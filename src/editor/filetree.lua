@@ -46,24 +46,76 @@ do
 end
 
 local function treeAddDir(tree,parent_id,rootdir)
-  tree:DeleteChildren(parent_id)
+  local item, cookie = tree:GetFirstChild(parent_id)
+  local items = {}
+  while true do
+    if not item:IsOk() then break end
+    items[tree:GetItemText(item) .. tree:GetItemImage(item)] = item
+    item, cookie = tree:GetNextChild(item, cookie)
+  end
+
+  local curr
   local search = rootdir..string_Pathsep.."*.*"
   local dirs = FileSysGet(search,wx.wxDIR)
+
   -- append directories
   for i,dir in ipairs(dirs) do
-    local dir_id = tree:AppendItem(parent_id, dir:match("%"..string_Pathsep.."("..stringset_File.."+)$"), 0)
-    tree:SetItemHasChildren(dir_id,FileSysHasContent(dir))
+    local name = dir:match("%"..string_Pathsep.."("..stringset_File.."+)$")
+    local icon = 0
+    local item = items[name .. icon]
+    if item then -- existing item
+      -- keep deleting items until we find item
+      while true do
+        next = curr and tree:GetNextSibling(curr)
+                     or tree:GetFirstChild(parent_id)
+        if not next:IsOk() or name == tree:GetItemText(next) then
+          curr = next
+          break
+        end
+        tree:Delete(next)
+      end
+    else -- new item
+      local dir_id = curr and tree:InsertItem(parent_id, curr, name, icon)
+                           or tree:PrependItem(parent_id, name, icon)
+      tree:SetItemHasChildren(dir_id,FileSysHasContent(dir))
+      curr = dir_id
+    end
   end
+
   -- then append files
   local files = FileSysGet(search,wx.wxFILE)
   for i,file in ipairs(files) do
-    local fname = file:match("%"..string_Pathsep.."("..stringset_File.."+)$")
+    local name = file:match("%"..string_Pathsep.."("..stringset_File.."+)$")
     local known = GetSpec(GetFileExt(fname))
-    tree:AppendItem(parent_id, fname, known and 1 or 2)
+    local icon = known and 1 or 2
+    local item = items[name .. icon]
+    if item then -- existing item
+      -- keep deleting items until we find item
+      while true do
+        next = curr and tree:GetNextSibling(curr)
+                     or tree:GetFirstChild(parent_id)
+        if not next:IsOk() or name == tree:GetItemText(next) then
+          curr = next
+          break
+        end
+        tree:Delete(next)
+      end
+    else -- new item
+      curr = curr and tree:InsertItem(parent_id, curr, name, icon)
+                   or tree:PrependItem(parent_id, name, icon)
+    end
   end
-  if tree:GetChildrenCount(parent_id, false) == 0 then
-    tree:SetItemHasChildren(parent_id, false)
+
+  -- delete any leftovers (something that exists in the tree, but not on disk)
+  while true do
+    next = curr and tree:GetNextSibling(curr)
+                 or tree:GetFirstChild(parent_id)
+    if not next:IsOk() then break end
+    tree:Delete(next)
   end
+
+  tree:SetItemHasChildren(parent_id,
+    tree:GetChildrenCount(parent_id, false) > 0)
 end
 
 local function treeGetItemFullName(tree,treedata,item_id)
@@ -105,10 +157,7 @@ local function treeSetConnectorsAndIcons(tree,treedata)
     function( event )
       local item_id = event:GetItem()
       local dir = treeGetItemFullName(tree,treedata,item_id)
-      if tree:GetChildrenCount(item_id, false) == 0 then -- TBR
-        treeAddDir(tree,item_id,dir)
-      end
-
+      treeAddDir(tree,item_id,dir)
       return true
     end )
   tree:Connect( wx.wxEVT_COMMAND_TREE_ITEM_COLLAPSED,
@@ -120,11 +169,22 @@ local function treeSetConnectorsAndIcons(tree,treedata)
     function( event )
       local item_id = event:GetItem()
 
-      if (tree:GetItemImage(item_id) == 0) then return end
-      -- openfile
       local name = treeGetItemFullName(tree,treedata,item_id)
-      LoadFile(name,nil,true)
-      FileTreeMarkSelected(name)
+      -- refresh the folder
+      if (tree:GetItemImage(item_id) == 0) then
+        if wx.wxFileName(name):DirExists() then
+          treeAddDir(tree,item_id,name) -- refresh the content
+        else -- stale filetree information; rescan
+          treeAddDir(tree,tree:GetItemParent(item_id),name)
+        end
+      else -- open file
+        if wx.wxFileName(name):FileExists() then
+          LoadFile(name,nil,true)
+          FileTreeMarkSelected(name)
+        else -- stale filetree information; rescan
+          treeAddDir(tree,tree:GetItemParent(item_id),name)
+        end 
+      end
     end )
   tree:Connect( wx.wxEVT_COMMAND_TREE_SEL_CHANGED,
     function( event )
@@ -244,6 +304,32 @@ function FileTreeGetProjects()
   return filetree.projdirTextArray
 end
 
+local function findItem(tree, match)
+  local node = projtree:GetRootItem()
+  local label = tree:GetItemText(node)
+
+  local s, e = string.find(match, label .. string_Pathsep)
+  if not s or s ~= 1 then return end
+
+  for token in string.gmatch(string.sub(match,e+1), "[^%"..string_Pathsep.."]+") do
+    local dir = treeGetItemFullName(tree,filetree.projdata,node)
+    treeAddDir(tree,node,dir)
+
+    local item, cookie = tree:GetFirstChild(node)
+    while true do
+      if not item:IsOk() then return end -- not found
+      if tree:GetItemText(item) == token then
+        node = item
+        break
+      end
+      item, cookie = tree:GetNextChild(item, cookie)
+    end
+  end
+
+  -- this loop exits only when a match is found
+  return node
+end
+
 local curr_id
 function FileTreeMarkSelected(file)
   if not file then return end
@@ -258,33 +344,4 @@ function FileTreeMarkSelected(file)
       curr_id = item_id
     end
   end
-end
-
-function findItem(tree, match)
-  local node = projtree:GetRootItem()
-  local label = tree:GetItemText(node)
-
-  local s, e = string.find(match, label .. string_Pathsep)
-  if not s or s ~= 1 then return end
-
-  for token in string.gmatch(string.sub(match,e+1), "[^%"..string_Pathsep.."]+") do
-    -- check if the node has been populated
-    if tree:ItemHasChildren(node) and
-       tree:GetChildrenCount(node, false) == 0 then
-       local dir = treeGetItemFullName(tree,filetree.projdata,node)
-       treeAddDir(tree,node,dir)
-    end
-    local item, cookie = tree:GetFirstChild(node)
-    while true do
-      if not item:IsOk() then return end -- not found
-      if tree:GetItemText(item) == token then
-        node = item
-        break
-      end
-      item, cookie = tree:GetNextChild(item, cookie)
-    end
-  end
-
-  -- this loop exits only when a match is found
-  return node
 end
