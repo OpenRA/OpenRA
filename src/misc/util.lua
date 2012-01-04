@@ -163,6 +163,9 @@ end
 function FileSysGet(dir,spec)
   local content = {}
   local browse = wx.wxFileSystem()
+  if not wx.wxFileName(dir):DirExists() then
+    return content
+  end
   local f = browse:FindFirst(dir,spec)
   while #f>0 do
     table.insert(content,f)
