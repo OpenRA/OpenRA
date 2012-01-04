@@ -13,7 +13,7 @@ return {
       shellLog:SetReadOnly(true)
     end
 
-    ShellExecuteCode(nil,wfilename)
+    ShellExecuteCode(wfilename)
   end,
   fprojdir = function(self,wfilename)
     return wfilename:GetPath(wx.wxPATH_GET_VOLUME)

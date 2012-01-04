@@ -75,7 +75,6 @@ debugger.shell = function(expression)
         if err then DisplayShellErr(err)
         elseif value ~= nil and value ~= 'nil' then DisplayShell(value)
         end
-        DisplayShellPrompt('')
       end)
   end
 end
@@ -125,7 +124,7 @@ debugger.listen = function()
       end
 
       if (not options.noshell) then
-        ShellSupportRemote(debugger.shell, 0)
+        ShellSupportRemote(debugger.shell, debugger.pid)
       end
 
     end)

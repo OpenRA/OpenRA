@@ -109,34 +109,49 @@ local function getNextHistoryLine(forward, promptText)
   return getInput(currentHistory)
 end
 
-local function shellPrint(...)
+local function shellPrint(marker, ...)
   local cnt = select('#',...)
+  local isPrompt = marker and (getPromptLine() > -1)
+
+  local text = ''
   for i=1,cnt do
     local x = select(i,...)
-    out:InsertText(out:GetLength(),tostring(x)..(i < cnt and "\t" or ""))
+    text = text .. tostring(x)..(i < cnt and "\t" or "")
   end
+  -- add "\n" if it is missing
+  if text then text = text:gsub("\n$", "") .. "\n" end
+
+  local lines = out:GetLineCount()
+  local promptLine = isPrompt and getPromptLine() or nil
+  local insertLineAt = isPrompt and getPromptLine() or out:GetLineCount()-1
+  local insertAt = isPrompt and out:PositionFromLine(getPromptLine()) or out:GetLength()
+  out:InsertText(insertAt, text)
+  local linesAdded = out:GetLineCount() - lines
+
+  if marker then
+    if promptLine then out:MarkerDelete(promptLine, CURRENT_LINE_MARKER) end
+    for line = insertLineAt, insertLineAt + linesAdded - 1 do
+      out:MarkerAdd(line, marker)
+    end
+    if promptLine then out:MarkerAdd(promptLine+linesAdded, CURRENT_LINE_MARKER) end
+  end
+
   out:EmptyUndoBuffer() -- don't allow the user to undo shell text
   out:GotoPos(out:GetLength())
 end
 
 DisplayShell = function (...)
-  local start = out:GetLineCount()-1
-  shellPrint(...)
-
-  local finish = out:GetLineCount()-1
-  for line=start,finish do
-    out:MarkerAdd(line, OUTPUT_MARKER)
-  end
-  shellPrint("\n")
+  shellPrint(OUTPUT_MARKER, ...)
 end
 DisplayShellErr = function (...)
-  out:MarkerAdd(out:GetLineCount()-1, BREAKPOINT_MARKER)
-  shellPrint(...)
-  shellPrint("\n")
+  shellPrint(BREAKPOINT_MARKER, ...)
+end
+DisplayShellDirect = function (...)
+  shellPrint(nil, ...)
 end
 DisplayShellPrompt = function (...)
+  -- don't print anything; just mark the line with a prompt mark
   out:MarkerAdd(out:GetLineCount()-1, CURRENT_LINE_MARKER)
-  shellPrint(...)
 end
 
 local function createenv ()
@@ -218,7 +233,8 @@ local env = createenv()
 local function executeShellCode(tx)
   if tx == nil or tx == '' then return end
 
-  shellPrint('\n')
+  DisplayShellDirect('\n')
+  DisplayShellPrompt('')
 
   local fn,err
   if remotesend then
@@ -242,16 +258,25 @@ local function executeShellCode(tx)
         DisplayShellErr(res)
       end
     end
-    DisplayShellPrompt('')
   end
 end
 
 function ShellSupportRemote(client,uid)
   remotesend = client
   remoteuid = client and uid
+
+  if (remotesend) then CommandLineToShell(remoteuid,true) end
+
   -- change the name of the tab: console is the second page in the notebook
   bottomnotebook:SetPageText(1,
     client and "Remote console" or "Local console")
+end
+
+function ShellExecuteCode(wfilename)
+  if (not wfilename) then return end
+  local cmd = 'dofile([['..wfilename:GetFullPath()..']])'
+  DisplayShellDirect(cmd)
+  executeShellCode(cmd)
 end
 
 out:Connect(wx.wxEVT_KEY_DOWN,
@@ -326,6 +351,6 @@ out:Connect(wx.wxEVT_KEY_DOWN,
     event:Skip()
   end)
 
-DisplayShell([[Welcome to the interactive Lua interpreter.
+DisplayShellDirect([[Welcome to the interactive Lua interpreter.
 Enter Lua code and press Enter to run it. Use Shift-Enter for multiline code.]])
 DisplayShellPrompt('')
