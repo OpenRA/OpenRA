@@ -219,7 +219,7 @@ local function createenv ()
     end
   end
 
-  env.print = DisplayShell
+  env.print = function (...) DisplayOutputNoMarker(...,"\n") end
   env.dofile = dofile
   env.loadfile = loadfile
   env.RELFILE = relativeFilename
@@ -264,8 +264,6 @@ end
 function ShellSupportRemote(client,uid)
   remotesend = client
   remoteuid = client and uid
-
-  if (remotesend) then CommandLineToShell(remoteuid,true) end
 
   -- change the name of the tab: console is the second page in the notebook
   bottomnotebook:SetPageText(1,
