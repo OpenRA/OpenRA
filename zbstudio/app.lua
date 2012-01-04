@@ -31,12 +31,14 @@ local app = {
   postinit = function ()
     local bundle = wx.wxIconBundle()
     local files = FileSysGet("zbstudio/res/", wx.wxFILE)
+    local icons = 0
     for i,file in ipairs(files) do
       if GetFileExt(file) == "ico" then
+        icons = icons + 1
         bundle:AddIcon(file, wx.wxBITMAP_TYPE_ICO)
       end
     end
-    ide.frame:SetIcons(bundle)
+    if icons > 0 then ide.frame:SetIcons(bundle) end
 
     -- start debugger
     ide.debugger.listen()
