@@ -279,6 +279,13 @@ function ShellExecuteCode(wfilename)
   executeShellCode(cmd)
 end
 
+local function displayShellIntro()
+  DisplayShellDirect([[Welcome to the interactive Lua interpreter.
+Enter Lua code and press Enter to run it. Use Shift-Enter for multiline code.
+Use 'clear' to clear the shell output and the history.]])
+  DisplayShellPrompt('')
+end
+
 out:Connect(wx.wxEVT_KEY_DOWN,
   function (event)
     -- this loop is only needed to allow to get to the end of function easily
@@ -334,7 +341,12 @@ out:Connect(wx.wxEVT_KEY_DOWN,
         if caretOnPromptLine(true) and event:ShiftDown() then break end
 
         local promptText = getPromptText()
-        executeShellCode(promptText)
+        if promptText == 'clear' then
+          out:ClearAll()
+          displayShellIntro()
+        else
+          executeShellCode(promptText)
+        end
         currentHistory = getPromptLine() -- reset history
         return -- don't need to do anything else with return
       else
@@ -351,6 +363,5 @@ out:Connect(wx.wxEVT_KEY_DOWN,
     event:Skip()
   end)
 
-DisplayShellDirect([[Welcome to the interactive Lua interpreter.
-Enter Lua code and press Enter to run it. Use Shift-Enter for multiline code.]])
-DisplayShellPrompt('')
+displayShellIntro()
+
