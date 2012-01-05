@@ -37,8 +37,17 @@ end
 
 DisplayShell = shellPrint
 DisplayShellErr = function (...)
-  out:MarkerAdd(out:GetLineCount()-1, BREAKPOINT_MARKER)
-  DisplayShell("! " .. ...)
+  local startpos = out:GetLineCount()-1
+  local args = {...}
+  shellPrint("! " .. ...)
+  local endpos   = out:GetLineCount()-2 
+  for i=startpos,endpos do
+    out:MarkerAdd(i, BREAKPOINT_MARKER)
+  end
+end
+
+local function filterTraceError(err)
+  return err:match("(.*)\n[^\n]*\n[^\n]*src/editor/shellbox.*in function 'ShellExecuteCode'")
 end
 
 local function createenv ()
@@ -97,11 +106,11 @@ local function createenv ()
     local fn,err = loadfile(file)
     local args = {...}
     if not fn then
-      shellPrint("Error: "..err)
+      DisplayShellErr(err)
     else
       setfenv(fn,env)
       xpcall(function() return fn(unpack(args)) end,function(err)
-          shellPrint(debug.traceback(err))
+          DisplayShellErr(filterTraceError(debug.traceback(err)))
         end)
     end
   end
@@ -167,11 +176,13 @@ function ShellExecuteCode(ev,wfilename)
     DisplayShellErr(err)
   elseif fn then
     setfenv(fn,env)
-    local ok, res = pcall(fn)
+    local ok, res = xpcall(fn,
+      function(err)
+        DisplayShellErr(filterTraceError(debug.traceback(err)))
+      end)
+    
     if ok then
       DisplayShell(res)
-    else
-      DisplayShellErr(res)
     end
   end
 end
