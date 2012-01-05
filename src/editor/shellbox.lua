@@ -32,7 +32,7 @@ out:SetWrapVisualFlagsLocation(wxstc.wxSTC_WRAPVISUALFLAGLOC_END_BY_TEXT)
 out:SetWrapVisualFlags(wxstc.wxSTC_WRAPVISUALFLAG_START)
 out:WrapCount(80)
 
-out:MarkerDefine(CURRENT_LINE_MARKER, wxstc.wxSTC_MARK_SHORTARROW)
+out:MarkerDefine(CURRENT_LINE_MARKER, wxstc.wxSTC_MARK_CHARACTER+string.byte('>'), wx.wxBLACK, wx.wxColour(240, 240, 240))
 out:MarkerDefine(BREAKPOINT_MARKER, wxstc.wxSTC_MARK_BACKGROUND, wx.wxBLACK, wx.wxColour(255, 220, 220))
 out:MarkerDefine(OUTPUT_MARKER, wxstc.wxSTC_MARK_BACKGROUND, wx.wxBLACK, wx.wxColour(240, 240, 240))
 out:SetReadOnly(false)
@@ -219,7 +219,7 @@ local function createenv ()
     end
   end
 
-  env.print = function (...) DisplayOutputNoMarker(...,"\n") end
+  env.print = DisplayShell
   env.dofile = dofile
   env.loadfile = loadfile
   env.RELFILE = relativeFilename
