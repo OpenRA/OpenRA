@@ -142,6 +142,8 @@ function ShellExecuteCode(ev,wfilename)
 
   if (wfilename) then
     fn,err = loadfile(wfilename:GetFullPath())
+    tx = "dofile([["..wfilename:GetFullPath().."]])"
+    marker = "> "
   elseif(remotesend and remote:IsChecked()) then
     marker = ">> " -- remote exec
     tx = code:GetText()
@@ -157,7 +159,7 @@ function ShellExecuteCode(ev,wfilename)
     end
   end
 
-  if tx == nil or tx == '' then return end
+  if (tx == nil or tx == '') then return end
 
   DisplayShell(marker .. string.gsub(tx, "\n", "\n" .. marker))
 
