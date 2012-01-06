@@ -73,7 +73,7 @@ debugger.shell = function(expression)
         local value, _, err = debugger.handle('eval ' .. expression)
         if err ~= nil then value, _, err = debugger.handle('exec ' .. expression) end
         if err then DisplayShellErr(err)
-        else DisplayShell(value)
+        elseif value ~= nil and value ~= 'nil' then DisplayShell(value)
         end
       end)
   end
@@ -124,7 +124,7 @@ debugger.listen = function()
       end
 
       if (not options.noshell) then
-        ShellSupportRemote(debugger.shell, 0)
+        ShellSupportRemote(debugger.shell, debugger.pid)
       end
 
     end)

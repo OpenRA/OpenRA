@@ -60,7 +60,7 @@ end
 
 function CommandLineToShell(uid,state)
   for pid,custom in pairs(customprocs) do
-    if (custom.uid == uid and custom.proc and custom.proc.Exists(tonumber(tostring(pid))) )then
+    if ((pid == uid or custom.uid == uid) and custom.proc and custom.proc.Exists(tonumber(tostring(pid))) )then
       if (streamins[pid]) then streamins[pid].toshell = state end
       if (streamerrs[pid]) then streamerrs[pid].toshell = state end
       return true
@@ -103,8 +103,8 @@ function CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
   end
 
   -- launch process
-  local pid = proc and wx.wxExecute(cmd, wx.wxEXEC_ASYNC + (nohide and wx.wxEXEC_NOHIDE or 0),proc) or
-  wx.wxExecute(cmd, wx.wxEXEC_ASYNC + (nohide and wx.wxEXEC_NOHIDE or 0))
+  local pid = (proc and wx.wxExecute(cmd, wx.wxEXEC_ASYNC + (nohide and wx.wxEXEC_NOHIDE or 0),proc) or
+    wx.wxExecute(cmd, wx.wxEXEC_ASYNC + (nohide and wx.wxEXEC_NOHIDE or 0)))
 
   if (oldcwd) then
     wx.wxFileName.SetCwd(oldcwd)
@@ -116,7 +116,7 @@ function CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
     customproc = nil
     return
   else
-    DisplayOutputNoMarker("Process: "..uid.." pid:"..tostring(pid).."\n")
+    DisplayOutput("Process: "..uid..", pid:"..tostring(pid).."\n")
     customprocs[pid] = {proc=customproc, uid=uid, endcallback=endcallback}
   end
 
