@@ -154,37 +154,19 @@ bottomnotebook = wxaui.wxAuiNotebook(splitter, wx.wxID_ANY,
   wx.wxDefaultPosition, wx.wxDefaultSize,
   wxaui.wxAUI_NB_DEFAULT_STYLE + wxaui.wxAUI_NB_TAB_EXTERNAL_MOVE
   - wxaui.wxAUI_NB_CLOSE_ON_ACTIVE_TAB + wx.wxNO_BORDER)
-errorlog = wxstc.wxStyledTextCtrl(bottomnotebook, wx.wxID_ANY,wx.wxDefaultPosition, wx.wxDefaultSize,
-  wx.wxBORDER_STATIC)
+errorlog = wxstc.wxStyledTextCtrl(bottomnotebook, wx.wxID_ANY,
+  wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxBORDER_STATIC)
+
+--shellbox = wx.wxPanel(bottomnotebook,wx.wxID_ANY)
+shellbox = wxstc.wxStyledTextCtrl(bottomnotebook, ID "shellbox.output",
+  wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxBORDER_STATIC)
+
 bottomnotebook:AddPage(errorlog, "Output", true)
-
-shellbox = wx.wxPanel(bottomnotebook,wx.wxID_ANY)
-shellbox.output = wxstc.wxStyledTextCtrl(shellbox, ID "shellbox.output")
-shellbox.input = wxstc.wxStyledTextCtrl(shellbox, ID "shellbox.input")
-shellbox.run = wx.wxButton(shellbox, ID "shellbox.run", "Run")
-shellbox.remote = wx.wxCheckBox(shellbox, ID "shellbox.remote", "Remote")
-shellbox.remote:Disable()
-
-local hsizer = wx.wxFlexGridSizer(0, 1, 0, 0)
-hsizer:AddGrowableCol(0)
-hsizer:AddGrowableRow(0)
-hsizer:Add(shellbox.run, 0, wx.wxGROW+wx.wxALIGN_CENTER_VERTICAL, 0 )
-hsizer:Add(shellbox.remote, 0, wx.wxGROW+wx.wxALIGN_CENTER_VERTICAL, 0 )
-
-local vsizer = wx.wxFlexGridSizer(1, 0, 0, 0)
-vsizer:AddGrowableCol(0)
-vsizer:AddGrowableRow(0)
-vsizer:Add(shellbox.input, 0, wx.wxGROW+wx.wxALIGN_CENTER_HORIZONTAL, 0 )
-vsizer:Add(hsizer, 0, wx.wxGROW+wx.wxALIGN_CENTER_HORIZONTAL, 0 )
-
-local gridsizer = wx.wxFlexGridSizer(0, 1, 0, 0)
-gridsizer:AddGrowableCol(0)
-gridsizer:AddGrowableRow(0)
-gridsizer:Add(shellbox.output, 0, wx.wxGROW+wx.wxALIGN_CENTER_HORIZONTAL, 0 )
-gridsizer:Add(vsizer, 0, wx.wxGROW+wx.wxALIGN_CENTER_HORIZONTAL, 0 )
-shellbox:SetSizer(gridsizer)
-
-bottomnotebook:AddPage(shellbox, "Lua shell",false)
+bottomnotebook:AddPage(shellbox, "Local console", false)
+bottomnotebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CLOSE,
+  function (event)
+    event:Veto() -- don't allow closing pages in thiw notebook
+  end)
 
 -- sidenotebook
 sidenotebook = wxaui.wxAuiNotebook(vsplitter, wx.wxID_ANY,
