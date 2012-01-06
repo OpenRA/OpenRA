@@ -244,12 +244,11 @@ local function executeShellCode(tx)
   if remotesend then
     remotesend(tx)
   else
-    -- for some direct queries
-    --fn,err = loadstring("return("..tx..")")
-    -- otherise use string directly
-    --if err then
-      fn,err = loadstring(tx)
-    --end
+    fn,err = loadstring(tx)
+    -- for statement queries create the return
+    if err and err:find("'=' expected ") > -1 then
+      fn,err = loadstring("return("..tx..")")
+    end
   end
   
   if fn == nil and err then
@@ -261,7 +260,7 @@ local function executeShellCode(tx)
         DisplayShellErr(filterTraceError(debug.traceback(err)))
       end)
     
-    if ok then
+    if ok and res ~= nil then
       DisplayShell(res)
     end
   end
