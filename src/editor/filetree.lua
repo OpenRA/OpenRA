@@ -275,9 +275,12 @@ function filetree:updateProjectDir(newdir, cboxsel)
   treeSetRoot(projtree,filetree.projdata,newdir)
 
   -- sync with the current editor window and activate selected file
-  local id = GetEditor():GetId()
-  if ide.openDocuments[id] then
-    FileTreeMarkSelected(ide.openDocuments[id].filePath)
+  local editor = GetEditor()
+  if (editor) then
+    local id = GetEditor():GetId()
+    if ide.openDocuments[id] then
+      FileTreeMarkSelected(ide.openDocuments[id].filePath)
+    end
   end
 end
 

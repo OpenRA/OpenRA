@@ -33,7 +33,7 @@ function LoadFile(filePath, editor, file_must_exist)
   -- prevent files from being reopened again
   if (not editor) then
     for id, doc in pairs(openDocuments) do
-      local docName = string.lower(string.gsub(doc.filePath, "\\", "/"))
+      local docName = doc.filePath and string.lower(string.gsub(doc.filePath, "\\", "/"))
       if cmpName == docName then
         notebook:SetSelection(doc.index)
         return doc.editor
