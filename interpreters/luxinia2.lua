@@ -1,3 +1,8 @@
+if (not(ide.config.path.luxinia2 and 
+        wx.wxFileExists(ide.config.path.luxinia2..'luajit.exe'))) then 
+  return 
+end
+
 return {
   name = "Luxinia2",
   description = "Luxinia2",
