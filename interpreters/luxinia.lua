@@ -15,7 +15,7 @@ return {
     local fname = wfilename:GetFullName()
     endstr = endstr..(fname and (" -t "..fname) or "")
 
-    local cmd = ide.config.path.luxinia..'luxinia.exe --nologo'..endstr
+    local cmd = 'luxinia.exe --nologo'..endstr
     CommandLineRun(cmd,ide.config.path.luxinia,true,true)
   end,
   fprojdir = function(self,wfilename)

@@ -47,7 +47,7 @@ DisplayShellErr = function (...)
 end
 
 local function filterTraceError(err)
-  return err:match("(.*)\n[^\n]*\n[^\n]*src/editor/shellbox.*in function 'ShellExecuteCode'")
+  return err:match("(.-)\n[^\n]*\n[^\n]*src/editor/shellbox")
 end
 
 local function createenv ()
@@ -149,17 +149,13 @@ function ShellExecuteCode(ev,wfilename)
   local tx
   local marker
 
-  if (wfilename) then
-    fn,err = loadfile(wfilename:GetFullPath())
-    tx = "dofile([["..wfilename:GetFullPath().."]])"
-    marker = "> "
-  elseif(remotesend and remote:IsChecked()) then
+  if(remotesend and remote:IsChecked()) then
     marker = ">> " -- remote exec
     tx = code:GetText()
     remotesend(tx)
   else
     marker = "> " -- local exec
-    tx = code:GetText()
+    tx = wfilename and "dofile([["..wfilename:GetFullPath().."]])" or code:GetText()
     -- for some direct queries
     fn,err = loadstring("return("..tx..")")
     -- otherise use string directly

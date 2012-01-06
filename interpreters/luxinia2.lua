@@ -61,7 +61,7 @@ return {
 
     local jitargs = ide.config.luxinia2jitargs
     jitargs = jitargs or ""
-    local cmd = luxdir..'/luajit.exe '..jitargs..' ../main.lua '..args
+    local cmd = 'luajit.exe '..jitargs..' ../main.lua '..args
 
 
     local pid = CommandLineRun(cmd,ide.config.path.luxinia2,true,true,nil,self:fuid(wfilename),
