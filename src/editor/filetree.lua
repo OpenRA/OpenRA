@@ -66,8 +66,8 @@ local function treeAddDir(tree,parent_id,rootdir)
     if item then -- existing item
       -- keep deleting items until we find item
       while true do
-        next = curr and tree:GetNextSibling(curr)
-                     or tree:GetFirstChild(parent_id)
+        local next = curr and tree:GetNextSibling(curr)
+                           or tree:GetFirstChild(parent_id)
         if not next:IsOk() or name == tree:GetItemText(next) then
           curr = next
           break
@@ -92,8 +92,8 @@ local function treeAddDir(tree,parent_id,rootdir)
     if item then -- existing item
       -- keep deleting items until we find item
       while true do
-        next = curr and tree:GetNextSibling(curr)
-                     or tree:GetFirstChild(parent_id)
+        local next = curr and tree:GetNextSibling(curr)
+                           or tree:GetFirstChild(parent_id)
         if not next:IsOk() or name == tree:GetItemText(next) then
           curr = next
           break
@@ -108,8 +108,8 @@ local function treeAddDir(tree,parent_id,rootdir)
 
   -- delete any leftovers (something that exists in the tree, but not on disk)
   while true do
-    next = curr and tree:GetNextSibling(curr)
-                 or tree:GetFirstChild(parent_id)
+    local next = curr and tree:GetNextSibling(curr)
+                       or tree:GetFirstChild(parent_id)
     if not next:IsOk() then break end
     tree:Delete(next)
   end
