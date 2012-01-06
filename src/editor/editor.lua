@@ -9,10 +9,10 @@ local editorID = 100 -- window id to create editor pages with, incremented for n
 local openDocuments = ide.openDocuments
 local ignoredFilesList = ide.ignoredFilesList
 local statusBar = ide.frame.statusBar
-local notebook = ide.frame.vsplitter.splitter.notebook
+local notebook = ide.frame.notebook
 local funclist = ide.frame.toolBar.funclist
 local edcfg = ide.config.editor
-local projcombobox = ide.frame.vsplitter.sidenotebook.projpanel.projcombobox
+local projcombobox = ide.frame.projpanel.projcombobox
 
 -- ----------------------------------------------------------------------------
 -- Update the statusbar text of the frame using the given editor.

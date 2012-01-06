@@ -5,11 +5,10 @@ local ide = ide
 -- shellbox - a lua testbed environment within the IDE
 --
 
-local bottomnotebook = ide.frame.vsplitter.splitter.bottomnotebook
+local bottomnotebook = ide.frame.bottomnotebook
 local out = bottomnotebook.shellbox
 
 local remotesend
-local remoteuid
 
 local OUTPUT_MARKER = 3
 local OUTPUT_MARKER_VALUE = 8 -- = 2^OUTPUT_MARKER
@@ -270,7 +269,6 @@ end
 
 function ShellSupportRemote(client,uid)
   remotesend = client
-  remoteuid = client and uid
 
   -- change the name of the tab: console is the second page in the notebook
   bottomnotebook:SetPageText(1,

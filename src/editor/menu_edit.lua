@@ -33,7 +33,7 @@ function OnUpdateUIEditMenu(event) -- enable if there is a valid focused editor
   event:Enable(editor ~= nil)
 end
 
-local shellboxeditor = ide.frame.vsplitter.splitter.bottomnotebook.shellbox
+local shellboxeditor = ide.frame.bottomnotebook.shellbox
 
 function OnEditMenu(event)
   local menu_id = event:GetId()

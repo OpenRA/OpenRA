@@ -7,11 +7,6 @@ local ide = ide
 
 local frame = ide.frame
 local menuBar = frame.menuBar
-local vsplitter= frame.vsplitter
-local sidenotebook = vsplitter.sidenotebook
-local splitter = vsplitter.splitter
-local errorlog = splitter.bottomnotebook.errorlog
-local notebook = splitter.notebook
 
 local openDocuments = ide.openDocuments
 local debugger = ide.debugger

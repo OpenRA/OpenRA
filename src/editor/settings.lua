@@ -244,32 +244,13 @@ function SettingsRestoreView()
   settings:SetPath(listname)
 
   local frame = ide.frame
-  local vsplitter = frame.vsplitter
-  local sidenotebook = vsplitter.sidenotebook
-  local splitter = vsplitter.splitter
-
-  local treevis = tonumber(settingsReadSafe(settings,"filetreevis",1))
-  local outvis = tonumber(settingsReadSafe(settings,"outputvis",1))
-
-  ide.config.view.vsplitterpos = tonumber(settingsReadSafe(settings,"filetreewidth",ide.config.view.vsplitterpos))
-  ide.config.view.splitterheight = tonumber(settingsReadSafe(settings,"outputheight",ide.config.view.splitterheight))
-
-  local w, h = frame:GetClientSizeWH()
-
-  if (treevis > 0) then
-    vsplitter:SplitVertically(sidenotebook,splitter,ide.config.view.vsplitterpos)
-  else
-    vsplitter:Initialize(splitter)
+  local uimgr = frame.uimgr
+  
+  local layout = settingsReadSafe(settings,"uimgrlayout",uimgr:SavePerspective())
+  if (layout) then
+    uimgr:LoadPerspective(layout)
+    uimgr:Update()
   end
-
-  if (outvis > 0) then
-    splitter:SplitHorizontally(splitter.notebook, splitter.bottomnotebook, h-ide.config.view.splitterheight)
-  else
-    splitter:Initialize(splitter.notebook)
-  end
-
-  frame.menuBar:Check(ID "view.filetree.show", treevis > 0)
-  frame.menuBar:Check(ID "view.output.show", outvis > 0)
 
   settings:SetPath(path)
 end
@@ -281,15 +262,10 @@ function SettingsSaveView()
   settings:SetPath(listname)
 
   local frame = ide.frame
-  local vsplitter = frame.vsplitter
-  local splitter = vsplitter.splitter
-
-  local w, h = frame:GetClientSizeWH()
-
-  settings:Write("filetreevis", vsplitter:IsSplit())
-  settings:Write("filetreewidth", vsplitter:IsSplit() and vsplitter:GetSashPosition() or ide.config.view.vsplitterpos)
-  settings:Write("outputvis", splitter:IsSplit())
-  settings:Write("outputheight", splitter:IsSplit() and (h-splitter:GetSashPosition()) or ide.config.view.splitterheight)
+  local uimgr = frame.uimgr
+  
+  local layout = uimgr:SavePerspective()
+  settings:Write("uimgrlayout",layout)
 
   settings:SetPath(path)
 end

@@ -3,9 +3,8 @@
 ---------------------------------------------------------
 local ide = ide
 local frame = ide.frame
-local splitter = frame.vsplitter.splitter
-local notebook = splitter.notebook
-local bottomnotebook = splitter.bottomnotebook
+local notebook = frame.notebook
+local bottomnotebook = frame.bottomnotebook
 local errorlog = bottomnotebook.errorlog
 
 -------

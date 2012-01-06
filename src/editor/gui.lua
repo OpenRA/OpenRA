@@ -38,162 +38,177 @@ ide.fontItalic = fontItalic
 ide.ofont = ofont
 ide.ofontItalic = ofontItalic
 
--- wxWindow variables
-local frame = nil -- wxFrame the main top level window
-local toolBar = nil
-local funclist = nil
-local statusBar = nil
-local menuBar = nil
-
-local vsplitter = nil
-local sidenotebook = nil
-
-local splitter = nil -- wxSplitterWindow for the notebook and errorlog
-local notebook = nil -- wxNotebook of editors
-local bottomnotebook = nil -- notebook for the GUIs in the bottom line
-local errorlog = nil -- wxStyledTextCtrl log window for messages
-local shellbox = nil -- 2 wxStyledTextCtrl for lua shell
-
 -- ----------------------------------------------------------------------------
 -- Create the wxFrame
 -- ----------------------------------------------------------------------------
-frame = wx.wxFrame(wx.NULL, wx.wxID_ANY, GetIDEString("editor"))
+local function createFrame()
+  frame = wx.wxFrame(wx.NULL, wx.wxID_ANY, GetIDEString("editor"))
+  frame:DragAcceptFiles(true)
+  frame:Connect(wx.wxEVT_DROP_FILES,function(evt)
+      local files = evt:GetFiles()
+      if not files or #files == 0 then return end
+      for i,f in ipairs(files) do
+        LoadFile(f,nil,true)
+      end
+    end)
 
-menuBar = wx.wxMenuBar()
-statusBar = frame:CreateStatusBar( 5 )
-local status_txt_width = statusBar:GetTextExtent("OVRW")
-statusBar:SetStatusWidths({-1, status_txt_width*6, status_txt_width, status_txt_width, status_txt_width*5})
-statusBar:SetStatusText(GetIDEString("statuswelcome"))
+  local menuBar = wx.wxMenuBar()
+  frame:SetMenuBar(menuBar)
+  frame.menuBar = menuBar
+  
+  local statusBar = frame:CreateStatusBar( 5 )
+  frame.statusBar = statusBar
+  local status_txt_width = statusBar:GetTextExtent("OVRW")
+  statusBar:SetStatusWidths({-1, status_txt_width*6, status_txt_width, status_txt_width, status_txt_width*5})
+  statusBar:SetStatusText(GetIDEString("statuswelcome"))
+  
+  local mgr = wxaui.wxAuiManager()
+  frame.uimgr = mgr
+  mgr:SetManagedWindow(frame)
 
-frame:DragAcceptFiles(true)
-frame:Connect(wx.wxEVT_DROP_FILES,function(evt)
-    local files = evt:GetFiles()
-    if not files or #files == 0 then return end
-    for i,f in ipairs(files) do
-      LoadFile(f,nil,true)
-    end
-  end)
+  return frame
+end
 
-toolBar = frame:CreateToolBar(wx.wxNO_BORDER + wx.wxTB_FLAT + wx.wxTB_DOCKABLE)
-funclist = wx.wxChoice.new(toolBar,ID "toolBar.funclist",wx.wxDefaultPosition, wx.wxSize.new(240,16))
+local function createToolBar(frame)
+  local toolBar = wx.wxToolBar(frame, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize,
+                                   wx.wxTB_FLAT + wx.wxTB_NODIVIDER)
+  local funclist = wx.wxChoice.new(toolBar,ID "toolBar.funclist",wx.wxDefaultPosition, wx.wxSize.new(240,16))
+  
+  -- note: Ususally the bmp size isn't necessary, but the HELP icon is not the right size in MSW
+  local toolBmpSize = toolBar:GetToolBitmapSize()
+  toolBar:AddTool(ID_NEW, "New", wx.wxArtProvider.GetBitmap(wx.wxART_NORMAL_FILE, wx.wxART_TOOLBAR, toolBmpSize), "Create an empty document")
+  toolBar:AddTool(ID_OPEN, "Open", wx.wxArtProvider.GetBitmap(wx.wxART_FILE_OPEN, wx.wxART_TOOLBAR, toolBmpSize), "Open an existing document")
+  toolBar:AddTool(ID_SAVE, "Save", wx.wxArtProvider.GetBitmap(wx.wxART_FILE_SAVE, wx.wxART_TOOLBAR, toolBmpSize), "Save the current document")
+  toolBar:AddTool(ID_SAVEALL, "Save All", wx.wxArtProvider.GetBitmap(wx.wxART_NEW_DIR, wx.wxART_TOOLBAR, toolBmpSize), "Save all documents")
+  toolBar:AddSeparator()
+  toolBar:AddTool(ID_CUT, "Cut", wx.wxArtProvider.GetBitmap(wx.wxART_CUT, wx.wxART_TOOLBAR, toolBmpSize), "Cut the selection")
+  toolBar:AddTool(ID_COPY, "Copy", wx.wxArtProvider.GetBitmap(wx.wxART_COPY, wx.wxART_TOOLBAR, toolBmpSize), "Copy the selection")
+  toolBar:AddTool(ID_PASTE, "Paste", wx.wxArtProvider.GetBitmap(wx.wxART_PASTE, wx.wxART_TOOLBAR, toolBmpSize), "Paste text from the clipboard")
+  toolBar:AddSeparator()
+  toolBar:AddTool(ID_UNDO, "Undo", wx.wxArtProvider.GetBitmap(wx.wxART_UNDO, wx.wxART_TOOLBAR, toolBmpSize), "Undo last edit")
+  toolBar:AddTool(ID_REDO, "Redo", wx.wxArtProvider.GetBitmap(wx.wxART_REDO, wx.wxART_TOOLBAR, toolBmpSize), "Redo last undo")
+  toolBar:AddSeparator()
+  toolBar:AddTool(ID_FIND, "Find", wx.wxArtProvider.GetBitmap(wx.wxART_FIND, wx.wxART_TOOLBAR, toolBmpSize), "Find text")
+  toolBar:AddTool(ID_REPLACE, "Replace", wx.wxArtProvider.GetBitmap(wx.wxART_FIND_AND_REPLACE, wx.wxART_TOOLBAR, toolBmpSize), "Find and replace text")
+  toolBar:AddSeparator()
+  toolBar:AddTool(ID "debug.projectdir.fromfile", "Update", wx.wxArtProvider.GetBitmap(wx.wxART_GO_DIR_UP , wx.wxART_TOOLBAR, toolBmpSize), "Sets projectdir from file")
+  toolBar:AddSeparator()
+  toolBar:AddControl(funclist)
+  toolBar:Realize()
+  
+  toolBar.funclist = funclist
+  frame.toolBar = toolBar
+  return toolBar
+end
 
--- note: Ususally the bmp size isn't necessary, but the HELP icon is not the right size in MSW
-local toolBmpSize = toolBar:GetToolBitmapSize()
-toolBar:AddTool(ID_NEW, "New", wx.wxArtProvider.GetBitmap(wx.wxART_NORMAL_FILE, wx.wxART_TOOLBAR, toolBmpSize), "Create an empty document")
-toolBar:AddTool(ID_OPEN, "Open", wx.wxArtProvider.GetBitmap(wx.wxART_FILE_OPEN, wx.wxART_TOOLBAR, toolBmpSize), "Open an existing document")
-toolBar:AddTool(ID_SAVE, "Save", wx.wxArtProvider.GetBitmap(wx.wxART_FILE_SAVE, wx.wxART_TOOLBAR, toolBmpSize), "Save the current document")
-toolBar:AddTool(ID_SAVEALL, "Save All", wx.wxArtProvider.GetBitmap(wx.wxART_NEW_DIR, wx.wxART_TOOLBAR, toolBmpSize), "Save all documents")
-toolBar:AddSeparator()
-toolBar:AddTool(ID_CUT, "Cut", wx.wxArtProvider.GetBitmap(wx.wxART_CUT, wx.wxART_TOOLBAR, toolBmpSize), "Cut the selection")
-toolBar:AddTool(ID_COPY, "Copy", wx.wxArtProvider.GetBitmap(wx.wxART_COPY, wx.wxART_TOOLBAR, toolBmpSize), "Copy the selection")
-toolBar:AddTool(ID_PASTE, "Paste", wx.wxArtProvider.GetBitmap(wx.wxART_PASTE, wx.wxART_TOOLBAR, toolBmpSize), "Paste text from the clipboard")
-toolBar:AddSeparator()
-toolBar:AddTool(ID_UNDO, "Undo", wx.wxArtProvider.GetBitmap(wx.wxART_UNDO, wx.wxART_TOOLBAR, toolBmpSize), "Undo last edit")
-toolBar:AddTool(ID_REDO, "Redo", wx.wxArtProvider.GetBitmap(wx.wxART_REDO, wx.wxART_TOOLBAR, toolBmpSize), "Redo last undo")
-toolBar:AddSeparator()
-toolBar:AddTool(ID_FIND, "Find", wx.wxArtProvider.GetBitmap(wx.wxART_FIND, wx.wxART_TOOLBAR, toolBmpSize), "Find text")
-toolBar:AddTool(ID_REPLACE, "Replace", wx.wxArtProvider.GetBitmap(wx.wxART_FIND_AND_REPLACE, wx.wxART_TOOLBAR, toolBmpSize), "Find and replace text")
-toolBar:AddSeparator()
-toolBar:AddTool(ID "debug.projectdir.fromfile", "Update", wx.wxArtProvider.GetBitmap(wx.wxART_GO_DIR_UP , wx.wxART_TOOLBAR, toolBmpSize), "Sets projectdir from file")
-toolBar:AddSeparator()
-toolBar:AddControl(funclist)
-toolBar:Realize()
 
--- ----------------------------------------------------------------------------
--- Add the child windows to the frame
-
--- vertical splitter (splitter / sidenotebook)
-vsplitter = wx.wxSplitterWindow(frame, wx.wxID_ANY,
-  wx.wxDefaultPosition, wx.wxDefaultSize,
-  wx.wxSP_3DSASH)
-
--- horizontal splitter (notebook,bottomnotebook)
-splitter = wx.wxSplitterWindow(vsplitter, wx.wxID_ANY,
-  wx.wxDefaultPosition, wx.wxDefaultSize,
-  wx.wxSP_3DSASH)
-local ph
-splitter:Connect(wx.wxEVT_SIZE, function (evt)
-    local h = evt:GetSize():GetHeight()
-    ph = ph or h
-    local h2 = ph
-    ph = h
-    local dh = splitter:GetSashPosition()
-    splitter:SetSashPosition(dh-h2+h)
-    splitter:UpdateSize()
-    evt:Skip()
-  end)
-
--- notebook for editors
-notebook = wxaui.wxAuiNotebook(splitter, wx.wxID_ANY,
+local function createNotebook(frame)
+  -- notebook for editors
+  local notebook = wxaui.wxAuiNotebook(frame, wx.wxID_ANY,
   wx.wxDefaultPosition, wx.wxDefaultSize,
   wxaui.wxAUI_NB_DEFAULT_STYLE + wxaui.wxAUI_NB_TAB_EXTERNAL_MOVE
   + wx.wxNO_BORDER)
 
-local current -- the currently active editor, needed by the focus selection
-local function onPageChange(event)
-  current = event:GetSelection() -- update the active editor reference
-  SetEditorSelection(current)
-  event:Skip() -- skip to let page change
+  local current -- the currently active editor, needed by the focus selection
+  local function onPageChange(event)
+    current = event:GetSelection() -- update the active editor reference
+    SetEditorSelection(current)
+    event:Skip() -- skip to let page change
+  end
+
+  notebook:Connect(wx.wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, onPageChange)
+  notebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CHANGED, onPageChange)
+  notebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CLOSE,
+    function (event)
+      ClosePage(event:GetSelection())
+      event:Veto() -- don't propagate the event as the page is already closed
+    end)
+
+  notebook:Connect(wx.wxEVT_SET_FOCUS, -- Notepad tabs shouldn't be selectable,
+    function (event)
+      SetEditorSelection(current) -- select the currently active editor
+    end)
+  
+  frame.notebook = notebook
+  return notebook
 end
 
-notebook:Connect(wx.wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, onPageChange)
-notebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CHANGED, onPageChange)
-notebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CLOSE,
-  function (event)
-    ClosePage(event:GetSelection())
-    event:Veto() -- don't propagate the event as the page is already closed
-  end)
+local function createBottomNotebook(frame)
+  -- bottomnotebook (errorlog,shellbox)
+  local bottomnotebook = wxaui.wxAuiNotebook(frame, wx.wxID_ANY,
+    wx.wxDefaultPosition, wx.wxDefaultSize,
+    wxaui.wxAUI_NB_DEFAULT_STYLE + wxaui.wxAUI_NB_TAB_EXTERNAL_MOVE
+    - wxaui.wxAUI_NB_CLOSE_ON_ACTIVE_TAB + wx.wxNO_BORDER)
 
-notebook:Connect(wx.wxEVT_SET_FOCUS, -- Notepad tabs shouldn't be selectable,
-  function (event)
-    SetEditorSelection(current) -- select the currently active editor
-  end)
+  local errorlog = wxstc.wxStyledTextCtrl(bottomnotebook, wx.wxID_ANY,
+    wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxBORDER_STATIC)
 
--- bottomnotebook (errorlog,shellbox)
-bottomnotebook = wxaui.wxAuiNotebook(splitter, wx.wxID_ANY,
-  wx.wxDefaultPosition, wx.wxDefaultSize,
-  wxaui.wxAUI_NB_DEFAULT_STYLE + wxaui.wxAUI_NB_TAB_EXTERNAL_MOVE
-  - wxaui.wxAUI_NB_CLOSE_ON_ACTIVE_TAB + wx.wxNO_BORDER)
-errorlog = wxstc.wxStyledTextCtrl(bottomnotebook, wx.wxID_ANY,
-  wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxBORDER_STATIC)
+  local shellbox = wxstc.wxStyledTextCtrl(bottomnotebook, ID "shellbox.output",
+    wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxBORDER_STATIC)
 
---shellbox = wx.wxPanel(bottomnotebook,wx.wxID_ANY)
-shellbox = wxstc.wxStyledTextCtrl(bottomnotebook, ID "shellbox.output",
-  wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxBORDER_STATIC)
+  bottomnotebook:AddPage(errorlog, "Output", true)
+  bottomnotebook:AddPage(shellbox, "Local console", false)
+  bottomnotebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CLOSE,
+    function (event)
+      event:Veto() -- don't allow closing pages in thiw notebook
+    end)
+  
+  frame.bottomnotebook = bottomnotebook
+  bottomnotebook.errorlog = errorlog
+  bottomnotebook.shellbox = shellbox
+  
+  return bottomnotebook
+end
 
-bottomnotebook:AddPage(errorlog, "Output", true)
-bottomnotebook:AddPage(shellbox, "Local console", false)
-bottomnotebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CLOSE,
-  function (event)
-    event:Veto() -- don't allow closing pages in thiw notebook
-  end)
+local function createProjpanel(frame)
+  local projpanel = wx.wxPanel(frame,wx.wxID_ANY)
+  frame.projpanel = projpanel
+  return projpanel
+end
 
--- sidenotebook
-sidenotebook = wxaui.wxAuiNotebook(vsplitter, wx.wxID_ANY,
-  wx.wxDefaultPosition, wx.wxDefaultSize,
-  wxaui.wxAUI_NB_DEFAULT_STYLE + wxaui.wxAUI_NB_TAB_EXTERNAL_MOVE
-  - wxaui.wxAUI_NB_CLOSE_ON_ACTIVE_TAB + wx.wxNO_BORDER)
+-- ----------------------------------------------------------------------------
+-- Add the child windows to the frame
 
--- init splitters
-splitter:Initialize(notebook)
-vsplitter:Initialize(splitter)
-
--------
--- hierarchy
-bottomnotebook.shellbox = shellbox
-bottomnotebook.errorlog = errorlog
-
-splitter.bottomnotebook = bottomnotebook
-splitter.notebook = notebook
-
-vsplitter.splitter = splitter
-vsplitter.sidenotebook = sidenotebook
-
-toolBar.funclist = funclist
-
-frame.vsplitter = vsplitter
-frame.toolBar = toolBar
-frame.statusBar = statusBar
-frame.menuBar = menuBar
-
+local frame = createFrame()
 ide.frame = frame
+createToolBar(frame)
+createNotebook(frame)
+createProjpanel(frame)
+createBottomNotebook(frame)
+
+do
+  local frame = ide.frame
+  local mgr = frame.uimgr
+
+  mgr:AddPane(frame.toolBar, wxaui.wxAuiPaneInfo():
+              Name("toolBar"):Caption("Main Toolbar"):
+              MinSize(300,16):
+              ToolbarPane():Top():CloseButton(false):
+              LeftDockable(false):RightDockable(false):Hide())
+              
+  mgr:AddPane(frame.notebook, wxaui.wxAuiPaneInfo():
+              Name("notebook"):
+              CenterPane():PaneBorder(false):Hide())
+              
+  mgr:AddPane(frame.projpanel, wxaui.wxAuiPaneInfo():
+              Name("projpanel"):Caption("Project"):
+              MinSize(200,200):FloatingSize(200,400):
+              Left():Layer(1):Position(1):
+              CloseButton(true):MaximizeButton(true):PinButton(true):Hide())
+              
+  mgr:AddPane(frame.bottomnotebook, wxaui.wxAuiPaneInfo():
+              Name("bottomnotebook"):
+              MinSize(200,150):FloatingSize(400,250):
+              Bottom():Layer(1):Position(1):
+              CloseButton(true):MaximizeButton(true):PinButton(true):Hide())
+              
+  mgr:GetPane("toolBar"):Show(true)
+  mgr:GetPane("bottomnotebook"):Show(true)
+  mgr:GetPane("projpanel"):Show(true)
+  mgr:GetPane("notebook"):Show(true)
+  
+  local pp = mgr:SavePerspective()
+  mgr.defaultPerspective = pp
+  
+  mgr:Update()
+end

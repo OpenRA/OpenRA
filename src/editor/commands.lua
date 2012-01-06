@@ -3,8 +3,7 @@
 ---------------------------------------------------------
 local ide = ide
 local frame = ide.frame
-local splitter = ide.frame.vsplitter.splitter
-local notebook = splitter.notebook
+local notebook = frame.notebook
 local openDocuments = ide.openDocuments
 
 function NewFile(event)

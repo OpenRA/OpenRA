@@ -286,7 +286,7 @@ SettingsRestoreProjectSession(FileTreeSetProjects)
 -- Load the filenames
 
 do
-  local notebook = ide.frame.vsplitter.splitter.notebook
+  local notebook = ide.frame.notebook
   local loaded
 
   for i,fileName in ipairs(filenames) do

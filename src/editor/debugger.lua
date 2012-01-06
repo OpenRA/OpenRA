@@ -16,7 +16,7 @@ debugger.portnumber = 8171 -- the port # to use for debugging
 debugger.watchWindow = nil -- the watchWindow, nil when not created
 debugger.watchListCtrl = nil -- the child listctrl in the watchWindow
 
-local notebook = ide.frame.vsplitter.splitter.notebook
+local notebook = ide.frame.notebook
 
 local function updateWatchesSync()
   local watchListCtrl = debugger.watchListCtrl

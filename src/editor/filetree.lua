@@ -29,7 +29,6 @@ ide.filetree = {
 }
 local filetree = ide.filetree
 local frame = ide.frame
-local sidenotebook = ide.frame.vsplitter.sidenotebook
 
 -- generic tree
 -- ------------
@@ -207,8 +206,7 @@ end
 -- panel
 -- (combobox, button)
 -- (treectrl)
-
-local projpanel = wx.wxPanel(sidenotebook,wx.wxID_ANY)
+local projpanel = ide.frame.projpanel
 local projcombobox = wx.wxComboBox(projpanel, ID "filetree.proj.drivecb",
   filetree.projdirText,
   wx.wxDefaultPosition, wx.wxDefaultSize,
@@ -287,9 +285,6 @@ end
 projpanel.projbutton = projbutton
 projpanel.projcombobox = projcombobox
 projpanel.projtree = projtree
-sidenotebook.projpanel = projpanel
-
-sidenotebook:AddPage(projpanel, "Project",true)
 
 function FileTreeGetDir()
   -- atm only projtree
