@@ -40,6 +40,7 @@ namespace OpenRA.Server
 		public readonly IPAddress Ip;
 		public readonly int Port;
 		int randomSeed;
+		public readonly Thirdparty.Random Random = new Thirdparty.Random();
 
 		public ServerSettings Settings;
 		public ModData ModData;

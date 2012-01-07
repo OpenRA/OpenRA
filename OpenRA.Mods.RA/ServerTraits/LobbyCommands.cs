@@ -210,9 +210,9 @@ namespace OpenRA.Mods.RA.Server
 							};
 
 							// pick a random color for the bot
-							var hue = (byte)Game.CosmeticRandom.Next(255);
-							var sat = (byte)Game.CosmeticRandom.Next(255);
-							var lum = (byte)Game.CosmeticRandom.Next(51,255);
+							var hue = (byte)server.Random.Next(255);
+							var sat = (byte)server.Random.Next(255);
+							var lum = (byte)server.Random.Next(51,255);
 							bot.ColorRamp = new ColorRamp(hue, sat, lum, 10);
 
 							server.lobbyInfo.Clients.Add(bot);
