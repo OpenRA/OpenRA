@@ -277,10 +277,10 @@ dofile "src/preferences/project.lua"
 -- load rest of settings
 SettingsRestoreEditorSettings()
 SettingsRestoreFramePosition(ide.frame, "MainFrame")
-SettingsRestoreView()
 SettingsRestoreFileSession(SetOpenFiles)
 SettingsRestoreFileHistory(UpdateFileHistoryUI)
 SettingsRestoreProjectSession(FileTreeSetProjects)
+SettingsRestoreView()
 
 -- ---------------------------------------------------------------------------
 -- Load the filenames
@@ -296,9 +296,7 @@ do
     end
   end
 
-  if notebook:GetPageCount() > 0 then
-
-  else
+  if notebook:GetPageCount() == 0 then
     local editor = CreateEditor("untitled.lua")
     SetupKeywords(editor, "lua")
   end
