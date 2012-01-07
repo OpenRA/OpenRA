@@ -288,7 +288,7 @@ projpanel.projtree = projtree
 
 function FileTreeGetDir()
   -- atm only projtree
-  return ide.frame.vsplitter:IsSplit() and filetree.newfiledir
+  return ide.frame.projpanel:IsShown() and filetree.newfiledir
 end
 
 function FileTreeSetProjects(tab)

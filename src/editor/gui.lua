@@ -140,10 +140,10 @@ local function createBottomNotebook(frame)
     wxaui.wxAUI_NB_DEFAULT_STYLE + wxaui.wxAUI_NB_TAB_EXTERNAL_MOVE
     - wxaui.wxAUI_NB_CLOSE_ON_ACTIVE_TAB + wx.wxNO_BORDER)
 
-  local errorlog = wxstc.wxStyledTextCtrl(bottomnotebook, wx.wxID_ANY,
+  local errorlog = wxstc.wxStyledTextCtrl(bottomnotebook, ID "output",
     wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxBORDER_STATIC)
 
-  local shellbox = wxstc.wxStyledTextCtrl(bottomnotebook, ID "shellbox.output",
+  local shellbox = wxstc.wxStyledTextCtrl(bottomnotebook, ID "shell",
     wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxBORDER_STATIC)
 
   bottomnotebook:AddPage(errorlog, "Output", true)
