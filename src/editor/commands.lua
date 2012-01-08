@@ -79,7 +79,6 @@ function LoadFile(filePath, editor, file_must_exist)
   SetDocumentModified(id, false)
   editor:Colourise(0, -1)
 
-  AddDynamicWords(editor)
   IndicateFunctions(editor)
 
   SettingsAppendFileToHistory(filePath)
@@ -258,6 +257,7 @@ function ClosePage(selection)
   local editor = GetEditor(selection)
   local id = editor:GetId()
   if SaveModifiedDialog(editor, true) ~= wx.wxID_CANCEL then
+    DynamicWordsRemoveAll(editor)
     removePage(ide.openDocuments[id].index)
   end
 end

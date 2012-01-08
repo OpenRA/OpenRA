@@ -263,7 +263,6 @@ function CreateEditor(name)
   end
 
   editor.ev = {}
-
   editor:Connect(wxstc.wxEVT_STC_MARGINCLICK,
     function (event)
       local line = editor:LineFromPosition(event:GetPosition())
@@ -287,11 +286,26 @@ function CreateEditor(name)
       if (editor.assignscache and editor:GetCurrentLine() ~= editor.assignscache.line) then
         editor.assignscache = false
       end
-      if (bit.band(event:GetModificationType(),wxstc.wxSTC_MOD_INSERTTEXT) ~= 0) then
+      local evtype = event:GetModificationType()
+      if (bit.band(evtype,wxstc.wxSTC_MOD_INSERTTEXT) ~= 0) then
         table.insert(editor.ev,{event:GetPosition(),event:GetLinesAdded()})
+        DynamicWordsAdd("post",editor,nil,editor:LineFromPosition(event:GetPosition()),event:GetLinesAdded())
       end
-      if (bit.band(event:GetModificationType(),wxstc.wxSTC_MOD_DELETETEXT) ~= 0) then
+      if (bit.band(evtype,wxstc.wxSTC_MOD_DELETETEXT) ~= 0) then
         table.insert(editor.ev,{event:GetPosition(),0})
+        DynamicWordsAdd("post",editor,nil,editor:LineFromPosition(event:GetPosition()),0)
+      end
+      
+      if ide.config.acandtip.nodynwords then return end
+      -- only required to track changes
+      if (bit.band(evtype,wxstc.wxSTC_MOD_BEFOREDELETE) ~= 0) then
+        local numlines = 0
+        event:GetText():gsub("(\r?\n)",function() numlines = numlines + 1 end)
+        DynamicWordsRem("pre",editor,nil,editor:LineFromPosition(event:GetPosition()), numlines)
+      end
+      if (bit.band(evtype,wxstc.wxSTC_MOD_BEFOREINSERT) ~= 0) then
+        local pos = event:GetPosition()
+        DynamicWordsRem("pre",editor,nil,editor:LineFromPosition(event:GetPosition()), 0)
       end
     end)
 
@@ -307,8 +321,6 @@ function CreateEditor(name)
       local localpos = pos-linestart
 
       linetxtopos = linetx:sub(1,localpos)
-
-      AddDynamicWordsCurrent(editor,linetxtopos)
 
       if (ch == char_CR and eol==2) or (ch == char_LF and eol==0) then
         if (line > 0) then

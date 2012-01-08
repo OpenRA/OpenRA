@@ -23,7 +23,9 @@ local editMenu = wx.wxMenu{
   { },
   { ID_COMMENT, "C&omment/Uncomment\tCtrl-Q", "Comment or uncomment current or selected lines"},
   { },
-  { ID_FOLD, "&Fold/Unfold all\tF12", "Fold or unfold all code folds"} }
+  { ID_FOLD, "&Fold/Unfold all\tF12", "Fold or unfold all code folds"},
+  { ID "edit.cleardynamics", "Clear &Dynamic Words", "Resets the dynamic word list for autcompletion."},
+}
 menuBar:Append(editMenu, "&Edit")
 
 editMenu:Check(ID_AUTOCOMPLETE_ENABLE, ide.config.autocomplete)
@@ -83,6 +85,11 @@ frame:Connect(ID_REDO, wx.wxEVT_UPDATE_UI,
     event:Enable(editor and editor:CanRedo())
   end)
 
+frame:Connect(ID "edit.cleardynamics", wx.wxEVT_COMMAND_MENU_SELECTED,
+  function (event)
+    DynamicWordsReset()
+  end)
+
 frame:Connect(ID "edit.showtooltip", wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
     local editor = GetEditor()
@@ -124,29 +131,6 @@ frame:Connect(ID_AUTOCOMPLETE, wx.wxEVT_COMMAND_MENU_SELECTED,
     lt = lt:gsub("%s*%b{}%s*","")
     lt = lt:match("[^%[%(%s]*$")
     lt = lt:gsub("%s","")
-
-    --[[
-    local acstart = 1
-    local state = ""
-    for i=localpos,1,-1 do -- find out what should be completed
-      local c = linetx:sub(i,i)
-      if c : match "[%s]" and state~="begin" then
-        state = "space"
-      elseif c : match "[_0-9a-zA-Z]" then
-        if state == "space" then
-          acstart = i+1
-          break
-        end
-        state = "word"
-      elseif c : match(editor.spec.sep) then
-        state = "begin"
-      elseif c : match "[^%s]" then -- unknown char
-        acstart = i + 1
-        break
-      end
-    end
-    local lt = linetx:sub(acstart,localpos) : gsub("%s","")
-    ]]
 
     -- know now which string is to be completed
 

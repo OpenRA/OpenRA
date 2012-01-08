@@ -293,33 +293,43 @@ end
 
 local dywordentries = {}
 local dynamicwords = {}
+
 local function addDynamicWord (api,word )
-  if ide.config.acandtip.nodynwords then return end
-  if api.tip.staticnames[word] then return end
+  if api.tip.keys[word] or api.tip.staticnames[word] then return end
   local cnt = dywordentries[word]
   if cnt then
     dywordentries[word] = cnt +1
     return
   end
   dywordentries[word] = 1
+  --DisplayOutput("ADD",word,"\n")
+  local wlow = word:lower()
   for i=0,#word do
-    local k = word : sub (1,i)
+    local k = wlow : sub (1,i)
     dynamicwords[k] = dynamicwords[k] or {}
     table.insert(dynamicwords[k], word)
   end
 end
-local function removeDynamicWord (word)
+local function removeDynamicWord (api,word)
+  if api.tip.keys[word] or api.tip.staticnames[word] then return end
   local cnt = dywordentries[word]
   if not cnt then return end
 
   if (cnt == 1) then
     dywordentries[word] = nil
+    --DisplayOutput("DEL",word,"\n")
     for i=0,#word do
-      local k = word : sub (1,i) : lower()
-      if not dynamicwords[k] then break end
-      for i=1,#dynamicwords[k] do
-        if dynamicwords[i] == word then
-          table.remove(dynamicwords,i)
+      local wlow = word:lower()
+      local k = wlow : sub (1,i)
+      local page = dynamicwords[k]
+      local cnt  = #page
+      for n=1,cnt do
+        if page[n] == word then
+          if cnt == 1 then
+            dynamicwords[k] = nil
+          else
+            table.remove(page,n)
+          end
           break
         end
       end
@@ -328,34 +338,40 @@ local function removeDynamicWord (word)
     dywordentries[word] = cnt - 1
   end
 end
-local function purgeDynamicWordlist ()
+function DynamicWordsReset ()
   dywordentries = {}
   dynamicwords = {}
 end
 
-function AddDynamicWordsCurrent(editor,content)
-  local api = editor.api
+local function getEditorLines(editor,line,numlines)
+  local tx = ""
+  for i=0,numlines do
+    tx = tx..editor:GetLine(line + i)
+  end
+  return tx
+end
 
-  for word in content:gmatch "([a-zA-Z_]+[a-zA-Z_0-9]+)[^a-zA-Z0-9_\r\n]" do
+function DynamicWordsAdd(ev,editor,content,line,numlines)
+  if ide.config.acandtip.nodynwords then return end
+  local api = editor.api
+  local content = getEditorLines(editor,line,numlines)
+  for word in content:gmatch "[%.:]?%s*([a-zA-Z_]+[a-zA-Z_0-9]+)" do
     addDynamicWord(api,word)
   end
 end
 
-function RemDynamicWordsCurrent(editor,content)
-  for word in content:gmatch "([a-zA-Z_]+[a-zA-Z_0-9]+)[^a-zA-Z0-9_\r\n]" do
-    removeDynamicWord(word)
+function DynamicWordsRem(ev,editor,content,line,numlines)
+  if ide.config.acandtip.nodynwords then return end
+  local api = editor.api
+  local content = content or getEditorLines(editor,line,numlines)
+  for word in content:gmatch "[%.:]?%s*([a-zA-Z_]+[a-zA-Z_0-9]+)" do
+    removeDynamicWord(api,word)
   end
 end
 
-function AddDynamicWords (editor)
-  local api = editor.api
-  local content = editor:GetText()
-
-  --
-  -- TODO check if inside comment
-  for word in content:gmatch "([a-zA-Z_]+[a-zA-Z_0-9]+)" do
-    addDynamicWord(api,word)
-  end
+function DynamicWordsRemoveAll (editor)
+  local tx = editor:GetText()
+  DynamicWordsRem("close",editor,tx)
 end
 
 ------------
@@ -447,33 +463,6 @@ function CreateAutoCompList(editor,key)
 
   UpdateAssignCache(editor)
 
-  --[[
-  -- override class based on assign cache
-  if (editor.assignscache) then
-    local id,sep,rest = key:match("([%w_%.]+)%s*([:%.])%s*(.*)")
-    -- replace for lookup
-    if (id and rest) then
-      key = (editor.assignscache.assigns[id] or id)..sep..rest
-    end
-  end
-
-  -- search in api autocomplete list
-  -- track recursion depth
-  local depth = 0
-  local function findtab (rest,tab)
-    local key,krest = rest:match("([%w_]+)(.*)")
-
-    --DisplayOutput("2> "..rest.." : "..(key or "nil").." : "..tostring(krest).."\n")
-
-    -- check if we can go down hierarchy
-    if krest and #(krest:gsub("[%s]",""))>0 and tab.childs and tab.childs[key] then
-      depth = depth + 1
-      return findtab(krest,tab.childs[key])
-    end
-
-    return tab,rest
-  end
-  ]]
   local tab,rest = resolveAssign(editor,key)
   local progress = tab and tab.childs
   statusBar:SetStatusText(progress and tab.classname or "",1)
@@ -508,7 +497,17 @@ function CreateAutoCompList(editor,key)
           if (ma and mb) or (not ma and not mb) then return a<b end
           return ma
         end)
-      dw = " " .. table.concat(list," ")
+      -- ignore if word == last and sole user
+      for i,v in ipairs(list) do
+        if (v == last and dywordentries[v] == 1) then
+          table.remove(list,i)
+          break
+        end
+      end
+  
+      local res = table.concat(list," ")
+      dw = res ~= "" and " "..res or ""
+
     end
   end
 
@@ -558,7 +557,8 @@ function CreateAutoCompList(editor,key)
   end
 
   -- concat final, list complete first
-  -- DisplayOutput("1> "..(rest or "").."- "..tostring(dw).."\n")
-  return compstr .. dw
+  local li = (compstr .. dw)
+  
+  return li ~= "" and (#li > 1024 and li:sub(1,1024).."..." or li)
 
 end
