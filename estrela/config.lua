@@ -9,6 +9,7 @@ editor.fontname = "Courier New"
 editor.caretline = true
 editor.showfncall = true
 editor.whitespace = true
+editor.usetabs  = false
 editor.autotabs = true
 editor.tabwidth = 2
 
