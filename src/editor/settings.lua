@@ -352,7 +352,6 @@ local function loadNotebook(nb,str,fnIdConvert)
   
   -- add anything we forgot
   for i,page in pairs(currentpages) do
-    print(page.text)
     nb:AddPage(page.page, page.text)
     finishPage(page)
   end
@@ -383,6 +382,12 @@ function SettingsRestoreView()
   local layout = settingsReadSafe(settings,"nblayout",layoutcur)
   if (layout ~= layoutcur) then
     loadNotebook(ide.frame.notebook,layout)
+    local openDocuments = ide.openDocuments
+    local nb = frame.notebook
+    local cnt = nb:GetPageCount()
+    for i=0,cnt-1 do
+      openDocuments[nb:GetPage(i):GetId()].index = i
+    end
   end
   
   local layoutcur = saveNotebook(frame.bottomnotebook)
