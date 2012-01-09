@@ -20,15 +20,15 @@ namespace OpenRA.Mods.RA.Server
 {
 	public class LobbyCommands : ServerTrait, IInterpretCommand, INotifyServerStart
 	{
-		static bool ValidateSlotCommand(S server, Connection conn, string arg, bool requiresHost)
+		static bool ValidateSlotCommand(S server, Connection conn, Session.Client client, string arg, bool requiresHost)
 		{
 			if (!server.lobbyInfo.Slots.ContainsKey(arg))
 			{
 				Log.Write("server", "Invalid slot: {0}", arg );
 				return false;
 			}
-
-			if (requiresHost && conn.PlayerIndex != 0)
+			
+			if (requiresHost && !client.IsAdmin)
 			{
 				server.SendChatTo( conn, "Only the host can do that" );
 				return false;
@@ -127,7 +127,7 @@ namespace OpenRA.Mods.RA.Server
 				{ "slot_close",
 					s =>
 					{
-						if (!ValidateSlotCommand( server, conn, s, true ))
+						if (!ValidateSlotCommand( server, conn, client, s, true ))
 							return false;
 
 						// kick any player that's in the slot
@@ -154,7 +154,7 @@ namespace OpenRA.Mods.RA.Server
 				{ "slot_open",
 					s =>
 					{
-						if (!ValidateSlotCommand( server, conn, s, true ))
+						if (!ValidateSlotCommand( server, conn, client, s, true ))
 							return false;
 
 						var slot = server.lobbyInfo.Slots[s];
@@ -179,7 +179,7 @@ namespace OpenRA.Mods.RA.Server
 							return true;
 						}
 
-						if (!ValidateSlotCommand( server, conn, parts[0], true ))
+						if (!ValidateSlotCommand( server, conn, client, parts[0], true ))
 							return false;
 
 						var slot = server.lobbyInfo.Slots[parts[0]];
@@ -231,7 +231,7 @@ namespace OpenRA.Mods.RA.Server
 				{ "map",
 					s =>
 					{
-						if (conn.PlayerIndex != 0)
+						if (!client.IsAdmin)
 						{
 							server.SendChatTo( conn, "Only the host can change the map" );
 							return true;
@@ -267,7 +267,7 @@ namespace OpenRA.Mods.RA.Server
 				{ "lockteams",
 					s =>
 					{
-						if (conn.PlayerIndex != 0)
+						if (!client.IsAdmin)
 						{
 							server.SendChatTo( conn, "Only the host can set that option" );
 							return true;
@@ -280,7 +280,7 @@ namespace OpenRA.Mods.RA.Server
 				{ "allowcheats",
 					s =>
 					{
-						if (conn.PlayerIndex != 0)
+						if (!client.IsAdmin)
 						{
 							server.SendChatTo( conn, "Only the host can set that option" );
 							return true;
@@ -294,7 +294,7 @@ namespace OpenRA.Mods.RA.Server
 					s =>
 					{
 
-						if (conn.PlayerIndex != 0)
+						if (!client.IsAdmin)
 						{
 							server.SendChatTo( conn, "Only the host can kick players" );
 							return true;
@@ -330,7 +330,7 @@ namespace OpenRA.Mods.RA.Server
 						var targetClient = server.lobbyInfo.ClientWithIndex(int.Parse(parts[0]));
 
 						// Only the host can change other client's info
-						if (targetClient.Index != client.Index && conn.PlayerIndex != 0)
+						if (targetClient.Index != client.Index && !client.IsAdmin)
 							return true;
 
 						// Map has disabled race changes
@@ -348,7 +348,7 @@ namespace OpenRA.Mods.RA.Server
 						var targetClient = server.lobbyInfo.ClientWithIndex(int.Parse(parts[0]));
 
 						// Only the host can change other client's info
-						if (targetClient.Index != client.Index && conn.PlayerIndex != 0)
+						if (targetClient.Index != client.Index && !client.IsAdmin)
 							return true;
 
 						// Map has disabled team changes
@@ -369,7 +369,7 @@ namespace OpenRA.Mods.RA.Server
 						var targetClient = server.lobbyInfo.ClientWithIndex(int.Parse(parts[0]));
 
 						// Only the host can change other client's info
-						if (targetClient.Index != client.Index && conn.PlayerIndex != 0)
+						if (targetClient.Index != client.Index && !client.IsAdmin)
 							return true;
 
 						// Spectators don't need a spawnpoint
@@ -404,7 +404,7 @@ namespace OpenRA.Mods.RA.Server
 						var targetClient = server.lobbyInfo.ClientWithIndex(int.Parse(parts[0]));
 
 						// Only the host can change other client's info
-						if (targetClient.Index != client.Index && conn.PlayerIndex != 0)
+						if (targetClient.Index != client.Index && !client.IsAdmin)
 							return true;
 
 						// Map has disabled color changes

@@ -50,7 +50,7 @@ namespace OpenRA.Network
 			public int Team;
 			public string Slot;	// slot ID, or null for observer
 			public string Bot; // Bot type, null for real clients
-
+			public bool IsAdmin;
 			public bool IsReady { get { return State == ClientState.Ready; } }
 		}
 

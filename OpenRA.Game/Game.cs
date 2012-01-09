@@ -220,7 +220,12 @@ namespace OpenRA
 
 		public static bool IsHost
 		{
-			get { return orderManager.Connection.LocalClientId == 0; }
+			get 
+			{
+				var client= orderManager.LobbyInfo.ClientWithIndex (
+					orderManager.Connection.LocalClientId);
+				return ((client!=null) && client.IsAdmin);
+			}
 		}
 
 		public static Dictionary<String, Mod> CurrentMods
