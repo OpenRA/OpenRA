@@ -11,8 +11,8 @@ local debugger = ide.debugger
 local viewMenu = wx.wxMenu{
   -- NYI { ID "view.preferences", "&Preferences...", "Brings up dialog for settings (TODO)" },
   -- NYI { },
-  { ID "view.filetree.show", "View &FileTree Window", "View the filetree window" },
-  { ID "view.output.show", "View &Output/Shell Window", "View the output/shell window" },
+  { ID "view.filetree.show", "&FileTree Window", "View the filetree window" },
+  { ID "view.output.show", "&Output/Shell Window", "View the output/shell window" },
   { ID "view.defaultlayout", "&Default Layout", "Reset to default ui layout"},
   { },
   { ID "view.style.loadconfig", "&Load Config Style...", "Load and apply style from config file (must contain .styles)"},
