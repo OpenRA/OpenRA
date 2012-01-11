@@ -53,10 +53,9 @@ local app = {
 
     pos = menuBar:FindMenu("&View")
     menu = menuBar:GetMenu(pos)
-    local items = {3, 2}
-    while #items > 0 do
-      local itempos = table.remove(items, 1)
-      menu:Destroy(menu:FindItemByPosition(itempos))
+    local itemid = menu:GetMenuItemCount()
+    for itempos = itemid,itemid-1,-1 do
+      menu:Destroy(menu:FindItemByPosition(itempos-1))
     end
 
     menuBar:Check(ID_CLEAROUTPUT, true)
