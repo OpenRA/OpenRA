@@ -194,13 +194,13 @@ do
               Name("projpanel"):Caption("Project"):
               MinSize(200,200):FloatingSize(200,400):
               Left():Layer(1):Position(1):
-              CloseButton(true):MaximizeButton(true):PinButton(true):Hide())
+              CloseButton(true):MaximizeButton(false):PinButton(true):Hide())
               
   mgr:AddPane(frame.bottomnotebook, wxaui.wxAuiPaneInfo():
               Name("bottomnotebook"):
               MinSize(200,150):FloatingSize(400,250):
               Bottom():Layer(1):Position(1):
-              CloseButton(true):MaximizeButton(true):PinButton(true):Hide())
+              CloseButton(true):MaximizeButton(false):PinButton(true):Hide())
               
   mgr:GetPane("toolBar"):Show(true)
   mgr:GetPane("bottomnotebook"):Show(true)
