@@ -70,8 +70,8 @@ local function createFrame()
 end
 
 local function createToolBar(frame)
-  local toolBar = wx.wxToolBar(frame, wx.wxID_ANY, wx.wxDefaultPosition, wx.wxDefaultSize,
-                                   wx.wxTB_FLAT + wx.wxTB_NODIVIDER)
+  local toolBar = wx.wxToolBar(frame, wx.wxID_ANY,
+    wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTB_FLAT + wx.wxTB_NODIVIDER)
   local funclist = wx.wxChoice.new(toolBar,ID "toolBar.funclist",wx.wxDefaultPosition, wx.wxSize.new(240,16))
   
   -- note: Ususally the bmp size isn't necessary, but the HELP icon is not the right size in MSW
@@ -150,7 +150,7 @@ local function createBottomNotebook(frame)
   bottomnotebook:AddPage(shellbox, "Local console", false)
   bottomnotebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CLOSE,
     function (event)
-      event:Veto() -- don't allow closing pages in thiw notebook
+      event:Veto() -- don't allow closing pages in this notebook
     end)
   
   frame.bottomnotebook = bottomnotebook
@@ -198,7 +198,7 @@ do
               
   mgr:AddPane(frame.bottomnotebook, wxaui.wxAuiPaneInfo():
               Name("bottomnotebook"):
-              MinSize(200,150):FloatingSize(400,250):
+              MinSize(200,200):FloatingSize(400,250):
               Bottom():Layer(1):Position(1):
               CloseButton(true):MaximizeButton(false):PinButton(true):Hide())
               
