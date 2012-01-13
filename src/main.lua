@@ -48,11 +48,6 @@ ide = {
     savebak = false,
     singleinstance = false,
     singleinstanceport = 0xe493,
-
-    view = {
-      vsplitterpos = 150,
-      splitterheight = 200,
-    },
   },
   specs = {
     none = {
