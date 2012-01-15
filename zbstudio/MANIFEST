@@ -51,10 +51,7 @@ lualibs/socket/socket/http.lua
 lualibs/socket/socket/smtp.lua
 lualibs/socket/socket/tp.lua
 lualibs/socket/socket/url.lua
-spec/html.lua
 spec/lua.lua
-spec/sql.lua
-spec/text.lua
 src/defs.lua
 src/editor/autocomplete.lua
 src/editor/commands.lua
