@@ -70,10 +70,17 @@ end
 debugger.shell = function(expression)
   if debugger.server and not debugger.running then
     copas.addthread(function ()
-        local value, _, err = debugger.handle('eval ' .. expression)
-        if err ~= nil then value, _, err = debugger.handle('exec ' .. expression) end
-        if err then DisplayShellErr(err)
-        elseif value ~= nil and value ~= 'nil' then DisplayShell(value)
+        local addedret = false
+        local value, _, err = debugger.handle('exec ' .. expression)
+        if err ~= nil and err:find("'=' expected near '<eof>'") then
+          value, _, err = debugger.handle('eval ' .. expression)
+          addedret = true
+        end
+
+        if err then
+          DisplayShellErr(err)
+        elseif addedret or (value ~= nil and value ~= 'nil') then
+          DisplayShell(value)
         end
       end)
   end

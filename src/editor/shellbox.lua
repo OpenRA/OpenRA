@@ -240,6 +240,7 @@ local function executeShellCode(tx)
   DisplayShellDirect('\n')
   DisplayShellPrompt('')
 
+  local addedret = false
   local fn,err
   if remotesend then
     remotesend(tx)
@@ -248,6 +249,7 @@ local function executeShellCode(tx)
     -- for statement queries create the return
     if err and err:find("'=' expected near '<eof>'") then
       fn,err = loadstring("return("..tx..")")
+      addedret = true
     end
   end
   
@@ -260,9 +262,7 @@ local function executeShellCode(tx)
         DisplayShellErr(filterTraceError(debug.traceback(err)))
       end)
     
-    if ok and res ~= nil then
-      DisplayShell(res)
-    end
+    if ok and (addedret or res ~= nil) then DisplayShell(res) end
   end
 end
 
