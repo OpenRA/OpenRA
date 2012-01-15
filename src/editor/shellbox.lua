@@ -154,10 +154,10 @@ DisplayShellPrompt = function (...)
 end
 
 local function filterTraceError(err)
-  local err = err:match(".-:%d+:(.-)\n[^\n]*\n[^\n]*\n[^\n]*src/editor/shellbox.lua:.*in function 'executeShellCode'")
+  local err = err:match("(.-:%d+:.-)\n[^\n]*\n[^\n]*\n[^\n]*src/editor/shellbox.lua:.*in function 'executeShellCode'")
         err = err:gsub("stack traceback:.-\n[^\n]+\n?","")
         err = err:match("(.*)\n[^\n]*%(tail call%): %?$") or err
-  return "!"..err
+  return err
 end
 
 local function createenv ()
@@ -246,7 +246,7 @@ local function executeShellCode(tx)
   else
     fn,err = loadstring(tx)
     -- for statement queries create the return
-    if err and err:find("'=' expected ") then
+    if err and err:find("'=' expected near '<eof>'") then
       fn,err = loadstring("return("..tx..")")
     end
   end
@@ -307,7 +307,7 @@ out:Connect(wx.wxEVT_KEY_DOWN,
         setPromptText(getNextHistoryLine(false, promptText))
         return
       elseif key == wx.WXK_DOWN or key == wx.WXK_NUMPAD_DOWN then
-        -- if we are below the prompt line, then allow to go down
+        -- if we are above the last line, then allow to go down
         -- through multiline entry
         local totalLines = out:GetLineCount()-1
         if out:GetCurrentLine() < totalLines then break end
@@ -355,6 +355,7 @@ out:Connect(wx.wxEVT_KEY_DOWN,
         -- move cursor to end if not already there
         if not caretOnPromptLine() then
           out:GotoPos(out:GetLength())
+        -- check if the selection starts before the prompt line and reset it
         elseif out:LineFromPosition(out:GetSelectionStart()) < getPromptLine() then
           out:GotoPos(out:GetLength())
           out:SetSelection(out:GetSelectionEnd()+1,out:GetSelectionEnd())
@@ -366,4 +367,3 @@ out:Connect(wx.wxEVT_KEY_DOWN,
   end)
 
 displayShellIntro()
-
