@@ -135,6 +135,8 @@ function SetEditorSelection(selection)
   statusBar:SetStatusText("",1)
   ide.frame:SetTitle(getFileTitle(editor))
 
+  FileTreeMarkSelected('')
+
   if editor then
     if funclist:IsEmpty() then funclist:Append('Jump to a function definition...', 0) end
     funclist:SetSelection(0)
