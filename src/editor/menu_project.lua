@@ -89,9 +89,9 @@ ProjectUpdateProjectDir(ide.config.path.projectdir)
 
 local function projChoose(event)
   local editor = GetEditor()
-  local id = editor:GetId()
   local saved = false
-  local fn = wx.wxFileName(openDocuments[id].filePath or "")
+  local fn = wx.wxFileName(
+    editor and openDocuments[editor:GetId()].filePath or "")
   fn:Normalize() -- want absolute path for dialog
 
   local projectdir = ide.config.path.projectdir
