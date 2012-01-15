@@ -246,7 +246,7 @@ local function executeShellCode(tx)
   else
     fn,err = loadstring(tx)
     -- for statement queries create the return
-    if err and err:find("'=' expected ") > -1 then
+    if err and err:find("'=' expected ") then
       fn,err = loadstring("return("..tx..")")
     end
   end
