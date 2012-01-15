@@ -67,6 +67,25 @@ function CommandLineToShell(uid,state)
   end
 end
 
+-- logic to "unhide" wxwidget window using winapi
+pcall(function () return require 'winapi' end)
+local pid = nil
+local function unHideWxWindow(pidAssign)
+  if pidAssign ~= nil then
+    pid = pidAssign > 0 and pidAssign or nil
+  end
+  if pid and winapi then
+    local win = winapi.find_window_ex(function(w)
+      return w:get_process():get_pid() == pid
+         and w:get_class_name() == 'wxWindowClassNR'
+    end)
+    if win and not win:is_visible() then
+      win:show()
+      pid = nil
+    end
+  end
+end
+
 function CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
   if (not cmd) then return end
 
@@ -128,6 +147,8 @@ function CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
     streamerrs[pid] = {stream=streamerr, callback=stringcallback}
   end
 
+  unHideWxWindow(pid)
+
   return pid
 end
 
@@ -164,6 +185,7 @@ errorlog:Connect(wx.wxEVT_END_PROCESS, function(event)
         customprocs[pid].endcallback()
       end
       customprocs[pid] = nil
+      unHideWxWindow(0)
       DisplayOutput("Program finished ("..pid..").\n")
     end
   end)
@@ -172,6 +194,7 @@ errorlog:Connect(wx.wxEVT_IDLE, function(event)
     if (#streamins or #streamerrs) then
       getStreams()
     end
+    unHideWxWindow()
   end)
 
 local jumptopatterns = {
