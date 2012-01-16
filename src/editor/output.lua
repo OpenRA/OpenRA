@@ -134,7 +134,9 @@ function CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
     customproc = nil
     return
   else
-    DisplayOutput("Process: "..uid..", pid:"..tostring(pid).."\n")
+    DisplayOutput(
+      "Process: "..uid..", pid:"..tostring(pid)..
+      ", started in '"..(wdir and wdir or wx.wxFileName.GetCwd()).."'\n")
     customprocs[pid] = {proc=customproc, uid=uid, endcallback=endcallback}
   end
 
