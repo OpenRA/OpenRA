@@ -188,7 +188,7 @@ errorlog:Connect(wx.wxEVT_END_PROCESS, function(event)
       end
       customprocs[pid] = nil
       unHideWxWindow(0)
-      DisplayOutput("Program finished ("..pid..").\n")
+      DisplayOutput("Program finished (pid: "..pid..").\n")
     end
   end)
 
