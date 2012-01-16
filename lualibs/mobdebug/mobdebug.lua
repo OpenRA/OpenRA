@@ -1,5 +1,5 @@
 --
--- MobDebug 0.42
+-- MobDebug 0.43
 -- Copyright Paul Kulchenko 2011
 -- Based on RemDebug 1.0 (http://www.keplerproject.org/remdebug)
 --
@@ -10,7 +10,7 @@ module("mobdebug", package.seeall)
 
 _COPYRIGHT = "Paul Kulchenko"
 _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language"
-_VERSION = "0.42"
+_VERSION = "0.43"
 
 -- this is a socket class that implements maConnect interface
 local function socketMobileLua() 
@@ -143,7 +143,7 @@ local watches = {}
 local lastsource
 local lastfile
 local watchescnt = 0
-local abort = false
+local abort -- default value is nil; this is used in start/loop distinction
 local check_break = false
 local step_into = false
 local step_over = false
@@ -234,13 +234,9 @@ local function debug_hook(event, line)
     if (lastsource ~= caller.source) then
       lastsource = caller.source
       file = lastsource
-      if string.find(file, "@") == 1 then
-        file = string.sub(file, 2)
-      end
+      if string.find(file, "@") == 1 then file = string.sub(file, 2) end
       -- remove references to the current folder (./ or .\)
-      if string.find(file, "./") == 1 or string.find(file, ".\\") == 1 then
-        file = string.sub(file, 3)
-      end
+      if string.find(file, "%.[/\\]") == 1 then file = string.sub(file, 3) end
       -- fix filenames for loaded strings that may contain scripts with newlines
       if string.find(file, "\n") then
         file = string.sub(string.gsub(file, "\n", ' '), 1, 32) -- limit to 32 chars
@@ -275,7 +271,7 @@ local function debug_hook(event, line)
   end
 end
 
-local function debugger_loop()
+local function debugger_loop(sfile, sline)
   local command
   local eval_env = {}
   local function emptyWatch () return false end
@@ -345,26 +341,36 @@ local function debugger_loop()
     elseif command == "LOAD" then
       local _, _, size, name = string.find(line, "^[A-Z]+%s+(%d+)%s+([%w%p%s]*[%w%p]+)%s*$")
       size = tonumber(size)
-      if size == 0 then -- RELOAD the current script being debugged
-        server:send("200 OK 0\n") 
-        abort = true
-        coroutine.yield() -- this should not return as the hook will abort
-      end 
 
-      local chunk = server:receive(size)
-      if chunk then -- LOAD a new script for debugging
-        local func, res = loadstring(chunk, name)
-        if func then
-          server:send("200 OK 0\n") 
-          debugee = func
-          abort = true
-          coroutine.yield() -- this should not return as the hook will abort
+      if abort == nil then -- no LOAD/RELOAD allowed inside start()
+        if size > 0 then local _ = server:receive(size) end
+        if sfile and sline then
+          server:send("201 Started " .. sfile .. " " .. sline .. "\n")
         else
-          server:send("401 Error in Expression " .. string.len(res) .. "\n")
-          server:send(res)
+          server:send("200 OK 0\n")
         end
       else
-        server:send("400 Bad Request\n")
+        if size == 0 then -- RELOAD the current script being debugged
+          server:send("200 OK 0\n")
+          abort = true
+          coroutine.yield() -- this should not return as the hook will abort
+        end
+
+        local chunk = server:receive(size)
+        if chunk then -- LOAD a new script for debugging
+          local func, res = loadstring(chunk, name)
+          if func then
+            server:send("200 OK 0\n")
+            debugee = func
+            abort = true
+            coroutine.yield() -- this should not return as the hook will abort
+          else
+            server:send("401 Error in Expression " .. string.len(res) .. "\n")
+            server:send(res)
+          end
+        else
+          server:send("400 Bad Request\n")
+        end
       end
     elseif command == "SETW" then
       local _, _, exp = string.find(line, "^[A-Z]+%s+(.+)%s*$")
@@ -454,10 +460,14 @@ end
 function start(controller_host, controller_port)
   server = socket.connect(controller_host, controller_port)
   if server then
-    print("Connected to " .. controller_host .. ":" .. controller_port)
+    local info = debug.getinfo(2, "Sl")
+    local file = info.source
+    if string.find(file, "@") == 1 then file = string.sub(file, 2) end
+    if string.find(file, "%.[/\\]") == 1 then file = string.sub(file, 3) end
+
     debug.sethook(debug_hook, "lcr")
     coro_debugger = coroutine.create(debugger_loop)
-    return coroutine.resume(coro_debugger)
+    return coroutine.resume(coro_debugger, file, info.currentline)
   else
     print("Could not connect to " .. controller_host .. ":" .. controller_port)
   end
@@ -466,8 +476,6 @@ end
 function loop(controller_host, controller_port)
   server = socket.connect(controller_host, controller_port)
   if server then
-    print("Connected to " .. controller_host .. ":" .. controller_port)
-
     local function report(trace, err)
       local msg = err .. "\n" .. trace
       server:send("401 Error in Execution " .. string.len(msg) .. "\n")
@@ -624,7 +632,7 @@ function handle(params, client)
     if exp or (command == "reload") then 
       if command == "eval" then
         exp = string.gsub(exp, "\n", " ") -- convert new lines
-        client:send("EXEC return (" .. exp .. ")\n")
+        client:send("EXEC return " .. exp .. "\n")
       elseif command == "exec" then
         exp = string.gsub(exp, "\n", " ") -- convert new lines
         client:send("EXEC " .. exp .. "\n")
@@ -641,8 +649,8 @@ function handle(params, client)
         client:send("LOAD " .. string.len(lines) .. " " .. file .. "\n")
         client:send(lines)
       end
-      local line = client:receive()
-      local _, _, status, len = string.find(line, "^(%d+)[%s%w]+%s+(%d+)%s*$")
+      local params = client:receive()
+      local _, _, status, len = string.find(params, "^(%d+)[%w%p%s]+%s+(%d+)%s*$")
       if status == "200" then
         len = tonumber(len)
         if len > 0 then 
@@ -650,6 +658,8 @@ function handle(params, client)
           print(res)
           return res
         end
+      elseif status == "201" then
+        _, _, file, line = string.find(params, "^201 Started%s+([%w%p%s]+)%s+(%d+)%s*$")
       elseif status == "401" then
         len = tonumber(len)
         local res = client:receive(len)

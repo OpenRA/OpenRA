@@ -103,8 +103,6 @@ debugger.listen = function()
       debugger.socket = skt
       debugger.loop = false
 
-      DisplayOutput("Started remote debugging session (base directory: " .. debugger.basedir .. ").\n")
-
       -- load the remote file into the debugger
       -- set basedir first, before loading to make sure that the path is correct
       debugger.handle("basedir " .. debugger.basedir)
@@ -128,19 +126,54 @@ debugger.listen = function()
       if (options.run) then
         activateDocument(debugger.handle("run"))
       else
-        debugger.handle("load " .. startfile)
-        activateDocument(startfile, 1)
+        local file, line = debugger.handle("load " .. startfile)
+        -- "load" can work in two ways: (1) it can load the requested file
+        -- OR (2) it can "refuse" to load it if the client was started
+        -- with start() method, which can't load new files
+        -- if file and line are set, this indicates option #2
+        if file and line then
+          -- if the file name is absolute, try to load it
+          local activated
+          if wx.wxIsAbsolutePath(file) then
+            activated = activateDocument(file, line)
+          else
+            -- try to find a proper file based on file name
+            -- first check using basedir that was set based on current file path
+            -- if not found, check using project directory and reset basedir
+            if not activated then
+              local fullPath = debugger.basedir..string_Pathsep..file
+              activated = activateDocument(fullPath, line)
+            end
+
+            local projectDir = FileTreeGetDir()
+            if not activated and projectDir then
+              debugger.basedir = projectDir:gsub(string_Pathsep .. "$", "")
+              debugger.handle("basedir " .. debugger.basedir)
+              fullPath = projectDir .. file
+              activated = activateDocument(fullPath, line)
+            end
+          end
+
+          if not activated then
+            DisplayOutput("Can't find file '" .. file .. "' to activate for debugging; try opening the file before debugging.\n")
+            return debugger.terminate()
+          end
+        else
+          activateDocument(startfile, 1)
+        end
       end
 
       if (not options.noshell) then
         ShellSupportRemote(debugger.shell, debugger.pid)
       end
 
+      DisplayOutput("Started remote debugging session (base directory: '" .. debugger.basedir .. "').\n")
+
     end)
   debugger.listening = true
 end
 
-debugger.handle = function(line, server)
+debugger.handle = function(command, server)
   local _G = _G
   local os = os
   os.exit = function () end
@@ -152,7 +185,7 @@ debugger.handle = function(line, server)
   end
 
   debugger.running = true
-  local file, line, err = mobdebug.handle(line, server and server or debugger.server)
+  local file, line, err = mobdebug.handle(command, server and server or debugger.server)
   debugger.running = false
 
   return file, line, err
@@ -256,9 +289,9 @@ function DebuggerKillClient()
     -- (at least on Windows Vista SP2)
     local ret = wx.wxProcess.Kill(debugger.pid, wx.wxSIGKILL, wx.wxKILL_CHILDREN)
     if ret == wx.wxKILL_OK then
-      DisplayOutput("Stopped debuggee process "..debugger.pid..".\n")
+      DisplayOutput("Stopped debuggee process (pid: "..debugger.pid..").\n")
     elseif ret ~= wx.wxKILL_NO_PROCESS then
-      DisplayOutput("Unable to kill debuggee process "..debugger.pid..", code "..tostring(ret)..".\n")
+      DisplayOutput("Unable to kill debuggee process (pid: "..debugger.pid.."), code "..tostring(ret)..".\n")
     end
     debugger.pid = nil
   end
