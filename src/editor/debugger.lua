@@ -72,12 +72,14 @@ debugger.shell = function(expression)
     copas.addthread(function ()
         local addedret = false
         local value, _, err = debugger.handle('exec ' .. expression)
-        if err ~= nil and err:find("'=' expected near '<eof>'") then
-          value, _, err = debugger.handle('eval ' .. expression)
+        if err and (err:find("'=' expected near '<eof>'") or
+                    err:find("unexpected symbol near '")) then
+          value, _, err = debugger.handle('eval ' .. expression:gsub("^%s*=%s*",""))
           addedret = true
         end
 
         if err then
+          if addedret then err = err:gsub('^%[string "return ', '[string "') end
           DisplayShellErr(err)
         elseif addedret or (value ~= nil and value ~= 'nil') then
           DisplayShell(value)

@@ -153,9 +153,10 @@ DisplayShellPrompt = function (...)
   out:MarkerAdd(out:GetLineCount()-1, CURRENT_LINE_MARKER)
 end
 
-local function filterTraceError(err)
+local function filterTraceError(err, addedret)
   local err = err:match("(.-:%d+:.-)\n[^\n]*\n[^\n]*\n[^\n]*src/editor/shellbox.lua:.*in function 'executeShellCode'")
         err = err:gsub("stack traceback:.-\n[^\n]+\n?","")
+        if addedret then err = err:gsub('^%[string "return ', '[string "') end
         err = err:match("(.*)\n[^\n]*%(tail call%): %?$") or err
   return err
 end
@@ -247,9 +248,11 @@ local function executeShellCode(tx)
   else
     fn,err = loadstring(tx)
     -- for statement queries create the return
-    if err and err:find("'=' expected near '<eof>'") then
-      fn,err = loadstring("return("..tx..")")
-      addedret = true
+    if err and (err:find("'=' expected near '<eof>'") or
+                err:find("unexpected symbol near '")) then
+      local errmore
+      fn,errmore = loadstring("return "..tx:gsub("^%s*=%s*",""))
+      addedret = not errmore
     end
   end
   
@@ -259,7 +262,7 @@ local function executeShellCode(tx)
     setfenv(fn,env)
     local ok, res = xpcall(fn,
       function(err)
-        DisplayShellErr(filterTraceError(debug.traceback(err)))
+        DisplayShellErr(filterTraceError(debug.traceback(err), addedret))
       end)
     
     if ok and (addedret or res ~= nil) then DisplayShell(res) end
@@ -284,7 +287,7 @@ end
 local function displayShellIntro()
   DisplayShellDirect([[Welcome to the interactive Lua interpreter.
 Enter Lua code and press Enter to run it. Use Shift-Enter for multiline code.
-Use 'clear' to clear the shell output and the history.]])
+Use 'clear' to clear the shell output and the history. Prepend '=' to show values.]])
   DisplayShellPrompt('')
 end
 
