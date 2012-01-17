@@ -1,6 +1,8 @@
 editor.fontname = "Courier New"
 editor.caretline = true
 editor.showfncall = true
+editor.autotabs = false
+editor.usetabs  = false
 editor.tabwidth = 2
 editor.usewrap = true
 
