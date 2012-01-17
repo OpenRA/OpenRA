@@ -42,7 +42,8 @@ ide.ofontItalic = ofontItalic
 -- Create the wxFrame
 -- ----------------------------------------------------------------------------
 local function createFrame()
-  frame = wx.wxFrame(wx.NULL, wx.wxID_ANY, GetIDEString("editor"))
+  frame = wx.wxFrame(wx.NULL, wx.wxID_ANY, GetIDEString("editor"),
+    wx.wxDefaultPosition, wx.wxSize(1000, 700))
   frame:DragAcceptFiles(true)
   frame:Connect(wx.wxEVT_DROP_FILES,function(evt)
       local files = evt:GetFiles()
