@@ -55,7 +55,6 @@ local debugTab = {
   { },
   { ID_TOGGLEBREAKPOINT, "Toggle &Breakpoint\tF9", "Toggle Breakpoint" },
   --{ ID "view.debug.callstack", "V&iew Call Stack", "View the LUA call stack" },
-  { ID "view.debug.watches", "View &Watch Window", "View the Watch window" },
   { },
   { ID_CLEAROUTPUT, "C&lear Output Window", "Clear the output window before compiling or debugging", wx.wxITEM_CHECK },
 }
@@ -195,7 +194,7 @@ frame:Connect(ID_TOGGLEBREAKPOINT, wx.wxEVT_COMMAND_MENU_SELECTED,
     DebuggerToggleBreakpoint(editor, line)
   end)
 frame:Connect(ID_TOGGLEBREAKPOINT, wx.wxEVT_UPDATE_UI,
-  function(event)
+  function (event)
     local editor = GetEditor()
     event:Enable((ide.interpreter) and (ide.interpreter.hasdebugger) and (editor ~= nil))
   end)
@@ -205,7 +204,11 @@ frame:Connect(ID_COMPILE, wx.wxEVT_COMMAND_MENU_SELECTED,
     local editor = GetEditor()
     CompileProgram(editor)
   end)
-frame:Connect(ID_COMPILE, wx.wxEVT_UPDATE_UI, OnUpdateUIEditMenu)
+frame:Connect(ID_COMPILE, wx.wxEVT_UPDATE_UI,
+  function (event)
+    local editor = GetEditor()
+    event:Enable((debugger.server == nil) and (editor ~= nil))
+  end)
 
 frame:Connect(ID_RUN, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
@@ -335,17 +338,6 @@ frame:Connect(ID "view.debug.callstack", wx.wxEVT_UPDATE_UI,
     event:Enable((debugger.server ~= nil) and (not debugger.running))
   end)
 ]]
-
-frame:Connect(ID "view.debug.watches", wx.wxEVT_COMMAND_MENU_SELECTED,
-  function (event)
-    if not debugger.watchWindow then
-      DebuggerCreateWatchWindow()
-    end
-  end)
-frame:Connect(ID "view.debug.watches", wx.wxEVT_UPDATE_UI,
-  function (event)
-    event:Enable((debugger.server ~= nil) and (not debugger.running))
-  end)
 
 frame:Connect(wx.wxEVT_IDLE,
   function(event)
