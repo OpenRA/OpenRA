@@ -42,9 +42,6 @@ local app = {
     end
     if icons > 0 then ide.frame:SetIcons(bundle) end
 
-    -- start debugger
-    ide.debugger.listen()
-
     local menuBar = ide.frame.menuBar
     local menu = menuBar:GetMenu(menuBar:FindMenu("&Project"))
     local itemid = menu:FindItem("Lua &interpreter")
