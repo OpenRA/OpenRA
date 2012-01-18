@@ -294,7 +294,7 @@ end
 local dywordentries = {}
 local dynamicwords = {}
 
-local function addDynamicWord (api,word )
+local function addDynamicWord (api,word)
   if api.tip.keys[word] or api.tip.staticnames[word] then return end
   local cnt = dywordentries[word]
   if cnt then
@@ -302,7 +302,6 @@ local function addDynamicWord (api,word )
     return
   end
   dywordentries[word] = 1
-  --DisplayOutput("ADD",word,"\n")
   local wlow = word:lower()
   for i=0,#word do
     local k = wlow : sub (1,i)
@@ -317,20 +316,21 @@ local function removeDynamicWord (api,word)
 
   if (cnt == 1) then
     dywordentries[word] = nil
-    --DisplayOutput("DEL",word,"\n")
     for i=0,#word do
       local wlow = word:lower()
       local k = wlow : sub (1,i)
       local page = dynamicwords[k]
-      local cnt  = #page
-      for n=1,cnt do
-        if page[n] == word then
-          if cnt == 1 then
-            dynamicwords[k] = nil
-          else
-            table.remove(page,n)
+      if page then
+        local cnt  = #page
+        for n=1,cnt do
+          if page[n] == word then
+            if cnt == 1 then
+              dynamicwords[k] = nil
+            else
+              table.remove(page,n)
+            end
+            break
           end
-          break
         end
       end
     end
@@ -354,7 +354,7 @@ end
 function DynamicWordsAdd(ev,editor,content,line,numlines)
   if ide.config.acandtip.nodynwords then return end
   local api = editor.api
-  local content = getEditorLines(editor,line,numlines)
+  local content = content or getEditorLines(editor,line,numlines)
   for word in content:gmatch "[%.:]?%s*([a-zA-Z_]+[a-zA-Z_0-9]+)" do
     addDynamicWord(api,word)
   end
@@ -454,7 +454,6 @@ end
 -- make syntype dependent
 function CreateAutoCompList(editor,key)
   local api = editor.api
-  --DisplayOutput(key,"\n")
   local tip = api.tip
   local ac = api.ac
 
@@ -467,8 +466,6 @@ function CreateAutoCompList(editor,key)
   local progress = tab and tab.childs
   statusBar:SetStatusText(progress and tab.classname or "",1)
   if not (progress) then return end
-
-  --DisplayOutput("AC",tab.classname,rest,"\n")
 
   if (tab == ac) then
     local obj,krest = rest:match("([%w_]+)[:%.]([%w_]+)%s*$")

@@ -198,13 +198,12 @@ function ReApplySpecAndStyles()
     end
   end
 
-  local errorlog = ide.frame.vsplitter.splitter.bottomnotebook.errorlog
-  local shellbox = ide.frame.vsplitter.splitter.bottomnotebook.shellbox
+  local errorlog = ide.frame.bottomnotebook.errorlog
+  local shellbox = ide.frame.bottomnotebook.shellbox
 
-  SetupKeywords(shellbox.input,"lua",nil,ide.config.stylesoutshell,ide.ofont,ide.ofontItalic)
+  SetupKeywords(shellbox,"lua",nil,ide.config.stylesoutshell,ide.ofont,ide.ofontItalic)
 
   StylesApplyToEditor(ide.config.stylesoutshell,errorlog,ide.ofont,ide.ofontItalic)
-  StylesApplyToEditor(ide.config.stylesoutshell,shellbox.output,ide.ofont,ide.ofontItalic)
 end
 
 function LoadConfigStyle()

@@ -153,11 +153,12 @@ DisplayShellPrompt = function (...)
   out:MarkerAdd(out:GetLineCount()-1, CURRENT_LINE_MARKER)
 end
 
-local function filterTraceError(err)
-  local err = err:match(".-:%d+:(.-)\n[^\n]*\n[^\n]*\n[^\n]*src/editor/shellbox.lua:.*in function 'executeShellCode'")
+local function filterTraceError(err, addedret)
+  local err = err:match("(.-:%d+:.-)\n[^\n]*\n[^\n]*\n[^\n]*src/editor/shellbox.lua:.*in function 'executeShellCode'")
         err = err:gsub("stack traceback:.-\n[^\n]+\n?","")
+        if addedret then err = err:gsub('^%[string "return ', '[string "') end
         err = err:match("(.*)\n[^\n]*%(tail call%): %?$") or err
-  return "!"..err
+  return err
 end
 
 local function createenv ()
@@ -240,14 +241,18 @@ local function executeShellCode(tx)
   DisplayShellDirect('\n')
   DisplayShellPrompt('')
 
+  local addedret = false
   local fn,err
   if remotesend then
     remotesend(tx)
   else
     fn,err = loadstring(tx)
     -- for statement queries create the return
-    if err and err:find("'=' expected ") > -1 then
-      fn,err = loadstring("return("..tx..")")
+    if err and (err:find("'=' expected near '<eof>'") or
+                err:find("unexpected symbol near '")) then
+      local errmore
+      fn,errmore = loadstring("return "..tx:gsub("^%s*=%s*",""))
+      addedret = not errmore
     end
   end
   
@@ -257,12 +262,10 @@ local function executeShellCode(tx)
     setfenv(fn,env)
     local ok, res = xpcall(fn,
       function(err)
-        DisplayShellErr(filterTraceError(debug.traceback(err)))
+        DisplayShellErr(filterTraceError(debug.traceback(err), addedret))
       end)
     
-    if ok and res ~= nil then
-      DisplayShell(res)
-    end
+    if ok and (addedret or res ~= nil) then DisplayShell(res) end
   end
 end
 
@@ -284,7 +287,7 @@ end
 local function displayShellIntro()
   DisplayShellDirect([[Welcome to the interactive Lua interpreter.
 Enter Lua code and press Enter to run it. Use Shift-Enter for multiline code.
-Use 'clear' to clear the shell output and the history.]])
+Use 'clear' to clear the shell output and the history. Prepend '=' to show values.]])
   DisplayShellPrompt('')
 end
 
@@ -307,7 +310,7 @@ out:Connect(wx.wxEVT_KEY_DOWN,
         setPromptText(getNextHistoryLine(false, promptText))
         return
       elseif key == wx.WXK_DOWN or key == wx.WXK_NUMPAD_DOWN then
-        -- if we are below the prompt line, then allow to go down
+        -- if we are above the last line, then allow to go down
         -- through multiline entry
         local totalLines = out:GetLineCount()-1
         if out:GetCurrentLine() < totalLines then break end
@@ -355,6 +358,7 @@ out:Connect(wx.wxEVT_KEY_DOWN,
         -- move cursor to end if not already there
         if not caretOnPromptLine() then
           out:GotoPos(out:GetLength())
+        -- check if the selection starts before the prompt line and reset it
         elseif out:LineFromPosition(out:GetSelectionStart()) < getPromptLine() then
           out:GotoPos(out:GetLength())
           out:SetSelection(out:GetSelectionEnd()+1,out:GetSelectionEnd())
@@ -366,4 +370,3 @@ out:Connect(wx.wxEVT_KEY_DOWN,
   end)
 
 displayShellIntro()
-

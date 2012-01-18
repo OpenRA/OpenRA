@@ -44,20 +44,15 @@ local app = {
     ide.debugger.listen()
 
     local menuBar = ide.frame.menuBar
-    local pos = menuBar:FindMenu("&Project")
-    local menu = menuBar:GetMenu(pos)
+    local menu = menuBar:GetMenu(menuBar:FindMenu("&Project"))
     local itemid = menu:FindItem("Lua &interpreter")
     if itemid ~= wx.wxNOT_FOUND then menu:Destroy(itemid) end
     itemid = menu:FindItem("Project directory")
     if itemid ~= wx.wxNOT_FOUND then menu:Destroy(itemid) end
 
-    pos = menuBar:FindMenu("&View")
-    menu = menuBar:GetMenu(pos)
-    local items = {3, 2}
-    while #items > 0 do
-      local itempos = table.remove(items, 1)
-      menu:Destroy(menu:FindItemByPosition(itempos))
-    end
+    menu = menuBar:GetMenu(menuBar:FindMenu("&View"))
+    itemid = menu:FindItem("&Load Config Style...")
+    if itemid ~= wx.wxNOT_FOUND then menu:Destroy(itemid) end
 
     menuBar:Check(ID_CLEAROUTPUT, true)
   end,

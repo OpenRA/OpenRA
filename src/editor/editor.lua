@@ -135,6 +135,8 @@ function SetEditorSelection(selection)
   statusBar:SetStatusText("",1)
   ide.frame:SetTitle(getFileTitle(editor))
 
+  FileTreeMarkSelected('')
+
   if editor then
     if funclist:IsEmpty() then funclist:Append('Jump to a function definition...', 0) end
     funclist:SetSelection(0)
@@ -204,7 +206,6 @@ function CreateEditor(name)
   editor:SetFont(ide.font)
   editor:StyleSetFont(wxstc.wxSTC_STYLE_DEFAULT, ide.font)
 
-  editor:SetUseTabs(false)
   editor:SetTabWidth(ide.config.editor.tabwidth or 4)
   editor:SetIndent(ide.config.editor.tabwidth or 4)
   editor:SetUseTabs(ide.config.editor.usetabs and true or false)

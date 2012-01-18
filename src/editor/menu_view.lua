@@ -11,10 +11,11 @@ local debugger = ide.debugger
 local viewMenu = wx.wxMenu{
   -- NYI { ID "view.preferences", "&Preferences...", "Brings up dialog for settings (TODO)" },
   -- NYI { },
-  { ID "view.filetree.show", "View &FileTree Window", "View the filetree window" },
-  { ID "view.output.show", "View &Output/Shell Window", "View the output/shell window" },
-  { ID "view.defaultlayout", "&Default Layout", "Reset to default ui layout"},
+  { ID "view.filetree.show", "Project/&FileTree Window", "View the project/filetree window" },
+  { ID "view.output.show", "&Output/Shell Window", "View the output/shell window" },
+  { ID "view.debug.watches", "&Watch Window", "View the Watch window" },
   { },
+  { ID "view.defaultlayout", "&Default Layout", "Reset to default ui layout"},
   { ID "view.style.loadconfig", "&Load Config Style...", "Load and apply style from config file (must contain .styles)"},
 }
 menuBar:Append(viewMenu, "&View")
@@ -44,4 +45,9 @@ frame:Connect(ID "view.filetree.show", wx.wxEVT_COMMAND_MENU_SELECTED,
     uimgr:Update()
   end)
 
-  
+frame:Connect(ID "view.debug.watches", wx.wxEVT_COMMAND_MENU_SELECTED,
+  function (event)
+    if not debugger.watchWindow then
+      DebuggerCreateWatchWindow()
+    end
+  end)
