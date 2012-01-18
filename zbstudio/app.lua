@@ -29,6 +29,8 @@ local app = {
   end,
 
   postinit = function ()
+    dofile("zbstudio/menu_help.lua")
+
     local bundle = wx.wxIconBundle()
     local files = FileSysGet("zbstudio/res/", wx.wxFILE)
     local icons = 0

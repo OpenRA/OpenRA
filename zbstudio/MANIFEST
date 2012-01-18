@@ -79,9 +79,11 @@ src/main.lua
 src/misc/util.lua
 src/preferences/editor.lua
 src/preferences/project.lua
+src/version.lua
 zbstudio.exe
 zbstudio/app.lua
 zbstudio/config.lua
+zbstudio/menu_help.lua
 zbstudio/res/16.ico
 zbstudio/res/16/LICENSE
 zbstudio/res/16/wxART_COPY.png
@@ -100,3 +102,4 @@ zbstudio/res/16/wxART_PASTE.png
 zbstudio/res/16/wxART_REDO.png
 zbstudio/res/16/wxART_UNDO.png
 zbstudio/res/32.ico
+zbstudio/res/zerobrane.png
