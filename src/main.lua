@@ -269,6 +269,8 @@ dofile "src/editor/menu.lua"
 dofile "src/preferences/editor.lua"
 dofile "src/preferences/project.lua"
 
+dofile "src/version.lua"
+
 -- load rest of settings
 SettingsRestoreEditorSettings()
 SettingsRestoreFramePosition(ide.frame, "MainFrame")

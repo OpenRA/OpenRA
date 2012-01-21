@@ -29,6 +29,8 @@ local app = {
   end,
 
   postinit = function ()
+    dofile("zbstudio/menu_help.lua")
+
     local bundle = wx.wxIconBundle()
     local files = FileSysGet("zbstudio/res/", wx.wxFILE)
     local icons = 0
@@ -39,9 +41,6 @@ local app = {
       end
     end
     if icons > 0 then ide.frame:SetIcons(bundle) end
-
-    -- start debugger
-    ide.debugger.listen()
 
     local menuBar = ide.frame.menuBar
     local menu = menuBar:GetMenu(menuBar:FindMenu("&Project"))

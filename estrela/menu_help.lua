@@ -48,7 +48,7 @@ local function DisplayAbout(event)
 				</tr>
 			  </table>
 			<font size = 1>
-				Licenced under The MIT License.
+				Licensed under The MIT License.
 			</font>
 			</font>
 			</td>
@@ -71,7 +71,7 @@ local function DisplayAbout(event)
 				</tr>
 			  </table>
 			<font size = 1>
-				wxLua binding licenced under wxWindows Library Licence, Version 3.
+				wxLua binding licensed under wxWindows Library License, Version 3.
 			</font>
 			</font>
 			</td>
@@ -111,4 +111,3 @@ local function DisplayAbout(event)
 end
 
 frame:Connect(ID_ABOUT, wx.wxEVT_COMMAND_MENU_SELECTED, DisplayAbout)
-
