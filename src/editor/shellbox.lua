@@ -136,6 +136,7 @@ local function shellPrint(marker, ...)
 
   out:EmptyUndoBuffer() -- don't allow the user to undo shell text
   out:GotoPos(out:GetLength())
+  out:EnsureVisibleEnforcePolicy(out:GetLineCount()-1)
 end
 
 DisplayShell = function (...)
