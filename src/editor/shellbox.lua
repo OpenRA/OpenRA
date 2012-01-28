@@ -238,7 +238,6 @@ local env = createenv()
 local function executeShellCode(tx)
   if tx == nil or tx == '' then return end
 
-  DisplayShellDirect('\n')
   DisplayShellPrompt('')
 
   local addedret = false
@@ -277,11 +276,16 @@ function ShellSupportRemote(client,uid)
     client and "Remote console" or "Local console")
 end
 
-function ShellExecuteCode(wfilename)
+function ShellExecuteFile(wfilename)
   if (not wfilename) then return end
   local cmd = 'dofile([['..wfilename:GetFullPath()..']])'
   DisplayShellDirect(cmd)
   executeShellCode(cmd)
+end
+
+function ShellExecuteCode(code)
+  DisplayShellDirect(code)
+  executeShellCode(code)
 end
 
 local function displayShellIntro()
@@ -350,6 +354,7 @@ out:Connect(wx.wxEVT_KEY_DOWN,
           out:ClearAll()
           displayShellIntro()
         else
+          DisplayShellDirect('\n')
           executeShellCode(promptText)
         end
         currentHistory = getPromptLine() -- reset history
