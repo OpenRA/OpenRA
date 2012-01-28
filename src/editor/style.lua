@@ -11,6 +11,10 @@
 -- b bold - boolean
 -- i italic - boolean
 -- fill fill to end - boolean
+-- fn font Face Name - string ("Lucida Console")
+-- fx font size - number (11)
+-- hs turn hotspot on - true or {r,g,b} 0-255
+-- v visibility for symbols of the current style - boolean
 
 function StylesGetDefault()
   return {
@@ -148,6 +152,21 @@ function StylesApplyToEditor(styles,editor,font,fontitalic,lexerconvert)
     editor:StyleSetUnderline(id, style.u or false)
     editor:StyleSetEOLFilled(id, style.fill or false)
 
+    if style.fn then editor:StyleSetFaceName(id, style.fn) end
+    if style.fs then editor:StyleSetSize(id, style.fs) end
+    if style.v ~= nil then editor:StyleSetVisible(id, style.v) end
+
+    if style.hs then
+      editor:StyleSetHotSpot(id, 1)
+      -- if passed a color (table) as value, set it as foreground
+      if type(style.hs) == 'table' then
+        local color = wx.wxColour(unpack(style.hs))
+        editor:SetHotspotActiveForeground(1, color)
+      end
+      editor:SetHotspotActiveUnderline(1)
+      editor:SetHotspotSingleLine(1)
+    end
+
     if (style.fg or defaultfg) then
       editor:StyleSetForeground(id, style.fg and wx.wxColour(unpack(style.fg)) or defaultfg)
     end
@@ -179,6 +198,10 @@ function StylesApplyToEditor(styles,editor,font,fontitalic,lexerconvert)
       for n,outid in pairs(targets) do
         applystyle(style,outid)
       end
+    -- allow to specify style numbers, but exclude those styles
+    -- that may conflict with indicator numbers
+    elseif (style.st and style.st > 8 and style.st < wxstc.wxSTC_STYLE_DEFAULT) then
+      applystyle(style,style.st)
     end
   end
 

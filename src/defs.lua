@@ -13,7 +13,7 @@
 
 -- style definition
 -- ----------------------------------------------------
--- all entries are optiona
+-- all entries are optional
 stattr = {
   fg = {r,g,b}, -- foreground color 0-255
   bg = {r,g,b}, -- background color
@@ -21,6 +21,13 @@ stattr = {
   b = false, -- bold
   u = false, -- underline
   fill = true, -- fill to lineend
+  -- fn = "Lucida Console", -- font Face Name
+  -- fx = 11, -- font size
+  -- hs = true or {r,g,b}, -- turn hotspot on
+  --   use the specified color as activeForeground
+  --   use "hs = true", to turn it on without changing the color
+  --   HotspotActiveUnderline and HotspotSingleLine are on automatically
+  -- v = true, -- visibility for symbols of the current style
 }
 
 style = {
