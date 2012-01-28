@@ -270,9 +270,11 @@ end
 function ShellSupportRemote(client,uid)
   remotesend = client
 
-  -- change the name of the tab: console is the second page in the notebook
-  bottomnotebook:SetPageText(1,
-    client and "Remote console" or "Local console")
+  local index = bottomnotebook:GetPageIndex(out)
+  if index then
+    bottomnotebook:SetPageText(index,
+      client and "Remote console" or "Local console")
+  end
 end
 
 function ShellExecuteFile(wfilename)
