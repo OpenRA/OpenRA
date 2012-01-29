@@ -306,7 +306,7 @@ local function findItem(tree, match)
   local node = projtree:GetRootItem()
   local label = tree:GetItemText(node)
 
-  local s, e = string.find(match, label .. string_Pathsep)
+  local s, e = string.find(match, label)
   if not s or s ~= 1 then return end
 
   for token in string.gmatch(string.sub(match,e+1), "[^%"..string_Pathsep.."]+") do
