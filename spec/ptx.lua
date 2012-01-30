@@ -204,11 +204,6 @@ L2
 a1d
 a2d
 
-r
-g
-b
-a
-
 width
 height
 depth
