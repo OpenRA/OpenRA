@@ -97,7 +97,9 @@ debugger.listen = function()
       local options = debugger.options or {}
       local wxfilepath = GetEditorFileAndCurInfo()
       local startfile = options.startfile or wxfilepath:GetFullPath()
-      local basedir = options.basedir or wxfilepath:GetPath(wx.wxPATH_GET_VOLUME)
+      local basedir = options.basedir
+        or FileTreeGetDir()
+        or wxfilepath:GetPath(wx.wxPATH_GET_VOLUME)..string_Pathsep
       debugger.basedir = basedir
       debugger.server = copas.wrap(skt)
       debugger.socket = skt
@@ -139,23 +141,25 @@ debugger.listen = function()
           else
             -- try to find a proper file based on file name
             -- first check using basedir that was set based on current file path
-            -- if not found, check using project directory and reset basedir
             if not activated then
-              local fullPath = debugger.basedir..string_Pathsep..file
+              local fullPath = debugger.basedir..file
               activated = activateDocument(fullPath, line)
             end
 
-            local projectDir = FileTreeGetDir()
-            if not activated and projectDir then
-              debugger.basedir = projectDir:gsub(string_Pathsep .. "$", "")
-              debugger.handle("basedir " .. debugger.basedir)
-              fullPath = projectDir .. file
+            -- if not found, check using full file path and reset basedir
+            if not activated then
+              local path = wxfilepath:GetPath(wx.wxPATH_GET_VOLUME)..string_Pathsep
+              fullPath = path..file
               activated = activateDocument(fullPath, line)
+              if activated then
+                debugger.basedir = path
+                debugger.handle("basedir " .. debugger.basedir)
+              end
             end
           end
 
           if not activated then
-            DisplayOutput("Can't find file '" .. file .. "' to activate for debugging; try opening the file before debugging.\n")
+            DisplayOutput("Can't find file '" .. file .. "' to activate for debugging; open the file before debugging.\n")
             return debugger.terminate()
           end
         else
@@ -202,7 +206,7 @@ debugger.exec = function(command)
             return
           else
             if debugger.basedir and not wx.wxIsAbsolutePath(file) then
-              file = debugger.basedir .. "/" .. file
+              file = debugger.basedir .. file
             end
             if activateDocument(file, line) then
               if debugger.loop then
