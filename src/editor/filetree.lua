@@ -287,8 +287,7 @@ projpanel.projcombobox = projcombobox
 projpanel.projtree = projtree
 
 function FileTreeGetDir()
-  -- atm only projtree
-  return projpanel:IsShown() and (filetree.newfiledir .. string_Pathsep)
+  return projpanel:IsShown() and filetree.newfiledir
 end
 
 function FileTreeSetProjects(tab)
