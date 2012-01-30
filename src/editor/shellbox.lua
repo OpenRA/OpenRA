@@ -259,10 +259,22 @@ local function executeShellCode(tx)
     DisplayShellErr(err)
   elseif fn then
     setfenv(fn,env)
+
+    -- set the project dir as the current dir to allow "require" calls
+    -- to work from shell
+    local projectDir, cwd = FileTreeGetDir()
+    if projectDir then
+      cwd = wx.wxFileName.GetCwd()
+      wx.wxFileName.SetCwd(projectDir)
+    end
+
     local ok, res = xpcall(fn,
       function(err)
         DisplayShellErr(filterTraceError(debug.traceback(err), addedret))
       end)
+
+    -- restore the current dir
+    if projectDir then wx.wxFileName.SetCwd(cwd) end
     
     if ok and (addedret or res ~= nil) then DisplayShell(res) end
   end
