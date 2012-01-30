@@ -214,10 +214,8 @@ function CreateEditor(name)
 
   if (ide.config.editor.usewrap) then
     editor:SetWrapMode(wxstc.wxSTC_WRAP_WORD)
-    editor:SetWrapStartIndent(2)
+    editor:SetWrapStartIndent(0)
     editor:SetWrapVisualFlagsLocation(wxstc.wxSTC_WRAPVISUALFLAGLOC_END_BY_TEXT)
-    editor:SetWrapVisualFlags(wxstc.wxSTC_WRAPVISUALFLAG_START)
-    editor:WrapCount(80)
   end
 
   editor:SetCaretLineVisible(ide.config.editor.caretline and 1 or 0)
@@ -379,8 +377,14 @@ function CreateEditor(name)
       for e,iv in ipairs(editor.ev) do
         local line = editor:LineFromPosition(iv[1])
         IndicateFunctions(editor,line,line+iv[2])
+        if MarkupStyle then MarkupStyle(editor,line,line+iv[2]) end
       end
       editor.ev = {}
+    end)
+
+  editor:Connect(wxstc.wxEVT_STC_HOTSPOT_CLICK,
+    function (event)
+      if MarkupHotspotClick then MarkupHotspotClick(event, editor) end
     end)
 
   editor:Connect(wx.wxEVT_SET_FOCUS,
@@ -441,8 +445,6 @@ end
 function IndicateFunctions(editor, lines, linee)
   if (not (edcfg.showfncall and editor.spec and editor.spec.isfncall)) then return end
 
-  --DisplayOutput("indicate: "..tostring(lines).." "..tostring(linee).."\n")
-
   local es = editor:GetEndStyled()
   local lines = lines or 0
   local linee = linee or editor:GetLineCount()-1
@@ -480,15 +482,8 @@ function IndicateFunctions(editor, lines, linee)
       if (f) then
         local p = ls+f+off
         local s = bit.band(editor:GetStyleAt(p),31)
-        if (not (isinvalid[s])) then
-
-          editor:StartStyling(p,INDICS_MASK)
-          editor:SetStyling(t-f,INDIC0_MASK + 1)
-        else
-          editor:StartStyling(p,INDICS_MASK)
-          editor:SetStyling(t-f,0)
-        end
-
+        editor:StartStyling(p,INDICS_MASK)
+        editor:SetStyling(t-f,isinvalid[s] and 0 or (INDIC0_MASK + 1))
         off = off + t
       end
       from = t and (t+1)
@@ -500,7 +495,6 @@ end
 function SetupKeywords(editor, ext, forcespec, styles, font, fontitalic)
   local lexerstyleconvert = nil
   local spec = forcespec or GetSpec(ext)
-  --print(ext..":"..tostring(spec.apitype))
   -- found a spec setup lexers and keywords
   if spec then
     editor:SetLexer(spec.lexer or wxstc.wxSTC_LEX_NULL)
