@@ -62,6 +62,7 @@ src/editor/findreplace.lua
 src/editor/gui.lua
 src/editor/ids.lua
 src/editor/iofilters.lua
+src/editor/markup.lua
 src/editor/menu.lua
 src/editor/menu_edit.lua
 src/editor/menu_file.lua

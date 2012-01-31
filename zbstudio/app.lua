@@ -57,6 +57,16 @@ local app = {
     if itemid ~= wx.wxNOT_FOUND then menu:Destroy(itemid) end
 
     menuBar:Check(ID_CLEAROUTPUT, true)
+
+    -- load welcome.lua from myprograms/ if exists
+    local fn = wx.wxFileName("myprograms/welcome.lua")
+    if fn:FileExists() and
+      (not ide.config.path.projectdir
+        or string.len(ide.config.path.projectdir) == 0) then
+      fn:Normalize() -- make absolute path
+      LoadFile(fn:GetFullPath(),nil,true)
+      ProjectUpdateProjectDir(fn:GetPath(wx.wxPATH_GET_VOLUME))
+    end
   end,
   
   stringtable = {
