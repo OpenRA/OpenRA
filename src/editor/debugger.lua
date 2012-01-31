@@ -99,7 +99,7 @@ debugger.listen = function()
       local startfile = options.startfile or wxfilepath:GetFullPath()
       local basedir = options.basedir
         or FileTreeGetDir()
-        or wxfilepath:GetPath(wx.wxPATH_GET_VOLUME)..string_Pathsep
+        or wxfilepath:GetPath(wx.wxPATH_GET_VOLUME + wx.wxPATH_GET_SEPARATOR)
       debugger.basedir = basedir
       debugger.server = copas.wrap(skt)
       debugger.socket = skt
@@ -142,15 +142,13 @@ debugger.listen = function()
             -- try to find a proper file based on file name
             -- first check using basedir that was set based on current file path
             if not activated then
-              local fullPath = debugger.basedir..file
-              activated = activateDocument(fullPath, line)
+              activated = activateDocument(debugger.basedir..file, line)
             end
 
             -- if not found, check using full file path and reset basedir
             if not activated then
-              local path = wxfilepath:GetPath(wx.wxPATH_GET_VOLUME)..string_Pathsep
-              fullPath = path..file
-              activated = activateDocument(fullPath, line)
+              local path = wxfilepath:GetPath(wx.wxPATH_GET_VOLUME + wx.wxPATH_GET_SEPARATOR)
+              activated = activateDocument(path..file, line)
               if activated then
                 debugger.basedir = path
                 debugger.handle("basedir " .. debugger.basedir)

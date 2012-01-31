@@ -42,7 +42,8 @@ function MarkupHotspotClick(event, editor)
   if (poss and pose) then 
     local text = string.sub(tx, poss+1, pose-1)
     local wxfilepath = GetEditorFileAndCurInfo()
-    local name = wxfilepath:GetPath(wx.wxPATH_GET_VOLUME) .. string_Pathsep .. text
+    local name =
+      wxfilepath:GetPath(wx.wxPATH_GET_VOLUME + wx.wxPATH_GET_SEPARATOR) .. text
     local _,_,macro = string.find(text, "^macro:shell%((.*%S)%)")
     if macro then
       local bottomnotebook = ide.frame.bottomnotebook
