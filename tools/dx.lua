@@ -15,6 +15,7 @@ return dxpath and {
       { },
       { ID "dx.compile.input", "&Custom Args", "when set a popup for custom compiler args will be envoked", wx.wxITEM_CHECK },
       { ID "dx.compile.legacy", "&Legacy", "when set compiles in legacy mode", wx.wxITEM_CHECK },
+      { ID "dx.compile.backwards", "&Backwards Compatibility", "when set compiles in backwards compatibility mode", wx.wxITEM_CHECK },
       { },
       { ID "dx.compile.vertex", "Compile &Vertex", "Compile Vertex shader (select entry word)" },
       { ID "dx.compile.fragment", "Compile &Fragment", "Compile pixel shader (select entry word)" },
@@ -26,7 +27,9 @@ return dxpath and {
 
     local data = {}
     data.customarg = false
+    data.custom = ""
     data.legacy = false
+    data.backwards = false
     data.profid = ID ("dx.profile."..dxprofile)
     data.domains = {
       [ID "dx.compile.vertex"] = 1,
@@ -77,6 +80,10 @@ return dxpath and {
       function(event)
         data.legacy = event:IsChecked()
       end)
+    frame:Connect(ID "dx.compile.backwards",wx.wxEVT_COMMAND_MENU_SELECTED,
+      function(event)
+        data.backwards = event:IsChecked()
+      end)
     -- Compile
     local function evCompile(event)
       local filename,info = GetEditorFileAndCurInfo()
@@ -92,19 +99,20 @@ return dxpath and {
       if (not profile[domain]) then return end
 
       -- popup for custom input
-      local args = data.customarg and wx.wxGetTextFromUser("Compiler Args") or ""
-      args = args:len() > 0 and args or nil
+      data.custom = data.customarg and wx.wxGetTextFromUser("Compiler Args","Dx",data.custom) or data.custom
+      local args = data.custom:len() > 0 and data.custom or nil
 
       local fullname = filename:GetFullPath()
 
       local outname = fullname.."."..info.selword.."^"
-      outname = args and outname..args:gsub("%s+%-",";-")..";^" or outname
+      outname = args and outname..args:gsub("%s*[%-%/]",";-")..";^" or outname
       outname = outname..profile[domain]..profile.ext
       outname = '"'..outname..'"'
 
       local cmdline = " /T "..profile[domain].." "
       cmdline = cmdline..(args and args.." " or "")
       cmdline = cmdline..(data.legacy and "/LD " or "")
+      cmdline = cmdline..(data.backwards and "/Gec " or "")
       cmdline = cmdline..data.domaindefs[domain]
       cmdline = cmdline.."/Fc "..outname.." "
       cmdline = cmdline.."/E "..info.selword.." "
