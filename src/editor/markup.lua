@@ -2,13 +2,14 @@
 -- update styles for comment markup
 local styles = ide.config.styles
 local comment = styles.comment
-local MD_MARK_ITAL = '/' -- italic
+local MD_MARK_ITAL = '_' -- italic
 local MD_MARK_BOLD = '*' -- bold
 local MD_MARK_LINK = '~' -- link
 local MD_MARK_HEAD = '!' -- header
 local MD_MARK_CODE = '@' -- code
 local MD_MARK_LSEP = ';' -- link separator (between text and link)
 local MD_MARK_MARK = ' ' -- separator
+local MD_LINK_NEWWINDOW = '+' -- indicator to open a new window for links
 local markup = {
   [MD_MARK_CODE] = {st=26, fg={127,127,127}, bg=comment.bg, fs=9},
   [MD_MARK_HEAD] = {st=27, fg=comment.fg, bg=comment.bg, fn="Lucida Console", fs=10, b=true},
@@ -24,8 +25,7 @@ for key,value in pairs(markup) do
   if key ~= MD_MARK_MARK then MD_MARK_PTRN = MD_MARK_PTRN .. "%" .. key end
 end
 
-function MarkupHotspotClick(event, editor)
-  local pos = event:GetPosition()
+function MarkupHotspotClick(pos, editor)
   -- check if this is "our" hotspot event
   if bit.band(editor:GetStyleAt(pos),31) ~= markup[MD_MARK_LINK].st then
     -- not "our" style, so nothing to do for us here
@@ -33,7 +33,7 @@ function MarkupHotspotClick(event, editor)
   end
   local line = editor:LineFromPosition(pos)
   local tx = editor:GetLine(line)
-  pos = 1 + pos - editor:PositionFromLine(line) -- turn into relative position
+  pos = pos + 1 - editor:PositionFromLine(line) -- turn into relative position
 
   -- find the separator on the right side of the position
   local poss = string.find(tx, MD_MARK_LSEP, pos, true)
@@ -41,21 +41,39 @@ function MarkupHotspotClick(event, editor)
 
   if (poss and pose) then 
     local text = string.sub(tx, poss+1, pose-1)
-    local wxfilepath = GetEditorFileAndCurInfo()
-    local name =
-      wxfilepath:GetPath(wx.wxPATH_GET_VOLUME + wx.wxPATH_GET_SEPARATOR) .. text
-    local _,_,macro = string.find(text, "^macro:shell%((.*%S)%)")
-    if macro then
-      local bottomnotebook = ide.frame.bottomnotebook
-      local shellbox = bottomnotebook.shellbox
-      local index = bottomnotebook:GetPageIndex(shellbox)
+    local filepath = ide.openDocuments[editor:GetId()].filePath
+    local _,_,shell = string.find(text, [[^macro:shell%((.*%S)%)$]])
+    local _,_,http = string.find(text, [[^(http:%S+)$]])
+    local _,_,command = string.find(text, [[^macro:(%w+)$]])
+    local bottomnotebook = ide.frame.bottomnotebook
+    if shell then
+      local index = bottomnotebook:GetPageIndex(bottomnotebook.shellbox)
       if index then bottomnotebook:SetSelection(index) end
-      ShellExecuteCode(macro)
-    elseif wx.wxFileName(name):FileExists() then
-      LoadFile(name,nil,true)
+      ShellExecuteCode(shell)
+    elseif command == 'run' then -- run the current file
+      local index = bottomnotebook:GetPageIndex(bottomnotebook.errorlog)
+      if index then bottomnotebook:SetSelection(index) end
+      ProjectRun()
+    elseif command == 'debug' then -- debug the current file
+      local index = bottomnotebook:GetPageIndex(bottomnotebook.errorlog)
+      if index then bottomnotebook:SetSelection(index) end
+      ProjectDebug()
+    elseif http then -- open the URL in a new browser window
+      wx.wxLaunchDefaultBrowser(http, 0)
+    else
+      -- check if requested to open in a new window
+      local newwindow = string.find(text, MD_LINK_NEWWINDOW, 1, true) -- plain search
+      if newwindow then text = string.gsub(text, "^%" .. MD_LINK_NEWWINDOW, "") end
+      local name = wx.wxFileName(filepath):GetPath(wx.wxPATH_GET_VOLUME
+        + wx.wxPATH_GET_SEPARATOR) .. text
+      -- load/activate file
+      if wx.wxFileName(name):FileExists() and
+        (newindow or SaveModifiedDialog(editor, true) ~= wx.wxID_CANCEL) then
+        LoadFile(name,not newwindow and editor or nil,true)
+      end
     end
   end
-  event:Skip()
+  return true
 end
 
 local function ismarkup (tx)

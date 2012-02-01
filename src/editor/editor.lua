@@ -383,9 +383,15 @@ function CreateEditor(name)
       editor.ev = {}
     end)
 
-  editor:Connect(wxstc.wxEVT_STC_HOTSPOT_CLICK,
+  editor:Connect(wx.wxEVT_LEFT_DOWN,
     function (event)
-      if MarkupHotspotClick then MarkupHotspotClick(event, editor) end
+      if MarkupHotspotClick then
+        local position = editor:PositionFromPointClose(event:GetX(),event:GetY())
+        if position ~= wx.wxSTC_INVALID_POSITION then
+          if MarkupHotspotClick(position, editor) then return end
+        end
+      end
+      event:Skip()
     end)
 
   editor:Connect(wx.wxEVT_SET_FOCUS,
@@ -397,13 +403,6 @@ function CreateEditor(name)
       ide.in_evt_focus = false
     end)
 
-  --[[
-  editor:Connect(wxstc.wxEVT_STC_POSCHANGED,
-    function (event)
-      -- brace checking
-
-    end)
-  ]]
   if notebook:AddPage(editor, name, true) then
     local id = editor:GetId()
     local document = {}
