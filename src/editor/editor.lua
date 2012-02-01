@@ -118,11 +118,10 @@ end
 -- ----------------------------------------------------------------------------
 -- Get/Set notebook editor page, use nil for current page, returns nil if none
 function GetEditor(selection)
-  local editor = nil
-  selection = tonumber(selection)
   if selection == nil then
     selection = notebook:GetSelection()
   end
+  local editor
   if (selection >= 0) and (selection < notebook:GetPageCount()) and (notebook:GetPage(selection):GetClassInfo():GetClassName()=="wxStyledTextCtrl") then
     editor = notebook:GetPage(selection):DynamicCast("wxStyledTextCtrl")
   end

@@ -254,7 +254,7 @@ local function removePage(index)
 end
 
 function ClosePage(selection)
-  local editor = GetEditor(tonumber(selection))
+  local editor = GetEditor(selection)
   local id = editor:GetId()
   if SaveModifiedDialog(editor, true) ~= wx.wxID_CANCEL then
     DynamicWordsRemoveAll(editor)
