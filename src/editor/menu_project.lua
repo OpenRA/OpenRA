@@ -39,7 +39,6 @@ do
   targetMenu = wx.wxMenu(targetargs)
 end
 
-
 local debugTab = {
   { ID_RUN, "&Run\tF6", "Execute the current project/file" },
   { ID_COMPILE, "&Compile\tF7", "Test compile the Lua file" },
@@ -184,6 +183,21 @@ local function runInterpreter(wfilename, withdebugger)
   if withdebugger then debugger.pid = pid end
 end
 
+function ProjectRun()
+  runInterpreter(getNameToRun())
+end
+
+function ProjectDebug()
+  if (debugger.server ~= nil) then
+    if (not debugger.running) then
+      ClearAllCurrentLineMarkers()
+      debugger.run()
+    end
+  else
+    runInterpreter(getNameToRun(), true)
+  end
+end
+
 -----------------------
 -- Actions
 
@@ -210,10 +224,7 @@ frame:Connect(ID_COMPILE, wx.wxEVT_UPDATE_UI,
     event:Enable((debugger.server == nil) and (editor ~= nil))
   end)
 
-frame:Connect(ID_RUN, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function (event)
-    runInterpreter(getNameToRun())
-  end)
+frame:Connect(ID_RUN, wx.wxEVT_COMMAND_MENU_SELECTED, ProjectRun)
 frame:Connect(ID_RUN, wx.wxEVT_UPDATE_UI,
   function (event)
     local editor = GetEditor()
@@ -233,17 +244,7 @@ frame:Connect(ID_ATTACH_DEBUG, wx.wxEVT_UPDATE_UI,
   end)
 
 local lastcontinue
-frame:Connect(ID_START_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function (event)
-    if (debugger.server ~= nil) then
-      if (not debugger.running) then
-        ClearAllCurrentLineMarkers()
-        debugger.run()
-      end
-    else
-      runInterpreter(getNameToRun(), true)
-    end
-  end)
+frame:Connect(ID_START_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED, ProjectDebug)
 frame:Connect(ID_START_DEBUG, wx.wxEVT_UPDATE_UI,
   function (event)
     local editor = GetEditor()
