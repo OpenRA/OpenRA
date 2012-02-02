@@ -67,9 +67,11 @@ function MarkupHotspotClick(pos, editor)
       local name = wx.wxFileName(filepath):GetPath(wx.wxPATH_GET_VOLUME
         + wx.wxPATH_GET_SEPARATOR) .. text
       -- load/activate file
-      if wx.wxFileName(name):FileExists() and
+      local filename = wx.wxFileName(name)
+      filename:Normalize() -- remove .., ., and other similar elements
+      if filename:FileExists() and
         (newindow or SaveModifiedDialog(editor, true) ~= wx.wxID_CANCEL) then
-        LoadFile(name,not newwindow and editor or nil,true)
+        LoadFile(filename,not newwindow and editor or nil,true)
       end
     end
   end
