@@ -117,7 +117,7 @@ function OpenFile(event)
   if fileDialog:ShowModal() == wx.wxID_OK then
     if not LoadFile(fileDialog:GetPath(), nil, true) then
       wx.wxMessageBox("Unable to load file '"..fileDialog:GetPath().."'.",
-        "wxLua Error",
+        "Error",
         wx.wxOK + wx.wxCENTRE, ide.frame)
     end
   end
@@ -156,7 +156,7 @@ function SaveFile(editor, filePath)
       return true
     else
       wx.wxMessageBox("Unable to save file '"..filePath.."'.",
-        "wxLua Error Saving",
+        "Error",
         wx.wxOK + wx.wxCENTRE, ide.frame)
     end
   end
@@ -271,12 +271,7 @@ function SaveModifiedDialog(editor, allow_cancel)
   local filePath = document.filePath
   local fileName = document.fileName
   if document.isModified then
-    local message
-    if fileName then
-      message = "Save changes to '"..fileName.."' before exiting?"
-    else
-      message = "Save changes to 'untitled' before exiting?"
-    end
+    local message = "Do you want to save the changes to '"..(fileName or 'untitled').."'?"
     local dlg_styles = wx.wxYES_NO + wx.wxCENTRE + wx.wxICON_QUESTION
     if allow_cancel then dlg_styles = dlg_styles + wx.wxCANCEL end
     local dialog = wx.wxMessageDialog(ide.frame, message,

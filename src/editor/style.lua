@@ -245,7 +245,7 @@ function LoadConfigStyle()
 
     if not (cfgfn and (cfg.styles or cfg.stylesoutshell)) then
       wx.wxMessageBox("Unable to load config style '"..fileDialog:GetPath().."'.",
-        "wxLua Error",
+        "Error",
         wx.wxOK + wx.wxCENTRE, ide.frame)
     else
       if (cfg.styles) then
