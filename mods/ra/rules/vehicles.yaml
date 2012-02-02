@@ -404,7 +404,7 @@ MNLY.AT:
 		Mine: MINV
 	MineImmune:
 	LimitedAmmo:
-		Ammo: 5
+		Ammo: 3
 	AttackMove:
 		JustMove: true
 
