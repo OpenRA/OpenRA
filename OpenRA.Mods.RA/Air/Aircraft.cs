@@ -165,7 +165,7 @@ namespace OpenRA.Mods.RA.Air
 
 		public bool AircraftCanEnter(Actor a)
 		{
-			if( self.Owner != a.Owner ) return false;
+			if( self.AppearsHostileTo(a) ) return false;
 			return Info.RearmBuildings.Contains( a.Info.Name )
 				|| Info.RepairBuildings.Contains( a.Info.Name );
 		}
