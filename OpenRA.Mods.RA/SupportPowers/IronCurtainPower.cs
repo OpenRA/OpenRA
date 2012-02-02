@@ -15,7 +15,6 @@ using OpenRA.Graphics;
 using OpenRA.Mods.RA.Effects;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
-using TUtil = OpenRA.Traits.Util;
 
 namespace OpenRA.Mods.RA
 {
