@@ -129,8 +129,6 @@ function SaveFile(editor, filePath)
   if not filePath then
     return SaveFileAs(editor)
   else
-    filePath = filePath:gsub("\\","/")
-
     if (ide.config.savebak) then
       local backPath = filePath..".bak"
       os.remove(backPath)
@@ -190,6 +188,7 @@ function SaveFileAs(editor)
     if SaveFile(editor, filePath) then
       SetupKeywords(editor, GetFileExt(filePath))
       IndicateFunctions(editor)
+      if MarkupStyle then MarkupStyle(editor) end
       saved = true
     end
   end
