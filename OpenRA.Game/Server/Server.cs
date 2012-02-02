@@ -121,16 +121,15 @@ namespace OpenRA.Server
 				catch { }
 			} ) { IsBackground = true }.Start();
 		}
-		int nextPlayerIndex;
+
 		/* lobby rework todo:
 		 *	- "teams together" option for team games -- will eliminate most need
 		 *		for manual spawnpoint choosing.
-		 *	- 256 max players is a dirty hack
 		 */
+		int nextPlayerIndex = 0;
 		public int ChooseFreePlayerIndex()
 		{
-			nextPlayerIndex++;
-			return nextPlayerIndex;
+			return nextPlayerIndex++;
 		}
 
 		void AcceptConnection()
