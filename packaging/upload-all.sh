@@ -1,12 +1,11 @@
 #!/bin/bash
-FTPSERVER=openra.res0l.net
-FTPPATHBASE="openra.res0l.net"
-FTP="ftp://${FTPSERVER}/${FTPPATHBASE}/assets/downloads/"
+SERVER=openra.res0l.net
+PATHBASE="openra.res0l.net/assets/downloads"
 
 upload () {
     PLATFORM=$1
     FILENAME=$2
-    wput -u "${FTP}${PLATFORM}/" "${FILENAME}"
+    scp "${FILENAME}" ${SERVER}:${PATHBASE}/${PLATFORM}/
 }
 
 TAG=$1
@@ -20,4 +19,4 @@ upload linux/deb openra_${LINUXVERSION}_all.deb
 upload linux/rpm openra-${LINUXVERSION}-1.noarch.rpm
 upload linux/arch openra-${LINUXVERSION}-1-any.pkg.tar.xz
 
-wget http://${FTPSERVER}/home/syncdownloads
+wget http://${SERVER}/home/syncdownloads
