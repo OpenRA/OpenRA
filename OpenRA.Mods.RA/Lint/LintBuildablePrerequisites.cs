@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA
 				var bi = i.Value.Traits.GetOrDefault<BuildableInfo>();
 				if (bi != null)
 					foreach( var prereq in bi.Prerequisites )
-						if ( !providedPrereqs.Contains(prereq) )
+						if ( !providedPrereqs.Contains(prereq.Replace("!","")) )
 							emitError( "Buildable actor {0} has prereq {1} not provided by anything.".F( i.Key, prereq ) );
 			}
 		}

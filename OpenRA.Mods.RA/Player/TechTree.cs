@@ -86,15 +86,18 @@ namespace OpenRA.Mods.RA
 				this.hasPrerequisites = false;
 			}
 
+			bool HasPrerequisites(Cache<string, List<Actor>> buildings)
+			{
+				foreach (var p in prerequisites)
+					if (p.StartsWith("!") ^
+						!buildings.Keys.Contains(p.Replace("!","")))
+						return false;
+				return true;
+			}
+
 			public void Update(Cache<string, List<Actor>> buildings)
 			{
-				var nowHasPrerequisites = true;
-				foreach (var p in prerequisites)
-					if (!buildings.Keys.Contains(p))
-					{
-						nowHasPrerequisites = false;
-						break;
-					}
+				var nowHasPrerequisites = HasPrerequisites(buildings);
 
 				if( nowHasPrerequisites && !hasPrerequisites )
 					watcher.PrerequisitesAvailable(key);
