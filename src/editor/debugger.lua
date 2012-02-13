@@ -126,7 +126,8 @@ debugger.listen = function()
       end
 
       if (options.run) then
-        activateDocument(debugger.handle("run"))
+        local file, line = debugger.handle("run")
+        activateDocument(file, line)
       else
         local file, line = debugger.handle("load " .. startfile)
         -- "load" can work in two ways: (1) it can load the requested file
