@@ -217,7 +217,10 @@ local function removePage(index)
   selectIndex = selectIndex ~= index and selectIndex
 
   local delid = nil
-  for id, document in pairs(openDocuments) do
+  for id, document in pairsSorted(openDocuments,
+    function(a, b) -- sort by document index
+      return openDocuments[a].index < openDocuments[b].index
+    end) do
     local wasselected = document.index == selectIndex
     if document.index < index then
       prevIndex = document.index
