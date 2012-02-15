@@ -112,13 +112,6 @@ return {
       line = line+1
     end
 
-    if (added) then
-      DisplayOutput("\nTYPES\n")
-      for i,v in pairs(assigns) do
-        DisplayOutput(i,v,"\n")
-      end
-    end
-
     return assigns
   end,
 
