@@ -7,7 +7,7 @@ return {
   name = "Luxinia",
   description = "Luxinia project",
   api = {"luxiniaapi","baselib"},
-  fcmdline = function(self,wfilename)
+  frun = function(self,wfilename,withdebug)
     local projdir = ide.config.path.projectdir
     local endstr = (projdir and projdir:len()>0
       and " -p "..projdir or "")
@@ -18,6 +18,7 @@ return {
     local cmd = 'luxinia.exe --nologo'..endstr
     CommandLineRun(cmd,ide.config.path.luxinia,true,true)
   end,
+  fuid = function(self,wfilename) return "luxinia "..(ide.config.path.projectdir or "") end,
   fprojdir = function(self,wfilename)
     local path = GetPathWithSep(wfilename)
     fname = wx.wxFileName(path)
