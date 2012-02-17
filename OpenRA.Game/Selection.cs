@@ -72,7 +72,8 @@ namespace OpenRA
 				if (actors.Count == 0)
 					return;
 
-				controlGroups[group].Clear();
+				if (!mods.HasModifier(Modifiers.Shift))
+					controlGroups[group].Clear();
 
 				for (var i = 0; i < 10; i++)	/* all control groups */
 					controlGroups[i].RemoveAll(a => actors.Contains(a));
