@@ -100,7 +100,8 @@ debugger.listen = function()
       local basedir = options.basedir
         or FileTreeGetDir()
         or wxfilepath:GetPath(wx.wxPATH_GET_VOLUME + wx.wxPATH_GET_SEPARATOR)
-      debugger.basedir = basedir
+      -- guarantee that the path has a trailing separator
+      debugger.basedir = wx.wxFileName.DirName(basedir):GetFullPath()
       debugger.server = copas.wrap(skt)
       debugger.socket = skt
       debugger.loop = false
