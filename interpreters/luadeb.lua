@@ -11,11 +11,11 @@ return {
       script = (""..
         "package.path=package.path..';"..mainpath.."lualibs/?/?.lua';"..
         "package.cpath=package.cpath..';"..mainpath.."bin/clibs/?.dll';"..
-        "require 'mobdebug'; io.stdout:setvbuf('no'); mobdebug.loop('" .. wx.wxGetHostName().."',"..ide.debugger.portnumber..")")
+        "require 'mobdebug'; mobdebug.loop('" .. wx.wxGetHostName().."',"..ide.debugger.portnumber..")")
     else
       script = ([[dofile '%s']]):format(filepath)
     end
-    local code = ([[xpcall(function() %s end,function(err) print(debug.traceback(err)) end)]]):format(script)
+    local code = ([[xpcall(function() io.stdout:setvbuf('no'); %s end,function(err) print(debug.traceback(err)) end)]]):format(script)
     local cmd = '"'..mainpath..'bin/lua.exe" -e "'..code..'"'
     return CommandLineRun(cmd,self:fworkdir(wfilename),true,false)
   end,
