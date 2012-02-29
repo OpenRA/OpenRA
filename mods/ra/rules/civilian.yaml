@@ -140,6 +140,7 @@ OILB:
 	RevealsShroud:
 		Range: 3
 	Capturable:
+	-MustBeDestroyed:
 	CashTrickler:
 		Period: 250
 		Amount: 50
