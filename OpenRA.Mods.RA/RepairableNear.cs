@@ -23,14 +23,15 @@ namespace OpenRA.Mods.RA
 	{
 		[ActorReference] public readonly string[] Buildings = { "spen", "syrd" };
 
-		public object Create( ActorInitializer init ) { return new RepairableNear( init.self ); }
+		public object Create( ActorInitializer init ) { return new RepairableNear( init.self, this ); }
 	}
 
 	class RepairableNear : IIssueOrder, IResolveOrder
 	{
 		readonly Actor self;
+		readonly RepairableNearInfo info;
 
-		public RepairableNear( Actor self ) { this.self = self; }
+		public RepairableNear( Actor self, RepairableNearInfo info ) { this.self = self; this.info = info; }
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
@@ -51,7 +52,7 @@ namespace OpenRA.Mods.RA
 
 		bool CanRepairAt( Actor target )
 		{
-			return self.Info.Traits.Get<RepairableNearInfo>().Buildings.Contains( target.Info.Name );
+			return info.Buildings.Contains( target.Info.Name );
 		}
 
 		bool ShouldRepair()
