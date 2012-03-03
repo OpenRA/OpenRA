@@ -300,7 +300,6 @@ C2:
 		Range: 2
 	AttackFrontal:
 		PrimaryWeapon: Pistol
-	-ProximityCaptor:
 	ProximityCaptor:
 		Types:CivilianInfantry
 
