@@ -35,6 +35,7 @@ namespace OpenRA.Mods.RA.Render
 		public void Damaged(Actor self, AttackInfo e)
 		{
 			if (isSmoking) return;
+			if (e.Damage < 0) return;	/* getting healed */
 			if (e.DamageState < DamageState.Heavy) return;
 
 			isSmoking = true;
