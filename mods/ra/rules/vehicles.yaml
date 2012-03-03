@@ -510,12 +510,12 @@ TTNK:
 		Prerequisites: stek,tsla
 		Owner: soviet
 	Valued:
-		Cost: 1800
+		Cost: 1500
 	Tooltip:
 		Name: Tesla Tank
 		Description: Tank with mounted tesla coil.\n Strong vs Infantry.\n Weak vs Tanks
 	Health:
-		HP: 110
+		HP: 150
 	Armor:
 		Type: Light
 	Mobile:
