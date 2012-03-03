@@ -112,7 +112,7 @@ E4:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 60
-		Prerequisites: stek
+		Prerequisites: ftur
 		Owner: soviet
 	Valued:
 		Cost: 300
