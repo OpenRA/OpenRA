@@ -18,6 +18,7 @@ namespace OpenRA.Mods.RA.Move
 		int2 endLocation;
 		int2 startLocation;
 		int length;
+		int ticks = 0;
 
 		public Drag(int2 start, int2 end, int length)
 		{
@@ -26,17 +27,19 @@ namespace OpenRA.Mods.RA.Move
 			this.length = length;
 		}
 
-		int ticks = 0;
 		public override Activity Tick( Actor self )
 		{
 			var mobile = self.Trait<Mobile>();
-			mobile.PxPosition = int2.Lerp(startLocation, endLocation, ticks, length - 1);
+			mobile.PxPosition = length > 1
+				? int2.Lerp(startLocation, endLocation, ticks, length - 1)
+				: endLocation;
 
 			if (++ticks >= length)
 			{
 				mobile.IsMoving = false;
 				return NextActivity;
 			}
+
 			mobile.IsMoving = true;
 			return this;
 		}
