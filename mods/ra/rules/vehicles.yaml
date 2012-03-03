@@ -174,8 +174,9 @@ V2RL:
 		HuskActor: 4TNK.Husk
 	SelfHealing:
 		Step: 1
-		Ticks: 5
+		Ticks: 1
 		HealIfBelow: 50%
+		DamageCooldown: 200
 	Selectable:
 		Bounds: 44,38,0,-4
 
