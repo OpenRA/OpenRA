@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA.Activities
 		protected virtual Activity InnerTick( Actor self, AttackBase attack )
 		{
 			if (IsCanceled) return NextActivity;
-			var facing = self.Trait<IFacing>();
+
 			if (!Target.IsValid)
 				return NextActivity;
 
@@ -70,6 +70,7 @@ namespace OpenRA.Mods.RA.Activities
 			}
 
 			var desiredFacing = Util.GetFacing(Target.CenterLocation - self.CenterLocation, 0);
+			var facing = self.Trait<IFacing>();
 			if (facing.Facing != desiredFacing)
 				return Util.SequenceActivities( new Turn( desiredFacing ), this );
 
