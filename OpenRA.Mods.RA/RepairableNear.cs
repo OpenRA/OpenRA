@@ -22,6 +22,7 @@ namespace OpenRA.Mods.RA
 	class RepairableNearInfo : ITraitInfo, Requires<HealthInfo>
 	{
 		[ActorReference] public readonly string[] Buildings = { "spen", "syrd" };
+		public readonly int CloseEnough = 4;	/* cells */
 
 		public object Create( ActorInitializer init ) { return new RepairableNear( init.self, this ); }
 	}
@@ -68,7 +69,7 @@ namespace OpenRA.Mods.RA
 				var target = Target.FromOrder(order);
 
 				self.CancelActivity();
-				self.QueueActivity(mobile.MoveWithinRange(target, 1));
+				self.QueueActivity(mobile.MoveWithinRange(target, info.CloseEnough));
 				self.QueueActivity(new Repair(order.TargetActor));
 
 				self.SetTargetLine(target, Color.Green, false);
