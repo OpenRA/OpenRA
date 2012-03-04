@@ -1,11 +1,13 @@
 #!/bin/bash
+
+UPLOADUSER=openra
 SERVER=openra.res0l.net
 PATHBASE="openra.res0l.net/assets/downloads"
 
 upload () {
     PLATFORM=$1
     FILENAME=$2
-    scp "${FILENAME}" ${SERVER}:${PATHBASE}/${PLATFORM}/
+    scp "${FILENAME}" ${UPLOADUSER}@${SERVER}:${PATHBASE}/${PLATFORM}/
 }
 
 TAG=$1
