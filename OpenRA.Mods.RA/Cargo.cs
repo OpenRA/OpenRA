@@ -23,6 +23,7 @@ namespace OpenRA.Mods.RA
 		public readonly int PipCount = 0;
 		public readonly string[] Types = { };
 		public readonly int UnloadFacing = 0;
+		public readonly string[] InitialUnits = { };
 
 		public object Create( ActorInitializer init ) { return new Cargo( init, this ); }
 	}
@@ -45,6 +46,17 @@ namespace OpenRA.Mods.RA
 			{
 				cargo = init.Get<CargoInit,Actor[]>().ToList();
 				totalWeight = cargo.Sum( c => GetWeight(c) );
+			}
+			else
+			{
+				foreach (var u in info.InitialUnits)
+				{
+					var unit = self.World.CreateActor(false, u.ToLowerInvariant(),
+						new TypeDictionary { new OwnerInit(self.Owner) });
+
+					if (CanLoad(self, unit))
+						Load(self,unit);
+				}
 			}
 		}
 
