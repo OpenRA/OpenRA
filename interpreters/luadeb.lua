@@ -9,7 +9,7 @@ return {
     if rundebug then
       DebuggerAttachDefault()
       script = (""..
-        "package.path=package.path..';"..mainpath.."lualibs/?/?.lua';"..
+        "package.path=package.path..';"..mainpath.."lualibs/?/?.lua;"..mainpath.."lualibs/?.lua';"..
         "package.cpath=package.cpath..';"..mainpath.."bin/clibs/?.dll';"..
         "require 'mobdebug'; mobdebug.loop('" .. wx.wxGetHostName().."',"..ide.debugger.portnumber..")")
     else

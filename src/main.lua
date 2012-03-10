@@ -3,7 +3,7 @@
 
 package.cpath = package.cpath..';bin/?.dll;bin/clibs/?.dll;bin/clibs/?/?.dll;bin/clibs/?/?/?.dll'
 package.cpath = package.cpath..';bin/?.so;bin/clibs/?.so;bin/clibs/?/?.so;bin/clibs/?/?/?.so'
-package.path = package.path..'lualibs/?.lua;lualibs/?/?.lua;lualibs/?/init.lua;lualibs/?/?/?.lua;lualibs/?/?/init.lua'
+package.path = package.path..';lualibs/?.lua;lualibs/?/?.lua;lualibs/?/init.lua;lualibs/?/?/?.lua;lualibs/?/?/init.lua'
 
 require("wx")
 require("bit")
