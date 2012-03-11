@@ -17,7 +17,9 @@ return {
     end
     local code = ([[xpcall(function() io.stdout:setvbuf('no'); %s end,function(err) print(debug.traceback(err)) end)]]):format(script)
     local cmd = '"'..mainpath..'bin/lua.exe" -e "'..code..'"'
-    return CommandLineRun(cmd,self:fworkdir(wfilename),true,false)
+    -- CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
+    return CommandLineRun(cmd,self:fworkdir(wfilename),true,false,nil,nil,
+      function() ide.debugger.pid = nil end)
   end,
   fprojdir = function(self,wfilename)
     return wfilename:GetPath(wx.wxPATH_GET_VOLUME)

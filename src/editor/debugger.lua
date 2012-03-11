@@ -293,9 +293,9 @@ function DebuggerKillClient()
     -- (at least on Windows Vista SP2)
     local ret = wx.wxProcess.Kill(debugger.pid, wx.wxSIGKILL, wx.wxKILL_CHILDREN)
     if ret == wx.wxKILL_OK then
-      DisplayOutput("Stopped debuggee process (pid: "..debugger.pid..").\n")
+      DisplayOutput("Stopped process (pid: "..debugger.pid..").\n")
     elseif ret ~= wx.wxKILL_NO_PROCESS then
-      DisplayOutput("Unable to kill debuggee process (pid: "..debugger.pid.."), code "..tostring(ret)..".\n")
+      DisplayOutput("Unable to stop process (pid: "..debugger.pid.."), code "..tostring(ret)..".\n")
     end
     debugger.pid = nil
   end

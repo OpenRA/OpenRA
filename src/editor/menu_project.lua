@@ -45,7 +45,7 @@ local debugTab = {
   { ID_START_DEBUG, "Start &Debugging\tF5", "Start a debugging session" },
   { ID_ATTACH_DEBUG, "&Start Debugger Server\tShift-F6", "Allow a client to start a debugging session" },
   { },
-  { ID_STOP_DEBUG, "S&top Debugging\tShift-F12", "Stop and end the debugging session" },
+  { ID_STOP_DEBUG, "S&top Debugging\tShift-F12", "Stop the currently running process" },
   { ID_STEP, "St&ep\tF11", "Step into the next line" },
   { ID_STEP_OVER, "Step &Over\tF10", "Step over the next line" },
   { ID_STEP_OUT, "Step O&ut\tShift-F10", "Step out of the current function" },
@@ -53,13 +53,14 @@ local debugTab = {
   { ID_BREAK, "&Break", "Stop execution of the program at the next executed line of code" },
   { },
   { ID_TOGGLEBREAKPOINT, "Toggle &Breakpoint\tF9", "Toggle Breakpoint" },
-  --{ ID "view.debug.callstack", "V&iew Call Stack", "View the LUA call stack" },
+  --{ ID "view.debug.callstack", "V&iew Call Stack", "View the call stack" },
   { },
   { ID_CLEAROUTPUT, "C&lear Output Window", "Clear the output window before compiling or debugging", wx.wxITEM_CHECK },
 }
 
 local debugMenu = wx.wxMenu(debugTab)
 local debugMenuRun = {start="Start &Debugging\tF5", continue="Co&ntinue\tF5"}
+local debugMenuStop = {debugging="S&top Debugging\tShift-F12", process="S&top Process\tShift-F12"}
 
 local targetDirMenu = wx.wxMenu{
   {ID "debug.projectdir.choose","Choose ..."},
@@ -180,7 +181,7 @@ local function runInterpreter(wfilename, withdebugger)
   ClearAllCurrentLineMarkers()
   if not wfilename then return end
   local pid = ide.interpreter:frun(wfilename, withdebugger)
-  if withdebugger then debugger.pid = pid end
+  debugger.pid = pid
 end
 
 function ProjectRun()
@@ -221,14 +222,14 @@ frame:Connect(ID_COMPILE, wx.wxEVT_COMMAND_MENU_SELECTED,
 frame:Connect(ID_COMPILE, wx.wxEVT_UPDATE_UI,
   function (event)
     local editor = GetEditor()
-    event:Enable((debugger.server == nil) and (editor ~= nil))
+    event:Enable((debugger.server == nil and debugger.pid == nil) and (editor ~= nil))
   end)
 
 frame:Connect(ID_RUN, wx.wxEVT_COMMAND_MENU_SELECTED, ProjectRun)
 frame:Connect(ID_RUN, wx.wxEVT_UPDATE_UI,
   function (event)
     local editor = GetEditor()
-    event:Enable((debugger.server == nil) and (editor ~= nil))
+    event:Enable((debugger.server == nil and debugger.pid == nil) and (editor ~= nil))
   end)
 
 frame:Connect(ID_ATTACH_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -243,32 +244,34 @@ frame:Connect(ID_ATTACH_DEBUG, wx.wxEVT_UPDATE_UI,
       (not debugger.listening) and (debugger.server == nil) and (editor ~= nil))
   end)
 
-local lastcontinue
 frame:Connect(ID_START_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED, ProjectDebug)
 frame:Connect(ID_START_DEBUG, wx.wxEVT_UPDATE_UI,
   function (event)
     local editor = GetEditor()
     event:Enable((ide.interpreter) and (ide.interpreter.hasdebugger) and
-      ((debugger.server == nil) or (debugger.server ~= nil and not debugger.running)) and (editor ~= nil))
-    local curcontinue = (debugger.server ~= nil)
-    if curcontinue == lastcontinue then return end
-    lastcontinue = curcontinue
-    if curcontinue then
-      debugMenu:SetLabel(ID_START_DEBUG, debugMenuRun.continue)
-    else
-      debugMenu:SetLabel(ID_START_DEBUG, debugMenuRun.start)
+      ((debugger.server == nil and debugger.pid == nil) or (debugger.server ~= nil and not debugger.running)) and (editor ~= nil))
+    local label = (debugger.server ~= nil)
+      and debugMenuRun.continue or debugMenuRun.start
+    if debugMenu:GetLabel(ID_START_DEBUG) ~= label then
+      debugMenu:SetLabel(ID_START_DEBUG, label)
     end
   end)
 
 frame:Connect(ID_STOP_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
     ClearAllCurrentLineMarkers()
-    debugger.terminate()
+    if debugger.server then debugger.terminate() end
+    if debugger.pid then DebuggerKillClient() end
   end)
 frame:Connect(ID_STOP_DEBUG, wx.wxEVT_UPDATE_UI,
   function (event)
     local editor = GetEditor()
-    event:Enable((debugger.server ~= nil) and (editor ~= nil))
+    event:Enable((debugger.server ~= nil or debugger.pid ~= nil) and (editor ~= nil))
+    local label = (debugger.server == nil and debugger.pid ~= nil)
+      and debugMenuStop.process or debugMenuStop.debugging
+    if debugMenu:GetLabel(ID_STOP_DEBUG) ~= label then
+      debugMenu:SetLabel(ID_STOP_DEBUG, label)
+    end
   end)
 
 frame:Connect(ID_STEP, wx.wxEVT_COMMAND_MENU_SELECTED,
