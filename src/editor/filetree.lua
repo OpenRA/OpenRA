@@ -287,7 +287,7 @@ projpanel.projcombobox = projcombobox
 projpanel.projtree = projtree
 
 function FileTreeGetDir()
-  return projpanel:IsShown()
+  return projpanel:IsShown() and filetree.newfiledir
     and wx.wxFileName.DirName(filetree.newfiledir):GetFullPath()
 end
 
