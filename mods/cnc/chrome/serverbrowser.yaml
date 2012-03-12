@@ -1,5 +1,4 @@
 Container@SERVERBROWSER_PANEL:
-	Id:SERVERBROWSER_PANEL
 	Logic:ServerBrowserLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - 500)/2
@@ -19,67 +18,57 @@ Container@SERVERBROWSER_PANEL:
 			Background:panel-black
 			Children:
 				ScrollPanel@SERVER_LIST:
-					Id:SERVER_LIST
 					X:15
 					Y:30
 					Width:510
 					Height:450
 					Children:
 						ScrollItem@SERVER_TEMPLATE:
-							Id:SERVER_TEMPLATE
 							Width:PARENT_RIGHT-27
 							Height:68
 							X:2
 							Y:0
 							Children:
 								MapPreview@MAP_PREVIEW:
-									Id:MAP_PREVIEW
 									X:2
 									Y:2
 									Width:64
 									Height:64
 									ShowSpawnPoints:no
 								Label@TITLE:
-									Id:TITLE
 									X:70
 									Width:200
 									Height:25
 									Font:Bold
 								Label@MAP:
-									Id:MAP
 									X:70
 									Y:20
 									Width:250
 									Height:25
 								Label@PLAYERS:
-									Id:PLAYERS
 									X:70
 									Y:40
 									Width:50
 									Height:25
 								Label@STATE:
-									Id:STATE
 									Width:140
 									X:PARENT_RIGHT-150
 									Align:Right
 									Height:25
 									Font:Bold
 								Label@IP:
-									Id:IP
 									Width:140
 									X:PARENT_RIGHT-150
 									Y:20
 									Align:Right
 									Height:25
 								Label@VERSION:
-									Id:VERSION
 									Width:140
 									X:PARENT_RIGHT-150
 									Y:40
 									Align:Right
 									Height:25
 				Label@PROGRESS_LABEL:
-					Id:PROGRESS_LABEL
 					X:(PARENT_RIGHT - WIDTH) / 2
 					Y:PARENT_BOTTOM / 2 - HEIGHT
 					Width:710
@@ -88,7 +77,6 @@ Container@SERVERBROWSER_PANEL:
 					Align:Center
 					Visible:false
 		Button@BACK_BUTTON:
-			Id:BACK_BUTTON
 			Key:escape
 			X:0
 			Y:499
@@ -96,14 +84,12 @@ Container@SERVERBROWSER_PANEL:
 			Height:35
 			Text:Back
 		Button@REFRESH_BUTTON:
-			Id:REFRESH_BUTTON
 			X:250
 			Y:499
 			Width:140
 			Height:35
 			Text:Refresh
 		Button@JOIN_BUTTON:
-			Id:JOIN_BUTTON
 			Key:return
 			X:400
 			Y:499

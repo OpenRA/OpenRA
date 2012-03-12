@@ -1,5 +1,4 @@
 Container@SETTINGS_PANEL:
-	Id:SETTINGS_PANEL
 	Logic:CncSettingsLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - 250)/2
@@ -14,7 +13,6 @@ Container@SETTINGS_PANEL:
 			Align:Center
 			Text:Settings
 		Background@GENERAL_CONTROLS:
-			Id:GENERAL_CONTROLS
 			Width:740
 			Height:250
 			Background:panel-black
@@ -34,14 +32,12 @@ Container@SETTINGS_PANEL:
 					Align:Right
 					Text:Name:
 				TextField@NAME_TEXTFIELD:
-					Id:NAME_TEXTFIELD
 					X:65
 					Y:40
 					Width:205
 					Height:25
 					MaxLength:16
 				DropDownButton@COLOR:
-					Id:COLOR_DROPDOWN
 					X:275
 					Y:40
 					Width:80
@@ -49,7 +45,6 @@ Container@SETTINGS_PANEL:
 					IgnoreChildMouseOver: true
 					Children:
 						ColorBlock@COLORBLOCK:
-							Id:COLORBLOCK
 							X:5
 							Y:6
 							Width:PARENT_RIGHT-35
@@ -62,7 +57,6 @@ Container@SETTINGS_PANEL:
 					Text:Debug
 					Align:Center
 				Checkbox@PERFINFO_CHECKBOX:
-					Id:PERFTEXT_CHECKBOX
 					X:15
 					Y:120
 					Width:300
@@ -70,7 +64,6 @@ Container@SETTINGS_PANEL:
 					Font:Regular
 					Text:Show Performance Text
 				Checkbox@PERFGRAPH_CHECKBOX:
-					Id:PERFGRAPH_CHECKBOX
 					X:15
 					Y:150
 					Width:300
@@ -78,7 +71,6 @@ Container@SETTINGS_PANEL:
 					Font:Regular
 					Text:Show Performance Graph
 				Checkbox@CHECKUNSYNCED_CHECKBOX:
-					Id:CHECKUNSYNCED_CHECKBOX
 					X:15
 					Y:180
 					Width:300
@@ -100,7 +92,6 @@ Container@SETTINGS_PANEL:
 					Align:Right
 					Text:Mode:
 				DropDownButton@MODE_DROPDOWN:
-					Id:MODE_DROPDOWN
 					X:425
 					Y:40
 					Width:170
@@ -108,7 +99,6 @@ Container@SETTINGS_PANEL:
 					Font:Regular
 					Text:Windowed
 				Container@WINDOWRES:
-					Id:WINDOW_RESOLUTION
 					X:595
 					Y:40
 					Children:
@@ -120,7 +110,6 @@ Container@SETTINGS_PANEL:
 							Width:25
 							Align:Center
 						TextField@SCREEN_WIDTH:
-							Id:WINDOW_WIDTH
 							X:25
 							Width:45
 							Height:25
@@ -134,7 +123,6 @@ Container@SETTINGS_PANEL:
 							Width:15
 							Align:Center
 						TextField@SCREEN_HEIGHT:
-							Id:WINDOW_HEIGHT
 							X:85
 							Width:45
 							Height:25
@@ -148,7 +136,6 @@ Container@SETTINGS_PANEL:
 					Align:Center
 					Text:Mode/Resolution changes will be applied after the game is restarted
 				Checkbox@PIXELDOUBLE_CHECKBOX:
-					Id:PIXELDOUBLE_CHECKBOX
 					X:375
 					Y:90
 					Width:200
@@ -170,7 +157,6 @@ Container@SETTINGS_PANEL:
 					Align:Right
 					Text:Sound Volume:
 				Slider@SOUND_SLIDER:
-					Id:SOUND_SLIDER
 					X:475
 					Y:150
 					Width:240
@@ -184,14 +170,12 @@ Container@SETTINGS_PANEL:
 					Align:Right
 					Text:Music Volume:
 				Slider@MUSIC_SLIDER:
-					Id:MUSIC_SLIDER
 					X:475
 					Y:180
 					Width:240
 					Height:20
 					Ticks:5
 				Checkbox@SHELLMAP_MUSIC:
-					Id:SHELLMAP_MUSIC
 					X:375
 					Y:210
 					Width:200
@@ -199,7 +183,6 @@ Container@SETTINGS_PANEL:
 					Font:Regular
 					Text:Shellmap Music
 		Background@INPUT_CONTROLS:
-			Id:INPUT_CONTROLS
 			Width:740
 			Height:250
 			Background:panel-black
@@ -213,7 +196,6 @@ Container@SETTINGS_PANEL:
 					Y:20
 					Width:340
 				Checkbox@CLASSICORDERS_CHECKBOX:
-					Id:CLASSICORDERS_CHECKBOX
 					X:15
 					Y:35
 					Width:250
@@ -234,7 +216,6 @@ Container@SETTINGS_PANEL:
 					Height:25
 					Text:Scroll Speed:
 				Slider@SCROLLSPEED_SLIDER:
-					Id:SCROLLSPEED_SLIDER
 					X:100
 					Y:120
 					Width:240
@@ -243,7 +224,6 @@ Container@SETTINGS_PANEL:
 					MinimumValue: 10
 					MaximumValue: 50
 				Checkbox@EDGESCROLL_CHECKBOX:
-					Id:EDGESCROLL_CHECKBOX
 					X:15
 					Y:150
 					Width:130
@@ -259,7 +239,6 @@ Container@SETTINGS_PANEL:
 					Text:Middle-Mouse Scrolling:
 					Align:Right
 				DropDownButton@MOUSE_SCROLL:
-					Id:MOUSE_SCROLL
 					X:180
 					Y:180
 					Width:100
@@ -275,7 +254,6 @@ Container@SETTINGS_PANEL:
 #					Text:Multitouch Scrolling:
 #					Align:Right
 #				DropDownButton@MULTITOUCH_SCROLL:
-#					Id:MULTITOUCH_SCROLL
 #					X:180
 #					Y:210
 #					Width:100
@@ -290,7 +268,6 @@ Container@SETTINGS_PANEL:
 					Text:Keyboard Input
 					Align:Center
 				Checkbox@TEAMCHAT_CHECKBOX:
-					Id:TEAMCHAT_CHECKBOX
 					X:375
 					Y:35
 					Width:240
@@ -314,26 +291,22 @@ Container@SETTINGS_PANEL:
 #					Align:Right
 #					Text:Key
 #				ScrollPanel@KEYBINDINGS:
-#					Id:KEYBINDINGS
 #					X:375
 #					Y:85
 #					Width:350
 #					Height:150
 		Button@GENERAL_BUTTON:
-			Id:GENERAL_BUTTON
 			Y:249
 			Width:140
 			Height:35
 			Text:General
 		Button@INPUT_BUTTON:
-			Id:INPUT_BUTTON
 			X:150
 			Y:249
 			Width:140
 			Height:35
 			Text:Input
 		Button@SAVE_BUTTON:
-			Id:BACK_BUTTON
 			Key:escape
 			X:600
 			Y:249

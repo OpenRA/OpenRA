@@ -1,5 +1,4 @@
 Container@INGAME_MENU:
-	Id:INGAME_MENU
 	Width:WINDOW_RIGHT
 	Height:WINDOW_BOTTOM
 	Logic:CncIngameMenuLogic
@@ -12,7 +11,6 @@ Container@INGAME_MENU:
 			ImageCollection:logos
 			ImageName:eva
 		Label@VERSION_LABEL:
-			Id:VERSION_LABEL
 			X:WINDOW_RIGHT-128-43
 			Y:115
 			Width:128
@@ -23,42 +21,36 @@ Container@INGAME_MENU:
 			Height:WINDOW_BOTTOM
 			Background:shellmapborder
 		Container@MENU_BUTTONS:
-			Id:MENU_BUTTONS
 			X:(WINDOW_RIGHT-WIDTH)/2
 			Y:WINDOW_BOTTOM-33-HEIGHT-10
 			Width:740
 			Height:35
 			Children:
 				Button@QUIT_BUTTON:
-					Id:QUIT_BUTTON
 					X:0
 					Y:0
 					Width:140
 					Height:35
 					Text:Abort Mission
 				Button@SURRENDER_BUTTON:
-					Id:SURRENDER_BUTTON
 					X:150
 					Y:0
 					Width:140
 					Height:35
 					Text:Surrender
 				Button@MUSIC_BUTTON:
-					Id:MUSIC_BUTTON
 					X:300
 					Y:0
 					Width:140
 					Height:35
 					Text:Music
 				Button@SETTINGS_BUTTON:
-					Id:SETTINGS_BUTTON
 					X:450
 					Y:0
 					Width:140
 					Height:35
 					Text:Settings
 				Button@RESUME_BUTTON:
-					Id:RESUME_BUTTON
 					Key:escape
 					X:600
 					Y:0

@@ -1,5 +1,4 @@
 Container@MAPCHOOSER_PANEL:
-	Id:MAPCHOOSER_PANEL
 	Logic:MapChooserLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - 500)/2
@@ -19,14 +18,12 @@ Container@MAPCHOOSER_PANEL:
 			Background:panel-black
 			Children:
 				ScrollPanel@MAP_LIST:
-					Id:MAP_LIST
 					X:15
 					Y:30
 					Width:PARENT_RIGHT - 30
 					Height:455
 					Children:
 						ScrollItem@MAP_TEMPLATE:
-							Id:MAP_TEMPLATE
 							Width:180
 							Height:208
 							X:2
@@ -36,12 +33,10 @@ Container@MAPCHOOSER_PANEL:
 								Label@TITLE:
 									X:2
 									Y:PARENT_BOTTOM-47
-									Id:TITLE
 									Width:PARENT_RIGHT-4
 									Height:25
 									Align:Center
 								Label@DETAILS:
-									Id:DETAILS
 									Width:PARENT_RIGHT-4
 									X:2
 									Y:PARENT_BOTTOM-35
@@ -49,7 +44,6 @@ Container@MAPCHOOSER_PANEL:
 									Height:25
 									Font:Tiny
 								Label@AUTHOR:
-									Id:AUTHOR
 									Width:PARENT_RIGHT-4
 									X:2
 									Y:PARENT_BOTTOM-26
@@ -57,13 +51,11 @@ Container@MAPCHOOSER_PANEL:
 									Height:25
 									Font:Tiny
 								MapPreview@PREVIEW:
-									Id:PREVIEW
 									X:(PARENT_RIGHT - WIDTH)/2
 									Y:4
 									Width:160
 									Height:160
 				Button@BUTTON_CANCEL:
-					Id:BUTTON_CANCEL
 					Key:escape
 					X:0
 					Y:499
@@ -71,7 +63,6 @@ Container@MAPCHOOSER_PANEL:
 					Height:35
 					Text:Cancel
 				Button@BUTTON_OK:
-					Id:BUTTON_OK
 					Key:return
 					X:790 - WIDTH
 					Y:499
