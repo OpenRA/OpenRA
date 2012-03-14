@@ -211,9 +211,6 @@ namespace OpenRA.Widgets
 			args["widget"] = this;
 
 			LogicObject = Game.modData.ObjectCreator.CreateObject<object>(Logic, args);
-			var iwd = LogicObject as ILogicWithInit;
-			if (iwd != null)
-				iwd.Init();
 
 			args.Remove("widget");
 		}
@@ -402,12 +399,5 @@ namespace OpenRA.Widgets
 		public WidgetArgs() : base() { }
 		public WidgetArgs(Dictionary<string, object> args) : base(args) { }
 		public void Add(string key, Action val) { base.Add(key, val); }
-	}
-
-	// TODO: you should use this anywhere you want to do
-	// something in a logic ctor, but retain debuggability.
-	public interface ILogicWithInit
-	{
-		void Init();
 	}
 }
