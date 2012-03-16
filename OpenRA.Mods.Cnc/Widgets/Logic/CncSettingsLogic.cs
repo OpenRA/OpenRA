@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			playerPalettePreview = world.WorldActor.Trait<ColorPickerPaletteModifier>();
 			playerPalettePreview.Ramp = playerSettings.ColorRamp;
 
-			var colorDropdown = generalPane.GetWidget<DropDownButtonWidget>("COLOR_DROPDOWN");
+			var colorDropdown = generalPane.GetWidget<DropDownButtonWidget>("COLOR");
 			colorDropdown.OnMouseDown = _ => ShowColorPicker(colorDropdown, playerSettings);
 			colorDropdown.GetWidget<ColorBlockWidget>("COLORBLOCK").GetColor = () => playerSettings.ColorRamp.GetColor(0);
 

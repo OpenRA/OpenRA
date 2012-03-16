@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		{
 			// Performance info
 			var perfRoot = widget.GetWidget("PERFORMANCE_INFO");
-			perfRoot.GetWidget("PERF_GRAPH").IsVisible = () => Game.Settings.Debug.PerfGraph;
+			perfRoot.IsVisible = () => Game.Settings.Debug.PerfGraph;
 			var text = perfRoot.GetWidget<LabelWidget>("PERF_TEXT");
 			text.IsVisible = () => Game.Settings.Debug.PerfText;
 			text.GetText = () =>

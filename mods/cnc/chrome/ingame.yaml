@@ -41,7 +41,7 @@ Container@INGAME_ROOT:
 			Height:WINDOW_BOTTOM
 			TooltipContainer:TOOLTIP_CONTAINER
 		Container@PLAYER_ROOT:
-		TooltipContainer:
+		TooltipContainer@TOOLTIP_CONTAINER:
 Container@OBSERVER_WIDGETS:
 	Children:
 		ToggleButton@OPTIONS_BUTTON:
@@ -73,7 +73,7 @@ Container@OBSERVER_WIDGETS:
 					Height:PARENT_BOTTOM-2
 Container@PLAYER_WIDGETS:
 	Children:
-		LogicTicker:
+		LogicTicker@WIN_LOSS_WATCHER:
 		Button@CHEATS_BUTTON:
 			X:WINDOW_RIGHT-400
 			Y:5
@@ -106,7 +106,7 @@ Container@PLAYER_WIDGETS:
 					ClickSound:button.aud
 					ClickDisabledSound:scold2.aud
 					Children:
-						Image:
+						Image@ICON:
 							X:7
 							Y:5
 							ImageCollection:order-icons
@@ -123,7 +123,7 @@ Container@PLAYER_WIDGETS:
 					ClickSound:button.aud
 					ClickDisabledSound:scold2.aud
 					Children:
-						Image:
+						Image@ICON:
 							X:7
 							Y:5
 							ImageCollection:order-icons
@@ -139,7 +139,7 @@ Container@PLAYER_WIDGETS:
 					ClickSound:button.aud
 					ClickDisabledSound:scold2.aud
 					Children:
-						Image:
+						Image@ICON:
 							X:7
 							Y:5
 							ImageCollection:order-icons
@@ -169,11 +169,6 @@ Container@PLAYER_WIDGETS:
 							Width:PARENT_RIGHT-2
 							Height:PARENT_BOTTOM-2
 							TooltipContainer:TOOLTIP_CONTAINER
-#				Label@POWERICON:
-#					X:4
-#					Y:180
-#					Text:P
-#					Font:Bold
 				Background@SILOBAR:
 					X:180
 					Y:5
@@ -187,11 +182,6 @@ Container@PLAYER_WIDGETS:
 							Width:PARENT_RIGHT-2
 							Height:PARENT_BOTTOM-2
 							TooltipContainer:TOOLTIP_CONTAINER
-#				Label@SILOICON:
-#					X:181
-#					Y:180
-#					Text:T
-#					Font:Bold
 				Label@CASH:
 					Y:170
 					Width:PARENT_RIGHT
@@ -213,7 +203,7 @@ Container@PLAYER_WIDGETS:
 							ClickSound:button.aud
 							ClickDisabledSound:scold2.aud
 							Children:
-								Image:
+								Image@ICON:
 									X:7
 									Y:7
 									ImageCollection:production-icons
@@ -227,7 +217,7 @@ Container@PLAYER_WIDGETS:
 							ClickSound:button.aud
 							ClickDisabledSound:scold2.aud
 							Children:
-								Image:
+								Image@ICON:
 									X:7
 									Y:7
 									ImageCollection:production-icons
@@ -241,7 +231,7 @@ Container@PLAYER_WIDGETS:
 							ClickSound:button.aud
 							ClickDisabledSound:scold2.aud
 							Children:
-								Image:
+								Image@ICON:
 									X:7
 									Y:7
 									ImageCollection:production-icons
@@ -255,7 +245,7 @@ Container@PLAYER_WIDGETS:
 							ClickSound:button.aud
 							ClickDisabledSound:scold2.aud
 							Children:
-								Image:
+								Image@ICON:
 									X:7
 									Y:7
 									ImageCollection:production-icons
@@ -269,11 +259,11 @@ Container@PLAYER_WIDGETS:
 							ClickSound:button.aud
 							ClickDisabledSound:scold2.aud
 							Children:
-								Image:
+								Image@ICON:
 									X:7
 									Y:7
 									ImageCollection:production-icons
-		ProductionTabs:
+		ProductionTabs@PRODUCTION_TABS:
 			PaletteWidget:PRODUCTION_PALETTE
 			ClickSound:button.aud
 			DisabledClickSound:scold2.aud
@@ -281,7 +271,7 @@ Container@PLAYER_WIDGETS:
 			Y:268
 			Width:194
 			Height:20
-		ProductionPalette:
+		ProductionPalette@PRODUCTION_PALETTE:
 			X:WINDOW_RIGHT - 204
 			Y:287
 			TabClick: button.aud

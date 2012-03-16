@@ -115,7 +115,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			BindOrderButton<RepairOrderGenerator>(world, sidebarRoot, "REPAIR_BUTTON", "repair");
 
 			var playerResources = world.LocalPlayer.PlayerActor.Trait<PlayerResources>();
-			sidebarRoot.GetWidget<LabelWidget>("CASH_DISPLAY").GetText = () =>
+			sidebarRoot.GetWidget<LabelWidget>("CASH").GetText = () =>
 				"${0}".F(playerResources.DisplayCash + playerResources.DisplayOre);
 
 			queueTabs = playerWidgets.GetWidget<ProductionTabsWidget>("PRODUCTION_TABS");

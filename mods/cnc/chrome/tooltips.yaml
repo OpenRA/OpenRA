@@ -31,7 +31,7 @@ Background@WORLD_TOOLTIP:
 			X:5
 			Height:23
 			Font:Bold
-		Image:
+		Image@FLAG:
 			X:5
 			Y:24
 			Width:32

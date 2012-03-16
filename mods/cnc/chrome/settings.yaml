@@ -56,7 +56,7 @@ Container@SETTINGS_PANEL:
 					Font:Bold
 					Text:Debug
 					Align:Center
-				Checkbox@PERFINFO_CHECKBOX:
+				Checkbox@PERFTEXT_CHECKBOX:
 					X:15
 					Y:120
 					Width:300
@@ -98,7 +98,7 @@ Container@SETTINGS_PANEL:
 					Height:25
 					Font:Regular
 					Text:Windowed
-				Container@WINDOWRES:
+				Container@WINDOW_RESOLUTION:
 					X:595
 					Y:40
 					Children:
@@ -109,7 +109,7 @@ Container@SETTINGS_PANEL:
 							Height:25
 							Width:25
 							Align:Center
-						TextField@SCREEN_WIDTH:
+						TextField@WINDOW_WIDTH:
 							X:25
 							Width:45
 							Height:25
@@ -122,7 +122,7 @@ Container@SETTINGS_PANEL:
 							Height:25
 							Width:15
 							Align:Center
-						TextField@SCREEN_HEIGHT:
+						TextField@WINDOW_HEIGHT:
 							X:85
 							Width:45
 							Height:25
@@ -245,21 +245,6 @@ Container@SETTINGS_PANEL:
 					Height:25
 					Font:Regular
 					Text:Enabled
-#				Label@MULTITOUCH_SCROLL_LABEL:
-#					X:15
-#					Y:210
-#					Width:160
-#					Height:20
-#					Font:Regular
-#					Text:Multitouch Scrolling:
-#					Align:Right
-#				DropDownButton@MULTITOUCH_SCROLL:
-#					X:180
-#					Y:210
-#					Width:100
-#					Height:25
-#					Font:Regular
-#					Text:Enabled
 				Label@KEYBOARD_TITLE:
 					X:375
 					Y:20
@@ -274,27 +259,6 @@ Container@SETTINGS_PANEL:
 					Height:20
 					Font:Regular
 					Text:Shift-Enter Toggles Team Chat
-#				Label@BINDING_LABEL:
-#					Font:Bold
-#					X:375
-#					Y:60
-#					Width:200
-#					Height:25
-#					Align:Center
-#					Text:Action
-#				Label@KEY_LABEL:
-#					Font:Bold
-#					X:640
-#					Y:60
-#					Width:30
-#					Height:25
-#					Align:Right
-#					Text:Key
-#				ScrollPanel@KEYBINDINGS:
-#					X:375
-#					Y:85
-#					Width:350
-#					Height:150
 		Button@GENERAL_BUTTON:
 			Y:249
 			Width:140
@@ -306,7 +270,7 @@ Container@SETTINGS_PANEL:
 			Width:140
 			Height:35
 			Text:Input
-		Button@SAVE_BUTTON:
+		Button@BACK_BUTTON:
 			Key:escape
 			X:600
 			Y:249

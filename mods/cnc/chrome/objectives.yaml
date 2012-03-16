@@ -37,6 +37,7 @@ Container@CONQUEST_OBJECTIVES:
 					Height:20
 					Font:Bold
 					Text:Crush all opposition!
+					Disabled: yes
 				Container@LABEL_CONTAINER:
 					X:17
 					Y:80

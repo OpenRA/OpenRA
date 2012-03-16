@@ -22,15 +22,13 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			var panel = widget.GetWidget("CONQUEST_OBJECTIVES");
 			panel.GetWidget<LabelWidget>("TITLE").GetText = () => "Conquest: " + world.Map.Title;
 
-			var objectiveCheckbox = panel.GetWidget<CheckboxWidget>("OBJECTIVE_CHECKBOX");
-			objectiveCheckbox.IsDisabled = () => true;
-
-			var statusLabel = panel.GetWidget<LabelWidget>("STATUS_LABEL");
+			var statusLabel = panel.GetWidget<LabelWidget>("STATUS");
 			statusLabel.IsVisible = () => world.LocalPlayer != null;
 
 			if (world.LocalPlayer != null)
 			{
 				var lp = world.LocalPlayer;
+				var objectiveCheckbox = panel.GetWidget<CheckboxWidget>("1");
 				objectiveCheckbox.IsChecked = () => lp.WinState != WinState.Undefined;
 				objectiveCheckbox.GetCheckType = () => lp.WinState == WinState.Won ?
 					"checked" : "crossed";
