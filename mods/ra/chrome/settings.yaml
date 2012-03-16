@@ -156,7 +156,7 @@ Background@SETTINGS_MENU:
 					Height:25
 					Font:Regular
 					Text:Windowed
-				Container@WINDOWRES:
+				Container@WINDOW_RESOLUTION:
 					X:220
 					Y:0
 					Children:
@@ -167,7 +167,7 @@ Background@SETTINGS_MENU:
 							Height:25
 							Width:25
 							Align:Center
-						TextField@SCREEN_WIDTH:
+						TextField@WINDOW_WIDTH:
 							X:25
 							Width:45
 							Height:25
@@ -180,7 +180,7 @@ Background@SETTINGS_MENU:
 							Height:25
 							Width:15
 							Align:Center
-						TextField@SCREEN_HEIGHT:
+						TextField@WINDOW_HEIGHT:
 							X:85
 							Width:45
 							Height:25
