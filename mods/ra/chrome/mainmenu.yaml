@@ -136,6 +136,7 @@ Background@MUSIC_MENU:
 			Height:25
 			Text:Close
 			Font:Bold
+			Key:escape
 		Container@BUTTONS:
 			X:PARENT_RIGHT - 150
 			Y:50
