@@ -5,6 +5,7 @@ local ide = ide
 local frame = ide.frame
 local notebook = frame.notebook
 local openDocuments = ide.openDocuments
+local uimgr = frame.uimgr
 
 function NewFile(event)
   local editor = CreateEditor("untitled.lua")
@@ -467,6 +468,22 @@ function SetOpenFiles(nametab,index)
   notebook:SetSelection(index or 0)
 end
 
+local beforeFullScreenPerspective
+function ShowFullScreen(setFullScreen)
+  if setFullScreen then
+    beforeFullScreenPerspective = uimgr:SavePerspective()
+    uimgr:GetPane("bottomnotebook"):Show(false)
+    uimgr:GetPane("projpanel"):Show(false)
+  elseif beforeFullScreenPerspective then
+    uimgr:LoadPerspective(beforeFullScreenPerspective)
+    beforeFullScreenPerspective = nil
+  end
+
+  uimgr:GetPane("toolBar"):Show(not setFullScreen)
+  uimgr:Update()
+  frame:ShowFullScreen(setFullScreen)
+end
+
 function CloseWindow(event)
   exitingProgram = true -- don't handle focus events
 
@@ -476,6 +493,7 @@ function CloseWindow(event)
     return
   end
 
+  ShowFullScreen(false)
   SettingsSaveProjectSession(FileTreeGetProjects())
   SettingsSaveFileSession(GetOpenFiles())
   SettingsSaveView()
