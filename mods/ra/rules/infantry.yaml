@@ -202,7 +202,7 @@ E7:
 		Queue: Infantry
 		BuildPaletteOrder: 110
 		Prerequisites: techcenter
-		Owner: allies,soviet
+		Owner: allies
 	Valued:
 		Cost: 1200
 	Tooltip:
