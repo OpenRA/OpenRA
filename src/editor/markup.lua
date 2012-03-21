@@ -49,16 +49,10 @@ function MarkupHotspotClick(pos, editor)
     local _,_,command = string.find(text, [[^macro:(%w+)$]])
     local bottomnotebook = ide.frame.bottomnotebook
     if shell then
-      local index = bottomnotebook:GetPageIndex(bottomnotebook.shellbox)
-      if index then bottomnotebook:SetSelection(index) end
       ShellExecuteCode(shell)
     elseif command == 'run' then -- run the current file
-      local index = bottomnotebook:GetPageIndex(bottomnotebook.errorlog)
-      if index then bottomnotebook:SetSelection(index) end
       ProjectRun()
     elseif command == 'debug' then -- debug the current file
-      local index = bottomnotebook:GetPageIndex(bottomnotebook.errorlog)
-      if index then bottomnotebook:SetSelection(index) end
       ProjectDebug()
     elseif http then -- open the URL in a new browser window
       wx.wxLaunchDefaultBrowser(http, 0)

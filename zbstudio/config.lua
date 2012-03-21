@@ -14,6 +14,8 @@ singleinstanceport = 0xe493
 acandtip.shorttip = true
 acandtip.nodynwords = true
 
+activateoutput = true
+
 styles = {
   -- lexer specific (inherit fg/bg from text)
   lexerdef = {fg = {128, 128, 128}},

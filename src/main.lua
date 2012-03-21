@@ -43,6 +43,7 @@ ide = {
       strategy = 2,
     },
 
+    activateoutput = false, -- activate output/console on Run/Debug/Compile
     filehistorylength = 20,
     projecthistorylength = 15,
     savebak = false,

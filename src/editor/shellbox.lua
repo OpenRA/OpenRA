@@ -293,11 +293,15 @@ end
 function ShellExecuteFile(wfilename)
   if (not wfilename) then return end
   local cmd = 'dofile([['..wfilename:GetFullPath()..']])'
-  DisplayShellDirect(cmd)
-  executeShellCode(cmd)
+  ShellExecuteCode(cmd)
 end
 
 function ShellExecuteCode(code)
+  local index = bottomnotebook:GetPageIndex(bottomnotebook.shellbox)
+  if ide.config.activateoutput and bottomnotebook:GetSelection() ~= index then
+    bottomnotebook:SetSelection(index)
+  end
+
   DisplayShellDirect(code)
   executeShellCode(code)
 end
