@@ -197,9 +197,12 @@ end
 
 debugger.exec = function(command)
   if debugger.server and not debugger.running then
+
     copas.addthread(function ()
+        local out
         while true do
-          local file, line, err = debugger.handle(command)
+          local file, line, err = debugger.handle(out or command)
+          if out then out = nil end
           if line == nil then
             if err then DisplayOutput(err .. "\n") end
             DebuggerStop()
@@ -216,7 +219,7 @@ debugger.exec = function(command)
                 return
               end
             else
-              command = "out" -- redo now trying to get out of this file
+              out = "out" -- redo now trying to get out of this file
             end
           end
         end
@@ -379,7 +382,7 @@ function DebuggerCreateWatchWindow()
     return -1
   end
 
-  watchWindow:Connect( wx.wxEVT_CLOSE_WINDOW,
+  watchWindow:Connect(wx.wxEVT_CLOSE_WINDOW,
     function (event)
       DebuggerCloseWatchWindow()
       watchWindow = nil
