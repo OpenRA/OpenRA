@@ -52,7 +52,7 @@ return {
       local editorDir = string.gsub(ide.editorFilename:gsub("[^/\\]+$",""),"\\","/")
       script = ""..
       "package.path=package.path..';"..editorDir.."lualibs/?/?.lua';"..
-      "require 'mobdebug'; io.stdout:setvbuf('no'); mobdebug.start('" .. wx.wxGetHostName().."',"..ide.debugger.portnumber..")"
+      "io.stdout:setvbuf('no'); require('mobdebug').start('" .. wx.wxGetHostName().."',"..ide.debugger.portnumber..")"
 
       args = args..' -es "'..script..'"'..startargs
     else

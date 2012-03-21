@@ -11,7 +11,7 @@ return {
       script = (""..
         "package.path=package.path..';"..mainpath.."lualibs/?/?.lua;"..mainpath.."lualibs/?.lua';"..
         "package.cpath=package.cpath..';"..mainpath.."bin/clibs/?.dll';"..
-        "require 'mobdebug'; mobdebug.loop('" .. wx.wxGetHostName().."',"..ide.debugger.portnumber..")")
+        "require('mobdebug').loop('" .. wx.wxGetHostName().."',"..ide.debugger.portnumber..")")
     else
       script = ([[dofile '%s']]):format(filepath)
     end

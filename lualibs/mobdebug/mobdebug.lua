@@ -1,16 +1,28 @@
 --
--- MobDebug 0.43
--- Copyright Paul Kulchenko 2011
+-- MobDebug 0.44
+-- Copyright Paul Kulchenko 2011-2012
 -- Based on RemDebug 1.0 (http://www.keplerproject.org/remdebug)
 --
 
-(function()
+local mobdebug = {
+  _NAME = "mobdebug",
+  _COPYRIGHT = "Paul Kulchenko",
+  _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
+  _VERSION = "0.44"
+}
 
-module("mobdebug", package.seeall)
-
-_COPYRIGHT = "Paul Kulchenko"
-_DESCRIPTION = "Mobile Remote Debugger for the Lua programming language"
-_VERSION = "0.43"
+local coroutine = coroutine
+local error = error
+local getfenv = getfenv
+local loadstring = loadstring
+local io = io
+local os = os
+local pairs = pairs
+local require = require
+local setmetatable = setmetatable
+local string = string
+local tonumber = tonumber
+local mosync = mosync
 
 -- this is a socket class that implements maConnect interface
 local function socketMobileLua() 
@@ -18,45 +30,45 @@ local function socketMobileLua()
   self.select = function() return {} end
   self.connect = coroutine.wrap(function(host, port)
     while true do
-      local connection = maConnect("socket://" .. host .. ":" .. port)
+      local connection = mosync.maConnect("socket://" .. host .. ":" .. port)
   
       if connection > 0 then
-        local event = SysEventCreate()
+        local event = mosync.SysEventCreate()
         while true do
-          maWait(0)
-          maGetEvent(event)
-          local eventType = SysEventGetType(event)
-          if (EVENT_TYPE_CLOSE == eventType) then maExit(0) end
-          if (EVENT_TYPE_CONN == eventType and
-            SysEventGetConnHandle(event) == connection and
-            SysEventGetConnOpType(event) == CONNOP_CONNECT) then
+          mosync.maWait(0)
+          mosync.maGetEvent(event)
+          local eventType = mosync.SysEventGetType(event)
+          if (mosync.EVENT_TYPE_CLOSE == eventType) then mosync.maExit(0) end
+          if (mosync.EVENT_TYPE_CONN == eventType and
+            mosync.SysEventGetConnHandle(event) == connection and
+            mosync.SysEventGetConnOpType(event) == mosync.CONNOP_CONNECT) then
               -- result > 0 ? success : error
-              if not (SysEventGetConnResult(event) > 0) then connection = nil end
+              if not (mosync.SysEventGetConnResult(event) > 0) then connection = nil end
               break
           end
         end
-        SysFree(event)
+        mosync.SysFree(event)
       end
   
       host, port = coroutine.yield(connection and (function ()
         local self = {}
-        local outBuffer = SysAlloc(1000)
-        local inBuffer = SysAlloc(1000)
-        local event = SysEventCreate()
+        local outBuffer = mosync.SysAlloc(1000)
+        local inBuffer = mosync.SysAlloc(1000)
+        local event = mosync.SysEventCreate()
         local recvBuffer = ""
         function stringToBuffer(s, buffer)
           local i = 0
           for c in s:gmatch(".") do
             i = i + 1
             local b = s:byte(i)
-            SysBufferSetByte(buffer, i - 1, b)
+            mosync.SysBufferSetByte(buffer, i - 1, b)
           end
           return i
         end
         function bufferToString(buffer, len)
           local s = ""
           for i = 0, len - 1 do
-            local c = SysBufferGetByte(buffer, i)
+            local c = mosync.SysBufferGetByte(buffer, i)
             s = s .. string.char(c)
           end
           return s
@@ -64,16 +76,16 @@ local function socketMobileLua()
         self.send = coroutine.wrap(function(self, msg) 
           while true do
             local numberOfBytes = stringToBuffer(msg, outBuffer)
-            maConnWrite(connection, outBuffer, numberOfBytes)
+            mosync.maConnWrite(connection, outBuffer, numberOfBytes)
             local result = 0
             while true do
-              maWait(0)
-              maGetEvent(event)
-              local eventType = SysEventGetType(event)
-              if (EVENT_TYPE_CLOSE == eventType) then maExit(0) end
-              if (EVENT_TYPE_CONN == eventType and
-                  SysEventGetConnHandle(event) == connection and
-                  SysEventGetConnOpType(event) == CONNOP_WRITE) then
+              mosync.maWait(0)
+              mosync.maGetEvent(event)
+              local eventType = mosync.SysEventGetType(event)
+              if (mosync.EVENT_TYPE_CLOSE == eventType) then mosync.maExit(0) end
+              if (mosync.EVENT_TYPE_CONN == eventType and
+                  mosync.SysEventGetConnHandle(event) == connection and
+                  mosync.SysEventGetConnOpType(event) == mosync.CONNOP_WRITE) then
                 break
               end
             end
@@ -85,16 +97,16 @@ local function socketMobileLua()
             local line = recvBuffer
             while (len and string.len(line) < len)     -- either we need len bytes
                or (not len and not line:find("\n")) do -- or one line (if no len specified)
-              maConnRead(connection, inBuffer, 1000)
+              mosync.maConnRead(connection, inBuffer, 1000)
               while true do
-                maWait(0)
-                maGetEvent(event)
-                local eventType = SysEventGetType(event)
-                if (EVENT_TYPE_CLOSE == eventType) then maExit(0) end
-                if (EVENT_TYPE_CONN == eventType and
-                    SysEventGetConnHandle(event) == connection and
-                    SysEventGetConnOpType(event) == CONNOP_READ) then
-                  local result = SysEventGetConnResult(event);
+                mosync.maWait(0)
+                mosync.maGetEvent(event)
+                local eventType = mosync.SysEventGetType(event)
+                if (mosync.EVENT_TYPE_CLOSE == eventType) then mosync.maExit(0) end
+                if (mosync.EVENT_TYPE_CONN == eventType and
+                    mosync.SysEventGetConnHandle(event) == connection and
+                    mosync.SysEventGetConnOpType(event) == mosync.CONNOP_READ) then
+                  local result = mosync.SysEventGetConnResult(event);
                   if result > 0 then line = line .. bufferToString(inBuffer, result) end
                   break; -- got the event we wanted; now check if we have all we need
                 end
@@ -113,10 +125,10 @@ local function socketMobileLua()
         end)
         self.close = coroutine.wrap(function(self) 
           while true do
-            SysFree(inBuffer)
-            SysFree(outBuffer)
-            SysFree(event)
-            maConnClose(connection)
+            mosync.SysFree(inBuffer)
+            mosync.SysFree(outBuffer)
+            mosync.SysFree(event)
+            mosync.maConnClose(connection)
             coroutine.yield(self)
           end
         end)
@@ -128,7 +140,7 @@ local function socketMobileLua()
   return self
 end
 
-local socket = maConnect and socketMobileLua() or (require "socket")
+local socket = mosync and socketMobileLua() or (require "socket")
 
 --
 -- RemDebug 1.0 Beta
@@ -452,12 +464,12 @@ local function debugger_loop(sfile, sline)
   end
 end
 
-function connect(controller_host, controller_port)
+local function connect(controller_host, controller_port)
   return socket.connect(controller_host, controller_port)
 end
 
 -- Tries to start the debug session by connecting with a controller
-function start(controller_host, controller_port)
+local function start(controller_host, controller_port)
   server = socket.connect(controller_host, controller_port)
   if server then
     local info = debug.getinfo(2, "Sl")
@@ -473,7 +485,7 @@ function start(controller_host, controller_port)
   end
 end
 
-function loop(controller_host, controller_port)
+local function loop(controller_host, controller_port)
   server = socket.connect(controller_host, controller_port)
   if server then
     local function report(trace, err)
@@ -512,7 +524,7 @@ end
 local basedir = ""
 
 -- Handles server debugging commands 
-function handle(params, client)
+local function handle(params, client)
   local _, _, command = string.find(params, "^([a-z]+)")
   local file, line, watch_idx
   if command == "run" or command == "step" or command == "out"
@@ -724,7 +736,7 @@ function handle(params, client)
 end
 
 -- Starts debugging server
-function listen(host, port)
+local function listen(host, port)
 
   local socket = require "socket"
 
@@ -757,4 +769,15 @@ function listen(host, port)
   end
 end
 
-end)()
+-- make public functions available
+mobdebug.listen = listen
+mobdebug.loop = loop
+mobdebug.handle = handle
+mobdebug.connect = connect
+mobdebug.start = start
+
+-- this is needed to make "require 'modebug'" to work when mobdebug
+-- module is loaded manually
+package.loaded.mobdebug = mobdebug
+
+return mobdebug
