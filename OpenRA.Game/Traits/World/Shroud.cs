@@ -112,6 +112,24 @@ namespace OpenRA.Traits
 				Dirty();
 		}
 
+		public void HideActor(Actor a, int range)
+		{
+			if (a.Owner.World.LocalPlayer == null
+				|| a.Owner.Stances[a.Owner.World.LocalPlayer] == Stance.Ally) return;
+
+			var v = new ActorVisibility
+			{
+				vis = GetVisOrigins(a).ToArray()
+			};
+
+			foreach (var p in v.vis)
+				foreach (var q in FindVisibleTiles(a.World, p, range))
+					exploredCells[q.X, q.Y] = visibleCells[q.X, q.Y] > 0;
+
+			if (!Disabled)
+				Dirty();
+		}
+
 		public void UpdatePlayerStance(World w, Player player, Stance oldStance, Stance newStance)
 		{
 			if (oldStance == newStance)
