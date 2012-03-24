@@ -56,7 +56,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				Action onRetry = () =>
 				{
-					CloseWindow();
 					ConnectionLogic.Connect(om.Host, om.Port, onConnect, onExit);
 				};
 
