@@ -28,17 +28,19 @@ tools. Its main focus is extensibility for target applications using Lua.
 ## Frontends
 
 There is currently two front-ends using the same editor engine. The original
-is "estrela", which has a focus on 3d graphics related usage of Lua, especially
+is `estrela`, which has a focus on 3d graphics related usage of Lua, especially
 in combination with the luxinia engine or luxinia2 framework.
-The second is "zbstudio" which has a focus on remote use of Lua in robotics.
+The second is `zbstudio` which has a focus on remote use of Lua in robotics.
 
 Both are part of the standard distribution.
 
 ## Installation
 
-`git clone git://github.com/pkulchenko/ZeroBraneStudio.git zbstudio`
-or
-`git clone git://estrelaeditor.git.sourceforge.net/gitroot/estrelaeditor/estrelaeditor estrelaeditor`
+```bash
+$ git clone git://github.com/pkulchenko/ZeroBraneStudio.git zbstudio
+  or
+$ git clone git://estrelaeditor.git.sourceforge.net/gitroot/estrelaeditor/estrelaeditor estrelaeditor
+```
 
 ## Usage
 
