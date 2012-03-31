@@ -41,23 +41,19 @@ UBUNTU (substitute comparable packages for other linux distros):
 
 OpenRA does not work with some older versions of Compiz. On affected systems, disable desktop effects before playing. This is fixed in Ubuntu Natty and later.
 
-You will additionally need to copy the third party dependencies (.dll and .config) from the
-thirdparty and thirdparty/Tao directories into the game root:
-
-	cp -v thirdparty/*.dll thirdparty/Tao/* .
-
-Alternatively, the dlls can be installed into your system GAC. This is not
+The following dlls can also be installed into your system GAC. This is not
 recommended because we ship a custom Tao.FreeType that can conflict with
 other applications that use Tao:
 
-	gacutil -i thirdparty/Tao/Tao.Cg.dll
-	gacutil -i thirdparty/Tao/Tao.OpenGl.dll
-	gacutil -i thirdparty/Tao/Tao.OpenAl.dll
-	gacutil -i thirdparty/Tao/Tao.Sdl.dll
-	gacutil -i thirdparty/Tao/Tao.FreeType.dll
-	gacutil -i thirdparty/ICSharpCode.SharpZipLib.dll
+	gacutil -i Tao.Cg.dll
+	gacutil -i Tao.OpenGl.dll
+	gacutil -i Tao.OpenAl.dll
+	gacutil -i Tao.Sdl.dll
+	gacutil -i Tao.FreeType.dll
+	gacutil -i ICSharpCode.SharpZipLib.dll
 
 To compile OpenRA, run `make' from the command line.
+To install run 'make install'.
 Run the game with `mono OpenRA.Game.exe Game.Mods=ra` for Red Alert
 or `mono OpenRA.Game.exe Game.Mods=cnc` for Command & Conquer
 
