@@ -185,6 +185,7 @@
 		TerrainTypes: Clear,Road
 	GivesBuildableArea:
 	Capturable:
+	CapturableBar:
 	SoundOnDamageTransition:
 		DamagedSound: kaboom1.aud
 		DestroyedSound: kaboom22.aud
@@ -253,6 +254,7 @@
 	-GivesBuildableArea:
 	-Sellable:
 	-Capturable:
+	-CapturableBar:
 
 ^CivField:
 	Inherits: ^CivBuilding

@@ -140,6 +140,7 @@
     <Compile Include="Burns.cs" />
     <Compile Include="C4Demolition.cs" />
     <Compile Include="Capturable.cs" />
+    <Compile Include="CapturableBar.cs" />
     <Compile Include="Captures.cs" />
     <Compile Include="Cargo.cs" />
     <Compile Include="CarpetBomb.cs" />
