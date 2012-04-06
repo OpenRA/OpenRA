@@ -79,6 +79,7 @@ namespace OpenRA.Mods.RA
 
 		protected virtual bool CanAttack(Actor self, Target target)
 		{
+			if (!self.IsInWorld) return false;
 			if (!target.IsValid) return false;
 			if (Weapons.All(w => w.IsReloading)) return false;
 			if (self.IsDisabled()) return false;
