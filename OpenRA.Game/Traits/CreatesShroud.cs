@@ -12,13 +12,13 @@ using System.Linq;
 
 namespace OpenRA.Traits
 {
-	class CreatesShroudInfo : ITraitInfo
+	public class CreatesShroudInfo : ITraitInfo
 	{
 		public readonly int Range = 0;
 		public object Create(ActorInitializer init) { return new CreatesShroud(this); }
 	}
 
-	class CreatesShroud : ITick
+	public class CreatesShroud : ITick
 	{
 		CreatesShroudInfo Info;
 

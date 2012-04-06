@@ -64,6 +64,7 @@ GAP:
 	CreatesShroud:
 		Range: 6
 	IronCurtainable:
+	RenderShroudCircle:
 
 SPEN:
 	Inherits: ^Building

@@ -360,6 +360,7 @@
     <Compile Include="Player\BaseAttackNotifier.cs" />
     <Compile Include="InfiltrateForExploration.cs" />
     <Compile Include="InfiltrateForCash.cs" />
+    <Compile Include="RenderShroudCircle.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
