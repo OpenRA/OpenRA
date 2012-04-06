@@ -359,6 +359,7 @@
     <Compile Include="World\SmudgeLayer.cs" />
     <Compile Include="Player\BaseAttackNotifier.cs" />
     <Compile Include="InfiltrateForExploration.cs" />
+    <Compile Include="InfiltrateForCash.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
