@@ -18,6 +18,7 @@ namespace OpenRA.Mods.RA
 	{
 		public object Create(ActorInitializer init) { return new CapturableBar(init.self); }
 	}
+
 	class CapturableBar : ISelectionBar
 	{
 		Capturable cap;
