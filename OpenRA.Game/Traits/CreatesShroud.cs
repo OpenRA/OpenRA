@@ -29,7 +29,7 @@ namespace OpenRA.Traits
 
 		public void Tick(Actor self)
 		{
-			if (!self.TraitsImplementing<IDisable>().Any(d => d.Disabled))
+			if (!self.IsDisabled())
 				self.World.WorldActor.Trait<Shroud>().HideActor(self, Info.Range);
 		}
 	}
