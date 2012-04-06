@@ -84,8 +84,8 @@ namespace OpenRA.Mods.RA
 		{
 			get
 			{
-				yield return new UnitTraitOrderTargeter<IAcceptSpy>( "SpyInfiltrate", 5, "enter", true, false ) { ForceAttack=false };
-				yield return new UnitTraitOrderTargeter<RenderInfantry>( "Disguise", 5, "ability", true, true ) { ForceAttack=false };
+				yield return new UnitTraitOrderTargeter<IAcceptSpy>( "SpyInfiltrate", 7, "enter", true, false ) { ForceAttack=false };
+				yield return new UnitTraitOrderTargeter<RenderInfantry>( "Disguise", 7, "ability", true, true ) { ForceAttack=false };
 			}
 		}
 
