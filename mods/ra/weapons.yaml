@@ -911,6 +911,23 @@ Heal:
 			Concrete: 0%
 		InfDeath: 0
 		Damage: -50
+
+SilencedPPK:
+	ROF: 80
+	Range: 2.5
+	Report: silppk
+	Projectile: Bullet
+		Speed: 100
+	Warhead:
+		Spread: 3
+		Versus:
+			Wood: 0%
+			Light: 0%
+			Heavy: 0%
+			Concrete: 0%
+		Explosion: piffs
+		InfDeath: 1
+		Damage: 150
 		
 SCUD:
 	ROF: 280
