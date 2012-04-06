@@ -12,6 +12,7 @@ using System;
 using System.Linq;
 using OpenRA.Traits;
 using OpenRA.FileFormats;
+using OpenRA.Mods.RA.Effects;
 
 namespace OpenRA.Mods.RA
 {
@@ -27,21 +28,24 @@ namespace OpenRA.Mods.RA
 	class InfiltrateForCash : IAcceptSpy
 	{
 		InfiltrateForCashInfo info;
-		
+
 		public InfiltrateForCash(InfiltrateForCashInfo info) { this.info = info; }
-		
+
 		public void OnInfiltrate(Actor self, Actor spy)
 		{
 			var targetResources = self.Owner.PlayerActor.Trait<PlayerResources>();
 			var spyResources = spy.Owner.PlayerActor.Trait<PlayerResources>();
-			
+
 			var toTake = (targetResources.Cash + targetResources.Ore) * info.Percentage / 100;
 			var toGive = Math.Max(toTake, info.Minimum);
 			
 			targetResources.TakeCash(toTake);
 			spyResources.GiveCash(toGive);
-			
+
 			Sound.PlayToPlayer(self.Owner, info.SoundToVictim);
+
+			self.World.AddFrameEndTask(w => w.Add(new CashTick(toGive, 30, 2, self.CenterLocation,
+				spy.Owner.ColorRamp.GetColor(0))));
 		}
 	}
 }
