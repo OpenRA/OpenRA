@@ -356,6 +356,7 @@ DOME:
 	Bib:
 	ProvidesRadar:
 	IronCurtainable:
+	InfiltrateForExploration:
 
 PBOX:
 	Inherits: ^Building
