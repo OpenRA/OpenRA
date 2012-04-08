@@ -189,11 +189,12 @@ namespace OpenRA.Server
 				var client = handshake.Client;
 				var mods = handshake.Mods;
 
-				// Check that the client has compatable mods
+				// Check that the client has compatible mods
 				var valid = mods.All( m => m.Contains('@')) && //valid format
 							mods.Count() == Game.CurrentMods.Count() &&  //same number
 							mods.Select( m => Pair.New(m.Split('@')[0], m.Split('@')[1])).All(kv => Game.CurrentMods.ContainsKey(kv.First) &&
 					 		(kv.Second == "{DEV_VERSION}" || Game.CurrentMods[kv.First].Version == "{DEV_VERSION}" || kv.Second == Game.CurrentMods[kv.First].Version));
+
 				if (!valid)
 				{
 					Log.Write("server", "Rejected connection from {0}; mods do not match.",
