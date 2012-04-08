@@ -406,7 +406,7 @@ namespace OpenRA.Server
 					DispatchOrdersToClient( c, d.PlayerIndex, 0x7FFFFFFF, new byte[] { 0xBF } );
 
 			// Drop any unvalidated clients
-			foreach (var c in preConns)
+			foreach (var c in preConns.ToArray())
 				DropClient(c);
 
 			DispatchOrders(null, 0,
