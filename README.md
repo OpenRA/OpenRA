@@ -1,8 +1,10 @@
+# ZeroBrane Studio
+
 A simple and extensible Lua IDE and debugger. It supports multiple file
 formats, "api" for autocompletion and tooltips, and custom command-line
 tools. Its main focus is extensibility for target applications using Lua.
 
---[[ FEATURES ]]-----------------------------------------------------------
+## Features
 
 * Written in Lua, so easily customizable
 * Automatically loads several 'plugin' like classes
@@ -23,23 +25,26 @@ tools. Its main focus is extensibility for target applications using Lua.
 * Console to directly test code snippets with local and remote execution
 * Integrated debugger (with support for local and remote debugging)
 
---[[ FRONT-ENDS ]]--------------------------------------------------------
+## Frontends
 
 There is currently two front-ends using the same editor engine. The original
-is "estrela", which has a focus on 3d graphics related usage of Lua, especially
+is `estrela`, which has a focus on 3d graphics related usage of Lua, especially
 in combination with the luxinia engine or luxinia2 framework.
-The second is "zbstudio" which has a focus on remote use of Lua in robotics.
+The second is `zbstudio` which has a focus on remote use of Lua in robotics.
 
 Both are part of the standard distribution.
 
---[[ INSTALLATION ]]-------------------------------------------------------
+## Installation
 
-git clone git://github.com/pkulchenko/ZeroBraneStudio.git zbstudio
+```bash
+$ git clone git://github.com/pkulchenko/ZeroBraneStudio.git zbstudio
   or
-git clone git://estrelaeditor.git.sourceforge.net/gitroot/estrelaeditor/estrelaeditor estrelaeditor
+$ git clone git://estrelaeditor.git.sourceforge.net/gitroot/estrelaeditor/estrelaeditor estrelaeditor
+```
 
---[[ USAGE ]]--------------------------------------------------------------
+## Usage
 
+```
 Open File(s):
   <exe> <filename> [<filename>...]
   any non-option will be treated as filename
@@ -47,17 +52,18 @@ Open File(s):
 Overriding Config:
   <exe> [...] -cfg "<luacode overriding config>" [...]
   e.g.: zbstudio.exe -cfg "singleinstance=false;" somefile.lua
+```
 
---[[ AUTHOR ]]-------------------------------------------------------------
+## Author
 
-Estrela Editor
+#### Estrela Editor
 
-  Luxinia Dev: Christoph Kubisch (crazybutcher@luxinia.de)
+  **Luxinia Dev:** Christoph Kubisch (crazybutcher@luxinia.de)
 
-ZeroBrane Studio and MobDebug
+#### ZeroBrane Studio and MobDebug
 
-  ZeroBrane LLC: Paul Kulchenko (paul@kulchenko.com)
+  **ZeroBrane LLC:** Paul Kulchenko (paul@kulchenko.com)
 
---[[ LICENSE ]]------------------------------------------------------------
+## License
 
-See LICENSE file
+See LICENSE file.
