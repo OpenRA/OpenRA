@@ -229,6 +229,10 @@ namespace OpenRA.Server
 
 				SyncLobbyInfo();
 				SendChat(newConn, "has joined the game.");
+
+				if (mods.Any(m => m.Contains("{DEV_VERSION}")))
+					SendChat(newConn, "is running a development version, "+
+					"and may cause desync if they have any incompatible changes.");
 			}
 			catch (Exception) { DropClient(newConn); }
 		}
