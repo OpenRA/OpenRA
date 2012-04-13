@@ -53,7 +53,7 @@ namespace OpenRA.Mods.RA.Crates
 
 					collector.AddTrait(cloak);
 					if (collector.HasTrait<TargetableUnit<TargetableUnitInfo>>())
-						collector.Trait<TargetableUnit<TargetableUnitInfo>>().RecievedCloak(collector);
+						collector.Trait<TargetableUnit<TargetableUnitInfo>>().ReceivedCloak(collector);
 
 					w.Add(collector);
 				});
