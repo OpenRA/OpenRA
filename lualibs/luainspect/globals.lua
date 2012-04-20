@@ -41,6 +41,7 @@ local function traverse(ast, scope, globals, level, functionlevel)
   scope = scope or {}
 
   local blockrecurse
+  ast.level = level
 
   -- operations on walking down the AST
   if ast.tag == 'Local' then
@@ -55,6 +56,7 @@ local function traverse(ast, scope, globals, level, functionlevel)
       definelocal(parentscope, name, value_ast)
       value_ast.localdefinition = value_ast
       value_ast.functionlevel = functionlevel
+      value_ast.level = level+1
     end
     blockrecurse = 1
   elseif ast.tag == 'Id' then
@@ -77,6 +79,7 @@ local function traverse(ast, scope, globals, level, functionlevel)
         param_ast.functionlevel = functionlevel
         param_ast.isparam = true
       end
+      param_ast.level = level+1
     end
     blockrecurse = 1
   elseif ast.tag == 'Set' then
@@ -92,6 +95,7 @@ local function traverse(ast, scope, globals, level, functionlevel)
           end
         end
       end
+      ref_ast.level = level+1
     end
     --ENHANCE? We could differentiate assignments to x (which indicates that
     --  x is not const) and assignments to a member of x (which indicates that
@@ -133,6 +137,7 @@ local function traverse(ast, scope, globals, level, functionlevel)
       definelocal(scope, name, name_ast)
       name_ast.localdefinition = name_ast
       name_ast.functionlevel = functionlevel
+      name_ast.level = level+1
     end
     traverse(block_ast, scope, globals, level+1, functionlevel)
   else -- normal
@@ -155,6 +160,7 @@ local function traverse(ast, scope, globals, level, functionlevel)
       definelocal(parentscope, name, name_ast)
       name_ast.localdefinition = name_ast
       name_ast.functionlevel = functionlevel
+      name_ast.level = level+1
     end
   elseif ast.tag == 'Index' then
     if ast[2].tag == 'String' then

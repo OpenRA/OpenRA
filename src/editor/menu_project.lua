@@ -179,7 +179,7 @@ local function getNameToRun()
   return wx.wxFileName(openDocuments[id].filePath)
 end
 
-local function activateOutput()
+function ActivateOutput()
   if not ide.config.activateoutput then return end
   -- show output/errorlog pane
   uimgr:GetPane("bottomnotebook"):Show(true)
@@ -192,7 +192,7 @@ local function activateOutput()
 end
 
 local function runInterpreter(wfilename, withdebugger)
-  activateOutput()
+  ActivateOutput()
 
   ClearAllCurrentLineMarkers()
   if not wfilename then return end
@@ -233,7 +233,7 @@ frame:Connect(ID_TOGGLEBREAKPOINT, wx.wxEVT_UPDATE_UI,
 frame:Connect(ID_COMPILE, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
     local editor = GetEditor()
-    activateOutput()
+    ActivateOutput()
     CompileProgram(editor)
   end)
 frame:Connect(ID_COMPILE, wx.wxEVT_UPDATE_UI,

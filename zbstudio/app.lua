@@ -32,6 +32,7 @@ local app = {
   end,
 
   postinit = function ()
+    dofile("src/editor/inspect.lua")
     dofile("zbstudio/menu_help.lua")
 
     local bundle = wx.wxIconBundle()

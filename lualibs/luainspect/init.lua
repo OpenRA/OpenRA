@@ -1150,14 +1150,14 @@ function M.inspect(top_ast, tokenlist, src, report)
         local iswarn
         local target_ast = ast.tag == 'Call' and ast[1] or ast[2]
         if (nargmax or math.huge) < nparammin then
-          ast.note = "Too few arguments.  "
+          ast.note = "Too few arguments; "
           iswarn = true
         elseif nargmin > (nparammax or math.huge) then
-          ast.note = "Too many arguments.  "
+          ast.note = "Too many arguments; "
           iswarn = true
         end
         if iswarn then
-          ast.note = ast.note ..  "Expected "
+          ast.note = ast.note ..  "expected "
             .. nparammin .. (nparammax == nparammin and "" or " to " .. (nparammax or "infinity"))
             .. " but got "
             .. nargmin .. (nargmax == nargmin and "" or " to " .. (nargmax or "infinity")) .. "."
