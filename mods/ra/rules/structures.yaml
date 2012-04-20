@@ -368,7 +368,7 @@ PBOX:
 		BuildPaletteOrder: 20
 		Prerequisites: tent
 		Owner: allies
-		Hotkey: x
+		Hotkey: p
 	Valued:
 		Cost: 400
 	Tooltip:
