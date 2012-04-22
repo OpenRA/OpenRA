@@ -25,7 +25,8 @@ local app = {
     end
     wx.wxArtProvider.Push(artProvider)
 
-    ide.config.interpreter = "luadeb";
+    ide.config.interpreter = "luadeb"
+    ide.config.unhidewxwindow = true
 
     -- this needs to be in pre-init to load the styles
     dofile("src/editor/markup.lua")

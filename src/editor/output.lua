@@ -71,7 +71,9 @@ end
 pcall(function () return require 'winapi' end)
 local pid = nil
 local function unHideWxWindow(pidAssign)
-  if pidAssign ~= nil then
+  -- skip if not configured to do anything
+  if not ide.config.unhidewxwindow then return end
+  if pidAssign then
     pid = pidAssign > 0 and pidAssign or nil
   end
   if pid and winapi then

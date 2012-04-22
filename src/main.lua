@@ -44,6 +44,7 @@ ide = {
     },
 
     activateoutput = false, -- activate output/console on Run/Debug/Compile
+    unhidewxwindow = false, -- try to unhide a wx window
     filehistorylength = 20,
     projecthistorylength = 15,
     savebak = false,
