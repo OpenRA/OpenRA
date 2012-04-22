@@ -185,21 +185,6 @@ local function treeSetConnectorsAndIcons(tree,treedata)
         end 
       end
     end )
-  tree:Connect( wx.wxEVT_COMMAND_TREE_SEL_CHANGED,
-    function( event )
-      local item_id = event:GetItem()
-
-      -- set "newfile-path"
-      local isfile = tree:GetItemImage(item_id) ~= 0
-      filetree.newfiledir = treeGetItemFullName(tree,treedata,item_id)
-
-      if (isfile) then
-        -- remove file
-        filetree.newfiledir = wx.wxFileName(filetree.newfiledir):GetPath(wx.wxPATH_GET_VOLUME)
-      end
-
-      filetree.newfiledir = filetree.newfiledir..string_Pathsep
-    end )
 end
 
 -- project
