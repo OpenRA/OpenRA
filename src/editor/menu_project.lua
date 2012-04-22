@@ -362,7 +362,6 @@ frame:Connect(ID "view.debug.callstack", wx.wxEVT_UPDATE_UI,
 
 frame:Connect(wx.wxEVT_IDLE,
   function(event)
-    if (debugger.update) then
-      debugger.update()
-    end
+    if (debugger.update) then debugger.update() end
+    event:Skip() -- let other EVT_IDLE handlers to work on the event
   end)
