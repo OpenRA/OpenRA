@@ -21,6 +21,7 @@ function M.warnings_from_string(src, file)
 
   if FAST then
     LI.inspect(ast, nil, src)
+    LA.ensure_parents_marked(ast)
   else
     local tokenlist = LA.ast_to_tokenlist(ast, src)
     LI.inspect(ast, tokenlist, src)
@@ -33,40 +34,62 @@ end
 function M.show_warnings(top_ast)
   local warnings = {}
   local function warn(msg, linenum, path)
-    warnings[#warnings+1] = (path or "?") .. "(" .. linenum .. "): " .. msg
+    warnings[#warnings+1] = (path or "?") .. "(" .. (linenum or 0) .. "): " .. msg
   end
   local function known(o) return not T.istype[o] end
   local isseen = {}
   LA.walk(top_ast, function(ast)
-      local line = ast.lineinfo and ast.lineinfo.first[1] or 0
-      local path = ast.lineinfo and ast.lineinfo.first[4] or '?'
-      -- check if we're masking a variable in the same scope
-      if ast.localmasking and 
-         ast.level == ast.localmasking.level then
-        local linenum = ast.localmasking.lineinfo.first[1]
-        warn("local variable '" .. ast[1] .. "' masks earlier declaration " ..
-          (linenum and "on line " .. linenum or "in the same scope"),
-          line, path)
+    local line = ast.lineinfo and ast.lineinfo.first[1] or 0
+    local path = ast.lineinfo and ast.lineinfo.first[4] or '?'
+    -- check if we're masking a variable in the same scope
+    if ast.localmasking and
+       ast.level == ast.localmasking.level then
+      local linenum = ast.localmasking.lineinfo.first[1]
+      warn("local variable '" .. ast[1] .. "' masks earlier declaration " ..
+        (linenum and "on line " .. linenum or "in the same scope"),
+        line, path)
+    end
+    if ast.localdefinition == ast and not ast.isused and
+       not ast.isignore then
+      local parent = ast.parent and ast.parent.parent
+      local isparam = parent and parent.tag == 'Function'
+      if isparam then
+        if ast[1] ~= 'self' then
+          local func = parent.parent and parent.parent.parent
+          local name = type(func[1][1][1]) == 'string' and func[1][1][1]
+          -- "function foo(bar)" => func.tag == 'Set'
+          -- "local function foo(bar)" => func.tag == 'Localrec'
+          -- "local _, foo = 1, function(bar)" => func.tag == 'Local'
+          -- "print(function(bar) end)" => func.tag == nil
+          warn("unused parameter '" .. ast[1] .. "'" ..
+               (func and (not func.tag or func.tag == 'Set' or func.tag == 'Localrec')
+                     and (name and func.tag
+                               and (" in function '" .. name .. "'")
+                               or " in anonymous function")
+                     or ""),
+               line, path)
+        end
+      else
+        warn("unused local variable '" .. ast[1] ..
+             "'; consider removing or replacing with '_'",
+             line, path)
       end
-      if ast.localdefinition == ast and not ast.isused
-      and not ast.isignore and ast[1] ~= 'self' then
-        warn("unused local variable '" .. ast[1] .. "'"..
-             "; consider removing or replacing with '_'", line, path)
-      end
-      -- remove as it requires value evaluation, which is very slow
-      -- even on simple and short scripts
-      if false and ast.isfield and not(known(ast.seevalue.value) and ast.seevalue.value ~= nil) then
-        warn("unknown field " .. ast[1], ast.lineinfo.first[1], path)
-      elseif ast.tag == 'Id' and not ast.localdefinition and not ast.definedglobal then
-        warn("unknown global variable '" .. ast[1] .. "'", line, path)
-      end
-      local vast = ast.seevalue or ast
-      local note = vast.parent and (vast.parent.tag == 'Call' or vast.parent.tag == 'Invoke')
-                    and vast.parent.note
-      if note and not isseen[vast.parent] then
-        isseen[vast.parent] = true
-        warn("function '" .. ast[1] .. "': " .. note, line, path)
-      end
+    end
+    -- removed as it requires value evaluation, which is very slow
+    -- even on simple and short scripts
+    if false and ast.isfield and not(known(ast.seevalue.value) and ast.seevalue.value ~= nil) then
+      warn("unknown field " .. ast[1], ast.lineinfo.first[1], path)
+    elseif ast.tag == 'Id' and not ast.localdefinition and not ast.definedglobal then
+      warn("unknown global variable '" .. ast[1] .. "'", line, path)
+    end
+    local vast = ast.seevalue or ast
+    local note = vast.parent
+             and (vast.parent.tag == 'Call' or vast.parent.tag == 'Invoke')
+             and vast.parent.note
+    if note and not isseen[vast.parent] then
+      isseen[vast.parent] = true
+      warn("function '" .. ast[1] .. "': " .. note, line, path)
+    end
   end)
   return warnings
 end
