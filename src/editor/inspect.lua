@@ -48,7 +48,8 @@ function M.show_warnings(top_ast)
           (linenum and "on line " .. linenum or "in the same scope"),
           line, path)
       end
-      if ast.localdefinition == ast and not ast.isused and not ast.isignore then
+      if ast.localdefinition == ast and not ast.isused
+      and not ast.isignore and ast[1] ~= 'self' then
         warn("unused local variable '" .. ast[1] .. "'"..
              "; consider removing or replacing with '_'", line, path)
       end
