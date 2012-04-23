@@ -16,8 +16,8 @@ if FAST then
 end
 
 function M.warnings_from_string(src, file)
-  local ast, err, linenum, colnum, linenum2 = LA.ast_from_string(src, file)
-  if err then return null, err, linenum, colnum end
+  local ast, err, linenum, colnum = LA.ast_from_string(src, file)
+  if err then return nil, err, linenum, colnum end
 
   if FAST then
     LI.inspect(ast, nil, src)
@@ -27,16 +27,15 @@ function M.warnings_from_string(src, file)
     LI.mark_related_keywords(ast, tokenlist, src)
   end
 
-  return M.show_warnings(ast, src)
+  return M.show_warnings(ast)
 end
 
-function M.show_warnings(top_ast, src)
+function M.show_warnings(top_ast)
   local warnings = {}
   local function warn(msg, linenum, path)
     warnings[#warnings+1] = (path or "?") .. "(" .. linenum .. "): " .. msg
   end
   local function known(o) return not T.istype[o] end
-  local function unknown(o) return T.istype[o] end
   local isseen = {}
   LA.walk(top_ast, function(ast)
       local line = ast.lineinfo and ast.lineinfo.first[1] or 0
@@ -95,7 +94,7 @@ local function analyzeProgram(editor)
   DisplayOutput("Analizing the source code")
   frame:Update()
 
-  local warn, err, linenum, colnum, linenum2 = M.warnings_from_string(editorText, filePath)
+  local warn, err = M.warnings_from_string(editorText, filePath)
   DisplayOutput(": " .. (#warn > 0 and (#warn .. " warnings") or "no warnings.") .. "\n")
 
   if err then return false end -- report compilation error
@@ -105,9 +104,9 @@ local function analyzeProgram(editor)
 end
 
 frame:Connect(ID_ANALYZE, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function (event)
-    local editor = GetEditor()
+  function ()
     ActivateOutput()
+    local editor = GetEditor()
     if not analyzeProgram(editor) then CompileProgram(editor) end
   end)
 frame:Connect(ID_ANALYZE, wx.wxEVT_UPDATE_UI,

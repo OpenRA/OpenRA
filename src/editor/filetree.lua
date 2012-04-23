@@ -23,12 +23,8 @@ ide.filetree = {
     root_id = nil,
     rootdir = "",
   },
-  imglist,
-
-  newfiledir,
 }
 local filetree = ide.filetree
-local frame = ide.frame
 
 -- generic tree
 -- ------------
@@ -58,7 +54,7 @@ local function treeAddDir(tree,parent_id,rootdir)
   local dirs = FileSysGet(search,wx.wxDIR)
 
   -- append directories
-  for i,dir in ipairs(dirs) do
+  for _,dir in ipairs(dirs) do
     local name = dir:match("%"..string_Pathsep.."("..stringset_File.."+)$")
     local icon = 0
     local item = items[name .. icon]
@@ -83,9 +79,9 @@ local function treeAddDir(tree,parent_id,rootdir)
 
   -- then append files
   local files = FileSysGet(search,wx.wxFILE)
-  for i,file in ipairs(files) do
+  for _,file in ipairs(files) do
     local name = file:match("%"..string_Pathsep.."("..stringset_File.."+)$")
-    local known = GetSpec(GetFileExt(fname))
+    local known = GetSpec(GetFileExt(name))
     local icon = known and 1 or 2
     local item = items[name .. icon]
     if item then -- existing item
@@ -160,10 +156,7 @@ local function treeSetConnectorsAndIcons(tree,treedata)
       return true
     end )
   tree:Connect( wx.wxEVT_COMMAND_TREE_ITEM_COLLAPSED,
-    function( event )
-      -- don't need to do anything here
-      return true
-    end )
+    function() return true end )
   tree:Connect( wx.wxEVT_COMMAND_TREE_ITEM_ACTIVATED,
     function( event )
       local item_id = event:GetItem()

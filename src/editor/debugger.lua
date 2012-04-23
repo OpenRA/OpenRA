@@ -47,7 +47,7 @@ local function activateDocument(fileName, line)
   end
 
   local fileFound = false
-  for id, document in pairs(ide.openDocuments) do
+  for _, document in pairs(ide.openDocuments) do
     local editor = document.editor
     -- for running in cygwin, use same type of separators
     filePath = string.gsub(document.filePath, "\\", "/")
@@ -116,7 +116,7 @@ debugger.listen = function()
       debugger.handle("delallb")
 
       -- go over all windows and find all breakpoints
-      for id, document in pairs(ide.openDocuments) do
+      for _, document in pairs(ide.openDocuments) do
         local editor = document.editor
         local filePath = document.filePath
         line = editor:MarkerNext(0, BREAKPOINT_MARKER_VALUE)
@@ -268,7 +268,7 @@ debugger.breaknow = function()
     local running = debugger.running
     -- this needs to be short as it will block the UI
     debugger.socket:settimeout(0.25)
-    local file, line, err = debugger.handle("step", debugger.socket)
+    debugger.handle("step", debugger.socket)
     debugger.socket:settimeout(0)
     -- restore running status
     debugger.running = running
@@ -391,7 +391,7 @@ function DebuggerCreateWatchWindow()
     end)
 
   watchWindow:Connect(ID_ADDWATCH, wx.wxEVT_COMMAND_MENU_SELECTED,
-    function (event)
+    function ()
       local row = watchListCtrl:InsertItem(watchListCtrl:GetItemCount(), "Expr")
       watchListCtrl:SetItem(row, 0, "Expr")
       watchListCtrl:SetItem(row, 1, "Value")
@@ -399,7 +399,7 @@ function DebuggerCreateWatchWindow()
     end)
 
   watchWindow:Connect(ID_EDITWATCH, wx.wxEVT_COMMAND_MENU_SELECTED,
-    function (event)
+    function ()
       local row = findSelectedWatchItem()
       if row >= 0 then
         watchListCtrl:EditLabel(row)
@@ -411,7 +411,7 @@ function DebuggerCreateWatchWindow()
     end)
 
   watchWindow:Connect(ID_REMOVEWATCH, wx.wxEVT_COMMAND_MENU_SELECTED,
-    function (event)
+    function ()
       local row = findSelectedWatchItem()
       if row >= 0 then
         watchListCtrl:DeleteItem(row)
@@ -423,9 +423,7 @@ function DebuggerCreateWatchWindow()
     end)
 
   watchWindow:Connect(ID_EVALUATEWATCH, wx.wxEVT_COMMAND_MENU_SELECTED,
-    function (event)
-      updateWatches()
-    end)
+    function () updateWatches() end)
   watchWindow:Connect(ID_EVALUATEWATCH, wx.wxEVT_UPDATE_UI,
     function (event)
       event:Enable(watchListCtrl:GetItemCount() > 0)
