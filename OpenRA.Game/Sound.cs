@@ -37,9 +37,21 @@ namespace OpenRA
 			return soundEngine.AddSoundSourceFromMemory(rawData, 1, 16, 22050);
 		}
 
-		public static void Create()
+		static ISoundEngine CreateEngine(string engine)
 		{
-			soundEngine = new OpenAlSoundEngine();
+			switch (engine)
+			{	/* todo: if someone cares about pluggable crap here, ship this out */
+			case "AL": return new OpenAlSoundEngine();
+			case "Null": return new NullSoundEngine();
+
+			default:
+				throw new InvalidOperationException("Unsupported sound engine: {0}".F (engine));
+			}
+		}
+
+		public static void Create(string engine)
+		{
+			soundEngine = CreateEngine(engine);
 		}
 
 		public static void Initialize()
@@ -494,5 +506,36 @@ namespace OpenRA
 				return state == Al.AL_PLAYING;
 			}
 		}
+	}
+
+	class NullSoundEngine : ISoundEngine
+	{
+		public ISoundSource AddSoundSourceFromMemory(byte[] data, int channels, int sampleBits, int sampleRate)
+		{
+			return new NullSoundSource();
+		}
+
+		public ISound Play2D(ISoundSource sound, bool loop, bool relative, float2 pos, float volume)
+		{
+			return new NullSound();
+		}
+
+		public void PauseSound(ISound sound, bool paused) {}
+		public void StopSound(ISound sound) {}
+		public void SetAllSoundsPaused(bool paused) {}
+		public void StopAllSounds() {}
+		public void SetListenerPosition(float2 position) {}
+		public void SetSoundVolume(float volume, ISound music, ISound video) {}
+
+		public float Volume { get; set; }
+	}
+
+	class NullSoundSource : ISoundSource {}
+
+	class NullSound : ISound
+	{
+		public float Volume { get; set; }
+		public float SeekPosition { get { return 0; } }
+		public bool Playing { get { return false; } }
 	}
 }
