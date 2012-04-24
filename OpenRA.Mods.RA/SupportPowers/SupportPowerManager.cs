@@ -136,7 +136,8 @@ namespace OpenRA.Mods.RA
 
 			public void Tick()
 			{
-				if (Disabled || Instances.All(i => i.self.IsDisabled()))
+				Active = Disabled || Instances.All(i => i.self.IsDisabled());
+				if (!Active)
 					return;
 
 				if (Manager.devMode.FastCharge && RemainingTime > 25)
