@@ -70,7 +70,7 @@ Background@CHEATS_PANEL:
 		Button@CLOSE:
 			X:30
 			Y:360
-			Width:PARENT_RIGHT - 30
+			Width:PARENT_RIGHT - 60
 			Height:20
 			Text:Close
 			Key:escape
