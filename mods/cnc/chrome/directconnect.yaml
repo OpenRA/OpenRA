@@ -24,7 +24,7 @@ Container@DIRECTCONNECT_PANEL:
 					Height:25
 					Align:Right
 					Text:Address:
-				TextField@SERVER_ADDRESS:
+				TextField@IP:
 					X:150
 					Y:15
 					Width:200
