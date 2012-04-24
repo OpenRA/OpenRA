@@ -326,7 +326,6 @@
     <Compile Include="Widgets\Logic\ModBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\ColorPickerLogic.cs" />
     <Compile Include="Widgets\Logic\ConnectionLogic.cs" />
-    <Compile Include="Widgets\Logic\DeveloperModeLogic.cs" />
     <Compile Include="Widgets\Logic\DiplomacyLogic.cs" />
     <Compile Include="Widgets\Logic\DirectConnectLogic.cs" />
     <Compile Include="Widgets\Logic\DownloadPackagesLogic.cs" />
@@ -361,6 +360,7 @@
     <Compile Include="InfiltrateForExploration.cs" />
     <Compile Include="InfiltrateForCash.cs" />
     <Compile Include="RenderShroudCircle.cs" />
+    <Compile Include="Widgets\Logic\CheatsLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

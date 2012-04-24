@@ -1,5 +1,5 @@
 Container@CHEATS_PANEL:
-	Logic:CncCheatsLogic
+	Logic:CheatsLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - 110)/2
 	Width:590

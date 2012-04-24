@@ -30,6 +30,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			r.GetWidget<ButtonWidget>("INGAME_OPTIONS_BUTTON").OnClick = () =>
 				optionsBG.Visible = !optionsBG.Visible;
+			
+			var cheatsButton = gameRoot.GetWidget<ButtonWidget>("CHEATS_BUTTON");
+			cheatsButton.OnClick = () =>
+			{
+				Game.OpenWindow("CHEATS_PANEL", new WidgetArgs() {{"onExit", () => {} }});
+			};
+			cheatsButton.IsVisible = () => world.LocalPlayer != null && world.LobbyInfo.GlobalSettings.AllowCheats;
 
 			optionsBG.GetWidget<ButtonWidget>("DISCONNECT").OnClick = () => LeaveGame(optionsBG);
 

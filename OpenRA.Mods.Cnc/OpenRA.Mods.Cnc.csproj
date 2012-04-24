@@ -74,7 +74,6 @@
     <Compile Include="Widgets\CncWorldInteractionControllerWidget.cs" />
     <Compile Include="Widgets\LogicTickerWidget.cs" />
     <Compile Include="Widgets\Logic\ButtonTooltipLogic.cs" />
-    <Compile Include="Widgets\Logic\CncCheatsLogic.cs" />
     <Compile Include="Widgets\Logic\CncConquestObjectivesLogic.cs" />
     <Compile Include="Widgets\Logic\CncIngameChromeLogic.cs" />
     <Compile Include="Widgets\Logic\CncIngameMenuLogic.cs" />
