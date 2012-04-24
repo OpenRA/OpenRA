@@ -19,45 +19,45 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public CncCheatsLogic(Widget widget, Action onExit, World world)
 		{
-			var panel = widget.GetWidget("CHEATS_PANEL");
+			var panel = widget;
 
 			var devTrait = world.LocalPlayer.PlayerActor.Trait<DeveloperMode>();
-			var shroudCheckbox = panel.GetWidget<CheckboxWidget>("SHROUD_CHECKBOX");
+			var shroudCheckbox = panel.GetWidget<CheckboxWidget>("DISABLE_SHROUD");
 			shroudCheckbox.IsChecked = () => devTrait.DisableShroud;
 			shroudCheckbox.OnClick = () => Order(world, "DevShroud");
 
-			var pathCheckbox = panel.GetWidget<CheckboxWidget>("PATHDEBUG_CHECKBOX");
+			var pathCheckbox = panel.GetWidget<CheckboxWidget>("SHOW_UNIT_PATHS");
 			pathCheckbox.IsChecked = () => devTrait.PathDebug;
 			pathCheckbox.OnClick = () => Order(world, "DevPathDebug");
 
 
-			panel.GetWidget<ButtonWidget>("GIVE_CASH_BUTTON").OnClick = () =>
+			panel.GetWidget<ButtonWidget>("GIVE_CASH").OnClick = () =>
 				world.IssueOrder(new Order("DevGiveCash", world.LocalPlayer.PlayerActor, false));
 
-			var fastBuildCheckbox = panel.GetWidget<CheckboxWidget>("INSTANT_BUILD_CHECKBOX");
+			var fastBuildCheckbox = panel.GetWidget<CheckboxWidget>("INSTANT_BUILD");
 			fastBuildCheckbox.IsChecked = () => devTrait.FastBuild;
 			fastBuildCheckbox.OnClick = () => Order(world, "DevFastBuild");
 
-			var fastChargeCheckbox = panel.GetWidget<CheckboxWidget>("INSTANT_CHARGE_CHECKBOX");
+			var fastChargeCheckbox = panel.GetWidget<CheckboxWidget>("INSTANT_CHARGE");
 			fastChargeCheckbox.IsChecked = () => devTrait.FastCharge;
 			fastChargeCheckbox.OnClick = () => Order(world, "DevFastCharge");
 
-			var allTechCheckbox = panel.GetWidget<CheckboxWidget>("ENABLE_TECH_CHECKBOX");
+			var allTechCheckbox = panel.GetWidget<CheckboxWidget>("ENABLE_TECH");
 			allTechCheckbox.IsChecked = () => devTrait.AllTech;
 			allTechCheckbox.OnClick = () => Order(world, "DevEnableTech");
 
-			var powerCheckbox = panel.GetWidget<CheckboxWidget>("UNLIMITED_POWER_CHECKBOX");
+			var powerCheckbox = panel.GetWidget<CheckboxWidget>("UNLIMITED_POWER");
 			powerCheckbox.IsChecked = () => devTrait.UnlimitedPower;
 			powerCheckbox.OnClick = () => Order(world, "DevUnlimitedPower");
 
-			var buildAnywhereCheckbox = panel.GetWidget<CheckboxWidget>("BUILD_ANYWHERE_CHECKBOX");
+			var buildAnywhereCheckbox = panel.GetWidget<CheckboxWidget>("BUILD_ANYWHERE");
 			buildAnywhereCheckbox.IsChecked = () => devTrait.BuildAnywhere;
 			buildAnywhereCheckbox.OnClick = () => Order(world, "DevBuildAnywhere");
 
-			panel.GetWidget<ButtonWidget>("GIVE_EXPLORATION_BUTTON").OnClick = () =>
+			panel.GetWidget<ButtonWidget>("GIVE_EXPLORATION").OnClick = () =>
 				world.IssueOrder(new Order("DevGiveExploration", world.LocalPlayer.PlayerActor, false));
 
-			panel.GetWidget<ButtonWidget>("CLOSE_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
+			panel.GetWidget<ButtonWidget>("CLOSE").OnClick = () => { Ui.CloseWindow(); onExit(); };
 		}
 
 		public void Order(World world, string order)

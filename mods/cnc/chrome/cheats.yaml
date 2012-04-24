@@ -47,19 +47,19 @@ Container@CHEATS_PANEL:
 					Width:200
 					Height:20
 					Text:Instant Charge Time				
-				Checkbox@CHECKBOX_SHROUD:
+				Checkbox@DISABLE_SHROUD:
 					X:400
 					Y:15
 					Height:20
 					Width:200
 					Text:Disable Shroud
-				Checkbox@CHECKBOX_PATHDEBUG:
+				Checkbox@SHOW_UNIT_PATHS:
 					X:400
 					Y:45
 					Width:200
 					Height:20
 					Text:Show Unit Paths
-		Button@CLOSE_BUTTON:
+		Button@CLOSE:
 			Key:escape
 			X:0
 			Y:109
