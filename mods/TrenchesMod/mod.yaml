@@ -1,0 +1,116 @@
+Metadata:
+	Title: Trenches Mod
+	Description: Attempt to simulate the combat of the defense-oriented First World War.
+	Version: 21 April 2012
+	Author: Chris Mason
+
+Folders:
+	.
+	./mods/TrenchesMod
+	./mods/TrenchesMod/bits
+	./mods/TrenchesMod/uibits
+	~^/Content/TrenchesMod
+
+Packages:
+	~main.mix
+	redalert.mix
+	conquer.mix
+	hires.mix
+	local.mix
+	sounds.mix
+	speech.mix
+	allies.mix
+	russian.mix
+	temperat.mix
+	snow.mix
+	interior.mix
+	~scores.mix
+	~movies1.mix
+	~movies2.mix
+
+Rules:
+	mods/TrenchesMod/rules/defaults.yaml
+	mods/TrenchesMod/rules/system.yaml
+	mods/TrenchesMod/rules/vehicles.yaml
+	mods/TrenchesMod/rules/structures.yaml
+	mods/TrenchesMod/rules/infantry.yaml
+	mods/TrenchesMod/rules/civilian.yaml
+	mods/TrenchesMod/rules/trees.yaml
+	mods/TrenchesMod/rules/aircraft.yaml
+	mods/TrenchesMod/rules/ships.yaml
+
+Sequences:
+	mods/ra/sequences.yaml
+
+Cursors:
+	mods/ra/cursors.yaml
+
+Chrome:
+	mods/ra/chrome.yaml
+	
+Assemblies:
+	mods/ra/OpenRA.Mods.RA.dll
+
+ChromeLayout:
+	mods/ra/chrome/gameinit.yaml
+	mods/ra/chrome/ingame.yaml
+	mods/ra/chrome/mainmenu.yaml
+	mods/ra/chrome/settings.yaml
+	mods/ra/chrome/lobby.yaml
+	mods/ra/chrome/map-chooser.yaml
+	mods/ra/chrome/create-server.yaml
+	mods/ra/chrome/serverbrowser.yaml
+	mods/ra/chrome/replaybrowser.yaml
+	mods/ra/chrome/dropdowns.yaml
+	mods/ra/chrome/modchooser.yaml
+Weapons:
+	mods/TrenchesMod/weapons.yaml
+	
+Voices:
+	mods/TrenchesMod/voices.yaml
+	
+TileSets:
+	mods/TrenchesMod/tilesets/snow.yaml
+	mods/TrenchesMod/tilesets/interior.yaml
+	mods/TrenchesMod/tilesets/temperat.yaml
+
+Music:
+	mods/TrenchesMod/music.yaml
+	mods/TrenchesMod/music-cs.yaml
+	mods/TrenchesMod/music-am.yaml
+
+Movies:
+	mods/TrenchesMod/movies1.yaml
+	mods/TrenchesMod/movies2.yaml
+
+LoadScreen: RALoadScreen
+	InstallerMenuWidget: INSTALL_PANEL
+	TestFile: redalert.mix
+	PackageURL: http://open-ra.org/get-dependency.php?file=ra-packages
+
+ServerTraits:
+	LobbyCommands
+	MasterServerPinger
+
+ChromeMetrics:
+	mods/TrenchesMod/metrics.yaml
+
+Fonts:
+	Regular:
+		Font:FreeSans.ttf
+		Size:14
+	Bold:
+		Font:FreeSansBold.ttf
+		Size:14
+	Title:
+		Font:titles.ttf
+		Size:48
+	BigBold:
+		Font:FreeSansBold.ttf
+		Size:24
+	Tiny:
+		Font:FreeSans.ttf
+		Size:10
+	TinyBold:
+		Font:FreeSansBold.ttf
+		Size:10

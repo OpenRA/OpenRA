@@ -41,6 +41,11 @@ UBUNTU (substitute comparable packages for other linux distros):
 
 OpenRA does not work with some older versions of Compiz. On affected systems, disable desktop effects before playing. This is fixed in Ubuntu Natty and later.
 
+You will additionally need to copy the third party dependencies (.dll and .config) from the
+thirdparty and thirdparty/Tao directories into the game root:
+
+cp -v thirdparty/*.dll thirdparty/Tao/* .
+
 The following dlls can also be installed into your system GAC. This is not
 recommended because we ship a custom Tao.FreeType that can conflict with
 other applications that use Tao:

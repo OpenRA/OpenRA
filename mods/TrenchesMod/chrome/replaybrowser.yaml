@@ -1,0 +1,117 @@
+Background@REPLAYBROWSER_BG:
+	Id:REPLAYBROWSER_BG
+	Logic:ReplayBrowserLogic
+	X:(WINDOW_RIGHT - WIDTH)/2
+	Y:(WINDOW_BOTTOM - HEIGHT)/2
+	Width:700
+	Height:410
+	Children:
+		Label@REPLAYBROWSER_LABEL_TITLE:
+			Id:REPLAYBROWSER_LABEL_TITLE
+			X:0
+			Y:20
+			Width:PARENT_RIGHT
+			Height:25
+			Text:Choose Replay
+			Align:Center
+			Font:Bold
+		ScrollPanel@REPLAY_LIST:
+			Id:REPLAY_LIST
+			X:20
+			Y:50
+			Width:390
+			Height:300
+			Children:
+				ScrollItem@REPLAY_TEMPLATE:
+					Id:REPLAY_TEMPLATE
+					Width:PARENT_RIGHT-27
+					Height:25
+					X:2
+					Y:0
+					Visible:false
+					Children:
+						Label@TITLE:
+							X:10
+							Id:TITLE
+							Width:PARENT_RIGHT-20
+							Height:25
+		Container@REPLAY_INFO:
+			Id:REPLAY_INFO
+			X:0
+			Y:0
+			Width:PARENT_RIGHT
+			Height:PARENT_BOTTOM
+			Visible:false
+			Children:
+				MapPreview@MAP_PREVIEW:
+					Id:MAP_PREVIEW
+					X:PARENT_RIGHT-241
+					Y:30
+					Width:192
+					Height:192
+				Label@MAP_TITLE_LABEL:
+					Id:MAP_TITLE_LABEL
+					X:PARENT_RIGHT - 200 - WIDTH
+					Y:250
+					Align:Right
+					Width:70
+					Height:20
+					Text:Map:
+					Font:Bold
+				Label@MAP_TITLE:
+					Id:MAP_TITLE
+					X:PARENT_RIGHT - 195
+					Y:250
+					Align:Left
+					Width:70
+					Height:20
+				Label@DURATION_LABEL:
+					Id:DURATION_LABEL
+					X:PARENT_RIGHT - 200 - WIDTH
+					Y:270
+					Align:Right
+					Width:70
+					Height:20
+					Text:Duration:
+					Font:Bold
+				Label@DURATION:
+					Id:DURATION
+					X:PARENT_RIGHT - 195
+					Y:270
+					Align:Left
+					Width:70
+					Height:20
+				Label@PLAYERS_LABEL:
+					Id:PLAYERS_LABEL
+					X:PARENT_RIGHT - 200 - WIDTH
+					Y:290
+					Align:Right
+					Width:70
+					Height:20
+					Text:Players:
+					Font:Bold
+				Label@PLAYERS:
+					Id:PLAYERS
+					X:PARENT_RIGHT - 195
+					Y:290
+					Align:Left
+					Width:70
+					Height:20
+		Button@WATCH_BUTTON:
+			Id:WATCH_BUTTON
+			X:PARENT_RIGHT - 140 - 130
+			Y:PARENT_BOTTOM - 45
+			Width:120
+			Height:25
+			Text:Watch
+			Font:Bold
+			Key:return
+		Button@CANCEL_BUTTON:
+			Id:CANCEL_BUTTON
+			X:PARENT_RIGHT - 140
+			Y:PARENT_BOTTOM - 45
+			Width:120
+			Height:25
+			Text:Cancel
+			Font:Bold
+			Key:escape

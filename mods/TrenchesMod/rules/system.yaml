@@ -1,3 +1,4 @@
+#test
 Player:
 	TechTree:
 	ClassicProductionQueue@Building:
@@ -39,8 +40,8 @@ Player:
 		InitialCash: 5000
 	ActorGroupProxy:
 	DeveloperMode:
-	HackyAI@tcampAI:
-		Name:tcampAI
+	HackyAI@EasyAI:
+		Name:Easy AI
 		BuildingFractions:
 			proc: 30%
 			powr: 35%
@@ -58,40 +59,6 @@ Player:
 			fix: 0.1%
 			dome: 10%
 		UnitsToBuild:
-			e1: 70% 
-			e2: 10% 
-			e3: 20% 
-			e4: 5% 
-			e6: 5% 
-			medi: 1% 
-			shok: 5% 
-			apc: 30%
-			jeep: 40%
-			ftrk: 50%
-			1tnk: 20%
-			2tnk: 25%
-			3tnk: 50%
-			arty: 10%
-		SquadSize: 7
-	HackyAI@NormalAI:
-		Name:Normal AI
-		BuildingFractions:
-			proc: 30%
-			powr: 35%
-			tent: 1%
-			barr: 1%
-			weap: 1%
-			pbox: 7%
-			gun: 7%
-			ftur: 10%
-			tsla: 5%
-			fix: 0.1%
-			dome: 10%
-			agun: 5%
-			sam: 1%
-			atek: 1%
-			stek: 1%
-		UnitsToBuild:
 			e1: 50%
 			e3: 10%
 			apc: 30%
@@ -102,9 +69,9 @@ Player:
 			1tnk: 70%
 			2tnk: 25%
 			3tnk: 50%
-		SquadSize: 15
-	HackyAI@HardAI:
-		Name:Hard AI
+		SquadSize: 20
+	HackyAI@TrenchAI1:
+		Name:Tep AI 1
 		BuildingFractions:
 			proc: 30%
 			powr: 35%
@@ -123,7 +90,7 @@ Player:
 			stek: 1%
 		UnitsToBuild:
 			e1: 50%
-			e3: 10%
+			e2: 10%
 			harv: 10%
 			apc: 30%
 			jeep: 40%
@@ -132,44 +99,31 @@ Player:
 			2tnk: 25%
 			3tnk: 50%
 		SquadSize: 10
-	HackyAI@epAI:
-		#If you make any changes to this, please rename your
-		# custom bot to something else to avoid confusion
-		# in viewing replays, sharing information, etc.
-		Name:epAI 120421
+	HackyAI@TrenchAI2:
+		Name:Tep AI 2
 		BuildingFractions:
 			proc: 25%
-			powr: 30%
-			tent: 1%
+			powr: 25%
+			tent: 1% 
 			barr: 1%
-			weap: 5%
-			pbox: 7%
-			gun: 10%
-			ftur: 5%
-			tsla: 15%
+			weap: 3%
+			hbox: 19%
+			gun: 19%
 			fix: 1%
-			dome: 3%
-			agun: 10%
-			sam: 10%
-			#hpad: 20%
-			#afld: 20%
-			atek: 1%
-			stek: 1%
+			dome: 10%
 		UnitsToBuild:
-			e1: 14%
-			e2: 7%
-			e3: 10%
+			e1: 30%
+			e2: 30%
+			#e3: 10%
 			harv: 20%
-			apc: 5%
-			jeep: 5%
-			ftrk: 5%
-			1tnk: 25%
-			2tnk: 60%
-			3tnk: 60%
-			v2rl: 25%
+			apc: 50%
 			arty: 25%
-		SquadSize: 10
-
+			#jeep: 0%
+			#ftrk: 50%
+			#1tnk: 70%
+			#2tnk: 25%
+			#3tnk: 50%
+		SquadSize: 15
 	PlayerColorPalette:
 		BasePalette: terrain
 	DebugResourceCash:
@@ -236,9 +190,9 @@ World:
 	Country@0:
 		Name: Allies
 		Race: allies
-	Country@1:
-		Name: Soviet
-		Race: soviet
+	#Country@1:
+	#	Name: Soviet
+	#	Race: soviet
 	BibLayer:
 	ResourceLayer:
 	ResourceType@ore:
@@ -339,7 +293,7 @@ CRATE:
 		SelectionShares: 1
 		Effect: reveal-map
 	SupportPowerCrateAction@parabombs:
-		SelectionShares: 5
+		SelectionShares: 70
 		Proxy: powerproxy.parabombs
 	GiveMcvCrateAction:
 		SelectionShares: 2
@@ -352,19 +306,19 @@ CRATE:
 		SelectionShares: 6
 		Unit: arty
 	GiveUnitCrateAction@v2rl:
-		SelectionShares: 6
+		SelectionShares: 0
 		Unit: v2rl
 	GiveUnitCrateAction@1tnk:
-		SelectionShares: 5
+		SelectionShares: 0
 		Unit: 1tnk
 	GiveUnitCrateAction@2tnk:
-		SelectionShares: 4
+		SelectionShares: 0
 		Unit: 2tnk
 	GiveUnitCrateAction@3tnk:
-		SelectionShares: 4
+		SelectionShares: 0
 		Unit: 3tnk
 	GiveUnitCrateAction@4tnk:
-		SelectionShares: 3
+		SelectionShares: 0
 		Unit: 4tnk
 	RenderSimple:
 	BelowUnits:
@@ -398,8 +352,8 @@ FLARE:
 powerproxy.parabombs:
 	AirstrikePower:
 		Image: pbmbicon
-		Description: Parabombs (Single Use)
-		LongDesc: A Badger drops a load of parachuted\nbombs on your target.
+		Description: Blimp Attack
+		LongDesc: A blimp drops a load of parachuted\nbombs on your target.
 		OneShot: yes
 		AllowMultiple: yes
 		UnitType: badr.bomber
