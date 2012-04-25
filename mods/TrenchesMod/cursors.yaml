@@ -1,0 +1,271 @@
+﻿Palettes:
+	cursor: cursor.pal
+
+Cursors:
+	mouse: cursor
+		scroll-t:
+			start:1
+			x: 12
+			y: 12
+		scroll-tr:
+			start: 2
+			x: 12
+			y: 12
+		scroll-r:
+			start: 3
+			x: 12
+			y: 12
+		scroll-br:
+			start: 4
+			x: 12
+			y: 12
+		scroll-b:
+			start:5
+			x: 12
+			y: 12
+		scroll-bl:
+			start:6
+			x: 12
+			y: 12
+		scroll-l:
+			start:7
+			x: 12
+			y: 12
+		scroll-tl:
+			start:8
+			x: 12
+			y: 12
+		scroll-t-blocked:
+			start:124
+			x: 12
+			y: 12
+		scroll-tr-blocked:
+			start:125
+			x: 12
+			y: 12
+		scroll-r-blocked:
+			start:126
+			x: 12
+			y: 12
+		scroll-br-blocked:
+			start:127
+			x: 12
+			y: 12
+		scroll-b-blocked:
+			start:128
+			x: 12
+			y: 12
+		scroll-bl-blocked:
+			start:129
+			x: 12
+			y: 12
+		scroll-l-blocked:
+			start:130
+			x: 12
+			y: 12
+		scroll-tl-blocked:
+			start:131
+			x: 12
+			y: 12
+		select:
+			start:15
+			length: 6
+			x: 12
+			y: 12
+	
+		default:
+			start:0
+		default-minimap:
+			start:80
+		generic-blocked:
+			start:9
+		generic-blocked-minimap:
+			start:33
+		move:
+			start:10
+			length: 4
+			x: 12
+			y: 12
+		move-minimap:
+			start:29
+			length: 4
+			x: 12
+			y: 12
+		move-blocked:
+			start:14
+			x: 12
+			y: 12
+		move-blocked-minimap:
+			start:33
+			x: 12
+			y: 12
+		attack:
+			start:195
+			length: 8
+			x: 12
+			y: 12
+		attack-minimap:
+			start:203
+			length: 8
+			x: 12
+			y: 12
+		attackmove:
+			start:21
+			length: 8
+			x: 12
+			y: 12
+		attackmove-minimap:
+			start:134
+			length: 8
+			x: 12
+			y: 12
+		harvest:
+			start:21
+			length: 8
+			x: 12
+			y: 12
+		harvest-minimap:
+			start:134
+			length: 8
+			x: 12
+			y: 12
+		enter:
+			start:113
+			length: 3
+			x: 12
+			y: 12
+		enter-minimap:
+			start:139
+			length: 3
+			x: 12
+			y: 12
+		enter-blocked:
+			start:212
+			length: 1
+			x: 12
+			y: 12
+		enter-blocked-minimap:
+			start:33
+		c4:
+			start:116
+			length: 3
+			x: 12
+			y: 12
+		c4-minimap:
+			start:121
+			length: 3
+			x: 12
+			y: 12
+		guard:
+			start:147
+			length: 1
+			x: 12
+			y: 12
+		guard-minimap:
+			start:146
+			length: 1
+			x: 12
+			y: 12
+		capture:
+			start:164
+			length: 3
+			x: 12
+			y: 12
+		capture-minimap:
+			start:167
+			length: 3
+			x: 12
+			y: 12
+		heal:
+			start:160
+			length: 4
+			x: 12
+			y: 12
+		heal-minimap:
+			start:194
+			length: 1
+			x: 12
+			y: 12
+		ability:
+			start:82
+			length: 8
+			x: 12
+			y: 12
+		ability-minimap:
+			start:214
+			length: 8
+			x: 12
+			y: 12
+
+# Cursors that need minimap variants
+		deploy:
+			start:59
+			length: 9
+			x: 12
+			y: 12
+		deploy-blocked:
+			start:211
+			length: 1
+			x: 12
+			y: 12
+		goldwrench:
+			start:170
+			length: 24
+			x: 12
+			y: 12
+		goldwrench-blocked:
+			start:213
+			length: 1
+			x: 12
+			y: 12
+		nuke:
+			start:90
+			length: 7
+			x: 12
+			y: 12
+		chrono-select:
+			start:97
+			length: 8
+			x: 12
+			y: 12
+		chrono-target:
+			start:105
+			length: 8
+			x: 12
+			y: 12
+
+		sell:
+			start:68
+			length: 12
+			x: 12
+			y: 12
+		sell-blocked:
+			start:119
+			length: 1
+			x: 12
+			y: 12
+		repair:
+			start:35
+			length: 24
+			x: 12
+			y: 12
+		repair-blocked:
+			start:120
+			length: 1
+			x: 12
+			y: 12
+		sell2:
+			start:148
+			length: 12
+
+	nopower: cursor
+		powerdown-blocked:
+			start:0
+			length: 1
+			x: 12
+			y: 12
+		powerdown:
+			start:1
+			length: 3
+			x: 12
+			y: 12
