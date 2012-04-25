@@ -52,7 +52,8 @@ World:
 	CncMenuPaletteEffect:
 	ScreenShaker:
 	NukePaletteEffect:
-	CncWaterPaletteRotation:
+	WaterPaletteRotation:
+		Base: 32
 	BuildingInfluence:
 	BridgeLayer:
 		Bridges: bridge1, bridge2, bridge3, bridge4
