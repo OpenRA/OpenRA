@@ -50,6 +50,7 @@ World:
 	LoadWidgetAtGameStart:
 		Widget: INGAME_ROOT
 	CncMenuPaletteEffect:
+	CloakPaletteEffect:
 	ScreenShaker:
 	NukePaletteEffect:
 	WaterPaletteRotation:
@@ -69,6 +70,12 @@ World:
 		Filename: temperat.pal
 	PaletteFromRGBA@shadow:
 		Name: shadow
+		R: 0
+		G: 0
+		B: 0
+		A: 140
+	PaletteFromRGBA@cloak:
+		Name: cloak
 		R: 0
 		G: 0
 		B: 0
