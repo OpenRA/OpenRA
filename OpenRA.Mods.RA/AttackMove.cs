@@ -71,7 +71,7 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		class AttackMoveActivity : Activity
+		public class AttackMoveActivity : Activity
 		{
 			Activity inner;
 			int scanTicks;
