@@ -58,6 +58,7 @@ namespace OpenRA.Mods.RA
 		public void ResolveOrder(Actor self, Order order)
 		{
 			TargetLocation = null;
+
 			if (order.OrderString == "AttackMove")
 			{
 				if (Info.JustMove)
