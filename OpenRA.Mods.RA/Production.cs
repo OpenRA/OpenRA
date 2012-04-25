@@ -87,7 +87,8 @@ namespace OpenRA.Mods.RA
 			var mobile = newUnit.TraitOrDefault<Mobile>();
 			if (mobile != null)
 			{
-				newUnit.QueueActivity(new AttackMove.AttackMoveActivity(mobile.MoveTo(rp.rallyPoint, 1)));
+				newUnit.QueueActivity(new AttackMove.AttackMoveActivity(
+					newUnit, mobile.MoveTo(rp.rallyPoint, 1)));
 				return rp.rallyPoint;
 			}
 
