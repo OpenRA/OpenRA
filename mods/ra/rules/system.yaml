@@ -39,8 +39,8 @@ Player:
 		InitialCash: 5000
 	ActorGroupProxy:
 	DeveloperMode:
-	HackyAI@EasyAI:
-		Name:Easy AI
+	HackyAI@tcampAI:
+		Name:tcampAI
 		BuildingFractions:
 			proc: 30%
 			powr: 35%
@@ -58,17 +58,21 @@ Player:
 			fix: 0.1%
 			dome: 10%
 		UnitsToBuild:
-			e1: 50%
-			e3: 10%
+			e1: 70% 
+			e2: 10% 
+			e3: 20% 
+			e4: 5% 
+			e6: 5% 
+			medi: 1% 
+			shok: 5% 
 			apc: 30%
 			jeep: 40%
-			arty: 15%
-			v2rl: 40%
 			ftrk: 50%
-			1tnk: 70%
+			1tnk: 20%
 			2tnk: 25%
 			3tnk: 50%
-		SquadSize: 20
+			arty: 10%
+		SquadSize: 7
 	HackyAI@NormalAI:
 		Name:Normal AI
 		BuildingFractions:
@@ -128,6 +132,44 @@ Player:
 			2tnk: 25%
 			3tnk: 50%
 		SquadSize: 10
+	HackyAI@epAI:
+		#If you make any changes to this, please rename your
+		# custom bot to something else to avoid confusion
+		# in viewing replays, sharing information, etc.
+		Name:epAI 120421
+		BuildingFractions:
+			proc: 25%
+			powr: 30%
+			tent: 1%
+			barr: 1%
+			weap: 5%
+			pbox: 7%
+			gun: 10%
+			ftur: 5%
+			tsla: 15%
+			fix: 1%
+			dome: 3%
+			agun: 10%
+			sam: 10%
+			#hpad: 20%
+			#afld: 20%
+			atek: 1%
+			stek: 1%
+		UnitsToBuild:
+			e1: 14%
+			e2: 7%
+			e3: 10%
+			harv: 20%
+			apc: 5%
+			jeep: 5%
+			ftrk: 5%
+			1tnk: 25%
+			2tnk: 60%
+			3tnk: 60%
+			v2rl: 25%
+			arty: 25%
+		SquadSize: 10
+
 	PlayerColorPalette:
 		BasePalette: terrain
 	DebugResourceCash:
