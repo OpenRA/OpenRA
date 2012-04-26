@@ -23,11 +23,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		public ColorPickerLogic(Widget widget, ColorRamp initialRamp, Action<ColorRamp> onChange,
 			Action<ColorRamp> onSelect, WorldRenderer worldRenderer)
 		{
-			var panel = widget.GetWidget("COLOR_CHOOSER");
+			var panel = widget;
 			ramp = initialRamp;
-			var hueSlider = panel.GetWidget<SliderWidget>("HUE_SLIDER");
-			var satSlider = panel.GetWidget<SliderWidget>("SAT_SLIDER");
-			var lumSlider = panel.GetWidget<SliderWidget>("LUM_SLIDER");
+			var hueSlider = panel.GetWidget<SliderWidget>("HUE");
+			var satSlider = panel.GetWidget<SliderWidget>("SAT");
+			var lumSlider = panel.GetWidget<SliderWidget>("LUM");
 
 			Action sliderChanged = () =>
 			{
