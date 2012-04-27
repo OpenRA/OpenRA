@@ -63,7 +63,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			this.world = world;
 			this.worldRenderer = worldRenderer;
 			tooltipContainer = Lazy.New(() =>
-				Ui.Root.GetWidget<TooltipContainerWidget>(TooltipContainer));
+				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 
 			cantBuild = new Animation("clock");
 			cantBuild.PlayFetchIndex("idle", () => 0);

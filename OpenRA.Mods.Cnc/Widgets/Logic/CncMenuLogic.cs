@@ -27,17 +27,17 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			world.WorldActor.Trait<CncMenuPaletteEffect>()
 				.Fade(CncMenuPaletteEffect.EffectType.Desaturated);
 
-			rootMenu = widget.GetWidget("MENU_BACKGROUND");
-			rootMenu.GetWidget<LabelWidget>("VERSION_LABEL").GetText = WidgetUtils.ActiveModVersion;
+			rootMenu = widget.Get("MENU_BACKGROUND");
+			rootMenu.Get<LabelWidget>("VERSION_LABEL").GetText = WidgetUtils.ActiveModVersion;
 
 			// Menu buttons
-			var mainMenu = widget.GetWidget("MAIN_MENU");
+			var mainMenu = widget.Get("MAIN_MENU");
 			mainMenu.IsVisible = () => Menu == MenuType.Main;
 
-			mainMenu.GetWidget<ButtonWidget>("SOLO_BUTTON").OnClick = StartSkirmishGame;
-			mainMenu.GetWidget<ButtonWidget>("MULTIPLAYER_BUTTON").OnClick = () => Menu = MenuType.Multiplayer;
+			mainMenu.Get<ButtonWidget>("SOLO_BUTTON").OnClick = StartSkirmishGame;
+			mainMenu.Get<ButtonWidget>("MULTIPLAYER_BUTTON").OnClick = () => Menu = MenuType.Multiplayer;
 
-			mainMenu.GetWidget<ButtonWidget>("MODS_BUTTON").OnClick = () =>
+			mainMenu.Get<ButtonWidget>("MODS_BUTTON").OnClick = () =>
 			{
 				Menu = MenuType.None;
 				Ui.OpenWindow("MODS_PANEL", new WidgetArgs()
@@ -47,23 +47,23 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				});
 			};
 
-			mainMenu.GetWidget<ButtonWidget>("SETTINGS_BUTTON").OnClick = () => Menu = MenuType.Settings;
-			mainMenu.GetWidget<ButtonWidget>("QUIT_BUTTON").OnClick = Game.Exit;
+			mainMenu.Get<ButtonWidget>("SETTINGS_BUTTON").OnClick = () => Menu = MenuType.Settings;
+			mainMenu.Get<ButtonWidget>("QUIT_BUTTON").OnClick = Game.Exit;
 
 			// Multiplayer menu
-			var multiplayerMenu = widget.GetWidget("MULTIPLAYER_MENU");
+			var multiplayerMenu = widget.Get("MULTIPLAYER_MENU");
 			multiplayerMenu.IsVisible = () => Menu == MenuType.Multiplayer;
 
-			multiplayerMenu.GetWidget<ButtonWidget>("BACK_BUTTON").OnClick = () => Menu = MenuType.Main;
-			multiplayerMenu.GetWidget<ButtonWidget>("JOIN_BUTTON").OnClick = () => OpenGamePanel("SERVERBROWSER_PANEL");
-			multiplayerMenu.GetWidget<ButtonWidget>("CREATE_BUTTON").OnClick = () => OpenGamePanel("CREATESERVER_PANEL");
-			multiplayerMenu.GetWidget<ButtonWidget>("DIRECTCONNECT_BUTTON").OnClick = () => OpenGamePanel("DIRECTCONNECT_PANEL");
+			multiplayerMenu.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => Menu = MenuType.Main;
+			multiplayerMenu.Get<ButtonWidget>("JOIN_BUTTON").OnClick = () => OpenGamePanel("SERVERBROWSER_PANEL");
+			multiplayerMenu.Get<ButtonWidget>("CREATE_BUTTON").OnClick = () => OpenGamePanel("CREATESERVER_PANEL");
+			multiplayerMenu.Get<ButtonWidget>("DIRECTCONNECT_BUTTON").OnClick = () => OpenGamePanel("DIRECTCONNECT_PANEL");
 
 			// Settings menu
-			var settingsMenu = widget.GetWidget("SETTINGS_MENU");
+			var settingsMenu = widget.Get("SETTINGS_MENU");
 			settingsMenu.IsVisible = () => Menu == MenuType.Settings;
 
-			settingsMenu.GetWidget<ButtonWidget>("REPLAYS_BUTTON").OnClick = () =>
+			settingsMenu.Get<ButtonWidget>("REPLAYS_BUTTON").OnClick = () =>
 			{
 				Menu = MenuType.None;
 				Ui.OpenWindow("REPLAYBROWSER_PANEL", new WidgetArgs()
@@ -73,7 +73,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				});
 			};
 
-			settingsMenu.GetWidget<ButtonWidget>("MUSIC_BUTTON").OnClick = () =>
+			settingsMenu.Get<ButtonWidget>("MUSIC_BUTTON").OnClick = () =>
 			{
 				Menu = MenuType.None;
 				Ui.OpenWindow("MUSIC_PANEL", new WidgetArgs()
@@ -82,7 +82,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				});
 			};
 
-			settingsMenu.GetWidget<ButtonWidget>("SETTINGS_BUTTON").OnClick = () =>
+			settingsMenu.Get<ButtonWidget>("SETTINGS_BUTTON").OnClick = () =>
 			{
 				Menu = MenuType.None;
 				Ui.OpenWindow("SETTINGS_PANEL", new WidgetArgs()
@@ -92,9 +92,9 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				});
 			};
 
-			settingsMenu.GetWidget<ButtonWidget>("BACK_BUTTON").OnClick = () => Menu = MenuType.Main;
+			settingsMenu.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => Menu = MenuType.Main;
 
-			rootMenu.GetWidget<ImageWidget>("RECBLOCK").IsVisible = () => world.FrameNumber / 25 % 2 == 0;
+			rootMenu.Get<ImageWidget>("RECBLOCK").IsVisible = () => world.FrameNumber / 25 % 2 == 0;
 		}
 		
 		void OpenGamePanel(string id)

@@ -26,13 +26,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			Game.BeforeGameStart += UnregisterEvents;
 
 			var r = Ui.Root;
-			gameRoot = r.GetWidget("OBSERVER_ROOT");
-			var optionsBG = gameRoot.GetWidget("INGAME_OPTIONS_BG");
+			gameRoot = r.Get("OBSERVER_ROOT");
+			var optionsBG = gameRoot.Get("INGAME_OPTIONS_BG");
 
-			r.GetWidget<ButtonWidget>("INGAME_OPTIONS_BUTTON").OnClick = () =>
+			r.Get<ButtonWidget>("INGAME_OPTIONS_BUTTON").OnClick = () =>
 				optionsBG.Visible = !optionsBG.Visible;
 
-			optionsBG.GetWidget<ButtonWidget>("DISCONNECT").OnClick = () =>
+			optionsBG.Get<ButtonWidget>("DISCONNECT").OnClick = () =>
 			{
 				optionsBG.Visible = false;
 				Game.Disconnect();
@@ -41,10 +41,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				Ui.OpenWindow("MAINMENU_BG");
 			};
 
-			optionsBG.GetWidget<ButtonWidget>("SETTINGS").OnClick = () => Ui.OpenWindow("SETTINGS_MENU");
-			optionsBG.GetWidget<ButtonWidget>("MUSIC").OnClick = () => Ui.OpenWindow("MUSIC_MENU");
-			optionsBG.GetWidget<ButtonWidget>("RESUME").OnClick = () => optionsBG.Visible = false;
-			optionsBG.GetWidget<ButtonWidget>("SURRENDER").IsVisible = () => false;
+			optionsBG.Get<ButtonWidget>("SETTINGS").OnClick = () => Ui.OpenWindow("SETTINGS_MENU");
+			optionsBG.Get<ButtonWidget>("MUSIC").OnClick = () => Ui.OpenWindow("MUSIC_MENU");
+			optionsBG.Get<ButtonWidget>("RESUME").OnClick = () => optionsBG.Visible = false;
+			optionsBG.Get<ButtonWidget>("SURRENDER").IsVisible = () => false;
 		}
 
 		void UnregisterEvents()
@@ -55,7 +55,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		void AddChatLine(Color c, string from, string text)
 		{
-			gameRoot.GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").AddLine(c, from, text);
+			gameRoot.Get<ChatDisplayWidget>("CHAT_DISPLAY").AddLine(c, from, text);
 		}
 	}
 }

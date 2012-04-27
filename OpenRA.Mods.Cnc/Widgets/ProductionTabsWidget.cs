@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			// Only visible if the production palette has icons to display
 			IsVisible = () => queueGroup != null && Groups[queueGroup].Tabs.Count > 0;
 
-			paletteWidget = Lazy.New(() => Ui.Root.GetWidget<ProductionPaletteWidget>(PaletteWidget));
+			paletteWidget = Lazy.New(() => Ui.Root.Get<ProductionPaletteWidget>(PaletteWidget));
 		}
 
 		public void SelectNextTab(bool reverse)

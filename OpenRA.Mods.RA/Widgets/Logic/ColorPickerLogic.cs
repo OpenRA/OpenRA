@@ -25,9 +25,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			var panel = widget;
 			ramp = initialRamp;
-			var hueSlider = panel.GetWidget<SliderWidget>("HUE");
-			var satSlider = panel.GetWidget<SliderWidget>("SAT");
-			var lumSlider = panel.GetWidget<SliderWidget>("LUM");
+			var hueSlider = panel.Get<SliderWidget>("HUE");
+			var satSlider = panel.Get<SliderWidget>("SAT");
+			var lumSlider = panel.Get<SliderWidget>("LUM");
 
 			Action sliderChanged = () =>
 			{
@@ -49,9 +49,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				lumSlider.Value = ramp.L / 255f;
 			};
 
-			panel.GetWidget<ButtonWidget>("SAVE_BUTTON").OnClick = () => onSelect(ramp);
+			panel.Get<ButtonWidget>("SAVE_BUTTON").OnClick = () => onSelect(ramp);
 
-			var randomButton = panel.GetWidget<ButtonWidget>("RANDOM_BUTTON");
+			var randomButton = panel.Get<ButtonWidget>("RANDOM_BUTTON");
 			if (randomButton != null)
 				randomButton.OnClick = () =>
 				{

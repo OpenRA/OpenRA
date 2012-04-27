@@ -27,13 +27,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			map = Game.modData.AvailableMaps[WidgetUtils.ChooseInitialMap(initialMap)];
 
-			widget.GetWidget<ButtonWidget>("BUTTON_OK").OnClick = () => { Ui.CloseWindow(); onSelect(map); };
-			widget.GetWidget<ButtonWidget>("BUTTON_CANCEL").OnClick = () => { Ui.CloseWindow(); onExit(); };
+			widget.Get<ButtonWidget>("BUTTON_OK").OnClick = () => { Ui.CloseWindow(); onSelect(map); };
+			widget.Get<ButtonWidget>("BUTTON_CANCEL").OnClick = () => { Ui.CloseWindow(); onExit(); };
 
-			scrollpanel = widget.GetWidget<ScrollPanelWidget>("MAP_LIST");
-			itemTemplate = scrollpanel.GetWidget<ScrollItemWidget>("MAP_TEMPLATE");
+			scrollpanel = widget.Get<ScrollPanelWidget>("MAP_LIST");
+			itemTemplate = scrollpanel.Get<ScrollItemWidget>("MAP_TEMPLATE");
 
-			var gameModeDropdown = widget.GetWidget<DropDownButtonWidget>("GAMEMODE_FILTER");
+			var gameModeDropdown = widget.GetOrNull<DropDownButtonWidget>("GAMEMODE_FILTER");
 			if (gameModeDropdown != null)
 			{
 				var selectableMaps = Game.modData.AvailableMaps.Where(m => m.Value.Selectable);
@@ -52,7 +52,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					var item = ScrollItemWidget.Setup(template,
 						() => gameMode == ii.First,
 						() => { gameMode = ii.First; EnumerateMaps(); });
-					item.GetWidget<LabelWidget>("LABEL").GetText = () => showItem(ii);
+					item.Get<LabelWidget>("LABEL").GetText = () => showItem(ii);
 					return item;
 				};
 
@@ -82,19 +82,19 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var m = kv.Value;
 				var item = ScrollItemWidget.Setup(itemTemplate, () => m == map, () => map = m);
 
-				var titleLabel = item.GetWidget<LabelWidget>("TITLE");
+				var titleLabel = item.Get<LabelWidget>("TITLE");
 				titleLabel.GetText = () => m.Title;
 
-				var previewWidget = item.GetWidget<MapPreviewWidget>("PREVIEW");
+				var previewWidget = item.Get<MapPreviewWidget>("PREVIEW");
 				previewWidget.IgnoreMouseOver = true;
 				previewWidget.IgnoreMouseInput = true;
 				previewWidget.Map = () => m;
 
-				var detailsWidget = item.GetWidget<LabelWidget>("DETAILS");
+				var detailsWidget = item.Get<LabelWidget>("DETAILS");
 				if (detailsWidget != null)
 					detailsWidget.GetText = () => "{0} ({1})".F(m.Type, m.PlayerCount);
 
-				var authorWidget = item.GetWidget<LabelWidget>("AUTHOR");
+				var authorWidget = item.Get<LabelWidget>("AUTHOR");
 				if (authorWidget != null)
 					authorWidget.GetText = () => m.Author;
 

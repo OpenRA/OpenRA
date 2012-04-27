@@ -17,8 +17,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public ButtonTooltipLogic(Widget widget, ToggleButtonWidget button)
 		{
-			var label = widget.GetWidget<LabelWidget>("LABEL");
-			var hotkey = widget.GetWidget<LabelWidget>("HOTKEY");
+			var label = widget.Get<LabelWidget>("LABEL");
+			var hotkey = widget.Get<LabelWidget>("HOTKEY");
 
 			label.GetText = () => button.TooltipText;
 			var labelWidth = Game.Renderer.Fonts[label.Font].Measure(button.TooltipText).X;
