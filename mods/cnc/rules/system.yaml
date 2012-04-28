@@ -177,9 +177,6 @@ CRATE:
 	RevealMapCrateAction:
 		SelectionShares: 1
 		Effect: reveal-map
-	HideMapCrateAction:
-		SelectionShares: 5
-		Effect: hide-map
 	LevelUpCrateAction:
 		SelectionShares: 20
 	ExplodeCrateAction@fire:
