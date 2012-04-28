@@ -182,9 +182,6 @@ CRATE:
 	ExplodeCrateAction@fire:
 		Weapon: Napalm.Crate
 		SelectionShares: 5
-	ExplodeCrateAction@boom:
-		Weapon: Atomic
-		SelectionShares: 5
 	CloakCrateAction:
 		SelectionShares: 5
 		InitialDelay: 15
