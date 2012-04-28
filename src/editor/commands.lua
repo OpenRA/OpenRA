@@ -383,20 +383,21 @@ function ClearAllCurrentLineMarkers()
   end
 end
 
-function CompileProgram(editor)
+function CompileProgram(editor, quiet)
   local editorText = editor:GetText()
   local id = editor:GetId()
   local filePath = DebuggerMakeFileName(editor, openDocuments[id].filePath)
-  local ret, errMsg, line_num = wxlua.CompileLuaScript(editorText, filePath)
+  local _, errMsg, line_num = wxlua.CompileLuaScript(editorText, filePath)
   if ide.frame.menuBar:IsChecked(ID_CLEAROUTPUT) then
     ClearOutput()
   end
 
   if line_num > -1 then
-    DisplayOutput("Compilation error on line number :"..tostring(line_num).."\n"..errMsg.."\n")
-    editor:GotoLine(line_num-1)
+    DisplayOutput("Compilation error on line "..tostring(line_num).."\n"..
+      errMsg:gsub("Lua:.-\n", "").."\n")
+    if not quiet then editor:GotoLine(line_num-1) end
   else
-    DisplayOutput("Compilation successful.\n")
+    if not quiet then DisplayOutput("Compilation successful.\n") end
   end
 
   return line_num == -1 -- return true if it compiled ok
