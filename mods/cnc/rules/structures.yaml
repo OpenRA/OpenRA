@@ -14,7 +14,7 @@ FACT:
 	Health:
 		HP: 1750
 	RevealsShroud:
-		Range: 5
+		Range: 10
 	Bib:
 	Production:
 		Produces: Building,Defense
@@ -381,7 +381,7 @@ FIX:
 		Owner: gdi,nod
 	Building:
 		Power: -30
-		Footprint: _x_ xxx =x=
+		Footprint: _x_ xxx _x_
 		Dimensions: 3,3
 	Health:
 		HP: 800
@@ -391,8 +391,7 @@ FIX:
 	Reservable:
 	RepairsUnits:
 	RallyPoint:
-	Bib:
-
+	
 HPAD:
 	Inherits: ^Building
 	Valued:
