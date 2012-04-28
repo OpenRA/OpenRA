@@ -15,32 +15,42 @@ Player:
 		Name:Easy AI
 		BuildingFractions:
 			proc: 20%
+			nuke: 9%
 			pyle: 5%
 			hand: 5%
-			weap: 5%
-			hq: 2%
-			afld: 5%
+			hq: 4%
+			nuk2: 9%
+			weap: 9%
+			afld: 9%
 			gtwr: 5%
 			gun: 5%
-			atwr: 5%
-			obli: 5%
-			sam: 1%
+			atwr: 9%
+			obli: 7%
+			sam: 7%
 			eye: 1%
 			tmpl: 1%
-			silo: 5%
+			silo: 4%
 			fix: 1%
+			hpad: 2%
 		UnitsToBuild:
-			e1: 0%
-			e2: 0%
-			e3: 0%
-			e4: 0%
-			e5: 0%
-			bggy: 0%
-			bike: 0%
-			1tnk: 0%
-			jeep: 0%
-			mtnk: 0%
-			arty: 0%
+			e1: 14%
+			e3: 7%
+			e2: 10%
+			e4: 7%
+			e5: 5%
+			harv: 1%
+			bggy: 5%
+			bike: 40%
+			ltnk: 25%
+			ftnk: 10%
+			arty: 60%
+			stnk: 40%
+			jeep: 5%
+			mtnk: 20%
+			msam: 40%
+			htnk: 50%
+			heli: 5%
+			orca: 5%
 	PlayerColorPalette:
 		BasePalette: terrain
 		PaletteFormat: cnc
@@ -169,16 +179,10 @@ CRATE:
 	RevealMapCrateAction:
 		SelectionShares: 1
 		Effect: reveal-map
-	HideMapCrateAction:
-		SelectionShares: 5
-		Effect: hide-map
 	LevelUpCrateAction:
 		SelectionShares: 20
 	ExplodeCrateAction@fire:
 		Weapon: Napalm.Crate
-		SelectionShares: 5
-	ExplodeCrateAction@boom:
-		Weapon: Atomic
 		SelectionShares: 5
 	CloakCrateAction:
 		SelectionShares: 5
