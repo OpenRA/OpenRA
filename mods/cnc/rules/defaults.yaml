@@ -94,7 +94,7 @@
 	Armor:
 		Type: None
 	RevealsShroud:
-		Range: 4
+		Range: 5
 	AutoTarget:
 		ScanRadius: 4
 	Mobile:
@@ -130,6 +130,7 @@
 	ActorLostNotification:
 		Notification: unitlost.aud
 	SpawnViceroid:
+		Probability: 2
 	CrushableInfantry:
 
 ^CivInfantry:
@@ -239,6 +240,7 @@
 		Notification: strclost.aud
 	EditorAppearance:
 		RelativeToTopLeft: yes
+	AutoTargetIgnore:
 	ShakeOnDeath:
 	Sellable:
 	Capturable:
