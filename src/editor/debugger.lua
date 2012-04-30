@@ -76,11 +76,17 @@ function DebugRerunScratchpad(scratchpadEditor)
     local filePath = DebuggerMakeFileName(scratchpadEditor,
       ide.openDocuments[scratchpadEditor:GetId()].filePath)
 
-    copas.addthread(function ()
-      debugger.breaknow() -- break the current execution first
-      local _, _, err = debugger.loadstring(filePath, code)
-      if not err then debugger.breaknow("run") end
-    end)
+    debugger.breaknow() -- break the current execution first
+    copas.step(0.25)
+
+    if not debugger.scratching then
+      copas.addthread(function ()
+        debugger.scratching = true
+        debugger.loadstring(filePath, code)
+        debugger.handle("run")
+        debugger.scratching = false
+      end)
+    end
   else
     ProjectDebug()
   end
@@ -285,7 +291,8 @@ debugger.over = function() debugger.exec("over") end
 debugger.out = function() debugger.exec("out") end
 debugger.run = function() debugger.exec("run") end
 debugger.evaluate = function(expression) return debugger.handle('eval ' .. expression) end
-debugger.breaknow = function(command)
+debugger.execute = function(expression) return debugger.handle('exec ' .. expression) end
+debugger.breaknow = function()
   -- stop if we're running a "trace" command
   debugger.loop = false
 
@@ -297,7 +304,7 @@ debugger.breaknow = function(command)
     local running = debugger.running
     -- this needs to be short as it will block the UI
     debugger.socket:settimeout(0.25)
-    local file, line, err = debugger.handle(command or "step", debugger.socket)
+    local file, line, err = debugger.handle("suspend", debugger.socket)
     debugger.socket:settimeout(0)
     -- restore running status
     debugger.running = running

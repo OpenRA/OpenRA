@@ -1,5 +1,5 @@
 --
--- MobDebug 0.442
+-- MobDebug 0.443
 -- Copyright Paul Kulchenko 2011-2012
 -- Based on RemDebug 1.0 (http://www.keplerproject.org/remdebug)
 --
@@ -8,7 +8,7 @@ local mobdebug = {
   _NAME = "mobdebug",
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
-  _VERSION = "0.442"
+  _VERSION = "0.443"
 }
 
 local coroutine = coroutine
@@ -238,15 +238,28 @@ local function stack_depth(start_depth)
   end
 end
 
+local function is_safe(stack_level)
+  -- check the stack to see if we are in the main function we can abort from
+  -- the stack grows up: 0 is getinfo, 1 is is_safe, 2 is debug_hook, 3 is user function
+  if stack_level == 3 then return true end
+  local main = debug.getinfo(3, "S").source
+
+  for i = 3, stack_level do
+    -- return if it is not safe to abort
+    local info = debug.getinfo(i, "S")
+    if not info then return true end
+    if info.source ~= main then return false end
+  end
+  return true
+end
+
 local function debug_hook(event, line)
   if abort then
-    -- check the stack to see if there are any C functions above us
-    for i = 2, stack_level+1 do
-      -- simply return if it is not safe to abort
-      local source = debug.getinfo(i, "S")
-      if source and source.what == "C" then return end
+    if is_safe(stack_level) then
+      error("aborted") -- abort execution for RE/LOAD
+    else
+      return
     end
-    error("aborted") -- abort execution for RE/LOAD
   end
   if event == "call" then
     stack_level = stack_level + 1
@@ -290,10 +303,16 @@ local function debug_hook(event, line)
       end
     end
 
-    if step_into
+    local suspend = (check_break
+      -- stack check is at least two times faster than select
+      -- 1.2s vs 2.5s for 100,000 iterations on 1.6Ghz CPU
+      and is_safe(stack_level)
+      and (socket.select({server}, {}, 0))[server]
+    )
+    if suspend
+    or step_into
     or (step_over and stack_level <= step_level)
-    or has_breakpoint(file, line)
-    or (check_break and (socket.select({server}, {}, 0))[server]) then
+    or has_breakpoint(file, line) then
       vars = vars or capture_vars()
       check_break = true -- this is only needed to avoid breaking too early when debugging is starting
       step_into = false
@@ -485,6 +504,8 @@ local function debugger_loop(sfile, sline)
         server:send("401 Error in Execution " .. string.len(file) .. "\n")
         server:send(file)
       end
+    elseif command == "SUSPEND" then
+      -- do nothing; it already fulfilled its role
     elseif command == "EXIT" then
       server:send("200 OK\n")
       os.exit()
@@ -592,7 +613,7 @@ local function handle(params, client)
       print("Unknown error")
       os.exit()
       -- use return here for those cases where os.exit() is not wanted
-      return nil, nil, "Unknown error; unexpected response '" .. breakpoint .. "'"
+      return nil, nil, "Debugger error; unexpected response '" .. breakpoint .. "'"
     end
   elseif command == "setb" then
     _, _, _, file, line = string.find(params, "^([a-z]+)%s+([%w%p%s]+)%s+(%d+)%s*$")
@@ -704,7 +725,7 @@ local function handle(params, client)
       end
       local params = client:receive()
       if not params then
-        return nil, nil, "Missing content after EXEC/LOAD"
+        return nil, nil, "Missing response after EXEC/LOAD"
       end
       local _, _, status, len = string.find(params, "^(%d+)[%w%p%s]+%s+(%d+)%s*$")
       if status == "200" then
@@ -726,7 +747,7 @@ local function handle(params, client)
         return nil, nil, res
       else
         print("Unknown error")
-        return nil, nil, "Unknown error after EXEC/LOAD; unexpected response '" .. params .. "'"
+        return nil, nil, "Debugger error after EXEC/LOAD; unexpected response '" .. params .. "'"
       end
     else
       print("Invalid command")
@@ -743,6 +764,8 @@ local function handle(params, client)
     for i, v in pairs(watches) do
       print("Watch exp. " .. i .. ": " .. v)
     end    
+  elseif command == "suspend" then
+    client:send("SUSPEND\n")
   elseif command == "basedir" then
     local _, _, dir = string.find(params, "^[a-z]+%s+(.+)$")
     if dir then
