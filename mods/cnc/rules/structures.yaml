@@ -639,6 +639,7 @@ GUN:
 		PrimaryWeapon: TurretGun
 		PrimaryLocalOffset: 0,4,0,-2,0
 	AutoTarget:
+	-AutoTargetIgnore:
 	-RenderBuilding:
 	-DeadBuildingState:
 	RenderRangeCircle:
@@ -678,6 +679,7 @@ SAM:
 		PrimaryWeapon: SAMMissile
 	WithMuzzleFlash:
 	AutoTarget:
+	-AutoTargetIgnore:
 	-RenderBuilding:
 	RenderRangeCircle:
 	
@@ -706,6 +708,7 @@ GTWR:
 		PrimaryOffset: 0,0,0,-6
 		PrimaryLocalOffset: 0,-6,0,0,0
 	AutoTarget:
+	-AutoTargetIgnore:
 	DetectCloaked:
 		Range: 3
 	RenderDetectionCircle:
@@ -746,6 +749,7 @@ ATWR:
 	Turreted:
 		ROT:255
 	AutoTarget:
+	-AutoTargetIgnore:
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 6
