@@ -1422,7 +1422,7 @@ e4:
 		Facings: 8
 
 fb1:
-	idle: ffl
+	idle: 
 		Start: 0
 		Length: *
 
@@ -1616,6 +1616,15 @@ dd-crnr:
 		Start: 3
 
 fb2:
+	idle:
+		Start: 0
+		Length: *
+
+fb3:
+	idle:
+		Start: 0
+		Length: *
+fb4:
 	idle:
 		Start: 0
 		Length: *

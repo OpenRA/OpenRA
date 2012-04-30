@@ -162,26 +162,30 @@ FireballLauncher:
 		Damage: 150
 		
 Flamer:
-	ROF: 50
+	ROF: 40
 	Range: 5
+	Burst: 30
+	BurstDelay: 1
 	Projectile: Bullet
 		Speed: 12
-		Trail: fb2
-		Image: FB1
+		Trail: fb4
+		Image: fb3
+		Angle: .1
+		Inaccuracy: 17
 	Warhead:
-		Spread: 4
+		Spread: 8
 		Versus: 
 			None: 90%
 			Wood: 100%
 			Light: 60%
 			Heavy: 25%
 			Concrete: 50%
-		Explosion: napalm
-		WaterExplosion: napalm
+		Explosion: small_napalm
+		WaterExplosion: small_napalm
 		InfDeath: 4
 		SmudgeType: Scorch
 		ImpactSound: firebl3
-		Damage: 70
+		Damage: 3
 
 ChainGun:
 	ROF: 10
