@@ -6,6 +6,7 @@ local ide = ide
 
 local frame = ide.frame
 local menuBar = frame.menuBar
+local mobdebug = require "mobdebug"
 
 local helpMenu = wx.wxMenu{
   { ID_ABOUT, "&About\tF1", "About ZeroBrane Studio" },
