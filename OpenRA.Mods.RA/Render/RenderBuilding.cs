@@ -56,7 +56,7 @@ namespace OpenRA.Mods.RA.Render
 
 		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
 		{
-			var disabled = self.TraitsImplementing<IDisable>().Any(d => d.Disabled);
+			var disabled = self.IsDisabled();
 			foreach (var a in r)
 			{
 				var ret = a.WithPos(a.Pos - Info.Origin);

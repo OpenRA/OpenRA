@@ -25,12 +25,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			panel = widget;
 
-			panel.GetWidget<ButtonWidget>("CANCEL_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
+			panel.Get<ButtonWidget>("CANCEL_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
 
-			var rl = panel.GetWidget<ScrollPanelWidget>("REPLAY_LIST");
+			var rl = panel.Get<ScrollPanelWidget>("REPLAY_LIST");
 			var replayDir = Path.Combine(Platform.SupportDir, "Replays");
 
-			var template = panel.GetWidget<ScrollItemWidget>("REPLAY_TEMPLATE");
+			var template = panel.Get<ScrollItemWidget>("REPLAY_TEMPLATE");
 
 			rl.RemoveChildren();
 			if (Directory.Exists(replayDir))
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				SelectReplay(files.FirstOrDefault());
 			}
 
-			var watch = panel.GetWidget<ButtonWidget>("WATCH_BUTTON");
+			var watch = panel.Get<ButtonWidget>("WATCH_BUTTON");
 			watch.IsDisabled = () => currentReplay == null || currentMap == null || currentReplay.Duration == 0;
 			watch.OnClick = () =>
 			{
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				}
 			};
 
-			panel.GetWidget("REPLAY_INFO").IsVisible = () => currentReplay != null;
+			panel.Get("REPLAY_INFO").IsVisible = () => currentReplay != null;
 		}
 
 		Replay currentReplay;
@@ -70,15 +70,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				currentReplay = new Replay(filename);
 				currentMap = currentReplay.Map();
 
-				panel.GetWidget<LabelWidget>("DURATION").GetText =
+				panel.Get<LabelWidget>("DURATION").GetText =
 					() => WidgetUtils.FormatTime(currentReplay.Duration * 3	/* todo: 3:1 ratio isnt always true. */);
-				panel.GetWidget<MapPreviewWidget>("MAP_PREVIEW").Map = () => currentMap;
-				panel.GetWidget<LabelWidget>("MAP_TITLE").GetText =
+				panel.Get<MapPreviewWidget>("MAP_PREVIEW").Map = () => currentMap;
+				panel.Get<LabelWidget>("MAP_TITLE").GetText =
 					() => currentMap != null ? currentMap.Title : "(Unknown Map)";
 
 				var players = currentReplay.LobbyInfo.Slots
 					.Count(s => currentReplay.LobbyInfo.ClientInSlot(s.Key) != null);
-				panel.GetWidget<LabelWidget>("PLAYERS").GetText = () => players.ToString();
+				panel.Get<LabelWidget>("PLAYERS").GetText = () => players.ToString();
 			}
 			catch (Exception e)
 			{
@@ -94,7 +94,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				() => currentReplay != null && currentReplay.Filename == filename,
 				() => SelectReplay(filename));
 			var f = Path.GetFileName(filename);
-			item.GetWidget<LabelWidget>("TITLE").GetText = () => f;
+			item.Get<LabelWidget>("TITLE").GetText = () => f;
 			list.AddChild(item);
 		}
 	}

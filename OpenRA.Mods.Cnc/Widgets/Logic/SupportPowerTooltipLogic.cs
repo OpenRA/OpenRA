@@ -20,9 +20,9 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		public SupportPowerTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, SupportPowersWidget palette)
 		{
 			widget.IsVisible = () => palette.TooltipPower != null;
-			var nameLabel = widget.GetWidget<LabelWidget>("NAME");
-			var timeLabel = widget.GetWidget<LabelWidget>("TIME");
-			var descLabel = widget.GetWidget<LabelWidget>("DESC");
+			var nameLabel = widget.Get<LabelWidget>("NAME");
+			var timeLabel = widget.Get<LabelWidget>("TIME");
+			var descLabel = widget.Get<LabelWidget>("DESC");
 			var nameFont = Game.Renderer.Fonts[nameLabel.Font];
 			var timeFont = Game.Renderer.Fonts[timeLabel.Font];
 			var descFont = Game.Renderer.Fonts[descLabel.Font];

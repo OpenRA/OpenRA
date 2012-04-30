@@ -1,6 +1,5 @@
 Container@CHEATS_PANEL:
-	Id:CHEATS_PANEL
-	Logic:CncCheatsLogic
+	Logic:CheatsLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - 110)/2
 	Width:590
@@ -19,56 +18,48 @@ Container@CHEATS_PANEL:
 			Background:panel-black
 			Children:
 				Checkbox@INSTANT_BUILD:
-					Id:INSTANT_BUILD_CHECKBOX
 					X:15
 					Y:15
 					Width:200
 					Height:20
 					Text:Instant Build Speed
 				Checkbox@ENABLE_TECH:
-					Id:ENABLE_TECH_CHECKBOX
 					X:15
 					Y:45
 					Width:200
 					Height:20
 					Text:Build Everything
 				Checkbox@BUILD_ANYWHERE:
-					Id:BUILD_ANYWHERE_CHECKBOX
 					X:15
 					Y:75
 					Width:200
 					Height:20
 					Text:Build Anywhere
 				Checkbox@UNLIMITED_POWER:
-					Id:UNLIMITED_POWER_CHECKBOX
 					X:200
 					Y:15
 					Width:200
 					Height:20
 					Text:Unlimited Power
 				Checkbox@INSTANT_CHARGE:
-					Id:INSTANT_CHARGE_CHECKBOX
 					X:200
 					Y:45
 					Width:200
 					Height:20
 					Text:Instant Charge Time				
-				Checkbox@CHECKBOX_SHROUD:
-					Id:SHROUD_CHECKBOX
+				Checkbox@DISABLE_SHROUD:
 					X:400
 					Y:15
 					Height:20
 					Width:200
 					Text:Disable Shroud
-				Checkbox@CHECKBOX_PATHDEBUG:
-					Id:PATHDEBUG_CHECKBOX
+				Checkbox@SHOW_UNIT_PATHS:
 					X:400
 					Y:45
 					Width:200
 					Height:20
 					Text:Show Unit Paths
-		Button@CLOSE_BUTTON:
-			Id:CLOSE_BUTTON
+		Button@CLOSE:
 			Key:escape
 			X:0
 			Y:109
@@ -76,14 +67,12 @@ Container@CHEATS_PANEL:
 			Height:35
 			Text:Close
 		Button@GIVE_CASH:
-			Id:GIVE_CASH_BUTTON
 			X:300
 			Y:109
 			Width:140
 			Height:35
 			Text:Give Cash
 		Button@GIVE_EXPLORATION:
-			Id:GIVE_EXPLORATION_BUTTON
 			X:450
 			Y:109
 			Width:140

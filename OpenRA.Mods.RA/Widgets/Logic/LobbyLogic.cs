@@ -56,7 +56,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				Action onRetry = () =>
 				{
-					CloseWindow();
 					ConnectionLogic.Connect(om.Host, om.Port, onConnect, onExit);
 				};
 
@@ -99,21 +98,21 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			UpdateCurrentMap();
 			PlayerPalettePreview = world.WorldActor.Trait<ColorPickerPaletteModifier>();
 			PlayerPalettePreview.Ramp = Game.Settings.Player.ColorRamp;
-			Players = lobby.GetWidget<ScrollPanelWidget>("PLAYERS");
-			EditablePlayerTemplate = Players.GetWidget("TEMPLATE_EDITABLE_PLAYER");
-			NonEditablePlayerTemplate = Players.GetWidget("TEMPLATE_NONEDITABLE_PLAYER");
-			EmptySlotTemplate = Players.GetWidget("TEMPLATE_EMPTY");
-			EditableSpectatorTemplate = Players.GetWidget("TEMPLATE_EDITABLE_SPECTATOR");
-			NonEditableSpectatorTemplate = Players.GetWidget("TEMPLATE_NONEDITABLE_SPECTATOR");
-			NewSpectatorTemplate = Players.GetWidget("TEMPLATE_NEW_SPECTATOR");
+			Players = lobby.Get<ScrollPanelWidget>("PLAYERS");
+			EditablePlayerTemplate = Players.Get("TEMPLATE_EDITABLE_PLAYER");
+			NonEditablePlayerTemplate = Players.Get("TEMPLATE_NONEDITABLE_PLAYER");
+			EmptySlotTemplate = Players.Get("TEMPLATE_EMPTY");
+			EditableSpectatorTemplate = Players.Get("TEMPLATE_EDITABLE_SPECTATOR");
+			NonEditableSpectatorTemplate = Players.Get("TEMPLATE_NONEDITABLE_SPECTATOR");
+			NewSpectatorTemplate = Players.Get("TEMPLATE_NEW_SPECTATOR");
 
-			var mapPreview = lobby.GetWidget<MapPreviewWidget>("MAP_PREVIEW");
+			var mapPreview = lobby.Get<MapPreviewWidget>("MAP_PREVIEW");
 			mapPreview.IsVisible = () => Map != null;
 			mapPreview.Map = () => Map;
 			mapPreview.OnMouseDown = mi => LobbyUtils.SelectSpawnPoint( orderManager, mapPreview, Map, mi );
 			mapPreview.SpawnColors = () => LobbyUtils.GetSpawnColors( orderManager, Map );
 
-			var mapTitle = lobby.GetWidget<LabelWidget>("MAP_TITLE");
+			var mapTitle = lobby.GetOrNull<LabelWidget>("MAP_TITLE");
 			if (mapTitle != null)
 			{
 				mapTitle.IsVisible = () => Map != null;
@@ -125,7 +124,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				.ToDictionary(a => a.Race, a => a.Name);
 			CountryNames.Add("random", "Any");
 
-			var mapButton = lobby.GetWidget<ButtonWidget>("CHANGEMAP_BUTTON");
+			var mapButton = lobby.Get<ButtonWidget>("CHANGEMAP_BUTTON");
 			mapButton.OnClick = () =>
 			{
 				var onSelect = new Action<Map>(m =>
@@ -144,19 +143,19 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			};
 			mapButton.IsVisible = () => mapButton.Visible && Game.IsHost;
 
-			var disconnectButton = lobby.GetWidget<ButtonWidget>("DISCONNECT_BUTTON");
+			var disconnectButton = lobby.Get<ButtonWidget>("DISCONNECT_BUTTON");
 			disconnectButton.OnClick = () => { CloseWindow(); onExit(); };
 
 			var gameStarting = false;
 
-			var allowCheats = lobby.GetWidget<CheckboxWidget>("ALLOWCHEATS_CHECKBOX");
+			var allowCheats = lobby.Get<CheckboxWidget>("ALLOWCHEATS_CHECKBOX");
 			allowCheats.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.AllowCheats;
 			allowCheats.IsDisabled = () => !Game.IsHost || gameStarting || orderManager.LocalClient == null
 				|| orderManager.LocalClient.IsReady;
 			allowCheats.OnClick = () =>	orderManager.IssueOrder(Order.Command(
 						"allowcheats {0}".F(!orderManager.LobbyInfo.GlobalSettings.AllowCheats)));
 
-			var startGameButton = lobby.GetWidget<ButtonWidget>("START_GAME_BUTTON");
+			var startGameButton = lobby.Get<ButtonWidget>("START_GAME_BUTTON");
 			startGameButton.IsVisible = () => Game.IsHost;
 			startGameButton.IsDisabled = () => gameStarting;
 			startGameButton.OnClick = () =>
@@ -166,8 +165,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			};
 
 			bool teamChat = false;
-			var chatLabel = lobby.GetWidget<LabelWidget>("LABEL_CHATTYPE");
-			var chatTextField = lobby.GetWidget<TextFieldWidget>("CHAT_TEXTFIELD");
+			var chatLabel = lobby.Get<LabelWidget>("LABEL_CHATTYPE");
+			var chatTextField = lobby.Get<TextFieldWidget>("CHAT_TEXTFIELD");
 
 			chatTextField.OnEnterKey = () =>
 			{
@@ -186,11 +185,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				return true;
 			};
 
-			chatPanel = lobby.GetWidget<ScrollPanelWidget>("CHAT_DISPLAY");
-			chatTemplate = chatPanel.GetWidget("CHAT_TEMPLATE");
+			chatPanel = lobby.Get<ScrollPanelWidget>("CHAT_DISPLAY");
+			chatTemplate = chatPanel.Get("CHAT_TEMPLATE");
 			chatPanel.RemoveChildren();
 
-			var musicButton = lobby.GetWidget<ButtonWidget>("MUSIC_BUTTON");
+			var musicButton = lobby.GetOrNull<ButtonWidget>("MUSIC_BUTTON");
 			if (musicButton != null)
 				musicButton.OnClick = () => Ui.OpenWindow("MUSIC_PANEL", new WidgetArgs
 					{ { "onExit", () => {} } });
@@ -209,9 +208,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		void AddChatLine(Color c, string from, string text)
 		{
 			var template = chatTemplate.Clone();
-			var nameLabel = template.GetWidget<LabelWidget>("NAME");
-			var timeLabel = template.GetWidget<LabelWidget>("TIME");
-			var textLabel = template.GetWidget<LabelWidget>("TEXT");
+			var nameLabel = template.Get<LabelWidget>("NAME");
+			var timeLabel = template.Get<LabelWidget>("TIME");
+			var textLabel = template.Get<LabelWidget>("TEXT");
 
 			var name = from + ":";
 			var font = Game.Renderer.Fonts[nameLabel.Font];
@@ -247,7 +246,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			MapUid = orderManager.LobbyInfo.GlobalSettings.Map;
 			Map = new Map(Game.modData.AvailableMaps[MapUid].Path);
 
-			var title = Ui.Root.GetWidget<LabelWidget>("TITLE");
+			var title = Ui.Root.Get<LabelWidget>("TITLE");
 			title.Text = orderManager.LobbyInfo.GlobalSettings.ServerName;
 		}
 
@@ -273,7 +272,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 					if (Game.IsHost)
 					{
-						var name = template.GetWidget<DropDownButtonWidget>("NAME_HOST");
+						var name = template.Get<DropDownButtonWidget>("NAME_HOST");
 						name.IsVisible = () => true;
 						name.IsDisabled = () => ready;
 						name.GetText = getText;
@@ -281,12 +280,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					}
 					else
 					{
-						var name = template.GetWidget<LabelWidget>("NAME");
+						var name = template.Get<LabelWidget>("NAME");
 						name.IsVisible = () => true;
 						name.GetText = getText;
 					}
 
-					var join = template.GetWidget<ButtonWidget>("JOIN");
+					var join = template.Get<ButtonWidget>("JOIN");
 					join.IsVisible = () => !slot.Closed;
 					join.IsDisabled = () => ready;
 					join.OnClick = () => orderManager.IssueOrder(Order.Command("slot " + key));
@@ -301,7 +300,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 					if (client.Bot != null)
 					{
-						var name = template.GetWidget<DropDownButtonWidget>("BOT_DROPDOWN");
+						var name = template.Get<DropDownButtonWidget>("BOT_DROPDOWN");
 						name.IsVisible = () => true;
 						name.IsDisabled = () => ready;
 						name.GetText = () => client.Name;
@@ -309,30 +308,30 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					}
 					else
 					{
-						var name = template.GetWidget<TextFieldWidget>("NAME");
+						var name = template.Get<TextFieldWidget>("NAME");
 						name.IsVisible = () => true;
 						name.IsDisabled = () => ready;
 						LobbyUtils.SetupNameWidget(orderManager, client, name);
 					}
 
-					var color = template.GetWidget<DropDownButtonWidget>("COLOR");
+					var color = template.Get<DropDownButtonWidget>("COLOR");
 					color.IsDisabled = () => slot.LockColor || ready;
 					color.OnMouseDown = _ => LobbyUtils.ShowColorDropDown(color, client, orderManager, PlayerPalettePreview);
 
-					var colorBlock = color.GetWidget<ColorBlockWidget>("COLORBLOCK");
+					var colorBlock = color.Get<ColorBlockWidget>("COLORBLOCK");
 					colorBlock.GetColor = () => client.ColorRamp.GetColor(0);
 
-					var faction = template.GetWidget<DropDownButtonWidget>("FACTION");
+					var faction = template.Get<DropDownButtonWidget>("FACTION");
 					faction.IsDisabled = () => slot.LockRace || ready;
 					faction.OnMouseDown = _ => LobbyUtils.ShowRaceDropDown(faction, client, orderManager, CountryNames);
 
-					var factionname = faction.GetWidget<LabelWidget>("FACTIONNAME");
+					var factionname = faction.Get<LabelWidget>("FACTIONNAME");
 					factionname.GetText = () => CountryNames[client.Country];
-					var factionflag = faction.GetWidget<ImageWidget>("FACTIONFLAG");
+					var factionflag = faction.Get<ImageWidget>("FACTIONFLAG");
 					factionflag.GetImageName = () => client.Country;
 					factionflag.GetImageCollection = () => "flags";
 
-					var team = template.GetWidget<DropDownButtonWidget>("TEAM");
+					var team = template.Get<DropDownButtonWidget>("TEAM");
 					team.IsDisabled = () => slot.LockTeam || ready;
 					team.OnMouseDown = _ => LobbyUtils.ShowTeamDropDown(team, client, orderManager, Map);
 					team.GetText = () => (client.Team == 0) ? "-" : client.Team.ToString();
@@ -340,35 +339,35 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					if (client.Bot == null)
 					{
 						// local player
-						var status = template.GetWidget<CheckboxWidget>("STATUS_CHECKBOX");
+						var status = template.Get<CheckboxWidget>("STATUS_CHECKBOX");
 						status.IsChecked = () => ready;
 						status.IsVisible = () => true;
 						status.OnClick += CycleReady;
 					}
 					else // Bot
-						template.GetWidget<ImageWidget>("STATUS_IMAGE").IsVisible = () => true;
+						template.Get<ImageWidget>("STATUS_IMAGE").IsVisible = () => true;
 				}
 				else
 				{	// Non-editable player in slot
 					template = NonEditablePlayerTemplate.Clone();
-					template.GetWidget<LabelWidget>("NAME").GetText = () => client.Name;
-					var color = template.GetWidget<ColorBlockWidget>("COLOR");
+					template.Get<LabelWidget>("NAME").GetText = () => client.Name;
+					var color = template.Get<ColorBlockWidget>("COLOR");
 					color.GetColor = () => client.ColorRamp.GetColor(0);
 
-					var faction = template.GetWidget<LabelWidget>("FACTION");
-					var factionname = faction.GetWidget<LabelWidget>("FACTIONNAME");
+					var faction = template.Get<LabelWidget>("FACTION");
+					var factionname = faction.Get<LabelWidget>("FACTIONNAME");
 					factionname.GetText = () => CountryNames[client.Country];
-					var factionflag = faction.GetWidget<ImageWidget>("FACTIONFLAG");
+					var factionflag = faction.Get<ImageWidget>("FACTIONFLAG");
 					factionflag.GetImageName = () => client.Country;
 					factionflag.GetImageCollection = () => "flags";
 
-					var team = template.GetWidget<LabelWidget>("TEAM");
+					var team = template.Get<LabelWidget>("TEAM");
 					team.GetText = () => (client.Team == 0) ? "-" : client.Team.ToString();
 
-					template.GetWidget<ImageWidget>("STATUS_IMAGE").IsVisible = () =>
+					template.Get<ImageWidget>("STATUS_IMAGE").IsVisible = () =>
 						client.Bot != null || client.IsReady;
 
-					var kickButton = template.GetWidget<ButtonWidget>("KICK");
+					var kickButton = template.Get<ButtonWidget>("KICK");
 					kickButton.IsVisible = () => Game.IsHost && client.Index != orderManager.LocalClient.Index;
 					kickButton.IsDisabled = () => orderManager.LocalClient.IsReady;
 					kickButton.OnClick = () => orderManager.IssueOrder(Order.Command("kick " + client.Index));
@@ -389,18 +388,18 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				if (c.Index == orderManager.LocalClient.Index)
 				{
 					template = EditableSpectatorTemplate.Clone();
-					var name = template.GetWidget<TextFieldWidget>("NAME");
+					var name = template.Get<TextFieldWidget>("NAME");
 					name.IsDisabled = () => ready;
 					LobbyUtils.SetupNameWidget(orderManager, c, name);
 
-					var color = template.GetWidget<DropDownButtonWidget>("COLOR");
+					var color = template.Get<DropDownButtonWidget>("COLOR");
 					color.IsDisabled = () => ready;
 					color.OnMouseDown = _ => LobbyUtils.ShowColorDropDown(color, c, orderManager, PlayerPalettePreview);
 
-					var colorBlock = color.GetWidget<ColorBlockWidget>("COLORBLOCK");
+					var colorBlock = color.Get<ColorBlockWidget>("COLORBLOCK");
 					colorBlock.GetColor = () => c.ColorRamp.GetColor(0);
 
-					var status = template.GetWidget<CheckboxWidget>("STATUS_CHECKBOX");
+					var status = template.Get<CheckboxWidget>("STATUS_CHECKBOX");
 					status.IsChecked = () => ready;
 					status.OnClick += CycleReady;
 				}
@@ -408,13 +407,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				else
 				{
 					template = NonEditableSpectatorTemplate.Clone();
-					template.GetWidget<LabelWidget>("NAME").GetText = () => c.Name;
-					var color = template.GetWidget<ColorBlockWidget>("COLOR");
+					template.Get<LabelWidget>("NAME").GetText = () => c.Name;
+					var color = template.Get<ColorBlockWidget>("COLOR");
 					color.GetColor = () => c.ColorRamp.GetColor(0);
 
-					template.GetWidget<ImageWidget>("STATUS_IMAGE").IsVisible = () => c.Bot != null || c.IsReady;
+					template.Get<ImageWidget>("STATUS_IMAGE").IsVisible = () => c.Bot != null || c.IsReady;
 
-					var kickButton = template.GetWidget<ButtonWidget>("KICK");
+					var kickButton = template.Get<ButtonWidget>("KICK");
 					kickButton.IsVisible = () => Game.IsHost && c.Index != orderManager.LocalClient.Index;
 					kickButton.IsDisabled = () => orderManager.LocalClient.IsReady;
 					kickButton.OnClick = () => orderManager.IssueOrder(Order.Command("kick " + c.Index));
@@ -428,7 +427,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (orderManager.LocalClient.Slot != null)
 			{
 				var spec = NewSpectatorTemplate.Clone();
-				var btn = spec.GetWidget<ButtonWidget>("SPECTATE");
+				var btn = spec.Get<ButtonWidget>("SPECTATE");
 				btn.OnClick = () => orderManager.IssueOrder(Order.Command("spectate"));
 				btn.IsDisabled = () => orderManager.LocalClient.IsReady;
 				spec.IsVisible = () => true;

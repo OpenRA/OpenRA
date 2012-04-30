@@ -15,18 +15,24 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class WaterPaletteRotationInfo : TraitInfo<WaterPaletteRotation> {}
+	class WaterPaletteRotationInfo : ITraitInfo
+	{
+		public readonly int Base = 0x60;
+
+		public object Create(ActorInitializer init) { return new WaterPaletteRotation(this); }
+	}
 
 	class WaterPaletteRotation : ITick, IPaletteModifier
 	{
 		float t = 0;
-		public void Tick(Actor self)
-		{
-			t += .25f;
-		}
+		readonly WaterPaletteRotationInfo info;
+
+		public WaterPaletteRotation(WaterPaletteRotationInfo info) { this.info = info; }
+
+		public void Tick(Actor self) { t += .25f; }
 
 		static string[] excludePalettes = { "cursor", "chrome", "colorpicker" };
-		static uint[] temp = new uint[7];
+		static uint[] temp = new uint[7]; /* allocating this on the fly actually hurts our profile */
 
 		public void AdjustPalette(Dictionary<string,Palette> palettes)
 		{
@@ -39,10 +45,10 @@ namespace OpenRA.Mods.RA
 				var rotate = (int)t % 7;
 
 				for (var i = 0; i < 7; i++)
-					temp[(rotate + i) % 7] = colors[0x60 + i];
+					temp[(rotate + i) % 7] = colors[info.Base + i];
 
 				for (var i = 0; i < 7; i++)
-					pal.Value.SetColor(0x60 + i, temp[i]);
+					pal.Value.SetColor(info.Base + i, temp[i]);
 			}
 		}
 	}

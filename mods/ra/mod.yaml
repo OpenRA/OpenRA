@@ -63,6 +63,8 @@ ChromeLayout:
 	mods/ra/chrome/replaybrowser.yaml
 	mods/ra/chrome/dropdowns.yaml
 	mods/ra/chrome/modchooser.yaml
+	mods/ra/chrome/cheats.yaml
+
 Weapons:
 	mods/ra/weapons.yaml
 	

@@ -211,9 +211,6 @@ namespace OpenRA.Widgets
 			args["widget"] = this;
 
 			LogicObject = Game.modData.ObjectCreator.CreateObject<object>(Logic, args);
-			var iwd = LogicObject as ILogicWithInit;
-			if (iwd != null)
-				iwd.Init();
 
 			args.Remove("widget");
 		}
@@ -366,25 +363,36 @@ namespace OpenRA.Widgets
 				c.Removed();
 		}
 
-		public Widget GetWidget(string id)
+		public Widget GetOrNull(string id)
 		{
 			if (this.Id == id)
 				return this;
 
 			foreach (var child in Children)
 			{
-				var w = child.GetWidget(id);
+				var w = child.GetOrNull(id);
 				if (w != null)
 					return w;
 			}
 			return null;
 		}
 
-		public T GetWidget<T>(string id) where T : Widget
+		public T GetOrNull<T>(string id) where T : Widget
 		{
-			var widget = GetWidget(id);
-			return (widget != null) ? (T)widget : null;
+			return (T) GetOrNull(id);
 		}
+
+		public T Get<T>(string id) where T : Widget
+		{
+			var t = GetOrNull<T>(id);
+			if (t == null)
+				throw new InvalidOperationException(
+					"Widget {0} has no child {1} of type {2}".F(
+						Id, id, typeof(T).Name));
+			return t;
+		}
+
+		public Widget Get(string id) { return Get<Widget>(id); }
 	}
 
 	public class ContainerWidget : Widget
@@ -402,12 +410,5 @@ namespace OpenRA.Widgets
 		public WidgetArgs() : base() { }
 		public WidgetArgs(Dictionary<string, object> args) : base(args) { }
 		public void Add(string key, Action val) { base.Add(key, val); }
-	}
-
-	// TODO: you should use this anywhere you want to do
-	// something in a logic ctor, but retain debuggability.
-	public interface ILogicWithInit
-	{
-		void Init();
 	}
 }

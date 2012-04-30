@@ -60,7 +60,7 @@ HARV:
 	Health:
 		HP: 600
 	Armor: 
-		Type: Light
+		Type: Heavy
 	RevealsShroud:
 		Range: 4
 	RenderUnit:

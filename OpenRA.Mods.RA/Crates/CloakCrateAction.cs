@@ -52,8 +52,8 @@ namespace OpenRA.Mods.RA.Crates
 					w.Remove(collector);
 
 					collector.AddTrait(cloak);
-					if (collector.HasTrait<TargetableUnit<TargetableUnitInfo>>())
-						collector.Trait<TargetableUnit<TargetableUnitInfo>>().RecievedCloak(collector);
+					var t = collector.TraitOrDefault<TargetableUnit<TargetableUnitInfo>>();
+					if (t != null) t.ReceivedCloak(collector);
 
 					w.Add(collector);
 				});

@@ -1,5 +1,4 @@
 Container@MENU_BACKGROUND:
-	Id:MENU_BACKGROUND
 	Width:WINDOW_RIGHT
 	Height:WINDOW_BOTTOM
 	Logic:CncMenuLogic
@@ -18,7 +17,6 @@ Container@MENU_BACKGROUND:
 			Font:Bold
 			Text:REC
 		Image@RECBLOCK:
-			Id:RECBLOCK
 			X:(WINDOW_RIGHT-512)/2+40
 			Y:(WINDOW_BOTTOM+512)/2-25
 			Width:16
@@ -33,7 +31,6 @@ Container@MENU_BACKGROUND:
 			ImageCollection:logos
 			ImageName:eva
 		Label@VERSION_LABEL:
-			Id:VERSION_LABEL
 			X:WINDOW_RIGHT-128-43
 			Y:115
 			Width:128
@@ -50,7 +47,6 @@ Container@MENU_BACKGROUND:
 			Height:35
 			Children:		
 				Container@MAIN_MENU:
-					Id:MAIN_MENU
 					Width:PARENT_RIGHT
 					Children:	
 						Label@TITLE:
@@ -63,42 +59,36 @@ Container@MENU_BACKGROUND:
 							Font:Bold
 							Contrast:True
 						Button@SOLO_BUTTON:
-							Id:SOLO_BUTTON
 							X:0
 							Y:0
 							Width:140
 							Height:35
 							Text:Singleplayer
 						Button@MULTIPLAYER_BUTTON:
-							Id:MULTIPLAYER_BUTTON
 							X:150
 							Y:0
 							Width:140
 							Height:35
 							Text:Multiplayer
 						Button@SETTINGS_BUTTON:
-							Id:SETTINGS_BUTTON
 							X:300
 							Y:0
 							Width:140
 							Height:35
 							Text:Options
 						Button@MODS_BUTTON:
-							Id:MODS_BUTTON
 							X:450
 							Y:0
 							Width:140
 							Height:35
 							Text:Mods
 						Button@QUIT_BUTTON:
-							Id:QUIT_BUTTON
 							X:600
 							Y:0
 							Width:140
 							Height:35
 							Text:Quit
 				Container@MULTIPLAYER_MENU:
-					Id:MULTIPLAYER_MENU
 					Width:PARENT_RIGHT
 					Visible:false
 					Children:
@@ -112,28 +102,24 @@ Container@MENU_BACKGROUND:
 							Font:Bold
 							Contrast:True
 						Button@CREATE_BUTTON:
-							Id:CREATE_BUTTON
 							X:0
 							Y:0
 							Width:140
 							Height:35
 							Text:Create Server
 						Button@JOIN_BUTTON:
-							Id:JOIN_BUTTON
 							X:150
 							Y:0
 							Width:140
 							Height:35
 							Text:Find Server
 						Button@DIRECTCONNECT_BUTTON:
-							Id:DIRECTCONNECT_BUTTON
 							X:300
 							Y:0
 							Width:140
 							Height:35
 							Text:Direct Connect
 						Button@BACK_BUTTON:
-							Id:BACK_BUTTON
 							Key:escape
 							X:600
 							Y:0
@@ -141,7 +127,6 @@ Container@MENU_BACKGROUND:
 							Height:35
 							Text:Back
 				Container@SETTINGS_MENU:
-					Id:SETTINGS_MENU
 					Width:PARENT_RIGHT
 					Visible:False
 					Children:	
@@ -155,28 +140,24 @@ Container@MENU_BACKGROUND:
 							Font:Bold
 							Contrast:True
 						Button@REPLAYS_BUTTON:
-							Id:REPLAYS_BUTTON
 							X:0
 							Y:0
 							Width:140
 							Height:35
 							Text: Replays
 						Button@MUSIC_BUTTON:
-							Id:MUSIC_BUTTON
 							X:150
 							Y:0
 							Width:140
 							Height:35
 							Text:Music
 						Button@SETTINGS_BUTTON:
-							Id:SETTINGS_BUTTON
 							X:300
 							Y:0
 							Width:140
 							Height:35
 							Text:Settings
 						Button@BACK_BUTTON:
-							Id:BACK_BUTTON
 							Key:escape
 							X:600
 							Y:0
@@ -184,11 +165,9 @@ Container@MENU_BACKGROUND:
 							Height:35
 							Text:Back
 		Container@PERFORMANCE_INFO:
-			Id:PERFORMANCE_INFO
 			Logic:CncPerfDebugLogic
 			Children:
 				Label@PERF_TEXT:
-					Id:PERF_TEXT
 					X:40
 					Y:40
 					Width:170
@@ -196,7 +175,6 @@ Container@MENU_BACKGROUND:
 					Contrast:true
 					VAlign:Top
 				Background@GRAPH_BG:
-					Id:PERF_GRAPH
 					X:WINDOW_RIGHT-WIDTH-31
 					Y:31
 					Width:220

@@ -112,15 +112,16 @@ namespace OpenRA.FileFormats
 				if (t.Length == 0 || t[0] == '#')
 					continue;
 				var level = line.Length - t.Length;
+				var location = new MiniYamlNode.SourceLocation { Filename = filename, Line = lineNo };
 
 				if (levels.Count <= level)
-					throw new YamlException("Bad indent in miniyaml");
+					throw new YamlException("Bad indent in miniyaml at {0}".F (location));
 				while (levels.Count > level + 1)
 					levels.RemoveAt(levels.Count - 1);
 
 				var d = new List<MiniYamlNode>();
 				var rhs = SplitAtColon( ref t );
-				levels[ level ].Add( new MiniYamlNode( t, rhs, d, new MiniYamlNode.SourceLocation { Filename = filename, Line = lineNo } ) );
+				levels[ level ].Add( new MiniYamlNode( t, rhs, d, location ) );
 
 				levels.Add(d);
 			}

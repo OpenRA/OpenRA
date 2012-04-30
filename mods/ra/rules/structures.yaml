@@ -42,15 +42,15 @@ GAP:
 	RequiresPower:
 	CanPowerDown:
 	Valued:
-		Cost: 500
+		Cost: 1000
 	Tooltip:
 		Name: Gap Generator
-		Description: Regenerates the Fog of War nearby, \nobscuring the area.\n  Unarmed
-#	Buildable:
-#		BuildPaletteOrder: 100
-#		Prerequisites: atek
-#		Owner: allies
-#		Cost: 500
+		Description: Regenerates the shroud nearby, \nobscuring the area.\n  Unarmed
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 100
+		Prerequisites: atek
+		Owner: allies
 	Building:
 		Power: -60
 		Footprint: _ x
@@ -60,8 +60,11 @@ GAP:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 10
+		Range: 6
+	CreatesShroud:
+		Range: 6
 	IronCurtainable:
+	RenderShroudCircle:
 
 SPEN:
 	Inherits: ^Building
@@ -356,6 +359,7 @@ DOME:
 	Bib:
 	ProvidesRadar:
 	IronCurtainable:
+	InfiltrateForExploration:
 
 PBOX:
 	Inherits: ^Building
@@ -364,7 +368,7 @@ PBOX:
 		BuildPaletteOrder: 20
 		Prerequisites: tent
 		Owner: allies
-		Hotkey: x
+		Hotkey: p
 	Valued:
 		Cost: 400
 	Tooltip:
@@ -668,6 +672,10 @@ PROC:
 		InitialActivity: FindResources
 		SpawnOffset: 1,2
 		Facing: 64
+	InfiltrateForCash:
+		Percentage: 50
+		Minimum: 500
+		SoundToVictim: credit1.aud
 
 SILO:
 	Inherits: ^Building

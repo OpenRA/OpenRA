@@ -27,7 +27,6 @@ HOSP:
 		Dimensions: 2,2
 	Tooltip:
 		Name: Hospital
-	-Capturable:
 	LeavesHusk: 
 		HuskActor: HOSP.Husk
 

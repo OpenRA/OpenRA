@@ -12,7 +12,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace OpenRA.Collections
+namespace OpenRA.FileFormats
 {
 	public class Set<T> : IEnumerable<T>
 	{
@@ -43,6 +43,14 @@ namespace OpenRA.Collections
 		IEnumerator IEnumerable.GetEnumerator()
 		{
 			return GetEnumerator();
+		}
+
+		public bool Contains( T obj ) { return data.ContainsKey(obj); }
+
+		public Set( params T[] ts )
+		{
+			foreach( var t in ts )
+				Add(t);
 		}
 	}
 }

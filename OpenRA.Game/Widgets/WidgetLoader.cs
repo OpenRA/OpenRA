@@ -48,6 +48,9 @@ namespace OpenRA
 			if (parent != null)
 				parent.AddChild( widget );
 
+			if (node.Key.Contains("@"))
+				FieldLoader.LoadField(widget, "Id", node.Key.Split('@')[1]);
+
 			foreach (var child in node.Value.Nodes)
 				if (child.Key != "Children")
 					FieldLoader.LoadField(widget, child.Key, child.Value.Value);

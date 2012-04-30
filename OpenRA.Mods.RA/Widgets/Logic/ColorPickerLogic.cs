@@ -23,11 +23,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		public ColorPickerLogic(Widget widget, ColorRamp initialRamp, Action<ColorRamp> onChange,
 			Action<ColorRamp> onSelect, WorldRenderer worldRenderer)
 		{
-			var panel = widget.GetWidget("COLOR_CHOOSER");
+			var panel = widget;
 			ramp = initialRamp;
-			var hueSlider = panel.GetWidget<SliderWidget>("HUE_SLIDER");
-			var satSlider = panel.GetWidget<SliderWidget>("SAT_SLIDER");
-			var lumSlider = panel.GetWidget<SliderWidget>("LUM_SLIDER");
+			var hueSlider = panel.Get<SliderWidget>("HUE");
+			var satSlider = panel.Get<SliderWidget>("SAT");
+			var lumSlider = panel.Get<SliderWidget>("LUM");
 
 			Action sliderChanged = () =>
 			{
@@ -49,9 +49,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				lumSlider.Value = ramp.L / 255f;
 			};
 
-			panel.GetWidget<ButtonWidget>("SAVE_BUTTON").OnClick = () => onSelect(ramp);
+			panel.Get<ButtonWidget>("SAVE_BUTTON").OnClick = () => onSelect(ramp);
 
-			var randomButton = panel.GetWidget<ButtonWidget>("RANDOM_BUTTON");
+			var randomButton = panel.Get<ButtonWidget>("RANDOM_BUTTON");
 			if (randomButton != null)
 				randomButton.OnClick = () =>
 				{

@@ -18,7 +18,7 @@ namespace OpenRA.Scripting
 		public static void PlayFMVFullscreen(World w, string movie, Action onComplete)
 		{
 			var playerRoot = Game.OpenWindow(w, "FMVPLAYER");
-			var player = playerRoot.GetWidget<VqaPlayerWidget>("PLAYER");
+			var player = playerRoot.Get<VqaPlayerWidget>("PLAYER");
 			w.EnableTick = false;
 			player.Load(movie);
 

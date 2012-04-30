@@ -25,31 +25,38 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			Game.BeforeGameStart += UnregisterEvents;
 
 			var r = Ui.Root;
-			gameRoot = r.GetWidget("INGAME_ROOT");
-			var optionsBG = gameRoot.GetWidget("INGAME_OPTIONS_BG");
+			gameRoot = r.Get("INGAME_ROOT");
+			var optionsBG = gameRoot.Get("INGAME_OPTIONS_BG");
 
-			r.GetWidget<ButtonWidget>("INGAME_OPTIONS_BUTTON").OnClick = () =>
+			r.Get<ButtonWidget>("INGAME_OPTIONS_BUTTON").OnClick = () =>
 				optionsBG.Visible = !optionsBG.Visible;
+			
+			var cheatsButton = gameRoot.Get<ButtonWidget>("CHEATS_BUTTON");
+			cheatsButton.OnClick = () =>
+			{
+				Game.OpenWindow("CHEATS_PANEL", new WidgetArgs() {{"onExit", () => {} }});
+			};
+			cheatsButton.IsVisible = () => world.LocalPlayer != null && world.LobbyInfo.GlobalSettings.AllowCheats;
 
-			optionsBG.GetWidget<ButtonWidget>("DISCONNECT").OnClick = () => LeaveGame(optionsBG);
+			optionsBG.Get<ButtonWidget>("DISCONNECT").OnClick = () => LeaveGame(optionsBG);
 
-			optionsBG.GetWidget<ButtonWidget>("SETTINGS").OnClick = () => Ui.OpenWindow("SETTINGS_MENU");
-			optionsBG.GetWidget<ButtonWidget>("MUSIC").OnClick = () => Ui.OpenWindow("MUSIC_MENU");
-			optionsBG.GetWidget<ButtonWidget>("RESUME").OnClick = () => optionsBG.Visible = false;
+			optionsBG.Get<ButtonWidget>("SETTINGS").OnClick = () => Ui.OpenWindow("SETTINGS_MENU");
+			optionsBG.Get<ButtonWidget>("MUSIC").OnClick = () => Ui.OpenWindow("MUSIC_MENU");
+			optionsBG.Get<ButtonWidget>("RESUME").OnClick = () => optionsBG.Visible = false;
 
-			optionsBG.GetWidget<ButtonWidget>("SURRENDER").OnClick = () =>
+			optionsBG.Get<ButtonWidget>("SURRENDER").OnClick = () =>
 			{
 				optionsBG.Visible = false;
 				world.IssueOrder(new Order("Surrender", world.LocalPlayer.PlayerActor, false));
 			};
 
-			optionsBG.GetWidget("SURRENDER").IsVisible = () => (world.LocalPlayer != null && world.LocalPlayer.WinState == WinState.Undefined);
+			optionsBG.Get("SURRENDER").IsVisible = () => (world.LocalPlayer != null && world.LocalPlayer.WinState == WinState.Undefined);
 
-			var postgameBG = gameRoot.GetWidget("POSTGAME_BG");
-			var postgameText = postgameBG.GetWidget<LabelWidget>("TEXT");
-			var postGameObserve = postgameBG.GetWidget<ButtonWidget>("POSTGAME_OBSERVE");
+			var postgameBG = gameRoot.Get("POSTGAME_BG");
+			var postgameText = postgameBG.Get<LabelWidget>("TEXT");
+			var postGameObserve = postgameBG.Get<ButtonWidget>("POSTGAME_OBSERVE");
 
-			var postgameQuit = postgameBG.GetWidget<ButtonWidget>("POSTGAME_QUIT");
+			var postgameQuit = postgameBG.Get<ButtonWidget>("POSTGAME_QUIT");
 			postgameQuit.OnClick = () => LeaveGame(postgameQuit);
 
 			postGameObserve.OnClick = () => postgameQuit.Visible = false;
@@ -86,7 +93,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		void AddChatLine(Color c, string from, string text)
 		{
-			gameRoot.GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").AddLine(c, from, text);
+			gameRoot.Get<ChatDisplayWidget>("CHAT_DISPLAY").AddLine(c, from, text);
 		}
 	}
 }

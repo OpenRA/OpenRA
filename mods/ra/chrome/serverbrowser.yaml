@@ -1,5 +1,4 @@
 Background@JOINSERVER_BG:
-	Id:JOINSERVER_BG
 	Logic:ServerBrowserLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
@@ -7,7 +6,6 @@ Background@JOINSERVER_BG:
 	Height:535
 	Children:
 		Label@JOINSERVER_LABEL_TITLE:
-			Id:JOINSERVER_LABEL_TITLE
 			X:0
 			Y:20
 			Width:PARENT_RIGHT
@@ -16,60 +14,51 @@ Background@JOINSERVER_BG:
 			Align:Center
 			Font:Bold
 		ScrollPanel@SERVER_LIST:
-			Id:SERVER_LIST
 			X:20
 			Y:50
 			Width:500
 			Height:425
 			Children:
 				ScrollItem@SERVER_TEMPLATE:
-					Id:SERVER_TEMPLATE
 					Width:PARENT_RIGHT-27
 					Height:68
 					X:2
 					Y:0
 					Children:
 						MapPreview@MAP_PREVIEW:
-							Id:MAP_PREVIEW
 							X:2
 							Y:2
 							Width:64
 							Height:64
 							ShowSpawnPoints:no
 						Label@TITLE:
-							Id:TITLE
 							X:70
 							Width:200
 							Height:25
 							Font:Bold
 						Label@MAP:
-							Id:MAP
 							X:70
 							Y:20
 							Width:250
 							Height:25
 						Label@PLAYERS:
-							Id:PLAYERS
 							X:70
 							Y:40
 							Width:50
 							Height:25
 						Label@STATE:
-							Id:STATE
 							Width:140
 							X:PARENT_RIGHT-150
 							Align:Right
 							Height:25
 							Font:Bold
 						Label@IP:
-							Id:IP
 							Width:140
 							X:PARENT_RIGHT-150
 							Y:20
 							Align:Right
 							Height:25
 						Label@VERSION:
-							Id:VERSION
 							Width:140
 							X:PARENT_RIGHT-150
 							Y:40
@@ -77,7 +66,6 @@ Background@JOINSERVER_BG:
 							Height:25
 						
 		Label@PROGRESS_LABEL:
-			Id:PROGRESS_LABEL
 			X:(PARENT_RIGHT - WIDTH) / 2
 			Y:PARENT_BOTTOM / 2 - HEIGHT
 			Width:150
@@ -85,7 +73,6 @@ Background@JOINSERVER_BG:
 			Text:Fetching games...
 			Align:Center				
 		Button@REFRESH_BUTTON:
-			Id:REFRESH_BUTTON
 			X:20
 			Y:PARENT_BOTTOM - 45
 			Width:120
@@ -93,7 +80,6 @@ Background@JOINSERVER_BG:
 			Text:Refresh
 			Font:Bold
 		Button@JOIN_BUTTON:
-			Id:JOIN_BUTTON
 			X:PARENT_RIGHT - 140 - 130
 			Y:PARENT_BOTTOM - 45
 			Width:120
@@ -102,7 +88,6 @@ Background@JOINSERVER_BG:
 			Font:Bold
 			Key:return
 		Button@BACK_BUTTON:
-			Id:BACK_BUTTON
 			X:PARENT_RIGHT - 140
 			Y:PARENT_BOTTOM - 45
 			Width:120
@@ -111,7 +96,6 @@ Background@JOINSERVER_BG:
 			Font:Bold
 			Key:escape
 Background@DIRECTCONNECT_BG:
-	Id:DIRECTCONNECT_BG
 	Logic:DirectConnectLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
@@ -119,7 +103,6 @@ Background@DIRECTCONNECT_BG:
 	Height:155
 	Children:
 		Label@DIRECTCONNECT_LABEL_TITLE:
-			Id:DIRECTCONNECT_LABEL_TITLE
 			X:0
 			Y:20
 			Width:400
@@ -128,7 +111,6 @@ Background@DIRECTCONNECT_BG:
 			Align:Center
 			Font:Bold
 		Label@ADDRESS_LABEL:
-			Id:ADDRESS_LABEL
 			X:50
 			Y:59
 			Width:95
@@ -136,21 +118,18 @@ Background@DIRECTCONNECT_BG:
 			Align:Right
 			Text:Server Address:
 		TextField@IP:
-			Id:IP
 			X:150
 			Y:60
 			Width:160
 			MaxLength:50
 			Height:25
 		TextField@PORT:
-			Id:PORT
 			X:315
 			Y:60
 			Width:55
 			MaxLength:5
 			Height:25
 		Button@JOIN_BUTTON:
-			Id:JOIN_BUTTON
 			X:130
 			Y:PARENT_BOTTOM - 45
 			Width:120
@@ -159,7 +138,6 @@ Background@DIRECTCONNECT_BG:
 			Font:Bold
 			Key:return
 		Button@BACK_BUTTON:
-			Id:BACK_BUTTON
 			X:260
 			Y:PARENT_BOTTOM - 45
 			Width:120
@@ -168,7 +146,6 @@ Background@DIRECTCONNECT_BG:
 			Font:Bold
 			Key:escape
 Background@CONNECTIONFAILED_PANEL:
-	Id:CONNECTIONFAILED_PANEL
 	Logic:ConnectionFailedLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
@@ -176,7 +153,6 @@ Background@CONNECTIONFAILED_PANEL:
 	Height:150
 	Children:
 		Label@CONNECTION_FAILED_TITLE:
-			Id:CONNECTION_FAILED_TITLE
 			X:0
 			Y:20
 			Width:450
@@ -185,7 +161,6 @@ Background@CONNECTIONFAILED_PANEL:
 			Align:Center
 			Font:Bold
 		Label@CONNECTING_DESC:
-			Id:CONNECTING_DESC
 			X:0
 			Y:60
 			Width:PARENT_RIGHT
@@ -193,7 +168,6 @@ Background@CONNECTIONFAILED_PANEL:
 			Text:Could not connect to AAA.BBB.CCC.DDD:EEEE
 			Align:Center
 		Button@RETRY_BUTTON:
-			Id:RETRY_BUTTON
 			X:PARENT_RIGHT - 360
 			Y:PARENT_BOTTOM - 45
 			Width:160
@@ -202,7 +176,6 @@ Background@CONNECTIONFAILED_PANEL:
 			Font:Bold
 			Key:return
 		Button@ABORT_BUTTON:
-			Id:ABORT_BUTTON
 			X:PARENT_RIGHT - 180
 			Y:PARENT_BOTTOM - 45
 			Width:160
@@ -211,7 +184,6 @@ Background@CONNECTIONFAILED_PANEL:
 			Font:Bold
 			Key:escape
 Background@CONNECTING_PANEL:
-	Id:CONNECTING_PANEL
 	Logic:ConnectionLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
@@ -219,7 +191,6 @@ Background@CONNECTING_PANEL:
 	Height:150
 	Children:
 		Label@CONNECTING_TITLE:
-			Id:CONNECTING_TITLE
 			X:0
 			Y:20
 			Width:450
@@ -228,7 +199,6 @@ Background@CONNECTING_PANEL:
 			Align:Center
 			Font:Bold
 		Label@CONNECTING_DESC:
-			Id:CONNECTING_DESC
 			X:0
 			Y:60
 			Width:PARENT_RIGHT
@@ -236,7 +206,6 @@ Background@CONNECTING_PANEL:
 			Text:Connecting to AAA.BBB.CCC.DDD:EEEE...
 			Align:Center
 		Button@ABORT_BUTTON:
-			Id:ABORT_BUTTON
 			X:PARENT_RIGHT - 180
 			Y:PARENT_BOTTOM - 45
 			Width:160

@@ -242,6 +242,7 @@
 	ShakeOnDeath:
 	Sellable:
 	Capturable:
+	CapturableBar:
 
 ^CivBuilding:
 	Inherits: ^Building
@@ -257,6 +258,7 @@
 	WithBuildingExplosion:
 	-RepairableBuilding:
 	-Capturable:
+	-CapturableBar:
 	-Sellable:
 	Tooltip:
 		Name: Civilian Building
@@ -275,6 +277,7 @@
 ^TechBuilding:
 	Inherits: ^CivBuilding
 	Capturable:
+	CapturableBar:
 	RepairableBuilding:
 	RevealsShroud:
 		Range: 3

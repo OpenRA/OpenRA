@@ -16,14 +16,14 @@ namespace OpenRA.Mods.RA
 {
 	class InfiltrateForSupportPowerInfo : ITraitInfo
 	{
-		[ActorReference]
-		public readonly string Proxy = null;
+		[ActorReference] public readonly string Proxy = null;
 		public object Create(ActorInitializer init) { return new InfiltrateForSupportPower(this); }
 	}
 
 	class InfiltrateForSupportPower : IAcceptSpy
 	{
 		InfiltrateForSupportPowerInfo Info;
+
 		public InfiltrateForSupportPower(InfiltrateForSupportPowerInfo info)
 		{
 			Info = info;

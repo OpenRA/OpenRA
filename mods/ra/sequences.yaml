@@ -1629,6 +1629,8 @@ crate:
 		Start: 0
 		Length: *
 		Tick: 500
+	land: sh-crate
+		Start: 0
 
 crate-effects:
 	speed: speed

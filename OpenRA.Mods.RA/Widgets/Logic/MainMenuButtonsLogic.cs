@@ -22,26 +22,26 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			rootMenu = widget;
 
 			Game.modData.WidgetLoader.LoadWidget( new WidgetArgs(), Ui.Root, "PERF_BG" );
-			widget.GetWidget<ButtonWidget>("MAINMENU_BUTTON_JOIN").OnClick = () => OpenGamePanel("JOINSERVER_BG");
-			widget.GetWidget<ButtonWidget>("MAINMENU_BUTTON_CREATE").OnClick = () => OpenGamePanel("CREATESERVER_BG");
-			widget.GetWidget<ButtonWidget>("MAINMENU_BUTTON_DIRECTCONNECT").OnClick = () => OpenGamePanel("DIRECTCONNECT_BG");
-			widget.GetWidget<ButtonWidget>("MAINMENU_BUTTON_SETTINGS").OnClick = () => Ui.OpenWindow("SETTINGS_MENU");
-			widget.GetWidget<ButtonWidget>("MAINMENU_BUTTON_MUSIC").OnClick = () => Ui.OpenWindow("MUSIC_MENU");
+			widget.Get<ButtonWidget>("MAINMENU_BUTTON_JOIN").OnClick = () => OpenGamePanel("JOINSERVER_BG");
+			widget.Get<ButtonWidget>("MAINMENU_BUTTON_CREATE").OnClick = () => OpenGamePanel("CREATESERVER_BG");
+			widget.Get<ButtonWidget>("MAINMENU_BUTTON_DIRECTCONNECT").OnClick = () => OpenGamePanel("DIRECTCONNECT_BG");
+			widget.Get<ButtonWidget>("MAINMENU_BUTTON_SETTINGS").OnClick = () => Ui.OpenWindow("SETTINGS_MENU");
+			widget.Get<ButtonWidget>("MAINMENU_BUTTON_MUSIC").OnClick = () => Ui.OpenWindow("MUSIC_MENU");
 
-			widget.GetWidget<ButtonWidget>("MAINMENU_BUTTON_MODS").OnClick = () =>
+			widget.Get<ButtonWidget>("MAINMENU_BUTTON_MODS").OnClick = () =>
 				Ui.OpenWindow("MODS_PANEL", new WidgetArgs()
 				{
 					{ "onExit", () => {} },
 					{ "onSwitch", RemoveShellmapUI }
 				});
 
-			widget.GetWidget<ButtonWidget>("MAINMENU_BUTTON_REPLAY_VIEWER").OnClick = () =>
+			widget.Get<ButtonWidget>("MAINMENU_BUTTON_REPLAY_VIEWER").OnClick = () =>
 				Ui.OpenWindow("REPLAYBROWSER_BG", new WidgetArgs()
 				{
 					{ "onExit", () => {} },
 					{ "onStart", RemoveShellmapUI }
 				});
-			widget.GetWidget<ButtonWidget>("MAINMENU_BUTTON_QUIT").OnClick = () => Game.Exit();
+			widget.Get<ButtonWidget>("MAINMENU_BUTTON_QUIT").OnClick = () => Game.Exit();
 		}
 
 		void RemoveShellmapUI()

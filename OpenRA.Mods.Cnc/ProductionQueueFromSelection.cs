@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			this.world = world;
 
 			tabsWidget = Lazy.New(() =>
-				Ui.Root.GetWidget<ProductionTabsWidget>(info.ProductionTabsWidget));
+				Ui.Root.Get<ProductionTabsWidget>(info.ProductionTabsWidget));
 		}
 
 		public void SelectionChanged()
