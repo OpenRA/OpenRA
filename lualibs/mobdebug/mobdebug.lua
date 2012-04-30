@@ -1,5 +1,5 @@
 --
--- MobDebug 0.44
+-- MobDebug 0.442
 -- Copyright Paul Kulchenko 2011-2012
 -- Based on RemDebug 1.0 (http://www.keplerproject.org/remdebug)
 --
@@ -8,7 +8,7 @@ local mobdebug = {
   _NAME = "mobdebug",
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
-  _VERSION = "0.44"
+  _VERSION = "0.442"
 }
 
 local coroutine = coroutine
@@ -232,13 +232,34 @@ local function capture_vars()
   return vars
 end
 
+local function stack_depth(start_depth)
+  for i = start_depth, 0, -1 do
+    if debug.getinfo(i, "l") then return i+1 end
+  end
+end
+
 local function debug_hook(event, line)
-  if abort then error("aborted") end -- abort execution for RE/LOAD
+  if abort then
+    -- check the stack to see if there are any C functions above us
+    for i = 2, stack_level+1 do
+      -- simply return if it is not safe to abort
+      local source = debug.getinfo(i, "S")
+      if source and source.what == "C" then return end
+    end
+    error("aborted") -- abort execution for RE/LOAD
+  end
   if event == "call" then
     stack_level = stack_level + 1
   elseif event == "return" or event == "tail return" then
     stack_level = stack_level - 1
   elseif event == "line" then
+    -- this is needed to check if the stack got shorter.
+    -- this may happen when "pcall(load, '')" is called
+    -- or when "error()" is called in a function.
+    -- in either case there are more "call" than "return" events reported.
+    -- this validation is done for every "line" event, but should be
+    -- "cheap" as it only checks for the stack to get shorter
+    stack_level = stack_depth(stack_level)
     local caller = debug.getinfo(2, "S")
 
     -- grab the filename and fix it if needed
@@ -265,7 +286,6 @@ local function debug_hook(event, line)
         local status, res = pcall(value)
         if status and res then
           coroutine.resume(coro_debugger, events.WATCH, vars, file, line, index)
-          restore_vars(vars)
         end
       end
     end
@@ -280,30 +300,34 @@ local function debug_hook(event, line)
       step_over = false
       coroutine.resume(coro_debugger, events.BREAK, vars, file, line)
     end
+    if vars then restore_vars(vars) end
   end
 end
 
 local function debugger_loop(sfile, sline)
   local command
+  local app
   local eval_env = {}
   local function emptyWatch () return false end
+  local loaded = {}
+  for k in pairs(package.loaded) do loaded[k] = true end
 
   while true do
     local line, err
-    if server.settimeout then server:settimeout(0.010) end
+    if wx and server.settimeout then server:settimeout(0.010) end
     while true do
       line, err = server:receive()
       if not line and err == "timeout" then
         -- yield for wx GUI applications if possible to avoid "busyness"
-        if wx and wx.wxGetApp then
-          local app = wx.wxGetApp()
+        app = app or (wx and wx.wxGetApp and wx.wxGetApp())
+        if app then
           local win = app:GetTopWindow()
           if win then
             -- process messages in a regular way
             -- and exit as soon as the event loop is idle
             win:Connect(wx.wxEVT_IDLE, function(event)
-              app:ExitMainLoop()
               win:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wx.wxEVT_IDLE)
+              app:ExitMainLoop()
             end)
             app:MainLoop()
           end
@@ -355,33 +379,39 @@ local function debugger_loop(sfile, sline)
       size = tonumber(size)
 
       if abort == nil then -- no LOAD/RELOAD allowed inside start()
-        if size > 0 then local _ = server:receive(size) end
+        if size > 0 then server:receive(size) end
         if sfile and sline then
           server:send("201 Started " .. sfile .. " " .. sline .. "\n")
         else
           server:send("200 OK 0\n")
         end
       else
+        -- reset environment to allow required modules to load again
+        -- remove those packages that weren't loaded when debugger started
+        for k in pairs(package.loaded) do
+          if not loaded[k] then package.loaded[k] = nil end
+        end
+
         if size == 0 then -- RELOAD the current script being debugged
           server:send("200 OK 0\n")
           abort = true
-          coroutine.yield() -- this should not return as the hook will abort
-        end
-
-        local chunk = server:receive(size)
-        if chunk then -- LOAD a new script for debugging
-          local func, res = loadstring(chunk, name)
-          if func then
-            server:send("200 OK 0\n")
-            debugee = func
-            abort = true
-            coroutine.yield() -- this should not return as the hook will abort
-          else
-            server:send("401 Error in Expression " .. string.len(res) .. "\n")
-            server:send(res)
-          end
+          coroutine.yield()
         else
-          server:send("400 Bad Request\n")
+          local chunk = server:receive(size)
+          if chunk then -- LOAD a new script for debugging
+            local func, res = loadstring(chunk, name)
+            if func then
+              server:send("200 OK 0\n")
+              debugee = func
+              abort = true
+              coroutine.yield()
+            else
+              server:send("401 Error in Expression " .. string.len(res) .. "\n")
+              server:send(res)
+            end
+          else
+            server:send("400 Bad Request\n")
+          end
         end
       end
     elseif command == "SETW" then
@@ -468,7 +498,7 @@ local function connect(controller_host, controller_port)
   return socket.connect(controller_host, controller_port)
 end
 
--- Tries to start the debug session by connecting with a controller
+-- Starts a debug session by connecting to a controller
 local function start(controller_host, controller_port)
   server = socket.connect(controller_host, controller_port)
   if server then
@@ -492,7 +522,6 @@ local function loop(controller_host, controller_port)
       local msg = err .. "\n" .. trace
       server:send("401 Error in Execution " .. string.len(msg) .. "\n")
       server:send(msg)
-      server:close()
       return err
     end
 
@@ -506,11 +535,12 @@ local function loop(controller_host, controller_port)
       local status, error = coroutine.resume(coro_debugee)
 
       -- was there an error or is the script done?
-      if not abort then -- this is an expected error; ignore it
-        if not status then -- this is something to be reported
-          return false,report(debug.traceback(coro_debugee), error) 
+      if not abort then -- 'abort' state is allowed here; ignore it
+        if not status then -- report the error
+          report(debug.traceback(coro_debugee), error)
+        else
+          break
         end
-        break
       end
     end
     server:close()
@@ -538,7 +568,9 @@ local function handle(params, client)
       return -- use return here for those cases where os.exit() is not wanted
     end
     local _, _, status = string.find(breakpoint, "^(%d+)")
-    if status == "202" then
+    if status == "200" then
+      -- don't need to do anything
+    elseif status == "202" then
       _, _, file, line = string.find(breakpoint, "^202 Paused%s+([%w%p%s]+)%s+(%d+)%s*$")
       if file and line then 
         print("Paused at file " .. file .. " line " .. line)
@@ -559,7 +591,8 @@ local function handle(params, client)
     else
       print("Unknown error")
       os.exit()
-      return nil, nil, "Unknown error" -- use return here for those cases where os.exit() is not wanted
+      -- use return here for those cases where os.exit() is not wanted
+      return nil, nil, "Unknown error; unexpected response '" .. breakpoint .. "'"
     end
   elseif command == "setb" then
     _, _, _, file, line = string.find(params, "^([a-z]+)%s+([%w%p%s]+)%s+(%d+)%s*$")
@@ -639,7 +672,8 @@ local function handle(params, client)
       end
     end    
   elseif command == "eval" or command == "exec" 
-      or command == "load" or command == "reload" then
+      or command == "load" or command == "loadstring"
+      or command == "reload" then
     local _, _, exp = string.find(params, "^[a-z]+%s+(.+)$")
     if exp or (command == "reload") then 
       if command == "eval" then
@@ -650,6 +684,13 @@ local function handle(params, client)
         client:send("EXEC " .. exp .. "\n")
       elseif command == "reload" then
         client:send("LOAD 0 -\n")
+      elseif command == "loadstring" then
+        local _, _, _, file, lines = string.find(exp, "^([\"'])(.-)%1%s+(.+)")
+        if not file then
+           _, _, file, lines = string.find(exp, "^(%S+)%s+(.+)")
+        end
+        client:send("LOAD " .. string.len(lines) .. " " .. file .. "\n")
+        client:send(lines)
       else
         local file = io.open(exp, "r")
         if not file then print("Cannot open file " .. exp); return end
@@ -662,6 +703,9 @@ local function handle(params, client)
         client:send(lines)
       end
       local params = client:receive()
+      if not params then
+        return nil, nil, "Missing content after EXEC/LOAD"
+      end
       local _, _, status, len = string.find(params, "^(%d+)[%w%p%s]+%s+(%d+)%s*$")
       if status == "200" then
         len = tonumber(len)
@@ -672,6 +716,9 @@ local function handle(params, client)
         end
       elseif status == "201" then
         _, _, file, line = string.find(params, "^201 Started%s+([%w%p%s]+)%s+(%d+)%s*$")
+      elseif status == "202" or params == "200 OK" then
+        -- do nothing; this only happens when RE/LOAD command gets the response
+        -- that was for the original command that was aborted
       elseif status == "401" then
         len = tonumber(len)
         local res = client:receive(len)
@@ -679,7 +726,7 @@ local function handle(params, client)
         return nil, nil, res
       else
         print("Unknown error")
-        return nil, nil, "Unknown error"
+        return nil, nil, "Unknown error after EXEC/LOAD; unexpected response '" .. params .. "'"
       end
     else
       print("Invalid command")

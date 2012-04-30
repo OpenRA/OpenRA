@@ -36,7 +36,7 @@ local function updateWatches()
 end
 
 local function activateDocument(fileName, line)
-  if (not fileName and line) then return end
+  if not fileName then return end
 
   if not wx.wxIsAbsolutePath(fileName) then
     fileName = wx.wxGetCwd().."/"..fileName
@@ -57,8 +57,10 @@ local function activateDocument(fileName, line)
       notebook:SetSelection(selection)
       SetEditorSelection(selection)
       ClearAllCurrentLineMarkers()
-      editor:MarkerAdd(line-1, CURRENT_LINE_MARKER)
-      editor:EnsureVisibleEnforcePolicy(line-1)
+      if line then
+        editor:MarkerAdd(line-1, CURRENT_LINE_MARKER)
+        editor:EnsureVisibleEnforcePolicy(line-1)
+      end
       fileFound = true
       break
     end
@@ -93,8 +95,8 @@ debugger.listen = function()
   DisplayOutput("Started debugger server; clients can connect to "..wx.wxGetHostName()..":"..debugger.portnumber..".\n")
   copas.autoclose = false
   copas.addserver(server, function (skt)
-      SetAllEditorsReadOnly(true)
       local options = debugger.options or {}
+      if not debugger.scratchpad then SetAllEditorsReadOnly(true) end
       local wxfilepath = GetEditorFileAndCurInfo()
       local startfile = options.startfile or wxfilepath:GetFullPath()
       local basedir = options.basedir
@@ -116,13 +118,15 @@ debugger.listen = function()
       debugger.handle("delallb")
 
       -- go over all windows and find all breakpoints
-      for _, document in pairs(ide.openDocuments) do
-        local editor = document.editor
-        local filePath = document.filePath
-        line = editor:MarkerNext(0, BREAKPOINT_MARKER_VALUE)
-        while line ~= -1 do
-          debugger.handle("setb " .. filePath .. " " .. (line+1))
-          line = editor:MarkerNext(line + 1, BREAKPOINT_MARKER_VALUE)
+      if (not debugger.scratchpad) then
+        for _, document in pairs(ide.openDocuments) do
+          local editor = document.editor
+          local filePath = document.filePath
+          line = editor:MarkerNext(0, BREAKPOINT_MARKER_VALUE)
+          while line ~= -1 do
+            debugger.handle("setb " .. filePath .. " " .. (line+1))
+            line = editor:MarkerNext(line + 1, BREAKPOINT_MARKER_VALUE)
+          end
         end
       end
 
@@ -130,7 +134,7 @@ debugger.listen = function()
         local file, line = debugger.handle("run")
         activateDocument(file, line)
       else
-        local file, line = debugger.handle("load " .. startfile)
+        local file, line = debugger.loadfile(startfile)
         -- "load" can work in two ways: (1) it can load the requested file
         -- OR (2) it can "refuse" to load it if the client was started
         -- with start() method, which can't load new files
@@ -163,7 +167,10 @@ debugger.listen = function()
             return debugger.terminate()
           end
         else
-          activateDocument(startfile, 1)
+          activateDocument(startfile, not debugger.scratchpad and 1 or nil)
+          -- don't use debugger.run() for scratchpad as it includes logic
+          -- that breaks the interaction ("out" and DebuggerStop)
+          if debugger.scratchpad then debugger.run() end -- handle("run") end
         end
       end
 
@@ -197,7 +204,6 @@ end
 
 debugger.exec = function(command)
   if debugger.server and not debugger.running then
-
     copas.addthread(function ()
         local out
         while true do
@@ -205,7 +211,7 @@ debugger.exec = function(command)
           if out then out = nil end
           if line == nil then
             if err then DisplayOutput(err .. "\n") end
-            DebuggerStop()
+            if not debugger.scratchpad then DebuggerStop() end
             return
           else
             if debugger.basedir and not wx.wxIsAbsolutePath(file) then
@@ -235,6 +241,12 @@ debugger.updateBreakpoint = function(command)
   end
 end
 
+debugger.loadfile = function(file)
+  return debugger.handle("load " .. file)
+end
+debugger.loadstring = function(file, string)
+  return debugger.handle("loadstring '" .. file .. "' " .. string)
+end
 debugger.update = function() copas.step(0) end
 debugger.terminate = function()
   if debugger.server then
@@ -256,7 +268,7 @@ debugger.over = function() debugger.exec("over") end
 debugger.out = function() debugger.exec("out") end
 debugger.run = function() debugger.exec("run") end
 debugger.evaluate = function(expression) return debugger.handle('eval ' .. expression) end
-debugger.breaknow = function()
+debugger.breaknow = function(command)
   -- stop if we're running a "trace" command
   debugger.loop = false
 
@@ -268,12 +280,13 @@ debugger.breaknow = function()
     local running = debugger.running
     -- this needs to be short as it will block the UI
     debugger.socket:settimeout(0.25)
-    debugger.handle("step", debugger.socket)
+    local file, line, err = debugger.handle(command or "step", debugger.socket)
     debugger.socket:settimeout(0)
     -- restore running status
     debugger.running = running
     -- don't need to do anything else as the earlier call (run, step, etc.)
     -- will get the results (file, line) back and will update the UI
+    return file, line, err
   end
 end
 debugger.breakpoint = function(file, line, state)

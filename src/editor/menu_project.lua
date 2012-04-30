@@ -43,6 +43,7 @@ end
 
 local debugTab = {
   { ID_RUN, "&Run\tF6", "Execute the current project/file" },
+  { ID_RUNNOW, "Run as Scratchpad", "Execute the current project/file and keep updating the code to see immediate results", wx.wxITEM_CHECK },
   { ID_COMPILE, "&Compile\tF7", "Test compile the Lua file" },
   { ID_START_DEBUG, "Start &Debugging\tF5", "Start a debugging session" },
   { ID_ATTACH_DEBUG, "&Start Debugger Server\tShift-F6", "Allow a client to start a debugging session" },
@@ -196,8 +197,7 @@ local function runInterpreter(wfilename, withdebugger)
 
   ClearAllCurrentLineMarkers()
   if not wfilename then return end
-  local pid = ide.interpreter:frun(wfilename, withdebugger)
-  debugger.pid = pid
+  debugger.pid = ide.interpreter:frun(wfilename, withdebugger)
 end
 
 function ProjectRun()
@@ -249,6 +249,68 @@ frame:Connect(ID_RUN, wx.wxEVT_UPDATE_UI,
     event:Enable((debugger.server == nil and debugger.pid == nil) and (editor ~= nil))
   end)
 
+local scratchpadEditor
+local scratchpadUpdated = false
+local function runOnChange(event)
+  local evtype = event:GetModificationType()
+  if (scratchpadEditor and (
+       bit.band(evtype,wxstc.wxSTC_MOD_INSERTTEXT) ~= 0 or
+       bit.band(evtype,wxstc.wxSTC_MOD_DELETETEXT) ~= 0 or
+       bit.band(evtype,wxstc.wxSTC_PERFORMED_UNDO) ~= 0 or
+       bit.band(evtype,wxstc.wxSTC_PERFORMED_REDO) ~= 0)) then
+
+    -- check if the code can even compile
+    if CompileProgram(scratchpadEditor, true) then
+      scratchpadUpdated = true
+    end
+  end
+  event:Skip()
+end
+local function rerunScratchpad()
+  if scratchpadUpdated then
+    -- are we already running in the debugger?
+    if debugger.pid then
+      local code = scratchpadEditor:GetText()
+      local filePath = DebuggerMakeFileName(scratchpadEditor,
+        openDocuments[scratchpadEditor:GetId()].filePath)
+
+      copas.addthread(function ()
+        debugger.breaknow() -- break the current execution first
+        local _, _, err = debugger.loadstring(filePath, code)
+        if not err then debugger.breaknow("run") end
+      end)
+    else
+      ProjectDebug()
+    end
+    scratchpadUpdated = false
+  end
+end
+
+frame:Connect(ID_RUNNOW, wx.wxEVT_COMMAND_MENU_SELECTED,
+  function (event)
+    if event:IsChecked() then
+      debugger.scratchpad = true
+      scratchpadEditor = GetEditor()
+      scratchpadEditor:Connect(wxstc.wxEVT_STC_MODIFIED, runOnChange)
+      ProjectDebug()
+    else
+      scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wxstc.wxEVT_STC_MODIFIED)
+      debugger.scratchpad = nil
+      debugger.terminate()
+    end
+  end)
+frame:Connect(ID_RUNNOW, wx.wxEVT_UPDATE_UI,
+  function (event)
+    local editor = GetEditor()
+    event:Enable((debugger.server == nil) and (editor ~= nil) or debugger.scratchpad)
+    -- disable checkbox if the process has been stopped
+    if frame.menuBar:IsChecked(ID_RUNNOW) and not debugger.pid then
+      scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wxstc.wxEVT_STC_MODIFIED)
+      debugger.scratchpad = nil
+      event:Check(false)
+    end
+  end)
+
 frame:Connect(ID_ATTACH_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
     ClearAllCurrentLineMarkers()
@@ -257,8 +319,9 @@ frame:Connect(ID_ATTACH_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
 frame:Connect(ID_ATTACH_DEBUG, wx.wxEVT_UPDATE_UI,
   function (event)
     local editor = GetEditor()
-    event:Enable((ide.interpreter) and (ide.interpreter.fattachdebug) and
-      (not debugger.listening) and (debugger.server == nil) and (editor ~= nil))
+    event:Enable((ide.interpreter) and (ide.interpreter.fattachdebug)
+      and (not debugger.listening) and (debugger.server == nil)
+      and (editor ~= nil) and (not debugger.scratchpad))
   end)
 
 frame:Connect(ID_START_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED, ProjectDebug)
@@ -344,7 +407,8 @@ frame:Connect(ID_BREAK, wx.wxEVT_COMMAND_MENU_SELECTED,
 frame:Connect(ID_BREAK, wx.wxEVT_UPDATE_UI,
   function (event)
     local editor = GetEditor()
-    event:Enable((debugger.server ~= nil) and (debugger.running) and (editor ~= nil))
+    event:Enable((debugger.server ~= nil) and (debugger.running)
+                 and (editor ~= nil) and (not debugger.scratchpad))
   end)
 
 --[[
@@ -363,5 +427,6 @@ frame:Connect(ID "view.debug.callstack", wx.wxEVT_UPDATE_UI,
 frame:Connect(wx.wxEVT_IDLE,
   function(event)
     if (debugger.update) then debugger.update() end
+    if (debugger.scratchpad) then rerunScratchpad() end
     event:Skip() -- let other EVT_IDLE handlers to work on the event
   end)

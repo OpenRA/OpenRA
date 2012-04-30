@@ -35,7 +35,6 @@ local app = {
   postinit = function ()
     dofile("zbstudio/menu_help.lua")
     dofile("src/editor/inspect.lua")
-    dofile("src/editor/scratchpad.lua")
 
     local bundle = wx.wxIconBundle()
     local files = FileSysGet("zbstudio/res/", wx.wxFILE)
