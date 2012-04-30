@@ -1623,7 +1623,7 @@ fb2:
 fb3:
 	idle:
 		Start: 0
-		Length: *
+		Facings: 32
 fb4:
 	idle:
 		Start: 0

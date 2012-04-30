@@ -162,16 +162,16 @@ FireballLauncher:
 		Damage: 150
 		
 Flamer:
-	ROF: 40
+	ROF: 50
 	Range: 5
-	Burst: 30
+	Burst: 15
 	BurstDelay: 1
 	Projectile: Bullet
-		Speed: 12
+		Speed: 10
 		Trail: fb4
 		Image: fb3
 		Angle: .1
-		Inaccuracy: 17
+		Inaccuracy: 20
 	Warhead:
 		Spread: 8
 		Versus: 
@@ -185,7 +185,7 @@ Flamer:
 		InfDeath: 4
 		SmudgeType: Scorch
 		ImpactSound: firebl3
-		Damage: 3
+		Damage: 8
 
 ChainGun:
 	ROF: 10
