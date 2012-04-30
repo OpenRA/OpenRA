@@ -416,6 +416,11 @@ HBOX:
 		Type: Wood
 	RevealsShroud:
 		Range: 6
+	Cloak:
+		InitialDelay: 125
+		CloakDelay: 125
+		CloakSound: appear1.aud
+		UncloakSound: appear1.aud
 	AttackTurreted:
 		PrimaryWeapon: Vulcan
 		PrimaryLocalOffset: 0,-11,0,0,0
