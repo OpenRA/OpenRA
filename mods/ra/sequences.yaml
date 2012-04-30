@@ -849,6 +849,9 @@ explosion:
 	large_explosion: frag1
 		Start: 0
 		Length: *
+	small_napalm: napalm1
+		Start: 0
+		Length: *
 
 lst:
 	idle:
@@ -1419,7 +1422,7 @@ e4:
 		Facings: 8
 
 fb1:
-	idle:
+	idle: ffl
 		Start: 0
 		Length: *
 
@@ -2070,3 +2073,4 @@ overlay:
 		Start: 0
 	target-invalid:
 		Start: 1
+
