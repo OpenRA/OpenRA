@@ -284,12 +284,6 @@ frame:Connect(ID_RUNNOW, wx.wxEVT_UPDATE_UI,
   function (event)
     local editor = GetEditor()
     event:Enable((debugger.server == nil) and (editor ~= nil) or debugger.scratchpad)
-    -- disable checkbox if the process has been stopped
-    if frame.menuBar:IsChecked(ID_RUNNOW) and not debugger.pid then
-      scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wxstc.wxEVT_STC_MODIFIED)
-      debugger.scratchpad = nil
-      event:Check(false)
-    end
   end)
 
 frame:Connect(ID_ATTACH_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -412,6 +406,12 @@ frame:Connect(wx.wxEVT_IDLE,
       if scratchpadUpdated then
         DebugRerunScratchpad(scratchpadEditor)
         scratchpadUpdated = false
+      end
+      -- disable checkbox if the process has been stopped
+      if frame.menuBar:IsChecked(ID_RUNNOW) and not debugger.pid then
+        scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wxstc.wxEVT_STC_MODIFIED)
+        debugger.scratchpad = nil
+        frame.menuBar:Check(ID_RUNNOW, false)
       end
     end
     event:Skip() -- let other EVT_IDLE handlers to work on the event
