@@ -136,7 +136,7 @@ namespace OpenRA.Mods.RA
 
 			public void Tick()
 			{
-				Active = Disabled || Instances.All(i => i.self.IsDisabled());
+				Active = !Disabled && Instances.Any(i => !i.self.IsDisabled());
 				if (!Active)
 					return;
 
