@@ -39,6 +39,7 @@ Vulcan:
 	Report: GUN13
 	Projectile: Bullet
 		Speed: 100
+		ContrailLength: 1000
 	Warhead@1:
 		Spread: 3
 		Versus: 
@@ -48,7 +49,7 @@ Vulcan:
 			Concrete: 25%
 		Explosion: piffs
 		InfDeath: 1
-		Damage: 7
+		Damage: 10
 	Warhead@2:
 		Spread: 3
 		Versus: 
@@ -58,8 +59,8 @@ Vulcan:
 			Concrete: 25%
 		Explosion: piffs
 		InfDeath: 1
-		Damage: 5
-		Delay: 7
+		Damage: 10
+		Delay: 2
 	Warhead@3:
 		Spread: 3
 		Versus: 
@@ -69,7 +70,7 @@ Vulcan:
 			Concrete: 25%
 		Explosion: piffs
 		InfDeath: 1
-		Damage: 7
+		Damage: 10
 		Delay: 4
 	Warhead@4:
 		Spread: 3
@@ -80,7 +81,7 @@ Vulcan:
 			Concrete: 25%
 		Explosion: piffs
 		InfDeath: 1
-		Damage: 7
+		Damage: 10
 		Delay: 6
 	Warhead@5:
 		Spread: 3
@@ -91,7 +92,7 @@ Vulcan:
 			Concrete: 25%
 		Explosion: piffs
 		InfDeath: 1
-		Damage: 7
+		Damage: 10
 		Delay: 8
 	Warhead@6:
 		Spread: 3
@@ -102,7 +103,7 @@ Vulcan:
 			Concrete: 25%
 		Explosion: piffs
 		InfDeath: 1
-		Damage: 7
+		Damage: 10
 		Delay: 10
 		
 Maverick:

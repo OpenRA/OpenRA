@@ -20,6 +20,7 @@ namespace OpenRA.Mods.RA
 		[ActorReference] public readonly string[] PassengerTypes = {};
 		[ActorReference] public readonly string OnEnter = null;
 		[ActorReference] public readonly string OnExit = null;
+		public readonly bool SkipMakeAnims = false;
 
 		public object Create(ActorInitializer init) { return new TransformOnPassenger(this); }
 	}
@@ -36,8 +37,12 @@ namespace OpenRA.Mods.RA
 			{
 				self.World.AddFrameEndTask( w =>
 				{
+					var facing = self.TraitOrDefault<IFacing>();
+					var transform = new Transform(self, transformTo) { SkipMakeAnims = info.SkipMakeAnims };
+					if (facing != null) transform.Facing = facing.Facing;
+
 					self.CancelActivity();
-					self.QueueActivity( new Transform(self, transformTo) { Facing = self.Trait<IFacing>().Facing } );
+					self.QueueActivity(transform);
 				});
 			}
 		}

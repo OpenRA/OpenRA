@@ -21,6 +21,7 @@ namespace OpenRA.Mods.RA.Activities
 		public int Facing = 96;
 		public string[] Sounds = {};
 		public int ForceHealthPercentage = 0;
+		public bool SkipMakeAnims = false;
 
 		public Transform(Actor self, string toActor)
 		{
@@ -45,6 +46,9 @@ namespace OpenRA.Mods.RA.Activities
 					new OwnerInit( self.Owner ),
 					new FacingInit( Facing ),
 				};
+
+				if (SkipMakeAnims) init.Add(new SkipMakeAnimsInit());
+
 				var health = self.TraitOrDefault<Health>();
 				if (health != null)
 				{

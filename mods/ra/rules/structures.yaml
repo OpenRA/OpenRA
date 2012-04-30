@@ -363,45 +363,146 @@ DOME:
 
 PBOX:
 	Inherits: ^Building
-	Buildable:
-		Queue: Defense
-		BuildPaletteOrder: 20
-		Prerequisites: tent
-		Owner: allies
-		Hotkey: p
-	Valued:
-		Cost: 400
 	Tooltip:
-		Name: Pillbox
-		Description: Basic defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
+		Name: Pillbox (Unarmed)
 	Building:
 		Power: -15
 	-GivesBuildableArea:
+	Valued:
+		Cost: 400
 	Health:
 		HP: 400
 	Armor:
 		Type: Wood
 	RevealsShroud:
 		Range: 6
+	IronCurtainable:
+	-AcceptsSupplies:
+	Turreted:
+		ROT: 255
+	Cargo:
+		Types: Infantry
+		MaxWeight: 1
+		PipCount: 1
+	-EmitInfantryOnSell:
+#	EmitCargoOnSell:
+	TransformOnPassenger@e1:
+		PassengerTypes: e1
+		OnEnter: pbox.e1
+		OnExit: pbox
+		SkipMakeAnims: true
+#	TransformOnPassenger@e2:
+#		PassengerTypes: e2
+#		OnEnter: pbox.e2
+#		OnExit: pbox
+#		SkipMakeAnims: true
+	TransformOnPassenger@e3:
+		PassengerTypes: e3
+		OnEnter: pbox.e3
+		OnExit: pbox
+		SkipMakeAnims: true
+	TransformOnPassenger@e4:
+		PassengerTypes: e4
+		OnEnter: pbox.e4
+		OnExit: pbox
+		SkipMakeAnims: true
+	TransformOnPassenger@e7:
+		PassengerTypes: e7
+		OnEnter: pbox.e7
+		OnExit:	pbox
+		SkipMakeAnims: true
+	TransformOnPassenger@SHOK:
+		PassengerTypes: shok
+		OnEnter: pbox.shok
+		OnExit:	pbox
+		SkipMakeAnims: true
+
+PBOX.E1:
+	Inherits: PBOX
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 20
+		Prerequisites: tent
+		Owner: allies
+		Hotkey: p
+	Tooltip:
+		Name: Pillbox (Guns)
+		Description: Basic defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
+		Icon: PBOXICON
+	RenderBuilding:
+		Image: PBOX
+	RenderRangeCircle:
+	AutoTarget:
 	AttackTurreted:
 		PrimaryWeapon: Vulcan
 		PrimaryLocalOffset: 0,-11,0,0,0
-	AutoTarget:
-	IronCurtainable:
-	RenderRangeCircle:
-	-AcceptsSupplies:
 	WithMuzzleFlash:
-	Turreted:
-		ROT: 255
+	Cargo:
+		InitialUnits: e1
+
+#PBOX.E2:
+#	Inherits: PBOX
+#	Tooltip:
+#		Name: Pillbox (Grenades)
+#	RenderBuilding:
+#		Image: PBOX
+
+PBOX.E3:
+	Inherits: PBOX
+	Tooltip:
+		Name: Pillbox (Rockets)
+	RenderBuilding:
+		Image: PBOX
+	RenderRangeCircle:
+	AutoTarget:
+	AttackTurreted:
+		PrimaryWeapon: Dragon
+		PrimaryLocalOffset: 0,-11,0,0,0
+
+PBOX.E4:
+	Inherits: PBOX
+	Tooltip:
+		Name: Pillbox (Flamethrower)
+	RenderBuilding:
+		Image: PBOX
+	RenderRangeCircle:
+	AutoTarget:
+	AttackTurreted:
+		PrimaryWeapon: Flamer
+		PrimaryLocalOffset: 0,-11,0,0,0
+
+PBOX.E7:
+	Inherits: PBOX
+	Tooltip:
+		Name: Pillbox (Tanya)
+	RenderBuilding:
+		Image: PBOX
+	RenderRangeCircle:
+	AutoTarget:
+	AttackTurreted:
+		PrimaryWeapon: Colt45
+		PrimaryLocalOffset: 0,-11,0,0,0
+
+PBOX.SHOK:
+	Inherits: PBOX
+	Tooltip:
+		Name: Pillbox (Tesla)
+	RenderBuilding:
+		Image: PBOX
+	RenderRangeCircle:
+	AutoTarget:
+	AttackTurreted:
+		PrimaryWeapon: PortaTesla
+		PrimaryLocalOffset: 0,-11,0,0,0
 
 HBOX:
 	Inherits: ^Building
-	Buildable:
-		Queue: Defense
-		BuildPaletteOrder: 30
-		Prerequisites: tent
-		Owner: allies
-		Hotkey: c
+#	Buildable:
+#		Queue: Defense
+#		BuildPaletteOrder: 30
+#		Prerequisites: tent
+#		Owner: allies
+#		Hotkey: c
 	Valued:
 		Cost: 600
 	Tooltip:
