@@ -27,6 +27,10 @@ namespace OpenRA.Mods.RA
 		{
 			if (order.OrderString == "Sell" && !Selling)
 			{
+				var capturing = self.TraitOrDefault<Capturable>();
+				if (capturing != null && capturing.CaptureInProgress)
+					return;
+
 				Selling = true;
 
 				foreach( var ns in self.TraitsImplementing<INotifySold>() )
