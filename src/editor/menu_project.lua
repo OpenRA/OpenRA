@@ -266,25 +266,6 @@ local function runOnChange(event)
   end
   event:Skip()
 end
-local function rerunScratchpad()
-  if scratchpadUpdated then
-    -- are we already running in the debugger?
-    if debugger.pid then
-      local code = scratchpadEditor:GetText()
-      local filePath = DebuggerMakeFileName(scratchpadEditor,
-        openDocuments[scratchpadEditor:GetId()].filePath)
-
-      copas.addthread(function ()
-        debugger.breaknow() -- break the current execution first
-        local _, _, err = debugger.loadstring(filePath, code)
-        if not err then debugger.breaknow("run") end
-      end)
-    else
-      ProjectDebug()
-    end
-    scratchpadUpdated = false
-  end
-end
 
 frame:Connect(ID_RUNNOW, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
@@ -427,6 +408,11 @@ frame:Connect(ID "view.debug.callstack", wx.wxEVT_UPDATE_UI,
 frame:Connect(wx.wxEVT_IDLE,
   function(event)
     if (debugger.update) then debugger.update() end
-    if (debugger.scratchpad) then rerunScratchpad() end
+    if (debugger.scratchpad) then
+      if scratchpadUpdated then
+        DebugRerunScratchpad(scratchpadEditor)
+        scratchpadUpdated = false
+      end
+    end
     event:Skip() -- let other EVT_IDLE handlers to work on the event
   end)

@@ -46,7 +46,7 @@ local function activateDocument(fileName, line)
     fileName = wx.wxUnix2DosFilename(fileName)
   end
 
-  local fileFound = false
+  local activated
   for _, document in pairs(ide.openDocuments) do
     local editor = document.editor
     -- for running in cygwin, use same type of separators
@@ -61,12 +61,29 @@ local function activateDocument(fileName, line)
         editor:MarkerAdd(line-1, CURRENT_LINE_MARKER)
         editor:EnsureVisibleEnforcePolicy(line-1)
       end
-      fileFound = true
+      activated = editor
       break
     end
   end
 
-  return fileFound
+  return activated ~= nil, activated
+end
+
+function DebugRerunScratchpad(scratchpadEditor)
+  -- are we already running in the debugger?
+  if debugger.pid then
+    local code = scratchpadEditor:GetText()
+    local filePath = DebuggerMakeFileName(scratchpadEditor,
+      ide.openDocuments[scratchpadEditor:GetId()].filePath)
+
+    copas.addthread(function ()
+      debugger.breaknow() -- break the current execution first
+      local _, _, err = debugger.loadstring(filePath, code)
+      if not err then debugger.breaknow("run") end
+    end)
+  else
+    ProjectDebug()
+  end
 end
 
 debugger.shell = function(expression)
@@ -133,6 +150,9 @@ debugger.listen = function()
       if (options.run) then
         local file, line = debugger.handle("run")
         activateDocument(file, line)
+      elseif (debugger.scratchpad) then
+        local found, editor = activateDocument(startfile)
+        if found then DebugRerunScratchpad(editor) end
       else
         local file, line = debugger.loadfile(startfile)
         -- "load" can work in two ways: (1) it can load the requested file
@@ -167,10 +187,7 @@ debugger.listen = function()
             return debugger.terminate()
           end
         else
-          activateDocument(startfile, not debugger.scratchpad and 1 or nil)
-          -- don't use debugger.run() for scratchpad as it includes logic
-          -- that breaks the interaction ("out" and DebuggerStop)
-          if debugger.scratchpad then debugger.run() end -- handle("run") end
+          activateDocument(startfile, 1)
         end
       end
 
