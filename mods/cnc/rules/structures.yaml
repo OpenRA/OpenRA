@@ -116,7 +116,7 @@ SILO:
 		Description: Stores processed Tiberium
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 20
+		BuildPaletteOrder: 15
 		Prerequisites: proc
 		Owner: gdi,nod
 	Building:
@@ -557,7 +557,7 @@ CYCL:
 		Description: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 10
+		BuildPaletteOrder: 20
 		Prerequisites: fact
 		Owner: nod
 	Health:
