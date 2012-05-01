@@ -573,7 +573,7 @@ FTUR:
 	Valued:
 		Cost: 600
 	Tooltip:
-		Name: Flame Turret
+		Name: Flame Tower
 		Description: Anti-Infantry base defense.\n  Strong vs Infantry\n  Weak vs Aircraft
 	Building:
 		Power: -20
