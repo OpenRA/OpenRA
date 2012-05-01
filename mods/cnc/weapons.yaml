@@ -321,7 +321,7 @@ OrcaAAMissiles:
 
 Flamethrower:
 	ROF: 50
-	Range: 2
+	Range: 3
 	Report: FLAMER2
 	Projectile: Bullet
 		Speed: 100
@@ -329,8 +329,8 @@ Flamethrower:
 		Spread: 8
 		Versus: 
 			None: 90%
-			Wood: 100%
-			Light: 60%
+			Wood: 200%
+			Light: 75%
 			Heavy: 25%
 		InfDeath: 4
 		ImpactSound: flamer2
@@ -349,8 +349,8 @@ BigFlamer:
 		Spread: 8
 		Versus: 
 			None: 90%
-			Wood: 100%
-			Light: 60%
+			Wood: 200%
+			Light: 75%
 			Heavy: 25%
 		InfDeath: 4
 		Explosion: 3
@@ -360,7 +360,7 @@ BigFlamer:
 
 Chemspray:
 	ROF: 70
-	Range: 2
+	Range: 3
 	Report: FLAMER2
 	Projectile: Bullet
 		Speed: 100
@@ -368,10 +368,10 @@ Chemspray:
 		Damage: 80
 		Spread: 6
 		Versus: 
-			None: 90%
+			None: 100%
 			Wood: 75%
-			Light: 60%
-			Heavy: 25%
+			Light: 75%
+			Heavy: 50%
 		InfDeath: 5
 		SmudgeType: Scorch
 		ImpactSound: xplos
@@ -390,8 +390,8 @@ Grenade:
 		Versus: 
 			None: 90%
 			Wood: 75%
-			Light: 60%
-			Heavy: 25%
+			Light: 75%
+			Heavy: 50%
 		InfDeath: 2
 		Explosion: 5
 		ImpactSound: xplos
@@ -695,7 +695,7 @@ TowerMissle:
 		Damage: 60
 
 Napalm:
-	ROF: 4
+	ROF: 2
 	Projectile: GravityBomb
 		Image: BOMBLET
 	Warhead:
