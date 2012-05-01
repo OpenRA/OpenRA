@@ -412,7 +412,6 @@ HPAD:
 		HP: 800
 	RevealsShroud:
 		Range: 5
-	Bib:
 	Exit@1:
 		SpawnOffset: 0,-6
 	Production:
