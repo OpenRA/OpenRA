@@ -101,13 +101,13 @@ Player:
 	HackyAI@ZhukovAI:
 		Name:Zhukov AI
 		BuildingFractions:
-			proc: 30%
+			proc: 20%
 			powr: 35%
 			tent: 1%
 			barr: 1%
 			weap: 1%
-			pbox: 7%
-			gun: 10%
+			pbox: 12%
+			gun: 12%
 			ftur: 10%
 			tsla: 5%
 			dome: 10%
@@ -117,16 +117,16 @@ Player:
 			atek: 1%
 			stek: 1%
 		UnitsToBuild:
-			e1: 40%
-			e3: 10%
+			e1: 4%
+			e3: 1%
 			harv: 10%
 			ftrk: 5%
 			v2rl: 40%
 			arty: 40%
-			1tnk: 20%
-			2tnk: 20%
-			3tnk: 20%
-		SquadSize: 30
+			1tnk: 15%
+			2tnk: 15%
+			3tnk: 15%
+		SquadSize: 25
 	HackyAI@RommelAI:
 		Name:Rommel AI
 		BuildingFractions:
