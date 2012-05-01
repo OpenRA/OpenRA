@@ -81,8 +81,7 @@ namespace OpenRA.Mods.RA
 			{
 				if( IsCanceled || !target.IsValid ) return NextActivity;
 
-				if (self.TraitsImplementing<IDisable>().Any(d => d.Disabled))
-					return this;
+				if (self.IsDisabled()) return this;
 
 				var attack = self.Trait<AttackTurreted>();
 				const int RangeTolerance = 1;	/* how far inside our maximum range we should try to sit */

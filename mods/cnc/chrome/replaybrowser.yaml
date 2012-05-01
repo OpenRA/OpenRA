@@ -1,5 +1,4 @@
 Container@REPLAYBROWSER_PANEL:
-	Id:REPLAYBROWSER_PANEL
 	Logic:ReplayBrowserLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - 300)/2
@@ -19,14 +18,12 @@ Container@REPLAYBROWSER_PANEL:
 			Background:panel-black
 			Children:
 				ScrollPanel@REPLAY_LIST:
-					Id:REPLAY_LIST
 					X:15
 					Y:15
 					Width:286
 					Height:270
 					Children:
 						ScrollItem@REPLAY_TEMPLATE:
-							Id:REPLAY_TEMPLATE
 							Width:PARENT_RIGHT-27
 							Height:25
 							X:2
@@ -35,7 +32,6 @@ Container@REPLAYBROWSER_PANEL:
 							Children:
 								Label@TITLE:
 									X:10
-									Id:TITLE
 									Width:PARENT_RIGHT-20
 									Height:25
 				Background@MAP_BG:
@@ -46,13 +42,11 @@ Container@REPLAYBROWSER_PANEL:
 					Background:panel-gray
 					Children:
 						MapPreview@MAP_PREVIEW:
-							Id:MAP_PREVIEW
 							X:1
 							Y:1
 							Width:192
 							Height:192
 				Container@REPLAY_INFO:
-					Id:REPLAY_INFO
 					X:PARENT_RIGHT-WIDTH-15
 					Y:219
 					Width:194
@@ -66,7 +60,6 @@ Container@REPLAYBROWSER_PANEL:
 							Text:Map:
 							Font:Bold
 						Label@MAP_TITLE:
-							Id:MAP_TITLE
 							X:75
 							Width:70
 							Height:20
@@ -78,7 +71,6 @@ Container@REPLAYBROWSER_PANEL:
 							Text:Duration:
 							Font:Bold
 						Label@DURATION:
-							Id:DURATION
 							X:75
 							Y:20
 							Width:70
@@ -91,13 +83,11 @@ Container@REPLAYBROWSER_PANEL:
 							Text:Players:
 							Font:Bold
 						Label@PLAYERS:
-							Id:PLAYERS
 							X:75
 							Y:40
 							Width:70
 							Height:20
 				Button@CANCEL_BUTTON:
-					Id:CANCEL_BUTTON
 					Key:escape
 					X:0
 					Y:299
@@ -105,7 +95,6 @@ Container@REPLAYBROWSER_PANEL:
 					Height:35
 					Text:Back
 				Button@WATCH_BUTTON:
-					Id:WATCH_BUTTON
 					Key:return
 					X:380
 					Y:299

@@ -31,18 +31,18 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		public RAInstallFromCDLogic(Widget widget, Action continueLoading)
 		{
 			this.continueLoading = continueLoading;
-			panel = widget.GetWidget("INSTALL_FROMCD_PANEL");
-			progressBar = panel.GetWidget<ProgressBarWidget>("PROGRESS_BAR");
-			statusLabel = panel.GetWidget<LabelWidget>("STATUS_LABEL");
+			panel = widget.Get("INSTALL_FROMCD_PANEL");
+			progressBar = panel.Get<ProgressBarWidget>("PROGRESS_BAR");
+			statusLabel = panel.Get<LabelWidget>("STATUS_LABEL");
 
-			backButton = panel.GetWidget<ButtonWidget>("BACK_BUTTON");
+			backButton = panel.Get<ButtonWidget>("BACK_BUTTON");
 			backButton.OnClick = Ui.CloseWindow;
 
-			retryButton = panel.GetWidget<ButtonWidget>("RETRY_BUTTON");
+			retryButton = panel.Get<ButtonWidget>("RETRY_BUTTON");
 			retryButton.OnClick = CheckForDisk;
 
-			installingContainer = panel.GetWidget("INSTALLING");
-			insertDiskContainer = panel.GetWidget("INSERT_DISK");
+			installingContainer = panel.Get("INSTALLING");
+			insertDiskContainer = panel.Get("INSERT_DISK");
 			CheckForDisk();
 		}
 

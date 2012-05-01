@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA
 
 		public void SelectionChanged()
 		{
-			var palette = Ui.Root.GetWidget<BuildPaletteWidget>("INGAME_BUILD_PALETTE");
+			var palette = Ui.Root.GetOrNull<BuildPaletteWidget>("INGAME_BUILD_PALETTE");
 			if (palette == null)
 				return;
 

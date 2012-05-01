@@ -18,7 +18,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public SimpleTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, Func<string> getText)
 		{
-			var label = widget.GetWidget<LabelWidget>("LABEL");
+			var label = widget.Get<LabelWidget>("LABEL");
 
 			var font = Game.Renderer.Fonts[label.Font];
 			var cachedWidth = 0;

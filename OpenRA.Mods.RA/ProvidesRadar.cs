@@ -24,8 +24,7 @@ namespace OpenRA.Mods.RA
 		bool UpdateActive(Actor self)
 		{
 			// Check if powered
-			if (self.TraitsImplementing<IDisable>().Any(d => d.Disabled))
-				return false;
+			if (self.IsDisabled()) return false;
 
 			var isJammed = self.World.ActorsWithTrait<JamsRadar>().Any(a => self.Owner != a.Actor.Owner
 				&& (self.Location - a.Actor.Location).Length < a.Actor.Info.Traits.Get<JamsRadarInfo>().Range);

@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA.Activities
 
 			target.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(payload);
 			self.Destroy();
-			if (self.World.LocalPlayer != null && self.Owner.Stances[self.World.LocalPlayer] == Stance.Ally)
+			if (self.World.LocalPlayer == null || self.Owner.Stances[self.World.LocalPlayer] == Stance.Ally)
 				self.World.AddFrameEndTask(w => w.Add(new CashTick(payload, 30, 2, target.CenterLocation, target.Owner.ColorRamp.GetColor(0))));
 
 			return this;

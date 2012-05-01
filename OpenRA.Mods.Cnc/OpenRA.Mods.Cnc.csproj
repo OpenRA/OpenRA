@@ -55,7 +55,6 @@
     <Compile Include="Activities\HarvesterDockSequence.cs" />
     <Compile Include="CncLoadScreen.cs" />
     <Compile Include="CncMenuPaletteEffect.cs" />
-    <Compile Include="CncWaterPaletteRotation.cs" />
     <Compile Include="DeadBuildingState.cs" />
     <Compile Include="Effects\IonCannon.cs" />
     <Compile Include="IonCannonPower.cs" />
@@ -74,7 +73,6 @@
     <Compile Include="Widgets\CncWorldInteractionControllerWidget.cs" />
     <Compile Include="Widgets\LogicTickerWidget.cs" />
     <Compile Include="Widgets\Logic\ButtonTooltipLogic.cs" />
-    <Compile Include="Widgets\Logic\CncCheatsLogic.cs" />
     <Compile Include="Widgets\Logic\CncConquestObjectivesLogic.cs" />
     <Compile Include="Widgets\Logic\CncIngameChromeLogic.cs" />
     <Compile Include="Widgets\Logic\CncIngameMenuLogic.cs" />

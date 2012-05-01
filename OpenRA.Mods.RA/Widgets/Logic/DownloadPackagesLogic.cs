@@ -33,9 +33,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			this.installData = installData;
 			this.afterInstall = afterInstall;
 
-			panel = widget.GetWidget("INSTALL_DOWNLOAD_PANEL");
-			progressBar = panel.GetWidget<ProgressBarWidget>("PROGRESS_BAR");
-			statusLabel = panel.GetWidget<LabelWidget>("STATUS_LABEL");
+			panel = widget.Get("INSTALL_DOWNLOAD_PANEL");
+			progressBar = panel.Get<ProgressBarWidget>("PROGRESS_BAR");
+			statusLabel = panel.Get<LabelWidget>("STATUS_LABEL");
 
 			ShowDownloadDialog();
 		}
@@ -44,10 +44,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			statusLabel.GetText = () => "Initializing...";
 			progressBar.SetIndeterminate(true);
-			var retryButton = panel.GetWidget<ButtonWidget>("RETRY_BUTTON");
+			var retryButton = panel.Get<ButtonWidget>("RETRY_BUTTON");
 			retryButton.IsVisible = () => false;
 
-			var cancelButton = panel.GetWidget<ButtonWidget>("CANCEL_BUTTON");
+			var cancelButton = panel.Get<ButtonWidget>("CANCEL_BUTTON");
 
 			// Save the package to a temp file
 			var file = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());

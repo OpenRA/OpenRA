@@ -61,12 +61,13 @@ namespace OpenRA.Mods.Cnc
 			}
 		}
 
+		static Set<string> excludePalettes = new Set<string>("cursor", "chrome", "colorpicker", "shroud", "fog");
+
 		public void AdjustPalette(Dictionary<string,Palette> palettes)
 		{
 			if (to == EffectType.None && remainingFrames == 0)
 				return;
 
-			var excludePalettes = new List<string>(){"cursor", "chrome", "colorpicker", "shroud", "fog"};
 			foreach (var pal in palettes)
 			{
 				if (excludePalettes.Contains(pal.Key))

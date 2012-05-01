@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 		void AddChatLine(Color c, string from, string text)
 		{
-			ingameRoot.GetWidget<ChatDisplayWidget>("CHAT_DISPLAY").AddLine(c, from, text);
+			ingameRoot.Get<ChatDisplayWidget>("CHAT_DISPLAY").AddLine(c, from, text);
 		}
 
 		void UnregisterEvents()
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			button.OnKeyPress = e => selectTab(e.Modifiers.HasModifier(Modifiers.Shift));
 			button.IsToggled = () => queueTabs.QueueGroup == group;
 			var chromeName = group.ToLowerInvariant();
-			var icon = button.GetWidget<ImageWidget>("ICON");
+			var icon = button.Get<ImageWidget>("ICON");
 			icon.GetImageName = () => button.IsDisabled() ? chromeName+"-disabled" :
 				queueTabs.Groups[group].Alert ? chromeName+"-alert" : chromeName;
 		}
@@ -72,8 +72,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			Game.AddChatLine += AddChatLine;
 			Game.BeforeGameStart += UnregisterEvents;
 
-			ingameRoot = widget.GetWidget("INGAME_ROOT");
-			var playerRoot = ingameRoot.GetWidget("PLAYER_ROOT");
+			ingameRoot = widget.Get("INGAME_ROOT");
+			var playerRoot = ingameRoot.Get("PLAYER_ROOT");
 
 			// Observer
 			if (world.LocalPlayer == null)
@@ -100,7 +100,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		public void InitObserverWidgets(World world, Widget playerRoot)
 		{
 			var observerWidgets = Game.LoadWidget(world, "OBSERVER_WIDGETS", playerRoot, new WidgetArgs());
-			observerWidgets.GetWidget<ButtonWidget>("OPTIONS_BUTTON").OnClick = OptionsClicked;
+			observerWidgets.Get<ButtonWidget>("OPTIONS_BUTTON").OnClick = OptionsClicked;
 		}
 
 		public void InitPlayerWidgets(World world, Widget playerRoot)
@@ -109,29 +109,29 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			var playerWidgets = Game.LoadWidget(world, "PLAYER_WIDGETS", playerRoot, new WidgetArgs());
 			playerWidgets.IsVisible = () => true;
 
-			var sidebarRoot = playerWidgets.GetWidget("SIDEBAR_BACKGROUND");
+			var sidebarRoot = playerWidgets.Get("SIDEBAR_BACKGROUND");
 
 			BindOrderButton<SellOrderGenerator>(world, sidebarRoot, "SELL_BUTTON", "sell");
 			BindOrderButton<RepairOrderGenerator>(world, sidebarRoot, "REPAIR_BUTTON", "repair");
 
 			var playerResources = world.LocalPlayer.PlayerActor.Trait<PlayerResources>();
-			sidebarRoot.GetWidget<LabelWidget>("CASH_DISPLAY").GetText = () =>
+			sidebarRoot.Get<LabelWidget>("CASH").GetText = () =>
 				"${0}".F(playerResources.DisplayCash + playerResources.DisplayOre);
 
-			queueTabs = playerWidgets.GetWidget<ProductionTabsWidget>("PRODUCTION_TABS");
+			queueTabs = playerWidgets.Get<ProductionTabsWidget>("PRODUCTION_TABS");
 			world.ActorAdded += queueTabs.ActorChanged;
 			world.ActorRemoved += queueTabs.ActorChanged;
 
-			var queueTypes = sidebarRoot.GetWidget("PRODUCTION_TYPES");
-			SetupProductionGroupButton(queueTypes.GetWidget<ToggleButtonWidget>("BUILDING"), "Building");
-			SetupProductionGroupButton(queueTypes.GetWidget<ToggleButtonWidget>("DEFENSE"), "Defense");
-			SetupProductionGroupButton(queueTypes.GetWidget<ToggleButtonWidget>("INFANTRY"), "Infantry");
-			SetupProductionGroupButton(queueTypes.GetWidget<ToggleButtonWidget>("VEHICLE"), "Vehicle");
-			SetupProductionGroupButton(queueTypes.GetWidget<ToggleButtonWidget>("AIRCRAFT"), "Aircraft");
+			var queueTypes = sidebarRoot.Get("PRODUCTION_TYPES");
+			SetupProductionGroupButton(queueTypes.Get<ToggleButtonWidget>("BUILDING"), "Building");
+			SetupProductionGroupButton(queueTypes.Get<ToggleButtonWidget>("DEFENSE"), "Defense");
+			SetupProductionGroupButton(queueTypes.Get<ToggleButtonWidget>("INFANTRY"), "Infantry");
+			SetupProductionGroupButton(queueTypes.Get<ToggleButtonWidget>("VEHICLE"), "Vehicle");
+			SetupProductionGroupButton(queueTypes.Get<ToggleButtonWidget>("AIRCRAFT"), "Aircraft");
 
-			playerWidgets.GetWidget<ButtonWidget>("OPTIONS_BUTTON").OnClick = OptionsClicked;
+			playerWidgets.Get<ButtonWidget>("OPTIONS_BUTTON").OnClick = OptionsClicked;
 
-			var cheatsButton = playerWidgets.GetWidget<ButtonWidget>("CHEATS_BUTTON");
+			var cheatsButton = playerWidgets.Get<ButtonWidget>("CHEATS_BUTTON");
 			cheatsButton.OnClick = () =>
 			{
 				if (menu != MenuType.None)
@@ -142,7 +142,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			};
 			cheatsButton.IsVisible = () => world.LocalPlayer != null && world.LobbyInfo.GlobalSettings.AllowCheats;
 
-			var winLossWatcher = playerWidgets.GetWidget<LogicTickerWidget>("WIN_LOSS_WATCHER");
+			var winLossWatcher = playerWidgets.Get<LogicTickerWidget>("WIN_LOSS_WATCHER");
 			winLossWatcher.OnTick = () =>
 			{
 				if (world.LocalPlayer.WinState != WinState.Undefined)
@@ -157,11 +157,11 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		static void BindOrderButton<T>(World world, Widget parent, string button, string icon)
 			where T : IOrderGenerator, new()
 		{
-			var w = parent.GetWidget<ToggleButtonWidget>(button);
+			var w = parent.Get<ToggleButtonWidget>(button);
 			w.OnClick = () => world.ToggleInputMode<T>();
 			w.IsToggled = () => world.OrderGenerator is T;
 
-			w.GetWidget<ImageWidget>("ICON").GetImageName =
+			w.Get<ImageWidget>("ICON").GetImageName =
 				() => world.OrderGenerator is T ? icon+"-active" : icon;
 		}
 	}

@@ -180,10 +180,10 @@ $(foreach prog,$(PROGRAMS),$(eval $(call BUILD_ASSEMBLY,$(prog))))
 #
 # Install / Uninstall for *nix
 #
-prefix = /usr/local
-datarootdir = $(prefix)/share
-datadir = $(datarootdir)
-bindir = $(prefix)/bin
+prefix ?= /usr/local
+datarootdir ?= $(prefix)/share
+datadir ?= $(datarootdir)
+bindir ?= $(prefix)/bin
 BIN_INSTALL_DIR = $(DESTDIR)$(bindir)
 INSTALL_DIR = $(DESTDIR)$(datadir)/openra
 INSTALL = install
@@ -219,15 +219,20 @@ install: all
 	@cp -r glsl $(INSTALL_DIR)
 	@cp -r cg $(INSTALL_DIR)
 	@cp *.ttf $(INSTALL_DIR)
-	@cp --parents -r thirdparty/Tao $(INSTALL_DIR)
+	@cp thirdparty/Tao/* $(INSTALL_DIR)
 	@$(INSTALL_PROGRAM) thirdparty/ICSharpCode.SharpZipLib.dll $(INSTALL_DIR)
 
 	@echo "#!/bin/sh" > openra
 	@echo "cd "$(datadir)"/openra" >> openra
-	@echo "mono "$(datadir)"/openra/OpenRA.Game.exe \"$$""@\"" >> openra
+	@echo "exec mono "$(datadir)"/openra/OpenRA.Game.exe \"$$""@\"" >> openra
+
+	@echo "#!/bin/sh" > openra-editor
+	@echo "cd "$(datadir)"/openra" >> openra-editor
+	@echo "exec mono "$(datadir)"/openra/OpenRA.Editor.exe \"$$""@\"" >> openra-editor
 
 	@$(INSTALL_PROGRAM) -d $(BIN_INSTALL_DIR)
 	@$(INSTALL_PROGRAM) -m +rx openra $(BIN_INSTALL_DIR)
+	@$(INSTALL_PROGRAM) -m +rx openra-editor $(BIN_INSTALL_DIR)
 
 uninstall:
 	@-rm -r $(INSTALL_DIR)

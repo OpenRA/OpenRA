@@ -19,6 +19,7 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly string Name = "shroud";
 		public readonly bool IsFog = false;
+
 		public object Create(ActorInitializer init) { return new ShroudPalette(this); }
 	}
 

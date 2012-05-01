@@ -32,14 +32,14 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		public CncSettingsLogic(Widget widget, World world, Action onExit)
 		{
 			this.world = world;
-			var panel = widget.GetWidget("SETTINGS_PANEL");
+			var panel = widget.Get("SETTINGS_PANEL");
 
 			// General pane
-			var generalButton = panel.GetWidget<ButtonWidget>("GENERAL_BUTTON");
+			var generalButton = panel.Get<ButtonWidget>("GENERAL_BUTTON");
 			generalButton.OnClick = () => Settings = PanelType.General;
 			generalButton.IsDisabled = () => Settings == PanelType.General;
 
-			var generalPane = panel.GetWidget("GENERAL_CONTROLS");
+			var generalPane = panel.Get("GENERAL_CONTROLS");
 			generalPane.IsVisible = () => Settings == PanelType.General;
 
 			var gameSettings = Game.Settings.Game;
@@ -49,36 +49,36 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			var soundSettings = Game.Settings.Sound;
 
 			// Player profile
-			var nameTextfield = generalPane.GetWidget<TextFieldWidget>("NAME_TEXTFIELD");
+			var nameTextfield = generalPane.Get<TextFieldWidget>("NAME_TEXTFIELD");
 			nameTextfield.Text = playerSettings.Name;
 
 			playerPalettePreview = world.WorldActor.Trait<ColorPickerPaletteModifier>();
 			playerPalettePreview.Ramp = playerSettings.ColorRamp;
 
-			var colorDropdown = generalPane.GetWidget<DropDownButtonWidget>("COLOR_DROPDOWN");
+			var colorDropdown = generalPane.Get<DropDownButtonWidget>("COLOR");
 			colorDropdown.OnMouseDown = _ => ShowColorPicker(colorDropdown, playerSettings);
-			colorDropdown.GetWidget<ColorBlockWidget>("COLORBLOCK").GetColor = () => playerSettings.ColorRamp.GetColor(0);
+			colorDropdown.Get<ColorBlockWidget>("COLORBLOCK").GetColor = () => playerSettings.ColorRamp.GetColor(0);
 
 			// Debug
-			var perftextCheckbox = generalPane.GetWidget<CheckboxWidget>("PERFTEXT_CHECKBOX");
+			var perftextCheckbox = generalPane.Get<CheckboxWidget>("PERFTEXT_CHECKBOX");
 			perftextCheckbox.IsChecked = () => debugSettings.PerfText;
 			perftextCheckbox.OnClick = () => debugSettings.PerfText ^= true;
 
-			var perfgraphCheckbox = generalPane.GetWidget<CheckboxWidget>("PERFGRAPH_CHECKBOX");
+			var perfgraphCheckbox = generalPane.Get<CheckboxWidget>("PERFGRAPH_CHECKBOX");
 			perfgraphCheckbox.IsChecked = () => debugSettings.PerfGraph;
 			perfgraphCheckbox.OnClick = () => debugSettings.PerfGraph ^= true;
 
-			var checkunsyncedCheckbox = generalPane.GetWidget<CheckboxWidget>("CHECKUNSYNCED_CHECKBOX");
+			var checkunsyncedCheckbox = generalPane.Get<CheckboxWidget>("CHECKUNSYNCED_CHECKBOX");
 			checkunsyncedCheckbox.IsChecked = () => debugSettings.SanityCheckUnsyncedCode;
 			checkunsyncedCheckbox.OnClick = () => debugSettings.SanityCheckUnsyncedCode ^= true;
 
 			// Video
-			var windowModeDropdown = generalPane.GetWidget<DropDownButtonWidget>("MODE_DROPDOWN");
+			var windowModeDropdown = generalPane.Get<DropDownButtonWidget>("MODE_DROPDOWN");
 			windowModeDropdown.OnMouseDown = _ => SettingsMenuLogic.ShowWindowModeDropdown(windowModeDropdown, graphicsSettings);
 			windowModeDropdown.GetText = () => graphicsSettings.Mode == WindowMode.Windowed ?
 				"Windowed" : graphicsSettings.Mode == WindowMode.Fullscreen ? "Fullscreen" : "Pseudo-Fullscreen";
 
-			var pixelDoubleCheckbox = generalPane.GetWidget<CheckboxWidget>("PIXELDOUBLE_CHECKBOX");
+			var pixelDoubleCheckbox = generalPane.Get<CheckboxWidget>("PIXELDOUBLE_CHECKBOX");
 			pixelDoubleCheckbox.IsChecked = () => graphicsSettings.PixelDouble;
 			pixelDoubleCheckbox.OnClick = () =>
 			{
@@ -86,53 +86,53 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				Game.viewport.Zoom = graphicsSettings.PixelDouble ? 2 : 1;
 			};
 
-			generalPane.GetWidget("WINDOW_RESOLUTION").IsVisible = () => graphicsSettings.Mode == WindowMode.Windowed;
-			var windowWidth = generalPane.GetWidget<TextFieldWidget>("WINDOW_WIDTH");
+			generalPane.Get("WINDOW_RESOLUTION").IsVisible = () => graphicsSettings.Mode == WindowMode.Windowed;
+			var windowWidth = generalPane.Get<TextFieldWidget>("WINDOW_WIDTH");
 			windowWidth.Text = graphicsSettings.WindowedSize.X.ToString();
 
-			var windowHeight = generalPane.GetWidget<TextFieldWidget>("WINDOW_HEIGHT");
+			var windowHeight = generalPane.Get<TextFieldWidget>("WINDOW_HEIGHT");
 			windowHeight.Text = graphicsSettings.WindowedSize.Y.ToString();
 
 			// Audio
-			var soundSlider = generalPane.GetWidget<SliderWidget>("SOUND_SLIDER");
+			var soundSlider = generalPane.Get<SliderWidget>("SOUND_SLIDER");
 			soundSlider.OnChange += x => { soundSettings.SoundVolume = x; Sound.SoundVolume = x;};
 			soundSlider.Value = soundSettings.SoundVolume;
 
-			var musicSlider = generalPane.GetWidget<SliderWidget>("MUSIC_SLIDER");
+			var musicSlider = generalPane.Get<SliderWidget>("MUSIC_SLIDER");
 			musicSlider.OnChange += x => { soundSettings.MusicVolume = x; Sound.MusicVolume = x; };
 			musicSlider.Value = soundSettings.MusicVolume;
 
-			var shellmapMusicCheckbox = generalPane.GetWidget<CheckboxWidget>("SHELLMAP_MUSIC");
+			var shellmapMusicCheckbox = generalPane.Get<CheckboxWidget>("SHELLMAP_MUSIC");
 			shellmapMusicCheckbox.IsChecked = () => soundSettings.ShellmapMusic;
 			shellmapMusicCheckbox.OnClick = () => soundSettings.ShellmapMusic ^= true;
 
 			// Input pane
-			var inputPane = panel.GetWidget("INPUT_CONTROLS");
+			var inputPane = panel.Get("INPUT_CONTROLS");
 			inputPane.IsVisible = () => Settings == PanelType.Input;
 
-			var inputButton = panel.GetWidget<ButtonWidget>("INPUT_BUTTON");
+			var inputButton = panel.Get<ButtonWidget>("INPUT_BUTTON");
 			inputButton.OnClick = () => Settings = PanelType.Input;
 			inputButton.IsDisabled = () => Settings == PanelType.Input;
 
-			inputPane.GetWidget<CheckboxWidget>("CLASSICORDERS_CHECKBOX").IsDisabled = () => true;
+			inputPane.Get<CheckboxWidget>("CLASSICORDERS_CHECKBOX").IsDisabled = () => true;
 
-			var scrollSlider = inputPane.GetWidget<SliderWidget>("SCROLLSPEED_SLIDER");
+			var scrollSlider = inputPane.Get<SliderWidget>("SCROLLSPEED_SLIDER");
 			scrollSlider.Value = gameSettings.ViewportEdgeScrollStep;
 			scrollSlider.OnChange += x => gameSettings.ViewportEdgeScrollStep = x;
 
-			var edgescrollCheckbox = inputPane.GetWidget<CheckboxWidget>("EDGESCROLL_CHECKBOX");
+			var edgescrollCheckbox = inputPane.Get<CheckboxWidget>("EDGESCROLL_CHECKBOX");
 			edgescrollCheckbox.IsChecked = () => gameSettings.ViewportEdgeScroll;
 			edgescrollCheckbox.OnClick = () => gameSettings.ViewportEdgeScroll ^= true;
 
-			var mouseScrollDropdown = inputPane.GetWidget<DropDownButtonWidget>("MOUSE_SCROLL");
+			var mouseScrollDropdown = inputPane.Get<DropDownButtonWidget>("MOUSE_SCROLL");
 			mouseScrollDropdown.OnMouseDown = _ => ShowMouseScrollDropdown(mouseScrollDropdown, gameSettings);
 			mouseScrollDropdown.GetText = () => gameSettings.MouseScroll.ToString();
 
-			var teamchatCheckbox = inputPane.GetWidget<CheckboxWidget>("TEAMCHAT_CHECKBOX");
+			var teamchatCheckbox = inputPane.Get<CheckboxWidget>("TEAMCHAT_CHECKBOX");
 			teamchatCheckbox.IsChecked = () => gameSettings.TeamChatToggle;
 			teamchatCheckbox.OnClick = () => gameSettings.TeamChatToggle ^= true;
 
-			panel.GetWidget<ButtonWidget>("BACK_BUTTON").OnClick = () =>
+			panel.Get<ButtonWidget>("BACK_BUTTON").OnClick = () =>
 			{
 				playerSettings.Name = nameTextfield.Text;
 				int x, y;
@@ -175,7 +175,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				var item = ScrollItemWidget.Setup(itemTemplate,
 					() => s.MouseScroll == options[o],
 					() => s.MouseScroll = options[o]);
-				item.GetWidget<LabelWidget>("LABEL").GetText = () => o;
+				item.Get<LabelWidget>("LABEL").GetText = () => o;
 				return item;
 			};
 

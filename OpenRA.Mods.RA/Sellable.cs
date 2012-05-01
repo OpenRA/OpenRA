@@ -21,13 +21,17 @@ namespace OpenRA.Mods.RA
 
 	public class Sellable : IResolveOrder
 	{
-		bool selling = false;
+		[Sync] public bool Selling = false;
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Sell" && !selling)
+			if (order.OrderString == "Sell" && !Selling)
 			{
-				selling = true;
+				var capturing = self.TraitOrDefault<Capturable>();
+				if (capturing != null && capturing.CaptureInProgress)
+					return;
+
+				Selling = true;
 
 				foreach( var ns in self.TraitsImplementing<INotifySold>() )
 					ns.Selling( self );

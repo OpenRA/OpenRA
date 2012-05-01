@@ -1,6 +1,5 @@
 Background@MODS_PANEL:
 	Logic:ModBrowserLogic
-	Id:MODS_PANEL
 	Width:740
 	Height:500
 	X:(WINDOW_RIGHT - WIDTH)/2
@@ -13,14 +12,12 @@ Background@MODS_PANEL:
 			Font:Bold
 			Align:Center
 		ScrollPanel@MOD_LIST:
-			Id:MOD_LIST
 			X:15
 			Y:70
 			Width:710
 			Height:PARENT_BOTTOM - 125
 			Children:
 				ScrollItem@MOD_TEMPLATE:
-					Id:MOD_TEMPLATE
 					Width:PARENT_RIGHT-27
 					Height:25
 					X:2
@@ -29,17 +26,14 @@ Background@MODS_PANEL:
 					Children:
 						Label@TITLE:
 							X:10
-							Id:TITLE
 							Width:200
 							Height:25
 						Label@AUTHOR:
-							Id:AUTHOR
 							X:PARENT_RIGHT-300
 							Align:Center
 							Width:50
 							Height:25
 						Label@VERSION:
-							Id:VERSION
 							Width:140
 							X:PARENT_RIGHT-150
 							Align:Center
@@ -73,7 +67,6 @@ Background@MODS_PANEL:
 					Text:Version
 					Font:Bold
 		Button@BACK_BUTTON:
-			Id:BACK_BUTTON
 			Key:escape
 			X:PARENT_RIGHT-180
 			Y:PARENT_BOTTOM-45
@@ -82,7 +75,6 @@ Background@MODS_PANEL:
 			Font:Bold
 			Text:Cancel
 		Button@LOAD_BUTTON:
-			Id:LOAD_BUTTON
 			Key:return
 			X:PARENT_RIGHT-360
 			Y:PARENT_BOTTOM-45

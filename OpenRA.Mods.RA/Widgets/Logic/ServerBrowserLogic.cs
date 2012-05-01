@@ -41,10 +41,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		public ServerBrowserLogic(Widget widget, Action openLobby, Action onExit)
 		{
 			var panel = widget;
-			var sl = panel.GetWidget<ScrollPanelWidget>("SERVER_LIST");
+			var sl = panel.Get<ScrollPanelWidget>("SERVER_LIST");
 
 			// Menu buttons
-			var refreshButton = panel.GetWidget<ButtonWidget>("REFRESH_BUTTON");
+			var refreshButton = panel.Get<ButtonWidget>("REFRESH_BUTTON");
 			refreshButton.IsDisabled = () => searchStatus == SearchStatus.Fetching;
 			refreshButton.OnClick = () =>
 			{
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				ServerList.Query(games => RefreshServerList(panel, games));
 			};
 
-			var join = panel.GetWidget<ButtonWidget>("JOIN_BUTTON");
+			var join = panel.Get<ButtonWidget>("JOIN_BUTTON");
 			join.IsDisabled = () => currentServer == null || !currentServer.CanJoin();
 			join.OnClick = () =>
 			{
@@ -68,14 +68,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				ConnectionLogic.Connect(host, port, openLobby, onExit);
 			};
 
-			panel.GetWidget<ButtonWidget>("BACK_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
+			panel.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
 
 			// Server list
-			serverTemplate = sl.GetWidget<ScrollItemWidget>("SERVER_TEMPLATE");
+			serverTemplate = sl.Get<ScrollItemWidget>("SERVER_TEMPLATE");
 
 			// Display the progress label over the server list
 			// The text is only visible when the list is empty
-			var progressText = panel.GetWidget<LabelWidget>("PROGRESS_LABEL");
+			var progressText = panel.Get<LabelWidget>("PROGRESS_LABEL");
 			progressText.IsVisible = () => searchStatus != SearchStatus.Hidden;
 			progressText.GetText = ProgressLabelText;
 
@@ -123,7 +123,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		public void RefreshServerList(Widget panel, IEnumerable<GameServer> games)
 		{
-			var sl = panel.GetWidget<ScrollPanelWidget>("SERVER_LIST");
+			var sl = panel.Get<ScrollPanelWidget>("SERVER_LIST");
 
 			sl.RemoveChildren();
 			currentServer = null;
@@ -151,15 +151,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				var item = ScrollItemWidget.Setup(serverTemplate, () => currentServer == game, () => currentServer = game);
 
-				var preview = item.GetWidget<MapPreviewWidget>("MAP_PREVIEW");
+				var preview = item.Get<MapPreviewWidget>("MAP_PREVIEW");
 				preview.Map = () => GetMapPreview(game);
 				preview.IsVisible = () => GetMapPreview(game) != null;
 
-				var title = item.GetWidget<LabelWidget>("TITLE");
+				var title = item.Get<LabelWidget>("TITLE");
 				title.GetText = () => game.Name;
 
 				// TODO: Use game.MapTitle once the server supports it
-				var maptitle = item.GetWidget<LabelWidget>("MAP");
+				var maptitle = item.Get<LabelWidget>("MAP");
 				maptitle.GetText = () =>
 				{
 					var map = Game.modData.FindMapByUid(game.Map);
@@ -167,16 +167,16 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				};
 
 				// TODO: Use game.MaxPlayers once the server supports it
-				var players = item.GetWidget<LabelWidget>("PLAYERS");
+				var players = item.Get<LabelWidget>("PLAYERS");
 				players.GetText = () => GetPlayersLabel(game);
 
-				var state = item.GetWidget<LabelWidget>("STATE");
+				var state = item.Get<LabelWidget>("STATE");
 				state.GetText = () => GetStateLabel(game);
 	
-				var ip = item.GetWidget<LabelWidget>("IP");
+				var ip = item.Get<LabelWidget>("IP");
 				ip.GetText = () => game.Address;
 
-				var version = item.GetWidget<LabelWidget>("VERSION");
+				var version = item.Get<LabelWidget>("VERSION");
 				version.GetText = () => GenerateModsLabel(game);
 				version.IsVisible = () => !game.CompatibleVersion();
 
