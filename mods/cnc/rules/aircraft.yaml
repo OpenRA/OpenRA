@@ -32,8 +32,8 @@ TRAN:
 	WithShadow:
 	Cargo:
 		Types: Infantry
-		MaxWeight: 5
-		PipCount: 5
+		MaxWeight: 10
+		PipCount: 10
 	FallsToEarth:
 
 HELI:
