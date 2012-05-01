@@ -1,5 +1,4 @@
 Container@MODS_PANEL:
-	Id:MODS_PANEL
 	Logic:ModBrowserLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - 500)/2
@@ -19,14 +18,12 @@ Container@MODS_PANEL:
 			Background:panel-black
 			Children:
 				ScrollPanel@MOD_LIST:
-					Id:MOD_LIST
 					X:15
 					Y:30
 					Width:710
 					Height:455
 					Children:
 						ScrollItem@MOD_TEMPLATE:
-							Id:MOD_TEMPLATE
 							Width:PARENT_RIGHT-27
 							Height:25
 							X:2
@@ -35,17 +32,14 @@ Container@MODS_PANEL:
 							Children:
 								Label@TITLE:
 									X:10
-									Id:TITLE
 									Width:200
 									Height:25								
 								Label@AUTHOR:
-									Id:AUTHOR
 									X:PARENT_RIGHT-300
 									Align:Center
 									Width:50
 									Height:25
 								Label@VERSION:
-									Id:VERSION
 									Width:140
 									X:PARENT_RIGHT-150
 									Align:Center
@@ -79,7 +73,6 @@ Container@MODS_PANEL:
 							Text:Version
 							Font:Bold
 		Button@BACK_BUTTON:
-			Id:BACK_BUTTON
 			Key:escape
 			X:0
 			Y:499
@@ -87,7 +80,6 @@ Container@MODS_PANEL:
 			Height:35
 			Text:Back
 		Button@LOAD_BUTTON:
-			Id:LOAD_BUTTON
 			Key:return
 			X:600
 			Y:499

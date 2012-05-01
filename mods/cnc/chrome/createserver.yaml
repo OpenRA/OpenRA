@@ -1,5 +1,4 @@
 Container@CREATESERVER_PANEL:
-	Id:CREATESERVER_PANEL
 	Logic:ServerCreationLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - 260)/2
@@ -26,13 +25,11 @@ Container@CREATESERVER_PANEL:
 					Background:panel-gray
 					Children:
 						MapPreview@MAP_PREVIEW:
-							Id:MAP_PREVIEW
 							X:1
 							Y:1
 							Width:192
 							Height:192
 				Label@MAP_NAME:
-					Id:MAP_NAME
 					X:PARENT_RIGHT-WIDTH-15
 					Y:220
 					Width:194
@@ -47,7 +44,6 @@ Container@CREATESERVER_PANEL:
 					Align:Right
 					Text:Server Name:
 				TextField@SERVER_NAME:
-					Id:SERVER_NAME
 					X:110
 					Y:15
 					Width:275
@@ -62,7 +58,6 @@ Container@CREATESERVER_PANEL:
 					Align: Right
 					Text:Port:
 				TextField@LISTEN_PORT:
-					Id:LISTEN_PORT
 					X:110
 					Y:120
 					Width:50
@@ -70,7 +65,6 @@ Container@CREATESERVER_PANEL:
 					Height:25
 					Text:1234
 				Checkbox@ADVERTISE_CHECKBOX:
-					Id:ADVERTISE_CHECKBOX
 					X:110
 					Y:155
 					Width:150
@@ -91,7 +85,6 @@ Container@CREATESERVER_PANEL:
 					Align:Right
 					Text:External Port:
 				TextField@EXTERNAL_PORT:
-					Id:EXTERNAL_PORT
 					X:110
 					Y:220
 					Width:50
@@ -99,7 +92,6 @@ Container@CREATESERVER_PANEL:
 					Height:25
 					Text:1234
 		Button@BACK_BUTTON:
-			Id:BACK_BUTTON
 			Key:escape
 			X:0
 			Y:259
@@ -107,14 +99,12 @@ Container@CREATESERVER_PANEL:
 			Height:35
 			Text:Back
 		Button@MAP_BUTTON:
-			Id:MAP_BUTTON
 			X:314
 			Y:259
 			Width:140
 			Height:35
 			Text:Choose Map
 		Button@CREATE_BUTTON:
-			Id:CREATE_BUTTON
 			Key:return
 			X:464
 			Y:259

@@ -120,6 +120,8 @@ allyrepair:
 crate:
 	idle: wcrate
 		Start: 0
+	land: wcrate
+		Start: 0
 
 crate-effects:
 	airstrike: deviator

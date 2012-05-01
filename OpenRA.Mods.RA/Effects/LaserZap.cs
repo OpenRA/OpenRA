@@ -88,6 +88,8 @@ namespace OpenRA.Mods.RA.Effects
 			var wlr = Game.Renderer.WorldLineRenderer;
 			wlr.LineWidth = info.BeamRadius * 2;
 			wlr.DrawLine(args.src, args.dest, rc, rc);
+			wlr.Flush();
+			wlr.LineWidth = 1f;
 		}
 	}
 }

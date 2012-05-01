@@ -85,7 +85,7 @@ namespace OpenRA.Widgets
 			var panel = (ScrollPanelWidget)Ui.LoadWidget(panelTemplate, null, new WidgetArgs()
 				{{ "substitutions", substitutions }});
 
-			var itemTemplate = panel.GetWidget<ScrollItemWidget>("TEMPLATE");
+			var itemTemplate = panel.Get<ScrollItemWidget>("TEMPLATE");
 			panel.RemoveChildren();
 			foreach (var option in options)
 			{

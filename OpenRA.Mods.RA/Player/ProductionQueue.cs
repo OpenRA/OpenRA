@@ -294,11 +294,6 @@ namespace OpenRA.Mods.RA
 			Queue.Add(item);
 		}
 
-		protected static bool IsDisabledBuilding(Actor a)
-		{
-			return a.TraitsImplementing<IDisable>().Any(d => d.Disabled);
-		}
-
 		// Builds a unit from the actor that holds this queue (1 queue per building)
 		// Returns false if the unit can't be built
 		protected virtual bool BuildUnit( string name )
@@ -311,7 +306,7 @@ namespace OpenRA.Mods.RA
 			}
 
 			var sp = self.TraitsImplementing<Production>().FirstOrDefault(p => p.Info.Produces.Contains(Info.Type));
-			if (sp != null && !IsDisabledBuilding(self) && sp.Produce(self, Rules.Info[ name ]))
+			if (sp != null && !self.IsDisabled() && sp.Produce(self, Rules.Info[ name ]))
 			{
 				FinishProduction();
 				return true;

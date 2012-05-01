@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA
 {
 	public class CrateSpawnerInfo : TraitInfo<CrateSpawner>
 	{
-		public readonly int Minimum = 1; // Minumum number of crates
+		public readonly int Minimum = 1; // Minimum number of crates
 		public readonly int Maximum = 255; // Maximum number of crates
 		public readonly string[] ValidGround = {"Clear", "Rough", "Road", "Ore", "Beach"}; // Which terrain types can we drop on?
 		public readonly string[] ValidWater = {"Water"};

@@ -19,18 +19,16 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public CncConquestObjectivesLogic(Widget widget, World world)
 		{
-			var panel = widget.GetWidget("CONQUEST_OBJECTIVES");
-			panel.GetWidget<LabelWidget>("TITLE").GetText = () => "Conquest: " + world.Map.Title;
+			var panel = widget.Get("CONQUEST_OBJECTIVES");
+			panel.Get<LabelWidget>("TITLE").GetText = () => "Conquest: " + world.Map.Title;
 
-			var objectiveCheckbox = panel.GetWidget<CheckboxWidget>("OBJECTIVE_CHECKBOX");
-			objectiveCheckbox.IsDisabled = () => true;
-
-			var statusLabel = panel.GetWidget<LabelWidget>("STATUS_LABEL");
+			var statusLabel = panel.Get<LabelWidget>("STATUS");
 			statusLabel.IsVisible = () => world.LocalPlayer != null;
 
 			if (world.LocalPlayer != null)
 			{
 				var lp = world.LocalPlayer;
+				var objectiveCheckbox = panel.Get<CheckboxWidget>("1");
 				objectiveCheckbox.IsChecked = () => lp.WinState != WinState.Undefined;
 				objectiveCheckbox.GetCheckType = () => lp.WinState == WinState.Won ?
 					"checked" : "crossed";
@@ -41,8 +39,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					lp.WinState == WinState.Lost ? Color.Red : Color.White;
 			}
 
-			var scrollpanel = panel.GetWidget<ScrollPanelWidget>("PLAYER_LIST");
-			var itemTemplate = scrollpanel.GetWidget("PLAYER_TEMPLATE");
+			var scrollpanel = panel.Get<ScrollPanelWidget>("PLAYER_LIST");
+			var itemTemplate = scrollpanel.Get("PLAYER_TEMPLATE");
 			scrollpanel.RemoveChildren();
 
 			foreach (var p in world.Players.Where(a => !a.NonCombatant))
@@ -50,21 +48,21 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				Player pp = p;
 				var c = world.LobbyInfo.ClientWithIndex(pp.ClientIndex);
 				var item = itemTemplate.Clone();
-				var nameLabel = item.GetWidget<LabelWidget>("NAME");
+				var nameLabel = item.Get<LabelWidget>("NAME");
 				nameLabel.GetText = () => pp.WinState == WinState.Lost ? pp.PlayerName + " (Dead)" : pp.PlayerName;
 				nameLabel.GetColor = () => pp.ColorRamp.GetColor(0);
 
-				var flag = item.GetWidget<ImageWidget>("FACTIONFLAG");
+				var flag = item.Get<ImageWidget>("FACTIONFLAG");
 				flag.GetImageName = () => pp.Country.Race;
 				flag.GetImageCollection = () => "flags";
-				item.GetWidget<LabelWidget>("FACTION").GetText = () => pp.Country.Name;
+				item.Get<LabelWidget>("FACTION").GetText = () => pp.Country.Name;
 
-				var team = item.GetWidget<LabelWidget>("TEAM");
+				var team = item.Get<LabelWidget>("TEAM");
 				team.GetText = () => (c.Team == 0) ? "-" : c.Team.ToString();
 				scrollpanel.AddChild(item);
 
-				item.GetWidget<LabelWidget>("KILLS").GetText = () => pp.Kills.ToString();
-				item.GetWidget<LabelWidget>("DEATHS").GetText = () => pp.Deaths.ToString();
+				item.Get<LabelWidget>("KILLS").GetText = () => pp.Kills.ToString();
+				item.Get<LabelWidget>("DEATHS").GetText = () => pp.Deaths.ToString();
 			}
 		}
 	}

@@ -32,6 +32,8 @@ namespace OpenRA.Mods.RA.Activities
 
 			self.Destroy();
 
+			Sound.PlayToPlayer(self.Owner, "bldginf1.aud");
+
 			return this;
 		}
 	}

@@ -9,7 +9,7 @@ UnitExplode:
 			Heavy: 25%
 		Explosion: 8
 		InfDeath: 3
-		ImpactSound: xplobig4
+		ImpactSound: xplobig6
 
 UnitExplodeSmall:
 	Warhead:
@@ -26,8 +26,8 @@ UnitExplodeSmall:
 
 GrenadierExplode:
 	Warhead:
-		Damage: 25
-		Spread: 10
+		Damage: 10
+		Spread: 3
 		Versus:
 			None: 90%
 			Wood: 75%
@@ -108,12 +108,12 @@ Sniper:
 
 HighV:
 	ROF: 40
-	Range: 4
+	Range: 5
 	Report: GUN8
 	Projectile: Bullet
 		Speed: 100
 	Warhead:
-		Damage: 20
+		Damage: 40
 		Spread: 3
 		Versus: 
 			None: 100%
@@ -531,7 +531,8 @@ MammothMissiles:
 
 227mm: 
 	ROF: 80
-	Range: 8
+	Range: 10
+	MinRange: 2
 	Burst: 6
 	BurstDelay: 1
 	Report: ROCKET1
@@ -592,13 +593,15 @@ MammothMissiles:
 
 ArtilleryShell:
 	ROF: 65
-	Range: 6
+	Range: 12
+	MinRange: 2
 	Report: TNKFIRE2
 	Projectile: Bullet
+		ContrailLength: 30
 		Speed: 12
 		High: yes
 		Angle: .09
-		Inaccuracy: 5
+		Inaccuracy: 30
 		Image: 120MM
 	Warhead:
 		Damage: 150
@@ -611,7 +614,7 @@ ArtilleryShell:
 		InfDeath: 2
 		Explosion: 5
 		SmudgeType: Crater
-		ImpactSound: xplos
+		ImpactSound: XPLOSML2
 
 MachineGun:
 	ROF: 30
@@ -692,11 +695,11 @@ TowerMissle:
 		Damage: 60
 
 Napalm:
-	ROF: 5
+	ROF: 4
 	Projectile: GravityBomb
 		Image: BOMBLET
 	Warhead:
-		Spread: 8
+		Spread: 20
 		Versus: 
 			None: 90%
 			Wood: 100%

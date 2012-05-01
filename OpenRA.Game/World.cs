@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Collections;
 using OpenRA.Effects;
 using OpenRA.FileFormats;
 using OpenRA.Network;

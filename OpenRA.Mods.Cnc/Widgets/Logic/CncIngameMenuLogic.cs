@@ -23,14 +23,14 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		public CncIngameMenuLogic(Widget widget, World world, Action onExit)
 		{
 			var resumeDisabled = false;
-			menu = widget.GetWidget("INGAME_MENU");
+			menu = widget.Get("INGAME_MENU");
 			var mpe = world.WorldActor.Trait<CncMenuPaletteEffect>();
 			mpe.Fade(CncMenuPaletteEffect.EffectType.Desaturated);
 
-			menu.GetWidget<LabelWidget>("VERSION_LABEL").GetText = WidgetUtils.ActiveModVersion;
+			menu.Get<LabelWidget>("VERSION_LABEL").GetText = WidgetUtils.ActiveModVersion;
 
 			bool hideButtons = false;
-			menu.GetWidget("MENU_BUTTONS").IsVisible = () => !hideButtons;
+			menu.Get("MENU_BUTTONS").IsVisible = () => !hideButtons;
 
 			// TODO: Create a mechanism to do things like this cleaner. Also needed for scripted missions
 			Action onQuit = () =>
@@ -48,16 +48,16 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 			Action doNothing = () => {};
 
-			menu.GetWidget<ButtonWidget>("QUIT_BUTTON").OnClick = () =>
+			menu.Get<ButtonWidget>("QUIT_BUTTON").OnClick = () =>
 				CncWidgetUtils.PromptConfirmAction("Abort Mission", "Leave this game and return to the menu?", onQuit, doNothing);
 
 			Action onSurrender = () => world.IssueOrder(new Order("Surrender", world.LocalPlayer.PlayerActor, false));
-			var surrenderButton = menu.GetWidget<ButtonWidget>("SURRENDER_BUTTON");
+			var surrenderButton = menu.Get<ButtonWidget>("SURRENDER_BUTTON");
 			surrenderButton.IsDisabled = () => (world.LocalPlayer == null || world.LocalPlayer.WinState != WinState.Undefined);
 			surrenderButton.OnClick = () =>
 				CncWidgetUtils.PromptConfirmAction("Surrender", "Are you sure you want to surrender?", onSurrender, doNothing);
 
-			menu.GetWidget<ButtonWidget>("MUSIC_BUTTON").OnClick = () =>
+			menu.Get<ButtonWidget>("MUSIC_BUTTON").OnClick = () =>
 			{
 				hideButtons = true;
 				Ui.OpenWindow("MUSIC_PANEL", new WidgetArgs()
@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				});
 			};
 
-			menu.GetWidget<ButtonWidget>("SETTINGS_BUTTON").OnClick = () =>
+			menu.Get<ButtonWidget>("SETTINGS_BUTTON").OnClick = () =>
 			{
 				hideButtons = true;
 				Ui.OpenWindow("SETTINGS_PANEL", new WidgetArgs()
@@ -76,7 +76,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				});
 			};
 
-			var resumeButton = menu.GetWidget<ButtonWidget>("RESUME_BUTTON");
+			var resumeButton = menu.Get<ButtonWidget>("RESUME_BUTTON");
 			resumeButton.IsDisabled = () => resumeDisabled;
 			resumeButton.OnClick = () =>
 			{

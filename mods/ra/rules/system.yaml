@@ -69,36 +69,6 @@ Player:
 			2tnk: 25%
 			3tnk: 50%
 		SquadSize: 20
-	HackyAI@NormalAI:
-		Name:Normal AI
-		BuildingFractions:
-			proc: 30%
-			powr: 35%
-			tent: 1%
-			barr: 1%
-			weap: 1%
-			pbox: 7%
-			gun: 7%
-			ftur: 10%
-			tsla: 5%
-			fix: 0.1%
-			dome: 10%
-			agun: 5%
-			sam: 1%
-			atek: 1%
-			stek: 1%
-		UnitsToBuild:
-			e1: 50%
-			e3: 10%
-			apc: 30%
-			jeep: 40%
-			arty: 15%
-			v2rl: 40%
-			ftrk: 50%
-			1tnk: 70%
-			2tnk: 25%
-			3tnk: 50%
-		SquadSize: 15
 	HackyAI@HardAI:
 		Name:Hard AI
 		BuildingFractions:
@@ -128,6 +98,62 @@ Player:
 			2tnk: 25%
 			3tnk: 50%
 		SquadSize: 10
+	HackyAI@ZhukovAI:
+		Name:Zhukov AI
+		BuildingFractions:
+			proc: 30%
+			powr: 35%
+			tent: 1%
+			barr: 1%
+			weap: 1%
+			pbox: 7%
+			gun: 10%
+			ftur: 10%
+			tsla: 5%
+			dome: 10%
+			fix: 0.1%
+			agun: 7%
+			sam: 7%
+			atek: 1%
+			stek: 1%
+		UnitsToBuild:
+			e1: 40%
+			e3: 10%
+			harv: 10%
+			ftrk: 5%
+			v2rl: 40%
+			arty: 40%
+			1tnk: 20%
+			2tnk: 20%
+			3tnk: 20%
+		SquadSize: 30
+	HackyAI@RommelAI:
+		Name:Rommel AI
+		BuildingFractions:
+			proc: 30%
+			powr: 35%
+			tent: 1%
+			barr: 1%
+			weap: 1%
+			pbox: 7%
+			gun: 7%
+			ftur: 10%
+			tsla: 5%
+			fix: 0.1%
+			dome: 10%
+			agun: 5%
+			sam: 1%
+			atek: 1%
+			stek: 1%
+		UnitsToBuild:
+			e1: 5%
+			e3: 10%
+			3tnk: 75%
+			2tnk: 75%
+			v2rl: 15%
+			arty: 15%
+			harv: 10%
+		SquadSize: 7
 	PlayerColorPalette:
 		BasePalette: terrain
 	DebugResourceCash:
@@ -164,6 +190,12 @@ World:
 		Filename: temperat.pal
 	PaletteFromRGBA@shadow:
 		Name: shadow
+		R: 0
+		G: 0
+		B: 0
+		A: 140
+	PaletteFromRGBA@cloak:
+		Name: cloak
 		R: 0
 		G: 0
 		B: 0

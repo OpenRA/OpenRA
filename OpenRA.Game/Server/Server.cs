@@ -189,11 +189,12 @@ namespace OpenRA.Server
 				var client = handshake.Client;
 				var mods = handshake.Mods;
 
-				// Check that the client has compatable mods
+				// Check that the client has compatible mods
 				var valid = mods.All( m => m.Contains('@')) && //valid format
 							mods.Count() == Game.CurrentMods.Count() &&  //same number
 							mods.Select( m => Pair.New(m.Split('@')[0], m.Split('@')[1])).All(kv => Game.CurrentMods.ContainsKey(kv.First) &&
 					 		(kv.Second == "{DEV_VERSION}" || Game.CurrentMods[kv.First].Version == "{DEV_VERSION}" || kv.Second == Game.CurrentMods[kv.First].Version));
+
 				if (!valid)
 				{
 					Log.Write("server", "Rejected connection from {0}; mods do not match.",
@@ -228,6 +229,10 @@ namespace OpenRA.Server
 
 				SyncLobbyInfo();
 				SendChat(newConn, "has joined the game.");
+
+				if (mods.Any(m => m.Contains("{DEV_VERSION}")))
+					SendChat(newConn, "is running a development version, "+
+					"and may cause desync if they have any incompatible changes.");
 			}
 			catch (Exception) { DropClient(newConn); }
 		}
@@ -406,7 +411,7 @@ namespace OpenRA.Server
 					DispatchOrdersToClient( c, d.PlayerIndex, 0x7FFFFFFF, new byte[] { 0xBF } );
 
 			// Drop any unvalidated clients
-			foreach (var c in preConns)
+			foreach (var c in preConns.ToArray())
 				DropClient(c);
 
 			DispatchOrders(null, 0,

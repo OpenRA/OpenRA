@@ -11,6 +11,7 @@
 using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Air;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Traits;
@@ -86,7 +87,8 @@ namespace OpenRA.Mods.RA
 			var mobile = newUnit.TraitOrDefault<Mobile>();
 			if (mobile != null)
 			{
-				newUnit.QueueActivity(mobile.MoveTo(rp.rallyPoint, 1));
+				newUnit.QueueActivity(new AttackMove.AttackMoveActivity(
+					newUnit, mobile.MoveTo(rp.rallyPoint, 1)));
 				return rp.rallyPoint;
 			}
 

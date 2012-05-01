@@ -28,23 +28,12 @@ namespace OpenRA.Mods.RA.Activities
 			if( !target.OccupiesSpace.OccupiedCells().Any( x => x.First == self.Location ) )
 				return NextActivity;
 
-			// todo: clean this up
-			self.World.AddFrameEndTask(w =>
-			{
-				// momentarily remove from world so the ownership queries don't get confused
-				var oldOwner = target.Owner;
-				w.Remove(target);
-				target.Owner = self.Owner;
-				w.Add(target);
+			var sellable = target.TraitOrDefault<Sellable>();
+			if (sellable != null && sellable.Selling) return NextActivity;
 
-				foreach (var t in target.TraitsImplementing<INotifyCapture>())
-					t.OnCapture(target, self, oldOwner, self.Owner);
+			target.Trait<Capturable>().BeginCapture(target, self);
+			self.World.AddFrameEndTask(w => self.Destroy());
 
-				foreach (var t in self.World.ActorsWithTrait<INotifyOtherCaptured>())
-					t.Trait.OnActorCaptured(t.Actor, target, self, oldOwner, self.Owner);
-
-				self.Destroy();
-			});
 			return this;
 		}
 	}

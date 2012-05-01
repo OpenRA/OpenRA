@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
@@ -224,4 +225,12 @@ namespace OpenRA.Traits
 	public interface ILintPass { void Run(Action<string> emitError, Action<string> emitWarning); }
 
 	public interface IObjectivesPanel { string ObjectivesPanel { get; } }
+
+	public static class DisableExts
+	{
+		public static bool IsDisabled(this Actor a)
+		{
+			return a.TraitsImplementing<IDisable>().Any(d => d.Disabled);
+		}
+	}
 }

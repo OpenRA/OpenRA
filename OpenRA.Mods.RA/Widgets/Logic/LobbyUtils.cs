@@ -79,7 +79,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var item = ScrollItemWidget.Setup(itemTemplate,
 					o.Selected,
 					() => orderManager.IssueOrder(Order.Command(o.Order)));
-				item.GetWidget<LabelWidget>("LABEL").GetText = () => o.Title;
+				item.Get<LabelWidget>("LABEL").GetText = () => o.Title;
 				return item;
 			};
 
@@ -94,7 +94,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var item = ScrollItemWidget.Setup(itemTemplate,
 					() => client.Team == ii,
 					() => orderManager.IssueOrder(Order.Command("team {0} {1}".F(client.Index, ii))));
-				item.GetWidget<LabelWidget>("LABEL").GetText = () => ii == 0 ? "-" : ii.ToString();
+				item.Get<LabelWidget>("LABEL").GetText = () => ii == 0 ? "-" : ii.ToString();
 				return item;
 			};
 
@@ -110,8 +110,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var item = ScrollItemWidget.Setup(itemTemplate,
 					() => client.Country == race,
 					() => orderManager.IssueOrder(Order.Command("race {0} {1}".F(client.Index, race))));
-				item.GetWidget<LabelWidget>("LABEL").GetText = () => countryNames[race];
-				var flag = item.GetWidget<ImageWidget>("FLAG");
+				item.Get<LabelWidget>("LABEL").GetText = () => countryNames[race];
+				var flag = item.Get<ImageWidget>("FLAG");
 				flag.GetImageCollection = () => "flags";
 				flag.GetImageName = () => race;
 				return item;

@@ -18,11 +18,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		public PerfDebugLogic()
 		{
 			var r = Ui.Root;
-			var perfRoot = r.GetWidget("PERF_BG");
+			var perfRoot = r.Get("PERF_BG");
 			perfRoot.IsVisible = () => perfRoot.Visible && Game.Settings.Debug.PerfGraph;
 
 			// Perf text
-			var perfText = perfRoot.GetWidget<LabelWidget>("TEXT");
+			var perfText = perfRoot.Get<LabelWidget>("TEXT");
 			perfText.GetText = () => "Render {0} ({5}={2:F1} ms)\nTick {4} ({3:F1} ms)".F(
 					Game.RenderFrame,
 					Game.NetFrameNumber,

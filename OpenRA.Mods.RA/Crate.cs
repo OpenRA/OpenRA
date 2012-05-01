@@ -115,7 +115,7 @@ namespace OpenRA.Mods.RA
 			Location = cell;
 			PxPosition = Util.CenterOfCell(cell);
 
-			var seq = self.World.GetTerrainInfo(cell).IsWater ? "water" : "idle";
+			var seq = self.World.GetTerrainInfo(cell).IsWater ? "water" : "land";
 			var rs = self.Trait<RenderSimple>();
 			if (seq != rs.anim.CurrentSequence.Name)
 				rs.anim.PlayRepeating(seq);
