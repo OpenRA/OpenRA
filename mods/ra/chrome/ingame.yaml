@@ -1,7 +1,7 @@
 Container@INGAME_ROOT:
 	Logic:IngameChromeLogic
 	Children:
-		WorldInteractionController:
+		WorldInteractionController@INTERACTION_CONTROLLER:
 			X:0
 			Y:0
 			Width:WINDOW_RIGHT
@@ -222,7 +222,7 @@ Container@OBSERVER_ROOT:
 	Visible:true
 	Logic:IngameObserverChromeLogic
 	Children:
-		WorldInteractionController:
+		WorldInteractionController@INTERACTION_CONTROLLER:
 			X:0
 			Y:0
 			Width:WINDOW_RIGHT
