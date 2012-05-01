@@ -1,5 +1,4 @@
 Background@MAPCHOOSER_PANEL:
-	Id:MAPCHOOSER_PANEL
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Logic:MapChooserLogic
@@ -15,14 +14,12 @@ Background@MAPCHOOSER_PANEL:
 			Text:Choose Map
 			Font:Bold
 		ScrollPanel@MAP_LIST:
-			Id:MAP_LIST
 			X:20
 			Y:47
 			Width:PARENT_RIGHT - 40
 			Height:474
 			Children:
 				ScrollItem@MAP_TEMPLATE:
-					Id:MAP_TEMPLATE
 					Width:180
 					Height:208
 					X:2
@@ -32,12 +29,10 @@ Background@MAPCHOOSER_PANEL:
 						Label@TITLE:
 							X:2
 							Y:PARENT_BOTTOM-47
-							Id:TITLE
 							Width:PARENT_RIGHT-4
 							Height:25
 							Align:Center
 						Label@DETAILS:
-							Id:DETAILS
 							Width:PARENT_RIGHT-4
 							X:2
 							Y:PARENT_BOTTOM-35
@@ -45,7 +40,6 @@ Background@MAPCHOOSER_PANEL:
 							Height:25
 							Font:Tiny
 						Label@AUTHOR:
-							Id:AUTHOR
 							Width:PARENT_RIGHT-4
 							X:2
 							Y:PARENT_BOTTOM-26
@@ -53,19 +47,16 @@ Background@MAPCHOOSER_PANEL:
 							Height:25
 							Font:Tiny
 						MapPreview@PREVIEW:
-							Id:PREVIEW
 							X:(PARENT_RIGHT - WIDTH)/2
 							Y:4
 							Width:160
 							Height:160
 		DropDownButton@GAMEMODE_FILTER:
-			Id:GAMEMODE_FILTER
 			X:PARENT_RIGHT - 220
 			Y:17
 			Width:200
 			Height:25
 		Button@BUTTON_OK:
-			Id:BUTTON_OK
 			X:PARENT_RIGHT - 295
 			Y:PARENT_BOTTOM - 49
 			Width:120
@@ -74,7 +65,6 @@ Background@MAPCHOOSER_PANEL:
 			Font:Bold
 			Key:return
 		Button@BUTTON_CANCEL:
-			Id:BUTTON_CANCEL
 			X:PARENT_RIGHT-154
 			Y:PARENT_BOTTOM-49
 			Width:120

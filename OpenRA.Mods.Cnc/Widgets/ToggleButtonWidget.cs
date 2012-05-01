@@ -27,7 +27,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			: base()
 		{
 			tooltipContainer = Lazy.New(() =>
-				Ui.Root.GetWidget<TooltipContainerWidget>(TooltipContainer));
+				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 		}
 
 		protected ToggleButtonWidget(ToggleButtonWidget other)
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			TooltipText = other.TooltipText;
 			TooltipContainer = other.TooltipContainer;
 			tooltipContainer = Lazy.New(() =>
-				Ui.Root.GetWidget<TooltipContainerWidget>(TooltipContainer));
+				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 		}
 
 		public override void MouseEntered()

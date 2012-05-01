@@ -19,6 +19,9 @@ namespace OpenRA.Mods.RA.Activities
 	{
 		public override Activity Tick(Actor self)
 		{
+			var capturing = self.TraitOrDefault<Capturable>();
+			if (capturing != null && capturing.CaptureInProgress) return NextActivity;
+
 			var h = self.TraitOrDefault<Health>();
 			var si = self.Info.Traits.Get<SellableInfo>();
 			var pr = self.Owner.PlayerActor.Trait<PlayerResources>();

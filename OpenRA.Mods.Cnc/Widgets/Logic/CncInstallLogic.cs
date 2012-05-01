@@ -19,17 +19,17 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public CncInstallLogic(Widget widget, Dictionary<string,string> installData, Action continueLoading)
 		{
-			var panel = widget.GetWidget("INSTALL_PANEL");
+			var panel = widget.Get("INSTALL_PANEL");
 			var args = new WidgetArgs()
 			{
 				{ "afterInstall", () => { Ui.CloseWindow(); continueLoading(); } },
 				{ "installData", installData }
 			};
 
-			panel.GetWidget<ButtonWidget>("DOWNLOAD_BUTTON").OnClick = () =>
+			panel.Get<ButtonWidget>("DOWNLOAD_BUTTON").OnClick = () =>
 				Ui.OpenWindow("INSTALL_DOWNLOAD_PANEL", args);
 
-			panel.GetWidget<ButtonWidget>("INSTALL_BUTTON").OnClick = () =>
+			panel.Get<ButtonWidget>("INSTALL_BUTTON").OnClick = () =>
 				Ui.OpenWindow("INSTALL_FROMCD_PANEL", new WidgetArgs(args)
 				{
 					{ "filesToCopy", new[] { "CONQUER.MIX", "DESERT.MIX", "SCORES.MIX",
@@ -37,9 +37,9 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					{ "filesToExtract", new[] { "speech.mix", "tempicnh.mix", "transit.mix" } },
 				});
 
-			panel.GetWidget<ButtonWidget>("QUIT_BUTTON").OnClick = Game.Exit;
+			panel.Get<ButtonWidget>("QUIT_BUTTON").OnClick = Game.Exit;
 
-			panel.GetWidget<ButtonWidget>("MODS_BUTTON").OnClick = () =>
+			panel.Get<ButtonWidget>("MODS_BUTTON").OnClick = () =>
 			{
 				Ui.OpenWindow("MODS_PANEL", new WidgetArgs()
 				{

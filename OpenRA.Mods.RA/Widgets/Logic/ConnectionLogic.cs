@@ -59,9 +59,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			Game.ConnectionStateChanged += ConnectionStateChanged;
 
 			var panel = widget;
-			panel.GetWidget<ButtonWidget>("ABORT_BUTTON").OnClick = () => { CloseWindow(); onAbort(); };
+			panel.Get<ButtonWidget>("ABORT_BUTTON").OnClick = () => { CloseWindow(); onAbort(); };
 
-			widget.GetWidget<LabelWidget>("CONNECTING_DESC").GetText = () =>
+			widget.Get<LabelWidget>("CONNECTING_DESC").GetText = () =>
 				"Connecting to {0}:{1}...".F(host, port);
 		}
 
@@ -85,10 +85,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		public ConnectionFailedLogic(Widget widget, string host, int port, Action onRetry, Action onAbort)
 		{
 			var panel = widget;
-			panel.GetWidget<ButtonWidget>("ABORT_BUTTON").OnClick = () => { Ui.CloseWindow(); onAbort(); };
-			panel.GetWidget<ButtonWidget>("RETRY_BUTTON").OnClick = () => { Ui.CloseWindow(); onRetry(); };
+			panel.Get<ButtonWidget>("ABORT_BUTTON").OnClick = () => { Ui.CloseWindow(); onAbort(); };
+			panel.Get<ButtonWidget>("RETRY_BUTTON").OnClick = () => { Ui.CloseWindow(); onRetry(); };
 
-			widget.GetWidget<LabelWidget>("CONNECTING_DESC").GetText = () =>
+			widget.Get<LabelWidget>("CONNECTING_DESC").GetText = () =>
 				"Could not connect to {0}:{1}".F(host, port);
 		}
 	}

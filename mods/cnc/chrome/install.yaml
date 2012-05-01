@@ -1,5 +1,4 @@
 Container@INSTALL_BACKGROUND:
-	Id:INSTALL_BACKGROUND
 	Width:WINDOW_RIGHT
 	Height:WINDOW_BOTTOM
 	Children:
@@ -26,7 +25,6 @@ Container@INSTALL_BACKGROUND:
 			Background:shellmapborder
 
 Container@INSTALL_PANEL:
-	Id:INSTALL_PANEL
 	Logic:CncInstallLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - 150)/2
@@ -66,27 +64,23 @@ Container@INSTALL_PANEL:
 					Text:OpenRA can download these files (excluding music and videos) from the internet, or you can install from the original C&C CDs.
 					Font:Bold
 		Button@QUIT_BUTTON:
-			Id:QUIT_BUTTON
 			Y:149
 			Width:140
 			Height:35
 			Text:Quit
 		Button@MODS_BUTTON:
-			Id:MODS_BUTTON
 			X:150
 			Y:149
 			Width:140
 			Height:35
 			Text:Change Mod
 		Button@DOWNLOAD_BUTTON:
-			Id:DOWNLOAD_BUTTON
 			X:350
 			Y:149
 			Width:140
 			Height:35
 			Text:Download
 		Button@INSTALL_BUTTON:
-			Id:INSTALL_BUTTON
 			X:500
 			Y:149
 			Width:140
@@ -94,7 +88,6 @@ Container@INSTALL_PANEL:
 			Text:Use CD
 
 Container@INSTALL_FROMCD_PANEL:
-	Id:INSTALL_FROMCD_PANEL
 	Logic:CncInstallFromCDLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - 150)/2
@@ -119,26 +112,22 @@ Container@INSTALL_FROMCD_PANEL:
 					ImageCollection:logos
 					ImageName:install
 				Container@INSTALLING:
-					Id:INSTALLING
 					Width:PARENT_RIGHT
 					Height:PARENT_BOTTOM
 					Visible: false
 					Children:
 						ProgressBar@PROGRESS_BAR:
-							Id:PROGRESS_BAR
 							X:170
 							Y:45
 							Width:PARENT_RIGHT - 185
 							Height:35
 						Label@STATUS_LABEL:
-							Id:STATUS_LABEL
 							X:170
 							Y:85
 							Width:PARENT_RIGHT - 185
 							Height:25
 							Align:Left
 				Container@INSERT_DISK:
-					Id:INSERT_DISK
 					Width:PARENT_RIGHT
 					Height:PARENT_BOTTOM
 					Visible: false
@@ -159,14 +148,12 @@ Container@INSTALL_FROMCD_PANEL:
 							Text:Please insert one of the Command & Conquer install CDs then click Retry.
 							Font:Bold
 		Button@BACK_BUTTON:
-			Id:BACK_BUTTON
 			Key:escape
 			Y:149
 			Width:140
 			Height:35
 			Text:Back
 		Button@RETRY_BUTTON:
-			Id:RETRY_BUTTON
 			Key:return
 			X:500
 			Y:149
@@ -175,7 +162,6 @@ Container@INSTALL_FROMCD_PANEL:
 			Text:Retry
 
 Container@INSTALL_DOWNLOAD_PANEL:
-	Id:INSTALL_DOWNLOAD_PANEL
 	Logic:DownloadPackagesLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - 150)/2
@@ -200,13 +186,11 @@ Container@INSTALL_DOWNLOAD_PANEL:
 					ImageCollection:logos
 					ImageName:install
 				ProgressBar@PROGRESS_BAR:
-					Id:PROGRESS_BAR
 					X:170
 					Y:45
 					Width:PARENT_RIGHT - 185
 					Height:35
 				Label@STATUS_LABEL:
-					Id:STATUS_LABEL
 					X:170
 					Y:85
 					Width:PARENT_RIGHT - 185
@@ -214,14 +198,12 @@ Container@INSTALL_DOWNLOAD_PANEL:
 					Align:Left
 					Text:Initialising...
 		Button@CANCEL_BUTTON:
-			Id:CANCEL_BUTTON
 			Key:escape
 			Y:149
 			Width:140
 			Height:35
 			Text:Cancel
 		Button@RETRY_BUTTON:
-			Id:RETRY_BUTTON
 			Key:return
 			X:500
 			Y:149

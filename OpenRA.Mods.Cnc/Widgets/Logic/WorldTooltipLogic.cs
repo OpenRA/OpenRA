@@ -20,9 +20,9 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		public WorldTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, CncWorldInteractionControllerWidget wic)
 		{
 			widget.IsVisible = () => wic.TooltipType != WorldTooltipType.None;
-			var label = widget.GetWidget<LabelWidget>("LABEL");
-			var flag = widget.GetWidget<ImageWidget>("FLAG");
-			var owner = widget.GetWidget<LabelWidget>("OWNER");
+			var label = widget.Get<LabelWidget>("LABEL");
+			var flag = widget.Get<ImageWidget>("FLAG");
+			var owner = widget.Get<LabelWidget>("OWNER");
 
 			var font = Game.Renderer.Fonts[label.Font];
 			var ownerFont = Game.Renderer.Fonts[owner.Font];

@@ -31,10 +31,10 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public CncMusicPlayerLogic(Widget widget, Action onExit)
 		{
-			panel = widget.GetWidget("MUSIC_PANEL");
+			panel = widget.Get("MUSIC_PANEL");
 
-			var ml = panel.GetWidget<ScrollPanelWidget>("MUSIC_LIST");
-			itemTemplate = ml.GetWidget<ScrollItemWidget>("MUSIC_TEMPLATE");
+			var ml = panel.Get<ScrollPanelWidget>("MUSIC_LIST");
+			itemTemplate = ml.Get<ScrollItemWidget>("MUSIC_TEMPLATE");
 
 			BuildMusicTable(ml);
 
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			installed = Rules.Music.Where(m => m.Value.Exists).Any();
 			Func<bool> noMusic = () => !installed;
 
-			panel.GetWidget<ButtonWidget>("BACK_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
+			panel.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
 
 			Action afterInstall = () =>
 			{
@@ -60,7 +60,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				BuildMusicTable(ml);
 			};
 
-			var installButton = panel.GetWidget<ButtonWidget>("INSTALL_BUTTON");
+			var installButton = panel.Get<ButtonWidget>("INSTALL_BUTTON");
 			installButton.OnClick = () =>
 				Ui.OpenWindow("INSTALL_MUSIC_PANEL", new WidgetArgs() {
 					{ "afterInstall", afterInstall },
@@ -69,42 +69,42 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				});
 			installButton.IsVisible = () => music.Length < 3; // Hack around music being split between transit.mix and scores.mix
 
-			panel.GetWidget("NO_MUSIC_LABEL").IsVisible = noMusic;
+			panel.Get("NO_MUSIC_LABEL").IsVisible = noMusic;
 
-			var playButton = panel.GetWidget<ButtonWidget>("BUTTON_PLAY");
+			var playButton = panel.Get<ButtonWidget>("BUTTON_PLAY");
 			playButton.OnClick = Play;
 			playButton.IsDisabled = noMusic;
 
-			var pauseButton = panel.GetWidget<ButtonWidget>("BUTTON_PAUSE");
+			var pauseButton = panel.Get<ButtonWidget>("BUTTON_PAUSE");
 			pauseButton.OnClick = Pause;
 			pauseButton.IsDisabled = noMusic;
 
-			var stopButton = panel.GetWidget<ButtonWidget>("BUTTON_STOP");
+			var stopButton = panel.Get<ButtonWidget>("BUTTON_STOP");
 			stopButton.OnClick = Stop;
 			stopButton.IsDisabled = noMusic;
 
-			var nextButton = panel.GetWidget<ButtonWidget>("BUTTON_NEXT");
+			var nextButton = panel.Get<ButtonWidget>("BUTTON_NEXT");
 			nextButton.OnClick = () => { currentSong = GetNextSong(); Play(); };
 			nextButton.IsDisabled = noMusic;
 
-			var prevButton = panel.GetWidget<ButtonWidget>("BUTTON_PREV");
+			var prevButton = panel.Get<ButtonWidget>("BUTTON_PREV");
 			prevButton.OnClick = () => { currentSong = GetPrevSong(); Play(); };
 			prevButton.IsDisabled = noMusic;
 
-			var shuffleCheckbox = panel.GetWidget<CheckboxWidget>("SHUFFLE");
+			var shuffleCheckbox = panel.Get<CheckboxWidget>("SHUFFLE");
 			shuffleCheckbox.IsChecked = () => Game.Settings.Sound.Shuffle;
 			shuffleCheckbox.OnClick = () => Game.Settings.Sound.Shuffle ^= true;
 
-			var repeatCheckbox = panel.GetWidget<CheckboxWidget>("REPEAT");
+			var repeatCheckbox = panel.Get<CheckboxWidget>("REPEAT");
 			repeatCheckbox.IsChecked = () => Game.Settings.Sound.Repeat;
 			repeatCheckbox.OnClick = () => Game.Settings.Sound.Repeat ^= true;
 
-			panel.GetWidget<LabelWidget>("TIME_LABEL").GetText = () => (currentSong == null) ? "" :
+			panel.Get<LabelWidget>("TIME_LABEL").GetText = () => (currentSong == null) ? "" :
 					"{0:D2}:{1:D2} / {2:D2}:{3:D2}".F((int)Sound.MusicSeekPosition / 60, (int)Sound.MusicSeekPosition % 60,
 													  currentSong.Length / 60, currentSong.Length % 60);
-			panel.GetWidget<LabelWidget>("TITLE_LABEL").GetText = () => (currentSong == null) ? "" : currentSong.Title;
+			panel.Get<LabelWidget>("TITLE_LABEL").GetText = () => (currentSong == null) ? "" : currentSong.Title;
 
-			var musicSlider = panel.GetWidget<SliderWidget>("MUSIC_SLIDER");
+			var musicSlider = panel.Get<SliderWidget>("MUSIC_SLIDER");
 			musicSlider.OnChange += x => Sound.MusicVolume = x;
 			musicSlider.Value = Sound.MusicVolume;
 		}
@@ -122,8 +122,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					currentSong = song;
 
 				var item = ScrollItemWidget.Setup(itemTemplate, () => currentSong == song, () => { currentSong = song; Play(); });
-				item.GetWidget<LabelWidget>("TITLE").GetText = () => song.Title;
-				item.GetWidget<LabelWidget>("LENGTH").GetText = () => SongLengthLabel(song);
+				item.Get<LabelWidget>("TITLE").GetText = () => song.Title;
+				item.Get<LabelWidget>("LENGTH").GetText = () => SongLengthLabel(song);
 				list.AddChild(item);
 			}
 		}
@@ -140,22 +140,22 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				Play();
 			});
 
-			panel.GetWidget("BUTTON_PLAY").Visible = false;
-			panel.GetWidget("BUTTON_PAUSE").Visible = true;
+			panel.Get("BUTTON_PLAY").Visible = false;
+			panel.Get("BUTTON_PAUSE").Visible = true;
 		}
 
 		void Pause()
 		{
 			Sound.PauseMusic();
-			panel.GetWidget("BUTTON_PAUSE").Visible = false;
-			panel.GetWidget("BUTTON_PLAY").Visible = true;
+			panel.Get("BUTTON_PAUSE").Visible = false;
+			panel.Get("BUTTON_PLAY").Visible = true;
 		}
 
 		void Stop()
 		{
 			Sound.StopMusic();
-			panel.GetWidget("BUTTON_PAUSE").Visible = false;
-			panel.GetWidget("BUTTON_PLAY").Visible = true;
+			panel.Get("BUTTON_PAUSE").Visible = false;
+			panel.Get("BUTTON_PLAY").Visible = true;
 		}
 
 		string SongLengthLabel(MusicInfo song)

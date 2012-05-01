@@ -1,5 +1,4 @@
 Container@CONNECTING_PANEL:
-	Id:CONNECTING_PANEL
 	Logic:ConnectionLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - 90)/2
@@ -19,7 +18,6 @@ Container@CONNECTING_PANEL:
 			Background:panel-black
 			Children:
 				Label@CONNECTING_DESC:
-					Id:CONNECTING_DESC
 					Y:(PARENT_BOTTOM-HEIGHT)/2
 					Width:PARENT_RIGHT
 					Height:25
@@ -27,7 +25,6 @@ Container@CONNECTING_PANEL:
 					Font:Bold
 					Align:Center
 		Button@ABORT_BUTTON:
-			Id:ABORT_BUTTON
 			Key:escape
 			X:230
 			Y:89
@@ -36,7 +33,6 @@ Container@CONNECTING_PANEL:
 			Text:Abort
 
 Container@CONNECTIONFAILED_PANEL:
-	Id:CONNECTIONFAILED_PANEL
 	Logic:ConnectionFailedLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - 90)/2
@@ -56,7 +52,6 @@ Container@CONNECTIONFAILED_PANEL:
 			Background:panel-black
 			Children:
 				Label@CONNECTING_DESC:
-					Id:CONNECTING_DESC
 					Y:(PARENT_BOTTOM-HEIGHT)/2
 					Width:PARENT_RIGHT
 					Height:25
@@ -64,14 +59,12 @@ Container@CONNECTIONFAILED_PANEL:
 					Font:Bold
 					Align:Center
 		Button@RETRY_BUTTON:
-			Id:RETRY_BUTTON
 			Key:return
 			Y:89
 			Width:140
 			Height:35
 			Text:Retry
 		Button@ABORT_BUTTON:
-			Id:ABORT_BUTTON
 			Key:escape
 			X:230
 			Y:89

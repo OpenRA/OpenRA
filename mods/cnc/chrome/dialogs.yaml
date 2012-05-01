@@ -1,12 +1,10 @@
 Background@COLOR_CHOOSER:
-	Id:COLOR_CHOOSER
 	Logic:ColorPickerLogic
 	Background:panel-black
 	Width:315
 	Height:130
 	Children:
 		Button@SAVE_BUTTON:
-			Id:SAVE_BUTTON
 			Key:return
 			X:210
 			Y:90
@@ -14,14 +12,12 @@ Background@COLOR_CHOOSER:
 			Height:25
 			Text:Save
 		Button@RANDOM_BUTTON:
-			Id:RANDOM_BUTTON
 			X:15
 			Y:90
 			Width:90
 			Height:25
 			Text:Random
 		ShpImage@FACT:
-			Id:FACT
 			X:220
 			Y:15
 			Image:fact
@@ -35,7 +31,6 @@ Background@COLOR_CHOOSER:
 			Text:Hue:
 			Font:Bold
 		Slider@HUE:
-			Id:HUE_SLIDER
 			X:43
 			Y:10
 			Width:160
@@ -50,7 +45,6 @@ Background@COLOR_CHOOSER:
 			Text:Sat:
 			Font:Bold
 		Slider@SAT:
-			Id:SAT_SLIDER
 			X:43
 			Y:35
 			Width:160
@@ -65,7 +59,6 @@ Background@COLOR_CHOOSER:
 			Text:Lum:
 			Font:Bold
 		Slider@LUM:
-			Id:LUM_SLIDER
 			X:43
 			Y:60
 			Width:160
@@ -75,12 +68,10 @@ Background@COLOR_CHOOSER:
 			MaximumValue: 1
 
 ScrollPanel@LABEL_DROPDOWN_TEMPLATE:
-	Id:LABEL_DROPDOWN_TEMPLATE
 	Width:DROPDOWN_WIDTH
 	Background:panel-black
 	Children:
 		ScrollItem@TEMPLATE:
-			Id:TEMPLATE
 			Width:PARENT_RIGHT-27
 			Height:25
 			X:2
@@ -88,18 +79,15 @@ ScrollPanel@LABEL_DROPDOWN_TEMPLATE:
 			Visible:false
 			Children:
 				Label@LABEL:
-					Id:LABEL
 					X:10
 					Width:PARENT_RIGHT-20
 					Height:25
 
 ScrollPanel@RACE_DROPDOWN_TEMPLATE:
-	Id:RACE_DROPDOWN_TEMPLATE
 	Width:DROPDOWN_WIDTH
 	Background:panel-black
 	Children:
 		ScrollItem@TEMPLATE:
-			Id:TEMPLATE
 			Width:PARENT_RIGHT-27
 			Height:25
 			X:2
@@ -107,24 +95,20 @@ ScrollPanel@RACE_DROPDOWN_TEMPLATE:
 			Visible:false
 			Children:
 				Image@FLAG:
-					Id:FLAG
 					X:4
 					Y:4
 					Width:32
 					Height:16
 				Label@LABEL:
-					Id:LABEL
 					X:40
 					Width:60
 					Height:25
 
 ScrollPanel@TEAM_DROPDOWN_TEMPLATE:
-	Id:TEAM_DROPDOWN_TEMPLATE
 	Width:DROPDOWN_WIDTH
 	Background:panel-black
 	Children:
 		ScrollItem@TEMPLATE:
-			Id:TEMPLATE
 			Width:PARENT_RIGHT-27
 			Height:25
 			X:2
@@ -132,21 +116,18 @@ ScrollPanel@TEAM_DROPDOWN_TEMPLATE:
 			Visible:false
 			Children:
 				Label@LABEL:
-					Id:LABEL
 					X:0
 					Width:PARENT_RIGHT
 					Height:25
 					Align:Center
 
 Container@CONFIRM_PROMPT:
-	Id:CONFIRM_PROMPT
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - 90)/2
 	Width:370
 	Height:125
 	Children:
 		Label@PROMPT_TITLE:
-			Id:PROMPT_TITLE
 			Width:PARENT_RIGHT
 			Y:0-25
 			Font:BigBold
@@ -158,21 +139,18 @@ Container@CONFIRM_PROMPT:
 			Background:panel-black
 			Children:
 				Label@PROMPT_TEXT:
-					Id:PROMPT_TEXT
 					Y:(PARENT_BOTTOM-HEIGHT)/2
 					Width:PARENT_RIGHT
 					Height:25
 					Font:Bold
 					Align:Center
 		Button@CANCEL_BUTTON:
-			Id:CANCEL_BUTTON
 			Key:escape
 			Y:89
 			Width:140
 			Height:35
 			Text:Cancel
 		Button@CONFIRM_BUTTON:
-			Id:CONFIRM_BUTTON
 			Key:return
 			X:230
 			Y:89

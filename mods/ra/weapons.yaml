@@ -39,6 +39,7 @@ Vulcan:
 	Report: GUN13
 	Projectile: Bullet
 		Speed: 100
+		ContrailLength: 1000
 	Warhead@1:
 		Spread: 3
 		Versus: 
@@ -48,7 +49,7 @@ Vulcan:
 			Concrete: 25%
 		Explosion: piffs
 		InfDeath: 1
-		Damage: 7
+		Damage: 10
 	Warhead@2:
 		Spread: 3
 		Versus: 
@@ -58,8 +59,8 @@ Vulcan:
 			Concrete: 25%
 		Explosion: piffs
 		InfDeath: 1
-		Damage: 5
-		Delay: 7
+		Damage: 10
+		Delay: 2
 	Warhead@3:
 		Spread: 3
 		Versus: 
@@ -69,7 +70,7 @@ Vulcan:
 			Concrete: 25%
 		Explosion: piffs
 		InfDeath: 1
-		Damage: 7
+		Damage: 10
 		Delay: 4
 	Warhead@4:
 		Spread: 3
@@ -80,7 +81,7 @@ Vulcan:
 			Concrete: 25%
 		Explosion: piffs
 		InfDeath: 1
-		Damage: 7
+		Damage: 10
 		Delay: 6
 	Warhead@5:
 		Spread: 3
@@ -91,7 +92,7 @@ Vulcan:
 			Concrete: 25%
 		Explosion: piffs
 		InfDeath: 1
-		Damage: 7
+		Damage: 10
 		Delay: 8
 	Warhead@6:
 		Spread: 3
@@ -102,7 +103,7 @@ Vulcan:
 			Concrete: 25%
 		Explosion: piffs
 		InfDeath: 1
-		Damage: 7
+		Damage: 10
 		Delay: 10
 		
 Maverick:
@@ -164,24 +165,28 @@ FireballLauncher:
 Flamer:
 	ROF: 50
 	Range: 5
+	Burst: 15
+	BurstDelay: 1
 	Projectile: Bullet
-		Speed: 12
-		Trail: fb2
-		Image: FB1
+		Speed: 10
+		Trail: fb4
+		Image: fb3
+		Angle: .1
+		Inaccuracy: 20
 	Warhead:
-		Spread: 4
+		Spread: 8
 		Versus: 
 			None: 90%
 			Wood: 100%
 			Light: 60%
 			Heavy: 25%
 			Concrete: 50%
-		Explosion: napalm
-		WaterExplosion: napalm
+		Explosion: small_napalm
+		WaterExplosion: small_napalm
 		InfDeath: 4
 		SmudgeType: Scorch
 		ImpactSound: firebl3
-		Damage: 70
+		Damage: 8
 
 ChainGun:
 	ROF: 10
@@ -911,6 +916,23 @@ Heal:
 			Concrete: 0%
 		InfDeath: 0
 		Damage: -50
+
+SilencedPPK:
+	ROF: 80
+	Range: 2.5
+	Report: silppk
+	Projectile: Bullet
+		Speed: 100
+	Warhead:
+		Spread: 3
+		Versus:
+			Wood: 0%
+			Light: 0%
+			Heavy: 0%
+			Concrete: 0%
+		Explosion: piffs
+		InfDeath: 1
+		Damage: 150
 		
 SCUD:
 	ROF: 280

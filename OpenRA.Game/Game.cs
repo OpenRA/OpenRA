@@ -259,7 +259,7 @@ namespace OpenRA
 			foreach(var mod in Mod.AllMods)
 				Console.WriteLine("\t{0}: {1} ({2})", mod.Key, mod.Value.Title, mod.Value.Version);
 
-			Sound.Create();
+			Sound.Create(Settings.Sound.Engine);
 			InitializeWithMods(Settings.Game.Mods);
 		}
 

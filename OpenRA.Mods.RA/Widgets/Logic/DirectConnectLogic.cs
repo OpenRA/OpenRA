@@ -19,14 +19,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		public DirectConnectLogic(Widget widget, Action onExit, Action openLobby)
 		{
 			var panel = widget;
-			var ipField = panel.GetWidget<TextFieldWidget>("IP");
-			var portField = panel.GetWidget<TextFieldWidget>("PORT");
+			var ipField = panel.Get<TextFieldWidget>("IP");
+			var portField = panel.Get<TextFieldWidget>("PORT");
 
 			var last = Game.Settings.Player.LastServer.Split(':');
 			ipField.Text = last.Length > 1 ? last[0] : "localhost";
 			portField.Text = last.Length > 2 ? last[1] : "1234";
 
-			panel.GetWidget<ButtonWidget>("JOIN_BUTTON").OnClick = () =>
+			panel.Get<ButtonWidget>("JOIN_BUTTON").OnClick = () =>
 			{
 				var port = Exts.WithDefault(1234, () => int.Parse(portField.Text));
 
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				ConnectionLogic.Connect(ipField.Text, port, openLobby, onExit);
 			};
 
-			panel.GetWidget<ButtonWidget>("BACK_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
+			panel.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
 		}
 	}
 }

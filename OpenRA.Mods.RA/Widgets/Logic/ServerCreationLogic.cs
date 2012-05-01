@@ -31,15 +31,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			this.onExit = onExit;
 
 			var settings = Game.Settings;
-			panel.GetWidget<ButtonWidget>("BACK_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
-			panel.GetWidget<ButtonWidget>("CREATE_BUTTON").OnClick = CreateAndJoin;
+			panel.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
+			panel.Get<ButtonWidget>("CREATE_BUTTON").OnClick = CreateAndJoin;
 
 			map = Game.modData.AvailableMaps[ WidgetUtils.ChooseInitialMap(Game.Settings.Server.Map) ];
 
-			var mapButton = panel.GetWidget<ButtonWidget>("MAP_BUTTON");
+			var mapButton = panel.GetOrNull<ButtonWidget>("MAP_BUTTON");
 			if (mapButton != null)
 			{
-				panel.GetWidget<ButtonWidget>("MAP_BUTTON").OnClick = () =>
+				panel.Get<ButtonWidget>("MAP_BUTTON").OnClick = () =>
 				{
 					Ui.OpenWindow("MAPCHOOSER_PANEL", new WidgetArgs()
 					{
@@ -49,31 +49,31 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					});
 				};
 
-				panel.GetWidget<MapPreviewWidget>("MAP_PREVIEW").Map = () => map;
-				panel.GetWidget<LabelWidget>("MAP_NAME").GetText = () => map.Title;
+				panel.Get<MapPreviewWidget>("MAP_PREVIEW").Map = () => map;
+				panel.Get<LabelWidget>("MAP_NAME").GetText = () => map.Title;
 			}
 
-			panel.GetWidget<TextFieldWidget>("SERVER_NAME").Text = settings.Server.Name ?? "";
-			panel.GetWidget<TextFieldWidget>("LISTEN_PORT").Text = settings.Server.ListenPort.ToString();
+			panel.Get<TextFieldWidget>("SERVER_NAME").Text = settings.Server.Name ?? "";
+			panel.Get<TextFieldWidget>("LISTEN_PORT").Text = settings.Server.ListenPort.ToString();
 			advertiseOnline = Game.Settings.Server.AdvertiseOnline;
 
-			var externalPort = panel.GetWidget<TextFieldWidget>("EXTERNAL_PORT");
+			var externalPort = panel.Get<TextFieldWidget>("EXTERNAL_PORT");
 			externalPort.Text = settings.Server.ExternalPort.ToString();
 			externalPort.IsDisabled = () => !advertiseOnline;
 
-			var advertiseCheckbox = panel.GetWidget<CheckboxWidget>("ADVERTISE_CHECKBOX");
+			var advertiseCheckbox = panel.Get<CheckboxWidget>("ADVERTISE_CHECKBOX");
 			advertiseCheckbox.IsChecked = () => advertiseOnline;
 			advertiseCheckbox.OnClick = () => advertiseOnline ^= true;
 		}
 
 		void CreateAndJoin()
 		{
-			var name = panel.GetWidget<TextFieldWidget>("SERVER_NAME").Text;
+			var name = panel.Get<TextFieldWidget>("SERVER_NAME").Text;
 			int listenPort, externalPort;
-			if (!int.TryParse(panel.GetWidget<TextFieldWidget>("LISTEN_PORT").Text, out listenPort))
+			if (!int.TryParse(panel.Get<TextFieldWidget>("LISTEN_PORT").Text, out listenPort))
 				listenPort = 1234;
 
-			if (!int.TryParse(panel.GetWidget<TextFieldWidget>("EXTERNAL_PORT").Text, out externalPort))
+			if (!int.TryParse(panel.Get<TextFieldWidget>("EXTERNAL_PORT").Text, out externalPort))
 				externalPort = 1234;
 
 			// Save new settings

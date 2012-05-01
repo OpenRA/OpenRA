@@ -27,11 +27,11 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			var pr = palette.world.LocalPlayer.PlayerActor.Trait<PlayerResources>();
 
 			widget.IsVisible = () => palette.TooltipActor != null;
-			var nameLabel = widget.GetWidget<LabelWidget>("NAME");
-			var requiresLabel = widget.GetWidget<LabelWidget>("REQUIRES");
-			var powerLabel = widget.GetWidget<LabelWidget>("POWER");
-			var timeLabel = widget.GetWidget<LabelWidget>("TIME");
-			var costLabel = widget.GetWidget<LabelWidget>("COST");
+			var nameLabel = widget.Get<LabelWidget>("NAME");
+			var requiresLabel = widget.Get<LabelWidget>("REQUIRES");
+			var powerLabel = widget.Get<LabelWidget>("POWER");
+			var timeLabel = widget.Get<LabelWidget>("TIME");
+			var costLabel = widget.Get<LabelWidget>("COST");
 
 			var font = Game.Renderer.Fonts[nameLabel.Font];
 			var requiresFont = Game.Renderer.Fonts[requiresLabel.Font];

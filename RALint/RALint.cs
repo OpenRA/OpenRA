@@ -51,13 +51,20 @@ namespace RALint
 				foreach (var customPassType in Game.modData.ObjectCreator
 					.GetTypesImplementing<ILintPass>())
 				{
-					var customPass = (ILintPass)Game.modData.ObjectCreator
-						.CreateBasic(customPassType);
+					try
+					{
+						var customPass = (ILintPass)Game.modData.ObjectCreator
+							.CreateBasic(customPassType);
 
-					if (verbose)
-						Console.WriteLine("Pass: {0}".F(customPassType.ToString()));
+						if (verbose)
+							Console.WriteLine("Pass: {0}".F(customPassType.ToString()));
 
-					customPass.Run(EmitError, EmitWarning);
+						customPass.Run(EmitError, EmitWarning);
+					}
+					catch(Exception e)
+					{
+						EmitError("Failed with exception: {0}".F(e));
+					}
 				}
 
 				if (errors > 0)

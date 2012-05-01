@@ -42,11 +42,10 @@ namespace OpenRA.Mods.RA
 			return null;
 		}
 
-
 		void Activate(Actor self)
 		{
 			self.CancelActivity();
-			self.QueueActivity(new AttackMoveActivity(mobile.MoveTo(TargetLocation.Value, 1)));
+			self.QueueActivity(new AttackMoveActivity(self, mobile.MoveTo(TargetLocation.Value, 1)));
 			self.SetTargetLine(Target.FromCell(TargetLocation.Value), Color.Red);
 		}
 
@@ -59,6 +58,7 @@ namespace OpenRA.Mods.RA
 		public void ResolveOrder(Actor self, Order order)
 		{
 			TargetLocation = null;
+
 			if (order.OrderString == "AttackMove")
 			{
 				if (Info.JustMove)
@@ -71,20 +71,25 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		class AttackMoveActivity : Activity
+		public class AttackMoveActivity : Activity
 		{
 			Activity inner;
 			int scanTicks;
+			AutoTarget autoTarget;
 
 			const int ScanInterval = 7;
 
-			public AttackMoveActivity( Activity inner ) { this.inner = inner; }
+			public AttackMoveActivity( Actor self, Activity inner )
+			{
+				this.inner = inner;
+				this.autoTarget = self.TraitOrDefault<AutoTarget>();
+			}
 
 			public override Activity Tick( Actor self )
 			{
-				if (--scanTicks <= 0)
+				if (autoTarget != null && --scanTicks <= 0)
 				{
-					self.Trait<AutoTarget>().ScanAndAttack(self);
+					autoTarget.ScanAndAttack(self);
 					scanTicks = ScanInterval;
 				}
 

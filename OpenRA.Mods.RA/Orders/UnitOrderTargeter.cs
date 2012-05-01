@@ -30,6 +30,7 @@ namespace OpenRA.Mods.RA.Orders
 
 		public string OrderID { get; private set; }
 		public int OrderPriority { get; private set; }
+		public bool? ForceAttack = null;
 
 		public virtual bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceQueued, ref string cursor)
 		{
@@ -38,6 +39,8 @@ namespace OpenRA.Mods.RA.Orders
 
 			cursor = this.cursor;
 			IsQueued = forceQueued;
+
+			if (ForceAttack != null && forceAttack != ForceAttack) return false;
 
 			var playerRelationship = self.Owner.Stances[ target.Owner ];
 

@@ -28,9 +28,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		public DiplomacyLogic(World world)
 		{
 			this.world = world;
-			var root = Ui.Root.GetWidget("INGAME_ROOT");
-			var diplomacyBG = root.GetWidget("DIPLOMACY_BG");
-			var diplomacy = root.GetWidget<ButtonWidget>("INGAME_DIPLOMACY_BUTTON");
+			var root = Ui.Root.Get("INGAME_ROOT");
+			var diplomacyBG = root.Get("DIPLOMACY_BG");
+			var diplomacy = root.Get<ButtonWidget>("INGAME_DIPLOMACY_BUTTON");
 
 			diplomacy.OnClick = () =>
 			{
@@ -129,7 +129,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					() => s == world.LocalPlayer.Stances[ p ],
 					() => SetStance(dropdown, p, s));
 
-				item.GetWidget<LabelWidget>("LABEL").GetText = () => s.ToString();
+				item.Get<LabelWidget>("LABEL").GetText = () => s.ToString();
 				return item;
 			};
 

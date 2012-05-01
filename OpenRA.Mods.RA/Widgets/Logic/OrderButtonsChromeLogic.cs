@@ -21,9 +21,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			/* todo: attach this to the correct widget, to remove the lookups below */
 			var r = Ui.Root;
-			var gameRoot = r.GetWidget("INGAME_ROOT");
+			var gameRoot = r.Get("INGAME_ROOT");
 
-			var moneybin = gameRoot.GetWidget("INGAME_MONEY_BIN");
+			var moneybin = gameRoot.Get("INGAME_MONEY_BIN");
 			moneybin.IsVisible = () => {
 				return world.LocalPlayer.WinState == WinState.Undefined;
 			};
@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		static void BindOrderButton<T>(World world, Widget parent, string button)
 			where T : IOrderGenerator, new()
 		{
-			var w = parent.GetWidget<OrderButtonWidget>(button);
+			var w = parent.GetOrNull<OrderButtonWidget>(button);
 			if (w != null)
 			{
 				w.Pressed = () => world.OrderGenerator is T;

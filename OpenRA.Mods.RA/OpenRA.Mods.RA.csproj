@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -38,13 +38,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core">
-    </Reference>
+    <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Xml.Linq">
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
-    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="ICSharpCode.SharpZipLib">
@@ -140,6 +137,7 @@
     <Compile Include="Burns.cs" />
     <Compile Include="C4Demolition.cs" />
     <Compile Include="Capturable.cs" />
+    <Compile Include="CapturableBar.cs" />
     <Compile Include="Captures.cs" />
     <Compile Include="Cargo.cs" />
     <Compile Include="CarpetBomb.cs" />
@@ -188,6 +186,7 @@
     <Compile Include="Effects\SatelliteLaunch.cs" />
     <Compile Include="Effects\Smoke.cs" />
     <Compile Include="Effects\TeslaZap.cs" />
+    <Compile Include="EmitCargoOnSell.cs" />
     <Compile Include="EmitInfantryOnSell.cs" />
     <Compile Include="EngineerRepair.cs" />
     <Compile Include="Explodes.cs" />
@@ -328,7 +327,6 @@
     <Compile Include="Widgets\Logic\ModBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\ColorPickerLogic.cs" />
     <Compile Include="Widgets\Logic\ConnectionLogic.cs" />
-    <Compile Include="Widgets\Logic\DeveloperModeLogic.cs" />
     <Compile Include="Widgets\Logic\DiplomacyLogic.cs" />
     <Compile Include="Widgets\Logic\DirectConnectLogic.cs" />
     <Compile Include="Widgets\Logic\DownloadPackagesLogic.cs" />
@@ -360,6 +358,11 @@
     <Compile Include="World\PlayMusicOnMapLoad.cs" />
     <Compile Include="World\SmudgeLayer.cs" />
     <Compile Include="Player\BaseAttackNotifier.cs" />
+    <Compile Include="InfiltrateForExploration.cs" />
+    <Compile Include="InfiltrateForCash.cs" />
+    <Compile Include="RenderShroudCircle.cs" />
+    <Compile Include="Widgets\Logic\CheatsLogic.cs" />
+    <Compile Include="CloakPaletteEffect.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

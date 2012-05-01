@@ -110,7 +110,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 				if (WorldInteractionController != null)
 				{
-					var controller = Ui.Root.GetWidget<WorldInteractionControllerWidget>(WorldInteractionController);
+					var controller = Ui.Root.Get<WorldInteractionControllerWidget>(WorldInteractionController);
 					controller.HandleMouseInput(fakemi);
 					fakemi.Event = MouseInputEvent.Up;
 					controller.HandleMouseInput(fakemi);
@@ -128,7 +128,6 @@ namespace OpenRA.Mods.RA.Widgets
 		public override void Draw()
 		{
 			if (world == null) return;
-			if( world.LocalPlayer.WinState != WinState.Undefined ) return;
 
 			var o = new float2(mapRect.Location.X, mapRect.Location.Y + world.Map.Bounds.Height * previewScale * (1 - radarMinimapHeight)/2);
 			var s = new float2(mapRect.Size.Width, mapRect.Size.Height*radarMinimapHeight);

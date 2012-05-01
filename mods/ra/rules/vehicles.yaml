@@ -205,6 +205,8 @@ ARTY:
 		PrimaryWeapon: 155mm
 	RenderUnit:
 	Explodes:
+		Weapon: UnitExplode
+		Chance: 75  
 	AutoTarget:
 
 HARV:

@@ -114,6 +114,11 @@ E5:
 		Bounds: 12,17,0,-6
 	Mobile:
 		Speed: 4
+		TerrainSpeeds:
+			Tiberium: 80
+				PathingCost: 80
+			BlueTiberium: 80
+				PathingCost: 80
 	Health:
 		HP: 90
 	AttackFrontal:
@@ -173,8 +178,10 @@ RMBO:
 		Speed: 5
 	Health:
 		HP: 200
+	Passenger:
+		PipType: Red
 	RevealsShroud:
-		Range: 5
+		Range: 6
 	AutoTarget:
 		ScanRadius: 5
 	C4Demolition:
