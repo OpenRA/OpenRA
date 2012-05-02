@@ -162,14 +162,14 @@ do
   menuBar:Check(defaultid, true)
 end
 
-local function getNameToRun()
+local function getNameToRun(skipcheck)
   local editor = GetEditor()
 
   -- test compile it before we run it, if successful then ask to save
   -- only compile if lua api
   if (editor.spec.apitype and
     editor.spec.apitype == "lua" and
-    not CompileProgram(editor)) then
+    (not CompileProgram(editor, true) and not skipcheck)) then
     return
   end
 
@@ -200,18 +200,18 @@ local function runInterpreter(wfilename, withdebugger)
   debugger.pid = ide.interpreter:frun(wfilename, withdebugger)
 end
 
-function ProjectRun()
-  runInterpreter(getNameToRun())
+function ProjectRun(skipcheck)
+  runInterpreter(getNameToRun(skipcheck))
 end
 
-function ProjectDebug()
+function ProjectDebug(skipcheck)
   if (debugger.server ~= nil) then
     if (not debugger.running) then
       ClearAllCurrentLineMarkers()
       debugger.run()
     end
   else
-    runInterpreter(getNameToRun(), true)
+    runInterpreter(getNameToRun(skipcheck), true)
   end
 end
 
@@ -273,7 +273,7 @@ frame:Connect(ID_RUNNOW, wx.wxEVT_COMMAND_MENU_SELECTED,
       debugger.scratchpad = true
       scratchpadEditor = GetEditor()
       scratchpadEditor:Connect(wxstc.wxEVT_STC_MODIFIED, runOnChange)
-      ProjectDebug()
+      ProjectDebug(true)
     else
       scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wxstc.wxEVT_STC_MODIFIED)
       debugger.scratchpad = nil

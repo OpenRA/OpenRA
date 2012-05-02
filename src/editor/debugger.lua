@@ -84,9 +84,11 @@ function DebugRerunScratchpad(scratchpadEditor)
       local function reloadScratchpadCode()
         debugger.scratching = true
         while true do -- continue while there are still changes
-          debugger.loadstring(filePath, code)
-          local _, _, err = debugger.handle("run")
-          if err then DisplayOutput(err .. "\n") end
+          local _, _, err = debugger.loadstring(filePath, code)
+          if not err then -- if no compile errors, then run the script
+            _, _, err = debugger.handle("run")
+            if err then DisplayOutput(err .. "\n") end
+          end
           if code == scratchpadEditor:GetText() then break end
           code = scratchpadEditor:GetText()
         end
@@ -96,7 +98,7 @@ function DebugRerunScratchpad(scratchpadEditor)
       copas.addthread(reloadScratchpadCode)
     end
   else
-    ProjectDebug()
+    ProjectDebug(true)
   end
 end
 
