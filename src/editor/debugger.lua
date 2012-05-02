@@ -72,23 +72,28 @@ end
 function DebugRerunScratchpad(scratchpadEditor)
   -- are we already running in the debugger?
   if debugger.pid then
-    local code = scratchpadEditor:GetText()
-    local filePath = DebuggerMakeFileName(scratchpadEditor,
-      ide.openDocuments[scratchpadEditor:GetId()].filePath)
-
     -- break the current execution first
     -- this shouldn't do any harm if the execution is not running
     debugger.breaknow()
-    copas.step(0.25)
 
     if not debugger.scratching then
-      copas.addthread(function ()
+      local code = scratchpadEditor:GetText()
+      local filePath = DebuggerMakeFileName(scratchpadEditor,
+        ide.openDocuments[scratchpadEditor:GetId()].filePath)
+
+      local function reloadScratchpadCode()
         debugger.scratching = true
-        debugger.loadstring(filePath, code)
-        local _, _, err = debugger.handle("run")
+        while true do -- continue while there are still changes
+          debugger.loadstring(filePath, code)
+          local _, _, err = debugger.handle("run")
+          if err then DisplayOutput(err .. "\n") end
+          if code == scratchpadEditor:GetText() then break end
+          code = scratchpadEditor:GetText()
+        end
         debugger.scratching = false
-        if err then DisplayOutput(err .. "\n") end
-      end)
+      end
+
+      copas.addthread(reloadScratchpadCode)
     end
   else
     ProjectDebug()
@@ -237,7 +242,7 @@ debugger.exec = function(command)
           if out then out = nil end
           if line == nil then
             if err then DisplayOutput(err .. "\n") end
-            if not debugger.scratchpad then DebuggerStop() end
+            DebuggerStop()
             return
           else
             if debugger.basedir and not wx.wxIsAbsolutePath(file) then
