@@ -1,5 +1,5 @@
 --
--- MobDebug 0.443
+-- MobDebug 0.444
 -- Copyright Paul Kulchenko 2011-2012
 -- Based on RemDebug 1.0 (http://www.keplerproject.org/remdebug)
 --
@@ -8,7 +8,7 @@ local mobdebug = {
   _NAME = "mobdebug",
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
-  _VERSION = "0.443"
+  _VERSION = "0.444"
 }
 
 local coroutine = coroutine
@@ -149,7 +149,7 @@ local socket = mosync and socketMobileLua() or (require "socket")
 
 local debug = require "debug"
 local coro_debugger
-local events = { BREAK = 1, WATCH = 2 }
+local events = { BREAK = 1, WATCH = 2, RESTART = 3 }
 local breakpoints = {}
 local watches = {}
 local lastsource
@@ -239,16 +239,13 @@ local function stack_depth(start_depth)
 end
 
 local function is_safe(stack_level)
-  -- check the stack to see if we are in the main function we can abort from
   -- the stack grows up: 0 is getinfo, 1 is is_safe, 2 is debug_hook, 3 is user function
   if stack_level == 3 then return true end
-  local main = debug.getinfo(3, "S").source
 
   for i = 3, stack_level do
     -- return if it is not safe to abort
     local info = debug.getinfo(i, "S")
-    if not info then return true end
-    if info.source ~= main then return false end
+    if info and info.what == "C" then return false end
   end
   return true
 end
@@ -467,6 +464,8 @@ local function debugger_loop(sfile, sline)
         server:send("202 Paused " .. file .. " " .. line .. "\n")
       elseif ev == events.WATCH then
         server:send("203 Paused " .. file .. " " .. line .. " " .. idx_watch .. "\n")
+      elseif ev == events.RESTART then
+        -- nothing to do
       else
         server:send("401 Error in Execution " .. string.len(file) .. "\n")
         server:send(file)
@@ -481,6 +480,8 @@ local function debugger_loop(sfile, sline)
         server:send("202 Paused " .. file .. " " .. line .. "\n")
       elseif ev == events.WATCH then
         server:send("203 Paused " .. file .. " " .. line .. " " .. idx_watch .. "\n")
+      elseif ev == events.RESTART then
+        -- nothing to do
       else
         server:send("401 Error in Execution " .. string.len(file) .. "\n")
         server:send(file)
@@ -500,6 +501,8 @@ local function debugger_loop(sfile, sline)
         server:send("202 Paused " .. file .. " " .. line .. "\n")
       elseif ev == events.WATCH then
         server:send("203 Paused " .. file .. " " .. line .. " " .. idx_watch .. "\n")
+      elseif ev == events.RESTART then
+        -- nothing to do
       else
         server:send("401 Error in Execution " .. string.len(file) .. "\n")
         server:send(file)
@@ -546,10 +549,11 @@ local function loop(controller_host, controller_port)
       return err
     end
 
+    coro_debugger = coroutine.create(debugger_loop)
+
     while true do 
       step_into = true
       abort = false
-      coro_debugger = coroutine.create(debugger_loop)
 
       local coro_debugee = coroutine.create(debugee)
       debug.sethook(coro_debugee, debug_hook, "lcr")
@@ -559,6 +563,8 @@ local function loop(controller_host, controller_port)
       if not abort then -- 'abort' state is allowed here; ignore it
         if not status then -- report the error
           report(debug.traceback(coro_debugee), error)
+          -- resume once more to clear the response the debugger wants to send
+          coroutine.resume(coro_debugger, events.RESTART)
         else
           break
         end

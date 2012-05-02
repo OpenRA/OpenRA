@@ -76,15 +76,18 @@ function DebugRerunScratchpad(scratchpadEditor)
     local filePath = DebuggerMakeFileName(scratchpadEditor,
       ide.openDocuments[scratchpadEditor:GetId()].filePath)
 
-    debugger.breaknow() -- break the current execution first
+    -- break the current execution first
+    -- this shouldn't do any harm if the execution is not running
+    debugger.breaknow()
     copas.step(0.25)
 
     if not debugger.scratching then
       copas.addthread(function ()
         debugger.scratching = true
         debugger.loadstring(filePath, code)
-        debugger.handle("run")
+        local _, _, err = debugger.handle("run")
         debugger.scratching = false
+        if err then DisplayOutput(err .. "\n") end
       end)
     end
   else
