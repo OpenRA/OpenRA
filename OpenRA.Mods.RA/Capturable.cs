@@ -44,9 +44,7 @@ namespace OpenRA.Mods.RA
 			this.Captor = captor;
 
 			if (self.Owner != self.World.WorldActor.Owner)
-			{
 				self.ChangeOwner(self.World.WorldActor.Owner);
-			}
 		}
 
 		public void Tick(Actor self)
@@ -60,6 +58,7 @@ namespace OpenRA.Mods.RA
 				self.World.AddFrameEndTask(w =>
 				{
 					self.ChangeOwner(Captor.Owner);
+					ChangeCargoOwner(self, Captor.Owner);
 
 					foreach (var t in self.TraitsImplementing<INotifyCapture>())
 						t.OnCapture(self, Captor, self.Owner, Captor.Owner);
@@ -70,6 +69,16 @@ namespace OpenRA.Mods.RA
 					Captor = null;
 				});
 			}
+		}
+
+		void ChangeCargoOwner(Actor self, Player captor)
+		{
+			var cargo = self.TraitOrDefault<Cargo>();
+			if (cargo == null)
+				return;
+
+			foreach (var c in cargo.Passengers)
+				c.Owner = captor;
 		}
 	}
 }
