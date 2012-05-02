@@ -80,14 +80,20 @@ function DebugRerunScratchpad(scratchpadEditor)
       local code = scratchpadEditor:GetText()
       local filePath = DebuggerMakeFileName(scratchpadEditor,
         ide.openDocuments[scratchpadEditor:GetId()].filePath)
+      local errormsg = 'execution suspended at ' .. os.clock()
+      local stopper = "\nerror('" .. errormsg .. "')"
 
       local function reloadScratchpadCode()
         debugger.scratching = true
         while true do -- continue while there are still changes
-          local _, _, err = debugger.loadstring(filePath, code)
+          local _, _, err = debugger.loadstring(filePath, code .. stopper)
           if not err then -- if no compile errors, then run the script
             _, _, err = debugger.handle("run")
-            if err then DisplayOutput(err .. "\n") end
+            if err and not err:find(errormsg) then
+              local line = err:match('.*%[string "[%w:/%\\_%-%.]+"%]:(%d+)%s*:')
+              DisplayOutput("Execution error on line " .. line .. "\n"
+                .. err:gsub('stack traceback:.+', ''))
+            end
           end
           if code == scratchpadEditor:GetText() then break end
           code = scratchpadEditor:GetText()
