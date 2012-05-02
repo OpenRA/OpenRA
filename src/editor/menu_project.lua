@@ -283,7 +283,8 @@ frame:Connect(ID_RUNNOW, wx.wxEVT_COMMAND_MENU_SELECTED,
 frame:Connect(ID_RUNNOW, wx.wxEVT_UPDATE_UI,
   function (event)
     local editor = GetEditor()
-    event:Enable((debugger.server == nil) and (editor ~= nil) or debugger.scratchpad)
+    event:Enable((debugger.server == nil) and (editor ~= nil) and (debugger.pid == nil)
+                 or debugger.scratchpad)
   end)
 
 frame:Connect(ID_ATTACH_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
