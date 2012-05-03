@@ -380,7 +380,9 @@ frame:Connect(ID_START_DEBUG, wx.wxEVT_UPDATE_UI,
   function (event)
     local editor = GetEditor()
     event:Enable((ide.interpreter) and (ide.interpreter.hasdebugger) and
-      ((debugger.server == nil and debugger.pid == nil) or (debugger.server ~= nil and not debugger.running)) and (editor ~= nil))
+      ((debugger.server == nil and debugger.pid == nil) or
+       (debugger.server ~= nil and not debugger.running)) and
+      (editor ~= nil) and (not debugger.scratchpad))
     local label = (debugger.server ~= nil)
       and debugMenuRun.continue or debugMenuRun.start
     if debugMenu:GetLabel(ID_START_DEBUG) ~= label then
@@ -413,7 +415,8 @@ frame:Connect(ID_STEP, wx.wxEVT_COMMAND_MENU_SELECTED,
 frame:Connect(ID_STEP, wx.wxEVT_UPDATE_UI,
   function (event)
     local editor = GetEditor()
-    event:Enable((debugger.server ~= nil) and (not debugger.running) and (editor ~= nil))
+    event:Enable((debugger.server ~= nil) and (not debugger.running)
+      and (editor ~= nil) and (not debugger.scratchpad))
   end)
 
 frame:Connect(ID_STEP_OVER, wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -424,7 +427,8 @@ frame:Connect(ID_STEP_OVER, wx.wxEVT_COMMAND_MENU_SELECTED,
 frame:Connect(ID_STEP_OVER, wx.wxEVT_UPDATE_UI,
   function (event)
     local editor = GetEditor()
-    event:Enable((debugger.server ~= nil) and (not debugger.running) and (editor ~= nil))
+    event:Enable((debugger.server ~= nil) and (not debugger.running)
+      and (editor ~= nil) and (not debugger.scratchpad))
   end)
 
 frame:Connect(ID_STEP_OUT, wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -435,7 +439,8 @@ frame:Connect(ID_STEP_OUT, wx.wxEVT_COMMAND_MENU_SELECTED,
 frame:Connect(ID_STEP_OUT, wx.wxEVT_UPDATE_UI,
   function (event)
     local editor = GetEditor()
-    event:Enable((debugger.server ~= nil) and (not debugger.running) and (editor ~= nil))
+    event:Enable((debugger.server ~= nil) and (not debugger.running)
+      and (editor ~= nil) and (not debugger.scratchpad))
   end)
 
 frame:Connect(ID_TRACE, wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -446,7 +451,8 @@ frame:Connect(ID_TRACE, wx.wxEVT_COMMAND_MENU_SELECTED,
 frame:Connect(ID_TRACE, wx.wxEVT_UPDATE_UI,
   function (event)
     local editor = GetEditor()
-    event:Enable((debugger.server ~= nil) and (not debugger.running) and (editor ~= nil))
+    event:Enable((debugger.server ~= nil) and (not debugger.running)
+      and (editor ~= nil) and (not debugger.scratchpad))
   end)
 
 frame:Connect(ID_BREAK, wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -459,7 +465,7 @@ frame:Connect(ID_BREAK, wx.wxEVT_UPDATE_UI,
   function (event)
     local editor = GetEditor()
     event:Enable((debugger.server ~= nil) and (debugger.running)
-                 and (editor ~= nil) and (not debugger.scratchpad))
+      and (editor ~= nil) and (not debugger.scratchpad))
   end)
 
 --[[
