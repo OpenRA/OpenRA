@@ -1,5 +1,5 @@
 --
--- MobDebug 0.444
+-- MobDebug 0.445
 -- Copyright Paul Kulchenko 2011-2012
 -- Based on RemDebug 1.0 (http://www.keplerproject.org/remdebug)
 --
@@ -8,7 +8,7 @@ local mobdebug = {
   _NAME = "mobdebug",
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
-  _VERSION = "0.444"
+  _VERSION = "0.445"
 }
 
 local coroutine = coroutine
@@ -238,14 +238,15 @@ local function stack_depth(start_depth)
   end
 end
 
-local function is_safe(stack_level)
+local function is_safe(stack_level, conservative)
   -- the stack grows up: 0 is getinfo, 1 is is_safe, 2 is debug_hook, 3 is user function
   if stack_level == 3 then return true end
+  local main = debug.getinfo(3, "S").source
 
   for i = 3, stack_level do
     -- return if it is not safe to abort
     local info = debug.getinfo(i, "S")
-    if info and info.what == "C" then return false end
+    if info and (conservative and info.source ~= main or info.what == "C") then return false end
   end
   return true
 end
@@ -303,7 +304,7 @@ local function debug_hook(event, line)
     local suspend = (check_break
       -- stack check is at least two times faster than select
       -- 1.2s vs 2.5s for 100,000 iterations on 1.6Ghz CPU
-      and is_safe(stack_level)
+      and is_safe(stack_level, true)
       and (socket.select({server}, {}, 0))[server]
     )
     if suspend
@@ -330,7 +331,7 @@ local function debugger_loop(sfile, sline)
 
   while true do
     local line, err
-    if wx and server.settimeout then server:settimeout(0.010) end
+    if wx and server.settimeout then server:settimeout(0.1) end
     while true do
       line, err = server:receive()
       if not line and err == "timeout" then

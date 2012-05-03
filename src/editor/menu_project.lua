@@ -250,7 +250,6 @@ frame:Connect(ID_RUN, wx.wxEVT_UPDATE_UI,
   end)
 
 local scratchpadEditor
-local scratchpadUpdated = false
 local function runOnChange(event)
   local evtype = event:GetModificationType()
   if (scratchpadEditor and (
@@ -258,24 +257,100 @@ local function runOnChange(event)
        bit.band(evtype,wxstc.wxSTC_MOD_DELETETEXT) ~= 0 or
        bit.band(evtype,wxstc.wxSTC_PERFORMED_UNDO) ~= 0 or
        bit.band(evtype,wxstc.wxSTC_PERFORMED_REDO) ~= 0)) then
-
-    -- check if the code can even compile
-    if CompileProgram(scratchpadEditor, true) then
-      scratchpadUpdated = true
-    end
+    debugger.scratchpad.updated = true
   end
   event:Skip()
 end
 
 frame:Connect(ID_RUNNOW, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
+    local numberStyle = wxstc.wxSTC_LUA_NUMBER
     if event:IsChecked() then
-      debugger.scratchpad = true
+      debugger.scratchpad = {}
       scratchpadEditor = GetEditor()
+      scratchpadEditor:StyleSetUnderline(numberStyle, true)
       scratchpadEditor:Connect(wxstc.wxEVT_STC_MODIFIED, runOnChange)
+      scratchpadEditor:Connect(wx.wxEVT_LEFT_DOWN, function(event)
+        local scratchpad = debugger.scratchpad
+
+        local point = event:GetPosition()
+        local pos = scratchpadEditor:PositionFromPoint(point)
+
+        if ((not scratchpad) or
+            (bit.band(scratchpadEditor:GetStyleAt(pos),31) ~= numberStyle)) then
+          event:Skip()
+          return
+        end
+
+        -- find start position and length of the number
+        local text = scratchpadEditor:GetText()
+
+        local nstart = pos
+        while nstart >= 0
+          and (bit.band(scratchpadEditor:GetStyleAt(nstart),31) == numberStyle)
+          do nstart = nstart - 1 end
+
+        local nend = pos
+        while nend < string.len(text)
+          and (bit.band(scratchpadEditor:GetStyleAt(nend),31) == numberStyle)
+          do nend = nend + 1 end
+
+        scratchpad.origin = scratchpadEditor:GetTextRange(nstart+1,nend)
+        scratchpad.start = nstart + 1
+        scratchpad.length = nend - nstart - 1
+        scratchpad.point = point
+
+        local col = scratchpadEditor:GetColumn(pos)
+        local line = scratchpadEditor:LineFromPosition(pos)
+        -- scan the line to the left to find the number of numbers
+        -- this will define the name of the global variable we need
+      end)
+      scratchpadEditor:Connect(wx.wxEVT_LEFT_UP, function(event)
+        if debugger.scratchpad and debugger.scratchpad.point then
+          debugger.scratchpad = {}
+          wx.wxSetCursor(wx.wxCursor(wx.wxCURSOR_ARROW))
+        else event:Skip() end
+      end)
+      scratchpadEditor:Connect(wx.wxEVT_MOTION, function(event)
+        local point = event:GetPosition()
+        local pos = scratchpadEditor:PositionFromPoint(point)
+        local scratchpad = debugger.scratchpad
+        local ipoint = scratchpad and scratchpad.point
+
+        -- record the fact that we are over a number or dragging slider
+        scratchpad.over = scratchpad and
+          (ipoint or (bit.band(scratchpadEditor:GetStyleAt(pos),31) == numberStyle))
+
+        if ipoint then
+          -- calculate difference in point position
+          -- re-calculate the value
+          -- update the value in the document
+          local dx = point.x - ipoint.x
+          local dy = - (point.y - ipoint.y) -- invert dy as y increases down
+
+          local startpos = scratchpad.start
+          local endpos = scratchpad.start+scratchpad.length
+          local num = scratchpad.origin + dx/10
+          -- update length
+          scratchpad.length = string.len(num)
+          scratchpadEditor:SetTargetStart(startpos)
+          scratchpadEditor:SetTargetEnd(endpos)
+          scratchpadEditor:ReplaceTarget("" .. num)
+        else event:Skip() end
+      end)
+      scratchpadEditor:Connect(wx.wxEVT_SET_CURSOR, function(event)
+        if (debugger.scratchpad and debugger.scratchpad.over) then
+          event:SetCursor(wx.wxCursor(wx.wxCURSOR_SIZEWE))
+        else event:Skip() end
+      end)
       ProjectDebug(true)
     else
+      scratchpadEditor:StyleSetUnderline(numberStyle, false)
       scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wxstc.wxEVT_STC_MODIFIED)
+      scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wx.wxEVT_MOTION)
+      scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wx.wxEVT_LEFT_DOWN)
+      scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wx.wxEVT_LEFT_UP)
+      scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wx.wxEVT_SET_CURSOR)
       debugger.scratchpad = nil
       debugger.terminate()
     end
@@ -284,7 +359,7 @@ frame:Connect(ID_RUNNOW, wx.wxEVT_UPDATE_UI,
   function (event)
     local editor = GetEditor()
     event:Enable((debugger.server == nil) and (editor ~= nil) and (debugger.pid == nil)
-                 or debugger.scratchpad)
+                 or debugger.scratchpad ~= nil)
   end)
 
 frame:Connect(ID_ATTACH_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -403,17 +478,6 @@ frame:Connect(ID "view.debug.callstack", wx.wxEVT_UPDATE_UI,
 frame:Connect(wx.wxEVT_IDLE,
   function(event)
     if (debugger.update) then debugger.update() end
-    if (debugger.scratchpad) then
-      if scratchpadUpdated then
-        DebugRerunScratchpad(scratchpadEditor)
-        scratchpadUpdated = false
-      end
-      -- disable checkbox if the process has been stopped
-      if frame.menuBar:IsChecked(ID_RUNNOW) and not debugger.pid then
-        scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wxstc.wxEVT_STC_MODIFIED)
-        debugger.scratchpad = nil
-        frame.menuBar:Check(ID_RUNNOW, false)
-      end
-    end
+    if (debugger.scratchpad) then DebugRerunScratchpad(scratchpadEditor) end
     event:Skip() -- let other EVT_IDLE handlers to work on the event
   end)

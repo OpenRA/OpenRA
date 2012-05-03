@@ -70,8 +70,7 @@ local function activateDocument(fileName, line)
 end
 
 function DebugRerunScratchpad(scratchpadEditor)
-  -- are we already running in the debugger?
-  if debugger.pid then
+  if debugger.pid and debugger.scratchpad.updated then
     -- break the current execution first
     -- this shouldn't do any harm if the execution is not running
     debugger.breaknow()
@@ -85,26 +84,26 @@ function DebugRerunScratchpad(scratchpadEditor)
 
       local function reloadScratchpadCode()
         debugger.scratching = true
-        while true do -- continue while there are still changes
-          local _, _, err = debugger.loadstring(filePath, code .. stopper)
-          if not err then -- if no compile errors, then run the script
-            _, _, err = debugger.handle("run")
-            if err and not err:find(errormsg) then
-              local line = err:match('.*%[string "[%w:/%\\_%-%.]+"%]:(%d+)%s*:')
-              DisplayOutput("Execution error on line " .. line .. "\n"
-                .. err:gsub('stack traceback:.+', ''))
-            end
+        debugger.scratchpad.updated = false
+
+        local _, _, err = debugger.loadstring(filePath, code .. stopper)
+        if err then -- compilation error
+          local line = err:match('.*%[string "[%w:/%\\_%-%.]+"%]:(%d+)%s*:')
+          DisplayOutput("Compilation error on line " .. line .. "\n"
+            .. err:gsub('stack traceback:.+', ''))
+        else
+          _, _, err = debugger.handle("run")
+          if err and not err:find(errormsg) then
+            local line = err:match('.*%[string "[%w:/%\\_%-%.]+"%]:(%d+)%s*:')
+            DisplayOutput("Execution error on line " .. line .. "\n"
+              .. err:gsub('stack traceback:.+', ''))
           end
-          if code == scratchpadEditor:GetText() then break end
-          code = scratchpadEditor:GetText()
         end
         debugger.scratching = false
       end
 
       copas.addthread(reloadScratchpadCode)
     end
-  else
-    ProjectDebug(true)
   end
 end
 
@@ -173,8 +172,7 @@ debugger.listen = function()
         local file, line = debugger.handle("run")
         activateDocument(file, line)
       elseif (debugger.scratchpad) then
-        local found, editor = activateDocument(startfile)
-        if found then DebugRerunScratchpad(editor) end
+        debugger.scratchpad.updated = true
       else
         local file, line = debugger.loadfile(startfile)
         -- "load" can work in two ways: (1) it can load the requested file
