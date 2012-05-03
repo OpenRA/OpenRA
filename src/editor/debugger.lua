@@ -548,6 +548,7 @@ function DebuggerScratchpadOn(editor)
     local point = event:GetPosition()
     local pos = scratchpadEditor:PositionFromPoint(point)
 
+    -- are we over a number in the scratchpad? if not, it's not our event
     if ((not scratchpad) or
         (bit.band(scratchpadEditor:GetStyleAt(pos),31) ~= numberStyle)) then
       event:Skip()
@@ -572,6 +573,8 @@ function DebuggerScratchpadOn(editor)
     scratchpad.length = nend - nstart - 1
     scratchpad.point = point
 
+    scratchpadEditor:CaptureMouse()
+
     local col = scratchpadEditor:GetColumn(pos)
     local line = scratchpadEditor:LineFromPosition(pos)
     -- scan the line to the left to find the number of numbers
@@ -581,7 +584,8 @@ function DebuggerScratchpadOn(editor)
   scratchpadEditor:Connect(wx.wxEVT_LEFT_UP, function(event)
     if debugger.scratchpad and debugger.scratchpad.point then
       debugger.scratchpad.point = nil
-      wx.wxSetCursor(wx.wxCursor(wx.wxCURSOR_ARROW))
+      debugger.scratchpad.editor:ReleaseMouse()
+      wx.wxSetCursor(wx.wxCursor(wx.wxCURSOR_ARROW)) -- restore cursor
     else event:Skip() end
   end)
 
