@@ -19,7 +19,7 @@ errorlog:MarkerDefine(CURRENT_LINE_MARKER, wxstc.wxSTC_MARK_ARROWS, wx.wxBLACK, 
 errorlog:SetReadOnly(true)
 StylesApplyToEditor(ide.config.stylesoutshell,errorlog,ide.ofont,ide.ofontItalic)
 
-function ClearOutput(event)
+function ClearOutput()
   errorlog:SetReadOnly(false)
   errorlog:ClearAll()
   errorlog:SetReadOnly(true)

@@ -75,31 +75,35 @@ function DebugRerunScratchpad(scratchpadEditor)
     -- this shouldn't do any harm if the execution is not running
     debugger.breaknow()
 
-    if not debugger.scratching then
+    if not debugger.scratchpad.running then
+      if ide.frame.menuBar:IsChecked(ID_CLEAROUTPUT) then ClearOutput() end
+
       local code = scratchpadEditor:GetText()
       local filePath = DebuggerMakeFileName(scratchpadEditor,
         ide.openDocuments[scratchpadEditor:GetId()].filePath)
+
+      -- this is a special error message that is generated at the very end
+      -- of each script to avoid exiting the (debugee) scratchpad process.
+      -- these errors are handled and not reported to the user
       local errormsg = 'execution suspended at ' .. os.clock()
       local stopper = "\nerror('" .. errormsg .. "')"
 
       local function reloadScratchpadCode()
-        debugger.scratching = true
+        debugger.scratchpad.running = true
         debugger.scratchpad.updated = false
 
         local _, _, err = debugger.loadstring(filePath, code .. stopper)
-        if err then -- compilation error
-          local line = err:match('.*%[string "[%w:/%\\_%-%.]+"%]:(%d+)%s*:')
-          DisplayOutput("Compilation error on line " .. line .. "\n"
-            .. err:gsub('stack traceback:.+', ''))
-        else
+        local prefix = "Compilation error"
+        if not err then
           _, _, err = debugger.handle("run")
-          if err and not err:find(errormsg) then
-            local line = err:match('.*%[string "[%w:/%\\_%-%.]+"%]:(%d+)%s*:')
-            DisplayOutput("Execution error on line " .. line .. "\n"
-              .. err:gsub('stack traceback:.+', ''))
-          end
+          prefix = "Execution error"
         end
-        debugger.scratching = false
+        if err and not err:find(errormsg) then
+          local line = err:match('.*%[string "[%w:/%\\_%-%.]+"%]:(%d+)%s*:')
+          DisplayOutput(prefix .. (line and " on line " .. line or "") .. ":\n"
+            .. err:gsub('stack traceback:.+', ''):gsub('\n+$', '') .. "\n")
+        end
+        debugger.scratchpad.running = false
       end
 
       copas.addthread(reloadScratchpadCode)
