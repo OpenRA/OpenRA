@@ -69,48 +69,6 @@ local function activateDocument(fileName, line)
   return activated ~= nil, activated
 end
 
-function DebugRerunScratchpad(scratchpadEditor)
-  if debugger.pid and debugger.scratchpad.updated then
-    -- break the current execution first
-    -- this shouldn't do any harm if the execution is not running
-    debugger.breaknow()
-
-    if not debugger.scratchpad.running then
-      if ide.frame.menuBar:IsChecked(ID_CLEAROUTPUT) then ClearOutput() end
-
-      local code = scratchpadEditor:GetText()
-      local filePath = DebuggerMakeFileName(scratchpadEditor,
-        ide.openDocuments[scratchpadEditor:GetId()].filePath)
-
-      -- this is a special error message that is generated at the very end
-      -- of each script to avoid exiting the (debugee) scratchpad process.
-      -- these errors are handled and not reported to the user
-      local errormsg = 'execution suspended at ' .. os.clock()
-      local stopper = "\nerror('" .. errormsg .. "')"
-
-      local function reloadScratchpadCode()
-        debugger.scratchpad.running = true
-        debugger.scratchpad.updated = false
-
-        local _, _, err = debugger.loadstring(filePath, code .. stopper)
-        local prefix = "Compilation error"
-        if not err then
-          _, _, err = debugger.handle("run")
-          prefix = "Execution error"
-        end
-        if err and not err:find(errormsg) then
-          local line = err:match('.*%[string "[%w:/%\\_%-%.]+"%]:(%d+)%s*:')
-          DisplayOutput(prefix .. (line and " on line " .. line or "") .. ":\n"
-            .. err:gsub('stack traceback:.+', ''):gsub('\n+$', '') .. "\n")
-        end
-        debugger.scratchpad.running = false
-      end
-
-      copas.addthread(reloadScratchpadCode)
-    end
-  end
-end
-
 debugger.shell = function(expression)
   if debugger.server and not debugger.running then
     copas.addthread(function ()
@@ -215,7 +173,7 @@ debugger.listen = function()
         end
       end
 
-      if (not options.noshell) then
+      if (not options.noshell and not debugger.scratchpad) then
         ShellSupportRemote(debugger.shell, debugger.pid)
       end
 
@@ -366,6 +324,7 @@ function DebuggerStop()
     SetAllEditorsReadOnly(false)
     ShellSupportRemote(nil, 0)
     ClearAllCurrentLineMarkers()
+    DebuggerScratchpadOff()
     DisplayOutput("Completed debugging session.\n")
   end
 end
@@ -517,4 +476,170 @@ function DebuggerToggleBreakpoint(editor, line)
       debugger.breakpoint(filePath, line+1, true)
     end
   end
+end
+
+-- scratchpad functions
+
+function DebuggerRefreshScratchpad()
+  if debugger.pid and debugger.scratchpad.updated then
+    -- break the current execution first
+    -- this shouldn't do any harm if the execution is not running
+    debugger.breaknow()
+
+    if not debugger.scratchpad.running then
+      if ide.frame.menuBar:IsChecked(ID_CLEAROUTPUT) then ClearOutput() end
+
+      local scratchpadEditor = debugger.scratchpad.editor
+      local code = scratchpadEditor:GetText()
+      local filePath = DebuggerMakeFileName(scratchpadEditor,
+        ide.openDocuments[scratchpadEditor:GetId()].filePath)
+
+      -- this is a special error message that is generated at the very end
+      -- of each script to avoid exiting the (debugee) scratchpad process.
+      -- these errors are handled and not reported to the user
+      local errormsg = 'execution suspended at ' .. os.clock()
+      local stopper = "\nerror('" .. errormsg .. "')"
+
+      local function reloadScratchpadCode()
+        debugger.scratchpad.running = true
+        debugger.scratchpad.updated = false
+
+        local _, _, err = debugger.loadstring(filePath, code .. stopper)
+        local prefix = "Compilation error"
+        if not err then
+          _, _, err = debugger.handle("run")
+          prefix = "Execution error"
+        end
+        if err and not err:find(errormsg) then
+          local line = err:match('.*%[string "[%w:/%\\_%-%.]+"%]:(%d+)%s*:')
+          DisplayOutput(prefix .. (line and " on line " .. line or "") .. ":\n"
+            .. err:gsub('stack traceback:.+', ''):gsub('\n+$', '') .. "\n")
+        end
+        debugger.scratchpad.running = false
+      end
+
+      copas.addthread(reloadScratchpadCode)
+    end
+  end
+end
+
+local numberStyle = wxstc.wxSTC_LUA_NUMBER
+
+function DebuggerScratchpadOn(editor)
+  debugger.scratchpad = {}
+  debugger.scratchpad.editor = editor
+  local scratchpadEditor = editor
+  scratchpadEditor:StyleSetUnderline(numberStyle, true)
+
+  scratchpadEditor:Connect(wxstc.wxEVT_STC_MODIFIED, function(event)
+    local evtype = event:GetModificationType()
+    if (bit.band(evtype,wxstc.wxSTC_MOD_INSERTTEXT) ~= 0 or
+        bit.band(evtype,wxstc.wxSTC_MOD_DELETETEXT) ~= 0 or
+        bit.band(evtype,wxstc.wxSTC_PERFORMED_UNDO) ~= 0 or
+        bit.band(evtype,wxstc.wxSTC_PERFORMED_REDO) ~= 0) then
+      debugger.scratchpad.updated = true
+    end
+    event:Skip()
+  end)
+
+  scratchpadEditor:Connect(wx.wxEVT_LEFT_DOWN, function(event)
+    local scratchpad = debugger.scratchpad
+
+    local point = event:GetPosition()
+    local pos = scratchpadEditor:PositionFromPoint(point)
+
+    if ((not scratchpad) or
+        (bit.band(scratchpadEditor:GetStyleAt(pos),31) ~= numberStyle)) then
+      event:Skip()
+      return
+    end
+
+    -- find start position and length of the number
+    local text = scratchpadEditor:GetText()
+
+    local nstart = pos
+    while nstart >= 0
+      and (bit.band(scratchpadEditor:GetStyleAt(nstart),31) == numberStyle)
+      do nstart = nstart - 1 end
+
+    local nend = pos
+    while nend < string.len(text)
+      and (bit.band(scratchpadEditor:GetStyleAt(nend),31) == numberStyle)
+      do nend = nend + 1 end
+
+    scratchpad.origin = scratchpadEditor:GetTextRange(nstart+1,nend)
+    scratchpad.start = nstart + 1
+    scratchpad.length = nend - nstart - 1
+    scratchpad.point = point
+
+    local col = scratchpadEditor:GetColumn(pos)
+    local line = scratchpadEditor:LineFromPosition(pos)
+    -- scan the line to the left to find the number of numbers
+    -- this will define the name of the global variable we need
+  end)
+
+  scratchpadEditor:Connect(wx.wxEVT_LEFT_UP, function(event)
+    if debugger.scratchpad and debugger.scratchpad.point then
+      debugger.scratchpad.point = nil
+      wx.wxSetCursor(wx.wxCursor(wx.wxCURSOR_ARROW))
+    else event:Skip() end
+  end)
+
+  scratchpadEditor:Connect(wx.wxEVT_MOTION, function(event)
+    local point = event:GetPosition()
+    local pos = scratchpadEditor:PositionFromPoint(point)
+    local scratchpad = debugger.scratchpad
+    local ipoint = scratchpad and scratchpad.point
+
+    -- record the fact that we are over a number or dragging slider
+    scratchpad.over = scratchpad and
+      (ipoint or (bit.band(scratchpadEditor:GetStyleAt(pos),31) == numberStyle))
+
+    if ipoint then
+      -- calculate difference in point position
+      local dx = point.x - ipoint.x
+      local dy = - (point.y - ipoint.y) -- invert dy as y increases down
+
+      -- re-calculate the value
+      local startpos = scratchpad.start
+      local endpos = scratchpad.start+scratchpad.length
+      local num = scratchpad.origin + dx/10
+
+      -- update length
+      scratchpad.length = string.len(num)
+
+      -- update the value in the document
+      scratchpadEditor:SetTargetStart(startpos)
+      scratchpadEditor:SetTargetEnd(endpos)
+      scratchpadEditor:ReplaceTarget("" .. num)
+    else event:Skip() end
+  end)
+
+  scratchpadEditor:Connect(wx.wxEVT_SET_CURSOR, function(event)
+    if (debugger.scratchpad and debugger.scratchpad.over) then
+      event:SetCursor(wx.wxCursor(wx.wxCURSOR_SIZEWE))
+    else event:Skip() end
+  end)
+
+  ProjectDebug(true)
+end
+
+function DebuggerScratchpadOff()
+  if not debugger.scratchpad then return end
+
+  local scratchpadEditor = debugger.scratchpad.editor
+  scratchpadEditor:StyleSetUnderline(numberStyle, false)
+  scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wxstc.wxEVT_STC_MODIFIED)
+  scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wx.wxEVT_MOTION)
+  scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wx.wxEVT_LEFT_DOWN)
+  scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wx.wxEVT_LEFT_UP)
+  scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wx.wxEVT_SET_CURSOR)
+
+  debugger.scratchpad = nil
+  debugger.terminate()
+
+  -- disable menu if it is still enabled
+  -- (as this may be called when the debugger is being shut down)
+  local menuBar = ide.frame.menuBar
+  if menuBar:IsChecked(ID_RUNNOW) then menuBar:Check(ID_RUNNOW, false) end
 end
