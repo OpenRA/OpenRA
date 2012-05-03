@@ -620,7 +620,7 @@ GUN:
 		Description: Anti-Armor base defense.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 40
+		BuildPaletteOrder: 45
 		Prerequisites: barracks
 		Owner: gdi,nod
 	Building:
@@ -692,7 +692,7 @@ GTWR:
 		Description: Basic defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 50
+		BuildPaletteOrder: 40
 		Prerequisites: barracks
 		Owner: gdi,nod
 	Building:
