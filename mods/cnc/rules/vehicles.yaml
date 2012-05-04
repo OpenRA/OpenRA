@@ -384,7 +384,7 @@ HTNK:
 MSAM:
 	Inherits: ^Tank
 	Valued:
-		Cost: 800
+		Cost: 1200
 	Tooltip:
 		Name: Rocket Launcher
 		Icon: msamicnh
