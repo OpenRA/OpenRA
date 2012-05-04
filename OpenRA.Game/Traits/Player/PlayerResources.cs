@@ -17,7 +17,7 @@ namespace OpenRA.Traits
 	{
 		public readonly int InitialCash = 10000;
 		public readonly int InitialOre = 0;
-		public readonly int AdviceInterval = 250;
+		public readonly int AdviceInterval = 500;
 
 		public object Create(ActorInitializer init) { return new PlayerResources(init.self, this); }
 	}
