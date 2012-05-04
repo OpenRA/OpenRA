@@ -11,6 +11,8 @@ TRAN:
 		Prerequisites: hpad
 		BuiltAt: hpad
 		Owner: gdi,nod
+	Selectable:
+		Bounds: 40,40
 	Helicopter:
 		LandWhenIdle: true
 		ROT: 5
@@ -49,6 +51,8 @@ HELI:
 		Prerequisites: hpad, hq
 		BuiltAt: hpad
 		Owner: nod
+	Selectable:
+		Bounds: 30,24
 	Helicopter:
 		ROT: 4
 		Speed: 20
@@ -93,6 +97,8 @@ ORCA:
 		Prerequisites: hpad, hq
 		BuiltAt: hpad
 		Owner: gdi
+	Selectable:
+		Bounds: 30,24
 	Helicopter:
 		ROT: 4
 		Speed: 20
