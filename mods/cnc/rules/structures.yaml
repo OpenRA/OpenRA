@@ -12,7 +12,9 @@ FACT:
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Health:
-		HP: 1750
+		HP: 2000
+	Armor: 
+		Type: Heavy
 	RevealsShroud:
 		Range: 10
 	Bib:
@@ -240,7 +242,7 @@ AFLD:
 		Footprint: xxxx xxxx
 		Dimensions: 4,2
 	Health:
-		HP: 1000
+		HP: 1750
 	RevealsShroud:
 		Range: 7
 	Bib:
@@ -282,7 +284,7 @@ WEAP:
 		Footprint: ___ xxx ===
 		Dimensions: 3,3
 	Health:
-		HP: 1000
+		HP: 1750
 	RevealsShroud:
 		Range: 4
 	Bib:
@@ -362,7 +364,7 @@ NUK2:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 600
+		HP: 650
 	RevealsShroud:
 		Range: 4
 	Bib:
@@ -409,7 +411,7 @@ HPAD:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 800
+		HP: 400
 	RevealsShroud:
 		Range: 5
 	Exit@1:
@@ -561,7 +563,7 @@ CYCL:
 		Prerequisites: fact
 		Owner: nod
 	Health:
-		HP: 300
+		HP: 100
 	Armor: 
 		Type: Light
 
@@ -581,7 +583,7 @@ SBAG:
 		Prerequisites: fact
 		Owner: gdi
 	Health:
-		HP: 250
+		HP: 100
 	Armor: 
 		Type: Light
 
@@ -601,7 +603,7 @@ BRIK:
 		Prerequisites: vehicleproduction
 		Owner: gdi,nod
 	Health:
-		HP: 1000
+		HP: 250
 	Armor: 
 		Type: Heavy
 	Wall:
@@ -678,7 +680,6 @@ SAM:
 		PrimaryWeapon: SAMMissile
 	WithMuzzleFlash:
 	AutoTarget:
-	-AutoTargetIgnore:
 	-RenderBuilding:
 	RenderRangeCircle:
 	
