@@ -19,7 +19,7 @@ MCV:
 	Armor: 
 		Type: Light
 	RevealsShroud:
-		Range: 4
+		Range: 8
 	Transforms:
 		IntoActor: fact
 		Offset:-1,-1
@@ -400,7 +400,7 @@ MSAM:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 6
+		Range: 10
 	Turreted:
 		ROT: 255
 	AttackFrontal:
