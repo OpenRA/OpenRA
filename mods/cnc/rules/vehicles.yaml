@@ -19,7 +19,7 @@ MCV:
 	Armor: 
 		Type: Light
 	RevealsShroud:
-		Range: 4
+		Range: 7
 	Transforms:
 		IntoActor: fact
 		Offset:-1,-1
@@ -90,7 +90,7 @@ APC:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 5
+		Range: 6
 	Turreted:
 		ROT: 10
 	AttackTurreted:
@@ -384,7 +384,7 @@ HTNK:
 MSAM:
 	Inherits: ^Tank
 	Valued:
-		Cost: 800
+		Cost: 1200
 	Tooltip:
 		Name: Rocket Launcher
 		Icon: msamicnh
@@ -400,7 +400,7 @@ MSAM:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 6
+		Range: 10
 	Turreted:
 		ROT: 255
 	AttackFrontal:
