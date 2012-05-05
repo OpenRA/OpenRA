@@ -597,7 +597,6 @@ ArtilleryShell:
 	MinRange: 2
 	Report: TNKFIRE2
 	Projectile: Bullet
-		ContrailLength: 30
 		Speed: 12
 		High: yes
 		Angle: .09
