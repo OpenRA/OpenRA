@@ -10,6 +10,7 @@
 
 using System;
 using System.Linq;
+using OpenRA.GameRules;
 
 namespace OpenRA.Traits
 {
@@ -62,6 +63,8 @@ namespace OpenRA.Traits
 	{
 		readonly Player Owner;
 		int AdviceInterval;
+		
+		int tickermod = 0;
 
 		public PlayerResources(Actor self, PlayerResourcesInfo info)
 		{
@@ -134,7 +137,8 @@ namespace OpenRA.Traits
 		public void Tick(Actor self)
 		{
 			var eva = self.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
-
+			tickermod = (tickermod + 1) % 3;
+			
 			OreCapacity = self.World.ActorsWithTrait<IStoreOre>()
 				.Where(a => a.Actor.Owner == Owner)
 				.Sum(a => a.Trait.Capacity);
@@ -158,12 +162,12 @@ namespace OpenRA.Traits
 			if (DisplayCash < Cash)
 			{
 				DisplayCash += move;
-				Sound.PlayToPlayer(self.Owner, eva.CashTickUp);
+				playCashTickUp(self);
 			}
 			else if (DisplayCash > Cash)
 			{
 				DisplayCash -= move;
-				Sound.PlayToPlayer(self.Owner, eva.CashTickDown);
+				playCashTickDown(self);
 			}
 
 			diff = Math.Abs(Ore - DisplayOre);
@@ -173,13 +177,35 @@ namespace OpenRA.Traits
 			if (DisplayOre < Ore)
 			{
 				DisplayOre += move;
-				Sound.PlayToPlayer(self.Owner, eva.CashTickUp);
+				playCashTickUp(self);
 			}
 			else if (DisplayOre > Ore)
 			{
 				DisplayOre -= move;
+				playCashTickDown(self);
+                        }
+		}
+		
+		
+		public void playCashTickUp(Actor self)
+		{
+			var eva = self.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
+			if (Game.Settings.Sound.SoundCashTickType != SoundCashTicks.Disabled)
+			{
+				Sound.PlayToPlayer(self.Owner, eva.CashTickUp);
+			}
+		}
+		
+		public void playCashTickDown(Actor self)
+		{
+			var eva = self.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
+			if (
+				Game.Settings.Sound.SoundCashTickType == SoundCashTicks.Extreme ||
+				(Game.Settings.Sound.SoundCashTickType == SoundCashTicks.Normal && tickermod == 0)
+			) {
 				Sound.PlayToPlayer(self.Owner, eva.CashTickDown);
 			}
+			
 		}
 	}
 }
