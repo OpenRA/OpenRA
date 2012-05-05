@@ -204,14 +204,21 @@ function ProjectRun(skipcheck)
   runInterpreter(getNameToRun(skipcheck))
 end
 
-function ProjectDebug(skipcheck)
+local debuggers = {
+  debug = "require('mobdebug').loop('%s',%d)",
+  scratchpad = "require('mobdebug').scratchpad('%s',%d)"
+}
+
+function ProjectDebug(skipcheck, debtype)
   if (debugger.server ~= nil) then
     if (not debugger.running) then
       ClearAllCurrentLineMarkers()
       debugger.run()
     end
   else
-    runInterpreter(getNameToRun(skipcheck), true)
+    local debcall = (debuggers[debtype or "debug"]):
+      format(wx.wxGetHostName(), ide.debugger.portnumber)
+    runInterpreter(getNameToRun(skipcheck), debcall)
   end
 end
 

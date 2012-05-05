@@ -1,5 +1,5 @@
 --
--- MobDebug 0.445
+-- MobDebug 0.446
 -- Copyright Paul Kulchenko 2011-2012
 -- Based on RemDebug 1.0 (http://www.keplerproject.org/remdebug)
 --
@@ -8,7 +8,7 @@ local mobdebug = {
   _NAME = "mobdebug",
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
-  _VERSION = "0.445"
+  _VERSION = "0.446"
 }
 
 local coroutine = coroutine
@@ -157,15 +157,18 @@ local lastfile
 local watchescnt = 0
 local abort -- default value is nil; this is used in start/loop distinction
 local check_break = false
+local skip
+local skipcount = 0
 local step_into = false
 local step_over = false
 local step_level = 0
 local stack_level = 0
 local server
+local deferror = "execution aborted at default debugee"
 local debugee = function () 
   local a = 1
-  a = a + 1
-  return "ok"
+  for _ = 1, 10 do a = a + 1 end
+  error(deferror)
 end
 
 local function set_breakpoint(file, line)
@@ -246,7 +249,8 @@ local function is_safe(stack_level, conservative)
   for i = 3, stack_level do
     -- return if it is not safe to abort
     local info = debug.getinfo(i, "S")
-    if info and (conservative and info.source ~= main or info.what == "C") then return false end
+    if not info then return true end
+    if conservative and info.source ~= main or info.what == "C" then return false end
   end
   return true
 end
@@ -264,6 +268,14 @@ local function debug_hook(event, line)
   elseif event == "return" or event == "tail return" then
     stack_level = stack_level - 1
   elseif event == "line" then
+
+    -- check if we need to skip some callbacks (to save time)
+    if skip then
+      skipcount = skipcount + 1
+      if skipcount < skip or not is_safe(stack_level) then return end
+      skipcount = 0
+    end
+
     -- this is needed to check if the stack got shorter.
     -- this may happen when "pcall(load, '')" is called
     -- or when "error()" is called in a function.
@@ -304,7 +316,7 @@ local function debug_hook(event, line)
     local suspend = (check_break
       -- stack check is at least two times faster than select
       -- 1.2s vs 2.5s for 100,000 iterations on 1.6Ghz CPU
-      and is_safe(stack_level, true)
+      and is_safe(stack_level)
       and (socket.select({server}, {}, 0))[server]
     )
     if suspend
@@ -540,7 +552,7 @@ local function start(controller_host, controller_port)
   end
 end
 
-local function loop(controller_host, controller_port)
+local function controller(controller_host, controller_port)
   server = socket.connect(controller_host, controller_port)
   if server then
     local function report(trace, err)
@@ -558,16 +570,17 @@ local function loop(controller_host, controller_port)
 
       local coro_debugee = coroutine.create(debugee)
       debug.sethook(coro_debugee, debug_hook, "lcr")
-      local status, error = coroutine.resume(coro_debugee)
+      local status, err = coroutine.resume(coro_debugee)
 
       -- was there an error or is the script done?
-      if not abort then -- 'abort' state is allowed here; ignore it
-        if not status then -- report the error
-          report(debug.traceback(coro_debugee), error)
+      -- 'abort' state is allowed here; ignore it
+      if not abort then
+        if status then -- normal execution is done
+          break
+        elseif not err:find(deferror) then -- report the error
+          report(debug.traceback(coro_debugee), err)
           -- resume once more to clear the response the debugger wants to send
           coroutine.resume(coro_debugger, events.RESTART)
-        else
-          break
         end
       end
     end
@@ -579,6 +592,16 @@ local function loop(controller_host, controller_port)
   return true
 end
 
+local function scratchpad(controller_host, controller_port, frequency)
+  skip = frequency or 100
+  return controller(controller_host, controller_port)
+end
+
+local function loop(controller_host, controller_port)
+  skip = nil -- just in case if loop() is called after scratchpad()
+  return controller(controller_host, controller_port)
+end
+
 local basedir = ""
 
 -- Handles server debugging commands 
@@ -588,7 +611,7 @@ local function handle(params, client)
   if command == "run" or command == "step" or command == "out"
   or command == "over" or command == "exit" then
     client:send(string.upper(command) .. "\n")
-    client:receive()
+    client:receive() -- this should consume the first '200 OK' response
     local breakpoint = client:receive()
     if not breakpoint then
       print("Program finished")
@@ -620,7 +643,7 @@ local function handle(params, client)
       print("Unknown error")
       os.exit()
       -- use return here for those cases where os.exit() is not wanted
-      return nil, nil, "Debugger error; unexpected response '" .. breakpoint .. "'"
+      return nil, nil, "Debugger error: unexpected response '" .. breakpoint .. "'"
     end
   elseif command == "setb" then
     _, _, _, file, line = string.find(params, "^([a-z]+)%s+([%w%p%s]+)%s+(%d+)%s*$")
@@ -732,7 +755,7 @@ local function handle(params, client)
       end
       local params = client:receive()
       if not params then
-        return nil, nil, "Missing response after EXEC/LOAD"
+        return nil, nil, "Debugger error: missing response after EXEC/LOAD"
       end
       local _, _, status, len = string.find(params, "^(%d+)[%w%p%s]+%s+(%d+)%s*$")
       if status == "200" then
@@ -754,7 +777,7 @@ local function handle(params, client)
         return nil, nil, res
       else
         print("Unknown error")
-        return nil, nil, "Debugger error after EXEC/LOAD; unexpected response '" .. params .. "'"
+        return nil, nil, "Debugger error: unexpected response after EXEC/LOAD '" .. params .. "'"
       end
     else
       print("Invalid command")
@@ -849,6 +872,7 @@ end
 -- make public functions available
 mobdebug.listen = listen
 mobdebug.loop = loop
+mobdebug.scratchpad = scratchpad
 mobdebug.handle = handle
 mobdebug.connect = connect
 mobdebug.start = start

@@ -251,7 +251,7 @@ debugger.terminate = function()
   if debugger.server then
     if debugger.pid then -- if there is PID, try local kill
       DebuggerKillClient()
-    else -- otherwise, trace graceful exit for the remote process
+    else -- otherwise, try graceful exit for the remote process
       debugger.exec("exit")
       copas.step(1) -- process 'exit' right away; doesn't guarantee the response
     end
@@ -607,7 +607,7 @@ function DebuggerScratchpadOn(editor)
       -- re-calculate the value
       local startpos = scratchpad.start
       local endpos = scratchpad.start+scratchpad.length
-      local num = scratchpad.origin + dx/10
+      local num = tonumber(scratchpad.origin) + dx/10
 
       -- update length
       scratchpad.length = string.len(num)
@@ -625,7 +625,7 @@ function DebuggerScratchpadOn(editor)
     else event:Skip() end
   end)
 
-  ProjectDebug(true)
+  ProjectDebug(true, "scratchpad")
 end
 
 function DebuggerScratchpadOff()

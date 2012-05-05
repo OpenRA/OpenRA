@@ -8,10 +8,11 @@ return {
     local script
     if rundebug then
       DebuggerAttachDefault()
-      script = (""..
+      script = (
         "package.path=package.path..';"..mainpath.."lualibs/?/?.lua;"..mainpath.."lualibs/?.lua';"..
         "package.cpath=package.cpath..';"..mainpath.."bin/clibs/?.dll';"..
-        "require('mobdebug').loop('" .. wx.wxGetHostName().."',"..ide.debugger.portnumber..")")
+        rundebug
+      )
     else
       script = ([[dofile '%s']]):format(filepath)
     end
