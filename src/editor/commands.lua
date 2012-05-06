@@ -261,6 +261,19 @@ function ClosePage(selection)
   local id = editor:GetId()
   if SaveModifiedDialog(editor, true) ~= wx.wxID_CANCEL then
     DynamicWordsRemoveAll(editor)
+    local debugger = ide.debugger
+    -- check if the window with the scratchpad running is being closed
+    if debugger and debugger.scratchpad and debugger.scratchpad.editor == editor then
+      DebuggerScratchpadOff()
+    end
+    -- check if the debugger is running and is using the current window
+    -- abort the debugger if the current marker is in the window being closed
+    -- also abort the debugger if it is running, as we don't know what
+    -- window will need to be activated when the debugger is paused
+    if debugger and debugger.pid and
+      (debugger.running or editor:MarkerNext(0, CURRENT_LINE_MARKER_VALUE) >= 0) then
+      debugger.terminate()
+    end
     removePage(ide.openDocuments[id].index)
   end
 end
