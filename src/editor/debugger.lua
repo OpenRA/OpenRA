@@ -487,8 +487,7 @@ function DebuggerRefreshScratchpad()
     debugger.breaknow()
 
     if not debugger.scratchpad.running then
-      if ide.frame.menuBar:IsChecked(ID_CLEAROUTPUT) then ClearOutput() end
-
+      local clear = ide.frame.menuBar:IsChecked(ID_CLEAROUTPUT)
       local scratchpadEditor = debugger.scratchpad.editor
       local code = scratchpadEditor:GetText()
       local filePath = DebuggerMakeFileName(scratchpadEditor,
@@ -506,6 +505,9 @@ function DebuggerRefreshScratchpad()
 
         local _, _, err = debugger.loadstring(filePath, code .. stopper)
         local prefix = "Compilation error"
+
+        if clear then ClearOutput() end
+
         if not err then
           _, _, err = debugger.handle("run")
           prefix = "Execution error"
