@@ -83,6 +83,7 @@ local function unHideWxWindow(pidAssign)
     end)
     if win and not win:is_visible() then
       win:show()
+      notebook:SetFocus() -- set focus back to the IDE window
       pid = nil
     end
   end
