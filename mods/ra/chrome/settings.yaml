@@ -166,24 +166,52 @@ Background@SETTINGS_MENU:
 			Height:PARENT_BOTTOM - 100
 			Visible: false
 			Children:
-				Label@MODE_LABEL:
+				Label@RENDERER_LABEL:
 					X:0
 					Y:0
+					Width:75
+					Height:25
+					Text:Renderer:
+				TextField@GRAPHICS_RENDERER:
+					Id:GRAPHICS_RENDERER
+					X:80
+					Y:1
+					Width:50
+					Height:25
+					Font:Regular
+					Text:Gl
+				Label@RENDERER_DESC:
+					Y:25
+					Width:PARENT_RIGHT
+					Height:20
+					Font:Tiny
+					Align:Center
+					Text:Renderer can be Gl (default) or Cg (better for some laptops).
+				Label@RENDERER_DESC:
+					Y:45
+					Width:PARENT_RIGHT
+					Height:20
+					Font:Tiny
+					Align:Center
+					Text:Renderer changes will be applied after the game is restarted.
+				Label@MODE_LABEL:
+					X:0
+					Y:75
 					Width:45
 					Height:25
 					Text:Mode:
 				DropDownButton@MODE_DROPDOWN:
 					Id:MODE_DROPDOWN
 					X:50
-					Y:1
+					Y:75
 					Width:170
 					Height:25
 					Font:Regular
 					Text:Windowed
 				Container@WINDOWRES:
 					Id:WINDOW_RESOLUTION
-					X:220
-					Y:0
+					X:225
+					Y:75
 					Children:
 						Label@At:
 							Text:@
@@ -213,15 +241,15 @@ Background@SETTINGS_MENU:
 							Height:25
 							MaxLength:5
 				Label@VIDEO_DESC:
-					Y:25
+					Y:100
 					Width:PARENT_RIGHT
 					Height:25
 					Font:Tiny
 					Align:Center
-					Text:Mode/Resolution changes will be applied after the game is restarted
+					Text:Mode/Resolution changes will be applied after the game is restarted.
 				Checkbox@PIXELDOUBLE_CHECKBOX:
 					Id:PIXELDOUBLE_CHECKBOX
-					Y:50
+					Y:130
 					Width:200
 					Height:20
 					Font:Regular

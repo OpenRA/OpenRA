@@ -84,6 +84,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var display = bg.GetWidget("DISPLAY_PANE");
 			var gs = Game.Settings.Graphics;
 
+			var GraphicsRenderer = display.GetWidget<TextFieldWidget>("GRAPHICS_RENDERER");
+			GraphicsRenderer.Text = gs.Renderer;
+
 			var windowModeDropdown = display.GetWidget<DropDownButtonWidget>("MODE_DROPDOWN");
 			windowModeDropdown.OnMouseDown = _ => ShowWindowModeDropdown(windowModeDropdown, gs);
 			windowModeDropdown.GetText = () => gs.Mode == WindowMode.Windowed ?
@@ -121,6 +124,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				int.TryParse(windowWidth.Text, out x);
 				int.TryParse(windowHeight.Text, out y);
 				gs.WindowedSize = new int2(x,y);
+				gs.Renderer = GraphicsRenderer.Text;
 				Game.Settings.Save();
 				Ui.CloseWindow();
 			};
