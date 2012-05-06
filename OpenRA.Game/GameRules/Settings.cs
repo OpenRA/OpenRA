@@ -19,6 +19,9 @@ using OpenRA.Server;
 
 namespace OpenRA.GameRules
 {
+	public enum MouseScrollType { Disabled, Standard, Inverted }
+	public enum SoundCashTicks { Disabled, Normal, Extreme }
+
 	public class ServerSettings
 	{
 		public string Name = "OpenRA Game";
@@ -77,6 +80,8 @@ namespace OpenRA.GameRules
 		public bool Repeat = false;
 		public bool ShellmapMusic = true;
 		public string Engine = "AL";
+		
+		public SoundCashTicks SoundCashTickType = SoundCashTicks.Extreme;
 	}
 
 	public class PlayerSettings
@@ -85,8 +90,6 @@ namespace OpenRA.GameRules
 		public ColorRamp ColorRamp = new ColorRamp(75, 255, 180, 25);
 		public string LastServer = "localhost:1234";
 	}
-
-	public enum MouseScrollType { Disabled, Standard, Inverted }
 
 	public class GameSettings
 	{
