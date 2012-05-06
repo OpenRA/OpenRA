@@ -198,10 +198,14 @@ local function runInterpreter(wfilename, withdebugger)
   ClearAllCurrentLineMarkers()
   if not wfilename then return end
   debugger.pid = ide.interpreter:frun(wfilename, withdebugger)
+  return debugger.pid
 end
 
 function ProjectRun(skipcheck)
-  runInterpreter(getNameToRun(skipcheck))
+  local fname = getNameToRun(skipcheck)
+  if not fname then return end
+  runInterpreter(fname)
+  return true
 end
 
 local debuggers = {
@@ -218,8 +222,11 @@ function ProjectDebug(skipcheck, debtype)
   else
     local debcall = (debuggers[debtype or "debug"]):
       format(wx.wxGetHostName(), ide.debugger.portnumber)
-    runInterpreter(getNameToRun(skipcheck), debcall)
+    local fname = getNameToRun(skipcheck)
+    if not fname then return end
+    runInterpreter(fname, debcall)
   end
+  return true
 end
 
 -----------------------
@@ -258,7 +265,10 @@ frame:Connect(ID_RUN, wx.wxEVT_UPDATE_UI,
 
 frame:Connect(ID_RUNNOW, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
-    if event:IsChecked() then DebuggerScratchpadOn(GetEditor())
+    if event:IsChecked() then
+      if not DebuggerScratchpadOn(GetEditor()) then
+        menuBar:Check(ID_RUNNOW, false) -- disable if couldn't start scratchpad
+      end
     else DebuggerScratchpadOff() end
   end)
 frame:Connect(ID_RUNNOW, wx.wxEVT_UPDATE_UI,

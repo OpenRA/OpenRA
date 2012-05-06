@@ -527,7 +527,14 @@ local numberStyle = wxstc.wxSTC_LUA_NUMBER
 
 function DebuggerScratchpadOn(editor)
   debugger.scratchpad = {}
+
+  if not ProjectDebug(true, "scratchpad") then
+    debugger.scratchpad = nil
+    return
+  end
+
   debugger.scratchpad.editor = editor
+
   local scratchpadEditor = editor
   scratchpadEditor:StyleSetUnderline(numberStyle, true)
 
@@ -625,7 +632,7 @@ function DebuggerScratchpadOn(editor)
     else event:Skip() end
   end)
 
-  ProjectDebug(true, "scratchpad")
+  return true
 end
 
 function DebuggerScratchpadOff()
@@ -646,4 +653,6 @@ function DebuggerScratchpadOff()
   -- (as this may be called when the debugger is being shut down)
   local menuBar = ide.frame.menuBar
   if menuBar:IsChecked(ID_RUNNOW) then menuBar:Check(ID_RUNNOW, false) end
+
+  return true
 end
