@@ -1,4 +1,4 @@
-# ZeroBrane Studio
+# Project Description
 
 A simple and extensible Lua IDE and debugger. It supports multiple file
 formats, "api" for autocompletion and tooltips, and custom command-line
@@ -28,9 +28,10 @@ tools. Its main focus is extensibility for target applications using Lua.
 ## Frontends
 
 There is currently two front-ends using the same editor engine. The original
-is `estrela`, which has a focus on 3d graphics related usage of Lua, especially
-in combination with the luxinia engine or luxinia2 framework.
-The second is `zbstudio` which has a focus on remote use of Lua in robotics.
+one is `Estrela`, which has a focus on 3d graphics related usage of Lua,
+especially in combination with the luxinia engine or luxinia2 framework.
+The second front-end is `ZeroBrane Studio` (zbstudio) which has a focus
+on using Lua in education, mobile development, and robotics.
 
 Both are part of the standard distribution.
 
@@ -56,11 +57,11 @@ Overriding Config:
 
 ## Author
 
-#### Estrela Editor
+### Estrela Editor
 
   **Luxinia Dev:** Christoph Kubisch (crazybutcher@luxinia.de)
 
-#### ZeroBrane Studio and MobDebug
+### ZeroBrane Studio and MobDebug
 
   **ZeroBrane LLC:** Paul Kulchenko (paul@kulchenko.com)
 
