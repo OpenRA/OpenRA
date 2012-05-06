@@ -594,7 +594,7 @@ function DebuggerScratchpadOn(editor)
     if debugger.scratchpad and debugger.scratchpad.point then
       debugger.scratchpad.point = nil
       debugger.scratchpad.editor:ReleaseMouse()
-      wx.wxSetCursor(wx.wxCursor(wx.wxCURSOR_ARROW)) -- restore cursor
+      wx.wxSetCursor(wx.wxNullCursor) -- restore cursor
     else event:Skip() end
   end)
 
