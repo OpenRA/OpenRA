@@ -64,7 +64,7 @@ namespace OpenRA.Traits
 		readonly Player Owner;
 		int AdviceInterval;
 		
-		int tickermod = 0;
+		int cashtickallowed = 0;
 
 		public PlayerResources(Actor self, PlayerResourcesInfo info)
 		{
@@ -137,7 +137,10 @@ namespace OpenRA.Traits
 		public void Tick(Actor self)
 		{
 			var eva = self.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
-			tickermod = (tickermod + 1) % 3;
+			
+			if(cashtickallowed > 0) {
+				cashtickallowed = cashtickallowed - 1;
+			}
 			
 			OreCapacity = self.World.ActorsWithTrait<IStoreOre>()
 				.Where(a => a.Actor.Owner == Owner)
@@ -201,9 +204,10 @@ namespace OpenRA.Traits
 			var eva = self.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
 			if (
 				Game.Settings.Sound.SoundCashTickType == SoundCashTicks.Extreme ||
-				(Game.Settings.Sound.SoundCashTickType == SoundCashTicks.Normal && tickermod == 0)
+				(Game.Settings.Sound.SoundCashTickType == SoundCashTicks.Normal && cashtickallowed == 0)
 			) {
 				Sound.PlayToPlayer(self.Owner, eva.CashTickDown);
+				cashtickallowed = 3;
 			}
 			
 		}
