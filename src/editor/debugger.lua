@@ -575,17 +575,17 @@ function DebuggerScratchpadOn(editor)
       and (bit.band(scratchpadEditor:GetStyleAt(nend),31) == numberStyle)
       do nend = nend + 1 end
 
-    scratchpad.origin = scratchpadEditor:GetTextRange(nstart+1,nend)
+    -- check if there is minus sign right before the number and include it
+    if nstart >= 0 and scratchpadEditor:GetTextRange(nstart,nstart+1) == '-' then 
+      nstart = nstart - 1
+    end
     scratchpad.start = nstart + 1
     scratchpad.length = nend - nstart - 1
-    scratchpad.point = point
-
-    scratchpadEditor:CaptureMouse()
-
-    local col = scratchpadEditor:GetColumn(pos)
-    local line = scratchpadEditor:LineFromPosition(pos)
-    -- scan the line to the left to find the number of numbers
-    -- this will define the name of the global variable we need
+    scratchpad.origin = tonumber(scratchpadEditor:GetTextRange(nstart+1,nend))
+    if scratchpad.origin then
+      scratchpad.point = point
+      scratchpadEditor:CaptureMouse()
+    end
   end)
 
   scratchpadEditor:Connect(wx.wxEVT_LEFT_UP, function(event)
