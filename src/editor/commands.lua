@@ -401,12 +401,11 @@ function CompileProgram(editor, quiet)
   local id = editor:GetId()
   local filePath = DebuggerMakeFileName(editor, openDocuments[id].filePath)
   local _, errMsg, line_num = wxlua.CompileLuaScript(editorText, filePath)
-  if ide.frame.menuBar:IsChecked(ID_CLEAROUTPUT) then
-    ClearOutput()
-  end
+
+  if ide.frame.menuBar:IsChecked(ID_CLEAROUTPUT) then ClearOutput() end
 
   if line_num > -1 then
-    DisplayOutput("Compilation error on line "..tostring(line_num).."\n"..
+    DisplayOutput("Compilation error on line "..tostring(line_num)..":\n"..
       errMsg:gsub("Lua:.-\n", "").."\n")
     if not quiet then editor:GotoLine(line_num-1) end
   else

@@ -514,6 +514,14 @@ function DebuggerRefreshScratchpad()
         end
         if err and not err:find(errormsg) then
           local line = err:match('.*%[string "[%w:/%\\_%-%.]+"%]:(%d+)%s*:')
+          -- check if the line number in the error matches the line we added
+          -- to stop the script; if so, compile it the usual way and report.
+          -- the usual way is not used all the time because it is slow
+          if prefix == "Compilation error" and
+             tonumber(line) == scratchpadEditor:GetLineCount()+1 then
+            _, err, line = wxlua.CompileLuaScript(code, filePath)
+            err = err:gsub("Lua:.-\n", "") -- remove "syntax error" part
+          end
           DisplayOutput(prefix .. (line and " on line " .. line or "") .. ":\n"
             .. err:gsub('stack traceback:.+', ''):gsub('\n+$', '') .. "\n")
         end

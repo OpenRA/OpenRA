@@ -256,7 +256,7 @@ frame:Connect(ID_COMPILE, wx.wxEVT_UPDATE_UI,
     event:Enable((debugger.server == nil and debugger.pid == nil) and (editor ~= nil))
   end)
 
-frame:Connect(ID_RUN, wx.wxEVT_COMMAND_MENU_SELECTED, ProjectRun)
+frame:Connect(ID_RUN, wx.wxEVT_COMMAND_MENU_SELECTED, function () ProjectRun() end)
 frame:Connect(ID_RUN, wx.wxEVT_UPDATE_UI,
   function (event)
     local editor = GetEditor()
@@ -291,7 +291,7 @@ frame:Connect(ID_ATTACH_DEBUG, wx.wxEVT_UPDATE_UI,
       and (editor ~= nil) and (not debugger.scratchpad))
   end)
 
-frame:Connect(ID_START_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED, ProjectDebug)
+frame:Connect(ID_START_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED, function () ProjectDebug() end)
 frame:Connect(ID_START_DEBUG, wx.wxEVT_UPDATE_UI,
   function (event)
     local editor = GetEditor()
