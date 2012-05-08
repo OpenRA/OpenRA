@@ -137,7 +137,7 @@ debugger.listen = function()
       elseif (debugger.scratchpad) then
         debugger.scratchpad.updated = true
       else
-        local file, line = debugger.loadfile(startfile)
+        local file, line, err = debugger.loadfile(startfile)
         -- "load" can work in two ways: (1) it can load the requested file
         -- OR (2) it can "refuse" to load it if the client was started
         -- with start() method, which can't load new files
@@ -169,6 +169,9 @@ debugger.listen = function()
             DisplayOutput("Can't find file '" .. file .. "' to activate for debugging; open the file before debugging.\n")
             return debugger.terminate()
           end
+        elseif err then
+          DisplayOutput("Can't debug the script in the active editor window. Compilation error:\n" .. err .. "\n")
+          return debugger.terminate()
         else
           activateDocument(startfile, 1)
         end
