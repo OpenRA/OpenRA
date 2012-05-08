@@ -119,9 +119,12 @@ local function analyzeProgram(editor)
   frame:Update()
 
   local warn, err = M.warnings_from_string(editorText, filePath)
-  DisplayOutput(": " .. (#warn > 0 and (#warn .. " warnings") or "no warnings.") .. "\n")
+  if err then -- report compilation error
+    DisplayOutput(": not completed\n")
+    return false
+  end
 
-  if err then return false end -- report compilation error
+  DisplayOutput(": " .. (warn and #warn > 0 and (#warn .. " warnings") or "no warnings.") .. "\n")
   DisplayOutputNoMarker(table.concat(warn, "\n") .. "\n")
 
   return true -- analyzed ok
