@@ -248,6 +248,7 @@ local function executeShellCode(tx)
     fn,err = loadstring(tx)
     -- for statement queries create the return
     if err and (err:find("'=' expected near '<eof>'") or
+                err:find("syntax error near '") or
                 err:find("unexpected symbol near '")) then
       local errmore
       fn,errmore = loadstring("return "..tx:gsub("^%s*=%s*",""))

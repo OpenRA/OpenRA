@@ -75,6 +75,7 @@ debugger.shell = function(expression)
         local addedret = false
         local value, _, err = debugger.handle('exec ' .. expression)
         if err and (err:find("'=' expected near '<eof>'") or
+                    err:find("syntax error near '") or
                     err:find("unexpected symbol near '")) then
           value, _, err = debugger.handle('eval ' .. expression:gsub("^%s*=%s*",""))
           addedret = true
