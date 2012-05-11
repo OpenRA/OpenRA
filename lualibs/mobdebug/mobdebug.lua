@@ -1,5 +1,5 @@
 --
--- MobDebug 0.446
+-- MobDebug 0.448
 -- Copyright Paul Kulchenko 2011-2012
 -- Based on RemDebug 1.0 (http://www.keplerproject.org/remdebug)
 --
@@ -8,7 +8,7 @@ local mobdebug = {
   _NAME = "mobdebug",
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
-  _VERSION = "0.446"
+  _VERSION = "0.448"
 }
 
 local coroutine = coroutine
@@ -27,7 +27,13 @@ local mosync = mosync
 -- this is a socket class that implements maConnect interface
 local function socketMobileLua() 
   local self = {}
-  self.select = function() return {} end
+  self.select = function(readfrom) -- writeto and timeout parameters are ignored
+    local canread = {}
+    for _,s in ipairs(readfrom) do
+      if s:receive(0) then canread[s] = true end
+    end
+    return canread
+  end
   self.connect = coroutine.wrap(function(host, port)
     while true do
       local connection = mosync.maConnect("socket://" .. host .. ":" .. port)
@@ -73,7 +79,7 @@ local function socketMobileLua()
           end
           return s
         end
-        self.send = coroutine.wrap(function(self, msg) 
+        self.send = coroutine.wrap(function(self, msg)
           while true do
             local numberOfBytes = stringToBuffer(msg, outBuffer)
             mosync.maConnWrite(connection, outBuffer, numberOfBytes)
@@ -92,23 +98,27 @@ local function socketMobileLua()
             self, msg = coroutine.yield()
           end
         end)
-        self.receive = coroutine.wrap(function(self, len) 
+        self.receive = coroutine.wrap(function(self, len)
           while true do
             local line = recvBuffer
             while (len and string.len(line) < len)     -- either we need len bytes
-               or (not len and not line:find("\n")) do -- or one line (if no len specified)
+               or (not len and not line:find("\n")) -- or one line (if no len specified)
+               or (len == 0) do -- only check for new data (select-like)
               mosync.maConnRead(connection, inBuffer, 1000)
               while true do
-                mosync.maWait(0)
+                if len ~= 0 then mosync.maWait(0) end
                 mosync.maGetEvent(event)
                 local eventType = mosync.SysEventGetType(event)
                 if (mosync.EVENT_TYPE_CLOSE == eventType) then mosync.maExit(0) end
                 if (mosync.EVENT_TYPE_CONN == eventType and
                     mosync.SysEventGetConnHandle(event) == connection and
                     mosync.SysEventGetConnOpType(event) == mosync.CONNOP_READ) then
-                  local result = mosync.SysEventGetConnResult(event);
+                  local result = mosync.SysEventGetConnResult(event)
                   if result > 0 then line = line .. bufferToString(inBuffer, result) end
-                  break; -- got the event we wanted; now check if we have all we need
+                  if len == 0 then self, len = coroutine.yield("") end
+                  break -- got the event we wanted; now check if we have all we need
+                elseif len == 0 then
+                  self, len = coroutine.yield(nil)
                 end
               end  
             end
@@ -198,7 +208,7 @@ local function restore_vars(vars)
   while true do
     local name = debug.getlocal(3, i)
     if not name then break end
-    debug.setlocal(3, i, vars[name])
+    if string.sub(name, 1, 1) ~= '(' then debug.setlocal(3, i, vars[name]) end
     written_vars[name] = true
     i = i + 1
   end
@@ -207,7 +217,7 @@ local function restore_vars(vars)
     local name = debug.getupvalue(func, i)
     if not name then break end
     if not written_vars[name] then
-      debug.setupvalue(func, i, vars[name])
+      if string.sub(name, 1, 1) ~= '(' then debug.setupvalue(func, i, vars[name]) end
       written_vars[name] = true
     end
     i = i + 1
@@ -221,14 +231,14 @@ local function capture_vars()
   while true do
     local name, value = debug.getupvalue(func, i)
     if not name then break end
-    vars[name] = value
+    if string.sub(name, 1, 1) ~= '(' then vars[name] = value end
     i = i + 1
   end
   i = 1
   while true do
     local name, value = debug.getlocal(3, i)
     if not name then break end
-    vars[name] = value
+    if string.sub(name, 1, 1) ~= '(' then vars[name] = value end
     i = i + 1
   end
   setmetatable(vars, { __index = getfenv(func), __newindex = getfenv(func) })
@@ -239,6 +249,7 @@ local function stack_depth(start_depth)
   for i = start_depth, 0, -1 do
     if debug.getinfo(i, "l") then return i+1 end
   end
+  return start_depth
 end
 
 local function is_safe(stack_level, conservative)
@@ -256,13 +267,6 @@ local function is_safe(stack_level, conservative)
 end
 
 local function debug_hook(event, line)
-  if abort then
-    if is_safe(stack_level) then
-      error("aborted") -- abort execution for RE/LOAD
-    else
-      return
-    end
-  end
   if event == "call" then
     stack_level = stack_level + 1
   elseif event == "return" or event == "tail return" then
@@ -327,7 +331,11 @@ local function debug_hook(event, line)
       check_break = true -- this is only needed to avoid breaking too early when debugging is starting
       step_into = false
       step_over = false
-      coroutine.resume(coro_debugger, events.BREAK, vars, file, line)
+      local status, res = coroutine.resume(coro_debugger, events.BREAK, vars, file, line)
+      if status and res then
+        abort = res
+        error(abort)
+      end -- abort execution if requested
     end
     if vars then restore_vars(vars) end
   end
@@ -423,8 +431,7 @@ local function debugger_loop(sfile, sline)
 
         if size == 0 then -- RELOAD the current script being debugged
           server:send("200 OK 0\n")
-          abort = true
-          coroutine.yield()
+          coroutine.yield("load")
         else
           local chunk = server:receive(size)
           if chunk then -- LOAD a new script for debugging
@@ -432,8 +439,7 @@ local function debugger_loop(sfile, sline)
             if func then
               server:send("200 OK 0\n")
               debugee = func
-              abort = true
-              coroutine.yield()
+              coroutine.yield("load")
             else
               server:send("401 Error in Expression " .. string.len(res) .. "\n")
               server:send(res)
@@ -524,7 +530,7 @@ local function debugger_loop(sfile, sline)
       -- do nothing; it already fulfilled its role
     elseif command == "EXIT" then
       server:send("200 OK\n")
-      os.exit()
+      coroutine.yield("exit")
     else
       server:send("400 Bad Request\n")
     end
@@ -553,6 +559,7 @@ local function start(controller_host, controller_port)
 end
 
 local function controller(controller_host, controller_port)
+  local exitonerror = not skip -- exit if not running a scratchpad
   server = socket.connect(controller_host, controller_port)
   if server then
     local function report(trace, err)
@@ -567,6 +574,7 @@ local function controller(controller_host, controller_port)
     while true do 
       step_into = true
       abort = false
+      if skip then skipcount = skip end -- to force suspend right away
 
       local coro_debugee = coroutine.create(debugee)
       debug.sethook(coro_debugee, debug_hook, "lcr")
@@ -574,11 +582,14 @@ local function controller(controller_host, controller_port)
 
       -- was there an error or is the script done?
       -- 'abort' state is allowed here; ignore it
-      if not abort then
+      if abort then
+        if tostring(abort) == 'exit' then break end
+      else
         if status then -- normal execution is done
           break
         elseif not err:find(deferror) then -- report the error
           report(debug.traceback(coro_debugee), err)
+          if exitonerror then break end
           -- resume once more to clear the response the debugger wants to send
           coroutine.resume(coro_debugger, events.RESTART)
         end
@@ -727,11 +738,11 @@ local function handle(params, client)
       or command == "reload" then
     local _, _, exp = string.find(params, "^[a-z]+%s+(.+)$")
     if exp or (command == "reload") then 
-      if command == "eval" then
-        exp = string.gsub(exp, "\n", " ") -- convert new lines
-        client:send("EXEC return " .. exp .. "\n")
-      elseif command == "exec" then
-        exp = string.gsub(exp, "\n", " ") -- convert new lines
+      if command == "eval" or command == "exec" then
+        exp = (exp:gsub("%-%-%[(=*)%[.-%]%1%]", "") -- remove comments
+                  :gsub("%-%-.-\n", " ") -- remove line comments
+                  :gsub("\n", " ")) -- convert new lines
+        if command == "eval" then exp = "return " .. exp end
         client:send("EXEC " .. exp .. "\n")
       elseif command == "reload" then
         client:send("LOAD 0 -\n")
