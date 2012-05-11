@@ -43,7 +43,7 @@ end
 
 local debugTab = {
   { ID_RUN, "&Run\tF6", "Execute the current project/file" },
-  { ID_RUNNOW, "Run as Scratchpad", "Execute the current project/file and keep updating the code to see immediate results", wx.wxITEM_CHECK },
+  { ID_RUNNOW, "Run as Scratchpad\tCtrl-F6", "Execute the current project/file and keep updating the code to see immediate results", wx.wxITEM_CHECK },
   { ID_COMPILE, "&Compile\tF7", "Test compile the Lua file" },
   { ID_START_DEBUG, "Start &Debugging\tF5", "Start a debugging session" },
   { ID_ATTACH_DEBUG, "&Start Debugger Server\tShift-F6", "Allow a client to start a debugging session" },
