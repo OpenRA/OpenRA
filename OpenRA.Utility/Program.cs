@@ -27,6 +27,7 @@ namespace OpenRA.Utility
 				{ "--extract", Command.ExtractFiles },
 				{ "--tmp-png", Command.ConvertTmpToPng },
 				{ "--remap", Command.RemapShp },
+				{ "--dumpr8", Command.ConvertR8ToBmp }
 			};
 
 			if (args.Length == 0) { PrintUsage(); return; }
@@ -59,6 +60,7 @@ namespace OpenRA.Utility
 			Console.WriteLine("  --extract MOD[,MOD]* FILES		  Extract files from mod packages");
 			Console.WriteLine("  --tmp-png MOD[,MOD]* THEATER FILES        Extract terrain tiles to PNG");
 			Console.WriteLine("  --remap SRCMOD:PAL DESTMOD:PAL SRCSHP DESTSHP  Remap SHPs to another palette");
+			Console.WriteLine("  --dumpr8 R8FILE PALETTE          Convert Dune 2000 DATA.R8 to BMPs");
 		}
 
 		static string GetNamedArg(string[] args, string arg)
