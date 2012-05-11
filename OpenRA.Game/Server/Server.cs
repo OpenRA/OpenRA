@@ -13,9 +13,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Net;
 using System.Net.Sockets;
+using System.Net.NetworkInformation;
+using UPnP;
 using System.Threading;
+using System.Xml;
 using OpenRA.FileFormats;
 using OpenRA.GameRules;
 using OpenRA.Network;
@@ -58,6 +62,8 @@ namespace OpenRA.Server
 			var localEndpoint = (IPEndPoint)listener.LocalEndpoint;
 			Ip = localEndpoint.Address;
 			Port = localEndpoint.Port;
+			
+			PortForward();
 
 			Settings = settings;
 			ModData = modData;
@@ -126,6 +132,26 @@ namespace OpenRA.Server
 		 *	- "teams together" option for team games -- will eliminate most need
 		 *		for manual spawnpoint choosing.
 		 */
+		 
+		void PortForward()
+		{
+			try
+			{
+				if (UPnP.NAT.Discover())
+				{
+					Log.Write("server", "UPnP-enabled router discovered.");
+					UPnP.NAT.ForwardPort(Port, ProtocolType.Tcp, "OpenRA");
+					Log.Write("server", "Port "+Port+" (TCP) has been forwarded.");
+					Log.Write("server", "Your IP is: "+UPnP.NAT.GetExternalIP());
+				}
+			}
+			catch
+			{
+				Log.Write("server", "No UPnP-enabled router detected.");
+			}
+			return;
+		}
+		
 		int nextPlayerIndex = 0;
 		public int ChooseFreePlayerIndex()
 		{
