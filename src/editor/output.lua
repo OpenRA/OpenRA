@@ -19,7 +19,7 @@ errorlog:MarkerDefine(CURRENT_LINE_MARKER, wxstc.wxSTC_MARK_ARROWS, wx.wxBLACK, 
 errorlog:SetReadOnly(true)
 StylesApplyToEditor(ide.config.stylesoutshell,errorlog,ide.ofont,ide.ofontItalic)
 
-function ClearOutput(event)
+function ClearOutput()
   errorlog:SetReadOnly(false)
   errorlog:ClearAll()
   errorlog:SetReadOnly(true)
@@ -83,6 +83,7 @@ local function unHideWxWindow(pidAssign)
     end)
     if win and not win:is_visible() then
       win:show()
+      notebook:SetFocus() -- set focus back to the IDE window
       pid = nil
     end
   end

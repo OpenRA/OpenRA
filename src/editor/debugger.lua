@@ -36,7 +36,7 @@ local function updateWatches()
 end
 
 local function activateDocument(fileName, line)
-  if (not fileName and line) then return end
+  if not fileName then return end
 
   if not wx.wxIsAbsolutePath(fileName) then
     fileName = wx.wxGetCwd().."/"..fileName
@@ -46,7 +46,7 @@ local function activateDocument(fileName, line)
     fileName = wx.wxUnix2DosFilename(fileName)
   end
 
-  local fileFound = false
+  local activated
   for _, document in pairs(ide.openDocuments) do
     local editor = document.editor
     -- for running in cygwin, use same type of separators
@@ -57,14 +57,16 @@ local function activateDocument(fileName, line)
       notebook:SetSelection(selection)
       SetEditorSelection(selection)
       ClearAllCurrentLineMarkers()
-      editor:MarkerAdd(line-1, CURRENT_LINE_MARKER)
-      editor:EnsureVisibleEnforcePolicy(line-1)
-      fileFound = true
+      if line then
+        editor:MarkerAdd(line-1, CURRENT_LINE_MARKER)
+        editor:EnsureVisibleEnforcePolicy(line-1)
+      end
+      activated = editor
       break
     end
   end
 
-  return fileFound
+  return activated ~= nil, activated
 end
 
 debugger.shell = function(expression)
@@ -73,6 +75,7 @@ debugger.shell = function(expression)
         local addedret = false
         local value, _, err = debugger.handle('exec ' .. expression)
         if err and (err:find("'=' expected near '<eof>'") or
+                    err:find("syntax error near '") or
                     err:find("unexpected symbol near '")) then
           value, _, err = debugger.handle('eval ' .. expression:gsub("^%s*=%s*",""))
           addedret = true
@@ -93,8 +96,8 @@ debugger.listen = function()
   DisplayOutput("Started debugger server; clients can connect to "..wx.wxGetHostName()..":"..debugger.portnumber..".\n")
   copas.autoclose = false
   copas.addserver(server, function (skt)
-      SetAllEditorsReadOnly(true)
       local options = debugger.options or {}
+      if not debugger.scratchpad then SetAllEditorsReadOnly(true) end
       local wxfilepath = GetEditorFileAndCurInfo()
       local startfile = options.startfile or wxfilepath:GetFullPath()
       local basedir = options.basedir
@@ -116,21 +119,25 @@ debugger.listen = function()
       debugger.handle("delallb")
 
       -- go over all windows and find all breakpoints
-      for _, document in pairs(ide.openDocuments) do
-        local editor = document.editor
-        local filePath = document.filePath
-        line = editor:MarkerNext(0, BREAKPOINT_MARKER_VALUE)
-        while line ~= -1 do
-          debugger.handle("setb " .. filePath .. " " .. (line+1))
-          line = editor:MarkerNext(line + 1, BREAKPOINT_MARKER_VALUE)
+      if (not debugger.scratchpad) then
+        for _, document in pairs(ide.openDocuments) do
+          local editor = document.editor
+          local filePath = document.filePath
+          line = editor:MarkerNext(0, BREAKPOINT_MARKER_VALUE)
+          while line ~= -1 do
+            debugger.handle("setb " .. filePath .. " " .. (line+1))
+            line = editor:MarkerNext(line + 1, BREAKPOINT_MARKER_VALUE)
+          end
         end
       end
 
       if (options.run) then
         local file, line = debugger.handle("run")
         activateDocument(file, line)
+      elseif (debugger.scratchpad) then
+        debugger.scratchpad.updated = true
       else
-        local file, line = debugger.handle("load " .. startfile)
+        local file, line, err = debugger.loadfile(startfile)
         -- "load" can work in two ways: (1) it can load the requested file
         -- OR (2) it can "refuse" to load it if the client was started
         -- with start() method, which can't load new files
@@ -162,12 +169,15 @@ debugger.listen = function()
             DisplayOutput("Can't find file '" .. file .. "' to activate for debugging; open the file before debugging.\n")
             return debugger.terminate()
           end
+        elseif err then
+          DisplayOutput("Can't debug the script in the active editor window. Compilation error:\n" .. err .. "\n")
+          return debugger.terminate()
         else
           activateDocument(startfile, 1)
         end
       end
 
-      if (not options.noshell) then
+      if (not options.noshell and not debugger.scratchpad) then
         ShellSupportRemote(debugger.shell, debugger.pid)
       end
 
@@ -197,7 +207,6 @@ end
 
 debugger.exec = function(command)
   if debugger.server and not debugger.running then
-
     copas.addthread(function ()
         local out
         while true do
@@ -235,12 +244,18 @@ debugger.updateBreakpoint = function(command)
   end
 end
 
+debugger.loadfile = function(file)
+  return debugger.handle("load " .. file)
+end
+debugger.loadstring = function(file, string)
+  return debugger.handle("loadstring '" .. file .. "' " .. string)
+end
 debugger.update = function() copas.step(0) end
 debugger.terminate = function()
   if debugger.server then
     if debugger.pid then -- if there is PID, try local kill
       DebuggerKillClient()
-    else -- otherwise, trace graceful exit for the remote process
+    else -- otherwise, try graceful exit for the remote process
       debugger.exec("exit")
       copas.step(1) -- process 'exit' right away; doesn't guarantee the response
     end
@@ -256,6 +271,7 @@ debugger.over = function() debugger.exec("over") end
 debugger.out = function() debugger.exec("out") end
 debugger.run = function() debugger.exec("run") end
 debugger.evaluate = function(expression) return debugger.handle('eval ' .. expression) end
+debugger.execute = function(expression) return debugger.handle('exec ' .. expression) end
 debugger.breaknow = function()
   -- stop if we're running a "trace" command
   debugger.loop = false
@@ -268,12 +284,13 @@ debugger.breaknow = function()
     local running = debugger.running
     -- this needs to be short as it will block the UI
     debugger.socket:settimeout(0.25)
-    debugger.handle("step", debugger.socket)
+    local file, line, err = debugger.handle("suspend", debugger.socket)
     debugger.socket:settimeout(0)
     -- restore running status
     debugger.running = running
     -- don't need to do anything else as the earlier call (run, step, etc.)
     -- will get the results (file, line) back and will update the UI
+    return file, line, err
   end
 end
 debugger.breakpoint = function(file, line, state)
@@ -311,6 +328,7 @@ function DebuggerStop()
     SetAllEditorsReadOnly(false)
     ShellSupportRemote(nil, 0)
     ClearAllCurrentLineMarkers()
+    DebuggerScratchpadOff()
     DisplayOutput("Completed debugging session.\n")
   end
 end
@@ -462,4 +480,193 @@ function DebuggerToggleBreakpoint(editor, line)
       debugger.breakpoint(filePath, line+1, true)
     end
   end
+end
+
+-- scratchpad functions
+
+function DebuggerRefreshScratchpad()
+  if debugger.pid and debugger.scratchpad.updated then
+    -- break the current execution first
+    -- this shouldn't do any harm if the execution is not running
+    debugger.breaknow()
+
+    if not debugger.scratchpad.running then
+      local clear = ide.frame.menuBar:IsChecked(ID_CLEAROUTPUT)
+      local scratchpadEditor = debugger.scratchpad.editor
+      local code = scratchpadEditor:GetText()
+      local filePath = DebuggerMakeFileName(scratchpadEditor,
+        ide.openDocuments[scratchpadEditor:GetId()].filePath)
+
+      -- this is a special error message that is generated at the very end
+      -- of each script to avoid exiting the (debugee) scratchpad process.
+      -- these errors are handled and not reported to the user
+      local errormsg = 'execution suspended at ' .. os.clock()
+      local stopper = "\nerror('" .. errormsg .. "')"
+
+      local function reloadScratchpadCode()
+        debugger.scratchpad.running = true
+        debugger.scratchpad.updated = false
+
+        local _, _, err = debugger.loadstring(filePath, code .. stopper)
+        local prefix = "Compilation error"
+
+        if clear then ClearOutput() end
+
+        if not err then
+          _, _, err = debugger.handle("run")
+          prefix = "Execution error"
+        end
+        if err and not err:find(errormsg) then
+          local line = err:match('.*%[string "[%w:/%\\_%-%.]+"%]:(%d+)%s*:')
+          -- check if the line number in the error matches the line we added
+          -- to stop the script; if so, compile it the usual way and report.
+          -- the usual way is not used all the time because it is slow
+          if prefix == "Compilation error" and
+             tonumber(line) == scratchpadEditor:GetLineCount()+1 then
+            _, err, line = wxlua.CompileLuaScript(code, filePath)
+            err = err:gsub("Lua:.-\n", "") -- remove "syntax error" part
+          end
+          DisplayOutput(prefix .. (line and " on line " .. line or "") .. ":\n"
+            .. err:gsub('stack traceback:.+', ''):gsub('\n+$', '') .. "\n")
+        end
+        debugger.scratchpad.running = false
+      end
+
+      copas.addthread(reloadScratchpadCode)
+    end
+  end
+end
+
+local numberStyle = wxstc.wxSTC_LUA_NUMBER
+
+function DebuggerScratchpadOn(editor)
+  debugger.scratchpad = {}
+
+  if not ProjectDebug(true, "scratchpad") then
+    debugger.scratchpad = nil
+    return
+  end
+
+  debugger.scratchpad.editor = editor
+
+  local scratchpadEditor = editor
+  scratchpadEditor:StyleSetUnderline(numberStyle, true)
+
+  scratchpadEditor:Connect(wxstc.wxEVT_STC_MODIFIED, function(event)
+    local evtype = event:GetModificationType()
+    if (bit.band(evtype,wxstc.wxSTC_MOD_INSERTTEXT) ~= 0 or
+        bit.band(evtype,wxstc.wxSTC_MOD_DELETETEXT) ~= 0 or
+        bit.band(evtype,wxstc.wxSTC_PERFORMED_UNDO) ~= 0 or
+        bit.band(evtype,wxstc.wxSTC_PERFORMED_REDO) ~= 0) then
+      debugger.scratchpad.updated = true
+    end
+    event:Skip()
+  end)
+
+  scratchpadEditor:Connect(wx.wxEVT_LEFT_DOWN, function(event)
+    local scratchpad = debugger.scratchpad
+
+    local point = event:GetPosition()
+    local pos = scratchpadEditor:PositionFromPoint(point)
+
+    -- are we over a number in the scratchpad? if not, it's not our event
+    if ((not scratchpad) or
+        (bit.band(scratchpadEditor:GetStyleAt(pos),31) ~= numberStyle)) then
+      event:Skip()
+      return
+    end
+
+    -- find start position and length of the number
+    local text = scratchpadEditor:GetText()
+
+    local nstart = pos
+    while nstart >= 0
+      and (bit.band(scratchpadEditor:GetStyleAt(nstart),31) == numberStyle)
+      do nstart = nstart - 1 end
+
+    local nend = pos
+    while nend < string.len(text)
+      and (bit.band(scratchpadEditor:GetStyleAt(nend),31) == numberStyle)
+      do nend = nend + 1 end
+
+    -- check if there is minus sign right before the number and include it
+    if nstart >= 0 and scratchpadEditor:GetTextRange(nstart,nstart+1) == '-' then 
+      nstart = nstart - 1
+    end
+    scratchpad.start = nstart + 1
+    scratchpad.length = nend - nstart - 1
+    scratchpad.origin = tonumber(scratchpadEditor:GetTextRange(nstart+1,nend))
+    if scratchpad.origin then
+      scratchpad.point = point
+      scratchpadEditor:CaptureMouse()
+    end
+  end)
+
+  scratchpadEditor:Connect(wx.wxEVT_LEFT_UP, function(event)
+    if debugger.scratchpad and debugger.scratchpad.point then
+      debugger.scratchpad.point = nil
+      debugger.scratchpad.editor:ReleaseMouse()
+      wx.wxSetCursor(wx.wxNullCursor) -- restore cursor
+    else event:Skip() end
+  end)
+
+  scratchpadEditor:Connect(wx.wxEVT_MOTION, function(event)
+    local point = event:GetPosition()
+    local pos = scratchpadEditor:PositionFromPoint(point)
+    local scratchpad = debugger.scratchpad
+    local ipoint = scratchpad and scratchpad.point
+
+    -- record the fact that we are over a number or dragging slider
+    scratchpad.over = scratchpad and
+      (ipoint or (bit.band(scratchpadEditor:GetStyleAt(pos),31) == numberStyle))
+
+    if ipoint then
+      -- calculate difference in point position
+      local dx = point.x - ipoint.x
+      local dy = - (point.y - ipoint.y) -- invert dy as y increases down
+
+      -- re-calculate the value
+      local startpos = scratchpad.start
+      local endpos = scratchpad.start+scratchpad.length
+      local num = tonumber(scratchpad.origin) + dx/10
+
+      -- update length
+      scratchpad.length = string.len(num)
+
+      -- update the value in the document
+      scratchpadEditor:SetTargetStart(startpos)
+      scratchpadEditor:SetTargetEnd(endpos)
+      scratchpadEditor:ReplaceTarget("" .. num)
+    else event:Skip() end
+  end)
+
+  scratchpadEditor:Connect(wx.wxEVT_SET_CURSOR, function(event)
+    if (debugger.scratchpad and debugger.scratchpad.over) then
+      event:SetCursor(wx.wxCursor(wx.wxCURSOR_SIZEWE))
+    else event:Skip() end
+  end)
+
+  return true
+end
+
+function DebuggerScratchpadOff()
+  if not debugger.scratchpad then return end
+
+  local scratchpadEditor = debugger.scratchpad.editor
+  scratchpadEditor:StyleSetUnderline(numberStyle, false)
+  scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wxstc.wxEVT_STC_MODIFIED)
+  scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wx.wxEVT_MOTION)
+  scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wx.wxEVT_LEFT_DOWN)
+  scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wx.wxEVT_LEFT_UP)
+  scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wx.wxEVT_SET_CURSOR)
+
+  debugger.scratchpad = nil
+  debugger.terminate()
+
+  -- disable menu if it is still enabled
+  -- (as this may be called when the debugger is being shut down)
+  local menuBar = ide.frame.menuBar
+  if menuBar:IsChecked(ID_RUNNOW) then menuBar:Check(ID_RUNNOW, false) end
+
+  return true
 end

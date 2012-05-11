@@ -157,7 +157,7 @@ function GetEditorFileAndCurInfo(nochecksave)
     return
   end
 
-  local id = editor:GetId();
+  local id = editor:GetId()
   local filepath = openDocuments[id].filePath
   if (nochecksave and not filepath) then
     return
