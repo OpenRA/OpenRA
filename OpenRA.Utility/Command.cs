@@ -106,23 +106,37 @@ namespace OpenRA.Utility
 
 		public static void ConvertR8ToBmp(string[] args)
 		{
-			var palette = Palette.Load(args[1], false); //"mods/palettetest/d2k.pal"
-			var r8 = new R8Reader(File.OpenRead(args[2])); //"/home/matthias/.openra/Content/d2k/DATA.R8"
-				
+			var palette = Palette.Load(args[1], false);
+			var r8 = new R8Reader(File.OpenRead(args[2]));
+
 			for (int f = 0; f < r8.Frames; f++)
 			{
 				var frame = r8[f];
-				var bitmap = new Bitmap(frame.Width, frame.Height);
-				var data = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.WriteOnly,
+				var bitmap = new Bitmap(frame.FrameWidth, frame.FrameHeight);
+				int StartX = frame.FrameWidth + frame.OffsetX;
+				int EndX = StartX + frame.Width;
+				int StartY = frame.FrameHeight - frame.OffsetY;
+				int EndY = StartY + frame.Height;
+
+				Console.WriteLine("frame.Width: {0}", frame.Width);
+				Console.WriteLine("frame.Height: {0}", frame.Height);
+				Console.WriteLine("frame.FrameWidth: {0}", frame.FrameWidth);
+				Console.WriteLine("frame.FrameHeight: {0}", frame.FrameHeight);
+				Console.WriteLine("StartX: {0}", StartX);
+				Console.WriteLine("EndX: {0}", EndX);
+				Console.WriteLine("StartY: {0}", StartY);
+				Console.WriteLine("EndY: {0}", EndY);
+				
+
+				var data = bitmap.LockBits(new Rectangle(0, 0, frame.Width, frame.Height), ImageLockMode.WriteOnly,
 					PixelFormat.Format32bppArgb);
 				unsafe
 				{
-				int* q = (int*)data.Scan0.ToPointer();
-				var stride = data.Stride >> 2;
-
-				for (var i = 0; i < frame.Width; i++)
-					for (var j = 0; j < frame.Height; j++)
-						q[j * stride + i] = palette.GetColor(frame.Image[i + frame.Width * j]).ToArgb();
+					int* q = (int*)data.Scan0.ToPointer();
+					var stride = data.Stride >> 2;
+					for (var i = 0; i < frame.Width; i++)
+						for (var j = 0; j < frame.Height; j++)
+							q[j * stride + i] = palette.GetColor(frame.Image[i + frame.Width * j]).ToArgb();
 				}
 				bitmap.UnlockBits(data);
 				bitmap.Save("{0}.bmp".F(f));
