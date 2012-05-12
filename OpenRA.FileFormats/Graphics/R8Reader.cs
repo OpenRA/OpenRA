@@ -22,10 +22,10 @@ namespace OpenRA.FileFormats
 		public int Height;
 		public int OffsetX;
 		public int OffsetY;
-		
+
 		public byte FrameWidth;
 		public byte FrameHeight;
-		
+
 		public int ImageHandle;
 		public int PaletteHandle;
 		
@@ -33,27 +33,21 @@ namespace OpenRA.FileFormats
 
 		public R8Image( BinaryReader reader, int Frame )
 		{
-			while (reader.PeekChar() == 0) // skip alignment byte
-				reader.ReadByte();
-			
 			var offset = reader.BaseStream.Position;
-			var ID = reader.ReadByte();
-			if (ID == 0)
-				throw new InvalidDataException("Header with no data?");
-			Width = reader.ReadInt32();
-			Height = reader.ReadInt32();
-			OffsetX = reader.ReadInt32();
-			OffsetY = reader.ReadInt32();
-			ImageHandle = reader.ReadInt32();
-			PaletteHandle = reader.ReadInt32();
-			var Bpp = reader.ReadByte();
-			
-			//if (Bpp != 8)
-			//	throw new InvalidDataException("{0} != 8 bits per pixel".F(Bpp));
-			
-			FrameWidth = reader.ReadByte();
-			FrameHeight = reader.ReadByte();
-			
+			var ID = reader.ReadByte(); // 0 = no data, 1 = picture with palette, 2 = picture with current palette
+			while (ID == 0)
+				ID = reader.ReadByte();
+			Width = reader.ReadInt32(); //Width of picture
+			Height = reader.ReadInt32(); //Height of picture
+			OffsetX = reader.ReadInt32(); //Offset on X axis from left border edge of virtual frame
+			OffsetY = reader.ReadInt32(); //Offset on Y axis from top border edge of virtual frame
+			ImageHandle = reader.ReadInt32(); // 0 = no picture
+			PaletteHandle = reader.ReadInt32(); // 0 = no palette
+			var Bpp = reader.ReadByte(); // Bits per Pixel
+			FrameHeight = reader.ReadByte(); // Height of virtual frame
+			FrameWidth = reader.ReadByte(); // Width of virtual frame
+			var Align = reader.ReadByte(); //Alignment on even border
+
 			Console.WriteLine("Offset: {0}",offset);
 			Console.WriteLine("ID: {0}",ID);
 			Console.WriteLine("Width: {0}",Width);
@@ -65,30 +59,33 @@ namespace OpenRA.FileFormats
 			Console.WriteLine("Bpp: {0}",Bpp);
 			Console.WriteLine("FrameWidth: {0}",FrameWidth);
 			Console.WriteLine("FrameHeight: {0}",FrameHeight);
-			
+			Console.WriteLine("Align: {0}",Align);
 
-			if (reader.PeekChar() == 0) // skip alignment byte
-				reader.ReadByte();
 			// Load image
-			Image = new byte[Width*Height];
+			if (Bpp == 8)
+				Image = new byte[Width*Height];
+			else
+				throw new InvalidDataException("Error: {0} bits per pixel are not supported.".F(Bpp));
 
-			// Load (and ignore) custom palette
+			
 			if (ID == 1 && PaletteHandle != 0)
 			{
-				reader.ReadInt32(); // The memory under a palette was allocated  (???)
-				reader.ReadInt32(); // Handle to colors array (in memory)
+				// read and ignore custom palette
+				reader.ReadInt32(); //Memory
+				reader.ReadInt32(); //Handle
+
 				for (int i = 0; i < Width*Height; i++)
 					Image[i] = reader.ReadByte();
-				for (int i = 0; i < 512; i++)
+				for (int i = 0; i < 256; i++)
+					reader.ReadUInt16();
+			}
+			else if (ID == 2 && PaletteHandle != 0)
+			{
+				// ignore image with custom palette
+				for (int i = 0; i < Width*Height; i++)
 					reader.ReadByte();
 			}
-			else if (ID == 2 && PaletteHandle != 0) //current palette
-			{
-				for (int i = 0; i < Width*Height; i++)
-					//reader.ReadByte();
-					Image[i] = reader.ReadByte();
-			}
-			else //standard palette
+			else //standard palette or 16 Bpp
 			{
 				for (int i = 0; i < Width*Height; i++)
 					Image[i] = reader.ReadByte();
