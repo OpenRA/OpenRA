@@ -31,6 +31,11 @@ namespace OpenRA.FileFormats
 		
 		public byte[] Image;
 
+		int StartX;
+		int StartY;
+		int EndX;
+		int EndY;
+
 		public R8Image( BinaryReader reader, int Frame )
 		{
 			var offset = reader.BaseStream.Position;
@@ -60,6 +65,26 @@ namespace OpenRA.FileFormats
 			Console.WriteLine("FrameWidth: {0}",FrameWidth);
 			Console.WriteLine("FrameHeight: {0}",FrameHeight);
 			Console.WriteLine("Align: {0}",Align);
+			
+			if (OffsetX != 0 && OffsetY != 0)
+			{
+				StartX = FrameWidth + OffsetX;
+				StartY = FrameHeight - OffsetY;
+
+			}
+			else //no Offset
+			{
+				StartX = 0;
+				StartY = 0;
+			}
+			EndX = StartX + Width;
+			EndY = StartY + Height;
+			
+
+			Console.WriteLine("StartX: {0}", StartX);
+			Console.WriteLine("EndX: {0}", EndX);
+			Console.WriteLine("StartY: {0}", StartY);
+			Console.WriteLine("EndY: {0}", EndY);
 
 			// Load image
 			if (Bpp == 8)
