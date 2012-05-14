@@ -402,10 +402,14 @@ function CreateEditor(name)
       ide.in_evt_focus = false
     end)
 
-  editor:Connect(wx.wxEVT_KEY_UP,
+  editor:Connect(wx.wxEVT_KEY_DOWN,
     function (event)
       if event:GetKeyCode() == wx.WXK_ESCAPE and frame:IsFullScreen() then
         ShowFullScreen(false)
+      elseif event:GetKeyCode() == wx.WXK_PAGEDOWN and event:ControlDown() then
+        notebook:AdvanceSelection(true)
+      elseif event:GetKeyCode() == wx.WXK_PAGEUP and event:ControlDown() then
+        notebook:AdvanceSelection(false)
       else
         event:Skip()
       end
