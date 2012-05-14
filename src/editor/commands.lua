@@ -487,6 +487,7 @@ function ShowFullScreen(setFullScreen)
     beforeFullScreenPerspective = uimgr:SavePerspective()
     uimgr:GetPane("bottomnotebook"):Show(false)
     uimgr:GetPane("projpanel"):Show(false)
+    SetEditorSelection() -- make sure the focus is on the editor
   elseif beforeFullScreenPerspective then
     uimgr:LoadPerspective(beforeFullScreenPerspective)
     beforeFullScreenPerspective = nil

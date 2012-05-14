@@ -402,6 +402,15 @@ function CreateEditor(name)
       ide.in_evt_focus = false
     end)
 
+  editor:Connect(wx.wxEVT_KEY_UP,
+    function (event)
+      if event:GetKeyCode() == wx.WXK_ESCAPE and frame:IsFullScreen() then
+        ShowFullScreen(false)
+      else
+        event:Skip()
+      end
+    end)
+
   if notebook:AddPage(editor, name, true) then
     local id = editor:GetId()
     local document = {}
