@@ -374,11 +374,12 @@ function CreateEditor(name)
     function (event)
       updateStatusText(editor)
       updateBraceMatch(editor)
-      for e,iv in ipairs(editor.ev) do
+      for _,iv in ipairs(editor.ev) do
         local line = editor:LineFromPosition(iv[1])
         IndicateFunctions(editor,line,line+iv[2])
-        if MarkupStyle then MarkupStyle(editor,line,line+iv[2]) end
+        if MarkupStyle then MarkupStyle(editor,line,line+iv[2]+1) end
       end
+      if MarkupStyleRefresh then MarkupStyleRefresh(editor, editor.ev) end
       editor.ev = {}
     end)
 

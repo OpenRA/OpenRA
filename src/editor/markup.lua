@@ -105,15 +105,14 @@ function MarkupStyle(editor, lines, linee)
   -- always style to the end as there may be comments that need re-styling
   -- technically, this should be GetLineCount()-1, but we want to style
   -- beyond the last line to make sure it is styled correctly
-  local linee = linee or editor:GetLineCount()-1
-  local linef = editor:GetLineCount()
+  local linee = linee or editor:GetLineCount()
 
   local iscomment = {}
   for i,v in pairs(editor.spec.iscomment) do
     iscomment[i] = v
   end
 
-  for line=lines,linef do
+  for line=lines,linee do
     local tx = editor:GetLine(line)
     local ls = editor:PositionFromLine(line)
 
@@ -148,6 +147,34 @@ function MarkupStyle(editor, lines, linee)
         off = off + t
       end
       from = t and (t+1)
+    end
+  end
+end
+
+-- it could work by calling MarkupStyle directly from EVT_UPDATEUI,
+-- but the styling didn't work correctly as the style on block comments
+-- (which is used to identify where the markup should be applied)
+-- was not always correct during UPDATEUI event.
+-- to rectify this, we style immediately (by calling MarkupStyle
+-- from UPDATEUI), but also store the starting point and re-style
+-- during the next UPDATEUI event when the block comment style is correct.
+local needStyle = {}
+local frame
+function MarkupStyleRefresh(editor, ev)
+  if not frame then
+    frame = ide.frame
+    frame:Connect(wx.wxEVT_IDLE,
+      function(event) MarkupStyleRefresh(); event:Skip() end)
+  end
+
+  if not ev or #ev == 0 then -- no new records, refresh deferred ones
+    for ed,line in pairs(needStyle) do
+      MarkupStyle(ed, line)
+      needStyle[ed] = nil
+    end
+  else -- store records from the event table to defer refresh
+    for _,pos in ipairs(ev) do
+      needStyle[editor] = editor:LineFromPosition(pos[1])
     end
   end
 end
