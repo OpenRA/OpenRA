@@ -62,6 +62,11 @@ local function updateBraceMatch(editor)
   pos = (match[char] and pos) or (charp and match[charp] and posp)
 
   if (pos) then
+    -- don't match brackets in markup comments
+    local style = bit.band(editor:GetStyleAt(pos), 31)
+    if MarkupIsSpecial and MarkupIsSpecial(style)
+      or editor.spec.iscomment[style] then return end
+
     local pos2 = editor:BraceMatch(pos)
     if (pos2 == wxstc.wxSTC_INVALID_POSITION) then
       editor:BraceBadLight(pos)
