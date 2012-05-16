@@ -62,13 +62,14 @@ namespace OpenRA.Server
 			var localEndpoint = (IPEndPoint)listener.LocalEndpoint;
 			Ip = localEndpoint.Address;
 			Port = localEndpoint.Port;
-			
-			PortForward();
 
 			Settings = settings;
 			ModData = modData;
 
 			randomSeed = (int)DateTime.Now.ToBinary();
+
+			if (settings.AllowUPnP)
+				PortForward();
 
 			foreach (var trait in modData.Manifest.ServerTraits)
 				ServerTraits.Add( modData.ObjectCreator.CreateObject<ServerTrait>(trait) );
@@ -135,20 +136,15 @@ namespace OpenRA.Server
 		 
 		void PortForward()
 		{
-			try
+			if (UPnP.NAT.Discover())
 			{
-				if (UPnP.NAT.Discover())
-				{
-					Log.Write("server", "UPnP-enabled router discovered.");
-					UPnP.NAT.ForwardPort(Port, ProtocolType.Tcp, "OpenRA");
-					Log.Write("server", "Port "+Port+" (TCP) has been forwarded.");
-					Log.Write("server", "Your IP is: "+UPnP.NAT.GetExternalIP());
-				}
+				Log.Write("server", "UPnP-enabled router discovered.");
+				UPnP.NAT.ForwardPort(Port, ProtocolType.Tcp, "OpenRA"); //might timeout after second try
+				Log.Write("server", "Port "+Port+" (TCP) has been forwarded.");
+				Log.Write("server", "Your IP is: "+UPnP.NAT.GetExternalIP());
 			}
-			catch
-			{
+			else
 				Log.Write("server", "No UPnP-enabled router detected.");
-			}
 			return;
 		}
 		

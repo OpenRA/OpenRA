@@ -25,6 +25,7 @@ namespace OpenRA.GameRules
 		public int ListenPort = 1234;
 		public int ExternalPort = 1234;
 		public bool AdvertiseOnline = true;
+		public bool AllowUPnP = true;
 		public string MasterServer = "http://master.open-ra.org/";
 		public bool AllowCheats = false;
 		public string Map = null;
@@ -37,6 +38,7 @@ namespace OpenRA.GameRules
 			ListenPort = other.ListenPort;
 			ExternalPort = other.ExternalPort;
 			AdvertiseOnline = other.AdvertiseOnline;
+			AllowUPnP = other.AllowUPnP;
 			MasterServer = other.MasterServer;
 			AllowCheats = other.AllowCheats;
 			Map = other.Map;

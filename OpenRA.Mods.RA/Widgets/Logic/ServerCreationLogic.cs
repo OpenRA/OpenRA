@@ -22,6 +22,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		Action onExit;
 		Map map;
 		bool advertiseOnline;
+		bool allowUPnP;
 
 		[ObjectCreator.UseCtor]
 		public ServerCreationLogic(Widget widget, Action onExit, Action openLobby)
@@ -64,6 +65,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var advertiseCheckbox = panel.GetWidget<CheckboxWidget>("ADVERTISE_CHECKBOX");
 			advertiseCheckbox.IsChecked = () => advertiseOnline;
 			advertiseCheckbox.OnClick = () => advertiseOnline ^= true;
+			
+			var UPnPCheckbox = panel.GetWidget<CheckboxWidget>("UPNP_CHECKBOX");
+			UPnPCheckbox.IsChecked = () => allowUPnP;
+			UPnPCheckbox.OnClick = () => allowUPnP ^= true;
 		}
 
 		void CreateAndJoin()
@@ -81,6 +86,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			Game.Settings.Server.ListenPort = listenPort;
 			Game.Settings.Server.ExternalPort = externalPort;
 			Game.Settings.Server.AdvertiseOnline = advertiseOnline;
+			Game.Settings.Server.AllowUPnP = allowUPnP;
 			Game.Settings.Server.Map = map.Uid;
 			Game.Settings.Save();
 
