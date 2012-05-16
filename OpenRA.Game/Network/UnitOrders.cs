@@ -96,8 +96,21 @@ namespace OpenRA.Network
 					}
 				
 				case "PauseGame":
-					{
-						orderManager.GamePaused = !orderManager.GamePaused;
+					{	
+						if(clientId != null)
+						{
+							var client = orderManager.LobbyInfo.ClientWithIndex(clientId);
+					
+							orderManager.GamePaused = !orderManager.GamePaused;
+							if(orderManager.GamePaused)
+							{
+								Game.AddChatLine(Color.White, "", "The game is paused by "+client.Name);
+							}
+							else
+							{
+								Game.AddChatLine(Color.White, "", "The game is un-paused by "+client.Name);
+							}
+						}
 						break;
 					}
 
