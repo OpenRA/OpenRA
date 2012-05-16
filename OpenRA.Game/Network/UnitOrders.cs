@@ -94,6 +94,12 @@ namespace OpenRA.Network
 						Game.StartGame(orderManager.LobbyInfo.GlobalSettings.Map, false);
 						break;
 					}
+				
+				case "PauseGame":
+					{
+						orderManager.GamePaused = !orderManager.GamePaused;
+						break;
+					}
 
 				case "HandshakeRequest":
 					{

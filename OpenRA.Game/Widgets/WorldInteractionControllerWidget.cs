@@ -148,6 +148,10 @@ namespace OpenRA.Widgets
 					world.Selection.DoControlGroup(world, e.KeyName[0] - '0', e.Modifiers);
 					return true;
 				}
+				else if(e.KeyName == "pause")
+				{
+					world.IssueOrder(Order.PauseRequest());
+				}
 
 				bool handled = false;
 
