@@ -16,12 +16,18 @@ namespace OpenRA.Widgets
 	{
 		public override void Draw()
 		{
-			var s = WidgetUtils.FormatTime(Game.LocalTick);
 			var font = Game.Renderer.Fonts["Title"];
 			var rb = RenderBounds;
+			
+			var s = WidgetUtils.FormatTime(Game.LocalTick);
 			var pos = new float2(rb.Left - font.Measure(s).X / 2, rb.Top);
 
+			var s_paused = (Game.orderManager.GamePaused ? "\n (paused)" : "");
+			var pos_paused = new float2(rb.Left - font.Measure(s_paused).X / 2, rb.Top+1);
+			
 			font.DrawTextWithContrast(s, pos, Color.White, Color.Black, 1);
+			font.DrawTextWithContrast(s_paused, pos_paused, Color.White, Color.Black, 1);
+
 		}
 	}
 }
