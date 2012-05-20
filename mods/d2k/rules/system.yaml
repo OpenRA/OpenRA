@@ -1,79 +1,30 @@
 Player:
-	TechTree:
-	PlayerResources:
-		InitialCash: 5000
-	ActorGroupProxy:
-	DeveloperMode:
-
-World:
-	ScreenShaker:
-	ColorPickerPaletteModifier:
-	BuildingInfluence:
-	UnitInfluence:
-	ChooseBuildTabOnSelect:
-	PaletteFromCurrentTileset:
-		Name: terrain
-	PlayerColorPalette:
-		BasePalette: units
+	PlayerColorPalette@d2kplayer:
+		BasePalette: d2k
+		BaseName: d2kplayer
 		PaletteFormat: d2k
-	PaletteFromFile@units:
-		Name: units
-		Filename: units.pal
+World:	
+	Country@2:
+		Name: Atreides
+		Race: atreides
+#	Country@3:
+#		Name: Harkonnen
+#		Race: harkonnen
+#	Country@4:
+#		Name: Ordos
+#		Race: ordos
+	PaletteFromFile@d2k:
+		Name: d2k
+		Filename: d2k.pal
 	PaletteFromFile@chrome:
 		Name: chrome
-		Filename: temperat.pal
-	PaletteFromFile@effect:
-		Name: effect
-		Filename: temperat.pal
-	PaletteFromFile@cursor:
-		Name: cursor
-		Filename: temperat.pal
-	PaletteFromRGBA@shadow:
-		Name: shadow
-		R: 0
-		G: 0
-		B: 0
-		A: 140
-	PaletteFromRGBA@highlight:
-		Name: highlight
-		R: 255
-		G: 255
-		B: 255
-		A: 128
-	PaletteFromRGBA@disabled:
-		Name: disabled
-		R: 0
-		G: 0
-		B: 0
-		A: 180
-	ShroudPalette@shroud:
-	ShroudPalette@fog:
-		IsFog: yes
-		Name: fog
-	Country@0:
-		Name: Allies
-		Race: allies
-	SpawnMapActors:
-	CreateMPPlayers:
-	MPStartLocations:
-	SpawnMPUnits:
-	EvaAlerts:
-		RadarUp:
-		RadarDown:
-		BuildingSelectAudio:
-		BuildingReadyAudio:
-		BuildingCannotPlaceAudio:
-		UnitSelectAudio:
-		UnitReadyAudio:
-		OnHoldAudio:
-		CancelledAudio:
-		CashTickUp:
-		CashTickDown:
-		LowPower:
-		SilosNeeded:
-		PrimaryBuildingSelected:
-		AbilityInsufficientPower:
-		LevelUp:
-	SpatialBins:
-		BinSize: 4
-	Shroud:
+		Filename: d2k.pal
+#	ResourceType@spice:
+#		ResourceType: 1
+#		Palette: d2k
+#		SpriteNames: spice #?
+#		ValuePerUnit: 25
+#		Name: Spice
+#		PipColor: Yellow
+#		AllowedTerrainTypes: Sand
+#		AllowUnderActors: false

@@ -1,0 +1,232 @@
+CONYARDA:
+	Inherits: ^Building
+	Building:
+		Power: 0
+		Footprint: xxx xxx xxx
+		Dimensions: 3,3
+	Health:
+		HP: 1000
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 5
+	Bib:
+	Production:
+		Produces: Building,Defense
+	IronCurtainable: 
+	Valued:
+		Cost: 2500
+	Tooltip:
+		Name: Atreides Construction Yard
+	CustomSellValue:
+		Value: 2500
+	BaseBuilding:
+	Transforms:
+		IntoActor: mcv
+		Offset:1,1
+		Facing: 96
+	ProductionBar:
+	RenderBuilding:
+		PlayerPalette: d2kplayer
+
+PWRA:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 0
+		Owner: atreides
+#		Hotkey: p
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Atreides Windtrap
+		Description: Provides power for other Atreides structures
+	ProvidesCustomPrerequisite:
+		Prerequisite: anypower
+	Building:
+		Power: 100
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 400
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4
+	Bib:
+	RenderBuilding:
+		PlayerPalette: d2kplayer
+
+BARRA:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 30
+		Prerequisites: anypower
+		Owner: atreides
+#		Hotkey: b
+	Valued:
+		Cost: 400
+	Tooltip:
+		Name: Atreides Barracks
+		Description: Trains infantry
+	Building:
+		Power: -20
+		Footprint: xx xx xx
+		Dimensions: 2,3
+	Health:
+		HP: 800
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 5
+	Bib:
+	RenderBuilding:
+		PlayerPalette: d2kplayer
+	RallyPoint:
+	Exit@1:
+		SpawnOffset: -1,19
+		ExitCell: 0,2
+	Exit@2:
+		SpawnOffset: -17,15
+		ExitCell: 0,2
+	Production:
+		Produces: Infantry
+	PrimaryBuilding:
+	ProductionBar:
+
+HIGHTECHA:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 50
+		Prerequisites: refa
+		Owner: atreides
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: High Tech Factory
+		Description: Produces carryalls
+	ProvidesCustomPrerequisite:
+		Prerequisite: anyhightech
+	Building:
+		Power: -30
+		Footprint: _x_ xxx xxx
+		Dimensions: 3,3
+	Health:
+		HP: 1500
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 4
+	Bib:
+	RenderBuilding:
+		PlayerPalette: d2kplayer
+	RallyPoint:
+	Exit@1:
+		SpawnOffset: 5,0
+		ExitCell: 1,1
+	Production:
+		Produces: Plane
+	PrimaryBuilding:
+	ProductionBar:
+
+REFA:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 10
+		Prerequisites: anypower
+		Owner: atreides
+	Valued:
+		Cost: 1400
+	Tooltip:
+		Name: Spice Refinery
+		Description: Harvesters unload spice here.
+	Building:
+		Power: -30
+		Footprint: _x_ xxx x==
+		Dimensions: 3,3
+	Health:
+		HP: 900
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 6
+	Bib:
+	RenderBuilding:
+		PlayerPalette: d2kplayer
+	OreRefinery:
+	StoresOre:
+		PipCount: 17
+		Capacity: 2000
+	CustomSellValue:
+		Value: 600
+	FreeActor:
+		Actor: HARV
+		InitialActivity: FindResources
+		SpawnOffset: 1,2
+		Facing: 64
+
+SILOA:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 40
+		Prerequisites: refa
+		Owner: atreides
+	Valued:
+		Cost: 150
+	Tooltip:
+		Name: Silo
+		Description: Stores excess harvested Spice
+	Building:
+		Power: -10
+	-GivesBuildableArea:
+	Health:
+		HP: 300
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4
+#	RenderBuildingSilo:
+	StoresOre:
+		PipCount: 5
+		Capacity: 1500
+	RenderBuilding:
+		PlayerPalette: d2kplayer
+	-EmitInfantryOnSell:
+
+LIGHTA:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 50
+		Prerequisites: refa
+		Owner: atreides
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: Light Factory
+		Description: light vehicles.
+	Building:
+		Power: -30
+		Footprint: xxx xxx
+		Dimensions: 3,2
+	Health:
+		HP: 1500
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 4
+	Bib:
+	RenderBuilding:
+		PlayerPalette: d2kplayer
+	RallyPoint:
+	Exit@1:
+		SpawnOffset: 5,0
+		ExitCell: 1,1
+	Production:
+		Produces: Vehicle
+	PrimaryBuilding:
+	ProductionBar:

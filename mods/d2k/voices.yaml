@@ -1,0 +1,13 @@
+# Classic Red Alert Mod -- Package Manifest
+
+GenericVoice:
+	Variants:
+		atreides: .v01,.v03
+		harkonnen: .v01,.v03
+		ordos: .v01,.v03
+
+VehicleVoice:
+	Variants:
+		atreides: .v00,.v02
+		harkonnen: .v00,.v02
+		ordos: .v00,.v02
