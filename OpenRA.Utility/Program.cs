@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2012 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -27,6 +27,7 @@ namespace OpenRA.Utility
 				{ "--extract", Command.ExtractFiles },
 				{ "--tmp-png", Command.ConvertTmpToPng },
 				{ "--remap", Command.RemapShp },
+				{ "--r8", Command.ConvertR8ToPng },
 			};
 
 			if (args.Length == 0) { PrintUsage(); return; }
@@ -53,12 +54,14 @@ namespace OpenRA.Utility
 		{
 			Console.WriteLine("Usage: OpenRA.Utility.exe [OPTION] [ARGS]");
 			Console.WriteLine();
-			Console.WriteLine("  --settings-value KEY             Get value of KEY from settings.yaml");
-			Console.WriteLine("  --shp PNGFILE FRAMEWIDTH         Convert a PNG containing one or more frames to a SHP");
-			Console.WriteLine("  --png SHPFILE PALETTE [--transparent] Convert a SHP to a PNG containing all of its frames, optionally setting up transparency");
-			Console.WriteLine("  --extract MOD[,MOD]* FILES		  Extract files from mod packages");
-			Console.WriteLine("  --tmp-png MOD[,MOD]* THEATER FILES        Extract terrain tiles to PNG");
-			Console.WriteLine("  --remap SRCMOD:PAL DESTMOD:PAL SRCSHP DESTSHP  Remap SHPs to another palette");
+			Console.WriteLine("  --settings-value KEY                                             Get value of KEY from settings.yaml");
+			Console.WriteLine("  --shp PNGFILE FRAMEWIDTH                                         Convert a single PNG with multiple frames appended after another to a SHP");
+			Console.WriteLine("  --png SHPFILE PALETTE [--transparent]                            Convert a SHP to a PNG containing all of its frames, optionally setting up transparency");
+			Console.WriteLine("  --extract MOD[,MOD]* FILES                                       Extract files from mod packages");
+			Console.WriteLine("  --tmp-png MOD[,MOD]* THEATER FILES                               Extract terrain tiles to PNG");
+			Console.WriteLine("  --remap SRCMOD:PAL DESTMOD:PAL SRCSHP DESTSHP                    Remap SHPs to another palette");
+			Console.WriteLine("  --r8 R8FILE PALETTE STARTFRAME ENDFRAME FILENAME [--transparent] ");
+			Console.WriteLine("       [--infrantry] [--vehicle] [--projectile] [--building]       Convert Dune 2000 DATA.R8 to PNGs choosing start- and endframe as well as unit type for correct offset to append multiple frames to one PNG named by filename optionally setting up transparency");
 		}
 
 		static string GetNamedArg(string[] args, string arg)

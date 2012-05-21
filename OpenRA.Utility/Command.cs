@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2012 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -102,6 +102,116 @@ namespace OpenRA.Utility
 
 				bitmap.Save(dest);
 			}
+		}
+
+		public static void ConvertR8ToPng(string[] args)
+		{
+			var srcImage = new R8Reader(File.OpenRead(args[1]));
+			var shouldRemap = args.Contains("--transparent");
+			var palette = Palette.Load(args[2], shouldRemap);
+			var startFrame = int.Parse(args[3]);
+			var endFrame = int.Parse(args[4]) + 1;
+			var filename = args[5];
+			var FrameCount = endFrame - startFrame;
+
+			var frame = srcImage[startFrame];
+			var bitmap = new Bitmap(frame.FrameWidth * FrameCount, frame.FrameHeight, PixelFormat.Format8bppIndexed);
+			bitmap.Palette = palette.AsSystemPalette();
+
+			int OffsetX = 0;
+			int OffsetY = 0;
+
+			int x = 0;
+			
+			if (args.Contains("--vehicle")) //complex resorting to RA/CnC compatible frame order
+			{
+				endFrame = endFrame - (FrameCount / 2);
+				startFrame--;
+				for (int f = endFrame; f > startFrame; f--)
+				{
+					frame = srcImage[f];
+
+					OffsetX = frame.FrameWidth/2 - frame.OffsetX;
+					OffsetY = frame.FrameHeight/2 - frame.OffsetY;
+
+					Console.WriteLine("calculated OffsetX: {0}", OffsetX);
+					Console.WriteLine("calculated OffsetY: {0}", OffsetY);
+
+					var data = bitmap.LockBits(new Rectangle(x+OffsetX, 0+OffsetY, frame.Width, frame.Height), ImageLockMode.WriteOnly,
+						PixelFormat.Format8bppIndexed);
+
+					for (var i = 0; i < frame.Height; i++)
+						Marshal.Copy(frame.Image, i * frame.Width,
+							new IntPtr(data.Scan0.ToInt64() + i * data.Stride), frame.Width);
+
+					bitmap.UnlockBits(data);
+
+					x += frame.FrameWidth;
+				}
+				endFrame = endFrame + (FrameCount / 2) - 1;
+				startFrame = startFrame + (FrameCount / 2) + 1;
+				for (int f = endFrame; f > startFrame; f--)
+				{
+					frame = srcImage[f];
+
+					OffsetX = frame.FrameWidth/2 - frame.OffsetX;
+					OffsetY = frame.FrameHeight/2 - frame.OffsetY;
+
+					Console.WriteLine("calculated OffsetX: {0}", OffsetX);
+					Console.WriteLine("calculated OffsetY: {0}", OffsetY);
+
+					var data = bitmap.LockBits(new Rectangle(x+OffsetX, 0+OffsetY, frame.Width, frame.Height), ImageLockMode.WriteOnly,
+						PixelFormat.Format8bppIndexed);
+
+					for (var i = 0; i < frame.Height; i++)
+						Marshal.Copy(frame.Image, i * frame.Width,
+							new IntPtr(data.Scan0.ToInt64() + i * data.Stride), frame.Width);
+
+					bitmap.UnlockBits(data);
+
+					x += frame.FrameWidth;
+				}
+			}
+			else
+			{
+				for (int f = startFrame; f < endFrame; f++)
+				{
+					frame = srcImage[f];
+					
+					if (args.Contains("--infrantry"))
+					{
+						OffsetX = frame.FrameWidth/2 - frame.Width/2;
+						OffsetY = frame.FrameHeight/2 - frame.Height/2;
+					}
+					else if (args.Contains("--projectile"))
+					{
+						OffsetX = frame.FrameWidth/2 - frame.OffsetX;
+						OffsetY = frame.FrameHeight/2 - frame.OffsetY;
+					}
+					else if (args.Contains("--building"))
+					{
+						if (frame.OffsetX < 0) { frame.OffsetX = 0 - frame.OffsetX; }
+						if (frame.OffsetY < 0) { frame.OffsetY = 0 - frame.OffsetY; }
+						OffsetX = 0 + frame.OffsetX;
+						OffsetY = frame.FrameHeight - frame.OffsetY;
+					}
+					Console.WriteLine("calculated OffsetX: {0}", OffsetX);
+					Console.WriteLine("calculated OffsetY: {0}", OffsetY);
+
+					var data = bitmap.LockBits(new Rectangle(x+OffsetX, 0+OffsetY, frame.Width, frame.Height), ImageLockMode.WriteOnly,
+						PixelFormat.Format8bppIndexed);
+
+					for (var i = 0; i < frame.Height; i++)
+						Marshal.Copy(frame.Image, i * frame.Width,
+							new IntPtr(data.Scan0.ToInt64() + i * data.Stride), frame.Width);
+
+					bitmap.UnlockBits(data);
+
+					x += frame.FrameWidth;
+				}
+			}
+			bitmap.Save(filename+".png");
+			Console.WriteLine(filename+".png saved");
 		}
 
 		public static void ConvertTmpToPng(string[] args)

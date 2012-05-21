@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2012 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -13,9 +13,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Net;
 using System.Net.Sockets;
+using System.Net.NetworkInformation;
+using UPnP;
 using System.Threading;
+using System.Xml;
 using OpenRA.FileFormats;
 using OpenRA.GameRules;
 using OpenRA.Network;
@@ -63,6 +67,9 @@ namespace OpenRA.Server
 			ModData = modData;
 
 			randomSeed = (int)DateTime.Now.ToBinary();
+
+			if (settings.AllowUPnP)
+				PortForward();
 
 			foreach (var trait in modData.Manifest.ServerTraits)
 				ServerTraits.Add( modData.ObjectCreator.CreateObject<ServerTrait>(trait) );
@@ -120,6 +127,20 @@ namespace OpenRA.Server
 				try { listener.Stop(); }
 				catch { }
 			} ) { IsBackground = true }.Start();
+		}
+
+		void PortForward()
+		{
+			if (UPnP.NAT.Discover())
+			{
+				Log.Write("server", "UPnP-enabled router discovered.");
+				UPnP.NAT.ForwardPort(Port, ProtocolType.Tcp, "OpenRA"); //might timeout after second try
+				Log.Write("server", "Port {0} (TCP) has been forwarded.", Port);
+				Log.Write("server", "Your IP is: {0}", UPnP.NAT.GetExternalIP() );
+			}
+			else
+				Log.Write("server", "No UPnP-enabled router detected.");
+			return;
 		}
 
 		/* lobby rework todo:

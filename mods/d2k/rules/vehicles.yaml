@@ -1,21 +1,69 @@
 MCV:
+	Transforms:
+		IntoActor: conyarda
+	RenderUnit:
+		Image: MCV
+		PlayerPalette: d2kplayer
+
+TRIKE:
 	Inherits: ^Vehicle
 	Valued:
-		Cost: 2000
+		Cost: 200
 	Tooltip:
-		Name: Mobile Construction Vehicle
-		Description: Deploys into another Construction Yard.\n  Unarmed
+		Name: Scout Trike
+		Icon: trikeicon
+		Description: Weak Scout.\n Decent vs. Infantry
+	Buildable:
+		BuildPaletteOrder: 15
+		Prerequisites: lighta
+		Owner: atreides
 	Selectable:
-		Priority: 3
-		Bounds: 42,42
+		Bounds: 24,24
+	Mobile:
+		ROT: 15
+		Speed: 20
 	Health:
-		HP: 600
+		HP: 75
 	Armor:
 		Type: Light
-	Mobile:
-		Speed: 6
 	RevealsShroud:
-		Range: 4
+		Range: 8
+	AttackFrontal:
+		PrimaryWeapon: M60mg
+		PrimaryOffset: 0,0,0,-4
 	RenderUnit:
-	MustBeDestroyed:
-	BaseBuilding:
+		PlayerPalette: d2kplayer
+	WithMuzzleFlash:
+		PrimaryOffset: 0,3,0,0
+	AutoTarget:
+
+QUAD:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 400
+	Tooltip:
+		Name: Quad
+		Description: Fast scout vehicle, armed with \nrockets.\n  Strong vs Vehicles, Aircraft\n  Weak vs Infantry
+	Buildable:
+		BuildPaletteOrder: 30
+		Prerequisites: lighta
+		Owner: atreides
+	Mobile:
+		ROT: 10
+		Speed: 13
+	Health:
+		HP: 120
+	Armor: 
+		Type: Light
+	RevealsShroud:
+		Range: 7
+	AttackFrontal:
+		PrimaryWeapon: RedEye
+		SecondaryWeapon: Dragon
+		PrimaryOffset: 0,0,0,-2
+		PrimaryLocalOffset: -4,0,0,0,25, 4,0,0,0,-25
+		SecondaryOffset: 0,0,0,-2
+		SecondaryLocalOffset: -4,0,0,0,25, 4,0,0,0,-25
+	RenderUnit:
+		PlayerPalette: d2kplayer
+	AutoTarget:

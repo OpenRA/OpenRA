@@ -1,0 +1,35 @@
+CARRYALL:
+	Inherits: ^Helicopter
+	Buildable:
+		Queue: Plane
+		BuildPaletteOrder: 110
+		Prerequisites: anyhightech
+		BuiltAt: hightecha
+		Owner: atreides
+	Valued:
+		Cost: 1200
+	Tooltip:
+		Name: Carryall
+		Description: Fast drop ship.\n  Unarmed
+	Health:
+		HP: 90
+	Armor: 
+		Type: Light
+	RevealsShroud:
+		Range: 12
+	Helicopter:
+		RearmBuildings: hightecha
+		InitialFacing: 0
+		ROT: 5
+		Speed: 12
+		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach
+	RenderUnit:
+		PlayerPalette: d2kplayer
+#	RenderCargo:
+	WithShadow:
+	Cargo:
+		Types: Vehicle
+		MaxWeight: 1
+		PipCount: 1
+	FallsToEarth:
+		Explosion: UnitExplode

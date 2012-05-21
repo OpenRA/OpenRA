@@ -1,0 +1,174 @@
+chrome-atreides: chrome-atreides.png
+	specialbin-top: 0,0,30,51
+	specialbin-middle: 0,51,30,51
+	specialbin-bottom: 0,153,30,39
+	moneybin: 192,0,320,32
+	tooltip-bg: 0,288,272,136
+
+radar-atreides: chrome-atreides.png
+	left: 297,31,9,192
+	right: 498,31,9,192
+	bottom: 297,223,210,30
+	bg: 306,31,192,192
+
+power-atreides: chrome-atreides.png
+	power-indicator: 187,4,4,7
+
+palette-atreides: chrome-atreides.png
+	top: 297,288,201,9
+	dock-top: 498,274,14,23
+	bottom: 297,489,201,9
+	dock-bottom: 498,489,14,23
+	bg-0: 297,297,201,48
+	dock-0: 498,297,14,48
+	bg-1: 297,345,201,48
+	dock-1: 498,345,14,48
+	bg-2: 297,393,201,48
+	dock-2: 498,393,14,48
+	bg-3: 297,441,201,48
+	dock-3: 498,441,14,48
+
+digits-atreides: chrome-atreides.png
+	0: 32,0,13,17
+	1: 45,0,13,17
+	2: 58,0,13,17
+	3: 71,0,13,17
+	4: 84,0,13,17
+	5: 97,0,13,17
+	6: 110,0,13,17
+	7: 123,0,13,17
+	8: 136,0,13,17
+	9: 149,0,13,17
+
+chrome-harkonnen: chrome-harkonnen.png
+	specialbin-top: 0,0,30,51
+	specialbin-middle: 0,51,30,51
+	specialbin-bottom: 0,153,30,39
+	moneybin: 192,0,320,32
+	tooltip-bg: 0,288,272,136
+
+radar-harkonnen: chrome-harkonnen.png
+	left: 297,31,9,192
+	right: 498,31,9,192
+	bottom: 297,223,210,30
+	bg: 306,31,192,192
+	power-indicator: 187,4,4,7
+
+power-harkonnen: chrome-harkonnen.png
+	power-indicator: 187,4,4,7
+
+palette-harkonnen: chrome-harkonnen.png
+	top: 297,288,201,9
+	dock-top: 498,274,14,23
+	bottom: 297,489,201,9
+	dock-bottom: 498,489,14,23
+	bg-0: 297,297,201,48
+	dock-0: 498,297,14,48
+	bg-1: 297,345,201,48
+	dock-1: 498,345,14,48
+	bg-2: 297,393,201,48
+	dock-2: 498,393,14,48
+	bg-3: 297,441,201,48
+	dock-3: 498,441,14,48
+
+digits-harkonnen: chrome-harkonnen.png
+	0: 32,0,13,17
+	1: 45,0,13,17
+	2: 58,0,13,17
+	3: 71,0,13,17
+	4: 84,0,13,17
+	5: 97,0,13,17
+	6: 110,0,13,17
+	7: 123,0,13,17
+	8: 136,0,13,17
+	9: 149,0,13,17
+
+chrome-ordos: chrome-ordos.png
+	specialbin-top: 0,0,30,51
+	specialbin-middle: 0,51,30,51
+	specialbin-bottom: 0,153,30,39
+	moneybin: 192,0,320,32
+	tooltip-bg: 0,288,272,136
+
+radar-ordos: chrome-ordos.png
+	left: 297,31,9,192
+	right: 498,31,9,192
+	bottom: 297,223,210,30
+	bg: 306,31,192,192
+
+power-ordos: chrome-ordos.png
+	power-indicator: 187,4,4,7
+
+palette-ordos: chrome-ordos.png
+	top: 297,288,201,9
+	dock-top: 498,274,14,23
+	bottom: 297,489,201,9
+	dock-bottom: 498,489,14,23
+	bg-0: 297,297,201,48
+	dock-0: 498,297,14,48
+	bg-1: 297,345,201,48
+	dock-1: 498,345,14,48
+	bg-2: 297,393,201,48
+	dock-2: 498,393,14,48
+	bg-3: 297,441,201,48
+	dock-3: 498,441,14,48
+
+digits-ordos: chrome-ordos.png
+	0: 32,0,13,17
+	1: 45,0,13,17
+	2: 58,0,13,17
+	3: 71,0,13,17
+	4: 84,0,13,17
+	5: 97,0,13,17
+	6: 110,0,13,17
+	7: 123,0,13,17
+	8: 136,0,13,17
+	9: 149,0,13,17
+
+tabs-selected: tabs.png
+	atreides-Building: 0,0,27,41
+	atreides-Defense: 0,40,27,41
+	atreides-Infantry: 0,80,27,41
+	atreides-Vehicle: 0,120,27,41
+	atreides-Plane: 0,160,27,41
+	atreides-Ship: 0,200,27,41
+	harkonnen-Building: 80,0,27,41
+	harkonnen-Defense: 80,40,27,41
+	harkonnen-Infantry: 80,80,27,41
+	harkonnen-Vehicle: 80,120,27,41
+	harkonnen-Plane: 80,160,27,41
+	harkonnen-Ship: 80,200,27,41
+
+tabs-ready: tabs.png
+	atreides-Building: 27,0,27,41
+	atreides-Defense: 27,40,27,41
+	atreides-Infantry: 27,80,27,41
+	atreides-Vehicle: 27,120,27,41
+	atreides-Plane: 27,160,27,41
+	atreides-Ship: 27,200,27,41
+	harkonnen-Building: 107,0,27,41
+	harkonnen-Defense: 107,40,27,41
+	harkonnen-Infantry: 107,80,27,41
+	harkonnen-Vehicle: 107,120,27,41
+	harkonnen-Plane: 107,160,27,41
+	harkonnen-Ship: 107,200,27,41
+
+tabs-normal: tabs.png
+	atreides-Building: 54,0,27,41
+	atreides-Defense: 54,40,27,41
+	atreides-Infantry: 54,80,27,41
+	atreides-Vehicle: 54,120,27,41
+	atreides-Plane: 54,160,27,41
+	atreides-Ship: 54,200,27,41
+	harkonnen-Building: 134,0,27,41
+	harkonnen-Defense: 134,40,27,41
+	harkonnen-Infantry: 134,80,27,41
+	harkonnen-Vehicle: 134,120,27,41
+	harkonnen-Plane: 134,160,27,41
+	harkonnen-Ship: 134,200,27,41
+
+flags: buttons.png
+	atreides: 60,84,30,15
+	harkonnen: 60,84,30,15
+	orodos: 60,84,30,15
+

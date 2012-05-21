@@ -5,10 +5,10 @@ COMMON_LIBS	= System.dll System.Core.dll System.Drawing.dll System.Xml.dll third
 PHONY		= core tools package all mods clean distclean
 
 .SUFFIXES:
-core: game renderers mod_ra mod_cnc utility
+core: game renderers mod_ra mod_cnc mod_d2k utility
 tools: editor ralint tsbuild
 package: core editor
-mods: mod_ra mod_cnc
+mods: mod_ra mod_cnc mod_d2k
 all: core tools
 clean: 
 	@-rm -f *.exe *.dll *.mdb mods/**/*.dll mods/**/*.mdb *.resources
@@ -96,6 +96,16 @@ mod_cnc_LIBS		= $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_ra_TARGET)
 mod_cnc_EXTRA_CMDS	= mono --debug RALint.exe cnc
 PROGRAMS 		+= mod_cnc
 mod_cnc: $(mod_cnc_TARGET)
+
+# Dune 2000
+mod_d2k_SRCS		:= $(shell find OpenRA.Mods.D2k/ -iname '*.cs')
+mod_d2k_TARGET		= mods/d2k/OpenRA.Mods.D2k.dll
+mod_d2k_KIND		= library
+mod_d2k_DEPS		= $(STD_MOD_DEPS) $(mod_ra_TARGET)
+mod_d2k_LIBS		= $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_ra_TARGET)
+mod_d2k_EXTRA_CMDS	= mono --debug RALint.exe d2k
+PROGRAMS 		+= mod_d2k
+mod_d2k: $(mod_d2k_TARGET)
 
 #
 # Tools

@@ -3,42 +3,86 @@ mcv:
 		Start: 0
 		Facings: 32
 
-moveflsh:
+conyarda:
 	idle:
 		Start: 0
-		Length: *
-
-pips:
-	groups:
-		Start: 8
-		Length: 10
-	medic:
-		Start: 20
-	ready:
-		Start: 3
-	hold:
-		Start: 4
-	pip-empty:
+	make: conmake
 		Start: 0
-	pip-green:
+		Length: *
+	damaged-idle:
 		Start: 1
-	pip-yellow:
-		Start: 5
-	pip-gray:
-		Start: 6
-	pip-red:
-		Start: 7
-	tag-fake:
-		Start: 18
-	tag-primary:
+
+pwra:
+	idle:
+		Start: 0
+	make: wtrpmake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 1
+
+barra:
+	idle:
+		Start: 0
+	make: barramake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 1
+
+refa:
+	idle:
+		Start: 1
+	make: refmake
+		Start: 0
+		Length: *
+	damaged-idle:
 		Start: 2
 
-clock:
+siloa:
 	idle:
+		Start: 0
+#		Length: 3
+		Length: 1
+	damaged-idle:
+		Start: 4
+		Length: 1
+	make: silomake
 		Start: 0
 		Length: *
 
-rank:
-	rank:
+hightecha:
+	idle:
+		Start: 0
+	make: highmake
 		Start: 0
 		Length: *
+	damaged-idle:
+		Start: 1
+
+lighta:
+	idle:
+		Start: 1
+	make: lightmake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 2
+
+carryall:
+	idle:
+		Start: 0
+		Facings: 32
+	unload:
+		Start: 0
+		Facings: 32
+
+trike:
+	idle:
+		Start: 0
+		Facings: 32
+
+quad:
+	idle:
+		Start: 0
+		Facings: 32
