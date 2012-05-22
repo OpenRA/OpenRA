@@ -24,20 +24,20 @@ namespace OpenRA.Mods.Cnc
 	{
 		Cargo cargo;
 		IFacing facing;
-		IHasLocation location;
+		IMove move;
 
 		public RenderCargo(Actor self)
 		{
 			cargo = self.Trait<Cargo>();
 			facing = self.TraitOrDefault<IFacing>();
-			location = self.Trait<IHasLocation>();
+			move = self.Trait<IMove>();
 		}
 
 		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
 		{
 			foreach (var c in cargo.Passengers)
 			{
-				c.Trait<ITeleportable>().SetPxPosition( c, location.PxPosition );
+				c.Trait<ITeleportable>().SetPxPosition( c, move.PxPosition );
 
 				var cargoFacing = c.TraitOrDefault<IFacing>();
 				if (facing != null && cargoFacing != null)
