@@ -36,9 +36,12 @@ namespace OpenRA.Mods.Cnc
 			foreach (var c in cargo.Passengers)
 			{
 				c.Trait<ITeleportable>().SetPxPosition( c, self.Trait<IHasLocation>().PxPosition );
-				if (facing != null && c.HasTrait<IFacing>())
-					c.Trait<IFacing>().Facing = facing.Facing;
+
+				var cargoFacing = c.TraitOrDefault<IFacing>();
+				if (facing != null && cargoFacing != null)
+					cargoFacing.Facing = facing.Facing;
 			}
+
 			return r.Concat(cargo.Passengers.SelectMany(a => a.Render()));
 		}
 	}
