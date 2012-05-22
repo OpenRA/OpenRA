@@ -118,8 +118,8 @@ mono OpenRA.Utility.exe --r8 $R8 $PAL 4017 4017 "raidericon"
 mono OpenRA.Utility.exe --shp raidericon.png 60
 mono OpenRA.Utility.exe --r8 $R8 $PAL 4018 4018 "quadicon"
 mono OpenRA.Utility.exe --shp quadicon.png 60
-mono OpenRA.Utility.exe --r8 $R8 $PAL 4019 4019 "harvicon" # = 4044
-mono OpenRA.Utility.exe --shp harvicon.png 60
+mono OpenRA.Utility.exe --r8 $R8 $PAL 4019 4019 "harestervicon" # = 4044
+mono OpenRA.Utility.exe --shp harestervicon.png 60
 mono OpenRA.Utility.exe --r8 $R8 $PAL 4020 4020 "combataicon"
 mono OpenRA.Utility.exe --shp combataicon.png 60
 mono OpenRA.Utility.exe --r8 $R8 $PAL 4021 4021 "combathicon"

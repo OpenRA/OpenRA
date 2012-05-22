@@ -81,7 +81,6 @@
     <Compile Include="Graphics\IGraphicsDevice.cs" />
     <Compile Include="Graphics\IInputHandler.cs" />
     <Compile Include="Graphics\PngLoader.cs" />
-    <Compile Include="Graphics\R8Reader.cs" />
     <Compile Include="Graphics\ShpReader.cs" />
     <Compile Include="Graphics\ShpWriter.cs" />
     <Compile Include="Graphics\Vertex.cs" />

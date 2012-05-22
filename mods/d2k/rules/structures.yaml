@@ -163,7 +163,7 @@ REFA:
 	CustomSellValue:
 		Value: 600
 	FreeActor:
-		Actor: HARV
+		Actor: HARVESTER
 		InitialActivity: FindResources
 		SpawnOffset: 1,2
 		Facing: 64

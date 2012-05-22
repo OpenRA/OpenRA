@@ -82,7 +82,9 @@
     </ProjectReference> 
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
+  <PropertyGroup>
+    <PostBuildEvent>mkdir "$(SolutionDir)mods/d2k/"
+copy "$(TargetPath)" "$(SolutionDir)mods/d2k/"
+cd "$(SolutionDir)"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

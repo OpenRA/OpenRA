@@ -21,11 +21,11 @@ CARRYALL:
 		RearmBuildings: hightecha
 		InitialFacing: 0
 		ROT: 5
-		Speed: 12
+		Speed: 15
 		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach
 	RenderUnit:
 		PlayerPalette: d2kplayer
-#	RenderCargo:
+	RenderCargo:
 	WithShadow:
 	Cargo:
 		Types: Vehicle

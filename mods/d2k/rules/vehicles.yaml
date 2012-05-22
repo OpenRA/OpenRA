@@ -5,65 +5,95 @@ MCV:
 		Image: MCV
 		PlayerPalette: d2kplayer
 
+HARVESTER:
+	Inherits: ^Vehicle
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 10
+		Prerequisites: refa
+		Owner: atreides
+	Valued:
+		Cost: 1100
+	Tooltip:
+		Name: Spice Harvester
+		Description: Collects Spice for processing.\n  Unarmed
+	Selectable:
+		Priority: 7
+		Bounds: 42,42
+	Harvester:
+		Capacity: 20
+		Resources: Ore,Gems
+		UnloadTicksPerBale: 1
+	Health:
+		HP: 600
+	Armor:
+		Type: Heavy
+	Mobile:
+		Speed: 6
+		Crushes: wall, atmine, crate, infantry
+	RevealsShroud:
+		Range: 4
+	RenderUnit::
+		PlayerPalette: d2kplayer
+	-AttackMove:
+	GpsDot:
+		String:Harvester
+
 TRIKE:
 	Inherits: ^Vehicle
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 15
+		Prerequisites: lighta
+		Owner: atreides
 	Valued:
 		Cost: 200
 	Tooltip:
 		Name: Scout Trike
-		Icon: trikeicon
 		Description: Weak Scout.\n Decent vs. Infantry
-	Buildable:
-		BuildPaletteOrder: 15
-		Prerequisites: lighta
-		Owner: atreides
 	Selectable:
 		Bounds: 24,24
-	Mobile:
-		ROT: 15
-		Speed: 20
 	Health:
 		HP: 75
 	Armor:
 		Type: Light
+	Mobile:
+		ROT: 15
+		Speed: 20
 	RevealsShroud:
 		Range: 8
+	RenderUnit:
+		PlayerPalette: d2kplayer
 	AttackFrontal:
 		PrimaryWeapon: M60mg
 		PrimaryOffset: 0,0,0,-4
-	RenderUnit:
-		PlayerPalette: d2kplayer
-	WithMuzzleFlash:
-		PrimaryOffset: 0,3,0,0
 	AutoTarget:
 
 QUAD:
 	Inherits: ^Vehicle
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 30
+		Prerequisites: lighta
+		Owner: atreides
 	Valued:
 		Cost: 400
 	Tooltip:
 		Name: Quad
-		Description: Fast scout vehicle, armed with \nrockets.\n  Strong vs Vehicles, Aircraft\n  Weak vs Infantry
-	Buildable:
-		BuildPaletteOrder: 30
-		Prerequisites: lighta
-		Owner: atreides
-	Mobile:
-		ROT: 10
-		Speed: 13
+		Description: Fast scout vehicle, armed with \nrockets.\n  Strong vs Vehicles\n  Weak vs Infantry
 	Health:
 		HP: 120
 	Armor: 
 		Type: Light
+	Mobile:
+		ROT: 10
+		Speed: 13
 	RevealsShroud:
 		Range: 7
-	AttackFrontal:
-		PrimaryWeapon: RedEye
-		SecondaryWeapon: Dragon
-		PrimaryOffset: 0,0,0,-2
-		PrimaryLocalOffset: -4,0,0,0,25, 4,0,0,0,-25
-		SecondaryOffset: 0,0,0,-2
-		SecondaryLocalOffset: -4,0,0,0,25, 4,0,0,0,-25
 	RenderUnit:
 		PlayerPalette: d2kplayer
+	AttackFrontal:
+		PrimaryWeapon: RedEye
+		PrimaryOffset: 0,0,0,-2
+		PrimaryLocalOffset: -4,0,0,0,25, 4,0,0,0,-25
 	AutoTarget:

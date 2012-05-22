@@ -3,6 +3,7 @@ Metadata:
 	Description: Converting the OpenRA Red Alert Mod one by one to Dune 2000
 	Version: {DEV_VERSION}
 	Author: The OpenD2k Developers
+	Requires: ra
 
 Folders:
 	.
@@ -10,84 +11,38 @@ Folders:
 	./mods/d2k/bits
 	./mods/d2k/uibits
 	~^/Content/d2k
-	./mods/ra
-	./mods/ra/bits
-	./mods/ra/uibits
-	~^/Content/ra
 
 Packages:
-	~main.mix
-	redalert.mix
-	conquer.mix
-	hires.mix
-	local.mix
-	sounds.mix
-	speech.mix
-	allies.mix
-	russian.mix
-	temperat.mix
-	snow.mix
-	interior.mix
-	~scores.mix
-	~movies1.mix
-	~movies2.mix
-	mods/d2k/bits/arrakis.mix
+	arrakis.mix
 
 Rules:
 	mods/d2k/rules/system.yaml
 	mods/d2k/rules/vehicles.yaml
 	mods/d2k/rules/structures.yaml
 	mods/d2k/rules/aircraft.yaml
-	mods/ra/rules/defaults.yaml
-	mods/ra/rules/system.yaml
-	mods/ra/rules/vehicles.yaml
-	mods/ra/rules/structures.yaml
-	mods/ra/rules/infantry.yaml
-	mods/ra/rules/civilian.yaml
-	mods/ra/rules/trees.yaml
-	mods/ra/rules/aircraft.yaml
-	mods/ra/rules/ships.yaml
 
 Sequences:
 	mods/d2k/sequences.yaml
-	mods/ra/sequences.yaml
 
 Cursors:
-	mods/ra/cursors.yaml
 
 Chrome:
 	mods/d2k/chrome.yaml
-	mods/ra/chrome.yaml
 
 Assemblies:
 	mods/d2k/OpenRA.Mods.D2k.dll
 	mods/ra/OpenRA.Mods.RA.dll
+	mods/cnc/OpenRA.Mods.Cnc.dll
 
 ChromeLayout:
-	mods/ra/chrome/gameinit.yaml
-	mods/ra/chrome/ingame.yaml
-	mods/ra/chrome/mainmenu.yaml
-	mods/ra/chrome/settings.yaml
-	mods/ra/chrome/lobby.yaml
-	mods/ra/chrome/map-chooser.yaml
-	mods/ra/chrome/create-server.yaml
-	mods/ra/chrome/serverbrowser.yaml
-	mods/ra/chrome/replaybrowser.yaml
-	mods/ra/chrome/dropdowns.yaml
-	mods/ra/chrome/modchooser.yaml
 
 Weapons:
-	mods/ra/weapons.yaml
 
 Voices:
 	mods/d2k/voices.yaml
-	mods/ra/voices.yaml
 
 TileSets:
 	mods/d2k/tilesets/arrakis.yaml
-	mods/ra/tilesets/snow.yaml
-	mods/ra/tilesets/interior.yaml
-	mods/ra/tilesets/temperat.yaml
 
 Music:
 
@@ -100,7 +55,6 @@ ServerTraits:
 	MasterServerPinger
 
 ChromeMetrics:
-	mods/ra/metrics.yaml
 
 Fonts:
 	Regular:

@@ -3,6 +3,21 @@ mcv:
 		Start: 0
 		Facings: 32
 
+harvester:
+	idle:
+		Start: 0
+		Facings: 32
+	harvest:
+		Start: 0
+		Length: 0
+		Facings: 8
+	dock:
+		Start: 0
+		Length: 1
+	dock-loop:
+		Start: 0
+		Length: 1
+
 conyarda:
 	idle:
 		Start: 0

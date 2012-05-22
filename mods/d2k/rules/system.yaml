@@ -1,9 +1,111 @@
 Player:
+	TechTree:
+	ClassicProductionQueue@Building:
+		Type: Building
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+		QueuedAudio: abldgin1.aud
+		ReadyAudio: conscmp1.aud
+	ClassicProductionQueue@Defense:
+		Type: Defense
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+		QueuedAudio: abldgin1.aud
+		ReadyAudio: conscmp1.aud
+	ClassicProductionQueue@Vehicle:
+		Type: Vehicle
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+	ClassicProductionQueue@Infantry:
+		Type: Infantry
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+	ClassicProductionQueue@Plane:
+		Type: Plane
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+	PlaceBuilding:
+	SupportPowerManager:
+	ConquestVictoryConditions:
+		WinNotification:misnwon1.aud
+		LoseNotification:misnlst1.aud
+	PowerManager:
+	AllyRepair:
+	PlayerResources:
+		InitialCash: 5000
+	ActorGroupProxy:
+	DeveloperMode:
 	PlayerColorPalette@d2kplayer:
 		BasePalette: d2k
 		BaseName: d2kplayer
 		PaletteFormat: d2k
+	DebugResourceCash:
+	DebugResourceOre:
+	DebugResourceOreCapacity:
+	GpsWatcher:
+	BaseAttackNotifier:
+
 World:	
+	OpenWidgetAtGameStart:
+		Widget: INGAME_ROOT
+		ObserverWidget: OBSERVER_ROOT
+	ScreenShaker:
+	WaterPaletteRotation:
+	NukePaletteEffect:
+	LightPaletteRotator:
+	BuildingInfluence:
+	ChooseBuildTabOnSelect:
+	CrateDrop:
+		Minimum: 1
+		Maximum: 3
+		SpawnInterval: 120
+		WaterChance: .2
+	PaletteFromCurrentTileset:
+		Name: terrain
+	PaletteFromFile@d2k:
+		Name: d2k
+		Filename: d2k.pal
+	PaletteFromFile@chrome:
+		Name: chrome
+		Filename: d2k.pal
+	PaletteFromFile@effect:
+		Name: effect
+		Filename: temperat.pal
+	PaletteFromRGBA@shadow:
+		Name: shadow
+		R: 0
+		G: 0
+		B: 0
+		A: 140
+	PaletteFromRGBA@cloak:
+		Name: cloak
+		R: 0
+		G: 0
+		B: 0
+		A: 140
+	PaletteFromRGBA@highlight:
+		Name: highlight
+		R: 255
+		G: 255
+		B: 255
+		A: 128
+	PaletteFromRGBA@invuln:
+		Name: invuln
+		R: 128
+		G: 0
+		B: 0
+		A: 128
+	PaletteFromRGBA@disabled:
+		Name: disabled
+		R: 0
+		G: 0
+		B: 0
+		A: 180
+	ColorPickerPaletteModifier:
+	ShroudPalette@shroud:
+	ShroudPalette@fog:
+		IsFog: yes
+		Name: fog
 	Country@2:
 		Name: Atreides
 		Race: atreides
@@ -13,12 +115,8 @@ World:
 #	Country@4:
 #		Name: Ordos
 #		Race: ordos
-	PaletteFromFile@d2k:
-		Name: d2k
-		Filename: d2k.pal
-	PaletteFromFile@chrome:
-		Name: chrome
-		Filename: d2k.pal
+	BibLayer:
+	ResourceLayer:
 #	ResourceType@spice:
 #		ResourceType: 1
 #		Palette: d2k
@@ -28,3 +126,75 @@ World:
 #		PipColor: Yellow
 #		AllowedTerrainTypes: Sand
 #		AllowUnderActors: false
+	SmudgeLayer@SCORCH:
+		Type:Scorch
+		SmokePercentage:50
+		Types:sc1,sc2,sc3,sc4,sc5,sc6
+		Depths:1,1,1,1,1,1
+	SmudgeLayer@CRATER:
+		Type:Crater
+		Types:cr1,cr2,cr3,cr4,cr5,cr6
+		Depths:5,5,5,5,5,5
+	SpawnMapActors:
+	CreateMPPlayers:
+	MPStartLocations:
+	SpawnMPUnits:
+	EvaAlerts:
+	SpatialBins:
+		BinSize: 4
+	Shroud:
+	PathFinder:
+	ValidateOrder:
+CRATE:
+	Tooltip:
+		Name: Crate
+	Crate:
+		Lifetime: 120
+		TerrainTypes: Clear, Rough, Road, Water, Ore, Beach
+	GiveCashCrateAction:
+		Amount: 1000
+		SelectionShares: 50
+		UseCashTick: yes
+	LevelUpCrateAction:
+		SelectionShares: 40
+	ExplodeCrateAction@fire:
+		Weapon: CrateNapalm
+		SelectionShares: 5
+	ExplodeCrateAction@boom:
+		Weapon: CrateExplosion
+		SelectionShares: 5
+	ExplodeCrateAction@nuke:
+		Weapon: CrateNuke
+		SelectionShares: 5
+	HideMapCrateAction:
+		SelectionShares: 5
+		Effect: hide-map
+	RevealMapCrateAction:
+		SelectionShares: 1
+		Effect: reveal-map
+	SupportPowerCrateAction@parabombs:
+		SelectionShares: 5
+		Proxy: powerproxy.parabombs
+	GiveMcvCrateAction:
+		SelectionShares: 2
+		NoBaseSelectionShares: 9001
+		Unit: mcv
+	GiveUnitCrateAction@trike:
+		SelectionShares: 7
+		Unit: trike
+	GiveUnitCrateAction@quad:
+		SelectionShares: 6
+		Unit: quad
+	RenderSimple:
+	BelowUnits:
+	ProximityCaptor:
+		Types:Crate
+	Passenger:
+
+mpspawn:
+	Waypoint:
+	RenderEditorOnly:
+
+waypoint:
+	Waypoint:
+	RenderEditorOnly:
