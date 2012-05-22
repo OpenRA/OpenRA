@@ -38,7 +38,7 @@ mono OpenRA.Utility.exe --r8 $R8 $PAL 1859 1890 "combataturret" --vehicle
 mono OpenRA.Utility.exe --shp combataturret.png 48
 mono OpenRA.Utility.exe --r8 $R8 $PAL 1891 1922 "siegeturret" --vehicle
 mono OpenRA.Utility.exe --shp siegeturret.png 48
-mono OpenRA.Utility.exe --r8 $R8 $PAL 1923 1954 "carryall" --vehicle # requires some reordering (again)
+mono OpenRA.Utility.exe --r8 $R8 $PAL 1923 1954 "carryall" --vehicle
 mono OpenRA.Utility.exe --shp carryall.png 64
 mono OpenRA.Utility.exe --r8 $R8 $PAL 1955 2050 "orni" --vehicle
 mono OpenRA.Utility.exe --shp orni.png 48

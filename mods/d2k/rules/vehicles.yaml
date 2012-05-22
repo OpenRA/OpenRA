@@ -93,7 +93,7 @@ QUAD:
 	RenderUnit:
 		PlayerPalette: d2kplayer
 	AttackFrontal:
-		PrimaryWeapon: RedEye
+		PrimaryWeapon: Dragon
 		PrimaryOffset: 0,0,0,-2
 		PrimaryLocalOffset: -4,0,0,0,25, 4,0,0,0,-25
 	AutoTarget:

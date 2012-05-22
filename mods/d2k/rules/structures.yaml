@@ -45,8 +45,8 @@ PWRA:
 		Prerequisite: anypower
 	Building:
 		Power: 100
-		Footprint: xx xx
-		Dimensions: 2,2
+		Footprint: xx xx xx
+		Dimensions: 2,3
 	Health:
 		HP: 400
 	Armor:
@@ -145,7 +145,7 @@ REFA:
 		Description: Harvesters unload spice here.
 	Building:
 		Power: -30
-		Footprint: _x_ xxx x==
+		Footprint: xxx xxx x==
 		Dimensions: 3,3
 	Health:
 		HP: 900
@@ -211,8 +211,8 @@ LIGHTA:
 		Description: light vehicles.
 	Building:
 		Power: -30
-		Footprint: xxx xxx
-		Dimensions: 3,2
+		Footprint: xxx xxx xxx
+		Dimensions: 3,3
 	Health:
 		HP: 1500
 	Armor:
@@ -224,8 +224,8 @@ LIGHTA:
 		PlayerPalette: d2kplayer
 	RallyPoint:
 	Exit@1:
-		SpawnOffset: 5,0
-		ExitCell: 1,1
+		SpawnOffset: 10,0
+		ExitCell: 1,3
 	Production:
 		Produces: Vehicle
 	PrimaryBuilding:

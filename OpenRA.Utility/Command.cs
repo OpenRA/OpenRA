@@ -123,14 +123,14 @@ namespace OpenRA.Utility
 
 			int x = 0;
 			
-			if (args.Contains("--vehicle")) //complex resorting to RA/CnC compatible frame order
+			if (args.Contains("--vehicle")) //resorting to RA/CnC compatible counter-clockwise frame order
 			{
-				endFrame = endFrame - (FrameCount / 2);
+				frame = srcImage[startFrame];
+			
+				endFrame--;
 				startFrame--;
 				for (int f = endFrame; f > startFrame; f--)
 				{
-					frame = srcImage[f];
-
 					OffsetX = frame.FrameWidth/2 - frame.OffsetX;
 					OffsetY = frame.FrameHeight/2 - frame.OffsetY;
 
@@ -147,29 +147,8 @@ namespace OpenRA.Utility
 					bitmap.UnlockBits(data);
 
 					x += frame.FrameWidth;
-				}
-				endFrame = endFrame + (FrameCount / 2) - 1;
-				startFrame = startFrame + (FrameCount / 2) + 1;
-				for (int f = endFrame; f > startFrame; f--)
-				{
+
 					frame = srcImage[f];
-
-					OffsetX = frame.FrameWidth/2 - frame.OffsetX;
-					OffsetY = frame.FrameHeight/2 - frame.OffsetY;
-
-					Console.WriteLine("calculated OffsetX: {0}", OffsetX);
-					Console.WriteLine("calculated OffsetY: {0}", OffsetY);
-
-					var data = bitmap.LockBits(new Rectangle(x+OffsetX, 0+OffsetY, frame.Width, frame.Height), ImageLockMode.WriteOnly,
-						PixelFormat.Format8bppIndexed);
-
-					for (var i = 0; i < frame.Height; i++)
-						Marshal.Copy(frame.Image, i * frame.Width,
-							new IntPtr(data.Scan0.ToInt64() + i * data.Stride), frame.Width);
-
-					bitmap.UnlockBits(data);
-
-					x += frame.FrameWidth;
 				}
 			}
 			else
