@@ -15,9 +15,12 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc
 {
-	class RenderCargoInfo : ITraitInfo, Requires<CargoInfo>
+	public class RenderCargoInfo : ITraitInfo, Requires<CargoInfo>
 	{
-		public object Create(ActorInitializer init) { return new RenderCargo(init.self); }
+		/* altitude of the cargo, relative to us. -ve is underneath us */
+		public readonly int RelativeAltitude = 0;
+
+		public object Create(ActorInitializer init) { return new RenderCargo(init.self, this); }
 	}
 
 	public class RenderCargo : IRenderModifier
@@ -25,12 +28,14 @@ namespace OpenRA.Mods.Cnc
 		Cargo cargo;
 		IFacing facing;
 		IMove move;
+		RenderCargoInfo Info;
 
-		public RenderCargo(Actor self)
+		public RenderCargo(Actor self, RenderCargoInfo info)
 		{
 			cargo = self.Trait<Cargo>();
 			facing = self.TraitOrDefault<IFacing>();
 			move = self.Trait<IMove>();
+			Info = info;
 		}
 
 		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
@@ -44,7 +49,9 @@ namespace OpenRA.Mods.Cnc
 					cargoFacing.Facing = facing.Facing;
 			}
 
-			return r.Concat(cargo.Passengers.SelectMany(a => a.Render()));
+			return r.Concat(cargo.Passengers.SelectMany(a => a.Render())
+				.Select(a => a.WithPos(a.Pos - new float2(0, Info.RelativeAltitude))
+			        .WithZOffset(a.ZOffset + Info.RelativeAltitude)));
 		}
 	}
 }
