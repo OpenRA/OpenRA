@@ -1,5 +1,6 @@
 MCV:
 	Transforms:
+		Facing: 10
 		IntoActor: conyarda
 	RenderUnit:
 		Image: MCV

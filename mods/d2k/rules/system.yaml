@@ -50,9 +50,9 @@ World:
 		Widget: INGAME_ROOT
 		ObserverWidget: OBSERVER_ROOT
 	ScreenShaker:
-	WaterPaletteRotation:
+	-WaterPaletteRotation:
 	NukePaletteEffect:
-	LightPaletteRotator:
+	-LightPaletteRotator:
 	BuildingInfluence:
 	ChooseBuildTabOnSelect:
 	CrateDrop:

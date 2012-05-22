@@ -24,7 +24,7 @@ CONYARDA:
 	Transforms:
 		IntoActor: mcv
 		Offset:1,1
-		Facing: 96
+		Facing: 270
 	ProductionBar:
 	RenderBuilding:
 		PlayerPalette: d2kplayer
