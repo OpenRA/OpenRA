@@ -99,13 +99,14 @@ namespace OpenRA.Mods.RA.Effects
 
 			Altitude += Math.Sign(targetAltitude - Altitude);
 
-			Facing = Traits.Util.TickFacing(Facing,
-				Traits.Util.GetFacing(dist, Facing),
-				Info.ROT);
+			if (Args.target.IsValid)
+				Facing = Traits.Util.TickFacing(Facing,
+					Traits.Util.GetFacing(dist, Facing),
+					Info.ROT);
 
 			anim.Tick();
 
-			if (dist.LengthSquared < MissileCloseEnough * MissileCloseEnough || !Args.target.IsValid )
+			if (dist.LengthSquared < MissileCloseEnough * MissileCloseEnough && Args.target.IsValid )
 				Explode(world);
 
 			// TODO: Replace this with a lookup table
