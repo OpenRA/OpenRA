@@ -380,6 +380,8 @@ HTNK:
 	AutoTarget:
 	SelfHealing:
 		Ticks: 10
+		HealIfBelow: 50%
+		DamageCooldown: 200
 	LeavesHusk:
 		HuskActor: HTNK.Husk
 	Explodes:
