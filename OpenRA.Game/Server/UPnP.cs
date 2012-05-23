@@ -40,8 +40,6 @@ namespace UPnP
 			do
 			{
 				s.SendTo(data, ipe);
-				s.SendTo(data, ipe);
-				s.SendTo(data, ipe);
 
 				int length = 0;
 				do
