@@ -52,6 +52,56 @@ patriot:
 		Facings: 32
 
 explosion:
+# explosion 1:
+	piff: piff
+		Start: 0
+		Length: *
+# explosion 2:
+	piffs: piffpiff
+		Start: 0
+		Length: *
+# explosion 4:
+	small_frag: veh-hit3
+		Start: 0
+		Length: *
+	frag: frag1
+		Start: 0
+		Length: *
+# longer frag with flames: 
+	longer_frag: frag3
+		Start: 0
+		Length: *
+# explosion 5:
+	small_arty: veh-hit2
+		Start: 0
+		Length: *
+# explosion 8:
+	arty: art-exp1
+		Start: 0
+		Length: *
+	small_building: veh-hit1
+		Start: 0
+		Length: *
+	building: fball1
+		Start: 0
+		Length: *
+	small_napalm: napalm1
+		Start: 0
+		Length: *
+# explosion 3: 
+	napalm: napalm2
+		Start: 0
+		Length: *
+	big_napalm: napalm3
+		Start: 0
+		Length: *
+	chemball: chemball
+		Start: 0
+		Length: *
+# explosion 6:
+	nuke: atomsfx		
+		Start: 0
+		Length: *
 	1: piff
 		Start: 0
 		Length: *
@@ -83,9 +133,6 @@ explosion:
 		Start: 0
 		Length: *
 	8: art-exp1
-		Start: 0
-		Length: *
-	building: fball1
 		Start: 0
 		Length: *
 	6: atomsfx
