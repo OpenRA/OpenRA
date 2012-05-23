@@ -71,8 +71,8 @@ mono OpenRA.Utility.exe --r8 $R8 $PAL 2523 2524 "pwra" --building
 mono OpenRA.Utility.exe --shp pwra.png 64
 mono OpenRA.Utility.exe --r8 $R8 $PAL 2525 2526 "barra" --building
 mono OpenRA.Utility.exe --shp barra.png 80
-mono OpenRA.Utility.exe --r8 $R8 $PAL 2527 2558 "wall" --building
-mono OpenRA.Utility.exe --shp wall.png 32
+mono OpenRA.Utility.exe --r8 $R8 $PAL 2527 2558 "walla" --building
+mono OpenRA.Utility.exe --shp walla.png 32
 mono OpenRA.Utility.exe --r8 $R8 $PAL 2559 2560 "conyarda" --building
 mono OpenRA.Utility.exe --shp conyarda.png 96
 mono OpenRA.Utility.exe --r8 $R8 $PAL 2561 2563 "refa" --building # 2561 is fassade, 2562 is silo top, 2563 is silo top broken
@@ -81,9 +81,24 @@ mono OpenRA.Utility.exe --r8 $R8 $PAL 2564 2565 "hightecha" --building
 mono OpenRA.Utility.exe --shp hightecha.png 96
 mono OpenRA.Utility.exe --r8 $R8 $PAL 2566 2570 "siloa" --building
 mono OpenRA.Utility.exe --shp siloa.png 32
-
+mono OpenRA.Utility.exe --r8 $R8 $PAL 2571 2572 "repaira" --building
+mono OpenRA.Utility.exe --shp repaira.png 96
+mono OpenRA.Utility.exe --r8 $R8 $PAL 2573 2588 "guntowera" --building
+mono OpenRA.Utility.exe --shp guntowera.png 48
+mono OpenRA.Utility.exe --r8 $R8 $PAL 2589 2620 "gunturret" --building
+mono OpenRA.Utility.exe --shp gunturret.png 48
+mono OpenRA.Utility.exe --r8 $R8 $PAL 2621 2636 "rockettowera" --building
+mono OpenRA.Utility.exe --shp rockettowera.png 48
+mono OpenRA.Utility.exe --r8 $R8 $PAL 2637 2668 "rocketturreta" --building
+mono OpenRA.Utility.exe --shp rocketturreta.png 48
+mono OpenRA.Utility.exe --r8 $R8 $PAL 2669 2670 "researcha" --building
+mono OpenRA.Utility.exe --shp researcha.png 96
+mono OpenRA.Utility.exe --r8 $R8 $PAL 2671 2672 "starporta" --building
+mono OpenRA.Utility.exe --shp starporta.png 96
 mono OpenRA.Utility.exe --r8 $R8 $PAL 2673 2675 "lighta" --building
 mono OpenRA.Utility.exe --shp lighta.png 96
+mono OpenRA.Utility.exe --r8 $R8 $PAL 2676 2677 "palacea" --building
+mono OpenRA.Utility.exe --shp palacea.png 96
 
 mono OpenRA.Utility.exe --r8 $R8 $PAL 3549 3564 "sandwormmouth"
 mono OpenRA.Utility.exe --shp sandwormmouth.png 68
@@ -171,8 +186,8 @@ mono OpenRA.Utility.exe --r8 $R8 $PAL 4060 4060 "barrhicon"
 mono OpenRA.Utility.exe --shp barrhicon.png 60
 mono OpenRA.Utility.exe --r8 $R8 $PAL 4061 4061 "barroicon"
 mono OpenRA.Utility.exe --shp barroicon.png 60
-mono OpenRA.Utility.exe --r8 $R8 $PAL 4063 4063 "wallicon" # = 4061..4062
-mono OpenRA.Utility.exe --shp wallicon.png 60
+mono OpenRA.Utility.exe --r8 $R8 $PAL 4063 4063 "wallaicon" # = 4061..4062
+mono OpenRA.Utility.exe --shp wallaicon.png 60
 mono OpenRA.Utility.exe --r8 $R8 $PAL 4066 4066 "refaicon"
 mono OpenRA.Utility.exe --shp refaicon.png 60
 mono OpenRA.Utility.exe --r8 $R8 $PAL 4067 4067 "refhicon"
@@ -222,10 +237,18 @@ mono OpenRA.Utility.exe --shp starporthicon.png 60
 mono OpenRA.Utility.exe --r8 $R8 $PAL 4094 4094 "starportoicon"
 mono OpenRA.Utility.exe --shp starportoicon.png 60
 # 4095 = orniicon
-mono OpenRA.Utility.exe --r8 $R8 $PAL 4096 4096 "repairicon" # = 4097..4098
-mono OpenRA.Utility.exe --shp repairicon.png 60
-mono OpenRA.Utility.exe --r8 $R8 $PAL 4099 4099 "researchicon" # = 4100..4101
-mono OpenRA.Utility.exe --shp researchicon.png 60
+mono OpenRA.Utility.exe --r8 $R8 $PAL 4096 4096 "repairaicon"
+mono OpenRA.Utility.exe --shp repairaicon.png 60
+mono OpenRA.Utility.exe --r8 $R8 $PAL 4097 4097 "repairhicon"
+mono OpenRA.Utility.exe --shp repairhicon.png 60
+mono OpenRA.Utility.exe --r8 $R8 $PAL 4098 4098 "repairoicon"
+mono OpenRA.Utility.exe --shp repairhicon.png 60
+mono OpenRA.Utility.exe --r8 $R8 $PAL 4099 4099 "researchaicon"
+mono OpenRA.Utility.exe --shp researchaicon.png 60
+mono OpenRA.Utility.exe --r8 $R8 $PAL 4100 4100 "researchhicon"
+mono OpenRA.Utility.exe --shp researchhicon.png 60
+mono OpenRA.Utility.exe --r8 $R8 $PAL 4101 4101 "researchoicon"
+mono OpenRA.Utility.exe --shp researchoicon.png 60
 mono OpenRA.Utility.exe --r8 $R8 $PAL 4102 4102 "palaceaicon"
 mono OpenRA.Utility.exe --shp palaceaicon.png 60
 mono OpenRA.Utility.exe --r8 $R8 $PAL 4103 4103 "palacehicon"
@@ -244,19 +267,29 @@ mono OpenRA.Utility.exe --shp barramake.png 80
 
 mono OpenRA.Utility.exe --r8 $R8 $PAL 4231 4253 "refmake" --building
 mono OpenRA.Utility.exe --shp refmake.png 120
-
+mono OpenRA.Utility.exe --r8 $R8 $PAL 4254 4273 "radarmake" --building
+mono OpenRA.Utility.exe --shp radarmake.png 96
 mono OpenRA.Utility.exe --r8 $R8 $PAL 4274 4294 "highmake" --building
 mono OpenRA.Utility.exe --shp highmake.png 96
 mono OpenRA.Utility.exe --r8 $R8 $PAL 4275 4312 "lightmake" --building
 mono OpenRA.Utility.exe --shp lightmake.png 96
 mono OpenRA.Utility.exe --r8 $R8 $PAL 4313 4327 "silomake" --building
 mono OpenRA.Utility.exe --shp silomake.png 32
-
-mono OpenRA.Utility.exe --r8 $R8 $PAL 4436 4449 "cranea"
+mono OpenRA.Utility.exe --r8 $R8 $PAL 4328 4346 "heavymake" --building
+mono OpenRA.Utility.exe --shp heavymake.png 96
+mono OpenRA.Utility.exe --r8 $R8 $PAL 4347 4369 "starportmake" --building
+mono OpenRA.Utility.exe --shp starportmake.png 96
+mono OpenRA.Utility.exe --r8 $R8 $PAL 4370 4390 "repairmake" --building
+mono OpenRA.Utility.exe --shp repairmake.png 96
+mono OpenRA.Utility.exe --r8 $R8 $PAL 4391 4412 "researchmake" --building
+mono OpenRA.Utility.exe --shp researchmake.png 96
+mono OpenRA.Utility.exe --r8 $R8 $PAL 4413 4435 "palacemake" --building
+mono OpenRA.Utility.exe --shp palacemake.png 96
+mono OpenRA.Utility.exe --r8 $R8 $PAL 4436 4449 "cranea" --building
 mono OpenRA.Utility.exe --shp cranea.png 96
-mono OpenRA.Utility.exe --r8 $R8 $PAL 4450 4463 "craneh"
+mono OpenRA.Utility.exe --r8 $R8 $PAL 4450 4463 "craneh" --building
 mono OpenRA.Utility.exe --shp craneh.png 96
-mono OpenRA.Utility.exe --r8 $R8 $PAL 4463 4477 "craneo"
+mono OpenRA.Utility.exe --r8 $R8 $PAL 4463 4477 "craneo" --building
 mono OpenRA.Utility.exe --shp craneo.png 96
 
 mono OpenRA.Utility.exe --r8 $R8 $PAL 4760 4819 "windtrap_anim" --building #?

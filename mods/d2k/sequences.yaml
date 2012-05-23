@@ -27,6 +27,20 @@ conyarda:
 	damaged-idle:
 		Start: 1
 
+walla:
+	idle:
+		Start: 0
+		Length: 16
+	scratched-idle:
+		Start: 0
+		Length: 16
+	damaged-idle:
+		Start: 16
+		Length: 16
+	critical-idle:
+		Start: 16
+		Length: 16
+
 pwra:
 	idle:
 		Start: 0
@@ -40,6 +54,15 @@ barra:
 	idle:
 		Start: 0
 	make: barramake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 1
+
+radara:
+	idle:
+		Start: 0
+	make: radarmake
 		Start: 0
 		Length: *
 	damaged-idle:
@@ -79,6 +102,15 @@ lighta:
 	idle:
 		Start: 1
 	make: lightmake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 2
+
+heavya:
+	idle:
+		Start: 1
+	make: heavymake
 		Start: 0
 		Length: *
 	damaged-idle:

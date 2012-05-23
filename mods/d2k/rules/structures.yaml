@@ -205,13 +205,47 @@ LIGHTA:
 		Prerequisites: refa
 		Owner: atreides
 	Valued:
-		Cost: 2000
+		Cost: 1000
 	Tooltip:
 		Name: Light Factory
-		Description: light vehicles.
+		Description: produces light vehicles.
 	Building:
 		Power: -30
 		Footprint: xxx xxx xxx
+		Dimensions: 3,3
+	Health:
+		HP: 750
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 4
+	Bib:
+	RenderBuilding:
+		PlayerPalette: d2kplayer
+	RallyPoint:
+	Exit@1:
+		SpawnOffset: 10,0
+		ExitCell: 1,3
+	Production:
+		Produces: Vehicle
+	PrimaryBuilding:
+	ProductionBar:
+
+HEAVYA:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 50
+		Prerequisites: lighta
+		Owner: atreides
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: Heavy Factory
+		Description: produces tanks
+	Building:
+		Power: -30
+		Footprint: _x_ xxx xxx
 		Dimensions: 3,3
 	Health:
 		HP: 1500
@@ -230,3 +264,58 @@ LIGHTA:
 		Produces: Vehicle
 	PrimaryBuilding:
 	ProductionBar:
+
+RADARA:
+	RequiresPower:
+	CanPowerDown:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 60
+		Prerequisites: barra
+		Owner: atreides
+	Valued:
+		Cost: 1400
+	Tooltip:
+		Name: Outpost
+		Description: Provides a radar map of the battlefield.\n  Requires power to operate.
+	Building:
+		Power: -40
+		Footprint: xxx xxx xxx
+		Dimensions: 3,3
+	Health:
+		HP: 1000
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 10
+	Bib:
+	RenderBuilding:
+		PlayerPalette: d2kplayer
+	ProvidesRadar:
+
+WALLA:
+	Inherits: ^Wall
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 1000
+		Prerequisites: conyarda
+		Owner: atreides
+	Valued:
+		Cost: 100
+	CustomSellValue:
+		Value: 0
+	Tooltip:
+		Name: Concrete Wall
+		Description: Stop units and blocks enemy fire.
+	SoundOnDamageTransition:
+		DamagedSound: crmble2.aud
+		DestroyedSound: kaboom30.aud
+	Health:
+		HP: 500
+	Armor:
+		Type: Concrete
+	Wall:
+		CrushClasses: heavywall
+	RenderBuildingWall:
+		Palette: d2k

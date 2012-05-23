@@ -11,7 +11,7 @@ HARVESTER:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
-		Prerequisites: refa
+		Prerequisites: refa,heavya
 		Owner: atreides
 	Valued:
 		Cost: 1100
