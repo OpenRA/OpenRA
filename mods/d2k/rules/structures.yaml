@@ -131,6 +131,59 @@ HIGHTECHA:
 	PrimaryBuilding:
 	ProductionBar:
 
+RESEARCHA:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 50
+		Prerequisites: heavya,radara
+		Owner: atreides
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: IX Research Center
+		Description: Provides advanced units
+	Building:
+		Power: -30
+		Footprint: _x_ xxx xxx
+		Dimensions: 3,3
+	Health:
+		HP: 1000
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 4
+	Bib:
+	RenderBuilding:
+		PlayerPalette: d2kplayer
+
+PALACEA:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 50
+		Prerequisites: researcha
+		Owner: atreides
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: Atreides Palace
+		Description: Provides advanced technology
+	Building:
+		Power: -30
+		Footprint: xxx xxx xxx
+		Dimensions: 3,3
+	Health:
+		HP: 2000
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 4
+	Bib:
+	RenderBuilding:
+		PlayerPalette: d2kplayer
+
+
 REFA:
 	Inherits: ^Building
 	Buildable:
@@ -211,8 +264,8 @@ LIGHTA:
 		Description: produces light vehicles.
 	Building:
 		Power: -30
-		Footprint: xxx xxx xxx
-		Dimensions: 3,3
+		Footprint: xxx xxx
+		Dimensions: 3,2
 	Health:
 		HP: 750
 	Armor:
@@ -294,6 +347,50 @@ RADARA:
 		PlayerPalette: d2kplayer
 	ProvidesRadar:
 
+STARPORTA:
+	Inherits: ^Building
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: Starport
+		Description: Provides a dropzone for vehicle reinforcements
+	ProvidesCustomPrerequisite:
+		Prerequisite: anystarport
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 60
+		Prerequisites: radara
+		Owner: atreides
+	Building:
+		Power: -30
+		Footprint: xxx xxx xxx
+		Dimensions: 3,3
+	Health:
+		HP: 1000
+	RevealsShroud:
+		Range: 7
+	RenderBuilding:
+		PlayerPalette: d2kplayer
+	Bib:
+	RallyPoint:
+		RallyPoint: 4,2
+	BelowUnits:
+	Exit@1:
+		SpawnOffset: -24,0
+		ExitCell: 3,1
+	ProductionAirdrop:
+		Produces: Vehicle
+	ProductionQueue:
+		Type: Vehicle
+		Group: Vehicle
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+		QueuedAudio:
+		ReadyAudio:
+		OnHoldAudio:
+		CancelledAudio:
+	ProductionBar:
+
 WALLA:
 	Inherits: ^Wall
 	Buildable:
@@ -319,3 +416,66 @@ WALLA:
 		CrushClasses: heavywall
 	RenderBuildingWall:
 		Palette: d2k
+
+GUNTOWERA:
+	Inherits: ^Building
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 40
+		Prerequisites: barra
+		Owner: atreides
+	Valued:
+		Cost: 600
+	Tooltip:
+		Name: Turret
+		Description: Anti-Armor base defense.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
+		Icon: turreticon
+	Building:
+		Power: -40
+	-GivesBuildableArea:
+	Health:
+		HP: 400
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 7
+	Turreted:
+		ROT: 12
+		InitialFacing: 50
+	RenderBuildingTurreted:
+		Palette: d2k
+	AttackTurreted:
+		PrimaryWeapon: TurretGun
+	AutoTarget:
+	-RenderBuilding:
+	RenderRangeCircle:
+
+REPAIRA:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 30
+		Prerequisites: heavya
+		Owner: atreides
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Repair Pad
+		Description: Repairs vehicles, and allows\n the construction of additional bases.
+	Building:
+		Power: -30
+		Footprint: xxx xxx xxx
+		Dimensions: 3,3
+	Health:
+		HP: 800
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 5
+	RenderBuilding:
+		PlayerPalette: d2kplayer
+	BelowUnits:
+	Reservable:
+	RallyPoint:
+	RepairsUnits:
+		Interval: 10

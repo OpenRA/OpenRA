@@ -1,0 +1,63 @@
+QuadRockets:
+	ROF: 60
+	Range: 7
+	Report: MISSILE6
+	ValidTargets: Ground, Air
+	Burst: 2
+	BurstDelay: 0
+	Projectile: Missile
+		Arm: 0
+		High: yes
+		Shadow: no
+		Proximity: yes
+		Inaccuracy: 3
+		Image: DRAGON
+		ROT: 10
+		Trail: smokey
+		Speed: 35
+		RangeLimit: 40
+	Warhead:
+		Spread: 3
+		Versus: 
+			None: 50%
+			Wood: 30%
+			Light: 75%
+			Heavy: 30%
+		InfDeath: 3
+		Explosion: med_explosion
+		WaterExplosion: med_splash
+		ImpactSound: kaboom12
+		SmudgeType: Crater
+		Damage: 35
+
+227mm: 
+	ROF: 80
+	Range: 10
+	MinRange: 2
+	Burst: 6
+	BurstDelay: 1
+	Report: MISSILE6
+	ValidTargets: Ground
+	Projectile: Bullet
+		Arm: 5
+		High: yes
+		Shadow: yes
+		Inaccuracy: 30
+		Angle: 0.1
+		Image: DRAGON
+		ROT: 5
+		Trail: smokey
+		Speed: 15
+	Warhead:
+		Spread: 10
+		Versus: 
+			None: 30%
+			Wood: 75%
+			Light: 75%
+			Heavy: 50%
+		InfDeath: 3
+		Explosion: med_explosion
+		WaterExplosion: med_splash
+		ImpactSound: kaboom12
+		SmudgeType: Crater
+		Damage: 25

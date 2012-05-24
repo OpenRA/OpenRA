@@ -1,10 +1,39 @@
 MCV:
+	Inherits: ^Vehicle
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 110
+		Prerequisites: heavya,repaira
+		Owner: atreides
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: Mobile Construction Vehicle
+		Description: Deploys into another Construction Yard.\n  Unarmed
+	Selectable:
+		Priority: 3
+		Bounds: 42,42
+	Health:
+		HP: 600
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 6
+		Crushes: crate, infantry
+	RevealsShroud:
+		Range: 4
 	Transforms:
 		Facing: 10
 		IntoActor: conyarda
+		Offset:-1,-1
+		TransformSounds: placbldg.aud, build5.aud
+		NoTransformSounds: nodeply1.aud
 	RenderUnit:
 		Image: MCV
 		PlayerPalette: d2kplayer
+	MustBeDestroyed:
+	BaseBuilding:
+	-AttackMove:
 
 HARVESTER:
 	Inherits: ^Vehicle
@@ -94,7 +123,105 @@ QUAD:
 	RenderUnit:
 		PlayerPalette: d2kplayer
 	AttackFrontal:
-		PrimaryWeapon: Dragon
+		PrimaryWeapon: QuadRockets
 		PrimaryOffset: 0,0,0,-2
 		PrimaryLocalOffset: -4,0,0,0,25, 4,0,0,0,-25
+	AutoTarget:
+
+COMBATA:
+	Inherits: ^Tank
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 60
+		Prerequisites: heavya
+		Owner: atreides
+	Valued:
+		Cost: 850
+	Tooltip:
+		Name: Combat Tank
+		Description: Atreides Main Battle Tank.\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
+	Health:
+		HP: 450
+	Armor:
+		Type: Heavy
+	Mobile:
+		Speed: 6
+		Crushes: crate, infantry
+	RevealsShroud:
+		Range: 5
+	Turreted:
+		ROT: 5
+	AttackTurreted:
+		PrimaryWeapon: 90mm
+		PrimaryRecoil: 3
+		PrimaryRecoilRecovery: 0.9
+	RenderUnitTurreted:
+		PlayerPalette: d2kplayer
+	AutoTarget:
+	Explodes:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
+	Selectable:
+		Bounds: 30,30
+
+SIEGE:
+	Inherits: ^Tank
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 80
+		Prerequisites: radara
+		Owner: atreides
+	Valued:
+		Cost: 600
+	Tooltip:
+		Name: Siege Tank
+		Description: Long-range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
+	Health:
+		HP: 75
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 6
+		Crushes: crate, infantry
+	RevealsShroud:
+		Range: 5
+	Turreted:
+		ROT: 5
+	AttackTurreted:
+		PrimaryWeapon: 155mm
+		PrimaryRecoil: 3
+		PrimaryRecoilRecovery: 0.9
+	RenderUnitTurreted:
+		PlayerPalette: d2kplayer
+	Explodes:
+		Weapon: UnitExplode
+		Chance: 75  
+	AutoTarget:
+
+Missile:
+	Inherits: ^Tank
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Missile Tank
+		Description: Long range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 50
+		Prerequisites: heavya
+		Owner: atreides
+	Mobile:
+		Speed: 6
+	Health:
+		HP: 120
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 6
+	AttackFrontal:
+		PrimaryWeapon: 227mm
+		PrimaryOffset: 0,6,0,-3
+		PrimaryLocalOffset: 3,-5,0,0,0, -3,-5,0,0,0
+	RenderUnit:
+		PlayerPalette: d2kplayer
 	AutoTarget:

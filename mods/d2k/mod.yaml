@@ -20,6 +20,7 @@ Rules:
 	mods/d2k/rules/vehicles.yaml
 	mods/d2k/rules/structures.yaml
 	mods/d2k/rules/aircraft.yaml
+	mods/d2k/rules/infantry.yaml
 
 Sequences:
 	mods/d2k/sequences.yaml
@@ -37,12 +38,15 @@ Assemblies:
 ChromeLayout:
 
 Weapons:
+	mods/d2k/weapons.yaml
 
 Voices:
 	mods/d2k/voices.yaml
 
 TileSets:
 	mods/d2k/tilesets/arrakis.yaml
+
+#TileSize: 32
 
 Music:
 

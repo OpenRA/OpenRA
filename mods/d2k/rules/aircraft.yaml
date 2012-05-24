@@ -33,3 +33,29 @@ CARRYALL:
 		PipCount: 1
 	FallsToEarth:
 		Explosion: UnitExplode
+
+C17:
+	ParaDrop:
+		LZRange: 1
+	Inherits: ^Plane
+	Tooltip:
+		Name: Frigate
+		Description: Supply spacecraft
+	Plane:
+		ROT: 5
+		Speed: 35
+	Health:
+		HP: 25
+	Armor:
+		Type: Heavy
+	RenderUnit:
+		Image: frigate
+		PlayerPalette: d2kplayer
+	WithShadow:
+	Cargo:
+		MaxWeight: 10
+		PipCount: 10
+	Invulnerable:
+	-Selectable:
+	-GainsExperience:
+	FlyAwayOnIdle:

@@ -4,10 +4,10 @@ PAL="mods/d2k/bits/d2k.pal"
 
 mono OpenRA.Utility.exe --r8 $R8 $PAL 194 205 "spice"
 mono OpenRA.Utility.exe --shp spice.png 48
-mono OpenRA.Utility.exe --r8 $R8 $PAL 206 457 "rifleinfantry" --infantry
-mono OpenRA.Utility.exe --shp rifleinfantry.png 48
-mono OpenRA.Utility.exe --r8 $R8 $PAL 458 693 "rocketinfantry" --infantry
-mono OpenRA.Utility.exe --shp rocketinfantry.png 48
+mono OpenRA.Utility.exe --r8 $R8 $PAL 206 457 "rifle" --infantry
+mono OpenRA.Utility.exe --shp rifle.png 48
+mono OpenRA.Utility.exe --r8 $R8 $PAL 458 693 "rocket" --infantry
+mono OpenRA.Utility.exe --shp rocket.png 48
 mono OpenRA.Utility.exe --r8 $R8 $PAL 694 929 "fremen" --infantry
 mono OpenRA.Utility.exe --shp fremen.png 48
 mono OpenRA.Utility.exe --r8 $R8 $PAL 930 1165 "sardaukar" --infantry
@@ -117,8 +117,8 @@ mono OpenRA.Utility.exe --r8 $R8 $PAL 3679 3686 "sell"
 mono OpenRA.Utility.exe --shp sell.png 48
 #explosions and muzzle flash
 
-mono OpenRA.Utility.exe --r8 $R8 $PAL 4011 4011 "infrantryicon"
-mono OpenRA.Utility.exe --shp infrantryicon.png 60
+mono OpenRA.Utility.exe --r8 $R8 $PAL 4011 4011 "rifleicon"
+mono OpenRA.Utility.exe --shp rifleicon.png 60
 mono OpenRA.Utility.exe --r8 $R8 $PAL 4012 4012 "bazookaicon"
 mono OpenRA.Utility.exe --shp bazookaicon.png 60
 mono OpenRA.Utility.exe --r8 $R8 $PAL 4013 4013 "engineericon"
@@ -271,7 +271,7 @@ mono OpenRA.Utility.exe --r8 $R8 $PAL 4254 4273 "radarmake" --building
 mono OpenRA.Utility.exe --shp radarmake.png 96
 mono OpenRA.Utility.exe --r8 $R8 $PAL 4274 4294 "highmake" --building
 mono OpenRA.Utility.exe --shp highmake.png 96
-mono OpenRA.Utility.exe --r8 $R8 $PAL 4275 4312 "lightmake" --building
+mono OpenRA.Utility.exe --r8 $R8 $PAL 4295 4312 "lightmake" --building
 mono OpenRA.Utility.exe --shp lightmake.png 96
 mono OpenRA.Utility.exe --r8 $R8 $PAL 4313 4327 "silomake" --building
 mono OpenRA.Utility.exe --shp silomake.png 32
