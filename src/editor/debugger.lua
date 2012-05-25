@@ -108,6 +108,7 @@ debugger.listen = function()
       debugger.server = copas.wrap(skt)
       debugger.socket = skt
       debugger.loop = false
+      debugger.scratchable = false
 
       -- load the remote file into the debugger
       -- set basedir first, before loading to make sure that the path is correct
@@ -173,6 +174,7 @@ debugger.listen = function()
           DisplayOutput("Can't debug the script in the active editor window. Compilation error:\n" .. err .. "\n")
           return debugger.terminate()
         else
+          debugger.scratchable = true
           activateDocument(startfile, 1)
         end
       end
@@ -236,11 +238,9 @@ debugger.exec = function(command)
   end
 end
 
-debugger.updateBreakpoint = function(command)
+debugger.handleAsync = function(command)
   if debugger.server and not debugger.running then
-    copas.addthread(function ()
-        debugger.handle(command)
-      end)
+    copas.addthread(function () debugger.handle(command) end)
   end
 end
 
@@ -256,8 +256,7 @@ debugger.terminate = function()
     if debugger.pid then -- if there is PID, try local kill
       DebuggerKillClient()
     else -- otherwise, try graceful exit for the remote process
-      debugger.exec("exit")
-      copas.step(1) -- process 'exit' right away; doesn't guarantee the response
+      debugger.breaknow("exit")
     end
     DebuggerStop()
   end
@@ -272,19 +271,19 @@ debugger.out = function() debugger.exec("out") end
 debugger.run = function() debugger.exec("run") end
 debugger.evaluate = function(expression) return debugger.handle('eval ' .. expression) end
 debugger.execute = function(expression) return debugger.handle('exec ' .. expression) end
-debugger.breaknow = function()
+debugger.breaknow = function(command)
   -- stop if we're running a "trace" command
   debugger.loop = false
 
-  -- force a step command; don't use copas interface as it checks
+  -- force suspend command; don't use copas interface as it checks
   -- for the other side "reading" and the other side is not reading anything.
-  -- use the "original" socket to write a "step" command.
+  -- use the "original" socket to send "suspend" command.
   -- this will only break on the next Lua command.
   if debugger.socket then
     local running = debugger.running
     -- this needs to be short as it will block the UI
     debugger.socket:settimeout(0.25)
-    local file, line, err = debugger.handle("suspend", debugger.socket)
+    local file, line, err = debugger.handle(command or "suspend", debugger.socket)
     debugger.socket:settimeout(0)
     -- restore running status
     debugger.running = running
@@ -294,7 +293,7 @@ debugger.breaknow = function()
   end
 end
 debugger.breakpoint = function(file, line, state)
-  debugger.updateBreakpoint((state and "setb " or "delb ") .. file .. " " .. line)
+  debugger.handleAsync((state and "setb " or "delb ") .. file .. " " .. line)
 end
 
 ----------------------------------------------
@@ -485,12 +484,16 @@ end
 -- scratchpad functions
 
 function DebuggerRefreshScratchpad()
-  if debugger.pid and debugger.scratchpad.updated then
-    -- break the current execution first
-    -- this shouldn't do any harm if the execution is not running
-    debugger.breaknow()
-
-    if not debugger.scratchpad.running then
+  if debugger.scratchpad and debugger.scratchpad.updated then
+    if debugger.scratchpad.running then
+      -- break the current execution first
+      -- don't try too frequently to avoid overwhelming the debugger
+      local now = os.clock()
+      if now - debugger.scratchpad.running > 0.250 then
+        debugger.breaknow()
+        debugger.scratchpad.running = now
+      end
+    else
       local clear = ide.frame.menuBar:IsChecked(ID_CLEAROUTPUT)
       local scratchpadEditor = debugger.scratchpad.editor
       local code = scratchpadEditor:GetText()
@@ -501,10 +504,10 @@ function DebuggerRefreshScratchpad()
       -- of each script to avoid exiting the (debugee) scratchpad process.
       -- these errors are handled and not reported to the user
       local errormsg = 'execution suspended at ' .. os.clock()
-      local stopper = "\nerror('" .. errormsg .. "')"
+      local stopper = "\ndo error('" .. errormsg .. "') end"
 
       local function reloadScratchpadCode()
-        debugger.scratchpad.running = true
+        debugger.scratchpad.running = os.clock()
         debugger.scratchpad.updated = false
 
         local _, _, err = debugger.loadstring(filePath, code .. stopper)
@@ -540,14 +543,20 @@ end
 local numberStyle = wxstc.wxSTC_LUA_NUMBER
 
 function DebuggerScratchpadOn(editor)
-  debugger.scratchpad = {}
+  debugger.scratchpad = {editor = editor}
 
-  if not ProjectDebug(true, "scratchpad") then
+  -- check if the debugger is already running; this happens when
+  -- scratchpad is turned on after external script has connected
+  if debugger.server then
+    debugger.scratchpad.updated = true
+    ClearAllCurrentLineMarkers()
+    SetAllEditorsReadOnly(false)
+    ShellSupportRemote(nil, 0) -- disable remote shell
+    DebuggerRefreshScratchpad()
+  elseif not ProjectDebug(true, "scratchpad") then
     debugger.scratchpad = nil
     return
   end
-
-  debugger.scratchpad.editor = editor
 
   local scratchpadEditor = editor
   scratchpadEditor:StyleSetUnderline(numberStyle, true)

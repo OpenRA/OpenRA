@@ -274,8 +274,10 @@ frame:Connect(ID_RUNNOW, wx.wxEVT_COMMAND_MENU_SELECTED,
 frame:Connect(ID_RUNNOW, wx.wxEVT_UPDATE_UI,
   function (event)
     local editor = GetEditor()
-    event:Enable((debugger.server == nil) and (editor ~= nil) and (debugger.pid == nil)
-                 or debugger.scratchpad ~= nil)
+    -- allow scratchpad if there is no server or there is a server, but it is
+    -- allowed to turn it into a scratchpad and we are not debugging anything
+    event:Enable((editor ~= nil) and ((debugger.server == nil or debugger.scratchable)
+                 and debugger.pid == nil or debugger.scratchpad ~= nil))
   end)
 
 frame:Connect(ID_ATTACH_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,

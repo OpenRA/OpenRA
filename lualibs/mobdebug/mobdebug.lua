@@ -1,14 +1,15 @@
 --
--- MobDebug 0.448
+-- MobDebug 0.449
 -- Copyright Paul Kulchenko 2011-2012
--- Based on RemDebug 1.0 (http://www.keplerproject.org/remdebug)
+-- Based on RemDebug 1.0 Copyright Kepler Project 2005
+-- (http://www.keplerproject.org/remdebug)
 --
 
 local mobdebug = {
   _NAME = "mobdebug",
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
-  _VERSION = "0.448"
+  _VERSION = "0.449"
 }
 
 local coroutine = coroutine
@@ -151,11 +152,6 @@ local function socketMobileLua()
 end
 
 local socket = mosync and socketMobileLua() or (require "socket")
-
---
--- RemDebug 1.0 Beta
--- Copyright Kepler Project 2005 (http://www.keplerproject.org/remdebug)
---
 
 local debug = require "debug"
 local coro_debugger
@@ -587,11 +583,12 @@ local function controller(controller_host, controller_port)
       else
         if status then -- normal execution is done
           break
-        elseif not err:find(deferror) then -- report the error
+        elseif err and not err:find(deferror) then -- report the error
           report(debug.traceback(coro_debugee), err)
           if exitonerror then break end
           -- resume once more to clear the response the debugger wants to send
-          coroutine.resume(coro_debugger, events.RESTART)
+          local status, err = coroutine.resume(coro_debugger, events.RESTART)
+          if status and err == "exit" then break end
         end
       end
     end
@@ -728,7 +725,7 @@ local function handle(params, client)
     for index, exp in pairs(watches) do
       client:send("DELW " .. index .. "\n")
       if client:receive() == "200 OK" then 
-      watches[index] = nil
+        watches[index] = nil
       else
         print("Error: watch expression at index " .. index .. " [" .. exp .. "] not removed")
       end
