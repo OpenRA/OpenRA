@@ -1,8 +1,6 @@
-# make R8Reader not always scan the whole file on load
 # brick walls don't fit, requires updated RenderBuildingWall
 # factories and refinery require overlays (something like RenderWeaponFactory)
 # make structures appear earlier when errecting from ground
-# silo frames don't fit, requires updated RenderSilo
 # harvester unload frames missing (too few DATA.R8 frames in general)
 # carryalls should automatically transport harvesters (needs complex logic)
 # windtrap animations missing
@@ -11,15 +9,15 @@
 # Arrakis tileset crashes the game
 # create a tileset extractor for gamefiles to remove copyrighted content from distribution
 # replace ore with spice and mines with spice blooms
-# add game logic for concrete plates
+# add game logic for concrete plates (use terrain overlay from bridges/ressources)
 # allow placing turrets on walls
 # support separate turret sequence with RenderBuildingTurreted
-# repair bay should repair vehicles
-# add ornithocopter (might need new RenderOrni code)
+# repair bay should really repair vehicles
+# ornithocopter should flap (might need new RenderOrni code for proper animation)
+# R8 converter needs infantry frame resorter
 # add infantry
-# add tanks
 # add sandworm
-# add thumper
+# add thumper which really attracts sandworms
 # allow upgrades
 # add ordos/harkonnen (avoid redundancy using inheritances)
 # add voices (Dune 2000/DATA/SFX folder contains .aud files)
@@ -28,4 +26,5 @@
 # create a shellmap
 # rework chrome UI, dialoges, tabs
 # add install rules to makefile (once more polished)
-# idea: frame 2998 (looks like hole) could become a tunnel to make Ordos really insidious (similiar mechanism to paratroopers powerproxy)
+# idea: frame 2998 (fremen siech) could become a tunnel to make Ordos really insidious (similiar mechanism to paratroopers powerproxy)
+# add sonic tank weapon (currently uses tesla)

@@ -17,6 +17,7 @@ Packages:
 
 Rules:
 	mods/d2k/rules/system.yaml
+	mods/d2k/rules/defaults.yaml
 	mods/d2k/rules/vehicles.yaml
 	mods/d2k/rules/structures.yaml
 	mods/d2k/rules/aircraft.yaml

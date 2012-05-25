@@ -242,12 +242,12 @@ SILOA:
 		Type: Wood
 	RevealsShroud:
 		Range: 4
-#	RenderBuildingSilo:
+	RenderBuildingSilo:
+		PlayerPalette: d2kplayer
 	StoresOre:
 		PipCount: 5
 		Capacity: 1500
-	RenderBuilding:
-		PlayerPalette: d2kplayer
+	-RenderBuilding:
 	-EmitInfantryOnSell:
 
 LIGHTA:
@@ -476,6 +476,5 @@ REPAIRA:
 		PlayerPalette: d2kplayer
 	BelowUnits:
 	Reservable:
-	RallyPoint:
 	RepairsUnits:
-		Interval: 10
+	RallyPoint:

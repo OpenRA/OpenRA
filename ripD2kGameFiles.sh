@@ -71,7 +71,7 @@ mono OpenRA.Utility.exe --r8 $R8 $PAL 2523 2524 "pwra" --building
 mono OpenRA.Utility.exe --shp pwra.png 64
 mono OpenRA.Utility.exe --r8 $R8 $PAL 2525 2526 "barra" --building
 mono OpenRA.Utility.exe --shp barra.png 80
-mono OpenRA.Utility.exe --r8 $R8 $PAL 2527 2558 "walla" --building
+mono OpenRA.Utility.exe --r8 $R8 $PAL 2527 2558 "walla" --wall
 mono OpenRA.Utility.exe --shp walla.png 32
 mono OpenRA.Utility.exe --r8 $R8 $PAL 2559 2560 "conyarda" --building
 mono OpenRA.Utility.exe --shp conyarda.png 96

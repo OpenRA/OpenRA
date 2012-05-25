@@ -225,3 +225,32 @@ Missile:
 	RenderUnit:
 		PlayerPalette: d2kplayer
 	AutoTarget:
+
+SONIC:
+	Inherits: ^Vehicle
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 15
+		Prerequisites: heavya,researcha
+		Owner: atreides
+	Valued:
+		Cost: 1500
+	Tooltip:
+		Name: Sonic Tank
+		Description: Fires a sound wave\n Strong vs Infantry.\n Weak vs Tanks
+	Selectable:
+		Bounds: 24,24
+	Health:
+		HP: 150
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 8
+	RevealsShroud:
+		Range: 7
+	RenderUnit:
+		PlayerPalette: d2kplayer
+	AttackFrontal:
+		PrimaryWeapon: TTankZap
+		PrimaryOffset: 0,0,0,-5
+	AutoTarget:

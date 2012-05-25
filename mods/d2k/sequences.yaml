@@ -103,8 +103,7 @@ refa:
 siloa:
 	idle:
 		Start: 0
-#		Length: 3
-		Length: 1
+		Length: 4
 	damaged-idle:
 		Start: 4
 		Length: 1
@@ -166,6 +165,11 @@ carryall:
 		Start: 0
 		Facings: 32
 
+orni:
+	idle:
+		Start: 0
+		Facings: 32
+
 trike:
 	idle:
 		Start: 0
@@ -197,6 +201,11 @@ missile:
 		Start: 0
 		Facings: 32
 
+sonic:
+	idle:
+		Start: 0
+		Facings: 32
+
 guntowera:
 	idle:
 		Start: 0
@@ -222,46 +231,38 @@ frigate:
 		Start: 0
 		Facings: 1
 
-#rifle:
-#	stand:
-#		Start: 0
-#		Facings: 8
-#	run:
-#		Start: 8
-#		Length: 6
-#		Facings: 8
-#	shoot:
-#		Start: 56
-#		Length: 8
-#		Facings: 8
-#	prone-stand:
-#		Start: 136
-#		Length: 4
-#		Facings: 8
-#	prone-run:
-#		Start: 136
-#		Length: 4
-#		Facings: 8
-#	standup-0:
-#		Start: 176
-#		Length: 2
-#		Facings: 8
-#	prone-shoot:
-#		Start: 168
-#		Length: 8
-#		Facings: 8
-#	die1:
-#		Start: 288
-#		Length: 8
-#	die2:
-#		Start: 296
-#		Length: 8
-#	die3:
-#		Start: 304
-#		Length: 8
-#	die4:
-#		Start: 312
-#		Length: 12
-#	die5:
-#		Start: 324
-#		Length: 18
+#TODO: This is wrong.
+rifle:
+	stand:
+		Start: 0
+		Facings: 8
+	stand2:
+		Start: 8
+		Length: 8
+	stand3:
+		Start: 128
+		Length: 16
+	run:
+		Start: 16
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 64
+		Length: 6
+		Facings: 8
+	prone-stand:
+		Start: 112
+		Length: 4
+		Facings: 8
+	prone-run:
+		Start: 144
+		Length: 4
+		Facings: 8
+	standup-0:
+		Start: 176
+		Length: 2
+		Facings: 8
+	prone-shoot:
+		Start: 192
+		Length: 6
+		Facings: 8

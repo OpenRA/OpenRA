@@ -151,13 +151,41 @@ namespace OpenRA.Utility
 					frame = srcImage[f];
 				}
 			}
+			else if (args.Contains("--wall")) //complex resorting to RA/CnC compatible frame order
+			{
+				int[] D2kBrikFrameOrder = {1, 4, 2, 12, 5, 6, 16, 9, 3, 13, 7, 8, 14, 10, 11, 15, 17, 20, 18, 28, 21, 22, 32, 25, 19, 29, 23, 24, 30, 26, 27, 31};
+				foreach (int o in D2kBrikFrameOrder)
+				{
+					int f = startFrame -1 + o;
+
+					frame = srcImage[f];
+
+					if (frame.OffsetX < 0) { frame.OffsetX = 0 - frame.OffsetX; }
+					if (frame.OffsetY < 0) { frame.OffsetY = 0 - frame.OffsetY; }
+					OffsetX = 0 + frame.OffsetX;
+					OffsetY = frame.FrameHeight - frame.OffsetY;
+					Console.WriteLine("calculated OffsetX: {0}", OffsetX);
+					Console.WriteLine("calculated OffsetY: {0}", OffsetY);
+
+					var data = bitmap.LockBits(new Rectangle(x+OffsetX, 0+OffsetY, frame.Width, frame.Height), ImageLockMode.WriteOnly,
+						PixelFormat.Format8bppIndexed);
+
+					for (var i = 0; i < frame.Height; i++)
+						Marshal.Copy(frame.Image, i * frame.Width,
+							new IntPtr(data.Scan0.ToInt64() + i * data.Stride), frame.Width);
+
+					bitmap.UnlockBits(data);
+
+					x += frame.FrameWidth;
+				}
+			}
 			else
 			{
 				for (int f = startFrame; f < endFrame; f++)
 				{
 					frame = srcImage[f];
 					
-					if (args.Contains("--infrantry"))
+					if (args.Contains("--infantry"))
 					{
 						OffsetX = frame.FrameWidth/2 - frame.Width/2;
 						OffsetY = frame.FrameHeight/2 - frame.Height/2;

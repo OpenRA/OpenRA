@@ -59,3 +59,41 @@ C17:
 	-Selectable:
 	-GainsExperience:
 	FlyAwayOnIdle:
+
+ORNI:
+	Inherits: ^Helicopter
+	Buildable:
+		Queue: Plane
+		BuildPaletteOrder: 90
+		Prerequisites: hightecha
+		BuiltAt: hightecha
+		Owner: atreides
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Ornithocopter
+		Description: Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles.\n  Weak vs Tanks
+	Health:
+		HP: 150
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 10
+	AttackHeli:
+		PrimaryWeapon: ChainGun
+		PrimaryOffset: -5,-2,0,2
+		FacingTolerance: 20
+	Helicopter:
+		LandWhenIdle: false
+		InitialFacing: 20
+		ROT: 4
+		Speed: 12
+	RenderUnit:
+		PlayerPalette: d2kplayer
+	WithShadow:
+	Selectable:
+		Bounds: 38,32,0,0
+	FallsToEarth:
+		Explosion: UnitExplode
+	SmokeTrailWhenDamaged:
+		Offset: 0,-10
