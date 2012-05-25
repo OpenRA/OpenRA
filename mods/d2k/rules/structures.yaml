@@ -207,7 +207,9 @@ REFA:
 	RevealsShroud:
 		Range: 6
 	Bib:
-	RenderBuilding:
+	-RenderBuilding:
+	RenderBuildingWarFactory:
+		Image: REFA
 		PlayerPalette: d2kplayer
 	OreRefinery:
 	StoresOre:
@@ -273,7 +275,9 @@ LIGHTA:
 	RevealsShroud:
 		Range: 4
 	Bib:
-	RenderBuilding:
+	-RenderBuilding:
+	RenderBuildingWarFactory:
+		Image: LIGHTA
 		PlayerPalette: d2kplayer
 	RallyPoint:
 	Exit@1:
@@ -307,7 +311,9 @@ HEAVYA:
 	RevealsShroud:
 		Range: 4
 	Bib:
-	RenderBuilding:
+	-RenderBuilding:
+	RenderBuildingWarFactory:
+		Image: HEAVYA
 		PlayerPalette: d2kplayer
 	RallyPoint:
 	Exit@1:

@@ -93,11 +93,22 @@ radara:
 
 refa:
 	idle:
-		Start: 1
+		Start: 0
+		Length: 1
 	make: refmake
 		Start: 0
 		Length: *
 	damaged-idle:
+		Start: 0
+	build-top:
+		Start: 1
+		Length: 1
+	damaged-build-top:
+		Start: 2
+		Length: 1
+	idle-top:
+		Start: 1
+	damaged-idle-top:
 		Start: 2
 
 siloa:
@@ -141,20 +152,42 @@ palacea:
 
 lighta:
 	idle:
-		Start: 1
+		Start: 0
+		Length: 1
 	make: lightmake
 		Start: 0
 		Length: *
 	damaged-idle:
+		Start: 0
+	build-top:
+		Start: 1
+		Length: 1
+	damaged-build-top:
+		Start: 2
+		Length: 1
+	idle-top:
+		Start: 1
+	damaged-idle-top:
 		Start: 2
 
 heavya:
 	idle:
-		Start: 1
+		Start: 0
+		Length: 1
 	make: heavymake
 		Start: 0
 		Length: *
 	damaged-idle:
+		Start: 0
+	build-top:
+		Start: 1
+		Length: 1
+	damaged-build-top:
+		Start: 2
+		Length: 1
+	idle-top:
+		Start: 1
+	damaged-idle-top:
 		Start: 2
 
 carryall:

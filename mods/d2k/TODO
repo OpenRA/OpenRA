@@ -1,11 +1,11 @@
-# brick walls don't fit, requires updated RenderBuildingWall
-# factories and refinery require overlays (something like RenderWeaponFactory)
 # make structures appear earlier when errecting from ground
 # harvester unload frames missing (too few DATA.R8 frames in general)
 # carryalls should automatically transport harvesters (needs complex logic)
 # windtrap animations missing
 # outpost animations missing
 # construction yard crane animations missing
+# welding animation (factories) missing
+# chimney animation (refinery) missing
 # Arrakis tileset crashes the game
 # create a tileset extractor for gamefiles to remove copyrighted content from distribution
 # replace ore with spice and mines with spice blooms
