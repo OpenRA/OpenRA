@@ -1,4 +1,4 @@
-CONYARDA:
+^CONYARD:
 	Inherits: ^Building
 	Building:
 		Power: 0
@@ -13,11 +13,10 @@ CONYARDA:
 	Bib:
 	Production:
 		Produces: Building,Defense
-	IronCurtainable: 
 	Valued:
 		Cost: 2500
 	Tooltip:
-		Name: Atreides Construction Yard
+		Name: Construction Yard
 	CustomSellValue:
 		Value: 2500
 	BaseBuilding:
@@ -26,21 +25,18 @@ CONYARDA:
 		Offset:1,1
 		Facing: 270
 	ProductionBar:
-	RenderBuilding:
-		PlayerPalette: d2kplayer
 
-PWRA:
+^POWER:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 0
-		Owner: atreides
-#		Hotkey: p
+		Hotkey: w
 	Valued:
 		Cost: 300
 	Tooltip:
-		Name: Atreides Windtrap
-		Description: Provides power for other Atreides structures
+		Name: Windtrap
+		Description: Provides power for other structures
 	ProvidesCustomPrerequisite:
 		Prerequisite: anypower
 	Building:
@@ -54,21 +50,18 @@ PWRA:
 	RevealsShroud:
 		Range: 4
 	Bib:
-	RenderBuilding:
-		PlayerPalette: d2kplayer
 
-BARRA:
+^BARRACKS:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 30
 		Prerequisites: anypower
-		Owner: atreides
-#		Hotkey: b
+		Hotkey: b
 	Valued:
 		Cost: 400
 	Tooltip:
-		Name: Atreides Barracks
+		Name: Barracks
 		Description: Trains infantry
 	Building:
 		Power: -20
@@ -81,8 +74,6 @@ BARRA:
 	RevealsShroud:
 		Range: 5
 	Bib:
-	RenderBuilding:
-		PlayerPalette: d2kplayer
 	RallyPoint:
 	Exit@1:
 		SpawnOffset: -1,19
@@ -95,18 +86,16 @@ BARRA:
 	PrimaryBuilding:
 	ProductionBar:
 
-HIGHTECHA:
+^HIGHTECH:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 50
-		Prerequisites: refa
-		Owner: atreides
 	Valued:
 		Cost: 2000
 	Tooltip:
 		Name: High Tech Factory
-		Description: Produces carryalls
+		Description: Produces Carryalls
 	ProvidesCustomPrerequisite:
 		Prerequisite: anyhightech
 	Building:
@@ -120,8 +109,6 @@ HIGHTECHA:
 	RevealsShroud:
 		Range: 4
 	Bib:
-	RenderBuilding:
-		PlayerPalette: d2kplayer
 	RallyPoint:
 	Exit@1:
 		SpawnOffset: 5,0
@@ -131,13 +118,11 @@ HIGHTECHA:
 	PrimaryBuilding:
 	ProductionBar:
 
-RESEARCHA:
+^RESEARCH:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 50
-		Prerequisites: heavya,radara
-		Owner: atreides
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -154,20 +139,16 @@ RESEARCHA:
 	RevealsShroud:
 		Range: 4
 	Bib:
-	RenderBuilding:
-		PlayerPalette: d2kplayer
 
-PALACEA:
+^PALACE:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 50
-		Prerequisites: researcha
-		Owner: atreides
 	Valued:
 		Cost: 2000
 	Tooltip:
-		Name: Atreides Palace
+		Name: Palace
 		Description: Provides advanced technology
 	Building:
 		Power: -30
@@ -180,17 +161,16 @@ PALACEA:
 	RevealsShroud:
 		Range: 4
 	Bib:
-	RenderBuilding:
-		PlayerPalette: d2kplayer
 
 
-REFA:
+^REFINERY:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 10
 		Prerequisites: anypower
-		Owner: atreides
+	ProvidesCustomPrerequisite:
+		Prerequisite: anyref
 	Valued:
 		Cost: 1400
 	Tooltip:
@@ -208,9 +188,6 @@ REFA:
 		Range: 6
 	Bib:
 	-RenderBuilding:
-	RenderBuildingWarFactory:
-		Image: REFA
-		PlayerPalette: d2kplayer
 	OreRefinery:
 	StoresOre:
 		PipCount: 17
@@ -223,13 +200,11 @@ REFA:
 		SpawnOffset: 1,2
 		Facing: 64
 
-SILOA:
+^SILO:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 40
-		Prerequisites: refa
-		Owner: atreides
 	Valued:
 		Cost: 150
 	Tooltip:
@@ -244,21 +219,20 @@ SILOA:
 		Type: Wood
 	RevealsShroud:
 		Range: 4
+	-RenderBuilding:
 	RenderBuildingSilo:
-		PlayerPalette: d2kplayer
 	StoresOre:
 		PipCount: 5
 		Capacity: 1500
-	-RenderBuilding:
 	-EmitInfantryOnSell:
 
-LIGHTA:
+^LIGHT:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 50
-		Prerequisites: refa
-		Owner: atreides
+	ProvidesCustomPrerequisite:
+		Prerequisite: anylight
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -276,9 +250,6 @@ LIGHTA:
 		Range: 4
 	Bib:
 	-RenderBuilding:
-	RenderBuildingWarFactory:
-		Image: LIGHTA
-		PlayerPalette: d2kplayer
 	RallyPoint:
 	Exit@1:
 		SpawnOffset: 10,0
@@ -288,13 +259,13 @@ LIGHTA:
 	PrimaryBuilding:
 	ProductionBar:
 
-HEAVYA:
+^HEAVY:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 50
-		Prerequisites: lighta
-		Owner: atreides
+	ProvidesCustomPrerequisite:
+		Prerequisite: anyheavy
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -312,9 +283,6 @@ HEAVYA:
 		Range: 4
 	Bib:
 	-RenderBuilding:
-	RenderBuildingWarFactory:
-		Image: HEAVYA
-		PlayerPalette: d2kplayer
 	RallyPoint:
 	Exit@1:
 		SpawnOffset: 10,0
@@ -324,15 +292,15 @@ HEAVYA:
 	PrimaryBuilding:
 	ProductionBar:
 
-RADARA:
+^RADAR:
 	RequiresPower:
 	CanPowerDown:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 60
-		Prerequisites: barra
-		Owner: atreides
+	ProvidesCustomPrerequisite:
+		Prerequisite: anyradar
 	Valued:
 		Cost: 1400
 	Tooltip:
@@ -349,11 +317,9 @@ RADARA:
 	RevealsShroud:
 		Range: 10
 	Bib:
-	RenderBuilding:
-		PlayerPalette: d2kplayer
 	ProvidesRadar:
 
-STARPORTA:
+^STARPORT:
 	Inherits: ^Building
 	Valued:
 		Cost: 2000
@@ -365,8 +331,6 @@ STARPORTA:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 60
-		Prerequisites: radara
-		Owner: atreides
 	Building:
 		Power: -30
 		Footprint: xxx xxx xxx
@@ -375,8 +339,6 @@ STARPORTA:
 		HP: 1000
 	RevealsShroud:
 		Range: 7
-	RenderBuilding:
-		PlayerPalette: d2kplayer
 	Bib:
 	RallyPoint:
 		RallyPoint: 4,2
@@ -391,45 +353,13 @@ STARPORTA:
 		Group: Vehicle
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
-		QueuedAudio:
-		ReadyAudio:
-		OnHoldAudio:
-		CancelledAudio:
 	ProductionBar:
 
-WALLA:
-	Inherits: ^Wall
-	Buildable:
-		Queue: Defense
-		BuildPaletteOrder: 1000
-		Prerequisites: conyarda
-		Owner: atreides
-	Valued:
-		Cost: 100
-	CustomSellValue:
-		Value: 0
-	Tooltip:
-		Name: Concrete Wall
-		Description: Stop units and blocks enemy fire.
-	SoundOnDamageTransition:
-		DamagedSound: crmble2.aud
-		DestroyedSound: kaboom30.aud
-	Health:
-		HP: 500
-	Armor:
-		Type: Concrete
-	Wall:
-		CrushClasses: heavywall
-	RenderBuildingWall:
-		Palette: d2k
-
-GUNTOWERA:
+^GUNTOWER:
 	Inherits: ^Building
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 40
-		Prerequisites: barra
-		Owner: atreides
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -445,29 +375,27 @@ GUNTOWERA:
 		Type: Heavy
 	RevealsShroud:
 		Range: 7
+	RenderRangeCircle:
+	-RenderBuilding:
+	RenderBuildingTurreted:
+		Palette: d2k
 	Turreted:
 		ROT: 12
 		InitialFacing: 50
-	RenderBuildingTurreted:
-		Palette: d2k
 	AttackTurreted:
 		PrimaryWeapon: TurretGun
 	AutoTarget:
-	-RenderBuilding:
-	RenderRangeCircle:
 
-REPAIRA:
+^REPAIR:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 30
-		Prerequisites: heavya
-		Owner: atreides
 	Valued:
 		Cost: 1000
 	Tooltip:
 		Name: Repair Pad
-		Description: Repairs vehicles, and allows\n the construction of additional bases.
+		Description: Repairs vehicles and allows\n the construction of additional bases.
 	Building:
 		Power: -30
 		Footprint: xxx xxx xxx
@@ -478,9 +406,8 @@ REPAIRA:
 		Type: Wood
 	RevealsShroud:
 		Range: 5
-	RenderBuilding:
-		PlayerPalette: d2kplayer
 	BelowUnits:
 	Reservable:
 	RepairsUnits:
+		Interval: 10
 	RallyPoint:

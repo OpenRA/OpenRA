@@ -165,6 +165,19 @@
 	GivesBounty:
 
 ^Wall:
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 1000
+	SoundOnDamageTransition:
+		DamagedSound:
+		DestroyedSound:
+	Valued:
+		Cost: 100
+	CustomSellValue:
+		Value: 0
+	Tooltip:
+		Name: Concrete Wall
+		Description: Stop units and blocks enemy fire.
 	AppearsOnRadar:
 	Building:
 		Dimensions: 1,1
@@ -172,11 +185,12 @@
 		BuildSounds:
 		Adjacent: 7
 		TerrainTypes: Clear,Road
-	SoundOnDamageTransition:
-		DamagedSound:
-		DestroyedSound:
+	Health:
+		HP: 500
+	Armor:
+		Type: Concrete
 	Wall:
-		CrushClasses: wall
+		CrushClasses: heavywall
 	LineBuild:
 		Range: 8
 	SelectionDecorations:

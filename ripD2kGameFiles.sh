@@ -167,12 +167,12 @@ mono OpenRA.Utility.exe --shp saboteuricon.png 60
 mono OpenRA.Utility.exe --r8 $R8 $PAL 4035 4035 "deathhandicon"
 mono OpenRA.Utility.exe --shp deathhandicon.png 60
 # 4036..4045 = repetitions
-mono OpenRA.Utility.exe --r8 $R8 $PAL 4046 4046 "conyardicona" # = 4049
-mono OpenRA.Utility.exe --shp conyardicona.png 60
-mono OpenRA.Utility.exe --r8 $R8 $PAL 4047 4047 "conyardiconh"
-mono OpenRA.Utility.exe --shp conyardiconh.png 60
-mono OpenRA.Utility.exe --r8 $R8 $PAL 4048 4048 "conyardicono"
-mono OpenRA.Utility.exe --shp conyardicono.png 60
+mono OpenRA.Utility.exe --r8 $R8 $PAL 4046 4046 "conyardaicon" # = 4049
+mono OpenRA.Utility.exe --shp conyardaicon.png 60
+mono OpenRA.Utility.exe --r8 $R8 $PAL 4047 4047 "conyardhicon"
+mono OpenRA.Utility.exe --shp conyardhicon.png 60
+mono OpenRA.Utility.exe --r8 $R8 $PAL 4048 4048 "conyardaicon"
+mono OpenRA.Utility.exe --shp conyardoicon.png 60
 mono OpenRA.Utility.exe --r8 $R8 $PAL 4050 4050 "4plateicon" # = 4051..4052
 mono OpenRA.Utility.exe --shp 4plateicon.png 60
 mono OpenRA.Utility.exe --r8 $R8 $PAL 4053 4053 "6plateicon" # = 4054..4055

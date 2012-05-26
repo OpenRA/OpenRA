@@ -1,10 +1,8 @@
-MCV:
+^MCV:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 110
-		Prerequisites: heavya,repaira
-		Owner: atreides
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -22,15 +20,7 @@ MCV:
 		Crushes: crate, infantry
 	RevealsShroud:
 		Range: 4
-	Transforms:
-		Facing: 10
-		IntoActor: conyarda
-		Offset:-1,-1
-		TransformSounds: placbldg.aud, build5.aud
-		NoTransformSounds: AI_DPLOY.AUD
 	RenderUnit:
-		Image: MCV
-		PlayerPalette: d2kplayer
 	MustBeDestroyed:
 	BaseBuilding:
 	-AttackMove:
@@ -40,7 +30,7 @@ HARVESTER:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
-		Prerequisites: refa,heavya
+		Prerequisites: anyref,anyheavy
 		Owner: atreides
 	Valued:
 		Cost: 1100
@@ -52,7 +42,7 @@ HARVESTER:
 		Bounds: 42,42
 	Harvester:
 		Capacity: 20
-		Resources: Ore,Gems
+		Resources: Spice
 		UnloadTicksPerBale: 1
 	Health:
 		HP: 600
@@ -60,11 +50,10 @@ HARVESTER:
 		Type: Heavy
 	Mobile:
 		Speed: 6
-		Crushes: wall, atmine, crate, infantry
+		Crushes: crate, infantry
+	RenderUnit:
 	RevealsShroud:
 		Range: 4
-	RenderUnit::
-		PlayerPalette: d2kplayer
 	-AttackMove:
 
 TRIKE:
@@ -72,7 +61,7 @@ TRIKE:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 15
-		Prerequisites: lighta
+		Prerequisites: anylight
 		Owner: atreides
 	Valued:
 		Cost: 200
@@ -91,7 +80,6 @@ TRIKE:
 	RevealsShroud:
 		Range: 8
 	RenderUnit:
-		PlayerPalette: d2kplayer
 	AttackFrontal:
 		PrimaryWeapon: M60mg
 		PrimaryOffset: 0,0,0,-4
@@ -102,7 +90,7 @@ QUAD:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
-		Prerequisites: lighta
+		Prerequisites: anylight
 		Owner: atreides
 	Valued:
 		Cost: 400
@@ -119,25 +107,22 @@ QUAD:
 	RevealsShroud:
 		Range: 7
 	RenderUnit:
-		PlayerPalette: d2kplayer
 	AttackFrontal:
 		PrimaryWeapon: QuadRockets
 		PrimaryOffset: 0,0,0,-2
 		PrimaryLocalOffset: -4,0,0,0,25, 4,0,0,0,-25
 	AutoTarget:
 
-COMBATA:
+^COMBAT:
 	Inherits: ^Tank
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 60
-		Prerequisites: heavya
-		Owner: atreides
 	Valued:
 		Cost: 850
 	Tooltip:
 		Name: Combat Tank
-		Description: Atreides Main Battle Tank.\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
+		Description: Main Battle Tank.\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
 	Health:
 		HP: 450
 	Armor:
@@ -154,7 +139,6 @@ COMBATA:
 		PrimaryRecoil: 3
 		PrimaryRecoilRecovery: 0.9
 	RenderUnitTurreted:
-		PlayerPalette: d2kplayer
 	AutoTarget:
 	Explodes:
 		Weapon: UnitExplodeSmall
@@ -167,7 +151,7 @@ SIEGE:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 80
-		Prerequisites: radara
+		Prerequisites: anyradar
 		Owner: atreides
 	Valued:
 		Cost: 600
@@ -190,7 +174,6 @@ SIEGE:
 		PrimaryRecoil: 3
 		PrimaryRecoilRecovery: 0.9
 	RenderUnitTurreted:
-		PlayerPalette: d2kplayer
 	Explodes:
 		Weapon: UnitExplode
 		Chance: 75  
@@ -206,7 +189,7 @@ Missile:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 50
-		Prerequisites: heavya
+		Prerequisites: anyheavy
 		Owner: atreides
 	Mobile:
 		Speed: 6
@@ -216,39 +199,9 @@ Missile:
 		Type: Light
 	RevealsShroud:
 		Range: 6
+	RenderUnit:
 	AttackFrontal:
 		PrimaryWeapon: 227mm
 		PrimaryOffset: 0,6,0,-3
 		PrimaryLocalOffset: 3,-5,0,0,0, -3,-5,0,0,0
-	RenderUnit:
-		PlayerPalette: d2kplayer
-	AutoTarget:
-
-SONIC:
-	Inherits: ^Vehicle
-	Buildable:
-		Queue: Vehicle
-		BuildPaletteOrder: 15
-		Prerequisites: heavya,researcha
-		Owner: atreides
-	Valued:
-		Cost: 1500
-	Tooltip:
-		Name: Sonic Tank
-		Description: Fires a sound wave\n Strong vs Infantry.\n Weak vs Tanks
-	Selectable:
-		Bounds: 24,24
-	Health:
-		HP: 150
-	Armor:
-		Type: Light
-	Mobile:
-		Speed: 8
-	RevealsShroud:
-		Range: 7
-	RenderUnit:
-		PlayerPalette: d2kplayer
-	AttackFrontal:
-		PrimaryWeapon: TTankZap
-		PrimaryOffset: 0,0,0,-5
 	AutoTarget:

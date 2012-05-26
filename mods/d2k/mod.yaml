@@ -41,6 +41,7 @@ Rules:
 	mods/d2k/rules/structures.yaml
 	mods/d2k/rules/aircraft.yaml
 	mods/d2k/rules/infantry.yaml
+	mods/d2k/rules/atreides.yaml
 
 Sequences:
 	mods/d2k/sequences.yaml

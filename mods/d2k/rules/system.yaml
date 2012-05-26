@@ -38,10 +38,6 @@ Player:
 	PlayerColorPalette:
 		BasePalette: d2k
 		PaletteFormat: d2k
-	PlayerColorPalette@d2kplayer:
-		BasePalette: d2k
-		BaseName: d2kplayer
-		PaletteFormat: d2k
 	DebugResourceCash:
 	DebugResourceOre:
 	DebugResourceOreCapacity:

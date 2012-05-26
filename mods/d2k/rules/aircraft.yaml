@@ -24,7 +24,6 @@ CARRYALL:
 		Speed: 15
 		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach
 	RenderUnit:
-		PlayerPalette: d2kplayer
 	RenderCargo:
 	WithShadow:
 	Cargo:
@@ -50,7 +49,6 @@ C17:
 		Type: Heavy
 	RenderUnit:
 		Image: frigate
-		PlayerPalette: d2kplayer
 	WithShadow:
 	Cargo:
 		MaxWeight: 10
@@ -89,7 +87,6 @@ ORNI:
 		ROT: 4
 		Speed: 12
 	RenderUnit:
-		PlayerPalette: d2kplayer
 	WithShadow:
 	Selectable:
 		Bounds: 38,32,0,0

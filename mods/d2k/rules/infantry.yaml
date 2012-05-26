@@ -10,7 +10,7 @@ RIFLE:
 		Name: Rifle Infantry
 		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles
 	Selectable:
-		Bounds: 12,17,0,-9
+		Bounds: 12,17,0,0
 	Health:
 		HP: 50
 	Mobile:
@@ -20,4 +20,3 @@ RIFLE:
 	TakeCover:
 	-RenderInfantry:
 	RenderInfantryProne:
-		PlayerPalette: d2kplayer

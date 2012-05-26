@@ -9,9 +9,8 @@ ENTORDOS: Enter the Ordos
 	Extension: AUD
 FIGHTPWR: Fight for Power
 	Extension: AUD
-# this one crashes the game at startup:
-#FREMEN: The Fremen
-#	Extension: AUD
+FREMEN: The Fremen
+	Extension: AUD
 HARK_BAT: Harkonnen Battle
 	Extension: AUD
 LANDSAND: Land of Sand
@@ -24,9 +23,8 @@ RISEHARK: Rise of Harkonnen
 	Extension: AUD
 ROBOTIX: Robotix
 	Extension: AUD
-# this one crashes the game at startup:
-#SCORE: Score
-#	Extension: AUD
+SCORE: Score
+	Extension: AUD
 SOLDAPPR: The Soldiers Approach
 	Extension: AUD
 SPICESCT: Spice Scouting
