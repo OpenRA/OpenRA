@@ -11,6 +11,8 @@ Folders:
 	./mods/d2k/bits
 	./mods/d2k/uibits
 	~^/Content/d2k
+	~^/Content/d2k/GAMESFX
+	~^/Content/d2k/Music
 
 Packages:
 	arrakis.mix
@@ -50,6 +52,7 @@ TileSets:
 #TileSize: 32
 
 Music:
+	mods/d2k/music.yaml
 
 Movies:
 

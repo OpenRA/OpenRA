@@ -27,7 +27,7 @@ MCV:
 		IntoActor: conyarda
 		Offset:-1,-1
 		TransformSounds: placbldg.aud, build5.aud
-		NoTransformSounds: nodeply1.aud
+		NoTransformSounds: AI_DPLOY.AUD
 	RenderUnit:
 		Image: MCV
 		PlayerPalette: d2kplayer
