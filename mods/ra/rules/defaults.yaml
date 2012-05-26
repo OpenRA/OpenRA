@@ -1,7 +1,7 @@
 ^Vehicle:
 	AppearsOnRadar:
 	Mobile:
-		Crushes: crate
+		Crushes: atmine, crate, apmine
 		TerrainSpeeds:
 			Clear: 80
 			Rough: 40
@@ -11,10 +11,11 @@
 		ROT: 5
 	SelectionDecorations:
 	Selectable: 
-		Voice:
+		Voice: VehicleVoice
 	TargetableUnit:
 		TargetTypes: Ground
 	Repairable: 
+	Chronoshiftable: 
 	Passenger: 
 		CargoType: Vehicle
 	IronCurtainable: 
@@ -24,16 +25,18 @@
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
-		Notification:
+		Notification: unitlst1.aud
 	ProximityCaptor:
 		Types:Vehicle
 	GivesBounty:
+	GpsDot:
+		String:Vehicle
 	WithSmoke:
 
 ^Tank:
 	AppearsOnRadar:
 	Mobile:
-		Crushes: crate
+		Crushes: wall, atmine, crate, apmine
 		TerrainSpeeds:
 			Clear: 80
 			Rough: 70
@@ -43,23 +46,26 @@
 		ROT: 5
 	SelectionDecorations:
 	Selectable: 
-		Voice:
+		Voice: VehicleVoice
 	TargetableUnit:
 		TargetTypes: Ground
 	Repairable: 
 	Chronoshiftable: 
 	Passenger: 
 		CargoType: Vehicle
+	IronCurtainable:
 	AttackMove:
 	HiddenUnderFog:
 	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
-		Notification:
+		Notification: unitlst1.aud
 	ProximityCaptor:
 		Types:Tank
 	GivesBounty:
+	GpsDot:
+		String:Vehicle
 	WithSmoke:
 
 ^Infantry:
@@ -71,7 +77,7 @@
 	RevealsShroud:
 		Range: 4
 	Mobile:
-		Crushes: crate
+		Crushes: apmine, crate
 		SharesCell: true
 		TerrainSpeeds:
 			Clear: 90
@@ -81,7 +87,7 @@
 			Beach: 80
 	SelectionDecorations:
 	Selectable:
-		Voice:
+		Voice: GenericVoice
 	TargetableUnit:
 		TargetTypes: Ground
 	RenderInfantry:
@@ -90,25 +96,55 @@
 	Passenger:
 		CargoType: Infantry
 	HiddenUnderFog:
+	TeslaInstantKills:
 	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
-		Notification:
+		Notification: unitlst1.aud
 	ProximityCaptor:
 		Types:Infantry
 	GivesBounty:
 	GpsDot:
 		String:Infantry
+	ParachuteAttachment:
+		Offset: 0,-10
 	CrushableInfantry:
-		CrushSound:
+		CrushSound: squishy2.aud
 
-^Helicopter:
+^Ship:
+	AppearsOnRadar:
+	Mobile:
+		Crushes: crate
+		TerrainSpeeds:
+			Water: 100
+	SelectionDecorations:
+	Selectable:
+		Voice: ShipVoice
+	TargetableUnit:
+		TargetTypes: Ground, Water
+	DetectCloaked:
+		Range: 3
+	HiddenUnderFog:
+	AttackMove:
+	GainsExperience:
+	GivesExperience:
+	DrawLineToTarget:
+	ActorLostNotification:
+		Notification: navylst1.aud
+	ProximityCaptor:
+		Types:Ship
+	GivesBounty:
+	GpsDot:
+		String:Ship
+	WithSmoke:
+
+^Plane:
 	AppearsOnRadar:
 		UseLocation: yes
 	SelectionDecorations:
 	Selectable:
-		Voice:
+		Voice: GenericVoice
 	TargetableAircraft:
 		TargetTypes: Air
 		GroundedTargetTypes: Ground
@@ -117,7 +153,7 @@
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
-		Notification:
+		Notification: aunitl1.aud
 	DebugAircraftFacing:
 	DebugAircraftSubPxX:
 	DebugAircraftSubPxY:
@@ -125,9 +161,16 @@
 	ProximityCaptor:
 		Types:Plane
 	EjectOnDeath:
-		PilotActor: RIFLE
+		PilotActor: E1
 		SuccessRate: 50
 	GivesBounty:
+	GpsDot:
+		String:Plane
+
+^Helicopter:
+	Inherits: ^Plane
+	GpsDot:
+		String:Helicopter
 
 ^Building:
 	AppearsOnRadar:
@@ -144,18 +187,18 @@
 	Capturable:
 	CapturableBar:
 	SoundOnDamageTransition:
-		DamagedSound:
-		DestroyedSound:
+		DamagedSound: kaboom1.aud
+		DestroyedSound: kaboom22.aud
 	RenderBuilding:
 	WithBuildingExplosion:
 	RepairableBuilding:
 	EmitInfantryOnSell:
-		ActorTypes: rifle,rifle,rifle,rifle,rifle,rifle
+		ActorTypes: e1,e1,e1,c1,c2,e6
 	MustBeDestroyed:
 	GivesExperience:
 #	FrozenUnderFog:
 	CaptureNotification:
-		Notification:
+		Notification: strucap1.aud
 	EditorAppearance:
 		RelativeToTopLeft: yes
 	ShakeOnDeath:
@@ -170,12 +213,12 @@
 	Building:
 		Dimensions: 1,1
 		Footprint: x
-		BuildSounds:
+		BuildSounds: placbldg.aud
 		Adjacent: 7
 		TerrainTypes: Clear,Road
 	SoundOnDamageTransition:
-		DamagedSound:
-		DestroyedSound:
+		DamagedSound: sandbag2.aud
+		DestroyedSound: sandbag2.aud
 	Wall:
 		CrushClasses: wall
 	LineBuild:
@@ -187,7 +230,7 @@
 		TargetTypes: Ground
 	RenderBuildingWall:
 		HasMakeAnimation: false
-		Palette: d2k
+		Palette: terrain
 	GivesExperience:
 	EditorAppearance:
 		RelativeToTopLeft: yes
@@ -195,3 +238,73 @@
 	ProximityCaptor:
 		Types:Wall
 	Sellable:
+
+^CivBuilding:
+	Inherits: ^Building
+	-RepairableBuilding:
+	Health:
+		HP: 400
+	Armor:
+		Type: Wood
+	Tooltip:
+		Name: Civilian Building
+	ProximityCaptor:
+		Types:CivilianBuilding
+	-AcceptsSupplies:
+	-GivesBuildableArea:
+	-Sellable:
+	-Capturable:
+	-CapturableBar:
+
+^CivField:
+	Inherits: ^CivBuilding
+	-Selectable:
+	Tooltip:
+		Name: Field
+	-ProximityCaptor:
+	ProximityCaptor:
+		Types:CivilianField
+
+^Tree:
+	Tooltip:
+		Name: Tree
+	RenderBuilding:
+		Palette: terrain
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	AppearsOnRadar:
+	RadarColorFromTerrain:
+		Terrain: Tree
+	EditorAppearance:
+		RelativeToTopLeft: yes
+	ProximityCaptor:
+		Types:Tree
+
+^Husk:
+	Husk:
+	RenderUnit:
+	Health:
+		HP: 140
+	Armor:
+		Type: Heavy
+	HiddenUnderFog:
+	AppearsOnRadar:
+	Burns:
+	ProximityCaptor:
+		Types:Husk
+
+^Bridge:
+	Tooltip:
+		Name: Bridge
+	BelowUnits:
+	TargetableBuilding:
+		TargetTypes: Ground, Water
+	Building:
+		Footprint: ____ ____
+		Dimensions: 4,2
+	Health:
+		HP: 1000
+	ProximityCaptor:
+		Types:Bridge
+	AutoTargetIgnore:

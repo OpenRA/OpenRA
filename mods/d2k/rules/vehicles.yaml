@@ -66,8 +66,6 @@ HARVESTER:
 	RenderUnit::
 		PlayerPalette: d2kplayer
 	-AttackMove:
-	GpsDot:
-		String:Harvester
 
 TRIKE:
 	Inherits: ^Vehicle

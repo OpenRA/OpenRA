@@ -299,3 +299,138 @@ rifle:
 		Start: 192
 		Length: 6
 		Facings: 8
+
+pips:
+	groups:
+		Start: 8
+		Length: 10
+	medic:
+		Start: 20
+	ready:
+		Start: 3
+	hold:
+		Start: 4
+	tag-fake:
+		Start: 18
+	tag-primary:
+		Start: 2
+	pip-empty: pips2
+		Start: 0
+	pip-green: pips2
+		Start: 1
+	pip-yellow: pips2
+		Start: 2
+	pip-gray: pips2
+		Start: 3
+	pip-red: pips2
+		Start: 4
+	pip-blue: pips2
+		Start: 5
+
+clock:
+	idle:
+		Start: 0
+		Length: *
+
+powerdown:
+	disabled: speed
+		Start: 3
+
+rank:
+	rank:
+		Start: 0
+		Length: *
+
+overlay:
+	build-valid:
+		Start: 0
+	build-invalid:
+		Start: 1
+	target-select:
+		Start: 2
+	target-valid:
+		Start: 0
+	target-invalid:
+		Start: 1
+
+rallypoint:
+	flag:flagfly
+		Start: 0
+		Length: *
+	circles:fpls
+		Start: 0
+		Length: *
+
+dragon:
+	idle:
+		Start: 0
+		Facings: 32
+
+explosion:
+	piff: piff
+		Start: 0
+		Length: *
+	piffs: piffpiff
+		Start: 0
+		Length: *
+	small_explosion: veh-hit3
+		Start: 0
+		Length: *
+	med_explosion: veh-hit2
+		Start: 0
+		Length: *
+	large_splash: h2o_exp1
+		Start: 0
+		Length: *
+	napalm: napalm2
+		Start: 0
+		Length: *
+	nuke: atomsfx
+		Start: 0
+		Length: *
+	med_splash: h2o_exp2
+		Start: 0
+		Length: *
+	self_destruct: art-exp1
+		Start: 0
+		Length: *
+	building: fball1
+		Start: 0
+		Length: *
+	small_splash: h2o_exp3
+		Start: 0
+		Length: *
+	large_explosion: frag1
+		Start: 0
+		Length: *
+	small_napalm: napalm1
+		Start: 0
+		Length: *
+
+smokey:
+	idle:
+		Start: 0
+		Length: *
+
+smoke_m:
+	idle:
+		Start: 0
+		Length: *
+	loop:
+		Start: 49
+		Length: 42
+	end:
+		Start: 0
+		Length: 26
+
+120mm:
+	idle:
+		Start: 0
+
+litning:
+	bright:
+		Start: 0
+		Length: 4
+	dim:
+		Start: 4
+		Length: 4

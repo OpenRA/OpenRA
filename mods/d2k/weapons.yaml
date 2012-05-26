@@ -42,7 +42,7 @@ Dragon:
 		Explosion: med_explosion
 		WaterExplosion: med_splash
 		InfDeath: 3
-		SmudgeType: Crater
+#		SmudgeType: Crater
 		Damage: 50
 		ImpactSound: kaboom12
 
@@ -75,7 +75,7 @@ QuadRockets:
 		Explosion: med_explosion
 		WaterExplosion: med_splash
 		ImpactSound: kaboom12
-		SmudgeType: Crater
+#		SmudgeType: Crater
 		Damage: 35
 
 TurretGun:
@@ -95,7 +95,7 @@ TurretGun:
 		Explosion: small_explosion
 		WaterExplosion: small_splash
 		InfDeath: 3
-		SmudgeType: Crater
+#		SmudgeType: Crater
 		Damage: 60
 
 25mm:
@@ -115,7 +115,7 @@ TurretGun:
 		Explosion: small_explosion
 		WaterExplosion: small_splash
 		InfDeath: 3
-		SmudgeType: Crater
+#		SmudgeType: Crater
 		Damage: 16
 
 90mm:
@@ -135,7 +135,7 @@ TurretGun:
 		Explosion: small_explosion
 		WaterExplosion: small_splash
 		InfDeath: 3
-		SmudgeType: Crater
+#		SmudgeType: Crater
 		Damage: 30
 
 105mm:
@@ -157,7 +157,7 @@ TurretGun:
 		Explosion: small_explosion
 		WaterExplosion: small_splash
 		InfDeath: 3
-		SmudgeType: Crater
+#		SmudgeType: Crater
 		Damage: 40
 
 120mm:
@@ -178,7 +178,7 @@ TurretGun:
 		Explosion: small_explosion
 		WaterExplosion: small_splash
 		InfDeath: 3
-		SmudgeType: Crater
+#		SmudgeType: Crater
 		Damage: 50
 
 227mm: 
@@ -210,7 +210,7 @@ TurretGun:
 		Explosion: med_explosion
 		WaterExplosion: med_splash
 		ImpactSound: kaboom12
-		SmudgeType: Crater
+#		SmudgeType: Crater
 		Damage: 25
 
 #for rocket turret
@@ -242,7 +242,7 @@ MammothTusk:
 		Explosion: med_explosion
 		WaterExplosion: med_splash
 		InfDeath: 2
-		SmudgeType: Crater
+#		SmudgeType: Crater
 		Damage: 45
 
 155mm:
@@ -268,7 +268,7 @@ MammothTusk:
 		Explosion: large_explosion
 		WaterExplosion: med_splash
 		InfDeath: 2
-		SmudgeType: Crater
+#		SmudgeType: Crater
 		Damage: 220
 
 TTankZap:
@@ -281,6 +281,45 @@ TTankZap:
 		Spread: 1
 		InfDeath: 5
 		Damage: 100
+
+ChainGun:
+	ROF: 10
+	Range: 5
+	MinRange: 1
+	Report: GUN13
+	Projectile: Bullet
+		Speed: 100
+		High: true
+	Warhead:
+		Spread: 3
+		Versus: 
+			Wood: 50%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 25%
+		Explosion: piffs
+		WaterExplosion: small_splash
+		InfDeath: 1
+		Damage: 20
+
+M60mg:
+	ROF: 30
+	Range: 4
+	Report: PILLBOX1
+	Burst: 5
+	Projectile: Bullet
+		Speed: 100
+	Warhead:
+		Spread: 3
+		Versus: 
+			Wood: 10%
+			Light: 30%
+			Heavy: 10%
+			Concrete: 10%
+		Explosion: piffs
+		WaterExplosion: small_splash
+		InfDeath: 1
+		Damage: 15
 
 Demolish:
 	Warhead:
@@ -309,7 +348,7 @@ Atomic:
 	Warhead@areanuke:
 		DamageModel: PerCell
 		Damage: 250
-		SmudgeType: Scorch
+#		SmudgeType: Scorch
 		Size: 5,4
 		Ore: true
 		Versus: 
@@ -338,7 +377,7 @@ CrateNuke:
 	Warhead@areanuke:
 		DamageModel: PerCell
 		Damage: 250
-		SmudgeType: Scorch
+#		SmudgeType: Scorch
 		Size: 5,4
 		Ore: true
 		Versus: 

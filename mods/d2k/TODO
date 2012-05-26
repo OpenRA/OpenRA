@@ -6,9 +6,9 @@
 # construction yard crane animations missing
 # welding animation (factories) missing
 # chimney animation (refinery) missing
-# Arrakis tileset crashes the game
 # create a tileset extractor for gamefiles to remove copyrighted content from distribution
 # replace ore with spice and mines with spice blooms
+# add Smudge Types
 # add game logic for concrete plates (use terrain overlay from bridges/ressources)
 # allow placing turrets on walls
 # support separate turret sequence with RenderBuildingTurreted
@@ -28,3 +28,4 @@
 # add install rules to makefile (once more polished)
 # idea: frame 2998 (fremen siech) could become a tunnel to make Ordos really insidious (similiar mechanism to paratroopers powerproxy)
 # add sonic tank weapon (currently uses tesla)
+# replace RA mouse.shp, nopower.shp with Dune 2000 equivalent

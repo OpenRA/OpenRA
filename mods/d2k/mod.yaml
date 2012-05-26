@@ -3,7 +3,6 @@ Metadata:
 	Description: Converting the OpenRA Red Alert Mod one by one to Dune 2000
 	Version: {DEV_VERSION}
 	Author: The OpenD2k Developers
-	Requires: ra
 
 Folders:
 	.
@@ -13,9 +12,27 @@ Folders:
 	~^/Content/d2k
 	~^/Content/d2k/GAMESFX
 	~^/Content/d2k/Music
+	./mods/ra/bits
+	./mods/ra/uibits
+	~^/Content/ra
 
 Packages:
 	arrakis.mix
+	~main.mix
+	redalert.mix
+	conquer.mix
+	hires.mix
+	local.mix
+	sounds.mix
+	speech.mix
+	allies.mix
+	russian.mix
+	temperat.mix
+	snow.mix
+	interior.mix
+	~scores.mix
+	~movies1.mix
+	~movies2.mix
 
 Rules:
 	mods/d2k/rules/system.yaml
@@ -29,6 +46,7 @@ Sequences:
 	mods/d2k/sequences.yaml
 
 Cursors:
+	mods/d2k/cursors.yaml
 
 Chrome:
 	mods/d2k/chrome.yaml
@@ -39,6 +57,18 @@ Assemblies:
 	mods/cnc/OpenRA.Mods.Cnc.dll
 
 ChromeLayout:
+	mods/d2k/chrome/gameinit.yaml
+	mods/d2k/chrome/ingame.yaml
+	mods/d2k/chrome/mainmenu.yaml
+	mods/d2k/chrome/settings.yaml
+	mods/d2k/chrome/lobby.yaml
+	mods/d2k/chrome/map-chooser.yaml
+	mods/d2k/chrome/create-server.yaml
+	mods/d2k/chrome/serverbrowser.yaml
+	mods/d2k/chrome/replaybrowser.yaml
+	mods/d2k/chrome/dropdowns.yaml
+	mods/d2k/chrome/modchooser.yaml
+	mods/d2k/chrome/cheats.yaml
 
 Weapons:
 	mods/d2k/weapons.yaml
@@ -49,7 +79,7 @@ Voices:
 TileSets:
 	mods/d2k/tilesets/arrakis.yaml
 
-#TileSize: 32
+TileSize: 32
 
 Music:
 	mods/d2k/music.yaml
@@ -63,6 +93,7 @@ ServerTraits:
 	MasterServerPinger
 
 ChromeMetrics:
+	mods/d2k/metrics.yaml
 
 Fonts:
 	Regular:

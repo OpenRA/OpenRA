@@ -2,6 +2,9 @@
 R8="/home/matthias/.openra/Content/d2k/DATA.R8"
 PAL="mods/d2k/bits/d2k.pal"
 
+mono OpenRA.Utility.exe --r8 $R8 $PAL 0 2 "overlay"
+mono OpenRA.Utility.exe --shp overlay.png 32
+
 mono OpenRA.Utility.exe --r8 $R8 $PAL 194 205 "spice"
 mono OpenRA.Utility.exe --shp spice.png 48
 mono OpenRA.Utility.exe --r8 $R8 $PAL 206 457 "rifle" --infantry
