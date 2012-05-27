@@ -2,6 +2,10 @@ CONYARDA:
 	Inherits: ^CONYARD
 	Buildable:
 		Owner: atreides
+	Transforms:
+		IntoActor: mcva
+		Offset:1,1
+		Facing: 270
 
 PWRA:
 	Inherits: ^POWER
@@ -80,26 +84,13 @@ STARPORTA:
 		OnHoldAudio: AI_HOLD.AUD
 		CancelledAudio: AI_CANCL.AUD
 
-WALLA:
-	Inherits: ^Wall
-	Buildable:
-		Prerequisites: conyarda
-		Owner: atreides
-
-GUNTOWERA:
-	Inherits: ^GUNTOWER
-	Buildable:
-		Prerequisites: barra
-		Owner: atreides
-
 REPAIRA:
 	Inherits: ^REPAIR
 	Buildable:
 		Prerequisites: heavya
 		Owner: atreides
 
-#TODO: game has to spawn MCVA, MCVH, MCVO instead of MCV for everyone
-MCV:
+MCVA:
 	Inherits: ^MCV
 	Buildable:
 		Prerequisites: heavya,repaira
@@ -110,8 +101,6 @@ MCV:
 		Offset:-1,-1
 		TransformSounds:
 		NoTransformSounds: AI_DPLOY.AUD
-	RenderUnit:
-		Image: MCV
 
 COMBATA:
 	Inherits: ^COMBAT

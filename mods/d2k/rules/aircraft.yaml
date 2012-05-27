@@ -5,7 +5,7 @@ CARRYALL:
 		BuildPaletteOrder: 110
 		Prerequisites: anyhightech
 		BuiltAt: hightecha
-		Owner: atreides
+		Owner: atreides,harkonnen
 	Valued:
 		Cost: 1200
 	Tooltip:

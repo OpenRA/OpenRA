@@ -20,10 +20,6 @@
 	CustomSellValue:
 		Value: 2500
 	BaseBuilding:
-	Transforms:
-		IntoActor: mcv
-		Offset:1,1
-		Facing: 270
 	ProductionBar:
 
 ^POWER:
@@ -355,11 +351,58 @@
 		LowPowerSlowdown: 3
 	ProductionBar:
 
-^GUNTOWER:
+WALL:
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 1000
+		Owner: atreides,harkonnen
+	SoundOnDamageTransition:
+		DamagedSound:
+		DestroyedSound:
+	Valued:
+		Cost: 100
+	CustomSellValue:
+		Value: 0
+	Tooltip:
+		Name: Concrete Wall
+		Description: Stop units and blocks enemy fire.
+	AppearsOnRadar:
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+		BuildSounds:
+		Adjacent: 7
+		TerrainTypes: Clear,Road
+	Health:
+		HP: 500
+	Armor:
+		Type: Concrete
+	Wall:
+		CrushClasses: heavywall
+	LineBuild:
+		Range: 8
+	SelectionDecorations:
+	Selectable:
+		Priority: 1
+	TargetableBuilding:
+		TargetTypes: Ground
+	RenderBuildingWall:
+		HasMakeAnimation: false
+		Palette: d2k
+	GivesExperience:
+	EditorAppearance:
+		RelativeToTopLeft: yes
+	AutoTargetIgnore:
+	ProximityCaptor:
+		Types:Wall
+	Sellable:
+
+GUNTOWER:
 	Inherits: ^Building
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 40
+		Owner: atreides,harkonnen
 	Valued:
 		Cost: 600
 	Tooltip:

@@ -12,7 +12,7 @@ Background@SERVER_LOBBY:
 			Width:800
 			Height:20
 			Font:Bold
-			Text:OpenRA Multiplayer Lobby
+			Text:OpenD2k Multiplayer Lobby
 		Background@LOBBY_MAP_BG:
 			X:PARENT_RIGHT-268
 			Y:50
@@ -70,15 +70,15 @@ Background@SERVER_LOBBY:
 							Y:0
 							Children:
 								Image@FACTIONFLAG:
-									Width:30
-									Height:15
+									Width:23
+									Height:23
 									X:5
-									Y:5
+									Y:0
 								Label@FACTIONNAME:
 									Text:Faction
-									Width:60
+									Width:70
 									Height:25
-									X:40
+									X:30
 									Y:0
 						DropDownButton@TEAM:
 							Text:Team

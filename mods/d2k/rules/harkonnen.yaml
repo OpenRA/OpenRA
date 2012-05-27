@@ -1,0 +1,144 @@
+CONYARDH:
+	Inherits: ^CONYARD
+	Buildable:
+		Owner: harkonnen
+	Transforms:
+		IntoActor: mcvh
+		Offset:1,1
+		Facing: 270
+
+PWRH:
+	Inherits: ^POWER
+	Buildable:
+		Prerequisites: conyardh
+		Owner: harkonnen
+
+REFH:
+	Inherits: ^REFINERY
+	Buildable:
+		Prerequisites: pwrh
+		Owner: harkonnen
+	RenderBuildingWarFactory:
+		Image: REFH
+
+BARRH:
+	Inherits: ^BARRACKS
+	Buildable:
+		Prerequisites: pwrh
+		Owner: harkonnen
+
+HIGHTECHH:
+	Inherits: ^HIGHTECH
+	Buildable:
+		Prerequisites: radarh
+		Owner: harkonnen
+
+RESEARCHH:
+	Inherits: ^RESEARCH
+	Buildable:
+		Prerequisites: radarh,heavyh
+		Owner: harkonnen
+
+PALACEH:
+	Inherits: ^PALACE
+	Buildable:
+		Prerequisites: researchh
+		Owner: harkonnen
+
+SILOH:
+	Inherits: ^SILO
+	Buildable:
+		Prerequisites: refh
+		Owner: harkonnen
+
+LIGHTH:
+	Inherits: ^LIGHT
+	Buildable:
+		Prerequisites: refh
+		Owner: harkonnen
+	RenderBuildingWarFactory:
+		Image: LIGHTH
+
+HEAVYH:
+	Inherits: ^HEAVY
+	Buildable:
+		Prerequisites: lighth
+		Owner: harkonnen
+	RenderBuildingWarFactory:
+		Image: HEAVYH
+
+RADARH:
+	Inherits: ^RADAR
+	Buildable:
+		Prerequisites: barrh
+		Owner: harkonnen
+
+STARPORTH:
+	Inherits: ^STARPORT
+	Buildable:
+		Prerequisites: radarh
+		Owner: harkonnen
+	ProductionQueue:
+		QueuedAudio: HI_ORDER.AUD
+		ReadyAudio: HI_REINF.AUD
+		OnHoldAudio: HI_HOLD.AUD
+		CancelledAudio: HI_CANCL.AUD
+
+REPAIRH:
+	Inherits: ^REPAIR
+	Buildable:
+		Prerequisites: heavyh
+		Owner: harkonnen
+
+MCVH:
+	Inherits: ^MCV
+	Buildable:
+		Prerequisites: heavyh,repairh
+		Owner: harkonnen
+	Transforms:
+		Facing: 10
+		IntoActor: conyardh
+		Offset:-1,-1
+		TransformSounds:
+		NoTransformSounds: HI_DPLOY.AUD
+
+COMBATH:
+	Inherits: ^COMBAT
+	Buildable:
+		Prerequisites: heavyh
+		Owner: harkonnen
+
+DEVAST:
+	Inherits: ^Tank
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 100
+		Prerequisites: repairh,researchh
+		Owner: harkonnen
+	Valued:
+		Cost: 1800
+	Tooltip:
+		Name: Devastator
+		Description: Big and slow tank.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
+	Health:
+		HP: 900
+	Armor:
+		Type: Heavy
+	Mobile:
+		Speed: 3
+		Crushes: crate, infantry
+	RevealsShroud:
+		Range: 6
+	RenderUnit:
+	AttackFrontal:
+		PrimaryWeapon: 120mm
+		PrimaryLocalOffset: -4,-5,0,0,0, 4,-5,0,0,0
+		PrimaryRecoil: 4
+		PrimaryRecoilRecovery: 0.7
+	AutoTarget:
+	Explodes:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
+	LeavesHusk:
+	Selectable:
+		Bounds: 44,38,0,-4

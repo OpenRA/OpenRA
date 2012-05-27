@@ -169,8 +169,8 @@ tabs-normal: tabs.png
 
 flags: buttons.png
 	atreides: 0,84,21,107
-	harkonnen: 22,84,45,107
-	orodos: 45,84,67,107
+	harkonnen: 22,84,23,107
+	ordos: 45,84,22,107
 	random: 67,84,90,107
 	spectator: 67,84,90,107
 

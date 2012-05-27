@@ -105,9 +105,9 @@ World:
 	Country@2:
 		Name: Atreides
 		Race: atreides
-#	Country@3:
-#		Name: Harkonnen
-#		Race: harkonnen
+	Country@3:
+		Name: Harkonnen
+		Race: harkonnen
 #	Country@4:
 #		Name: Ordos
 #		Race: ordos
@@ -134,7 +134,14 @@ World:
 	SpawnMapActors:
 	CreateMPPlayers:
 	MPStartLocations:
-	SpawnMPUnits:
+	SpawnMPUnits@atreides:
+		InitialUnit: mcva
+		Faction: atreides
+	SpawnMPUnits@harkonnen:
+		InitialUnit: mcvh
+		Faction: harkonnen
+#	SpawnMPUnits@ordos:
+#		InitialUnit: mcvo
 	EvaAlerts:
 	SpatialBins:
 		BinSize: 4

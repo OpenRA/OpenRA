@@ -8,6 +8,7 @@
 	Tooltip:
 		Name: Mobile Construction Vehicle
 		Description: Deploys into another Construction Yard.\n  Unarmed
+		Icon: mcvicon
 	Selectable:
 		Priority: 3
 		Bounds: 42,42
@@ -21,6 +22,7 @@
 	RevealsShroud:
 		Range: 4
 	RenderUnit:
+		Image: MCV
 	MustBeDestroyed:
 	BaseBuilding:
 	-AttackMove:
@@ -62,7 +64,7 @@ TRIKE:
 		Queue: Vehicle
 		BuildPaletteOrder: 15
 		Prerequisites: anylight
-		Owner: atreides
+		Owner: atreides,harkonnen
 	Valued:
 		Cost: 200
 	Tooltip:
@@ -91,7 +93,7 @@ QUAD:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
 		Prerequisites: anylight
-		Owner: atreides
+		Owner: atreides,harkonnen
 	Valued:
 		Cost: 400
 	Tooltip:
@@ -152,7 +154,7 @@ SIEGE:
 		Queue: Vehicle
 		BuildPaletteOrder: 80
 		Prerequisites: anyradar
-		Owner: atreides
+		Owner: atreides,harkonnen
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -190,7 +192,7 @@ Missile:
 		Queue: Vehicle
 		BuildPaletteOrder: 50
 		Prerequisites: anyheavy
-		Owner: atreides
+		Owner: atreides,harkonnen
 	Mobile:
 		Speed: 6
 	Health:

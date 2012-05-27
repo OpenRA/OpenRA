@@ -3,7 +3,7 @@ RIFLE:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 10
-		Owner: atreides
+		Owner: atreides,harkonnen
 	Valued:
 		Cost: 100
 	Tooltip:

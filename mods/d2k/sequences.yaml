@@ -18,6 +18,124 @@ harvester:
 		Start: 0
 		Length: 1
 
+wall:
+	idle:
+		Start: 0
+		Length: 16
+	scratched-idle:
+		Start: 0
+		Length: 16
+	damaged-idle:
+		Start: 16
+		Length: 16
+	critical-idle:
+		Start: 16
+		Length: 16
+
+carryall:
+	idle:
+		Start: 0
+		Facings: 32
+	unload:
+		Start: 0
+		Facings: 32
+
+orni:
+	idle:
+		Start: 0
+		Facings: 32
+
+trike:
+	idle:
+		Start: 0
+		Facings: 32
+
+quad:
+	idle:
+		Start: 0
+		Facings: 32
+
+
+
+siege:
+	idle:
+		Start: 0
+		Facings: 32
+	turret: siegeturret
+		Start: 0
+		Facings: 32
+
+missile:
+	idle:
+		Start: 0
+		Facings: 32
+
+sonic:
+	idle:
+		Start: 0
+		Facings: 32
+
+guntower:
+	idle:
+		Start: 0
+		Facings: 1
+	recoil:
+		Start: 0
+		Facings: 1
+	make: silomake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 0
+		Facings: 1
+	damaged-recoil:
+		Start: 0
+		Facings: 1
+	turret: gunturret
+		Start: 0
+		Facings: 32
+
+frigate:
+	idle:
+		Start: 0
+		Facings: 1
+
+#TODO: This is wrong.
+rifle:
+	stand:
+		Start: 0
+		Facings: 8
+	stand2:
+		Start: 8
+		Length: 8
+	stand3:
+		Start: 128
+		Length: 16
+	run:
+		Start: 16
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 64
+		Length: 6
+		Facings: 8
+	prone-stand:
+		Start: 112
+		Length: 4
+		Facings: 8
+	prone-run:
+		Start: 144
+		Length: 4
+		Facings: 8
+	standup-0:
+		Start: 176
+		Length: 2
+		Facings: 8
+	prone-shoot:
+		Start: 192
+		Length: 6
+		Facings: 8
+
 conyarda:
 	idle:
 		Start: 0
@@ -49,20 +167,6 @@ starporta:
 	make: starportmake
 		Start: 0
 		Length: *
-
-walla:
-	idle:
-		Start: 0
-		Length: 16
-	scratched-idle:
-		Start: 0
-		Length: 16
-	damaged-idle:
-		Start: 16
-		Length: 16
-	critical-idle:
-		Start: 16
-		Length: 16
 
 pwra:
 	idle:
@@ -190,29 +294,6 @@ heavya:
 	damaged-idle-top:
 		Start: 2
 
-carryall:
-	idle:
-		Start: 0
-		Facings: 32
-	unload:
-		Start: 0
-		Facings: 32
-
-orni:
-	idle:
-		Start: 0
-		Facings: 32
-
-trike:
-	idle:
-		Start: 0
-		Facings: 32
-
-quad:
-	idle:
-		Start: 0
-		Facings: 32
-
 combata:
 	idle:
 		Start: 0
@@ -221,84 +302,176 @@ combata:
 		Start: 0
 		Facings: 32
 
-siege:
+conyardh:
 	idle:
 		Start: 0
-		Facings: 32
-	turret: siegeturret
+	make: conmake
 		Start: 0
-		Facings: 32
+		Length: *
+	damaged-idle:
+		Start: 1
 
-missile:
+repairh:
 	idle:
 		Start: 0
-		Facings: 32
+	make: repairmake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 1
 
-sonic:
+starporth:
 	idle:
 		Start: 0
-		Facings: 32
+	active:
+		Start: 0
+		Length: 1
+	damaged-idle:
+		Start: 1
+	damaged-active:
+		Start: 1
+	make: starportmake
+		Start: 0
+		Length: *
 
-guntowera:
+pwrh:
 	idle:
 		Start: 0
-		Facings: 1
-	recoil:
+	make: wtrpmake
 		Start: 0
-		Facings: 1
-	make: silomake
+		Length: *
+	damaged-idle:
+		Start: 1
+
+barrh:
+	idle:
+		Start: 0
+	make: barramake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 1
+
+radarh:
+	idle:
+		Start: 0
+	make: radarmake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 1
+
+refh:
+	idle:
+		Start: 0
+		Length: 1
+	make: refmake
 		Start: 0
 		Length: *
 	damaged-idle:
 		Start: 0
-		Facings: 1
-	damaged-recoil:
+	build-top:
+		Start: 1
+		Length: 1
+	damaged-build-top:
+		Start: 2
+		Length: 1
+	idle-top:
+		Start: 1
+	damaged-idle-top:
+		Start: 2
+
+siloh:
+	idle:
 		Start: 0
-		Facings: 1
-	turret: gunturret
+		Length: 4
+	damaged-idle:
+		Start: 4
+		Length: 1
+	make: silomake
+		Start: 0
+		Length: *
+
+hightechh:
+	idle:
+		Start: 0
+	make: highmake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 1
+
+researchh:
+	idle:
+		Start: 0
+	make: researchmake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 1
+
+palaceh:
+	idle:
+		Start: 0
+	make: palacemake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 1
+
+
+lighth:
+	idle:
+		Start: 0
+		Length: 1
+	make: lightmake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 0
+	build-top:
+		Start: 1
+		Length: 1
+	damaged-build-top:
+		Start: 2
+		Length: 1
+	idle-top:
+		Start: 1
+	damaged-idle-top:
+		Start: 2
+
+heavyh:
+	idle:
+		Start: 0
+		Length: 1
+	make: heavymake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 0
+	build-top:
+		Start: 1
+		Length: 1
+	damaged-build-top:
+		Start: 2
+		Length: 1
+	idle-top:
+		Start: 1
+	damaged-idle-top:
+		Start: 2
+
+combath:
+	idle:
+		Start: 0
+		Facings: 32
+	turret: combathturret
 		Start: 0
 		Facings: 32
 
-frigate:
+devast:
 	idle:
 		Start: 0
-		Facings: 1
-
-#TODO: This is wrong.
-rifle:
-	stand:
-		Start: 0
-		Facings: 8
-	stand2:
-		Start: 8
-		Length: 8
-	stand3:
-		Start: 128
-		Length: 16
-	run:
-		Start: 16
-		Length: 6
-		Facings: 8
-	shoot:
-		Start: 64
-		Length: 6
-		Facings: 8
-	prone-stand:
-		Start: 112
-		Length: 4
-		Facings: 8
-	prone-run:
-		Start: 144
-		Length: 4
-		Facings: 8
-	standup-0:
-		Start: 176
-		Length: 2
-		Facings: 8
-	prone-shoot:
-		Start: 192
-		Length: 6
-		Facings: 8
+		Facings: 32
 
 pips:
 	groups:
