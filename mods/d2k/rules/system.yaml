@@ -41,26 +41,38 @@ Player:
 #		BuildingFractions:
 #			refa: 30%
 #			refh: 30%
+#			refo: 30%
 #			powra: 35%
 #			powrh: 35%
+#			powro: 35%
 #			barra: 1%
 #			barrh: 1%
+#			barro: 1%
 #			lighta: 1%
 #			lighth: 1%
+#			lighto: 1%
 #			heavya: 1%
 #			heavyh: 1%
+#			heavyo: 1%
 #			researcha: 1%
 #			researchh: 1%
+#			researcho: 1%
 #			repaira: 0.1%
+#			repairh: 0.1%
+#			repairo: 0.1%
 #			radara: 10%
+#			radaro: 10%
+#			radarh: 10%
 #		UnitsToBuild:
 #			trike: 30%
+#			raider: 30%
 #			quad: 40%
 #			siege: 15%
 #			combata: 70%
 #			combath: 70%
 #			sonic: 25%
 #			devast: 25%
+#			deviator: 25%
 #		SquadSize: 10
 	PlayerColorPalette:
 		BasePalette: d2k
@@ -213,10 +225,11 @@ CRATE:
 	RevealMapCrateAction:
 		SelectionShares: 1
 		Effect: reveal-map
+#TODO: Currently only gives you an Atreides MCV
 	GiveMcvCrateAction:
 		SelectionShares: 2
 		NoBaseSelectionShares: 9001
-		Unit: mcv
+		Unit: mcva
 	GiveUnitCrateAction@trike:
 		SelectionShares: 7
 		Unit: trike

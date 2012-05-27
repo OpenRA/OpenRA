@@ -14,7 +14,6 @@
 		Voice: VehicleVoice
 	TargetableUnit:
 		TargetTypes: Ground
-	Repairable: 
 	Passenger: 
 		CargoType: Vehicle
 	AttackMove:
@@ -28,6 +27,8 @@
 		Types:Vehicle
 	GivesBounty:
 	WithSmoke:
+	Repairable:
+		RepairBuildings: repaira,repairh,repairo
 
 ^Tank:
 	AppearsOnRadar:
@@ -45,7 +46,6 @@
 		Voice: VehicleVoice
 	TargetableUnit:
 		TargetTypes: Ground
-	Repairable: 
 	Passenger: 
 		CargoType: Vehicle
 	AttackMove:
@@ -59,6 +59,8 @@
 		Types:Tank
 	GivesBounty:
 	WithSmoke:
+	Repairable:
+		RepairBuildings: repaira,repairh,repairo
 
 ^Infantry:
 	AppearsOnRadar:

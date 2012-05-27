@@ -8,11 +8,10 @@
 # chimney animation (refinery) missing
 # create a tileset extractor for gamefiles to remove copyrighted content from distribution
 # replace ore with spice and mines with spice blooms
-# add Smudge Types
+# add Smudge Types (stored in SHPs not in tileset)
 # add game logic for concrete plates (use terrain overlay from bridges/ressources)
 # allow placing turrets on walls
 # support separate turret sequence with RenderBuildingTurreted
-# repair bay should really repair vehicles
 # ornithocopter should flap (might need new RenderOrni code for proper animation)
 # R8 converter needs infantry frame resorter
 # add infantry dieing animation
@@ -25,12 +24,17 @@
 # add thumper which really attracts sandworms
 # allow upgrades
 # add voices (Dune 2000/DATA/SFX folder contains .aud files)
-# muzzles and explosions with lightning (might need engine update)
+# add SOUND.TS .wav file extractor to RA.Utility.exe
+# convert .wav to .aud or support .wav files for Dune 2000 sounds
+# add muzzles and explosions with lightning (might need engine update)
 # ingame gamefile extractor at first start when SHPs are not found
-# create a shellmap
+# create a shellmap (currently just a blank placeholder)
 # rework chrome UI, dialoges, tabs
 # add install rules to makefile (once more polished)
-# idea: frame 2998 (fremen siech) could become a tunnel to make Ordos really insidious (similiar mechanism to paratroopers powerproxy)
 # add sonic tank weapon (currently uses tesla)
 # make deviator change the allegiance of ememy units (currently shoots rockets)
 # replace RA mouse.shp, nopower.shp with Dune 2000 equivalent
+# add bots (blocked by issue #2184)
+# complete Arrakis tileset (blocked by issue #2178)
+# allow frigate to deliver 5 units at once to starport
+# starport prices should vary

@@ -18,7 +18,6 @@ CARRYALL:
 	RevealsShroud:
 		Range: 12
 	Helicopter:
-		RearmBuildings: hightecha
 		InitialFacing: 0
 		ROT: 5
 		Speed: 15
@@ -63,7 +62,7 @@ ORNI:
 	Buildable:
 		Queue: Plane
 		BuildPaletteOrder: 90
-		Prerequisites: hightecha
+		Prerequisites: researcha
 		BuiltAt: hightecha
 		Owner: atreides
 	Valued:
