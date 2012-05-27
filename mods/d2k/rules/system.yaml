@@ -1,17 +1,18 @@
+#TODO: Currently only uses the Atreides voices.
 Player:
 	TechTree:
 	ClassicProductionQueue@Building:
 		Type: Building
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
-		QueuedAudio: abldgin1.aud
-		ReadyAudio: conscmp1.aud
+		QueuedAudio: AI_BUILD.AUD
+		ReadyAudio: AI_BDRDY.AUD
 	ClassicProductionQueue@Defense:
 		Type: Defense
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
-		QueuedAudio: abldgin1.aud
-		ReadyAudio: conscmp1.aud
+		QueuedAudio: AI_BUILD.AUD
+		ReadyAudio: AI_BDRDY.AUD
 	ClassicProductionQueue@Vehicle:
 		Type: Vehicle
 		BuildSpeed: .4
@@ -27,8 +28,8 @@ Player:
 	PlaceBuilding:
 	SupportPowerManager:
 	ConquestVictoryConditions:
-		WinNotification:misnwon1.aud
-		LoseNotification:misnlst1.aud
+		WinNotification:AI_MWIN.AUD
+		LoseNotification:AI_MFAIL.AUD
 	PowerManager:
 	AllyRepair:
 	PlayerResources:
@@ -152,9 +153,6 @@ CRATE:
 		UseCashTick: yes
 	LevelUpCrateAction:
 		SelectionShares: 40
-	ExplodeCrateAction@fire:
-		Weapon: CrateNapalm
-		SelectionShares: 5
 	ExplodeCrateAction@boom:
 		Weapon: CrateExplosion
 		SelectionShares: 5
@@ -167,9 +165,6 @@ CRATE:
 	RevealMapCrateAction:
 		SelectionShares: 1
 		Effect: reveal-map
-	SupportPowerCrateAction@parabombs:
-		SelectionShares: 5
-		Proxy: powerproxy.parabombs
 	GiveMcvCrateAction:
 		SelectionShares: 2
 		NoBaseSelectionShares: 9001

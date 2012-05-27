@@ -5,6 +5,14 @@ PAL="mods/d2k/bits/d2k.pal"
 mono OpenRA.Utility.exe --r8 $R8 $PAL 0 2 "overlay"
 mono OpenRA.Utility.exe --shp overlay.png 32
 
+mono OpenRA.Utility.exe --r8 $R8 $PAL 40 101 "shroud"
+mono OpenRA.Utility.exe --shp shroud.png 32
+mono OpenRA.Utility.exe --r8 $R8 $PAL 102 105 "crates"
+mono OpenRA.Utility.exe --shp crates.png 32
+mono OpenRA.Utility.exe --r8 $R8 $PAL 106 109 "spicebloom"
+mono OpenRA.Utility.exe --shp spicebloom.png 32
+
+
 mono OpenRA.Utility.exe --r8 $R8 $PAL 194 205 "spice"
 mono OpenRA.Utility.exe --shp spice.png 48
 mono OpenRA.Utility.exe --r8 $R8 $PAL 206 457 "rifle" --infantry

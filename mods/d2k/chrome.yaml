@@ -168,11 +168,11 @@ tabs-normal: tabs.png
 	harkonnen-Ship: 134,200,27,41
 
 flags: buttons.png
-	atreides: 60,84,30,15
-	harkonnen: 60,84,30,15
-	orodos: 60,84,30,15
-	random: 60,84,30,15
-	spectator: 60,84,30,15
+	atreides: 0,84,21,107
+	harkonnen: 22,84,45,107
+	orodos: 45,84,67,107
+	random: 67,84,90,107
+	spectator: 67,84,90,107
 
 dialog2: dialog.png
 	background: 513,1,126,126

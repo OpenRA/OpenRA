@@ -1,0 +1,148 @@
+CONYARDA:
+	Inherits: ^CONYARD
+	Buildable:
+		Owner: atreides
+
+PWRA:
+	Inherits: ^POWER
+	Buildable:
+		Prerequisites: conyarda
+		Owner: atreides
+
+REFA:
+	Inherits: ^REFINERY
+	Buildable:
+		Prerequisites: pwra
+		Owner: atreides
+	RenderBuildingWarFactory:
+		Image: REFA
+
+BARRA:
+	Inherits: ^BARRACKS
+	Buildable:
+		Prerequisites: pwra
+		Owner: atreides
+
+HIGHTECHA:
+	Inherits: ^HIGHTECH
+	Buildable:
+		Prerequisites: radara
+		Owner: atreides
+
+RESEARCHA:
+	Inherits: ^RESEARCH
+	Buildable:
+		Prerequisites: radara,heavya
+		Owner: atreides
+
+PALACEA:
+	Inherits: ^PALACE
+	Buildable:
+		Prerequisites: researcha
+		Owner: atreides
+
+SILOA:
+	Inherits: ^SILO
+	Buildable:
+		Prerequisites: refa
+		Owner: atreides
+
+LIGHTA:
+	Inherits: ^LIGHT
+	Buildable:
+		Prerequisites: refa
+		Owner: atreides
+	RenderBuildingWarFactory:
+		Image: LIGHTA
+
+HEAVYA:
+	Inherits: ^HEAVY
+	Buildable:
+		Prerequisites: lighta
+		Owner: atreides
+	RenderBuildingWarFactory:
+		Image: HEAVYA
+
+RADARA:
+	Inherits: ^RADAR
+	Buildable:
+		Prerequisites: barra
+		Owner: atreides
+
+STARPORTA:
+	Inherits: ^STARPORT
+	Buildable:
+		Prerequisites: radara
+		Owner: atreides
+	ProductionQueue:
+		QueuedAudio: AI_ORDER.AUD
+		ReadyAudio: AI_REINF.AUD
+		OnHoldAudio: AI_HOLD.AUD
+		CancelledAudio: AI_CANCL.AUD
+
+WALLA:
+	Inherits: ^Wall
+	Buildable:
+		Prerequisites: conyarda
+		Owner: atreides
+
+GUNTOWERA:
+	Inherits: ^GUNTOWER
+	Buildable:
+		Prerequisites: barra
+		Owner: atreides
+
+REPAIRA:
+	Inherits: ^REPAIR
+	Buildable:
+		Prerequisites: heavya
+		Owner: atreides
+
+#TODO: game has to spawn MCVA, MCVH, MCVO instead of MCV for everyone
+MCV:
+	Inherits: ^MCV
+	Buildable:
+		Prerequisites: heavya,repaira
+		Owner: atreides
+	Transforms:
+		Facing: 10
+		IntoActor: conyarda
+		Offset:-1,-1
+		TransformSounds:
+		NoTransformSounds: AI_DPLOY.AUD
+	RenderUnit:
+		Image: MCV
+
+COMBATA:
+	Inherits: ^COMBAT
+	Buildable:
+		Prerequisites: heavya
+		Owner: atreides
+
+SONIC:
+	Inherits: ^Vehicle
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 15
+		Prerequisites: heavya,researcha
+		Owner: atreides
+	Valued:
+		Cost: 1500
+	Tooltip:
+		Name: Sonic Tank
+		Description: Fires a sound wave\n Strong vs Infantry.\n Weak vs Tanks
+	Selectable:
+		Bounds: 24,24
+	Health:
+		HP: 150
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 8
+	RevealsShroud:
+		Range: 7
+	RenderUnit:
+	AttackFrontal:
+		PrimaryWeapon: TTankZap
+		PrimaryOffset: 0,0,0,-5
+	AutoTarget:
