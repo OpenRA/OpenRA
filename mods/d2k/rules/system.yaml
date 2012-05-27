@@ -36,6 +36,32 @@ Player:
 		InitialCash: 5000
 	ActorGroupProxy:
 	DeveloperMode:
+#	HackyAI@EasyAI:
+#		Name:Easy AI
+#		BuildingFractions:
+#			refa: 30%
+#			refh: 30%
+#			powra: 35%
+#			powrh: 35%
+#			barra: 1%
+#			barrh: 1%
+#			lighta: 1%
+#			lighth: 1%
+#			heavya: 1%
+#			heavyh: 1%
+#			researcha: 1%
+#			researchh: 1%
+#			repaira: 0.1%
+#			radara: 10%
+#		UnitsToBuild:
+#			trike: 30%
+#			quad: 40%
+#			siege: 15%
+#			combata: 70%
+#			combath: 70%
+#			sonic: 25%
+#			devast: 25%
+#		SquadSize: 10
 	PlayerColorPalette:
 		BasePalette: d2k
 		PaletteFormat: d2k
@@ -55,7 +81,11 @@ World:
 	-LightPaletteRotator:
 	BuildingInfluence:
 	ChooseBuildTabOnSelect:
-	-CrateDrop:
+	CrateSpawner:
+		Minimum: 1
+		Maximum: 3
+		SpawnInterval: 120
+		WaterChance: 0
 	PaletteFromCurrentTileset:
 		Name: terrain
 	PaletteFromFile@d2k:
@@ -102,15 +132,15 @@ World:
 	ShroudPalette@fog:
 		IsFog: yes
 		Name: fog
-	Country@2:
+	Country@Atreides:
 		Name: Atreides
 		Race: atreides
-	Country@3:
+	Country@Harkonnen:
 		Name: Harkonnen
 		Race: harkonnen
-#	Country@4:
-#		Name: Ordos
-#		Race: ordos
+	Country@Ordos:
+		Name: Ordos
+		Race: ordos
 #	BibLayer:
 	ResourceLayer:
 #	ResourceType@spice:
@@ -140,9 +170,20 @@ World:
 	SpawnMPUnits@harkonnen:
 		InitialUnit: mcvh
 		Faction: harkonnen
-#	SpawnMPUnits@ordos:
-#		InitialUnit: mcvo
+	SpawnMPUnits@ordos:
+		InitialUnit: mcvo
+		Faction: ordos
 	EvaAlerts:
+		RadarUp:
+		RadarDown:
+		BuildingCannotPlaceAudio:
+		CashTickUp:
+		CashTickDown:
+		LowPower:
+		SilosNeeded:
+		PrimaryBuildingSelected:
+		AbilityInsufficientPower:
+		LevelUp:
 	SpatialBins:
 		BinSize: 4
 	Shroud:

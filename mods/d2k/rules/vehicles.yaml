@@ -33,7 +33,7 @@ HARVESTER:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
 		Prerequisites: anyref,anyheavy
-		Owner: atreides
+		Owner: atreides,harkonnen,ordos
 	Valued:
 		Cost: 1100
 	Tooltip:
@@ -93,7 +93,7 @@ QUAD:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
 		Prerequisites: anylight
-		Owner: atreides,harkonnen
+		Owner: atreides,harkonnen,ordos
 	Valued:
 		Cost: 400
 	Tooltip:
@@ -154,7 +154,7 @@ SIEGE:
 		Queue: Vehicle
 		BuildPaletteOrder: 80
 		Prerequisites: anyradar
-		Owner: atreides,harkonnen
+		Owner: atreides,harkonnen,ordos
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -192,7 +192,7 @@ Missile:
 		Queue: Vehicle
 		BuildPaletteOrder: 50
 		Prerequisites: anyheavy
-		Owner: atreides,harkonnen
+		Owner: atreides,harkonnen,ordos
 	Mobile:
 		Speed: 6
 	Health:

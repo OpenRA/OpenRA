@@ -473,6 +473,182 @@ devast:
 		Start: 0
 		Facings: 32
 
+conyardo:
+	idle:
+		Start: 0
+	make: conmake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 1
+
+repairo:
+	idle:
+		Start: 0
+	make: repairmake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 1
+
+starporto:
+	idle:
+		Start: 0
+	active:
+		Start: 0
+		Length: 1
+	damaged-idle:
+		Start: 1
+	damaged-active:
+		Start: 1
+	make: starportmake
+		Start: 0
+		Length: *
+
+pwro:
+	idle:
+		Start: 0
+	make: wtrpmake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 1
+
+barro:
+	idle:
+		Start: 0
+	make: barramake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 1
+
+radaro:
+	idle:
+		Start: 0
+	make: radarmake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 1
+
+refo:
+	idle:
+		Start: 0
+		Length: 1
+	make: refmake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 0
+	build-top:
+		Start: 1
+		Length: 1
+	damaged-build-top:
+		Start: 2
+		Length: 1
+	idle-top:
+		Start: 1
+	damaged-idle-top:
+		Start: 2
+
+siloo:
+	idle:
+		Start: 0
+		Length: 4
+	damaged-idle:
+		Start: 4
+		Length: 1
+	make: silomake
+		Start: 0
+		Length: *
+
+hightecho:
+	idle:
+		Start: 0
+	make: highmake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 1
+
+researcho:
+	idle:
+		Start: 0
+	make: researchmake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 1
+
+palaceo:
+	idle:
+		Start: 0
+	make: palacemake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 1
+
+
+lighto:
+	idle:
+		Start: 0
+		Length: 1
+	make: lightmake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 0
+	build-top:
+		Start: 1
+		Length: 1
+	damaged-build-top:
+		Start: 2
+		Length: 1
+	idle-top:
+		Start: 1
+	damaged-idle-top:
+		Start: 2
+
+heavyo:
+	idle:
+		Start: 0
+		Length: 1
+	make: heavymake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 0
+	build-top:
+		Start: 1
+		Length: 1
+	damaged-build-top:
+		Start: 2
+		Length: 1
+	idle-top:
+		Start: 1
+	damaged-idle-top:
+		Start: 2
+
+combato:
+	idle:
+		Start: 0
+		Facings: 32
+	turret: combatoturret
+		Start: 0
+		Facings: 32
+
+raider:
+	idle:
+		Start: 0
+		Facings: 32
+
+deviator:
+	idle:
+		Start: 0
+		Facings: 32
+
 pips:
 	groups:
 		Start: 8
@@ -508,6 +684,12 @@ clock:
 powerdown:
 	disabled: speed
 		Start: 3
+
+poweroff:
+	offline:
+		Start: 0
+		Length: *
+		Tick: 160
 
 rank:
 	rank:
@@ -607,3 +789,67 @@ litning:
 	dim:
 		Start: 4
 		Length: 4
+
+crate:
+	idle: scrate
+		Start: 0
+	water: wwcrate
+		Start: 0
+		Length: *
+		Tick: 500
+	land: sh-crate
+		Start: 0
+
+crate-effects:
+	speed: speed
+		Start: 0
+		Length: *
+	dollar: dollar
+		Start: 0
+		Length: *
+	reveal-map: earth
+		Start: 0
+		Length: *
+	hide-map: empulse
+		Start: 0
+		Length: *
+	fpower: fpower
+		Start: 0
+		Length: *
+	gps: gpsbox
+		Start: 0
+		Length: *
+	invuln: invulbox
+		Start: 0
+		Length: *
+	heal: invun
+		Start: 0
+		Length: *
+	nuke: missile2
+		Start: 0
+		Length: *
+	parabombs: parabox
+		Start: 0
+		Length: *
+	sonar: sonarbox
+		Start: 0
+		Length: *
+	stealth: stealth2
+		Start: 0
+		Length: *
+	timequake: tquake
+		Start: 0
+		Length: *
+	armor: armor
+		Start: 0
+		Length: *
+	chrono: chronbox
+		Start: 0
+		Length: *
+	airstrike: deviator
+		Start: 0
+		Length: *
+	levelup: levelup
+		Start: 0
+		Length: *
+		Tick: 200

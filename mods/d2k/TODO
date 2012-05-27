@@ -15,11 +15,15 @@
 # repair bay should really repair vehicles
 # ornithocopter should flap (might need new RenderOrni code for proper animation)
 # R8 converter needs infantry frame resorter
-# add infantry
+# add infantry dieing animation
+# add trooper
+# add engineer
+# add fremen
+# add saboteur
+# add deathhand missile (nuke)
 # add sandworm
 # add thumper which really attracts sandworms
 # allow upgrades
-# add ordos/harkonnen (avoid redundancy using inheritances)
 # add voices (Dune 2000/DATA/SFX folder contains .aud files)
 # muzzles and explosions with lightning (might need engine update)
 # ingame gamefile extractor at first start when SHPs are not found
@@ -28,4 +32,5 @@
 # add install rules to makefile (once more polished)
 # idea: frame 2998 (fremen siech) could become a tunnel to make Ordos really insidious (similiar mechanism to paratroopers powerproxy)
 # add sonic tank weapon (currently uses tesla)
+# make deviator change the allegiance of ememy units (currently shoots rockets)
 # replace RA mouse.shp, nopower.shp with Dune 2000 equivalent
