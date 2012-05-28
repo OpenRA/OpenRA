@@ -38,3 +38,4 @@
 # complete Arrakis tileset (blocked by issue #2178)
 # allow frigate to deliver 5 units at once to starport
 # starport prices should vary
+# add shroud (Dune's 32x32 tiles differ completely from RA/CnC)

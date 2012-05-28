@@ -122,14 +122,49 @@ namespace OpenRA.Utility
 			int OffsetY = 0;
 
 			int x = 0;
-			
-			if (args.Contains("--vehicle")) //resorting to RA/CnC compatible counter-clockwise frame order
+
+			frame = srcImage[startFrame];
+
+			//TODO: This is not enough as the run and shoot animation are next to each other for each sequence in RA/CnC.
+			if (args.Contains("--infantry")) //resorting to RA/CnC compatible counter-clockwise frame order
+			{
+				endFrame = startFrame-1;
+				for (int e = 8; e < FrameCount+1; e=e+8) //assuming 8 facings each animation set
+				{
+					
+					for (int f = startFrame+e-1; f > endFrame; f--)
+					{
+						OffsetX = frame.FrameWidth/2 - frame.Width/2;
+						OffsetY = frame.FrameHeight/2 - frame.Height/2;
+
+						Console.WriteLine("calculated OffsetX: {0}", OffsetX);
+						Console.WriteLine("calculated OffsetY: {0}", OffsetY);
+
+						var data = bitmap.LockBits(new Rectangle(x+OffsetX, 0+OffsetY, frame.Width, frame.Height), ImageLockMode.WriteOnly,
+							PixelFormat.Format8bppIndexed);
+
+						for (var i = 0; i < frame.Height; i++)
+							Marshal.Copy(frame.Image, i * frame.Width,
+								new IntPtr(data.Scan0.ToInt64() + i * data.Stride), frame.Width);
+
+						bitmap.UnlockBits(data);
+
+						x += frame.FrameWidth;
+
+						frame = srcImage[f];
+						Console.WriteLine("f: {0}", f);
+					}
+					endFrame = startFrame+e-1;
+					frame = srcImage[startFrame+e];
+					Console.WriteLine("e: {0}", e);
+					Console.WriteLine("FrameCount: {0}", FrameCount);
+				}
+			}
+			else if (args.Contains("--vehicle")) //resorting to RA/CnC compatible counter-clockwise frame order
 			{
 				frame = srcImage[startFrame];
-			
-				endFrame--;
-				startFrame--;
-				for (int f = endFrame; f > startFrame; f--)
+
+				for (int f = endFrame-1; f > startFrame-1; f--)
 				{
 					OffsetX = frame.FrameWidth/2 - frame.OffsetX;
 					OffsetY = frame.FrameHeight/2 - frame.OffsetY;
@@ -184,8 +219,7 @@ namespace OpenRA.Utility
 				for (int f = startFrame; f < endFrame; f++)
 				{
 					frame = srcImage[f];
-					
-					if (args.Contains("--infantry"))
+					if (args.Contains("--infantrydeath"))
 					{
 						OffsetX = frame.FrameWidth/2 - frame.Width/2;
 						OffsetY = frame.FrameHeight/2 - frame.Height/2;

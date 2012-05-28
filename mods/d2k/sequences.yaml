@@ -100,41 +100,59 @@ frigate:
 		Start: 0
 		Facings: 1
 
-#TODO: This is wrong.
 rifle:
 	stand:
 		Start: 0
 		Facings: 8
 	stand2:
-		Start: 8
-		Length: 8
+		Start: 0
+		Facings: 8
 	stand3:
-		Start: 128
-		Length: 16
+		Start: 0
+		Facings: 8
 	run:
-		Start: 16
+		Start: 8
 		Length: 6
 		Facings: 8
 	shoot:
-		Start: 64
-		Length: 6
+		Start: 56
+		Length: 5
 		Facings: 8
 	prone-stand:
-		Start: 112
-		Length: 4
+		Start: 104
+		Length: 1
 		Facings: 8
 	prone-run:
-		Start: 144
-		Length: 4
+		Start: 112
+		Length: 3
 		Facings: 8
 	standup-0:
-		Start: 176
-		Length: 2
+		Start: 96
+		Length: 1
 		Facings: 8
 	prone-shoot:
-		Start: 192
-		Length: 6
+		Start: 136
+		Length: 5
 		Facings: 8
+	die1: rifledeath
+		Start: 0
+		Length: 5
+	die2: rifledeath
+		Start: 5
+		Length: 7
+	die3: rifledeath
+		Start: 12
+		Length: 7
+	die4: rifledeath
+		Start: 19
+		Length: 7
+	die5: rifledeath
+		Start: 26
+		Length: 7
+	die-crushed: rifledeath
+		Start: 33
+		Length: 7
+		Tick: 1600
 
 conyarda:
 	idle:
@@ -791,13 +809,9 @@ litning:
 		Length: 4
 
 crate:
-	idle: scrate
+	idle: crates
 		Start: 0
-	water: wwcrate
-		Start: 0
-		Length: *
-		Tick: 500
-	land: sh-crate
+	land: crates
 		Start: 0
 
 crate-effects:

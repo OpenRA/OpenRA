@@ -82,11 +82,10 @@ namespace OpenRA.Utility
 				for (int i = 0; i < 256; i++)
 					reader.ReadUInt16();
 			}
-			else if (ID == 2 && PaletteHandle != 0)
+			else if (ID == 2 && PaletteHandle != 0) // image with custom palette
 			{
-				// ignore image with custom palette
 				for (int i = 0; i < Width*Height; i++)
-					reader.ReadByte();
+					Image[i] = reader.ReadByte();
 			}
 			else //standard palette or 16 Bpp
 			{

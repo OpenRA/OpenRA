@@ -52,8 +52,8 @@ Player:
 		InitialCash: 5000
 	ActorGroupProxy:
 	DeveloperMode:
-	HackyAI@EasyAI:
-		Name:Easy AI
+	HackyAI@Omnius:
+		Name:Omnius
 		RallypointTestBuilding: conyarda
 		HarvesterUnit: harvester
 		BaseBuildUnit: mcva,mcvh,mcvo
