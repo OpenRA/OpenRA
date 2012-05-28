@@ -110,6 +110,9 @@
 	TargetableAircraft:
 		TargetTypes: Air
 		GroundedTargetTypes: Ground
+	Plane:
+		RepairBuildings: repaira,repairo,repairh
+		RearmBuildings: hightecha
 	HiddenUnderFog:
 	GainsExperience:
 	GivesExperience:
@@ -129,6 +132,9 @@
 
 ^Helicopter:
 	Inherits: ^Plane
+	Helicopter:
+		RepairBuildings: repaira,repairo,repairh
+		RearmBuildings: hightecha
 
 ^Building:
 	AppearsOnRadar:

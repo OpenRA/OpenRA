@@ -355,7 +355,7 @@ WALL:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 1000
-		Owner: atreides,harkonnen
+		Owner: atreides,harkonnen,ordos
 	SoundOnDamageTransition:
 		DamagedSound:
 		DestroyedSound:
@@ -402,7 +402,7 @@ GUNTOWER:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 40
-		Owner: atreides,harkonnen
+		Owner: atreides,harkonnen,ordos
 	Valued:
 		Cost: 600
 	Tooltip:

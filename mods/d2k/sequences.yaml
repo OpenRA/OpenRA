@@ -853,3 +853,9 @@ crate-effects:
 		Start: 0
 		Length: *
 		Tick: 200
+
+allyrepair:
+	repair:
+		Start: 0
+		Length: *
+		Tick: 160
