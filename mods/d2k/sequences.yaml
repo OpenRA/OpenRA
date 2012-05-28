@@ -150,8 +150,8 @@ rifle:
 		Start: 26
 		Length: 7
 	die-crushed: rifledeath
-		Start: 33
-		Length: 7
+		Start: 54
+		Length: 22
 		Tick: 1600
 
 conyarda:

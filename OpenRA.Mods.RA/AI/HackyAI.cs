@@ -36,8 +36,6 @@ namespace OpenRA.Mods.RA.AI
 		public readonly string RallypointTestBuilding = "fact";		// temporary hack to maintain previous rallypoint behavior.
 		public readonly string[] UnitQueues = {"Vehicle", "Infantry", "Plane"};
 		public readonly bool ShouldRepairBuildings = true;
-		public readonly string HarvesterUnit = "harv";
-		public readonly string[] BaseBuildUnit = {"mcv"};
 
 		string IBotInfo.Name { get { return this.Name; } }
 
@@ -68,7 +66,6 @@ namespace OpenRA.Mods.RA.AI
 	{
 		bool enabled;
 		public int ticks;
-		public string FoundBaseBuildUnit;
 		public Player p;
 		PowerManager playerPower;
 		readonly BuildingInfo rallypointTestBuilding;		// temporary hack
@@ -264,14 +261,14 @@ namespace OpenRA.Mods.RA.AI
 				assignRolesTicks = Info.AssignRolesInterval;
 
 			var newUnits = self.World.ActorsWithTrait<IMove>()
-				.Where(a => a.Actor.Owner == p && a.Actor.Info != Rules.Info[FoundBaseBuildUnit]
+				.Where(a => a.Actor.Owner == p && !a.Actor.HasTrait<BaseBuilding>()
 					&& !activeUnits.Contains(a.Actor))
 					.Select(a => a.Actor).ToArray();
 
 			foreach (var a in newUnits)
 			{
 				BotDebug("AI: Found a newly built unit");
-				if (a.Info == Rules.Info[Info.HarvesterUnit])
+				if (a.HasTrait<Harvester>())
 					world.IssueOrder( new Order( "Harvest", a, false ) );
 				else
 					unitsHangingAroundTheBase.Add(a);
@@ -421,20 +418,16 @@ namespace OpenRA.Mods.RA.AI
 		void DeployMcv(Actor self)
 		{
 			/* find our mcv and deploy it */
-			foreach (var m in Info.BaseBuildUnit)
-			{
-				var mcv = self.World.Actors
-					.FirstOrDefault(a => a.Owner == p && a.Info == Rules.Info[m]);
+			var mcv = self.World.Actors
+				.FirstOrDefault(a => a.Owner == p && a.HasTrait<BaseBuilding>());
 
-				if (mcv != null)
-				{
-					baseCenter = mcv.Location;
-					world.IssueOrder(new Order("DeployTransform", mcv, false));
-					FoundBaseBuildUnit = m; //remember the type to exclude it from attack forces
-				}
-				else
-					BotDebug("AI: Can't find BaseBuildUnit {0}.", m);
+			if (mcv != null)
+			{
+				baseCenter = mcv.Location;
+				world.IssueOrder(new Order("DeployTransform", mcv, false));
 			}
+			else
+					BotDebug("AI: Can't find BaseBuildUnit.");
 		}
 
 		internal IEnumerable<ProductionQueue> FindQueues(string category)

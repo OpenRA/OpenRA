@@ -14,7 +14,6 @@
 # support separate turret sequence with RenderBuildingTurreted
 # ornithocopter should flap (might need new RenderOrni code for proper animation)
 # R8 converter needs infantry frame resorter
-# add infantry dieing animation
 # add trooper
 # add engineer
 # add fremen
