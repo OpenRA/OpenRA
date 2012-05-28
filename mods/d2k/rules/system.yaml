@@ -6,25 +6,41 @@ Player:
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
 		QueuedAudio: AI_BUILD.AUD
+		OnHoldAudio: AI_HOLD.AUD
 		ReadyAudio: AI_BDRDY.AUD
+		CancelledAudio: AI_CANCL.AUD
 	ClassicProductionQueue@Defense:
 		Type: Defense
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
 		QueuedAudio: AI_BUILD.AUD
+		OnHoldAudio: AI_HOLD.AUD
 		ReadyAudio: AI_BDRDY.AUD
+		CancelledAudio: AI_CANCL.AUD
 	ClassicProductionQueue@Vehicle:
 		Type: Vehicle
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
+		ReadyAudio: AI_UNRDY.AUD
+		QueuedAudio:AI_TRAIN.AUD
+		OnHoldAudio: AI_HOLD.AUD
+		CancelledAudio: AI_CANCL.AUD
 	ClassicProductionQueue@Infantry:
 		Type: Infantry
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
+		ReadyAudio: AI_UNRDY.AUD
+		QueuedAudio:AI_TRAIN.AUD
+		OnHoldAudio: AI_HOLD.AUD
+		CancelledAudio: AI_CANCL.AUD
 	ClassicProductionQueue@Plane:
 		Type: Plane
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
+		ReadyAudio: AI_UNRDY.AUD
+		QueuedAudio:AI_TRAIN.AUD
+		OnHoldAudio: AI_HOLD.AUD
+		CancelledAudio: AI_CANCL.AUD
 	PlaceBuilding:
 	SupportPowerManager:
 	ConquestVictoryConditions:
@@ -86,6 +102,7 @@ Player:
 	DebugResourceOreCapacity:
 	-GpsWatcher:
 	BaseAttackNotifier:
+		Audio: AI_ATACK.AUD
 
 World:	
 	OpenWidgetAtGameStart:
@@ -189,15 +206,17 @@ World:
 	SpawnMPUnits@ordos:
 		InitialUnit: mcvo
 		Faction: ordos
+#TODO: These are just the Atreides sounds.
 	EvaAlerts:
 		RadarUp:
 		RadarDown:
-		BuildingCannotPlaceAudio:
+		BuildingCannotPlaceAudio: AI_PLACE.AUD
 		CashTickUp:
 		CashTickDown:
-		LowPower:
-		SilosNeeded:
-		PrimaryBuildingSelected:
+		NewOptions: AI_NEWOP.AUD
+		LowPower: AI_POWER.AUD
+		SilosNeeded: AI_SILOS.AUD
+		PrimaryBuildingSelected: AI_PRMRY.AUD
 		AbilityInsufficientPower:
 		LevelUp:
 	SpatialBins:

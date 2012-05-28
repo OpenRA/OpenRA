@@ -1,5 +1,5 @@
 # make structures appear earlier when errecting from ground
-# harvester unload frames missing (too few DATA.R8 frames in general)
+# harvester harvest and unload frames missing (too few DATA.R8 frames in general)
 # carryalls should automatically transport harvesters (needs complex logic)
 # windtrap animations missing
 # outpost animations missing
@@ -22,8 +22,9 @@
 # add deathhand missile (nuke)
 # add sandworm
 # add thumper which really attracts sandworms
+# add neutral buildings: emperor palace, fremen siech, smugglers house
 # allow upgrades
-# add voices (Dune 2000/DATA/SFX folder contains .aud files)
+# allow different EVA voices for each faction (currently Atreides only)
 # add SOUND.TS .wav file extractor to RA.Utility.exe
 # convert .wav to .aud or support .wav files for Dune 2000 sounds
 # add muzzles and explosions with lightning (might need engine update)
@@ -34,7 +35,6 @@
 # add sonic tank weapon (currently uses tesla)
 # make deviator change the allegiance of ememy units (currently shoots rockets)
 # replace RA mouse.shp, nopower.shp with Dune 2000 equivalent
-# add bots (blocked by issue #2184)
 # complete Arrakis tileset (blocked by issue #2178)
 # allow frigate to deliver 5 units at once to starport
 # starport prices should vary
