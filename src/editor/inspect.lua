@@ -37,7 +37,7 @@ function M.show_warnings(top_ast)
     warnings[#warnings+1] = (path or "?") .. "(" .. (linenum or 0) .. "): " .. msg
   end
   local function known(o) return not T.istype[o] end
-  local isseen = {}
+  local isseen, globseen = {}, {}
   LA.walk(top_ast, function(ast)
     local line = ast.lineinfo and ast.lineinfo.first[1] or 0
     local path = ast.lineinfo and ast.lineinfo.first[4] or '?'
@@ -75,12 +75,19 @@ function M.show_warnings(top_ast)
              line, path)
       end
     end
-    -- removed as it requires value evaluation, which is very slow
-    -- even on simple and short scripts
-    if false and ast.isfield and not(known(ast.seevalue.value) and ast.seevalue.value ~= nil) then
+    -- added check for FAST as ast.seevalue relies on value evaluation,
+    -- which is very slow even on simple and short scripts
+    if not FAST and ast.isfield and not(known(ast.seevalue.value) and ast.seevalue.value ~= nil) then
       warn("unknown field " .. ast[1], ast.lineinfo.first[1], path)
     elseif ast.tag == 'Id' and not ast.localdefinition and not ast.definedglobal then
       warn("unknown global variable '" .. ast[1] .. "'", line, path)
+    elseif ast.tag == 'Id' and not ast.localdefinition and ast.definedglobal then
+      local parent = ast.parent and ast.parent.parent
+      if parent and parent.tag == 'Set' and not globseen[ast[1]] -- report assignments to global
+        and parent[2][1].tag ~= "Function" then -- but ignore global functions
+        warn("first assignment to global variable '" .. ast[1] .. "'", line, path)
+        globseen[ast[1]] = true
+      end
     end
     local vast = ast.seevalue or ast
     local note = vast.parent
