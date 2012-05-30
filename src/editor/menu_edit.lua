@@ -99,7 +99,7 @@ frame:Connect(ID "edit.showtooltip", wx.wxEVT_COMMAND_MENU_SELECTED,
     local linestart = editor:PositionFromLine(line)
     local localpos = pos-linestart
 
-    linetxtopos = linetx:sub(1,localpos)
+    local linetxtopos = linetx:sub(1,localpos)
     linetxtopos = linetxtopos..")"
     linetxtopos = linetxtopos:match("([a-zA-Z_0-9%.%:]+)%b()$")
 

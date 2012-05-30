@@ -3,11 +3,9 @@
 ---------------------------------------------------------
 local wxkeywords = nil -- a string of the keywords for scintilla of wxLua's wx.XXX items
 
-local in_evt_focus = false -- true when in editor focus event to avoid recursion
 local editorID = 100 -- window id to create editor pages with, incremented for new editors
 
 local openDocuments = ide.openDocuments
-local ignoredFilesList = ide.ignoredFilesList
 local statusBar = ide.frame.statusBar
 local notebook = ide.frame.notebook
 local funclist = ide.frame.toolBar.funclist
@@ -17,7 +15,7 @@ local projcombobox = ide.frame.projpanel.projcombobox
 -- ----------------------------------------------------------------------------
 -- Update the statusbar text of the frame using the given editor.
 -- Only update if the text has changed.
-statusTextTable = { "OVR?", "R/O?", "Cursor Pos" }
+local statusTextTable = { "OVR?", "R/O?", "Cursor Pos" }
 
 -- set funclist font to be the same as the combobox in the project dropdown
 funclist:SetFont(projcombobox:GetFont())
@@ -308,7 +306,6 @@ function CreateEditor(name)
         DynamicWordsRem("pre",editor,nil,editor:LineFromPosition(event:GetPosition()), numlines)
       end
       if (bit.band(evtype,wxstc.wxSTC_MOD_BEFOREINSERT) ~= 0) then
-        local pos = event:GetPosition()
         DynamicWordsRem("pre",editor,nil,editor:LineFromPosition(event:GetPosition()), 0)
       end
     end)
@@ -324,7 +321,7 @@ function CreateEditor(name)
       local linestart = editor:PositionFromLine(line)
       local localpos = pos-linestart
 
-      linetxtopos = linetx:sub(1,localpos)
+      local linetxtopos = linetx:sub(1,localpos)
 
       if (ch == char_CR and eol==2) or (ch == char_LF and eol==0) then
         if (line > 0) then
@@ -402,8 +399,8 @@ function CreateEditor(name)
   editor:Connect(wx.wxEVT_SET_FOCUS,
     function (event)
       event:Skip()
-      if ide.in_evt_focus or exitingProgram then return end
-      ide.in_evt_focus = true
+      if ide.in_evt_focus or ide.exitingProgram then return end
+      ide.in_evt_focus = true -- true when in editor focus event to avoid recursion
       isFileAlteredOnDisk(editor)
       ide.in_evt_focus = false
     end)
@@ -443,7 +440,7 @@ function GetSpec(ext,forcespec)
   -- allow forcespec for "override"
   if ext and not spec then
     for i,curspec in pairs(ide.specs) do
-      exts = curspec.exts
+      local exts = curspec.exts
       if (exts) then
         for n,curext in ipairs(exts) do
           if (curext == ext) then

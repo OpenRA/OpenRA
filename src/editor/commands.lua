@@ -54,12 +54,9 @@ function LoadFile(filePath, editor, file_must_exist)
     return nil
   end
 
-  if not editor then
-    editor = findDocumentToReuse()
-  end
-  if not editor then
-    editor = CreateEditor(wx.wxFileName(filePath):GetFullName() or "untitled.lua")
-  end
+  editor = editor
+    or findDocumentToReuse()
+    or CreateEditor(wx.wxFileName(filePath):GetFullName() or "untitled.lua")
 
   editor:Clear()
   editor:ClearAll()
@@ -499,11 +496,11 @@ function ShowFullScreen(setFullScreen)
 end
 
 function CloseWindow(event)
-  exitingProgram = true -- don't handle focus events
+  ide.exitingProgram = true -- don't handle focus events
 
   if not SaveOnExit(event:CanVeto()) then
     event:Veto()
-    exitingProgram = false
+    ide.exitingProgram = false
     return
   end
 
