@@ -407,12 +407,20 @@ function CreateEditor(name)
 
   editor:Connect(wx.wxEVT_KEY_DOWN,
     function (event)
-      if event:GetKeyCode() == wx.WXK_ESCAPE and frame:IsFullScreen() then
+      local keycode = event:GetKeyCode()
+      local first, last = 0, notebook:GetPageCount()-1
+      if keycode == wx.WXK_ESCAPE and frame:IsFullScreen() then
         ShowFullScreen(false)
-      elseif event:GetKeyCode() == wx.WXK_PAGEDOWN and event:ControlDown() then
-        notebook:AdvanceSelection(true)
-      elseif event:GetKeyCode() == wx.WXK_PAGEUP and event:ControlDown() then
-        notebook:AdvanceSelection(false)
+      elseif event:ControlDown() and
+        (keycode == wx.WXK_PAGEUP or keycode == wx.WXK_TAB and event:ShiftDown()) then
+        if notebook:GetSelection() == first
+        then notebook:SetSelection(last)
+        else notebook:AdvanceSelection(false) end
+      elseif event:ControlDown() and
+        (keycode == wx.WXK_PAGEDOWN or keycode == wx.WXK_TAB) then
+        if notebook:GetSelection() == last
+        then notebook:SetSelection(first)
+        else notebook:AdvanceSelection(true) end
       else
         event:Skip()
       end
