@@ -100,10 +100,6 @@ Player:
 	PlayerColorPalette:
 		BasePalette: d2k
 		PaletteFormat: d2k
-	DebugResourceCash:
-	DebugResourceOre:
-	DebugResourceOreCapacity:
-	-GpsWatcher:
 	BaseAttackNotifier:
 		Audio: AI_ATACK.AUD
 
@@ -112,9 +108,7 @@ World:
 		Widget: INGAME_ROOT
 		ObserverWidget: OBSERVER_ROOT
 	ScreenShaker:
-	-WaterPaletteRotation:
 	NukePaletteEffect:
-	-LightPaletteRotator:
 	BuildingInfluence:
 	ChooseBuildTabOnSelect:
 	CrateSpawner:
@@ -179,15 +173,16 @@ World:
 		Race: ordos
 #	BibLayer:
 	ResourceLayer:
-#	ResourceType@spice:
-#		ResourceType: 1
-#		Palette: d2k
-#		SpriteNames: spice #?
-#		ValuePerUnit: 25
-#		Name: Spice
-#		PipColor: Yellow
-#		AllowedTerrainTypes: Sand
-#		AllowUnderActors: false
+	ResourceType@spice:
+		ResourceType: 1
+		Palette: d2k
+		TerrainType: Spice
+		SpriteNames: spice0
+		ValuePerUnit: 35
+		Name: Spice
+		PipColor: Yellow
+		AllowedTerrainTypes: Clear
+		AllowUnderActors: false
 #	SmudgeLayer@SCORCH:
 #		Type:Scorch
 #		SmokePercentage:50
@@ -232,7 +227,7 @@ CRATE:
 		Name: Crate
 	Crate:
 		Lifetime: 120
-		TerrainTypes: Clear, Rough, Road, Water, Ore, Beach
+		TerrainTypes: Clear, Rough, Road, Water, Beach
 	GiveCashCrateAction:
 		Amount: 1000
 		SelectionShares: 50

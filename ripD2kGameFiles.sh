@@ -1,5 +1,5 @@
 #!/bin/bash
-R8="/home/matthias/.openra/Content/d2k/DATA.R8"
+R8="$HOME/.openra/Content/d2k/DATA.R8"
 PAL="mods/d2k/bits/d2k.pal"
 
 mono OpenRA.Utility.exe --r8 $R8 $PAL 0 2 "overlay"
@@ -13,8 +13,8 @@ mono OpenRA.Utility.exe --r8 $R8 $PAL 106 109 "spicebloom"
 mono OpenRA.Utility.exe --shp spicebloom.png 32
 
 
-mono OpenRA.Utility.exe --r8 $R8 $PAL 194 205 "spice"
-mono OpenRA.Utility.exe --shp spice.png 48
+#mono OpenRA.Utility.exe --r8 $R8 $PAL 194 205 "spice"
+#mono OpenRA.Utility.exe --shp spice.png 48
 mono OpenRA.Utility.exe --r8 $R8 $PAL 206 381 "rifle" --infantry
 mono OpenRA.Utility.exe --shp rifle.png 48
 mono OpenRA.Utility.exe --r8 $R8 $PAL 382 457 "rifledeath" --infantrydeath
@@ -376,10 +376,14 @@ mono OpenRA.Utility.exe --shp windtrap_anim.png 96
 mono OpenRA.Utility.exe --r8 $R8 $PAL 4820 4840 "missile_launch"
 mono OpenRA.Utility.exe --shp missile_launch.png 96
 
-R8="/home/matthias/.openra/Content/d2k/MOUSE.R8"
-PAL="mods/d2k/bits/d2k.pal"
+R8="$HOME/.openra/Content/d2k/MOUSE.R8"
 
 mono OpenRA.Utility.exe --r8 $R8 $PAL 0 264 "mouse" --transparent
 mono OpenRA.Utility.exe --shp mouse.png 48
+
+R8="$HOME/.openra/Content/d2k/BLOXBASE.R8"
+mono OpenRA.Utility.exe --r8 $R8 $PAL 0 799 "BLOXBASE"
+#mono OpenRA.Utility.exe --r8 $R8 $PAL 748 757 "spice0"
+#mono OpenRA.Utility.exe --shp spice0.png 32
 
 mv *.shp mods/d2k/bits

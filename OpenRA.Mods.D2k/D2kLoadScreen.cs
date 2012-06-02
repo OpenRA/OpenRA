@@ -9,6 +9,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.IO;
 using System.Drawing;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
@@ -36,8 +37,7 @@ namespace OpenRA.Mods.D2k
 			// can display loadscreen as early as possible
 			r = Game.Renderer;
 			if (r == null) return;
-
-			var s = new Sheet("mods/d2k/uibits/loadscreen.png");
+			var s = new Sheet(Path.Combine(Path.Combine(Path.Combine("mods", "d2k"), "uibits"), "loadscreen.png"));
 			Logo = new Sprite(s, new Rectangle(0,0,256,256), TextureChannel.Alpha);
 			Stripe = new Sprite(s, new Rectangle(256,0,256,256), TextureChannel.Alpha);
 			StripeRect = new Rectangle(0, Renderer.Resolution.Height/2 - 128, Renderer.Resolution.Width, 256);

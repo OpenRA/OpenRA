@@ -2,4 +2,4 @@ OpenRA is a Libre/Free Real Time Strategy game engine supporting early Westwood 
 
 Distributed mods include a reimagining and updating of both the Red Alert and Command & Conquer multiplayer games. This repository tries to add Dune 2000. It is already a standalone mod, but still falls back to Red Alert gamefiles at some times.
 
-Please read INSTALL on how to install an OpenRA development environment, HACKING for an overview of the engine and mods/d2k/TODO to find out about the still missing features. You need to copy "Dune 2000/Data/GAMESFX" and "Dune 2000/DATA/DATA.R8" to ~/.openra/Content/d2k/ and run the bash script ripD2kGameFiles.sh before starting the d2k mod.
+Please read INSTALL on how to install an OpenRA development environment, HACKING for an overview of the engine and mods/d2k/TODO to find out about the still missing features. You need to copy "Dune 2000/Data/GAMESFX" and "Dune 2000/DATA/DATA.R8" and "Dune 2000/DATA/MOUSE.R8" to ~/.openra/Content/d2k/ and run the bash script ripD2kGameFiles.sh before starting the d2k mod.

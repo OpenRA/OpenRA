@@ -12,6 +12,12 @@ Terrain:
 		AcceptSmudge: True
 		IsWater: False
 		Color: 255,255,255,255
+	TerrainType@Spice:
+		Type: Spice
+		Buildable: False
+		AcceptSmudge: False
+		IsWater: False
+		Color: 255,255,255,255
 
 Templates:
 	Template@0:

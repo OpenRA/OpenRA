@@ -6,7 +6,7 @@
 			Clear: 80
 			Rough: 40
 			Road: 100
-			Ore: 70
+			Spice: 70
 			Beach: 40
 		ROT: 5
 	SelectionDecorations:
@@ -38,7 +38,7 @@
 			Clear: 80
 			Rough: 70
 			Road: 100
-			Ore: 70
+			Spice: 70
 			Beach: 70
 		ROT: 5
 	SelectionDecorations:
@@ -77,7 +77,7 @@
 			Clear: 90
 			Rough: 80
 			Road: 100
-			Ore: 80
+			Spice: 80
 			Beach: 80
 	SelectionDecorations:
 	Selectable:
