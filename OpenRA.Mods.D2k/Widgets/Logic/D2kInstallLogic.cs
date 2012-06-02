@@ -17,12 +17,12 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 	public class D2kInstallLogic
 	{
 		[ObjectCreator.UseCtor]
-		public D2kInstallLogic(Widget widget, Dictionary<string,string> installData, Action continueLoading)
+		public D2kInstallLogic(Widget widget, Dictionary<string,string> installData)
 		{
 			var panel = widget.Get("INSTALL_PANEL");
 			var args = new WidgetArgs()
 			{
-				{ "afterInstall", () => { Ui.CloseWindow(); continueLoading(); } },
+				{ "afterInstall", () => { Ui.CloseWindow(); Game.Exit(); } },
 				{ "installData", installData }
 			};
 

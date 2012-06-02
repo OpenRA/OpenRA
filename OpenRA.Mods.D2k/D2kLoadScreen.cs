@@ -77,7 +77,6 @@ namespace OpenRA.Mods.D2k
 			{
 				var args = new WidgetArgs()
 				{
-					{ "continueLoading", () => TestAndContinue() },
 					{ "installData", Info }
 				};
 				Ui.OpenWindow(Info["InstallerMenuWidget"], args);

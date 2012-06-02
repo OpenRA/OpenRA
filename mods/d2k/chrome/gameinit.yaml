@@ -67,7 +67,7 @@ Background@INSTALL_PANEL:
 			Y:PARENT_BOTTOM - 45
 			Width:150
 			Height:25
-			Text:Use CD (will crash)
+			Text:Use CD (broken)
 			Font:Bold
 		Button@QUIT_BUTTON:
 			X:PARENT_RIGHT - 140

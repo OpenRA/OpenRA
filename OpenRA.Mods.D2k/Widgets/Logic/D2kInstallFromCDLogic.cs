@@ -23,14 +23,12 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 		Widget panel;
 		ProgressBarWidget progressBar;
 		LabelWidget statusLabel;
-		Action continueLoading;
 		ButtonWidget retryButton, backButton;
 		Widget installingContainer, insertDiskContainer;
 
 		[ObjectCreator.UseCtor]
-		public D2kInstallFromCDLogic(Widget widget, Action continueLoading)
+		public D2kInstallFromCDLogic(Widget widget)
 		{
-			this.continueLoading = continueLoading;
 			panel = widget.Get("INSTALL_FROMCD_PANEL");
 			progressBar = panel.Get<ProgressBarWidget>("PROGRESS_BAR");
 			statusLabel = panel.Get<LabelWidget>("STATUS_LABEL");
@@ -46,12 +44,18 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 			CheckForDisk();
 		}
 
+		public static bool IsValidDisk(string diskRoot)
+		{
+			var files = new string[][] {
+				new [] { diskRoot, "music", "ambush.aud" },
+			};
+
+			return files.All(f => File.Exists(f.Aggregate(Path.Combine)));
+		}
+
 		void CheckForDisk()
 		{
-			Func<string, bool> ValidDiskFilter = diskRoot => File.Exists(diskRoot+Path.DirectorySeparatorChar+"MAIN.MIX") &&
-					File.Exists(new string[] { diskRoot, "setup", "setup.z" }.Aggregate(Path.Combine));
-
-			var path = InstallUtils.GetMountedDisk(ValidDiskFilter);
+			var path = InstallUtils.GetMountedDisk(IsValidDisk);
 
 			if (path != null)
 				Install(path);
@@ -105,7 +109,7 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 					Game.RunAfterTick(() =>
 					{
 						Ui.CloseWindow();
-						continueLoading();
+						Game.Exit();
 					});
 				}
 				catch
