@@ -132,7 +132,7 @@ World:
 		Filename: d2k.pal
 	PaletteFromFile@effect:
 		Name: effect
-		Filename: temperat.pal
+		Filename: d2k.pal
 	PaletteFromRGBA@shadow:
 		Name: shadow
 		R: 0

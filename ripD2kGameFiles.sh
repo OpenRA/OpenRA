@@ -376,4 +376,10 @@ mono OpenRA.Utility.exe --shp windtrap_anim.png 96
 mono OpenRA.Utility.exe --r8 $R8 $PAL 4820 4840 "missile_launch"
 mono OpenRA.Utility.exe --shp missile_launch.png 96
 
+R8="/home/matthias/.openra/Content/d2k/MOUSE.R8"
+PAL="mods/d2k/bits/d2k.pal"
+
+mono OpenRA.Utility.exe --r8 $R8 $PAL 0 264 "mouse" --transparent
+mono OpenRA.Utility.exe --shp mouse.png 48
+
 mv *.shp mods/d2k/bits

@@ -22,6 +22,8 @@ CARRYALL:
 		ROT: 5
 		Speed: 15
 		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach
+		RepairBuildings: repaira,repairo,repairh
+		RearmBuildings: hightecha
 	RenderUnit:
 	RenderCargo:
 	WithShadow:
@@ -32,7 +34,7 @@ CARRYALL:
 	FallsToEarth:
 		Explosion: UnitExplode
 
-C17:
+FRIGATE:
 	ParaDrop:
 		LZRange: 1
 	Inherits: ^Plane
@@ -42,6 +44,8 @@ C17:
 	Plane:
 		ROT: 5
 		Speed: 35
+		RepairBuildings: repaira,repairo,repairh
+		RearmBuildings: hightecha
 	Health:
 		HP: 25
 	Armor:
@@ -85,6 +89,8 @@ ORNI:
 		InitialFacing: 20
 		ROT: 4
 		Speed: 12
+		RepairBuildings: repaira,repairo,repairh
+		RearmBuildings: hightecha
 	RenderUnit:
 	WithShadow:
 	Selectable:

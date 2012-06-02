@@ -344,6 +344,8 @@
 		ExitCell: 3,1
 	ProductionAirdrop:
 		Produces: Vehicle
+		ReadyAudio: AI_REINF.AUD
+		ActorType: frigate
 	ProductionQueue:
 		Type: Vehicle
 		Group: Vehicle
