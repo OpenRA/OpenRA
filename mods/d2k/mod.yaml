@@ -81,6 +81,7 @@ Voices:
 
 TileSets:
 	mods/d2k/tilesets/arrakis.yaml
+#	mods/d2k/tilesets/bloxbase.yaml
 
 TileSize: 32
 
@@ -90,6 +91,8 @@ Music:
 Movies:
 
 LoadScreen: D2kLoadScreen
+	InstallerMenuWidget: INSTALL_PANEL
+	TestFile: DATA.R8
 
 ServerTraits:
 	LobbyCommands

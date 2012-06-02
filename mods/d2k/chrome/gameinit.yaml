@@ -1,16 +1,16 @@
 Background@INSTALL_PANEL:
-	Logic:RAInstallLogic
+	Logic:D2kInstallLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
-	Width:500
-	Height:160
+	Width:600
+	Height:300
 	Children:
 		Label@TITLE:
 			X:0
 			Y:20
 			Width:PARENT_RIGHT
 			Height:25
-			Text:Install Required
+			Text:Content files missing
 			Align:Center
 			Font:Bold
 		Label@DESC1:
@@ -18,28 +18,56 @@ Background@INSTALL_PANEL:
 			Y:50
 			Width:PARENT_RIGHT
 			Height:25
-			Text:OpenRA requires the original Red Alert game content.
+			Text:This is the work in progress Dune 2000 mod.
 			Align:Center
 		Label@DESC2:
 			X:0
 			Y:70
 			Width:PARENT_RIGHT
 			Height:25
-			Text:Content can be downloaded, or copied from the install CD.
+			Text:It requires the original Dune 2000 (and still some Red Alert game) content.
 			Align:Center
-		Button@DOWNLOAD_BUTTON:
-			X:PARENT_RIGHT - 280
-			Y:PARENT_BOTTOM - 45
-			Width:120
+		Label@DESC4:
+			X:0
+			Y:110
+			Width:PARENT_RIGHT
 			Height:25
-			Text:Download
-			Font:Bold
+			Text:You need to copy "Dune 2000/Data/GAMESFX", "Dune 2000/DATA/DATA.R8"
+			Align:Center
+		Label@DESC5:
+			X:0
+			Y:130
+			Width:PARENT_RIGHT
+			Height:25
+			Text:and "Dune 2000/DATA/MOUSE.R8" from your local Dune 2000 installation
+			Align:Center
+		Label@DESC6:
+			X:0
+			Y:150
+			Width:PARENT_RIGHT
+			Height:25
+			Text:to ~/.openra/Content/d2k/ and run the bash script ripD2kGameFiles.sh
+			Align:Center
+		Label@DESC7:
+			X:0
+			Y:170
+			Width:PARENT_RIGHT
+			Height:25
+			Text:to convert the content. In the future this GUI should do this
+			Align:Center
+		Label@DESC8:
+			X:0
+			Y:190
+			Width:PARENT_RIGHT
+			Height:25
+			Text:automatically using your Dune 2000 CD (won't work yet).
+			Align:Center
 		Button@INSTALL_BUTTON:
 			X:PARENT_RIGHT - 420
 			Y:PARENT_BOTTOM - 45
-			Width:120
+			Width:150
 			Height:25
-			Text:Use CD
+			Text:Use CD (will crash)
 			Font:Bold
 		Button@QUIT_BUTTON:
 			X:PARENT_RIGHT - 140
@@ -49,51 +77,8 @@ Background@INSTALL_PANEL:
 			Text:Quit
 			Font:Bold
 
-Background@INSTALL_DOWNLOAD_PANEL:
-	Logic:DownloadPackagesLogic
-	X:(WINDOW_RIGHT - WIDTH)/2
-	Y:(WINDOW_BOTTOM - HEIGHT)/2
-	Width:500
-	Height:160
-	Children:
-		Label@TITLE:
-			X:0
-			Y:20
-			Width:PARENT_RIGHT
-			Height:25
-			Text:Downloading Red Alert Content
-			Align:Center
-			Font:Bold
-		ProgressBar@PROGRESS_BAR:
-			X:50
-			Y:55
-			Width:PARENT_RIGHT - 100
-			Height:25
-		Label@STATUS_LABEL:
-			X:50
-			Y:80
-			Width:PARENT_RIGHT - 100
-			Height:25
-			Align:Left
-		Button@RETRY_BUTTON:
-			X:PARENT_RIGHT - 280
-			Y:PARENT_BOTTOM - 45
-			Width:120
-			Height:25
-			Visible: false
-			Text:Retry
-			Font:Bold
-			Key:return
-		Button@CANCEL_BUTTON:
-			X:PARENT_RIGHT - 140
-			Y:PARENT_BOTTOM - 45
-			Width:120
-			Height:25
-			Text:Cancel
-			Font:Bold
-			Key:escape
 Background@INSTALL_FROMCD_PANEL:
-	Logic:RAInstallFromCDLogic
+	Logic:D2kInstallFromCDLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Width:500
@@ -138,7 +123,7 @@ Background@INSTALL_FROMCD_PANEL:
 					Y:70
 					Width:PARENT_RIGHT
 					Height:25
-					Text:Please insert one of the Red Alert install CDs then click Retry.
+					Text:Please insert the Dune 2000 install CDs then click Retry.
 					Align:Center
 		Button@RETRY_BUTTON:
 			X:PARENT_RIGHT - 280
