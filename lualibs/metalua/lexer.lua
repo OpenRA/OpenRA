@@ -28,8 +28,9 @@
 
 module ("lexer", package.seeall)
 
-require 'metalua.runtime'
-
+-- don't load metalua.runtime as it loads metalua.base, which pollutes
+-- global namespace and overwrites pairs/ipairs -- PK 6/4/2012
+require 'metalua.table2'
 
 lexer = { alpha={ }, sym={ } }
 lexer.__index=lexer

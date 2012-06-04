@@ -1,21 +1,26 @@
 -- Integration with LuaInspect
 -- (C) 2012 Paul Kulchenko
 
-require "metalua"
-
-local M = {}
-
-local LA = require "luainspect.ast"
-local LI = require "luainspect.init"
-local T = require "luainspect.types"
-
+local M, LA, LI, T = {}
 local FAST = true
-if FAST then
-  LI.eval_comments = function () end
-  LI.infer_values = function () end
+
+local function init()
+  if LA then return end
+
+  require "metalua"
+  LA = require "luainspect.ast"
+  LI = require "luainspect.init"
+  T = require "luainspect.types"
+
+  if FAST then
+    LI.eval_comments = function () end
+    LI.infer_values = function () end
+  end
 end
 
 function M.warnings_from_string(src, file)
+  init()
+
   local ast, err, linenum, colnum = LA.ast_from_string(src, file)
   if err then return nil, err, linenum, colnum end
 

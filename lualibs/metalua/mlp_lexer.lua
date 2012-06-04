@@ -27,6 +27,6 @@ local keywords = {
     "...", "..", "==", ">=", "<=", "~=", 
     "+{", "-{" }
  
-for w in values(keywords) do mlp_lexer:add(w) end
+for _,w in pairs(keywords) do mlp_lexer:add(w) end -- PK 6/4/2012
 
 _M.lexer = mlp_lexer
