@@ -1,9 +1,13 @@
 -- authors: Luxinia Dev (Eike Decker & Christoph Kubisch)
 ---------------------------------------------------------
 
-package.cpath = package.cpath..';bin/?.dll;bin/clibs/?.dll;bin/clibs/?/?.dll;bin/clibs/?/?/?.dll'
-package.cpath = package.cpath..';bin/?.so;bin/clibs/?.so;bin/clibs/?/?.so;bin/clibs/?/?/?.so'
-package.path = package.path..';lualibs/?.lua;lualibs/?/?.lua;lualibs/?/init.lua;lualibs/?/?/?.lua;lualibs/?/?/init.lua'
+-- put bin/ and lualibs/ first to avoid conflicts with included modules
+-- that may have other versions present somewhere else in path/cpath
+package.cpath = 'bin/?.dll;bin/clibs/?.dll;bin/clibs/?/?.dll;bin/clibs/?/?/?.dll;'
+              ..'bin/?.so;bin/clibs/?.so;bin/clibs/?/?.so;bin/clibs/?/?/?.so;'
+              .. package.cpath
+package.path  = 'lualibs/?.lua;lualibs/?/?.lua;lualibs/?/init.lua;lualibs/?/?/?.lua;lualibs/?/?/init.lua;'
+              .. package.path
 
 require("wx")
 require("bit")
