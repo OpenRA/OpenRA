@@ -6,10 +6,9 @@
 # construction yard crane animations missing
 # welding animation (factories) missing
 # chimney animation (refinery) missing
-# create a tileset extractor for gamefiles to remove copyrighted content from distribution
+# create a tileset extractor for gamefiles to remove copyrighted content from distribution (convert BLOX*.R8 to TMP files)
 # replace mines with spice blooms
 # spice tiles do not fit
-# add Smudge Types (stored in SHPs not in tileset)
 # add game logic for concrete plates (use terrain overlay from bridges/ressources)
 # allow placing turrets on walls
 # support separate turret sequence with RenderBuildingTurreted
@@ -34,7 +33,10 @@
 # add install rules to makefile (once more polished)
 # add sonic tank weapon (currently uses tesla)
 # make deviator change the allegiance of ememy units (currently shoots rockets)
-# complete Arrakis tileset (blocked by issue #2178)
+# complete Arrakis tileset (blocked by TilesetBuilder crashing on export)
 # allow frigate to deliver 5 units at once to starport
 # starport prices should vary
+# reinforcements have arrived is played twice when ordering via starport
 # add shroud (Dune's 32x32 tiles differ completely from RA/CnC)
+# black spots on buildings should be transparent
+# gamefile extraction (setup/setup.z) from CD fails

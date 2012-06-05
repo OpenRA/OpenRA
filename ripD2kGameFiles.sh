@@ -11,10 +11,16 @@ mono OpenRA.Utility.exe --r8 $R8 $PAL 102 105 "crates"
 mono OpenRA.Utility.exe --shp crates.png 32
 mono OpenRA.Utility.exe --r8 $R8 $PAL 106 109 "spicebloom"
 mono OpenRA.Utility.exe --shp spicebloom.png 32
+# stars, arrow-up
+mono OpenRA.Utility.exe --r8 $R8 $PAL 114 129 "rockcrater1"
+mono OpenRA.Utility.exe --shp rockcrater1.png 32
+mono OpenRA.Utility.exe --r8 $R8 $PAL 130 145 "rockcrater2"
+mono OpenRA.Utility.exe --shp rockcrater2.png 32
+mono OpenRA.Utility.exe --r8 $R8 $PAL 146 161 "sandcrater1"
+mono OpenRA.Utility.exe --shp sandcrater1.png 32
+mono OpenRA.Utility.exe --r8 $R8 $PAL 162 177 "sandcrater2"
+mono OpenRA.Utility.exe --shp sandcrater2.png 32
 
-
-#mono OpenRA.Utility.exe --r8 $R8 $PAL 194 205 "spice"
-#mono OpenRA.Utility.exe --shp spice.png 48
 mono OpenRA.Utility.exe --r8 $R8 $PAL 206 381 "rifle" --infantry
 mono OpenRA.Utility.exe --shp rifle.png 48
 mono OpenRA.Utility.exe --r8 $R8 $PAL 382 457 "rifledeath" --infantrydeath
@@ -383,6 +389,8 @@ mono OpenRA.Utility.exe --shp mouse.png 48
 
 R8="$HOME/.openra/Content/d2k/BLOXBASE.R8"
 mono OpenRA.Utility.exe --r8 $R8 $PAL 0 799 "BLOXBASE"
+mono OpenRA.Utility.exe --r8 $R8 $PAL 0 0 "sand0"
+
 #mono OpenRA.Utility.exe --r8 $R8 $PAL 748 757 "spice0"
 #mono OpenRA.Utility.exe --shp spice0.png 32
 

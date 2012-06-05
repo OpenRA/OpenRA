@@ -42,7 +42,7 @@ Dragon:
 		Explosion: med_explosion
 		WaterExplosion: med_splash
 		InfDeath: 3
-#		SmudgeType: Crater
+		SmudgeType: Crater
 		Damage: 50
 		ImpactSound: kaboom12
 
@@ -75,7 +75,7 @@ QuadRockets:
 		Explosion: med_explosion
 		WaterExplosion: med_splash
 		ImpactSound: kaboom12
-#		SmudgeType: Crater
+		SmudgeType: Crater
 		Damage: 35
 
 TurretGun:
@@ -95,7 +95,7 @@ TurretGun:
 		Explosion: small_explosion
 		WaterExplosion: small_splash
 		InfDeath: 3
-#		SmudgeType: Crater
+		SmudgeType: Crater
 		Damage: 60
 
 25mm:
@@ -115,7 +115,7 @@ TurretGun:
 		Explosion: small_explosion
 		WaterExplosion: small_splash
 		InfDeath: 3
-#		SmudgeType: Crater
+		SmudgeType: Crater
 		Damage: 16
 
 90mm:
@@ -135,7 +135,7 @@ TurretGun:
 		Explosion: small_explosion
 		WaterExplosion: small_splash
 		InfDeath: 3
-#		SmudgeType: Crater
+		SmudgeType: Crater
 		Damage: 30
 
 105mm:
@@ -157,7 +157,7 @@ TurretGun:
 		Explosion: small_explosion
 		WaterExplosion: small_splash
 		InfDeath: 3
-#		SmudgeType: Crater
+		SmudgeType: Crater
 		Damage: 40
 
 120mm:
@@ -178,7 +178,7 @@ TurretGun:
 		Explosion: small_explosion
 		WaterExplosion: small_splash
 		InfDeath: 3
-#		SmudgeType: Crater
+		SmudgeType: Crater
 		Damage: 50
 
 227mm: 
@@ -210,7 +210,7 @@ TurretGun:
 		Explosion: med_explosion
 		WaterExplosion: med_splash
 		ImpactSound: kaboom12
-#		SmudgeType: Crater
+		SmudgeType: Crater
 		Damage: 25
 
 #for rocket turret
@@ -242,7 +242,7 @@ MammothTusk:
 		Explosion: med_explosion
 		WaterExplosion: med_splash
 		InfDeath: 2
-#		SmudgeType: Crater
+		SmudgeType: Crater
 		Damage: 45
 
 155mm:
@@ -268,7 +268,7 @@ MammothTusk:
 		Explosion: large_explosion
 		WaterExplosion: med_splash
 		InfDeath: 2
-#		SmudgeType: Crater
+		SmudgeType: Crater
 		Damage: 220
 
 TTankZap:

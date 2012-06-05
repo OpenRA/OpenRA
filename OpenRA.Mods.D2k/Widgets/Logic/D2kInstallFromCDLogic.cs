@@ -48,6 +48,7 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 		{
 			var files = new string[][] {
 				new [] { diskRoot, "music", "ambush.aud" },
+				new [] { diskRoot, "setup", "setup.z" },
 			};
 
 			return files.All(f => File.Exists(f.Aggregate(Path.Combine)));
