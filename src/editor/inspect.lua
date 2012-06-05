@@ -61,13 +61,14 @@ function M.show_warnings(top_ast)
       if isparam then
         if ast[1] ~= 'self' then
           local func = parent.parent and parent.parent.parent
-          local name = type(func[1][1][1]) == 'string' and func[1][1][1]
+          local assignment = not func.tag or func.tag == 'Set' or func.tag == 'Localrec'
+          local name = assignment and type(func[1][1][1]) == 'string' and func[1][1][1]
           -- "function foo(bar)" => func.tag == 'Set'
           -- "local function foo(bar)" => func.tag == 'Localrec'
           -- "local _, foo = 1, function(bar)" => func.tag == 'Local'
           -- "print(function(bar) end)" => func.tag == nil
           warn("unused parameter '" .. ast[1] .. "'" ..
-               (func and (not func.tag or func.tag == 'Set' or func.tag == 'Localrec')
+               (func and assignment
                      and (name and func.tag
                                and (" in function '" .. name .. "'")
                                or " in anonymous function")
