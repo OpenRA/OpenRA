@@ -85,14 +85,25 @@ function M.show_warnings(top_ast)
     if not FAST and ast.isfield and not(known(ast.seevalue.value) and ast.seevalue.value ~= nil) then
       warn("unknown field " .. ast[1], ast.lineinfo.first[1], path)
     elseif ast.tag == 'Id' and not ast.localdefinition and not ast.definedglobal then
-      warn("unknown global variable '" .. ast[1] .. "'", line, path)
+      local key = ast[1]..';'..line -- report only once per line
+      if not globseen[key] then
+        warn("unknown global variable '" .. ast[1] .. "'", line, path)
+        globseen[key] = true
+      end
     elseif ast.tag == 'Id' and not ast.localdefinition and ast.definedglobal then
       local parent = ast.parent and ast.parent.parent
       if parent and parent.tag == 'Set' and not globseen[ast[1]] -- report assignments to global
+        -- only report if it is on the left side of the assignment
+        -- this is a bit tricky as it can be assigned as part of a, b = c, d
+        -- `Set{ {lhs+} {expr+} } -- lhs1, lhs2... = e1, e2...
+        and parent[1] == ast.parent
         and parent[2][1].tag ~= "Function" then -- but ignore global functions
         warn("first assignment to global variable '" .. ast[1] .. "'", line, path)
         globseen[ast[1]] = true
       end
+    elseif (ast.tag == 'Set' or ast.tag == 'Local') and #(ast[2]) > #(ast[1]) then
+      warn(("value discarded in multiple assignment: %d values assigned to %d variable%s")
+        :format(#(ast[2]), #(ast[1]), #(ast[1]) > 1 and 's' or ''), line, path)
     end
     local vast = ast.seevalue or ast
     local note = vast.parent
