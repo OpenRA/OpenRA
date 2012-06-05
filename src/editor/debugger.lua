@@ -50,7 +50,7 @@ local function activateDocument(fileName, line)
   for _, document in pairs(ide.openDocuments) do
     local editor = document.editor
     -- for running in cygwin, use same type of separators
-    filePath = string.gsub(document.filePath, "\\", "/")
+    local filePath = string.gsub(document.filePath, "\\", "/")
     local fileName = string.gsub(fileName, "\\", "/")
     if string.upper(filePath) == string.upper(fileName) then
       local selection = document.index
@@ -124,7 +124,7 @@ debugger.listen = function()
         for _, document in pairs(ide.openDocuments) do
           local editor = document.editor
           local filePath = document.filePath
-          line = editor:MarkerNext(0, BREAKPOINT_MARKER_VALUE)
+          local line = editor:MarkerNext(0, BREAKPOINT_MARKER_VALUE)
           while line ~= -1 do
             debugger.handle("setb " .. filePath .. " " .. (line+1))
             line = editor:MarkerNext(line + 1, BREAKPOINT_MARKER_VALUE)

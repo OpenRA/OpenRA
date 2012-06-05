@@ -51,7 +51,6 @@ function MarkupHotspotClick(pos, editor)
     local _,_,shell = string.find(text, [[^macro:shell%((.*%S)%)$]])
     local _,_,http = string.find(text, [[^(http:%S+)$]])
     local _,_,command = string.find(text, [[^macro:(%w+)$]])
-    local bottomnotebook = ide.frame.bottomnotebook
     if shell then
       ShellExecuteCode(shell)
     elseif command == 'run' then -- run the current file
@@ -70,7 +69,7 @@ function MarkupHotspotClick(pos, editor)
       local filename = wx.wxFileName(name)
       filename:Normalize() -- remove .., ., and other similar elements
       if filename:FileExists() and
-        (newindow or SaveModifiedDialog(editor, true) ~= wx.wxID_CANCEL) then
+        (newwindow or SaveModifiedDialog(editor, true) ~= wx.wxID_CANCEL) then
         LoadFile(filename,not newwindow and editor or nil,true)
       end
     end
