@@ -46,11 +46,15 @@ function M.show_warnings(top_ast)
   LA.walk(top_ast, function(ast)
     local line = ast.lineinfo and ast.lineinfo.first[1] or 0
     local path = ast.lineinfo and ast.lineinfo.first[4] or '?'
+    local name = ast[1]
     -- check if we're masking a variable in the same scope
-    if ast.localmasking and
+    if ast.localmasking and name ~= '_' and
        ast.level == ast.localmasking.level then
       local linenum = ast.localmasking.lineinfo.first[1]
-      warn("local variable '" .. ast[1] .. "' masks earlier declaration " ..
+      local parent = ast.parent and ast.parent.parent
+      local func = parent and parent.tag == 'Localrec'
+      warn("local " .. (func and 'function' or 'variable') .. " '" ..
+        name .. "' masks earlier declaration " ..
         (linenum and "on line " .. linenum or "in the same scope"),
         line, path)
     end
@@ -59,48 +63,56 @@ function M.show_warnings(top_ast)
       local parent = ast.parent and ast.parent.parent
       local isparam = parent and parent.tag == 'Function'
       if isparam then
-        if ast[1] ~= 'self' then
+        if name ~= 'self' then
           local func = parent.parent and parent.parent.parent
           local assignment = not func.tag or func.tag == 'Set' or func.tag == 'Localrec'
-          local name = assignment and type(func[1][1][1]) == 'string' and func[1][1][1]
+          local fname = assignment and type(func[1][1][1]) == 'string' and func[1][1][1]
           -- "function foo(bar)" => func.tag == 'Set'
           -- "local function foo(bar)" => func.tag == 'Localrec'
           -- "local _, foo = 1, function(bar)" => func.tag == 'Local'
           -- "print(function(bar) end)" => func.tag == nil
-          warn("unused parameter '" .. ast[1] .. "'" ..
+          warn("unused parameter '" .. name .. "'" ..
                (func and assignment
-                     and (name and func.tag
-                               and (" in function '" .. name .. "'")
+                     and (fname and func.tag
+                               and (" in function '" .. fname .. "'")
                                or " in anonymous function")
                      or ""),
                line, path)
         end
       else
-        warn("unused local variable '" .. ast[1] ..
-             "'; consider removing or replacing with '_'",
-             line, path)
+        if parent.tag == 'Localrec' then -- local function foo...
+          warn("unused local function '" .. name .. "'", line, path)
+        else
+          warn("unused local variable '" .. name .. "'; "..
+               "consider removing or replacing with '_'", line, path)
+        end
       end
     end
     -- added check for FAST as ast.seevalue relies on value evaluation,
     -- which is very slow even on simple and short scripts
     if not FAST and ast.isfield and not(known(ast.seevalue.value) and ast.seevalue.value ~= nil) then
-      warn("unknown field " .. ast[1], ast.lineinfo.first[1], path)
+      warn("unknown field " .. name, ast.lineinfo.first[1], path)
     elseif ast.tag == 'Id' and not ast.localdefinition and not ast.definedglobal then
-      local key = ast[1]..';'..line -- report only once per line
-      if not globseen[key] then
-        warn("unknown global variable '" .. ast[1] .. "'", line, path)
-        globseen[key] = true
+      if not globseen[name] then
+        globseen[name] = true
+        local parent = ast.parent
+        -- if being called and not one of the parameters
+        if parent and parent.tag == 'Call' and parent[1] == ast then
+          warn("first use of unknown global function '" .. name .. "'", line, path)
+        else
+          warn("first use of unknown global variable '" .. name .. "'", line, path)
+        end
       end
     elseif ast.tag == 'Id' and not ast.localdefinition and ast.definedglobal then
       local parent = ast.parent and ast.parent.parent
-      if parent and parent.tag == 'Set' and not globseen[ast[1]] -- report assignments to global
+      if parent and parent.tag == 'Set' and not globseen[name] -- report assignments to global
         -- only report if it is on the left side of the assignment
         -- this is a bit tricky as it can be assigned as part of a, b = c, d
         -- `Set{ {lhs+} {expr+} } -- lhs1, lhs2... = e1, e2...
         and parent[1] == ast.parent
         and parent[2][1].tag ~= "Function" then -- but ignore global functions
-        warn("first assignment to global variable '" .. ast[1] .. "'", line, path)
-        globseen[ast[1]] = true
+        warn("first assignment to global variable '" .. name .. "'", line, path)
+        globseen[name] = true
       end
     elseif (ast.tag == 'Set' or ast.tag == 'Local') and #(ast[2]) > #(ast[1]) then
       warn(("value discarded in multiple assignment: %d values assigned to %d variable%s")
@@ -112,7 +124,7 @@ function M.show_warnings(top_ast)
              and vast.parent.note
     if note and not isseen[vast.parent] then
       isseen[vast.parent] = true
-      warn("function '" .. ast[1] .. "': " .. note, line, path)
+      warn("function '" .. name .. "': " .. note, line, path)
     end
   end)
   return warnings
