@@ -9,7 +9,7 @@ mono OpenRA.Utility.exe --shp overlay.png 32
 #mono OpenRA.Utility.exe --shp shadow.png 32
 mono OpenRA.Utility.exe --r8 $R8 $PAL 102 105 "crates"
 mono OpenRA.Utility.exe --shp crates.png 32
-mono OpenRA.Utility.exe --r8 $R8 $PAL 106 109 "spicebloom"
+mono OpenRA.Utility.exe --r8 $R8 $PAL 107 109 "spicebloom"
 mono OpenRA.Utility.exe --shp spicebloom.png 32
 # stars, arrow-up
 mono OpenRA.Utility.exe --r8 $R8 $PAL 114 129 "rockcrater1"
@@ -391,7 +391,7 @@ R8="$HOME/.openra/Content/d2k/BLOXBASE.R8"
 mono OpenRA.Utility.exe --r8 $R8 $PAL 0 799 "BLOXBASE"
 mono OpenRA.Utility.exe --r8 $R8 $PAL 0 0 "sand0"
 
-#mono OpenRA.Utility.exe --r8 $R8 $PAL 748 757 "spice0"
-#mono OpenRA.Utility.exe --shp spice0.png 32
+mono OpenRA.Utility.exe --r8 $R8 $PAL 748 749 "spice0"
+mono OpenRA.Utility.exe --shp spice0.png 32
 
 mv *.shp mods/d2k/bits

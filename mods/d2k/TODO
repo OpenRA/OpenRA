@@ -7,8 +7,7 @@
 # welding animation (factories) missing
 # chimney animation (refinery) missing
 # create a tileset extractor for gamefiles to remove copyrighted content from distribution (convert BLOX*.R8 to TMP files)
-# replace mines with spice blooms
-# spice tiles do not fit
+# add more spice tiles and make them fit
 # add game logic for concrete plates (use terrain overlay from bridges/ressources)
 # allow placing turrets on walls
 # support separate turret sequence with RenderBuildingTurreted

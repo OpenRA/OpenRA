@@ -873,3 +873,13 @@ allyrepair:
 		Start: 0
 		Length: *
 		Tick: 160
+
+spicebloom:
+	make:
+		Start: 0
+		Length: 3
+	active:
+		Start: 2
+		Length: 1
+	idle:
+		Start: 2

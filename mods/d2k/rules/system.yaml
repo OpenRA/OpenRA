@@ -126,7 +126,7 @@ World:
 		Filename: d2k.pal
 	PaletteFromFile@effect:
 		Name: effect
-		Filename: d2k.pal
+		Filename: temperat.pal
 	PaletteFromRGBA@shadow:
 		Name: shadow
 		R: 0
@@ -265,3 +265,22 @@ mpspawn:
 waypoint:
 	Waypoint:
 	RenderEditorOnly:
+
+SPICEBLOOM:
+	RenderBuilding:
+		Palette: d2k
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	AppearsOnRadar:
+	EditorAppearance:
+		RelativeToTopLeft: yes
+	ProximityCaptor:
+		Types:Tree
+	BelowUnits:
+	Tooltip:
+		Name: Spice Bloom
+	SeedsResource:
+		ResourceType: Spice
+	RadarColorFromTerrain:
+		Terrain: Spice
