@@ -148,7 +148,7 @@ namespace OpenRA.Widgets
 					world.Selection.DoControlGroup(world, e.KeyName[0] - '0', e.Modifiers);
 					return true;
 				}
-				else if(e.KeyName == "pause")
+				else if(e.KeyName == "pause" || e.KeyName == "f3")
 				{
 					world.IssueOrder(Order.PauseRequest());
 				}
