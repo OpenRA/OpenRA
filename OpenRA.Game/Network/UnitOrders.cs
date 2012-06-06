@@ -97,19 +97,13 @@ namespace OpenRA.Network
 				
 				case "PauseGame":
 					{	
-						if(clientId != null)
+						var client = orderManager.LobbyInfo.ClientWithIndex(clientId);
+				
+						if(client != null)
 						{
-							var client = orderManager.LobbyInfo.ClientWithIndex(clientId);
-					
 							orderManager.GamePaused = !orderManager.GamePaused;
-							if(orderManager.GamePaused)
-							{
-								Game.AddChatLine(Color.White, "", "The game is paused by "+client.Name);
-							}
-							else
-							{
-								Game.AddChatLine(Color.White, "", "The game is un-paused by "+client.Name);
-							}
+							var pausetext = "The game is {0} by {1}".F( orderManager.GamePaused ? "paused" : "un-paused", client.Name );
+							Game.AddChatLine(Color.White, "", pausetext);
 						}
 						break;
 					}
