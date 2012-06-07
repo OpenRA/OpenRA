@@ -8,12 +8,9 @@ local ide = ide
 local bottomnotebook = ide.frame.bottomnotebook
 local out = bottomnotebook.shellbox
 
+local OUTPUT_MARKER = 3
 local remotesend
 
-local OUTPUT_MARKER = 3
-local OUTPUT_MARKER_VALUE = 8 -- = 2^OUTPUT_MARKER
-
-local frame = ide.frame
 out:SetFont(ide.ofont)
 out:StyleSetFont(wxstc.wxSTC_STYLE_DEFAULT, ide.ofont)
 out:StyleClearAll()
@@ -200,7 +197,7 @@ local function createenv ()
   end
 
   local function relativeFilepath(file)
-    local name,level = luafilepath(3)
+    local name = luafilepath(3)
     return (file and name) and name.."/"..file or file or name
   end
 
@@ -281,7 +278,7 @@ local function executeShellCode(tx)
   end
 end
 
-function ShellSupportRemote(client,uid)
+function ShellSupportRemote(client)
   remotesend = client
 
   local index = bottomnotebook:GetPageIndex(out)
@@ -359,7 +356,7 @@ out:Connect(wx.wxEVT_KEY_DOWN,
           or key == wx.WXK_SHIFT or key == wx.WXK_CONTROL
           or key == wx.WXK_ALT then
         break
-      elseif key == wx.WXK_RETURN or key == WXK_NUMPAD_ENTER then
+      elseif key == wx.WXK_RETURN or key == wx.WXK_NUMPAD_ENTER then
         if not caretOnPromptLine()
         or out:LineFromPosition(out:GetSelectionStart()) < getPromptLine() then
           return

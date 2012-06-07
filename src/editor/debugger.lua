@@ -180,7 +180,7 @@ debugger.listen = function()
       end
 
       if (not options.noshell and not debugger.scratchpad) then
-        ShellSupportRemote(debugger.shell, debugger.pid)
+        ShellSupportRemote(debugger.shell)
       end
 
       DisplayOutput("Started remote debugging session (base directory: '" .. debugger.basedir .. "').\n")
@@ -325,7 +325,7 @@ function DebuggerStop()
     debugger.server = nil
     debugger.pid = nil
     SetAllEditorsReadOnly(false)
-    ShellSupportRemote(nil, 0)
+    ShellSupportRemote(nil)
     ClearAllCurrentLineMarkers()
     DebuggerScratchpadOff()
     DisplayOutput("Completed debugging session.\n")
@@ -551,7 +551,7 @@ function DebuggerScratchpadOn(editor)
     debugger.scratchpad.updated = true
     ClearAllCurrentLineMarkers()
     SetAllEditorsReadOnly(false)
-    ShellSupportRemote(nil, 0) -- disable remote shell
+    ShellSupportRemote(nil) -- disable remote shell
     DebuggerRefreshScratchpad()
   elseif not ProjectDebug(true, "scratchpad") then
     debugger.scratchpad = nil
