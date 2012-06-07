@@ -104,7 +104,7 @@ do
   -- first argument must be the application name
   assert(type(arg[1]) == "string","first argument must be application name")
   ide.editorFilename = arg[1]
-  ide.config.path.app = arg[1]:match("([%w_-]+)%.?[^%.]*$")
+  ide.config.path.app = arg[1]:match("([%w_-%.]+)$"):gsub("%.[^%.]*$","")
   assert(ide.config.path.app, "no application path defined")
   for index = 2, #arg do
     if (arg[index] == "-cfg" and index+1 <= #arg) then
