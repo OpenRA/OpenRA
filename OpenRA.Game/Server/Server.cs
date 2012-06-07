@@ -505,7 +505,7 @@ namespace OpenRA.Server
 				
 				DispatchOrders( toDrop, toDrop.MostRecentFrame, new byte[] { 0xbf } );
 
-				if (conns.Count != 0)
+				if (conns.Count != 0 || lobbyInfo.GlobalSettings.Dedicated)
 					SyncLobbyInfo();
 			}
 
