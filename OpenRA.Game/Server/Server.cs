@@ -500,6 +500,7 @@ namespace OpenRA.Server
 		{
 			GameStarted = true;
 			listener.Stop();
+
 			Console.WriteLine("Game started");
 
 			foreach( var c in conns )
