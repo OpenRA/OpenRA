@@ -118,6 +118,7 @@ namespace OpenRA.Server
 			lobbyInfo.GlobalSettings.Map = settings.Map;
 			lobbyInfo.GlobalSettings.ServerName = settings.Name;
 			lobbyInfo.GlobalSettings.Ban = settings.Ban;
+			lobbyInfo.GlobalSettings.Dedicated = settings.Dedicated;
 
 			foreach (var t in ServerTraits.WithInterface<INotifyServerStart>())
 				t.ServerStarted(this);
@@ -263,7 +264,10 @@ namespace OpenRA.Server
 							mods.Count() == Game.CurrentMods.Count() &&  //same number
 							mods.Select( m => Pair.New(m.Split('@')[0], m.Split('@')[1])).All(kv => Game.CurrentMods.ContainsKey(kv.First) &&
 					 		(kv.Second == "{DEV_VERSION}" || Game.CurrentMods[kv.First].Version == "{DEV_VERSION}" || kv.Second == Game.CurrentMods[kv.First].Version));
-
+				
+				// Drop DEV_VERSION if it's a Dedicated
+				if ( lobbyInfo.GlobalSettings.Dedicated &&  mods.Any(m => m.Contains("{DEV_VERSION}"))) { valid = false; }
+				
 				if (!valid)
 				{
 					Log.Write("server", "Rejected connection from {0}; mods do not match.",
