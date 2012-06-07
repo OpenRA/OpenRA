@@ -236,6 +236,11 @@ namespace OpenRA.Mods.RA.Server
 							server.SendChatTo( conn, "Only the host can change the map" );
 							return true;
 						}
+						if(!server.ModData.AvailableMaps.ContainsKey(s))
+						{
+							server.SendChatTo( conn, "Map not found");
+							return true;
+						}
 						server.lobbyInfo.GlobalSettings.Map = s;
 						var oldSlots = server.lobbyInfo.Slots.Keys.ToArray();
 						LoadMap(server);
