@@ -28,6 +28,7 @@ namespace OpenRA.GameRules
 		public string MasterServer = "http://master.open-ra.org/";
 		public bool AllowCheats = false;
 		public string Map = null;
+		public int TimeOut = 0;
 
 		public ServerSettings() { }
 
@@ -40,6 +41,7 @@ namespace OpenRA.GameRules
 			MasterServer = other.MasterServer;
 			AllowCheats = other.AllowCheats;
 			Map = other.Map;
+			TimeOut = other.TimeOut;
 		}
 	}
 
