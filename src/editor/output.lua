@@ -124,16 +124,20 @@ function CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
   end
 
   -- launch process
-  local pid = (proc and wx.wxExecute(cmd, wx.wxEXEC_ASYNC + (nohide and wx.wxEXEC_NOHIDE or 0),proc) or
-    wx.wxExecute(cmd, wx.wxEXEC_ASYNC + (nohide and wx.wxEXEC_NOHIDE or 0)))
+  local pid = (proc
+    and wx.wxExecute(cmd, wx.wxEXEC_ASYNC + (nohide and wx.wxEXEC_NOHIDE or 0),proc)
+     or wx.wxExecute(cmd, wx.wxEXEC_ASYNC + (nohide and wx.wxEXEC_NOHIDE or 0)))
 
   if (oldcwd) then
     wx.wxFileName.SetCwd(oldcwd)
   end
 
-  -- check process
-  if not pid or pid == -1 then
-    DisplayOutputNoMarker("Unknown ERROR Running program!\n")
+  -- For asynchronous execution, he return value is the process id and
+  -- zero value indicates that the command could not be executed.
+  -- The return value of -1 in this case indicates that we didn't launch
+  -- a new process, but connected to the running one (e.g. DDE under Windows).
+  if not pid or pid == -1 or pid == 0 then
+    DisplayOutput("Unable to run program: "..cmd.."\n")
     customproc = nil
     return
   else
