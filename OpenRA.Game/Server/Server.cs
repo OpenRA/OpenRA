@@ -406,6 +406,7 @@ namespace OpenRA.Server
 		public void StartGame()
 		{
 			GameStarted = true;
+			listener.Stop();
 			foreach( var c in conns )
 				foreach( var d in conns )
 					DispatchOrdersToClient( c, d.PlayerIndex, 0x7FFFFFFF, new byte[] { 0xBF } );
