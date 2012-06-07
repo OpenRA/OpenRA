@@ -197,7 +197,7 @@ namespace OpenRA.Server
 					 		(kv.Second == "{DEV_VERSION}" || Game.CurrentMods[kv.First].Version == "{DEV_VERSION}" || kv.Second == Game.CurrentMods[kv.First].Version));
 				
 				// Drop DEV_VERSION if it's a Dedicated
-				if ( lobbyInfo.GlobalSettings.Dedicated &&  mods.Any(m => m.Contains("{DEV_VERSION}"))) { valid = false; }
+				if ( lobbyInfo.GlobalSettings.Dedicated &&  mods.Any(m => m.Contains("{DEV_VERSION}")) ) { valid = false; }
 				
 				if (!valid)
 				{
@@ -225,6 +225,9 @@ namespace OpenRA.Server
 				if(lobbyInfo.Clients.Count==1)
 					client.IsAdmin=true;
 
+				OpenRA.Network.Session.Client cli = lobbyInfo.Clients.Where(c1 => c1.IsAdmin).Last();
+				string adminName = cli.Name;
+				
 				Log.Write("server", "Client {0}: Accepted connection from {1}",
 					newConn.PlayerIndex, newConn.socket.RemoteEndPoint);
 
@@ -233,6 +236,15 @@ namespace OpenRA.Server
 
 				SyncLobbyInfo();
 				SendChat(newConn, "has joined the game.");
+				
+				if ( lobbyInfo.GlobalSettings.Dedicated )
+				{
+					SendChatTo(newConn, "You have joined the dedicated server!");
+					if (client.IsAdmin == true)
+						SendChatTo(newConn, "    You are admin now!");
+					else
+						SendChatTo(newConn, "    Current admin is "+adminName);
+				}
 
 				if (mods.Any(m => m.Contains("{DEV_VERSION}")))
 					SendChat(newConn, "is running a development version, "+
@@ -378,12 +390,26 @@ namespace OpenRA.Server
 			{
 				conns.Remove(toDrop);
 				SendChat(toDrop, "Connection Dropped");
-
+				
+				OpenRA.Network.Session.Client oldCli = lobbyInfo.Clients.Where(c1 => c1.Index == toDrop.PlayerIndex).Last();
+				
 				if (GameStarted)
 					SendDisconnected(toDrop); /* Report disconnection */
 
 				lobbyInfo.Clients.RemoveAll(c => c.Index == toDrop.PlayerIndex);
 
+				// reassign admin if necessary
+				if ( lobbyInfo.GlobalSettings.Dedicated && oldCli.IsAdmin == true && !GameStarted)
+				{
+					if (lobbyInfo.Clients.Count() > 0)
+					{
+						// client was not alone on the server but he was admin: set admin to the last connected client
+						OpenRA.Network.Session.Client newCli = lobbyInfo.Clients.Last();
+						newCli.IsAdmin = true;
+						SendChat(toDrop, "Admin left! "+newCli.Name+" is a new admin now!");
+					}
+				}
+				
 				DispatchOrders( toDrop, toDrop.MostRecentFrame, new byte[] { 0xbf } );
 
 				if (conns.Count != 0)
