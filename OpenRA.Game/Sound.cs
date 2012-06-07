@@ -39,6 +39,7 @@ namespace OpenRA
 
 		static ISoundEngine CreateEngine(string engine)
 		{
+			engine = Game.Settings.Server.Dedicated?"Null":engine;
 			switch (engine)
 			{	/* todo: if someone cares about pluggable crap here, ship this out */
 			case "AL": return new OpenAlSoundEngine();
