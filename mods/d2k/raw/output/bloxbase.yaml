@@ -1,0 +1,2369 @@
+General:
+	Name: Bloxbase
+	TileSize: 32
+	Id: BLOXBASE
+	Palette: bloxbase.pal
+	Extensions: .blo,.shp
+
+Terrain:
+	TerrainType@Clear:
+		Type: Clear
+		AcceptSmudge: True
+		IsWater: False
+		Color: 255,40,68,40
+	TerrainType@Water:
+		Type: Water
+		AcceptSmudge: False
+		IsWater: True
+		Color: 255,92,116,164
+	TerrainType@Road:
+		Type: Road
+		AcceptSmudge: True
+		IsWater: False
+		Color: 255,88,116,116
+	TerrainType@Rock:
+		Type: Rock
+		AcceptSmudge: False
+		IsWater: False
+		Color: 255,68,68,60
+	TerrainType@Tree:
+		Type: Tree
+		AcceptSmudge: False
+		IsWater: False
+		Color: 255,28,32,36
+	TerrainType@River:
+		Type: River
+		AcceptSmudge: False
+		IsWater: False
+		Color: 255,92,140,180
+	TerrainType@Rough:
+		Type: Rough
+		AcceptSmudge: True
+		IsWater: False
+		Color: 255,68,20,100
+	TerrainType@Wall:
+		Type: Wall
+		AcceptSmudge: True
+		IsWater: False
+		Color: 255,208,192,160
+	TerrainType@Beach:
+		Type: Beach
+		AcceptSmudge: False
+		IsWater: False
+		Color: 255,176,156,120
+	TerrainType@Spice:
+		Type: Spice
+		AcceptSmudge: True
+		IsWater: False
+		Color: 255,161,226,28
+	TerrainType@SpiceBlobs:
+		Type: SpiceBlobs
+		AcceptSmudge: True
+		IsWater: False
+		Color: 255,84,252,252
+
+Templates:
+	Template@0:
+		Id: 0
+		Image: t00
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@1:
+		Id: 1
+		Image: t01
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@2:
+		Id: 2
+		Image: t02
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@3:
+		Id: 3
+		Image: t03
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@4:
+		Id: 4
+		Image: t04
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@5:
+		Id: 5
+		Image: t05
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@6:
+		Id: 6
+		Image: t06
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@7:
+		Id: 7
+		Image: t07
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@8:
+		Id: 8
+		Image: t08
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@9:
+		Id: 9
+		Image: t09
+		Size: 5,3
+		PickAny: False
+		Tiles:
+			0: Clear
+			6: Clear
+			1: Clear
+			5: Clear
+			10: Clear
+			11: Clear
+			12: Clear
+			13: Clear
+			14: Clear
+			9: Clear
+			4: Clear
+			3: Clear
+			2: Clear
+			7: Clear
+			8: Clear
+	Template@10:
+		Id: 10
+		Image: t10
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@11:
+		Id: 11
+		Image: t11
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@12:
+		Id: 12
+		Image: t12
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@13:
+		Id: 13
+		Image: t13
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@14:
+		Id: 14
+		Image: t14
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@15:
+		Id: 15
+		Image: t15
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@16:
+		Id: 16
+		Image: t16
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@17:
+		Id: 17
+		Image: t17
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@18:
+		Id: 18
+		Image: t18
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@19:
+		Id: 19
+		Image: t19
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@20:
+		Id: 20
+		Image: t20
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@21:
+		Id: 21
+		Image: t21
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@22:
+		Id: 22
+		Image: t22
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@23:
+		Id: 23
+		Image: t23
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@24:
+		Id: 24
+		Image: t24
+		Size: 2,3
+		PickAny: False
+		Tiles:
+			0: Clear
+			2: Clear
+			3: Clear
+			5: Clear
+			4: Clear
+			1: Clear
+	Template@25:
+		Id: 25
+		Image: t25
+		Size: 3,3
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			4: Clear
+			3: Clear
+			6: Clear
+			7: Clear
+			8: Clear
+			5: Clear
+			2: Clear
+	Template@26:
+		Id: 26
+		Image: t26
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@27:
+		Id: 27
+		Image: t27
+		Size: 1,2
+		PickAny: False
+		Tiles:
+			1: Clear
+			0: Clear
+	Template@28:
+		Id: 28
+		Image: t28
+		Size: 3,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			4: Clear
+			5: Clear
+			2: Clear
+			3: Clear
+	Template@29:
+		Id: 29
+		Image: t29
+		Size: 3,3
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
+			5: Clear
+			4: Clear
+			7: Clear
+			6: Clear
+			3: Clear
+			8: Clear
+	Template@30:
+		Id: 30
+		Image: t30
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@31:
+		Id: 31
+		Image: t31
+		Size: 2,1
+		PickAny: False
+		Tiles:
+			1: Clear
+			0: Clear
+	Template@32:
+		Id: 32
+		Image: t32
+		Size: 4,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			5: Clear
+			6: Clear
+			2: Clear
+			3: Clear
+			7: Clear
+			4: Clear
+	Template@33:
+		Id: 33
+		Image: t33
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			2: Clear
+			3: Clear
+			1: Clear
+	Template@34:
+		Id: 34
+		Image: t34
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			3: Clear
+			2: Clear
+			1: Clear
+	Template@35:
+		Id: 35
+		Image: t35
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
+			3: Clear
+	Template@36:
+		Id: 36
+		Image: t36
+		Size: 3,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
+			5: Clear
+			4: Clear
+			3: Clear
+	Template@37:
+		Id: 37
+		Image: t37
+		Size: 3,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
+			4: Clear
+			3: Clear
+			5: Clear
+	Template@38:
+		Id: 38
+		Image: t38
+		Size: 2,1
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+	Template@39:
+		Id: 39
+		Image: t39
+		Size: 2,1
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+	Template@40:
+		Id: 40
+		Image: t40
+		Size: 2,1
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+	Template@41:
+		Id: 41
+		Image: t41
+		Size: 2,1
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+	Template@42:
+		Id: 42
+		Image: t42
+		Size: 3,3
+		PickAny: False
+		Tiles:
+			3: Clear
+			4: Clear
+			7: Clear
+			2: Clear
+			6: Clear
+	Template@43:
+		Id: 43
+		Image: t43
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@44:
+		Id: 44
+		Image: t44
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			1: Clear
+			2: Clear
+			3: Clear
+			0: Clear
+	Template@45:
+		Id: 45
+		Image: t45
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@46:
+		Id: 46
+		Image: t46
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@47:
+		Id: 47
+		Image: t47
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			3: Clear
+			2: Clear
+			0: Clear
+			1: Clear
+	Template@48:
+		Id: 48
+		Image: t48
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			2: Clear
+			3: Clear
+			1: Clear
+	Template@49:
+		Id: 49
+		Image: t49
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@50:
+		Id: 50
+		Image: t50
+		Size: 3,2
+		PickAny: False
+		Tiles:
+			3: Clear
+			4: Clear
+			1: Clear
+			5: Clear
+			2: Clear
+			0: Clear
+	Template@51:
+		Id: 51
+		Image: t51
+		Size: 3,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			3: Clear
+			4: Clear
+			1: Clear
+			2: Clear
+			5: Clear
+	Template@52:
+		Id: 52
+		Image: t52
+		Size: 3,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			3: Clear
+			4: Clear
+			1: Clear
+			2: Clear
+			5: Clear
+	Template@53:
+		Id: 53
+		Image: t53
+		Size: 3,2
+		PickAny: False
+		Tiles:
+			2: Clear
+			5: Clear
+			4: Clear
+			3: Clear
+			0: Clear
+			1: Clear
+	Template@54:
+		Id: 54
+		Image: t54
+		Size: 2,3
+		PickAny: False
+		Tiles:
+			0: Clear
+			2: Clear
+			4: Clear
+			5: Clear
+			3: Clear
+			1: Clear
+	Template@55:
+		Id: 55
+		Image: t55
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@56:
+		Id: 56
+		Image: t56
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@57:
+		Id: 57
+		Image: t57
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@58:
+		Id: 58
+		Image: t58
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@59:
+		Id: 59
+		Image: t59
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			1: Clear
+			3: Clear
+			2: Clear
+			0: Clear
+	Template@60:
+		Id: 60
+		Image: t60
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			1: Clear
+			3: Clear
+			2: Clear
+			0: Clear
+	Template@61:
+		Id: 61
+		Image: t61
+		Size: 2,3
+		PickAny: False
+		Tiles:
+			0: Clear
+			2: Clear
+			3: Clear
+			5: Clear
+			4: Clear
+			1: Clear
+	Template@62:
+		Id: 62
+		Image: t62
+		Size: 2,3
+		PickAny: False
+		Tiles:
+			0: Clear
+			2: Clear
+			3: Clear
+			5: Clear
+			4: Clear
+			1: Clear
+	Template@63:
+		Id: 63
+		Image: t63
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@64:
+		Id: 64
+		Image: t64
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@65:
+		Id: 65
+		Image: t65
+		Size: 3,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
+			5: Clear
+			4: Clear
+			3: Clear
+	Template@66:
+		Id: 66
+		Image: t66
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			1: Clear
+			0: Clear
+			2: Clear
+			3: Clear
+	Template@67:
+		Id: 67
+		Image: t67
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			2: Clear
+			3: Clear
+			1: Clear
+	Template@68:
+		Id: 68
+		Image: t68
+		Size: 2,3
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			5: Clear
+			4: Clear
+			2: Clear
+	Template@69:
+		Id: 69
+		Image: t69
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@70:
+		Id: 70
+		Image: t70
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@71:
+		Id: 71
+		Image: t71
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@72:
+		Id: 72
+		Image: t72
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@73:
+		Id: 73
+		Image: t73
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@74:
+		Id: 74
+		Image: t74
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@75:
+		Id: 75
+		Image: t75
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@76:
+		Id: 76
+		Image: t76
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@77:
+		Id: 77
+		Image: t77
+		Size: 1,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+	Template@78:
+		Id: 78
+		Image: t78
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@79:
+		Id: 79
+		Image: t79
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@80:
+		Id: 80
+		Image: t80
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@81:
+		Id: 81
+		Image: t81
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@82:
+		Id: 82
+		Image: t82
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@83:
+		Id: 83
+		Image: t83
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@84:
+		Id: 84
+		Image: t84
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@85:
+		Id: 85
+		Image: t85
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@86:
+		Id: 86
+		Image: t86
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@87:
+		Id: 87
+		Image: t87
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@88:
+		Id: 88
+		Image: t88
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@89:
+		Id: 89
+		Image: t89
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@90:
+		Id: 90
+		Image: t90
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@91:
+		Id: 91
+		Image: t91
+		Size: 2,1
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+	Template@92:
+		Id: 92
+		Image: t92
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@93:
+		Id: 93
+		Image: t93
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@94:
+		Id: 94
+		Image: t94
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@95:
+		Id: 95
+		Image: t95
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			2: Clear
+			3: Clear
+			1: Clear
+	Template@96:
+		Id: 96
+		Image: t96
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@97:
+		Id: 97
+		Image: t97
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			2: Clear
+			3: Clear
+			1: Clear
+	Template@98:
+		Id: 98
+		Image: t98
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			2: Clear
+			3: Clear
+			1: Clear
+	Template@99:
+		Id: 99
+		Image: t99
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			2: Clear
+			1: Clear
+			3: Clear
+	Template@100:
+		Id: 100
+		Image: t100
+		Size: 2,1
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+	Template@101:
+		Id: 101
+		Image: t101
+		Size: 2,3
+		PickAny: False
+		Tiles:
+			0: Clear
+			2: Clear
+			4: Clear
+			5: Clear
+			3: Clear
+			1: Clear
+	Template@102:
+		Id: 102
+		Image: t102
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			2: Clear
+			3: Clear
+			1: Clear
+	Template@103:
+		Id: 103
+		Image: t103
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@104:
+		Id: 104
+		Image: t104
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@105:
+		Id: 105
+		Image: t105
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@106:
+		Id: 106
+		Image: t106
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@107:
+		Id: 107
+		Image: t107
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@108:
+		Id: 108
+		Image: t108
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@109:
+		Id: 109
+		Image: t109
+		Size: 2,3
+		PickAny: False
+		Tiles:
+			4: Clear
+			5: Clear
+			3: Clear
+			1: Clear
+			0: Clear
+			2: Clear
+	Template@110:
+		Id: 110
+		Image: t110
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@111:
+		Id: 111
+		Image: t111
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			3: Clear
+			1: Clear
+			2: Clear
+	Template@112:
+		Id: 112
+		Image: t112
+		Size: 3,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			4: Clear
+			3: Clear
+			5: Clear
+			2: Clear
+	Template@113:
+		Id: 113
+		Image: t113
+		Size: 3,1
+		PickAny: False
+		Tiles:
+			2: Clear
+			1: Clear
+			0: Clear
+	Template@114:
+		Id: 114
+		Image: t114
+		Size: 1,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+	Template@115:
+		Id: 115
+		Image: t115
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@116:
+		Id: 116
+		Image: t116
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@117:
+		Id: 117
+		Image: t117
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@118:
+		Id: 118
+		Image: t118
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			2: Clear
+			3: Clear
+			1: Clear
+	Template@119:
+		Id: 119
+		Image: t119
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			2: Clear
+			3: Clear
+			1: Clear
+	Template@120:
+		Id: 120
+		Image: t120
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			2: Clear
+			3: Clear
+			1: Clear
+	Template@121:
+		Id: 121
+		Image: t121
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			2: Clear
+			3: Clear
+			1: Clear
+	Template@122:
+		Id: 122
+		Image: t122
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			2: Clear
+			3: Clear
+			1: Clear
+	Template@123:
+		Id: 123
+		Image: t123
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			1: Clear
+			3: Clear
+			2: Clear
+			0: Clear
+	Template@124:
+		Id: 124
+		Image: t124
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			1: Clear
+			0: Clear
+			2: Clear
+			3: Clear
+	Template@125:
+		Id: 125
+		Image: t125
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			2: Clear
+			3: Clear
+			1: Clear
+	Template@126:
+		Id: 126
+		Image: t126
+		Size: 3,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
+			5: Clear
+			4: Clear
+			3: Clear
+	Template@127:
+		Id: 127
+		Image: t127
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@128:
+		Id: 128
+		Image: t128
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			1: Clear
+			0: Clear
+			2: Clear
+			3: Clear
+	Template@129:
+		Id: 129
+		Image: t129
+		Size: 3,3
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			4: Clear
+			5: Clear
+			8: Clear
+			7: Clear
+			6: Clear
+			3: Clear
+			2: Clear
+	Template@130:
+		Id: 130
+		Image: t130
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@131:
+		Id: 131
+		Image: t131
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@132:
+		Id: 132
+		Image: t132
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@133:
+		Id: 133
+		Image: t133
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@134:
+		Id: 134
+		Image: t134
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@135:
+		Id: 135
+		Image: t135
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@136:
+		Id: 136
+		Image: t136
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@137:
+		Id: 137
+		Image: t137
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@138:
+		Id: 138
+		Image: t138
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@139:
+		Id: 139
+		Image: t139
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@140:
+		Id: 140
+		Image: t140
+		Size: 4,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			2: Clear
+			3: Clear
+			7: Clear
+			6: Clear
+			5: Clear
+			4: Clear
+	Template@141:
+		Id: 141
+		Image: t141
+		Size: 2,1
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+	Template@142:
+		Id: 142
+		Image: t142
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			2: Clear
+			3: Clear
+			1: Clear
+	Template@143:
+		Id: 143
+		Image: t143
+		Size: 1,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+	Template@144:
+		Id: 144
+		Image: t144
+		Size: 1,2
+		PickAny: False
+		Tiles:
+			1: Clear
+			0: Clear
+	Template@145:
+		Id: 145
+		Image: t145
+		Size: 2,1
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+	Template@146:
+		Id: 146
+		Image: t146
+		Size: 2,1
+		PickAny: False
+		Tiles:
+			1: Clear
+			0: Clear
+	Template@147:
+		Id: 147
+		Image: t147
+		Size: 1,2
+		PickAny: False
+		Tiles:
+			1: Clear
+			0: Clear
+	Template@148:
+		Id: 148
+		Image: t148
+		Size: 2,1
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+	Template@149:
+		Id: 149
+		Image: t149
+		Size: 2,3
+		PickAny: False
+		Tiles:
+			0: Clear
+			2: Clear
+			4: Clear
+			5: Clear
+			3: Clear
+			1: Clear
+	Template@150:
+		Id: 150
+		Image: t150
+		Size: 2,3
+		PickAny: False
+		Tiles:
+			0: Clear
+			2: Clear
+			4: Clear
+			5: Clear
+			3: Clear
+			1: Clear
+	Template@151:
+		Id: 151
+		Image: t151
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			2: Clear
+			3: Clear
+			1: Clear
+	Template@152:
+		Id: 152
+		Image: t152
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			2: Clear
+			3: Clear
+			1: Clear
+	Template@153:
+		Id: 153
+		Image: t153
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@154:
+		Id: 154
+		Image: t154
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@155:
+		Id: 155
+		Image: t155
+		Size: 2,1
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+	Template@156:
+		Id: 156
+		Image: t156
+		Size: 2,1
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+	Template@157:
+		Id: 157
+		Image: t157
+		Size: 2,1
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+	Template@158:
+		Id: 158
+		Image: t158
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@159:
+		Id: 159
+		Image: t159
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@160:
+		Id: 160
+		Image: t160
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@161:
+		Id: 161
+		Image: t161
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@162:
+		Id: 162
+		Image: t162
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@163:
+		Id: 163
+		Image: t163
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@164:
+		Id: 164
+		Image: t164
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@165:
+		Id: 165
+		Image: t165
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@166:
+		Id: 166
+		Image: t166
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@167:
+		Id: 167
+		Image: t167
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@168:
+		Id: 168
+		Image: t168
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@169:
+		Id: 169
+		Image: t169
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@170:
+		Id: 170
+		Image: t170
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@171:
+		Id: 171
+		Image: t171
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@172:
+		Id: 172
+		Image: t172
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@173:
+		Id: 173
+		Image: t173
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@174:
+		Id: 174
+		Image: t174
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@175:
+		Id: 175
+		Image: t175
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@176:
+		Id: 176
+		Image: t176
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@177:
+		Id: 177
+		Image: t177
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@178:
+		Id: 178
+		Image: t178
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@179:
+		Id: 179
+		Image: t179
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@180:
+		Id: 180
+		Image: t180
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@181:
+		Id: 181
+		Image: t181
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@182:
+		Id: 182
+		Image: t182
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@183:
+		Id: 183
+		Image: t183
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@184:
+		Id: 184
+		Image: t184
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@185:
+		Id: 185
+		Image: t185
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@186:
+		Id: 186
+		Image: t186
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@187:
+		Id: 187
+		Image: t187
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@188:
+		Id: 188
+		Image: t188
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@189:
+		Id: 189
+		Image: t189
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@190:
+		Id: 190
+		Image: t190
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@191:
+		Id: 191
+		Image: t191
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@192:
+		Id: 192
+		Image: t192
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@193:
+		Id: 193
+		Image: t193
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@194:
+		Id: 194
+		Image: t194
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@195:
+		Id: 195
+		Image: t195
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@196:
+		Id: 196
+		Image: t196
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@197:
+		Id: 197
+		Image: t197
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@198:
+		Id: 198
+		Image: t198
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@199:
+		Id: 199
+		Image: t199
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@200:
+		Id: 200
+		Image: t200
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@201:
+		Id: 201
+		Image: t201
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@202:
+		Id: 202
+		Image: t202
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@203:
+		Id: 203
+		Image: t203
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@204:
+		Id: 204
+		Image: t204
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@205:
+		Id: 205
+		Image: t205
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@206:
+		Id: 206
+		Image: t206
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@207:
+		Id: 207
+		Image: t207
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@208:
+		Id: 208
+		Image: t208
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@209:
+		Id: 209
+		Image: t209
+		Size: 1,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+	Template@210:
+		Id: 210
+		Image: t210
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@211:
+		Id: 211
+		Image: t211
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@212:
+		Id: 212
+		Image: t212
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@213:
+		Id: 213
+		Image: t213
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@214:
+		Id: 214
+		Image: t214
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@215:
+		Id: 215
+		Image: t215
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@216:
+		Id: 216
+		Image: t216
+		Size: 1,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+	Template@217:
+		Id: 217
+		Image: t217
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			2: Clear
+			3: Clear
+			1: Clear
+	Template@218:
+		Id: 218
+		Image: t218
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@219:
+		Id: 219
+		Image: t219
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@220:
+		Id: 220
+		Image: t220
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@221:
+		Id: 221
+		Image: t221
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@222:
+		Id: 222
+		Image: t222
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@223:
+		Id: 223
+		Image: t223
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@224:
+		Id: 224
+		Image: t224
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@225:
+		Id: 225
+		Image: t225
+		Size: 2,1
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+	Template@226:
+		Id: 226
+		Image: t226
+		Size: 2,1
+		PickAny: False
+		Tiles:
+			1: Clear
+			0: Clear
+	Template@227:
+		Id: 227
+		Image: t227
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@228:
+		Id: 228
+		Image: t228
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@229:
+		Id: 229
+		Image: t229
+		Size: 2,1
+		PickAny: False
+		Tiles:
+			1: Clear
+			0: Clear
+	Template@230:
+		Id: 230
+		Image: t230
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@231:
+		Id: 231
+		Image: t231
+		Size: 1,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+	Template@232:
+		Id: 232
+		Image: t232
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@233:
+		Id: 233
+		Image: t233
+		Size: 1,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+	Template@234:
+		Id: 234
+		Image: t234
+		Size: 1,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+	Template@235:
+		Id: 235
+		Image: t235
+		Size: 1,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+	Template@236:
+		Id: 236
+		Image: t236
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@237:
+		Id: 237
+		Image: t237
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			2: Clear
+			3: Clear
+			1: Clear
+	Template@238:
+		Id: 238
+		Image: t238
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			2: Clear
+			3: Clear
+			1: Clear
+	Template@239:
+		Id: 239
+		Image: t239
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			2: Clear
+			3: Clear
+			1: Clear
+	Template@240:
+		Id: 240
+		Image: t240
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			2: Clear
+			3: Clear
+			1: Clear
+	Template@241:
+		Id: 241
+		Image: t241
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@242:
+		Id: 242
+		Image: t242
+		Size: 1,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+	Template@243:
+		Id: 243
+		Image: t243
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			3: Clear
+			2: Clear
+	Template@244:
+		Id: 244
+		Image: t244
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			3: Clear
+			2: Clear
+			0: Clear
+			1: Clear
+	Template@245:
+		Id: 245
+		Image: t245
+		Size: 5,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+			6: Clear
+			7: Clear
+			8: Clear
+			9: Clear
+			4: Clear
+			3: Clear
+			2: Clear
+			5: Clear
+	Template@246:
+		Id: 246
+		Image: t246
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@247:
+		Id: 247
+		Image: t247
+		Size: 1,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+	Template@248:
+		Id: 248
+		Image: t248
+		Size: 2,3
+		PickAny: False
+		Tiles:
+			0: Clear
+			2: Clear
+			3: Clear
+			5: Clear
+			4: Clear
+			1: Clear
+	Template@249:
+		Id: 249
+		Image: t249
+		Size: 1,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+	Template@250:
+		Id: 250
+		Image: t250
+		Size: 1,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+	Template@251:
+		Id: 251
+		Image: t251
+		Size: 1,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+	Template@252:
+		Id: 252
+		Image: t252
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@253:
+		Id: 253
+		Image: t253
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			1: Clear
+			3: Clear
+			2: Clear
+			0: Clear
+	Template@254:
+		Id: 254
+		Image: t254
+		Size: 1,2
+		PickAny: False
+		Tiles:
+			0: Clear
+			1: Clear
+	Template@255:
+		Id: 255
+		Image: t255
+		Size: 3,3
+		PickAny: False
+		Tiles:
+			2: Clear
+			5: Clear
+			4: Clear
+			6: Clear
+			7: Clear
+			8: Clear
+			1: Clear
+			0: Clear
+			3: Clear
+	Template@256:
+		Id: 256
+		Image: t256
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			2: Clear
+			3: Clear
+			1: Clear
+			0: Clear
+	Template@257:
+		Id: 257
+		Image: t257
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@258:
+		Id: 258
+		Image: t258
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+	Template@259:
+		Id: 259
+		Image: t259
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Clear
+

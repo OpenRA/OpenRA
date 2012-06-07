@@ -1,0 +1,46 @@
+Terrain:
+	TerrainType@Clear:
+		Type: Clear
+		AcceptSmudge: True
+		Color: 40, 68, 40
+	TerrainType@Water:
+		Type: Water
+		IsWater: true
+		AcceptSmudge: False
+		Color: 92, 116, 164
+	TerrainType@Road:
+		Type: Road
+		AcceptSmudge: True
+		Color: 88, 116, 116
+	TerrainType@Rock:
+		Type: Rock
+		AcceptSmudge: False
+		Color: 68, 68, 60
+	TerrainType@Tree:
+		Type: Tree
+		AcceptSmudge: False
+		Color: 28, 32, 36
+	TerrainType@River:
+		Type: River
+		AcceptSmudge: False
+		Color: 92, 140, 180
+	TerrainType@Rough:
+		Type: Rough
+		AcceptSmudge: True
+		Color: 68, 20, 100
+	TerrainType@Wall:
+		Type: Wall
+		AcceptSmudge: True
+		Color: 208, 192, 160
+	TerrainType@Beach:
+		Type: Beach
+		AcceptSmudge: False
+		Color: 176, 156, 120
+	TerrainType@Spice:
+		Type: Spice
+		AcceptSmudge: True
+		Color: 161, 226, 28
+	TerrainType@SpiceBlobs:
+		Type: SpiceBlobs
+		AcceptSmudge: True
+		Color: 84, 252, 252

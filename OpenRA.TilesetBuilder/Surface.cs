@@ -1,14 +1,4 @@
-﻿#region Copyright & License Information
-/*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
- * This file is part of OpenRA, which is free software. It is made
- * available to you under the terms of the GNU General Public License
- * as published by the Free Software Foundation. For more information,
- * see COPYING.
- */
-#endregion
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -18,13 +8,28 @@ namespace OpenRA.TilesetBuilder
 	class Surface : Control
 	{
 		public Bitmap Image;
+		private ImageList ImagesListControl;
 		public int[,] TerrainTypes;
 		public List<Template> Templates = new List<Template>();
-		public bool ShowTerrainTypes = true;
+		private bool bShowTerrainTypes;
 		public string InputMode;
+		public Bitmap[] icon;
 		public int TileSize;
+		//private System.ComponentModel.IContainer components;
 
 		Template CurrentTemplate;
+
+		public bool ShowTerrainTypes
+		{
+			get { return bShowTerrainTypes; }
+			set { bShowTerrainTypes = value; }
+		}
+
+		public ImageList ImagesList
+		{
+			get { return ImagesListControl; }
+			set { ImagesListControl = value; }
+		}
 
 		public Surface()
 		{
@@ -43,17 +48,21 @@ namespace OpenRA.TilesetBuilder
 
 			/* draw the background */
 			e.Graphics.DrawImageUnscaled(Image, 0, 0);
-
 			/* draw terrain type overlays */
 			if (ShowTerrainTypes)
+			{
 				for (var i = 0; i <= TerrainTypes.GetUpperBound(0); i++)
 					for (var j = 0; j <= TerrainTypes.GetUpperBound(1); j++)
 						if (TerrainTypes[i, j] != 0)
 						{
-							e.Graphics.FillRectangle(Brushes.Black, TileSize * i + 10, TileSize * j + 10, 10, 10);
-							e.Graphics.DrawString(TerrainTypes[i, j].ToString(),
-								Font, Brushes.LimeGreen, TileSize * i + 10, TileSize * j + 10);
+							//e.Graphics.FillRectangle(Brushes.Black, TileSize * i + 8, TileSize * j + 8, 16, 16);
+
+							e.Graphics.DrawImage(icon[TerrainTypes[i, j]], TileSize * i + 8, TileSize * j + 8, 16, 16);
+
+							//e.Graphics.DrawString(TerrainTypes[i, j].ToString(),
+							//Font, Brushes.LimeGreen, TileSize * i + 10, TileSize * j + 10);
 						}
+			}
 
 			/* draw template outlines */
 			foreach (var t in Templates)
@@ -119,6 +128,12 @@ namespace OpenRA.TilesetBuilder
 					}
 				}
 			}
+		}
+
+		private void InitializeComponent()
+		{
+			this.SuspendLayout();
+			this.ResumeLayout(false);
 		}
 	}
 }

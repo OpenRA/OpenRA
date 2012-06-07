@@ -137,15 +137,19 @@ ralint: $(ralint_TARGET)
 
 # Builds and exports tilesets from a bitmap
 tsbuild_SRCS		:= $(shell find OpenRA.TilesetBuilder/ -iname '*.cs')
-tsbuild_TARGET		= TilesetBuilder.exe
+tsbuild_TARGET		= OpenRA.TilesetBuilder.exe
 tsbuild_KIND		= winexe
 tsbuild_DEPS		= $(fileformats_TARGET) $(game_TARGET)
 tsbuild_LIBS		= $(COMMON_LIBS) $(tsbuild_DEPS) System.Windows.Forms.dll
-tsbuild_EXTRA		= -resource:OpenRA.TilesetBuilder.Form1.resources
+tsbuild_EXTRA		= -resource:OpenRA.TilesetBuilder.frmBuilder.resources -resource:OpenRA.TilesetBuilder.frmNew.resources -resource:OpenRA.TilesetBuilder.Surface.resources
 PROGRAMS 			+= tsbuild
-OpenRA.TilesetBuilder.Form1.resources:
-	resgen2 OpenRA.TilesetBuilder/Form1.resx OpenRA.TilesetBuilder.Form1.resources 1> /dev/null
-tsbuild: OpenRA.TilesetBuilder.Form1.resources $(tsbuild_TARGET)
+OpenRA.TilesetBuilder.frmBuilder.resources:
+	resgen2 OpenRA.TilesetBuilder/frmBuilder.resx OpenRA.TilesetBuilder.frmBuilder.resources 1> /dev/null
+OpenRA.TilesetBuilder.frmNew.resources:
+	resgen2 OpenRA.TilesetBuilder/frmNew.resx OpenRA.TilesetBuilder.frmNew.resources 1> /dev/null
+OpenRA.TilesetBuilder.Surface.resources:
+	resgen2 OpenRA.TilesetBuilder/Surface.resx OpenRA.TilesetBuilder.Surface.resources 1> /dev/null
+tsbuild: OpenRA.TilesetBuilder.frmBuilder.resources OpenRA.TilesetBuilder.frmNew.resources OpenRA.TilesetBuilder.Surface.resources $(tsbuild_TARGET)
 
 #
 # Launchers / Utilities

@@ -9,6 +9,7 @@ Folders:
 	./mods/d2k
 	./mods/d2k/bits
 	./mods/d2k/uibits
+	./mods/d2k/tilesets/bloxbase
 	~^/Content/d2k
 	~^/Content/d2k/GAMESFX
 	~^/Content/d2k/Music
@@ -81,7 +82,7 @@ Voices:
 
 TileSets:
 	mods/d2k/tilesets/arrakis.yaml
-#	mods/d2k/tilesets/bloxbase.yaml
+	mods/d2k/tilesets/bloxbase.yaml
 
 TileSize: 32
 
