@@ -304,19 +304,30 @@ namespace OpenRA
 
 			if (Game.Settings.Server.Dedicated)
 			{
-				Game.CreateServer(new ServerSettings(Game.Settings.Server));
-				while(true)
+				while (true)
 				{
-					System.Threading.Thread.Sleep(100);
-
-					//Accessing public field and List::Count is thread safe
-					if((server.GameStarted)&&(server.conns.Count<=1))
+					Game.CreateServer(new ServerSettings(Game.Settings.Server));
+					while(true)
 					{
-						Console.WriteLine("No one is playing, shutting down...");
-						server.Shutdown();
-						System.Environment.Exit(0);
+						System.Threading.Thread.Sleep(100);
+
+						//Accessing public field and List::Count is thread safe
+						if((server.GameStarted)&&(server.conns.Count<=1))
+						{
+							Console.WriteLine("No one is playing, shutting down...");
+							server.Shutdown();
+							break;
+						}
 					}
+					if (Game.Settings.Server.DedicatedLoop)
+					{
+						Console.WriteLine("Starting a new server instance...");
+						continue;
+					}
+					else
+						break;
 				}
+				System.Environment.Exit(0);
 			}
 			else
 			{

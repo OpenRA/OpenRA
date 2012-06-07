@@ -35,6 +35,7 @@ namespace OpenRA.GameRules
 		public string[] Ban = null;
 		public int TimeOut = 0;
 		public bool Dedicated = false;
+		public bool DedicatedLoop = true;
 
 		public ServerSettings() { }
 
@@ -51,6 +52,7 @@ namespace OpenRA.GameRules
 			Ban = other.Ban;
 			TimeOut = other.TimeOut;
 			Dedicated = other.Dedicated;
+			DedicatedLoop = other.DedicatedLoop;
 		}
 	}
 
