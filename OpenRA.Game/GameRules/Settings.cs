@@ -33,6 +33,7 @@ namespace OpenRA.GameRules
 		public bool AllowCheats = false;
 		public string Map = null;
 		public string[] Ban = null;
+		public int TimeOut = 0;
 
 		public ServerSettings() { }
 
@@ -47,6 +48,7 @@ namespace OpenRA.GameRules
 			AllowCheats = other.AllowCheats;
 			Map = other.Map;
 			Ban = other.Ban;
+			TimeOut = other.TimeOut;
 		}
 	}
 

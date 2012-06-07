@@ -18,6 +18,7 @@ using System.Net.Sockets;
 using System.Net.NetworkInformation;
 using UPnP;
 using System.Threading;
+using System.Timers;
 using OpenRA.FileFormats;
 using OpenRA.GameRules;
 using OpenRA.Network;
@@ -466,6 +467,22 @@ namespace OpenRA.Server
 
 			foreach (var t in ServerTraits.WithInterface<IStartGame>())
 				t.GameStarted(this);
+			
+			// Check TimeOut
+			if ( Game.Settings.Server.TimeOut > 10000 )
+			{
+				aTimer = new System.Timers.Timer(Game.Settings.Server.TimeOut);
+				aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
+				aTimer.Enabled = true;
+			}
+		}
+		
+		private static System.Timers.Timer aTimer;
+
+		private static void OnTimedEvent(object source, ElapsedEventArgs e)
+		{
+			Console.WriteLine("Started game has Timed Out at {0} !!!", e.SignalTime);
+			System.Environment.Exit(0);
 		}
 	}
 }
