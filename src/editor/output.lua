@@ -20,9 +20,10 @@ errorlog:SetReadOnly(true)
 StylesApplyToEditor(ide.config.stylesoutshell,errorlog,ide.ofont,ide.ofontItalic)
 
 function ClearOutput()
+  local current = errorlog:GetReadOnly()
   errorlog:SetReadOnly(false)
   errorlog:ClearAll()
-  errorlog:SetReadOnly(true)
+  errorlog:SetReadOnly(current)
 end
 
 function DisplayOutputNoMarker(...)
@@ -33,9 +34,10 @@ function DisplayOutputNoMarker(...)
     message = message..tostring(v)..(i<cnt and "\t" or "")
   end
 
+  local current = errorlog:GetReadOnly()
   errorlog:SetReadOnly(false)
   errorlog:AppendText(message)
-  errorlog:SetReadOnly(true)
+  errorlog:SetReadOnly(current)
   errorlog:GotoPos(errorlog:GetLength())
 end
 function DisplayOutput(...)
@@ -45,7 +47,9 @@ end
 
 local streamins = {}
 local streamerrs = {}
+local streamouts = {}
 local customprocs = {}
+local textout = '' -- this is a buffer for any text sent to external scripts
 
 function CommandLineRunning(uid)
   for pid,custom in pairs(customprocs) do
@@ -89,6 +93,11 @@ local function unHideWxWindow(pidAssign)
   end
 end
 
+local function nameTab(tab, name)
+  local index = bottomnotebook:GetPageIndex(tab)
+  if index then bottomnotebook:SetPageText(index, name) end
+end
+
 function CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
   if (not cmd) then return end
 
@@ -99,13 +108,12 @@ function CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
   uid = uid or exename
 
   if (CommandLineRunning(uid)) then
-    DisplayOutput("Conflicting Process still running: "..cmd.."\n")
+    DisplayOutput("Conflicting process still running: "..cmd.."\n")
     return
   end
 
   DisplayOutput("Running program: "..cmd.."\n")
 
-  local pid = -1
   local proc = nil
   local customproc
 
@@ -149,21 +157,26 @@ function CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
 
   local streamin = proc and proc:GetInputStream()
   local streamerr = proc and proc:GetErrorStream()
+  local streamout = proc and proc:GetOutputStream()
   if (streamin) then
     streamins[pid] = {stream=streamin, callback=stringcallback}
   end
   if (streamerr) then
     streamerrs[pid] = {stream=streamerr, callback=stringcallback}
   end
+  if (streamout) then
+    streamouts[pid] = {stream=streamout, callback=stringcallback, out=true}
+  end
 
   unHideWxWindow(pid)
+  nameTab(errorlog, "Output (running)")
 
   return pid
 end
 
 local function getStreams()
-  local function displayStream(tab)
-    for i,v in pairs(tab) do
+  local function readStream(tab)
+    for _,v in pairs(tab) do
       while(v.stream:CanRead()) do
         local str = v.stream:Read(4096)
         local pfn
@@ -175,21 +188,49 @@ local function getStreams()
         else
           DisplayOutputNoMarker(str)
         end
+        if str and ide.config.allowinteractivescript and errorlog:GetReadOnly() then
+          ActivateOutput()
+          errorlog:SetReadOnly(false)
+          errorlog:SetFocus()
+        end
         pfn = pfn and pfn()
       end
     end
   end
+  local function sendStream(tab)
+    local str = textout
+    if not str then return end
+    textout = nil
+    str = str .. "\n"
+    for _,v in pairs(tab) do
+      local pfn
+      if (v.callback) then
+        str,pfn = v.callback(str)
+      end
+      v.stream:Write(str, #str)
+      pfn = pfn and pfn()
+    end
+  end
 
-  displayStream(streamins)
-  displayStream(streamerrs)
+  readStream(streamins)
+  readStream(streamerrs)
+  sendStream(streamouts)
 end
 
 errorlog:Connect(wx.wxEVT_END_PROCESS, function(event)
     local pid = event:GetPid()
     if (pid ~= -1) then
       getStreams()
+      -- make errorlog readonly again if needed
+      if not errorlog:GetReadOnly() then
+        errorlog:SetReadOnly(true)
+        GetEditor():SetFocus()
+      end
+      nameTab(errorlog, "Output")
+
       streamins[pid] = nil
       streamerrs[pid] = nil
+      streamouts[pid] = nil
       if (customprocs[pid].endcallback) then
         customprocs[pid].endcallback()
       end
@@ -229,7 +270,7 @@ errorlog:Connect(wxstc.wxEVT_STC_DOUBLECLICK,
     local jumpline
     local jumplinepos
 
-    for i,pattern in ipairs(jumptopatterns) do
+    for _,pattern in ipairs(jumptopatterns) do
       fname,jumpline,jumplinepos = linetx:match(pattern)
       if (fname and jumpline) then
         break
@@ -248,5 +289,73 @@ errorlog:Connect(wxstc.wxEVT_STC_DOUBLECLICK,
         editor:SetFocus()
       end
     end
+  end)
 
+local function getInputLine() return errorlog:GetLineCount()-1 end
+local function getInputText()
+  return errorlog:GetTextRange(
+    errorlog:PositionFromLine(getInputLine()), errorlog:GetLength())
+end
+local function positionInLine(line)
+  return errorlog:GetCurrentPos() - errorlog:PositionFromLine(line)
+end
+local function caretOnInputLine(disallowLeftmost)
+  local inputLine = getInputLine()
+  local boundary = disallowLeftmost and 0 or -1
+  return (errorlog:GetCurrentLine() > inputLine
+    or errorlog:GetCurrentLine() == inputLine
+   and positionInLine(inputLine) > boundary)
+end
+
+errorlog:Connect(wx.wxEVT_KEY_DOWN,
+  function (event)
+    -- this loop is only needed to allow to get to the end of function easily
+    -- "return" aborts the processing and ignores the key
+    -- "break" aborts the processing and processes the key normally
+    while true do
+      -- no special processing if it's readonly
+      if errorlog:GetReadOnly() then break end
+
+      local key = event:GetKeyCode()
+      if key == wx.WXK_UP or key == wx.WXK_NUMPAD_UP then
+        return -- don't go up
+      elseif key == wx.WXK_DOWN or key == wx.WXK_NUMPAD_DOWN then
+        break -- can go down
+      elseif key == wx.WXK_LEFT or key == wx.WXK_NUMPAD_LEFT then
+        if not caretOnInputLine(true) then return end
+      elseif key == wx.WXK_BACK then
+        if not caretOnInputLine(true) then return end
+      elseif key == wx.WXK_DELETE or key == wx.WXK_NUMPAD_DELETE then
+        if not caretOnInputLine()
+        or errorlog:LineFromPosition(errorlog:GetSelectionStart()) < getInputLine() then
+          return
+        end
+      elseif key == wx.WXK_PAGEUP or key == wx.WXK_NUMPAD_PAGEUP
+          or key == wx.WXK_PAGEDOWN or key == wx.WXK_NUMPAD_PAGEDOWN
+          or key == wx.WXK_END or key == wx.WXK_NUMPAD_END
+          or key == wx.WXK_HOME or key == wx.WXK_NUMPAD_HOME
+          or key == wx.WXK_RIGHT or key == wx.WXK_NUMPAD_RIGHT
+          or key == wx.WXK_SHIFT or key == wx.WXK_CONTROL
+          or key == wx.WXK_ALT then
+        break
+      elseif key == wx.WXK_RETURN or key == wx.WXK_NUMPAD_ENTER then
+        if not caretOnInputLine()
+        or errorlog:LineFromPosition(errorlog:GetSelectionStart()) < getInputLine() then
+          return
+        end
+        textout = (textout or '').. getInputText(-1)
+        break -- don't need to do anything else with return
+      else
+        -- move cursor to end if not already there
+        if not caretOnInputLine() then
+          errorlog:GotoPos(errorlog:GetLength())
+        -- check if the selection starts before the input line and reset it
+        elseif errorlog:LineFromPosition(errorlog:GetSelectionStart()) < getInputLine(-1) then
+          errorlog:GotoPos(errorlog:GetLength())
+          errorlog:SetSelection(errorlog:GetSelectionEnd()+1,errorlog:GetSelectionEnd())
+        end
+      end
+      break
+    end
+    event:Skip()
   end)

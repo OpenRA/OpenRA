@@ -166,6 +166,10 @@ config = {
 
   singleinstanceport = 0xe493,
   -- UDP port for single instance communication
+
+  activateoutput = false, -- activate output/console on Run/Debug/Compile
+  unhidewxwindow = false, -- try to unhide a wx window
+  allowinteractivescript = false, -- allow interaction in the output window
 }
 
 -- application engine

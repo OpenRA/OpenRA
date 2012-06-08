@@ -26,7 +26,8 @@ local app = {
     wx.wxArtProvider.Push(artProvider)
 
     ide.config.interpreter = "luadeb"
-    ide.config.unhidewxwindow = true
+    ide.config.unhidewxwindow = true -- allow unhiding of wx windows
+    ide.config.allowinteractivescript = true -- allow interaction in the output window
 
     -- this needs to be in pre-init to load the styles
     dofile("src/editor/markup.lua")
