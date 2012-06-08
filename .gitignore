@@ -55,6 +55,5 @@ OpenRA.Launcher.Mac/OpenRA.xcodeproj/*.mode1v3
 # other crap
 Logs/
 Replays/
-settings.yaml
 \#*
 .*.sw?
