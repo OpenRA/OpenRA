@@ -125,7 +125,8 @@ function GetEditor(selection)
     selection = notebook:GetSelection()
   end
   local editor
-  if (selection >= 0) and (selection < notebook:GetPageCount()) and (notebook:GetPage(selection):GetClassInfo():GetClassName()=="wxStyledTextCtrl") then
+  if (selection >= 0) and (selection < notebook:GetPageCount())
+    and (notebook:GetPage(selection):GetClassInfo():GetClassName()=="wxStyledTextCtrl") then
     editor = notebook:GetPage(selection):DynamicCast("wxStyledTextCtrl")
   end
   return editor
@@ -146,7 +147,6 @@ function SetEditorSelection(selection)
 
     editor:SetFocus()
     editor:SetSTCFocus(true)
-    isFileAlteredOnDisk(editor)
     local id = editor:GetId()
     if openDocuments[id] and openDocuments[id].filePath then
       FileTreeMarkSelected(openDocuments[id].filePath)
@@ -396,13 +396,14 @@ function CreateEditor(name)
       event:Skip()
     end)
 
+  local inhandler = false
   editor:Connect(wx.wxEVT_SET_FOCUS,
     function (event)
       event:Skip()
-      if ide.in_evt_focus or ide.exitingProgram then return end
-      ide.in_evt_focus = true -- true when in editor focus event to avoid recursion
+      if inhandler or ide.exitingProgram then return end
+      inhandler = true
       isFileAlteredOnDisk(editor)
-      ide.in_evt_focus = false
+      inhandler = false
     end)
 
   editor:Connect(wx.wxEVT_KEY_DOWN,

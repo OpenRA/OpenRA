@@ -54,6 +54,7 @@ function LoadFile(filePath, editor, file_must_exist)
     return nil
   end
 
+  local current = editor and editor:GetCurrentPos()
   editor = editor
     or findDocumentToReuse()
     or CreateEditor(wx.wxFileName(filePath):GetFullName() or "untitled.lua")
@@ -64,6 +65,7 @@ function LoadFile(filePath, editor, file_must_exist)
   editor:MarkerDeleteAll(BREAKPOINT_MARKER)
   editor:MarkerDeleteAll(CURRENT_LINE_MARKER)
   editor:AppendText(file_text)
+  if current then editor:GotoPos(current) end
   if (ide.config.editor.autotabs) then
     local found = string.find(file_text,"\t") ~= nil
     editor:SetUseTabs(found)
@@ -81,7 +83,9 @@ function LoadFile(filePath, editor, file_must_exist)
 
   SettingsAppendFileToHistory(filePath)
   
-  SetEditorSelection(nil)
+  -- activate the editor; this is needed for those cases when the editor is
+  -- created from some other element, for example, from a project tree.
+  SetEditorSelection()
 
   return editor
 end
@@ -250,7 +254,7 @@ local function removePage(index)
     notebook:SetSelection(prevIndex)
   end
 
-  SetEditorSelection(nil) -- will use notebook GetSelection to update
+  SetEditorSelection() -- will use notebook GetSelection to update
 end
 
 function ClosePage(selection)
