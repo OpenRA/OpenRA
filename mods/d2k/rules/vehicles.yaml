@@ -21,8 +21,6 @@
 		Crushes: crate, infantry
 	RevealsShroud:
 		Range: 4
-	RenderUnit:
-		Image: MCV
 	MustBeDestroyed:
 	BaseBuilding:
 	-AttackMove:
@@ -181,7 +179,7 @@ SIEGE:
 		Chance: 75  
 	AutoTarget:
 
-Missile:
+MISSILE:
 	Inherits: ^Tank
 	Valued:
 		Cost: 800

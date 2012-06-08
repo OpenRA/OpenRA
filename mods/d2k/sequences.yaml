@@ -1,4 +1,4 @@
-mcv:
+dmcv:
 	idle:
 		Start: 0
 		Facings: 32
@@ -873,6 +873,15 @@ allyrepair:
 		Start: 0
 		Length: *
 		Tick: 160
+
+parach:
+	open:
+		Start: 0
+		Length: 5
+	idle:
+		Start: 5
+		Length: 11
+
 
 spicebloom:
 	make:

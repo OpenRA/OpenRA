@@ -101,6 +101,8 @@ MCVA:
 		Offset:-1,-1
 		TransformSounds:
 		NoTransformSounds: AI_DPLOY.AUD
+	RenderUnit:
+		Image: DMCV
 
 COMBATA:
 	Inherits: ^COMBAT

@@ -101,6 +101,8 @@ MCVO:
 		Offset:-1,-1
 		TransformSounds:
 		NoTransformSounds: OI_DPLOY.AUD
+	RenderUnit:
+		Image: DMCV
 
 COMBATO:
 	Inherits: ^COMBAT

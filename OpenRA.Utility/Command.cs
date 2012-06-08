@@ -214,6 +214,35 @@ namespace OpenRA.Utility
 					x += frame.FrameWidth;
 				}
 			}
+			else if (args.Contains("--tileset"))
+			{
+				int f = 0;
+				var tileset = new Bitmap(frame.FrameWidth * 20, frame.FrameHeight * 40, PixelFormat.Format8bppIndexed);
+				tileset.Palette = palette.AsSystemPalette();
+
+				for (int h = 0; h < 40; h++)
+				{
+					for (int w = 0; w < 20; w++)
+					{
+						if (h * 20 + w < FrameCount)
+						{
+							Console.WriteLine(f);
+							frame = srcImage[f];
+
+							var data = tileset.LockBits(new Rectangle(w * frame.Width, h * frame.Height, frame.Width, frame.Height),
+								ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
+
+							for (var i = 0; i < frame.Height; i++)
+								Marshal.Copy(frame.Image, i * frame.Width,
+									new IntPtr(data.Scan0.ToInt64() + i * data.Stride), frame.Width);
+
+							tileset.UnlockBits(data);
+							f++;
+						}
+					}
+				}
+				bitmap = tileset;
+			}
 			else
 			{
 				for (int f = startFrame; f < endFrame; f++)

@@ -49,8 +49,8 @@ mono OpenRA.Utility.exe --r8 $R8 $PAL 1731 1762 "combata" --vehicle
 mono OpenRA.Utility.exe --shp combata.png 48
 mono OpenRA.Utility.exe --r8 $R8 $PAL 1763 1794 "siege" --vehicle
 mono OpenRA.Utility.exe --shp siege.png 48
-mono OpenRA.Utility.exe --r8 $R8 $PAL 1795 1826 "mcv" --vehicle
-mono OpenRA.Utility.exe --shp mcv.png 48
+mono OpenRA.Utility.exe --r8 $R8 $PAL 1795 1826 "dmcv" --vehicle
+mono OpenRA.Utility.exe --shp dmcv.png 48
 mono OpenRA.Utility.exe --r8 $R8 $PAL 1827 1858 "sonic" --vehicle
 mono OpenRA.Utility.exe --shp sonic.png 48
 mono OpenRA.Utility.exe --r8 $R8 $PAL 1859 1890 "combataturret" --vehicle
@@ -218,8 +218,8 @@ mono OpenRA.Utility.exe --r8 $R8 $PAL 4017 4017 "raidericon"
 mono OpenRA.Utility.exe --shp raidericon.png 60
 mono OpenRA.Utility.exe --r8 $R8 $PAL 4018 4018 "quadicon"
 mono OpenRA.Utility.exe --shp quadicon.png 60
-mono OpenRA.Utility.exe --r8 $R8 $PAL 4019 4019 "harestervicon" # = 4044
-mono OpenRA.Utility.exe --shp harestervicon.png 60
+mono OpenRA.Utility.exe --r8 $R8 $PAL 4019 4019 "harvestericon" # = 4044
+mono OpenRA.Utility.exe --shp harvestericon.png 60
 mono OpenRA.Utility.exe --r8 $R8 $PAL 4020 4020 "combataicon"
 mono OpenRA.Utility.exe --shp combataicon.png 60
 mono OpenRA.Utility.exe --r8 $R8 $PAL 4021 4021 "combathicon"
@@ -253,7 +253,7 @@ mono OpenRA.Utility.exe --r8 $R8 $PAL 4046 4046 "conyardaicon" # = 4049
 mono OpenRA.Utility.exe --shp conyardaicon.png 60
 mono OpenRA.Utility.exe --r8 $R8 $PAL 4047 4047 "conyardhicon"
 mono OpenRA.Utility.exe --shp conyardhicon.png 60
-mono OpenRA.Utility.exe --r8 $R8 $PAL 4048 4048 "conyardaicon"
+mono OpenRA.Utility.exe --r8 $R8 $PAL 4048 4048 "conyardoicon"
 mono OpenRA.Utility.exe --shp conyardoicon.png 60
 mono OpenRA.Utility.exe --r8 $R8 $PAL 4050 4050 "4plateicon" # = 4051..4052
 mono OpenRA.Utility.exe --shp 4plateicon.png 60
@@ -388,10 +388,24 @@ mono OpenRA.Utility.exe --r8 $R8 $PAL 0 264 "mouse" --transparent
 mono OpenRA.Utility.exe --shp mouse.png 48
 
 R8="$HOME/.openra/Content/d2k/BLOXBASE.R8"
-mono OpenRA.Utility.exe --r8 $R8 $PAL 0 799 "BLOXBASE"
-mono OpenRA.Utility.exe --r8 $R8 $PAL 0 0 "sand0"
-
+mono OpenRA.Utility.exe --r8 $R8 $PAL 0 799 "BASE" --tileset
 mono OpenRA.Utility.exe --r8 $R8 $PAL 748 749 "spice0"
 mono OpenRA.Utility.exe --shp spice0.png 32
+mono OpenRA.TilesetBuilder.exe "BASE.png" 32 --export "Content/d2k/Tilesets"
+R8="$HOME/.openra/Content/d2k/BLOXBAT.R8"
+mono OpenRA.Utility.exe --r8 $R8 $PAL 0 799 "BAT" --tileset
+mono OpenRA.TilesetBuilder.exe "BAT.png" 32 --export "Content/d2k/tilesets"
+R8="$HOME/.openra/Content/d2k/BLOXBGBS.R8"
+mono OpenRA.Utility.exe --r8 $R8 $PAL 0 799 "BGBS" --tileset
+mono OpenRA.TilesetBuilder.exe "BGBS.png" 32 --export "Content/d2k/tilesets"
+R8="$HOME/.openra/Content/d2k/BLOXICE.R8"
+mono OpenRA.Utility.exe --r8 $R8 $PAL 0 799 "ICE" --tileset
+mono OpenRA.TilesetBuilder.exe "ICE.png" 32 --export "Content/d2k/tilesets"
+R8="$HOME/.openra/Content/d2k/BLOXTREE.R8"
+mono OpenRA.Utility.exe --r8 $R8 $PAL 0 799 "TREE" --tileset
+mono OpenRA.TilesetBuilder.exe "TREE.png" 32 --export "Content/d2k/tilesets"
+R8="$HOME/.openra/Content/d2k/BLOXWAST.R8"
+mono OpenRA.Utility.exe --r8 $R8 $PAL 0 799 "XWAST" --tileset
+mono OpenRA.TilesetBuilder.exe "XWAST.png" 32 --export "Content/d2k/tilesets"
 
-mv *.shp mods/d2k/bits
+mv *.shp $HOME/.openra/Content/d2k/SHPs

@@ -6,7 +6,6 @@
 # construction yard crane animations missing
 # welding animation (factories) missing
 # chimney animation (refinery) missing
-# create a tileset extractor for gamefiles to remove copyrighted content from distribution (convert BLOX*.R8 to TMP files)
 # add more spice tiles and make them fit
 # add game logic for concrete plates (use terrain overlay from bridges/ressources)
 # allow placing turrets on walls
@@ -38,4 +37,3 @@
 # add shroud (Dune's 32x32 tiles differ completely from RA/CnC)
 # black spots on buildings should be transparent
 # gamefile extraction (setup/setup.z) from CD fails
-# TilesetBuilder does not support TerrainTypes other then "Clear"

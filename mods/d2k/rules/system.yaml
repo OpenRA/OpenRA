@@ -61,30 +61,30 @@ Player:
 		Name:Omnius
 		RallypointTestBuilding: conyarda
 		BuildingFractions:
-			refa: 30%
-			refh: 30%
-			refo: 30%
-			powra: 35%
-			powrh: 35%
-			powro: 35%
-			barra: 1%
-			barrh: 1%
-			barro: 1%
-			lighta: 1%
-			lighth: 1%
-			lighto: 1%
-			heavya: 1%
-			heavyh: 1%
-			heavyo: 1%
-			researcha: 1%
-			researchh: 1%
-			researcho: 1%
+			refa: 25.1%
+			refh: 25.1%
+			refo: 25.1%
+			barra: 0.1%
+			barrh: 0.1%
+			barro: 0.1%
+			lighta: 0.1%
+			lighth: 0.1%
+			lighto: 0.1%
+			heavya: 0.1%
+			heavyh: 0.1%
+			heavyo: 0.1%
+			researcha: 0.1%
+			researchh: 0.1%
+			researcho: 0.1%
 			repaira: 0.1%
 			repairh: 0.1%
 			repairo: 0.1%
-			radara: 10%
-			radaro: 10%
-			radarh: 10%
+			radara: 0.1%
+			radaro: 0.1%
+			radarh: 0.1%
+			powra: 35%
+			powrh: 35%
+			powro: 35%
 		UnitsToBuild:
 			trike: 30%
 			raider: 30%
@@ -181,7 +181,7 @@ World:
 		ValuePerUnit: 35
 		Name: Spice
 		PipColor: Yellow
-		AllowedTerrainTypes: Clear
+		AllowedTerrainTypes: Sand
 		AllowUnderActors: false
 	SmudgeLayer@CRATER:
 		Type:Crater
@@ -222,7 +222,7 @@ CRATE:
 		Name: Crate
 	Crate:
 		Lifetime: 120
-		TerrainTypes: Clear, Rough, Road, Water, Beach
+		TerrainTypes: Sand, Dune, Rock
 	GiveCashCrateAction:
 		Amount: 1000
 		SelectionShares: 50

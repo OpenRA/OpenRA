@@ -101,6 +101,8 @@ MCVH:
 		Offset:-1,-1
 		TransformSounds:
 		NoTransformSounds: HI_DPLOY.AUD
+	RenderUnit:
+		Image: DMCV
 
 COMBATH:
 	Inherits: ^COMBAT

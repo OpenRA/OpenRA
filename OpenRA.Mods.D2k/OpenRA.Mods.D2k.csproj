@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="D2kLoadScreen.cs" />
+    <Compile Include="Render\RenderBuildingSeparateTurret.cs" />
     <Compile Include="Widgets\Logic\D2kInstallFromCDLogic.cs" />
     <Compile Include="Widgets\Logic\D2kInstallLogic.cs" />
   </ItemGroup>

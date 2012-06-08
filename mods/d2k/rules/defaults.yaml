@@ -3,11 +3,12 @@
 	Mobile:
 		Crushes: crate
 		TerrainSpeeds:
-			Clear: 80
-			Rough: 40
-			Road: 100
+			Sand: 80
+			Rock: 90
+			Concrete: 100
 			Spice: 70
-			Beach: 40
+			SpiceBlobs: 70
+			Dune: 40
 		ROT: 5
 	SelectionDecorations:
 	Selectable: 
@@ -35,11 +36,12 @@
 	Mobile:
 		Crushes: crate
 		TerrainSpeeds:
-			Clear: 80
-			Rough: 70
-			Road: 100
+			Sand: 80
+			Rock: 90
+			Concrete: 100
 			Spice: 70
-			Beach: 70
+			SpiceBlobs: 70
+			Dune: 40
 		ROT: 5
 	SelectionDecorations:
 	Selectable: 
@@ -74,11 +76,13 @@
 		Crushes: crate
 		SharesCell: true
 		TerrainSpeeds:
-			Clear: 90
-			Rough: 80
-			Road: 100
-			Spice: 80
-			Beach: 80
+			Sand: 80
+			Rock: 90
+			Concrete: 100
+			Spice: 70
+			SpiceBlobs: 70
+			Dune: 40
+			Rough: 60
 	SelectionDecorations:
 	Selectable:
 		Voice: GenericVoice
@@ -140,7 +144,7 @@
 	Building:
 		Dimensions: 1,1
 		Footprint: x
-		TerrainTypes: Clear,Road
+		TerrainTypes: Rock, Concrete
 	GivesBuildableArea:
 	Capturable:
 	CapturableBar:

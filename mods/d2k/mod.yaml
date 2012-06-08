@@ -9,16 +9,16 @@ Folders:
 	./mods/d2k
 	./mods/d2k/bits
 	./mods/d2k/uibits
-	./mods/d2k/tilesets/bloxbase
 	~^/Content/d2k
 	~^/Content/d2k/GAMESFX
 	~^/Content/d2k/Music
+	~^/Content/d2k/Tilesets
+	~^/Content/d2k/SHPs
 	./mods/ra/bits
 	./mods/ra/uibits
 	~^/Content/ra
 
 Packages:
-	arrakis.mix
 	~main.mix
 	redalert.mix
 	conquer.mix
@@ -81,8 +81,7 @@ Voices:
 	mods/d2k/voices.yaml
 
 TileSets:
-	mods/d2k/tilesets/arrakis.yaml
-	mods/d2k/tilesets/bloxbase.yaml
+	mods/d2k/tilesets/base.yaml
 
 TileSize: 32
 
