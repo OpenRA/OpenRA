@@ -35,13 +35,13 @@ function OnUpdateUIEditMenu(event) -- enable if there is a valid focused editor
   event:Enable(editor ~= nil)
 end
 
-local shellboxeditor = ide.frame.bottomnotebook.shellbox
+local othereditors = { frame.bottomnotebook.shellbox, frame.bottomnotebook.errorlog }
 
 function OnEditMenu(event)
   local menu_id = event:GetId()
   local editor = GetEditor()
-  if shellboxeditor:FindFocus():GetId() == shellboxeditor:GetId() then
-    editor = shellboxeditor
+  for _,e in pairs(othereditors) do
+    if e:FindFocus():GetId() == e:GetId() then editor = e end
   end
   if editor == nil then return end
 
