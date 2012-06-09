@@ -26,8 +26,11 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 				{ "installData", installData }
 			};
 
-			panel.Get<ButtonWidget>("INSTALL_BUTTON").OnClick = () =>
+			panel.Get<ButtonWidget>("COPY_BUTTON").OnClick = () =>
 				Ui.OpenWindow("INSTALL_FROMCD_PANEL", args);
+
+			panel.Get<ButtonWidget>("EXTRACT_BUTTON").OnClick = () =>
+				Ui.OpenWindow("EXTRACT_GAMEFILES_PANEL", args);
 
 			panel.Get<ButtonWidget>("QUIT_BUTTON").OnClick = Game.Exit;
 		}

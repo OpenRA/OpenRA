@@ -21,7 +21,7 @@ using OpenRA.GameRules;
 
 namespace OpenRA.Utility
 {
-	static class Command
+	public static class Command
 	{
 		public static void Settings(string[] args)
 		{

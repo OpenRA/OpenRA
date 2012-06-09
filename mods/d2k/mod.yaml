@@ -92,7 +92,7 @@ Movies:
 
 LoadScreen: D2kLoadScreen
 	InstallerMenuWidget: INSTALL_PANEL
-	TestFile: DATA.R8
+	TestFile: carryall.shp
 
 ServerTraits:
 	LobbyCommands

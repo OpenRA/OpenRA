@@ -37,3 +37,5 @@
 # add shroud (Dune's 32x32 tiles differ completely from RA/CnC)
 # black spots on buildings should be transparent
 # gamefile extraction (setup/setup.z) from CD fails
+# support patch 1.06 gamefiles: DATA.R8 has more frames and currently fails to extract, also featuring new terrain with white houses and new unit: grenade thrower
+# mouse cursor has no transparency and is a little pixelish

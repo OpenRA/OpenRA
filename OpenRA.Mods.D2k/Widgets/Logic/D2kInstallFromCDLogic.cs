@@ -15,6 +15,7 @@ using System.Threading;
 using OpenRA.FileFormats;
 using OpenRA.FileFormats.Graphics;
 using OpenRA.Widgets;
+using OpenRA.Utility;
 
 namespace OpenRA.Mods.D2k.Widgets.Logic
 {
@@ -74,14 +75,16 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 			insertDiskContainer.IsVisible = () => false;
 			installingContainer.IsVisible = () => true;
 
-			var dest = new string[] { Platform.SupportDir, "Content", "d2k" }.Aggregate(Path.Combine);
-			var copyFiles = new string[] { "music/ambush.aud" };
+			var dest = new string[] { Platform.SupportDir, "Content", "d2k", "Music" }.Aggregate(Path.Combine);
+			var copyFiles = new string[] { "music/ambush.aud", "music/arakatak.aud", "music/atregain.aud", "music/entordos.aud", "music/fightpwr.aud", "music/fremen.aud", "music/hark_bat.aud", "music/landsand.aud", "music/options.aud", "music/plotting.aud", "music/risehark.aud", "music/robotix.aud", "music/score.aud", "music/soldappr.aud", "music/spicesct.aud", "music/undercon.aud", "music/waitgame.aud" };
 
-			var extractPackage = "setup/setup.z";
-			var extractFiles = new string[] { "DATA.R8", "MOUSE.R8", "BLOXBASE.R8" };
+			// TODO: won't work yet:
+			//var extractPackage = "setup/setup.z";
+			//var extractFiles = new string[] { "DATA.R8", "MOUSE.R8", "BLOXBASE.R8", "BLOXBAT.R8", "BLOXBGBS.R8", "BLOXICE.R8", "BLOXTREE.R8", "BLOXWAST.R8" };
 
 			var installCounter = 0;
-			var installTotal = copyFiles.Count() + extractFiles.Count();
+			var installTotal = copyFiles.Count(); //+ extractFiles.Count();
+
 			var onProgress = (Action<string>)(s => Game.RunAfterTick(() =>
 			{
 				progressBar.Percentage = installCounter*100/installTotal;
@@ -104,13 +107,13 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 					if (!InstallUtils.CopyFiles(source, copyFiles, dest, onProgress, onError))
 						return;
 
-					if (!InstallUtils.ExtractFromPackage(source, extractPackage, extractFiles, dest, onProgress, onError))
-						return;
+					//if (!InstallUtils.ExtractFromPackage(source, extractPackage, extractFiles, dest, onProgress, onError))
+					//	return;
 
 					Game.RunAfterTick(() =>
 					{
-						Ui.CloseWindow();
-						Game.Exit();
+						statusLabel.GetText = () => "Music has been copied.";
+						backButton.IsDisabled = () => false;
 					});
 				}
 				catch
