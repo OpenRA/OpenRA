@@ -468,7 +468,6 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 					File.Copy("mods/d2k/tilesets/BASE.tsx", Path.Combine(PathToImages, "BASE.tsx"));
 					// this is ugly: a GUI will open and close immediately after some delay
 					Process.Start("OpenRA.TilesetBuilder.exe", Path.Combine(PathToImages, "BASE.png")+" 32 --export Content/d2k/Tilesets");
-					File.Delete(Path.Combine(PathToImages, "BASE.tsx"));
 
 					Game.RunAfterTick(() =>
 					{

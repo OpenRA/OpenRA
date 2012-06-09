@@ -1944,38 +1944,6 @@ Templates:
 	Template@212:
 		Id: 212
 		Image: t212
-		Size: 2,1
-		PickAny: False
-		Tiles:
-			0: Cliff
-			1: Cliff
-	Template@213:
-		Id: 213
-		Image: t213
-		Size: 2,1
-		PickAny: False
-		Tiles:
-			0: Cliff
-			1: Cliff
-	Template@214:
-		Id: 214
-		Image: t214
-		Size: 2,1
-		PickAny: False
-		Tiles:
-			1: Cliff
-			0: Cliff
-	Template@215:
-		Id: 215
-		Image: t215
-		Size: 2,1
-		PickAny: False
-		Tiles:
-			1: Cliff
-			0: Cliff
-	Template@216:
-		Id: 216
-		Image: t216
 		Size: 2,3
 		PickAny: False
 		Tiles:
@@ -1985,9 +1953,9 @@ Templates:
 			4: Rock
 			2: Cliff
 			0: Cliff
-	Template@217:
-		Id: 217
-		Image: t217
+	Template@213:
+		Id: 213
+		Image: t213
 		Size: 2,2
 		PickAny: False
 		Tiles:
@@ -1995,9 +1963,9 @@ Templates:
 			1: Cliff
 			3: Sand
 			2: Sand
-	Template@218:
-		Id: 218
-		Image: t218
+	Template@214:
+		Id: 214
+		Image: t214
 		Size: 2,2
 		PickAny: False
 		Tiles:
@@ -2005,9 +1973,9 @@ Templates:
 			2: Sand
 			3: Rock
 			1: Cliff
-	Template@219:
-		Id: 219
-		Image: t219
+	Template@215:
+		Id: 215
+		Image: t215
 		Size: 2,2
 		PickAny: False
 		Tiles:
@@ -2015,9 +1983,9 @@ Templates:
 			2: Cliff
 			3: Sand
 			1: Cliff
-	Template@220:
-		Id: 220
-		Image: t220
+	Template@216:
+		Id: 216
+		Image: t216
 		Size: 2,2
 		PickAny: False
 		Tiles:
@@ -2025,9 +1993,9 @@ Templates:
 			1: Sand
 			0: Cliff
 			2: Rock
-	Template@221:
-		Id: 221
-		Image: t221
+	Template@217:
+		Id: 217
+		Image: t217
 		Size: 2,2
 		PickAny: False
 		Tiles:
@@ -2035,9 +2003,9 @@ Templates:
 			0: Cliff
 			2: Cliff
 			3: Cliff
-	Template@222:
-		Id: 222
-		Image: t222
+	Template@218:
+		Id: 218
+		Image: t218
 		Size: 2,2
 		PickAny: False
 		Tiles:
@@ -2045,9 +2013,9 @@ Templates:
 			1: Sand
 			0: Sand
 			2: Cliff
-	Template@223:
-		Id: 223
-		Image: t223
+	Template@219:
+		Id: 219
+		Image: t219
 		Size: 2,2
 		PickAny: False
 		Tiles:
@@ -2055,9 +2023,9 @@ Templates:
 			1: Sand
 			3: Cliff
 			2: Cliff
-	Template@224:
-		Id: 224
-		Image: t224
+	Template@220:
+		Id: 220
+		Image: t220
 		Size: 2,3
 		PickAny: False
 		Tiles:
@@ -2067,16 +2035,16 @@ Templates:
 			1: Rough
 			3: Rough
 			5: Rough
-	Template@225:
-		Id: 225
-		Image: t225
+	Template@221:
+		Id: 221
+		Image: t221
 		Size: 1,1
 		PickAny: False
 		Tiles:
 			0: Rough
-	Template@226:
-		Id: 226
-		Image: t226
+	Template@222:
+		Id: 222
+		Image: t222
 		Size: 2,3
 		PickAny: False
 		Tiles:
@@ -2086,21 +2054,62 @@ Templates:
 			4: Rough
 			2: Rough
 			0: Sand
-	Template@227:
-		Id: 227
-		Image: t227
+	Template@223:
+		Id: 223
+		Image: t223
 		Size: 1,1
 		PickAny: False
 		Tiles:
 			0: Rough
+	Template@224:
+		Id: 224
+		Image: t224
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			1: Rough
+			3: Rough
+			2: Rough
+			0: Rough
+	Template@225:
+		Id: 225
+		Image: t225
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			1: Rough
+			3: Rough
+			2: Rough
+			0: Rough
+	Template@226:
+		Id: 226
+		Image: t226
+		Size: 3,2
+		PickAny: False
+		Tiles:
+			2: Rough
+			5: Rough
+			4: Rough
+			1: Rough
+			0: Rough
+			3: Rough
+	Template@227:
+		Id: 227
+		Image: t227
+		Size: 3,1
+		PickAny: False
+		Tiles:
+			0: Rough
+			1: Rough
+			2: Rough
 	Template@228:
 		Id: 228
 		Image: t228
 		Size: 2,2
 		PickAny: False
 		Tiles:
-			1: Rough
-			3: Rough
+			1: Rock
+			3: Rock
 			2: Rough
 			0: Rough
 	Template@229:
@@ -2109,54 +2118,13 @@ Templates:
 		Size: 2,2
 		PickAny: False
 		Tiles:
-			1: Rough
-			3: Rough
-			2: Rough
-			0: Rough
-	Template@230:
-		Id: 230
-		Image: t230
-		Size: 3,2
-		PickAny: False
-		Tiles:
-			2: Rough
-			5: Rough
-			4: Rough
-			1: Rough
-			0: Rough
-			3: Rough
-	Template@231:
-		Id: 231
-		Image: t231
-		Size: 3,1
-		PickAny: False
-		Tiles:
-			0: Rough
-			1: Rough
-			2: Rough
-	Template@232:
-		Id: 232
-		Image: t232
-		Size: 2,2
-		PickAny: False
-		Tiles:
-			1: Rock
-			3: Rock
-			2: Rough
-			0: Rough
-	Template@233:
-		Id: 233
-		Image: t233
-		Size: 2,2
-		PickAny: False
-		Tiles:
 			0: Sand
 			2: Cliff
 			3: Cliff
 			1: Cliff
-	Template@234:
-		Id: 234
-		Image: t234
+	Template@230:
+		Id: 230
+		Image: t230
 		Size: 2,2
 		PickAny: False
 		Tiles:
@@ -2164,91 +2132,111 @@ Templates:
 			1: Dune
 			3: Dune
 			2: Dune
+	Template@231:
+		Id: 231
+		Image: t231
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Sand
+	Template@232:
+		Id: 232
+		Image: t232
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Sand
+	Template@233:
+		Id: 233
+		Image: t233
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Sand
+	Template@234:
+		Id: 234
+		Image: t234
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Sand
 	Template@235:
 		Id: 235
 		Image: t235
-		Size: 1,1
-		PickAny: False
-		Tiles:
-			0: Sand
-	Template@236:
-		Id: 236
-		Image: t236
-		Size: 1,1
-		PickAny: False
-		Tiles:
-			0: Sand
-	Template@237:
-		Id: 237
-		Image: t237
-		Size: 1,1
-		PickAny: False
-		Tiles:
-			0: Sand
-	Template@238:
-		Id: 238
-		Image: t238
-		Size: 1,1
-		PickAny: False
-		Tiles:
-			0: Sand
-	Template@239:
-		Id: 239
-		Image: t239
-		Size: 2,2
-		PickAny: False
-		Tiles:
-			0: Sand
-			2: Sand
-			3: Sand
-			1: Sand
-	Template@240:
-		Id: 240
-		Image: t240
-		Size: 3,2
-		PickAny: False
-		Tiles:
-			2: Sand
-			1: Sand
-			0: Sand
-			3: Sand
-			4: Sand
-			5: Sand
-	Template@241:
-		Id: 241
-		Image: t241
 		Size: 2,2
 		PickAny: False
 		Tiles:
 			1: Sand
 			3: Dune
 			2: Dune
+			0: Dune
+	Template@236:
+		Id: 236
+		Image: t236
+		Size: 2,1
+		PickAny: False
+		Tiles:
+			1: Dune
+			0: Dune
+	Template@237:
+		Id: 237
+		Image: t237
+		Size: 2,1
+		PickAny: False
+		Tiles:
+			1: Dune
+			0: Dune
+	Template@238:
+		Id: 238
+		Image: t238
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			1: Dune
+			3: Sand
+			2: Dune
+			0: Dune
+	Template@239:
+		Id: 239
+		Image: t239
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Dune
+	Template@240:
+		Id: 240
+		Image: t240
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: Dune
+	Template@241:
+		Id: 241
+		Image: t241
+		Size: 1,1
+		PickAny: False
+		Tiles:
 			0: Dune
 	Template@242:
 		Id: 242
 		Image: t242
-		Size: 2,1
+		Size: 1,1
 		PickAny: False
 		Tiles:
-			1: Dune
 			0: Dune
 	Template@243:
 		Id: 243
 		Image: t243
-		Size: 2,1
+		Size: 1,1
 		PickAny: False
 		Tiles:
-			1: Dune
 			0: Dune
 	Template@244:
 		Id: 244
 		Image: t244
-		Size: 2,2
+		Size: 1,1
 		PickAny: False
 		Tiles:
-			1: Dune
-			3: Sand
-			2: Dune
 			0: Dune
 	Template@245:
 		Id: 245
@@ -2302,48 +2290,6 @@ Templates:
 	Template@252:
 		Id: 252
 		Image: t252
-		Size: 1,1
-		PickAny: False
-		Tiles:
-			0: Dune
-	Template@253:
-		Id: 253
-		Image: t253
-		Size: 1,1
-		PickAny: False
-		Tiles:
-			0: Dune
-	Template@254:
-		Id: 254
-		Image: t254
-		Size: 1,1
-		PickAny: False
-		Tiles:
-			0: Dune
-	Template@255:
-		Id: 255
-		Image: t255
-		Size: 1,1
-		PickAny: False
-		Tiles:
-			0: Dune
-	Template@256:
-		Id: 256
-		Image: t256
-		Size: 1,1
-		PickAny: False
-		Tiles:
-			0: Dune
-	Template@257:
-		Id: 257
-		Image: t257
-		Size: 1,1
-		PickAny: False
-		Tiles:
-			0: Dune
-	Template@258:
-		Id: 258
-		Image: t258
 		Size: 2,2
 		PickAny: False
 		Tiles:
@@ -2351,9 +2297,9 @@ Templates:
 			1: Dune
 			3: Dune
 			2: Sand
-	Template@259:
-		Id: 259
-		Image: t259
+	Template@253:
+		Id: 253
+		Image: t253
 		Size: 2,2
 		PickAny: False
 		Tiles:
@@ -2361,31 +2307,31 @@ Templates:
 			2: Rough
 			3: Rough
 			1: Rough
-	Template@260:
-		Id: 260
-		Image: t260
+	Template@254:
+		Id: 254
+		Image: t254
 		Size: 2,1
 		PickAny: False
 		Tiles:
 			1: Rough
 			0: Rough
-	Template@261:
-		Id: 261
-		Image: t261
+	Template@255:
+		Id: 255
+		Image: t255
 		Size: 1,1
 		PickAny: False
 		Tiles:
 			0: Rough
-	Template@262:
-		Id: 262
-		Image: t262
+	Template@256:
+		Id: 256
+		Image: t256
 		Size: 1,1
 		PickAny: False
 		Tiles:
 			0: Rough
-	Template@263:
-		Id: 263
-		Image: t263
+	Template@257:
+		Id: 257
+		Image: t257
 		Size: 2,2
 		PickAny: False
 		Tiles:
@@ -2393,41 +2339,9 @@ Templates:
 			2: Rough
 			3: Rough
 			1: Rough
-	Template@264:
-		Id: 264
-		Image: t264
-		Size: 2,1
-		PickAny: False
-		Tiles:
-			1: Cliff
-			0: Cliff
-	Template@265:
-		Id: 265
-		Image: t265
-		Size: 2,1
-		PickAny: False
-		Tiles:
-			1: Cliff
-			0: Cliff
-	Template@266:
-		Id: 266
-		Image: t266
-		Size: 2,1
-		PickAny: False
-		Tiles:
-			0: Cliff
-			1: Cliff
-	Template@267:
-		Id: 267
-		Image: t267
-		Size: 2,1
-		PickAny: False
-		Tiles:
-			0: Cliff
-			1: Cliff
-	Template@268:
-		Id: 268
-		Image: t268
+	Template@258:
+		Id: 258
+		Image: t258
 		Size: 2,2
 		PickAny: False
 		Tiles:
@@ -2435,4 +2349,60 @@ Templates:
 			1: Cliff
 			3: Sand
 			2: Sand
+	Template@259:
+		Id: 259
+		Image: t259
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			1: Cliff
+			3: Cliff
+			2: Cliff
+			0: Cliff
+	Template@260:
+		Id: 260
+		Image: t260
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Cliff
+			2: Cliff
+			3: Cliff
+			1: Cliff
+	Template@261:
+		Id: 261
+		Image: t261
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			0: Cliff
+			1: Cliff
+			3: Cliff
+			2: Cliff
+	Template@262:
+		Id: 262
+		Image: t262
+		Size: 2,2
+		PickAny: False
+		Tiles:
+			2: Cliff
+			3: Cliff
+			1: Cliff
+			0: Cliff
+	Template@263:
+		Id: 263
+		Image: t263
+		Size: 5,2
+		PickAny: False
+		Tiles:
+			0: Sand
+			1: Sand
+			2: Sand
+			3: Sand
+			4: Sand
+			9: Sand
+			8: Sand
+			7: Sand
+			6: Sand
+			5: Sand
 
