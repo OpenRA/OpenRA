@@ -394,18 +394,18 @@ mono OpenRA.Utility.exe --shp spice0.png 32
 mono OpenRA.TilesetBuilder.exe "BASE.png" 32 --export "Content/d2k/Tilesets"
 R8="$HOME/.openra/Content/d2k/BLOXBAT.R8"
 mono OpenRA.Utility.exe --r8 $R8 $PAL 0 799 "BAT" --tileset
-mono OpenRA.TilesetBuilder.exe "BAT.png" 32 --export "Content/d2k/tilesets"
+mono OpenRA.TilesetBuilder.exe "BAT.png" 32 --export "Content/d2k/Tilesets"
 R8="$HOME/.openra/Content/d2k/BLOXBGBS.R8"
 mono OpenRA.Utility.exe --r8 $R8 $PAL 0 799 "BGBS" --tileset
-mono OpenRA.TilesetBuilder.exe "BGBS.png" 32 --export "Content/d2k/tilesets"
+mono OpenRA.TilesetBuilder.exe "BGBS.png" 32 --export "Content/d2k/Tilesets"
 R8="$HOME/.openra/Content/d2k/BLOXICE.R8"
 mono OpenRA.Utility.exe --r8 $R8 $PAL 0 799 "ICE" --tileset
-mono OpenRA.TilesetBuilder.exe "ICE.png" 32 --export "Content/d2k/tilesets"
+mono OpenRA.TilesetBuilder.exe "ICE.png" 32 --export "Content/d2k/Tilesets"
 R8="$HOME/.openra/Content/d2k/BLOXTREE.R8"
 mono OpenRA.Utility.exe --r8 $R8 $PAL 0 799 "TREE" --tileset
-mono OpenRA.TilesetBuilder.exe "TREE.png" 32 --export "Content/d2k/tilesets"
+mono OpenRA.TilesetBuilder.exe "TREE.png" 32 --export "Content/d2k/Tilesets"
 R8="$HOME/.openra/Content/d2k/BLOXWAST.R8"
 mono OpenRA.Utility.exe --r8 $R8 $PAL 0 799 "XWAST" --tileset
-mono OpenRA.TilesetBuilder.exe "XWAST.png" 32 --export "Content/d2k/tilesets"
+mono OpenRA.TilesetBuilder.exe "XWAST.png" 32 --export "Content/d2k/Tilesets"
 
 mv *.shp $HOME/.openra/Content/d2k/SHPs
