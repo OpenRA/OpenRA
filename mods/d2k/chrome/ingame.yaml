@@ -1,8 +1,7 @@
 Container@INGAME_ROOT:
-	Delegate:IngameChromeDelegate
-	Visible:false
+	Logic:IngameChromeLogic
 	Children:
-		WorldInteractionController:
+		WorldInteractionController@INTERACTION_CONTROLLER:
 			X:0
 			Y:0
 			Width:WINDOW_RIGHT
@@ -12,9 +11,17 @@ Container@INGAME_ROOT:
 			Y:0
 			Width:WINDOW_RIGHT
 			Height:WINDOW_BOTTOM
+		WorldCommand:
+			X:0
+			Y:0
+			Width:WINDOW_RIGHT
+			Height:WINDOW_BOTTOM
 		Timer@GAME_TIMER:
 			X: WINDOW_RIGHT/2
-			Y: 10
+			Y: 0-10
+		StrategicProgress@STRATEGIC_PROGRESS:
+			X: WINDOW_RIGHT/2
+			Y: 40
 		Background@POSTGAME_BG:
 			X:(WINDOW_RIGHT - WIDTH)/2
 			Y:(WINDOW_BOTTOM - HEIGHT)/2
@@ -25,11 +32,24 @@ Container@INGAME_ROOT:
 			Children:
 				Label@TEXT:
 					X:(PARENT_RIGHT - WIDTH)/2
-					Y:(PARENT_BOTTOM - HEIGHT)/2
+					Y:0
 					Width:200
-					Height:40
+					Height:80
 					Align:Center
-					Bold:True
+				Button@POSTGAME_OBSERVE:
+					X:10
+					Y:(PARENT_BOTTOM - HEIGHT - 10)
+					Width:150
+					Height:25
+					Font:Bold
+					Text:Observe
+				Button@POSTGAME_QUIT:
+					X:(PARENT_RIGHT - WIDTH - 10)
+					Y:(PARENT_BOTTOM - HEIGHT - 10)
+					Width:150
+					Height:25
+					Font:Bold
+					Text:Leave
 		SupportPowerBin@INGAME_POWERS_BIN:
 			X:0
 			Y:25
@@ -44,24 +64,25 @@ Container@INGAME_ROOT:
 			Width:160
 			Height:25
 			Text:Options
-			Bold:True
+			Font:Bold
+			Key: escape
 		Button@INGAME_DIPLOMACY_BUTTON:
 			X:162
 			Y:0
 			Width:160
 			Height:25
 			Text:Diplomacy
-			Bold:True
-		WorldTooltip@INGAME_WORLD_TOOLTIP:
-		Button@INGAME_DEVELOPERMODE_BUTTON:
+			Font:Bold
+		Button@CHEATS_BUTTON:
 			X:324
 			Y:0
 			Width:160
 			Height:25
-			Text:Developer Mode
+			Text:Cheats
 			Visible:false
-			Bold:True
+			Font:Bold
 		RadarBin@INGAME_RADAR_BIN:
+			WorldInteractionController:INTERACTION_CONTROLLER
 		PowerBin@INGAME_POWER_BIN:
 		MoneyBin@INGAME_MONEY_BIN:
 			X:WINDOW_RIGHT - WIDTH
@@ -70,7 +91,7 @@ Container@INGAME_ROOT:
 			Height: 32
 			Children:
 				OrderButton@SELL:
-					Delegate:OrderButtonsChromeDelegate
+					Logic:OrderButtonsChromeLogic
 					X:3
 					Y:0
 					Width:30
@@ -79,7 +100,7 @@ Container@INGAME_ROOT:
 					Description:Sell
 					LongDesc:Sell buildings, reclaiming a \nproportion of their build cost
 				OrderButton@POWER_DOWN:
-					Delegate:OrderButtonsChromeDelegate
+					Logic:OrderButtonsChromeLogic
 					X:39
 					Y:0
 					Width:30
@@ -88,7 +109,7 @@ Container@INGAME_ROOT:
 					Description:Powerdown
 					LongDesc:Disable unneeded structures so their \npower can be used elsewhere
 				OrderButton@REPAIR:
-					Delegate:OrderButtonsChromeDelegate
+					Logic:OrderButtonsChromeLogic
 					X:75
 					Y:0
 					Width:30
@@ -101,7 +122,7 @@ Container@INGAME_ROOT:
 			X:(WINDOW_RIGHT - WIDTH)/2
 			Y:(WINDOW_BOTTOM - HEIGHT)/2
 			Width:300
-			Height:320
+			Height:295
 			Visible:false
 			Children:
 				Label@LABEL_TITLE:
@@ -111,51 +132,45 @@ Container@INGAME_ROOT:
 					Height:25
 					Text:Options
 					Align:Center
-					Bold:True
+					Font:Bold
 				Button@RESUME:
 					X:(PARENT_RIGHT - WIDTH)/2
 					Y:60
 					Width:160
 					Height:25
 					Text:Resume
-					Bold:True
+					Font:Bold
+					Key:escape
 				Button@SETTINGS:
 					X:(PARENT_RIGHT - WIDTH)/2
 					Y:100
 					Width:160
 					Height:25
 					Text:Settings
-					Bold:True
+					Font:Bold
 				Button@MUSIC:
 					X:(PARENT_RIGHT - WIDTH)/2
 					Y:140
 					Width:160
 					Height:25
 					Text:Music
-					Bold:True					
+					Font:Bold
 				Button@SURRENDER:
 					X:(PARENT_RIGHT - WIDTH)/2
 					Y:180
 					Width:160
 					Height:25
 					Text:Surrender
-					Bold:True
+					Font:Bold
 				Button@DISCONNECT:
 					X:(PARENT_RIGHT - WIDTH)/2
 					Y:220
 					Width:160
 					Height:25
-					Text:Disconnect
-					Bold:True
-				Button@QUIT:
-					X:(PARENT_RIGHT - WIDTH)/2
-					Y:260
-					Width:160
-					Height:25
-					Text:Quit
-					Bold:True
+					Text:Abort Mission
+					Font:Bold
 		Background@DIPLOMACY_BG:
-			Delegate:DiplomacyDelegate
+			Logic:DiplomacyLogic
 			X:(WINDOW_RIGHT - WIDTH)/2
 			Y:(WINDOW_BOTTOM - HEIGHT)/2
 			Width:450
@@ -169,7 +184,148 @@ Container@INGAME_ROOT:
 					Height:25
 					Text:Diplomacy
 					Align:Center
-					Bold:True
+					Font:Bold
+		ChatDisplay@CHAT_DISPLAY:
+			X:250
+			Y:WINDOW_BOTTOM - HEIGHT - 30
+			Width: 760
+			Height: 200
+			DrawBackground: False
+			RemoveTime:250
+			UseContrast: yes
+		ChatEntry@CHAT_ENTRY:
+			X:250
+			Y:WINDOW_BOTTOM - HEIGHT
+			Width: 760
+			Height: 30
+			UseContrast: yes
+		Background@PERF_BG:
+			ClickThrough:true
+			Background:dialog4
+			Logic:PerfDebugLogic
+			X:10
+			Y:WINDOW_BOTTOM - 250
+			Width: 210
+			Height: 250
+			Children:
+				PerfGraph@GRAPH:
+					X:5
+					Y:5
+					Width:200
+					Height:200
+				Label@TEXT:
+					X:20
+					Y:205
+					Width:170
+					Height:40
+Container@OBSERVER_ROOT:
+	Visible:true
+	Logic:IngameObserverChromeLogic
+	Children:
+		WorldInteractionController@INTERACTION_CONTROLLER:
+			X:0
+			Y:0
+			Width:WINDOW_RIGHT
+			Height:WINDOW_BOTTOM
+		ViewportScrollController:
+			X:0
+			Y:0
+			Width:WINDOW_RIGHT
+			Height:WINDOW_BOTTOM
+		Timer@GAME_TIMER:
+			X: WINDOW_RIGHT/2
+			Y: 0-10
+		Background@POSTGAME_BG:
+			X:(WINDOW_RIGHT - WIDTH)/2
+			Y:(WINDOW_BOTTOM - HEIGHT)/2
+			Width:400
+			Height:100
+			Background:dialog4
+			Visible:false
+			Children:
+				Label@TEXT:
+					X:(PARENT_RIGHT - WIDTH)/2
+					Y:0
+					Width:200
+					Height:80
+					Align:Center
+				Button@POSTGAME_OBSERVE:
+					X:10
+					Y:(PARENT_BOTTOM - HEIGHT - 10)
+					Width:150
+					Height:25
+					Font:Bold
+					Text:Observe
+				Button@POSTGAME_QUIT:
+					X:(PARENT_RIGHT - WIDTH - 10)
+					Y:(PARENT_BOTTOM - HEIGHT - 10)
+					Width:150
+					Height:25
+					Font:Bold
+					Text:Leave
+		SupportPowerBin@INGAME_POWERS_BIN:
+			X:0
+			Y:25
+		Button@INGAME_OPTIONS_BUTTON:
+			X:0
+			Y:0
+			Width:160
+			Height:25
+			Text:Options
+			Font:Bold
+			Key:escape
+		WorldTooltip:
+		Background@INGAME_OPTIONS_BG:
+			X:(WINDOW_RIGHT - WIDTH)/2
+			Y:(WINDOW_BOTTOM - HEIGHT)/2
+			Width:300
+			Height:295
+			Visible:false
+			Children:
+				Label@LABEL_TITLE:
+					X:(PARENT_RIGHT - WIDTH)/2
+					Y:20
+					Width:250
+					Height:25
+					Text:Options
+					Align:Center
+					Font:Bold
+				Button@RESUME:
+					X:(PARENT_RIGHT - WIDTH)/2
+					Y:60
+					Width:160
+					Height:25
+					Text:Resume
+					Font:Bold
+					Key:escape
+				Button@SETTINGS:
+					X:(PARENT_RIGHT - WIDTH)/2
+					Y:100
+					Width:160
+					Height:25
+					Text:Settings
+					Font:Bold
+				Button@MUSIC:
+					X:(PARENT_RIGHT - WIDTH)/2
+					Y:140
+					Width:160
+					Height:25
+					Text:Music
+					Font:Bold
+				Button@SURRENDER:
+					X:(PARENT_RIGHT - WIDTH)/2
+					Y:180
+					Width:160
+					Height:25
+					Text:Surrender
+					Font:Bold
+				Button@DISCONNECT:
+					X:(PARENT_RIGHT - WIDTH)/2
+					Y:220
+					Width:160
+					Height:25
+					Text:Abort Mission
+					Font:Bold
 		ChatDisplay@CHAT_DISPLAY:
 			X:250
 			Y:WINDOW_BOTTOM - HEIGHT - 30
@@ -182,66 +338,32 @@ Container@INGAME_ROOT:
 			Y:WINDOW_BOTTOM - HEIGHT
 			Width: 760
 			Height: 30
-		Background@DEVELOPERMODE_BG:
-			Delegate:DeveloperModeDelegate
-			X:(WINDOW_RIGHT - WIDTH)/2
-			Y:(WINDOW_BOTTOM - HEIGHT)/2
-			Width:350
-			Height:330
-			Visible:false
+		Background@PERF_BG:
+			ClickThrough:true
+			Background:dialog4
+			Logic:PerfDebugLogic
+			X:10
+			Y:WINDOW_BOTTOM - 250
+			Width: 210
+			Height: 250
 			Children:
-				Label@LABEL_TITLE:
-					X:(PARENT_RIGHT - WIDTH)/2
-					Y:20
-					Width:250
-					Height:25
-					Text:Developer Mode
-					Align:Center
-				Checkbox@CHECKBOX_SHROUD
-					X:30
-					Y:50
-					Height:20
-					Width:PARENT_RIGHT - 30
-					Text:Disable Shroud
-				Checkbox@CHECKBOX_UNITDEBUG:
-					X:30
-					Y:80
-					Width:PARENT_RIGHT - 30
-					Height:20
-					Text:Show Occupied Cells
-				Checkbox@CHECKBOX_PATHDEBUG:
-					X:30
-					Y:110
-					Width:PARENT_RIGHT - 30
-					Height:20
-					Text:Show Unit Paths
-				Button@GIVE_CASH
-					X:30
-					Y:140
+				PerfGraph@GRAPH:
+					X:5
+					Y:5
 					Width:200
-					Height:20
-					Text: Give Cash
-				Checkbox@INSTANT_BUILD
-					X:30
-					Y:170
-					Width:PARENT_RIGHT - 30
-					Height:20
-					Text:Instant Build Speed
-				Checkbox@INSTANT_CHARGE
-					X:30
-					Y:200
-					Width:PARENT_RIGHT - 30
-					Height:20
-					Text:Instant Charge Time (Special Powers)
-				Checkbox@ENABLE_TECH
-					X:30
-					Y:230
-					Width:PARENT_RIGHT - 30
-					Height:20
-					Text:Build Everything
-				Button@GIVE_EXPLORATION
-					X:30
-					Y:260
-					Width:200
-					Height:20
-					Text: Give Exploration
+					Height:200
+				Label@TEXT:
+					X:20
+					Y:205
+					Width:170
+					Height:40
+Background@FMVPLAYER:
+	Width:WINDOW_RIGHT
+	Height:WINDOW_BOTTOM
+	Background:dialog4
+	Children:
+		VqaPlayer:
+			X:0
+			Y:0
+			Width:WINDOW_RIGHT
+			Height:WINDOW_BOTTOM

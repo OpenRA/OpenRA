@@ -1,0 +1,22 @@
+RIFLE:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 10
+		Owner: atreides,harkonnen,ordos
+	Valued:
+		Cost: 100
+	Tooltip:
+		Name: Rifle Infantry
+		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles
+	Selectable:
+		Bounds: 12,17,0,0
+	Health:
+		HP: 50
+	Mobile:
+		Speed: 4
+	AttackFrontal:
+		PrimaryWeapon: M1Carbine
+	TakeCover:
+	-RenderInfantry:
+	RenderInfantryProne:

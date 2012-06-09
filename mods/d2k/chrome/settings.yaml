@@ -1,10 +1,9 @@
 Background@SETTINGS_MENU:
-	Delegate:SettingsMenuDelegate
+	Logic:SettingsMenuLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM- HEIGHT)/2
 	Width: 450
 	Height: 350
-	Visible: false
 	Children:
 		Label@SETTINGS_LABEL_TITLE:
 			X:0
@@ -13,14 +12,15 @@ Background@SETTINGS_MENU:
 			Height:25
 			Text:Settings
 			Align:Center
-			Bold:True
+			Font:Bold
 		Button@BUTTON_CLOSE:
 			X:PARENT_RIGHT - 180
 			Y:PARENT_BOTTOM - 45
 			Width:160
 			Height:25
 			Text:Close
-			Bold:True
+			Font:Bold
+			Key:escape
 		Container@TAB_CONTAINER:
 			X:0
 			Y:50
@@ -33,28 +33,28 @@ Background@SETTINGS_MENU:
 					Width:90
 					Height:25
 					Text:General
-					Bold:True
+					Font:Bold
 				Button@AUDIO:
 					X:135
 					Y:0
 					Width:90
 					Height:25
 					Text:Audio
-					Bold:True
+					Font:Bold
 				Button@DISPLAY:
 					X:225
 					Y:0
 					Width:90
 					Height:25
 					Text:Display
-					Bold:True
+					Font:Bold
 				Button@DEBUG:
 					X:315
 					Y:0
 					Width:90
 					Height:25
 					Text:Debug
-					Bold:True
+					Font:Bold
 		Container@GENERAL_PANE:
 			X:37
 			Y:100
@@ -79,12 +79,36 @@ Background@SETTINGS_MENU:
 					Width:200
 					Height:20
 					Text: Enable Edge Scrolling
+				Label@EDGE_SCROLL_AMOUNT_LABEL:
+					X:0
+					Y:70
+					Text: Scroll Speed
+				Slider@EDGE_SCROLL_AMOUNT:
+					X:130
+					Y:60
+					Width:250
+					Height:20
+					Ticks:5
+					MinimumValue: 10
+					MaximumValue: 50
 				Checkbox@INVERSE_SCROLL:
 					X:0
-					Y:60
+					Y:90
 					Width:200
 					Height:20
 					Text: Invert Mouse Drag Scrolling
+				Checkbox@TEAMCHAT_TOGGLE:
+					X:0
+					Y:120
+					Width:200
+					Height:20
+					Text: Shift-Enter Toggles Team Chat
+				Checkbox@SHOW_SHELLMAP:
+					X:0
+					Y:150
+					Width:200
+					Height:20
+					Text: Show Shellmap
 		Container@AUDIO_PANE:
 			X:37
 			Y:100
@@ -119,38 +143,61 @@ Background@SETTINGS_MENU:
 			Height:PARENT_BOTTOM - 100
 			Visible: false
 			Children:
-				Checkbox@FULLSCREEN_CHECKBOX:
+				Label@MODE_LABEL:
 					X:0
 					Y:0
-					Width:300
+					Width:45
+					Height:25
+					Text:Mode:
+				DropDownButton@MODE_DROPDOWN:
+					X:50
+					Y:1
+					Width:170
+					Height:25
+					Font:Regular
+					Text:Windowed
+				Container@WINDOW_RESOLUTION:
+					X:220
+					Y:0
+					Children:
+						Label@At:
+							Text:@
+							Font:Bold
+							Y:0-1
+							Height:25
+							Width:25
+							Align:Center
+						TextField@WINDOW_WIDTH:
+							X:25
+							Width:45
+							Height:25
+							MaxLength:5
+						Label@X:
+							Text:x
+							Font:Bold
+							X:70
+							Y:0-1
+							Height:25
+							Width:15
+							Align:Center
+						TextField@WINDOW_HEIGHT:
+							X:85
+							Width:45
+							Height:25
+							MaxLength:5
+				Label@VIDEO_DESC:
+					Y:25
+					Width:PARENT_RIGHT
+					Height:25
+					Font:Tiny
+					Align:Center
+					Text:Mode/Resolution changes will be applied after the game is restarted
+				Checkbox@PIXELDOUBLE_CHECKBOX:
+					Y:50
+					Width:200
 					Height:20
-					Text:Fullscreen
-				Label@RESOLUTION_LABEL:
-					X:0
-					Y:50
-					Text: Window Resolution:
-				TextField@SCREEN_WIDTH:
-					Text:Width
-					Width:50
-					Height:25
-					X:130
-					Y:40
-					MaxLength:5
-				Label@X:
-					Text:x
-					X:185
-					Y:50
-				TextField@SCREEN_HEIGHT:
-					Text:Height
-					Width:50
-					Height:25
-					X:195
-					Y:40
-					MaxLength:5
-				Label@RESTART:
-					Text: Restart Game To Apply Changes
-					X:0
-					Y:PARENT_BOTTOM - 30
+					Font:Regular
+					Text:Enable Pixel Doubling
 		Container@DEBUG_PANE:
 			X:37
 			Y:100
@@ -164,15 +211,9 @@ Background@SETTINGS_MENU:
 					Width:300
 					Height:20
 					Text:Show Performance Information
-				Checkbox@SYNCREPORTS_CHECKBOX:
+				Checkbox@CHECKUNSYNCED_CHECKBOX:
 					X:0
 					Y:30
 					Width:300
 					Height:20
-					Text:Collect Sync Reports
-				Checkbox@GAMETIME_CHECKBOX:
-					X:0
-					Y:60
-					Width:300
-					Height:20
-					Text:Show Game Time Counter 
+					Text:Check Sync around Unsynced Code
