@@ -98,6 +98,65 @@ Player:
 			2tnk: 25%
 			3tnk: 50%
 		SquadSize: 10
+	HackyAI@OptiAI:
+		Name:Optimized AI
+		BuildingFractions:
+			proc: 25.1%
+			powr: 35%
+			tent: 0.1%
+			barr: 0.1%
+			weap: 0.1%
+			fix: 0.1%
+			dome: 0.1%
+			atek: 0.1%
+			stek: 0.1%
+		UnitsToBuild:
+			e1: 50%
+			e2: 1%
+			e3: 10%
+			medi: 0.01%
+			e7: 0.01%
+			apc: 10%
+			jeep: 10%
+			ftrk: 25%
+			1tnk: 25%
+			2tnk: 50%
+			3tnk: 75%
+			4tnk: 100%
+			arty: 30%
+			v2rl: 30%
+		SquadSize: 10
+	HackyAI@AirAI:
+		Name:Air AI
+		BuildingFractions:
+			proc: 25.1%
+			powr: 35%
+			afld: 30%
+			hpad: 30%
+			weap: 0.1%
+			dome: 0.1%
+			atek: 0.1%
+			stek: 0.1%
+		UnitsToBuild:
+			yak: 50%
+			hind: 50%
+			mig: 50%
+			heli: 50%
+		SquadSize: 1
+	HackyAI@BaseAI:
+		Name:Basewalk AI
+		BuildingFractions:
+			proc: 25.1%
+			powr: 40%
+			tent: 0.1%
+			barr: 0.1%
+			pbox: 20%
+			ftur: 25%
+			weap: 0.1%
+			gun: 20%
+			tsla: 15%
+		UnitsToBuild:
+		SquadSize: 1
 	HackyAI@ZhukovAI:
 		Name:Zhukov AI
 		BuildingFractions:
