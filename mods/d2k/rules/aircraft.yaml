@@ -12,7 +12,7 @@ CARRYALL:
 		Name: Carryall
 		Description: Fast drop ship.\n  Unarmed
 	Health:
-		HP: 90
+		HP: 500
 	Armor: 
 		Type: Light
 	RevealsShroud:
@@ -21,7 +21,7 @@ CARRYALL:
 		InitialFacing: 0
 		ROT: 5
 		Speed: 15
-		LandableTerrainTypes: Clear,Rough,Road,Ore,Beach
+		LandableTerrainTypes: Sand, Rock, Spice, Dune
 		RepairBuildings: repaira,repairo,repairh
 		RearmBuildings: hightecha
 	RenderUnit:

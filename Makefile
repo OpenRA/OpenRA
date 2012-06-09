@@ -202,7 +202,7 @@ BIN_INSTALL_DIR = $(DESTDIR)$(bindir)
 INSTALL_DIR = $(DESTDIR)$(datadir)/openra
 INSTALL = install
 INSTALL_PROGRAM = $(INSTALL)
-CORE = fileformats rcg rgl rsdl rnull game editor utility
+CORE = fileformats rcg rgl rsdl rnull game editor utility tsbuild
 
 install: all
 	@-echo "Installing OpenRA to $(INSTALL_DIR)"
@@ -210,6 +210,10 @@ install: all
 	@$(INSTALL_PROGRAM) $(foreach prog,$(CORE),$($(prog)_TARGET)) $(INSTALL_DIR)
 	@$(INSTALL_PROGRAM) -d $(INSTALL_DIR)/mods/cnc
 	@$(INSTALL_PROGRAM) $(mod_cnc_TARGET) $(INSTALL_DIR)/mods/cnc
+	@$(INSTALL_PROGRAM) -d $(INSTALL_DIR)/mods/ra
+	@$(INSTALL_PROGRAM) $(mod_ra_TARGET) $(INSTALL_DIR)/mods/ra
+	@$(INSTALL_PROGRAM) -d $(INSTALL_DIR)/mods/d2k
+	@$(INSTALL_PROGRAM) $(mod_d2k_TARGET) $(INSTALL_DIR)/mods/d2k
 
 	@-cp $(foreach f,$(shell ls mods/cnc --hide=*.dll),mods/cnc/$(f)) $(INSTALL_DIR)/mods/cnc
 	@cp -r mods/cnc/maps $(INSTALL_DIR)/mods/cnc
@@ -219,8 +223,6 @@ install: all
 	@cp -r mods/cnc/sequences $(INSTALL_DIR)/mods/cnc
 	@cp -r mods/cnc/tilesets $(INSTALL_DIR)/mods/cnc
 	@cp -r mods/cnc/uibits $(INSTALL_DIR)/mods/cnc
-	@$(INSTALL_PROGRAM) -d $(INSTALL_DIR)/mods/ra
-	@$(INSTALL_PROGRAM) $(mod_ra_TARGET) $(INSTALL_DIR)/mods/ra
 
 	@-cp $(foreach f,$(shell ls mods/ra --hide=*.dll),mods/ra/$(f)) $(INSTALL_DIR)/mods/ra
 	@cp -r mods/ra/maps $(INSTALL_DIR)/mods/ra
@@ -229,6 +231,14 @@ install: all
 	@cp -r mods/ra/rules $(INSTALL_DIR)/mods/ra
 	@cp -r mods/ra/tilesets $(INSTALL_DIR)/mods/ra
 	@cp -r mods/ra/uibits $(INSTALL_DIR)/mods/ra
+	
+	@-cp $(foreach f,$(shell ls mods/d2k --hide=*.dll),mods/d2k/$(f)) $(INSTALL_DIR)/mods/d2k
+	@cp -r mods/d2k/maps $(INSTALL_DIR)/mods/d2k
+	@cp -r mods/d2k/bits $(INSTALL_DIR)/mods/d2k
+	@cp -r mods/d2k/chrome $(INSTALL_DIR)/mods/d2k
+	@cp -r mods/d2k/rules $(INSTALL_DIR)/mods/d2k
+	@cp -r mods/d2k/tilesets $(INSTALL_DIR)/mods/d2k
+	@cp -r mods/d2k/uibits $(INSTALL_DIR)/mods/d2k
 
 	@cp -r glsl $(INSTALL_DIR)
 	@cp -r cg $(INSTALL_DIR)
@@ -251,3 +261,4 @@ install: all
 uninstall:
 	@-rm -r $(INSTALL_DIR)
 	@-rm $(DESTDIR)$(bindir)/openra
+	@-rm $(DESTDIR)$(bindir)/openra-editor

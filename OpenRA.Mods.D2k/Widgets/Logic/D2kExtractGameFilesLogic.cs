@@ -259,7 +259,7 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 			{
 				new string[] {"--shp", Path.Combine(PathToImages, "overlay.png"), "32"},
 				new string[] {"--shp", Path.Combine(PathToImages, "crates.png"), "32"},
-				//new string[] {"--shp", Path.Combine(PathToImages, "shadow.png"), "32
+				//new string[] {"--shp", Path.Combine(PathToImages, "shadow.png"), "32"},
 				new string[] {"--shp", Path.Combine(PathToImages, "spicebloom.png"), "32"},
 				new string[] {"--shp", Path.Combine(PathToImages, "rockcrater1.png"), "32"},
 				new string[] {"--shp", Path.Combine(PathToImages, "rockcrater2.png"), "32"},
