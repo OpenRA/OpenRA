@@ -134,7 +134,7 @@ local function addConfig(filename,showerror,isstring)
     ide.config.os = os
     ide.config.wxstc = wxstc
     setfenv(cfgfn,ide.config)
-    xpcall(function()cfgfn(assert(_G))end,
+    xpcall(function()cfgfn(assert(_G or _ENV))end,
       function(err)
         print("Error while executing configuration file: \n",
           debug.traceback(err))
@@ -144,11 +144,6 @@ end
 
 do
   addConfig(ide.config.path.app.."/config.lua",true)
-  addConfig("cfg/user.lua",false)
-  for i,v in ipairs(configs) do
-    addConfig(v,true,true)
-  end
-  configs = nil
 end
 
 ----------------------
@@ -177,7 +172,7 @@ local function addToTab(tab,file)
 
     local success,result
     success, result = xpcall(
-      function()return cfgfn(_G)end,
+      function()return cfgfn(_G or _ENV)end,
       function(err)
         print(("Error while executing configuration file (%s): \n%s"):
           format(file,debug.traceback(err)))
@@ -197,8 +192,7 @@ end
 
 -- load interpreters
 local function loadInterpreters()
-
-  local files = FileSysGet(".\\interpreters\\*.*",wx.wxFILE)
+  local files = FileSysGet("./interpreters/*.*",wx.wxFILE)
   for i,file in ipairs(files) do
     if file:match "%.lua$" and app.loadfilters.interpreters(file) then
       addToTab(ide.interpreters,file)
@@ -209,8 +203,7 @@ loadInterpreters()
 
 -- load specs
 local function loadSpecs()
-
-  local files = FileSysGet(".\\spec\\*.*",wx.wxFILE)
+  local files = FileSysGet("./spec/*.*",wx.wxFILE)
   for i,file in ipairs(files) do
     if file:match "%.lua$" and app.loadfilters.specs(file) then
       addToTab(ide.specs,file)
@@ -239,8 +232,7 @@ loadSpecs()
 
 -- load tools
 local function loadTools()
-
-  local files = FileSysGet(".\\tools\\*.*",wx.wxFILE)
+  local files = FileSysGet("./tools/*.*",wx.wxFILE)
   for i,file in ipairs(files) do
     if file:match "%.lua$" and app.loadfilters.tools(file) then
       addToTab(ide.tools,file)
@@ -250,6 +242,14 @@ end
 loadTools()
 
 if app.preinit then app.preinit() end
+
+do
+  addConfig("cfg/user.lua",false)
+  for i,v in ipairs(configs) do
+    addConfig(v,true,true)
+  end
+  configs = nil
+end
 
 ---------------
 -- Load App
