@@ -311,7 +311,6 @@ namespace OpenRA
 					{
 						System.Threading.Thread.Sleep(100);
 
-						//Accessing public field and List::Count is thread safe
 						if((server.GameStarted)&&(server.conns.Count<=1))
 						{
 							Console.WriteLine("No one is playing, shutting down...");
