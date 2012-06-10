@@ -99,7 +99,7 @@ Player:
 			3tnk: 50%
 		SquadSize: 10
 	HackyAI@OptiAI:
-		Name:Optimized AI
+		Name:Eisenhower AI
 		BuildingFractions:
 			proc: 25.1%
 			powr: 35%
@@ -126,37 +126,6 @@ Player:
 			arty: 30%
 			v2rl: 30%
 		SquadSize: 10
-	HackyAI@AirAI:
-		Name:Air AI
-		BuildingFractions:
-			proc: 25.1%
-			powr: 35%
-			afld: 30%
-			hpad: 30%
-			weap: 0.1%
-			dome: 0.1%
-			atek: 0.1%
-			stek: 0.1%
-		UnitsToBuild:
-			yak: 50%
-			hind: 50%
-			mig: 50%
-			heli: 50%
-		SquadSize: 1
-	HackyAI@BaseAI:
-		Name:Basewalk AI
-		BuildingFractions:
-			proc: 25.1%
-			powr: 40%
-			tent: 0.1%
-			barr: 0.1%
-			pbox: 20%
-			ftur: 25%
-			weap: 0.1%
-			gun: 20%
-			tsla: 15%
-		UnitsToBuild:
-		SquadSize: 1
 	HackyAI@ZhukovAI:
 		Name:Zhukov AI
 		BuildingFractions:
