@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA.AI
 		public readonly int SquadSize = 8;
 		public readonly int AssignRolesInterval = 20;
 		public readonly string RallypointTestBuilding = "fact";		// temporary hack to maintain previous rallypoint behavior.
-		public readonly string[] UnitQueues = { "Vehicle", "Infantry", "Plane" };
+		public readonly string[] UnitQueues = {"Vehicle", "Infantry", "Plane"};
 		public readonly bool ShouldRepairBuildings = true;
 
 		string IBotInfo.Name { get { return this.Name; } }
@@ -182,7 +182,7 @@ namespace OpenRA.Mods.RA.AI
 
 			ticks++;
 
-			if (ticks == 10)
+			if (ticks == 1)
 				DeployMcv(self);
 
 			if (ticks % feedbackTime == 0)
@@ -261,14 +261,14 @@ namespace OpenRA.Mods.RA.AI
 				assignRolesTicks = Info.AssignRolesInterval;
 
 			var newUnits = self.World.ActorsWithTrait<IMove>()
-				.Where(a => a.Actor.Owner == p && a.Actor.Info != Rules.Info["mcv"]
+				.Where(a => a.Actor.Owner == p && !a.Actor.HasTrait<BaseBuilding>()
 					&& !activeUnits.Contains(a.Actor))
 					.Select(a => a.Actor).ToArray();
 
 			foreach (var a in newUnits)
 			{
 				BotDebug("AI: Found a newly built unit");
-				if (a.Info == Rules.Info["harv"])
+				if (a.HasTrait<Harvester>())
 					world.IssueOrder( new Order( "Harvest", a, false ) );
 				else
 					unitsHangingAroundTheBase.Add(a);
@@ -419,7 +419,7 @@ namespace OpenRA.Mods.RA.AI
 		{
 			/* find our mcv and deploy it */
 			var mcv = self.World.Actors
-				.FirstOrDefault(a => a.Owner == p && a.Info == Rules.Info["mcv"]);
+				.FirstOrDefault(a => a.Owner == p && a.HasTrait<BaseBuilding>());
 
 			if (mcv != null)
 			{
@@ -427,7 +427,7 @@ namespace OpenRA.Mods.RA.AI
 				world.IssueOrder(new Order("DeployTransform", mcv, false));
 			}
 			else
-				BotDebug("AI: Can't find the MCV.");
+					BotDebug("AI: Can't find BaseBuildUnit.");
 		}
 
 		internal IEnumerable<ProductionQueue> FindQueues(string category)

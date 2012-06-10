@@ -1,0 +1,458 @@
+^CONYARD:
+	Inherits: ^Building
+	Building:
+		Power: 0
+		Footprint: xxx xxx xxx
+		Dimensions: 3,3
+	Health:
+		HP: 1000
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 5
+	Bib:
+	Production:
+		Produces: Building,Defense
+	Valued:
+		Cost: 2500
+	Tooltip:
+		Name: Construction Yard
+	CustomSellValue:
+		Value: 2500
+	BaseBuilding:
+	ProductionBar:
+
+^POWER:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 0
+		Hotkey: w
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Windtrap
+		Description: Provides power for other structures
+	ProvidesCustomPrerequisite:
+		Prerequisite: anypower
+	Building:
+		Power: 100
+		Footprint: xx xx xx
+		Dimensions: 2,3
+	Health:
+		HP: 400
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4
+	Bib:
+
+^BARRACKS:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 30
+		Prerequisites: anypower
+		Hotkey: b
+	Valued:
+		Cost: 400
+	Tooltip:
+		Name: Barracks
+		Description: Trains infantry
+	Building:
+		Power: -20
+		Footprint: xx xx xx
+		Dimensions: 2,3
+	Health:
+		HP: 800
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 5
+	Bib:
+	RallyPoint:
+	Exit@1:
+		SpawnOffset: -1,19
+		ExitCell: 0,2
+	Exit@2:
+		SpawnOffset: -17,15
+		ExitCell: 0,2
+	Production:
+		Produces: Infantry
+	PrimaryBuilding:
+	ProductionBar:
+
+^HIGHTECH:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 50
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: High Tech Factory
+		Description: Produces Carryalls
+	ProvidesCustomPrerequisite:
+		Prerequisite: anyhightech
+	Building:
+		Power: -30
+		Footprint: _x_ xxx xxx
+		Dimensions: 3,3
+	Health:
+		HP: 1500
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 4
+	Bib:
+	RallyPoint:
+	Exit@1:
+		SpawnOffset: 5,0
+		ExitCell: 1,1
+	Production:
+		Produces: Plane
+	PrimaryBuilding:
+	ProductionBar:
+
+^RESEARCH:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 50
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: IX Research Center
+		Description: Provides advanced units
+	Building:
+		Power: -30
+		Footprint: _x_ xxx xxx
+		Dimensions: 3,3
+	Health:
+		HP: 1000
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 4
+	Bib:
+
+^PALACE:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 50
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: Palace
+		Description: Provides advanced technology
+	Building:
+		Power: -30
+		Footprint: xxx xxx xxx
+		Dimensions: 3,3
+	Health:
+		HP: 2000
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 4
+	Bib:
+
+
+^REFINERY:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 10
+		Prerequisites: anypower
+	ProvidesCustomPrerequisite:
+		Prerequisite: anyref
+	Valued:
+		Cost: 1400
+	Tooltip:
+		Name: Spice Refinery
+		Description: Harvesters unload spice here.
+	Building:
+		Power: -30
+		Footprint: xxx xxx x==
+		Dimensions: 3,3
+	Health:
+		HP: 900
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 6
+	Bib:
+	-RenderBuilding:
+	OreRefinery:
+	StoresOre:
+		PipCount: 17
+		Capacity: 2000
+	CustomSellValue:
+		Value: 600
+	FreeActor:
+		Actor: HARVESTER
+		InitialActivity: FindResources
+		SpawnOffset: 1,2
+		Facing: 64
+
+^SILO:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 40
+	Valued:
+		Cost: 150
+	Tooltip:
+		Name: Silo
+		Description: Stores excess harvested Spice
+	Building:
+		Power: -10
+	-GivesBuildableArea:
+	Health:
+		HP: 300
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4
+	-RenderBuilding:
+	RenderBuildingSilo:
+	StoresOre:
+		PipCount: 5
+		Capacity: 1500
+	-EmitInfantryOnSell:
+
+^LIGHT:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 50
+	ProvidesCustomPrerequisite:
+		Prerequisite: anylight
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Light Factory
+		Description: produces light vehicles.
+	Building:
+		Power: -30
+		Footprint: xxx xxx
+		Dimensions: 3,2
+	Health:
+		HP: 750
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 4
+	Bib:
+	-RenderBuilding:
+	RallyPoint:
+	Exit@1:
+		SpawnOffset: 10,0
+		ExitCell: 1,3
+	Production:
+		Produces: Vehicle
+	PrimaryBuilding:
+	ProductionBar:
+
+^HEAVY:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 50
+	ProvidesCustomPrerequisite:
+		Prerequisite: anyheavy
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: Heavy Factory
+		Description: produces tanks
+	Building:
+		Power: -30
+		Footprint: _x_ xxx xxx
+		Dimensions: 3,3
+	Health:
+		HP: 1500
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 4
+	Bib:
+	-RenderBuilding:
+	RallyPoint:
+	Exit@1:
+		SpawnOffset: 10,0
+		ExitCell: 1,3
+	Production:
+		Produces: Vehicle
+	PrimaryBuilding:
+	ProductionBar:
+
+^RADAR:
+	RequiresPower:
+	CanPowerDown:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 60
+	ProvidesCustomPrerequisite:
+		Prerequisite: anyradar
+	Valued:
+		Cost: 1400
+	Tooltip:
+		Name: Outpost
+		Description: Provides a radar map of the battlefield.\n  Requires power to operate.
+	Building:
+		Power: -40
+		Footprint: xxx xxx xxx
+		Dimensions: 3,3
+	Health:
+		HP: 1000
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 10
+	Bib:
+	ProvidesRadar:
+
+^STARPORT:
+	Inherits: ^Building
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: Starport
+		Description: Provides a dropzone for vehicle reinforcements
+	ProvidesCustomPrerequisite:
+		Prerequisite: anystarport
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 60
+	Building:
+		Power: -30
+		Footprint: xxx xxx xxx
+		Dimensions: 3,3
+	Health:
+		HP: 1000
+	RevealsShroud:
+		Range: 7
+	Bib:
+	RallyPoint:
+		RallyPoint: 4,2
+	BelowUnits:
+	Exit@1:
+		SpawnOffset: -24,0
+		ExitCell: 3,1
+	ProductionAirdrop:
+		Produces: Vehicle
+		ReadyAudio: AI_REINF.AUD
+		ActorType: frigate
+	ProductionQueue:
+		Type: Vehicle
+		Group: Vehicle
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+	ProductionBar:
+
+WALL:
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 1000
+		Owner: atreides,harkonnen,ordos
+	SoundOnDamageTransition:
+		DamagedSound:
+		DestroyedSound:
+	Valued:
+		Cost: 100
+	CustomSellValue:
+		Value: 0
+	Tooltip:
+		Name: Concrete Wall
+		Description: Stop units and blocks enemy fire.
+	AppearsOnRadar:
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+		BuildSounds:
+		Adjacent: 7
+		TerrainTypes: Clear,Road
+	Health:
+		HP: 500
+	Armor:
+		Type: Concrete
+	Wall:
+		CrushClasses: heavywall
+	LineBuild:
+		Range: 8
+	SelectionDecorations:
+	Selectable:
+		Priority: 1
+	TargetableBuilding:
+		TargetTypes: Ground
+	RenderBuildingWall:
+		HasMakeAnimation: false
+		Palette: d2k
+	GivesExperience:
+	EditorAppearance:
+		RelativeToTopLeft: yes
+	AutoTargetIgnore:
+	ProximityCaptor:
+		Types:Wall
+	Sellable:
+
+GUNTOWER:
+	Inherits: ^Building
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 40
+		Owner: atreides,harkonnen,ordos
+	Valued:
+		Cost: 600
+	Tooltip:
+		Name: Turret
+		Description: Anti-Armor base defense.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
+		Icon: turreticon
+	Building:
+		Power: -40
+	-GivesBuildableArea:
+	Health:
+		HP: 400
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 7
+	RenderRangeCircle:
+	-RenderBuilding:
+	RenderBuildingTurreted:
+		Palette: d2k
+	Turreted:
+		ROT: 12
+		InitialFacing: 50
+	AttackTurreted:
+		PrimaryWeapon: TurretGun
+	AutoTarget:
+
+^REPAIR:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 30
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Repair Pad
+		Description: Repairs vehicles and allows\n the construction of additional bases.
+	Building:
+		Power: -30
+		Footprint: xxx xxx xxx
+		Dimensions: 3,3
+	Health:
+		HP: 800
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 5
+	BelowUnits:
+	Reservable:
+	RepairsUnits:
+		Interval: 10
+	RallyPoint:

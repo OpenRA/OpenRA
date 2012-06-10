@@ -1,16 +1,171 @@
 ^Vehicle:
 	AppearsOnRadar:
 	Mobile:
+		Crushes: crate
 		TerrainSpeeds:
-			Clear: 100%
+			Sand: 80
+			Rock: 90
+			Concrete: 100
+			Spice: 70
+			SpiceBlobs: 70
+			Dune: 40
 		ROT: 5
+	SelectionDecorations:
 	Selectable: 
-	Targetable:
+		Voice: VehicleVoice
+	TargetableUnit:
 		TargetTypes: Ground
-	Repairable: 
 	Passenger: 
 		CargoType: Vehicle
+	AttackMove:
 	HiddenUnderFog:
 	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:
+	ActorLostNotification:
+		Notification:
+	ProximityCaptor:
+		Types:Vehicle
+	GivesBounty:
+	WithSmoke:
+	Repairable:
+		RepairBuildings: repaira,repairh,repairo
+
+^Tank:
+	AppearsOnRadar:
+	Mobile:
+		Crushes: crate
+		TerrainSpeeds:
+			Sand: 80
+			Rock: 90
+			Concrete: 100
+			Spice: 70
+			SpiceBlobs: 70
+			Dune: 40
+		ROT: 5
+	SelectionDecorations:
+	Selectable: 
+		Voice: VehicleVoice
+	TargetableUnit:
+		TargetTypes: Ground
+	Passenger: 
+		CargoType: Vehicle
+	AttackMove:
+	HiddenUnderFog:
+	GainsExperience:
+	GivesExperience:
+	DrawLineToTarget:
+	ActorLostNotification:
+		Notification:
+	ProximityCaptor:
+		Types:Tank
+	GivesBounty:
+	WithSmoke:
+	Repairable:
+		RepairBuildings: repaira,repairh,repairo
+
+^Infantry:
+	AppearsOnRadar:
+	Health:
+		Radius: 3
+	Armor:
+		Type: None
+	RevealsShroud:
+		Range: 4
+	Mobile:
+		Crushes: crate
+		SharesCell: true
+		TerrainSpeeds:
+			Sand: 80
+			Rock: 90
+			Concrete: 100
+			Spice: 70
+			SpiceBlobs: 70
+			Dune: 40
+			Rough: 60
+	SelectionDecorations:
+	Selectable:
+		Voice: GenericVoice
+	TargetableUnit:
+		TargetTypes: Ground
+	RenderInfantry:
+	AutoTarget:
+	AttackMove:
+	Passenger:
+		CargoType: Infantry
+	HiddenUnderFog:
+	GainsExperience:
+	GivesExperience:
+	DrawLineToTarget:
+	ActorLostNotification:
+		Notification:
+	ProximityCaptor:
+		Types:Infantry
+	GivesBounty:
+	CrushableInfantry:
+		CrushSound:
+
+^Plane:
+	AppearsOnRadar:
+		UseLocation: yes
+	SelectionDecorations:
+	Selectable:
+		Voice: GenericVoice
+	TargetableAircraft:
+		TargetTypes: Air
+		GroundedTargetTypes: Ground
+	HiddenUnderFog:
+	GainsExperience:
+	GivesExperience:
+	DrawLineToTarget:
+	ActorLostNotification:
+		Notification:
+	DebugAircraftFacing:
+	DebugAircraftSubPxX:
+	DebugAircraftSubPxY:
+	DebugAircraftAltitude:
+	ProximityCaptor:
+		Types:Plane
+	EjectOnDeath:
+		PilotActor: RIFLE
+		SuccessRate: 50
+	GivesBounty:
+
+^Helicopter:
+	Inherits: ^Plane
+
+^Building:
+	AppearsOnRadar:
+	SelectionDecorations:
+	Selectable:
+		Priority: 3
+	TargetableBuilding:
+		TargetTypes: Ground
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+		TerrainTypes: Rock, Concrete
+	GivesBuildableArea:
+	Capturable:
+	CapturableBar:
+	SoundOnDamageTransition:
+		DamagedSound:
+		DestroyedSound:
+	RenderBuilding:
+	WithBuildingExplosion:
+	RepairableBuilding:
+	EmitInfantryOnSell:
+		ActorTypes: rifle,rifle,rifle,rifle,rifle,rifle
+	MustBeDestroyed:
+	GivesExperience:
+#	FrozenUnderFog:
+	CaptureNotification:
+		Notification:
+	EditorAppearance:
+		RelativeToTopLeft: yes
+	ShakeOnDeath:
+	ProximityCaptor:
+		Types:Building
+	Sellable:
+	AcceptsSupplies:
+	GivesBounty:

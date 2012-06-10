@@ -1,0 +1,431 @@
+M1Carbine:
+	ROF: 20
+	Range: 5
+	Report: GUN11
+	Projectile: Bullet
+		Speed: 100
+	Warhead:
+		Spread: 3
+		Versus: 
+			Wood: 25%
+			Light: 30%
+			Heavy: 10%
+			Concrete: 10%
+		Explosion: piffs
+		InfDeath: 1
+		Damage: 15
+
+Dragon:
+	ROF: 50
+	Range: 5
+	Report: MISSILE6
+	ValidTargets: Ground
+	Projectile: Missile
+		Speed: 25
+		Arm: 2
+		High: true
+		Shadow: false
+		Proximity: true
+		Trail: smokey
+		ContrailLength: 10
+		Inaccuracy: 3
+		Image: DRAGON
+		ROT: 5
+		RangeLimit: 35
+	Warhead:
+		Spread: 3
+		Versus: 
+			None: 10%
+			Wood: 75%
+			Light: 35%
+			Concrete: 20%
+		Explosion: med_explosion
+		WaterExplosion: med_splash
+		InfDeath: 3
+		SmudgeType: Crater
+		Damage: 50
+		ImpactSound: kaboom12
+
+QuadRockets:
+	ROF: 60
+	Range: 7
+	Report: MISSILE6
+	ValidTargets: Ground, Air
+	Burst: 2
+	BurstDelay: 0
+	Projectile: Missile
+		Arm: 0
+		High: yes
+		Shadow: no
+		Proximity: yes
+		Inaccuracy: 3
+		Image: DRAGON
+		ROT: 10
+		Trail: smokey
+		Speed: 35
+		RangeLimit: 40
+	Warhead:
+		Spread: 3
+		Versus: 
+			None: 50%
+			Wood: 30%
+			Light: 75%
+			Heavy: 30%
+		InfDeath: 3
+		Explosion: med_explosion
+		WaterExplosion: med_splash
+		ImpactSound: kaboom12
+		SmudgeType: Crater
+		Damage: 35
+
+TurretGun:
+	ROF: 30
+	Range: 7
+	Report: TURRET1
+	Projectile: Bullet
+		Speed: 40
+		Image: 120MM
+	Warhead:
+		Spread: 3
+		Versus: 
+			None: 20%
+			Wood: 75%
+			Light: 75%
+			Concrete: 50%
+		Explosion: small_explosion
+		WaterExplosion: small_splash
+		InfDeath: 3
+		SmudgeType: Crater
+		Damage: 60
+
+25mm:
+	ROF: 13
+	Range: 4
+	Report: CANNON2
+	Projectile: Bullet
+		Speed: 50
+		Image: 120MM
+	Warhead:
+		Spread: 3
+		Versus: 
+			None: 30%
+			Wood: 40%
+			Heavy: 40%
+			Concrete: 30%
+		Explosion: small_explosion
+		WaterExplosion: small_splash
+		InfDeath: 3
+		SmudgeType: Crater
+		Damage: 16
+
+90mm:
+	ROF: 50
+	Range: 4.75
+	Report: CANNON1
+	Projectile: Bullet
+		Speed: 40
+		Image: 120MM
+	Warhead:
+		Spread: 3
+		Versus: 
+			None: 20%
+			Wood: 75%
+			Light: 75%
+			Concrete: 50%
+		Explosion: small_explosion
+		WaterExplosion: small_splash
+		InfDeath: 3
+		SmudgeType: Crater
+		Damage: 30
+
+105mm:
+	ROF: 70
+	Range: 4.75
+	Report: CANNON1
+	Burst: 2
+	BurstDelay: 4
+	Projectile: Bullet
+		Speed: 40
+		Image: 120MM
+	Warhead:
+		Spread: 3
+		Versus: 
+			None: 20%
+			Wood: 75%
+			Light: 75%
+			Concrete: 50%
+		Explosion: small_explosion
+		WaterExplosion: small_splash
+		InfDeath: 3
+		SmudgeType: Crater
+		Damage: 40
+
+120mm:
+	ROF: 90
+	Range: 4.75
+	Report: CANNON1
+	Burst: 2
+	Projectile: Bullet
+		Speed: 40
+		Image: 120MM
+	Warhead:
+		Spread: 3
+		Versus: 
+			None: 20%
+			Wood: 75%
+			Light: 75%
+			Concrete: 50%
+		Explosion: small_explosion
+		WaterExplosion: small_splash
+		InfDeath: 3
+		SmudgeType: Crater
+		Damage: 50
+
+227mm: 
+	ROF: 80
+	Range: 10
+	MinRange: 2
+	Burst: 6
+	BurstDelay: 1
+	Report: MISSILE6
+	ValidTargets: Ground
+	Projectile: Bullet
+		Arm: 5
+		High: yes
+		Shadow: yes
+		Inaccuracy: 30
+		Angle: 0.1
+		Image: DRAGON
+		ROT: 5
+		Trail: smokey
+		Speed: 15
+	Warhead:
+		Spread: 10
+		Versus: 
+			None: 30%
+			Wood: 75%
+			Light: 75%
+			Heavy: 50%
+		InfDeath: 3
+		Explosion: med_explosion
+		WaterExplosion: med_splash
+		ImpactSound: kaboom12
+		SmudgeType: Crater
+		Damage: 25
+
+#for rocket turret
+MammothTusk:
+	ROF: 60
+	Range: 8
+	Report: MISSILE6
+	Burst: 2
+	ValidTargets: Ground, Air
+	Projectile: Missile
+		Speed: 30
+		Arm: 2
+		High: true
+		Shadow: false
+		Proximity: true
+#		Trail: smokey
+		ContrailLength: 10
+		Inaccuracy: 3
+		Image: DRAGON
+		ROT: 5
+		RangeLimit: 40
+	Warhead:
+		Spread: 6
+		Versus: 
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
+		Explosion: med_explosion
+		WaterExplosion: med_splash
+		InfDeath: 2
+		SmudgeType: Crater
+		Damage: 45
+
+155mm:
+	ROF: 85
+	Range: 14
+	MinRange: 3
+	Report: TANK5
+	Projectile: Bullet
+		Speed: 12
+		High: true
+		Angle: .1
+		Inaccuracy: 40
+		Image: 120MM
+		ContrailLength: 30
+	Warhead:
+		Spread: 10
+		Versus: 
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 50%
+		Explosion: large_explosion
+		WaterExplosion: med_splash
+		InfDeath: 2
+		SmudgeType: Crater
+		Damage: 220
+
+TTankZap:
+	ROF: 120
+	Range: 7
+	Report: TESLA1
+	Charges: yes
+	Projectile: TeslaZap
+	Warhead:
+		Spread: 1
+		InfDeath: 5
+		Damage: 100
+
+ChainGun:
+	ROF: 10
+	Range: 5
+	MinRange: 1
+	Report: GUN13
+	Projectile: Bullet
+		Speed: 100
+		High: true
+	Warhead:
+		Spread: 3
+		Versus: 
+			Wood: 50%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 25%
+		Explosion: piffs
+		WaterExplosion: small_splash
+		InfDeath: 1
+		Damage: 20
+
+M60mg:
+	ROF: 30
+	Range: 4
+	Report: PILLBOX1
+	Burst: 5
+	Projectile: Bullet
+		Speed: 100
+	Warhead:
+		Spread: 3
+		Versus: 
+			Wood: 10%
+			Light: 30%
+			Heavy: 10%
+			Concrete: 10%
+		Explosion: piffs
+		WaterExplosion: small_splash
+		InfDeath: 1
+		Damage: 15
+
+Demolish:
+	Warhead:
+		ImpactSound: kaboom25
+		Explosion: building
+
+Crush:
+	Warhead:
+		ImpactSound: squishy2
+		Damage: 100
+
+Atomic:
+	Warhead@impact:
+		Damage: 1000
+		Spread: 6
+		Ore: true
+		Versus: 
+			None: 90%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 50%
+		Explosion: nuke
+		WaterExplosion: nuke
+		InfDeath: 4
+		ImpactSound: kaboom1
+	Warhead@areanuke:
+		DamageModel: PerCell
+		Damage: 250
+#		SmudgeType: Scorch
+		Size: 5,4
+		Ore: true
+		Versus: 
+			None: 90%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 50%
+		Delay: 4
+		InfDeath: 4
+		ImpactSound: kaboom22
+
+CrateNuke:
+	Warhead@impact:
+		Damage: 1000
+		Spread: 6
+		Ore: true
+		Versus: 
+			None: 90%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 50%
+		Explosion: nuke
+		WaterExplosion: nuke
+		InfDeath: 4
+		ImpactSound: kaboom1
+	Warhead@areanuke:
+		DamageModel: PerCell
+		Damage: 250
+#		SmudgeType: Scorch
+		Size: 5,4
+		Ore: true
+		Versus: 
+			None: 90%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 50%
+		Delay: 4
+		InfDeath: 4
+		ImpactSound: kaboom22
+
+CrateExplosion:
+	Warhead:
+		Damage: 500
+		Spread: 10
+		Versus: 
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
+		Explosion: self_destruct
+		WaterExplosion: self_destruct
+		InfDeath: 3
+		ImpactSound: kaboom15
+
+UnitExplode:
+	Warhead:
+		Damage: 500
+		Spread: 10
+		Versus: 
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
+		Explosion: self_destruct
+		WaterExplosion: large_splash
+		InfDeath: 3
+		ImpactSound: kaboom22
+
+UnitExplodeSmall:
+	Warhead:
+		Damage: 40
+		Spread: 10
+		Versus: 
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
+		Explosion: large_explosion
+		InfDeath: 3
+		ImpactSound: kaboom15
