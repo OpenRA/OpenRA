@@ -18,5 +18,6 @@ luaspec.keywords[1] = luaspec.keywords[1] .. ' foo'
 editor.fontencoding = G.wx.wxFONTENCODING_ISO8859_5
 -- or WinCyrillic
 editor.fontencoding = G.wx.wxFONTENCODING_CP1251
+outputshell.fontencoding = G.wx.wxFONTENCODING_CP1251
 
 --]]--
