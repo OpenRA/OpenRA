@@ -429,3 +429,14 @@ UnitExplodeSmall:
 		Explosion: large_explosion
 		InfDeath: 3
 		ImpactSound: kaboom15
+
+WormJaw:
+	ROF: 10
+	Range: 3
+	Report: AI_WATTK
+	Warhead:
+		Spread: 5
+		Versus: 
+			Wood: 0%
+			Concrete: 0%
+		Damage: 100

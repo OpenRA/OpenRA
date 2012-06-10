@@ -37,3 +37,6 @@
 # gamefile extraction (setup/setup.z) from CD fails
 # support patch 1.06 gamefiles: DATA.R8 has more frames and currently fails to extract, also featuring new terrain with white houses and new unit: grenade thrower
 # mouse cursor has no transparency and is a little pixelish
+# mouse cursor does not change for infantry-only areas (Rough)
+# put TilesetBuilder.Export into OpenRA.Utility
+# create a minimal Freeware auto-download version from patch 1.06 files

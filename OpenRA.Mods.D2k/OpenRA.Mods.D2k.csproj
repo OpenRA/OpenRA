@@ -62,6 +62,7 @@
     <Compile Include="Widgets\Logic\D2kInstallLogic.cs" />
     <Compile Include="Widgets\Logic\D2kExtractGameFilesLogic.cs" />
     <Compile Include="Widgets\Logic\D2kInstallFromCDLogic.cs" />
+    <Compile Include="Widgets\Logic\D2kDownloadPackagesLogic.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

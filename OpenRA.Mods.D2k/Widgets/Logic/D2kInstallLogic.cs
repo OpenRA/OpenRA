@@ -26,6 +26,9 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 				{ "installData", installData }
 			};
 
+			panel.Get<ButtonWidget>("DOWNLOAD_BUTTON").OnClick = () =>
+				Ui.OpenWindow("INSTALL_DOWNLOAD_PANEL", args);
+
 			panel.Get<ButtonWidget>("COPY_BUTTON").OnClick = () =>
 				Ui.OpenWindow("INSTALL_FROMCD_PANEL", args);
 

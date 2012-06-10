@@ -882,7 +882,6 @@ parach:
 		Start: 5
 		Length: 11
 
-
 spicebloom:
 	make:
 		Start: 0
@@ -892,3 +891,39 @@ spicebloom:
 		Length: 1
 	idle:
 		Start: 2
+
+sandworm:
+	stand: wormsigns2
+		Start: 0
+		Length: *
+		Tick: 150
+	run: sandwormdust
+		Start: 0
+		Facings: 4
+		Length: 5
+		Tick: 150
+	die1: sandwormdust
+		Start: 0
+		Length: 1
+	die2: sandwormdust
+		Start: 0
+		Length: 1
+	die3: sandwormdust
+		Start: 0
+		Length: 1
+	die4: sandwormdust
+		Start: 0
+		Length: 1
+	die5: sandwormdust
+		Start: 0
+		Length: 1
+	die6: sandwormdust
+		Start: 0
+		Length: 1
+	die-crushed: sandwormdust
+		Start: 0
+		Length: 1
+		Tick: 1600		
+	wormattack: sandwormmouth
+		Start: 0
+		Length: 15

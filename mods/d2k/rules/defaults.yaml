@@ -1,7 +1,7 @@
 ^Vehicle:
 	AppearsOnRadar:
 	Mobile:
-		Crushes: crate
+		Crushes: crate, worm
 		TerrainSpeeds:
 			Sand: 80
 			Rock: 90
@@ -34,7 +34,7 @@
 ^Tank:
 	AppearsOnRadar:
 	Mobile:
-		Crushes: crate
+		Crushes: crate, worm
 		TerrainSpeeds:
 			Sand: 80
 			Rock: 90
