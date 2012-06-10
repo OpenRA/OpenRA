@@ -240,7 +240,7 @@ namespace OpenRA.Server
 				if ( lobbyInfo.GlobalSettings.Dedicated )
 				{
 					SendChatTo(newConn, "You have joined the dedicated server!");
-					if (client.IsAdmin == true)
+					if (client.IsAdmin)
 						SendChatTo(newConn, "    You are admin now!");
 					else
 						SendChatTo(newConn, "    Current admin is "+adminName);
@@ -399,7 +399,7 @@ namespace OpenRA.Server
 				lobbyInfo.Clients.RemoveAll(c => c.Index == toDrop.PlayerIndex);
 
 				// reassign admin if necessary
-				if ( lobbyInfo.GlobalSettings.Dedicated && oldCli.IsAdmin == true && !GameStarted)
+				if ( lobbyInfo.GlobalSettings.Dedicated && oldCli.IsAdmin && !GameStarted)
 				{
 					if (lobbyInfo.Clients.Count() > 0)
 					{
