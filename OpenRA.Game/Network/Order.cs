@@ -199,7 +199,18 @@ namespace OpenRA
 		{
 			return new Order("HandshakeResponse", null, false) { IsImmediate = true, TargetString = text };
 		}
+		
+		public static Order PauseRequest()
+		{
+			return new Order("PauseRequest", null, false) { IsImmediate = true, TargetString="" }; //TODO: targetbool?
+		}
+                
+		public static Order PauseGame()
+		{
+			return new Order("PauseGame", null, false) { IsImmediate = true, TargetString=""}; //TODO: targetbool?
+		}
 
+		
 		public static Order Command(string text)
 		{
 			return new Order("Command", null, false) { IsImmediate = true, TargetString = text };

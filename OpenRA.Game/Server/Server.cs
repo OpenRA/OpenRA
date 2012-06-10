@@ -348,6 +348,9 @@ namespace OpenRA.Server
 
 		void InterpretServerOrder(Connection conn, ServerOrder so)
 		{
+			var fromClient = GetClient(conn);
+			var fromIndex = fromClient != null ? fromClient.Index : 0;
+			
 			switch (so.Name)
 			{
 				case "Command":
@@ -363,17 +366,23 @@ namespace OpenRA.Server
 					}
 
 					break;
+				
 				case "HandshakeResponse":
 					ValidateClient(conn, so.Data);
 					break;
+				
 				case "Chat":
 				case "TeamChat":
-					var fromClient = GetClient(conn);
-					var fromIndex = fromClient != null ? fromClient.Index : 0;
-
 					foreach (var c in conns.Except(conn).ToArray())
 						DispatchOrdersToClient(c, fromIndex, 0, so.Serialize());
-				break;
+					break;
+				
+				case "PauseRequest":
+					foreach (var c in conns.ToArray())
+					{  var x = Order.PauseGame();
+						DispatchOrdersToClient(c, fromIndex, 0, x.Serialize());
+					}
+					break;
 			}
 		}
 
