@@ -18,19 +18,27 @@ local ofontItalic = nil
 -- ----------------------------------------------------------------------------
 -- Pick some reasonable fixed width fonts to use for the editor
 if wx.__WXMSW__ then
-  font = wx.wxFont(ide.config.editor.fontsize or 10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, false, ide.config.editor.fontname or "Courier New")
-  fontItalic = wx.wxFont(ide.config.editor.fontsize or 10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_ITALIC, wx.wxFONTWEIGHT_NORMAL, false, ide.config.editor.fontname or "Courier New")
+  font = wx.wxFont(ide.config.editor.fontsize or 10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_NORMAL,
+    wx.wxFONTWEIGHT_NORMAL, false, ide.config.editor.fontname or "Courier New", ide.config.editor.fontencoding or wx.wxFONTENCODING_DEFAULT)
+  fontItalic = wx.wxFont(ide.config.editor.fontsize or 10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_ITALIC,
+    wx.wxFONTWEIGHT_NORMAL, false, ide.config.editor.fontname or "Courier New", ide.config.editor.fontencoding or wx.wxFONTENCODING_DEFAULT)
 else
-  font = wx.wxFont(ide.config.editor.fontsize or 10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, false, ide.config.editor.fontname or "")
-  fontItalic = wx.wxFont(ide.config.editor.fontsize or 10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_ITALIC, wx.wxFONTWEIGHT_NORMAL, false, ide.config.editor.fontname or "")
+  font = wx.wxFont(ide.config.editor.fontsize or 10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_NORMAL,
+    wx.wxFONTWEIGHT_NORMAL, false, ide.config.editor.fontname or "", ide.config.editor.fontencoding or wx.wxFONTENCODING_DEFAULT)
+  fontItalic = wx.wxFont(ide.config.editor.fontsize or 10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_ITALIC,
+    wx.wxFONTWEIGHT_NORMAL, false, ide.config.editor.fontname or "", ide.config.editor.fontencoding or wx.wxFONTENCODING_DEFAULT)
 end
 
 if wx.__WXMSW__ then
-  ofont = wx.wxFont(ide.config.outputshell.fontsize or 10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, false, ide.config.outputshell.fontname or "Courier New")
-  ofontItalic = wx.wxFont(ide.config.outputshell.fontsize or 10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_ITALIC, wx.wxFONTWEIGHT_NORMAL, false, ide.config.outputshell.fontname or "Courier New")
+  ofont = wx.wxFont(ide.config.outputshell.fontsize or 10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_NORMAL,
+    wx.wxFONTWEIGHT_NORMAL, false, ide.config.outputshell.fontname or "Courier New", ide.config.editor.fontencoding or wx.wxFONTENCODING_DEFAULT)
+  ofontItalic = wx.wxFont(ide.config.outputshell.fontsize or 10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_ITALIC,
+    wx.wxFONTWEIGHT_NORMAL, false, ide.config.outputshell.fontname or "Courier New", ide.config.editor.fontencoding or wx.wxFONTENCODING_DEFAULT)
 else
-  ofont = wx.wxFont(ide.config.outputshell.fontsize or 10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_NORMAL, wx.wxFONTWEIGHT_NORMAL, false, ide.config.outputshell.fontname or "")
-  ofontItalic = wx.wxFont(ide.config.outputshell.fontsize or 10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_ITALIC, wx.wxFONTWEIGHT_NORMAL, false, ide.config.outputshell.fontname or "")
+  ofont = wx.wxFont(ide.config.outputshell.fontsize or 10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_NORMAL,
+    wx.wxFONTWEIGHT_NORMAL, false, ide.config.outputshell.fontname or "", ide.config.editor.fontencoding or wx.wxFONTENCODING_DEFAULT)
+  ofontItalic = wx.wxFont(ide.config.outputshell.fontsize or 10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_ITALIC,
+    wx.wxFONTWEIGHT_NORMAL, false, ide.config.outputshell.fontname or "", ide.config.editor.fontencoding or wx.wxFONTENCODING_DEFAULT)
 end
 
 ide.font = font
