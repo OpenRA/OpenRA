@@ -9,6 +9,9 @@ local errorlog = bottomnotebook.errorlog
 
 -------
 -- setup errorlog
+local INPUT_MARKER = 3
+local INPUT_MARKER_VALUE = 2^INPUT_MARKER
+
 errorlog:Show(true)
 errorlog:SetFont(ide.ofont)
 errorlog:StyleSetFont(wxstc.wxSTC_STYLE_DEFAULT, ide.ofont)
@@ -16,6 +19,8 @@ errorlog:StyleClearAll()
 errorlog:SetMarginWidth(1, 16) -- marker margin
 errorlog:SetMarginType(1, wxstc.wxSTC_MARGIN_SYMBOL);
 errorlog:MarkerDefine(CURRENT_LINE_MARKER, wxstc.wxSTC_MARK_ARROWS, wx.wxBLACK, wx.wxWHITE)
+errorlog:MarkerDefine(INPUT_MARKER, wxstc.wxSTC_MARK_CHARACTER+string.byte('>'),
+  wx.wxColour(127, 127, 127), wx.wxColour(240, 240, 240))
 errorlog:SetReadOnly(true)
 StylesApplyToEditor(ide.config.stylesoutshell,errorlog,ide.ofont,ide.ofontItalic)
 
@@ -37,6 +42,7 @@ function DisplayOutputNoMarker(...)
   local current = errorlog:GetReadOnly()
   errorlog:SetReadOnly(false)
   errorlog:AppendText(message)
+  errorlog:EmptyUndoBuffer()
   errorlog:SetReadOnly(current)
   errorlog:GotoPos(errorlog:GetLength())
 end
@@ -174,6 +180,22 @@ function CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
   return pid
 end
 
+local inputBound -- to track where partial output ends for input editing purposes
+local function getInputLine()
+  local totalLines = errorlog:GetLineCount()
+  return errorlog:MarkerPrevious(totalLines+1, INPUT_MARKER_VALUE)
+end
+local function getInputText(bound)
+  return errorlog:GetTextRange(
+    errorlog:PositionFromLine(getInputLine())+(bound or 0), errorlog:GetLength())
+end
+local function updateInputMarker()
+  local lastline = errorlog:GetLineCount()-1
+  errorlog:MarkerDeleteAll(INPUT_MARKER)
+  errorlog:MarkerAdd(lastline, INPUT_MARKER)
+  inputBound = #getInputText()
+end
+
 local function getStreams()
   local function readStream(tab)
     for _,v in pairs(tab) do
@@ -188,9 +210,10 @@ local function getStreams()
         else
           DisplayOutputNoMarker(str)
         end
-        if str and ide.config.allowinteractivescript and errorlog:GetReadOnly() then
+        if str and ide.config.allowinteractivescript and
+          (getInputLine() > -1 or errorlog:GetReadOnly()) then
           ActivateOutput()
-          errorlog:SetReadOnly(false)
+          updateInputMarker()
           errorlog:SetFocus()
         end
         pfn = pfn and pfn()
@@ -208,6 +231,7 @@ local function getStreams()
         str,pfn = v.callback(str)
       end
       v.stream:Write(str, #str)
+      updateInputMarker()
       pfn = pfn and pfn()
     end
   end
@@ -221,9 +245,9 @@ errorlog:Connect(wx.wxEVT_END_PROCESS, function(event)
     local pid = event:GetPid()
     if (pid ~= -1) then
       getStreams()
-      -- make errorlog readonly again if needed
-      if not errorlog:GetReadOnly() then
-        errorlog:SetReadOnly(true)
+      -- delete markers and set focus to the editor if there is an input marker
+      if errorlog:MarkerPrevious(errorlog:GetLineCount(), INPUT_MARKER_VALUE) > -1 then
+        errorlog:MarkerDeleteAll(INPUT_MARKER)
         GetEditor():SetFocus()
       end
       nameTab(errorlog, "Output")
@@ -241,10 +265,8 @@ errorlog:Connect(wx.wxEVT_END_PROCESS, function(event)
     end
   end)
 
-errorlog:Connect(wx.wxEVT_IDLE, function(event)
-    if (#streamins or #streamerrs) then
-      getStreams()
-    end
+errorlog:Connect(wx.wxEVT_IDLE, function()
+    if (#streamins or #streamerrs) then getStreams() end
     unHideWxWindow()
   end)
 
@@ -260,7 +282,7 @@ local jumptopatterns = {
 }
 
 errorlog:Connect(wxstc.wxEVT_STC_DOUBLECLICK,
-  function(event)
+  function()
     local line = errorlog:GetCurrentLine()
     local linetx = errorlog:GetLine(line)
     -- try to detect a filename + line
@@ -291,17 +313,12 @@ errorlog:Connect(wxstc.wxEVT_STC_DOUBLECLICK,
     end
   end)
 
-local function getInputLine() return errorlog:GetLineCount()-1 end
-local function getInputText()
-  return errorlog:GetTextRange(
-    errorlog:PositionFromLine(getInputLine()), errorlog:GetLength())
-end
 local function positionInLine(line)
   return errorlog:GetCurrentPos() - errorlog:PositionFromLine(line)
 end
 local function caretOnInputLine(disallowLeftmost)
   local inputLine = getInputLine()
-  local boundary = disallowLeftmost and 0 or -1
+  local boundary = inputBound + (disallowLeftmost and 0 or -1)
   return (errorlog:GetCurrentLine() > inputLine
     or errorlog:GetCurrentLine() == inputLine
    and positionInLine(inputLine) > boundary)
@@ -318,7 +335,8 @@ errorlog:Connect(wx.wxEVT_KEY_DOWN,
 
       local key = event:GetKeyCode()
       if key == wx.WXK_UP or key == wx.WXK_NUMPAD_UP then
-        return -- don't go up
+        if errorlog:GetCurrentLine() > getInputLine() then break
+        else return end
       elseif key == wx.WXK_DOWN or key == wx.WXK_NUMPAD_DOWN then
         break -- can go down
       elseif key == wx.WXK_LEFT or key == wx.WXK_NUMPAD_LEFT then
@@ -343,7 +361,10 @@ errorlog:Connect(wx.wxEVT_KEY_DOWN,
         or errorlog:LineFromPosition(errorlog:GetSelectionStart()) < getInputLine() then
           return
         end
-        textout = (textout or '').. getInputText(-1)
+        errorlog:GotoPos(errorlog:GetLength()) -- move to the end
+        textout = (textout or '') .. getInputText(inputBound)
+        -- remove selection if any, otherwise the text gets replaced
+        errorlog:SetSelection(errorlog:GetSelectionEnd()+1,errorlog:GetSelectionEnd())
         break -- don't need to do anything else with return
       else
         -- move cursor to end if not already there
@@ -358,4 +379,24 @@ errorlog:Connect(wx.wxEVT_KEY_DOWN,
       break
     end
     event:Skip()
+  end)
+
+local function inputEditable(line)
+  local inputLine = getInputLine()
+  local currentLine = line or errorlog:GetCurrentLine()
+  return inputLine > -1 and
+    (currentLine > inputLine or
+     currentLine == inputLine and positionInLine(inputLine) >= inputBound) and
+    not (errorlog:LineFromPosition(errorlog:GetSelectionStart()) < getInputLine())
+end
+
+errorlog:Connect(wxstc.wxEVT_STC_UPDATEUI,
+  function () errorlog:SetReadOnly(not inputEditable()) end)
+
+-- only allow copy/move text by dropping to the input line
+errorlog:Connect(wxstc.wxEVT_STC_DO_DROP,
+  function (event)
+    if not inputEditable(errorlog:LineFromPosition(event:GetPosition())) then
+      event:SetDragResult(wx.wxDragNone)
+    end
   end)

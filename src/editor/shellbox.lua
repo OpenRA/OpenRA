@@ -56,11 +56,12 @@ local function positionInLine(line)
   return out:GetCurrentPos() - out:PositionFromLine(line)
 end
 
-local function caretOnPromptLine(disallowLeftmost)
+local function caretOnPromptLine(disallowLeftmost, line)
   local promptLine = getPromptLine()
+  local currentLine = line or out:GetCurrentLine()
   local boundary = disallowLeftmost and 0 or -1
-  return (out:GetCurrentLine() > promptLine
-    or out:GetCurrentLine() == promptLine and positionInLine(promptLine) > boundary)
+  return (currentLine > promptLine
+    or currentLine == promptLine and positionInLine(promptLine) > boundary)
 end
 
 local function chomp(line)
@@ -388,6 +389,22 @@ out:Connect(wx.wxEVT_KEY_DOWN,
       break
     end
     event:Skip()
+  end)
+
+local function inputEditable(line)
+  return caretOnPromptLine(fale, line) and
+    not (out:LineFromPosition(out:GetSelectionStart()) < getPromptLine())
+end
+
+out:Connect(wxstc.wxEVT_STC_UPDATEUI,
+  function (event) out:SetReadOnly(not inputEditable()) end)
+
+-- only allow copy/move text by dropping to the input line
+out:Connect(wxstc.wxEVT_STC_DO_DROP,
+  function (event)
+    if not inputEditable(out:LineFromPosition(event:GetPosition())) then
+      event:SetDragResult(wx.wxDragNone)
+    end
   end)
 
 displayShellIntro()
