@@ -201,11 +201,11 @@ World:
 		Faction: ordos
 #TODO: These are just the Atreides sounds.
 	EvaAlerts:
-		RadarUp:
-		RadarDown:
+		RadarUp: POWRUP1.aud
+		RadarDown: POWRDN1.aud
 		BuildingCannotPlaceAudio: AI_PLACE.AUD
-		CashTickUp:
-		CashTickDown:
+		CashTickUp: CASHTIK1.aud
+		CashTickDown:CASHTIK1.aud
 		NewOptions: AI_NEWOP.AUD
 		LowPower: AI_POWER.AUD
 		SilosNeeded: AI_SILOS.AUD

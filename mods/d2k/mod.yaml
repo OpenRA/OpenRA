@@ -14,6 +14,7 @@ Folders:
 	~^/Content/d2k/Music
 	~^/Content/d2k/Tilesets
 	~^/Content/d2k/SHPs
+	~^/Content/d2k/Sound
 	./mods/ra/bits
 	./mods/ra/uibits
 	~^/Content/ra

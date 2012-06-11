@@ -9,22 +9,23 @@
 # add more spice tiles and make them fit
 # add game logic for concrete plates (use terrain overlay from bridges/ressources)
 # allow placing turrets on walls
-# support separate turret sequence with RenderBuildingTurreted
+# RenderBuildingTurreted does not support separate turret sequence
 # ornithocopter should flap (might need new RenderOrni code for proper animation)
 # R8 converter needs infantry frame resorter
-# add trooper
+# add trooper (carries bazooka)
 # add engineer
-# add fremen
-# add saboteur
-# add deathhand missile (nuke)
-# add sandworm
-# add thumper which really attracts sandworms
+# add fremen (stealthed)
+# add saboteur (stealthed with C4)
+# add grenade thrower
+# add sadukar (heavy infantry)
+# add sandworm (behave like a moving anti-vehicle mine)
+# add thumper which deploys and really attracts sandworms
 # add neutral buildings: emperor palace, fremen siech, smugglers factory
+# add deathhand missile (nuke)
+# maybe add ornithocopter strikes (they are currently directly contrallable units with non-reloading machine guns as in Dune II)
 # allow upgrades
 # allow different EVA voices for each faction (currently Atreides only)
-# add SOUND.TS .wav file extractor to RA.Utility.exe
-# convert .wav to .aud or support .wav files for Dune 2000 sounds
-# add muzzles and explosions with lightning (might need engine update)
+# add muzzles and explosions (currently falls back to RA)
 # create a shellmap (currently just a blank placeholder)
 # rework chrome UI, dialoges, tabs
 # add sonic tank weapon (currently uses tesla)
@@ -32,11 +33,11 @@
 # allow frigate to deliver 5 units at once to starport
 # starport prices should vary
 # reinforcements have arrived is played twice when ordering via starport
-# add shroud (Dune's 32x32 tiles differ completely from RA/CnC)
-# black spots on buildings should be transparent
+# fix shroud, currently falls back to 24x24 shadow from RA (Dune's 32x32 tiles differ completely from RA/CnC)
+# black spots on buildings should be fading team colors
 # gamefile extraction (setup/setup.z) from CD fails
 # support patch 1.06 gamefiles: DATA.R8 has more frames and currently fails to extract, also featuring new terrain with white houses and new unit: grenade thrower
 # mouse cursor has no transparency and is a little pixelish
-# mouse cursor does not change for infantry-only areas (Rough)
-# put TilesetBuilder.Export into OpenRA.Utility
+# infantry-only areas (Rough) do not show the dark-green mouse cursor
+# put TilesetBuilder.Export into OpenRA.Utility to call the functions directly when extracting game-files (instead of opening a GUI)
 # create a minimal Freeware auto-download version from patch 1.06 files

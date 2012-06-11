@@ -99,7 +99,7 @@ MCVA:
 		Facing: 10
 		IntoActor: conyarda
 		Offset:-1,-1
-		TransformSounds:
+		TransformSounds: BUILD1.aud
 		NoTransformSounds: AI_DPLOY.AUD
 	RenderUnit:
 		Image: DMCV
