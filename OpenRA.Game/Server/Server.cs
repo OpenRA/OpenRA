@@ -225,8 +225,7 @@ namespace OpenRA.Server
 				if(lobbyInfo.Clients.Count==1)
 					client.IsAdmin=true;
 
-				OpenRA.Network.Session.Client cli = lobbyInfo.Clients.Where(c1 => c1.IsAdmin).Last();
-				string adminName = cli.Name;
+				OpenRA.Network.Session.Client clientAdmin = lobbyInfo.Clients.Where(c1 => c1.IsAdmin).Single();
 				
 				Log.Write("server", "Client {0}: Accepted connection from {1}",
 					newConn.PlayerIndex, newConn.socket.RemoteEndPoint);
@@ -243,7 +242,7 @@ namespace OpenRA.Server
 					if (client.IsAdmin)
 						SendChatTo(newConn, "    You are admin now!");
 					else
-						SendChatTo(newConn, "    Current admin is "+adminName);
+						SendChatTo(newConn, "    Current admin is {0}".F(clientAdmin.Name));
 				}
 
 				if (mods.Any(m => m.Contains("{DEV_VERSION}")))
@@ -391,7 +390,7 @@ namespace OpenRA.Server
 				conns.Remove(toDrop);
 				SendChat(toDrop, "Connection Dropped");
 				
-				OpenRA.Network.Session.Client oldCli = lobbyInfo.Clients.Where(c1 => c1.Index == toDrop.PlayerIndex).Last();
+				OpenRA.Network.Session.Client dropClient = lobbyInfo.Clients.Where(c1 => c1.Index == toDrop.PlayerIndex).Single();
 				
 				if (GameStarted)
 					SendDisconnected(toDrop); /* Report disconnection */
@@ -399,14 +398,14 @@ namespace OpenRA.Server
 				lobbyInfo.Clients.RemoveAll(c => c.Index == toDrop.PlayerIndex);
 
 				// reassign admin if necessary
-				if ( lobbyInfo.GlobalSettings.Dedicated && oldCli.IsAdmin && !GameStarted)
+				if ( lobbyInfo.GlobalSettings.Dedicated && dropClient.IsAdmin && !GameStarted)
 				{
 					if (lobbyInfo.Clients.Count() > 0)
 					{
 						// client was not alone on the server but he was admin: set admin to the last connected client
-						OpenRA.Network.Session.Client newCli = lobbyInfo.Clients.Last();
-						newCli.IsAdmin = true;
-						SendChat(toDrop, "Admin left! "+newCli.Name+" is a new admin now!");
+						OpenRA.Network.Session.Client lastClient = lobbyInfo.Clients.Last();
+						lastClient.IsAdmin = true;
+						SendChat(toDrop, "Admin left! {0} is a new admin now!".F(lastClient.Name));
 					}
 				}
 				
