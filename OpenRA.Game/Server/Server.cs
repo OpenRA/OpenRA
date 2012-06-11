@@ -71,6 +71,7 @@ namespace OpenRA.Server
 			lobbyInfo.GlobalSettings.RandomSeed = randomSeed;
 			lobbyInfo.GlobalSettings.Map = settings.Map;
 			lobbyInfo.GlobalSettings.ServerName = settings.Name;
+			lobbyInfo.GlobalSettings.Dedicated = settings.Dedicated;
 
 			foreach (var t in ServerTraits.WithInterface<INotifyServerStart>())
 				t.ServerStarted(this);
@@ -194,7 +195,10 @@ namespace OpenRA.Server
 							mods.Count() == Game.CurrentMods.Count() &&  //same number
 							mods.Select( m => Pair.New(m.Split('@')[0], m.Split('@')[1])).All(kv => Game.CurrentMods.ContainsKey(kv.First) &&
 					 		(kv.Second == "{DEV_VERSION}" || Game.CurrentMods[kv.First].Version == "{DEV_VERSION}" || kv.Second == Game.CurrentMods[kv.First].Version));
-
+				
+				// Drop DEV_VERSION if it's a Dedicated
+				if ( lobbyInfo.GlobalSettings.Dedicated &&  mods.Any(m => m.Contains("{DEV_VERSION}")) ) { valid = false; }
+				
 				if (!valid)
 				{
 					Log.Write("server", "Rejected connection from {0}; mods do not match.",
@@ -221,6 +225,8 @@ namespace OpenRA.Server
 				if(lobbyInfo.Clients.Count==1)
 					client.IsAdmin=true;
 
+				OpenRA.Network.Session.Client clientAdmin = lobbyInfo.Clients.Where(c1 => c1.IsAdmin).Single();
+				
 				Log.Write("server", "Client {0}: Accepted connection from {1}",
 					newConn.PlayerIndex, newConn.socket.RemoteEndPoint);
 
@@ -229,6 +235,15 @@ namespace OpenRA.Server
 
 				SyncLobbyInfo();
 				SendChat(newConn, "has joined the game.");
+				
+				if ( lobbyInfo.GlobalSettings.Dedicated )
+				{
+					SendChatTo(newConn, "You have joined the dedicated server!");
+					if (client.IsAdmin)
+						SendChatTo(newConn, "    You are admin now!");
+					else
+						SendChatTo(newConn, "    Current admin is {0}".F(clientAdmin.Name));
+				}
 
 				if (mods.Any(m => m.Contains("{DEV_VERSION}")))
 					SendChat(newConn, "is running a development version, "+
@@ -374,15 +389,29 @@ namespace OpenRA.Server
 			{
 				conns.Remove(toDrop);
 				SendChat(toDrop, "Connection Dropped");
-
+				
+				OpenRA.Network.Session.Client dropClient = lobbyInfo.Clients.Where(c1 => c1.Index == toDrop.PlayerIndex).Single();
+				
 				if (GameStarted)
 					SendDisconnected(toDrop); /* Report disconnection */
 
 				lobbyInfo.Clients.RemoveAll(c => c.Index == toDrop.PlayerIndex);
 
+				// reassign admin if necessary
+				if ( lobbyInfo.GlobalSettings.Dedicated && dropClient.IsAdmin && !GameStarted)
+				{
+					if (lobbyInfo.Clients.Count() > 0)
+					{
+						// client was not alone on the server but he was admin: set admin to the last connected client
+						OpenRA.Network.Session.Client lastClient = lobbyInfo.Clients.Last();
+						lastClient.IsAdmin = true;
+						SendChat(toDrop, "Admin left! {0} is a new admin now!".F(lastClient.Name));
+					}
+				}
+				
 				DispatchOrders( toDrop, toDrop.MostRecentFrame, new byte[] { 0xbf } );
 
-				if (conns.Count != 0)
+				if (conns.Count != 0 || lobbyInfo.GlobalSettings.Dedicated)
 					SyncLobbyInfo();
 			}
 
@@ -406,6 +435,7 @@ namespace OpenRA.Server
 		public void StartGame()
 		{
 			GameStarted = true;
+			listener.Stop();
 			foreach( var c in conns )
 				foreach( var d in conns )
 					DispatchOrdersToClient( c, d.PlayerIndex, 0x7FFFFFFF, new byte[] { 0xBF } );
