@@ -39,7 +39,7 @@ ide.iofilters["GermanUtf8Ascii"] = {
     }
     local lst = "["
     for k in pairs(charconv) do lst = lst .. k end
-    lst = "]"
+    lst = lst.."]"
 
     return content:gsub(lst,charconv)
   end,
