@@ -374,7 +374,7 @@ WALL:
 		Footprint: x
 		BuildSounds:
 		Adjacent: 7
-		TerrainTypes: Clear,Road
+		TerrainTypes: Rock
 	Health:
 		HP: 500
 	Armor:

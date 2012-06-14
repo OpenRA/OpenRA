@@ -3,6 +3,10 @@ Terrain:
 		Type: Sand
 		AcceptSmudge: True
 		Color: 208, 192, 160
+	TerrainType@Transition:
+		Type: Transition
+		AcceptSmudge: True
+		Color: 207, 166, 100
 	TerrainType@Rock:
 		Type: Rock
 		AcceptSmudge: True

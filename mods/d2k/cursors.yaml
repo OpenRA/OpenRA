@@ -1,7 +1,9 @@
 ﻿Palettes:
+	cursor: cursor.pal
+	mouse: d2k.pal
 
 Cursors:
-	mouse: cursor
+	mouse: mouse
 		scroll-t:
 			start:112
 			x: 12

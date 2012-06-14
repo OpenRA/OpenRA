@@ -127,9 +127,6 @@ World:
 	PaletteFromFile@effect:
 		Name: effect
 		Filename: temperat.pal
-	PaletteFromFile@cursor:
-		Name: cursor
-		Filename: d2k.pal
 	PaletteFromRGBA@shadow:
 		Name: shadow
 		R: 0
@@ -271,7 +268,6 @@ waypoint:
 
 SPICEBLOOM:
 	RenderBuilding:
-		Palette: d2k
 	Building:
 		Footprint: x
 		Dimensions: 1,1

@@ -25,13 +25,13 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 		Dictionary<string,string> installData;
 		ProgressBarWidget progressBar;
 		LabelWidget statusLabel;
-		Action afterInstall;
+		//Action afterInstall;
 		
 		[ObjectCreator.UseCtor]
 		public D2kDownloadPackagesLogic(Widget widget, Dictionary<string,string> installData, Action afterInstall)
 		{
 			this.installData = installData;
-			this.afterInstall = afterInstall;
+			//this.afterInstall = afterInstall;
 
 			panel = widget.Get("INSTALL_DOWNLOAD_PANEL");
 			progressBar = panel.Get<ProgressBarWidget>("PROGRESS_BAR");
