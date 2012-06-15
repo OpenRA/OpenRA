@@ -18,10 +18,11 @@ using System.Net.Sockets;
 using System.Net.NetworkInformation;
 using UPnP;
 using System.Threading;
-using System.Timers;
 using OpenRA.FileFormats;
 using OpenRA.GameRules;
 using OpenRA.Network;
+
+using XTimer = System.Timers.Timer;
 
 namespace OpenRA.Server
 {
@@ -48,6 +49,7 @@ namespace OpenRA.Server
 		public ServerSettings Settings;
 		public ModData ModData;
 		public Map Map;
+		XTimer gameTimeout;
 
 		volatile bool shutdown = false;
 		public void Shutdown() { shutdown = true; }
@@ -469,20 +471,16 @@ namespace OpenRA.Server
 				t.GameStarted(this);
 			
 			// Check TimeOut
-			if ( Game.Settings.Server.TimeOut > 10000 )
+			if ( Settings.TimeOut > 10000 )
 			{
-				aTimer = new System.Timers.Timer(Game.Settings.Server.TimeOut);
-				aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
-				aTimer.Enabled = true;
+				gameTimeout = new XTimer(Settings.TimeOut);
+				gameTimeout.Elapsed += (_,e) =>
+                                {
+                                    Console.WriteLine("Timeout at {0}!!!", e.SignalTime);
+                                    Environment.Exit(0);
+                                };
+				gameTimeout.Enabled = true;
 			}
-		}
-		
-		private static System.Timers.Timer aTimer;
-
-		private static void OnTimedEvent(object source, ElapsedEventArgs e)
-		{
-			Console.WriteLine("Started game has Timed Out at {0} !!!", e.SignalTime);
-			System.Environment.Exit(0);
 		}
 	}
 }
