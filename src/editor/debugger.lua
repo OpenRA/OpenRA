@@ -448,8 +448,10 @@ function DebuggerCreateWatchWindow()
 
   watchListCtrl:Connect(wx.wxEVT_COMMAND_LIST_END_LABEL_EDIT,
     function (event)
-      watchListCtrl:SetItem(event:GetIndex(), 0, event:GetText())
-      updateWatches()
+      if #(event:GetText()) > 0 then
+        watchListCtrl:SetItem(event:GetIndex(), 0, event:GetText())
+        updateWatches()
+      end
       event:Skip()
     end)
 end
