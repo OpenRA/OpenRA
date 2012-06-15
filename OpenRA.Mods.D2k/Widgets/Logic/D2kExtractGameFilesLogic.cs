@@ -438,7 +438,7 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 				new string[] {"--shp", Path.Combine(PathToSHPs, "cranea.png"), "96"},
 				new string[] {"--shp", Path.Combine(PathToSHPs, "craneh.png"), "96"},
 				new string[] {"--shp", Path.Combine(PathToSHPs, "craneo.png"), "96"},
-				new string[] {"--shp", Path.Combine(PathToSHPs, "windtrap_anim.png"), "96"},																																																																																																																				                                   
+				new string[] {"--shp", Path.Combine(PathToSHPs, "windtrap_anim.png"), "96"},
 				new string[] {"--shp", Path.Combine(PathToSHPs, "missile_launch.png"), "96"},
 				new string[] {"--shp", Path.Combine(PathToSHPs, "mouse.png"), "48"},
 				new string[] {"--shp", Path.Combine(PathToSHPs, "spice0.png"), "32"},
@@ -487,6 +487,7 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 						File.Delete(Path.Combine(PathToTilesets, "{0}.tsx".F(set)));
 						File.Delete(Path.Combine(PathToTilesets, "{0}.png".F(set)));
 						File.Delete(Path.Combine(PathToTilesets, "{0}.yaml".F(set.ToLower())));
+						File.Delete(Path.Combine(PathToTilesets, "{0}.pal".F(set.ToLower())));
 						c++;
 					}
 

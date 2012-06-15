@@ -1005,18 +1005,6 @@
     <cell x="2" y="15" />
   </template>
   <template>
-    <cell x="3" y="15" />
-    <cell x="3" y="16" />
-    <cell x="4" y="16" />
-    <cell x="4" y="15" />
-  </template>
-  <template>
-    <cell x="6" y="15" />
-    <cell x="6" y="16" />
-    <cell x="7" y="16" />
-    <cell x="7" y="15" />
-  </template>
-  <template>
     <cell x="8" y="14" />
   </template>
   <template>
@@ -1198,23 +1186,6 @@
     <cell x="19" y="27" />
     <cell x="18" y="27" />
     <cell x="18" y="28" />
-  </template>
-  <template>
-    <cell x="12" y="27" />
-    <cell x="13" y="27" />
-    <cell x="14" y="27" />
-    <cell x="15" y="27" />
-    <cell x="16" y="27" />
-    <cell x="16" y="28" />
-    <cell x="16" y="29" />
-    <cell x="15" y="29" />
-    <cell x="14" y="29" />
-    <cell x="13" y="29" />
-    <cell x="12" y="29" />
-    <cell x="12" y="28" />
-    <cell x="13" y="28" />
-    <cell x="14" y="28" />
-    <cell x="15" y="28" />
   </template>
   <template>
     <cell x="11" y="30" />
@@ -1642,20 +1613,6 @@
     <cell x="14" y="23" />
   </template>
   <template>
-    <cell x="11" y="23" />
-    <cell x="12" y="23" />
-    <cell x="13" y="23" />
-    <cell x="13" y="24" />
-    <cell x="12" y="24" />
-    <cell x="11" y="24" />
-    <cell x="11" y="25" />
-    <cell x="12" y="25" />
-    <cell x="13" y="25" />
-    <cell x="13" y="26" />
-    <cell x="12" y="26" />
-    <cell x="11" y="26" />
-  </template>
-  <template>
     <cell x="10" y="24" />
     <cell x="10" y="25" />
     <cell x="9" y="25" />
@@ -1944,5 +1901,64 @@
   <template>
     <cell x="16" y="34" />
     <cell x="16" y="33" />
+  </template>
+  <template>
+    <cell x="3" y="15" />
+  </template>
+  <template>
+    <cell x="4" y="15" />
+  </template>
+  <template>
+    <cell x="4" y="16" />
+  </template>
+  <template>
+    <cell x="3" y="16" />
+  </template>
+  <template>
+    <cell x="11" y="25" />
+    <cell x="12" y="25" />
+    <cell x="13" y="25" />
+    <cell x="13" y="26" />
+    <cell x="12" y="26" />
+    <cell x="11" y="26" />
+  </template>
+  <template>
+    <cell x="11" y="24" />
+    <cell x="12" y="24" />
+    <cell x="13" y="24" />
+    <cell x="13" y="23" />
+    <cell x="12" y="23" />
+    <cell x="11" y="23" />
+  </template>
+  <template>
+    <cell x="12" y="27" />
+    <cell x="12" y="28" />
+    <cell x="13" y="28" />
+    <cell x="14" y="28" />
+    <cell x="15" y="28" />
+    <cell x="16" y="28" />
+    <cell x="16" y="27" />
+    <cell x="15" y="27" />
+    <cell x="14" y="27" />
+    <cell x="13" y="27" />
+  </template>
+  <template>
+    <cell x="15" y="29" />
+  </template>
+  <template>
+    <cell x="16" y="29" />
+  </template>
+  <template>
+    <cell x="6" y="15" />
+    <cell x="7" y="15" />
+  </template>
+  <template>
+    <cell x="7" y="16" />
+    <cell x="6" y="16" />
+  </template>
+  <template>
+    <cell x="12" y="29" />
+    <cell x="13" y="29" />
+    <cell x="14" y="29" />
   </template>
 </tileset>
