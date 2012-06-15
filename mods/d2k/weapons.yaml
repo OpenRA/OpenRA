@@ -440,3 +440,31 @@ WormJaw:
 			Wood: 0%
 			Concrete: 0%
 		Damage: 100
+
+RedEye:
+	ROF: 50
+	Range: 7.5
+	Report: MISSILE1
+	ValidTargets: Air
+	Projectile: Missile
+		Arm: 3
+		High: true
+		Shadow: false
+		Proximity: true
+#		Trail: smokey
+		ContrailLength: 10
+		Image: MISSILE
+		ROT: 20
+		RangeLimit: 30
+		Speed: 35
+	Warhead:
+		Spread: 3
+		Versus: 
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
+		Explosion: med_explosion
+		InfDeath: 2
+		SmudgeType: Crater
+		Damage: 40

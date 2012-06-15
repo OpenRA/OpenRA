@@ -12,8 +12,6 @@
 # RenderBuildingTurreted does not support separate turret sequence
 # ornithocopter should flap (might need new RenderOrni code for proper animation)
 # R8 converter needs infantry frame resorter
-# add trooper (carries bazooka)
-# add engineer
 # add fremen (stealthed)
 # add saboteur (stealthed with C4)
 # add grenade thrower

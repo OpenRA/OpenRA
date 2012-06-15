@@ -146,7 +146,7 @@ QUAD:
 	Selectable:
 		Bounds: 30,30
 
-SIEGE:
+SIEGETANK:
 	Inherits: ^Tank
 	Buildable:
 		Queue: Vehicle
@@ -179,7 +179,7 @@ SIEGE:
 		Chance: 75  
 	AutoTarget:
 
-MISSILE:
+MISSILETANK:
 	Inherits: ^Tank
 	Valued:
 		Cost: 800

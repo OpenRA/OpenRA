@@ -55,9 +55,7 @@ quad:
 		Start: 0
 		Facings: 32
 
-
-
-siege:
+siegetank:
 	idle:
 		Start: 0
 		Facings: 32
@@ -65,12 +63,12 @@ siege:
 		Start: 0
 		Facings: 32
 
-missile:
+missiletank:
 	idle:
 		Start: 0
 		Facings: 32
 
-sonic:
+sonictank:
 	idle:
 		Start: 0
 		Facings: 32
@@ -149,6 +147,100 @@ rifle:
 	die5: rifledeath
 		Start: 26
 		Length: 7
+	die6: electro
+		Start: 0
+		Length: *
+	die-crushed: rifledeath
+		Start: 54
+		Length: 22
+		Tick: 1600
+
+bazooka:
+	stand:
+		Start: 0
+		Facings: 8
+	stand2:
+		Start: 0
+		Facings: 8
+	stand3:
+		Start: 0
+		Facings: 8
+	run:
+		Start: 8
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 56
+		Length: 5
+		Facings: 8
+	prone-stand:
+		Start: 104
+		Length: 1
+		Facings: 8
+	prone-run:
+		Start: 112
+		Length: 3
+		Facings: 8
+	standup-0:
+		Start: 96
+		Length: 1
+		Facings: 8
+	prone-shoot:
+		Start: 136
+		Length: 5
+		Facings: 8
+	die1: rifledeath
+		Start: 0
+		Length: 5
+	die2: rifledeath
+		Start: 5
+		Length: 7
+	die3: rifledeath
+		Start: 12
+		Length: 7
+	die4: rifledeath
+		Start: 19
+		Length: 7
+	die5: rifledeath
+		Start: 26
+		Length: 7
+	die6: electro
+		Start: 0
+		Length: *
+	die-crushed: rifledeath
+		Start: 54
+		Length: 22
+		Tick: 1600
+
+engineer:
+	stand:
+		Start: 0
+		Facings: 8
+	stand2:
+		Start: 0
+		Facings: 8
+	run:
+		Start: 8
+		Length: 6
+		Facings: 8
+	die1: rifledeath
+		Start: 0
+		Length: 5
+	die2: rifledeath
+		Start: 5
+		Length: 7
+	die3: rifledeath
+		Start: 12
+		Length: 7
+	die4: rifledeath
+		Start: 19
+		Length: 7
+	die5: rifledeath
+		Start: 26
+		Length: 7
+	die6: electro
+		Start: 0
+		Length: *
 	die-crushed: rifledeath
 		Start: 54
 		Length: 22
@@ -662,7 +754,7 @@ raider:
 		Start: 0
 		Facings: 32
 
-deviator:
+deviatortank:
 	idle:
 		Start: 0
 		Facings: 32
@@ -881,6 +973,11 @@ parach:
 	idle:
 		Start: 5
 		Length: 11
+
+missile:
+	idle:
+		Start: 0
+		Facings: 32
 
 spicebloom:
 	make:

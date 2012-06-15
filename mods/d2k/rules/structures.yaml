@@ -423,7 +423,6 @@ GUNTOWER:
 	RenderRangeCircle:
 	-RenderBuilding:
 	RenderBuildingTurreted:
-		Palette: d2k
 	Turreted:
 		ROT: 12
 		InitialFacing: 50

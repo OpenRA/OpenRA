@@ -141,7 +141,7 @@ RAIDER:
 		SecondaryOffset: 0,0,0,-4
 	AutoTarget:
 
-DEVIATOR:
+DEVIATORTANK:
 	Inherits: ^Tank
 	Valued:
 		Cost: 800

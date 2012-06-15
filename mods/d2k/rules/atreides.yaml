@@ -110,7 +110,7 @@ COMBATA:
 		Prerequisites: heavya
 		Owner: atreides
 
-SONIC:
+SONICTANK:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Vehicle
