@@ -141,7 +141,7 @@ RAIDER:
 		SecondaryOffset: 0,0,0,-4
 	AutoTarget:
 
-DEVIATOR:
+DEVIATORTANK:
 	Inherits: ^Tank
 	Valued:
 		Cost: 800
@@ -167,3 +167,35 @@ DEVIATOR:
 		PrimaryLocalOffset: -7,2,0,0,25, 7,2,0,0,-25
 		PrimaryRecoil: 1
 	AutoTarget:
+
+SABOTEUR:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 110
+		Prerequisites: palaceo
+		Owner: ordos
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Saboteur
+		Description: Sneaky infantry, armed with explosives.\n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: destroy buildings
+	Selectable:
+#		Voice: TanyaVoice
+		Bounds: 12,17,0,-9
+	Health:
+		HP: 100
+	Mobile:
+		Speed: 5
+	RevealsShroud:
+		Range: 6
+	C4Demolition:
+		C4Delay: 45
+	Passenger:
+		PipType: Red
+	TakeCover:
+	-RenderInfantry:
+	RenderInfantryProne:
+	-AutoTarget:
+	AttackMove:
+		JustMove: true

@@ -81,7 +81,7 @@ Voices:
 	mods/d2k/voices.yaml
 
 TileSets:
-	mods/d2k/tilesets/base.yaml
+	mods/d2k/tilesets/arrakis.yaml
 
 TileSize: 32
 
@@ -93,6 +93,7 @@ Movies:
 LoadScreen: D2kLoadScreen
 	InstallerMenuWidget: INSTALL_PANEL
 	TestFile: carryall.shp
+	PackageURL: http://open-ra.org/get-dependency.php?file=d2k-packages
 
 ServerTraits:
 	LobbyCommands

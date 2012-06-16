@@ -246,7 +246,7 @@ namespace OpenRA.TilesetBuilder
 		string ExportTemplate(Template t, int n, string suffix, string dir)
 		{
 			var TileSize = size;
-			var filename = Path.Combine(dir, "t{0:00}{1}".F(n, suffix));
+			var filename = Path.Combine(dir, "{0}{1:00}{2}".F(txtTilesetName.Text, n, suffix));
 			var totalTiles = t.Width * t.Height;
 
 			var ms = new MemoryStream();
@@ -391,7 +391,7 @@ namespace OpenRA.TilesetBuilder
 				var template = new TileTemplate()
 				{
 					Id = cur,
-					Image = "t{0:00}".F(cur),
+					Image = "{0}{1:00}".F(txtTilesetName.Text, cur),
 					Size = new int2(tp.Width,tp.Height),
 				};
 

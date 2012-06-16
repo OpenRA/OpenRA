@@ -144,3 +144,34 @@ DEVAST:
 	LeavesHusk:
 	Selectable:
 		Bounds: 44,38,0,-4
+
+SARDAUKAR:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 110
+		Prerequisites: palaceh
+		Owner: harkonnen
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Sardaukar
+		Description: Heavy infantry.
+	Selectable:
+#		Voice: TanyaVoice
+		Bounds: 12,17,0,-9
+	Health:
+		HP: 150
+	Mobile:
+		Speed: 5
+	RevealsShroud:
+		Range: 6
+	Passenger:
+		PipType: Red
+	TakeCover:
+	-RenderInfantry:
+	RenderInfantryProne:
+	AttackFrontal:
+		PrimaryWeapon: Vulcan
+		SecondaryWeapon: Dragon
+		PrimaryOffset: 0,0,0,-13

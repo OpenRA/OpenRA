@@ -417,10 +417,10 @@ Background@COLOR_CHOOSER:
 			Height:25
 			Text:Random
 			Font:Bold
-		ShpImage@FACT:
+		ShpImage@CARRYALL:
 			X:220
 			Y:10
-			Image:fact
+			Image:carryall
 			Palette:colorpicker
 		Label@HUE_LABEL:
 			X:0

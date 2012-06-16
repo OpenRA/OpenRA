@@ -86,6 +86,8 @@ Player:
 			powrh: 35%
 			powro: 35%
 		UnitsToBuild:
+			rifle: 30%
+			bazooka: 30%
 			trike: 30%
 			raider: 30%
 			quad: 40%
@@ -116,6 +118,7 @@ World:
 		Maximum: 3
 		SpawnInterval: 120
 		WaterChance: 0
+		ValidGround: Sand, Dune, Rock
 	PaletteFromCurrentTileset:
 		Name: terrain
 	PaletteFromFile@d2k:
@@ -172,6 +175,8 @@ World:
 		Name: Ordos
 		Race: ordos
 #	BibLayer:
+#		BibTypes: bib2x2,bib3x2,bib3x3
+#		BibWidths: 2,3,3
 	ResourceLayer:
 	ResourceType@spice:
 		ResourceType: 1
@@ -201,11 +206,11 @@ World:
 		Faction: ordos
 #TODO: These are just the Atreides sounds.
 	EvaAlerts:
-		RadarUp:
-		RadarDown:
+		RadarUp: POWRUP1.aud
+		RadarDown: POWRDN1.aud
 		BuildingCannotPlaceAudio: AI_PLACE.AUD
-		CashTickUp:
-		CashTickDown:
+		CashTickUp: CASHTIK1.aud
+		CashTickDown:CASHTIK1.aud
 		NewOptions: AI_NEWOP.AUD
 		LowPower: AI_POWER.AUD
 		SilosNeeded: AI_SILOS.AUD
@@ -268,7 +273,6 @@ waypoint:
 
 SPICEBLOOM:
 	RenderBuilding:
-		Palette: d2k
 	Building:
 		Footprint: x
 		Dimensions: 1,1
@@ -284,3 +288,28 @@ SPICEBLOOM:
 		ResourceType: Spice
 	RadarColorFromTerrain:
 		Terrain: Spice
+
+SANDWORM:
+	Inherits: ^Infantry
+	Buildable:
+		Owner: Creep
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Sandworm
+		Description: Attracted by vibrations in the sand. Will eat units whole and has a large appetite.
+		Icon: sandwormdust
+	Health:
+		HP: 10000
+	Mobile:
+		Speed: 5
+		TerrainSpeeds:
+			Sand: 100
+			Dune: 100
+	AutoTarget:
+	AttackWander:
+	AttackLeap:
+		PrimaryWeapon: WormJaw
+		CanAttackGround: no
+	RenderInfantry:
+	BelowUnits:

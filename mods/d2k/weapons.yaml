@@ -429,3 +429,131 @@ UnitExplodeSmall:
 		Explosion: large_explosion
 		InfDeath: 3
 		ImpactSound: kaboom15
+
+WormJaw:
+	ROF: 10
+	Range: 3
+	Report: AI_WATTK
+	Warhead:
+		Spread: 5
+		Versus: 
+			Wood: 0%
+			Concrete: 0%
+		Damage: 100
+
+RedEye:
+	ROF: 50
+	Range: 7.5
+	Report: MISSILE1
+	ValidTargets: Air
+	Projectile: Missile
+		Arm: 3
+		High: true
+		Shadow: false
+		Proximity: true
+#		Trail: smokey
+		ContrailLength: 10
+		Image: MISSILE
+		ROT: 20
+		RangeLimit: 30
+		Speed: 35
+	Warhead:
+		Spread: 3
+		Versus: 
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
+		Explosion: med_explosion
+		InfDeath: 2
+		SmudgeType: Crater
+		Damage: 40
+
+Sniper:
+	Report: GUN11
+	ROF: 40
+	Range: 7
+	Projectile: Bullet
+		Speed: 100
+	Warhead: 
+		Damage: 100
+		Spread: 1
+		Versus: 
+			None: 100%
+			Wood: 5%
+			Light: 5%
+			Heavy: 5%
+		InfDeath: 1
+
+Vulcan:
+	ROF: 30
+	Range: 6
+	Report: GUN13
+	Projectile: Bullet
+		Speed: 100
+		ContrailLength: 1000
+	Warhead@1:
+		Spread: 3
+		Versus: 
+			Wood: 50%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 25%
+		Explosion: piffs
+		InfDeath: 1
+		Damage: 10
+	Warhead@2:
+		Spread: 3
+		Versus: 
+			Wood: 50%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 25%
+		Explosion: piffs
+		InfDeath: 1
+		Damage: 10
+		Delay: 2
+	Warhead@3:
+		Spread: 3
+		Versus: 
+			Wood: 50%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 25%
+		Explosion: piffs
+		InfDeath: 1
+		Damage: 10
+		Delay: 4
+	Warhead@4:
+		Spread: 3
+		Versus: 
+			Wood: 50%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 25%
+		Explosion: piffs
+		InfDeath: 1
+		Damage: 10
+		Delay: 6
+	Warhead@5:
+		Spread: 3
+		Versus: 
+			Wood: 50%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 25%
+		Explosion: piffs
+		InfDeath: 1
+		Damage: 10
+		Delay: 8
+	Warhead@6:
+		Spread: 3
+		Versus: 
+			Wood: 50%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 25%
+		Explosion: piffs
+		InfDeath: 1
+		Damage: 10
+		Delay: 10
