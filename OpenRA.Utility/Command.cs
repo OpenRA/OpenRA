@@ -52,6 +52,8 @@ namespace OpenRA.Utility
 			using (var destStream = File.Create(dest))
 				ShpWriter.Write(destStream, width, srcImage.Height,
 					srcImage.ToFrames(width));
+
+			Console.WriteLine(dest+" saved");
 		}
 
 		static IEnumerable<byte[]> ToFrames(this Bitmap bitmap, int width)

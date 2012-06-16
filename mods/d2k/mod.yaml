@@ -93,7 +93,7 @@ Movies:
 LoadScreen: D2kLoadScreen
 	InstallerMenuWidget: INSTALL_PANEL
 	TestFile: carryall.shp
-	PackageURL: DunePatch106R8Data.zip
+	PackageURL: http://open-ra.org/get-dependency.php?file=d2k-packages
 
 ServerTraits:
 	LobbyCommands

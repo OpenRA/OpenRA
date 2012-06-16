@@ -21,7 +21,7 @@ CARRYALL:
 		InitialFacing: 0
 		ROT: 5
 		Speed: 15
-		LandableTerrainTypes: Sand, Rock, Spice, Dune
+		LandableTerrainTypes: Sand, Rock, Transition, Spice, Dune
 		RepairBuildings: repaira,repairo,repairh
 		RearmBuildings: hightecha
 	RenderUnit:

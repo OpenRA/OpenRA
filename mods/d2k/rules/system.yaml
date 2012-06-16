@@ -86,6 +86,8 @@ Player:
 			powrh: 35%
 			powro: 35%
 		UnitsToBuild:
+			rifle: 30%
+			bazooka: 30%
 			trike: 30%
 			raider: 30%
 			quad: 40%
@@ -116,6 +118,7 @@ World:
 		Maximum: 3
 		SpawnInterval: 120
 		WaterChance: 0
+		ValidGround: Sand, Dune, Rock
 	PaletteFromCurrentTileset:
 		Name: terrain
 	PaletteFromFile@d2k:

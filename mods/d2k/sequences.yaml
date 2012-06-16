@@ -147,9 +147,9 @@ rifle:
 	die5: rifledeath
 		Start: 26
 		Length: 7
-	die6: electro
-		Start: 0
-		Length: *
+	die6: rifledeath
+		Start: 26
+		Length: 7
 	die-crushed: rifledeath
 		Start: 54
 		Length: 22
@@ -204,9 +204,9 @@ bazooka:
 	die5: rifledeath
 		Start: 26
 		Length: 7
-	die6: electro
-		Start: 0
-		Length: *
+	die6: rifledeath
+		Start: 26
+		Length: 7
 	die-crushed: rifledeath
 		Start: 54
 		Length: 22
@@ -238,9 +238,111 @@ engineer:
 	die5: rifledeath
 		Start: 26
 		Length: 7
-	die6: electro
+	die6: rifledeath
+		Start: 26
+		Length: 7
+	die-crushed: rifledeath
+		Start: 54
+		Length: 22
+		Tick: 1600
+
+fremen:
+	stand:
 		Start: 0
-		Length: *
+		Facings: 8
+	stand2:
+		Start: 0
+		Facings: 8
+	run:
+		Start: 8
+		Length: 6
+		Facings: 8
+	die1: rifledeath
+		Start: 0
+		Length: 5
+	die2: rifledeath
+		Start: 5
+		Length: 7
+	die3: rifledeath
+		Start: 12
+		Length: 7
+	die4: rifledeath
+		Start: 19
+		Length: 7
+	die5: rifledeath
+		Start: 26
+		Length: 7
+	die6: rifledeath
+		Start: 26
+		Length: 7
+	die-crushed: rifledeath
+		Start: 54
+		Length: 22
+		Tick: 1600
+
+saboteur:
+	stand:
+		Start: 0
+		Facings: 8
+	stand2:
+		Start: 0
+		Facings: 8
+	run:
+		Start: 8
+		Length: 4
+		Facings: 8
+	die1: rifledeath
+		Start: 0
+		Length: 5
+	die2: rifledeath
+		Start: 5
+		Length: 7
+	die3: rifledeath
+		Start: 12
+		Length: 7
+	die4: rifledeath
+		Start: 19
+		Length: 7
+	die5: rifledeath
+		Start: 26
+		Length: 7
+	die6: rifledeath
+		Start: 26
+		Length: 7
+	die-crushed: rifledeath
+		Start: 54
+		Length: 22
+		Tick: 1600
+
+sardaukar:
+	stand:
+		Start: 0
+		Facings: 8
+	stand2:
+		Start: 0
+		Facings: 8
+	run:
+		Start: 8
+		Length: 4
+		Facings: 8
+	die1: rifledeath
+		Start: 0
+		Length: 5
+	die2: rifledeath
+		Start: 5
+		Length: 7
+	die3: rifledeath
+		Start: 12
+		Length: 7
+	die4: rifledeath
+		Start: 19
+		Length: 7
+	die5: rifledeath
+		Start: 26
+		Length: 7
+	die6: rifledeath
+		Start: 26
+		Length: 7
 	die-crushed: rifledeath
 		Start: 54
 		Length: 22
