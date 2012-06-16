@@ -176,7 +176,7 @@ SABOTEUR:
 		Prerequisites: palaceo
 		Owner: ordos
 	Valued:
-		Cost: 1000
+		Cost: 800
 	Tooltip:
 		Name: Saboteur
 		Description: Sneaky infantry, armed with explosives.\n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: destroy buildings

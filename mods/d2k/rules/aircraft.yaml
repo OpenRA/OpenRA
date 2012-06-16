@@ -20,7 +20,7 @@ CARRYALL:
 	Helicopter:
 		InitialFacing: 0
 		ROT: 5
-		Speed: 15
+		Speed: 20
 		LandableTerrainTypes: Sand, Rock, Transition, Spice, Dune
 		RepairBuildings: repaira,repairo,repairh
 		RearmBuildings: hightecha

@@ -175,6 +175,8 @@ World:
 		Name: Ordos
 		Race: ordos
 #	BibLayer:
+#		BibTypes: bib2x2,bib3x2,bib3x3
+#		BibWidths: 2,3,3
 	ResourceLayer:
 	ResourceType@spice:
 		ResourceType: 1

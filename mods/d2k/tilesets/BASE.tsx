@@ -11,6 +11,7 @@
   <terrain x="0" y="8" t="3" />
   <terrain x="0" y="10" t="3" />
   <terrain x="0" y="11" t="3" />
+  <terrain x="0" y="12" t="3" />
   <terrain x="0" y="13" t="1" />
   <terrain x="0" y="14" t="1" />
   <terrain x="0" y="15" t="8" />
@@ -23,7 +24,7 @@
   <terrain x="0" y="22" t="1" />
   <terrain x="0" y="23" t="1" />
   <terrain x="0" y="24" t="3" />
-  <terrain x="0" y="27" t="2" />
+  <terrain x="0" y="27" t="3" />
   <terrain x="0" y="28" t="3" />
   <terrain x="0" y="29" t="2" />
   <terrain x="0" y="30" t="2" />
@@ -59,8 +60,8 @@
   <terrain x="1" y="23" t="2" />
   <terrain x="1" y="24" t="3" />
   <terrain x="1" y="25" t="3" />
-  <terrain x="1" y="26" t="2" />
-  <terrain x="1" y="27" t="2" />
+  <terrain x="1" y="26" t="3" />
+  <terrain x="1" y="27" t="3" />
   <terrain x="1" y="28" t="3" />
   <terrain x="1" y="29" t="2" />
   <terrain x="1" y="30" t="1" />
@@ -90,10 +91,11 @@
   <terrain x="2" y="18" t="4" />
   <terrain x="2" y="20" t="3" />
   <terrain x="2" y="21" t="3" />
+  <terrain x="2" y="22" t="3" />
   <terrain x="2" y="24" t="3" />
   <terrain x="2" y="25" t="3" />
-  <terrain x="2" y="26" t="2" />
-  <terrain x="2" y="27" t="2" />
+  <terrain x="2" y="26" t="3" />
+  <terrain x="2" y="27" t="3" />
   <terrain x="2" y="28" t="3" />
   <terrain x="2" y="29" t="2" />
   <terrain x="2" y="30" t="2" />
@@ -115,6 +117,7 @@
   <terrain x="3" y="8" t="3" />
   <terrain x="3" y="10" t="3" />
   <terrain x="3" y="11" t="3" />
+  <terrain x="3" y="12" t="3" />
   <terrain x="3" y="13" t="1" />
   <terrain x="3" y="14" t="1" />
   <terrain x="3" y="15" t="1" />
@@ -146,6 +149,7 @@
   <terrain x="4" y="8" t="4" />
   <terrain x="4" y="9" t="4" />
   <terrain x="4" y="10" t="3" />
+  <terrain x="4" y="11" t="3" />
   <terrain x="4" y="13" t="1" />
   <terrain x="4" y="15" t="1" />
   <terrain x="4" y="16" t="1" />
@@ -171,6 +175,7 @@
   <terrain x="5" y="1" t="6" />
   <terrain x="5" y="2" t="6" />
   <terrain x="5" y="3" t="6" />
+  <terrain x="5" y="4" t="3" />
   <terrain x="5" y="5" t="3" />
   <terrain x="5" y="6" t="3" />
   <terrain x="5" y="8" t="4" />
@@ -202,7 +207,9 @@
   <terrain x="6" y="1" t="6" />
   <terrain x="6" y="2" t="6" />
   <terrain x="6" y="3" t="6" />
+  <terrain x="6" y="4" t="3" />
   <terrain x="6" y="6" t="3" />
+  <terrain x="6" y="7" t="3" />
   <terrain x="6" y="8" t="4" />
   <terrain x="6" y="9" t="4" />
   <terrain x="6" y="10" t="3" />
@@ -235,10 +242,12 @@
   <terrain x="6" y="39" t="7" />
   <terrain x="7" y="2" t="6" />
   <terrain x="7" y="4" t="3" />
+  <terrain x="7" y="6" t="3" />
   <terrain x="7" y="8" t="4" />
   <terrain x="7" y="9" t="4" />
   <terrain x="7" y="10" t="3" />
   <terrain x="7" y="11" t="3" />
+  <terrain x="7" y="12" t="3" />
   <terrain x="7" y="13" t="1" />
   <terrain x="7" y="14" t="1" />
   <terrain x="7" y="15" t="2" />
@@ -254,7 +263,7 @@
   <terrain x="7" y="26" t="3" />
   <terrain x="7" y="27" t="2" />
   <terrain x="7" y="28" t="3" />
-  <terrain x="7" y="29" t="1" />
+  <terrain x="7" y="29" t="3" />
   <terrain x="7" y="30" t="3" />
   <terrain x="7" y="31" t="3" />
   <terrain x="7" y="32" t="5" />
@@ -265,10 +274,13 @@
   <terrain x="7" y="38" t="7" />
   <terrain x="7" y="39" t="7" />
   <terrain x="8" y="4" t="3" />
+  <terrain x="8" y="6" t="3" />
+  <terrain x="8" y="7" t="3" />
   <terrain x="8" y="8" t="3" />
   <terrain x="8" y="9" t="3" />
   <terrain x="8" y="10" t="3" />
   <terrain x="8" y="11" t="3" />
+  <terrain x="8" y="12" t="3" />
   <terrain x="8" y="13" t="3" />
   <terrain x="8" y="15" t="2" />
   <terrain x="8" y="18" t="4" />
@@ -282,7 +294,7 @@
   <terrain x="8" y="26" t="3" />
   <terrain x="8" y="27" t="2" />
   <terrain x="8" y="28" t="3" />
-  <terrain x="8" y="29" t="1" />
+  <terrain x="8" y="29" t="3" />
   <terrain x="8" y="30" t="3" />
   <terrain x="8" y="31" t="3" />
   <terrain x="8" y="32" t="5" />
@@ -295,6 +307,7 @@
   <terrain x="8" y="39" t="7" />
   <terrain x="9" y="4" t="3" />
   <terrain x="9" y="6" t="3" />
+  <terrain x="9" y="7" t="3" />
   <terrain x="9" y="8" t="3" />
   <terrain x="9" y="9" t="3" />
   <terrain x="9" y="10" t="3" />
@@ -315,7 +328,7 @@
   <terrain x="9" y="25" t="3" />
   <terrain x="9" y="26" t="3" />
   <terrain x="9" y="27" t="2" />
-  <terrain x="9" y="28" t="1" />
+  <terrain x="9" y="28" t="3" />
   <terrain x="9" y="29" t="3" />
   <terrain x="9" y="30" t="3" />
   <terrain x="9" y="31" t="3" />
@@ -328,6 +341,7 @@
   <terrain x="9" y="38" t="7" />
   <terrain x="9" y="39" t="7" />
   <terrain x="10" y="1" t="6" />
+  <terrain x="10" y="4" t="3" />
   <terrain x="10" y="5" t="3" />
   <terrain x="10" y="6" t="3" />
   <terrain x="10" y="7" t="3" />
@@ -335,6 +349,7 @@
   <terrain x="10" y="9" t="3" />
   <terrain x="10" y="10" t="3" />
   <terrain x="10" y="11" t="3" />
+  <terrain x="10" y="12" t="3" />
   <terrain x="10" y="14" t="1" />
   <terrain x="10" y="15" t="1" />
   <terrain x="10" y="17" t="4" />
@@ -347,8 +362,8 @@
   <terrain x="10" y="25" t="3" />
   <terrain x="10" y="26" t="3" />
   <terrain x="10" y="27" t="2" />
-  <terrain x="10" y="28" t="2" />
-  <terrain x="10" y="29" t="2" />
+  <terrain x="10" y="28" t="3" />
+  <terrain x="10" y="29" t="3" />
   <terrain x="10" y="31" t="3" />
   <terrain x="10" y="32" t="5" />
   <terrain x="10" y="33" t="5" />
@@ -362,6 +377,7 @@
   <terrain x="11" y="1" t="6" />
   <terrain x="11" y="4" t="3" />
   <terrain x="11" y="5" t="3" />
+  <terrain x="11" y="7" t="3" />
   <terrain x="11" y="8" t="3" />
   <terrain x="11" y="9" t="3" />
   <terrain x="11" y="11" t="3" />
@@ -369,12 +385,13 @@
   <terrain x="11" y="16" t="1" />
   <terrain x="11" y="20" t="3" />
   <terrain x="11" y="21" t="3" />
-  <terrain x="11" y="23" t="1" />
+  <terrain x="11" y="22" t="3" />
+  <terrain x="11" y="23" t="3" />
   <terrain x="11" y="24" t="3" />
   <terrain x="11" y="25" t="3" />
   <terrain x="11" y="26" t="3" />
   <terrain x="11" y="28" t="3" />
-  <terrain x="11" y="29" t="2" />
+  <terrain x="11" y="29" t="3" />
   <terrain x="11" y="30" t="2" />
   <terrain x="11" y="31" t="2" />
   <terrain x="11" y="32" t="5" />
@@ -389,6 +406,7 @@
   <terrain x="12" y="1" t="4" />
   <terrain x="12" y="4" t="3" />
   <terrain x="12" y="5" t="3" />
+  <terrain x="12" y="7" t="3" />
   <terrain x="12" y="8" t="3" />
   <terrain x="12" y="9" t="3" />
   <terrain x="12" y="10" t="3" />
@@ -457,9 +475,10 @@
   <terrain x="14" y="5" t="3" />
   <terrain x="14" y="6" t="3" />
   <terrain x="14" y="7" t="3" />
-  <terrain x="14" y="8" t="3" />
-  <terrain x="14" y="9" t="3" />
+  <terrain x="14" y="8" t="4" />
+  <terrain x="14" y="9" t="4" />
   <terrain x="14" y="10" t="3" />
+  <terrain x="14" y="11" t="3" />
   <terrain x="14" y="12" t="3" />
   <terrain x="14" y="14" t="1" />
   <terrain x="14" y="15" t="1" />
@@ -467,9 +486,10 @@
   <terrain x="14" y="17" t="4" />
   <terrain x="14" y="18" t="4" />
   <terrain x="14" y="19" t="4" />
+  <terrain x="14" y="20" t="3" />
   <terrain x="14" y="21" t="3" />
   <terrain x="14" y="22" t="3" />
-  <terrain x="14" y="23" t="2" />
+  <terrain x="14" y="23" t="3" />
   <terrain x="14" y="24" t="2" />
   <terrain x="14" y="25" t="3" />
   <terrain x="14" y="26" t="3" />
@@ -494,8 +514,8 @@
   <terrain x="15" y="5" t="3" />
   <terrain x="15" y="6" t="3" />
   <terrain x="15" y="7" t="3" />
-  <terrain x="15" y="8" t="3" />
-  <terrain x="15" y="9" t="3" />
+  <terrain x="15" y="8" t="4" />
+  <terrain x="15" y="9" t="4" />
   <terrain x="15" y="10" t="3" />
   <terrain x="15" y="11" t="3" />
   <terrain x="15" y="12" t="3" />
@@ -505,7 +525,9 @@
   <terrain x="15" y="17" t="4" />
   <terrain x="15" y="18" t="4" />
   <terrain x="15" y="19" t="4" />
+  <terrain x="15" y="20" t="3" />
   <terrain x="15" y="21" t="3" />
+  <terrain x="15" y="22" t="3" />
   <terrain x="15" y="23" t="3" />
   <terrain x="15" y="24" t="2" />
   <terrain x="15" y="25" t="3" />
@@ -528,13 +550,15 @@
   <terrain x="16" y="5" t="3" />
   <terrain x="16" y="6" t="3" />
   <terrain x="16" y="7" t="3" />
-  <terrain x="16" y="8" t="3" />
-  <terrain x="16" y="9" t="3" />
+  <terrain x="16" y="8" t="4" />
+  <terrain x="16" y="9" t="4" />
   <terrain x="16" y="10" t="3" />
+  <terrain x="16" y="11" t="3" />
   <terrain x="16" y="12" t="1" />
   <terrain x="16" y="13" t="1" />
   <terrain x="16" y="14" t="1" />
   <terrain x="16" y="16" t="1" />
+  <terrain x="16" y="18" t="3" />
   <terrain x="16" y="19" t="3" />
   <terrain x="16" y="20" t="3" />
   <terrain x="16" y="21" t="3" />
@@ -561,24 +585,26 @@
   <terrain x="17" y="3" t="6" />
   <terrain x="17" y="6" t="3" />
   <terrain x="17" y="7" t="3" />
-  <terrain x="17" y="8" t="3" />
+  <terrain x="17" y="8" t="4" />
+  <terrain x="17" y="9" t="4" />
   <terrain x="17" y="10" t="3" />
   <terrain x="17" y="11" t="3" />
   <terrain x="17" y="12" t="1" />
   <terrain x="17" y="13" t="1" />
   <terrain x="17" y="15" t="1" />
   <terrain x="17" y="16" t="1" />
-  <terrain x="17" y="19" t="2" />
+  <terrain x="17" y="18" t="3" />
+  <terrain x="17" y="19" t="3" />
   <terrain x="17" y="20" t="3" />
   <terrain x="17" y="21" t="3" />
   <terrain x="17" y="22" t="3" />
-  <terrain x="17" y="23" t="2" />
+  <terrain x="17" y="23" t="3" />
   <terrain x="17" y="24" t="2" />
   <terrain x="17" y="25" t="3" />
   <terrain x="17" y="26" t="3" />
-  <terrain x="17" y="27" t="3" />
-  <terrain x="17" y="28" t="3" />
-  <terrain x="17" y="29" t="3" />
+  <terrain x="17" y="27" t="4" />
+  <terrain x="17" y="28" t="4" />
+  <terrain x="17" y="29" t="4" />
   <terrain x="17" y="30" t="2" />
   <terrain x="17" y="31" t="2" />
   <terrain x="17" y="32" t="5" />
@@ -605,16 +631,16 @@
   <terrain x="18" y="16" t="4" />
   <terrain x="18" y="17" t="4" />
   <terrain x="18" y="18" t="3" />
-  <terrain x="18" y="19" t="2" />
+  <terrain x="18" y="19" t="3" />
   <terrain x="18" y="20" t="3" />
   <terrain x="18" y="21" t="3" />
   <terrain x="18" y="22" t="3" />
   <terrain x="18" y="24" t="3" />
   <terrain x="18" y="25" t="1" />
   <terrain x="18" y="26" t="2" />
-  <terrain x="18" y="27" t="3" />
-  <terrain x="18" y="28" t="3" />
-  <terrain x="18" y="29" t="3" />
+  <terrain x="18" y="27" t="4" />
+  <terrain x="18" y="28" t="4" />
+  <terrain x="18" y="29" t="4" />
   <terrain x="18" y="30" t="2" />
   <terrain x="18" y="31" t="2" />
   <terrain x="18" y="32" t="5" />
@@ -624,6 +650,8 @@
   <terrain x="18" y="39" t="7" />
   <terrain x="19" y="1" t="6" />
   <terrain x="19" y="2" t="6" />
+  <terrain x="19" y="4" t="3" />
+  <terrain x="19" y="5" t="3" />
   <terrain x="19" y="6" t="3" />
   <terrain x="19" y="7" t="3" />
   <terrain x="19" y="8" t="1" />
@@ -634,15 +662,17 @@
   <terrain x="19" y="14" t="3" />
   <terrain x="19" y="16" t="4" />
   <terrain x="19" y="17" t="4" />
+  <terrain x="19" y="18" t="3" />
   <terrain x="19" y="19" t="3" />
   <terrain x="19" y="20" t="3" />
+  <terrain x="19" y="21" t="3" />
   <terrain x="19" y="22" t="3" />
   <terrain x="19" y="23" t="2" />
   <terrain x="19" y="24" t="3" />
   <terrain x="19" y="26" t="2" />
-  <terrain x="19" y="27" t="3" />
-  <terrain x="19" y="28" t="3" />
-  <terrain x="19" y="29" t="3" />
+  <terrain x="19" y="27" t="4" />
+  <terrain x="19" y="28" t="4" />
+  <terrain x="19" y="29" t="4" />
   <terrain x="19" y="30" t="2" />
   <terrain x="19" y="31" t="2" />
   <terrain x="19" y="32" t="5" />

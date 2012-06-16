@@ -1,21 +1,19 @@
 # make structures appear earlier when errecting from ground
-# harvester harvest and unload frames missing (too few DATA.R8 frames in general)
+# too few DATA.R8 frames?
 # carryalls should automatically transport harvesters (needs complex logic)
 # windtrap animations missing
 # outpost animations missing
 # construction yard crane animations missing
 # welding animation (factories) missing
 # chimney animation (refinery) missing
+# harvester unload and harvest animation missing
 # add more spice tiles and make them fit
 # add game logic for concrete plates (use terrain overlay from bridges/ressources)
 # allow placing turrets on walls
 # RenderBuildingTurreted does not support separate turret sequence
 # ornithocopter should flap (might need new RenderOrni code for proper animation)
 # R8 converter needs infantry frame resorter
-# add fremen (stealthed)
-# add saboteur (stealthed with C4)
 # add grenade thrower
-# add sadukar (heavy infantry)
 # add sandworm (behave like a moving anti-vehicle mine)
 # add thumper which deploys and really attracts sandworms
 # add neutral buildings: emperor palace, fremen siech, smugglers factory
@@ -38,4 +36,4 @@
 # mouse cursor has no transparency and is a little pixelish
 # infantry-only areas (Rough) do not show the dark-green mouse cursor
 # put TilesetBuilder.Export into OpenRA.Utility to call the functions directly when extracting game-files (instead of opening a GUI)
-# create a minimal Freeware auto-download version from patch 1.06 files
+# replace RA sounds by Dune 2000 ones

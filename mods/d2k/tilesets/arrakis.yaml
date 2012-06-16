@@ -161,8 +161,8 @@ Templates:
 		Tiles:
 			0: Cliff
 			2: Cliff
-			3: Sand
-			1: Sand
+			3: Cliff
+			1: Cliff
 	Template@11:
 		Id: 11
 		Image: BASE11
@@ -200,7 +200,7 @@ Templates:
 		PickAny: False
 		Tiles:
 			3: Cliff
-			2: Sand
+			2: Cliff
 			0: Sand
 			1: Cliff
 	Template@15:
@@ -211,7 +211,7 @@ Templates:
 		Tiles:
 			0: Cliff
 			1: Sand
-			3: Sand
+			3: Cliff
 			2: Cliff
 	Template@16:
 		Id: 16
@@ -219,9 +219,9 @@ Templates:
 		Size: 2,2
 		PickAny: False
 		Tiles:
-			3: Sand
-			2: Sand
-			0: Sand
+			3: Cliff
+			2: Cliff
+			0: Cliff
 			1: Cliff
 	Template@17:
 		Id: 17
@@ -229,9 +229,9 @@ Templates:
 		Size: 2,2
 		PickAny: False
 		Tiles:
-			1: Sand
+			1: Cliff
 			3: Sand
-			2: Sand
+			2: Cliff
 			0: Cliff
 	Template@18:
 		Id: 18
@@ -279,20 +279,20 @@ Templates:
 		Size: 2,2
 		PickAny: False
 		Tiles:
-			1: Cliff
-			3: Sand
-			2: Cliff
-			0: Cliff
+			1: Rough
+			3: Rough
+			2: Rough
+			0: Rough
 	Template@23:
 		Id: 23
 		Image: BASE23
 		Size: 2,2
 		PickAny: False
 		Tiles:
-			1: Cliff
-			3: Cliff
-			2: Cliff
-			0: Cliff
+			1: Rough
+			3: Rough
+			2: Rough
+			0: Rough
 	Template@24:
 		Id: 24
 		Image: BASE24
@@ -374,7 +374,7 @@ Templates:
 			3: Cliff
 			1: Cliff
 			4: Cliff
-			5: Sand
+			5: Cliff
 	Template@32:
 		Id: 32
 		Image: BASE32
@@ -394,7 +394,7 @@ Templates:
 			1: Sand
 			3: Cliff
 			5: Cliff
-			4: Sand
+			4: Cliff
 			2: Cliff
 			0: Cliff
 	Template@34:
@@ -404,7 +404,7 @@ Templates:
 		PickAny: False
 		Tiles:
 			0: Cliff
-			2: Sand
+			2: Cliff
 			4: Sand
 			5: Sand
 			3: Cliff
@@ -418,7 +418,7 @@ Templates:
 			0: Cliff
 			2: Cliff
 			4: Sand
-			5: Sand
+			5: Cliff
 			3: Cliff
 			1: Cliff
 	Template@36:
@@ -447,8 +447,8 @@ Templates:
 		Size: 2,2
 		PickAny: False
 		Tiles:
-			0: Sand
-			1: Sand
+			0: Cliff
+			1: Cliff
 			3: Sand
 			2: Cliff
 	Template@39:
@@ -468,7 +468,7 @@ Templates:
 		PickAny: False
 		Tiles:
 			0: Cliff
-			1: Sand
+			1: Cliff
 			3: Cliff
 			2: Sand
 	Template@41:
@@ -537,7 +537,7 @@ Templates:
 		Size: 2,2
 		PickAny: False
 		Tiles:
-			2: Sand
+			2: Cliff
 			0: Cliff
 			1: Cliff
 			3: Cliff
@@ -548,7 +548,7 @@ Templates:
 		PickAny: False
 		Tiles:
 			3: Cliff
-			2: Sand
+			2: Cliff
 			0: Cliff
 			1: Cliff
 	Template@49:
@@ -584,9 +584,9 @@ Templates:
 			5: Sand
 			4: Cliff
 			3: Cliff
-			0: Sand
+			0: Cliff
 			1: Cliff
-			2: Sand
+			2: Cliff
 	Template@52:
 		Id: 52
 		Image: BASE52
@@ -993,15 +993,15 @@ Templates:
 		Size: 3,3
 		PickAny: False
 		Tiles:
-			0: Cliff
-			3: Cliff
-			6: Cliff
-			7: Cliff
-			8: Cliff
-			5: Cliff
-			2: Cliff
-			1: Cliff
-			4: Cliff
+			0: Rough
+			3: Rough
+			6: Rough
+			7: Rough
+			8: Rough
+			5: Rough
+			2: Rough
+			1: Rough
+			4: Rough
 	Template@102:
 		Id: 102
 		Image: BASE102
@@ -1613,7 +1613,7 @@ Templates:
 		Tiles:
 			0: Cliff
 			1: Cliff
-			3: Transition
+			3: Cliff
 			2: Cliff
 	Template@181:
 		Id: 181
@@ -1662,18 +1662,18 @@ Templates:
 		PickAny: False
 		Tiles:
 			0: Cliff
-			1: Transition
+			1: Cliff
 			3: Cliff
-			2: Transition
+			2: Cliff
 	Template@186:
 		Id: 186
 		Image: BASE186
 		Size: 2,2
 		PickAny: False
 		Tiles:
-			0: Rock
-			2: Rock
-			3: Rock
+			0: Cliff
+			2: Cliff
+			3: Cliff
 			1: Cliff
 	Template@187:
 		Id: 187
@@ -1721,12 +1721,12 @@ Templates:
 		Size: 3,2
 		PickAny: False
 		Tiles:
-			5: Rock
-			2: Rock
-			1: Rock
+			5: Cliff
+			2: Cliff
+			1: Cliff
 			0: Sand
-			3: Rock
-			4: Rock
+			3: Cliff
+			4: Cliff
 	Template@192:
 		Id: 192
 		Image: BASE192
@@ -1757,7 +1757,7 @@ Templates:
 		Tiles:
 			0: Cliff
 			2: Cliff
-			4: Sand
+			4: Cliff
 			5: Cliff
 			3: Cliff
 			1: Cliff
@@ -1790,7 +1790,7 @@ Templates:
 			0: Cliff
 			2: Cliff
 			4: Cliff
-			5: Sand
+			5: Cliff
 			3: Cliff
 			1: Cliff
 	Template@198:
@@ -1818,11 +1818,11 @@ Templates:
 		PickAny: False
 		Tiles:
 			0: Cliff
-			1: Sand
+			1: Cliff
 			3: Cliff
 			5: Rock
 			4: Rock
-			2: Rock
+			2: Cliff
 	Template@201:
 		Id: 201
 		Image: BASE201
@@ -1880,7 +1880,7 @@ Templates:
 		PickAny: False
 		Tiles:
 			1: Cliff
-			3: Rock
+			3: Cliff
 			5: Rock
 			4: Rock
 			2: Cliff
@@ -1913,7 +1913,7 @@ Templates:
 		Tiles:
 			0: Cliff
 			2: Cliff
-			3: Sand
+			3: Cliff
 			1: Cliff
 	Template@210:
 		Id: 210
@@ -1922,9 +1922,9 @@ Templates:
 		PickAny: False
 		Tiles:
 			3: Cliff
-			1: Sand
+			1: Cliff
 			0: Cliff
-			2: Rock
+			2: Cliff
 	Template@211:
 		Id: 211
 		Image: BASE211
@@ -1941,9 +1941,9 @@ Templates:
 		Size: 2,2
 		PickAny: False
 		Tiles:
-			3: Rock
-			1: Sand
-			0: Sand
+			3: Cliff
+			1: Cliff
+			0: Cliff
 			2: Cliff
 	Template@213:
 		Id: 213
@@ -1951,8 +1951,8 @@ Templates:
 		Size: 2,2
 		PickAny: False
 		Tiles:
-			0: Sand
-			1: Sand
+			0: Cliff
+			1: Cliff
 			3: Cliff
 			2: Cliff
 	Template@214:
@@ -2396,7 +2396,7 @@ Templates:
 			5: Cliff
 			2: Sand
 			1: Cliff
-			0: Transition
+			0: Cliff
 	Template@265:
 		Id: 265
 		Image: BASE265

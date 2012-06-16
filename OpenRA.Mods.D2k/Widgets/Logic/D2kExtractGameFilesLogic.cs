@@ -152,6 +152,8 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 				new string[] {"--r8", PathToDataR8, PathToPalette, "2991", "2992", Path.Combine(PathToSHPs, "starporto"), "--building"},
 				new string[] {"--r8", PathToDataR8, PathToPalette, "2993", "2995", Path.Combine(PathToSHPs, "lighto"), "--building"},
 				new string[] {"--r8", PathToDataR8, PathToPalette, "2996", "2997", Path.Combine(PathToSHPs, "palaceo"), "--building"},
+				new string[] {"--r8", PathToDataR8, PathToPalette, "3370", "3380", Path.Combine(PathToSHPs, "unload"), "--vehicle"},
+				//explosions
 				new string[] {"--r8", PathToDataR8, PathToPalette, "3549", "3564", Path.Combine(PathToSHPs, "sandwormmouth")},
 				new string[] {"--r8", PathToDataR8, PathToPalette, "3565", "3585", Path.Combine(PathToSHPs, "sandwormdust")},
 				new string[] {"--r8", PathToDataR8, PathToPalette, "3586", "3600", Path.Combine(PathToSHPs, "wormsigns1")},
@@ -354,6 +356,7 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 				new string[] {"--shp", Path.Combine(PathToSHPs, "starporto.png"), "96"},
 				new string[] {"--shp", Path.Combine(PathToSHPs, "lighto.png"), "96"},
 				new string[] {"--shp", Path.Combine(PathToSHPs, "palaceo.png"), "96"},
+				new string[] {"--shp", Path.Combine(PathToSHPs, "unload.png"), "48"},
 				new string[] {"--shp", Path.Combine(PathToSHPs, "sandwormmouth.png"), "68"},
 				new string[] {"--shp", Path.Combine(PathToSHPs, "sandwormdust.png"), "68"},
 				new string[] {"--shp", Path.Combine(PathToSHPs, "wormsigns1.png"), "16"},
