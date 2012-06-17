@@ -58,10 +58,10 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="D2kLoadScreen.cs" />
-    <Compile Include="Render\RenderBuildingSeparateTurret.cs" />
     <Compile Include="Widgets\Logic\D2kInstallLogic.cs" />
     <Compile Include="Widgets\Logic\D2kExtractGameFilesLogic.cs" />
     <Compile Include="Widgets\Logic\D2kInstallFromCDLogic.cs" />
+    <Compile Include="Widgets\Logic\D2kDownloadPackagesLogic.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
@@ -86,5 +86,12 @@ cd "$(SolutionDir)"</PostBuildEvent>
       <Project>{1A8E50CC-EE32-4E57-8842-0C39C8EA7541}</Project>
       <Name>OpenRA.TilesetBuilder</Name>
     </ProjectReference>
+    <ProjectReference Include="..\OpenRA.Mods.RA\OpenRA.Mods.RA.csproj">
+      <Project>{4A8A43B5-A9EF-4ED0-99DD-4BAB10A0DB6E}</Project>
+      <Name>OpenRA.Mods.RA</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Render\" />
   </ItemGroup>
 </Project>

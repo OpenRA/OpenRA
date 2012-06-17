@@ -27,7 +27,7 @@ namespace OpenRA.Graphics
 			var sequences = new MiniYaml(null, sequenceFiles.Select(s => MiniYaml.FromFile(s)).Aggregate(MiniYaml.MergeLiberal));
 
 			foreach (var s in sequences.NodesDict["Palettes"].Nodes)
-				Game.modData.Palette.AddPalette(s.Key, new Palette(FileSystem.Open(s.Value.Value), false));
+				Game.modData.Palette.AddPalette(s.Key, new Palette(FileSystem.Open(s.Value.Value), true));
 
 			foreach (var s in sequences.NodesDict["Cursors"].Nodes)
 				LoadSequencesForCursor(s.Key, s.Value);

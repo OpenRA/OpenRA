@@ -1,10 +1,11 @@
 ^Vehicle:
 	AppearsOnRadar:
 	Mobile:
-		Crushes: crate
+		Crushes: crate, worm
 		TerrainSpeeds:
 			Sand: 80
 			Rock: 90
+			Transition: 85
 			Concrete: 100
 			Spice: 70
 			SpiceBlobs: 70
@@ -34,10 +35,11 @@
 ^Tank:
 	AppearsOnRadar:
 	Mobile:
-		Crushes: crate
+		Crushes: crate, worm
 		TerrainSpeeds:
 			Sand: 80
 			Rock: 90
+			Transition: 85
 			Concrete: 100
 			Spice: 70
 			SpiceBlobs: 70
@@ -78,6 +80,7 @@
 		TerrainSpeeds:
 			Sand: 80
 			Rock: 90
+			Transition: 85
 			Concrete: 100
 			Spice: 70
 			SpiceBlobs: 70

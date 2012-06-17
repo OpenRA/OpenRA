@@ -99,7 +99,7 @@ MCVA:
 		Facing: 10
 		IntoActor: conyarda
 		Offset:-1,-1
-		TransformSounds:
+		TransformSounds: BUILD1.aud
 		NoTransformSounds: AI_DPLOY.AUD
 	RenderUnit:
 		Image: DMCV
@@ -110,7 +110,7 @@ COMBATA:
 		Prerequisites: heavya
 		Owner: atreides
 
-SONIC:
+SONICTANK:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Vehicle
@@ -137,3 +137,39 @@ SONIC:
 		PrimaryWeapon: TTankZap
 		PrimaryOffset: 0,0,0,-5
 	AutoTarget:
+
+FREMEN:
+	Inherits: ^Infantry
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Fremen
+		Description: Elite sniper infantry unit.\n  Strong vs Infantry\n  Weak vs Vehicles\n  Special Ability: Invisible
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 50
+		Owner: atreides
+		Prerequisites: palacea
+	Selectable:
+		Bounds: 12,17,0,-6
+#		Voice: CommandoVoice
+	Mobile:
+		Speed: 5
+	Health:
+		HP: 200
+	Passenger:
+		PipType: Red
+	RevealsShroud:
+		Range: 6
+	AutoTarget:
+		ScanRadius: 5
+	AttackFrontal:
+		PrimaryWeapon: Sniper
+	RenderInfantryProne:
+	-RenderInfantry:
+	TakeCover:
+	Cloak:
+		InitialDelay: 125
+		CloakDelay: 125
+		CloakSound:
+		UncloakSound:

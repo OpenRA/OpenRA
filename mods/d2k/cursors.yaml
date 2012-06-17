@@ -1,8 +1,9 @@
 ﻿Palettes:
-	cursor: d2k.pal
+	cursor: cursor.pal
+	mouse: d2k.pal
 
 Cursors:
-	mouse: cursor
+	mouse: mouse
 		scroll-t:
 			start:112
 			x: 12
@@ -148,12 +149,12 @@ Cursors:
 			start:104
 		c4:
 			start:252
-			length: 8
+			length: 4
 			x: 12
 			y: 12
 		c4-minimap:
 			start:252
-			length: 8
+			length: 4
 			x: 12
 			y: 12
 		guard:
@@ -220,6 +221,16 @@ Cursors:
 			x: 12
 			y: 12
 		repair-blocked:
+			start:64
+			length: 1
+			x: 12
+			y: 12
+		goldwrench:
+			start:88
+			length: 8
+			x: 12
+			y: 12
+		goldwrench-blocked:
 			start:64
 			length: 1
 			x: 12
