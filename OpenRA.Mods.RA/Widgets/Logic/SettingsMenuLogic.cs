@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2012 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -84,6 +84,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var display = bg.Get("DISPLAY_PANE");
 			var gs = Game.Settings.Graphics;
 
+			var GraphicsRendererDropdown = display.Get<DropDownButtonWidget>("GRAPHICS_RENDERER");
+			GraphicsRendererDropdown.OnMouseDown = _ => ShowRendererDropdown(GraphicsRendererDropdown, gs);
+			GraphicsRendererDropdown.GetText = () => gs.Renderer == "Gl" ?
+				"OpenGL" : gs.Renderer == "Cg" ? "Cg Toolkit" : "OpenGL";
+
 			var windowModeDropdown = display.Get<DropDownButtonWidget>("MODE_DROPDOWN");
 			windowModeDropdown.OnMouseDown = _ => ShowWindowModeDropdown(windowModeDropdown, gs);
 			windowModeDropdown.GetText = () => gs.Mode == WindowMode.Windowed ?
@@ -152,6 +157,27 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var item = ScrollItemWidget.Setup(itemTemplate,
 					() => s.Mode == options[o],
 					() => s.Mode = options[o]);
+				item.Get<LabelWidget>("LABEL").GetText = () => o;
+				return item;
+			};
+
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, setupItem);
+			return true;
+		}
+
+		public static bool ShowRendererDropdown(DropDownButtonWidget dropdown, GraphicSettings s)
+		{
+			var options = new Dictionary<string, string>()
+			{
+				{ "OpenGL", "Gl" },
+				{ "Cg Toolkit", "Cg" },
+			};
+
+			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
+			{
+				var item = ScrollItemWidget.Setup(itemTemplate,
+					() => s.Renderer == options[o],
+					() => s.Renderer = options[o]);
 				item.Get<LabelWidget>("LABEL").GetText = () => o;
 				return item;
 			};
