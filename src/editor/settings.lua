@@ -394,7 +394,7 @@ function SettingsRestoreView()
   local layout = settingsReadSafe(settings,"nbbtmlayout",layoutcur)
   if (layout ~= layoutcur) then
     loadNotebook(ide.frame.bottomnotebook,layout,
-      function(name) return name:match("console") or name end)
+      function(name) return name:match("Output") or name end)
   end
 
   settings:SetPath(path)

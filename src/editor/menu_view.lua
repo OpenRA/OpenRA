@@ -12,7 +12,7 @@ local viewMenu = wx.wxMenu{
   -- NYI { ID "view.preferences", "&Preferences...", "Brings up dialog for settings (TODO)" },
   -- NYI { },
   { ID "view.filetree.show", "Project/&FileTree Window\tCtrl-Alt-P", "View the project/filetree window" },
-  { ID "view.output.show", "&Output/Shell Window\tCtrl-Alt-O", "View the output/shell window" },
+  { ID "view.output.show", "&Output/Console Window\tCtrl-Alt-O", "View the output/console window" },
   { ID "view.debug.watches", "&Watch Window", "View the Watch window" },
   { },
   { ID "view.defaultlayout", "&Default Layout", "Reset to default layout"},
