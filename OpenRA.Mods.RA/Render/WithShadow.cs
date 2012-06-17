@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Traits;
 using OpenRA.Mods.RA.Air;
+using OpenRA.Mods.RA.Move;
 
 namespace OpenRA.Mods.RA.Render
 {
@@ -25,7 +26,7 @@ namespace OpenRA.Mods.RA.Render
 			var move = self.Trait<IMove>();
 
 			/* rude hack */
-			var visualOffset = (move is Helicopter && move.Altitude > 0)
+			var visualOffset = ((move is Helicopter || move is Mobile) && move.Altitude > 0)
 				? Math.Abs((self.ActorID + Game.LocalTick) / 5 % 4 - 1) - 1 : 0;
 
 			var shadowSprites = r.Select(a => a.WithPalette("shadow"));
