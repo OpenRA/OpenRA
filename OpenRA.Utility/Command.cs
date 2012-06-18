@@ -402,16 +402,20 @@ namespace OpenRA.Utility
 		public static void TransposeShp(string[] args)
 		{
 			var srcImage = ShpReader.Load(args[1]);
-			var start = int.Parse(args[3]);
-			var m = int.Parse(args[4]);
-			var n = int.Parse(args[5]);
 
 			var srcFrames = srcImage.Frames.ToArray();
 			var destFrames = srcImage.Frames.ToArray();
 
-			for( var i = 0; i < m; i++ )
-				for( var j = 0; j < n; j++ )
-					destFrames[ start + i*n + j ] = srcFrames[ start + j*m + i ];
+			for( var z = 3; z < args.Length - 2; z += 3 )
+			{
+				var start = int.Parse(args[z]);
+				var m = int.Parse(args[z+1]);
+				var n = int.Parse(args[z+2]);
+
+				for( var i = 0; i < m; i++ )
+					for( var j = 0; j < n; j++ )
+						destFrames[ start + i*n + j ] = srcFrames[ start + j*m + i ];
+			}
 
 			using( var destStream = File.Create(args[2]) )
 				ShpWriter.Write(destStream, srcImage.Width, srcImage.Height,
