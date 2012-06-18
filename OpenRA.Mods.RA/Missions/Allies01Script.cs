@@ -69,14 +69,14 @@ namespace OpenRA.Mods.RA.Missions
         private const string tanyaName = "e7";
         private const string chinookName = "tran";
 
-        private void NextObjective(int currentFrameNumber)
+        private void NextObjective()
         {
             currentObjective++;
         }
 
-        private void DisplayObjective(string text)
+        private void DisplayObjective()
         {
-            Game.AddChatLine(Color.LimeGreen, "Objective", text);
+            Game.AddChatLine(Color.LimeGreen, "Objective", objectives[currentObjective]);
         }
 
         private void MissionFailed(Actor self, string text)
@@ -114,7 +114,7 @@ namespace OpenRA.Mods.RA.Missions
             // display current objective every so often
             if (self.World.FrameNumber % 1500 == 1)
             {
-                DisplayObjective(objectives[currentObjective]);
+                DisplayObjective();
             }
             // taunt every so often
             if (self.World.FrameNumber % 1000 == 0)
@@ -140,8 +140,8 @@ namespace OpenRA.Mods.RA.Missions
                     SpawnEinsteinAtLab(self); // spawn Einstein once the area is clear
                     Sound.Play("einok1.aud"); // "Incredible!" - Einstein
                     SendShips(self);
-                    NextObjective(self.World.FrameNumber);
-                    DisplayObjective(objectives[currentObjective]);
+                    NextObjective();
+                    DisplayObjective();
                 }
                 if (lab.Destroyed)
                 {
@@ -164,7 +164,7 @@ namespace OpenRA.Mods.RA.Missions
                 {
                     if (einsteinChinook.Trait<Cargo>().Passengers.Contains(einstein))
                     {
-                        FlyFromExtractionLZ();
+                        FlyEinsteinFromExtractionLZ();
                     }
                     if (UnitsNearActor(self, chinookExitPoint, 5).Contains(einsteinChinook) && !einstein.IsInWorld)
                     {
@@ -199,11 +199,6 @@ namespace OpenRA.Mods.RA.Missions
                 .Where(a => a.IsInWorld && a != self.World.WorldActor && !a.Destroyed && a.HasTrait<IMove>() && !a.Owner.NonCombatant);
         }
 
-        private IEnumerable<Actor> UnitsNearExtractionLZ(Actor self, int range)
-        {
-            return UnitsNearActor(self, extractionLZ, range);
-        }
-
         private IEnumerable<Actor> UnitsNearLab(Actor self, int range)
         {
             return UnitsNearActor(self, lab, range);
@@ -230,7 +225,7 @@ namespace OpenRA.Mods.RA.Missions
             }
         }
 
-        private void FlyFromExtractionLZ()
+        private void FlyEinsteinFromExtractionLZ()
         {
             einsteinChinook.QueueActivity(new Wait(150));
             einsteinChinook.QueueActivity(new HeliFly(chinookExitPoint.CenterLocation));
