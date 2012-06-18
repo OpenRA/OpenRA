@@ -1,0 +1,307 @@
+#region Copyright & License Information
+/*
+ * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * This file is part of OpenRA, which is free software. It is made
+ * available to you under the terms of the GNU General Public License
+ * as published by the Free Software Foundation. For more information,
+ * see COPYING.
+ */
+#endregion
+
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using OpenRA.FileFormats;
+using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Air;
+using OpenRA.Network;
+using OpenRA.Traits;
+
+namespace OpenRA.Mods.RA.Missions
+{
+    public class Allies01ScriptInfo : TraitInfo<Allies01Script>, Requires<SpawnMapActorsInfo> { }
+
+    public class Allies01Script : IWorldLoaded, ITick
+    {
+        private string[] objectives = 
+        {
+             "Find Einstein.",
+             "Wait for the helicopter and extract Einstein."
+        };
+
+        private int currentObjective;
+
+        private Player allies;
+        private Player soviets;
+
+        private ISound music;
+
+        private bool tanyaLanded;
+        private int frameLastAttackWave;
+        private int currentAttackWave;
+
+        private Actor insertionLZ;
+        private Actor extractionLZ;
+        private Actor lab;
+        private Actor insertionLZEntryPoint;
+        private Actor extractionLZEntryPoint;
+        private Actor chinookExitPoint;
+        private Actor shipSpawnPoint;
+        private Actor shipMovePoint;
+        private Actor einstein;
+        private Actor einsteinChinook;
+        private Actor tanya;
+        private Actor attackEntryPoint1;
+        private Actor attackEntryPoint2;
+
+        private Random random = new Random();
+        private static readonly string[] taunts = { "laugh1.aud", "lefty1.aud", "cmon1.aud", "gotit1.aud" };
+        private static readonly string[] ships = { "ca", "ca", "ca", "ca" };
+
+        private static readonly string[][] attackWaves = new string[][] {
+                                                         new[] { "e1", "e1", "e1", "e2", "e2", "dog" },
+                                                         new[] { "e1", "e1", "e1", "e1", "e1", "e1", "e2", "e2", "e2", "e2", "dog" },
+                                                         new[] { "e1", "e1", "e1", "e1", "e1", "e1", "e1", "e1", "e2", "e2", "e2", "e2", "e2", "e2", "dog", "dog", "3tnk" },
+                                                         new[] { "e1", "e1", "e1", "e1", "e1", "e1", "e1", "e1", "e1", "e1", "e2", "e2", "e2", "e2", "e2", "e2", "dog", "dog", "e4", "e4", "3tnk", "3tnk" },
+                                                         };
+
+        private static readonly string[] reinforcements = { "e1", "e1", "e1", "e3", "e3" };
+
+        private const int labRange = 5;
+        private const int lzRange = 3;
+        private const string einsteinName = "c1";
+        private const string tanyaName = "e7";
+        private const string chinookName = "tran";
+
+        private void DisplayObjective(string text)
+        {
+            Game.AddChatLine(Color.LimeGreen, "Objective", text);
+        }
+
+        private void MissionFailed(Actor self, string text)
+        {
+            if (allies.WinState != WinState.Undefined)
+            {
+                return;
+            }
+            allies.WinState = WinState.Lost;
+            Game.AddChatLine(Color.Red, "Mission failed", text);
+            foreach (var actor in self.World.Actors.Where(a => a.Owner.InternalName == allies.InternalName))
+            {
+                actor.Kill(actor);
+            }
+            self.World.LocalShroud.Disabled = true;
+        }
+
+        private void MissionAccomplished(Actor self, string text)
+        {
+            if (allies.WinState != WinState.Undefined)
+            {
+                return;
+            }
+            allies.WinState = WinState.Won;
+            Game.AddChatLine(Color.Blue, "Mission accomplished", text);
+            self.World.LocalShroud.Disabled = true;
+        }
+
+        public void Tick(Actor self)
+        {
+            if (allies.WinState != WinState.Undefined)
+            {
+                return;
+            }
+            // display current objective every so often
+            if (self.World.FrameNumber % 1500 == 1)
+            {
+                DisplayObjective(objectives[currentObjective]);
+            }
+            // taunt every so often
+            if (self.World.FrameNumber % 1000 == 0)
+            {
+                Sound.Play(taunts[random.Next(0, taunts.Length)]);
+            }
+            // take Tanya to the LZ
+            if (self.World.FrameNumber == 1)
+            {
+                FlyTanyaToInsertionLZ(self);
+            }
+            // laugh when Tanya arrives at the LZ
+            if (tanya.IsInWorld && !tanyaLanded)
+            {
+                Sound.Play("laugh1.aud"); // "Hahaha" - Tanya
+                tanyaLanded = true;
+            }
+            // objectives
+            if (currentObjective == 0)
+            {
+                if (AlliesControlLab(self))
+                {
+                    SpawnEinsteinAtLab(self); // spawn Einstein once the area is clear
+                    Sound.Play("einok1.aud"); // "Incredible!" - Einstein
+                    FlyUnitsToInsertionLZ(self, reinforcements);
+                    SendShips(self);
+                    currentObjective++;
+                    DisplayObjective(objectives[currentObjective]);
+                }
+                if (lab.Destroyed)
+                {
+                    MissionFailed(self, "Einstein was killed.");
+                }
+            }
+            else if (currentObjective == 1)
+            {
+                if (self.World.FrameNumber >= frameLastAttackWave + 600)
+                {
+                    FlyUnitsToInsertionLZ(self, reinforcements);
+                    SendAttackWave(self, attackWaves[Math.Min(currentAttackWave, attackWaves.Length - 1)]);
+                    if (currentAttackWave == attackWaves.Length - 1)
+                    {
+                        FlyToExtractionLZ(self);
+                    }
+                    currentAttackWave++;
+                    frameLastAttackWave = self.World.FrameNumber;
+                }
+                if (einsteinChinook != null)
+                {
+                    if (einsteinChinook.Trait<Cargo>().Passengers.Contains(einstein))
+                    {
+                        FlyFromExtractionLZ();
+                    }
+                    if (UnitsNearActor(self, chinookExitPoint, 5).Contains(einsteinChinook) && !einstein.IsInWorld)
+                    {
+                        MissionAccomplished(self, "Einstein was rescued.");
+                    }
+                }
+                if (einstein.Destroyed)
+                {
+                    MissionFailed(self, "Einstein was killed.");
+                }
+            }
+            if (tanya.Destroyed)
+            {
+                MissionFailed(self, "Tanya was killed.");
+            }
+        }
+
+        private void SendAttackWave(Actor self, IEnumerable<string> wave)
+        {
+            foreach (var unit in wave)
+            {
+                var spawnActor = random.Next(2) == 0 ? attackEntryPoint1 : attackEntryPoint2;
+                var targetActor = random.Next(2) == 0 ? einstein : tanya;
+                var actor = self.World.CreateActor(unit, new TypeDictionary { new OwnerInit(soviets), new LocationInit(spawnActor.Location) });
+                actor.QueueActivity(new Attack(Target.FromActor(targetActor), 2));
+            }
+        }
+
+        private IEnumerable<Actor> UnitsNearActor(Actor self, Actor actor, int range)
+        {
+            return self.World.FindUnitsInCircle(actor.CenterLocation, Game.CellSize * range)
+                .Where(a => a.IsInWorld && a != self.World.WorldActor && !a.Destroyed && a.HasTrait<IMove>() && !a.Owner.NonCombatant);
+        }
+
+        private IEnumerable<Actor> UnitsNearExtractionLZ(Actor self, int range)
+        {
+            return UnitsNearActor(self, extractionLZ, range);
+        }
+
+        private IEnumerable<Actor> UnitsNearLab(Actor self, int range)
+        {
+            return UnitsNearActor(self, lab, range);
+        }
+
+        private bool AlliesControlLab(Actor self)
+        {
+            var units = UnitsNearLab(self, labRange);
+            return units.Count() >= 1 && units.All(a => a.Owner.InternalName == allies.InternalName);
+        }
+
+        private void SpawnEinsteinAtLab(Actor self)
+        {
+            einstein = self.World.CreateActor(einsteinName, new TypeDictionary { new OwnerInit(allies), new LocationInit(lab.Location) });
+        }
+
+        private void SendShips(Actor self)
+        {
+            for (int i = 0; i < ships.Length; i++)
+            {
+                var actor = self.World.CreateActor(ships[i],
+                    new TypeDictionary { new OwnerInit(allies), new LocationInit(shipSpawnPoint.Location + new int2(i * 2, 0)) });
+                actor.QueueActivity(new Move.Move(shipMovePoint.Location + new int2(i * 4, 0)));
+            }
+        }
+
+        private void FlyFromExtractionLZ()
+        {
+            einsteinChinook.QueueActivity(new Wait(150));
+            einsteinChinook.QueueActivity(new HeliFly(chinookExitPoint.CenterLocation));
+            einsteinChinook.QueueActivity(new RemoveSelf());
+        }
+
+        private void FlyToExtractionLZ(Actor self)
+        {
+            einsteinChinook = self.World.CreateActor(chinookName, new TypeDictionary { new OwnerInit(allies), new LocationInit(extractionLZEntryPoint.Location) });
+            einsteinChinook.QueueActivity(new HeliFly(extractionLZ.CenterLocation));
+            einsteinChinook.QueueActivity(new Turn(0));
+            einsteinChinook.QueueActivity(new HeliLand(true));
+        }
+
+        private void FlyTanyaToInsertionLZ(Actor self)
+        {
+            tanya = self.World.CreateActor(false, tanyaName, new TypeDictionary { new OwnerInit(allies) });
+            FlyUnitsToInsertionLZ(self, new[] { tanya });
+        }
+
+        private void FlyUnitsToInsertionLZ(Actor self, IEnumerable<string> unitNames)
+        {
+            var units = unitNames.Select(name => self.World.CreateActor(false, name, new TypeDictionary { new OwnerInit(allies) }));
+            FlyUnitsToInsertionLZ(self, units);
+        }
+
+        private void FlyUnitsToInsertionLZ(Actor self, IEnumerable<Actor> units)
+        {
+            var chinook = self.World.CreateActor(chinookName, new TypeDictionary { new OwnerInit(allies), new LocationInit(insertionLZEntryPoint.Location) });
+            foreach (var unit in units)
+            {
+                chinook.Trait<Cargo>().Load(chinook, unit);
+            }
+            // use CenterLocation for HeliFly, Location for Move
+            chinook.QueueActivity(new HeliFly(insertionLZ.CenterLocation));
+            chinook.QueueActivity(new Turn(0));
+            chinook.QueueActivity(new HeliLand(true));
+            chinook.QueueActivity(new UnloadCargo());
+            chinook.QueueActivity(new Wait(150));
+            chinook.QueueActivity(new HeliFly(chinookExitPoint.CenterLocation));
+            chinook.QueueActivity(new RemoveSelf());
+        }
+
+        public void WorldLoaded(World w)
+        {
+            allies = w.Players.Single(p => p.InternalName == "Allies");
+            soviets = w.Players.Single(p => p.InternalName == "Soviets");
+            var actors = w.WorldActor.Trait<SpawnMapActors>().Actors;
+            insertionLZ = actors["InsertionLZ"];
+            extractionLZ = actors["ExtractionLZ"];
+            lab = actors["Lab"];
+            insertionLZEntryPoint = actors["InsertionLZEntryPoint"];
+            chinookExitPoint = actors["ChinookExitPoint"];
+            extractionLZEntryPoint = actors["ExtractionLZEntryPoint"];
+            shipSpawnPoint = actors["ShipSpawnPoint"];
+            shipMovePoint = actors["ShipMovePoint"];
+            attackEntryPoint1 = actors["SovietAttackEntryPoint1"];
+            attackEntryPoint2 = actors["SovietAttackEntryPoint2"];
+            music = Sound.Play("hell226m.aud"); // Hell March
+            Game.ConnectionStateChanged += StopMusic;
+        }
+
+        private void StopMusic(OrderManager orderManager)
+        {
+            if (!orderManager.GameStarted)
+            {
+                Sound.StopSound(music);
+                Game.ConnectionStateChanged -= StopMusic;
+            }
+        }
+    }
+}
