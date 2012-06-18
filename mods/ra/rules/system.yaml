@@ -47,7 +47,7 @@ Player:
 			barr: 1%
 			tent: 1%
 			weap: 1%
-			pbox: 7%
+			pbox.e1: 7%
 			gun: 7%
 			tsla: 5%
 			ftur: 10%
@@ -77,7 +77,7 @@ Player:
 			tent: 1%
 			barr: 1%
 			weap: 1%
-			pbox: 7%
+			pbox.e1: 7%
 			gun: 7%
 			ftur: 10%
 			tsla: 5%
@@ -98,15 +98,44 @@ Player:
 			2tnk: 25%
 			3tnk: 50%
 		SquadSize: 10
+	HackyAI@OptiAI:
+		Name:Eisenhower AI
+		BuildingFractions:
+			proc: 25.1%
+			powr: 35%
+			tent: 0.1%
+			barr: 0.1%
+			weap: 0.1%
+			fix: 0.1%
+			dome: 0.1%
+			atek: 0.1%
+			stek: 0.1%
+		UnitsToBuild:
+			e1: 50%
+			e2: 1%
+			e3: 10%
+			medi: 0.01%
+			e7: 0.01%
+			apc: 10%
+			jeep: 10%
+			ftrk: 25%
+			1tnk: 25%
+			2tnk: 50%
+			3tnk: 75%
+			4tnk: 100%
+			arty: 30%
+			v2rl: 30%
+		SquadSize: 10
 	HackyAI@ZhukovAI:
 		Name:Zhukov AI
 		BuildingFractions:
-			proc: 30%
+			proc: 20%
 			powr: 35%
 			tent: 1%
 			barr: 1%
 			weap: 1%
-			pbox: 7%
+			pbox.e1: 4%
+			hbox.e1: 3%
 			gun: 10%
 			ftur: 10%
 			tsla: 5%
@@ -117,16 +146,16 @@ Player:
 			atek: 1%
 			stek: 1%
 		UnitsToBuild:
-			e1: 40%
-			e3: 10%
+			e1: 4%
+			e3: 1%
 			harv: 10%
 			ftrk: 5%
 			v2rl: 40%
 			arty: 40%
-			1tnk: 20%
-			2tnk: 20%
-			3tnk: 20%
-		SquadSize: 30
+			1tnk: 15%
+			2tnk: 15%
+			3tnk: 15%
+		SquadSize: 25
 	HackyAI@RommelAI:
 		Name:Rommel AI
 		BuildingFractions:
@@ -135,7 +164,7 @@ Player:
 			tent: 1%
 			barr: 1%
 			weap: 1%
-			pbox: 7%
+			pbox.e1: 7%
 			gun: 7%
 			ftur: 10%
 			tsla: 5%

@@ -81,6 +81,8 @@ namespace OpenRA.Mods.RA
 			if (remainingTime > 0 && canCloak)
 				if (--remainingTime <= 0)
 					Sound.Play(info.CloakSound, self.CenterLocation);
+			if (self.IsDisabled())
+				Uncloak();
 		}
 
 		public bool IsVisible(Actor self)

@@ -166,7 +166,7 @@ namespace OpenRA
 					{
 						var isNetTick = LocalTick % NetTickScale == 0;
 
-						if (!isNetTick || orderManager.IsReadyForNextFrame)
+						if ((!isNetTick || orderManager.IsReadyForNextFrame) && !orderManager.GamePaused )
 						{
 							++orderManager.LocalFrameNumber;
 
@@ -188,6 +188,8 @@ namespace OpenRA
 						else
 							if (orderManager.NetFrameNumber == 0)
 								orderManager.LastTickTime = Environment.TickCount;
+					
+						viewport.Tick();
 					}
 				}
 		}

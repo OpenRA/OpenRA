@@ -42,7 +42,13 @@ namespace OpenRA.Mods.RA.Orders
 			}
 		}
 
-		public void Tick(World world) { }
+		public void Tick(World world)
+		{
+			if (world.LocalPlayer != null &&
+				world.LocalPlayer.WinState != WinState.Undefined)
+				world.CancelInputMode();
+		}
+
 		public void RenderAfterWorld(WorldRenderer wr, World world) { }
 		public void RenderBeforeWorld(WorldRenderer wr, World world) { }
 

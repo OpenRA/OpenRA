@@ -497,36 +497,142 @@ PBOX.SHOK:
 
 HBOX:
 	Inherits: ^Building
-#	Buildable:
-#		Queue: Defense
-#		BuildPaletteOrder: 30
-#		Prerequisites: tent
-#		Owner: allies
-#		Hotkey: c
-	Valued:
-		Cost: 600
 	Tooltip:
-		Name: Camo Pillbox
-		Description: Hidden defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
+		Name: Camo Pillbox (Unarmed)
 	Building:
 		Power: -15
 	-GivesBuildableArea:
+	Valued:
+		Cost: 600
 	Health:
 		HP: 600
 	Armor:
 		Type: Wood
 	RevealsShroud:
 		Range: 6
+	Cloak:
+		InitialDelay: 125
+		CloakDelay: 60
+		CloakSound: appear1.aud
+		UncloakSound: appear1.aud
+	IronCurtainable:
+	-AcceptsSupplies:
+	Turreted:
+		ROT: 255
+	Cargo:
+		Types: Infantry
+		MaxWeight: 1
+		PipCount: 1
+	-EmitInfantryOnSell:
+#	EmitCargoOnSell:
+	TransformOnPassenger@e1:
+		PassengerTypes: e1
+		OnEnter: HBOX.e1
+		OnExit: HBOX
+		SkipMakeAnims: true
+#	TransformOnPassenger@e2:
+#		PassengerTypes: e2
+#		OnEnter: HBOX.e2
+#		OnExit: HBOX
+#		SkipMakeAnims: true
+	TransformOnPassenger@e3:
+		PassengerTypes: e3
+		OnEnter: HBOX.e3
+		OnExit: HBOX
+		SkipMakeAnims: true
+	TransformOnPassenger@e4:
+		PassengerTypes: e4
+		OnEnter: HBOX.e4
+		OnExit: HBOX
+		SkipMakeAnims: true
+	TransformOnPassenger@e7:
+		PassengerTypes: e7
+		OnEnter: HBOX.e7
+		OnExit:	HBOX
+		SkipMakeAnims: true
+	TransformOnPassenger@SHOK:
+		PassengerTypes: shok
+		OnEnter: HBOX.shok
+		OnExit:	HBOX
+		SkipMakeAnims: true
+
+HBOX.E1:
+	Inherits: HBOX
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 20
+		Prerequisites: tent
+		Owner: allies
+		Hotkey: p
+	Tooltip:
+		Name: Camo Pillbox (Guns)
+		Description: Hidden defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
+		Icon: HBOXICON
+	RenderBuilding:
+		Image: HBOX
+	RenderRangeCircle:
+	AutoTarget:
 	AttackTurreted:
 		PrimaryWeapon: Vulcan
 		PrimaryLocalOffset: 0,-11,0,0,0
-	AutoTarget:
-	IronCurtainable:
-	RenderRangeCircle:
-	-AcceptsSupplies:
 	WithMuzzleFlash:
-	Turreted:
-		ROT: 255
+	Cargo:
+		InitialUnits: e1
+
+#HBOX.E2:
+#	Inherits: HBOX
+#	Tooltip:
+#		Name: Camo Pillbox (Grenades)
+#	RenderBuilding:
+#		Image: HBOX
+
+HBOX.E3:
+	Inherits: HBOX
+	Tooltip:
+		Name: Camo Pillbox (Rockets)
+	RenderBuilding:
+		Image: HBOX
+	RenderRangeCircle:
+	AutoTarget:
+	AttackTurreted:
+		PrimaryWeapon: Dragon
+		PrimaryLocalOffset: 0,-11,0,0,0
+
+HBOX.E4:
+	Inherits: HBOX
+	Tooltip:
+		Name: Camo Pillbox (Flamethrower)
+	RenderBuilding:
+		Image: HBOX
+	RenderRangeCircle:
+	AutoTarget:
+	AttackTurreted:
+		PrimaryWeapon: Flamer
+		PrimaryLocalOffset: 0,-11,0,0,0
+
+HBOX.E7:
+	Inherits: HBOX
+	Tooltip:
+		Name: Camo Pillbox (Tanya)
+	RenderBuilding:
+		Image: HBOX
+	RenderRangeCircle:
+	AutoTarget:
+	AttackTurreted:
+		PrimaryWeapon: Colt45
+		PrimaryLocalOffset: 0,-11,0,0,0
+
+HBOX.SHOK:
+	Inherits: HBOX
+	Tooltip:
+		Name: Camo Pillbox (Tesla)
+	RenderBuilding:
+		Image: HBOX
+	RenderRangeCircle:
+	AutoTarget:
+	AttackTurreted:
+		PrimaryWeapon: PortaTesla
+		PrimaryLocalOffset: 0,-11,0,0,0		
 
 GUN:
 	Inherits: ^Building

@@ -183,7 +183,7 @@ namespace OpenRA
 
 			while (frameEndActions.Count != 0)
 				frameEndActions.Dequeue()(this);
-			Game.viewport.Tick();
+			
 		}
 
 		public IEnumerable<Actor> Actors { get { return actors; } }

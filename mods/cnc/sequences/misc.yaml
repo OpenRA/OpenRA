@@ -94,6 +94,10 @@ explosion:
 	6w: atomsfx
 		Start: 0
 		Length: *
+	chemball: chemball
+		Start: 0
+		Length: *
+
 rank:
 	rank:
 		Start: 0

@@ -30,6 +30,7 @@ namespace OpenRA.Mods.RA.Move
 		public readonly int Speed = 1;
 		public readonly bool OnRails = false;
 		public readonly bool SharesCell = false;
+		public readonly int Altitude;
 
 		public virtual object Create(ActorInitializer init) { return new Mobile(init, this); }
 
@@ -110,7 +111,7 @@ namespace OpenRA.Mods.RA.Move
 		int2 __fromCell, __toCell;
 		public SubCell fromSubCell, toSubCell;
 
-		int __altitude;
+		//int __altitude;
 
 		[Sync]
 		public int Facing
@@ -120,11 +121,7 @@ namespace OpenRA.Mods.RA.Move
 		}
 
 		[Sync]
-		public int Altitude
-		{
-			get { return __altitude; }
-			set { __altitude = value; }
-		}
+		public int Altitude { get; set; }
 
 		public int ROT { get { return Info.ROT; } }
 		public int InitialFacing { get { return Info.InitialFacing; } }

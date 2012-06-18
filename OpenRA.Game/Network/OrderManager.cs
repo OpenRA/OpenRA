@@ -36,6 +36,7 @@ namespace OpenRA.Network
 		public int LastTickTime = Environment.TickCount;
 
 		public bool GameStarted { get { return NetFrameNumber != 0; } }
+		public bool GamePaused {get; set;}
 		public IConnection Connection { get; private set; }
 
 		public readonly int SyncHeaderSize = 9;

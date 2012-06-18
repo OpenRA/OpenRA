@@ -25,7 +25,13 @@ namespace OpenRA.Mods.RA
 			 * - actually steal their exploration before resetting it
 			 */
 			if (self.World.LocalPlayer != null && self.World.LocalPlayer.Stances[self.Owner] == Stance.Ally)
+			{
+				var gpsWatcher = self.Owner.PlayerActor.TraitOrDefault<GpsWatcher>();
+				if (gpsWatcher != null && (gpsWatcher.Granted || gpsWatcher.GrantedAllies)) 
+					return;
+
 				self.Owner.Shroud.ResetExploration();
+			}
 		}
 	}
 }

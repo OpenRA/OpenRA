@@ -105,11 +105,14 @@ namespace OpenRA.FileFormats
 			levels.Add(new List<MiniYamlNode>());
 
 			var lineNo = 0;
-			foreach (var line in lines)
+			foreach (var ll in lines)
 			{
+				var line = ll;
 				++lineNo;
+				if (line.Contains('#'))
+					line = line.Substring(0, line.IndexOf('#')).TrimEnd(' ', '\t');
 				var t = line.TrimStart(' ', '\t');
-				if (t.Length == 0 || t[0] == '#')
+				if (t.Length == 0)
 					continue;
 				var level = line.Length - t.Length;
 				var location = new MiniYamlNode.SourceLocation { Filename = filename, Line = lineNo };

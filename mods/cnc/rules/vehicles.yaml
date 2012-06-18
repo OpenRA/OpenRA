@@ -19,7 +19,7 @@ MCV:
 	Armor: 
 		Type: Light
 	RevealsShroud:
-		Range: 4
+		Range: 8
 	Transforms:
 		IntoActor: fact
 		Offset:-1,-1
@@ -84,7 +84,7 @@ APC:
 		Owner: gdi
 	Mobile:
 		ROT: 5
-		Speed: 11
+		Speed: 10
 	Health:
 		HP: 200
 	Armor:
@@ -186,7 +186,7 @@ BGGY:
 		Owner: nod
 	Mobile:
 		ROT: 10
-		Speed: 12
+		Speed: 16
 	Health:
 		HP: 140
 	Armor:
@@ -218,7 +218,14 @@ BIKE:
 		Owner: nod
 	Mobile:
 		ROT: 10
-		Speed: 13
+		Speed: 20
+		TerrainSpeeds:
+			Clear: 42
+			Rough: 25
+			Road: 100
+			Tiberium: 25
+			BlueTiberium: 25
+			Beach: 25
 	Health:
 		HP: 120
 	Armor: 
@@ -248,7 +255,7 @@ JEEP:
 		Owner: gdi
 	Mobile:
 		ROT: 10
-		Speed: 10
+		Speed: 14
 	Health:
 		HP: 150
 	Armor:
@@ -314,7 +321,7 @@ MTNK:
 		Prerequisites: hq
 		Owner: gdi
 	Mobile:
-		Speed: 9
+		Speed: 7
 	Health:
 		HP: 400
 	Armor:
@@ -373,6 +380,8 @@ HTNK:
 	AutoTarget:
 	SelfHealing:
 		Ticks: 10
+		HealIfBelow: 50%
+		DamageCooldown: 200
 	LeavesHusk:
 		HuskActor: HTNK.Husk
 	Explodes:
@@ -384,7 +393,7 @@ HTNK:
 MSAM:
 	Inherits: ^Tank
 	Valued:
-		Cost: 800
+		Cost: 1200
 	Tooltip:
 		Name: Rocket Launcher
 		Icon: msamicnh
@@ -400,7 +409,7 @@ MSAM:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 6
+		Range: 10
 	Turreted:
 		ROT: 255
 	AttackFrontal:

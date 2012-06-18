@@ -435,8 +435,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			}
 		}
 
-		bool SpawnPointAvailable(int index) { return (index == 0) || orderManager.LobbyInfo.Clients.All(c => c.SpawnPoint != index); }
-
 		void CycleReady()
 		{
 			orderManager.IssueOrder(Order.Command("ready"));

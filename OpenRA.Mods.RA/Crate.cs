@@ -38,13 +38,10 @@ namespace OpenRA.Mods.RA
 	class Crate : ITick, IOccupySpace, ITeleportable, ICrushable, ISync
 	{
 		readonly Actor self;
-		[Sync]
-		int ticks;
-
-		[Sync]
-		public int2 Location;
-
+		[Sync] int ticks;
+		[Sync] public int2 Location;
 		CrateInfo Info;
+
 		public Crate(ActorInitializer init, CrateInfo info)
 		{
 			this.self = init.self;

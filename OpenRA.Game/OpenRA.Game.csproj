@@ -142,6 +142,7 @@
     <Compile Include="Server\Server.cs" />
     <Compile Include="Server\ServerOrder.cs" />
     <Compile Include="Server\TraitInterfaces.cs" />
+    <Compile Include="Server\UPnP.cs" />
     <Compile Include="Sound.cs" />
     <Compile Include="Support\Arguments.cs" />
     <Compile Include="Support\PerfHistory.cs" />

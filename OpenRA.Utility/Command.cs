@@ -398,5 +398,28 @@ namespace OpenRA.Utility
 				ShpWriter.Write(destStream, srcImage.Width, srcImage.Height,
 					srcImage.Frames.Select( im => im.Image.Select(px => (byte)remap[px]).ToArray() ));
 		}
+
+		public static void TransposeShp(string[] args)
+		{
+			var srcImage = ShpReader.Load(args[1]);
+
+			var srcFrames = srcImage.Frames.ToArray();
+			var destFrames = srcImage.Frames.ToArray();
+
+			for( var z = 3; z < args.Length - 2; z += 3 )
+			{
+				var start = int.Parse(args[z]);
+				var m = int.Parse(args[z+1]);
+				var n = int.Parse(args[z+2]);
+
+				for( var i = 0; i < m; i++ )
+					for( var j = 0; j < n; j++ )
+						destFrames[ start + i*n + j ] = srcFrames[ start + j*m + i ];
+			}
+
+			using( var destStream = File.Create(args[2]) )
+				ShpWriter.Write(destStream, srcImage.Width, srcImage.Height,
+					destFrames.Select(f => f.Image));
+		}
 	}
 }

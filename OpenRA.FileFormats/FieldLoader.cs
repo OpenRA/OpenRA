@@ -56,6 +56,11 @@ namespace OpenRA.FileFormats
 				ret = GetValue( fieldName, fieldType, n[ 0 ].Value.Value );
 				return true;
 			}
+			else if ( n.Count > 1 )
+			{
+				throw new InvalidOperationException("The field {0} has multiple definitions:\n{1}"
+					.F(fieldName, n.Select(m => "\t- " + m.Location).JoinWith("\n")));
+			}
 			throw new InvalidOperationException( "TryGetValueFromYaml: unable to load field {0} (of type {1})".F( fieldName, fieldType ) );
 		}
 
