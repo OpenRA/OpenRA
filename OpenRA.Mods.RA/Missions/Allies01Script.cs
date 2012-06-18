@@ -166,7 +166,7 @@ namespace OpenRA.Mods.RA.Missions
                     {
                         FlyEinsteinFromExtractionLZ();
                     }
-                    if (UnitsNearActor(self, chinookExitPoint, 5).Contains(einsteinChinook) && !einstein.IsInWorld)
+                    if (!self.World.Map.IsInMap(einsteinChinook.Location) && !einstein.IsInWorld)
                     {
                         MissionAccomplished(self, "Einstein was rescued.");
                     }
