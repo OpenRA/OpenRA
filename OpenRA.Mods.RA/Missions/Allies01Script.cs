@@ -37,8 +37,6 @@ namespace OpenRA.Mods.RA.Missions
 
         private ISound music;
 
-        private bool tanyaLanded;
-
         private Actor insertionLZ;
         private Actor extractionLZ;
         private Actor lab;
@@ -126,12 +124,6 @@ namespace OpenRA.Mods.RA.Missions
             {
                 FlyTanyaToInsertionLZ(self);
             }
-            // laugh when Tanya arrives at the LZ
-            if (tanya.IsInWorld && !tanyaLanded)
-            {
-                Sound.Play("laugh1.aud"); // "Hahaha" - Tanya
-                tanyaLanded = true;
-            }
             // objectives
             if (currentObjective == 0)
             {
@@ -199,14 +191,9 @@ namespace OpenRA.Mods.RA.Missions
                 .Where(a => a.IsInWorld && a != self.World.WorldActor && !a.Destroyed && a.HasTrait<IMove>() && !a.Owner.NonCombatant);
         }
 
-        private IEnumerable<Actor> UnitsNearLab(Actor self, int range)
-        {
-            return UnitsNearActor(self, lab, range);
-        }
-
         private bool AlliesControlLab(Actor self)
         {
-            var units = UnitsNearLab(self, labRange);
+            var units = UnitsNearActor(self, lab, labRange);
             return units.Count() >= 1 && units.All(a => a.Owner.InternalName == allies.InternalName);
         }
 
@@ -243,27 +230,14 @@ namespace OpenRA.Mods.RA.Missions
         private void FlyTanyaToInsertionLZ(Actor self)
         {
             tanya = self.World.CreateActor(false, tanyaName, new TypeDictionary { new OwnerInit(allies) });
-            FlyUnitsToInsertionLZ(self, new[] { tanya });
-        }
-
-        private void FlyUnitsToInsertionLZ(Actor self, IEnumerable<string> unitNames)
-        {
-            var units = unitNames.Select(name => self.World.CreateActor(false, name, new TypeDictionary { new OwnerInit(allies) }));
-            FlyUnitsToInsertionLZ(self, units);
-        }
-
-        private void FlyUnitsToInsertionLZ(Actor self, IEnumerable<Actor> units)
-        {
             var chinook = self.World.CreateActor(chinookName, new TypeDictionary { new OwnerInit(allies), new LocationInit(insertionLZEntryPoint.Location) });
-            foreach (var unit in units)
-            {
-                chinook.Trait<Cargo>().Load(chinook, unit);
-            }
+            chinook.Trait<Cargo>().Load(chinook, tanya);
             // use CenterLocation for HeliFly, Location for Move
             chinook.QueueActivity(new HeliFly(insertionLZ.CenterLocation));
             chinook.QueueActivity(new Turn(0));
             chinook.QueueActivity(new HeliLand(true));
             chinook.QueueActivity(new UnloadCargo());
+            chinook.QueueActivity(new CallFunc(() => Sound.Play("laugh1.aud")));
             chinook.QueueActivity(new Wait(150));
             chinook.QueueActivity(new HeliFly(chinookExitPoint.CenterLocation));
             chinook.QueueActivity(new RemoveSelf());
