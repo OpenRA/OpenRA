@@ -12,12 +12,13 @@ using System;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
+using System.Collections.Generic;
 
 namespace OpenRA.Traits
 {
 	public class ResourceLayerInfo : TraitInfo<ResourceLayer> { }
 
-	public class ResourceLayer: IRenderOverlay, IWorldLoaded
+	public class ResourceLayer : IRenderOverlay, IWorldLoaded
 	{
 		World world;
 
@@ -26,12 +27,12 @@ namespace OpenRA.Traits
 
 		bool hasSetupPalettes;
 
-		public void Render( WorldRenderer wr )
+		public void Render(WorldRenderer wr)
 		{
 			if (!hasSetupPalettes)
 			{
 				hasSetupPalettes = true;
-				foreach( var rt in world.WorldActor.TraitsImplementing<ResourceType>() )
+				foreach (var rt in world.WorldActor.TraitsImplementing<ResourceType>())
 					rt.info.PaletteIndex = wr.GetPaletteIndex(rt.info.Palette);
 			}
 
@@ -104,7 +105,7 @@ namespace OpenRA.Traits
 			int sum = 0;
 			for (var u = -1; u < 2; u++)
 				for (var v = -1; v < 2; v++)
-					if (content[i+u, j+v].type == t)
+					if (content[i + u, j + v].type == t)
 						++sum;
 			return sum;
 		}
@@ -131,14 +132,14 @@ namespace OpenRA.Traits
 				content[i, j].image.Length - 1,
 				content[i, j].density + n);
 
-			world.Map.CustomTerrain[i,j] = t.info.TerrainType;
+			world.Map.CustomTerrain[i, j] = t.info.TerrainType;
 		}
 
 		public bool IsFull(int i, int j) { return content[i, j].density == content[i, j].image.Length - 1; }
 
 		public ResourceType Harvest(CPos p)
 		{
-			var type = content[p.X,p.Y].type;
+			var type = content[p.X, p.Y].type;
 			if (type == null) return null;
 
 			if (--content[p.X, p.Y].density < 0)
@@ -163,6 +164,12 @@ namespace OpenRA.Traits
 		}
 
 		public ResourceType GetResource(CPos p) { return content[p.X, p.Y].type; }
+		public int GetResourceDensity(CPos p) { return content[p.X, p.Y].density; }
+		public int GetMaxResourceDensity(CPos p)
+		{
+			if (content[p.X, p.Y].image == null) return 0;
+			return content[p.X, p.Y].image.Length - 1;
+		}
 
 		public struct CellContents
 		{

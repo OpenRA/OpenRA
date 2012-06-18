@@ -233,7 +233,7 @@ namespace OpenRA.Mods.RA.Move
 
 		public override void Cancel( Actor self )
 		{
-			path = new List<CPos>();
+			path = new List<CPos>(0);
 			base.Cancel(self);
 		}
 

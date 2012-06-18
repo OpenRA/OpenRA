@@ -37,4 +37,9 @@ namespace OpenRA.Mods.RA
 	{
 		IEnumerable<string> ProvidesPrerequisites {get;}
 	}
+
+	public interface INotifyResourceClaimLost
+	{
+		void OnNotifyResourceClaimLost(Actor self, ResourceClaim claim, Actor claimer);
+	}
 }

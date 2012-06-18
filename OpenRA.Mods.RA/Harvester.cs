@@ -30,53 +30,72 @@ namespace OpenRA.Mods.RA
 	}
 
 	public class Harvester : IIssueOrder, IResolveOrder, IPips,
-		IExplodeModifier, IOrderVoice, ISpeedModifier, ISync
+		IExplodeModifier, IOrderVoice, ISpeedModifier, ISync, INotifyResourceClaimLost, INotifyIdle
 	{
 		Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
 
+		[Sync] public Actor OwnerLinkedProc = null;
+		[Sync] public Actor LastLinkedProc = null;
 		[Sync] public Actor LinkedProc = null;
 		[Sync] int currentUnloadTicks;
 		public CPos? LastHarvestedCell = null;
-		[Sync] public int ContentValue { get { return contents.Sum(c => c.Key.ValuePerUnit*c.Value); } }
+		public CPos? LastOrderLocation = null;
+		[Sync] public int ContentValue { get { return contents.Sum(c => c.Key.ValuePerUnit * c.Value); } }
 		readonly HarvesterInfo Info;
 
 		public Harvester(Actor self, HarvesterInfo info)
 		{
 			Info = info;
-			self.QueueActivity( new CallFunc( () => ChooseNewProc(self, null)));
+			self.QueueActivity(new CallFunc(() => ChooseNewProc(self, null)));
 		}
 
-		public void ChooseNewProc(Actor self, Actor ignore) { LinkedProc = ClosestProc(self, ignore); }
+		public void ChooseNewProc(Actor self, Actor ignore)
+		{
+			LinkedProc = ClosestProc(self, ignore);
+			LastLinkedProc = null;
+		}
 
 		public void ContinueHarvesting(Actor self)
 		{
-			if (LastHarvestedCell.HasValue)
-			{
-				var mobile = self.Trait<Mobile>();
-				self.QueueActivity( mobile.MoveTo(LastHarvestedCell.Value, 5) );
-				self.SetTargetLine(Target.FromCell(LastHarvestedCell.Value), Color.Red, false);
-			}
-			self.QueueActivity( new FindResources() );
+			// Move out of the refinery dock and continue harvesting:
+			UnblockRefinery(self);
+			self.QueueActivity(new FindResources());
 		}
 
 		Actor ClosestProc(Actor self, Actor ignore)
 		{
-			var refs = self.World.ActorsWithTrait<IAcceptOre>()
-				.Where(x => x.Actor != ignore && x.Actor.Owner == self.Owner)
-				.ToList();
+			// Find all refineries and their occupancy count:
+			var refs = (
+				from r in self.World.ActorsWithTrait<IAcceptOre>()
+				where r.Actor != ignore && r.Actor.Owner == self.Owner
+				let linkedHarvs = self.World.ActorsWithTrait<Harvester>().Where(a => a.Trait.LinkedProc == r.Actor).Count()
+				select new { Location = r.Actor.Location + r.Trait.DeliverOffset, Actor = r.Actor, Occupancy = linkedHarvs }
+			).ToDictionary(r => r.Location);
+
+			// Start a search from each refinery's delivery location:
 			var mi = self.Info.Traits.Get<MobileInfo>();
 			var path = self.World.WorldActor.Trait<PathFinder>().FindPath(
-				PathSearch.FromPoints(self.World, mi, self.Owner,
-					refs.Select(r => r.Actor.Location + r.Trait.DeliverOffset),
-					self.Location, false));
+				PathSearch.FromPoints(self.World, mi, self.Owner, refs.Values.Select(r => r.Location), self.Location, false)
+					.WithCustomCost((loc) =>
+					{
+						if (!refs.ContainsKey(loc)) return 0;
 
+						int occupancy = refs[loc].Occupancy;
+						// 4 harvesters clogs up the refinery's delivery location:
+						if (occupancy >= 3) return int.MaxValue;
+
+						// Prefer refineries with less occupancy (multiplier is to offset distance cost):
+						return occupancy * 12;
+					})
+			);
+
+			// Reverse the found-path to find the refinery location instead of our location:
 			path.Reverse();
 
 			if (path.Count != 0)
-				return refs.Where(x => x.Actor.Location + x.Trait.DeliverOffset == path[0])
-					.Select(a => a.Actor).FirstOrDefault();
-			else
-				return null;
+				return refs[path[0]].Actor;
+
+			return null;
 		}
 
 		public bool IsFull { get { return contents.Values.Sum() == Info.Capacity; } }
@@ -87,6 +106,43 @@ namespace OpenRA.Mods.RA
 		{
 			if (!contents.ContainsKey(type.info)) contents[type.info] = 1;
 			else contents[type.info]++;
+		}
+
+		public void UnblockRefinery(Actor self)
+		{
+			// Check that we're not in a critical location and being useless (refinery drop-off):
+			var lastproc = LastLinkedProc ?? LinkedProc;
+			if (lastproc != null)
+			{
+				var deliveryLoc = lastproc.Location + lastproc.Trait<IAcceptOre>().DeliverOffset;
+				if (self.Location == deliveryLoc)
+				{
+					// Get out of the way:
+					var mobile = self.Trait<Mobile>();
+					var harv = self.Trait<Harvester>();
+					// TODO: would like an interruptible move here
+					var moveTo = harv.LastHarvestedCell ?? (deliveryLoc + new CVec(0, 4));
+					self.QueueActivity(mobile.MoveTo(moveTo, 1));
+					self.SetTargetLine(Target.FromCell(moveTo), Color.Red, false);
+					self.World.WorldActor.Trait<ResourceClaimLayer>().ClaimResource(self, moveTo);
+					return;
+				}
+			}
+		}
+
+		public void TickIdle(Actor self)
+		{
+			// Are we not empty? Deliver resources:
+			if (!IsEmpty)
+			{
+				self.QueueActivity(new DeliverResources());
+				return;
+			}
+
+			UnblockRefinery(self);
+
+			// Wait for a bit before becoming idle again:
+			self.QueueActivity(new Wait(10));
 		}
 
 		// Returns true when unloading is complete
@@ -125,12 +181,12 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		public Order IssueOrder( Actor self, IOrderTargeter order, Target target, bool queued )
+		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if( order.OrderID == "Deliver" )
+			if (order.OrderID == "Deliver")
 				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
 
-			if( order.OrderID == "Harvest" )
+			if (order.OrderID == "Harvest")
 				return new Order(order.OrderID, self, queued) { TargetLocation = target.CenterLocation.ToCPos() };
 
 			return null;
@@ -145,23 +201,35 @@ namespace OpenRA.Mods.RA
 		{
 			if (order.OrderString == "Harvest")
 			{
+				// NOTE: An explicit harvest order allows the harvester to decide which refinery to deliver to.
+				OwnerLinkedProc = null;
+
 				var mobile = self.Trait<Mobile>();
 				self.CancelActivity();
 				if (order.TargetLocation != CPos.Zero)
 				{
-					self.QueueActivity(mobile.MoveTo(order.TargetLocation, 0));
-					self.SetTargetLine(Target.FromOrder(order), Color.Red);
+					var loc = order.TargetLocation;
+					var territory = self.World.WorldActor.Trait<ResourceClaimLayer>();
+
+					// Find the nearest claimable cell to the order location (useful for group-select harvest):
+					loc = mobile.NearestCell(loc, p => mobile.CanEnterCell(p) && territory.ClaimResource(self, p), 1, 6);
+
+					self.QueueActivity(mobile.MoveTo(loc, 0));
+					self.SetTargetLine(Target.FromCell(loc), Color.Red);
+
+					LastOrderLocation = loc;
 				}
 				self.QueueActivity(new FindResources());
 			}
 			else if (order.OrderString == "Deliver")
 			{
+				// NOTE: An explicit deliver order forces the harvester to always deliver to this refinery.
 				var iao = order.TargetActor.TraitOrDefault<IAcceptOre>();
 				if (iao == null || !iao.AllowDocking)
 					return;
 
-				if (order.TargetActor != LinkedProc)
-					LinkedProc = order.TargetActor;
+				if (order.TargetActor != OwnerLinkedProc)
+					LinkedProc = OwnerLinkedProc = order.TargetActor;
 
 				if (IsEmpty)
 					return;
@@ -177,6 +245,15 @@ namespace OpenRA.Mods.RA
 		{
 			if (LinkedProc == proc)
 				ChooseNewProc(self, proc);
+		}
+
+		public void OnNotifyResourceClaimLost(Actor self, ResourceClaim claim, Actor claimer)
+		{
+			if (self == claimer) return;
+
+			// Our claim on a resource was stolen, find more unclaimed resources:
+			self.CancelActivity();
+			self.QueueActivity(new FindResources());
 		}
 
 		PipType GetPipAt(int i)
@@ -204,7 +281,7 @@ namespace OpenRA.Mods.RA
 
 		public decimal GetSpeedModifier()
 		{
-			return 1m - ( 1m - Info.FullyLoadedSpeed ) * contents.Values.Sum() / Info.Capacity;
+			return 1m - (1m - Info.FullyLoadedSpeed) * contents.Values.Sum() / Info.Capacity;
 		}
 
 		class HarvestOrderTargeter : IOrderTargeter
@@ -223,11 +300,11 @@ namespace OpenRA.Mods.RA
 				// Don't leak info about resources under the shroud
 				if (!self.World.LocalShroud.IsExplored(location)) return false;
 
-				var res = self.World.WorldActor.Trait<ResourceLayer>().GetResource( location );
+				var res = self.World.WorldActor.Trait<ResourceLayer>().GetResource(location);
 				var info = self.Info.Traits.Get<HarvesterInfo>();
 
-				if( res == null ) return false;
-				if( !info.Resources.Contains( res.info.Name ) ) return false;
+				if (res == null) return false;
+				if (!info.Resources.Contains(res.info.Name)) return false;
 				cursor = "harvest";
 				IsQueued = forceQueued;
 

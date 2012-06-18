@@ -116,7 +116,6 @@ namespace OpenRA.Mods.RA
 			harv.QueueActivity( new CallFunc( () => harv.Trait<Harvester>().ContinueHarvesting(harv) ) );
 		}
 
-
 		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{
 			// Steal any docked harv too
