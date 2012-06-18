@@ -25,9 +25,14 @@ namespace OpenRA.Graphics
 		{
 			cursors = new Dictionary<string, CursorSequence>();
 			var sequences = new MiniYaml(null, sequenceFiles.Select(s => MiniYaml.FromFile(s)).Aggregate(MiniYaml.MergeLiberal));
+			var transparent = false;
+			var currentMod = Mod.AllMods[Game.modData.Manifest.Mods[0]];
+
+			if (currentMod.Id == "d2k")
+				transparent = true;
 
 			foreach (var s in sequences.NodesDict["Palettes"].Nodes)
-				Game.modData.Palette.AddPalette(s.Key, new Palette(FileSystem.Open(s.Value.Value), true));
+				Game.modData.Palette.AddPalette(s.Key, new Palette(FileSystem.Open(s.Value.Value), transparent));
 
 			foreach (var s in sequences.NodesDict["Cursors"].Nodes)
 				LoadSequencesForCursor(s.Key, s.Value);

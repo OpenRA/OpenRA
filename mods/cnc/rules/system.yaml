@@ -74,10 +74,10 @@ World:
 		Name: staticterrain
 	PaletteFromFile@chrome:
 		Name: chrome
-		Filename: temperat.pal
+		Filename: cursor.pal
 	PaletteFromFile@effect:
 		Name: effect
-		Filename: temperat.pal
+		Filename: cursor.pal
 	PaletteFromRGBA@shadow:
 		Name: shadow
 		R: 0
