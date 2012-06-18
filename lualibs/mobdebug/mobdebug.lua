@@ -1,5 +1,5 @@
 --
--- MobDebug 0.449
+-- MobDebug 0.451
 -- Copyright Paul Kulchenko 2011-2012
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
 -- (http://www.keplerproject.org/remdebug)
@@ -9,7 +9,7 @@ local mobdebug = {
   _NAME = "mobdebug",
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
-  _VERSION = "0.449"
+  _VERSION = "0.451"
 }
 
 local coroutine = coroutine
@@ -45,13 +45,14 @@ local function socketMobileLua()
           mosync.maWait(0)
           mosync.maGetEvent(event)
           local eventType = mosync.SysEventGetType(event)
-          if (mosync.EVENT_TYPE_CLOSE == eventType) then mosync.maExit(0) end
           if (mosync.EVENT_TYPE_CONN == eventType and
             mosync.SysEventGetConnHandle(event) == connection and
             mosync.SysEventGetConnOpType(event) == mosync.CONNOP_CONNECT) then
               -- result > 0 ? success : error
               if not (mosync.SysEventGetConnResult(event) > 0) then connection = nil end
               break
+          elseif mosync.EventMonitor and mosync.EventMonitor.HandleEvent then
+            mosync.EventMonitor:HandleEvent(event)
           end
         end
         mosync.SysFree(event)
@@ -84,16 +85,16 @@ local function socketMobileLua()
           while true do
             local numberOfBytes = stringToBuffer(msg, outBuffer)
             mosync.maConnWrite(connection, outBuffer, numberOfBytes)
-            local result = 0
             while true do
               mosync.maWait(0)
               mosync.maGetEvent(event)
               local eventType = mosync.SysEventGetType(event)
-              if (mosync.EVENT_TYPE_CLOSE == eventType) then mosync.maExit(0) end
               if (mosync.EVENT_TYPE_CONN == eventType and
                   mosync.SysEventGetConnHandle(event) == connection and
                   mosync.SysEventGetConnOpType(event) == mosync.CONNOP_WRITE) then
                 break
+              elseif mosync.EventMonitor and mosync.EventMonitor.HandleEvent then
+                mosync.EventMonitor:HandleEvent(event)
               end
             end
             self, msg = coroutine.yield()
@@ -110,7 +111,6 @@ local function socketMobileLua()
                 if len ~= 0 then mosync.maWait(0) end
                 mosync.maGetEvent(event)
                 local eventType = mosync.SysEventGetType(event)
-                if (mosync.EVENT_TYPE_CLOSE == eventType) then mosync.maExit(0) end
                 if (mosync.EVENT_TYPE_CONN == eventType and
                     mosync.SysEventGetConnHandle(event) == connection and
                     mosync.SysEventGetConnOpType(event) == mosync.CONNOP_READ) then
@@ -120,6 +120,8 @@ local function socketMobileLua()
                   break -- got the event we wanted; now check if we have all we need
                 elseif len == 0 then
                   self, len = coroutine.yield(nil)
+                elseif mosync.EventMonitor and mosync.EventMonitor.HandleEvent then
+                  mosync.EventMonitor:HandleEvent(event)
                 end
               end  
             end
@@ -151,11 +153,19 @@ local function socketMobileLua()
   return self
 end
 
+-- overwrite RunEventLoop in MobileLua as it conflicts with the event
+-- loop that needs to run to process debugger events (socket read/write).
+-- event loop functionality is implemented by calling HandleEvent
+-- while waiting for debugger events.
+if mosync and mosync.EventMonitor then
+  mosync.EventMonitor.RunEventLoop = function(self) end
+end
+
 local socket = mosync and socketMobileLua() or (require "socket")
 
 local debug = require "debug"
 local coro_debugger
-local events = { BREAK = 1, WATCH = 2, RESTART = 3 }
+local events = { BREAK = 1, WATCH = 2, RESTART = 3, STACK = 4 }
 local breakpoints = {}
 local watches = {}
 local lastsource
@@ -175,6 +185,137 @@ local debugee = function ()
   local a = 1
   for _ = 1, 10 do a = a + 1 end
   error(deferror)
+end
+
+local serpent = (function() ---- include Serpent module for serialization
+local n, v = "serpent", 0.15 -- (C) 2012 Paul Kulchenko; MIT License
+local c, d = "Paul Kulchenko", "Serializer and pretty printer of Lua data types"
+local snum = {[tostring(1/0)]='1/0 --[[math.huge]]',[tostring(-1/0)]='-1/0 --[[-math.huge]]',[tostring(0/0)]='0/0'}
+local badtype = {thread = true, userdata = true}
+local keyword, globals, G = {}, {}, (_G or _ENV)
+for _,k in ipairs({'and', 'break', 'do', 'else', 'elseif', 'end', 'false',
+  'for', 'function', 'goto', 'if', 'in', 'local', 'nil', 'not', 'or', 'repeat',
+  'return', 'then', 'true', 'until', 'while'}) do keyword[k] = true end
+for k,v in pairs(G) do globals[v] = k end -- build func to name mapping
+for _,g in ipairs({'coroutine', 'debug', 'io', 'math', 'string', 'table', 'os'}) do
+  for k,v in pairs(G[g]) do globals[v] = g..'.'..k end end
+
+local function s(t, opts)
+  local name, indent, fatal = opts.name, opts.indent, opts.fatal
+  local sparse, custom, huge = opts.sparse, opts.custom, not opts.nohuge
+  local space, maxl = (opts.compact and '' or ' '), (opts.maxlevel or math.huge)
+  local comm = opts.comment and (tonumber(opts.comment) or math.huge)
+  local seen, sref, syms, symn = {}, {}, {}, 0
+  local function gensym(val) return tostring(val):gsub("[^%w]",""):gsub("(%d%w+)",
+    function(s) if not syms[s] then symn = symn+1; syms[s] = symn end return syms[s] end) end
+  local function safestr(s) return type(s) == "number" and (huge and snum[tostring(s)] or s)
+    or type(s) ~= "string" and tostring(s) -- escape NEWLINE/010 and EOF/026
+    or ("%q"):format(s):gsub("\010","n"):gsub("\026","\\026") end
+  local function comment(s,l) return comm and (l or 0) < comm and ' --[['..tostring(s)..']]' or '' end
+  local function globerr(s,l) return globals[s] and globals[s]..comment(s,l) or not fatal
+    and safestr(tostring(s))..comment('err',l) or error("Can't serialize "..tostring(s)) end
+  local function safename(path, name) -- generates foo.bar, foo[3], or foo['b a r']
+    local n = name == nil and '' or name
+    local plain = type(n) == "string" and n:match("^[%l%u_][%w_]*$") and not keyword[n]
+    local safe = plain and n or '['..safestr(n)..']'
+    return (path or '')..(plain and path and '.' or '')..safe, safe end
+  local alphanumsort = type(opts.sortkeys) == 'function' and opts.sortkeys or function(o, n)
+    local maxn, to = tonumber(n) or 12, {number = 'a', string = 'b'}
+    local function padnum(d) return ("%0"..maxn.."d"):format(d) end
+    table.sort(o, function(a,b)
+      return (o[a] and 0 or to[type(a)] or 'z')..(tostring(a):gsub("%d+",padnum))
+           < (o[b] and 0 or to[type(b)] or 'z')..(tostring(b):gsub("%d+",padnum)) end) end
+  local function val2str(t, name, indent, path, plainindex, level)
+    local ttype, level = type(t), (level or 0)
+    local spath, sname = safename(path, name)
+    local tag = plainindex and
+      ((type(name) == "number") and '' or name..space..'='..space) or
+      (name ~= nil and sname..space..'='..space or '')
+    if seen[t] then
+      table.insert(sref, spath..space..'='..space..seen[t])
+      return tag..'nil'..comment('ref', level)
+    elseif badtype[ttype] then return tag..globerr(t, level)
+    elseif ttype == 'function' then
+      seen[t] = spath
+      local ok, res = pcall(string.dump, t)
+      local func = ok and ((opts.nocode and "function() end" or
+        "loadstring("..safestr(res)..",'@serialized')")..comment(t, level))
+      return tag..(func or globerr(t, level))
+    elseif ttype == "table" then
+      if level >= maxl then return tag..'{}'..comment('max', level) end
+      seen[t] = spath
+      if next(t) == nil then return tag..'{}'..comment(t, level) end -- table empty
+      local maxn, o, out = #t, {}, {}
+      for key = 1, maxn do table.insert(o, key) end
+      for key in pairs(t) do if not o[key] then table.insert(o, key) end end
+      if opts.sortkeys then alphanumsort(o, opts.sortkeys) end
+      for n, key in ipairs(o) do
+        local value, ktype, plainindex = t[key], type(key), n <= maxn and not sparse
+        if opts.ignore and opts.ignore[value] -- skip ignored values; do nothing
+        or sparse and value == nil then -- skipping nils; do nothing
+        elseif ktype == 'table' or ktype == 'function' then
+          if not seen[key] and not globals[key] then
+            table.insert(sref, 'local '..val2str(key,gensym(key),indent)) end
+          table.insert(sref, seen[t]..'['..(seen[key] or globals[key] or gensym(key))
+            ..']'..space..'='..space..(seen[value] or val2str(value,nil,indent)))
+        else
+          if badtype[ktype] then plainindex, key = true, '['..globerr(key, level+1)..']' end
+          table.insert(out,val2str(value,key,indent,spath,plainindex,level+1))
+        end
+      end
+      local prefix = string.rep(indent or '', level)
+      local head = indent and '{\n'..prefix..indent or '{'
+      local body = table.concat(out, ','..(indent and '\n'..prefix..indent or space))
+      local tail = indent and "\n"..prefix..'}' or '}'
+      return (custom and custom(tag,head,body,tail) or tag..head..body..tail)..comment(t, level)
+    else return tag..safestr(t) end -- handle all other types
+  end
+  local sepr = indent and "\n" or ";"..space
+  local body = val2str(t, name, indent) -- this call also populates sref
+  local tail = #sref>0 and table.concat(sref, sepr)..sepr or ''
+  return not name and body or "do local "..body..sepr..tail.."return "..name..sepr.."end"
+end
+
+local function merge(a, b) if b then for k,v in pairs(b) do a[k] = v end end; return a; end
+return { _NAME = n, _COPYRIGHT = c, _DESCRIPTION = d, _VERSION = v, serialize = s,
+  dump = function(a, opts) return s(a, merge({name = '_', compact = true, sparse = true}, opts)) end,
+  line = function(a, opts) return s(a, merge({sortkeys = true, comment = true}, opts)) end,
+  block = function(a, opts) return s(a, merge({indent = '  ', sortkeys = true, comment = true}, opts)) end }
+end)() ---- end of Serpent module
+
+local function stack(start)
+  local function vars(f)
+    local func = debug.getinfo(f, "f").func
+    local i = 1
+    local locals = {}
+    while true do
+      local name, value = debug.getlocal(f, i)
+      if not name then break end
+      if string.sub(name, 1, 1) ~= '(' then locals[name] = {value, tostring(value)} end
+      i = i + 1
+    end
+    i = 1
+    local ups = {}
+    while true do
+      local name, value = debug.getupvalue(func, i)
+      if not name then break end
+      ups[name] = {value, tostring(value)}
+      i = i + 1
+    end
+    return locals, ups
+  end
+
+  local stack = {}
+    for i = (start or 0), 100 do
+      local source = debug.getinfo(i, "Snl")
+      if not source then break end
+      table.insert(stack, {
+        {source.name, source.source, source.linedefined,
+         source.currentline, source.what, source.namewhat},
+        vars(i+1)})
+      if source.what == 'main' then break end
+    end
+  return stack
 end
 
 local function set_breakpoint(file, line)
@@ -328,7 +469,12 @@ local function debug_hook(event, line)
       step_into = false
       step_over = false
       local status, res = coroutine.resume(coro_debugger, events.BREAK, vars, file, line)
-      if status and res then
+      if status and res == 'stack' then
+        while status and res == 'stack' do
+          -- resume with the stack trace and variables
+          status, res = coroutine.resume(coro_debugger, events.STACK, stack(3), file, line)
+        end
+      elseif status and res then
         abort = res
         error(abort)
       end -- abort execution if requested
@@ -358,7 +504,7 @@ local function debugger_loop(sfile, sline)
           if win then
             -- process messages in a regular way
             -- and exit as soon as the event loop is idle
-            win:Connect(wx.wxEVT_IDLE, function(event)
+            win:Connect(wx.wxEVT_IDLE, function()
               win:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wx.wxEVT_IDLE)
               app:ExitMainLoop()
             end)
@@ -380,7 +526,7 @@ local function debugger_loop(sfile, sline)
         server:send("400 Bad Request\n")
       end
     elseif command == "DELB" then
-      _, _, _, file, line = string.find(line, "^([A-Z]+)%s+([%w%p%s]+)%s+(%d+)%s*$")
+      local _, _, _, file, line = string.find(line, "^([A-Z]+)%s+([%w%p%s]+)%s+(%d+)%s*$")
       if file and line then
         remove_breakpoint(file, tonumber(line))
         server:send("200 OK\n")
@@ -524,6 +670,15 @@ local function debugger_loop(sfile, sline)
       end
     elseif command == "SUSPEND" then
       -- do nothing; it already fulfilled its role
+    elseif command == "STACK" then
+      -- yield back to debug hook to get stack information
+      local ev, vars = coroutine.yield("stack")
+      if ev == events.STACK then
+        server:send("200 OK " .. serpent.dump(vars,
+          {nocode = true, sparse = false, ignore = {[mobdebug] = true}}) .. "\n")
+      else
+        server:send("401 Error in Expression 0\n")
+      end
     elseif command == "EXIT" then
       server:send("200 OK\n")
       coroutine.yield("exit")
@@ -583,8 +738,10 @@ local function controller(controller_host, controller_port)
       else
         if status then -- normal execution is done
           break
-        elseif err and not err:find(deferror) then -- report the error
-          report(debug.traceback(coro_debugee), err)
+        elseif err and not tostring(err):find(deferror) then
+          -- report the error back
+          -- err is not necessarily a string, so convert to string to report
+          report(debug.traceback(coro_debugee), tostring(err))
           if exitonerror then break end
           -- resume once more to clear the response the debugger wants to send
           local status, err = coroutine.resume(coro_debugger, events.RESTART)
@@ -793,7 +950,7 @@ local function handle(params, client)
   elseif command == "listb" then
     for k, v in pairs(breakpoints) do
       local b = k .. ": " -- get filename
-      for k, v in pairs(v) do
+      for k in pairs(v) do
         b = b .. k .. " " -- get line numbers
       end
       print(b)
@@ -804,6 +961,34 @@ local function handle(params, client)
     end    
   elseif command == "suspend" then
     client:send("SUSPEND\n")
+  elseif command == "stack" then
+    client:send("STACK\n")
+    local resp = client:receive()
+    local _, _, status, res = string.find(resp, "^(%d+)%s+%w+%s+(.+)%s*$")
+    if status == "200" then
+      local func, err = loadstring(res)
+      if func == nil then
+        print("Error in stack information: " .. err)
+        return nil, nil, err
+      end
+      local stack = func()
+      for _,frame in ipairs(stack) do
+        -- remove basedir from short_src or source
+        local src = string.gsub(frame[1][2], "\\", "/") -- convert slash
+        if string.find(src, "@") == 1 then src = string.sub(src, 2) end
+        if string.find(src, "%./") == 1 then src = string.sub(src, 3) end
+        frame[1][2] = string.gsub(src, basedir, '') -- remove basedir
+        print(serpent.line(frame[1], {comment = false}))
+      end
+      return stack
+    elseif status == "401" then
+      local res = "Error in stack result"
+      print(res)
+      return nil, nil, res
+    else
+      print("Unknown error")
+      return nil, nil, "Debugger error: unexpected response after STACK"
+    end
   elseif command == "basedir" then
     local _, _, dir = string.find(params, "^[a-z]+%s+(.+)$")
     if dir then
@@ -884,6 +1069,8 @@ mobdebug.scratchpad = scratchpad
 mobdebug.handle = handle
 mobdebug.connect = connect
 mobdebug.start = start
+mobdebug.line = serpent.line
+mobdebug.dump = serpent.dump
 
 -- this is needed to make "require 'modebug'" to work when mobdebug
 -- module is loaded manually

@@ -16,7 +16,7 @@ local fileMenu = wx.wxMenu({
     { },
     { ID_SAVE, "&Save\tCtrl-S", "Save the current document" },
     { ID_SAVEAS, "Save &As...\tAlt-Shift-S", "Save the current document to a file with a new name" },
-    { ID_SAVEALL, "Save A&ll...\tCtrl-Shift-S", "Save all open documents" },
+    { ID_SAVEALL, "Save A&ll...", "Save all open documents" },
     { },
     --{ ID "file.recentfiles", "Recent files",},
     { },

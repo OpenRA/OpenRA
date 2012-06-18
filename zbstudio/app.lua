@@ -1,6 +1,20 @@
+local icons = {}
+local CreateBitmap = function(id, client, size)
+  local width = size:GetWidth()
+  local key = width .. "/" .. id
+  local fileClient = "zbstudio/res/" .. key .. "-" .. client .. ".png"
+  local fileKey = "zbstudio/res/" .. key .. ".png"
+  local file
+  if wx.wxFileName(fileClient):FileExists() then file = fileClient
+  elseif wx.wxFileName(fileKey):FileExists() then file = fileKey
+  else return wx.wxNullBitmap end
+  local icon = icons[file] or wx.wxBitmap(file)
+  icons[file] = icon
+  return icon
+end
 local ide = ide
 local app = {
-
+  createbitmap = CreateBitmap,
   loadfilters = {
     tools = function(file) return false end,
     specs = function(file) return true end,
@@ -9,20 +23,7 @@ local app = {
 
   preinit = function ()
     local artProvider = wx.wxLuaArtProvider()
-    local icons = {}
-    artProvider.CreateBitmap = function(self, id, client, size)
-      local width = size:GetWidth()
-      local key = width .. "/" .. id
-      local fileClient = "zbstudio/res/" .. key .. "-" .. client .. ".png"
-      local fileKey = "zbstudio/res/" .. key .. ".png"
-      local file
-      if wx.wxFileName(fileClient):FileExists() then file = fileClient
-      elseif wx.wxFileName(fileKey):FileExists() then file = fileKey
-      else return wx.wxNullBitmap end
-      local icon = icons[file] or wx.wxBitmap(file)
-      icons[file] = icon
-      return icon
-    end
+    artProvider.CreateBitmap = function(self, ...) return CreateBitmap(...) end
     wx.wxArtProvider.Push(artProvider)
 
     ide.config.interpreter = "luadeb"
