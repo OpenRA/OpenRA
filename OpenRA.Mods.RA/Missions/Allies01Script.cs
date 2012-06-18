@@ -38,8 +38,6 @@ namespace OpenRA.Mods.RA.Missions
         private ISound music;
 
         private bool tanyaLanded;
-        private int frameLastAttackWave;
-        private int currentAttackWave;
 
         private Actor insertionLZ;
         private Actor extractionLZ;
@@ -55,24 +53,26 @@ namespace OpenRA.Mods.RA.Missions
         private Actor attackEntryPoint1;
         private Actor attackEntryPoint2;
 
-        private Random random = new Random();
+        private static readonly Random random = new Random();
         private static readonly string[] taunts = { "laugh1.aud", "lefty1.aud", "cmon1.aud", "gotit1.aud" };
+
         private static readonly string[] ships = { "ca", "ca", "ca", "ca" };
 
-        private static readonly string[][] attackWaves = new string[][] {
-                                                         new[] { "e1", "e1", "e1", "e2", "e2", "dog" },
-                                                         new[] { "e1", "e1", "e1", "e1", "e1", "e1", "e2", "e2", "e2", "e2", "dog" },
-                                                         new[] { "e1", "e1", "e1", "e1", "e1", "e1", "e1", "e1", "e2", "e2", "e2", "e2", "e2", "e2", "dog", "dog", "3tnk" },
-                                                         new[] { "e1", "e1", "e1", "e1", "e1", "e1", "e1", "e1", "e1", "e1", "e2", "e2", "e2", "e2", "e2", "e2", "dog", "dog", "e4", "e4", "3tnk", "3tnk" },
-                                                         };
-
-        private static readonly string[] reinforcements = { "e1", "e1", "e1", "e3", "e3" };
+        private static readonly string[] attackWave = { "e1", "e1", "e1", "e1", "e2", "e2", "e2", "e2", "dog" };
+        private int currentAttackWaveFrameNumber = -600;
+        private int currentAttackWave;
+        private const int einsteinChinookArrivesAtAttackWave = 5;
 
         private const int labRange = 5;
         private const int lzRange = 3;
         private const string einsteinName = "c1";
         private const string tanyaName = "e7";
         private const string chinookName = "tran";
+
+        private void NextObjective(int currentFrameNumber)
+        {
+            currentObjective++;
+        }
 
         private void DisplayObjective(string text)
         {
@@ -139,9 +139,8 @@ namespace OpenRA.Mods.RA.Missions
                 {
                     SpawnEinsteinAtLab(self); // spawn Einstein once the area is clear
                     Sound.Play("einok1.aud"); // "Incredible!" - Einstein
-                    FlyUnitsToInsertionLZ(self, reinforcements);
                     SendShips(self);
-                    currentObjective++;
+                    NextObjective(self.World.FrameNumber);
                     DisplayObjective(objectives[currentObjective]);
                 }
                 if (lab.Destroyed)
@@ -151,16 +150,15 @@ namespace OpenRA.Mods.RA.Missions
             }
             else if (currentObjective == 1)
             {
-                if (self.World.FrameNumber >= frameLastAttackWave + 600)
+                if (self.World.FrameNumber >= currentAttackWaveFrameNumber + 600)
                 {
-                    FlyUnitsToInsertionLZ(self, reinforcements);
-                    SendAttackWave(self, attackWaves[Math.Min(currentAttackWave, attackWaves.Length - 1)]);
-                    if (currentAttackWave == attackWaves.Length - 1)
+                    SendAttackWave(self, attackWave);
+                    currentAttackWave++;
+                    currentAttackWaveFrameNumber = self.World.FrameNumber;
+                    if (currentAttackWave == einsteinChinookArrivesAtAttackWave)
                     {
                         FlyToExtractionLZ(self);
                     }
-                    currentAttackWave++;
-                    frameLastAttackWave = self.World.FrameNumber;
                 }
                 if (einsteinChinook != null)
                 {
