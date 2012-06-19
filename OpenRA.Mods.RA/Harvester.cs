@@ -37,26 +37,43 @@ namespace OpenRA.Mods.RA
 		[Sync] public Actor LinkedProc = null;
 		[Sync] int currentUnloadTicks;
 		public int2? LastHarvestedCell = null;
-		[Sync] public int ContentValue { get { return contents.Sum(c => c.Key.ValuePerUnit*c.Value); } }
+		[Sync] public int ContentValue { get { return contents.Sum(c => c.Key.ValuePerUnit * c.Value); } }
 		readonly HarvesterInfo Info;
 
 		public Harvester(Actor self, HarvesterInfo info)
 		{
 			Info = info;
-			self.QueueActivity( new CallFunc( () => ChooseNewProc(self, null)));
+			self.QueueActivity(new CallFunc(() => ChooseNewProc(self, null)));
+		}
+
+		public bool ClaimResource(Actor self, int2 p)
+		{
+			var resLayer = self.World.WorldActor.Trait<ResourceLayer>();
+			return resLayer.ClaimResource(this, p);
+		}
+
+		public void UnclaimResource(Actor self)
+		{
+			var resLayer = self.World.WorldActor.Trait<ResourceLayer>();
+			resLayer.UnclaimResource(this);
 		}
 
 		public void ChooseNewProc(Actor self, Actor ignore) { LinkedProc = ClosestProc(self, ignore); }
 
 		public void ContinueHarvesting(Actor self)
 		{
+			// NOTE(jsd): This causes the harvester to get further and further away from
+			// the refinery. Fall back on always finding the closest harvestable point to
+			// the refinery in the FindResources activity.
+#if false
 			if (LastHarvestedCell.HasValue)
 			{
 				var mobile = self.Trait<Mobile>();
 				self.QueueActivity( mobile.MoveTo(LastHarvestedCell.Value, 5) );
 				self.SetTargetLine(Target.FromCell(LastHarvestedCell.Value), Color.Red, false);
 			}
-			self.QueueActivity( new FindResources() );
+#endif
+			self.QueueActivity(new FindResources());
 		}
 
 		Actor ClosestProc(Actor self, Actor ignore)
@@ -125,12 +142,12 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		public Order IssueOrder( Actor self, IOrderTargeter order, Target target, bool queued )
+		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if( order.OrderID == "Deliver" )
+			if (order.OrderID == "Deliver")
 				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
 
-			if( order.OrderID == "Harvest" )
+			if (order.OrderID == "Harvest")
 				return new Order(order.OrderID, self, queued) { TargetLocation = Util.CellContaining(target.CenterLocation) };
 
 			return null;
@@ -204,7 +221,7 @@ namespace OpenRA.Mods.RA
 
 		public decimal GetSpeedModifier()
 		{
-			return 1m - ( 1m - Info.FullyLoadedSpeed ) * contents.Values.Sum() / Info.Capacity;
+			return 1m - (1m - Info.FullyLoadedSpeed) * contents.Values.Sum() / Info.Capacity;
 		}
 
 		class HarvestOrderTargeter : IOrderTargeter
@@ -223,11 +240,11 @@ namespace OpenRA.Mods.RA
 				// Don't leak info about resources under the shroud
 				if (!self.World.LocalShroud.IsExplored(location)) return false;
 
-				var res = self.World.WorldActor.Trait<ResourceLayer>().GetResource( location );
+				var res = self.World.WorldActor.Trait<ResourceLayer>().GetResource(location);
 				var info = self.Info.Traits.Get<HarvesterInfo>();
 
-				if( res == null ) return false;
-				if( !info.Resources.Contains( res.info.Name ) ) return false;
+				if (res == null) return false;
+				if (!info.Resources.Contains(res.info.Name)) return false;
 				cursor = "harvest";
 				IsQueued = forceQueued;
 

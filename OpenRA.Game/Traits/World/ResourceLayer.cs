@@ -12,26 +12,29 @@ using System;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
+using System.Collections.Generic;
 
 namespace OpenRA.Traits
 {
 	public class ResourceLayerInfo : TraitInfo<ResourceLayer> { }
 
-	public class ResourceLayer: IRenderOverlay, IWorldLoaded
+	public class ResourceLayer : IRenderOverlay, IWorldLoaded
 	{
 		World world;
 
 		public ResourceType[] resourceTypes;
 		CellContents[,] content;
 
+		Dictionary<object, int2> claimers;
+
 		bool hasSetupPalettes;
 
-		public void Render( WorldRenderer wr )
+		public void Render(WorldRenderer wr)
 		{
 			if (!hasSetupPalettes)
 			{
 				hasSetupPalettes = true;
-				foreach( var rt in world.WorldActor.TraitsImplementing<ResourceType>() )
+				foreach (var rt in world.WorldActor.TraitsImplementing<ResourceType>())
 					rt.info.PaletteIndex = wr.GetPaletteIndex(rt.info.Palette);
 			}
 
@@ -54,6 +57,7 @@ namespace OpenRA.Traits
 		{
 			this.world = w;
 			content = new CellContents[w.Map.MapSize.X, w.Map.MapSize.Y];
+			claimers = new Dictionary<object, int2>(32);
 
 			resourceTypes = w.WorldActor.TraitsImplementing<ResourceType>().ToArray();
 			foreach (var rt in resourceTypes)
@@ -70,7 +74,7 @@ namespace OpenRA.Traits
 					if (type == null)
 						continue;
 
-					if (!AllowResourceAt(type, new int2(x,y)))
+					if (!AllowResourceAt(type, new int2(x, y)))
 						continue;
 
 					content[x, y].type = type;
@@ -104,7 +108,7 @@ namespace OpenRA.Traits
 			int sum = 0;
 			for (var u = -1; u < 2; u++)
 				for (var v = -1; v < 2; v++)
-					if (content[i+u, j+v].type == t)
+					if (content[i + u, j + v].type == t)
 						++sum;
 			return sum;
 		}
@@ -131,14 +135,49 @@ namespace OpenRA.Traits
 				content[i, j].image.Length - 1,
 				content[i, j].density + n);
 
-			world.Map.CustomTerrain[i,j] = t.info.TerrainType;
+			world.Map.CustomTerrain[i, j] = t.info.TerrainType;
 		}
 
 		public bool IsFull(int i, int j) { return content[i, j].density == content[i, j].image.Length - 1; }
 
+		public bool ClaimResource(object claimer, int2 p)
+		{
+			// Has anyone else claimed this point?
+			foreach (var cp in claimers)
+			{
+				if (cp.Value != p) continue;
+
+				// Same claimer?
+				return (cp.Key == claimer);
+			}
+
+			// Nobody else claims this point, allow it:
+			claimers[claimer] = p;
+			return true;
+		}
+
+		public bool UnclaimResource(object claimer)
+		{
+			return claimers.Remove(claimer);
+		}
+
+		public bool IsClaimedBy(object claimer, int2 p)
+		{
+			// Has anyone else claimed this point?
+			foreach (var cp in claimers)
+			{
+				if (cp.Value != p) continue;
+
+				// Same claimer?
+				return (cp.Key == claimer);
+			}
+
+			return false;
+		}
+
 		public ResourceType Harvest(int2 p)
 		{
-			var type = content[p.X,p.Y].type;
+			var type = content[p.X, p.Y].type;
 			if (type == null) return null;
 
 			if (--content[p.X, p.Y].density < 0)
@@ -163,6 +202,7 @@ namespace OpenRA.Traits
 		}
 
 		public ResourceType GetResource(int2 p) { return content[p.X, p.Y].type; }
+		public int GetResourceDensity(int2 p) { return content[p.X, p.Y].density; }
 
 		public struct CellContents
 		{

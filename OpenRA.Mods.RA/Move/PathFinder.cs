@@ -19,13 +19,13 @@ namespace OpenRA.Mods.RA.Move
 {
 	public class PathFinderInfo : ITraitInfo
 	{
-		public object Create( ActorInitializer init ) { return new PathFinder( init.world ); }
+		public object Create(ActorInitializer init) { return new PathFinder(init.world); }
 	}
 
 	public class PathFinder
 	{
 		readonly World world;
-		public PathFinder( World world ) { this.world = world; }
+		public PathFinder(World world) { this.world = world; }
 
 		class CachedPath
 		{
@@ -66,13 +66,13 @@ namespace OpenRA.Mods.RA.Move
 			}
 		}
 
-		public List<int2> FindUnitPathToRange( int2 src, int2 target, int range, Actor self )
+		public List<int2> FindUnitPathToRange(int2 src, int2 target, int range, Actor self)
 		{
-			using( new PerfSample( "Pathfinder" ) )
+			using (new PerfSample("Pathfinder"))
 			{
 				var mi = self.Info.Traits.Get<MobileInfo>();
 				var tilesInRange = world.FindTilesInCircle(target, range)
-					.Where( t => mi.CanEnterCell(self.World, self.Owner, t, null, true));
+					.Where(t => mi.CanEnterCell(self.World, self.Owner, t, null, true));
 
 				var path = FindBidiPath(
 					PathSearch.FromPoints(world, mi, self.Owner, tilesInRange, src, true),
@@ -83,11 +83,11 @@ namespace OpenRA.Mods.RA.Move
 			}
 		}
 
-		public List<int2> FindPath( PathSearch search )
+		public List<int2> FindPath(PathSearch search)
 		{
 			using (new PerfSample("Pathfinder"))
 			{
-				using(search)
+				using (search)
 					while (!search.queue.Empty)
 					{
 						var p = search.Expand(world);
@@ -100,15 +100,15 @@ namespace OpenRA.Mods.RA.Move
 			}
 		}
 
-		static List<int2> MakePath( CellInfo[ , ] cellInfo, int2 destination )
+		static List<int2> MakePath(CellInfo[,] cellInfo, int2 destination)
 		{
 			List<int2> ret = new List<int2>();
 			int2 pathNode = destination;
 
-			while( cellInfo[ pathNode.X, pathNode.Y ].Path != pathNode )
+			while (cellInfo[pathNode.X, pathNode.Y].Path != pathNode)
 			{
-				ret.Add( pathNode );
-				pathNode = cellInfo[ pathNode.X, pathNode.Y ].Path;
+				ret.Add(pathNode);
+				pathNode = cellInfo[pathNode.X, pathNode.Y].Path;
 			}
 
 			ret.Add(pathNode);
@@ -155,8 +155,8 @@ namespace OpenRA.Mods.RA.Move
 			var q = p;
 			while (ca[q.X, q.Y].Path != q)
 			{
-				ret.Add( q );
-				q = ca[ q.X, q.Y ].Path;
+				ret.Add(q);
+				q = ca[q.X, q.Y].Path;
 			}
 			ret.Add(q);
 
@@ -169,22 +169,22 @@ namespace OpenRA.Mods.RA.Move
 				ret.Add(q);
 			}
 
-			CheckSanePath( ret );
+			CheckSanePath(ret);
 			return ret;
 		}
 
-		[Conditional( "SANITY_CHECKS" )]
-		static void CheckSanePath( List<int2> path )
+		[Conditional("SANITY_CHECKS")]
+		static void CheckSanePath(List<int2> path)
 		{
-			if( path.Count == 0 )
+			if (path.Count == 0)
 				return;
-			var prev = path[ 0 ];
-			for( int i = 0 ; i < path.Count ; i++ )
+			var prev = path[0];
+			for (int i = 0; i < path.Count; i++)
 			{
-				var d = path[ i ] - prev;
-				if( Math.Abs( d.X ) > 1 || Math.Abs( d.Y ) > 1 )
-					throw new InvalidOperationException( "(PathFinder) path sanity check failed" );
-				prev = path[ i ];
+				var d = path[i] - prev;
+				if (Math.Abs(d.X) > 1 || Math.Abs(d.Y) > 1)
+					throw new InvalidOperationException("(PathFinder) path sanity check failed");
+				prev = path[i];
 			}
 		}
 
@@ -207,7 +207,7 @@ namespace OpenRA.Mods.RA.Move
 		public int2 Path;
 		public bool Seen;
 
-		public CellInfo( int minCost, int2 path, bool seen )
+		public CellInfo(int minCost, int2 path, bool seen)
 		{
 			MinCost = minCost;
 			Path = path;
