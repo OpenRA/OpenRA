@@ -1,5 +1,5 @@
 --
--- MobDebug 0.453
+-- MobDebug 0.463
 -- Copyright Paul Kulchenko 2011-2012
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
 -- (http://www.keplerproject.org/remdebug)
@@ -9,7 +9,7 @@ local mobdebug = {
   _NAME = "mobdebug",
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
-  _VERSION = "0.453"
+  _VERSION = "0.463"
 }
 
 local coroutine = coroutine
@@ -296,7 +296,7 @@ local function stack(start)
     end
     i = 1
     local ups = {}
-    while true do
+    while func and true do -- check for func as it may be nil for tail calls
       local name, value = debug.getupvalue(func, i)
       if not name then break end
       ups[name] = {value, tostring(value)}
@@ -306,15 +306,15 @@ local function stack(start)
   end
 
   local stack = {}
-    for i = (start or 0), 100 do
-      local source = debug.getinfo(i, "Snl")
-      if not source then break end
-      table.insert(stack, {
-        {source.name, source.source, source.linedefined,
-         source.currentline, source.what, source.namewhat},
-        vars(i+1)})
-      if source.what == 'main' then break end
-    end
+  for i = (start or 0), 100 do
+    local source = debug.getinfo(i, "Snl")
+    if not source then break end
+    table.insert(stack, {
+      {source.name, source.source, source.linedefined,
+       source.currentline, source.what, source.namewhat, source.short_src},
+      vars(i+1)})
+    if source.what == 'main' then break end
+  end
   return stack
 end
 
@@ -404,6 +404,8 @@ local function is_safe(stack_level, conservative)
 end
 
 local function debug_hook(event, line)
+  if abort and is_safe(stack_level) then error(abort) end
+
   if event == "call" then
     stack_level = stack_level + 1
   elseif event == "return" or event == "tail return" then
@@ -454,16 +456,10 @@ local function debug_hook(event, line)
       end
     end
 
-    local suspend = (check_break
-      -- stack check is at least two times faster than select
-      -- 1.2s vs 2.5s for 100,000 iterations on 1.6Ghz CPU
-      and is_safe(stack_level)
-      and (socket.select({server}, {}, 0))[server]
-    )
-    if suspend
-    or step_into
+    if step_into
     or (step_over and stack_level <= step_level)
-    or has_breakpoint(file, line) then
+    or has_breakpoint(file, line)
+    or check_break and (socket.select({server}, {}, 0))[server] then
       vars = vars or capture_vars()
       check_break = true -- this is only needed to avoid breaking too early when debugging is starting
       step_into = false
@@ -483,7 +479,9 @@ local function debug_hook(event, line)
       if status and res and res ~= 'stack' then
         if abort == nil and res == "exit" then os.exit(1) end
         abort = res
-        error(abort)
+        -- only abort if safe; if not, there is another (earlier) check inside
+        -- debug_hook, which will abort execution at the first safe opportunity
+        if is_safe(stack_level) then error(abort) end
       end -- abort execution if requested
     end
     if vars then restore_vars(vars) end
@@ -711,14 +709,27 @@ local function connect(controller_host, controller_port)
   return socket.connect(controller_host, controller_port)
 end
 
+local function isrunning()
+  return coro_debugger and coroutine.status(coro_debugger) == 'suspended'
+end
+
 -- Starts a debug session by connecting to a controller
 local function start(controller_host, controller_port)
+  -- only one debugging session can be run (as there is only one debug hook)
+  if isrunning() then return end
+
   server = socket.connect(controller_host, controller_port)
   if server then
     local info = debug.getinfo(2, "Sl")
     local file = info.source
     if string.find(file, "@") == 1 then file = string.sub(file, 2) end
     if string.find(file, "%.[/\\]") == 1 then file = string.sub(file, 3) end
+
+    -- correct stack depth which already has some calls on it
+    -- so it doesn't go into negative when those calls return
+    -- as this breaks subsequence checks in stack_depth().
+    -- start from 16th frame, which is sufficiently large for this check.
+    stack_level = stack_depth(16)
 
     debug.sethook(debug_hook, "lcr")
     coro_debugger = coroutine.create(debugger_loop)
@@ -729,6 +740,9 @@ local function start(controller_host, controller_port)
 end
 
 local function controller(controller_host, controller_port)
+  -- only one debugging session can be run (as there is only one debug hook)
+  if isrunning() then return end
+
   local exitonerror = not skip -- exit if not running a scratchpad
   server = socket.connect(controller_host, controller_port)
   if server then
@@ -1039,16 +1053,17 @@ local function handle(params, client)
     print("setw <exp>            -- adds a new watch expression")
     print("delw <index>          -- removes the watch expression at index")
     print("delallw               -- removes all watch expressions")
-    print("run                   -- run until next breakpoint")
-    print("step                  -- run until next line, stepping into function calls")
-    print("over                  -- run until next line, stepping over function calls")
-    print("out                   -- run until line after returning from current function")
+    print("run                   -- runs until next breakpoint")
+    print("step                  -- runs until next line, stepping into function calls")
+    print("over                  -- runs until next line, stepping over function calls")
+    print("out                   -- runs until line after returning from current function")
     print("listb                 -- lists breakpoints")
     print("listw                 -- lists watch expressions")
     print("eval <exp>            -- evaluates expression on the current context and returns its value")
     print("exec <stmt>           -- executes statement on the current context")
     print("load <file>           -- loads a local file for debugging")
     print("reload                -- restarts the current debugging session")
+    print("stack                 -- reports stack trace")
     print("basedir [<path>]      -- sets the base path of the remote application, or shows the current one")
     print("exit                  -- exits debugger")
   else

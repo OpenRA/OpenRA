@@ -49,13 +49,17 @@ local function updateStackSync(reset)
       -- "main chunk at line 24"
       -- "foo() at line 13 (defined at foobar.lua:11)"
       -- call = { source.name, source.source, source.linedefined,
-      --   source.currentline, source.what, source.namewhat }
+      --   source.currentline, source.what, source.namewhat, source.short_src }
       local call = frame[1]
       local func = call[5] == "main" and "main chunk"
-        or call[5] == "C" and (call[1] or "[C]")
-        or (call[1] or "anon?")
-      local text = ("%s at line %d %s"):format(func, call[4],
-        call[5] ~= "Lua" and '' or "(defined at "..call[2]..":"..call[3]..")")
+        or call[5] == "C" and (call[1] or "C function")
+        or call[5] == "tail" and "tail call"
+        or (call[1] or "anonymous function")
+      local text = func ..
+        (call[4] == -1 and '' or " at line "..call[4]) ..
+        (call[5] ~= "main" and call[5] ~= "Lua" and ''
+         or (call[3] > 0 and " (defined at "..call[2]..":"..call[3]..")"
+                          or " (defined in "..call[2]..")"))
       local callitem = stackCtrl:AppendItem(root, text, 0)
       for name,val in pairs(frame[2]) do
         local value, comment = val[1], val[2]
