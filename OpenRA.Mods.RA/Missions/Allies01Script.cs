@@ -51,7 +51,6 @@ namespace OpenRA.Mods.RA.Missions
         private Actor attackEntryPoint1;
         private Actor attackEntryPoint2;
 
-        private static readonly Random random = new Random();
         private static readonly string[] taunts = { "laugh1.aud", "lefty1.aud", "cmon1.aud", "gotit1.aud" };
 
         private static readonly string[] ships = { "ca", "ca", "ca", "ca" };
@@ -116,7 +115,7 @@ namespace OpenRA.Mods.RA.Missions
             // taunt every so often
             if (self.World.FrameNumber % 1000 == 0)
             {
-                Sound.Play(taunts[random.Next(0, taunts.Length)]);
+                Sound.Play(taunts[self.World.SharedRandom.Next(taunts.Length)]);
             }
             // take Tanya to the LZ
             if (self.World.FrameNumber == 1)
@@ -177,8 +176,8 @@ namespace OpenRA.Mods.RA.Missions
         {
             foreach (var unit in wave)
             {
-                var spawnActor = random.Next(2) == 0 ? attackEntryPoint1 : attackEntryPoint2;
-                var targetActor = random.Next(2) == 0 ? einstein : tanya;
+                var spawnActor = self.World.SharedRandom.Next(2) == 0 ? attackEntryPoint1 : attackEntryPoint2;
+                var targetActor = self.World.SharedRandom.Next(2) == 0 ? einstein : tanya;
                 var actor = self.World.CreateActor(unit, new TypeDictionary { new OwnerInit(soviets), new LocationInit(spawnActor.Location) });
                 actor.QueueActivity(new Attack(Target.FromActor(targetActor), 2));
             }
@@ -193,7 +192,7 @@ namespace OpenRA.Mods.RA.Missions
         private bool AlliesControlLab(Actor self)
         {
             var units = UnitsNearActor(self, lab, labRange);
-            return units.Count() >= 1 && units.All(a => a.Owner.InternalName == allies.InternalName);
+            return units.Count() >= 1 && units.All(a => a.Owner == allies);
         }
 
         private void SpawnEinsteinAtLab(Actor self)
