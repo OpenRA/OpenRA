@@ -62,7 +62,6 @@ namespace OpenRA.Mods.RA.Missions
         private const int einsteinChinookArrivesAtAttackWave = 5;
 
         private const int labRange = 5;
-        private const int lzRange = 3;
         private const string einsteinName = "c1";
         private const string tanyaName = "e7";
         private const string chinookName = "tran";
