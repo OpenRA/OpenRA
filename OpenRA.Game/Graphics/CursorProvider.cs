@@ -26,9 +26,8 @@ namespace OpenRA.Graphics
 			cursors = new Dictionary<string, CursorSequence>();
 			var sequences = new MiniYaml(null, sequenceFiles.Select(s => MiniYaml.FromFile(s)).Aggregate(MiniYaml.MergeLiberal));
 			var transparent = false;
-			var currentMod = Mod.AllMods[Game.modData.Manifest.Mods[0]];
 
-			if (currentMod.Id == "d2k")
+			if (sequences.NodesDict.ContainsKey("Transparent"))
 				transparent = true;
 
 			foreach (var s in sequences.NodesDict["Palettes"].Nodes)
