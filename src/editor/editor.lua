@@ -105,7 +105,7 @@ local function isFileAlteredOnDisk(editor)
         wx.wxMessageBox(fileName.." is no longer on the disk.",
           GetIDEString("editormessage"),
           wx.wxOK + wx.wxCENTRE, ide.frame)
-      elseif modTime:IsValid() and oldModTime:IsEarlierThan(modTime) then
+      elseif not editor:GetReadOnly() and modTime:IsValid() and oldModTime:IsEarlierThan(modTime) then
         local ret = wx.wxMessageBox(fileName.." has been modified on disk.\nDo you want to reload it?",
           GetIDEString("editormessage"),
           wx.wxYES_NO + wx.wxCENTRE, ide.frame)
