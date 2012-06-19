@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA.Move
 		List<CachedPath> CachedPaths = new List<CachedPath>();
 		const int MaxPathAge = 50;	/* x 40ms ticks */
 
-		public List<CPos> FindUnitPath(CPos from, CPos target, Actor self)
+		public List<CPos> FindUnitPath(CPos from, CPos target, Actor self, Func<Actor, PathSearch, PathSearch> applyCustomCost)
 		{
 			using (new PerfSample("Pathfinder"))
 			{
@@ -55,8 +55,8 @@ namespace OpenRA.Mods.RA.Move
 				var mi = self.Info.Traits.Get<MobileInfo>();
 
 				var pb = FindBidiPath(
-					PathSearch.FromPoint(world, mi, self.Owner, target, from, true),
-					PathSearch.FromPoint(world, mi, self.Owner, from, target, true).InReverse()
+					applyCustomCost(self, PathSearch.FromPoint(world, mi, self.Owner, target, from, true)),
+					applyCustomCost(self, PathSearch.FromPoint(world, mi, self.Owner, from, target, true)).InReverse()
 				);
 
 				CheckSanePath2(pb, from, target);
@@ -67,7 +67,7 @@ namespace OpenRA.Mods.RA.Move
 			}
 		}
 
-		public List<CPos> FindUnitPathToRange(CPos src, CPos target, int range, Actor self)
+		public List<CPos> FindUnitPathToRange(CPos src, CPos target, int range, Actor self, Func<Actor, PathSearch, PathSearch> applyCustomCost)
 		{
 			using (new PerfSample("Pathfinder"))
 			{
@@ -76,8 +76,8 @@ namespace OpenRA.Mods.RA.Move
 					.Where(t => mi.CanEnterCell(self.World, self.Owner, t, null, true));
 
 				var path = FindBidiPath(
-					PathSearch.FromPoints(world, mi, self.Owner, tilesInRange, src, true),
-					PathSearch.FromPoint(world, mi, self.Owner, src, target, true).InReverse()
+					applyCustomCost(self, PathSearch.FromPoints(world, mi, self.Owner, tilesInRange, src, true)),
+					applyCustomCost(self, PathSearch.FromPoint(world, mi, self.Owner, src, target, true)).InReverse()
 				);
 
 				return path;

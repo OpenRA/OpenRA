@@ -258,6 +258,7 @@ World:
 		Name: Soviet
 		Race: soviet
 	BibLayer:
+	DangerZoneLayer:
 	ResourceLayer:
 	ResourceClaimLayer:
 	ResourceType@ore:

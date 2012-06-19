@@ -32,6 +32,18 @@ namespace OpenRA.Mods.RA
 			return null;
 		}
 
+		public static int MaxWarheadRange(WarheadInfo warhead)
+		{
+			switch (warhead.DamageModel)
+			{
+				case DamageModel.Normal:
+					return (int)(warhead.Spread * (float) Math.Log(Math.Abs(warhead.Damage), 2));
+				case DamageModel.PerCell:
+					return warhead.Size[0];
+			}
+			return 0;
+		}
+
 		public static void DoImpact(WarheadInfo warhead, ProjectileArgs args)
 		{
 			var world = args.firedBy.World;
@@ -121,6 +133,43 @@ namespace OpenRA.Mods.RA
 									(int)(warhead.Damage * warhead.EffectivenessAgainst(unit)), warhead);
 					} break;
 			}
+		}
+
+		public static IEnumerable<OpenRA.FileFormats.Pair<Actor, int>> FindActorsInImpactRadius(WarheadInfo warhead, World world, CPos targetTile, PPos dest)
+		{
+			switch (warhead.DamageModel)
+			{
+				case DamageModel.Normal:
+					{
+						var maxSpread = warhead.Spread * (float)Math.Log(Math.Abs(warhead.Damage), 2);
+						int radius = (int)maxSpread;
+						var hitActors = world.FindUnitsInCircle(dest, (int)maxSpread);
+
+						foreach (var victim in hitActors)
+							yield return OpenRA.FileFormats.Pair.New(victim, radius);
+					} break;
+
+				case DamageModel.PerCell:
+					{
+						int radius = warhead.Size[0];
+						foreach (var t in world.FindTilesInCircle(targetTile, radius))
+							foreach (var unit in world.FindUnits(t.ToPPos(), t.ToPPos() + PVecInt.OneCell))
+								yield return OpenRA.FileFormats.Pair.New(unit, radius);
+					} break;
+			}
+		}
+
+		public static IEnumerable<OpenRA.FileFormats.Pair<Actor, int>> FindActorsInImpactRadius(ProjectileArgs args)
+		{
+			var world = args.firedBy.World;
+			var targetTile = args.dest.ToCPos();
+
+			if (!world.Map.IsInMap(targetTile))
+				yield break;
+
+			foreach (var warhead in args.weapon.Warheads)
+				foreach (var actor in FindActorsInImpactRadius(warhead, world, targetTile, args.dest))
+					yield return actor;
 		}
 
 		public static void DoImpacts(ProjectileArgs args)

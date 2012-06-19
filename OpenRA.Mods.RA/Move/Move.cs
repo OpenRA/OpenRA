@@ -30,27 +30,36 @@ namespace OpenRA.Mods.RA.Move
 		// Ignores lane bias and nearby units
 		public Move(CPos destination)
 		{
-			this.getPath = (self,mobile) =>
-				self.World.WorldActor.Trait<PathFinder>().FindPath(
-					PathSearch.FromPoint( self.World, mobile.Info, self.Owner, mobile.toCell, destination, false )
-					.WithoutLaneBias());
+			this.getPath = (self, mobile) => self.World.WorldActor.Trait<PathFinder>().FindPath(
+				AvoidDangerZones(self,
+					PathSearch.FromPoint(self.World, mobile.Info, self.Owner, mobile.toCell, destination, false)
+						.WithoutLaneBias()
+				)
+			);
+
 			this.destination = destination;
 			this.nearEnough = 0;
 		}
 
 		public Move(CPos destination, int nearEnough)
 		{
-			this.getPath = (self,mobile) => self.World.WorldActor.Trait<PathFinder>().FindUnitPath( mobile.toCell, destination, self );
+			this.getPath = (self,mobile) => self.World.WorldActor.Trait<PathFinder>().FindUnitPath(
+				mobile.toCell, destination, self,
+				AvoidDangerZones
+			);
+
 			this.destination = destination;
 			this.nearEnough = nearEnough;
 		}
 
 		public Move(CPos destination, Actor ignoreBuilding)
 		{
-			this.getPath = (self,mobile) =>
-				self.World.WorldActor.Trait<PathFinder>().FindPath(
+			this.getPath = (self, mobile) => self.World.WorldActor.Trait<PathFinder>().FindPath(
+				AvoidDangerZones(self,
 					PathSearch.FromPoint( self.World, mobile.Info, self.Owner, mobile.toCell, destination, false )
-					.WithIgnoredBuilding( ignoreBuilding ));
+						.WithIgnoredBuilding( ignoreBuilding )
+				)
+			);
 
 			this.destination = destination;
 			this.nearEnough = 0;
@@ -59,9 +68,12 @@ namespace OpenRA.Mods.RA.Move
 
 		public Move(Target target, int range)
 		{
-			this.getPath = (self,mobile) => self.World.WorldActor.Trait<PathFinder>().FindUnitPathToRange(
+			this.getPath = (self, mobile) => self.World.WorldActor.Trait<PathFinder>().FindUnitPathToRange(
 				mobile.toCell, target.CenterLocation.ToCPos(),
-				range, self);
+				range, self,
+				AvoidDangerZones
+			);
+
 			this.destination = null;
 			this.nearEnough = range;
 		}
@@ -73,7 +85,44 @@ namespace OpenRA.Mods.RA.Move
 			this.nearEnough = 0;
 		}
 
-		static int HashList<T>(List<T> xs)
+		/// <summary>
+		/// For Clone.
+		/// </summary>
+		private Move()
+		{
+		}
+
+		/// <summary>
+		/// Clones this Move so it may be requeued later.
+		/// </summary>
+		/// <returns></returns>
+		public Activity Clone()
+		{
+			return new Move()
+			{
+				getPath = getPath,
+				destination = destination,
+				nearEnough = nearEnough,
+				ignoreBuilding = ignoreBuilding,
+				NextActivity = NextActivity
+			};
+		}
+
+		PathSearch AvoidDangerZones(Actor self, PathSearch search)
+		{
+			// The World should have a DangerZoneLayer trait:
+			var layer = self.World.WorldActor.TraitOrDefault<DangerZoneLayer>();
+			if (layer == null) return search;
+
+			// The unit should have AvoidDangerZones trait:
+			var avoid = self.TraitOrDefault<AvoidDangerZones>();
+			if (avoid == null) return search;
+
+			// Are we headed for the danger zone? Kenny Loggins wants us to be.
+			return search.WithCustomCost(loc => layer.DangerCost(self, loc, avoid.ShouldAvoid));
+		}
+
+	    static int HashList<T>(List<T> xs)
 		{
 			int hash = 0;
 			int n = 0;

@@ -133,6 +133,10 @@ namespace OpenRA.Traits
 
 	public interface IMove : ITeleportable { int Altitude { get; set; } }
 	public interface INotifyBlockingMove { void OnNotifyBlockingMove(Actor self, Actor blocking); }
+	public interface INotifyDangerZoneCreatedNearby
+	{
+		void OnNotifyDangerZoneCreatedNearby(Actor self, DangerZone zone);
+	}
 
 	public interface IFacing
 	{

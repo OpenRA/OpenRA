@@ -146,7 +146,10 @@ namespace OpenRA.Mods.RA
 				{
 					var projectile = args.weapon.Projectile.Create(args);
 					if (projectile != null)
+					{
 						self.World.Add(projectile);
+						NotifyFriendlyFire(args);
+					}
 
 					if (!string.IsNullOrEmpty(args.weapon.Report))
 						Sound.Play(args.weapon.Report + ".aud", self.CenterLocation);
@@ -157,6 +160,41 @@ namespace OpenRA.Mods.RA
 				na.Attacking(self, target);
 
 			FiredShot();
+		}
+
+		void NotifyFriendlyFire(ProjectileArgs args)
+		{
+			var world = args.firedBy.World;
+
+			// Create a danger zone:
+			var cellLocation = args.dest.ToCPos();
+			var blastRadius = args.weapon.Warheads.Max(wh => Combat.MaxWarheadRange(wh));
+			var zone = new DangerZone()
+			{
+				CreatedBy = args.firedBy,
+				CreatedFrame = world.FrameNumber,
+				CellLocation = cellLocation,
+				PixelLocation = args.dest,
+				PixelRadius = blastRadius,
+				CellRadiusSquared = Math.Max((blastRadius * blastRadius) / (Game.CellSize * Game.CellSize), 1)
+			};
+
+			// Add the danger zone to the world's layer:
+			var dangerLayer = world.WorldActor.TraitOrDefault<DangerZoneLayer>();
+			if (dangerLayer != null)
+			{
+				dangerLayer.AddDangerZone(world, zone);
+			}
+
+			// Find actors that could be impacted at the destination point of this projectile:
+			foreach (var actor in world.FindUnitsInCircle(args.dest, blastRadius))
+			{
+				var notifyIncoming = actor.TraitOrDefault<INotifyDangerZoneCreatedNearby>();
+				if (notifyIncoming == null) continue;
+
+				// Notify the actor that a projectile is incoming:
+				notifyIncoming.OnNotifyDangerZoneCreatedNearby(actor, zone);
+			}
 		}
 	}
 }
