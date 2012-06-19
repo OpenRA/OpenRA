@@ -15,6 +15,7 @@ using OpenRA.GameRules;
 using OpenRA.Mods.RA.Effects;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
+using System.Collections.Generic;
 
 namespace OpenRA.Mods.RA
 {
@@ -97,6 +98,43 @@ namespace OpenRA.Mods.RA
 									(int)(warhead.Damage * warhead.EffectivenessAgainst(unit)), warhead);
 					} break;
 			}
+		}
+
+		public static IEnumerable<OpenRA.FileFormats.Pair<Actor, int>> FindActorsInImpactRadius(WarheadInfo warhead, World world, int2 targetTile, int2 dest)
+		{
+			switch (warhead.DamageModel)
+			{
+				case DamageModel.Normal:
+					{
+						var maxSpread = warhead.Spread * (float)Math.Log(Math.Abs(warhead.Damage), 2);
+						int radius = (int)maxSpread;
+						var hitActors = world.FindUnitsInCircle(dest, (int)maxSpread);
+
+						foreach (var victim in hitActors)
+							yield return OpenRA.FileFormats.Pair.New(victim, radius);
+					} break;
+
+				case DamageModel.PerCell:
+					{
+						int radius = warhead.Size[0];
+						foreach (var t in world.FindTilesInCircle(targetTile, radius))
+							foreach (var unit in world.FindUnits(Game.CellSize * t, Game.CellSize * (t + new int2(1, 1))))
+								yield return OpenRA.FileFormats.Pair.New(unit, radius);
+					} break;
+			}
+		}
+
+		public static IEnumerable<OpenRA.FileFormats.Pair<Actor, int>> FindActorsInImpactRadius(ProjectileArgs args)
+		{
+			var world = args.firedBy.World;
+			var targetTile = Util.CellContaining(args.dest);
+
+			if (!world.Map.IsInMap(targetTile))
+				yield break;
+
+			foreach (var warhead in args.weapon.Warheads)
+				foreach (var actor in FindActorsInImpactRadius(warhead, world, targetTile, args.dest))
+					yield return actor;
 		}
 
 		public static void DoImpacts(ProjectileArgs args)
