@@ -25,16 +25,20 @@ local function updateWatchesSync()
   if watchCtrl and debugger.server and not debugger.running then
     for idx = 0, watchCtrl:GetItemCount() - 1 do
       local expression = watchCtrl:GetItemText(idx)
-      local value, _, error = debugger.evaluate(expression)
-      watchCtrl:SetItem(idx, 1, value or ('error: ' .. error))
+      local _, values, error = debugger.evaluate(expression)
+      if error then error = error:gsub("%[.-%]:%d+:%s+","")
+      elseif #values == 0 then values = {'nil'} end
+      watchCtrl:SetItem(idx, 1, error and ('error: '..error) or values[1])
     end
   end
 end
 
 local simpleType = {['nil'] = true, ['string'] = true, ['number'] = true, ['boolean'] = true}
-local function updateStackSync()
+local function updateStackSync(reset)
   local stackCtrl = debugger.stackCtrl
   if stackCtrl and debugger.server and not debugger.running then
+    if reset then stackCtrl:DeleteAllItems(); return end
+
     local stack = debugger.stack()
     if not stack or #stack == 0 then return end
     stackCtrl:Freeze()
@@ -119,19 +123,28 @@ debugger.shell = function(expression)
   if debugger.server and not debugger.running then
     copas.addthread(function ()
         local addedret = false
-        local value, _, err = debugger.handle('exec ' .. expression)
+        -- exec command is not expected to return anything.
+        -- eval command returns 0 or more results.
+        -- 'values' has a list of serialized results returned.
+        -- as it is not possible to distinguish between 0 and nil returned,
+        -- 'nil' is always returned in this case.
+        -- the first value returned by eval command is not used;
+        -- this may need to be taken into account by other debuggers.
+        local _, values, err = debugger.handle('exec ' .. expression)
         if err and (err:find("'=' expected near '<eof>'") or
                     err:find("syntax error near '") or
                     err:find("unexpected symbol near '")) then
-          value, _, err = debugger.handle('eval ' .. expression:gsub("^%s*=%s*",""))
+          _, values, err = debugger.handle('eval ' .. expression:gsub("^%s*=%s*",""))
           addedret = true
         end
 
         if err then
           if addedret then err = err:gsub('^%[string "return ', '[string "') end
           DisplayShellErr(err)
-        elseif addedret or (value ~= nil and value ~= 'nil') then
-          DisplayShell(value)
+        elseif addedret or #values > 0 then
+          -- if empty table is returned, then show nil if this was an expression
+          if addedret and #values == 0 then values = {'nil'} end
+          DisplayShell((table.unpack or unpack)(values))
         end
       end)
   end
@@ -210,6 +223,11 @@ debugger.listen = function()
                 debugger.handle("basedir " .. debugger.basedir)
               end
             end
+
+            -- only reset stack window
+            -- can't execute STACK command as the client first needs
+            -- STEP/RUN command to get into the debug hook
+            updateStackSync(true)
           end
 
           if not activated then
@@ -221,6 +239,7 @@ debugger.listen = function()
           return debugger.terminate()
         else
           debugger.scratchable = true
+          updateStackSync()
           activateDocument(startfile, 1)
         end
       end
@@ -228,6 +247,8 @@ debugger.listen = function()
       if (not options.noshell and not debugger.scratchpad) then
         ShellSupportRemote(debugger.shell)
       end
+
+      updateWatchesSync()
 
       DisplayOutput("Started remote debugging session (base directory: '" .. debugger.basedir .. "').\n")
 
@@ -474,11 +495,11 @@ function DebuggerCreateWatchWindow()
   local info = wx.wxListItem()
   info:SetMask(wx.wxLIST_MASK_TEXT + wx.wxLIST_MASK_WIDTH)
   info:SetText("Expression")
-  info:SetWidth(width * 0.45)
+  info:SetWidth(width * 0.32)
   watchCtrl:InsertColumn(0, info)
 
   info:SetText("Value")
-  info:SetWidth(width * 0.45)
+  info:SetWidth(width * 0.56)
   watchCtrl:InsertColumn(1, info)
 
   watchWindow:CentreOnParent()

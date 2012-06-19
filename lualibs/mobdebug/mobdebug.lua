@@ -1,5 +1,5 @@
 --
--- MobDebug 0.451
+-- MobDebug 0.453
 -- Copyright Paul Kulchenko 2011-2012
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
 -- (http://www.keplerproject.org/remdebug)
@@ -9,7 +9,7 @@ local mobdebug = {
   _NAME = "mobdebug",
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
-  _VERSION = "0.451"
+  _VERSION = "0.453"
 }
 
 local coroutine = coroutine
@@ -469,18 +469,38 @@ local function debug_hook(event, line)
       step_into = false
       step_over = false
       local status, res = coroutine.resume(coro_debugger, events.BREAK, vars, file, line)
+
+      -- handle 'stack' command that provides stack() information to the debugger
       if status and res == 'stack' then
         while status and res == 'stack' do
           -- resume with the stack trace and variables
           status, res = coroutine.resume(coro_debugger, events.STACK, stack(3), file, line)
         end
-      elseif status and res then
+      end
+
+      -- need to recheck once more as resume after 'stack' command may
+      -- return something else (for example, 'exit'), which needs to be handled
+      if status and res and res ~= 'stack' then
+        if abort == nil and res == "exit" then os.exit(1) end
         abort = res
         error(abort)
       end -- abort execution if requested
     end
     if vars then restore_vars(vars) end
   end
+end
+
+local function stringify_results(status, ...)
+  if not status then return status, ... end -- on error report as it
+
+  local t = {...}
+  for i,v in pairs(t) do -- stringify each of the returned values
+    t[i] = serpent.line(v, {nocode = true, comment = 1})
+  end
+  -- stringify table with all returned values
+  -- this is done to allow each returned value to be used (serialized or not)
+  -- intependently and to preserve "original" comments
+  return status, serpent.dump(t, {sparse = false})
 end
 
 local function debugger_loop(sfile, sline)
@@ -540,9 +560,8 @@ local function debugger_loop(sfile, sline)
         local status
         if func then
           setfenv(func, eval_env)
-          status, res = pcall(func)
+          status, res = stringify_results(pcall(func))
         end
-        res = tostring(res)
         if status then
           server:send("200 OK " .. string.len(res) .. "\n") 
           server:send(res)
@@ -675,7 +694,7 @@ local function debugger_loop(sfile, sline)
       local ev, vars = coroutine.yield("stack")
       if ev == events.STACK then
         server:send("200 OK " .. serpent.dump(vars,
-          {nocode = true, sparse = false, ignore = {[mobdebug] = true}}) .. "\n")
+          {nocode = true, sparse = false}) .. "\n")
       else
         server:send("401 Error in Expression 0\n")
       end
@@ -801,12 +820,12 @@ local function handle(params, client)
       if size then
         local msg = client:receive(tonumber(size))
         print("Error in remote application: " .. msg)
-        os.exit()
+        os.exit(1)
         return nil, nil, msg -- use return here for those cases where os.exit() is not wanted
       end
     else
       print("Unknown error")
-      os.exit()
+      os.exit(1)
       -- use return here for those cases where os.exit() is not wanted
       return nil, nil, "Debugger error: unexpected response '" .. breakpoint .. "'"
     end
@@ -926,9 +945,23 @@ local function handle(params, client)
       if status == "200" then
         len = tonumber(len)
         if len > 0 then 
-          local res = client:receive(len)
-          print(res)
-          return res
+          local status, res
+          local str = client:receive(len)
+          -- handle serialized table with results
+          local func, err = loadstring(str)
+          if func then
+            status, res = pcall(func)
+            if not status then err = res
+            elseif type(res) ~= "table" then
+              err = "received "..type(res).." instead of expected 'table'"
+            end
+          end
+          if err then
+            print("Error in processing results: " .. err)
+            return nil, nil, "Error in processing results: " .. err
+          end
+          print((table.unpack or unpack)(res))
+          return res[1], res
         end
       elseif status == "201" then
         _, _, file, line = string.find(params, "^201 Started%s+([%w%p%s]+)%s+(%d+)%s*$")

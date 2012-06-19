@@ -233,25 +233,24 @@ end
 
 local env = createenv()
 
+local function packResults(status, ...) return status, {...} end
+
 local function executeShellCode(tx)
   if tx == nil or tx == '' then return end
 
   DisplayShellPrompt('')
 
-  local addedret = false
-  local fn,err
-  if remotesend then
-    remotesend(tx)
-  else
-    fn,err = loadstring(tx)
-    -- for statement queries create the return
-    if err and (err:find("'=' expected near '<eof>'") or
-                err:find("syntax error near '") or
-                err:find("unexpected symbol near '")) then
-      local errmore
-      fn,errmore = loadstring("return "..tx:gsub("^%s*=%s*",""))
-      addedret = not errmore
-    end
+  if remotesend then remotesend(tx); return end
+
+  local addedret, forceexpression = false, tx:match("^%s*=%s*")
+  local fn,err = loadstring(tx)
+  -- for expression queries create the return
+  if err and (err:find("'=' expected near '<eof>'") or
+              err:find("syntax error near '") or
+              err:find("unexpected symbol near '")) then
+    local errmore
+    fn,errmore = loadstring("return "..tx:gsub("^%s*=%s*",""))
+    addedret = not errmore
   end
   
   if fn == nil and err then
@@ -267,15 +266,23 @@ local function executeShellCode(tx)
       wx.wxFileName.SetCwd(projectDir)
     end
 
-    local ok, res = xpcall(fn,
+    local ok, res = packResults(xpcall(fn,
       function(err)
         DisplayShellErr(filterTraceError(debug.traceback(err), addedret))
-      end)
+      end))
 
     -- restore the current dir
     if projectDir then wx.wxFileName.SetCwd(cwd) end
     
-    if ok and (addedret or res ~= nil) then DisplayShell(res) end
+    if ok and (addedret or #res > 0) then
+      if addedret then
+        local mobdebug = require "mobdebug"
+        for i,v in pairs(res) do -- stringify each of the returned values
+          res[i] = mobdebug.line(v, {nocode = true, comment = 1})
+        end
+      end
+      DisplayShell((table.unpack or unpack)(res))
+    end
   end
 end
 
@@ -367,6 +374,7 @@ out:Connect(wx.wxEVT_KEY_DOWN,
         if caretOnPromptLine(true) and event:ShiftDown() then break end
 
         local promptText = getPromptText()
+        if #promptText == 0 then return end -- nothing to execute, exit
         if promptText == 'clear' then
           out:ClearAll()
           displayShellIntro()
