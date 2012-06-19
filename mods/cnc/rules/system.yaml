@@ -53,7 +53,7 @@ Player:
 			orca: 5%
 	PlayerColorPalette:
 		BasePalette: terrain
-		PaletteFormat: cnc
+		RemapIndex: 176, 178, 180, 182, 184, 186, 189, 191, 177, 179, 181, 183, 185, 187, 188, 190
 	BaseAttackNotifier:
 
 World:
