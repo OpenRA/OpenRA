@@ -18,7 +18,7 @@ namespace OpenRA.Mods.RA.Move
 	public class PathSearch : IDisposable
 	{
 		World world;
-		public CellInfo[ , ] cellInfo;
+		public CellInfo[,] cellInfo;
 		public PriorityQueue<PathDistance> queue;
 		public Func<int2, int> heuristic;
 		Func<int2, bool> customBlock;
@@ -70,13 +70,13 @@ namespace OpenRA.Mods.RA.Move
 
 		public PathSearch FromPoint(int2 from)
 		{
-			AddInitialCell( from );
+			AddInitialCell(from);
 			return this;
 		}
 
 		int LaneBias = 1;
 
-		public int2 Expand( World world )
+		public int2 Expand(World world)
 		{
 			var p = queue.Pop();
 			while (cellInfo[p.Location.X, p.Location.Y].Seen)
@@ -92,12 +92,12 @@ namespace OpenRA.Mods.RA.Move
 			if (thisCost == int.MaxValue)
 				return p.Location;
 
-			foreach( int2 d in directions )
+			foreach (int2 d in directions)
 			{
 				int2 newHere = p.Location + d;
 
 				if (!world.Map.IsInMap(newHere.X, newHere.Y)) continue;
-				if( cellInfo[ newHere.X, newHere.Y ].Seen )
+				if (cellInfo[newHere.X, newHere.Y].Seen)
 					continue;
 
 				var costHere = mobileInfo.MovementCostForCell(world, newHere);
@@ -111,31 +111,34 @@ namespace OpenRA.Mods.RA.Move
 				if (customBlock != null && customBlock(newHere))
 					continue;
 
-				var est = heuristic( newHere );
-				if( est == int.MaxValue )
+				var est = heuristic(newHere);
+				if (est == int.MaxValue)
 					continue;
 
 				int cellCost = costHere;
-				if( d.X * d.Y != 0 ) cellCost = ( cellCost * 34 ) / 24;
+				if (d.X * d.Y != 0) cellCost = (cellCost * 34) / 24;
 
 				// directional bonuses for smoother flow!
-				var ux = (newHere.X + (inReverse ? 1 : 0) & 1);
-				var uy = (newHere.Y + (inReverse ? 1 : 0) & 1);
+				if (LaneBias != 0)
+				{
+					var ux = (newHere.X + (inReverse ? 1 : 0) & 1);
+					var uy = (newHere.Y + (inReverse ? 1 : 0) & 1);
 
-				if (ux == 0 && d.Y < 0) cellCost += LaneBias;
-				else if (ux == 1 && d.Y > 0) cellCost += LaneBias;
-				if (uy == 0 && d.X < 0) cellCost += LaneBias;
-				else if (uy == 1 && d.X > 0) cellCost += LaneBias;
+					if (ux == 0 && d.Y < 0) cellCost += LaneBias;
+					else if (ux == 1 && d.Y > 0) cellCost += LaneBias;
+					if (uy == 0 && d.X < 0) cellCost += LaneBias;
+					else if (uy == 1 && d.X > 0) cellCost += LaneBias;
+				}
 
-				int newCost = cellInfo[ p.Location.X, p.Location.Y ].MinCost + cellCost;
+				int newCost = cellInfo[p.Location.X, p.Location.Y].MinCost + cellCost;
 
-				if( newCost >= cellInfo[ newHere.X, newHere.Y ].MinCost )
+				if (newCost >= cellInfo[newHere.X, newHere.Y].MinCost)
 					continue;
 
-				cellInfo[ newHere.X, newHere.Y ].Path = p.Location;
-				cellInfo[ newHere.X, newHere.Y ].MinCost = newCost;
+				cellInfo[newHere.X, newHere.Y].Path = p.Location;
+				cellInfo[newHere.X, newHere.Y].MinCost = newCost;
 
-				queue.Add( new PathDistance( newCost + est, newHere ) );
+				queue.Add(new PathDistance(newCost + est, newHere));
 
 			}
 			return p.Location;
@@ -153,29 +156,33 @@ namespace OpenRA.Mods.RA.Move
 			new int2(  1,  1 ),
 		};
 
-		public void AddInitialCell( int2 location )
+		public void AddInitialCell(int2 location)
 		{
 			if (!world.Map.IsInMap(location.X, location.Y))
 				return;
 
-			cellInfo[ location.X, location.Y ] = new CellInfo( 0, location, false );
-			queue.Add( new PathDistance( heuristic( location ), location ) );
+			cellInfo[location.X, location.Y] = new CellInfo(0, location, false);
+			queue.Add(new PathDistance(heuristic(location), location));
 		}
 
-		public static PathSearch Search( World world, MobileInfo mi, Player owner, bool checkForBlocked )
+		public static PathSearch Search(World world, MobileInfo mi, Player owner, bool checkForBlocked)
 		{
-			var search = new PathSearch(world, mi, owner) {
-				checkForBlocked = checkForBlocked };
+			var search = new PathSearch(world, mi, owner)
+			{
+				checkForBlocked = checkForBlocked
+			};
 			return search;
 		}
 
-		public static PathSearch FromPoint( World world, MobileInfo mi, Player owner, int2 from, int2 target, bool checkForBlocked )
+		public static PathSearch FromPoint(World world, MobileInfo mi, Player owner, int2 from, int2 target, bool checkForBlocked)
 		{
-			var search = new PathSearch(world, mi, owner) {
-				heuristic = DefaultEstimator( target ),
-				checkForBlocked = checkForBlocked };
+			var search = new PathSearch(world, mi, owner)
+			{
+				heuristic = DefaultEstimator(target),
+				checkForBlocked = checkForBlocked
+			};
 
-			search.AddInitialCell( from );
+			search.AddInitialCell(from);
 			return search;
 		}
 
@@ -187,8 +194,8 @@ namespace OpenRA.Mods.RA.Move
 				checkForBlocked = checkForBlocked
 			};
 
-			foreach( var sl in froms )
-				search.AddInitialCell( sl );
+			foreach (var sl in froms)
+				search.AddInitialCell(sl);
 
 			return search;
 		}
@@ -207,7 +214,7 @@ namespace OpenRA.Mods.RA.Move
 				cellInfoPool.Enqueue(ci);
 		}
 
-		CellInfo[ , ] InitCellInfo()
+		CellInfo[,] InitCellInfo()
 		{
 			CellInfo[,] result = null;
 			while (cellInfoPool.Count > 0)
@@ -225,22 +232,22 @@ namespace OpenRA.Mods.RA.Move
 			}
 
 			if (result == null)
-				result  = new CellInfo[ world.Map.MapSize.X, world.Map.MapSize.Y ];
+				result = new CellInfo[world.Map.MapSize.X, world.Map.MapSize.Y];
 
-			for( int x = 0 ; x < world.Map.MapSize.X ; x++ )
-				for( int y = 0 ; y < world.Map.MapSize.Y ; y++ )
-					result[ x, y ] = new CellInfo( int.MaxValue, new int2( x, y ), false );
+			for (int x = 0; x < world.Map.MapSize.X; x++)
+				for (int y = 0; y < world.Map.MapSize.Y; y++)
+					result[x, y] = new CellInfo(int.MaxValue, new int2(x, y), false);
 
 			return result;
 		}
 
-		public static Func<int2, int> DefaultEstimator( int2 destination )
+		public static Func<int2, int> DefaultEstimator(int2 destination)
 		{
 			return here =>
 			{
-				int2 d = ( here - destination ).Abs();
-				int diag = Math.Min( d.X, d.Y );
-				int straight = Math.Abs( d.X - d.Y );
+				int2 d = (here - destination).Abs();
+				int diag = Math.Min(d.X, d.Y);
+				int straight = Math.Abs(d.X - d.Y);
 				return (3400 * diag / 24) + (100 * straight);
 			};
 		}

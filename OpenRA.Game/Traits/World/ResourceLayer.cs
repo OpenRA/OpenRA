@@ -12,26 +12,29 @@ using System;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Graphics;
+using System.Collections.Generic;
 
 namespace OpenRA.Traits
 {
 	public class ResourceLayerInfo : TraitInfo<ResourceLayer> { }
 
-	public class ResourceLayer: IRenderOverlay, IWorldLoaded
+	public class ResourceLayer : IRenderOverlay, IWorldLoaded
 	{
 		World world;
 
 		public ResourceType[] resourceTypes;
 		CellContents[,] content;
 
+		Dictionary<int2, Actor> claimedPoints;
+
 		bool hasSetupPalettes;
 
-		public void Render( WorldRenderer wr )
+		public void Render(WorldRenderer wr)
 		{
 			if (!hasSetupPalettes)
 			{
 				hasSetupPalettes = true;
-				foreach( var rt in world.WorldActor.TraitsImplementing<ResourceType>() )
+				foreach (var rt in world.WorldActor.TraitsImplementing<ResourceType>())
 					rt.info.PaletteIndex = wr.GetPaletteIndex(rt.info.Palette);
 			}
 
@@ -55,6 +58,9 @@ namespace OpenRA.Traits
 			this.world = w;
 			content = new CellContents[w.Map.MapSize.X, w.Map.MapSize.Y];
 
+			// NOTE(jsd): 32 seems a sane default initial capacity for the total # of harvesters in a game. Purely a guesstimate.
+			claimedPoints = new Dictionary<int2, Actor>(32);
+
 			resourceTypes = w.WorldActor.TraitsImplementing<ResourceType>().ToArray();
 			foreach (var rt in resourceTypes)
 				rt.info.Sprites = rt.info.SpriteNames.Select(a => Game.modData.SpriteLoader.LoadAllSprites(a)).ToArray();
@@ -70,7 +76,7 @@ namespace OpenRA.Traits
 					if (type == null)
 						continue;
 
-					if (!AllowResourceAt(type, new int2(x,y)))
+					if (!AllowResourceAt(type, new int2(x, y)))
 						continue;
 
 					content[x, y].type = type;
@@ -104,7 +110,7 @@ namespace OpenRA.Traits
 			int sum = 0;
 			for (var u = -1; u < 2; u++)
 				for (var v = -1; v < 2; v++)
-					if (content[i+u, j+v].type == t)
+					if (content[i + u, j + v].type == t)
 						++sum;
 			return sum;
 		}
@@ -131,14 +137,68 @@ namespace OpenRA.Traits
 				content[i, j].image.Length - 1,
 				content[i, j].density + n);
 
-			world.Map.CustomTerrain[i,j] = t.info.TerrainType;
+			world.Map.CustomTerrain[i, j] = t.info.TerrainType;
 		}
 
 		public bool IsFull(int i, int j) { return content[i, j].density == content[i, j].image.Length - 1; }
 
+		public bool ClaimResource(Actor claimer, int2 p)
+		{
+			// Has anyone else claimed this point?
+			Actor claimedBy;
+			if (claimedPoints.TryGetValue(p, out claimedBy))
+			{
+				// Same claimer:
+				if (claimedBy == claimer) return true;
+
+				// This is to prevent in-fighting amongst friendly harvesters:
+				if (claimer.Owner == claimedBy.Owner) return false;
+				if (claimer.Owner.Stances[claimedBy.Owner] == Stance.Ally) return false;
+
+				// If an enemy/neutral claimed this, don't respect that claim and fall through:
+			}
+
+			// Either nobody else claims this point or an enemy/neutral claims it:
+			UnclaimAllResourcesBy(claimer);
+			claimedPoints[p] = claimer;
+			return true;
+		}
+
+		public void UnclaimAllResourcesBy(Actor claimer)
+		{
+			List<int2> pointsToRemove = new List<int2>(1);
+
+			foreach (var pair in claimedPoints)
+			{
+				if (pair.Value == claimer)
+					pointsToRemove.Add(pair.Key);
+			}
+
+			foreach (var point in pointsToRemove)
+				claimedPoints.Remove(point);
+		}
+
+		public bool IsClaimedByAnyoneElse(Actor self, int2 p)
+		{
+			Actor claimedBy;
+			if (claimedPoints.TryGetValue(p, out claimedBy))
+			{
+				// Same claimer:
+				if (claimedBy == self) return false;
+
+				// This is to prevent in-fighting amongst friendly harvesters:
+				if (self.Owner == claimedBy.Owner) return true;
+				if (self.Owner.Stances[claimedBy.Owner] == Stance.Ally) return true;
+
+				// If an enemy/neutral claimed this, don't respect that claim and fall through:
+			}
+
+			return false;
+		}
+
 		public ResourceType Harvest(int2 p)
 		{
-			var type = content[p.X,p.Y].type;
+			var type = content[p.X, p.Y].type;
 			if (type == null) return null;
 
 			if (--content[p.X, p.Y].density < 0)
@@ -163,6 +223,7 @@ namespace OpenRA.Traits
 		}
 
 		public ResourceType GetResource(int2 p) { return content[p.X, p.Y].type; }
+		public int GetResourceDensity(int2 p) { return content[p.X, p.Y].density; }
 
 		public struct CellContents
 		{
