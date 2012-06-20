@@ -62,6 +62,7 @@
     <Compile Include="Widgets\Logic\D2kExtractGameFilesLogic.cs" />
     <Compile Include="Widgets\Logic\D2kInstallFromCDLogic.cs" />
     <Compile Include="Widgets\Logic\D2kDownloadPackagesLogic.cs" />
+    <Compile Include="BuildingCaptureNotification.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
@@ -90,8 +91,5 @@ cd "$(SolutionDir)"</PostBuildEvent>
       <Project>{4A8A43B5-A9EF-4ED0-99DD-4BAB10A0DB6E}</Project>
       <Name>OpenRA.Mods.RA</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Render\" />
   </ItemGroup>
 </Project>

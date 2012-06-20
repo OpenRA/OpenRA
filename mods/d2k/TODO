@@ -6,7 +6,8 @@
 # construction yard crane animations missing
 # welding animation (factories) missing
 # chimney animation (refinery) missing
-# harvester unload and harvest animation missing
+# harvest animation missing
+# harvester unload animation ugly
 # add more spice tiles and make them fit
 # add game logic for concrete plates (use terrain overlay from bridges/ressources)
 # allow placing turrets on walls
@@ -14,8 +15,7 @@
 # ornithocopter should flap (might need new RenderOrni code for proper animation)
 # R8 converter needs infantry frame resorter
 # add grenade thrower
-# add sandworm (behave like a moving anti-vehicle mine)
-# add thumper which deploys and really attracts sandworms
+# make sandworm behave like a moving anti-vehicle mine
 # add neutral buildings: emperor palace, fremen siech, smugglers factory
 # add deathhand missile (nuke)
 # maybe add ornithocopter strikes (they are currently directly contrallable units with non-reloading machine guns as in Dune II)
@@ -33,7 +33,6 @@
 # black spots on buildings should be fading team colors
 # gamefile extraction (setup/setup.z) from CD fails
 # support patch 1.06 gamefiles: DATA.R8 has more frames and currently fails to extract, also featuring new terrain with white houses and new unit: grenade thrower
-# mouse cursor has no transparency and is a little pixelish
 # infantry-only areas (Rough) do not show the dark-green mouse cursor
 # put TilesetBuilder.Export into OpenRA.Utility to call the functions directly when extracting game-files (instead of opening a GUI)
 # replace RA sounds by Dune 2000 ones

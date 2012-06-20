@@ -23,9 +23,15 @@
 	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:
-#TODO: not race specific
-	ActorLostNotification:
+	ActorLostNotification@Atreides:
+		Race: atreides
 		Notification: AI_ULOST.AUD
+	ActorLostNotification@Harkonnen:
+		Race: harkonnen
+		Notification: HI_ULOST.AUD
+	ActorLostNotification@Ordos:
+		Race: ordos
+		Notification: OI_ULOST.AUD
 	ProximityCaptor:
 		Types:Vehicle
 	GivesBounty:
@@ -58,8 +64,15 @@
 	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:
-	ActorLostNotification:
+	ActorLostNotification@Atreides:
+		Race: atreides
 		Notification: AI_ULOST.AUD
+	ActorLostNotification@Harkonnen:
+		Race: harkonnen
+		Notification: HI_ULOST.AUD
+	ActorLostNotification@Ordos:
+		Race: ordos
+		Notification: OI_ULOST.AUD
 	ProximityCaptor:
 		Types:Tank
 	GivesBounty:
@@ -101,8 +114,15 @@
 	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:
-	ActorLostNotification:
+	ActorLostNotification@Atreides:
+		Race: atreides
 		Notification: AI_ULOST.AUD
+	ActorLostNotification@Harkonnen:
+		Race: harkonnen
+		Notification: HI_ULOST.AUD
+	ActorLostNotification@Ordos:
+		Race: ordos
+		Notification: OI_ULOST.AUD
 	ProximityCaptor:
 		Types:Infantry
 	GivesBounty:
@@ -122,8 +142,15 @@
 	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:
-	ActorLostNotification:
+	ActorLostNotification@Atreides:
+		Race: atreides
 		Notification: AI_ULOST.AUD
+	ActorLostNotification@Harkonnen:
+		Race: harkonnen
+		Notification: HI_ULOST.AUD
+	ActorLostNotification@Ordos:
+		Race: ordos
+		Notification: OI_ULOST.AUD
 	DebugAircraftFacing:
 	DebugAircraftSubPxX:
 	DebugAircraftSubPxY:
@@ -159,7 +186,7 @@
 	WithBuildingExplosion:
 	RepairableBuilding:
 	EmitInfantryOnSell:
-		ActorTypes: rifle,rifle,rifle,rifle,rifle,rifle
+		ActorTypes: rifle,rifle,rifle,bazooka,bazooka,engineer
 	MustBeDestroyed:
 	GivesExperience:
 #	FrozenUnderFog:
@@ -172,9 +199,15 @@
 	CaptureNotification@Ordos:
 		Race: ordos
 		Notification: OI_CAPT.AUD
-#TODO: not Race-specific
-	ActorLostNotification:
+	ActorLostNotification@Atreides:
+		Race: atreides
 		Notification: AI_BLOST.AUD
+	ActorLostNotification@Harkonnen:
+		Race: harkonnen
+		Notification: HI_BLOST.AUD
+	ActorLostNotification@Ordos:
+		Race: ordos
+		Notification: OI_BLOST.AUD
 	EditorAppearance:
 		RelativeToTopLeft: yes
 	ShakeOnDeath:

@@ -48,9 +48,18 @@ Player:
 		BlockedAudio: AI_NROOM.AUD
 	PlaceBuilding:
 	SupportPowerManager:
-	ConquestVictoryConditions:
-		WinNotification:AI_MWIN.AUD
-		LoseNotification:AI_MFAIL.AUD
+	ConquestVictoryConditions@Atreides:
+		Race: atreides
+		WinNotification: AI_MWIN.AUD
+		LoseNotification: AI_MFAIL.AUD
+	ConquestVictoryConditions@Harkonnen:
+		Race: harkonnen
+		WinNotification: HI_MWIN.AUD
+		LoseNotification: HI_MFAIL.AUD
+	ConquestVictoryConditions@Ordos:
+		Race: ordos
+		WinNotification: OI_MWIN.AUD
+		LoseNotification: OI_MFAIL.AUD
 	PowerManager:
 	AllyRepair:
 	PlayerResources:
@@ -246,17 +255,60 @@ CRATE:
 	RevealMapCrateAction:
 		SelectionShares: 1
 		Effect: reveal-map
-#TODO: Currently only gives you an Atreides MCV
-	GiveMcvCrateAction:
+	GiveMcvCrateAction@Atreides:
 		SelectionShares: 2
 		NoBaseSelectionShares: 9001
 		Unit: mcva
-	GiveUnitCrateAction@trike:
+	GiveMcvCrateAction@Harkonnen:
+		SelectionShares: 2
+		NoBaseSelectionShares: 9001
+		Unit: mcvh
+	GiveMcvCrateAction@Ordos:
+		SelectionShares: 2
+		NoBaseSelectionShares: 9001
+		Unit: mcvo
+	GiveUnitCrateAction@Trike:
 		SelectionShares: 7
 		Unit: trike
-	GiveUnitCrateAction@quad:
+	GiveUnitCrateAction@Quad:
 		SelectionShares: 6
 		Unit: quad
+	GiveUnitCrateAction@Raider:
+		SelectionShares: 6
+		Unit: raider
+	GiveUnitCrateAction@SiegeTank:
+		SelectionShares: 6
+		Unit: siegetank
+	GiveUnitCrateAction@MissileTank:
+		SelectionShares: 6
+		Unit: missiletank
+	GiveUnitCrateAction@CombatA:
+		SelectionShares: 5
+		Unit: combata
+	GiveUnitCrateAction@CombatH:
+		SelectionShares: 5
+		Unit: combath
+	GiveUnitCrateAction@CombatO:
+		SelectionShares: 5
+		Unit: combato
+	GiveUnitCrateAction@Fremen:
+		SelectionShares: 4
+		Unit: fremen
+	GiveUnitCrateAction@Sardaukar:
+		SelectionShares: 4
+		Unit: sardaukar
+	GiveUnitCrateAction@Saboteur:
+		SelectionShares: 4
+		Unit: saboteur
+	GiveUnitCrateAction@SonicTank:
+		SelectionShares: 3
+		Unit: sonictank
+	GiveUnitCrateAction@Devast:
+		SelectionShares: 3
+		Unit: devast
+	GiveUnitCrateAction@deviatortank:
+		SelectionShares: 3
+		Unit: deviatortank
 	RenderSimple:
 	BelowUnits:
 	ProximityCaptor:
