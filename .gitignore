@@ -57,3 +57,5 @@ Logs/
 Replays/
 \#*
 .*.sw?
+.directory
+*.kate-swp
