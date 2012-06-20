@@ -147,7 +147,10 @@ namespace OpenRA.Mods.RA
 				{
 					var projectile = args.weapon.Projectile.Create(args);
 					if (projectile != null)
+					{
 						self.World.Add(projectile);
+						NotifyFriendlyFire(args);
+					}
 
 					if (!string.IsNullOrEmpty(args.weapon.Report))
 						Sound.Play(args.weapon.Report + ".aud", self.CenterLocation);
@@ -158,6 +161,22 @@ namespace OpenRA.Mods.RA
 				na.Attacking(self, target);
 
 			FiredShot();
+		}
+
+		void NotifyFriendlyFire(ProjectileArgs args)
+		{
+			// Find actors that could be impacted at the destination point of this projectile:
+			foreach (var pair in Combat.FindActorsInImpactRadius(args))
+			{
+				var actor = pair.First;
+				int radius = pair.Second;
+
+				var notifyIncoming = actor.TraitOrDefault<INotifyIncomingProjectile>();
+				if (notifyIncoming == null) continue;
+
+				// Notify the actor that a projectile is incoming:
+				notifyIncoming.OnNotifyIncomingProjectile(actor, args.firedBy, args.dest, radius);
+			}
 		}
 	}
 }

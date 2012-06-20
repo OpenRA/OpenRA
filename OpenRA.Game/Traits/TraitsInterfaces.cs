@@ -132,6 +132,7 @@ namespace OpenRA.Traits
 	}
 
 	public interface IMove : ITeleportable { int Altitude { get; set; } }
+	public interface INotifyIncomingProjectile { void OnNotifyIncomingProjectile(Actor self, Actor firedBy, int2 projectileDestination, int blastRadius); }
 
 	public interface IFacing
 	{
