@@ -21,10 +21,7 @@ namespace OpenRA.FileFormats
 
 		static int[] GetRemapRamp(int[] Ramp)
 		{
-			int[] RemapRamp = new int[Ramp.Length];
-			for (var i=0; i < Ramp.Length; i++)
-				RemapRamp[i] = Ramp[i] - Ramp[0];
-
+			var RemapRamp = Ramp.Select(r => r - Ramp[0]).ToArray();
 			return RemapRamp;
 		}
 

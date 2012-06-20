@@ -17,7 +17,7 @@ namespace OpenRA.Traits
 	{
 		public readonly string BasePalette = null;
 		public readonly string BaseName = "player";
-		public readonly int[] RemapIndex = new[] {};
+		public readonly int[] RemapIndex = {};
 
 		public object Create( ActorInitializer init ) { return new PlayerColorPalette( init.self.Owner, this ); }
 	}
