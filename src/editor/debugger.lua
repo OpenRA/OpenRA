@@ -182,19 +182,6 @@ debugger.listen = function()
       -- without resetting their breakpoints
       debugger.handle("delallb")
 
-      -- go over all windows and find all breakpoints
-      if (not debugger.scratchpad) then
-        for _, document in pairs(ide.openDocuments) do
-          local editor = document.editor
-          local filePath = document.filePath
-          local line = editor:MarkerNext(0, BREAKPOINT_MARKER_VALUE)
-          while line ~= -1 do
-            debugger.handle("setb " .. filePath .. " " .. (line+1))
-            line = editor:MarkerNext(line + 1, BREAKPOINT_MARKER_VALUE)
-          end
-        end
-      end
-
       if (options.run) then
         local file, line = debugger.handle("run")
         activateDocument(file, line)
@@ -245,6 +232,19 @@ debugger.listen = function()
           debugger.scratchable = true
           updateStackSync()
           activateDocument(startfile, 1)
+        end
+      end
+
+      -- go over all windows and find all breakpoints
+      if (not debugger.scratchpad) then
+        for _, document in pairs(ide.openDocuments) do
+          local editor = document.editor
+          local filePath = document.filePath
+          local line = editor:MarkerNext(0, BREAKPOINT_MARKER_VALUE)
+          while line ~= -1 do
+            debugger.handle("setb " .. filePath .. " " .. (line+1))
+            line = editor:MarkerNext(line + 1, BREAKPOINT_MARKER_VALUE)
+          end
         end
       end
 
