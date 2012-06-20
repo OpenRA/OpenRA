@@ -221,6 +221,7 @@
     <Compile Include="Move\Move.cs" />
     <Compile Include="Move\PathFinder.cs" />
     <Compile Include="Move\PathSearch.cs" />
+    <Compile Include="Move\ScatterFromProjectiles.cs" />
     <Compile Include="NukePaletteEffect.cs" />
     <Compile Include="NullLoadScreen.cs" />
     <Compile Include="OpenWidgetAtGameStart.cs" />
