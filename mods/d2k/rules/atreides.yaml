@@ -158,7 +158,6 @@ FREMEN:
 	Health:
 		HP: 200
 	Passenger:
-		PipType: Red
 	RevealsShroud:
 		Range: 6
 	AutoTarget:

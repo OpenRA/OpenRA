@@ -290,7 +290,6 @@ SPICEBLOOM:
 		Terrain: Spice
 
 SANDWORM:
-	Inherits: ^Infantry
 	Buildable:
 		Owner: Creep
 	Valued:
@@ -298,18 +297,29 @@ SANDWORM:
 	Tooltip:
 		Name: Sandworm
 		Description: Attracted by vibrations in the sand. Will eat units whole and has a large appetite.
-		Icon: sandwormdust
+		Icon: wormjaw
 	Health:
 		HP: 10000
+		Radius: 3
+	Armor:
+		Type: None
 	Mobile:
 		Speed: 5
 		TerrainSpeeds:
 			Sand: 100
 			Dune: 100
+			Spice: 100
+	TargetableUnit:
+		TargetTypes: Ground
 	AutoTarget:
+	AttackMove:
+		JustMove: true
 	AttackWander:
 	AttackLeap:
 		PrimaryWeapon: WormJaw
 		CanAttackGround: no
 	RenderInfantry:
 	BelowUnits:
+	GivesExperience:
+	GivesBounty:
+	DrawLineToTarget:

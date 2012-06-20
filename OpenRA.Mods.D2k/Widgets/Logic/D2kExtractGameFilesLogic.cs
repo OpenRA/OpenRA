@@ -59,7 +59,9 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 			var PathToTilesets = Path.Combine(Platform.SupportDir, "Content/d2k/Tilesets");
 
 			var ExtractGameFiles = new string[][]
-			{	new string[] {"--r8", PathToDataR8, PathToPalette, "0", "2", Path.Combine(PathToSHPs, "overlay")},
+			{
+				new string[] {"--r8", PathToDataR8, PathToPalette, "0", "2", Path.Combine(PathToSHPs, "overlay")},
+				new string[] {"--r8", PathToDataR8, PathToPalette, "15", "16", Path.Combine(PathToSHPs, "dots")},
 				//new string[] {"--r8", PathToDataR8, PathToPalette, "40", "101", Path.Combine(PathToSHPs, "shadow")},
 				new string[] {"--r8", PathToDataR8, PathToPalette, "102", "105", Path.Combine(PathToSHPs, "crates")},
 				new string[] {"--r8", PathToDataR8, PathToPalette, "107", "109", Path.Combine(PathToSHPs, "spicebloom")},
@@ -67,6 +69,7 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 				new string[] {"--r8", PathToDataR8, PathToPalette, "130", "145", Path.Combine(PathToSHPs, "rockcrater2")},
 				new string[] {"--r8", PathToDataR8, PathToPalette, "146", "161", Path.Combine(PathToSHPs, "sandcrater1")},
 				new string[] {"--r8", PathToDataR8, PathToPalette, "162", "177", Path.Combine(PathToSHPs, "sandcrater2")},
+				// ?
 				new string[] {"--r8", PathToDataR8, PathToPalette, "206", "381", Path.Combine(PathToSHPs, "rifle"), "--infantry"},
 				new string[] {"--r8", PathToDataR8, PathToPalette, "382", "457", Path.Combine(PathToSHPs, "rifledeath"), "--infantrydeath"},
 				new string[] {"--r8", PathToDataR8, PathToPalette, "458", "693", Path.Combine(PathToSHPs, "bazooka"), "--infantry"},
@@ -154,8 +157,8 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 				new string[] {"--r8", PathToDataR8, PathToPalette, "2996", "2997", Path.Combine(PathToSHPs, "palaceo"), "--building"},
 				new string[] {"--r8", PathToDataR8, PathToPalette, "3370", "3380", Path.Combine(PathToSHPs, "unload"), "--vehicle"},
 				//explosions
-				new string[] {"--r8", PathToDataR8, PathToPalette, "3549", "3564", Path.Combine(PathToSHPs, "sandwormmouth")},
-				new string[] {"--r8", PathToDataR8, PathToPalette, "3565", "3585", Path.Combine(PathToSHPs, "sandwormdust")},
+				new string[] {"--r8", PathToDataR8, PathToPalette, "3549", "3564", Path.Combine(PathToSHPs, "wormjaw")},
+				new string[] {"--r8", PathToDataR8, PathToPalette, "3565", "3585", Path.Combine(PathToSHPs, "wormdust")},
 				new string[] {"--r8", PathToDataR8, PathToPalette, "3586", "3600", Path.Combine(PathToSHPs, "wormsigns1")},
 				new string[] {"--r8", PathToDataR8, PathToPalette, "3601", "3610", Path.Combine(PathToSHPs, "wormsigns2")},
 				new string[] {"--r8", PathToDataR8, PathToPalette, "3611", "3615", Path.Combine(PathToSHPs, "wormsigns3")},
@@ -269,6 +272,7 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 			var SHPsToCreate = new string[][]
 			{
 				new string[] {"--shp", Path.Combine(PathToSHPs, "overlay.png"), "32"},
+				new string[] {"--shp", Path.Combine(PathToSHPs, "dots.png"), "4"},
 				new string[] {"--shp", Path.Combine(PathToSHPs, "crates.png"), "32"},
 				//new string[] {"--shp", Path.Combine(PathToSHPs, "shadow.png"), "32"},
 				new string[] {"--shp", Path.Combine(PathToSHPs, "spicebloom.png"), "32"},
@@ -357,8 +361,8 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 				new string[] {"--shp", Path.Combine(PathToSHPs, "lighto.png"), "96"},
 				new string[] {"--shp", Path.Combine(PathToSHPs, "palaceo.png"), "96"},
 				new string[] {"--shp", Path.Combine(PathToSHPs, "unload.png"), "48"},
-				new string[] {"--shp", Path.Combine(PathToSHPs, "sandwormmouth.png"), "68"},
-				new string[] {"--shp", Path.Combine(PathToSHPs, "sandwormdust.png"), "68"},
+				new string[] {"--shp", Path.Combine(PathToSHPs, "wormjaw.png"), "68"},
+				new string[] {"--shp", Path.Combine(PathToSHPs, "wormdust.png"), "68"},
 				new string[] {"--shp", Path.Combine(PathToSHPs, "wormsigns1.png"), "16"},
 				new string[] {"--shp", Path.Combine(PathToSHPs, "wormsigns2.png"), "16"},
 				new string[] {"--shp", Path.Combine(PathToSHPs, "wormsigns3.png"), "16"},
