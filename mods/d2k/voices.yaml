@@ -9,11 +9,79 @@ GenericVoice:
 		Select: G_SSEL1,G_SSEL2,G_SSEL3
 		Move: G_SCONF1,G_SCONF2,G_SCONF3
 
-VehicleVoice:
+AtreidesVehicleVoice:
 	Variants:
 		atreides: .AUD
+	Voices:
+		Select: A_VSEL1,A_VSEL2,A_VSEL3
+		Move: A_VCONF1,A_VCONF2,A_VCONF3
+
+AtreidesInfantryVoice:
+	Variants:
+		atreides: .AUD
+	Voices:
+		Select: A_ISEL1,A_ISEL2,A_ISEL3
+		Move: A_ICONF1,A_ICONF2,A_ICONF3
+
+AtreidesEngineerVoice:
+	Variants:
+		atreides: .AUD
+	Voices:
+		Select: A_ESEL1,A_ESEL2,A_ESEL3
+		Move: A_ECONF1,A_ECONF2,A_ECONF3
+
+FremenVoice:
+	Variants:
+		atreides: .AUD
+	Voices:
+		Select: A_FSEL1,A_FSEL2,A_FSEL3
+		Move: A_FCONF1,A_FCONF2,A_FCONF3
+
+HarkonnenVehicleVoice:
+	Variants:
 		harkonnen: .AUD
+	Voices:
+		Select: H_VSEL1,H_VSEL2,H_VSEL3
+		Move: H_VCONF1,H_VCONF2,H_VCONF3
+
+HarkonnenInfantryVoice:
+	Variants:
+		harkonnen: .AUD
+	Voices:
+		Select: H_ISEL1,H_ISEL2,H_ISEL3
+		Move: H_ICONF1,H_ICONF2,H_ICONF3
+
+HarkonnenEngineerVoice:
+	Variants:
+		harkonnen: .AUD
+	Voices:
+		Select: H_ESEL1,H_ESEL2,H_ESEL3
+		Move: H_ECONF1,H_ECONF2,H_ECONF3
+
+OrdosVehicleVoice:
+	Variants:
 		ordos: .AUD
 	Voices:
-		Select: G_SSEL1,G_SSEL2,G_SSEL3
-		Move: G_SCONF1,G_SCONF2,G_SCONF3
+		Select: O_VSEL1,O_VSEL2,O_VSEL3
+		Move: O_VCONF1,O_VCONF2,O_VCONF3
+
+OrdosInfantryVoice:
+	Variants:
+		ordos: .AUD
+	Voices:
+		Select: O_ISEL1,O_ISEL2,O_ISEL3
+		Move: O_ICONF1,O_ICONF2,O_ICONF3
+
+OrdosEngineerVoice:
+	Variants:
+		ordos: .AUD
+	Voices:
+		Select: O_ESEL1,O_ESEL2,O_ESEL3
+		Move: O_ECONF1,O_ECONF2,O_ECONF3
+
+SaboteurVoice:
+	Variants:
+		ordos: .AUD
+	Voices:
+		Select: O_SSEL1,O_SSEL2,O_SSEL3
+		Move: O_SCONF1,O_SCONF2,O_SCONF3

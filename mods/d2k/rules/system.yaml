@@ -1,51 +1,5 @@
-#TODO: Currently only uses the Atreides voices.
 Player:
 	TechTree:
-	ClassicProductionQueue@Building:
-		Type: Building
-		BuildSpeed: .4
-		LowPowerSlowdown: 3
-		QueuedAudio: AI_BUILD.AUD
-		OnHoldAudio: AI_HOLD.AUD
-		ReadyAudio: AI_BDRDY.AUD
-		CancelledAudio: AI_CANCL.AUD
-		BlockedAudio: AI_NROOM.AUD
-	ClassicProductionQueue@Defense:
-		Type: Defense
-		BuildSpeed: .4
-		LowPowerSlowdown: 3
-		QueuedAudio: AI_BUILD.AUD
-		OnHoldAudio: AI_HOLD.AUD
-		ReadyAudio: AI_BDRDY.AUD
-		CancelledAudio: AI_CANCL.AUD
-		BlockedAudio: AI_NROOM.AUD
-	ClassicProductionQueue@Vehicle:
-		Type: Vehicle
-		BuildSpeed: .4
-		LowPowerSlowdown: 3
-		ReadyAudio: AI_UNRDY.AUD
-		QueuedAudio:AI_TRAIN.AUD
-		OnHoldAudio: AI_HOLD.AUD
-		CancelledAudio: AI_CANCL.AUD
-		BlockedAudio: AI_NROOM.AUD
-	ClassicProductionQueue@Infantry:
-		Type: Infantry
-		BuildSpeed: .4
-		LowPowerSlowdown: 3
-		ReadyAudio: AI_UNRDY.AUD
-		QueuedAudio:AI_TRAIN.AUD
-		OnHoldAudio: AI_HOLD.AUD
-		CancelledAudio: AI_CANCL.AUD
-		BlockedAudio: AI_NROOM.AUD
-	ClassicProductionQueue@Plane:
-		Type: Plane
-		BuildSpeed: .4
-		LowPowerSlowdown: 3
-		ReadyAudio: AI_UNRDY.AUD
-		QueuedAudio:AI_TRAIN.AUD
-		OnHoldAudio: AI_HOLD.AUD
-		CancelledAudio: AI_CANCL.AUD
-		BlockedAudio: AI_NROOM.AUD
 	PlaceBuilding:
 	SupportPowerManager:
 	ConquestVictoryConditions@Atreides:

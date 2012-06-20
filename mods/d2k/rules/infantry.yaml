@@ -33,8 +33,8 @@ ENGINEER:
 		Name: Engineer
 		Description: Infiltrates and captures enemy structures.\n  Strong vs Nothing\n  Weak vs Everything
 	Selectable:
-#		Voice: EngineerVoice
 		Bounds: 12,17,0,-9
+		Voice: EngineerVoice
 	Health:
 		HP: 25
 	Mobile:
@@ -84,7 +84,6 @@ THUMPER:
 		Name: Thumper
 		Description: Attracts sandsworm through vibrations.\n  Strong vs Nothing\n  Weak vs Everything
 	Selectable:
-#		Voice: EngineerVoice
 		Bounds: 12,17,0,-9
 	Health:
 		HP: 25
@@ -116,10 +115,10 @@ THUMPING:
 		Cost: 400
 	Tooltip:
 		Name: Thumper
-	CustomSellValue:
-		Value: 0
+	-Capturable:
+	-CapturableBar:
+	-Sellable:
 	-GivesBuildableArea:
-	-EmitInfantryOnSell:
 	FreeActor:
 		Actor: SANDWORM
 		SpawnOffset: 1,2

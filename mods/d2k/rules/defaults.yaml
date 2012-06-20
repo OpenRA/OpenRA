@@ -13,7 +13,7 @@
 		ROT: 5
 	SelectionDecorations:
 	Selectable: 
-		Voice: VehicleVoice
+		Voice: GenericVoice
 	TargetableUnit:
 		TargetTypes: Ground
 	Passenger: 
@@ -54,7 +54,7 @@
 		ROT: 5
 	SelectionDecorations:
 	Selectable: 
-		Voice: VehicleVoice
+		Voice: GenericVoice
 	TargetableUnit:
 		TargetTypes: Ground
 	Passenger: 
@@ -214,5 +214,4 @@
 	ProximityCaptor:
 		Types:Building
 	Sellable:
-	AcceptsSupplies:
 	GivesBounty:
