@@ -82,7 +82,7 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			allies.WinState = WinState.Lost;
 			Game.AddChatLine(Color.Red, "Mission failed", text);
-			foreach (var actor in self.World.Actors.Where(a => a.Owner.InternalName == allies.InternalName))
+			foreach (var actor in self.World.Actors.Where(a => a.Owner == allies))
 			{
 				actor.Kill(actor);
 			}
