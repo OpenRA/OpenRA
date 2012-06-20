@@ -125,7 +125,7 @@ namespace OpenRA.Mods.RA.Widgets
 		bool PerformStanceCycle()
 		{
 			var actor = World.Selection.Actors
-				.Where(a => a.Owner == World.LocalPlayer)
+				.Where(a => a.Owner == World.LocalPlayer && !a.Destroyed)
 				.Select(a => Pair.New( a, a.TraitOrDefault<AutoTarget>() ))
 				.Where(a => a.Second != null).FirstOrDefault();
 
