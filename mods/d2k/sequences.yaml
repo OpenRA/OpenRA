@@ -908,31 +908,20 @@ deviatortank:
 		Start: 0
 		Facings: 32
 
+#TODO: add Dune 2000 SHPs
 pips:
 	groups:
 		Start: 8
 		Length: 10
-	medic:
-		Start: 20
 	ready:
 		Start: 3
 	hold:
 		Start: 4
-	tag-fake:
-		Start: 18
 	tag-primary:
 		Start: 2
 	pip-empty: dots
 		Start: 0
 	pip-green: dots
-		Start: 1
-	pip-yellow: dots
-		Start: 1
-	pip-gray: dots
-		Start: 0
-	pip-red: dots
-		Start: 1
-	pip-blue: dots
 		Start: 1
 
 clock:

@@ -13,7 +13,7 @@
 		ROT: 5
 	SelectionDecorations:
 	Selectable: 
-		Voice: GenericVoice
+		Voice: VehicleVoice
 	TargetableUnit:
 		TargetTypes: Ground
 	Passenger: 
@@ -54,7 +54,7 @@
 		ROT: 5
 	SelectionDecorations:
 	Selectable: 
-		Voice: GenericVoice
+		Voice: VehicleVoice
 	TargetableUnit:
 		TargetTypes: Ground
 	Passenger: 
@@ -102,7 +102,7 @@
 			Rough: 60
 	SelectionDecorations:
 	Selectable:
-		Voice: GenericVoice
+		Voice: InfantryVoice
 	TargetableUnit:
 		TargetTypes: Ground
 	RenderInfantry:

@@ -202,7 +202,8 @@
 	-RenderBuilding:
 	OreRefinery:
 	StoresOre:
-		PipCount: 17
+		PipColor: Green
+		PipCount: 20
 		Capacity: 2000
 	CustomSellValue:
 		Value: 600
@@ -234,6 +235,7 @@
 	-RenderBuilding:
 	RenderBuildingSilo:
 	StoresOre:
+		PipColor: Green
 		PipCount: 5
 		Capacity: 1500
 	-EmitInfantryOnSell:

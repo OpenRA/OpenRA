@@ -148,7 +148,7 @@ World:
 		SpriteNames: spice0
 		ValuePerUnit: 35
 		Name: Spice
-		PipColor: Yellow
+		PipColor: Green
 		AllowedTerrainTypes: Sand
 		AllowUnderActors: false
 	SmudgeLayer@CRATER:
