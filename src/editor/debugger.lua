@@ -159,6 +159,11 @@ debugger.listen = function()
   DisplayOutput("Started debugger server; clients can connect to "..wx.wxGetHostName()..":"..debugger.portnumber..".\n")
   copas.autoclose = false
   copas.addserver(server, function (skt)
+      if debugger.server then
+        DisplayOutput("Refused a request to start a new debugging session as there is one in progress already.\n")
+        return
+      end
+
       local options = debugger.options or {}
       if not debugger.scratchpad then SetAllEditorsReadOnly(true) end
       local wxfilepath = GetEditorFileAndCurInfo()
