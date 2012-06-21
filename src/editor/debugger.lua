@@ -22,7 +22,8 @@ local notebook = ide.frame.notebook
 
 local function updateWatchesSync()
   local watchCtrl = debugger.watchCtrl
-  if watchCtrl and debugger.server and not debugger.running then
+  if watchCtrl and debugger.server
+    and not debugger.running and not debugger.scratchpad then
     for idx = 0, watchCtrl:GetItemCount() - 1 do
       local expression = watchCtrl:GetItemText(idx)
       local _, values, error = debugger.evaluate(expression)
@@ -36,7 +37,8 @@ end
 local simpleType = {['nil'] = true, ['string'] = true, ['number'] = true, ['boolean'] = true}
 local function updateStackSync()
   local stackCtrl = debugger.stackCtrl
-  if stackCtrl and debugger.server and not debugger.running then
+  if stackCtrl and debugger.server
+    and not debugger.running and not debugger.scratchpad then
     local stack = debugger.stack()
     if not stack or #stack == 0 then stackCtrl:DeleteAllItems(); return end
     stackCtrl:Freeze()
