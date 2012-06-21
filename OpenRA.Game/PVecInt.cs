@@ -54,6 +54,7 @@ namespace OpenRA
 
 		public float2 ToFloat2() { return new float2(X, Y); }
 		public int2 ToInt2() { return new int2(X, Y); }
+		public CVec ToCVec() { return new CVec(X / Game.CellSize, Y / Game.CellSize); }
 
 		public PVecInt Clamp(Rectangle r)
 		{

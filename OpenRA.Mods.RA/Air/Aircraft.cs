@@ -107,8 +107,8 @@ namespace OpenRA.Mods.RA.Air
 		[Sync]
 		public int Altitude { get; set; }
 		[Sync]
-		public int2 SubPxPosition;
-		public PPos PxPosition { get { return new PPos( SubPxPosition.X / 1024, SubPxPosition.Y / 1024 ); } }
+		public PSubPos SubPxPosition;
+		public PPos PxPosition { get { return SubPxPosition.ToPPos(); } }
 		public CPos TopLeft { get { return PxPosition.ToCPos(); } }
 
 		readonly AircraftInfo Info;
@@ -117,7 +117,7 @@ namespace OpenRA.Mods.RA.Air
 		{
 			this.self = init.self;
 			if( init.Contains<LocationInit>() )
-				this.SubPxPosition = 1024 * Util.CenterOfCell( init.Get<LocationInit, CPos>() ).ToInt2();
+				this.SubPxPosition = Util.CenterOfCell( init.Get<LocationInit, CPos>() ).ToPSubPos();
 
 			this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit,int>() : info.InitialFacing;
 			this.Altitude = init.Contains<AltitudeInit>() ? init.Get<AltitudeInit,int>() : 0;
@@ -158,7 +158,7 @@ namespace OpenRA.Mods.RA.Air
 
 		public void SetPxPosition( Actor self, PPos px )
 		{
-			SubPxPosition = px.ToInt2() * 1024;
+			SubPxPosition = px.ToPSubPos();
 		}
 
 		public void AdjustPxPosition(Actor self, PPos px) { SetPxPosition(self, px); }
@@ -188,7 +188,7 @@ namespace OpenRA.Mods.RA.Air
 
 		public void TickMove( int speed, int facing )
 		{
-			var rawspeed = speed * 7 / (32 * 1024);
+			var rawspeed = speed * 7 / (32 * PSubPos.PerPx);
 			SubPxPosition += rawspeed * -Util.SubPxVector[facing];
 		}
 

@@ -38,13 +38,13 @@ namespace OpenRA.Mods.RA.Air
 			var dist = Dest - aircraft.PxPosition;
 			if (float2.WithinEpsilon(float2.Zero, dist.ToFloat2(), 2))
 			{
-				aircraft.SubPxPosition = (Dest.ToInt2() * 1024);
+				aircraft.SubPxPosition = Dest.ToPSubPos();
 				return NextActivity;
 			}
 
 			var desiredFacing = Util.GetFacing(dist, aircraft.Facing);
 			aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, aircraft.ROT);
-			aircraft.TickMove( 1024 * aircraft.MovementSpeed, desiredFacing );
+			aircraft.TickMove( PSubPos.PerPx * aircraft.MovementSpeed, desiredFacing );
 
 			return this;
 		}

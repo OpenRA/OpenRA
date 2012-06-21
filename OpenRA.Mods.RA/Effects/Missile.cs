@@ -47,8 +47,8 @@ namespace OpenRA.Mods.RA.Effects
 		readonly ProjectileArgs Args;
 
 		PVecInt offset;
-		public int2 SubPxPosition;
-		public PPos PxPosition { get { return new PPos(SubPxPosition.X / 1024, SubPxPosition.Y / 1024); } }
+		public PSubPos SubPxPosition;
+		public PPos PxPosition { get { return SubPxPosition.ToPPos(); } }
 
 		readonly Animation anim;
 		int Facing;
@@ -61,7 +61,7 @@ namespace OpenRA.Mods.RA.Effects
 			Info = info;
 			Args = args;
 
-			SubPxPosition = 1024 * Args.src.ToInt2();
+			SubPxPosition = Args.src.ToPSubPos();
 			Altitude = Args.srcAltitude;
 			Facing = Args.facing;
 
@@ -110,7 +110,7 @@ namespace OpenRA.Mods.RA.Effects
 				Explode(world);
 
 			// TODO: Replace this with a lookup table
-			var dir = (-float2.FromAngle((float)(Facing / 128f * Math.PI))*1024).ToInt2();
+			var dir = (-float2.FromAngle((float)(Facing / 128f * Math.PI))).ToPSubVec();
 
 			var move = Info.Speed * dir;
 			if (targetAltitude > 0 && Info.TurboBoost)
@@ -121,7 +121,7 @@ namespace OpenRA.Mods.RA.Effects
 
 			if (Info.Trail != null)
 			{
-				var sp = (PPos)((SubPxPosition - (move * 3) / 2) / 1024) - new PVecInt(0, Altitude);
+				var sp = ((SubPxPosition - (move * 3) / 2)).ToPPos() - new PVecInt(0, Altitude);
 
 				if (--ticksToNextSmoke < 0)
 				{
