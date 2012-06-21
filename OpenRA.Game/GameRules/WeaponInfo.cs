@@ -72,11 +72,11 @@ namespace OpenRA.GameRules
 	{
 		public WeaponInfo weapon;
 		public Actor firedBy;
-		public int2 src;
+		public PPos src;
 		public int srcAltitude;
 		public int facing;
 		public Target target;
-		public int2 dest;
+		public PPos dest;
 		public int destAltitude;
 		public float firepowerModifier = 1.0f;
 	}

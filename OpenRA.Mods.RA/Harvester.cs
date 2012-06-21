@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA
 
 		[Sync] public Actor LinkedProc = null;
 		[Sync] int currentUnloadTicks;
-		public int2? LastHarvestedCell = null;
+		public CPos? LastHarvestedCell = null;
 		[Sync] public int ContentValue { get { return contents.Sum(c => c.Key.ValuePerUnit*c.Value); } }
 		readonly HarvesterInfo Info;
 
@@ -131,7 +131,7 @@ namespace OpenRA.Mods.RA
 				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
 
 			if( order.OrderID == "Harvest" )
-				return new Order(order.OrderID, self, queued) { TargetLocation = Util.CellContaining(target.CenterLocation) };
+				return new Order(order.OrderID, self, queued) { TargetLocation = target.CenterLocation.ToCPos() };
 
 			return null;
 		}
@@ -147,7 +147,7 @@ namespace OpenRA.Mods.RA
 			{
 				var mobile = self.Trait<Mobile>();
 				self.CancelActivity();
-				if (order.TargetLocation != int2.Zero)
+				if (order.TargetLocation != CPos.Zero)
 				{
 					self.QueueActivity(mobile.MoveTo(order.TargetLocation, 0));
 					self.SetTargetLine(Target.FromOrder(order), Color.Red);
@@ -218,7 +218,7 @@ namespace OpenRA.Mods.RA
 				return false;
 			}
 
-			public bool CanTargetLocation(Actor self, int2 location, List<Actor> actorsAtLocation, bool forceAttack, bool forceQueued, ref string cursor)
+			public bool CanTargetLocation(Actor self, CPos location, List<Actor> actorsAtLocation, bool forceAttack, bool forceQueued, ref string cursor)
 			{
 				// Don't leak info about resources under the shroud
 				if (!self.World.LocalShroud.IsExplored(location)) return false;

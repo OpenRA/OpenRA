@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA.Activities
 
 				return Util.SequenceActivities(
 					new MoveAdjacentTo(Target.FromActor(rearmTarget)),
-					mobile.MoveTo(Traits.Util.CellContaining(rearmTarget.CenterLocation), rearmTarget),
+					mobile.MoveTo(rearmTarget.CenterLocation.ToCPos(), rearmTarget),
 					new Rearm(self),
 					new Repair(rearmTarget),
 					this );
@@ -65,11 +65,10 @@ namespace OpenRA.Mods.RA.Activities
 			return new Wait(20);	// nothing to do here
 		}
 
-		bool ShouldLayMine(Actor self, int2 p)
+		bool ShouldLayMine(Actor self, CPos p)
 		{
 			// if there is no unit (other than me) here, we want to place a mine here
-			return !self.World.ActorMap
-				.GetUnitsAt(p).Any(a => a != self);
+			return !self.World.ActorMap.GetUnitsAt(p).Any(a => a != self);
 		}
 
 		void LayMine(Actor self)

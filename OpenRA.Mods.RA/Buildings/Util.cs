@@ -16,12 +16,12 @@ namespace OpenRA.Mods.RA.Buildings
 {
 	public static class BuildingUtils
 	{
-		public static bool IsCellBuildable(this World world, int2 a, BuildingInfo bi)
+		public static bool IsCellBuildable(this World world, CPos a, BuildingInfo bi)
 		{
 			return world.IsCellBuildable(a, bi, null);
 		}
 
-		public static bool IsCellBuildable(this World world, int2 a, BuildingInfo bi, Actor toIgnore)
+		public static bool IsCellBuildable(this World world, CPos a, BuildingInfo bi, Actor toIgnore)
 		{
 			if (world.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(a) != null) return false;
 			if (world.ActorMap.GetUnitsAt(a).Any(b => b != toIgnore)) return false;
@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Buildings
 			return world.Map.IsInMap(a) && bi.TerrainTypes.Contains(world.GetTerrainType(a));
 		}
 
-		public static bool CanPlaceBuilding(this World world, string name, BuildingInfo building, int2 topLeft, Actor toIgnore)
+		public static bool CanPlaceBuilding(this World world, string name, BuildingInfo building, CPos topLeft, Actor toIgnore)
 		{
 			var res = world.WorldActor.Trait<ResourceLayer>();
 			return FootprintUtils.Tiles(name, building, topLeft).All(
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA.Buildings
 					world.IsCellBuildable(t, building, toIgnore));
 		}
 
-		public static IEnumerable<int2> GetLineBuildCells(World world, int2 location, string name, BuildingInfo bi)
+		public static IEnumerable<CPos> GetLineBuildCells(World world, CPos location, string name, BuildingInfo bi)
 		{
 			int range = Rules.Info[name].Traits.Get<LineBuildInfo>().Range;
 			var topLeft = location;	// 1x1 assumption!
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA.Buildings
 
 			// Start at place location, search outwards
 			// TODO: First make it work, then make it nice
-			var vecs = new[] { new int2(1, 0), new int2(0, 1), new int2(-1, 0), new int2(0, -1) };
+			var vecs = new[] { new CVec(1, 0), new CVec(0, 1), new CVec(-1, 0), new CVec(0, -1) };
 			int[] dirs = { 0, 0, 0, 0 };
 			for (int d = 0; d < 4; d++)
 			{
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.RA.Buildings
 					if (dirs[d] != 0)
 						continue;
 
-					int2 cell = topLeft + i * vecs[d];
+					CPos cell = topLeft + i * vecs[d];
 					if (world.IsCellBuildable(cell, bi))
 						continue; // Cell is empty; continue search
 

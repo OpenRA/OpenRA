@@ -31,13 +31,13 @@ namespace OpenRA.Mods.RA
 	{
 		readonly Actor self;
 		readonly MineInfo info;
-		[Sync] readonly int2 location;
+		[Sync] readonly CPos location;
 
 		public Mine(ActorInitializer init, MineInfo info)
 		{
 			this.self = init.self;
 			this.info = info;
-			this.location = init.Get<LocationInit,int2>();
+			this.location = init.Get<LocationInit,CPos>();
 		}
 
 		public void WarnCrush(Actor crusher) {}
@@ -60,10 +60,10 @@ namespace OpenRA.Mods.RA
 			return info.CrushClasses.Intersect(crushClasses).Any();
 		}
 
-		public int2 TopLeft { get { return location; } }
+		public CPos TopLeft { get { return location; } }
 
-		public IEnumerable<Pair<int2, SubCell>> OccupiedCells() { yield return Pair.New(TopLeft, SubCell.FullCell); }
-		public int2 PxPosition { get { return Util.CenterOfCell( location ); } }
+		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { yield return Pair.New(TopLeft, SubCell.FullCell); }
+		public PPos PxPosition { get { return Util.CenterOfCell( location ); } }
 	}
 
 	/* tag trait for stuff that shouldnt trigger mines */

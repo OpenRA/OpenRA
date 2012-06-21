@@ -39,13 +39,13 @@ namespace OpenRA.Traits
 			for (int x = clip.Left; x < clip.Right; x++)
 				for (int y = clip.Top; y < clip.Bottom; y++)
 				{
-					if (!world.LocalShroud.IsExplored(new int2(x, y)))
+					if (!world.LocalShroud.IsExplored(new CPos(x, y)))
 						continue;
 
 					var c = content[x, y];
 					if (c.image != null)
 						c.image[c.density].DrawAt(
-							Game.CellSize * new int2(x, y),
+							new CPos(x, y).ToPPos().ToFloat2(),
 							c.type.info.PaletteIndex);
 				}
 		}
@@ -70,7 +70,7 @@ namespace OpenRA.Traits
 					if (type == null)
 						continue;
 
-					if (!AllowResourceAt(type, new int2(x,y)))
+					if (!AllowResourceAt(type, new CPos(x,y)))
 						continue;
 
 					content[x, y].type = type;
@@ -86,7 +86,7 @@ namespace OpenRA.Traits
 					}
 		}
 
-		public bool AllowResourceAt(ResourceType rt, int2 a)
+		public bool AllowResourceAt(ResourceType rt, CPos a)
 		{
 			if (!world.Map.IsInMap(a.X, a.Y)) return false;
 			if (!rt.info.AllowedTerrainTypes.Contains(world.GetTerrainInfo(a).Type)) return false;
@@ -136,7 +136,7 @@ namespace OpenRA.Traits
 
 		public bool IsFull(int i, int j) { return content[i, j].density == content[i, j].image.Length - 1; }
 
-		public ResourceType Harvest(int2 p)
+		public ResourceType Harvest(CPos p)
 		{
 			var type = content[p.X,p.Y].type;
 			if (type == null) return null;
@@ -150,7 +150,7 @@ namespace OpenRA.Traits
 			return type;
 		}
 
-		public void Destroy(int2 p)
+		public void Destroy(CPos p)
 		{
 			// Don't break other users of CustomTerrain if there are no resources
 			if (content[p.X, p.Y].type == null)
@@ -162,7 +162,7 @@ namespace OpenRA.Traits
 			world.Map.CustomTerrain[p.X, p.Y] = null;
 		}
 
-		public ResourceType GetResource(int2 p) { return content[p.X, p.Y].type; }
+		public ResourceType GetResource(CPos p) { return content[p.X, p.Y].type; }
 
 		public struct CellContents
 		{

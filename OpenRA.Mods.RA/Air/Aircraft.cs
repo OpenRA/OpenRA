@@ -108,8 +108,8 @@ namespace OpenRA.Mods.RA.Air
 		public int Altitude { get; set; }
 		[Sync]
 		public int2 SubPxPosition;
-		public int2 PxPosition { get { return new int2( SubPxPosition.X / 1024, SubPxPosition.Y / 1024 ); } }
-		public int2 TopLeft { get { return Util.CellContaining( PxPosition ); } }
+		public PPos PxPosition { get { return new PPos( SubPxPosition.X / 1024, SubPxPosition.Y / 1024 ); } }
+		public CPos TopLeft { get { return PxPosition.ToCPos(); } }
 
 		readonly AircraftInfo Info;
 
@@ -117,7 +117,7 @@ namespace OpenRA.Mods.RA.Air
 		{
 			this.self = init.self;
 			if( init.Contains<LocationInit>() )
-				this.SubPxPosition = 1024 * Util.CenterOfCell( init.Get<LocationInit, int2>() );
+				this.SubPxPosition = 1024 * Util.CenterOfCell( init.Get<LocationInit, CPos>() ).ToInt2();
 
 			this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit,int>() : info.InitialFacing;
 			this.Altitude = init.Contains<AltitudeInit>() ? init.Get<AltitudeInit,int>() : 0;
@@ -151,17 +151,17 @@ namespace OpenRA.Mods.RA.Air
 
 		public int InitialFacing { get { return Info.InitialFacing; } }
 
-		public void SetPosition(Actor self, int2 cell)
+		public void SetPosition(Actor self, CPos cell)
 		{
 			SetPxPosition( self, Util.CenterOfCell( cell ) );
 		}
 
-		public void SetPxPosition( Actor self, int2 px )
+		public void SetPxPosition( Actor self, PPos px )
 		{
-			SubPxPosition = px * 1024;
+			SubPxPosition = px.ToInt2() * 1024;
 		}
 
-		public void AdjustPxPosition(Actor self, int2 px) { SetPxPosition(self, px); }
+		public void AdjustPxPosition(Actor self, PPos px) { SetPxPosition(self, px); }
 
 		public bool AircraftCanEnter(Actor a)
 		{
@@ -170,7 +170,7 @@ namespace OpenRA.Mods.RA.Air
 				|| Info.RepairBuildings.Contains( a.Info.Name );
 		}
 
-		public bool CanEnterCell(int2 location) { return true; }
+		public bool CanEnterCell(CPos location) { return true; }
 
 		public int MovementSpeed
 		{
@@ -183,8 +183,8 @@ namespace OpenRA.Mods.RA.Air
 			}
 		}
 
-		Pair<int2, SubCell>[] noCells = new Pair<int2, SubCell>[] { };
-		public IEnumerable<Pair<int2, SubCell>> OccupiedCells() { return noCells; }
+		Pair<CPos, SubCell>[] noCells = new Pair<CPos, SubCell>[] { };
+		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { return noCells; }
 
 		public void TickMove( int speed, int facing )
 		{
@@ -192,7 +192,7 @@ namespace OpenRA.Mods.RA.Air
 			SubPxPosition += rawspeed * -Util.SubPxVector[facing];
 		}
 
-		public bool CanLand(int2 cell)
+		public bool CanLand(CPos cell)
 		{
 			if (!self.World.Map.IsInMap(cell))
 				return false;
@@ -230,7 +230,7 @@ namespace OpenRA.Mods.RA.Air
 				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
 
 			if (order.OrderID == "Move")
-				return new Order(order.OrderID, self, queued) { TargetLocation = Util.CellContaining(target.CenterLocation) };
+				return new Order(order.OrderID, self, queued) { TargetLocation = target.CenterLocation.ToCPos() };
 
 			return null;
 		}
@@ -273,7 +273,7 @@ namespace OpenRA.Mods.RA.Air
 			return false;
 		}
 
-		public bool CanTargetLocation(Actor self, int2 location, List<Actor> actorsAtLocation, bool forceAttack, bool forceQueued, ref string cursor)
+		public bool CanTargetLocation(Actor self, CPos location, List<Actor> actorsAtLocation, bool forceAttack, bool forceQueued, ref string cursor)
 		{
 			IsQueued = forceQueued;
 			cursor = self.World.Map.IsInMap(location) ? "move" : "move-blocked";

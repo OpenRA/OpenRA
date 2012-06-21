@@ -23,8 +23,8 @@ namespace OpenRA.Mods.RA
 
 	class AttackMove : IResolveOrder, IOrderVoice, INotifyIdle, ISync
 	{
-		[Sync] public int2 _targetLocation { get { return TargetLocation.HasValue ? TargetLocation.Value : int2.Zero; } }
-		public int2? TargetLocation = null;
+		[Sync] public CPos _targetLocation { get { return TargetLocation.HasValue ? TargetLocation.Value : CPos.Zero; } }
+		public CPos? TargetLocation = null;
 
 		readonly Mobile mobile;
 		readonly AttackMoveInfo Info;

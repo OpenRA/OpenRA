@@ -18,8 +18,8 @@ namespace OpenRA.Mods.RA
 {
 	public class Barrel
 	{
-		public int2 TurretSpaceOffset;		// position in turret space
-		public int2 ScreenSpaceOffset;		// screen-space hack to make things line up good.
+		public PVecInt TurretSpaceOffset;	// position in turret space
+		public PVecInt ScreenSpaceOffset;	// screen-space hack to make things line up good.
 		public int Facing;					// deviation from turret facing
 	}
 
@@ -27,13 +27,13 @@ namespace OpenRA.Mods.RA
 	{
 		public float Recoil = 0.0f;			// remaining recoil
 		public float RecoilRecovery = 0.2f;	// recoil recovery rate
-		public int2 UnitSpacePosition;		// where, in the unit's local space.
-		public int2 ScreenSpacePosition;	// screen-space hack to make things line up good.
+		public PVecInt UnitSpacePosition;	// where, in the unit's local space.
+		public PVecInt ScreenSpacePosition;	// screen-space hack to make things line up good.
 
 		public Turret(int[] offset, float recoilRecovery)
 		{
-			ScreenSpacePosition = offset.AbsOffset().ToInt2();
-			UnitSpacePosition = offset.RelOffset().ToInt2();
+			ScreenSpacePosition = (PVecInt) offset.AbsOffset().ToInt2();
+			UnitSpacePosition = (PVecInt) offset.RelOffset().ToInt2();
 			RecoilRecovery = recoilRecovery;
 		}
 
@@ -61,14 +61,14 @@ namespace OpenRA.Mods.RA
 			for (var i = 0; i < localOffset.Length / 5; i++)
 				barrels.Add(new Barrel
 				{
-					TurretSpaceOffset = new int2(localOffset[5 * i], localOffset[5 * i + 1]),
-					ScreenSpaceOffset = new int2(localOffset[5 * i + 2], localOffset[5 * i + 3]),
+					TurretSpaceOffset = new PVecInt(localOffset[5 * i], localOffset[5 * i + 1]),
+					ScreenSpaceOffset = new PVecInt(localOffset[5 * i + 2], localOffset[5 * i + 3]),
 					Facing = localOffset[5 * i + 4]
 				});
 
 			// if no barrels specified, the default is "turret position; turret facing".
 			if (barrels.Count == 0)
-				barrels.Add(new Barrel { TurretSpaceOffset = int2.Zero, ScreenSpaceOffset = int2.Zero, Facing = 0 });
+				barrels.Add(new Barrel { TurretSpaceOffset = PVecInt.Zero, ScreenSpaceOffset = PVecInt.Zero, Facing = 0 });
 
 			Barrels = barrels.ToArray();
 		}
@@ -86,7 +86,7 @@ namespace OpenRA.Mods.RA
 			if( target.IsActor )
 				return Combat.WeaponValidForTarget( Info, target.Actor );
 			else
-				return Combat.WeaponValidForTarget( Info, world, Util.CellContaining( target.CenterLocation ) );
+				return Combat.WeaponValidForTarget( Info, world, target.CenterLocation.ToCPos() );
 		}
 
 		public void FiredShot()
@@ -126,8 +126,7 @@ namespace OpenRA.Mods.RA
 				firedBy = self,
 				target = target,
 
-				src = (self.CenterLocation
-					+ Combat.GetBarrelPosition(self, facing, Turret, barrel)).ToInt2(),
+				src = (self.CenterLocation + Combat.GetBarrelPosition(self, facing, Turret, barrel)),
 				srcAltitude = move != null ? move.Altitude : 0,
 				dest = target.CenterLocation,
 				destAltitude = destMove != null ? destMove.Altitude : 0,

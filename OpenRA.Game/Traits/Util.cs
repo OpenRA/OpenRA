@@ -30,6 +30,16 @@ namespace OpenRA.Traits
 				return ( facing - rot ) & 0xFF;
 		}
 
+		public static int GetFacing(PVecInt d, int currentFacing)
+		{
+			return GetFacing(d.ToInt2(), currentFacing);
+		}
+
+		public static int GetFacing(CVec d, int currentFacing)
+		{
+			return GetFacing(d.ToInt2(), currentFacing);
+		}
+
 		public static int GetFacing( int2 d, int currentFacing )
 		{
 			if (d == int2.Zero)
@@ -80,14 +90,14 @@ namespace OpenRA.Traits
 				ecc * (cosAngle * v.Y - sinAngle * v.X));
 		}
 
-		public static int2 CenterOfCell(int2 loc)
+		public static PPos CenterOfCell(CPos loc)
 		{
-			return new int2( Game.CellSize / 2, Game.CellSize / 2 ) + Game.CellSize * loc;
+			return loc.ToPPos() + new PVecInt(Game.CellSize / 2, Game.CellSize / 2);
 		}
 
-		public static int2 BetweenCells(int2 from, int2 to)
+		public static PPos BetweenCells(CPos from, CPos to)
 		{
-			return int2.Lerp( CenterOfCell( from ), CenterOfCell( to ), 1, 2 );
+			return PPos.Lerp(CenterOfCell(from), CenterOfCell(to), 1, 2);
 		}
 
 		public static int2 AsInt2(this int[] xs) { return new int2(xs[0], xs[1]); }
@@ -120,6 +130,7 @@ namespace OpenRA.Traits
 
 		public static Color ArrayToColor(int[] x) { return Color.FromArgb(x[0], x[1], x[2]); }
 
+		[Obsolete("Use ToCPos() method", true)]
 		public static int2 CellContaining(float2 pos) { return (1f / Game.CellSize * pos).ToInt2(); }
 
 		/* pretty crap */
@@ -134,39 +145,39 @@ namespace OpenRA.Traits
 			}
 		}
 
-		static IEnumerable<int2> Neighbours(int2 c, bool allowDiagonal)
+		static IEnumerable<CPos> Neighbours(CPos c, bool allowDiagonal)
 		{
 			yield return c;
-			yield return new int2(c.X - 1, c.Y);
-			yield return new int2(c.X + 1, c.Y);
-			yield return new int2(c.X, c.Y - 1);
-			yield return new int2(c.X, c.Y + 1);
+			yield return new CPos(c.X - 1, c.Y);
+			yield return new CPos(c.X + 1, c.Y);
+			yield return new CPos(c.X, c.Y - 1);
+			yield return new CPos(c.X, c.Y + 1);
 
 			if (allowDiagonal)
 			{
-				yield return new int2(c.X - 1, c.Y - 1);
-				yield return new int2(c.X + 1, c.Y - 1);
-				yield return new int2(c.X - 1, c.Y + 1);
-				yield return new int2(c.X + 1, c.Y + 1);
+				yield return new CPos(c.X - 1, c.Y - 1);
+				yield return new CPos(c.X + 1, c.Y - 1);
+				yield return new CPos(c.X - 1, c.Y + 1);
+				yield return new CPos(c.X + 1, c.Y + 1);
 			}
 		}
 
-		public static IEnumerable<int2> ExpandFootprint(IEnumerable<int2> cells, bool allowDiagonal)
+		public static IEnumerable<CPos> ExpandFootprint(IEnumerable<CPos> cells, bool allowDiagonal)
 		{
-			var result = new Dictionary<int2, bool>();
+			var result = new Dictionary<CPos, bool>();
 			foreach (var c in cells.SelectMany(c => Neighbours(c, allowDiagonal)))
 				result[c] = true;
 			return result.Keys;
 		}
 
-		public static IEnumerable<int2> AdjacentCells( Target target )
+		public static IEnumerable<CPos> AdjacentCells(Target target)
 		{
 			var cells = target.IsActor
 				? target.Actor.OccupiesSpace.OccupiedCells().Select(c => c.First).ToArray()
-				: new int2[] {};
+				: new CPos[] {};
 
 			if (cells.Length == 0)
-				cells = new [] { Util.CellContaining(target.CenterLocation) };
+				cells = new CPos[] { target.CenterLocation.ToCPos() };
 
 			return Util.ExpandFootprint(cells, true);
 		}

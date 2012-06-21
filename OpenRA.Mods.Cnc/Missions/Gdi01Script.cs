@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Cnc
 			Players = w.Players.ToDictionary(p => p.InternalName);
 			Actors = w.WorldActor.Trait<SpawnMapActors>().Actors;
 			var b = w.Map.Bounds;
-			Game.MoveViewport(new int2(b.Left + b.Width/2, b.Top + b.Height/2));
+			Game.MoveViewport(new CPos(b.Left + b.Width/2, b.Top + b.Height/2).ToFloat2());
 
 			Scripting.Media.PlayFMVFullscreen(w, "gdi1.vqa",
 				() => Scripting.Media.PlayFMVFullscreen(w, "landing.vqa", () =>
@@ -130,7 +130,7 @@ namespace OpenRA.Mods.Cnc
 				ReinforceFromSea(self.World,
 								 Actors["lstStart"].Location,
 								 Actors["lstEnd"].Location,
-								 new int2(53,53),
+								 new CPos(53, 53),
 								 new string[] {"e1","e1","e1"},
 								 Players["GoodGuy"]);
 			}
@@ -140,7 +140,7 @@ namespace OpenRA.Mods.Cnc
 				ReinforceFromSea(self.World,
 								 Actors["lstStart"].Location,
 								 Actors["lstEnd"].Location,
-								 new int2(53,53),
+								 new CPos(53, 53),
 								 new string[] {"e1","e1","e1"},
 								 Players["GoodGuy"]);
 			}
@@ -150,7 +150,7 @@ namespace OpenRA.Mods.Cnc
 				ReinforceFromSea(self.World,
 								 Actors["lstStart"].Location,
 								 Actors["lstEnd"].Location,
-								 new int2(53,53),
+								 new CPos(53, 53),
 								 new string[] {"jeep"},
 								 Players["GoodGuy"]);
 			}
@@ -160,7 +160,7 @@ namespace OpenRA.Mods.Cnc
 				ReinforceFromSea(self.World,
 								 Actors["lstStart"].Location,
 								 Actors["lstEnd"].Location,
-								 new int2(53,53),
+								 new CPos(53, 53),
 								 new string[] {"jeep"},
 								 Players["GoodGuy"]);
 			}
@@ -177,7 +177,7 @@ namespace OpenRA.Mods.Cnc
 			self.QueueActivity(new CallFunc(() => SetGunboatPath()));
 		}
 
-		void ReinforceFromSea(World world, int2 startPos, int2 endPos, int2 unload, string[] items, Player player)
+		void ReinforceFromSea(World world, CPos startPos, CPos endPos, CPos unload, string[] items, Player player)
 		{
 			world.AddFrameEndTask(w =>
 			{

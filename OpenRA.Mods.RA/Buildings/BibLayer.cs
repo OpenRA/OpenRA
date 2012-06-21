@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA.Buildings
 	{
 		World world;
 		BibLayerInfo info;
-		Dictionary<int2, TileReference<byte, byte>> tiles;
+		Dictionary<CPos, TileReference<byte, byte>> tiles;
 		Sprite[][] bibSprites;
 
 		public BibLayer(Actor self, BibLayerInfo info)
@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA.Buildings
 		public void WorldLoaded(World w)
 		{
 			world = w;
-			tiles = new Dictionary<int2, TileReference<byte, byte>>();
+			tiles = new Dictionary<CPos, TileReference<byte, byte>>();
 		}
 
 		public void DoBib(Actor b, bool isAdd)
@@ -63,9 +63,9 @@ namespace OpenRA.Mods.RA.Buildings
 
 			for (int i = 0; i < 2 * size; i++)
 			{
-				var p = b.Location + new int2(i % size, i / size + bibOffset);
+				var p = b.Location + new CVec(i % size, i / size + bibOffset);
 				if (isAdd)
-					tiles[p] = new TileReference<byte, byte>((byte)((isAdd) ? bib + 1 : 0), (byte)i);
+					tiles[p] = new TileReference<byte, byte>((byte)(bib + 1), (byte)i);
 				else
 					tiles.Remove(p);
 			}
@@ -81,8 +81,7 @@ namespace OpenRA.Mods.RA.Buildings
 				if (!world.LocalShroud.IsExplored(kv.Key))
 					continue;
 
-				bibSprites[kv.Value.type - 1][kv.Value.index].DrawAt( wr,
-					Game.CellSize * kv.Key, "terrain");
+				bibSprites[kv.Value.type - 1][kv.Value.index].DrawAt(wr, kv.Key.ToPPos().ToFloat2(), "terrain");
 			}
 		}
 	}

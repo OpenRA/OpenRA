@@ -18,8 +18,8 @@ namespace OpenRA.Mods.RA.Effects
 {
 	class RallyPoint : IEffect
 	{
-		Actor building;
-		RA.RallyPoint rp;
+		readonly Actor building;
+		readonly RA.RallyPoint rp;
 		public Animation flag = new Animation("rallypoint");
 		public Animation circles = new Animation("rallypoint");
 
@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA.Effects
 			circles.Play("circles");
 		}
 
-		int2 cachedLocation;
+		CPos cachedLocation;
 		public void Tick( World world )
 		{
 			flag.Tick();
@@ -55,11 +55,11 @@ namespace OpenRA.Mods.RA.Effects
 				var palette = building.Trait<RenderSimple>().Palette(building.Owner);
 
 				yield return new Renderable(circles.Image,
-					pos - .5f * circles.Image.size,
+					pos.ToFloat2() - .5f * circles.Image.size,
 					palette, (int)pos.Y);
 
 				yield return new Renderable(flag.Image,
-					pos + new float2(-1,-17),
+					pos.ToFloat2() + new float2(-1,-17),
 					palette, (int)pos.Y);
 			}
 		}

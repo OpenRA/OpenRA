@@ -42,8 +42,7 @@ namespace OpenRA.Mods.RA
 
 			self.Trait<RenderBuilding>().PlayCustomAnim(self, "active");
 			self.World.AddFrameEndTask(w => w.Add(
-				new NukeLaunch(self.Owner, self, npi.MissileWeapon, npi.SpawnOffset,
-					order.TargetLocation)));
+				new NukeLaunch(self.Owner, self, npi.MissileWeapon, (PVecInt)npi.SpawnOffset, order.TargetLocation)));
 		}
 	}
 }

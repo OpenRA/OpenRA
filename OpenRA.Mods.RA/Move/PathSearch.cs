@@ -20,8 +20,8 @@ namespace OpenRA.Mods.RA.Move
 		World world;
 		public CellInfo[ , ] cellInfo;
 		public PriorityQueue<PathDistance> queue;
-		public Func<int2, int> heuristic;
-		Func<int2, bool> customBlock;
+		public Func<CPos, int> heuristic;
+		Func<CPos, bool> customBlock;
 		public bool checkForBlocked;
 		public Actor ignoreBuilding;
 		public bool inReverse;
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA.Move
 			return this;
 		}
 
-		public PathSearch WithCustomBlocker(Func<int2, bool> customBlock)
+		public PathSearch WithCustomBlocker(Func<CPos, bool> customBlock)
 		{
 			this.customBlock = customBlock;
 			return this;
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.RA.Move
 			return this;
 		}
 
-		public PathSearch WithHeuristic(Func<int2, int> h)
+		public PathSearch WithHeuristic(Func<CPos, int> h)
 		{
 			heuristic = h;
 			return this;
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.RA.Move
 			return this;
 		}
 
-		public PathSearch FromPoint(int2 from)
+		public PathSearch FromPoint(CPos from)
 		{
 			AddInitialCell( from );
 			return this;
@@ -76,7 +76,7 @@ namespace OpenRA.Mods.RA.Move
 
 		int LaneBias = 1;
 
-		public int2 Expand( World world )
+		public CPos Expand(World world)
 		{
 			var p = queue.Pop();
 			while (cellInfo[p.Location.X, p.Location.Y].Seen)
@@ -92,9 +92,9 @@ namespace OpenRA.Mods.RA.Move
 			if (thisCost == int.MaxValue)
 				return p.Location;
 
-			foreach( int2 d in directions )
+			foreach( CVec d in directions )
 			{
-				int2 newHere = p.Location + d;
+				CPos newHere = p.Location + d;
 
 				if (!world.Map.IsInMap(newHere.X, newHere.Y)) continue;
 				if( cellInfo[ newHere.X, newHere.Y ].Seen )
@@ -141,19 +141,19 @@ namespace OpenRA.Mods.RA.Move
 			return p.Location;
 		}
 
-		static readonly int2[] directions =
+		static readonly CVec[] directions =
 		{
-			new int2( -1, -1 ),
-			new int2( -1,  0 ),
-			new int2( -1,  1 ),
-			new int2(  0, -1 ),
-			new int2(  0,  1 ),
-			new int2(  1, -1 ),
-			new int2(  1,  0 ),
-			new int2(  1,  1 ),
+			new CVec( -1, -1 ),
+			new CVec( -1,  0 ),
+			new CVec( -1,  1 ),
+			new CVec(  0, -1 ),
+			new CVec(  0,  1 ),
+			new CVec(  1, -1 ),
+			new CVec(  1,  0 ),
+			new CVec(  1,  1 ),
 		};
 
-		public void AddInitialCell( int2 location )
+		public void AddInitialCell(CPos location)
 		{
 			if (!world.Map.IsInMap(location.X, location.Y))
 				return;
@@ -169,7 +169,7 @@ namespace OpenRA.Mods.RA.Move
 			return search;
 		}
 
-		public static PathSearch FromPoint( World world, MobileInfo mi, Player owner, int2 from, int2 target, bool checkForBlocked )
+		public static PathSearch FromPoint(World world, MobileInfo mi, Player owner, CPos from, CPos target, bool checkForBlocked)
 		{
 			var search = new PathSearch(world, mi, owner) {
 				heuristic = DefaultEstimator( target ),
@@ -179,7 +179,7 @@ namespace OpenRA.Mods.RA.Move
 			return search;
 		}
 
-		public static PathSearch FromPoints(World world, MobileInfo mi, Player owner, IEnumerable<int2> froms, int2 target, bool checkForBlocked)
+		public static PathSearch FromPoints(World world, MobileInfo mi, Player owner, IEnumerable<CPos> froms, CPos target, bool checkForBlocked)
 		{
 			var search = new PathSearch(world, mi, owner)
 			{
@@ -229,16 +229,16 @@ namespace OpenRA.Mods.RA.Move
 
 			for( int x = 0 ; x < world.Map.MapSize.X ; x++ )
 				for( int y = 0 ; y < world.Map.MapSize.Y ; y++ )
-					result[ x, y ] = new CellInfo( int.MaxValue, new int2( x, y ), false );
+					result[ x, y ] = new CellInfo( int.MaxValue, new CPos( x, y ), false );
 
 			return result;
 		}
 
-		public static Func<int2, int> DefaultEstimator( int2 destination )
+		public static Func<CPos, int> DefaultEstimator(CPos destination)
 		{
 			return here =>
 			{
-				int2 d = ( here - destination ).Abs();
+				CVec d = (here - destination).Abs();
 				int diag = Math.Min( d.X, d.Y );
 				int straight = Math.Abs( d.X - d.Y );
 				return (3400 * diag / 24) + (100 * straight);

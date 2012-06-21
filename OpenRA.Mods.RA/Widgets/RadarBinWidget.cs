@@ -77,7 +77,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 			var mi = new MouseInput
 			{
-				Location = loc,
+				Location = loc.ToInt2(),
 				Button = MouseButton.Right,
 				Modifiers = Game.GetModifierKeys()
 			};
@@ -98,7 +98,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 			var loc = MinimapPixelToCell(mi.Location);
 			if ((mi.Event == MouseInputEvent.Down || mi.Event == MouseInputEvent.Move) && mi.Button == MouseButton.Left)
-				Game.viewport.Center(loc);
+				Game.viewport.Center(loc.ToFloat2());
 
 			if (mi.Event == MouseInputEvent.Down && mi.Button == MouseButton.Right)
 			{
@@ -108,7 +108,7 @@ namespace OpenRA.Mods.RA.Widgets
 					Event = MouseInputEvent.Down,
 					Button = MouseButton.Right,
 					Modifiers = mi.Modifiers,
-					Location = (loc * Game.CellSize - Game.viewport.Location).ToInt2()
+					Location = (loc.ToPPos().ToFloat2() - Game.viewport.Location).ToInt2()
 				};
 
 				if (WorldInteractionController != null)
@@ -154,9 +154,9 @@ namespace OpenRA.Mods.RA.Widgets
 				if (radarAnimationFrame == radarSlideAnimationLength + radarActivateAnimationLength)
 				{
 					var wr = Game.viewport.WorldRect;
-					var wro = new int2(wr.X, wr.Y);
+					var wro = new CPos(wr.X, wr.Y);
 					var tl = CellToMinimapPixel(wro);
-					var br = CellToMinimapPixel(wro + new int2(wr.Width, wr.Height));
+					var br = CellToMinimapPixel(wro + new CVec(wr.Width, wr.Height));
 
 					Game.Renderer.EnableScissor((int)mapRect.Left, (int)mapRect.Top, (int)mapRect.Width, (int)mapRect.Height);
 					Game.Renderer.LineRenderer.DrawRect(tl, br, Color.White);
@@ -220,14 +220,14 @@ namespace OpenRA.Mods.RA.Widgets
 				radarAnimating = false;
 		}
 
-		int2 CellToMinimapPixel(int2 p)
+		int2 CellToMinimapPixel(CPos p)
 		{
 			return new int2((int)(mapRect.X +previewScale*(p.X - world.Map.Bounds.Left)), (int)(mapRect.Y + previewScale*(p.Y - world.Map.Bounds.Top)));
 		}
 
-		int2 MinimapPixelToCell(int2 p)
+		CPos MinimapPixelToCell(int2 p)
 		{
-			return new int2(world.Map.Bounds.Left + (int)((p.X - mapRect.X)/previewScale), world.Map.Bounds.Top + (int)((p.Y - mapRect.Y)/previewScale));
+			return new CPos(world.Map.Bounds.Left + (int)((p.X - mapRect.X) / previewScale), world.Map.Bounds.Top + (int)((p.Y - mapRect.Y) / previewScale));
 		}
 	}
 }

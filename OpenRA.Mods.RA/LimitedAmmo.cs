@@ -24,8 +24,7 @@ namespace OpenRA.Mods.RA
 
 	public class LimitedAmmo : INotifyAttack, IPips, ISync
 	{
-		[Sync]
-		int ammo;
+		[Sync] int ammo;
 		LimitedAmmoInfo Info;
 
 		public LimitedAmmo(LimitedAmmoInfo info)

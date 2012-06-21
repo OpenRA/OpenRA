@@ -78,6 +78,9 @@
     <Compile Include="ActorInitializer.cs" />
     <Compile Include="ActorMap.cs" />
     <Compile Include="ActorReference.cs" />
+    <Compile Include="PVecInt.cs" />
+    <Compile Include="PVecFloat.cs" />
+    <Compile Include="PPos.cs" />
     <Compile Include="Download.cs" />
     <Compile Include="Effects\DelayedAction.cs" />
     <Compile Include="Effects\FlashTarget.cs" />
@@ -114,6 +117,8 @@
     <Compile Include="Graphics\WorldRenderer.cs" />
     <Compile Include="Group.cs" />
     <Compile Include="InputHandler.cs" />
+    <Compile Include="CVec.cs" />
+    <Compile Include="CPos.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="ModData.cs" />
     <Compile Include="Network\Connection.cs" />

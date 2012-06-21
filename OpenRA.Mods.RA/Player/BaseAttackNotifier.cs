@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA
 		BaseAttackNotifierInfo info;
 
 		public int lastAttackTime = -1;
-		public float2 lastAttackLocation;
+		public CPos lastAttackLocation;
 
 		public BaseAttackNotifier(BaseAttackNotifierInfo info) { this.info = info; }
 
@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA
 			if (self.World.FrameNumber - lastAttackTime > info.NotifyInterval * 25)
 				Sound.PlayToPlayer(self.Owner, info.Audio);
 
-			lastAttackLocation = self.CenterLocation / Game.CellSize;
+			lastAttackLocation = self.CenterLocation.ToCPos();
 			lastAttackTime = self.World.FrameNumber;
 		}
 	}

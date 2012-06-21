@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA.Effects
 				var palette = building.Trait<RenderSimple>().Palette(player);
 
 				yield return new Renderable(anim.Image,
-					building.CenterLocation - .5f * anim.Image.size, palette, (int)building.CenterLocation.Y);
+					building.CenterLocation.ToFloat2() - .5f * anim.Image.size, palette, (int)building.CenterLocation.Y);
 			}
 		}
 	}

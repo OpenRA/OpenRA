@@ -46,9 +46,9 @@ namespace OpenRA.Mods.RA.Effects
 		readonly MissileInfo Info;
 		readonly ProjectileArgs Args;
 
-		int2 offset;
+		PVecInt offset;
 		public int2 SubPxPosition;
-		public int2 PxPosition { get { return new int2( SubPxPosition.X / 1024, SubPxPosition.Y / 1024 ); } }
+		public PPos PxPosition { get { return new PPos(SubPxPosition.X / 1024, SubPxPosition.Y / 1024); } }
 
 		readonly Animation anim;
 		int Facing;
@@ -61,12 +61,12 @@ namespace OpenRA.Mods.RA.Effects
 			Info = info;
 			Args = args;
 
-			SubPxPosition = 1024 * Args.src;
+			SubPxPosition = 1024 * Args.src.ToInt2();
 			Altitude = Args.srcAltitude;
 			Facing = Args.facing;
 
 			if (info.Inaccuracy > 0)
-				offset = (info.Inaccuracy * args.firedBy.World.SharedRandom.Gauss2D(2)).ToInt2();
+				offset = (PVecInt)(info.Inaccuracy * args.firedBy.World.SharedRandom.Gauss2D(2)).ToInt2();
 
 			if (Info.Image != null)
 			{
@@ -121,7 +121,7 @@ namespace OpenRA.Mods.RA.Effects
 
 			if (Info.Trail != null)
 			{
-				var sp = (SubPxPosition - (move * 3) / 2) / 1024 - new int2(0, Altitude);
+				var sp = (PPos)((SubPxPosition - (move * 3) / 2) / 1024) - new PVecInt(0, Altitude);
 
 				if (--ticksToNextSmoke < 0)
 				{
@@ -135,14 +135,13 @@ namespace OpenRA.Mods.RA.Effects
 
 			if (!Info.High)		// check for hitting a wall
 			{
-				var cell = Traits.Util.CellContaining(PxPosition);
-				if (world.ActorMap.GetUnitsAt(cell).Any(
-					a => a.HasTrait<IBlocksBullets>()))
+				var cell = PxPosition.ToCPos();
+				if (world.ActorMap.GetUnitsAt(cell).Any(a => a.HasTrait<IBlocksBullets>()))
 					Explode(world);
 			}
 
 			if (Trail != null)
-				Trail.Tick(PxPosition - new float2(0,Altitude));
+				Trail.Tick(PxPosition - new PVecInt(0, Altitude));
 		}
 
 		void Explode(World world)
@@ -155,8 +154,8 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<Renderable> Render()
 		{
-			if (Args.firedBy.World.LocalShroud.IsVisible(OpenRA.Traits.Util.CellContaining(PxPosition.ToFloat2())))
-				yield return new Renderable(anim.Image,PxPosition.ToFloat2() - 0.5f * anim.Image.size - new float2(0, Altitude),
+			if (Args.firedBy.World.LocalShroud.IsVisible(PxPosition.ToCPos()))
+				yield return new Renderable(anim.Image, PxPosition.ToFloat2() - 0.5f * anim.Image.size - new float2(0, Altitude),
 					Args.weapon.Underwater ? "shadow" : "effect", PxPosition.Y);
 
 			if (Trail != null)

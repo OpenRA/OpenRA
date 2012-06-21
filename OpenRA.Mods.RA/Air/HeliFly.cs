@@ -16,8 +16,8 @@ namespace OpenRA.Mods.RA.Air
 {
 	class HeliFly : Activity
 	{
-		public readonly int2 Dest;
-		public HeliFly(int2 dest)
+		public readonly PPos Dest;
+		public HeliFly(PPos dest)
 		{
 			Dest = dest;
 		}
@@ -36,9 +36,9 @@ namespace OpenRA.Mods.RA.Air
 			}
 
 			var dist = Dest - aircraft.PxPosition;
-			if (float2.WithinEpsilon(float2.Zero, dist, 2))
+			if (float2.WithinEpsilon(float2.Zero, dist.ToFloat2(), 2))
 			{
-				aircraft.SubPxPosition = Dest * 1024;
+				aircraft.SubPxPosition = (Dest.ToInt2() * 1024);
 				return NextActivity;
 			}
 

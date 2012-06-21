@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA
 	class SmokeTrailWhenDamaged : ITick
 	{
 		Turret smokeTurret;
-		int2 position;
+		PPos position;
 		int interval;
 		int ticks;
 
@@ -42,10 +42,10 @@ namespace OpenRA.Mods.RA
 				if (move.Altitude > 0 && self.GetDamageState() >= DamageState.Heavy)
 				{
 					var facing = self.Trait<IFacing>();
-					var altitude = new int2(0, move.Altitude);
-					position = (self.CenterLocation - Combat.GetTurretPosition(self, facing, smokeTurret)).ToInt2();
+					var altitude = new PVecInt(0, move.Altitude);
+					position = (self.CenterLocation - Combat.GetTurretPosition(self, facing, smokeTurret));
 
-					if (self.World.LocalShroud.IsVisible(Util.CellContaining(position)))
+					if (self.World.LocalShroud.IsVisible(position.ToCPos()))
 						self.World.AddFrameEndTask(
 							w => w.Add(new Smoke(w, position - altitude, "smokey")));
 				}

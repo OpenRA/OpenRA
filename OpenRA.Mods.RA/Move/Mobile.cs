@@ -55,7 +55,7 @@ namespace OpenRA.Mods.RA.Move
 			public decimal Speed = 0;
 		}
 
-		public int MovementCostForCell(World world, int2 cell)
+		public int MovementCostForCell(World world, CPos cell)
 		{
 			if (!world.Map.IsInMap(cell.X, cell.Y))
 				return int.MaxValue;
@@ -67,17 +67,17 @@ namespace OpenRA.Mods.RA.Move
 			return TerrainSpeeds[type].Cost;
 		}
 
-		public readonly Dictionary<SubCell, int2> SubCellOffsets = new Dictionary<SubCell, int2>()
+		public readonly Dictionary<SubCell, PVecInt> SubCellOffsets = new Dictionary<SubCell, PVecInt>()
 		{
-			{SubCell.TopLeft, new int2(-7,-6)},
-			{SubCell.TopRight, new int2(6,-6)},
-			{SubCell.Center, new int2(0,0)},
-			{SubCell.BottomLeft, new int2(-7,6)},
-			{SubCell.BottomRight, new int2(6,6)},
-			{SubCell.FullCell, new int2(0,0)},
+			{SubCell.TopLeft, new PVecInt(-7,-6)},
+			{SubCell.TopRight, new PVecInt(6,-6)},
+			{SubCell.Center, new PVecInt(0,0)},
+			{SubCell.BottomLeft, new PVecInt(-7,6)},
+			{SubCell.BottomRight, new PVecInt(6,6)},
+			{SubCell.FullCell, new PVecInt(0,0)},
 		};
 
-		public bool CanEnterCell(World world, Player owner, int2 cell, Actor ignoreActor, bool checkTransientActors)
+		public bool CanEnterCell(World world, Player owner, CPos cell, Actor ignoreActor, bool checkTransientActors)
 		{
 			if (MovementCostForCell(world, cell) == int.MaxValue)
 				return false;
@@ -108,35 +108,29 @@ namespace OpenRA.Mods.RA.Move
 		public bool IsMoving { get; internal set; }
 
 		int __facing;
-		int2 __fromCell, __toCell;
+		CPos __fromCell, __toCell;
 		public SubCell fromSubCell, toSubCell;
 
 		//int __altitude;
 
-		[Sync]
-		public int Facing
+		[Sync] public int Facing
 		{
 			get { return __facing; }
 			set { __facing = value; }
 		}
 
-		[Sync]
-		public int Altitude { get; set; }
+		[Sync] public int Altitude { get; set; }
 
 		public int ROT { get { return Info.ROT; } }
 		public int InitialFacing { get { return Info.InitialFacing; } }
 
-		[Sync]
-		public int2 PxPosition { get; set; }
-		[Sync]
-		public int2 fromCell { get { return __fromCell; } }
-		[Sync]
-		public int2 toCell { get { return __toCell; } }
+		[Sync] public PPos PxPosition { get; set; }
+		[Sync] public CPos fromCell { get { return __fromCell; } }
+		[Sync] public CPos toCell { get { return __toCell; } }
 
-		[Sync]
-		public int PathHash;	// written by Move.EvalPath, to temporarily debug this crap.
+		[Sync] public int PathHash;	// written by Move.EvalPath, to temporarily debug this crap.
 
-		public void SetLocation(int2 from, SubCell fromSub, int2 to, SubCell toSub)
+		public void SetLocation(CPos from, SubCell fromSub, CPos to, SubCell toSub)
 		{
 			if (fromCell == from && toCell == to) return;
 			RemoveInfluence();
@@ -164,7 +158,7 @@ namespace OpenRA.Mods.RA.Move
 
 			if (init.Contains<LocationInit>())
 			{
-				this.__fromCell = this.__toCell = init.Get<LocationInit, int2>();
+				this.__fromCell = this.__toCell = init.Get<LocationInit, CPos>();
 				this.PxPosition = Util.CenterOfCell(fromCell) + info.SubCellOffsets[fromSubCell];
 			}
 
@@ -172,22 +166,22 @@ namespace OpenRA.Mods.RA.Move
 			this.Altitude = init.Contains<AltitudeInit>() ? init.Get<AltitudeInit, int>() : 0;
 		}
 
-		public void SetPosition(Actor self, int2 cell)
+		public void SetPosition(Actor self, CPos cell)
 		{
 			SetLocation(cell,fromSubCell, cell,fromSubCell);
 			PxPosition = Util.CenterOfCell(fromCell) + Info.SubCellOffsets[fromSubCell];
 			FinishedMoving(self);
 		}
 
-		public void SetPxPosition(Actor self, int2 px)
+		public void SetPxPosition(Actor self, PPos px)
 		{
-			var cell = Util.CellContaining(px);
+			var cell = px.ToCPos();
 			SetLocation(cell,fromSubCell, cell,fromSubCell);
 			PxPosition = px;
 			FinishedMoving(self);
 		}
 
-		public void AdjustPxPosition(Actor self, int2 px)	/* visual hack only */
+		public void AdjustPxPosition(Actor self, PPos px)	/* visual hack only */
 		{
 			PxPosition = px;
 		}
@@ -200,17 +194,17 @@ namespace OpenRA.Mods.RA.Move
 			if (order is MoveOrderTargeter)
 			{
 				if (Info.OnRails) return null;
-				return new Order("Move", self, queued) { TargetLocation = Util.CellContaining(target.CenterLocation) };
+				return new Order("Move", self, queued) { TargetLocation = target.CenterLocation.ToCPos() };
 			}
 			return null;
 		}
 
-		public int2 NearestMoveableCell(int2 target)
+		public CPos NearestMoveableCell(CPos target)
 		{
 			if (CanEnterCell(target))
 				return target;
 
-			var searched = new List<int2>() { };
+			var searched = new List<CPos>();
 			// Limit search to a radius of 10 tiles
 			for (int r = 1; r < 10; r++)
 				foreach (var tile in self.World.FindTilesInCircle(target, r).Except(searched))
@@ -225,9 +219,9 @@ namespace OpenRA.Mods.RA.Move
 			return target;
 		}
 
-		void PerformMoveInner(Actor self, int2 targetLocation, bool queued)
+		void PerformMoveInner(Actor self, CPos targetLocation, bool queued)
 		{
-			int2 currentLocation = NearestMoveableCell(targetLocation);
+			var currentLocation = NearestMoveableCell(targetLocation);
 
 			if (!CanEnterCell(currentLocation))
 			{
@@ -244,12 +238,12 @@ namespace OpenRA.Mods.RA.Move
 			self.SetTargetLine(Target.FromCell(currentLocation), Color.Green);
 		}
 
-		protected void PerformMove(Actor self, int2 targetLocation, bool queued)
+		protected void PerformMove(Actor self, CPos targetLocation, bool queued)
 		{
 			if (queued)
-				self.QueueActivity(new CallFunc(() => PerformMoveInner(self, targetLocation, queued)));
+				self.QueueActivity(new CallFunc(() => PerformMoveInner(self, targetLocation, true)));
 			else
-				PerformMoveInner(self, targetLocation, queued);
+				PerformMoveInner(self, targetLocation, false);
 		}
 
 		public void ResolveOrder(Actor self, Order order)
@@ -278,9 +272,9 @@ namespace OpenRA.Mods.RA.Move
 			}
 		}
 
-		public int2 TopLeft { get { return toCell; } }
+		public CPos TopLeft { get { return toCell; } }
 
-		public IEnumerable<Pair<int2, SubCell>> OccupiedCells()
+		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells()
 		{
 			if (fromCell == toCell)
 				yield return Pair.New(fromCell, fromSubCell);
@@ -293,7 +287,7 @@ namespace OpenRA.Mods.RA.Move
 			}
 		}
 
-		public SubCell GetDesiredSubcell(int2 a, Actor ignoreActor)
+		public SubCell GetDesiredSubcell(CPos a, Actor ignoreActor)
 		{
 			if (!Info.SharesCell)
 				return SubCell.FullCell;
@@ -303,7 +297,7 @@ namespace OpenRA.Mods.RA.Move
 				SubCell.BottomLeft, SubCell.BottomRight}.First(b =>
 			{
 				var blockingActors = self.World.ActorMap.GetUnitsAt(a,b).Where(c => c != ignoreActor);
-				if (blockingActors.Count() > 0)
+				if (blockingActors.Any())
 				{
 					// Non-sharable unit can enter a cell with shareable units only if it can crush all of them
 					if (Info.Crushes == null)
@@ -317,12 +311,12 @@ namespace OpenRA.Mods.RA.Move
 			});
 		}
 
-		public bool CanEnterCell(int2 p)
+		public bool CanEnterCell(CPos p)
 		{
 			return CanEnterCell(p, null, true);
 		}
 
-		public bool CanEnterCell(int2 cell, Actor ignoreActor, bool checkTransientActors)
+		public bool CanEnterCell(CPos cell, Actor ignoreActor, bool checkTransientActors)
 		{
 			return Info.CanEnterCell(self.World, self.Owner, cell, ignoreActor, checkTransientActors);
 		}
@@ -349,7 +343,7 @@ namespace OpenRA.Mods.RA.Move
 			}
 		}
 
-		public int MovementSpeedForCell(Actor self, int2 cell)
+		public int MovementSpeedForCell(Actor self, CPos cell)
 		{
 			var type = self.World.GetTerrainType(cell);
 
@@ -385,13 +379,13 @@ namespace OpenRA.Mods.RA.Move
 				return;		/* don't nudge if we're busy doing something! */
 
 			// pick an adjacent available cell.
-			var availCells = new List<int2>();
-			var notStupidCells = new List<int2>();
+			var availCells = new List<CPos>();
+			var notStupidCells = new List<CPos>();
 
 			for (var i = -1; i < 2; i++)
 				for (var j = -1; j < 2; j++)
 				{
-					var p = toCell + new int2(i, j);
+					var p = toCell + new CVec(i, j);
 					if (CanEnterCell(p))
 						availCells.Add(p);
 					else
@@ -400,7 +394,7 @@ namespace OpenRA.Mods.RA.Move
 				}
 
 			var moveTo = availCells.Any() ? availCells.Random(self.World.SharedRandom) :
-				notStupidCells.Any() ? notStupidCells.Random(self.World.SharedRandom) : (int2?)null;
+				notStupidCells.Any() ? notStupidCells.Random(self.World.SharedRandom) : (CPos?)null;
 
 			if (moveTo.HasValue)
 			{
@@ -434,7 +428,7 @@ namespace OpenRA.Mods.RA.Move
 				return false;
 			}
 
-			public bool CanTargetLocation(Actor self, int2 location, List<Actor> actorsAtLocation, bool forceAttack, bool forceQueued, ref string cursor)
+			public bool CanTargetLocation(Actor self, CPos location, List<Actor> actorsAtLocation, bool forceAttack, bool forceQueued, ref string cursor)
 			{
 				IsQueued = forceQueued;
 				cursor = "move";
@@ -446,10 +440,10 @@ namespace OpenRA.Mods.RA.Move
 			}
 		}
 
-		public Activity ScriptedMove(int2 cell) { return new Move(cell); }
-		public Activity MoveTo(int2 cell, int nearEnough) { return new Move(cell, nearEnough); }
-		public Activity MoveTo(int2 cell, Actor ignoredActor) { return new Move(cell, ignoredActor); }
+		public Activity ScriptedMove(CPos cell) { return new Move(cell); }
+		public Activity MoveTo(CPos cell, int nearEnough) { return new Move(cell, nearEnough); }
+		public Activity MoveTo(CPos cell, Actor ignoredActor) { return new Move(cell, ignoredActor); }
 		public Activity MoveWithinRange(Target target, int range) { return new Move(target, range); }
-		public Activity MoveTo(Func<List<int2>> pathFunc) { return new Move(pathFunc); }
+		public Activity MoveTo(Func<List<CPos>> pathFunc) { return new Move(pathFunc); }
 	}
 }

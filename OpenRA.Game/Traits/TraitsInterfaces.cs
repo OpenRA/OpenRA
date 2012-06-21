@@ -47,7 +47,7 @@ namespace OpenRA.Traits
 		string OrderID { get; }
 		int OrderPriority { get; }
 		bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceQueue, ref string cursor);
-		bool CanTargetLocation(Actor self, int2 location, List<Actor> actorsAtLocation, bool forceAttack, bool forceQueue, ref string cursor);
+		bool CanTargetLocation(Actor self, CPos location, List<Actor> actorsAtLocation, bool forceAttack, bool forceQueue, ref string cursor);
 		bool IsQueued { get; }
 	}
 
@@ -60,7 +60,7 @@ namespace OpenRA.Traits
 	public interface INotifyKilled { void Killed(Actor self, AttackInfo e); }
 	public interface INotifyAppliedDamage { void AppliedDamage(Actor self, Actor damaged, AttackInfo e); }
 	public interface INotifyBuildComplete { void BuildingComplete(Actor self); }
-	public interface INotifyProduction { void UnitProduced(Actor self, Actor other, int2 exit); }
+	public interface INotifyProduction { void UnitProduced(Actor self, Actor other, CPos exit); }
 	public interface INotifyCapture { void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner); }
 	public interface INotifyOtherCaptured { void OnActorCaptured(Actor self, Actor captured, Actor captor, Player oldOwner, Player newOwner); }
 	public interface IAcceptSpy { void OnInfiltrate(Actor self, Actor spy); }
@@ -79,23 +79,23 @@ namespace OpenRA.Traits
 
 	public interface IRadarSignature
 	{
-		IEnumerable<int2> RadarSignatureCells(Actor self);
+		IEnumerable<CPos> RadarSignatureCells(Actor self);
 		Color RadarSignatureColor(Actor self);
 	}
 
 	public interface IVisibilityModifier { bool IsVisible(Actor self); }
 	public interface IRadarColorModifier { Color RadarColorOverride(Actor self); }
-	public interface IHasLocation { int2 PxPosition { get; } }
+	public interface IHasLocation { PPos PxPosition { get; } }
 
 	public interface IOccupySpace : IHasLocation
 	{
-		int2 TopLeft { get; }
-		IEnumerable<Pair<int2, SubCell>> OccupiedCells();
+		CPos TopLeft { get; }
+		IEnumerable<Pair<CPos, SubCell>> OccupiedCells();
 	}
 
 	public static class IOccupySpaceExts
 	{
-		public static int2 NearestCellTo(this IOccupySpace ios, int2 other)
+		public static CPos NearestCellTo(this IOccupySpace ios, CPos other)
 		{
 			var nearest = ios.TopLeft;
 			var nearestDistance = int.MaxValue;
@@ -125,10 +125,10 @@ namespace OpenRA.Traits
 
 	public interface ITeleportable : IHasLocation /* crap name! */
 	{
-		bool CanEnterCell(int2 location);
-		void SetPosition(Actor self, int2 cell);
-		void SetPxPosition(Actor self, int2 px);
-		void AdjustPxPosition(Actor self, int2 px);	/* works like SetPxPosition, but visual only */
+		bool CanEnterCell(CPos location);
+		void SetPosition(Actor self, CPos cell);
+		void SetPxPosition(Actor self, PPos px);
+		void AdjustPxPosition(Actor self, PPos px);	/* works like SetPxPosition, but visual only */
 	}
 
 	public interface IMove : ITeleportable { int Altitude { get; set; } }
@@ -212,7 +212,7 @@ namespace OpenRA.Traits
 	public interface ITargetable
 	{
 		string[] TargetTypes { get; }
-		IEnumerable<int2> TargetableCells(Actor self);
+		IEnumerable<CPos> TargetableCells(Actor self);
 		bool TargetableBy(Actor self, Actor byActor);
 	}
 

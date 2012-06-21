@@ -70,7 +70,7 @@ namespace OpenRA.Mods.RA.Air
 						reservation = res.Reserve(order.TargetActor, self, this);
 
 					var exit = order.TargetActor.Info.Traits.WithInterface<ExitInfo>().FirstOrDefault();
-					var offset = exit != null ? exit.SpawnOffset : int2.Zero;
+					var offset = exit != null ? exit.SpawnOffsetVector : PVecInt.Zero;
 
 					self.SetTargetLine(Target.FromActor(order.TargetActor), Color.Green);
 
@@ -118,9 +118,9 @@ namespace OpenRA.Mods.RA.Air
 				.Select(h => GetRepulseForce(self, h))
 				.Aggregate(int2.Zero, (a, b) => a + b);
 
-			int RepulsionFacing = Util.GetFacing( f, -1 );
-			if( RepulsionFacing != -1 )
-				TickMove( 1024 * MovementSpeed, RepulsionFacing );
+			int repulsionFacing = Util.GetFacing( f, -1 );
+			if( repulsionFacing != -1 )
+				TickMove( 1024 * MovementSpeed, repulsionFacing );
 		}
 
 		// Returns an int2 in subPx units
@@ -137,7 +137,7 @@ namespace OpenRA.Mods.RA.Air
 
 			if (d.LengthSquared < 1)
 				return Util.SubPxVector[self.World.SharedRandom.Next(255)];
-			return (5120 / d.LengthSquared) * d;
+			return (5120 / d.LengthSquared) * d.ToInt2();
 		}
 	}
 }
