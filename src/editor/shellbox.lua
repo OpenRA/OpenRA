@@ -280,6 +280,7 @@ local function executeShellCode(tx)
         for i,v in pairs(res) do -- stringify each of the returned values
           res[i] = mobdebug.line(v, {nocode = true, comment = 1})
         end
+        if #res == 0 then res = {'nil'} end
       end
       DisplayShell((table.unpack or unpack)(res))
     end
