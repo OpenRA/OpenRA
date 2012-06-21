@@ -1,5 +1,5 @@
 -- Integration with MobDebug
--- Copyright Paul Kulchenko 2011
+-- Copyright 2011-12 Paul Kulchenko
 -- Original authors: Lomtik Software (J. Winwood & John Labenski)
 -- Luxinia Dev (Eike Decker & Christoph Kubisch)
 
@@ -14,9 +14,9 @@ debugger.running = false -- true when the debuggee is running
 debugger.listening = false -- true when the debugger is listening for a client
 debugger.portnumber = 8171 -- the port # to use for debugging
 debugger.watchWindow = nil -- the watchWindow, nil when not created
-debugger.watchCtrl = nil -- the child listctrl in the watchWindow
-debugger.stackWindow = nil -- the watchWindow, nil when not created
-debugger.stackCtrl = nil -- the child listctrl in the watchWindow
+debugger.watchCtrl = nil -- the child ctrl in the watchWindow
+debugger.stackWindow = nil -- the stackWindow, nil when not created
+debugger.stackCtrl = nil -- the child ctrl in the stackWindow
 
 local notebook = ide.frame.notebook
 
@@ -86,6 +86,21 @@ end
 local function updateStackAndWatches()
   if debugger.server and not debugger.running then
     copas.addthread(function() updateStackSync() updateWatchesSync() end)
+  end
+end
+
+local function killClient()
+  if (debugger.pid) then
+    -- using SIGTERM for some reason kills not only the debugee process,
+    -- but also some system processes, which leads to a blue screen crash
+    -- (at least on Windows Vista SP2)
+    local ret = wx.wxProcess.Kill(debugger.pid, wx.wxSIGKILL, wx.wxKILL_CHILDREN)
+    if ret == wx.wxKILL_OK then
+      DisplayOutput("Stopped process (pid: "..debugger.pid..").\n")
+    elseif ret ~= wx.wxKILL_NO_PROCESS then
+      DisplayOutput("Unable to stop process (pid: "..debugger.pid.."), code "..tostring(ret)..".\n")
+    end
+    debugger.pid = nil
   end
 end
 
@@ -331,7 +346,7 @@ debugger.update = function() copas.step(0) end
 debugger.terminate = function()
   if debugger.server then
     if debugger.pid then -- if there is PID, try local kill
-      DebuggerKillClient()
+      killClient()
     else -- otherwise, try graceful exit for the remote process
       debugger.breaknow("exit")
     end
@@ -383,19 +398,9 @@ function DebuggerAttachDefault(options)
   debugger.listen()
 end
 
-function DebuggerKillClient()
-  if (debugger.pid) then
-    -- using SIGTERM for some reason kills not only the debugee process,
-    -- but also some system processes, which leads to a blue screen crash
-    -- (at least on Windows Vista SP2)
-    local ret = wx.wxProcess.Kill(debugger.pid, wx.wxSIGKILL, wx.wxKILL_CHILDREN)
-    if ret == wx.wxKILL_OK then
-      DisplayOutput("Stopped process (pid: "..debugger.pid..").\n")
-    elseif ret ~= wx.wxKILL_NO_PROCESS then
-      DisplayOutput("Unable to stop process (pid: "..debugger.pid.."), code "..tostring(ret)..".\n")
-    end
-    debugger.pid = nil
-  end
+function DebuggerShutdown()
+  if debugger.server then debugger.terminate() end
+  if debugger.pid then killClient() end
 end
 
 function DebuggerStop()

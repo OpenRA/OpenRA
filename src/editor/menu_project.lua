@@ -312,8 +312,7 @@ frame:Connect(ID_START_DEBUG, wx.wxEVT_UPDATE_UI,
 frame:Connect(ID_STOP_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
     ClearAllCurrentLineMarkers()
-    if debugger.server then debugger.terminate() end
-    if debugger.pid then DebuggerKillClient() end
+    DebuggerShutdown()
   end)
 frame:Connect(ID_STOP_DEBUG, wx.wxEVT_UPDATE_UI,
   function (event)
