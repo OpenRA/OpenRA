@@ -12,7 +12,7 @@ local debugger = ide.debugger
 debugger.server = nil -- DebuggerServer object when debugging, else nil
 debugger.running = false -- true when the debuggee is running
 debugger.listening = false -- true when the debugger is listening for a client
-debugger.portnumber = 8171 -- the port # to use for debugging
+debugger.portnumber = mobdebug.port or 8171 -- the port # to use for debugging
 debugger.watchWindow = nil -- the watchWindow, nil when not created
 debugger.watchCtrl = nil -- the child ctrl in the watchWindow
 debugger.stackWindow = nil -- the stackWindow, nil when not created
@@ -34,13 +34,11 @@ local function updateWatchesSync()
 end
 
 local simpleType = {['nil'] = true, ['string'] = true, ['number'] = true, ['boolean'] = true}
-local function updateStackSync(reset)
+local function updateStackSync()
   local stackCtrl = debugger.stackCtrl
   if stackCtrl and debugger.server and not debugger.running then
-    if reset then stackCtrl:DeleteAllItems(); return end
-
     local stack = debugger.stack()
-    if not stack or #stack == 0 then return end
+    if not stack or #stack == 0 then stackCtrl:DeleteAllItems(); return end
     stackCtrl:Freeze()
     stackCtrl:DeleteAllItems()
     local params = {comment = false, nocode = true}
@@ -234,11 +232,6 @@ debugger.listen = function()
                 debugger.handle("basedir " .. debugger.basedir)
               end
             end
-
-            -- only reset stack window
-            -- can't execute STACK command as the client first needs
-            -- STEP/RUN command to get into the debug hook
-            updateStackSync(true)
           end
 
           if not activated then
@@ -250,7 +243,6 @@ debugger.listen = function()
           return debugger.terminate()
         else
           debugger.scratchable = true
-          updateStackSync()
           activateDocument(startfile, 1)
         end
       end
@@ -272,6 +264,7 @@ debugger.listen = function()
         ShellSupportRemote(debugger.shell)
       end
 
+      updateStackSync()
       updateWatchesSync()
 
       DisplayOutput("Started remote debugging session (base directory: '" .. debugger.basedir .. "').\n")

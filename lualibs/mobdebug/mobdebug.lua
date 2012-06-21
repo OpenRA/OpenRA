@@ -1,15 +1,15 @@
 --
--- MobDebug 0.463
--- Copyright Paul Kulchenko 2011-2012
+-- MobDebug 0.465
+-- Copyright 2011-12 Paul Kulchenko
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
--- (http://www.keplerproject.org/remdebug)
 --
 
 local mobdebug = {
   _NAME = "mobdebug",
+  _VERSION = 0.465,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
-  _VERSION = "0.463"
+  port = 8171
 }
 
 local coroutine = coroutine
@@ -172,7 +172,7 @@ local lastsource
 local lastfile
 local watchescnt = 0
 local abort -- default value is nil; this is used in start/loop distinction
-local check_break = false
+local seen_hook = false
 local skip
 local skipcount = 0
 local step_into = false
@@ -459,9 +459,11 @@ local function debug_hook(event, line)
     if step_into
     or (step_over and stack_level <= step_level)
     or has_breakpoint(file, line)
-    or check_break and (socket.select({server}, {}, 0))[server] then
+    -- seen_hook protects select() check to avoid breaking when debugging
+    -- is starting and before debug hook has been visited at least once.
+    or seen_hook and (socket.select({server}, {}, 0))[server] then
       vars = vars or capture_vars()
-      check_break = true -- this is only needed to avoid breaking too early when debugging is starting
+      seen_hook = true
       step_into = false
       step_over = false
       local status, res = coroutine.resume(coro_debugger, events.BREAK, vars, file, line)
@@ -688,13 +690,21 @@ local function debugger_loop(sfile, sline)
     elseif command == "SUSPEND" then
       -- do nothing; it already fulfilled its role
     elseif command == "STACK" then
-      -- yield back to debug hook to get stack information
-      local ev, vars = coroutine.yield("stack")
-      if ev == events.STACK then
-        server:send("200 OK " .. serpent.dump(vars,
-          {nocode = true, sparse = false}) .. "\n")
+      -- first check if we can execute the stack command
+      -- as it requires yielding back to debug_hook it cannot be executed
+      -- if we have not seen the hook yet as happens after start().
+      -- in this case we simply return an empty result
+      if not seen_hook then
+        server:send("200 OK " .. serpent.dump({}) .. "\n")
       else
-        server:send("401 Error in Expression 0\n")
+        -- yield back to debug hook to get stack information
+        local ev, vars = coroutine.yield("stack")
+        if ev == events.STACK then
+          server:send("200 OK " ..
+            serpent.dump(vars, {nocode = true, sparse = false}) .. "\n")
+        else
+          server:send("401 Error in Expression 0\n")
+        end
       end
     elseif command == "EXIT" then
       server:send("200 OK\n")
@@ -717,6 +727,9 @@ end
 local function start(controller_host, controller_port)
   -- only one debugging session can be run (as there is only one debug hook)
   if isrunning() then return end
+
+  controller_host = controller_host or "localhost"
+  controller_port = controller_port or mobdebug.port
 
   server = socket.connect(controller_host, controller_port)
   if server then
@@ -742,6 +755,9 @@ end
 local function controller(controller_host, controller_port)
   -- only one debugging session can be run (as there is only one debug hook)
   if isrunning() then return end
+
+  controller_host = controller_host or "localhost"
+  controller_port = controller_port or mobdebug.port
 
   local exitonerror = not skip -- exit if not running a scratchpad
   server = socket.connect(controller_host, controller_port)
@@ -1078,6 +1094,8 @@ end
 
 -- Starts debugging server
 local function listen(host, port)
+  host = host or "*"
+  port = port or mobdebug.port
 
   local socket = require "socket"
 
