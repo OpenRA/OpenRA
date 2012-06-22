@@ -73,6 +73,7 @@ namespace OpenRA.Mods.RA.Missions
         private void DisplayObjective()
         {
             Game.AddChatLine(Color.LimeGreen, "Objective", objectives[currentObjective]);
+            Sound.Play("bleep6.aud", 5);
         }
 
         private void MissionFailed(Actor self, string text)
