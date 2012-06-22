@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA
 	public class ColorPickerPaletteModifier : IPalette, IPaletteModifier
 	{
 		ColorPickerPaletteModifierInfo Info;
-		PaletteFormat format;
+		int[] index;
 		public ColorRamp Ramp;
 
 		public ColorPickerPaletteModifier(ColorPickerPaletteModifierInfo info) { Info = info; }
@@ -34,14 +34,14 @@ namespace OpenRA.Mods.RA
 		{
 			var info = Rules.Info["player"].Traits.WithInterface<PlayerColorPaletteInfo>()
 				.First(p => p.BaseName == Info.PlayerPalette);
-			format = info.PaletteFormat;
+			index = info.RemapIndex;
 			wr.AddPalette("colorpicker", wr.GetPalette(info.BasePalette));
 		}
 
 		public void AdjustPalette(Dictionary<string, Palette> palettes)
 		{
 			palettes["colorpicker"] = new Palette(palettes["colorpicker"],
-			  new PlayerColorRemap(format, Ramp));
+			  new PlayerColorRemap(index, Ramp));
 		}
 	}
 }

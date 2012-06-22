@@ -368,24 +368,25 @@ namespace OpenRA.Utility
 			var remap = new Dictionary<int,int>();
 
 			/* the first 4 entries are fixed */
-			for( var i = 0; i < 4; i++ )
+			for (var i = 0; i < 4; i++)
 				remap[i] = i;
 
-			var srcPaletteType = Enum<PaletteFormat>.Parse(args[1].Split(':')[0]);
-			var destPaletteType = Enum<PaletteFormat>.Parse(args[2].Split(':')[0]);
+			// TODO: should read that from mods/*/system.yaml
+			var srcRemapIndex = Enum<int[]>.Parse(args[1].Split(':')[0]);
+			var destRemapIndex = Enum<int[]>.Parse(args[2].Split(':')[0]);
 
-			/* the remap range is always 16 entries, but their location and order changes */
-			for( var i = 0; i < 16; i++ )
-				remap[ PlayerColorRemap.GetRemapIndex(srcPaletteType, i) ]
-					= PlayerColorRemap.GetRemapIndex(destPaletteType, i);
+			// the remap range is always 16 entries, but their location and order changes
+			for (var i = 0; i < 16; i++)
+				remap[PlayerColorRemap.GetRemapIndex(srcRemapIndex, i)]
+					= PlayerColorRemap.GetRemapIndex(destRemapIndex, i);
 
-			/* map everything else to the best match based on channel-wise distance */
+			// map everything else to the best match based on channel-wise distance
 			var srcPalette = Palette.Load(args[1].Split(':')[1], false);
 			var destPalette = Palette.Load(args[2].Split(':')[1], false);
 
 			var fullIndexRange = Exts.MakeArray<int>(256, x => x);
 
-			for( var i = 0; i < 256; i++ )
+			for (var i = 0; i < 256; i++)
 				if (!remap.ContainsKey(i))
 					remap[i] = fullIndexRange
 						.Where(a => !remap.ContainsValue(a))
@@ -394,7 +395,7 @@ namespace OpenRA.Utility
 
 			var srcImage = ShpReader.Load(args[3]);
 
-			using( var destStream = File.Create(args[4]) )
+			using (var destStream = File.Create(args[4]))
 				ShpWriter.Write(destStream, srcImage.Width, srcImage.Height,
 					srcImage.Frames.Select( im => im.Image.Select(px => (byte)remap[px]).ToArray() ));
 		}

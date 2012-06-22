@@ -91,7 +91,4 @@ cd "$(SolutionDir)"</PostBuildEvent>
       <Name>OpenRA.Mods.RA</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Render\" />
-  </ItemGroup>
 </Project>
