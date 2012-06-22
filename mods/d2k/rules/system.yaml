@@ -65,8 +65,15 @@ Player:
 	PlayerColorPalette:
 		BasePalette: d2k
 		PaletteFormat: d2k
-	BaseAttackNotifier:
+	BaseAttackNotifier@Atreides:
+		Race: atreides
 		Audio: AI_ATACK.AUD
+	BaseAttackNotifier@Harkonnen:
+		Race: harkonnen
+		Audio: HI_ATACK.AUD
+	BaseAttackNotifier@Ordos:
+		Race: ordos
+		Audio: OI_ATACK.AUD
 
 World:	
 	OpenWidgetAtGameStart:

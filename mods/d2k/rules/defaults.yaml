@@ -176,6 +176,8 @@
 		Dimensions: 1,1
 		Footprint: x
 		TerrainTypes: Rock, Concrete
+		BuildSounds:
+		SellSounds:
 	GivesBuildableArea:
 	Capturable:
 	CapturableBar:
