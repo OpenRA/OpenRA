@@ -39,12 +39,12 @@ namespace OpenRA.Mods.RA
 		{
 			self.Trait<RenderBuilding>().PlayCustomAnim(self, "active");
 
-			Sound.Play("ironcur9.aud", Game.CellSize * order.TargetLocation);
+			Sound.Play("ironcur9.aud", order.TargetLocation.ToPPos());
 			foreach (var target in UnitsInRange(order.TargetLocation))
 				target.Trait<IronCurtainable>().Activate(target, (Info as IronCurtainPowerInfo).Duration * 25);
 		}
 
-		public IEnumerable<Actor> UnitsInRange(int2 xy)
+		public IEnumerable<Actor> UnitsInRange(CPos xy)
 		{
 			int range = (Info as IronCurtainPowerInfo).Range;
 			var tiles = self.World.FindTilesInCircle(xy, range);
@@ -72,7 +72,7 @@ namespace OpenRA.Mods.RA
 				tile = SequenceProvider.GetSequence("overlay", "target-select").GetSprite(0);
 			}
 
-			public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
+			public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
 			{
 				world.CancelInputMode();
 				if (mi.Button == MouseButton.Left && power.UnitsInRange(xy).Any())
@@ -88,19 +88,19 @@ namespace OpenRA.Mods.RA
 
 			public void RenderAfterWorld(WorldRenderer wr, World world)
 			{
-				var xy = Game.viewport.ViewToWorld(Viewport.LastMousePos).ToInt2();
+				var xy = Game.viewport.ViewToWorld(Viewport.LastMousePos);
 				foreach (var unit in power.UnitsInRange(xy))
 					wr.DrawSelectionBox(unit, Color.Red);
 			}
 
 			public void RenderBeforeWorld(WorldRenderer wr, World world)
 			{
-				var xy = Game.viewport.ViewToWorld(Viewport.LastMousePos).ToInt2();
+				var xy = Game.viewport.ViewToWorld(Viewport.LastMousePos);
 				foreach (var t in world.FindTilesInCircle(xy, range))
-					tile.DrawAt( wr, Game.CellSize * t, "terrain" );
+					tile.DrawAt( wr, t.ToPPos().ToFloat2(), "terrain" );
 			}
 
-			public string GetCursor(World world, int2 xy, MouseInput mi)
+			public string GetCursor(World world, CPos xy, MouseInput mi)
 			{
 				return power.UnitsInRange(xy).Any()	? "ability" : "move-blocked";
 			}

@@ -204,8 +204,8 @@ namespace OpenRA.Mods.RA.Missions
 			for (int i = 0; i < ships.Length; i++)
 			{
 				var actor = self.World.CreateActor(ships[i],
-					new TypeDictionary { new OwnerInit(allies), new LocationInit(shipSpawnPoint.Location + new int2(i * 2, 0)) });
-				actor.QueueActivity(new Move.Move(shipMovePoint.Location + new int2(i * 4, 0)));
+					new TypeDictionary { new OwnerInit(allies), new LocationInit(shipSpawnPoint.Location + new CVec(i * 2, 0)) });
+				actor.QueueActivity(new Move.Move(shipMovePoint.Location + new CVec(i * 4, 0)));
 			}
 		}
 

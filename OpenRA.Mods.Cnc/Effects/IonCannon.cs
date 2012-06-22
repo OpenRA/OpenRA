@@ -22,7 +22,7 @@ namespace OpenRA.Mods.Cnc.Effects
 		Animation anim;
 		Actor firedBy;
 
-		public IonCannon(Actor firedBy, World world, int2 location)
+		public IonCannon(Actor firedBy, World world, CPos location)
 		{
 			this.firedBy = firedBy;
 			target = Target.FromCell(location);
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Cnc.Effects
 		public IEnumerable<Renderable> Render()
 		{
 			yield return new Renderable(anim.Image,
-				target.CenterLocation - new float2(.5f * anim.Image.size.X, anim.Image.size.Y - Game.CellSize),
+				target.CenterLocation.ToFloat2() - new float2(.5f * anim.Image.size.X, anim.Image.size.Y - Game.CellSize),
 				"effect", (int)target.CenterLocation.Y);
 		}
 

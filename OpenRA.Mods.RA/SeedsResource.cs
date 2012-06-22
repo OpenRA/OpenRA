@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA
 				var cell = RandomWalk(self.Location, self.World.SharedRandom)
 					.Take(info.MaxRange)
 					.SkipWhile(p => resLayer.GetResource(p) == resourceType && resLayer.IsFull(p.X, p.Y))
-					.Cast<int2?>().FirstOrDefault();
+					.Cast<CPos?>().FirstOrDefault();
 
 				if (cell != null && self.World.Map.IsInMap(cell.Value) &&
 					(resLayer.GetResource(cell.Value) == resourceType
@@ -64,7 +64,7 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		static IEnumerable<int2> RandomWalk(int2 p, Thirdparty.Random r)
+		static IEnumerable<CPos> RandomWalk(CPos p, Thirdparty.Random r)
 		{
 			for (; ; )
 			{
@@ -74,8 +74,7 @@ namespace OpenRA.Mods.RA
 				if (dx == 0 && dy == 0)
 					continue;
 
-				p.X += dx;
-				p.Y += dy;
+				p += new CVec(dx, dy);
 				yield return p;
 			}
 		}

@@ -18,19 +18,20 @@ namespace OpenRA.Mods.RA.Effects
 {
 	class CashTick : IEffect
 	{
-		string s;
+		readonly string s;
 		int remaining;
-		int velocity;
-		float2 pos, offset;
-		Color color;
-		SpriteFont font;
+		readonly int velocity;
+		PPos pos;
+		readonly float2 offset;
+		readonly Color color;
+		readonly SpriteFont font;
 
 		static string FormatCashAmount(int x) { return "{0}${1}".F(x < 0 ? "-" : "+", x); }
 
-		public CashTick(int value, int lifetime, int velocity, float2 pos, Color color)
+		public CashTick(int value, int lifetime, int velocity, PPos pos, Color color)
 			: this( FormatCashAmount(value), lifetime, velocity, pos, color ) { }
 
-		public CashTick(string value, int lifetime, int velocity, float2 pos, Color color)
+		public CashTick(string value, int lifetime, int velocity, PPos pos, Color color)
 		{
 			this.color = color;
 			this.velocity = velocity;
@@ -45,12 +46,12 @@ namespace OpenRA.Mods.RA.Effects
 		{
 			if (--remaining <= 0)
 				world.AddFrameEndTask(w => w.Remove(this));
-			pos.Y -= velocity;
+			pos -= new PVecInt(0, velocity);
 		}
 
 		public IEnumerable<Renderable> Render()
 		{
-			font.DrawTextWithContrast(s, Game.viewport.Zoom*(pos - Game.viewport.Location) - offset, color, Color.Black,1);
+			font.DrawTextWithContrast(s, Game.viewport.Zoom*(pos.ToFloat2() - Game.viewport.Location) - offset, color, Color.Black,1);
 			yield break;
 		}
 	}

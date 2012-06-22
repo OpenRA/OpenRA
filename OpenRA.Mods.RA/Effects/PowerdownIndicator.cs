@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA.Effects
 		{
 			if (!a.Destroyed && (a.World.LocalPlayer == null || a.Owner.Stances[a.Owner.World.LocalPlayer] == Stance.Ally))
 				yield return new Renderable(anim.Image,
-					a.CenterLocation - .5f * anim.Image.size, "chrome", (int)a.CenterLocation.Y);
+					a.CenterLocation.ToFloat2() - .5f * anim.Image.size, "chrome", (int)a.CenterLocation.Y);
 		}
 	}
 }

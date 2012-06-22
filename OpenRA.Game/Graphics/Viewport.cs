@@ -149,18 +149,18 @@ namespace OpenRA.Graphics
 		}
 
 		// Convert from viewport coords to cell coords (not px)
-		public float2 ViewToWorld(MouseInput mi) { return ViewToWorld(mi.Location); }
-		public float2 ViewToWorld(int2 loc)
+		public CPos ViewToWorld(MouseInput mi) { return ViewToWorld(mi.Location); }
+		public CPos ViewToWorld(int2 loc)
 		{
-			return (1f / Game.CellSize) * (1f/Zoom*loc.ToFloat2() + Location);
+			return (CPos)( (1f / Game.CellSize) * (1f/Zoom*loc.ToFloat2() + Location) ).ToInt2();
 		}
 
-		public int2 ViewToWorldPx(int2 loc) { return (1f/Zoom*loc.ToFloat2() + Location).ToInt2(); }
-		public int2 ViewToWorldPx(MouseInput mi) { return ViewToWorldPx(mi.Location); }
+		public PPos ViewToWorldPx(int2 loc) { return (PPos)(1f/Zoom*loc.ToFloat2() + Location).ToInt2(); }
+		public PPos ViewToWorldPx(MouseInput mi) { return ViewToWorldPx(mi.Location); }
 
 		public void Center(float2 loc)
 		{
-			scrollPosition = NormalizeScrollPosition((Game.CellSize*loc - 1f/(2*Zoom)*screenSize.ToFloat2()).ToInt2());
+			scrollPosition = NormalizeScrollPosition((Game.CellSize * loc - 1f/(2*Zoom)*screenSize.ToFloat2()).ToInt2());
 		}
 
 		public void Center(IEnumerable<Actor> actors)
@@ -168,9 +168,9 @@ namespace OpenRA.Graphics
 			if (!actors.Any()) return;
 
 			var avgPos = actors
-				.Select(a => a.CenterLocation)
+				.Select(a => (PVecInt)a.CenterLocation)
 				.Aggregate((a, b) => a + b) / actors.Count();
-			scrollPosition = NormalizeScrollPosition((avgPos - 1f/(2*Zoom)*screenSize.ToFloat2()).ToInt2());
+			scrollPosition = NormalizeScrollPosition(((PVecFloat)avgPos - (PVecFloat)(1f / (2 * Zoom) * screenSize.ToFloat2())).ToInt2());
 		}
 
 		// Rectangle (in viewport coords) that contains things to be drawn

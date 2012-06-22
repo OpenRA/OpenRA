@@ -201,7 +201,7 @@ namespace OpenRA.Mods.RA
 			expectedButton = button;
 		}
 
-		public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
+		public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
 		{
 			world.CancelInputMode();
 			if (mi.Button == expectedButton && world.Map.IsInMap(xy))
@@ -217,6 +217,6 @@ namespace OpenRA.Mods.RA
 
 		public void RenderBeforeWorld(WorldRenderer wr, World world) { }
 		public void RenderAfterWorld(WorldRenderer wr, World world) { }
-		public string GetCursor(World world, int2 xy, MouseInput mi) { return world.Map.IsInMap(xy) ? cursor : "generic-blocked"; }
+		public string GetCursor(World world, CPos xy, MouseInput mi) { return world.Map.IsInMap(xy) ? cursor : "generic-blocked"; }
 	}
 }

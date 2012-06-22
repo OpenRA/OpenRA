@@ -54,7 +54,7 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		int2? ChooseDropCell(Actor self, bool inWater, int maxTries)
+		CPos? ChooseDropCell(Actor self, bool inWater, int maxTries)
 		{
 			for( var n = 0; n < maxTries; n++ )
 			{

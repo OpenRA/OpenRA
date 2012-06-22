@@ -37,7 +37,7 @@ namespace OpenRA
 			world.ActorRemoved += a => Remove( a, a.OccupiesSpace );
 		}
 
-		public IEnumerable<Actor> GetUnitsAt( int2 a )
+		public IEnumerable<Actor> GetUnitsAt(CPos a)
 		{
 			if (!map.IsInMap(a)) yield break;
 
@@ -46,7 +46,7 @@ namespace OpenRA
 					yield return i.actor;
 		}
 
-		public IEnumerable<Actor> GetUnitsAt( int2 a, SubCell sub )
+		public IEnumerable<Actor> GetUnitsAt(CPos a, SubCell sub)
 		{
 			if (!map.IsInMap(a)) yield break;
 
@@ -55,7 +55,7 @@ namespace OpenRA
 					yield return i.actor;
 		}
 
-		public bool HasFreeSubCell(int2 a)
+		public bool HasFreeSubCell(CPos a)
 		{
 			if (!AnyUnitsAt(a))
 				return true;
@@ -64,12 +64,12 @@ namespace OpenRA
 				SubCell.BottomLeft, SubCell.BottomRight }.Any(b => !AnyUnitsAt(a,b));
 		}
 
-		public bool AnyUnitsAt(int2 a)
+		public bool AnyUnitsAt(CPos a)
 		{
 			return influence[ a.X, a.Y ] != null;
 		}
 
-		public bool AnyUnitsAt(int2 a, SubCell sub)
+		public bool AnyUnitsAt(CPos a, SubCell sub)
 		{
 			for( var i = influence[ a.X, a.Y ] ; i != null ; i = i.next )
 				if (i.subCell == sub || i.subCell == SubCell.FullCell)

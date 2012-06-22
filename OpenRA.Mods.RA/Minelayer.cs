@@ -31,8 +31,8 @@ namespace OpenRA.Mods.RA
 	class Minelayer : IIssueOrder, IResolveOrder, IPostRenderSelection, ISync
 	{
 		/* [Sync] when sync can cope with arrays! */
-		public int2[] minefield = null;
-		[Sync] int2 minefieldStart;
+		public CPos[] minefield = null;
+		[Sync] CPos minefieldStart;
 		Actor self;
 
 		public Minelayer(Actor self) { this.self = self; }
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA
 		{
 			if( order is BeginMinefieldOrderTargeter )
 			{
-				var start = Traits.Util.CellContaining( target.CenterLocation );
+				var start = target.CenterLocation.ToCPos();
 				self.World.OrderGenerator = new MinefieldOrderGenerator( self, start );
 				return new Order("BeginMinefield", self, false) { TargetLocation = start };
 			}
@@ -71,34 +71,34 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		static IEnumerable<int2> GetMinefieldCells(int2 start, int2 end, float depth)
+		static IEnumerable<CPos> GetMinefieldCells(CPos start, CPos end, float depth)
 		{
-			var mins = int2.Min(start, end);
-			var maxs = int2.Max(start, end);
+			var mins = CPos.Min(start, end);
+			var maxs = CPos.Max(start, end);
 
 			/* todo: proper endcaps, if anyone cares (which won't happen unless depth is large) */
 
 			var p = end - start;
 			var q = new float2(p.Y, -p.X);
 			q = (start != end) ? (1 / q.Length) * q : new float2(1, 0);
-			var c = -float2.Dot(q, start);
+			var c = -float2.Dot(q, start.ToFloat2());
 
 			/* return all points such that |ax + by + c| < depth */
 
 			for (var i = mins.X; i <= maxs.X; i++)
 				for (var j = mins.Y; j <= maxs.Y; j++)
 					if (Math.Abs(q.X * i + q.Y * j + c) < depth)
-						yield return new int2(i, j);
+						yield return new CPos(i, j);
 		}
 
 		class MinefieldOrderGenerator : IOrderGenerator
 		{
 			readonly Actor minelayer;
-			readonly int2 minefieldStart;
+			readonly CPos minefieldStart;
 
-			public MinefieldOrderGenerator(Actor self, int2 xy ) { minelayer = self; minefieldStart = xy; }
+			public MinefieldOrderGenerator(Actor self, CPos xy ) { minelayer = self; minefieldStart = xy; }
 
-			public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
+			public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
 			{
 				if (mi.Button == MouseButton.Left)
 				{
@@ -124,7 +124,7 @@ namespace OpenRA.Mods.RA
 					world.CancelInputMode();
 			}
 
-			int2 lastMousePos;
+			CPos lastMousePos;
 			public void RenderAfterWorld(WorldRenderer wr, World world)
 			{
 				if (!minelayer.IsInWorld)
@@ -140,7 +140,7 @@ namespace OpenRA.Mods.RA
 
 			public void RenderBeforeWorld(WorldRenderer wr, World world) { }
 
-			public string GetCursor(World world, int2 xy, MouseInput mi) { lastMousePos = xy; return "ability"; }	/* todo */
+			public string GetCursor(World world, CPos xy, MouseInput mi) { lastMousePos = xy; return "ability"; }	/* todo */
 		}
 
 		public void RenderAfterWorld(WorldRenderer wr)
@@ -162,7 +162,7 @@ namespace OpenRA.Mods.RA
 				return false;
 			}
 
-			public bool CanTargetLocation(Actor self, int2 location, List<Actor> actorsAtLocation, bool forceAttack, bool forceQueued, ref string cursor)
+			public bool CanTargetLocation(Actor self, CPos location, List<Actor> actorsAtLocation, bool forceAttack, bool forceQueued, ref string cursor)
 			{
 				if (!self.World.Map.IsInMap(location))
 					return false;

@@ -62,12 +62,12 @@ namespace OpenRA
 		public int Value( World world ) { return value; }
 	}
 
-	public class LocationInit : IActorInit<int2>
+	public class LocationInit : IActorInit<CPos>
 	{
 		[FieldFromYamlKey] public readonly int2 value = int2.Zero;
 		public LocationInit() { }
-		public LocationInit( int2 init ) { value = init; }
-		public int2 Value( World world ) { return value; }
+		public LocationInit( CPos init ) { value = init.ToInt2(); }
+		public CPos Value(World world) { return (CPos)value; }
 	}
 
 	public class SubCellInit : IActorInit<SubCell>
@@ -78,12 +78,12 @@ namespace OpenRA
 		public SubCell Value(World world) { return (SubCell)value; }
 	}
 
-	public class CenterLocationInit : IActorInit<int2>
+	public class CenterLocationInit : IActorInit<PPos>
 	{
 		[FieldFromYamlKey] public readonly int2 value = int2.Zero;
 		public CenterLocationInit() { }
-		public CenterLocationInit( int2 init ) { value = init; }
-		public int2 Value( World world ) { return value; }
+		public CenterLocationInit(PPos init) { value = init.ToInt2(); }
+		public PPos Value(World world) { return (PPos)value; }
 	}
 
 	public class OwnerInit : IActorInit<Player>

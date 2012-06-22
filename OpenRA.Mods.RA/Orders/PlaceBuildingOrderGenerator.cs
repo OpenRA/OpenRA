@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA.Orders
 			buildBlocked = SequenceProvider.GetSequence("overlay", "build-invalid").GetSprite(0);
 		}
 
-		public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
+		public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
 		{
 			if (mi.Button == MouseButton.Right)
 				world.CancelInputMode();
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.RA.Orders
 			return ret;
 		}
 
-		IEnumerable<Order> InnerOrder(World world, int2 xy, MouseInput mi)
+		IEnumerable<Order> InnerOrder(World world, CPos xy, MouseInput mi)
 		{
 			if (mi.Button == MouseButton.Left)
 			{
@@ -73,14 +73,14 @@ namespace OpenRA.Mods.RA.Orders
 		public void RenderAfterWorld( WorldRenderer wr, World world ) {}
 		public void RenderBeforeWorld( WorldRenderer wr, World world )
 		{
-			var position = Game.viewport.ViewToWorld(Viewport.LastMousePos).ToInt2();
+			var position = Game.viewport.ViewToWorld(Viewport.LastMousePos);
 			var topLeft = position - FootprintUtils.AdjustForBuildingSize( BuildingInfo );
 
 			var actorInfo = Rules.Info[Building];
 			foreach (var dec in actorInfo.Traits.WithInterface<IPlaceBuildingDecoration>())
 				dec.Render(wr, world, actorInfo, Traits.Util.CenterOfCell(position));	/* hack hack */
 
-			var cells = new Dictionary<int2, bool>();
+			var cells = new Dictionary<CPos, bool>();
 			// Linebuild for walls.
 			// Assumes a 1x1 footprint; weird things will happen for other footprints
 			if (Rules.Info[Building].Traits.Contains<LineBuildInfo>())
@@ -91,7 +91,7 @@ namespace OpenRA.Mods.RA.Orders
 			else
 			{
 				foreach (var r in Preview)
-					r.Sprite.DrawAt(Game.CellSize*topLeft + r.Pos,
+					r.Sprite.DrawAt(topLeft.ToPPos().ToFloat2() + r.Pos,
 									wr.GetPaletteIndex(r.Palette),
 									r.Scale*r.Sprite.size);
 
@@ -102,9 +102,9 @@ namespace OpenRA.Mods.RA.Orders
 			}
 
 			foreach( var c in cells )
-				( c.Value ? buildOk : buildBlocked ).DrawAt( wr, Game.CellSize * c.Key, "terrain" );
+				( c.Value ? buildOk : buildBlocked ).DrawAt(wr, c.Key.ToPPos().ToFloat2(), "terrain" );
 		}
 
-		public string GetCursor(World world, int2 xy, MouseInput mi) { return "default"; }
+		public string GetCursor(World world, CPos xy, MouseInput mi) { return "default"; }
 	}
 }

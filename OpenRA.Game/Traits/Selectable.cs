@@ -146,12 +146,12 @@ namespace OpenRA.Traits
 			{
 				var alt = new float2(0, -mobile.Altitude);
 				var targets = activity.GetTargets(self);
-				var start = self.CenterLocation + alt;
+				var start = self.CenterLocation.ToFloat2() + alt;
 
 				var c = Color.Green;
 
 				var wlr = Game.Renderer.WorldLineRenderer;
-				foreach (var step in targets.Select(p => p.CenterLocation))
+				foreach (var step in targets.Select(p => p.CenterLocation.ToFloat2()))
 				{
 					var stp = step + alt;
 					wlr.DrawLine(stp + new float2(-1, -1), stp + new float2(-1, 1), c, c);

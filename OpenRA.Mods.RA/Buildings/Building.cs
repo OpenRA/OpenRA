@@ -32,28 +32,28 @@ namespace OpenRA.Mods.RA.Buildings
 
 		public object Create(ActorInitializer init) { return new Building(init, this); }
 
-		public bool IsCloseEnoughToBase(World world, Player p, string buildingName, int2 topLeft)
+		public bool IsCloseEnoughToBase(World world, Player p, string buildingName, CPos topLeft)
 		{
 			if (p.PlayerActor.Trait<DeveloperMode>().BuildAnywhere)
 				return true;
 
-			var buildingMaxBounds = Dimensions;
+			var buildingMaxBounds = (CVec)Dimensions;
 			if( Rules.Info[ buildingName ].Traits.Contains<BibInfo>() )
-				buildingMaxBounds.Y += 1;
+				buildingMaxBounds += new CVec(0, 1);
 
-			var scanStart = world.ClampToWorld( topLeft - new int2( Adjacent, Adjacent ) );
-			var scanEnd = world.ClampToWorld( topLeft + buildingMaxBounds + new int2( Adjacent, Adjacent ) );
+			var scanStart = world.ClampToWorld( topLeft - new CVec( Adjacent, Adjacent ) );
+			var scanEnd = world.ClampToWorld(topLeft + buildingMaxBounds + new CVec(Adjacent, Adjacent));
 
-			var nearnessCandidates = new List<int2>();
+			var nearnessCandidates = new List<CPos>();
 
 			var bi = world.WorldActor.Trait<BuildingInfluence>();
 
 			for( int y = scanStart.Y ; y < scanEnd.Y ; y++ )
 				for( int x = scanStart.X ; x < scanEnd.X ; x++ )
 				{
-					var at = bi.GetBuildingAt( new int2( x, y ) );
+					var at = bi.GetBuildingAt( new CPos( x, y ) );
 					if( at != null && at.Owner.Stances[ p ] == Stance.Ally && at.HasTrait<GivesBuildableArea>() )
-						nearnessCandidates.Add( new int2( x, y ) );
+						nearnessCandidates.Add( new CPos( x, y ) );
 				}
 
 			var buildingTiles = FootprintUtils.Tiles( buildingName, this, topLeft ).ToList();
@@ -68,27 +68,26 @@ namespace OpenRA.Mods.RA.Buildings
 	{
 		readonly Actor self;
 		public readonly BuildingInfo Info;
-		[Sync]
-		readonly int2 topLeft;
+		[Sync] readonly CPos topLeft;
 
 		PowerManager PlayerPower;
-		int2 pxPosition;
+		PPos pxPosition;
 
-		public int2 TopLeft	{ get { return topLeft; } }
-		public int2 PxPosition { get { return pxPosition; } }
+		public CPos TopLeft { get { return topLeft; } }
+		public PPos PxPosition { get { return pxPosition; } }
 
 		public IEnumerable<string> ProvidesPrerequisites { get { yield return self.Info.Name; } }
 
 		public Building(ActorInitializer init, BuildingInfo info)
 		{
 			this.self = init.self;
-			this.topLeft = init.Get<LocationInit,int2>();
+			this.topLeft = init.Get<LocationInit, CPos>();
 			this.Info = info;
 			this.PlayerPower = init.self.Owner.PlayerActor.Trait<PowerManager>();
 
 			occupiedCells = FootprintUtils.UnpathableTiles( self.Info.Name, Info, TopLeft )
 				.Select(c => Pair.New(c, SubCell.FullCell)).ToArray();
-			pxPosition = ( 2 * topLeft + Info.Dimensions ) * Game.CellSize / 2;
+			pxPosition = (PPos) (( 2 * topLeft.ToInt2() + Info.Dimensions ) * Game.CellSize / 2);
 		}
 
 		public int GetPowerUsage()
@@ -107,8 +106,8 @@ namespace OpenRA.Mods.RA.Buildings
 				PlayerPower.UpdateActor(self, GetPowerUsage());
 		}
 
-		Pair<int2,SubCell>[] occupiedCells;
-		public IEnumerable<Pair<int2, SubCell>> OccupiedCells() { return occupiedCells; }
+		Pair<CPos, SubCell>[] occupiedCells;
+		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { return occupiedCells; }
 
 		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{

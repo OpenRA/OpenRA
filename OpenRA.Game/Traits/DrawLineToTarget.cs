@@ -52,12 +52,12 @@ namespace OpenRA.Traits
 				return;
 
 			var move = self.TraitOrDefault<IMove>();
-			var origin = move != null ? self.CenterLocation - new int2(0, move.Altitude) : self.CenterLocation;
+			var origin = (move != null ? self.CenterLocation - new PVecInt(0, move.Altitude) : self.CenterLocation).ToFloat2();
 
 			var wlr = Game.Renderer.WorldLineRenderer;
 
-			wlr.DrawLine(origin, target.CenterLocation, c, c);
-			DrawTargetMarker(wlr, target.CenterLocation);
+			wlr.DrawLine(origin, target.CenterLocation.ToFloat2(), c, c);
+			DrawTargetMarker(wlr, target.CenterLocation.ToFloat2());
 			DrawTargetMarker(wlr, origin);
 		}
 

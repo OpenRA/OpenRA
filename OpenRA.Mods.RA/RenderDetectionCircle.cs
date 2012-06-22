@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA
 
 			wr.DrawRangeCircle(
 				Color.FromArgb(128, Color.LimeGreen),
-				self.CenterLocation, self.Info.Traits.Get<DetectCloakedInfo>().Range);
+				self.CenterLocation.ToFloat2(), self.Info.Traits.Get<DetectCloakedInfo>().Range);
 		}
 	}
 }

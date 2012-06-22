@@ -64,7 +64,7 @@ namespace OpenRA
 
 		public static void SetListenerPosition(float2 position) { soundEngine.SetListenerPosition(position); }
 
-		static ISound Play(Player player, string name, bool headRelative, float2 pos, float volumeModifier)
+		static ISound Play(Player player, string name, bool headRelative, PPos pos, float volumeModifier)
 		{
 			if (player != null && player != player.World.LocalPlayer)
 				return null;
@@ -72,16 +72,16 @@ namespace OpenRA
 				return null;
 
 			return soundEngine.Play2D(sounds[name],
-				false, headRelative, pos,
+				false, headRelative, pos.ToFloat2(),
 				InternalSoundVolume * volumeModifier);
 		}
 
-		public static ISound Play(string name) { return Play(null, name, true, float2.Zero, 1); }
-		public static ISound Play(string name, float2 pos) { return Play(null, name, false, pos, 1); }
-		public static ISound Play(string name, float volumeModifier) { return Play(null, name, true, float2.Zero, volumeModifier); }
-		public static ISound Play(string name, float2 pos, float volumeModifier) { return Play(null, name, false, pos, volumeModifier); }
-		public static ISound PlayToPlayer(Player player, string name) { return Play( player, name, true, float2.Zero, 1); }
-		public static ISound PlayToPlayer(Player player, string name, float2 pos) { return Play(player, name, false, pos, 1); }
+		public static ISound Play(string name) { return Play(null, name, true, PPos.Zero, 1); }
+		public static ISound Play(string name, PPos pos) { return Play(null, name, false, pos, 1); }
+		public static ISound Play(string name, float volumeModifier) { return Play(null, name, true, PPos.Zero, volumeModifier); }
+		public static ISound Play(string name, PPos pos, float volumeModifier) { return Play(null, name, false, pos, volumeModifier); }
+		public static ISound PlayToPlayer(Player player, string name) { return Play(player, name, true, PPos.Zero, 1); }
+		public static ISound PlayToPlayer(Player player, string name, PPos pos) { return Play(player, name, false, pos, 1); }
 
 		public static void PlayVideo(byte[] raw)
 		{
