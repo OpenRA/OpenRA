@@ -84,10 +84,6 @@ namespace OpenRA.Mods.RA.Missions
             }
             allies.WinState = WinState.Lost;
             Game.AddChatLine(Color.Red, "Mission failed", text);
-            foreach (var actor in self.World.Actors.Where(a => a.Owner == allies))
-            {
-                actor.Kill(actor);
-            }
             self.World.LocalShroud.Disabled = true;
             Sound.Play("misnlst1.aud", 5);
         }
