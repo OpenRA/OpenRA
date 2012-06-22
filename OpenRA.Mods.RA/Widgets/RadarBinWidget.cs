@@ -108,7 +108,7 @@ namespace OpenRA.Mods.RA.Widgets
 					Event = MouseInputEvent.Down,
 					Button = MouseButton.Right,
 					Modifiers = mi.Modifiers,
-					Location = (loc.ToPPos().ToFloat2() - Game.viewport.Location).ToInt2()
+					Location = (((loc.ToPPos().ToFloat2()) - Game.viewport.Location) * Game.viewport.Zoom).ToInt2()
 				};
 
 				if (WorldInteractionController != null)
