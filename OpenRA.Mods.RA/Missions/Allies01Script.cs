@@ -54,7 +54,7 @@ namespace OpenRA.Mods.RA.Missions
 
         private static readonly string[] ships = { "ca", "ca", "ca", "ca" };
 
-        private static readonly string[] attackWave = { "e1", "e1", "e1", "e1", "e2", "e2", "e2", "e2", "dog" };
+        private static readonly string[] attackWave = { "e1", "e1", "e1", "e1", "e2", "e2", "e2", "e2", "dog", "3tnk" };
         private int currentAttackWaveFrameNumber;
         private int currentAttackWave;
         private const int einsteinChinookArrivesAtAttackWave = 5;
