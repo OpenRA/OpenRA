@@ -203,8 +203,7 @@ debugger.listen = function()
       debugger.handle("delallb")
 
       if (options.run) then
-        local file, line = debugger.handle("run")
-        activateDocument(file, line)
+        -- do nothing here
       elseif (debugger.scratchpad) then
         debugger.scratchpad.updated = true
       else
@@ -270,6 +269,11 @@ debugger.listen = function()
       updateWatchesSync()
 
       DisplayOutput("Started remote debugging session (base directory: '" .. debugger.basedir .. "').\n")
+      
+      if (options.run) then
+        local file, line = debugger.handle("run")
+        activateDocument(file, line)
+      end
 
     end)
   debugger.listening = true

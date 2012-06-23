@@ -52,7 +52,7 @@ return {
       local editorDir = string.gsub(ide.editorFilename:gsub("[^/\\]+$",""),"\\","/")
       script = ""..
       "package.path=package.path..';"..editorDir.."lualibs/?/?.lua';"..
-      "io.stdout:setvbuf('no'); require('mobdebug').start('" .. wx.wxGetHostName().."',"..ide.debugger.portnumber..")"
+      "io.stdout:setvbuf('no'); jit.off(); require('mobdebug').start('" .. wx.wxGetHostName().."',"..ide.debugger.portnumber..")"
 
       args = args..' -es "'..script..'"'..startargs
     else
@@ -77,6 +77,7 @@ return {
     if not rundebug then
       local client = self:finitclient()
       ShellSupportRemote(client,self:fuid(wfilename))
+      pid = nil
     end
     
     return pid
