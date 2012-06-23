@@ -23,6 +23,7 @@ namespace OpenRA.GameRules
 		public readonly string DefaultVariant = ".aud" ;
 		public readonly string DefaultPrefix = "" ;
 		public readonly string[] DisableVariants = { };
+		public readonly string[] DisablePrefixes = { };
 
 		static Dictionary<string, string[]> Load( MiniYaml y, string name )
 		{

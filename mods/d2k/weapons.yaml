@@ -1,7 +1,7 @@
 M1Carbine:
 	ROF: 20
 	Range: 5
-	Report: GUN11
+	Report: MGUN2
 	Projectile: Bullet
 		Speed: 100
 	Warhead:
@@ -18,7 +18,7 @@ M1Carbine:
 Dragon:
 	ROF: 50
 	Range: 5
-	Report: MISSILE6
+	Report: BAZOOK1
 	ValidTargets: Ground
 	Projectile: Missile
 		Speed: 25
@@ -49,7 +49,7 @@ Dragon:
 QuadRockets:
 	ROF: 60
 	Range: 7
-	Report: MISSILE6
+	Report: BAZOOK1
 	ValidTargets: Ground, Air
 	Burst: 2
 	BurstDelay: 0
@@ -101,7 +101,7 @@ TurretGun:
 25mm:
 	ROF: 13
 	Range: 4
-	Report: CANNON2
+	Report: MEDTANK1
 	Projectile: Bullet
 		Speed: 50
 		Image: 120MM
@@ -121,7 +121,7 @@ TurretGun:
 90mm:
 	ROF: 50
 	Range: 4.75
-	Report: CANNON1
+	Report: MEDTANK1
 	Projectile: Bullet
 		Speed: 40
 		Image: 120MM
@@ -141,7 +141,7 @@ TurretGun:
 105mm:
 	ROF: 70
 	Range: 4.75
-	Report: CANNON1
+	Report: MEDTANK1
 	Burst: 2
 	BurstDelay: 4
 	Projectile: Bullet
@@ -163,7 +163,7 @@ TurretGun:
 120mm:
 	ROF: 90
 	Range: 4.75
-	Report: CANNON1
+	Report: TANKHVY1
 	Burst: 2
 	Projectile: Bullet
 		Speed: 40
@@ -187,7 +187,7 @@ TurretGun:
 	MinRange: 2
 	Burst: 6
 	BurstDelay: 1
-	Report: MISSILE6
+	Report: MISSLE1
 	ValidTargets: Ground
 	Projectile: Bullet
 		Arm: 5
@@ -217,7 +217,7 @@ TurretGun:
 MammothTusk:
 	ROF: 60
 	Range: 8
-	Report: MISSILE6
+	Report: MISSLE1
 	Burst: 2
 	ValidTargets: Ground, Air
 	Projectile: Missile
@@ -249,7 +249,7 @@ MammothTusk:
 	ROF: 85
 	Range: 14
 	MinRange: 3
-	Report: TANK5
+	Report: MORTAR1
 	Projectile: Bullet
 		Speed: 12
 		High: true
@@ -274,7 +274,7 @@ MammothTusk:
 TTankZap:
 	ROF: 120
 	Range: 7
-	Report: TESLA1
+	Report: SONIC1
 	Charges: yes
 	Projectile: TeslaZap
 	Warhead:
@@ -286,7 +286,7 @@ ChainGun:
 	ROF: 10
 	Range: 5
 	MinRange: 1
-	Report: GUN13
+	Report: 20MMGUN1
 	Projectile: Bullet
 		Speed: 100
 		High: true
@@ -305,7 +305,7 @@ ChainGun:
 M60mg:
 	ROF: 30
 	Range: 4
-	Report: PILLBOX1
+	Report: 20MMGUN1
 	Burst: 5
 	Projectile: Bullet
 		Speed: 100
@@ -328,7 +328,7 @@ Demolish:
 
 Crush:
 	Warhead:
-		ImpactSound: squishy2
+		ImpactSound: CRUSH1
 		Damage: 100
 
 Atomic:
@@ -342,9 +342,8 @@ Atomic:
 			Heavy: 25%
 			Concrete: 50%
 		Explosion: nuke
-		WaterExplosion: nuke
 		InfDeath: 4
-		ImpactSound: kaboom1
+		ImpactSound: EXPLSML2
 	Warhead@areanuke:
 		DamageModel: PerCell
 		Damage: 250
@@ -358,7 +357,7 @@ Atomic:
 			Concrete: 50%
 		Delay: 4
 		InfDeath: 4
-		ImpactSound: kaboom22
+		ImpactSound: EXPLLG2
 
 CrateNuke:
 	Warhead@impact:
@@ -371,9 +370,8 @@ CrateNuke:
 			Heavy: 25%
 			Concrete: 50%
 		Explosion: nuke
-		WaterExplosion: nuke
 		InfDeath: 4
-		ImpactSound: kaboom1
+		ImpactSound: EXPLSML2
 	Warhead@areanuke:
 		DamageModel: PerCell
 		Damage: 250
@@ -387,7 +385,7 @@ CrateNuke:
 			Concrete: 50%
 		Delay: 4
 		InfDeath: 4
-		ImpactSound: kaboom22
+		ImpactSound: EXPLLG2
 
 CrateExplosion:
 	Warhead:
@@ -401,7 +399,7 @@ CrateExplosion:
 		Explosion: self_destruct
 		WaterExplosion: self_destruct
 		InfDeath: 3
-		ImpactSound: kaboom15
+		ImpactSound: EXPLSML4
 
 UnitExplode:
 	Warhead:
@@ -415,7 +413,7 @@ UnitExplode:
 		Explosion: self_destruct
 		WaterExplosion: large_splash
 		InfDeath: 3
-		ImpactSound: kaboom22
+		ImpactSound: EXPLMD1
 
 UnitExplodeSmall:
 	Warhead:
@@ -428,12 +426,12 @@ UnitExplodeSmall:
 			Heavy: 25%
 		Explosion: large_explosion
 		InfDeath: 3
-		ImpactSound: kaboom15
+		ImpactSound: EXPLSML2
 
 WormJaw:
 	ROF: 10
 	Range: 3
-	Report: AI_WATTK
+	Report: WORM
 	Warhead:
 		Spread: 5
 		Versus: 
@@ -470,7 +468,7 @@ RedEye:
 		Damage: 40
 
 Sniper:
-	Report: GUN11
+	Report: FREMODD1
 	ROF: 40
 	Range: 7
 	Projectile: Bullet
@@ -488,7 +486,7 @@ Sniper:
 Vulcan:
 	ROF: 30
 	Range: 6
-	Report: GUN13
+	Report: 20MMGUN1
 	Projectile: Bullet
 		Speed: 100
 		ContrailLength: 1000

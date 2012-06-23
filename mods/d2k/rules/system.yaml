@@ -186,7 +186,7 @@ World:
 		SilosNeeded: AI_SILOS.AUD
 		PrimaryBuildingSelected: AI_PRMRY.AUD
 		AbilityInsufficientPower:
-		LevelUp:
+		LevelUp: SCORTIK1.aud
 	SpatialBins:
 		BinSize: 4
 	Shroud:

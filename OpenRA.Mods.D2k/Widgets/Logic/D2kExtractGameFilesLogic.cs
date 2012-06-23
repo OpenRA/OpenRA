@@ -61,10 +61,14 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 			var ExtractGameFiles = new string[][]
 			{
 				new string[] {"--r8", PathToDataR8, PathToPalette, "0", "2", Path.Combine(PathToSHPs, "overlay")},
+				new string[] {"--r8", PathToDataR8, PathToPalette, "3", "3", Path.Combine(PathToSHPs, "repairing")},
 				new string[] {"--r8", PathToDataR8, PathToPalette, "15", "16", Path.Combine(PathToSHPs, "dots")},
+				new string[] {"--r8", PathToDataR8, PathToPalette, "17", "26", Path.Combine(PathToSHPs, "numbers")},
 				//new string[] {"--r8", PathToDataR8, PathToPalette, "40", "101", Path.Combine(PathToSHPs, "shadow")},
 				new string[] {"--r8", PathToDataR8, PathToPalette, "102", "105", Path.Combine(PathToSHPs, "crates")},
 				new string[] {"--r8", PathToDataR8, PathToPalette, "107", "109", Path.Combine(PathToSHPs, "spicebloom")},
+				new string[] {"--r8", PathToDataR8, PathToPalette, "110", "111", Path.Combine(PathToSHPs, "stars")},
+				new string[] {"--r8", PathToDataR8, PathToPalette, "112", "112", Path.Combine(PathToSHPs, "greenuparrow")},
 				new string[] {"--r8", PathToDataR8, PathToPalette, "114", "129", Path.Combine(PathToSHPs, "rockcrater1")},
 				new string[] {"--r8", PathToDataR8, PathToPalette, "130", "145", Path.Combine(PathToSHPs, "rockcrater2")},
 				new string[] {"--r8", PathToDataR8, PathToPalette, "146", "161", Path.Combine(PathToSHPs, "sandcrater1")},
@@ -272,10 +276,14 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 			var SHPsToCreate = new string[][]
 			{
 				new string[] {"--shp", Path.Combine(PathToSHPs, "overlay.png"), "32"},
+				new string[] {"--shp", Path.Combine(PathToSHPs, "repairing.png"), "24"},
+				new string[] {"--shp", Path.Combine(PathToSHPs, "numbers.png"), "8"},
 				new string[] {"--shp", Path.Combine(PathToSHPs, "dots.png"), "4"},
 				new string[] {"--shp", Path.Combine(PathToSHPs, "crates.png"), "32"},
 				//new string[] {"--shp", Path.Combine(PathToSHPs, "shadow.png"), "32"},
 				new string[] {"--shp", Path.Combine(PathToSHPs, "spicebloom.png"), "32"},
+				new string[] {"--shp", Path.Combine(PathToSHPs, "stars.png"), "16"},
+				new string[] {"--shp", Path.Combine(PathToSHPs, "greenuparrow.png"), "16"},
 				new string[] {"--shp", Path.Combine(PathToSHPs, "rockcrater1.png"), "32"},
 				new string[] {"--shp", Path.Combine(PathToSHPs, "rockcrater2.png"), "32"},
 				new string[] {"--shp", Path.Combine(PathToSHPs, "sandcrater1.png"), "32"},

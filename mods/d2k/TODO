@@ -1,6 +1,8 @@
 # make structures appear earlier when errecting from ground
 # too few DATA.R8 frames?
-# carryalls should automatically transport harvesters (needs complex logic)
+# carryalls should pickup vehicles not land so that things can roll in
+# carryalls should automatically transport harvesters
+# carryalls should automatically transport vehicles to repair pad if player uses the repair cursor
 # windtrap animations missing
 # outpost animations missing
 # construction yard crane animations missing
@@ -32,4 +34,3 @@
 # support patch 1.06 gamefiles: DATA.R8 has more frames and currently fails to extract, also featuring new terrain with white houses and new unit: grenade thrower
 # infantry-only areas (Rough) do not show the dark-green mouse cursor
 # put TilesetBuilder.Export into OpenRA.Utility to call the functions directly when extracting game-files (instead of opening a GUI)
-# replace RA sounds by Dune 2000 ones

@@ -259,7 +259,7 @@ namespace OpenRA
 
 			var variantExt = (vi.Variants.ContainsKey(variant) && !vi.DisableVariants.Contains(phrase)) ?
 				  vi.Variants[variant][voicedUnit.ActorID % vi.Variants[variant].Length] : vi.DefaultVariant;
-			var prefix = (vi.Prefixes.ContainsKey(variant)) ?
+			var prefix = (vi.Prefixes.ContainsKey(variant) && !vi.DisablePrefixes.Contains(phrase)) ?
 				vi.Prefixes[variant][voicedUnit.ActorID % vi.Prefixes[variant].Length] : vi.DefaultPrefix;
 			Play(prefix + clip + variantExt);
 			return true;

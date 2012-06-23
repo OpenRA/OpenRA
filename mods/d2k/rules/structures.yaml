@@ -396,7 +396,8 @@ WALL:
 	Building:
 		Dimensions: 1,1
 		Footprint: x
-		BuildSounds:
+		BuildSounds: CHUNG.aud
+		SellSounds: CHUNG.aud
 		Adjacent: 7
 		TerrainTypes: Rock
 	Health:
@@ -414,7 +415,6 @@ WALL:
 		TargetTypes: Ground
 	RenderBuildingWall:
 		HasMakeAnimation: false
-		Palette: d2k
 	GivesExperience:
 	EditorAppearance:
 		RelativeToTopLeft: yes
@@ -453,6 +453,8 @@ GUNTOWER:
 	AttackTurreted:
 		PrimaryWeapon: TurretGun
 	AutoTarget:
+	RequiresPower:
+	CanPowerDown:
 
 ^REPAIR:
 	Inherits: ^Building

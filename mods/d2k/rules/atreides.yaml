@@ -208,5 +208,5 @@ FREMEN:
 	Cloak:
 		InitialDelay: 125
 		CloakDelay: 125
-		CloakSound:
-		UncloakSound:
+		CloakSound: STEALTH1.aud
+		UncloakSound: STEALTH2.aud

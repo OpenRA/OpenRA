@@ -157,9 +157,6 @@
 	DebugAircraftAltitude:
 	ProximityCaptor:
 		Types:Plane
-	EjectOnDeath:
-		PilotActor: RIFLE
-		SuccessRate: 50
 	GivesBounty:
 
 ^Helicopter:
@@ -176,14 +173,14 @@
 		Dimensions: 1,1
 		Footprint: x
 		TerrainTypes: Rock, Concrete
-		BuildSounds:
-		SellSounds:
+		BuildSounds: BUILD1.aud
+		SellSounds: BUILD1.aud
 	GivesBuildableArea:
 	Capturable:
 	CapturableBar:
 	SoundOnDamageTransition:
-		DamagedSound:
-		DestroyedSound:
+		DamagedSound: EXPLSML1.aud
+		DestroyedSound: EXPLHG1.aud
 	RenderBuilding:
 	WithBuildingExplosion:
 	RepairableBuilding:

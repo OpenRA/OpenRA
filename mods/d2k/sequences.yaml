@@ -909,37 +909,41 @@ deviatortank:
 		Start: 0
 		Facings: 32
 
-#TODO: add Dune 2000 SHPs
+#ready/hold falls back to RA, but look ok
 pips:
-	groups:
-		Start: 8
+	groups: numbers
+		Start: 0
 		Length: 10
 	ready:
 		Start: 3
 	hold:
 		Start: 4
-	tag-primary:
-		Start: 2
+	tag-primary: greenuparrow
+		Start: 0
 	pip-empty: dots
 		Start: 0
 	pip-green: dots
 		Start: 1
 
+#falls back to RA, but look ok
 clock:
 	idle:
 		Start: 0
 		Length: *
 
+#falls back to RA, but look ok
 powerdown:
 	disabled: speed
 		Start: 3
 
+#TODO: falls back to RA, different palette
 poweroff:
 	offline:
 		Start: 0
 		Length: *
 		Tick: 160
 
+#falls back to RA, but looks okay
 rank:
 	rank:
 		Start: 0
@@ -957,6 +961,7 @@ overlay:
 	target-invalid:
 		Start: 1
 
+#TODO: falls back to RA, different palette
 rallypoint:
 	flag:flagfly
 		Start: 0
@@ -965,11 +970,13 @@ rallypoint:
 		Start: 0
 		Length: *
 
+#TODO: falls back to RA
 dragon:
 	idle:
 		Start: 0
 		Facings: 32
 
+#TODO: falls back to RA
 explosion:
 	piff: piff
 		Start: 0
@@ -1011,11 +1018,13 @@ explosion:
 		Start: 0
 		Length: *
 
+#TODO: falls back to RA
 smokey:
 	idle:
 		Start: 0
 		Length: *
 
+#TODO: falls back to RA
 smoke_m:
 	idle:
 		Start: 0
@@ -1027,10 +1036,12 @@ smoke_m:
 		Start: 0
 		Length: 26
 
+#TODO: falls back to RA
 120mm:
 	idle:
 		Start: 0
 
+#TODO: falls back to RA
 litning:
 	bright:
 		Start: 0
@@ -1045,6 +1056,7 @@ crate:
 	land: crates
 		Start: 0
 
+#TODO: falls back to RA
 crate-effects:
 	speed: speed
 		Start: 0
@@ -1100,18 +1112,10 @@ crate-effects:
 		Tick: 200
 
 allyrepair:
-	repair:
+	repair: repairing
 		Start: 0
 		Length: *
 		Tick: 160
-
-parach:
-	open:
-		Start: 0
-		Length: 5
-	idle:
-		Start: 5
-		Length: 11
 
 missile:
 	idle:
