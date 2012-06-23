@@ -96,9 +96,10 @@ local function killClient()
     -- (at least on Windows Vista SP2)
     local ret = wx.wxProcess.Kill(debugger.pid, wx.wxSIGKILL, wx.wxKILL_CHILDREN)
     if ret == wx.wxKILL_OK then
-      DisplayOutput("Stopped process (pid: "..debugger.pid..").\n")
+      DisplayOutput(("Program stopped (pid: %d).\n"):format(debugger.pid))
     elseif ret ~= wx.wxKILL_NO_PROCESS then
-      DisplayOutput("Unable to stop process (pid: "..debugger.pid.."), code "..tostring(ret)..".\n")
+      DisplayOutput(("Unable to stop programs (pid: %d), code %d.\n")
+        :format(debugger.pid, ret))
     end
     debugger.pid = nil
   end
@@ -171,7 +172,8 @@ end
 
 debugger.listen = function()
   local server = socket.bind("*", debugger.portnumber)
-  DisplayOutput("Started debugger server; clients can connect to "..wx.wxGetHostName()..":"..debugger.portnumber..".\n")
+  DisplayOutput(("Debugger server started at %s:%d.\n")
+    :format(wx.wxGetHostName(), debugger.portnumber))
   copas.autoclose = false
   copas.addserver(server, function (skt)
       if debugger.server then
@@ -237,11 +239,13 @@ debugger.listen = function()
           end
 
           if not activated then
-            DisplayOutput("Can't find file '" .. file .. "' to activate for debugging; open the file before debugging.\n")
+            DisplayOutput(("Can't find file '%s' to activate for debugging; open the file in the editor before debugging.\n")
+              :format(file))
             return debugger.terminate()
           end
         elseif err then
-          DisplayOutput("Can't debug the script in the active editor window. Compilation error:\n" .. err .. "\n")
+          DisplayOutput(("Can't debug the script in the active editor window. Compilation error:\n%s\n")
+            :format(err))
           return debugger.terminate()
         else
           debugger.scratchable = true
@@ -269,8 +273,8 @@ debugger.listen = function()
       updateStackSync()
       updateWatchesSync()
 
-      DisplayOutput("Started remote debugging session (base directory: '" .. debugger.basedir .. "').\n")
-
+      DisplayOutput(("Debugging session started in '%s'.\n")
+        :format(debugger.basedir))
     end)
   debugger.listening = true
 end
@@ -406,12 +410,8 @@ function DebuggerStop()
     ShellSupportRemote(nil)
     ClearAllCurrentLineMarkers()
     DebuggerScratchpadOff()
-    DisplayOutput("Completed debugging session.\n")
+    DisplayOutput("Debugging session completed.\n")
   end
-end
-
-function DebuggerCreateStackWindow()
-  DisplayOutput("Not Yet Implemented\n")
 end
 
 function DebuggerCloseStackWindow()
