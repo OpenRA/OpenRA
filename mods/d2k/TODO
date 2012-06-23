@@ -12,8 +12,7 @@
 # add game logic for concrete plates (use terrain overlay from bridges/ressources)
 # allow placing turrets on walls
 # RenderBuildingTurreted does not support separate turret sequence
-# ornithocopter should flap (might need new RenderOrni code for proper animation)
-# R8 converter needs infantry frame resorter
+# R8 converter needs infantry/ornithocopter frame resorter
 # add grenade thrower
 # make sandworm behave like a moving anti-vehicle mine
 # add neutral buildings: emperor palace, fremen siech, smugglers factory
@@ -26,7 +25,6 @@
 # rework chrome UI, dialoges, tabs
 # add sonic tank weapon (currently uses tesla)
 # make deviator change the allegiance of ememy units (currently shoots rockets)
-# allow frigate to deliver 5 units at once to starport
 # starport prices should vary
 # fix shroud, currently falls back to 24x24 shadow from RA (Dune's 32x32 tiles differ completely from RA/CnC)
 # black spots on buildings should be fading team colors

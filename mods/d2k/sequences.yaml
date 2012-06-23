@@ -44,6 +44,7 @@ orni:
 	idle:
 		Start: 0
 		Facings: 32
+		Length: 3
 
 trike:
 	idle:
