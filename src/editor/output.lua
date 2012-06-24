@@ -107,9 +107,13 @@ end
 function CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
   if (not cmd) then return end
 
+  -- try to extract the name of the executable from the command
+  -- the executable may not have the extension and may be in quotes
   local exename = string.gsub(cmd, "\\", "/")
-  exename = string.match(exename,'%/*([^%/]+%.%w+)') or exename
-  exename = string.match(exename,'%/*([^%/]+%.%w+)[%s%"]') or exename
+  local _,_,fullname = string.find(exename,'^[\'"]([^\'"]-)[\'"]')
+  exename = string.match(fullname or exename,'/?([^/]+)%s')
+    or string.match(fullname or exename,'/?([^/]+)$')
+    or fullname or exename
 
   uid = uid or exename
 

@@ -1,6 +1,6 @@
 return {
-  name = "Lua Debug",
-  description = "Commandline Lua interpreter",
+  name = "Lua with Debugger",
+  description = "Lua interpreter with debugger",
   api = {"wxwidgets","baselib"},
   frun = function(self,wfilename,rundebug)
     local mainpath = string.gsub(ide.editorFilename:gsub("[^/\\]+$",""),"\\","/")
@@ -17,7 +17,7 @@ return {
       script = ([[dofile '%s']]):format(filepath)
     end
     local code = ([[xpcall(function() io.stdout:setvbuf('no'); %s end,function(err) print(debug.traceback(err)) end)]]):format(script)
-    local cmd = '"'..mainpath..'bin/lua.exe" -e "'..code..'"'
+    local cmd = '"'..mainpath..'bin/lua" -e "'..code..'"'
     -- CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
     return CommandLineRun(cmd,self:fworkdir(wfilename),true,false,nil,nil,
       function() ide.debugger.pid = nil end)
