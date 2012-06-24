@@ -50,10 +50,36 @@ namespace OpenRA.Mods.RA
 			self.QueueActivity(new CallFunc(() => ChooseNewProc(self, null)));
 		}
 
+		public void SetProcLines(Actor proc)
+		{
+			if (proc == null) return;
+
+			var linkedHarvs = proc.World.ActorsWithTrait<Harvester>()
+				.Where(a => a.Trait.LinkedProc == proc)
+				.Select(a => Target.FromActor(a.Actor))
+				.ToList();
+
+			proc.SetTargetLines(linkedHarvs, Color.Gold);
+		}
+
+		public void LinkProc(Actor self, Actor proc)
+		{
+			var oldProc = LinkedProc;
+			LinkedProc = proc;
+			SetProcLines(oldProc);
+			SetProcLines(proc);
+		}
+
+		public void UnlinkProc(Actor self, Actor proc)
+		{
+			if (LinkedProc == proc)
+				ChooseNewProc(self, proc);
+		}
+
 		public void ChooseNewProc(Actor self, Actor ignore)
 		{
-			LinkedProc = ClosestProc(self, ignore);
 			LastLinkedProc = null;
+			LinkProc(self, ClosestProc(self, ignore));
 		}
 
 		public void ContinueHarvesting(Actor self)
@@ -121,9 +147,11 @@ namespace OpenRA.Mods.RA
 					// Get out of the way:
 					var mobile = self.Trait<Mobile>();
 					var harv = self.Trait<Harvester>();
+
 					var moveTo = harv.LastHarvestedCell ?? (deliveryLoc + new CVec(0, 4));
 					self.QueueActivity(mobile.MoveTo(moveTo, 1));
-					self.SetTargetLine(Target.FromCell(moveTo), Color.Red, false);
+					self.SetTargetLine(Target.FromCell(moveTo), Color.Gray, false);
+
 					self.World.WorldActor.Trait<ResourceClaimLayer>().ClaimResource(self, moveTo);
 					self.QueueActivity(new FindResources());
 					return;
@@ -140,7 +168,11 @@ namespace OpenRA.Mods.RA
 			{
 				self.CancelActivity();
 				var mobile = self.Trait<Mobile>();
-				self.QueueActivity(mobile.MoveTo(mobile.NearestMoveableCell(cell, 2, 5), 0));
+
+				var moveTo = mobile.NearestMoveableCell(cell, 2, 5);
+				self.QueueActivity(mobile.MoveTo(moveTo, 0));
+				self.SetTargetLine(Target.FromCell(moveTo), Color.Gray, false);
+
 				// Find more resources but not at this location:
 				self.QueueActivity(new FindResources(cell));
 			}
@@ -218,7 +250,7 @@ namespace OpenRA.Mods.RA
 			if (order.OrderString == "Harvest")
 			{
 				// NOTE: An explicit harvest order allows the harvester to decide which refinery to deliver to.
-				OwnerLinkedProc = null;
+				LinkProc(self, OwnerLinkedProc = null);
 
 				var mobile = self.Trait<Mobile>();
 				self.CancelActivity();
@@ -245,7 +277,7 @@ namespace OpenRA.Mods.RA
 					return;
 
 				if (order.TargetActor != OwnerLinkedProc)
-					LinkedProc = OwnerLinkedProc = order.TargetActor;
+					LinkProc(self, OwnerLinkedProc = order.TargetActor);
 
 				if (IsEmpty)
 					return;
@@ -255,12 +287,6 @@ namespace OpenRA.Mods.RA
 				self.CancelActivity();
 				self.QueueActivity(new DeliverResources());
 			}
-		}
-
-		public void UnlinkProc(Actor self, Actor proc)
-		{
-			if (LinkedProc == proc)
-				ChooseNewProc(self, proc);
 		}
 
 		public void OnNotifyResourceClaimLost(Actor self, ResourceClaim claim, Actor claimer)

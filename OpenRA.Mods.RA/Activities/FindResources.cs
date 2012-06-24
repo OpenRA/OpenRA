@@ -82,16 +82,6 @@ namespace OpenRA.Mods.RA.Activities
 						ResourceClaim claim;
 						if (territory.IsClaimedByAnyoneElse(self, loc, out claim)) return 1;
 
-#if false
-						// Is anyone covering the location already?
-						// NOTE(jsd): This is required to prevent harvester deadlocking.
-						var unitsAtLoc =
-							from u in self.World.FindUnits(loc.ToPPos(), loc.ToPPos() + PVecInt.OneCell)
-							where u != self
-							select u;
-						if (unitsAtLoc.Any()) return 1;
-#endif
-
 						return 0;
 					})
 					.FromPoint(self.Location)

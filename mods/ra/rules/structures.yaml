@@ -872,6 +872,7 @@ PROC:
 		PipCount: 17
 		Capacity: 2000
 	IronCurtainable:
+	DrawLineToTarget:
 	CustomSellValue:
 		Value: 600
 	FreeActor:
