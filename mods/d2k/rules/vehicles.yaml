@@ -19,8 +19,9 @@
 	Mobile:
 		Speed: 6
 		Crushes: crate, infantry
+#TODO: this is temporary until the Dune 2000 shadow.shp is working correctly
 	RevealsShroud:
-		Range: 4
+		Range: 9999
 	MustBeDestroyed:
 	BaseBuilding:
 	-AttackMove:
@@ -114,6 +115,8 @@ QUAD:
 		PrimaryOffset: 0,0,0,-2
 		PrimaryLocalOffset: -4,0,0,0,25, 4,0,0,0,-25
 	AutoTarget:
+	Selectable:
+		Bounds: 24,24
 
 ^COMBAT:
 	Inherits: ^Tank
@@ -180,6 +183,8 @@ SIEGETANK:
 		Weapon: UnitExplode
 		Chance: 75  
 	AutoTarget:
+	Selectable:
+		Bounds: 30,30
 
 MISSILETANK:
 	Inherits: ^Tank
@@ -207,3 +212,5 @@ MISSILETANK:
 		PrimaryOffset: 0,6,0,-3
 		PrimaryLocalOffset: 3,-5,0,0,0, -3,-5,0,0,0
 	AutoTarget:
+	Selectable:
+		Bounds: 30,30

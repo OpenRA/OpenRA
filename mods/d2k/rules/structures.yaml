@@ -8,8 +8,9 @@
 		HP: 1000
 	Armor:
 		Type: Heavy
+#TODO: this is temporary until the Dune 2000 shadow.shp is working correctly
 	RevealsShroud:
-		Range: 5
+		Range: 9999
 	Bib:
 	Production:
 		Produces: Building,Defense

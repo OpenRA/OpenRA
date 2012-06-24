@@ -161,7 +161,7 @@ SONICTANK:
 		Name: Sonic Tank
 		Description: Fires a sound wave\n Strong vs Infantry.\n Weak vs Tanks
 	Selectable:
-		Bounds: 24,24
+		Bounds: 30,30
 	Health:
 		HP: 150
 	Armor:
@@ -189,7 +189,7 @@ FREMEN:
 		Owner: atreides
 		Prerequisites: palacea
 	Selectable:
-		Bounds: 12,17,0,-6
+		Bounds: 12,17,0,0
 		Voice: FremenVoice
 	Mobile:
 		Speed: 5
