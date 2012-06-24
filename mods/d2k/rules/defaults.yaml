@@ -23,8 +23,9 @@
 	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:
+#TODO: not race specific
 	ActorLostNotification:
-		Notification:
+		Notification: AI_ULOST.AUD
 	ProximityCaptor:
 		Types:Vehicle
 	GivesBounty:
@@ -58,7 +59,7 @@
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
-		Notification:
+		Notification: AI_ULOST.AUD
 	ProximityCaptor:
 		Types:Tank
 	GivesBounty:
@@ -101,7 +102,7 @@
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
-		Notification:
+		Notification: AI_ULOST.AUD
 	ProximityCaptor:
 		Types:Infantry
 	GivesBounty:
@@ -122,7 +123,7 @@
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
-		Notification:
+		Notification: AI_ULOST.AUD
 	DebugAircraftFacing:
 	DebugAircraftSubPxX:
 	DebugAircraftSubPxY:
@@ -162,8 +163,18 @@
 	MustBeDestroyed:
 	GivesExperience:
 #	FrozenUnderFog:
-	CaptureNotification:
-		Notification:
+	CaptureNotification@Atreides:
+		Race: atreides
+		Notification: AI_CAPT.AUD
+	CaptureNotification@Harkonnen:
+		Race: harkonnen
+		Notification: HI_CAPT.AUD
+	CaptureNotification@Ordos:
+		Race: ordos
+		Notification: OI_CAPT.AUD
+#TODO: not Race-specific
+	ActorLostNotification:
+		Notification: AI_BLOST.AUD
 	EditorAppearance:
 		RelativeToTopLeft: yes
 	ShakeOnDeath:

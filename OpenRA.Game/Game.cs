@@ -392,6 +392,7 @@ namespace OpenRA
 			// Work around a miscompile in mono 2.6.7:
 			// booleans that default to true cannot be set false by an initializer
 			settings.AdvertiseOnline = false;
+			settings.AllowUPnP = false;
 
 			server = new Server.Server(new IPEndPoint(IPAddress.Loopback, 0),
 				Game.Settings.Game.Mods, settings, modData);
