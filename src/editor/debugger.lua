@@ -139,6 +139,26 @@ local function activateDocument(fileName, line)
   return activated ~= nil, activated
 end
 
+local function reSetBreakpoints()
+  -- remove all breakpoints that may still be present from the last session
+  -- this only matters for those remote clients that reload scripts
+  -- without resetting their breakpoints
+  debugger.handle("delallb")
+
+  -- go over all windows and find all breakpoints
+  if (not debugger.scratchpad) then
+    for _, document in pairs(ide.openDocuments) do
+      local editor = document.editor
+      local filePath = document.filePath
+      local line = editor:MarkerNext(0, BREAKPOINT_MARKER_VALUE)
+      while line ~= -1 do
+        debugger.handle("setb " .. filePath .. " " .. (line+1))
+        line = editor:MarkerNext(line + 1, BREAKPOINT_MARKER_VALUE)
+      end
+    end
+  end
+end
+
 debugger.shell = function(expression, isstatement)
   if debugger.server and not debugger.running then
     copas.addthread(function ()
@@ -202,10 +222,7 @@ debugger.listen = function()
       -- set basedir first, before loading to make sure that the path is correct
       debugger.handle("basedir " .. debugger.basedir)
 
-      -- remove all breakpoints that may still be present from the last session
-      -- this only matters for those remote clients that reload scripts
-      -- without resetting their breakpoints
-      debugger.handle("delallb")
+      reSetBreakpoints()
 
       if (options.run) then
         local file, line = debugger.handle("run")
@@ -237,6 +254,8 @@ debugger.listen = function()
               if activated then
                 debugger.basedir = path
                 debugger.handle("basedir " .. debugger.basedir)
+                -- reset breakpoints again as basedir has changed
+                reSetBreakpoints()
               end
             end
           end
@@ -253,19 +272,6 @@ debugger.listen = function()
         else
           debugger.scratchable = true
           activateDocument(startfile, 1)
-        end
-      end
-
-      -- go over all windows and find all breakpoints
-      if (not debugger.scratchpad) then
-        for _, document in pairs(ide.openDocuments) do
-          local editor = document.editor
-          local filePath = document.filePath
-          local line = editor:MarkerNext(0, BREAKPOINT_MARKER_VALUE)
-          while line ~= -1 do
-            debugger.handle("setb " .. filePath .. " " .. (line+1))
-            line = editor:MarkerNext(line + 1, BREAKPOINT_MARKER_VALUE)
-          end
         end
       end
 
