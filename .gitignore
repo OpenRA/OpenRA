@@ -55,4 +55,6 @@ OpenRA.Launcher.Mac/OpenRA.xcodeproj/*.mode1v3
 *.config
 *.resources
 
+# KDE crap
 *.kate-swp
+*.directory

@@ -372,14 +372,14 @@ namespace OpenRA.Utility
 			for (var i = 0; i < 4; i++)
 				remap[i] = i;
 
-			var srcMod = Enum<string>.Parse(args[1].Split(':')[0]);
+			var srcMod = args[1].Split(':')[0];
 			Game.modData = new ModData(srcMod);
 			FileSystem.LoadFromManifest(Game.modData.Manifest);
 			Rules.LoadRules(Game.modData.Manifest, new Map());
 			var srcPaletteInfo = Rules.Info["player"].Traits.Get<PlayerColorPaletteInfo>();
 			int[] srcRemapIndex = srcPaletteInfo.RemapIndex;
 
-			var destMod = Enum<string>.Parse(args[2].Split(':')[0]);
+			var destMod = args[2].Split(':')[0];
 			Game.modData = new ModData(destMod);
 			FileSystem.LoadFromManifest(Game.modData.Manifest);
 			Rules.LoadRules(Game.modData.Manifest, new Map());
