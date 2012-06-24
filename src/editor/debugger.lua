@@ -139,10 +139,9 @@ local function activateDocument(fileName, line)
   return activated ~= nil, activated
 end
 
-debugger.shell = function(expression)
+debugger.shell = function(expression, isstatement)
   if debugger.server and not debugger.running then
     copas.addthread(function ()
-        local addedret = false
         -- exec command is not expected to return anything.
         -- eval command returns 0 or more results.
         -- 'values' has a list of serialized results returned.
@@ -150,12 +149,14 @@ debugger.shell = function(expression)
         -- 'nil' is always returned in this case.
         -- the first value returned by eval command is not used;
         -- this may need to be taken into account by other debuggers.
-        local _, values, err = debugger.handle('exec ' .. expression)
-        if err and (err:find("'=' expected near '<eof>'") or
-                    err:find("syntax error near '") or
-                    err:find("unexpected symbol near '")) then
-          _, values, err = debugger.handle('eval ' .. expression:gsub("^%s*=%s*",""))
-          addedret = true
+        local addedret, forceexpression = true, expression:match("^%s*=%s*")
+        expression = expression:gsub("^%s*=%s*","")
+        local _, values, err = debugger.evaluate(expression)
+        if not forceexpression and err and
+          (err:find("'<eof>' expected near '") or
+           err:find("unexpected symbol near '")) then
+          _, values, err = debugger.execute(expression)
+          addedret = false
         end
 
         if err then
@@ -163,7 +164,9 @@ debugger.shell = function(expression)
           DisplayShellErr(err)
         elseif addedret or #values > 0 then
           -- if empty table is returned, then show nil if this was an expression
-          if addedret and #values == 0 then values = {'nil'} end
+          if #values == 0 and (forceexpression or not isstatement) then
+            values = {'nil'}
+          end
           DisplayShell((table.unpack or unpack)(values))
         end
       end)
