@@ -453,6 +453,18 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 				new string[] {"--shp", Path.Combine(PathToSHPs, "spice0.png"), "32"},
 			};
 
+			var SHPsToTranspose = new string[][]
+			{
+				new string[] {"--transpose", Path.Combine(PathToSHPs, "orni.shp"), Path.Combine(PathToSHPs, "orni.shp"), "0", "32", "3"},
+				new string[] {"--transpose", Path.Combine(PathToSHPs, "rifle.shp"), Path.Combine(PathToSHPs, "rifle.shp"), "8", "8", "6", "56", "8", "5", "112", "8", "3", "136", "8", "5"},
+				new string[] {"--transpose", Path.Combine(PathToSHPs, "bazooka.shp"), Path.Combine(PathToSHPs, "bazooka.shp"), "8", "8", "6", "56", "8", "5", "112", "8", "3", "136", "8", "5"},
+				new string[] {"--transpose", Path.Combine(PathToSHPs, "fremen.shp"), Path.Combine(PathToSHPs, "fremen.shp"), "8", "8", "6", "56", "8", "5", "112", "8", "3", "136", "8", "5"},
+				new string[] {"--transpose", Path.Combine(PathToSHPs, "sardaukar.shp"), Path.Combine(PathToSHPs, "sardaukar.shp"), "8", "8", "6", "56", "8", "5", "112", "8", "3", "136", "8", "5"},
+				new string[] {"--transpose", Path.Combine(PathToSHPs, "thumper.shp"), Path.Combine(PathToSHPs, "thumper.shp"), "8", "8", "6"},
+				new string[] {"--transpose", Path.Combine(PathToSHPs, "engineer.shp"), Path.Combine(PathToSHPs, "engineer.shp"), "8", "8", "6"},
+				new string[] {"--transpose", Path.Combine(PathToSHPs, "saboteur.shp"), Path.Combine(PathToSHPs, "saboteur.shp"), "8", "8", "4"},
+			};
+
 			var onError = (Action<string>)(s => Game.RunAfterTick(() =>
 			{
 				statusLabel.GetText = () => "Error: "+s;
@@ -477,6 +489,13 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 						statusLabel.GetText = () => "Converting...";
 						Utility.Command.ConvertPngToShp(SHPsToCreate[i]);
 						File.Delete(SHPsToCreate[i][1]);
+					}
+
+					for (int i = 0; i < SHPsToTranspose.Length; i++)
+					{
+						progressBar.Percentage = i*100/SHPsToTranspose.Count();
+						statusLabel.GetText = () => "Transposing...";
+						Utility.Command.TransposeShp(SHPsToTranspose[i]);
 					}
 
 					statusLabel.GetText = () => "Building tilesets...";
