@@ -18,6 +18,7 @@ using System.Runtime.InteropServices;
 using OpenRA.FileFormats;
 using OpenRA.FileFormats.Graphics;
 using OpenRA.GameRules;
+using OpenRA.Traits;
 
 namespace OpenRA.Utility
 {
@@ -371,9 +372,19 @@ namespace OpenRA.Utility
 			for (var i = 0; i < 4; i++)
 				remap[i] = i;
 
-			// TODO: should read that from mods/*/system.yaml
-			var srcRemapIndex = Enum<int[]>.Parse(args[1].Split(':')[0]);
-			var destRemapIndex = Enum<int[]>.Parse(args[2].Split(':')[0]);
+			var srcMod = Enum<string>.Parse(args[1].Split(':')[0]);
+			Game.modData = new ModData(srcMod);
+			FileSystem.LoadFromManifest(Game.modData.Manifest);
+			Rules.LoadRules(Game.modData.Manifest, new Map());
+			var srcPaletteInfo = Rules.Info["player"].Traits.Get<PlayerColorPaletteInfo>();
+			int[] srcRemapIndex = srcPaletteInfo.RemapIndex;
+
+			var destMod = Enum<string>.Parse(args[2].Split(':')[0]);
+			Game.modData = new ModData(destMod);
+			FileSystem.LoadFromManifest(Game.modData.Manifest);
+			Rules.LoadRules(Game.modData.Manifest, new Map());
+			var destPaletteInfo = Rules.Info["player"].Traits.Get<PlayerColorPaletteInfo>();
+			int[] destRemapIndex = destPaletteInfo.RemapIndex;
 
 			// the remap range is always 16 entries, but their location and order changes
 			for (var i = 0; i < 16; i++)
