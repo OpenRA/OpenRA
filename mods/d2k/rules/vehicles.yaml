@@ -19,8 +19,9 @@
 	Mobile:
 		Speed: 6
 		Crushes: crate, infantry
+#TODO: this is temporary until the Dune 2000 shadow.shp is working correctly
 	RevealsShroud:
-		Range: 4
+		Range: 9999
 	MustBeDestroyed:
 	BaseBuilding:
 	-AttackMove:
