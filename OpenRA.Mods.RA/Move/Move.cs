@@ -178,6 +178,11 @@ namespace OpenRA.Mods.RA.Move
 			var nudge = blocker.TraitOrDefault<INudge>();
 			if (nudge != null)
 				nudge.OnNudge(blocker, self, false);
+
+			// Notify the blocker that he's blocking our move:
+			INotifyBlockingMove moveBlocked;
+			if ((moveBlocked = blocker.TraitOrDefault<INotifyBlockingMove>()) != null)
+				moveBlocked.OnNotifyBlockingMove(blocker, self, nextCell);
 		}
 
 		Pair<CPos, SubCell>? PopPath(Actor self, Mobile mobile)

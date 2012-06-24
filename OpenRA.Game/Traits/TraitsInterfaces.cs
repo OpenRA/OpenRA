@@ -132,6 +132,7 @@ namespace OpenRA.Traits
 	}
 
 	public interface IMove : ITeleportable { int Altitude { get; set; } }
+	public interface INotifyBlockingMove { void OnNotifyBlockingMove(Actor self, Actor blocking, CPos cell); }
 
 	public interface IFacing
 	{

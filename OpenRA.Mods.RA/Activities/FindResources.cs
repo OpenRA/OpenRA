@@ -20,6 +20,17 @@ namespace OpenRA.Mods.RA.Activities
 {
 	public class FindResources : Activity
 	{
+		CPos avoidCell;
+
+		public FindResources()
+		{
+		}
+
+		public FindResources(CPos avoidCell)
+		{
+			this.avoidCell = avoidCell;
+		}
+
 		public override Activity Tick(Actor self)
 		{
 			if (IsCanceled || NextActivity != null) return NextActivity;
@@ -53,6 +64,8 @@ namespace OpenRA.Mods.RA.Activities
 					})
 					.WithHeuristic(loc =>
 					{
+						if (loc == avoidCell) return 1;
+
 						// Don't harvest out of range:
 						int distSquared = (loc - (harv.LastOrderLocation ?? harv.LinkedProc.Location)).LengthSquared;
 						if (distSquared > (12 * 12))
@@ -69,6 +82,7 @@ namespace OpenRA.Mods.RA.Activities
 						ResourceClaim claim;
 						if (territory.IsClaimedByAnyoneElse(self, loc, out claim)) return 1;
 
+#if false
 						// Is anyone covering the location already?
 						// NOTE(jsd): This is required to prevent harvester deadlocking.
 						var unitsAtLoc =
@@ -76,6 +90,7 @@ namespace OpenRA.Mods.RA.Activities
 							where u != self
 							select u;
 						if (unitsAtLoc.Any()) return 1;
+#endif
 
 						return 0;
 					})
@@ -90,23 +105,24 @@ namespace OpenRA.Mods.RA.Activities
 				{
 					// Get out of the way if we are:
 					harv.UnblockRefinery(self);
+					int randFrames = 125 + self.World.SharedRandom.Next(-35, 35);
 					if (NextActivity != null)
-						return Util.SequenceActivities(NextActivity, new Wait(90), this);
+						return Util.SequenceActivities(NextActivity, new Wait(randFrames), new FindResources());
 					else
-						return Util.SequenceActivities(new Wait(90), this);
+						return Util.SequenceActivities(new Wait(randFrames), new FindResources());
 				}
 			}
 
 			// Attempt to claim a resource as ours:
 			if (!territory.ClaimResource(self, path[0]))
-				return Util.SequenceActivities(new Wait(25), this);
+				return Util.SequenceActivities(new Wait(25), new FindResources());
 
 			// If not given a direct order, assume ordered to the first resource location we find:
 			if (harv.LastOrderLocation == null)
 				harv.LastOrderLocation = path[0];
 
 			self.SetTargetLine(Target.FromCell(path[0]), Color.Red, false);
-			return Util.SequenceActivities(mobile.MoveTo(path[0], 1), new HarvestResource(), this);
+			return Util.SequenceActivities(mobile.MoveTo(path[0], 1), new HarvestResource(), new FindResources());
 		}
 
 		public override IEnumerable<Target> GetTargets(Actor self)

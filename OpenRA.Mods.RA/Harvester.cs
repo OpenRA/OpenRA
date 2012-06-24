@@ -30,7 +30,8 @@ namespace OpenRA.Mods.RA
 	}
 
 	public class Harvester : IIssueOrder, IResolveOrder, IPips,
-		IExplodeModifier, IOrderVoice, ISpeedModifier, ISync, INotifyResourceClaimLost, INotifyIdle
+		IExplodeModifier, IOrderVoice, ISpeedModifier, ISync,
+		INotifyResourceClaimLost, INotifyIdle, INotifyBlockingMove
 	{
 		Dictionary<ResourceTypeInfo, int> contents = new Dictionary<ResourceTypeInfo, int>();
 
@@ -120,13 +121,28 @@ namespace OpenRA.Mods.RA
 					// Get out of the way:
 					var mobile = self.Trait<Mobile>();
 					var harv = self.Trait<Harvester>();
-					// TODO: would like an interruptible move here
 					var moveTo = harv.LastHarvestedCell ?? (deliveryLoc + new CVec(0, 4));
 					self.QueueActivity(mobile.MoveTo(moveTo, 1));
 					self.SetTargetLine(Target.FromCell(moveTo), Color.Red, false);
 					self.World.WorldActor.Trait<ResourceClaimLayer>().ClaimResource(self, moveTo);
+					self.QueueActivity(new FindResources());
 					return;
 				}
+			}
+		}
+
+		public void OnNotifyBlockingMove(Actor self, Actor blocking, CPos cell)
+		{
+			// I'm blocking someone else from moving to my location:
+			Activity act = self.GetCurrentActivity();
+			// If I'm just waiting around, then get out of the way:
+			if (act.GetType() == typeof(Wait))
+			{
+				self.CancelActivity();
+				var mobile = self.Trait<Mobile>();
+				self.QueueActivity(mobile.MoveTo(mobile.NearestMoveableCell(cell, 2, 5), 0));
+				// Find more resources but not at this location:
+				self.QueueActivity(new FindResources(cell));
 			}
 		}
 
