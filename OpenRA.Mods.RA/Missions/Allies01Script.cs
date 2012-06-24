@@ -55,7 +55,7 @@ namespace OpenRA.Mods.RA.Missions
 		private static readonly string[] ships = { "ca", "ca", "ca", "ca" };
 
 		private static readonly string[] attackWave = { "e1", "e1", "e1", "e1", "e2", "e2", "e2", "e2", "dog" };
-		private static readonly string[] lastAttackWaveAddition = { "3tnk" };
+		private static readonly string[] lastAttackWaveAddition = { "3tnk", "e1", "e1", "e1", "e1", "e2", "e2", "e2", "e2" };
 		private int currentAttackWaveFrameNumber;
 		private int currentAttackWave;
 		private const int einsteinChinookArrivesAtAttackWave = 5;
@@ -149,11 +149,14 @@ namespace OpenRA.Mods.RA.Missions
 					SendAttackWave(self, attackWave);
 					currentAttackWave++;
 					currentAttackWaveFrameNumber = self.World.FrameNumber;
-					if (currentAttackWave == einsteinChinookArrivesAtAttackWave)
-					{
-						SendAttackWave(self, lastAttackWaveAddition);
-						FlyEinsteinFromExtractionLZ(self);
-					}
+                    if (currentAttackWave >= einsteinChinookArrivesAtAttackWave)
+                    {
+                        SendAttackWave(self, lastAttackWaveAddition);
+                    }
+                    if (currentAttackWave == einsteinChinookArrivesAtAttackWave)
+                    {
+                        FlyEinsteinFromExtractionLZ(self);
+                    }
 				}
 				if (einsteinChinook != null && !self.World.Map.IsInMap(einsteinChinook.Location) && !einstein.IsInWorld)
 				{
