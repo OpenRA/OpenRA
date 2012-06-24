@@ -33,7 +33,7 @@ ENGINEER:
 		Name: Engineer
 		Description: Infiltrates and captures enemy structures.\n  Strong vs Nothing\n  Weak vs Everything
 	Selectable:
-		Bounds: 12,17,0,-9
+		Bounds: 12,17,0,0
 		Voice: EngineerVoice
 	Health:
 		HP: 25
@@ -59,7 +59,7 @@ BAZOOKA:
 		Name: Trooper
 		Description: Anti-tank/Anti-aircraft infantry.\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry
 	Selectable:
-		Bounds: 12,17,0,-9
+		Bounds: 12,17,0,0
 	Health:
 		HP: 45
 	Mobile:
@@ -84,7 +84,7 @@ THUMPER:
 		Name: Thumper
 		Description: Attracts sandsworm through vibrations.\n  Strong vs Nothing\n  Weak vs Everything
 	Selectable:
-		Bounds: 12,17,0,-9
+		Bounds: 12,17,0,0
 	Health:
 		HP: 25
 	Mobile:

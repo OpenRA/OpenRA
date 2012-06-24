@@ -181,7 +181,7 @@ DEVAST:
 		EmptyWeapon: UnitExplodeSmall
 	LeavesHusk:
 	Selectable:
-		Bounds: 44,38,0,-4
+		Bounds: 44,38,0,0
 
 SARDAUKAR:
 	Inherits: ^Infantry
@@ -196,7 +196,7 @@ SARDAUKAR:
 		Name: Sardaukar
 		Description: Heavy infantry.
 	Selectable:
-		Bounds: 12,17,0,-9
+		Bounds: 12,17,0,0
 	Health:
 		HP: 150
 	Mobile:
