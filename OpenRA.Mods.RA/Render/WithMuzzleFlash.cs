@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA.Render
 
 					muzzleFlashes.Add("muzzle{0}".F(muzzleFlashes.Count), new AnimationWithOffset(
 						muzzleFlash,
-						() => Combat.GetBarrelPosition(self, facing, turret, barrel),
+						() => Combat.GetBarrelPosition(self, facing, turret, barrel).ToFloat2(),
 						() => !isShowing));
 				}
 		}

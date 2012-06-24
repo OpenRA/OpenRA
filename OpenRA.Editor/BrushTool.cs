@@ -39,7 +39,7 @@ namespace OpenRA.Editor
 			for (var u = 0; u < template.Size.X; u++)
 				for (var v = 0; v < template.Size.Y; v++)
 				{
-					if (surface.Map.IsInMap(new int2(u, v) + pos))
+					if (surface.Map.IsInMap(new CVec(u, v) + pos))
 					{
 						var z = u + v * template.Size.X;
 						if (tile.TileBitmapBytes[z] != null)
@@ -69,17 +69,17 @@ namespace OpenRA.Editor
 					Brush.Bitmap.Height * surface.Zoom);
 		}
 
-		void FloodFillWithBrush(Surface s, int2 pos)
+		void FloodFillWithBrush(Surface s, CPos pos)
 		{
-			var queue = new Queue<int2>();
+			var queue = new Queue<CPos>();
 			var replace = s.Map.MapTiles.Value[pos.X, pos.Y];
 			var touched = new bool[s.Map.MapSize.X, s.Map.MapSize.Y];
 
-			Action<int, int> MaybeEnqueue = (x, y) =>
+			Action<int, int> maybeEnqueue = (x, y) =>
 			{
 				if (s.Map.IsInMap(x, y) && !touched[x, y])
 				{
-					queue.Enqueue(new int2(x, y));
+					queue.Enqueue(new CPos(x, y));
 					touched[x, y] = true;
 				}
 			};
@@ -91,16 +91,16 @@ namespace OpenRA.Editor
 				if (!s.Map.MapTiles.Value[p.X, p.Y].Equals(replace))
 					continue;
 
-				var a = FindEdge(s, p, new int2(-1, 0), replace);
-				var b = FindEdge(s, p, new int2(1, 0), replace);
+				var a = FindEdge(s, p, new CVec(-1, 0), replace);
+				var b = FindEdge(s, p, new CVec(1, 0), replace);
 
 				for (var x = a.X; x <= b.X; x++)
 				{
 					s.Map.MapTiles.Value[x, p.Y] = new TileReference<ushort, byte> { type = Brush.N, index = (byte)0 };
 					if (s.Map.MapTiles.Value[x, p.Y - 1].Equals(replace))
-						MaybeEnqueue(x, p.Y - 1);
+						maybeEnqueue(x, p.Y - 1);
 					if (s.Map.MapTiles.Value[x, p.Y + 1].Equals(replace))
-						MaybeEnqueue(x, p.Y + 1);
+						maybeEnqueue(x, p.Y + 1);
 				}
 			}
 
@@ -109,7 +109,7 @@ namespace OpenRA.Editor
 			s.Chunks.Clear();
 		}
 
-		int2 FindEdge(Surface s, int2 p, int2 d, TileReference<ushort, byte> replace)
+		CPos FindEdge(Surface s, CPos p, CVec d, TileReference<ushort, byte> replace)
 		{
 			for (; ; )
 			{

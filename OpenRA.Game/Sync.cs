@@ -50,6 +50,36 @@ namespace OpenRA
 				il.EmitCall(OpCodes.Call, ((Func<int2, int>)hash_int2).Method, null);
 				il.Emit(OpCodes.Xor);
 			}
+			else if (type == typeof(CPos))
+			{
+				il.EmitCall(OpCodes.Call, ((Func<CPos, int>)hash_CPos).Method, null);
+				il.Emit(OpCodes.Xor);
+			}
+			else if (type == typeof(CVec))
+			{
+				il.EmitCall(OpCodes.Call, ((Func<CVec, int>)hash_CVec).Method, null);
+				il.Emit(OpCodes.Xor);
+			}
+			else if (type == typeof(PPos))
+			{
+				il.EmitCall(OpCodes.Call, ((Func<PPos, int>)hash_PPos).Method, null);
+				il.Emit(OpCodes.Xor);
+			}
+			else if (type == typeof(PVecInt))
+			{
+				il.EmitCall(OpCodes.Call, ((Func<PVecInt, int>)hash_PVecInt).Method, null);
+				il.Emit(OpCodes.Xor);
+			}
+			else if (type == typeof(PSubPos))
+			{
+				il.EmitCall(OpCodes.Call, ((Func<PSubPos, int>)hash_PSubPos).Method, null);
+				il.Emit(OpCodes.Xor);
+			}
+			else if (type == typeof(PSubVec))
+			{
+				il.EmitCall(OpCodes.Call, ((Func<PSubVec, int>)hash_PSubVec).Method, null);
+				il.Emit(OpCodes.Xor);
+			}
 			else if (type == typeof(TypeDictionary))
 			{
 				il.EmitCall(OpCodes.Call, ((Func<TypeDictionary, int>)hash_tdict).Method, null);
@@ -108,6 +138,36 @@ namespace OpenRA
 		public static int hash_int2( int2 i2 )
 		{
 			return ( ( i2.X * 5 ) ^ ( i2.Y * 3 ) ) / 4;
+		}
+
+		public static int hash_CPos( CPos i2 )
+		{
+			return ( ( i2.X * 5) ^ ( i2.Y * 3 ) ) / 4;
+		}
+		
+		public static int hash_CVec( CVec i2 )
+		{
+			return ( ( i2.X * 5) ^ ( i2.Y * 3 ) ) / 4;
+		}
+		
+		public static int hash_PPos( PPos i2 )
+		{
+			return ( ( i2.X * 5) ^ ( i2.Y * 3 ) ) / 4;
+		}
+		
+		public static int hash_PVecInt( PVecInt i2 )
+		{
+			return ( ( i2.X * 5) ^ ( i2.Y * 3 ) ) / 4;
+		}
+
+		public static int hash_PSubPos(PSubPos i2)
+		{
+			return ((i2.X * 5) ^ (i2.Y * 3)) / 4;
+		}
+
+		public static int hash_PSubVec(PSubVec i2)
+		{
+			return ((i2.X * 5) ^ (i2.Y * 3)) / 4;
 		}
 
 		public static int hash_tdict( TypeDictionary d )

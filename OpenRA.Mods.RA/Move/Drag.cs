@@ -15,12 +15,12 @@ namespace OpenRA.Mods.RA.Move
 {
 	public class Drag : Activity
 	{
-		int2 endLocation;
-		int2 startLocation;
+		PPos endLocation;
+		PPos startLocation;
 		int length;
 		int ticks = 0;
 
-		public Drag(int2 start, int2 end, int length)
+		public Drag(PPos start, PPos end, int length)
 		{
 			startLocation = start;
 			endLocation = end;
@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA.Move
 		{
 			var mobile = self.Trait<Mobile>();
 			mobile.PxPosition = length > 1
-				? int2.Lerp(startLocation, endLocation, ticks, length - 1)
+				? PPos.Lerp(startLocation, endLocation, ticks, length - 1)
 				: endLocation;
 
 			if (++ticks >= length)

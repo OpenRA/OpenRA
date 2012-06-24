@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA
 				SpawnUnitsForPlayer(s.Key, s.Value);
 		}
 
-		void SpawnUnitsForPlayer(Player p, int2 sp)
+		void SpawnUnitsForPlayer(Player p, CPos sp)
 		{
 			if (!p.PlayerReference.DefaultStartingUnits)
 				return;	/* they don't want an mcv, the map provides something else for them */

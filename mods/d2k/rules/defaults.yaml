@@ -23,9 +23,15 @@
 	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:
-#TODO: not race specific
-	ActorLostNotification:
+	ActorLostNotification@Atreides:
+		Race: atreides
 		Notification: AI_ULOST.AUD
+	ActorLostNotification@Harkonnen:
+		Race: harkonnen
+		Notification: HI_ULOST.AUD
+	ActorLostNotification@Ordos:
+		Race: ordos
+		Notification: OI_ULOST.AUD
 	ProximityCaptor:
 		Types:Vehicle
 	GivesBounty:
@@ -58,8 +64,15 @@
 	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:
-	ActorLostNotification:
+	ActorLostNotification@Atreides:
+		Race: atreides
 		Notification: AI_ULOST.AUD
+	ActorLostNotification@Harkonnen:
+		Race: harkonnen
+		Notification: HI_ULOST.AUD
+	ActorLostNotification@Ordos:
+		Race: ordos
+		Notification: OI_ULOST.AUD
 	ProximityCaptor:
 		Types:Tank
 	GivesBounty:
@@ -89,7 +102,7 @@
 			Rough: 60
 	SelectionDecorations:
 	Selectable:
-		Voice: GenericVoice
+		Voice: InfantryVoice
 	TargetableUnit:
 		TargetTypes: Ground
 	RenderInfantry:
@@ -101,8 +114,15 @@
 	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:
-	ActorLostNotification:
+	ActorLostNotification@Atreides:
+		Race: atreides
 		Notification: AI_ULOST.AUD
+	ActorLostNotification@Harkonnen:
+		Race: harkonnen
+		Notification: HI_ULOST.AUD
+	ActorLostNotification@Ordos:
+		Race: ordos
+		Notification: OI_ULOST.AUD
 	ProximityCaptor:
 		Types:Infantry
 	GivesBounty:
@@ -122,17 +142,21 @@
 	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:
-	ActorLostNotification:
+	ActorLostNotification@Atreides:
+		Race: atreides
 		Notification: AI_ULOST.AUD
+	ActorLostNotification@Harkonnen:
+		Race: harkonnen
+		Notification: HI_ULOST.AUD
+	ActorLostNotification@Ordos:
+		Race: ordos
+		Notification: OI_ULOST.AUD
 	DebugAircraftFacing:
 	DebugAircraftSubPxX:
 	DebugAircraftSubPxY:
 	DebugAircraftAltitude:
 	ProximityCaptor:
 		Types:Plane
-	EjectOnDeath:
-		PilotActor: RIFLE
-		SuccessRate: 50
 	GivesBounty:
 
 ^Helicopter:
@@ -149,17 +173,19 @@
 		Dimensions: 1,1
 		Footprint: x
 		TerrainTypes: Rock, Concrete
+		BuildSounds: BUILD1.aud
+		SellSounds: BUILD1.aud
 	GivesBuildableArea:
 	Capturable:
 	CapturableBar:
 	SoundOnDamageTransition:
-		DamagedSound:
-		DestroyedSound:
+		DamagedSound: EXPLSML1.aud
+		DestroyedSound: EXPLHG1.aud
 	RenderBuilding:
 	WithBuildingExplosion:
 	RepairableBuilding:
 	EmitInfantryOnSell:
-		ActorTypes: rifle,rifle,rifle,rifle,rifle,rifle
+		ActorTypes: rifle,rifle,rifle,bazooka,bazooka,engineer
 	MustBeDestroyed:
 	GivesExperience:
 #	FrozenUnderFog:
@@ -172,14 +198,19 @@
 	CaptureNotification@Ordos:
 		Race: ordos
 		Notification: OI_CAPT.AUD
-#TODO: not Race-specific
-	ActorLostNotification:
+	ActorLostNotification@Atreides:
+		Race: atreides
 		Notification: AI_BLOST.AUD
+	ActorLostNotification@Harkonnen:
+		Race: harkonnen
+		Notification: HI_BLOST.AUD
+	ActorLostNotification@Ordos:
+		Race: ordos
+		Notification: OI_BLOST.AUD
 	EditorAppearance:
 		RelativeToTopLeft: yes
 	ShakeOnDeath:
 	ProximityCaptor:
 		Types:Building
 	Sellable:
-	AcceptsSupplies:
 	GivesBounty:

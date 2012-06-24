@@ -11,11 +11,11 @@ harvester:
 		Start: 0
 		Length: 0
 		Facings: 8
-	dock:
+	dock: unload
 		Start: 0
-		Length: 1
-	dock-loop:
-		Start: 0
+		Length: 10
+	dock-loop: unload
+		Start: 10
 		Length: 1
 
 wall:
@@ -44,6 +44,8 @@ orni:
 	idle:
 		Start: 0
 		Facings: 32
+		Length: 3
+		Tick: 160
 
 trike:
 	idle:
@@ -245,6 +247,53 @@ engineer:
 		Start: 54
 		Length: 22
 		Tick: 1600
+
+thumper:
+	stand:
+		Start: 0
+		Facings: 8
+	stand2:
+		Start: 0
+		Facings: 8
+	run:
+		Start: 8
+		Length: 6
+		Facings: 8
+	die1: rifledeath
+		Start: 0
+		Length: 5
+	die2: rifledeath
+		Start: 5
+		Length: 7
+	die3: rifledeath
+		Start: 12
+		Length: 7
+	die4: rifledeath
+		Start: 19
+		Length: 7
+	die5: rifledeath
+		Start: 26
+		Length: 7
+	die6: rifledeath
+		Start: 26
+		Length: 7
+	die-crushed: rifledeath
+		Start: 54
+		Length: 22
+		Tick: 1600
+
+thumping:
+	idle: thumper
+		Start: 57
+		Length: 4
+		Tick: 150
+	make: thumper
+		Start: 56
+		Length: 5
+	damaged-idle: thumper
+		Start: 57
+		Length: 4
+		Tick: 150
 
 fremen:
 	stand:
@@ -861,48 +910,41 @@ deviatortank:
 		Start: 0
 		Facings: 32
 
+#ready/hold falls back to RA, but look ok
 pips:
-	groups:
-		Start: 8
+	groups: numbers
+		Start: 0
 		Length: 10
-	medic:
-		Start: 20
 	ready:
 		Start: 3
 	hold:
 		Start: 4
-	tag-fake:
-		Start: 18
-	tag-primary:
-		Start: 2
-	pip-empty: pips2
+	tag-primary: greenuparrow
 		Start: 0
-	pip-green: pips2
+	pip-empty: dots
+		Start: 0
+	pip-green: dots
 		Start: 1
-	pip-yellow: pips2
-		Start: 2
-	pip-gray: pips2
-		Start: 3
-	pip-red: pips2
-		Start: 4
-	pip-blue: pips2
-		Start: 5
 
+#falls back to RA, but look ok
 clock:
 	idle:
 		Start: 0
 		Length: *
 
+#falls back to RA, but look ok
 powerdown:
 	disabled: speed
 		Start: 3
 
+#TODO: falls back to RA, different palette
 poweroff:
 	offline:
 		Start: 0
 		Length: *
 		Tick: 160
 
+#falls back to RA, but looks okay
 rank:
 	rank:
 		Start: 0
@@ -920,6 +962,7 @@ overlay:
 	target-invalid:
 		Start: 1
 
+#TODO: falls back to RA, different palette
 rallypoint:
 	flag:flagfly
 		Start: 0
@@ -928,11 +971,13 @@ rallypoint:
 		Start: 0
 		Length: *
 
+#TODO: falls back to RA
 dragon:
 	idle:
 		Start: 0
 		Facings: 32
 
+#TODO: falls back to RA
 explosion:
 	piff: piff
 		Start: 0
@@ -974,11 +1019,13 @@ explosion:
 		Start: 0
 		Length: *
 
+#TODO: falls back to RA
 smokey:
 	idle:
 		Start: 0
 		Length: *
 
+#TODO: falls back to RA
 smoke_m:
 	idle:
 		Start: 0
@@ -990,10 +1037,12 @@ smoke_m:
 		Start: 0
 		Length: 26
 
+#TODO: falls back to RA
 120mm:
 	idle:
 		Start: 0
 
+#TODO: falls back to RA
 litning:
 	bright:
 		Start: 0
@@ -1008,6 +1057,7 @@ crate:
 	land: crates
 		Start: 0
 
+#TODO: falls back to RA
 crate-effects:
 	speed: speed
 		Start: 0
@@ -1063,18 +1113,10 @@ crate-effects:
 		Tick: 200
 
 allyrepair:
-	repair:
+	repair: repairing
 		Start: 0
 		Length: *
 		Tick: 160
-
-parach:
-	open:
-		Start: 0
-		Length: 5
-	idle:
-		Start: 5
-		Length: 11
 
 missile:
 	idle:
@@ -1092,37 +1134,35 @@ spicebloom:
 		Start: 2
 
 sandworm:
-	stand: wormsigns2
+	stand: wormsigns1
 		Start: 0
 		Length: *
-		Tick: 150
-	run: sandwormdust
+	run: wormsigns2
 		Start: 0
-		Facings: 4
-		Length: 5
-		Tick: 150
-	die1: sandwormdust
+		Facings: 15
+		Length: 1
+	die1: wormsigns3
 		Start: 0
 		Length: 1
-	die2: sandwormdust
+	die2: wormsigns3
 		Start: 0
 		Length: 1
-	die3: sandwormdust
+	die3: wormsigns3
 		Start: 0
 		Length: 1
-	die4: sandwormdust
+	die4: wormsigns3
 		Start: 0
 		Length: 1
-	die5: sandwormdust
+	die5: wormsigns3
 		Start: 0
 		Length: 1
-	die6: sandwormdust
+	die6: wormsigns3
 		Start: 0
 		Length: 1
-	die-crushed: sandwormdust
+	die-crushed: wormsigns3
 		Start: 0
 		Length: 1
 		Tick: 1600		
-	wormattack: sandwormmouth
+	wormattack: wormjaw
 		Start: 0
 		Length: 15

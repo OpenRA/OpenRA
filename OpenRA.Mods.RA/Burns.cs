@@ -24,8 +24,7 @@ namespace OpenRA.Mods.RA
 
 	class Burns : ITick, ISync
 	{
-		[Sync]
-		int ticks;
+		[Sync] int ticks;
 		BurnsInfo Info;
 
 		public Burns(Actor self, BurnsInfo info)

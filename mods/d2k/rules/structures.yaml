@@ -21,6 +21,14 @@
 		Value: 2500
 	BaseBuilding:
 	ProductionBar:
+	ProductionQueue@Building:
+		Type: Building
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+	ProductionQueue@Defense:
+		Type: Defense
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
 
 ^POWER:
 	Inherits: ^Building
@@ -81,6 +89,10 @@
 		Produces: Infantry
 	PrimaryBuilding:
 	ProductionBar:
+	ProductionQueue@Infantry:
+		Type: Infantry
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
 
 ^HIGHTECH:
 	Inherits: ^Building
@@ -113,6 +125,10 @@
 		Produces: Plane
 	PrimaryBuilding:
 	ProductionBar:
+	ProductionQueue@Plane:
+		Type: Plane
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
 
 ^RESEARCH:
 	Inherits: ^Building
@@ -186,7 +202,8 @@
 	-RenderBuilding:
 	OreRefinery:
 	StoresOre:
-		PipCount: 17
+		PipColor: Green
+		PipCount: 20
 		Capacity: 2000
 	CustomSellValue:
 		Value: 600
@@ -218,6 +235,7 @@
 	-RenderBuilding:
 	RenderBuildingSilo:
 	StoresOre:
+		PipColor: Green
 		PipCount: 5
 		Capacity: 1500
 	-EmitInfantryOnSell:
@@ -254,6 +272,10 @@
 		Produces: Vehicle
 	PrimaryBuilding:
 	ProductionBar:
+	ProductionQueue@Vehicle:
+		Type: Vehicle
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
 
 ^HEAVY:
 	Inherits: ^Building
@@ -287,6 +309,10 @@
 		Produces: Vehicle
 	PrimaryBuilding:
 	ProductionBar:
+	ProductionQueue@Vehicle:
+		Type: Vehicle
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
 
 ^RADAR:
 	RequiresPower:
@@ -344,11 +370,9 @@
 		ExitCell: 3,1
 	ProductionAirdrop:
 		Produces: Vehicle
-		ReadyAudio: AI_REINF.AUD
 		ActorType: frigate
-	ProductionQueue:
+	ProductionQueue@Vehicle:
 		Type: Vehicle
-		Group: Vehicle
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
 	ProductionBar:
@@ -372,7 +396,8 @@ WALL:
 	Building:
 		Dimensions: 1,1
 		Footprint: x
-		BuildSounds:
+		BuildSounds: CHUNG.aud
+		SellSounds: CHUNG.aud
 		Adjacent: 7
 		TerrainTypes: Rock
 	Health:
@@ -390,7 +415,6 @@ WALL:
 		TargetTypes: Ground
 	RenderBuildingWall:
 		HasMakeAnimation: false
-		Palette: d2k
 	GivesExperience:
 	EditorAppearance:
 		RelativeToTopLeft: yes
@@ -429,6 +453,8 @@ GUNTOWER:
 	AttackTurreted:
 		PrimaryWeapon: TurretGun
 	AutoTarget:
+	RequiresPower:
+	CanPowerDown:
 
 ^REPAIR:
 	Inherits: ^Building

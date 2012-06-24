@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA.Activities
 
 		public override IEnumerable<Target> GetTargets(Actor self)
 		{
-			yield return Target.FromPos(self.Location);
+			yield return Target.FromCell(self.Location);
 		}
 	}
 

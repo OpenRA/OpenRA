@@ -10,6 +10,9 @@ obj
 *.manifest
 mods/*/*.dll
 
+# ReSharper crap
+_ReSharper.*/
+
 # Red Alert binary files
 mods/*/packages/*.[mM][iI][xX]
 
@@ -52,3 +55,4 @@ OpenRA.Launcher.Mac/OpenRA.xcodeproj/*.mode1v3
 *.config
 *.resources
 
+*.kate-swp

@@ -6,6 +6,18 @@ CONYARDH:
 		IntoActor: mcvh
 		Offset:1,1
 		Facing: 270
+	ProductionQueue@Building:
+		QueuedAudio: HI_BUILD.AUD
+		OnHoldAudio: HI_HOLD.AUD
+		ReadyAudio: HI_BDRDY.AUD
+		CancelledAudio: HI_CANCL.AUD
+		BlockedAudio: HI_NROOM.AUD
+	ProductionQueue@Defense:
+		QueuedAudio: HI_BUILD.AUD
+		OnHoldAudio: HI_HOLD.AUD
+		ReadyAudio: HI_BDRDY.AUD
+		CancelledAudio: HI_CANCL.AUD
+		BlockedAudio: HI_NROOM.AUD
 
 PWRH:
 	Inherits: ^POWER
@@ -26,12 +38,24 @@ BARRH:
 	Buildable:
 		Prerequisites: pwrh
 		Owner: harkonnen
+	ProductionQueue@Infantry:
+		ReadyAudio: HI_UNRDY.AUD
+		QueuedAudio:HI_TRAIN.AUD
+		OnHoldAudio: HI_HOLD.AUD
+		CancelledAudio: HI_CANCL.AUD
+		BlockedAudio: HI_NROOM.AUD
 
 HIGHTECHH:
 	Inherits: ^HIGHTECH
 	Buildable:
 		Prerequisites: radarh
 		Owner: harkonnen
+	ProductionQueue@Plane:
+		ReadyAudio: HI_UNRDY.AUD
+		QueuedAudio:HI_TRAIN.AUD
+		OnHoldAudio: HI_HOLD.AUD
+		CancelledAudio: HI_CANCL.AUD
+		BlockedAudio: HI_NROOM.AUD
 
 RESEARCHH:
 	Inherits: ^RESEARCH
@@ -58,6 +82,12 @@ LIGHTH:
 		Owner: harkonnen
 	RenderBuildingWarFactory:
 		Image: LIGHTH
+	ProductionQueue@Vehicle:
+		ReadyAudio: HI_UNRDY.AUD
+		QueuedAudio:HI_TRAIN.AUD
+		OnHoldAudio: HI_HOLD.AUD
+		CancelledAudio: HI_CANCL.AUD
+		BlockedAudio: HI_NROOM.AUD
 
 HEAVYH:
 	Inherits: ^HEAVY
@@ -66,6 +96,12 @@ HEAVYH:
 		Owner: harkonnen
 	RenderBuildingWarFactory:
 		Image: HEAVYH
+	ProductionQueue@Vehicle:
+		ReadyAudio: HI_UNRDY.AUD
+		QueuedAudio:HI_TRAIN.AUD
+		OnHoldAudio: HI_HOLD.AUD
+		CancelledAudio: HI_CANCL.AUD
+		BlockedAudio: HI_NROOM.AUD
 
 RADARH:
 	Inherits: ^RADAR
@@ -78,11 +114,14 @@ STARPORTH:
 	Buildable:
 		Prerequisites: radarh
 		Owner: harkonnen
-	ProductionQueue:
-		QueuedAudio: HI_ORDER.AUD
+	ProductionAirdrop:
 		ReadyAudio: HI_REINF.AUD
+	ProductionQueue@Vehicle:
+		QueuedAudio: HI_ORDER.AUD
+		ReadyAudio: 
 		OnHoldAudio: HI_HOLD.AUD
 		CancelledAudio: HI_CANCL.AUD
+		BlockedAudio: HI_NROOM.AUD
 
 REPAIRH:
 	Inherits: ^REPAIR
@@ -99,7 +138,6 @@ MCVH:
 		Facing: 10
 		IntoActor: conyardh
 		Offset:-1,-1
-		TransformSounds:
 		NoTransformSounds: HI_DPLOY.AUD
 	RenderUnit:
 		Image: DMCV
@@ -143,7 +181,7 @@ DEVAST:
 		EmptyWeapon: UnitExplodeSmall
 	LeavesHusk:
 	Selectable:
-		Bounds: 44,38,0,-4
+		Bounds: 44,38,0,0
 
 SARDAUKAR:
 	Inherits: ^Infantry
@@ -158,8 +196,7 @@ SARDAUKAR:
 		Name: Sardaukar
 		Description: Heavy infantry.
 	Selectable:
-#		Voice: TanyaVoice
-		Bounds: 12,17,0,-9
+		Bounds: 12,17,0,0
 	Health:
 		HP: 150
 	Mobile:

@@ -18,7 +18,7 @@ namespace OpenRA.Mods.RA.Orders
 {
 	public class RepairOrderGenerator : IOrderGenerator
 	{
-		public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
+		public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
 		{
 			if (mi.Button == MouseButton.Right)
 				world.CancelInputMode();
@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Orders
 			return OrderInner(world, xy, mi);
 		}
 
-		IEnumerable<Order> OrderInner(World world, int2 xy, MouseInput mi)
+		IEnumerable<Order> OrderInner(World world, CPos xy, MouseInput mi)
 		{
 			if (mi.Button == MouseButton.Left)
 			{
@@ -52,7 +52,7 @@ namespace OpenRA.Mods.RA.Orders
 		public void RenderAfterWorld(WorldRenderer wr, World world) { }
 		public void RenderBeforeWorld(WorldRenderer wr, World world) { }
 
-		public string GetCursor(World world, int2 xy, MouseInput mi)
+		public string GetCursor(World world, CPos xy, MouseInput mi)
 		{
 			mi.Button = MouseButton.Left;
 			return OrderInner(world, xy, mi).Any()

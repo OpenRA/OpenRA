@@ -1,56 +1,19 @@
-#TODO: Currently only uses the Atreides voices.
 Player:
 	TechTree:
-	ClassicProductionQueue@Building:
-		Type: Building
-		BuildSpeed: .4
-		LowPowerSlowdown: 3
-		QueuedAudio: AI_BUILD.AUD
-		OnHoldAudio: AI_HOLD.AUD
-		ReadyAudio: AI_BDRDY.AUD
-		CancelledAudio: AI_CANCL.AUD
-		BlockedAudio: AI_NROOM.AUD
-	ClassicProductionQueue@Defense:
-		Type: Defense
-		BuildSpeed: .4
-		LowPowerSlowdown: 3
-		QueuedAudio: AI_BUILD.AUD
-		OnHoldAudio: AI_HOLD.AUD
-		ReadyAudio: AI_BDRDY.AUD
-		CancelledAudio: AI_CANCL.AUD
-		BlockedAudio: AI_NROOM.AUD
-	ClassicProductionQueue@Vehicle:
-		Type: Vehicle
-		BuildSpeed: .4
-		LowPowerSlowdown: 3
-		ReadyAudio: AI_UNRDY.AUD
-		QueuedAudio:AI_TRAIN.AUD
-		OnHoldAudio: AI_HOLD.AUD
-		CancelledAudio: AI_CANCL.AUD
-		BlockedAudio: AI_NROOM.AUD
-	ClassicProductionQueue@Infantry:
-		Type: Infantry
-		BuildSpeed: .4
-		LowPowerSlowdown: 3
-		ReadyAudio: AI_UNRDY.AUD
-		QueuedAudio:AI_TRAIN.AUD
-		OnHoldAudio: AI_HOLD.AUD
-		CancelledAudio: AI_CANCL.AUD
-		BlockedAudio: AI_NROOM.AUD
-	ClassicProductionQueue@Plane:
-		Type: Plane
-		BuildSpeed: .4
-		LowPowerSlowdown: 3
-		ReadyAudio: AI_UNRDY.AUD
-		QueuedAudio:AI_TRAIN.AUD
-		OnHoldAudio: AI_HOLD.AUD
-		CancelledAudio: AI_CANCL.AUD
-		BlockedAudio: AI_NROOM.AUD
 	PlaceBuilding:
 	SupportPowerManager:
-	ConquestVictoryConditions:
-		WinNotification:AI_MWIN.AUD
-		LoseNotification:AI_MFAIL.AUD
+	ConquestVictoryConditions@Atreides:
+		Race: atreides
+		WinNotification: AI_MWIN.AUD
+		LoseNotification: AI_MFAIL.AUD
+	ConquestVictoryConditions@Harkonnen:
+		Race: harkonnen
+		WinNotification: HI_MWIN.AUD
+		LoseNotification: HI_MFAIL.AUD
+	ConquestVictoryConditions@Ordos:
+		Race: ordos
+		WinNotification: OI_MWIN.AUD
+		LoseNotification: OI_MFAIL.AUD
 	PowerManager:
 	AllyRepair:
 	PlayerResources:
@@ -102,8 +65,15 @@ Player:
 	PlayerColorPalette:
 		BasePalette: d2k
 		RemapIndex: 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255
-	BaseAttackNotifier:
+	BaseAttackNotifier@Atreides:
+		Race: atreides
 		Audio: AI_ATACK.AUD
+	BaseAttackNotifier@Harkonnen:
+		Race: harkonnen
+		Audio: HI_ATACK.AUD
+	BaseAttackNotifier@Ordos:
+		Race: ordos
+		Audio: OI_ATACK.AUD
 
 World:	
 	OpenWidgetAtGameStart:
@@ -185,7 +155,7 @@ World:
 		SpriteNames: spice0
 		ValuePerUnit: 35
 		Name: Spice
-		PipColor: Yellow
+		PipColor: Green
 		AllowedTerrainTypes: Sand
 		AllowUnderActors: false
 	SmudgeLayer@CRATER:
@@ -216,7 +186,7 @@ World:
 		SilosNeeded: AI_SILOS.AUD
 		PrimaryBuildingSelected: AI_PRMRY.AUD
 		AbilityInsufficientPower:
-		LevelUp:
+		LevelUp: SCORTIK1.aud
 	SpatialBins:
 		BinSize: 4
 	Shroud:
@@ -246,17 +216,60 @@ CRATE:
 	RevealMapCrateAction:
 		SelectionShares: 1
 		Effect: reveal-map
-#TODO: Currently only gives you an Atreides MCV
-	GiveMcvCrateAction:
+	GiveMcvCrateAction@Atreides:
 		SelectionShares: 2
 		NoBaseSelectionShares: 9001
 		Unit: mcva
-	GiveUnitCrateAction@trike:
+	GiveMcvCrateAction@Harkonnen:
+		SelectionShares: 2
+		NoBaseSelectionShares: 9001
+		Unit: mcvh
+	GiveMcvCrateAction@Ordos:
+		SelectionShares: 2
+		NoBaseSelectionShares: 9001
+		Unit: mcvo
+	GiveUnitCrateAction@Trike:
 		SelectionShares: 7
 		Unit: trike
-	GiveUnitCrateAction@quad:
+	GiveUnitCrateAction@Quad:
 		SelectionShares: 6
 		Unit: quad
+	GiveUnitCrateAction@Raider:
+		SelectionShares: 6
+		Unit: raider
+	GiveUnitCrateAction@SiegeTank:
+		SelectionShares: 6
+		Unit: siegetank
+	GiveUnitCrateAction@MissileTank:
+		SelectionShares: 6
+		Unit: missiletank
+	GiveUnitCrateAction@CombatA:
+		SelectionShares: 5
+		Unit: combata
+	GiveUnitCrateAction@CombatH:
+		SelectionShares: 5
+		Unit: combath
+	GiveUnitCrateAction@CombatO:
+		SelectionShares: 5
+		Unit: combato
+	GiveUnitCrateAction@Fremen:
+		SelectionShares: 4
+		Unit: fremen
+	GiveUnitCrateAction@Sardaukar:
+		SelectionShares: 4
+		Unit: sardaukar
+	GiveUnitCrateAction@Saboteur:
+		SelectionShares: 4
+		Unit: saboteur
+	GiveUnitCrateAction@SonicTank:
+		SelectionShares: 3
+		Unit: sonictank
+	GiveUnitCrateAction@Devast:
+		SelectionShares: 3
+		Unit: devast
+	GiveUnitCrateAction@deviatortank:
+		SelectionShares: 3
+		Unit: deviatortank
 	RenderSimple:
 	BelowUnits:
 	ProximityCaptor:
@@ -290,7 +303,6 @@ SPICEBLOOM:
 		Terrain: Spice
 
 SANDWORM:
-	Inherits: ^Infantry
 	Buildable:
 		Owner: Creep
 	Valued:
@@ -298,18 +310,29 @@ SANDWORM:
 	Tooltip:
 		Name: Sandworm
 		Description: Attracted by vibrations in the sand. Will eat units whole and has a large appetite.
-		Icon: sandwormdust
+		Icon: wormjaw
 	Health:
 		HP: 10000
+		Radius: 3
+	Armor:
+		Type: None
 	Mobile:
 		Speed: 5
 		TerrainSpeeds:
 			Sand: 100
 			Dune: 100
+			Spice: 100
+	TargetableUnit:
+		TargetTypes: Ground
 	AutoTarget:
+	AttackMove:
+		JustMove: true
 	AttackWander:
 	AttackLeap:
 		PrimaryWeapon: WormJaw
 		CanAttackGround: no
 	RenderInfantry:
 	BelowUnits:
+	GivesExperience:
+	GivesBounty:
+	DrawLineToTarget:

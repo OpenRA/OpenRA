@@ -18,7 +18,7 @@ namespace OpenRA.Mods.RA
 		void OnDock(Actor harv, DeliverResources dockOrder);
 		void GiveOre(int amount);
 		bool CanGiveOre(int amount);
-		int2 DeliverOffset { get; }
+		CVec DeliverOffset { get; }
 		bool AllowDocking { get; }
 	}
 

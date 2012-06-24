@@ -15,9 +15,9 @@ namespace OpenRA.Mods.RA.Activities
 {
 	public class Teleport : Activity
 	{
-		int2 destination;
+		CPos destination;
 
-		public Teleport(int2 destination)
+		public Teleport(CPos destination)
 		{
 			this.destination = destination;
 		}

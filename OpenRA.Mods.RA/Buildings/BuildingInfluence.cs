@@ -43,7 +43,7 @@ namespace OpenRA.Mods.RA.Buildings
 					influence[ u.X, u.Y ] = isAdd ? a : null;
 		}
 
-		public Actor GetBuildingAt(int2 cell)
+		public Actor GetBuildingAt(CPos cell)
 		{
 			if (!map.IsInMap(cell)) return null;
 			return influence[cell.X, cell.Y];

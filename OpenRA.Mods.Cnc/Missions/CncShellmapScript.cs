@@ -22,13 +22,13 @@ namespace OpenRA.Mods.RA
 	class CncShellmapScript: IWorldLoaded, ITick
 	{
 		Dictionary<string, Actor> Actors;
-		static int2 ViewportOrigin;
+		static CPos ViewportOrigin;
 
 		public void WorldLoaded(World w)
 		{
 			var b = w.Map.Bounds;
-			ViewportOrigin = new int2(b.Left + b.Width/2, b.Top + b.Height/2);
-			Game.MoveViewport(ViewportOrigin);
+			ViewportOrigin = new CPos(b.Left + b.Width/2, b.Top + b.Height/2);
+			Game.MoveViewport(ViewportOrigin.ToFloat2());
 
 			Actors = w.WorldActor.Trait<SpawnMapActors>().Actors;
 
@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA
 		void SetViewport()
 		{
 			var t = (ticks + 45) % (360f * speed) * (Math.PI / 180) * 1f / speed;
-			var loc = ViewportOrigin + new float2(-15,4) * float2.FromAngle( (float)t );
+			var loc = ViewportOrigin.ToFloat2() + (new float2(-15,4) * float2.FromAngle( (float)t ));
 			Game.viewport.Center(loc);
 		}
 
@@ -78,7 +78,7 @@ namespace OpenRA.Mods.RA
 				}));
 		}
 
-		void LoopTrack(Actor self, int2 left, int2 right)
+		void LoopTrack(Actor self, CPos left, CPos right)
 		{
 			var mobile = self.Trait<Mobile>();
 			self.QueueActivity(mobile.ScriptedMove(left));

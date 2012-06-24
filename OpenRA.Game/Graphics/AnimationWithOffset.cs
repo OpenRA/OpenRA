@@ -35,7 +35,7 @@ namespace OpenRA.Graphics
 		public Renderable Image(Actor self, string pal)
 		{
 			var p = self.CenterLocation;
-			var loc = p - 0.5f * Animation.Image.size
+			var loc = p.ToFloat2() - 0.5f * Animation.Image.size
 				+ (OffsetFunc != null ? OffsetFunc() : float2.Zero);
 			var r = new Renderable(Animation.Image, loc, pal, p.Y);
 

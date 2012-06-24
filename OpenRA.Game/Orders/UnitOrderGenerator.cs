@@ -17,7 +17,7 @@ namespace OpenRA.Orders
 {
 	class UnitOrderGenerator : IOrderGenerator
 	{
-		public IEnumerable<Order> Order( World world, int2 xy, MouseInput mi )
+		public IEnumerable<Order> Order( World world, CPos xy, MouseInput mi )
 		{
 			var underCursor = world.FindUnitsAtMouse(mi.Location)
 				.Where(a => a.HasTrait<ITargetable>())
@@ -45,7 +45,7 @@ namespace OpenRA.Orders
 		public void RenderBeforeWorld( WorldRenderer wr, World world ) { }
 		public void RenderAfterWorld( WorldRenderer wr, World world ) { }
 
-		public string GetCursor( World world, int2 xy, MouseInput mi )
+		public string GetCursor(World world, CPos xy, MouseInput mi)
 		{
 			bool useSelect = false;
 
@@ -68,7 +68,7 @@ namespace OpenRA.Orders
 			return orders[0].cursor ?? ((useSelect) ? "select" : "default");
 		}
 
-		static UnitOrderResult OrderForUnit( Actor self, int2 xy, MouseInput mi, Actor underCursor )
+		static UnitOrderResult OrderForUnit(Actor self, CPos xy, MouseInput mi, Actor underCursor)
 		{
 			if (self.Owner != self.World.LocalPlayer)
 				return null;

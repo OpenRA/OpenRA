@@ -1,21 +1,22 @@
 # make structures appear earlier when errecting from ground
 # too few DATA.R8 frames?
-# carryalls should automatically transport harvesters (needs complex logic)
+# carryalls should pickup vehicles not land so that things can roll in
+# carryalls should automatically transport harvesters
+# carryalls should automatically transport vehicles to repair pad if player uses the repair cursor
 # windtrap animations missing
 # outpost animations missing
 # construction yard crane animations missing
 # welding animation (factories) missing
 # chimney animation (refinery) missing
-# harvester unload and harvest animation missing
+# harvest animation missing
+# harvester unload animation ugly
 # add more spice tiles and make them fit
 # add game logic for concrete plates (use terrain overlay from bridges/ressources)
 # allow placing turrets on walls
 # RenderBuildingTurreted does not support separate turret sequence
-# ornithocopter should flap (might need new RenderOrni code for proper animation)
-# R8 converter needs infantry frame resorter
+# R8 converter needs infantry/ornithocopter frame resorter
 # add grenade thrower
-# add sandworm (behave like a moving anti-vehicle mine)
-# add thumper which deploys and really attracts sandworms
+# make sandworm behave like a moving anti-vehicle mine
 # add neutral buildings: emperor palace, fremen siech, smugglers factory
 # add deathhand missile (nuke)
 # maybe add ornithocopter strikes (they are currently directly contrallable units with non-reloading machine guns as in Dune II)
@@ -26,14 +27,10 @@
 # rework chrome UI, dialoges, tabs
 # add sonic tank weapon (currently uses tesla)
 # make deviator change the allegiance of ememy units (currently shoots rockets)
-# allow frigate to deliver 5 units at once to starport
 # starport prices should vary
-# reinforcements have arrived is played twice when ordering via starport
 # fix shroud, currently falls back to 24x24 shadow from RA (Dune's 32x32 tiles differ completely from RA/CnC)
 # black spots on buildings should be fading team colors
 # gamefile extraction (setup/setup.z) from CD fails
 # support patch 1.06 gamefiles: DATA.R8 has more frames and currently fails to extract, also featuring new terrain with white houses and new unit: grenade thrower
-# mouse cursor has no transparency and is a little pixelish
 # infantry-only areas (Rough) do not show the dark-green mouse cursor
 # put TilesetBuilder.Export into OpenRA.Utility to call the functions directly when extracting game-files (instead of opening a GUI)
-# replace RA sounds by Dune 2000 ones
