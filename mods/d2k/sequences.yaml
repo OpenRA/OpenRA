@@ -937,7 +937,6 @@ powerdown:
 	disabled: speed
 		Start: 3
 
-#TODO: falls back to RA, different palette
 poweroff:
 	offline:
 		Start: 0
@@ -962,7 +961,6 @@ overlay:
 	target-invalid:
 		Start: 1
 
-#TODO: falls back to RA, different palette
 rallypoint:
 	flag:flagfly
 		Start: 0
