@@ -14,6 +14,7 @@ namespace OpenRA.Mods.RA
 {
 	class ActorLostNotificationInfo : ITraitInfo
 	{
+		public readonly string Race = null;
 		public readonly string Notification = null;
 		public readonly bool NotifyAll = false;
 
@@ -31,6 +32,8 @@ namespace OpenRA.Mods.RA
 		public void Killed(Actor self, AttackInfo e)
 		{
 			var player = (Info.NotifyAll) ? self.World.LocalPlayer : self.Owner;
+			if (Info.Race != null && Info.Race != self.Owner.Country.Race)
+				return;
 			Sound.PlayToPlayer(player, Info.Notification);
 		}
 	}

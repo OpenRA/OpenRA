@@ -19,6 +19,7 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly int NotifyInterval = 30;	/* seconds */
 		public readonly string Audio = "baseatk1.aud";
+		public readonly string Race = null;
 
 		public object Create(ActorInitializer init) { return new BaseAttackNotifier(this); }
 	}
@@ -34,6 +35,7 @@ namespace OpenRA.Mods.RA
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
+			if (info.Race != null && info.Race != self.Owner.Country.Race) return;
 			/* only track last hit against our base */
 			if (!self.HasTrait<Building>())
 				return;

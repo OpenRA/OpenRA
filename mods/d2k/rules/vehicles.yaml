@@ -24,6 +24,8 @@
 	MustBeDestroyed:
 	BaseBuilding:
 	-AttackMove:
+	Transforms:
+		TransformSounds: BUILD1.aud
 
 HARVESTER:
 	Inherits: ^Vehicle

@@ -6,6 +6,18 @@ CONYARDO:
 		IntoActor: mcvo
 		Offset:1,1
 		Facing: 270
+	ProductionQueue@Building:
+		QueuedAudio: OI_BUILD.AUD
+		OnHoldAudio: OI_HOLD.AUD
+		ReadyAudio: OI_BDRDY.AUD
+		CancelledAudio: OI_CANCL.AUD
+		BlockedAudio: OI_NROOM.AUD
+	ProductionQueue@Defense:
+		QueuedAudio: OI_BUILD.AUD
+		OnHoldAudio: OI_HOLD.AUD
+		ReadyAudio: OI_BDRDY.AUD
+		CancelledAudio: OI_CANCL.AUD
+		BlockedAudio: OI_NROOM.AUD
 
 PWRO:
 	Inherits: ^POWER
@@ -26,12 +38,24 @@ BARRO:
 	Buildable:
 		Prerequisites: pwro
 		Owner: ordos
+	ProductionQueue@Infantry:
+		ReadyAudio: OI_UNRDY.AUD
+		QueuedAudio:OI_TRAIN.AUD
+		OnHoldAudio: OI_HOLD.AUD
+		CancelledAudio: OI_CANCL.AUD
+		BlockedAudio: OI_NROOM.AUD
 
 HIGHTECHO:
 	Inherits: ^HIGHTECH
 	Buildable:
 		Prerequisites: radaro
 		Owner: ordos
+	ProductionQueue@Plane:
+		ReadyAudio: OI_UNRDY.AUD
+		QueuedAudio:OI_TRAIN.AUD
+		OnHoldAudio: OI_HOLD.AUD
+		CancelledAudio: OI_CANCL.AUD
+		BlockedAudio: OI_NROOM.AUD
 
 RESEARCHO:
 	Inherits: ^RESEARCH
@@ -58,6 +82,12 @@ LIGHTO:
 		Owner: ordos
 	RenderBuildingWarFactory:
 		Image: LIGHTO
+	ProductionQueue@Vehicle:
+		ReadyAudio: OI_UNRDY.AUD
+		QueuedAudio:OI_TRAIN.AUD
+		OnHoldAudio: OI_HOLD.AUD
+		CancelledAudio: OI_CANCL.AUD
+		BlockedAudio: OI_NROOM.AUD
 
 HEAVYO:
 	Inherits: ^HEAVY
@@ -66,6 +96,12 @@ HEAVYO:
 		Owner: ordos
 	RenderBuildingWarFactory:
 		Image: HEAVYO
+	ProductionQueue@Vehicle:
+		ReadyAudio: OI_UNRDY.AUD
+		QueuedAudio:OI_TRAIN.AUD
+		OnHoldAudio: OI_HOLD.AUD
+		CancelledAudio: OI_CANCL.AUD
+		BlockedAudio: OI_NROOM.AUD
 
 RADARO:
 	Inherits: ^RADAR
@@ -78,11 +114,14 @@ STARPORTO:
 	Buildable:
 		Prerequisites: radaro
 		Owner: ordos
-	ProductionQueue:
-		QueuedAudio: OI_ORDER.AUD
+	ProductionAirdrop:
 		ReadyAudio: OI_REINF.AUD
+	ProductionQueue@Vehicle:
+		QueuedAudio: OI_ORDER.AUD
+		ReadyAudio: 
 		OnHoldAudio: OI_HOLD.AUD
 		CancelledAudio: OI_CANCL.AUD
+		BlockedAudio: OI_NROOM.AUD
 
 REPAIRO:
 	Inherits: ^REPAIR
@@ -99,7 +138,6 @@ MCVO:
 		Facing: 10
 		IntoActor: conyardo
 		Offset:-1,-1
-		TransformSounds:
 		NoTransformSounds: OI_DPLOY.AUD
 	RenderUnit:
 		Image: DMCV
@@ -181,7 +219,7 @@ SABOTEUR:
 		Name: Saboteur
 		Description: Sneaky infantry, armed with explosives.\n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: destroy buildings
 	Selectable:
-#		Voice: TanyaVoice
+		Voice: SaboteurVoice
 		Bounds: 12,17,0,-9
 	Health:
 		HP: 100

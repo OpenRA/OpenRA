@@ -6,6 +6,18 @@ CONYARDA:
 		IntoActor: mcva
 		Offset:1,1
 		Facing: 270
+	ProductionQueue@Building:
+		QueuedAudio: AI_BUILD.AUD
+		OnHoldAudio: AI_HOLD.AUD
+		ReadyAudio: AI_BDRDY.AUD
+		CancelledAudio: AI_CANCL.AUD
+		BlockedAudio: AI_NROOM.AUD
+	ProductionQueue@Defense:
+		QueuedAudio: AI_BUILD.AUD
+		OnHoldAudio: AI_HOLD.AUD
+		ReadyAudio: AI_BDRDY.AUD
+		CancelledAudio: AI_CANCL.AUD
+		BlockedAudio: AI_NROOM.AUD
 
 PWRA:
 	Inherits: ^POWER
@@ -26,12 +38,24 @@ BARRA:
 	Buildable:
 		Prerequisites: pwra
 		Owner: atreides
+	ProductionQueue@Infantry:
+		ReadyAudio: AI_UNRDY.AUD
+		QueuedAudio:AI_TRAIN.AUD
+		OnHoldAudio: AI_HOLD.AUD
+		CancelledAudio: AI_CANCL.AUD
+		BlockedAudio: AI_NROOM.AUD
 
 HIGHTECHA:
 	Inherits: ^HIGHTECH
 	Buildable:
 		Prerequisites: radara
 		Owner: atreides
+	ProductionQueue@Plane:
+		ReadyAudio: AI_UNRDY.AUD
+		QueuedAudio:AI_TRAIN.AUD
+		OnHoldAudio: AI_HOLD.AUD
+		CancelledAudio: AI_CANCL.AUD
+		BlockedAudio: AI_NROOM.AUD
 
 RESEARCHA:
 	Inherits: ^RESEARCH
@@ -58,6 +82,12 @@ LIGHTA:
 		Owner: atreides
 	RenderBuildingWarFactory:
 		Image: LIGHTA
+	ProductionQueue@Vehicle:
+		ReadyAudio: AI_UNRDY.AUD
+		QueuedAudio:AI_TRAIN.AUD
+		OnHoldAudio: AI_HOLD.AUD
+		CancelledAudio: AI_CANCL.AUD
+		BlockedAudio: AI_NROOM.AUD
 
 HEAVYA:
 	Inherits: ^HEAVY
@@ -66,6 +96,12 @@ HEAVYA:
 		Owner: atreides
 	RenderBuildingWarFactory:
 		Image: HEAVYA
+	ProductionQueue@Vehicle:
+		ReadyAudio: AI_UNRDY.AUD
+		QueuedAudio:AI_TRAIN.AUD
+		OnHoldAudio: AI_HOLD.AUD
+		CancelledAudio: AI_CANCL.AUD
+		BlockedAudio: AI_NROOM.AUD
 
 RADARA:
 	Inherits: ^RADAR
@@ -78,11 +114,14 @@ STARPORTA:
 	Buildable:
 		Prerequisites: radara
 		Owner: atreides
-	ProductionQueue:
-		QueuedAudio: AI_ORDER.AUD
+	ProductionAirdrop:
 		ReadyAudio: AI_REINF.AUD
+	ProductionQueue@Vehicle:
+		QueuedAudio: AI_ORDER.AUD
+		ReadyAudio: 
 		OnHoldAudio: AI_HOLD.AUD
 		CancelledAudio: AI_CANCL.AUD
+		BlockedAudio: AI_NROOM.AUD
 
 REPAIRA:
 	Inherits: ^REPAIR
@@ -99,7 +138,6 @@ MCVA:
 		Facing: 10
 		IntoActor: conyarda
 		Offset:-1,-1
-		TransformSounds: BUILD1.aud
 		NoTransformSounds: AI_DPLOY.AUD
 	RenderUnit:
 		Image: DMCV
@@ -152,13 +190,12 @@ FREMEN:
 		Prerequisites: palacea
 	Selectable:
 		Bounds: 12,17,0,-6
-#		Voice: CommandoVoice
+		Voice: FremenVoice
 	Mobile:
 		Speed: 5
 	Health:
 		HP: 200
 	Passenger:
-		PipType: Red
 	RevealsShroud:
 		Range: 6
 	AutoTarget:
@@ -171,5 +208,5 @@ FREMEN:
 	Cloak:
 		InitialDelay: 125
 		CloakDelay: 125
-		CloakSound:
-		UncloakSound:
+		CloakSound: STEALTH1.aud
+		UncloakSound: STEALTH2.aud
