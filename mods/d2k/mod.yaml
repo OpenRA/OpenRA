@@ -25,15 +25,6 @@ Packages:
 	hires.mix
 	local.mix
 	sounds.mix
-	speech.mix
-	allies.mix
-	russian.mix
-	temperat.mix
-	snow.mix
-	interior.mix
-	~scores.mix
-	~movies1.mix
-	~movies2.mix
 
 Rules:
 	mods/d2k/rules/system.yaml

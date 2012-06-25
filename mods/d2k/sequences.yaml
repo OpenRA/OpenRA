@@ -910,15 +910,10 @@ deviatortank:
 		Start: 0
 		Facings: 32
 
-#ready/hold falls back to RA, but look ok
 pips:
 	groups: numbers
 		Start: 0
 		Length: 10
-	ready:
-		Start: 3
-	hold:
-		Start: 4
 	tag-primary: greenuparrow
 		Start: 0
 	pip-empty: dots
