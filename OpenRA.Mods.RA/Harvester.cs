@@ -159,16 +159,17 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		public void OnNotifyBlockingMove(Actor self, Actor blocking, CPos cell)
+		public void OnNotifyBlockingMove(Actor self, Actor blocking)
 		{
 			// I'm blocking someone else from moving to my location:
 			Activity act = self.GetCurrentActivity();
-			// If I'm just waiting around, then get out of the way:
+			// If I'm just waiting around then get out of the way:
 			if (act.GetType() == typeof(Wait))
 			{
 				self.CancelActivity();
 				var mobile = self.Trait<Mobile>();
 
+				var cell = self.Location;
 				var moveTo = mobile.NearestMoveableCell(cell, 2, 5);
 				self.QueueActivity(mobile.MoveTo(moveTo, 0));
 				self.SetTargetLine(Target.FromCell(moveTo), Color.Gray, false);

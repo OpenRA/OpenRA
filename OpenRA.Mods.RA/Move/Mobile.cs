@@ -101,7 +101,7 @@ namespace OpenRA.Mods.RA.Move
 		}
 	}
 
-	public class Mobile : IIssueOrder, IResolveOrder, IOrderVoice, IOccupySpace, IMove, IFacing, INudge, ISync
+	public class Mobile : IIssueOrder, IResolveOrder, IOrderVoice, IOccupySpace, IMove, IFacing, ISync
 	{
 		public readonly Actor self;
 		public readonly MobileInfo Info;
@@ -280,7 +280,7 @@ namespace OpenRA.Mods.RA.Move
 				self.CancelActivity();
 
 			if (order.OrderString == "Scatter")
-				OnNudge(self, self, true);
+				Nudge(self, self, true);
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
@@ -392,7 +392,7 @@ namespace OpenRA.Mods.RA.Move
 				self.World.ActorMap.Remove(self, this);
 		}
 
-		public void OnNudge(Actor self, Actor nudger, bool force)
+		public void Nudge(Actor self, Actor nudger, bool force)
 		{
 			/* initial fairly braindead implementation. */
 			if (!force && self.Owner.Stances[nudger.Owner] != Stance.Ally)

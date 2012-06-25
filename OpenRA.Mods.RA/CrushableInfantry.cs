@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA
 		public void WarnCrush(Actor crusher)
 		{
 			if (self.World.SharedRandom.Next(100) <= Info.WarnProbability)
-				self.Trait<Mobile>().OnNudge(self, crusher, true);
+				self.Trait<Mobile>().Nudge(self, crusher, true);
 		}
 
 		public void OnCrush(Actor crusher)
