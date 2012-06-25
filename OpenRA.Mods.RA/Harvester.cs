@@ -152,7 +152,9 @@ namespace OpenRA.Mods.RA
 					self.QueueActivity(mobile.MoveTo(moveTo, 1));
 					self.SetTargetLine(Target.FromCell(moveTo), Color.Gray, false);
 
-					self.World.WorldActor.Trait<ResourceClaimLayer>().ClaimResource(self, moveTo);
+					var territory = self.World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
+					if (territory != null) territory.ClaimResource(self, moveTo);
+
 					self.QueueActivity(new FindResources());
 					return;
 				}
@@ -258,10 +260,19 @@ namespace OpenRA.Mods.RA
 				if (order.TargetLocation != CPos.Zero)
 				{
 					var loc = order.TargetLocation;
-					var territory = self.World.WorldActor.Trait<ResourceClaimLayer>();
+					var territory = self.World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
 
-					// Find the nearest claimable cell to the order location (useful for group-select harvest):
-					loc = mobile.NearestCell(loc, p => mobile.CanEnterCell(p) && territory.ClaimResource(self, p), 1, 6);
+					if (territory != null)
+					{
+						// Find the nearest claimable cell to the order location (useful for group-select harvest):
+						loc = mobile.NearestCell(loc, p => mobile.CanEnterCell(p) && territory.ClaimResource(self, p), 1, 6);
+					}
+					else
+					{
+						// Find the nearest cell to the order location (useful for group-select harvest):
+						var taken = new HashSet<CPos>();
+						loc = mobile.NearestCell(loc, p => mobile.CanEnterCell(p) && taken.Add(p), 1, 6);
+					}
 
 					self.QueueActivity(mobile.MoveTo(loc, 0));
 					self.SetTargetLine(Target.FromCell(loc), Color.Red);
@@ -310,7 +321,7 @@ namespace OpenRA.Mods.RA
 			var harvInfo = self.Info.Traits.Get<HarvesterInfo>();
 			var mobileInfo = self.Info.Traits.Get<MobileInfo>();
 			var resLayer = self.World.WorldActor.Trait<ResourceLayer>();
-			var territory = self.World.WorldActor.Trait<ResourceClaimLayer>();
+			var territory = self.World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
 
 			// Find any harvestable resources:
 			var path = self.World.WorldActor.Trait<PathFinder>().FindPath(
@@ -325,8 +336,11 @@ namespace OpenRA.Mods.RA
 						if (!harvInfo.Resources.Contains(resType.info.Name)) return 1;
 
 						// Another harvester has claimed this resource:
-						ResourceClaim claim;
-						if (territory.IsClaimedByAnyoneElse(self, loc, out claim)) return 1;
+						if (territory != null)
+						{
+							ResourceClaim claim;
+							if (territory.IsClaimedByAnyoneElse(self, loc, out claim)) return 1;
+						}
 
 						return 0;
 					})

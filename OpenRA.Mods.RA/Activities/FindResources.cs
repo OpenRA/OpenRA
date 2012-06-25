@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA.Activities
 			var mobile = self.Trait<Mobile>();
 			var mobileInfo = self.Info.Traits.Get<MobileInfo>();
 			var resLayer = self.World.WorldActor.Trait<ResourceLayer>();
-			var territory = self.World.WorldActor.Trait<ResourceClaimLayer>();
+			var territory = self.World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
 
 			// Find harvestable resources nearby:
 			var path = self.World.WorldActor.Trait<PathFinder>().FindPath(
@@ -79,9 +79,12 @@ namespace OpenRA.Mods.RA.Activities
 						// Can the harvester collect this kind of resource?
 						if (!harvInfo.Resources.Contains(resType.info.Name)) return 1;
 
-						// Another harvester has claimed this resource:
-						ResourceClaim claim;
-						if (territory.IsClaimedByAnyoneElse(self, loc, out claim)) return 1;
+						if (territory != null)
+						{
+							// Another harvester has claimed this resource:
+							ResourceClaim claim;
+							if (territory.IsClaimedByAnyoneElse(self, loc, out claim)) return 1;
+						}
 
 						return 0;
 					})
@@ -105,8 +108,11 @@ namespace OpenRA.Mods.RA.Activities
 			}
 
 			// Attempt to claim a resource as ours:
-			if (!territory.ClaimResource(self, path[0]))
-				return Util.SequenceActivities(new Wait(25), new FindResources());
+			if (territory != null)
+			{
+				if (!territory.ClaimResource(self, path[0]))
+					return Util.SequenceActivities(new Wait(25), new FindResources());
+			}
 
 			// If not given a direct order, assume ordered to the first resource location we find:
 			if (harv.LastOrderLocation == null)
@@ -130,10 +136,10 @@ namespace OpenRA.Mods.RA.Activities
 		{
 			if (isHarvesting) return this;
 
-			var territory = self.World.WorldActor.Trait<ResourceClaimLayer>();
+			var territory = self.World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
 			if (IsCanceled)
 			{
-				territory.UnclaimByActor(self);
+				if (territory != null) territory.UnclaimByActor(self);
 				return NextActivity;
 			}
 
@@ -142,7 +148,7 @@ namespace OpenRA.Mods.RA.Activities
 
 			if (harv.IsFull)
 			{
-				territory.UnclaimByActor(self);
+				if (territory != null) territory.UnclaimByActor(self);
 				return NextActivity;
 			}
 
@@ -150,7 +156,7 @@ namespace OpenRA.Mods.RA.Activities
 			var resource = resLayer.Harvest(self.Location);
 			if (resource == null)
 			{
-				territory.UnclaimByActor(self);
+				if (territory != null) territory.UnclaimByActor(self);
 				return NextActivity;
 			}
 
