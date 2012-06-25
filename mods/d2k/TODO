@@ -28,11 +28,9 @@
 # add sonic tank weapon (currently uses tesla)
 # make deviator change the allegiance of ememy units (currently shoots rockets)
 # starport prices should vary
-# fix shroud, currently falls back to 24x24 shadow from RA (Dune's 32x32 tiles differ completely from RA/CnC)
 # black spots on buildings should be fading team colors
 # gamefile extraction (setup/setup.z) from CD fails
 # support patch 1.06 gamefiles: DATA.R8 has more frames and currently fails to extract, also featuring new terrain with white houses and new unit: grenade thrower
 # infantry-only areas (Rough) do not show the dark-green mouse cursor
 # put TilesetBuilder.Export into OpenRA.Utility to call the functions directly when extracting game-files (instead of opening a GUI)
 # group number metrics are off, should use DrawText not pips SHP
-# AcceptSmudges should be a string and not a boolean or array to seperate SmudgeTypes

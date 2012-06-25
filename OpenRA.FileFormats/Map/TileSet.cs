@@ -20,7 +20,7 @@ namespace OpenRA.FileFormats
 	public class TerrainTypeInfo
 	{
 		public string Type;
-		public bool AcceptSmudge = true;
+		public string[] AcceptsSmudgeType = { };
 		public bool IsWater = false;
 		public Color Color;
 

@@ -914,20 +914,20 @@ pips:
 	groups: numbers
 		Start: 0
 		Length: 10
-	tag-primary: greenuparrow
+	tag-primary: stars
 		Start: 0
 	pip-empty: dots
 		Start: 0
 	pip-green: dots
 		Start: 1
 
-#falls back to RA, but look ok
+#falls back to RA, but looks ok
 clock:
 	idle:
 		Start: 0
 		Length: *
 
-#falls back to RA, but look ok
+#falls back to RA, but looks ok
 powerdown:
 	disabled: speed
 		Start: 3
