@@ -158,10 +158,14 @@ World:
 		PipColor: Green
 		AllowedTerrainTypes: Sand
 		AllowUnderActors: false
-	SmudgeLayer@CRATER:
-		Type:Crater
-		Types:rockcrater1,rockcrater2,sandcrater1,sandcrater2
-		Depths:15,15,15,15
+	SmudgeLayer@rock:
+		Type:RockCrater
+		Types:rockcrater1,rockcrater2
+		Depths:15,15
+	SmudgeLayer@sand:
+		Type:SandCrater
+		Types:sandcrater1,sandcrater2
+		Depths:15,15
 	SpawnMapActors:
 	CreateMPPlayers:
 	MPStartLocations:

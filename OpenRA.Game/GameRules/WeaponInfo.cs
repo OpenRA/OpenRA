@@ -24,7 +24,7 @@ namespace OpenRA.GameRules
 		public readonly bool Ore = false;								// can this damage ore?
 		public readonly string Explosion = null;						// explosion effect to use
 		public readonly string WaterExplosion = null;					// explosion effect on hitting water (usually a splash)
-		public readonly string SmudgeType = null;						// type of smudge to apply
+		public readonly string[] SmudgeType = { };						// type of smudge to apply
 		public readonly int[] Size = { 0, 0 };							// size of the explosion. provide 2 values for a ring effect (outer/inner)
 		public readonly int InfDeath = 0;								// infantry death animation to use
 		public readonly string ImpactSound = null;						// sound to play on impact

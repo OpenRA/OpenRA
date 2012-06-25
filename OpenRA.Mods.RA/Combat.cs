@@ -48,12 +48,18 @@ namespace OpenRA.Mods.RA
 
 			Sound.Play(GetImpactSound(warhead, isWater), args.dest);
 
-			if (warhead.SmudgeType != null)
+			string SelectedSmudgeType = null;
+			foreach (string WarheadSmudgeType in warhead.SmudgeType)
+				foreach (string acceptedSmudgeType in world.GetTerrainInfo(targetTile).AcceptsSmudgeType)
+					if (WarheadSmudgeType == acceptedSmudgeType)
+						SelectedSmudgeType = WarheadSmudgeType;
+
+			if (SelectedSmudgeType != null)
 			{
 				var smudgeLayer = world.WorldActor.TraitsImplementing<SmudgeLayer>()
-					.FirstOrDefault(x => x.Info.Type == warhead.SmudgeType);
+					.FirstOrDefault(x => x.Info.Type == SelectedSmudgeType);
 				if (smudgeLayer == null)
-					throw new NotImplementedException("Unknown smudge type `{0}`".F(warhead.SmudgeType));
+					throw new NotImplementedException("Unknown smudge type `{0}`".F(SelectedSmudgeType));
 
 				if (warhead.Size[0] > 0)
 				{

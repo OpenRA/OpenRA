@@ -1,7 +1,4 @@
-
-Ground Units:
-
-All Infantry		No idle animations
+Ground Units
 E1		Works
 E2		Grenades are too accurate.
 E3		Works
@@ -9,9 +6,12 @@ E4		Works
 E6		Works
 E7		Works
 MEDI		Works
-SPY		Infiltrate action missing
+SPY		Works
 THF		Works
-C1,C2,Einstein,Kosygin		Not implemented
+C1		Works
+C2		Works
+Einstein	Works
+Kosygin		Not implemented
 
 All tracked vehicles
 1TNK	Works
@@ -21,12 +21,12 @@ All tracked vehicles
 
 Light vehicles
 V2RL	Works
-APC		Works
+APC	Works
 MNLY	Works
-MGG		Works
-MRJ		Works
+MGG	Works
+MRJ	Works
 JEEP	Works
-MCV		Works
+MCV	Works
 HARV	Works
 ARTY	Works
 
@@ -44,8 +44,8 @@ MIG		Works
 Ships
 CA		Works
 SS		Works
-DD		depth charges don't work
-PT		depth charges don't work
+DD		Works
+PT		Works
 LST		Works
 
 Aftermath Units:
