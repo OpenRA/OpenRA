@@ -63,9 +63,8 @@ namespace OpenRA.Orders
 				.Where(o => o != null)
 				.ToArray();
 
-			if( orders.Length == 0 ) return (useSelect) ? "select" : "default";
-
-			return orders[0].cursor ?? ((useSelect) ? "select" : "default");
+			var cursorName = orders.Select(o => o.cursor).FirstOrDefault();
+			return cursorName ?? (useSelect ? "select" : "default");
 		}
 
 		static UnitOrderResult OrderForUnit(Actor self, CPos xy, MouseInput mi, Actor underCursor)
