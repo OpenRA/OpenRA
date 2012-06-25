@@ -51,9 +51,7 @@ local app = {
 
     local menuBar = ide.frame.menuBar
     local menu = menuBar:GetMenu(menuBar:FindMenu("&Project"))
-    local itemid = menu:FindItem("Lua &interpreter")
-    if itemid ~= wx.wxNOT_FOUND then menu:Destroy(itemid) end
-    itemid = menu:FindItem("Project directory")
+    local itemid = menu:FindItem("Project directory")
     if itemid ~= wx.wxNOT_FOUND then menu:Destroy(itemid) end
 
     menu = menuBar:GetMenu(menuBar:FindMenu("&View"))
