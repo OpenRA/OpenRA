@@ -308,7 +308,6 @@ namespace OpenRA.Mods.RA
 		{
 			// NOTE: This is only used for the AI to find the next available resource to harvest.
 			var harvInfo = self.Info.Traits.Get<HarvesterInfo>();
-			var mobile = self.Trait<Mobile>();
 			var mobileInfo = self.Info.Traits.Get<MobileInfo>();
 			var resLayer = self.World.WorldActor.Trait<ResourceLayer>();
 			var territory = self.World.WorldActor.Trait<ResourceClaimLayer>();
