@@ -261,6 +261,7 @@ World:
 		Race: soviet
 	BibLayer:
 	ResourceLayer:
+	ResourceClaimLayer:
 	ResourceType@ore:
 		ResourceType: 1
 		Palette: terrain

@@ -164,20 +164,21 @@ namespace OpenRA.Mods.RA.Move
 		}
 
 		bool hasWaited;
-		bool hasNudged;
+		bool hasNotifiedBlocker;
 		int waitTicksRemaining;
 
-		void NudgeBlocker(Actor self, CPos nextCell)
+		void NotifyBlocker(Actor self, CPos nextCell)
 		{
-			var blocker = self.World.ActorMap.GetUnitsAt(nextCell).FirstOrDefault();
-			if (blocker == null) return;
+			foreach (var blocker in self.World.ActorMap.GetUnitsAt(nextCell))
+			{
+				Log.Write("debug", "NotifyBlocker #{0} nudges #{1} at {2} from {3}",
+					self.ActorID, blocker.ActorID, nextCell, self.Location);
 
-			Log.Write("debug", "NudgeBlocker #{0} nudges #{1} at {2} from {3}",
-				self.ActorID, blocker.ActorID, nextCell, self.Location);
-
-			var nudge = blocker.TraitOrDefault<INudge>();
-			if (nudge != null)
-				nudge.OnNudge(blocker, self, false);
+				// Notify the blocker that he's blocking our move:
+				var moveBlocked = blocker.TraitOrDefault<INotifyBlockingMove>();
+				if (moveBlocked != null)
+					moveBlocked.OnNotifyBlockingMove(blocker, self);
+			}
 		}
 
 		Pair<CPos, SubCell>? PopPath(Actor self, Mobile mobile)
@@ -192,10 +193,10 @@ namespace OpenRA.Mods.RA.Move
 					return null;
 				}
 
-				if (!hasNudged)
+				if (!hasNotifiedBlocker)
 				{
-					NudgeBlocker(self, nextCell);
-					hasNudged = true;
+					NotifyBlocker(self, nextCell);
+					hasNotifiedBlocker = true;
 				}
 
 				if (!hasWaited)
@@ -223,7 +224,7 @@ namespace OpenRA.Mods.RA.Move
 
 				return null;
 			}
-			hasNudged = false;
+			hasNotifiedBlocker = false;
 			hasWaited = false;
 			path.RemoveAt( path.Count - 1 );
 
@@ -233,7 +234,7 @@ namespace OpenRA.Mods.RA.Move
 
 		public override void Cancel( Actor self )
 		{
-			path = new List<CPos>();
+			path = new List<CPos>(0);
 			base.Cancel(self);
 		}
 

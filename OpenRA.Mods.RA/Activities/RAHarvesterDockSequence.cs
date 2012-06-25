@@ -55,6 +55,8 @@ namespace OpenRA.Mods.RA
 					state = State.Wait;
 					return this;
 				case State.Complete:
+					harv.LastLinkedProc = harv.LinkedProc;
+					harv.LinkProc(self, null);
 					return NextActivity;
 			}
 			throw new InvalidOperationException("Invalid harvester dock state");

@@ -19,13 +19,13 @@ namespace OpenRA.Mods.RA.Move
 {
 	public class PathFinderInfo : ITraitInfo
 	{
-		public object Create( ActorInitializer init ) { return new PathFinder( init.world ); }
+		public object Create(ActorInitializer init) { return new PathFinder(init.world); }
 	}
 
 	public class PathFinder
 	{
 		readonly World world;
-		public PathFinder( World world ) { this.world = world; }
+		public PathFinder(World world) { this.world = world; }
 
 		class CachedPath
 		{
@@ -47,7 +47,8 @@ namespace OpenRA.Mods.RA.Move
 				if (cached != null)
 				{
 					Log.Write("debug", "Actor {0} asked for a path from {1} tick(s) ago", self.ActorID, world.FrameNumber - cached.tick);
-					cached.tick = world.FrameNumber;
+					if (world.FrameNumber - cached.tick > MaxPathAge)
+						CachedPaths.Remove(cached);
 					return new List<CPos>(cached.result);
 				}
 
@@ -68,11 +69,11 @@ namespace OpenRA.Mods.RA.Move
 
 		public List<CPos> FindUnitPathToRange(CPos src, CPos target, int range, Actor self)
 		{
-			using( new PerfSample( "Pathfinder" ) )
+			using (new PerfSample("Pathfinder"))
 			{
 				var mi = self.Info.Traits.Get<MobileInfo>();
 				var tilesInRange = world.FindTilesInCircle(target, range)
-					.Where( t => mi.CanEnterCell(self.World, self.Owner, t, null, true));
+					.Where(t => mi.CanEnterCell(self.World, self.Owner, t, null, true));
 
 				var path = FindBidiPath(
 					PathSearch.FromPoints(world, mi, self.Owner, tilesInRange, src, true),
@@ -105,10 +106,10 @@ namespace OpenRA.Mods.RA.Move
 			var ret = new List<CPos>();
 			CPos pathNode = destination;
 
-			while( cellInfo[ pathNode.X, pathNode.Y ].Path != pathNode )
+			while (cellInfo[pathNode.X, pathNode.Y].Path != pathNode)
 			{
-				ret.Add( pathNode );
-				pathNode = cellInfo[ pathNode.X, pathNode.Y ].Path;
+				ret.Add(pathNode);
+				pathNode = cellInfo[pathNode.X, pathNode.Y].Path;
 			}
 
 			ret.Add(pathNode);
@@ -153,8 +154,8 @@ namespace OpenRA.Mods.RA.Move
 			var q = p;
 			while (ca[q.X, q.Y].Path != q)
 			{
-				ret.Add( q );
-				q = ca[ q.X, q.Y ].Path;
+				ret.Add(q);
+				q = ca[q.X, q.Y].Path;
 			}
 			ret.Add(q);
 
@@ -167,22 +168,22 @@ namespace OpenRA.Mods.RA.Move
 				ret.Add(q);
 			}
 
-			CheckSanePath( ret );
+			CheckSanePath(ret);
 			return ret;
 		}
 
-		[Conditional( "SANITY_CHECKS" )]
+		[Conditional("SANITY_CHECKS")]
 		static void CheckSanePath(List<CPos> path)
 		{
-			if( path.Count == 0 )
+			if (path.Count == 0)
 				return;
-			var prev = path[ 0 ];
-			for( int i = 0 ; i < path.Count ; i++ )
+			var prev = path[0];
+			for (int i = 0; i < path.Count; i++)
 			{
-				var d = path[ i ] - prev;
-				if( Math.Abs( d.X ) > 1 || Math.Abs( d.Y ) > 1 )
-					throw new InvalidOperationException( "(PathFinder) path sanity check failed" );
-				prev = path[ i ];
+				var d = path[i] - prev;
+				if (Math.Abs(d.X) > 1 || Math.Abs(d.Y) > 1)
+					throw new InvalidOperationException("(PathFinder) path sanity check failed");
+				prev = path[i];
 			}
 		}
 
