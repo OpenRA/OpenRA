@@ -11,7 +11,7 @@ filehistorylength = 20
 singleinstance = true
 singleinstanceport = 0xe493
 
-acandtip.shorttip = true
+acandtip.shorttip = false
 acandtip.nodynwords = true
 
 activateoutput = true

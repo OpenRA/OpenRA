@@ -239,7 +239,7 @@ end
 
 function GetTipInfo(editor, content, short)
   local caller = content:match("([%w_]+)%(%s*$")
-  local class = caller and content:match("([%w_%.]+)[%.:]"..caller.."%(%s*$")
+  local class = caller and content:match("([%w_]+)[%.:]"..caller.."%(%s*$")
   local tip = editor.api.tip
 
   local classtab = short and tip.shortfinfoclass or tip.finfoclass
