@@ -24,11 +24,12 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 		Widget panel;
 		ProgressBarWidget progressBar;
 		LabelWidget statusLabel;
+		Action continueLoading;
 		ButtonWidget retryButton, backButton;
 		Widget installingContainer, insertDiskContainer;
 
 		[ObjectCreator.UseCtor]
-		public D2kInstallFromCDLogic(Widget widget)
+		public D2kInstallFromCDLogic(Widget widget, Action continueLoading)
 		{
 			panel = widget.Get("INSTALL_FROMCD_PANEL");
 			progressBar = panel.Get<ProgressBarWidget>("PROGRESS_BAR");
@@ -42,7 +43,9 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 
 			installingContainer = panel.Get("INSTALLING");
 			insertDiskContainer = panel.Get("INSERT_DISK");
+
 			CheckForDisk();
+			this.continueLoading = continueLoading;
 		}
 
 		public static bool IsValidDisk(string diskRoot)
@@ -114,6 +117,7 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 					{
 						statusLabel.GetText = () => "Music has been copied.";
 						backButton.IsDisabled = () => false;
+						continueLoading();
 					});
 				}
 				catch

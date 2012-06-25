@@ -36,4 +36,3 @@
 # put TilesetBuilder.Export into OpenRA.Utility to call the functions directly when extracting game-files (instead of opening a GUI)
 # group number metrics are off, should use DrawText not pips SHP
 # AcceptSmudges should be a string and not a boolean or array to seperate SmudgeTypes
-# start the game after getting the game-file

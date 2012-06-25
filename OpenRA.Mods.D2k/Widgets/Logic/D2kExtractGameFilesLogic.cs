@@ -25,11 +25,12 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 		Widget panel;
 		ProgressBarWidget progressBar;
 		LabelWidget statusLabel;
+		Action continueLoading;
 		ButtonWidget retryButton, backButton;
 		Widget extractingContainer, copyFilesContainer;
 
 		[ObjectCreator.UseCtor]
-		public D2kExtractGameFilesLogic(Widget widget)
+		public D2kExtractGameFilesLogic(Widget widget, Action continueLoading)
 		{
 			panel = widget.Get("EXTRACT_GAMEFILES_PANEL");
 			progressBar = panel.Get<ProgressBarWidget>("PROGRESS_BAR");
@@ -43,7 +44,9 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 
 			extractingContainer = panel.Get("EXTRACTING");
 			copyFilesContainer = panel.Get("COPY_FILES");
+
 			Extract();
+			this.continueLoading = continueLoading;
 		}
 
 		void Extract()
@@ -536,6 +539,7 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 						progressBar.Percentage = 100;
 						statusLabel.GetText = () => "Extraction and conversion complete.";
 						backButton.IsDisabled = () => false;
+						continueLoading();
 					});
 				}
 				catch
