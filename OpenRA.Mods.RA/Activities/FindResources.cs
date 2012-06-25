@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA.Activities
 {
 	public class FindResources : Activity
 	{
-		CPos avoidCell;
+		CPos? avoidCell;
 
 		public FindResources()
 		{
@@ -64,7 +64,8 @@ namespace OpenRA.Mods.RA.Activities
 					})
 					.WithHeuristic(loc =>
 					{
-						if (loc == avoidCell) return 1;
+						// Avoid this cell:
+						if (avoidCell.HasValue && loc == avoidCell.Value) return 1;
 
 						// Don't harvest out of range:
 						int distSquared = (loc - (harv.LastOrderLocation ?? harv.LinkedProc.Location)).LengthSquared;

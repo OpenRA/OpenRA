@@ -268,6 +268,20 @@ namespace OpenRA.Mods.RA
 
 					LastOrderLocation = loc;
 				}
+				else
+				{
+					// A bot order gives us a CPos.Zero TargetLocation, so find some good resources for him:
+					CPos? loc = FindNextResourceForBot(self);
+					// No more resources? Oh well.
+					if (!loc.HasValue)
+						return;
+
+					self.QueueActivity(mobile.MoveTo(loc.Value, 0));
+					self.SetTargetLine(Target.FromCell(loc.Value), Color.Red);
+
+					LastOrderLocation = loc;
+				}
+
 				self.QueueActivity(new FindResources());
 			}
 			else if (order.OrderString == "Deliver")
@@ -288,6 +302,42 @@ namespace OpenRA.Mods.RA
 				self.CancelActivity();
 				self.QueueActivity(new DeliverResources());
 			}
+		}
+
+		CPos? FindNextResourceForBot(Actor self)
+		{
+			// NOTE: This is only used for the AI to find the next available resource to harvest.
+			var harvInfo = self.Info.Traits.Get<HarvesterInfo>();
+			var mobile = self.Trait<Mobile>();
+			var mobileInfo = self.Info.Traits.Get<MobileInfo>();
+			var resLayer = self.World.WorldActor.Trait<ResourceLayer>();
+			var territory = self.World.WorldActor.Trait<ResourceClaimLayer>();
+
+			// Find any harvestable resources:
+			var path = self.World.WorldActor.Trait<PathFinder>().FindPath(
+				PathSearch.Search(self.World, mobileInfo, self.Owner, true)
+					.WithHeuristic(loc =>
+					{
+						// Get the resource at this location:
+						var resType = resLayer.GetResource(loc);
+
+						if (resType == null) return 1;
+						// Can the harvester collect this kind of resource?
+						if (!harvInfo.Resources.Contains(resType.info.Name)) return 1;
+
+						// Another harvester has claimed this resource:
+						ResourceClaim claim;
+						if (territory.IsClaimedByAnyoneElse(self, loc, out claim)) return 1;
+
+						return 0;
+					})
+					.FromPoint(self.Location)
+			);
+
+			if (path.Count == 0)
+				return (CPos?)null;
+
+			return path[0];
 		}
 
 		public void OnNotifyResourceClaimLost(Actor self, ResourceClaim claim, Actor claimer)

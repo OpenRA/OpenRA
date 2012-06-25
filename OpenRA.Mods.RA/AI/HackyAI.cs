@@ -260,6 +260,25 @@ namespace OpenRA.Mods.RA.AI
 			else
 				assignRolesTicks = Info.AssignRolesInterval;
 
+			// Find idle harvesters and give them orders:
+			foreach (var a in activeUnits)
+			{
+				var harv = a.TraitOrDefault<Harvester>();
+				if (harv == null) continue;
+				if (!a.IsIdle)
+				{
+					Activity act = a.GetCurrentActivity();
+					// A Wait activity is technically idle:
+					if ((act.GetType() != typeof(OpenRA.Mods.RA.Activities.Wait)) &&
+						(act.NextActivity == null || act.NextActivity.GetType() != typeof(OpenRA.Mods.RA.Activities.FindResources)))
+						continue;
+				}
+				if (!harv.IsEmpty) continue;
+
+				// Tell the idle harvester to quit slacking:
+				world.IssueOrder(new Order("Harvest", a, false));
+			}
+
 			var newUnits = self.World.ActorsWithTrait<IMove>()
 				.Where(a => a.Actor.Owner == p && !a.Actor.HasTrait<BaseBuilding>()
 					&& !activeUnits.Contains(a.Actor))
@@ -275,12 +294,12 @@ namespace OpenRA.Mods.RA.AI
 
 				activeUnits.Add(a);
 			}
-			
+
 			/* Create an attack force when we have enough units around our base. */
 			// (don't bother leaving any behind for defense.)
 			
 			int randomizedSquadSize = Info.SquadSize - 4 + random.Next(200);
-						
+
 			if (unitsHangingAroundTheBase.Count >= randomizedSquadSize)
 			{
 				BotDebug("Launch an attack.");
@@ -426,7 +445,7 @@ namespace OpenRA.Mods.RA.AI
 				world.IssueOrder(new Order("DeployTransform", mcv, false));
 			}
 			else
-					BotDebug("AI: Can't find BaseBuildUnit.");
+				BotDebug("AI: Can't find BaseBuildUnit.");
 		}
 
 		internal IEnumerable<ProductionQueue> FindQueues(string category)
