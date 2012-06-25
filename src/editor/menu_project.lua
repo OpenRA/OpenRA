@@ -72,8 +72,8 @@ local targetDirMenu = wx.wxMenu{
   {ID "debug.projectdir.currentdir",""}
 }
 
-debugMenu:Append(0,"Lua &interpreter",targetMenu,"Set the interpreter to be used")
-debugMenu:Append(0,"Project directory",targetDirMenu,"Set the project directory to be used")
+debugMenu:Append(ID_INTERPRETER,"Lua &interpreter",targetMenu,"Set the interpreter to be used")
+debugMenu:Append(ID_PROJECTDIR,"Project directory",targetDirMenu,"Set the project directory to be used")
 menuBar:Append(debugMenu, "&Project")
 
 -----------------------------
@@ -385,19 +385,6 @@ frame:Connect(ID_BREAK, wx.wxEVT_UPDATE_UI,
     event:Enable((debugger.server ~= nil) and (debugger.running)
       and (editor ~= nil) and (not debugger.scratchpad))
   end)
-
---[[
-frame:Connect(ID "view.debug.callstack", wx.wxEVT_COMMAND_MENU_SELECTED,
-  function (event)
-    if debugger.server then
-      DebuggerCreateStackWindow()
-    end
-  end)
-frame:Connect(ID "view.debug.callstack", wx.wxEVT_UPDATE_UI,
-  function (event)
-    event:Enable((debugger.server ~= nil) and (not debugger.running))
-  end)
-]]
 
 frame:Connect(wx.wxEVT_IDLE,
   function(event)

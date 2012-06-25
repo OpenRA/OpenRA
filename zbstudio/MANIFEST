@@ -41,6 +41,7 @@ bin/wxmsw28_richtext_vc_custom.dll
 bin/wxmsw28_stc_vc_custom.dll
 bin/wxmsw28_xrc_vc_custom.dll
 cfg/user-sample.lua
+interpreters/love2d.lua
 interpreters/luadeb.lua
 lualibs/copas/copas.lua
 lualibs/coxpcall/coxpcall.lua

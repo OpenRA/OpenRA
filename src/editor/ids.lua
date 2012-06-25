@@ -37,15 +37,13 @@ ID_FIND_IN_FILES    = NewID()
 ID_REPLACE_IN_FILES = NewID()
 ID_GOTOLINE         = NewID()
 ID_SORT             = NewID()
--- Debug menu
+-- Project/Debug menu
 ID_TOGGLEBREAKPOINT = NewID()
 ID_COMPILE          = NewID()
 ID_RUN              = NewID()
 ID_RUNNOW           = NewID()
 ID_ATTACH_DEBUG     = NewID()
 ID_START_DEBUG      = NewID()
---ID_USECONSOLE       = NewID()
-
 ID_STOP_DEBUG       = NewID()
 ID_STEP             = NewID()
 ID_STEP_OVER        = NewID()
@@ -56,7 +54,8 @@ ID_TRACE            = NewID()
 ID_VIEWCALLSTACK    = NewID()
 ID_VIEWWATCHWINDOW  = NewID()
 ID_CLEAROUTPUT      = NewID()
-ID_DEBUGGER_PORT    = NewID()
+ID_PROJECTDIR       = NewID()
+ID_INTERPRETER      = NewID()
 -- Help menu
 ID_ABOUT            = wx.wxID_ABOUT
 -- Watch window menu items
@@ -65,8 +64,6 @@ ID_ADDWATCH         = NewID()
 ID_EDITWATCH        = NewID()
 ID_REMOVEWATCH      = NewID()
 ID_EVALUATEWATCH    = NewID()
-
-ID_WORKDIR_CHOSE = NewID()
 
 local ids = {}
 function ID (name)

@@ -107,6 +107,8 @@ end
 
 local function shellPrint(marker, ...)
   local cnt = select('#',...)
+  if cnt == 0 then return end -- return if nothing to print
+
   local isPrompt = marker and (getPromptLine() > -1)
 
   local text = ''
@@ -153,6 +155,7 @@ end
 
 local function filterTraceError(err, addedret)
   local err = err:match("(.-:%d+:.-)\n[^\n]*\n[^\n]*\n[^\n]*src/editor/shellbox.lua:.*in function 'executeShellCode'")
+              or err
         err = err:gsub("stack traceback:.-\n[^\n]+\n?","")
         if addedret then err = err:gsub('^%[string "return ', '[string "') end
         err = err:match("(.*)\n[^\n]*%(tail call%): %?$") or err
@@ -240,21 +243,24 @@ local function executeShellCode(tx)
 
   DisplayShellPrompt('')
 
-  if remotesend then remotesend(tx); return end
+  -- try to compile as statement
+  local _, err = loadstring(tx)
+  local isstatement = not err
 
-  local addedret, forceexpression = false, tx:match("^%s*=%s*")
-  local fn,err = loadstring(tx)
-  -- for expression queries create the return
-  if err and (err:find("'=' expected near '<eof>'") or
-              err:find("syntax error near '") or
-              err:find("unexpected symbol near '")) then
-    local errmore
-    fn,errmore = loadstring("return "..tx:gsub("^%s*=%s*",""))
-    addedret = not errmore
+  if remotesend then remotesend(tx, isstatement); return end
+
+  local addedret, forceexpression = true, tx:match("^%s*=%s*")
+  tx = tx:gsub("^%s*=%s*","")
+  fn, err = loadstring("return "..tx)
+  if not forceexpression and err and
+     (err:find("'<eof>' expected near '") or
+      err:find("unexpected symbol near '")) then
+    fn, err = loadstring(tx)
+    addedret = false
   end
   
   if fn == nil and err then
-    DisplayShellErr(err)
+    DisplayShellErr(filterTraceError(err, addedret))
   elseif fn then
     setfenv(fn,env)
 
@@ -280,7 +286,12 @@ local function executeShellCode(tx)
         for i,v in pairs(res) do -- stringify each of the returned values
           res[i] = mobdebug.line(v, {nocode = true, comment = 1})
         end
-        if #res == 0 then res = {'nil'} end
+        -- add nil only if we are forced (using =) or if this is not a statement
+        -- this is needed to print 'nil' when asked for 'foo',
+        -- and don't print it when asked for 'print(1)'
+        if #res == 0 and (forceexpression or not isstatement) then
+          res = {'nil'}
+        end
       end
       DisplayShell((table.unpack or unpack)(res))
     end

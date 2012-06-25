@@ -96,9 +96,10 @@ local function killClient()
     -- (at least on Windows Vista SP2)
     local ret = wx.wxProcess.Kill(debugger.pid, wx.wxSIGKILL, wx.wxKILL_CHILDREN)
     if ret == wx.wxKILL_OK then
-      DisplayOutput("Stopped process (pid: "..debugger.pid..").\n")
+      DisplayOutput(("Program stopped (pid: %d).\n"):format(debugger.pid))
     elseif ret ~= wx.wxKILL_NO_PROCESS then
-      DisplayOutput("Unable to stop process (pid: "..debugger.pid.."), code "..tostring(ret)..".\n")
+      DisplayOutput(("Unable to stop programs (pid: %d), code %d.\n")
+        :format(debugger.pid, ret))
     end
     debugger.pid = nil
   end
@@ -138,10 +139,29 @@ local function activateDocument(fileName, line)
   return activated ~= nil, activated
 end
 
-debugger.shell = function(expression)
+local function reSetBreakpoints()
+  -- remove all breakpoints that may still be present from the last session
+  -- this only matters for those remote clients that reload scripts
+  -- without resetting their breakpoints
+  debugger.handle("delallb")
+
+  -- go over all windows and find all breakpoints
+  if (not debugger.scratchpad) then
+    for _, document in pairs(ide.openDocuments) do
+      local editor = document.editor
+      local filePath = document.filePath
+      local line = editor:MarkerNext(0, BREAKPOINT_MARKER_VALUE)
+      while line ~= -1 do
+        debugger.handle("setb " .. filePath .. " " .. (line+1))
+        line = editor:MarkerNext(line + 1, BREAKPOINT_MARKER_VALUE)
+      end
+    end
+  end
+end
+
+debugger.shell = function(expression, isstatement)
   if debugger.server and not debugger.running then
     copas.addthread(function ()
-        local addedret = false
         -- exec command is not expected to return anything.
         -- eval command returns 0 or more results.
         -- 'values' has a list of serialized results returned.
@@ -149,12 +169,14 @@ debugger.shell = function(expression)
         -- 'nil' is always returned in this case.
         -- the first value returned by eval command is not used;
         -- this may need to be taken into account by other debuggers.
-        local _, values, err = debugger.handle('exec ' .. expression)
-        if err and (err:find("'=' expected near '<eof>'") or
-                    err:find("syntax error near '") or
-                    err:find("unexpected symbol near '")) then
-          _, values, err = debugger.handle('eval ' .. expression:gsub("^%s*=%s*",""))
-          addedret = true
+        local addedret, forceexpression = true, expression:match("^%s*=%s*")
+        expression = expression:gsub("^%s*=%s*","")
+        local _, values, err = debugger.evaluate(expression)
+        if not forceexpression and err and
+          (err:find("'<eof>' expected near '") or
+           err:find("unexpected symbol near '")) then
+          _, values, err = debugger.execute(expression)
+          addedret = false
         end
 
         if err then
@@ -162,7 +184,9 @@ debugger.shell = function(expression)
           DisplayShellErr(err)
         elseif addedret or #values > 0 then
           -- if empty table is returned, then show nil if this was an expression
-          if addedret and #values == 0 then values = {'nil'} end
+          if #values == 0 and (forceexpression or not isstatement) then
+            values = {'nil'}
+          end
           DisplayShell((table.unpack or unpack)(values))
         end
       end)
@@ -171,7 +195,8 @@ end
 
 debugger.listen = function()
   local server = socket.bind("*", debugger.portnumber)
-  DisplayOutput("Started debugger server; clients can connect to "..wx.wxGetHostName()..":"..debugger.portnumber..".\n")
+  DisplayOutput(("Debugger server started at %s:%d.\n")
+    :format(wx.wxGetHostName(), debugger.portnumber))
   copas.autoclose = false
   copas.addserver(server, function (skt)
       if debugger.server then
@@ -197,10 +222,7 @@ debugger.listen = function()
       -- set basedir first, before loading to make sure that the path is correct
       debugger.handle("basedir " .. debugger.basedir)
 
-      -- remove all breakpoints that may still be present from the last session
-      -- this only matters for those remote clients that reload scripts
-      -- without resetting their breakpoints
-      debugger.handle("delallb")
+      reSetBreakpoints()
 
       if (options.run) then
         -- do nothing here
@@ -231,33 +253,24 @@ debugger.listen = function()
               if activated then
                 debugger.basedir = path
                 debugger.handle("basedir " .. debugger.basedir)
+                -- reset breakpoints again as basedir has changed
+                reSetBreakpoints()
               end
             end
           end
 
           if not activated then
-            DisplayOutput("Can't find file '" .. file .. "' to activate for debugging; open the file before debugging.\n")
+            DisplayOutput(("Can't find file '%s' to activate for debugging; open the file in the editor before debugging.\n")
+              :format(file))
             return debugger.terminate()
           end
         elseif err then
-          DisplayOutput("Can't debug the script in the active editor window. Compilation error:\n" .. err .. "\n")
+          DisplayOutput(("Can't debug the script in the active editor window. Compilation error:\n%s\n")
+            :format(err))
           return debugger.terminate()
         else
           debugger.scratchable = true
           activateDocument(startfile, 1)
-        end
-      end
-
-      -- go over all windows and find all breakpoints
-      if (not debugger.scratchpad) then
-        for _, document in pairs(ide.openDocuments) do
-          local editor = document.editor
-          local filePath = document.filePath
-          local line = editor:MarkerNext(0, BREAKPOINT_MARKER_VALUE)
-          while line ~= -1 do
-            debugger.handle("setb " .. filePath .. " " .. (line+1))
-            line = editor:MarkerNext(line + 1, BREAKPOINT_MARKER_VALUE)
-          end
         end
       end
 
@@ -268,7 +281,8 @@ debugger.listen = function()
       updateStackSync()
       updateWatchesSync()
 
-      DisplayOutput("Started remote debugging session (base directory: '" .. debugger.basedir .. "').\n")
+      DisplayOutput(("Debugging session started in '%s'.\n")
+        :format(debugger.basedir))
       
       if (options.run) then
         local file, line = debugger.handle("run")
@@ -410,12 +424,8 @@ function DebuggerStop()
     ShellSupportRemote(nil)
     ClearAllCurrentLineMarkers()
     DebuggerScratchpadOff()
-    DisplayOutput("Completed debugging session.\n")
+    DisplayOutput("Debugging session completed.\n")
   end
-end
-
-function DebuggerCreateStackWindow()
-  DisplayOutput("Not Yet Implemented\n")
 end
 
 function DebuggerCloseStackWindow()

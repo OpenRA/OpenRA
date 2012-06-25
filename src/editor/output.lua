@@ -107,18 +107,23 @@ end
 function CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
   if (not cmd) then return end
 
+  -- try to extract the name of the executable from the command
+  -- the executable may not have the extension and may be in quotes
   local exename = string.gsub(cmd, "\\", "/")
-  exename = string.match(exename,'%/*([^%/]+%.%w+)') or exename
-  exename = string.match(exename,'%/*([^%/]+%.%w+)[%s%"]') or exename
+  local _,_,fullname = string.find(exename,'^[\'"]([^\'"]-)[\'"]')
+  exename = string.match(fullname or exename,'/?([^/]+)%s')
+    or string.match(fullname or exename,'/?([^/]+)$')
+    or fullname or exename
 
   uid = uid or exename
 
   if (CommandLineRunning(uid)) then
-    DisplayOutput("Conflicting process still running: "..cmd.."\n")
+    DisplayOutput(("Program can't start because conflicting process is running as '%s'.\n")
+      :format(cmd))
     return
   end
 
-  DisplayOutput("Running program: "..cmd.."\n")
+  DisplayOutput(("Program starting as '%s'.\n"):format(cmd))
 
   local proc = nil
   local customproc
@@ -146,20 +151,19 @@ function CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
     wx.wxFileName.SetCwd(oldcwd)
   end
 
-  -- For asynchronous execution, he return value is the process id and
+  -- For asynchronous execution, the return value is the process id and
   -- zero value indicates that the command could not be executed.
   -- The return value of -1 in this case indicates that we didn't launch
   -- a new process, but connected to the running one (e.g. DDE under Windows).
   if not pid or pid == -1 or pid == 0 then
-    DisplayOutput("Unable to run program: "..cmd.."\n")
+    DisplayOutput(("Program unable to run as '%s'\n"):format(cmd))
     customproc = nil
     return
-  else
-    DisplayOutput(
-      "Process: "..uid..", pid:"..tostring(pid)..
-      ", started in '"..(wdir and wdir or wx.wxFileName.GetCwd()).."'\n")
-    customprocs[pid] = {proc=customproc, uid=uid, endcallback=endcallback}
   end
+
+  DisplayOutput(("Program '%s' started in '%s' (pid: %d).\n")
+    :format(uid, (wdir and wdir or wx.wxFileName.GetCwd()), pid))
+  customprocs[pid] = {proc=customproc, uid=uid, endcallback=endcallback, started = os.clock()}
 
   local streamin = proc and proc:GetInputStream()
   local streamerr = proc and proc:GetErrorStream()
@@ -251,6 +255,7 @@ errorlog:Connect(wx.wxEVT_END_PROCESS, function(event)
         GetEditor():SetFocus()
       end
       nameTab(errorlog, "Output")
+      local runtime = os.clock() - customprocs[pid].started
 
       streamins[pid] = nil
       streamerrs[pid] = nil
@@ -261,7 +266,8 @@ errorlog:Connect(wx.wxEVT_END_PROCESS, function(event)
       customprocs[pid] = nil
       unHideWxWindow(0)
       DebuggerStop()
-      DisplayOutput("Program finished (pid: "..pid..").\n")
+      DisplayOutput(("Program completed in %.2f seconds (pid: %d).\n")
+        :format(runtime, pid))
     end
   end)
 
