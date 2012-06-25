@@ -240,6 +240,7 @@ namespace OpenRA.Mods.RA.Widgets
 						{
 							for (var d = 1; d < repeats; d++)
 							{
+								textBits.Remove(Pair.New(overlayPos + new float2(-24, -14), (d-1).ToString()));
 								textBits.Add(Pair.New(overlayPos + new float2(-24, -14), d.ToString()));
 							}
 						}
