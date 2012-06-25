@@ -166,7 +166,7 @@ namespace OpenRA.Mods.RA
 			// I'm blocking someone else from moving to my location:
 			Activity act = self.GetCurrentActivity();
 			// If I'm just waiting around then get out of the way:
-			if (act.GetType() == typeof(Wait))
+			if (act == null || act.GetType() == typeof(Wait))
 			{
 				self.CancelActivity();
 				var mobile = self.Trait<Mobile>();
