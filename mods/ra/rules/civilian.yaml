@@ -19,6 +19,12 @@ V01:
 		Dimensions: 2,2
 	Tooltip:
 		Name: Church
+	RevealsShroud:
+		Range: 10
+	Capturable:
+		Type: civilianbuilding
+		CaptureCompleteTime: 0
+
 V02:
 	Inherits: ^CivBuilding
 	Building:
