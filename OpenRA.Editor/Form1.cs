@@ -148,6 +148,23 @@ namespace OpenRA.Editor
 			foreach (var tc in tileset.Templates.GroupBy(t => t.Value.Category))
 			{
 				var category = tc.Key ?? "(Uncategorized)";
+				var categoryHeader = new Label
+				{
+					BackColor = SystemColors.Highlight,
+					ForeColor = SystemColors.HighlightText,
+					Text = category,
+					AutoSize = false,
+					Height = 24,
+					TextAlign = ContentAlignment.MiddleLeft,
+					Width = tilePalette.ClientSize.Width,
+				};
+				// hook this manually, anchoring inside FlowLayoutPanel is flaky.
+				tilePalette.Resize += (_,e) => categoryHeader.Width = tilePalette.ClientSize.Width;
+
+				if (tilePalette.Controls.Count > 0)
+					tilePalette.SetFlowBreak(
+						tilePalette.Controls[tilePalette.Controls.Count - 1], true);
+				tilePalette.Controls.Add(categoryHeader);
 
 				foreach( var t in tc )
 				{
