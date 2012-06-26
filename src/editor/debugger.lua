@@ -35,6 +35,17 @@ local function updateWatchesSync()
 end
 
 local simpleType = {['nil'] = true, ['string'] = true, ['number'] = true, ['boolean'] = true}
+local stackItemValue = {}
+local function checkIfExpandable(value, item)
+  local expandable = type(value) == 'table' and next(value) ~= nil
+    and not stackItemValue[value] -- only expand first time
+  if expandable then -- cache table value to expand when requested
+    stackItemValue[item:GetValue()] = value
+    stackItemValue[value] = item:GetValue() -- to avoid circular refs
+  end
+  return expandable
+end
+
 local function updateStackSync()
   local stackCtrl = debugger.stackCtrl
   if stackCtrl and debugger.server
@@ -45,6 +56,7 @@ local function updateStackSync()
     stackCtrl:DeleteAllItems()
     local params = {comment = false, nocode = true}
     local root = stackCtrl:AddRoot("Stack")
+    stackItemValue = {} -- reset cache of items in the stack
     for _,frame in ipairs(stack) do
       -- "main chunk at line 24"
       -- "foo() at line 13 (defined at foobar.lua:11)"
@@ -66,14 +78,20 @@ local function updateStackSync()
         local text = ("%s = %s%s"):
           format(name, mobdebug.line(value, params),
                  simpleType[type(value)] and "" or ("  --[["..comment.."]]"))
-        stackCtrl:AppendItem(callitem, text, 1)
+        local item = stackCtrl:AppendItem(callitem, text, 1)
+        if checkIfExpandable(value, item) then
+          stackCtrl:SetItemHasChildren(item, true)
+        end
       end
       for name,val in pairs(frame[3]) do
         local value, comment = val[1], val[2]
         local text = ("%s = %s%s"):
           format(name, mobdebug.line(value, params),
                  simpleType[type(value)] and "" or ("  --[["..comment.."]]"))
-        stackCtrl:AppendItem(callitem, text, 2)
+        local item = stackCtrl:AppendItem(callitem, text, 2)
+        if checkIfExpandable(value, item) then
+          stackCtrl:SetItemHasChildren(item, true)
+        end
       end
       stackCtrl:SortChildren(callitem)
       stackCtrl:Expand(callitem)
@@ -86,6 +104,12 @@ end
 local function updateStackAndWatches()
   if debugger.server and not debugger.running then
     copas.addthread(function() updateStackSync() updateWatchesSync() end)
+  end
+end
+
+local function updateWatches()
+  if debugger.server and not debugger.running then
+    copas.addthread(function() updateWatchesSync() end)
   end
 end
 
@@ -464,7 +488,7 @@ function DebuggerCreateStackWindow()
 
   local stackCtrl = wx.wxTreeCtrl(stackWindow, ID "debug.stack",
     wx.wxDefaultPosition, wx.wxDefaultSize,
-    wx.wxTR_HAS_BUTTONS + wx.wxTR_SINGLE + wx.wxTR_HIDE_ROOT)
+    wx.wxTR_LINES_AT_ROOT + wx.wxTR_HAS_BUTTONS + wx.wxTR_SINGLE + wx.wxTR_HIDE_ROOT)
 
   debugger.stackCtrl = stackCtrl
 
@@ -480,6 +504,32 @@ function DebuggerCreateStackWindow()
       stackCtrl = nil
       event:Skip()
     end)
+
+  stackCtrl:Connect( wx.wxEVT_COMMAND_TREE_ITEM_EXPANDING,
+    function (event)
+      local item_id = event:GetItem()
+      local count = stackCtrl:GetChildrenCount(item_id, false)
+      if count > 0 then return true end
+
+      local image = stackCtrl:GetItemImage(item_id)
+      local num = 1
+      for name,value in pairs(stackItemValue[item_id:GetValue()]) do
+        local strval = mobdebug.line(value, {comment = false, nocode = true})
+        local text = type(name) == "number"
+          and (num == name and strval or ("[%s] = %s"):format(name, strval))
+          or ("%s = %s"):format(name, strval)
+        local item = stackCtrl:AppendItem(item_id, text, image)
+        if checkIfExpandable(value, item) then
+          stackCtrl:SetItemHasChildren(item, true)
+        end
+        num = num + 1
+      end
+
+      stackCtrl:SortChildren(item_id)
+      return true
+    end)
+  stackCtrl:Connect( wx.wxEVT_COMMAND_TREE_ITEM_COLLAPSED,
+    function() return true end)
 
   updateStackAndWatches()
 end
@@ -577,7 +627,7 @@ function DebuggerCreateWatchWindow()
     end)
 
   watchWindow:Connect(ID_EVALUATEWATCH, wx.wxEVT_COMMAND_MENU_SELECTED,
-    function () updateStackAndWatches() end)
+    function () updateWatches() end)
   watchWindow:Connect(ID_EVALUATEWATCH, wx.wxEVT_UPDATE_UI,
     function (event)
       event:Enable(watchCtrl:GetItemCount() > 0)
@@ -587,7 +637,7 @@ function DebuggerCreateWatchWindow()
     function (event)
       if #(event:GetText()) > 0 then
         watchCtrl:SetItem(event:GetIndex(), 0, event:GetText())
-        updateStackAndWatches()
+        updateWatches()
       end
       event:Skip()
     end)
