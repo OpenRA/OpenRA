@@ -283,6 +283,7 @@
     <Compile Include="Render\RenderBuildingCharge.cs" />
     <Compile Include="Render\RenderBuildingSilo.cs" />
     <Compile Include="Render\RenderBuildingTurreted.cs" />
+    <Compile Include="Render\RenderBuildingSeparateTurret.cs" />
     <Compile Include="Render\RenderBuildingWall.cs" />
     <Compile Include="Render\RenderBuildingWarFactory.cs" />
     <Compile Include="Render\RenderEditorOnly.cs" />

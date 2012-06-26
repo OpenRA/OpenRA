@@ -446,7 +446,7 @@ GUNTOWER:
 		Range: 7
 	RenderRangeCircle:
 	-RenderBuilding:
-	RenderBuildingTurreted:
+	RenderBuildingSeparateTurret:
 	Turreted:
 		ROT: 12
 		InitialFacing: 50
