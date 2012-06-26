@@ -122,7 +122,7 @@ namespace OpenRA.Mods.RA.Move
 			return search.WithCustomCost(loc => layer.DangerCost(self, loc, avoid.ShouldAvoid));
 		}
 
-	    static int HashList<T>(List<T> xs)
+		static int HashList<T>(List<T> xs)
 		{
 			int hash = 0;
 			int n = 0;
