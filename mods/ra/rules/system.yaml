@@ -210,12 +210,15 @@ World:
 		WaterChance: .2
 	PaletteFromCurrentTileset:
 		Name: terrain
+		ShadowIndex: 4
 	PaletteFromFile@chrome:
 		Name: chrome
 		Filename: temperat.pal
+		ShadowIndex: 3
 	PaletteFromFile@effect:
 		Name: effect
 		Filename: temperat.pal
+		ShadowIndex: 4
 	PaletteFromRGBA@shadow:
 		Name: shadow
 		R: 0

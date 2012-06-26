@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2012 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -25,13 +25,16 @@ namespace OpenRA.Graphics
 		{
 			cursors = new Dictionary<string, CursorSequence>();
 			var sequences = new MiniYaml(null, sequenceFiles.Select(s => MiniYaml.FromFile(s)).Aggregate(MiniYaml.MergeLiberal));
-			var transparent = false;
+			int[] ShadowIndex = { };
 
-			if (sequences.NodesDict.ContainsKey("Transparent"))
-				transparent = true;
+			if (sequences.NodesDict.ContainsKey("ShadowIndex"))
+				{
+					Array.Resize(ref ShadowIndex, ShadowIndex.Length + 1);
+					ShadowIndex[ShadowIndex.Length - 1] = Convert.ToInt32(sequences.NodesDict["ShadowIndex"].Value);
+				}
 
 			foreach (var s in sequences.NodesDict["Palettes"].Nodes)
-				Game.modData.Palette.AddPalette(s.Key, new Palette(FileSystem.Open(s.Value.Value), transparent));
+				Game.modData.Palette.AddPalette(s.Key, new Palette(FileSystem.Open(s.Value.Value), ShadowIndex));
 
 			foreach (var s in sequences.NodesDict["Cursors"].Nodes)
 				LoadSequencesForCursor(s.Key, s.Value);

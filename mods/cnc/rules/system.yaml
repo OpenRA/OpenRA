@@ -68,14 +68,18 @@ World:
 		Bridges: bridge1, bridge2, bridge3, bridge4
 	PaletteFromCurrentTileset@terrain:
 		Name: terrain
+		ShadowIndex: 4
 	PaletteFromCurrentTileset@static:
 		Name: staticterrain
+		ShadowIndex: 4
 	PaletteFromFile@chrome:
 		Name: chrome
 		Filename: temperat.pal
+		ShadowIndex: 3
 	PaletteFromFile@effect:
 		Name: effect
 		Filename: temperat.pal
+		ShadowIndex: 4
 	PaletteFromRGBA@shadow:
 		Name: shadow
 		R: 0
