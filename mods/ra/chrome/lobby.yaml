@@ -46,6 +46,13 @@ Background@SERVER_LOBBY:
 							X:0
 							Y:0
 							MaxLength:16
+						Image@ISADMIN:
+							Width:16
+							Height:16
+							X:150
+							Y:4
+							ImageName:isadmin
+							ImageCollection:misc
 						DropDownButton@BOT_DROPDOWN:
 							Text:Name
 							Width:150
@@ -192,6 +199,13 @@ Background@SERVER_LOBBY:
 							Height:25
 							X:160
 							Y:0
+						Image@ISADMIN:
+							Width:16
+							Height:16
+							X:150
+							Y:4
+							ImageName:isadmin
+							ImageCollection:misc
 				Container@TEMPLATE_EDITABLE_SPECTATOR:
 					X:5
 					Y:0
@@ -236,6 +250,13 @@ Background@SERVER_LOBBY:
 							Height:20
 							ImageCollection:checkbox-bits
 							ImageName:checked
+						Image@ISADMIN:
+							Width:16
+							Height:16
+							X:150
+							Y:4
+							ImageName:isadmin
+							ImageCollection:misc
 
 				Container@TEMPLATE_NONEDITABLE_SPECTATOR:
 					X:5
