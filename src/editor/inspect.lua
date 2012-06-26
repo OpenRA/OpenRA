@@ -160,7 +160,8 @@ local function analyzeProgram(editor)
     return false
   end
 
-  DisplayOutput(": " .. (warn and #warn > 0 and (#warn .. " warnings") or "no warnings.") .. "\n")
+  DisplayOutput((": %s warning%s.\n")
+    :format(#warn > 0 and #warn or 'no', #warn == 1 and '' or 's'))
   DisplayOutputNoMarker(table.concat(warn, "\n") .. "\n")
 
   return true -- analyzed ok
