@@ -144,32 +144,38 @@ namespace OpenRA.Editor
 			// construct the palette of tiles
 			var palettes = new[] { tilePalette, actorPalette, resourcePalette };
 			foreach (var p in palettes) { p.Visible = false; p.SuspendLayout(); }
-			foreach (var t in tileset.Templates)
+
+			foreach (var tc in tileset.Templates.GroupBy(t => t.Value.Category))
 			{
-				try
+				var category = tc.Key ?? "(Uncategorized)";
+
+				foreach( var t in tc )
 				{
-					var bitmap = tileset.RenderTemplate((ushort)t.Key, palette);
-					var ibox = new PictureBox
+					try
 					{
-						Image = bitmap,
-						Width = bitmap.Width / 2,
-						Height = bitmap.Height / 2,
-						SizeMode = PictureBoxSizeMode.StretchImage
-					};
-
-					var brushTemplate = new BrushTemplate { Bitmap = bitmap, N = t.Key };
-					ibox.Click += (_, e) => surface1.SetTool(new BrushTool(brushTemplate));
-
-					var template = t.Value;
-					tilePalette.Controls.Add(ibox);
-					tt.SetToolTip(ibox,
-						"{1}:{0} ({2}x{3})".F(
-						template.Image,
-						template.Id,
-						template.Size.X,
-						template.Size.Y));
+						var bitmap = tileset.RenderTemplate((ushort)t.Key, palette);
+						var ibox = new PictureBox
+						{
+							Image = bitmap,
+							Width = bitmap.Width / 2,
+							Height = bitmap.Height / 2,
+							SizeMode = PictureBoxSizeMode.StretchImage
+						};
+	
+						var brushTemplate = new BrushTemplate { Bitmap = bitmap, N = t.Key };
+						ibox.Click += (_, e) => surface1.SetTool(new BrushTool(brushTemplate));
+	
+						var template = t.Value;
+						tilePalette.Controls.Add(ibox);
+						tt.SetToolTip(ibox,
+							"{1}:{0} ({2}x{3})".F(
+							template.Image,
+							template.Id,
+							template.Size.X,
+							template.Size.Y));
+					}
+					catch { }
 				}
-				catch { }
 			}
 
 			var actorTemplates = new List<ActorTemplate>();
