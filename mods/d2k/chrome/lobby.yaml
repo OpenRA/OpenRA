@@ -46,6 +46,13 @@ Background@SERVER_LOBBY:
 							X:0
 							Y:0
 							MaxLength:16
+						Image@ISADMIN:
+							Width:16
+							Height:16
+							X:150
+							Y:4
+							ImageName:isadmin
+							ImageCollection:misc
 						DropDownButton@BOT_DROPDOWN:
 							Text:Name
 							Width:150
@@ -114,6 +121,13 @@ Background@SERVER_LOBBY:
 							Height:25
 							X:5
 							Y:0-1
+						Image@ISADMIN:
+							Width:16
+							Height:16
+							X:150
+							Y:4
+							ImageName:isadmin
+							ImageCollection:misc
 						Button@KICK:
 							Text:X
 							Width:25
@@ -172,6 +186,13 @@ Background@SERVER_LOBBY:
 							Height:25
 							X:5
 							Y:0-1
+						Image@ISADMIN:
+							Width:16
+							Height:16
+							X:150
+							Y:4
+							ImageName:isadmin
+							ImageCollection:misc
 						DropDownButton@NAME_HOST:
 							Text:Name
 							Width:150
@@ -197,6 +218,13 @@ Background@SERVER_LOBBY:
 							Width:150
 							Height:25
 							MaxLength:16
+						Image@ISADMIN:
+							Width:16
+							Height:16
+							X:150
+							Y:4
+							ImageName:isadmin
+							ImageCollection:misc
 						DropDownButton@COLOR:
 							Width:80
 							Height:25
@@ -243,6 +271,13 @@ Background@SERVER_LOBBY:
 							Height:25
 							X:5
 							Y:0-1
+						Image@ISADMIN:
+							Width:16
+							Height:16
+							X:150
+							Y:4
+							ImageName:isadmin
+							ImageCollection:misc
 						Button@KICK:
 							Text:X
 							Width:25

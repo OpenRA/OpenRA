@@ -121,6 +121,7 @@ World:
 		ProductionTabsWidget: PRODUCTION_TABS
 	BibLayer:
 	ResourceLayer:
+	ResourceClaimLayer:
 	ResourceType@green-tib:
 		ResourceType: 1
 		Palette: staticterrain

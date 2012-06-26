@@ -373,6 +373,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					kickButton.OnClick = () => orderManager.IssueOrder(Order.Command("kick " + client.Index));
 				}
 
+				template.Get<ImageWidget>("ISADMIN").IsVisible = () => client != null && client.IsAdmin;
+
 				template.IsVisible = () => true;
 				Players.AddChild(template);
 			}
@@ -418,6 +420,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					kickButton.IsDisabled = () => orderManager.LocalClient.IsReady;
 					kickButton.OnClick = () => orderManager.IssueOrder(Order.Command("kick " + c.Index));
 				}
+
+				template.Get<ImageWidget>("ISADMIN").IsVisible = () => c.IsAdmin;
 
 				template.IsVisible = () => true;
 				Players.AddChild(template);

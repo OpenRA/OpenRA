@@ -101,7 +101,7 @@ namespace OpenRA.Mods.RA.Move
 		}
 	}
 
-	public class Mobile : IIssueOrder, IResolveOrder, IOrderVoice, IOccupySpace, IMove, IFacing, INudge, ISync
+	public class Mobile : IIssueOrder, IResolveOrder, IOrderVoice, IOccupySpace, IMove, IFacing, ISync
 	{
 		public readonly Actor self;
 		public readonly MobileInfo Info;
@@ -201,15 +201,39 @@ namespace OpenRA.Mods.RA.Move
 
 		public CPos NearestMoveableCell(CPos target)
 		{
+			return NearestMoveableCell(target, 1, 10);
+		}
+
+		public CPos NearestMoveableCell(CPos target, int minRange, int maxRange)
+		{
 			if (CanEnterCell(target))
 				return target;
 
 			var searched = new List<CPos>();
 			// Limit search to a radius of 10 tiles
-			for (int r = 1; r < 10; r++)
+			for (int r = minRange; r < maxRange; r++)
 				foreach (var tile in self.World.FindTilesInCircle(target, r).Except(searched))
 				{
 					if (CanEnterCell(tile))
+						return tile;
+
+					searched.Add(tile);
+				}
+
+			// Couldn't find a cell
+			return target;
+		}
+
+		public CPos NearestCell(CPos target, Func<CPos, bool> check, int minRange, int maxRange)
+		{
+			if (check(target))
+				return target;
+
+			var searched = new List<CPos>();
+			for (int r = minRange; r < maxRange; r++)
+				foreach (var tile in self.World.FindTilesInCircle(target, r).Except(searched))
+				{
+					if (check(tile))
 						return tile;
 
 					searched.Add(tile);
@@ -256,7 +280,7 @@ namespace OpenRA.Mods.RA.Move
 				self.CancelActivity();
 
 			if (order.OrderString == "Scatter")
-				OnNudge(self, self, true);
+				Nudge(self, self, true);
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
@@ -368,7 +392,7 @@ namespace OpenRA.Mods.RA.Move
 				self.World.ActorMap.Remove(self, this);
 		}
 
-		public void OnNudge(Actor self, Actor nudger, bool force)
+		public void Nudge(Actor self, Actor nudger, bool force)
 		{
 			/* initial fairly braindead implementation. */
 			if (!force && self.Owner.Stances[nudger.Owner] != Stance.Ally)

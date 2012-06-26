@@ -152,6 +152,7 @@ World:
 #		BibTypes: bib2x2,bib3x2,bib3x3
 #		BibWidths: 2,3,3
 	ResourceLayer:
+	ResourceClaimLayer:
 	ResourceType@spice:
 		ResourceType: 1
 		Palette: d2k

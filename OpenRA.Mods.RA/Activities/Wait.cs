@@ -54,7 +54,7 @@ namespace OpenRA.Mods.RA.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			return (f != null && f()) ? NextActivity : this;
+			return (f == null || f()) ? NextActivity : this;
 		}
 
 		public override void Cancel( Actor self )
