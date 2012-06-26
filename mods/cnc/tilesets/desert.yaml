@@ -12,7 +12,7 @@ Terrain:
 	TerrainType@Water:
 		Type: Water
 		IsWater: true
-		AcceptsSmudgeType: none
+		AcceptsSmudgeType:
 		Color: 93, 165, 206
 	TerrainType@Road:
 		Type: Road
@@ -20,15 +20,15 @@ Terrain:
 		Color: 168, 123, 83
 	TerrainType@Rock:
 		Type: Rock
-		AcceptsSmudgeType: none
+		AcceptsSmudgeType:
 		Color: 116, 90, 63
 	TerrainType@Tree:
 		Type: Tree
-		AcceptsSmudgeType: none
+		AcceptsSmudgeType:
 		Color: 28, 32, 36
 	TerrainType@River:
 		Type: River
-		AcceptsSmudgeType: none
+		AcceptsSmudgeType:
 		Color: 111, 132, 139
 	TerrainType@Rough:
 		Type: Rough
@@ -40,7 +40,7 @@ Terrain:
 		Color: 208, 192, 160
 	TerrainType@Beach:
 		Type: Beach
-		AcceptsSmudgeType: none
+		AcceptsSmudgeType:
 		Color: 176, 156, 120
 	TerrainType@Tiberium:
 		Type: Tiberium

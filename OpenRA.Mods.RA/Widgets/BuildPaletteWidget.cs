@@ -237,13 +237,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 						var repeats = queue.AllQueued().Count(a => a.Item == item.Name);
 						if (repeats > 1 || queue.CurrentItem() != firstOfThis)
-						{
-							for (var d = 1; d < repeats; d++)
-							{
-								textBits.Remove(Pair.New(overlayPos + new float2(-24, -14), (d-1).ToString()));
-								textBits.Add(Pair.New(overlayPos + new float2(-24, -14), d.ToString()));
-							}
-						}
+							textBits.Add(Pair.New(overlayPos + new float2(-24, -14), repeats.ToString()));
 					}
 					else
 						if (!buildableItems.Any(a => a.Name == item.Name))
