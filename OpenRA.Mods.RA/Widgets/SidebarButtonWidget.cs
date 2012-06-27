@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA
 		
 		readonly World world;
 		[ObjectCreator.UseCtor]
-		public SidebarButtonWidget( [ObjectCreator.Param] World world )
+		public SidebarButtonWidget( World world )
 			: base()
 		{
 			this.world = world;
@@ -33,8 +33,9 @@ namespace OpenRA.Mods.RA
 		{
 			this.world = widget.world;
 		}
-		
-		public override void DrawInner()
+
+		// TODO(jsd): might need cleanup. Used to be DrawInner().
+		public override void Draw()
 		{
 			var state = Depressed ? "pressed" : 
 						RenderBounds.Contains(Viewport.LastMousePos) ? "hover" : "normal";

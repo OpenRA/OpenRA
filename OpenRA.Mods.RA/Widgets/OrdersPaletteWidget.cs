@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA.Widgets
         readonly World world;
 
         [ObjectCreator.UseCtor]
-        public OrdersPaletteWidget([ObjectCreator.Param] World world)
+        public OrdersPaletteWidget(World world)
             : base()
         {
             this.world = world;
@@ -61,15 +61,13 @@ namespace OpenRA.Mods.RA.Widgets
 				var child = new SidebarButtonWidget(world)
 				{
 					Bounds = new Rectangle(x, 0, 32, 32),
-					OnMouseUp = mi => { 
+					OnClick = () => {
                         Game.Debug("OrderButton: {0}",s.OrderID);
 
                         if (s.IsImmediate)
                             IssueOrder(a => new Order(s.OrderID, a, false));
                         else
 							world.OrderGenerator = new RestrictedUnitOrderGenerator(s.OrderID);
-
-                        return true; 
                     },
 					Image = "opal-button",
 					DrawTooltip = (rect) => DrawOrderButtonTooltip(s, rect)
@@ -101,7 +99,8 @@ namespace OpenRA.Mods.RA.Widgets
 	{
 		public void SelectionChanged()
 		{
-			Widget.RootWidget.GetWidget<OrdersPaletteWidget>("ORDERS_PALETTE").Update();
+			// NOTE(jsd): Was `Widget.RootWidget.GetWidget`
+			Ui.Root.Get<OrdersPaletteWidget>("ORDERS_PALETTE").Update();
 		}
 	}
 }
