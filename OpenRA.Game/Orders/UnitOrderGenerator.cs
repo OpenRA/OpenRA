@@ -99,9 +99,9 @@ namespace OpenRA.Orders
 					if (acceptTargeter(o.Order))
 					{
 						string cursor = null;
-						if( underCursor != null && o.Order.CanTargetActor(self, underCursor, forceAttack, forceQueue, ref cursor))
+						if (underCursor != null && o.Order.CanTargetActor(self, underCursor, forceAttack, forceQueue, ref cursor))
 							return new UnitOrderResult( self, o.Order, o.Trait, cursor, Target.FromActor( underCursor ) );
-					if (o.Order.CanTargetLocation(self, xy, actorsAt, forceAttack, forceQueue, ref cursor))
+						if (o.Order.CanTargetLocation(self, xy, actorsAt, forceAttack, forceQueue, ref cursor))
 							return new UnitOrderResult( self, o.Order, o.Trait, cursor, Target.FromCell( xy ) );
 					}
 				}
@@ -159,18 +159,16 @@ namespace OpenRA.Orders
         static readonly Order[] NoOrders = {};
         public override IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
         {
-            if (mi.Button == MouseButton.Right)
+            if (mi.Button == MouseButton.Left)
             {
                 world.CancelInputMode();
                 return NoOrders;
             }
 
-            if (mi.Button == MouseButton.Left)
+            if (mi.Button == MouseButton.Right)
             {
                 if (!mi.Modifiers.HasModifier(Modifiers.Shift))
                     world.CancelInputMode();
-
-                mi.Button = MouseButton.Right;
             }
 
             return base.Order(world, xy, mi);
