@@ -420,11 +420,22 @@ strategic: strategic.png
 	enemy_owned: 32,32,32,32
 	player_owned: 96,0,32,32
 
+dialog4: dialog4.png
+	border-t: 5,0,52,6
+	border-b: 5,58,52,6
+	border-l: 0,5,6,54
+	border-r: 58,5,6,54
+	corner-tl: 0,0,6,6
+	corner-tr: 58,0,6,6
+	corner-bl: 0,58,6,6
+	corner-br: 58,58,6,6
+	background: 5,5,52,52
+
 opal-button-gdi: buttons.png
 	normal: 0,0,34,28
 	pressed: 34,0,34,28
 	hover: 68,0,34,28
-	
+
 opal-button-nod: buttons.png
 	normal: 0,0,34,28
 	pressed: 34,0,34,28
