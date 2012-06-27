@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA.Activities
 			var territory = self.World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
 
 			// Determine where to search from and how far to search:
-			var searchFromLoc = harv.LastOrderLocation ?? harv.LinkedProc.Location;
+			var searchFromLoc = harv.LastOrderLocation ?? (harv.LastLinkedProc ?? harv.LinkedProc ?? self).Location;
 			int searchRadius = harv.LastOrderLocation.HasValue ? harvInfo.SearchFromOrderRadius : harvInfo.SearchFromProcRadius;
 			int searchRadiusSquared = searchRadius * searchRadius;
 
