@@ -316,6 +316,10 @@ end
 
 if app.postinit then app.postinit() end
 
+-- only set menu bar *after* postinit handler as it may include adding
+-- app-specific menus (Help/About), which are not recognized by MacOS
+-- as special items unless SetMenuBar is done after menus are populated.
+ide.frame:SetMenuBar(ide.frame.menuBar)
 ide.frame:Show(true)
 
 -- Call wx.wxGetApp():MainLoop() last to start the wxWidgets event loop,

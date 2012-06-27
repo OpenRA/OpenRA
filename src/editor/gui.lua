@@ -65,7 +65,6 @@ local function createFrame()
     end)
 
   local menuBar = wx.wxMenuBar()
-  frame:SetMenuBar(menuBar)
   frame.menuBar = menuBar
   
   local statusBar = frame:CreateStatusBar( 5 )
