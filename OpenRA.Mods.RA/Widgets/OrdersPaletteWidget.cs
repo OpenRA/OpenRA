@@ -89,7 +89,7 @@ namespace OpenRA.Mods.RA.Widgets
 					DrawTooltip = (rect) => DrawOrderButtonTooltip(s, rect)
 				};
 				AddChild(child);
-				x += 34 + 3;
+				x += 34 + 4;
 			}
 		}
 
