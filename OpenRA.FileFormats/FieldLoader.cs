@@ -325,6 +325,10 @@ namespace OpenRA.FileFormats
 					((int)c.B).Clamp(0, 255));
 			}
 
+			// Don't save floats in settings.yaml using country-specific decimal separators which can be misunderstood as group seperators.
+			if (t == typeof(float))
+				return ((float)v).ToString(CultureInfo.InvariantCulture);
+
 			if (t == typeof(Rectangle))
 			{
 				var r = (Rectangle)v;

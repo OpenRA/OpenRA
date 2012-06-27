@@ -144,7 +144,7 @@ Background@SETTINGS_MENU:
 					X:100
 					Y:60
 					Width:250
-					Height:20
+					Height:25
 					Font:Regular
 					Text:Extreme
 		Container@DISPLAY_PANE:
