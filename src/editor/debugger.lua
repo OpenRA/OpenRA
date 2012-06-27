@@ -129,7 +129,7 @@ local function killClient()
     if ret == wx.wxKILL_OK then
       DisplayOutput(("Program stopped (pid: %d).\n"):format(debugger.pid))
     elseif ret ~= wx.wxKILL_NO_PROCESS then
-      DisplayOutput(("Unable to stop programs (pid: %d), code %d.\n")
+      DisplayOutput(("Unable to stop program (pid: %d), code %d.\n")
         :format(debugger.pid, ret))
     end
     debugger.pid = nil

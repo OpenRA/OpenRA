@@ -1,6 +1,7 @@
 LICENSE
 README.md
 api/lua/baselib.lua
+api/lua/love2d.lua
 api/readme.txt
 bin/clibs/lfs.dll
 bin/clibs/mojoshader.dll
