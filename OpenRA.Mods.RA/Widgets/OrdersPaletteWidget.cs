@@ -19,17 +19,17 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA.Widgets
 {
-    public class OrdersPaletteWidget : BackgroundWidget
-    {
-        readonly World world;
+	public class OrdersPaletteWidget : BackgroundWidget
+	{
+		readonly World world;
 
-        [ObjectCreator.UseCtor]
-        public OrdersPaletteWidget(World world)
-            : base()
-        {
-            this.world = world;
-        }
-		
+		[ObjectCreator.UseCtor]
+		public OrdersPaletteWidget(World world)
+			: base()
+		{
+			this.world = world;
+		}
+
 		public void DrawOrderButtonTooltip(IOrderTargeter order, Rectangle rect)
 		{
 			rect = rect.InflateBy(3, 3, 3, 3);
@@ -42,14 +42,14 @@ namespace OpenRA.Mods.RA.Widgets
 
 			WidgetUtils.DrawPanelPartial("dialog4", rect.InflateBy(0, border[0], 0, 0),
 				PanelSides.Bottom | PanelSides.Left | PanelSides.Right);
-				
-			WidgetUtils.DrawPanelPartial("dialog4", new Rectangle(tl.X, tl.Y, rect.Width+border[3], height+border[1]),
+
+			WidgetUtils.DrawPanelPartial("dialog4", new Rectangle(tl.X, tl.Y, rect.Width + border[3], height + border[1]),
 				PanelSides.Top | PanelSides.Left);
-			
-			WidgetUtils.DrawPanelPartial("dialog4", new Rectangle(tl.X+rect.Width-border[2], tl.Y, width, height),
+
+			WidgetUtils.DrawPanelPartial("dialog4", new Rectangle(tl.X + rect.Width - border[2], tl.Y, width, height),
 				PanelSides.Top | PanelSides.Right | PanelSides.Bottom);
 		}
-		
+
 		// Giant hack
 		public void Update()
 		{
@@ -61,22 +61,23 @@ namespace OpenRA.Mods.RA.Widgets
 				var child = new SidebarButtonWidget(world)
 				{
 					Bounds = new Rectangle(x, 0, 32, 32),
-					OnClick = () => {
-                        Game.Debug("OrderButton: {0}",s.OrderID);
+					OnClick = () =>
+					{
+						Game.Debug("OrderButton: {0}", s.OrderID);
 
-                        if (s.IsImmediate)
-                            IssueOrder(a => new Order(s.OrderID, a, false));
-                        else
+						if (s.IsImmediate)
+							IssueOrder(a => new Order(s.OrderID, a, false));
+						else
 							world.OrderGenerator = new RestrictedUnitOrderGenerator(s.OrderID);
-                    },
+					},
 					Image = "opal-button",
 					DrawTooltip = (rect) => DrawOrderButtonTooltip(s, rect)
 				};
 				AddChild(child);
 				x += 32;
-			}	
+			}
 		}
-		
+
 		void IssueOrder(Func<Actor, Order> f)
 		{
 			var orders = world.Selection.Actors.Select(f).ToArray();
@@ -84,16 +85,16 @@ namespace OpenRA.Mods.RA.Widgets
 			world.PlayVoiceForOrders(orders);
 		}
 
-        List<IOrderTargeter> GetOrders()
-        {
-            return world.Selection.Actors
-                .Where(a => !a.Destroyed && a.Owner == a.World.LocalPlayer)
-                .SelectMany(a => a.TraitsImplementing<IIssueOrder>())
-                .SelectMany(io => io.Orders).Distinct().ToList();
-        }
-    }
-	
-	public class UpdateOrderPaletteInfo : TraitInfo<UpdateOrderPalette> {}
+		List<IOrderTargeter> GetOrders()
+		{
+			return world.Selection.Actors
+				.Where(a => !a.Destroyed && a.Owner == a.World.LocalPlayer)
+				.SelectMany(a => a.TraitsImplementing<IIssueOrder>())
+				.SelectMany(io => io.Orders).Distinct().ToList();
+		}
+	}
+
+	public class UpdateOrderPaletteInfo : TraitInfo<UpdateOrderPalette> { }
 
 	public class UpdateOrderPalette : INotifySelection
 	{
