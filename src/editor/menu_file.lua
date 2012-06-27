@@ -12,7 +12,7 @@ local debugger = ide.debugger
 local fileMenu = wx.wxMenu({
     { ID_NEW, "&New\tCtrl-N", "Create an empty document" },
     { ID_OPEN, "&Open...\tCtrl-O", "Open an existing document" },
-    { ID_CLOSE, "&Close page\tCtrl+W", "Close the current editor window" },
+    { ID_CLOSE, "&Close page\tCtrl-W", "Close the current editor window" },
     { },
     { ID_SAVE, "&Save\tCtrl-S", "Save the current document" },
     { ID_SAVEAS, "Save &As...\tAlt-Shift-S", "Save the current document to a file with a new name" },
@@ -20,7 +20,7 @@ local fileMenu = wx.wxMenu({
     { },
     --{ ID "file.recentfiles", "Recent files",},
     { },
-    { ID_EXIT, "E&xit\tAlt-X", "Exit Program" }})
+    { ID_EXIT, "E&xit", "Exit Program" }})
 menuBar:Append(fileMenu, "&File")
 
 local filehistorymenu = wx.wxMenu({})

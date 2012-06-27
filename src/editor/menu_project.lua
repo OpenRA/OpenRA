@@ -46,17 +46,16 @@ local debugTab = {
   { ID_RUNNOW, "Run as Scratchpad\tCtrl-F6", "Execute the current project/file and keep updating the code to see immediate results", wx.wxITEM_CHECK },
   { ID_COMPILE, "&Compile\tF7", "Test compile the Lua file" },
   { ID_START_DEBUG, "Start &Debugging\tF5", "Start a debugging session" },
-  { ID_ATTACH_DEBUG, "&Start Debugger Server\tShift-F6", "Allow a client to start a debugging session" },
+  { ID_ATTACH_DEBUG, "&Start Debugger Server", "Allow a client to start a debugging session" },
   { },
   { ID_STOP_DEBUG, "S&top Debugging\tShift-F12", "Stop the currently running process" },
   { ID_STEP, "St&ep\tF11", "Step into the next line" },
   { ID_STEP_OVER, "Step &Over\tF10", "Step over the next line" },
   { ID_STEP_OUT, "Step O&ut\tShift-F10", "Step out of the current function" },
   { ID_TRACE, "Tr&ace", "Trace execution showing each executed line" },
-  { ID_BREAK, "&Break", "Stop execution of the program at the next executed line of code" },
+  { ID_BREAK, "&Break\tShift-F9", "Stop execution of the program at the next executed line of code" },
   { },
-  { ID_TOGGLEBREAKPOINT, "Toggle &Breakpoint\tF9", "Toggle Breakpoint" },
-  --{ ID "view.debug.callstack", "V&iew Call Stack", "View the call stack" },
+  { ID_TOGGLEBREAKPOINT, "Toggle Break&point\tF9", "Toggle Breakpoint" },
   { },
   { ID_CLEAROUTPUT, "C&lear Output Window", "Clear the output window before compiling or debugging", wx.wxITEM_CHECK },
 }
@@ -72,8 +71,8 @@ local targetDirMenu = wx.wxMenu{
   {ID "debug.projectdir.currentdir",""}
 }
 
-debugMenu:Append(ID_INTERPRETER,"Lua &interpreter",targetMenu,"Set the interpreter to be used")
-debugMenu:Append(ID_PROJECTDIR,"Project directory",targetDirMenu,"Set the project directory to be used")
+debugMenu:Append(ID_INTERPRETER,"Lua &Interpreter",targetMenu,"Set the interpreter to be used")
+debugMenu:Append(ID_PROJECTDIR,"Project Directory",targetDirMenu,"Set the project directory to be used")
 menuBar:Append(debugMenu, "&Project")
 
 -----------------------------
