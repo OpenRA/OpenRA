@@ -157,7 +157,7 @@ namespace OpenRA.Orders
 		public RestrictedUnitOrderGenerator(string orderId) : base(ot => ot.OrderID == orderId) { }
 
         static readonly Order[] NoOrders = {};
-        public override IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
+        public override IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
         {
             if (mi.Button == MouseButton.Right)
             {

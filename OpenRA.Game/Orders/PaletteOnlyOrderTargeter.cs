@@ -21,17 +21,17 @@ namespace OpenRA.Orders
         public string OrderID { get { return orderName; } }
         public int OrderPriority { get { return 255; } }
 
-        public bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceMove, bool forceQueue, ref string cursor)
+        public bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceQueue, ref string cursor)
         {
             return false;
         }
 
-        public bool CanTargetLocation(Actor self, int2 location, List<Actor> actorsAtLocation, bool forceAttack, bool forceQueue, bool forceMove, ref string cursor)
+        public bool CanTargetLocation(Actor self, CPos location, List<Actor> actorsAtLocation, bool forceAttack, bool forceQueue, ref string cursor)
         {
             return false;
         }
 
         public bool IsQueued { get { return false; } }
         public bool IsImmediate { get { return true; } }
-    }
+	}
 }
