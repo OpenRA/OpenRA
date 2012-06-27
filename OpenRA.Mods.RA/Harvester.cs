@@ -25,6 +25,14 @@ namespace OpenRA.Mods.RA
 		public readonly int PipCount = 7;
 		public readonly string[] Resources = { };
 		public readonly decimal FullyLoadedSpeed = .85m;
+		/// <summary>
+		/// Initial search radius (in cells) from the refinery (proc) that created us.
+		/// </summary>
+		public readonly int SearchFromProcRadius = 24;
+		/// <summary>
+		/// Search radius (in cells) from the last harvest order location to find more resources.
+		/// </summary>
+		public readonly int SearchFromOrderRadius = 12;
 
 		public object Create(ActorInitializer init) { return new Harvester(init.self, this); }
 	}

@@ -46,6 +46,11 @@ namespace OpenRA.Mods.RA.Activities
 			var resLayer = self.World.WorldActor.Trait<ResourceLayer>();
 			var territory = self.World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
 
+			// Determine where to search from and how far to search:
+			var searchFromLoc = harv.LastOrderLocation ?? harv.LinkedProc.Location;
+			int searchRadius = harv.LastOrderLocation.HasValue ? harvInfo.SearchFromOrderRadius : harvInfo.SearchFromProcRadius;
+			int searchRadiusSquared = searchRadius * searchRadius;
+
 			// Find harvestable resources nearby:
 			var path = self.World.WorldActor.Trait<PathFinder>().FindPath(
 				PathSearch.Search(self.World, mobileInfo, self.Owner, true)
@@ -68,8 +73,8 @@ namespace OpenRA.Mods.RA.Activities
 						if (avoidCell.HasValue && loc == avoidCell.Value) return 1;
 
 						// Don't harvest out of range:
-						int distSquared = (loc - (harv.LastOrderLocation ?? harv.LinkedProc.Location)).LengthSquared;
-						if (distSquared > (12 * 12))
+						int distSquared = (loc - searchFromLoc).LengthSquared;
+						if (distSquared > searchRadiusSquared)
 							return int.MaxValue;
 
 						// Get the resource at this location:
