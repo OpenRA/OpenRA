@@ -221,7 +221,7 @@ function ProjectDebug(skipcheck, debtype)
     end
   else
     local debcall = (debuggers[debtype or "debug"]):
-      format(wx.wxGetHostName(), ide.debugger.portnumber)
+      format(ide.debugger.hostname, ide.debugger.portnumber)
     local fname = getNameToRun(skipcheck)
     if not fname then return end
     runInterpreter(fname, debcall)

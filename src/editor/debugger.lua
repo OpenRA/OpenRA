@@ -17,6 +17,13 @@ debugger.watchWindow = nil -- the watchWindow, nil when not created
 debugger.watchCtrl = nil -- the child ctrl in the watchWindow
 debugger.stackWindow = nil -- the stackWindow, nil when not created
 debugger.stackCtrl = nil -- the child ctrl in the stackWindow
+debugger.hostname = (function() -- check what address is resolvable
+  local addr = wx.wxIPV4address()
+  for _, host in ipairs({wx.wxGetHostName(), wx.wxGetFullHostName()}) do
+    if addr:Hostname(host) then return host end
+  end
+  return "localhost" -- last resort; no known good hostname
+end)()
 
 local notebook = ide.frame.notebook
 
@@ -220,7 +227,7 @@ end
 debugger.listen = function()
   local server = socket.bind("*", debugger.portnumber)
   DisplayOutput(("Debugger server started at %s:%d.\n")
-    :format(wx.wxGetHostName(), debugger.portnumber))
+    :format(debugger.hostname, debugger.portnumber))
   copas.autoclose = false
   copas.addserver(server, function (skt)
       if debugger.server then
