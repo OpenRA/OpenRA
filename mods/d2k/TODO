@@ -13,7 +13,6 @@
 # add more spice tiles and make them fit
 # add game logic for concrete plates (use terrain overlay from bridges/ressources)
 # allow placing turrets on walls
-# RenderBuildingTurreted does not support separate turret sequence
 # R8 converter needs infantry/ornithocopter frame resorter
 # add grenade thrower
 # make sandworm behave like a moving anti-vehicle mine
@@ -33,4 +32,4 @@
 # support patch 1.06 gamefiles: DATA.R8 has more frames and currently fails to extract, also featuring new terrain with white houses and new unit: grenade thrower
 # infantry-only areas (Rough) do not show the dark-green mouse cursor
 # put TilesetBuilder.Export into OpenRA.Utility to call the functions directly when extracting game-files (instead of opening a GUI)
-# group number metrics are off, should use DrawText not pips SHP
+# group number metrics are off

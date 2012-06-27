@@ -128,7 +128,6 @@ namespace OpenRA.Utility
 
 			frame = srcImage[startFrame];
 
-			//TODO: This is not enough as the run and shoot animation are next to each other for each sequence in RA/CnC.
 			if (args.Contains("--infantry")) //resorting to RA/CnC compatible counter-clockwise frame order
 			{
 				endFrame = startFrame-1;
@@ -171,6 +170,34 @@ namespace OpenRA.Utility
 				{
 					OffsetX = frame.FrameWidth/2 - frame.OffsetX;
 					OffsetY = frame.FrameHeight/2 - frame.OffsetY;
+
+					Console.WriteLine("calculated OffsetX: {0}", OffsetX);
+					Console.WriteLine("calculated OffsetY: {0}", OffsetY);
+
+					var data = bitmap.LockBits(new Rectangle(x+OffsetX, 0+OffsetY, frame.Width, frame.Height), ImageLockMode.WriteOnly,
+						PixelFormat.Format8bppIndexed);
+
+					for (var i = 0; i < frame.Height; i++)
+						Marshal.Copy(frame.Image, i * frame.Width,
+							new IntPtr(data.Scan0.ToInt64() + i * data.Stride), frame.Width);
+
+					bitmap.UnlockBits(data);
+
+					x += frame.FrameWidth;
+
+					frame = srcImage[f];
+				}
+			}
+			else if (args.Contains("--turret")) //resorting to RA/CnC compatible counter-clockwise frame order
+			{
+				frame = srcImage[startFrame];
+
+				for (int f = endFrame-1; f > startFrame-1; f--)
+				{
+					if (frame.OffsetX < 0) { frame.OffsetX = 0 - frame.OffsetX; }
+					if (frame.OffsetY < 0) { frame.OffsetY = 0 - frame.OffsetY; }
+					OffsetX = 0 + frame.OffsetX;
+					OffsetY = frame.FrameHeight - frame.OffsetY;
 
 					Console.WriteLine("calculated OffsetX: {0}", OffsetX);
 					Console.WriteLine("calculated OffsetY: {0}", OffsetY);
@@ -411,6 +438,7 @@ namespace OpenRA.Utility
 					srcImage.Frames.Select( im => im.Image.Select(px => (byte)remap[px]).ToArray() ));
 		}
 
+		//This is needed because the run and shoot animation are next to each other for each sequence in RA/CnC, but not in D2k.
 		public static void TransposeShp(string[] args)
 		{
 			var srcImage = ShpReader.Load(args[1]);

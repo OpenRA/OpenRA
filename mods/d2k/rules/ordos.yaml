@@ -45,6 +45,24 @@ BARRO:
 		CancelledAudio: OI_CANCL.AUD
 		BlockedAudio: OI_NROOM.AUD
 
+GUNTOWERO:
+	Inherits: ^GUNTOWER
+	Buildable:
+		Prerequisites: conyardo
+		Owner: ordos
+
+ROCKETTOWERO:
+	Inherits: ^ROCKETTOWER
+	Buildable:
+		Prerequisites: radaro
+		Owner: ordos
+
+WALLO:
+	Inherits: ^WALL
+	Buildable:
+		Prerequisites: conyardo
+		Owner: ordos
+
 HIGHTECHO:
 	Inherits: ^HIGHTECH
 	Buildable:

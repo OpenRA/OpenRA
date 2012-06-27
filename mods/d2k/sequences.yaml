@@ -18,7 +18,35 @@ harvester:
 		Start: 10
 		Length: 1
 
-wall:
+walla:
+	idle:
+		Start: 0
+		Length: 16
+	scratched-idle:
+		Start: 0
+		Length: 16
+	damaged-idle:
+		Start: 16
+		Length: 16
+	critical-idle:
+		Start: 16
+		Length: 16
+
+wallh:
+	idle:
+		Start: 0
+		Length: 16
+	scratched-idle:
+		Start: 0
+		Length: 16
+	damaged-idle:
+		Start: 16
+		Length: 16
+	critical-idle:
+		Start: 16
+		Length: 16
+
+wallo:
 	idle:
 		Start: 0
 		Length: 16
@@ -75,7 +103,7 @@ sonictank:
 		Start: 0
 		Facings: 32
 
-guntower:
+guntowera:
 	idle:
 		Start: 0
 		Facings: 1
@@ -91,7 +119,106 @@ guntower:
 	damaged-recoil:
 		Start: 0
 		Facings: 1
-	turret: gunturret
+	turret: gunturreta
+		Start: 0
+		Facings: 32
+
+guntowerh:
+	idle:
+		Start: 0
+		Facings: 1
+	recoil:
+		Start: 0
+		Facings: 1
+	make: silomake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 0
+		Facings: 1
+	damaged-recoil:
+		Start: 0
+		Facings: 1
+	turret: gunturreth
+		Start: 0
+		Facings: 32
+
+guntowero:
+	idle:
+		Start: 0
+		Facings: 1
+	recoil:
+		Start: 0
+		Facings: 1
+	make: silomake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 0
+		Facings: 1
+	damaged-recoil:
+		Start: 0
+		Facings: 1
+	turret: gunturreto
+		Start: 0
+		Facings: 32
+
+rockettowera:
+	idle:
+		Start: 0
+		Facings: 1
+	recoil:
+		Start: 0
+		Facings: 1
+	make: silomake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 0
+		Facings: 1
+	damaged-recoil:
+		Start: 0
+		Facings: 1
+	turret: rocketturreta
+		Start: 0
+		Facings: 32
+
+rockettowerh:
+	idle:
+		Start: 0
+		Facings: 1
+	recoil:
+		Start: 0
+		Facings: 1
+	make: silomake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 0
+		Facings: 1
+	damaged-recoil:
+		Start: 0
+		Facings: 1
+	turret: rocketturreth
+		Start: 0
+		Facings: 32
+rockettowero:
+	idle:
+		Start: 0
+		Facings: 1
+	recoil:
+		Start: 0
+		Facings: 1
+	make: silomake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 0
+		Facings: 1
+	damaged-recoil:
+		Start: 0
+		Facings: 1
+	turret: rocketturreto
 		Start: 0
 		Facings: 32
 

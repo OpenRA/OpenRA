@@ -377,11 +377,10 @@
 		LowPowerSlowdown: 3
 	ProductionBar:
 
-WALL:
+^WALL:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 1000
-		Owner: atreides,harkonnen,ordos
 	SoundOnDamageTransition:
 		DamagedSound:
 		DestroyedSound:
@@ -392,6 +391,7 @@ WALL:
 	Tooltip:
 		Name: Concrete Wall
 		Description: Stop units and blocks enemy fire.
+		Icon: wallicon
 	AppearsOnRadar:
 	Building:
 		Dimensions: 1,1
@@ -423,12 +423,11 @@ WALL:
 		Types:Wall
 	Sellable:
 
-GUNTOWER:
+^GUNTOWER:
 	Inherits: ^Building
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 40
-		Owner: atreides,harkonnen,ordos
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -436,7 +435,7 @@ GUNTOWER:
 		Description: Anti-Armor base defense.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
 		Icon: turreticon
 	Building:
-		Power: -40
+		Power: -20
 	-GivesBuildableArea:
 	Health:
 		HP: 400
@@ -447,6 +446,7 @@ GUNTOWER:
 	RenderRangeCircle:
 	-RenderBuilding:
 	RenderBuildingSeparateTurret:
+		HasMakeAnimation: false
 	Turreted:
 		ROT: 12
 		InitialFacing: 50
@@ -455,6 +455,40 @@ GUNTOWER:
 	AutoTarget:
 	RequiresPower:
 	CanPowerDown:
+
+^ROCKETTOWER:
+	Inherits: ^Building
+	RequiresPower:
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Rocket Tower
+		Icon: rturreticon
+		Description: Anti-armor defensive structure.\n  Strong vs Light Vehicles, Tanks\n  Weak vs Infantry
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 60
+	Building:
+		Power: -40
+	-GivesBuildableArea:
+	Health:
+		HP: 800
+	Armor: 
+		Type: Heavy
+	RevealsShroud:
+		Range: 8
+	-RenderBuilding:
+	RenderBuildingSeparateTurret:
+		HasMakeAnimation: false
+	AttackTurreted:
+		PrimaryWeapon: TowerMissle
+		PrimaryOffset: 0,0,5,2
+		PrimaryLocalOffset: 7,-7,0,0,-25, -7,-7,0,0,25
+	Turreted:
+		ROT: 12
+		InitialFacing: 50
+	AutoTarget:
+	RenderRangeCircle:
 
 ^REPAIR:
 	Inherits: ^Building

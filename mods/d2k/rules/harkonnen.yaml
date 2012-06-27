@@ -45,6 +45,24 @@ BARRH:
 		CancelledAudio: HI_CANCL.AUD
 		BlockedAudio: HI_NROOM.AUD
 
+GUNTOWERH:
+	Inherits: ^GUNTOWER
+	Buildable:
+		Prerequisites: conyardh
+		Owner: harkonnen
+
+ROCKETTOWERH:
+	Inherits: ^ROCKETTOWER
+	Buildable:
+		Prerequisites: radarh
+		Owner: harkonnen
+
+WALLH:
+	Inherits: ^WALL
+	Buildable:
+		Prerequisites: conyardh
+		Owner: harkonnen
+
 HIGHTECHH:
 	Inherits: ^HIGHTECH
 	Buildable:

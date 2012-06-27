@@ -25,6 +25,24 @@ PWRA:
 		Prerequisites: conyarda
 		Owner: atreides
 
+GUNTOWERA:
+	Inherits: ^GUNTOWER
+	Buildable:
+		Prerequisites: conyarda
+		Owner: atreides
+
+ROCKETTOWERA:
+	Inherits: ^ROCKETTOWER
+	Buildable:
+		Prerequisites: radara
+		Owner: atreides
+
+WALLA:
+	Inherits: ^WALL
+	Buildable:
+		Prerequisites: conyarda
+		Owner: atreides
+
 REFA:
 	Inherits: ^REFINERY
 	Buildable:
