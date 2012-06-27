@@ -45,8 +45,8 @@ Container@INGAME_ROOT:
 				OrdersPalette@ORDERS_PALETTE:
 					X:(WINDOW_RIGHT - WIDTH) / 2
 					Y:WINDOW_BOTTOM - HEIGHT - 20
-					Width: 200
-					Height: 32
+					Width: 34 * 8
+					Height: 28
 					Background:panel-black
 					Visible: true
 		TooltipContainer@TOOLTIP_CONTAINER:

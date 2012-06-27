@@ -50,7 +50,7 @@ namespace OpenRA.Mods.RA.Widgets
 				PanelSides.Top | PanelSides.Right | PanelSides.Bottom);
 
 			// Show the order name:
-			Game.Renderer.Fonts["Regular"].DrawText(order.OrderID, tl + new int2(4, 4), Color.White);
+			Game.Renderer.Fonts["Regular"].DrawText(order.OrderID, tl + new int2(6, 6), Color.White);
 		}
 
 		public override bool HandleMouseInput(MouseInput mi)
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.RA.Widgets
 				var s = o; // Closure fail
 				var child = new SidebarButtonWidget(world)
 				{
-					Bounds = new Rectangle(x, 0, 32, 32),
+					Bounds = new Rectangle(x, 0, 34, 28),
 					OnClick = () =>
 					{
 						Game.Debug("OrderButton: {0}", s.OrderID);
@@ -82,7 +82,7 @@ namespace OpenRA.Mods.RA.Widgets
 					DrawTooltip = (rect) => DrawOrderButtonTooltip(s, rect)
 				};
 				AddChild(child);
-				x += 32;
+				x += 34;
 			}
 		}
 
