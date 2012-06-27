@@ -507,7 +507,7 @@ namespace OpenRA.Mods.RA.Widgets
 		void TabChange(bool shift)
 		{
 			var queues = VisibleQueues.Concat(VisibleQueues);
-			if (shift) queues.Reverse();
+			if (shift) queues = queues.Reverse();
 			var nextQueue = queues.SkipWhile( q => q != CurrentQueue )
 				.ElementAtOrDefault(1);
 			if (nextQueue != null)
