@@ -246,7 +246,6 @@ namespace OpenRA
 			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
 
 			Settings = new Settings(Platform.SupportDir + "settings.yaml", args);
-			Settings.Save();
 
 			Log.LogPath = Platform.SupportDir + "Logs" + Path.DirectorySeparatorChar;
 			Log.AddChannel("perf", "perf.log");
@@ -280,11 +279,11 @@ namespace OpenRA
 			if (orderManager != null)
 				orderManager.Dispose();
 
-			// Discard any invalid mods
+			// Discard any invalid mods, set RA as default
 			var mm = mods.Where( m => Mod.AllMods.ContainsKey( m ) ).ToArray();
+			if (mm.Length == 0) mm = new[] { "ra" };
 			Console.WriteLine("Loading mods: {0}", mm.JoinWith(","));
 			Settings.Game.Mods = mm;
-			Settings.Save();
 
 			Sound.StopMusic();
 			Sound.StopVideo();
@@ -304,6 +303,7 @@ namespace OpenRA
 			viewport = new Viewport(new int2(Renderer.Resolution), Rectangle.Empty, Renderer);
 
 			modData.LoadScreen.StartGame();
+			Settings.Save();
 		}
 
 		public static void LoadShellMap()
