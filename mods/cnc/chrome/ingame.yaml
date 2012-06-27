@@ -16,13 +16,6 @@ Container@INGAME_ROOT:
 			RemoveTime:250
 			UseContrast: yes
 			Notification: scold1.aud
-		OrdersPalette@ORDERS_PALETTE:
-			X:(WINDOW_RIGHT - WIDTH) / 2
-			Y:WINDOW_BOTTOM - HEIGHT - 20
-			Width: 200
-			Height: 32
-			Background:panel-black
-			Visible: true
 		ChatEntry@CHAT_ENTRY:
 			X:250
 			Y:WINDOW_BOTTOM - HEIGHT
@@ -48,6 +41,14 @@ Container@INGAME_ROOT:
 			Height:WINDOW_BOTTOM
 			TooltipContainer:TOOLTIP_CONTAINER
 		Container@PLAYER_ROOT:
+			Children:
+				OrdersPalette@ORDERS_PALETTE:
+					X:(WINDOW_RIGHT - WIDTH) / 2
+					Y:WINDOW_BOTTOM - HEIGHT - 20
+					Width: 200
+					Height: 32
+					Background:panel-black
+					Visible: true
 		TooltipContainer@TOOLTIP_CONTAINER:
 Container@OBSERVER_WIDGETS:
 	Children:

@@ -48,6 +48,14 @@ namespace OpenRA.Mods.RA.Widgets
 
 			WidgetUtils.DrawPanelPartial("dialog4", new Rectangle(tl.X + rect.Width - border[2], tl.Y, width, height),
 				PanelSides.Top | PanelSides.Right | PanelSides.Bottom);
+
+			// Show the order name:
+			Game.Renderer.Fonts["Regular"].DrawText(order.OrderID, tl + new int2(4, 4), Color.White);
+		}
+
+		public override bool HandleMouseInput(MouseInput mi)
+		{
+			return !ClickThrough;
 		}
 
 		// Giant hack
@@ -85,12 +93,29 @@ namespace OpenRA.Mods.RA.Widgets
 			world.PlayVoiceForOrders(orders);
 		}
 
+		static readonly IEqualityComparer<IOrderTargeter> orderComparer = new OrderTargeterEqualityComparer();
+
+		class OrderTargeterEqualityComparer : IEqualityComparer<IOrderTargeter>
+		{
+			public bool Equals(IOrderTargeter x, IOrderTargeter y)
+			{
+				return x.OrderID.Equals(y.OrderID);
+			}
+
+			public int GetHashCode(IOrderTargeter obj)
+			{
+				return obj.OrderID.GetHashCode();
+			}
+		}
+
 		List<IOrderTargeter> GetOrders()
 		{
 			return world.Selection.Actors
 				.Where(a => !a.Destroyed && a.Owner == a.World.LocalPlayer)
 				.SelectMany(a => a.TraitsImplementing<IIssueOrder>())
-				.SelectMany(io => io.Orders).Distinct().ToList();
+				.SelectMany(io => io.Orders)
+				.Distinct(orderComparer)
+				.ToList();
 		}
 	}
 
@@ -100,7 +125,6 @@ namespace OpenRA.Mods.RA.Widgets
 	{
 		public void SelectionChanged()
 		{
-			// NOTE(jsd): Was `Widget.RootWidget.GetWidget`
 			Ui.Root.Get<OrdersPaletteWidget>("ORDERS_PALETTE").Update();
 		}
 	}
