@@ -254,6 +254,10 @@ namespace OpenRA.Mods.RA
 				* Info.BuildSpeed
 				* (25 * 60) /* frames per min */				/* todo: build acceleration, if we do that */
 				 / 1000;
+
+			if (unit.Traits.Contains<CustomBuildTimeValueInfo>())
+				time = unit.Traits.Get<CustomBuildTimeValueInfo>().Value * (1 / Info.BuildSpeed);
+
 			return (int) time;
 		}
 
