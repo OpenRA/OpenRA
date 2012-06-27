@@ -1233,7 +1233,7 @@ crate-effects:
 		Tick: 200
 
 allyrepair:
-	repair: repairing
+	repair:
 		Start: 0
 		Length: *
 		Tick: 160

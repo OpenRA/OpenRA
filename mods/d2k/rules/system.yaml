@@ -192,6 +192,7 @@ World:
 		PrimaryBuildingSelected: AI_PRMRY.AUD
 		AbilityInsufficientPower:
 		LevelUp: SCORTIK1.aud
+		Repairing:
 	SpatialBins:
 		BinSize: 4
 	Shroud:
