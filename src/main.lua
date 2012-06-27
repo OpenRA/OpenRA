@@ -3,9 +3,11 @@
 
 -- put bin/ and lualibs/ first to avoid conflicts with included modules
 -- that may have other versions present somewhere else in path/cpath
-package.cpath = 'bin/?.dll;bin/clibs/?.dll;bin/clibs/?/?.dll;bin/clibs/?/?/?.dll;'
-              ..'bin/?.so;bin/clibs/?.so;bin/clibs/?/?.so;bin/clibs/?/?/?.so;'
-              .. package.cpath
+local iswindows = os.getenv('WINDIR') or (os.getenv('OS') or ''):match('[Ww]indows')
+package.cpath = (iswindows
+  and 'bin/?.dll;bin/clibs/?.dll;bin/clibs/?/?.dll;bin/clibs/?/?/?.dll;'
+   or 'bin/?.so;bin/clibs/?.so;bin/clibs/?/?.so;bin/clibs/?/?/?.so;')
+  .. package.cpath
 package.path  = 'lualibs/?.lua;lualibs/?/?.lua;lualibs/?/init.lua;lualibs/?/?/?.lua;lualibs/?/?/init.lua;'
               .. package.path
 
@@ -101,11 +103,17 @@ local filenames = {}
 local configs = {}
 do
   local arg = {...}
+  local fullPath = arg[1] -- first argument must be the application name
+  assert(type(fullPath) == "string", "first argument must be application name")
+
+  if not wx.wxIsAbsolutePath(fullPath) then
+    fullPath = wx.wxGetCwd().."/"..fullPath
+    if wx.__WXMSW__ then fullPath = wx.wxUnix2DosFilename(fullPath) end
+  end
+
   ide.arg = arg
-  -- first argument must be the application name
-  assert(type(arg[1]) == "string","first argument must be application name")
-  ide.editorFilename = arg[1]
-  ide.config.path.app = arg[1]:match("([%w_-%.]+)$"):gsub("%.[^%.]*$","")
+  ide.editorFilename = fullPath
+  ide.config.path.app = fullPath:match("([%w_-%.]+)$"):gsub("%.[^%.]*$","")
   assert(ide.config.path.app, "no application path defined")
   for index = 2, #arg do
     if (arg[index] == "-cfg" and index+1 <= #arg) then
