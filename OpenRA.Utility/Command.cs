@@ -81,8 +81,15 @@ namespace OpenRA.Utility
 			var dest = Path.ChangeExtension(src, ".png");
 
 			var srcImage = ShpReader.Load(src);
-			var shouldRemap = args.Contains( "--transparent" );
-			var palette = Palette.Load(args[2], shouldRemap);
+			int[] ShadowIndex = { };
+			if (args.Contains("--noshadow"))
+			{
+					Array.Resize(ref ShadowIndex, ShadowIndex.Length + 3);
+					ShadowIndex[ShadowIndex.Length - 1] = 1;
+					ShadowIndex[ShadowIndex.Length - 2] = 3;
+					ShadowIndex[ShadowIndex.Length - 1] = 4;
+			}
+			var palette = Palette.Load(args[2], ShadowIndex);
 
 			using (var bitmap = new Bitmap(srcImage.ImageCount * srcImage.Width, srcImage.Height, PixelFormat.Format8bppIndexed))
 			{
@@ -110,8 +117,13 @@ namespace OpenRA.Utility
 		public static void ConvertR8ToPng(string[] args)
 		{
 			var srcImage = new R8Reader(File.OpenRead(args[1]));
-			var shouldRemap = args.Contains("--transparent");
-			var palette = Palette.Load(args[2], shouldRemap);
+			int[] ShadowIndex = { };
+			if (args.Contains("--noshadow"))
+			{
+					Array.Resize(ref ShadowIndex, ShadowIndex.Length + 1);
+					ShadowIndex[ShadowIndex.Length - 1] = 3;
+			}
+			var palette = Palette.Load(args[2], ShadowIndex);
 			var startFrame = int.Parse(args[3]);
 			var endFrame = int.Parse(args[4]) + 1;
 			var filename = args[5];
@@ -292,6 +304,7 @@ namespace OpenRA.Utility
 			var mods = args[1].Split(',');
 			var theater = args[2];
 			var templateNames = args.Skip(3);
+			int[] ShadowIndex = { 3, 4 };
 
 			var manifest = new Manifest(mods);
 			FileSystem.LoadFromManifest(manifest);
@@ -303,7 +316,7 @@ namespace OpenRA.Utility
 				throw new InvalidOperationException("No theater named '{0}'".F(theater));
 
 			tileset.LoadTiles();
-			var palette = new Palette(FileSystem.Open(tileset.Palette), true);
+			var palette = new Palette(FileSystem.Open(tileset.Palette), ShadowIndex);
 
 			foreach( var templateName in templateNames )
 			{
@@ -386,14 +399,15 @@ namespace OpenRA.Utility
 			var destPaletteInfo = Rules.Info["player"].Traits.Get<PlayerColorPaletteInfo>();
 			int[] destRemapIndex = destPaletteInfo.RemapIndex;
 
+			int[] ShadowIndex = { };
 			// the remap range is always 16 entries, but their location and order changes
 			for (var i = 0; i < 16; i++)
 				remap[PlayerColorRemap.GetRemapIndex(srcRemapIndex, i)]
 					= PlayerColorRemap.GetRemapIndex(destRemapIndex, i);
 
 			// map everything else to the best match based on channel-wise distance
-			var srcPalette = Palette.Load(args[1].Split(':')[1], false);
-			var destPalette = Palette.Load(args[2].Split(':')[1], false);
+			var srcPalette = Palette.Load(args[1].Split(':')[1], ShadowIndex);
+			var destPalette = Palette.Load(args[2].Split(':')[1], ShadowIndex);
 
 			var fullIndexRange = Exts.MakeArray<int>(256, x => x);
 
