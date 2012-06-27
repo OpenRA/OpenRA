@@ -23,9 +23,10 @@ CARRYALL:
 		Speed: 14
 		LandableTerrainTypes: Sand, Rock, Transition, Spice, Dune
 		RepairBuildings: repaira,repairo,repairh
-		RearmBuildings: hightecha
+		RearmBuildings: starporta,starporto,starporth
 	RenderUnit:
 	RenderCargo:
+		RelativeAltitude: 25
 	WithShadow:
 	Cargo:
 		Types: Vehicle
@@ -45,7 +46,7 @@ FRIGATE:
 		ROT: 5
 		Speed: 35
 		RepairBuildings: repaira,repairo,repairh
-		RearmBuildings: hightecha
+		RearmBuildings: starporta,starporto,starporth
 	Health:
 		HP: 25
 	Armor:
@@ -90,7 +91,7 @@ ORNI:
 		ROT: 4
 		Speed: 12
 		RepairBuildings: repaira,repairo,repairh
-		RearmBuildings: hightecha
+		RearmBuildings: starporta,starporto,starporth
 	RenderUnit:
 	WithShadow:
 	Selectable:
