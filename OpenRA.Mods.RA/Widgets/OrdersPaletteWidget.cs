@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA.Widgets
 			var width = 200;
 			var tl = pos - new int2(0, height);
 
-			WidgetUtils.DrawPanelPartial("dialog4", rect.InflateBy(0, border[0], 0, 0),
+			WidgetUtils.DrawPanelPartial("dialog4", rect.InflateBy(0, border[1], 0, 0),
 				PanelSides.Bottom | PanelSides.Left | PanelSides.Right);
 
 			WidgetUtils.DrawPanelPartial("dialog4", new Rectangle(tl.X, tl.Y, rect.Width + border[3], height + border[1]),
@@ -49,8 +49,15 @@ namespace OpenRA.Mods.RA.Widgets
 			WidgetUtils.DrawPanelPartial("dialog4", new Rectangle(tl.X + rect.Width - border[2], tl.Y, width, height),
 				PanelSides.Top | PanelSides.Right | PanelSides.Bottom);
 
+			WidgetUtils.DrawPanelPartial("dialog4", new Rectangle(tl.X, tl.Y, width + rect.Width - border[2], height), PanelSides.Center);
+
+			WidgetUtils.DrawPanelPartial("dialog4", rect.InflateBy(0, border[1] + border[1], border[3], -rect.Height + border[1]), PanelSides.Center);
+
+			WidgetUtils.DrawPanelPartial("dialog4", rect.InflateBy(0, border[1], 0, -rect.Height + border[1] + border[1]), PanelSides.Center);
+
 			// Show the order name:
-			Game.Renderer.Fonts["Regular"].DrawText(order.OrderID, tl + new int2(6, 6), Color.White);
+			Game.Renderer.Fonts["Bold"]
+				.DrawText(order.OrderID, tl + new int2(border[0], border[1]), Color.White);
 		}
 
 		public override bool HandleMouseInput(MouseInput mi)
@@ -82,7 +89,7 @@ namespace OpenRA.Mods.RA.Widgets
 					DrawTooltip = (rect) => DrawOrderButtonTooltip(s, rect)
 				};
 				AddChild(child);
-				x += 34;
+				x += 34 + 3;
 			}
 		}
 
