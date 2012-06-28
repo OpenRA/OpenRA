@@ -3,8 +3,6 @@ Player:
 	TechTree:
 	SupportPowerManager:
 	ConquestVictoryConditions:
-		WinNotification:accom1.aud
-		LoseNotification:fail1.aud
 	PowerManager:
 	AllyRepair:
 	PlayerResources:
@@ -151,17 +149,6 @@ World:
 	CreateMPPlayers:
 	SpawnMPUnits:
 	MPStartLocations:
-	EvaAlerts:
-		RadarUp: comcntr1.aud
-		RadarDown: powrdn1.aud
-		BuildingCannotPlaceAudio: deploy1.aud
-		CashTickUp:
-		CashTickDown:
-		LowPower: lopower1.aud
-		SilosNeeded: silos1.aud
-		PrimaryBuildingSelected: pribldg1.aud
-		AbilityInsufficientPower: nopower1.aud
-		LevelUp: text2.aud
 	SpatialBins:
 		BinSize: 4
 	Shroud:

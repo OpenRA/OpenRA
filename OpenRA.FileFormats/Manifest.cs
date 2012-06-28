@@ -20,7 +20,7 @@ namespace OpenRA.FileFormats
 		public readonly string[]
 			Mods, Folders, Packages, Rules, ServerTraits,
 			Sequences, Cursors, Chrome, Assemblies, ChromeLayout,
-			Weapons, Voices, Music, Movies, TileSets, ChromeMetrics;
+			Weapons, Voices, Notifications, Music, Movies, TileSets, ChromeMetrics;
 		public readonly MiniYaml LoadScreen;
 		public readonly Dictionary<string, Pair<string,int>> Fonts;
 		public readonly int TileSize = 24;
@@ -44,6 +44,7 @@ namespace OpenRA.FileFormats
 			ChromeLayout = YamlList(yaml, "ChromeLayout");
 			Weapons = YamlList(yaml, "Weapons");
 			Voices = YamlList(yaml, "Voices");
+			Notifications = YamlList(yaml, "Notifications");
 			Music = YamlList(yaml, "Music");
 			Movies = YamlList(yaml, "Movies");
 			TileSets = YamlList(yaml, "TileSets");

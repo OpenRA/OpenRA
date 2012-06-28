@@ -44,9 +44,6 @@ namespace OpenRA.Mods.RA.Widgets
 		List<Pair<Rectangle, Action<MouseInput>>> tabs = new List<Pair<Rectangle, Action<MouseInput>>>();
 		Animation cantBuild;
 		Animation clock;
-		public readonly string BuildPaletteOpen = "bleep13.aud";
-		public readonly string BuildPaletteClose = "bleep13.aud";
-		public readonly string TabClick = "ramenu1.aud";
 
 		readonly WorldRenderer worldRenderer;
 		readonly World world;
@@ -118,11 +115,11 @@ namespace OpenRA.Mods.RA.Widgets
 
 			// Play palette-open sound at the start of the activate anim (open)
 			if (paletteAnimationFrame == 1 && paletteOpen)
-				Sound.Play(BuildPaletteOpen);
+				Sound.PlayNotification(null, "Sounds", "BuildPaletteOpen", null);
 
 			// Play palette-close sound at the start of the activate anim (close)
 			if (paletteAnimationFrame == paletteAnimationLength + -1 && !paletteOpen)
-				Sound.Play(BuildPaletteClose);
+				Sound.PlayNotification(null, "Sounds", "BuildPaletteClose", null);
 
 			// Animation is complete
 			if ((paletteAnimationFrame == 0 && !paletteOpen)
@@ -291,7 +288,7 @@ namespace OpenRA.Mods.RA.Widgets
 		Action<MouseInput> HandleClick(string name, World world)
 		{
 			return mi => {
-				Sound.Play(TabClick);
+				Sound.PlayNotification(null, "Sounds", "TabClick", null);
 
 				if (name != null)
 					HandleBuildPalette(world, name, (mi.Button == MouseButton.Left));
@@ -304,7 +301,7 @@ namespace OpenRA.Mods.RA.Widgets
 				if (mi.Button != MouseButton.Left)
 					return;
 
-				Sound.Play(TabClick);
+				Sound.PlayNotification(null, "Sounds", "TabClick", null);
 				var wasOpen = paletteOpen;
 				paletteOpen = (CurrentQueue == queue && wasOpen) ? false : true;
 				CurrentQueue = queue;
@@ -496,7 +493,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 			if ( toBuild != null )
 			{
-				Sound.Play(TabClick);
+				Sound.PlayNotification(null, "Sounds", "TabClick", null);
 				HandleBuildPalette(world, toBuild.Name, true);
 				return true;
 			}

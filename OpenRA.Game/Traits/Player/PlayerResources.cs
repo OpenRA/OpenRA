@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2012 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -136,8 +136,6 @@ namespace OpenRA.Traits
 
 		public void Tick(Actor self)
 		{
-			var eva = self.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
-			
 			if(cashtickallowed > 0) {
 				cashtickallowed = cashtickallowed - 1;
 			}
@@ -152,7 +150,7 @@ namespace OpenRA.Traits
 			if (--nextSiloAdviceTime <= 0)
 			{
 				if (Ore > 0.8*OreCapacity)
-					Owner.GiveAdvice(eva.SilosNeeded);
+					Sound.PlayNotification(Owner, "Speech", "SilosNeeded", Owner.Country.Race);
 
 				nextSiloAdviceTime = AdviceInterval;
 			}
@@ -192,21 +190,19 @@ namespace OpenRA.Traits
 		
 		public void playCashTickUp(Actor self)
 		{
-			var eva = self.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
 			if (Game.Settings.Sound.SoundCashTickType != SoundCashTicks.Disabled)
 			{
-				Sound.PlayToPlayer(self.Owner, eva.CashTickUp);
+				Sound.PlayNotification(self.Owner, "Sounds", "CashTickUp", self.Owner.Country.Race);
 			}
 		}
 		
 		public void playCashTickDown(Actor self)
 		{
-			var eva = self.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
 			if (
 				Game.Settings.Sound.SoundCashTickType == SoundCashTicks.Extreme ||
 				(Game.Settings.Sound.SoundCashTickType == SoundCashTicks.Normal && cashtickallowed == 0)
 			) {
-				Sound.PlayToPlayer(self.Owner, eva.CashTickDown);
+				Sound.PlayNotification(self.Owner, "Sounds", "CashTickDown", self.Owner.Country.Race);
 				cashtickallowed = 3;
 			}
 			

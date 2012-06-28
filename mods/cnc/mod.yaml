@@ -90,6 +90,9 @@ Movies:
 Voices:
 	mods/cnc/voices.yaml
 
+Notifications:
+	mods/cnc/notifications.yaml
+
 Music:
 	mods/cnc/music.yaml
 

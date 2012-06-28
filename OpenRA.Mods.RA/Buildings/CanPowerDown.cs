@@ -37,9 +37,7 @@ namespace OpenRA.Mods.RA.Buildings
 			if (order.OrderString == "PowerDown")
 			{
 				disabled = !disabled;
-				var eva = self.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
-				Sound.PlayToPlayer(self.Owner, disabled ? eva.EnablePower : eva.DisablePower);
-
+				Sound.PlayNotification(self.Owner, "Sounds", (disabled ? "EnablePower" : "DisablePower"), self.Owner.Country.Race);
 				PowerManager.UpdateActor(self, disabled ? 0 : normalPower);
 
 				if (disabled)

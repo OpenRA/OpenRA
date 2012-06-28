@@ -2,18 +2,7 @@ Player:
 	TechTree:
 	PlaceBuilding:
 	SupportPowerManager:
-	ConquestVictoryConditions@Atreides:
-		Race: atreides
-		WinNotification: AI_MWIN.AUD
-		LoseNotification: AI_MFAIL.AUD
-	ConquestVictoryConditions@Harkonnen:
-		Race: harkonnen
-		WinNotification: HI_MWIN.AUD
-		LoseNotification: HI_MFAIL.AUD
-	ConquestVictoryConditions@Ordos:
-		Race: ordos
-		WinNotification: OI_MWIN.AUD
-		LoseNotification: OI_MFAIL.AUD
+	ConquestVictoryConditions:
 	PowerManager:
 	AllyRepair:
 	PlayerResources:
@@ -65,15 +54,8 @@ Player:
 	PlayerColorPalette:
 		BasePalette: d2k
 		RemapIndex: 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255
-	BaseAttackNotifier@Atreides:
-		Race: atreides
-		Audio: AI_ATACK.AUD
-	BaseAttackNotifier@Harkonnen:
-		Race: harkonnen
-		Audio: HI_ATACK.AUD
-	BaseAttackNotifier@Ordos:
-		Race: ordos
-		Audio: OI_ATACK.AUD
+	BaseAttackNotifier:
+	HarvesterAttackNotifier:
 
 World:	
 	OpenWidgetAtGameStart:
@@ -179,25 +161,12 @@ World:
 	SpawnMPUnits@ordos:
 		InitialUnit: mcvo
 		Faction: ordos
-#TODO: These are just the Atreides sounds.
-	EvaAlerts:
-		RadarUp: POWRUP1.aud
-		RadarDown: POWRDN1.aud
-		BuildingCannotPlaceAudio: AI_PLACE.AUD
-		CashTickUp: CASHTIK1.aud
-		CashTickDown:CASHTIK1.aud
-		NewOptions: AI_NEWOP.AUD
-		LowPower: AI_POWER.AUD
-		SilosNeeded: AI_SILOS.AUD
-		PrimaryBuildingSelected: AI_PRMRY.AUD
-		AbilityInsufficientPower:
-		LevelUp: SCORTIK1.aud
-		Repairing:
 	SpatialBins:
 		BinSize: 4
 	Shroud:
 	PathFinder:
 	ValidateOrder:
+
 CRATE:
 	Tooltip:
 		Name: Crate

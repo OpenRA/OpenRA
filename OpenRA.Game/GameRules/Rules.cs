@@ -20,7 +20,8 @@ namespace OpenRA
 	{
 		public static Dictionary<string, ActorInfo> Info;
 		public static Dictionary<string, WeaponInfo> Weapons;
-		public static Dictionary<string, VoiceInfo> Voices;
+		public static Dictionary<string, SoundInfo> Voices;
+		public static Dictionary<string, SoundInfo> Notifications;
 		public static Dictionary<string, MusicInfo> Music;
 		public static Dictionary<string, string> Movies;
 		public static Dictionary<string, TileSet> TileSets;
@@ -30,7 +31,8 @@ namespace OpenRA
 			// Added support to extend the list of rules (add it to m.LocalRules)
 			Info = LoadYamlRules(m.Rules, map.Rules, (k, y) => new ActorInfo(k.Key.ToLowerInvariant(), k.Value, y));
 			Weapons = LoadYamlRules(m.Weapons, map.Weapons, (k, _) => new WeaponInfo(k.Key.ToLowerInvariant(), k.Value));
-			Voices = LoadYamlRules(m.Voices, map.Voices, (k, _) => new VoiceInfo(k.Value));
+			Voices = LoadYamlRules(m.Voices, map.Voices, (k, _) => new SoundInfo(k.Value));
+			Notifications = LoadYamlRules(m.Notifications, map.Notifications, (k, _) => new SoundInfo(k.Value));
 			Music = LoadYamlRules(m.Music, new List<MiniYamlNode>(), (k, _) => new MusicInfo(k.Key, k.Value));
 			Movies = LoadYamlRules(m.Movies, new List<MiniYamlNode>(), (k, v) => k.Value.Value);
 

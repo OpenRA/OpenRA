@@ -121,7 +121,7 @@ namespace OpenRA
 			return selectable != null && selectable.Voice != null;
 		}
 
-		public static VoiceInfo GetVoice(this Actor a)
+		public static SoundInfo GetVoice(this Actor a)
 		{
 			var selectable = a.Info.Traits.GetOrDefault<SelectableInfo>();
 			if (selectable == null) return null;

@@ -71,6 +71,9 @@ Weapons:
 Voices:
 	mods/d2k/voices.yaml
 
+Notifications:
+	mods/d2k/notifications.yaml
+
 TileSets:
 	mods/d2k/tilesets/arrakis.yaml
 

@@ -35,7 +35,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			// TODO: Create a mechanism to do things like this cleaner. Also needed for scripted missions
 			Action onQuit = () =>
 			{
-				Sound.Play("batlcon1.aud");
+				Sound.PlayNotification(null, "Speech", "Leave", null);
 				resumeDisabled = true;
 				Game.RunAfterDelay(1200, () => mpe.Fade(CncMenuPaletteEffect.EffectType.Black));
 				Game.RunAfterDelay(1200 + 40 * mpe.Info.FadeLength, () =>

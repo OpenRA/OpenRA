@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			};
 			cheatsButton.IsVisible = () => world.LocalPlayer != null && world.LobbyInfo.GlobalSettings.AllowCheats;
 
-			optionsBG.Get<ButtonWidget>("DISCONNECT").OnClick = () => LeaveGame(optionsBG);
+			optionsBG.Get<ButtonWidget>("DISCONNECT").OnClick = () => LeaveGame(optionsBG, world);
 
 			optionsBG.Get<ButtonWidget>("SETTINGS").OnClick = () => Ui.OpenWindow("SETTINGS_MENU");
 			optionsBG.Get<ButtonWidget>("MUSIC").OnClick = () => Ui.OpenWindow("MUSIC_MENU");
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var postGameObserve = postgameBG.Get<ButtonWidget>("POSTGAME_OBSERVE");
 
 			var postgameQuit = postgameBG.Get<ButtonWidget>("POSTGAME_QUIT");
-			postgameQuit.OnClick = () => LeaveGame(postgameQuit);
+			postgameQuit.OnClick = () => LeaveGame(postgameQuit, world);
 
 			postGameObserve.OnClick = () => postgameQuit.Visible = false;
 			postGameObserve.IsVisible = () => world.LocalPlayer.WinState != WinState.Won;
@@ -76,8 +76,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			};
 		}
 
-		void LeaveGame(Widget pane)
+		void LeaveGame(Widget pane, World world)
 		{
+			Sound.PlayNotification(null, "Speech", "Leave", world.LocalPlayer.Country.Race);
 			pane.Visible = false;
 			Game.Disconnect();
 			Game.LoadShellMap();

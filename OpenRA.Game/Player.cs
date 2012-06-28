@@ -90,11 +90,6 @@ namespace OpenRA
 			}
 		}
 
-		public void GiveAdvice(string advice)
-		{
-			Sound.PlayToPlayer(this, advice);
-		}
-
 		public Dictionary<Player, Stance> Stances = new Dictionary<Player, Stance>();
 	}
 }

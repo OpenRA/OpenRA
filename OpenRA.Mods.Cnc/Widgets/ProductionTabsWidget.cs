@@ -61,8 +61,6 @@ namespace OpenRA.Mods.Cnc.Widgets
 	class ProductionTabsWidget : Widget
 	{
 		public readonly string PaletteWidget = null;
-		public readonly string ClickSound = null;
-		public readonly string DisabledClickSound = null;
 		public readonly float ScrollVelocity = 4f;
 		public readonly int TabWidth = 30;
 		public readonly int ArrowWidth = 20;
@@ -248,9 +246,9 @@ namespace OpenRA.Mods.Cnc.Widgets
 			if (leftPressed || rightPressed)
 			{
 				if ((leftPressed && !leftDisabled) || (rightPressed && !rightDisabled))
-					Sound.Play(ClickSound);
+					Sound.PlayNotification(null, "Sounds", "ClickSound", null);
 				else
-					Sound.Play(DisabledClickSound);
+					Sound.PlayNotification(null, "Sounds", "DisabledClickSound", null);
 			}
 
 			// Check production tabs
@@ -258,7 +256,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			if (offsetloc.X > 0 && offsetloc.X < ContentWidth)
 			{
 				CurrentQueue = Groups[queueGroup].Tabs[offsetloc.X/(TabWidth - 1)].Queue;
-				Sound.Play(ClickSound);
+				Sound.PlayNotification(null, "Sounds", "ClickSound", null);
 				return true;
 			}
 
@@ -270,7 +268,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			if (e.Event != KeyInputEvent.Down) return false;
 			if (e.KeyName == "tab")
 			{
-				Sound.Play(ClickSound);
+				Sound.PlayNotification(null, "Sounds", "ClickSound", null);
 				SelectNextTab(e.Modifiers.HasModifier(Modifiers.Shift));
 				return true;
 			}

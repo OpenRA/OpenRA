@@ -46,7 +46,7 @@ HARVESTER:
 		Capacity: 20
 		Resources: Spice
 		UnloadTicksPerBale: 1
-		# How far away from our linked proc (refinery) to find resources (in cells):
+		# How far away from our linked refinery to find resources (in cells):
 		SearchFromProcRadius: 24
 		# How far away from last harvest order location to find more resources (in cells):
 		SearchFromOrderRadius: 12

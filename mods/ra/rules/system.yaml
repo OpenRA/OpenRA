@@ -31,8 +31,6 @@ Player:
 	PlaceBuilding:
 	SupportPowerManager:
 	ConquestVictoryConditions:
-		WinNotification:misnwon1.aud
-		LoseNotification:misnlst1.aud
 	PowerManager:
 	AllyRepair:
 	PlayerResources:
@@ -293,7 +291,6 @@ World:
 	CreateMPPlayers:
 	MPStartLocations:
 	SpawnMPUnits:
-	EvaAlerts:
 	SpatialBins:
 		BinSize: 4
 	Shroud:
