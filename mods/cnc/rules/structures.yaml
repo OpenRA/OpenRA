@@ -52,12 +52,13 @@ NUKE:
 	Tooltip:
 		Name: Power Plant
 		Icon: nukeicnh
-		Description: Provides power for other structures
+		Description: Generates power
 	ProvidesCustomPrerequisite:
 		Prerequisite: anypower
 	Buildable:
 		BuildPaletteOrder: 10
 		Owner: gdi,nod
+		Prerequisites: fact
 	Building:
 		Power: 100
 		Footprint: x_ xx
@@ -75,7 +76,7 @@ PROC:
 	Tooltip:
 		Name: Tiberium Refinery
 		Icon: procicnh
-		Description: Processes raw Tiberium into useable resources
+		Description: Processes raw Tiberium\ninto useable resources
 	Buildable:
 		BuildPaletteOrder: 30
 		Prerequisites: anypower
@@ -232,7 +233,7 @@ AFLD:
 	Tooltip:
 		Name: Airstrip
 		Icon: afldicnh
-		Description: Provides a dropzone for vehicle reinforcements
+		Description: Provides a dropzone\nfor vehicle reinforcements
 	ProvidesCustomPrerequisite:
 		Prerequisite: vehicleproduction
 	Buildable:
@@ -274,7 +275,7 @@ WEAP:
 	Tooltip:
 		Name: Weapons Factory
 		Icon: weapicnh
-		Description: Assembly point for vehicle reinforcements
+		Description: Assembly point for\nvehicle reinforcements
 	ProvidesCustomPrerequisite:
 		Prerequisite: vehicleproduction
 	Buildable:
@@ -403,7 +404,7 @@ HPAD:
 	Tooltip:
 		Name: Helipad
 		Icon:hpadicnh
-		Description: Produces and reloads helicopters
+		Description: Produces, rearms and\nrepairs helicopters
 	Buildable:
 		BuildPaletteOrder: 50
 		Prerequisites: barracks
@@ -482,7 +483,7 @@ TMPL:
 	Tooltip:
 		Name: Temple of Nod
 		Icon: tmplicnh
-		Description: Place of worship and secret missile silo.\nRequires power to operate.
+		Description: Place of worship and secret missile silo.\n  Requires power to operate.
 	Buildable:
 		BuildPaletteOrder: 100
 		Prerequisites: hq
@@ -516,7 +517,7 @@ OBLI:
 	Tooltip:
 		Name: Obelisk of Light
 		Icon:obliicnh
-		Description: Advanced base defense. Requires power\nto operate.\n  Strong vs Tanks, Infantry\n  Weak vs Aircraft
+		Description: Advanced base defense.\n  Requires power to operate.\n  Strong vs Tanks, Infantry\n  Weak vs Aircraft
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 60
@@ -692,7 +693,7 @@ GTWR:
 	Tooltip:
 		Name: Guard Tower
 		Icon: gtwricnh
-		Description: Basic defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
+		Description: Basic defensive structure.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 40
