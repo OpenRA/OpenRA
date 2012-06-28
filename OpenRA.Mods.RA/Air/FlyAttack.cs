@@ -50,9 +50,10 @@ namespace OpenRA.Mods.RA.Air
 			{
 				if( inner != null )
 					inner.Cancel( self );
-
-				base.Cancel( self );
 			}
+
+			// NextActivity must always be set to null:
+			base.Cancel(self);
 		}
 	}
 }
