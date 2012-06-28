@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA.Effects
 		readonly Animation anim;
 		readonly string palette;
 		readonly Animation paraAnim;
-		readonly float2 location;
+		readonly PPos location;
 
 		readonly Actor cargo;
 
@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA.Effects
 		float altitude;
 		const float fallRate = .3f;
 
-		public Parachute(Player owner, float2 location, int altitude, Actor cargo)
+		public Parachute(Player owner, PPos location, int altitude, Actor cargo)
 		{
 			this.location = location;
 			this.altitude = altitude;
@@ -63,7 +63,7 @@ namespace OpenRA.Mods.RA.Effects
 				world.AddFrameEndTask(w =>
 					{
 						w.Remove(this);
-						var loc = Traits.Util.CellContaining(location);
+						var loc = location.ToCPos();
 						cargo.CancelActivity();
 						cargo.Trait<ITeleportable>().SetPosition(cargo, loc);
 						w.Add(cargo);
@@ -72,8 +72,8 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<Renderable> Render()
 		{
-			var pos = location - new float2(0, altitude);
-			yield return new Renderable(anim.Image, location - .5f * anim.Image.size, "shadow", 0);
+			var pos = location.ToFloat2() - new float2(0, altitude);
+			yield return new Renderable(anim.Image, location.ToFloat2() - .5f * anim.Image.size, "shadow", 0);
 			yield return new Renderable(anim.Image, pos - .5f * anim.Image.size, palette, 2);
 			yield return new Renderable(paraAnim.Image, pos - .5f * paraAnim.Image.size + offset, palette, 3);
 		}

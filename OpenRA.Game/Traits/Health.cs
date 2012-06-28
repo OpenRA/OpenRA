@@ -41,7 +41,7 @@ namespace OpenRA.Traits
 		}
 
 		public int HP { get { return hp; } }
-		public readonly int MaxHP;
+		public int MaxHP;
 
 		public bool IsDead { get { return hp <= 0; } }
 		public bool RemoveOnDeath = true;

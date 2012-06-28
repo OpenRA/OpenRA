@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA
 			{
 				self.World.AddFrameEndTask(w => w.Add(
 						new Parachute(pilot.Owner,
-							Util.CenterOfCell(Util.CellContaining(self.CenterLocation)),
+							Util.CenterOfCell(self.CenterLocation.ToCPos()),
 							aircraft.Altitude, pilot)));
 
 				Sound.Play(info.ChuteSound, self.CenterLocation);
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA
 				pilot.Destroy();
 		}
 
-		bool IsSuitableCell(Actor actorToDrop, int2 p)
+		bool IsSuitableCell(Actor actorToDrop, CPos p)
 		{
 			return actorToDrop.Trait<ITeleportable>().CanEnterCell(p);
 		}

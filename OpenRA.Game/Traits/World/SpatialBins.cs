@@ -75,7 +75,7 @@ namespace OpenRA.Traits
 						yield return a;
 		}
 
-		public IEnumerable<Actor> ActorsInBox(int2 a, int2 b)
+		public IEnumerable<Actor> ActorsInBox(PPos a, PPos b)
 		{
 			var r = Rectangle.FromLTRB(a.X, a.Y, b.X, b.Y);
 

@@ -197,7 +197,7 @@ Container@PLAYER_WIDGETS:
 						ToggleButton@BUILDING:
 							Width:30
 							Height:30
-							Key: y
+							Key: q
 							TooltipText: Buildings
 							TooltipContainer:TOOLTIP_CONTAINER
 							ClickSound:button.aud
@@ -211,7 +211,7 @@ Container@PLAYER_WIDGETS:
 							X:35
 							Width:30
 							Height:30
-							Key: u
+							Key: w
 							TooltipText: Defense
 							TooltipContainer:TOOLTIP_CONTAINER
 							ClickSound:button.aud
@@ -225,7 +225,7 @@ Container@PLAYER_WIDGETS:
 							X:70
 							Width:30
 							Height:30
-							Key: i
+							Key: e
 							TooltipText: Infantry
 							TooltipContainer:TOOLTIP_CONTAINER
 							ClickSound:button.aud
@@ -239,7 +239,7 @@ Container@PLAYER_WIDGETS:
 							X:105
 							Width:30
 							Height:30
-							Key: o
+							Key: r
 							TooltipText: Vehicles
 							TooltipContainer:TOOLTIP_CONTAINER
 							ClickSound:button.aud
@@ -253,7 +253,7 @@ Container@PLAYER_WIDGETS:
 							X:140
 							Width:30
 							Height:30
-							Key: p
+							Key: t
 							TooltipText: Aircraft
 							TooltipContainer:TOOLTIP_CONTAINER
 							ClickSound:button.aud

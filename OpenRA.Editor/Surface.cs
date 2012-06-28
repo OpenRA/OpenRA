@@ -157,23 +157,23 @@ namespace OpenRA.Editor
 		void Erase()
 		{
 			// Crash preventing
-			var BrushLocation = GetBrushLocation();
+			var brushLocation = GetBrushLocation();
 
-			if (Map == null || BrushLocation.X >= Map.MapSize.X ||
-				BrushLocation.Y >= Map.MapSize.Y ||
-				BrushLocation.X < 0 ||
-				BrushLocation.Y < 0)
+			if (Map == null || brushLocation.X >= Map.MapSize.X ||
+				brushLocation.Y >= Map.MapSize.Y ||
+				brushLocation.X < 0 ||
+				brushLocation.Y < 0)
 				return;
 
 			Tool = null;
 
-			var key = Map.Actors.Value.FirstOrDefault(a => a.Value.Location() == BrushLocation);
+			var key = Map.Actors.Value.FirstOrDefault(a => a.Value.Location() == brushLocation);
 			if (key.Key != null) Map.Actors.Value.Remove(key.Key);
 
-			if (Map.MapResources.Value[BrushLocation.X, BrushLocation.Y].type != 0)
+			if (Map.MapResources.Value[brushLocation.X, brushLocation.Y].type != 0)
 			{
-				Map.MapResources.Value[BrushLocation.X, BrushLocation.Y] = new TileReference<byte, byte>();
-				var ch = new int2((BrushLocation.X) / ChunkSize, (BrushLocation.Y) / ChunkSize);
+				Map.MapResources.Value[brushLocation.X, brushLocation.Y] = new TileReference<byte, byte>();
+				var ch = new int2((brushLocation.X) / ChunkSize, (brushLocation.Y) / ChunkSize);
 				if (Chunks.ContainsKey(ch))
 				{
 					Chunks[ch].Dispose();
@@ -267,31 +267,31 @@ namespace OpenRA.Editor
 			return bitmap;
 		}
 
-		public int2 GetBrushLocation()
+		public CPos GetBrushLocation()
 		{
 			var vX = (int)Math.Floor((MousePos.X - Offset.X) / Zoom);
 			var vY = (int)Math.Floor((MousePos.Y - Offset.Y) / Zoom);
-			return new int2(vX / TileSet.TileSize, vY / TileSet.TileSize);
+			return new CPos(vX / TileSet.TileSize, vY / TileSet.TileSize);
 		}
 
-		public void DrawActor(SGraphics g, int2 p, ActorTemplate t, ColorPalette cp)
+		public void DrawActor(SGraphics g, CPos p, ActorTemplate t, ColorPalette cp)
 		{
 			var centered = t.Appearance == null || !t.Appearance.RelativeToTopLeft;
 			DrawImage(g, t.Bitmap, p, centered, cp);
 		}
 
-		float2 GetDrawPosition(int2 location, Bitmap bmp, bool centered)
+		float2 GetDrawPosition(CPos location, Bitmap bmp, bool centered)
 		{
-			float OffsetX = centered ? bmp.Width / 2 - TileSet.TileSize / 2 : 0;
-			float DrawX = TileSet.TileSize * location.X * Zoom + Offset.X - OffsetX;
+			float offsetX = centered ? bmp.Width / 2 - TileSet.TileSize / 2 : 0;
+			float drawX = TileSet.TileSize * location.X * Zoom + Offset.X - offsetX;
 
-			float OffsetY = centered ? bmp.Height / 2 - TileSet.TileSize / 2 : 0;
-			float DrawY = TileSet.TileSize * location.Y * Zoom + Offset.Y - OffsetY;
+			float offsetY = centered ? bmp.Height / 2 - TileSet.TileSize / 2 : 0;
+			float drawY = TileSet.TileSize * location.Y * Zoom + Offset.Y - offsetY;
 
-			return new float2(DrawX, DrawY);
+			return new float2(drawX, drawY);
 		}
 
-		public void DrawImage(SGraphics g, Bitmap bmp, int2 location, bool centered, ColorPalette cp)
+		public void DrawImage(SGraphics g, Bitmap bmp, CPos location, bool centered, ColorPalette cp)
 		{
 			var drawPos = GetDrawPosition(location, bmp, centered);
 
@@ -304,7 +304,7 @@ namespace OpenRA.Editor
 			if (cp != null) bmp.Palette = restorePalette;
 		}
 
-		void DrawActorBorder(SGraphics g, int2 p, ActorTemplate t)
+		void DrawActorBorder(SGraphics g, CPos p, ActorTemplate t)
 		{
 			var centered = t.Appearance == null || !t.Appearance.RelativeToTopLeft;
 			var drawPos = GetDrawPosition(p, t.Bitmap, centered);
@@ -318,7 +318,7 @@ namespace OpenRA.Editor
 		{
 			var pr = Map.Players[name];
 			var pcpi = Rules.Info["player"].Traits.Get<PlayerColorPaletteInfo>();
-			var remap = new PlayerColorRemap(pcpi.PaletteFormat, pr.ColorRamp);
+			var remap = new PlayerColorRemap(pcpi.RemapIndex, pr.ColorRamp);
 			return new Palette(Palette, remap).AsSystemPalette();
 		}
 
@@ -399,9 +399,9 @@ namespace OpenRA.Editor
 
 	static class ActorReferenceExts
 	{
-		public static int2 Location(this ActorReference ar)
+		public static CPos Location(this ActorReference ar)
 		{
-			return ar.InitDict.Get<LocationInit>().value;
+			return (CPos)ar.InitDict.Get<LocationInit>().value;
 		}
 
 		public static void DrawStringContrast(this SGraphics g, Font f, string s, int x, int y, Brush fg, Brush bg)

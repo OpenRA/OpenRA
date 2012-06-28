@@ -1,16 +1,216 @@
 ^Vehicle:
 	AppearsOnRadar:
 	Mobile:
+		Crushes: crate, worm
 		TerrainSpeeds:
-			Clear: 100%
+			Sand: 80
+			Rock: 90
+			Transition: 85
+			Concrete: 100
+			Spice: 70
+			SpiceBlobs: 70
+			Dune: 40
 		ROT: 5
+	SelectionDecorations:
 	Selectable: 
-	Targetable:
+		Voice: VehicleVoice
+	TargetableUnit:
 		TargetTypes: Ground
-	Repairable: 
 	Passenger: 
 		CargoType: Vehicle
+	AttackMove:
 	HiddenUnderFog:
 	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:
+	ActorLostNotification@Atreides:
+		Race: atreides
+		Notification: AI_ULOST.AUD
+	ActorLostNotification@Harkonnen:
+		Race: harkonnen
+		Notification: HI_ULOST.AUD
+	ActorLostNotification@Ordos:
+		Race: ordos
+		Notification: OI_ULOST.AUD
+	ProximityCaptor:
+		Types:Vehicle
+	GivesBounty:
+	WithSmoke:
+	Repairable:
+		RepairBuildings: repaira,repairh,repairo
+
+^Tank:
+	AppearsOnRadar:
+	Mobile:
+		Crushes: crate, worm
+		TerrainSpeeds:
+			Sand: 80
+			Rock: 90
+			Transition: 85
+			Concrete: 100
+			Spice: 70
+			SpiceBlobs: 70
+			Dune: 40
+		ROT: 5
+	SelectionDecorations:
+	Selectable: 
+		Voice: VehicleVoice
+	TargetableUnit:
+		TargetTypes: Ground
+	Passenger: 
+		CargoType: Vehicle
+	AttackMove:
+	HiddenUnderFog:
+	GainsExperience:
+	GivesExperience:
+	DrawLineToTarget:
+	ActorLostNotification@Atreides:
+		Race: atreides
+		Notification: AI_ULOST.AUD
+	ActorLostNotification@Harkonnen:
+		Race: harkonnen
+		Notification: HI_ULOST.AUD
+	ActorLostNotification@Ordos:
+		Race: ordos
+		Notification: OI_ULOST.AUD
+	ProximityCaptor:
+		Types:Tank
+	GivesBounty:
+	WithSmoke:
+	Repairable:
+		RepairBuildings: repaira,repairh,repairo
+
+^Infantry:
+	AppearsOnRadar:
+	Health:
+		Radius: 3
+	Armor:
+		Type: None
+	RevealsShroud:
+		Range: 4
+	Mobile:
+		Crushes: crate
+		SharesCell: true
+		TerrainSpeeds:
+			Sand: 80
+			Rock: 90
+			Transition: 85
+			Concrete: 100
+			Spice: 70
+			SpiceBlobs: 70
+			Dune: 40
+			Rough: 60
+	SelectionDecorations:
+	Selectable:
+		Voice: InfantryVoice
+	TargetableUnit:
+		TargetTypes: Ground
+	RenderInfantry:
+	AutoTarget:
+	AttackMove:
+	Passenger:
+		CargoType: Infantry
+	HiddenUnderFog:
+	GainsExperience:
+	GivesExperience:
+	DrawLineToTarget:
+	ActorLostNotification@Atreides:
+		Race: atreides
+		Notification: AI_ULOST.AUD
+	ActorLostNotification@Harkonnen:
+		Race: harkonnen
+		Notification: HI_ULOST.AUD
+	ActorLostNotification@Ordos:
+		Race: ordos
+		Notification: OI_ULOST.AUD
+	ProximityCaptor:
+		Types:Infantry
+	GivesBounty:
+	CrushableInfantry:
+		CrushSound:
+
+^Plane:
+	AppearsOnRadar:
+		UseLocation: yes
+	SelectionDecorations:
+	Selectable:
+		Voice: GenericVoice
+	TargetableAircraft:
+		TargetTypes: Air
+		GroundedTargetTypes: Ground
+	HiddenUnderFog:
+	GainsExperience:
+	GivesExperience:
+	DrawLineToTarget:
+	ActorLostNotification@Atreides:
+		Race: atreides
+		Notification: AI_ULOST.AUD
+	ActorLostNotification@Harkonnen:
+		Race: harkonnen
+		Notification: HI_ULOST.AUD
+	ActorLostNotification@Ordos:
+		Race: ordos
+		Notification: OI_ULOST.AUD
+	DebugAircraftFacing:
+	DebugAircraftSubPxX:
+	DebugAircraftSubPxY:
+	DebugAircraftAltitude:
+	ProximityCaptor:
+		Types:Plane
+	GivesBounty:
+
+^Helicopter:
+	Inherits: ^Plane
+
+^Building:
+	AppearsOnRadar:
+	SelectionDecorations:
+	Selectable:
+		Priority: 3
+	TargetableBuilding:
+		TargetTypes: Ground
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+		TerrainTypes: Rock, Concrete
+		BuildSounds: BUILD1.aud
+		SellSounds: BUILD1.aud
+	GivesBuildableArea:
+	Capturable:
+	CapturableBar:
+	SoundOnDamageTransition:
+		DamagedSound: EXPLSML1.aud
+		DestroyedSound: EXPLHG1.aud
+	RenderBuilding:
+	WithBuildingExplosion:
+	RepairableBuilding:
+	EmitInfantryOnSell:
+		ActorTypes: rifle,rifle,rifle,bazooka,bazooka,engineer
+	MustBeDestroyed:
+	GivesExperience:
+#	FrozenUnderFog:
+	CaptureNotification@Atreides:
+		Race: atreides
+		Notification: AI_CAPT.AUD
+	CaptureNotification@Harkonnen:
+		Race: harkonnen
+		Notification: HI_CAPT.AUD
+	CaptureNotification@Ordos:
+		Race: ordos
+		Notification: OI_CAPT.AUD
+	ActorLostNotification@Atreides:
+		Race: atreides
+		Notification: AI_BLOST.AUD
+	ActorLostNotification@Harkonnen:
+		Race: harkonnen
+		Notification: HI_BLOST.AUD
+	ActorLostNotification@Ordos:
+		Race: ordos
+		Notification: OI_BLOST.AUD
+	EditorAppearance:
+		RelativeToTopLeft: yes
+	ShakeOnDeath:
+	ProximityCaptor:
+		Types:Building
+	Sellable:
+	GivesBounty:

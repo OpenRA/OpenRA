@@ -39,15 +39,15 @@ namespace OpenRA
 		public readonly Actor Subject;
 		public readonly bool Queued;
 		public Actor TargetActor;
-		public int2 TargetLocation;
+		public CPos TargetLocation;
 		public string TargetString;
-		public int2 ExtraLocation;
+		public CPos ExtraLocation;
 		public bool IsImmediate;
 
 		public Player Player { get { return Subject.Owner; } }
 
 		Order(string orderString, Actor subject,
-			Actor targetActor, int2 targetLocation, string targetString, bool queued, int2 extraLocation)
+			Actor targetActor, CPos targetLocation, string targetString, bool queued, CPos extraLocation)
 		{
 			this.OrderString = orderString;
 			this.Subject = subject;
@@ -60,10 +60,10 @@ namespace OpenRA
 
 		// For scripting special powers
 		public Order()
-			: this(null, null, null, int2.Zero, null, false, int2.Zero) { }
+			: this(null, null, null, CPos.Zero, null, false, CPos.Zero) { }
 
 		public Order(string orderString, Actor subject, bool queued)
-			: this(orderString, subject, null, int2.Zero, null, queued, int2.Zero) { }
+			: this(orderString, subject, null, CPos.Zero, null, queued, CPos.Zero) { }
 
 		public Order(string orderstring, Order order)
 			: this(orderstring, order.Subject, order.TargetActor, order.TargetLocation,
@@ -98,21 +98,21 @@ namespace OpenRA
 
 						OrderFields fields = 0;
 						if (TargetActor != null) fields |= OrderFields.TargetActor;
-						if (TargetLocation != int2.Zero) fields |= OrderFields.TargetLocation;
+						if (TargetLocation != CPos.Zero) fields |= OrderFields.TargetLocation;
 						if (TargetString != null) fields |= OrderFields.TargetString;
 						if (Queued) fields |= OrderFields.Queued;
-						if (ExtraLocation != int2.Zero) fields |= OrderFields.ExtraLocation;
+						if (ExtraLocation != CPos.Zero) fields |= OrderFields.ExtraLocation;
 
 						w.Write((byte)fields);
 
 						if (TargetActor != null)
 							w.Write(UIntFromActor(TargetActor));
-						if (TargetLocation != int2.Zero)
-							w.Write(TargetLocation);
+						if (TargetLocation != CPos.Zero)
+							w.Write(TargetLocation.ToInt2());
 						if (TargetString != null)
 							w.Write(TargetString);
-						if (ExtraLocation != int2.Zero)
-							w.Write(ExtraLocation);
+						if (ExtraLocation != CPos.Zero)
+							w.Write(ExtraLocation.ToInt2());
 
 						return ret.ToArray();
 					}
@@ -130,10 +130,10 @@ namespace OpenRA
 						var flags = (OrderFields)r.ReadByte();
 
 						var targetActorId = flags.HasField(OrderFields.TargetActor) ?  r.ReadUInt32() : 0xffffffff;
-						var targetLocation = flags.HasField(OrderFields.TargetLocation) ? r.ReadInt2() : int2.Zero;
+						var targetLocation = (CPos)( flags.HasField(OrderFields.TargetLocation) ? r.ReadInt2() : int2.Zero );
 						var targetString = flags.HasField(OrderFields.TargetString) ? r.ReadString() : null;
 						var queued = flags.HasField(OrderFields.Queued);
-						var extraLocation = flags.HasField(OrderFields.ExtraLocation) ? r.ReadInt2() : int2.Zero;
+						var extraLocation = (CPos)(flags.HasField(OrderFields.ExtraLocation) ? r.ReadInt2() : int2.Zero);
 
 						Actor subject, targetActor;
 						if( !TryGetActorFromUInt( world, subjectId, out subject ) || !TryGetActorFromUInt( world, targetActorId, out targetActor ) )
@@ -199,7 +199,18 @@ namespace OpenRA
 		{
 			return new Order("HandshakeResponse", null, false) { IsImmediate = true, TargetString = text };
 		}
+		
+		public static Order PauseRequest()
+		{
+			return new Order("PauseRequest", null, false) { IsImmediate = true, TargetString="" }; //TODO: targetbool?
+		}
+                
+		public static Order PauseGame()
+		{
+			return new Order("PauseGame", null, false) { IsImmediate = true, TargetString=""}; //TODO: targetbool?
+		}
 
+		
 		public static Order Command(string text)
 		{
 			return new Order("Command", null, false) { IsImmediate = true, TargetString = text };
@@ -207,17 +218,17 @@ namespace OpenRA
 
 		public static Order StartProduction(Actor subject, string item, int count)
 		{
-			return new Order("StartProduction", subject, false) { TargetLocation = new int2(count, 0), TargetString = item };
+			return new Order("StartProduction", subject, false) { TargetLocation = new CPos(count, 0), TargetString = item };
 		}
 
 		public static Order PauseProduction(Actor subject, string item, bool pause)
 		{
-			return new Order("PauseProduction", subject, false) { TargetLocation = new int2(pause ? 1 : 0, 0), TargetString = item };
+			return new Order("PauseProduction", subject, false) { TargetLocation = new CPos(pause ? 1 : 0, 0), TargetString = item };
 		}
 
 		public static Order CancelProduction(Actor subject, string item, int count)
 		{
-			return new Order("CancelProduction", subject, false) { TargetLocation = new int2(count, 0), TargetString = item };
+			return new Order("CancelProduction", subject, false) { TargetLocation = new CPos(count, 0), TargetString = item };
 		}
 	}
 }

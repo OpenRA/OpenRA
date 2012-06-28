@@ -338,7 +338,7 @@ namespace OpenRA
 			return dataStream.ToArray();
 		}
 
-		public bool IsInMap(int2 xy) { return IsInMap(xy.X, xy.Y); }
+		public bool IsInMap(CPos xy) { return IsInMap(xy.X, xy.Y); }
 		public bool IsInMap(int x, int y) { return Bounds.Contains(x,y); }
 
 		static T[,] ResizeArray<T>(T[,] ts, T t, int width, int height)

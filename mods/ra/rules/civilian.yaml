@@ -89,11 +89,9 @@ V18:
 	Inherits: ^CivField
 
 BARL:
-	Inherits: ^Building
+	Inherits: ^CivBuilding
 	Selectable:
 		Priority: 0
-	-RepairableBuilding:
-	-GivesBuildableArea:
 	Health:
 		HP: 10
 	Explodes:
@@ -101,11 +99,9 @@ BARL:
 		Name: Explosive Barrel
 
 BRL3:
-	Inherits: ^Building
+	Inherits: ^CivBuilding
 	Selectable:
 		Priority: 0
-	-RepairableBuilding:
-	-GivesBuildableArea:
 	Health:
 		HP: 10
 	Explodes:

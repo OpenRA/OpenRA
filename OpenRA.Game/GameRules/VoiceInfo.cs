@@ -18,9 +18,12 @@ namespace OpenRA.GameRules
 	public class VoiceInfo
 	{
 		[FieldLoader.Ignore] public readonly Dictionary<string,string[]> Variants;
+		[FieldLoader.Ignore] public readonly Dictionary<string,string[]> Prefixes;
 		[FieldLoader.Ignore] public readonly Dictionary<string,string[]> Voices;
 		public readonly string DefaultVariant = ".aud" ;
+		public readonly string DefaultPrefix = "" ;
 		public readonly string[] DisableVariants = { };
+		public readonly string[] DisablePrefixes = { };
 
 		static Dictionary<string, string[]> Load( MiniYaml y, string name )
 		{
@@ -37,6 +40,7 @@ namespace OpenRA.GameRules
 		{
 			FieldLoader.Load( this, y );
 			Variants = Load(y, "Variants");
+			Prefixes = Load(y, "Prefixes");
 			Voices = Load(y, "Voices");
 
 			if (!Voices.ContainsKey("Attack"))

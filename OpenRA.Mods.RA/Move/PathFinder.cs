@@ -19,19 +19,19 @@ namespace OpenRA.Mods.RA.Move
 {
 	public class PathFinderInfo : ITraitInfo
 	{
-		public object Create( ActorInitializer init ) { return new PathFinder( init.world ); }
+		public object Create(ActorInitializer init) { return new PathFinder(init.world); }
 	}
 
 	public class PathFinder
 	{
 		readonly World world;
-		public PathFinder( World world ) { this.world = world; }
+		public PathFinder(World world) { this.world = world; }
 
 		class CachedPath
 		{
-			public int2 from;
-			public int2 to;
-			public List<int2> result;
+			public CPos from;
+			public CPos to;
+			public List<CPos> result;
 			public int tick;
 			public Actor actor;
 		}
@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA.Move
 		List<CachedPath> CachedPaths = new List<CachedPath>();
 		const int MaxPathAge = 50;	/* x 40ms ticks */
 
-		public List<int2> FindUnitPath(int2 from, int2 target, Actor self)
+		public List<CPos> FindUnitPath(CPos from, CPos target, Actor self)
 		{
 			using (new PerfSample("Pathfinder"))
 			{
@@ -47,47 +47,48 @@ namespace OpenRA.Mods.RA.Move
 				if (cached != null)
 				{
 					Log.Write("debug", "Actor {0} asked for a path from {1} tick(s) ago", self.ActorID, world.FrameNumber - cached.tick);
-					cached.tick = world.FrameNumber;
-					return new List<int2>(cached.result);
+					if (world.FrameNumber - cached.tick > MaxPathAge)
+						CachedPaths.Remove(cached);
+					return new List<CPos>(cached.result);
 				}
 
 				var mi = self.Info.Traits.Get<MobileInfo>();
 
 				var pb = FindBidiPath(
 					PathSearch.FromPoint(world, mi, self.Owner, target, from, true),
-					PathSearch.FromPoint(world, mi, self.Owner, from, target, true)
-						.InReverse());
+					PathSearch.FromPoint(world, mi, self.Owner, from, target, true).InReverse()
+				);
 
 				CheckSanePath2(pb, from, target);
 
 				CachedPaths.RemoveAll(p => world.FrameNumber - p.tick > MaxPathAge);
 				CachedPaths.Add(new CachedPath { from = from, to = target, actor = self, result = pb, tick = world.FrameNumber });
-				return new List<int2>(pb);
+				return new List<CPos>(pb);
 			}
 		}
 
-		public List<int2> FindUnitPathToRange( int2 src, int2 target, int range, Actor self )
+		public List<CPos> FindUnitPathToRange(CPos src, CPos target, int range, Actor self)
 		{
-			using( new PerfSample( "Pathfinder" ) )
+			using (new PerfSample("Pathfinder"))
 			{
 				var mi = self.Info.Traits.Get<MobileInfo>();
 				var tilesInRange = world.FindTilesInCircle(target, range)
-					.Where( t => mi.CanEnterCell(self.World, self.Owner, t, null, true));
+					.Where(t => mi.CanEnterCell(self.World, self.Owner, t, null, true));
 
 				var path = FindBidiPath(
 					PathSearch.FromPoints(world, mi, self.Owner, tilesInRange, src, true),
-					PathSearch.FromPoint(world, mi, self.Owner, src, target, true)
-						.InReverse());
+					PathSearch.FromPoint(world, mi, self.Owner, src, target, true).InReverse()
+				);
 
 				return path;
 			}
 		}
 
-		public List<int2> FindPath( PathSearch search )
+		public List<CPos> FindPath(PathSearch search)
 		{
 			using (new PerfSample("Pathfinder"))
 			{
-				using(search)
+				using (search)
 					while (!search.queue.Empty)
 					{
 						var p = search.Expand(world);
@@ -96,19 +97,19 @@ namespace OpenRA.Mods.RA.Move
 					}
 
 				// no path exists
-				return new List<int2>();
+				return new List<CPos>(0);
 			}
 		}
 
-		static List<int2> MakePath( CellInfo[ , ] cellInfo, int2 destination )
+		static List<CPos> MakePath(CellInfo[,] cellInfo, CPos destination)
 		{
-			List<int2> ret = new List<int2>();
-			int2 pathNode = destination;
+			var ret = new List<CPos>();
+			CPos pathNode = destination;
 
-			while( cellInfo[ pathNode.X, pathNode.Y ].Path != pathNode )
+			while (cellInfo[pathNode.X, pathNode.Y].Path != pathNode)
 			{
-				ret.Add( pathNode );
-				pathNode = cellInfo[ pathNode.X, pathNode.Y ].Path;
+				ret.Add(pathNode);
+				pathNode = cellInfo[pathNode.X, pathNode.Y].Path;
 			}
 
 			ret.Add(pathNode);
@@ -116,9 +117,7 @@ namespace OpenRA.Mods.RA.Move
 			return ret;
 		}
 
-
-
-		public List<int2> FindBidiPath(			/* searches from both ends toward each other */
+		public List<CPos> FindBidiPath(			/* searches from both ends toward each other */
 			PathSearch fromSrc,
 			PathSearch fromDest)
 		{
@@ -141,22 +140,22 @@ namespace OpenRA.Mods.RA.Move
 							return MakeBidiPath(fromSrc, fromDest, q);
 					}
 
-				return new List<int2>();
+				return new List<CPos>(0);
 			}
 		}
 
-		static List<int2> MakeBidiPath(PathSearch a, PathSearch b, int2 p)
+		static List<CPos> MakeBidiPath(PathSearch a, PathSearch b, CPos p)
 		{
 			var ca = a.cellInfo;
 			var cb = b.cellInfo;
 
-			var ret = new List<int2>();
+			var ret = new List<CPos>();
 
 			var q = p;
 			while (ca[q.X, q.Y].Path != q)
 			{
-				ret.Add( q );
-				q = ca[ q.X, q.Y ].Path;
+				ret.Add(q);
+				q = ca[q.X, q.Y].Path;
 			}
 			ret.Add(q);
 
@@ -169,27 +168,27 @@ namespace OpenRA.Mods.RA.Move
 				ret.Add(q);
 			}
 
-			CheckSanePath( ret );
+			CheckSanePath(ret);
 			return ret;
 		}
 
-		[Conditional( "SANITY_CHECKS" )]
-		static void CheckSanePath( List<int2> path )
+		[Conditional("SANITY_CHECKS")]
+		static void CheckSanePath(List<CPos> path)
 		{
-			if( path.Count == 0 )
+			if (path.Count == 0)
 				return;
-			var prev = path[ 0 ];
-			for( int i = 0 ; i < path.Count ; i++ )
+			var prev = path[0];
+			for (int i = 0; i < path.Count; i++)
 			{
-				var d = path[ i ] - prev;
-				if( Math.Abs( d.X ) > 1 || Math.Abs( d.Y ) > 1 )
-					throw new InvalidOperationException( "(PathFinder) path sanity check failed" );
-				prev = path[ i ];
+				var d = path[i] - prev;
+				if (Math.Abs(d.X) > 1 || Math.Abs(d.Y) > 1)
+					throw new InvalidOperationException("(PathFinder) path sanity check failed");
+				prev = path[i];
 			}
 		}
 
 		[Conditional("SANITY_CHECKS")]
-		static void CheckSanePath2(List<int2> path, int2 src, int2 dest)
+		static void CheckSanePath2(List<CPos> path, CPos src, CPos dest)
 		{
 			if (path.Count == 0)
 				return;
@@ -204,10 +203,10 @@ namespace OpenRA.Mods.RA.Move
 	public struct CellInfo
 	{
 		public int MinCost;
-		public int2 Path;
+		public CPos Path;
 		public bool Seen;
 
-		public CellInfo( int minCost, int2 path, bool seen )
+		public CellInfo(int minCost, CPos path, bool seen)
 		{
 			MinCost = minCost;
 			Path = path;
@@ -218,9 +217,9 @@ namespace OpenRA.Mods.RA.Move
 	public struct PathDistance : IComparable<PathDistance>
 	{
 		public int EstTotal;
-		public int2 Location;
+		public CPos Location;
 
-		public PathDistance(int estTotal, int2 location)
+		public PathDistance(int estTotal, CPos location)
 		{
 			EstTotal = estTotal;
 			Location = location;

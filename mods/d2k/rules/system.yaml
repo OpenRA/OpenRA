@@ -1,35 +1,113 @@
 Player:
 	TechTree:
+	PlaceBuilding:
+	SupportPowerManager:
+	ConquestVictoryConditions@Atreides:
+		Race: atreides
+		WinNotification: AI_MWIN.AUD
+		LoseNotification: AI_MFAIL.AUD
+	ConquestVictoryConditions@Harkonnen:
+		Race: harkonnen
+		WinNotification: HI_MWIN.AUD
+		LoseNotification: HI_MFAIL.AUD
+	ConquestVictoryConditions@Ordos:
+		Race: ordos
+		WinNotification: OI_MWIN.AUD
+		LoseNotification: OI_MFAIL.AUD
+	PowerManager:
+	AllyRepair:
 	PlayerResources:
 		InitialCash: 5000
 	ActorGroupProxy:
 	DeveloperMode:
+	HackyAI@Omnius:
+		Name:Omnius
+		RallypointTestBuilding: conyarda
+		BuildingFractions:
+			refa: 25.1%
+			refh: 25.1%
+			refo: 25.1%
+			barra: 0.1%
+			barrh: 0.1%
+			barro: 0.1%
+			lighta: 0.1%
+			lighth: 0.1%
+			lighto: 0.1%
+			heavya: 0.1%
+			heavyh: 0.1%
+			heavyo: 0.1%
+			researcha: 0.1%
+			researchh: 0.1%
+			researcho: 0.1%
+			repaira: 0.1%
+			repairh: 0.1%
+			repairo: 0.1%
+			radara: 0.1%
+			radaro: 0.1%
+			radarh: 0.1%
+			powra: 35%
+			powrh: 35%
+			powro: 35%
+		UnitsToBuild:
+			rifle: 30%
+			bazooka: 30%
+			trike: 30%
+			raider: 30%
+			quad: 40%
+			siege: 15%
+			combata: 70%
+			combath: 70%
+			combato: 70%
+			sonic: 25%
+			devast: 25%
+			deviator: 25%
+		SquadSize: 10
+	PlayerColorPalette:
+		BasePalette: d2k
+		RemapIndex: 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255
+	BaseAttackNotifier@Atreides:
+		Race: atreides
+		Audio: AI_ATACK.AUD
+	BaseAttackNotifier@Harkonnen:
+		Race: harkonnen
+		Audio: HI_ATACK.AUD
+	BaseAttackNotifier@Ordos:
+		Race: ordos
+		Audio: OI_ATACK.AUD
 
-World:
+World:	
+	OpenWidgetAtGameStart:
+		Widget: INGAME_ROOT
+		ObserverWidget: OBSERVER_ROOT
 	ScreenShaker:
-	ColorPickerPaletteModifier:
+	NukePaletteEffect:
 	BuildingInfluence:
-	UnitInfluence:
 	ChooseBuildTabOnSelect:
+	CrateSpawner:
+		Minimum: 1
+		Maximum: 3
+		SpawnInterval: 120
+		WaterChance: 0
+		ValidGround: Sand, Dune, Rock
 	PaletteFromCurrentTileset:
 		Name: terrain
-	PlayerColorPalette:
-		BasePalette: units
-		PaletteFormat: d2k
-	PaletteFromFile@units:
-		Name: units
-		Filename: units.pal
+	PaletteFromFile@d2k:
+		Name: d2k
+		Filename: d2k.pal
 	PaletteFromFile@chrome:
 		Name: chrome
-		Filename: temperat.pal
+		Filename: d2k.pal
 	PaletteFromFile@effect:
 		Name: effect
 		Filename: temperat.pal
-	PaletteFromFile@cursor:
-		Name: cursor
-		Filename: temperat.pal
 	PaletteFromRGBA@shadow:
 		Name: shadow
+		R: 0
+		G: 0
+		B: 0
+		A: 140
+	PaletteFromRGBA@cloak:
+		Name: cloak
 		R: 0
 		G: 0
 		B: 0
@@ -40,40 +118,227 @@ World:
 		G: 255
 		B: 255
 		A: 128
+	PaletteFromRGBA@invuln:
+		Name: invuln
+		R: 128
+		G: 0
+		B: 0
+		A: 128
 	PaletteFromRGBA@disabled:
 		Name: disabled
 		R: 0
 		G: 0
 		B: 0
 		A: 180
+	ColorPickerPaletteModifier:
 	ShroudPalette@shroud:
 	ShroudPalette@fog:
 		IsFog: yes
 		Name: fog
-	Country@0:
-		Name: Allies
-		Race: allies
+	Country@Atreides:
+		Name: Atreides
+		Race: atreides
+	Country@Harkonnen:
+		Name: Harkonnen
+		Race: harkonnen
+	Country@Ordos:
+		Name: Ordos
+		Race: ordos
+#	BibLayer:
+#		BibTypes: bib2x2,bib3x2,bib3x3
+#		BibWidths: 2,3,3
+	ResourceLayer:
+	ResourceClaimLayer:
+	ResourceType@spice:
+		ResourceType: 1
+		Palette: d2k
+		TerrainType: Spice
+		SpriteNames: spice0
+		ValuePerUnit: 35
+		Name: Spice
+		PipColor: Green
+		AllowedTerrainTypes: Sand
+		AllowUnderActors: false
+	SmudgeLayer@rock:
+		Type:RockCrater
+		Types:rockcrater1,rockcrater2
+		Depths:15,15
+	SmudgeLayer@sand:
+		Type:SandCrater
+		Types:sandcrater1,sandcrater2
+		Depths:15,15
 	SpawnMapActors:
 	CreateMPPlayers:
 	MPStartLocations:
-	SpawnMPUnits:
+	SpawnMPUnits@atreides:
+		InitialUnit: mcva
+		Faction: atreides
+	SpawnMPUnits@harkonnen:
+		InitialUnit: mcvh
+		Faction: harkonnen
+	SpawnMPUnits@ordos:
+		InitialUnit: mcvo
+		Faction: ordos
+#TODO: These are just the Atreides sounds.
 	EvaAlerts:
-		RadarUp:
-		RadarDown:
-		BuildingSelectAudio:
-		BuildingReadyAudio:
-		BuildingCannotPlaceAudio:
-		UnitSelectAudio:
-		UnitReadyAudio:
-		OnHoldAudio:
-		CancelledAudio:
-		CashTickUp:
-		CashTickDown:
-		LowPower:
-		SilosNeeded:
-		PrimaryBuildingSelected:
+		RadarUp: POWRUP1.aud
+		RadarDown: POWRDN1.aud
+		BuildingCannotPlaceAudio: AI_PLACE.AUD
+		CashTickUp: CASHTIK1.aud
+		CashTickDown:CASHTIK1.aud
+		NewOptions: AI_NEWOP.AUD
+		LowPower: AI_POWER.AUD
+		SilosNeeded: AI_SILOS.AUD
+		PrimaryBuildingSelected: AI_PRMRY.AUD
 		AbilityInsufficientPower:
-		LevelUp:
+		LevelUp: SCORTIK1.aud
+		Repairing:
 	SpatialBins:
 		BinSize: 4
 	Shroud:
+	PathFinder:
+	ValidateOrder:
+CRATE:
+	Tooltip:
+		Name: Crate
+	Crate:
+		Lifetime: 120
+		TerrainTypes: Sand, Dune, Rock
+	GiveCashCrateAction:
+		Amount: 1000
+		SelectionShares: 50
+		UseCashTick: yes
+	LevelUpCrateAction:
+		SelectionShares: 40
+	ExplodeCrateAction@boom:
+		Weapon: CrateExplosion
+		SelectionShares: 5
+	ExplodeCrateAction@nuke:
+		Weapon: CrateNuke
+		SelectionShares: 5
+	HideMapCrateAction:
+		SelectionShares: 5
+		Effect: hide-map
+	RevealMapCrateAction:
+		SelectionShares: 1
+		Effect: reveal-map
+	GiveMcvCrateAction@Atreides:
+		SelectionShares: 2
+		NoBaseSelectionShares: 9001
+		Unit: mcva
+	GiveMcvCrateAction@Harkonnen:
+		SelectionShares: 2
+		NoBaseSelectionShares: 9001
+		Unit: mcvh
+	GiveMcvCrateAction@Ordos:
+		SelectionShares: 2
+		NoBaseSelectionShares: 9001
+		Unit: mcvo
+	GiveUnitCrateAction@Trike:
+		SelectionShares: 7
+		Unit: trike
+	GiveUnitCrateAction@Quad:
+		SelectionShares: 6
+		Unit: quad
+	GiveUnitCrateAction@Raider:
+		SelectionShares: 6
+		Unit: raider
+	GiveUnitCrateAction@SiegeTank:
+		SelectionShares: 6
+		Unit: siegetank
+	GiveUnitCrateAction@MissileTank:
+		SelectionShares: 6
+		Unit: missiletank
+	GiveUnitCrateAction@CombatA:
+		SelectionShares: 5
+		Unit: combata
+	GiveUnitCrateAction@CombatH:
+		SelectionShares: 5
+		Unit: combath
+	GiveUnitCrateAction@CombatO:
+		SelectionShares: 5
+		Unit: combato
+	GiveUnitCrateAction@Fremen:
+		SelectionShares: 4
+		Unit: fremen
+	GiveUnitCrateAction@Sardaukar:
+		SelectionShares: 4
+		Unit: sardaukar
+	GiveUnitCrateAction@Saboteur:
+		SelectionShares: 4
+		Unit: saboteur
+	GiveUnitCrateAction@SonicTank:
+		SelectionShares: 3
+		Unit: sonictank
+	GiveUnitCrateAction@Devast:
+		SelectionShares: 3
+		Unit: devast
+	GiveUnitCrateAction@deviatortank:
+		SelectionShares: 3
+		Unit: deviatortank
+	RenderSimple:
+	BelowUnits:
+	ProximityCaptor:
+		Types:Crate
+	Passenger:
+
+mpspawn:
+	Waypoint:
+	RenderEditorOnly:
+
+waypoint:
+	Waypoint:
+	RenderEditorOnly:
+
+SPICEBLOOM:
+	RenderBuilding:
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	AppearsOnRadar:
+	EditorAppearance:
+		RelativeToTopLeft: yes
+	ProximityCaptor:
+		Types:Tree
+	BelowUnits:
+	Tooltip:
+		Name: Spice Bloom
+	SeedsResource:
+		ResourceType: Spice
+	RadarColorFromTerrain:
+		Terrain: Spice
+
+SANDWORM:
+	Buildable:
+		Owner: Creep
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Sandworm
+		Description: Attracted by vibrations in the sand. Will eat units whole and has a large appetite.
+		Icon: wormjaw
+	Health:
+		HP: 10000
+		Radius: 3
+	Armor:
+		Type: None
+	Mobile:
+		Speed: 5
+		TerrainSpeeds:
+			Sand: 100
+			Dune: 100
+			Spice: 100
+	TargetableUnit:
+		TargetTypes: Ground
+	AutoTarget:
+	AttackMove:
+		JustMove: true
+	AttackWander:
+	AttackLeap:
+		PrimaryWeapon: WormJaw
+		CanAttackGround: no
+	RenderInfantry:
+	BelowUnits:
+	GivesExperience:
+	GivesBounty:
+	DrawLineToTarget:

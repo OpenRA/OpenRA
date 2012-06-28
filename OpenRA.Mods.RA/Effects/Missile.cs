@@ -46,9 +46,9 @@ namespace OpenRA.Mods.RA.Effects
 		readonly MissileInfo Info;
 		readonly ProjectileArgs Args;
 
-		int2 offset;
-		public int2 SubPxPosition;
-		public int2 PxPosition { get { return new int2( SubPxPosition.X / 1024, SubPxPosition.Y / 1024 ); } }
+		PVecInt offset;
+		public PSubPos SubPxPosition;
+		public PPos PxPosition { get { return SubPxPosition.ToPPos(); } }
 
 		readonly Animation anim;
 		int Facing;
@@ -61,12 +61,12 @@ namespace OpenRA.Mods.RA.Effects
 			Info = info;
 			Args = args;
 
-			SubPxPosition = 1024 * Args.src;
+			SubPxPosition = Args.src.ToPSubPos();
 			Altitude = Args.srcAltitude;
 			Facing = Args.facing;
 
 			if (info.Inaccuracy > 0)
-				offset = (info.Inaccuracy * args.firedBy.World.SharedRandom.Gauss2D(2)).ToInt2();
+				offset = (PVecInt)(info.Inaccuracy * args.firedBy.World.SharedRandom.Gauss2D(2)).ToInt2();
 
 			if (Info.Image != null)
 			{
@@ -99,17 +99,18 @@ namespace OpenRA.Mods.RA.Effects
 
 			Altitude += Math.Sign(targetAltitude - Altitude);
 
-			Facing = Traits.Util.TickFacing(Facing,
-				Traits.Util.GetFacing(dist, Facing),
-				Info.ROT);
+			if (Args.target.IsValid)
+				Facing = Traits.Util.TickFacing(Facing,
+					Traits.Util.GetFacing(dist, Facing),
+					Info.ROT);
 
 			anim.Tick();
 
-			if (dist.LengthSquared < MissileCloseEnough * MissileCloseEnough || !Args.target.IsValid )
+			if (dist.LengthSquared < MissileCloseEnough * MissileCloseEnough && Args.target.IsValid )
 				Explode(world);
 
 			// TODO: Replace this with a lookup table
-			var dir = (-float2.FromAngle((float)(Facing / 128f * Math.PI))*1024).ToInt2();
+			var dir = (-float2.FromAngle((float)(Facing / 128f * Math.PI))).ToPSubVec();
 
 			var move = Info.Speed * dir;
 			if (targetAltitude > 0 && Info.TurboBoost)
@@ -120,7 +121,7 @@ namespace OpenRA.Mods.RA.Effects
 
 			if (Info.Trail != null)
 			{
-				var sp = (SubPxPosition - (move * 3) / 2) / 1024 - new int2(0, Altitude);
+				var sp = ((SubPxPosition - (move * 3) / 2)).ToPPos() - new PVecInt(0, Altitude);
 
 				if (--ticksToNextSmoke < 0)
 				{
@@ -134,14 +135,13 @@ namespace OpenRA.Mods.RA.Effects
 
 			if (!Info.High)		// check for hitting a wall
 			{
-				var cell = Traits.Util.CellContaining(PxPosition);
-				if (world.ActorMap.GetUnitsAt(cell).Any(
-					a => a.HasTrait<IBlocksBullets>()))
+				var cell = PxPosition.ToCPos();
+				if (world.ActorMap.GetUnitsAt(cell).Any(a => a.HasTrait<IBlocksBullets>()))
 					Explode(world);
 			}
 
 			if (Trail != null)
-				Trail.Tick(PxPosition - new float2(0,Altitude));
+				Trail.Tick(PxPosition - new PVecInt(0, Altitude));
 		}
 
 		void Explode(World world)
@@ -154,8 +154,8 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<Renderable> Render()
 		{
-			if (Args.firedBy.World.LocalShroud.IsVisible(OpenRA.Traits.Util.CellContaining(PxPosition.ToFloat2())))
-				yield return new Renderable(anim.Image,PxPosition.ToFloat2() - 0.5f * anim.Image.size - new float2(0, Altitude),
+			if (Args.firedBy.World.LocalShroud.IsVisible(PxPosition.ToCPos()))
+				yield return new Renderable(anim.Image, PxPosition.ToFloat2() - 0.5f * anim.Image.size - new float2(0, Altitude),
 					Args.weapon.Underwater ? "shadow" : "effect", PxPosition.Y);
 
 			if (Trail != null)

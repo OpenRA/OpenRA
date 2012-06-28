@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -21,14 +22,17 @@ namespace OpenRA.Mods.RA
 	class CapturesInfo : ITraitInfo
 	{
 		public string[] CaptureTypes = {"building"};
-		public object Create(ActorInitializer init) { return new Captures(this); }
+		public object Create(ActorInitializer init) { return new Captures(init.self, this); }
 	}
 
 	class Captures : IIssueOrder, IResolveOrder, IOrderVoice
 	{
 		public readonly CapturesInfo Info;
-		public Captures(CapturesInfo info)
+		readonly Actor self;
+
+		public Captures(Actor self, CapturesInfo info)
 		{
+			this.self = self;
 			Info = info;
 		}
 
@@ -36,7 +40,7 @@ namespace OpenRA.Mods.RA
 		{
 			get
 			{
-				yield return new CaptureOrderTargeter(Info.CaptureTypes);
+				yield return new CaptureOrderTargeter(Info.CaptureTypes, target => CanEnter(target));
 			}
 		}
 
@@ -50,13 +54,16 @@ namespace OpenRA.Mods.RA
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return (order.OrderString == "CaptureActor") ? "Attack" : null;
+			return (order.OrderString == "CaptureActor"
+					&& CanEnter(order.TargetActor)) ? "Attack" : null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "CaptureActor")
 			{
+				if (!CanEnter(order.TargetActor)) return;
+
 				self.SetTargetLine(Target.FromOrder(order), Color.Red);
 
 				self.CancelActivity();
@@ -64,15 +71,24 @@ namespace OpenRA.Mods.RA
 				self.QueueActivity(new CaptureActor(order.TargetActor));
 			}
 		}
+
+		bool CanEnter(Actor target)
+		{
+			var c = target.TraitOrDefault<Capturable>();
+			return c != null && ( !c.CaptureInProgress || c.Captor.Owner.Stances[self.Owner] != Stance.Ally );
+		}
 	}
 
 	class CaptureOrderTargeter : UnitTraitOrderTargeter<Capturable>
 	{
 		readonly string[] captureTypes;
-		public CaptureOrderTargeter(string[] captureTypes)
-			: base( "CaptureActor", 6, "enter", true, true )
+		readonly Func<Actor, bool> useEnterCursor;
+
+		public CaptureOrderTargeter(string[] captureTypes, Func<Actor, bool> useEnterCursor)
+			: base( "CaptureActor", 6, "enter", true, true)
 		{
 			this.captureTypes = captureTypes;
+			this.useEnterCursor = useEnterCursor;
 		}
 
 		public override bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceQueued, ref string cursor)
@@ -87,9 +103,10 @@ namespace OpenRA.Mods.RA
 			if( playerRelationship == Stance.Neutral && !ci.AllowNeutral ) return false;
 
 			IsQueued = forceQueued;
+
 			if (captureTypes.Contains(ci.Type))
 			{
-				cursor = "enter";
+				cursor = useEnterCursor(target) ? "enter" : "enter-blocked";
 				return true;
 			}
 

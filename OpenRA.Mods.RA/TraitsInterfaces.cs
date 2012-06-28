@@ -18,7 +18,7 @@ namespace OpenRA.Mods.RA
 		void OnDock(Actor harv, DeliverResources dockOrder);
 		void GiveOre(int amount);
 		bool CanGiveOre(int amount);
-		int2 DeliverOffset { get; }
+		CVec DeliverOffset { get; }
 		bool AllowDocking { get; }
 	}
 
@@ -36,5 +36,10 @@ namespace OpenRA.Mods.RA
 	public interface ITechTreePrerequisite
 	{
 		IEnumerable<string> ProvidesPrerequisites {get;}
+	}
+
+	public interface INotifyResourceClaimLost
+	{
+		void OnNotifyResourceClaimLost(Actor self, ResourceClaim claim, Actor claimer);
 	}
 }

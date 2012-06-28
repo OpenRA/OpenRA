@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2012 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -21,7 +21,6 @@ namespace OpenRA.Mods.RA.Widgets
 	class SupportPowerBinWidget : Widget
 	{
 		Dictionary<string, Sprite> spsprites;
-		Animation ready;
 		Animation clock;
 		readonly List<Pair<Rectangle, Action<MouseInput>>> buttons = new List<Pair<Rectangle,Action<MouseInput>>>();
 
@@ -45,8 +44,6 @@ namespace OpenRA.Mods.RA.Widgets
 					u => u,
 					u => Game.modData.SpriteLoader.LoadAllSprites(u)[0]);
 
-			ready = new Animation("pips");
-			ready.PlayRepeating("ready");
 			clock = new Animation("clock");
 		}
 
@@ -151,11 +148,13 @@ namespace OpenRA.Mods.RA.Widgets
 
 				WidgetUtils.DrawSHP(clock.Image, drawPos, worldRenderer);
 
-				var overlay = sp.Ready ? "ready" : sp.Active ? null : "hold";
+				var overlay = sp.Ready ? "READY" : sp.Active ? null : "ON HOLD";
+				var font = Game.Renderer.Fonts["TinyBold"];
 				if (overlay != null)
 				{
-					ready.Play(overlay);
-					WidgetUtils.DrawSHP(ready.Image, drawPos + new float2((64 - ready.Image.size.X) / 2, 2), worldRenderer);
+					var size = font.Measure(overlay);
+					var overlayPos = drawPos + new float2(32, 16);
+					font.DrawTextWithContrast(overlay, overlayPos - new float2(size.X / 2, 0), Color.White, Color.Black, 1);
 				}
 
 				buttons.Add(Pair.New(rect,HandleSupportPower(kv.Key, manager)));

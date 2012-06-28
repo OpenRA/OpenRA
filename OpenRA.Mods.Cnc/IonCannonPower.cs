@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Cnc
 		{
 			self.World.AddFrameEndTask(w =>
 			{
-				Sound.Play(Info.LaunchSound, Game.CellSize * order.TargetLocation.ToFloat2());
+				Sound.Play(Info.LaunchSound, order.TargetLocation.ToPPos());
 				w.Add(new IonCannon(self, w, order.TargetLocation));
 			});
 		}

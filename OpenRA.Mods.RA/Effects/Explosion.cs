@@ -18,10 +18,10 @@ namespace OpenRA.Mods.RA.Effects
 	public class Explosion : IEffect
 	{
 		Animation anim;
-		int2 pos;
+		PPos pos;
 		int altitude;
 
-		public Explosion(World world, int2 pixelPos, string style, bool isWater, int altitude)
+		public Explosion(World world, PPos pixelPos, string style, bool isWater, int altitude)
 		{
 			this.pos = pixelPos;
 			this.altitude = altitude;
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA.Effects
 		public IEnumerable<Renderable> Render()
 		{
 			yield return new Renderable(anim.Image,
-				pos - .5f * anim.Image.size - new int2(0,altitude),
+				pos.ToFloat2() - .5f * anim.Image.size - new int2(0,altitude),
 				"effect", (int)pos.Y - altitude);
 		}
 

@@ -78,7 +78,7 @@ namespace OpenRA.Mods.RA.Effects
 		{
 			if (explosion != null)
 				yield return new Renderable(explosion.Image,
-					args.dest - .5f * explosion.Image.size, "effect", (int)args.dest.Y);
+					args.dest.ToFloat2() - .5f * explosion.Image.size, "effect", (int)args.dest.Y);
 
 			if (ticks >= info.BeamDuration)
 				yield break;
@@ -87,7 +87,7 @@ namespace OpenRA.Mods.RA.Effects
 
 			var wlr = Game.Renderer.WorldLineRenderer;
 			wlr.LineWidth = info.BeamRadius * 2;
-			wlr.DrawLine(args.src, args.dest, rc, rc);
+			wlr.DrawLine(args.src.ToFloat2(), args.dest.ToFloat2(), rc, rc);
 			wlr.Flush();
 			wlr.LineWidth = 1f;
 		}

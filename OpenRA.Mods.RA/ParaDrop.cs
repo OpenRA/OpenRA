@@ -24,10 +24,10 @@ namespace OpenRA.Mods.RA
 
 	public class ParaDrop : ITick
 	{
-		readonly List<int2> droppedAt = new List<int2>();
-		int2 lz;
+		readonly List<CPos> droppedAt = new List<CPos>();
+		CPos lz;
 
-		public void SetLZ(int2 lz)
+		public void SetLZ(CPos lz)
 		{
 			this.lz = lz;
 			droppedAt.Clear();
@@ -55,16 +55,19 @@ namespace OpenRA.Mods.RA
 
 					var aircraft = self.Trait<IMove>();
 					self.World.AddFrameEndTask(w => w.Add(
-						new Parachute(self.Owner,
-							Util.CenterOfCell(Util.CellContaining(self.CenterLocation)),
-							aircraft.Altitude, a)));
+						new Parachute(
+							self.Owner,
+							Util.CenterOfCell(self.CenterLocation.ToCPos()),
+							aircraft.Altitude, a
+						)
+					));
 
 					Sound.Play(info.ChuteSound, self.CenterLocation);
 				}
 			}
 		}
 
-		bool IsSuitableCell(Actor actorToDrop, int2 p)
+		bool IsSuitableCell(Actor actorToDrop, CPos p)
 		{
 			return actorToDrop.Trait<ITeleportable>().CanEnterCell(p);
 		}
