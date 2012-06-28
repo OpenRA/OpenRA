@@ -48,14 +48,14 @@ namespace OpenRA.Orders
 
 		}
 
-		public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
+		public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
 		{
 			if (mi.Button != expectedButton)
 				world.CancelInputMode();
 			return OrderInner(world, xy, mi);
 		}
 
-		IEnumerable<Order> OrderInner(World world, int2 xy, MouseInput mi)
+		IEnumerable<Order> OrderInner(World world, CPos xy, MouseInput mi)
 		{
 			if (mi.Button == expectedButton && world.Map.IsInMap(xy))
 			{
@@ -68,6 +68,6 @@ namespace OpenRA.Orders
 		public virtual void Tick(World world) { }
 		public void RenderBeforeWorld(WorldRenderer wr, World world) { }
 		public void RenderAfterWorld(WorldRenderer wr, World world) { }
-		public string GetCursor(World world, int2 xy, MouseInput mi) { return world.Map.IsInMap(xy) ? cursor : "generic-blocked"; }
+		public string GetCursor(World world, CPos xy, MouseInput mi) { return world.Map.IsInMap(xy) ? cursor : "generic-blocked"; }
 	}
 }

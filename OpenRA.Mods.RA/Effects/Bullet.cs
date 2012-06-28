@@ -57,8 +57,8 @@ namespace OpenRA.Mods.RA.Effects
 
 			if (info.Inaccuracy > 0)
 			{
-				var factor = ((Args.dest - Args.src).Length / Game.CellSize) / args.weapon.Range;
-				Args.dest += (info.Inaccuracy * factor * args.firedBy.World.SharedRandom.Gauss2D(2)).ToInt2();
+				var factor = ((Args.dest - Args.src).Length / (float)Game.CellSize) / args.weapon.Range;
+				Args.dest += (PVecInt) (info.Inaccuracy * factor * args.firedBy.World.SharedRandom.Gauss2D(2)).ToInt2();
 			}
 
 			if (Info.Image != null)
@@ -110,7 +110,7 @@ namespace OpenRA.Mods.RA.Effects
 			{
 				var at = (float)t / TotalTime();
 				var altitude = float2.Lerp(Args.srcAltitude, Args.destAltitude, at);
-				var pos = float2.Lerp(Args.src, Args.dest, at) - new float2(0, altitude);
+				var pos = float2.Lerp(Args.src.ToFloat2(), Args.dest.ToFloat2(), at) - new float2(0, altitude);
 
 				var highPos = (Info.High || Info.Angle > 0)
 					? (pos - new float2(0, GetAltitude()))
@@ -119,24 +119,24 @@ namespace OpenRA.Mods.RA.Effects
 				if (Info.Trail != null && --ticksToNextSmoke < 0)
 				{
 					world.AddFrameEndTask(w => w.Add(
-						new Smoke(w, highPos.ToInt2(), Info.Trail)));
+						new Smoke(w, (PPos) highPos.ToInt2(), Info.Trail)));
 					ticksToNextSmoke = Info.TrailInterval;
 				}
 
 				if (Trail != null)
-					Trail.Tick(highPos);
+					Trail.Tick((PPos)highPos.ToInt2());
 			}
 
 			if (!Info.High)		// check for hitting a wall
 			{
 				var at = (float)t / TotalTime();
-				var pos = float2.Lerp(Args.src, Args.dest, at);
-				var cell = Traits.Util.CellContaining(pos);
+				var pos = float2.Lerp(Args.src.ToFloat2(), Args.dest.ToFloat2(), at);
+				var cell = ((PPos) pos.ToInt2()).ToCPos();
 
 				if (world.ActorMap.GetUnitsAt(cell).Any(
 					a => a.HasTrait<IBlocksBullets>()))
 				{
-					Args.dest = pos.ToInt2();
+					Args.dest = (PPos) pos.ToInt2();
 					Explode(world);
 				}
 			}
@@ -151,9 +151,9 @@ namespace OpenRA.Mods.RA.Effects
 				var at = (float)t / TotalTime();
 
 				var altitude = float2.Lerp(Args.srcAltitude, Args.destAltitude, at);
-				var pos = float2.Lerp(Args.src, Args.dest, at) - new float2(0, altitude);
+				var pos = float2.Lerp(Args.src.ToFloat2(), Args.dest.ToFloat2(), at) - new float2(0, altitude);
 
-				if (Args.firedBy.World.LocalShroud.IsVisible(OpenRA.Traits.Util.CellContaining(pos)))
+				if (Args.firedBy.World.LocalShroud.IsVisible(((PPos) pos.ToInt2()).ToCPos()))
 				{
 					if (Info.High || Info.Angle > 0)
 					{

@@ -56,8 +56,7 @@ namespace OpenRA.Mods.RA.Render
 
 			if (!hasTicked)
 			{
-				var oneCell = new int2(Game.CellSize, Game.CellSize);
-				var adjWalls = self.World.FindUnits(self.CenterLocation - oneCell, self.CenterLocation + oneCell)
+				var adjWalls = self.World.FindUnits(self.CenterLocation - PVecInt.OneCell, self.CenterLocation + PVecInt.OneCell)
 					.Where(a => a.Info == self.Info && a != self);
 
 				foreach (var w in adjWalls)
@@ -69,12 +68,12 @@ namespace OpenRA.Mods.RA.Render
 			}
 		}
 
-		void AddAdjacentWall(int2 location, int2 otherLocation)
+		void AddAdjacentWall(CPos location, CPos otherLocation)
 		{
-			if (otherLocation == location + new int2(0, -1)) adjacentWalls |= 1;
-			if (otherLocation == location + new int2(+1, 0)) adjacentWalls |= 2;
-			if (otherLocation == location + new int2(0, +1)) adjacentWalls |= 4;
-			if (otherLocation == location + new int2(-1, 0)) adjacentWalls |= 8;
+			if (otherLocation == location + new CVec(0, -1)) adjacentWalls |= 1;
+			if (otherLocation == location + new CVec(+1, 0)) adjacentWalls |= 2;
+			if (otherLocation == location + new CVec(0, +1)) adjacentWalls |= 4;
+			if (otherLocation == location + new CVec(-1, 0)) adjacentWalls |= 8;
 		}
 	}
 }

@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA.Activities
 
 			ps1.heuristic = PathSearch.DefaultEstimator( mobile.toCell );
 
-			var ps2 = PathSearch.FromPoint( self.World, mobile.Info, self.Owner, mobile.toCell, Util.CellContaining(target.CenterLocation), true );
+			var ps2 = PathSearch.FromPoint( self.World, mobile.Info, self.Owner, mobile.toCell, target.CenterLocation.ToCPos(), true );
 			var ret = self.World.WorldActor.Trait<PathFinder>().FindBidiPath( ps1, ps2 );
 
 			return Util.SequenceActivities( mobile.MoveTo( () => ret ), this );

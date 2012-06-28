@@ -25,8 +25,7 @@ namespace OpenRA.Mods.RA
 	{
 		readonly StoresOreInfo Info;
 
-		[Sync]
-		public int Stored { get { return Player.OreCapacity == 0 ? 0 : Info.Capacity * Player.Ore / Player.OreCapacity; } }
+		[Sync] public int Stored { get { return Player.OreCapacity == 0 ? 0 : Info.Capacity * Player.Ore / Player.OreCapacity; } }
 
 		PlayerResources Player;
 		public StoresOre(Actor self, StoresOreInfo info)

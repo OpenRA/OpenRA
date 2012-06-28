@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA.Air
 
 	public class Plane : Aircraft, IResolveOrder, ITick, ISync
 	{
-		[Sync] public int2 RTBPathHash;
+		[Sync] public PVecInt RTBPathHash;
 
 		public Plane( ActorInitializer init, PlaneInfo info )
 			: base( init, info ) { }

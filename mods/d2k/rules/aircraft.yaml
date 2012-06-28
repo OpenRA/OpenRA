@@ -1,0 +1,102 @@
+CARRYALL:
+	Inherits: ^Helicopter
+	Buildable:
+		Queue: Plane
+		BuildPaletteOrder: 110
+		Prerequisites: anyhightech
+		BuiltAt: hightecha
+		Owner: atreides,harkonnen,ordos
+	Valued:
+		Cost: 1200
+	Tooltip:
+		Name: Carryall
+		Description: Fast drop ship.\n  Unarmed
+	Health:
+		HP: 500
+	Armor: 
+		Type: Light
+	RevealsShroud:
+		Range: 12
+	Helicopter:
+		InitialFacing: 0
+		ROT: 5
+		Speed: 14
+		LandableTerrainTypes: Sand, Rock, Transition, Spice, Dune
+		RepairBuildings: repaira,repairo,repairh
+		RearmBuildings: starporta,starporto,starporth
+	RenderUnit:
+	RenderCargo:
+		RelativeAltitude: 25
+	WithShadow:
+	Cargo:
+		Types: Vehicle
+		MaxWeight: 1
+		PipCount: 1
+	FallsToEarth:
+		Explosion: UnitExplode
+
+FRIGATE:
+	ParaDrop:
+		LZRange: 1
+	Inherits: ^Plane
+	Tooltip:
+		Name: Frigate
+		Description: Supply spacecraft
+	Plane:
+		ROT: 5
+		Speed: 35
+		RepairBuildings: repaira,repairo,repairh
+		RearmBuildings: starporta,starporto,starporth
+	Health:
+		HP: 25
+	Armor:
+		Type: Heavy
+	RenderUnit:
+		Image: frigate
+	WithShadow:
+	Cargo:
+		MaxWeight: 10
+		PipCount: 10
+	Invulnerable:
+	-Selectable:
+	-GainsExperience:
+	FlyAwayOnIdle:
+
+ORNI:
+	Inherits: ^Helicopter
+	Buildable:
+		Queue: Plane
+		BuildPaletteOrder: 90
+		Prerequisites: researcha
+		BuiltAt: hightecha
+		Owner: atreides
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Ornithocopter
+		Description: Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles.\n  Weak vs Tanks
+	Health:
+		HP: 150
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 10
+	AttackHeli:
+		PrimaryWeapon: ChainGun
+		PrimaryOffset: -5,-2,0,2
+		FacingTolerance: 20
+	Helicopter:
+		LandWhenIdle: false
+		InitialFacing: 20
+		ROT: 4
+		Speed: 12
+		RepairBuildings: repaira,repairo,repairh
+		RearmBuildings: starporta,starporto,starporth
+	RenderUnit:
+	WithShadow:
+	Selectable:
+		Bounds: 38,32,0,0
+	FallsToEarth:
+		Explosion: UnitExplode
+	SmokeTrailWhenDamaged:
+		Offset: 0,-10

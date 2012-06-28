@@ -121,7 +121,8 @@ namespace OpenRA.Mods.RA
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return order.OrderString == "Disguise" ? "Attack" : null;
+			return (order.OrderString == "Disguise"
+					|| order.OrderString == "SpyInfiltrate") ? "Attack" : null;
 		}
 
 		public Color RadarColorOverride(Actor self)

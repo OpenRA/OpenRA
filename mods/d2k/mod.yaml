@@ -1,41 +1,114 @@
 Metadata:
 	Title: Dune 2000
-	Description: Work in progress d2k port
-	Version: a0001
-	Author: The OpenRA Developers
+	Description: early version of the Dune 2000 mod
+	Version: {DEV_VERSION}
+	Author: The OpenD2k Developers
 
 Folders:
 	.
-	mods/d2k
-	mods/d2k/bits
-	mods/ra/uibits
+	./mods/d2k
+	./mods/d2k/bits
+	./mods/d2k/uibits
+	~^/Content/d2k
+	~^/Content/d2k/GAMESFX
+	~^/Content/d2k/Music
+	~^/Content/d2k/Tilesets
+	~^/Content/d2k/SHPs
+	./mods/ra/bits
+	./mods/ra/uibits
+	~^/Content/ra
+
 Packages:
-	mods/d2k/bits/arrakis.mix
+	~main.mix
+	redalert.mix
+	conquer.mix
+	hires.mix
+	local.mix
+	sounds.mix
+
 Rules:
+	mods/d2k/rules/system.yaml
 	mods/d2k/rules/defaults.yaml
 	mods/d2k/rules/vehicles.yaml
-	mods/d2k/rules/system.yaml
+	mods/d2k/rules/structures.yaml
+	mods/d2k/rules/aircraft.yaml
+	mods/d2k/rules/infantry.yaml
+	mods/d2k/rules/atreides.yaml
+	mods/d2k/rules/harkonnen.yaml
+	mods/d2k/rules/ordos.yaml
+
 Sequences:
 	mods/d2k/sequences.yaml
+
 Cursors:
-	mods/d2k/cursors.xml
+	mods/d2k/cursors.yaml
+
 Chrome:
-	mods/ra/chrome.xml
+	mods/d2k/chrome.yaml
+
 Assemblies:
+	mods/d2k/OpenRA.Mods.D2k.dll
 	mods/ra/OpenRA.Mods.RA.dll
+	mods/cnc/OpenRA.Mods.Cnc.dll
+
 ChromeLayout:
-	mods/d2k/chrome/ingame.yaml
+	mods/d2k/chrome/gameinit.yaml
+	mods/ra/chrome/ingame.yaml
 	mods/d2k/chrome/mainmenu.yaml
-	mods/d2k/chrome/videoplayer.yaml
-	mods/d2k/chrome/settings.yaml
-	mods/d2k/chrome/gamelobby.yaml
-	mods/d2k/chrome/serverbrowser.yaml
+	mods/ra/chrome/settings.yaml
+	mods/d2k/chrome/lobby.yaml
+	mods/ra/chrome/map-chooser.yaml
+	mods/ra/chrome/create-server.yaml
+	mods/ra/chrome/serverbrowser.yaml
+	mods/ra/chrome/replaybrowser.yaml
+	mods/ra/chrome/dropdowns.yaml
+	mods/ra/chrome/modchooser.yaml
+	mods/ra/chrome/cheats.yaml
+
 Weapons:
+	mods/d2k/weapons.yaml
+
 Voices:
+	mods/d2k/voices.yaml
+
 TileSets:
 	mods/d2k/tilesets/arrakis.yaml
+
+TileSize: 32
+
 Music:
+	mods/d2k/music.yaml
+
 Movies:
-LoadScreen: NullLoadScreen
-ShellmapUid:1e36d6874ef7960ac0e21edf36bbe1490a4650eb
-TileSize:32
+
+LoadScreen: D2kLoadScreen
+	InstallerMenuWidget: INSTALL_PANEL
+	TestFile: carryall.shp
+	PackageURL: http://open-ra.org/get-dependency.php?file=d2k-packages
+
+ServerTraits:
+	LobbyCommands
+	MasterServerPinger
+
+ChromeMetrics:
+	mods/d2k/metrics.yaml
+
+Fonts:
+	Regular:
+		Font:FreeSans.ttf
+		Size:14
+	Bold:
+		Font:FreeSansBold.ttf
+		Size:14
+	Title:
+		Font:titles.ttf
+		Size:48
+	BigBold:
+		Font:FreeSansBold.ttf
+		Size:24
+	Tiny:
+		Font:FreeSans.ttf
+		Size:10
+	TinyBold:
+		Font:FreeSansBold.ttf
+		Size:10

@@ -17,10 +17,10 @@ namespace OpenRA.Mods.RA.Effects
 {
 	public class Smoke : IEffect
 	{
-		readonly int2 pos;
+		readonly PPos pos;
 		readonly Animation anim;
 
-		public Smoke(World world, int2 pos, string trail)
+		public Smoke(World world, PPos pos, string trail)
 		{
 			this.pos = pos;
 			anim = new Animation(trail);
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<Renderable> Render()
 		{
-			yield return new Renderable(anim.Image, pos - .5f * anim.Image.size, "effect", (int)pos.Y);
+			yield return new Renderable(anim.Image, pos.ToFloat2() - .5f * anim.Image.size, "effect", (int)pos.Y);
 		}
 	}
 }

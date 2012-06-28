@@ -70,6 +70,7 @@ namespace OpenRA.Network
 		{
 			public string ServerName;
 			public string Map;
+			public string[] Ban;
 			public string[] Mods = { "ra" };	// mod names
 			public int OrderLatency = 3;
 			public int RandomSeed = 0;

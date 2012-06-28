@@ -1,0 +1,6 @@
+# General dumping-ground for UI element sizes, etc.
+
+Metrics:
+	ButtonDepth: 1
+	ButtonFont: Regular
+	CheckboxPressedState: false

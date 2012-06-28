@@ -14,7 +14,7 @@ Container@SETTINGS_PANEL:
 			Text:Settings
 		Background@GENERAL_CONTROLS:
 			Width:740
-			Height:250
+			Height:290
 			Background:panel-black
 			Children:
 				Label@TITLE:
@@ -142,49 +142,56 @@ Container@SETTINGS_PANEL:
 					Height:20
 					Font:Regular
 					Text:Enable Pixel Doubling
+				Checkbox@SHOW_SHELLMAP:
+					X:375
+					Y:120
+					Width:200
+					Height:20
+					Font:Regular
+					Text:Show Shellmap
 				Label@AUDIO_TITLE:
 					X:375
-					Y:130
+					Y:160
 					Width:340
 					Font:Bold
 					Text:Sound
 					Align:Center
 				Label@SOUND_LABEL:
 					X:375
-					Y:145
+					Y:175
 					Width:95
 					Height:25
 					Align:Right
 					Text:Sound Volume:
 				Slider@SOUND_SLIDER:
 					X:475
-					Y:150
+					Y:180
 					Width:240
 					Height:20
 					Ticks:5
 				Label@MUSIC_LABEL:
 					X:375
-					Y:175
+					Y:205
 					Width:95
 					Height:25
 					Align:Right
 					Text:Music Volume:
 				Slider@MUSIC_SLIDER:
 					X:475
-					Y:180
+					Y:210
 					Width:240
 					Height:20
 					Ticks:5
 				Checkbox@SHELLMAP_MUSIC:
 					X:375
-					Y:210
+					Y:240
 					Width:200
 					Height:20
 					Font:Regular
 					Text:Shellmap Music
 		Background@INPUT_CONTROLS:
 			Width:740
-			Height:250
+			Height:290
 			Background:panel-black
 			Visible:false
 			Children:
@@ -260,20 +267,20 @@ Container@SETTINGS_PANEL:
 					Font:Regular
 					Text:Shift-Enter Toggles Team Chat
 		Button@GENERAL_BUTTON:
-			Y:249
+			Y:289
 			Width:140
 			Height:35
 			Text:General
 		Button@INPUT_BUTTON:
 			X:150
-			Y:249
+			Y:289
 			Width:140
 			Height:35
 			Text:Input
 		Button@BACK_BUTTON:
 			Key:escape
 			X:600
-			Y:249
+			Y:289
 			Width:140
 			Height:35
 			Text:Back

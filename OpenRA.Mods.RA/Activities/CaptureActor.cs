@@ -28,8 +28,13 @@ namespace OpenRA.Mods.RA.Activities
 			if( !target.OccupiesSpace.OccupiedCells().Any( x => x.First == self.Location ) )
 				return NextActivity;
 
+			var capturable = target.TraitOrDefault<Capturable>();
+			if (capturable != null && capturable.CaptureInProgress && capturable.Captor.Owner.Stances[self.Owner] == Stance.Ally)
+				return NextActivity;
+
 			var sellable = target.TraitOrDefault<Sellable>();
-			if (sellable != null && sellable.Selling) return NextActivity;
+			if (sellable != null && sellable.Selling)
+				return NextActivity;
 
 			target.Trait<Capturable>().BeginCapture(target, self);
 			self.World.AddFrameEndTask(w => self.Destroy());

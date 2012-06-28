@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Buildings
 
 		public void Killed(Actor self, AttackInfo e)
 		{
-			self.World.WorldActor.Trait<ScreenShaker>().AddEffect(Info.Intensity, self.CenterLocation, 1);
+			self.World.WorldActor.Trait<ScreenShaker>().AddEffect(Info.Intensity, self.CenterLocation.ToFloat2(), 1);
 		}
 	}
 }

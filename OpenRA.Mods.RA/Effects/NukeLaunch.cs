@@ -19,13 +19,13 @@ namespace OpenRA.Mods.RA.Effects
 	{
 		readonly Player firedBy;
 		Animation anim;
-		int2 pos;
-		int2 targetLocation;
+		PPos pos;
+		CPos targetLocation;
 		int altitude;
 		bool goingUp = true;
 		string weapon;
 
-		public NukeLaunch(Player firedBy, Actor silo, string weapon, int2 spawnOffset, int2 targetLocation)
+		public NukeLaunch(Player firedBy, Actor silo, string weapon, PVecInt spawnOffset, CPos targetLocation)
 		{
 			this.firedBy = firedBy;
 			this.targetLocation = targetLocation;
@@ -71,7 +71,7 @@ namespace OpenRA.Mods.RA.Effects
 		{
 			world.AddFrameEndTask(w => w.Remove(this));
 			Combat.DoExplosion(firedBy.PlayerActor, weapon, pos, 0);
-			world.WorldActor.Trait<ScreenShaker>().AddEffect(20, pos, 5);
+			world.WorldActor.Trait<ScreenShaker>().AddEffect(20, pos.ToFloat2(), 5);
 
 			foreach (var a in world.ActorsWithTrait<NukePaletteEffect>())
 				a.Trait.Enable();
@@ -79,7 +79,7 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<Renderable> Render()
 		{
-			yield return new Renderable(anim.Image, pos - 0.5f * anim.Image.size - new float2(0, altitude),
+			yield return new Renderable(anim.Image, pos.ToFloat2() - 0.5f * anim.Image.size - new float2(0, altitude),
 				"effect", (int)pos.Y);
 		}
 	}

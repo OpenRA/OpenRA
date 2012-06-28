@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA.Widgets
 			if (Viewport.TicksSinceLastMove < TooltipDelay || world == null)
 				return;
 
-			var cell = Game.viewport.ViewToWorld(Viewport.LastMousePos).ToInt2();
+			var cell = Game.viewport.ViewToWorld(Viewport.LastMousePos);
 			if (!world.Map.IsInMap(cell)) return;
 
 			if (world.LocalPlayer != null && !world.LocalPlayer.Shroud.IsExplored(cell))

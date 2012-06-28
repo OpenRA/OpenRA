@@ -1,0 +1,230 @@
+CONYARDA:
+	Inherits: ^CONYARD
+	Buildable:
+		Owner: atreides
+	Transforms:
+		IntoActor: mcva
+		Offset:1,1
+		Facing: 270
+	ProductionQueue@Building:
+		QueuedAudio: AI_BUILD.AUD
+		OnHoldAudio: AI_HOLD.AUD
+		ReadyAudio: AI_BDRDY.AUD
+		CancelledAudio: AI_CANCL.AUD
+		BlockedAudio: AI_NROOM.AUD
+	ProductionQueue@Defense:
+		QueuedAudio: AI_BUILD.AUD
+		OnHoldAudio: AI_HOLD.AUD
+		ReadyAudio: AI_BDRDY.AUD
+		CancelledAudio: AI_CANCL.AUD
+		BlockedAudio: AI_NROOM.AUD
+
+PWRA:
+	Inherits: ^POWER
+	Buildable:
+		Prerequisites: conyarda
+		Owner: atreides
+
+GUNTOWERA:
+	Inherits: ^GUNTOWER
+	Buildable:
+		Prerequisites: conyarda
+		Owner: atreides
+
+ROCKETTOWERA:
+	Inherits: ^ROCKETTOWER
+	Buildable:
+		Prerequisites: radara
+		Owner: atreides
+
+WALLA:
+	Inherits: ^WALL
+	Buildable:
+		Prerequisites: conyarda
+		Owner: atreides
+
+REFA:
+	Inherits: ^REFINERY
+	Buildable:
+		Prerequisites: pwra
+		Owner: atreides
+	RenderBuildingWarFactory:
+		Image: REFA
+
+BARRA:
+	Inherits: ^BARRACKS
+	Buildable:
+		Prerequisites: pwra
+		Owner: atreides
+	ProductionQueue@Infantry:
+		ReadyAudio: AI_UNRDY.AUD
+		QueuedAudio:AI_TRAIN.AUD
+		OnHoldAudio: AI_HOLD.AUD
+		CancelledAudio: AI_CANCL.AUD
+		BlockedAudio: AI_NROOM.AUD
+
+HIGHTECHA:
+	Inherits: ^HIGHTECH
+	Buildable:
+		Prerequisites: radara
+		Owner: atreides
+	ProductionQueue@Plane:
+		ReadyAudio: AI_UNRDY.AUD
+		QueuedAudio:AI_TRAIN.AUD
+		OnHoldAudio: AI_HOLD.AUD
+		CancelledAudio: AI_CANCL.AUD
+		BlockedAudio: AI_NROOM.AUD
+
+RESEARCHA:
+	Inherits: ^RESEARCH
+	Buildable:
+		Prerequisites: radara,heavya
+		Owner: atreides
+
+PALACEA:
+	Inherits: ^PALACE
+	Buildable:
+		Prerequisites: researcha
+		Owner: atreides
+
+SILOA:
+	Inherits: ^SILO
+	Buildable:
+		Prerequisites: refa
+		Owner: atreides
+
+LIGHTA:
+	Inherits: ^LIGHT
+	Buildable:
+		Prerequisites: refa
+		Owner: atreides
+	RenderBuildingWarFactory:
+		Image: LIGHTA
+	ProductionQueue@Vehicle:
+		ReadyAudio: AI_UNRDY.AUD
+		QueuedAudio:AI_TRAIN.AUD
+		OnHoldAudio: AI_HOLD.AUD
+		CancelledAudio: AI_CANCL.AUD
+		BlockedAudio: AI_NROOM.AUD
+
+HEAVYA:
+	Inherits: ^HEAVY
+	Buildable:
+		Prerequisites: lighta
+		Owner: atreides
+	RenderBuildingWarFactory:
+		Image: HEAVYA
+	ProductionQueue@Vehicle:
+		ReadyAudio: AI_UNRDY.AUD
+		QueuedAudio:AI_TRAIN.AUD
+		OnHoldAudio: AI_HOLD.AUD
+		CancelledAudio: AI_CANCL.AUD
+		BlockedAudio: AI_NROOM.AUD
+
+RADARA:
+	Inherits: ^RADAR
+	Buildable:
+		Prerequisites: barra
+		Owner: atreides
+
+STARPORTA:
+	Inherits: ^STARPORT
+	Buildable:
+		Prerequisites: radara
+		Owner: atreides
+	ProductionAirdrop:
+		ReadyAudio: AI_REINF.AUD
+	ProductionQueue@Vehicle:
+		QueuedAudio: AI_ORDER.AUD
+		ReadyAudio: 
+		OnHoldAudio: AI_HOLD.AUD
+		CancelledAudio: AI_CANCL.AUD
+		BlockedAudio: AI_NROOM.AUD
+
+REPAIRA:
+	Inherits: ^REPAIR
+	Buildable:
+		Prerequisites: heavya
+		Owner: atreides
+
+MCVA:
+	Inherits: ^MCV
+	Buildable:
+		Prerequisites: heavya,repaira
+		Owner: atreides
+	Transforms:
+		Facing: 10
+		IntoActor: conyarda
+		Offset:-1,-1
+		NoTransformSounds: AI_DPLOY.AUD
+	RenderUnit:
+		Image: DMCV
+
+COMBATA:
+	Inherits: ^COMBAT
+	Buildable:
+		Prerequisites: heavya
+		Owner: atreides
+
+SONICTANK:
+	Inherits: ^Vehicle
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 15
+		Prerequisites: heavya,researcha
+		Owner: atreides
+	Valued:
+		Cost: 1500
+	Tooltip:
+		Name: Sonic Tank
+		Description: Fires a sound wave\n Strong vs Infantry.\n Weak vs Tanks
+	Selectable:
+		Bounds: 30,30
+	Health:
+		HP: 150
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 8
+	RevealsShroud:
+		Range: 7
+	RenderUnit:
+	AttackFrontal:
+		PrimaryWeapon: TTankZap
+		PrimaryOffset: 0,0,0,-5
+	AutoTarget:
+
+FREMEN:
+	Inherits: ^Infantry
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Fremen
+		Description: Elite sniper infantry unit.\n  Strong vs Infantry\n  Weak vs Vehicles\n  Special Ability: Invisible
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 50
+		Owner: atreides
+		Prerequisites: palacea
+	Selectable:
+		Bounds: 12,17,0,0
+		Voice: FremenVoice
+	Mobile:
+		Speed: 5
+	Health:
+		HP: 200
+	Passenger:
+	RevealsShroud:
+		Range: 6
+	AutoTarget:
+		ScanRadius: 5
+	AttackFrontal:
+		PrimaryWeapon: Sniper
+	RenderInfantryProne:
+	-RenderInfantry:
+	TakeCover:
+	Cloak:
+		InitialDelay: 125
+		CloakDelay: 125
+		CloakSound: STEALTH1.aud
+		UncloakSound: STEALTH2.aud

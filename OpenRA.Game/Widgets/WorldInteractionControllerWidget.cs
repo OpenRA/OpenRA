@@ -42,12 +42,12 @@ namespace OpenRA.Widgets
 				return;
 			}
 
-			Game.Renderer.WorldLineRenderer.DrawRect(selbox.Value.First, selbox.Value.Second, Color.White);
+			Game.Renderer.WorldLineRenderer.DrawRect(selbox.Value.First.ToFloat2(), selbox.Value.Second.ToFloat2(), Color.White);
 			foreach (var u in SelectActorsInBox(world, selbox.Value.First, selbox.Value.Second, _ => true))
 				worldRenderer.DrawRollover(u);
 		}
 
-		int2 dragStart, dragEnd;
+		PPos dragStart, dragEnd;
 
 		public override bool HandleMouseInput(MouseInput mi)
 		{
@@ -101,7 +101,7 @@ namespace OpenRA.Widgets
 			return true;
 		}
 
-		public Pair<int2, int2>? SelectionBox
+		public Pair<PPos, PPos>? SelectionBox
 		{
 			get
 			{
@@ -110,11 +110,11 @@ namespace OpenRA.Widgets
 			}
 		}
 
-		public void ApplyOrders(World world, int2 xy, MouseInput mi)
+		public void ApplyOrders(World world, PPos xy, MouseInput mi)
 		{
 			if (world.OrderGenerator == null) return;
 
-			var orders = world.OrderGenerator.Order(world, Traits.Util.CellContaining(xy), mi).ToArray();
+			var orders = world.OrderGenerator.Order(world, xy.ToCPos(), mi).ToArray();
 			orders.Do( o => world.IssueOrder( o ) );
 
 			world.PlayVoiceForOrders(orders);
@@ -135,7 +135,7 @@ namespace OpenRA.Widgets
 				};
 
 				// TODO: fix this up.
-				return world.OrderGenerator.GetCursor( world, Game.viewport.ViewToWorld(mi).ToInt2(), mi );
+				return world.OrderGenerator.GetCursor( world, Game.viewport.ViewToWorld(mi), mi );
 			} );
 		}
 
@@ -148,6 +148,10 @@ namespace OpenRA.Widgets
 					world.Selection.DoControlGroup(world, e.KeyName[0] - '0', e.Modifiers);
 					return true;
 				}
+				else if(e.KeyName == "pause" || e.KeyName == "f3")
+				{
+					world.IssueOrder(Order.PauseRequest());
+				}
 
 				bool handled = false;
 
@@ -157,7 +161,7 @@ namespace OpenRA.Widgets
 		}
 
 		static readonly Actor[] NoActors = {};
-		IEnumerable<Actor> SelectActorsInBox(World world, int2 a, int2 b, Func<Actor, bool> cond)
+		IEnumerable<Actor> SelectActorsInBox(World world, PPos a, PPos b, Func<Actor, bool> cond)
 		{
 			return world.FindUnits(a, b)
 				.Where( x => x.HasTrait<Selectable>() && world.LocalShroud.IsVisible(x) && cond(x) )

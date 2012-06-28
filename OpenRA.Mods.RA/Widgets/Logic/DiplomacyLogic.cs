@@ -141,8 +141,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (p.World.LobbyInfo.GlobalSettings.LockTeams)
 				return;	// team changes are banned
 
+			// NOTE(jsd): Abuse of the type system here with `CPos`
 			world.IssueOrder(new Order("SetStance", world.LocalPlayer.PlayerActor, false)
-				{ TargetLocation = new int2((int)ss, 0), TargetString = p.InternalName });
+				{ TargetLocation = new CPos((int)ss, 0), TargetString = p.InternalName });
 
 			bw.Text = ss.ToString();
 		}

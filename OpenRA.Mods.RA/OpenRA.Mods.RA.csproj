@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -12,6 +12,25 @@
     <AssemblyName>OpenRA.Mods.RA</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -27,6 +46,7 @@
         <Command type="AfterBuild" command="mono RALint.exe ra" workingdir="${ProjectDir}/../" />
       </CustomCommands>
     </CustomCommands>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -35,6 +55,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <OutputPath>bin\Release\</OutputPath>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -125,6 +146,7 @@
     <Compile Include="Buildings\BuildingInfluence.cs" />
     <Compile Include="Buildings\CanPowerDown.cs" />
     <Compile Include="Buildings\CustomSellValue.cs" />
+    <Compile Include="Buildings\CustomBuildTimeValue.cs" />
     <Compile Include="Buildings\FootprintUtils.cs" />
     <Compile Include="Buildings\LineBuild.cs" />
     <Compile Include="Buildings\PowerManager.cs" />
@@ -213,6 +235,7 @@
     <Compile Include="MPStartLocations.cs" />
     <Compile Include="Mine.cs" />
     <Compile Include="Minelayer.cs" />
+    <Compile Include="Missions\Allies01Script.cs" />
     <Compile Include="Missions\DefaultShellmapScript.cs" />
     <Compile Include="Modifiers\FrozenUnderFog.cs" />
     <Compile Include="Modifiers\HiddenUnderFog.cs" />
@@ -261,6 +284,7 @@
     <Compile Include="Render\RenderBuildingCharge.cs" />
     <Compile Include="Render\RenderBuildingSilo.cs" />
     <Compile Include="Render\RenderBuildingTurreted.cs" />
+    <Compile Include="Render\RenderBuildingSeparateTurret.cs" />
     <Compile Include="Render\RenderBuildingWall.cs" />
     <Compile Include="Render\RenderBuildingWarFactory.cs" />
     <Compile Include="Render\RenderEditorOnly.cs" />
@@ -355,6 +379,8 @@
     <Compile Include="Widgets\WorldCommandWidget.cs" />
     <Compile Include="Widgets\WorldTooltipWidget.cs" />
     <Compile Include="World\ChooseBuildTabOnSelect.cs" />
+    <Compile Include="World\ResourceClaim.cs" />
+    <Compile Include="World\ResourceClaimLayer.cs" />
     <Compile Include="World\PlayMusicOnMapLoad.cs" />
     <Compile Include="World\SmudgeLayer.cs" />
     <Compile Include="Player\BaseAttackNotifier.cs" />
@@ -375,6 +401,23 @@
       <Name>OpenRA.Game</Name>
       <Private>False</Private>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

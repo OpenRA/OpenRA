@@ -43,7 +43,7 @@ namespace OpenRA.Mods.RA
 		[Sync] bool preventDock = false;
 
 		public bool AllowDocking { get { return !preventDock; } }
-		public int2 DeliverOffset { get { return Info.DockOffset; } }
+		public CVec DeliverOffset { get { return (CVec)Info.DockOffset; } }
 
 		public virtual Activity DockSequence(Actor harv, Actor self) { return new RAHarvesterDockSequence(harv, self); }
 
@@ -115,7 +115,6 @@ namespace OpenRA.Mods.RA
 			}
 			harv.QueueActivity( new CallFunc( () => harv.Trait<Harvester>().ContinueHarvesting(harv) ) );
 		}
-
 
 		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{

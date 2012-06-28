@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2012 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -43,7 +43,6 @@ namespace OpenRA.Mods.RA.Widgets
 		List<Pair<Rectangle, Action<MouseInput>>> buttons = new List<Pair<Rectangle,Action<MouseInput>>>();
 		List<Pair<Rectangle, Action<MouseInput>>> tabs = new List<Pair<Rectangle, Action<MouseInput>>>();
 		Animation cantBuild;
-		Animation ready;
 		Animation clock;
 		public readonly string BuildPaletteOpen = "bleep13.aud";
 		public readonly string BuildPaletteClose = "bleep13.aud";
@@ -60,8 +59,6 @@ namespace OpenRA.Mods.RA.Widgets
 
 			cantBuild = new Animation("clock");
 			cantBuild.PlayFetchIndex("idle", () => 0);
-			ready = new Animation("pips");
-			ready.PlayRepeating("ready");
 			clock = new Animation("clock");
 			paletteOrigin = paletteClosedOrigin;
 			VisibleQueues = new List<ProductionQueue>();
@@ -240,17 +237,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 						var repeats = queue.AllQueued().Count(a => a.Item == item.Name);
 						if (repeats > 1 || queue.CurrentItem() != firstOfThis)
-						{
-							var offset = -40;
-							var digits = repeats.ToString();
-							foreach (var d in digits)
-							{
-								ready.PlayFetchIndex("groups", () => d - '0');
-								ready.Tick();
-								overlayBits.Add(Pair.New(ready.Image, overlayPos + new float2(offset, -14)));
-								offset += 6;
-							}
-						}
+							textBits.Add(Pair.New(overlayPos + new float2(-24, -14), repeats.ToString()));
 					}
 					else
 						if (!buildableItems.Any(a => a.Name == item.Name))

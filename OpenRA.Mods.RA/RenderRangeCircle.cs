@@ -16,18 +16,18 @@ namespace OpenRA.Mods.RA
 {
 	public interface IPlaceBuildingDecoration
 	{
-		void Render(WorldRenderer wr, World w, ActorInfo ai, int2 centerLocation);
+		void Render(WorldRenderer wr, World w, ActorInfo ai, PPos centerLocation);
 	}
 
 	class RenderRangeCircleInfo : TraitInfo<RenderRangeCircle>, IPlaceBuildingDecoration
 	{
 		public readonly string RangeCircleType = null;
 
-		public void Render(WorldRenderer wr, World w, ActorInfo ai, int2 centerLocation)
+		public void Render(WorldRenderer wr, World w, ActorInfo ai, PPos centerLocation)
 		{
 			wr.DrawRangeCircle(
 				Color.FromArgb(128, Color.Yellow),
-				centerLocation,
+				centerLocation.ToFloat2(),
 				ai.Traits.Get<AttackBaseInfo>().GetMaximumRange());
 
 			foreach (var a in w.ActorsWithTrait<RenderRangeCircle>())
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA
 
 			wr.DrawRangeCircle(
 				Color.FromArgb(128, Color.Yellow),
-				self.CenterLocation, (int)self.Trait<AttackBase>().GetMaximumRange());
+				self.CenterLocation.ToFloat2(), (int)self.Trait<AttackBase>().GetMaximumRange());
 		}
 	}
 }

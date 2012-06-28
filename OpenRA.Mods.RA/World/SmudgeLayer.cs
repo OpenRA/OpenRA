@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA
 	public class SmudgeLayer: IRenderOverlay, IWorldLoaded
 	{
 		public SmudgeLayerInfo Info;
-		Dictionary<int2,TileReference<byte,byte>> tiles;
+		Dictionary<CPos, TileReference<byte, byte>> tiles;
 		Sprite[][] smudgeSprites;
 		World world;
 
@@ -45,19 +45,15 @@ namespace OpenRA.Mods.RA
 		public void WorldLoaded(World w)
 		{
 			world = w;
-			tiles = new Dictionary<int2,TileReference<byte,byte>>();
+			tiles = new Dictionary<CPos, TileReference<byte, byte>>();
 
 			// Add map smudges
 			foreach (var s in w.Map.Smudges.Value.Where( s => Info.Types.Contains(s.Type )))
-				tiles.Add(s.Location,new TileReference<byte,byte>((byte)Array.IndexOf(Info.Types,s.Type),
-												                  (byte)s.Depth));
+				tiles.Add((CPos)s.Location, new TileReference<byte, byte>((byte)Array.IndexOf(Info.Types, s.Type), (byte)s.Depth));
 		}
 
-		public void AddSmudge(int2 loc)
+		public void AddSmudge(CPos loc)
 		{
-			if (!world.GetTerrainInfo(loc).AcceptSmudge)
-				return;
-
 			if (Game.CosmeticRandom.Next(0,100) <= Info.SmokePercentage)
 				world.AddFrameEndTask(w => w.Add(new Smoke(w, Traits.Util.CenterOfCell(loc), Info.SmokeType)));
 
@@ -90,8 +86,7 @@ namespace OpenRA.Mods.RA
 				if (localPlayer != null && !localPlayer.Shroud.IsExplored(kv.Key))
 					continue;
 
-				smudgeSprites[kv.Value.type- 1][kv.Value.index].DrawAt( wr,
-						Game.CellSize * kv.Key, "terrain");
+				smudgeSprites[kv.Value.type- 1][kv.Value.index].DrawAt(wr, kv.Key.ToPPos().ToFloat2(), "terrain");
 			}
 		}
 	}
