@@ -49,49 +49,50 @@ namespace OpenRA.Mods.RA
 
 			Sound.Play(GetImpactSound(warhead, isWater), args.dest);
 
-			var smudgeType = world.GetTerrainInfo(targetTile).AcceptsSmudgeType
-				.FirstOrDefault(t => warhead.SmudgeType.Contains(t));
+			var smudgeLayers = world.WorldActor.TraitsImplementing<SmudgeLayer>().ToDictionary(x => x.Info.Type);
 
-			if (smudgeType != null)
+			if (warhead.Size[0] > 0)
 			{
-				var smudgeLayer = world.WorldActor.TraitsImplementing<SmudgeLayer>()
-					.FirstOrDefault(x => x.Info.Type == smudgeType);
-				if (smudgeLayer == null)
-					throw new NotImplementedException("Unknown smudge type `{0}`".F(smudgeType));
+				var resLayer = world.WorldActor.Trait<ResourceLayer>();
+				var allCells = world.FindTilesInCircle(targetTile, warhead.Size[0]).ToList();
 
-				if (warhead.Size[0] > 0)
+				// `smudgeCells` might want to just be an outer shell of the cells:
+				IEnumerable<CPos> smudgeCells = allCells;
+				if (warhead.Size.Length == 2)
+					smudgeCells = smudgeCells.Except(world.FindTilesInCircle(targetTile, warhead.Size[1]));
+
+				// Draw the smudges:
+				foreach (var sc in smudgeCells)
 				{
-					var resLayer = world.WorldActor.Trait<ResourceLayer>();
-					var allCells = world.FindTilesInCircle(targetTile, warhead.Size[0]).ToList();
+					var smudgeType = world.GetTerrainInfo(sc).AcceptsSmudgeType.FirstOrDefault(t => warhead.SmudgeType.Contains(t));
+					if (smudgeType == null) continue;
 
-					// `smudgeCells` might want to just be an outer shell of the cells:
-					IEnumerable<CPos> smudgeCells = allCells;
-					if (warhead.Size.Length == 2)
-						smudgeCells = smudgeCells.Except(world.FindTilesInCircle(targetTile, warhead.Size[1]));
+					SmudgeLayer smudgeLayer;
+					if (!smudgeLayers.TryGetValue(smudgeType, out smudgeLayer))
+						throw new NotImplementedException("Unknown smudge type `{0}`".F(smudgeType));
 
-					// Draw the smudges:
-					foreach (var sc in smudgeCells)
-					{
-						// Water doesn't get scorched/smudged, it just gets superheated =P.
-						if (world.GetTerrainInfo(sc).IsWater) continue;
-
-						smudgeLayer.AddSmudge(sc);
-						if (warhead.Ore)
-							resLayer.Destroy(sc);
-					}
-
-					// Destroy all resources in range, not just the outer shell:
-					foreach (var cell in allCells)
-					{
-						if (warhead.Ore)
-							resLayer.Destroy(cell);
-					}
+					smudgeLayer.AddSmudge(sc);
+					if (warhead.Ore)
+						resLayer.Destroy(sc);
 				}
-				else
+
+				// Destroy all resources in range, not just the outer shell:
+				foreach (var cell in allCells)
 				{
-					// Don't smudge water (if this ever happens):
-					if (!world.GetTerrainInfo(targetTile).IsWater)
-						smudgeLayer.AddSmudge(targetTile);
+					if (warhead.Ore)
+						resLayer.Destroy(cell);
+				}
+			}
+			else
+			{
+				var smudgeType = world.GetTerrainInfo(targetTile).AcceptsSmudgeType.FirstOrDefault(t => warhead.SmudgeType.Contains(t));
+				if (smudgeType != null)
+				{
+					SmudgeLayer smudgeLayer;
+					if (!smudgeLayers.TryGetValue(smudgeType, out smudgeLayer))
+						throw new NotImplementedException("Unknown smudge type `{0}`".F(smudgeType));
+
+					smudgeLayer.AddSmudge(targetTile);
 				}
 			}
 
