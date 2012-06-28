@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA.Render
 				var turret = attack.Turrets[i];
 				anims.Add( "turret_{0}".F(i),
 					new AnimationWithOffset( turretAnim,
-						() => Combat.GetTurretPosition( self, facing, turret ),
+						() => Combat.GetTurretPosition( self, facing, turret ).ToFloat2(),
 						null));
 			}
 		}

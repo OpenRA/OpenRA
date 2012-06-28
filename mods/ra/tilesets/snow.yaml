@@ -7,44 +7,44 @@ General:
 Terrain:
 	TerrainType@Clear:
 		Type: Clear
-		AcceptSmudge: True
+		AcceptsSmudgeType: Crater, Scorch
 		Color: 196, 196, 196
 	TerrainType@Water:
 		Type: Water
 		IsWater: true
-		AcceptSmudge: False
+		AcceptsSmudgeType:
 		Color: 92, 116, 164
 	TerrainType@Road:
 		Type: Road
-		AcceptSmudge: True
+		AcceptsSmudgeType: Crater, Scorch
 		Color: 88, 116, 116
 	TerrainType@Rock:
 		Type: Rock
-		AcceptSmudge: False
+		AcceptsSmudgeType:
 		Color: 68, 68, 60
 	TerrainType@Tree:
 		Type: Tree
-		AcceptSmudge: False
+		AcceptsSmudgeType:
 		Color: 28, 32, 36
 	TerrainType@River:
 		Type: River
-		AcceptSmudge: False
+		AcceptsSmudgeType:
 		Color: 92, 140, 180
 	TerrainType@Rough:
 		Type: Rough
-		AcceptSmudge: True
+		AcceptsSmudgeType: Crater, Scorch
 		Color: 68, 68, 60
 	TerrainType@Wall:
 		Type: Wall
-		AcceptSmudge: True
+		AcceptsSmudgeType: Crater, Scorch
 		Color: 208, 192, 160
 	TerrainType@Beach:
 		Type: Beach
-		AcceptSmudge: False
+		AcceptsSmudgeType:
 		Color: 176, 156, 120
 	TerrainType@Ore:
 		Type: Ore
-		AcceptSmudge: True
+		AcceptsSmudgeType: Crater, Scorch
 		Color: 148, 128, 96
 
 Templates:

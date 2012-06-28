@@ -28,8 +28,7 @@ namespace OpenRA.Mods.RA
 	public class TakeCover : ITick, INotifyDamage, IDamageModifier, ISpeedModifier, ISync
 	{
 		TakeCoverInfo Info;
-		[Sync]
-		int remainingProneTime = 0;
+		[Sync] int remainingProneTime = 0;
 
 		public TakeCover(TakeCoverInfo info)
 		{
@@ -70,8 +69,8 @@ namespace OpenRA.Mods.RA
 			foreach (var w in ab.Weapons)
 				foreach (var b in w.Barrels)
 				{
-					b.TurretSpaceOffset += sign*new int2(Info.BarrelOffset[0], Info.BarrelOffset[1]);
-					b.ScreenSpaceOffset += sign*new int2(Info.BarrelOffset[2], Info.BarrelOffset[3]);
+					b.TurretSpaceOffset += sign * new PVecInt(Info.BarrelOffset[0], Info.BarrelOffset[1]);
+					b.ScreenSpaceOffset += sign * new PVecInt(Info.BarrelOffset[2], Info.BarrelOffset[3]);
 				}
 		}
 

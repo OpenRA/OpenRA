@@ -373,6 +373,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					kickButton.OnClick = () => orderManager.IssueOrder(Order.Command("kick " + client.Index));
 				}
 
+				template.Get<ImageWidget>("ISADMIN").IsVisible = () => client != null && client.IsAdmin;
+
 				template.IsVisible = () => true;
 				Players.AddChild(template);
 			}
@@ -419,6 +421,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					kickButton.OnClick = () => orderManager.IssueOrder(Order.Command("kick " + c.Index));
 				}
 
+				template.Get<ImageWidget>("ISADMIN").IsVisible = () => c.IsAdmin;
+
 				template.IsVisible = () => true;
 				Players.AddChild(template);
 			}
@@ -434,8 +438,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				Players.AddChild(spec);
 			}
 		}
-
-		bool SpawnPointAvailable(int index) { return (index == 0) || orderManager.LobbyInfo.Clients.All(c => c.SpawnPoint != index); }
 
 		void CycleReady()
 		{

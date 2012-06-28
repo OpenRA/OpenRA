@@ -17,7 +17,7 @@ namespace OpenRA.Mods.RA.Activities
 	class Transform : Activity
 	{
 		public readonly string ToActor = null;
-		public int2 Offset = new int2(0,0);
+		public CVec Offset = new CVec(0, 0);
 		public int Facing = 96;
 		public string[] Sounds = {};
 		public int ForceHealthPercentage = 0;

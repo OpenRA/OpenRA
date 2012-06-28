@@ -28,10 +28,10 @@ namespace OpenRA.Mods.RA
 
 		public AppearsOnRadar(AppearsOnRadarInfo info) { this.info = info; }
 
-		public IEnumerable<int2> RadarSignatureCells(Actor self)
+		public IEnumerable<CPos> RadarSignatureCells(Actor self)
 		{
 			if (info.UseLocation)
-				return new int2[] { self.Location };
+				return new CPos[] { self.Location };
 			else
 				return self.OccupiesSpace.OccupiedCells().Select(c => c.First);
 		}

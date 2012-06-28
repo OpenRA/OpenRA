@@ -86,6 +86,10 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				Game.viewport.Zoom = graphicsSettings.PixelDouble ? 2 : 1;
 			};
 
+			var showShellmapCheckbox = generalPane.Get<CheckboxWidget>("SHOW_SHELLMAP");
+			showShellmapCheckbox.IsChecked = () => gameSettings.ShowShellmap;
+			showShellmapCheckbox.OnClick = () => gameSettings.ShowShellmap ^= true;
+
 			generalPane.Get("WINDOW_RESOLUTION").IsVisible = () => graphicsSettings.Mode == WindowMode.Windowed;
 			var windowWidth = generalPane.Get<TextFieldWidget>("WINDOW_WIDTH");
 			windowWidth.Text = graphicsSettings.WindowedSize.X.ToString();

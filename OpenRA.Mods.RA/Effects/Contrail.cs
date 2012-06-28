@@ -45,8 +45,7 @@ namespace OpenRA.Mods.RA
 
 		public void Tick(Actor self)
 		{
-			history.Tick(self.CenterLocation - new int2(0, move.Altitude)
-				- Combat.GetTurretPosition(self, facing, contrailTurret));
+			history.Tick(self.CenterLocation - new PVecInt(0, move.Altitude) - Combat.GetTurretPosition(self, facing, contrailTurret));
 		}
 
 		public void RenderAfterWorld(WorldRenderer wr, Actor self) { history.Render(self); }
@@ -54,7 +53,7 @@ namespace OpenRA.Mods.RA
 
 	class ContrailHistory
 	{
-		List<float2> positions = new List<float2>();
+		List<PPos> positions = new List<PPos>();
 		readonly int TrailLength;
 		readonly Color Color;
 		readonly int StartSkip;
@@ -75,7 +74,7 @@ namespace OpenRA.Mods.RA
 			this.StartSkip = startSkip;
 		}
 
-		public void Tick(float2 currentPos)
+		public void Tick(PPos currentPos)
 		{
 			positions.Add(currentPos);
 			if (positions.Count >= TrailLength)
@@ -85,22 +84,20 @@ namespace OpenRA.Mods.RA
 		public void Render(Actor self)
 		{
 			Color trailStart = Color;
-			Color trailEnd = Color.FromArgb(trailStart.A - 255 / TrailLength, trailStart.R,
-									        trailStart.G, trailStart.B);
+			Color trailEnd = Color.FromArgb(trailStart.A - 255 / TrailLength, trailStart.R, trailStart.G, trailStart.B);
 
 			for (int i = positions.Count - 1 - StartSkip; i >= 1; --i)
 			{
 				var conPos = positions[i];
 				var nextPos = positions[i - 1];
 
-				if (self.World.LocalShroud.IsVisible(OpenRA.Traits.Util.CellContaining(conPos)) ||
-					self.World.LocalShroud.IsVisible(OpenRA.Traits.Util.CellContaining(nextPos)))
+				if (self.World.LocalShroud.IsVisible(conPos.ToCPos()) ||
+					self.World.LocalShroud.IsVisible(nextPos.ToCPos()))
 				{
-					Game.Renderer.WorldLineRenderer.DrawLine(conPos, nextPos, trailStart, trailEnd);
+					Game.Renderer.WorldLineRenderer.DrawLine(conPos.ToFloat2(), nextPos.ToFloat2(), trailStart, trailEnd);
 
 					trailStart = trailEnd;
-					trailEnd = Color.FromArgb(trailStart.A - 255 / positions.Count, trailStart.R,
-									            trailStart.G, trailStart.B);
+					trailEnd = Color.FromArgb(trailStart.A - 255 / positions.Count, trailStart.R, trailStart.G, trailStart.B);
 				}
 			}
 		}

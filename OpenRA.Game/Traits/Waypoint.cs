@@ -20,16 +20,16 @@ namespace OpenRA.Traits
 
 	class Waypoint : IOccupySpace, ISync
 	{
-		[Sync] int2 location;
+		[Sync] CPos location;
 
 		public Waypoint(ActorInitializer init)
 		{
-			this.location = init.Get<LocationInit,int2>();
+			this.location = init.Get<LocationInit, CPos>();
 		}
 
-		public int2 TopLeft { get { return location; } }
+		public CPos TopLeft { get { return location; } }
 
-		public IEnumerable<Pair<int2, SubCell>> OccupiedCells() { yield break; }
-		public int2 PxPosition { get { return Util.CenterOfCell( location ); } }
+		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { yield break; }
+		public PPos PxPosition { get { return Util.CenterOfCell(location); } }
 	}
 }

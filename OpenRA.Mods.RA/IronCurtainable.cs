@@ -18,8 +18,7 @@ namespace OpenRA.Mods.RA
 
 	class IronCurtainable : IDamageModifier, ITick, ISync
 	{
-		[Sync]
-		int RemainingTicks = 0;
+		[Sync] int RemainingTicks = 0;
 
 		public void Tick(Actor self)
 		{

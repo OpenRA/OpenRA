@@ -23,7 +23,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var args = new WidgetArgs()
 			{
 				{ "afterInstall", () => { Ui.CloseWindow(); continueLoading(); } },
-				{ "installData", installData }
+				{ "installData", installData },
+				{ "continueLoading", continueLoading }
 			};
 
 			panel.Get<ButtonWidget>("DOWNLOAD_BUTTON").OnClick = () =>

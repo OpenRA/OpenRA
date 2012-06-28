@@ -27,24 +27,24 @@ namespace OpenRA
 			return FindUnits(world, loc, loc).Where(a => world.LocalShroud.IsVisible(a));
 		}
 
-		public static IEnumerable<Actor> FindUnits(this World world, int2 a, int2 b)
+		public static IEnumerable<Actor> FindUnits(this World world, PPos a, PPos b)
 		{
-			var u = float2.Min(a, b).ToInt2();
-			var v = float2.Max(a, b).ToInt2();
+			var u = PPos.Min(a, b);
+			var v = PPos.Max(a, b);
 			return world.WorldActor.Trait<SpatialBins>().ActorsInBox(u,v);
 		}
 
-		public static Actor ClosestTo( this IEnumerable<Actor> actors, int2 px )
+		public static Actor ClosestTo(this IEnumerable<Actor> actors, PPos px)
 		{
 			return actors.OrderBy( a => (a.CenterLocation - px).LengthSquared ).FirstOrDefault();
 		}
 
-		public static IEnumerable<Actor> FindUnitsInCircle(this World world, int2 a, int r)
+		public static IEnumerable<Actor> FindUnitsInCircle(this World world, PPos a, int r)
 		{
 			using (new PerfSample("FindUnitsInCircle"))
 			{
-				var min = a - new int2(r, r);
-				var max = a + new int2(r, r);
+				var min = a - PVecInt.FromRadius(r);
+				var max = a + PVecInt.FromRadius(r);
 
 				var actors = world.FindUnits(min, max);
 
@@ -56,48 +56,48 @@ namespace OpenRA
 			}
 		}
 
-		public static IEnumerable<int2> FindTilesInCircle(this World world, int2 a, int r)
+		public static IEnumerable<CPos> FindTilesInCircle(this World world, CPos a, int r)
 		{
-			var min = world.ClampToWorld(a - new int2(r, r));
-			var max = world.ClampToWorld(a + new int2(r, r));
+			var min = world.ClampToWorld(a - new CVec(r, r));
+			var max = world.ClampToWorld(a + new CVec(r, r));
 			for (var j = min.Y; j <= max.Y; j++)
 				for (var i = min.X; i <= max.X; i++)
-					if (r * r >= (new int2(i, j) - a).LengthSquared)
-						yield return new int2(i, j);
+					if (r * r >= (new CPos(i, j) - a).LengthSquared)
+						yield return new CPos(i, j);
 		}
 
-		public static string GetTerrainType(this World world, int2 cell)
+		public static string GetTerrainType(this World world, CPos cell)
 		{
 			var custom = world.Map.CustomTerrain[cell.X, cell.Y];
 			return custom != null ? custom : world.TileSet.GetTerrainType(world.Map.MapTiles.Value[cell.X, cell.Y]);
 		}
 
-		public static TerrainTypeInfo GetTerrainInfo(this World world, int2 cell)
+		public static TerrainTypeInfo GetTerrainInfo(this World world, CPos cell)
 		{
 			return world.TileSet.Terrain[world.GetTerrainType(cell)];
 		}
 
-		public static int2 ClampToWorld( this World world, int2 xy )
+		public static CPos ClampToWorld(this World world, CPos xy)
 		{
 			var r = world.Map.Bounds;
 			return xy.Clamp(new Rectangle(r.X,r.Y,r.Width-1, r.Height-1));
 		}
 
-		public static int2 ChooseRandomEdgeCell(this World w)
+		public static CPos ChooseRandomEdgeCell(this World w)
 		{
 			var isX = w.SharedRandom.Next(2) == 0;
 			var edge = w.SharedRandom.Next(2) == 0;
 
-			return new int2(
+			return new CPos(
 				isX ? w.SharedRandom.Next(w.Map.Bounds.Left, w.Map.Bounds.Right)
 					: (edge ? w.Map.Bounds.Left : w.Map.Bounds.Right),
 				!isX ? w.SharedRandom.Next(w.Map.Bounds.Top, w.Map.Bounds.Bottom)
 					: (edge ? w.Map.Bounds.Top : w.Map.Bounds.Bottom));
 		}
 
-		public static int2 ChooseRandomCell(this World w, Thirdparty.Random r)
+		public static CPos ChooseRandomCell(this World w, Thirdparty.Random r)
 		{
-			return new int2(
+			return new CPos(
 				r.Next(w.Map.Bounds.Left, w.Map.Bounds.Right),
 				r.Next(w.Map.Bounds.Top, w.Map.Bounds.Bottom));
 		}

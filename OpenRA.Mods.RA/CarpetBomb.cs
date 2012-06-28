@@ -22,16 +22,16 @@ namespace OpenRA.Mods.RA
 
 	class CarpetBomb : ITick			// todo: maybe integrate this better with the normal weapons system?
 	{
-		int2 Target;
+		CPos Target;
 		int dropDelay;
 
-		public void SetTarget(int2 targetCell) { Target = targetCell; }
+		public void SetTarget(CPos targetCell) { Target = targetCell; }
 
 		public void Tick(Actor self)
 		{
 			var info = self.Info.Traits.Get<CarpetBombInfo>();
 
-			if( !Combat.IsInRange( self.CenterLocation, info.Range, Target * Game.CellSize ) )
+			if( !Combat.IsInRange( self.CenterLocation, info.Range, Target.ToPPos() ) )
 				return;
 
 			var limitedAmmo = self.TraitOrDefault<LimitedAmmo>();

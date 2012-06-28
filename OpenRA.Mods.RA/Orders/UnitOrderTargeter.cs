@@ -50,7 +50,7 @@ namespace OpenRA.Mods.RA.Orders
 			return true;
 		}
 
-		public virtual bool CanTargetLocation(Actor self, int2 location, List<Actor> actorsAtLocation, bool forceAttack, bool forceQueued, ref string cursor)
+		public virtual bool CanTargetLocation(Actor self, CPos location, List<Actor> actorsAtLocation, bool forceAttack, bool forceQueued, ref string cursor)
 		{
 			return false;
 		}

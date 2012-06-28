@@ -125,7 +125,7 @@ namespace OpenRA.Mods.RA.Widgets
 		bool PerformStanceCycle()
 		{
 			var actor = World.Selection.Actors
-				.Where(a => a.Owner == World.LocalPlayer)
+				.Where(a => a.Owner == World.LocalPlayer && !a.Destroyed)
 				.Select(a => Pair.New( a, a.TraitOrDefault<AutoTarget>() ))
 				.Where(a => a.Second != null).FirstOrDefault();
 
@@ -140,7 +140,8 @@ namespace OpenRA.Mods.RA.Widgets
 			{
 				var at = a.TraitOrDefault<AutoTarget>();
 				if (at != null) at.predictedStance = nextStance;
-				return new Order("SetUnitStance", a, false) { TargetLocation = new int2((int)nextStance, 0) };
+				// NOTE(jsd): Abuse of the type system here with `CPos`
+				return new Order("SetUnitStance", a, false) { TargetLocation = new CPos((int)nextStance, 0) };
 			});
 
 			Game.Debug( "Unit stance set to: {0}".F(nextStance) );
@@ -180,7 +181,7 @@ namespace OpenRA.Mods.RA.Widgets
 			if (eventNotifier.lastAttackTime < 0)
 				return true;
 
-			Game.viewport.Center(eventNotifier.lastAttackLocation);
+			Game.viewport.Center(eventNotifier.lastAttackLocation.ToFloat2());
 			return true;
 		}
 	}

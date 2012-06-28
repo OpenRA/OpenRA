@@ -67,7 +67,7 @@ namespace OpenRA.Mods.RA
 		static string cachedTileset;
 		static Cache<TileReference<ushort,byte>, Sprite> sprites;
 
-		Dictionary<ushort, Dictionary<int2, Sprite>> TileSprites = new Dictionary<ushort, Dictionary<int2, Sprite>>();
+		Dictionary<ushort, Dictionary<CPos, Sprite>> TileSprites = new Dictionary<ushort, Dictionary<CPos, Sprite>>();
 		Dictionary<ushort, TileTemplate> Templates = new Dictionary<ushort, TileTemplate>();
 		ushort currentTemplate;
 
@@ -86,7 +86,7 @@ namespace OpenRA.Mods.RA
 			this.Type = self.Info.Name;
 		}
 
-		public void Create(ushort template, Dictionary<int2, byte> subtiles)
+		public void Create(ushort template, Dictionary<CPos, byte> subtiles)
 		{
 			currentTemplate = template;
 
@@ -103,7 +103,7 @@ namespace OpenRA.Mods.RA
 			foreach (var t in Info.Templates)
 			{
 				Templates.Add(t.First,self.World.TileSet.Templates[t.First]);
-				TileSprites.Add(t.First,subtiles.ToDictionary(
+				TileSprites.Add(t.First, subtiles.ToDictionary(
 					a => a.Key,
 					a => sprites[new TileReference<ushort,byte>(t.First, (byte)a.Value)]));
 			}
@@ -113,10 +113,10 @@ namespace OpenRA.Mods.RA
 				self.World.Map.CustomTerrain[c.X, c.Y] = GetTerrainType(c);
 		}
 
-		public string GetTerrainType(int2 cell)
+		public string GetTerrainType(CPos cell)
 		{
 			var dx = cell - self.Location;
-			var index = dx.X + Templates[currentTemplate].Size.X*dx.Y;
+			var index = dx.X + Templates[currentTemplate].Size.X * dx.Y;
 			return self.World.TileSet.GetTerrainType(new TileReference<ushort, byte>(currentTemplate,(byte)index));
 		}
 
@@ -132,13 +132,13 @@ namespace OpenRA.Mods.RA
 		public Bridge GetNeighbor(int[] offset, BridgeLayer bridges)
 		{
 			if (offset == null) return null;
-			return bridges.GetBridge(self.Location + new int2(offset[0], offset[1]));
+			return bridges.GetBridge(self.Location + new CVec(offset[0], offset[1]));
 		}
 
 		public IEnumerable<Renderable> RenderAsTerrain(Actor self)
 		{
 			foreach (var t in TileSprites[currentTemplate])
-				yield return new Renderable(t.Value, Game.CellSize * t.Key, "terrain", Game.CellSize * t.Key.Y);
+				yield return new Renderable(t.Value, t.Key.ToPPos().ToFloat2(), "terrain", Game.CellSize * t.Key.Y);
 		}
 
 		bool IsIntact(Bridge b)

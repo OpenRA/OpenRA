@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
@@ -26,7 +27,7 @@ namespace OpenRA.Mods.RA.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			return (remainingTicks-- == 0) ? NextActivity: this;
+			return (remainingTicks-- == 0) ? NextActivity : this;
 		}
 
 		public override void Cancel( Actor self )
@@ -35,6 +36,33 @@ namespace OpenRA.Mods.RA.Activities
 				return;
 
 			remainingTicks = 0;
+			base.Cancel(self);
+		}
+	}
+
+	public class WaitFor : Activity
+	{
+		Func<bool> f;
+		bool interruptable = true;
+
+		public WaitFor(Func<bool> f) { this.f = f; }
+		public WaitFor(Func<bool> f, bool interruptable)
+		{
+			this.f = f;
+			this.interruptable = interruptable;
+		}
+
+		public override Activity Tick(Actor self)
+		{
+			return (f == null || f()) ? NextActivity : this;
+		}
+
+		public override void Cancel( Actor self )
+		{
+			if (!interruptable)
+				return;
+
+			f = null;
 			base.Cancel(self);
 		}
 	}

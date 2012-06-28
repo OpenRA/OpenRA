@@ -64,7 +64,7 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<Renderable> Render() { return renderables; }
 
-		static IEnumerable<Renderable> DrawZapWandering(int2 from, int2 to, Sequence s)
+		static IEnumerable<Renderable> DrawZapWandering(PPos from, PPos to, Sequence s)
 		{
 			var z = float2.Zero;	/* hack */
 			var dist = to - from;
@@ -73,19 +73,19 @@ namespace OpenRA.Mods.RA.Effects
 			var renderables = new List<Renderable>();
 			if (Game.CosmeticRandom.Next(2) != 0)
 			{
-				var p1 = from + (1 / 3f) * dist.ToFloat2() + Game.CosmeticRandom.Gauss1D(1) * .2f * dist.Length * norm;
-				var p2 = from + (2 / 3f) * dist.ToFloat2() + Game.CosmeticRandom.Gauss1D(1) * .2f * dist.Length * norm;
+				var p1 = from.ToFloat2() + (1 / 3f) * dist.ToFloat2() + Game.CosmeticRandom.Gauss1D(1) * .2f * dist.Length * norm;
+				var p2 = from.ToFloat2() + (2 / 3f) * dist.ToFloat2() + Game.CosmeticRandom.Gauss1D(1) * .2f * dist.Length * norm;
 
-				renderables.AddRange(DrawZap(from, p1, s, out p1));
+				renderables.AddRange(DrawZap(from.ToFloat2(), p1, s, out p1));
 				renderables.AddRange(DrawZap(p1, p2, s, out p2));
-				renderables.AddRange(DrawZap(p2, to, s, out z));
+				renderables.AddRange(DrawZap(p2, to.ToFloat2(), s, out z));
 			}
 			else
 			{
-				var p1 = from + (1 / 2f) * dist.ToFloat2() + Game.CosmeticRandom.Gauss1D(1) * .2f * dist.Length * norm;
+				var p1 = from.ToFloat2() + (1 / 2f) * dist.ToFloat2() + Game.CosmeticRandom.Gauss1D(1) * .2f * dist.Length * norm;
 
-				renderables.AddRange(DrawZap(from, p1, s, out p1));
-				renderables.AddRange(DrawZap(p1, to, s, out z));
+				renderables.AddRange(DrawZap(from.ToFloat2(), p1, s, out p1));
+				renderables.AddRange(DrawZap(p1, to.ToFloat2(), s, out z));
 			}
 
 			return renderables;

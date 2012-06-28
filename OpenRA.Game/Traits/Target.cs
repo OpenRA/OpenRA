@@ -16,7 +16,7 @@ namespace OpenRA.Traits
 
 		Actor actor;
 		Player owner;
-		int2 pos;
+		PPos pos;
 		bool valid;
 
 		public static Target FromActor(Actor a)
@@ -28,8 +28,8 @@ namespace OpenRA.Traits
 				owner = (a != null) ? a.Owner : null
 			};
 		}
-		public static Target FromPos(int2 p) { return new Target { pos = p, valid = true }; }
-		public static Target FromCell(int2 c) { return new Target { pos = Util.CenterOfCell(c), valid = true }; }
+		public static Target FromPos(PPos p) { return new Target { pos = p, valid = true }; }
+		public static Target FromCell(CPos c) { return new Target { pos = Util.CenterOfCell(c), valid = true }; }
 		public static Target FromOrder(Order o)
 		{
 			return o.TargetActor != null
@@ -40,8 +40,8 @@ namespace OpenRA.Traits
 		public static readonly Target None = new Target();
 
 		public bool IsValid { get { return valid && (actor == null || (actor.IsInWorld && actor.Owner == owner)); } }
-		public int2 PxPosition { get { return IsActor ? actor.Trait<IHasLocation>().PxPosition : pos; } }
-		public int2 CenterLocation { get { return PxPosition; } }
+		public PPos PxPosition { get { return IsActor ? actor.Trait<IHasLocation>().PxPosition : pos; } }
+		public PPos CenterLocation { get { return PxPosition; } }
 
 		public Actor Actor { get { return IsActor ? actor : null; } }
 		public bool IsActor { get { return actor != null && !actor.Destroyed; } }

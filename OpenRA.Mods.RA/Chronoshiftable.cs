@@ -18,10 +18,8 @@ namespace OpenRA.Mods.RA
 	public class Chronoshiftable : ITick, ISync
 	{
 		// Return-to-sender logic
-		[Sync]
-		int2 chronoshiftOrigin;
-		[Sync]
-		int chronoshiftReturnTicks = 0;
+		[Sync] CPos chronoshiftOrigin;
+		[Sync] int chronoshiftReturnTicks = 0;
 
 		public void Tick(Actor self)
 		{
@@ -41,7 +39,7 @@ namespace OpenRA.Mods.RA
 		}
 
 		// Can't be used in synced code, except with ignoreVis.
-		public virtual bool CanChronoshiftTo(Actor self, int2 targetLocation, bool ignoreVis)
+		public virtual bool CanChronoshiftTo(Actor self, CPos targetLocation, bool ignoreVis)
 		{
 			// Todo: Allow enemy units to be chronoshifted into bad terrain to kill them
 			return self.HasTrait<ITeleportable>() &&
@@ -49,7 +47,7 @@ namespace OpenRA.Mods.RA
 				(ignoreVis || self.World.LocalShroud.IsExplored(targetLocation));
 		}
 
-		public virtual bool Teleport(Actor self, int2 targetLocation, int duration, bool killCargo, Actor chronosphere)
+		public virtual bool Teleport(Actor self, CPos targetLocation, int duration, bool killCargo, Actor chronosphere)
 		{
 			/// Set up return-to-sender info
 			chronoshiftOrigin = self.Location;

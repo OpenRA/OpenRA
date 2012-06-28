@@ -24,13 +24,13 @@ namespace OpenRA.Mods.RA
 
 	public class MPStartLocations : IWorldLoaded
 	{
-		public Dictionary<Player, int2> Start = new Dictionary<Player, int2>();
+		public Dictionary<Player, CPos> Start = new Dictionary<Player, CPos>();
 
 		public void WorldLoaded(World world)
 		{
 			var taken = world.LobbyInfo.Clients.Where(c => c.SpawnPoint != 0 && c.Slot != null)
-				.Select(c => world.Map.GetSpawnPoints()[c.SpawnPoint-1]).ToList();
-			var available = world.Map.GetSpawnPoints().Except(taken).ToList();
+				.Select(c => (CPos) world.Map.GetSpawnPoints()[c.SpawnPoint-1]).ToList();
+			var available = world.Map.GetSpawnPoints().Select(c => (CPos)c).Except(taken).ToList();
 
 			// Set spawn
 			foreach (var kv in world.LobbyInfo.Slots)
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA
 				var client = world.LobbyInfo.ClientInSlot(kv.Key);
 				var spid = (client == null || client.SpawnPoint == 0)
 					? ChooseSpawnPoint(world, available, taken)
-					: world.Map.GetSpawnPoints()[client.SpawnPoint-1];
+					: (CPos)world.Map.GetSpawnPoints()[client.SpawnPoint-1];
 
 				Start.Add(player, spid);
 			}
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.RA
 
 			// Set viewport
 			if (world.LocalPlayer != null && Start.ContainsKey(world.LocalPlayer))
-				Game.viewport.Center(Start[world.LocalPlayer]);
+				Game.viewport.Center(Start[world.LocalPlayer].ToFloat2());
 		}
 
 		static Player FindPlayerInSlot(World world, string pr)
@@ -62,7 +62,7 @@ namespace OpenRA.Mods.RA
 			return world.Players.FirstOrDefault(p => p.PlayerReference.Name == pr);
 		}
 
-		static int2 ChooseSpawnPoint(World world, List<int2> available, List<int2> taken)
+		static CPos ChooseSpawnPoint(World world, List<CPos> available, List<CPos> taken)
 		{
 			if (available.Count == 0)
 				throw new InvalidOperationException("No free spawnpoint.");

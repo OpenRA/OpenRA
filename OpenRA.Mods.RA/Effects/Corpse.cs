@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Effects
 			anim.PlayThen(sequence,
 				() => fromActor.World.AddFrameEndTask(w => w.Remove(this)));
 
-			pos = fromActor.CenterLocation;
+			pos = fromActor.CenterLocation.ToFloat2();
 		}
 
 		public void Tick( World world ) { anim.Tick(); }

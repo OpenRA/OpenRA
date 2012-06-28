@@ -36,8 +36,8 @@ namespace OpenRA.Mods.Cnc
 
 			// Start a fixed distance away: the width of the map.
 			// This makes the production timing independent of spawnpoint
-			var startPos = self.Location + new int2(owner.World.Map.Bounds.Width, 0);
-			var endPos = new int2(owner.World.Map.Bounds.Left - 5, self.Location.Y);
+			var startPos = self.Location + new CVec(owner.World.Map.Bounds.Width, 0);
+			var endPos = new CPos(owner.World.Map.Bounds.Left - 5, self.Location.Y);
 
 			// Assume a single exit point for simplicity
 			var exit = self.Info.Traits.WithInterface<ExitInfo>().First();
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Cnc
 					new AltitudeInit( Rules.Info[actorType].Traits.Get<PlaneInfo>().CruiseAltitude ),
 				});
 
-				a.QueueActivity(Fly.ToCell(self.Location + new int2(6,0)));
+				a.QueueActivity(Fly.ToCell(self.Location + new CVec(6, 0)));
 				a.QueueActivity(new Land(Target.FromActor(self)));
 				a.QueueActivity(new CallFunc(() =>
 				{

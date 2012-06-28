@@ -38,19 +38,16 @@ namespace OpenRA.Mods.RA
 	class Crate : ITick, IOccupySpace, ITeleportable, ICrushable, ISync
 	{
 		readonly Actor self;
-		[Sync]
-		int ticks;
-
-		[Sync]
-		public int2 Location;
-
+		[Sync] int ticks;
+		[Sync] public CPos Location;
 		CrateInfo Info;
+
 		public Crate(ActorInitializer init, CrateInfo info)
 		{
 			this.self = init.self;
 			if (init.Contains<LocationInit>())
 			{
-				this.Location = init.Get<LocationInit, int2>();
+				this.Location = init.Get<LocationInit, CPos>();
 				PxPosition = Util.CenterOfCell(Location);
 			}
 			this.Info = info;
@@ -82,19 +79,19 @@ namespace OpenRA.Mods.RA
 				self.Destroy();
 		}
 
-		public int2 TopLeft { get { return Location; } }
-		public IEnumerable<Pair<int2, SubCell>> OccupiedCells() { yield return Pair.New( Location, SubCell.FullCell); }
+		public CPos TopLeft { get { return Location; } }
+		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { yield return Pair.New( Location, SubCell.FullCell); }
 
-		public int2 PxPosition { get; private set; }
+		public PPos PxPosition { get; private set; }
 
-		public void SetPxPosition( Actor self, int2 px )
+		public void SetPxPosition(Actor self, PPos px)
 		{
-			SetPosition( self, Util.CellContaining( px ) );
+			SetPosition( self, px.ToCPos() );
 		}
 
-		public void AdjustPxPosition(Actor self, int2 px) { SetPxPosition(self, px); }
+		public void AdjustPxPosition(Actor self, PPos px) { SetPxPosition(self, px); }
 
-		public bool CanEnterCell(int2 cell)
+		public bool CanEnterCell(CPos cell)
 		{
 			if (!self.World.Map.IsInMap(cell.X, cell.Y)) return false;
 			var type = self.World.GetTerrainType(cell);
@@ -107,7 +104,7 @@ namespace OpenRA.Mods.RA
 			return true;
 		}
 
-		public void SetPosition(Actor self, int2 cell)
+		public void SetPosition(Actor self, CPos cell)
 		{
 			if( self.IsInWorld )
 				self.World.ActorMap.Remove(self, this);

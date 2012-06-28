@@ -19,7 +19,7 @@ namespace OpenRA.Traits
 	class RevealsShroud : ITick
 	{
 		RevealsShroudInfo Info;
-		int2 previousLocation;
+		CPos previousLocation;
 
 		public RevealsShroud(RevealsShroudInfo info)
 		{
