@@ -258,6 +258,7 @@ namespace OpenRA.Mods.RA.Missions
             shipMovePoint = actors["ShipMovePoint"];
             attackEntryPoint1 = actors["SovietAttackEntryPoint1"];
             attackEntryPoint2 = actors["SovietAttackEntryPoint2"];
+            Game.MoveViewport(insertionLZ.Location.ToFloat2());
             music = Sound.Play("hell226m.aud"); // Hell March
             Game.ConnectionStateChanged += StopMusic;
         }
