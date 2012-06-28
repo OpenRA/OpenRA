@@ -15,6 +15,7 @@ using OpenRA.GameRules;
 using OpenRA.Mods.RA.Effects;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
+using System.Collections.Generic;
 
 namespace OpenRA.Mods.RA
 {
@@ -60,19 +61,38 @@ namespace OpenRA.Mods.RA
 
 				if (warhead.Size[0] > 0)
 				{
-					var smudgeCells = world.FindTilesInCircle(targetTile, warhead.Size[0]);
-					if (warhead.Size.Length == 2 )
-						smudgeCells = smudgeCells.Except(world.FindTilesInCircle(targetTile, warhead.Size[1])) ;
+					var resLayer = world.WorldActor.Trait<ResourceLayer>();
+					var allCells = world.FindTilesInCircle(targetTile, warhead.Size[0]).ToList();
 
+					// `smudgeCells` might want to just be an outer shell of the cells:
+					IEnumerable<CPos> smudgeCells = allCells;
+					if (warhead.Size.Length == 2)
+						smudgeCells = smudgeCells.Except(world.FindTilesInCircle(targetTile, warhead.Size[1]));
+
+					// Draw the smudges:
 					foreach (var sc in smudgeCells)
 					{
+						// Water doesn't get scorched/smudged, it just gets superheated =P.
+						if (world.GetTerrainInfo(sc).IsWater) continue;
+
 						smudgeLayer.AddSmudge(sc);
 						if (warhead.Ore)
-							world.WorldActor.Trait<ResourceLayer>().Destroy(sc);
+							resLayer.Destroy(sc);
+					}
+
+					// Destroy all resources in range, not just the outer shell:
+					foreach (var cell in allCells)
+					{
+						if (warhead.Ore)
+							resLayer.Destroy(cell);
 					}
 				}
 				else
-					smudgeLayer.AddSmudge(targetTile);
+				{
+					// Don't smudge water (if this ever happens):
+					if (!world.GetTerrainInfo(targetTile).IsWater)
+						smudgeLayer.AddSmudge(targetTile);
+				}
 			}
 
 			if (warhead.Ore)
