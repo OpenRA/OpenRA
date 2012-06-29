@@ -7,8 +7,8 @@ return {
     local love2d = ide.config.path.love2d
       or wx.wxFileName(self:fprojdir(wfilename)):GetPath(wx.wxPATH_GET_VOLUME)
       .. '/love'
-    local cmd = string.gsub(love2d, "\\","/") .. ' "' .. self:fprojdir(wfilename) .. '"'
-      .. (rundebug and ' -debug' or '')
+    local cmd = ('"%s" "%s"%s'):format(string.gsub(love2d, "\\","/"),
+      self:fprojdir(wfilename), rundebug and ' -debug' or '')
     -- CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
     return CommandLineRun(cmd,self:fworkdir(wfilename),true,false,nil,nil,
       function() ide.debugger.pid = nil end)
