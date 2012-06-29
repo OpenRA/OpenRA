@@ -514,9 +514,9 @@ function CloseWindow(event)
   SettingsSaveView()
   SettingsSaveFramePosition(ide.frame, "MainFrame")
   SettingsSaveEditorSettings()
-  DebuggerCloseWatchWindow()
-  DebuggerCloseStackWindow()
-  DebuggerShutdown()
+  if DebuggerCloseWatchWindow then DebuggerCloseWatchWindow() end
+  if DebuggerCloseStackWindow then DebuggerCloseStackWindow() end
+  if DebuggerShutdown then DebuggerShutdown() end
   ide.settings:delete() -- always delete the config
   event:Skip()
 end
