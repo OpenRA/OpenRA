@@ -144,7 +144,9 @@ function MarkupStyle(editor, lines, linee)
       if (f) then
         local p = ls+f+off
         local s = bit.band(editor:GetStyleAt(p), 31)
-        if iscomment[s] then
+        -- only style comments and only those that are not at the beginning
+        -- of the file to avoid styling shebang (#!) lines
+        if iscomment[s] and p > 0 then
           local smark = #mark
           local emark = #mark -- assumes end mark is the same length as start mark
           if mark == MD_MARK_HEAD then

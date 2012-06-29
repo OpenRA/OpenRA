@@ -398,7 +398,10 @@ function ClearAllCurrentLineMarkers()
 end
 
 function CompileProgram(editor, quiet)
-  local editorText = editor:GetText()
+  -- remove shebang line (#!) as it throws a compilation error as
+  -- loadstring() doesn't allow it even though lua/loadfile accepts it.
+  -- replace with a new line to keep the number of lines the same.
+  local editorText = editor:GetText():gsub("^#!.-\n", "\n")
   local id = editor:GetId()
   local filePath = DebuggerMakeFileName(editor, openDocuments[id].filePath)
   local _, errMsg, line_num = wxlua.CompileLuaScript(editorText, filePath)

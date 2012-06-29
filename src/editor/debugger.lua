@@ -692,7 +692,8 @@ function DebuggerRefreshScratchpad()
     else
       local clear = ide.frame.menuBar:IsChecked(ID_CLEAROUTPUT)
       local scratchpadEditor = debugger.scratchpad.editor
-      local code = scratchpadEditor:GetText()
+      -- take editor text and remove shebang line
+      local code = scratchpadEditor:GetText():gsub("^#!.-\n", "\n")
       local filePath = DebuggerMakeFileName(scratchpadEditor,
         ide.openDocuments[scratchpadEditor:GetId()].filePath)
 
