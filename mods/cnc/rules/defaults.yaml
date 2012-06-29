@@ -133,8 +133,9 @@
 	SpawnViceroid:
 		Probability: 2
 	CrushableInfantry:
-	Repairable:
-		RepairBuildings: hosp
+	RepairableNear:
+		Buildings: hosp
+		CloseEnough: 1
 
 ^CivInfantry:
 	Inherits: ^Infantry
