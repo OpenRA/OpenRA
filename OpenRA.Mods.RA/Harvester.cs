@@ -62,6 +62,7 @@ namespace OpenRA.Mods.RA
 		public void SetProcLines(Actor proc)
 		{
 			if (proc == null) return;
+			if (proc.Destroyed) return;
 
 			var linkedHarvs = proc.World.ActorsWithTrait<Harvester>()
 				.Where(a => a.Trait.LinkedProc == proc)
