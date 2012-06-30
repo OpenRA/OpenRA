@@ -53,6 +53,7 @@ namespace OpenRA.Mods.RA.Missions
         static readonly string[] taunts = { "laugh1.aud", "lefty1.aud", "cmon1.aud", "gotit1.aud" };
 
         static readonly string[] ships = { "ca", "ca", "ca", "ca" };
+        static readonly string[] patrol = { "e1", "dog", "e1" };
 
         static readonly string[] attackWave = { "e1", "e1", "e1", "e1", "e2", "e2", "e2", "e2", "dog" };
         static readonly string[] lastAttackWaveAddition = { "3tnk", "e1", "e1", "e1", "e1", "e2", "e2", "e2", "e2" };
@@ -116,6 +117,7 @@ namespace OpenRA.Mods.RA.Missions
             if (self.World.FrameNumber == 1)
             {
                 FlyTanyaToInsertionLZ(self);
+                SendPatrol(self);
             }
             // objectives
             if (currentObjective == 0)
@@ -180,6 +182,15 @@ namespace OpenRA.Mods.RA.Missions
                 var spawnActor = self.World.SharedRandom.Next(2) == 0 ? attackEntryPoint1 : attackEntryPoint2;
                 var actor = self.World.CreateActor(unit, new TypeDictionary { new OwnerInit(soviets), new LocationInit(spawnActor.Location) });
                 actor.QueueActivity(new AttackMove.AttackMoveActivity(actor, new Attack(Target.FromActor(einstein), 3))); // better way of doing this?
+            }
+        }
+
+        void SendPatrol(Actor self)
+        {
+            for (int i = 0; i < patrol.Length; i++)
+            {
+                var actor = self.World.CreateActor(patrol[i], new TypeDictionary { new OwnerInit(soviets), new LocationInit(insertionLZ.Location + new CVec(-1 + i, 6 + i * 2)) });
+                actor.QueueActivity(new Move.Move(insertionLZ.Location));
             }
         }
 
