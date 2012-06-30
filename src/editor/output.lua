@@ -25,10 +25,9 @@ errorlog:SetReadOnly(true)
 StylesApplyToEditor(ide.config.stylesoutshell,errorlog,ide.ofont,ide.ofontItalic)
 
 function ClearOutput()
-  local current = errorlog:GetReadOnly()
   errorlog:SetReadOnly(false)
   errorlog:ClearAll()
-  errorlog:SetReadOnly(current)
+  errorlog:SetReadOnly(true)
 end
 
 function DisplayOutputNoMarker(...)
@@ -217,7 +216,6 @@ local function getStreams()
           (getInputLine() > -1 or errorlog:GetReadOnly()) then
           ActivateOutput()
           updateInputMarker()
-          errorlog:SetFocus()
         end
         pfn = pfn and pfn()
       end
