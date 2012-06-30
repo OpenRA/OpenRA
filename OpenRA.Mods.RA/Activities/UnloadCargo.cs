@@ -99,7 +99,7 @@ namespace OpenRA.Mods.RA.Activities
 				actor.SetTargetLine(Target.FromCell(rallyPoint), Color.Green, false);
 			});
 
-			return this;
+			return NextActivity;
 		}
 	}
 }
