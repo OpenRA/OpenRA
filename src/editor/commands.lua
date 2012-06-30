@@ -499,7 +499,8 @@ function ShowFullScreen(setFullScreen)
 
   uimgr:GetPane("toolBar"):Show(not setFullScreen)
   uimgr:Update()
-  frame:ShowFullScreen(setFullScreen)
+  -- protect from systems that don't have ShowFullScreen (GTK on linux?)
+  pcall(function() frame:ShowFullScreen(setFullScreen) end)
 end
 
 function CloseWindow(event)
