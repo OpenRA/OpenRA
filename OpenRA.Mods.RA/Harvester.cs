@@ -268,8 +268,9 @@ namespace OpenRA.Mods.RA
 				LinkProc(self, OwnerLinkedProc = null);
 				idleSmart = true;
 
-				var mobile = self.Trait<Mobile>();
 				self.CancelActivity();
+				
+				var mobile = self.Trait<Mobile>();
 				if (order.TargetLocation != CPos.Zero)
 				{
 					var loc = order.TargetLocation;
@@ -295,7 +296,7 @@ namespace OpenRA.Mods.RA
 				else
 				{
 					// A bot order gives us a CPos.Zero TargetLocation, so find some good resources for him:
-					CPos? loc = FindNextResourceForBot(self);
+					var loc = FindNextResourceForBot(self);
 					// No more resources? Oh well.
 					if (!loc.HasValue)
 						return;
@@ -306,6 +307,8 @@ namespace OpenRA.Mods.RA
 					LastOrderLocation = loc;
 				}
 
+				// This prevents harvesters returning to an empty patch when the player orders them to a new patch:
+				LastHarvestedCell = LastOrderLocation;
 				self.QueueActivity(new FindResources());
 			}
 			else if (order.OrderString == "Deliver")
