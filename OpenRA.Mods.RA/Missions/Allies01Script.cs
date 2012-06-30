@@ -203,6 +203,7 @@ namespace OpenRA.Mods.RA.Missions
         private void SpawnEinsteinAtLab(Actor self)
         {
             einstein = self.World.CreateActor(einsteinName, new TypeDictionary { new OwnerInit(allies), new LocationInit(lab.Location) });
+            einstein.QueueActivity(new Move.Move(lab.Location - new CVec(0, 2)));
         }
 
         private void SendShips(Actor self)
