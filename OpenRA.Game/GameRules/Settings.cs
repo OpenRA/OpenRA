@@ -29,9 +29,11 @@ namespace OpenRA.GameRules
 		public int ExternalPort = 1234;
 		public bool AdvertiseOnline = true;
 		public string MasterServer = "http://master.open-ra.org/";
+		public bool AllowUPnP = true;
 		public bool AllowCheats = false;
 		public string Map = null;
 		public string[] Ban = null;
+		public int TimeOut = 0;
 
 		public ServerSettings() { }
 
@@ -42,9 +44,11 @@ namespace OpenRA.GameRules
 			ExternalPort = other.ExternalPort;
 			AdvertiseOnline = other.AdvertiseOnline;
 			MasterServer = other.MasterServer;
+			AllowUPnP = other.AllowUPnP;
 			AllowCheats = other.AllowCheats;
 			Map = other.Map;
 			Ban = other.Ban;
+			TimeOut = other.TimeOut;
 		}
 	}
 

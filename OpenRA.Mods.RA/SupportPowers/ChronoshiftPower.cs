@@ -45,12 +45,12 @@ namespace OpenRA.Mods.RA
 			foreach (var a in self.World.ActorsWithTrait<ChronoshiftPaletteEffect>())
 				a.Trait.Enable();
 
-			Sound.Play("chrono2.aud", Game.CellSize * order.TargetLocation);
-			Sound.Play("chrono2.aud", Game.CellSize * order.ExtraLocation);
+			Sound.Play("chrono2.aud", order.TargetLocation.ToPPos());
+			Sound.Play("chrono2.aud", order.ExtraLocation.ToPPos());
 			foreach (var target in UnitsInRange(order.ExtraLocation))
 			{
 				var cs = target.Trait<Chronoshiftable>();
-				var targetCell = target.Location + order.TargetLocation - order.ExtraLocation;
+				var targetCell = target.Location + (order.TargetLocation - order.ExtraLocation);
 				var cpi = Info as ChronoshiftPowerInfo;
 
 				if (cs.CanChronoshiftTo(target, targetCell, true))
@@ -59,7 +59,7 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		public IEnumerable<Actor> UnitsInRange(int2 xy)
+		public IEnumerable<Actor> UnitsInRange(CPos xy)
 		{
 			int range = (Info as ChronoshiftPowerInfo).Range;
 			var tiles = self.World.FindTilesInCircle(xy, range);
@@ -87,7 +87,7 @@ namespace OpenRA.Mods.RA
 				tile = SequenceProvider.GetSequence("overlay", "target-select").GetSprite(0);
 			}
 
-			public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
+			public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
 			{
 				world.CancelInputMode();
 				if (mi.Button == MouseButton.Left)
@@ -105,7 +105,7 @@ namespace OpenRA.Mods.RA
 
 			public void RenderAfterWorld(WorldRenderer wr, World world)
 			{
-				var xy = Game.viewport.ViewToWorld(Viewport.LastMousePos).ToInt2();
+				var xy = Game.viewport.ViewToWorld(Viewport.LastMousePos);
 				var targetUnits = power.UnitsInRange(xy);
 				foreach (var unit in targetUnits)
 					wr.DrawSelectionBox(unit, Color.Red);
@@ -113,13 +113,13 @@ namespace OpenRA.Mods.RA
 
 			public void RenderBeforeWorld(WorldRenderer wr, World world)
 			{
-				var xy = Game.viewport.ViewToWorld(Viewport.LastMousePos).ToInt2();
+				var xy = Game.viewport.ViewToWorld(Viewport.LastMousePos);
 				var tiles = world.FindTilesInCircle(xy, range);
 				foreach (var t in tiles)
-					tile.DrawAt( wr, Game.CellSize * t, "terrain" );
+					tile.DrawAt( wr, t.ToPPos().ToFloat2(), "terrain" );
 			}
 
-			public string GetCursor(World world, int2 xy, MouseInput mi)
+			public string GetCursor(World world, CPos xy, MouseInput mi)
 			{
 				return "chrono-select";
 			}
@@ -128,13 +128,13 @@ namespace OpenRA.Mods.RA
 		class SelectDestination : IOrderGenerator
 		{
 			readonly ChronoshiftPower power;
-			readonly int2 sourceLocation;
+			readonly CPos sourceLocation;
 			readonly int range;
 			readonly Sprite validTile, invalidTile, sourceTile;
 			readonly SupportPowerManager manager;
 			readonly string order;
 
-			public SelectDestination(string order, SupportPowerManager manager, ChronoshiftPower power, int2 sourceLocation)
+			public SelectDestination(string order, SupportPowerManager manager, ChronoshiftPower power, CPos sourceLocation)
 			{
 				this.manager = manager;
 				this.order = order;
@@ -147,7 +147,7 @@ namespace OpenRA.Mods.RA
 				sourceTile = SequenceProvider.GetSequence("overlay", "target-select").GetSprite(0);
 			}
 
-			public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
+			public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
 			{
 				if (mi.Button == MouseButton.Right)
 				{
@@ -163,7 +163,7 @@ namespace OpenRA.Mods.RA
 				yield return ret;
 			}
 
-			IEnumerable<Order> OrderInner(World world, int2 xy, MouseInput mi)
+			IEnumerable<Order> OrderInner(World world, CPos xy, MouseInput mi)
 			{
 				// Cannot chronoshift into unexplored location
 				if (IsValidTarget(xy))
@@ -189,22 +189,22 @@ namespace OpenRA.Mods.RA
 
 			public void RenderBeforeWorld(WorldRenderer wr, World world)
 			{
-				var xy = Game.viewport.ViewToWorld(Viewport.LastMousePos).ToInt2();
+				var xy = Game.viewport.ViewToWorld(Viewport.LastMousePos);
 
 				// Source tiles
 				foreach (var t in world.FindTilesInCircle(sourceLocation, range))
-					sourceTile.DrawAt( wr, Game.CellSize * t, "terrain" );
+					sourceTile.DrawAt( wr, t.ToPPos().ToFloat2(), "terrain" );
 
 				// Destination tiles
 				foreach (var t in world.FindTilesInCircle(xy, range))
-					sourceTile.DrawAt( wr, Game.CellSize * t, "terrain" );
+					sourceTile.DrawAt( wr, t.ToPPos().ToFloat2(), "terrain" );
 
 				// Unit previews
 				foreach (var unit in power.UnitsInRange(sourceLocation))
 				{
-					var targetCell = unit.Location + xy - sourceLocation;
+					var targetCell = unit.Location + (xy - sourceLocation);
 					foreach (var r in unit.Render())
-						r.Sprite.DrawAt(r.Pos - Traits.Util.CenterOfCell(unit.Location) + Traits.Util.CenterOfCell(targetCell),
+						r.Sprite.DrawAt(r.Pos - Traits.Util.CenterOfCell(unit.Location).ToFloat2() + Traits.Util.CenterOfCell(targetCell).ToFloat2(),
 							wr.GetPaletteIndex(r.Palette),
 							r.Scale*r.Sprite.size);
 				}
@@ -212,19 +212,19 @@ namespace OpenRA.Mods.RA
 				// Unit tiles
 				foreach (var unit in power.UnitsInRange(sourceLocation))
 				{
-					var targetCell = unit.Location + xy - sourceLocation;
+					var targetCell = unit.Location + (xy - sourceLocation);
 					var canEnter = unit.Trait<Chronoshiftable>().CanChronoshiftTo(unit,targetCell, false);
 					var tile = canEnter ? validTile : invalidTile;
-					tile.DrawAt( wr, Game.CellSize * targetCell, "terrain" );
+					tile.DrawAt( wr, targetCell.ToPPos().ToFloat2(), "terrain" );
 				}
 			}
 
-			bool IsValidTarget(int2 xy)
+			bool IsValidTarget(CPos xy)
 			{
 				var canTeleport = false;
 				foreach (var unit in power.UnitsInRange(sourceLocation))
 				{
-					var targetCell = unit.Location + xy - sourceLocation;
+					var targetCell = unit.Location + (xy - sourceLocation);
 					if (unit.Trait<Chronoshiftable>().CanChronoshiftTo(unit,targetCell, false))
 					{
 						canTeleport = true;
@@ -234,7 +234,7 @@ namespace OpenRA.Mods.RA
 				return canTeleport;
 			}
 
-			public string GetCursor(World world, int2 xy, MouseInput mi)
+			public string GetCursor(World world, CPos xy, MouseInput mi)
 			{
 				return IsValidTarget(xy) ? "chrono-target" : "move-blocked";
 			}

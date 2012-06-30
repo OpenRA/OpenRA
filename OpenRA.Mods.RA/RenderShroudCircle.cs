@@ -16,11 +16,11 @@ namespace OpenRA.Mods.RA
 {
 	class RenderShroudCircleInfo : TraitInfo<RenderShroudCircle>, IPlaceBuildingDecoration
 	{
-		public void Render(WorldRenderer wr, World w, ActorInfo ai, int2 centerLocation)
+		public void Render(WorldRenderer wr, World w, ActorInfo ai, PPos centerLocation)
 		{
 			wr.DrawRangeCircle(
 				Color.FromArgb(128, Color.Cyan),
-				centerLocation,
+				centerLocation.ToFloat2(),
 				ai.Traits.Get<CreatesShroudInfo>().Range);
 
 			foreach (var a in w.ActorsWithTrait<RenderShroudCircle>())
@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA
 
 			wr.DrawRangeCircle(
 				Color.FromArgb(128, Color.Cyan),
-				self.CenterLocation, (int)self.Info.Traits.Get<CreatesShroudInfo>().Range);
+				self.CenterLocation.ToFloat2(), (int)self.Info.Traits.Get<CreatesShroudInfo>().Range);
 		}
 	}
 }

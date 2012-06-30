@@ -305,6 +305,27 @@ C2:
 	ProximityCaptor:
 		Types:CivilianInfantry
 
+EINSTEIN:
+	Inherits: ^Infantry
+	Selectable:
+		Voice: EinsteinVoice
+		Bounds: 12,17,0,-9
+	Valued:
+		Cost: 10
+	Tooltip:
+		Name: Prof. Einstein
+	Health:
+		HP: 25
+	Mobile:
+		Speed: 5
+	RevealsShroud:
+		Range: 2
+	-AutoTarget:
+	AttackMove:
+		JustMove: true
+	ProximityCaptor:
+		Types:CivilianInfantry
+
 SHOK:
 	Inherits: ^Infantry
 	Buildable:

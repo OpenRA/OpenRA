@@ -18,7 +18,7 @@ namespace OpenRA.Scripting
 {
 	public class RASpecialPowers
 	{
-		public static void Chronoshift(World world, List<Pair<Actor, int2>>units, Actor chronosphere, int duration, bool killCargo)
+		public static void Chronoshift(World world, List<Pair<Actor, CPos>> units, Actor chronosphere, int duration, bool killCargo)
 		{
 			if (chronosphere != null)
 				chronosphere.Trait<RenderBuilding>().PlayCustomAnim(chronosphere, "active");

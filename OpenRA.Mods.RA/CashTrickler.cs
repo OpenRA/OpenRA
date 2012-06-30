@@ -26,8 +26,7 @@ namespace OpenRA.Mods.RA
 
 	class CashTrickler : ITick, ISync
 	{
-		[Sync]
-		int ticks;
+		[Sync] int ticks;
 		CashTricklerInfo Info;
 		public CashTrickler(CashTricklerInfo info)
 		{

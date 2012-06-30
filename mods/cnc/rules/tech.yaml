@@ -29,6 +29,9 @@ HOSP:
 		Name: Hospital
 	LeavesHusk: 
 		HuskActor: HOSP.Husk
+	Reservable:
+	RepairsUnits:
+	RallyPoint:
 
 HOSP.Husk:
 	Inherits: ^CivBuildingHusk

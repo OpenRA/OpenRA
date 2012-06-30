@@ -1,0 +1,266 @@
+Background@INSTALL_PANEL:
+	Logic:D2kInstallLogic
+	X:(WINDOW_RIGHT - WIDTH)/2
+	Y:(WINDOW_BOTTOM - HEIGHT)/2
+	Width:600
+	Height:350
+	Children:
+		Label@TITLE:
+			X:0
+			Y:20
+			Width:PARENT_RIGHT
+			Height:25
+			Text:Content files missing
+			Align:Center
+			Font:Bold
+		Label@DESC1:
+			X:0
+			Y:50
+			Width:PARENT_RIGHT
+			Height:25
+			Text:This is the work in progress Dune 2000 mod.
+			Align:Center
+		Label@DESC2:
+			X:0
+			Y:90
+			Width:PARENT_RIGHT
+			Height:25
+			Text:It requires the original Dune 2000 (and still some Red Alert) game content.
+			Align:Center
+		Label@DESC3:
+			X:0
+			Y:130
+			Width:PARENT_RIGHT
+			Height:25
+			Text:The easiest way is to simply click download to get already prepared files and restart.
+			Align:Center
+		Label@DESC4:
+			X:0
+			Y:170
+			Width:PARENT_RIGHT
+			Height:25
+			Text:You can also copy "Dune 2000/Data/GAMESFX" folder and "Dune 2000/DATA/*.R8" files
+			Align:Center
+		Label@DESC5:
+			X:0
+			Y:190
+			Width:PARENT_RIGHT
+			Height:25
+			Text: from your local Dune 2000 1.03 installation to ~/.openra/Content/d2k/ (Linux)
+			Align:Center
+		Label@DESC6:
+			X:0
+			Y:210
+			Width:PARENT_RIGHT
+			Height:25
+			Text: or "My Documents/OpenRA/Content/d2k/" (Windows) and click "Extract Data".
+			Align:Center
+		Label@DESC7:
+			X:0
+			Y:250
+			Width:PARENT_RIGHT
+			Height:25
+			Text: Put in your Dune 2000 CD and click "Copy Music" to (optionally) download the tracks.
+			Align:Center
+		Button@EXTRACT_BUTTON:
+			X:PARENT_RIGHT - 280
+			Y:PARENT_BOTTOM - 45
+			Width:100
+			Height:25
+			Text:Extract Data
+			Font:Bold
+		Button@COPY_BUTTON:
+			X:PARENT_RIGHT - 420
+			Y:PARENT_BOTTOM - 45
+			Width:90
+			Height:25
+			Text:Copy Music
+			Font:Bold
+		Button@DOWNLOAD_BUTTON:
+			X:PARENT_RIGHT - 560
+			Y:PARENT_BOTTOM - 45
+			Width:120
+			Height:25
+			Text:Download
+			Font:Bold
+		Button@QUIT_BUTTON:
+			X:PARENT_RIGHT - 140
+			Y:PARENT_BOTTOM - 45
+			Width:120
+			Height:25
+			Text:Quit
+			Font:Bold
+
+Background@INSTALL_DOWNLOAD_PANEL:
+	Logic:D2kDownloadPackagesLogic
+	X:(WINDOW_RIGHT - WIDTH)/2
+	Y:(WINDOW_BOTTOM - HEIGHT)/2
+	Width:500
+	Height:160
+	Children:
+		Label@TITLE:
+			X:0
+			Y:20
+			Width:PARENT_RIGHT
+			Height:25
+			Text:Downloading Dune 2000 Content
+			Align:Center
+			Font:Bold
+		ProgressBar@PROGRESS_BAR:
+			X:50
+			Y:55
+			Width:PARENT_RIGHT - 100
+			Height:25
+		Label@STATUS_LABEL:
+			X:50
+			Y:80
+			Width:PARENT_RIGHT - 100
+			Height:25
+			Align:Left
+		Button@RETRY_BUTTON:
+			X:PARENT_RIGHT - 280
+			Y:PARENT_BOTTOM - 45
+			Width:120
+			Height:25
+			Visible: false
+			Text:Retry
+			Font:Bold
+			Key:return
+		Button@CANCEL_BUTTON:
+			X:PARENT_RIGHT - 140
+			Y:PARENT_BOTTOM - 45
+			Width:120
+			Height:25
+			Text:Cancel
+			Font:Bold
+			Key:escape
+
+Background@INSTALL_FROMCD_PANEL:
+	Logic:D2kInstallFromCDLogic
+	X:(WINDOW_RIGHT - WIDTH)/2
+	Y:(WINDOW_BOTTOM - HEIGHT)/2
+	Width:500
+	Height:160
+	Children:
+		Label@TITLE:
+			X:0
+			Y:20
+			Width:PARENT_RIGHT
+			Height:25
+			Text:Installing (Music) from CD
+			Align:Center
+			Font:Bold
+		Container@INSTALLING:
+			Width:PARENT_RIGHT
+			Height:PARENT_BOTTOM
+			Visible: false
+			Children:
+				ProgressBar@PROGRESS_BAR:
+					X:50
+					Y:55
+					Width:PARENT_RIGHT - 100
+					Height:25
+				Label@STATUS_LABEL:
+					X:50
+					Y:80
+					Width:PARENT_RIGHT - 100
+					Height:25
+					Align:Left
+		Container@INSERT_DISK:
+			Width:PARENT_RIGHT
+			Height:PARENT_BOTTOM
+			Visible: false
+			Children:
+				Label@INFO:
+					Y:50
+					Width:PARENT_RIGHT
+					Height:25
+					Text:Disk not found.
+					Align:Center
+				Label@INFO2:
+					Y:70
+					Width:PARENT_RIGHT
+					Height:25
+					Text:Please insert the Dune 2000 install CDs then click Retry.
+					Align:Center
+		Button@RETRY_BUTTON:
+			X:PARENT_RIGHT - 280
+			Y:PARENT_BOTTOM - 45
+			Width:120
+			Height:25
+			Text:Retry
+			Font:Bold
+			Key:return
+		Button@BACK_BUTTON:
+			X:PARENT_RIGHT - 140
+			Y:PARENT_BOTTOM - 45
+			Width:120
+			Height:25
+			Text:Back
+			Font:Bold
+			Key:escape
+
+Background@EXTRACT_GAMEFILES_PANEL:
+	Logic:D2kExtractGameFilesLogic
+	X:(WINDOW_RIGHT - WIDTH)/2
+	Y:(WINDOW_BOTTOM - HEIGHT)/2
+	Width:500
+	Height:160
+	Children:
+		Label@TITLE:
+			X:0
+			Y:20
+			Width:PARENT_RIGHT
+			Height:25
+			Text:Extracting and Converting Dune 2000 Gamefiles
+			Align:Center
+			Font:Bold
+		Container@EXTRACTING:
+			Width:PARENT_RIGHT
+			Height:PARENT_BOTTOM
+			Visible: false
+			Children:
+				ProgressBar@PROGRESS_BAR:
+					X:50
+					Y:55
+					Width:PARENT_RIGHT - 100
+					Height:25
+				Label@STATUS_LABEL:
+					X:50
+					Y:80
+					Width:PARENT_RIGHT - 100
+					Height:25
+					Align:Left
+		Container@COPY_FILES:
+			Width:PARENT_RIGHT
+			Height:PARENT_BOTTOM
+			Visible: false
+			Children:
+				Label@INFO:
+					Y:50
+					Width:PARENT_RIGHT
+					Height:25
+					Text:Gamefiles not not found.
+					Align:Center
+				Label@INFO2:
+					Y:70
+					Width:PARENT_RIGHT
+					Height:25
+					Text:Please copy the Data/*.R8 files from your Dune 2000 installation to OpenRAs Content/d2k directory then click Retry.
+					Align:Center
+		Button@RETRY_BUTTON:
+			X:PARENT_RIGHT - 280
+			Y:PARENT_BOTTOM - 45
+			Width:120
+			Height:25
+			Text:Retry
+			Font:Bold
+			Key:return
+		Button@BACK_BUTTON:
+			X:PARENT_RIGHT - 140
+			Y:PARENT_BOTTOM - 45
+			Width:120
+			Height:25
+			Text:Back
+			Font:Bold
+			Key:escape

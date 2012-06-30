@@ -5,10 +5,10 @@ COMMON_LIBS	= System.dll System.Core.dll System.Drawing.dll System.Xml.dll third
 PHONY		= core tools package all mods clean distclean
 
 .SUFFIXES:
-core: game renderers mod_ra mod_cnc utility
+core: game renderers mods utility tsbuild
 tools: editor ralint tsbuild
 package: core editor
-mods: mod_ra mod_cnc
+mods: mod_ra mod_cnc mod_d2k
 all: core tools
 clean: 
 	@-rm -f *.exe *.dll *.mdb mods/**/*.dll mods/**/*.mdb *.resources
@@ -97,6 +97,16 @@ mod_cnc_EXTRA_CMDS	= mono --debug RALint.exe cnc
 PROGRAMS 		+= mod_cnc
 mod_cnc: $(mod_cnc_TARGET)
 
+# Dune 2000
+mod_d2k_SRCS		:= $(shell find OpenRA.Mods.D2k/ -iname '*.cs')
+mod_d2k_TARGET		= mods/d2k/OpenRA.Mods.D2k.dll
+mod_d2k_KIND		= library
+mod_d2k_DEPS		= $(STD_MOD_DEPS) $(mod_ra_TARGET) $(utility_TARGET)
+mod_d2k_LIBS		= $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_ra_TARGET) $(utility_TARGET)
+mod_d2k_EXTRA_CMDS	= mono --debug RALint.exe d2k
+PROGRAMS 		+= mod_d2k
+mod_d2k: $(mod_d2k_TARGET)
+
 #
 # Tools
 #
@@ -127,15 +137,19 @@ ralint: $(ralint_TARGET)
 
 # Builds and exports tilesets from a bitmap
 tsbuild_SRCS		:= $(shell find OpenRA.TilesetBuilder/ -iname '*.cs')
-tsbuild_TARGET		= TilesetBuilder.exe
+tsbuild_TARGET		= OpenRA.TilesetBuilder.exe
 tsbuild_KIND		= winexe
 tsbuild_DEPS		= $(fileformats_TARGET) $(game_TARGET)
 tsbuild_LIBS		= $(COMMON_LIBS) $(tsbuild_DEPS) System.Windows.Forms.dll
-tsbuild_EXTRA		= -resource:OpenRA.TilesetBuilder.Form1.resources
+tsbuild_EXTRA		= -resource:OpenRA.TilesetBuilder.frmBuilder.resources -resource:OpenRA.TilesetBuilder.frmNew.resources -resource:OpenRA.TilesetBuilder.Surface.resources
 PROGRAMS 			+= tsbuild
-OpenRA.TilesetBuilder.Form1.resources:
-	resgen2 OpenRA.TilesetBuilder/Form1.resx OpenRA.TilesetBuilder.Form1.resources 1> /dev/null
-tsbuild: OpenRA.TilesetBuilder.Form1.resources $(tsbuild_TARGET)
+OpenRA.TilesetBuilder.frmBuilder.resources:
+	resgen2 OpenRA.TilesetBuilder/frmBuilder.resx OpenRA.TilesetBuilder.frmBuilder.resources 1> /dev/null
+OpenRA.TilesetBuilder.frmNew.resources:
+	resgen2 OpenRA.TilesetBuilder/frmNew.resx OpenRA.TilesetBuilder.frmNew.resources 1> /dev/null
+OpenRA.TilesetBuilder.Surface.resources:
+	resgen2 OpenRA.TilesetBuilder/Surface.resx OpenRA.TilesetBuilder.Surface.resources 1> /dev/null
+tsbuild: OpenRA.TilesetBuilder.frmBuilder.resources OpenRA.TilesetBuilder.frmNew.resources OpenRA.TilesetBuilder.Surface.resources $(tsbuild_TARGET)
 
 #
 # Launchers / Utilities
@@ -188,7 +202,7 @@ BIN_INSTALL_DIR = $(DESTDIR)$(bindir)
 INSTALL_DIR = $(DESTDIR)$(datadir)/openra
 INSTALL = install
 INSTALL_PROGRAM = $(INSTALL)
-CORE = fileformats rcg rgl rsdl rnull game editor utility
+CORE = fileformats rcg rgl rsdl rnull game editor utility tsbuild
 
 install: all
 	@-echo "Installing OpenRA to $(INSTALL_DIR)"
@@ -196,6 +210,10 @@ install: all
 	@$(INSTALL_PROGRAM) $(foreach prog,$(CORE),$($(prog)_TARGET)) $(INSTALL_DIR)
 	@$(INSTALL_PROGRAM) -d $(INSTALL_DIR)/mods/cnc
 	@$(INSTALL_PROGRAM) $(mod_cnc_TARGET) $(INSTALL_DIR)/mods/cnc
+	@$(INSTALL_PROGRAM) -d $(INSTALL_DIR)/mods/ra
+	@$(INSTALL_PROGRAM) $(mod_ra_TARGET) $(INSTALL_DIR)/mods/ra
+	@$(INSTALL_PROGRAM) -d $(INSTALL_DIR)/mods/d2k
+	@$(INSTALL_PROGRAM) $(mod_d2k_TARGET) $(INSTALL_DIR)/mods/d2k
 
 	@-cp $(foreach f,$(shell ls mods/cnc --hide=*.dll),mods/cnc/$(f)) $(INSTALL_DIR)/mods/cnc
 	@cp -r mods/cnc/maps $(INSTALL_DIR)/mods/cnc
@@ -205,8 +223,6 @@ install: all
 	@cp -r mods/cnc/sequences $(INSTALL_DIR)/mods/cnc
 	@cp -r mods/cnc/tilesets $(INSTALL_DIR)/mods/cnc
 	@cp -r mods/cnc/uibits $(INSTALL_DIR)/mods/cnc
-	@$(INSTALL_PROGRAM) -d $(INSTALL_DIR)/mods/ra
-	@$(INSTALL_PROGRAM) $(mod_ra_TARGET) $(INSTALL_DIR)/mods/ra
 
 	@-cp $(foreach f,$(shell ls mods/ra --hide=*.dll),mods/ra/$(f)) $(INSTALL_DIR)/mods/ra
 	@cp -r mods/ra/maps $(INSTALL_DIR)/mods/ra
@@ -215,6 +231,14 @@ install: all
 	@cp -r mods/ra/rules $(INSTALL_DIR)/mods/ra
 	@cp -r mods/ra/tilesets $(INSTALL_DIR)/mods/ra
 	@cp -r mods/ra/uibits $(INSTALL_DIR)/mods/ra
+	
+	@-cp $(foreach f,$(shell ls mods/d2k --hide=*.dll),mods/d2k/$(f)) $(INSTALL_DIR)/mods/d2k
+	@cp -r mods/d2k/maps $(INSTALL_DIR)/mods/d2k
+	@cp -r mods/d2k/bits $(INSTALL_DIR)/mods/d2k
+	@cp -r mods/d2k/chrome $(INSTALL_DIR)/mods/d2k
+	@cp -r mods/d2k/rules $(INSTALL_DIR)/mods/d2k
+	@cp -r mods/d2k/tilesets $(INSTALL_DIR)/mods/d2k
+	@cp -r mods/d2k/uibits $(INSTALL_DIR)/mods/d2k
 
 	@cp -r glsl $(INSTALL_DIR)
 	@cp -r cg $(INSTALL_DIR)
@@ -237,3 +261,4 @@ install: all
 uninstall:
 	@-rm -r $(INSTALL_DIR)
 	@-rm $(DESTDIR)$(bindir)/openra
+	@-rm $(DESTDIR)$(bindir)/openra-editor

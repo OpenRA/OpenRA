@@ -75,12 +75,12 @@ namespace OpenRA.Mods.RA
 			// Create a new actor for this bridge and keep track of which subtiles this bridge includes
 			var bridge = w.CreateActor(BridgeTypes[tile].First, new TypeDictionary
 			{
-				new LocationInit( new int2(ni, nj) ),
+				new LocationInit( new CPos(ni, nj) ),
 				new OwnerInit( w.WorldActor.Owner ),
 				new HealthInit( BridgeTypes[tile].Second ),
 			}).Trait<Bridge>();
 
-			Dictionary<int2, byte> subTiles = new Dictionary<int2, byte>();
+			var subTiles = new Dictionary<CPos, byte>();
 
 			// For each subtile in the template
 			for (byte ind = 0; ind < template.Size.X*template.Size.Y; ind++)
@@ -97,16 +97,16 @@ namespace OpenRA.Mods.RA
 				if (!w.Map.IsInMap(x, y) || w.Map.MapTiles.Value[x, y].index != ind)
 					continue;
 
-				subTiles.Add(new int2(x,y),ind);
+				subTiles.Add(new CPos(x, y), ind);
 				Bridges[x,y] = bridge;
 			}
 			bridge.Create(tile, subTiles);
 		}
 
 		// Used to check for neighbouring bridges
-		public Bridge GetBridge(int2 cell)
+		public Bridge GetBridge(CPos cell)
 		{
-			if (!world.Map.IsInMap(cell.X, cell.Y))
+			if (!world.Map.IsInMap(cell))
 				return null;
 
 			return Bridges[ cell.X, cell.Y ];

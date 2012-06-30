@@ -42,7 +42,7 @@ namespace OpenRA.Mods.RA.Orders
 			return self == target;
 		}
 
-		public bool CanTargetLocation(Actor self, int2 location, List<Actor> actorsAtLocation, bool forceAttack, bool forceQueued, ref string cursor)
+		public bool CanTargetLocation(Actor self, CPos location, List<Actor> actorsAtLocation, bool forceAttack, bool forceQueued, ref string cursor)
 		{
 			return false;
 		}

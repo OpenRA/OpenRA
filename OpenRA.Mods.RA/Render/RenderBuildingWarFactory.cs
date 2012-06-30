@@ -42,7 +42,7 @@ namespace OpenRA.Mods.RA.Render
 	{
 		Animation roof;
 		[Sync] bool isOpen;
-		[Sync] int2 openExit;
+		[Sync] CPos openExit;
 		bool buildComplete;
 
 		public RenderBuildingWarFactory(ActorInitializer init, RenderBuildingInfo info)
@@ -64,8 +64,7 @@ namespace OpenRA.Mods.RA.Render
 		public override void Tick(Actor self)
 		{
 			base.Tick(self);
-			if (isOpen && !self.World.ActorMap.GetUnitsAt(openExit)
-				.Any( a => a != self ))
+			if (isOpen && !self.World.ActorMap.GetUnitsAt(openExit).Any( a => a != self ))
 			{
 				isOpen = false;
 				roof.PlayBackwardsThen(NormalizeSequence(self, "build-top"),
@@ -86,7 +85,7 @@ namespace OpenRA.Mods.RA.Render
 			base.DamageStateChanged(self, e);
 		}
 
-		public void UnitProduced(Actor self, Actor other, int2 exit)
+		public void UnitProduced(Actor self, Actor other, CPos exit)
 		{
 			roof.PlayThen(NormalizeSequence(self, "build-top"), () => { isOpen = true; openExit = exit; });
 		}

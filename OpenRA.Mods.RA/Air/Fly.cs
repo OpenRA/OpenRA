@@ -16,12 +16,12 @@ namespace OpenRA.Mods.RA.Air
 {
 	public class Fly : Activity
 	{
-		public readonly int2 Pos;
+		public readonly PPos Pos;
 
-		Fly( int2 px ) { Pos = px; }
+		Fly(PPos px) { Pos = px; }
 
-		public static Fly ToPx( int2 px ) { return new Fly( px ); }
-		public static Fly ToCell( int2 pos ) { return new Fly( Util.CenterOfCell( pos ) ); }
+		public static Fly ToPx( PPos px ) { return new Fly( px ); }
+		public static Fly ToCell(CPos pos) { return new Fly(Util.CenterOfCell(pos)); }
 
 		public override Activity Tick(Actor self)
 		{
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA.Air
 
 			var aircraft = self.Trait<Aircraft>();
 
-			var desiredFacing = Util.GetFacing(d, aircraft.Facing);
+			var desiredFacing = Util.GetFacing(d.ToInt2(), aircraft.Facing);
 			if (aircraft.Altitude == cruiseAltitude)
 				aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, aircraft.ROT);
 
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.RA.Air
 		public static void Fly(Actor self, int desiredAltitude )
 		{
 			var aircraft = self.Trait<Aircraft>();
-			aircraft.TickMove( 1024 * aircraft.MovementSpeed, aircraft.Facing );
+			aircraft.TickMove( PSubPos.PerPx * aircraft.MovementSpeed, aircraft.Facing );
 			aircraft.Altitude += Math.Sign(desiredAltitude - aircraft.Altitude);
 		}
 	}

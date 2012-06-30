@@ -872,6 +872,7 @@ PROC:
 		PipCount: 17
 		Capacity: 2000
 	IronCurtainable:
+	DrawLineToTarget:
 	CustomSellValue:
 		Value: 600
 	FreeActor:
@@ -947,6 +948,7 @@ HPAD:
 	Reservable:
 	IronCurtainable:
 	ProductionBar:
+	PrimaryBuilding:
 
 AFLD:
 	Inherits: ^Building
@@ -997,6 +999,7 @@ AFLD:
 		SelectTargetSound: slcttgt1.aud
 	ProductionBar:
 	SupportPowerChargeBar:
+	PrimaryBuilding:
 	
 POWR:
 	Inherits: ^Building

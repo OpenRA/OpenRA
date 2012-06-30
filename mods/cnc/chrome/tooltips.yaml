@@ -41,6 +41,7 @@ Background@WORLD_TOOLTIP:
 			Y:19
 			Height:23
 			Font:Bold
+
 Background@PRODUCTION_TOOLTIP:
 	Logic:ProductionTooltipLogic
 	Background:panel-black
@@ -56,6 +57,12 @@ Background@PRODUCTION_TOOLTIP:
 			Y:19
 			Height:23
 			Font:TinyBold
+		Label@DESC:
+			X:5
+			Y:39
+			Height:23
+			Font:TinyBold
+			VAlign:Top
 		Label@COST:
 			Height:23
 			Font:Bold

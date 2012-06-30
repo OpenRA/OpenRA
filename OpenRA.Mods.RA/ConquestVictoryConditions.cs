@@ -18,6 +18,8 @@ namespace OpenRA.Mods.RA
 		public string WinNotification = null;
 		public string LoseNotification = null;
 		public int NotificationDelay = 1500; // Milliseconds
+		public readonly string Race = null;
+
 		public object Create(ActorInitializer init) { return new ConquestVictoryConditions(this); }
 	}
 
@@ -53,6 +55,7 @@ namespace OpenRA.Mods.RA
 
 		public void Lose(Actor self)
 		{
+			if (Info.Race != null && Info.Race != self.Owner.Country.Race) return;
 			if (self.Owner.WinState == WinState.Lost) return;
 			self.Owner.WinState = WinState.Lost;
 
@@ -74,6 +77,7 @@ namespace OpenRA.Mods.RA
 
 		public void Win(Actor self)
 		{
+			if (Info.Race != null && Info.Race != self.Owner.Country.Race) return;
 			if (self.Owner.WinState == WinState.Won) return;
 			self.Owner.WinState = WinState.Won;
 

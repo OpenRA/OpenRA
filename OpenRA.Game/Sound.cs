@@ -29,6 +29,12 @@ namespace OpenRA
 
 		static ISoundSource LoadSound(string filename)
 		{
+			if (!FileSystem.Exists(filename))
+			{
+				Log.Write("debug", "LoadSound, file does not exist: {0}", filename);
+				return null;
+			}
+
 			return LoadSoundRaw(AudLoader.LoadSound(FileSystem.Open(filename)));
 		}
 
@@ -64,7 +70,7 @@ namespace OpenRA
 
 		public static void SetListenerPosition(float2 position) { soundEngine.SetListenerPosition(position); }
 
-		static ISound Play(Player player, string name, bool headRelative, float2 pos, float volumeModifier)
+		static ISound Play(Player player, string name, bool headRelative, PPos pos, float volumeModifier)
 		{
 			if (player != null && player != player.World.LocalPlayer)
 				return null;
@@ -72,16 +78,16 @@ namespace OpenRA
 				return null;
 
 			return soundEngine.Play2D(sounds[name],
-				false, headRelative, pos,
+				false, headRelative, pos.ToFloat2(),
 				InternalSoundVolume * volumeModifier);
 		}
 
-		public static ISound Play(string name) { return Play(null, name, true, float2.Zero, 1); }
-		public static ISound Play(string name, float2 pos) { return Play(null, name, false, pos, 1); }
-		public static ISound Play(string name, float volumeModifier) { return Play(null, name, true, float2.Zero, volumeModifier); }
-		public static ISound Play(string name, float2 pos, float volumeModifier) { return Play(null, name, false, pos, volumeModifier); }
-		public static ISound PlayToPlayer(Player player, string name) { return Play( player, name, true, float2.Zero, 1); }
-		public static ISound PlayToPlayer(Player player, string name, float2 pos) { return Play(player, name, false, pos, 1); }
+		public static ISound Play(string name) { return Play(null, name, true, PPos.Zero, 1); }
+		public static ISound Play(string name, PPos pos) { return Play(null, name, false, pos, 1); }
+		public static ISound Play(string name, float volumeModifier) { return Play(null, name, true, PPos.Zero, volumeModifier); }
+		public static ISound Play(string name, PPos pos, float volumeModifier) { return Play(null, name, false, pos, volumeModifier); }
+		public static ISound PlayToPlayer(Player player, string name) { return Play(player, name, true, PPos.Zero, 1); }
+		public static ISound PlayToPlayer(Player player, string name, PPos pos) { return Play(player, name, false, pos, 1); }
 
 		public static void PlayVideo(byte[] raw)
 		{
@@ -140,10 +146,12 @@ namespace OpenRA
 			}
 			StopMusic();
 
+			var sound = sounds[m.Filename];
+			if (sound == null) return;
+
+			music = soundEngine.Play2D(sound, false, true, float2.Zero, MusicVolume);
 			currentMusic = m;
 			MusicPlaying = true;
-			var sound = sounds[m.Filename];
-			music = soundEngine.Play2D(sound, false, true, float2.Zero, MusicVolume);
 		}
 
 		public static void PlayMusic()
@@ -259,7 +267,9 @@ namespace OpenRA
 
 			var variantExt = (vi.Variants.ContainsKey(variant) && !vi.DisableVariants.Contains(phrase)) ?
 				  vi.Variants[variant][voicedUnit.ActorID % vi.Variants[variant].Length] : vi.DefaultVariant;
-			Play(clip + variantExt);
+			var prefix = (vi.Prefixes.ContainsKey(variant) && !vi.DisablePrefixes.Contains(phrase)) ?
+				vi.Prefixes[variant][voicedUnit.ActorID % vi.Prefixes[variant].Length] : vi.DefaultPrefix;
+			Play(prefix + clip + variantExt);
 			return true;
 		}
 	}
@@ -355,6 +365,11 @@ namespace OpenRA
 
 		public ISound Play2D(ISoundSource sound, bool loop, bool relative, float2 pos, float volume)
 		{
+			if (sound == null)
+			{
+				Log.Write("debug", "Attempt to Play2D a null `ISoundSource`");
+				return null;
+			}
 			int source = GetSourceFromPool();
 			return new OpenAlSound(source, (sound as OpenAlSoundSource).buffer, loop, relative, pos, volume);
 		}
@@ -367,6 +382,8 @@ namespace OpenRA
 
 		public void PauseSound(ISound sound, bool paused)
 		{
+			if (sound == null) return;
+
 			int key = ((OpenAlSound)sound).source;
 			int state;
 			Al.alGetSourcei(key, Al.AL_SOURCE_STATE, out state);
@@ -408,6 +425,8 @@ namespace OpenRA
 
 		public void StopSound(ISound sound)
 		{
+			if (sound == null) return;
+
 			int key = ((OpenAlSound)sound).source;
 			int state;
 			Al.alGetSourcei(key, Al.AL_SOURCE_STATE, out state);

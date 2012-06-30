@@ -21,13 +21,13 @@ namespace OpenRA.Mods.RA
 	class DefaultShellmapScript: IWorldLoaded, ITick
 	{
 		Dictionary<string, Actor> Actors;
-		static int2 ViewportOrigin;
+		static CPos ViewportOrigin;
 
 		public void WorldLoaded(World w)
 		{
 			var b = w.Map.Bounds;
-			ViewportOrigin = new int2(b.Left + b.Width/2, b.Top + b.Height/2);
-			Game.MoveViewport(ViewportOrigin);
+			ViewportOrigin = new CPos(b.Left + b.Width/2, b.Top + b.Height/2);
+			Game.MoveViewport(ViewportOrigin.ToFloat2());
 
 			Actors = w.WorldActor.Trait<SpawnMapActors>().Actors;
 			Sound.SoundVolumeModifier = 0.25f;
@@ -39,26 +39,27 @@ namespace OpenRA.Mods.RA
 		{
 			var loc = new float2(
 				(float)(System.Math.Sin((ticks + 45) % (360f * speed) * (Math.PI / 180) * 1f / speed) * 15f + ViewportOrigin.X),
-				(float)(System.Math.Cos((ticks + 45) % (360f * speed) * (Math.PI / 180) * 1f / speed) * 10f + ViewportOrigin.Y));
+				(float)(System.Math.Cos((ticks + 45) % (360f * speed) * (Math.PI / 180) * 1f / speed) * 10f + ViewportOrigin.Y)
+			);
 
 			Game.MoveViewport(loc);
 
 			if (ticks == 250)
 			{
-				Scripting.RASpecialPowers.Chronoshift(self.World, new List<Pair<Actor, int2>>()
+				Scripting.RASpecialPowers.Chronoshift(self.World, new List<Pair<Actor, CPos>>()
 				{
-					Pair.New(Actors["ca1"], new int2(90, 70)),
-					Pair.New(Actors["ca2"], new int2(92, 71))
+					Pair.New(Actors["ca1"], new CPos(90, 70)),
+					Pair.New(Actors["ca2"], new CPos(92, 71))
 				}, Actors["pdox"], -1, false);
 			}
 
 
 			if (ticks == 100)
-				Actors["mslo1"].Trait<NukePower>().Activate(Actors["mslo1"], new Order(){ TargetLocation = new int2(98, 52) });
+				Actors["mslo1"].Trait<NukePower>().Activate(Actors["mslo1"], new Order() { TargetLocation = new CPos(98, 52) });
 			if (ticks == 140)
-				Actors["mslo2"].Trait<NukePower>().Activate(Actors["mslo2"], new Order(){ TargetLocation = new int2(95, 54) });
+				Actors["mslo2"].Trait<NukePower>().Activate(Actors["mslo2"], new Order() { TargetLocation = new CPos(95, 54) });
 			if (ticks == 180)
-				Actors["mslo3"].Trait<NukePower>().Activate(Actors["mslo3"], new Order(){ TargetLocation = new int2(95, 49) });
+				Actors["mslo3"].Trait<NukePower>().Activate(Actors["mslo3"], new Order() { TargetLocation = new CPos(95, 49) });
 
 			if (ticks == 430)
 			{
@@ -70,6 +71,4 @@ namespace OpenRA.Mods.RA
 			ticks++;
 		}
 	}
-
-
 }

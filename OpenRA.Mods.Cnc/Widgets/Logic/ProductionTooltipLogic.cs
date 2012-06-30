@@ -32,8 +32,10 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			var powerLabel = widget.Get<LabelWidget>("POWER");
 			var timeLabel = widget.Get<LabelWidget>("TIME");
 			var costLabel = widget.Get<LabelWidget>("COST");
+			var descLabel = widget.Get<LabelWidget>("DESC");
 
 			var font = Game.Renderer.Fonts[nameLabel.Font];
+			var descFont = Game.Renderer.Fonts[descLabel.Font];
 			var requiresFont = Game.Renderer.Fonts[requiresLabel.Font];
 			string lastActor = null;
 
@@ -70,12 +72,18 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				costLabel.GetColor = () => pr.DisplayCash + pr.DisplayOre >= cost
 					? Color.White : Color.Red;
 
-				var leftWidth = Math.Max(font.Measure(tooltip.Name).X, requiresFont.Measure(requiresString).X);
+				var descString = tooltip.Description.Replace("\\n", "\n");
+				descLabel.GetText = () => descString;
+
+				var leftWidth = new [] {font.Measure(tooltip.Name).X, requiresFont.Measure(requiresString).X, descFont.Measure(descString).X}.Aggregate(Math.Max);
 				var rightWidth = new [] {font.Measure(powerString).X, font.Measure(timeString).X, font.Measure(costString).X}.Aggregate(Math.Max);
 				timeLabel.Bounds.X = powerLabel.Bounds.X = costLabel.Bounds.X = leftWidth + 2*nameLabel.Bounds.X;
 				widget.Bounds.Width = leftWidth + rightWidth + 3*nameLabel.Bounds.X;
 
-				widget.Bounds.Height = power != 0 ? 65 : 45;
+				var leftHeight = font.Measure(tooltip.Name).Y + requiresFont.Measure(requiresString).Y + descFont.Measure(descString).Y;
+				var rightHeight = font.Measure(powerString).Y + font.Measure(timeString).Y + font.Measure(costString).Y;
+				widget.Bounds.Height = Math.Max(leftHeight, rightHeight)*3/2 + 3*nameLabel.Bounds.Y;
+
 				lastActor = actor;
 			};
 		}

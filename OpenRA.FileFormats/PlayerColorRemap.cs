@@ -14,40 +14,31 @@ using System.Linq;
 
 namespace OpenRA.FileFormats
 {
-	// TODO: ship this out of here.
-	public enum PaletteFormat { ra, cnc, d2k }
 
 	public class PlayerColorRemap : IPaletteRemap
 	{
 		Dictionary<int, Color> remapColors;
 
-		static readonly int[] CncRemapRamp = new[] { 0, 2, 4, 6, 8, 10, 13, 15, 1, 3, 5, 7, 9, 11, 12, 14 };
-		static readonly int[] NormalRemapRamp = new[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
-
-		static int GetRemapBase(PaletteFormat fmt)
+		static int[] GetRemapRamp(int[] Ramp)
 		{
-			return (fmt == PaletteFormat.cnc) ? 0xb0 : (fmt == PaletteFormat.d2k) ? 240 : 80;
+			var RemapRamp = Ramp.Select(r => r - Ramp[0]).ToArray();
+			return RemapRamp;
 		}
 
-		static int[] GetRemapRamp(PaletteFormat fmt)
+		public static int GetRemapIndex(int[] Ramp, int i)
 		{
-			return (fmt == PaletteFormat.cnc) ? CncRemapRamp : NormalRemapRamp;
+			return Ramp[i];
 		}
 
-		public static int GetRemapIndex(PaletteFormat fmt, int i)
-		{
-			return GetRemapBase(fmt) + GetRemapRamp(fmt)[i];
-		}
-
-		public PlayerColorRemap(PaletteFormat fmt, ColorRamp c)
+		public PlayerColorRemap(int[] Ramp, ColorRamp c)
 		{
 			var c1 = c.GetColor(0);
 			var c2 = c.GetColor(1); /* temptemp: this can be expressed better */
 
-			var baseIndex = GetRemapBase(fmt);
-			var ramp = GetRemapRamp(fmt);
+			var baseIndex =  Ramp[0];
+			var RemapRamp = GetRemapRamp(Ramp);
 
-			remapColors = ramp.Select((x, i) => Pair.New(baseIndex + i, Exts.ColorLerp(x / 16f, c1, c2)))
+			remapColors = RemapRamp.Select((x, i) => Pair.New(baseIndex + i, Exts.ColorLerp(x / 16f, c1, c2)))
 				.ToDictionary(u => u.First, u => u.Second);
 		}
 

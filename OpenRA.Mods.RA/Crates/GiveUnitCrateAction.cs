@@ -60,17 +60,17 @@ namespace OpenRA.Mods.RA.Crates
 			base.Activate(collector);
 		}
 
-		IEnumerable<int2> GetSuitableCells(int2 near)
+		IEnumerable<CPos> GetSuitableCells(CPos near)
 		{
 			var mi = Rules.Info[Info.Unit].Traits.Get<MobileInfo>();
 
 			for (var i = -1; i < 2; i++)
 				for (var j = -1; j < 2; j++)
-					if (mi.CanEnterCell(self.World, self.Owner, near + new int2(i, j), null, true))
-						yield return near + new int2(i, j);
+					if (mi.CanEnterCell(self.World, self.Owner, near + new CVec(i, j), null, true))
+						yield return near + new CVec(i, j);
 		}
 
-		int2? ChooseEmptyCellNear(Actor a)
+		CPos? ChooseEmptyCellNear(Actor a)
 		{
 			var possibleCells = GetSuitableCells(a.Location).ToArray();
 			if (possibleCells.Length == 0)

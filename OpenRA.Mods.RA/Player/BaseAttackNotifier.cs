@@ -19,6 +19,7 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly int NotifyInterval = 30;	/* seconds */
 		public readonly string Audio = "baseatk1.aud";
+		public readonly string Race = null;
 
 		public object Create(ActorInitializer init) { return new BaseAttackNotifier(this); }
 	}
@@ -28,12 +29,13 @@ namespace OpenRA.Mods.RA
 		BaseAttackNotifierInfo info;
 
 		public int lastAttackTime = -1;
-		public float2 lastAttackLocation;
+		public CPos lastAttackLocation;
 
 		public BaseAttackNotifier(BaseAttackNotifierInfo info) { this.info = info; }
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
+			if (info.Race != null && info.Race != self.Owner.Country.Race) return;
 			/* only track last hit against our base */
 			if (!self.HasTrait<Building>())
 				return;
@@ -45,7 +47,7 @@ namespace OpenRA.Mods.RA
 			if (self.World.FrameNumber - lastAttackTime > info.NotifyInterval * 25)
 				Sound.PlayToPlayer(self.Owner, info.Audio);
 
-			lastAttackLocation = self.CenterLocation / Game.CellSize;
+			lastAttackLocation = self.CenterLocation.ToCPos();
 			lastAttackTime = self.World.FrameNumber;
 		}
 	}

@@ -27,10 +27,9 @@ namespace OpenRA.Graphics
 		public int Facings { get { return facings; } }
 		public int Tick { get { return tick; } }
 
-		string srcOverride;
 		public Sequence(string unit, string name, MiniYaml info)
 		{
-			srcOverride = info.Value;
+			var srcOverride = info.Value;
 			Name = name;
 			var d = info.NodesDict;
 
@@ -60,26 +59,6 @@ namespace OpenRA.Graphics
 					"{6}: Sequence {0}.{1} uses frames [{2}..{3}] of SHP `{4}`, but only 0..{5} actually exist"
 					.F(unit, name, start, start + facings * length - 1, srcOverride ?? unit, sprites.Length - 1,
 					info.Nodes[0].Location));
-		}
-
-		public MiniYaml Save()
-		{
-			var root = new List<MiniYamlNode>();
-
-			root.Add(new MiniYamlNode("Start", start.ToString()));
-
-			if (length > 1 && (start != 0 || length != sprites.Length - start))
-				root.Add(new MiniYamlNode("Length", length.ToString()));
-			else if (length > 1 && length == sprites.Length - start)
-				root.Add(new MiniYamlNode("Length", "*"));
-
-			if (facings > 1)
-				root.Add(new MiniYamlNode("Facings", facings.ToString()));
-
-			if (tick != 40)
-				root.Add(new MiniYamlNode("Tick", tick.ToString()));
-
-			return new MiniYaml(srcOverride, root);
 		}
 
 		public Sprite GetSprite( int frame )

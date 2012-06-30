@@ -124,7 +124,11 @@ namespace OpenRA.Mods.RA.Render
 				return;
 
 			Sound.PlayVoice("Die", self, self.Owner.Country.Race);
-			self.World.AddFrameEndTask(w => w.Add(new Corpse(self, "die{0}".F(e.Warhead.InfDeath + 1))));
+			self.World.AddFrameEndTask(w =>
+			{
+				if (!self.Destroyed)
+					w.Add(new Corpse(self, "die{0}".F(e.Warhead.InfDeath + 1)));
+			});
 		}
 	}
 }

@@ -24,8 +24,7 @@ namespace OpenRA.Mods.RA
 	class ChronoshiftDeploy : IIssueOrder, IResolveOrder, ITick, IPips, IOrderVoice, ISync
 	{
 		// Recharge logic
-		[Sync]
-		int chargeTick = 0; // How long until we can chronoshift again?
+		[Sync] int chargeTick = 0; // How long until we can chronoshift again?
 
 		public void Tick(Actor self)
 		{
@@ -60,7 +59,7 @@ namespace OpenRA.Mods.RA
 				self.CancelActivity();
 				self.QueueActivity(new Teleport(order.TargetLocation));
 				Sound.Play("chrotnk1.aud", self.CenterLocation);
-				Sound.Play("chrotnk1.aud", Game.CellSize * order.TargetLocation.ToFloat2());
+				Sound.Play("chrotnk1.aud", order.TargetLocation.ToPPos());
 				chargeTick = 25 * self.Info.Traits.Get<ChronoshiftDeployInfo>().ChargeTime;
 
 				foreach (var a in self.World.ActorsWithTrait<ChronoshiftPaletteEffect>())

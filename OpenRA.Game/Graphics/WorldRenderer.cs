@@ -53,8 +53,9 @@ namespace OpenRA.Graphics
 			var comparer = new SpriteComparer();
 
 			var actors = world.FindUnits(
-				new int2(Game.CellSize*bounds.Left, Game.CellSize*bounds.Top),
-				new int2(Game.CellSize*bounds.Right, Game.CellSize*bounds.Bottom));
+				bounds.TopLeftAsCPos().ToPPos(),
+				bounds.BottomRightAsCPos().ToPPos()
+			);
 
 			var renderables = actors.SelectMany(a => a.Render())
 				.OrderBy(r => r, comparer);
@@ -140,25 +141,21 @@ namespace OpenRA.Graphics
 				selectable.DrawRollover(this, unit);
 		}
 
-		public void DrawLocus(Color c, int2[] cells)
+		public void DrawLocus(Color c, CPos[] cells)
 		{
 			var dict = cells.ToDictionary(a => a, a => 0);
 			var wlr = Game.Renderer.WorldLineRenderer;
 
 			foreach (var t in dict.Keys)
 			{
-				if (!dict.ContainsKey(t + new int2(-1, 0)))
-					wlr.DrawLine(Game.CellSize * t, Game.CellSize * (t + new int2(0, 1)),
-						c, c);
-				if (!dict.ContainsKey(t + new int2(1, 0)))
-					wlr.DrawLine(Game.CellSize * (t + new int2(1, 0)), Game.CellSize * (t + new int2(1, 1)),
-						c, c);
-				if (!dict.ContainsKey(t + new int2(0, -1)))
-					wlr.DrawLine(Game.CellSize * t, Game.CellSize * (t + new int2(1, 0)),
-						c, c);
-				if (!dict.ContainsKey(t + new int2(0, 1)))
-					wlr.DrawLine(Game.CellSize * (t + new int2(0, 1)), Game.CellSize * (t + new int2(1, 1)),
-						c, c);
+				if (!dict.ContainsKey(t + new CVec(-1, 0)))
+					wlr.DrawLine(t.ToPPos().ToFloat2(), (t + new CVec(0, 1)).ToPPos().ToFloat2(), c, c);
+				if (!dict.ContainsKey(t + new CVec(1, 0)))
+					wlr.DrawLine((t + new CVec(1, 0)).ToPPos().ToFloat2(), (t + new CVec(1, 1)).ToPPos().ToFloat2(), c, c);
+				if (!dict.ContainsKey(t + new CVec(0, -1)))
+					wlr.DrawLine(t.ToPPos().ToFloat2(), (t + new CVec(1, 0)).ToPPos().ToFloat2(), c, c);
+				if (!dict.ContainsKey(t + new CVec(0, 1)))
+					wlr.DrawLine((t + new CVec(0, 1)).ToPPos().ToFloat2(), (t + new CVec(1, 1)).ToPPos().ToFloat2(), c, c);
 			}
 		}
 

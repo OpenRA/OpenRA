@@ -3,22 +3,25 @@ aoi2: Act on Instinct (Voiced)
 	Filename: aoi
 	Extension: var
 airstrik: Air Strike
-befeared: Be Feared
-befeared2: Be Feared (Voiced)
+befeared: To be Feared
+befeared2: To be Feared (Voiced)
 	Filename: befeared
 	Extension: var
 80mx226m: C&C 80's mix
 ccthang: C&C Thang
 ind2: Canyon Chase
-chrg226m: Charge
-crep226m: Creep
-stopthem: Deception
+chrg226m: Depth Charge
+crep226m: Creeping Upon
+stopthem: Deception (Stop Them)
+deception: Deception (Stop Them) (Voiced)
+	Filename: stopthem
+	Extension: var
 heavyg: Demolition
 die: Die
 dril225m: Drill
 dron226m: Drone
 fwp: Fight Win Prevail
-fist226m: Fist
+fist226m: Iron Fist
 warfare: Full Stop
 win1: Great Shot!
 win2: Great Shot! (Voiced)
@@ -45,7 +48,7 @@ rout: Reaching out (Voiced)
 	Extension: var
 recn226m: Recon
 jdi_v2: Take em' out
-target: Target
+target: Target (Mechanical Man)
 j1: Untamed Land
 valkyrie: Ride of the Valkyries
-voic226m: Voices
+voic226m: Voice Rhythm

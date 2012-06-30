@@ -15,6 +15,7 @@ using OpenRA.GameRules;
 using OpenRA.Mods.RA.Effects;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
+using System.Collections.Generic;
 
 namespace OpenRA.Mods.RA
 {
@@ -34,7 +35,7 @@ namespace OpenRA.Mods.RA
 		public static void DoImpact(WarheadInfo warhead, ProjectileArgs args)
 		{
 			var world = args.firedBy.World;
-			var targetTile = Util.CellContaining(args.dest);
+			var targetTile = args.dest.ToCPos();
 
 			if (!world.Map.IsInMap(targetTile))
 				return;
@@ -48,28 +49,51 @@ namespace OpenRA.Mods.RA
 
 			Sound.Play(GetImpactSound(warhead, isWater), args.dest);
 
-			if (warhead.SmudgeType != null)
+			var smudgeLayers = world.WorldActor.TraitsImplementing<SmudgeLayer>().ToDictionary(x => x.Info.Type);
+
+			if (warhead.Size[0] > 0)
 			{
-				var smudgeLayer = world.WorldActor.TraitsImplementing<SmudgeLayer>()
-					.FirstOrDefault(x => x.Info.Type == warhead.SmudgeType);
-				if (smudgeLayer == null)
-					throw new NotImplementedException("Unknown smudge type `{0}`".F(warhead.SmudgeType));
+				var resLayer = world.WorldActor.Trait<ResourceLayer>();
+				var allCells = world.FindTilesInCircle(targetTile, warhead.Size[0]).ToList();
 
-				if (warhead.Size[0] > 0)
+				// `smudgeCells` might want to just be an outer shell of the cells:
+				IEnumerable<CPos> smudgeCells = allCells;
+				if (warhead.Size.Length == 2)
+					smudgeCells = smudgeCells.Except(world.FindTilesInCircle(targetTile, warhead.Size[1]));
+
+				// Draw the smudges:
+				foreach (var sc in smudgeCells)
 				{
-					var smudgeCells = world.FindTilesInCircle(targetTile, warhead.Size[0]);
-					if (warhead.Size.Length == 2 )
-						smudgeCells = smudgeCells.Except(world.FindTilesInCircle(targetTile, warhead.Size[1])) ;
+					var smudgeType = world.GetTerrainInfo(sc).AcceptsSmudgeType.FirstOrDefault(t => warhead.SmudgeType.Contains(t));
+					if (smudgeType == null) continue;
 
-					foreach (var sc in smudgeCells)
-					{
-						smudgeLayer.AddSmudge(sc);
-						if (warhead.Ore)
-							world.WorldActor.Trait<ResourceLayer>().Destroy(sc);
-					}
+					SmudgeLayer smudgeLayer;
+					if (!smudgeLayers.TryGetValue(smudgeType, out smudgeLayer))
+						throw new NotImplementedException("Unknown smudge type `{0}`".F(smudgeType));
+
+					smudgeLayer.AddSmudge(sc);
+					if (warhead.Ore)
+						resLayer.Destroy(sc);
 				}
-				else
+
+				// Destroy all resources in range, not just the outer shell:
+				foreach (var cell in allCells)
+				{
+					if (warhead.Ore)
+						resLayer.Destroy(cell);
+				}
+			}
+			else
+			{
+				var smudgeType = world.GetTerrainInfo(targetTile).AcceptsSmudgeType.FirstOrDefault(t => warhead.SmudgeType.Contains(t));
+				if (smudgeType != null)
+				{
+					SmudgeLayer smudgeLayer;
+					if (!smudgeLayers.TryGetValue(smudgeType, out smudgeLayer))
+						throw new NotImplementedException("Unknown smudge type `{0}`".F(smudgeType));
+
 					smudgeLayer.AddSmudge(targetTile);
+				}
 			}
 
 			if (warhead.Ore)
@@ -92,7 +116,7 @@ namespace OpenRA.Mods.RA
 				case DamageModel.PerCell:
 					{
 						foreach (var t in world.FindTilesInCircle(targetTile, warhead.Size[0]))
-							foreach (var unit in world.FindUnits(Game.CellSize * t, Game.CellSize * (t + new int2(1,1))))
+							foreach (var unit in world.FindUnits(t.ToPPos(), (t + new CVec(1,1)).ToPPos()))
 								unit.InflictDamage(args.firedBy,
 									(int)(warhead.Damage * warhead.EffectivenessAgainst(unit)), warhead);
 					} break;
@@ -103,16 +127,19 @@ namespace OpenRA.Mods.RA
 		{
 			foreach (var warhead in args.weapon.Warheads)
 			{
-				Action a = () => DoImpact(warhead, args);
+				// NOTE(jsd): Fixed access to modified closure bug!
+				var warheadClosed = warhead;
+
+				Action a = () => DoImpact(warheadClosed, args);
 				if (warhead.Delay > 0)
 					args.firedBy.World.AddFrameEndTask(
-						w => w.Add(new DelayedAction(warhead.Delay, a)));
+						w => w.Add(new DelayedAction(warheadClosed.Delay, a)));
 				else
 					a();
 			}
 		}
 
-		public static void DoExplosion(Actor attacker, string weapontype, int2 pos, int altitude)
+		public static void DoExplosion(Actor attacker, string weapontype, PPos pos, int altitude)
 		{
 			var args = new ProjectileArgs
 			{
@@ -174,7 +201,7 @@ namespace OpenRA.Mods.RA
 			return true;
 		}
 
-		public static bool WeaponValidForTarget( WeaponInfo weapon, World world, int2 location )
+		public static bool WeaponValidForTarget( WeaponInfo weapon, World world, CPos location )
 		{
 			if( weapon.ValidTargets.Contains( "Ground" ) && world.GetTerrainType( location ) != "Water" ) return true;
 			if( weapon.ValidTargets.Contains( "Water" ) && world.GetTerrainType( location ) == "Water" ) return true;
@@ -192,7 +219,7 @@ namespace OpenRA.Mods.RA
 			return Util.RotateVectorByFacing(localRecoil, facing, .7f);
 		}
 
-		public static float2 GetTurretPosition(Actor self, IFacing facing, Turret turret)
+		public static PVecInt GetTurretPosition(Actor self, IFacing facing, Turret turret)
 		{
 			if (facing == null) return turret.ScreenSpacePosition;	/* things that don't have a rotating base don't need the turrets repositioned */
 
@@ -201,41 +228,41 @@ namespace OpenRA.Mods.RA
 			var bodyFacing = facing.Facing;
 			var quantizedFacing = Util.QuantizeFacing(bodyFacing, numDirs) * (256 / numDirs);
 
-			return (Util.RotateVectorByFacing(turret.UnitSpacePosition, quantizedFacing, .7f)
+			return (PVecInt) ((PVecFloat)(Util.RotateVectorByFacing(turret.UnitSpacePosition.ToFloat2(), quantizedFacing, .7f)
 				+ GetRecoil(self, turret.Recoil))
-				+ turret.ScreenSpacePosition;
+				+ turret.ScreenSpacePosition);
 		}
 
 		// gets the screen-space position of a barrel.
-		public static float2 GetBarrelPosition(Actor self, IFacing facing, Turret turret, Barrel barrel)
+		public static PVecInt GetBarrelPosition(Actor self, IFacing facing, Turret turret, Barrel barrel)
 		{
 			var turreted = self.TraitOrDefault<Turreted>();
 
 			if (turreted == null && facing == null)
-				return float2.Zero;
+				return PVecInt.Zero;
 
 			var turretFacing = turreted != null  ? turreted.turretFacing : facing.Facing;
 
 			return GetTurretPosition(self, facing, turret) + barrel.ScreenSpaceOffset
-				+ Util.RotateVectorByFacing(barrel.TurretSpaceOffset, turretFacing, .7f);
+				+ (PVecInt)(PVecFloat)Util.RotateVectorByFacing(barrel.TurretSpaceOffset.ToFloat2(), turretFacing, .7f);
 		}
 
-		public static bool IsInRange( float2 attackOrigin, float range, Actor target )
+		public static bool IsInRange( PPos attackOrigin, float range, Actor target )
 		{
 			var rsq = range * range * Game.CellSize * Game.CellSize;
-			foreach( var cell in target.Trait<ITargetable>().TargetableCells( target ) )
-				if( ( attackOrigin - cell * Game.CellSize ).LengthSquared <= rsq )
+			foreach ( var cell in target.Trait<ITargetable>().TargetableCells( target ) )
+				if ( (attackOrigin - cell.ToPPos()).LengthSquared <= rsq )
 					return true;
 			return false;
 		}
 
-		public static bool IsInRange( float2 attackOrigin, float range, float2 targetLocation )
+		public static bool IsInRange(PPos attackOrigin, float range, PPos targetLocation)
 		{
 			var rsq = range * range * Game.CellSize * Game.CellSize;
 			return ( attackOrigin - targetLocation ).LengthSquared <= rsq;
 		}
 
-		public static bool IsInRange( float2 attackOrigin, float range, Target target )
+		public static bool IsInRange(PPos attackOrigin, float range, Target target)
 		{
 			if( !target.IsValid ) return false;
 			if( target.IsActor )

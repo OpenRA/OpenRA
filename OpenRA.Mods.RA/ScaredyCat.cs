@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA
 		{
 			if (!Panicked) return;
 
-			var target = Util.SubPxVector[self.World.SharedRandom.Next(255)]* Info.MoveRadius / 1024 + self.Location;
+			var target = ( Util.SubPxVector[self.World.SharedRandom.Next(255)] * Info.MoveRadius ).ToPVecInt().ToCVec() + self.Location;
 			self.Trait<Mobile>().ResolveOrder(self, new Order("Move", self, false) { TargetLocation = target });
 		}
 

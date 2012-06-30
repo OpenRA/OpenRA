@@ -54,22 +54,22 @@ namespace OpenRA.Traits
 
 		// cache of positions that were added, so no matter what crazy trait code does, it
 		// can't make us invalid.
-		class ActorVisibility { public int range; public int2[] vis; }
+		class ActorVisibility { public int range; public CPos[] vis; }
 		Dictionary<Actor, ActorVisibility> vis = new Dictionary<Actor, ActorVisibility>();
 
-		static IEnumerable<int2> FindVisibleTiles(World world, int2 a, int r)
+		static IEnumerable<CPos> FindVisibleTiles(World world, CPos a, int r)
 		{
-			var min = a - new int2(r, r);
-			var max = a + new int2(r, r);
-			if (min.X < world.Map.Bounds.Left - 1) min.X = world.Map.Bounds.Left - 1;
-			if (min.Y < world.Map.Bounds.Top - 1) min.Y = world.Map.Bounds.Top - 1;
-			if (max.X > world.Map.Bounds.Right) max.X = world.Map.Bounds.Right;
-			if (max.Y > world.Map.Bounds.Bottom) max.Y = world.Map.Bounds.Bottom;
+			var min = a - new CVec(r, r);
+			var max = a + new CVec(r, r);
+			if (min.X < world.Map.Bounds.Left - 1) min = new CPos(world.Map.Bounds.Left - 1, min.Y);
+			if (min.Y < world.Map.Bounds.Top - 1) min = new CPos(min.X, world.Map.Bounds.Top - 1);
+			if (max.X > world.Map.Bounds.Right) max = new CPos(world.Map.Bounds.Right, max.Y);
+			if (max.Y > world.Map.Bounds.Bottom) max = new CPos(max.X, world.Map.Bounds.Bottom);
 
 			for (var j = min.Y; j <= max.Y; j++)
 				for (var i = min.X; i <= max.X; i++)
-					if (r * r >= (new int2(i, j) - a).LengthSquared)
-						yield return new int2(i, j);
+					if (r * r >= (new CPos(i, j) - a).LengthSquared)
+						yield return new CPos(i, j);
 		}
 
 		void AddActor(Actor a)
@@ -148,7 +148,7 @@ namespace OpenRA.Traits
 					AddActor(a);
 		}
 
-		public static IEnumerable<int2> GetVisOrigins(Actor a)
+		public static IEnumerable<CPos> GetVisOrigins(Actor a)
 		{
 			var ios = a.OccupiesSpace;
 			if (ios != null)
@@ -157,7 +157,7 @@ namespace OpenRA.Traits
 				if (cells.Any()) return cells.Select(c => c.First);
 			}
 
-			return new[] { a.CenterLocation / Game.CellSize };
+			return new[] { a.CenterLocation.ToCPos() };
 		}
 
 		void RemoveActor(Actor a)
@@ -183,7 +183,7 @@ namespace OpenRA.Traits
 			RemoveActor(a); AddActor(a);
 		}
 
-		public void Explore(World world, int2 center, int range)
+		public void Explore(World world, CPos center, int range)
 		{
 			foreach (var q in FindVisibleTiles(world, center, range))
 				exploredCells[q.X, q.Y] = true;
@@ -216,7 +216,7 @@ namespace OpenRA.Traits
 				Dirty();
 		}
 
-		public bool IsExplored(int2 xy) { return IsExplored(xy.X, xy.Y); }
+		public bool IsExplored(CPos xy) { return IsExplored(xy.X, xy.Y); }
 		public bool IsExplored(int x, int y)
 		{
 			if (!map.IsInMap(x, y))
@@ -228,7 +228,7 @@ namespace OpenRA.Traits
 			return exploredCells[x,y];
 		}
 
-		public bool IsVisible(int2 xy) { return IsVisible(xy.X, xy.Y); }
+		public bool IsVisible(CPos xy) { return IsVisible(xy.X, xy.Y); }
 		public bool IsVisible(int x, int y)
 		{
 			if (Disabled)

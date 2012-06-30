@@ -18,7 +18,7 @@ namespace OpenRA.Mods.RA.Activities
 	class Leap : Activity
 	{
 		Target target;
-		int2 initialLocation;
+		PPos initialLocation;
 
 		int moveFraction;
 		const int delay = 6;
@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Activities
 		public Leap(Actor self, Target target)
 		{
 			this.target = target;
-			initialLocation = self.Trait<Mobile>().PxPosition;
+			initialLocation = (PPos) self.Trait<Mobile>().PxPosition;
 
 			self.Trait<RenderInfantry>().Attacking(self, target);
 			Sound.Play("dogg5p.aud", self.CenterLocation);
@@ -41,12 +41,12 @@ namespace OpenRA.Mods.RA.Activities
 			var mobile = self.Trait<Mobile>();
 			++moveFraction;
 
-			mobile.PxPosition = int2.Lerp(initialLocation, target.PxPosition, moveFraction, delay);
+			mobile.PxPosition = PPos.Lerp(initialLocation, target.PxPosition, moveFraction, delay);
 
 			if (moveFraction >= delay)
 			{
 				self.TraitsImplementing<IMove>().FirstOrDefault()
-					.SetPosition(self, Util.CellContaining(target.CenterLocation));
+					.SetPosition(self, target.CenterLocation.ToCPos());
 
 				if (target.IsActor)
 					target.Actor.Kill(self);

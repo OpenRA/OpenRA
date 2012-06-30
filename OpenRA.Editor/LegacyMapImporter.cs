@@ -175,7 +175,7 @@ namespace OpenRA.Editor
 			foreach( var kv in wps )
 			{
 				var a = new ActorReference("mpspawn");
-				a.Add(new LocationInit(kv.Second));
+				a.Add(new LocationInit((CPos)kv.Second));
 				a.Add(new OwnerInit("Neutral"));
 				Map.Actors.Value.Add("spawn" + kv.First, a);
 			}
@@ -276,7 +276,7 @@ namespace OpenRA.Editor
 						Map.Actors.Value.Add("Actor" + ActorCount++,
 							new ActorReference(overlayActorMapping[raOverlayNames[o]])
 							{
-								new LocationInit( new int2(i, j) ),
+								new LocationInit( new CPos(i, j) ),
 								new OwnerInit( "Neutral" )
 							});
 				}
@@ -294,7 +294,7 @@ namespace OpenRA.Editor
 				Map.Actors.Value.Add("Actor" + ActorCount++,
 					new ActorReference(kv.Value.ToLowerInvariant())
 					{
-						new LocationInit(new int2(loc % MapSize, loc / MapSize)),
+						new LocationInit(new CPos(loc % MapSize, loc / MapSize)),
 						new OwnerInit("Neutral")
 					});
 			}
@@ -323,7 +323,7 @@ namespace OpenRA.Editor
 			foreach (KeyValuePair<string, string> kv in overlay)
 			{
 				var loc = int.Parse(kv.Key);
-				var cell = new int2(loc % MapSize, loc / MapSize);
+				var cell = new CPos(loc % MapSize, loc / MapSize);
 
 				var res = Pair.New((byte)0, (byte)0);
 				if (overlayResourceMapping.ContainsKey(kv.Value.ToLower()))
@@ -353,7 +353,7 @@ namespace OpenRA.Editor
 				Map.Actors.Value.Add("Actor" + ActorCount++,
 					new ActorReference(kv.Value.Split(',')[0].ToLowerInvariant())
 					{
-						new LocationInit(new int2(loc % MapSize, loc / MapSize)),
+						new LocationInit(new CPos(loc % MapSize, loc / MapSize)),
 						new OwnerInit("Neutral")
 					});
 			}
@@ -380,7 +380,7 @@ namespace OpenRA.Editor
 
 					var actor = new ActorReference(parts[1].ToLowerInvariant())
 					{
-						new LocationInit(new int2(loc % MapSize, loc / MapSize)),
+						new LocationInit(new CPos(loc % MapSize, loc / MapSize)),
 						new OwnerInit(parts[0]),
 						new HealthInit(float.Parse(parts[2], NumberFormatInfo.InvariantInfo)/256),
 						new FacingInit((section == "INFANTRY") ? int.Parse(parts[6]) : int.Parse(parts[4])),
@@ -432,7 +432,7 @@ namespace OpenRA.Editor
 						(byte)(color.Second.GetBrightness() * 255))
 			};
 
-			var Neutral = new [] {"Neutral"};
+			var neutral = new [] {"Neutral"};
 			foreach (var s in file.GetSection(section, true))
 			{
 				Console.WriteLine(s.Key);
@@ -442,8 +442,8 @@ namespace OpenRA.Editor
 						pr.InitialCash = int.Parse(s.Value);
 					break;
 					case "Allies":
-						pr.Allies = s.Value.Split(',').Intersect(Players).Except(Neutral).ToArray();
-						pr.Enemies = s.Value.Split(',').SymmetricDifference(Players).Except(Neutral).ToArray();
+						pr.Allies = s.Value.Split(',').Intersect(Players).Except(neutral).ToArray();
+						pr.Enemies = s.Value.Split(',').SymmetricDifference(Players).Except(neutral).ToArray();
 					break;
 				}
 			}

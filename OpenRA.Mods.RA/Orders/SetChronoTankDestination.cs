@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA.Orders
 			this.self = self;
 		}
 
-		public IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
+		public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
 		{
 			if (mi.Button == MouseButton.Left)
 			{
@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA.Orders
 
 		public void RenderBeforeWorld( WorldRenderer wr, World world ) { }
 
-		public string GetCursor(World world, int2 xy, MouseInput mi)
+		public string GetCursor(World world, CPos xy, MouseInput mi)
 		{
 			if (!world.LocalPlayer.Shroud.IsExplored(xy))
 				return "move-blocked";

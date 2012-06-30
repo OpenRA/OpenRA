@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2012 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -15,10 +15,14 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Net.NetworkInformation;
+using UPnP;
 using System.Threading;
 using OpenRA.FileFormats;
 using OpenRA.GameRules;
 using OpenRA.Network;
+
+using XTimer = System.Timers.Timer;
 
 namespace OpenRA.Server
 {
@@ -45,6 +49,7 @@ namespace OpenRA.Server
 		public ServerSettings Settings;
 		public ModData ModData;
 		public Map Map;
+		XTimer gameTimeout;
 
 		volatile bool shutdown = false;
 		public void Shutdown() { shutdown = true; }
@@ -63,6 +68,9 @@ namespace OpenRA.Server
 			ModData = modData;
 
 			randomSeed = (int)DateTime.Now.ToBinary();
+
+			if (settings.AllowUPnP)
+				PortForward();
 
 			foreach (var trait in modData.Manifest.ServerTraits)
 				ServerTraits.Add( modData.ObjectCreator.CreateObject<ServerTrait>(trait) );
@@ -121,6 +129,20 @@ namespace OpenRA.Server
 				try { listener.Stop(); }
 				catch { }
 			} ) { IsBackground = true }.Start();
+		}
+
+		void PortForward()
+		{
+			if (UPnP.NAT.Discover())
+			{
+				Log.Write("server", "UPnP-enabled router discovered.");
+				UPnP.NAT.ForwardPort(Port, ProtocolType.Tcp, "OpenRA"); //might timeout after second try
+				Log.Write("server", "Port {0} (TCP) has been forwarded.", Port);
+				Log.Write("server", "Your IP is: {0}", UPnP.NAT.GetExternalIP() );
+			}
+			else
+				Log.Write("server", "No UPnP-enabled router detected.");
+			return;
 		}
 
 		/* lobby rework todo:
@@ -348,6 +370,9 @@ namespace OpenRA.Server
 
 		void InterpretServerOrder(Connection conn, ServerOrder so)
 		{
+			var fromClient = GetClient(conn);
+			var fromIndex = fromClient != null ? fromClient.Index : 0;
+			
 			switch (so.Name)
 			{
 				case "Command":
@@ -363,17 +388,23 @@ namespace OpenRA.Server
 					}
 
 					break;
+				
 				case "HandshakeResponse":
 					ValidateClient(conn, so.Data);
 					break;
+				
 				case "Chat":
 				case "TeamChat":
-					var fromClient = GetClient(conn);
-					var fromIndex = fromClient != null ? fromClient.Index : 0;
-
 					foreach (var c in conns.Except(conn).ToArray())
 						DispatchOrdersToClient(c, fromIndex, 0, so.Serialize());
-				break;
+					break;
+				
+				case "PauseRequest":
+					foreach (var c in conns.ToArray())
+					{  var x = Order.PauseGame();
+						DispatchOrdersToClient(c, fromIndex, 0, x.Serialize());
+					}
+					break;
 			}
 		}
 
@@ -438,6 +469,18 @@ namespace OpenRA.Server
 
 			foreach (var t in ServerTraits.WithInterface<IStartGame>())
 				t.GameStarted(this);
+			
+			// Check TimeOut
+			if ( Settings.TimeOut > 10000 )
+			{
+				gameTimeout = new XTimer(Settings.TimeOut);
+				gameTimeout.Elapsed += (_,e) =>
+                                {
+                                    Console.WriteLine("Timeout at {0}!!!", e.SignalTime);
+                                    Environment.Exit(0);
+                                };
+				gameTimeout.Enabled = true;
+			}
 		}
 	}
 }
