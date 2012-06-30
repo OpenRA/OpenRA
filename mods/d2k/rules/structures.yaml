@@ -266,8 +266,8 @@
 	-RenderBuilding:
 	RallyPoint:
 	Exit@1:
-		SpawnOffset: 10,0
-		ExitCell: 1,3
+		SpawnOffset: 5,0
+		ExitCell: 1,1
 	Production:
 		Produces: Vehicle
 	PrimaryBuilding:
@@ -302,9 +302,10 @@
 	Bib:
 	-RenderBuilding:
 	RallyPoint:
+		RallyPoint: 0,3
 	Exit@1:
-		SpawnOffset: 10,0
-		ExitCell: 1,3
+		SpawnOffset: -2,-2
+		ExitCell: 0,2
 	Production:
 		Produces: Vehicle
 	PrimaryBuilding:
