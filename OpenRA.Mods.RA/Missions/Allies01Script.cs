@@ -34,8 +34,6 @@ namespace OpenRA.Mods.RA.Missions
         Player allies;
         Player soviets;
 
-        ISound music;
-
         Actor insertionLZ;
         Actor extractionLZ;
         Actor lab;
@@ -266,7 +264,7 @@ namespace OpenRA.Mods.RA.Missions
             attackEntryPoint1 = actors["SovietAttackEntryPoint1"];
             attackEntryPoint2 = actors["SovietAttackEntryPoint2"];
             Game.MoveViewport(insertionLZ.Location.ToFloat2());
-            music = Sound.Play("hell226m.aud"); // Hell March
+            Sound.PlayMusic(Rules.Music["hell226m"]); // Hell March
             Game.ConnectionStateChanged += StopMusic;
         }
 
@@ -274,7 +272,7 @@ namespace OpenRA.Mods.RA.Missions
         {
             if (!orderManager.GameStarted)
             {
-                Sound.StopSound(music);
+                Sound.StopMusic();
                 Game.ConnectionStateChanged -= StopMusic;
             }
         }
