@@ -205,6 +205,7 @@ debugger.shell = function(expression, isstatement)
         local _, values, err = debugger.evaluate(expression)
         if not forceexpression and err and
           (err:find("'<eof>' expected near '") or
+           err:find("'%(' expected near") or
            err:find("unexpected symbol near '")) then
           _, values, err = debugger.execute(expression)
           addedret = false
