@@ -148,7 +148,7 @@ namespace OpenRA.Mods.RA
 		{
 			// Check that we're not in a critical location and being useless (refinery drop-off):
 			var lastproc = LastLinkedProc ?? LinkedProc;
-			if (lastproc != null)
+			if (lastproc != null && !lastproc.Destroyed)
 			{
 				var deliveryLoc = lastproc.Location + lastproc.Trait<IAcceptOre>().DeliverOffset;
 				if (self.Location == deliveryLoc)
