@@ -456,6 +456,8 @@ namespace OpenRA.Mods.RA.Move
 			{
 				IsQueued = forceQueued;
 				cursor = "move";
+				if (self.World.LocalPlayer.Shroud.IsExplored(location) && self.World.GetTerrainType(location) == "Rough")
+					cursor = "move-rough";
 				if (!self.World.Map.IsInMap(location) || (self.World.LocalPlayer.Shroud.IsExplored(location) &&
 						unitType.MovementCostForCell(self.World, location) == int.MaxValue))
 					cursor = "move-blocked";
