@@ -67,6 +67,9 @@ namespace OpenRA.Mods.RA.Effects
 						cargo.CancelActivity();
 						cargo.Trait<ITeleportable>().SetPosition(cargo, loc);
 						w.Add(cargo);
+
+						foreach( var npl in cargo.TraitsImplementing<INotifyParachuteLanded>() )
+							npl.OnLanded();
 					});
 		}
 

@@ -42,4 +42,6 @@ namespace OpenRA.Mods.RA
 	{
 		void OnNotifyResourceClaimLost(Actor self, ResourceClaim claim, Actor claimer);
 	}
+
+	public interface INotifyParachuteLanded { void OnLanded(); }
 }

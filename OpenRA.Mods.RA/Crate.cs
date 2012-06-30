@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA
 	}
 
 	// ITeleportable is required for paradrop
-	class Crate : ITick, IOccupySpace, ITeleportable, ICrushable, ISync
+	class Crate : ITick, IOccupySpace, ITeleportable, ICrushable, ISync, INotifyParachuteLanded
 	{
 		readonly Actor self;
 		[Sync] int ticks;
@@ -60,6 +60,15 @@ namespace OpenRA.Mods.RA
 				}
 				else
 					n -= s.Second;
+		}
+
+		public void OnLanded()
+		{
+			var landedOn = self.World.ActorMap.GetUnitsAt(self.Location)
+				.FirstOrDefault(a => a != self);
+
+			if (landedOn != null)
+				OnCrush(landedOn);
 		}
 
 		public void Tick(Actor self)
