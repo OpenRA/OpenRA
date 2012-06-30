@@ -29,6 +29,12 @@ namespace OpenRA
 
 		static ISoundSource LoadSound(string filename)
 		{
+			if (!FileSystem.Exists(filename))
+			{
+				Log.Write("debug", "LoadSound, file does not exist: {0}", filename);
+				return null;
+			}
+
 			return LoadSoundRaw(AudLoader.LoadSound(FileSystem.Open(filename)));
 		}
 
@@ -140,10 +146,12 @@ namespace OpenRA
 			}
 			StopMusic();
 
+			var sound = sounds[m.Filename];
+			if (sound == null) return;
+
+			music = soundEngine.Play2D(sound, false, true, float2.Zero, MusicVolume);
 			currentMusic = m;
 			MusicPlaying = true;
-			var sound = sounds[m.Filename];
-			music = soundEngine.Play2D(sound, false, true, float2.Zero, MusicVolume);
 		}
 
 		public static void PlayMusic()
@@ -357,6 +365,11 @@ namespace OpenRA
 
 		public ISound Play2D(ISoundSource sound, bool loop, bool relative, float2 pos, float volume)
 		{
+			if (sound == null)
+			{
+				Log.Write("debug", "Attempt to Play2D a null `ISoundSource`");
+				return null;
+			}
 			int source = GetSourceFromPool();
 			return new OpenAlSound(source, (sound as OpenAlSoundSource).buffer, loop, relative, pos, volume);
 		}
@@ -369,6 +382,8 @@ namespace OpenRA
 
 		public void PauseSound(ISound sound, bool paused)
 		{
+			if (sound == null) return;
+
 			int key = ((OpenAlSound)sound).source;
 			int state;
 			Al.alGetSourcei(key, Al.AL_SOURCE_STATE, out state);
@@ -410,6 +425,8 @@ namespace OpenRA
 
 		public void StopSound(ISound sound)
 		{
+			if (sound == null) return;
+
 			int key = ((OpenAlSound)sound).source;
 			int state;
 			Al.alGetSourcei(key, Al.AL_SOURCE_STATE, out state);
