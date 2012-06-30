@@ -51,6 +51,7 @@ namespace OpenRA.Mods.RA
 		public CPos? LastOrderLocation = null;
 		[Sync] public int ContentValue { get { return contents.Sum(c => c.Key.ValuePerUnit * c.Value); } }
 		readonly HarvesterInfo Info;
+		bool idleSmart = true;
 
 		public Harvester(Actor self, HarvesterInfo info)
 		{
@@ -191,6 +192,9 @@ namespace OpenRA.Mods.RA
 
 		public void TickIdle(Actor self)
 		{
+			// Should we be intelligent while idle?
+			if (!idleSmart) return;
+
 			// Are we not empty? Deliver resources:
 			if (!IsEmpty)
 			{
@@ -262,6 +266,7 @@ namespace OpenRA.Mods.RA
 			{
 				// NOTE: An explicit harvest order allows the harvester to decide which refinery to deliver to.
 				LinkProc(self, OwnerLinkedProc = null);
+				idleSmart = true;
 
 				var mobile = self.Trait<Mobile>();
 				self.CancelActivity();
@@ -316,10 +321,17 @@ namespace OpenRA.Mods.RA
 				if (IsEmpty)
 					return;
 
+				idleSmart = true;
+
 				self.SetTargetLine(Target.FromOrder(order), Color.Green);
 
 				self.CancelActivity();
 				self.QueueActivity(new DeliverResources());
+			}
+			else if (order.OrderString == "Stop" || order.OrderString == "Move")
+			{
+				// Turn off idle smarts to obey the stop/move:
+				idleSmart = false;
 			}
 		}
 
