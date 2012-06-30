@@ -58,7 +58,9 @@ namespace OpenRA.FileFormats
 				isEncrypted = 0 != (signature & (uint)MixFileFlags.Encrypted);
 				if( isEncrypted )
 				{
-					index = ParseRaHeader( s, out dataStart ).ToDictionary(x => x.Hash);
+					index = ParseRaHeader(s, out dataStart).ToDictionaryWithConflictLog(x => x.Hash,
+						"MixFile.RaHeader", null, x => "(offs={0}, len={1})".F(x.Offset, x.Length)
+					);
 					return;
 				}
 			}
@@ -66,7 +68,9 @@ namespace OpenRA.FileFormats
 				s.Seek( 0, SeekOrigin.Begin );
 
 			isEncrypted = false;
-			index = ParseTdHeader(s, out dataStart).ToDictionary(x => x.Hash);
+			index = ParseTdHeader(s, out dataStart).ToDictionaryWithConflictLog(x => x.Hash,
+				"MixFile.TdHeader", null, x => "(offs={0}, len={1})".F(x.Offset, x.Length)
+			);
 		}
 
 		const long headerStart = 84;
