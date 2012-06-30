@@ -19,65 +19,60 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Missions
 {
-    public class Allies01ScriptInfo : TraitInfo<Allies01Script>, Requires<SpawnMapActorsInfo> { }
+    class Allies01ScriptInfo : TraitInfo<Allies01Script>, Requires<SpawnMapActorsInfo> { }
 
-    public class Allies01Script : IWorldLoaded, ITick
+    class Allies01Script : IWorldLoaded, ITick
     {
-        private static readonly string[] objectives =
+        static readonly string[] objectives =
         {
             "Find Einstein.",
             "Wait for the helicopter and extract Einstein."
         };
 
-        private int currentObjective;
+        int currentObjective;
 
-        private Player allies;
-        private Player soviets;
+        Player allies;
+        Player soviets;
 
-        private ISound music;
+        ISound music;
 
-        private Actor insertionLZ;
-        private Actor extractionLZ;
-        private Actor lab;
-        private Actor insertionLZEntryPoint;
-        private Actor extractionLZEntryPoint;
-        private Actor chinookExitPoint;
-        private Actor shipSpawnPoint;
-        private Actor shipMovePoint;
-        private Actor einstein;
-        private Actor einsteinChinook;
-        private Actor tanya;
-        private Actor attackEntryPoint1;
-        private Actor attackEntryPoint2;
+        Actor insertionLZ;
+        Actor extractionLZ;
+        Actor lab;
+        Actor insertionLZEntryPoint;
+        Actor extractionLZEntryPoint;
+        Actor chinookExitPoint;
+        Actor shipSpawnPoint;
+        Actor shipMovePoint;
+        Actor einstein;
+        Actor einsteinChinook;
+        Actor tanya;
+        Actor attackEntryPoint1;
+        Actor attackEntryPoint2;
 
-        private static readonly string[] taunts = { "laugh1.aud", "lefty1.aud", "cmon1.aud", "gotit1.aud" };
+        static readonly string[] taunts = { "laugh1.aud", "lefty1.aud", "cmon1.aud", "gotit1.aud" };
 
-        private static readonly string[] ships = { "ca", "ca", "ca", "ca" };
+        static readonly string[] ships = { "ca", "ca", "ca", "ca" };
 
-        private static readonly string[] attackWave = { "e1", "e1", "e1", "e1", "e2", "e2", "e2", "e2", "dog" };
-        private static readonly string[] lastAttackWaveAddition = { "3tnk", "e1", "e1", "e1", "e1", "e2", "e2", "e2", "e2" };
-        private int currentAttackWaveFrameNumber;
-        private int currentAttackWave;
-        private const int einsteinChinookArrivesAtAttackWave = 5;
+        static readonly string[] attackWave = { "e1", "e1", "e1", "e1", "e2", "e2", "e2", "e2", "dog" };
+        static readonly string[] lastAttackWaveAddition = { "3tnk", "e1", "e1", "e1", "e1", "e2", "e2", "e2", "e2" };
+        int currentAttackWaveFrameNumber;
+        int currentAttackWave;
+        const int einsteinChinookArrivesAtAttackWave = 5;
 
-        private const int labRange = 5;
-        private const string einsteinName = "einstein";
-        private const string tanyaName = "e7";
-        private const string chinookName = "tran";
-        private const string signalFlareName = "flare";
+        const int labRange = 5;
+        const string einsteinName = "einstein";
+        const string tanyaName = "e7";
+        const string chinookName = "tran";
+        const string signalFlareName = "flare";
 
-        private void NextObjective()
-        {
-            currentObjective++;
-        }
-
-        private void DisplayObjective()
+        void DisplayObjective()
         {
             Game.AddChatLine(Color.LimeGreen, "Objective", objectives[currentObjective]);
             Sound.Play("bleep6.aud", 5);
         }
 
-        private void MissionFailed(Actor self, string text)
+        void MissionFailed(Actor self, string text)
         {
             if (allies.WinState != WinState.Undefined)
             {
@@ -89,7 +84,7 @@ namespace OpenRA.Mods.RA.Missions
             Sound.Play("misnlst1.aud", 5);
         }
 
-        private void MissionAccomplished(Actor self, string text)
+        void MissionAccomplished(Actor self, string text)
         {
             if (allies.WinState != WinState.Undefined)
             {
@@ -132,7 +127,7 @@ namespace OpenRA.Mods.RA.Missions
                     SpawnEinsteinAtLab(self); // spawn Einstein once the area is clear
                     Sound.Play("einok1.aud"); // "Incredible!" - Einstein
                     SendShips(self);
-                    NextObjective();
+                    currentObjective++;
                     DisplayObjective();
                     currentAttackWaveFrameNumber = self.World.FrameNumber;
                 }
@@ -158,7 +153,7 @@ namespace OpenRA.Mods.RA.Missions
                         FlyEinsteinFromExtractionLZ(self);
                     }
                 }
-                if (einsteinChinook != null && !self.World.Map.IsInMap(einsteinChinook.Location) && !einstein.IsInWorld)
+                if (einsteinChinook != null && !self.World.Map.IsInMap(einsteinChinook.Location) && einsteinChinook.Trait<Cargo>().Passengers.Contains(einstein))
                 {
                     MissionAccomplished(self, "Einstein was rescued.");
                 }
@@ -173,12 +168,12 @@ namespace OpenRA.Mods.RA.Missions
             }
         }
 
-        private void SpawnSignalFlare(Actor self)
+        void SpawnSignalFlare(Actor self)
         {
             self.World.CreateActor(signalFlareName, new TypeDictionary { new OwnerInit(allies), new LocationInit(extractionLZ.Location) });
         }
 
-        private void SendAttackWave(Actor self, IEnumerable<string> wave)
+        void SendAttackWave(Actor self, IEnumerable<string> wave)
         {
             foreach (var unit in wave)
             {
@@ -188,25 +183,25 @@ namespace OpenRA.Mods.RA.Missions
             }
         }
 
-        private IEnumerable<Actor> UnitsNearActor(Actor self, Actor actor, int range)
+        IEnumerable<Actor> UnitsNearActor(Actor self, Actor actor, int range)
         {
             return self.World.FindUnitsInCircle(actor.CenterLocation, Game.CellSize * range)
                 .Where(a => a.IsInWorld && a != self.World.WorldActor && !a.Destroyed && a.HasTrait<IMove>() && !a.Owner.NonCombatant);
         }
 
-        private bool AlliesControlLab(Actor self)
+        bool AlliesControlLab(Actor self)
         {
             var units = UnitsNearActor(self, lab, labRange);
             return units.Any() && units.All(a => a.Owner == allies);
         }
 
-        private void SpawnEinsteinAtLab(Actor self)
+        void SpawnEinsteinAtLab(Actor self)
         {
             einstein = self.World.CreateActor(einsteinName, new TypeDictionary { new OwnerInit(allies), new LocationInit(lab.Location) });
             einstein.QueueActivity(new Move.Move(lab.Location - new CVec(0, 2)));
         }
 
-        private void SendShips(Actor self)
+        void SendShips(Actor self)
         {
             for (int i = 0; i < ships.Length; i++)
             {
@@ -216,7 +211,7 @@ namespace OpenRA.Mods.RA.Missions
             }
         }
 
-        private void FlyEinsteinFromExtractionLZ(Actor self)
+        void FlyEinsteinFromExtractionLZ(Actor self)
         {
             einsteinChinook = self.World.CreateActor(chinookName, new TypeDictionary { new OwnerInit(allies), new LocationInit(extractionLZEntryPoint.Location) });
             einsteinChinook.QueueActivity(new HeliFly(extractionLZ.CenterLocation));
@@ -228,7 +223,7 @@ namespace OpenRA.Mods.RA.Missions
             einsteinChinook.QueueActivity(new RemoveSelf());
         }
 
-        private void FlyTanyaToInsertionLZ(Actor self)
+        void FlyTanyaToInsertionLZ(Actor self)
         {
             tanya = self.World.CreateActor(false, tanyaName, new TypeDictionary { new OwnerInit(allies) });
             var chinook = self.World.CreateActor(chinookName, new TypeDictionary { new OwnerInit(allies), new LocationInit(insertionLZEntryPoint.Location) });
@@ -264,7 +259,7 @@ namespace OpenRA.Mods.RA.Missions
             Game.ConnectionStateChanged += StopMusic;
         }
 
-        private void StopMusic(OrderManager orderManager)
+        void StopMusic(OrderManager orderManager)
         {
             if (!orderManager.GameStarted)
             {
