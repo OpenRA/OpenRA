@@ -32,6 +32,11 @@ REFO:
 		Owner: ordos
 	RenderBuildingWarFactory:
 		Image: REFO
+	FreeActor:
+		Actor: HARVESTERO
+		InitialActivity: FindResources
+		SpawnOffset: 1,2
+		Facing: 64
 
 BARRO:
 	Inherits: ^BARRACKS
@@ -160,6 +165,14 @@ MCVO:
 	RenderUnit:
 		Image: DMCV
 
+HARVESTERO:
+	Inherits: ^HARVESTER
+	Buildable:
+		Prerequisites: heavyo,refo
+		Owner: ordos
+	RenderUnit:
+		Image: HARVESTER
+
 COMBATO:
 	Inherits: ^COMBAT
 	Buildable:
@@ -171,7 +184,7 @@ RAIDER:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 15
-		Prerequisites: anylight
+		Prerequisites: lighto
 		Owner: ordos
 	Valued:
 		Cost: 200
@@ -197,17 +210,50 @@ RAIDER:
 		SecondaryOffset: 0,0,0,-4
 	AutoTarget:
 
+QUADO:
+	Inherits: ^QUAD
+	Buildable:
+		Prerequisites: lighto
+		Owner: ordos
+	RenderUnit:
+		Image: QUAD
+
+SIEGETANKO:
+	Inherits: ^SIEGETANK
+	Buildable:
+		Prerequisites: heavyo, radaro
+		Owner: ordos
+	RenderUnit:
+		Image: SIEGETANK
+
+MISSILETANKO:
+	Inherits: ^MISSILETANK
+	Buildable:
+		Prerequisites: heavyo
+		Owner: ordos
+	RenderUnit:
+		Image: MISSILETANK
+
+CARRYALLO:
+	Inherits: ^CARRYALL
+	Buildable:
+		Prerequisites: hightecho
+		BuiltAt: hightecho
+		Owner: ordos
+	RenderUnit:
+		Image: CARRYALL
+
 DEVIATORTANK:
 	Inherits: ^Tank
 	Valued:
 		Cost: 800
 	Tooltip:
 		Name: Deviator
-		Description: Long range artillery.\n  Strong vs Infantry, Tanks, Air\n  Weak vs Buildings
+		Description: Will cause no actual damage.\nFires a warhead which changes allegiances\n but does not effect buildings or tanks.
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 50
-		Prerequisites: anyheavy
+		Prerequisites: heavyo
 		Owner: ordos
 	Mobile:
 		Speed: 6
@@ -218,8 +264,12 @@ DEVIATORTANK:
 	RevealsShroud:
 		Range: 6
 	RenderUnit:
-	AttackFrontal:
-		PrimaryWeapon: MammothTusk
+#	Captures:
+#		CaptureTypes:
+#		Range: 5
+#		wastedAfterwards: false
+	AttackLoyalty:
+		PrimaryWeapon: FakeMissile
 		PrimaryLocalOffset: -7,2,0,0,25, 7,2,0,0,-25
 		PrimaryRecoil: 1
 	AutoTarget:

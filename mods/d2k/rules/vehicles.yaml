@@ -27,18 +27,17 @@
 	Transforms:
 		TransformSounds: BUILD1.aud
 
-HARVESTER:
+^HARVESTER:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
-		Prerequisites: anyref,anyheavy
-		Owner: atreides,harkonnen,ordos
 	Valued:
 		Cost: 1100
 	Tooltip:
 		Name: Spice Harvester
 		Description: Collects Spice for processing.\n  Unarmed
+		Icon: harvestericon
 	Selectable:
 		Priority: 7
 		Bounds: 42,42
@@ -62,18 +61,17 @@ HARVESTER:
 		Range: 4
 	-AttackMove:
 
-TRIKE:
+^TRIKE:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 15
-		Prerequisites: anylight
-		Owner: atreides,harkonnen
 	Valued:
 		Cost: 200
 	Tooltip:
 		Name: Scout Trike
 		Description: Weak Scout.\n Decent vs. Infantry
+		Icon: trikeicon
 	Selectable:
 		Bounds: 24,24
 	Health:
@@ -91,18 +89,17 @@ TRIKE:
 		PrimaryOffset: 0,0,0,-4
 	AutoTarget:
 
-QUAD:
+^QUAD:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
-		Prerequisites: anylight
-		Owner: atreides,harkonnen,ordos
 	Valued:
 		Cost: 400
 	Tooltip:
 		Name: Quad
 		Description: Fast scout vehicle, armed with \nrockets.\n  Strong vs Vehicles\n  Weak vs Infantry
+		Icon: quadicon
 	Health:
 		HP: 120
 	Armor: 
@@ -154,18 +151,17 @@ QUAD:
 	Selectable:
 		Bounds: 30,30
 
-SIEGETANK:
+^SIEGETANK:
 	Inherits: ^Tank
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 80
-		Prerequisites: anyradar
-		Owner: atreides,harkonnen,ordos
 	Valued:
 		Cost: 600
 	Tooltip:
 		Name: Siege Tank
 		Description: Long-range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
+		Icon: siegetankicon
 	Health:
 		HP: 75
 	Armor:
@@ -189,18 +185,17 @@ SIEGETANK:
 	Selectable:
 		Bounds: 30,30
 
-MISSILETANK:
+^MISSILETANK:
 	Inherits: ^Tank
 	Valued:
 		Cost: 800
 	Tooltip:
 		Name: Missile Tank
 		Description: Long range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
+		Icon: missiletankicon
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 50
-		Prerequisites: anyheavy
-		Owner: atreides,harkonnen,ordos
 	Mobile:
 		Speed: 6
 	Health:

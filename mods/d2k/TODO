@@ -23,12 +23,10 @@
 # create a shellmap (currently just a blank placeholder)
 # rework chrome UI, dialoges, tabs
 # add sonic tank weapon (currently uses tesla)
-# make deviator change the allegiance of ememy units (currently shoots rockets)
 # starport prices should vary
 # black spots on buildings should be fading team colors
 # gamefile extraction (setup/setup.z) from CD fails
 # support patch 1.06 gamefiles: DATA.R8 has more frames and currently fails to extract, also featuring new terrain with white houses and new unit: grenade thrower
-# infantry-only areas (Rough) do not show the dark-green mouse cursor
 # put TilesetBuilder.Export into OpenRA.Utility to call the functions directly when extracting game-files (instead of opening a GUI)
 # group number metrics are off
 # add bibs

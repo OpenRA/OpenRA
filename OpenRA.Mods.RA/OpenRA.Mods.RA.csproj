@@ -127,6 +127,7 @@
     <Compile Include="Attack\AttackBase.cs" />
     <Compile Include="Attack\AttackFrontal.cs" />
     <Compile Include="Attack\AttackLeap.cs" />
+    <Compile Include="Attack\AttackLoyalty.cs" />
     <Compile Include="Attack\AttackMedic.cs" />
     <Compile Include="Attack\AttackOmni.cs" />
     <Compile Include="Attack\AttackPopupTurreted.cs" />

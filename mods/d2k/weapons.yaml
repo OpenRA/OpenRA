@@ -239,36 +239,30 @@ TowerMissle:
 		SmudgeType: SandCrater, RockCrater
 		Damage: 25
 
-MammothTusk:
-	ROF: 60
+FakeMissile:
+	ROF: 90
 	Range: 8
+	Burst: 1
 	Report: MISSLE1
-	Burst: 2
-	ValidTargets: Ground, Air
-	Projectile: Missile
-		Speed: 30
-		Arm: 2
+	Projectile: Bullet
+		Speed: 35
 		High: true
-		Shadow: false
-		Proximity: true
-#		Trail: smokey
-		ContrailLength: 10
-		Inaccuracy: 3
-		Image: DRAGON
-		ROT: 5
-		RangeLimit: 40
+		Angle: .2
+		Inaccuracy: 70
+		Image: MISSILE
+		Trail: smokey
+		ContrailLength: 30
 	Warhead:
-		Spread: 6
+		Spread: 10
 		Versus: 
-			None: 90%
-			Wood: 75%
-			Light: 60%
-			Heavy: 25%
-		Explosion: med_explosion
-		WaterExplosion: med_splash
-		InfDeath: 2
+			Wood: 0%
+			Heavy: 0%
+			Concrete: 0%
+		Explosion: large_explosion
+		WaterExplosion: large_splash
 		SmudgeType: SandCrater, RockCrater
-		Damage: 45
+		Damage: 0
+		ImpactSound: kaboom12
 
 155mm:
 	ROF: 85

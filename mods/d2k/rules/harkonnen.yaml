@@ -32,6 +32,60 @@ REFH:
 		Owner: harkonnen
 	RenderBuildingWarFactory:
 		Image: REFH
+	FreeActor:
+		Actor: HARVESTERH
+		InitialActivity: FindResources
+		SpawnOffset: 1,2
+		Facing: 64
+
+HARVESTERH:
+	Inherits: ^HARVESTER
+	Buildable:
+		Prerequisites: heavyh,refh
+		Owner: harkonnen
+	RenderUnit:
+		Image: HARVESTER
+
+TRIKEH:
+	Inherits: ^TRIKE
+	Buildable:
+		Prerequisites: lighth
+		Owner: harkonnen
+	RenderUnit:
+		Image: TRIKE
+
+QUADH:
+	Inherits: ^QUAD
+	Buildable:
+		Prerequisites: lighth
+		Owner: harkonnen
+	RenderUnit:
+		Image: QUAD
+
+SIEGETANKH:
+	Inherits: ^SIEGETANK
+	Buildable:
+		Prerequisites: heavyh, radarh
+		Owner: harkonnen
+	RenderUnit:
+		Image: SIEGETANK
+
+MISSILETANKH:
+	Inherits: ^MISSILETANK
+	Buildable:
+		Prerequisites: heavyh
+		Owner: harkonnen
+	RenderUnit:
+		Image: MISSILETANK
+
+CARRYALLH:
+	Inherits: ^CARRYALL
+	Buildable:
+		Prerequisites: hightechh
+		BuiltAt: hightechh
+		Owner: harkonnen
+	RenderUnit:
+		Image: CARRYALL
 
 BARRH:
 	Inherits: ^BARRACKS

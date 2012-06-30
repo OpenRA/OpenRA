@@ -207,21 +207,42 @@ CRATE:
 		SelectionShares: 2
 		NoBaseSelectionShares: 9001
 		Unit: mcvo
-	GiveUnitCrateAction@Trike:
+	GiveUnitCrateAction@TrikeA:
 		SelectionShares: 7
-		Unit: trike
-	GiveUnitCrateAction@Quad:
+		Unit: trikea
+	GiveUnitCrateAction@TrikeH:
+		SelectionShares: 7
+		Unit: trikeh
+	GiveUnitCrateAction@QuadA:
 		SelectionShares: 6
-		Unit: quad
+		Unit: quada
+	GiveUnitCrateAction@QuadH:
+		SelectionShares: 6
+		Unit: quadh
+	GiveUnitCrateAction@QuadO:
+		SelectionShares: 6
+		Unit: quado
 	GiveUnitCrateAction@Raider:
 		SelectionShares: 6
 		Unit: raider
-	GiveUnitCrateAction@SiegeTank:
+	GiveUnitCrateAction@SiegeTankA:
 		SelectionShares: 6
-		Unit: siegetank
-	GiveUnitCrateAction@MissileTank:
+		Unit: siegetanka
+	GiveUnitCrateAction@SiegeTankH:
 		SelectionShares: 6
-		Unit: missiletank
+		Unit: siegetankh
+	GiveUnitCrateAction@SiegeTankO:
+		SelectionShares: 6
+		Unit: siegetanko
+	GiveUnitCrateAction@MissileTankA:
+		SelectionShares: 6
+		Unit: missiletanka
+	GiveUnitCrateAction@MissileTankH:
+		SelectionShares: 6
+		Unit: missiletankh
+	GiveUnitCrateAction@MissileTankO:
+		SelectionShares: 6
+		Unit: missiletanko
 	GiveUnitCrateAction@CombatA:
 		SelectionShares: 5
 		Unit: combata

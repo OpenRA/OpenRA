@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2012 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -22,6 +22,8 @@ namespace OpenRA.Mods.RA
 	class CapturesInfo : ITraitInfo
 	{
 		public string[] CaptureTypes = {"building"};
+		public int Range = 3;
+		public bool wastedAfterwards = true;
 		public object Create(ActorInitializer init) { return new Captures(init.self, this); }
 	}
 
@@ -40,7 +42,7 @@ namespace OpenRA.Mods.RA
 		{
 			get
 			{
-				yield return new CaptureOrderTargeter(Info.CaptureTypes, target => CanEnter(target));
+				yield return new CaptureOrderTargeter(Info.CaptureTypes, target => CanCapture(target));
 			}
 		}
 
@@ -55,24 +57,23 @@ namespace OpenRA.Mods.RA
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
 			return (order.OrderString == "CaptureActor"
-					&& CanEnter(order.TargetActor)) ? "Attack" : null;
+					&& CanCapture(order.TargetActor)) ? "Attack" : null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "CaptureActor")
 			{
-				if (!CanEnter(order.TargetActor)) return;
+				if (!CanCapture(order.TargetActor)) return;
 
 				self.SetTargetLine(Target.FromOrder(order), Color.Red);
 
 				self.CancelActivity();
-				self.QueueActivity(new Enter(order.TargetActor));
 				self.QueueActivity(new CaptureActor(order.TargetActor));
 			}
 		}
 
-		bool CanEnter(Actor target)
+		bool CanCapture(Actor target)
 		{
 			var c = target.TraitOrDefault<Capturable>();
 			return c != null && ( !c.CaptureInProgress || c.Captor.Owner.Stances[self.Owner] != Stance.Ally );
@@ -104,9 +105,11 @@ namespace OpenRA.Mods.RA
 
 			IsQueued = forceQueued;
 
+			var Info = self.Info.Traits.Get<CapturesInfo>();
+
 			if (captureTypes.Contains(ci.Type))
 			{
-				cursor = useEnterCursor(target) ? "enter" : "enter-blocked";
+				cursor = (Info.wastedAfterwards) ? (useEnterCursor(target) ? "enter" : "enter-blocked") : "attack";
 				return true;
 			}
 
