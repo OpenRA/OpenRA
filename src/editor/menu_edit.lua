@@ -93,22 +93,38 @@ frame:Connect(ID "edit.cleardynamics", wx.wxEVT_COMMAND_MENU_SELECTED,
 frame:Connect(ID "edit.showtooltip", wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
     local editor = GetEditor()
+
+    if (editor:CallTipActive()) then
+      editor:CallTipCancel()
+      return
+    end
+
     local pos = editor:GetCurrentPos()
     local line = editor:GetCurrentLine()
     local linetx = editor:GetLine(line)
     local linestart = editor:PositionFromLine(line)
     local localpos = pos-linestart
 
+    local ident = "([a-zA-Z_0-9][a-zA-Z_0-9%.%:]*)"
     local linetxtopos = linetx:sub(1,localpos)
     linetxtopos = linetxtopos..")"
-    linetxtopos = linetxtopos:match("([a-zA-Z_0-9%.%:]+)%b()$")
+    linetxtopos = linetxtopos:match(ident .. "%b()$")
 
     local tip = linetxtopos and GetTipInfo(editor,linetxtopos.."(",false)
     if tip then
-      if(editor:CallTipActive()) then
-        editor:CallTipCancel()
+      editor:CallTipShow(pos, tip)
+    else
+      -- check if we have a selected text or an identifier
+      -- for an identifier, check fragments on the left and on the right.
+      -- this is to match 'io' in 'i^o.print' and 'io.print' in 'io.pr^int'
+      local left = linetx:sub(1,localpos):match(ident.."$")
+      local right = linetx:sub(localpos+1,#linetx):match("^[a-zA-Z_0-9]*")
+      local var = editor:GetSelectionStart() ~= editor:GetSelectionEnd()
+        and editor:GetSelectedText()
+        or left and left..right or nil
+      if var and ide.debugger then
+        ide.debugger.quickeval(var, function(val) editor:CallTipShow(pos, val) end)
       end
-      editor:CallTipShow(pos,tip)
     end
   end)
 

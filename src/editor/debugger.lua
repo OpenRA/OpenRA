@@ -427,6 +427,17 @@ end
 debugger.breakpoint = function(file, line, state)
   debugger.handleAsync((state and "setb " or "delb ") .. file .. " " .. line)
 end
+debugger.quickeval = function(var, callback)
+  if debugger.server and not debugger.running then
+    copas.addthread(function ()
+      local _, values, err = debugger.evaluate(var)
+      local val = err
+        and err:gsub("%[.-%]:%d+:%s*","error: ")
+        or (var .. " = " .. (#values > 0 and values[1] or 'nil'))
+      if callback then callback(val) end
+    end)
+  end
+end
 
 ----------------------------------------------
 -- public api

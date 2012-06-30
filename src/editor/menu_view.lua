@@ -6,8 +6,6 @@ local frame = ide.frame
 local menuBar = frame.menuBar
 local uimgr = frame.uimgr
 
-local debugger = ide.debugger
-
 local viewMenu = wx.wxMenu {
   -- NYI { ID "view.preferences", "&Preferences...", "Brings up dialog for settings (TODO)" },
   -- NYI { },

@@ -7,7 +7,6 @@ local ide = ide
 local frame = ide.frame
 local menuBar = frame.menuBar
 local openDocuments = ide.openDocuments
-local debugger = ide.debugger
 
 local fileMenu = wx.wxMenu({
     { ID_NEW, "&New\tCtrl-N", "Create an empty document" },
