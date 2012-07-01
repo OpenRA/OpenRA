@@ -52,11 +52,11 @@ namespace OpenRA.Mods.RA.Activities
 				var health = self.TraitOrDefault<Health>();
 				if (health != null)
 				{
-					// TODO: Fix bogus health init
-					if (ForceHealthPercentage > 0)
-						init.Add( new HealthInit( ForceHealthPercentage * 1f / 100 ));
-					else
-						init.Add( new HealthInit( (float)health.HP / health.MaxHP ));
+					var newHP = (ForceHealthPercentage > 0)
+						? ForceHealthPercentage / 100f
+						: (float)health.HP / health.MaxHP;
+
+					init.Add( new HealthInit(newHP) );
 				}
 
 				var cargo = self.TraitOrDefault<Cargo>();
