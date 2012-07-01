@@ -196,15 +196,23 @@ namespace OpenRA.Server
 							mods.Select( m => Pair.New(m.Split('@')[0], m.Split('@')[1])).All(kv => Game.CurrentMods.ContainsKey(kv.First) &&
 					 		(kv.Second == "{DEV_VERSION}" || Game.CurrentMods[kv.First].Version == "{DEV_VERSION}" || kv.Second == Game.CurrentMods[kv.First].Version));
 				
-				// Drop DEV_VERSION if it's a Dedicated
-				if ( lobbyInfo.GlobalSettings.Dedicated &&  mods.Any(m => m.Contains("{DEV_VERSION}")) ) { valid = false; }
-				
 				if (!valid)
 				{
 					Log.Write("server", "Rejected connection from {0}; mods do not match.",
 						newConn.socket.RemoteEndPoint);
 
 					SendOrderTo(newConn, "ServerError", "Your mods don't match the server");
+					DropClient(newConn);
+					return;
+				}
+				
+				// Drop DEV_VERSION if it's a Dedicated
+				if ( lobbyInfo.GlobalSettings.Dedicated &&  mods.Any(m => m.Contains("{DEV_VERSION}")) )
+				{
+					Log.Write("server", "Rejected connection from {0}; DEV_VERSION is not allowed here.",
+						newConn.socket.RemoteEndPoint);
+
+					SendOrderTo(newConn, "ServerError", "DEV_VERSION is not allowed here");
 					DropClient(newConn);
 					return;
 				}
