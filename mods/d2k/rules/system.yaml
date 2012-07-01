@@ -130,9 +130,9 @@ World:
 	Country@Ordos:
 		Name: Ordos
 		Race: ordos
-#	BibLayer:
-#		BibTypes: bib2x2,bib3x2,bib3x3
-#		BibWidths: 2,3,3
+	BibLayer:
+		BibTypes: bib3x, bib2x
+		BibWidths: 3, 2
 	ResourceLayer:
 	ResourceClaimLayer:
 	ResourceType@spice:

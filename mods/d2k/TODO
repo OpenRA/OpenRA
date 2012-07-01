@@ -29,5 +29,4 @@
 # support patch 1.06 gamefiles: DATA.R8 has more frames and currently fails to extract, also featuring new terrain with white houses and new unit: grenade thrower
 # put TilesetBuilder.Export into OpenRA.Utility to call the functions directly when extracting game-files (instead of opening a GUI)
 # group number metrics are off
-# add bibs
 # building offsets wrong (worst for towers)
