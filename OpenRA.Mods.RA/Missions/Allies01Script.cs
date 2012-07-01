@@ -236,7 +236,7 @@ namespace OpenRA.Mods.RA.Missions
             chinook.QueueActivity(new HeliFly(insertionLZ.CenterLocation));
             chinook.QueueActivity(new Turn(0));
             chinook.QueueActivity(new HeliLand(true));
-            chinook.QueueActivity(new UnloadCargo());
+            chinook.QueueActivity(new UnloadCargo(true));
             chinook.QueueActivity(new CallFunc(() => Sound.Play("laugh1.aud")));
             chinook.QueueActivity(new Wait(150));
             chinook.QueueActivity(new HeliFly(chinookExitPoint.CenterLocation));

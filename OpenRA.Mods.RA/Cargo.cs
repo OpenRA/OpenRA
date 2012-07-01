@@ -81,7 +81,7 @@ namespace OpenRA.Mods.RA
 					return;
 
 				self.CancelActivity();
-				self.QueueActivity(new UnloadCargo());
+				self.QueueActivity(new UnloadCargo(true));
 			}
 		}
 

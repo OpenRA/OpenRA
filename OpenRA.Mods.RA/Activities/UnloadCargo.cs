@@ -18,6 +18,10 @@ namespace OpenRA.Mods.RA.Activities
 {
 	public class UnloadCargo : Activity
 	{
+		bool unloadAll;
+
+		public UnloadCargo(bool unloadAll) { this.unloadAll = unloadAll; }
+		
 		CPos? ChooseExitTile(Actor self, Actor cargo)
 		{
 			// is anyone still hogging this tile?
@@ -99,7 +103,7 @@ namespace OpenRA.Mods.RA.Activities
 				actor.SetTargetLine(Target.FromCell(rallyPoint), Color.Green, false);
 			});
 
-			return NextActivity;
+			return unloadAll ? this : NextActivity;
 		}
 	}
 }
