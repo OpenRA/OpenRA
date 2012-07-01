@@ -37,25 +37,33 @@ namespace UPnP
 
 			DateTime start = DateTime.Now;
 
-			do
+			try
 			{
-				s.SendTo(data, ipe);
-
-				int length = 0;
 				do
 				{
-					length = s.Receive(buffer);
-
-					string resp = Encoding.ASCII.GetString(buffer, 0, length).ToLower();
-					if (resp.Contains("upnp:rootdevice"))
+					s.SendTo(data, ipe);
+	
+					int length = 0;
+					do
 					{
-						resp = resp.Substring(resp.ToLower().IndexOf("location:") + 9);
-						resp = resp.Substring(0, resp.IndexOf("\r")).Trim();
-						if (!string.IsNullOrEmpty(_serviceUrl = GetServiceUrl(resp)))
-							return true;
-					}
-				} while (length > 0);
-			} while ((start - DateTime.Now) < _timeout);
+						length = s.Receive(buffer);
+	
+						string resp = Encoding.ASCII.GetString(buffer, 0, length).ToLower();
+						if (resp.Contains("upnp:rootdevice"))
+						{
+							resp = resp.Substring(resp.ToLower().IndexOf("location:") + 9);
+							resp = resp.Substring(0, resp.IndexOf("\r")).Trim();
+							if (!string.IsNullOrEmpty(_serviceUrl = GetServiceUrl(resp)))
+								return true;
+						}
+					} while (length > 0);
+				} while ((start - DateTime.Now) < _timeout);
+			}
+			catch (Exception e)
+			{
+				OpenRA.Log.Write("server", "UPNP discover failed: {0}", e);
+			}
+
 			return false;
 		}
 
