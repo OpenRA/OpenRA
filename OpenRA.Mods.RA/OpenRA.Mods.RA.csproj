@@ -384,6 +384,7 @@
     <Compile Include="World\PlayMusicOnMapLoad.cs" />
     <Compile Include="World\SmudgeLayer.cs" />
     <Compile Include="Player\BaseAttackNotifier.cs" />
+    <Compile Include="Player\HarvesterAttackNotifier.cs" />
     <Compile Include="InfiltrateForExploration.cs" />
     <Compile Include="InfiltrateForCash.cs" />
     <Compile Include="RenderShroudCircle.cs" />
