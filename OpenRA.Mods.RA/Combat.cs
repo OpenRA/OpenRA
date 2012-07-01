@@ -32,6 +32,18 @@ namespace OpenRA.Mods.RA
 			return null;
 		}
 
+		public static int MaxWarheadRange(WarheadInfo warhead)
+		{
+			switch (warhead.DamageModel)
+			{
+				case DamageModel.Normal:
+					return (int)(warhead.Spread * (float) Math.Log(Math.Abs(warhead.Damage), 2));
+				case DamageModel.PerCell:
+					return warhead.Size[0];
+			}
+			return 0;
+		}
+
 		public static void DoImpact(WarheadInfo warhead, ProjectileArgs args)
 		{
 			var world = args.firedBy.World;

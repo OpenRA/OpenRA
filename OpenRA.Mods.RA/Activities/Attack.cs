@@ -39,6 +39,18 @@ namespace OpenRA.Mods.RA.Activities
 
 		public Attack(Target target, int range) : this(target, range, true) {}
 
+		/// <summary>
+		/// Clones this Attack so it may be requeued later.
+		/// </summary>
+		/// <returns></returns>
+		public Activity Clone()
+		{
+			return new Attack(Target, Range, AllowMovement)
+			{
+				NextActivity = NextActivity
+			};
+		}
+
 		public override Activity Tick( Actor self )
 		{
 			var attack = self.Trait<AttackBase>();
