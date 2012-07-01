@@ -23,6 +23,7 @@ namespace OpenRA.FileFormats
 		public string[] AcceptsSmudgeType = { };
 		public bool IsWater = false;
 		public Color Color;
+		public string CustomCursor;
 
 		public TerrainTypeInfo() {}
 		public TerrainTypeInfo(MiniYaml my) { FieldLoader.Load(this, my); }
