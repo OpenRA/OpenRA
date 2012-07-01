@@ -545,5 +545,10 @@ namespace OpenRA.Editor
 			var player = actorOwnerChooser.SelectedItem as PlayerReference;
 			surface1.NewActorOwner = player.Name;
 		}
+
+		private void copySelectionToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			surface1.CopySelection();
+		}
 	}
 }

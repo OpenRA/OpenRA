@@ -38,6 +38,12 @@ namespace OpenRA.Editor
 		public bool ShowActorNames;
 		public bool ShowGrid;
 
+		public bool IsPaste { get { return TileSelection != null && ResourceSelection != null; } }
+		public TileReference<ushort, byte>[,] TileSelection;
+		public TileReference<byte, byte>[,] ResourceSelection;
+		public CPos SelectionStart;
+		public CPos SelectionEnd;
+
 		public string NewActorOwner;
 
 		public event Action AfterChange = () => { };
@@ -59,7 +65,7 @@ namespace OpenRA.Editor
 			Tool = null;
 		}
 
-		public void SetTool(ITool tool) { Tool = tool; }
+		public void SetTool(ITool tool) { Tool = tool; ClearSelection(); }
 
 		public void BindActorTemplates(IEnumerable<ActorTemplate> templates)
 		{
@@ -83,6 +89,8 @@ namespace OpenRA.Editor
 			UpdateStyles();
 		}
 
+		static readonly Pen SelectionPen = new Pen(Color.Blue);
+		static readonly Pen PastePen = new Pen(Color.Green);
 		static readonly Pen CordonPen = new Pen(Color.Red);
 		int2 MousePos;
 
@@ -182,12 +190,20 @@ namespace OpenRA.Editor
 			}
 
 			AfterChange();
+			ClearSelection();
 		}
 
 		void Draw()
 		{
-			if (Tool != null) Tool.Apply(this);
-			AfterChange();
+			if (Tool != null)
+			{
+				Tool.Apply(this);
+				AfterChange();
+			}
+			else if (IsPaste)
+				PasteSelection();
+			else
+				SelectionEnd = GetBrushLocation();
 		}
 
 		protected override void OnMouseDown(MouseEventArgs e)
@@ -199,7 +215,11 @@ namespace OpenRA.Editor
 			if (!IsPanning)
 			{
 				if (e.Button == MouseButtons.Right) Erase();
-				if (e.Button == MouseButtons.Left) Draw();
+				if (e.Button == MouseButtons.Left)
+				{
+					Draw();
+					if (!IsPaste) SelectionStart = GetBrushLocation();
+				}
 			}
 
 			Invalidate();
@@ -367,6 +387,25 @@ namespace OpenRA.Editor
 				Map.Bounds.Width * TileSet.TileSize * Zoom,
 				Map.Bounds.Height * TileSet.TileSize * Zoom);
 
+			e.Graphics.DrawRectangle(SelectionPen,
+				(SelectionStart.X * TileSet.TileSize * Zoom) + Offset.X,
+				(SelectionStart.Y * TileSet.TileSize * Zoom) + Offset.Y,
+				(SelectionEnd - SelectionStart).X * TileSet.TileSize * Zoom,
+				(SelectionEnd - SelectionStart).Y * TileSet.TileSize * Zoom);
+
+			if (IsPaste)
+			{
+				var loc = GetBrushLocation();
+				var width = Math.Abs((SelectionStart - SelectionEnd).X);
+				var height = Math.Abs((SelectionStart - SelectionEnd).Y);
+
+				e.Graphics.DrawRectangle(PastePen,
+					(loc.X * TileSet.TileSize * Zoom) + Offset.X,
+					(loc.Y * TileSet.TileSize * Zoom) + Offset.Y,
+					width * (TileSet.TileSize * Zoom),
+					height * (TileSet.TileSize * Zoom));
+			}
+
 			foreach (var ar in Map.Actors.Value)
 			{
 				if (ActorTemplates.ContainsKey(ar.Value.Type))
@@ -394,6 +433,67 @@ namespace OpenRA.Editor
 				if (x.Key != null)
 					DrawActorBorder(e.Graphics, x.Value.Location(), ActorTemplates[x.Value.Type]);
 			}
+		}
+
+		public void CopySelection()
+		{
+			// Grab tiles and resources within selection (doesn't do actors)
+			var start = SelectionStart;
+			var end = SelectionEnd;
+
+			if (start == end) return;
+
+			int width = Math.Abs((start - end).X);
+			int height = Math.Abs((start - end).Y);
+
+			TileSelection = new TileReference<ushort, byte>[width, height];
+			ResourceSelection = new TileReference<byte, byte>[width, height];
+
+			for (int x = 0; x < width; x++)
+			{
+				for (int y = 0; y < height; y++)
+				{
+					//todo: crash prevention
+					TileSelection[x, y] = Map.MapTiles.Value[start.X + x, start.Y + y];
+					ResourceSelection[x, y] = Map.MapResources.Value[start.X + x, start.Y + y];
+				}
+			}
+		}
+
+		void PasteSelection()
+		{
+			var loc = GetBrushLocation();
+			var width = Math.Abs((SelectionStart - SelectionEnd).X);
+			var height = Math.Abs((SelectionStart - SelectionEnd).Y);
+
+			for (int x = 0; x < width; x++)
+			{
+				for (int y = 0; y < height; y++)
+				{
+					var mapX = loc.X + x;
+					var mapY = loc.Y + y;
+
+					//todo: crash prevention for outside of bounds
+					Map.MapTiles.Value[mapX, mapY] = TileSelection[x, y];
+					Map.MapResources.Value[mapX, mapY] = ResourceSelection[x, y];
+
+					var ch = new int2(mapX / ChunkSize, mapY / ChunkSize);
+					if (Chunks.ContainsKey(ch))
+					{
+						Chunks[ch].Dispose();
+						Chunks.Remove(ch);
+					}
+				}
+			}
+			AfterChange();
+		}
+
+		void ClearSelection()
+		{
+			SelectionStart = CPos.Zero;
+			SelectionEnd = CPos.Zero;
+			TileSelection = null;
+			ResourceSelection = null;
 		}
 	}
 
