@@ -305,6 +305,8 @@ namespace OpenRA
 			{
 				while (true)
 				{
+					Game.Settings.Server.Map = WidgetUtils.ChooseInitialMap(Game.Settings.Server.Map);
+					Game.Settings.Save();
 					Game.CreateServer(new ServerSettings(Game.Settings.Server));
 					while(true)
 					{
