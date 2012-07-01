@@ -56,12 +56,7 @@ namespace OpenRA.Mods.RA
 
 				self.CancelActivity();
 				self.QueueActivity(new Teleport(null, order.TargetLocation, true));
-				Sound.Play("chrotnk1.aud", self.CenterLocation);
-				Sound.Play("chrotnk1.aud", order.TargetLocation.ToPPos());
 				chargeTick = 25 * self.Info.Traits.Get<ChronoshiftDeployInfo>().ChargeTime;
-
-				foreach (var a in self.World.ActorsWithTrait<ChronoshiftPaletteEffect>())
-					a.Trait.Enable();
 			}
 		}
 

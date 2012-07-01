@@ -10,6 +10,7 @@
 
 using System.Linq;
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Render;
 
 namespace OpenRA.Mods.RA.Activities
 {
@@ -28,6 +29,9 @@ namespace OpenRA.Mods.RA.Activities
 
 		public override Activity Tick(Actor self)
 		{
+			Sound.Play("chrono2.aud", self.Location.ToPPos());
+			Sound.Play("chrono2.aud", destination.ToPPos());
+
 			self.Trait<ITeleportable>().SetPosition(self, destination);
 
 			if (killCargo && self.HasTrait<Cargo>())
@@ -41,6 +45,13 @@ namespace OpenRA.Mods.RA.Activities
 					a.Owner.Deaths++;
 				}
 			}
+
+			// Trigger screen desaturate effect
+			foreach (var a in self.World.ActorsWithTrait<ChronoshiftPaletteEffect>())
+				a.Trait.Enable();
+
+			if (chronosphere != null && !chronosphere.Destroyed && chronosphere.HasTrait<RenderBuilding>())
+				chronosphere.Trait<RenderBuilding>().PlayCustomAnim(chronosphere, "active");
 
 			return NextActivity;
 		}
