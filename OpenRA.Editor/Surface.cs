@@ -203,7 +203,7 @@ namespace OpenRA.Editor
 			else if (IsPaste)
 				PasteSelection();
 			else
-				SelectionEnd = GetBrushLocation();
+				SelectionEnd = GetBrushLocationBR();
 		}
 
 		protected override void OnMouseDown(MouseEventArgs e)
@@ -292,6 +292,14 @@ namespace OpenRA.Editor
 			var vX = (int)Math.Floor((MousePos.X - Offset.X) / Zoom);
 			var vY = (int)Math.Floor((MousePos.Y - Offset.Y) / Zoom);
 			return new CPos(vX / TileSet.TileSize, vY / TileSet.TileSize);
+		}
+
+		public CPos GetBrushLocationBR()
+		{
+			var vX = (int)Math.Floor((MousePos.X - Offset.X) / Zoom);
+			var vY = (int)Math.Floor((MousePos.Y - Offset.Y) / Zoom);
+			return new CPos((vX + TileSet.TileSize - 1) / TileSet.TileSize,
+			                (vY + TileSet.TileSize - 1) / TileSet.TileSize);
 		}
 
 		public void DrawActor(SGraphics g, CPos p, ActorTemplate t, ColorPalette cp)
