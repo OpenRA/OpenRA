@@ -82,7 +82,7 @@ namespace OpenRA.Mods.RA
 		{
 			var mobile = self.Trait<Mobile>();
 			self.QueueActivity(mobile.ScriptedMove(left));
-			self.QueueActivity(new Teleport(null, right, false));
+			self.QueueActivity(new SimpleTeleport(right));
 			self.QueueActivity(new CallFunc(() => LoopTrack(self,left,right)));
 		}
 	}
