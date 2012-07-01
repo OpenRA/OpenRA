@@ -179,7 +179,16 @@ namespace OpenRA.Mods.RA.Missions
             {
                 var spawnActor = self.World.SharedRandom.Next(2) == 0 ? attackEntryPoint1 : attackEntryPoint2;
                 var actor = self.World.CreateActor(unit, new TypeDictionary { new OwnerInit(soviets), new LocationInit(spawnActor.Location) });
-                actor.QueueActivity(new AttackMove.AttackMoveActivity(actor, new Attack(Target.FromActor(einstein), 3))); // better way of doing this?
+                Activity innerActivity;
+                if (einstein != null && einstein.IsInWorld)
+                {
+                    innerActivity = new Attack(Target.FromActor(einstein), 3);
+                }
+                else
+                {
+                    innerActivity = new Move.Move(extractionLZ.Location, 3);
+                }
+                actor.QueueActivity(new AttackMove.AttackMoveActivity(actor, innerActivity));
             }
         }
 
