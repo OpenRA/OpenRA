@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2012 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -8,7 +8,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -255,7 +254,6 @@ namespace OpenRA.Mods.RA.Missions
             tanya = self.World.CreateActor(false, tanyaName, new TypeDictionary { new OwnerInit(allies) });
             var chinook = self.World.CreateActor(chinookName, new TypeDictionary { new OwnerInit(allies), new LocationInit(insertionLZEntryPoint.Location) });
             chinook.Trait<Cargo>().Load(chinook, tanya);
-            // use CenterLocation for HeliFly, Location for Move
             chinook.QueueActivity(new HeliFly(insertionLZ.CenterLocation));
             chinook.QueueActivity(new Turn(0));
             chinook.QueueActivity(new HeliLand(true));
