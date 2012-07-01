@@ -321,3 +321,7 @@ function FileTreeMarkSelected(file)
     end
   end
 end
+
+function FileTreeRefresh()
+  treeSetRoot(projtree,filetree.projdata,filetree.projdirText)
+end

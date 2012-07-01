@@ -29,7 +29,7 @@ end
 function LoadFile(filePath, editor, file_must_exist)
   filePath = wx.wxFileName(filePath):GetFullPath()
   local cmpName = string.lower(string.gsub(filePath, "\\", "/"))
-  
+
   -- prevent files from being reopened again
   if (not editor) then
     for id, doc in pairs(openDocuments) do
@@ -82,7 +82,7 @@ function LoadFile(filePath, editor, file_must_exist)
   IndicateFunctions(editor)
 
   SettingsAppendFileToHistory(filePath)
-  
+
   -- activate the editor; this is needed for those cases when the editor is
   -- created from some other element, for example, from a project tree.
   SetEditorSelection()
@@ -188,6 +188,9 @@ function SaveFileAs(editor)
     local filePath = fileDialog:GetPath()
 
     if SaveFile(editor, filePath) then
+      SetEditorSelection() -- update title of the editor
+      FileTreeRefresh() -- refresh the tree to reflect the new file
+      FileTreeMarkSelected(filePath)
       SetupKeywords(editor, GetFileExt(filePath))
       IndicateFunctions(editor)
       if MarkupStyle then MarkupStyle(editor) end
