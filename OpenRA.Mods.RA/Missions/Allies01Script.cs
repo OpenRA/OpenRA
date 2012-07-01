@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -166,6 +167,14 @@ namespace OpenRA.Mods.RA.Missions
             {
                 MissionFailed(self, "Tanya was killed.");
             }
+            ManageSovietOre();
+        }
+
+        void ManageSovietOre()
+        {
+            var res = soviets.PlayerActor.Trait<PlayerResources>();
+            res.TakeOre(res.Ore);
+            res.TakeCash(res.Cash);
         }
 
         void SpawnSignalFlare(Actor self)
