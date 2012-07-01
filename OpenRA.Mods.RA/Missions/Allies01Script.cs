@@ -204,7 +204,7 @@ namespace OpenRA.Mods.RA.Missions
         {
             for (int i = 0; i < patrol.Length; i++)
             {
-                var actor = self.World.CreateActor(patrol[i], new TypeDictionary { new OwnerInit(soviets), new LocationInit(insertionLZ.Location + new CVec(-1 + i, 8 + i * 2)) });
+                var actor = self.World.CreateActor(patrol[i], new TypeDictionary { new OwnerInit(soviets), new LocationInit(insertionLZ.Location + new CVec(-1 + i, 10 + i * 2)) });
                 actor.QueueActivity(new Move.Move(insertionLZ.Location));
             }
         }
