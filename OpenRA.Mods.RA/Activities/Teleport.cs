@@ -16,15 +16,32 @@ namespace OpenRA.Mods.RA.Activities
 	public class Teleport : Activity
 	{
 		CPos destination;
+		bool killCargo;
+		Actor chronosphere;
 
-		public Teleport(CPos destination)
+		public Teleport(Actor chronosphere, CPos destination, bool killCargo)
 		{
+			this.chronosphere = chronosphere;
 			this.destination = destination;
+			this.killCargo = killCargo;
 		}
 
 		public override Activity Tick(Actor self)
 		{
 			self.Trait<ITeleportable>().SetPosition(self, destination);
+
+			if (killCargo && self.HasTrait<Cargo>())
+			{
+				var cargo = self.Trait<Cargo>();
+				while (!cargo.IsEmpty(self))
+				{
+					if (chronosphere != null)
+						chronosphere.Owner.Kills++;
+					var a = cargo.Unload(self);
+					a.Owner.Deaths++;
+				}
+			}
+
 			return NextActivity;
 		}
 	}

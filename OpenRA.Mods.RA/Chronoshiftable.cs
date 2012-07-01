@@ -20,6 +20,8 @@ namespace OpenRA.Mods.RA
 		// Return-to-sender logic
 		[Sync] CPos chronoshiftOrigin;
 		[Sync] int chronoshiftReturnTicks = 0;
+		Actor chronosphere;
+		bool killCargo;
 
 		public void Tick(Actor self)
 		{
@@ -34,7 +36,7 @@ namespace OpenRA.Mods.RA
 			{
 				self.CancelActivity();
 				// Todo: need a new Teleport method that will move to the closest available cell
-				self.QueueActivity(new Teleport(chronoshiftOrigin));
+				self.QueueActivity(new Teleport(chronosphere, chronoshiftOrigin, killCargo));
 			}
 		}
 
@@ -52,22 +54,12 @@ namespace OpenRA.Mods.RA
 			/// Set up return-to-sender info
 			chronoshiftOrigin = self.Location;
 			chronoshiftReturnTicks = duration;
-
-			// Kill cargo
-			if (killCargo && self.HasTrait<Cargo>())
-			{
-				var cargo = self.Trait<Cargo>();
-				while (!cargo.IsEmpty(self))
-				{
-					chronosphere.Owner.Kills++;
-					var a = cargo.Unload(self);
-					a.Owner.Deaths++;
-				}
-			}
+			this.chronosphere = chronosphere;
+			this.killCargo = killCargo;
 
 			// Set up the teleport
 			self.CancelActivity();
-			self.QueueActivity(new Teleport(targetLocation));
+			self.QueueActivity(new Teleport(chronosphere, targetLocation, killCargo));
 
 			return true;
 		}
