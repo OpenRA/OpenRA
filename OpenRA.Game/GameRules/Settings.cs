@@ -30,6 +30,7 @@ namespace OpenRA.GameRules
 		public string Map = null;
 		public bool Dedicated = false;
 		public bool DedicatedLoop = true;
+		public string DedicatedMOTD = null;
 
 		public ServerSettings() { }
 
@@ -44,6 +45,7 @@ namespace OpenRA.GameRules
 			Map = other.Map;
 			Dedicated = other.Dedicated;
 			DedicatedLoop = other.DedicatedLoop;
+			DedicatedMOTD = other.DedicatedMOTD;
 		}
 	}
 

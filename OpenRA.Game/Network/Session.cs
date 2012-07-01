@@ -76,6 +76,7 @@ namespace OpenRA.Network
 			public bool LockTeams = true;	// don't allow team changes after game start.
 			public bool AllowCheats = false;
 			public bool Dedicated;
+			public string DedicatedMOTD;
 		}
 
 		public Session(string[] mods)
