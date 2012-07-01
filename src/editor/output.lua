@@ -124,15 +124,8 @@ function CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
 
   DisplayOutput(("Program starting as '%s'.\n"):format(cmd))
 
-  local proc = nil
-  local customproc
-
-  if (tooutput) then
-    customproc = wx.wxProcess(errorlog)
-    customproc:Redirect()
-
-    proc = customproc
-  end
+  local proc = wx.wxProcess(errorlog)
+  if (tooutput) then proc:Redirect() end -- redirect the output if requested
 
   -- manipulate working directory
   local oldcwd
@@ -155,13 +148,12 @@ function CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
   -- a new process, but connected to the running one (e.g. DDE under Windows).
   if not pid or pid == -1 or pid == 0 then
     DisplayOutput(("Program unable to run as '%s'\n"):format(cmd))
-    customproc = nil
     return
   end
 
   DisplayOutput(("Program '%s' started in '%s' (pid: %d).\n")
     :format(uid, (wdir and wdir or wx.wxFileName.GetCwd()), pid))
-  customprocs[pid] = {proc=customproc, uid=uid, endcallback=endcallback, started = os.clock()}
+  customprocs[pid] = {proc=proc, uid=uid, endcallback=endcallback, started = os.clock()}
 
   local streamin = proc and proc:GetInputStream()
   local streamerr = proc and proc:GetErrorStream()
