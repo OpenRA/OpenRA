@@ -119,6 +119,7 @@ namespace OpenRA.Server
 			lobbyInfo.GlobalSettings.ServerName = settings.Name;
 			lobbyInfo.GlobalSettings.Ban = settings.Ban;
 			lobbyInfo.GlobalSettings.Dedicated = settings.Dedicated;
+			lobbyInfo.GlobalSettings.DedicatedMOTD = settings.DedicatedMOTD;
 
 			foreach (var t in ServerTraits.WithInterface<INotifyServerStart>())
 				t.ServerStarted(this);
@@ -330,7 +331,8 @@ namespace OpenRA.Server
 				
 				if ( lobbyInfo.GlobalSettings.Dedicated )
 				{
-					SendChatTo(newConn, "You have joined the dedicated server!");
+					if (lobbyInfo.GlobalSettings.DedicatedMOTD != null)
+						SendChatTo(newConn, lobbyInfo.GlobalSettings.DedicatedMOTD);
 					if (client.IsAdmin)
 						SendChatTo(newConn, "    You are admin now!");
 					else
