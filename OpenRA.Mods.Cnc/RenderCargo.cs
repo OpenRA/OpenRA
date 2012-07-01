@@ -19,6 +19,7 @@ namespace OpenRA.Mods.Cnc
 	{
 		/* altitude of the cargo, relative to us. -ve is underneath us */
 		public readonly int RelativeAltitude = 0;
+		public readonly string[] PassengerTypes;
 
 		public object Create(ActorInitializer init) { return new RenderCargo(init.self, this); }
 	}
@@ -49,7 +50,12 @@ namespace OpenRA.Mods.Cnc
 					cargoFacing.Facing = facing.Facing;
 			}
 
-			return r.Concat(cargo.Passengers.SelectMany(a => a.Render())
+			var visiblePassengers = (Info.PassengerTypes != null && Info.PassengerTypes.Length > 0)
+				? cargo.Passengers.Where(p =>
+					Info.PassengerTypes.Contains(p.Trait<Passenger>().info.CargoType))
+				: cargo.Passengers;
+
+			return r.Concat(visiblePassengers.SelectMany(a => a.Render())
 				.Select(a => a.WithPos(a.Pos - new float2(0, Info.RelativeAltitude))
 			        .WithZOffset(a.ZOffset + Info.RelativeAltitude)));
 		}

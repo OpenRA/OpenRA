@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA
 
 	public class Passenger : IIssueOrder, IResolveOrder, IOrderVoice
 	{
-		readonly PassengerInfo info;
+		public readonly PassengerInfo info;
 		public Passenger( PassengerInfo info ) { this.info = info; }
 
 		public IEnumerable<IOrderTargeter> Orders
