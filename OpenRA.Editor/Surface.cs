@@ -218,7 +218,8 @@ namespace OpenRA.Editor
 				if (e.Button == MouseButtons.Left)
 				{
 					Draw();
-					if (!IsPaste) SelectionStart = GetBrushLocation();
+					if (!IsPaste)
+						SelectionStart = SelectionEnd = GetBrushLocation();
 				}
 			}
 
