@@ -127,7 +127,7 @@ namespace OpenRA.Mods.RA.Render
 			self.World.AddFrameEndTask(w =>
 			{
 				if (!self.Destroyed)
-					w.Add(new Corpse(self, "die{0}".F(e.Warhead.InfDeath + 1)));
+					w.Add(new Corpse(self, "die{0}".F(e.Warhead.InfDeath)));
 			});
 		}
 	}

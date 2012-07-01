@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Cnc
 		[ActorReference] public readonly string ViceroidActor = "vice";
 		public readonly int Probability = 10;
 		public readonly string Owner = "Creeps";
-		public readonly int InfDeath = 5;
+		public readonly int InfDeath = 6;
 
 		public object Create(ActorInitializer init) { return new SpawnViceroid(this); }
 	}

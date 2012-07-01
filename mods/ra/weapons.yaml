@@ -12,7 +12,7 @@ Colt45:
 			Heavy: 5%
 			Concrete: 5%
 		Explosion: piff
-		InfDeath: 1
+		InfDeath: 2
 		Damage: 50
 		
 ZSU-23:
@@ -48,7 +48,7 @@ Vulcan:
 			Heavy: 25%
 			Concrete: 25%
 		Explosion: piffs
-		InfDeath: 1
+		InfDeath: 2
 		Damage: 10
 	Warhead@2:
 		Spread: 3
@@ -58,7 +58,7 @@ Vulcan:
 			Heavy: 25%
 			Concrete: 25%
 		Explosion: piffs
-		InfDeath: 1
+		InfDeath: 2
 		Damage: 10
 		Delay: 2
 	Warhead@3:
@@ -69,7 +69,7 @@ Vulcan:
 			Heavy: 25%
 			Concrete: 25%
 		Explosion: piffs
-		InfDeath: 1
+		InfDeath: 2
 		Damage: 10
 		Delay: 4
 	Warhead@4:
@@ -80,7 +80,7 @@ Vulcan:
 			Heavy: 25%
 			Concrete: 25%
 		Explosion: piffs
-		InfDeath: 1
+		InfDeath: 2
 		Damage: 10
 		Delay: 6
 	Warhead@5:
@@ -91,7 +91,7 @@ Vulcan:
 			Heavy: 25%
 			Concrete: 25%
 		Explosion: piffs
-		InfDeath: 1
+		InfDeath: 2
 		Damage: 10
 		Delay: 8
 	Warhead@6:
@@ -102,7 +102,7 @@ Vulcan:
 			Heavy: 25%
 			Concrete: 25%
 		Explosion: piffs
-		InfDeath: 1
+		InfDeath: 2
 		Damage: 10
 		Delay: 10
 		
@@ -135,7 +135,7 @@ Maverick:
 			Concrete: 50%
 		Explosion: med_explosion
 		WaterExplosion: med_splash
-		InfDeath: 3
+		InfDeath: 4
 		SmudgeType: Crater
 		Damage: 70
 		
@@ -157,7 +157,7 @@ FireballLauncher:
 			Concrete: 50%
 		Explosion: napalm
 		WaterExplosion: napalm
-		InfDeath: 4
+		InfDeath: 5
 		SmudgeType: Scorch
 		ImpactSound: firebl3
 		Damage: 150
@@ -183,7 +183,7 @@ Flamer:
 			Concrete: 50%
 		Explosion: small_napalm
 		WaterExplosion: small_napalm
-		InfDeath: 4
+		InfDeath: 5
 		SmudgeType: Scorch
 		ImpactSound: firebl3
 		Damage: 8
@@ -205,7 +205,7 @@ ChainGun:
 			Concrete: 25%
 		Explosion: piffs
 		WaterExplosion: small_splash
-		InfDeath: 1
+		InfDeath: 2
 		Damage: 20
 
 ChainGun.Yak:
@@ -225,7 +225,7 @@ ChainGun.Yak:
 			Concrete: 25%
 		Explosion: piffs
 		WaterExplosion: small_splash
-		InfDeath: 1
+		InfDeath: 2
 		Damage: 40
 		
 Pistol:
@@ -242,7 +242,7 @@ Pistol:
 			Heavy: 25%
 			Concrete: 25%
 		Explosion: piffs
-		InfDeath: 1
+		InfDeath: 2
 		Damage: 1
 		
 M1Carbine:
@@ -259,7 +259,7 @@ M1Carbine:
 			Heavy: 10%
 			Concrete: 10%
 		Explosion: piffs
-		InfDeath: 1
+		InfDeath: 2
 		Damage: 15
 
 Dragon:
@@ -288,7 +288,7 @@ Dragon:
 			Concrete: 20%
 		Explosion: med_explosion
 		WaterExplosion: med_splash
-		InfDeath: 3
+		InfDeath: 4
 		SmudgeType: Crater
 		Damage: 50
 		ImpactSound: kaboom12
@@ -321,7 +321,7 @@ HellfireAG:
 			Concrete: 50%
 		Explosion: med_explosion
 		WaterExplosion: med_splash
-		InfDeath: 3
+		InfDeath: 4
 		SmudgeType: Crater
 		Damage: 40
 
@@ -353,7 +353,7 @@ HellfireAA:
 			Concrete: 50%
 		Explosion: med_explosion
 		WaterExplosion: med_splash
-		InfDeath: 3
+		InfDeath: 4
 		SmudgeType: Crater
 		Damage: 40		
 
@@ -376,7 +376,7 @@ Grenade:
 			Heavy: 5%
 		Explosion: med_explosion
 		WaterExplosion: small_splash
-		InfDeath: 2
+		InfDeath: 3
 		SmudgeType: Crater
 		Damage: 60
 		ImpactSound: kaboom12
@@ -397,7 +397,7 @@ Grenade:
 			Concrete: 30%
 		Explosion: small_explosion
 		WaterExplosion: small_splash
-		InfDeath: 3
+		InfDeath: 4
 		SmudgeType: Crater
 		Damage: 16
 
@@ -417,7 +417,7 @@ Grenade:
 			Concrete: 50%
 		Explosion: small_explosion
 		WaterExplosion: small_splash
-		InfDeath: 3
+		InfDeath: 4
 		SmudgeType: Crater
 		Damage: 30
 
@@ -439,7 +439,7 @@ Grenade:
 			Concrete: 50%
 		Explosion: small_explosion
 		WaterExplosion: small_splash
-		InfDeath: 3
+		InfDeath: 4
 		SmudgeType: Crater
 		Damage: 40
 
@@ -460,7 +460,7 @@ Grenade:
 			Concrete: 50%
 		Explosion: small_explosion
 		WaterExplosion: small_splash
-		InfDeath: 3
+		InfDeath: 4
 		SmudgeType: Crater
 		Damage: 50
 
@@ -480,7 +480,7 @@ TurretGun:
 			Concrete: 50%
 		Explosion: small_explosion
 		WaterExplosion: small_splash
-		InfDeath: 3
+		InfDeath: 4
 		SmudgeType: Crater
 		Damage: 60
 
@@ -511,7 +511,7 @@ MammothTusk:
 			Heavy: 25%
 		Explosion: med_explosion
 		WaterExplosion: med_splash
-		InfDeath: 2
+		InfDeath: 3
 		SmudgeType: Crater
 		Damage: 45
 
@@ -537,7 +537,7 @@ MammothTusk:
 			Concrete: 50%
 		Explosion: large_explosion
 		WaterExplosion: med_splash
-		InfDeath: 2
+		InfDeath: 3
 		SmudgeType: Crater
 		Damage: 220
 
@@ -557,7 +557,7 @@ M60mg:
 			Concrete: 10%
 		Explosion: piffs
 		WaterExplosion: small_splash
-		InfDeath: 1
+		InfDeath: 2
 		Damage: 15
 		
 Napalm:
@@ -578,7 +578,7 @@ Napalm:
 			Concrete: 50%
 		Explosion: napalm
 		WaterExplosion: med_splash
-		InfDeath: 4
+		InfDeath: 5
 		SmudgeType: Scorch
 		ImpactSound: firebl3
 		Damage: 100
@@ -593,7 +593,7 @@ CrateNapalm:
 			Concrete: 50%
 		Explosion: napalm
 		WaterExplosion: napalm
-		InfDeath: 4
+		InfDeath: 5
 		SmudgeType: Scorch
 		ImpactSound: firebl3
 		Damage: 600
@@ -609,7 +609,7 @@ CrateExplosion:
 			Heavy: 25%
 		Explosion: self_destruct
 		WaterExplosion: self_destruct
-		InfDeath: 3
+		InfDeath: 4
 		ImpactSound: kaboom15
 
 CrateNuke:
@@ -624,7 +624,7 @@ CrateNuke:
 			Concrete: 50%
 		Explosion: nuke
 		WaterExplosion: nuke
-		InfDeath: 4
+		InfDeath: 5
 		ImpactSound: kaboom1
 	Warhead@areanuke:
 		DamageModel: PerCell
@@ -638,7 +638,7 @@ CrateNuke:
 			Heavy: 25%
 			Concrete: 50%
 		Delay: 4
-		InfDeath: 4
+		InfDeath: 5
 		ImpactSound: kaboom22
 		
 		
@@ -650,7 +650,7 @@ TeslaZap:
 	Projectile: TeslaZap
 	Warhead:
 		Spread: 1
-		InfDeath: 5
+		InfDeath: 6
 		Damage: 100
 		
 Nike:
@@ -678,7 +678,7 @@ Nike:
 			Heavy: 50%
 			Concrete: 0%
 		Explosion: med_explosion
-		InfDeath: 2
+		InfDeath: 3
 		SmudgeType: Crater
 		Damage: 100
 
@@ -706,7 +706,7 @@ RedEye:
 			Light: 60%
 			Heavy: 25%
 		Explosion: med_explosion
-		InfDeath: 2
+		InfDeath: 3
 		SmudgeType: Crater
 		Damage: 40
 
@@ -732,7 +732,7 @@ RedEye:
 			Heavy: 25%
 		Explosion: large_explosion
 		WaterExplosion: large_splash
-		InfDeath: 2
+		InfDeath: 3
 		SmudgeType: Crater
 		Damage: 250
 		ImpactSound: kaboom12
@@ -760,7 +760,7 @@ SubMissile:
 			Heavy: 30%
 		Explosion: large_explosion
 		WaterExplosion: large_splash
-		InfDeath: 2
+		InfDeath: 3
 		SmudgeType: Crater
 		Damage: 300
 		ImpactSound: kaboom12
@@ -794,7 +794,7 @@ Stinger:
 			Concrete: 50%
 		Explosion: med_explosion
 		WaterExplosion: med_splash
-		InfDeath: 3
+		InfDeath: 4
 		SmudgeType: Crater
 		Damage: 30
 		
@@ -821,7 +821,7 @@ TorpTube:
 			Light: 75%
 			Concrete: 50%
 		WaterExplosion: large_splash
-		InfDeath: 3
+		InfDeath: 4
 		SmudgeType: Crater
 		Damage: 180
 		
@@ -841,7 +841,7 @@ TorpTube:
 			Concrete: 50%
 		Explosion: small_explosion
 		WaterExplosion: med_splash
-		InfDeath: 3
+		InfDeath: 4
 		SmudgeType: Crater
 		Damage: 25
 		
@@ -863,7 +863,7 @@ DepthCharge:
 			Light: 75%
 			Concrete: 50%
 		WaterExplosion: large_splash
-		InfDeath: 3
+		InfDeath: 4
 		SmudgeType: Crater
 		Damage: 80
 		
@@ -882,7 +882,7 @@ ParaBomb:
 			Concrete: 50%
 		Explosion: self_destruct
 		WaterExplosion: small_splash
-		InfDeath: 3
+		InfDeath: 4
 		SmudgeType: Crater
 		Damage: 500
 		ImpactSound: kaboom15
@@ -898,7 +898,7 @@ DogJaw:
 			Light: 0%
 			Heavy: 0%
 			Concrete: 0%
-		InfDeath: 0
+		InfDeath: 1
 		Damage: 100
 		
 Heal:
@@ -914,7 +914,7 @@ Heal:
 			Light: 0%
 			Heavy: 0%
 			Concrete: 0%
-		InfDeath: 0
+		InfDeath: 1
 		Damage: -50
 
 SilencedPPK:
@@ -931,7 +931,7 @@ SilencedPPK:
 			Heavy: 0%
 			Concrete: 0%
 		Explosion: piffs
-		InfDeath: 1
+		InfDeath: 2
 		Damage: 150
 		
 SCUD:
@@ -958,7 +958,7 @@ SCUD:
 			Heavy: 25%
 		Explosion: napalm
 		WaterExplosion: large_splash
-		InfDeath: 2
+		InfDeath: 3
 		SmudgeType: Crater
 		Damage: 600
 		ImpactSound: firebl3
@@ -976,7 +976,7 @@ Atomic:
 			Concrete: 50%
 		Explosion: nuke
 		WaterExplosion: nuke
-		InfDeath: 4
+		InfDeath: 5
 		ImpactSound: kaboom1
 	Warhead@areanuke:
 		DamageModel: PerCell
@@ -990,7 +990,7 @@ Atomic:
 			Heavy: 25%
 			Concrete: 50%
 		Delay: 4
-		InfDeath: 4
+		InfDeath: 5
 		ImpactSound: kaboom22
 
 UnitExplode:
@@ -1004,7 +1004,7 @@ UnitExplode:
 			Heavy: 25%
 		Explosion: self_destruct
 		WaterExplosion: large_splash
-		InfDeath: 3
+		InfDeath: 4
 		ImpactSound: kaboom22
 
 UnitExplodeSmall:
@@ -1017,7 +1017,7 @@ UnitExplodeSmall:
 			Light: 60%
 			Heavy: 25%
 		Explosion: large_explosion
-		InfDeath: 3
+		InfDeath: 4
 		ImpactSound: kaboom15
 
 Crush:
@@ -1044,7 +1044,7 @@ APMine:
 			Heavy: 0%
 			Concrete: 0%
 		ImpactSound: mine1
-		InfDeath: 2
+		InfDeath: 3
 		Explosion: napalm
 		
 Demolish:
@@ -1061,7 +1061,7 @@ PortaTesla:
 	Projectile: TeslaZap
 	Warhead:
 		Spread: 1
-		InfDeath: 5
+		InfDeath: 6
 		Damage: 45
 
 TTankZap:
@@ -1072,7 +1072,7 @@ TTankZap:
 	Projectile: TeslaZap
 	Warhead:
 		Spread: 1
-		InfDeath: 5
+		InfDeath: 6
 		Damage: 100
 
 FLAK-23:

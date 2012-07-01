@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA
 	{
 		public float GetDamageModifier(Actor attacker, WarheadInfo warhead )
 		{
-			if( warhead != null && warhead.InfDeath == 5 )
+			if( warhead != null && warhead.InfDeath == 6 )
 				return 1000f;
 			return 1f;
 		}
