@@ -1,6 +1,8 @@
 -- authors: Luxinia Dev (Eike Decker & Christoph Kubisch)
 ---------------------------------------------------------
 
+local funcdef = "([A-Za-z_][A-Za-z0-9_%.%:]*)%s*"
+local funccall = "([A-Za-z_][A-Za-z0-9_]*)%s*"
 return {
   exts = {"lua"},
   lexer = wxstc.wxSTC_LEX_LUA,
@@ -8,23 +10,18 @@ return {
   linecomment = "--",
   sep = "%.:",
   isfncall = function(str)
-    return string.find(str,"([A-Za-z0-9_]+)%s*%(")
+    return string.find(str, funccall .. "%(")
   end,
   isfndef = function(str)
     local l
-    local s,e,cap,par = string.find(str,"function%s+([A-Za-z0-9_]+%s-[%.%:]?%s-[A-Za-z0-9_]*)%s*(%(.-%))")
+    local s,e,cap,par = string.find(str, "function%s+" .. funcdef .. "(%(.-%))")
     -- try to match without brackets now, but only at the beginning of the line
     if (not s) then
-      s,e,cap = string.find(str,"^%s*function%s+([A-Za-z0-9_]+%s-[%.%:]?%s-[A-Za-z0-9_]*)%s*")
+      s,e,cap = string.find(str, "^%s*function%s+" .. funcdef)
     end
     -- try to match "foo = function()"
     if (not s) then
-      s,e,cap,cap1,cap2,par = string.find(str,"(([A-Za-z0-9_]+%s-[%.%:]?%s-)([A-Za-z0-9_]*))%s*=%s*function%s*(%(.-%))")
-      -- check if we captured 'local foo =' instead of 'foo.bar ='
-      if cap1 and cap2 and string.len(cap2) > 0 and not string.find(cap1,'[%.%:]') then
-        cap = cap2
-        s = s + string.len(cap1)
-      end
+      s,e,cap,par = string.find(str, funcdef .. "=%s*function%s*(%(.-%))")
     end
     if (s) then
       l = string.find(string.sub(str,1,s-1),"local%s+$")
