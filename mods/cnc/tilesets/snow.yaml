@@ -520,6 +520,30 @@ Templates:
 		Size: 3,3
 		Tiles:
 			2: River
+	Template@67:
+		Id: 67
+		Image: p01
+		Size: 1,1
+		Tiles:
+			0: Wall
+	Template@68:
+		Id: 68
+		Image: p02
+		Size: 1,1
+		Tiles:
+			0: Wall
+	Template@69:
+		Id: 69
+		Image: p03
+		Size: 1,1
+		Tiles:
+			0: Wall
+	Template@70:
+		Id: 70
+		Image: p04
+		Size: 1,1
+		Tiles:
+			0: Wall
 	Template@73:
 		Id: 73
 		Image: p07
@@ -576,11 +600,6 @@ Templates:
 		Tiles:
 			0: Wall
 			1: Wall
-	Template@81:
-		Id: 81
-		Image: p15
-		Size: 4,2
-		Tiles:
 	Template@82:
 		Id: 82
 		Image: b1
@@ -1238,31 +1257,6 @@ Templates:
 			15: River
 			18: Road
 			24: Road
-	Template@181:
-		Id: 181
-		Image: p16
-		Size: 2,2
-		Tiles:
-	Template@182:
-		Id: 182
-		Image: p17
-		Size: 4,2
-		Tiles:
-	Template@183:
-		Id: 183
-		Image: p18
-		Size: 4,3
-		Tiles:
-	Template@184:
-		Id: 184
-		Image: p19
-		Size: 6,2
-		Tiles:
-	Template@185:
-		Id: 185
-		Image: p20
-		Size: 4,3
-		Tiles:
 	Template@186:
 		Id: 186
 		Image: sh34
@@ -1281,4 +1275,3 @@ Templates:
 			3: Water
 			4: River
 			6: Water
-
