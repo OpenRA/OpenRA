@@ -15,26 +15,26 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	public class BaseAttackNotifierInfo : ITraitInfo
+	public class HarvesterAttackNotifierInfo : ITraitInfo
 	{
 		public readonly int NotifyInterval = 30;	// seconds
 
-		public object Create(ActorInitializer init) { return new BaseAttackNotifier(this); }
+		public object Create(ActorInitializer init) { return new HarvesterAttackNotifier(this); }
 	}
 
-	public class BaseAttackNotifier : INotifyDamage
+	public class HarvesterAttackNotifier : INotifyDamage
 	{
-		BaseAttackNotifierInfo info;
+		HarvesterAttackNotifierInfo info;
 
 		public int lastAttackTime = -1;
 		public CPos lastAttackLocation;
 
-		public BaseAttackNotifier(BaseAttackNotifierInfo info) { this.info = info; }
+		public HarvesterAttackNotifier(HarvesterAttackNotifierInfo info) { this.info = info; }
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
 			// only track last hit against our base
-			if (!self.HasTrait<Building>())
+			if (!self.HasTrait<Harvester>())
 				return;
 
 			// don't track self-damage
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.RA
 				return;
 
 			if (self.World.FrameNumber - lastAttackTime > info.NotifyInterval * 25)
-				Sound.PlayNotification(self.Owner, "Speech", "BaseAttack", self.Owner.Country.Race);
+				Sound.PlayNotification(self.Owner, "Speech", "HarvesterAttack", self.Owner.Country.Race);
 
 			lastAttackLocation = self.CenterLocation.ToCPos();
 			lastAttackTime = self.World.FrameNumber;

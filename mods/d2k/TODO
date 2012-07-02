@@ -13,23 +13,21 @@
 # add more spice tiles and make them fit
 # add game logic for concrete plates (use terrain overlay from bridges/ressources)
 # allow placing turrets on walls
-# R8 converter needs infantry/ornithocopter frame resorter
 # add grenade thrower
 # make sandworm behave like a moving anti-vehicle mine
 # add neutral buildings: emperor palace, fremen siech, smugglers factory
 # add deathhand missile (nuke)
 # maybe add ornithocopter strikes (they are currently directly contrallable units with non-reloading machine guns as in Dune II)
 # allow upgrades
-# allow different EVA voices for each faction (currently Atreides only)
 # add muzzles and explosions (currently falls back to RA)
 # create a shellmap (currently just a blank placeholder)
 # rework chrome UI, dialoges, tabs
 # add sonic tank weapon (currently uses tesla)
-# make deviator change the allegiance of ememy units (currently shoots rockets)
 # starport prices should vary
 # black spots on buildings should be fading team colors
 # gamefile extraction (setup/setup.z) from CD fails
 # support patch 1.06 gamefiles: DATA.R8 has more frames and currently fails to extract, also featuring new terrain with white houses and new unit: grenade thrower
-# infantry-only areas (Rough) do not show the dark-green mouse cursor
 # put TilesetBuilder.Export into OpenRA.Utility to call the functions directly when extracting game-files (instead of opening a GUI)
 # group number metrics are off
+# add bibs
+# building offsets wrong (worst for towers)

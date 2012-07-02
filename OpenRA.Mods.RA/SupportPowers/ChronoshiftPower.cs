@@ -39,14 +39,6 @@ namespace OpenRA.Mods.RA
 
 		public override void Activate(Actor self, Order order)
 		{
-			self.Trait<RenderBuilding>().PlayCustomAnim(self, "active");
-
-			// Trigger screen desaturate effect
-			foreach (var a in self.World.ActorsWithTrait<ChronoshiftPaletteEffect>())
-				a.Trait.Enable();
-
-			Sound.Play("chrono2.aud", order.TargetLocation.ToPPos());
-			Sound.Play("chrono2.aud", order.ExtraLocation.ToPPos());
 			foreach (var target in UnitsInRange(order.ExtraLocation))
 			{
 				var cs = target.Trait<Chronoshiftable>();

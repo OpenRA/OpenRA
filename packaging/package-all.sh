@@ -26,7 +26,7 @@ find . -path "*.mdb" -delete
 # they are now installed to the game directory instead of placed in the gac
 FILES="OpenRA.Game.exe OpenRA.Editor.exe OpenRA.Utility.exe OpenRA.Renderer.SdlCommon.dll OpenRA.Renderer.Cg.dll \
 OpenRA.Renderer.Gl.dll OpenRA.Renderer.Null.dll OpenRA.FileFormats.dll FreeSans.ttf FreeSansBold.ttf titles.ttf \
-cg glsl mods/ra mods/cnc COPYING HACKING INSTALL CHANGELOG"
+cg glsl mods/ra mods/cnc mods/d2k COPYING HACKING INSTALL CHANGELOG"
 
 echo "Copying files..."
 for i in $FILES; do
@@ -45,6 +45,7 @@ cp OpenRA.Game/OpenRA.ico packaging/built
 # Update mod versions
 sed "s/{DEV_VERSION}/$TAG/" ./mods/ra/mod.yaml > ./packaging/built/mods/ra/mod.yaml
 sed "s/{DEV_VERSION}/$TAG/" ./mods/cnc/mod.yaml > ./packaging/built/mods/cnc/mod.yaml
+sed "s/{DEV_VERSION}/$TAG/" ./mods/d2k/mod.yaml > ./packaging/built/mods/d2k/mod.yaml
 
 # Remove demo.mix from cnc
 rm ./packaging/built/mods/cnc/bits/demo.mix
@@ -82,5 +83,6 @@ echo "Creating packages..."
     fi
 ) &
 wait
+echo "Package build done."
 
 rm -rf $BUILTDIR

@@ -29,6 +29,12 @@ namespace OpenRA
 
 		static ISoundSource LoadSound(string filename)
 		{
+			if (!FileSystem.Exists(filename))
+			{
+				Log.Write("debug", "LoadSound, file does not exist: {0}", filename);
+				return null;
+			}
+
 			return LoadSoundRaw(AudLoader.LoadSound(FileSystem.Open(filename)));
 		}
 
@@ -140,10 +146,12 @@ namespace OpenRA
 			}
 			StopMusic();
 
+			var sound = sounds[m.Filename];
+			if (sound == null) return;
+
+			music = soundEngine.Play2D(sound, false, true, float2.Zero, MusicVolume);
 			currentMusic = m;
 			MusicPlaying = true;
-			var sound = sounds[m.Filename];
-			music = soundEngine.Play2D(sound, false, true, float2.Zero, MusicVolume);
 		}
 
 		public static void PlayMusic()
@@ -238,7 +246,45 @@ namespace OpenRA
 			get { return (video != null) ? video.SeekPosition : 0; }
 		}
 
-		// Returns true if it played a phrase
+		// Returns true if played successfully
+		public static bool PlayPredefined(Player p, Actor voicedUnit, string type, string definition, string variant)
+		{
+			if (definition == null) return false;
+
+			var rules = (voicedUnit != null) ? Rules.Voices[type] : Rules.Notifications[type];
+
+			var ID = (voicedUnit != null) ? voicedUnit.ActorID : 0;
+
+			var clip = (voicedUnit != null) ? rules.VoicePools.Value[definition].GetNext() : rules.NotificationsPools.Value[definition].GetNext();
+			if (clip == null) return false;
+
+			var suffix = rules.DefaultVariant;
+			var prefix = rules.DefaultPrefix;
+
+			if (voicedUnit != null)
+			{
+				if (!rules.VoicePools.Value.ContainsKey("Attack"))
+					rules.VoicePools.Value.Add("Attack", rules.VoicePools.Value["Move"]);
+
+				if (!rules.VoicePools.Value.ContainsKey("AttackMove"))
+					rules.VoicePools.Value.Add("AttackMove", rules.VoicePools.Value["Move"]);
+			}
+
+			if (variant != null)
+			{
+				if (rules.Variants.ContainsKey(variant) && !rules.DisableVariants.Contains(definition))
+					suffix = rules.Variants[variant][ID % rules.Variants[variant].Length];
+				if (rules.Prefixes.ContainsKey(variant) && !rules.DisablePrefixes.Contains(definition))
+					prefix = rules.Prefixes[variant][ID % rules.Prefixes[variant].Length];
+			}
+
+			if (p == null)
+				Play(prefix + clip + suffix);
+			else
+				PlayToPlayer(p, prefix + clip + suffix);
+			return true;
+		}
+
 		public static bool PlayVoice(string phrase, Actor voicedUnit, string variant)
 		{
 			if (voicedUnit == null) return false;
@@ -248,21 +294,17 @@ namespace OpenRA
 			if (mi == null) return false;
 			if (mi.Voice == null) return false;
 
-			var vi = Rules.Voices[mi.Voice.ToLowerInvariant()];
+                        var type = mi.Voice.ToLowerInvariant();
 
-			if (!vi.Pools.Value.ContainsKey(phrase))
-				return false;
+			return PlayPredefined(null, voicedUnit, type, phrase, variant);
+		}
 
-			var clip = vi.Pools.Value[phrase].GetNext();
-			if (clip == null)
-				return false;
+		public static bool PlayNotification(Player player, string type, string notification, string variant)
+		{
+			if (type == null) return false;
+			if (notification == null) return false;
 
-			var variantExt = (vi.Variants.ContainsKey(variant) && !vi.DisableVariants.Contains(phrase)) ?
-				  vi.Variants[variant][voicedUnit.ActorID % vi.Variants[variant].Length] : vi.DefaultVariant;
-			var prefix = (vi.Prefixes.ContainsKey(variant) && !vi.DisablePrefixes.Contains(phrase)) ?
-				vi.Prefixes[variant][voicedUnit.ActorID % vi.Prefixes[variant].Length] : vi.DefaultPrefix;
-			Play(prefix + clip + variantExt);
-			return true;
+			return PlayPredefined(player, null, type.ToLowerInvariant(), notification, variant);
 		}
 	}
 
@@ -357,6 +399,11 @@ namespace OpenRA
 
 		public ISound Play2D(ISoundSource sound, bool loop, bool relative, float2 pos, float volume)
 		{
+			if (sound == null)
+			{
+				Log.Write("debug", "Attempt to Play2D a null `ISoundSource`");
+				return null;
+			}
 			int source = GetSourceFromPool();
 			return new OpenAlSound(source, (sound as OpenAlSoundSource).buffer, loop, relative, pos, volume);
 		}
@@ -369,6 +416,8 @@ namespace OpenRA
 
 		public void PauseSound(ISound sound, bool paused)
 		{
+			if (sound == null) return;
+
 			int key = ((OpenAlSound)sound).source;
 			int state;
 			Al.alGetSourcei(key, Al.AL_SOURCE_STATE, out state);
@@ -410,6 +459,8 @@ namespace OpenRA
 
 		public void StopSound(ISound sound)
 		{
+			if (sound == null) return;
+
 			int key = ((OpenAlSound)sound).source;
 			int state;
 			Al.alGetSourcei(key, Al.AL_SOURCE_STATE, out state);

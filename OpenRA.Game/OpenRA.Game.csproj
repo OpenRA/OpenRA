@@ -94,7 +94,7 @@
     <Compile Include="GameRules\MusicInfo.cs" />
     <Compile Include="GameRules\Rules.cs" />
     <Compile Include="GameRules\Settings.cs" />
-    <Compile Include="GameRules\VoiceInfo.cs" />
+    <Compile Include="GameRules\SoundInfo.cs" />
     <Compile Include="GameRules\WeaponInfo.cs" />
     <Compile Include="Graphics\Animation.cs" />
     <Compile Include="Graphics\AnimationWithOffset.cs" />
@@ -167,7 +167,6 @@
     <Compile Include="Traits\Health.cs" />
     <Compile Include="Traits\LintAttributes.cs" />
     <Compile Include="Traits\Player\DeveloperMode.cs" />
-    <Compile Include="Traits\Player\EvaAlerts.cs" />
     <Compile Include="Traits\Player\PlayerResources.cs" />
     <Compile Include="Traits\Render\RenderSimple.cs" />
     <Compile Include="Traits\RevealsShroud.cs" />

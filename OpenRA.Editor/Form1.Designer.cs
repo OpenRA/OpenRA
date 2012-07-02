@@ -82,6 +82,9 @@ namespace OpenRA.Editor
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.toolStripStatusLabelFiller = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripStatusLabelMousePosition = new System.Windows.Forms.ToolStripStatusLabel();
+			this.copySelectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
@@ -417,8 +420,11 @@ namespace OpenRA.Editor
             this.resizeToolStripMenuItem,
             this.showActorNamesToolStripMenuItem,
             this.showGridToolStripMenuItem,
+            this.toolStripSeparator5,
             this.fixOpenAreasToolStripMenuItem,
-            this.setupDefaultPlayersMenuItem});
+            this.setupDefaultPlayersMenuItem,
+            this.toolStripSeparator4,
+            this.copySelectionToolStripMenuItem});
 			this.mapToolStripMenuItem.Name = "mapToolStripMenuItem";
 			this.mapToolStripMenuItem.Size = new System.Drawing.Size(43, 23);
 			this.mapToolStripMenuItem.Text = "&Map";
@@ -507,6 +513,23 @@ namespace OpenRA.Editor
 			this.toolStripStatusLabelMousePosition.Size = new System.Drawing.Size(22, 17);
 			this.toolStripStatusLabelMousePosition.Text = "0,0";
 			// 
+			// copySelectionToolStripMenuItem
+			// 
+			this.copySelectionToolStripMenuItem.Name = "copySelectionToolStripMenuItem";
+			this.copySelectionToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+			this.copySelectionToolStripMenuItem.Text = "Copy Selection";
+			this.copySelectionToolStripMenuItem.Click += new System.EventHandler(this.copySelectionToolStripMenuItem_Click);
+			// 
+			// toolStripSeparator4
+			// 
+			this.toolStripSeparator4.Name = "toolStripSeparator4";
+			this.toolStripSeparator4.Size = new System.Drawing.Size(182, 6);
+			// 
+			// toolStripSeparator5
+			// 
+			this.toolStripSeparator5.Name = "toolStripSeparator5";
+			this.toolStripSeparator5.Size = new System.Drawing.Size(182, 6);
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -520,9 +543,9 @@ namespace OpenRA.Editor
 			this.Name = "Form1";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "OpenRA Editor";
-			this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyUp);
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OnFormClosing);
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
+			this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyUp);
 			this.splitContainer1.Panel1.ResumeLayout(false);
 			this.splitContainer1.Panel2.ResumeLayout(false);
 			this.splitContainer1.ResumeLayout(false);
@@ -592,6 +615,9 @@ namespace OpenRA.Editor
 		private System.Windows.Forms.Panel panel1;
 		private System.Windows.Forms.FlowLayoutPanel actorPalette;
 		private System.Windows.Forms.ComboBox actorOwnerChooser;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+		private System.Windows.Forms.ToolStripMenuItem copySelectionToolStripMenuItem;
 
 	}
 }

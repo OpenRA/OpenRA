@@ -1,16 +1,14 @@
-CARRYALL:
+^CARRYALL:
 	Inherits: ^Helicopter
 	Buildable:
 		Queue: Plane
 		BuildPaletteOrder: 110
-		Prerequisites: anyhightech
-		BuiltAt: hightecha
-		Owner: atreides,harkonnen,ordos
 	Valued:
 		Cost: 1200
 	Tooltip:
 		Name: Carryall
 		Description: Fast drop ship.\n  Unarmed
+		Icon: carryallicon
 	Health:
 		HP: 500
 	Armor: 

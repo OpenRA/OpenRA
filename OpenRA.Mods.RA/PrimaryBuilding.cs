@@ -66,8 +66,7 @@ namespace OpenRA.Mods.RA
 
 			isPrimary = true;
 
-			var eva = self.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
-			Sound.PlayToPlayer(self.Owner, eva.PrimaryBuildingSelected);
+			Sound.PlayNotification(self.Owner, "Speech", "PrimaryBuildingSelected", self.Owner.Country.Race);
 		}
 	}
 

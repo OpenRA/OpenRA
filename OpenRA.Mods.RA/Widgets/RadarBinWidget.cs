@@ -175,8 +175,7 @@ namespace OpenRA.Mods.RA.Widgets
 			if (hasRadarNew != hasRadar)
 			{
 				radarAnimating = true;
-				var eva = Rules.Info["world"].Traits.Get<EvaAlertsInfo>();
-				Sound.Play(hasRadarNew ? eva.RadarUp : eva.RadarDown);
+				Sound.PlayNotification(null, "Sounds", (hasRadarNew ? "RadarUp" : "RadarDown"), null);
 			}
 
 			hasRadar = hasRadarNew;

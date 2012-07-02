@@ -50,6 +50,60 @@ REFA:
 		Owner: atreides
 	RenderBuildingWarFactory:
 		Image: REFA
+	FreeActor:
+		Actor: HARVESTERA
+		InitialActivity: FindResources
+		SpawnOffset: 1,2
+		Facing: 64
+
+HARVESTERA:
+	Inherits: ^HARVESTER
+	Buildable:
+		Prerequisites: heavya,refa
+		Owner: atreides
+	RenderUnit:
+		Image: HARVESTER
+
+TRIKEA:
+	Inherits: ^TRIKE
+	Buildable:
+		Prerequisites: lighta
+		Owner: atreides
+	RenderUnit:
+		Image: TRIKE
+
+QUADA:
+	Inherits: ^QUAD
+	Buildable:
+		Prerequisites: lighta
+		Owner: atreides
+	RenderUnit:
+		Image: QUAD
+
+SIEGETANKA:
+	Inherits: ^SIEGETANK
+	Buildable:
+		Prerequisites: heavya, radara
+		Owner: atreides
+	RenderUnit:
+		Image: SIEGETANK
+
+MISSILETANKA:
+	Inherits: ^MISSILETANK
+	Buildable:
+		Prerequisites: heavya
+		Owner: atreides
+	RenderUnit:
+		Image: MISSILETANK
+
+CARRYALLA:
+	Inherits: ^CARRYALL
+	Buildable:
+		Prerequisites: hightecha
+		BuiltAt: hightecha
+		Owner: atreides
+	RenderUnit:
+		Image: CARRYALL
 
 BARRA:
 	Inherits: ^BARRACKS

@@ -48,7 +48,7 @@ namespace OpenRA.Mods.RA.Buildings
 					else
 					{
 						Repairer = p;
-						Sound.PlayToPlayer(Repairer, p.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>().Repairing);
+						Sound.PlayNotification(Repairer, "Speech", "Repairing", self.Owner.Country.Race);
 
 						self.World.AddFrameEndTask(
 							w => w.Add(new RepairIndicator(self, p)));

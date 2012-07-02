@@ -91,6 +91,11 @@ Cursors:
 			length: 4
 			x: 12
 			y: 12
+		move-rough:
+			start:10
+			length: 4
+			x: 12
+			y: 12
 		move-blocked:
 			start:14
 			x: 12

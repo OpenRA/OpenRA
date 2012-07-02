@@ -1,0 +1,30 @@
+Speech:
+	Notifications:
+		Repairing: repair1
+		LowPower: lopower1
+		SilosNeeded: silond1
+		PrimaryBuildingSelected: pribldg1
+		BuildingCannotPlaceAudio: nodeply1
+		NewOptions: newopt1
+		AbilityInsufficientPower: nopowr1
+		Win: misnwon1
+		Lose: misnlst1
+		BaseAttack: baseatk1
+		HarvesterAttack:
+		Leave: bct1
+
+Sounds:
+	Notifications:
+		RadarUp: radaron2
+		RadarDown: radardn1
+		CashTickUp: cashup1
+		CashTickDown:cashdn1
+		LevelUp: hydrod1
+		DisablePower: bleep11
+		EnablePower: bleep12
+		ChatLine: scold1
+		BuildPaletteOpen: bleep13
+		BuildPaletteClose: bleep13
+		TabClick: ramenu1
+		ClickSound:
+		ClickDisabledSound:

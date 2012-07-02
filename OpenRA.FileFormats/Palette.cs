@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2012 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -39,7 +39,7 @@ namespace OpenRA.FileFormats
 			get { return colors; }
 		}
 
-		public Palette(Stream s, bool remapTransparent)
+		public Palette(Stream s, int[] remapShadow)
 		{
 			colors = new uint[256];
 
@@ -54,13 +54,9 @@ namespace OpenRA.FileFormats
 				}
 			}
 
-			colors[0] = 0;
-			if (remapTransparent)
-			{
-				colors[1] = 178u << 24; // Hack for d2k; may have side effects
-				colors[3] = 178u << 24;
-				colors[4] = 140u << 24;
-			}
+			colors[0] = 0; //convert black background to transparency
+			foreach (int i in remapShadow)
+				colors[i] = 140u << 24;
 		}
 
 		public Palette(Palette p, IPaletteRemap r)
@@ -92,12 +88,12 @@ namespace OpenRA.FileFormats
 			return pal;
 		}
 
-		public static Palette Load( string filename, bool remap )
+		public static Palette Load(string filename, int[] remap)
 		{
 			using(var s = File.OpenRead(filename))
 				return new Palette(s, remap);
 		}
 	}
 
-	public interface IPaletteRemap { Color GetRemappedColor(Color original, int index);	}
+	public interface IPaletteRemap { Color GetRemappedColor(Color original, int index); }
 }

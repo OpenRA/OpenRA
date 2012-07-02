@@ -82,8 +82,7 @@ namespace OpenRA.Mods.RA
 
 					if (GetNumBuildables(self.Owner) > prevItems)
 						w.Add(new DelayedAction(10,
-							() => Sound.PlayToPlayer(order.Player,
-								w.WorldActor.Info.Traits.Get<EvaAlertsInfo>().NewOptions)));
+							() => Sound.PlayNotification(order.Player, "Speech", "NewOptions", order.Player.Country.Race)));
 				});
 			}
 		}

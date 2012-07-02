@@ -138,7 +138,8 @@ namespace OpenRA.Editor
 			Rules.LoadRules(manifest, map);
 			tileset = Rules.TileSets[map.Tileset];
 			tileset.LoadTiles();
-			var palette = new Palette(FileSystem.Open(tileset.Palette), true);
+			int[] ShadowIndex = { 3, 4 };
+			var palette = new Palette(FileSystem.Open(tileset.Palette), ShadowIndex);
 
 			surface1.Bind(map, tileset, palette);
 			// construct the palette of tiles
@@ -544,6 +545,11 @@ namespace OpenRA.Editor
 		{
 			var player = actorOwnerChooser.SelectedItem as PlayerReference;
 			surface1.NewActorOwner = player.Name;
+		}
+
+		private void copySelectionToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			surface1.CopySelection();
 		}
 	}
 }

@@ -8,7 +8,7 @@ UnitExplode:
 			Light: 60%
 			Heavy: 25%
 		Explosion: 8
-		InfDeath: 3
+		InfDeath: 4
 		ImpactSound: xplobig6
 
 UnitExplodeSmall:
@@ -21,7 +21,7 @@ UnitExplodeSmall:
 			Light: 60%
 			Heavy: 25%
 		Explosion: 8
-		InfDeath: 3
+		InfDeath: 4
 		ImpactSound: xplos
 
 GrenadierExplode:
@@ -34,7 +34,7 @@ GrenadierExplode:
 			Light: 60%
 			Heavy: 25%
 		Explosion: 8
-		InfDeath: 2
+		InfDeath: 3
 		ImpactSound: xplos
 
 Atomic:
@@ -48,7 +48,7 @@ Atomic:
 			Light: 60%
 			Heavy: 25%
 		Explosion: 6
-		InfDeath: 4
+		InfDeath: 5
 		ImpactSound: nukexplo
 	Warhead@areanuke:
 		DamageModel: PerCell
@@ -62,7 +62,7 @@ Atomic:
 			Light: 60%
 			Heavy: 25%
 		Delay: 3
-		InfDeath: 4
+		InfDeath: 5
 		ImpactSound: xplobig4
 
 IonCannon:
@@ -75,7 +75,7 @@ IonCannon:
 			Wood: 60%
 			Light: 60%
 			Heavy: 25%
-		InfDeath: 4
+		InfDeath: 5
 	Warhead@area:
 		DamageModel: PerCell
 		Damage: 200
@@ -88,7 +88,7 @@ IonCannon:
 			Light: 60%
 			Heavy: 25%
 		Delay: 3
-		InfDeath: 4
+		InfDeath: 5
 
 Sniper:
 	Report: RAMGUN2
@@ -104,7 +104,7 @@ Sniper:
 			Wood: 5%
 			Light: 5%
 			Heavy: 5%
-		InfDeath: 1
+		InfDeath: 2
 
 HighV:
 	ROF: 40
@@ -120,7 +120,7 @@ HighV:
 			Wood: 50%
 			Light: 50%
 			Heavy: 25%
-		InfDeath: 1
+		InfDeath: 2
 		Explosion: 1
 
 HeliAGGun:
@@ -140,7 +140,7 @@ HeliAGGun:
 			Wood: 50%
 			Light: 50%
 			Heavy: 25%
-		InfDeath: 1
+		InfDeath: 2
 		Explosion: 1
 
 HeliAAGun:
@@ -160,7 +160,7 @@ HeliAAGun:
 			Wood: 50%
 			Light: 50%
 			Heavy: 25%
-		InfDeath: 1
+		InfDeath: 2
 		Explosion: 1
 
 Pistol:
@@ -176,7 +176,7 @@ Pistol:
 			Wood: 50%
 			Light: 50%
 			Heavy: 25%
-		InfDeath: 1
+		InfDeath: 2
 		Explosion: 1
 		Damage: 1
 
@@ -194,7 +194,7 @@ M16:
 			Light: 30%
 			Heavy: 10%
 		Explosion: 1
-		InfDeath: 1
+		InfDeath: 2
 		Damage: 15
 
 Rockets:
@@ -220,7 +220,7 @@ Rockets:
 			Wood: 75%
 			Light: 75%
 			Heavy: 50%
-		InfDeath: 3
+		InfDeath: 4
 		Explosion: 4
 		ImpactSound: xplos
 		SmudgeType: Crater
@@ -251,7 +251,7 @@ BikeRockets:
 			Wood: 30%
 			Light: 75%
 			Heavy: 30%
-		InfDeath: 3
+		InfDeath: 4
 		Explosion: 4
 		ImpactSound: xplos
 		SmudgeType: Crater
@@ -282,7 +282,7 @@ OrcaAGMissiles:
 			Wood: 75%
 			Light: 75%
 			Heavy: 50%
-		InfDeath: 3
+		InfDeath: 4
 		Explosion: 4
 		ImpactSound: xplos
 		SmudgeType: Crater
@@ -313,7 +313,7 @@ OrcaAAMissiles:
 			Wood: 75%
 			Light: 75%
 			Heavy: 50%
-		InfDeath: 3
+		InfDeath: 4
 		Explosion: 4
 		ImpactSound: xplos
 		SmudgeType: Crater
@@ -332,7 +332,7 @@ Flamethrower:
 			Wood: 200%
 			Light: 75%
 			Heavy: 25%
-		InfDeath: 4
+		InfDeath: 5
 		ImpactSound: flamer2
 		SmudgeType: Scorch
 		Damage: 35
@@ -352,7 +352,7 @@ BigFlamer:
 			Wood: 200%
 			Light: 75%
 			Heavy: 25%
-		InfDeath: 4
+		InfDeath: 5
 		Explosion: 3
 		ImpactSound: flamer2
 		SmudgeType: Scorch
@@ -372,7 +372,7 @@ Chemspray:
 			Wood: 75%
 			Light: 75%
 			Heavy: 50%
-		InfDeath: 5
+		InfDeath: 6
 		SmudgeType: Scorch
 		ImpactSound: xplos
 
@@ -392,7 +392,7 @@ Grenade:
 			Wood: 75%
 			Light: 75%
 			Heavy: 50%
-		InfDeath: 2
+		InfDeath: 3
 		Explosion: 5
 		ImpactSound: xplos
 		SmudgeType: Crater
@@ -412,7 +412,7 @@ Grenade:
 			Wood: 75%
 			Light: 75%
 			Heavy: 50%
-		InfDeath: 3
+		InfDeath: 4
 		Explosion: 4
 		ImpactSound: xplos
 		SmudgeType: Crater
@@ -432,7 +432,7 @@ Grenade:
 			Wood: 75%
 			Light: 75%
 			Heavy: 50%
-		InfDeath: 3
+		InfDeath: 4
 		Explosion: 4
 		ImpactSound: xplos
 		SmudgeType: Crater
@@ -452,7 +452,7 @@ Grenade:
 			Wood: 75%
 			Light: 75%
 			Heavy: 50%
-		InfDeath: 3
+		InfDeath: 4
 		Explosion: 4
 		ImpactSound: xplos
 		SmudgeType: Crater
@@ -473,7 +473,7 @@ Grenade:
 			Wood: 75%
 			Light: 75%
 			Heavy: 50%
-		InfDeath: 3
+		InfDeath: 4
 		Explosion: 4
 		ImpactSound: xplos
 		SmudgeType: Crater
@@ -493,7 +493,7 @@ TurretGun:
 			Wood: 75%
 			Light: 75%
 			Heavy: 50%
-		InfDeath: 3
+		InfDeath: 4
 		Explosion: 4
 		ImpactSound: xplos
 		SmudgeType: Crater
@@ -523,7 +523,7 @@ MammothMissiles:
 			Wood: 75%
 			Light: 75%
 			Heavy: 50%
-		InfDeath: 3
+		InfDeath: 4
 		Explosion: 4
 		ImpactSound: xplos
 		SmudgeType: Crater
@@ -554,7 +554,7 @@ MammothMissiles:
 			Wood: 50%
 			Light: 100%
 			Heavy: 50%
-		InfDeath: 3
+		InfDeath: 4
 		Explosion: 4
 		ImpactSound: xplos
 		SmudgeType: Crater
@@ -585,7 +585,7 @@ MammothMissiles:
 			Wood: 75%
 			Light: 75%
 			Heavy: 50%
-		InfDeath: 3
+		InfDeath: 4
 		Explosion: 4
 		ImpactSound: xplos
 		SmudgeType: Crater
@@ -611,7 +611,7 @@ ArtilleryShell:
 			Wood: 75%
 			Light: 60%
 			Heavy: 25%
-		InfDeath: 2
+		InfDeath: 3
 		Explosion: 8
 		SmudgeType: Crater
 		ImpactSound: XPLOSML2
@@ -629,7 +629,7 @@ MachineGun:
 			Wood: 50%
 			Light: 50%
 			Heavy: 25%
-		InfDeath: 1
+		InfDeath: 2
 		Explosion: 1
 		Damage: 15
 
@@ -657,7 +657,7 @@ BoatMissile:
 			Wood: 75%
 			Light: 60%
 			Heavy: 25%
-		InfDeath: 2
+		InfDeath: 3
 		Explosion: 5
 		ImpactSound: xplos
 		SmudgeType: Crater
@@ -688,7 +688,7 @@ TowerMissle:
 			Wood: 75%
 			Light: 60%
 			Heavy: 25%
-		InfDeath: 2
+		InfDeath: 3
 		Explosion: 5
 		ImpactSound: xplos
 		SmudgeType: Crater
@@ -705,7 +705,7 @@ Napalm:
 			Wood: 100%
 			Light: 60%
 			Heavy: 25%
-		InfDeath: 4
+		InfDeath: 5
 		Explosion: 3
 		ImpactSound: flamer2
 		SmudgeType: Scorch
@@ -719,7 +719,7 @@ Napalm.Crate:
 			Wood: 100%
 			Light: 60%
 			Heavy: 25%
-		InfDeath: 4
+		InfDeath: 5
 		Explosion: 3
 		ImpactSound: flamer2
 		SmudgeType: Scorch
@@ -734,7 +734,7 @@ Laser:
 		BeamRadius: 1
 	Warhead:
 		Spread: 1
-		InfDeath: 4
+		InfDeath: 5
 		SmudgeType: Scorch
 		Damage: 200
 
@@ -760,7 +760,7 @@ SAMMissile:
 			Wood: 75%
 			Light: 75%
 			Heavy: 50%
-		InfDeath: 3
+		InfDeath: 4
 		Explosion: 4
 		ImpactSound: xplos
 		SmudgeType: Crater
@@ -788,7 +788,7 @@ HonestJohn:
 			Wood: 75%
 			Light: 60%
 			Heavy: 25%
-		InfDeath: 2
+		InfDeath: 3
 		Explosion: 5
 		ImpactSound: xplos
 		SmudgeType: Crater
@@ -798,7 +798,7 @@ Tiberium:
 	ROF: 4
 	Warhead:
 		Spread: 1
-		InfDeath: 5
+		InfDeath: 6
 		Damage: 1
 		PreventProne: yes
 

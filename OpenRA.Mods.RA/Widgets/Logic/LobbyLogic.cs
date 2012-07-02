@@ -237,7 +237,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			chatPanel.AddChild(template);
 			chatPanel.ScrollToBottom();
-			Sound.Play("scold1.aud");
+			Sound.PlayNotification(null, "Sounds", "ChatLine", null);
 		}
 
 		void UpdateCurrentMap()

@@ -56,9 +56,11 @@ namespace OpenRA.TilesetBuilder
 			Bitmap rbitmap = fbitmap.Clone(new Rectangle(0, 0, fbitmap.Width, fbitmap.Height),
 					fbitmap.PixelFormat);
 
+			int[] ShadowIndex = { };
+
 			if (!PaletteFromImage)
 			{
-				tpal = Palette.Load(PaletteFile, false);
+				tpal = Palette.Load(PaletteFile, ShadowIndex);
 				rbitmap.Palette = tpal.AsSystemPalette();
 			}
 			

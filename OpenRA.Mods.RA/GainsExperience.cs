@@ -77,8 +77,7 @@ namespace OpenRA.Mods.RA
 			while (Level < MaxLevel && Experience >= Levels[Level])
 			{
 				Level++;
-				var eva = self.World.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
-				Sound.PlayToPlayer(self.Owner, eva.LevelUp, self.CenterLocation);
+				Sound.PlayNotification(self.Owner, "Sounds", "LevelUp", self.Owner.Country.Race);
 				self.World.AddFrameEndTask(w => w.Add(new CrateEffect(self, "levelup", new int2(0,-24))));
 			}
 		}

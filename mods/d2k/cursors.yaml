@@ -1,4 +1,4 @@
-﻿Transparent:
+﻿ShadowIndex: 1
 
 Palettes:
 	cursor: cursor.pal
@@ -180,12 +180,12 @@ Cursors:
 			x: 12
 			y: 12
 		ability:
-			start:96
+			start:72
 			length: 8
 			x: 12
 			y: 12
 		ability-minimap:
-			start:96
+			start:72
 			length: 8
 			x: 12
 			y: 12
@@ -235,6 +235,11 @@ Cursors:
 		goldwrench-blocked:
 			start:64
 			length: 1
+			x: 12
+			y: 12
+		move-rough:
+			start:256
+			length: 8
 			x: 12
 			y: 12
 

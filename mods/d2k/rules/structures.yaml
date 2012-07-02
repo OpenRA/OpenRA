@@ -41,8 +41,6 @@
 	Tooltip:
 		Name: Windtrap
 		Description: Provides power for other structures
-	ProvidesCustomPrerequisite:
-		Prerequisite: anypower
 	Building:
 		Power: 100
 		Footprint: xx xx xx
@@ -60,7 +58,6 @@
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 30
-		Prerequisites: anypower
 		Hotkey: b
 	Valued:
 		Cost: 400
@@ -104,8 +101,6 @@
 	Tooltip:
 		Name: High Tech Factory
 		Description: Produces Carryalls
-	ProvidesCustomPrerequisite:
-		Prerequisite: anyhightech
 	Building:
 		Power: -30
 		Footprint: _x_ xxx xxx
@@ -180,9 +175,6 @@
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 10
-		Prerequisites: anypower
-	ProvidesCustomPrerequisite:
-		Prerequisite: anyref
 	Valued:
 		Cost: 1400
 	Tooltip:
@@ -207,11 +199,6 @@
 		Capacity: 2000
 	CustomSellValue:
 		Value: 600
-	FreeActor:
-		Actor: HARVESTER
-		InitialActivity: FindResources
-		SpawnOffset: 1,2
-		Facing: 64
 
 ^SILO:
 	Inherits: ^Building
@@ -245,8 +232,6 @@
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 50
-	ProvidesCustomPrerequisite:
-		Prerequisite: anylight
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -266,8 +251,8 @@
 	-RenderBuilding:
 	RallyPoint:
 	Exit@1:
-		SpawnOffset: 10,0
-		ExitCell: 1,3
+		SpawnOffset: 5,0
+		ExitCell: 1,1
 	Production:
 		Produces: Vehicle
 	PrimaryBuilding:
@@ -282,8 +267,6 @@
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 50
-	ProvidesCustomPrerequisite:
-		Prerequisite: anyheavy
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -302,9 +285,10 @@
 	Bib:
 	-RenderBuilding:
 	RallyPoint:
+		RallyPoint: 0,3
 	Exit@1:
-		SpawnOffset: 10,0
-		ExitCell: 1,3
+		SpawnOffset: -2,-2
+		ExitCell: 0,2
 	Production:
 		Produces: Vehicle
 	PrimaryBuilding:
@@ -321,8 +305,6 @@
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 60
-	ProvidesCustomPrerequisite:
-		Prerequisite: anyradar
 	Valued:
 		Cost: 1400
 	Tooltip:
@@ -348,8 +330,6 @@
 	Tooltip:
 		Name: Starport
 		Description: Provides a dropzone for vehicle reinforcements
-	ProvidesCustomPrerequisite:
-		Prerequisite: anystarport
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 60

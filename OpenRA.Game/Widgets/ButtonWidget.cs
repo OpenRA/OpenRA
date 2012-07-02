@@ -22,8 +22,6 @@ namespace OpenRA.Widgets
 		public bool Depressed = false;
 		public int VisualHeight = ChromeMetrics.Get<int>("ButtonDepth");
 		public string Font = ChromeMetrics.Get<string>("ButtonFont");
-		public string ClickSound = null;
-		public string ClickDisabledSound = null;
 		public bool Disabled = false;
 		public Func<string> GetText;
 		public Func<bool> IsDisabled;
@@ -73,10 +71,10 @@ namespace OpenRA.Widgets
 			if (!IsDisabled())
 			{
 				OnKeyPress(e);
-				Sound.Play(ClickSound);
+				Sound.PlayNotification(null, "Sounds", "ClickSound", null);
 			}
 			else
-				Sound.Play(ClickDisabledSound);
+				Sound.PlayNotification(null, "Sounds", "ClickDisabledSound", null);
 
 			return true;
 		}
@@ -105,12 +103,12 @@ namespace OpenRA.Widgets
 				{
 					OnMouseDown(mi);
 					Depressed = true;
-					Sound.Play(ClickSound);
+					Sound.PlayNotification(null, "Sounds", "ClickSound", null);
 				}
 				else
 				{
 					LoseFocus(mi);
-					Sound.Play(ClickDisabledSound);
+					Sound.PlayNotification(null, "Sounds", "ClickDisabledSound", null);
 				}
 			}
 			else if (mi.Event == MouseInputEvent.Move && Focused)

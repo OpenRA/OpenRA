@@ -18,6 +18,10 @@ namespace OpenRA.Mods.RA.Activities
 {
 	public class UnloadCargo : Activity
 	{
+		bool unloadAll;
+
+		public UnloadCargo(bool unloadAll) { this.unloadAll = unloadAll; }
+		
 		CPos? ChooseExitTile(Actor self, Actor cargo)
 		{
 			// is anyone still hogging this tile?
@@ -33,6 +37,19 @@ namespace OpenRA.Mods.RA.Activities
 						return self.Location + new CVec(i, j);
 
 			return null;
+		}
+
+		CPos? ChooseRallyPoint(Actor self)
+		{
+			var mobile = self.Trait<Mobile>();
+
+			for (var i = -1; i < 2; i++)
+				for (var j = -1; j < 2; j++)
+					if ((i != 0 || j != 0) &&
+						mobile.CanEnterCell(self.Location + new CVec(i, j)))
+						return self.Location + new CVec(i, j);
+
+			return self.Location;
 		}
 
 		public override Activity Tick(Actor self)
@@ -80,10 +97,13 @@ namespace OpenRA.Mods.RA.Activities
 				actor.CancelActivity();
 				actor.QueueActivity(new Drag(currentPx, exitPx, length));
 				actor.QueueActivity(mobile.MoveTo(exitTile.Value, 0));
-				actor.SetTargetLine(Target.FromCell(exitTile.Value), Color.Green, false);
+
+				var rallyPoint = ChooseRallyPoint(actor).Value;
+				actor.QueueActivity(mobile.MoveTo(rallyPoint, 0));
+				actor.SetTargetLine(Target.FromCell(rallyPoint), Color.Green, false);
 			});
 
-			return this;
+			return unloadAll ? this : NextActivity;
 		}
 	}
 }

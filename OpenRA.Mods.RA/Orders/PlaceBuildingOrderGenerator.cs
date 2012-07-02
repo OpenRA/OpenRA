@@ -58,8 +58,7 @@ namespace OpenRA.Mods.RA.Orders
 				if (!world.CanPlaceBuilding( Building, BuildingInfo, topLeft, null)
 					|| !BuildingInfo.IsCloseEnoughToBase(world, Producer.Owner, Building, topLeft))
 				{
-					var eva = world.WorldActor.Info.Traits.Get<EvaAlertsInfo>();
-					Sound.Play(eva.BuildingCannotPlaceAudio);
+					Sound.PlayNotification(Producer.Owner, "Speech", "BuildingCannotPlaceAudio", Producer.Owner.Country.Race);
 					yield break;
 				}
 

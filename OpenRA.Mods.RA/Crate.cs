@@ -14,17 +14,6 @@ using OpenRA.FileFormats;
 using OpenRA.Traits;
 using OpenRA.Mods.RA.Buildings;
 
-/*
- * Crates left to implement:
-HealBase=1,INVUN                ; all buildings to full strength
-ICBM=1,MISSILE2                 ; nuke missile one time shot
-Sonar=3,SONARBOX                ; one time sonar pulse
-Squad=20,NONE                   ; squad of random infantry
-Unit=20,NONE                    ; vehicle
-Invulnerability=3,INVULBOX,1.0  ; invulnerability (duration in minutes)
-TimeQuake=3,TQUAKE              ; time quake
-*/
-
 namespace OpenRA.Mods.RA
 {
 	class CrateInfo : ITraitInfo, Requires<RenderSimpleInfo>
@@ -35,7 +24,7 @@ namespace OpenRA.Mods.RA
 	}
 
 	// ITeleportable is required for paradrop
-	class Crate : ITick, IOccupySpace, ITeleportable, ICrushable, ISync
+	class Crate : ITick, IOccupySpace, ITeleportable, ICrushable, ISync, INotifyParachuteLanded
 	{
 		readonly Actor self;
 		[Sync] int ticks;
@@ -71,6 +60,15 @@ namespace OpenRA.Mods.RA
 				}
 				else
 					n -= s.Second;
+		}
+
+		public void OnLanded()
+		{
+			var landedOn = self.World.ActorMap.GetUnitsAt(self.Location)
+				.FirstOrDefault(a => a != self);
+
+			if (landedOn != null)
+				OnCrush(landedOn);
 		}
 
 		public void Tick(Actor self)

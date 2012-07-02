@@ -948,6 +948,7 @@ HPAD:
 	Reservable:
 	IronCurtainable:
 	ProductionBar:
+	PrimaryBuilding:
 
 AFLD:
 	Inherits: ^Building
@@ -998,6 +999,7 @@ AFLD:
 		SelectTargetSound: slcttgt1.aud
 	ProductionBar:
 	SupportPowerChargeBar:
+	PrimaryBuilding:
 	
 POWR:
 	Inherits: ^Building

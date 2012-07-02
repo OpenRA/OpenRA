@@ -267,7 +267,7 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 				new string[] {"--r8", PathToDataR8, PathToPalette, "4463", "4477", Path.Combine(PathToSHPs, "craneo"), "--building"},
 				new string[] {"--r8", PathToDataR8, PathToPalette, "4760", "4819", Path.Combine(PathToSHPs, "windtrap_anim"), "--building"}, //?
 				new string[] {"--r8", PathToDataR8, PathToPalette, "4820", "4840", Path.Combine(PathToSHPs, "missile_launch"), "--building"},
-				new string[] {"--r8", Path.Combine(Platform.SupportDir, "Content/d2k/MOUSE.R8"), PathToPalette, "0", "264", Path.Combine(PathToSHPs, "mouse"), "--transparent"},
+				new string[] {"--r8", Path.Combine(Platform.SupportDir, "Content/d2k/MOUSE.R8"), PathToPalette, "0", "264", Path.Combine(PathToSHPs, "mouse")},
 				new string[] {"--r8", Path.Combine(Platform.SupportDir, "Content/d2k/BLOXBASE.R8"), PathToPalette, "0", "799", Path.Combine(PathToTilesets, "BASE"), "--tileset"},
 				new string[] {"--r8", Path.Combine(Platform.SupportDir, "Content/d2k/BLOXBASE.R8"), PathToPalette, "748", "749", Path.Combine(PathToSHPs, "spice0")},
 				new string[] {"--r8", Path.Combine(Platform.SupportDir, "Content/d2k/BLOXBAT.R8"), PathToPalette, "0", "799", Path.Combine(PathToTilesets, "BAT"), "--tileset"},

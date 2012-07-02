@@ -51,6 +51,7 @@ namespace OpenRA.Mods.RA
 		public CPos? LastOrderLocation = null;
 		[Sync] public int ContentValue { get { return contents.Sum(c => c.Key.ValuePerUnit * c.Value); } }
 		readonly HarvesterInfo Info;
+		bool idleSmart = true;
 
 		public Harvester(Actor self, HarvesterInfo info)
 		{
@@ -61,6 +62,7 @@ namespace OpenRA.Mods.RA
 		public void SetProcLines(Actor proc)
 		{
 			if (proc == null) return;
+			if (proc.Destroyed) return;
 
 			var linkedHarvs = proc.World.ActorsWithTrait<Harvester>()
 				.Where(a => a.Trait.LinkedProc == proc)
@@ -147,7 +149,7 @@ namespace OpenRA.Mods.RA
 		{
 			// Check that we're not in a critical location and being useless (refinery drop-off):
 			var lastproc = LastLinkedProc ?? LinkedProc;
-			if (lastproc != null)
+			if (lastproc != null && !lastproc.Destroyed)
 			{
 				var deliveryLoc = lastproc.Location + lastproc.Trait<IAcceptOre>().DeliverOffset;
 				if (self.Location == deliveryLoc)
@@ -191,6 +193,9 @@ namespace OpenRA.Mods.RA
 
 		public void TickIdle(Actor self)
 		{
+			// Should we be intelligent while idle?
+			if (!idleSmart) return;
+
 			// Are we not empty? Deliver resources:
 			if (!IsEmpty)
 			{
@@ -262,9 +267,11 @@ namespace OpenRA.Mods.RA
 			{
 				// NOTE: An explicit harvest order allows the harvester to decide which refinery to deliver to.
 				LinkProc(self, OwnerLinkedProc = null);
+				idleSmart = true;
 
-				var mobile = self.Trait<Mobile>();
 				self.CancelActivity();
+				
+				var mobile = self.Trait<Mobile>();
 				if (order.TargetLocation != CPos.Zero)
 				{
 					var loc = order.TargetLocation;
@@ -290,7 +297,7 @@ namespace OpenRA.Mods.RA
 				else
 				{
 					// A bot order gives us a CPos.Zero TargetLocation, so find some good resources for him:
-					CPos? loc = FindNextResourceForBot(self);
+					var loc = FindNextResourceForBot(self);
 					// No more resources? Oh well.
 					if (!loc.HasValue)
 						return;
@@ -301,6 +308,8 @@ namespace OpenRA.Mods.RA
 					LastOrderLocation = loc;
 				}
 
+				// This prevents harvesters returning to an empty patch when the player orders them to a new patch:
+				LastHarvestedCell = LastOrderLocation;
 				self.QueueActivity(new FindResources());
 			}
 			else if (order.OrderString == "Deliver")
@@ -316,10 +325,17 @@ namespace OpenRA.Mods.RA
 				if (IsEmpty)
 					return;
 
+				idleSmart = true;
+
 				self.SetTargetLine(Target.FromOrder(order), Color.Green);
 
 				self.CancelActivity();
 				self.QueueActivity(new DeliverResources());
+			}
+			else if (order.OrderString == "Stop" || order.OrderString == "Move")
+			{
+				// Turn off idle smarts to obey the stop/move:
+				idleSmart = false;
 			}
 		}
 

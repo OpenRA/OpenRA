@@ -52,18 +52,11 @@ namespace OpenRA.Mods.RA
 			if (order.OrderString == "ChronoshiftSelf" && movement.CanEnterCell(order.TargetLocation))
 			{
 				if (self.Owner == self.World.LocalPlayer)
-				{
 					self.World.CancelInputMode();
-				}
 
 				self.CancelActivity();
-				self.QueueActivity(new Teleport(order.TargetLocation));
-				Sound.Play("chrotnk1.aud", self.CenterLocation);
-				Sound.Play("chrotnk1.aud", order.TargetLocation.ToPPos());
+				self.QueueActivity(new Teleport(null, order.TargetLocation, true));
 				chargeTick = 25 * self.Info.Traits.Get<ChronoshiftDeployInfo>().ChargeTime;
-
-				foreach (var a in self.World.ActorsWithTrait<ChronoshiftPaletteEffect>())
-					a.Trait.Enable();
 			}
 		}
 
