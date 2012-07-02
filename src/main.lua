@@ -222,6 +222,7 @@ local function loadSpecs()
     spec.sep = spec.sep or ""
     spec.iscomment = {}
     spec.iskeyword0 = {}
+    spec.isstring = {}
     if (spec.lexerstyleconvert) then
       if (spec.lexerstyleconvert.comment) then
         for i,s in pairs(spec.lexerstyleconvert.comment) do
@@ -231,6 +232,11 @@ local function loadSpecs()
       if (spec.lexerstyleconvert.keywords0) then
         for i,s in pairs(spec.lexerstyleconvert.keywords0) do
           spec.iskeyword0[s] = true
+        end
+      end
+      if (spec.lexerstyleconvert.stringtxt) then
+        for i,s in pairs(spec.lexerstyleconvert.stringtxt) do
+          spec.isstring[s] = true
         end
       end
     end
