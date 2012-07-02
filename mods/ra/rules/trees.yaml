@@ -174,3 +174,37 @@ BOXES09:
 	Inherits: ^Tree
 	Tooltip:
 		Name: Boxes
+
+ICE01:
+	Inherits: ^Tree
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Tooltip:
+		Name: Ice Floe
+
+ICE02:
+	Inherits: ^Tree
+	Building:
+		Footprint: x x
+		Dimensions: 1,2
+	Tooltip:
+		Name: Ice Floe
+
+ICE03:
+	Inherits: ^Tree
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	Tooltip:
+		Name: Ice Floe
+
+ICE04:
+	Inherits: ^Tree
+	Tooltip:
+		Name: Ice Floe
+
+ICE05:
+	Inherits: ^Tree
+	Tooltip:
+		Name: Ice Floe
