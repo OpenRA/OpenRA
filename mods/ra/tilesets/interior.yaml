@@ -8,7 +8,7 @@ Terrain:
 	TerrainType@Clear:
 		Type: Clear
 		AcceptsSmudgeType: Crater, Scorch
-		Color: 40, 68, 40
+		Color: 0, 0, 0
 	TerrainType@Water:
 		Type: Water
 		IsWater: true
