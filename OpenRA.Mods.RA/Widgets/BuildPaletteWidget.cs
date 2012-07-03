@@ -155,6 +155,17 @@ namespace OpenRA.Mods.RA.Widgets
 			if (mi.Event != MouseInputEvent.Down)
 				return false;
 
+			if (mi.Button == MouseButton.WheelDown)
+			{
+				TabChange(false);
+				return true;
+			}
+			if (mi.Button == MouseButton.WheelUp)
+			{
+				TabChange(true);
+				return true;
+			}
+
 			var action = tabs.Where(a => a.First.Contains(mi.Location))
 				.Select(a => a.Second).FirstOrDefault();
 			if (action == null && paletteOpen)
