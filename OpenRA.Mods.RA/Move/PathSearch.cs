@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Traits;
 
@@ -28,8 +29,9 @@ namespace OpenRA.Mods.RA.Move
 		public bool inReverse;
 		public HashSet<CPos> considered;
 		public int maxCost;
+		Pair<CVec, int>[] nextDirections;
 		MobileInfo mobileInfo;
-		Player owner;
+		public Player owner;
 
 		public PathSearch(World world, MobileInfo mobileInfo, Player owner)
 		{
@@ -41,6 +43,7 @@ namespace OpenRA.Mods.RA.Move
 			queue = new PriorityQueue<PathDistance>();
 			considered = new HashSet<CPos>();
 			maxCost = 0;
+			nextDirections = directions.Select(d => new Pair<CVec, int>(d, 0)).ToArray();
 		}
 
 		public PathSearch InReverse()
@@ -113,8 +116,11 @@ namespace OpenRA.Mods.RA.Move
 			// This current cell is ok; check all immediate directions:
 			considered.Add(p.Location);
 
-			foreach( CVec d in directions )
+			for (int i = 0; i < nextDirections.Length; ++i)
 			{
+				CVec d = nextDirections[i].First;
+				nextDirections[i].Second = int.MaxValue;
+
 				CPos newHere = p.Location + d;
 
 				// Is this direction flat-out unusable or already seen?
@@ -170,11 +176,15 @@ namespace OpenRA.Mods.RA.Move
 				cellInfo[newHere.X, newHere.Y].Path = p.Location;
 				cellInfo[newHere.X, newHere.Y].MinCost = newCost;
 
+				nextDirections[i].Second = newCost + est;
 				queue.Add(new PathDistance(newCost + est, newHere));
 
 				if (newCost > maxCost) maxCost = newCost;
 				considered.Add(newHere);
 			}
+
+			// Sort to prefer the cheaper direction:
+			Array.Sort(nextDirections, (a, b) => a.Second.CompareTo(b.Second));
 
 			return p.Location;
 		}

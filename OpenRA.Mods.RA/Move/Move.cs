@@ -33,7 +33,8 @@ namespace OpenRA.Mods.RA.Move
 			this.getPath = (self,mobile) =>
 				self.World.WorldActor.Trait<PathFinder>().FindPath(
 					PathSearch.FromPoint( self.World, mobile.Info, self.Owner, mobile.toCell, destination, false )
-					.WithoutLaneBias());
+					.WithoutLaneBias()
+				);
 			this.destination = destination;
 			this.nearEnough = 0;
 		}
@@ -50,7 +51,8 @@ namespace OpenRA.Mods.RA.Move
 			this.getPath = (self,mobile) =>
 				self.World.WorldActor.Trait<PathFinder>().FindPath(
 					PathSearch.FromPoint( self.World, mobile.Info, self.Owner, mobile.toCell, destination, false )
-					.WithIgnoredBuilding( ignoreBuilding ));
+					.WithIgnoredBuilding( ignoreBuilding )
+				);
 
 			this.destination = destination;
 			this.nearEnough = 0;
