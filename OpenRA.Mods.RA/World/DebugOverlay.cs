@@ -50,24 +50,31 @@ namespace OpenRA.Mods.RA
 
 			var qr = Game.Renderer.WorldQuadRenderer;
 			bool doDim = refreshTick - world.FrameNumber <= 0;
-			if (doDim) refreshTick = world.FrameNumber + 25;
+			if (doDim) refreshTick = world.FrameNumber + 20;
+
+			var viewBounds = Game.viewport.WorldBounds(world);
+			var mapBounds = world.Map.Bounds;
 
 			foreach (var pair in layers)
 			{
 				Color c = (pair.Key != null) ? pair.Key.ColorRamp.GetColor(0f) : Color.PaleTurquoise;
 				var layer = pair.Value;
 
-				for (int j = world.Map.Bounds.Top; j <= world.Map.Bounds.Bottom; ++j)
-					for (int i = world.Map.Bounds.Left; i <= world.Map.Bounds.Right; ++i)
+				for (int j = mapBounds.Top; j <= mapBounds.Bottom; ++j)
+					for (int i = mapBounds.Left; i <= mapBounds.Right; ++i)
 					{
-						var ploc = new CPos(i, j).ToPPos();
 						if (layer[i, j] <= 0) continue;
 
 						var w = Math.Max(0, Math.Min(layer[i, j], 128));
 						if (doDim)
 						{
-							layer[i, j] = layer[i, j] * 4 / 5;
+							layer[i, j] = layer[i, j] * 5 / 6;
 						}
+
+						if (!viewBounds.Contains(i, j)) continue;
+
+						// Only render quads in viewing range:
+						var ploc = new CPos(i, j).ToPPos();
 						qr.FillRect(new RectangleF(ploc.X, ploc.Y, Game.CellSize, Game.CellSize), Color.FromArgb(w, c));
 					}
 			}
