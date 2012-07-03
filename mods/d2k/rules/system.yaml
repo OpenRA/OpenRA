@@ -139,7 +139,7 @@ World:
 		ResourceType: 1
 		Palette: d2k
 		TerrainType: Spice
-		SpriteNames: spice0
+		SpriteNames: spice1
 		ValuePerUnit: 35
 		Name: Spice
 		PipColor: Green
