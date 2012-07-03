@@ -171,7 +171,7 @@ namespace OpenRA.Mods.RA.Move
 				int newCost = cellInfo[p.Location.X, p.Location.Y].MinCost + cellCost;
 
 				// Cost is even higher; next direction:
-				if (newCost >= cellInfo[newHere.X, newHere.Y].MinCost)
+				if (newCost > cellInfo[newHere.X, newHere.Y].MinCost)
 					continue;
 
 				cellInfo[newHere.X, newHere.Y].Path = p.Location;
@@ -185,7 +185,7 @@ namespace OpenRA.Mods.RA.Move
 			}
 
 			// Sort to prefer the cheaper direction:
-			Array.Sort(nextDirections, (a, b) => a.Second.CompareTo(b.Second));
+			//Array.Sort(nextDirections, (a, b) => a.Second.CompareTo(b.Second));
 
 			return p.Location;
 		}
@@ -291,10 +291,11 @@ namespace OpenRA.Mods.RA.Move
 		{
 			return here =>
 			{
-				CVec d = (here - destination).Abs();
-				int diag = Math.Min(d.X, d.Y);
-				int straight = Math.Abs(d.X - d.Y);
-				return (3400 * diag / 24) + (100 * straight);
+				int diag = Math.Min(Math.Abs(here.X - destination.X), Math.Abs(here.Y - destination.Y));
+				int straight = (Math.Abs(here.X - destination.X) + Math.Abs(here.Y - destination.Y));
+				int h = (3400 * diag / 24) + 100 * (straight - (2 * diag));
+				h = (int)(h * 1.001);
+				return h;
 			};
 		}
 
