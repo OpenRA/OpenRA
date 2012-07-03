@@ -137,3 +137,11 @@ TC05:
 	Building:
 		Footprint: __x_ xxx_ _xx_
 		Dimensions: 4,3
+
+A10CR:
+	Inherits: ^Tree
+	Building:
+		Footprint: _x xx xx xx
+		Dimensions: 4,2
+	Tooltip:
+		Name: Crash Site
