@@ -101,13 +101,13 @@ namespace OpenRA.Mods.RA.Move
 			var thisCost = mobileInfo.MovementCostForCell(world, p.Location);
 
 			if (thisCost == int.MaxValue)
-				goto thisRejected;
+				return p.Location;
 
 			if (customCost != null)
 			{
 				int c = customCost(p.Location);
 				if (c == int.MaxValue)
-					goto thisRejected;
+					return p.Location;
 			}
 
 			// This current cell is ok; check all immediate directions:
@@ -127,17 +127,17 @@ namespace OpenRA.Mods.RA.Move
 				var costHere = mobileInfo.MovementCostForCell(world, newHere);
 
 				if (costHere == int.MaxValue)
-					goto directionRejected;
+					continue;
 
 				if (!mobileInfo.CanEnterCell(world, owner, newHere, ignoreBuilding, checkForBlocked))
-					goto directionRejected;
+					continue;
 
 				if (customBlock != null && customBlock(newHere))
-					goto directionRejected;
+					continue;
 
 				var est = heuristic(newHere);
 				if (est == int.MaxValue)
-					goto directionRejected;
+					continue;
 
 				int cellCost = costHere;
 				if (d.X * d.Y != 0) cellCost = (cellCost * 34) / 24;
@@ -165,7 +165,7 @@ namespace OpenRA.Mods.RA.Move
 
 				// Cost is even higher; next direction:
 				if (newCost >= cellInfo[newHere.X, newHere.Y].MinCost)
-					goto directionRejected;
+					continue;
 
 				cellInfo[newHere.X, newHere.Y].Path = p.Location;
 				cellInfo[newHere.X, newHere.Y].MinCost = newCost;
@@ -174,14 +174,8 @@ namespace OpenRA.Mods.RA.Move
 
 				if (newCost > maxCost) maxCost = newCost;
 				considered.Add(newHere);
-				continue;
-
-			directionRejected:
-				considered.Add(newHere);
-				continue;
 			}
 
-		thisRejected:
 			return p.Location;
 		}
 
