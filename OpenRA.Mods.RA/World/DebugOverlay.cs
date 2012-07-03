@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA
 			}
 
 			foreach (var p in cellWeights)
-				layer[p.First.X, p.First.Y] = Math.Min(128, (layer[p.First.X, p.First.Y] / 2) + ((maxWeight - p.Second) * 64 / maxWeight));
+				layer[p.First.X, p.First.Y] = Math.Min(128, (layer[p.First.X, p.First.Y]) + ((maxWeight - p.Second) * 64 / maxWeight));
 		}
 
 		public void Render(WorldRenderer wr)
@@ -61,6 +61,7 @@ namespace OpenRA.Mods.RA
 					for (int i = world.Map.Bounds.Left; i <= world.Map.Bounds.Right; ++i)
 					{
 						var ploc = new CPos(i, j).ToPPos();
+						if (layer[i, j] <= 0) continue;
 
 						var w = Math.Max(0, Math.Min(layer[i, j], 128));
 						if (doDim)
