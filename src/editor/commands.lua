@@ -314,8 +314,13 @@ function SaveOnExit(allow_cancel)
     if (SaveModifiedDialog(document.editor, allow_cancel) == wx.wxID_CANCEL) then
       return false
     end
+  end
 
-    document.isModified = false
+  -- if all documents have been saved or refused to save, then mark those that
+  -- are still modified as not modified (they don't need to be saved)
+  -- to keep their tab names correct
+  for id, document in pairs(openDocuments) do
+    if document.isModified then SetDocumentModified(id, false) end
   end
 
   return true

@@ -335,7 +335,7 @@ local function loadNotebook(nb,str,fnIdConvert)
     local instr = cmd:match("<(%w)>")
     if (not instr) then
       local id = fnIdConvert and fnIdConvert(cmd) or cmd
-      local pageind = next(currentpages[id])
+      local pageind = next(currentpages[id] or {})
       if (pageind) then
         local page = currentpages[id][pageind]
         currentpages[id][pageind] = nil
