@@ -1,12 +1,12 @@
 --
--- MobDebug 0.471
+-- MobDebug 0.472
 -- Copyright 2011-12 Paul Kulchenko
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
 --
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.471,
+  _VERSION = 0.472,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = 8171
@@ -24,6 +24,7 @@ local setmetatable = setmetatable
 local string = string
 local tonumber = tonumber
 local mosync = mosync
+local jit = jit
 
 -- this is a socket class that implements maConnect interface
 local function socketMobileLua() 

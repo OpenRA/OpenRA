@@ -24,4 +24,5 @@ return {
   fattachdebug = function(self)
     DebuggerAttachDefault()
   end,
+  scratchextloop = true,
 }

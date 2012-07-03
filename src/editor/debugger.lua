@@ -714,12 +714,27 @@ function DebuggerRefreshScratchpad()
       -- these errors are handled and not reported to the user
       local errormsg = 'execution suspended at ' .. os.clock()
       local stopper = "\ndo error('" .. errormsg .. "') end"
+      -- store if interpreter requires a special handling for external loop
+      local extloop = ide.interpreter.scratchextloop
 
       local function reloadScratchpadCode()
         debugger.scratchpad.running = os.clock()
         debugger.scratchpad.updated = false
+        debugger.scratchpad.runs = (debugger.scratchpad.runs or 0) + 1
 
-        local _, _, err = debugger.loadstring(filePath, code .. stopper)
+        -- the code can be running in two ways under scratchpad:
+        -- 1. controlled by the application, requires stopper (most apps)
+        -- 2. controlled by some external loop (for example, love2d).
+        -- in the first case we need to reload the app after each change
+        -- in the second case, we need to load the app once and then
+        -- "execute" new code to reflect the changes (with some limitations).
+        local _, _, err
+        if extloop then -- if the execution is controlled by an external loop
+          if debugger.scratchpad.runs == 1
+          then _, _, err = debugger.loadstring(filePath, code)
+          else _, _, err = debugger.execute(code) end
+        else   _, _, err = debugger.loadstring(filePath, code .. stopper) end
+
         local prefix = "Compilation error"
 
         if clear then ClearOutput() end
