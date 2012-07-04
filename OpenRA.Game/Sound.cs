@@ -251,7 +251,10 @@ namespace OpenRA
 		{
 			if (definition == null) return false;
 
+			if (Rules.Voices == null) return false;
+			if (Rules.Notifications == null) return false;
 			var rules = (voicedUnit != null) ? Rules.Voices[type] : Rules.Notifications[type];
+			if (rules == null) return false;
 
 			var ID = (voicedUnit != null) ? voicedUnit.ActorID : 0;
 
