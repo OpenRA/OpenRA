@@ -1280,7 +1280,6 @@ Templates:
 		Image: a10cr
 		Size: 4,2
 		Tiles:
-			0: Clear
 			1: Tree
 			5: Tree
 			6: Tree
