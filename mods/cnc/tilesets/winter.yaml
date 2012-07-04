@@ -1281,4 +1281,16 @@ Templates:
 			3: Water
 			4: River
 			6: Water
-
+	Template@188:
+		Id: 188
+		Image: a10cr
+		Size: 4,2
+		Tiles:
+			0: Clear
+			1: Tree
+			5: Tree
+			6: Tree
+			7: Tree
+			3: Tree
+			2: Tree
+			4: Tree
