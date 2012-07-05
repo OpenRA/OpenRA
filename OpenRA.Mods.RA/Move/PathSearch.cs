@@ -120,7 +120,7 @@ namespace OpenRA.Mods.RA.Move
 				if (costHere == int.MaxValue)
 					continue;
 
-				if (!mobileInfo.CanEnterCell(world, owner, newHere, ignoreBuilding, checkForBlocked))
+				if (!mobileInfo.CanEnterCell(world, owner, newHere, ignoreBuilding, checkForBlocked, false))
 					continue;
 
 				if (customBlock != null && customBlock(newHere))
