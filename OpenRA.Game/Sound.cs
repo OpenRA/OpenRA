@@ -72,14 +72,14 @@ namespace OpenRA
 
 		static ISound Play(Player player, string name, bool headRelative, PPos pos, float volumeModifier)
 		{
-			if (player != null && player != player.World.LocalPlayer)
+			if (String.IsNullOrEmpty(name))
 				return null;
-			if (name == "" || name == null)
+			if (player != null && player != player.World.LocalPlayer)
 				return null;
 
 			return soundEngine.Play2D(sounds[name],
 				false, headRelative, pos.ToFloat2(),
-				InternalSoundVolume * volumeModifier);
+				InternalSoundVolume * volumeModifier, true);
 		}
 
 		public static ISound Play(string name) { return Play(null, name, true, PPos.Zero, 1); }
@@ -92,7 +92,7 @@ namespace OpenRA
 		public static void PlayVideo(byte[] raw)
 		{
 			rawSource = LoadSoundRaw(raw);
-			video = soundEngine.Play2D(rawSource, false, true, float2.Zero, InternalSoundVolume);
+			video = soundEngine.Play2D(rawSource, false, true, float2.Zero, InternalSoundVolume, false);
 		}
 
 		public static void PlayVideo()
@@ -149,7 +149,7 @@ namespace OpenRA
 			var sound = sounds[m.Filename];
 			if (sound == null) return;
 
-			music = soundEngine.Play2D(sound, false, true, float2.Zero, MusicVolume);
+			music = soundEngine.Play2D(sound, false, true, float2.Zero, MusicVolume, false);
 			currentMusic = m;
 			MusicPlaying = true;
 		}
@@ -311,7 +311,7 @@ namespace OpenRA
 	interface ISoundEngine
 	{
 		ISoundSource AddSoundSourceFromMemory(byte[] data, int channels, int sampleBits, int sampleRate);
-		ISound Play2D(ISoundSource sound, bool loop, bool relative, float2 pos, float volume);
+		ISound Play2D(ISoundSource sound, bool loop, bool relative, float2 pos, float volume, bool attenuateVolume);
 		float Volume { get; set; }
 		void PauseSound(ISound sound, bool paused);
 		void StopSound(ISound sound);
@@ -332,8 +332,17 @@ namespace OpenRA
 
 	class OpenAlSoundEngine : ISoundEngine
 	{
+		class PoolSlot
+		{
+			public bool isActive;
+			public int frameStarted;
+			public float2 pos;
+			public bool isRelative;
+			public ISoundSource sound;
+		}
+
 		float volume = 1f;
-		Dictionary<int, bool> sourcePool = new Dictionary<int, bool>();
+		Dictionary<int, PoolSlot> sourcePool = new Dictionary<int, PoolSlot>();
 		const int POOL_SIZE = 32;
 
 		public OpenAlSoundEngine()
@@ -357,7 +366,7 @@ namespace OpenRA
 					return;
 				}
 
-				sourcePool.Add(source, false);
+				sourcePool.Add(source, new PoolSlot() { isActive = false });
 			}
 		}
 
@@ -365,9 +374,9 @@ namespace OpenRA
 		{
 			foreach (var kvp in sourcePool)
 			{
-				if (!kvp.Value)
+				if (!kvp.Value.isActive)
 				{
-					sourcePool[kvp.Key] = true;
+					sourcePool[kvp.Key].isActive = true;
 					return kvp.Key;
 				}
 			}
@@ -385,9 +394,9 @@ namespace OpenRA
 				return -1;
 
 			foreach (int i in freeSources)
-				sourcePool[i] = false;
+				sourcePool[i].isActive = false;
 
-			sourcePool[freeSources[0]] = true;
+			sourcePool[freeSources[0]].isActive = true;
 
 			return freeSources[0];
 		}
@@ -397,15 +406,62 @@ namespace OpenRA
 			return new OpenAlSoundSource(data, channels, sampleBits, sampleRate);
 		}
 
-		public ISound Play2D(ISoundSource sound, bool loop, bool relative, float2 pos, float volume)
+		const int maxInstancesPerFrame = 3;
+		const int groupDistance = 64;
+		const int groupDistanceSqr = groupDistance * groupDistance;
+
+		public ISound Play2D(ISoundSource sound, bool loop, bool relative, float2 pos, float volume, bool attenuateVolume)
 		{
 			if (sound == null)
 			{
 				Log.Write("debug", "Attempt to Play2D a null `ISoundSource`");
 				return null;
 			}
+
+			var world = Game.orderManager.world;
+			int currFrame = world != null ? world.FrameNumber : 0;
+			float atten = 1f;
+
+			// Check if max # of instances-per-location reached:
+			if (attenuateVolume)
+			{
+				int instances = 0, activeCount = 0;
+				foreach (var s in sourcePool.Values)
+				{
+					if (!s.isActive)
+						continue;
+					if (s.isRelative != relative)
+						continue;
+
+					++activeCount;
+					if (s.sound != sound)
+						continue;
+					if (currFrame - s.frameStarted >= 5)
+						continue;
+
+					// Too far away to count?
+					var lensqr = (s.pos - pos).LengthSquared;
+					if (lensqr >= groupDistanceSqr)
+						continue;
+
+					// If we are starting too many instances of the same sound within a short time then stop this one:
+					if (++instances == maxInstancesPerFrame)
+						return null;
+				}
+
+				// Attenuate a little bit based on number of active sounds:
+				atten = 0.66f * ((POOL_SIZE - activeCount * 0.5f) / POOL_SIZE);
+			}
+
 			int source = GetSourceFromPool();
-			return new OpenAlSound(source, (sound as OpenAlSoundSource).buffer, loop, relative, pos, volume);
+			if (source == -1) return null;
+
+			var slot = sourcePool[source];
+			slot.pos = pos;
+			slot.frameStarted = currFrame;
+			slot.sound = sound;
+			slot.isRelative = relative;
+			return new OpenAlSound(source, (sound as OpenAlSoundSource).buffer, loop, relative, pos, volume * atten);
 		}
 
 		public float Volume
@@ -518,15 +574,14 @@ namespace OpenRA
 			if (source == -1) return;
 			this.source = source;
 			Al.alSourcef(source, Al.AL_PITCH, 1f);
-			Al.alSourcef(source, Al.AL_GAIN, 1f);
+			Volume = volume;
 			Al.alSource3f(source, Al.AL_POSITION, pos.X, pos.Y, 0f);
 			Al.alSource3f(source, Al.AL_VELOCITY, 0f, 0f, 0f);
 			Al.alSourcei(source, Al.AL_BUFFER, buffer);
 			Al.alSourcei(source, Al.AL_LOOPING, looping ? Al.AL_TRUE : Al.AL_FALSE);
 			Al.alSourcei(source, Al.AL_SOURCE_RELATIVE, relative ? 1 : 0);
-			Al.alSourcef(source, Al.AL_REFERENCE_DISTANCE, 200);
-			Al.alSourcef(source, Al.AL_MAX_DISTANCE, 1500);
-			Volume = volume;
+			Al.alSourcef(source, Al.AL_REFERENCE_DISTANCE, 160);
+			Al.alSourcef(source, Al.AL_MAX_DISTANCE, 3200 / Game.viewport.Zoom);
 			Al.alSourcePlay(source);
 		}
 
@@ -568,7 +623,7 @@ namespace OpenRA
 			return new NullSoundSource();
 		}
 
-		public ISound Play2D(ISoundSource sound, bool loop, bool relative, float2 pos, float volume)
+		public ISound Play2D(ISoundSource sound, bool loop, bool relative, float2 pos, float volume, bool attenuateVolume)
 		{
 			return new NullSound();
 		}
