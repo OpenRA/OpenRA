@@ -53,7 +53,7 @@ namespace OpenRA.Mods.RA.Activities
 
 			// Find harvestable resources nearby:
 			var path = self.World.WorldActor.Trait<PathFinder>().FindPath(
-				PathSearch.Search(self.World, mobileInfo, self.Owner, true)
+				PathSearch.Search(self.World, mobileInfo, self, true)
 					.WithCustomCost(loc =>
 					{
 						// Avoid enemy territory:

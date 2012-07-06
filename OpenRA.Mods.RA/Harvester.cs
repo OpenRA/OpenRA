@@ -112,7 +112,7 @@ namespace OpenRA.Mods.RA
 			// Start a search from each refinery's delivery location:
 			var mi = self.Info.Traits.Get<MobileInfo>();
 			var path = self.World.WorldActor.Trait<PathFinder>().FindPath(
-				PathSearch.FromPoints(self.World, mi, self.Owner, refs.Values.Select(r => r.Location), self.Location, false)
+				PathSearch.FromPoints(self.World, mi, self, refs.Values.Select(r => r.Location), self.Location, false)
 					.WithCustomCost((loc) =>
 					{
 						if (!refs.ContainsKey(loc)) return 0;
@@ -349,7 +349,7 @@ namespace OpenRA.Mods.RA
 
 			// Find any harvestable resources:
 			var path = self.World.WorldActor.Trait<PathFinder>().FindPath(
-				PathSearch.Search(self.World, mobileInfo, self.Owner, true)
+				PathSearch.Search(self.World, mobileInfo, self, true)
 					.WithHeuristic(loc =>
 					{
 						// Get the resource at this location:

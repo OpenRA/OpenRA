@@ -55,8 +55,8 @@ namespace OpenRA.Mods.RA.Move
 				var mi = self.Info.Traits.Get<MobileInfo>();
 
 				var pb = FindBidiPath(
-					PathSearch.FromPoint(world, mi, self.Owner, target, from, true),
-					PathSearch.FromPoint(world, mi, self.Owner, from, target, true).InReverse()
+					PathSearch.FromPoint(world, mi, self, target, from, true),
+					PathSearch.FromPoint(world, mi, self, from, target, true).InReverse()
 				);
 
 				CheckSanePath2(pb, from, target);
@@ -73,11 +73,11 @@ namespace OpenRA.Mods.RA.Move
 			{
 				var mi = self.Info.Traits.Get<MobileInfo>();
 				var tilesInRange = world.FindTilesInCircle(target, range)
-					.Where(t => mi.CanEnterCell(self.World, self.Owner, t, null, true, true));
+					.Where(t => mi.CanEnterCell(self.World, self, t, null, true, true));
 
 				var path = FindBidiPath(
-					PathSearch.FromPoints(world, mi, self.Owner, tilesInRange, src, true),
-					PathSearch.FromPoint(world, mi, self.Owner, src, target, true).InReverse()
+					PathSearch.FromPoints(world, mi, self, tilesInRange, src, true),
+					PathSearch.FromPoint(world, mi, self, src, target, true).InReverse()
 				);
 
 				return path;

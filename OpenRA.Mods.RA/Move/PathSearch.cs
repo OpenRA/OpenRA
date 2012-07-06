@@ -28,14 +28,15 @@ namespace OpenRA.Mods.RA.Move
 		public bool inReverse;
 
 		MobileInfo mobileInfo;
-		Player owner;
+		Actor self;
+		public Player owner { get { return self.Owner; } }
 
-		public PathSearch(World world, MobileInfo mobileInfo, Player owner)
+		public PathSearch(World world, MobileInfo mobileInfo, Actor self)
 		{
 			this.world = world;
 			cellInfo = InitCellInfo();
 			this.mobileInfo = mobileInfo;
-			this.owner = owner;
+			this.self = self;
 			customCost = null;
 			queue = new PriorityQueue<PathDistance>();
 		}
@@ -120,7 +121,7 @@ namespace OpenRA.Mods.RA.Move
 				if (costHere == int.MaxValue)
 					continue;
 
-				if (!mobileInfo.CanEnterCell(world, owner, newHere, ignoreBuilding, checkForBlocked, false))
+				if (!mobileInfo.CanEnterCell(world, self, newHere, ignoreBuilding, checkForBlocked, false))
 					continue;
 
 				if (customBlock != null && customBlock(newHere))
@@ -182,18 +183,18 @@ namespace OpenRA.Mods.RA.Move
 			queue.Add(new PathDistance(heuristic(location), location));
 		}
 
-		public static PathSearch Search(World world, MobileInfo mi, Player owner, bool checkForBlocked)
+		public static PathSearch Search(World world, MobileInfo mi, Actor self, bool checkForBlocked)
 		{
-			var search = new PathSearch(world, mi, owner)
+			var search = new PathSearch(world, mi, self)
 			{
 				checkForBlocked = checkForBlocked
 			};
 			return search;
 		}
 
-		public static PathSearch FromPoint(World world, MobileInfo mi, Player owner, CPos from, CPos target, bool checkForBlocked)
+		public static PathSearch FromPoint(World world, MobileInfo mi, Actor self, CPos from, CPos target, bool checkForBlocked)
 		{
-			var search = new PathSearch(world, mi, owner)
+			var search = new PathSearch(world, mi, self)
 			{
 				heuristic = DefaultEstimator(target),
 				checkForBlocked = checkForBlocked
@@ -203,9 +204,9 @@ namespace OpenRA.Mods.RA.Move
 			return search;
 		}
 
-		public static PathSearch FromPoints(World world, MobileInfo mi, Player owner, IEnumerable<CPos> froms, CPos target, bool checkForBlocked)
+		public static PathSearch FromPoints(World world, MobileInfo mi, Actor self, IEnumerable<CPos> froms, CPos target, bool checkForBlocked)
 		{
-			var search = new PathSearch(world, mi, owner)
+			var search = new PathSearch(world, mi, self)
 			{
 				heuristic = DefaultEstimator(target),
 				checkForBlocked = checkForBlocked
