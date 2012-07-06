@@ -77,7 +77,25 @@ namespace OpenRA.Mods.RA.Move
 			{SubCell.FullCell, new PVecInt(0,0)},
 		};
 
-		public bool CanEnterCell(World world, Player owner, CPos cell, Actor ignoreActor, bool checkTransientActors)
+		static bool IsMovingInMyDirection(Actor self, Actor other)
+		{
+			if (!other.IsMoving()) return false;
+			if (self == null) return true;
+
+			var selfMobile = self.TraitOrDefault<Mobile>();
+			if (selfMobile == null) return false;
+
+			var otherMobile = other.TraitOrDefault<Mobile>();
+			if (otherMobile == null) return false;
+
+			// Sign of dot-product indicates (roughly) if vectors are facing in same or opposite directions:
+			var dp = CVec.Dot((selfMobile.toCell - self.Location), (otherMobile.toCell - other.Location));
+			if (dp <= 0) return false;
+
+			return true;
+		}
+
+		public bool CanEnterCell(World world, Actor self, CPos cell, Actor ignoreActor, bool checkTransientActors, bool blockedByMovers)
 		{
 			if (MovementCostForCell(world, cell) == int.MaxValue)
 				return false;
@@ -85,7 +103,12 @@ namespace OpenRA.Mods.RA.Move
 			if (SharesCell && world.ActorMap.HasFreeSubCell(cell))
 				return true;
 
-			var blockingActors = world.ActorMap.GetUnitsAt(cell).Where(x => x != ignoreActor).ToList();
+			var blockingActors = world.ActorMap.GetUnitsAt(cell)
+				.Where(x => x != ignoreActor)
+				// Neutral/enemy units are blockers. Allied units that are moving are not blockers.
+				.Where(x => blockedByMovers || ((self.Owner.Stances[x.Owner] != Stance.Ally) || !IsMovingInMyDirection(self, x)))
+				.ToList();
+
 			if (checkTransientActors && blockingActors.Count > 0)
 			{
 				// Non-sharable unit can enter a cell with shareable units only if it can crush all of them
@@ -93,7 +116,7 @@ namespace OpenRA.Mods.RA.Move
 					return false;
 
 				if (blockingActors.Any(a => !(a.HasTrait<ICrushable>() &&
-									         a.TraitsImplementing<ICrushable>().Any(b => b.CrushableBy(Crushes, owner)))))
+											 a.TraitsImplementing<ICrushable>().Any(b => b.CrushableBy(Crushes, self.Owner)))))
 					return false;
 			}
 
@@ -342,7 +365,7 @@ namespace OpenRA.Mods.RA.Move
 
 		public bool CanEnterCell(CPos cell, Actor ignoreActor, bool checkTransientActors)
 		{
-			return Info.CanEnterCell(self.World, self.Owner, cell, ignoreActor, checkTransientActors);
+			return Info.CanEnterCell(self.World, self, cell, ignoreActor, checkTransientActors, true);
 		}
 
 		public void EnteringCell(Actor self)

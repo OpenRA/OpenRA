@@ -129,7 +129,7 @@ namespace OpenRA.Mods.RA
 			var mobileInfo = producee.Traits.GetOrDefault<MobileInfo>();
 
 			return mobileInfo == null ||
-				mobileInfo.CanEnterCell(self.World, self.Owner, self.Location + s.ExitCellVector, self, true);
+				mobileInfo.CanEnterCell(self.World, self, self.Location + s.ExitCellVector, self, true, true);
 		}
 	}
 }

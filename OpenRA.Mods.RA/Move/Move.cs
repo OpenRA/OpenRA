@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA.Move
 		{
 			this.getPath = (self,mobile) =>
 				self.World.WorldActor.Trait<PathFinder>().FindPath(
-					PathSearch.FromPoint( self.World, mobile.Info, self.Owner, mobile.toCell, destination, false )
+					PathSearch.FromPoint( self.World, mobile.Info, self, mobile.toCell, destination, false )
 					.WithoutLaneBias());
 			this.destination = destination;
 			this.nearEnough = 0;
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.RA.Move
 		{
 			this.getPath = (self,mobile) =>
 				self.World.WorldActor.Trait<PathFinder>().FindPath(
-					PathSearch.FromPoint( self.World, mobile.Info, self.Owner, mobile.toCell, destination, false )
+					PathSearch.FromPoint( self.World, mobile.Info, self, mobile.toCell, destination, false )
 					.WithIgnoredBuilding( ignoreBuilding ));
 
 			this.destination = destination;
@@ -386,6 +386,25 @@ namespace OpenRA.Mods.RA.Move
 				mobile.FinishedMoving(self);
 				return null;
 			}
+		}
+	}
+
+	public static class ActorExtensionsForMove
+	{
+		public static bool IsMoving(this Actor self)
+		{
+			if (self.IsIdle) return false;
+
+			Activity a = self.GetCurrentActivity();
+			Debug.Assert(a != null);
+
+			// Dirty, but it suffices until we do something better:
+			if (a.GetType() == typeof(Move)) return true;
+			if (a.GetType() == typeof(MoveAdjacentTo)) return true;
+			if (a.GetType() == typeof(AttackMove)) return true;
+
+			// Not a move:
+			return false;
 		}
 	}
 }
