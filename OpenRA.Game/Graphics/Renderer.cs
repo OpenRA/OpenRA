@@ -33,6 +33,7 @@ namespace OpenRA.Graphics
 		internal IShader SpriteShader { get; private set; }
 
 		public SpriteRenderer WorldSpriteRenderer { get; private set; }
+		public QuadRenderer WorldQuadRenderer { get; private set; }
 		public LineRenderer WorldLineRenderer { get; private set; }
 		public LineRenderer LineRenderer { get; private set; }
 		public SpriteRenderer RgbaSpriteRenderer { get; private set; }
@@ -58,6 +59,7 @@ namespace OpenRA.Graphics
 
 			WorldSpriteRenderer = new SpriteRenderer( this, WorldSpriteShader );
 			WorldLineRenderer = new LineRenderer(this, WorldLineShader);
+			WorldQuadRenderer = new QuadRenderer(this, WorldLineShader);
 			LineRenderer = new LineRenderer(this, LineShader);
 			RgbaSpriteRenderer = new SpriteRenderer( this, RgbaSpriteShader );
 			SpriteRenderer = new SpriteRenderer( this, SpriteShader );

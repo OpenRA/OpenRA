@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Traits;
 
@@ -26,9 +27,11 @@ namespace OpenRA.Mods.RA.Move
 		public bool checkForBlocked;
 		public Actor ignoreBuilding;
 		public bool inReverse;
-
+		public HashSet<CPos> considered;
+		public int maxCost;
+		Pair<CVec, int>[] nextDirections;
 		MobileInfo mobileInfo;
-		Player owner;
+		public Player owner;
 
 		public PathSearch(World world, MobileInfo mobileInfo, Player owner)
 		{
@@ -38,6 +41,9 @@ namespace OpenRA.Mods.RA.Move
 			this.owner = owner;
 			customCost = null;
 			queue = new PriorityQueue<PathDistance>();
+			considered = new HashSet<CPos>();
+			maxCost = 0;
+			nextDirections = directions.Select(d => new Pair<CVec, int>(d, 0)).ToArray();
 		}
 
 		public PathSearch InReverse()
@@ -107,14 +113,23 @@ namespace OpenRA.Mods.RA.Move
 					return p.Location;
 			}
 
-			foreach( CVec d in directions )
+			// This current cell is ok; check all immediate directions:
+			considered.Add(p.Location);
+
+			for (int i = 0; i < nextDirections.Length; ++i)
 			{
+				CVec d = nextDirections[i].First;
+				nextDirections[i].Second = int.MaxValue;
+
 				CPos newHere = p.Location + d;
 
-				if (!world.Map.IsInMap(newHere.X, newHere.Y)) continue;
+				// Is this direction flat-out unusable or already seen?
+				if (!world.Map.IsInMap(newHere.X, newHere.Y))
+					continue;
 				if (cellInfo[newHere.X, newHere.Y].Seen)
 					continue;
 
+				// Now we may seriously consider this direction using heuristics:
 				var costHere = mobileInfo.MovementCostForCell(world, newHere);
 
 				if (costHere == int.MaxValue)
@@ -133,8 +148,12 @@ namespace OpenRA.Mods.RA.Move
 				int cellCost = costHere;
 				if (d.X * d.Y != 0) cellCost = (cellCost * 34) / 24;
 
+				int userCost = 0;
 				if (customCost != null)
-					cellCost += customCost(newHere);
+				{
+					userCost = customCost(newHere);
+					cellCost += userCost;
+				}
 
 				// directional bonuses for smoother flow!
 				if (LaneBias != 0)
@@ -150,14 +169,23 @@ namespace OpenRA.Mods.RA.Move
 
 				int newCost = cellInfo[p.Location.X, p.Location.Y].MinCost + cellCost;
 
-				if (newCost >= cellInfo[newHere.X, newHere.Y].MinCost)
+				// Cost is even higher; next direction:
+				if (newCost > cellInfo[newHere.X, newHere.Y].MinCost)
 					continue;
 
 				cellInfo[newHere.X, newHere.Y].Path = p.Location;
 				cellInfo[newHere.X, newHere.Y].MinCost = newCost;
 
+				nextDirections[i].Second = newCost + est;
 				queue.Add(new PathDistance(newCost + est, newHere));
+
+				if (newCost > maxCost) maxCost = newCost;
+				considered.Add(newHere);
 			}
+
+			// Sort to prefer the cheaper direction:
+			//Array.Sort(nextDirections, (a, b) => a.Second.CompareTo(b.Second));
+
 			return p.Location;
 		}
 
@@ -262,10 +290,11 @@ namespace OpenRA.Mods.RA.Move
 		{
 			return here =>
 			{
-				CVec d = (here - destination).Abs();
-				int diag = Math.Min(d.X, d.Y);
-				int straight = Math.Abs(d.X - d.Y);
-				return (3400 * diag / 24) + (100 * straight);
+				int diag = Math.Min(Math.Abs(here.X - destination.X), Math.Abs(here.Y - destination.Y));
+				int straight = (Math.Abs(here.X - destination.X) + Math.Abs(here.Y - destination.Y));
+				int h = (3400 * diag / 24) + 100 * (straight - (2 * diag));
+				h = (int)(h * 1.001);
+				return h;
 			};
 		}
 
