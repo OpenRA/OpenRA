@@ -219,9 +219,8 @@ end
 
 local function ProcInFiles(startdir,mask,subdirs,replace)
   if (subdirs) then
-    local dirs = FileSysGet(startdir..string_Pathsep.."*.*",wx.wxDIR)
+    local dirs = FileSysGet(startdir..string_Pathsep.."*",wx.wxDIR)
     for i,dir in ipairs(dirs) do
-      --DisplayOutput(dir.."\n")
       ProcInFiles(dir,mask,true,replace)
     end
   end
@@ -229,8 +228,6 @@ local function ProcInFiles(startdir,mask,subdirs,replace)
   local files = FileSysGet(startdir..string_Pathsep..mask,wx.wxFILE)
   for i,file in ipairs(files) do
     findReplace.curfilename = file
-
-    --DisplayOutput(file.."\n")
 
     -- load file
     local handle = io.open(file, "rb")

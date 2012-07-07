@@ -50,7 +50,7 @@ local function treeAddDir(tree,parent_id,rootdir)
   end
 
   local curr
-  local search = rootdir..string_Pathsep.."*.*"
+  local search = rootdir..string_Pathsep.."*"
   local dirs = FileSysGet(search,wx.wxDIR)
 
   -- append directories
