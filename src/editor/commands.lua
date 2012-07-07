@@ -115,7 +115,7 @@ function OpenFile(event)
     "",
     "",
     exts,
-    wx.wxOPEN + wx.wxFILE_MUST_EXIST)
+    wx.wxFD_OPEN + wx.wxFD_FILE_MUST_EXIST)
   if fileDialog:ShowModal() == wx.wxID_OK then
     if not LoadFile(fileDialog:GetPath(), nil, true) then
       wx.wxMessageBox("Unable to load file '"..fileDialog:GetPath().."'.",
@@ -182,7 +182,7 @@ function SaveFileAs(editor)
     fn:GetPath(wx.wxPATH_GET_VOLUME),
     fn:GetFullName(),
     exts,
-    wx.wxSAVE)
+    wx.wxFD_SAVE)
 
   if fileDialog:ShowModal() == wx.wxID_OK then
     local filePath = fileDialog:GetPath()
@@ -531,5 +531,9 @@ function CloseWindow(event)
   if DebuggerShutdown then DebuggerShutdown() end
   ide.settings:delete() -- always delete the config
   event:Skip()
+
+  -- without explicit exit() the IDE crashes with SIGILL exception when closed
+  -- on MacOS compiled under 64bit with wxwidgets 2.9.3
+  if ide.osname == "Macintosh" then os.exit() end
 end
 frame:Connect(wx.wxEVT_CLOSE_WINDOW, CloseWindow)

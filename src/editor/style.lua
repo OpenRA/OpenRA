@@ -234,7 +234,7 @@ function LoadConfigStyle()
     "/cfg",
     "",
     "Lua file (*.lua)|*.lua|All files (*)|*",
-    wx.wxOPEN + wx.wxFILE_MUST_EXIST)
+    wx.wxFD_OPEN + wx.wxFD_FILE_MUST_EXIST)
   if fileDialog:ShowModal() == wx.wxID_OK then
     local cfg = {wxstc = wxstc, path = {}, editor = {}, view ={}, acandtip = {}, outputshell = {}, debugger={},}
     local cfgfn,err = loadfile(fileDialog:GetPath())

@@ -168,7 +168,7 @@ function FileSysGet(dir,spec)
   end
   local f = browse:FindFirst(dir,spec)
   while #f>0 do
-    table.insert(content,f)
+    table.insert(content,(f:gsub("^file:",""))) -- remove file: protocol (wx2.9+)
     f = browse:FindNext()
   end
   return content
