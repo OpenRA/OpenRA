@@ -241,7 +241,9 @@ errorlog:Connect(wx.wxEVT_END_PROCESS, function(event)
       -- delete markers and set focus to the editor if there is an input marker
       if errorlog:MarkerPrevious(errorlog:GetLineCount(), INPUT_MARKER_VALUE) > -1 then
         errorlog:MarkerDeleteAll(INPUT_MARKER)
-        GetEditor():SetFocus()
+        local editor = GetEditor()
+        -- check if editor still exists; it may not if the window is closed
+        if editor then editor:SetFocus() end
       end
       nameTab(errorlog, "Output")
       local runtime = os.clock() - customprocs[pid].started
