@@ -45,7 +45,7 @@ function MarkupHotspotClick(pos, editor)
   pos = pos + #MD_MARK_LINK - editor:PositionFromLine(line) -- turn into relative position
 
   -- extract the URL/command on the right side of the separator
-  local _,_,text = string.find(tx, q(MD_MARK_LSEP).."([^%s]+)"..q(MD_MARK_LINT), pos)
+  local _,_,text = string.find(tx, q(MD_MARK_LSEP).."([^%s]-)"..q(MD_MARK_LINT), pos)
   if text then
     local filepath = ide.openDocuments[editor:GetId()].filePath
     local _,_,shell = string.find(text, [[^macro:shell%((.*%S)%)$]])
@@ -98,7 +98,7 @@ local function ismarkup (tx)
     elseif sep == MD_MARK_LINK then
       -- allow everything except spaces in the second part
       s,e,cap = string.find(tx,"^("..q(MD_MARK_LINK)..nonspace..".-"..nonspace
-                                   ..q(MD_MARK_LSEP).."[^%s]+"
+                                   ..q(MD_MARK_LSEP).."[^%s][^%s]-"
                                    ..q(MD_MARK_LINT)..")", st)
     elseif markup[sep] then
       -- try 2+ characters between separators first
