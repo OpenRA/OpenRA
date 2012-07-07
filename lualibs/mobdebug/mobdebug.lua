@@ -1,12 +1,12 @@
 --
--- MobDebug 0.472
+-- MobDebug 0.473
 -- Copyright 2011-12 Paul Kulchenko
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
 --
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.472,
+  _VERSION = 0.473,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = 8171
@@ -494,6 +494,7 @@ local function debug_hook(event, line)
       if status and res == 'stack' then
         while status and res == 'stack' do
           -- resume with the stack trace and variables
+          if vars then restore_vars(vars) end -- restore vars so they are reflected in stack values
           status, res = coroutine.resume(coro_debugger, events.STACK, stack(3), file, line)
         end
       end
@@ -506,7 +507,7 @@ local function debug_hook(event, line)
         -- only abort if safe; if not, there is another (earlier) check inside
         -- debug_hook, which will abort execution at the first safe opportunity
         if is_safe(stack_level) then error(abort) end
-      end -- abort execution if requested
+      end
     end
     if vars then restore_vars(vars) end
   end

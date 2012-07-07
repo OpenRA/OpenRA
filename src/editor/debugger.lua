@@ -496,7 +496,7 @@ do
 end
 
 function DebuggerCreateStackWindow()
-  if (debugger.stackWindow) then return end
+  if (debugger.stackWindow) then return updateStackAndWatches() end
   local width = 360
   local stackWindow = wx.wxFrame(ide.frame, wx.wxID_ANY,
     "Stack Window",
@@ -554,7 +554,7 @@ function DebuggerCreateStackWindow()
 end
 
 function DebuggerCreateWatchWindow()
-  if (debugger.watchWindow) then return end
+  if (debugger.watchWindow) then return updateWatches() end
   local width = 360
   local watchWindow = wx.wxFrame(ide.frame, wx.wxID_ANY,
     "Watch Window",
