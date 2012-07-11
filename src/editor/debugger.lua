@@ -663,10 +663,7 @@ function DebuggerCreateWatchWindow()
 end
 
 function DebuggerMakeFileName(editor, filePath)
-  if not filePath then
-    filePath = "file"..tostring(editor)
-  end
-  return filePath
+  return filePath or editor:GetText()
 end
 
 function DebuggerToggleBreakpoint(editor, line)
