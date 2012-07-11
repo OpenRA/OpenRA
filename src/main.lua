@@ -5,8 +5,8 @@
 -- that may have other versions present somewhere else in path/cpath
 local iswindows = os.getenv('WINDIR') or (os.getenv('OS') or ''):match('[Ww]indows')
 package.cpath = (iswindows
-  and 'bin/?.dll;bin/clibs/?.dll;bin/clibs/?/?.dll;bin/clibs/?/?/?.dll;'
-   or 'bin/?.so;bin/clibs/?.so;bin/clibs/?/?.so;bin/clibs/?/?/?.so;')
+  and 'bin/?.dll;bin/clibs/?.dll;'
+   or 'bin/clibs/?.dylib;bin/lib?.dylib;bin/?.so;bin/clibs/?.so;')
   .. package.cpath
 package.path  = 'lualibs/?.lua;lualibs/?/?.lua;lualibs/?/init.lua;lualibs/?/?/?.lua;lualibs/?/?/init.lua;'
               .. package.path
@@ -113,6 +113,7 @@ do
 
   ide.arg = arg
   ide.editorFilename = fullPath
+  ide.osname = wx.wxPlatformInfo.Get():GetOperatingSystemFamilyName()
   ide.config.path.app = fullPath:match("([%w_-%.]+)$"):gsub("%.[^%.]*$","")
   assert(ide.config.path.app, "no application path defined")
   for index = 2, #arg do
