@@ -30,14 +30,15 @@ local filetree = ide.filetree
 -- ------------
 
 do
+  local getBitmap = (ide.app.createbitmap or wx.wxArtProvider.GetBitmap)
   local size = wx.wxSize(16, 16)
   filetree.imglist = wx.wxImageList(16,16)
   -- 0 = directory
-  filetree.imglist:Add(wx.wxArtProvider.GetBitmap(wx.wxART_FOLDER, wx.wxART_OTHER, size))
+  filetree.imglist:Add(getBitmap(wx.wxART_FOLDER, wx.wxART_OTHER, size))
   -- 1 = file known spec
-  filetree.imglist:Add(wx.wxArtProvider.GetBitmap(wx.wxART_HELP_PAGE, wx.wxART_OTHER, size))
+  filetree.imglist:Add(getBitmap(wx.wxART_HELP_PAGE, wx.wxART_OTHER, size))
   -- 2 = file rest
-  filetree.imglist:Add(wx.wxArtProvider.GetBitmap(wx.wxART_NORMAL_FILE, wx.wxART_OTHER, size))
+  filetree.imglist:Add(getBitmap(wx.wxART_NORMAL_FILE, wx.wxART_OTHER, size))
 end
 
 local function treeAddDir(tree,parent_id,rootdir)

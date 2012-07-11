@@ -486,13 +486,14 @@ end
 -- of it and if done inside a function, icons do not work as expected
 local imglist = wx.wxImageList(16,16)
 do
+  local getBitmap = (ide.app.createbitmap or wx.wxArtProvider.GetBitmap)
   local size = wx.wxSize(16,16)
   -- 0 = stack call
-  imglist:Add((ide.app.createbitmap or wx.wxArtProvider.GetBitmap)(wx.wxART_GO_FORWARD, wx.wxART_OTHER, size))
+  imglist:Add(getBitmap(wx.wxART_GO_FORWARD, wx.wxART_OTHER, size))
   -- 1 = local variables
-  imglist:Add((ide.app.createbitmap or wx.wxArtProvider.GetBitmap)(wx.wxART_LIST_VIEW, wx.wxART_OTHER, size))
+  imglist:Add(getBitmap(wx.wxART_LIST_VIEW, wx.wxART_OTHER, size))
   -- 2 = upvalues
-  imglist:Add((ide.app.createbitmap or wx.wxArtProvider.GetBitmap)(wx.wxART_REPORT_VIEW, wx.wxART_OTHER, size))
+  imglist:Add(getBitmap(wx.wxART_REPORT_VIEW, wx.wxART_OTHER, size))
 end
 
 function DebuggerCreateStackWindow()
