@@ -49,7 +49,7 @@ function MarkupHotspotClick(pos, editor)
   if text then
     local filepath = ide.openDocuments[editor:GetId()].filePath
     local _,_,shell = string.find(text, [[^macro:shell%((.*%S)%)$]])
-    local _,_,http = string.find(text, [[^(http:%S+)$]])
+    local _,_,http = string.find(text, [[^(https?:%S+)$]])
     local _,_,command = string.find(text, [[^macro:(%w+)$]])
     if shell then
       ShellExecuteCode(shell)
@@ -70,6 +70,7 @@ function MarkupHotspotClick(pos, editor)
       filename:Normalize() -- remove .., ., and other similar elements
       if filename:FileExists() and
         (newwindow or SaveModifiedDialog(editor, true) ~= wx.wxID_CANCEL) then
+        if not newwindow and ide.osname == 'Macintosh' then editor:GotoPos(0) end
         LoadFile(filename,not newwindow and editor or nil,true)
       end
     end
