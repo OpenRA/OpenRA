@@ -51,10 +51,9 @@ local function treeAddDir(tree,parent_id,rootdir)
 
   local curr
   local search = rootdir..string_Pathsep.."*"
-  local dirs = FileSysGet(search,wx.wxDIR)
 
   -- append directories
-  for _,dir in ipairs(dirs) do
+  for _,dir in ipairs(FileSysGet(search,wx.wxDIR)) do
     local name = dir:match("%"..string_Pathsep.."("..stringset_File.."+)$")
     local icon = 0
     local item = items[name .. icon]
@@ -78,8 +77,7 @@ local function treeAddDir(tree,parent_id,rootdir)
   end
 
   -- then append files
-  local files = FileSysGet(search,wx.wxFILE)
-  for _,file in ipairs(files) do
+  for _,file in ipairs(FileSysGet(search,wx.wxFILE)) do
     local name = file:match("%"..string_Pathsep.."("..stringset_File.."+)$")
     local known = GetSpec(GetFileExt(name))
     local icon = known and 1 or 2
@@ -127,10 +125,8 @@ end
 
 local function treeSetRoot(tree,treedata,rootdir)
   tree:DeleteAllItems()
-
   if (not wx.wxDirExists(rootdir)) then
     treedata.root_id = nil
-    tree:AddRoot("Invalid")
     return
   end
 
@@ -308,7 +304,7 @@ end
 
 local curr_id
 function FileTreeMarkSelected(file)
-  if not file then return end
+  if not file or not filetree.projdirText or #filetree.projdirText == 0 then return end
   local item_id = findItem(projtree, file)
   if curr_id ~= item_id then
     if curr_id and projtree:IsBold(curr_id) then
