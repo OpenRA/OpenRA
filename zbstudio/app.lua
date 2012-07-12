@@ -61,8 +61,9 @@ local app = {
     menuBar:Check(ID_CLEAROUTPUT, true)
 
     -- load myprograms/welcome.lua if exists and no projectdir
-    if (not ide.config.path.projectdir
-        or string.len(ide.config.path.projectdir) == 0) then
+    local projectdir = ide.config.path.projectdir
+    if (not projectdir or string.len(projectdir) == 0
+        or not wx.wxFileName(projectdir):FileExists()) then
       local home = wx.wxGetHomeDir():gsub("[\\/]$","")
       for _,dir in pairs({home, home.."/Desktop", ""}) do
         local fn = wx.wxFileName("myprograms/welcome.lua")
