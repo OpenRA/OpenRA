@@ -249,6 +249,7 @@ debugger.listen = function()
       debugger.socket = skt
       debugger.loop = false
       debugger.scratchable = false
+      debugger.stats = {line = 0}
 
       -- load the remote file into the debugger
       -- set basedir first, before loading to make sure that the path is correct
@@ -354,6 +355,7 @@ debugger.exec = function(command)
               file = debugger.basedir .. file
             end
             if activateDocument(file, line) then
+              debugger.stats.line = debugger.stats.line + 1
               if debugger.loop then
                 updateStackSync()
                 updateWatchesSync()
@@ -462,7 +464,8 @@ function DebuggerStop()
     ShellSupportRemote(nil)
     ClearAllCurrentLineMarkers()
     DebuggerScratchpadOff()
-    DisplayOutput("Debugging session completed.\n")
+    DisplayOutput(("Debugging session completed (traced %d instruction%s).\n")
+      :format(debugger.stats.line, debugger.stats.line == 1 and '' or 's'))
   end
 end
 
