@@ -1,4 +1,3 @@
-editor.fontname = "Courier New"
 editor.caretline = true
 editor.showfncall = true
 editor.autotabs = false
