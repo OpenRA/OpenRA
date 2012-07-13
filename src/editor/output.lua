@@ -13,8 +13,8 @@ local INPUT_MARKER = 3
 local INPUT_MARKER_VALUE = 2^INPUT_MARKER
 
 errorlog:Show(true)
-errorlog:SetFont(ide.ofont)
-errorlog:StyleSetFont(wxstc.wxSTC_STYLE_DEFAULT, ide.ofont)
+errorlog:SetFont(ide.font.oNormal)
+errorlog:StyleSetFont(wxstc.wxSTC_STYLE_DEFAULT, ide.font.oNormal)
 errorlog:StyleClearAll()
 errorlog:SetMarginWidth(1, 16) -- marker margin
 errorlog:SetMarginType(1, wxstc.wxSTC_MARGIN_SYMBOL);
@@ -22,7 +22,7 @@ errorlog:MarkerDefine(CURRENT_LINE_MARKER, wxstc.wxSTC_MARK_ARROWS, wx.wxBLACK, 
 errorlog:MarkerDefine(INPUT_MARKER, wxstc.wxSTC_MARK_CHARACTER+string.byte('>'),
   wx.wxColour(127, 127, 127), wx.wxColour(240, 240, 240))
 errorlog:SetReadOnly(true)
-StylesApplyToEditor(ide.config.stylesoutshell,errorlog,ide.ofont,ide.ofontItalic)
+StylesApplyToEditor(ide.config.stylesoutshell,errorlog,ide.font.oNormal,ide.font.oItalic)
 
 function ClearOutput()
   errorlog:SetReadOnly(false)

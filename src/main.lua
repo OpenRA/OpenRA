@@ -37,6 +37,7 @@ ide = {
       verbose = false,
     },
     outputshell = {},
+    filetree = {},
 
     styles = StylesGetDefault(),
     stylesoutshell = StylesGetDefault(),
@@ -91,10 +92,13 @@ ide = {
   -- modTime = wxDateTime of disk file or nil,
   -- isModified = bool is the document modified? }
   ignoredFilesList = {},
-  font = nil,
-  fontItalic = nil,
-  ofont = nil,
-  ofontItalic = nil,
+  font = {
+    eNormal = nil,
+    eItalic = nil,
+    oNormal = nil,
+    oItalic = nil,
+    fNormal = nil,
+  }
 }
 
 ---------------

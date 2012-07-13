@@ -10,41 +10,23 @@ BREAKPOINT_MARKER_VALUE = 2 -- = 2^BREAKPOINT_MARKER
 CURRENT_LINE_MARKER = 2
 CURRENT_LINE_MARKER_VALUE = 4 -- = 2^CURRENT_LINE_MARKER
 
--- Globals
-local font = nil -- fonts to use for the editor
-local fontItalic = nil
-local ofont = nil -- fonts to use for the outputshell
-local ofontItalic = nil
--- ----------------------------------------------------------------------------
 -- Pick some reasonable fixed width fonts to use for the editor
-if wx.__WXMSW__ then
-  font = wx.wxFont(ide.config.editor.fontsize or 10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_NORMAL,
-    wx.wxFONTWEIGHT_NORMAL, false, ide.config.editor.fontname or "Courier New", ide.config.editor.fontencoding or wx.wxFONTENCODING_DEFAULT)
-  fontItalic = wx.wxFont(ide.config.editor.fontsize or 10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_ITALIC,
-    wx.wxFONTWEIGHT_NORMAL, false, ide.config.editor.fontname or "Courier New", ide.config.editor.fontencoding or wx.wxFONTENCODING_DEFAULT)
-else
-  font = wx.wxFont(ide.config.editor.fontsize or 10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_NORMAL,
-    wx.wxFONTWEIGHT_NORMAL, false, ide.config.editor.fontname or "", ide.config.editor.fontencoding or wx.wxFONTENCODING_DEFAULT)
-  fontItalic = wx.wxFont(ide.config.editor.fontsize or 10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_ITALIC,
-    wx.wxFONTWEIGHT_NORMAL, false, ide.config.editor.fontname or "", ide.config.editor.fontencoding or wx.wxFONTENCODING_DEFAULT)
+local function setFont(style, config, name, size)
+  return wx.wxFont(config.fontsize or size or 10, wx.wxFONTFAMILY_MODERN, style,
+    wx.wxFONTWEIGHT_NORMAL, false, config.fontname or name,
+    config.fontencoding or wx.wxFONTENCODING_DEFAULT)
 end
+ide.font.eNormal = setFont(wx.wxFONTSTYLE_NORMAL, ide.config.editor, wx.__WXMSW__ and "Courier New" or "")
+ide.font.eItalic = setFont(wx.wxFONTSTYLE_ITALIC, ide.config.editor, wx.__WXMSW__ and "Courier New" or "")
 
-if wx.__WXMSW__ then
-  ofont = wx.wxFont(ide.config.outputshell.fontsize or 10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_NORMAL,
-    wx.wxFONTWEIGHT_NORMAL, false, ide.config.outputshell.fontname or "Courier New", ide.config.outputshell.fontencoding or wx.wxFONTENCODING_DEFAULT)
-  ofontItalic = wx.wxFont(ide.config.outputshell.fontsize or 10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_ITALIC,
-    wx.wxFONTWEIGHT_NORMAL, false, ide.config.outputshell.fontname or "Courier New", ide.config.outputshell.fontencoding or wx.wxFONTENCODING_DEFAULT)
-else
-  ofont = wx.wxFont(ide.config.outputshell.fontsize or 10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_NORMAL,
-    wx.wxFONTWEIGHT_NORMAL, false, ide.config.outputshell.fontname or "", ide.config.outputshell.fontencoding or wx.wxFONTENCODING_DEFAULT)
-  ofontItalic = wx.wxFont(ide.config.outputshell.fontsize or 10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_ITALIC,
-    wx.wxFONTWEIGHT_NORMAL, false, ide.config.outputshell.fontname or "", ide.config.outputshell.fontencoding or wx.wxFONTENCODING_DEFAULT)
-end
+ide.font.oNormal = setFont(wx.wxFONTSTYLE_NORMAL, ide.config.outputshell, wx.__WXMSW__ and "Courier New" or "")
+ide.font.oItalic = setFont(wx.wxFONTSTYLE_ITALIC, ide.config.outputshell, wx.__WXMSW__ and "Courier New" or "")
 
-ide.font = font
-ide.fontItalic = fontItalic
-ide.ofont = ofont
-ide.ofontItalic = ofontItalic
+-- treeCtrl font requires slightly different handling
+local gui, config = wx.wxTreeCtrl():GetFont(), ide.config.filetree
+if config.fontsize then gui:SetPointSize(config.fontsize) end
+if config.fontname then gui:SetFaceName(config.fontname) end
+ide.font.fNormal = gui
 
 -- ----------------------------------------------------------------------------
 -- Create the wxFrame

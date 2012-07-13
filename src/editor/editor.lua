@@ -18,7 +18,7 @@ local projcombobox = ide.frame.projpanel.projcombobox
 local statusTextTable = { "OVR?", "R/O?", "Cursor Pos" }
 
 -- set funclist font to be the same as the combobox in the project dropdown
-funclist:SetFont(projcombobox:GetFont())
+funclist:SetFont(ide.font.fNormal)
 
 local function updateStatusText(editor)
   local texts = { "", "", "" }
@@ -206,8 +206,8 @@ function CreateEditor(name)
   editor:SetBufferedDraw(true)
   editor:StyleClearAll()
 
-  editor:SetFont(ide.font)
-  editor:StyleSetFont(wxstc.wxSTC_STYLE_DEFAULT, ide.font)
+  editor:SetFont(ide.font.eNormal)
+  editor:StyleSetFont(wxstc.wxSTC_STYLE_DEFAULT, ide.font.eNormal)
 
   editor:SetTabWidth(ide.config.editor.tabwidth or 4)
   editor:SetIndent(ide.config.editor.tabwidth or 4)
@@ -555,7 +555,7 @@ function SetupKeywords(editor, ext, forcespec, styles, font, fontitalic)
   end
 
   StylesApplyToEditor(styles or ide.config.styles, editor,
-    font or ide.font,fontitalic or ide.fontItalic,lexerstyleconvert)
+    font or ide.font.eNormal,fontitalic or ide.font.eItalic,lexerstyleconvert)
 end
 
 ----------------------------------------------------
