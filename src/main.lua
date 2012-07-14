@@ -331,10 +331,12 @@ if app.postinit then app.postinit() end
 -- app-specific menus (Help/About), which are not recognized by MacOS
 -- as special items unless SetMenuBar is done after menus are populated.
 ide.frame:SetMenuBar(ide.frame.menuBar)
+if ide.osname == 'Macintosh' then -- force refresh to fix the filetree
+  pcall(function() ide.frame:ShowFullScreen(true) ide.frame:ShowFullScreen(false) end)
+end
 ide.frame:Show(true)
 
--- Call wx.wxGetApp():MainLoop() last to start the wxWidgets event loop,
--- otherwise the wxLua program will exit immediately.
--- Does nothing if running from wxLua, wxLuaFreeze, or wxLuaEdit since the
--- MainLoop is already running or will be started by the C++ program.
+-- call wx.wxGetApp():MainLoop() last to start the wxWidgets event loop,
+-- otherwise the program will exit immediately.
+-- Does nothing if the MainLoop is already running.
 wx.wxGetApp():MainLoop()

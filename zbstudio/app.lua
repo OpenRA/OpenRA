@@ -71,9 +71,6 @@ local app = {
         if fn:Normalize(wx.wxPATH_NORM_ALL, dir) and fn:FileExists() then
           LoadFile(fn:GetFullPath(),nil,true)
           ProjectUpdateProjectDir(fn:GetPath(wx.wxPATH_GET_VOLUME))
-          if ide.osname == 'Macintosh' then -- force refresh to fix the filetree
-            pcall(function() ide.frame:ShowFullScreen(true) ide.frame:ShowFullScreen(false) end)
-          end
           break
         end
       end
