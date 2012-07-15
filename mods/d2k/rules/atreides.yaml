@@ -85,7 +85,7 @@ SIEGETANKA:
 	Buildable:
 		Prerequisites: heavya, radara
 		Owner: atreides
-	RenderUnit:
+	RenderUnitTurreted:
 		Image: SIEGETANK
 
 MISSILETANKA:

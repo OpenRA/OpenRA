@@ -67,7 +67,7 @@ SIEGETANKH:
 	Buildable:
 		Prerequisites: heavyh, radarh
 		Owner: harkonnen
-	RenderUnit:
+	RenderUnitTurreted:
 		Image: SIEGETANK
 
 MISSILETANKH:

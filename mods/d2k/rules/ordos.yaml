@@ -223,7 +223,7 @@ SIEGETANKO:
 	Buildable:
 		Prerequisites: heavyo, radaro
 		Owner: ordos
-	RenderUnit:
+	RenderUnitTurreted:
 		Image: SIEGETANK
 
 MISSILETANKO:
@@ -264,10 +264,6 @@ DEVIATORTANK:
 	RevealsShroud:
 		Range: 6
 	RenderUnit:
-#	Captures:
-#		CaptureTypes:
-#		Range: 5
-#		wastedAfterwards: false
 	AttackLoyalty:
 		PrimaryWeapon: FakeMissile
 		PrimaryLocalOffset: -7,2,0,0,25, 7,2,0,0,-25
