@@ -52,7 +52,10 @@ namespace OpenRA.Server
 		XTimer gameTimeout;
 
 		volatile bool shutdown = false;
-		public void Shutdown() { shutdown = true; }
+		public void Shutdown()
+		{
+			shutdown = true;
+		}
 
 		public Server(IPEndPoint endpoint, string[] mods, ServerSettings settings, ModData modData)
 		{
@@ -69,8 +72,43 @@ namespace OpenRA.Server
 
 			randomSeed = (int)DateTime.Now.ToBinary();
 
-			if (settings.AllowUPnP)
-				PortForward();
+			if (Settings.AllowUPnP)
+			{
+				try
+				{
+					if (UPnP.NAT.Discover())
+						{
+							Log.Write("server", "UPnP-enabled router discovered.");
+							Log.Write("server", "Your IP is: {0}", UPnP.NAT.GetExternalIP() );
+						}
+						else
+						{
+							Log.Write("server", "No UPnP-enabled router detected.");
+							Settings.AllowUPnP = false;
+						}
+				}
+				catch (Exception e)
+				{
+					OpenRA.Log.Write("server", "Can't discover UPnP-enabled routers: {0}", e);
+					Settings.AllowUPnP = false;
+				}
+			}
+
+			if (Settings.AllowUPnP)
+			{
+				try
+				{
+					if (UPnP.NAT.ForwardPort(Port, ProtocolType.Tcp, "OpenRA"))
+						Log.Write("server", "Port {0} (TCP) has been forwarded.", Port);
+					else
+						Settings.AllowUPnP = false;
+				}
+				catch (Exception e)
+				{
+					OpenRA.Log.Write("server", "Can not forward ports via UPnP: {0}", e);
+					Settings.AllowUPnP = false;
+				}
+			}
 
 			foreach (var trait in modData.Manifest.ServerTraits)
 				ServerTraits.Add( modData.ObjectCreator.CreateObject<ServerTrait>(trait) );
@@ -102,7 +140,11 @@ namespace OpenRA.Server
 
 					Socket.Select( checkRead, null, null, timeout );
 					if (shutdown)
+					{
+						if (Settings.AllowUPnP)
+							RemovePortforward();
 						break;
+					}
 
 					foreach( Socket s in checkRead )
 						if( s == listener.Server ) AcceptConnection();
@@ -117,7 +159,11 @@ namespace OpenRA.Server
 						t.Tick(this);
 
 					if (shutdown)
+					{
+						if (Settings.AllowUPnP)
+							RemovePortforward();
 						break;
+					}
 				}
 
 				GameStarted = false;
@@ -129,20 +175,20 @@ namespace OpenRA.Server
 				try { listener.Stop(); }
 				catch { }
 			} ) { IsBackground = true }.Start();
+
 		}
 
-		void PortForward()
+		void RemovePortforward()
 		{
-			if (UPnP.NAT.Discover())
+			try
 			{
-				Log.Write("server", "UPnP-enabled router discovered.");
-				UPnP.NAT.ForwardPort(Port, ProtocolType.Tcp, "OpenRA"); //might timeout after second try
-				Log.Write("server", "Port {0} (TCP) has been forwarded.", Port);
-				Log.Write("server", "Your IP is: {0}", UPnP.NAT.GetExternalIP() );
+				if (UPnP.NAT.DeleteForwardingRule(Port, ProtocolType.Tcp))
+					Log.Write("server", "Port {0} (TCP) forwarding rules has been removed.", Port);
 			}
-			else
-				Log.Write("server", "No UPnP-enabled router detected.");
-			return;
+  			catch (Exception e)
+			{
+				OpenRA.Log.Write("server", "Can not remove UPnP portforwarding rules: {0}", e);
+			}
 		}
 
 		/* lobby rework todo:
