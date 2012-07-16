@@ -111,6 +111,8 @@ ORNI.bomber:
 	Plane:
 		ROT: 5
 		Speed: 16
+		RepairBuildings: repaira,repairo,repairh
+		RearmBuildings: starporta,starporto,starporth
 	LimitedAmmo:
 		Ammo: 7
 	RenderUnit:
@@ -138,6 +140,8 @@ CARRYALL.infantry:
 	Plane:
 		ROT: 5
 		Speed: 16
+		RepairBuildings: repaira,repairo,repairh
+		RearmBuildings: starporta,starporto,starporth
 	RenderUnit:
 		Image: carryall
 	WithShadow:
