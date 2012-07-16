@@ -79,6 +79,9 @@ trike:
 	idle:
 		Start: 0
 		Facings: 32
+	unload:
+		Start: 0
+		Facings: 32
 
 quad:
 	idle:
@@ -1037,6 +1040,9 @@ combato:
 
 raider:
 	idle:
+		Start: 0
+		Facings: 32
+	unload:
 		Start: 0
 		Facings: 32
 
