@@ -140,6 +140,20 @@ PALACEH:
 	Buildable:
 		Prerequisites: researchh
 		Owner: harkonnen
+	NukePower:
+		Image: deathhandicon
+		ChargeTime: 540
+		Description: Death Hand
+		LongDesc: Launches a nuclear missile at a target location.
+		BeginChargeSound: HI_PREP.AUD
+		EndChargeSound: HI_DHRDY.AUD
+		SelectTargetSound: 
+		LaunchSound: HI_LAUNC.AUD
+		MissileWeapon: atomic
+		SpawnOffset: 10,0
+	CanPowerDown:
+	RequiresPower:
+	SupportPowerChargeBar:
 
 SILOH:
 	Inherits: ^SILO

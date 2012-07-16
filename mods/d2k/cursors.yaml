@@ -150,13 +150,13 @@ Cursors:
 		enter-blocked-minimap:
 			start:104
 		c4:
-			start:252
-			length: 4
+			start:248
+			length: 8
 			x: 12
 			y: 12
 		c4-minimap:
-			start:252
-			length: 4
+			start:248
+			length: 8
 			x: 12
 			y: 12
 		guard:
@@ -202,7 +202,7 @@ Cursors:
 			x: 12
 			y: 12
 		nuke:
-			start:244
+			start:240
 			length: 8
 			x: 12
 			y: 12

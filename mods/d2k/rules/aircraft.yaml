@@ -71,7 +71,7 @@ ORNI:
 	Valued:
 		Cost: 1000
 	Tooltip:
-		Name: Ornithocopter
+		Name: Ornithopter
 		Description: Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles.\n  Weak vs Tanks
 	Health:
 		HP: 150
@@ -98,3 +98,57 @@ ORNI:
 		Explosion: UnitExplode
 	SmokeTrailWhenDamaged:
 		Offset: 0,-10
+
+ORNI.bomber:
+	CarpetBomb:
+		Range: 3
+		Weapon: ParaBomb
+	Inherits: ^Plane
+	Health:
+		HP: 60
+	Armor:
+		Type: Light
+	Plane:
+		ROT: 5
+		Speed: 16
+	LimitedAmmo:
+		Ammo: 7
+	RenderUnit:
+		Image: orni
+	WithShadow:
+	-Selectable:
+	-GainsExperience:
+	Tooltip:
+		Name: Ornithopter
+	FallsToEarth:
+		Spins: no
+		Moves: yes
+		Explosion: UnitExplode
+	SmokeTrailWhenDamaged:
+		Offset: 0,-10
+
+CARRYALL.infantry:
+	ParaDrop:
+		LZRange: 4
+	Inherits: ^Plane
+	Health:
+		HP: 60
+	Armor:
+		Type: Light
+	Plane:
+		ROT: 5
+		Speed: 16
+	RenderUnit:
+		Image: carryall
+	WithShadow:
+	Cargo:
+		MaxWeight: 5
+		Types: Infantry
+	-Selectable:
+	-GainsExperience:
+	Tooltip:
+		Name: Carryall
+	FallsToEarth:
+		Spins: no
+		Moves: yes
+		Explosion: UnitExplode

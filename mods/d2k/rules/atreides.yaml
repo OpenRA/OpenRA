@@ -140,6 +140,17 @@ PALACEA:
 	Buildable:
 		Prerequisites: researcha
 		Owner: atreides
+	AirstrikePower:
+		Image: orniicon
+		Description: Air Strike
+		ChargeTime: 180
+		LongDesc: Ornithopter drops a load of parachuted\nbombs on your target.
+		UnitType: orni.bomber
+		SelectTargetSound: 
+		FlareType:
+	CanPowerDown:
+	RequiresPower:
+	SupportPowerChargeBar:
 
 SILOA:
 	Inherits: ^SILO

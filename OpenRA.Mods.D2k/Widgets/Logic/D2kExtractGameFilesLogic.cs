@@ -102,9 +102,9 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 				new string[] {"--r8", PathToDataR8, PathToPalette, "2083", "2114", Path.Combine(PathToSHPs, "devast"), "--vehicle"},
 				new string[] {"--r8", PathToDataR8, PathToPalette, "2115", "2146", Path.Combine(PathToSHPs, "combathturret"), "--vehicle"},
 				new string[] {"--r8", PathToDataR8, PathToPalette, "2147", "2148", Path.Combine(PathToSHPs, "deathhandmissile")},
+
 				new string[] {"--r8", PathToDataR8, PathToPalette, "2245", "2284", Path.Combine(PathToSHPs, "saboteur"), "--infantry"},
 				new string[] {"--r8", PathToDataR8, PathToPalette, "2325", "2388", Path.Combine(PathToSHPs, "saboteurdeath"), "--infantrydeath"},
-				//rifleinfantry repetitions?
 				new string[] {"--r8", PathToDataR8, PathToPalette, "2389", "2420", Path.Combine(PathToSHPs, "deviatortank"), "--vehicle"},
 				new string[] {"--r8", PathToDataR8, PathToPalette, "2421", "2452", Path.Combine(PathToSHPs, "raider"), "--vehicle"},
 				new string[] {"--r8", PathToDataR8, PathToPalette, "2453", "2484", Path.Combine(PathToSHPs, "combato"), "--vehicle"},

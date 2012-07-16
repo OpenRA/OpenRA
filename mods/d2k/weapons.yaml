@@ -572,3 +572,23 @@ Vulcan:
 		InfDeath: 2
 		Damage: 10
 		Delay: 10
+
+ParaBomb:
+	ROF: 10
+	Range: 4.5
+	Report: 
+	Projectile: GravityBomb
+		Image: PARABOMB
+	Warhead:
+		Spread: 6
+		Versus: 
+			None: 30%
+			Wood: 75%
+			Light: 75%
+			Concrete: 50%
+		Explosion: self_destruct
+		WaterExplosion: small_splash
+		InfDeath: 4
+		SmudgeType: Crater
+		Damage: 500
+		ImpactSound: kaboom15
