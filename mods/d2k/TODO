@@ -8,8 +8,7 @@
 # construction yard crane animations missing
 # welding animation (factories) missing
 # chimney animation (refinery) missing
-# harvest animation missing
-# harvester turn and offset wrong while unloading
+# harvest animation missing (sand is spit out)
 # add more spice tiles and make them fit
 # add game logic for concrete plates (use terrain overlay from bridges/ressources)
 # allow placing turrets on walls

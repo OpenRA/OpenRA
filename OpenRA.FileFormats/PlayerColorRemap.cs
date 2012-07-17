@@ -29,7 +29,7 @@ namespace OpenRA.FileFormats
 			var c1 = c.GetColor(0);
 			var c2 = c.GetColor(1); // temptemp: this can be expressed better
 
-			var baseIndex =  Ramp[0];
+			var baseIndex = Ramp[0];
 			var RemapRamp = Ramp.Select(r => r - Ramp[0]).ToArray();
 
 			if (Ramp[0] > Ramp[15]) // reversed remapping

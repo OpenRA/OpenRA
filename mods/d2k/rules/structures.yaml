@@ -193,6 +193,8 @@
 	Bib:
 	-RenderBuilding:
 	OreRefinery:
+		DockOffset: 2,1
+		DockAngle: 144
 	StoresOre:
 		PipColor: Green
 		PipCount: 20

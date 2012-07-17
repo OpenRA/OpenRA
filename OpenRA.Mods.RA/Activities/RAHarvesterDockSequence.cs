@@ -21,13 +21,15 @@ namespace OpenRA.Mods.RA
 		enum State { Wait, Turn, Dock, Loop, Undock, Complete };
 
 		readonly Actor proc;
+		readonly int angle;
 		readonly Harvester harv;
 		readonly RenderUnit ru;
 		State state;
 
-		public RAHarvesterDockSequence(Actor self, Actor proc)
+		public RAHarvesterDockSequence(Actor self, Actor proc, int angle)
 		{
 			this.proc = proc;
+			this.angle = angle;
 			state = State.Turn;
 			harv = self.Trait<Harvester>();
 			ru = self.Trait<RenderUnit>();
@@ -41,7 +43,7 @@ namespace OpenRA.Mods.RA
 					return this;
 				case State.Turn:
 					state = State.Dock;
-					return Util.SequenceActivities(new Turn(64), this);
+					return Util.SequenceActivities(new Turn(angle), this);
 				case State.Dock:
 					ru.PlayCustomAnimation(self, "dock", () => {ru.PlayCustomAnimRepeating(self, "dock-loop"); state = State.Loop;});
 					state = State.Wait;
