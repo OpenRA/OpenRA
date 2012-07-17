@@ -12,6 +12,15 @@ FCOM:
 		Range: 10
 	Bib:
 
+HOSP:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Tooltip:
+		Name: Hospital
+	RepairsUnits:
+
 V01:
 	Inherits: ^CivBuilding
 	Building:
@@ -120,6 +129,15 @@ MISS:
 	Armor:
 		Type: Wood
 	Bib:
+
+BIO:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Tooltip:
+		Name: Biological Lab
+
 
 OILB:
 	Inherits: ^CivBuilding
