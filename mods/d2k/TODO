@@ -14,7 +14,6 @@
 # add game logic for concrete plates (use terrain overlay from bridges/ressources)
 # allow placing turrets on walls
 # make sandworm behave like a moving anti-everything mine (currently not attacking anything)
-# add neutral buildings: emperor palace, fremen siech, smugglers factory
 # allow upgrades
 # add muzzles and explosions (currently falls back to RA)
 # create a shellmap (currently just a blank placeholder)

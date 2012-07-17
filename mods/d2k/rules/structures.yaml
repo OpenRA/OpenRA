@@ -493,3 +493,51 @@
 	RepairsUnits:
 		Interval: 10
 	RallyPoint:
+
+SIETCH:
+	Inherits: ^Building
+	Tooltip:
+		Name: Fremen Sietch
+	Building:
+		Power: 0
+		Footprint: xx xx
+		Dimensions: 2,2
+		TerrainTypes: Cliff
+	Health:
+		HP: 400
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 10
+	-GivesBuildableArea:
+	-Sellable:
+	-Capturable:
+	-CapturableBar:
+
+STARPORTC:
+	Inherits: ^STARPORT
+	ProductionAirdrop:
+		ReadyAudio:
+	ProductionQueue@Vehicle:
+		QueuedAudio:
+		ReadyAudio: 
+		OnHoldAudio:
+		CancelledAudio:
+		BlockedAudio:
+	-Buildable:
+
+PALACEC:
+	Inherits: ^PALACE
+	-Buildable:
+
+HEAVYC:
+	Inherits: ^HEAVY
+	-Buildable:
+	RenderBuildingWarFactory:
+		Image: HEAVYC
+	ProductionQueue@Vehicle:
+		ReadyAudio:
+		QueuedAudio:
+		OnHoldAudio:
+		CancelledAudio:
+		BlockedAudio:

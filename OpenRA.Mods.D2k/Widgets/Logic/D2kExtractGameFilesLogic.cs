@@ -164,6 +164,13 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 				new string[] {"--r8", PathToDataR8, PathToPalette, "2991", "2992", Path.Combine(PathToSHPs, "starporto"), "--building"},
 				new string[] {"--r8", PathToDataR8, PathToPalette, "2993", "2995", Path.Combine(PathToSHPs, "lighto"), "--building"},
 				new string[] {"--r8", PathToDataR8, PathToPalette, "2996", "2997", Path.Combine(PathToSHPs, "palaceo"), "--building"},
+				new string[] {"--r8", PathToDataR8, PathToPalette, "2998", "2998", Path.Combine(PathToSHPs, "sietch"), "--building"},
+				new string[] {"--r8", PathToDataR8, PathToPalette, "2999", "3000", Path.Combine(PathToSHPs, "starportc"), "--building"},
+				new string[] {"--r8", PathToDataR8, PathToPalette, "3001", "3003", Path.Combine(PathToSHPs, "heavyc"), "--building"},
+				new string[] {"--r8", PathToDataR8, PathToPalette, "3004", "3005", Path.Combine(PathToSHPs, "palacec"), "--building"},
+				//conyardc repetition
+				new string[] {"--r8", PathToDataR8, PathToPalette, "3008", "3013", Path.Combine(PathToSHPs, "plates")},
+				//projectiles
 				new string[] {"--r8", PathToDataR8, PathToPalette, "3370", "3380", Path.Combine(PathToSHPs, "unload"), "--projectile"},
 				//explosions
 				new string[] {"--r8", PathToDataR8, PathToPalette, "3549", "3564", Path.Combine(PathToSHPs, "wormjaw")},
@@ -474,6 +481,11 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 				new string[] {"--shp", Path.Combine(PathToSHPs, "missile_launch.png"), "96"},
 				new string[] {"--shp", Path.Combine(PathToSHPs, "mouse.png"), "48"},
 				new string[] {"--shp", Path.Combine(PathToSHPs, "spice0.png"), "32"},
+				new string[] {"--shp", Path.Combine(PathToSHPs, "sietch.png"), "64"},
+				new string[] {"--shp", Path.Combine(PathToSHPs, "starportc.png"), "96"},
+				new string[] {"--shp", Path.Combine(PathToSHPs, "heavyc.png"), "96"},
+				new string[] {"--shp", Path.Combine(PathToSHPs, "palacec.png"), "96"},
+				new string[] {"--shp", Path.Combine(PathToSHPs, "plates.png"), "32"},
 			};
 
 			var SHPsToTranspose = new string[][]
