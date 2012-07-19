@@ -16,7 +16,7 @@
 # allow upgrades
 # add muzzles and explosions (currently falls back to RA)
 # create a shellmap (currently just a blank placeholder)
-# rework chrome UI, dialoges, tabs
+# rework chrome UI, tabs
 # add sonic tank weapon (currently uses tesla)
 # starport prices should vary
 # some transparent tiles (see Atreides Hightech Factory) should be white
@@ -25,3 +25,5 @@
 # put TilesetBuilder.Export into OpenRA.Utility to call the functions directly when extracting game-files (instead of opening a GUI)
 # group number metrics are off
 # building offsets wrong (worst for towers)
+# spice blooms should explode and create new spice field instead of growing spice
+# build light vehicles only at light factory, don't create a new production queue and tab for every new factory except starport

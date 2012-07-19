@@ -186,11 +186,11 @@ tabs-normal: tabs.png
 	ordos-Ship: 54,200,27,41
 
 flags: buttons.png
-	atreides: 0,84,21,23
-	harkonnen: 22,84,23,23
-	ordos: 45,84,22,23
-	random: 67,84,23,23
-	spectator: 67,84,23,23
+	atreides: 0,86,22,21
+	harkonnen: 22,86,23,21
+	ordos: 45,86,22,21
+	random: 67,86,23,21
+	spectator: 67,86,23,21
 
 dialog2: dialog.png
 	background: 513,1,126,126
