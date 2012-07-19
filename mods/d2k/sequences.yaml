@@ -1326,3 +1326,17 @@ parach:
 	idle:
 		Start: 5
 		Length: 11
+
+plates:
+	idle:
+		Start: 0
+		Length: 6
+	scratched-idle:
+		Start: 0
+		Length: 6
+	damaged-idle:
+		Start: 0
+		Length: 6
+	critical-idle:
+		Start: 0
+		Length: 6
