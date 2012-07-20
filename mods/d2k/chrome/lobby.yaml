@@ -80,7 +80,7 @@ Background@SERVER_LOBBY:
 									Width:23
 									Height:23
 									X:5
-									Y:0
+									Y:2
 								Label@FACTIONNAME:
 									Text:Faction
 									Width:70
@@ -147,10 +147,10 @@ Background@SERVER_LOBBY:
 							Y:0
 							Children:
 								Image@FACTIONFLAG:
-									Width:30
-									Height:15
+									Width:23
+									Height:23
 									X:5
-									Y:5
+									Y:2
 								Label@FACTIONNAME:
 									Text:Faction
 									Width:60

@@ -6,18 +6,6 @@ CONYARDO:
 		IntoActor: mcvo
 		Offset:1,1
 		Facing: 270
-	ProductionQueue@Building:
-		QueuedAudio: OI_BUILD.AUD
-		OnHoldAudio: OI_HOLD.AUD
-		ReadyAudio: OI_BDRDY.AUD
-		CancelledAudio: OI_CANCL.AUD
-		BlockedAudio: OI_NROOM.AUD
-	ProductionQueue@Defense:
-		QueuedAudio: OI_BUILD.AUD
-		OnHoldAudio: OI_HOLD.AUD
-		ReadyAudio: OI_BDRDY.AUD
-		CancelledAudio: OI_CANCL.AUD
-		BlockedAudio: OI_NROOM.AUD
 
 PWRO:
 	Inherits: ^POWER
@@ -43,12 +31,6 @@ BARRO:
 	Buildable:
 		Prerequisites: pwro
 		Owner: ordos
-	ProductionQueue@Infantry:
-		ReadyAudio: OI_UNRDY.AUD
-		QueuedAudio:OI_TRAIN.AUD
-		OnHoldAudio: OI_HOLD.AUD
-		CancelledAudio: OI_CANCL.AUD
-		BlockedAudio: OI_NROOM.AUD
 
 GUNTOWERO:
 	Inherits: ^GUNTOWER
@@ -73,12 +55,6 @@ HIGHTECHO:
 	Buildable:
 		Prerequisites: radaro
 		Owner: ordos
-	ProductionQueue@Plane:
-		ReadyAudio: OI_UNRDY.AUD
-		QueuedAudio:OI_TRAIN.AUD
-		OnHoldAudio: OI_HOLD.AUD
-		CancelledAudio: OI_CANCL.AUD
-		BlockedAudio: OI_NROOM.AUD
 
 RESEARCHO:
 	Inherits: ^RESEARCH
@@ -91,6 +67,20 @@ PALACEO:
 	Buildable:
 		Prerequisites: researcho
 		Owner: ordos
+	ParatroopersPower:
+		Image: carryallicon
+		UnitType: carryall.infantry
+		FlareTime: 0
+		ChargeTime: 360
+		Description: Paratroopers
+		LongDesc: A Carryall drops a squad of Infantry \nanywhere on the map
+		Prerequisites: HIGHTECHO
+		DropItems: RIFLE, RIFLE, ENGINEER, BAZOOKA, BAZOOKA
+		SelectTargetSound:
+		FlareType:
+	CanPowerDown:
+	RequiresPower:
+	SupportPowerChargeBar:
 
 SILOO:
 	Inherits: ^SILO
@@ -105,12 +95,6 @@ LIGHTO:
 		Owner: ordos
 	RenderBuildingWarFactory:
 		Image: LIGHTO
-	ProductionQueue@Vehicle:
-		ReadyAudio: OI_UNRDY.AUD
-		QueuedAudio:OI_TRAIN.AUD
-		OnHoldAudio: OI_HOLD.AUD
-		CancelledAudio: OI_CANCL.AUD
-		BlockedAudio: OI_NROOM.AUD
 
 HEAVYO:
 	Inherits: ^HEAVY
@@ -119,12 +103,6 @@ HEAVYO:
 		Owner: ordos
 	RenderBuildingWarFactory:
 		Image: HEAVYO
-	ProductionQueue@Vehicle:
-		ReadyAudio: OI_UNRDY.AUD
-		QueuedAudio:OI_TRAIN.AUD
-		OnHoldAudio: OI_HOLD.AUD
-		CancelledAudio: OI_CANCL.AUD
-		BlockedAudio: OI_NROOM.AUD
 
 RADARO:
 	Inherits: ^RADAR
@@ -137,14 +115,6 @@ STARPORTO:
 	Buildable:
 		Prerequisites: radaro
 		Owner: ordos
-	ProductionAirdrop:
-		ReadyAudio: OI_REINF.AUD
-	ProductionQueue@Vehicle:
-		QueuedAudio: OI_ORDER.AUD
-		ReadyAudio: 
-		OnHoldAudio: OI_HOLD.AUD
-		CancelledAudio: OI_CANCL.AUD
-		BlockedAudio: OI_NROOM.AUD
 
 REPAIRO:
 	Inherits: ^REPAIR
@@ -165,6 +135,14 @@ MCVO:
 	RenderUnit:
 		Image: DMCV
 
+MCVO.starport:
+	Inherits: MCVO
+	Buildable:
+		Queue: Ship
+		BuiltAt: starporto
+	Valued:
+		Cost: 1499
+
 HARVESTERO:
 	Inherits: ^HARVESTER
 	Buildable:
@@ -173,11 +151,31 @@ HARVESTERO:
 	RenderUnit:
 		Image: HARVESTER
 
+HARVESTERO.starport:
+	Inherits: HARVESTERO
+	Buildable:
+		Queue: Ship
+		BuiltAt: starporto
+	Valued:
+		Cost: 895
+
 COMBATO:
 	Inherits: ^COMBAT
+	Tooltip:
+		Icon: combatoicon
 	Buildable:
 		Prerequisites: heavyo
 		Owner: ordos
+	RenderUnitTurreted:
+		Image: COMBATO
+
+COMBATO.starport:
+	Inherits: COMBATO
+	Buildable:
+		Queue: Ship
+		BuiltAt: starporto
+	Valued:
+		Cost: 595
 
 RAIDER:
 	Inherits: ^Vehicle
@@ -209,6 +207,11 @@ RAIDER:
 		SecondaryWeapon: M60mg
 		SecondaryOffset: 0,0,0,-4
 	AutoTarget:
+	Cargo:
+		Types: Infantry
+		MaxWeight: 1
+		PipCount: 1
+		UnloadFacing: 220
 
 QUADO:
 	Inherits: ^QUAD
@@ -218,6 +221,14 @@ QUADO:
 	RenderUnit:
 		Image: QUAD
 
+QUADO.starport:
+	Inherits: QUADO
+	Buildable:
+		Queue: Ship
+		BuiltAt: starporto
+	Valued:
+		Cost: 295
+
 SIEGETANKO:
 	Inherits: ^SIEGETANK
 	Buildable:
@@ -225,6 +236,14 @@ SIEGETANKO:
 		Owner: ordos
 	RenderUnitTurreted:
 		Image: SIEGETANK
+
+SIEGETANKO.starport:
+	Inherits: SIEGETANKO
+	Buildable:
+		Queue: Ship
+		BuiltAt: starporto
+	Valued:
+		Cost: 495
 
 MISSILETANKO:
 	Inherits: ^MISSILETANK
@@ -234,6 +253,14 @@ MISSILETANKO:
 	RenderUnit:
 		Image: MISSILETANK
 
+MISSILETANKO.starport:
+	Inherits: MISSILETANKO
+	Buildable:
+		Queue: Ship
+		BuiltAt: starporto
+	Valued:
+		Cost: 599
+
 CARRYALLO:
 	Inherits: ^CARRYALL
 	Buildable:
@@ -242,6 +269,14 @@ CARRYALLO:
 		Owner: ordos
 	RenderUnit:
 		Image: CARRYALL
+
+CARRYALLO.starport:
+	Inherits: CARRYALLO
+	Buildable:
+		Queue: Ship
+		BuiltAt: starporto
+	Valued:
+		Cost: 999
 
 DEVIATORTANK:
 	Inherits: ^Tank

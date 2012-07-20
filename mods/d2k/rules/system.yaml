@@ -1,5 +1,41 @@
 Player:
 	TechTree:
+	ClassicProductionQueue@Building:
+		Type: Building
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+		QueuedAudio: Building
+		ReadyAudio: BuildingReady
+		BlockedAudio: NoRoom
+	ClassicProductionQueue@Defense:
+		Type: Defense
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+		QueuedAudio: Building
+		ReadyAudio: BuildingReady
+		BlockedAudio: NoRoom
+	ClassicProductionQueue@Vehicle:
+		Type: Vehicle
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+		BlockedAudio: NoRoom
+	ClassicProductionQueue@Infantry:
+		Type: Infantry
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+		BlockedAudio: NoRoom
+	ClassicProductionQueue@Ship:
+		Type: Ship
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+		BlockedAudio: NoRoom
+		QueuedAudio: OrderPlaced
+		ReadyAudio:
+	ClassicProductionQueue@Plane:
+		Type: Plane
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+		BlockedAudio: NoRoom
 	PlaceBuilding:
 	SupportPowerManager:
 	ConquestVictoryConditions:
@@ -53,7 +89,7 @@ Player:
 		SquadSize: 10
 	PlayerColorPalette:
 		BasePalette: d2k
-		RemapIndex: 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255
+		RemapIndex: 255, 254, 253, 252, 251, 250, 249, 248, 247, 246, 245, 244, 243, 242, 241, 240
 	BaseAttackNotifier:
 	HarvesterAttackNotifier:
 

@@ -12,6 +12,13 @@ Speech:
 		BaseAttack: baseatk1
 		HarvesterAttack:
 		Leave: bct1
+		UnitReady: unitrdy1
+		NoBuild: nobuild1
+		Training: train1
+		OnHold: onhold1
+		Cancelled: cancld1
+		Building: abldgin1
+		ConstructionComplete: conscmp1
 
 Sounds:
 	Notifications:

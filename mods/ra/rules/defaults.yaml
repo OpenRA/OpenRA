@@ -111,6 +111,9 @@
 		Offset: 0,-10
 	CrushableInfantry:
 		CrushSound: squishy2.aud
+	RepairableNear:
+		Buildings: hosp
+		CloseEnough: 1
 
 ^Ship:
 	AppearsOnRadar:

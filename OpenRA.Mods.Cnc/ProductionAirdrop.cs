@@ -20,7 +20,7 @@ namespace OpenRA.Mods.Cnc
 {
 	public class ProductionAirdropInfo : ProductionInfo
 	{
-		public readonly string ReadyAudio = "reinfor1.aud";
+		public readonly string ReadyAudio = "Reinforce";
 		[ActorReference] public readonly string ActorType = "c17";
 
 		public override object Create(ActorInitializer init) { return new ProductionAirdrop(this); }
@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Cnc
 
 					rb.PlayCustomAnimRepeating(self, "idle");
 					self.World.AddFrameEndTask(ww => DoProduction(self, producee, exit));
-					Sound.PlayToPlayer(self.Owner, (Info as ProductionAirdropInfo).ReadyAudio);
+					Sound.PlayNotification(self.Owner, "Speech", (Info as ProductionAirdropInfo).ReadyAudio, self.Owner.Country.Race);
 				}));
 				a.QueueActivity(Fly.ToCell(endPos));
 				a.QueueActivity(new RemoveSelf());

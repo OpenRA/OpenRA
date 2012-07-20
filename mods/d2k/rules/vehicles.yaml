@@ -88,6 +88,11 @@
 		PrimaryWeapon: M60mg
 		PrimaryOffset: 0,0,0,-4
 	AutoTarget:
+	Cargo:
+		Types: Infantry
+		MaxWeight: 1
+		PipCount: 1
+		UnloadFacing: 220
 
 ^QUAD:
 	Inherits: ^Vehicle

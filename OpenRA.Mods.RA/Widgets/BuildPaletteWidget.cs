@@ -374,15 +374,15 @@ namespace OpenRA.Mods.RA.Widgets
 				{
 					// instant cancel of things we havent really started yet, and things that are finished
 					if (producing.Paused || producing.Done || producing.TotalCost == producing.RemainingCost)
-					{
-						Sound.Play(CurrentQueue.Info.CancelledAudio);
+					{ 
+						Sound.PlayNotification(world.LocalPlayer, "Speech", CurrentQueue.Info.CancelledAudio, world.LocalPlayer.Country.Race);
 						int numberToCancel = Game.GetModifierKeys().HasModifier(Modifiers.Shift) ? 5 : 1;
 
 						world.IssueOrder(Order.CancelProduction(CurrentQueue.self, item, numberToCancel));
 					}
 					else
 					{
-						Sound.Play(CurrentQueue.Info.OnHoldAudio);
+						Sound.PlayNotification(world.LocalPlayer, "Speech", CurrentQueue.Info.OnHoldAudio, world.LocalPlayer.Country.Race);
 						world.IssueOrder(Order.PauseProduction(CurrentQueue.self, item, true));
 					}
 				}
@@ -391,7 +391,8 @@ namespace OpenRA.Mods.RA.Widgets
 
 		void StartProduction( World world, string item )
 		{
-			Sound.Play(CurrentQueue.Info.QueuedAudio);
+
+			Sound.PlayNotification(world.LocalPlayer, "Speech", CurrentQueue.Info.QueuedAudio, world.LocalPlayer.Country.Race);
 			world.IssueOrder(Order.StartProduction(CurrentQueue.self, item,
 				Game.GetModifierKeys().HasModifier(Modifiers.Shift) ? 5 : 1));
 		}

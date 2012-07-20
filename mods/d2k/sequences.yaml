@@ -79,6 +79,9 @@ trike:
 	idle:
 		Start: 0
 		Facings: 32
+	unload:
+		Start: 0
+		Facings: 32
 
 quad:
 	idle:
@@ -532,6 +535,14 @@ conyarda:
 		Length: *
 	damaged-idle:
 		Start: 1
+#	build: cranea
+#		Start: 0
+#		Length: 14
+#		Tick: 75
+#	damaged-build: cranea
+#		Start: 0
+#		Length: 14
+#		Tick: 75
 
 repaira:
 	idle:
@@ -1031,6 +1042,9 @@ raider:
 	idle:
 		Start: 0
 		Facings: 32
+	unload:
+		Start: 0
+		Facings: 32
 
 deviatortank:
 	idle:
@@ -1286,3 +1300,43 @@ sandworm:
 	wormattack: wormjaw
 		Start: 0
 		Length: 15
+
+atomic:
+	up: deathhandmissile
+		Start: 0
+		Length: 1
+	down: deathhandmissile
+		Start: 1
+		Length: 1
+
+# falls back to RA
+parabomb:
+	open:
+		Start: 0
+		Length: 8
+	idle:
+		Start: 8
+		Length: 5
+
+# falls back to RA
+parach:
+	open:
+		Start: 0
+		Length: 5
+	idle:
+		Start: 5
+		Length: 11
+
+plates:
+	idle:
+		Start: 0
+		Length: 6
+	scratched-idle:
+		Start: 0
+		Length: 6
+	damaged-idle:
+		Start: 0
+		Length: 6
+	critical-idle:
+		Start: 0
+		Length: 6

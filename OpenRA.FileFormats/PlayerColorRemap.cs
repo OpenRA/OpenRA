@@ -19,12 +19,6 @@ namespace OpenRA.FileFormats
 	{
 		Dictionary<int, Color> remapColors;
 
-		static int[] GetRemapRamp(int[] Ramp)
-		{
-			var RemapRamp = Ramp.Select(r => r - Ramp[0]).ToArray();
-			return RemapRamp;
-		}
-
 		public static int GetRemapIndex(int[] Ramp, int i)
 		{
 			return Ramp[i];
@@ -33,11 +27,18 @@ namespace OpenRA.FileFormats
 		public PlayerColorRemap(int[] Ramp, ColorRamp c)
 		{
 			var c1 = c.GetColor(0);
-			var c2 = c.GetColor(1); /* temptemp: this can be expressed better */
+			var c2 = c.GetColor(1); // temptemp: this can be expressed better
 
-			var baseIndex =  Ramp[0];
-			var RemapRamp = GetRemapRamp(Ramp);
+			var baseIndex = Ramp[0];
+			var RemapRamp = Ramp.Select(r => r - Ramp[0]).ToArray();
 
+			if (Ramp[0] > Ramp[15]) // reversed remapping
+                        {
+				baseIndex = Ramp[15];
+				for (int i=15; i>0; i--)
+					RemapRamp = Ramp.Select(r => r - Ramp[15]).ToArray();
+			}
+			
 			remapColors = RemapRamp.Select((x, i) => Pair.New(baseIndex + i, Exts.ColorLerp(x / 16f, c1, c2)))
 				.ToDictionary(u => u.First, u => u.Second);
 		}

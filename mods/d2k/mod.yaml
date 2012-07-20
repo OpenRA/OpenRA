@@ -1,8 +1,8 @@
 Metadata:
-	Title: Dune 2000
+	Title: Dune 2000 (beta)
 	Description: early version of the Dune 2000 mod
 	Version: {DEV_VERSION}
-	Author: The OpenD2k Developers
+	Author: The OpenRA Developers
 
 Folders:
 	.
@@ -86,7 +86,7 @@ Movies:
 
 LoadScreen: D2kLoadScreen
 	InstallerMenuWidget: INSTALL_PANEL
-	TestFile: carryall.shp
+	TestFile: plates.shp
 	PackageURL: http://open-ra.org/get-dependency.php?file=d2k-packages
 
 ServerTraits:

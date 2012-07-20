@@ -21,14 +21,6 @@
 		Value: 2500
 	BaseBuilding:
 	ProductionBar:
-	ProductionQueue@Building:
-		Type: Building
-		BuildSpeed: .4
-		LowPowerSlowdown: 3
-	ProductionQueue@Defense:
-		Type: Defense
-		BuildSpeed: .4
-		LowPowerSlowdown: 3
 
 ^POWER:
 	Inherits: ^Building
@@ -86,10 +78,6 @@
 		Produces: Infantry
 	PrimaryBuilding:
 	ProductionBar:
-	ProductionQueue@Infantry:
-		Type: Infantry
-		BuildSpeed: .4
-		LowPowerSlowdown: 3
 
 ^HIGHTECH:
 	Inherits: ^Building
@@ -120,10 +108,6 @@
 		Produces: Plane
 	PrimaryBuilding:
 	ProductionBar:
-	ProductionQueue@Plane:
-		Type: Plane
-		BuildSpeed: .4
-		LowPowerSlowdown: 3
 
 ^RESEARCH:
 	Inherits: ^Building
@@ -193,6 +177,8 @@
 	Bib:
 	-RenderBuilding:
 	OreRefinery:
+		DockOffset: 2,1
+		DockAngle: 144
 	StoresOre:
 		PipColor: Green
 		PipCount: 20
@@ -236,7 +222,7 @@
 		Cost: 1000
 	Tooltip:
 		Name: Light Factory
-		Description: produces light vehicles.
+		Description: Produces light vehicles.
 	Building:
 		Power: -30
 		Footprint: xxx xxx
@@ -257,10 +243,6 @@
 		Produces: Vehicle
 	PrimaryBuilding:
 	ProductionBar:
-	ProductionQueue@Vehicle:
-		Type: Vehicle
-		BuildSpeed: .4
-		LowPowerSlowdown: 3
 
 ^HEAVY:
 	Inherits: ^Building
@@ -271,7 +253,7 @@
 		Cost: 2000
 	Tooltip:
 		Name: Heavy Factory
-		Description: produces tanks
+		Description: Produces heavy vehicles.
 	Building:
 		Power: -30
 		Footprint: _x_ xxx xxx
@@ -293,10 +275,6 @@
 		Produces: Vehicle
 	PrimaryBuilding:
 	ProductionBar:
-	ProductionQueue@Vehicle:
-		Type: Vehicle
-		BuildSpeed: .4
-		LowPowerSlowdown: 3
 
 ^RADAR:
 	RequiresPower:
@@ -329,7 +307,7 @@
 		Cost: 2000
 	Tooltip:
 		Name: Starport
-		Description: Provides a dropzone for vehicle reinforcements
+		Description: Dropzone for cheap reinforcements
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 60
@@ -343,19 +321,16 @@
 		Range: 7
 	Bib:
 	RallyPoint:
-		RallyPoint: 4,2
+		RallyPoint: 2,2
 	BelowUnits:
 	Exit@1:
 		SpawnOffset: -24,0
-		ExitCell: 3,1
+		ExitCell: 2,1
 	ProductionAirdrop:
-		Produces: Vehicle
+		Produces: Ship
 		ActorType: frigate
-	ProductionQueue@Vehicle:
-		Type: Vehicle
-		BuildSpeed: .4
-		LowPowerSlowdown: 3
 	ProductionBar:
+	PrimaryBuilding:
 
 ^WALL:
 	Buildable:
@@ -480,8 +455,9 @@
 		Description: Repairs vehicles and allows\n the construction of additional bases.
 	Building:
 		Power: -30
-		Footprint: xxx xxx xxx
-		Dimensions: 3,3
+		Footprint: xxx xxx
+		Dimensions: 3,2
+	Bib:
 	Health:
 		HP: 800
 	Armor:
@@ -493,3 +469,88 @@
 	RepairsUnits:
 		Interval: 10
 	RallyPoint:
+		RallyPoint: 2,2
+
+SIETCH:
+	Inherits: ^Building
+	Tooltip:
+		Name: Fremen Sietch
+	Building:
+		Power: 0
+		Footprint: xx xx
+		Dimensions: 2,2
+		TerrainTypes: Cliff
+	Health:
+		HP: 400
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 10
+	-GivesBuildableArea:
+	-Sellable:
+	-Capturable:
+	-CapturableBar:
+
+STARPORTC:
+	Inherits: ^STARPORT
+	ProductionAirdrop:
+		ReadyAudio:
+	-Buildable:
+
+PALACEC:
+	Inherits: ^PALACE
+	-Buildable:
+
+HEAVYC:
+	Inherits: ^HEAVY
+	-Buildable:
+	RenderBuildingWarFactory:
+		Image: HEAVYC
+
+#4PLATES:
+#	Inherits: ^WALL
+#	Buildable:
+#		BuildPaletteOrder: 2000
+#		Owner: atreides, harkonnen, ordos
+#	Tooltip:
+#		Name: Fundament
+#		Description: Pretty useless at the moment.
+#		Icon: 4plateicon
+#	Building:
+#		TerrainTypes: Rock
+#		Footprint: =
+#	BelowUnits:
+#	LineBuild:
+#		Range: 4
+#	RenderBuildingWall:
+#		HasMakeAnimation: false
+#		Image: PLATES
+#	Wall:
+#		CrushClasses: plates
+#	-SelectionDecorations:
+#	-Selectable:
+
+#6PLATES:
+#	Inherits: ^WALL
+#	Buildable:
+#		BuildPaletteOrder: 3000
+#		Owner: atreides, harkonnen, ordos
+#	Valued:
+#		Cost: 120
+#	Tooltip:
+#		Name: Fundament
+#		Description: Pretty useless at the moment.
+#		Icon: 6plateicon
+#	Building:
+#		TerrainTypes: Rock
+#		Footprint: =
+#	BelowUnits:
+#	LineBuild:
+#		Range: 6
+#	RenderBuildingWall:
+#		HasMakeAnimation: false
+#		Image: PLATES
+#	Wall:
+#		CrushClasses: plates
+#	-SelectionDecorations:
+#	-Selectable:
