@@ -138,12 +138,12 @@ tabs-selected: tabs.png
 	harkonnen-Vehicle: 80,120,27,41
 	harkonnen-Plane: 80,160,27,41
 	harkonnen-Ship: 80,200,27,41
-	ordos-Building: 0,0,27,41
-	ordos-Defense: 0,40,27,41
-	ordos-Infantry: 0,80,27,41
-	ordos-Vehicle: 0,120,27,41
-	ordos-Plane: 0,160,27,41
-	ordos-Ship: 0,200,27,41
+	ordos-Building: 160,0,27,41
+	ordos-Defense: 160,40,27,41
+	ordos-Infantry: 160,80,27,41
+	ordos-Vehicle: 160,120,27,41
+	ordos-Plane: 160,160,27,41
+	ordos-Ship: 160,200,27,41
 
 tabs-ready: tabs.png
 	atreides-Building: 27,0,27,41
@@ -158,12 +158,12 @@ tabs-ready: tabs.png
 	harkonnen-Vehicle: 107,120,27,41
 	harkonnen-Plane: 107,160,27,41
 	harkonnen-Ship: 107,200,27,41
-	ordos-Building: 27,0,27,41
-	ordos-Defense: 27,40,27,41
-	ordos-Infantry: 27,80,27,41
-	ordos-Vehicle: 27,120,27,41
-	ordos-Plane: 27,160,27,41
-	ordos-Ship: 27,200,27,41
+	ordos-Building: 187,0,27,41
+	ordos-Defense: 187,40,27,41
+	ordos-Infantry: 187,80,27,41
+	ordos-Vehicle: 187,120,27,41
+	ordos-Plane: 187,160,27,41
+	ordos-Ship: 187,200,27,41
 
 tabs-normal: tabs.png
 	atreides-Building: 54,0,27,41
@@ -178,12 +178,12 @@ tabs-normal: tabs.png
 	harkonnen-Vehicle: 134,120,27,41
 	harkonnen-Plane: 134,160,27,41
 	harkonnen-Ship: 134,200,27,41
-	ordos-Building: 54,0,27,41
-	ordos-Defense: 54,40,27,41
-	ordos-Infantry: 54,80,27,41
-	ordos-Vehicle: 54,120,27,41
-	ordos-Plane: 54,160,27,41
-	ordos-Ship: 54,200,27,41
+	ordos-Building: 214,0,27,41
+	ordos-Defense: 214,40,27,41
+	ordos-Infantry: 214,80,27,41
+	ordos-Vehicle: 214,120,27,41
+	ordos-Plane: 214,160,27,41
+	ordos-Ship: 214,200,27,41
 
 flags: buttons.png
 	atreides: 0,86,22,21

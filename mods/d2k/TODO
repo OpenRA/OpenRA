@@ -16,7 +16,6 @@
 # allow upgrades
 # add muzzles and explosions (currently falls back to RA)
 # create a shellmap (currently just a blank placeholder)
-# rework chrome UI, tabs
 # add sonic tank weapon (currently uses tesla)
 # starport prices should vary
 # some transparent tiles (see Atreides Hightech Factory) should be white
