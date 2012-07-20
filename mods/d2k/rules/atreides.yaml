@@ -6,18 +6,6 @@ CONYARDA:
 		IntoActor: mcva
 		Offset:1,1
 		Facing: 270
-	ProductionQueue@Building:
-		QueuedAudio: AI_BUILD.AUD
-		OnHoldAudio: AI_HOLD.AUD
-		ReadyAudio: AI_BDRDY.AUD
-		CancelledAudio: AI_CANCL.AUD
-		BlockedAudio: AI_NROOM.AUD
-	ProductionQueue@Defense:
-		QueuedAudio: AI_BUILD.AUD
-		OnHoldAudio: AI_HOLD.AUD
-		ReadyAudio: AI_BDRDY.AUD
-		CancelledAudio: AI_CANCL.AUD
-		BlockedAudio: AI_NROOM.AUD
 
 PWRA:
 	Inherits: ^POWER
@@ -61,40 +49,85 @@ HARVESTERA:
 	Buildable:
 		Prerequisites: heavya,refa
 		Owner: atreides
+		BuiltAt: heavya
 	RenderUnit:
 		Image: HARVESTER
+
+HARVESTERA.starport:
+	Inherits: HARVESTERA
+	Buildable:
+		Queue: Ship
+		BuiltAt: starporta
+	Valued:
+		Cost: 895
 
 TRIKEA:
 	Inherits: ^TRIKE
 	Buildable:
 		Prerequisites: lighta
 		Owner: atreides
+		BuiltAt: lighta
 	RenderUnit:
 		Image: TRIKE
+
+TRIKEA.starport:
+	Inherits: TRIKEA
+	Buildable:
+		Queue: Ship
+		BuiltAt: starporta
+	Valued:
+		Cost: 149
 
 QUADA:
 	Inherits: ^QUAD
 	Buildable:
 		Prerequisites: lighta
 		Owner: atreides
+		BuiltAt: lighta
 	RenderUnit:
 		Image: QUAD
+
+QUADA.starport:
+	Inherits: QUADA
+	Buildable:
+		Queue: Ship
+		BuiltAt: starporta
+	Valued:
+		Cost: 295
 
 SIEGETANKA:
 	Inherits: ^SIEGETANK
 	Buildable:
 		Prerequisites: heavya, radara
 		Owner: atreides
+		BuiltAt: heavya
 	RenderUnitTurreted:
 		Image: SIEGETANK
+
+SIEGETANKA.starport:
+	Inherits: SIEGETANKA
+	Buildable:
+		Queue: Ship
+		BuiltAt: starporta
+	Valued:
+		Cost: 495
 
 MISSILETANKA:
 	Inherits: ^MISSILETANK
 	Buildable:
 		Prerequisites: heavya
 		Owner: atreides
+		BuiltAt: heavya
 	RenderUnit:
 		Image: MISSILETANK
+
+MISSILETANKA.starport:
+	Inherits: MISSILETANKA
+	Buildable:
+		Queue: Ship
+		BuiltAt: starporta
+	Valued:
+		Cost: 599
 
 CARRYALLA:
 	Inherits: ^CARRYALL
@@ -105,29 +138,26 @@ CARRYALLA:
 	RenderUnit:
 		Image: CARRYALL
 
+CARRYALLA.starport:
+	Inherits: CARRYALLA
+	Buildable:
+		Queue: Ship
+		BuiltAt: starporta
+	Valued:
+		Cost: 999
+
 BARRA:
 	Inherits: ^BARRACKS
 	Buildable:
 		Prerequisites: pwra
 		Owner: atreides
-	ProductionQueue@Infantry:
-		ReadyAudio: AI_UNRDY.AUD
-		QueuedAudio:AI_TRAIN.AUD
-		OnHoldAudio: AI_HOLD.AUD
-		CancelledAudio: AI_CANCL.AUD
-		BlockedAudio: AI_NROOM.AUD
+
 
 HIGHTECHA:
 	Inherits: ^HIGHTECH
 	Buildable:
 		Prerequisites: radara
 		Owner: atreides
-	ProductionQueue@Plane:
-		ReadyAudio: AI_UNRDY.AUD
-		QueuedAudio:AI_TRAIN.AUD
-		OnHoldAudio: AI_HOLD.AUD
-		CancelledAudio: AI_CANCL.AUD
-		BlockedAudio: AI_NROOM.AUD
 
 RESEARCHA:
 	Inherits: ^RESEARCH
@@ -165,12 +195,6 @@ LIGHTA:
 		Owner: atreides
 	RenderBuildingWarFactory:
 		Image: LIGHTA
-	ProductionQueue@Vehicle:
-		ReadyAudio: AI_UNRDY.AUD
-		QueuedAudio:AI_TRAIN.AUD
-		OnHoldAudio: AI_HOLD.AUD
-		CancelledAudio: AI_CANCL.AUD
-		BlockedAudio: AI_NROOM.AUD
 
 HEAVYA:
 	Inherits: ^HEAVY
@@ -179,12 +203,6 @@ HEAVYA:
 		Owner: atreides
 	RenderBuildingWarFactory:
 		Image: HEAVYA
-	ProductionQueue@Vehicle:
-		ReadyAudio: AI_UNRDY.AUD
-		QueuedAudio:AI_TRAIN.AUD
-		OnHoldAudio: AI_HOLD.AUD
-		CancelledAudio: AI_CANCL.AUD
-		BlockedAudio: AI_NROOM.AUD
 
 RADARA:
 	Inherits: ^RADAR
@@ -197,14 +215,6 @@ STARPORTA:
 	Buildable:
 		Prerequisites: radara
 		Owner: atreides
-	ProductionAirdrop:
-		ReadyAudio: AI_REINF.AUD
-	ProductionQueue@Vehicle:
-		QueuedAudio: AI_ORDER.AUD
-		ReadyAudio: 
-		OnHoldAudio: AI_HOLD.AUD
-		CancelledAudio: AI_CANCL.AUD
-		BlockedAudio: AI_NROOM.AUD
 
 REPAIRA:
 	Inherits: ^REPAIR
@@ -217,6 +227,7 @@ MCVA:
 	Buildable:
 		Prerequisites: heavya,repaira
 		Owner: atreides
+		BuiltAt: heavya
 	Transforms:
 		Facing: 10
 		IntoActor: conyarda
@@ -225,11 +236,32 @@ MCVA:
 	RenderUnit:
 		Image: DMCV
 
+MCVA.starport:
+	Inherits: MCVA
+	Buildable:
+		Queue: Ship
+		BuiltAt: starporta
+	Valued:
+		Cost: 1499
+
 COMBATA:
 	Inherits: ^COMBAT
+	Tooltip:
+		Icon: combataicon
 	Buildable:
 		Prerequisites: heavya
 		Owner: atreides
+		BuiltAt: heavya
+	RenderUnitTurreted:
+		Image: COMBATA
+
+COMBATA.starport:
+	Inherits: COMBATA
+	Buildable:
+		Queue: Ship
+		BuiltAt: starporta
+	Valued:
+		Cost: 595
 
 SONICTANK:
 	Inherits: ^Vehicle
@@ -238,11 +270,13 @@ SONICTANK:
 		BuildPaletteOrder: 15
 		Prerequisites: heavya,researcha
 		Owner: atreides
+		BuiltAt: heavya
 	Valued:
 		Cost: 1500
 	Tooltip:
 		Name: Sonic Tank
 		Description: Fires a sound wave\n Strong vs Infantry.\n Weak vs Tanks
+		Icon: sonictankicon
 	Selectable:
 		Bounds: 30,30
 	Health:
@@ -254,6 +288,7 @@ SONICTANK:
 	RevealsShroud:
 		Range: 7
 	RenderUnit:
+		Image: SONICTANK
 	AttackFrontal:
 		PrimaryWeapon: TTankZap
 		PrimaryOffset: 0,0,0,-5

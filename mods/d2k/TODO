@@ -13,11 +13,9 @@
 # add game logic for concrete plates (use terrain overlay from bridges/ressources)
 # allow placing turrets on walls
 # make sandworm behave like a moving anti-everything mine (currently not attacking anything)
-# allow upgrades
 # add muzzles and explosions (currently falls back to RA)
 # create a shellmap (currently just a blank placeholder)
 # add sonic tank weapon (currently uses tesla)
-# starport prices should vary
 # some transparent tiles (see Atreides Hightech Factory) should be white
 # gamefile extraction (setup/setup.z) from CD fails
 # support patch 1.06 gamefiles: DATA.R8 has more frames and currently fails to extract, also featuring new terrain with white houses and new units: grenade thrower, stealth raider icon
@@ -25,4 +23,3 @@
 # group number metrics are off
 # building offsets wrong (worst for towers)
 # spice blooms should explode and create new spice field instead of growing spice
-# build light vehicles only at light factory, don't create a new production queue and tab for every new factory except starport

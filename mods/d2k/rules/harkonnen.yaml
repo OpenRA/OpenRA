@@ -6,18 +6,6 @@ CONYARDH:
 		IntoActor: mcvh
 		Offset:1,1
 		Facing: 270
-	ProductionQueue@Building:
-		QueuedAudio: HI_BUILD.AUD
-		OnHoldAudio: HI_HOLD.AUD
-		ReadyAudio: HI_BDRDY.AUD
-		CancelledAudio: HI_CANCL.AUD
-		BlockedAudio: HI_NROOM.AUD
-	ProductionQueue@Defense:
-		QueuedAudio: HI_BUILD.AUD
-		OnHoldAudio: HI_HOLD.AUD
-		ReadyAudio: HI_BDRDY.AUD
-		CancelledAudio: HI_CANCL.AUD
-		BlockedAudio: HI_NROOM.AUD
 
 PWRH:
 	Inherits: ^POWER
@@ -46,6 +34,14 @@ HARVESTERH:
 	RenderUnit:
 		Image: HARVESTER
 
+HARVESTERH.starport:
+	Inherits: HARVESTERH
+	Buildable:
+		Queue: Ship
+		BuiltAt: starporth
+	Valued:
+		Cost: 895
+
 TRIKEH:
 	Inherits: ^TRIKE
 	Buildable:
@@ -53,6 +49,14 @@ TRIKEH:
 		Owner: harkonnen
 	RenderUnit:
 		Image: TRIKE
+
+TRIKEH.starport:
+	Inherits: TRIKEH
+	Buildable:
+		Queue: Ship
+		BuiltAt: starporth
+	Valued:
+		Cost: 149
 
 QUADH:
 	Inherits: ^QUAD
@@ -62,6 +66,14 @@ QUADH:
 	RenderUnit:
 		Image: QUAD
 
+QUADH.starport:
+	Inherits: QUADH
+	Buildable:
+		Queue: Ship
+		BuiltAt: starporth
+	Valued:
+		Cost: 295
+
 SIEGETANKH:
 	Inherits: ^SIEGETANK
 	Buildable:
@@ -70,6 +82,14 @@ SIEGETANKH:
 	RenderUnitTurreted:
 		Image: SIEGETANK
 
+SIEGETANKH.starport:
+	Inherits: SIEGETANKH
+	Buildable:
+		Queue: Ship
+		BuiltAt: starporta
+	Valued:
+		Cost: 495
+
 MISSILETANKH:
 	Inherits: ^MISSILETANK
 	Buildable:
@@ -77,6 +97,14 @@ MISSILETANKH:
 		Owner: harkonnen
 	RenderUnit:
 		Image: MISSILETANK
+
+MISSILETANKH.starport:
+	Inherits: MISSILETANKH
+	Buildable:
+		Queue: Ship
+		BuiltAt: starporth
+	Valued:
+		Cost: 599
 
 CARRYALLH:
 	Inherits: ^CARRYALL
@@ -87,17 +115,19 @@ CARRYALLH:
 	RenderUnit:
 		Image: CARRYALL
 
+CARRYALLH.starport:
+	Inherits: CARRYALLH
+	Buildable:
+		Queue: Ship
+		BuiltAt: starporth
+	Valued:
+		Cost: 999
+
 BARRH:
 	Inherits: ^BARRACKS
 	Buildable:
 		Prerequisites: pwrh
 		Owner: harkonnen
-	ProductionQueue@Infantry:
-		ReadyAudio: HI_UNRDY.AUD
-		QueuedAudio:HI_TRAIN.AUD
-		OnHoldAudio: HI_HOLD.AUD
-		CancelledAudio: HI_CANCL.AUD
-		BlockedAudio: HI_NROOM.AUD
 
 GUNTOWERH:
 	Inherits: ^GUNTOWER
@@ -122,12 +152,6 @@ HIGHTECHH:
 	Buildable:
 		Prerequisites: radarh
 		Owner: harkonnen
-	ProductionQueue@Plane:
-		ReadyAudio: HI_UNRDY.AUD
-		QueuedAudio:HI_TRAIN.AUD
-		OnHoldAudio: HI_HOLD.AUD
-		CancelledAudio: HI_CANCL.AUD
-		BlockedAudio: HI_NROOM.AUD
 
 RESEARCHH:
 	Inherits: ^RESEARCH
@@ -168,12 +192,6 @@ LIGHTH:
 		Owner: harkonnen
 	RenderBuildingWarFactory:
 		Image: LIGHTH
-	ProductionQueue@Vehicle:
-		ReadyAudio: HI_UNRDY.AUD
-		QueuedAudio:HI_TRAIN.AUD
-		OnHoldAudio: HI_HOLD.AUD
-		CancelledAudio: HI_CANCL.AUD
-		BlockedAudio: HI_NROOM.AUD
 
 HEAVYH:
 	Inherits: ^HEAVY
@@ -182,12 +200,6 @@ HEAVYH:
 		Owner: harkonnen
 	RenderBuildingWarFactory:
 		Image: HEAVYH
-	ProductionQueue@Vehicle:
-		ReadyAudio: HI_UNRDY.AUD
-		QueuedAudio:HI_TRAIN.AUD
-		OnHoldAudio: HI_HOLD.AUD
-		CancelledAudio: HI_CANCL.AUD
-		BlockedAudio: HI_NROOM.AUD
 
 RADARH:
 	Inherits: ^RADAR
@@ -200,14 +212,6 @@ STARPORTH:
 	Buildable:
 		Prerequisites: radarh
 		Owner: harkonnen
-	ProductionAirdrop:
-		ReadyAudio: HI_REINF.AUD
-	ProductionQueue@Vehicle:
-		QueuedAudio: HI_ORDER.AUD
-		ReadyAudio: 
-		OnHoldAudio: HI_HOLD.AUD
-		CancelledAudio: HI_CANCL.AUD
-		BlockedAudio: HI_NROOM.AUD
 
 REPAIRH:
 	Inherits: ^REPAIR
@@ -228,11 +232,31 @@ MCVH:
 	RenderUnit:
 		Image: DMCV
 
+MCVH.starport:
+	Inherits: MCVH
+	Buildable:
+		Queue: Ship
+		BuiltAt: starporth
+	Valued:
+		Cost: 1499
+
 COMBATH:
 	Inherits: ^COMBAT
+	Tooltip:
+		Icon: combathicon
 	Buildable:
 		Prerequisites: heavyh
 		Owner: harkonnen
+	RenderUnitTurreted:
+		Image: COMBATH
+
+COMBATH.starport:
+	Inherits: COMBATH
+	Buildable:
+		Queue: Ship
+		BuiltAt: starporth
+	Valued:
+		Cost: 595
 
 DEVAST:
 	Inherits: ^Tank

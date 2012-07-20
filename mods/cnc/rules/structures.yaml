@@ -29,19 +29,15 @@ FACT:
 		Group: Building
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
-		QueuedAudio: bldging1.aud
-		ReadyAudio: constru1.aud
-		OnHoldAudio: onhold1.aud
-		CancelledAudio: cancel1.aud
+		QueuedAudio: Building
+		ReadyAudio: ConstructionComplete
 	ProductionQueue@Defense:
 		Type: Defense
 		Group: Defense
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
-		QueuedAudio: bldging1.aud
-		ReadyAudio: constru1.aud
-		OnHoldAudio: onhold1.aud
-		CancelledAudio: cancel1.aud
+		QueuedAudio: Building
+		ReadyAudio: ConstructionComplete
 	BaseBuilding:
 	ProductionBar:
 
@@ -180,10 +176,6 @@ PYLE:
 		Group: Infantry
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
-		QueuedAudio: bldging1.aud
-		ReadyAudio: unitredy.aud
-		OnHoldAudio: onhold1.aud
-		CancelledAudio: cancel1.aud
 	ProductionBar:
 	
 HAND:
@@ -220,10 +212,6 @@ HAND:
 		Group: Infantry
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
-		QueuedAudio: bldging1.aud
-		ReadyAudio: unitredy.aud
-		OnHoldAudio: onhold1.aud
-		CancelledAudio: cancel1.aud
 	ProductionBar:
 
 AFLD:
@@ -262,10 +250,7 @@ AFLD:
 		Group: Vehicle
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
-		QueuedAudio: bldging1.aud
 		ReadyAudio:
-		OnHoldAudio: onhold1.aud
-		CancelledAudio: cancel1.aud
 	ProductionBar:
 
 WEAP:
@@ -305,10 +290,6 @@ WEAP:
 		Group: Vehicle
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
-		QueuedAudio: bldging1.aud
-		ReadyAudio: unitredy.aud
-		OnHoldAudio: onhold1.aud
-		CancelledAudio: cancel1.aud
 	ProductionBar:
 
 HQ:
@@ -430,10 +411,6 @@ HPAD:
 		Group: Aircraft
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
-		QueuedAudio: bldging1.aud
-		ReadyAudio: unitredy.aud
-		OnHoldAudio: onhold1.aud
-		CancelledAudio: cancel1.aud
 	ProductionBar:
 
 EYE:

@@ -146,7 +146,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				else if (CurrentQueue.BuildableItems().Any(a => a.Name == clicked.Name))
 				{
 					Sound.Play(TabClick);
-					Sound.Play(CurrentQueue.Info.QueuedAudio);
+					Sound.PlayNotification(world.LocalPlayer, "Speech", CurrentQueue.Info.QueuedAudio, world.LocalPlayer.Country.Race);
 					world.IssueOrder(Order.StartProduction(CurrentQueue.self, clicked.Name,
 						Game.GetModifierKeys().HasModifier(Modifiers.Shift) ? 5 : 1));
 				}
@@ -164,13 +164,13 @@ namespace OpenRA.Mods.Cnc.Widgets
 					// instant cancel of things we havent started yet and things that are finished
 					if (first.Paused || first.Done || first.TotalCost == first.RemainingCost)
 					{
-						Sound.Play(CurrentQueue.Info.CancelledAudio);
+						Sound.PlayNotification(world.LocalPlayer, "Speech", CurrentQueue.Info.CancelledAudio, world.LocalPlayer.Country.Race);
 						world.IssueOrder(Order.CancelProduction(CurrentQueue.self, clicked.Name,
 							Game.GetModifierKeys().HasModifier(Modifiers.Shift) ? 5 : 1));
 					}
 					else
 					{
-						Sound.Play(CurrentQueue.Info.OnHoldAudio);
+						Sound.PlayNotification(world.LocalPlayer, "Speech", CurrentQueue.Info.OnHoldAudio, world.LocalPlayer.Country.Race);
 						world.IssueOrder(Order.PauseProduction(CurrentQueue.self, clicked.Name, true));
 					}
 				}

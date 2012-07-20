@@ -1,5 +1,41 @@
 Player:
 	TechTree:
+	ClassicProductionQueue@Building:
+		Type: Building
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+		QueuedAudio: Building
+		ReadyAudio: BuildingReady
+		BlockedAudio: NoRoom
+	ClassicProductionQueue@Defense:
+		Type: Defense
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+		QueuedAudio: Building
+		ReadyAudio: BuildingReady
+		BlockedAudio: NoRoom
+	ClassicProductionQueue@Vehicle:
+		Type: Vehicle
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+		BlockedAudio: NoRoom
+	ClassicProductionQueue@Infantry:
+		Type: Infantry
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+		BlockedAudio: NoRoom
+	ClassicProductionQueue@Ship:
+		Type: Ship
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+		BlockedAudio: NoRoom
+		QueuedAudio: OrderPlaced
+		ReadyAudio:
+	ClassicProductionQueue@Plane:
+		Type: Plane
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+		BlockedAudio: NoRoom
 	PlaceBuilding:
 	SupportPowerManager:
 	ConquestVictoryConditions:
