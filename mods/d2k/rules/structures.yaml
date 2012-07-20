@@ -321,11 +321,11 @@
 		Range: 7
 	Bib:
 	RallyPoint:
-		RallyPoint: 4,2
+		RallyPoint: 2,2
 	BelowUnits:
 	Exit@1:
 		SpawnOffset: -24,0
-		ExitCell: 3,1
+		ExitCell: 2,1
 	ProductionAirdrop:
 		Produces: Ship
 		ActorType: frigate
@@ -455,8 +455,9 @@
 		Description: Repairs vehicles and allows\n the construction of additional bases.
 	Building:
 		Power: -30
-		Footprint: xxx xxx xxx
-		Dimensions: 3,3
+		Footprint: xxx xxx
+		Dimensions: 3,2
+	Bib:
 	Health:
 		HP: 800
 	Armor:
@@ -468,6 +469,7 @@
 	RepairsUnits:
 		Interval: 10
 	RallyPoint:
+		RallyPoint: 2,2
 
 SIETCH:
 	Inherits: ^Building
