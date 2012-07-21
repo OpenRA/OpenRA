@@ -52,6 +52,7 @@
 			this.toolStripButton15 = new System.Windows.Forms.ToolStripButton();
 			this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
 			this.toolStripButton14 = new System.Windows.Forms.ToolStripButton();
+			this.toolStripButton16 = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
 			this.surface1 = new OpenRA.TilesetBuilder.Surface();
@@ -227,6 +228,7 @@
 			this.toolStripButton1.Name = "toolStripButton1";
 			this.toolStripButton1.Size = new System.Drawing.Size(118, 20);
 			this.toolStripButton1.Text = "Template Tool";
+			this.toolStripButton1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			this.toolStripButton1.Click += new System.EventHandler(this.TerrainTypeSelectorClicked);
 			// 
 			// toolStrip1
@@ -236,6 +238,7 @@
 			this.toolStripButton15,
 			this.toolStripButton2,
 			this.toolStripButton14,
+			this.toolStripButton16,
 			this.toolStripSeparator1,
 			this.toolStripButton3});
 			this.toolStrip1.Location = new System.Drawing.Point(3, 0);
@@ -250,6 +253,7 @@
 			this.toolStripButton15.Name = "toolStripButton15";
 			this.toolStripButton15.Size = new System.Drawing.Size(48, 22);
 			this.toolStripButton15.Text = "New";
+			this.toolStripButton15.ToolTipText = "Create new tileset";
 			this.toolStripButton15.Click += new System.EventHandler(this.toolStripButton15_Click);
 			// 
 			// toolStripButton2
@@ -259,6 +263,7 @@
 			this.toolStripButton2.Name = "toolStripButton2";
 			this.toolStripButton2.Size = new System.Drawing.Size(51, 22);
 			this.toolStripButton2.Text = "Save";
+			this.toolStripButton2.ToolTipText = "Save Template definitions to file (*.tsx)";
 			this.toolStripButton2.Click += new System.EventHandler(this.SaveClicked);
 			// 
 			// toolStripButton14
@@ -268,7 +273,18 @@
 			this.toolStripButton14.Name = "toolStripButton14";
 			this.toolStripButton14.Size = new System.Drawing.Size(59, 22);
 			this.toolStripButton14.Text = "Export";
+			this.toolStripButton14.ToolTipText = "Export defined Templates to files";
 			this.toolStripButton14.Click += new System.EventHandler(this.ExportClicked);
+			// 
+			// toolStripButton16
+			// 
+			this.toolStripButton16.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton14.Image")));
+			this.toolStripButton16.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toolStripButton16.Name = "toolStripButton16";
+			this.toolStripButton16.Size = new System.Drawing.Size(65, 22);
+			this.toolStripButton16.Text = "Dump";
+			this.toolStripButton16.ToolTipText = "Dump Template ID to tile number mapping to console";
+			this.toolStripButton16.Click += new System.EventHandler(this.Export2Clicked);
 			// 
 			// toolStripSeparator1
 			// 
@@ -282,6 +298,8 @@
 			this.toolStripButton3.Name = "toolStripButton3";
 			this.toolStripButton3.Size = new System.Drawing.Size(70, 22);
 			this.toolStripButton3.Text = "Overlays";
+			this.toolStripButton3.ToolTipText = "Show/hide terrain type overlays";
+			this.toolStripButton3.CheckOnClick = true;
 			this.toolStripButton3.Click += new System.EventHandler(this.ShowOverlaysClicked);
 			// 
 			// surface1
@@ -290,7 +308,7 @@
 			this.surface1.ImagesList = this.imageList;
 			this.surface1.Location = new System.Drawing.Point(0, 0);
 			this.surface1.Name = "surface1";
-			this.surface1.ShowTerrainTypes = true;
+			this.surface1.ShowTerrainTypes = this.toolStripButton3.Checked;
 			this.surface1.Size = new System.Drawing.Size(653, 454);
 			this.surface1.TabIndex = 2;
 			this.surface1.Text = "surface1";
@@ -325,13 +343,14 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripButton toolStripButton3;
 		private System.Windows.Forms.ToolStripButton toolStripButton14;
+		private System.Windows.Forms.ToolStripButton toolStripButton15;
+		private System.Windows.Forms.ToolStripButton toolStripButton16;
 		public System.Windows.Forms.ImageList imageList;
 		private System.Windows.Forms.ToolStrip tsTerrainTypes;
 		private System.Windows.Forms.Panel panel1;
 		private Surface surface1;
 		private System.Windows.Forms.ToolStripLabel toolStripLabel2;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-		private System.Windows.Forms.ToolStripButton toolStripButton15;
 		private System.Windows.Forms.ToolStripButton toolStripButton1;
 		private System.Windows.Forms.ToolStripLabel toolStripLabel3;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;

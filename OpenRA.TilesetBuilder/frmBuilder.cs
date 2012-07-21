@@ -65,6 +65,7 @@ namespace OpenRA.TilesetBuilder
 			}
 			
 			surface1.Image = (Bitmap)rbitmap;
+			surface1.TilesPerRow = surface1.Image.Size.Width / surface1.TileSize;
 			surface1.Image.SetResolution(96, 96); // people keep being noobs about DPI, and GDI+ cares.
 			surface1.TerrainTypes = new int[surface1.Image.Width / size, surface1.Image.Height / size];		/* all passable by default */
 			surface1.Templates = new List<Template>();
@@ -86,6 +87,13 @@ namespace OpenRA.TilesetBuilder
 			int i = 0;
 			surface1.icon = new Bitmap[DefTerrain.Keys.Count];
 			TerrainType = new TerrainTypeInfo[DefTerrain.Keys.Count];
+
+			var title = this.Text;
+			surface1.UpdateMouseTilePosition += (x, y, tileNr) => 
+			{
+				this.Text = "{0} - {1} ({2,3}, {3,3}) tileNr: {4,3}".F(title, txtTilesetName.Text, x, y, tileNr);
+			};
+
 			surface1.Enabled = false;
 			foreach (var deftype in DefTerrain)
 			{
@@ -107,6 +115,7 @@ namespace OpenRA.TilesetBuilder
 				TerrainTypeButton.ToolTipText = deftype.Key;
 				TerrainTypeButton.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText;
 				TerrainTypeButton.Tag = i.ToString();
+				TerrainTypeButton.ImageAlign = ContentAlignment.MiddleLeft;
 				i++;
 				tsTerrainTypes.Items.Add(TerrainTypeButton);
 			}
@@ -117,6 +126,7 @@ namespace OpenRA.TilesetBuilder
 				this.size = size;
 				surface1.TileSize = size;
 				surface1.Image = (Bitmap)Image.FromFile(src);
+				surface1.TilesPerRow = surface1.Image.Size.Width / surface1.TileSize;
 				surface1.Image.SetResolution(96, 96);	// people keep being noobs about DPI, and GDI+ cares.
 				surface1.TerrainTypes = new int[surface1.Image.Width / size, surface1.Image.Height / size];		/* all passable by default */
 				surface1.Templates = new List<Template>();
@@ -219,21 +229,18 @@ namespace OpenRA.TilesetBuilder
 		void SaveClicked(object sender, EventArgs e) { Save(); }
 		void ShowOverlaysClicked(object sender, EventArgs e) 
 		{
-			if (surface1.ShowTerrainTypes == false)
-			{
-				surface1.ShowTerrainTypes = true;
-				this.Refresh();
-			}
-			else
-			{
-				surface1.ShowTerrainTypes = false;
-				this.Refresh();
-			}
+			surface1.ShowTerrainTypes = (sender as ToolStripButton).Checked;
+			surface1.Invalidate();
 		}
 
 		void ExportClicked(object sender, EventArgs e)
 		{
 			Export("Tilesets");
+		}
+
+		void Export2Clicked(object sender, EventArgs e)
+		{
+			ExportTemplateToTileNumberMapping();
 		}
 
 		string ExportPalette(List<Color> p, string file)
@@ -401,7 +408,8 @@ namespace OpenRA.TilesetBuilder
 				{
 					string ttype = "Clear";
 					ttype = TerrainType[surface1.TerrainTypes[t.Key.X, t.Key.Y]].Type;
-					template.Tiles.Add((byte)((t.Key.X - tp.Left) + tp.Width * (t.Key.Y - tp.Top)), ttype);
+					var idx = ((t.Key.X - tp.Left) + tp.Width * (t.Key.Y - tp.Top));
+					template.Tiles.Add((byte)idx, ttype);
 				}
 
 				tileset.Templates.Add(cur, template);
@@ -417,7 +425,37 @@ namespace OpenRA.TilesetBuilder
 				//File.Delete(file);
 
 			Console.WriteLine("Finished export");
+		}
+
+		public void ExportTemplateToTileNumberMapping()
+		{
+			Console.WriteLine("# start");
+			Console.WriteLine("# TemplateID CellID tilenr TemplateW TemplateH XinTilesPNG YinTilesPNG");
+
+			ushort cur = 0;
+			foreach (var tp in surface1.Templates)
+			{
+				foreach (var t in tp.Cells)
+				{
+					var idx = ((t.Key.X - tp.Left) + tp.Width * (t.Key.Y - tp.Top));
+
+					// TemplateID CellID tilenr TemplateW TemplateH XinTilesPNG YinTilesPNG
+					Console.WriteLine("{0} {1} {2} {3} {4} {5} {6}", 
+		                  cur, 
+		                  idx,
+		                  ((t.Key.Y * surface1.TilesPerRow) + t.Key.X).ToString(),
+		                  tp.Width, 
+					      tp.Height,
+					      t.Key.X,
+					      t.Key.Y
+					);
+				}
+
+				cur++;
 			}
+
+			Console.WriteLine("# end\n");
+		}
 
 		private void toolStripContainer1_TopToolStripPanel_Click(object sender, EventArgs e)
 		{
@@ -452,6 +490,5 @@ namespace OpenRA.TilesetBuilder
 		{
 			CreateNewTileset();
 		}
-
 	}
 }
