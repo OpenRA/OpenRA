@@ -89,3 +89,10 @@ ShokVoice:
 		Move: jdance1,jyes1
 		Attack: jburn1,jcrisp1,jshock1,jlight1
 		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman6,dedman7,dedman8,dedman10
+
+VolkovVoice:
+	Voices:
+		Select: iromsec,iromsee
+		Move: irommoc,irommoe,irommod
+		Attack: iromata,iromatb,iromatc,iromatd,iromate
+		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman6,dedman7,dedman8,dedman10,nuyell1,nuyell3,nuyell4,nuyell5

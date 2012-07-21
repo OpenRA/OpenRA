@@ -313,6 +313,7 @@ MINP:
 	InvisibleToEnemy:
 	Tooltip:
 		Name: Anti-Personnel Mine
+		Icon: jmin
 	ProximityCaptor:
 		Types:Mine
 
@@ -329,6 +330,7 @@ MINV:
 	InvisibleToEnemy:
 	Tooltip:
 		Name: Anti-Tank Mine
+		Icon: jmin
 	ProximityCaptor:
 		Types:Mine
 
