@@ -18,7 +18,7 @@
 	Helicopter:
 		InitialFacing: 0
 		ROT: 5
-		Speed: 14
+		Speed: 18
 		LandableTerrainTypes: Sand, Rock, Transition, Spice, Dune
 		RepairBuildings: repaira,repairo,repairh
 		RearmBuildings: starporta,starporto,starporth
@@ -87,7 +87,7 @@ ORNI:
 		LandWhenIdle: false
 		InitialFacing: 20
 		ROT: 4
-		Speed: 12
+		Speed: 20
 		RepairBuildings: repaira,repairo,repairh
 		RearmBuildings: starporta,starporto,starporth
 	RenderUnit:
@@ -110,7 +110,7 @@ ORNI.bomber:
 		Type: Light
 	Plane:
 		ROT: 5
-		Speed: 16
+		Speed: 25
 		RepairBuildings: repaira,repairo,repairh
 		RearmBuildings: starporta,starporto,starporth
 	LimitedAmmo:
@@ -139,7 +139,7 @@ CARRYALL.infantry:
 		Type: Light
 	Plane:
 		ROT: 5
-		Speed: 16
+		Speed: 25
 		RepairBuildings: repaira,repairo,repairh
 		RearmBuildings: starporta,starporto,starporth
 	RenderUnit:
