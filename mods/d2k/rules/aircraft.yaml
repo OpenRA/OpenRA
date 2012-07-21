@@ -31,6 +31,8 @@
 		MaxWeight: 1
 		PipCount: 1
 	FallsToEarth:
+		Spins: no
+		Moves: yes
 		Explosion: UnitExplode
 
 FRIGATE:
@@ -95,6 +97,8 @@ ORNI:
 	Selectable:
 		Bounds: 38,32,0,0
 	FallsToEarth:
+		Spins: no
+		Moves: no
 		Explosion: UnitExplode
 	SmokeTrailWhenDamaged:
 		Offset: 0,-10
@@ -102,7 +106,7 @@ ORNI:
 ORNI.bomber:
 	CarpetBomb:
 		Range: 3
-		Weapon: ParaBomb
+		Weapon: Napalm
 	Inherits: ^Plane
 	Health:
 		HP: 60
@@ -114,7 +118,7 @@ ORNI.bomber:
 		RepairBuildings: repaira,repairo,repairh
 		RearmBuildings: starporta,starporto,starporth
 	LimitedAmmo:
-		Ammo: 7
+		Ammo: 8
 	RenderUnit:
 		Image: orni
 	WithShadow:

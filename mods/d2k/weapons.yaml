@@ -592,3 +592,20 @@ ParaBomb:
 		SmudgeType: Crater
 		Damage: 500
 		ImpactSound: kaboom15
+
+Napalm:
+	ROF: 3
+	Projectile: GravityBomb
+		Image: PARABOMB
+	Warhead:
+		Spread: 20
+		Versus: 
+			None: 90%
+			Wood: 100%
+			Light: 60%
+			Heavy: 25%
+		InfDeath: 4
+		Explosion: napalm
+		ImpactSound: firebl3
+		SmudgeType: Crater
+		Damage: 100
