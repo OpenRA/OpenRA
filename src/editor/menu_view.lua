@@ -6,9 +6,7 @@ local frame = ide.frame
 local menuBar = frame.menuBar
 local uimgr = frame.uimgr
 
-local debugger = ide.debugger
-
-local viewMenu = wx.wxMenu{
+local viewMenu = wx.wxMenu {
   -- NYI { ID "view.preferences", "&Preferences...", "Brings up dialog for settings (TODO)" },
   -- NYI { },
   { ID "view.filetree.show", "Project/&FileTree Window\tCtrl-Shift-P", "View the project/filetree window" },
@@ -17,7 +15,7 @@ local viewMenu = wx.wxMenu{
   { ID_VIEWCALLSTACK, "&Stack Window\tCtrl-Shift-S", "View the Stack window" },
   { },
   { ID "view.defaultlayout", "&Default Layout", "Reset to default layout"},
-  { ID "view.fullscreen", "Full &Screen\tCtrl-Shift-A", "Switch to or from full screen mode"},
+  { ID_FULLSCREEN, "Full &Screen\tCtrl-Shift-A", "Switch to or from full screen mode"},
   { ID "view.style.loadconfig", "&Load Config Style...", "Load and apply style from config file (must contain .styles)"},
 }
 menuBar:Append(viewMenu, "&View")
@@ -47,8 +45,9 @@ frame:Connect(ID "view.filetree.show", wx.wxEVT_COMMAND_MENU_SELECTED,
     uimgr:Update()
   end)
 
-frame:Connect(ID "view.fullscreen", wx.wxEVT_COMMAND_MENU_SELECTED,
-  function (event) ShowFullScreen(not frame:IsFullScreen()) end)
+frame:Connect(ID_FULLSCREEN, wx.wxEVT_COMMAND_MENU_SELECTED, function ()
+    pcall(function() ShowFullScreen(not frame:IsFullScreen()) end)
+  end)
 
 frame:Connect(ID_VIEWWATCHWINDOW, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event) DebuggerCreateWatchWindow() end)

@@ -55,7 +55,7 @@ local function DisplayAbout(event)
       </body>
     </html>]]
 
-  local dlg = wx.wxDialog(frame, wx.wxID_ANY, "About ZeroBane Studio")
+  local dlg = wx.wxDialog(frame, wx.wxID_ANY, "About ZeroBrane Studio")
   local html = wx.wxLuaHtmlWindow(dlg, wx.wxID_ANY,
     wx.wxDefaultPosition, wx.wxSize(440, 270),
     wx.wxHW_SCROLLBAR_NEVER)
@@ -73,11 +73,10 @@ local function DisplayAbout(event)
   topsizer:Add(html, 1, wx.wxALL, 10)
   topsizer:Add(line, 0, wx.wxEXPAND + wx.wxLEFT + wx.wxRIGHT, 10)
   topsizer:Add(button, 0, wx.wxALL + wx.wxALIGN_RIGHT, 10)
+  topsizer:Fit(dlg)
 
   dlg:SetAutoLayout(true)
   dlg:SetSizer(topsizer)
-  topsizer:Fit(dlg)
-
   dlg:ShowModal()
   dlg:Destroy()
 end

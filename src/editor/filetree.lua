@@ -30,14 +30,15 @@ local filetree = ide.filetree
 -- ------------
 
 do
+  local getBitmap = (ide.app.createbitmap or wx.wxArtProvider.GetBitmap)
   local size = wx.wxSize(16, 16)
   filetree.imglist = wx.wxImageList(16,16)
   -- 0 = directory
-  filetree.imglist:Add(wx.wxArtProvider.GetBitmap(wx.wxART_FOLDER, wx.wxART_OTHER, size))
+  filetree.imglist:Add(getBitmap(wx.wxART_FOLDER, wx.wxART_OTHER, size))
   -- 1 = file known spec
-  filetree.imglist:Add(wx.wxArtProvider.GetBitmap(wx.wxART_HELP_PAGE, wx.wxART_OTHER, size))
+  filetree.imglist:Add(getBitmap(wx.wxART_HELP_PAGE, wx.wxART_OTHER, size))
   -- 2 = file rest
-  filetree.imglist:Add(wx.wxArtProvider.GetBitmap(wx.wxART_NORMAL_FILE, wx.wxART_OTHER, size))
+  filetree.imglist:Add(getBitmap(wx.wxART_NORMAL_FILE, wx.wxART_OTHER, size))
 end
 
 local function treeAddDir(tree,parent_id,rootdir)
@@ -50,11 +51,10 @@ local function treeAddDir(tree,parent_id,rootdir)
   end
 
   local curr
-  local search = rootdir..string_Pathsep.."*.*"
-  local dirs = FileSysGet(search,wx.wxDIR)
+  local search = rootdir..string_Pathsep.."*"
 
   -- append directories
-  for _,dir in ipairs(dirs) do
+  for _,dir in ipairs(FileSysGet(search,wx.wxDIR)) do
     local name = dir:match("%"..string_Pathsep.."("..stringset_File.."+)$")
     local icon = 0
     local item = items[name .. icon]
@@ -78,8 +78,7 @@ local function treeAddDir(tree,parent_id,rootdir)
   end
 
   -- then append files
-  local files = FileSysGet(search,wx.wxFILE)
-  for _,file in ipairs(files) do
+  for _,file in ipairs(FileSysGet(search,wx.wxFILE)) do
     local name = file:match("%"..string_Pathsep.."("..stringset_File.."+)$")
     local known = GetSpec(GetFileExt(name))
     local icon = known and 1 or 2
@@ -127,10 +126,8 @@ end
 
 local function treeSetRoot(tree,treedata,rootdir)
   tree:DeleteAllItems()
-
   if (not wx.wxDirExists(rootdir)) then
     treedata.root_id = nil
-    tree:AddRoot("Invalid")
     return
   end
 
@@ -199,7 +196,8 @@ local projtree = wx.wxTreeCtrl(projpanel, ID "filetree.projtree",
   or (wx.wxTR_HAS_BUTTONS + wx.wxTR_SINGLE + wx.wxTR_HIDE_ROOT))
 
 -- use the same font in the combobox as is used in the filetree
-projcombobox:SetFont(projtree:GetFont())
+projtree:SetFont(ide.font.fNormal)
+projcombobox:SetFont(ide.font.fNormal)
 
 local projTopSizer = wx.wxBoxSizer( wx.wxHORIZONTAL );
 projTopSizer:Add(projcombobox, 1, wx.wxALL + wx.wxALIGN_LEFT + wx.wxGROW, 0)
@@ -308,7 +306,7 @@ end
 
 local curr_id
 function FileTreeMarkSelected(file)
-  if not file then return end
+  if not file or not filetree.projdirText or #filetree.projdirText == 0 then return end
   local item_id = findItem(projtree, file)
   if curr_id ~= item_id then
     if curr_id and projtree:IsBold(curr_id) then
@@ -320,4 +318,8 @@ function FileTreeMarkSelected(file)
       curr_id = item_id
     end
   end
+end
+
+function FileTreeRefresh()
+  treeSetRoot(projtree,filetree.projdata,filetree.projdirText)
 end

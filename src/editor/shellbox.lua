@@ -11,8 +11,8 @@ local out = bottomnotebook.shellbox
 local OUTPUT_MARKER = 3
 local remotesend
 
-out:SetFont(ide.ofont)
-out:StyleSetFont(wxstc.wxSTC_STYLE_DEFAULT, ide.ofont)
+out:SetFont(ide.font.oNormal)
+out:StyleSetFont(wxstc.wxSTC_STYLE_DEFAULT, ide.font.oNormal)
 out:StyleClearAll()
 out:SetBufferedDraw(true)
 
@@ -32,7 +32,7 @@ out:MarkerDefine(BREAKPOINT_MARKER, wxstc.wxSTC_MARK_BACKGROUND, wx.wxBLACK, wx.
 out:MarkerDefine(OUTPUT_MARKER, wxstc.wxSTC_MARK_BACKGROUND, wx.wxBLACK, wx.wxColour(240, 240, 240))
 out:SetReadOnly(false)
 
-SetupKeywords(out,"lua",nil,ide.config.stylesoutshell,ide.ofont,ide.ofontItalic)
+SetupKeywords(out,"lua",nil,ide.config.stylesoutshell,ide.font.oNormal,ide.font.oItalic)
 
 local function getPromptLine()
   local totalLines = out:GetLineCount()
@@ -254,6 +254,7 @@ local function executeShellCode(tx)
   fn, err = loadstring("return "..tx)
   if not forceexpression and err and
      (err:find("'<eof>' expected near '") or
+      err:find("'%(' expected near") or
       err:find("unexpected symbol near '")) then
     fn, err = loadstring(tx)
     addedret = false

@@ -10,41 +10,23 @@ BREAKPOINT_MARKER_VALUE = 2 -- = 2^BREAKPOINT_MARKER
 CURRENT_LINE_MARKER = 2
 CURRENT_LINE_MARKER_VALUE = 4 -- = 2^CURRENT_LINE_MARKER
 
--- Globals
-local font = nil -- fonts to use for the editor
-local fontItalic = nil
-local ofont = nil -- fonts to use for the outputshell
-local ofontItalic = nil
--- ----------------------------------------------------------------------------
 -- Pick some reasonable fixed width fonts to use for the editor
-if wx.__WXMSW__ then
-  font = wx.wxFont(ide.config.editor.fontsize or 10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_NORMAL,
-    wx.wxFONTWEIGHT_NORMAL, false, ide.config.editor.fontname or "Courier New", ide.config.editor.fontencoding or wx.wxFONTENCODING_DEFAULT)
-  fontItalic = wx.wxFont(ide.config.editor.fontsize or 10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_ITALIC,
-    wx.wxFONTWEIGHT_NORMAL, false, ide.config.editor.fontname or "Courier New", ide.config.editor.fontencoding or wx.wxFONTENCODING_DEFAULT)
-else
-  font = wx.wxFont(ide.config.editor.fontsize or 10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_NORMAL,
-    wx.wxFONTWEIGHT_NORMAL, false, ide.config.editor.fontname or "", ide.config.editor.fontencoding or wx.wxFONTENCODING_DEFAULT)
-  fontItalic = wx.wxFont(ide.config.editor.fontsize or 10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_ITALIC,
-    wx.wxFONTWEIGHT_NORMAL, false, ide.config.editor.fontname or "", ide.config.editor.fontencoding or wx.wxFONTENCODING_DEFAULT)
+local function setFont(style, config, name, size)
+  return wx.wxFont(config.fontsize or size or 10, wx.wxFONTFAMILY_MODERN, style,
+    wx.wxFONTWEIGHT_NORMAL, false, config.fontname or name,
+    config.fontencoding or wx.wxFONTENCODING_DEFAULT)
 end
+ide.font.eNormal = setFont(wx.wxFONTSTYLE_NORMAL, ide.config.editor, wx.__WXMSW__ and "Courier New" or "")
+ide.font.eItalic = setFont(wx.wxFONTSTYLE_ITALIC, ide.config.editor, wx.__WXMSW__ and "Courier New" or "")
 
-if wx.__WXMSW__ then
-  ofont = wx.wxFont(ide.config.outputshell.fontsize or 10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_NORMAL,
-    wx.wxFONTWEIGHT_NORMAL, false, ide.config.outputshell.fontname or "Courier New", ide.config.outputshell.fontencoding or wx.wxFONTENCODING_DEFAULT)
-  ofontItalic = wx.wxFont(ide.config.outputshell.fontsize or 10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_ITALIC,
-    wx.wxFONTWEIGHT_NORMAL, false, ide.config.outputshell.fontname or "Courier New", ide.config.outputshell.fontencoding or wx.wxFONTENCODING_DEFAULT)
-else
-  ofont = wx.wxFont(ide.config.outputshell.fontsize or 10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_NORMAL,
-    wx.wxFONTWEIGHT_NORMAL, false, ide.config.outputshell.fontname or "", ide.config.outputshell.fontencoding or wx.wxFONTENCODING_DEFAULT)
-  ofontItalic = wx.wxFont(ide.config.outputshell.fontsize or 10, wx.wxFONTFAMILY_MODERN, wx.wxFONTSTYLE_ITALIC,
-    wx.wxFONTWEIGHT_NORMAL, false, ide.config.outputshell.fontname or "", ide.config.outputshell.fontencoding or wx.wxFONTENCODING_DEFAULT)
-end
+ide.font.oNormal = setFont(wx.wxFONTSTYLE_NORMAL, ide.config.outputshell, wx.__WXMSW__ and "Courier New" or "")
+ide.font.oItalic = setFont(wx.wxFONTSTYLE_ITALIC, ide.config.outputshell, wx.__WXMSW__ and "Courier New" or "")
 
-ide.font = font
-ide.fontItalic = fontItalic
-ide.ofont = ofont
-ide.ofontItalic = ofontItalic
+-- treeCtrl font requires slightly different handling
+local gui, config = wx.wxTreeCtrl():GetFont(), ide.config.filetree
+if config.fontsize then gui:SetPointSize(config.fontsize) end
+if config.fontname then gui:SetFaceName(config.fontname) end
+ide.font.fNormal = gui
 
 -- ----------------------------------------------------------------------------
 -- Create the wxFrame
@@ -65,7 +47,6 @@ local function createFrame()
     end)
 
   local menuBar = wx.wxMenuBar()
-  frame:SetMenuBar(menuBar)
   frame.menuBar = menuBar
   
   local statusBar = frame:CreateStatusBar( 5 )
@@ -87,23 +68,24 @@ local function createToolBar(frame)
   local funclist = wx.wxChoice.new(toolBar,ID "toolBar.funclist",wx.wxDefaultPosition, wx.wxSize.new(240,16))
   
   -- note: Ususally the bmp size isn't necessary, but the HELP icon is not the right size in MSW
+  local getBitmap = (ide.app.createbitmap or wx.wxArtProvider.GetBitmap)
   local toolBmpSize = toolBar:GetToolBitmapSize()
-  toolBar:AddTool(ID_NEW, "New", wx.wxArtProvider.GetBitmap(wx.wxART_NORMAL_FILE, wx.wxART_TOOLBAR, toolBmpSize), "Create an empty document")
-  toolBar:AddTool(ID_OPEN, "Open", wx.wxArtProvider.GetBitmap(wx.wxART_FILE_OPEN, wx.wxART_TOOLBAR, toolBmpSize), "Open an existing document")
-  toolBar:AddTool(ID_SAVE, "Save", wx.wxArtProvider.GetBitmap(wx.wxART_FILE_SAVE, wx.wxART_TOOLBAR, toolBmpSize), "Save the current document")
-  toolBar:AddTool(ID_SAVEALL, "Save All", wx.wxArtProvider.GetBitmap(wx.wxART_NEW_DIR, wx.wxART_TOOLBAR, toolBmpSize), "Save all documents")
+  toolBar:AddTool(ID_NEW, "New", getBitmap(wx.wxART_NORMAL_FILE, wx.wxART_TOOLBAR, toolBmpSize), "Create an empty document")
+  toolBar:AddTool(ID_OPEN, "Open", getBitmap(wx.wxART_FILE_OPEN, wx.wxART_TOOLBAR, toolBmpSize), "Open an existing document")
+  toolBar:AddTool(ID_SAVE, "Save", getBitmap(wx.wxART_FILE_SAVE, wx.wxART_TOOLBAR, toolBmpSize), "Save the current document")
+  toolBar:AddTool(ID_SAVEALL, "Save All", getBitmap(wx.wxART_NEW_DIR, wx.wxART_TOOLBAR, toolBmpSize), "Save all documents")
   toolBar:AddSeparator()
-  toolBar:AddTool(ID_CUT, "Cut", wx.wxArtProvider.GetBitmap(wx.wxART_CUT, wx.wxART_TOOLBAR, toolBmpSize), "Cut the selection")
-  toolBar:AddTool(ID_COPY, "Copy", wx.wxArtProvider.GetBitmap(wx.wxART_COPY, wx.wxART_TOOLBAR, toolBmpSize), "Copy the selection")
-  toolBar:AddTool(ID_PASTE, "Paste", wx.wxArtProvider.GetBitmap(wx.wxART_PASTE, wx.wxART_TOOLBAR, toolBmpSize), "Paste text from the clipboard")
+  toolBar:AddTool(ID_CUT, "Cut", getBitmap(wx.wxART_CUT, wx.wxART_TOOLBAR, toolBmpSize), "Cut the selection")
+  toolBar:AddTool(ID_COPY, "Copy", getBitmap(wx.wxART_COPY, wx.wxART_TOOLBAR, toolBmpSize), "Copy the selection")
+  toolBar:AddTool(ID_PASTE, "Paste", getBitmap(wx.wxART_PASTE, wx.wxART_TOOLBAR, toolBmpSize), "Paste text from the clipboard")
   toolBar:AddSeparator()
-  toolBar:AddTool(ID_UNDO, "Undo", wx.wxArtProvider.GetBitmap(wx.wxART_UNDO, wx.wxART_TOOLBAR, toolBmpSize), "Undo last edit")
-  toolBar:AddTool(ID_REDO, "Redo", wx.wxArtProvider.GetBitmap(wx.wxART_REDO, wx.wxART_TOOLBAR, toolBmpSize), "Redo last undo")
+  toolBar:AddTool(ID_UNDO, "Undo", getBitmap(wx.wxART_UNDO, wx.wxART_TOOLBAR, toolBmpSize), "Undo last edit")
+  toolBar:AddTool(ID_REDO, "Redo", getBitmap(wx.wxART_REDO, wx.wxART_TOOLBAR, toolBmpSize), "Redo last undo")
   toolBar:AddSeparator()
-  toolBar:AddTool(ID_FIND, "Find", wx.wxArtProvider.GetBitmap(wx.wxART_FIND, wx.wxART_TOOLBAR, toolBmpSize), "Find text")
-  toolBar:AddTool(ID_REPLACE, "Replace", wx.wxArtProvider.GetBitmap(wx.wxART_FIND_AND_REPLACE, wx.wxART_TOOLBAR, toolBmpSize), "Find and replace text")
+  toolBar:AddTool(ID_FIND, "Find", getBitmap(wx.wxART_FIND, wx.wxART_TOOLBAR, toolBmpSize), "Find text")
+  toolBar:AddTool(ID_REPLACE, "Replace", getBitmap(wx.wxART_FIND_AND_REPLACE, wx.wxART_TOOLBAR, toolBmpSize), "Find and replace text")
   toolBar:AddSeparator()
-  toolBar:AddTool(ID "debug.projectdir.fromfile", "Update", wx.wxArtProvider.GetBitmap(wx.wxART_GO_DIR_UP , wx.wxART_TOOLBAR, toolBmpSize), "Sets projectdir from file")
+  toolBar:AddTool(ID "debug.projectdir.fromfile", "Update", getBitmap(wx.wxART_GO_DIR_UP , wx.wxART_TOOLBAR, toolBmpSize), "Sets projectdir from file")
   toolBar:AddSeparator()
   toolBar:AddControl(funclist)
   toolBar:Realize()

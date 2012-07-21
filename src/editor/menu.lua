@@ -8,5 +8,3 @@ dofile "src/editor/menu_search.lua"
 dofile "src/editor/menu_view.lua"
 dofile "src/editor/menu_project.lua"
 dofile "src/editor/menu_tools.lua"
-
-ide.frame:SetMenuBar(ide.frame.menuBar )

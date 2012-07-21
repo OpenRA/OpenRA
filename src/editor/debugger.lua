@@ -17,6 +17,13 @@ debugger.watchWindow = nil -- the watchWindow, nil when not created
 debugger.watchCtrl = nil -- the child ctrl in the watchWindow
 debugger.stackWindow = nil -- the stackWindow, nil when not created
 debugger.stackCtrl = nil -- the child ctrl in the stackWindow
+debugger.hostname = (function() -- check what address is resolvable
+  local addr = wx.wxIPV4address()
+  for _, host in ipairs({wx.wxGetHostName(), wx.wxGetFullHostName()}) do
+    if addr:Hostname(host) then return host end
+  end
+  return "localhost" -- last resort; no known good hostname
+end)()
 
 local notebook = ide.frame.notebook
 
@@ -35,6 +42,17 @@ local function updateWatchesSync()
 end
 
 local simpleType = {['nil'] = true, ['string'] = true, ['number'] = true, ['boolean'] = true}
+local stackItemValue = {}
+local function checkIfExpandable(value, item)
+  local expandable = type(value) == 'table' and next(value) ~= nil
+    and not stackItemValue[value] -- only expand first time
+  if expandable then -- cache table value to expand when requested
+    stackItemValue[item:GetValue()] = value
+    stackItemValue[value] = item:GetValue() -- to avoid circular refs
+  end
+  return expandable
+end
+
 local function updateStackSync()
   local stackCtrl = debugger.stackCtrl
   if stackCtrl and debugger.server
@@ -45,6 +63,7 @@ local function updateStackSync()
     stackCtrl:DeleteAllItems()
     local params = {comment = false, nocode = true}
     local root = stackCtrl:AddRoot("Stack")
+    stackItemValue = {} -- reset cache of items in the stack
     for _,frame in ipairs(stack) do
       -- "main chunk at line 24"
       -- "foo() at line 13 (defined at foobar.lua:11)"
@@ -66,14 +85,20 @@ local function updateStackSync()
         local text = ("%s = %s%s"):
           format(name, mobdebug.line(value, params),
                  simpleType[type(value)] and "" or ("  --[["..comment.."]]"))
-        stackCtrl:AppendItem(callitem, text, 1)
+        local item = stackCtrl:AppendItem(callitem, text, 1)
+        if checkIfExpandable(value, item) then
+          stackCtrl:SetItemHasChildren(item, true)
+        end
       end
       for name,val in pairs(frame[3]) do
         local value, comment = val[1], val[2]
         local text = ("%s = %s%s"):
           format(name, mobdebug.line(value, params),
                  simpleType[type(value)] and "" or ("  --[["..comment.."]]"))
-        stackCtrl:AppendItem(callitem, text, 2)
+        local item = stackCtrl:AppendItem(callitem, text, 2)
+        if checkIfExpandable(value, item) then
+          stackCtrl:SetItemHasChildren(item, true)
+        end
       end
       stackCtrl:SortChildren(callitem)
       stackCtrl:Expand(callitem)
@@ -89,6 +114,12 @@ local function updateStackAndWatches()
   end
 end
 
+local function updateWatches()
+  if debugger.server and not debugger.running then
+    copas.addthread(function() updateWatchesSync() end)
+  end
+end
+
 local function killClient()
   if (debugger.pid) then
     -- using SIGTERM for some reason kills not only the debugee process,
@@ -98,7 +129,7 @@ local function killClient()
     if ret == wx.wxKILL_OK then
       DisplayOutput(("Program stopped (pid: %d).\n"):format(debugger.pid))
     elseif ret ~= wx.wxKILL_NO_PROCESS then
-      DisplayOutput(("Unable to stop programs (pid: %d), code %d.\n")
+      DisplayOutput(("Unable to stop program (pid: %d), code %d.\n")
         :format(debugger.pid, ret))
     end
     debugger.pid = nil
@@ -174,6 +205,7 @@ debugger.shell = function(expression, isstatement)
         local _, values, err = debugger.evaluate(expression)
         if not forceexpression and err and
           (err:find("'<eof>' expected near '") or
+           err:find("'%(' expected near") or
            err:find("unexpected symbol near '")) then
           _, values, err = debugger.execute(expression)
           addedret = false
@@ -196,7 +228,7 @@ end
 debugger.listen = function()
   local server = socket.bind("*", debugger.portnumber)
   DisplayOutput(("Debugger server started at %s:%d.\n")
-    :format(wx.wxGetHostName(), debugger.portnumber))
+    :format(debugger.hostname, debugger.portnumber))
   copas.autoclose = false
   copas.addserver(server, function (skt)
       if debugger.server then
@@ -217,6 +249,7 @@ debugger.listen = function()
       debugger.socket = skt
       debugger.loop = false
       debugger.scratchable = false
+      debugger.stats = {line = 0}
 
       -- load the remote file into the debugger
       -- set basedir first, before loading to make sure that the path is correct
@@ -327,6 +360,7 @@ debugger.exec = function(command)
               file = debugger.basedir .. file
             end
             if activateDocument(file, line) then
+              debugger.stats.line = debugger.stats.line + 1
               if debugger.loop then
                 updateStackSync()
                 updateWatchesSync()
@@ -401,6 +435,17 @@ end
 debugger.breakpoint = function(file, line, state)
   debugger.handleAsync((state and "setb " or "delb ") .. file .. " " .. line)
 end
+debugger.quickeval = function(var, callback)
+  if debugger.server and not debugger.running then
+    copas.addthread(function ()
+      local _, values, err = debugger.evaluate(var)
+      local val = err
+        and err:gsub("%[.-%]:%d+:%s*","error: ")
+        or (var .. " = " .. (#values > 0 and values[1] or 'nil'))
+      if callback then callback(val) end
+    end)
+  end
+end
 
 ----------------------------------------------
 -- public api
@@ -424,7 +469,8 @@ function DebuggerStop()
     ShellSupportRemote(nil)
     ClearAllCurrentLineMarkers()
     DebuggerScratchpadOff()
-    DisplayOutput("Debugging session completed.\n")
+    DisplayOutput(("Debugging session completed (traced %d instruction%s).\n")
+      :format(debugger.stats.line, debugger.stats.line == 1 and '' or 's'))
   end
 end
 
@@ -448,17 +494,18 @@ end
 -- of it and if done inside a function, icons do not work as expected
 local imglist = wx.wxImageList(16,16)
 do
+  local getBitmap = (ide.app.createbitmap or wx.wxArtProvider.GetBitmap)
   local size = wx.wxSize(16,16)
   -- 0 = stack call
-  imglist:Add((ide.app.createbitmap or wx.wxArtProvider.GetBitmap)(wx.wxART_GO_FORWARD, wx.wxART_OTHER, size))
+  imglist:Add(getBitmap(wx.wxART_GO_FORWARD, wx.wxART_OTHER, size))
   -- 1 = local variables
-  imglist:Add((ide.app.createbitmap or wx.wxArtProvider.GetBitmap)(wx.wxART_LIST_VIEW, wx.wxART_OTHER, size))
+  imglist:Add(getBitmap(wx.wxART_LIST_VIEW, wx.wxART_OTHER, size))
   -- 2 = upvalues
-  imglist:Add((ide.app.createbitmap or wx.wxArtProvider.GetBitmap)(wx.wxART_REPORT_VIEW, wx.wxART_OTHER, size))
+  imglist:Add(getBitmap(wx.wxART_REPORT_VIEW, wx.wxART_OTHER, size))
 end
 
 function DebuggerCreateStackWindow()
-  if (debugger.stackWindow) then return end
+  if (debugger.stackWindow) then return updateStackAndWatches() end
   local width = 360
   local stackWindow = wx.wxFrame(ide.frame, wx.wxID_ANY,
     "Stack Window",
@@ -469,7 +516,7 @@ function DebuggerCreateStackWindow()
 
   local stackCtrl = wx.wxTreeCtrl(stackWindow, ID "debug.stack",
     wx.wxDefaultPosition, wx.wxDefaultSize,
-    wx.wxTR_HAS_BUTTONS + wx.wxTR_SINGLE + wx.wxTR_HIDE_ROOT)
+    wx.wxTR_LINES_AT_ROOT + wx.wxTR_HAS_BUTTONS + wx.wxTR_SINGLE + wx.wxTR_HIDE_ROOT)
 
   debugger.stackCtrl = stackCtrl
 
@@ -486,11 +533,37 @@ function DebuggerCreateStackWindow()
       event:Skip()
     end)
 
+  stackCtrl:Connect( wx.wxEVT_COMMAND_TREE_ITEM_EXPANDING,
+    function (event)
+      local item_id = event:GetItem()
+      local count = stackCtrl:GetChildrenCount(item_id, false)
+      if count > 0 then return true end
+
+      local image = stackCtrl:GetItemImage(item_id)
+      local num = 1
+      for name,value in pairs(stackItemValue[item_id:GetValue()]) do
+        local strval = mobdebug.line(value, {comment = false, nocode = true})
+        local text = type(name) == "number"
+          and (num == name and strval or ("[%s] = %s"):format(name, strval))
+          or ("%s = %s"):format(name, strval)
+        local item = stackCtrl:AppendItem(item_id, text, image)
+        if checkIfExpandable(value, item) then
+          stackCtrl:SetItemHasChildren(item, true)
+        end
+        num = num + 1
+      end
+
+      stackCtrl:SortChildren(item_id)
+      return true
+    end)
+  stackCtrl:Connect( wx.wxEVT_COMMAND_TREE_ITEM_COLLAPSED,
+    function() return true end)
+
   updateStackAndWatches()
 end
 
 function DebuggerCreateWatchWindow()
-  if (debugger.watchWindow) then return end
+  if (debugger.watchWindow) then return updateWatches() end
   local width = 360
   local watchWindow = wx.wxFrame(ide.frame, wx.wxID_ANY,
     "Watch Window",
@@ -582,7 +655,7 @@ function DebuggerCreateWatchWindow()
     end)
 
   watchWindow:Connect(ID_EVALUATEWATCH, wx.wxEVT_COMMAND_MENU_SELECTED,
-    function () updateStackAndWatches() end)
+    function () updateWatches() end)
   watchWindow:Connect(ID_EVALUATEWATCH, wx.wxEVT_UPDATE_UI,
     function (event)
       event:Enable(watchCtrl:GetItemCount() > 0)
@@ -592,17 +665,14 @@ function DebuggerCreateWatchWindow()
     function (event)
       if #(event:GetText()) > 0 then
         watchCtrl:SetItem(event:GetIndex(), 0, event:GetText())
-        updateStackAndWatches()
+        updateWatches()
       end
       event:Skip()
     end)
 end
 
 function DebuggerMakeFileName(editor, filePath)
-  if not filePath then
-    filePath = "file"..tostring(editor)
-  end
-  return filePath
+  return filePath or editor:GetText()
 end
 
 function DebuggerToggleBreakpoint(editor, line)
@@ -640,7 +710,8 @@ function DebuggerRefreshScratchpad()
     else
       local clear = ide.frame.menuBar:IsChecked(ID_CLEAROUTPUT)
       local scratchpadEditor = debugger.scratchpad.editor
-      local code = scratchpadEditor:GetText()
+      -- take editor text and remove shebang line
+      local code = scratchpadEditor:GetText():gsub("^#!.-\n", "\n")
       local filePath = DebuggerMakeFileName(scratchpadEditor,
         ide.openDocuments[scratchpadEditor:GetId()].filePath)
 
@@ -649,12 +720,27 @@ function DebuggerRefreshScratchpad()
       -- these errors are handled and not reported to the user
       local errormsg = 'execution suspended at ' .. os.clock()
       local stopper = "\ndo error('" .. errormsg .. "') end"
+      -- store if interpreter requires a special handling for external loop
+      local extloop = ide.interpreter.scratchextloop
 
       local function reloadScratchpadCode()
         debugger.scratchpad.running = os.clock()
         debugger.scratchpad.updated = false
+        debugger.scratchpad.runs = (debugger.scratchpad.runs or 0) + 1
 
-        local _, _, err = debugger.loadstring(filePath, code .. stopper)
+        -- the code can be running in two ways under scratchpad:
+        -- 1. controlled by the application, requires stopper (most apps)
+        -- 2. controlled by some external loop (for example, love2d).
+        -- in the first case we need to reload the app after each change
+        -- in the second case, we need to load the app once and then
+        -- "execute" new code to reflect the changes (with some limitations).
+        local _, _, err
+        if extloop then -- if the execution is controlled by an external loop
+          if debugger.scratchpad.runs == 1
+          then _, _, err = debugger.loadstring(filePath, code)
+          else _, _, err = debugger.execute(code) end
+        else   _, _, err = debugger.loadstring(filePath, code .. stopper) end
+
         local prefix = "Compilation error"
 
         if clear then ClearOutput() end

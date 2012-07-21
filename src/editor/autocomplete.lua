@@ -89,8 +89,8 @@ local function addAPI(apifile,only,subapis,known) -- relative to API directory
 end
 
 local function loadallAPIs (only,subapis,known)
-  for i,dir in ipairs(FileSysGet(".\\api\\*.*",wx.wxDIR)) do
-    local files = FileSysGet(dir.."\\*.*",wx.wxFILE)
+  for i,dir in ipairs(FileSysGet("./api/*",wx.wxDIR)) do
+    local files = FileSysGet(dir.."/*.*",wx.wxFILE)
     for i,file in ipairs(files) do
       if file:match "%.lua$" then
         addAPI(file,only,subapis,known)
@@ -239,7 +239,7 @@ end
 
 function GetTipInfo(editor, content, short)
   local caller = content:match("([%w_]+)%(%s*$")
-  local class = caller and content:match("([%w_%.]+)[%.:]"..caller.."%(%s*$")
+  local class = caller and content:match("([%w_]+)[%.:]"..caller.."%(%s*$")
   local tip = editor.api.tip
 
   local classtab = short and tip.shortfinfoclass or tip.finfoclass

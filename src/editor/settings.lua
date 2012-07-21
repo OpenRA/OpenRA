@@ -233,7 +233,6 @@ end
 
 -----------------------------------
 
-
 local function saveNotebook(nb)
   local cnt = nb:GetPageCount()
   
@@ -250,7 +249,6 @@ local function saveNotebook(nb)
   
   for i=1,cnt do
     local id = nb:GetPageText(i-1)
-
     local pg = nb:GetPage(i-1)
     local x,y = pg:GetPosition():GetXY()
     addTo(pagesX,x,id)
@@ -303,14 +301,14 @@ local function loadNotebook(nb,str,fnIdConvert)
   if (not str) then return end
   local cnt = nb:GetPageCount()
   local sel = nb:GetSelection()
-  
 
   -- store old pages
   local currentpages = {}
   for i=1,cnt do
     local id = nb:GetPageText(i-1)
     local newid = fnIdConvert and fnIdConvert(id) or id
-    currentpages[newid] = {page = nb:GetPage(i-1), text = id, index = i-1}
+    currentpages[newid] = currentpages[newid] or {}
+    table.insert(currentpages[newid], {page = nb:GetPage(i-1), text = id, index = i-1})
   end
   
   -- remove them
@@ -318,7 +316,7 @@ local function loadNotebook(nb,str,fnIdConvert)
     nb:RemovePage(i-1)
   end
 
-  -- readd them and perform splits
+  -- read them and perform splits
   local direction
   local splits = {
     X = wx.wxRIGHT,
@@ -337,13 +335,13 @@ local function loadNotebook(nb,str,fnIdConvert)
     local instr = cmd:match("<(%w)>")
     if (not instr) then
       local id = fnIdConvert and fnIdConvert(cmd) or cmd
-      local page = currentpages[id]
-      if (page) then
+      local pageind = next(currentpages[id] or {})
+      if (pageind) then
+        local page = currentpages[id][pageind]
+        currentpages[id][pageind] = nil
+
         nb:AddPage(page.page, page.text)
-        currentpages[id] = nil
-        if (direction) then
-          nb:Split(t, direction)
-        end
+        if (direction) then nb:Split(t, direction) end
         finishPage(page)
       end
     end
@@ -351,17 +349,17 @@ local function loadNotebook(nb,str,fnIdConvert)
   end
   
   -- add anything we forgot
-  for i,page in pairs(currentpages) do
-    nb:AddPage(page.page, page.text)
-    finishPage(page)
+  for _,pagelist in pairs(currentpages) do
+    for _,page in pairs(pagelist) do
+      nb:AddPage(page.page, page.text)
+      finishPage(page)
+    end
   end
   
   if (newsel) then
     nb:SetSelection(newsel)
   end
-
 end
-
 
 function SettingsRestoreView()
   local listname = "/view"
@@ -424,6 +422,7 @@ function SettingsRestoreEditorSettings()
   ide.config.interpreter = settingsReadSafe(settings,"interpreter",ide.config.interpreter)
   ProjectSetInterpreter(ide.config.interpreter)
 end
+
 function SettingsSaveEditorSettings()
   local listname = "/editor"
   local path = settings:GetPath()

@@ -18,7 +18,7 @@ local projcombobox = ide.frame.projpanel.projcombobox
 local statusTextTable = { "OVR?", "R/O?", "Cursor Pos" }
 
 -- set funclist font to be the same as the combobox in the project dropdown
-funclist:SetFont(projcombobox:GetFont())
+funclist:SetFont(ide.font.fNormal)
 
 local function updateStatusText(editor)
   local texts = { "", "", "" }
@@ -206,8 +206,8 @@ function CreateEditor(name)
   editor:SetBufferedDraw(true)
   editor:StyleClearAll()
 
-  editor:SetFont(ide.font)
-  editor:StyleSetFont(wxstc.wxSTC_STYLE_DEFAULT, ide.font)
+  editor:SetFont(ide.font.eNormal)
+  editor:StyleSetFont(wxstc.wxSTC_STYLE_DEFAULT, ide.font.eNormal)
 
   editor:SetTabWidth(ide.config.editor.tabwidth or 4)
   editor:SetIndent(ide.config.editor.tabwidth or 4)
@@ -363,17 +363,17 @@ function CreateEditor(name)
     end)
 
   editor:Connect(wxstc.wxEVT_STC_SAVEPOINTREACHED,
-    function (event)
+    function ()
       SetDocumentModified(editor:GetId(), false)
     end)
 
   editor:Connect(wxstc.wxEVT_STC_SAVEPOINTLEFT,
-    function (event)
+    function ()
       SetDocumentModified(editor:GetId(), true)
     end)
 
   editor:Connect(wxstc.wxEVT_STC_UPDATEUI,
-    function (event)
+    function ()
       updateStatusText(editor)
       updateBraceMatch(editor)
       for _,iv in ipairs(editor.ev) do
@@ -448,10 +448,10 @@ function GetSpec(ext,forcespec)
   -- search proper spec
   -- allow forcespec for "override"
   if ext and not spec then
-    for i,curspec in pairs(ide.specs) do
+    for _,curspec in pairs(ide.specs) do
       local exts = curspec.exts
       if (exts) then
-        for n,curext in ipairs(exts) do
+        for _,curext in ipairs(exts) do
           if (curext == ext) then
             spec = curspec
             break
@@ -475,16 +475,11 @@ function IndicateFunctions(editor, lines, linee)
 
   if (lines < 0) then return end
 
-  local isfunc = editor.spec.isfncall
-  local iscomment = editor.spec.iscomment
-  local iskeyword0 = editor.spec.iskeyword0
+  local isfncall = editor.spec.isfncall
   local isinvalid = {}
-  for i,v in pairs(iscomment) do
-    isinvalid[i] = v
-  end
-  for i,v in pairs(iskeyword0) do
-    isinvalid[i] = v
-  end
+  for i,v in pairs(editor.spec.iscomment) do isinvalid[i] = v end
+  for i,v in pairs(editor.spec.iskeyword0) do isinvalid[i] = v end
+  for i,v in pairs(editor.spec.isstring) do isinvalid[i] = v end
 
   local INDICS_MASK = wxstc.wxSTC_INDICS_MASK
   local INDIC0_MASK = wxstc.wxSTC_INDIC0_MASK
@@ -501,13 +496,13 @@ function IndicateFunctions(editor, lines, linee)
     while from do
       tx = from==1 and tx or string.sub(tx,from)
 
-      local f,t,w = isfunc(tx)
+      local f,t,w = isfncall(tx)
 
       if (f) then
         local p = ls+f+off
         local s = bit.band(editor:GetStyleAt(p),31)
         editor:StartStyling(p,INDICS_MASK)
-        editor:SetStyling(t-f,isinvalid[s] and 0 or (INDIC0_MASK + 1))
+        editor:SetStyling(#w,isinvalid[s] and 0 or (INDIC0_MASK + 1))
         off = off + t
       end
       from = t and (t+1)
@@ -534,11 +529,11 @@ function SetupKeywords(editor, ext, forcespec, styles, font, fontitalic)
       -- Get the items in the global "wx" table for autocompletion
       if not wxkeywords then
         local keyword_table = {}
-        for index, value in pairs(wx) do
+        for index in pairs(wx) do
           table.insert(keyword_table, "wx."..index.." ")
         end
 
-        for index, value in pairs(wxstc) do
+        for index in pairs(wxstc) do
           table.insert(keyword_table, "wxstc."..index.." ")
         end
 
@@ -560,7 +555,7 @@ function SetupKeywords(editor, ext, forcespec, styles, font, fontitalic)
   end
 
   StylesApplyToEditor(styles or ide.config.styles, editor,
-    font or ide.font,fontitalic or ide.fontItalic,lexerstyleconvert)
+    font or ide.font.eNormal,fontitalic or ide.font.eItalic,lexerstyleconvert)
 end
 
 ----------------------------------------------------
@@ -588,9 +583,13 @@ funclist:Connect(wx.wxEVT_SET_FOCUS,
     local linee = editor:GetLineCount()-1
     for line=lines,linee do
       local tx = editor:GetLine(line)
-      local s,e,cap,l = editor.spec.isfndef(tx)
+      local s,_,cap,l = editor.spec.isfndef(tx)
       if (s) then
-        funclist:Append((l and "  " or "")..cap,line)
+        local ls = editor:PositionFromLine(line)
+        local style = bit.band(editor:GetStyleAt(ls+s),31)
+        if not (editor.spec.iscomment[style] or editor.spec.isstring[style]) then
+          funclist:Append((l and "  " or "")..cap,line)
+        end
       end
     end
 

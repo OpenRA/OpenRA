@@ -13,8 +13,8 @@ local INPUT_MARKER = 3
 local INPUT_MARKER_VALUE = 2^INPUT_MARKER
 
 errorlog:Show(true)
-errorlog:SetFont(ide.ofont)
-errorlog:StyleSetFont(wxstc.wxSTC_STYLE_DEFAULT, ide.ofont)
+errorlog:SetFont(ide.font.oNormal)
+errorlog:StyleSetFont(wxstc.wxSTC_STYLE_DEFAULT, ide.font.oNormal)
 errorlog:StyleClearAll()
 errorlog:SetMarginWidth(1, 16) -- marker margin
 errorlog:SetMarginType(1, wxstc.wxSTC_MARGIN_SYMBOL);
@@ -22,13 +22,12 @@ errorlog:MarkerDefine(CURRENT_LINE_MARKER, wxstc.wxSTC_MARK_ARROWS, wx.wxBLACK, 
 errorlog:MarkerDefine(INPUT_MARKER, wxstc.wxSTC_MARK_CHARACTER+string.byte('>'),
   wx.wxColour(127, 127, 127), wx.wxColour(240, 240, 240))
 errorlog:SetReadOnly(true)
-StylesApplyToEditor(ide.config.stylesoutshell,errorlog,ide.ofont,ide.ofontItalic)
+StylesApplyToEditor(ide.config.stylesoutshell,errorlog,ide.font.oNormal,ide.font.oItalic)
 
 function ClearOutput()
-  local current = errorlog:GetReadOnly()
   errorlog:SetReadOnly(false)
   errorlog:ClearAll()
-  errorlog:SetReadOnly(current)
+  errorlog:SetReadOnly(true)
 end
 
 function DisplayOutputNoMarker(...)
@@ -110,10 +109,9 @@ function CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
   -- try to extract the name of the executable from the command
   -- the executable may not have the extension and may be in quotes
   local exename = string.gsub(cmd, "\\", "/")
-  local _,_,fullname = string.find(exename,'^[\'"]([^\'"]-)[\'"]')
-  exename = string.match(fullname or exename,'/?([^/]+)%s')
-    or string.match(fullname or exename,'/?([^/]+)$')
-    or fullname or exename
+  local _,_,fullname = string.find(exename,'^[\'"]([^\'"]+)[\'"]')
+  exename = fullname and string.match(fullname,'/?([^/]+)$')
+    or string.match(exename,'/?([^/]-)%s') or exename
 
   uid = uid or exename
 
@@ -125,15 +123,8 @@ function CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
 
   DisplayOutput(("Program starting as '%s'.\n"):format(cmd))
 
-  local proc = nil
-  local customproc
-
-  if (tooutput) then
-    customproc = wx.wxProcess(errorlog)
-    customproc:Redirect()
-
-    proc = customproc
-  end
+  local proc = wx.wxProcess(errorlog)
+  if (tooutput) then proc:Redirect() end -- redirect the output if requested
 
   -- manipulate working directory
   local oldcwd
@@ -143,9 +134,8 @@ function CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
   end
 
   -- launch process
-  local pid = (proc
-    and wx.wxExecute(cmd, wx.wxEXEC_ASYNC + (nohide and wx.wxEXEC_NOHIDE or 0),proc)
-     or wx.wxExecute(cmd, wx.wxEXEC_ASYNC + (nohide and wx.wxEXEC_NOHIDE or 0)))
+  local params = wx.wxEXEC_ASYNC + wx.wxEXEC_MAKE_GROUP_LEADER + (nohide and wx.wxEXEC_NOHIDE or 0)
+  local pid = wx.wxExecute(cmd, params, proc)
 
   if (oldcwd) then
     wx.wxFileName.SetCwd(oldcwd)
@@ -157,13 +147,12 @@ function CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
   -- a new process, but connected to the running one (e.g. DDE under Windows).
   if not pid or pid == -1 or pid == 0 then
     DisplayOutput(("Program unable to run as '%s'\n"):format(cmd))
-    customproc = nil
     return
   end
 
   DisplayOutput(("Program '%s' started in '%s' (pid: %d).\n")
     :format(uid, (wdir and wdir or wx.wxFileName.GetCwd()), pid))
-  customprocs[pid] = {proc=customproc, uid=uid, endcallback=endcallback, started = os.clock()}
+  customprocs[pid] = {proc=proc, uid=uid, endcallback=endcallback, started = os.clock()}
 
   local streamin = proc and proc:GetInputStream()
   local streamerr = proc and proc:GetErrorStream()
@@ -218,7 +207,6 @@ local function getStreams()
           (getInputLine() > -1 or errorlog:GetReadOnly()) then
           ActivateOutput()
           updateInputMarker()
-          errorlog:SetFocus()
         end
         pfn = pfn and pfn()
       end
@@ -252,7 +240,9 @@ errorlog:Connect(wx.wxEVT_END_PROCESS, function(event)
       -- delete markers and set focus to the editor if there is an input marker
       if errorlog:MarkerPrevious(errorlog:GetLineCount(), INPUT_MARKER_VALUE) > -1 then
         errorlog:MarkerDeleteAll(INPUT_MARKER)
-        GetEditor():SetFocus()
+        local editor = GetEditor()
+        -- check if editor still exists; it may not if the window is closed
+        if editor then editor:SetFocus() end
       end
       nameTab(errorlog, "Output")
       local runtime = os.clock() - customprocs[pid].started

@@ -224,9 +224,9 @@ function ReApplySpecAndStyles()
   local errorlog = ide.frame.bottomnotebook.errorlog
   local shellbox = ide.frame.bottomnotebook.shellbox
 
-  SetupKeywords(shellbox,"lua",nil,ide.config.stylesoutshell,ide.ofont,ide.ofontItalic)
+  SetupKeywords(shellbox,"lua",nil,ide.config.stylesoutshell,ide.font.oNormal,ide.font.oItalic)
 
-  StylesApplyToEditor(ide.config.stylesoutshell,errorlog,ide.ofont,ide.ofontItalic)
+  StylesApplyToEditor(ide.config.stylesoutshell,errorlog,ide.font.oNormal,ide.font.oItalic)
 end
 
 function LoadConfigStyle()
@@ -234,7 +234,7 @@ function LoadConfigStyle()
     "/cfg",
     "",
     "Lua file (*.lua)|*.lua|All files (*)|*",
-    wx.wxOPEN + wx.wxFILE_MUST_EXIST)
+    wx.wxFD_OPEN + wx.wxFD_FILE_MUST_EXIST)
   if fileDialog:ShowModal() == wx.wxID_OK then
     local cfg = {wxstc = wxstc, path = {}, editor = {}, view ={}, acandtip = {}, outputshell = {}, debugger={},}
     local cfgfn,err = loadfile(fileDialog:GetPath())

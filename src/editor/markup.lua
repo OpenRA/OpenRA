@@ -5,12 +5,13 @@ local styles = ide.config.styles
 local comment = styles.comment
 local MD_MARK_ITAL = '_' -- italic
 local MD_MARK_BOLD = '**' -- bold
-local MD_MARK_LINK = '[' -- link
-local MD_MARK_LINT = ')' -- link terminator
+local MD_MARK_LINK = '[' -- link description start
+local MD_MARK_LINZ = ']' -- link description end
+local MD_MARK_LINA = '(' -- link URL start
+local MD_MARK_LINT = ')' -- link URL end
 local MD_MARK_HEAD = '#' -- header
 local MD_MARK_CODE = '`' -- code
 local MD_MARK_BOXD = '|' -- highlight
-local MD_MARK_LSEP = '](' -- link separator (between text and link)
 local MD_MARK_MARK = ' ' -- separator
 local MD_LINK_NEWWINDOW = '+' -- indicator to open a new window for links
 local markup = {
@@ -45,11 +46,12 @@ function MarkupHotspotClick(pos, editor)
   pos = pos + #MD_MARK_LINK - editor:PositionFromLine(line) -- turn into relative position
 
   -- extract the URL/command on the right side of the separator
-  local _,_,text = string.find(tx, q(MD_MARK_LSEP).."([^%s]+)"..q(MD_MARK_LINT), pos)
+  local _,_,text = string.find(tx, q(MD_MARK_LINZ).."(%b"..MD_MARK_LINA..MD_MARK_LINT..")", pos)
   if text then
+    text = text:gsub("^"..q(MD_MARK_LINA), ""):gsub(q(MD_MARK_LINT).."$", "")
     local filepath = ide.openDocuments[editor:GetId()].filePath
     local _,_,shell = string.find(text, [[^macro:shell%((.*%S)%)$]])
-    local _,_,http = string.find(text, [[^(http:%S+)$]])
+    local _,_,http = string.find(text, [[^(https?:%S+)$]])
     local _,_,command = string.find(text, [[^macro:(%w+)$]])
     if shell then
       ShellExecuteCode(shell)
@@ -59,7 +61,7 @@ function MarkupHotspotClick(pos, editor)
       ProjectDebug()
     elseif http then -- open the URL in a new browser window
       wx.wxLaunchDefaultBrowser(http, 0)
-    else
+    elseif filepath then -- only check for saved files
       -- check if requested to open in a new window
       local newwindow = string.find(text, MD_LINK_NEWWINDOW, 1, true) -- plain search
       if newwindow then text = string.gsub(text, "^%" .. MD_LINK_NEWWINDOW, "") end
@@ -70,6 +72,7 @@ function MarkupHotspotClick(pos, editor)
       filename:Normalize() -- remove .., ., and other similar elements
       if filename:FileExists() and
         (newwindow or SaveModifiedDialog(editor, true) ~= wx.wxID_CANCEL) then
+        if not newwindow and ide.osname == 'Macintosh' then editor:GotoPos(0) end
         LoadFile(filename,not newwindow and editor or nil,true)
       end
     end
@@ -96,10 +99,10 @@ local function ismarkup (tx)
       -- [%w%p] set is needed to avoid continuing this markup to the next line
       s,e,cap = string.find(tx,"^("..q(MD_MARK_HEAD)..".+[%w%p])")
     elseif sep == MD_MARK_LINK then
-      -- allow everything except spaces in the second part
-      s,e,cap = string.find(tx,"^("..q(MD_MARK_LINK)..nonspace..".-"..nonspace
-                                   ..q(MD_MARK_LSEP).."[^%s]+"
-                                   ..q(MD_MARK_LINT)..")", st)
+      -- allow everything based on balanced link separators
+      s,e,cap = string.find(tx,
+        "^(%b"..MD_MARK_LINK..MD_MARK_LINZ
+        .."%b"..MD_MARK_LINA..MD_MARK_LINT..")", st)
     elseif markup[sep] then
       -- try 2+ characters between separators first
       -- if not found, try a single character
@@ -144,7 +147,9 @@ function MarkupStyle(editor, lines, linee)
       if (f) then
         local p = ls+f+off
         local s = bit.band(editor:GetStyleAt(p), 31)
-        if iscomment[s] then
+        -- only style comments and only those that are not at the beginning
+        -- of the file to avoid styling shebang (#!) lines
+        if iscomment[s] and p > 0 then
           local smark = #mark
           local emark = #mark -- assumes end mark is the same length as start mark
           if mark == MD_MARK_HEAD then
@@ -152,7 +157,7 @@ function MarkupStyle(editor, lines, linee)
             local _,_,full = string.find(w,"^("..q(MD_MARK_HEAD).."+)")
             smark,emark = #full,0
           elseif mark == MD_MARK_LINK then
-            local lsep = w:find(q(MD_MARK_LSEP))
+            local lsep = w:find(q(MD_MARK_LINZ)..q(MD_MARK_LINA))
             if lsep then emark = #w-lsep+#MD_MARK_LINT end
           end
           editor:StartStyling(p, 31)

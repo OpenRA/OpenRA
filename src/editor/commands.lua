@@ -29,7 +29,7 @@ end
 function LoadFile(filePath, editor, file_must_exist)
   filePath = wx.wxFileName(filePath):GetFullPath()
   local cmpName = string.lower(string.gsub(filePath, "\\", "/"))
-  
+
   -- prevent files from being reopened again
   if (not editor) then
     for id, doc in pairs(openDocuments) do
@@ -82,7 +82,7 @@ function LoadFile(filePath, editor, file_must_exist)
   IndicateFunctions(editor)
 
   SettingsAppendFileToHistory(filePath)
-  
+
   -- activate the editor; this is needed for those cases when the editor is
   -- created from some other element, for example, from a project tree.
   SetEditorSelection()
@@ -115,7 +115,7 @@ function OpenFile(event)
     "",
     "",
     exts,
-    wx.wxOPEN + wx.wxFILE_MUST_EXIST)
+    wx.wxFD_OPEN + wx.wxFD_FILE_MUST_EXIST)
   if fileDialog:ShowModal() == wx.wxID_OK then
     if not LoadFile(fileDialog:GetPath(), nil, true) then
       wx.wxMessageBox("Unable to load file '"..fileDialog:GetPath().."'.",
@@ -182,12 +182,15 @@ function SaveFileAs(editor)
     fn:GetPath(wx.wxPATH_GET_VOLUME),
     fn:GetFullName(),
     exts,
-    wx.wxSAVE)
+    wx.wxFD_SAVE)
 
   if fileDialog:ShowModal() == wx.wxID_OK then
     local filePath = fileDialog:GetPath()
 
     if SaveFile(editor, filePath) then
+      SetEditorSelection() -- update title of the editor
+      FileTreeRefresh() -- refresh the tree to reflect the new file
+      FileTreeMarkSelected(filePath)
       SetupKeywords(editor, GetFileExt(filePath))
       IndicateFunctions(editor)
       if MarkupStyle then MarkupStyle(editor) end
@@ -311,8 +314,13 @@ function SaveOnExit(allow_cancel)
     if (SaveModifiedDialog(document.editor, allow_cancel) == wx.wxID_CANCEL) then
       return false
     end
+  end
 
-    document.isModified = false
+  -- if all documents have been saved or refused to save, then mark those that
+  -- are still modified as not modified (they don't need to be saved)
+  -- to keep their tab names correct
+  for id, document in pairs(openDocuments) do
+    if document.isModified then SetDocumentModified(id, false) end
   end
 
   return true
@@ -398,7 +406,10 @@ function ClearAllCurrentLineMarkers()
 end
 
 function CompileProgram(editor, quiet)
-  local editorText = editor:GetText()
+  -- remove shebang line (#!) as it throws a compilation error as
+  -- loadstring() doesn't allow it even though lua/loadfile accepts it.
+  -- replace with a new line to keep the number of lines the same.
+  local editorText = editor:GetText():gsub("^#!.-\n", "\n")
   local id = editor:GetId()
   local filePath = DebuggerMakeFileName(editor, openDocuments[id].filePath)
   local _, errMsg, line_num = wxlua.CompileLuaScript(editorText, filePath)
@@ -496,7 +507,8 @@ function ShowFullScreen(setFullScreen)
 
   uimgr:GetPane("toolBar"):Show(not setFullScreen)
   uimgr:Update()
-  frame:ShowFullScreen(setFullScreen)
+  -- protect from systems that don't have ShowFullScreen (GTK on linux?)
+  pcall(function() frame:ShowFullScreen(setFullScreen) end)
 end
 
 function CloseWindow(event)
@@ -514,10 +526,14 @@ function CloseWindow(event)
   SettingsSaveView()
   SettingsSaveFramePosition(ide.frame, "MainFrame")
   SettingsSaveEditorSettings()
-  DebuggerCloseWatchWindow()
-  DebuggerCloseStackWindow()
-  DebuggerShutdown()
+  if DebuggerCloseWatchWindow then DebuggerCloseWatchWindow() end
+  if DebuggerCloseStackWindow then DebuggerCloseStackWindow() end
+  if DebuggerShutdown then DebuggerShutdown() end
   ide.settings:delete() -- always delete the config
   event:Skip()
+
+  -- without explicit exit() the IDE crashes with SIGILL exception when closed
+  -- on MacOS compiled under 64bit with wxwidgets 2.9.3
+  if ide.osname == "Macintosh" then os.exit() end
 end
 frame:Connect(wx.wxEVT_CLOSE_WINDOW, CloseWindow)

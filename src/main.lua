@@ -3,9 +3,11 @@
 
 -- put bin/ and lualibs/ first to avoid conflicts with included modules
 -- that may have other versions present somewhere else in path/cpath
-package.cpath = 'bin/?.dll;bin/clibs/?.dll;bin/clibs/?/?.dll;bin/clibs/?/?/?.dll;'
-              ..'bin/?.so;bin/clibs/?.so;bin/clibs/?/?.so;bin/clibs/?/?/?.so;'
-              .. package.cpath
+local iswindows = os.getenv('WINDIR') or (os.getenv('OS') or ''):match('[Ww]indows')
+package.cpath = (iswindows
+  and 'bin/?.dll;bin/clibs/?.dll;'
+   or 'bin/clibs/?.dylib;bin/lib?.dylib;bin/?.so;bin/clibs/?.so;')
+  .. package.cpath
 package.path  = 'lualibs/?.lua;lualibs/?/?.lua;lualibs/?/init.lua;lualibs/?/?/?.lua;lualibs/?/?/init.lua;'
               .. package.path
 
@@ -35,6 +37,7 @@ ide = {
       verbose = false,
     },
     outputshell = {},
+    filetree = {},
 
     styles = StylesGetDefault(),
     stylesoutshell = StylesGetDefault(),
@@ -89,10 +92,13 @@ ide = {
   -- modTime = wxDateTime of disk file or nil,
   -- isModified = bool is the document modified? }
   ignoredFilesList = {},
-  font = nil,
-  fontItalic = nil,
-  ofont = nil,
-  ofontItalic = nil,
+  font = {
+    eNormal = nil,
+    eItalic = nil,
+    oNormal = nil,
+    oItalic = nil,
+    fNormal = nil,
+  }
 }
 
 ---------------
@@ -101,11 +107,18 @@ local filenames = {}
 local configs = {}
 do
   local arg = {...}
+  local fullPath = arg[1] -- first argument must be the application name
+  assert(type(fullPath) == "string", "first argument must be application name")
+
+  if not wx.wxIsAbsolutePath(fullPath) then
+    fullPath = wx.wxGetCwd().."/"..fullPath
+    if wx.__WXMSW__ then fullPath = wx.wxUnix2DosFilename(fullPath) end
+  end
+
   ide.arg = arg
-  -- first argument must be the application name
-  assert(type(arg[1]) == "string","first argument must be application name")
-  ide.editorFilename = arg[1]
-  ide.config.path.app = arg[1]:match("([%w_-%.]+)$"):gsub("%.[^%.]*$","")
+  ide.editorFilename = fullPath
+  ide.osname = wx.wxPlatformInfo.Get():GetOperatingSystemFamilyName()
+  ide.config.path.app = fullPath:match("([%w_-%.]+)$"):gsub("%.[^%.]*$","")
   assert(ide.config.path.app, "no application path defined")
   for index = 2, #arg do
     if (arg[index] == "-cfg" and index+1 <= #arg) then
@@ -214,6 +227,7 @@ local function loadSpecs()
     spec.sep = spec.sep or ""
     spec.iscomment = {}
     spec.iskeyword0 = {}
+    spec.isstring = {}
     if (spec.lexerstyleconvert) then
       if (spec.lexerstyleconvert.comment) then
         for i,s in pairs(spec.lexerstyleconvert.comment) do
@@ -223,6 +237,11 @@ local function loadSpecs()
       if (spec.lexerstyleconvert.keywords0) then
         for i,s in pairs(spec.lexerstyleconvert.keywords0) do
           spec.iskeyword0[s] = true
+        end
+      end
+      if (spec.lexerstyleconvert.stringtxt) then
+        for i,s in pairs(spec.lexerstyleconvert.stringtxt) do
+          spec.isstring[s] = true
         end
       end
     end
@@ -308,10 +327,16 @@ end
 
 if app.postinit then app.postinit() end
 
+-- only set menu bar *after* postinit handler as it may include adding
+-- app-specific menus (Help/About), which are not recognized by MacOS
+-- as special items unless SetMenuBar is done after menus are populated.
+ide.frame:SetMenuBar(ide.frame.menuBar)
+if ide.osname == 'Macintosh' then -- force refresh to fix the filetree
+  pcall(function() ide.frame:ShowFullScreen(true) ide.frame:ShowFullScreen(false) end)
+end
 ide.frame:Show(true)
 
--- Call wx.wxGetApp():MainLoop() last to start the wxWidgets event loop,
--- otherwise the wxLua program will exit immediately.
--- Does nothing if running from wxLua, wxLuaFreeze, or wxLuaEdit since the
--- MainLoop is already running or will be started by the C++ program.
+-- call wx.wxGetApp():MainLoop() last to start the wxWidgets event loop,
+-- otherwise the program will exit immediately.
+-- Does nothing if the MainLoop is already running.
 wx.wxGetApp():MainLoop()

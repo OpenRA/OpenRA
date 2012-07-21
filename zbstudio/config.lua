@@ -1,4 +1,3 @@
-editor.fontname = "Courier New"
 editor.caretline = true
 editor.showfncall = true
 editor.autotabs = false
@@ -6,12 +5,15 @@ editor.usetabs  = false
 editor.tabwidth = 2
 editor.usewrap = true
 
+local G = ... -- this now points to the global environment
+if G.ide.osname == 'Macintosh' then filetree.fontsize = 11 end
+
 filehistorylength = 20
 
 singleinstance = true
 singleinstanceport = 0xe493
 
-acandtip.shorttip = true
+acandtip.shorttip = false
 acandtip.nodynwords = true
 
 activateoutput = true

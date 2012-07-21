@@ -310,12 +310,10 @@ debuginterface = {
 interpreter = {
   name = "",
   description = "",
-  api = {"apifile_without_extension"} -- optional to limit loaded lua apis
-  frun = function(self,wfilename,withdebugger)
-  end,
-  fprojdir = function(self,wfilename)
-    return "projpath_from_filename" -- optional
-  end,
-  fattachdebug = function(self) end, -- optional
+  api = {"apifile_without_extension"} -- (opt) to limit loaded lua apis
+  frun = function(self,wfilename,withdebugger) end,
+  fprojdir = function(self,wfilename) return "projpath_from_filename" end, -- (opt)
+  fattachdebug = function(self) end, -- (opt)
   hasdebugger = false, -- if debugging is available
+  scratchextloop = false, -- (opt) if scratchpad requires handling for external loop
 }

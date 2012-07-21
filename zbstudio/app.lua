@@ -51,7 +51,7 @@ local app = {
 
     local menuBar = ide.frame.menuBar
     local menu = menuBar:GetMenu(menuBar:FindMenu("&Project"))
-    local itemid = menu:FindItem("Project directory")
+    local itemid = menu:FindItem("Project Directory")
     if itemid ~= wx.wxNOT_FOUND then menu:Destroy(itemid) end
 
     menu = menuBar:GetMenu(menuBar:FindMenu("&View"))
@@ -60,14 +60,20 @@ local app = {
 
     menuBar:Check(ID_CLEAROUTPUT, true)
 
-    -- load welcome.lua from myprograms/ if exists
-    local fn = wx.wxFileName("myprograms/welcome.lua")
-    if fn:FileExists() and
-      (not ide.config.path.projectdir
-        or string.len(ide.config.path.projectdir) == 0) then
-      fn:Normalize() -- make absolute path
-      LoadFile(fn:GetFullPath(),nil,true)
-      ProjectUpdateProjectDir(fn:GetPath(wx.wxPATH_GET_VOLUME))
+    -- load myprograms/welcome.lua if exists and no projectdir
+    local projectdir = ide.config.path.projectdir
+    if (not projectdir or string.len(projectdir) == 0
+        or not wx.wxFileName(projectdir):DirExists()) then
+      local home = wx.wxGetHomeDir():gsub("[\\/]$","")
+      for _,dir in pairs({home, home.."/Desktop", ""}) do
+        local fn = wx.wxFileName("myprograms/welcome.lua")
+        -- normalize to absolute path
+        if fn:Normalize(wx.wxPATH_NORM_ALL, dir) and fn:FileExists() then
+          LoadFile(fn:GetFullPath(),nil,true)
+          ProjectUpdateProjectDir(fn:GetPath(wx.wxPATH_GET_VOLUME))
+          break
+        end
+      end
     end
   end,
   
@@ -79,7 +85,6 @@ local app = {
     settingsapp = "ZeroBraneStudio",
     settingsvendor = "ZeroBraneLLC",
   },
-  
 }
 
 return app
