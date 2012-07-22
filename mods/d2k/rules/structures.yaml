@@ -105,7 +105,7 @@
 		SpawnOffset: 5,0
 		ExitCell: 1,1
 	Production:
-		Produces: Plane
+		Produces: Aircraft
 	PrimaryBuilding:
 	ProductionBar:
 
@@ -329,7 +329,7 @@
 		SpawnOffset: -24,0
 		ExitCell: 2,1
 	ProductionAirdrop:
-		Produces: Ship
+		Produces: Starport
 		ActorType: frigate
 	ProductionBar:
 	PrimaryBuilding:

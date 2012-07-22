@@ -1,7 +1,7 @@
 ^CARRYALL:
 	Inherits: ^Helicopter
 	Buildable:
-		Queue: Plane
+		Queue: Aircraft
 		BuildPaletteOrder: 110
 	Valued:
 		Cost: 1200
@@ -65,7 +65,7 @@ FRIGATE:
 ORNI:
 	Inherits: ^Helicopter
 	Buildable:
-		Queue: Plane
+		Queue: Aircraft
 		BuildPaletteOrder: 90
 		Prerequisites: researcha
 		BuiltAt: hightecha

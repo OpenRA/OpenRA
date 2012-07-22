@@ -37,7 +37,7 @@ HARVESTERH:
 HARVESTERH.starport:
 	Inherits: HARVESTERH
 	Buildable:
-		Queue: Ship
+		Queue: Starport
 		BuiltAt: starporth
 	Valued:
 		Cost: 895
@@ -53,7 +53,7 @@ TRIKEH:
 TRIKEH.starport:
 	Inherits: TRIKEH
 	Buildable:
-		Queue: Ship
+		Queue: Starport
 		BuiltAt: starporth
 	Valued:
 		Cost: 149
@@ -69,7 +69,7 @@ QUADH:
 QUADH.starport:
 	Inherits: QUADH
 	Buildable:
-		Queue: Ship
+		Queue: Starport
 		BuiltAt: starporth
 	Valued:
 		Cost: 295
@@ -85,7 +85,7 @@ SIEGETANKH:
 SIEGETANKH.starport:
 	Inherits: SIEGETANKH
 	Buildable:
-		Queue: Ship
+		Queue: Starport
 		BuiltAt: starporta
 	Valued:
 		Cost: 495
@@ -101,7 +101,7 @@ MISSILETANKH:
 MISSILETANKH.starport:
 	Inherits: MISSILETANKH
 	Buildable:
-		Queue: Ship
+		Queue: Starport
 		BuiltAt: starporth
 	Valued:
 		Cost: 599
@@ -118,7 +118,7 @@ CARRYALLH:
 CARRYALLH.starport:
 	Inherits: CARRYALLH
 	Buildable:
-		Queue: Ship
+		Queue: Starport
 		BuiltAt: starporth
 	Valued:
 		Cost: 999
@@ -235,7 +235,7 @@ MCVH:
 MCVH.starport:
 	Inherits: MCVH
 	Buildable:
-		Queue: Ship
+		Queue: Starport
 		BuiltAt: starporth
 	Valued:
 		Cost: 1499
@@ -253,7 +253,7 @@ COMBATH:
 COMBATH.starport:
 	Inherits: COMBATH
 	Buildable:
-		Queue: Ship
+		Queue: Starport
 		BuiltAt: starporth
 	Valued:
 		Cost: 595

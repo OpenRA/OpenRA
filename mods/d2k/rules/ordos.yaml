@@ -138,7 +138,7 @@ MCVO:
 MCVO.starport:
 	Inherits: MCVO
 	Buildable:
-		Queue: Ship
+		Queue: Starport
 		BuiltAt: starporto
 	Valued:
 		Cost: 1499
@@ -154,7 +154,7 @@ HARVESTERO:
 HARVESTERO.starport:
 	Inherits: HARVESTERO
 	Buildable:
-		Queue: Ship
+		Queue: Starport
 		BuiltAt: starporto
 	Valued:
 		Cost: 895
@@ -172,7 +172,7 @@ COMBATO:
 COMBATO.starport:
 	Inherits: COMBATO
 	Buildable:
-		Queue: Ship
+		Queue: Starport
 		BuiltAt: starporto
 	Valued:
 		Cost: 595
@@ -224,7 +224,7 @@ QUADO:
 QUADO.starport:
 	Inherits: QUADO
 	Buildable:
-		Queue: Ship
+		Queue: Starport
 		BuiltAt: starporto
 	Valued:
 		Cost: 295
@@ -240,7 +240,7 @@ SIEGETANKO:
 SIEGETANKO.starport:
 	Inherits: SIEGETANKO
 	Buildable:
-		Queue: Ship
+		Queue: Starport
 		BuiltAt: starporto
 	Valued:
 		Cost: 495
@@ -256,7 +256,7 @@ MISSILETANKO:
 MISSILETANKO.starport:
 	Inherits: MISSILETANKO
 	Buildable:
-		Queue: Ship
+		Queue: Starport
 		BuiltAt: starporto
 	Valued:
 		Cost: 599
@@ -273,7 +273,7 @@ CARRYALLO:
 CARRYALLO.starport:
 	Inherits: CARRYALLO
 	Buildable:
-		Queue: Ship
+		Queue: Starport
 		BuiltAt: starporto
 	Valued:
 		Cost: 999
