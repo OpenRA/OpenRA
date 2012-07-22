@@ -209,6 +209,7 @@
 		Notification: OI_BLOST.AUD
 	EditorAppearance:
 		RelativeToTopLeft: yes
+	AutoTargetIgnore:
 	ShakeOnDeath:
 	ProximityCaptor:
 		Types:Building
