@@ -110,6 +110,7 @@
 	AttackMove:
 	Passenger:
 		CargoType: Infantry
+		PipType: Green
 	HiddenUnderFog:
 	GainsExperience:
 	GivesExperience:
