@@ -330,8 +330,6 @@ SABOTEUR:
 		Range: 6
 	C4Demolition:
 		C4Delay: 45
-	Passenger:
-		PipType: Red
 	TakeCover:
 	-RenderInfantry:
 	RenderInfantryProne:

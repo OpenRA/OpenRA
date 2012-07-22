@@ -313,8 +313,6 @@ SARDAUKAR:
 		Speed: 5
 	RevealsShroud:
 		Range: 6
-	Passenger:
-		PipType: Red
 	TakeCover:
 	-RenderInfantry:
 	RenderInfantryProne:
