@@ -56,7 +56,7 @@ HARVESTERA:
 HARVESTERA.starport:
 	Inherits: HARVESTERA
 	Buildable:
-		Queue: Ship
+		Queue: Starport
 		BuiltAt: starporta
 	Valued:
 		Cost: 895
@@ -73,7 +73,7 @@ TRIKEA:
 TRIKEA.starport:
 	Inherits: TRIKEA
 	Buildable:
-		Queue: Ship
+		Queue: Starport
 		BuiltAt: starporta
 	Valued:
 		Cost: 149
@@ -90,7 +90,7 @@ QUADA:
 QUADA.starport:
 	Inherits: QUADA
 	Buildable:
-		Queue: Ship
+		Queue: Starport
 		BuiltAt: starporta
 	Valued:
 		Cost: 295
@@ -107,7 +107,7 @@ SIEGETANKA:
 SIEGETANKA.starport:
 	Inherits: SIEGETANKA
 	Buildable:
-		Queue: Ship
+		Queue: Starport
 		BuiltAt: starporta
 	Valued:
 		Cost: 495
@@ -124,7 +124,7 @@ MISSILETANKA:
 MISSILETANKA.starport:
 	Inherits: MISSILETANKA
 	Buildable:
-		Queue: Ship
+		Queue: Starport
 		BuiltAt: starporta
 	Valued:
 		Cost: 599
@@ -141,7 +141,7 @@ CARRYALLA:
 CARRYALLA.starport:
 	Inherits: CARRYALLA
 	Buildable:
-		Queue: Ship
+		Queue: Starport
 		BuiltAt: starporta
 	Valued:
 		Cost: 999
@@ -239,7 +239,7 @@ MCVA:
 MCVA.starport:
 	Inherits: MCVA
 	Buildable:
-		Queue: Ship
+		Queue: Starport
 		BuiltAt: starporta
 	Valued:
 		Cost: 1499
@@ -258,7 +258,7 @@ COMBATA:
 COMBATA.starport:
 	Inherits: COMBATA
 	Buildable:
-		Queue: Ship
+		Queue: Starport
 		BuiltAt: starporta
 	Valued:
 		Cost: 595
