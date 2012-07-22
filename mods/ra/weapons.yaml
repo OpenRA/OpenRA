@@ -1093,3 +1093,51 @@ FLAK-23:
 			Concrete: 20%
 		Explosion: med_explosion
 		Damage: 20
+
+VolkAT:
+	ROF: 30
+	Range: 5
+	Report: volk_at
+	ValidTargets: Ground
+	Burst: 1
+	Projectile: Bullet
+		Speed: 50
+		Image: 120MM
+	Warhead:
+		Spread: 3
+		Versus: 
+			None: 0%
+			Wood: 0%
+			Light: 75%
+			Heavy: 90%
+			Concrete: 50%
+		Explosion: small_explosion
+		WaterExplosion: small_splash
+		InfDeath: 3
+		SmudgeType: Crater
+		Damage: 70
+		
+VolkNapalm:
+	ROF: 60
+	Range: 5
+	Report: volknapalm
+	ValidTargets: Ground
+	Burst: 1
+	BurstDelay: 1
+	Projectile: Bullet
+		Speed: 50
+		Image: 120MM
+	Warhead:
+		Spread: 8
+		Versus: 
+			None: 90%
+			Wood: 170%
+			Light: 0%
+			Heavy: 0%
+			Concrete: 0%
+		Explosion: napalm
+		WaterExplosion: small_napalm
+		InfDeath: 4
+		SmudgeType: Scorch
+		ImpactSound: firebl3
+		Damage: 80

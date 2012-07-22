@@ -7,7 +7,7 @@
 	Health:
 		HP: 1000
 	Armor:
-		Type: Heavy
+		Type: Concrete
 	RevealsShroud:
 		Range: 5
 	Bib:
@@ -96,7 +96,7 @@
 	Health:
 		HP: 1500
 	Armor:
-		Type: Light
+		Type: Wood
 	RevealsShroud:
 		Range: 4
 	Bib:
@@ -105,7 +105,7 @@
 		SpawnOffset: 5,0
 		ExitCell: 1,1
 	Production:
-		Produces: Plane
+		Produces: Aircraft
 	PrimaryBuilding:
 	ProductionBar:
 
@@ -126,7 +126,7 @@
 	Health:
 		HP: 1000
 	Armor:
-		Type: Light
+		Type: Wood
 	RevealsShroud:
 		Range: 4
 	Bib:
@@ -148,7 +148,7 @@
 	Health:
 		HP: 2000
 	Armor:
-		Type: Light
+		Type: Concrete
 	RevealsShroud:
 		Range: 4
 	Bib:
@@ -230,7 +230,7 @@
 	Health:
 		HP: 750
 	Armor:
-		Type: Light
+		Type: Wood
 	RevealsShroud:
 		Range: 4
 	Bib:
@@ -261,7 +261,7 @@
 	Health:
 		HP: 1500
 	Armor:
-		Type: Light
+		Type: Wood
 	RevealsShroud:
 		Range: 4
 	Bib:
@@ -317,6 +317,8 @@
 		Dimensions: 3,2
 	Health:
 		HP: 1000
+	Armor:
+		Type: Wood
 	RevealsShroud:
 		Range: 7
 	Bib:
@@ -327,7 +329,7 @@
 		SpawnOffset: -24,0
 		ExitCell: 2,1
 	ProductionAirdrop:
-		Produces: Ship
+		Produces: Starport
 		ActorType: frigate
 	ProductionBar:
 	PrimaryBuilding:
@@ -358,7 +360,7 @@
 	Armor:
 		Type: Concrete
 	Wall:
-		CrushClasses: heavywall
+		CrushClasses: Concretewall
 	LineBuild:
 		Range: 8
 	SelectionDecorations:
@@ -393,7 +395,7 @@
 	Health:
 		HP: 400
 	Armor:
-		Type: Heavy
+		Type: Concrete
 	RevealsShroud:
 		Range: 7
 	RenderRangeCircle:
@@ -427,7 +429,7 @@
 	Health:
 		HP: 800
 	Armor: 
-		Type: Heavy
+		Type: Concrete
 	RevealsShroud:
 		Range: 8
 	-RenderBuilding:
@@ -483,7 +485,7 @@ SIETCH:
 	Health:
 		HP: 400
 	Armor:
-		Type: Heavy
+		Type: Concrete
 	RevealsShroud:
 		Range: 10
 	-GivesBuildableArea:

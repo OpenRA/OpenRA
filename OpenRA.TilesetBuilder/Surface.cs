@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -15,7 +16,11 @@ namespace OpenRA.TilesetBuilder
 		public string InputMode;
 		public Bitmap[] icon;
 		public int TileSize;
+		public int TilesPerRow;
 		//private System.ComponentModel.IContainer components;
+
+		
+		public event Action<int, int, int> UpdateMouseTilePosition = (x, y, t) => { };
 
 		Template CurrentTemplate;
 
@@ -67,19 +72,21 @@ namespace OpenRA.TilesetBuilder
 			/* draw template outlines */
 			foreach (var t in Templates)
 			{
+				System.Drawing.Pen pen = Pens.White;
+
 				foreach (var c in t.Cells.Keys)
 				{
 					if (CurrentTemplate == t)
 						e.Graphics.FillRectangle(currentBrush, TileSize * c.X, TileSize * c.Y, TileSize, TileSize);
 
 					if (!t.Cells.ContainsKey(c + new int2(-1, 0)))
-						e.Graphics.DrawLine(Pens.Red, (TileSize * c).ToPoint(), (TileSize * (c + new int2(0, 1))).ToPoint());
+						e.Graphics.DrawLine(pen, (TileSize * c).ToPoint(), (TileSize * (c + new int2(0, 1))).ToPoint());
 					if (!t.Cells.ContainsKey(c + new int2(+1, 0)))
-						e.Graphics.DrawLine(Pens.Red, (TileSize * (c + new int2(1, 0))).ToPoint(), (TileSize * (c + new int2(1, 1))).ToPoint());
+						e.Graphics.DrawLine(pen, (TileSize * (c + new int2(1, 0))).ToPoint(), (TileSize * (c + new int2(1, 1))).ToPoint());
 					if (!t.Cells.ContainsKey(c + new int2(0, +1)))
-						e.Graphics.DrawLine(Pens.Red, (TileSize * (c + new int2(0, 1))).ToPoint(), (TileSize * (c + new int2(1, 1))).ToPoint());
+						e.Graphics.DrawLine(pen, (TileSize * (c + new int2(0, 1))).ToPoint(), (TileSize * (c + new int2(1, 1))).ToPoint());
 					if (!t.Cells.ContainsKey(c + new int2(0, -1)))
-						e.Graphics.DrawLine(Pens.Red, (TileSize * c).ToPoint(), (TileSize * (c + new int2(1, 0))).ToPoint());
+						e.Graphics.DrawLine(pen, (TileSize * c).ToPoint(), (TileSize * (c + new int2(1, 0))).ToPoint());
 				}
 			}
 		}
@@ -128,6 +135,8 @@ namespace OpenRA.TilesetBuilder
 					}
 				}
 			}
+
+			UpdateMouseTilePosition(pos.X, pos.Y, (pos.Y * TilesPerRow) + pos.X);
 		}
 
 		private void InitializeComponent()

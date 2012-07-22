@@ -79,8 +79,8 @@
 	Armor:
 		Type: Light
 	Mobile:
-		ROT: 15
-		Speed: 20
+		ROT: 10
+		Speed: 12
 	RevealsShroud:
 		Range: 8
 	RenderUnit:
@@ -111,7 +111,7 @@
 		Type: Light
 	Mobile:
 		ROT: 10
-		Speed: 13
+		Speed: 12
 	RevealsShroud:
 		Range: 7
 	RenderUnit:
