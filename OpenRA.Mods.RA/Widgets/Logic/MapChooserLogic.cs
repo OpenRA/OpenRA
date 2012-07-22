@@ -9,7 +9,9 @@
 #endregion
 
 using System;
+using System.Drawing;
 using System.Linq;
+using System.Threading;
 using OpenRA.FileFormats;
 using OpenRA.Widgets;
 
@@ -18,13 +20,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	public class MapChooserLogic
 	{
 		Map map;
+		private Widget widget;
 		ScrollPanelWidget scrollpanel;
 		ScrollItemWidget itemTemplate;
 		string gameMode;
-		
+
 		[ObjectCreator.UseCtor]
 		internal MapChooserLogic(Widget widget, string initialMap, Action onExit, Action<Map> onSelect)
 		{
+			this.widget = widget;
 			map = Game.modData.AvailableMaps[WidgetUtils.ChooseInitialMap(initialMap)];
 
 			widget.Get<ButtonWidget>("BUTTON_OK").OnClick = () => { Ui.CloseWindow(); onSelect(map); };
@@ -36,18 +40,18 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var gameModeDropdown = widget.GetOrNull<DropDownButtonWidget>("GAMEMODE_FILTER");
 			if (gameModeDropdown != null)
 			{
-				var selectableMaps = Game.modData.AvailableMaps.Where(m => m.Value.Selectable);
+				var selectableMaps = Game.modData.AvailableMaps.Where(m => m.Value.Selectable).ToList(); //ToList to stop re-enumeration
 				var gameModes = selectableMaps
 					.GroupBy(m => m.Value.Type)
 					.Select(g => Pair.New(g.Key, g.Count())).ToList();
 
 				// 'all game types' extra item
-				gameModes.Insert( 0, Pair.New( null as string, selectableMaps.Count() ) );
+				gameModes.Insert(0, Pair.New(null as string, selectableMaps.Count()));
 
-				Func<Pair<string,int>, string> showItem =
-					x => "{0} ({1})".F( x.First ?? "All Game Types", x.Second );
+				Func<Pair<string, int>, string> showItem =
+					x => "{0} ({1})".F(x.First ?? "All Game Types", x.Second);
 
-				Func<Pair<string,int>, ScrollItemWidget, ScrollItemWidget> setupItem = (ii, template) =>
+				Func<Pair<string, int>, ScrollItemWidget, ScrollItemWidget> setupItem = (ii, template) =>
 				{
 					var item = ScrollItemWidget.Setup(template,
 						() => gameMode == ii.First,
@@ -62,7 +66,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				gameModeDropdown.GetText = () => showItem(gameModes.First(m => m.First == gameMode));
 			}
 
-			EnumerateMaps();
+			//thread to get the chooser up
+			new Thread(EnumerateMaps).Start();
 		}
 
 		void EnumerateMaps()
@@ -71,12 +76,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			scrollpanel.Layout = new GridLayout(scrollpanel);
 			scrollpanel.ScrollToTop();
 
+			// add a loading message
+			var ts = widget.GetWidget<LabelWidget>("LOADING_MAPS");
+			Game.RunAfterTick(() => scrollpanel.Parent.AddChild(ts));
+			
 			var maps = Game.modData.AvailableMaps
 				.Where(kv => kv.Value.Selectable)
 				.Where(kv => kv.Value.Type == gameMode || gameMode == null)
 				.OrderBy(kv => kv.Value.PlayerCount)
 				.ThenBy(kv => kv.Value.Title);
-
 			foreach (var kv in maps)
 			{
 				var m = kv.Value;
@@ -97,8 +105,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var authorWidget = item.Get<LabelWidget>("AUTHOR");
 				if (authorWidget != null)
 					authorWidget.GetText = () => m.Author;
-
-				scrollpanel.AddChild(item);
+				Game.RunAfterTick(() =>
+									{
+										if (scrollpanel.Parent.Children.Contains(ts)) 
+											scrollpanel.Parent.RemoveChild(ts); //will only remove here not outside of loop for some reason
+										scrollpanel.AddChild(item);
+									});
 			}
 		}
 	}
