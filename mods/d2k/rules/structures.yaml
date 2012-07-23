@@ -197,7 +197,7 @@
 		Name: Silo
 		Description: Stores excess harvested Spice
 	Building:
-		Power: -10
+		Power: 0
 	-GivesBuildableArea:
 	Health:
 		HP: 300
@@ -207,6 +207,7 @@
 		Range: 4
 	-RenderBuilding:
 	RenderBuildingSilo:
+		FillSteps: 39
 	StoresOre:
 		PipColor: Green
 		PipCount: 5
