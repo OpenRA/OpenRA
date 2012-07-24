@@ -25,3 +25,4 @@
 # spice blooms should explode and create new spice field instead of growing spice
 # fix BuiltAt to build vehicles at appropriate factories
 # transpose breaks thumping animation (split into several SHPs)
+# missile sound is wrong
