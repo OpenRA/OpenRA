@@ -244,10 +244,12 @@ rifle:
 		Start: 8
 		Length: 6
 		Facings: 8
+		Tick: 120
 	shoot:
 		Start: 56
 		Length: 5
 		Facings: 8
+		Tick: 120
 	prone-stand:
 		Start: 104
 		Length: 1
@@ -256,14 +258,17 @@ rifle:
 		Start: 112
 		Length: 3
 		Facings: 8
+		Tick: 120
 	standup-0:
 		Start: 96
 		Length: 1
 		Facings: 8
+		Tick: 120
 	prone-shoot:
 		Start: 136
 		Length: 5
 		Facings: 8
+		Tick: 120
 	die1: rifledeath
 		Start: 0
 		Length: 5
@@ -301,10 +306,12 @@ bazooka:
 		Start: 8
 		Length: 6
 		Facings: 8
+		Tick: 120
 	shoot:
 		Start: 56
 		Length: 5
 		Facings: 8
+		Tick: 120
 	prone-stand:
 		Start: 104
 		Length: 1
@@ -313,6 +320,7 @@ bazooka:
 		Start: 112
 		Length: 3
 		Facings: 8
+		Tick: 120
 	standup-0:
 		Start: 96
 		Length: 1
@@ -321,6 +329,7 @@ bazooka:
 		Start: 136
 		Length: 5
 		Facings: 8
+		Tick: 120
 	die1: rifledeath
 		Start: 0
 		Length: 5
@@ -355,6 +364,7 @@ engineer:
 		Start: 8
 		Length: 6
 		Facings: 8
+		Tick: 120
 	die1: rifledeath
 		Start: 0
 		Length: 5
@@ -389,6 +399,7 @@ thumper:
 		Start: 8
 		Length: 6
 		Facings: 8
+		Tick: 120
 	die1: rifledeath
 		Start: 0
 		Length: 5
@@ -414,14 +425,14 @@ thumper:
 
 thumping:
 	idle: thumper
-		Start: 57
+		Start: 56
 		Length: 4
 		Tick: 150
 	make: thumper
 		Start: 56
-		Length: 5
+		Length: 4
 	damaged-idle: thumper
-		Start: 57
+		Start: 56
 		Length: 4
 		Tick: 150
 
@@ -436,6 +447,7 @@ fremen:
 		Start: 8
 		Length: 6
 		Facings: 8
+		Tick: 120
 	die1: rifledeath
 		Start: 0
 		Length: 5
@@ -470,6 +482,7 @@ saboteur:
 		Start: 8
 		Length: 4
 		Facings: 8
+		Tick: 120
 	die1: rifledeath
 		Start: 0
 		Length: 5
@@ -504,6 +517,7 @@ sardaukar:
 		Start: 8
 		Length: 4
 		Facings: 8
+		Tick: 120
 	die1: rifledeath
 		Start: 0
 		Length: 5
