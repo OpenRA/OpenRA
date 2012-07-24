@@ -83,6 +83,7 @@ lualibs/socket/tp.lua
 lualibs/socket/url.lua
 lualibs/ssl.lua
 lualibs/ssl/https.lua
+lualibs/testwell.lua
 spec/lua.lua
 src/defs.lua
 src/editor/autocomplete.lua
