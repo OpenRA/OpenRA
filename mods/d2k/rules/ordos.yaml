@@ -288,7 +288,7 @@ DEVIATORTANK:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 50
-		Prerequisites: heavyo
+		Prerequisites: heavyo,researcho
 		Owner: ordos
 	Mobile:
 		Speed: 6
