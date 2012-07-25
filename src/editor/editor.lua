@@ -423,6 +423,9 @@ function CreateEditor(name)
         then notebook:SetSelection(first)
         else notebook:AdvanceSelection(true) end
       else
+        if ide.osname == 'Macintosh' and event:CmdDown() then
+          return -- ignore a key press if Command key is also pressed
+        end
         event:Skip()
       end
     end)
