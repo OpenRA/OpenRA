@@ -1,12 +1,12 @@
 --
--- MobDebug 0.473
+-- MobDebug 0.479
 -- Copyright 2011-12 Paul Kulchenko
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
 --
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.473,
+  _VERSION = 0.479,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = 8171
@@ -340,17 +340,32 @@ end
 
 local function restore_vars(vars)
   if type(vars) ~= 'table' then return end
-  local func = debug.getinfo(3, "f").func
+
+  -- locals need to be processed in the reverse order, starting from
+  -- the inner block out, to make sure that the localized variables
+  -- are correctly updated with only the closest variable with
+  -- the same name being changed
+  -- first loop find how many local variables there is, while
+  -- the second loop processes them from i to 1
   local i = 1
-  local written_vars = {}
   while true do
     local name = debug.getlocal(3, i)
     if not name then break end
-    if string.sub(name, 1, 1) ~= '(' then debug.setlocal(3, i, vars[name]) end
-    written_vars[name] = true
     i = i + 1
   end
+  i = i - 1
+  local written_vars = {}
+  while i > 0 do
+    local name = debug.getlocal(3, i)
+    if not written_vars[name] then
+      if string.sub(name, 1, 1) ~= '(' then debug.setlocal(3, i, vars[name]) end
+      written_vars[name] = true
+    end
+    i = i - 1
+  end
+
   i = 1
+  local func = debug.getinfo(3, "f").func
   while true do
     local name = debug.getupvalue(func, i)
     if not name then break end
@@ -756,7 +771,12 @@ local function start(controller_host, controller_port)
 
   server = socket.connect(controller_host, controller_port)
   if server then
+    -- check if we are called from the debugger as this may happen
+    -- when another debugger function calls start(); only check one level deep
+    local this = debug.getinfo(1, "S").source
     local info = debug.getinfo(2, "Sl")
+    if info.source == this then info = debug.getinfo(3, "Sl") end
+
     local file = info.source
     if string.find(file, "@") == 1 then file = string.sub(file, 2) end
     if string.find(file, "%.[/\\]") == 1 then file = string.sub(file, 3) end
@@ -775,6 +795,7 @@ local function start(controller_host, controller_port)
   end
 end
 
+local coro_debugee
 local function controller(controller_host, controller_port)
   -- only one debugging session can be run (as there is only one debug hook)
   if isrunning() then return end
@@ -799,7 +820,7 @@ local function controller(controller_host, controller_port)
       abort = false
       if skip then skipcount = skip end -- to force suspend right away
 
-      local coro_debugee = coroutine.create(debugee)
+      coro_debugee = coroutine.create(debugee)
       debug.sethook(coro_debugee, debug_hook, "lcr")
       local status, err = coroutine.resume(coro_debugee)
 
@@ -839,7 +860,42 @@ local function loop(controller_host, controller_port)
   return controller(controller_host, controller_port)
 end
 
+local coroutines = {}
+setmetatable(coroutines, {__mode = "k"}) -- "weak" keys
+
+local function on()
+  if not (isrunning() and server) then return end
+
+  local co = coroutine.running()
+  if co then
+    if not coroutines[co] then
+      coroutines[co] = true
+      debug.sethook(co, debug_hook, "lcr")
+    end
+  else
+    -- restore hook for the main module
+    if coro_debugee then
+      debug.sethook(coro_debugee, debug_hook, "lcr")
+    else
+      debug.sethook(debug_hook, "lcr")
+    end
+  end
+end
+
+local function off()
+  if not (isrunning() and server) then return end
+
+  local co = coroutine.running()
+  if co then
+    if coroutines[co] then coroutines[co] = false end
+    debug.sethook(co)
+  else
+    debug.sethook()
+  end
+end
+
 local basedir = ""
+local function q(s) return s:gsub('([%(%)%.%%%+%-%*%?%[%^%$%]])','%%%1') end
 
 -- Handles server debugging commands 
 local function handle(params, client)
@@ -886,7 +942,7 @@ local function handle(params, client)
     _, _, _, file, line = string.find(params, "^([a-z]+)%s+([%w%p%s]+)%s+(%d+)%s*$")
     if file and line then
       file = string.gsub(file, "\\", "/") -- convert slash
-      file = string.gsub(file, basedir, '') -- remove basedir
+      file = string.gsub(file, q(basedir), '') -- remove basedir
       if not breakpoints[file] then breakpoints[file] = {} end
       client:send("SETB " .. file .. " " .. line .. "\n")
       if client:receive() == "200 OK" then 
@@ -916,7 +972,7 @@ local function handle(params, client)
     _, _, _, file, line = string.find(params, "^([a-z]+)%s+([%w%p%s]+)%s+(%d+)%s*$")
     if file and line then
       file = string.gsub(file, "\\", "/") -- convert slash
-      file = string.gsub(file, basedir, '') -- remove basedir
+      file = string.gsub(file, q(basedir), '') -- remove basedir
       if not breakpoints[file] then breakpoints[file] = {} end
       client:send("DELB " .. file .. " " .. line .. "\n")
       if client:receive() == "200 OK" then 
@@ -987,7 +1043,7 @@ local function handle(params, client)
         file:close()
 
         local file = string.gsub(exp, "\\", "/") -- convert slash
-        file = string.gsub(file, basedir, '') -- remove basedir
+        file = string.gsub(file, q(basedir), '') -- remove basedir
         client:send("LOAD " .. string.len(lines) .. " " .. file .. "\n")
         client:send(lines)
       end
@@ -1064,7 +1120,7 @@ local function handle(params, client)
         local src = string.gsub(frame[1][2], "\\", "/") -- convert slash
         if string.find(src, "@") == 1 then src = string.sub(src, 2) end
         if string.find(src, "%./") == 1 then src = string.sub(src, 3) end
-        frame[1][2] = string.gsub(src, basedir, '') -- remove basedir
+        frame[1][2] = string.gsub(src, q(basedir), '') -- remove basedir
         print(serpent.line(frame[1], {comment = false}))
       end
       return stack
@@ -1152,6 +1208,37 @@ local function listen(host, port)
   end
 end
 
+local cocreate
+local function coro()
+  if cocreate then return end -- only set once
+  cocreate = cocreate or coroutine.create
+  coroutine.create = function(f, ...)
+    return cocreate(function(...)
+      require("mobdebug").on()
+      return f(...)
+    end, ...)
+  end
+end
+
+local moconew
+local function moai()
+  if moconew then return end -- only set once
+  moconew = moconew or (MOAICoroutine and MOAICoroutine.new)
+  if not moconew then return end
+  MOAICoroutine.new = function(...)
+    local thread = moconew(...)
+    local mt = getmetatable(thread)
+    local patched = mt.run
+    mt.run = function(self, f, ...)
+      return patched(self,  function(...)
+        require("mobdebug").on()
+        return f(...)
+      end, ...)
+    end
+    return thread
+  end
+end
+
 -- make public functions available
 mobdebug.listen = listen
 mobdebug.loop = loop
@@ -1159,6 +1246,10 @@ mobdebug.scratchpad = scratchpad
 mobdebug.handle = handle
 mobdebug.connect = connect
 mobdebug.start = start
+mobdebug.on = on
+mobdebug.off = off
+mobdebug.moai = moai
+mobdebug.coro = coro
 mobdebug.line = serpent.line
 mobdebug.dump = serpent.dump
 
