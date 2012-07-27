@@ -49,7 +49,7 @@
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 30
+		BuildPaletteOrder: 20
 		Hotkey: b
 	Valued:
 		Cost: 400
@@ -83,7 +83,7 @@
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 50
+		BuildPaletteOrder: 80
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -113,7 +113,7 @@
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 50
+		BuildPaletteOrder: 90
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -135,7 +135,7 @@
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 50
+		BuildPaletteOrder: 100
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -190,7 +190,7 @@
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 40
+		BuildPaletteOrder: 15
 	Valued:
 		Cost: 150
 	Tooltip:
@@ -249,7 +249,7 @@
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 50
+		BuildPaletteOrder: 60
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -283,7 +283,7 @@
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 60
+		BuildPaletteOrder: 30
 	Valued:
 		Cost: 1400
 	Tooltip:
@@ -311,7 +311,7 @@
 		Description: Dropzone for cheap reinforcements
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 60
+		BuildPaletteOrder: 40
 	Building:
 		Power: -30
 		Footprint: xxx xxx
@@ -450,7 +450,7 @@
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 30
+		BuildPaletteOrder: 70
 	Valued:
 		Cost: 1000
 	Tooltip:
