@@ -409,12 +409,17 @@ PBOX:
 	TransformOnPassenger@e7:
 		PassengerTypes: e7
 		OnEnter: pbox.e7
-		OnExit:	pbox
+		OnExit: pbox
 		SkipMakeAnims: true
 	TransformOnPassenger@SHOK:
 		PassengerTypes: shok
 		OnEnter: pbox.shok
-		OnExit:	pbox
+		OnExit: pbox
+		SkipMakeAnims: true
+	TransformOnPassenger@Sniper:
+		PassengerTypes: sniper
+		OnEnter: pbox.sniper
+		OnExit: pbox
 		SkipMakeAnims: true
 
 PBOX.E1:
@@ -495,6 +500,18 @@ PBOX.SHOK:
 		PrimaryWeapon: PortaTesla
 		PrimaryLocalOffset: 0,-11,0,0,0
 
+PBOX.SNIPER:
+	Inherits: PBOX
+	Tooltip:
+		Name: Pillbox (Sniper)
+	RenderBuilding:
+		Image: PBOX
+	RenderRangeCircle:
+	AutoTarget:
+	AttackTurreted:
+		PrimaryWeapon: Sniper
+		PrimaryLocalOffset: 0,-11,0,0,0
+
 HBOX:
 	Inherits: ^Building
 	Tooltip:
@@ -548,12 +565,17 @@ HBOX:
 	TransformOnPassenger@e7:
 		PassengerTypes: e7
 		OnEnter: HBOX.e7
-		OnExit:	HBOX
+		OnExit: HBOX
 		SkipMakeAnims: true
 	TransformOnPassenger@SHOK:
 		PassengerTypes: shok
 		OnEnter: HBOX.shok
-		OnExit:	HBOX
+		OnExit: HBOX
+		SkipMakeAnims: true
+	TransformOnPassenger@Sniper:
+		PassengerTypes: sniper
+		OnEnter: HBOX.sniper
+		OnExit: HBOX
 		SkipMakeAnims: true
 
 HBOX.E1:
@@ -632,7 +654,19 @@ HBOX.SHOK:
 	AutoTarget:
 	AttackTurreted:
 		PrimaryWeapon: PortaTesla
-		PrimaryLocalOffset: 0,-11,0,0,0		
+		PrimaryLocalOffset: 0,-11,0,0,0
+
+HBOX.SNIPER:
+	Inherits: HBOX
+	Tooltip:
+		Name: Camo Pillbox (Sniper)
+	RenderBuilding:
+		Image: HBOX
+	RenderRangeCircle:
+	AutoTarget:
+	AttackTurreted:
+		PrimaryWeapon: Sniper
+		PrimaryLocalOffset: 0,-11,0,0,0
 
 GUN:
 	Inherits: ^Building

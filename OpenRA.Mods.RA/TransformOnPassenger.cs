@@ -21,6 +21,7 @@ namespace OpenRA.Mods.RA
 		[ActorReference] public readonly string OnEnter = null;
 		[ActorReference] public readonly string OnExit = null;
 		public readonly bool SkipMakeAnims = false;
+		public readonly bool BecomeNeutral = false;
 
 		public object Create(ActorInitializer init) { return new TransformOnPassenger(this); }
 	}
@@ -43,6 +44,7 @@ namespace OpenRA.Mods.RA
 
 					self.CancelActivity();
 					self.QueueActivity(transform);
+					if (info.BecomeNeutral) self.ChangeOwner(self.World.WorldActor.Owner);
 				});
 			}
 		}

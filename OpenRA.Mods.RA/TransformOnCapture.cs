@@ -29,10 +29,12 @@ namespace OpenRA.Mods.RA
 
 		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{
-			self.QueueActivity(new Transform(self, Info.IntoActor) {
-				ForceHealthPercentage = Info.ForceHealthPercentage,
-				Facing = self.Trait<IFacing>().Facing
-			});
+			var facing = self.TraitOrDefault<IFacing>();
+			var transform = new Transform(self, Info.IntoActor) { ForceHealthPercentage = Info.ForceHealthPercentage };
+			if (facing != null) transform.Facing = facing.Facing;
+			transform.SkipMakeAnims = true;
+			self.CancelActivity();
+			self.QueueActivity(transform);
 		}
 	}
 }

@@ -411,6 +411,7 @@ SNIPER:
 	RevealsShroud:
 		Range: 6
 	-AutoTarget:
+	-AttackMove:
 	AttackFrontal:
 		PrimaryWeapon: Sniper
 	TakeCover:
@@ -422,3 +423,6 @@ SNIPER:
 		CloakDelay: 120
 		CloakSound: appear1.aud
 		UncloakSound: appear1.aud
+	Captures:
+		CaptureTypes: civilianbuilding
+		AllowAllies: true
