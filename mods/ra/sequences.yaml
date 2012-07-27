@@ -635,6 +635,70 @@ e1:
 		Length: 6
 		Tick: 1600
 
+sniper:
+	stand:
+		Start: 0
+		Facings: 8
+	stand2:
+		Start: 8
+		Facings: 8
+	run:
+		Start: 16
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 64
+		Length: 16
+		Facings: 8
+	stand3:
+		Start: 192
+		Length: 16
+	prone-stand:
+		Start: 208
+		Length: 4
+		Facings: 8
+	prone-run:
+		Start: 208
+		Length: 4
+		Facings: 8
+	standup:
+		Start: 240
+		Length: 2
+		Facings: 8
+	prone-shoot:
+		Start: 256
+		Length: 16
+		Facings: 8
+	idle1:
+		Start: 384
+		Length: 14
+		Tick: 120
+	idle2:
+		Start: 399
+		Length: 16
+		Tick: 120
+	die1:
+		Start: 416
+		Length: 8
+	die2:
+		Start: 424
+		Length: 8
+	die3:
+		Start: 432
+		Length: 8
+	die4:
+		Start: 440
+		Length: 12
+	die5:
+		Start: 452
+		Length: 18
+	die6: electro
+		Start: 0
+	die-crushed: corpse1
+		Start: 0
+		Length: 6
+		Tick: 1600
+
 clock:
 	idle:
 		Start: 0

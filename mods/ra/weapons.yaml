@@ -1141,3 +1141,19 @@ VolkNapalm:
 		SmudgeType: Scorch
 		ImpactSound: firebl3
 		Damage: 80
+
+Sniper:
+	Report: GUN5
+	ROF: 40
+	Range: 10
+	Projectile: Bullet
+		Speed: 100
+	Warhead: 
+		Damage: 100
+		Spread: 1
+		Versus: 
+			None: 100%
+			Wood: 5%
+			Light: 5%
+			Heavy: 5%
+		InfDeath: 2

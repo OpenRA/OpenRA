@@ -387,3 +387,38 @@ SHOK:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
 	-CrushableInfantry:
+
+SNIPER:
+	Inherits: ^Infantry
+	Valued:
+		Cost: 700
+	Tooltip:
+		Icon: snipericon
+		Name: Sniper
+		Description: Elite sniper infantry unit.\n  Strong vs Infantry\n  Weak vs Vehicles
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 50
+		Owner: allies,soviet
+	Selectable:
+		Bounds: 12,17,0,-6
+	Mobile:
+		Speed: 4
+	Health:
+		HP: 200
+	Passenger:
+		PipType: Red
+	RevealsShroud:
+		Range: 6
+	-AutoTarget:
+	AttackFrontal:
+		PrimaryWeapon: Sniper
+	TakeCover:
+	-RenderInfantry:
+	RenderInfantryProne:
+		IdleAnimations: idle1,idle2
+	Cloak:
+		InitialDelay: 250
+		CloakDelay: 120
+		CloakSound: appear1.aud
+		UncloakSound: appear1.aud
