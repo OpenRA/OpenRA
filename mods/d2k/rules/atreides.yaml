@@ -267,7 +267,7 @@ SONICTANK:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 15
+		BuildPaletteOrder: 100
 		Prerequisites: heavya,researcha
 		Owner: atreides
 		BuiltAt: heavya
