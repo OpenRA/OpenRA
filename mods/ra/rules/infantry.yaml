@@ -50,6 +50,8 @@ E1:
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
+	Captures:
+		CaptureTypes: civilianbuilding
 
 E2:
 	Inherits: ^Infantry
