@@ -19,6 +19,7 @@ namespace OpenRA.Mods.RA.Air
 	{
 		public readonly int IdealSeparation = 40;
 		public readonly bool LandWhenIdle = true;
+		public readonly int MinimalLandAltitude = 0;
 
 		public override object Create( ActorInitializer init ) { return new Helicopter( init, this); }
 	}
@@ -52,7 +53,7 @@ namespace OpenRA.Mods.RA.Air
 				if (Info.LandWhenIdle)
 				{
 					self.QueueActivity(new Turn(Info.InitialFacing));
-					self.QueueActivity(new HeliLand(true));
+					self.QueueActivity(new HeliLand(true, Info.MinimalLandAltitude));
 				}
 			}
 
@@ -77,7 +78,7 @@ namespace OpenRA.Mods.RA.Air
 					self.CancelActivity();
 					self.QueueActivity(new HeliFly(order.TargetActor.Trait<IHasLocation>().PxPosition + offset));
 					self.QueueActivity(new Turn(Info.InitialFacing));
-					self.QueueActivity(new HeliLand(false));
+					self.QueueActivity(new HeliLand(false, Info.MinimalLandAltitude));
 					self.QueueActivity(new ResupplyAircraft());
 				}
 			}
@@ -95,7 +96,7 @@ namespace OpenRA.Mods.RA.Air
 				if (Info.LandWhenIdle)
 				{
 					self.QueueActivity(new Turn(Info.InitialFacing));
-					self.QueueActivity(new HeliLand(true));
+					self.QueueActivity(new HeliLand(true, Info.MinimalLandAltitude));
 				}
 			}
 		}

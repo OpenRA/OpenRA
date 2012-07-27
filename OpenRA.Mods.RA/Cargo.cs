@@ -24,6 +24,7 @@ namespace OpenRA.Mods.RA
 		public readonly string[] Types = { };
 		public readonly int UnloadFacing = 0;
 		public readonly string[] InitialUnits = { };
+		public readonly int minimalUnloadAltitude = 0;
 
 		public object Create( ActorInitializer init ) { return new Cargo( init, this ); }
 	}
@@ -92,7 +93,7 @@ namespace OpenRA.Mods.RA
 
 			// Cannot unload mid-air
 			var move = self.TraitOrDefault<IMove>();
-			if (move != null && move.Altitude > 0)
+			if (move != null && move.Altitude > info.minimalUnloadAltitude)
 				return false;
 
 			// Todo: Check if there is a free tile to unload to
@@ -106,7 +107,7 @@ namespace OpenRA.Mods.RA
 
 			// Cannot load mid-air
 			var move = self.TraitOrDefault<IMove>();
-			return move == null || move.Altitude == 0;
+			return move == null || move.Altitude == info.minimalUnloadAltitude;
 		}
 
 		public string CursorForOrder(Actor self, Order order)

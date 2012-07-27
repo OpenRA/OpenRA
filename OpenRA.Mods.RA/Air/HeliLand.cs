@@ -14,15 +14,20 @@ namespace OpenRA.Mods.RA.Air
 {
 	class HeliLand : Activity
 	{
-		public HeliLand(bool requireSpace) { this.requireSpace = requireSpace; }
+		public HeliLand(bool requireSpace, int minimalAltitude)
+		{
+			this.requireSpace = requireSpace;
+			this.minimalAltitude = minimalAltitude;
+		}
 
 		bool requireSpace;
+		int minimalAltitude = 0;
 
 		public override Activity Tick(Actor self)
 		{
 			if (IsCanceled) return NextActivity;
 			var aircraft = self.Trait<Aircraft>();
-			if (aircraft.Altitude == 0)
+			if (aircraft.Altitude == minimalAltitude)
 				return NextActivity;
 
 			if (requireSpace && !aircraft.CanLand(self.Location))
