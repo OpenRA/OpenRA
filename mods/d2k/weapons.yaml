@@ -49,7 +49,7 @@ Dragon:
 QuadRockets:
 	ROF: 60
 	Range: 7
-	Report: BAZOOK1
+	Report: ROCKET1
 	ValidTargets: Ground, Air
 	Burst: 2
 	BurstDelay: 0
@@ -243,7 +243,7 @@ FakeMissile:
 	ROF: 90
 	Range: 8
 	Burst: 1
-	Report: MISSLE1
+	Report: FLAMER1
 	Projectile: Bullet
 		Speed: 35
 		High: true
@@ -340,7 +340,7 @@ M60mg:
 
 Demolish:
 	Warhead:
-		ImpactSound: kaboom25
+		ImpactSound: EXPLLG2
 		Explosion: building
 
 Crush:
@@ -587,11 +587,10 @@ ParaBomb:
 			Light: 75%
 			Concrete: 50%
 		Explosion: self_destruct
-		WaterExplosion: small_splash
 		InfDeath: 4
 		SmudgeType: Crater
 		Damage: 500
-		ImpactSound: kaboom15
+		ImpactSound: EXPLLG3
 
 Napalm:
 	ROF: 3
@@ -606,6 +605,6 @@ Napalm:
 			Heavy: 25%
 		InfDeath: 4
 		Explosion: napalm
-		ImpactSound: firebl3
+		ImpactSound: NAPALM1
 		SmudgeType: Crater
 		Damage: 100
