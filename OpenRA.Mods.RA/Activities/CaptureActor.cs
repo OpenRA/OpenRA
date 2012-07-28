@@ -9,8 +9,8 @@
 #endregion
 
 using System.Linq;
-using OpenRA.Traits;
 using OpenRA.Mods.RA.Move;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
@@ -26,6 +26,12 @@ namespace OpenRA.Mods.RA.Activities
 			if (target == null || !target.IsInWorld || target.IsDead()) return NextActivity;
 			if (target.Owner == self.Owner) return NextActivity;
 
+			// Need to be next to building, TODO: stop capture when going away
+			var mobile = self.Trait<Mobile>();
+			var nearest = target.OccupiesSpace.NearestCellTo(mobile.toCell);
+			if ((nearest - mobile.toCell).LengthSquared > 2)
+				return Util.SequenceActivities(new MoveAdjacentTo(Target.FromActor(target)), this);
+
 			var capturable = target.TraitOrDefault<Capturable>();
 			if (capturable != null && capturable.CaptureInProgress && capturable.Captor.Owner.Stances[self.Owner] == Stance.Ally)
 				return NextActivity;
@@ -34,12 +40,9 @@ namespace OpenRA.Mods.RA.Activities
 			if (sellable != null && sellable.Selling)
 				return NextActivity;
 
-			var captures = self.TraitOrDefault<Captures>();
+			target.Trait<Capturable>().BeginCapture(target, self);
+
 			var capturesInfo = self.Info.Traits.Get<CapturesInfo>();
-			if (captures != null && Combat.IsInRange(self.CenterLocation, capturesInfo.Range, target))
-				target.Trait<Capturable>().BeginCapture(target, self);
-			else
-				return Util.SequenceActivities(self.Trait<Mobile>().MoveWithinRange(Target.FromActor(target), capturesInfo.Range), this);
 			if (capturesInfo != null && capturesInfo.wastedAfterwards)
 				self.World.AddFrameEndTask(w => self.Destroy());
 

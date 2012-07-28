@@ -22,7 +22,6 @@ namespace OpenRA.Mods.RA
 	class CapturesInfo : ITraitInfo
 	{
 		public string[] CaptureTypes = {"building"};
-		public int Range = 3;
 		public bool wastedAfterwards = true;
 		public object Create(ActorInitializer init) { return new Captures(init.self, this); }
 	}

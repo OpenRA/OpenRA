@@ -17,6 +17,7 @@ namespace OpenRA.Mods.RA
 	{
 		[ActorReference] public readonly string IntoActor = null;
 		public readonly int ForceHealthPercentage = 0;
+		public readonly bool SkipMakeAnims = true;
 
 		public virtual object Create(ActorInitializer init) { return new TransformOnCapture(this); }
 	}
@@ -32,7 +33,7 @@ namespace OpenRA.Mods.RA
 			var facing = self.TraitOrDefault<IFacing>();
 			var transform = new Transform(self, Info.IntoActor) { ForceHealthPercentage = Info.ForceHealthPercentage };
 			if (facing != null) transform.Facing = facing.Facing;
-			transform.SkipMakeAnims = true;
+			transform.SkipMakeAnims = Info.SkipMakeAnims;
 			self.CancelActivity();
 			self.QueueActivity(transform);
 		}

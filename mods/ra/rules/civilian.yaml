@@ -32,6 +32,7 @@ V01:
 		Range: 10
 	TransformOnCapture:
 		IntoActor: v01.sniper
+		SkipMakeAnims: true
 	Capturable:
 		Type: civilianbuilding
 		CaptureCompleteTime: 0
