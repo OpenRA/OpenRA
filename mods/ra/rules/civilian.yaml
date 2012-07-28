@@ -243,3 +243,40 @@ BRIDGE2:
 	Building:
 		Footprint: _____ _____
 		Dimensions: 5,2
+
+SBRIDGE1:
+	Inherits: ^SVBridge
+	Bridge:
+		Template: 520
+		DamagedTemplate: 521
+		DestroyedTemplate: 522
+	Building:
+		Footprint: ___ ___
+		Dimensions: 3,2
+SBRIDGE2:
+	Inherits: ^SHBridge
+	Bridge:
+		Template: 531
+		DamagedTemplate: 532
+		DestroyedTemplate: 533
+	Building:
+		Footprint: __ __ __
+		Dimensions: 2,3
+SBRIDGE3:
+	Inherits: ^STDBridge
+	Bridge:
+		Template: 523
+		DamagedTemplate: 524
+		DestroyedTemplate: 525
+	Building:
+		Footprint: ____ ____
+		Dimensions: 4,2
+SBRIDGE4:
+	Inherits: ^STDBridge
+	Bridge:
+		Template: 527
+		DamagedTemplate: 528
+		DestroyedTemplate: 529
+	Building:
+		Footprint: ____ ____
+		Dimensions: 4,2

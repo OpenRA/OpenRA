@@ -3128,3 +3128,436 @@ Templates:
 		Tiles:
 			0: Rock
 			1: Rock
+	Template@500:
+		Id: 500
+		Image: sh57
+		Size: 1,1
+		Tiles:
+			0: Rock
+		Category: Debris
+	Template@502:
+		Id: 502
+		Image: sh58
+		Size: 2,1
+		Tiles:
+			0: Rock
+			1: Rock
+		Category: Debris
+	Template@503:
+		Id: 503
+		Image: sh59
+		Size: 2,1
+		Tiles:
+			0: Rock
+			1: Rock
+		Category: Debris
+	Template@504:
+		Id: 504
+		Image: sh60
+		Size: 1,2
+		Tiles:
+			0: Rock
+			1: Rock
+		Category: Debris
+	Template@505:
+		Id: 505
+		Image: sh61
+		Size: 1,1
+		Tiles:
+			0: Rock
+		Category: Debris
+	Template@506:
+		Id: 506
+		Image: sh62
+		Size: 1,1
+		Tiles:
+			0: Rock
+		Category: Debris
+	Template@507:
+		Id: 507
+		Image: sh63
+		Size: 2,2
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+		Category: Debris
+	Template@508:
+		Id: 508
+		Image: sh64
+		Size: 1,1
+		Tiles:
+			0: Rock
+		Category: Debris
+	Template@519:
+		Id: 519
+		Image: sbridge1x
+		Size: 3,4
+		Tiles:
+			0: Clear
+			1: Road
+			2: Clear
+			9: Clear
+			10: Road
+			11: Rock
+		Category: Bridge
+	Template@520:
+		Id: 520
+		Image: sbridge1
+		Size: 3,2
+		Tiles:
+			0: River
+			1: Road
+			2: River
+			3: River 
+			4: Road
+			5: River
+		Category: Bridge
+	Template@521:
+		Id: 521
+		Image: sbridge1h
+		Size: 3,2
+		Tiles:
+			0: River
+			1: Road
+			2: River
+			3: River 
+			4: Road
+			5: River
+		Category: Bridge
+	Template@522:
+		Id: 522
+		Image: sbridge1d
+		Size: 3,2
+		Tiles:
+			0: River
+			1: Rock
+			2: River
+			3: River 
+			4: Rock
+			5: River
+		Category: Bridge
+	Template@523:
+		Id: 523
+		Image: sbridge3
+		Size: 4,2
+		Tiles:
+			1: Rock
+			2: Road
+			3: Rock
+			4: River
+			5: Road
+			6: Rock
+			7: River
+		Category: Bridge
+	Template@524:
+		Id: 524
+		Image: sbridge3h
+		Size: 4,2
+		Tiles:
+			1: Rock
+			2: Road
+			3: Rock
+			4: River
+			5: Road
+			6: Rock
+			7: River
+		Category: Bridge
+	Template@525:
+		Id: 525
+		Image: sbridge3d
+		Size: 4,2
+		Tiles:
+			1: Rock
+			2: Rock
+			3: Rock
+			4: River
+			5: River
+			6: Rock
+			7: River
+		Category: Bridge
+	Template@526:
+		Id: 526
+		Image: sbridge3x
+		Size: 4,4
+		Tiles:
+			1: Clear
+			2: Clear
+			3: Road
+			4: River
+			12: Road
+			13: Clear
+			14: River
+			15: River
+		Category: Bridge
+	Template@527:
+		Id: 527
+		Image: sbridge4
+		Size: 4,2
+		Tiles:
+			0: Rock
+			1: Road
+			2: Rock
+			4: River
+			5: Rock
+			6: Road
+			7: Rock
+		Category: Bridge
+	Template@528:
+		Id: 528
+		Image: sbridge4h
+		Size: 4,2
+		Tiles:
+			0: Rock
+			1: Road
+			2: Rock
+			4: River
+			5: Rock
+			6: Road
+			7: Rock
+		Category: Bridge
+	Template@529:
+		Id: 529
+		Image: sbridge4d
+		Size: 4,2
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			4: River
+			5: Rock
+			6: Rock
+			7: Rock
+		Category: Bridge
+	Template@530
+		Id: 530
+		Image: sbridge4x
+		Size: 5,5
+		Tiles:
+			0: Road
+			1: Clear
+			2: Clear
+			4: River
+			8: River
+			9: River
+			14: River
+			15: River
+			16: River
+			17: Clear
+			18: Road
+			19: Clear
+			23: Clear
+			24: Road
+		Category: Bridge
+	Template@531
+		Id: 531
+		Image: sbridge2
+		Size: 2,3
+		Tiles:
+			0: River
+			1: River
+			2: Road
+			3: Road
+			4: Rock
+			5: Rock
+		Category: Bridge
+	Template@532
+		Id: 532
+		Image: sbridge2h
+		Size: 2,3
+		Tiles:
+			0: River
+			1: River
+			2: Road
+			3: Road
+			4: Rock
+			5: Rock
+		Category: Bridge
+	Template@533
+		Id: 533
+		Image: sbridge2d
+		Size: 2,3
+		Tiles:
+			0: River
+			1: River
+			2: River
+			3: River
+			4: River
+			5: River
+		Category: Bridge
+	Template@534
+		Id: 534
+		Image: sbridge2x
+		Size: 4,4
+		Tiles:
+			0: Clear
+			3: Rock
+			4: Road
+			7: Road
+			8: Clear
+			11: Rock
+			12: Clear
+			13: River
+			14: River
+			15: Clear
+		Category: Bridge
+	Template@550:
+		Id: 550
+		Image: sccnr
+		Size: 2,3
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+		Category: Water Cliffs
+	Template@551:
+		Id: 551
+		Image: sccnl
+		Size: 2,3
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+		Category: Water Cliffs
+	Template@552:
+		Id: 552
+		Image: sccsr
+		Size: 2,3
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+		Category: Water Cliffs
+	Template@553:
+		Id: 553
+		Image: sccsl
+		Size: 2,3
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+		Category: Water Cliffs
+	Template@554:
+		Id: 554
+		Image: sccln
+		Size: 3,2
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+		Category: Water Cliffs
+	Template@555:
+		Id: 555
+		Image: sccls
+		Size: 3,2
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+		Category: Water Cliffs
+	Template@556:
+		Id: 556
+		Image: sccrn
+		Size: 3,2
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+		Category: Water Cliffs
+	Template@557:
+		Id: 557
+		Image: sccrs
+		Size: 3,2
+		Tiles:
+			0: Rock
+			1: Rock
+			2: Rock
+			3: Rock
+		Category: Water Cliffs
+	Template@580:
+		Id: 580
+		Image: deca
+		Size: 1,1
+		Tiles:
+			0: Rough
+		Category: Debris
+	Template@581:
+		Id: 581
+		Image: decb
+		Size: 1,1
+		Tiles:
+			0: Rough
+		Category: Debris
+	Template@582:
+		Id: 582
+		Image: decc
+		Size: 1,1
+		Tiles:
+			0: Rough
+		Category: Debris		
+	Template@583:
+		Id: 583
+		Image: decc
+		Size: 1,1
+		Tiles:
+			0: Rough
+		Category: Debris
+	Template@584:
+		Id: 584
+		Image: decd
+		Size: 1,1
+		Tiles:
+			0: Rough
+		Category: Debris
+	Template@585:
+		Id: 585
+		Image: dece
+		Size: 1,1
+		Tiles:
+			0: Rough
+		Category: Debris
+	Template@586:
+		Id: 586
+		Image: decf
+		Size: 1,1
+		Tiles:
+			0: Rough
+		Category: Debris
+	Template@587:
+		Id: 587
+		Image: decg
+		Size: 1,1
+		Tiles:
+			0: Rough
+		Category: Debris
+	Template@588:
+		Id: 588
+		Image: dech
+		Size: 1,1
+		Tiles:
+			0: Rough
+		Category: Debris
+	Template@590:
+		Id: 590
+		Image: fjord1
+		Size: 1,2
+		Tiles:
+			0: Rough
+			1: Rough
+		Category: Bridge
+	Template@591:
+		Id: 591
+		Image: fjord2
+		Size: 2,1
+		Tiles:
+			0: Rough
+			1: Rough
+		Category: Bridge
