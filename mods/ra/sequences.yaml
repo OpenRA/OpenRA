@@ -7,6 +7,26 @@ fcom:
 		Start: 0
 		Length: *
 
+hosp:
+	idle:
+		Start: 0
+		Length: 4
+	damaged-idle:
+		Start: 4
+		Length: 4
+	make: hospmake
+		Start: 0
+		Length: *
+
+bio:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	make: biomake
+		Start: 0
+		Length: *
+
 oilb:
 	idle:
 		Start: 0
