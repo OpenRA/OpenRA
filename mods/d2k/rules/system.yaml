@@ -48,6 +48,8 @@ Player:
 		AdviceInterval: 650
 	ActorGroupProxy:
 	DeveloperMode:
+	#HackyAI@Erasmus:
+	#HackyAI@Chirox:
 	HackyAI@Omnius:
 		Name:Omnius
 		UnitQueues: Infantry, Vehicle, Armor, Starport
