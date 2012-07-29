@@ -45,6 +45,8 @@ Player:
 		InitialCash: 5000
 	ActorGroupProxy:
 	DeveloperMode:
+	#HackyAI@Erasmus:
+	#HackyAI@Chirox:
 	HackyAI@Omnius:
 		Name:Omnius
 		RallypointTestBuilding: conyarda
