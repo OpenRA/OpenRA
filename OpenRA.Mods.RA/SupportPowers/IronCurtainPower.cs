@@ -40,7 +40,9 @@ namespace OpenRA.Mods.RA
 			self.Trait<RenderBuilding>().PlayCustomAnim(self, "active");
 
 			Sound.Play("ironcur9.aud", order.TargetLocation.ToPPos());
-			foreach (var target in UnitsInRange(order.TargetLocation))
+
+			foreach (var target in UnitsInRange(order.TargetLocation)
+				.Where(a => a.Owner.Stances[self.Owner] == Stance.Ally))
 				target.Trait<IronCurtainable>().Activate(target, (Info as IronCurtainPowerInfo).Duration * 25);
 		}
 
