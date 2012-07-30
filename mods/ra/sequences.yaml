@@ -952,6 +952,16 @@ tran:
 	unload: tran2
 		Start: 32
 		Length: 4
+		
+tran1husk:
+	idle:
+		Start: 0
+		Length: *
+
+tran2husk:
+	idle:
+		Start: 0
+		Length: *
 
 v2:
 	idle:
