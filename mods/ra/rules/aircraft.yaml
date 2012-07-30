@@ -212,6 +212,20 @@ TRAN:
 	IronCurtainable:
 	FallsToEarth:
 		Explosion: UnitExplode
+		
+TRAN.Husk1:
+	Inherits: ^Husk
+	Tooltip:
+		Name: Husk (Transport Helicopter)
+	RenderUnit:
+		Image: tran1husk
+
+TRAN.Husk2:
+	Inherits: ^Husk
+	Tooltip:
+		Name: Husk (Transport Helicopter)
+	RenderUnit:
+		Image: tran2husk
 
 HELI:
 	Inherits: ^Helicopter

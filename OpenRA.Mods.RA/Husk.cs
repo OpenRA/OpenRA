@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA
 		{
 			var self = init.self;
 			location = init.Get<LocationInit, CPos>();
-			PxPosition = init.Get<CenterLocationInit, PPos>();
+			PxPosition = init.Contains<CenterLocationInit>() ? init.Get<CenterLocationInit, PPos>() : Util.CenterOfCell(location);
 			Facing = init.Contains<FacingInit>() ? init.Get<FacingInit,int>() : 128;
 
 			var speed = init.Contains<HuskSpeedInit>() ? init.Get<HuskSpeedInit,int>() : 0;
