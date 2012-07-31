@@ -191,6 +191,33 @@ function SetDocumentModified(id, modified)
   notebook:SetPageText(openDocuments[id].index, pageText)
 end
 
+function EditorAutoComplete(editor)
+  if (editor == nil or not editor.spec) then return end
+
+  -- retrieve the current line and get a string to the current cursor position in the line
+  local pos = editor:GetCurrentPos()
+  local line = editor:GetCurrentLine()
+  local linetx = editor:GetLine(line)
+  local linestart = editor:PositionFromLine(line)
+  local localpos = pos-linestart
+
+  local lt = linetx:sub(1,localpos)
+  lt = lt:gsub("%s*("..editor.spec.sep..")%s*",function(a) return a end)
+  lt = lt:gsub("%s*%b[]%s*","")
+  lt = lt:gsub("%s*%b()%s*","")
+  lt = lt:gsub("%s*%b{}%s*","")
+  lt = lt:match("[^%[%(%s]*$")
+  lt = lt:gsub("%s","")
+
+  -- know now which string is to be completed
+  local userList = CreateAutoCompList(editor,lt)
+  if userList and string.len(userList) > 0 then
+    editor:UserListShow(1, userList)
+  elseif editor:AutoCompActive() then
+    editor:AutoCompCancel()
+  end
+end
+
 -- ----------------------------------------------------------------------------
 -- Create an editor and add it to the notebook
 function CreateEditor(name)
@@ -334,22 +361,18 @@ function CreateEditor(name)
             editor:GotoPos(pos+indent)
           end
         end
-      elseif ch == ("("):byte() then
 
+      elseif ch == ("("):byte() then
         local tip = GetTipInfo(editor,linetxtopos,ide.config.acandtip.shorttip)
         if tip then
           editor:CallTipShow(pos,tip)
         end
 
       elseif ide.config.autocomplete then -- code completion prompt
-
         local trigger = linetxtopos:match("["..editor.spec.sep.."%w_]+$")
-
         if (trigger and (#trigger > 1 or trigger:match("[%.:]"))) then
-          -- defined in menu_edit.lua
-          local commandEvent = wx.wxCommandEvent(wx.wxEVT_COMMAND_MENU_SELECTED,
-            ID_AUTOCOMPLETE)
-          wx.wxPostEvent(ide.frame, commandEvent)
+          ide.frame:AddPendingEvent(wx.wxCommandEvent(
+            wx.wxEVT_COMMAND_MENU_SELECTED, ID_AUTOCOMPLETE))
         end
       end
     end)

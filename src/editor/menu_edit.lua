@@ -130,33 +130,7 @@ frame:Connect(ID "edit.showtooltip", wx.wxEVT_COMMAND_MENU_SELECTED,
 
 frame:Connect(ID_AUTOCOMPLETE, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
-    local editor = GetEditor()
-    if (editor == nil or not editor.spec) then return end
-
-    -- retrieve the current line and get a string to the current cursor position in the line
-    local pos = editor:GetCurrentPos()
-    local line = editor:GetCurrentLine()
-    local linetx = editor:GetLine(line)
-    local linestart = editor:PositionFromLine(line)
-    local localpos = pos-linestart
-
-    local lt = linetx:sub(1,localpos)
-    lt = lt:gsub("%s*("..editor.spec.sep..")%s*",function(a) return a end)
-    lt = lt:gsub("%s*%b[]%s*","")
-    lt = lt:gsub("%s*%b()%s*","")
-    lt = lt:gsub("%s*%b{}%s*","")
-    lt = lt:match("[^%[%(%s]*$")
-    lt = lt:gsub("%s","")
-
-    -- know now which string is to be completed
-
-    local userList = CreateAutoCompList(editor,lt)
-    if userList and string.len(userList) > 0 then
-      editor:UserListShow(1, userList)
-      --ShowList(userList)
-    elseif (editor:AutoCompActive()) then
-      editor:AutoCompCancel()
-    end
+    EditorAutoComplete(GetEditor())
   end)
 frame:Connect(ID_AUTOCOMPLETE, wx.wxEVT_UPDATE_UI, OnUpdateUIEditMenu)
 
