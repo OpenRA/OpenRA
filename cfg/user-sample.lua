@@ -4,7 +4,8 @@ Configuration files are loaded in the following order
 
 1. <application>\config.lua
 2. cfg\user.lua
-3. -cfg commandline strings
+3. ~\.zbs\user.lua
+4. -cfg commandline strings
 
 -- an example of how loaded configuration can be modified from this file
 

@@ -264,6 +264,7 @@ if app.preinit then app.preinit() end
 
 do
   addConfig("cfg/user.lua",false)
+  addConfig(os.getenv( "HOME" ) .. "/.zbs/user.lua",false)
   for i,v in ipairs(configs) do
     addConfig(v,true,true)
   end
