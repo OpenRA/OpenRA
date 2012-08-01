@@ -23,33 +23,35 @@ local findMenu = wx.wxMenu{
   { ID_SORT, "&Sort", "Sort selected lines"}}
 menuBar:Append(findMenu, "&Search")
 
+function OnUpdateUISearchMenu(event) event:Enable(GetEditor() ~= nil) end
+
 frame:Connect(ID_FIND, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
     findReplace:GetSelectedString()
     findReplace:Show(false)
   end)
-frame:Connect(ID_FIND, wx.wxEVT_UPDATE_UI, OnUpdateUIEditMenu)
+frame:Connect(ID_FIND, wx.wxEVT_UPDATE_UI, OnUpdateUISearchMenu)
 
 frame:Connect(ID_REPLACE, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
     findReplace:GetSelectedString()
     findReplace:Show(true)
   end)
-frame:Connect(ID_REPLACE, wx.wxEVT_UPDATE_UI, OnUpdateUIEditMenu)
+frame:Connect(ID_REPLACE, wx.wxEVT_UPDATE_UI, OnUpdateUISearchMenu)
 
 frame:Connect(ID_FIND_IN_FILES, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
     findReplace:GetSelectedString()
     findReplace:Show(false,true)
   end)
-frame:Connect(ID_FIND_IN_FILES, wx.wxEVT_UPDATE_UI, OnUpdateUIEditMenu)
+frame:Connect(ID_FIND_IN_FILES, wx.wxEVT_UPDATE_UI, OnUpdateUISearchMenu)
 
 frame:Connect(ID_REPLACE_IN_FILES, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
     findReplace:GetSelectedString()
     findReplace:Show(true,true)
   end)
-frame:Connect(ID_REPLACE_IN_FILES, wx.wxEVT_UPDATE_UI, OnUpdateUIEditMenu)
+frame:Connect(ID_REPLACE_IN_FILES, wx.wxEVT_UPDATE_UI, OnUpdateUISearchMenu)
 
 frame:Connect(ID_FINDNEXT, wx.wxEVT_COMMAND_MENU_SELECTED, function (event) findReplace:GetSelectedString() findReplace:FindString() end)
 frame:Connect(ID_FINDNEXT, wx.wxEVT_UPDATE_UI, function (event) findReplace:HasText() end)
@@ -73,7 +75,7 @@ frame:Connect(ID_GOTOLINE, wx.wxEVT_COMMAND_MENU_SELECTED,
       editor:GotoLine(linenum-1)
     end
   end)
-frame:Connect(ID_GOTOLINE, wx.wxEVT_UPDATE_UI, OnUpdateUIEditMenu)
+frame:Connect(ID_GOTOLINE, wx.wxEVT_UPDATE_UI, OnUpdateUISearchMenu)
 
 frame:Connect(ID_SORT, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
@@ -87,4 +89,4 @@ frame:Connect(ID_SORT, wx.wxEVT_COMMAND_MENU_SELECTED,
       editor:ReplaceSelection(table.concat(buf,"\n"))
     end
   end)
-frame:Connect(ID_SORT, wx.wxEVT_UPDATE_UI, OnUpdateUIEditMenu)
+frame:Connect(ID_SORT, wx.wxEVT_UPDATE_UI, OnUpdateUISearchMenu)

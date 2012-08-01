@@ -30,21 +30,46 @@ menuBar:Append(editMenu, "&Edit")
 
 editMenu:Check(ID_AUTOCOMPLETE_ENABLE, ide.config.autocomplete)
 
-function OnUpdateUIEditMenu(event) -- enable if there is a valid focused editor
+local function getControlWithFocus()
   local editor = GetEditor()
-  event:Enable(editor ~= nil)
+  for _,e in pairs({frame.bottomnotebook.shellbox, frame.bottomnotebook.errorlog}) do
+    local ctrl = e:FindFocus()
+    if ctrl and
+      (ctrl:GetId() == e:GetId()
+       or ide.osname == 'Macintosh' and
+         ctrl:GetParent():GetId() == e:GetId()) then editor = e end
+  end
+  return editor
 end
 
-local othereditors = { frame.bottomnotebook.shellbox, frame.bottomnotebook.errorlog }
+function OnUpdateUIEditMenu(event)
+  local editor = getControlWithFocus()
+  if editor == nil then event:Enable(false); return end
+
+  local menu_id = event:GetId()
+  local enable =
+    -- buggy GTK clipboard runs eventloop and can generate asserts
+    menu_id == ID_PASTE and (wx.__WXGTK__ or editor:CanPaste()) or
+    menu_id == ID_UNDO and editor:CanUndo() or
+    menu_id == ID_REDO and editor:CanRedo() or
+    (menu_id ~= ID_PASTE and menu_id ~= ID_UNDO and menu_id ~= ID_REDO)
+  -- wxComboBox doesn't have SELECT ALL, so disable it
+  if editor:GetClassInfo():GetClassName() == 'wxComboBox'
+  and menu_id == ID_SELECTALL then enable = false end
+  event:Enable(enable)
+end
 
 function OnEditMenu(event)
-  local menu_id = event:GetId()
-  local editor = GetEditor()
-  for _,e in pairs(othereditors) do
-    if e:FindFocus():GetId() == e:GetId() then editor = e end
-  end
-  if editor == nil then return end
+  local editor = getControlWithFocus()
 
+  -- if there is no editor, or if it's not the editor we care about,
+  -- then allow normal processing to take place
+  if editor == nil or
+     editor:FindFocus():GetId() ~= editor:GetId() or
+     editor:GetClassInfo():GetClassName() ~= 'wxStyledTextCtrl'
+    then event:Skip(); return end
+
+  local menu_id = event:GetId()
   if menu_id == ID_CUT then editor:Cut()
   elseif menu_id == ID_COPY then editor:Copy()
   elseif menu_id == ID_PASTE then editor:Paste()
@@ -54,36 +79,10 @@ function OnEditMenu(event)
   end
 end
 
-frame:Connect(ID_CUT, wx.wxEVT_COMMAND_MENU_SELECTED, OnEditMenu)
-frame:Connect(ID_CUT, wx.wxEVT_UPDATE_UI, OnUpdateUIEditMenu)
-
-frame:Connect(ID_COPY, wx.wxEVT_COMMAND_MENU_SELECTED, OnEditMenu)
-frame:Connect(ID_COPY, wx.wxEVT_UPDATE_UI, OnUpdateUIEditMenu)
-
-frame:Connect(ID_PASTE, wx.wxEVT_COMMAND_MENU_SELECTED, OnEditMenu)
-frame:Connect(ID_PASTE, wx.wxEVT_UPDATE_UI,
-  function (event)
-    local editor = GetEditor()
-    -- buggy GTK clipboard runs eventloop and can generate asserts
-    event:Enable(editor and (wx.__WXGTK__ or editor:CanPaste()))
-  end)
-
-frame:Connect(ID_SELECTALL, wx.wxEVT_COMMAND_MENU_SELECTED, OnEditMenu)
-frame:Connect(ID_SELECTALL, wx.wxEVT_UPDATE_UI, OnUpdateUIEditMenu)
-
-frame:Connect(ID_UNDO, wx.wxEVT_COMMAND_MENU_SELECTED, OnEditMenu)
-frame:Connect(ID_UNDO, wx.wxEVT_UPDATE_UI,
-  function (event)
-    local editor = GetEditor()
-    event:Enable(editor and editor:CanUndo())
-  end)
-
-frame:Connect(ID_REDO, wx.wxEVT_COMMAND_MENU_SELECTED, OnEditMenu)
-frame:Connect(ID_REDO, wx.wxEVT_UPDATE_UI,
-  function (event)
-    local editor = GetEditor()
-    event:Enable(editor and editor:CanRedo())
-  end)
+for _, event in pairs({ID_CUT, ID_COPY, ID_PASTE, ID_SELECTALL, ID_UNDO, ID_REDO}) do
+  frame:Connect(event, wx.wxEVT_COMMAND_MENU_SELECTED, OnEditMenu)
+  frame:Connect(event, wx.wxEVT_UPDATE_UI, OnUpdateUIEditMenu)
+end
 
 frame:Connect(ID "edit.cleardynamics", wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
