@@ -181,7 +181,7 @@ end
 
 -- Set if the document is modified and update the notebook page text
 function SetDocumentModified(id, modified)
-  local pageText = openDocuments[id].fileName or "untitled.lua"
+  local pageText = openDocuments[id].fileName or ide.config.default.fullname
 
   if modified then
     pageText = "* "..pageText

@@ -8,7 +8,7 @@ local openDocuments = ide.openDocuments
 local uimgr = frame.uimgr
 
 function NewFile(event)
-  local editor = CreateEditor("untitled.lua")
+  local editor = CreateEditor(ide.config.default.fullname)
   SetupKeywords(editor, "lua")
 end
 
@@ -57,7 +57,8 @@ function LoadFile(filePath, editor, file_must_exist)
   local current = editor and editor:GetCurrentPos()
   editor = editor
     or findDocumentToReuse()
-    or CreateEditor(wx.wxFileName(filePath):GetFullName() or "untitled.lua")
+    or CreateEditor(wx.wxFileName(filePath):GetFullName()
+      or ide.config.default.fullname)
 
   editor:Clear()
   editor:ClearAll()
@@ -170,7 +171,7 @@ function SaveFileAs(editor)
   local filePath = openDocuments[id].filePath
   if (not filePath) then
     filePath = FileTreeGetDir()
-    filePath = (filePath or "").."untitled"
+    filePath = (filePath or "")..ide.config.default.name
   end
 
   local fn = wx.wxFileName(filePath)
@@ -291,7 +292,8 @@ function SaveModifiedDialog(editor, allow_cancel)
   local filePath = document.filePath
   local fileName = document.fileName
   if document.isModified then
-    local message = "Do you want to save the changes to '"..(fileName or 'untitled').."'?"
+    local message = "Do you want to save the changes to '"
+      ..(fileName or ide.config.default.name).."'?"
     local dlg_styles = wx.wxYES_NO + wx.wxCENTRE + wx.wxICON_QUESTION
     if allow_cancel then dlg_styles = dlg_styles + wx.wxCANCEL end
     local dialog = wx.wxMessageDialog(ide.frame, message,

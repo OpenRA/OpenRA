@@ -114,6 +114,11 @@ config = {
     -- sets "usetabs" to true for this file
   },
 
+  default = {
+    name = 'untitled',
+    fullname = 'untitled.lua',
+  },
+
   debugger = {
     verbose = false,
   }
@@ -301,9 +306,8 @@ debuginterface = {
   breakpoint = function(self,file,line,state) end, -- set breakpoint state
 
   -- returns result table if successful
-  evaluate = function(self, expressions, fnSetValues) end, -- for watches tables expected
-
-  -- NYI getstack = function(self, fnSetValues ) end, -- get stack information
+  evaluate = function(self, expressions, fnSetValues) end, -- for watches tables
+  stack = function(self) end, -- get stack information
 }
 
 -- interpreter definition-- ----------------------------------------------------

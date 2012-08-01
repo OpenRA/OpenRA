@@ -667,7 +667,7 @@ function DebuggerCreateWatchWindow()
 end
 
 function DebuggerMakeFileName(editor, filePath)
-  return filePath or editor:GetText()
+  return filePath or ide.config.default.fullname
 end
 
 function DebuggerToggleBreakpoint(editor, line)

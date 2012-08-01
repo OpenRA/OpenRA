@@ -36,6 +36,10 @@ ide = {
     debugger = {
       verbose = false,
     },
+    default = {
+      name = 'untitled',
+      fullname = 'untitled.lua',
+    },
     outputshell = {},
     filetree = {},
 
