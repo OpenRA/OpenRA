@@ -91,7 +91,9 @@ local function unHideWindow(pidAssign)
          and ide.config.unhidewindow[w:get_class_name()]
     end)
     for _,win in pairs(wins) do
-      local show = ide.config.unhidewindow[win:get_class_name()] > 0
+      -- win:get_class_name() can return nil if the window is already gone
+      -- between getting the list and this check
+      local show = (ide.config.unhidewindow[win:get_class_name()] or 0) > 0
       if show and not win:is_visible()
       or not show and win:is_visible() then
         if show then win:show() else win:show(winapi.SW_HIDE) end
