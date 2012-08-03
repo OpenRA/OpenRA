@@ -2,7 +2,7 @@ General:
 	Name: Snow
 	Id: SNOW
 	Extensions: .sno, .shp, .tem
-	Palette: snow.pal	
+	Palette: snow.pal
 
 Terrain:
 	TerrainType@Clear:
