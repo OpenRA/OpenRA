@@ -27,7 +27,10 @@ local app = {
     wx.wxArtProvider.Push(artProvider)
 
     ide.config.interpreter = "luadeb"
-    ide.config.unhidewxwindow = true -- allow unhiding of wx windows
+    ide.config.unhidewindow = { -- allow unhiding of GUI windows
+      wxWindowClassNR = 1, -- unhide if hidden
+      ConsoleWindowClass = 0, -- hide if shown
+    }
     ide.config.allowinteractivescript = true -- allow interaction in the output window
 
     -- this needs to be in pre-init to load the styles

@@ -1,12 +1,12 @@
 --
--- MobDebug 0.479
+-- MobDebug 0.4791
 -- Copyright 2011-12 Paul Kulchenko
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
 --
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.479,
+  _VERSION = 0.4791,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = 8171
@@ -842,7 +842,6 @@ local function controller(controller_host, controller_port)
         end
       end
     end
-    server:close()
   else
     print("Could not connect to " .. controller_host .. ":" .. controller_port)
     return false

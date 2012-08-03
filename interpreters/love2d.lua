@@ -17,12 +17,9 @@ return {
     return wfilename:GetPath(wx.wxPATH_GET_VOLUME)
   end,
   fworkdir = function (self,wfilename)
-    return ide.config.path.projectdir
-    or wfilename:GetPath(wx.wxPATH_GET_VOLUME)
+    return ide.config.path.projectdir or wfilename:GetPath(wx.wxPATH_GET_VOLUME)
   end,
   hasdebugger = true,
-  fattachdebug = function(self)
-    DebuggerAttachDefault()
-  end,
+  fattachdebug = function(self) DebuggerAttachDefault() end,
   scratchextloop = true,
 }

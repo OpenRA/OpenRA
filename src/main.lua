@@ -55,7 +55,7 @@ ide = {
     },
 
     activateoutput = false, -- activate output/console on Run/Debug/Compile
-    unhidewxwindow = false, -- try to unhide a wx window
+    unhidewindow = false, -- to unhide a gui window
     allowinteractivescript = false, -- allow interaction in the output window
     filehistorylength = 20,
     projecthistorylength = 15,

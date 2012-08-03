@@ -79,21 +79,25 @@ end
 -- logic to "unhide" wxwidget window using winapi
 pcall(function () return require 'winapi' end)
 local pid = nil
-local function unHideWxWindow(pidAssign)
+local function unHideWindow(pidAssign)
   -- skip if not configured to do anything
-  if not ide.config.unhidewxwindow then return end
+  if not ide.config.unhidewindow then return end
   if pidAssign then
     pid = pidAssign > 0 and pidAssign or nil
   end
   if pid and winapi then
-    local win = winapi.find_window_ex(function(w)
+    local wins = winapi.find_all_windows(function(w)
       return w:get_process():get_pid() == pid
-         and w:get_class_name() == 'wxWindowClassNR'
+         and ide.config.unhidewindow[w:get_class_name()]
     end)
-    if win and not win:is_visible() then
-      win:show()
-      notebook:SetFocus() -- set focus back to the IDE window
-      pid = nil
+    for _,win in pairs(wins) do
+      local show = ide.config.unhidewindow[win:get_class_name()] > 0
+      if show and not win:is_visible()
+      or not show and win:is_visible() then
+        if show then win:show() else win:show(winapi.SW_HIDE) end
+        notebook:SetFocus() -- set focus back to the IDE window
+        pid = nil
+      end
     end
   end
 end
@@ -167,7 +171,7 @@ function CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
     streamouts[pid] = {stream=streamout, callback=stringcallback, out=true}
   end
 
-  unHideWxWindow(pid)
+  unHideWindow(pid)
   nameTab(errorlog, "Output (running)")
 
   return pid
@@ -254,7 +258,7 @@ errorlog:Connect(wx.wxEVT_END_PROCESS, function(event)
         customprocs[pid].endcallback()
       end
       customprocs[pid] = nil
-      unHideWxWindow(0)
+      unHideWindow(0)
       DebuggerStop()
       DisplayOutput(("Program completed in %.2f seconds (pid: %d).\n")
         :format(runtime, pid))
@@ -263,7 +267,7 @@ errorlog:Connect(wx.wxEVT_END_PROCESS, function(event)
 
 errorlog:Connect(wx.wxEVT_IDLE, function()
     if (#streamins or #streamerrs) then getStreams() end
-    unHideWxWindow()
+    unHideWindow()
   end)
 
 local jumptopatterns = {
