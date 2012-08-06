@@ -268,7 +268,8 @@ if app.preinit then app.preinit() end
 
 do
   addConfig("cfg/user.lua",false)
-  addConfig(os.getenv( "HOME" ) .. "/.zbs/user.lua",false)
+  local home = os.getenv("HOME")
+  if home then addConfig(home .. "/.zbs/user.lua",false) end
   for i,v in ipairs(configs) do
     addConfig(v,true,true)
   end
