@@ -364,7 +364,9 @@ debugger.exec = function(command)
                 return
               end
             else
-              out = "out" -- redo now trying to get out of this file
+              -- redo now; if the call is from the debugger, then repeat
+              -- the same command; in all other cases get out of this file
+              out = file:find('mobdebug%.lua$') and command or "out"
             end
           end
         end

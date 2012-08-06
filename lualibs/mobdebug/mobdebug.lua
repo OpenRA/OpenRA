@@ -1,12 +1,12 @@
 --
--- MobDebug 0.4791
+-- MobDebug 0.481
 -- Copyright 2011-12 Paul Kulchenko
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
 --
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.4791,
+  _VERSION = 0.481,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = 8171
@@ -458,13 +458,18 @@ local function debug_hook(event, line)
       skipcount = 0
     end
 
-    -- this is needed to check if the stack got shorter.
-    -- this may happen when "pcall(load, '')" is called
+    -- this is needed to check if the stack got shorter or longer.
+    -- unfortunately counting call/return calls is not reliable.
+    -- the discrepancy may happen when "pcall(load, '')" call is made
     -- or when "error()" is called in a function.
     -- in either case there are more "call" than "return" events reported.
-    -- this validation is done for every "line" event, but should be
-    -- "cheap" as it only checks for the stack to get shorter
-    stack_level = stack_depth(stack_level)
+    -- this validation is done for every "line" event, but should be "cheap"
+    -- as it checks for the stack to get shorter (or longer by one call).
+    -- start from one level higher just in case we need to grow the stack.
+    -- this may happen after coroutine.resume call to a function that doesn't
+    -- have any other instructions to execute. it triggers three returns:
+    -- "return, tail return, return", which needs to be accounted for.
+    stack_level = stack_depth(stack_level+1)
     local caller = debug.getinfo(2, "S")
 
     -- grab the filename and fix it if needed
