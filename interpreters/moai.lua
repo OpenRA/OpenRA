@@ -51,9 +51,7 @@ return {
     local config = fullNameIfExists(os.getenv('MOAI_CONFIG'), 'config.lua') or ''
     local cmd = ('"%s" %s"%s"'):format(string.gsub(moai, "\\","/"), config, file)
     -- CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
-    -- use nohide=true on windows to show moai window
-    -- TODO: remove when winapi provides ShowWindowAsync or PostMessage
-    return CommandLineRun(cmd,self:fworkdir(wfilename),true,win,nil,nil,
+    return CommandLineRun(cmd,self:fworkdir(wfilename),true,false,nil,nil,
       function() ide.debugger.pid = nil if rundebug then wx.wxRemoveFile(file) end end)
   end,
   fprojdir = function(self,wfilename)

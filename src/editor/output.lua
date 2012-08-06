@@ -88,7 +88,7 @@ local function unHideWindow(pidAssign)
   if pid and winapi then
     local wins = winapi.find_all_windows(function(w)
       return w:get_process():get_pid() == pid
-         and ide.config.unhidewindow[w:get_class_name()]
+        and ide.config.unhidewindow[w:get_class_name()]
     end)
     for _,win in pairs(wins) do
       -- win:get_class_name() can return nil if the window is already gone
@@ -96,7 +96,9 @@ local function unHideWindow(pidAssign)
       local show = (ide.config.unhidewindow[win:get_class_name()] or 0) > 0
       if show and not win:is_visible()
       or not show and win:is_visible() then
-        if show then win:show() else win:show(winapi.SW_HIDE) end
+        -- use show_async call (ShowWindowAsync) to avoid blocking the IDE
+        -- if the app is busy or is being debugged
+        win:show_async(show and winapi.SW_SHOW or winapi.SW_HIDE)
         notebook:SetFocus() -- set focus back to the IDE window
         pid = nil
       end

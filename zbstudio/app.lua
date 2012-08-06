@@ -28,8 +28,9 @@ local app = {
 
     ide.config.interpreter = "luadeb"
     ide.config.unhidewindow = { -- allow unhiding of GUI windows
-      wxWindowClassNR = 1, -- unhide if hidden
-      ConsoleWindowClass = 0, -- hide if shown
+      -- 1 - unhide if hidden, 0 - hide if shown
+      wxWindowClassNR = 1, -- wxwindows applications
+      GLUT = 1, -- opengl applications (for example, moai)
     }
     ide.config.allowinteractivescript = true -- allow interaction in the output window
 
