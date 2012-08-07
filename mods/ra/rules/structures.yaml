@@ -1191,6 +1191,22 @@ TENT:
 	PrimaryBuilding:
 	IronCurtainable:
 	ProductionBar:
+	
+KENN:
+	Inherits: ^Building
+	Tooltip:
+		Name: Kennel
+	Building:
+		Power: -10
+	-GivesBuildableArea:
+	Health:
+		HP: 300
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4
+	IronCurtainable:
+	-EmitInfantryOnSell:
 
 FIX:
 	Inherits: ^Building
