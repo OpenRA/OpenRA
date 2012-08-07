@@ -258,7 +258,7 @@ Actors:
 	Actor77: tc04
 		Location: 93,96
 		Owner: Neutral
-	Actor21: tran.husk2
+	ChinookHusk: tran.husk2
 		Location: 108,87
 		Owner: Allies
 	Actor79: t06
@@ -270,8 +270,8 @@ Actors:
 	Actor32: t03
 		Location: 81,67
 		Owner: Neutral
-	Actor286: brik
-		Location: 62,61
+	Actor313: brik
+		Location: 65,62
 		Owner: Soviets
 	Actor84: einstein
 		Location: 108,86
@@ -279,7 +279,7 @@ Actors:
 	Actor85: medi
 		Location: 110,87
 		Owner: Allies
-	Actor0: sam
+	SAM1: sam
 		Location: 106,96
 		Owner: Soviets
 	Actor83: e7
@@ -312,9 +312,6 @@ Actors:
 	Actor87: sbag
 		Location: 96,67
 		Owner: Soviets
-	Actor257: apwr
-		Location: 46,58
-		Owner: Soviets
 	Actor100: fenc
 		Location: 83,72
 		Owner: Soviets
@@ -336,9 +333,6 @@ Actors:
 	Actor92: wood
 		Location: 103,62
 		Owner: Neutral
-	Actor74: sam
-		Location: 91,65
-		Owner: Soviets
 	Actor91: wood
 		Location: 104,62
 		Owner: Neutral
@@ -348,14 +342,11 @@ Actors:
 	Actor106: fenc
 		Location: 111,94
 		Owner: Soviets
-	Actor169: apwr
-		Location: 47,64
-		Owner: Soviets
 	Actor118: fenc
 		Location: 109,99
 		Owner: Soviets
-	Actor190: apwr
-		Location: 42,58
+	Actor386: apwr
+		Location: 46,59
 		Owner: Soviets
 	Actor125: t01
 		Location: 99,82
@@ -363,8 +354,8 @@ Actors:
 	Actor120: t06
 		Location: 37,53
 		Owner: Neutral
-	Actor167: brik
-		Location: 57,50
+	Actor292: tsla
+		Location: 58,55
 		Owner: Soviets
 	Actor209: brik
 		Location: 58,53
@@ -375,20 +366,17 @@ Actors:
 	Actor137: t01
 		Location: 111,92
 		Owner: Neutral
-	Actor306: brik
-		Location: 62,62
+	Actor312: brik
+		Location: 65,61
 		Owner: Soviets
 	Actor287: barr
-		Location: 53,48
+		Location: 54,49
 		Owner: Soviets
 	Actor256: e1
 		Location: 59,49
 		Owner: Soviets
 	Actor98: fenc
 		Location: 109,93
-		Owner: Soviets
-	Actor102: fenc
-		Location: 110,93
 		Owner: Soviets
 	Actor105: fenc
 		Location: 110,94
@@ -420,7 +408,7 @@ Actors:
 	Actor136: t15
 		Location: 110,103
 		Owner: Neutral
-	Actor151: cycl
+	Actor221: brik
 		Location: 97,39
 		Owner: Soviets
 	Actor114: fenc
@@ -477,8 +465,8 @@ Actors:
 	Actor135: dome
 		Location: 94,106
 		Owner: Soviets
-	Actor117: powr
-		Location: 54,43
+	Actor392: e2
+		Location: 59,56
 		Owner: Soviets
 	Actor174: t06
 		Location: 51,78
@@ -504,8 +492,8 @@ Actors:
 	Actor179: tc01
 		Location: 22,76
 		Owner: Neutral
-	Actor307: brik
-		Location: 62,63
+	Actor311: brik
+		Location: 65,60
 		Owner: Soviets
 	Actor168: dog
 		Location: 107,104
@@ -540,8 +528,8 @@ Actors:
 	Actor196: t17
 		Location: 21,15
 		Owner: Neutral
-	Actor197: t15
-		Location: 27,83
+	Actor162: v12
+		Location: 20,89
 		Owner: Neutral
 	Actor198: tc03
 		Location: 18,106
@@ -549,17 +537,17 @@ Actors:
 	Actor200: tc01
 		Location: 19,110
 		Owner: Neutral
-	Actor202: mine
-		Location: 20,96
-		Owner: Neutral
+	Actor197: ftur
+		Location: 19,77
+		Owner: Soviets
 	Actor203: t12
 		Location: 40,87
 		Owner: Neutral
 	Actor204: tc05
 		Location: 37,98
 		Owner: Neutral
-	Actor205: t06
-		Location: 33,104
+	Actor147: mine
+		Location: 20,98
 		Owner: Neutral
 	Actor206: t08
 		Location: 38,109
@@ -591,8 +579,8 @@ Actors:
 	Actor53: e1
 		Location: 109,89
 		Owner: Allies
-	Actor220: v03
-		Location: 28,88
+	Actor148: t01
+		Location: 19,92
 		Owner: Neutral
 	Actor126: t11
 		Location: 106,78
@@ -672,8 +660,8 @@ Actors:
 	Actor164: e1
 		Location: 107,99
 		Owner: Soviets
-	Actor162: powr
-		Location: 45,43
+	Actor257: brik
+		Location: 44,74
 		Owner: Soviets
 	Actor103: brik
 		Location: 43,42
@@ -698,9 +686,6 @@ Actors:
 		Owner: Soviets
 	Actor247: brik
 		Location: 58,42
-		Owner: Soviets
-	Actor148: powr
-		Location: 47,43
 		Owner: Soviets
 	Actor261: brik
 		Location: 58,52
@@ -756,8 +741,8 @@ Actors:
 	Actor171: brik
 		Location: 61,56
 		Owner: Soviets
-	Actor283: brik
-		Location: 62,59
+	Actor369: brik
+		Location: 65,64
 		Owner: Soviets
 	Actor172: brik
 		Location: 57,52
@@ -768,14 +753,14 @@ Actors:
 	Actor293: e2
 		Location: 49,44
 		Owner: Soviets
-	Actor418: brik
-		Location: 61,67
+	Actor285: brik
+		Location: 65,56
 		Owner: Soviets
 	Actor288: e2
 		Location: 48,48
 		Owner: Soviets
-	Actor290: e1
-		Location: 55,50
+	Actor290: dog
+		Location: 58,46
 		Owner: Soviets
 	Actor291: e1
 		Location: 48,52
@@ -786,32 +771,32 @@ Actors:
 	Actor296: e1
 		Location: 55,55
 		Owner: Soviets
-	Actor297: e1
-		Location: 44,72
+	Actor169: tsla
+		Location: 44,71
 		Owner: Soviets
 	Actor295: e2
 		Location: 41,71
 		Owner: Soviets
-	Actor299: brl3
-		Location: 47,45
+	Actor411: e1
+		Location: 41,55
 		Owner: Soviets
-	Actor300: barl
-		Location: 46,45
+	Actor302: brik
+		Location: 58,48
 		Owner: Soviets
-	Actor301: brl3
-		Location: 45,45
+	Actor410: e1
+		Location: 58,54
 		Owner: Soviets
-	Actor302: brl3
-		Location: 44,44
+	Actor303: brik
+		Location: 57,48
 		Owner: Soviets
-	Actor303: brl3
-		Location: 56,43
+	Actor300: t05
+		Location: 22,71
+		Owner: Neutral
+	Actor298: brik
+		Location: 43,73
 		Owner: Soviets
-	Actor304: barl
-		Location: 45,42
-		Owner: Soviets
-	Actor305: brl3
-		Location: 46,42
+	Actor299: dog
+		Location: 43,71
 		Owner: Soviets
 	Actor199: t01
 		Location: 108,49
@@ -843,17 +828,17 @@ Actors:
 	Actor116: t06
 		Location: 100,47
 		Owner: Neutral
-	Actor226: cycl
-		Location: 97,41
+	Actor228: brik
+		Location: 97,42
 		Owner: Soviets
-	Actor219: cycl
-		Location: 98,42
+	Actor231: brik
+		Location: 98,41
 		Owner: Soviets
 	Actor208: oilb
 		Location: 105,43
 		Owner: Soviets
-	Actor221: cycl
-		Location: 98,41
+	Actor229: brik
+		Location: 98,42
 		Owner: Soviets
 	Actor201: oilb
 		Location: 105,40
@@ -864,44 +849,32 @@ Actors:
 	Actor211: barr
 		Location: 101,40
 		Owner: Soviets
-	Actor227: cycl
-		Location: 106,38
+	Actor74: brik
+		Location: 98,37
 		Owner: Soviets
-	Actor228: cycl
-		Location: 105,38
+	Actor234: brik
+		Location: 98,47
 		Owner: Soviets
-	Actor229: cycl
-		Location: 104,38
-		Owner: Soviets
-	Actor231: cycl
-		Location: 103,38
-		Owner: Soviets
-	Actor232: cycl
-		Location: 102,38
-		Owner: Soviets
-	Actor234: cycl
-		Location: 101,38
-		Owner: Soviets
-	Actor235: cycl
-		Location: 100,38
-		Owner: Soviets
-	Actor237: cycl
-		Location: 99,38
-		Owner: Soviets
-	Actor242: cycl
+	Actor21: brik
 		Location: 98,38
 		Owner: Soviets
-	Actor243: cycl
+	Actor232: brik
+		Location: 97,47
+		Owner: Soviets
+	Actor151: brik
+		Location: 97,37
+		Owner: Soviets
+	Actor219: brik
 		Location: 97,38
 		Owner: Soviets
-	Actor244: cycl
+	Actor226: brik
 		Location: 97,40
 		Owner: Soviets
 	Actor248: barl
 		Location: 100,41
 		Owner: Soviets
-	Actor246: cycl
-		Location: 97,42
+	Actor227: brik
+		Location: 97,41
 		Owner: Soviets
 	Actor245: e1
 		Location: 101,43
@@ -943,10 +916,10 @@ Actors:
 		Location: 62,57
 		Owner: Soviets
 	Actor282: brik
-		Location: 62,58
+		Location: 63,56
 		Owner: Soviets
-	Actor285: brik
-		Location: 62,60
+	Actor314: brik
+		Location: 65,63
 		Owner: Soviets
 	Actor308: e1
 		Location: 54,59
@@ -955,19 +928,19 @@ Actors:
 		Location: 59,62
 		Owner: Soviets
 	Actor310: brik
-		Location: 62,64
+		Location: 65,59
 		Owner: Soviets
-	Actor311: brik
-		Location: 62,65
+	Actor306: brik
+		Location: 65,57
 		Owner: Soviets
-	Actor312: brik
-		Location: 62,66
+	Actor307: brik
+		Location: 64,57
 		Owner: Soviets
-	Actor313: brik
-		Location: 61,66
+	Actor283: brik
+		Location: 64,56
 		Owner: Soviets
-	Actor314: brik
-		Location: 62,67
+	Actor286: brik
+		Location: 65,58
 		Owner: Soviets
 	Actor315: brik
 		Location: 54,74
@@ -975,8 +948,8 @@ Actors:
 	Actor316: brik
 		Location: 54,73
 		Owner: Soviets
-	Actor317: brik
-		Location: 53,73
+	Actor317: tsla
+		Location: 55,71
 		Owner: Soviets
 	Actor318: brik
 		Location: 53,74
@@ -1005,8 +978,8 @@ Actors:
 	Actor326: brik
 		Location: 45,74
 		Owner: Soviets
-	Actor328: brik
-		Location: 46,73
+	Actor205: brik
+		Location: 43,74
 		Owner: Soviets
 	Actor425: e1
 		Location: 17,78
@@ -1014,8 +987,8 @@ Actors:
 	Actor424: dog
 		Location: 29,74
 		Owner: Soviets
-	Actor327: brik
-		Location: 45,73
+	Actor220: brik
+		Location: 44,73
 		Owner: Soviets
 	Actor331: t03
 		Location: 97,49
@@ -1048,61 +1021,58 @@ Actors:
 		Location: 104,59
 		Owner: Neutral
 	Actor342: dog
-		Location: 28,56
+		Location: 27,52
 		Owner: Soviets
-	Actor348: sbag
-		Location: 87,50
-		Owner: Soviets
-	Actor349: sbag
-		Location: 88,49
-		Owner: Soviets
-	Actor350: sbag
-		Location: 88,50
-		Owner: Soviets
-	Actor351: sbag
-		Location: 87,49
-		Owner: Soviets
-	Actor352: sbag
-		Location: 92,49
-		Owner: Soviets
-	Actor353: sbag
-		Location: 92,50
-		Owner: Soviets
-	Actor354: sbag
-		Location: 93,50
-		Owner: Soviets
-	Actor355: sbag
-		Location: 93,49
-		Owner: Soviets
-	Actor356: sbag
-		Location: 86,50
-		Owner: Soviets
-	Actor357: sbag
-		Location: 85,50
-		Owner: Soviets
-	Actor358: sbag
+	Actor344: sbag
 		Location: 84,50
 		Owner: Soviets
-	Actor359: sbag
-		Location: 84,49
+	Actor348: e3
+		Location: 87,48
 		Owner: Soviets
-	Actor360: sbag
-		Location: 85,49
+	Actor346: sbag
+		Location: 88,48
 		Owner: Soviets
-	Actor361: sbag
-		Location: 94,50
+	Actor345: sbag
+		Location: 83,50
 		Owner: Soviets
-	Actor362: sbag
-		Location: 95,50
+	Actor352: fenc
+		Location: 71,46
 		Owner: Soviets
-	Actor363: sbag
-		Location: 96,50
+	Actor351: fenc
+		Location: 72,46
 		Owner: Soviets
-	Actor364: sbag
-		Location: 96,49
+	Actor353: fenc
+		Location: 70,46
 		Owner: Soviets
-	Actor365: sbag
-		Location: 95,49
+	Actor349: fenc
+		Location: 72,44
+		Owner: Soviets
+	Actor284: sbag
+		Location: 88,49
+		Owner: Soviets
+	Actor246: sbag
+		Location: 88,50
+		Owner: Soviets
+	Actor244: sbag
+		Location: 87,50
+		Owner: Soviets
+	Actor243: sbag
+		Location: 86,50
+		Owner: Soviets
+	Actor242: sbag
+		Location: 85,50
+		Owner: Soviets
+	Actor354: fenc
+		Location: 70,47
+		Owner: Soviets
+	Actor350: fenc
+		Location: 72,45
+		Owner: Soviets
+	Actor356: fenc
+		Location: 69,48
+		Owner: Soviets
+	Actor355: fenc
+		Location: 69,47
 		Owner: Soviets
 	Actor366: e1
 		Location: 88,51
@@ -1113,7 +1083,7 @@ Actors:
 	Actor368: e1
 		Location: 91,49
 		Owner: Soviets
-	Actor369: e3
+	Actor347: e3
 		Location: 86,49
 		Owner: Soviets
 	Actor370: e2
@@ -1143,47 +1113,47 @@ Actors:
 	Actor378: e1
 		Location: 110,88
 		Owner: Allies
-	Actor379: sam
-		Location: 28,57
+	SAM2: sam
+		Location: 91,65
 		Owner: Soviets
-	Actor472: tsla
-		Location: 58,54
+	Actor391: e2
+		Location: 58,47
 		Owner: Soviets
-	Actor381: brik
-		Location: 25,53
+	Actor304: brik
+		Location: 21,54
 		Owner: Soviets
-	Actor382: brik
-		Location: 25,54
+	Actor363: brik
+		Location: 29,49
 		Owner: Soviets
-	Actor383: brik
-		Location: 26,54
+	Actor305: brik
+		Location: 26,49
 		Owner: Soviets
-	Actor384: brik
-		Location: 26,53
+	Actor361: brik
+		Location: 21,55
 		Owner: Soviets
-	Actor385: brik
-		Location: 27,53
+	Actor362: brik
+		Location: 28,49
 		Owner: Soviets
-	Actor386: brik
-		Location: 28,53
+	Actor360: brik
+		Location: 21,52
 		Owner: Soviets
-	Actor387: brik
-		Location: 29,53
+	Actor359: brik
+		Location: 21,53
 		Owner: Soviets
-	Actor388: brik
-		Location: 30,53
+	Actor358: brik
+		Location: 22,53
 		Owner: Soviets
-	Actor389: brik
-		Location: 31,53
+	Actor357: brik
+		Location: 22,52
 		Owner: Soviets
-	Actor390: brik
-		Location: 32,53
+	Actor329: brik
+		Location: 27,49
 		Owner: Soviets
-	Actor391: brik
-		Location: 32,54
+	Actor328: brik
+		Location: 27,50
 		Owner: Soviets
-	Actor392: brik
-		Location: 31,54
+	Actor327: brik
+		Location: 26,50
 		Owner: Soviets
 	Actor403: brik
 		Location: 21,76
@@ -1236,8 +1206,8 @@ Actors:
 	Actor124: mine
 		Location: 49,25
 		Owner: Neutral
-	Actor147: apwr
-		Location: 43,64
+	Actor202: ftur
+		Location: 30,74
 		Owner: Soviets
 	Actor207: e2
 		Location: 33,55
@@ -1254,8 +1224,8 @@ Actors:
 	Actor341: dog
 		Location: 48,62
 		Owner: Soviets
-	Actor410: tsla
-		Location: 24,49
+	Actor379: brik
+		Location: 65,65
 		Owner: Soviets
 	Actor423: dog
 		Location: 19,78
@@ -1266,8 +1236,8 @@ Actors:
 	Actor426: e1
 		Location: 29,75
 		Owner: Soviets
-	Actor284: hpad
-		Location: 33,57
+	Actor0: hpad
+		Location: 62,59
 		Owner: Soviets
 	Actor166: e1
 		Location: 98,84
@@ -1284,53 +1254,53 @@ Actors:
 	Actor464: e1
 		Location: 46,63
 		Owner: Soviets
-	Actor329: tsla
-		Location: 22,74
+	Actor301: tsla
+		Location: 21,74
 		Owner: Soviets
 	Actor380: tsla
 		Location: 26,73
 		Owner: Soviets
-	Actor298: tsla
-		Location: 42,70
+	Actor297: e1
+		Location: 42,73
 		Owner: Soviets
 	Actor471: tsla
 		Location: 40,40
 		Owner: Soviets
-	Actor473: brik
-		Location: 32,61
+	Actor382: brik
+		Location: 64,64
 		Owner: Soviets
-	Actor474: brik
-		Location: 32,60
+	Actor381: brik
+		Location: 64,65
 		Owner: Soviets
-	Actor475: brik
-		Location: 31,60
+	Actor364: brik
+		Location: 29,48
 		Owner: Soviets
-	Actor476: brik
-		Location: 31,61
+	Actor383: brik
+		Location: 55,73
 		Owner: Soviets
-	Actor477: brik
-		Location: 30,61
+	Actor384: brik
+		Location: 55,74
 		Owner: Soviets
-	Actor478: brik
-		Location: 29,61
+	Actor385: tsla
+		Location: 63,64
 		Owner: Soviets
-	Actor479: brik
-		Location: 28,61
+	Actor117: apwr
+		Location: 42,59
 		Owner: Soviets
-	Actor480: brik
-		Location: 27,61
+	Actor387: apwr
+		Location: 42,56
 		Owner: Soviets
-	Actor481: brik
-		Location: 26,61
+	Actor388: apwr
+		Location: 46,56
 		Owner: Soviets
-	Actor482: brik
-		Location: 25,61
+	Actor389: fix
+		Location: 45,65
 		Owner: Soviets
-	Actor483: brik
-		Location: 25,60
+	Actor390: dog
+		Location: 60,55
 		Owner: Soviets
-	Actor484: brik
-		Location: 26,60
+	Actor365: tsla
+		Location: 25,51
 		Owner: Soviets
 	Actor485: 3tnk
 		Location: 57,44
@@ -1380,12 +1350,12 @@ Actors:
 	Actor330: oilb
 		Location: 67,30
 		Owner: Neutral
-	Actor346: t01
-		Location: 85,31
-		Owner: Neutral
-	Actor344: t05
-		Location: 97,29
-		Owner: Neutral
+	Actor237: brik
+		Location: 97,46
+		Owner: Soviets
+	Actor102: spen
+		Location: 101,35
+		Owner: Soviets
 	Actor343: brl3
 		Location: 69,30
 		Owner: Neutral
@@ -1410,9 +1380,9 @@ Actors:
 	Actor521: sbag
 		Location: 93,17
 		Owner: Soviets
-	Actor345: t03
-		Location: 107,34
-		Owner: Neutral
+	Actor235: brik
+		Location: 98,46
+		Owner: Soviets
 	Actor490: fenc
 		Location: 74,16
 		Owner: Soviets
@@ -1428,7 +1398,7 @@ Actors:
 	Actor289: sbag
 		Location: 95,17
 		Owner: Soviets
-	Actor496: sam
+	SAM3: sam
 		Location: 94,18
 		Owner: Soviets
 	Actor512: sbag
@@ -1440,9 +1410,9 @@ Actors:
 	Actor514: tc03
 		Location: 104,20
 		Owner: Neutral
-	Actor525: tc03
-		Location: 31,84
-		Owner: Neutral
+	Actor190: ftur
+		Location: 40,71
+		Owner: Soviets
 	Actor524: t16
 		Location: 32,24
 		Owner: Neutral
@@ -1458,8 +1428,8 @@ Actors:
 	Actor530: ftur
 		Location: 52,61
 		Owner: Soviets
-	Actor292: tsla
-		Location: 58,45
+	Actor167: tsla
+		Location: 58,44
 		Owner: Soviets
 
 Smudges:
@@ -1471,11 +1441,12 @@ Rules:
 		-CrateDrop:
 		-SpawnMPUnits:
 		-MPStartLocations:
+		Allies02Script:
 	TRAN.Husk2:
 		Burns:
 			Damage: 0
 		RevealsShroud:
-			Range: 15
+			Range: 3
 
 Sequences:
 
