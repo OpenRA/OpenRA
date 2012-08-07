@@ -25,8 +25,8 @@ namespace OpenRA.Mods.RA.Missions
 	{
 		static readonly string[] objectives =
 		{
-			"Find Einstein.",
-			"Wait for the helicopter and extract Einstein."
+			"Find Einstein. Tanya and Einstein must survive.",
+			"Wait for the helicopter and extract Einstein. Tanya and Einstein must survive."
 		};
 
 		int currentObjective;
