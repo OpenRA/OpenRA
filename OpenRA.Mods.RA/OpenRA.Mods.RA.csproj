@@ -233,6 +233,7 @@
     <Compile Include="Lint\CheckSyncAnnotations.cs" />
     <Compile Include="Lint\CheckTraitPrerequisites.cs" />
     <Compile Include="Lint\LintBuildablePrerequisites.cs" />
+    <Compile Include="Missions\Allies02Script.cs" />
     <Compile Include="MPStartLocations.cs" />
     <Compile Include="Mine.cs" />
     <Compile Include="Minelayer.cs" />
