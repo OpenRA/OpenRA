@@ -1431,6 +1431,9 @@ Actors:
 	Actor167: tsla
 		Location: 58,44
 		Owner: Soviets
+	Actor412: kenn
+		Location: 55,57
+		Owner: Soviets
 
 Smudges:
 
