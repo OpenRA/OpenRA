@@ -1,10 +1,10 @@
 local moai
 local win = ide.osname == "Windows"
 
-local function fullNameIfExists(p, f)
+local function fullPathIfExists(p, f)
   if not p or not f then return end
   local file = wx.wxFileName(p, f)
-  return file:FileExists() and file:GetFullName()
+  return file:FileExists() and file:GetFullPath()
 end
 
 return {
@@ -15,10 +15,12 @@ return {
     -- add check for MOAI_CONFIG
     if not moai then
       local sep = win and ';' or ':'
-      local path = (os.getenv('PATH') or '')..sep..(os.getenv('MOAI_BIN') or '')
+      local path = (os.getenv('PATH') or '')..sep
+                 ..(os.getenv('MOAI_BIN') or '')..sep
+                 ..(os.getenv('HOME') and os.getenv('HOME') .. '/bin' or '')
       local paths = {}
       for p in path:gmatch("[^"..sep.."]+") do
-        moai = moai or fullNameIfExists(p, win and 'moai.exe' or 'moai')
+        moai = moai or fullPathIfExists(p, win and 'moai.exe' or 'moai')
         table.insert(paths, p)
       end
       moai = moai or ide.config.path.moai
@@ -28,7 +30,7 @@ return {
         return
       end
     end
-    local file = string.gsub(wfilename:GetFullPath(), "\\","/")
+    local file = wfilename:GetFullPath()
     if rundebug then
       DebuggerAttachDefault()
       local code = (
@@ -48,8 +50,13 @@ return {
       f:write(code)
       f:close()
     end
-    local config = fullNameIfExists(os.getenv('MOAI_CONFIG'), 'config.lua') or ''
-    local cmd = ('"%s" %s"%s"'):format(string.gsub(moai, "\\","/"), config, file)
+    -- try to find a config file: (1) MOAI_CONFIG, (2) project directory,
+    -- (3) folder with the current file, (4) folder with moai executable
+    local config = fullPathIfExists(os.getenv('MOAI_CONFIG') or self:fworkdir(wfilename), 'config.lua')
+      or fullPathIfExists(wfilename:GetPath(wx.wxPATH_GET_VOLUME), 'config.lua')
+      or fullPathIfExists(wx.wxFileName(moai):GetPath(wx.wxPATH_GET_VOLUME), 'config.lua')
+    local cmd = config and ('"%s" "%s" "%s"'):format(moai, config, file)
+      or ('"%s" "%s"'):format(moai, file)
     -- CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
     return CommandLineRun(cmd,self:fworkdir(wfilename),true,false,nil,nil,
       function() ide.debugger.pid = nil if rundebug then wx.wxRemoveFile(file) end end)
