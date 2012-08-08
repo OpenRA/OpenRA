@@ -57,13 +57,13 @@ namespace OpenRA.Mods.RA.Missions
 		static readonly string[] lastAttackWaveAddition = { "3tnk", "e1", "e1", "e1", "e1", "e2", "e2", "e2", "e2" };
 		int currentAttackWaveFrameNumber;
 		int currentAttackWave;
-		const int einsteinChinookArrivesAtAttackWave = 5;
+		const int EinsteinChinookAttackWave = 5;
 
-		const int labRange = 5;
-		const string einsteinName = "einstein";
-		const string tanyaName = "e7";
-		const string chinookName = "tran";
-		const string signalFlareName = "flare";
+		const int LabClearRange = 5;
+		const string EinsteinName = "einstein";
+		const string TanyaName = "e7";
+		const string ChinookName = "tran";
+		const string SignalFlareName = "flare";
 
 		void DisplayObjective()
 		{
@@ -79,7 +79,6 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			allies.WinState = WinState.Lost;
 			Game.AddChatLine(Color.Red, "Mission failed", text);
-			self.World.LocalShroud.Disabled = true;
 			Sound.Play("misnlst1.aud", 5);
 		}
 
@@ -91,7 +90,6 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			allies.WinState = WinState.Won;
 			Game.AddChatLine(Color.Blue, "Mission accomplished", text);
-			self.World.LocalShroud.Disabled = true;
 			Sound.Play("misnwon1.aud", 5);
 		}
 
@@ -144,11 +142,11 @@ namespace OpenRA.Mods.RA.Missions
 					SendAttackWave(self, attackWave);
 					currentAttackWave++;
 					currentAttackWaveFrameNumber = self.World.FrameNumber;
-					if (currentAttackWave >= einsteinChinookArrivesAtAttackWave)
+					if (currentAttackWave >= EinsteinChinookAttackWave)
 					{
 						SendAttackWave(self, lastAttackWaveAddition);
 					}
-					if (currentAttackWave == einsteinChinookArrivesAtAttackWave)
+					if (currentAttackWave == EinsteinChinookAttackWave)
 					{
 						FlyEinsteinFromExtractionLZ(self);
 					}
@@ -178,7 +176,7 @@ namespace OpenRA.Mods.RA.Missions
 
 		void SpawnSignalFlare(Actor self)
 		{
-			self.World.CreateActor(signalFlareName, new TypeDictionary { new OwnerInit(allies), new LocationInit(extractionLZ.Location) });
+			self.World.CreateActor(SignalFlareName, new TypeDictionary { new OwnerInit(allies), new LocationInit(extractionLZ.Location) });
 		}
 
 		void SendAttackWave(Actor self, IEnumerable<string> wave)
@@ -217,13 +215,13 @@ namespace OpenRA.Mods.RA.Missions
 
 		bool AlliesControlLab(Actor self)
 		{
-			var units = UnitsNearActor(self, lab, labRange);
+			var units = UnitsNearActor(self, lab, LabClearRange);
 			return units.Any() && units.All(a => a.Owner == allies);
 		}
 
 		void SpawnEinsteinAtLab(Actor self)
 		{
-			einstein = self.World.CreateActor(einsteinName, new TypeDictionary { new OwnerInit(allies), new LocationInit(lab.Location) });
+			einstein = self.World.CreateActor(EinsteinName, new TypeDictionary { new OwnerInit(allies), new LocationInit(lab.Location) });
 			einstein.QueueActivity(new Move.Move(lab.Location - new CVec(0, 2)));
 		}
 
@@ -239,7 +237,7 @@ namespace OpenRA.Mods.RA.Missions
 
 		void FlyEinsteinFromExtractionLZ(Actor self)
 		{
-			einsteinChinook = self.World.CreateActor(chinookName, new TypeDictionary { new OwnerInit(allies), new LocationInit(extractionLZEntryPoint.Location) });
+			einsteinChinook = self.World.CreateActor(ChinookName, new TypeDictionary { new OwnerInit(allies), new LocationInit(extractionLZEntryPoint.Location) });
 			einsteinChinook.QueueActivity(new HeliFly(extractionLZ.CenterLocation));
 			einsteinChinook.QueueActivity(new Turn(0));
 			einsteinChinook.QueueActivity(new HeliLand(true));
@@ -251,8 +249,8 @@ namespace OpenRA.Mods.RA.Missions
 
 		void FlyTanyaToInsertionLZ(Actor self)
 		{
-			tanya = self.World.CreateActor(false, tanyaName, new TypeDictionary { new OwnerInit(allies) });
-			var chinook = self.World.CreateActor(chinookName, new TypeDictionary { new OwnerInit(allies), new LocationInit(insertionLZEntryPoint.Location) });
+			tanya = self.World.CreateActor(false, TanyaName, new TypeDictionary { new OwnerInit(allies) });
+			var chinook = self.World.CreateActor(ChinookName, new TypeDictionary { new OwnerInit(allies), new LocationInit(insertionLZEntryPoint.Location) });
 			chinook.Trait<Cargo>().Load(chinook, tanya);
 			chinook.QueueActivity(new HeliFly(insertionLZ.CenterLocation));
 			chinook.QueueActivity(new Turn(0));

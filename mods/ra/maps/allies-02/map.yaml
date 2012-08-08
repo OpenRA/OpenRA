@@ -24,22 +24,35 @@ Players:
 		OwnsWorld: True
 		NonCombatant: True
 		Race: allies
-	PlayerReference@Allies:
-		Name: Allies
+	PlayerReference@Allies1:
+		Name: Allies1
 		Playable: True
-		AllowBots: False
+		#AllowBots: False
 		LockRace: True
 		Race: allies
 		LockColor: True
 		ColorRamp: 153,240,130,10
 		LockSpawn: True
 		LockTeam: True
+		Allies: Allies2
+		Enemies: Soviets
+	PlayerReference@Allies2:
+		Name: Allies2
+		Playable: True
+		#AllowBots: False
+		LockRace: True
+		Race: allies
+		LockColor: True
+		ColorRamp: 80,240,130,10
+		LockSpawn: True
+		LockTeam: True
+		Allies: Allies1
 		Enemies: Soviets
 	PlayerReference@Soviets:
 		Name: Soviets
 		Race: soviet
 		ColorRamp: 0,255,128,10
-		Enemies: Allies
+		Enemies: Allies1,Allies2
 
 Actors:
 	Actor1: v07
@@ -194,7 +207,7 @@ Actors:
 		Owner: Neutral
 	Actor78: e6
 		Location: 109,88
-		Owner: Allies
+		Owner: Allies1
 	Actor135: e1
 		Location: 97,104
 		Owner: Soviets
@@ -260,7 +273,7 @@ Actors:
 		Owner: Neutral
 	ChinookHusk: tran.husk2
 		Location: 108,87
-		Owner: Allies
+		Owner: Allies1
 	Actor54: cycl
 		Location: 98,103
 		Owner: Soviets
@@ -273,18 +286,18 @@ Actors:
 	Actor313: brik
 		Location: 65,62
 		Owner: Soviets
-	Actor84: einstein
+	Einstein: einstein
 		Location: 108,86
-		Owner: Allies
+		Owner: Allies1
 	Actor85: medi
 		Location: 110,87
-		Owner: Allies
+		Owner: Allies1
 	SAM1: sam
 		Location: 106,96
 		Owner: Soviets
-	Actor83: e7
+	Tanya: e7
 		Location: 106,86
-		Owner: Allies
+		Owner: Allies1
 	Actor60: e2
 		Location: 77,96
 		Owner: Soviets
@@ -578,7 +591,7 @@ Actors:
 		Owner: Neutral
 	Actor53: e1
 		Location: 109,89
-		Owner: Allies
+		Owner: Allies1
 	Actor148: t01
 		Location: 19,92
 		Owner: Neutral
@@ -590,7 +603,7 @@ Actors:
 		Owner: Neutral
 	Actor52: e1
 		Location: 106,88
-		Owner: Allies
+		Owner: Allies1
 	Actor238: t06
 		Location: 16,35
 		Owner: Neutral
@@ -1106,13 +1119,13 @@ Actors:
 		Owner: Soviets
 	Actor376: e1
 		Location: 107,89
-		Owner: Allies
+		Owner: Allies1
 	Actor377: e1
 		Location: 108,89
-		Owner: Allies
+		Owner: Allies1
 	Actor378: e1
 		Location: 110,88
-		Owner: Allies
+		Owner: Allies1
 	SAM2: sam
 		Location: 91,65
 		Owner: Soviets
@@ -1539,6 +1552,30 @@ Actors:
 	Actor456: sbag
 		Location: 33,56
 		Owner: Soviets
+	Actor452: tent
+		Location: 33,92
+		Owner: Allies2
+	Actor457: proc
+		Location: 24,92
+		Owner: Allies2
+	Actor458: weap
+		Location: 30,103
+		Owner: Allies2
+	Actor459: powr
+		Location: 38,101
+		Owner: Allies2
+	Actor460: powr
+		Location: 36,101
+		Owner: Allies2
+	Actor461: pbox.e1
+		Location: 35,88
+		Owner: Allies2
+	Actor465: gun
+		Location: 39,89
+		Owner: Allies2
+	Actor466: gun
+		Location: 31,89
+		Owner: Allies2
 
 Smudges:
 
