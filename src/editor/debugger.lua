@@ -234,6 +234,11 @@ debugger.listen = function()
         return
       end
 
+      copas.setErrorHandler(function(error)
+        DisplayOutput("Can't start debugging session due to internal error '" .. error .. "'.\n")
+        skt:close()
+      end)
+
       local options = debugger.options or {}
       if not debugger.scratchpad then SetAllEditorsReadOnly(true) end
       local wxfilepath = GetEditorFileAndCurInfo()
