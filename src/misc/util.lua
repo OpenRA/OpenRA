@@ -152,6 +152,7 @@ function GetFileNameExt(filePath)
 end
 
 function GetPathWithSep(wxfn)
+  if type(wxfn) == 'string' then wxfn = wx.wxFileName(wxfn) end
   return wxfn:GetPath(bit.bor(wx.wxPATH_GET_VOLUME, wx.wxPATH_GET_SEPARATOR))
 end
 
@@ -172,6 +173,12 @@ function FileSysGet(dir,spec)
     f = browse:FindNext()
   end
   return content
+end
+
+function GetFullPathIfExists(p, f)
+  if not p or not f then return end
+  local file = wx.wxFileName(p, f)
+  return file:FileExists() and file:GetFullPath()
 end
 
 function pairsSorted(t, f)
