@@ -27,7 +27,6 @@ Players:
 	PlayerReference@Allies1:
 		Name: Allies1
 		Playable: True
-		#AllowBots: False
 		LockRace: True
 		Race: allies
 		LockColor: True
@@ -39,7 +38,6 @@ Players:
 	PlayerReference@Allies2:
 		Name: Allies2
 		Playable: True
-		#AllowBots: False
 		LockRace: True
 		Race: allies
 		LockColor: True
@@ -1438,8 +1436,8 @@ Actors:
 	Actor528: fenc
 		Location: 74,23
 		Owner: Soviets
-	Actor530: ftur
-		Location: 52,61
+	Actor473: tsla
+		Location: 52,60
 		Owner: Soviets
 	Actor167: tsla
 		Location: 58,44
@@ -1516,8 +1514,8 @@ Actors:
 	Actor444: dome
 		Location: 55,68
 		Owner: Soviets
-	Actor445: fact
-		Location: 27,56
+	Actor445: apwr
+		Location: 29,54
 		Owner: Soviets
 	Actor450: silo
 		Location: 47,43
@@ -1576,6 +1574,27 @@ Actors:
 	Actor466: gun
 		Location: 31,89
 		Owner: Allies2
+	Actor83: dome
+		Location: 29,96
+		Owner: Allies2
+	Allies2BasePoint: waypoint
+		Location: 32,97
+		Owner: Neutral
+	Actor468: apwr
+		Location: 25,54
+		Owner: Soviets
+	Actor467: powr
+		Location: 102,46
+		Owner: Soviets
+	Actor469: apwr
+		Location: 25,57
+		Owner: Soviets
+	Actor470: apwr
+		Location: 29,57
+		Owner: Soviets
+	Actor472: fact
+		Location: 29,61
+		Owner: Soviets
 
 Smudges:
 

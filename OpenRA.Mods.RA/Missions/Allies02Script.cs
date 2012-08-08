@@ -34,6 +34,8 @@ namespace OpenRA.Mods.RA.Missions
 		Actor tanya;
 		Actor einstein;
 
+		Actor allies2BasePoint;
+
 		Player allies1;
 		Player allies2;
 		Player soviets;
@@ -83,7 +85,7 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			else if (currentObjective == 1)
 			{
-				
+
 			}
 			if (tanya.Destroyed)
 			{
@@ -108,11 +110,12 @@ namespace OpenRA.Mods.RA.Missions
 			sam4 = actors["SAM4"];
 			tanya = actors["Tanya"];
 			einstein = actors["Einstein"];
+			allies2BasePoint = actors["Allies2BasePoint"];
 			w.WorldActor.Trait<Shroud>().Explore(w, sam1.Location, 2);
 			w.WorldActor.Trait<Shroud>().Explore(w, sam2.Location, 2);
 			w.WorldActor.Trait<Shroud>().Explore(w, sam3.Location, 2);
 			w.WorldActor.Trait<Shroud>().Explore(w, sam4.Location, 2);
-			Game.MoveViewport(chinookHusk.Location.ToFloat2());
+			Game.MoveViewport((w.LocalPlayer == allies1 ? chinookHusk.Location : allies2BasePoint.Location).ToFloat2());
 		}
 	}
 }
