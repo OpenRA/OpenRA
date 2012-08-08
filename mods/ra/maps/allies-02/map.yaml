@@ -1565,14 +1565,11 @@ Actors:
 	Actor460: powr
 		Location: 36,101
 		Owner: Allies2
-	Actor461: pbox.e1
-		Location: 35,88
+	Actor461: pbox
+		Location: 27,88
 		Owner: Allies2
 	Actor465: gun
-		Location: 39,89
-		Owner: Allies2
-	Actor466: gun
-		Location: 31,89
+		Location: 39,88
 		Owner: Allies2
 	Actor83: dome
 		Location: 29,96
@@ -1593,8 +1590,20 @@ Actors:
 		Location: 29,57
 		Owner: Soviets
 	Actor472: fact
-		Location: 29,61
+		Location: 29,62
 		Owner: Soviets
+	Actor84: fenc
+		Location: 110,93
+		Owner: Soviets
+	Actor474: apwr
+		Location: 36,104
+		Owner: Allies2
+	Actor476: gun
+		Location: 21,88
+		Owner: Allies2
+	Actor475: pbox
+		Location: 33,88
+		Owner: Allies2
 
 Smudges:
 
@@ -1611,6 +1620,8 @@ Rules:
 			Damage: 0
 		RevealsShroud:
 			Range: 3
+	E7:
+		-AutoTarget:
 
 Sequences:
 
