@@ -1,6 +1,17 @@
 local mainpath = string.gsub(ide.editorFilename:gsub("[^/\\]+$",""),"\\","/")
 local os = ide.osname
 
+local macExe = mainpath..'bin/lua.app/Contents/MacOS/lua'
+local exe = (os == "Macintosh" and wx.wxFileExists(macExe)
+  and macExe or mainpath..'bin/lua')
+
+-- (luaconf.h) in Windows, any exclamation mark ('!') in the path is replaced
+-- by the path of the directory of the executable file of the current process.
+-- this effectively prevents any path with an exclamation mark from working.
+-- if the path has an excamation mark, we allow Lua to expand it
+-- (for use in LUA_PATH/LUA_CPATH)
+if os == "Windows" and mainpath:find('%!') then mainpath = "!/../" end
+
 local clibs =
   os == "Windows" and mainpath.."bin/?.dll;"..mainpath.."bin/clibs/?.dll" or
   os == "Macintosh" and mainpath.."bin/lib?.dylib;"..mainpath.."bin/clibs/?.dylib" or
@@ -8,10 +19,6 @@ local clibs =
 wx.wxSetEnv("LUA_PATH", package.path .. ';'
   .. mainpath.."lualibs/?/?.lua;"..mainpath.."lualibs/?.lua")
 if clibs then wx.wxSetEnv("LUA_CPATH", package.cpath .. ';' .. clibs) end
-
-local macExe = mainpath..'bin/lua.app/Contents/MacOS/lua'
-local exe = (os == "Macintosh" and wx.wxFileExists(macExe)
-  and macExe or mainpath..'bin/lua')
 
 return {
   name = "Lua with Debugger",
