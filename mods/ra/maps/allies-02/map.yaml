@@ -195,17 +195,17 @@ Actors:
 	Actor78: e6
 		Location: 109,88
 		Owner: Allies
-	Actor54: t05
-		Location: 96,102
-		Owner: Neutral
+	Actor135: e1
+		Location: 97,104
+		Owner: Soviets
 	Actor56: cycl
 		Location: 103,105
 		Owner: Soviets
 	Actor55: cycl
 		Location: 103,104
 		Owner: Soviets
-	Actor57: powr
-		Location: 97,106
+	Actor79: cycl
+		Location: 97,103
 		Owner: Soviets
 	Actor58: t06
 		Location: 85,105
@@ -261,9 +261,9 @@ Actors:
 	ChinookHusk: tran.husk2
 		Location: 108,87
 		Owner: Allies
-	Actor79: t06
-		Location: 90,102
-		Owner: Neutral
+	Actor54: cycl
+		Location: 98,103
+		Owner: Soviets
 	Actor81: tc02
 		Location: 94,66
 		Owner: Neutral
@@ -462,7 +462,7 @@ Actors:
 	Actor185: tc02
 		Location: 17,57
 		Owner: Neutral
-	Actor135: dome
+	Actor57: powr
 		Location: 94,106
 		Owner: Soviets
 	Actor392: e2
@@ -1356,9 +1356,9 @@ Actors:
 	Actor102: spen
 		Location: 101,35
 		Owner: Soviets
-	Actor343: brl3
-		Location: 69,30
-		Owner: Neutral
+	Actor343: ftur
+		Location: 59,42
+		Owner: Soviets
 	Actor487: apwr
 		Location: 80,16
 		Owner: Soviets
@@ -1433,6 +1433,72 @@ Actors:
 		Owner: Soviets
 	Actor412: kenn
 		Location: 55,57
+		Owner: Soviets
+	Actor413: e1
+		Location: 104,38
+		Owner: Soviets
+	Actor414: ftur
+		Location: 61,55
+		Owner: Soviets
+	Actor418: ftur
+		Location: 88,63
+		Owner: Soviets
+	Actor419: e1
+		Location: 82,62
+		Owner: Soviets
+	Actor421: e2
+		Location: 80,64
+		Owner: Soviets
+	Actor422: dog
+		Location: 84,64
+		Owner: Soviets
+	Actor427: e1
+		Location: 76,71
+		Owner: Soviets
+	Actor429: e2
+		Location: 78,70
+		Owner: Soviets
+	Actor430: e3
+		Location: 57,50
+		Owner: Soviets
+	Actor431: e3
+		Location: 57,51
+		Owner: Soviets
+	Actor432: e3
+		Location: 63,57
+		Owner: Soviets
+	Actor433: e3
+		Location: 46,73
+		Owner: Soviets
+	Actor434: e3
+		Location: 27,74
+		Owner: Soviets
+	Actor435: e3
+		Location: 20,75
+		Owner: Soviets
+	Actor436: e3
+		Location: 88,66
+		Owner: Soviets
+	Actor437: fenc
+		Location: 88,21
+		Owner: Soviets
+	Actor440: fenc
+		Location: 90,22
+		Owner: Soviets
+	Actor439: fenc
+		Location: 90,21
+		Owner: Soviets
+	Actor441: fenc
+		Location: 91,22
+		Owner: Soviets
+	Actor438: fenc
+		Location: 89,21
+		Owner: Soviets
+	Actor442: fenc
+		Location: 92,22
+		Owner: Soviets
+	Actor443: dog
+		Location: 98,105
 		Owner: Soviets
 
 Smudges:
