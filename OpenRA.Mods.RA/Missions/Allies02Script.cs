@@ -21,6 +21,7 @@ namespace OpenRA.Mods.RA.Missions
 		Actor sam1;
 		Actor sam2;
 		Actor sam3;
+		Actor sam4;
 
 		Player allies;
 		Player soviets;
@@ -39,9 +40,11 @@ namespace OpenRA.Mods.RA.Missions
 			sam1 = actors["SAM1"];
 			sam2 = actors["SAM2"];
 			sam3 = actors["SAM3"];
-			w.WorldActor.Trait<Shroud>().Explore(w, sam1.Location, 3);
-			w.WorldActor.Trait<Shroud>().Explore(w, sam2.Location, 3);
-			w.WorldActor.Trait<Shroud>().Explore(w, sam3.Location, 3);
+			sam4 = actors["SAM4"];
+			w.WorldActor.Trait<Shroud>().Explore(w, sam1.Location, 2);
+			w.WorldActor.Trait<Shroud>().Explore(w, sam2.Location, 2);
+			w.WorldActor.Trait<Shroud>().Explore(w, sam3.Location, 2);
+			w.WorldActor.Trait<Shroud>().Explore(w, sam4.Location, 2);
 		}
 	}
 }

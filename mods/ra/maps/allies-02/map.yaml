@@ -1524,7 +1524,7 @@ Actors:
 	Actor451: silo
 		Location: 47,44
 		Owner: Soviets
-	Actor452: sam
+	SAM4: sam
 		Location: 34,57
 		Owner: Soviets
 	Actor453: sbag
