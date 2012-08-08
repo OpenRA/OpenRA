@@ -30,6 +30,7 @@ namespace OpenRA.Mods.RA
 		[Sync] int ticks;
 		[Sync] public CPos Location;
 		CrateInfo Info;
+		bool collected;
 
 		public Crate(ActorInitializer init, CrateInfo info)
 		{
@@ -46,12 +47,16 @@ namespace OpenRA.Mods.RA
 
 		public void OnCrush(Actor crusher)
 		{
+			if (collected) return;
+
 			var shares = self.TraitsImplementing<CrateAction>().Select(
 				a => Pair.New(a, a.GetSelectionSharesOuter(crusher)));
 			var totalShares = shares.Sum(a => a.Second);
 			var n = self.World.SharedRandom.Next(totalShares);
 
 			self.Destroy();
+			collected = true;
+
 			foreach (var s in shares)
 				if (n < s.Second)
 				{
