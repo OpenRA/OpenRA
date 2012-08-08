@@ -1236,8 +1236,8 @@ Actors:
 	Actor426: e1
 		Location: 29,75
 		Owner: Soviets
-	Actor0: hpad
-		Location: 62,59
+	Actor0: silo
+		Location: 46,43
 		Owner: Soviets
 	Actor166: e1
 		Location: 98,84
@@ -1499,6 +1499,45 @@ Actors:
 		Owner: Soviets
 	Actor443: dog
 		Location: 98,105
+		Owner: Soviets
+	Actor444: dome
+		Location: 55,68
+		Owner: Soviets
+	Actor445: fact
+		Location: 27,56
+		Owner: Soviets
+	Actor450: silo
+		Location: 47,43
+		Owner: Soviets
+	Actor447: tsla
+		Location: 27,61
+		Owner: Soviets
+	Actor448: dog
+		Location: 26,60
+		Owner: Soviets
+	Actor449: e1
+		Location: 28,65
+		Owner: Soviets
+	Actor446: silo
+		Location: 46,44
+		Owner: Soviets
+	Actor451: silo
+		Location: 47,44
+		Owner: Soviets
+	Actor452: sam
+		Location: 34,57
+		Owner: Soviets
+	Actor453: sbag
+		Location: 34,58
+		Owner: Soviets
+	Actor454: sbag
+		Location: 33,58
+		Owner: Soviets
+	Actor455: sbag
+		Location: 33,57
+		Owner: Soviets
+	Actor456: sbag
+		Location: 33,56
 		Owner: Soviets
 
 Smudges:
