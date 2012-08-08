@@ -148,12 +148,10 @@ local function activateDocument(fileName, line)
   end
 
   local activated
+  local fileName = wx.wxFileName(fileName)
   for _, document in pairs(ide.openDocuments) do
-    local editor = document.editor
-    -- for running in cygwin, use same type of separators
-    local filePath = string.gsub(document.filePath, "\\", "/")
-    local fileName = string.gsub(fileName, "\\", "/")
-    if string.upper(filePath) == string.upper(fileName) then
+    if fileName:SameAs(wx.wxFileName(document.filePath)) then
+      local editor = document.editor
       local selection = document.index
       notebook:SetSelection(selection)
       SetEditorSelection(selection)

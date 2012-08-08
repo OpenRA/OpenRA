@@ -27,19 +27,17 @@ local function findDocumentToReuse()
 end
 
 function LoadFile(filePath, editor, file_must_exist)
-  filePath = wx.wxFileName(filePath):GetFullPath()
-  local cmpName = string.lower(string.gsub(filePath, "\\", "/"))
-
   -- prevent files from being reopened again
   if (not editor) then
+    local filePath = wx.wxFileName(filePath)
     for id, doc in pairs(openDocuments) do
-      local docName = doc.filePath and string.lower(string.gsub(doc.filePath, "\\", "/"))
-      if cmpName == docName then
+      if doc.filePath and filePath:SameAs(wx.wxFileName(doc.filePath)) then
         notebook:SetSelection(doc.index)
         return doc.editor
       end
     end
   end
+  filePath = wx.wxFileName(filePath):GetFullPath()
 
   -- if not opened yet, try open now
   local file_text = ""
