@@ -31,7 +31,7 @@ return {
       DebuggerAttachDefault()
       script = rundebug
     else
-      script = ([[dofile '%s']]):format(filepath)
+      script = ('dofile [[%s]]'):format(filepath)
     end
     local code = ([[xpcall(function() io.stdout:setvbuf('no'); %s end,function(err) print(debug.traceback(err)) end)]]):format(script)
     local cmd = '"'..exe..'" -e "'..code..'"'
