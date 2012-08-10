@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA.Missions
 		Player soviets;
 
 		CountdownTimerWidget reinfTimer;
-		const int CountdownTicks = 18000;
+		const int CountdownTicks = /*18000;*/300;
 
 		static readonly string[] reinforcements = { "1tnk", "1tnk", "jeep", "mcv" };
 
@@ -171,18 +171,27 @@ namespace OpenRA.Mods.RA.Missions
 		{
 			Header = header;
 			TicksLeft = ticksLeft;
+			OnOneMinuteRemaining = () => Sound.Play("1minr.aud");
+			OnTwoMinutesRemaining = () => Sound.Play("2minr.aud");
+			OnThreeMinutesRemaining = () => Sound.Play("3minr.aud");
+			OnFourMinutesRemaining = () => Sound.Play("4minr.aud");
+			OnFiveMinutesRemaining = () => Sound.Play("5minr.aud");
+			OnTenMinutesRemaining = () => Sound.Play("10minr.aud");
+			OnTwentyMinutesRemaining = () => Sound.Play("20minr.aud");
+			OnThirtyMinutesRemaining = () => Sound.Play("30minr.aud");
+			OnFortyMinutesRemaining = () => Sound.Play("40minr.aud");
 		}
 
 		public Action OnExpired;
-		public Action OnOneMinuteRemaining = () => Sound.Play("1minr.aud");
-		public Action OnTwoMinutesRemaining = () => Sound.Play("2minr.aud");
-		public Action OnThreeMinutesRemaining = () => Sound.Play("3minr.aud");
-		public Action OnFourMinutesRemaining = () => Sound.Play("4minr.aud");
-		public Action OnFiveMinutesRemaining = () => Sound.Play("5minr.aud");
-		public Action OnTenMinutesRemaining = () => Sound.Play("10minr.aud");
-		public Action OnTwentyMinutesRemaining = () => Sound.Play("20minr.aud");
-		public Action OnThirtyMinutesRemaining = () => Sound.Play("30minr.aud");
-		public Action OnFortyMinutesRemaining = () => Sound.Play("40minr.aud");
+		public Action OnOneMinuteRemaining { get; set; }
+		public Action OnTwoMinutesRemaining { get; set; }
+		public Action OnThreeMinutesRemaining { get; set; }
+		public Action OnFourMinutesRemaining { get; set; }
+		public Action OnFiveMinutesRemaining { get; set; }
+		public Action OnTenMinutesRemaining { get; set; }
+		public Action OnTwentyMinutesRemaining { get; set; }
+		public Action OnThirtyMinutesRemaining { get; set; }
+		public Action OnFortyMinutesRemaining { get; set; }
 
 		const int Expired = 0;
 		const int OneMinute = 1500;
