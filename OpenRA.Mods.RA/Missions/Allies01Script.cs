@@ -68,7 +68,7 @@ namespace OpenRA.Mods.RA.Missions
 		void DisplayObjective()
 		{
 			Game.AddChatLine(Color.LimeGreen, "Objective", objectives[currentObjective]);
-			Sound.Play("bleep6.aud", 5);
+			Sound.Play("bleep6.aud");
 		}
 
 		void MissionFailed(Actor self, string text)
@@ -79,7 +79,7 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			allies.WinState = WinState.Lost;
 			Game.AddChatLine(Color.Red, "Mission failed", text);
-			Sound.Play("misnlst1.aud", 5);
+			Sound.Play("misnlst1.aud");
 		}
 
 		void MissionAccomplished(Actor self, string text)
@@ -90,7 +90,7 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			allies.WinState = WinState.Won;
 			Game.AddChatLine(Color.Blue, "Mission accomplished", text);
-			Sound.Play("misnwon1.aud", 5);
+			Sound.Play("misnwon1.aud");
 		}
 
 		public void Tick(Actor self)
@@ -121,9 +121,8 @@ namespace OpenRA.Mods.RA.Missions
 				if (AlliesControlLab(self))
 				{
 					SpawnSignalFlare(self);
-					Sound.Play("flaren1.aud", 5);
+					Sound.Play("flaren1.aud");
 					SpawnEinsteinAtLab(self); // spawn Einstein once the area is clear
-					Sound.Play("einok1.aud"); // "Incredible!" - Einstein
 					SendShips(self);
 					currentObjective++;
 					DisplayObjective();
@@ -138,7 +137,7 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				if (self.World.FrameNumber >= currentAttackWaveFrameNumber + 600)
 				{
-					Sound.Play("enmyapp1.aud", 5);
+					Sound.Play("enmyapp1.aud");
 					SendAttackWave(self, attackWave);
 					currentAttackWave++;
 					currentAttackWaveFrameNumber = self.World.FrameNumber;
