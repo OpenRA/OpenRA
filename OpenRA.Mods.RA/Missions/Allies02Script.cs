@@ -11,6 +11,7 @@
 using System;
 using System.Drawing;
 using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
@@ -37,12 +38,18 @@ namespace OpenRA.Mods.RA.Missions
 
 		Actor chinookHusk;
 		Actor allies2BasePoint;
+		Actor reinforcementsEntryPoint;
+
+		World world;
 
 		Player allies1;
 		Player allies2;
 		Player soviets;
 
 		CountdownTimerWidget reinfTimer;
+		const int CountdownTicks = 18000;
+
+		static readonly string[] reinforcements = { "1tnk", "1tnk", "jeep", "mcv" };
 
 		void DisplayObjective()
 		{
@@ -101,8 +108,31 @@ namespace OpenRA.Mods.RA.Missions
 			}
 		}
 
+		void StartReinforcementsTimer()
+		{
+			reinfTimer.IsVisible = () => true;
+			Sound.Play("timergo1.aud");
+		}
+
+		void TimerExpired()
+		{
+			reinfTimer.IsVisible = () => false;
+			SendReinforcements();
+		}
+
+		void SendReinforcements()
+		{
+			Sound.Play("reinfor1.aud");
+			foreach (var unit in reinforcements)
+			{
+				var actor = world.CreateActor(unit, new TypeDictionary { new LocationInit(reinforcementsEntryPoint.Location), new FacingInit(0), new OwnerInit(allies2) });
+				actor.QueueActivity(new Move.Move(allies2BasePoint.Location));
+			}
+		}
+
 		public void WorldLoaded(World w)
 		{
+			world = w;
 			allies1 = w.Players.Single(p => p.InternalName == "Allies1");
 			allies2 = w.Players.Single(p => p.InternalName == "Allies2");
 			soviets = w.Players.Single(p => p.InternalName == "Soviets");
@@ -115,25 +145,20 @@ namespace OpenRA.Mods.RA.Missions
 			tanya = actors["Tanya"];
 			einstein = actors["Einstein"];
 			allies2BasePoint = actors["Allies2BasePoint"];
+			reinforcementsEntryPoint = actors["ReinforcementsEntryPoint"];
 			w.WorldActor.Trait<Shroud>().Explore(w, sam1.Location, 2);
 			w.WorldActor.Trait<Shroud>().Explore(w, sam2.Location, 2);
 			w.WorldActor.Trait<Shroud>().Explore(w, sam3.Location, 2);
 			w.WorldActor.Trait<Shroud>().Explore(w, sam4.Location, 2);
-			Game.MoveViewport(((w.LocalPlayer ?? allies1) == allies1 ? chinookHusk.Location : allies2BasePoint.Location).ToFloat2());
-			StartReinforcementsTimer();
-		}
-
-		void StartReinforcementsTimer()
-		{
-			reinfTimer = new CountdownTimerWidget("Reinforcements arrive in", 3200)
+			reinfTimer = new CountdownTimerWidget("Reinforcements arrive in", CountdownTicks)
 			{
+				IsVisible = () => false,
 				OnExpired = TimerExpired
 			};
 			Ui.Root.AddChild(reinfTimer);
-			Sound.Play("timergo1.aud");
+			Game.MoveViewport(((w.LocalPlayer ?? allies1) == allies1 ? chinookHusk.Location : allies2BasePoint.Location).ToFloat2());
+			StartReinforcementsTimer();
 		}
-
-		void TimerExpired() {}
 	}
 
 	class CountdownTimerWidget : Widget

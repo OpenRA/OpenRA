@@ -1604,6 +1604,15 @@ Actors:
 	Actor475: pbox
 		Location: 33,88
 		Owner: Allies2
+	ReinforcementsEntryPoint: waypoint
+		Location: 24,111
+		Owner: Neutral
+	Actor477: oilb
+		Location: 37,96
+		Owner: Allies2
+	Actor478: brl3
+		Location: 38,95
+		Owner: Allies2
 
 Smudges:
 
