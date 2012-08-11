@@ -522,7 +522,7 @@ Actors:
 		Location: 104,98
 		Owner: Soviets
 	Actor240: 3tnk
-		Location: 82,35
+		Location: 77,33
 		Owner: Soviets
 	Actor195: tc03
 		Location: 16,16
@@ -642,7 +642,7 @@ Actors:
 		Location: 104,85
 		Owner: Neutral
 	Actor236: 3tnk
-		Location: 79,38
+		Location: 75,33
 		Owner: Soviets
 	Actor254: tc02
 		Location: 89,34
@@ -1148,6 +1148,9 @@ Actors:
 	Actor420: e2
 		Location: 39,43
 		Owner: Soviets
+	Actor341: t10
+		Location: 57,68
+		Owner: Neutral
 	Actor506: brik
 		Location: 56,67
 		Owner: Soviets
@@ -1688,6 +1691,9 @@ Actors:
 	Actor434: silo
 		Location: 44,51
 		Owner: Soviets
+	Actor414: t13
+		Location: 74,43
+		Owner: Neutral
 	Actor445: silo
 		Location: 43,51
 		Owner: Soviets
