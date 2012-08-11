@@ -87,7 +87,7 @@ namespace OpenRA.Mods.RA.Missions
 				{
 					currentObjective++;
 					DisplayObjective();
-					StartReinforcementsTimer();
+					StartChinookTimer();
 				}
 			}
 			else if (currentObjective == 1)
@@ -105,9 +105,14 @@ namespace OpenRA.Mods.RA.Missions
 
 		CountdownTimerWidget reinforcementsTimer;
 		const string ReinforcementsTimerHeader = "Reinforcements arrive in";
-		const int ReinforcementsTimerTicks = 18000;
-		static readonly float2 reinforcementsTimerPosition = new float2(96, 64);
+		const int ReinforcementsTimerTicks = 1500 * 12;
+		static readonly float2 reinforcementsTimerPosition = new float2(128, 64);
 		static readonly string[] reinforcements = { "1tnk", "1tnk", "jeep", "mcv" };
+
+		CountdownTimerWidget chinookTimer;
+		const string ChinookTimerHeader = "Extraction in";
+		const int ChinookTimerTicks = 1500 * 1;
+		static readonly float2 chinookTimerPosition = new float2(128, 96);
 
 		void StartReinforcementsTimer()
 		{
@@ -115,10 +120,22 @@ namespace OpenRA.Mods.RA.Missions
 			Sound.Play("timergo1.aud");
 		}
 
-		void TimerExpired()
+		void StartChinookTimer()
+		{
+			chinookTimer.IsVisible = () => true;
+			Sound.Play("timergo1.aud");
+		}
+
+		void ReinforcementsTimerExpired()
 		{
 			reinforcementsTimer.IsVisible = () => false;
 			SendReinforcements();
+		}
+
+		void ChinookTimerExpired()
+		{
+			chinookTimer.IsVisible = () => false;
+			SendChinook();
 		}
 
 		void SendReinforcements()
@@ -129,6 +146,11 @@ namespace OpenRA.Mods.RA.Missions
 				var actor = world.CreateActor(reinforcements[i], new TypeDictionary { new LocationInit(reinforcementsEntryPoint.Location + new CVec(i, 0)), new FacingInit(0), new OwnerInit(allies2) });
 				actor.QueueActivity(new Move.Move(allies2BasePoint.Location));
 			}
+		}
+
+		void SendChinook()
+		{
+			
 		}
 
 		public void WorldLoaded(World w)
@@ -154,10 +176,17 @@ namespace OpenRA.Mods.RA.Missions
 			reinforcementsTimer = new CountdownTimerWidget(ReinforcementsTimerHeader, ReinforcementsTimerTicks, reinforcementsTimerPosition)
 			{
 				IsVisible = () => false,
-				OnExpired = TimerExpired
+				OnExpired = ReinforcementsTimerExpired
 			};
 			Ui.Root.AddChild(reinforcementsTimer);
+			chinookTimer = new CountdownTimerWidget(ChinookTimerHeader, ChinookTimerTicks, chinookTimerPosition)
+			{
+				IsVisible = () => false,
+				OnExpired = ChinookTimerExpired
+			};
+			Ui.Root.AddChild(chinookTimer);
 			Game.MoveViewport(((w.LocalPlayer ?? allies1) == allies1 ? chinookHusk.Location : allies2BasePoint.Location).ToFloat2());
+			StartReinforcementsTimer();
 		}
 	}
 
@@ -166,7 +195,6 @@ namespace OpenRA.Mods.RA.Missions
 		public string Header { get; set; }
 		public int TicksLeft { get; set; }
 		public float2 Position { get; set; }
-		int ticks;
 
 		public CountdownTimerWidget(string header, int ticksLeft, float2 position)
 		{
@@ -201,7 +229,6 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				return;
 			}
-			ticks++;
 			if (TicksLeft > 0)
 			{
 				TicksLeft--;
@@ -229,7 +256,7 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			var font = Game.Renderer.Fonts["Bold"];
 			var text = "{0}: {1}".F(Header, WidgetUtils.FormatTime(TicksLeft));
-			font.DrawTextWithContrast(text, Position, TicksLeft == 0 && ticks % 60 >= 30 ? Color.Red : Color.White, Color.Black, 1);
+			font.DrawTextWithContrast(text, Position, TicksLeft == 0 && Game.LocalTick % 60 >= 30 ? Color.Red : Color.White, Color.Black, 1);
 		}
 	}
 }
