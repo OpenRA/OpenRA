@@ -356,8 +356,8 @@ Actors:
 	Actor125: t01
 		Location: 99,82
 		Owner: Neutral
-	Actor120: t06
-		Location: 37,53
+	Actor213: t02
+		Location: 20,51
 		Owner: Neutral
 	Actor292: tsla
 		Location: 58,55
@@ -485,8 +485,8 @@ Actors:
 	Actor173: tc02
 		Location: 49,17
 		Owner: Neutral
-	Actor191: t14
-		Location: 33,51
+	Actor191: t11
+		Location: 34,45
 		Owner: Neutral
 	Actor73: fenc
 		Location: 104,92
@@ -560,8 +560,8 @@ Actors:
 	Actor212: t11
 		Location: 60,50
 		Owner: Neutral
-	Actor213: t05
-		Location: 34,52
+	Actor120: t03
+		Location: 40,61
 		Owner: Neutral
 	Actor176: tc05
 		Location: 17,60
@@ -755,8 +755,8 @@ Actors:
 	Actor290: dog
 		Location: 58,46
 		Owner: Soviets
-	Actor291: e1
-		Location: 48,52
+	Actor291: silo
+		Location: 44,52
 		Owner: Soviets
 	Actor294: e1
 		Location: 43,46
@@ -1148,9 +1148,6 @@ Actors:
 	Actor420: e2
 		Location: 39,43
 		Owner: Soviets
-	Actor341: dog
-		Location: 48,62
-		Owner: Soviets
 	Actor506: brik
 		Location: 56,67
 		Owner: Soviets
@@ -1203,7 +1200,7 @@ Actors:
 		Location: 62,59
 		Owner: Soviets
 	Actor57: fix
-		Location: 48,49
+		Location: 46,49
 		Owner: Soviets
 	Actor390: dog
 		Location: 60,55
@@ -1336,6 +1333,9 @@ Actors:
 		Owner: Soviets
 	Actor413: e1
 		Location: 104,38
+		Owner: Soviets
+	Actor343: brik
+		Location: 54,72
 		Owner: Soviets
 	Actor418: ftur
 		Location: 88,63
@@ -1545,7 +1545,7 @@ Actors:
 		Location: 23,69
 		Owner: Soviets
 	Actor117: fcom
-		Location: 49,58
+		Location: 47,57
 		Owner: Soviets
 	Actor285: brik
 		Location: 51,73
@@ -1687,9 +1687,6 @@ Actors:
 		Owner: Soviets
 	Actor434: silo
 		Location: 44,51
-		Owner: Soviets
-	Actor435: silo
-		Location: 44,52
 		Owner: Soviets
 	Actor445: silo
 		Location: 43,51
