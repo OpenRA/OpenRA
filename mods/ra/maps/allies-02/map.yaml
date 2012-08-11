@@ -401,8 +401,8 @@ Actors:
 	Actor157: tc05
 		Location: 91,36
 		Owner: Neutral
-	Actor107: oilb
-		Location: 65,32
+	Actor330: oilb
+		Location: 65,31
 		Owner: Neutral
 	Actor139: tc05
 		Location: 23,74
@@ -530,9 +530,6 @@ Actors:
 	Actor196: t17
 		Location: 21,15
 		Owner: Neutral
-	Actor162: v12
-		Location: 20,89
-		Owner: Neutral
 	Actor198: tc03
 		Location: 18,106
 		Owner: Neutral
@@ -593,8 +590,8 @@ Actors:
 	Actor238: t06
 		Location: 16,35
 		Owner: Neutral
-	Actor239: t05
-		Location: 36,80
+	Actor239: t02
+		Location: 36,76
 		Owner: Neutral
 	Actor241: t17
 		Location: 21,80
@@ -1256,8 +1253,8 @@ Actors:
 	Actor502: fenc
 		Location: 74,21
 		Owner: Soviets
-	Actor330: oilb
-		Location: 67,30
+	Actor107: oilb
+		Location: 68,29
 		Owner: Neutral
 	Actor237: brik
 		Location: 97,46
@@ -1431,13 +1428,13 @@ Actors:
 		Location: 29,23
 		Owner: Soviets
 	Actor452: tent
-		Location: 33,92
+		Location: 33,99
 		Owner: Allies2
-	Actor457: proc
-		Location: 24,92
+	Actor453: proc
+		Location: 26,105
 		Owner: Allies2
-	Actor458: weap
-		Location: 30,103
+	Actor457: weap
+		Location: 30,104
 		Owner: Allies2
 	Actor459: powr
 		Location: 38,101
@@ -1445,14 +1442,14 @@ Actors:
 	Actor460: powr
 		Location: 36,101
 		Owner: Allies2
-	Actor461: pbox
-		Location: 27,88
-		Owner: Allies2
-	Actor465: gun
-		Location: 39,88
-		Owner: Allies2
+	Actor471: cycl
+		Location: 30,84
+		Owner: Soviets
+	Actor450: e1
+		Location: 29,88
+		Owner: Soviets
 	Actor83: dome
-		Location: 29,96
+		Location: 36,108
 		Owner: Allies2
 	Allies2BasePoint: waypoint
 		Location: 32,97
@@ -1478,21 +1475,21 @@ Actors:
 	Actor474: apwr
 		Location: 36,104
 		Owner: Allies2
-	Actor476: gun
-		Location: 21,88
-		Owner: Allies2
-	Actor475: pbox
-		Location: 33,88
-		Owner: Allies2
+	Actor458: cycl
+		Location: 36,84
+		Owner: Soviets
+	Actor475: cycl
+		Location: 30,87
+		Owner: Soviets
 	ReinforcementsEntryPoint: waypoint
 		Location: 24,111
 		Owner: Neutral
-	Actor477: oilb
-		Location: 37,96
-		Owner: Allies2
-	Actor478: brl3
-		Location: 38,95
-		Owner: Allies2
+	Actor456: cycl
+		Location: 36,85
+		Owner: Soviets
+	Actor162: oilb
+		Location: 31,85
+		Owner: Soviets
 	Actor479: brik
 		Location: 62,60
 		Owner: Soviets
@@ -1696,6 +1693,57 @@ Actors:
 		Owner: Neutral
 	Actor445: silo
 		Location: 43,51
+		Owner: Soviets
+	Actor472: cycl
+		Location: 30,86
+		Owner: Soviets
+	Actor473: 3tnk
+		Location: 32,87
+		Owner: Soviets
+	Actor461: cycl
+		Location: 34,84
+		Owner: Soviets
+	Actor435: oilb
+		Location: 34,85
+		Owner: Soviets
+	Actor468: cycl
+		Location: 32,84
+		Owner: Soviets
+	Actor465: cycl
+		Location: 33,84
+		Owner: Soviets
+	Actor446: cycl
+		Location: 35,84
+		Owner: Soviets
+	Actor447: cycl
+		Location: 30,85
+		Owner: Soviets
+	Actor451: e1
+		Location: 35,88
+		Owner: Soviets
+	Actor476: pbox.e1
+		Location: 31,95
+		Owner: Allies2
+	Actor484: gun
+		Location: 37,95
+		Owner: Allies2
+	Actor470: cycl
+		Location: 31,84
+		Owner: Soviets
+	Actor478: gun
+		Location: 25,95
+		Owner: Allies2
+	Actor477: e2
+		Location: 34,87
+		Owner: Soviets
+	Actor448: barl
+		Location: 33,85
+		Owner: Soviets
+	Actor455: cycl
+		Location: 36,86
+		Owner: Soviets
+	Actor454: cycl
+		Location: 36,87
 		Owner: Soviets
 
 Smudges:
