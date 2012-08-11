@@ -96,9 +96,9 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				DisplayObjective();
 			}
-			if (world.FrameNumber == 1)
+			if (world.FrameNumber == 200)
 			{
-				StartReinforcementsTimer();
+				SendReinforcements();
 			}
 			if (!engineerMiss.Destroyed && engineer == null && AlliesControlMiss())
 			{
@@ -146,24 +146,11 @@ namespace OpenRA.Mods.RA.Missions
 			world.CreateActor(SignalFlareName, new TypeDictionary { new OwnerInit(allies1), new LocationInit(extractionLZ.Location) });
 		}
 
-		void StartReinforcementsTimer()
-		{
-			var timer = new CountdownTimerWidget("Reinforcements arrive in", 1500 * 12, ReinforcementsTimerExpired, new float2(128, 64));
-			Ui.Root.AddChild(timer);
-			Sound.Play("timergo1.aud");
-		}
-
 		void StartChinookTimer()
 		{
 			var timer = new CountdownTimerWidget("Extraction arrives in", 1500 * 6, ChinookTimerExpired, new float2(128, 96));
 			Ui.Root.AddChild(timer);
 			Sound.Play("timergo1.aud");
-		}
-
-		void ReinforcementsTimerExpired(CountdownTimerWidget timer)
-		{
-			timer.Visible = false;
-			SendReinforcements();
 		}
 
 		void ChinookTimerExpired(CountdownTimerWidget timer)
