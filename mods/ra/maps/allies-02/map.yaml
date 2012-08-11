@@ -1697,6 +1697,8 @@ Rules:
 			Range: 3
 	E7:
 		-AutoTarget:
+	TRAN:
+		-Selectable:
 
 Sequences:
 
