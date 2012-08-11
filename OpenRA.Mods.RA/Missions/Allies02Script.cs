@@ -111,7 +111,7 @@ namespace OpenRA.Mods.RA.Missions
 
 		CountdownTimerWidget chinookTimer;
 		const string ChinookTimerHeader = "Extraction in";
-		const int ChinookTimerTicks = 1500 * 1;
+		const int ChinookTimerTicks = 1500 * 6;
 		static readonly float2 chinookTimerPosition = new float2(128, 96);
 
 		void StartReinforcementsTimer()
