@@ -1428,10 +1428,10 @@ Actors:
 		Location: 29,23
 		Owner: Soviets
 	Actor452: tent
-		Location: 33,99
+		Location: 36,97
 		Owner: Allies2
 	Actor453: proc
-		Location: 26,105
+		Location: 27,96
 		Owner: Allies2
 	Actor457: weap
 		Location: 30,104
@@ -1752,13 +1752,14 @@ Rules:
 	Player:
 		-ConquestVictoryConditions:
 		HackyAI@SovietAI:
-			Name:Soviet AI
+			Name: Soviet AI
 			BuildingFractions:
 			UnitsToBuild:
+				dog: 10%
 				e1: 50%
 				e2: 20%
 				e3: 10%
-				3tnk: 100%
+				3tnk: 50%
 			SquadSize: 10
 	World:
 		-CrateDrop:

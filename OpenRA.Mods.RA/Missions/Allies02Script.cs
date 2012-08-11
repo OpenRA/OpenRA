@@ -164,11 +164,11 @@ namespace OpenRA.Mods.RA.Missions
 		void SendReinforcements()
 		{
 			Sound.Play("reinfor1.aud");
-			for (int i = 0; i < reinforcements.Length; i++)
+			foreach (var unit in reinforcements)
 			{
-				var actor = world.CreateActor(reinforcements[i], new TypeDictionary
+				var actor = world.CreateActor(unit, new TypeDictionary
 				{
-					new LocationInit(reinforcementsEntryPoint.Location + new CVec(i, 0)),
+					new LocationInit(reinforcementsEntryPoint.Location),
 					new FacingInit(0),
 					new OwnerInit(allies2)
 				});
