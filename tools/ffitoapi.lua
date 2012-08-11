@@ -1,5 +1,46 @@
 -- author: Christoph Kubisch
 ---------------------------------------------------------
+local StripCommentsC = StripCommentsC
+if not StripCommentsC then
+  StripCommentsC = function(tx)
+    local out = ""
+    local lastc = ""
+    local skip
+    local skipline
+    local skipmulti
+    local tx = string.gsub(tx, "\r\n", "\n")
+    for c in tx:gmatch(".") do
+      local oc = c
+      local tu = lastc..c
+      skip = c == '/'
+
+      if ( not (skipmulti or skipline)) then
+        if (tu == "//") then
+          skipline = true
+        elseif (tu == "/*") then
+          skipmulti = true
+          c = ""
+        elseif (lastc == '/') then
+          oc = tu
+        end
+      elseif (skipmulti and tu == "*/") then
+        skipmulti = false
+        c = ""
+      elseif (skipline and lastc == "\n") then
+        out = out.."\n"
+        skipline = false
+      end
+
+      lastc = c
+      if (not (skip or skipline or skipmulti)) then
+        out = out..oc
+      end
+    end
+
+    return out..lastc
+  end
+
+end
 
 local function ffiToApi(ffidef)
   local str = ffidef
@@ -250,8 +291,16 @@ local function exec(wxfname,projectdir)
   editor:SetText(tx)
 end
 
-if (RELPATH) then
-  ffitoapiExec = exec
+if (not ide) then
+  ffitoapi = function(fname)
+    local f = io.open(fname,"rb")
+    local tx = f:read("*a")
+    f:close()
+    tx = ffiToApi(tx)
+    local f = io.open(fname,"wb")
+    f:write(tx)
+    f:close()
+  end
 end
 
 return {
