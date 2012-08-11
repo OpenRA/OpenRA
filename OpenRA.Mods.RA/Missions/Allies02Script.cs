@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
@@ -37,13 +38,15 @@ namespace OpenRA.Mods.RA.Missions
 		Actor sam4;
 		Actor tanya;
 		Actor einstein;
+		Actor engineer;
+
+		Actor engineerMiss;
 
 		Actor chinookHusk;
 		Actor allies2BasePoint;
 		Actor reinforcementsEntryPoint;
 		Actor extractionLZEntryPoint;
 		Actor extractionLZ;
-		Actor extractionLZExitPoint;
 
 		Actor einsteinChinook;
 
@@ -56,6 +59,8 @@ namespace OpenRA.Mods.RA.Missions
 		static readonly string[] reinforcements = { "1tnk", "1tnk", "jeep", "mcv" };
 		const string ChinookName = "tran";
 		const string SignalFlareName = "flare";
+		const string EngineerName = "e6";
+		const int EngineerMissClearRange = 5;
 
 		void DisplayObjective()
 		{
@@ -95,20 +100,25 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				StartReinforcementsTimer();
 			}
+			if (!engineerMiss.Destroyed && engineer == null && AlliesControlMiss())
+			{
+				SpawnEngineerAtMiss();
+				engineerMiss.QueueActivity(new Demolish(engineerMiss, 0));
+			}
 			if (currentObjective == 0)
 			{
 				if (sam1.Destroyed && sam2.Destroyed && sam3.Destroyed && sam4.Destroyed)
 				{
 					currentObjective++;
 					DisplayObjective();
-					Sound.Play("flaren1.aud");
 					SpawnSignalFlare();
-					Game.RunAfterDelay(150, StartChinookTimer);
+					Sound.Play("flaren1.aud");
+					Game.RunAfterDelay(25 * 10, StartChinookTimer);
 				}
 			}
 			else if (currentObjective == 1)
 			{
-				if (einsteinChinook != null && !world.Map.IsInMap(einsteinChinook.Location) && einsteinChinook.Trait<Cargo>().Passengers.Contains(einstein))
+				if (einsteinChinook != null && !einsteinChinook.IsDead() && !world.Map.IsInMap(einsteinChinook.Location) && einsteinChinook.Trait<Cargo>().Passengers.Contains(einstein))
 				{
 					MissionAccomplished("Einstein was rescued.");
 				}
@@ -185,8 +195,26 @@ namespace OpenRA.Mods.RA.Missions
 			einsteinChinook.QueueActivity(new HeliLand(true));
 			einsteinChinook.QueueActivity(new WaitFor(() => einsteinChinook.Trait<Cargo>().Passengers.Contains(einstein)));
 			einsteinChinook.QueueActivity(new Wait(150));
-			einsteinChinook.QueueActivity(new HeliFly(extractionLZExitPoint.CenterLocation));
+			einsteinChinook.QueueActivity(new HeliFly(extractionLZEntryPoint.CenterLocation));
 			einsteinChinook.QueueActivity(new RemoveSelf());
+		}
+
+		IEnumerable<Actor> UnitsNearActor(Actor actor, int range)
+		{
+			return world.FindUnitsInCircle(actor.CenterLocation, Game.CellSize * range)
+				.Where(a => a.IsInWorld && a != world.WorldActor && !a.Destroyed && a.HasTrait<IMove>() && !a.Owner.NonCombatant);
+		}
+
+		bool AlliesControlMiss()
+		{
+			var units = UnitsNearActor(engineerMiss, EngineerMissClearRange);
+			return units.Any() && units.All(a => a.Owner == allies1);
+		}
+
+		void SpawnEngineerAtMiss()
+		{
+			engineer = world.CreateActor(EngineerName, new TypeDictionary { new OwnerInit(allies1), new LocationInit(engineerMiss.Location) });
+			engineer.QueueActivity(new Move.Move(engineerMiss.Location + new CVec(5, 0)));
 		}
 
 		public void WorldLoaded(World w)
@@ -207,7 +235,7 @@ namespace OpenRA.Mods.RA.Missions
 			reinforcementsEntryPoint = actors["ReinforcementsEntryPoint"];
 			extractionLZ = actors["ExtractionLZ"];
 			extractionLZEntryPoint = actors["ExtractionLZEntryPoint"];
-			extractionLZExitPoint = actors["ExtractionLZExitPoint"];
+			engineerMiss = actors["EngineerMiss"];
 			w.WorldActor.Trait<Shroud>().Explore(w, sam1.Location, 2);
 			w.WorldActor.Trait<Shroud>().Explore(w, sam2.Location, 2);
 			w.WorldActor.Trait<Shroud>().Explore(w, sam3.Location, 2);

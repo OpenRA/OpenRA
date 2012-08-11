@@ -124,7 +124,7 @@ namespace OpenRA.Mods.RA.Missions
 				{
 					SpawnSignalFlare();
 					Sound.Play("flaren1.aud");
-					SpawnEinsteinAtLab(); // spawn Einstein once the area is clear
+					SpawnEinsteinAtLab();
 					SendShips();
 					currentObjective++;
 					DisplayObjective();
@@ -152,7 +152,7 @@ namespace OpenRA.Mods.RA.Missions
 						FlyEinsteinFromExtractionLZ();
 					}
 				}
-				if (einsteinChinook != null && !world.Map.IsInMap(einsteinChinook.Location) && einsteinChinook.Trait<Cargo>().Passengers.Contains(einstein))
+				if (einsteinChinook != null && !einsteinChinook.IsDead() && !world.Map.IsInMap(einsteinChinook.Location) && einsteinChinook.Trait<Cargo>().Passengers.Contains(einstein))
 				{
 					MissionAccomplished("Einstein was rescued.");
 				}
