@@ -61,7 +61,7 @@ namespace OpenRA.Mods.RA.Missions
 			Sound.Play("bleep6.aud");
 		}
 
-		void MissionFailed(Actor self, string text)
+		void MissionFailed(string text)
 		{
 			if (allies1.WinState != WinState.Undefined)
 			{
@@ -72,7 +72,7 @@ namespace OpenRA.Mods.RA.Missions
 			Sound.Play("misnlst1.aud");
 		}
 
-		void MissionAccomplished(Actor self, string text)
+		void MissionAccomplished(string text)
 		{
 			if (allies1.WinState != WinState.Undefined)
 			{
@@ -85,9 +85,13 @@ namespace OpenRA.Mods.RA.Missions
 
 		public void Tick(Actor self)
 		{
-			if (self.World.FrameNumber % 3500 == 1)
+			if (world.FrameNumber % 3500 == 1)
 			{
 				DisplayObjective();
+			}
+			if (world.FrameNumber == 1)
+			{
+				StartReinforcementsTimer();
 			}
 			if (currentObjective == 0)
 			{
@@ -105,11 +109,11 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			if (tanya.Destroyed)
 			{
-				MissionFailed(self, "Tanya was killed.");
+				MissionFailed("Tanya was killed.");
 			}
 			if (einstein.Destroyed)
 			{
-				MissionFailed(self, "Einstein was killed.");
+				MissionFailed("Einstein was killed.");
 			}
 			ManageSovietOre();
 		}
@@ -203,7 +207,6 @@ namespace OpenRA.Mods.RA.Missions
 			w.WorldActor.Trait<Shroud>().Explore(w, sam3.Location, 2);
 			w.WorldActor.Trait<Shroud>().Explore(w, sam4.Location, 2);
 			Game.MoveViewport(((w.LocalPlayer ?? allies1) == allies1 ? chinookHusk.Location : allies2BasePoint.Location).ToFloat2());
-			StartReinforcementsTimer();
 		}
 	}
 

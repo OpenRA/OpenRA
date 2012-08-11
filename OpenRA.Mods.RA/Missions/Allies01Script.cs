@@ -48,6 +48,8 @@ namespace OpenRA.Mods.RA.Missions
 		Actor attackEntryPoint1;
 		Actor attackEntryPoint2;
 
+		World world;
+
 		static readonly string[] taunts = { "laugh1.aud", "lefty1.aud", "cmon1.aud", "gotit1.aud" };
 
 		static readonly string[] ships = { "ca", "ca", "ca", "ca" };
@@ -71,7 +73,7 @@ namespace OpenRA.Mods.RA.Missions
 			Sound.Play("bleep6.aud");
 		}
 
-		void MissionFailed(Actor self, string text)
+		void MissionFailed(string text)
 		{
 			if (allies.WinState != WinState.Undefined)
 			{
@@ -82,7 +84,7 @@ namespace OpenRA.Mods.RA.Missions
 			Sound.Play("misnlst1.aud");
 		}
 
-		void MissionAccomplished(Actor self, string text)
+		void MissionAccomplished(string text)
 		{
 			if (allies.WinState != WinState.Undefined)
 			{
@@ -100,68 +102,68 @@ namespace OpenRA.Mods.RA.Missions
 				return;
 			}
 			// display current objective every so often
-			if (self.World.FrameNumber % 1500 == 1)
+			if (world.FrameNumber % 1500 == 1)
 			{
 				DisplayObjective();
 			}
 			// taunt every so often
-			if (self.World.FrameNumber % 1000 == 0)
+			if (world.FrameNumber % 1000 == 0)
 			{
-				Sound.Play(taunts[self.World.SharedRandom.Next(taunts.Length)]);
+				Sound.Play(taunts[world.SharedRandom.Next(taunts.Length)]);
 			}
 			// take Tanya to the LZ
-			if (self.World.FrameNumber == 1)
+			if (world.FrameNumber == 1)
 			{
-				FlyTanyaToInsertionLZ(self);
-				SendPatrol(self);
+				FlyTanyaToInsertionLZ();
+				SendPatrol();
 			}
 			// objectives
 			if (currentObjective == 0)
 			{
-				if (AlliesControlLab(self))
+				if (AlliesControlLab())
 				{
-					SpawnSignalFlare(self);
+					SpawnSignalFlare();
 					Sound.Play("flaren1.aud");
-					SpawnEinsteinAtLab(self); // spawn Einstein once the area is clear
-					SendShips(self);
+					SpawnEinsteinAtLab(); // spawn Einstein once the area is clear
+					SendShips();
 					currentObjective++;
 					DisplayObjective();
-					currentAttackWaveFrameNumber = self.World.FrameNumber;
+					currentAttackWaveFrameNumber = world.FrameNumber;
 				}
 				if (lab.Destroyed)
 				{
-					MissionFailed(self, "Einstein was killed.");
+					MissionFailed("Einstein was killed.");
 				}
 			}
 			else if (currentObjective == 1)
 			{
-				if (self.World.FrameNumber >= currentAttackWaveFrameNumber + 600)
+				if (world.FrameNumber >= currentAttackWaveFrameNumber + 600)
 				{
 					Sound.Play("enmyapp1.aud");
-					SendAttackWave(self, attackWave);
+					SendAttackWave(attackWave);
 					currentAttackWave++;
-					currentAttackWaveFrameNumber = self.World.FrameNumber;
+					currentAttackWaveFrameNumber = world.FrameNumber;
 					if (currentAttackWave >= EinsteinChinookAttackWave)
 					{
-						SendAttackWave(self, lastAttackWaveAddition);
+						SendAttackWave(lastAttackWaveAddition);
 					}
 					if (currentAttackWave == EinsteinChinookAttackWave)
 					{
-						FlyEinsteinFromExtractionLZ(self);
+						FlyEinsteinFromExtractionLZ();
 					}
 				}
-				if (einsteinChinook != null && !self.World.Map.IsInMap(einsteinChinook.Location) && einsteinChinook.Trait<Cargo>().Passengers.Contains(einstein))
+				if (einsteinChinook != null && !world.Map.IsInMap(einsteinChinook.Location) && einsteinChinook.Trait<Cargo>().Passengers.Contains(einstein))
 				{
-					MissionAccomplished(self, "Einstein was rescued.");
+					MissionAccomplished("Einstein was rescued.");
 				}
 				if (einstein.Destroyed)
 				{
-					MissionFailed(self, "Einstein was killed.");
+					MissionFailed("Einstein was killed.");
 				}
 			}
 			if (tanya.Destroyed)
 			{
-				MissionFailed(self, "Tanya was killed.");
+				MissionFailed("Tanya was killed.");
 			}
 			ManageSovietOre();
 		}
@@ -173,17 +175,17 @@ namespace OpenRA.Mods.RA.Missions
 			res.TakeCash(res.Cash);
 		}
 
-		void SpawnSignalFlare(Actor self)
+		void SpawnSignalFlare()
 		{
-			self.World.CreateActor(SignalFlareName, new TypeDictionary { new OwnerInit(allies), new LocationInit(extractionLZ.Location) });
+			world.CreateActor(SignalFlareName, new TypeDictionary { new OwnerInit(allies), new LocationInit(extractionLZ.Location) });
 		}
 
-		void SendAttackWave(Actor self, IEnumerable<string> wave)
+		void SendAttackWave(IEnumerable<string> wave)
 		{
 			foreach (var unit in wave)
 			{
-				var spawnActor = self.World.SharedRandom.Next(2) == 0 ? attackEntryPoint1 : attackEntryPoint2;
-				var actor = self.World.CreateActor(unit, new TypeDictionary { new OwnerInit(soviets), new LocationInit(spawnActor.Location) });
+				var spawnActor = world.SharedRandom.Next(2) == 0 ? attackEntryPoint1 : attackEntryPoint2;
+				var actor = world.CreateActor(unit, new TypeDictionary { new OwnerInit(soviets), new LocationInit(spawnActor.Location) });
 				Activity innerActivity;
 				if (einstein != null && einstein.IsInWorld)
 				{
@@ -197,46 +199,46 @@ namespace OpenRA.Mods.RA.Missions
 			}
 		}
 
-		void SendPatrol(Actor self)
+		void SendPatrol()
 		{
 			for (int i = 0; i < patrol.Length; i++)
 			{
-				var actor = self.World.CreateActor(patrol[i], new TypeDictionary { new OwnerInit(soviets), new LocationInit(insertionLZ.Location + new CVec(-1 + i, 10 + i * 2)) });
+				var actor = world.CreateActor(patrol[i], new TypeDictionary { new OwnerInit(soviets), new LocationInit(insertionLZ.Location + new CVec(-1 + i, 10 + i * 2)) });
 				actor.QueueActivity(new Move.Move(insertionLZ.Location));
 			}
 		}
 
-		IEnumerable<Actor> UnitsNearActor(Actor self, Actor actor, int range)
+		IEnumerable<Actor> UnitsNearActor(Actor actor, int range)
 		{
-			return self.World.FindUnitsInCircle(actor.CenterLocation, Game.CellSize * range)
-				.Where(a => a.IsInWorld && a != self.World.WorldActor && !a.Destroyed && a.HasTrait<IMove>() && !a.Owner.NonCombatant);
+			return world.FindUnitsInCircle(actor.CenterLocation, Game.CellSize * range)
+				.Where(a => a.IsInWorld && a != world.WorldActor && !a.Destroyed && a.HasTrait<IMove>() && !a.Owner.NonCombatant);
 		}
 
-		bool AlliesControlLab(Actor self)
+		bool AlliesControlLab()
 		{
-			var units = UnitsNearActor(self, lab, LabClearRange);
+			var units = UnitsNearActor(lab, LabClearRange);
 			return units.Any() && units.All(a => a.Owner == allies);
 		}
 
-		void SpawnEinsteinAtLab(Actor self)
+		void SpawnEinsteinAtLab()
 		{
-			einstein = self.World.CreateActor(EinsteinName, new TypeDictionary { new OwnerInit(allies), new LocationInit(lab.Location) });
+			einstein = world.CreateActor(EinsteinName, new TypeDictionary { new OwnerInit(allies), new LocationInit(lab.Location) });
 			einstein.QueueActivity(new Move.Move(lab.Location - new CVec(0, 2)));
 		}
 
-		void SendShips(Actor self)
+		void SendShips()
 		{
 			for (int i = 0; i < ships.Length; i++)
 			{
-				var actor = self.World.CreateActor(ships[i],
+				var actor = world.CreateActor(ships[i],
 					new TypeDictionary { new OwnerInit(allies), new LocationInit(shipSpawnPoint.Location + new CVec(i * 2, 0)) });
 				actor.QueueActivity(new Move.Move(shipMovePoint.Location + new CVec(i * 4, 0)));
 			}
 		}
 
-		void FlyEinsteinFromExtractionLZ(Actor self)
+		void FlyEinsteinFromExtractionLZ()
 		{
-			einsteinChinook = self.World.CreateActor(ChinookName, new TypeDictionary { new OwnerInit(allies), new LocationInit(extractionLZEntryPoint.Location) });
+			einsteinChinook = world.CreateActor(ChinookName, new TypeDictionary { new OwnerInit(allies), new LocationInit(extractionLZEntryPoint.Location) });
 			einsteinChinook.QueueActivity(new HeliFly(extractionLZ.CenterLocation));
 			einsteinChinook.QueueActivity(new Turn(0));
 			einsteinChinook.QueueActivity(new HeliLand(true));
@@ -246,10 +248,10 @@ namespace OpenRA.Mods.RA.Missions
 			einsteinChinook.QueueActivity(new RemoveSelf());
 		}
 
-		void FlyTanyaToInsertionLZ(Actor self)
+		void FlyTanyaToInsertionLZ()
 		{
-			tanya = self.World.CreateActor(false, TanyaName, new TypeDictionary { new OwnerInit(allies) });
-			var chinook = self.World.CreateActor(ChinookName, new TypeDictionary { new OwnerInit(allies), new LocationInit(insertionLZEntryPoint.Location) });
+			tanya = world.CreateActor(false, TanyaName, new TypeDictionary { new OwnerInit(allies) });
+			var chinook = world.CreateActor(ChinookName, new TypeDictionary { new OwnerInit(allies), new LocationInit(insertionLZEntryPoint.Location) });
 			chinook.Trait<Cargo>().Load(chinook, tanya);
 			chinook.QueueActivity(new HeliFly(insertionLZ.CenterLocation));
 			chinook.QueueActivity(new Turn(0));
@@ -263,6 +265,7 @@ namespace OpenRA.Mods.RA.Missions
 
 		public void WorldLoaded(World w)
 		{
+			world = w;
 			allies = w.Players.Single(p => p.InternalName == "Allies");
 			soviets = w.Players.Single(p => p.InternalName == "Soviets");
 			var actors = w.WorldActor.Trait<SpawnMapActors>().Actors;
