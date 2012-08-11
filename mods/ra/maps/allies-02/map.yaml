@@ -1751,6 +1751,15 @@ Smudges:
 Rules:
 	Player:
 		-ConquestVictoryConditions:
+		HackyAI@SovietAI:
+			Name:Soviet AI
+			BuildingFractions:
+			UnitsToBuild:
+				e1: 50%
+				e2: 20%
+				e3: 10%
+				3tnk: 100%
+			SquadSize: 10
 	World:
 		-CrateDrop:
 		-SpawnMPUnits:

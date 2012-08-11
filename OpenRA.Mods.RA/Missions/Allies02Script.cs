@@ -131,14 +131,16 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				MissionFailed("Einstein was killed.");
 			}
-			ManageSovietOre();
 		}
 
-		void ManageSovietOre()
+		void InitializeSovietAI()
 		{
-			var res = soviets.PlayerActor.Trait<PlayerResources>();
-			res.TakeOre(res.Ore);
-			res.TakeCash(res.Cash);
+			if (!Game.IsHost || world.LocalPlayer == null)
+			{
+				return;
+			}
+			var logic = world.LocalPlayer.PlayerActor.TraitsImplementing<IBot>().First(b => b.Info.Name == "Soviet AI");
+			logic.Activate(soviets);
 		}
 
 		void SpawnSignalFlare()
@@ -228,6 +230,7 @@ namespace OpenRA.Mods.RA.Missions
 			w.WorldActor.Trait<Shroud>().Explore(w, sam3.Location, 2);
 			w.WorldActor.Trait<Shroud>().Explore(w, sam4.Location, 2);
 			Game.MoveViewport(((w.LocalPlayer ?? allies1) == allies1 ? chinookHusk.Location : allies2BasePoint.Location).ToFloat2());
+			InitializeSovietAI();
 		}
 	}
 
