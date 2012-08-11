@@ -113,7 +113,7 @@ namespace OpenRA.Mods.RA.Missions
 					DisplayObjective();
 					SpawnSignalFlare();
 					Sound.Play("flaren1.aud");
-					Game.RunAfterDelay(25 * 10, StartChinookTimer);
+					StartChinookTimer();
 				}
 			}
 			else if (currentObjective == 1)
@@ -150,7 +150,6 @@ namespace OpenRA.Mods.RA.Missions
 		{
 			var timer = new CountdownTimerWidget("Extraction arrives in", 1500 * 6, ChinookTimerExpired, new float2(128, 96));
 			Ui.Root.AddChild(timer);
-			Sound.Play("timergo1.aud");
 		}
 
 		void ChinookTimerExpired(CountdownTimerWidget timer)
