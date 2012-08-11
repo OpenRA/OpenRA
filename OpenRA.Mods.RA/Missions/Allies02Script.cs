@@ -12,6 +12,8 @@ using System;
 using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Air;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
@@ -39,12 +41,19 @@ namespace OpenRA.Mods.RA.Missions
 		Actor chinookHusk;
 		Actor allies2BasePoint;
 		Actor reinforcementsEntryPoint;
+		Actor extractionLZEntryPoint;
+		Actor extractionLZ;
+		Actor extractionLZExitPoint;
 
 		World world;
 
 		Player allies1;
 		Player allies2;
 		Player soviets;
+
+		static readonly string[] reinforcements = { "1tnk", "1tnk", "jeep", "mcv" };
+		const string ChinookName = "tran";
+		const string SignalFlareName = "flare";
 
 		void DisplayObjective()
 		{
@@ -76,7 +85,6 @@ namespace OpenRA.Mods.RA.Missions
 
 		public void Tick(Actor self)
 		{
-			// display current objective every so often
 			if (self.World.FrameNumber % 3500 == 1)
 			{
 				DisplayObjective();
@@ -87,7 +95,9 @@ namespace OpenRA.Mods.RA.Missions
 				{
 					currentObjective++;
 					DisplayObjective();
-					StartChinookTimer();
+					Sound.Play("flaren1.aud");
+					SpawnSignalFlare();
+					Game.RunAfterDelay(150, StartChinookTimer);
 				}
 			}
 			else if (currentObjective == 1)
@@ -101,40 +111,44 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				MissionFailed(self, "Einstein was killed.");
 			}
+			ManageSovietOre();
 		}
 
-		CountdownTimerWidget reinforcementsTimer;
-		const string ReinforcementsTimerHeader = "Reinforcements arrive in";
-		const int ReinforcementsTimerTicks = 1500 * 12;
-		static readonly float2 reinforcementsTimerPosition = new float2(128, 64);
-		static readonly string[] reinforcements = { "1tnk", "1tnk", "jeep", "mcv" };
+		void ManageSovietOre()
+		{
+			var res = soviets.PlayerActor.Trait<PlayerResources>();
+			res.TakeOre(res.Ore);
+			res.TakeCash(res.Cash);
+		}
 
-		CountdownTimerWidget chinookTimer;
-		const string ChinookTimerHeader = "Extraction in";
-		const int ChinookTimerTicks = 1500 * 6;
-		static readonly float2 chinookTimerPosition = new float2(128, 96);
+		void SpawnSignalFlare()
+		{
+			world.CreateActor(SignalFlareName, new TypeDictionary { new OwnerInit(allies1), new LocationInit(extractionLZ.Location) });
+		}
 
 		void StartReinforcementsTimer()
 		{
-			reinforcementsTimer.IsVisible = () => true;
+			var timer = new CountdownTimerWidget("Reinforcements arrive in", 1500 * 12, ReinforcementsTimerExpired, new float2(128, 64));
+			Ui.Root.AddChild(timer);
 			Sound.Play("timergo1.aud");
 		}
 
 		void StartChinookTimer()
 		{
-			chinookTimer.IsVisible = () => true;
+			var timer = new CountdownTimerWidget("Extraction arrives in", 1500 * 6, ChinookTimerExpired, new float2(128, 96));
+			Ui.Root.AddChild(timer);
 			Sound.Play("timergo1.aud");
 		}
 
-		void ReinforcementsTimerExpired()
+		void ReinforcementsTimerExpired(CountdownTimerWidget timer)
 		{
-			reinforcementsTimer.IsVisible = () => false;
+			timer.Visible = false;
 			SendReinforcements();
 		}
 
-		void ChinookTimerExpired()
+		void ChinookTimerExpired(CountdownTimerWidget timer)
 		{
-			chinookTimer.IsVisible = () => false;
+			timer.Visible = false;
 			SendChinook();
 		}
 
@@ -143,14 +157,26 @@ namespace OpenRA.Mods.RA.Missions
 			Sound.Play("reinfor1.aud");
 			for (int i = 0; i < reinforcements.Length; i++)
 			{
-				var actor = world.CreateActor(reinforcements[i], new TypeDictionary { new LocationInit(reinforcementsEntryPoint.Location + new CVec(i, 0)), new FacingInit(0), new OwnerInit(allies2) });
+				var actor = world.CreateActor(reinforcements[i], new TypeDictionary
+				{
+					new LocationInit(reinforcementsEntryPoint.Location + new CVec(i, 0)),
+					new FacingInit(0),
+					new OwnerInit(allies2)
+				});
 				actor.QueueActivity(new Move.Move(allies2BasePoint.Location));
 			}
 		}
 
 		void SendChinook()
 		{
-			
+			var chinook = world.CreateActor(ChinookName, new TypeDictionary { new OwnerInit(allies1), new LocationInit(extractionLZEntryPoint.Location) });
+			chinook.QueueActivity(new HeliFly(extractionLZ.CenterLocation));
+			chinook.QueueActivity(new Turn(0));
+			chinook.QueueActivity(new HeliLand(true));
+			chinook.QueueActivity(new WaitFor(() => chinook.Trait<Cargo>().Passengers.Contains(einstein)));
+			chinook.QueueActivity(new Wait(150));
+			chinook.QueueActivity(new HeliFly(extractionLZExitPoint.CenterLocation));
+			chinook.QueueActivity(new RemoveSelf());
 		}
 
 		public void WorldLoaded(World w)
@@ -160,31 +186,22 @@ namespace OpenRA.Mods.RA.Missions
 			allies2 = w.Players.Single(p => p.InternalName == "Allies2");
 			soviets = w.Players.Single(p => p.InternalName == "Soviets");
 			var actors = w.WorldActor.Trait<SpawnMapActors>().Actors;
-			chinookHusk = actors["ChinookHusk"];
 			sam1 = actors["SAM1"];
 			sam2 = actors["SAM2"];
 			sam3 = actors["SAM3"];
 			sam4 = actors["SAM4"];
 			tanya = actors["Tanya"];
 			einstein = actors["Einstein"];
+			chinookHusk = actors["ChinookHusk"];
 			allies2BasePoint = actors["Allies2BasePoint"];
 			reinforcementsEntryPoint = actors["ReinforcementsEntryPoint"];
+			extractionLZ = actors["ExtractionLZ"];
+			extractionLZEntryPoint = actors["ExtractionLZEntryPoint"];
+			extractionLZExitPoint = actors["ExtractionLZExitPoint"];
 			w.WorldActor.Trait<Shroud>().Explore(w, sam1.Location, 2);
 			w.WorldActor.Trait<Shroud>().Explore(w, sam2.Location, 2);
 			w.WorldActor.Trait<Shroud>().Explore(w, sam3.Location, 2);
 			w.WorldActor.Trait<Shroud>().Explore(w, sam4.Location, 2);
-			reinforcementsTimer = new CountdownTimerWidget(ReinforcementsTimerHeader, ReinforcementsTimerTicks, reinforcementsTimerPosition)
-			{
-				IsVisible = () => false,
-				OnExpired = ReinforcementsTimerExpired
-			};
-			Ui.Root.AddChild(reinforcementsTimer);
-			chinookTimer = new CountdownTimerWidget(ChinookTimerHeader, ChinookTimerTicks, chinookTimerPosition)
-			{
-				IsVisible = () => false,
-				OnExpired = ChinookTimerExpired
-			};
-			Ui.Root.AddChild(chinookTimer);
 			Game.MoveViewport(((w.LocalPlayer ?? allies1) == allies1 ? chinookHusk.Location : allies2BasePoint.Location).ToFloat2());
 			StartReinforcementsTimer();
 		}
@@ -196,32 +213,33 @@ namespace OpenRA.Mods.RA.Missions
 		public int TicksLeft { get; set; }
 		public float2 Position { get; set; }
 
-		public CountdownTimerWidget(string header, int ticksLeft, float2 position)
+		public CountdownTimerWidget(string header, int ticksLeft, Action<CountdownTimerWidget> onExpired, float2 position)
 		{
 			Header = header;
 			TicksLeft = ticksLeft;
+			OnExpired = onExpired;
 			Position = position;
-			OnOneMinuteRemaining = () => Sound.Play("1minr.aud");
-			OnTwoMinutesRemaining = () => Sound.Play("2minr.aud");
-			OnThreeMinutesRemaining = () => Sound.Play("3minr.aud");
-			OnFourMinutesRemaining = () => Sound.Play("4minr.aud");
-			OnFiveMinutesRemaining = () => Sound.Play("5minr.aud");
-			OnTenMinutesRemaining = () => Sound.Play("10minr.aud");
-			OnTwentyMinutesRemaining = () => Sound.Play("20minr.aud");
-			OnThirtyMinutesRemaining = () => Sound.Play("30minr.aud");
-			OnFortyMinutesRemaining = () => Sound.Play("40minr.aud");
+			OnOneMinuteRemaining = t => Sound.Play("1minr.aud");
+			OnTwoMinutesRemaining = t => Sound.Play("2minr.aud");
+			OnThreeMinutesRemaining = t => Sound.Play("3minr.aud");
+			OnFourMinutesRemaining = t => Sound.Play("4minr.aud");
+			OnFiveMinutesRemaining = t => Sound.Play("5minr.aud");
+			OnTenMinutesRemaining = t => Sound.Play("10minr.aud");
+			OnTwentyMinutesRemaining = t => Sound.Play("20minr.aud");
+			OnThirtyMinutesRemaining = t => Sound.Play("30minr.aud");
+			OnFortyMinutesRemaining = t => Sound.Play("40minr.aud");
 		}
 
-		public Action OnExpired;
-		public Action OnOneMinuteRemaining { get; set; }
-		public Action OnTwoMinutesRemaining { get; set; }
-		public Action OnThreeMinutesRemaining { get; set; }
-		public Action OnFourMinutesRemaining { get; set; }
-		public Action OnFiveMinutesRemaining { get; set; }
-		public Action OnTenMinutesRemaining { get; set; }
-		public Action OnTwentyMinutesRemaining { get; set; }
-		public Action OnThirtyMinutesRemaining { get; set; }
-		public Action OnFortyMinutesRemaining { get; set; }
+		public Action<CountdownTimerWidget> OnExpired { get; set; }
+		public Action<CountdownTimerWidget> OnOneMinuteRemaining { get; set; }
+		public Action<CountdownTimerWidget> OnTwoMinutesRemaining { get; set; }
+		public Action<CountdownTimerWidget> OnThreeMinutesRemaining { get; set; }
+		public Action<CountdownTimerWidget> OnFourMinutesRemaining { get; set; }
+		public Action<CountdownTimerWidget> OnFiveMinutesRemaining { get; set; }
+		public Action<CountdownTimerWidget> OnTenMinutesRemaining { get; set; }
+		public Action<CountdownTimerWidget> OnTwentyMinutesRemaining { get; set; }
+		public Action<CountdownTimerWidget> OnThirtyMinutesRemaining { get; set; }
+		public Action<CountdownTimerWidget> OnFortyMinutesRemaining { get; set; }
 
 		public override void Tick()
 		{
@@ -234,16 +252,16 @@ namespace OpenRA.Mods.RA.Missions
 				TicksLeft--;
 				switch (TicksLeft)
 				{
-					case 1500 * 00: OnExpired(); break;
-					case 1500 * 01: OnOneMinuteRemaining(); break;
-					case 1500 * 02: OnTwoMinutesRemaining(); break;
-					case 1500 * 03: OnThreeMinutesRemaining(); break;
-					case 1500 * 04: OnFourMinutesRemaining(); break;
-					case 1500 * 05: OnFiveMinutesRemaining(); break;
-					case 1500 * 10: OnTenMinutesRemaining(); break;
-					case 1500 * 20: OnTwentyMinutesRemaining(); break;
-					case 1500 * 30: OnThirtyMinutesRemaining(); break;
-					case 1500 * 40: OnFortyMinutesRemaining(); break;
+					case 1500 * 00: OnExpired(this); break;
+					case 1500 * 01: OnOneMinuteRemaining(this); break;
+					case 1500 * 02: OnTwoMinutesRemaining(this); break;
+					case 1500 * 03: OnThreeMinutesRemaining(this); break;
+					case 1500 * 04: OnFourMinutesRemaining(this); break;
+					case 1500 * 05: OnFiveMinutesRemaining(this); break;
+					case 1500 * 10: OnTenMinutesRemaining(this); break;
+					case 1500 * 20: OnTwentyMinutesRemaining(this); break;
+					case 1500 * 30: OnThirtyMinutesRemaining(this); break;
+					case 1500 * 40: OnFortyMinutesRemaining(this); break;
 				}
 			}
 		}

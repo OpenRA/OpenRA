@@ -569,9 +569,6 @@ Actors:
 	Actor213: t05
 		Location: 34,52
 		Owner: Neutral
-	Actor214: oilb
-		Location: 70,73
-		Owner: Neutral
 	Actor176: tc05
 		Location: 17,60
 		Owner: Neutral
@@ -1754,6 +1751,15 @@ Actors:
 	Actor559: e1
 		Location: 67,92
 		Owner: Soviets
+	ExtractionLZ: waypoint
+		Location: 53,31
+		Owner: Neutral
+	ExtractionLZEntryPoint: waypoint
+		Location: 9,9
+		Owner: Neutral
+	ExtractionLZExitPoint: waypoint
+		Location: 60,10
+		Owner: Neutral
 
 Smudges:
 
