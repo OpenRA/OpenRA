@@ -46,11 +46,6 @@ namespace OpenRA.Mods.RA.Missions
 		Player allies2;
 		Player soviets;
 
-		CountdownTimerWidget reinfTimer;
-		const int CountdownTicks = /*18000;*/300;
-
-		static readonly string[] reinforcements = { "1tnk", "1tnk", "jeep", "mcv" };
-
 		void DisplayObjective()
 		{
 			Game.AddChatLine(Color.LimeGreen, "Objective", objectives[currentObjective]);
@@ -82,7 +77,7 @@ namespace OpenRA.Mods.RA.Missions
 		public void Tick(Actor self)
 		{
 			// display current objective every so often
-			if (self.World.FrameNumber % 1500 == 1)
+			if (self.World.FrameNumber % 3500 == 1)
 			{
 				DisplayObjective();
 			}
@@ -92,11 +87,11 @@ namespace OpenRA.Mods.RA.Missions
 				{
 					currentObjective++;
 					DisplayObjective();
+					StartReinforcementsTimer();
 				}
 			}
 			else if (currentObjective == 1)
 			{
-
 			}
 			if (tanya.Destroyed)
 			{
@@ -108,24 +103,30 @@ namespace OpenRA.Mods.RA.Missions
 			}
 		}
 
+		CountdownTimerWidget reinforcementsTimer;
+		const string ReinforcementsTimerHeader = "Reinforcements arrive in";
+		const int ReinforcementsTimerTicks = 18000;
+		static readonly float2 reinforcementsTimerPosition = new float2(96, 64);
+		static readonly string[] reinforcements = { "1tnk", "1tnk", "jeep", "mcv" };
+
 		void StartReinforcementsTimer()
 		{
-			reinfTimer.IsVisible = () => true;
+			reinforcementsTimer.IsVisible = () => true;
 			Sound.Play("timergo1.aud");
 		}
 
 		void TimerExpired()
 		{
-			reinfTimer.IsVisible = () => false;
+			reinforcementsTimer.IsVisible = () => false;
 			SendReinforcements();
 		}
 
 		void SendReinforcements()
 		{
 			Sound.Play("reinfor1.aud");
-			foreach (var unit in reinforcements)
+			for (int i = 0; i < reinforcements.Length; i++)
 			{
-				var actor = world.CreateActor(unit, new TypeDictionary { new LocationInit(reinforcementsEntryPoint.Location), new FacingInit(0), new OwnerInit(allies2) });
+				var actor = world.CreateActor(reinforcements[i], new TypeDictionary { new LocationInit(reinforcementsEntryPoint.Location + new CVec(i, 0)), new FacingInit(0), new OwnerInit(allies2) });
 				actor.QueueActivity(new Move.Move(allies2BasePoint.Location));
 			}
 		}
@@ -150,27 +151,28 @@ namespace OpenRA.Mods.RA.Missions
 			w.WorldActor.Trait<Shroud>().Explore(w, sam2.Location, 2);
 			w.WorldActor.Trait<Shroud>().Explore(w, sam3.Location, 2);
 			w.WorldActor.Trait<Shroud>().Explore(w, sam4.Location, 2);
-			reinfTimer = new CountdownTimerWidget("Reinforcements arrive in", CountdownTicks)
+			reinforcementsTimer = new CountdownTimerWidget(ReinforcementsTimerHeader, ReinforcementsTimerTicks, reinforcementsTimerPosition)
 			{
 				IsVisible = () => false,
 				OnExpired = TimerExpired
 			};
-			Ui.Root.AddChild(reinfTimer);
+			Ui.Root.AddChild(reinforcementsTimer);
 			Game.MoveViewport(((w.LocalPlayer ?? allies1) == allies1 ? chinookHusk.Location : allies2BasePoint.Location).ToFloat2());
-			StartReinforcementsTimer();
 		}
 	}
 
-	class CountdownTimerWidget : Widget
+	public class CountdownTimerWidget : Widget
 	{
 		public string Header { get; set; }
 		public int TicksLeft { get; set; }
+		public float2 Position { get; set; }
 		int ticks;
 
-		public CountdownTimerWidget(string header, int ticksLeft)
+		public CountdownTimerWidget(string header, int ticksLeft, float2 position)
 		{
 			Header = header;
 			TicksLeft = ticksLeft;
+			Position = position;
 			OnOneMinuteRemaining = () => Sound.Play("1minr.aud");
 			OnTwoMinutesRemaining = () => Sound.Play("2minr.aud");
 			OnThreeMinutesRemaining = () => Sound.Play("3minr.aud");
@@ -193,17 +195,6 @@ namespace OpenRA.Mods.RA.Missions
 		public Action OnThirtyMinutesRemaining { get; set; }
 		public Action OnFortyMinutesRemaining { get; set; }
 
-		const int Expired = 0;
-		const int OneMinute = 1500;
-		const int TwoMinutes = OneMinute * 2;
-		const int ThreeMinutes = OneMinute * 3;
-		const int FourMinutes = OneMinute * 4;
-		const int FiveMinutes = OneMinute * 5;
-		const int TenMinutes = OneMinute * 10;
-		const int TwentyMinutes = OneMinute * 20;
-		const int ThirtyMinutes = OneMinute * 30;
-		const int FortyMinutes = OneMinute * 40;
-
 		public override void Tick()
 		{
 			if (!IsVisible())
@@ -216,16 +207,16 @@ namespace OpenRA.Mods.RA.Missions
 				TicksLeft--;
 				switch (TicksLeft)
 				{
-					case Expired: OnExpired(); break;
-					case OneMinute: OnOneMinuteRemaining(); break;
-					case TwoMinutes: OnTwoMinutesRemaining(); break;
-					case ThreeMinutes: OnThreeMinutesRemaining(); break;
-					case FourMinutes: OnFourMinutesRemaining(); break;
-					case FiveMinutes: OnFiveMinutesRemaining(); break;
-					case TenMinutes: OnTenMinutesRemaining(); break;
-					case TwentyMinutes: OnTwentyMinutesRemaining(); break;
-					case ThirtyMinutes: OnThirtyMinutesRemaining(); break;
-					case FortyMinutes: OnFortyMinutesRemaining(); break;
+					case 1500 * 00: OnExpired(); break;
+					case 1500 * 01: OnOneMinuteRemaining(); break;
+					case 1500 * 02: OnTwoMinutesRemaining(); break;
+					case 1500 * 03: OnThreeMinutesRemaining(); break;
+					case 1500 * 04: OnFourMinutesRemaining(); break;
+					case 1500 * 05: OnFiveMinutesRemaining(); break;
+					case 1500 * 10: OnTenMinutesRemaining(); break;
+					case 1500 * 20: OnTwentyMinutesRemaining(); break;
+					case 1500 * 30: OnThirtyMinutesRemaining(); break;
+					case 1500 * 40: OnFortyMinutesRemaining(); break;
 				}
 			}
 		}
@@ -238,7 +229,7 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			var font = Game.Renderer.Fonts["Bold"];
 			var text = "{0}: {1}".F(Header, WidgetUtils.FormatTime(TicksLeft));
-			font.DrawTextWithContrast(text, new float2(32, 64), TicksLeft == 0 && ticks % 60 >= 30 ? Color.Red : Color.White, Color.Black, 1);
+			font.DrawTextWithContrast(text, Position, TicksLeft == 0 && ticks % 60 >= 30 ? Color.Red : Color.White, Color.Black, 1);
 		}
 	}
 }
