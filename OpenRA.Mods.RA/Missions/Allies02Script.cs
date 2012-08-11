@@ -45,6 +45,8 @@ namespace OpenRA.Mods.RA.Missions
 		Actor extractionLZ;
 		Actor extractionLZExitPoint;
 
+		Actor einsteinChinook;
+
 		World world;
 
 		Player allies1;
@@ -106,6 +108,10 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			else if (currentObjective == 1)
 			{
+				if (einsteinChinook != null && !world.Map.IsInMap(einsteinChinook.Location) && einsteinChinook.Trait<Cargo>().Passengers.Contains(einstein))
+				{
+					MissionAccomplished("Einstein was rescued.");
+				}
 			}
 			if (tanya.Destroyed)
 			{
@@ -173,14 +179,14 @@ namespace OpenRA.Mods.RA.Missions
 
 		void SendChinook()
 		{
-			var chinook = world.CreateActor(ChinookName, new TypeDictionary { new OwnerInit(allies1), new LocationInit(extractionLZEntryPoint.Location) });
-			chinook.QueueActivity(new HeliFly(extractionLZ.CenterLocation));
-			chinook.QueueActivity(new Turn(0));
-			chinook.QueueActivity(new HeliLand(true));
-			chinook.QueueActivity(new WaitFor(() => chinook.Trait<Cargo>().Passengers.Contains(einstein)));
-			chinook.QueueActivity(new Wait(150));
-			chinook.QueueActivity(new HeliFly(extractionLZExitPoint.CenterLocation));
-			chinook.QueueActivity(new RemoveSelf());
+			einsteinChinook = world.CreateActor(ChinookName, new TypeDictionary { new OwnerInit(allies1), new LocationInit(extractionLZEntryPoint.Location) });
+			einsteinChinook.QueueActivity(new HeliFly(extractionLZ.CenterLocation));
+			einsteinChinook.QueueActivity(new Turn(0));
+			einsteinChinook.QueueActivity(new HeliLand(true));
+			einsteinChinook.QueueActivity(new WaitFor(() => einsteinChinook.Trait<Cargo>().Passengers.Contains(einstein)));
+			einsteinChinook.QueueActivity(new Wait(150));
+			einsteinChinook.QueueActivity(new HeliFly(extractionLZExitPoint.CenterLocation));
+			einsteinChinook.QueueActivity(new RemoveSelf());
 		}
 
 		public void WorldLoaded(World w)
