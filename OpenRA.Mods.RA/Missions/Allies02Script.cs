@@ -155,6 +155,7 @@ namespace OpenRA.Mods.RA.Missions
 
 		void ChinookTimerExpired(CountdownTimerWidget timer)
 		{
+			Sound.Play("reinfor1.aud");
 			timer.Visible = false;
 			SendChinook();
 		}
