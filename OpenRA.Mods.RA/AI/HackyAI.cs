@@ -15,6 +15,7 @@ using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
 using XRandom = OpenRA.Thirdparty.Random;
+using OpenRA.Mods.RA.Move;
 
 //TODO:
 // effectively clear the area around the production buildings' spawn points.
@@ -437,7 +438,7 @@ namespace OpenRA.Mods.RA.AI
 		{
 			/* find our mcv and deploy it */
 			var mcv = self.World.Actors
-				.FirstOrDefault(a => a.Owner == p && a.HasTrait<BaseBuilding>());
+				.FirstOrDefault(a => a.Owner == p && a.HasTrait<BaseBuilding>() && a.HasTrait<Mobile>());
 
 			if (mcv != null)
 			{
