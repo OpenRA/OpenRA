@@ -575,8 +575,8 @@ Actors:
 	Actor53: e1
 		Location: 109,89
 		Owner: Allies1
-	Actor148: t01
-		Location: 19,92
+	Actor435: oilb
+		Location: 41,87
 		Owner: Neutral
 	Actor126: t11
 		Location: 106,78
@@ -1439,12 +1439,9 @@ Actors:
 	Actor460: powr
 		Location: 36,101
 		Owner: Allies2
-	Actor471: cycl
-		Location: 30,84
-		Owner: Soviets
-	Actor450: e1
-		Location: 29,88
-		Owner: Soviets
+	Actor148: oilb
+		Location: 40,90
+		Owner: Neutral
 	Actor83: dome
 		Location: 36,108
 		Owner: Allies2
@@ -1472,21 +1469,12 @@ Actors:
 	Actor474: apwr
 		Location: 36,104
 		Owner: Allies2
-	Actor458: cycl
-		Location: 36,84
-		Owner: Soviets
-	Actor475: cycl
-		Location: 30,87
-		Owner: Soviets
+	Actor162: mine
+		Location: 19,95
+		Owner: Neutral
 	ReinforcementsEntryPoint: waypoint
 		Location: 31,111
 		Owner: Neutral
-	Actor456: cycl
-		Location: 36,85
-		Owner: Soviets
-	Actor162: oilb
-		Location: 31,85
-		Owner: Soviets
 	Actor479: brik
 		Location: 62,60
 		Owner: Soviets
@@ -1691,56 +1679,23 @@ Actors:
 	Actor445: silo
 		Location: 43,51
 		Owner: Soviets
-	Actor472: cycl
-		Location: 30,86
-		Owner: Soviets
-	Actor473: 3tnk
-		Location: 32,87
-		Owner: Soviets
-	Actor461: cycl
-		Location: 34,84
-		Owner: Soviets
-	Actor435: oilb
-		Location: 34,85
-		Owner: Soviets
-	Actor468: cycl
-		Location: 32,84
-		Owner: Soviets
-	Actor465: cycl
-		Location: 33,84
-		Owner: Soviets
-	Actor446: cycl
-		Location: 35,84
-		Owner: Soviets
-	Actor447: cycl
-		Location: 30,85
-		Owner: Soviets
-	Actor451: e1
-		Location: 35,88
-		Owner: Soviets
 	Allies2BasePoint: waypoint
 		Location: 31,107
 		Owner: Neutral
 	Actor54: proc
 		Location: 25,95
 		Owner: Allies2
-	Actor470: cycl
-		Location: 31,84
-		Owner: Soviets
 	Actor476: gun
 		Location: 29,95
 		Owner: Allies2
-	Actor477: e2
-		Location: 34,87
+	Actor446: spen
+		Location: 58,17
 		Owner: Soviets
-	Actor448: barl
-		Location: 33,85
+	Actor447: e1
+		Location: 54,18
 		Owner: Soviets
-	Actor455: cycl
-		Location: 36,86
-		Owner: Soviets
-	Actor454: cycl
-		Location: 36,87
+	Actor448: e2
+		Location: 55,20
 		Owner: Soviets
 
 Smudges:
