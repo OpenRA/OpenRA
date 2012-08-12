@@ -10,7 +10,7 @@ return {
     if not love2d then
       local sep = win and ';' or ':'
       local path = (os.getenv('PATH') or '')..sep
-                 ..(GetPathWithSep(self:fprojdir(wfilename)))..sep
+                 ..(GetPathWithSep(self:fworkdir(wfilename)))..sep
                  ..(os.getenv('HOME') and GetPathWithSep(os.getenv('HOME'))..'bin' or '')
       local paths = {}
       for p in path:gmatch("[^"..sep.."]+") do
@@ -24,10 +24,15 @@ return {
       end
     end
 
+    if not GetFullPathIfExists(self:fworkdir(wfilename), 'main.lua') then
+      DisplayOutput("Can't find 'main.lua' file in the current project folder.\n")
+      return
+    end
+
     if rundebug then DebuggerAttachDefault() end
 
     local cmd = ('"%s" "%s"%s'):format(love2d,
-      self:fprojdir(wfilename), rundebug and ' -debug' or '')
+      self:fworkdir(wfilename), rundebug and ' -debug' or '')
     -- CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
     return CommandLineRun(cmd,self:fworkdir(wfilename),true,false,nil,nil,
       function() ide.debugger.pid = nil end)
