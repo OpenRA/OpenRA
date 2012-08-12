@@ -1772,9 +1772,6 @@ Rules:
 	AGUN:
 		Buildable:
 			Owner: None
-	HBOX:
-		Buildable:
-			Owner: None
 	FTUR:
 		Buildable:
 			Owner: None
