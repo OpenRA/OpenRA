@@ -139,8 +139,6 @@ function SetEditorSelection(selection)
   statusBar:SetStatusText("",1)
   ide.frame:SetTitle(getFileTitle(editor))
 
-  FileTreeMarkSelected('')
-
   if editor then
     if funclist:IsEmpty() then funclist:Append('Jump to a function definition...', 0) end
     funclist:SetSelection(0)
@@ -151,6 +149,8 @@ function SetEditorSelection(selection)
     if openDocuments[id] and openDocuments[id].filePath then
       FileTreeMarkSelected(openDocuments[id].filePath)
     end
+  else
+    FileTreeMarkSelected('')
   end
 end
 
