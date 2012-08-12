@@ -374,7 +374,7 @@ Actors:
 	Actor529: brik
 		Location: 55,71
 		Owner: Soviets
-	Actor287: barr
+	SovietBarracks: barr
 		Location: 54,57
 		Owner: Soviets
 	Actor256: e1
@@ -647,7 +647,7 @@ Actors:
 	Actor138: tc01
 		Location: 104,82
 		Owner: Neutral
-	Actor170: weap
+	SovietWarFactory: weap
 		Location: 50,43
 		Owner: Soviets
 	Actor164: e1
@@ -938,7 +938,7 @@ Actors:
 	Actor401: brik
 		Location: 50,72
 		Owner: Soviets
-	Actor54: barr
+	Actor287: barr
 		Location: 74,82
 		Owner: Soviets
 	Actor311: t10
@@ -1427,11 +1427,11 @@ Actors:
 	Actor452: tent
 		Location: 36,97
 		Owner: Allies2
-	Actor453: proc
-		Location: 27,96
+	Actor478: gun
+		Location: 37,95
 		Owner: Allies2
-	Actor457: weap
-		Location: 30,104
+	Actor170: weap
+		Location: 23,103
 		Owner: Allies2
 	Actor459: powr
 		Location: 38,101
@@ -1448,9 +1448,9 @@ Actors:
 	Actor83: dome
 		Location: 36,108
 		Owner: Allies2
-	Allies2BasePoint: waypoint
-		Location: 32,97
-		Owner: Neutral
+	Actor484: pbox.e1
+		Location: 33,98
+		Owner: Allies2
 	Actor183: brik
 		Location: 24,47
 		Owner: Soviets
@@ -1479,7 +1479,7 @@ Actors:
 		Location: 30,87
 		Owner: Soviets
 	ReinforcementsEntryPoint: waypoint
-		Location: 24,111
+		Location: 31,111
 		Owner: Neutral
 	Actor456: cycl
 		Location: 36,85
@@ -1718,17 +1718,17 @@ Actors:
 	Actor451: e1
 		Location: 35,88
 		Owner: Soviets
-	Actor476: pbox.e1
-		Location: 31,95
-		Owner: Allies2
-	Actor484: gun
-		Location: 37,95
+	Allies2BasePoint: waypoint
+		Location: 31,107
+		Owner: Neutral
+	Actor54: proc
+		Location: 25,95
 		Owner: Allies2
 	Actor470: cycl
 		Location: 31,84
 		Owner: Soviets
-	Actor478: gun
-		Location: 25,95
+	Actor476: gun
+		Location: 29,95
 		Owner: Allies2
 	Actor477: e2
 		Location: 34,87
@@ -1748,16 +1748,6 @@ Smudges:
 Rules:
 	Player:
 		-ConquestVictoryConditions:
-		HackyAI@SovietAI:
-			Name: Soviet AI
-			BuildingFractions:
-			UnitsToBuild:
-				dog: 10%
-				e1: 50%
-				e2: 20%
-				e3: 10%
-				3tnk: 50%
-			SquadSize: 10
 	World:
 		-CrateDrop:
 		-SpawnMPUnits:
