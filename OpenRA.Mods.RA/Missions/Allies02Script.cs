@@ -65,6 +65,7 @@ namespace OpenRA.Mods.RA.Missions
 		static readonly string[] sovietInfantry = { "e1", "e2", "e3", "dog" };
 		static readonly string[] sovietVehicles = { "3tnk", "v2rl" };
 
+		const int ReinforcementsTicks = 1500 * 12;
 		static readonly string[] reinforcements = { "1tnk", "1tnk", "jeep", "mcv" };
 
 		const string ChinookName = "tran";
@@ -199,7 +200,7 @@ namespace OpenRA.Mods.RA.Missions
 		void StartReinforcementsTimer()
 		{
 			Sound.Play("timergo1.aud");
-			var timer = new CountdownTimerWidget("Reinforcements arrive in", 1500 * 12, ReinforcementsTimerExpired, new float2(128, 96));
+			var timer = new CountdownTimerWidget("Reinforcements arrive in", ReinforcementsTicks, ReinforcementsTimerExpired, new float2(128, 96));
 			Ui.Root.AddChild(timer);
 		}
 

@@ -27,6 +27,7 @@ Players:
 	PlayerReference@Allies1:
 		Name: Allies1
 		Playable: True
+		AllowBots: False
 		LockRace: True
 		Race: allies
 		LockColor: True
@@ -38,6 +39,7 @@ Players:
 	PlayerReference@Allies2:
 		Name: Allies2
 		Playable: True
+		AllowBots: False
 		LockRace: True
 		Race: allies
 		LockColor: True
@@ -1717,6 +1719,118 @@ Rules:
 		-AutoTarget:
 	TRAN:
 		-Selectable:
+		Buildable:
+			Owner: None
+	MIG:
+		Buildable:
+			Owner: None
+	YAK:
+		Buildable:
+			Owner: None
+	HELI:
+		Buildable:
+			Owner: None
+	HIND:
+		Buildable:
+			Owner: None
+	SS:
+		Buildable:
+			Owner: None
+	MSUB:
+		Buildable:
+			Owner: None
+	DD:
+		Buildable:
+			Owner: None
+	CA:
+		Buildable:
+			Owner: None
+	PT:
+		Buildable:
+			Owner: None
+	MSLO:
+		Buildable:
+			Owner: None
+	GAP:
+		Buildable:
+			Owner: None
+	SPEN:
+		Buildable:
+			Owner: None
+	SYRD:
+		Buildable:
+			Owner: None
+	IRON:
+		Buildable:
+			Owner: None
+	PDOX:
+		Buildable:
+			Owner: None
+	TSLA:
+		Buildable:
+			Owner: None
+	AGUN:
+		Buildable:
+			Owner: None
+	HBOX:
+		Buildable:
+			Owner: None
+	FTUR:
+		Buildable:
+			Owner: None
+	SAM:
+		Buildable:
+			Owner: None
+	ATEK:
+		Buildable:
+			Owner: None
+	HPAD:
+		Buildable:
+			Owner: None
+	AFLD:
+		Buildable:
+			Owner: None
+	STEK:
+		Buildable:
+			Owner: None
+	BARR:
+		Buildable:
+			Owner: None
+	FIX:
+		Buildable:
+			Owner: None
+	2TNK:
+		Buildable:
+			Owner: None
+	4TNK:
+		Buildable:
+			Owner: None
+	ARTY:
+		Buildable:
+			Owner: None
+	MCV:
+		Buildable:
+			Owner: None
+	APC:
+		Buildable:
+			Owner: None
+	MNLY.AP:
+		Buildable:
+			Owner: None
+	MNLY.AT:
+		Buildable:
+			Owner: None
+	TRUK:
+		Buildable:
+			Owner: None
+	TTNK:
+		Buildable:
+			Owner: None
+	FTRK:
+		Buildable:
+			Owner: None
+	
+	
 
 Sequences:
 
