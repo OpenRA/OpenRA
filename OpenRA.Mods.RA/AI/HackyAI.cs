@@ -438,12 +438,16 @@ namespace OpenRA.Mods.RA.AI
 		{
 			/* find our mcv and deploy it */
 			var mcv = self.World.Actors
-				.FirstOrDefault(a => a.Owner == p && a.HasTrait<BaseBuilding>() && a.HasTrait<Mobile>());
+				.FirstOrDefault(a => a.Owner == p && a.HasTrait<BaseBuilding>());
 
 			if (mcv != null)
 			{
 				baseCenter = mcv.Location;
-				world.IssueOrder(new Order("DeployTransform", mcv, false));
+				//Don't transform the mcv if it is a fact
+				if (mcv.HasTrait<Mobile>())
+				{
+					world.IssueOrder(new Order("DeployTransform", mcv, false));
+				}
 			}
 			else
 				BotDebug("AI: Can't find BaseBuildUnit.");
