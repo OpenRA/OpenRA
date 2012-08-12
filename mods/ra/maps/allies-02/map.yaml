@@ -375,7 +375,7 @@ Actors:
 		Location: 55,71
 		Owner: Soviets
 	Actor287: barr
-		Location: 54,49
+		Location: 54,57
 		Owner: Soviets
 	Actor256: e1
 		Location: 59,49
@@ -1208,9 +1208,6 @@ Actors:
 	Actor359: brik
 		Location: 29,46
 		Owner: Soviets
-	Actor485: 3tnk
-		Location: 57,44
-		Owner: Soviets
 	Actor510: e1
 		Location: 94,20
 		Owner: Soviets
@@ -1467,7 +1464,7 @@ Actors:
 		Location: 45,68
 		Owner: Soviets
 	Actor320: kenn
-		Location: 56,59
+		Location: 54,51
 		Owner: Soviets
 	Actor84: fenc
 		Location: 110,93
