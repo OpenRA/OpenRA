@@ -60,6 +60,8 @@ namespace OpenRA.Mods.RA.Missions
 		Actor sovietBarracks;
 		Actor sovietWarFactory;
 
+		CountdownTimerWidget reinforcementsTimer;
+
 		const string InfantryQueueName = "Infantry";
 		const string VehicleQueueName = "Vehicle";
 		static readonly string[] sovietInfantry = { "e1", "e2", "e3", "dog" };
@@ -86,6 +88,10 @@ namespace OpenRA.Mods.RA.Missions
 				return;
 			}
 			allies1.WinState = allies2.WinState = WinState.Lost;
+			if (reinforcementsTimer != null)
+			{
+				reinforcementsTimer.Visible = false;
+			}
 			Game.AddChatLine(Color.Red, "Mission failed", text);
 			Sound.Play("misnlst1.aud");
 		}
@@ -97,12 +103,20 @@ namespace OpenRA.Mods.RA.Missions
 				return;
 			}
 			allies1.WinState = allies2.WinState = WinState.Won;
+			if (reinforcementsTimer != null)
+			{
+				reinforcementsTimer.Visible = false;
+			}
 			Game.AddChatLine(Color.Blue, "Mission accomplished", text);
 			Sound.Play("misnwon1.aud");
 		}
 
 		public void Tick(Actor self)
 		{
+			if (allies1.WinState != WinState.Undefined)
+			{
+				return;
+			}
 			if (world.FrameNumber % 3500 == 1)
 			{
 				DisplayObjective();
@@ -200,8 +214,8 @@ namespace OpenRA.Mods.RA.Missions
 		void StartReinforcementsTimer()
 		{
 			Sound.Play("timergo1.aud");
-			var timer = new CountdownTimerWidget("Reinforcements arrive in", ReinforcementsTicks, ReinforcementsTimerExpired, new float2(128, 96));
-			Ui.Root.AddChild(timer);
+			reinforcementsTimer = new CountdownTimerWidget("Reinforcements arrive in", ReinforcementsTicks, ReinforcementsTimerExpired, new float2(128, 96));
+			Ui.Root.AddChild(reinforcementsTimer);
 		}
 
 		void ReinforcementsTimerExpired(CountdownTimerWidget timer)
@@ -251,7 +265,7 @@ namespace OpenRA.Mods.RA.Missions
 
 		void SpawnEngineerAtMiss()
 		{
-			engineer = world.CreateActor(EngineerName, new TypeDictionary { new OwnerInit(allies1), new LocationInit(engineerMiss.Location) });
+			engineer = world.CreateActor(EngineerName, new TypeDictionary {new OwnerInit(allies1), new LocationInit(engineerMiss.Location)});
 			engineer.QueueActivity(new Move.Move(engineerMiss.Location + new CVec(5, 0)));
 		}
 
