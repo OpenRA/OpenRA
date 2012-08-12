@@ -388,7 +388,6 @@
 	Tooltip:
 		Name: Turret
 		Description: Anti-Armor base defense.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
-		Icon: turreticon
 	Building:
 		Power: -20
 	-GivesBuildableArea:
@@ -418,7 +417,6 @@
 		Cost: 1000
 	Tooltip:
 		Name: Rocket Tower
-		Icon: rturreticon
 		Description: Anti-armor defensive structure.\n  Strong vs Light Vehicles, Tanks\n  Weak vs Infantry
 	Buildable:
 		Queue: Defense
