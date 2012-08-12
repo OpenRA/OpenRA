@@ -135,7 +135,7 @@ namespace OpenRA.Mods.RA.Missions
 
 		void InitializeSovietAI()
 		{
-			if (!Game.IsHost || world.LocalPlayer == null)
+			if (!Game.IsHost)
 			{
 				return;
 			}
