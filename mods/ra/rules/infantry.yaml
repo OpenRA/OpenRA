@@ -399,7 +399,7 @@ SNIPER:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 50
-		Owner: allies,soviet
+		Owner: soviet
 	Selectable:
 		Bounds: 12,17,0,-6
 	Mobile:
@@ -410,8 +410,8 @@ SNIPER:
 		PipType: Red
 	RevealsShroud:
 		Range: 6
-	-AutoTarget:
-	-AttackMove:
+	AutoTarget:
+		InitialStance: HoldFire
 	AttackFrontal:
 		PrimaryWeapon: Sniper
 	TakeCover:
