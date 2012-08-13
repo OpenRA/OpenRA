@@ -14,8 +14,7 @@ namespace OpenRA.Mods.RA
 {
 	class CaptureNotificationInfo : ITraitInfo
 	{
-		public readonly string Race = null;
-		public readonly string Notification = null;
+		public readonly string Notification = "BuildingCaptured";
 
 		public object Create(ActorInitializer init) { return new CaptureNotification(this); }
 	}
@@ -33,10 +32,7 @@ namespace OpenRA.Mods.RA
 			if (captor.World.LocalPlayer != captor.Owner)
 				return;
 
-			if (Info.Race != null && Info.Race != newOwner.Country.Race)
-				return;
-
-			Sound.PlayToPlayer(captor.World.LocalPlayer, Info.Notification);
+			Sound.PlayNotification(captor.World.LocalPlayer, "Speech", Info.Notification, newOwner.Country.Race);
 		}
 	}
 }
