@@ -43,7 +43,7 @@ namespace OpenRA.Mods.RA.Activities
 			target.Trait<Capturable>().BeginCapture(target, self);
 
 			var capturesInfo = self.Info.Traits.Get<CapturesInfo>();
-			if (capturesInfo != null && capturesInfo.wastedAfterwards)
+			if (capturesInfo != null && capturesInfo.WastedAfterwards)
 				self.World.AddFrameEndTask(w => self.Destroy());
 
 			return this;

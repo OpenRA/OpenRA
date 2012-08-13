@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA
 	class CapturesInfo : ITraitInfo
 	{
 		public string[] CaptureTypes = {"building"};
-		public bool wastedAfterwards = true;
+		public bool WastedAfterwards = true;
 		public object Create(ActorInitializer init) { return new Captures(init.self, this); }
 	}
 
@@ -108,7 +108,7 @@ namespace OpenRA.Mods.RA
 
 			if (captureTypes.Contains(ci.Type))
 			{
-				cursor = (Info.wastedAfterwards) ? (useEnterCursor(target) ? "enter" : "enter-blocked") : "attack";
+				cursor = (Info.WastedAfterwards) ? (useEnterCursor(target) ? "enter" : "enter-blocked") : "attack";
 				return true;
 			}
 
