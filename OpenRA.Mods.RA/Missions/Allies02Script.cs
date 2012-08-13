@@ -177,6 +177,11 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				return;
 			}
+			var resources = soviets.PlayerActor.Trait<PlayerResources>();
+			if (resources.Cash < 2000)
+			{
+				resources.GiveCash(2000);
+			}
 			if (!sovietBarracks.Destroyed)
 			{
 				BuildUnitIfQueueIdle(soviets, InfantryQueueName, sovietInfantry[world.SharedRandom.Next(sovietInfantry.Length)]);
@@ -189,8 +194,6 @@ namespace OpenRA.Mods.RA.Missions
 
 		void InitializeSoviets()
 		{
-			var res = soviets.PlayerActor.Trait<PlayerResources>();
-			res.GiveCash(100000);
 			sovietBarracks.Trait<RallyPoint>().rallyPoint = allies2BasePoint.Location;
 			sovietWarFactory.Trait<RallyPoint>().rallyPoint = allies2BasePoint.Location;
 			sovietBarracks.Trait<PrimaryBuilding>().SetPrimaryProducer(sovietBarracks, true);
