@@ -577,8 +577,8 @@ Actors:
 	Actor53: e1
 		Location: 109,89
 		Owner: Allies1
-	Actor435: oilb
-		Location: 41,87
+	Actor148: oilb
+		Location: 45,88
 		Owner: Neutral
 	Actor126: t11
 		Location: 106,78
@@ -1427,10 +1427,7 @@ Actors:
 		Location: 29,23
 		Owner: Soviets
 	Actor452: tent
-		Location: 36,97
-		Owner: Allies2
-	Actor478: gun
-		Location: 37,95
+		Location: 38,95
 		Owner: Allies2
 	Actor170: weap
 		Location: 23,103
@@ -1441,14 +1438,11 @@ Actors:
 	Actor460: powr
 		Location: 36,101
 		Owner: Allies2
-	Actor148: oilb
-		Location: 40,90
+	Actor435: oilb
+		Location: 45,85
 		Owner: Neutral
 	Actor83: dome
 		Location: 36,108
-		Owner: Allies2
-	Actor484: pbox.e1
-		Location: 33,98
 		Owner: Allies2
 	Actor183: brik
 		Location: 24,47
@@ -1687,8 +1681,8 @@ Actors:
 	Actor54: proc
 		Location: 25,95
 		Owner: Allies2
-	Actor476: gun
-		Location: 29,95
+	Actor455: fenc
+		Location: 31,93
 		Owner: Allies2
 	Actor446: spen
 		Location: 58,17
@@ -1699,6 +1693,72 @@ Actors:
 	Actor448: e2
 		Location: 55,20
 		Owner: Soviets
+	Actor450: t05
+		Location: 47,84
+		Owner: Neutral
+	Actor468: fenc
+		Location: 29,93
+		Owner: Allies2
+	Actor456: fenc
+		Location: 41,93
+		Owner: Allies2
+	Actor531: fenc
+		Location: 45,93
+		Owner: Allies2
+	Actor461: fenc
+		Location: 44,93
+		Owner: Allies2
+	Actor458: fenc
+		Location: 43,93
+		Owner: Allies2
+	Actor453: fenc
+		Location: 27,93
+		Owner: Allies2
+	Actor470: fenc
+		Location: 26,93
+		Owner: Allies2
+	Actor454: pbox.e1
+		Location: 32,93
+		Owner: Allies2
+	Actor465: fenc
+		Location: 30,93
+		Owner: Allies2
+	Actor473: pbox.e1
+		Location: 40,93
+		Owner: Allies2
+	Actor472: gun
+		Location: 41,92
+		Owner: Allies2
+	Actor451: fenc
+		Location: 28,93
+		Owner: Allies2
+	Actor478: fenc
+		Location: 24,91
+		Owner: Allies2
+	Actor484: fenc
+		Location: 23,91
+		Owner: Allies2
+	Actor476: fenc
+		Location: 25,92
+		Owner: Allies2
+	Actor475: gun
+		Location: 31,92
+		Owner: Allies2
+	Actor471: fenc
+		Location: 25,93
+		Owner: Allies2
+	Actor477: fenc
+		Location: 25,91
+		Owner: Allies2
+	Actor534: 1tnk
+		Location: 35,97
+		Owner: Allies2
+	Actor546: 1tnk
+		Location: 34,97
+		Owner: Allies2
+	Actor457: fenc
+		Location: 42,93
+		Owner: Allies2
 
 Smudges:
 
@@ -1826,8 +1886,6 @@ Rules:
 	FTRK:
 		Buildable:
 			Owner: None
-	
-	
 
 Sequences:
 
