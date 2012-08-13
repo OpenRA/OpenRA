@@ -312,6 +312,7 @@
 		Types:Bridge
 	AutoTargetIgnore:
 
+#Terrain Expansion
 ^SVBridge:
 	Tooltip:
 		Name: Small Bridge
@@ -351,4 +352,3 @@
 		HP: 750
 	ProximityCaptor:
 		Types:Bridge
-
