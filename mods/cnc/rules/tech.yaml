@@ -57,10 +57,6 @@ BIO:
 		Group: Infantry
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
-		QueuedAudio: bldging1.aud
-		ReadyAudio: unitredy.aud
-		OnHoldAudio: onhold1.aud
-		CancelledAudio: cancel1.aud
 	ProductionBar:
 	RallyPoint:
 		RallyPoint: -1,-1
