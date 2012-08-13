@@ -238,6 +238,8 @@ namespace OpenRA.Mods.RA.Missions
 		void SendReinforcements()
 		{
 			Sound.Play("reinfor1.aud");
+			var resources = allies2.PlayerActor.Trait<PlayerResources>();
+			resources.GiveCash(2000);
 			foreach (var unit in reinforcements)
 			{
 				var actor = world.CreateActor(unit, new TypeDictionary
