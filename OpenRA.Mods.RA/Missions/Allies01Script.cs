@@ -80,6 +80,10 @@ namespace OpenRA.Mods.RA.Missions
 				return;
 			}
 			allies.WinState = WinState.Lost;
+			foreach (var actor in world.Actors.Where(a => a.IsInWorld && a.Owner == allies && !a.IsDead()))
+			{
+				actor.Kill(actor);
+			}
 			Game.AddChatLine(Color.Red, "Mission failed", text);
 			Sound.Play("misnlst1.aud");
 		}

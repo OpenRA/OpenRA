@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA.Missions
 	{
 		static readonly string[] objectives =
 		{
-			"Destroy the SAM sites. Tanya and Einstein must survive.",
+			"Hold off the Soviet forces and destroy the SAM sites. Tanya and Einstein must survive.",
 			"Wait for the helicopter and extract Einstein. Tanya and Einstein must survive."
 		};
 
@@ -92,6 +92,10 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				reinforcementsTimer.Visible = false;
 			}
+			foreach (var actor in world.Actors.Where(a => a.IsInWorld && (a.Owner == allies1 || a.Owner == allies2) && !a.IsDead()))
+			{
+				actor.Kill(actor);
+			}
 			Game.AddChatLine(Color.Red, "Mission failed", text);
 			Sound.Play("misnlst1.aud");
 		}
@@ -128,6 +132,10 @@ namespace OpenRA.Mods.RA.Missions
 			if (world.FrameNumber % 25 == 0)
 			{
 				BuildSovietUnits();
+			}
+			if (!world.Actors.Any(a => a.IsInWorld && a.HasTrait<Building>() && a.Owner == allies2))
+			{
+				MissionFailed("The Allied reinforcements have been defeated.");
 			}
 			if (!engineerMiss.Destroyed && engineer == null && AlliesControlMiss())
 			{
@@ -265,7 +273,7 @@ namespace OpenRA.Mods.RA.Missions
 
 		void SpawnEngineerAtMiss()
 		{
-			engineer = world.CreateActor(EngineerName, new TypeDictionary {new OwnerInit(allies1), new LocationInit(engineerMiss.Location)});
+			engineer = world.CreateActor(EngineerName, new TypeDictionary { new OwnerInit(allies1), new LocationInit(engineerMiss.Location) });
 			engineer.QueueActivity(new Move.Move(engineerMiss.Location + new CVec(5, 0)));
 		}
 
