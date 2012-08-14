@@ -156,18 +156,25 @@ namespace OpenRA.Mods.RA.Missions
 						FlyEinsteinFromExtractionLZ();
 					}
 				}
-				if (einsteinChinook != null && !einsteinChinook.IsDead() && !world.Map.IsInMap(einsteinChinook.Location) && einsteinChinook.Trait<Cargo>().Passengers.Contains(einstein))
+				if (einsteinChinook != null)
 				{
-					MissionAccomplished("Einstein was rescued.");
-				}
-				if (einstein.Destroyed)
-				{
-					MissionFailed("Einstein was killed.");
+					if (einsteinChinook.Destroyed)
+					{
+						MissionFailed("The extraction helicopter was destroyed.");
+					}
+					else if (!world.Map.IsInMap(einsteinChinook.Location) && einsteinChinook.Trait<Cargo>().Passengers.Contains(einstein))
+					{
+						MissionAccomplished("Einstein was rescued.");
+					}
 				}
 			}
 			if (tanya.Destroyed)
 			{
 				MissionFailed("Tanya was killed.");
+			}
+			else if (einstein != null && einstein.Destroyed)
+			{
+				MissionFailed("Einstein was killed.");
 			}
 			ManageSovietOre();
 		}

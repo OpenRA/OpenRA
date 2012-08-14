@@ -133,10 +133,6 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				BuildSovietUnits();
 			}
-			if (!world.Actors.Any(a => a.IsInWorld && a.HasTrait<Building>() && a.Owner == allies2))
-			{
-				MissionFailed("The Allied reinforcements have been defeated.");
-			}
 			if (!engineerMiss.Destroyed && engineer == null && AlliesControlMiss())
 			{
 				SpawnEngineerAtMiss();
@@ -153,9 +149,13 @@ namespace OpenRA.Mods.RA.Missions
 					SendChinook();
 				}
 			}
-			else if (currentObjective == 1)
+			else if (currentObjective == 1 && einsteinChinook != null)
 			{
-				if (einsteinChinook != null && !einsteinChinook.IsDead() && !world.Map.IsInMap(einsteinChinook.Location) && einsteinChinook.Trait<Cargo>().Passengers.Contains(einstein))
+				if (einsteinChinook.Destroyed)
+				{
+					MissionFailed("The extraction helicopter was destroyed.");
+				}
+				else if (!world.Map.IsInMap(einsteinChinook.Location) && einsteinChinook.Trait<Cargo>().Passengers.Contains(einstein))
 				{
 					MissionAccomplished("Einstein was rescued.");
 				}
@@ -164,9 +164,13 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				MissionFailed("Tanya was killed.");
 			}
-			if (einstein.Destroyed)
+			else if (einstein.Destroyed)
 			{
 				MissionFailed("Einstein was killed.");
+			}
+			else if (!world.Actors.Any(a => a.IsInWorld && a.HasTrait<Building>() && a.Owner == allies2))
+			{
+				MissionFailed("The Allied reinforcements have been defeated.");
 			}
 		}
 
