@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA.Missions
 
 	class Allies01Script : IWorldLoaded, ITick
 	{
-		static readonly string[] objectives =
+		static readonly string[] Objectives =
 		{
 			"Find Einstein. Tanya and Einstein must survive.",
 			"Wait for the helicopter and extract Einstein. Tanya and Einstein must survive."
@@ -50,13 +50,13 @@ namespace OpenRA.Mods.RA.Missions
 
 		World world;
 
-		static readonly string[] taunts = { "laugh1.aud", "lefty1.aud", "cmon1.aud", "gotit1.aud" };
+		static readonly string[] Taunts = { "laugh1.aud", "lefty1.aud", "cmon1.aud", "gotit1.aud" };
 
-		static readonly string[] ships = { "ca", "ca", "ca", "ca" };
-		static readonly string[] patrol = { "e1", "dog", "e1" };
+		static readonly string[] Ships = { "ca", "ca", "ca", "ca" };
+		static readonly string[] Patrol = { "e1", "dog", "e1" };
 
-		static readonly string[] attackWave = { "e1", "e1", "e1", "e1", "e2", "e2", "e2", "e2", "dog" };
-		static readonly string[] lastAttackWaveAddition = { "3tnk", "e1", "e1", "e1", "e1", "e2", "e2", "e2", "e2" };
+		static readonly string[] AttackWave = { "e1", "e1", "e1", "e1", "e2", "e2", "e2", "e2", "dog" };
+		static readonly string[] LastAttackWaveAddition = { "3tnk", "e1", "e1", "e1", "e1", "e2", "e2", "e2", "e2" };
 		int currentAttackWaveFrameNumber;
 		int currentAttackWave;
 		const int EinsteinChinookAttackWave = 5;
@@ -69,7 +69,7 @@ namespace OpenRA.Mods.RA.Missions
 
 		void DisplayObjective()
 		{
-			Game.AddChatLine(Color.LimeGreen, "Objective", objectives[currentObjective]);
+			Game.AddChatLine(Color.LimeGreen, "Objective", Objectives[currentObjective]);
 			Sound.Play("bleep6.aud");
 		}
 
@@ -113,7 +113,7 @@ namespace OpenRA.Mods.RA.Missions
 			// taunt every so often
 			if (world.FrameNumber % 1000 == 0)
 			{
-				Sound.Play(taunts[world.SharedRandom.Next(taunts.Length)]);
+				Sound.Play(Taunts[world.SharedRandom.Next(Taunts.Length)]);
 			}
 			// take Tanya to the LZ
 			if (world.FrameNumber == 1)
@@ -144,12 +144,12 @@ namespace OpenRA.Mods.RA.Missions
 				if (world.FrameNumber >= currentAttackWaveFrameNumber + 600)
 				{
 					Sound.Play("enmyapp1.aud");
-					SendAttackWave(attackWave);
+					SendAttackWave(AttackWave);
 					currentAttackWave++;
 					currentAttackWaveFrameNumber = world.FrameNumber;
 					if (currentAttackWave >= EinsteinChinookAttackWave)
 					{
-						SendAttackWave(lastAttackWaveAddition);
+						SendAttackWave(LastAttackWaveAddition);
 					}
 					if (currentAttackWave == EinsteinChinookAttackWave)
 					{
@@ -212,9 +212,9 @@ namespace OpenRA.Mods.RA.Missions
 
 		void SendPatrol()
 		{
-			for (int i = 0; i < patrol.Length; i++)
+			for (int i = 0; i < Patrol.Length; i++)
 			{
-				var actor = world.CreateActor(patrol[i], new TypeDictionary { new OwnerInit(soviets), new LocationInit(insertionLZ.Location + new CVec(-1 + i, 10 + i * 2)) });
+				var actor = world.CreateActor(Patrol[i], new TypeDictionary { new OwnerInit(soviets), new LocationInit(insertionLZ.Location + new CVec(-1 + i, 10 + i * 2)) });
 				actor.QueueActivity(new Move.Move(insertionLZ.Location));
 			}
 		}
@@ -239,9 +239,9 @@ namespace OpenRA.Mods.RA.Missions
 
 		void SendShips()
 		{
-			for (int i = 0; i < ships.Length; i++)
+			for (int i = 0; i < Ships.Length; i++)
 			{
-				var actor = world.CreateActor(ships[i],
+				var actor = world.CreateActor(Ships[i],
 					new TypeDictionary { new OwnerInit(allies), new LocationInit(shipSpawnPoint.Location + new CVec(i * 2, 0)) });
 				actor.QueueActivity(new Move.Move(shipMovePoint.Location + new CVec(i * 4, 0)));
 			}

@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA.Missions
 
 	class Allies02Script : IWorldLoaded, ITick
 	{
-		static readonly string[] objectives =
+		static readonly string[] Objectives =
 		{
 			"Hold off the Soviet forces and destroy the SAM sites. Tanya and Einstein must survive.",
 			"Wait for the helicopter and extract Einstein. Tanya and Einstein must survive."
@@ -64,11 +64,12 @@ namespace OpenRA.Mods.RA.Missions
 
 		const string InfantryQueueName = "Infantry";
 		const string VehicleQueueName = "Vehicle";
-		static readonly string[] sovietInfantry = { "e1", "e2", "e3", "dog" };
-		static readonly string[] sovietVehicles = { "3tnk", "v2rl" };
+		static readonly string[] SovietInfantry = { "e1", "e2", "e3", "dog" };
+		static readonly string[] SovietVehicles = { "3tnk", "v2rl" };
 
 		const int ReinforcementsTicks = 1500 * 12;
-		static readonly string[] reinforcements = { "1tnk", "1tnk", "jeep", "mcv" };
+		static readonly string[] Reinforcements = { "1tnk", "1tnk", "jeep", "mcv" };
+		const int ReinforcementsCash = 2000;
 
 		const string ChinookName = "tran";
 		const string SignalFlareName = "flare";
@@ -77,7 +78,7 @@ namespace OpenRA.Mods.RA.Missions
 
 		void DisplayObjective()
 		{
-			Game.AddChatLine(Color.LimeGreen, "Objective", objectives[currentObjective]);
+			Game.AddChatLine(Color.LimeGreen, "Objective", Objectives[currentObjective]);
 			Sound.Play("bleep6.aud");
 		}
 
@@ -182,17 +183,17 @@ namespace OpenRA.Mods.RA.Missions
 				return;
 			}
 			var resources = soviets.PlayerActor.Trait<PlayerResources>();
-			if (resources.Cash < 2000)
+			if (resources.Cash < ReinforcementsCash)
 			{
-				resources.GiveCash(2000);
+				resources.GiveCash(ReinforcementsCash);
 			}
 			if (!sovietBarracks.Destroyed)
 			{
-				BuildUnitIfQueueIdle(soviets, InfantryQueueName, sovietInfantry[world.SharedRandom.Next(sovietInfantry.Length)]);
+				BuildUnitIfQueueIdle(soviets, InfantryQueueName, SovietInfantry[world.SharedRandom.Next(SovietInfantry.Length)]);
 			}
 			if (!sovietWarFactory.Destroyed)
 			{
-				BuildUnitIfQueueIdle(soviets, VehicleQueueName, sovietVehicles[world.SharedRandom.Next(sovietVehicles.Length)]);
+				BuildUnitIfQueueIdle(soviets, VehicleQueueName, SovietVehicles[world.SharedRandom.Next(SovietVehicles.Length)]);
 			}
 		}
 
@@ -244,7 +245,7 @@ namespace OpenRA.Mods.RA.Missions
 			Sound.Play("reinfor1.aud");
 			var resources = allies2.PlayerActor.Trait<PlayerResources>();
 			resources.GiveCash(2000);
-			foreach (var unit in reinforcements)
+			foreach (var unit in Reinforcements)
 			{
 				var actor = world.CreateActor(unit, new TypeDictionary
 				{
