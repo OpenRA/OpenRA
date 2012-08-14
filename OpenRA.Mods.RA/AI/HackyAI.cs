@@ -13,9 +13,9 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Buildings;
+using OpenRA.Mods.RA.Move;
 using OpenRA.Traits;
 using XRandom = OpenRA.Thirdparty.Random;
-using OpenRA.Mods.RA.Move;
 
 //TODO:
 // effectively clear the area around the production buildings' spawn points.
