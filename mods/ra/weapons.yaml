@@ -1144,12 +1144,12 @@ VolkNapalm:
 
 Sniper:
 	Report: GUN5
-	ROF: 40
+	ROF: 70
 	Range: 10
 	Projectile: Bullet
 		Speed: 100
 	Warhead: 
-		Damage: 100
+		Damage: 140
 		Spread: 1
 		Versus: 
 			None: 100%
