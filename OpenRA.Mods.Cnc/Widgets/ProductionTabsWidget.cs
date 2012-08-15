@@ -248,7 +248,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				if ((leftPressed && !leftDisabled) || (rightPressed && !rightDisabled))
 					Sound.PlayNotification(null, "Sounds", "ClickSound", null);
 				else
-					Sound.PlayNotification(null, "Sounds", "DisabledClickSound", null);
+					Sound.PlayNotification(null, "Sounds", "ClickDisabledSound", null);
 			}
 
 			// Check production tabs
