@@ -64,7 +64,7 @@ Container@SERVER_LOBBY:
 								Image@ISADMIN:
 									Width:16
 									Height:16
-									X:200
+									X:192
 									Y:4
 									ImageName:isadmin
 									ImageCollection:misc
@@ -139,7 +139,7 @@ Container@SERVER_LOBBY:
 								Image@ISADMIN:
 									Width:16
 									Height:16
-									X:200
+									X:192
 									Y:4
 									ImageName:isadmin
 									ImageCollection:misc
@@ -209,7 +209,7 @@ Container@SERVER_LOBBY:
 								Image@ISADMIN:
 									Width:16
 									Height:16
-									X:200
+									X:192
 									Y:4
 									ImageName:isadmin
 									ImageCollection:misc
@@ -235,7 +235,7 @@ Container@SERVER_LOBBY:
 								Image@ISADMIN:
 									Width:16
 									Height:16
-									X:200
+									X:192
 									Y:4
 									ImageName:isadmin
 									ImageCollection:misc
@@ -280,7 +280,7 @@ Container@SERVER_LOBBY:
 								Image@ISADMIN:
 									Width:16
 									Height:16
-									X:200
+									X:192
 									Y:4
 									ImageName:isadmin
 									ImageCollection:misc

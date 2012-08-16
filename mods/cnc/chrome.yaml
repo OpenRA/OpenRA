@@ -453,4 +453,4 @@ order-icons: chrome.png
 	repair-active: 384,80,16,16
 
 misc: misc.png
-	isadmin: 0,0,16,16
+	isadmin: 0,0,10,15
