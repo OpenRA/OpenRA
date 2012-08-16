@@ -11,8 +11,9 @@ Container@SERVER_LOBBY:
 			X:0
 			Y:0-25
 			Font:BigBold
+			Contrast:true
 			Align:Center
-			Text:CNC Muiltiplayer Lobby
+			Text:CNC Multiplayer Lobby
 		Background@bg:
 			Width:740
 			Height:500
