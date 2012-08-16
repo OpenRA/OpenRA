@@ -481,4 +481,4 @@ scrollitem-hover: dialog.png
 	corner-br: 594,82,1,1
 
 misc: misc.png
-	isadmin: 0,0,16,16
+	isadmin: 0,0,10,15
