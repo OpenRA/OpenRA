@@ -49,7 +49,7 @@ Container@MENU_BACKGROUND:
 				Container@MAIN_MENU:
 					Width:PARENT_RIGHT
 					Children:	
-						Label@TITLE:
+						Label@MAINMENU_LABEL_TITLE:
 							X:0
 							Y:0-30
 							Width:PARENT_RIGHT
@@ -92,7 +92,7 @@ Container@MENU_BACKGROUND:
 					Width:PARENT_RIGHT
 					Visible:false
 					Children:
-						Label@TITLE:
+						Label@MULTIPLAYER_MENU_TITLE:
 							X:0
 							Y:0-30
 							Width:PARENT_RIGHT

@@ -7,10 +7,12 @@ Container@SERVER_LOBBY:
 	Children:
 		Label@TITLE:
 			Width:740
+			Height: 20
+			X:0
 			Y:0-25
 			Font:BigBold
-			Contrast:true
 			Align:Center
+			Text:CNC Muiltiplayer Lobby
 		Background@bg:
 			Width:740
 			Height:500
