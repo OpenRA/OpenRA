@@ -262,7 +262,7 @@ namespace OpenRA.Mods.RA.Missions
 			einsteinChinook = world.CreateActor(ChinookName, new TypeDictionary { new OwnerInit(allies1), new LocationInit(extractionLZEntryPoint.Location) });
 			einsteinChinook.QueueActivity(new HeliFly(extractionLZ.CenterLocation));
 			einsteinChinook.QueueActivity(new Turn(0));
-			einsteinChinook.QueueActivity(new HeliLand(true));
+			einsteinChinook.QueueActivity(new HeliLand(true, 0));
 			einsteinChinook.QueueActivity(new WaitFor(() => einsteinChinook.Trait<Cargo>().Passengers.Contains(einstein)));
 			einsteinChinook.QueueActivity(new Wait(150));
 			einsteinChinook.QueueActivity(new HeliFly(extractionLZEntryPoint.CenterLocation));
