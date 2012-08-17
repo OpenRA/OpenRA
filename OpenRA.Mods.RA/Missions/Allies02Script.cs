@@ -69,6 +69,7 @@ namespace OpenRA.Mods.RA.Missions
 		const string VehicleQueueName = "Vehicle";
 		static readonly string[] SovietInfantry = { "e1", "e2", "e3" };
 		static readonly string[] SovietVehicles = { "3tnk" };
+		const int SovietGroupSize = 5;
 
 		const int StartReinforcementsTicks = 25 * 10;
 		const int ReinforcementsTicks = 1500 * 12;
@@ -78,7 +79,6 @@ namespace OpenRA.Mods.RA.Missions
 		const int ParatroopersTicks = 1500 * 5;
 		static readonly string[] Paratroopers = { "e1", "e1", "e1", "e2", "3tnk" };
 		const string BadgerName = "badr";
-		const int SovietAttackGroupSize = 5;
 
 		const string ChinookName = "tran";
 		const string SignalFlareName = "flare";
@@ -224,7 +224,7 @@ namespace OpenRA.Mods.RA.Missions
 		{
 			var idleSovietUnits = UnitsNearActor(allies2BasePoint, 20).Where(a => a.Owner == soviets && a.IsIdle);
 			var idleSovietUnitsAtRP = UnitsNearActor(sovietRallyPoint, 5).Where(a => a.Owner == soviets && a.IsIdle);
-			if (idleSovietUnitsAtRP.Count() >= SovietAttackGroupSize)
+			if (idleSovietUnitsAtRP.Count() >= SovietGroupSize)
 			{
 				idleSovietUnits = idleSovietUnits.Union(idleSovietUnitsAtRP);
 			}
