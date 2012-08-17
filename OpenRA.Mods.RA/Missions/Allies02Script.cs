@@ -48,6 +48,8 @@ namespace OpenRA.Mods.RA.Missions
 		Actor reinforcementsEntryPoint;
 		Actor extractionLZEntryPoint;
 		Actor extractionLZ;
+		Actor badgerEntryPoint;
+		Actor badgerDropPoint;
 
 		Actor einsteinChinook;
 
@@ -67,9 +69,14 @@ namespace OpenRA.Mods.RA.Missions
 		static readonly string[] SovietInfantry = { "e1", "e2", "e3", "dog" };
 		static readonly string[] SovietVehicles = { "3tnk", "v2rl" };
 
+		const int StartReinforcementsTicks = 25 * 10;
 		const int ReinforcementsTicks = 1500 * 12;
 		static readonly string[] Reinforcements = { "1tnk", "1tnk", "jeep", "mcv" };
 		const int ReinforcementsCash = 2000;
+
+		const int ParatroopersTicks = 1500 * 5;
+		static readonly string[] Paratroopers = { "e1", "e1", "e1", "e2", "3tnk" };
+		const string BadgerName = "badr";
 
 		const string ChinookName = "tran";
 		const string SignalFlareName = "flare";
@@ -126,9 +133,13 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				DisplayObjective();
 			}
-			if (world.FrameNumber == 25 * 10)
+			if (world.FrameNumber == StartReinforcementsTicks)
 			{
 				StartReinforcementsTimer();
+			}
+			if (world.FrameNumber == ParatroopersTicks)
+			{
+				ParadropSovietUnits();
 			}
 			if (world.FrameNumber % 25 == 0)
 			{
@@ -234,6 +245,24 @@ namespace OpenRA.Mods.RA.Missions
 			Ui.Root.AddChild(reinforcementsTimer);
 		}
 
+		void ParadropSovietUnits()
+		{
+			var badger = world.CreateActor(BadgerName, new TypeDictionary
+			{
+				new LocationInit(badgerEntryPoint.Location),
+				new OwnerInit(soviets),
+				new FacingInit(Util.GetFacing(badgerDropPoint.Location - badgerEntryPoint.Location, 0)),
+				new AltitudeInit(Rules.Info[BadgerName].Traits.Get<PlaneInfo>().CruiseAltitude),
+			});
+			badger.QueueActivity(new FlyAttack(Target.FromCell(badgerDropPoint.Location)));
+			badger.Trait<ParaDrop>().SetLZ(badgerDropPoint.Location);
+			var cargo = badger.Trait<Cargo>();
+			foreach (var unit in Paratroopers)
+			{
+				cargo.Load(badger, world.CreateActor(false, unit, new TypeDictionary { new OwnerInit(soviets) }));
+			}
+		}
+
 		void ReinforcementsTimerExpired(CountdownTimerWidget timer)
 		{
 			timer.Visible = false;
@@ -305,6 +334,8 @@ namespace OpenRA.Mods.RA.Missions
 			reinforcementsEntryPoint = actors["ReinforcementsEntryPoint"];
 			extractionLZ = actors["ExtractionLZ"];
 			extractionLZEntryPoint = actors["ExtractionLZEntryPoint"];
+			badgerEntryPoint = actors["BadgerEntryPoint"];
+			badgerDropPoint = actors["BadgerDropPoint"];
 			engineerMiss = actors["EngineerMiss"];
 			sovietBarracks = actors["SovietBarracks"];
 			sovietWarFactory = actors["SovietWarFactory"];
