@@ -233,8 +233,11 @@ namespace OpenRA.Mods.RA.Missions
 				var closestAlliedBuilding = BuildingsNearActor(allies2BasePoint, 20)
 											.Where(a => a.Owner == allies2)
 											.OrderBy(a => (unit.Location - a.Location).LengthSquared)
-											.First();
-				unit.QueueActivity(new AttackMove.AttackMoveActivity(unit, new Move.Move(closestAlliedBuilding.Location, 3)));
+											.FirstOrDefault();
+				if (closestAlliedBuilding != null)
+				{
+					unit.QueueActivity(new AttackMove.AttackMoveActivity(unit, new Move.Move(closestAlliedBuilding.Location, 3)));
+				}
 			}
 		}
 
