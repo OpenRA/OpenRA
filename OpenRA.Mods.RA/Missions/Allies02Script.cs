@@ -180,7 +180,7 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				MissionFailed("Einstein was killed.");
 			}
-			else if (!world.Actors.Any(a => a.IsInWorld && a.HasTrait<Building>() && a.Owner == allies2))
+			else if (!world.Actors.Any(a => a.IsInWorld && a.HasTrait<Building>() && !a.HasTrait<Wall>() && a.Owner == allies2))
 			{
 				MissionFailed("The Allied reinforcements have been defeated.");
 			}
