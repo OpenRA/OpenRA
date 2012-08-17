@@ -20,9 +20,12 @@ filehistorylength = 20 -- this is mapped to ide.config.filehistorylength
 
 -- specify full path to love2d executable; this is only needed
 -- if the game folder and the executable are NOT in the same folder.
-path.love2d = 'd:/lua/love/love' -- set the path of love executable
+path.love2d = 'd:/lua/love/love'
 
 -- specify full path to moai executable if it's not in one of PATH folders
-path.moai = 'd:/lua/moai/moai' -- set the path of moai executable
+path.moai = 'd:/lua/moai/moai'
+
+-- specify full path to lua interpreter if you need to use your own version
+path.lua = 'd:/lua/lua'
 
 --]]--
