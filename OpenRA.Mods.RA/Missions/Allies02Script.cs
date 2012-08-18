@@ -51,11 +51,11 @@ namespace OpenRA.Mods.RA.Missions
 		Actor badgerEntryPoint;
 		Actor badgerDropPoint;
 		Actor sovietRallyPoint;
+		Actor flamersEntryPoint;
 
 		Actor einsteinChinook;
 
 		World world;
-
 		Player allies1;
 		Player allies2;
 		Player soviets;
@@ -67,18 +67,23 @@ namespace OpenRA.Mods.RA.Missions
 
 		const string InfantryQueueName = "Infantry";
 		const string VehicleQueueName = "Vehicle";
-		static readonly string[] SovietInfantry = { "e1", "e2", "e3" };
-		static readonly string[] SovietVehicles = { "3tnk" };
-		const int SovietGroupSize = 5;
+		static List<string> sovietInfantry = new List<string> { "e1", "e2", "e3" };
+		static List<string> sovietVehicles = new List<string> { "3tnk" };
+		static readonly string[] SovietVehicleAdditions = { "v2rl" };
+		const int SovietGroupSize = 3;
+		const int SovietVehicleAdditionsTicks = 1500 * 4;
 
-		const int StartReinforcementsTicks = 25 * 10;
 		const int ReinforcementsTicks = 1500 * 12;
 		static readonly string[] Reinforcements = { "2tnk", "2tnk", "2tnk", "mcv" };
 		const int ReinforcementsCash = 2000;
 
-		const int ParatroopersTicks = 1500 * 5;
+		const int ParatroopersTicks = 1500 * 10;
 		static readonly string[] Paratroopers = { "e1", "e1", "e1", "e2", "3tnk" };
 		const string BadgerName = "badr";
+
+		const int FlamerTicks = 1500 * 7;
+		static readonly string[] Flamers = { "e4", "e4", "e4", "e4", "e4" };
+		const string ApcName = "apc";
 
 		const string ChinookName = "tran";
 		const string SignalFlareName = "flare";
@@ -138,14 +143,19 @@ namespace OpenRA.Mods.RA.Missions
 			if (world.FrameNumber == 1)
 			{
 				InitializeSovietFactories();
-			}
-			if (world.FrameNumber == StartReinforcementsTicks)
-			{
 				StartReinforcementsTimer();
 			}
 			if (world.FrameNumber == ParatroopersTicks)
 			{
 				ParadropSovietUnits();
+			}
+			if (world.FrameNumber == FlamerTicks)
+			{
+				RushSovietFlamers();
+			}
+			if (world.FrameNumber == SovietVehicleAdditionsTicks)
+			{
+				sovietVehicles.AddRange(SovietVehicleAdditions);
 			}
 			if (world.FrameNumber % 25 == 0)
 			{
@@ -212,33 +222,38 @@ namespace OpenRA.Mods.RA.Missions
 		{
 			if (!sovietBarracks.Destroyed)
 			{
-				BuildSovietUnit(InfantryQueueName, SovietInfantry.Random(world.SharedRandom));
+				BuildSovietUnit(InfantryQueueName, sovietInfantry.Random(world.SharedRandom));
 			}
 			if (!sovietWarFactory.Destroyed)
 			{
-				BuildSovietUnit(VehicleQueueName, SovietVehicles.Random(world.SharedRandom));
+				BuildSovietUnit(VehicleQueueName, sovietVehicles.Random(world.SharedRandom));
 			}
 		}
 
 		void ManageSovietUnits()
 		{
-			var idleSovietUnits = UnitsNearActor(allies2BasePoint, 20).Where(a => a.Owner == soviets && a.IsIdle);
-			var idleSovietUnitsAtRP = UnitsNearActor(sovietRallyPoint, 5).Where(a => a.Owner == soviets && a.IsIdle);
+			var idleSovietUnits = ForcesNearActor(allies2BasePoint, 20).Where(a => a.Owner == soviets && a.IsIdle);
+			var idleSovietUnitsAtRP = ForcesNearActor(sovietRallyPoint, 5).Where(a => a.Owner == soviets && a.IsIdle);
 			if (idleSovietUnitsAtRP.Count() >= SovietGroupSize)
 			{
 				idleSovietUnits = idleSovietUnits.Union(idleSovietUnitsAtRP);
 			}
 			foreach (var unit in idleSovietUnits)
 			{
-				var closestAlliedBuilding = BuildingsNearActor(allies2BasePoint, 20)
-											.Where(a => a.Owner == allies2)
-											.OrderBy(a => (unit.Location - a.Location).LengthSquared)
-											.FirstOrDefault();
+				var closestAlliedBuilding = ClosestAlliedBuilding(unit, 20);
 				if (closestAlliedBuilding != null)
 				{
 					unit.QueueActivity(new AttackMove.AttackMoveActivity(unit, new Move.Move(closestAlliedBuilding.Location, 3)));
 				}
 			}
+		}
+
+		Actor ClosestAlliedBuilding(Actor actor, int range)
+		{
+			return BuildingsNearActor(allies2BasePoint, range)
+					.Where(a => a.Owner == allies2)
+					.OrderBy(a => (actor.Location - a.Location).LengthSquared)
+					.FirstOrDefault();
 		}
 
 		void InitializeSovietFactories()
@@ -296,6 +311,23 @@ namespace OpenRA.Mods.RA.Missions
 			}
 		}
 
+		void RushSovietFlamers()
+		{
+			var closestAlliedBuilding = ClosestAlliedBuilding(badgerDropPoint, 10);
+			if (closestAlliedBuilding == null)
+			{
+				return;
+			}
+			var apc = world.CreateActor(ApcName, new TypeDictionary { new OwnerInit(soviets), new LocationInit(flamersEntryPoint.Location) });
+			foreach (var flamer in Flamers)
+			{
+				var unit = world.CreateActor(false, flamer, new TypeDictionary { new OwnerInit(soviets) });
+				apc.Trait<Cargo>().Load(apc, unit);
+			}
+			apc.QueueActivity(new MoveAdjacentTo(Target.FromActor(closestAlliedBuilding)));
+			apc.QueueActivity(new UnloadCargo(true));
+		}
+
 		void ReinforcementsTimerExpired(CountdownTimerWidget timer)
 		{
 			timer.Visible = false;
@@ -331,21 +363,25 @@ namespace OpenRA.Mods.RA.Missions
 			einsteinChinook.QueueActivity(new RemoveSelf());
 		}
 
-		IEnumerable<Actor> BuildingsNearActor(Actor actor, int range)
-		{
-			return world.FindUnitsInCircle(actor.CenterLocation, Game.CellSize * range)
-				.Where(a => a.IsInWorld && a != world.WorldActor && !a.Destroyed && a.HasTrait<Building>() && !a.HasTrait<Wall>() && !a.Owner.NonCombatant);
-		}
-
 		IEnumerable<Actor> UnitsNearActor(Actor actor, int range)
 		{
 			return world.FindUnitsInCircle(actor.CenterLocation, Game.CellSize * range)
-				.Where(a => a.IsInWorld && a != world.WorldActor && !a.Destroyed && a.HasTrait<IMove>() && !a.Owner.NonCombatant);
+				.Where(a => a.IsInWorld && a != world.WorldActor && !a.Destroyed && !a.Owner.NonCombatant);
+		}
+
+		IEnumerable<Actor> BuildingsNearActor(Actor actor, int range)
+		{
+			return UnitsNearActor(actor, range).Where(a => a.HasTrait<Building>() && !a.HasTrait<Wall>());
+		}
+
+		IEnumerable<Actor> ForcesNearActor(Actor actor, int range)
+		{
+			return UnitsNearActor(actor, range).Where(a => a.HasTrait<IMove>());
 		}
 
 		bool AlliesControlMiss()
 		{
-			var units = UnitsNearActor(engineerMiss, EngineerMissClearRange);
+			var units = ForcesNearActor(engineerMiss, EngineerMissClearRange);
 			return units.Any() && units.All(a => a.Owner == allies1);
 		}
 
@@ -379,6 +415,7 @@ namespace OpenRA.Mods.RA.Missions
 			sovietBarracks = actors["SovietBarracks"];
 			sovietWarFactory = actors["SovietWarFactory"];
 			sovietRallyPoint = actors["SovietRallyPoint"];
+			flamersEntryPoint = actors["FlamersEntryPoint"];
 			w.WorldActor.Trait<Shroud>().Explore(w, sam1.Location, 2);
 			w.WorldActor.Trait<Shroud>().Explore(w, sam2.Location, 2);
 			w.WorldActor.Trait<Shroud>().Explore(w, sam3.Location, 2);
