@@ -39,7 +39,6 @@ Vulcan:
 	Report: GUN13
 	Projectile: Bullet
 		Speed: 100
-		ContrailLength: 1000
 	Warhead@1:
 		Spread: 3
 		Versus: 
