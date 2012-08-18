@@ -114,14 +114,18 @@ do
   local fullPath = arg[1] -- first argument must be the application name
   assert(type(fullPath) == "string", "first argument must be application name")
 
-  if not wx.wxIsAbsolutePath(fullPath) then
+  ide.arg = arg
+  ide.osname = wx.wxPlatformInfo.Get():GetOperatingSystemFamilyName()
+
+  -- on Windows use GetExecutablePath, which is Unicode friendly,
+  -- whereas wxGetCwd() is not (at least in wxlua 2.8.12.2)
+  if ide.osname == "Windows" then
+    fullPath = wx.wxStandardPaths.Get():GetExecutablePath()
+  elseif not wx.wxIsAbsolutePath(fullPath) then
     fullPath = wx.wxGetCwd().."/"..fullPath
-    if wx.__WXMSW__ then fullPath = wx.wxUnix2DosFilename(fullPath) end
   end
 
-  ide.arg = arg
   ide.editorFilename = fullPath
-  ide.osname = wx.wxPlatformInfo.Get():GetOperatingSystemFamilyName()
   ide.config.path.app = fullPath:match("([%w_-%.]+)$"):gsub("%.[^%.]*$","")
   assert(ide.config.path.app, "no application path defined")
   for index = 2, #arg do

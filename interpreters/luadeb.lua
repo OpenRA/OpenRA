@@ -1,13 +1,13 @@
 local exe
 
 local function exePath()
-  local mainpath = string.gsub(ide.editorFilename:gsub("[^/\\]+$",""),"\\","/")
+  local mainpath = ide.editorFilename:gsub("[^/\\]+$","")
   local os = ide.osname
 
   local macExe = mainpath..'bin/lua.app/Contents/MacOS/lua'
   local exe = ide.config.path.lua or
-    (os == "Macintosh" and wx.wxFileExists(macExe) and macExe 
-     or mainpath..'bin/lua')
+    (os == "Windows" and mainpath..[[bin\lua]]
+     or (wx.wxFileExists(macExe) and macExe or mainpath..'bin/lua'))
 
   -- (luaconf.h) in Windows, any exclamation mark ('!') in the path is replaced
   -- by the path of the directory of the executable file of the current process.
@@ -32,12 +32,22 @@ return {
   api = {"wxwidgets","baselib"},
   frun = function(self,wfilename,rundebug)
     exe = exe or exePath()
-    local filepath = string.gsub(wfilename:GetFullPath(), "\\","/")
+    local filepath = wfilename:GetFullPath()
     local script
     if rundebug then
       DebuggerAttachDefault()
       script = rundebug
     else
+      -- if running on Windows and can't open the file, this may mean that
+      -- the file path includes unicode characters that need special handling
+      local fh = io.open(filepath, "r")
+      if fh then fh:close() end
+      if ide.osname == 'Windows' and pcall(require, "winapi")
+      and wfilename:FileExists() and not fh then
+        winapi.set_encoding(winapi.CP_UTF8)
+        filepath = winapi.short_path(filepath)
+      end
+
       script = ('dofile [[%s]]'):format(filepath)
     end
     local code = ([[xpcall(function() io.stdout:setvbuf('no'); %s end,function(err) print(debug.traceback(err)) end)]]):format(script)

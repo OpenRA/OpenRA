@@ -209,14 +209,6 @@ local function onFileRegister(pos)
   findReplace.occurrences = findReplace.occurrences + 1
 end
 
-local function storefile(file,content)
-  local handle = io.open(file, "wb")
-  if (handle) then
-    handle:write(content)
-    handle:close()
-  end
-end
-
 local function ProcInFiles(startdir,mask,subdirs,replace)
   if (subdirs) then
     local dirs = FileSysGet(startdir..string_Pathsep.."*",wx.wxDIR)
@@ -230,18 +222,15 @@ local function ProcInFiles(startdir,mask,subdirs,replace)
     findReplace.curfilename = file
 
     -- load file
-    local handle = io.open(file, "rb")
-    if handle then
-      local filetext = handle:read("*a")
-      handle:close()
+    local filetext = FileRead(file)
+    if filetext then
       findReplace.oveditor:SetText(filetext)
 
       if (replace and findReplace:ReplaceString(true,onFileRegister)) then
         -- store changed content, make .bak
-        if (findReplace.fMakeBak) then
-          storefile(file..".bak",filetext)
+        if findReplace.fMakeBak and FileWrite(file..".bak",filetext) then
+          FileWrite(file,findReplace.oveditor:GetText())
         end
-        storefile(file,findReplace.oveditor:GetText())
       else
         findReplace:FindStringAll(onFileRegister)
       end

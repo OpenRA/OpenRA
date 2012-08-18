@@ -276,13 +276,13 @@ errorlog:Connect(wx.wxEVT_IDLE, function()
 
 local jumptopatterns = {
   -- <filename>(line,linepos):
-  "%s*([%w:/%\\_%-%.]+)%((%d+),(%d+)%)%s*:",
+  "^%s*(.-)%((%d+),(%d+)%)%s*:",
   -- <filename>(line):
-  "%s*([%w:/%\\_%-%.]+)%((%d+).*%)%s*:",
-  -- <filename>:line:
-  "%s*([%w:/%\\_%-%.]+):(%d+)%s*:",
+  "^%s*(.-)%((%d+).*%)%s*:",
   --[string "<filename>"]:line:
-  '.*%[string "([%w:/%\\_%-%.]+)"%]:(%d+)%s*:',
+  '^.-%[string "([^"]+)"%]:(%d+)%s*:',
+  -- <filename>:line:
+  "^%s*(.-):(%d+)%s*:",
 }
 
 errorlog:Connect(wxstc.wxEVT_STC_DOUBLECLICK,

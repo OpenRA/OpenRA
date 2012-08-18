@@ -1,12 +1,12 @@
 --
--- MobDebug 0.481
+-- MobDebug 0.485
 -- Copyright 2011-12 Paul Kulchenko
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
 --
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.481,
+  _VERSION = 0.485,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = 8171
@@ -488,47 +488,57 @@ local function debug_hook(event, line)
       lastfile = file
     end
 
-    local vars
+    local vars, status, res
     if (watchescnt > 0) then
       vars = capture_vars()
       for index, value in pairs(watches) do
         setfenv(value, vars)
-        local status, res = pcall(value)
-        if status and res then
-          coroutine.resume(coro_debugger, events.WATCH, vars, file, line, index)
+        local ok, fired = pcall(value)
+        if ok and fired then
+          status, res = coroutine.resume(coro_debugger, events.WATCH, vars, file, line, index)
+          break -- any one watch is enough; don't check multiple times
         end
       end
     end
 
-    if step_into
-    or (step_over and stack_level <= step_level)
-    or has_breakpoint(file, line)
-    or (socket.select({server}, {}, 0))[server] then
+    -- need to get into the "regular" debug handler, but only if there was
+    -- no watch that was fired. If there was a watch, handle its result.
+    local getin = (status == nil) and
+      (step_into
+      or (step_over and stack_level <= step_level)
+      or has_breakpoint(file, line)
+      -- don't break on select() unless this hook has already been visited for
+      -- any other reason. this check is needed to avoid stepping in too early
+      -- (for example, when coroutine.resume() is executed inside start()).
+      or (seen_hook and (socket.select({server}, {}, 0))[server]))
+
+    if getin then
       vars = vars or capture_vars()
       seen_hook = true
       step_into = false
       step_over = false
-      local status, res = coroutine.resume(coro_debugger, events.BREAK, vars, file, line)
+      status, res = coroutine.resume(coro_debugger, events.BREAK, vars, file, line)
+    end
 
-      -- handle 'stack' command that provides stack() information to the debugger
-      if status and res == 'stack' then
-        while status and res == 'stack' do
-          -- resume with the stack trace and variables
-          if vars then restore_vars(vars) end -- restore vars so they are reflected in stack values
-          status, res = coroutine.resume(coro_debugger, events.STACK, stack(3), file, line)
-        end
-      end
-
-      -- need to recheck once more as resume after 'stack' command may
-      -- return something else (for example, 'exit'), which needs to be handled
-      if status and res and res ~= 'stack' then
-        if abort == nil and res == "exit" then os.exit(1) end
-        abort = res
-        -- only abort if safe; if not, there is another (earlier) check inside
-        -- debug_hook, which will abort execution at the first safe opportunity
-        if is_safe(stack_level) then error(abort) end
+    -- handle 'stack' command that provides stack() information to the debugger
+    if status and res == 'stack' then
+      while status and res == 'stack' do
+        -- resume with the stack trace and variables
+        if vars then restore_vars(vars) end -- restore vars so they are reflected in stack values
+        status, res = coroutine.resume(coro_debugger, events.STACK, stack(3), file, line)
       end
     end
+
+    -- need to recheck once more as resume after 'stack' command may
+    -- return something else (for example, 'exit'), which needs to be handled
+    if status and res and res ~= 'stack' then
+      if abort == nil and res == "exit" then os.exit(1) end
+      abort = res
+      -- only abort if safe; if not, there is another (earlier) check inside
+      -- debug_hook, which will abort execution at the first safe opportunity
+      if is_safe(stack_level) then error(abort) end
+    end
+
     if vars then restore_vars(vars) end
   end
 end
@@ -581,7 +591,7 @@ local function debugger_loop(sfile, sline)
     if server.settimeout then server:settimeout() end -- back to blocking
     command = string.sub(line, string.find(line, "^[A-Z]+"))
     if command == "SETB" then
-      local _, _, _, file, line = string.find(line, "^([A-Z]+)%s+([%w%p%s]+)%s+(%d+)%s*$")
+      local _, _, _, file, line = string.find(line, "^([A-Z]+)%s+(.-)%s+(%d+)%s*$")
       if file and line then
         set_breakpoint(file, tonumber(line))
         server:send("200 OK\n")
@@ -589,7 +599,7 @@ local function debugger_loop(sfile, sline)
         server:send("400 Bad Request\n")
       end
     elseif command == "DELB" then
-      local _, _, _, file, line = string.find(line, "^([A-Z]+)%s+([%w%p%s]+)%s+(%d+)%s*$")
+      local _, _, _, file, line = string.find(line, "^([A-Z]+)%s+(.-)%s+(%d+)%s*$")
       if file and line then
         remove_breakpoint(file, tonumber(line))
         server:send("200 OK\n")
@@ -616,7 +626,7 @@ local function debugger_loop(sfile, sline)
         server:send("400 Bad Request\n")
       end
     elseif command == "LOAD" then
-      local _, _, size, name = string.find(line, "^[A-Z]+%s+(%d+)%s+([%w%p%s]*[%w%p]+)%s*$")
+      local _, _, size, name = string.find(line, "^[A-Z]+%s+(%d+)%s+(%S.-)%s*$")
       size = tonumber(size)
 
       if abort == nil then -- no LOAD/RELOAD allowed inside start()
@@ -656,14 +666,15 @@ local function debugger_loop(sfile, sline)
     elseif command == "SETW" then
       local _, _, exp = string.find(line, "^[A-Z]+%s+(.+)%s*$")
       if exp then 
-        local func = loadstring("return(" .. exp .. ")")
+        local func, res = loadstring("return(" .. exp .. ")")
         if func then
           watchescnt = watchescnt + 1
           local newidx = #watches + 1
           watches[newidx] = func
           server:send("200 OK " .. newidx .. "\n") 
         else
-          server:send("400 Bad Request\n")
+          server:send("401 Error in Expression " .. string.len(res) .. "\n")
+          server:send(res)
         end
       else
         server:send("400 Bad Request\n")
@@ -792,8 +803,8 @@ local function start(controller_host, controller_port)
     -- start from 16th frame, which is sufficiently large for this check.
     stack_level = stack_depth(16)
 
-    debug.sethook(debug_hook, "lcr")
     coro_debugger = coroutine.create(debugger_loop)
+    debug.sethook(debug_hook, "lcr")
     return coroutine.resume(coro_debugger, file, info.currentline)
   else
     print("Could not connect to " .. controller_host .. ":" .. controller_port)
@@ -820,7 +831,7 @@ local function controller(controller_host, controller_port)
 
     coro_debugger = coroutine.create(debugger_loop)
 
-    while true do 
+    while true do
       step_into = true
       abort = false
       if skip then skipcount = skip end -- to force suspend right away
@@ -919,12 +930,12 @@ local function handle(params, client)
     if status == "200" then
       -- don't need to do anything
     elseif status == "202" then
-      _, _, file, line = string.find(breakpoint, "^202 Paused%s+([%w%p%s]+)%s+(%d+)%s*$")
+      _, _, file, line = string.find(breakpoint, "^202 Paused%s+(.-)%s+(%d+)%s*$")
       if file and line then 
         print("Paused at file " .. file .. " line " .. line)
       end
     elseif status == "203" then
-      _, _, file, line, watch_idx = string.find(breakpoint, "^203 Paused%s+([%w%p%s]+)%s+(%d+)%s+(%d+)%s*$")
+      _, _, file, line, watch_idx = string.find(breakpoint, "^203 Paused%s+(.-)%s+(%d+)%s+(%d+)%s*$")
       if file and line and watch_idx then
         print("Paused at file " .. file .. " line " .. line .. " (watch expression " .. watch_idx .. ": [" .. watches[watch_idx] .. "])")
       end
@@ -943,7 +954,7 @@ local function handle(params, client)
       return nil, nil, "Debugger error: unexpected response '" .. breakpoint .. "'"
     end
   elseif command == "setb" then
-    _, _, _, file, line = string.find(params, "^([a-z]+)%s+([%w%p%s]+)%s+(%d+)%s*$")
+    _, _, _, file, line = string.find(params, "^([a-z]+)%s+(.-)%s+(%d+)%s*$")
     if file and line then
       file = string.gsub(file, "\\", "/") -- convert slash
       file = string.gsub(file, q(basedir), '') -- remove basedir
@@ -967,13 +978,19 @@ local function handle(params, client)
         watches[watch_idx] = exp
         print("Inserted watch exp no. " .. watch_idx)
       else
-        print("Error: Watch expression not inserted")
+        local _, _, size = string.find(answer, "^401 Error in Expression (%d+)$")
+        if size then
+          local err = client:receive(tonumber(size)):gsub(".-:%d+:%s*","")
+          print("Error: watch expression not set: " .. err)
+        else
+          print("Error: watch expression not set")
+        end
       end
     else
       print("Invalid command")
     end
   elseif command == "delb" then
-    _, _, _, file, line = string.find(params, "^([a-z]+)%s+([%w%p%s]+)%s+(%d+)%s*$")
+    _, _, _, file, line = string.find(params, "^([a-z]+)%s+(.-)%s+(%d+)%s*$")
     if file and line then
       file = string.gsub(file, "\\", "/") -- convert slash
       file = string.gsub(file, q(basedir), '') -- remove basedir
@@ -1041,7 +1058,13 @@ local function handle(params, client)
         client:send(lines)
       else
         local file = io.open(exp, "r")
-        if not file then print("Cannot open file " .. exp); return end
+        if not file and pcall(require, "winapi") then
+          -- if file is not open and winapi is there, try with a short path;
+          -- this may be needed for unicode paths on windows
+          winapi.set_encoding(winapi.CP_UTF8)
+          file = io.open(winapi.short_path(exp), "r")
+        end
+        if not file then error("Cannot open file " .. exp) end
         -- read the file and remove the shebang line as it causes a compilation error
         local lines = file:read("*all"):gsub("^#!.-\n", "\n")
         file:close()
@@ -1055,7 +1078,7 @@ local function handle(params, client)
       if not params then
         return nil, nil, "Debugger error: missing response after EXEC/LOAD"
       end
-      local _, _, status, len = string.find(params, "^(%d+)[%w%p%s]+%s+(%d+)%s*$")
+      local _, _, status, len = string.find(params, "^(%d+).-%s+(%d+)%s*$")
       if status == "200" then
         len = tonumber(len)
         if len > 0 then 
@@ -1078,7 +1101,7 @@ local function handle(params, client)
           return res[1], res
         end
       elseif status == "201" then
-        _, _, file, line = string.find(params, "^201 Started%s+([%w%p%s]+)%s+(%d+)%s*$")
+        _, _, file, line = string.find(params, "^201 Started%s+(.-)%s+(%d+)%s*$")
       elseif status == "202" or params == "200 OK" then
         -- do nothing; this only happens when RE/LOAD command gets the response
         -- that was for the original command that was aborted
@@ -1193,7 +1216,7 @@ local function listen(host, port)
   client:receive()
 
   local breakpoint = client:receive()
-  local _, _, file, line = string.find(breakpoint, "^202 Paused%s+([%w%p%s]+)%s+(%d+)%s*$")
+  local _, _, file, line = string.find(breakpoint, "^202 Paused%s+(.-)%s+(%d+)%s*$")
   if file and line then
     print("Paused at file " .. file )
     print("Type 'help' for commands")

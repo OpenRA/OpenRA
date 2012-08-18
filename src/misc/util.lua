@@ -181,6 +181,28 @@ function GetFullPathIfExists(p, f)
   return file:FileExists() and file:GetFullPath()
 end
 
+function FileWrite(file,content)
+  local log = wx.wxLogNull() -- disable error reporting; will report as needed
+  local file = wx.wxFile(file, wx.wxFile.write)
+  if not file:IsOpened() then return nil, wx.wxSysErrorMsg() end
+
+  file:Write(content, #content)
+  file:Close()
+  return true
+end
+
+function FileRead(file)
+  local log = wx.wxLogNull() -- disable error reporting; will report as needed
+  local file = wx.wxFile(file, wx.wxFile.read)
+  if not file:IsOpened() then return end
+
+  local _, content = file:Read(file:Length())
+  file:Close()
+  return content, wx.wxSysErrorMsg()
+end
+
+function FileRename(file1, file2) return wx.wxRenameFile(file1, file2) end
+
 function pairsSorted(t, f)
   local a = {}
   for n in pairs(t) do table.insert(a, n) end
