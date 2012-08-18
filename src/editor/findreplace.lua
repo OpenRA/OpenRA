@@ -112,7 +112,7 @@ function findReplace:FindString(reverse)
     end
     if posFind == -1 then
       findReplace.foundString = false
-      ide.frame:SetStatusText("Find text not found.")
+      ide.frame:SetStatusText("Text not found.")
     else
       findReplace.foundString = true
       local start = editor:GetTargetStart()
@@ -212,31 +212,33 @@ end
 local function ProcInFiles(startdir,mask,subdirs,replace)
   if (subdirs) then
     local dirs = FileSysGet(startdir..string_Pathsep.."*",wx.wxDIR)
-    for i,dir in ipairs(dirs) do
+    for _,dir in ipairs(dirs) do
       ProcInFiles(dir,mask,true,replace)
     end
   end
 
   local files = FileSysGet(startdir..string_Pathsep..mask,wx.wxFILE)
-  for i,file in ipairs(files) do
-    findReplace.curfilename = file
+  for _,file in ipairs(files) do
+    -- ignore .bak files when replacing and asked to store .bak files
+    if not (replace and findReplace.fMakeBak and file:find('.bak$')) then
+      findReplace.curfilename = file
 
-    -- load file
-    local filetext = FileRead(file)
-    if filetext then
-      findReplace.oveditor:SetText(filetext)
+      local filetext = FileRead(file)
+      if filetext then
+        findReplace.oveditor:SetText(filetext)
 
-      if (replace and findReplace:ReplaceString(true,onFileRegister)) then
-        -- store changed content, make .bak
-        if findReplace.fMakeBak and FileWrite(file..".bak",filetext) then
-          FileWrite(file,findReplace.oveditor:GetText())
+        if replace then
+          -- check if anything replaced, store changed content, make .bak
+          if findReplace:ReplaceString(true,onFileRegister)
+          and findReplace.fMakeBak and FileWrite(file..".bak",filetext) then
+            FileWrite(file,findReplace.oveditor:GetText())
+          end
+        else
+          findReplace:FindStringAll(onFileRegister)
         end
-      else
-        findReplace:FindStringAll(onFileRegister)
       end
     end
   end
-
 end
 
 function findReplace:RunInFiles(replace)
@@ -251,11 +253,12 @@ function findReplace:RunInFiles(replace)
 
   local fname = wx.wxFileName(findReplace.filedirText)
   local startdir = findReplace.filedirText
-  DisplayOutput("> FindInFiles "..(replace and "Replacing" or "Searching")..": '"..findReplace.findText.."'\n")
+  DisplayOutput("FindInFiles: "..(replace and "Replacing" or "Searching for").." '"..findReplace.findText.."'.\n")
 
-  ProcInFiles(startdir, findReplace.filemaskText,findReplace.fSubDirs, replace)
+  ProcInFiles(startdir, findReplace.filemaskText, findReplace.fSubDirs, replace)
 
-  DisplayOutput("> FindInFiles: "..findReplace.occurrences.." occurrence(s) have been found\n\n")
+  DisplayOutput("FindInFiles: "..findReplace.occurrences.." instance(s) have been "..
+    (replace and "replaced" or "found")..".\n")
   findReplace.oveditor = nil
 end
 
@@ -426,7 +429,7 @@ local function createFindReplaceDialog(replace,infiles)
   end
 
   findDialog:Connect(ID_FIND_NEXT, wx.wxEVT_COMMAND_BUTTON_CLICKED,
-    function(event)
+    function()
       TransferDataFromWindow()
       if (findReplace.infiles) then
         findReplace:RunInFiles()
@@ -465,8 +468,8 @@ local function createFindReplaceDialog(replace,infiles)
 
   if infilesDirButton then
     findDialog:Connect(ID_SETDIR, wx.wxEVT_COMMAND_BUTTON_CLICKED,
-      function(event)
-        local filePicker = wx.wxDirDialog(findDialog, "Chose a project directory",
+      function()
+        local filePicker = wx.wxDirDialog(findDialog, "Choose a project directory",
           findReplace.filedirText~="" and findReplace.filedirText or wx.wxGetCwd(),wx.wxFLP_USE_TEXTCTRL)
 
         local res = filePicker:ShowModal(true)
