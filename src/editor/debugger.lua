@@ -143,10 +143,6 @@ local function activateDocument(fileName, line)
     fileName = wx.wxGetCwd().."/"..fileName
   end
 
-  if wx.__WXMSW__ then
-    fileName = wx.wxUnix2DosFilename(fileName)
-  end
-
   local activated
   local fileName = wx.wxFileName(fileName)
   for _, document in pairs(ide.openDocuments) do
@@ -236,7 +232,7 @@ debugger.listen = function()
 
       copas.setErrorHandler(function(error)
         DisplayOutput("Can't start debugging session due to internal error '" .. error .. "'.\n")
-        skt:close()
+        debugger.terminate()
       end)
 
       local options = debugger.options or {}
