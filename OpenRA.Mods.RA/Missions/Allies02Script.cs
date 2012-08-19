@@ -71,7 +71,7 @@ namespace OpenRA.Mods.RA.Missions
 		static List<string> sovietInfantry = new List<string> { "e1", "e2", "e3" };
 		static List<string> sovietVehicles = new List<string> { "3tnk" };
 		static readonly string[] SovietVehicleAdditions = { "v2rl" };
-		const int SovietGroupSize = 3;
+		const int SovietGroupSize = 5;
 		const int SovietVehicleAdditionsTicks = 1500 * 4;
 
 		const int ReinforcementsTicks = 1500 * 12;
@@ -237,7 +237,7 @@ namespace OpenRA.Mods.RA.Missions
 
 		void ManageSovietUnits()
 		{
-			var idleSovietUnits = ForcesNearActor(allies2BasePoint, 20).Where(a => a.Owner == soviets && a.IsIdle);
+			var idleSovietUnits = ForcesNearActor(allies2BasePoint, 10).Where(a => a.Owner == soviets && a.IsIdle);
 			var idleSovietUnitsAtRP = ForcesNearActor(sovietRallyPoint, 5).Where(a => a.Owner == soviets && a.IsIdle);
 			if (idleSovietUnitsAtRP.Count() >= SovietGroupSize)
 			{
