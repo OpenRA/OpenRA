@@ -160,7 +160,7 @@ function CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
 
   DisplayOutput(("Program '%s' started in '%s' (pid: %d).\n")
     :format(uid, (wdir and wdir or wx.wxFileName.GetCwd()), pid))
-  customprocs[pid] = {proc=proc, uid=uid, endcallback=endcallback, started = os.clock()}
+  customprocs[pid] = {proc=proc, uid=uid, endcallback=endcallback, started = TimeGet()}
 
   local streamin = proc and proc:GetInputStream()
   local streamerr = proc and proc:GetErrorStream()
@@ -253,7 +253,7 @@ errorlog:Connect(wx.wxEVT_END_PROCESS, function(event)
         if editor then editor:SetFocus() end
       end
       nameTab(errorlog, "Output")
-      local runtime = os.clock() - customprocs[pid].started
+      local runtime = TimeGet() - customprocs[pid].started
 
       streamins[pid] = nil
       streamerrs[pid] = nil

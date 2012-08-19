@@ -698,7 +698,7 @@ function DebuggerRefreshScratchpad()
     if debugger.scratchpad.running then
       -- break the current execution first
       -- don't try too frequently to avoid overwhelming the debugger
-      local now = os.clock()
+      local now = TimeGet()
       if now - debugger.scratchpad.running > 0.250 then
         debugger.breaknow()
         debugger.scratchpad.running = now
@@ -714,13 +714,13 @@ function DebuggerRefreshScratchpad()
       -- this is a special error message that is generated at the very end
       -- of each script to avoid exiting the (debugee) scratchpad process.
       -- these errors are handled and not reported to the user
-      local errormsg = 'execution suspended at ' .. os.clock()
+      local errormsg = 'execution suspended at ' .. TimeGet()
       local stopper = "\ndo error('" .. errormsg .. "') end"
       -- store if interpreter requires a special handling for external loop
       local extloop = ide.interpreter.scratchextloop
 
       local function reloadScratchpadCode()
-        debugger.scratchpad.running = os.clock()
+        debugger.scratchpad.running = TimeGet()
         debugger.scratchpad.updated = false
         debugger.scratchpad.runs = (debugger.scratchpad.runs or 0) + 1
 

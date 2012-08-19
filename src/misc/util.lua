@@ -203,6 +203,8 @@ end
 
 function FileRename(file1, file2) return wx.wxRenameFile(file1, file2) end
 
+TimeGet = pcall(require, "socket") and socket.gettime or os.clock
+
 function pairsSorted(t, f)
   local a = {}
   for n in pairs(t) do table.insert(a, n) end
