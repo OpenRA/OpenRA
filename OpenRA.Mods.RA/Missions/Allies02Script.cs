@@ -74,14 +74,14 @@ namespace OpenRA.Mods.RA.Missions
 		const int SovietVehicleAdditionsTicks = 1500 * 4;
 
 		const int ReinforcementsTicks = 1500 * 12;
-		static readonly string[] Reinforcements = { "2tnk", "2tnk", "2tnk", "mcv" };
+		static readonly string[] Reinforcements = { "2tnk", "2tnk", "2tnk", "2tnk", "2tnk", "2tnk", "1tnk", "1tnk", "jeep", "e1", "e1", "e1", "e1", "e3", "e3", "mcv" };
 		const int ReinforcementsCash = 2000;
 
 		const int ParatroopersTicks = 1500 * 10;
 		static readonly string[] Paratroopers = { "e1", "e1", "e1", "e2", "3tnk" };
 		const string BadgerName = "badr";
 
-		const int FlamerTicks = 1500 * 7;
+		const int FlamersTicks = 1500 * 7;
 		static readonly string[] Flamers = { "e4", "e4", "e4", "e4", "e4" };
 		const string ApcName = "apc";
 
@@ -149,7 +149,7 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				ParadropSovietUnits();
 			}
-			if (world.FrameNumber == FlamerTicks)
+			if (world.FrameNumber == FlamersTicks)
 			{
 				RushSovietFlamers();
 			}
