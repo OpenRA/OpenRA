@@ -102,6 +102,10 @@ namespace OpenRA.Mods.RA.Missions
 
 		public void Tick(Actor self)
 		{
+			if (!Sound.MusicPlaying)
+			{
+				PlayMusic();
+			}
 			if (allies.WinState != WinState.Undefined)
 			{
 				return;
@@ -293,7 +297,6 @@ namespace OpenRA.Mods.RA.Missions
 				{
 					FlyTanyaToInsertionLZ();
 					SendPatrol();
-					PlayMusic();
 				});
 			});
 		}
@@ -301,7 +304,7 @@ namespace OpenRA.Mods.RA.Missions
 		void PlayMusic()
 		{
 			var track = Rules.InstalledMusic.Random(Game.CosmeticRandom);
-			Sound.PlayMusicThen(track.Value, PlayMusic);
+			Sound.PlayMusic(track.Value);
 		}
 
 		void StopMusic(OrderManager orderManager)

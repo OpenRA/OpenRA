@@ -16,6 +16,7 @@ using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Air;
 using OpenRA.Mods.RA.Buildings;
+using OpenRA.Network;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
@@ -132,6 +133,10 @@ namespace OpenRA.Mods.RA.Missions
 
 		public void Tick(Actor self)
 		{
+			if (!Sound.MusicPlaying)
+			{
+				PlayMusic();
+			}
 			if (allies1.WinState != WinState.Undefined)
 			{
 				return;
@@ -421,6 +426,22 @@ namespace OpenRA.Mods.RA.Missions
 			w.WorldActor.Trait<Shroud>().Explore(w, sam3.Location, 2);
 			w.WorldActor.Trait<Shroud>().Explore(w, sam4.Location, 2);
 			Game.MoveViewport(((w.LocalPlayer ?? allies1) == allies1 ? chinookHusk.Location : allies2BasePoint.Location).ToFloat2());
+			Game.ConnectionStateChanged += StopMusic;
+		}
+
+		void PlayMusic()
+		{
+			var track = Rules.InstalledMusic.Random(Game.CosmeticRandom);
+			Sound.PlayMusic(track.Value);
+		}
+
+		void StopMusic(OrderManager orderManager)
+		{
+			if (!orderManager.GameStarted)
+			{
+				Sound.StopMusic();
+				Game.ConnectionStateChanged -= StopMusic;
+			}
 		}
 	}
 
