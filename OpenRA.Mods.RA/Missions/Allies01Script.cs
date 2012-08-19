@@ -15,6 +15,7 @@ using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Air;
 using OpenRA.Network;
+using OpenRA.Scripting;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Missions
@@ -115,12 +116,6 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				Sound.Play(Taunts[world.SharedRandom.Next(Taunts.Length)]);
 			}
-			// take Tanya to the LZ
-			if (world.FrameNumber == 1)
-			{
-				FlyTanyaToInsertionLZ();
-				SendPatrol();
-			}
 			// objectives
 			if (currentObjective == 0)
 			{
@@ -168,7 +163,7 @@ namespace OpenRA.Mods.RA.Missions
 					}
 				}
 			}
-			if (tanya.Destroyed)
+			if (tanya != null && tanya.Destroyed)
 			{
 				MissionFailed("Tanya was killed.");
 			}
@@ -291,8 +286,22 @@ namespace OpenRA.Mods.RA.Missions
 			attackEntryPoint1 = actors["SovietAttackEntryPoint1"];
 			attackEntryPoint2 = actors["SovietAttackEntryPoint2"];
 			Game.MoveViewport(insertionLZ.Location.ToFloat2());
-			Sound.PlayMusic(Rules.Music["hell226m"]); // Hell March
 			Game.ConnectionStateChanged += StopMusic;
+			Media.PlayFMVFullscreen(w, "ally1.vqa", () =>
+			{
+				Media.PlayFMVFullscreen(w, "landing.vqa", () =>
+				{
+					FlyTanyaToInsertionLZ();
+					SendPatrol();
+					PlayMusic();
+				});
+			});
+		}
+
+		void PlayMusic()
+		{
+			var track = Rules.InstalledMusic.Random(Game.CosmeticRandom);
+			Sound.PlayMusicThen(track.Value, PlayMusic);
 		}
 
 		void StopMusic(OrderManager orderManager)
