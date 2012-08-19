@@ -49,9 +49,9 @@ local debugTab = {
   { ID_ATTACH_DEBUG, "&Start Debugger Server", "Allow a client to start a debugging session" },
   { },
   { ID_STOP_DEBUG, "S&top Debugging\tShift-F12", "Stop the currently running process" },
-  { ID_STEP, "St&ep\tF11", "Step into the next line" },
-  { ID_STEP_OVER, "Step &Over\tF10", "Step over the next line" },
-  { ID_STEP_OUT, "Step O&ut\tShift-F10", "Step out of the current function" },
+  { ID_STEP, "Step &Into\tF10", "Step into the next line" },
+  { ID_STEP_OVER, "Step &Over\tShift-F10", "Step over the next line" },
+  { ID_STEP_OUT, "Step O&ut\tCtrl-F10", "Step out of the current function" },
   { ID_TRACE, "Tr&ace", "Trace execution showing each executed line" },
   { ID_BREAK, "&Break\tShift-F9", "Stop execution of the program at the next executed line of code" },
   { },
@@ -62,7 +62,7 @@ local debugTab = {
 
 local debugMenu = wx.wxMenu(debugTab)
 local debugMenuRun = {start="Start &Debugging\tF5", continue="Co&ntinue\tF5"}
-local debugMenuStop = {debugging="S&top Debugging\tShift-F12", process="S&top Process\tShift-F12"}
+local debugMenuStop = {debugging="S&top Debugging\tShift-F5", process="S&top Process\tShift-F5"}
 
 local targetDirMenu = wx.wxMenu{
   {ID "debug.projectdir.choose","Choose ..."},
