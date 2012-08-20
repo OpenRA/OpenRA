@@ -118,9 +118,11 @@ do
   ide.osname = wx.wxPlatformInfo.Get():GetOperatingSystemFamilyName()
 
   -- on Windows use GetExecutablePath, which is Unicode friendly,
-  -- whereas wxGetCwd() is not (at least in wxlua 2.8.12.2)
-  if ide.osname == "Windows" then
-    fullPath = wx.wxStandardPaths.Get():GetExecutablePath()
+  -- whereas wxGetCwd() is not (at least in wxlua 2.8.12.2).
+  -- some wxlua version on windows report wx.dll instead of *.exe.
+  local exepath = wx.wxStandardPaths.Get():GetExecutablePath()
+  if ide.osname == "Windows" and exepath:find("%.exe$") then
+    fullPath = exepath
   elseif not wx.wxIsAbsolutePath(fullPath) then
     fullPath = wx.wxGetCwd().."/"..fullPath
   end
