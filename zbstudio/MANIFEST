@@ -14,6 +14,7 @@ bin/wx.dll
 cfg/user-sample.lua
 interpreters/love2d.lua
 interpreters/luadeb.lua
+interpreters/moai.lua
 lualibs/copas/copas.lua
 lualibs/coxpcall/coxpcall.lua
 lualibs/luainspect/ast.lua
