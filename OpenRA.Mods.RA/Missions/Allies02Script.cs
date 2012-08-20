@@ -421,11 +421,19 @@ namespace OpenRA.Mods.RA.Missions
 			sovietWarFactory = actors["SovietWarFactory"];
 			sovietRallyPoint = actors["SovietRallyPoint"];
 			flamersEntryPoint = actors["FlamersEntryPoint"];
-			w.WorldActor.Trait<Shroud>().Explore(w, sam1.Location, 2);
-			w.WorldActor.Trait<Shroud>().Explore(w, sam2.Location, 2);
-			w.WorldActor.Trait<Shroud>().Explore(w, sam3.Location, 2);
-			w.WorldActor.Trait<Shroud>().Explore(w, sam4.Location, 2);
-			Game.MoveViewport(((w.LocalPlayer ?? allies1) == allies1 ? chinookHusk.Location : allies2BasePoint.Location).ToFloat2());
+			var shroud = w.WorldActor.Trait<Shroud>();
+			shroud.Explore(w, sam1.Location, 2);
+			shroud.Explore(w, sam2.Location, 2);
+			shroud.Explore(w, sam3.Location, 2);
+			shroud.Explore(w, sam4.Location, 2);
+			if (w.LocalPlayer == null || w.LocalPlayer == allies1)
+			{
+				Game.MoveViewport(chinookHusk.Location.ToFloat2());
+			}
+			else
+			{
+				Game.MoveViewport(allies2BasePoint.Location.ToFloat2());
+			}
 			Game.ConnectionStateChanged += StopMusic;
 		}
 
