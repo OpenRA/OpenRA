@@ -68,8 +68,8 @@ namespace OpenRA.Mods.RA.Missions
 
 		const string InfantryQueueName = "Infantry";
 		const string VehicleQueueName = "Vehicle";
-		static List<string> sovietInfantry = new List<string> { "e1", "e2", "e3" };
-		static List<string> sovietVehicles = new List<string> { "3tnk" };
+		readonly List<string> sovietInfantry = new List<string> { "e1", "e2", "e3" };
+		readonly List<string> sovietVehicles = new List<string> { "3tnk" };
 		static readonly string[] SovietVehicleAdditions = { "v2rl" };
 		const int SovietGroupSize = 5;
 		const int SovietVehicleAdditionsTicks = 1500 * 4;
@@ -211,11 +211,6 @@ namespace OpenRA.Mods.RA.Missions
 
 		void AddSovietCashIfRequired()
 		{
-			var powerManager = soviets.PlayerActor.Trait<PowerManager>();
-			if (powerManager.ExcessPower < 0)
-			{
-				return;
-			}
 			var resources = soviets.PlayerActor.Trait<PlayerResources>();
 			if (resources.Cash < ReinforcementsCash)
 			{
@@ -225,6 +220,11 @@ namespace OpenRA.Mods.RA.Missions
 
 		void BuildSovietUnits()
 		{
+			var powerManager = soviets.PlayerActor.Trait<PowerManager>();
+			if (powerManager.ExcessPower < 0)
+			{
+				return;
+			}
 			if (!sovietBarracks.Destroyed)
 			{
 				BuildSovietUnit(InfantryQueueName, sovietInfantry.Random(world.SharedRandom));
@@ -255,7 +255,7 @@ namespace OpenRA.Mods.RA.Missions
 
 		Actor ClosestAlliedBuilding(Actor actor, int range)
 		{
-			return BuildingsNearActor(allies2BasePoint, range)
+			return BuildingsNearActor(actor, range)
 					.Where(a => a.Owner == allies2)
 					.OrderBy(a => (actor.Location - a.Location).LengthSquared)
 					.FirstOrDefault();
