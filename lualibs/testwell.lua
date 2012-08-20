@@ -184,22 +184,22 @@ end
 
 local parms = {comment = false}
 function m.is(got, expected, name)
-  if type(got) == 'table' then got = serpent.line(got, parms) end
-  if type(expected) == 'table' then expected = serpent.line(expected, parms) end
-  local pass = got == expected
+  local tgot, texp = type(got), type(expected)
+  local vgot, vexp = serpent.line(got, parms), serpent.line(expected, parms)
+  local pass = vgot == vexp
   if got == nil then pass = nil end
   tb:ok(pass, name, not pass and 
-      "         got: " .. tostring(got) ..
-    "\n    expected: " .. tostring(expected))
+      "         got: " .. vgot .. " (" .. tgot .. ")" ..
+    "\n    expected: " .. vexp .. " (" .. texp .. ")")
 end
 
 function m.isnt(got, expected, name)
-  if type(got) == 'table' then got = serpent.line(got, parms) end
-  if type(expected) == 'table' then expected = serpent.line(expected, parms) end
-  local pass = got ~= expected
+  local tgot, texp = type(got), type(expected)
+  local vgot, vexp = serpent.line(got, parms), serpent.line(expected, parms)
+  local pass = vgot ~= vexp
   if got == nil then pass = nil end
   tb:ok(pass, name, not pass and
-      "         got: " .. tostring(got) ..
+      "         got: " .. vgot .. " (" .. tgot .. ")" ..
     "\n    expected: anything else")
 end
 
