@@ -2,28 +2,10 @@ local exe
 
 local function exePath()
   local mainpath = ide.editorFilename:gsub("[^/\\]+$","")
-  local os = ide.osname
-
   local macExe = mainpath..'bin/lua.app/Contents/MacOS/lua'
-  local exe = ide.config.path.lua or
-    (os == "Windows" and mainpath..[[bin\lua]]
+  return ide.config.path.lua or
+    (ide.osname == "Windows" and mainpath..[[bin\lua]]
      or (wx.wxFileExists(macExe) and macExe or mainpath..'bin/lua'))
-
-  -- (luaconf.h) in Windows, any exclamation mark ('!') in the path is replaced
-  -- by the path of the directory of the executable file of the current process.
-  -- this effectively prevents any path with an exclamation mark from working.
-  -- if the path has an excamation mark, we allow Lua to expand it
-  -- (for use in LUA_PATH/LUA_CPATH)
-  if os == "Windows" and mainpath:find('%!') then mainpath = "!/../" end
-
-  local clibs =
-    os == "Windows" and mainpath.."bin/?.dll;"..mainpath.."bin/clibs/?.dll" or
-    os == "Macintosh" and mainpath.."bin/lib?.dylib;"..mainpath.."bin/clibs/?.dylib" or
-    os == "Unix" and mainpath.."bin/?.so;"..mainpath.."bin/clibs/?.so" or nil
-  wx.wxSetEnv("LUA_PATH", package.path .. ';'
-    .. mainpath.."lualibs/?/?.lua;"..mainpath.."lualibs/?.lua")
-  if clibs then wx.wxSetEnv("LUA_CPATH", package.cpath .. ';' .. clibs) end
-  return exe
 end
 
 return {

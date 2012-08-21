@@ -105,6 +105,23 @@ ide = {
   }
 }
 
+function setLuaPaths(mainpath, os)
+  -- (luaconf.h) in Windows, any exclamation mark ('!') in the path is replaced
+  -- by the path of the directory of the executable file of the current process.
+  -- this effectively prevents any path with an exclamation mark from working.
+  -- if the path has an excamation mark, we allow Lua to expand it
+  -- (for use in LUA_PATH/LUA_CPATH)
+  if os == "Windows" and mainpath:find('%!') then mainpath = "!/../" end
+  wx.wxSetEnv("LUA_PATH", package.path .. ';'
+    .. mainpath.."lualibs/?/?.lua;"..mainpath.."lualibs/?.lua")
+
+  local clibs =
+    os == "Windows" and mainpath.."bin/?.dll;"..mainpath.."bin/clibs/?.dll" or
+    os == "Macintosh" and mainpath.."bin/lib?.dylib;"..mainpath.."bin/clibs/?.dylib" or
+    os == "Unix" and mainpath.."bin/?.so;"..mainpath.."bin/clibs/?.so" or nil
+  if clibs then wx.wxSetEnv("LUA_CPATH", package.cpath .. ';' .. clibs) end
+end
+
 ---------------
 -- process args
 local filenames = {}
@@ -130,6 +147,7 @@ do
   ide.editorFilename = fullPath
   ide.config.path.app = fullPath:match("([%w_-%.]+)$"):gsub("%.[^%.]*$","")
   assert(ide.config.path.app, "no application path defined")
+
   for index = 2, #arg do
     if (arg[index] == "-cfg" and index+1 <= #arg) then
       local str = arg[index+1]
@@ -143,6 +161,8 @@ do
       table.insert(filenames,arg[index])
     end
   end
+
+  setLuaPaths(GetPathWithSep(ide.editorFilename), ide.osname)
 end
 
 -----------------------
