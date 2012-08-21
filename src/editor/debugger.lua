@@ -467,6 +467,11 @@ function DebuggerStop()
     DebuggerScratchpadOff()
     DisplayOutput(("Debugging session completed (traced %d instruction%s).\n")
       :format(debugger.stats.line, debugger.stats.line == 1 and '' or 's'))
+  else
+    -- it's possible that the application couldn't start, or that the
+    -- debugger in the application didn't start, which means there is
+    -- no debugger.server, but scratchpad may still be on. Turn it off.
+    DebuggerScratchpadOff()
   end
 end
 

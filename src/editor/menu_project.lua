@@ -203,8 +203,7 @@ end
 function ProjectRun(skipcheck)
   local fname = getNameToRun(skipcheck)
   if not fname then return end
-  runInterpreter(fname)
-  return true
+  return runInterpreter(fname)
 end
 
 local debuggers = {
@@ -223,7 +222,7 @@ function ProjectDebug(skipcheck, debtype)
       format(ide.debugger.hostname, ide.debugger.portnumber)
     local fname = getNameToRun(skipcheck)
     if not fname then return end
-    runInterpreter(fname, debcall)
+    return runInterpreter(fname, debcall) -- this may be pid or nil
   end
   return true
 end
