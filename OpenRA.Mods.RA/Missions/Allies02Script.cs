@@ -64,7 +64,8 @@ namespace OpenRA.Mods.RA.Missions
 		Actor sovietBarracks;
 		Actor sovietWarFactory;
 
-		CountdownTimerWidget reinforcementsTimer;
+		CountdownTimer reinforcementsTimer;
+		CountdownTimerWidget reinforcementsTimerWidget;
 
 		const string InfantryQueueName = "Infantry";
 		const string VehicleQueueName = "Vehicle";
@@ -106,7 +107,7 @@ namespace OpenRA.Mods.RA.Missions
 			allies1.WinState = allies2.WinState = WinState.Lost;
 			if (reinforcementsTimer != null)
 			{
-				reinforcementsTimer.Visible = false;
+				reinforcementsTimerWidget.Visible = false;
 			}
 			foreach (var actor in world.Actors.Where(a => a.IsInWorld && (a.Owner == allies1 || a.Owner == allies2) && !a.IsDead()))
 			{
@@ -125,7 +126,7 @@ namespace OpenRA.Mods.RA.Missions
 			allies1.WinState = allies2.WinState = WinState.Won;
 			if (reinforcementsTimer != null)
 			{
-				reinforcementsTimer.Visible = false;
+				reinforcementsTimerWidget.Visible = false;
 			}
 			Game.AddChatLine(Color.Blue, "Mission accomplished", text);
 			Sound.Play("misnwon1.aud");
@@ -150,6 +151,7 @@ namespace OpenRA.Mods.RA.Missions
 				InitializeSovietFactories();
 				StartReinforcementsTimer();
 			}
+			reinforcementsTimer.Tick();
 			if (world.FrameNumber == ParatroopersTicks)
 			{
 				ParadropSovietUnits();
@@ -220,6 +222,10 @@ namespace OpenRA.Mods.RA.Missions
 
 		void BuildSovietUnits()
 		{
+			if (!Game.IsHost)
+			{
+				return;
+			}
 			var powerManager = soviets.PlayerActor.Trait<PowerManager>();
 			if (powerManager.ExcessPower < 0)
 			{
@@ -294,8 +300,9 @@ namespace OpenRA.Mods.RA.Missions
 		void StartReinforcementsTimer()
 		{
 			Sound.Play("timergo1.aud");
-			reinforcementsTimer = new CountdownTimerWidget("Reinforcements arrive in", ReinforcementsTicks, ReinforcementsTimerExpired, new float2(128, 96));
-			Ui.Root.AddChild(reinforcementsTimer);
+			reinforcementsTimer = new CountdownTimer(ReinforcementsTicks, ReinforcementsTimerExpired);
+			reinforcementsTimerWidget = new CountdownTimerWidget(reinforcementsTimer, "Reinforcements arrive in", new float2(128, 96));
+			Ui.Root.AddChild(reinforcementsTimerWidget);
 		}
 
 		void ParadropSovietUnits()
@@ -333,9 +340,9 @@ namespace OpenRA.Mods.RA.Missions
 			apc.QueueActivity(new UnloadCargo(true));
 		}
 
-		void ReinforcementsTimerExpired(CountdownTimerWidget timer)
+		void ReinforcementsTimerExpired(CountdownTimer countdownTimer)
 		{
-			timer.Visible = false;
+			reinforcementsTimerWidget.Visible = false;
 			SendReinforcements();
 		}
 
@@ -453,18 +460,25 @@ namespace OpenRA.Mods.RA.Missions
 		}
 	}
 
-	public class CountdownTimerWidget : Widget
+	public class CountdownTimer
 	{
-		public string Header { get; set; }
 		public int TicksLeft { get; set; }
-		public float2 Position { get; set; }
 
-		public CountdownTimerWidget(string header, int ticksLeft, Action<CountdownTimerWidget> onExpired, float2 position)
+		public Action<CountdownTimer> OnExpired { get; set; }
+		public Action<CountdownTimer> OnOneMinuteRemaining { get; set; }
+		public Action<CountdownTimer> OnTwoMinutesRemaining { get; set; }
+		public Action<CountdownTimer> OnThreeMinutesRemaining { get; set; }
+		public Action<CountdownTimer> OnFourMinutesRemaining { get; set; }
+		public Action<CountdownTimer> OnFiveMinutesRemaining { get; set; }
+		public Action<CountdownTimer> OnTenMinutesRemaining { get; set; }
+		public Action<CountdownTimer> OnTwentyMinutesRemaining { get; set; }
+		public Action<CountdownTimer> OnThirtyMinutesRemaining { get; set; }
+		public Action<CountdownTimer> OnFortyMinutesRemaining { get; set; }
+
+		public CountdownTimer(int ticksLeft, Action<CountdownTimer> onExpired)
 		{
-			Header = header;
 			TicksLeft = ticksLeft;
 			OnExpired = onExpired;
-			Position = position;
 			OnOneMinuteRemaining = t => Sound.Play("1minr.aud");
 			OnTwoMinutesRemaining = t => Sound.Play("2minr.aud");
 			OnThreeMinutesRemaining = t => Sound.Play("3minr.aud");
@@ -476,23 +490,8 @@ namespace OpenRA.Mods.RA.Missions
 			OnFortyMinutesRemaining = t => Sound.Play("40minr.aud");
 		}
 
-		public Action<CountdownTimerWidget> OnExpired { get; set; }
-		public Action<CountdownTimerWidget> OnOneMinuteRemaining { get; set; }
-		public Action<CountdownTimerWidget> OnTwoMinutesRemaining { get; set; }
-		public Action<CountdownTimerWidget> OnThreeMinutesRemaining { get; set; }
-		public Action<CountdownTimerWidget> OnFourMinutesRemaining { get; set; }
-		public Action<CountdownTimerWidget> OnFiveMinutesRemaining { get; set; }
-		public Action<CountdownTimerWidget> OnTenMinutesRemaining { get; set; }
-		public Action<CountdownTimerWidget> OnTwentyMinutesRemaining { get; set; }
-		public Action<CountdownTimerWidget> OnThirtyMinutesRemaining { get; set; }
-		public Action<CountdownTimerWidget> OnFortyMinutesRemaining { get; set; }
-
-		public override void Tick()
+		public void Tick()
 		{
-			if (!IsVisible())
-			{
-				return;
-			}
 			if (TicksLeft > 0)
 			{
 				TicksLeft--;
@@ -511,6 +510,20 @@ namespace OpenRA.Mods.RA.Missions
 				}
 			}
 		}
+	}
+
+	public class CountdownTimerWidget : Widget
+	{
+		public CountdownTimer CountdownTimer { get; set; }
+		public string Header { get; set; }
+		public float2 Position { get; set; }
+
+		public CountdownTimerWidget(CountdownTimer countdownTimer, string header, float2 position)
+		{
+			CountdownTimer = countdownTimer;
+			Header = header;
+			Position = position;
+		}
 
 		public override void Draw()
 		{
@@ -519,8 +532,8 @@ namespace OpenRA.Mods.RA.Missions
 				return;
 			}
 			var font = Game.Renderer.Fonts["Bold"];
-			var text = "{0}: {1}".F(Header, WidgetUtils.FormatTime(TicksLeft));
-			font.DrawTextWithContrast(text, Position, TicksLeft == 0 && Game.LocalTick % 60 >= 30 ? Color.Red : Color.White, Color.Black, 1);
+			var text = "{0}: {1}".F(Header, WidgetUtils.FormatTime(CountdownTimer.TicksLeft));
+			font.DrawTextWithContrast(text, Position, CountdownTimer.TicksLeft == 0 && Game.LocalTick % 60 >= 30 ? Color.Red : Color.White, Color.Black, 1);
 		}
 	}
 }
