@@ -222,10 +222,6 @@ namespace OpenRA.Mods.RA.Missions
 
 		void BuildSovietUnits()
 		{
-			if (!Game.IsHost)
-			{
-				return;
-			}
 			var powerManager = soviets.PlayerActor.Trait<PowerManager>();
 			if (powerManager.ExcessPower < 0)
 			{
@@ -289,7 +285,11 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				return;
 			}
-			world.IssueOrder(Order.StartProduction(queue.self, unit, 1));
+			var order = Order.StartProduction(queue.self, unit, 1);
+			if (Game.IsHost)
+			{
+				world.IssueOrder(order);
+			}
 		}
 
 		void SpawnSignalFlare()
