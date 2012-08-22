@@ -400,8 +400,10 @@ return cgbinpath and {
     local function evCompile(event)
       local filename,info = GetEditorFileAndCurInfo()
       local editor = GetEditor()
+      local glsl = editor and editor.spec and editor.spec.apitype and editor.spec.apitype == "glsl"
+      local entryname = (glsl and "main" or info.selword)
 
-      if (not (filename and info.selword and cgbinpath)) then
+      if (not (filename and entryname and cgbinpath)) then
         DisplayOutput("Error: Cg Compile: Insufficient parameters (nofile / not selected entry function!\n")
         return
       end
@@ -415,11 +417,9 @@ return cgbinpath and {
       local args = data.customarg and data.custom or ""
       args = args:len() > 0 and args or nil
 
-      local fullname = filename:GetFullPath()
-      local glsl = editor and editor.spec and editor.spec.apitype and editor.spec.apitype == "glsl"
-
-      local outname = fullname.."."..info.selword.."^"
-      outname = args and outname..args:gsub("%s+%-",";-")..";^" or outname
+      local fullname  = filename:GetFullPath()
+      local outname = fullname.."."..entryname.."^"
+      outname = args and outname..args:gsub("%s*[%-%/]",";-")..";^" or outname
       outname = outname..profile[domain]..profile.ext
       outname = '"'..outname..'"'
 
@@ -430,7 +430,7 @@ return cgbinpath and {
       cmdline = args and cmdline..args.." " or cmdline
       cmdline = cmdline..data.domaindefs[domain]
       cmdline = cmdline.."-o "..outname.." "
-      cmdline = cmdline.."-entry "..info.selword
+      cmdline = cmdline.."-entry "..entryname
 
       cmdline = cgbinpath.."/cgc.exe"..cmdline
 
