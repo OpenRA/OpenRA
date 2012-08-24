@@ -134,10 +134,6 @@ namespace OpenRA.Mods.RA.Missions
 
 		public void Tick(Actor self)
 		{
-			if (!Sound.MusicPlaying)
-			{
-				PlayMusic();
-			}
 			if (allies1.WinState != WinState.Undefined)
 			{
 				return;
@@ -441,13 +437,18 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				Game.MoveViewport(allies2BasePoint.Location.ToFloat2());
 			}
+			PlayMusic();
 			Game.ConnectionStateChanged += StopMusic;
 		}
 
 		void PlayMusic()
 		{
+			if (!Rules.InstalledMusic.Any())
+			{
+				return;
+			}
 			var track = Rules.InstalledMusic.Random(Game.CosmeticRandom);
-			Sound.PlayMusic(track.Value);
+			Sound.PlayMusicThen(track.Value, PlayMusic);
 		}
 
 		void StopMusic(OrderManager orderManager)
