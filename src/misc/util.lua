@@ -152,6 +152,7 @@ function GetFileNameExt(filePath)
 end
 
 function GetPathWithSep(wxfn)
+  if type(wxfn) == 'string' then wxfn = wx.wxFileName(wxfn) end
   return wxfn:GetPath(bit.bor(wx.wxPATH_GET_VOLUME, wx.wxPATH_GET_SEPARATOR))
 end
 
@@ -173,6 +174,36 @@ function FileSysGet(dir,spec)
   end
   return content
 end
+
+function GetFullPathIfExists(p, f)
+  if not p or not f then return end
+  local file = wx.wxFileName(p, f)
+  return file:FileExists() and file:GetFullPath()
+end
+
+function FileWrite(file,content)
+  local log = wx.wxLogNull() -- disable error reporting; will report as needed
+  local file = wx.wxFile(file, wx.wxFile.write)
+  if not file:IsOpened() then return nil, wx.wxSysErrorMsg() end
+
+  file:Write(content, #content)
+  file:Close()
+  return true
+end
+
+function FileRead(file)
+  local log = wx.wxLogNull() -- disable error reporting; will report as needed
+  local file = wx.wxFile(file, wx.wxFile.read)
+  if not file:IsOpened() then return end
+
+  local _, content = file:Read(file:Length())
+  file:Close()
+  return content, wx.wxSysErrorMsg()
+end
+
+function FileRename(file1, file2) return wx.wxRenameFile(file1, file2) end
+
+TimeGet = pcall(require, "socket") and socket.gettime or os.clock
 
 function pairsSorted(t, f)
   local a = {}

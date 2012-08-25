@@ -8,7 +8,7 @@ local openDocuments = ide.openDocuments
 local uimgr = frame.uimgr
 
 function NewFile(event)
-  local editor = CreateEditor("untitled.lua")
+  local editor = CreateEditor(ide.config.default.fullname)
   SetupKeywords(editor, "lua")
 end
 
@@ -27,29 +27,24 @@ local function findDocumentToReuse()
 end
 
 function LoadFile(filePath, editor, file_must_exist)
-  filePath = wx.wxFileName(filePath):GetFullPath()
-  local cmpName = string.lower(string.gsub(filePath, "\\", "/"))
-
   -- prevent files from being reopened again
   if (not editor) then
+    local filePath = wx.wxFileName(filePath)
     for id, doc in pairs(openDocuments) do
-      local docName = doc.filePath and string.lower(string.gsub(doc.filePath, "\\", "/"))
-      if cmpName == docName then
+      if doc.filePath and filePath:SameAs(wx.wxFileName(doc.filePath)) then
         notebook:SetSelection(doc.index)
         return doc.editor
       end
     end
   end
+  filePath = wx.wxFileName(filePath):GetFullPath()
 
   -- if not opened yet, try open now
-  local file_text = ""
-  local handle = io.open(filePath, "rb")
-  if handle then
-    file_text = handle:read("*a")
+  local file_text = FileRead(filePath)
+  if file_text then
     if GetConfigIOFilter("input") then
       file_text = GetConfigIOFilter("input")(filePath,file_text)
     end
-    handle:close()
   elseif file_must_exist then
     return nil
   end
@@ -57,7 +52,8 @@ function LoadFile(filePath, editor, file_must_exist)
   local current = editor and editor:GetCurrentPos()
   editor = editor
     or findDocumentToReuse()
-    or CreateEditor(wx.wxFileName(filePath):GetFullName() or "untitled.lua")
+    or CreateEditor(wx.wxFileName(filePath):GetFullName()
+      or ide.config.default.fullname)
 
   editor:Clear()
   editor:ClearAll()
@@ -131,22 +127,15 @@ function SaveFile(editor, filePath)
   if not filePath then
     return SaveFileAs(editor)
   else
-    if (ide.config.savebak) then
-      local backPath = filePath..".bak"
-      os.remove(backPath)
-      os.rename(filePath, backPath)
+    if (ide.config.savebak) then FileRename(filePath, filePath..".bak") end
+
+    local st = editor:GetText()
+    if GetConfigIOFilter("output") then
+      st = GetConfigIOFilter("output")(filePath,st)
     end
 
-    local handle = io.open(filePath, "wb")
-    if handle then
-      local st = editor:GetText()
-
-      if GetConfigIOFilter("output") then
-        st = GetConfigIOFilter("output")(filePath,st)
-      end
-      handle:write(st)
-      handle:close()
-      --editor:EmptyUndoBuffer()
+    local ok, err = FileWrite(filePath, st)
+    if ok then
       editor:SetSavePoint()
       local id = editor:GetId()
       openDocuments[id].filePath = filePath
@@ -155,9 +144,9 @@ function SaveFile(editor, filePath)
       SetDocumentModified(id, false)
       return true
     else
-      wx.wxMessageBox("Unable to save file '"..filePath.."'.",
+      wx.wxMessageBox("Unable to save file '"..filePath.."': "..err,
         "Error",
-        wx.wxOK + wx.wxCENTRE, ide.frame)
+        wx.wxICON_ERROR + wx.wxOK + wx.wxCENTRE, ide.frame)
     end
   end
 
@@ -170,7 +159,7 @@ function SaveFileAs(editor)
   local filePath = openDocuments[id].filePath
   if (not filePath) then
     filePath = FileTreeGetDir()
-    filePath = (filePath or "").."untitled"
+    filePath = (filePath or "")..ide.config.default.name
   end
 
   local fn = wx.wxFileName(filePath)
@@ -291,7 +280,8 @@ function SaveModifiedDialog(editor, allow_cancel)
   local filePath = document.filePath
   local fileName = document.fileName
   if document.isModified then
-    local message = "Do you want to save the changes to '"..(fileName or 'untitled').."'?"
+    local message = "Do you want to save the changes to '"
+      ..(fileName or ide.config.default.name).."'?"
     local dlg_styles = wx.wxYES_NO + wx.wxCENTRE + wx.wxICON_QUESTION
     if allow_cancel then dlg_styles = dlg_styles + wx.wxCANCEL end
     local dialog = wx.wxMessageDialog(ide.frame, message,

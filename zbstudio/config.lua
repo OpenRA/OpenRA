@@ -4,6 +4,7 @@ editor.autotabs = false
 editor.usetabs  = false
 editor.tabwidth = 2
 editor.usewrap = true
+editor.calltipdelay = 500
 
 local G = ... -- this now points to the global environment
 if G.ide.osname == 'Macintosh' then filetree.fontsize = 11 end

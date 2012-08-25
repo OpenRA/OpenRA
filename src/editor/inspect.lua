@@ -66,11 +66,16 @@ function M.show_warnings(top_ast)
         if name ~= 'self' then
           local func = parent.parent and parent.parent.parent
           local assignment = not func.tag or func.tag == 'Set' or func.tag == 'Localrec'
-          local fname = assignment and type(func[1][1][1]) == 'string' and func[1][1][1]
+          local func1 = func[1][1]
+          local fname = assignment and func1 and type(func1[1]) == 'string' and func1[1]
+            or (func1.tag == 'Index' and func1[1][1] .. '.' .. func1[2][1])
           -- "function foo(bar)" => func.tag == 'Set'
+          --   `Set{{`Id{"foo"}},{`Function{{`Id{"bar"}},{}}}}
           -- "local function foo(bar)" => func.tag == 'Localrec'
           -- "local _, foo = 1, function(bar)" => func.tag == 'Local'
           -- "print(function(bar) end)" => func.tag == nil
+          -- "function tbl:foo(bar)" => func.tag == 'Set'
+          --   `Set{{`Index{`Id{"tbl"},`String{"foo"}}},{`Function{{`Id{"self"},`Id{"bar"}},{}}}}
           warn("unused parameter '" .. name .. "'" ..
                (func and assignment
                      and (fname and func.tag

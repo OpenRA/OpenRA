@@ -47,7 +47,7 @@ local function treeAddDir(tree,parent_id,rootdir)
   while true do
     if not item:IsOk() then break end
     items[tree:GetItemText(item) .. tree:GetItemImage(item)] = item
-    item, cookie = tree:GetNextChild(item, cookie)
+    item, cookie = tree:GetNextChild(parent_id, cookie)
   end
 
   local curr
@@ -121,7 +121,11 @@ local function treeGetItemFullName(tree,treedata,item_id)
     cur = tree:GetItemText(item_id)
     if cur and string.len(cur) > 0 then str = cur..string_Pathsep..str end
   end
-  return ((not filetree.showroot) and filetree.projdata.rootdir or "")..str
+  -- as root may already include path separate, normalize the path
+  local fullPath = wx.wxFileName(
+    filetree.showroot and str or filetree.projdata.rootdir .. str)
+  fullPath:Normalize()
+  return fullPath:GetFullPath()
 end
 
 local function treeSetRoot(tree,treedata,rootdir)
@@ -169,7 +173,6 @@ local function treeSetConnectorsAndIcons(tree,treedata)
       else -- open file
         if wx.wxFileName(name):FileExists() then
           LoadFile(name,nil,true)
-          FileTreeMarkSelected(name)
         else -- stale filetree information; rescan
           treeAddDir(tree,tree:GetItemParent(item_id),name)
         end 
@@ -282,7 +285,7 @@ local function findItem(tree, match)
   local node = projtree:GetRootItem()
   local label = tree:GetItemText(node)
 
-  local s, e = string.find(match, label)
+  local s, e = string.find(match, label, 1, true)
   if not s or s ~= 1 then return end
 
   for token in string.gmatch(string.sub(match,e+1), "[^%"..string_Pathsep.."]+") do
@@ -296,7 +299,7 @@ local function findItem(tree, match)
         node = item
         break
       end
-      item, cookie = tree:GetNextChild(item, cookie)
+      item, cookie = tree:GetNextChild(node, cookie)
     end
   end
 
@@ -317,6 +320,7 @@ function FileTreeMarkSelected(file)
       projtree:SetItemBold(item_id, true)
       curr_id = item_id
     end
+    projtree:Refresh() -- to force refresh on Mac (ide.osname == 'Macintosh')
   end
 end
 

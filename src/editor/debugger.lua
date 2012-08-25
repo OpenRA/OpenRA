@@ -143,17 +143,11 @@ local function activateDocument(fileName, line)
     fileName = wx.wxGetCwd().."/"..fileName
   end
 
-  if wx.__WXMSW__ then
-    fileName = wx.wxUnix2DosFilename(fileName)
-  end
-
   local activated
+  local fileName = wx.wxFileName(fileName)
   for _, document in pairs(ide.openDocuments) do
-    local editor = document.editor
-    -- for running in cygwin, use same type of separators
-    local filePath = string.gsub(document.filePath, "\\", "/")
-    local fileName = string.gsub(fileName, "\\", "/")
-    if string.upper(filePath) == string.upper(fileName) then
+    if fileName:SameAs(wx.wxFileName(document.filePath)) then
+      local editor = document.editor
       local selection = document.index
       notebook:SetSelection(selection)
       SetEditorSelection(selection)
@@ -235,6 +229,11 @@ debugger.listen = function()
         DisplayOutput("Refused a request to start a new debugging session as there is one in progress already.\n")
         return
       end
+
+      copas.setErrorHandler(function(error)
+        DisplayOutput("Can't start debugging session due to internal error '" .. error .. "'.\n")
+        debugger.terminate()
+      end)
 
       local options = debugger.options or {}
       if not debugger.scratchpad then SetAllEditorsReadOnly(true) end
@@ -369,7 +368,9 @@ debugger.exec = function(command)
                 return
               end
             else
-              out = "out" -- redo now trying to get out of this file
+              -- redo now; if the call is from the debugger, then repeat
+              -- the same command; in all other cases get out of this file
+              out = file:find('mobdebug%.lua$') and command or "out"
             end
           end
         end
@@ -471,6 +472,11 @@ function DebuggerStop()
     DebuggerScratchpadOff()
     DisplayOutput(("Debugging session completed (traced %d instruction%s).\n")
       :format(debugger.stats.line, debugger.stats.line == 1 and '' or 's'))
+  else
+    -- it's possible that the application couldn't start, or that the
+    -- debugger in the application didn't start, which means there is
+    -- no debugger.server, but scratchpad may still be on. Turn it off.
+    DebuggerScratchpadOff()
   end
 end
 
@@ -672,7 +678,7 @@ function DebuggerCreateWatchWindow()
 end
 
 function DebuggerMakeFileName(editor, filePath)
-  return filePath or editor:GetText()
+  return filePath or ide.config.default.fullname
 end
 
 function DebuggerToggleBreakpoint(editor, line)
@@ -702,7 +708,7 @@ function DebuggerRefreshScratchpad()
     if debugger.scratchpad.running then
       -- break the current execution first
       -- don't try too frequently to avoid overwhelming the debugger
-      local now = os.clock()
+      local now = TimeGet()
       if now - debugger.scratchpad.running > 0.250 then
         debugger.breaknow()
         debugger.scratchpad.running = now
@@ -718,13 +724,13 @@ function DebuggerRefreshScratchpad()
       -- this is a special error message that is generated at the very end
       -- of each script to avoid exiting the (debugee) scratchpad process.
       -- these errors are handled and not reported to the user
-      local errormsg = 'execution suspended at ' .. os.clock()
+      local errormsg = 'execution suspended at ' .. TimeGet()
       local stopper = "\ndo error('" .. errormsg .. "') end"
       -- store if interpreter requires a special handling for external loop
       local extloop = ide.interpreter.scratchextloop
 
       local function reloadScratchpadCode()
-        debugger.scratchpad.running = os.clock()
+        debugger.scratchpad.running = TimeGet()
         debugger.scratchpad.updated = false
         debugger.scratchpad.runs = (debugger.scratchpad.runs or 0) + 1
 

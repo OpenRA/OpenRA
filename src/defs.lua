@@ -112,6 +112,12 @@ config = {
     whitespace = false,
     autotabs = true, -- if true test for tabs after file load,
     -- sets "usetabs" to true for this file
+    calltipdelay = nil, -- delay to show calltip (in ms)
+  },
+
+  default = {
+    name = 'untitled',
+    fullname = 'untitled.lua',
   },
 
   debugger = {
@@ -168,7 +174,7 @@ config = {
   -- UDP port for single instance communication
 
   activateoutput = false, -- activate output/console on Run/Debug/Compile
-  unhidewxwindow = false, -- try to unhide a wx window
+  unhidewindow = false, -- to unhide a gui window
   allowinteractivescript = false, -- allow interaction in the output window
 }
 
@@ -301,9 +307,8 @@ debuginterface = {
   breakpoint = function(self,file,line,state) end, -- set breakpoint state
 
   -- returns result table if successful
-  evaluate = function(self, expressions, fnSetValues) end, -- for watches tables expected
-
-  -- NYI getstack = function(self, fnSetValues ) end, -- get stack information
+  evaluate = function(self, expressions, fnSetValues) end, -- for watches tables
+  stack = function(self) end, -- get stack information
 }
 
 -- interpreter definition-- ----------------------------------------------------

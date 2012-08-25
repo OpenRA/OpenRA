@@ -139,8 +139,6 @@ function SetEditorSelection(selection)
   statusBar:SetStatusText("",1)
   ide.frame:SetTitle(getFileTitle(editor))
 
-  FileTreeMarkSelected('')
-
   if editor then
     if funclist:IsEmpty() then funclist:Append('Jump to a function definition...', 0) end
     funclist:SetSelection(0)
@@ -151,6 +149,8 @@ function SetEditorSelection(selection)
     if openDocuments[id] and openDocuments[id].filePath then
       FileTreeMarkSelected(openDocuments[id].filePath)
     end
+  else
+    FileTreeMarkSelected('')
   end
 end
 
@@ -181,7 +181,7 @@ end
 
 -- Set if the document is modified and update the notebook page text
 function SetDocumentModified(id, modified)
-  local pageText = openDocuments[id].fileName or "untitled.lua"
+  local pageText = openDocuments[id].fileName or ide.config.default.fullname
 
   if modified then
     pageText = "* "..pageText
@@ -189,6 +189,77 @@ function SetDocumentModified(id, modified)
 
   openDocuments[id].isModified = modified
   notebook:SetPageText(openDocuments[id].index, pageText)
+end
+
+function EditorAutoComplete(editor)
+  if (editor == nil or not editor.spec) then return end
+
+  -- retrieve the current line and get a string to the current cursor position in the line
+  local pos = editor:GetCurrentPos()
+  local line = editor:GetCurrentLine()
+  local linetx = editor:GetLine(line)
+  local linestart = editor:PositionFromLine(line)
+  local localpos = pos-linestart
+
+  local lt = linetx:sub(1,localpos)
+  lt = lt:gsub("%s*("..editor.spec.sep..")%s*",function(a) return a end)
+  lt = lt:gsub("%s*%b[]%s*","")
+  lt = lt:gsub("%s*%b()%s*","")
+  lt = lt:gsub("%s*%b{}%s*","")
+  lt = lt:match("[^%[%(%s]*$")
+  lt = lt:gsub("%s","")
+
+  -- know now which string is to be completed
+  local userList = CreateAutoCompList(editor,lt)
+  if userList and string.len(userList) > 0 then
+    editor:UserListShow(1, userList)
+  elseif editor:AutoCompActive() then
+    editor:AutoCompCancel()
+  end
+end
+
+function EditorCallTip(editor, pos)
+  local line = editor:LineFromPosition(pos)
+  local linetx = editor:GetLine(line)
+  local linestart = editor:PositionFromLine(line)
+  local localpos = pos-linestart
+
+  local ident = "([a-zA-Z_0-9][a-zA-Z_0-9%.%:]*)"
+  local linetxtopos = linetx:sub(1,localpos)
+  linetxtopos = linetxtopos..")"
+  linetxtopos = linetxtopos:match(ident .. "%b()$")
+
+  local tip = linetxtopos and GetTipInfo(editor,linetxtopos.."(",false)
+  if ide.debugger and ide.debugger.server then
+    local selected = editor:GetSelectionStart() ~= editor:GetSelectionEnd()
+      and pos >= editor:GetSelectionStart() and pos <= editor:GetSelectionEnd()
+    local style = bit.band(editor:GetStyleAt(pos),31)
+    if not selected
+    and (editor.spec.iscomment[style]
+      or editor.spec.isstring[style]
+      or style == wxstc.wxSTC_LUA_NUMBER) then
+      return -- don't do anything for strings or comments or numbers
+    end
+
+    -- check if we have a selected text or an identifier
+    -- for an identifier, check fragments on the left and on the right.
+    -- this is to match 'io' in 'i^o.print' and 'io.print' in 'io.pr^int'.
+    -- remove square brackets to make tbl[index].x show proper values.
+    local start = linetx:sub(1,localpos)
+      :gsub("%b[]", function(s) return ("."):rep(#s) end)
+      :find(ident.."$")
+    local right = linetx:sub(localpos+1,#linetx):match("^[a-zA-Z_0-9]*")
+    local var = selected and editor:GetSelectedText()
+      or (start and linetx:sub(start,localpos)..right or nil)
+    if var then
+      local limit = 128
+      ide.debugger.quickeval(var, function(val)
+        if #val > limit then val = val:sub(1, limit-3).."..." end
+        editor:CallTipShow(pos, val) end)
+    end
+  elseif tip then
+    editor:CallTipShow(pos, tip)
+  end
 end
 
 -- ----------------------------------------------------------------------------
@@ -257,6 +328,10 @@ function CreateEditor(name)
   editor:MarkerDefine(wxstc.wxSTC_MARKNUM_FOLDEROPENMID, wxstc.wxSTC_MARK_BOXMINUSCONNECTED, wx.wxWHITE, grey)
   editor:MarkerDefine(wxstc.wxSTC_MARKNUM_FOLDERMIDTAIL, wxstc.wxSTC_MARK_TCORNER, wx.wxWHITE, grey)
   grey:delete()
+
+  if ide.config.editor.calltipdelay and ide.config.editor.calltipdelay > 0 then
+    editor:SetMouseDwellTime(ide.config.editor.calltipdelay)
+  end
 
   editor:AutoCompSetIgnoreCase(ide.config.acandtip.ignorecase)
   if (ide.config.acandtip.strategy > 0) then
@@ -334,24 +409,35 @@ function CreateEditor(name)
             editor:GotoPos(pos+indent)
           end
         end
-      elseif ch == ("("):byte() then
 
+      elseif ch == ("("):byte() then
         local tip = GetTipInfo(editor,linetxtopos,ide.config.acandtip.shorttip)
         if tip then
           editor:CallTipShow(pos,tip)
         end
 
       elseif ide.config.autocomplete then -- code completion prompt
-
         local trigger = linetxtopos:match("["..editor.spec.sep.."%w_]+$")
-
         if (trigger and (#trigger > 1 or trigger:match("[%.:]"))) then
-          -- defined in menu_edit.lua
-          local commandEvent = wx.wxCommandEvent(wx.wxEVT_COMMAND_MENU_SELECTED,
-            ID_AUTOCOMPLETE)
-          wx.wxPostEvent(ide.frame, commandEvent)
+          ide.frame:AddPendingEvent(wx.wxCommandEvent(
+            wx.wxEVT_COMMAND_MENU_SELECTED, ID_AUTOCOMPLETE))
         end
       end
+    end)
+
+  editor:Connect(wxstc.wxEVT_STC_DWELLSTART,
+    function (event)
+      local position = editor:PositionFromPointClose(event:GetX(),event:GetY())
+      if position ~= wxstc.wxSTC_INVALID_POSITION then
+        EditorCallTip(editor, position)
+      end
+      event:Skip()
+    end)
+
+  editor:Connect(wxstc.wxEVT_STC_DWELLEND,
+    function (event)
+      if editor:CallTipActive() then editor:CallTipCancel() end
+      event:Skip()
     end)
 
   editor:Connect(wxstc.wxEVT_STC_USERLISTSELECTION,
@@ -389,7 +475,7 @@ function CreateEditor(name)
     function (event)
       if MarkupHotspotClick then
         local position = editor:PositionFromPointClose(event:GetX(),event:GetY())
-        if position ~= wx.wxSTC_INVALID_POSITION then
+        if position ~= wxstc.wxSTC_INVALID_POSITION then
           if MarkupHotspotClick(position, editor) then return end
         end
       end
@@ -423,6 +509,9 @@ function CreateEditor(name)
         then notebook:SetSelection(first)
         else notebook:AdvanceSelection(true) end
       else
+        if ide.osname == 'Macintosh' and event:CmdDown() then
+          return -- ignore a key press if Command key is also pressed
+        end
         event:Skip()
       end
     end)

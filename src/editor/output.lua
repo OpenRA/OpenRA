@@ -79,21 +79,29 @@ end
 -- logic to "unhide" wxwidget window using winapi
 pcall(function () return require 'winapi' end)
 local pid = nil
-local function unHideWxWindow(pidAssign)
+local function unHideWindow(pidAssign)
   -- skip if not configured to do anything
-  if not ide.config.unhidewxwindow then return end
+  if not ide.config.unhidewindow then return end
   if pidAssign then
     pid = pidAssign > 0 and pidAssign or nil
   end
   if pid and winapi then
-    local win = winapi.find_window_ex(function(w)
+    local wins = winapi.find_all_windows(function(w)
       return w:get_process():get_pid() == pid
-         and w:get_class_name() == 'wxWindowClassNR'
+        and ide.config.unhidewindow[w:get_class_name()]
     end)
-    if win and not win:is_visible() then
-      win:show()
-      notebook:SetFocus() -- set focus back to the IDE window
-      pid = nil
+    for _,win in pairs(wins) do
+      -- win:get_class_name() can return nil if the window is already gone
+      -- between getting the list and this check
+      local show = (ide.config.unhidewindow[win:get_class_name()] or 0) > 0
+      if show and not win:is_visible()
+      or not show and win:is_visible() then
+        -- use show_async call (ShowWindowAsync) to avoid blocking the IDE
+        -- if the app is busy or is being debugged
+        win:show_async(show and winapi.SW_SHOW or winapi.SW_HIDE)
+        notebook:SetFocus() -- set focus back to the IDE window
+        pid = nil
+      end
     end
   end
 end
@@ -152,7 +160,7 @@ function CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
 
   DisplayOutput(("Program '%s' started in '%s' (pid: %d).\n")
     :format(uid, (wdir and wdir or wx.wxFileName.GetCwd()), pid))
-  customprocs[pid] = {proc=proc, uid=uid, endcallback=endcallback, started = os.clock()}
+  customprocs[pid] = {proc=proc, uid=uid, endcallback=endcallback, started = TimeGet()}
 
   local streamin = proc and proc:GetInputStream()
   local streamerr = proc and proc:GetErrorStream()
@@ -167,7 +175,7 @@ function CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
     streamouts[pid] = {stream=streamout, callback=stringcallback, out=true}
   end
 
-  unHideWxWindow(pid)
+  unHideWindow(pid)
   nameTab(errorlog, "Output (running)")
 
   return pid
@@ -245,7 +253,7 @@ errorlog:Connect(wx.wxEVT_END_PROCESS, function(event)
         if editor then editor:SetFocus() end
       end
       nameTab(errorlog, "Output")
-      local runtime = os.clock() - customprocs[pid].started
+      local runtime = TimeGet() - customprocs[pid].started
 
       streamins[pid] = nil
       streamerrs[pid] = nil
@@ -254,7 +262,7 @@ errorlog:Connect(wx.wxEVT_END_PROCESS, function(event)
         customprocs[pid].endcallback()
       end
       customprocs[pid] = nil
-      unHideWxWindow(0)
+      unHideWindow(0)
       DebuggerStop()
       DisplayOutput(("Program completed in %.2f seconds (pid: %d).\n")
         :format(runtime, pid))
@@ -263,18 +271,18 @@ errorlog:Connect(wx.wxEVT_END_PROCESS, function(event)
 
 errorlog:Connect(wx.wxEVT_IDLE, function()
     if (#streamins or #streamerrs) then getStreams() end
-    unHideWxWindow()
+    unHideWindow()
   end)
 
 local jumptopatterns = {
   -- <filename>(line,linepos):
-  "%s*([%w:/%\\_%-%.]+)%((%d+),(%d+)%)%s*:",
+  "^%s*(.-)%((%d+),(%d+)%)%s*:",
   -- <filename>(line):
-  "%s*([%w:/%\\_%-%.]+)%((%d+).*%)%s*:",
-  -- <filename>:line:
-  "%s*([%w:/%\\_%-%.]+):(%d+)%s*:",
+  "^%s*(.-)%((%d+).*%)%s*:",
   --[string "<filename>"]:line:
-  '.*%[string "([%w:/%\\_%-%.]+)"%]:(%d+)%s*:',
+  '^.-%[string "([^"]+)"%]:(%d+)%s*:',
+  -- <filename>:line:
+  "^%s*(.-):(%d+)%s*:",
 }
 
 errorlog:Connect(wxstc.wxEVT_STC_DOUBLECLICK,

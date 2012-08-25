@@ -36,6 +36,10 @@ ide = {
     debugger = {
       verbose = false,
     },
+    default = {
+      name = 'untitled',
+      fullname = 'untitled.lua',
+    },
     outputshell = {},
     filetree = {},
 
@@ -51,7 +55,7 @@ ide = {
     },
 
     activateoutput = false, -- activate output/console on Run/Debug/Compile
-    unhidewxwindow = false, -- try to unhide a wx window
+    unhidewindow = false, -- to unhide a gui window
     allowinteractivescript = false, -- allow interaction in the output window
     filehistorylength = 20,
     projecthistorylength = 15,
@@ -101,6 +105,23 @@ ide = {
   }
 }
 
+function setLuaPaths(mainpath, os)
+  -- (luaconf.h) in Windows, any exclamation mark ('!') in the path is replaced
+  -- by the path of the directory of the executable file of the current process.
+  -- this effectively prevents any path with an exclamation mark from working.
+  -- if the path has an excamation mark, we allow Lua to expand it
+  -- (for use in LUA_PATH/LUA_CPATH)
+  if os == "Windows" and mainpath:find('%!') then mainpath = "!/../" end
+  wx.wxSetEnv("LUA_PATH", package.path .. ';'
+    .. mainpath.."lualibs/?/?.lua;"..mainpath.."lualibs/?.lua")
+
+  local clibs =
+    os == "Windows" and mainpath.."bin/?.dll;"..mainpath.."bin/clibs/?.dll" or
+    os == "Macintosh" and mainpath.."bin/lib?.dylib;"..mainpath.."bin/clibs/?.dylib" or
+    os == "Unix" and mainpath.."bin/?.so;"..mainpath.."bin/clibs/?.so" or nil
+  if clibs then wx.wxSetEnv("LUA_CPATH", package.cpath .. ';' .. clibs) end
+end
+
 ---------------
 -- process args
 local filenames = {}
@@ -110,16 +131,23 @@ do
   local fullPath = arg[1] -- first argument must be the application name
   assert(type(fullPath) == "string", "first argument must be application name")
 
-  if not wx.wxIsAbsolutePath(fullPath) then
+  ide.arg = arg
+  ide.osname = wx.wxPlatformInfo.Get():GetOperatingSystemFamilyName()
+
+  -- on Windows use GetExecutablePath, which is Unicode friendly,
+  -- whereas wxGetCwd() is not (at least in wxlua 2.8.12.2).
+  -- some wxlua version on windows report wx.dll instead of *.exe.
+  local exepath = wx.wxStandardPaths.Get():GetExecutablePath()
+  if ide.osname == "Windows" and exepath:find("%.exe$") then
+    fullPath = exepath
+  elseif not wx.wxIsAbsolutePath(fullPath) then
     fullPath = wx.wxGetCwd().."/"..fullPath
-    if wx.__WXMSW__ then fullPath = wx.wxUnix2DosFilename(fullPath) end
   end
 
-  ide.arg = arg
   ide.editorFilename = fullPath
-  ide.osname = wx.wxPlatformInfo.Get():GetOperatingSystemFamilyName()
   ide.config.path.app = fullPath:match("([%w_-%.]+)$"):gsub("%.[^%.]*$","")
   assert(ide.config.path.app, "no application path defined")
+
   for index = 2, #arg do
     if (arg[index] == "-cfg" and index+1 <= #arg) then
       local str = arg[index+1]
@@ -133,6 +161,8 @@ do
       table.insert(filenames,arg[index])
     end
   end
+
+  setLuaPaths(GetPathWithSep(ide.editorFilename), ide.osname)
 end
 
 -----------------------
@@ -264,6 +294,8 @@ if app.preinit then app.preinit() end
 
 do
   addConfig("cfg/user.lua",false)
+  local home = os.getenv("HOME")
+  if home then addConfig(home .. "/.zbs/user.lua",false) end
   for i,v in ipairs(configs) do
     addConfig(v,true,true)
   end
