@@ -264,9 +264,27 @@ namespace OpenRA.Mods.RA.Missions
 			chinook.QueueActivity(new HeliLand(true, 0));
 			chinook.QueueActivity(new UnloadCargo(true));
 			chinook.QueueActivity(new CallFunc(() => Sound.Play("laugh1.aud")));
+			chinook.QueueActivity(new CallFunc(() => tanya.QueueActivity(new Move.Move(insertionLZ.Location - new CVec(1, 0)))));
 			chinook.QueueActivity(new Wait(150));
 			chinook.QueueActivity(new HeliFly(chinookExitPoint.CenterLocation));
 			chinook.QueueActivity(new RemoveSelf());
+		}
+
+		void SetAlliedUnitsToDefensiveStance()
+		{
+			foreach (var actor in world.Actors.Where(a => a.IsInWorld && a.Owner == allies && !a.IsDead()))
+			{
+				var at = actor.TraitOrDefault<AutoTarget>();
+				if (at != null)
+				{
+					at.predictedStance = UnitStance.Defend;
+				}
+				var order = new Order("SetUnitStance", actor, false) { TargetLocation = new CPos((int)UnitStance.Defend, 0) };
+				if (Game.IsHost)
+				{
+					world.IssueOrder(order);
+				}
+			}
 		}
 
 		public void WorldLoaded(World w)
@@ -285,6 +303,7 @@ namespace OpenRA.Mods.RA.Missions
 			shipMovePoint = actors["ShipMovePoint"];
 			attackEntryPoint1 = actors["SovietAttackEntryPoint1"];
 			attackEntryPoint2 = actors["SovietAttackEntryPoint2"];
+			SetAlliedUnitsToDefensiveStance();
 			Game.MoveViewport(insertionLZ.Location.ToFloat2());
 			Game.ConnectionStateChanged += StopMusic;
 			Media.PlayFMVFullscreen(w, "ally1.vqa", () =>
