@@ -8,6 +8,8 @@ FCOM:
 		HP: 400
 	Armor:
 		Type: Wood
+	Tooltip:
+		Name: Forward Command
 	RevealsShroud:
 		Range: 10
 	Bib:
