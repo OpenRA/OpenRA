@@ -98,6 +98,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				if (authorWidget != null)
 					authorWidget.GetText = () => m.Author;
 
+				var sizeWidget = item.Get<LabelWidget>("SIZE");
+				if (sizeWidget != null)
+					sizeWidget.GetText = () => m.Bounds.Width + "x" + m.Bounds.Height;
+
 				scrollpanel.AddChild(item);
 			}
 		}

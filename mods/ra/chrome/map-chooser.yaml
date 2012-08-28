@@ -46,6 +46,13 @@ Background@MAPCHOOSER_PANEL:
 							Align:Center
 							Height:25
 							Font:Tiny
+						Label@SIZE:
+							Width:PARENT_RIGHT-4
+							X:2
+							Y:PARENT_BOTTOM-17
+							Align:Center
+							Height:25
+							Font:Tiny
 						MapPreview@PREVIEW:
 							X:(PARENT_RIGHT - WIDTH)/2
 							Y:4
