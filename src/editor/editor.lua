@@ -250,7 +250,7 @@ function EditorCallTip(editor, pos)
       :find(ident.."$")
     local right = linetx:sub(localpos+1,#linetx):match("^[a-zA-Z_0-9]*")
     local var = selected and editor:GetSelectedText()
-      or (start and linetx:sub(start,localpos)..right or nil)
+      or (start and linetx:sub(start,localpos):gsub(":",".")..right or nil)
     if var then
       local limit = 128
       ide.debugger.quickeval(var, function(val)
