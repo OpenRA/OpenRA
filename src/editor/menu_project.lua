@@ -129,11 +129,17 @@ frame:Connect(ID "debug.projectdir.fromfile", wx.wxEVT_COMMAND_MENU_SELECTED,
 -- Interpreter Selection and Running
 
 local function selectInterpreter(id)
-  for i,inter in pairs(interpreters) do
-    menuBar:Check(i, false)
+  for id in pairs(interpreters) do
+    menuBar:Check(id, false)
+    menuBar:Enable(id, true)
   end
   menuBar:Check(id, true)
+  menuBar:Enable(id, false)
+
   ide.interpreter = interpreters[id]
+
+  if DebuggerShutdown then DebuggerShutdown() end
+  ide.frame.statusBar:SetStatusText(ide.interpreter.name or "", 5)
   ReloadLuaAPI()
 end
 
@@ -143,9 +149,8 @@ function ProjectSetInterpreter(name)
   selectInterpreter(id)
 end
 
-local function evSelectInterpreter (event)
-  local chose = event:GetId()
-  selectInterpreter(chose)
+local function evSelectInterpreter(event)
+  selectInterpreter(event:GetId())
 end
 
 for id,inter in pairs(interpreters) do

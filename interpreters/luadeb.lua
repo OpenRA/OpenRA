@@ -9,7 +9,7 @@ local function exePath()
 end
 
 return {
-  name = "Lua with Debugger",
+  name = "Lua",
   description = "Lua interpreter with debugger",
   api = {"wxwidgets","baselib"},
   frun = function(self,wfilename,rundebug)
