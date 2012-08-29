@@ -47,17 +47,20 @@ local function createFrame()
     end)
 
   local menuBar = wx.wxMenuBar()
-  frame.menuBar = menuBar
-  
-  local statusBar = frame:CreateStatusBar( 5 )
-  frame.statusBar = statusBar
-  local status_txt_width = statusBar:GetTextExtent("OVRW")
-  statusBar:SetStatusWidths({-1, status_txt_width*6, status_txt_width, status_txt_width, status_txt_width*5})
+  local statusBar = frame:CreateStatusBar(6)
+  local section_width = statusBar:GetTextExtent("OVRW")
+  statusBar:SetStatusStyles({wx.wxSB_RAISED, wx.wxSB_RAISED, wx.wxSB_RAISED,
+    wx.wxSB_RAISED, wx.wxSB_RAISED, wx.wxSB_RAISED})
+  statusBar:SetStatusWidths(
+    {-1, section_width*6, section_width, section_width, section_width*4, section_width*4})
   statusBar:SetStatusText(GetIDEString("statuswelcome"))
   
   local mgr = wxaui.wxAuiManager()
-  frame.uimgr = mgr
   mgr:SetManagedWindow(frame)
+
+  frame.menuBar = menuBar
+  frame.statusBar = statusBar
+  frame.uimgr = mgr
 
   return frame
 end

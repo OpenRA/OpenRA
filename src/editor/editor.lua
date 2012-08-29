@@ -27,9 +27,10 @@ local function updateStatusText(editor)
     local line = editor:LineFromPosition(pos)
     local col = 1 + pos - editor:PositionFromLine(line)
 
-    texts = { iff(editor:GetOvertype(), "OVR", "INS"),
+    texts = {
+      iff(editor:GetOvertype(), "OVR", "INS"),
       iff(editor:GetReadOnly(), "R/O", "R/W"),
-      "Ln "..tostring(line + 1).." Col "..tostring(col) }
+      "Ln: "..tostring(line + 1).." Col: "..tostring(col) }
   end
 
   if ide.frame then
