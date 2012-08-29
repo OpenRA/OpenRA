@@ -71,13 +71,14 @@ ldexp = fn "build floating point number from x and the corresponding integral ex
 packUnorm2x16 = fn "Converts each comp. of v into 16-bit ints, packs results into the returned 32-bit uint. - (uint)(vec2 v)",
 packUnorm4x8 = fn "Converts each comp. of v into 8-bit ints, packs results into the returned 32-bit uint. - (uint)(vec4 v)",
 packSnorm4x8 = fn "Converts each comp. of v into 8-bit ints, packs results into the returned 32-bit uint. - (uint)(vec4 v)",
+packDouble2x32 = fn "Packs components of v into a 64-bit value and returns a double-prec value. - (double)(uvec2 v)",
+packHalf2x16 = fn "Converts each comp. of v into 16-bit half float, packs results into the returned 32-bit uint. - (uint)(vec2 v)",
 
 unpackUnorm2x16 = fn "Unpacks 32-bit p into two 16-bit uints and converts them to normalized float. - (vec2)(uint p)",
 unpackUnorm4x8 = fn "Unpacks 32-bit p into four 8-bit uints and converts them to normalized float. - (vec4)(uint p)",
 unpackSnorm4x8 = fn "Unpacks 32-bit p into four 8-bit uints and converts them to normalized float. - (vec4)(uint p)",
-
-packDouble2x32 = fn "Packs components of v into a 64-bit value and returns a double-prec value. - (double)(uvec2 v)",
 unpackDouble2x32 = fn "Returns a 2 component vector representation of v. - (uvec2)(double v)",
+unpackHalf2x16 = fn "Interprets p as two 16-bit half floats and returns them as vector. - (vec2)(uint p)",
 
 length = fn "return scalar Euclidean length of a vector. - (type)(vecN)",
 distance = fn "return the Euclidean distance between two points. - (vecN)(vecN a, b)",
@@ -135,6 +136,11 @@ EndPrimitive = fn "Completes current output primitive and starts a new one. - ()
 barrier = fn "Synchronizes across shader invocations. - ()()",
 
 memoryBarrier = fn "control ordering of memory transactions issued by shader thread. - ()()",
+memoryBarrierAtomicCounter = fn "control ordering of memory transactions issued by shader thread. - ()()",
+memoryBarrierShared = fn "control ordering of memory transactions issued by shader thread. - ()()",
+memoryBarrierBuffer = fn "control ordering of memory transactions issued by shader thread. - ()()",
+memoryBarrierImage = fn "control ordering of memory transactions issued by shader thread. - ()()",
+groupMemoryBarrier = fn "control ordering of memory transactions issued by shader thread. - ()()",
 imageAtomicAdd = fn "performs atomic operation on individual texels returns new value. - (uint)(imageN, intN coord, [int sample], uint data)",
 imageAtomicMin = fn "performs atomic operation on individual texels returns new value. - (uint)(imageN, intN coord, [int sample], uint data)",
 imageAtomicMax = fn "performs atomic operation on individual texels returns new value. - (uint)(imageN, intN coord, [int sample], uint data)",
@@ -167,41 +173,51 @@ texelFetchOffset = fn "integer coordinate lookup for a single texel with offset.
 }
 
 local keyw = 
-[[int uint half float bool double
-vec2 vec3 vec4 dvec2 dvec3 dvec4
-ivec2 ivec3 ivec4 uvec2 uvec3 uvec4 bvec2 bvec3 bvec4
-mat2 mat3 mat4 mat2x2 mat3x3 mat4x4 mat2x3 mat3x2 mat4x2 mat2x4 mat4x3 mat3x4
-dmat2 dmat3 dmat4 dmat2x2 dmat3x3 dmat4x4 dmat2x3 dmat3x2 dmat4x2 dmat2x4 dmat4x3 dmat3x4
-struct typedef void
-usampler1D usampler2D usampler3D usampler2DRect usamplerCube isampler1DArray usampler2DARRAY usamplerCubeArray usampler2DMS usampler2DMSArray
-isampler1D isampler2D isampler3D isampler2DRect isamplerCube isampler1DArray isampler2DARRAY isamplerCubeArray isampler2DMS isampler2DMSArray
-sampler1D sampler2D sampler3D sampler2DRect samplerCube sampler1DArray sampler2DArray samplerCubeArray sampler2DMS sampler2DMSArray
-sampler1DShadow sampler2DShadow sampler2DRectShadow sampler1DArrayShadow sampler2DArrayShadow samplerCubeArrayShadow
-usamplerBuffer isamplerBuffer samplerBuffer
-in out inout uniform const centroid sample attribute varying patch
-return switch case for do while if else break continue
-layout location vertices line_strip triangle_strip max_vertices stream
-triangles quads equal_spacing isolines fractional_even_spacing
-fractional_odd_spacing cw ccw point_mode lines_adjacency triangles_adjacency
-invocations
-origin_upper_left pixel_center_integer
-smooth flat noperspective highp mediump lowp shared packed std140 row_major column_major
-gl_FrontColor gl_BackColor gl_FrontSecondaryColor gl_BackSecondaryColor gl_Color gl_SecondaryColor
-subroutine gl_Position
-gl_VertexID gl_InstanceID gl_Normal gl_Vertex gl_MultiTexCoord0 gl_MultiTexCoord1
-gl_MultiTexCoord2 gl_MultiTexCoord3 gl_MultiTexCoord4 gl_MultiTexCoord5 gl_MultiTexCoord6
-gl_MultiTexCoord7 gl_FogCoord gl_PointSize gl_ClipDistance
-gl_TexCoord gl_FogFragCoord gl_ClipVertex gl_in
-gl_PatchVerticesIn
-gl_PrimitiveID gl_InvocationID gl_TessLevelOuter gl_TessLevelInner gl_TessCoord
-gl_InvocationID gl_PrimitiveIDIn gl_Layer gl_ViewportIndex gl_FrontFacing
-gl_PointCoord gl_SampleID gl_SamplePosition gl_FragColor
-gl_FragData gl_FragDepth gl_SampleMask
+[[  int uint half float bool double atomic_uint binding offset
+    vec2 vec3 vec4 dvec2 dvec3 dvec4
+    ivec2 ivec3 ivec4 uvec2 uvec3 uvec4 bvec2 bvec3 bvec4
+    mat2 mat3 mat4 mat2x2 mat3x3 mat4x4 mat2x3 mat3x2 mat4x2 mat2x4 mat4x3 mat3x4
+    dmat2 dmat3 dmat4 dmat2x2 dmat3x3 dmat4x4 dmat2x3 dmat3x2 dmat4x2 dmat2x4 dmat4x3 dmat3x4
+    struct typedef void
+    usampler1D usampler2D usampler3D usampler2DRect usamplerCube isampler1DArray usampler2DARRAY usamplerCubeArray usampler2DMS usampler2DMSArray
+    isampler1D isampler2D isampler3D isampler2DRect isamplerCube isampler1DArray isampler2DARRAY isamplerCubeArray isampler2DMS isampler2DMSArray
+    sampler1D sampler2D sampler3D sampler2DRect samplerCube sampler1DArray sampler2DArray samplerCubeArray sampler2DMS sampler2DMSArray
+    sampler1DShadow sampler2DShadow sampler2DRectShadow sampler1DArrayShadow sampler2DArrayShadow samplerCubeArrayShadow
+    usamplerBuffer isamplerBuffer samplerBuffer samplerRenderbuffer isamplerRenderbuffer usamplerRenderbuffer
+    in out inout uniform const centroid sample attribute varying patch index true false
+    return switch case for do while if else break continue main inline
+    layout location vertices line_strip triangle_strip max_vertices stream
+    triangles quads equal_spacing isolines fractional_even_spacing lines points
+    fractional_odd_spacing cw ccw point_mode lines_adjacency triangles_adjacency
+    invocations
+    origin_upper_left pixel_center_integer depth_greater depth_greater depth_greater depth_unchanged
+    smooth flat noperspective highp mediump lowp shared packed std140 std430 row_major column_major buffer
+    gl_FrontColor gl_BackColor gl_FrontSecondaryColor gl_BackSecondaryColor gl_Color gl_SecondaryColor
+    subroutine gl_Position gl_FragCoord
+    gl_VertexID gl_InstanceID gl_Normal gl_Vertex gl_MultiTexCoord0 gl_MultiTexCoord1
+    gl_MultiTexCoord2 gl_MultiTexCoord3 gl_MultiTexCoord4 gl_MultiTexCoord5 gl_MultiTexCoord6
+    gl_MultiTexCoord7 gl_FogCoord gl_PointSize gl_ClipDistance
+    gl_TexCoord gl_FogFragCoord gl_ClipVertex gl_in
+    gl_PatchVerticesIn
+    gl_PrimitiveID gl_InvocationID gl_TessLevelOuter gl_TessLevelInner gl_TessCoord
+    gl_InvocationID gl_PrimitiveIDIn gl_Layer gl_ViewportIndex gl_FrontFacing
+    gl_PointCoord gl_SampleID gl_SamplePosition gl_FragColor
+    gl_FragData gl_FragDepth gl_SampleMask
+    gl_NumWorkGroups gl_WorkGroupSize gl_WorkGroupID gl_LocalInvocationID gl_GlobalInvocationID gl_LocalInvocationIndex
+    local_size_x local_size_y local_size_z
+
+    coherent volatile restrict readonly writeonly
+    image1D image2D image3D image2DRect imageCube imageBuffer image1DArray image2DArray imageCubeArray image2DMS image2DMSArray
+    uimage1D uimage2D uimage3D uimage2DRect uimageCube uimageBuffer uimage1DArray uimage2DArray uimageCubeArray uimage2DMS uimage2DMSArray
+    iimage1D iimage2D iimage3D iimage2DRect iimageCube iimageBuffer iimage1DArray iimage2DArray iimageCubeArray iimage2DMS iimage2DMSArray
+    size1x8 size1x16 size1x32 size2x32 size4x32 rgba32f rgba16f rg32f rg16f r32f r16f rgba8 rgba16 r11f_g11f_b10f rgb10_a2ui
+    rgb10_a2i rg16 rg8 r16 r8 rgba32i rgba16i rgba8i rg32i rg16i rg8i r32i r16i r8i rgba32ui rgba16ui rgba8ui rg32ui rg16ui rg8ui
+    r32ui r16ui r8ui rgba16_snorm rgba8_snorm rg16_snorm rg8_snorm r16_snorm r8_snorm
 ]]
 
 -- keywords - shouldn't be left out
 for w in keyw:gmatch("([a-zA-Z_0-9]+)") do
-	api[w] = {type="keyword"}
+    api[w] = {type="keyword"}
 end
 
 return api

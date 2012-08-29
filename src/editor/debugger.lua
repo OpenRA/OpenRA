@@ -257,8 +257,7 @@ debugger.listen = function()
       reSetBreakpoints()
 
       if (options.run) then
-        local file, line = debugger.handle("run")
-        activateDocument(file, line)
+        -- do nothing here
       elseif (debugger.scratchpad) then
         debugger.scratchpad.updated = true
       else
@@ -316,6 +315,11 @@ debugger.listen = function()
 
       DisplayOutput(("Debugging session started in '%s'.\n")
         :format(debugger.basedir))
+
+      if (options.run) then
+        local file, line = debugger.handle("run")
+        activateDocument(file, line)
+      end
     end)
   debugger.listening = true
 end

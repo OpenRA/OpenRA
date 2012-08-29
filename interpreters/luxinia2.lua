@@ -77,6 +77,7 @@ return {
     if not rundebug then
       local client = self:finitclient()
       ShellSupportRemote(client,self:fuid(wfilename))
+      pid = nil
     end
     
     return pid

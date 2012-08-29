@@ -46,7 +46,7 @@ return {
   },
 
   keywords = {
-    [[int uint half float bool double
+    [[int uint half float bool double atomic_uint binding offset
     vec2 vec3 vec4 dvec2 dvec3 dvec4
     ivec2 ivec3 ivec4 uvec2 uvec3 uvec4 bvec2 bvec3 bvec4
     mat2 mat3 mat4 mat2x2 mat3x3 mat4x4 mat2x3 mat3x2 mat4x2 mat2x4 mat4x3 mat3x4
@@ -63,8 +63,8 @@ return {
     triangles quads equal_spacing isolines fractional_even_spacing lines points
     fractional_odd_spacing cw ccw point_mode lines_adjacency triangles_adjacency
     invocations
-    origin_upper_left pixel_center_integer
-    smooth flat noperspective highp mediump lowp shared packed std140 row_major column_major
+    origin_upper_left pixel_center_integer depth_greater depth_greater depth_greater depth_unchanged
+    smooth flat noperspective highp mediump lowp shared packed std140 std430 row_major column_major buffer
     gl_FrontColor gl_BackColor gl_FrontSecondaryColor gl_BackSecondaryColor gl_Color gl_SecondaryColor
     subroutine gl_Position gl_FragCoord
     gl_VertexID gl_InstanceID gl_Normal gl_Vertex gl_MultiTexCoord0 gl_MultiTexCoord1
@@ -76,22 +76,26 @@ return {
     gl_InvocationID gl_PrimitiveIDIn gl_Layer gl_ViewportIndex gl_FrontFacing
     gl_PointCoord gl_SampleID gl_SamplePosition gl_FragColor
     gl_FragData gl_FragDepth gl_SampleMask
+    gl_NumWorkGroups gl_WorkGroupSize gl_WorkGroupID gl_LocalInvocationID gl_GlobalInvocationID gl_LocalInvocationIndex
+    local_size_x local_size_y local_size_z
 
-    coherent volatile restrict
+    coherent volatile restrict readonly writeonly
     image1D image2D image3D image2DRect imageCube imageBuffer image1DArray image2DArray imageCubeArray image2DMS image2DMSArray
     uimage1D uimage2D uimage3D uimage2DRect uimageCube uimageBuffer uimage1DArray uimage2DArray uimageCubeArray uimage2DMS uimage2DMSArray
     iimage1D iimage2D iimage3D iimage2DRect iimageCube iimageBuffer iimage1DArray iimage2DArray iimageCubeArray iimage2DMS iimage2DMSArray
-    size1x8 size1x16 size1x32 size2x32 size4x32
+    size1x8 size1x16 size1x32 size2x32 size4x32 rgba32f rgba16f rg32f rg16f r32f r16f rgba8 rgba16 r11f_g11f_b10f rgb10_a2ui
+    rgb10_a2i rg16 rg8 r16 r8 rgba32i rgba16i rgba8i rg32i rg16i rg8i r32i r16i r8i rgba32ui rgba16ui rgba8ui rg32ui rg16ui rg8ui
+    r32ui r16ui r8ui rgba16_snorm rgba8_snorm rg16_snorm rg8_snorm r16_snorm r8_snorm
     ]],
 
     [[discard
     radians degrees sin cos tan asin acos atan sinh cosh tanh asinh acosh atanh
     pow exp log exp2 log2 sqrt inversesqrt abs sign floor trunc round
     roundEven ceil fract mod modf min max mix step isnan isinf clamp smoothstep
-    floatBitsToInt intBitsToFloat uintBitsToFloat fma frexp ldexp
+    floatBitsToInt floatBitsToUint intBitsToFloat uintBitsToFloat fma frexp ldexp
     packUnorm2x16 packUnorm4x8 packSnorm4x8
     unpackUnorm2x16 unpackUnorm4x8 unpackSnorm4x8
-    packDouble2x32 unpackDouble2x32
+    packDouble2x32 unpackDouble2x32 packHalf2x16 unpackHalf2x16
     length distance dot cross normalize ftransform faceforward
     reflect refract
     matrixCompMult outerProduct transpose determinant inverse
@@ -138,7 +142,12 @@ return {
     imageAtomicAdd imageAtomicMin imageAtomicMax
     imageAtomicIncWrap imageAtomicDecWrap imageAtomicAnd
     imageAtomicOr imageAtomixXor imageAtomicExchange
-    imageCompSwap memoryBarrier
+    imageCompSwap
+    
+    memoryBarrier groupMemoryBarrier memoryBarrierAtomicCounter memoryBarrierShared memoryBarrierBuffer memoryBarrierImage
+    
+    atomicCounterIncrement atomicCounterDecrement atomicCounter
+    atomicMin atomicMax atomicAdd atomicAnd atomicOr atomicXor atomicExchange atomicCompSwap
 
     x y z w
     xxxx xxxy xxxz xxxw xxyx xxyy xxyz xxyw xxzx xxzy
