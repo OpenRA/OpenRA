@@ -234,13 +234,6 @@ function EditorCallTip(editor, pos)
   if ide.debugger and ide.debugger.server then
     local selected = editor:GetSelectionStart() ~= editor:GetSelectionEnd()
       and pos >= editor:GetSelectionStart() and pos <= editor:GetSelectionEnd()
-    local style = bit.band(editor:GetStyleAt(pos),31)
-    if not selected
-    and (editor.spec.iscomment[style]
-      or editor.spec.isstring[style]
-      or style == wxstc.wxSTC_LUA_NUMBER) then
-      return -- don't do anything for strings or comments or numbers
-    end
 
     -- check if we have a selected text or an identifier
     -- for an identifier, check fragments on the left and on the right.
@@ -249,6 +242,19 @@ function EditorCallTip(editor, pos)
     local start = linetx:sub(1,localpos)
       :gsub("%b[]", function(s) return ("."):rep(#s) end)
       :find(ident.."$")
+
+    -- check if the style is the right one; this is to ignore
+    -- comments, strings, numbers (to avoid '1 = 1'), keywords, and such
+    if start and not selected then
+      local style = bit.band(editor:GetStyleAt(linestart+start),31)
+      if editor.spec.iscomment[style]
+      or editor.spec.isstring[style]
+      or style == wxstc.wxSTC_LUA_NUMBER
+      or style == wxstc.wxSTC_LUA_WORD then
+        return -- don't do anything for strings or comments or numbers
+      end
+    end
+
     local right = linetx:sub(localpos+1,#linetx):match("^[a-zA-Z_0-9]*")
     local var = selected and editor:GetSelectedText()
       or (start and linetx:sub(start,localpos):gsub(":",".")..right or nil)
