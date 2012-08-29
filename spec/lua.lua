@@ -4,7 +4,7 @@
 local funcdef = "([A-Za-z_][A-Za-z0-9_%.%:]*)%s*"
 local funccall = "([A-Za-z_][A-Za-z0-9_]*)%s*"
 return {
-  exts = {"lua"},
+  exts = {"lua", "rockspec"},
   lexer = wxstc.wxSTC_LEX_LUA,
   apitype = "lua",
   linecomment = "--",
