@@ -228,6 +228,10 @@ debugger.shell = function(expression, isstatement)
           end
           DisplayShell((table.unpack or unpack)(values))
         end
+
+        -- refresh Stack and Watch windows if executed a statement (and no err)
+        if isstatement and not err and not addret and #values == 0 then
+          updateStackSync() updateWatchesSync() end
       end)
   end
 end
