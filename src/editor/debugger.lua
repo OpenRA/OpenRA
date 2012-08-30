@@ -190,8 +190,8 @@ debugger.shell = function(expression, isstatement)
         -- exec command is not expected to return anything.
         -- eval command returns 0 or more results.
         -- 'values' has a list of serialized results returned.
-        -- as it is not possible to distinguish between 0 and nil returned,
-        -- 'nil' is always returned in this case.
+        -- as it is not possible to distinguish between 0 results and one
+        -- 'nil' value returned, 'nil' is always returned in this case.
         -- the first value returned by eval command is not used;
         -- this may need to be taken into account by other debuggers.
         local addedret, forceexpression = true, expression:match("^%s*=%s*")
@@ -209,6 +209,19 @@ debugger.shell = function(expression, isstatement)
           if addedret then err = err:gsub('^%[string "return ', '[string "') end
           DisplayShellErr(err)
         elseif addedret or #values > 0 then
+          if forceexpression then -- display elements as multi-line
+            local mobdebug = require "mobdebug"
+            for i,v in pairs(values) do -- stringify each of the returned values
+              local func = loadstring('return '..v) -- deserialize the value first
+              if func then -- if it's deserialized correctly
+                values[i] = (forceexpression and i > 1 and '\n' or '') ..
+                  mobdebug.line(func(), {nocode = true, comment = 0,
+                    -- if '=' is used, then use multi-line serialized output
+                    indent = forceexpression and '  ' or nil})
+              end
+            end
+          end
+
           -- if empty table is returned, then show nil if this was an expression
           if #values == 0 and (forceexpression or not isstatement) then
             values = {'nil'}

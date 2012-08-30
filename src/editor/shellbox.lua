@@ -285,7 +285,10 @@ local function executeShellCode(tx)
       if addedret then
         local mobdebug = require "mobdebug"
         for i,v in pairs(res) do -- stringify each of the returned values
-          res[i] = mobdebug.line(v, {nocode = true, comment = 1})
+          res[i] = (forceexpression and i > 1 and '\n' or '') ..
+            mobdebug.line(v, {nocode = true, comment = 1,
+              -- if '=' is used, then use multi-line serialized output
+              indent = forceexpression and '  ' or nil})
         end
         -- add nil only if we are forced (using =) or if this is not a statement
         -- this is needed to print 'nil' when asked for 'foo',
@@ -328,7 +331,7 @@ end
 local function displayShellIntro()
   DisplayShellDirect([[Welcome to the interactive Lua interpreter.
 Enter Lua code and press Enter to run it. Use Shift-Enter for multiline code.
-Use 'clear' to clear the shell output and the history. Prepend '=' to show values.]])
+Use 'clear' to clear the shell output and the history. Prepend '=' to show complex values on multiple lines.]])
   DisplayShellPrompt('')
 end
 
