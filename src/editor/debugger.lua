@@ -385,8 +385,14 @@ debugger.exec = function(command)
               end
             else
               -- redo now; if the call is from the debugger, then repeat
-              -- the same command; in all other cases get out of this file
-              out = file:find('mobdebug%.lua$') and command or "out"
+              -- the same command, except when it was "run" (switch to 'step');
+              -- this is needed to "break" execution that happens in on() call.
+              -- in all other cases get out of this file.
+              -- don't get out of "mobdebug", because it may happen with
+              -- start() or on() call, which will get us out of the current
+              -- file, which is not what we want.
+              out = (file:find('mobdebug%.lua$')
+                and (command == 'run' and 'step' or command) or "out")
             end
           end
         end
