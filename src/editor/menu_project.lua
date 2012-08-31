@@ -286,7 +286,6 @@ frame:Connect(ID_RUNNOW, wx.wxEVT_UPDATE_UI,
 
 frame:Connect(ID_ATTACH_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
-    ClearAllCurrentLineMarkers()
     if (ide.interpreter.fattachdebug) then ide.interpreter:fattachdebug() end
   end)
 frame:Connect(ID_ATTACH_DEBUG, wx.wxEVT_UPDATE_UI,
@@ -314,7 +313,6 @@ frame:Connect(ID_START_DEBUG, wx.wxEVT_UPDATE_UI,
 
 frame:Connect(ID_STOP_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
-    ClearAllCurrentLineMarkers()
     DebuggerShutdown()
   end)
 frame:Connect(ID_STOP_DEBUG, wx.wxEVT_UPDATE_UI,

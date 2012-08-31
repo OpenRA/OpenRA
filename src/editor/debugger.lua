@@ -139,8 +139,8 @@ end
 local function activateDocument(fileName, line)
   if not fileName then return end
 
-  if not wx.wxIsAbsolutePath(fileName) then
-    fileName = wx.wxGetCwd().."/"..fileName
+  if not wx.wxIsAbsolutePath(fileName) and debugger.basedir then
+    fileName = debugger.basedir .. fileName
   end
 
   local activated
@@ -284,27 +284,17 @@ debugger.listen = function()
         -- with start() method, which can't load new files
         -- if file and line are set, this indicates option #2
         if file and line then
-          -- if the file name is absolute, try to load it
-          local activated
-          if wx.wxIsAbsolutePath(file) then
-            activated = activateDocument(file, line)
-          else
-            -- try to find a proper file based on file name
-            -- first check using basedir that was set based on current file path
-            if not activated then
-              activated = activateDocument(debugger.basedir..file, line)
-            end
+          local activated = activateDocument(file, line)
 
-            -- if not found, check using full file path and reset basedir
-            if not activated then
-              local path = wxfilepath:GetPath(wx.wxPATH_GET_VOLUME + wx.wxPATH_GET_SEPARATOR)
-              activated = activateDocument(path..file, line)
-              if activated then
-                debugger.basedir = path
-                debugger.handle("basedir " .. debugger.basedir)
-                -- reset breakpoints again as basedir has changed
-                reSetBreakpoints()
-              end
+          -- if not found, check using full file path and reset basedir
+          if not activated then
+            local path = wxfilepath:GetPath(wx.wxPATH_GET_VOLUME + wx.wxPATH_GET_SEPARATOR)
+            activated = activateDocument(path..file, line)
+            if activated then
+              debugger.basedir = path
+              debugger.handle("basedir " .. debugger.basedir)
+              -- reset breakpoints again as basedir has changed
+              reSetBreakpoints()
             end
           end
 
@@ -371,9 +361,6 @@ debugger.exec = function(command)
             DebuggerStop()
             return
           else
-            if debugger.basedir and not wx.wxIsAbsolutePath(file) then
-              file = debugger.basedir .. file
-            end
             if activateDocument(file, line) then
               debugger.stats.line = debugger.stats.line + 1
               if debugger.loop then
