@@ -307,19 +307,28 @@ local function findItem(tree, match)
   return node
 end
 
-local curr_id
+local curr_file
 function FileTreeMarkSelected(file)
   if not file or not filetree.projdirText or #filetree.projdirText == 0 then return end
+
   local item_id = findItem(projtree, file)
-  if curr_id ~= item_id then
-    if curr_id and projtree:IsBold(curr_id) then
-      projtree:SetItemBold(curr_id, false)
+
+  -- if the select item is different from the current one
+  -- or the current one is the same, but not bold (which may happen when
+  -- the project is changed to one that includes the current item)
+  if curr_file ~= file
+  or item_id and not projtree:IsBold(item_id) then
+    if curr_file then
+      local curr_id = findItem(projtree, curr_file)
+      if curr_id and projtree:IsBold(curr_id) then
+        projtree:SetItemBold(curr_id, false)
+      end
     end
     if item_id then
       projtree:EnsureVisible(item_id)
       projtree:SetItemBold(item_id, true)
-      curr_id = item_id
     end
+    curr_file = file
     projtree:Refresh() -- to force refresh on Mac (ide.osname == 'Macintosh')
   end
 end
