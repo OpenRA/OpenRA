@@ -103,10 +103,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				{
 					var size = m.Bounds.Width + "x" + m.Bounds.Height;
 					var numberPlayableCells = m.Bounds.Width * m.Bounds.Height;
-					if (numberPlayableCells >= 120 * 120) size += " (Large)";
-					else if (numberPlayableCells >= 90 * 90) size += " (Medium)";
-					else if (numberPlayableCells >= 60 * 60) size += " (Small)";
-					else size += " (Tiny)";
+					if (numberPlayableCells >= 120 * 120) size += " (Huge)";
+					else if (numberPlayableCells >= 90 * 90) size += " (Large)";
+					else if (numberPlayableCells >= 60 * 60) size += " (Medium)";
+					else size += " (Small)";
 					sizeWidget.GetText = () => size;
 				}
 
