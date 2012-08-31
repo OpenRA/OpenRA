@@ -46,10 +46,20 @@ ide.iofilters["GermanUtf8Ascii"] = {
 
 }
 
+ide.iofilters["0d0d0aFix"] = {
+  -- this function converts 0d0d0a line ending to 0d0a
+  input = function(fpath, content)
+    return content:gsub("\013\013\010","\013\010")
+  end,
+}
+
 --üäß
 
 for i,filter in pairs(ide.iofilters) do
-  assert(filter.output("",filter.input("","äöüÄÖÜß")),"Ã¢â‚¬Å¾Ã¢â‚¬ÂäöüÄÖÜß","UTF8-ANSI conversion failed: "..(i))
+  if filter.input and filter.output then
+    assert(filter.output("",filter.input("","äöüÄÖÜß")),
+      "Ã¢â‚¬Å¾Ã¢â‚¬ÂäöüÄÖÜß","UTF8-ANSI conversion failed: "..(i))
+  end
 end
 
 -- which: "input" or "output"

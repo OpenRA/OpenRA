@@ -28,4 +28,8 @@ path.moai = 'd:/lua/moai/moai'
 -- specify full path to lua interpreter if you need to use your own version
 path.lua = 'd:/lua/lua'
 
+-- fix an issue with 0d0d0a line endings in MOAI examples,
+-- which may negatively affect breakpoints during debugging
+editor.iofilter = "0d0d0aFix"
+
 --]]--
