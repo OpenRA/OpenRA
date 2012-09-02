@@ -26,7 +26,8 @@ return {
 
     local file = wfilename:GetFullPath()
     if rundebug then
-      DebuggerAttachDefault()
+      -- start running the application right away
+      DebuggerAttachDefault({runstart=true})
       local code = (
 [[xpcall(function() 
     io.stdout:setvbuf('no')
