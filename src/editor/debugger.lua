@@ -323,6 +323,11 @@ debugger.listen = function()
       DisplayOutput(("Debugging session started in '%s'.\n")
         :format(debugger.basedir))
 
+      if (options.runstart) then
+        ClearAllCurrentLineMarkers()
+        debugger.run()
+      end
+
       if (options.run) then
         local file, line = debugger.handle("run")
         activateDocument(file, line)
