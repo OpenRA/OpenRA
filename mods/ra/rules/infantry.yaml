@@ -248,7 +248,8 @@ E8:
 		Bounds: 12,17,0,-9
 	Health:
 		HP: 150
-	Armor: heavy
+	Armor:
+		Type: Heavy
 	Mobile:
 		Speed: 5
 	RevealsShroud:
