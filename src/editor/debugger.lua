@@ -273,7 +273,14 @@ debugger.listen = function()
 
       reSetBreakpoints()
 
-      if (options.run) then
+      if (options.startwith) then
+        local file, line, err = debugger.loadfile(options.startwith)
+        if err then
+          DisplayOutput(("Can't run the entry point script (%s). Compilation error:\n%s\n")
+            :format(options.startwith, err))
+          return debugger.terminate()
+        end
+      elseif (options.run) then
         -- do nothing here
       elseif (debugger.scratchpad) then
         debugger.scratchpad.updated = true

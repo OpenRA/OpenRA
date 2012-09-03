@@ -177,8 +177,12 @@ end
 
 function GetFullPathIfExists(p, f)
   if not p or not f then return end
-  local file = wx.wxFileName(p, f)
-  return file:FileExists() and file:GetFullPath()
+  local file = wx.wxFileName(f)
+  -- Normalize call is needed to make the case of p = '/abc/def' and
+  -- f = 'xyz/main.lua' work correctly. Normalize() returns true if done.
+  return (file:Normalize(wx.wxPATH_NORM_ALL, p)
+    and file:FileExists()
+    and file:GetFullPath())
 end
 
 function FileWrite(file,content)

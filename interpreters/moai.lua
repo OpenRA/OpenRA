@@ -24,10 +24,24 @@ return {
       end
     end
 
-    local file = wfilename:GetFullPath()
+    local file
+    local epoints = ide.config.moai and ide.config.moai.entrypoints
+    if epoints then
+      epoints = type(epoints) == 'table' and epoints or {epoints}
+      for _,entry in pairs(epoints) do
+        file = GetFullPathIfExists(self:fworkdir(wfilename), entry)
+        if file then break end
+      end
+      if not file then
+        DisplayOutput("Can't find any of the specified entry points ("
+          ..table.concat(epoints, ", ")
+          ..") in the current project; continuing with the current file...\n")
+      end
+    end
+
     if rundebug then
       -- start running the application right away
-      DebuggerAttachDefault({runstart=true})
+      DebuggerAttachDefault({runstart=true, startwith = file})
       local code = (
 [[xpcall(function() 
     io.stdout:setvbuf('no')
@@ -45,6 +59,8 @@ return {
       f:write(code)
       f:close()
     end
+
+    file = file or wfilename:GetFullPath()
 
     -- try to find a config file: (1) MOAI_CONFIG, (2) project directory,
     -- (3) folder with the current file, (4) folder with moai executable
