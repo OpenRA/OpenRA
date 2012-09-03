@@ -1,15 +1,15 @@
 # ZeroBrane Studio Changelog
 
-## Master (An in-progress version to become v0.32)
+## v0.32 (Sep 03 2012)
 
 ### Highlights
-  - Added Unicode support for file encoding and file paths on Windows (fixes #30).
-  - Added Moai integration and debugging (including debugging of Moai threads and callbacks).
+  - Added **Unicode support** for file encoding and file paths on Windows (fixes #30).
+  - Added **Moai integration and debugging** (including debugging of Moai threads and callbacks).
   - Added refresh of Stack and Watch windows after executing a statement in remote shell.
-  - Added display of complex values on multiple lines in shell with '='.
+  - Added **display of complex values** on multiple lines in shell with '='.
   - Added calltip on mouseover for functions during editing and for variables/expressions during debugging.
   - Added configuration options to set paths to lua and love2d executables.
-  - Added support for coroutine debugging with stepping through coroutine.resume/.yield calls.
+  - Added support for **coroutine debugging** with stepping through coroutine.resume/.yield calls.
   - Updated wx.dll to wxlua 2.8.12.2 and wxwidgets 2.8.12.
   - Signed zbstudio app and executable to avoid issues with files not being saved without admin privileges and to remove warning about 'unknown publisher' on windows (fixes #25).
     
@@ -64,12 +64,12 @@
   - Fixed handling of dashes in paths (upgraded to mobdebug 0.479).
   - Reorganized handling of automcomplete event (to use AddPendingEvent instead of PostEvent) to avoid runtime application error.
 
-## Jul 14 2012 v0.31
+## v0.31 (Jul 14 2012)
 
 ### Highlights
-  - Added scratchpad support for love2d.
+  - Added **scratchpad support for love2d**.
   - Added tooltip to display variable/expression values during debugging.
-  - Added MacOS support.
+  - Added **MacOS support**.
 
 ### Improvements
   - Added handling of balanced brackets in markup links.
@@ -107,16 +107,16 @@
   - Removed styling of function calls and capturing definitions in strings and comments (fixed #18).
   - Removed setting focus to the Output window when output is processed as it interfered with Run as Scratchpad.
 
-## Jun 27 2012 v0.30
+## v0.30 (Jun 27 2012)
 
 ### Highlights
-  - Added love2d support.
+  - Added **love2d support**.
   - Added auto complete for love2d API.
   - Added support for debugging processes running under LuaJIT.
-  - Added display of hierarchical data in Stack window.
-  - Added pretty printing in Watch and Console (local and remote) windows and handling of multiple results in Console.
-  - Added Stack window to display stack information and local/upvalue values for each stack frame.
-  - Added ability to interact with scripts by allowing text to be entered in the 'Output' window.
+  - Added display of **hierarchical data in Stack window**.
+  - Added **pretty printing in Watch and Console** (local and remote) windows and handling of multiple results in Console.
+  - Added **Stack window to display stack information** and local/upvalue values for each stack frame.
+  - Added ability to **interact with scripts** by allowing text to be entered in the 'Output' window.
 
 ### Improvements
   - Added love2d support.
@@ -160,12 +160,12 @@
   - Disabled 'Run as Scratchpad' if there is no debugger registered capable of running it.
   - Disabled Stack and Watch updates when scratchpad is active as they interfere with application execution.
 
-## May 31 2012 v0.29
+## v0.29 (May 31 2012)
 
 ### Highlights
-  - Added scratchpad (running live) functionality.
-  - Added code analyzer based on lua-inspect.
-  - Updated comment styling to follow markdown syntax.
+  - Added **scratchpad** (running live) functionality.
+  - Added **code analyzer** based on lua-inspect.
+  - Updated **comment styling** to follow markdown syntax.
 
 ### Improvements
   - Added scratchpad (running live) functionality.
@@ -191,7 +191,7 @@
   - Fixed an issue with scratchpad being on after Save dialog is canceled.
   - Fixed about screen.
 
-## Mar 21 2012 v0.28
+## v0.28 (Mar 21 2012)
 
 ### Highlights
   - Added full screen mode.
@@ -210,7 +210,7 @@
   - Fixed an issue with a missing path separator, which prevented debugging from executing step commands in some cases.
   - Fixed missing slash on SaveAs by enforcing trailing slash for the project path.
 
-## Feb 14 2012 v0.27
+## v0.27 (Feb 14 2012)
 
 ### Highlights
   - Added markup formatting in the comments.
@@ -232,4 +232,4 @@
   - Fixed an issue with activating the currenly edited file in the file tree.
   - Wrapped DragAcceptFiles into a protected call to make it not fail on MacOS (compiled with wxwidgets 2.8.12).
 
-## Jan 18 2012 v0.26
+## v0.26 (Jan 18 2012)
