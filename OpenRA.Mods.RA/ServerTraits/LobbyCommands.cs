@@ -53,6 +53,16 @@ namespace OpenRA.Mods.RA.Server
 			return true;
 		}
 
+		void CheckAutoStart(S server, Connection conn, Session.Client client)
+		{
+			var actualPlayers = server.conns
+				.Select(c => server.GetClient(c))
+				.Where(c => c.Slot != null);
+
+			if (actualPlayers.Count() > 0 && actualPlayers.All(c => c.State == Session.ClientState.Ready))
+				InterpretCommand(server, conn, client, "startgame");
+		}
+
 		public bool InterpretCommand(S server, Connection conn, Session.Client client, string cmd)
 		{
 			if (!ValidateCommand(server, conn, client, cmd))
@@ -74,8 +84,7 @@ namespace OpenRA.Mods.RA.Server
 
 						server.SyncLobbyInfo();
 
-						if (server.conns.Count > 0 && server.conns.All(c => server.GetClient(c).State == Session.ClientState.Ready))
-							InterpretCommand(server, conn, client, "startgame");
+						CheckAutoStart(server, conn, client);
 
 						return true;
 					}},
@@ -114,6 +123,8 @@ namespace OpenRA.Mods.RA.Server
 						S.SyncClientToPlayerReference(client, server.Map.Players[s]);
 
 						server.SyncLobbyInfo();
+						CheckAutoStart(server, conn, client);
+
 						return true;
 					}},
 				{ "spectate",
