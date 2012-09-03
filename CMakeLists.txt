@@ -3,8 +3,8 @@ cmake_minimum_required(VERSION 2.8)
 
 # set the default build type (this needs to be done *before* project command)
 if(NOT CMAKE_BUILD_TYPE)
-	set(CMAKE_BUILD_TYPE "RelWithDebInfo" CACHE STRING
-		"Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel." FORCE)
+  set(CMAKE_BUILD_TYPE "RelWithDebInfo" CACHE STRING
+    "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel." FORCE)
 endif()
 
 # set the project name (the actual executable name is controlled by IDE_FRONTEND option below)
@@ -13,7 +13,7 @@ project("ide")
 # add an user option to select the IDE frontend
 set(IDE_FRONTEND "zbstudio" CACHE STRING "Choose the IDE frontend to build, options are: estrela zbstudio.")
 if((NOT IDE_FRONTEND STREQUAL "estrela") AND (NOT IDE_FRONTEND STREQUAL "zbstudio"))
-	message(FATAL_ERROR "Invalid IDE frontend specified: ${IDE_FRONTEND}")
+  message(FATAL_ERROR "Invalid IDE frontend specified: ${IDE_FRONTEND}")
 endif()
 
 # list of C\C++ sources for building IDE executable file
@@ -30,14 +30,14 @@ include_directories("${LUA_INCLUDE_DIR}")
 find_package(wxWidgets REQUIRED)
 include("${wxWidgets_USE_FILE}")
 
-# pass the data directory and IDE frontend name to the starter application
-add_definitions("-DDATADIR=\"${CMAKE_SOURCE_DIR}\"" "-DIDE_FRONTEND=\"${IDE_FRONTEND}\"")
+# pass the data directory to the starter application
+add_definitions("-DDATADIR=\"${CMAKE_SOURCE_DIR}\"")
 
 # enable the compiler warnings
 if(MSVC)
-	add_definitions("/W3")
+  add_definitions("/W3")
 elseif(CMAKE_COMPILER_IS_GNUCXX)
-	add_definitions("-Wall")
+  add_definitions("-Wall")
 endif()
 
 # add the executable file to our project
