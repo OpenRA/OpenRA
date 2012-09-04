@@ -156,7 +156,7 @@ local function analyzeProgram(editor)
   local filePath = DebuggerMakeFileName(editor, openDocuments[id].filePath)
 
   if frame.menuBar:IsChecked(ID_CLEAROUTPUT) then ClearOutput() end
-  DisplayOutput("Analizing the source code")
+  DisplayOutput("Analyzing the source code")
   frame:Update()
 
   local warn, err = M.warnings_from_string(editorText, filePath)
