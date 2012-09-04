@@ -4,14 +4,6 @@ README.md
 api/lua/baselib.lua
 api/lua/love2d.lua
 api/readme.txt
-bin/clibs/mime/core.dll
-bin/clibs/ssl.dll
-bin/clibs/socket/core.dll
-bin/lua.exe
-bin/lua5.1.dll
-bin/lua51.dll
-bin/winapi.dll
-bin/wx.dll
 cfg/user-sample.lua
 interpreters/love2d.lua
 interpreters/luadeb.lua
@@ -87,7 +79,6 @@ src/misc/util.lua
 src/preferences/editor.lua
 src/preferences/project.lua
 src/version.lua
-zbstudio.exe
 zbstudio/app.lua
 zbstudio/config.lua
 zbstudio/menu_help.lua
