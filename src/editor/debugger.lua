@@ -626,9 +626,9 @@ function DebuggerCreateWatchWindow()
   debugger.watchWindow = watchWindow
 
   local watchMenu = wx.wxMenu{
-    { ID_ADDWATCH, "&Add Watch" },
+    { ID_ADDWATCH, "&Add Watch\tIns" },
     { ID_EDITWATCH, "&Edit Watch\tF2" },
-    { ID_REMOVEWATCH, "&Remove Watch" },
+    { ID_REMOVEWATCH, "&Remove Watch\tDel" },
     { ID_EVALUATEWATCH, "Evaluate &Watches" }}
 
   local watchMenuBar = wx.wxMenuBar()
