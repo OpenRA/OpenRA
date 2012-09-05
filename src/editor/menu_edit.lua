@@ -48,11 +48,14 @@ function OnUpdateUIEditMenu(event)
 
   local menu_id = event:GetId()
   local enable =
+    ((menu_id == ID_COPY or menu_id == ID_CUT) and
+     (editor:GetClassInfo():GetClassName() ~= 'wxStyledTextCtrl'
+      or editor:GetSelectionStart() ~= editor:GetSelectionEnd())) or
     -- buggy GTK clipboard runs eventloop and can generate asserts
     menu_id == ID_PASTE and (wx.__WXGTK__ or editor:CanPaste()) or
     menu_id == ID_UNDO and editor:CanUndo() or
     menu_id == ID_REDO and editor:CanRedo() or
-    (menu_id ~= ID_PASTE and menu_id ~= ID_UNDO and menu_id ~= ID_REDO)
+    menu_id == ID_SELECTALL
   -- wxComboBox doesn't have SELECT ALL, so disable it
   if editor:GetClassInfo():GetClassName() == 'wxComboBox'
   and menu_id == ID_SELECTALL then enable = false end
