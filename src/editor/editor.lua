@@ -219,49 +219,62 @@ function EditorAutoComplete(editor)
   end
 end
 
-function EditorCallTip(editor, pos)
+local function getValAtPosition(editor, pos)
   local line = editor:LineFromPosition(pos)
   local linetx = editor:GetLine(line)
   local linestart = editor:PositionFromLine(line)
   local localpos = pos-linestart
 
-  local ident = "([a-zA-Z_0-9][a-zA-Z_0-9%.%:]*)"
+  local ident = "([a-zA-Z_][a-zA-Z_0-9%.%:]*)"
   local linetxtopos = linetx:sub(1,localpos)
   linetxtopos = linetxtopos..")"
   linetxtopos = linetxtopos:match(ident .. "%b()$")
 
+  local selected = editor:GetSelectionStart() ~= editor:GetSelectionEnd()
+    and pos >= editor:GetSelectionStart() and pos <= editor:GetSelectionEnd()
+
+  -- check if we have a selected text or an identifier
+  -- for an identifier, check fragments on the left and on the right.
+  -- this is to match 'io' in 'i^o.print' and 'io.print' in 'io.pr^int'.
+  -- remove square brackets to make tbl[index].x show proper values.
+  local start = linetx:sub(1,localpos)
+    :gsub("%b[]", function(s) return ("."):rep(#s) end)
+    :find(ident.."$")
+
+  -- check if the style is the right one; this is to ignore
+  -- comments, strings, numbers (to avoid '1 = 1'), keywords, and such
+  if start and not selected then
+    local style = bit.band(editor:GetStyleAt(linestart+start),31)
+    if editor.spec.iscomment[style]
+    or editor.spec.isstring[style]
+    or style == wxstc.wxSTC_LUA_NUMBER
+    or style == wxstc.wxSTC_LUA_WORD then
+      -- don't do anything for strings or comments or numbers
+      return nil, linetxtopos
+    end
+  end
+
+  local right = linetx:sub(localpos+1,#linetx):match("^[a-zA-Z_0-9]*")
+  local var = selected and editor:GetSelectedText()
+    or (start and linetx:sub(start,localpos):gsub(":",".")..right or nil)
+
+  return var, linetxtopos
+end
+
+function EditorCallTip(editor, pos, x, y)
+  local var, linetxtopos = getValAtPosition(editor, pos)
   local tip = linetxtopos and GetTipInfo(editor,linetxtopos.."(",false)
   if ide.debugger and ide.debugger.server then
-    local selected = editor:GetSelectionStart() ~= editor:GetSelectionEnd()
-      and pos >= editor:GetSelectionStart() and pos <= editor:GetSelectionEnd()
-
-    -- check if we have a selected text or an identifier
-    -- for an identifier, check fragments on the left and on the right.
-    -- this is to match 'io' in 'i^o.print' and 'io.print' in 'io.pr^int'.
-    -- remove square brackets to make tbl[index].x show proper values.
-    local start = linetx:sub(1,localpos)
-      :gsub("%b[]", function(s) return ("."):rep(#s) end)
-      :find(ident.."$")
-
-    -- check if the style is the right one; this is to ignore
-    -- comments, strings, numbers (to avoid '1 = 1'), keywords, and such
-    if start and not selected then
-      local style = bit.band(editor:GetStyleAt(linestart+start),31)
-      if editor.spec.iscomment[style]
-      or editor.spec.isstring[style]
-      or style == wxstc.wxSTC_LUA_NUMBER
-      or style == wxstc.wxSTC_LUA_WORD then
-        return -- don't do anything for strings or comments or numbers
-      end
-    end
-
-    local right = linetx:sub(localpos+1,#linetx):match("^[a-zA-Z_0-9]*")
-    local var = selected and editor:GetSelectedText()
-      or (start and linetx:sub(start,localpos):gsub(":",".")..right or nil)
     if var then
       local limit = 128
       ide.debugger.quickeval(var, function(val)
         if #val > limit then val = val:sub(1, limit-3).."..." end
+        -- check if the mouse position is specified and the mouse has moved,
+        -- then don't show the tooltip as it's already too late for it.
+        if x and y then
+          local mouse = wx.wxGetMouseState()
+          if mouse:GetX() ~= x or mouse:GetY() ~= y then return end
+        end
         editor:CallTipShow(pos, val) end)
     end
   elseif tip then
@@ -434,9 +447,10 @@ function CreateEditor(name)
 
   editor:Connect(wxstc.wxEVT_STC_DWELLSTART,
     function (event)
+      local mouse = wx.wxGetMouseState()
       local position = editor:PositionFromPointClose(event:GetX(),event:GetY())
       if position ~= wxstc.wxSTC_INVALID_POSITION then
-        EditorCallTip(editor, position)
+        EditorCallTip(editor, position, mouse:GetX(), mouse:GetY())
       end
       event:Skip()
     end)
@@ -522,6 +536,38 @@ function CreateEditor(name)
         event:Skip()
       end
     end)
+
+  local value
+  editor:Connect(wx.wxEVT_CONTEXT_MENU,
+    function (event)
+      local menu = wx.wxMenu()
+      menu:Append(wx.wxID_UNDO, "&Undo")
+      menu:Append(wx.wxID_REDO, "&Redo")
+      menu:AppendSeparator()
+      menu:Append(wx.wxID_CUT, "Cu&t")
+      menu:Append(wx.wxID_COPY, "&Copy")
+      menu:Append(wx.wxID_PASTE, "&Paste")
+      menu:Append(wx.wxID_SELECTALL, "Select &All")
+      menu:AppendSeparator()
+      menu:Append(ID_QUICKADDWATCH, "Add Watch Expression")
+      menu:Append(ID_QUICKEVAL, "Evaluate in Console")
+
+      local point = editor:ScreenToClient(event:GetPosition())
+      local pos = editor:PositionFromPointClose(point.x, point.y)
+      value = pos ~= wxstc.wxSTC_INVALID_POSITION and getValAtPosition(editor, pos) or nil
+      menu:Enable(ID_QUICKADDWATCH, value ~= nil)
+      menu:Enable(ID_QUICKEVAL, value ~= nil)
+
+      -- cancel calltip as it interferes with popup menu
+      if editor:CallTipActive() then editor:CallTipCancel() end
+      editor:PopupMenu(menu)
+    end)
+
+  editor:Connect(ID_QUICKADDWATCH, wx.wxEVT_COMMAND_MENU_SELECTED,
+    function(event) DebuggerAddWatch(value) end)
+
+  editor:Connect(ID_QUICKEVAL, wx.wxEVT_COMMAND_MENU_SELECTED,
+    function(event) ShellExecuteCode(value) end)
 
   if notebook:AddPage(editor, name, true) then
     local id = editor:GetId()

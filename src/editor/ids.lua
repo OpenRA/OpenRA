@@ -65,6 +65,9 @@ ID_ADDWATCH         = NewID()
 ID_EDITWATCH        = NewID()
 ID_REMOVEWATCH      = NewID()
 ID_EVALUATEWATCH    = NewID()
+-- Editor popup menu items
+ID_QUICKADDWATCH    = NewID()
+ID_QUICKEVAL        = NewID()
 
 local ids = {}
 function ID (name)

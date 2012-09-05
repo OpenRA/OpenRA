@@ -27,16 +27,18 @@ end)()
 
 local notebook = ide.frame.notebook
 
-local function updateWatchesSync()
+local function updateWatchesSync(num)
   local watchCtrl = debugger.watchCtrl
   if watchCtrl and debugger.server
     and not debugger.running and not debugger.scratchpad then
     for idx = 0, watchCtrl:GetItemCount() - 1 do
-      local expression = watchCtrl:GetItemText(idx)
-      local _, values, error = debugger.evaluate(expression)
-      if error then error = error:gsub("%[.-%]:%d+:%s+","")
-      elseif #values == 0 then values = {'nil'} end
-      watchCtrl:SetItem(idx, 1, error and ('error: '..error) or values[1])
+      if not num or idx == num then
+        local expression = watchCtrl:GetItemText(idx)
+        local _, values, error = debugger.evaluate(expression)
+        if error then error = error:gsub("%[.-%]:%d+:%s+","")
+        elseif #values == 0 then values = {'nil'} end
+        watchCtrl:SetItem(idx, 1, error and ('error: '..error) or values[1])
+      end
     end
   end
 end
@@ -109,14 +111,20 @@ local function updateStackSync()
 end
 
 local function updateStackAndWatches()
+  -- check if the debugger is running and may be waiting for a response.
+  -- allow that request to finish, otherwise updateWatchesSync() does nothing.
+  if debugger.running then debugger.update() end
   if debugger.server and not debugger.running then
     copas.addthread(function() updateStackSync() updateWatchesSync() end)
   end
 end
 
-local function updateWatches()
+local function updateWatches(num)
+  -- check if the debugger is running and may be waiting for a response.
+  -- allow that request to finish, otherwise updateWatchesSync() does nothing.
+  if debugger.running then debugger.update() end
   if debugger.server and not debugger.running then
-    copas.addthread(function() updateWatchesSync() end)
+    copas.addthread(function() updateWatchesSync(num) end)
   end
 end
 
@@ -185,6 +193,9 @@ local function reSetBreakpoints()
 end
 
 debugger.shell = function(expression, isstatement)
+  -- check if the debugger is running and may be waiting for a response.
+  -- allow that request to finish, otherwise updateWatchesSync() does nothing.
+  if debugger.running then debugger.update() end
   if debugger.server and not debugger.running then
     copas.addthread(function ()
         -- exec command is not expected to return anything.
@@ -703,6 +714,22 @@ function DebuggerCreateWatchWindow()
       end
       event:Skip()
     end)
+end
+
+function DebuggerAddWatch(watch)
+  if (not debugger.watchWindow) then DebuggerCreateWatchWindow() end
+
+  local watchCtrl = debugger.watchCtrl
+  -- check if this expression is already on the list
+  for idx = 0, watchCtrl:GetItemCount() - 1 do
+    if watchCtrl:GetItemText(idx) == watch then return end
+  end
+
+  local row = watchCtrl:InsertItem(watchCtrl:GetItemCount(), "Expr")
+  watchCtrl:SetItem(row, 0, watch)
+  watchCtrl:SetItem(row, 1, "Value")
+
+  updateWatches(row)
 end
 
 function DebuggerMakeFileName(editor, filePath)
