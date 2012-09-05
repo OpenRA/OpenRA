@@ -37,7 +37,22 @@ local function updateWatchesSync(num)
         local _, values, error = debugger.evaluate(expression)
         if error then error = error:gsub("%[.-%]:%d+:%s+","")
         elseif #values == 0 then values = {'nil'} end
-        watchCtrl:SetItem(idx, 1, error and ('error: '..error) or values[1])
+
+        local newval = error and ('error: '..error) or values[1]
+        -- get the current value from a list item
+        do local litem = wx.wxListItem()
+          litem:SetMask(wx.wxLIST_MASK_TEXT)
+          litem:SetId(idx)
+          litem:SetColumn(1)
+          watchCtrl:GetItem(litem)
+          watchCtrl:SetItemBackgroundColour(idx,
+            watchCtrl:GetItem(litem) and newval ~= litem:GetText()
+            and ide.config.styles.caretlinebg
+            and wx.wxColour(unpack(ide.config.styles.caretlinebg.bg))
+            or watchCtrl:GetBackgroundColour())
+        end
+
+        watchCtrl:SetItem(idx, 1, newval)
       end
     end
   end

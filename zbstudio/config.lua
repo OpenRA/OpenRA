@@ -51,7 +51,7 @@ styles = {
   calltipbg = nil,
   sel = nil,
   caret = nil,
-  caretlinebg = {bg = {250,250,240}},
+  caretlinebg = {bg = {240,240,230}},
   fold = nil,
   whitespace = nil,
 
