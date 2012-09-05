@@ -641,6 +641,8 @@ function DebuggerCreateWatchWindow()
     return -1
   end
 
+  local defaultExpr = ""
+
   watchWindow:Connect(wx.wxEVT_CLOSE_WINDOW,
     function (event)
       DebuggerCloseWatchWindow()
@@ -652,7 +654,7 @@ function DebuggerCreateWatchWindow()
   watchWindow:Connect(ID_ADDWATCH, wx.wxEVT_COMMAND_MENU_SELECTED,
     function ()
       local row = watchCtrl:InsertItem(watchCtrl:GetItemCount(), "Expr")
-      watchCtrl:SetItem(row, 0, "Expr")
+      watchCtrl:SetItem(row, 0, defaultExpr)
       watchCtrl:SetItem(row, 1, "Value")
       watchCtrl:EditLabel(row)
     end)
@@ -690,9 +692,14 @@ function DebuggerCreateWatchWindow()
 
   watchCtrl:Connect(wx.wxEVT_COMMAND_LIST_END_LABEL_EDIT,
     function (event)
-      if #(event:GetText()) > 0 then
-        watchCtrl:SetItem(event:GetIndex(), 0, event:GetText())
-        updateWatches()
+      local row = event:GetIndex()
+      if event:IsEditCancelled() then
+        if watchCtrl:GetItemText(row) == defaultExpr then
+          watchCtrl:DeleteItem(row)
+        end
+      else
+        watchCtrl:SetItem(row, 0, event:GetText())
+        updateWatches(row)
       end
       event:Skip()
     end)
