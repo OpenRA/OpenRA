@@ -26,7 +26,7 @@ local function DisplayAbout(event)
 		<b>ZeroBrane Studio (]]..ide.VERSION..[[; using MobDebug ]]..mobdebug._VERSION..[[)</b><br>
 		<b>Copyright &copy; 2011-2012 ZeroBrane LLC</b><br>
 		Paul Kulchenko<br>
-		Licensed under The MIT License.
+		Licensed under the MIT License.
 		</td>
 	  </tr>
 	  <tr>
@@ -34,7 +34,7 @@ local function DisplayAbout(event)
 		<b>Based on Estrela Editor</b><br>
 		<b>Copyright &copy; 2008-2011 Luxinia DevTeam</b><br>
 		Christoph Kubisch, Eike Decker<br>
-		Licensed under The MIT License.
+		Licensed under the MIT License.
 		</td>
 	  </tr>
 	  <tr>

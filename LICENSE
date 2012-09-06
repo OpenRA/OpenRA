@@ -49,7 +49,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
---[[ wxLua License License ]]----------------------------------------------
+--[[ wxLua License ]]------------------------------------------------------
 
 http://wxlua.sourceforge.net/
 
@@ -61,7 +61,7 @@ Original wxLua Lua sample IDE:
   luascript at thersgb.net
 
 wxLua is based on 
-wxWindows Library Licence, Version 3
+wxWindows Library License, Version 3
 
 Copyright (c) 1998 Julian Smart, Robert Roebling et al
 
@@ -178,7 +178,7 @@ output file generation.
 
 MobDebug sources are released under the MIT License
 
-Copyright (c) 2011 Paul Kulchenko (paul@kulchenko.com)
+Copyright (c) 2011-2012 Paul Kulchenko (paul@kulchenko.com)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
