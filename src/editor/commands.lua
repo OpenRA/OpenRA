@@ -395,6 +395,7 @@ function ClearAllCurrentLineMarkers()
   end
 end
 
+local compileOk, compileTotal = 0, 0
 function CompileProgram(editor, quiet)
   -- remove shebang line (#!) as it throws a compilation error as
   -- loadstring() doesn't allow it even though lua/loadfile accepts it.
@@ -406,12 +407,17 @@ function CompileProgram(editor, quiet)
 
   if ide.frame.menuBar:IsChecked(ID_CLEAROUTPUT) then ClearOutput() end
 
+  compileTotal = compileTotal + 1
   if line_num > -1 then
     DisplayOutput("Compilation error on line "..tostring(line_num)..":\n"..
       errMsg:gsub("Lua:.-\n", "").."\n")
     if not quiet then editor:GotoLine(line_num-1) end
   else
-    if not quiet then DisplayOutput("Compilation successful.\n") end
+    compileOk = compileOk + 1
+    if not quiet then
+      DisplayOutput(("Compilation successful; %.0f%% success rate (%d/%d).\n")
+        :format(compileOk/compileTotal*100, compileOk, compileTotal))
+    end
   end
 
   return line_num == -1 -- return true if it compiled ok
