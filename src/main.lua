@@ -165,28 +165,44 @@ do
   setLuaPaths(GetPathWithSep(ide.editorFilename), ide.osname)
 end
 
+-- temporarily replace print() to capture reported error messages to show
+-- them later in the Output window after everything is loaded.
+local resumePrint do
+  local errors = {}
+  local origprint = print
+  print = function(...) errors[#errors+1] = {...} end
+  resumePrint = function()
+    print = origprint
+    for _, e in ipairs(errors) do DisplayOutput(unpack(e), "\n") end
+  end
+end
+
 -----------------------
 -- load config
-local function addConfig(filename,showerror,isstring)
-  local cfgfn,err = isstring and loadstring(filename) or loadfile(filename)
+local function addConfig(filename,isstring)
+  -- skip those files that don't exist
+  if not isstring and not wx.wxFileName(filename):FileExists() then return end
+
+  local cfgfn, err, msg
+  if isstring
+  then msg, cfgfn, err = "string", loadstring(filename)
+  else msg, cfgfn, err = "file", loadfile(filename) end
+
   if not cfgfn then
-    if (showerror) then
-      print(("Error while loading configuration file: %s\n%s"):format(filename,err))
-    end
+    print(("Error while loading configuration %s: %s"):format(msg, err))
   else
     ide.config.os = os
     ide.config.wxstc = wxstc
     setfenv(cfgfn,ide.config)
-    xpcall(function()cfgfn(assert(_G or _ENV))end,
-      function(err)
-        print("Error while executing configuration file: \n",
-          debug.traceback(err))
-      end)
+    local _, err = pcall(function()cfgfn(assert(_G or _ENV))end)
+    if err then
+      print(("Error while executing configuration %s: %s"):format(msg, err))
+    end
   end
 end
 
 do
-  addConfig(ide.config.path.app.."/config.lua",true)
+  addConfig(ide.config.path.app.."/config.lua")
 end
 
 ----------------------
@@ -293,11 +309,11 @@ loadTools()
 if app.preinit then app.preinit() end
 
 do
-  addConfig("cfg/user.lua",false)
+  addConfig("cfg/user.lua")
   local home = os.getenv("HOME")
-  if home then addConfig(home .. "/.zbs/user.lua",false) end
+  if home then addConfig(home .. "/.zbs/user.lua") end
   for i,v in ipairs(configs) do
-    addConfig(v,true,true)
+    addConfig(v,true)
   end
   configs = nil
 end
@@ -366,6 +382,9 @@ ide.frame:SetMenuBar(ide.frame.menuBar)
 if ide.osname == 'Macintosh' then -- force refresh to fix the filetree
   pcall(function() ide.frame:ShowFullScreen(true) ide.frame:ShowFullScreen(false) end)
 end
+
+resumePrint()
+
 ide.frame:Show(true)
 
 -- call wx.wxGetApp():MainLoop() last to start the wxWidgets event loop,
