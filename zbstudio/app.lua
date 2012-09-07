@@ -7,7 +7,7 @@ local CreateBitmap = function(id, client, size)
   local file
   if wx.wxFileName(fileClient):FileExists() then file = fileClient
   elseif wx.wxFileName(fileKey):FileExists() then file = fileKey
-  else return wx.wxNullBitmap end
+  else return wx.wxArtProvider.GetBitmap(id, client, size) end
   local icon = icons[file] or wx.wxBitmap(file)
   icons[file] = icon
   return icon
@@ -22,10 +22,6 @@ local app = {
   },
 
   preinit = function ()
-    local artProvider = wx.wxLuaArtProvider()
-    artProvider.CreateBitmap = function(self, ...) return CreateBitmap(...) end
-    wx.wxArtProvider.Push(artProvider)
-
     ide.config.interpreter = "luadeb"
     ide.config.unhidewindow = { -- allow unhiding of GUI windows
       -- 1 - unhide if hidden, 0 - hide if shown
