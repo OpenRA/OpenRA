@@ -32,4 +32,13 @@ path.lua = 'd:/lua/lua'
 -- which may negatively affect breakpoints during debugging
 editor.iofilter = "0d0d0aFix"
 
+-- to have 4 spaces when TAB is used in the editor
+editor.tabwidth = 4
+
+-- to have TABs stored in the file (to allow mixing tabs and spaces)
+editor.usetabs  = true
+
+-- specify a list of MOAI entrypoints
+moai = { entrypoints = { "main.lua", "source/main.lua" } }
+
 --]]--
