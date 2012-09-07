@@ -20,7 +20,8 @@ function(check_lua_module MODULE)
     endif()
 
     # run a short script with "require" statement to determine if the Lua module is available
-    execute_process(COMMAND "${LUA_EXECUTABLE}" -e "require(\"${MODULE}\")" RESULT_VARIABLE EXIT_CODE)
+    execute_process(COMMAND "${LUA_EXECUTABLE}" -e "require(\"${MODULE}\")"
+      RESULT_VARIABLE EXIT_CODE OUTPUT_QUIET ERROR_QUIET)
     if(EXIT_CODE EQUAL 0)
       set(${MODULE}_FOUND TRUE CACHE INTERNAL "Lua module status")
       message(STATUS "Found Lua module: ${MODULE}")
@@ -66,18 +67,55 @@ add_system_lua_module_option(luainspect)
 add_system_lua_module_option(mobdebug)
 
 # list of C\C++ sources for building IDE executable file
-set(SOURCES "estrela/unix_starter.cpp")
-
-# pass the data directory to the starter application
-add_definitions("-DDATADIR=\"${CMAKE_SOURCE_DIR}\"")
-
-# enable the compiler warnings
-if(MSVC)
-  add_definitions("/W3")
-elseif(CMAKE_COMPILER_IS_GNUCXX)
-  add_definitions("-Wall")
-endif()
+set(SOURCES estrela/unix_starter.cpp)
 
 # add the executable file to our project
 add_executable(${IDE_FRONTEND} WIN32 ${SOURCES})
 target_link_libraries(${IDE_FRONTEND} ${LUA_LIBRARIES} ${wxWidgets_LIBRARIES})
+
+# determine the install directories
+set(BINDIR "bin")
+set(DATADIR "share/${IDE_FRONTEND}")
+set(DOCDIR "share/doc/${IDE_FRONTEND}")
+
+# pass the data directory to the starter application
+add_definitions("-DDATADIR=\"${CMAKE_INSTALL_PREFIX}/${DATADIR}\"")
+
+# install IDE executable
+install(TARGETS ${IDE_FRONTEND} DESTINATION ${BINDIR})
+
+# install source files
+install(DIRECTORY src DESTINATION ${DATADIR})
+
+# install Lua modules
+if(NOT ${USE_SYSTEM_COPAS})
+  install(DIRECTORY lualibs/copas lualibs/coxpcall DESTINATION ${DATADIR}/lualibs)
+endif()
+if(NOT ${USE_SYSTEM_LUAINSPECT})
+  install(DIRECTORY lualibs/luainspect lualibs/metalua DESTINATION ${DATADIR}/lualibs)
+endif()
+if(NOT ${USE_SYSTEM_MOBDEBUG})
+  install(DIRECTORY lualibs/mobdebug DESTINATION ${DATADIR}/lualibs)
+endif()
+
+# install miscellaneous documentation files
+install(FILES CHANGELOG.md LICENSE README.md DESTINATION ${DOCDIR})
+
+# install IDE frontend-specific files
+if(IDE_FRONTEND STREQUAL "estrela")
+  install(DIRECTORY api cfg interpreters spec tools DESTINATION ${DATADIR})
+  install(FILES estrela/res/estrela.ico estrela/res/estrela.png estrela/res/wxlualogo2.png
+    DESTINATION ${DATADIR}/estrela/res)
+  file(GLOB FILELIST "${CMAKE_SOURCE_DIR}/estrela/*.lua")
+  install(FILES ${FILELIST} estrela/readme.txt DESTINATION ${DATADIR}/estrela)
+else()
+  install(FILES api/lua/baselib.lua api/lua/love2d.lua DESTINATION ${DATADIR}/api/lua)
+  install(FILES api/readme.txt DESTINATION ${DATADIR}/api)
+  install(FILES cfg/user-sample.lua DESTINATION ${DATADIR}/cfg)
+  install(FILES interpreters/love2d.lua interpreters/luadeb.lua interpreters/moai.lua
+    DESTINATION ${DATADIR}/interpreters)
+  install(FILES spec/lua.lua DESTINATION ${DATADIR}/spec)
+  install(DIRECTORY zbstudio/res DESTINATION ${DATADIR}/zbstudio)
+  file(GLOB FILELIST "${CMAKE_SOURCE_DIR}/zbstudio/*.lua")
+  install(FILES ${FILELIST} DESTINATION ${DATADIR}/zbstudio)
+endif()
