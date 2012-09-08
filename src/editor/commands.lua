@@ -268,6 +268,9 @@ function ClosePage(selection)
       debugger.terminate()
     end
     removePage(ide.openDocuments[id].index)
+
+    -- disable full screen if the last tab is closed
+    if not (notebook:GetSelection() >= 0) then ShowFullScreen(false) end
   end
 end
 
