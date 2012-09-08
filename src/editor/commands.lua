@@ -196,7 +196,7 @@ function SaveAll()
     local editor = document.editor
     local filePath = document.filePath
 
-    if document.isModified then
+    if document.isModified or not document.filePath then
       SaveFile(editor, filePath) -- will call SaveFileAs if necessary
     end
   end

@@ -63,12 +63,13 @@ frame:Connect(ID_SAVE, wx.wxEVT_COMMAND_MENU_SELECTED,
 frame:Connect(ID_SAVE, wx.wxEVT_UPDATE_UI,
   function (event)
     local editor = GetEditor()
+    local enabled = false
     if editor then
       local id = editor:GetId()
-      if openDocuments[id] then
-        event:Enable(openDocuments[id].isModified or not openDocuments[id].filePath)
-      end
+      enabled = openDocuments[id]
+        and (openDocuments[id].isModified or not openDocuments[id].filePath)
     end
+    event:Enable(enabled)
   end)
 
 frame:Connect(ID_SAVEAS, wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -90,7 +91,7 @@ frame:Connect(ID_SAVEALL, wx.wxEVT_UPDATE_UI,
   function (event)
     local atLeastOneModifiedDocument = false
     for id, document in pairs(openDocuments) do
-      if document.isModified then
+      if document.isModified or not document.filePath then
         atLeastOneModifiedDocument = true
         break
       end

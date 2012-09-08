@@ -48,9 +48,11 @@ frame:Connect(ID "view.filetree.show", wx.wxEVT_COMMAND_MENU_SELECTED,
 frame:Connect(ID_FULLSCREEN, wx.wxEVT_COMMAND_MENU_SELECTED, function ()
     pcall(function() ShowFullScreen(not frame:IsFullScreen()) end)
   end)
+frame:Connect(ID_FULLSCREEN, wx.wxEVT_UPDATE_UI,
+  function (event) event:Enable(GetEditor() ~= nil) end)
 
 frame:Connect(ID_VIEWWATCHWINDOW, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function (event) DebuggerCreateWatchWindow() end)
+  function () DebuggerCreateWatchWindow() end)
 
 frame:Connect(ID_VIEWCALLSTACK, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function (event) DebuggerCreateStackWindow() end)
+  function () DebuggerCreateStackWindow() end)

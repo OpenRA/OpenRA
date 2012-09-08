@@ -95,6 +95,7 @@ function findReplace:GetSelectedString()
       findReplace.foundString = true
     end
   end
+  return editor and findReplace.foundString
 end
 
 function findReplace:FindString(reverse)

@@ -44,20 +44,21 @@ frame:Connect(ID_FIND_IN_FILES, wx.wxEVT_COMMAND_MENU_SELECTED,
     findReplace:GetSelectedString()
     findReplace:Show(false,true)
   end)
-frame:Connect(ID_FIND_IN_FILES, wx.wxEVT_UPDATE_UI, OnUpdateUISearchMenu)
-
 frame:Connect(ID_REPLACE_IN_FILES, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
     findReplace:GetSelectedString()
     findReplace:Show(true,true)
   end)
-frame:Connect(ID_REPLACE_IN_FILES, wx.wxEVT_UPDATE_UI, OnUpdateUISearchMenu)
 
-frame:Connect(ID_FINDNEXT, wx.wxEVT_COMMAND_MENU_SELECTED, function (event) findReplace:GetSelectedString() findReplace:FindString() end)
-frame:Connect(ID_FINDNEXT, wx.wxEVT_UPDATE_UI, function (event) findReplace:HasText() end)
+frame:Connect(ID_FINDNEXT, wx.wxEVT_COMMAND_MENU_SELECTED,
+  function (event) findReplace:GetSelectedString() findReplace:FindString() end)
+frame:Connect(ID_FINDNEXT, wx.wxEVT_UPDATE_UI,
+  function (event) event:Enable(findReplace:GetSelectedString() and findReplace:HasText()) end)
 
-frame:Connect(ID_FINDPREV, wx.wxEVT_COMMAND_MENU_SELECTED, function (event) findReplace:GetSelectedString() findReplace:FindString(true) end)
-frame:Connect(ID_FINDPREV, wx.wxEVT_UPDATE_UI, function (event) findReplace:HasText() end)
+frame:Connect(ID_FINDPREV, wx.wxEVT_COMMAND_MENU_SELECTED,
+  function (event) findReplace:GetSelectedString() findReplace:FindString(true) end)
+frame:Connect(ID_FINDPREV, wx.wxEVT_UPDATE_UI,
+  function (event) event:Enable(findReplace:GetSelectedString() and findReplace:HasText()) end)
 
 -------------------- Find replace end
 

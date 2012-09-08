@@ -103,6 +103,8 @@ frame:Connect(ID "edit.showtooltip", wx.wxEVT_COMMAND_MENU_SELECTED,
 
     EditorCallTip(editor, editor:GetCurrentPos())
   end)
+frame:Connect(ID "edit.showtooltip", wx.wxEVT_UPDATE_UI,
+  function (event) event:Enable(GetEditor() ~= nil) end)
 
 frame:Connect(ID_AUTOCOMPLETE, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
