@@ -2,12 +2,19 @@
 ---------------------------------------------------------
 
 -- put bin/ and lualibs/ first to avoid conflicts with included modules
--- that may have other versions present somewhere else in path/cpath
+-- that may have other versions present somewhere else in path/cpath.
+-- don't need to do this on Linux where we expect all the libraries
+-- and binaries to be installed in *regular* places.
 local iswindows = os.getenv('WINDIR') or (os.getenv('OS') or ''):match('[Ww]indows')
-package.cpath = (iswindows
-  and 'bin/?.dll;bin/clibs/?.dll;'
-   or 'bin/clibs/?.dylib;bin/lib?.dylib;bin/?.so;bin/clibs/?.so;')
-  .. package.cpath
+
+if iswindows or not pcall(require, "wx")
+  or wx.wxPlatformInfo.Get():GetOperatingSystemFamilyName() == 'Macintosh' then
+  package.cpath = (iswindows
+    and 'bin/?.dll;bin/clibs/?.dll;'
+     or 'bin/clibs/?.dylib;bin/lib?.dylib;')
+    .. package.cpath
+end
+
 package.path  = 'lualibs/?.lua;lualibs/?/?.lua;lualibs/?/init.lua;lualibs/?/?/?.lua;lualibs/?/?/init.lua;'
               .. package.path
 
