@@ -106,17 +106,14 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				return;
 			}
-			// display current objective every so often
 			if (world.FrameNumber % 1500 == 1)
 			{
 				DisplayObjective();
 			}
-			// taunt every so often
 			if (world.FrameNumber % 1000 == 0)
 			{
 				Sound.Play(Taunts[world.SharedRandom.Next(Taunts.Length)]);
 			}
-			// objectives
 			if (currentObjective == 0)
 			{
 				if (AlliesControlLab())

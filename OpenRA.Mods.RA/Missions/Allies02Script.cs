@@ -42,8 +42,6 @@ namespace OpenRA.Mods.RA.Missions
 		Actor einstein;
 		Actor engineer;
 
-		Actor engineerMiss;
-
 		Actor chinookHusk;
 		Actor allies2BasePoint;
 		Actor reinforcementsEntryPoint;
@@ -89,8 +87,7 @@ namespace OpenRA.Mods.RA.Missions
 
 		const string ChinookName = "tran";
 		const string SignalFlareName = "flare";
-		const string EngineerName = "e6";
-		const int EngineerMissClearRange = 5;
+		const int EngineerSafeRange = 5;
 
 		void DisplayObjective()
 		{
@@ -166,10 +163,9 @@ namespace OpenRA.Mods.RA.Missions
 				BuildSovietUnits();
 				ManageSovietUnits();
 			}
-			if (!engineerMiss.Destroyed && engineer == null && AlliesControlMiss())
+			if (EngineerSafe())
 			{
-				SpawnEngineerAtMiss();
-				engineerMiss.QueueActivity(new Demolish(engineerMiss, 0));
+				RescueEngineer();
 			}
 			if (currentObjective == 0)
 			{
@@ -387,16 +383,16 @@ namespace OpenRA.Mods.RA.Missions
 			return UnitsNearActor(actor, range).Where(a => a.HasTrait<IMove>());
 		}
 
-		bool AlliesControlMiss()
+		bool EngineerSafe()
 		{
-			var units = ForcesNearActor(engineerMiss, EngineerMissClearRange);
+			if (engineer.Destroyed) return false;
+			var units = ForcesNearActor(engineer, EngineerSafeRange);
 			return units.Any() && units.All(a => a.Owner == allies1);
 		}
 
-		void SpawnEngineerAtMiss()
+		void RescueEngineer()
 		{
-			engineer = world.CreateActor(EngineerName, new TypeDictionary { new OwnerInit(allies1), new LocationInit(engineerMiss.Location) });
-			engineer.QueueActivity(new Move.Move(engineerMiss.Location + new CVec(5, 0)));
+			if (!engineer.Destroyed) engineer.ChangeOwner(allies1);
 		}
 
 		public void WorldLoaded(World w)
@@ -419,7 +415,7 @@ namespace OpenRA.Mods.RA.Missions
 			extractionLZEntryPoint = actors["ExtractionLZEntryPoint"];
 			badgerEntryPoint = actors["BadgerEntryPoint"];
 			badgerDropPoint = actors["BadgerDropPoint"];
-			engineerMiss = actors["EngineerMiss"];
+			engineer = actors["Engineer"];
 			sovietBarracks = actors["SovietBarracks"];
 			sovietWarFactory = actors["SovietWarFactory"];
 			sovietRallyPoint = actors["SovietRallyPoint"];
