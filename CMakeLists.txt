@@ -115,7 +115,10 @@ else()
   install(FILES interpreters/love2d.lua interpreters/luadeb.lua interpreters/moai.lua
     DESTINATION ${DATADIR}/interpreters)
   install(FILES spec/lua.lua DESTINATION ${DATADIR}/spec)
-  install(DIRECTORY zbstudio/res DESTINATION ${DATADIR}/zbstudio)
+  install(DIRECTORY zbstudio/res DESTINATION ${DATADIR}/zbstudio
+    PATTERN zbstudio.desktop EXCLUDE PATTERN zbstudio.png EXCLUDE)
+  install(FILES zbstudio/res/zbstudio.desktop DESTINATION share/applications)
+  install(FILES zbstudio/res/zbstudio.png DESTINATION share/icons/hicolor/256x256/apps)
   file(GLOB FILELIST "${CMAKE_SOURCE_DIR}/zbstudio/*.lua")
   install(FILES ${FILELIST} DESTINATION ${DATADIR}/zbstudio)
 endif()
