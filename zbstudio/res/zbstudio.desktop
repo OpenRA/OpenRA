@@ -1,6 +1,7 @@
 [Desktop Entry]
 Type=Application
 Version=1.0
+Encoding=UTF-8
 Name=ZeroBrane Studio
 GenericName=Integrated Development Environment
 Comment=A simple and extensible Lua IDE and debugger
