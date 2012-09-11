@@ -169,7 +169,8 @@ local function activateDocument(fileName, line)
   local activated
   local fileName = wx.wxFileName(fileName)
   for _, document in pairs(ide.openDocuments) do
-    if fileName:SameAs(wx.wxFileName(document.filePath)) then
+    -- skip those tabs that may have file without names (untitled.lua)
+    if document.filePath and fileName:SameAs(wx.wxFileName(document.filePath)) then
       local editor = document.editor
       local selection = document.index
       notebook:SetSelection(selection)
@@ -280,18 +281,26 @@ debugger.listen = function()
 
       local options = debugger.options or {}
       if not debugger.scratchpad then SetAllEditorsReadOnly(true) end
-      local wxfilepath = GetEditorFileAndCurInfo()
-      local startfile = options.startfile or wxfilepath:GetFullPath()
-      local basedir = options.basedir
-        or FileTreeGetDir()
-        or wxfilepath:GetPath(wx.wxPATH_GET_VOLUME + wx.wxPATH_GET_SEPARATOR)
-      -- guarantee that the path has a trailing separator
-      debugger.basedir = wx.wxFileName.DirName(basedir):GetFullPath()
+
       debugger.server = copas.wrap(skt)
       debugger.socket = skt
       debugger.loop = false
       debugger.scratchable = false
       debugger.stats = {line = 0}
+
+      local wxfilepath = GetEditorFileAndCurInfo()
+      local startfile = options.startfile or options.startwith
+        or (wxfilepath and wxfilepath:GetFullPath())
+
+      if not startfile then
+        DisplayOutput("Can't start debugging with the current file not being saved ('untitled.lua').\n")
+        return debugger.terminate()
+      end
+
+      local startpath = wx.wxFileName(startfile):GetPath(wx.wxPATH_GET_VOLUME + wx.wxPATH_GET_SEPARATOR)
+      local basedir = options.basedir or FileTreeGetDir() or startpath
+      -- guarantee that the path has a trailing separator
+      debugger.basedir = wx.wxFileName.DirName(basedir):GetFullPath()
 
       -- load the remote file into the debugger
       -- set basedir first, before loading to make sure that the path is correct
@@ -321,10 +330,9 @@ debugger.listen = function()
 
           -- if not found, check using full file path and reset basedir
           if not activated then
-            local path = wxfilepath:GetPath(wx.wxPATH_GET_VOLUME + wx.wxPATH_GET_SEPARATOR)
-            activated = activateDocument(path..file, line)
+            activated = activateDocument(startpath..file, line)
             if activated then
-              debugger.basedir = path
+              debugger.basedir = startpath
               debugger.handle("basedir " .. debugger.basedir)
               -- reset breakpoints again as basedir has changed
               reSetBreakpoints()

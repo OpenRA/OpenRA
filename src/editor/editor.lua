@@ -163,9 +163,7 @@ function GetEditorFileAndCurInfo(nochecksave)
 
   local id = editor:GetId()
   local filepath = openDocuments[id].filePath
-  if (nochecksave and not filepath) then
-    return
-  end
+  if not filepath then return end
 
   local fn = wx.wxFileName(filepath)
   fn:Normalize()
