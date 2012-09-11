@@ -68,11 +68,15 @@ end
 local function createToolBar(frame)
   local toolBar = wx.wxToolBar(frame, wx.wxID_ANY,
     wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTB_FLAT + wx.wxTB_NODIVIDER)
-  local funclist = wx.wxChoice.new(toolBar,ID "toolBar.funclist",wx.wxDefaultPosition, wx.wxSize.new(240,16))
+  local funclist = wx.wxChoice.new(toolBar,ID "toolBar.funclist",
+    -- Linux requires a bit larger size for the function list in the toolbar.
+    -- Mac also requires a bit larger size, but setting it to 20 resets
+    -- back to 16 when the toolbar is refreshed.
+    wx.wxDefaultPosition, wx.wxSize.new(240,ide.osname == "Unix" and 24 or 16))
   
-  -- note: Ususally the bmp size isn't necessary, but the HELP icon is not the right size in MSW
+  -- usually the bmp size isn't necessary, but the HELP icon is not the right size in MSW
   local getBitmap = (ide.app.createbitmap or wx.wxArtProvider.GetBitmap)
-  local toolBmpSize = toolBar:GetToolBitmapSize()
+  local toolBmpSize = wx.wxSize(16, 16)
   toolBar:AddTool(ID_NEW, "New", getBitmap(wx.wxART_NORMAL_FILE, wx.wxART_TOOLBAR, toolBmpSize), "Create an empty document")
   toolBar:AddTool(ID_OPEN, "Open", getBitmap(wx.wxART_FILE_OPEN, wx.wxART_TOOLBAR, toolBmpSize), "Open an existing document")
   toolBar:AddTool(ID_SAVE, "Save", getBitmap(wx.wxART_FILE_SAVE, wx.wxART_TOOLBAR, toolBmpSize), "Save the current document")
