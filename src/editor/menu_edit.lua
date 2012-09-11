@@ -51,8 +51,7 @@ function OnUpdateUIEditMenu(event)
     ((menu_id == ID_COPY or menu_id == ID_CUT) and
      (editor:GetClassInfo():GetClassName() ~= 'wxStyledTextCtrl'
       or editor:GetSelectionStart() ~= editor:GetSelectionEnd())) or
-    -- buggy GTK clipboard runs eventloop and can generate asserts
-    menu_id == ID_PASTE and (wx.__WXGTK__ or editor:CanPaste()) or
+    menu_id == ID_PASTE and editor:CanPaste() or
     menu_id == ID_UNDO and editor:CanUndo() or
     menu_id == ID_REDO and editor:CanRedo() or
     menu_id == ID_SELECTALL
