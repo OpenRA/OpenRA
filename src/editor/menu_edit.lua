@@ -68,7 +68,7 @@ function OnEditMenu(event)
   -- if there is no editor, or if it's not the editor we care about,
   -- then allow normal processing to take place
   if editor == nil or
-     editor:FindFocus():GetId() ~= editor:GetId() or
+     (editor:FindFocus() and editor:FindFocus():GetId() ~= editor:GetId()) or
      editor:GetClassInfo():GetClassName() ~= 'wxStyledTextCtrl'
     then event:Skip(); return end
 
