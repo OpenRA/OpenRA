@@ -40,7 +40,8 @@ namespace OpenRA.Mods.RA.Activities
 			if (sellable != null && sellable.Selling)
 				return NextActivity;
 
-			target.Trait<Capturable>().BeginCapture(target, self);
+			if (!target.Trait<Capturable>().BeginCapture(target, self))
+				return NextActivity;
 
 			var capturesInfo = self.Info.Traits.Get<CapturesInfo>();
 			if (capturesInfo != null && capturesInfo.WastedAfterwards)
