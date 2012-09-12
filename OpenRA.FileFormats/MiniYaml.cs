@@ -120,6 +120,7 @@ namespace OpenRA.FileFormats
 						}
 					++charNo;
 				}
+				line = line.Replace("\\#","#");
 				var t = line.TrimStart(' ', '\t');
 				if (t.Length == 0)
 					continue;
