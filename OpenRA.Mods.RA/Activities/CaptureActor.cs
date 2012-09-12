@@ -36,10 +36,6 @@ namespace OpenRA.Mods.RA.Activities
 			if (capturable != null && capturable.CaptureInProgress && capturable.Captor.Owner.Stances[self.Owner] == Stance.Ally)
 				return NextActivity;
 
-			var sellable = target.TraitOrDefault<Sellable>();
-			if (sellable != null && sellable.Selling)
-				return NextActivity;
-
 			if (!target.Trait<Capturable>().BeginCapture(target, self))
 				return NextActivity;
 
