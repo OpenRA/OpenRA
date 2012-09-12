@@ -48,6 +48,10 @@ namespace OpenRA.Mods.RA
 
 		bool CanDeploy()
 		{
+			var b = self.TraitOrDefault<Building>();
+			if (b != null && b.Locked)
+				return false;
+
 			return (bi == null || self.World.CanPlaceBuilding(Info.IntoActor, bi, self.Location + (CVec)Info.Offset, self));
 		}
 
