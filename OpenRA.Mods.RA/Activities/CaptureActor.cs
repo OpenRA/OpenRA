@@ -32,10 +32,6 @@ namespace OpenRA.Mods.RA.Activities
 			if ((nearest - mobile.toCell).LengthSquared > 2)
 				return Util.SequenceActivities(new MoveAdjacentTo(Target.FromActor(target)), this);
 
-			var capturable = target.TraitOrDefault<Capturable>();
-			if (capturable != null && capturable.CaptureInProgress && capturable.Captor.Owner.Stances[self.Owner] == Stance.Ally)
-				return NextActivity;
-
 			if (!target.Trait<Capturable>().BeginCapture(target, self))
 				return NextActivity;
 

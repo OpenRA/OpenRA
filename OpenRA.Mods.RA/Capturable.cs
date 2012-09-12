@@ -40,7 +40,10 @@ namespace OpenRA.Mods.RA
 
 		public bool BeginCapture(Actor self, Actor captor)
 		{
-			if (!self.Trait<Building>().Lock())
+			if (!CaptureInProgress && !self.Trait<Building>().Lock())
+				return false;
+
+			if (CaptureInProgress && Captor.Owner.Stances[captor.Owner] == Stance.Ally)
 				return false;
 
 			CaptureProgressTime = 0;
