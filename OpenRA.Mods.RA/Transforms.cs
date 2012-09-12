@@ -68,7 +68,9 @@ namespace OpenRA.Mods.RA
 		{
 			if (order.OrderString == "DeployTransform")
 			{
-				if (!CanDeploy())
+				var b = self.TraitOrDefault<Building>();
+
+				if (!CanDeploy() || (b != null && !b.Lock()))
 				{
 					foreach (var s in Info.NoTransformSounds)
 						Sound.PlayToPlayer(self.Owner, s);
