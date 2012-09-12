@@ -26,10 +26,6 @@ namespace OpenRA.Mods.RA
 		{
 			if (order.OrderString == "Sell")
 			{
-				var capturing = self.TraitOrDefault<Capturable>();
-				if (capturing != null && capturing.CaptureInProgress)
-					return;
-
 				if (!self.Trait<Building>().Lock())
 					return;
 
