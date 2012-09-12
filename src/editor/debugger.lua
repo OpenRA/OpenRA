@@ -929,7 +929,7 @@ function DebuggerScratchpadOn(editor)
     if debugger.scratchpad and debugger.scratchpad.point then
       debugger.scratchpad.point = nil
       debugger.scratchpad.editor:ReleaseMouse()
-      wx.wxSetCursor(wx.wxNullCursor) -- restore cursor
+      wx.wxSetCursor(ide.osname == 'Unix' and wx.wxCursor(wx.wxCURSOR_IBEAM) or wx.wxNullCursor) -- restore cursor
     else event:Skip() end
   end)
 
@@ -941,7 +941,10 @@ function DebuggerScratchpadOn(editor)
 
     -- record the fact that we are over a number or dragging slider
     scratchpad.over = scratchpad and
-      (ipoint or (bit.band(scratchpadEditor:GetStyleAt(pos),31) == numberStyle))
+      (ipoint ~= nil or (bit.band(scratchpadEditor:GetStyleAt(pos),31) == numberStyle))
+
+    if ide.osname == 'Unix' and scratchpad then
+      wx.wxSetCursor(wx.wxCursor(scratchpad.over and wx.wxCURSOR_SIZEWE or wx.wxCURSOR_IBEAM)) end 
 
     if ipoint then
       -- calculate difference in point position
@@ -982,6 +985,9 @@ function DebuggerScratchpadOff()
   scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wx.wxEVT_LEFT_DOWN)
   scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wx.wxEVT_LEFT_UP)
   scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wx.wxEVT_SET_CURSOR)
+
+  -- set the cursor back on Linux as EVT_SET_CURSOR does not help here
+  if ide.osname == 'Unix' then wx.wxSetCursor(wx.wxCursor(wx.wxCURSOR_IBEAM)) end 
 
   debugger.scratchpad = nil
   debugger.terminate()
