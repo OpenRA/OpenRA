@@ -26,6 +26,7 @@ Packages:
 	~movies-nod.mix
 	~movies.mix
 	~scores.mix
+	~scores2.mix
 	~transit.mix
 
 Rules:

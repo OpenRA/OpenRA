@@ -249,7 +249,7 @@ E8:
 	Health:
 		HP: 150
 	Armor:
-		Type: Heavy
+		Type: Cybernetic
 	Mobile:
 		Speed: 5
 	RevealsShroud:
