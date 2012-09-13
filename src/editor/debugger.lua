@@ -74,8 +74,14 @@ local function updateStackSync()
   local stackCtrl = debugger.stackCtrl
   if stackCtrl and debugger.server
     and not debugger.running and not debugger.scratchpad then
-    local stack = debugger.stack()
-    if not stack or #stack == 0 then stackCtrl:DeleteAllItems(); return end
+    local stack, _, err = debugger.stack()
+    if not stack or #stack == 0 then
+      stackCtrl:DeleteAllItems()
+      if err then -- report an error if any
+        stackCtrl:AppendItem(stackCtrl:AddRoot("Stack"), "Error: " .. err, 0)
+      end
+      return
+    end
     stackCtrl:Freeze()
     stackCtrl:DeleteAllItems()
     local params = {comment = false, nocode = true}
@@ -606,7 +612,7 @@ function DebuggerCreateStackWindow()
         local strval = mobdebug.line(value, {comment = false, nocode = true})
         local text = type(name) == "number"
           and (num == name and strval or ("[%s] = %s"):format(name, strval))
-          or ("%s = %s"):format(name, strval)
+          or ("%s = %s"):format(tostring(name), strval)
         local item = stackCtrl:AppendItem(item_id, text, image)
         if checkIfExpandable(value, item) then
           stackCtrl:SetItemHasChildren(item, true)
