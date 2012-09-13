@@ -271,8 +271,8 @@ function EditorCallTip(editor, pos, x, y)
         -- check if the mouse position is specified and the mouse has moved,
         -- then don't show the tooltip as it's already too late for it.
         if x and y then
-          local mouse = wx.wxGetMouseState()
-          if mouse:GetX() ~= x or mouse:GetY() ~= y then return end
+          local mpos = wx.wxGetMousePosition()
+          if mpos.x ~= x or mpos.y ~= y then return end
         end
         editor:CallTipShow(pos, val) end)
     end
@@ -446,10 +446,18 @@ function CreateEditor(name)
 
   editor:Connect(wxstc.wxEVT_STC_DWELLSTART,
     function (event)
-      local mouse = wx.wxGetMouseState()
-      local position = editor:PositionFromPointClose(event:GetX(),event:GetY())
+      -- on Linux DWELLSTART event seems to be generated even for those
+      -- editor windows that are not active. What's worse, when generated
+      -- the event seems to report "old" position when retrieved using
+      -- event:GetX and event:GetY, so instead we use wxGetMousePosition.
+      local linux = ide.osname == 'Unix'
+      if linux and editor ~= GetEditor() then return end
+      local mpos = wx.wxGetMousePosition()
+      local cpos = editor:ScreenToClient(mpos)
+      local position = editor:PositionFromPointClose(
+        linux and cpos.x or event:GetX(), linux and cpos.y or event:GetY())
       if position ~= wxstc.wxSTC_INVALID_POSITION then
-        EditorCallTip(editor, position, mouse:GetX(), mouse:GetY())
+        EditorCallTip(editor, position, mpos.x, mpos.y)
       end
       event:Skip()
     end)
