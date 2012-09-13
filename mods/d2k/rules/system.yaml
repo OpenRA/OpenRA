@@ -63,31 +63,71 @@ Player:
 			heavya: 0.1%
 			heavyh: 0.1%
 			heavyo: 0.1%
-			researcha: 0.1%
-			researchh: 0.1%
-			researcho: 0.1%
 			repaira: 0.1%
 			repairh: 0.1%
 			repairo: 0.1%
 			radara: 0.1%
 			radaro: 0.1%
 			radarh: 0.1%
+			starporta: 0.1%
+			starporth: 0.1%
+			starporto: 0.1%
+			researcha: 0.1%
+			researchh: 0.1%
+			researcho: 0.1%
+			hightecha: 0.1%
+			hightechh: 0.1%
+			hightecho: 0.1%
+			palacea: 0.1%
+			palaceh: 0.1%
+			palaceo: 0.1%
 			powra: 35%
 			powrh: 35%
 			powro: 35%
 		UnitsToBuild:
-			rifle: 30%
-			bazooka: 30%
-			trike: 30%
+			rifle: 90%
+			bazooka: 50%
+			fremen: 40%
+			sardaukar: 50%
+			trikea: 30%
+			trikeh: 30%
+			trikea.starport: 30%
+			trikeh.starport: 30%
+			quada: 40%
+			quadh: 40%
+			quado: 40%
+			quada.starport: 40%
+			quadh.starport: 40%
+			quado.starport: 40%
+			siegetanka: 15%
+			siegetankh: 15%
+			siegetanko: 15%
+			siegetanka.starport: 15%
+			siegetankh.starport: 15%
+			siegetanko.starport: 15%
+			missiletanka: 10%
+			missiletankh: 10%
+			missiletanko: 10%
+			missiletanka.starport: 10%
+			missiletankh.starport: 10%
+			missiletanko.starport: 10%
 			raider: 30%
-			quad: 40%
-			siege: 15%
+			harvestera: 1%
+			harvesterh: 1%
+			harvestero: 1%
+			harvestera.starport: 1%
+			harvesterh.starport: 1%
+			harvestero.starport: 1%
 			combata: 70%
 			combath: 70%
 			combato: 70%
-			sonic: 25%
+			combata.starport: 70%
+			combath.starport: 70%
+			combato.starport: 70%
+			sonictank: 25%
 			devast: 25%
-			deviator: 25%
+			deviatortank: 25%
+			orni: 20%
 		SquadSize: 10
 	PlayerColorPalette:
 		BasePalette: d2k
