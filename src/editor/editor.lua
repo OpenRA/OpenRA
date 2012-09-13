@@ -244,6 +244,7 @@ local function getValAtPosition(editor, pos)
   if start and not selected then
     local style = bit.band(editor:GetStyleAt(linestart+start),31)
     if editor.spec.iscomment[style]
+    or (MarkupIsAny and MarkupIsAny(style)) -- markup in comments
     or editor.spec.isstring[style]
     or style == wxstc.wxSTC_LUA_NUMBER
     or style == wxstc.wxSTC_LUA_WORD then

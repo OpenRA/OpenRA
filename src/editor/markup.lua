@@ -26,6 +26,7 @@ local markup = {
 
 -- allow other editor features to recognize this special markup
 function MarkupIsSpecial(style) return style == 31 end
+function MarkupIsAny(style) return style >= 25 and style <= 31 end
 
 local function q(s) return s:gsub('(.)','%%%1') end
 
