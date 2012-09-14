@@ -97,7 +97,10 @@ namespace OpenRA.Mods.RA.Air
 				var nearestAfld = ChooseAirfield(self, false);
 				
 				self.CancelActivity();
-				return Util.SequenceActivities(Fly.ToCell(nearestAfld.Location), new FlyCircle());
+				if (nearestAfld != null)
+					return Util.SequenceActivities(Fly.ToCell(nearestAfld.Location), new FlyCircle());
+				else
+					return new FlyCircle();
 			}
 
 			return Util.SequenceActivities(
