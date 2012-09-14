@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Air
 			var altitude = self.Trait<Aircraft>().Altitude;
 			if (altitude == 0) return;	// we're on the ground, let's stay there.
 
-			var airfield = ReturnToBase.ChooseAirfield(self);
+			var airfield = ReturnToBase.ChooseAirfield(self, true);
 			if (airfield != null)
 			{
 				self.QueueActivity(new ReturnToBase(self, airfield));

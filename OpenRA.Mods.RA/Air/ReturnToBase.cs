@@ -22,20 +22,20 @@ namespace OpenRA.Mods.RA.Air
 
 		PPos w1, w2, w3;	/* tangent points to turn circles */
 
-		public static Actor ChooseAirfield(Actor self)
+		public static Actor ChooseAirfield(Actor self, bool unreservedOnly)
 		{
 			var rearmBuildings = self.Info.Traits.Get<PlaneInfo>().RearmBuildings;
 			return self.World.ActorsWithTrait<Reservable>()
 				.Where(a => a.Actor.Owner == self.Owner)
 				.Where(a => rearmBuildings.Contains(a.Actor.Info.Name)
-					&& !Reservable.IsReserved(a.Actor))
+					&& (!unreservedOnly || !Reservable.IsReserved(a.Actor)))
 				.Select(a => a.Actor)
 				.ClosestTo( self.CenterLocation );
 		}
 
 		void Calculate(Actor self)
 		{
-			if (dest == null || Reservable.IsReserved(dest)) dest = ChooseAirfield(self);
+			if (dest == null || Reservable.IsReserved(dest)) dest = ChooseAirfield(self, true);
 
 			if (dest == null) return;
 
