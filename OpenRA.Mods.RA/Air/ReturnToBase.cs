@@ -94,11 +94,7 @@ namespace OpenRA.Mods.RA.Air
 				Calculate(self);
 			if (dest == null)
 			{
-				var rearmBuildings = self.Info.Traits.Get<PlaneInfo>().RearmBuildings;
-				var nearestAfld = self.World.ActorsWithTrait<Reservable>()
-					.Where(a => a.Actor.Owner == self.Owner && rearmBuildings.Contains(a.Actor.Info.Name))
-					.Select(a => a.Actor)
-					.ClosestTo(self.CenterLocation);
+				var nearestAfld = ChooseAirfield(self, false);
 				
 				self.CancelActivity();
 				return Util.SequenceActivities(Fly.ToCell(nearestAfld.Location), new FlyCircle());
