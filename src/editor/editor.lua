@@ -452,6 +452,12 @@ function CreateEditor(name)
       -- event:GetX and event:GetY, so instead we use wxGetMousePosition.
       local linux = ide.osname == 'Unix'
       if linux and editor ~= GetEditor() then return end
+      -- check if this editor has focus; it may not when Stack/Watch window
+      -- is on top, but DWELL events are still triggered in this case.
+      -- Don't want to show calltip as it is still shown when the focus
+      -- is switched to a different application.
+      local focus = editor:FindFocus()
+      if focus and focus:GetId() ~= editor:GetId() then return end
       local mpos = wx.wxGetMousePosition()
       local cpos = editor:ScreenToClient(mpos)
       local position = editor:PositionFromPointClose(
