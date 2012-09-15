@@ -172,6 +172,7 @@
     <Compile Include="ColorPickerPaletteModifier.cs" />
     <Compile Include="Combat.cs" />
     <Compile Include="ConquestVictoryConditions.cs" />
+    <Compile Include="ContainsCrate.cs" />
     <Compile Include="Crate.cs" />
     <Compile Include="CrateAction.cs" />
     <Compile Include="CrateDrop.cs" />
@@ -181,6 +182,7 @@
     <Compile Include="Crates\GiveCashCrateAction.cs" />
     <Compile Include="Crates\GiveMcvCrateAction.cs" />
     <Compile Include="Crates\GiveUnitCrateAction.cs" />
+    <Compile Include="Crates\HealUnitsCrateAction.cs" />
     <Compile Include="Crates\HideMapCrateAction.cs" />
     <Compile Include="Crates\LevelUpCrateAction.cs" />
     <Compile Include="Crates\RevealMapCrateAction.cs" />

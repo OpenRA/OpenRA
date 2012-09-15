@@ -178,8 +178,8 @@ Actors:
 	Actor42: t02
 		Location: 80,78
 		Owner: Neutral
-	Actor43: t07
-		Location: 78,95
+	Actor43: t02
+		Location: 79,102
 		Owner: Neutral
 	Actor132: fenc
 		Location: 100,100
@@ -2029,6 +2029,15 @@ Actors:
 	Actor634: 3tnk
 		Location: 37,65
 		Owner: Soviets
+	Actor55: wood
+		Location: 79,94
+		Owner: Neutral
+	Actor168: wood
+		Location: 79,95
+		Owner: Neutral
+	Actor172: wood
+		Location: 79,96
+		Owner: Neutral
 
 Smudges:
 
@@ -2048,6 +2057,8 @@ Rules:
 	E7:
 		AutoTarget:
 			InitialStance: ReturnFire
+	V01:
+		ContainsCrate:
 	TRAN:
 		-Selectable:
 		Buildable:
@@ -2151,6 +2162,41 @@ Rules:
 	FTRK:
 		Buildable:
 			Owner: None
+	CRATE:
+		GiveCashCrateAction:
+			SelectionShares: 0
+		LevelUpCrateAction:
+			SelectionShares: 0
+		ExplodeCrateAction@fire:
+			SelectionShares: 0
+		ExplodeCrateAction@boom:
+			SelectionShares: 0
+		ExplodeCrateAction@nuke:
+			SelectionShares: 0
+		HideMapCrateAction:
+			SelectionShares: 0
+		HealUnitsCrateAction:
+			SelectionShares: 10000
+		RevealMapCrateAction:
+			SelectionShares: 0
+		SupportPowerCrateAction@parabombs:
+			SelectionShares: 0
+		GiveMcvCrateAction:
+			SelectionShares: 0
+		GiveUnitCrateAction@jeep:
+			SelectionShares: 0
+		GiveUnitCrateAction@arty:
+			SelectionShares: 0
+		GiveUnitCrateAction@v2rl:
+			SelectionShares: 0
+		GiveUnitCrateAction@1tnk:
+			SelectionShares: 0
+		GiveUnitCrateAction@2tnk:
+			SelectionShares: 0
+		GiveUnitCrateAction@3tnk:
+			SelectionShares: 0
+		GiveUnitCrateAction@4tnk:
+			SelectionShares: 0
 
 Sequences:
 

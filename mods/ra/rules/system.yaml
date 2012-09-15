@@ -355,6 +355,9 @@ CRATE:
 	HideMapCrateAction:
 		SelectionShares: 5
 		Effect: hide-map
+	HealUnitsCrateAction:
+		Notification: heal2.aud
+		SelectionShares: 2
 	RevealMapCrateAction:
 		SelectionShares: 1
 		Effect: reveal-map
