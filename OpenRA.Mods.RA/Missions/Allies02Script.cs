@@ -74,8 +74,9 @@ namespace OpenRA.Mods.RA.Missions
 		static readonly string[] SovietVehicleAdditions = { "v2rl" };
 		const int SovietGroupSize = 8;
 		const int SovietVehicleAdditionsTicks = 1500 * 4;
+		const int SovietHelperCash = 2000;
 
-		const int ReinforcementsTicks = 1500 * 12;
+		const int ReinforcementsTicks = 1500 * 1;
 		static readonly string[] Reinforcements = { "2tnk", "2tnk", "2tnk", "2tnk", "2tnk", "2tnk", "1tnk", "1tnk", "jeep", "e1", "e1", "e1", "e1", "e3", "e3", "mcv" };
 		const int ReinforcementsCash = 2000;
 
@@ -212,9 +213,9 @@ namespace OpenRA.Mods.RA.Missions
 		void AddSovietCashIfRequired()
 		{
 			var resources = soviets.PlayerActor.Trait<PlayerResources>();
-			if (resources.Cash < ReinforcementsCash)
+			if (resources.Cash < SovietHelperCash)
 			{
-				resources.GiveCash(ReinforcementsCash);
+				resources.GiveCash(SovietHelperCash);
 			}
 		}
 
@@ -297,10 +298,9 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				return;
 			}
-			var order = Order.StartProduction(queue.self, unit, 1);
 			if (Game.IsHost)
 			{
-				world.IssueOrder(order);
+				world.IssueOrder(Order.StartProduction(queue.self, unit, 1));
 			}
 		}
 
@@ -362,7 +362,7 @@ namespace OpenRA.Mods.RA.Missions
 		{
 			Sound.Play("reinfor1.aud");
 			var resources = allies2.PlayerActor.Trait<PlayerResources>();
-			resources.GiveCash(2000);
+			resources.GiveCash(ReinforcementsCash);
 			foreach (var unit in Reinforcements)
 			{
 				var actor = world.CreateActor(unit, new TypeDictionary
