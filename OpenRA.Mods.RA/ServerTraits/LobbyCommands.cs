@@ -451,7 +451,8 @@ namespace OpenRA.Mods.RA.Server
 				LockRace = pr.LockRace,
 				LockColor = pr.LockColor,
 				LockTeam = pr.LockTeam,
-				LockSpawn = pr.LockSpawn
+				LockSpawn = pr.LockSpawn,
+				Required = pr.Required,
 			};
 		}
 
