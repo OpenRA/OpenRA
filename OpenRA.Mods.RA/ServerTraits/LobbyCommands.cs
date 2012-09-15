@@ -91,6 +91,12 @@ namespace OpenRA.Mods.RA.Server
 				{ "startgame",
 					s =>
 					{
+						if (server.lobbyInfo.Slots.Any(sl => sl.Value.Required && 
+							server.lobbyInfo.ClientInSlot(sl.Key) == null))
+						{
+							server.SendChat(conn, "Unable to start the game until required slots are full.");
+							return true;
+						}
 						server.StartGame();
 						return true;
 					}},
