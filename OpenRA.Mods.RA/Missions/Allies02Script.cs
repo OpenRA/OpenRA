@@ -141,6 +141,10 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				DisplayObjective();
 			}
+			if (world.FrameNumber % 50 == 1)
+			{
+				world.Add(new Smoke(world, chinookHusk.CenterLocation, "smoke_m"));
+			}
 			if (world.FrameNumber == 1)
 			{
 				InitializeSovietFactories();
