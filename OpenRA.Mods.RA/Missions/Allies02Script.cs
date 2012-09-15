@@ -19,6 +19,8 @@ using OpenRA.Mods.RA.Buildings;
 using OpenRA.Network;
 using OpenRA.Traits;
 using OpenRA.Widgets;
+using Gfx = OpenRA.Graphics;
+using OpenRA.Mods.RA.Effects;
 
 namespace OpenRA.Mods.RA.Missions
 {
@@ -70,7 +72,7 @@ namespace OpenRA.Mods.RA.Missions
 		readonly List<string> sovietInfantry = new List<string> { "e1", "e2", "e3" };
 		readonly List<string> sovietVehicles = new List<string> { "3tnk" };
 		static readonly string[] SovietVehicleAdditions = { "v2rl" };
-		const int SovietGroupSize = 5;
+		const int SovietGroupSize = 8;
 		const int SovietVehicleAdditionsTicks = 1500 * 4;
 
 		const int ReinforcementsTicks = 1500 * 12;
@@ -231,15 +233,26 @@ namespace OpenRA.Mods.RA.Missions
 
 		void ManageSovietUnits()
 		{
-			var idleSovietUnits = ForcesNearActor(allies2BasePoint, 10).Where(a => a.Owner == soviets && a.IsIdle);
-			var idleSovietUnitsAtRP = ForcesNearActor(sovietRallyPoint, 5).Where(a => a.Owner == soviets && a.IsIdle);
+			var idleSovietUnitsAtRP = ForcesNearLocation(sovietRallyPoint.CenterLocation, 3).Where(a => a.Owner == soviets && a.IsIdle);
 			if (idleSovietUnitsAtRP.Count() >= SovietGroupSize)
 			{
-				idleSovietUnits = idleSovietUnits.Union(idleSovietUnitsAtRP);
+				var firstIdleUnit = idleSovietUnitsAtRP.FirstOrDefault();
+				if (firstIdleUnit != null)
+				{
+					var closestAlliedBuilding = ClosestAlliedBuilding(firstIdleUnit, 20);
+					if (closestAlliedBuilding != null)
+					{
+						foreach (var unit in idleSovietUnitsAtRP)
+						{
+							unit.QueueActivity(new AttackMove.AttackMoveActivity(unit, new Move.Move(closestAlliedBuilding.Location, 3)));
+						}
+					}
+				}
 			}
+			var idleSovietUnits = ForcesNearLocation(allies2BasePoint.CenterLocation, 20).Where(a => a.Owner == soviets && a.IsIdle);
 			foreach (var unit in idleSovietUnits)
 			{
-				var closestAlliedBuilding = ClosestAlliedBuilding(unit, 20);
+				var closestAlliedBuilding = ClosestAlliedBuilding(unit, 40);
 				if (closestAlliedBuilding != null)
 				{
 					unit.QueueActivity(new AttackMove.AttackMoveActivity(unit, new Move.Move(closestAlliedBuilding.Location, 3)));
@@ -249,7 +262,7 @@ namespace OpenRA.Mods.RA.Missions
 
 		Actor ClosestAlliedBuilding(Actor actor, int range)
 		{
-			return BuildingsNearActor(actor, range)
+			return BuildingsNearLocation(actor.CenterLocation, range)
 					.Where(a => a.Owner == allies2)
 					.OrderBy(a => (actor.Location - a.Location).LengthSquared)
 					.FirstOrDefault();
@@ -367,32 +380,38 @@ namespace OpenRA.Mods.RA.Missions
 			einsteinChinook.QueueActivity(new RemoveSelf());
 		}
 
-		IEnumerable<Actor> UnitsNearActor(Actor actor, int range)
+		IEnumerable<Actor> UnitsNearLocation(PPos location, int range)
 		{
-			return world.FindUnitsInCircle(actor.CenterLocation, Game.CellSize * range)
+			return world.FindUnitsInCircle(location, Game.CellSize * range)
 				.Where(a => a.IsInWorld && a != world.WorldActor && !a.Destroyed && !a.Owner.NonCombatant);
 		}
 
-		IEnumerable<Actor> BuildingsNearActor(Actor actor, int range)
+		IEnumerable<Actor> BuildingsNearLocation(PPos location, int range)
 		{
-			return UnitsNearActor(actor, range).Where(a => a.HasTrait<Building>() && !a.HasTrait<Wall>());
+			return UnitsNearLocation(location, range).Where(a => a.HasTrait<Building>() && !a.HasTrait<Wall>());
 		}
 
-		IEnumerable<Actor> ForcesNearActor(Actor actor, int range)
+		IEnumerable<Actor> ForcesNearLocation(PPos location, int range)
 		{
-			return UnitsNearActor(actor, range).Where(a => a.HasTrait<IMove>());
+			return UnitsNearLocation(location, range).Where(a => a.HasTrait<IMove>());
 		}
 
 		bool EngineerSafe()
 		{
-			if (engineer.Destroyed) return false;
-			var units = ForcesNearActor(engineer, EngineerSafeRange);
+			if (engineer.Destroyed)
+			{
+				return false;
+			}
+			var units = ForcesNearLocation(engineer.CenterLocation, EngineerSafeRange);
 			return units.Any() && units.All(a => a.Owner == allies1);
 		}
 
 		void RescueEngineer()
 		{
-			if (!engineer.Destroyed) engineer.ChangeOwner(allies1);
+			if (!engineer.Destroyed)
+			{
+				engineer.ChangeOwner(allies1);
+			}
 		}
 
 		public void WorldLoaded(World w)
