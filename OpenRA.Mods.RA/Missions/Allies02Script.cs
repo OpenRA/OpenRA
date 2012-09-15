@@ -16,11 +16,11 @@ using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Air;
 using OpenRA.Mods.RA.Buildings;
+using OpenRA.Mods.RA.Effects;
+using OpenRA.Mods.RA.Move;
 using OpenRA.Network;
 using OpenRA.Traits;
 using OpenRA.Widgets;
-using Gfx = OpenRA.Graphics;
-using OpenRA.Mods.RA.Effects;
 
 namespace OpenRA.Mods.RA.Missions
 {
@@ -237,17 +237,18 @@ namespace OpenRA.Mods.RA.Missions
 
 		void ManageSovietUnits()
 		{
-			var idleSovietUnitsAtRP = ForcesNearLocation(sovietRallyPoint.CenterLocation, 3).Where(a => a.Owner == soviets && a.IsIdle);
+			var idleSovietUnitsAtRP = ForcesNearLocation(sovietRallyPoint.CenterLocation, 3).Where(a => a.Owner == soviets && a.IsIdle && a.HasTrait<Mobile>());
 			if (idleSovietUnitsAtRP.Count() >= SovietGroupSize)
 			{
-				var firstIdleUnit = idleSovietUnitsAtRP.FirstOrDefault();
-				if (firstIdleUnit != null)
+				var firstUnit = idleSovietUnitsAtRP.FirstOrDefault();
+				if (firstUnit != null)
 				{
-					var closestAlliedBuilding = ClosestAlliedBuilding(firstIdleUnit, 20);
+					var closestAlliedBuilding = ClosestAlliedBuilding(firstUnit, 40);
 					if (closestAlliedBuilding != null)
 					{
 						foreach (var unit in idleSovietUnitsAtRP)
 						{
+							unit.Trait<Mobile>().Nudge(unit, unit, true);
 							unit.QueueActivity(new AttackMove.AttackMoveActivity(unit, new Move.Move(closestAlliedBuilding.Location, 3)));
 						}
 					}
@@ -267,15 +268,17 @@ namespace OpenRA.Mods.RA.Missions
 		Actor ClosestAlliedBuilding(Actor actor, int range)
 		{
 			return BuildingsNearLocation(actor.CenterLocation, range)
-					.Where(a => a.Owner == allies2)
-					.OrderBy(a => (actor.Location - a.Location).LengthSquared)
-					.FirstOrDefault();
+				.Where(a => a.Owner == allies2)
+				.OrderBy(a => (actor.Location - a.Location).LengthSquared)
+				.FirstOrDefault();
 		}
 
 		void InitializeSovietFactories()
 		{
-			sovietBarracks.Trait<RallyPoint>().rallyPoint = sovietRallyPoint.Location;
-			sovietWarFactory.Trait<RallyPoint>().rallyPoint = sovietRallyPoint.Location;
+			var sbrp = sovietBarracks.Trait<RallyPoint>();
+			var swrp = sovietWarFactory.Trait<RallyPoint>();
+			sbrp.rallyPoint = swrp.rallyPoint = sovietRallyPoint.Location;
+			sbrp.nearEnough = swrp.nearEnough = 3;
 			sovietBarracks.Trait<PrimaryBuilding>().SetPrimaryProducer(sovietBarracks, true);
 			sovietWarFactory.Trait<PrimaryBuilding>().SetPrimaryProducer(sovietWarFactory, true);
 		}
