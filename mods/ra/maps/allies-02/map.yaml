@@ -2057,6 +2057,11 @@ Rules:
 	E7:
 		AutoTarget:
 			InitialStance: ReturnFire
+		Passenger:
+			Weight: 0
+	EINSTEIN:
+		Passenger:
+			Weight: 0
 	V01:
 		ContainsCrate:
 	TRAN:
