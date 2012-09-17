@@ -76,7 +76,7 @@ namespace OpenRA.Mods.RA.Missions
 		const int SovietVehicleAdditionsTicks = 1500 * 4;
 		const int SovietHelperCash = 2000;
 
-		const int ReinforcementsTicks = 1500 * 1;
+		const int ReinforcementsTicks = 1500 * 12;
 		static readonly string[] Reinforcements = { "2tnk", "2tnk", "2tnk", "2tnk", "2tnk", "2tnk", "1tnk", "1tnk", "jeep", "e1", "e1", "e1", "e1", "e3", "e3", "mcv" };
 		const int ReinforcementsCash = 2000;
 
