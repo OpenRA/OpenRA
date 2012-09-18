@@ -28,9 +28,9 @@ namespace OpenRA.Mods.RA.Missions
 		[Flags]
 		enum Objectives
 		{
-			None,
-			FindEinstein,
-			WaitForHelicopter
+			None = 0,
+			FindEinstein = 1,
+			WaitForHelicopter = 2
 		}
 
 		IEnumerable<string> GetObjectiveText()
