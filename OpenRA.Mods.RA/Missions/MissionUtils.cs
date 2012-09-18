@@ -50,7 +50,7 @@ namespace OpenRA.Mods.RA.Missions
 			return chinook;
 		}
 
-		public static Actor InsertUnitWithChinook(World world, Player owner, string unitName, CPos entry, CPos lz, CPos exit, Action<Actor> afterUnload)
+		public static Pair<Actor, Actor> InsertUnitWithChinook(World world, Player owner, string unitName, CPos entry, CPos lz, CPos exit, Action<Actor> afterUnload)
 		{
 			var unit = world.CreateActor(false, unitName, new TypeDictionary { new OwnerInit(owner) });
 			var chinook = world.CreateActor("tran", new TypeDictionary { new OwnerInit(owner), new LocationInit(entry) });
@@ -63,7 +63,21 @@ namespace OpenRA.Mods.RA.Missions
 			chinook.QueueActivity(new Wait(150));
 			chinook.QueueActivity(new HeliFly(Util.CenterOfCell(exit)));
 			chinook.QueueActivity(new RemoveSelf());
-			return unit;
+			return Pair.New(chinook, unit);
+		}
+
+		public static bool AreaSecuredByPlayer(World world, Player player, PPos location, int range)
+		{
+			var units = ForcesNearLocation(world, location, range);
+			return units.Any() && units.All(a => a.Owner == player);
+		}
+
+		public static Actor ClosestPlayerBuilding(World world, Player player, PPos location, int range)
+		{
+			return world.BuildingsNearLocation(location, range)
+				.Where(a => a.Owner == player)
+				.OrderBy(a => (location - a.CenterLocation).LengthSquared)
+				.FirstOrDefault();
 		}
 	}
 }

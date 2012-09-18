@@ -145,13 +145,7 @@ namespace OpenRA.Mods.RA.Missions
 					}
 					if (currentAttackWave == EinsteinChinookAttackWave)
 					{
-						einsteinChinook = MissionUtils.ExtractUnitWithChinook(
-							world,
-							allies,
-							einstein,
-							extractionLZEntryPoint.Location,
-							extractionLZ.Location,
-							chinookExitPoint.Location);
+						ExtractEinsteinAtLZ();
 					}
 				}
 				if (einsteinChinook != null)
@@ -219,8 +213,7 @@ namespace OpenRA.Mods.RA.Missions
 
 		bool AlliesControlLab()
 		{
-			var units = world.ForcesNearLocation(lab.CenterLocation, LabClearRange);
-			return units.Any() && units.All(a => a.Owner == allies);
+			return MissionUtils.AreaSecuredByPlayer(world, allies, lab.CenterLocation, LabClearRange);
 		}
 
 		void SpawnEinsteinAtLab()
@@ -239,7 +232,18 @@ namespace OpenRA.Mods.RA.Missions
 			}
 		}
 
-		void FlyTanyaToInsertionLZ()
+		void ExtractEinsteinAtLZ()
+		{
+			einsteinChinook = MissionUtils.ExtractUnitWithChinook(
+				world,
+				allies,
+				einstein,
+				extractionLZEntryPoint.Location,
+				extractionLZ.Location,
+				chinookExitPoint.Location);
+		}
+
+		void InsertTanyaAtLZ()
 		{
 			tanya = MissionUtils.InsertUnitWithChinook(
 				world,
@@ -248,11 +252,11 @@ namespace OpenRA.Mods.RA.Missions
 				insertionLZEntryPoint.Location,
 				insertionLZ.Location,
 				chinookExitPoint.Location,
-				unit => 
-				{ 
+				unit =>
+				{
 					Sound.Play("laugh1.aud");
-					unit.QueueActivity(new Move.Move(insertionLZ.Location - new CVec(1, 0))); 
-				});
+					unit.QueueActivity(new Move.Move(insertionLZ.Location - new CVec(1, 0)));
+				}).Second;
 		}
 
 		void SetAlliedUnitsToDefensiveStance()
@@ -295,7 +299,7 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				Media.PlayFMVFullscreen(w, "landing.vqa", () =>
 				{
-					FlyTanyaToInsertionLZ();
+					InsertTanyaAtLZ();
 					SendPatrol();
 					PlayMusic();
 				});
