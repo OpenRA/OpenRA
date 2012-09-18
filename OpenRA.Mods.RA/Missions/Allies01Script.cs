@@ -17,6 +17,7 @@ using OpenRA.Mods.RA.Air;
 using OpenRA.Network;
 using OpenRA.Scripting;
 using OpenRA.Traits;
+using System;
 
 namespace OpenRA.Mods.RA.Missions
 {
@@ -24,13 +25,53 @@ namespace OpenRA.Mods.RA.Missions
 
 	class Allies01Script : IWorldLoaded, ITick
 	{
-		static readonly string[] Objectives =
+		[Flags]
+		enum Objectives
 		{
-			"Find Einstein. Tanya and Einstein must survive.",
-			"Wait for the helicopter and extract Einstein. Tanya and Einstein must survive."
-		};
+			None,
+			FindEinstein,
+			WaitForHelicopter
+		}
 
-		int currentObjective;
+		IEnumerable<string> GetObjectiveText()
+		{
+			var objectives = new List<string>();
+			if (HasObjective(Objectives.FindEinstein))
+			{
+				objectives.Add("Find Einstein. Tanya and Einstein must survive.");
+			}
+			if (HasObjective(Objectives.WaitForHelicopter))
+			{
+				objectives.Add("Wait for the helicopter and extract Einstein. Tanya and Einstein must survive.");
+			}
+			return objectives;
+		}
+
+		bool HasObjective(Objectives o)
+		{
+			return (currentObjectives & o) == o;
+		}
+
+		void AddObjective(Objectives o)
+		{
+			currentObjectives |= o;
+		}
+
+		void RemoveObjective(Objectives o)
+		{
+			currentObjectives &= ~o;
+		}
+
+		void DisplayObjectives()
+		{
+			foreach (var objective in GetObjectiveText())
+			{
+				Game.AddChatLine(Color.LimeGreen, "Objective", objective);
+			}
+			Sound.Play("bleep6.aud");
+		}
+
+		Objectives currentObjectives = Objectives.FindEinstein;
 
 		Player allies;
 		Player soviets;
@@ -68,12 +109,6 @@ namespace OpenRA.Mods.RA.Missions
 		const string ChinookName = "tran";
 		const string SignalFlareName = "flare";
 
-		void DisplayObjective()
-		{
-			Game.AddChatLine(Color.LimeGreen, "Objective", Objectives[currentObjective]);
-			Sound.Play("bleep6.aud");
-		}
-
 		void MissionFailed(string text)
 		{
 			if (allies.WinState != WinState.Undefined)
@@ -108,13 +143,13 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			if (world.FrameNumber % 1500 == 1)
 			{
-				DisplayObjective();
+				DisplayObjectives();
 			}
 			if (world.FrameNumber % 1000 == 0)
 			{
 				Sound.Play(Taunts[world.SharedRandom.Next(Taunts.Length)]);
 			}
-			if (currentObjective == 0)
+			if (HasObjective(Objectives.FindEinstein))
 			{
 				if (AlliesControlLab())
 				{
@@ -122,8 +157,8 @@ namespace OpenRA.Mods.RA.Missions
 					Sound.Play("flaren1.aud");
 					SpawnEinsteinAtLab();
 					SendShips();
-					currentObjective++;
-					DisplayObjective();
+					currentObjectives = Objectives.WaitForHelicopter;
+					DisplayObjectives();
 					currentAttackWaveFrameNumber = world.FrameNumber;
 				}
 				if (lab.Destroyed)
@@ -131,7 +166,7 @@ namespace OpenRA.Mods.RA.Missions
 					MissionFailed("Einstein was killed.");
 				}
 			}
-			else if (currentObjective == 1)
+			else if (HasObjective(Objectives.WaitForHelicopter))
 			{
 				if (world.FrameNumber >= currentAttackWaveFrameNumber + 600)
 				{
@@ -302,6 +337,7 @@ namespace OpenRA.Mods.RA.Missions
 					InsertTanyaAtLZ();
 					SendPatrol();
 					PlayMusic();
+					DisplayObjectives();
 				});
 			});
 		}

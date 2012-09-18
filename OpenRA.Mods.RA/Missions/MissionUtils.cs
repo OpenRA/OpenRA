@@ -16,6 +16,7 @@ using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Air;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
+using System.Drawing;
 
 namespace OpenRA.Mods.RA.Missions
 {
@@ -78,6 +79,13 @@ namespace OpenRA.Mods.RA.Missions
 				.Where(a => a.Owner == player)
 				.OrderBy(a => (location - a.CenterLocation).LengthSquared)
 				.FirstOrDefault();
+		}
+
+		public static IEnumerable<ProductionQueue> FindQueues(World world, Player player, string category)
+		{
+			return world.ActorsWithTrait<ProductionQueue>()
+				.Where(a => a.Actor.Owner == player && a.Trait.Info.Type == category)
+				.Select(a => a.Trait);
 		}
 	}
 }

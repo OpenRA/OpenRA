@@ -182,7 +182,7 @@ namespace OpenRA.Mods.RA.Missions
 					DisplayObjective();
 					SpawnSignalFlare();
 					Sound.Play("flaren1.aud");
-					SendChinook();
+					ExtractEinsteinAtLZ();
 				}
 			}
 			else if (currentObjective == 1 && einsteinChinook != null)
@@ -281,16 +281,9 @@ namespace OpenRA.Mods.RA.Missions
 			sovietWarFactory.Trait<PrimaryBuilding>().SetPrimaryProducer(sovietWarFactory, true);
 		}
 
-		IEnumerable<ProductionQueue> FindQueues(Player player, string category)
-		{
-			return world.ActorsWithTrait<ProductionQueue>()
-				.Where(a => a.Actor.Owner == player && a.Trait.Info.Type == category)
-				.Select(a => a.Trait);
-		}
-
 		void BuildSovietUnit(string category, string unit)
 		{
-			var queue = FindQueues(soviets, category).FirstOrDefault(q => q.CurrentItem() == null);
+			var queue = MissionUtils.FindQueues(world, soviets, category).FirstOrDefault(q => q.CurrentItem() == null);
 			if (queue == null)
 			{
 				return;
@@ -372,16 +365,15 @@ namespace OpenRA.Mods.RA.Missions
 			}
 		}
 
-		void SendChinook()
+		void ExtractEinsteinAtLZ()
 		{
-			einsteinChinook = world.CreateActor(ChinookName, new TypeDictionary { new OwnerInit(allies1), new LocationInit(extractionLZEntryPoint.Location) });
-			einsteinChinook.QueueActivity(new HeliFly(extractionLZ.CenterLocation));
-			einsteinChinook.QueueActivity(new Turn(0));
-			einsteinChinook.QueueActivity(new HeliLand(true, 0));
-			einsteinChinook.QueueActivity(new WaitFor(() => einsteinChinook.Trait<Cargo>().Passengers.Contains(einstein)));
-			einsteinChinook.QueueActivity(new Wait(150));
-			einsteinChinook.QueueActivity(new HeliFly(extractionLZEntryPoint.CenterLocation));
-			einsteinChinook.QueueActivity(new RemoveSelf());
+			einsteinChinook = MissionUtils.ExtractUnitWithChinook(
+				world,
+				allies1,
+				einstein,
+				extractionLZEntryPoint.Location,
+				extractionLZ.Location,
+				extractionLZEntryPoint.Location);
 		}
 
 		bool EngineerSafe()
@@ -390,8 +382,7 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				return false;
 			}
-			var units = world.ForcesNearLocation(engineer.CenterLocation, EngineerSafeRange);
-			return units.Any() && units.All(a => a.Owner == allies1);
+			return MissionUtils.AreaSecuredByPlayer(world, allies1, engineer.CenterLocation, EngineerSafeRange);
 		}
 
 		void RescueEngineer()
