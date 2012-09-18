@@ -145,7 +145,13 @@ namespace OpenRA.Mods.RA.Missions
 					}
 					if (currentAttackWave == EinsteinChinookAttackWave)
 					{
-						FlyEinsteinFromExtractionLZ();
+						einsteinChinook = MissionUtils.ExtractUnitWithChinook(
+							world,
+							allies,
+							einstein,
+							extractionLZEntryPoint.Location,
+							extractionLZ.Location,
+							chinookExitPoint.Location);
 					}
 				}
 				if (einsteinChinook != null)
@@ -211,15 +217,9 @@ namespace OpenRA.Mods.RA.Missions
 			}
 		}
 
-		IEnumerable<Actor> UnitsNearActor(Actor actor, int range)
-		{
-			return world.FindUnitsInCircle(actor.CenterLocation, Game.CellSize * range)
-				.Where(a => a.IsInWorld && a != world.WorldActor && !a.Destroyed && a.HasTrait<IMove>() && !a.Owner.NonCombatant);
-		}
-
 		bool AlliesControlLab()
 		{
-			var units = UnitsNearActor(lab, LabClearRange);
+			var units = world.ForcesNearLocation(lab.CenterLocation, LabClearRange);
 			return units.Any() && units.All(a => a.Owner == allies);
 		}
 
@@ -239,32 +239,20 @@ namespace OpenRA.Mods.RA.Missions
 			}
 		}
 
-		void FlyEinsteinFromExtractionLZ()
-		{
-			einsteinChinook = world.CreateActor(ChinookName, new TypeDictionary { new OwnerInit(allies), new LocationInit(extractionLZEntryPoint.Location) });
-			einsteinChinook.QueueActivity(new HeliFly(extractionLZ.CenterLocation));
-			einsteinChinook.QueueActivity(new Turn(0));
-			einsteinChinook.QueueActivity(new HeliLand(true, 0));
-			einsteinChinook.QueueActivity(new WaitFor(() => einsteinChinook.Trait<Cargo>().Passengers.Contains(einstein)));
-			einsteinChinook.QueueActivity(new Wait(150));
-			einsteinChinook.QueueActivity(new HeliFly(chinookExitPoint.CenterLocation));
-			einsteinChinook.QueueActivity(new RemoveSelf());
-		}
-
 		void FlyTanyaToInsertionLZ()
 		{
-			tanya = world.CreateActor(false, TanyaName, new TypeDictionary { new OwnerInit(allies) });
-			var chinook = world.CreateActor(ChinookName, new TypeDictionary { new OwnerInit(allies), new LocationInit(insertionLZEntryPoint.Location) });
-			chinook.Trait<Cargo>().Load(chinook, tanya);
-			chinook.QueueActivity(new HeliFly(insertionLZ.CenterLocation));
-			chinook.QueueActivity(new Turn(0));
-			chinook.QueueActivity(new HeliLand(true, 0));
-			chinook.QueueActivity(new UnloadCargo(true));
-			chinook.QueueActivity(new CallFunc(() => Sound.Play("laugh1.aud")));
-			chinook.QueueActivity(new CallFunc(() => tanya.QueueActivity(new Move.Move(insertionLZ.Location - new CVec(1, 0)))));
-			chinook.QueueActivity(new Wait(150));
-			chinook.QueueActivity(new HeliFly(chinookExitPoint.CenterLocation));
-			chinook.QueueActivity(new RemoveSelf());
+			tanya = MissionUtils.InsertUnitWithChinook(
+				world,
+				allies,
+				TanyaName,
+				insertionLZEntryPoint.Location,
+				insertionLZ.Location,
+				chinookExitPoint.Location,
+				unit => 
+				{ 
+					Sound.Play("laugh1.aud");
+					unit.QueueActivity(new Move.Move(insertionLZ.Location - new CVec(1, 0))); 
+				});
 		}
 
 		void SetAlliedUnitsToDefensiveStance()

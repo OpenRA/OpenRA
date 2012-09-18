@@ -241,6 +241,7 @@
     <Compile Include="Missions\Allies01Script.cs" />
     <Compile Include="Missions\Allies02Script.cs" />
     <Compile Include="Missions\DefaultShellmapScript.cs" />
+    <Compile Include="Missions\MissionUtils.cs" />
     <Compile Include="Modifiers\FrozenUnderFog.cs" />
     <Compile Include="Modifiers\HiddenUnderFog.cs" />
     <Compile Include="Move\Drag.cs" />

@@ -238,7 +238,7 @@ namespace OpenRA.Mods.RA.Missions
 
 		void ManageSovietUnits()
 		{
-			var idleSovietUnitsAtRP = ForcesNearLocation(sovietRallyPoint.CenterLocation, 3).Where(a => a.Owner == soviets && a.IsIdle && a.HasTrait<Mobile>());
+			var idleSovietUnitsAtRP = world.ForcesNearLocation(sovietRallyPoint.CenterLocation, 3).Where(a => a.Owner == soviets && a.IsIdle && a.HasTrait<Mobile>());
 			if (idleSovietUnitsAtRP.Count() >= SovietGroupSize)
 			{
 				var firstUnit = idleSovietUnitsAtRP.FirstOrDefault();
@@ -255,7 +255,7 @@ namespace OpenRA.Mods.RA.Missions
 					}
 				}
 			}
-			var idleSovietUnits = ForcesNearLocation(allies2BasePoint.CenterLocation, 20).Where(a => a.Owner == soviets && a.IsIdle);
+			var idleSovietUnits = world.ForcesNearLocation(allies2BasePoint.CenterLocation, 20).Where(a => a.Owner == soviets && a.IsIdle);
 			foreach (var unit in idleSovietUnits)
 			{
 				var closestAlliedBuilding = ClosestAlliedBuilding(unit, 40);
@@ -268,7 +268,7 @@ namespace OpenRA.Mods.RA.Missions
 
 		Actor ClosestAlliedBuilding(Actor actor, int range)
 		{
-			return BuildingsNearLocation(actor.CenterLocation, range)
+			return world.BuildingsNearLocation(actor.CenterLocation, range)
 				.Where(a => a.Owner == allies2)
 				.OrderBy(a => (actor.Location - a.Location).LengthSquared)
 				.FirstOrDefault();
@@ -387,29 +387,13 @@ namespace OpenRA.Mods.RA.Missions
 			einsteinChinook.QueueActivity(new RemoveSelf());
 		}
 
-		IEnumerable<Actor> UnitsNearLocation(PPos location, int range)
-		{
-			return world.FindUnitsInCircle(location, Game.CellSize * range)
-				.Where(a => a.IsInWorld && a != world.WorldActor && !a.Destroyed && !a.Owner.NonCombatant);
-		}
-
-		IEnumerable<Actor> BuildingsNearLocation(PPos location, int range)
-		{
-			return UnitsNearLocation(location, range).Where(a => a.HasTrait<Building>() && !a.HasTrait<Wall>());
-		}
-
-		IEnumerable<Actor> ForcesNearLocation(PPos location, int range)
-		{
-			return UnitsNearLocation(location, range).Where(a => a.HasTrait<IMove>());
-		}
-
 		bool EngineerSafe()
 		{
 			if (engineer.Destroyed)
 			{
 				return false;
 			}
-			var units = ForcesNearLocation(engineer.CenterLocation, EngineerSafeRange);
+			var units = world.ForcesNearLocation(engineer.CenterLocation, EngineerSafeRange);
 			return units.Any() && units.All(a => a.Owner == allies1);
 		}
 
