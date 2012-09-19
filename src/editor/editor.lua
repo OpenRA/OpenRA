@@ -474,6 +474,12 @@ function CreateEditor(name)
       event:Skip()
     end)
 
+  editor:Connect(wx.wxEVT_KILL_FOCUS,
+    function (event)
+      if editor:AutoCompActive() then editor:AutoCompCancel() end
+      event:Skip()
+    end)
+
   editor:Connect(wxstc.wxEVT_STC_USERLISTSELECTION,
     function (event)
       local pos = editor:GetCurrentPos()
