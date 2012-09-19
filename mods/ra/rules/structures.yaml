@@ -302,7 +302,7 @@ AGUN:
 		Owner: allies
 		Hotkey: g
 	Valued:
-		Cost: 600
+		Cost: 800
 	Tooltip:
 		Name: AA Gun
 		Description: Anti-Air base defense.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
@@ -342,7 +342,7 @@ DOME:
 		Owner: allies,soviet
 		Hotkey: r
 	Valued:
-		Cost: 1400
+		Cost: 1600
 	Tooltip:
 		Name: Radar Dome
 		Description: Provides an overview of the battlefield.\n  Requires power to operate.
@@ -958,7 +958,7 @@ HPAD:
 		Owner: allies
 		Hotkey: i
 	Valued:
-		Cost: 300
+		Cost: 500
 	Tooltip:
 		Name: Helipad
 		Description: Produces and reloads helicopters
@@ -993,7 +993,7 @@ AFLD:
 		Owner: soviet
 		Hotkey: g
 	Valued:
-		Cost: 300
+		Cost: 500
 	Tooltip:
 		Name: Airstrip
 		Description: Provides radar and off-map support\n  Special Ability: Paratroopers\n  Special Ability: Spy Plane
@@ -1217,7 +1217,7 @@ FIX:
 		Owner: allies,soviet
 		Hotkey: d
 	Valued:
-		Cost: 1000
+		Cost: 1200
 	Tooltip:
 		Name: Service Depot
 		Description: Repairs vehicles, reloads minelayers, and \nallows the construction of additional bases.
