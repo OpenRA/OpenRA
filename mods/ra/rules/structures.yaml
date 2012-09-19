@@ -832,7 +832,7 @@ WEAP:
 	Health:
 		HP: 1500
 	Armor:
-		Type: Light
+		Type: Wood
 	RevealsShroud:
 		Range: 4
 	Bib:
@@ -1004,7 +1004,7 @@ AFLD:
 	Health:
 		HP: 1000
 	Armor:
-		Type: Heavy
+		Type: Wood
 	RevealsShroud:
 		Range: 7
 	Exit@1:
