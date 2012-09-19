@@ -156,7 +156,7 @@ V2RL:
 	RevealsShroud:
 		Range: 6
 	Turreted:
-		ROT: 2
+		ROT: 1
 	AttackTurreted:
 		PrimaryWeapon: 120mm
 		SecondaryWeapon: MammothTusk
@@ -175,8 +175,8 @@ V2RL:
 	SelfHealing:
 		Step: 1
 		Ticks: 1
-		HealIfBelow: 50%
-		DamageCooldown: 200
+		HealIfBelow: 80%
+		DamageCooldown: 150
 	Selectable:
 		Bounds: 44,38,0,-4
 
