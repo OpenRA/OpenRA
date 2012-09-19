@@ -91,6 +91,10 @@ endif()
 # install IDE executable
 if(WIN32)
   install(TARGETS ${IDE_FRONTEND} DESTINATION ${BINDIR})
+else()
+  set(IDE_DATADIR "${CMAKE_INSTALL_PREFIX}/${DATADIR}")
+  configure_file(zbstudio/zbstudio.in "${CMAKE_BINARY_DIR}/${IDE_FRONTEND}")
+  install(PROGRAMS "${CMAKE_BINARY_DIR}/${IDE_FRONTEND}" DESTINATION ${BINDIR})
 endif()
 
 # install source files
