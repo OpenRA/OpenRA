@@ -218,7 +218,7 @@ debugger.shell = function(expression, isstatement)
   -- check if the debugger is running and may be waiting for a response.
   -- allow that request to finish, otherwise updateWatchesSync() does nothing.
   if debugger.running then debugger.update() end
-  if debugger.server and not debugger.running then
+  if debugger.server and not debugger.running and not debugger.scratchpad then
     copas.addthread(function ()
         -- exec command is not expected to return anything.
         -- eval command returns 0 or more results.
@@ -498,7 +498,7 @@ debugger.breakpoint = function(file, line, state)
   debugger.handleAsync((state and "setb " or "delb ") .. file .. " " .. line)
 end
 debugger.quickeval = function(var, callback)
-  if debugger.server and not debugger.running then
+  if debugger.server and not debugger.running and not debugger.scratchpad then
     copas.addthread(function ()
       local _, values, err = debugger.evaluate(var)
       local val = err
