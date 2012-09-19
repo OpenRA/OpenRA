@@ -720,11 +720,10 @@ funclist:Connect(wx.wxEVT_SET_FOCUS,
   function (event)
     event:Skip()
 
-    -- parse current file and update list
     local editor = GetEditor()
+    if (editor and not (editor.spec and editor.spec.isfndef)) then return end
 
-    if (not (editor and editor.spec and editor.spec.isfndef)) then return end
-
+    -- parse current file and update list
     -- first populate with the current label to minimize flicker
     -- then populate the list and update the label
     local current = funclist:GetCurrentSelection()
@@ -735,7 +734,7 @@ funclist:Connect(wx.wxEVT_SET_FOCUS,
     funclist:SetSelection(0)
 
     local lines = 0
-    local linee = editor:GetLineCount()-1
+    local linee = (editor and editor:GetLineCount() or 0)-1
     for line=lines,linee do
       local tx = editor:GetLine(line)
       local s,_,cap,l = editor.spec.isfndef(tx)
