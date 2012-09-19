@@ -3,9 +3,12 @@ cmake_minimum_required(VERSION 2.8)
 
 # set the default build type (this needs to be done *before* project command)
 if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE "RelWithDebInfo" CACHE STRING
-    "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel." FORCE)
+  set(CMAKE_BUILD_TYPE "RelWithDebInfo" CACHE STRING "Choose the type of build." FORCE)
+  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "RelWithDebInfo" "MinSizeRel")
 endif()
+
+# restrict configuration types to the selected build type
+set(CMAKE_CONFIGURATION_TYPES ${CMAKE_BUILD_TYPE} CACHE INTERNAL "" FORCE)
 
 # set the project name (the actual executable name is controlled by IDE_FRONTEND option)
 project("ide")
@@ -31,20 +34,18 @@ function(check_lua_module MODULE)
   endif()
 endfunction()
 
-# search for Lua 5.1
-find_package(Lua51 REQUIRED)
-include_directories("${LUA_INCLUDE_DIR}")
+# check for Lua modules
+if(UNIX AND NOT APPLE)
+  check_lua_module(wx TRUE)
+  check_lua_module(socket TRUE)
+  check_lua_module(copas ${USE_SYSTEM_COPAS})
+  check_lua_module(luainspect ${USE_SYSTEM_LUAINSPECT})
+  check_lua_module(mobdebug ${USE_SYSTEM_MOBDEBUG})
+endif()
 
-# search for wxWidgets
-find_package(wxWidgets REQUIRED)
-include("${wxWidgets_USE_FILE}")
-
-# search for Lua modules
-check_lua_module(wx TRUE)
-check_lua_module(socket TRUE)
-check_lua_module(copas ${USE_SYSTEM_COPAS})
-check_lua_module(luainspect ${USE_SYSTEM_LUAINSPECT})
-check_lua_module(mobdebug ${USE_SYSTEM_MOBDEBUG})
+# add an user option to select the IDE frontend
+set(IDE_FRONTEND "zbstudio" CACHE STRING "Choose the IDE frontend to build.")
+set_property(CACHE IDE_FRONTEND PROPERTY STRINGS "estrela" "zbstudio")
 
 # adds an user option to enable/disable a particular system-wide Lua module
 function(add_system_lua_module_option MODULE)
@@ -55,51 +56,68 @@ function(add_system_lua_module_option MODULE)
   endif()
 endfunction()
 
-# add an user option to select the IDE frontend
-set(IDE_FRONTEND "zbstudio" CACHE STRING "Choose the IDE frontend to build, options are: estrela zbstudio.")
-if((NOT IDE_FRONTEND STREQUAL "estrela") AND (NOT IDE_FRONTEND STREQUAL "zbstudio"))
-  message(FATAL_ERROR "Invalid IDE frontend specified: ${IDE_FRONTEND}")
+# add user options to select between system-wide and bundled Lua modules
+if(UNIX AND NOT APPLE)
+  add_system_lua_module_option(copas)
+  add_system_lua_module_option(luainspect)
+  add_system_lua_module_option(mobdebug)
 endif()
 
-# add user options to select between system-wide and bundled Lua modules
-add_system_lua_module_option(copas)
-add_system_lua_module_option(luainspect)
-add_system_lua_module_option(mobdebug)
-
-# list of C\C++ sources for building IDE executable file
-set(SOURCES estrela/unix_starter.cpp)
-
 # add the executable file to our project
-add_executable(${IDE_FRONTEND} WIN32 ${SOURCES})
-target_link_libraries(${IDE_FRONTEND} ${LUA_LIBRARIES} ${wxWidgets_LIBRARIES})
+if(WIN32)
+  add_executable(${IDE_FRONTEND} WIN32 estrela/win32_starter.c ${IDE_FRONTEND}/res/${IDE_FRONTEND}.rc)
+endif()
+
+# link to the static multi-threaded CRT under MSVC
+if(MSVC)
+  string(TOUPPER ${CMAKE_BUILD_TYPE} BUILD_TYPE)
+  foreach(FLAGS_VAR CMAKE_C_FLAGS CMAKE_CXX_FLAGS CMAKE_C_FLAGS_${BUILD_TYPE} CMAKE_CXX_FLAGS_${BUILD_TYPE})
+    string(REGEX REPLACE "/MD" "/MT" ${FLAGS_VAR} ${${FLAGS_VAR}})
+    string(REGEX REPLACE "/MDd" "/MTd" ${FLAGS_VAR} ${${FLAGS_VAR}})
+  endforeach()
+endif()
 
 # determine the install directories
-set(BINDIR "bin")
-set(DATADIR "share/${IDE_FRONTEND}")
-set(DOCDIR "share/doc/${IDE_FRONTEND}")
-
-# pass the data directory to the starter application
-add_definitions("-DDATADIR=\"${CMAKE_INSTALL_PREFIX}/${DATADIR}\"")
+if(WIN32)
+  set(BINDIR ".")
+  set(DATADIR ".")
+  set(DOCDIR ".")
+else()
+  set(BINDIR "bin")
+  set(DATADIR "share/${IDE_FRONTEND}")
+  set(DOCDIR "share/doc/${IDE_FRONTEND}")
+endif()
 
 # install IDE executable
-install(TARGETS ${IDE_FRONTEND} DESTINATION ${BINDIR})
+if(WIN32)
+  install(TARGETS ${IDE_FRONTEND} DESTINATION ${BINDIR})
+endif()
 
 # install source files
 install(DIRECTORY src DESTINATION ${DATADIR})
 
 # install Lua modules
-if(NOT ${USE_SYSTEM_COPAS})
+if(NOT USE_SYSTEM_COPAS)
   install(DIRECTORY lualibs/copas lualibs/coxpcall DESTINATION ${DATADIR}/lualibs)
 endif()
-if(NOT ${USE_SYSTEM_LUAINSPECT})
+if(NOT USE_SYSTEM_LUAINSPECT)
   install(DIRECTORY lualibs/luainspect lualibs/metalua DESTINATION ${DATADIR}/lualibs)
 endif()
-if(NOT ${USE_SYSTEM_MOBDEBUG})
+if(NOT USE_SYSTEM_MOBDEBUG)
   install(DIRECTORY lualibs/mobdebug DESTINATION ${DATADIR}/lualibs)
 endif()
 
 # install miscellaneous documentation files
 install(FILES CHANGELOG.md LICENSE README.md DESTINATION ${DOCDIR})
+
+# install precompiled dependencies
+if(WIN32)
+  install(FILES bin/lua.exe bin/lua5.1.dll bin/lua51.dll bin/winapi.dll bin/wx.dll DESTINATION bin)
+  install(FILES bin/clibs/mime/core.dll DESTINATION bin/clibs/mime)
+  install(FILES bin/clibs/socket/core.dll DESTINATION bin/clibs/socket)
+  install(FILES lualibs/ltn12.lua lualibs/mime.lua lualibs/socket.lua DESTINATION lualibs)
+  install(DIRECTORY lualibs/socket DESTINATION lualibs)
+endif()
 
 # install IDE frontend-specific files
 if(IDE_FRONTEND STREQUAL "estrela")
@@ -116,9 +134,13 @@ else()
     DESTINATION ${DATADIR}/interpreters)
   install(FILES spec/lua.lua DESTINATION ${DATADIR}/spec)
   install(DIRECTORY zbstudio/res DESTINATION ${DATADIR}/zbstudio
-    PATTERN icons EXCLUDE PATTERN zbstudio.desktop EXCLUDE)
-  install(DIRECTORY zbstudio/res/icons/ DESTINATION share/icons/hicolor)
-  install(FILES zbstudio/res/zbstudio.desktop DESTINATION share/applications)
+    PATTERN icons EXCLUDE PATTERN zbstudio.desktop EXCLUDE PATTERN zbstudio.rc EXCLUDE)
   file(GLOB FILELIST "${CMAKE_SOURCE_DIR}/zbstudio/*.lua")
   install(FILES ${FILELIST} DESTINATION ${DATADIR}/zbstudio)
+
+  # install .desktop file and hicolor icon theme on Linux
+  if(UNIX AND NOT APPLE)
+    install(DIRECTORY zbstudio/res/icons/ DESTINATION share/icons/hicolor)
+    install(FILES zbstudio/res/zbstudio.desktop DESTINATION share/applications)
+  endif()
 endif()
