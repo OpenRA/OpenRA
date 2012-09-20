@@ -4,7 +4,7 @@ local win = ide.osname == "Windows"
 return {
   name = "Moai",
   description = "Moai mobile platform",
-  api = {"baselib"},
+  api = {"baselib", "moai"},
   frun = function(self,wfilename,rundebug)
     moai = moai or ide.config.path.moai -- check if the path is configured
     if not moai then

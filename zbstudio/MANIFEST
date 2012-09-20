@@ -3,6 +3,7 @@ LICENSE
 README.md
 api/lua/baselib.lua
 api/lua/love2d.lua
+api/lua/moai.lua
 api/readme.txt
 cfg/user-sample.lua
 interpreters/love2d.lua
