@@ -740,7 +740,9 @@ end
 ----------------------------------------------------
 -- function list for current file
 
-funclist:Connect(wx.wxEVT_SET_FOCUS,
+-- wx.wxEVT_SET_FOCUS is not triggered for wxChoice on Mac (wx 2.8.12),
+-- so use wx.wxEVT_LEFT_DOWN instead
+funclist:Connect(ide.osname == 'Macintosh' and wx.wxEVT_LEFT_DOWN or wx.wxEVT_SET_FOCUS,
   function (event)
     event:Skip()
 
