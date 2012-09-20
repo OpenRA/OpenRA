@@ -327,9 +327,10 @@ namespace OpenRA
 
 		internal static void Run()
 		{
+			var idealFrameTime = 1.0 / Settings.Graphics.MaxFramerate;
+			
 			while (!quit)
 			{
-				var idealFrameTime = 1.0 / Settings.Graphics.MaxFramerate;
 				var sw = new Stopwatch();
 
 				Tick( orderManager, viewport );
