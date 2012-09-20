@@ -28,13 +28,49 @@ namespace OpenRA.Mods.RA.Missions
 
 	class Allies02Script : IWorldLoaded, ITick
 	{
-		static readonly string[] Objectives =
+		[Flags]
+		enum Allies02Objectives
 		{
-			"Hold off the Soviet forces and destroy the SAM sites. Tanya and Einstein must survive.",
-			"Wait for the helicopter and extract Einstein. Tanya and Einstein must survive."
-		};
+			None = 0,
+			DestroySamSites = 1,
+			WaitForHelicopter = 2
+		}
 
-		int currentObjective;
+		IEnumerable<string> GetObjectiveText()
+		{
+			var objectives = new List<string>();
+			if (MissionUtils.HasFlag(currentObjectives, Allies02Objectives.DestroySamSites))
+			{
+				objectives.Add("Hold off the Soviet forces and destroy the SAM sites. Tanya and Einstein must survive.");
+			}
+			if (MissionUtils.HasFlag(currentObjectives, Allies02Objectives.WaitForHelicopter))
+			{
+				objectives.Add("Wait for the helicopter and extract Einstein. Tanya and Einstein must survive.");
+			}
+			return objectives;
+		}
+
+		Allies02Objectives currentObjectives = Allies02Objectives.DestroySamSites;
+
+		void DisplayObjective(string objective)
+		{
+			Game.AddChatLine(Color.LimeGreen, "Objective", objective);
+			Sound.Play("bleep6.aud");
+		}
+
+		void DisplayHint(string objective)
+		{
+			Game.AddChatLine(Color.Yellow, "Hint", objective);
+			Sound.Play("bleep6.aud");
+		}
+
+		void DisplayObjectives()
+		{
+			foreach (var objective in GetObjectiveText())
+			{
+				DisplayObjective(objective);
+			}
+		}
 
 		Actor sam1;
 		Actor sam2;
@@ -92,12 +128,6 @@ namespace OpenRA.Mods.RA.Missions
 		const string SignalFlareName = "flare";
 		const int EngineerSafeRange = 5;
 
-		void DisplayObjective()
-		{
-			Game.AddChatLine(Color.LimeGreen, "Objective", Objectives[currentObjective]);
-			Sound.Play("bleep6.aud");
-		}
-
 		void MissionFailed(string text)
 		{
 			if (allies1.WinState != WinState.Undefined)
@@ -140,7 +170,7 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			if (world.FrameNumber % 3500 == 1)
 			{
-				DisplayObjective();
+				DisplayObjectives();
 			}
 			if (world.FrameNumber % 50 == 1)
 			{
@@ -174,18 +204,19 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				RescueEngineer();
 			}
-			if (currentObjective == 0)
+			if (MissionUtils.HasFlag(currentObjectives, Allies02Objectives.DestroySamSites))
 			{
 				if (sam1.Destroyed && sam2.Destroyed && sam3.Destroyed && sam4.Destroyed)
 				{
-					currentObjective++;
-					DisplayObjective();
+					currentObjectives = MissionUtils.RemoveFlag(currentObjectives, Allies02Objectives.DestroySamSites);
+					currentObjectives = MissionUtils.AddFlag(currentObjectives, Allies02Objectives.WaitForHelicopter);
+					DisplayObjectives();
 					SpawnSignalFlare();
 					Sound.Play("flaren1.aud");
 					ExtractEinsteinAtLZ();
 				}
 			}
-			else if (currentObjective == 1 && einsteinChinook != null)
+			else if (MissionUtils.HasFlag(currentObjectives, Allies02Objectives.WaitForHelicopter) && einsteinChinook != null)
 			{
 				if (einsteinChinook.Destroyed)
 				{

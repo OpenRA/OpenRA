@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Missions
 	class Allies01Script : IWorldLoaded, ITick
 	{
 		[Flags]
-		enum Objectives
+		enum Allies01Objectives
 		{
 			None = 0,
 			FindEinstein = 1,
@@ -36,16 +36,18 @@ namespace OpenRA.Mods.RA.Missions
 		IEnumerable<string> GetObjectiveText()
 		{
 			var objectives = new List<string>();
-			if (MissionUtils.HasFlag(currentObjectives, Objectives.FindEinstein))
+			if (MissionUtils.HasFlag(currentObjectives, Allies01Objectives.FindEinstein))
 			{
 				objectives.Add("Find Einstein. Tanya and Einstein must survive.");
 			}
-			if (MissionUtils.HasFlag(currentObjectives, Objectives.WaitForHelicopter))
+			if (MissionUtils.HasFlag(currentObjectives, Allies01Objectives.WaitForHelicopter))
 			{
 				objectives.Add("Wait for the helicopter and extract Einstein. Tanya and Einstein must survive.");
 			}
 			return objectives;
 		}
+
+		Allies01Objectives currentObjectives = Allies01Objectives.FindEinstein;
 
 		void DisplayObjective(string objective)
 		{
@@ -66,8 +68,6 @@ namespace OpenRA.Mods.RA.Missions
 				DisplayObjective(objective);
 			}
 		}
-
-		Objectives currentObjectives = Objectives.FindEinstein;
 
 		Player allies;
 		Player soviets;
@@ -145,7 +145,7 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				Sound.Play(Taunts[world.SharedRandom.Next(Taunts.Length)]);
 			}
-			if (MissionUtils.HasFlag(currentObjectives, Objectives.FindEinstein))
+			if (MissionUtils.HasFlag(currentObjectives, Allies01Objectives.FindEinstein))
 			{
 				if (AlliesControlLab())
 				{
@@ -153,7 +153,8 @@ namespace OpenRA.Mods.RA.Missions
 					Sound.Play("flaren1.aud");
 					SpawnEinsteinAtLab();
 					SendShips();
-					currentObjectives = Objectives.WaitForHelicopter;
+					currentObjectives = MissionUtils.RemoveFlag(currentObjectives, Allies01Objectives.FindEinstein);
+					currentObjectives = MissionUtils.AddFlag(currentObjectives, Allies01Objectives.WaitForHelicopter);
 					DisplayObjectives();
 					currentAttackWaveFrameNumber = world.FrameNumber;
 				}
@@ -162,7 +163,7 @@ namespace OpenRA.Mods.RA.Missions
 					MissionFailed("Einstein was killed.");
 				}
 			}
-			else if (MissionUtils.HasFlag(currentObjectives, Objectives.WaitForHelicopter))
+			else if (MissionUtils.HasFlag(currentObjectives, Allies01Objectives.WaitForHelicopter))
 			{
 				if (world.FrameNumber >= currentAttackWaveFrameNumber + 600)
 				{
