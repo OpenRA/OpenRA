@@ -87,5 +87,26 @@ namespace OpenRA.Mods.RA.Missions
 				.Where(a => a.Actor.Owner == player && a.Trait.Info.Type == category)
 				.Select(a => a.Trait);
 		}
+
+		public static T AddFlag<T>(T flags, T flag)
+		{
+			var fs = Convert.ToInt32(flags);
+			var f = Convert.ToInt32(flag);
+			return (T)(object)(fs | f);
+		}
+
+		public static T RemoveFlag<T>(T flags, T flag)
+		{
+			var fs = Convert.ToInt32(flags);
+			var f = Convert.ToInt32(flag);
+			return (T)(object)(fs & ~f);
+		}
+
+		public static bool HasFlag<T>(T flags, T flag)
+		{
+			var fs = Convert.ToInt32(flags);
+			var f = Convert.ToInt32(flag);
+			return (fs & f) == f;
+		}
 	}
 }

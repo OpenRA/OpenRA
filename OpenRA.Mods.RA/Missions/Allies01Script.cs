@@ -36,39 +36,35 @@ namespace OpenRA.Mods.RA.Missions
 		IEnumerable<string> GetObjectiveText()
 		{
 			var objectives = new List<string>();
-			if (HasObjective(Objectives.FindEinstein))
+			if (MissionUtils.HasFlag(currentObjectives, Objectives.FindEinstein))
 			{
 				objectives.Add("Find Einstein. Tanya and Einstein must survive.");
 			}
-			if (HasObjective(Objectives.WaitForHelicopter))
+			if (MissionUtils.HasFlag(currentObjectives, Objectives.WaitForHelicopter))
 			{
 				objectives.Add("Wait for the helicopter and extract Einstein. Tanya and Einstein must survive.");
 			}
 			return objectives;
 		}
 
-		bool HasObjective(Objectives o)
+		void DisplayObjective(string objective)
 		{
-			return (currentObjectives & o) == o;
+			Game.AddChatLine(Color.LimeGreen, "Objective", objective);
+			Sound.Play("bleep6.aud");
 		}
 
-		void AddObjective(Objectives o)
+		void DisplayHint(string objective)
 		{
-			currentObjectives |= o;
-		}
-
-		void RemoveObjective(Objectives o)
-		{
-			currentObjectives &= ~o;
+			Game.AddChatLine(Color.Yellow, "Hint", objective);
+			Sound.Play("bleep6.aud");
 		}
 
 		void DisplayObjectives()
 		{
 			foreach (var objective in GetObjectiveText())
 			{
-				Game.AddChatLine(Color.LimeGreen, "Objective", objective);
+				DisplayObjective(objective);
 			}
-			Sound.Play("bleep6.aud");
 		}
 
 		Objectives currentObjectives = Objectives.FindEinstein;
@@ -149,7 +145,7 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				Sound.Play(Taunts[world.SharedRandom.Next(Taunts.Length)]);
 			}
-			if (HasObjective(Objectives.FindEinstein))
+			if (MissionUtils.HasFlag(currentObjectives, Objectives.FindEinstein))
 			{
 				if (AlliesControlLab())
 				{
@@ -166,7 +162,7 @@ namespace OpenRA.Mods.RA.Missions
 					MissionFailed("Einstein was killed.");
 				}
 			}
-			else if (HasObjective(Objectives.WaitForHelicopter))
+			else if (MissionUtils.HasFlag(currentObjectives, Objectives.WaitForHelicopter))
 			{
 				if (world.FrameNumber >= currentAttackWaveFrameNumber + 600)
 				{
