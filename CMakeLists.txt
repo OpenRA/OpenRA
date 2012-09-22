@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.8)
 
 # set the default build type (this needs to be done *before* project command)
 if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE "RelWithDebInfo" CACHE STRING "Choose the type of build." FORCE)
+  set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build." FORCE)
   set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "RelWithDebInfo" "MinSizeRel")
 endif()
 
@@ -82,6 +82,11 @@ if(WIN32)
   set(BINDIR ".")
   set(DATADIR ".")
   set(DOCDIR ".")
+elseif(APPLE)
+  set(ROOTDIR "ZeroBraneStudio.app/Contents")
+  set(BINDIR "${ROOTDIR}/MacOS")
+  set(DATADIR "${ROOTDIR}/ZeroBraneStudio")
+  set(DOCDIR "${DATADIR}")
 else()
   set(BINDIR "bin")
   set(DATADIR "share/${IDE_FRONTEND}")
@@ -91,14 +96,27 @@ endif()
 # install IDE executable
 if(WIN32)
   install(TARGETS ${IDE_FRONTEND} DESTINATION ${BINDIR})
+elseif(APPLE)
+  install(PROGRAMS zbstudio/ZeroBraneStudio.app/Contents/MacOS/ZeroBraneStudio DESTINATION ${BINDIR})
 else()
   set(IDE_DATADIR "${CMAKE_INSTALL_PREFIX}/${DATADIR}")
   configure_file(zbstudio/zbstudio.in "${CMAKE_BINARY_DIR}/${IDE_FRONTEND}")
   install(PROGRAMS "${CMAKE_BINARY_DIR}/${IDE_FRONTEND}" DESTINATION ${BINDIR})
 endif()
 
-# install source files
-install(DIRECTORY src DESTINATION ${DATADIR})
+# install precompiled dependencies
+if(WIN32)
+  install(FILES bin/clibs/mime/core.dll DESTINATION bin/clibs/mime)
+  install(FILES bin/clibs/socket/core.dll DESTINATION bin/clibs/socket)
+  install(FILES bin/lua.exe bin/lua5.1.dll bin/lua51.dll bin/winapi.dll bin/wx.dll DESTINATION bin)
+elseif(APPLE)
+  install(PROGRAMS bin/clibs/mime/core.dylib DESTINATION ${DATADIR}/bin/clibs/mime)
+  install(PROGRAMS bin/clibs/socket/core.dylib DESTINATION ${DATADIR}/bin/clibs/socket)
+  install(PROGRAMS bin/lua.app/Contents/MacOS/lua DESTINATION ${DATADIR}/bin/lua.app/Contents/MacOS)
+  install(FILES bin/lua.app/Contents/Info.plist DESTINATION ${DATADIR}/bin/lua.app/Contents)
+  file(GLOB FILELIST "${CMAKE_SOURCE_DIR}/bin/*.dylib")
+  install(PROGRAMS ${FILELIST} bin/lua DESTINATION ${DATADIR}/bin)
+endif()
 
 # install Lua modules
 if(NOT USE_SYSTEM_COPAS)
@@ -110,18 +128,16 @@ endif()
 if(NOT USE_SYSTEM_MOBDEBUG)
   install(DIRECTORY lualibs/mobdebug DESTINATION ${DATADIR}/lualibs)
 endif()
+if(WIN32 OR APPLE)
+  install(DIRECTORY lualibs/socket DESTINATION ${DATADIR}/lualibs)
+  install(FILES lualibs/ltn12.lua lualibs/mime.lua lualibs/socket.lua DESTINATION ${DATADIR}/lualibs)
+endif()
+
+# install source files
+install(DIRECTORY src DESTINATION ${DATADIR})
 
 # install miscellaneous documentation files
 install(FILES CHANGELOG.md LICENSE README.md DESTINATION ${DOCDIR})
-
-# install precompiled dependencies
-if(WIN32)
-  install(FILES bin/lua.exe bin/lua5.1.dll bin/lua51.dll bin/winapi.dll bin/wx.dll DESTINATION bin)
-  install(FILES bin/clibs/mime/core.dll DESTINATION bin/clibs/mime)
-  install(FILES bin/clibs/socket/core.dll DESTINATION bin/clibs/socket)
-  install(FILES lualibs/ltn12.lua lualibs/mime.lua lualibs/socket.lua DESTINATION lualibs)
-  install(DIRECTORY lualibs/socket DESTINATION lualibs)
-endif()
 
 # install IDE frontend-specific files
 if(IDE_FRONTEND STREQUAL "estrela")
@@ -131,16 +147,23 @@ if(IDE_FRONTEND STREQUAL "estrela")
   file(GLOB FILELIST "${CMAKE_SOURCE_DIR}/estrela/*.lua")
   install(FILES ${FILELIST} estrela/readme.txt DESTINATION ${DATADIR}/estrela)
 else()
-  install(FILES api/lua/baselib.lua api/lua/love2d.lua DESTINATION ${DATADIR}/api/lua)
+  install(FILES api/lua/baselib.lua api/lua/love2d.lua api/lua/moai.lua DESTINATION ${DATADIR}/api/lua)
   install(FILES api/readme.txt DESTINATION ${DATADIR}/api)
   install(FILES cfg/user-sample.lua DESTINATION ${DATADIR}/cfg)
   install(FILES interpreters/love2d.lua interpreters/luadeb.lua interpreters/moai.lua
     DESTINATION ${DATADIR}/interpreters)
   install(FILES spec/lua.lua DESTINATION ${DATADIR}/spec)
-  install(DIRECTORY zbstudio/res DESTINATION ${DATADIR}/zbstudio
-    PATTERN icons EXCLUDE PATTERN zbstudio.desktop EXCLUDE PATTERN zbstudio.rc EXCLUDE)
+  install(DIRECTORY zbstudio/res/16 DESTINATION ${DATADIR}/zbstudio/res)
+  install(FILES zbstudio/res/16.ico zbstudio/res/32.ico zbstudio/res/zerobrane.png
+    DESTINATION ${DATADIR}/zbstudio/res)
   file(GLOB FILELIST "${CMAKE_SOURCE_DIR}/zbstudio/*.lua")
   install(FILES ${FILELIST} DESTINATION ${DATADIR}/zbstudio)
+
+  # install icon pack and .plist file on OS X
+  if(APPLE)
+    install(DIRECTORY zbstudio/ZeroBraneStudio.app/Contents/Resources DESTINATION ${ROOTDIR})
+    install(FILES zbstudio/ZeroBraneStudio.app/Contents/Info.plist DESTINATION ${ROOTDIR})
+  endif()
 
   # install .desktop file and hicolor icon theme on Linux
   if(UNIX AND NOT APPLE)
