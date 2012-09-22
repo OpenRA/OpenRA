@@ -22,20 +22,16 @@ namespace OpenRA.Mods.RA.Missions
 {
 	public static class MissionUtils
 	{
-		public static IEnumerable<Actor> UnitsNearLocation(this World world, PPos location, int range)
+		public static IEnumerable<Actor> FindAliveCombatantActorsInCircle(this World world, PPos location, int range)
 		{
 			return world.FindUnitsInCircle(location, Game.CellSize * range)
 				.Where(a => a.IsInWorld && a != world.WorldActor && !a.Destroyed && !a.Owner.NonCombatant);
 		}
 
-		public static IEnumerable<Actor> BuildingsNearLocation(this World world, PPos location, int range)
+		public static IEnumerable<Actor> FindAliveNonCombatantActorsInCircle(this World world, PPos location, int range)
 		{
-			return UnitsNearLocation(world, location, range).Where(a => a.HasTrait<Building>() && !a.HasTrait<Wall>());
-		}
-
-		public static IEnumerable<Actor> ForcesNearLocation(this World world, PPos location, int range)
-		{
-			return UnitsNearLocation(world, location, range).Where(a => a.HasTrait<IMove>());
+			return world.FindUnitsInCircle(location, Game.CellSize * range)
+				.Where(a => a.IsInWorld && a != world.WorldActor && !a.Destroyed && a.Owner.NonCombatant);
 		}
 
 		public static Actor ExtractUnitWithChinook(World world, Player owner, Actor unit, CPos entry, CPos lz, CPos exit)
@@ -67,16 +63,24 @@ namespace OpenRA.Mods.RA.Missions
 			return Pair.New(chinook, unit);
 		}
 
-		public static bool AreaSecuredByPlayer(World world, Player player, PPos location, int range)
+		public static bool AreaSecuredWithUnits(World world, Player player, PPos location, int range)
 		{
-			var units = ForcesNearLocation(world, location, range);
+			var units = world.FindAliveCombatantActorsInCircle(location, range).Where(a => a.HasTrait<IMove>());
 			return units.Any() && units.All(a => a.Owner == player);
+		}
+
+		public static Actor ClosestPlayerUnit(World world, Player player, PPos location, int range)
+		{
+			return world.FindAliveCombatantActorsInCircle(location, range)
+				.Where(a => a.Owner == player && a.HasTrait<IMove>())
+				.OrderBy(a => (location - a.CenterLocation).LengthSquared)
+				.FirstOrDefault();
 		}
 
 		public static Actor ClosestPlayerBuilding(World world, Player player, PPos location, int range)
 		{
-			return world.BuildingsNearLocation(location, range)
-				.Where(a => a.Owner == player)
+			return world.FindAliveCombatantActorsInCircle(location, range)
+				.Where(a => a.Owner == player && a.HasTrait<Building>() && !a.HasTrait<Wall>())
 				.OrderBy(a => (location - a.CenterLocation).LengthSquared)
 				.FirstOrDefault();
 		}

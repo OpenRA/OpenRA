@@ -78,7 +78,6 @@ namespace OpenRA.Mods.RA.Missions
 		Actor sam4;
 		Actor tanya;
 		Actor einstein;
-		Actor engineer;
 
 		Actor chinookHusk;
 		Actor allies2BasePoint;
@@ -89,6 +88,9 @@ namespace OpenRA.Mods.RA.Missions
 		Actor badgerDropPoint;
 		Actor sovietRallyPoint;
 		Actor flamersEntryPoint;
+		Actor townPoint;
+		Actor sovietTownAttackPoint1;
+		Actor sovietTownAttackPoint2;
 
 		Actor einsteinChinook;
 
@@ -126,7 +128,10 @@ namespace OpenRA.Mods.RA.Missions
 
 		const string ChinookName = "tran";
 		const string SignalFlareName = "flare";
-		const int EngineerSafeRange = 5;
+
+		const int AlliedTownTransferRange = 15;
+		const int SovietTownAttackGroupRange = 5;
+		const int SovietTownMoveNearEnough = 5;
 
 		void MissionFailed(string text)
 		{
@@ -172,7 +177,7 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				DisplayObjectives();
 			}
-			if (world.FrameNumber % 50 == 1)
+			if (world.FrameNumber % 50 == 1 && chinookHusk.IsInWorld)
 			{
 				world.Add(new Smoke(world, chinookHusk.CenterLocation, "smoke_m"));
 			}
@@ -200,9 +205,10 @@ namespace OpenRA.Mods.RA.Missions
 				BuildSovietUnits();
 				ManageSovietUnits();
 			}
-			if (EngineerSafe())
+			if (AlliesNearTown())
 			{
-				RescueEngineer();
+				TransferTownUnitsToAllies();
+				SovietsAttackTown();
 			}
 			if (MissionUtils.HasFlag(currentObjectives, Allies02Objectives.DestroySamSites))
 			{
@@ -235,7 +241,7 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				MissionFailed("Einstein was killed.");
 			}
-			else if (!world.Actors.Any(a => a.IsInWorld && a.HasTrait<Building>() && !a.HasTrait<Wall>() && a.Owner == allies2))
+			else if (!world.FindAliveCombatantActorsInCircle(allies2BasePoint.CenterLocation, 20).Any(a => a.HasTrait<Building>() && !a.HasTrait<Wall>() && a.Owner == allies2))
 			{
 				MissionFailed("The Allied reinforcements have been defeated.");
 			}
@@ -269,7 +275,7 @@ namespace OpenRA.Mods.RA.Missions
 
 		void ManageSovietUnits()
 		{
-			var idleSovietUnitsAtRP = world.ForcesNearLocation(sovietRallyPoint.CenterLocation, 3).Where(a => a.Owner == soviets && a.IsIdle && a.HasTrait<Mobile>());
+			var idleSovietUnitsAtRP = world.FindAliveCombatantActorsInCircle(sovietRallyPoint.CenterLocation, 3).Where(a => a.Owner == soviets && a.IsIdle && a.HasTrait<IMove>());
 			if (idleSovietUnitsAtRP.Count() >= SovietGroupSize)
 			{
 				var firstUnit = idleSovietUnitsAtRP.FirstOrDefault();
@@ -286,7 +292,7 @@ namespace OpenRA.Mods.RA.Missions
 					}
 				}
 			}
-			var idleSovietUnits = world.ForcesNearLocation(allies2BasePoint.CenterLocation, 20).Where(a => a.Owner == soviets && a.IsIdle);
+			var idleSovietUnits = world.FindAliveCombatantActorsInCircle(allies2BasePoint.CenterLocation, 20).Where(a => a.Owner == soviets && a.IsIdle && a.HasTrait<IMove>());
 			foreach (var unit in idleSovietUnits)
 			{
 				var closestAlliedBuilding = ClosestAlliedBuilding(unit, 40);
@@ -407,20 +413,28 @@ namespace OpenRA.Mods.RA.Missions
 				extractionLZEntryPoint.Location);
 		}
 
-		bool EngineerSafe()
+		bool AlliesNearTown()
 		{
-			if (engineer.Destroyed)
-			{
-				return false;
-			}
-			return MissionUtils.AreaSecuredByPlayer(world, allies1, engineer.CenterLocation, EngineerSafeRange);
+			return world.FindAliveCombatantActorsInCircle(townPoint.CenterLocation, AlliedTownTransferRange).Where(a => a.HasTrait<IMove>()).Any(a => a.Owner == allies1);
 		}
 
-		void RescueEngineer()
+		void TransferTownUnitsToAllies()
 		{
-			if (!engineer.Destroyed)
+			foreach (var unit in world.FindAliveNonCombatantActorsInCircle(townPoint.CenterLocation, AlliedTownTransferRange).Where(a => a.HasTrait<IMove>()))
 			{
-				engineer.ChangeOwner(allies1);
+				unit.ChangeOwner(allies1);
+			}
+		}
+
+		void SovietsAttackTown()
+		{
+			var sovietAttackUnits = world.FindAliveCombatantActorsInCircle(sovietTownAttackPoint1.CenterLocation, SovietTownAttackGroupRange)
+				.Union(world.FindAliveCombatantActorsInCircle(sovietTownAttackPoint2.CenterLocation, SovietTownAttackGroupRange))
+				.Union(world.FindAliveCombatantActorsInCircle(townPoint.CenterLocation, AlliedTownTransferRange))
+				.Where(a => a.HasTrait<IMove>() && a.Owner == soviets);
+			foreach (var unit in sovietAttackUnits)
+			{
+				unit.QueueActivity(new AttackMove.AttackMoveActivity(unit, new Move.Move(townPoint.Location, SovietTownMoveNearEnough)));
 			}
 		}
 
@@ -444,11 +458,13 @@ namespace OpenRA.Mods.RA.Missions
 			extractionLZEntryPoint = actors["ExtractionLZEntryPoint"];
 			badgerEntryPoint = actors["BadgerEntryPoint"];
 			badgerDropPoint = actors["BadgerDropPoint"];
-			engineer = actors["Engineer"];
 			sovietBarracks = actors["SovietBarracks"];
 			sovietWarFactory = actors["SovietWarFactory"];
 			sovietRallyPoint = actors["SovietRallyPoint"];
 			flamersEntryPoint = actors["FlamersEntryPoint"];
+			townPoint = actors["TownPoint"];
+			sovietTownAttackPoint1 = actors["SovietTownAttackPoint1"];
+			sovietTownAttackPoint2 = actors["SovietTownAttackPoint2"];
 			var shroud = w.WorldActor.Trait<Shroud>();
 			shroud.Explore(w, sam1.Location, 2);
 			shroud.Explore(w, sam2.Location, 2);
