@@ -1675,41 +1675,20 @@ Actors:
 	Actor570: t17
 		Location: 18,70
 		Owner: Neutral
-	Actor447: fenc
-		Location: 43,76
+	Actor357: barb
+		Location: 30,78
 		Owner: Soviets
 	Actor571: t14
 		Location: 26,79
 		Owner: Neutral
-	Actor358: fenc
-		Location: 30,78
+	Actor358: barb
+		Location: 31,78
 		Owner: Soviets
-	Actor409: fenc
-		Location: 43,77
-		Owner: Soviets
-	Actor572: fenc
-		Location: 42,76
-		Owner: Soviets
-	Actor406: fenc
-		Location: 43,78
-		Owner: Soviets
-	Actor405: fenc
-		Location: 45,79
-		Owner: Soviets
-	Actor359: fenc
-		Location: 30,77
-		Owner: Soviets
-	Actor357: fenc
+	Actor261: barb
 		Location: 29,78
 		Owner: Soviets
-	Actor360: fenc
-		Location: 30,76
-		Owner: Soviets
-	Actor361: fenc
-		Location: 31,76
-		Owner: Soviets
-	Actor261: fenc
-		Location: 29,79
+	Actor359: barb
+		Location: 32,78
 		Owner: Soviets
 	Actor584: tc04
 		Location: 52,70
@@ -2244,11 +2223,11 @@ Actors:
 	Actor40: tran.husk1
 		Location: 69,87
 		Owner: Allies1
-	Actor400: fenc
-		Location: 44,78
+	Actor360: barb
+		Location: 32,77
 		Owner: Soviets
-	Actor399: fenc
-		Location: 44,79
+	Actor361: barb
+		Location: 32,76
 		Owner: Soviets
 	Actor575: tc05
 		Location: 17,88
