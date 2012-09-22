@@ -55,9 +55,9 @@ namespace OpenRA.Mods.RA.Missions
 			Sound.Play("bleep6.aud");
 		}
 
-		void DisplayHint(string objective)
+		void DisplayHint(string hint)
 		{
-			Game.AddChatLine(Color.Yellow, "Hint", objective);
+			Game.AddChatLine(Color.Yellow, "Hint", hint);
 			Sound.Play("bleep6.aud");
 		}
 
@@ -163,7 +163,7 @@ namespace OpenRA.Mods.RA.Missions
 					MissionFailed("Einstein was killed.");
 				}
 			}
-			else if (MissionUtils.HasFlag(currentObjectives, Allies01Objectives.WaitForHelicopter))
+			if (MissionUtils.HasFlag(currentObjectives, Allies01Objectives.WaitForHelicopter))
 			{
 				if (world.FrameNumber >= currentAttackWaveFrameNumber + 600)
 				{

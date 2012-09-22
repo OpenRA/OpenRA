@@ -32,16 +32,21 @@ namespace OpenRA.Mods.RA.Missions
 		enum Allies02Objectives
 		{
 			None = 0,
-			DestroySamSites = 1,
-			WaitForHelicopter = 2
+			FindEinstein = 1,
+			DestroySamSites = 2,
+			WaitForHelicopter = 4
 		}
 
 		IEnumerable<string> GetObjectiveText()
 		{
 			var objectives = new List<string>();
+			if (MissionUtils.HasFlag(currentObjectives, Allies02Objectives.FindEinstein))
+			{
+				objectives.Add("Find Einstein's crashed helicopter. Tanya must survive.");
+			}
 			if (MissionUtils.HasFlag(currentObjectives, Allies02Objectives.DestroySamSites))
 			{
-				objectives.Add("Hold off the Soviet forces and destroy the SAM sites. Tanya and Einstein must survive.");
+				objectives.Add("Destroy the SAM sites. Tanya must survive.");
 			}
 			if (MissionUtils.HasFlag(currentObjectives, Allies02Objectives.WaitForHelicopter))
 			{
@@ -50,7 +55,7 @@ namespace OpenRA.Mods.RA.Missions
 			return objectives;
 		}
 
-		Allies02Objectives currentObjectives = Allies02Objectives.DestroySamSites;
+		Allies02Objectives currentObjectives = Allies02Objectives.FindEinstein | Allies02Objectives.DestroySamSites;
 
 		void DisplayObjective(string objective)
 		{
@@ -58,9 +63,9 @@ namespace OpenRA.Mods.RA.Missions
 			Sound.Play("bleep6.aud");
 		}
 
-		void DisplayHint(string objective)
+		void DisplayHint(string hint)
 		{
-			Game.AddChatLine(Color.Yellow, "Hint", objective);
+			Game.AddChatLine(Color.Yellow, "Hint", hint);
 			Sound.Play("bleep6.aud");
 		}
 
@@ -126,6 +131,8 @@ namespace OpenRA.Mods.RA.Missions
 		static readonly string[] Flamers = { "e4", "e4", "e4", "e4", "e4" };
 		const string ApcName = "apc";
 
+		const int HintPowerTicks = 1500 * 6;
+
 		const string ChinookName = "tran";
 		const string SignalFlareName = "flare";
 
@@ -186,6 +193,10 @@ namespace OpenRA.Mods.RA.Missions
 				InitializeSovietFactories();
 				StartReinforcementsTimer();
 			}
+			if (world.FrameNumber == HintPowerTicks)
+			{
+				DisplayHint("Destroy the Soviet power stations to stop enemy attacks.");
+			}
 			reinforcementsTimer.Tick();
 			if (world.FrameNumber == ParatroopersTicks)
 			{
@@ -205,10 +216,15 @@ namespace OpenRA.Mods.RA.Missions
 				BuildSovietUnits();
 				ManageSovietUnits();
 			}
-			if (AlliesNearTown())
+			if (MissionUtils.HasFlag(currentObjectives, Allies02Objectives.FindEinstein))
 			{
-				TransferTownUnitsToAllies();
-				SovietsAttackTown();
+				if (AlliesNearTown())
+				{
+					currentObjectives = MissionUtils.RemoveFlag(currentObjectives, Allies02Objectives.FindEinstein);
+					DisplayObjectives();
+					TransferTownUnitsToAllies();
+					SovietsAttackTown();
+				}
 			}
 			if (MissionUtils.HasFlag(currentObjectives, Allies02Objectives.DestroySamSites))
 			{
@@ -222,7 +238,7 @@ namespace OpenRA.Mods.RA.Missions
 					ExtractEinsteinAtLZ();
 				}
 			}
-			else if (MissionUtils.HasFlag(currentObjectives, Allies02Objectives.WaitForHelicopter) && einsteinChinook != null)
+			if (MissionUtils.HasFlag(currentObjectives, Allies02Objectives.WaitForHelicopter) && einsteinChinook != null)
 			{
 				if (einsteinChinook.Destroyed)
 				{
@@ -241,10 +257,13 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				MissionFailed("Einstein was killed.");
 			}
-			else if (!world.FindAliveCombatantActorsInCircle(allies2BasePoint.CenterLocation, 20).Any(a => a.HasTrait<Building>() && !a.HasTrait<Wall>() && a.Owner == allies2))
-			{
-				MissionFailed("The Allied reinforcements have been defeated.");
-			}
+			world.AddFrameEndTask(w =>
+				{
+					if (!world.FindAliveCombatantActorsInCircle(allies2BasePoint.CenterLocation, 20).Any(a => a.HasTrait<Building>() && !a.HasTrait<Wall>() && a.Owner == allies2))
+					{
+						MissionFailed("The Allied reinforcements have been defeated.");
+					}
+				});
 		}
 
 		void AddSovietCashIfRequired()
