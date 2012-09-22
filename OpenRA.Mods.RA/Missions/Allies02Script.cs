@@ -138,7 +138,7 @@ namespace OpenRA.Mods.RA.Missions
 
 		const int AlliedTownTransferRange = 15;
 		const int SovietTownAttackGroupRange = 5;
-		const int SovietTownMoveNearEnough = 5;
+		const int SovietTownMoveNearEnough = 3;
 
 		void MissionFailed(string text)
 		{
@@ -195,7 +195,7 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			if (world.FrameNumber == HintPowerTicks)
 			{
-				DisplayHint("Destroy the Soviet power stations to stop enemy attacks.");
+				DisplayHint("Destroy the Soviet power stations to stop the attacks on the Allied reinforcements.");
 			}
 			reinforcementsTimer.Tick();
 			if (world.FrameNumber == ParatroopersTicks)
@@ -258,12 +258,12 @@ namespace OpenRA.Mods.RA.Missions
 				MissionFailed("Einstein was killed.");
 			}
 			world.AddFrameEndTask(w =>
+			{
+				if (!world.FindAliveCombatantActorsInCircle(allies2BasePoint.CenterLocation, 20).Any(a => a.HasTrait<Building>() && !a.HasTrait<Wall>() && a.Owner == allies2))
 				{
-					if (!world.FindAliveCombatantActorsInCircle(allies2BasePoint.CenterLocation, 20).Any(a => a.HasTrait<Building>() && !a.HasTrait<Wall>() && a.Owner == allies2))
-					{
-						MissionFailed("The Allied reinforcements have been defeated.");
-					}
-				});
+					MissionFailed("The Allied reinforcements have been defeated.");
+				}
+			});
 		}
 
 		void AddSovietCashIfRequired()
@@ -383,7 +383,7 @@ namespace OpenRA.Mods.RA.Missions
 
 		void RushSovietFlamers()
 		{
-			var closestAlliedBuilding = ClosestAlliedBuilding(badgerDropPoint, 10);
+			var closestAlliedBuilding = ClosestAlliedBuilding(badgerDropPoint, 40);
 			if (closestAlliedBuilding == null)
 			{
 				return;
