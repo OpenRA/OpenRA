@@ -10,8 +10,8 @@ endif()
 # restrict configuration types to the selected build type
 set(CMAKE_CONFIGURATION_TYPES ${CMAKE_BUILD_TYPE} CACHE INTERNAL "" FORCE)
 
-# set the project name (the actual executable name is controlled by IDE_FRONTEND option)
-project("ide")
+# set the project name
+project("zbstudio")
 
 # checks if the Lua module is available
 function(check_lua_module MODULE)
@@ -26,7 +26,7 @@ function(check_lua_module MODULE)
     execute_process(COMMAND "${LUA_EXECUTABLE}" -e "require(\"${MODULE}\")"
       RESULT_VARIABLE EXIT_CODE OUTPUT_QUIET ERROR_QUIET)
     if(EXIT_CODE EQUAL 0)
-      set(${MODULE}_FOUND TRUE CACHE INTERNAL "Lua module status")
+      set(${MODULE}_FOUND TRUE CACHE INTERNAL "")
       message(STATUS "Found Lua module: ${MODULE}")
     elseif(ARGV1)
       message(FATAL_ERROR "Lua module \"${MODULE}\" is not found")
@@ -34,20 +34,7 @@ function(check_lua_module MODULE)
   endif()
 endfunction()
 
-# check for Lua modules
-if(UNIX AND NOT APPLE)
-  check_lua_module(wx TRUE)
-  check_lua_module(socket TRUE)
-  check_lua_module(copas ${USE_SYSTEM_COPAS})
-  check_lua_module(luainspect ${USE_SYSTEM_LUAINSPECT})
-  check_lua_module(mobdebug ${USE_SYSTEM_MOBDEBUG})
-endif()
-
-# add an user option to select the IDE frontend
-set(IDE_FRONTEND "zbstudio" CACHE STRING "Choose the IDE frontend to build.")
-set_property(CACHE IDE_FRONTEND PROPERTY STRINGS "estrela" "zbstudio")
-
-# adds an user option to enable/disable a particular system-wide Lua module
+# adds an user option to select between system-wide and bundled Lua module
 function(add_system_lua_module_option MODULE)
   string(TOUPPER ${MODULE} UPPERCASE_MODULE)
   if(NOT DEFINED USE_SYSTEM_${UPPERCASE_MODULE})
@@ -56,16 +43,22 @@ function(add_system_lua_module_option MODULE)
   endif()
 endfunction()
 
-# add user options to select between system-wide and bundled Lua modules
+# check the available Lua modules on Linux
 if(UNIX AND NOT APPLE)
+  check_lua_module(wx TRUE)
+  check_lua_module(socket TRUE)
+  check_lua_module(copas ${USE_SYSTEM_COPAS})
+  check_lua_module(luainspect ${USE_SYSTEM_LUAINSPECT})
+  #check_lua_module(mobdebug ${USE_SYSTEM_MOBDEBUG})
+
   add_system_lua_module_option(copas)
   add_system_lua_module_option(luainspect)
-  add_system_lua_module_option(mobdebug)
+  #add_system_lua_module_option(mobdebug)
 endif()
 
 # add the executable file to our project
 if(WIN32)
-  add_executable(${IDE_FRONTEND} WIN32 estrela/win32_starter.c ${IDE_FRONTEND}/res/${IDE_FRONTEND}.rc)
+  add_executable(zbstudio WIN32 estrela/win32_starter.c zbstudio/res/zbstudio.rc)
 endif()
 
 # link to the static multi-threaded CRT under MSVC
@@ -89,19 +82,19 @@ elseif(APPLE)
   set(DOCDIR "${DATADIR}")
 else()
   set(BINDIR "bin")
-  set(DATADIR "share/${IDE_FRONTEND}")
-  set(DOCDIR "share/doc/${IDE_FRONTEND}")
+  set(DATADIR "share/zbstudio")
+  set(DOCDIR "share/doc/zbstudio")
 endif()
 
 # install IDE executable
 if(WIN32)
-  install(TARGETS ${IDE_FRONTEND} DESTINATION ${BINDIR})
+  install(TARGETS zbstudio DESTINATION ${BINDIR})
 elseif(APPLE)
   install(PROGRAMS zbstudio/ZeroBraneStudio.app/Contents/MacOS/ZeroBraneStudio DESTINATION ${BINDIR})
 else()
   set(IDE_DATADIR "${CMAKE_INSTALL_PREFIX}/${DATADIR}")
-  configure_file(zbstudio/zbstudio.in "${CMAKE_BINARY_DIR}/${IDE_FRONTEND}")
-  install(PROGRAMS "${CMAKE_BINARY_DIR}/${IDE_FRONTEND}" DESTINATION ${BINDIR})
+  configure_file(zbstudio/zbstudio.in "${CMAKE_BINARY_DIR}/zbstudio")
+  install(PROGRAMS "${CMAKE_BINARY_DIR}/zbstudio" DESTINATION ${BINDIR})
 endif()
 
 # install precompiled dependencies
@@ -139,35 +132,27 @@ install(DIRECTORY src DESTINATION ${DATADIR})
 # install miscellaneous documentation files
 install(FILES CHANGELOG.md LICENSE README.md DESTINATION ${DOCDIR})
 
-# install IDE frontend-specific files
-if(IDE_FRONTEND STREQUAL "estrela")
-  install(DIRECTORY api cfg interpreters spec tools DESTINATION ${DATADIR})
-  install(FILES estrela/res/estrela.ico estrela/res/estrela.png estrela/res/wxlualogo2.png
-    DESTINATION ${DATADIR}/estrela/res)
-  file(GLOB FILELIST "${CMAKE_SOURCE_DIR}/estrela/*.lua")
-  install(FILES ${FILELIST} estrela/readme.txt DESTINATION ${DATADIR}/estrela)
-else()
-  install(FILES api/lua/baselib.lua api/lua/love2d.lua api/lua/moai.lua DESTINATION ${DATADIR}/api/lua)
-  install(FILES api/readme.txt DESTINATION ${DATADIR}/api)
-  install(FILES cfg/user-sample.lua DESTINATION ${DATADIR}/cfg)
-  install(FILES interpreters/love2d.lua interpreters/luadeb.lua interpreters/moai.lua
-    DESTINATION ${DATADIR}/interpreters)
-  install(FILES spec/lua.lua DESTINATION ${DATADIR}/spec)
-  install(DIRECTORY zbstudio/res/16 DESTINATION ${DATADIR}/zbstudio/res)
-  install(FILES zbstudio/res/16.ico zbstudio/res/32.ico zbstudio/res/zerobrane.png
-    DESTINATION ${DATADIR}/zbstudio/res)
-  file(GLOB FILELIST "${CMAKE_SOURCE_DIR}/zbstudio/*.lua")
-  install(FILES ${FILELIST} DESTINATION ${DATADIR}/zbstudio)
+# install zbstudio files
+install(FILES api/lua/baselib.lua api/lua/love2d.lua api/lua/moai.lua DESTINATION ${DATADIR}/api/lua)
+install(FILES api/readme.txt DESTINATION ${DATADIR}/api)
+install(FILES cfg/user-sample.lua DESTINATION ${DATADIR}/cfg)
+install(FILES interpreters/love2d.lua interpreters/luadeb.lua interpreters/moai.lua
+  DESTINATION ${DATADIR}/interpreters)
+install(FILES spec/lua.lua DESTINATION ${DATADIR}/spec)
+install(DIRECTORY zbstudio/res/16 DESTINATION ${DATADIR}/zbstudio/res)
+install(FILES zbstudio/res/16.ico zbstudio/res/32.ico zbstudio/res/zerobrane.png
+  DESTINATION ${DATADIR}/zbstudio/res)
+file(GLOB FILELIST "${CMAKE_SOURCE_DIR}/zbstudio/*.lua")
+install(FILES ${FILELIST} DESTINATION ${DATADIR}/zbstudio)
 
-  # install icon pack and .plist file on OS X
-  if(APPLE)
-    install(DIRECTORY zbstudio/ZeroBraneStudio.app/Contents/Resources DESTINATION ${ROOTDIR})
-    install(FILES zbstudio/ZeroBraneStudio.app/Contents/Info.plist DESTINATION ${ROOTDIR})
-  endif()
+# install icon pack and .plist file on OS X
+if(APPLE)
+  install(DIRECTORY zbstudio/ZeroBraneStudio.app/Contents/Resources DESTINATION ${ROOTDIR})
+  install(FILES zbstudio/ZeroBraneStudio.app/Contents/Info.plist DESTINATION ${ROOTDIR})
+endif()
 
-  # install .desktop file and hicolor icon theme on Linux
-  if(UNIX AND NOT APPLE)
-    install(DIRECTORY zbstudio/res/icons/ DESTINATION share/icons/hicolor)
-    install(FILES zbstudio/res/zbstudio.desktop DESTINATION share/applications)
-  endif()
+# install .desktop file and hicolor icon theme on Linux
+if(UNIX AND NOT APPLE)
+  install(DIRECTORY zbstudio/res/icons/ DESTINATION share/icons/hicolor)
+  install(FILES zbstudio/res/zbstudio.desktop DESTINATION share/applications)
 endif()
