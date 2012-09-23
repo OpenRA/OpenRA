@@ -29,6 +29,7 @@ Players:
 	PlayerReference@Allies1:
 		Name: Allies1
 		Playable: True
+		AllowBots: False
 		LockRace: True
 		Race: allies
 		LockColor: True
@@ -40,6 +41,7 @@ Players:
 	PlayerReference@Allies2:
 		Name: Allies2
 		Playable: True
+		AllowBots: False
 		LockRace: True
 		Race: allies
 		LockColor: True
@@ -2284,6 +2286,8 @@ Rules:
 		-Selectable:
 		Buildable:
 			Owner: None
+		RevealsShroud:
+			Range: 0
 	MIG:
 		Buildable:
 			Owner: None
