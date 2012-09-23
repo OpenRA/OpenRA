@@ -423,8 +423,9 @@ SNIPER:
 	Cloak:
 		InitialDelay: 250
 		CloakDelay: 120
-		CloakSound: appear1.aud
-		UncloakSound: appear1.aud
+		CloakSound:
+		UncloakSound:
+		UncloakOnMove: yes
 	Captures:
 		CaptureTypes: civilianbuilding
 		AllowAllies: true
