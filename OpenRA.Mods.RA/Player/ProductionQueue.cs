@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA
 		public virtual object Create(ActorInitializer init) { return new ProductionQueue(init.self, init.self.Owner.PlayerActor, this); }
 	}
 
-	public class ProductionQueue : IResolveOrder, ITick, ITechTreeElement, INotifyCapture, INotifyKilled, INotifySold, ISync
+	public class ProductionQueue : IResolveOrder, ITick, ITechTreeElement, INotifyCapture, INotifyKilled, INotifySold, ISync, INotifyTransform
 	{
 		public readonly Actor self;
 		public ProductionQueueInfo Info;
@@ -94,6 +94,7 @@ namespace OpenRA.Mods.RA
 		public void Killed(Actor killed, AttackInfo e) { if (killed == self) ClearQueue(); }
 		public void Selling(Actor self) {}
 		public void Sold(Actor self) { ClearQueue(); }
+		public void OnTransform(Actor self) { ClearQueue(); }
 
 		Dictionary<ActorInfo, ProductionState> InitTech(Actor playerActor)
 		{
