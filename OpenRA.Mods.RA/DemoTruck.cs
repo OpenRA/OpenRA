@@ -17,9 +17,8 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	// Requiring Explodes is busted.
 	// Exception when overriding Chronoshift event; removed for now, will look into it.
-	class DemoTruckInfo : TraitInfo<DemoTruck> {} //, Requires<Explodes> {}
+	class DemoTruckInfo : TraitInfo<DemoTruck>, Requires<ExplodesInfo> {}
 
 	class DemoTruck : IIssueOrder, IResolveOrder, IOrderVoice
 	{
