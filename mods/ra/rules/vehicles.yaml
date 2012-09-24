@@ -597,8 +597,8 @@ DTRK:
 	AttackMove:
 		JustMove: yes
 	Explodes:
-		Weapon: Atomic
-		EmptyWeapon: Atomic
+		Weapon: MiniNuke
+		EmptyWeapon: MiniNuke
 	DemoTruck:
 	-IronCurtainable:
 	Chronoshiftable:
