@@ -601,4 +601,5 @@ DTRK:
 		EmptyWeapon: Atomic
 	DemoTruck:
 	-IronCurtainable:
-	-Chronoshiftable:
+	Chronoshiftable:
+		ExplodeInstead: yes
