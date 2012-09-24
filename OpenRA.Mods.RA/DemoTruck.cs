@@ -54,7 +54,7 @@ namespace OpenRA.Mods.RA
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "DemoDeploy")
+			if (order.OrderString == "DemoAttack")
 			{
 				self.World.AddFrameEndTask(w =>
 				{
@@ -62,7 +62,7 @@ namespace OpenRA.Mods.RA
 					self.QueueActivity(new CallFunc(() => Explode(self)));
 				});
 			}
-			if (order.OrderString == "DemoAttack")
+			if (order.OrderString == "DemoDeploy")
 				Explode(self);
 		}
 	}
