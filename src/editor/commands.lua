@@ -511,6 +511,13 @@ function ShowFullScreen(setFullScreen)
 end
 
 function CloseWindow(event)
+  -- if the app is already exiting, then help it exit; wxwidgets on Windows
+  -- is supposed to report Shutdown/logoff events by setting CanVeto() to
+  -- false, but it doesn't happen. We simply leverage the fact that
+  -- CloseWindow is called several times in this case and exit. Similar
+  -- behavior has been also seen on Linux, so this logic applies everywhere.
+  if ide.exitingProgram then os.exit() end
+
   ide.exitingProgram = true -- don't handle focus events
 
   if not SaveOnExit(event:CanVeto()) then
