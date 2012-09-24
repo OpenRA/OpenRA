@@ -977,9 +977,46 @@ Atomic:
 		WaterExplosion: nuke
 		InfDeath: 5
 		ImpactSound: kaboom1
-	Warhead@areanuke:
+	Warhead@areanuke1:
 		DamageModel: PerCell
-		Damage: 250
+		Damage: 180
+		Size: 2,1
+		Ore: true
+		Versus: 
+			None: 90%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 50%
+		Delay: 5
+		InfDeath: 5
+		ImpactSound: kaboom22
+	Warhead@areanuke2:
+		DamageModel: PerCell
+		Damage: 180
+		Size: 3,2
+		Ore: true
+		Versus: 
+			None: 90%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 50%
+		Delay: 10
+		InfDeath: 5
+	Warhead@areanuke3:
+		DamageModel: PerCell
+		Damage: 180
+		Size: 4,3
+		Ore: true
+		Versus: 
+			None: 90%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 50%
+		Delay: 15
+		InfDeath: 5
+	Warhead@areanuke4:
+		DamageModel: PerCell
+		Damage: 180
 		SmudgeType: Scorch
 		Size: 5,4
 		Ore: true
@@ -988,9 +1025,8 @@ Atomic:
 			Light: 60%
 			Heavy: 25%
 			Concrete: 50%
-		Delay: 4
+		Delay: 20
 		InfDeath: 5
-		ImpactSound: kaboom22
 
 UnitExplode:
 	Warhead:
