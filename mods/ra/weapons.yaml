@@ -1028,6 +1028,59 @@ Atomic:
 		Delay: 20
 		InfDeath: 5
 
+MiniNuke:
+	Warhead@impact:
+		Damage: 800
+		Spread: 6
+		Ore: true
+		Versus: 
+			None: 90%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 50%
+		Explosion: nuke
+		WaterExplosion: nuke
+		InfDeath: 5
+		ImpactSound: kaboom1
+	Warhead@areanuke1:
+		DamageModel: PerCell
+		Damage: 180
+		Size: 2,1
+		Ore: true
+		Versus: 
+			None: 90%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 50%
+		Delay: 5
+		InfDeath: 5
+		ImpactSound: kaboom22
+	Warhead@areanuke2:
+		DamageModel: PerCell
+		Damage: 180
+		Size: 3,2
+		Ore: true
+		Versus: 
+			None: 90%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 50%
+		Delay: 10
+		InfDeath: 5
+	Warhead@areanuke3:
+		DamageModel: PerCell
+		Damage: 180
+		Size: 4,3
+		SmudgeType: Scorch
+		Ore: true
+		Versus: 
+			None: 90%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 50%
+		Delay: 15
+		InfDeath: 5
+
 UnitExplode:
 	Warhead:
 		Damage: 500
