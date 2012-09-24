@@ -352,9 +352,6 @@ CRATE:
 	ExplodeCrateAction@boom:
 		Weapon: CrateExplosion
 		SelectionShares: 5
-	ExplodeCrateAction@nuke:
-		Weapon: CrateNuke
-		SelectionShares: 5
 	HideMapCrateAction:
 		SelectionShares: 5
 		Effect: hide-map
