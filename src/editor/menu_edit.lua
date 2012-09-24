@@ -46,6 +46,8 @@ function OnUpdateUIEditMenu(event)
   local editor = getControlWithFocus()
   if editor == nil then event:Enable(false); return end
 
+  local alwaysOn = { [ID_SELECTALL] = true, [ID_FOLD] = true,
+    [ID_COMMENT] = true, [ID_AUTOCOMPLETE] = true}
   local menu_id = event:GetId()
   local enable =
     ((menu_id == ID_COPY or menu_id == ID_CUT) and
@@ -54,7 +56,7 @@ function OnUpdateUIEditMenu(event)
     menu_id == ID_PASTE and editor:CanPaste() or
     menu_id == ID_UNDO and editor:CanUndo() or
     menu_id == ID_REDO and editor:CanRedo() or
-    menu_id == ID_SELECTALL
+    alwaysOn[menu_id]
   -- wxComboBox doesn't have SELECT ALL, so disable it
   if editor:GetClassInfo():GetClassName() == 'wxComboBox'
   and menu_id == ID_SELECTALL then enable = false end
