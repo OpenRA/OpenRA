@@ -13,7 +13,10 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class ChronoshiftableInfo : TraitInfo<Chronoshiftable> { }
+	class ChronoshiftableInfo : TraitInfo<Chronoshiftable>
+	{
+		public readonly bool ExplodeInstead = false;
+	}
 
 	public class Chronoshiftable : ITick, ISync
 	{
@@ -51,6 +54,17 @@ namespace OpenRA.Mods.RA
 
 		public virtual bool Teleport(Actor self, CPos targetLocation, int duration, bool killCargo, Actor chronosphere)
 		{
+			var info = self.Info.Traits.Get<ChronoshiftableInfo>();
+			if (info.ExplodeInstead)	// some things appear chronoshiftable, but instead they just die.
+			{
+				self.World.AddFrameEndTask(w =>
+				{
+					// damage is inflicted by the chronosphere
+					if (!self.Destroyed) self.InflictDamage(chronosphere, int.MaxValue, null); 
+				});
+				return true;
+			}
+
 			/// Set up return-to-sender info
 			chronoshiftOrigin = self.Location;
 			chronoshiftReturnTicks = duration;
