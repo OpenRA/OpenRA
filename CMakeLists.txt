@@ -75,7 +75,7 @@ if(WIN32)
   install(TARGETS zbstudio DESTINATION ${DATADIR})
 
   # install files from manifest
-  install_from_manifest(FILES zbstudio/MANIFEST ${DATADIR} "")
+  install_from_manifest(FILES zbstudio/MANIFEST ${DATADIR} "^$")
   install_from_manifest(FILES zbstudio/MANIFEST-bin-win32 ${DATADIR} "^zbstudio.exe$")
 elseif(APPLE)
   # setup the data directory
@@ -90,8 +90,8 @@ elseif(APPLE)
   install(FILES zbstudio/ZeroBraneStudio.app/Contents/Info.plist DESTINATION ${ROOTDIR})
 
   # install files from manifest
-  install_from_manifest(FILES zbstudio/MANIFEST ${DATADIR} "")
-  install_from_manifest(PROGRAMS zbstudio/MANIFEST-bin-macos ${DATADIR} "")
+  install_from_manifest(FILES zbstudio/MANIFEST ${DATADIR} "^$")
+  install_from_manifest(PROGRAMS zbstudio/MANIFEST-bin-macos ${DATADIR} "^$")
 else()
   # check the available Lua modules
   check_lua_module(wx TRUE)
