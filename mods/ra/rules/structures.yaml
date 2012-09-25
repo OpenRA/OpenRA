@@ -290,6 +290,7 @@ TSLA:
 	-RenderBuilding:
 	RenderRangeCircle:
 	-AcceptsSupplies:
+	DrawLineToTarget:
 
 AGUN:
 	Inherits: ^Building
@@ -330,6 +331,7 @@ AGUN:
 	RenderRangeCircle:
 		RangeCircleType: aa
 	-AcceptsSupplies:
+	DrawLineToTarget:
 
 DOME:
 	RequiresPower:
@@ -386,6 +388,7 @@ PBOX:
 		PipCount: 1
 	-EmitInfantryOnSell:
 #	EmitCargoOnSell:
+	DrawLineToTarget:
 	TransformOnPassenger@e1:
 		PassengerTypes: e1
 		OnEnter: pbox.e1
@@ -542,6 +545,7 @@ HBOX:
 		PipCount: 1
 	-EmitInfantryOnSell:
 #	EmitCargoOnSell:
+	DrawLineToTarget:
 	TransformOnPassenger@e1:
 		PassengerTypes: e1
 		OnEnter: HBOX.e1
@@ -701,6 +705,7 @@ GUN:
 	-RenderBuilding:
 	RenderRangeCircle:
 	-AcceptsSupplies:
+	DrawLineToTarget:
 
 FTUR:
 	Inherits: ^Building
@@ -734,6 +739,7 @@ FTUR:
 	IronCurtainable:
 	RenderRangeCircle:
 	-AcceptsSupplies:
+	DrawLineToTarget:
 
 SAM:
 	Inherits: ^Building
@@ -774,6 +780,7 @@ SAM:
 	RequiresPower:
 	CanPowerDown:
 	-AcceptsSupplies:
+	DrawLineToTarget:
 
 ATEK:
 	Inherits: ^Building
