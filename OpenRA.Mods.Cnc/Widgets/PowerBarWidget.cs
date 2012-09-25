@@ -53,27 +53,26 @@ namespace OpenRA.Mods.Cnc.Widgets
 			float powerScaleBy = 100;
 			var maxPower = Math.Max(pm.PowerProvided, pm.PowerDrained);
 			while (maxPower >= powerScaleBy) powerScaleBy *= 2;
+			var animRate = .3f;
 
 			// Current power supply
 			var providedFrac = pm.PowerProvided / powerScaleBy;
-			lastProvidedFrac = providedFrac = float2.Lerp(lastProvidedFrac.GetValueOrDefault(providedFrac), providedFrac, .3f);
+			lastProvidedFrac = providedFrac = float2.Lerp(lastProvidedFrac.GetValueOrDefault(providedFrac), providedFrac, animRate);
 
 			var color = GetBarColor();
 
 			var b = RenderBounds;
-			var rect = new RectangleF(b.X,
-									  b.Y + (1-providedFrac)*b.Height,
-									  (float)b.Width,
-									  providedFrac*b.Height);
+			var rect = new RectangleF(b.X, float2.Lerp(b.Bottom, b.Top, providedFrac),
+				(float)b.Width, providedFrac*b.Height);
 			Game.Renderer.LineRenderer.FillRect(rect, color);
 
 			var indicator = ChromeProvider.GetImage("sidebar-bits", "left-indicator");
 
 			var drainedFrac = pm.PowerDrained / powerScaleBy;
-			lastDrainedFrac = drainedFrac = float2.Lerp(lastDrainedFrac.GetValueOrDefault(drainedFrac), drainedFrac, .3f);
+			lastDrainedFrac = drainedFrac = float2.Lerp(lastDrainedFrac.GetValueOrDefault(drainedFrac), drainedFrac, animRate);
 
 			float2 pos = new float2(b.X + b.Width - indicator.size.X,
-									b.Y + (1-drainedFrac)*b.Height - indicator.size.Y / 2);
+				float2.Lerp(b.Bottom, b.Top, drainedFrac));
 
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(indicator, pos);
 		}
