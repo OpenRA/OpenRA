@@ -13,6 +13,9 @@ set(CMAKE_CONFIGURATION_TYPES ${CMAKE_BUILD_TYPE} CACHE INTERNAL "" FORCE)
 # set the project name
 project("zbstudio")
 
+# set the top-level project directory relative to CMakeLists.txt location
+set(TOPDIR ..)
+
 # checks if the Lua module is available
 function(check_lua_module MODULE)
   if(NOT ${MODULE}_FOUND)
@@ -50,14 +53,14 @@ function(install_from_manifest TYPE MANIFEST DESTDIR EXCLUDE_REGEX)
     string(STRIP ${FILENAME} FILENAME)
     if(NOT FILENAME MATCHES ${EXCLUDE_REGEX})
       get_filename_component(FILEPATH ${FILENAME} PATH)
-      install(${TYPE} ${FILENAME} DESTINATION ${DESTDIR}/${FILEPATH})
+      install(${TYPE} ${TOPDIR}/${FILENAME} DESTINATION ${DESTDIR}/${FILEPATH})
     endif()
   endforeach()
 endfunction()
 
 if(WIN32)
   # add the executable file to our project
-  add_executable(zbstudio WIN32 estrela/win32_starter.c zbstudio/res/zbstudio.rc)
+  add_executable(zbstudio WIN32 ${TOPDIR}/estrela/win32_starter.c ${TOPDIR}/zbstudio/res/zbstudio.rc)
 
   # link to the static multi-threaded CRT under MSVC
   if(MSVC)
@@ -75,23 +78,23 @@ if(WIN32)
   install(TARGETS zbstudio DESTINATION ${DATADIR})
 
   # install files from manifest
-  install_from_manifest(FILES zbstudio/MANIFEST ${DATADIR} "^$")
-  install_from_manifest(FILES zbstudio/MANIFEST-bin-win32 ${DATADIR} "^zbstudio.exe$")
+  install_from_manifest(FILES ${TOPDIR}/zbstudio/MANIFEST ${DATADIR} "^$")
+  install_from_manifest(FILES ${TOPDIR}/zbstudio/MANIFEST-bin-win32 ${DATADIR} "^zbstudio.exe$")
 elseif(APPLE)
   # setup the data directory
   set(ROOTDIR ZeroBraneStudio.app/Contents)
   set(DATADIR ${ROOTDIR}/ZeroBraneStudio)
 
   # install IDE shell script
-  install(PROGRAMS zbstudio/ZeroBraneStudio.app/Contents/MacOS/ZeroBraneStudio DESTINATION ${ROOTDIR}/MacOS)
+  install(PROGRAMS ${TOPDIR}/zbstudio/ZeroBraneStudio.app/Contents/MacOS/ZeroBraneStudio DESTINATION ${ROOTDIR}/MacOS)
 
   # install icon pack and .plist file
-  install(DIRECTORY zbstudio/ZeroBraneStudio.app/Contents/Resources DESTINATION ${ROOTDIR})
-  install(FILES zbstudio/ZeroBraneStudio.app/Contents/Info.plist DESTINATION ${ROOTDIR})
+  install(DIRECTORY ${TOPDIR}/zbstudio/ZeroBraneStudio.app/Contents/Resources DESTINATION ${ROOTDIR})
+  install(FILES ${TOPDIR}/zbstudio/ZeroBraneStudio.app/Contents/Info.plist DESTINATION ${ROOTDIR})
 
   # install files from manifest
-  install_from_manifest(FILES zbstudio/MANIFEST ${DATADIR} "^$")
-  install_from_manifest(PROGRAMS zbstudio/MANIFEST-bin-macos ${DATADIR} "^$")
+  install_from_manifest(FILES ${TOPDIR}/zbstudio/MANIFEST ${DATADIR} "^$")
+  install_from_manifest(PROGRAMS ${TOPDIR}/zbstudio/MANIFEST-bin-macos ${DATADIR} "^$")
 else()
   # check the available Lua modules
   check_lua_module(wx TRUE)
@@ -110,27 +113,27 @@ else()
 
   # install IDE shell script
   set(IDE_DATADIR "${CMAKE_INSTALL_PREFIX}/${DATADIR}")
-  configure_file(zbstudio/zbstudio.in "${CMAKE_BINARY_DIR}/zbstudio")
+  configure_file(${TOPDIR}/zbstudio/zbstudio.in "${CMAKE_BINARY_DIR}/zbstudio")
   install(PROGRAMS "${CMAKE_BINARY_DIR}/zbstudio" DESTINATION bin)
 
   # install bundled Lua modules
   if(NOT USE_SYSTEM_COPAS)
-    install(DIRECTORY lualibs/copas lualibs/coxpcall DESTINATION ${DATADIR}/lualibs)
+    install(DIRECTORY ${TOPDIR}/lualibs/copas ${TOPDIR}/lualibs/coxpcall DESTINATION ${DATADIR}/lualibs)
   endif()
   if(NOT USE_SYSTEM_LUAINSPECT)
-    install(DIRECTORY lualibs/luainspect lualibs/metalua DESTINATION ${DATADIR}/lualibs)
+    install(DIRECTORY ${TOPDIR}/lualibs/luainspect ${TOPDIR}/lualibs/metalua DESTINATION ${DATADIR}/lualibs)
   endif()
   if(NOT USE_SYSTEM_MOBDEBUG)
-    install(DIRECTORY lualibs/mobdebug DESTINATION ${DATADIR}/lualibs)
+    install(DIRECTORY ${TOPDIR}/lualibs/mobdebug DESTINATION ${DATADIR}/lualibs)
   endif()
 
   # install .desktop file and hicolor icon theme
-  install(DIRECTORY zbstudio/res/icons/ DESTINATION share/icons/hicolor)
-  install(FILES zbstudio/res/zbstudio.desktop DESTINATION share/applications)
+  install(DIRECTORY ${TOPDIR}/zbstudio/res/icons/ DESTINATION share/icons/hicolor)
+  install(FILES ${TOPDIR}/zbstudio/res/zbstudio.desktop DESTINATION share/applications)
 
   # install miscellaneous documentation files
-  install(FILES CHANGELOG.md LICENSE README.md DESTINATION share/doc/zbstudio)
+  install(FILES ${TOPDIR}/CHANGELOG.md ${TOPDIR}/LICENSE ${TOPDIR}/README.md DESTINATION share/doc/zbstudio)
 
   # install files from manifest
-  install_from_manifest(FILES zbstudio/MANIFEST ${DATADIR} "^(CHANGELOG.md|LICENSE|README.md)$|^lualibs/")
+  install_from_manifest(FILES ${TOPDIR}/zbstudio/MANIFEST ${DATADIR} "^(CHANGELOG.md|LICENSE|README.md)$|^lualibs/")
 endif()
