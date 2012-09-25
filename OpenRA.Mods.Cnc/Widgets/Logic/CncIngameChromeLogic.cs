@@ -152,6 +152,17 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 						InitObserverWidgets(world, playerRoot);
 					});
 			};
+
+			var siloBar = playerWidgets.Get<SiloBarWidget>("SILOBAR");
+			siloBar.GetProvided = () => playerResources.OreCapacity;
+			siloBar.GetUsed = () => playerResources.Ore;
+			siloBar.TooltipFormat = "Silo Usage: {0}/{1}";
+			siloBar.GetBarColor = () => 
+			{
+				if (playerResources.Ore == playerResources.OreCapacity) return Color.Red;
+				if (playerResources.Ore >= 0.8 * playerResources.OreCapacity) return Color.Orange;
+				return Color.LimeGreen;
+			};
 		}
 
 		static void BindOrderButton<T>(World world, Widget parent, string button, string icon)

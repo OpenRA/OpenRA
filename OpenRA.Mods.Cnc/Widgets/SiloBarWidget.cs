@@ -27,21 +27,17 @@ namespace OpenRA.Mods.Cnc.Widgets
 		EWMA providedLerp = new EWMA(0.3f);
 		EWMA usedLerp = new EWMA(0.3f);
 
-		public Func<float> GetProvided, GetUsed;
-		public string TooltipFormat = "Silo Usage: {0}/{1}";
+		public Func<float> GetProvided = () => 0;
+		public Func<float> GetUsed = () => 0;
+		public string TooltipFormat = "";
 		public bool RightIndicator = false;
-
-		readonly PlayerResources pr;
+		public Func<Color> GetBarColor = () => Color.White;
 
 		[ObjectCreator.UseCtor]
 		public SiloBarWidget(World world)
 		{
-			pr = world.LocalPlayer.PlayerActor.Trait<PlayerResources>();
 			tooltipContainer = Lazy.New(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
-
-			GetProvided = () => pr.OreCapacity;
-			GetUsed = () => pr.Ore;
 		}
 
 		public override void MouseEntered()
@@ -83,13 +79,6 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var pos = new float2(indicatorX, float2.Lerp( b.Bottom, b.Top, usedFrac ) - indicator.size.Y / 2);
 
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(indicator, pos);
-		}
-
-		Color GetBarColor()
-		{
-			if (pr.Ore == pr.OreCapacity) return Color.Red;
-			if (pr.Ore >= LowStorageThreshold * pr.OreCapacity) return Color.Orange;
-			return Color.LimeGreen;
 		}
 	}
 }
