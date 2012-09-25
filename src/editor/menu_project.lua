@@ -79,7 +79,7 @@ menuBar:Append(debugMenu, "&Project")
 -- Project directory handling
 
 function ProjectUpdateProjectDir(projdir,skiptree)
-  ide.config.path.projectdir = projdir
+  ide.config.path.projectdir = projdir ~= "" and projdir or nil
   menuBar:SetLabel(ID "debug.projectdir.currentdir",projdir)
   frame:SetStatusText(projdir)
   if (not skiptree) then
@@ -98,7 +98,7 @@ local function projChoose(event)
   local projectdir = ide.config.path.projectdir
 
   local filePicker = wx.wxDirDialog(frame, "Chose a project directory",
-    projectdir~="" and projectdir or wx.wxGetCwd(),wx.wxFLP_USE_TEXTCTRL)
+    projectdir ~= "" and projectdir or wx.wxGetCwd(),wx.wxFLP_USE_TEXTCTRL)
   local res = filePicker:ShowModal(true)
   if res == wx.wxID_OK then
     ProjectUpdateProjectDir(filePicker:GetPath())
