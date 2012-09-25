@@ -562,6 +562,17 @@ function CreateEditor(name)
             pos = pos - 1
             if pos < 0 then return end
           end
+
+          -- check if the modification is to one of "invisible" characters.
+          -- if not, proceed with "normal" processing as there are other
+          -- events that may depend on Backspace, for example, re-calculating
+          -- auto-complete suggestions.
+          local style = bit.band(editor:GetStyleAt(pos), 31)
+          if not MarkupIsSpecial or not MarkupIsSpecial(style) then
+            event:Skip()
+            return
+          end
+
           editor:SetTargetStart(pos)
           editor:SetTargetEnd(pos+1)
         end
