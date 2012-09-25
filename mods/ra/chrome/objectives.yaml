@@ -1,4 +1,5 @@
 Container@MISSION_OBJECTIVES:
+	Logic:MissionObjectivesLogic
 	X:25
 	Y:50
 	Width:512

@@ -16,7 +16,6 @@ using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Air;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
-using System.Drawing;
 
 namespace OpenRA.Mods.RA.Missions
 {
@@ -90,27 +89,6 @@ namespace OpenRA.Mods.RA.Missions
 			return world.ActorsWithTrait<ProductionQueue>()
 				.Where(a => a.Actor.Owner == player && a.Trait.Info.Type == category)
 				.Select(a => a.Trait);
-		}
-
-		public static T AddFlag<T>(T flags, T flag)
-		{
-			var fs = Convert.ToInt32(flags);
-			var f = Convert.ToInt32(flag);
-			return (T)(object)(fs | f);
-		}
-
-		public static T RemoveFlag<T>(T flags, T flag)
-		{
-			var fs = Convert.ToInt32(flags);
-			var f = Convert.ToInt32(flag);
-			return (T)(object)(fs & ~f);
-		}
-
-		public static bool HasFlag<T>(T flags, T flag)
-		{
-			var fs = Convert.ToInt32(flags);
-			var f = Convert.ToInt32(flag);
-			return (fs & f) == f;
 		}
 	}
 }

@@ -2117,9 +2117,6 @@ Actors:
 	Actor694: dog
 		Location: 87,79
 		Owner: Soviets
-	Actor710: dog
-		Location: 92,81
-		Owner: Soviets
 	Actor712: e1
 		Location: 71,86
 		Owner: Neutral
@@ -2266,6 +2263,8 @@ Rules:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		Allies02Script:
+		MissionObjectivesPanel:
+			ObjectivesPanel: MISSION_OBJECTIVES
 	TRAN.Husk1:
 		Burns:
 			Damage: 0

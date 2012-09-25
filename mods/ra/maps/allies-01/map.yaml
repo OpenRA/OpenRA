@@ -349,6 +349,8 @@ Rules:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		Allies01Script:
+		MissionObjectivesPanel:
+			ObjectivesPanel: MISSION_OBJECTIVES
 	POWR:
 		Health:
 			HP: 100

@@ -26,56 +26,29 @@ namespace OpenRA.Mods.RA.Missions
 {
 	class Allies02ScriptInfo : TraitInfo<Allies02Script>, Requires<SpawnMapActorsInfo> { }
 
-	class Allies02Script : IWorldLoaded, ITick
+	class Allies02Script : IHasObjectives, IWorldLoaded, ITick
 	{
-		[Flags]
-		enum Allies02Objectives
-		{
-			None = 0,
-			FindEinstein = 1,
-			DestroySamSites = 2,
-			WaitForHelicopter = 4
-		}
+		public event Action ObjectivesUpdated;
 
-		IEnumerable<string> GetObjectiveText()
-		{
-			var objectives = new List<string>();
-			if (MissionUtils.HasFlag(currentObjectives, Allies02Objectives.FindEinstein))
-			{
-				objectives.Add("Find Einstein's crashed helicopter. Tanya must survive.");
-			}
-			if (MissionUtils.HasFlag(currentObjectives, Allies02Objectives.DestroySamSites))
-			{
-				objectives.Add("Destroy the SAM sites. Tanya must survive.");
-			}
-			if (MissionUtils.HasFlag(currentObjectives, Allies02Objectives.WaitForHelicopter))
-			{
-				objectives.Add("Wait for the helicopter and extract Einstein. Tanya and Einstein must survive.");
-			}
-			return objectives;
-		}
+		public IEnumerable<Objective> Objectives { get { return objectives.Values; } }
 
-		Allies02Objectives currentObjectives = Allies02Objectives.FindEinstein | Allies02Objectives.DestroySamSites;
-
-		void DisplayObjective(string objective)
+		Dictionary<int, Objective> objectives = new Dictionary<int, Objective>()
 		{
-			Game.AddChatLine(Color.LimeGreen, "Objective", objective);
-			Sound.Play("bleep6.aud");
-		}
+			{ FindEinsteinID, new Objective(ObjectiveType.Primary, FindEinstein, ObjectiveStatus.InProgress) },
+			{ DestroySamSitesID, new Objective(ObjectiveType.Primary, DestroySamSites, ObjectiveStatus.InProgress) },
+			{ ExtractEinsteinID, new Objective(ObjectiveType.Primary, ExtractEinstein, ObjectiveStatus.Inactive) },
+			{ MaintainPresenceID, new Objective(ObjectiveType.Secondary, MaintainPresence, ObjectiveStatus.InProgress) }
+		};
 
-		void DisplayHint(string hint)
-		{
-			Game.AddChatLine(Color.Yellow, "Hint", hint);
-			Sound.Play("bleep6.aud");
-		}
+		const int FindEinsteinID = 0;
+		const int DestroySamSitesID = 1;
+		const int ExtractEinsteinID = 2;
+		const int MaintainPresenceID = 3;
 
-		void DisplayObjectives()
-		{
-			foreach (var objective in GetObjectiveText())
-			{
-				DisplayObjective(objective);
-			}
-		}
+		const string FindEinstein = "Find Einstein's crashed helicopter. Tanya must survive.";
+		const string DestroySamSites = "Destroy the SAM sites. Tanya must survive.";
+		const string ExtractEinstein = "Wait for the helicopter and extract Einstein. Tanya and Einstein must survive.";
+		const string MaintainPresence = "Maintain an Allied presence in the area. Reinforcements will arrive soon.";
 
 		Actor sam1;
 		Actor sam2;
@@ -180,10 +153,6 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				return;
 			}
-			if (world.FrameNumber % 3500 == 1)
-			{
-				DisplayObjectives();
-			}
 			if (world.FrameNumber % 50 == 1 && chinookHusk.IsInWorld)
 			{
 				world.Add(new Smoke(world, chinookHusk.CenterLocation, "smoke_m"));
@@ -192,10 +161,6 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				InitializeSovietFactories();
 				StartReinforcementsTimer();
-			}
-			if (world.FrameNumber == HintPowerTicks)
-			{
-				DisplayHint("Destroy the Soviet power stations to stop the attacks on the Allied reinforcements.");
 			}
 			reinforcementsTimer.Tick();
 			if (world.FrameNumber == ParatroopersTicks)
@@ -216,36 +181,40 @@ namespace OpenRA.Mods.RA.Missions
 				BuildSovietUnits();
 				ManageSovietUnits();
 			}
-			if (MissionUtils.HasFlag(currentObjectives, Allies02Objectives.FindEinstein))
+			if (objectives[FindEinsteinID].Status == ObjectiveStatus.InProgress)
 			{
 				if (AlliesNearTown())
 				{
-					currentObjectives = MissionUtils.RemoveFlag(currentObjectives, Allies02Objectives.FindEinstein);
-					DisplayObjectives();
+					objectives[FindEinsteinID].Status = ObjectiveStatus.Completed;
+					ObjectivesUpdated();
 					TransferTownUnitsToAllies();
 					SovietsAttackTown();
 				}
 			}
-			if (MissionUtils.HasFlag(currentObjectives, Allies02Objectives.DestroySamSites))
+			if (objectives[DestroySamSitesID].Status == ObjectiveStatus.InProgress)
 			{
 				if (sam1.Destroyed && sam2.Destroyed && sam3.Destroyed && sam4.Destroyed)
 				{
-					currentObjectives = MissionUtils.RemoveFlag(currentObjectives, Allies02Objectives.DestroySamSites);
-					currentObjectives = MissionUtils.AddFlag(currentObjectives, Allies02Objectives.WaitForHelicopter);
-					DisplayObjectives();
+					objectives[DestroySamSitesID].Status = ObjectiveStatus.Completed;
+					objectives[ExtractEinsteinID].Status = ObjectiveStatus.InProgress;
+					ObjectivesUpdated();
 					SpawnSignalFlare();
 					Sound.Play("flaren1.aud");
 					ExtractEinsteinAtLZ();
 				}
 			}
-			if (MissionUtils.HasFlag(currentObjectives, Allies02Objectives.WaitForHelicopter) && einsteinChinook != null)
+			if (objectives[ExtractEinsteinID].Status == ObjectiveStatus.InProgress && einsteinChinook != null)
 			{
 				if (einsteinChinook.Destroyed)
 				{
+					objectives[ExtractEinsteinID].Status = ObjectiveStatus.Failed;
+					ObjectivesUpdated();
 					MissionFailed("The extraction helicopter was destroyed.");
 				}
 				else if (!world.Map.IsInMap(einsteinChinook.Location) && einsteinChinook.Trait<Cargo>().Passengers.Contains(einstein))
 				{
+					objectives[ExtractEinsteinID].Status = ObjectiveStatus.Completed;
+					ObjectivesUpdated();
 					MissionAccomplished("Einstein was rescued.");
 				}
 			}
@@ -261,6 +230,8 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				if (!world.FindAliveCombatantActorsInCircle(allies2BasePoint.CenterLocation, 20).Any(a => a.HasTrait<Building>() && !a.HasTrait<Wall>() && a.Owner == allies2))
 				{
+					objectives[MaintainPresenceID].Status = ObjectiveStatus.Failed;
+					ObjectivesUpdated();
 					MissionFailed("The Allied reinforcements have been defeated.");
 				}
 			});
@@ -497,6 +468,7 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				Game.MoveViewport(allies2BasePoint.Location.ToFloat2());
 			}
+			ObjectivesUpdated();
 			PlayMusic();
 			Game.ConnectionStateChanged += StopMusic;
 		}

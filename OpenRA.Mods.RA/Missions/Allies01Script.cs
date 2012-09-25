@@ -8,66 +8,37 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Activities;
-using OpenRA.Mods.RA.Air;
 using OpenRA.Network;
 using OpenRA.Scripting;
 using OpenRA.Traits;
-using System;
 
 namespace OpenRA.Mods.RA.Missions
 {
 	class Allies01ScriptInfo : TraitInfo<Allies01Script>, Requires<SpawnMapActorsInfo> { }
 
-	class Allies01Script : IWorldLoaded, ITick
+	class Allies01Script : IHasObjectives, IWorldLoaded, ITick
 	{
-		[Flags]
-		enum Allies01Objectives
-		{
-			None = 0,
-			FindEinstein = 1,
-			WaitForHelicopter = 2
-		}
+		public event Action ObjectivesUpdated;
 
-		IEnumerable<string> GetObjectiveText()
-		{
-			var objectives = new List<string>();
-			if (MissionUtils.HasFlag(currentObjectives, Allies01Objectives.FindEinstein))
-			{
-				objectives.Add("Find Einstein. Tanya and Einstein must survive.");
-			}
-			if (MissionUtils.HasFlag(currentObjectives, Allies01Objectives.WaitForHelicopter))
-			{
-				objectives.Add("Wait for the helicopter and extract Einstein. Tanya and Einstein must survive.");
-			}
-			return objectives;
-		}
+		public IEnumerable<Objective> Objectives { get { return objectives.Values; } }
 
-		Allies01Objectives currentObjectives = Allies01Objectives.FindEinstein;
-
-		void DisplayObjective(string objective)
+		Dictionary<int, Objective> objectives = new Dictionary<int, Objective>
 		{
-			Game.AddChatLine(Color.LimeGreen, "Objective", objective);
-			Sound.Play("bleep6.aud");
-		}
+			{ FindEinsteinID, new Objective(ObjectiveType.Primary, FindEinstein, ObjectiveStatus.InProgress) },
+			{ ExtractEinsteinID, new Objective(ObjectiveType.Primary, ExtractEinstein, ObjectiveStatus.Inactive) }
+		};
 
-		void DisplayHint(string hint)
-		{
-			Game.AddChatLine(Color.Yellow, "Hint", hint);
-			Sound.Play("bleep6.aud");
-		}
+		const int FindEinsteinID = 0;
+		const int ExtractEinsteinID = 1;
 
-		void DisplayObjectives()
-		{
-			foreach (var objective in GetObjectiveText())
-			{
-				DisplayObjective(objective);
-			}
-		}
+		const string FindEinstein = "Find Einstein. Tanya and Einstein must survive.";
+		const string ExtractEinstein = "Wait for the helicopter and extract Einstein. Tanya and Einstein must survive.";
 
 		Player allies;
 		Player soviets;
@@ -137,15 +108,11 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				return;
 			}
-			if (world.FrameNumber % 1500 == 1)
-			{
-				DisplayObjectives();
-			}
 			if (world.FrameNumber % 1000 == 0)
 			{
 				Sound.Play(Taunts[world.SharedRandom.Next(Taunts.Length)]);
 			}
-			if (MissionUtils.HasFlag(currentObjectives, Allies01Objectives.FindEinstein))
+			if (objectives[FindEinsteinID].Status == ObjectiveStatus.InProgress)
 			{
 				if (AlliesControlLab())
 				{
@@ -153,17 +120,19 @@ namespace OpenRA.Mods.RA.Missions
 					Sound.Play("flaren1.aud");
 					SpawnEinsteinAtLab();
 					SendShips();
-					currentObjectives = MissionUtils.RemoveFlag(currentObjectives, Allies01Objectives.FindEinstein);
-					currentObjectives = MissionUtils.AddFlag(currentObjectives, Allies01Objectives.WaitForHelicopter);
-					DisplayObjectives();
+					objectives[FindEinsteinID].Status = ObjectiveStatus.Completed;
+					objectives[ExtractEinsteinID].Status = ObjectiveStatus.InProgress;
+					ObjectivesUpdated();
 					currentAttackWaveFrameNumber = world.FrameNumber;
 				}
 				if (lab.Destroyed)
 				{
+					objectives[FindEinsteinID].Status = ObjectiveStatus.Failed;
+					ObjectivesUpdated();
 					MissionFailed("Einstein was killed.");
 				}
 			}
-			if (MissionUtils.HasFlag(currentObjectives, Allies01Objectives.WaitForHelicopter))
+			if (objectives[ExtractEinsteinID].Status == ObjectiveStatus.InProgress)
 			{
 				if (world.FrameNumber >= currentAttackWaveFrameNumber + 600)
 				{
@@ -184,10 +153,14 @@ namespace OpenRA.Mods.RA.Missions
 				{
 					if (einsteinChinook.Destroyed)
 					{
+						objectives[ExtractEinsteinID].Status = ObjectiveStatus.Failed;
+						ObjectivesUpdated();
 						MissionFailed("The extraction helicopter was destroyed.");
 					}
 					else if (!world.Map.IsInMap(einsteinChinook.Location) && einsteinChinook.Trait<Cargo>().Passengers.Contains(einstein))
 					{
+						objectives[ExtractEinsteinID].Status = ObjectiveStatus.Completed;
+						ObjectivesUpdated();
 						MissionAccomplished("Einstein was rescued.");
 					}
 				}
@@ -334,7 +307,6 @@ namespace OpenRA.Mods.RA.Missions
 					InsertTanyaAtLZ();
 					SendPatrol();
 					PlayMusic();
-					DisplayObjectives();
 				});
 			});
 		}
