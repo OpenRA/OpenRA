@@ -150,14 +150,14 @@ Container@PLAYER_WIDGETS:
 							Width:PARENT_RIGHT-2
 							Height:PARENT_BOTTOM-2
 							WorldInteractionController:INTERACTION_CONTROLLER
-				Background@POWERBAR:
+				Background@POWERBAR_PANEL:
 					X:4
 					Y:5
 					Width:10
 					Height:168
 					Background:panel-black
 					Children:
-						PowerBar:
+						ResourceBar@POWERBAR:
 							X:1
 							Y:1
 							Width:PARENT_RIGHT-2
