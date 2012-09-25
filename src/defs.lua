@@ -145,12 +145,10 @@ config = {
   -- whether autocomplete is on by default
 
   acandtip = {
-    shorttip = false,
-    -- tooltips are compact during typing
-    nodynwords = false,
-    -- no dynamic words (user entered words)
-    ignorecase = false,
-    -- ignores case when performing comparison with autocomplete list
+    shorttip = false,   -- tooltips are compact during typing
+    nodynwords = false, -- no dynamic words (user entered words)
+    ignorecase = false, -- ignores case when performing comparison with autocomplete list
+    startat = 2,        -- start suggesting dynamic words after 2 characters
     strategy = 0,
     -- 0: is string comparison
     -- 1: substring leading characters (camel case or _ separated)
