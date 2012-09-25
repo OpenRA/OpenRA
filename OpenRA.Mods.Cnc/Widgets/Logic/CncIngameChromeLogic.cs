@@ -153,10 +153,11 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					});
 			};
 
-			var siloBar = playerWidgets.Get<SiloBarWidget>("SILOBAR");
+			var siloBar = playerWidgets.Get<ResourceBarWidget>("SILOBAR");
 			siloBar.GetProvided = () => playerResources.OreCapacity;
 			siloBar.GetUsed = () => playerResources.Ore;
 			siloBar.TooltipFormat = "Silo Usage: {0}/{1}";
+			siloBar.RightIndicator = true;
 			siloBar.GetBarColor = () => 
 			{
 				if (playerResources.Ore == playerResources.OreCapacity) return Color.Red;

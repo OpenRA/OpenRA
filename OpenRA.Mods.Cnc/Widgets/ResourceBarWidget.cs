@@ -17,7 +17,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc.Widgets
 {
-	public class SiloBarWidget : Widget
+	public class ResourceBarWidget : Widget
 	{
 		public readonly string TooltipTemplate = "SIMPLE_TOOLTIP";
 		public readonly string TooltipContainer;
@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 		public Func<Color> GetBarColor = () => Color.White;
 
 		[ObjectCreator.UseCtor]
-		public SiloBarWidget(World world)
+		public ResourceBarWidget(World world)
 		{
 			tooltipContainer = Lazy.New(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));

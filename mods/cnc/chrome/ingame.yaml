@@ -170,7 +170,7 @@ Container@PLAYER_WIDGETS:
 					Height:168
 					Background:panel-black
 					Children:
-						SiloBar@SILOBAR:
+						ResourceBar@SILOBAR:
 							X:1
 							Y:1
 							Width:PARENT_RIGHT-2
