@@ -58,11 +58,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var providedFrac = pm.PowerProvided / powerScaleBy;
 			lastProvidedFrac = providedFrac = float2.Lerp(lastProvidedFrac.GetValueOrDefault(providedFrac), providedFrac, .3f);
 
-			var color = Color.LimeGreen;
-			if (pm.PowerState == PowerState.Low)
-				color = Color.Orange;
-			if (pm.PowerState == PowerState.Critical)
-				color = Color.Red;
+			var color = GetBarColor();
 
 			var b = RenderBounds;
 			var rect = new RectangleF(b.X,
@@ -80,6 +76,13 @@ namespace OpenRA.Mods.Cnc.Widgets
 									b.Y + (1-drainedFrac)*b.Height - indicator.size.Y / 2);
 
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(indicator, pos);
+		}
+
+		Color GetBarColor()
+		{
+			if (pm.PowerState == PowerState.Critical) return Color.Red;
+			if (pm.PowerState == PowerState.Low) return Color.Orange;
+			return Color.LimeGreen;
 		}
 	}
 }
