@@ -1,12 +1,12 @@
 --
--- MobDebug 0.497
+-- MobDebug 0.498
 -- Copyright 2011-12 Paul Kulchenko
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
 --
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.497,
+  _VERSION = 0.498,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = 8171
@@ -25,6 +25,10 @@ local string = string
 local tonumber = tonumber
 local mosync = mosync
 local jit = jit
+
+-- check for OS and convert file names to lower case on windows
+-- (its file system is case insensitive, but case preserving), as setting a
+-- breakpoint on x:\Foo.lua will not work if the file was loaded as X:\foo.lua.
 local iswindows = os.getenv('WINDIR')
   or (os.getenv('OS') or ''):match('[Ww]indows')
   or pcall(require, "winapi")
@@ -185,12 +189,14 @@ local step_level = 0
 local stack_level = 0
 local server
 local rset
+local basedir = ""
 local deferror = "execution aborted at default debugee"
 local debugee = function () 
   local a = 1
   for _ = 1, 10 do a = a + 1 end
   error(deferror)
 end
+local function q(s) return s:gsub('([%(%)%.%%%+%-%*%?%[%^%$%]])','%%%1') end
 
 local serpent = (function() ---- include Serpent module for serialization
 local n, v = "serpent", 0.18 -- (C) 2012 Paul Kulchenko; MIT License
@@ -327,20 +333,14 @@ local function stack(start)
   return stack
 end
 
--- convert file names to lower case on windows (its file system is case
--- insensitive, but case preserving), as setting breakpoint on
--- x:\Foo.lua will not work if the file was loaded as X:\foo.lua.
-
 local function set_breakpoint(file, line)
   if file == '-' and lastfile then file = lastfile end
-  if iswindows then file = string.lower(file) end
   if not breakpoints[file] then breakpoints[file] = {} end
   breakpoints[file][line] = true  
 end
 
 local function remove_breakpoint(file, line)
   if file == '-' and lastfile then file = lastfile end
-  if iswindows then file = string.lower(file) end
   if breakpoints[file] then breakpoints[file][line] = nil end
 end
 
@@ -492,14 +492,15 @@ local function debug_hook(event, line)
       lastsource = caller.source
       file = lastsource
       if string.find(file, "@") == 1 then file = string.sub(file, 2) end
-      -- remove references to the current folder (./ or .\)
-      if string.find(file, "%.[/\\]") == 1 then file = string.sub(file, 3) end
+      if iswindows then file = string.lower(file) end
+      file = string.gsub(file, "\\", "/") -- convert slash
+      -- remove references to the current folder (./)
+      if string.find(file, "%./") == 1 then file = string.sub(file, 3)
+      else file = string.gsub(file, '^'..q(basedir), '') end
       -- fix filenames for loaded strings that may contain scripts with newlines
       if string.find(file, "\n") then
         file = string.sub(string.gsub(file, "\n", ' '), 1, 32) -- limit to 32 chars
       end
-      file = string.gsub(file, "\\", "/") -- convert slash
-      if iswindows then file = string.lower(file) end
 
       -- set to true if we got here; this only needs to be done once per
       -- session, so do it here to at least avoid setting it for every line.
@@ -762,6 +763,14 @@ local function debugger_loop(sfile, sline)
         server:send("401 Error in Execution " .. string.len(file) .. "\n")
         server:send(file)
       end
+    elseif command == "BASEDIR" then
+      local _, _, dir = string.find(line, "^[A-Z]+%s+(.+)%s*$")
+      if dir then
+        basedir = dir
+        server:send("200 OK\n")
+      else
+        server:send("400 Bad Request\n")
+      end
     elseif command == "SUSPEND" then
       -- do nothing; it already fulfilled its role
     elseif command == "STACK" then
@@ -929,9 +938,6 @@ local function off()
   end
 end
 
-local basedir = ""
-local function q(s) return s:gsub('([%(%)%.%%%+%-%*%?%[%^%$%]])','%%%1') end
-
 -- Handles server debugging commands 
 local function handle(params, client)
   local _, _, command = string.find(params, "^([a-z]+)")
@@ -976,8 +982,9 @@ local function handle(params, client)
   elseif command == "setb" then
     _, _, _, file, line = string.find(params, "^([a-z]+)%s+(.-)%s+(%d+)%s*$")
     if file and line then
+      if iswindows then file = string.lower(file) end
       file = string.gsub(file, "\\", "/") -- convert slash
-      file = string.gsub(file, q(basedir), '') -- remove basedir
+      file = string.gsub(file, '^'..q(basedir), '') -- remove basedir
       if not breakpoints[file] then breakpoints[file] = {} end
       client:send("SETB " .. file .. " " .. line .. "\n")
       if client:receive() == "200 OK" then 
@@ -1012,8 +1019,9 @@ local function handle(params, client)
   elseif command == "delb" then
     _, _, _, file, line = string.find(params, "^([a-z]+)%s+(.-)%s+(%d+)%s*$")
     if file and line then
+      if iswindows then file = string.lower(file) end
       file = string.gsub(file, "\\", "/") -- convert slash
-      file = string.gsub(file, q(basedir), '') -- remove basedir
+      file = string.gsub(file, '^'..q(basedir), '') -- remove basedir
       if not breakpoints[file] then breakpoints[file] = {} end
       client:send("DELB " .. file .. " " .. line .. "\n")
       if client:receive() == "200 OK" then 
@@ -1090,7 +1098,7 @@ local function handle(params, client)
         file:close()
 
         local file = string.gsub(exp, "\\", "/") -- convert slash
-        file = string.gsub(file, q(basedir), '') -- remove basedir
+        file = string.gsub(file, '^'..q(basedir), '') -- remove basedir
         client:send("LOAD " .. string.len(lines) .. " " .. file .. "\n")
         client:send(lines)
       end
@@ -1171,7 +1179,8 @@ local function handle(params, client)
         local src = string.gsub(frame[1][2], "\\", "/") -- convert slash
         if string.find(src, "@") == 1 then src = string.sub(src, 2) end
         if string.find(src, "%./") == 1 then src = string.sub(src, 3) end
-        frame[1][2] = string.gsub(src, q(basedir), '') -- remove basedir
+        if iswindows then src = string.lower(src) end
+        frame[1][2] = string.gsub(src, '^'..q(basedir), '') -- remove basedir
         print(serpent.line(frame[1], {comment = false}))
       end
       return stack
@@ -1186,10 +1195,20 @@ local function handle(params, client)
   elseif command == "basedir" then
     local _, _, dir = string.find(params, "^[a-z]+%s+(.+)$")
     if dir then
+      if iswindows then dir = string.lower(dir) end
       dir = string.gsub(dir, "\\", "/") -- convert slash
       if not string.find(dir, "/$") then dir = dir .. "/" end
       basedir = dir
-      print("New base directory is " .. basedir)
+
+      client:send("BASEDIR "..dir.."\n")
+      local resp = client:receive()
+      local _, _, status = string.find(resp, "^(%d+)%s+%w+%s*$")
+      if status == "200" then
+        print("New base directory is " .. basedir)
+      else
+        print("Unknown error")
+        return nil, nil, "Debugger error: unexpected response after BASEDIR"
+      end
     else
       print(basedir)
     end

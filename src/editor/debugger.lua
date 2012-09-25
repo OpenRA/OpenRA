@@ -335,7 +335,7 @@ debugger.listen = function()
           local activated = activateDocument(file, line)
 
           -- if not found, check using full file path and reset basedir
-          if not activated then
+          if not activated and not wx.wxIsAbsolutePath(file) then
             activated = activateDocument(startpath..file, line)
             if activated then
               debugger.basedir = startpath
