@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Encoding=UTF-8
+Name=ZeroBrane Studio
+GenericName=Integrated Development Environment
+Comment=A simple and extensible Lua IDE and debugger
+Exec=zbstudio %F
+Icon=zbstudio
+Terminal=false
+Categories=GTK;Development;IDE;
+MimeType=text/plain;application/lua;
+StartupNotify=true

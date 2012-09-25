@@ -1,0 +1,4 @@
+#!/bin/sh
+
+cd "@IDE_DATADIR@"
+lua src/main.lua zbstudio

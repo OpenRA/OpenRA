@@ -4,7 +4,7 @@
 // (providing a single exe file in our main directory without
 // polluting it with all these dlls located in the /bin folder)
 
-#ifdef __MINGW__ /* not sure if this is the *official* define */
+#ifdef __MINGW32__
 #define _WIN32_WINNT 0x0502
 #endif
 
