@@ -9,8 +9,8 @@ if it fails it tries to contact the running application
 - if it confirms being the IDE we let that instance open it, finish our application
 - otherwise we throw an error message on the user and start like normal
 
-probably a pitfal: an estreala instance is running but is not visible (because it was finished
-  though the UDP thing still runs)
+probably a pitfal: an instance is running but is not visible
+  (because it was finished though the UDP thing still runs)
 ]]
 
 if not ide.config.singleinstance then return end
@@ -56,11 +56,8 @@ if success then -- ok, server was started, we are solo
           svr:sendto(protocoll.server.answerok,ip,port)
 
           ide.frame:RequestUserAttention() -- let's let the user know we want his attention
-
         end
-
       end
-      --DisplayOutput("check "..os.clock().."\n")
     end)
 else -- something different is running on our port
   local cln = socket.udp()
@@ -91,10 +88,7 @@ else -- something different is running on our port
     else -- done
       os.exit(0)
     end
-    --DisplayOutput("OK\n")
   else
-    print("The Single instance communication has failed, it is not certain if this is the only running instance")
+    print("The single instance communication has failed; there may be another instance running, which may cause interference with the debugger.")
   end
 end
-
---print("UDP Server: "..success.." - "..tostring(errmsg).."\n")
