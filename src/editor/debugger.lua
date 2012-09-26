@@ -165,15 +165,16 @@ local function killClient()
   end
 end
 
-local function activateDocument(fileName, line)
-  if not fileName then return end
+local function activateDocument(file, line)
+  if not file then return end
 
-  if not wx.wxIsAbsolutePath(fileName) and debugger.basedir then
-    fileName = debugger.basedir .. fileName
+  if not wx.wxIsAbsolutePath(file) and debugger.basedir then
+    file = debugger.basedir .. file
   end
 
   local activated
-  local fileName = wx.wxFileName(fileName)
+  local indebugger = file:find('mobdebug%.lua$')
+  local fileName = wx.wxFileName(file)
   for _, document in pairs(ide.openDocuments) do
     -- skip those tabs that may have file without names (untitled.lua)
     if document.filePath and fileName:SameAs(wx.wxFileName(document.filePath)) then
@@ -191,7 +192,21 @@ local function activateDocument(fileName, line)
     end
   end
 
-  return activated ~= nil, activated
+  -- found file, but can't activate yet (because this part may be executed
+  -- in a different co-routine), so schedule pending activation.
+  if not activated and wx.wxFileName(file):FileExists()
+    and not indebugger then
+    debugger.activate = {file, line}
+    return true -- report successful activation, even though it's pending
+  end
+
+  if not activated and not indebugger and not debugger.missing[file] then
+    debugger.missing[file] = true
+    DisplayOutput(("Couldn't activate file '%s' for debugging; continuing without it.\n")
+      :format(file))
+  end
+
+  return activated ~= nil
 end
 
 local function reSetBreakpoints()
@@ -293,13 +308,14 @@ debugger.listen = function()
       debugger.loop = false
       debugger.scratchable = false
       debugger.stats = {line = 0}
+      debugger.missing = {}
 
       local wxfilepath = GetEditorFileAndCurInfo()
       local startfile = options.startfile or options.startwith
         or (wxfilepath and wxfilepath:GetFullPath())
 
       if not startfile then
-        DisplayOutput("Can't start debugging with the current file not being saved ('untitled.lua').\n")
+        DisplayOutput("Can't start debugging without an opened file or with the current file not being saved ('untitled.lua').\n")
         return debugger.terminate()
       end
 
@@ -346,7 +362,7 @@ debugger.listen = function()
           end
 
           if not activated then
-            DisplayOutput(("Can't find file '%s' to activate for debugging; open the file in the editor before debugging.\n")
+            DisplayOutput(("Can't find file '%s' in the current project to activate for debugging. Update the project or open the file in the editor before debugging.\n")
               :format(file))
             return debugger.terminate()
           end
@@ -451,7 +467,15 @@ end
 debugger.loadstring = function(file, string)
   return debugger.handle("loadstring '" .. file .. "' " .. string)
 end
-debugger.update = function() copas.step(0) end
+debugger.update = function()
+  copas.step(0)
+  -- if there are any pending activations
+  if debugger.activate then
+    local file, line = (table.unpack or unpack)(debugger.activate)
+    if LoadFile(file) then activateDocument(file, line) end
+    debugger.activate = nil
+  end
+end
 debugger.terminate = function()
   if debugger.server then
     if debugger.pid then -- if there is PID, try local kill
