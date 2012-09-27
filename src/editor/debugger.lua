@@ -948,8 +948,8 @@ function DebuggerScratchpadOn(editor)
     end
     scratchpad.start = nstart + 1
     scratchpad.length = nend - nstart - 1
-    scratchpad.origin = tonumber(scratchpadEditor:GetTextRange(nstart+1,nend))
-    if scratchpad.origin then
+    scratchpad.origin = scratchpadEditor:GetTextRange(nstart+1,nend)
+    if tonumber(scratchpad.origin) then
       scratchpad.point = point
       scratchpadEditor:CaptureMouse()
     end
@@ -977,22 +977,39 @@ function DebuggerScratchpadOn(editor)
       wx.wxSetCursor(wx.wxCursor(scratchpad.over and wx.wxCURSOR_SIZEWE or wx.wxCURSOR_IBEAM)) end 
 
     if ipoint then
-      -- calculate difference in point position
-      local dx = point.x - ipoint.x
-      local dy = - (point.y - ipoint.y) -- invert dy as y increases down
-
-      -- re-calculate the value
       local startpos = scratchpad.start
       local endpos = scratchpad.start+scratchpad.length
-      local num = tonumber(scratchpad.origin) + dx/10
+
+      -- calculate difference in point position
+      local dx = point.x - ipoint.x
+
+      -- calculate the number of decimal digits after the decimal point
+      local origin = scratchpad.origin
+      local decdigits = #(origin:match('%.(%d+)') or '')
+
+      -- calculate new value
+      local value = tonumber(origin) + dx * 10^-decdigits
+
+      -- convert new value back to string to check the number of decimal points
+      -- this is needed because the rate of change is determined by the
+      -- current value. For example, for number 1, the next value is 2,
+      -- but for number 1.1, the next is 1.2 and for 1.01 it is 1.02.
+      -- But if 1.01 becomes 1.00, the both zeros after the decimal point
+      -- need to be preserved to keep the increment ratio the same when
+      -- the user wants to release the slider and start again.
+      origin = tostring(value)
+      local newdigits = #(origin:match('%.(%d+)') or '')
+      if decdigits ~= newdigits then
+        origin = origin .. (origin:find('%.') and '' or '.') .. ("0"):rep(decdigits-newdigits)
+      end
 
       -- update length
-      scratchpad.length = string.len(num)
+      scratchpad.length = #origin
 
       -- update the value in the document
       scratchpadEditor:SetTargetStart(startpos)
       scratchpadEditor:SetTargetEnd(endpos)
-      scratchpadEditor:ReplaceTarget("" .. num)
+      scratchpadEditor:ReplaceTarget(origin)
     else event:Skip() end
   end)
 

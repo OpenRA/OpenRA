@@ -27,7 +27,7 @@ styles = {
   stringeol = {fg = {0, 0, 0}, bg = {224, 192, 224}, fill = true},
   preprocessor = {fg = {127, 127,0}},
   operator = {fg = {0, 0, 0}},
-  number = {fg = {90, 100, 0}},
+  number = {fg = {90, 0, 255}},
 
   keywords0 = {fg = {0, 0, 127}, b = true},
   keywords1 = {fg = {127, 0, 0}, b = true},
