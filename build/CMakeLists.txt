@@ -60,7 +60,7 @@ endfunction()
 
 if(WIN32)
   # add the executable file to our project
-  add_executable(zbstudio WIN32 ${TOPDIR}/estrela/win32_starter.c ${TOPDIR}/zbstudio/res/zbstudio.rc)
+  add_executable(zbstudio WIN32 ${TOPDIR}/build/win32_starter.c ${TOPDIR}/zbstudio/res/zbstudio.rc)
 
   # link to the static multi-threaded CRT under MSVC
   if(MSVC)

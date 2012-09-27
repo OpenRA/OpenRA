@@ -79,7 +79,7 @@ style = {
 -- content is optional
 -- config is loaded into existing config table
 config = {
-  appname = "estrela", -- by default the launcher name
+  appname = "zbstudio", -- by default the launcher name
 
   path = {
     -- path for tools/interpreters
@@ -138,7 +138,7 @@ config = {
   stylesoutshell = {},
   -- styles for output/shell
 
-  interpreter = "EstrelaEditor",
+  interpreter = "luadeb",
   -- the default "project" lua interpreter
 
   autocomplete = true,
