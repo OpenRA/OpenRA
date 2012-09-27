@@ -113,6 +113,7 @@ config = {
     autotabs = true, -- if true test for tabs after file load,
     -- sets "usetabs" to true for this file
     calltipdelay = nil, -- delay to show calltip (in ms)
+    autoactivate = false, -- auto-activate/open files during debugging
   },
 
   default = {

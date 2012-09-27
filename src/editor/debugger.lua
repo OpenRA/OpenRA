@@ -195,7 +195,7 @@ local function activateDocument(file, line)
   -- found file, but can't activate yet (because this part may be executed
   -- in a different co-routine), so schedule pending activation.
   if not activated and wx.wxFileName(file):FileExists()
-    and not indebugger then
+    and not indebugger and ide.config.editor.autoactivate then
     debugger.activate = {file, line}
     return true -- report successful activation, even though it's pending
   end
