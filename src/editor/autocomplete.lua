@@ -486,7 +486,7 @@ function CreateAutoCompList(editor,key)
   -- only if api search couldnt descend
   -- ie we couldnt find matching sub items
   local dw = ""
-  if (tab == ac and #last >= (ide.config.acandtip.startat or 2)) then
+  if (tab == ac and last and #last >= (ide.config.acandtip.startat or 2)) then
     if dynamicwords[last] then
       local list = dynamicwords[last]
       table.sort(list,function(a,b)
