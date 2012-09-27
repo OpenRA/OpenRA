@@ -358,6 +358,7 @@ CRATE:
 	HealUnitsCrateAction:
 		Notification: heal2.aud
 		SelectionShares: 2
+		Effect: heal
 	RevealMapCrateAction:
 		SelectionShares: 1
 		Effect: reveal-map
