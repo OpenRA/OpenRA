@@ -14,6 +14,8 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Air;
+using OpenRA.Mods.RA.Move;
 using OpenRA.Network;
 using OpenRA.Scripting;
 using OpenRA.Traits;
@@ -134,15 +136,19 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			if (objectives[ExtractEinsteinID].Status == ObjectiveStatus.InProgress)
 			{
+				if (world.FrameNumber % 25 == 0)
+				{
+					SendAttackWave();
+				}
 				if (world.FrameNumber >= currentAttackWaveFrameNumber + 600)
 				{
 					Sound.Play("enmyapp1.aud");
-					SendAttackWave(AttackWave);
+					SpawnAttackWave(AttackWave);
 					currentAttackWave++;
 					currentAttackWaveFrameNumber = world.FrameNumber;
 					if (currentAttackWave >= EinsteinChinookAttackWave)
 					{
-						SendAttackWave(LastAttackWaveAddition);
+						SpawnAttackWave(LastAttackWaveAddition);
 					}
 					if (currentAttackWave == EinsteinChinookAttackWave)
 					{
@@ -188,22 +194,47 @@ namespace OpenRA.Mods.RA.Missions
 			world.CreateActor(SignalFlareName, new TypeDictionary { new OwnerInit(allies), new LocationInit(extractionLZ.Location) });
 		}
 
-		void SendAttackWave(IEnumerable<string> wave)
+		void SpawnAttackWave(IEnumerable<string> wave)
 		{
 			foreach (var unit in wave)
 			{
 				var spawnActor = world.SharedRandom.Next(2) == 0 ? attackEntryPoint1 : attackEntryPoint2;
 				var actor = world.CreateActor(unit, new TypeDictionary { new OwnerInit(soviets), new LocationInit(spawnActor.Location) });
+			}
+		}
+
+		void SendAttackWave()
+		{
+			foreach (var unit in world.Actors.Where(
+				a => a != world.WorldActor
+				&& a.IsInWorld
+				&& a.Owner == soviets
+				&& !a.IsDead()
+				&& a.IsIdle
+				&& a.HasTrait<Mobile>()
+				&& a.HasTrait<AttackBase>()))
+			{
 				Activity innerActivity;
-				if (einstein != null && einstein.IsInWorld)
+				if (einstein != null)
 				{
-					innerActivity = new Attack(Target.FromActor(einstein), 3);
+					if (einstein.IsInWorld)
+					{
+						innerActivity = new Attack(Target.FromActor(einstein), 3);
+					}
+					else
+					{
+						var container = world.UnitContaining(einstein);
+						if (container != null && !container.HasTrait<Aircraft>() && container.HasTrait<Mobile>())
+						{
+							innerActivity = new Attack(Target.FromActor(container), 3);
+						}
+						else
+						{
+							innerActivity = new Move.Move(extractionLZ.Location, 3);
+						}
+					}
+					unit.QueueActivity(new AttackMove.AttackMoveActivity(unit, innerActivity));
 				}
-				else
-				{
-					innerActivity = new Move.Move(extractionLZ.Location, 3);
-				}
-				actor.QueueActivity(new AttackMove.AttackMoveActivity(actor, innerActivity));
 			}
 		}
 

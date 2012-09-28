@@ -24,13 +24,13 @@ namespace OpenRA.Mods.RA.Missions
 		public static IEnumerable<Actor> FindAliveCombatantActorsInCircle(this World world, PPos location, int range)
 		{
 			return world.FindUnitsInCircle(location, Game.CellSize * range)
-				.Where(a => a.IsInWorld && a != world.WorldActor && !a.Destroyed && !a.Owner.NonCombatant);
+				.Where(a => a.IsInWorld && a != world.WorldActor && !a.IsDead() && !a.Owner.NonCombatant);
 		}
 
 		public static IEnumerable<Actor> FindAliveNonCombatantActorsInCircle(this World world, PPos location, int range)
 		{
 			return world.FindUnitsInCircle(location, Game.CellSize * range)
-				.Where(a => a.IsInWorld && a != world.WorldActor && !a.Destroyed && a.Owner.NonCombatant);
+				.Where(a => a.IsInWorld && a != world.WorldActor && !a.IsDead() && a.Owner.NonCombatant);
 		}
 
 		public static Actor ExtractUnitWithChinook(World world, Player owner, Actor unit, CPos entry, CPos lz, CPos exit)
@@ -89,6 +89,11 @@ namespace OpenRA.Mods.RA.Missions
 			return world.ActorsWithTrait<ProductionQueue>()
 				.Where(a => a.Actor.Owner == player && a.Trait.Info.Type == category)
 				.Select(a => a.Trait);
+		}
+
+		public static Actor UnitContaining(this World world, Actor actor)
+		{
+			return world.Actors.FirstOrDefault(a => a.HasTrait<Cargo>() && a.Trait<Cargo>().Passengers.Contains(actor));
 		}
 	}
 }
