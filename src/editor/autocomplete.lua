@@ -11,7 +11,7 @@ local statusBar = ide.frame.statusBar
 
 local function newAPI(api)
   api = api or {}
-  for i,v in pairs(api) do
+  for i in pairs(api) do
     api[i] = nil
   end
   -- tool tip info and reserved names
@@ -36,8 +36,6 @@ local apis = {
   lua = newAPI(),
 }
 
-local config = ide.config.ac
-
 function GetApi(apitype)
   return apis[apitype] or apis["none"]
 end
@@ -61,7 +59,6 @@ local function addAPI(apifile,only,subapis,known) -- relative to API directory
     DisplayOutput("Error while loading API file: "..err.."\n")
     return
   end
-  local mt
   local env = apis[ftype] or newAPI()
   apis[ftype] = env
   env = env.ac.childs
@@ -142,7 +139,7 @@ local function fillTips(api,apibasename,apiname)
         -- build info
         local inf = frontname.."\n"..info.description
         local sentence = info.description:match("^([^\n]+)\n.*")
-        local sentence = sentence and sentence:match("([^%.]+)%..*$")
+        sentence = sentence and sentence:match("([^%.]+)%..*$")
         local infshort = frontname.."\n"..(sentence and sentence.."..." or info.description)
         local infshortbatch = (info.returns and info.args) and frontname or infshort
 
@@ -262,7 +259,7 @@ function ReloadLuaAPI()
   interpreterapi = interpreterapi and interpreterapi.api
   if (interpreterapi) then
     local apinames = {}
-    for i,v in ipairs(interpreterapi) do
+    for _, v in ipairs(interpreterapi) do
       apinames[v] = true
     end
     interpreterapi = apinames
@@ -272,7 +269,7 @@ end
 
 do
   local known = {}
-  for n,spec in pairs(ide.specs) do
+  for _, spec in pairs(ide.specs) do
     if (spec.apitype) then
       known[spec.apitype] = true
     end
@@ -384,7 +381,7 @@ local function getAutoCompApiList(childs,fragment)
     local wlist = cache[childs]
     if not wlist then
       wlist = " "
-      for i,v in pairs(childs) do
+      for i in pairs(childs) do
         wlist = wlist..i.." "
       end
       cache[childs] = wlist
@@ -411,8 +408,8 @@ local function getAutoCompApiList(childs,fragment)
   local t = {}
   cache[childs] = t
 
-  local sub = strat == 1
-  for key, info in pairs(childs) do
+  local sub = strategy == 1
+  for key in pairs(childs) do
     local used = {}
     --
     local kl = key:lower()
@@ -464,7 +461,7 @@ function CreateAutoCompList(editor,key)
   if not (progress) then return end
 
   if (tab == ac) then
-    local obj,krest = rest:match("([%w_]+)[:%.]([%w_]+)%s*$")
+    local _, krest = rest:match("([%w_]+)[:%.]([%w_]+)%s*$")
     if (krest) then
       if (#krest < 3) then return end
       tab = tip.finfo
@@ -522,13 +519,13 @@ function CreateAutoCompList(editor,key)
             local ma,mb = 0,0
             g(a,pat,function(...)
                 local l = {...}
-                for i,v in ipairs(l) do
+                for _, v in ipairs(l) do
                   ma = ma + ((v=="") and 0 or 1)
                 end
               end)
             g(b,pat,function(...)
                 local l = {...}
-                for i,v in ipairs(l) do
+                for _, v in ipairs(l) do
                   mb = mb + ((v=="") and 0 or 1)
                 end
               end)
