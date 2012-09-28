@@ -203,7 +203,7 @@ local function addConfig(filename,isstring)
     setfenv(cfgfn,ide.config)
     local _, err = pcall(function()cfgfn(assert(_G or _ENV))end)
     if err then
-      print(("Error while executing configuration %s: %s"):format(msg, err))
+      print(("Error while processing configuration %s: %s"):format(msg, err))
     end
   end
 end
@@ -232,18 +232,13 @@ end
 local function addToTab(tab,file)
   local cfgfn,err = loadfile(file)
   if not cfgfn then
-    print(("Error while loading configuration file (%s): \n%s"):format(file,err))
+    print(("Error while loading configuration file: %s"):format(err))
   else
     local name = file:match("([a-zA-Z_0-9]+)%.lua$")
-
-    local success,result
-    success, result = xpcall(
-      function()return cfgfn(_G or _ENV)end,
-      function(err)
-        print(("Error while executing configuration file (%s): \n%s"):
-          format(file,debug.traceback(err)))
-      end)
-    if (name and success) then
+    local success, result = pcall(function()return cfgfn(assert(_G or _ENV))end)
+    if not success then
+      print(("Error while processing configuration file: %s"):format(result))
+    elseif name then
       if (tab[name]) then
         local out = tab[name]
         for i,v in pairs(result) do
@@ -258,8 +253,7 @@ end
 
 -- load interpreters
 local function loadInterpreters()
-  local files = FileSysGet("./interpreters/*.*",wx.wxFILE)
-  for i,file in ipairs(files) do
+  for _, file in ipairs(FileSysGet("interpreters/*.*", wx.wxFILE)) do
     if file:match "%.lua$" and app.loadfilters.interpreters(file) then
       addToTab(ide.interpreters,file)
     end
@@ -269,31 +263,30 @@ loadInterpreters()
 
 -- load specs
 local function loadSpecs()
-  local files = FileSysGet("./spec/*.*",wx.wxFILE)
-  for i,file in ipairs(files) do
+  for _, file in ipairs(FileSysGet("spec/*.*", wx.wxFILE)) do
     if file:match "%.lua$" and app.loadfilters.specs(file) then
       addToTab(ide.specs,file)
     end
   end
 
-  for n,spec in pairs(ide.specs) do
+  for _, spec in pairs(ide.specs) do
     spec.sep = spec.sep or ""
     spec.iscomment = {}
     spec.iskeyword0 = {}
     spec.isstring = {}
     if (spec.lexerstyleconvert) then
       if (spec.lexerstyleconvert.comment) then
-        for i,s in pairs(spec.lexerstyleconvert.comment) do
+        for _, s in pairs(spec.lexerstyleconvert.comment) do
           spec.iscomment[s] = true
         end
       end
       if (spec.lexerstyleconvert.keywords0) then
-        for i,s in pairs(spec.lexerstyleconvert.keywords0) do
+        for _, s in pairs(spec.lexerstyleconvert.keywords0) do
           spec.iskeyword0[s] = true
         end
       end
       if (spec.lexerstyleconvert.stringtxt) then
-        for i,s in pairs(spec.lexerstyleconvert.stringtxt) do
+        for _, s in pairs(spec.lexerstyleconvert.stringtxt) do
           spec.isstring[s] = true
         end
       end
@@ -304,8 +297,7 @@ loadSpecs()
 
 -- load tools
 local function loadTools()
-  local files = FileSysGet("./tools/*.*",wx.wxFILE)
-  for i,file in ipairs(files) do
+  for _, file in ipairs(FileSysGet("tools/*.*", wx.wxFILE)) do
     if file:match "%.lua$" and app.loadfilters.tools(file) then
       addToTab(ide.tools,file)
     end
@@ -316,11 +308,19 @@ loadTools()
 if app.preinit then app.preinit() end
 
 do
-  addConfig("cfg/user.lua")
+  -- process user config
+  for _, file in ipairs(FileSysGet("cfg/user.lua", wx.wxFILE)) do
+    addConfig(file)
+  end
   local home = os.getenv("HOME")
-  if home then addConfig(home .. "/.zbs/user.lua") end
-  for i,v in ipairs(configs) do
-    addConfig(v,true)
+  if home then
+    for _, file in ipairs(FileSysGet(home .. "/.ZeroBraneStudio/user.lua", wx.wxFILE)) do
+      addConfig(file)
+    end
+  end
+  -- process all other configs (if any)
+  for _, v in ipairs(configs) do
+    addConfig(v, true)
   end
   configs = nil
 end
@@ -367,7 +367,7 @@ do
   local notebook = ide.frame.notebook
   local loaded
 
-  for i,fileName in ipairs(filenames) do
+  for _, fileName in ipairs(filenames) do
     if fileName ~= "--" then
       LoadFile(fileName, nil, true)
       loaded = true

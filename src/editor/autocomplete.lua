@@ -58,20 +58,17 @@ local function addAPI(apifile,only,subapis,known) -- relative to API directory
 
   local fn,err = loadfile(apifile)
   if err then
-    print("API file '"..apifile.."' could not be loaded: "..err.."\n")
+    DisplayOutput("Error while loading API file: "..err.."\n")
     return
   end
   local mt
   local env = apis[ftype] or newAPI()
   apis[ftype] = env
   env = env.ac.childs
-  local suc,res = xpcall(function()return fn(env)end, function(err)
-      DisplayOutput("Error while loading API file: "..apifile..":\n")
-      DisplayOutput(debug.traceback(err))
-      DisplayOutput("\n")
-    end)
-
-  if (suc and res) then
+  local suc,res = pcall(function()return fn(env)end)
+  if (not suc) then
+    DisplayOutput("Error while processing API file: "..res.."\n")
+  elseif (res) then
     local function gennames(tab,prefix)
       for i,v in pairs(tab) do
         v.classname = (prefix and (prefix..".") or "")..i
@@ -89,9 +86,8 @@ local function addAPI(apifile,only,subapis,known) -- relative to API directory
 end
 
 local function loadallAPIs (only,subapis,known)
-  for i,dir in ipairs(FileSysGet("./api/*",wx.wxDIR)) do
-    local files = FileSysGet(dir.."/*.*",wx.wxFILE)
-    for i,file in ipairs(files) do
+  for _, dir in ipairs(FileSysGet("api/*", wx.wxDIR)) do
+    for _, file in ipairs(FileSysGet(dir.."/*.*", wx.wxFILE)) do
       if file:match "%.lua$" then
         addAPI(file,only,subapis,known)
       end
