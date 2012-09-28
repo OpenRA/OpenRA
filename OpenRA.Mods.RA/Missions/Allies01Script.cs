@@ -136,10 +136,7 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			if (objectives[ExtractEinsteinID].Status == ObjectiveStatus.InProgress)
 			{
-				if (world.FrameNumber % 25 == 0)
-				{
-					SendAttackWave();
-				}
+				SendAttackWave();
 				if (world.FrameNumber >= currentAttackWaveFrameNumber + 600)
 				{
 					Sound.Play("enmyapp1.aud");
