@@ -192,18 +192,19 @@ local function activateDocument(file, line)
     end
   end
 
-  -- found file, but can't activate yet (because this part may be executed
-  -- in a different co-routine), so schedule pending activation.
-  if not activated and wx.wxFileName(file):FileExists()
-    and not indebugger and ide.config.editor.autoactivate then
-    debugger.activate = {file, line}
-    return true -- report successful activation, even though it's pending
-  end
+  if not activated and not indebugger and ide.config.editor.autoactivate then
+    -- found file, but can't activate yet (because this part may be executed
+    -- in a different co-routine), so schedule pending activation.
+    if wx.wxFileName(file):FileExists() then
+      debugger.activate = {file, line}
+      return true -- report successful activation, even though it's pending
+    end
 
-  if not activated and not indebugger and not debugger.missing[file] then
-    debugger.missing[file] = true
-    DisplayOutput(("Couldn't activate file '%s' for debugging; continuing without it.\n")
-      :format(file))
+    if not debugger.missing[file] then -- only report files once per session
+      debugger.missing[file] = true
+      DisplayOutput(("Couldn't activate file '%s' for debugging; continuing without it.\n")
+        :format(file))
+    end
   end
 
   return activated ~= nil
