@@ -23,8 +23,10 @@ namespace OpenRA.Widgets
 		public int VisualHeight = ChromeMetrics.Get<int>("ButtonDepth");
 		public string Font = ChromeMetrics.Get<string>("ButtonFont");
 		public bool Disabled = false;
+		public bool Highlighted = false;
 		public Func<string> GetText;
 		public Func<bool> IsDisabled;
+		public Func<bool> IsHighlighted;
 		public Action<MouseInput> OnMouseDown = _ => {};
 		public Action<MouseInput> OnMouseUp = _ => {};
 
@@ -39,6 +41,7 @@ namespace OpenRA.Widgets
 			OnMouseUp = _ => OnClick();
 			OnKeyPress = _ => OnClick();
 			IsDisabled = () => Disabled;
+			IsHighlighted = () => Highlighted;
 		}
 
 		protected ButtonWidget(ButtonWidget widget)
@@ -52,6 +55,8 @@ namespace OpenRA.Widgets
 			OnMouseDown = widget.OnMouseDown;
 			Disabled = widget.Disabled;
 			IsDisabled = widget.IsDisabled;
+			Highlighted = widget.Highlighted;
+			IsHighlighted = widget.IsHighlighted;
 
 			OnMouseUp = mi => OnClick();
 			OnKeyPress = _ => OnClick();
@@ -124,13 +129,14 @@ namespace OpenRA.Widgets
 		{
 			var rb = RenderBounds;
 			var disabled = IsDisabled();
+			var highlighted = IsHighlighted();
 
 			var font = Game.Renderer.Fonts[Font];
 			var text = GetText();
 			var s = font.Measure(text);
 			var stateOffset = (Depressed) ? new int2(VisualHeight, VisualHeight) : new int2(0, 0);
 
-			DrawBackground(rb, disabled, Depressed, Ui.MouseOverWidget == this);
+			DrawBackground(rb, disabled, Depressed, Ui.MouseOverWidget == this, highlighted);
 			font.DrawText(text, new int2(rb.X + (UsableWidth - s.X)/ 2, rb.Y + (Bounds.Height - s.Y) / 2) + stateOffset,
 						  disabled ? Color.Gray : Color.White);
 		}
@@ -138,17 +144,19 @@ namespace OpenRA.Widgets
 		public override Widget Clone() { return new ButtonWidget(this); }
 		public virtual int UsableWidth { get { return Bounds.Width; } }
 
-		public virtual void DrawBackground(Rectangle rect, bool disabled, bool pressed, bool hover)
+		public virtual void DrawBackground(Rectangle rect, bool disabled, bool pressed, bool hover, bool highlighted)
 		{
-			ButtonWidget.DrawBackground("button", rect, disabled, pressed, hover);
+			ButtonWidget.DrawBackground("button", rect, disabled, pressed, hover, highlighted);
 		}
 
-		public static void DrawBackground(string baseName, Rectangle rect, bool disabled, bool pressed, bool hover)
+		public static void DrawBackground(string baseName, Rectangle rect, bool disabled, bool pressed, bool hover, bool highlighted)
 		{
 			var state = disabled ? "-disabled" :
 						pressed ? "-pressed" :
 						hover ? "-hover" :
 						"";
+			if (highlighted)
+				state += "-highlighted";
 
 			WidgetUtils.DrawPanel(baseName + state, rect);
 		}

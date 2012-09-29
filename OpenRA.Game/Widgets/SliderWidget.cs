@@ -118,7 +118,7 @@ namespace OpenRA.Widgets
 
 			// Thumb
 			var thumbHover = Ui.MouseOverWidget == this && tr.Contains(Viewport.LastMousePos);
-			ButtonWidget.DrawBackground("scrollthumb", tr, IsDisabled(), isMoving, thumbHover);
+			ButtonWidget.DrawBackground("scrollthumb", tr, IsDisabled(), isMoving, thumbHover, false);
 		}
 	}
 }

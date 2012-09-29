@@ -53,10 +53,10 @@ namespace OpenRA.Mods.Cnc.Widgets
 			tooltipContainer.Value.RemoveTooltip();
 		}
 
-		public override void DrawBackground(Rectangle rect, bool disabled, bool pressed, bool hover)
+		public override void DrawBackground(Rectangle rect, bool disabled, bool pressed, bool hover, bool highlighted)
 		{
 			var baseName = IsToggled() ? "button-toggled" : "button";
-			ButtonWidget.DrawBackground(baseName, rect, disabled, pressed, hover);
+			ButtonWidget.DrawBackground(baseName, rect, disabled, pressed, hover, highlighted);
 		}
 	}
 }

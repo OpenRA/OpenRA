@@ -45,10 +45,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var objectivesButton = gameRoot.Get<ButtonWidget>("OBJECTIVES_BUTTON");
 				var objectivesWidget = Game.LoadWidget(world, iop.ObjectivesPanel, Ui.Root, new WidgetArgs());
 				objectivesWidget.Visible = false;
-				objectivesButton.OnClick = () =>
-				{
-					objectivesWidget.Visible = !objectivesWidget.Visible;
-				};
+				objectivesButton.OnClick += () => objectivesWidget.Visible = !objectivesWidget.Visible;
 				objectivesButton.IsVisible = () => world.LocalPlayer != null;
 			}
 

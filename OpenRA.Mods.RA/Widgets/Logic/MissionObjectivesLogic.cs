@@ -11,7 +11,6 @@
 using System.Linq;
 using OpenRA.Mods.RA.Missions;
 using OpenRA.Network;
-using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
@@ -23,18 +22,26 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		Widget secondaryPanel;
 		Widget primaryTemplate;
 		Widget secondaryTemplate;
+		ButtonWidget objectivesButton;
 
 		[ObjectCreator.UseCtor]
 		public MissionObjectivesLogic(World world, Widget widget)
 		{
+			var gameRoot = Ui.Root.Get("INGAME_ROOT");
 			primaryPanel = widget.Get("PRIMARY_OBJECTIVES");
 			secondaryPanel = widget.Get("SECONDARY_OBJECTIVES");
 			primaryTemplate = primaryPanel.Get("PRIMARY_OBJECTIVE_TEMPLATE");
 			secondaryTemplate = secondaryPanel.Get("SECONDARY_OBJECTIVE_TEMPLATE");
+
 			objectives = world.WorldActor.TraitsImplementing<IHasObjectives>().First();
-			Game.ConnectionStateChanged += RemoveHandlers;
+
+			objectivesButton = gameRoot.Get<ButtonWidget>("OBJECTIVES_BUTTON");
+			objectivesButton.IsHighlighted = () => Game.LocalTick % 60 <= 30 && objectivesButton.Highlighted;
+			objectivesButton.OnClick += () => objectivesButton.Highlighted = false;
+
 			objectives.ObjectivesUpdated += UpdateObjectives;
 			UpdateObjectives();
+			Game.ConnectionStateChanged += RemoveHandlers;
 		}
 
 		public void RemoveHandlers(OrderManager orderManager)
@@ -48,6 +55,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		public void UpdateObjectives()
 		{
+			objectivesButton.Highlighted = true;
 			primaryPanel.RemoveChildren();
 			secondaryPanel.RemoveChildren();
 			foreach (var o in objectives.Objectives.Where(o => o.Status != ObjectiveStatus.Inactive))
