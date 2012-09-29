@@ -905,6 +905,8 @@ function DebuggerScratchpadOn(editor)
 
   local scratchpadEditor = editor
   scratchpadEditor:StyleSetUnderline(numberStyle, true)
+  debugger.scratchpad.margin = scratchpadEditor:GetMarginWidth(0) +
+    scratchpadEditor:GetMarginWidth(1) + scratchpadEditor:GetMarginWidth(2)
 
   scratchpadEditor:Connect(wxstc.wxEVT_STC_MODIFIED, function(event)
     local evtype = event:GetModificationType()
@@ -960,7 +962,7 @@ function DebuggerScratchpadOn(editor)
     if debugger.scratchpad and debugger.scratchpad.point then
       debugger.scratchpad.point = nil
       debugger.scratchpad.editor:ReleaseMouse()
-      wx.wxSetCursor(ide.osname == 'Unix' and wx.wxCursor(wx.wxCURSOR_IBEAM) or wx.wxNullCursor) -- restore cursor
+      wx.wxSetCursor(wx.wxNullCursor) -- restore cursor
     else event:Skip() end
   end)
 
@@ -973,9 +975,6 @@ function DebuggerScratchpadOn(editor)
     -- record the fact that we are over a number or dragging slider
     scratchpad.over = scratchpad and
       (ipoint ~= nil or (bit.band(scratchpadEditor:GetStyleAt(pos),31) == numberStyle))
-
-    if ide.osname == 'Unix' and scratchpad then
-      wx.wxSetCursor(wx.wxCursor(scratchpad.over and wx.wxCURSOR_SIZEWE or wx.wxCURSOR_IBEAM)) end 
 
     if ipoint then
       local startpos = scratchpad.start
@@ -1017,6 +1016,10 @@ function DebuggerScratchpadOn(editor)
   scratchpadEditor:Connect(wx.wxEVT_SET_CURSOR, function(event)
     if (debugger.scratchpad and debugger.scratchpad.over) then
       event:SetCursor(wx.wxCursor(wx.wxCURSOR_SIZEWE))
+    elseif debugger.scratchpad and ide.osname == 'Unix' then
+      -- restore the cursor manually on Linux since event:Skip() doesn't reset it
+      local ibeam = event:GetX() > debugger.scratchpad.margin
+      event:SetCursor(wx.wxCursor(ibeam and wx.wxCURSOR_IBEAM or wx.wxCURSOR_RIGHT_ARROW))
     else event:Skip() end
   end)
 
@@ -1034,8 +1037,7 @@ function DebuggerScratchpadOff()
   scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wx.wxEVT_LEFT_UP)
   scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wx.wxEVT_SET_CURSOR)
 
-  -- set the cursor back on Linux as EVT_SET_CURSOR does not help here
-  if ide.osname == 'Unix' then wx.wxSetCursor(wx.wxCursor(wx.wxCURSOR_IBEAM)) end 
+  wx.wxSetCursor(wx.wxNullCursor) -- restore cursor
 
   debugger.scratchpad = nil
   debugger.terminate()
