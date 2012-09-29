@@ -63,7 +63,10 @@ namespace OpenRA.Mods.RA.Missions
 		Actor extractionLZEntryPoint;
 		Actor extractionLZ;
 		Actor badgerEntryPoint;
-		Actor badgerDropPoint;
+		Actor badgerDropPoint1;
+		Actor badgerDropPoint2;
+		Actor badgerDropPoint3;
+		Actor parabombPoint;
 		Actor sovietRallyPoint;
 		Actor flamersEntryPoint;
 		Actor townPoint;
@@ -96,17 +99,17 @@ namespace OpenRA.Mods.RA.Missions
 		static readonly string[] Reinforcements = { "2tnk", "2tnk", "2tnk", "2tnk", "2tnk", "2tnk", "1tnk", "1tnk", "jeep", "e1", "e1", "e1", "e1", "e3", "e3", "mcv" };
 		const int ReinforcementsCash = 2000;
 
-		const int ParatroopersTicks = 1500 * 10;
-		static readonly string[] Paratroopers = { "e1", "e1", "e1", "e2", "3tnk" };
-		const string BadgerName = "badr";
+		const int ParatroopersTicks = 1500 * 8;
+		static readonly string[] Badger1Passengers = { "e1", "e1", "e1", "e2", "3tnk" };
+		static readonly string[] Badger2Passengers = { "e1", "e1", "e1", "e2", "e2" };
+		static readonly string[] Badger3Passengers = { "e1", "e1", "e1", "e2", "e2" };
 
-		const int FlamersTicks = 1500 * 7;
+		const int ParabombTicks = 1500 * 5;
+
+		const int FlamersTicks = 1500 * 2;
 		static readonly string[] Flamers = { "e4", "e4", "e4", "e4", "e4" };
 		const string ApcName = "apc";
 
-		const int HintPowerTicks = 1500 * 6;
-
-		const string ChinookName = "tran";
 		const string SignalFlareName = "flare";
 
 		const int AlliedTownTransferRange = 15;
@@ -165,11 +168,17 @@ namespace OpenRA.Mods.RA.Missions
 			reinforcementsTimer.Tick();
 			if (world.FrameNumber == ParatroopersTicks)
 			{
-				ParadropSovietUnits();
+				MissionUtils.Paradrop(world, soviets, Badger1Passengers, badgerEntryPoint.Location, badgerDropPoint1.Location);
+				MissionUtils.Paradrop(world, soviets, Badger2Passengers, badgerEntryPoint.Location, badgerDropPoint2.Location);
+				MissionUtils.Paradrop(world, soviets, Badger3Passengers, badgerEntryPoint.Location, badgerDropPoint3.Location);
 			}
 			if (world.FrameNumber == FlamersTicks)
 			{
 				RushSovietFlamers();
+			}
+			if (world.FrameNumber == ParabombTicks)
+			{
+				MissionUtils.Parabomb(world, soviets, badgerEntryPoint.Location, parabombPoint.Location);
 			}
 			if (world.FrameNumber == SovietVehicleAdditionsTicks)
 			{
@@ -334,27 +343,9 @@ namespace OpenRA.Mods.RA.Missions
 			Ui.Root.AddChild(reinforcementsTimerWidget);
 		}
 
-		void ParadropSovietUnits()
-		{
-			var badger = world.CreateActor(BadgerName, new TypeDictionary
-			{
-				new LocationInit(badgerEntryPoint.Location),
-				new OwnerInit(soviets),
-				new FacingInit(Util.GetFacing(badgerDropPoint.Location - badgerEntryPoint.Location, 0)),
-				new AltitudeInit(Rules.Info[BadgerName].Traits.Get<PlaneInfo>().CruiseAltitude),
-			});
-			badger.QueueActivity(new FlyAttack(Target.FromCell(badgerDropPoint.Location)));
-			badger.Trait<ParaDrop>().SetLZ(badgerDropPoint.Location);
-			var cargo = badger.Trait<Cargo>();
-			foreach (var unit in Paratroopers)
-			{
-				cargo.Load(badger, world.CreateActor(false, unit, new TypeDictionary { new OwnerInit(soviets) }));
-			}
-		}
-
 		void RushSovietFlamers()
 		{
-			var closestAlliedBuilding = ClosestAlliedBuilding(badgerDropPoint, 40);
+			var closestAlliedBuilding = ClosestAlliedBuilding(badgerDropPoint1, 40);
 			if (closestAlliedBuilding == null)
 			{
 				return;
@@ -447,7 +438,10 @@ namespace OpenRA.Mods.RA.Missions
 			extractionLZ = actors["ExtractionLZ"];
 			extractionLZEntryPoint = actors["ExtractionLZEntryPoint"];
 			badgerEntryPoint = actors["BadgerEntryPoint"];
-			badgerDropPoint = actors["BadgerDropPoint"];
+			badgerDropPoint1 = actors["BadgerDropPoint1"];
+			badgerDropPoint2 = actors["BadgerDropPoint2"];
+			badgerDropPoint3 = actors["BadgerDropPoint3"];
+			parabombPoint = actors["ParabombPoint"];
 			sovietBarracks = actors["SovietBarracks"];
 			sovietWarFactory = actors["SovietWarFactory"];
 			sovietRallyPoint = actors["SovietRallyPoint"];

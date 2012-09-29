@@ -75,7 +75,6 @@ namespace OpenRA.Mods.RA.Missions
 		const int LabClearRange = 5;
 		const string EinsteinName = "einstein";
 		const string TanyaName = "e7";
-		const string ChinookName = "tran";
 		const string SignalFlareName = "flare";
 
 		void MissionFailed(string text)

@@ -1620,11 +1620,11 @@ Actors:
 	Actor457: fenc
 		Location: 42,93
 		Owner: Allies2
-	BadgerDropPoint: waypoint
+	BadgerDropPoint1: waypoint
 		Location: 19,96
 		Owner: Neutral
 	BadgerEntryPoint: waypoint
-		Location: 33,12
+		Location: 40,12
 		Owner: Neutral
 	Actor485: tc03
 		Location: 41,101
@@ -2252,6 +2252,15 @@ Actors:
 		Location: 38,90
 		Owner: Allies2
 		Facing: 0
+	BadgerDropPoint2: waypoint
+		Location: 34,106
+		Owner: Neutral
+	BadgerDropPoint3: waypoint
+		Location: 26,100
+		Owner: Neutral
+	ParabombPoint: waypoint
+		Location: 38,107
+		Owner: Neutral
 
 Smudges:
 

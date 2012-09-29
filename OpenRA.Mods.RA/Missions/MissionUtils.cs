@@ -62,6 +62,39 @@ namespace OpenRA.Mods.RA.Missions
 			return Pair.New(chinook, unit);
 		}
 
+		public static void Paradrop(World world, Player owner, IEnumerable<string> units, CPos entry, CPos location)
+		{
+			var badger = world.CreateActor("badr", new TypeDictionary
+			{
+				new LocationInit(entry),
+				new OwnerInit(owner),
+				new FacingInit(Util.GetFacing(location - entry, 0)),
+				new AltitudeInit(Rules.Info["badr"].Traits.Get<PlaneInfo>().CruiseAltitude),
+			});
+			badger.QueueActivity(new FlyAttack(Target.FromCell(location)));
+			badger.Trait<ParaDrop>().SetLZ(location);
+			var cargo = badger.Trait<Cargo>();
+			foreach (var unit in units)
+			{
+				cargo.Load(badger, world.CreateActor(false, unit, new TypeDictionary { new OwnerInit(owner) }));
+			}
+		}
+
+		public static void Parabomb(World world, Player owner, CPos entry, CPos location)
+		{
+			var badger = world.CreateActor("badr.bomber", new TypeDictionary
+			{
+				new LocationInit(entry),
+				new OwnerInit(owner),
+				new FacingInit(Util.GetFacing(location - entry, 0)),
+				new AltitudeInit(Rules.Info["badr.bomber"].Traits.Get<PlaneInfo>().CruiseAltitude),
+			});
+			badger.Trait<CarpetBomb>().SetTarget(location);
+			badger.QueueActivity(Fly.ToCell(location));
+			badger.QueueActivity(new FlyOffMap());
+			badger.QueueActivity(new RemoveSelf());
+		}
+
 		public static bool AreaSecuredWithUnits(World world, Player player, PPos location, int range)
 		{
 			var units = world.FindAliveCombatantActorsInCircle(location, range).Where(a => a.HasTrait<IMove>());
