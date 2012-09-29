@@ -25,6 +25,10 @@ tools. Its main focus is extensibility for target applications using Lua.
 * Console to directly test code snippets with local and remote execution
 * Integrated debugger (with support for local and remote debugging)
 
+## Screenshot
+
+![ZeroBrane Studio debugger screenshot](http://studio.zerobrane.com/images/debugging.png)
+
 ## Frontends
 
 There is currently two front-ends using the same editor engine. The original

@@ -1,5 +1,71 @@
 # ZeroBrane Studio Changelog
 
+## Current master that will become v0.33 (Sep 28 2012)
+
+### Highlights
+  - Added **Linux support**.
+  - Added **Moai auto-complete** (closes #52).
+  - Added Linux/OSX/Windows CMake-based launcher build (thanks to toiffel).
+
+### Improvements
+  - Added auto-activation of files requested during debugging.
+  - Added editor.autoactivate parameter (false by default) to enable activation.
+  - Added zbstudio.sh script to run on OSX/Linux; updated permissions (closes #15).
+  - Added variable ratio for sliders in scratchpad.
+  - Added Linux/OSX/Windows launcher CMake-based build (thanks to Arthur ?).
+  - Added configuration parameter for the number of characters typed before displaying auto-complete suggestions for dynamic words.
+  - Added proper closing of the application after Shutdown/Logoff events (fixes #57).
+  - Added Moai auto-complete (closes #52).
+  - Added hiding auto-complete suggestions on losing focus in the editor.
+  - Added proper reporting of errors in the stack window.
+  - Added wxlua.deb file and install script that pull and build all required dependencies on Linux (covers most of #15).
+  - Added osx executables and build files.
+  - Added disabling full screen mode when the last editor tab is closed.
+  - Added proper reporting of errors in config files.
+  - Added toggling folders in project pane by single click (fixes #41).
+  - Added examples for configuring tabs and moai entry points.
+  - Added reporting compilation success rate (fixes #39)
+  - Added shortcuts for adding and removing watches.
+  - Added highlighting rows with updated values in the Watch window.
+  - Added 'Add Watch Expression' and 'Evaluate in Console' context menu items in the editor.
+  - Added handling of canceling editing in adding a watch.
+  - Updated configuring toolbar size to improve Linux compatibility.
+  - Updated MobDebug to v0.497 to fix issues and improve performance.
+  - Updated a warning message about single instance communication.
+  - Updated cpath processing to allow Linux version to run side-by-side with Windows and Mac.
+  - Updated licensing information.
+  - Disabled 'not activated file for debugging' message when auto-activation is disabled.
+  - Disabled tooltip when scratchpad is on (fixes #51).
+  - Disabled showing calltip when the editor is not in focus.
+  - Disabled showing calltip over markup in comments.
+
+### Incompatibilities
+  - Changed searching for user config in '$HOME/.ZeroBraneStudio' from '$HOME/.zbs'.
+
+### Fixes
+  - Fixed a typo that prevented a corner case in autocomplete from working.
+  - Fixed inconsistent error messages about various config files.
+  - Fixed an issue with auto-complete when dot or colon is used (fixes #56).
+  - Fixed an issue with debugging scripts started using absolute file path.
+  - Fixed setting working directory for interpreters to the file path when the project directory is not set.
+  - Fixed an issue with Backspace not closing auto-complete suggestions.
+  - Fixed enabling items in the Edit menu (fixes #56).
+  - Fixed function list in the toolbar on Mac (helps #14).
+  - Fixed deleting of comment blocks with hidden markup (fixes #40).
+  - Fixed an issue with function list when all editor tabs are closed.
+  - Fixed multiple calltips shown on Linux (helps #15).
+  - Fixed an issue with mouse cursor in scratchpad not properly updated on Linux (fixes #49; helps #15).
+  - Fixed an issue with static analyzer that failes on function names like a.b.c (fixes #50).
+  - Fixed disabling Paste menu on Linux when needed (fixes #46; helps #15).
+  - Fixed an issue with context menu on Linux (fixes #47; helps #15).
+  - Fixed debugger failure when debugging is initiated externally and there is an unsaved file in one of editor tabs.
+  - Fixed stopping the debugger when an editor tab where debugging happens is closed.
+  - Fixed enabling of several menu items with no editor tab (fixes #42).
+  - Fixed an issue with loading stock icons on Linux.
+  - Fixed Cut/Copy menu items to reflect proper status in the editor.
+  - Fixed typo in the static analyzer output.
+  - Resolved conflict between lua executable names on Windows and Mac.
+
 ## v0.32 (Sep 03 2012)
 
 ### Highlights
