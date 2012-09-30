@@ -69,6 +69,7 @@ namespace OpenRA.Mods.RA.Missions
 		Actor parabombPoint;
 		Actor sovietRallyPoint;
 		Actor flamersEntryPoint;
+		Actor tanksEntryPoint;
 		Actor townPoint;
 		Actor sovietTownAttackPoint1;
 		Actor sovietTownAttackPoint2;
@@ -109,6 +110,9 @@ namespace OpenRA.Mods.RA.Missions
 		const int FlamersTicks = 1500 * 2;
 		static readonly string[] Flamers = { "e4", "e4", "e4", "e4", "e4" };
 		const string ApcName = "apc";
+
+		const int TanksTicks = 1500 * 11;
+		static readonly string[] Tanks = { "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk" };
 
 		const string SignalFlareName = "flare";
 
@@ -176,6 +180,10 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				RushSovietFlamers();
 			}
+			if (world.FrameNumber == TanksTicks)
+			{
+				RushSovietTanks();
+			}
 			if (world.FrameNumber == ParabombTicks)
 			{
 				MissionUtils.Parabomb(world, soviets, badgerEntryPoint.Location, parabombPoint.Location);
@@ -217,12 +225,14 @@ namespace OpenRA.Mods.RA.Missions
 				if (einsteinChinook.Destroyed)
 				{
 					objectives[ExtractEinsteinID].Status = ObjectiveStatus.Failed;
+					objectives[MaintainPresenceID].Status = ObjectiveStatus.Failed;
 					ObjectivesUpdated();
 					MissionFailed("The extraction helicopter was destroyed.");
 				}
 				else if (!world.Map.IsInMap(einsteinChinook.Location) && einsteinChinook.Trait<Cargo>().Passengers.Contains(einstein))
 				{
 					objectives[ExtractEinsteinID].Status = ObjectiveStatus.Completed;
+					objectives[MaintainPresenceID].Status = ObjectiveStatus.Completed;
 					ObjectivesUpdated();
 					MissionAccomplished("Einstein was rescued.");
 				}
@@ -286,7 +296,7 @@ namespace OpenRA.Mods.RA.Missions
 						foreach (var unit in idleSovietUnitsAtRP)
 						{
 							unit.Trait<Mobile>().Nudge(unit, unit, true);
-							unit.QueueActivity(new AttackMove.AttackMoveActivity(unit, new Move.Move(closestAlliedBuilding.Location, 3)));
+							unit.QueueActivity(new AttackMove.AttackMoveActivity(unit, new Attack(Target.FromActor(closestAlliedBuilding), 3)));
 						}
 					}
 				}
@@ -297,7 +307,7 @@ namespace OpenRA.Mods.RA.Missions
 				var closestAlliedBuilding = ClosestAlliedBuilding(unit, 40);
 				if (closestAlliedBuilding != null)
 				{
-					unit.QueueActivity(new AttackMove.AttackMoveActivity(unit, new Move.Move(closestAlliedBuilding.Location, 3)));
+					unit.QueueActivity(new AttackMove.AttackMoveActivity(unit, new Attack(Target.FromActor(closestAlliedBuilding), 3)));
 				}
 			}
 		}
@@ -341,6 +351,24 @@ namespace OpenRA.Mods.RA.Missions
 			reinforcementsTimer = new CountdownTimer(ReinforcementsTicks, ReinforcementsTimerExpired);
 			reinforcementsTimerWidget = new CountdownTimerWidget(reinforcementsTimer, "Reinforcements arrive in", new float2(Game.viewport.Width * 0.1f, Game.viewport.Height * 0.8f));
 			Ui.Root.AddChild(reinforcementsTimerWidget);
+		}
+
+		void RushSovietTanks()
+		{
+			var closestAlliedBuilding = ClosestAlliedBuilding(badgerDropPoint1, 40);
+			if (closestAlliedBuilding == null)
+			{
+				return;
+			}
+			foreach (var tank in Tanks)
+			{
+				var unit = world.CreateActor(tank, new TypeDictionary 
+				{
+					new OwnerInit(soviets),
+					new LocationInit(tanksEntryPoint.Location)
+				});
+				unit.QueueActivity(new AttackMove.AttackMoveActivity(unit, new Attack(Target.FromActor(closestAlliedBuilding), 3)));
+			}
 		}
 
 		void RushSovietFlamers()
@@ -446,6 +474,7 @@ namespace OpenRA.Mods.RA.Missions
 			sovietWarFactory = actors["SovietWarFactory"];
 			sovietRallyPoint = actors["SovietRallyPoint"];
 			flamersEntryPoint = actors["FlamersEntryPoint"];
+			tanksEntryPoint = actors["TanksEntryPoint"];
 			townPoint = actors["TownPoint"];
 			sovietTownAttackPoint1 = actors["SovietTownAttackPoint1"];
 			sovietTownAttackPoint2 = actors["SovietTownAttackPoint2"];
