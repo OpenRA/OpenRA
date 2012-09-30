@@ -97,8 +97,15 @@ namespace OpenRA.Mods.RA.Missions
 		const int SovietHelperCash = 2000;
 
 		const int ReinforcementsTicks = 1500 * 12;
-		static readonly string[] Reinforcements = { "2tnk", "2tnk", "2tnk", "2tnk", "2tnk", "2tnk", "1tnk", "1tnk", "jeep", "e1", "e1", "e1", "e1", "e3", "e3", "mcv" };
-		const int ReinforcementsCash = 5000;
+		static readonly string[] Reinforcements = {
+													"2tnk", "2tnk", "2tnk", "2tnk", "2tnk", "2tnk",
+													"1tnk", "1tnk",
+													"jeep",
+													"e1", "e1", "e1", "e1",
+													"e3", "e3",
+													"mcv",
+													"truk", "truk", "truk", "truk", "truk", "truk"
+												};
 
 		const int ParatroopersTicks = 1500 * 8;
 		static readonly string[] Badger1Passengers = { "e1", "e1", "e1", "e2", "3tnk" };
@@ -397,8 +404,6 @@ namespace OpenRA.Mods.RA.Missions
 		void SendReinforcements()
 		{
 			Sound.Play("reinfor1.aud");
-			var resources = allies2.PlayerActor.Trait<PlayerResources>();
-			resources.GiveCash(ReinforcementsCash);
 			foreach (var unit in Reinforcements)
 			{
 				var actor = world.CreateActor(unit, new TypeDictionary
