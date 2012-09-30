@@ -68,13 +68,13 @@ namespace OpenRA.Mods.RA.Missions
 
 	public class CountdownTimerWidget : Widget
 	{
-		public CountdownTimer CountdownTimer { get; set; }
+		public CountdownTimer Timer { get; set; }
 		public string Header { get; set; }
 		public float2 Position { get; set; }
 
-		public CountdownTimerWidget(CountdownTimer countdownTimer, string header, float2 position)
+		public CountdownTimerWidget(CountdownTimer timer, string header, float2 position)
 		{
-			CountdownTimer = countdownTimer;
+			Timer = timer;
 			Header = header;
 			Position = position;
 		}
@@ -86,8 +86,8 @@ namespace OpenRA.Mods.RA.Missions
 				return;
 			}
 			var font = Game.Renderer.Fonts["Bold"];
-			var text = "{0}: {1}".F(Header, WidgetUtils.FormatTime(CountdownTimer.TicksLeft));
-			font.DrawTextWithContrast(text, Position, CountdownTimer.TicksLeft == 0 && Game.LocalTick % 60 >= 30 ? Color.Red : Color.White, Color.Black, 1);
+			var text = "{0}: {1}".F(Header, WidgetUtils.FormatTime(Timer.TicksLeft));
+			font.DrawTextWithContrast(text, Position, Timer.TicksLeft <= 25 * 10 && Game.LocalTick % 60 <= 30 ? Color.Red : Color.White, Color.Black, 1);
 		}
 	}
 }
