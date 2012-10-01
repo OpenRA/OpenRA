@@ -1,24 +1,25 @@
 local gideros
 local win = ide.osname == "Windows"
+local mac = ide.osname == "Macintosh"
 
 return {
   name = "Gideros",
   description = "Gideros mobile platform",
   api = {"baselib"},
   frun = function(self,wfilename,rundebug)
-     if not win then
-       DisplayOutput("Can't run the application. Gideros integration is currently only available on Windows.\n")
-       return
-    end
-
     gideros = gideros or ide.config.path.gideros -- check if the path is configured
     if not gideros then
       local sep = win and ';' or ':'
+      local default =
+           win and ([[C:\Program Files\Gideros]]..sep..[[D:\Program Files\Gideros]]..sep)
+        or mac and ('/Applications/Gideros Studio/Gideros Player.app/Contents/MacOS'..sep)
+        or ''
       local path = (os.getenv('PATH') or '')..sep
+                 ..default
                  ..(os.getenv('HOME') and os.getenv('HOME') .. '/bin' or '')
       local paths = {}
       for p in path:gmatch("[^"..sep.."]+") do
-        gideros = gideros or GetFullPathIfExists(p, win and 'GiderosPlayer.exe' or '')
+        gideros = gideros or GetFullPathIfExists(p, win and 'GiderosPlayer.exe' or 'Gideros Player')
         table.insert(paths, p)
       end
       if not gideros then
@@ -27,11 +28,20 @@ return {
         return
       end
     end
+    if gideros and not wx.wxFileName(gideros):FileExists() then
+      DisplayOutput("Can't find the specified gideros executable '"..gideros.."'.\n")
+      return
+    end
 
-    local giderospath = wx.wxFileName(gideros):GetPath(wx.wxPATH_GET_VOLUME)
-    local gdrbridge = GetFullPathIfExists(giderospath.."/Tools", win and 'gdrbridge.exe' or '')
+    local giderostools = wx.wxFileName.DirName(wx.wxFileName(gideros)
+      :GetPath(wx.wxPATH_GET_VOLUME)
+      ..(win and '/Tools' or '/../../../Gideros Studio.app/Contents/Tools'))
+    giderostools:Normalize()
+    local giderospath = giderostools:GetPath(wx.wxPATH_GET_VOLUME)
+    local gdrbridge = GetFullPathIfExists(giderospath, win and 'gdrbridge.exe' or 'gdrbridge')
     if not gdrbridge then
-      DisplayOutput("Can't find gideros bridge executable in '"..giderospath.."/Tools'.\n")
+      DisplayOutput("Can't find gideros bridge executable in '"..giderospath.."'.\n")
+      return
     end
 
     -- find *.gproj file in the project directory
@@ -51,11 +61,11 @@ return {
 
     local cmd = ('"%s"'):format(gideros)
     -- CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
-    local pid = CommandLineRun(cmd,self:fworkdir(wfilename),true,not false,nil,nil,
+    local pid = CommandLineRun(cmd,self:fworkdir(wfilename),not mac,true,nil,nil,
       function() ide.debugger.pid = nil end)
 
     do
-      DisplayOutput("Connecting to the player.\n")
+      DisplayOutput("Starting the player and waiting for the bridge to connect at '"..gdrbridge.."'.\n")
       local cmd = ('"%s" %s'):format(gdrbridge, 'isconnected')
       local attempts, connected = 10
       for _ = 1, attempts do
