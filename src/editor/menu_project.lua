@@ -280,6 +280,7 @@ frame:Connect(ID_RUNNOW, wx.wxEVT_UPDATE_UI,
     -- allow scratchpad if there is no server or (there is a server and it is
     -- allowed to turn it into a scratchpad) and we are not debugging anything
     event:Enable((ide.interpreter) and (ide.interpreter.hasdebugger) and
+                 (ide.interpreter.scratchextloop ~= nil) and -- nil == no scratchpad support
                  (editor ~= nil) and ((debugger.server == nil or debugger.scratchable)
                  and debugger.pid == nil or debugger.scratchpad ~= nil))
   end)

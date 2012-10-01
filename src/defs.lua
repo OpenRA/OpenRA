@@ -319,5 +319,8 @@ interpreter = {
   fprojdir = function(self,wfilename) return "projpath_from_filename" end, -- (opt)
   fattachdebug = function(self) end, -- (opt)
   hasdebugger = false, -- if debugging is available
-  scratchextloop = false, -- (opt) if scratchpad requires handling for external loop
+  scratchextloop = nil, -- (opt) indicates scratchpad support
+    -- nil, no support for scratchpad;
+    -- false, scratchpad supported;
+    -- true, scratchpad supported and requires handling for external loop.
 }
