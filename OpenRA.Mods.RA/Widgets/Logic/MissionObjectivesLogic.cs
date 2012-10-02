@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			objectivesButton.IsHighlighted = () => Game.LocalTick % 60 <= 30 && objectivesButton.Highlighted;
 			objectivesButton.OnClick += () => objectivesButton.Highlighted = false;
 
-			objectives.ObjectivesUpdated += UpdateObjectives;
+			objectives.OnObjectivesUpdated += UpdateObjectives;
 			UpdateObjectives();
 			Game.ConnectionStateChanged += RemoveHandlers;
 		}
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (!orderManager.GameStarted)
 			{
 				Game.ConnectionStateChanged -= RemoveHandlers;
-				objectives.ObjectivesUpdated -= UpdateObjectives;
+				objectives.OnObjectivesUpdated -= UpdateObjectives;
 			}
 		}
 

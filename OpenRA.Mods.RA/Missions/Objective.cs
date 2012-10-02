@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA.Missions
 
 	public interface IHasObjectives
 	{
-		event Action ObjectivesUpdated;
+		event Action OnObjectivesUpdated;
 		IEnumerable<Objective> Objectives { get; }
 	}
 

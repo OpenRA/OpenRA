@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Missions
 
 	class Allies01Script : IHasObjectives, IWorldLoaded, ITick
 	{
-		public event Action ObjectivesUpdated;
+		public event Action OnObjectivesUpdated;
 
 		public IEnumerable<Objective> Objectives { get { return objectives.Values; } }
 
@@ -123,13 +123,13 @@ namespace OpenRA.Mods.RA.Missions
 					SendShips();
 					objectives[FindEinsteinID].Status = ObjectiveStatus.Completed;
 					objectives[ExtractEinsteinID].Status = ObjectiveStatus.InProgress;
-					ObjectivesUpdated();
+					OnObjectivesUpdated();
 					currentAttackWaveFrameNumber = world.FrameNumber;
 				}
 				if (lab.Destroyed)
 				{
 					objectives[FindEinsteinID].Status = ObjectiveStatus.Failed;
-					ObjectivesUpdated();
+					OnObjectivesUpdated();
 					MissionFailed("Einstein was killed.");
 				}
 			}
@@ -156,13 +156,13 @@ namespace OpenRA.Mods.RA.Missions
 					if (einsteinChinook.Destroyed)
 					{
 						objectives[ExtractEinsteinID].Status = ObjectiveStatus.Failed;
-						ObjectivesUpdated();
+						OnObjectivesUpdated();
 						MissionFailed("The extraction helicopter was destroyed.");
 					}
 					else if (!world.Map.IsInMap(einsteinChinook.Location) && einsteinChinook.Trait<Cargo>().Passengers.Contains(einstein))
 					{
 						objectives[ExtractEinsteinID].Status = ObjectiveStatus.Completed;
-						ObjectivesUpdated();
+						OnObjectivesUpdated();
 						MissionAccomplished("Einstein was rescued.");
 					}
 				}

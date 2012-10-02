@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA.Missions
 
 	class Allies02Script : IHasObjectives, IWorldLoaded, ITick
 	{
-		public event Action ObjectivesUpdated;
+		public event Action OnObjectivesUpdated;
 
 		public IEnumerable<Objective> Objectives { get { return objectives.Values; } }
 
@@ -56,6 +56,7 @@ namespace OpenRA.Mods.RA.Missions
 		Actor sam4;
 		Actor tanya;
 		Actor einstein;
+		Actor engineer;
 
 		Actor chinookHusk;
 		Actor allies2BasePoint;
@@ -73,6 +74,9 @@ namespace OpenRA.Mods.RA.Missions
 		Actor townPoint;
 		Actor sovietTownAttackPoint1;
 		Actor sovietTownAttackPoint2;
+		Actor yakEntryPoint;
+		Actor yakAttackPoint;
+		Actor yak;
 
 		Actor einsteinChinook;
 
@@ -122,6 +126,7 @@ namespace OpenRA.Mods.RA.Missions
 		static readonly string[] Tanks = { "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk" };
 
 		const string SignalFlareName = "flare";
+		const string YakName = "yak";
 
 		const int AlliedTownTransferRange = 15;
 		const int SovietTownAttackGroupRange = 5;
@@ -199,6 +204,15 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				sovietVehicles.AddRange(SovietVehicleAdditions);
 			}
+			if (yak == null || (yak != null && !yak.IsDead() && (yak.GetCurrentActivity() is FlyCircle || yak.IsIdle)))
+			{
+				var alliedUnitsNearYakPoint = world.FindAliveCombatantActorsInCircle(yakAttackPoint.CenterLocation, 10)
+					.Where(a => a.Owner != soviets && a.HasTrait<IMove>() && a != tanya && a != einstein && a != engineer);
+				if (alliedUnitsNearYakPoint.Any())
+				{
+					YakStrafe(alliedUnitsNearYakPoint);
+				}
+			}
 			if (world.FrameNumber % 25 == 0)
 			{
 				AddSovietCashIfRequired();
@@ -210,7 +224,7 @@ namespace OpenRA.Mods.RA.Missions
 				if (AlliesNearTown())
 				{
 					objectives[FindEinsteinID].Status = ObjectiveStatus.Completed;
-					ObjectivesUpdated();
+					OnObjectivesUpdated();
 					TransferTownUnitsToAllies();
 					SovietsAttackTown();
 				}
@@ -221,7 +235,7 @@ namespace OpenRA.Mods.RA.Missions
 				{
 					objectives[DestroySamSitesID].Status = ObjectiveStatus.Completed;
 					objectives[ExtractEinsteinID].Status = ObjectiveStatus.InProgress;
-					ObjectivesUpdated();
+					OnObjectivesUpdated();
 					SpawnSignalFlare();
 					Sound.Play("flaren1.aud");
 					ExtractEinsteinAtLZ();
@@ -233,14 +247,14 @@ namespace OpenRA.Mods.RA.Missions
 				{
 					objectives[ExtractEinsteinID].Status = ObjectiveStatus.Failed;
 					objectives[MaintainPresenceID].Status = ObjectiveStatus.Failed;
-					ObjectivesUpdated();
+					OnObjectivesUpdated();
 					MissionFailed("The extraction helicopter was destroyed.");
 				}
 				else if (!world.Map.IsInMap(einsteinChinook.Location) && einsteinChinook.Trait<Cargo>().Passengers.Contains(einstein))
 				{
 					objectives[ExtractEinsteinID].Status = ObjectiveStatus.Completed;
 					objectives[MaintainPresenceID].Status = ObjectiveStatus.Completed;
-					ObjectivesUpdated();
+					OnObjectivesUpdated();
 					MissionAccomplished("Einstein was rescued.");
 				}
 			}
@@ -257,10 +271,33 @@ namespace OpenRA.Mods.RA.Missions
 				if (!world.FindAliveCombatantActorsInCircle(allies2BasePoint.CenterLocation, 20).Any(a => a.HasTrait<Building>() && !a.HasTrait<Wall>() && a.Owner == allies2))
 				{
 					objectives[MaintainPresenceID].Status = ObjectiveStatus.Failed;
-					ObjectivesUpdated();
+					OnObjectivesUpdated();
 					MissionFailed("The Allied reinforcements have been defeated.");
 				}
 			});
+		}
+
+		void YakStrafe(IEnumerable<Actor> candidates)
+		{
+			if (yak == null)
+			{
+				yak = world.CreateActor(YakName, new TypeDictionary
+				{
+					new LocationInit(yakEntryPoint.Location),
+					new OwnerInit(soviets),
+					new FacingInit(Util.GetFacing(yakAttackPoint.Location - yakEntryPoint.Location, 0)),
+					new AltitudeInit(Rules.Info[YakName].Traits.Get<PlaneInfo>().CruiseAltitude),
+				});
+			}
+			if (yak.Trait<LimitedAmmo>().HasAmmo())
+			{
+				yak.QueueActivity(new FlyAttack(Target.FromActor(candidates.Random(world.SharedRandom))));
+			}
+			else
+			{
+				yak.QueueActivity(new FlyOffMap());
+				yak.QueueActivity(new RemoveSelf());
+			}
 		}
 
 		void AddSovietCashIfRequired()
@@ -465,6 +502,7 @@ namespace OpenRA.Mods.RA.Missions
 			sam4 = actors["SAM4"];
 			tanya = actors["Tanya"];
 			einstein = actors["Einstein"];
+			engineer = actors["Engineer"];
 			chinookHusk = actors["ChinookHusk"];
 			allies2BasePoint = actors["Allies2BasePoint"];
 			reinforcementsEntryPoint = actors["ReinforcementsEntryPoint"];
@@ -483,6 +521,8 @@ namespace OpenRA.Mods.RA.Missions
 			townPoint = actors["TownPoint"];
 			sovietTownAttackPoint1 = actors["SovietTownAttackPoint1"];
 			sovietTownAttackPoint2 = actors["SovietTownAttackPoint2"];
+			yakEntryPoint = actors["YakEntryPoint"];
+			yakAttackPoint = actors["YakAttackPoint"];
 			var shroud = w.WorldActor.Trait<Shroud>();
 			shroud.Explore(w, sam1.Location, 2);
 			shroud.Explore(w, sam2.Location, 2);
@@ -496,7 +536,7 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				Game.MoveViewport(allies2BasePoint.Location.ToFloat2());
 			}
-			ObjectivesUpdated();
+			OnObjectivesUpdated();
 			PlayMusic();
 			Game.ConnectionStateChanged += StopMusic;
 		}
