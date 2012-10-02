@@ -473,13 +473,14 @@ function CreateAutoCompList(editor,key)
     rest = rest:gsub("[^%w_]","")
   end
 
-  local last = key:match "([%w_]+)%s*$"
+  local last = key:match("([%w_]+)%s*$")
 
   -- build dynamic word list
   -- only if api search couldnt descend
   -- ie we couldnt find matching sub items
   local dw = ""
   if (tab == ac and last and #last >= (ide.config.acandtip.startat or 2)) then
+    last = last:lower()
     if dynamicwords[last] then
       local list = dynamicwords[last]
       table.sort(list,function(a,b)
@@ -489,7 +490,7 @@ function CreateAutoCompList(editor,key)
         end)
       -- ignore if word == last and sole user
       for i,v in ipairs(list) do
-        if (v == last and dywordentries[v] == 1) then
+        if (v:lower() == last and dywordentries[v] == 1) then
           table.remove(list,i)
           break
         end
@@ -497,7 +498,6 @@ function CreateAutoCompList(editor,key)
   
       local res = table.concat(list," ")
       dw = res ~= "" and " "..res or ""
-
     end
   end
 
