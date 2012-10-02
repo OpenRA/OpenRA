@@ -69,16 +69,34 @@ return {
       local cmd = ('"%s" %s'):format(gdrbridge, 'isconnected')
       local attempts, connected = 10
       for _ = 1, attempts do
-        local proc = wx.wxProcess.Open(cmd)
+        local proc = wx.wxProcess()
         proc:Redirect()
+        proc:Connect(wx.wxEVT_END_PROCESS, function(event) proc = nil end)
+        local pid = wx.wxExecute(cmd, wx.wxEXEC_ASYNC + wx.wxEXEC_MAKE_GROUP_LEADER, proc)
+        if not pid or pid == -1 or pid == 0 then
+          DisplayOutput(("Program unable to run as '%s'\n"):format(cmd))
+          return
+        end
+
         local streamin = proc:GetInputStream()
-        if tonumber(streamin:Read(4096)) == 1 then connected = true; break end
-        wx.wxSafeYield()
-        wx.wxWakeUpIdle()
-        wx.wxMilliSleep(300)
+        for _ = 1, 10 do
+          if streamin:CanRead() then
+            connected = tonumber(streamin:Read(4096)) == 1
+            break end
+          wx.wxSafeYield()
+          wx.wxWakeUpIdle()
+          wx.wxMilliSleep(250)
+        end
+
+        if connected then break end
+        if connected == nil and proc then
+          wx.wxProcess.Kill(pid, wx.wxSIGKILL, wx.wxKILL_CHILDREN)
+          DisplayOutput("Couldn't connect to the player. Try again or check starting the player and the bridge manually.\n")
+          return
+        end
       end
       if not connected then
-        DisplayOutput("Couldn't connect after "..attempts.." attempts. Try to start the player manually.\n")
+        DisplayOutput("Couldn't connect after "..attempts.." attempts. Try starting the player manually.\n")
         return
       end
 
