@@ -791,6 +791,8 @@ function DebuggerMakeFileName(editor, filePath)
 end
 
 function DebuggerToggleBreakpoint(editor, line)
+  -- ignore requests to toggle when the debugger is running
+  if debugger.server and debugger.running then return end
   local markers = editor:MarkerGet(line)
   if markers >= CURRENT_LINE_MARKER_VALUE then
     markers = markers - CURRENT_LINE_MARKER_VALUE

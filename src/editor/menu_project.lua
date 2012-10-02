@@ -244,7 +244,8 @@ frame:Connect(ID_TOGGLEBREAKPOINT, wx.wxEVT_COMMAND_MENU_SELECTED,
 frame:Connect(ID_TOGGLEBREAKPOINT, wx.wxEVT_UPDATE_UI,
   function (event)
     local editor = GetEditor()
-    event:Enable((ide.interpreter) and (ide.interpreter.hasdebugger) and (editor ~= nil))
+    event:Enable((ide.interpreter) and (ide.interpreter.hasdebugger) and (editor ~= nil)
+      and (not debugger.running) and (not debugger.scratchpad))
   end)
 
 frame:Connect(ID_COMPILE, wx.wxEVT_COMMAND_MENU_SELECTED,
