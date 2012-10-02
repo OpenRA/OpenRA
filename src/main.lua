@@ -314,7 +314,7 @@ do
   end
   local home = os.getenv("HOME")
   if home then
-    for _, file in ipairs(FileSysGet(home .. "/.ZeroBraneStudio/user.lua", wx.wxFILE)) do
+    for _, file in ipairs(FileSysGet(home .. "/.zbstudio/user.lua", wx.wxFILE)) do
       addConfig(file)
     end
   end

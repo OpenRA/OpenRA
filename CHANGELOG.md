@@ -40,7 +40,7 @@
   - Disabled showing calltip over markup in comments.
 
 ### Incompatibilities
-  - Changed searching for user config in '$HOME/.ZeroBraneStudio' from '$HOME/.zbs'.
+  - Changed searching for user config in '$HOME/.zbstudio' from '$HOME/.zbs'.
 
 ### Fixes
   - Fixed a typo that prevented a corner case in autocomplete from working.
