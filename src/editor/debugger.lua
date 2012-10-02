@@ -20,7 +20,7 @@ debugger.stackCtrl = nil -- the child ctrl in the stackWindow
 debugger.hostname = (function() -- check what address is resolvable
   local addr = wx.wxIPV4address()
   for _, host in ipairs({wx.wxGetHostName(), wx.wxGetFullHostName()}) do
-    if addr:Hostname(host) then return host end
+    if host and #host > 0 and addr:Hostname(host) then return host end
   end
   return "localhost" -- last resort; no known good hostname
 end)()
