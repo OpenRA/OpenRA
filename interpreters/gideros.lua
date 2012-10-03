@@ -5,7 +5,7 @@ local mac = ide.osname == "Macintosh"
 return {
   name = "Gideros",
   description = "Gideros mobile platform",
-  api = {"baselib"},
+  api = {"baselib", "gideros"},
   frun = function(self,wfilename,rundebug)
     gideros = gideros or ide.config.path.gideros -- check if the path is configured
     if not gideros then
@@ -117,4 +117,5 @@ return {
   end,
   hasdebugger = true,
   fattachdebug = function(self) DebuggerAttachDefault() end,
+  scratchextloop = true,
 }
