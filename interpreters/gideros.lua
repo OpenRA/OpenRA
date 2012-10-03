@@ -72,8 +72,8 @@ return {
         local proc = wx.wxProcess()
         proc:Redirect()
         proc:Connect(wx.wxEVT_END_PROCESS, function(event) proc = nil end)
-        local pid = wx.wxExecute(cmd, wx.wxEXEC_ASYNC + wx.wxEXEC_MAKE_GROUP_LEADER, proc)
-        if not pid or pid == -1 or pid == 0 then
+        local bid = wx.wxExecute(cmd, wx.wxEXEC_ASYNC + wx.wxEXEC_MAKE_GROUP_LEADER, proc)
+        if not bid or bid == -1 or bid == 0 then
           DisplayOutput(("Program unable to run as '%s'\n"):format(cmd))
           return
         end
@@ -90,13 +90,15 @@ return {
 
         if connected then break end
         if connected == nil and proc then
+          wx.wxProcess.Kill(bid, wx.wxSIGKILL, wx.wxKILL_CHILDREN)
           wx.wxProcess.Kill(pid, wx.wxSIGKILL, wx.wxKILL_CHILDREN)
           DisplayOutput("Couldn't connect to the player. Try again or check starting the player and the bridge manually.\n")
           return
         end
       end
       if not connected then
-        DisplayOutput("Couldn't connect after "..attempts.." attempts. Try starting the player manually.\n")
+        wx.wxProcess.Kill(pid, wx.wxSIGKILL, wx.wxKILL_CHILDREN)
+        DisplayOutput("Couldn't connect after "..attempts.." attempts. Try again or check starting the player manually.\n")
         return
       end
 
