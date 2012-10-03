@@ -87,6 +87,15 @@ zbstudio/res/16.ico
 zbstudio/res/16/LICENSE
 zbstudio/res/16/wxART_COPY.png
 zbstudio/res/16/wxART_CUT.png
+zbstudio/res/16/wxART_DEBUG_BREAK.png
+zbstudio/res/16/wxART_DEBUG_BREAKPOINT_TOGGLE.png
+zbstudio/res/16/wxART_DEBUG_CALLSTACK.png
+zbstudio/res/16/wxART_DEBUG_START.png
+zbstudio/res/16/wxART_DEBUG_STEP_INTO.png
+zbstudio/res/16/wxART_DEBUG_STEP_OUT.png
+zbstudio/res/16/wxART_DEBUG_STEP_OVER.png
+zbstudio/res/16/wxART_DEBUG_STOP.png
+zbstudio/res/16/wxART_DEBUG_WATCH.png
 zbstudio/res/16/wxART_FILE_OPEN.png
 zbstudio/res/16/wxART_FILE_SAVE.png
 zbstudio/res/16/wxART_FIND.png
