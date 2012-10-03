@@ -367,6 +367,10 @@ debugger.listen = function()
               :format(file))
             return debugger.terminate()
           end
+
+          -- debugger may still be available for scratchpad,
+          -- if the interpreter signals scratchpad support, so enable it.
+          debugger.scratchable = ide.interpreter.scratchextloop ~= nil
         elseif err then
           DisplayOutput(("Can't debug the script in the active editor window. Compilation error:\n%s\n")
             :format(err))
