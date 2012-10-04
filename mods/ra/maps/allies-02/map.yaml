@@ -2371,6 +2371,33 @@ Actors:
 	YakEntryPoint: waypoint
 		Location: 99,10
 		Owner: Neutral
+	Actor116: dog
+		Location: 38,42
+		Owner: Soviets
+	Actor119: dog
+		Location: 36,55
+		Owner: Soviets
+	Actor214: dog
+		Location: 48,61
+		Owner: Soviets
+	Actor262: dog
+		Location: 50,53
+		Owner: Soviets
+	Actor337: dog
+		Location: 26,59
+		Owner: Soviets
+	Actor338: dog
+		Location: 21,43
+		Owner: Soviets
+	Actor344: dog
+		Location: 23,50
+		Owner: Soviets
+	Actor430: dog
+		Location: 55,64
+		Owner: Soviets
+	Actor467: dog
+		Location: 49,22
+		Owner: Soviets
 
 Smudges:
 
