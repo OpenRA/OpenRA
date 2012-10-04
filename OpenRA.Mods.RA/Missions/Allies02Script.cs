@@ -63,7 +63,8 @@ namespace OpenRA.Mods.RA.Missions
 		Actor reinforcementsEntryPoint;
 		Actor extractionLZEntryPoint;
 		Actor extractionLZ;
-		Actor badgerEntryPoint;
+		Actor badgerEntryPoint1;
+		Actor badgerEntryPoint2;
 		Actor badgerDropPoint1;
 		Actor badgerDropPoint2;
 		Actor badgerDropPoint3;
@@ -184,9 +185,9 @@ namespace OpenRA.Mods.RA.Missions
 			reinforcementsTimer.Tick();
 			if (world.FrameNumber == ParatroopersTicks)
 			{
-				MissionUtils.Paradrop(world, soviets, Badger1Passengers, badgerEntryPoint.Location, badgerDropPoint1.Location);
-				MissionUtils.Paradrop(world, soviets, Badger2Passengers, badgerEntryPoint.Location, badgerDropPoint2.Location);
-				MissionUtils.Paradrop(world, soviets, Badger3Passengers, badgerEntryPoint.Location, badgerDropPoint3.Location);
+				MissionUtils.Paradrop(world, soviets, Badger1Passengers, badgerEntryPoint1.Location, badgerDropPoint1.Location);
+				MissionUtils.Paradrop(world, soviets, Badger2Passengers, badgerEntryPoint1.Location, badgerDropPoint2.Location);
+				MissionUtils.Paradrop(world, soviets, Badger3Passengers, badgerEntryPoint1.Location, badgerDropPoint3.Location);
 			}
 			if (world.FrameNumber == FlamersTicks)
 			{
@@ -198,7 +199,7 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			if (world.FrameNumber == ParabombTicks)
 			{
-				MissionUtils.Parabomb(world, soviets, badgerEntryPoint.Location, parabombPoint.Location);
+				MissionUtils.Parabomb(world, soviets, badgerEntryPoint2.Location, parabombPoint.Location);
 			}
 			if (world.FrameNumber == SovietVehicleAdditionsTicks)
 			{
@@ -361,6 +362,11 @@ namespace OpenRA.Mods.RA.Missions
 			return MissionUtils.ClosestPlayerBuilding(world, allies2, actor.CenterLocation, range);
 		}
 
+		IEnumerable<Actor> ClosestAlliedBuildings(Actor actor, int range)
+		{
+			return MissionUtils.ClosestPlayerBuildings(world, allies2, actor.CenterLocation, range);
+		}
+
 		void InitializeSovietFactories()
 		{
 			var sbrp = sovietBarracks.Trait<RallyPoint>();
@@ -399,8 +405,8 @@ namespace OpenRA.Mods.RA.Missions
 
 		void RushSovietTanks()
 		{
-			var closestAlliedBuilding = ClosestAlliedBuilding(badgerDropPoint1, 40);
-			if (closestAlliedBuilding == null)
+			var closestAlliedBuildings = ClosestAlliedBuildings(badgerDropPoint1, 40);
+			if (!closestAlliedBuildings.Any())
 			{
 				return;
 			}
@@ -411,7 +417,10 @@ namespace OpenRA.Mods.RA.Missions
 					new OwnerInit(soviets),
 					new LocationInit(tanksEntryPoint.Location)
 				});
-				unit.QueueActivity(new AttackMove.AttackMoveActivity(unit, new Attack(Target.FromActor(closestAlliedBuilding), 3)));
+				foreach (var building in closestAlliedBuildings)
+				{
+					unit.QueueActivity(new Attack(Target.FromActor(building), 3));
+				}
 			}
 		}
 
@@ -508,7 +517,8 @@ namespace OpenRA.Mods.RA.Missions
 			reinforcementsEntryPoint = actors["ReinforcementsEntryPoint"];
 			extractionLZ = actors["ExtractionLZ"];
 			extractionLZEntryPoint = actors["ExtractionLZEntryPoint"];
-			badgerEntryPoint = actors["BadgerEntryPoint"];
+			badgerEntryPoint1 = actors["BadgerEntryPoint1"];
+			badgerEntryPoint2 = actors["BadgerEntryPoint2"];
 			badgerDropPoint1 = actors["BadgerDropPoint1"];
 			badgerDropPoint2 = actors["BadgerDropPoint2"];
 			badgerDropPoint3 = actors["BadgerDropPoint3"];

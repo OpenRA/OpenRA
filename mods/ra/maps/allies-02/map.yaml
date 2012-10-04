@@ -1590,7 +1590,7 @@ Actors:
 	BadgerDropPoint1: waypoint
 		Location: 19,96
 		Owner: Neutral
-	BadgerEntryPoint: waypoint
+	BadgerEntryPoint1: waypoint
 		Location: 40,12
 		Owner: Neutral
 	Actor485: tc03
@@ -2398,6 +2398,9 @@ Actors:
 	Actor467: dog
 		Location: 49,22
 		Owner: Soviets
+	BadgerEntryPoint2: waypoint
+		Location: 119,77
+		Owner: Neutral
 
 Smudges:
 
