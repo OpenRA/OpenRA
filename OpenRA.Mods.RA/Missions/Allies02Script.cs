@@ -68,7 +68,8 @@ namespace OpenRA.Mods.RA.Missions
 		Actor badgerDropPoint1;
 		Actor badgerDropPoint2;
 		Actor badgerDropPoint3;
-		Actor parabombPoint;
+		Actor parabombPoint1;
+		Actor parabombPoint2;
 		Actor sovietRallyPoint;
 		Actor flamersEntryPoint;
 		Actor tanksEntryPoint;
@@ -102,7 +103,8 @@ namespace OpenRA.Mods.RA.Missions
 		const int SovietHelperCash = 2000;
 
 		const int ReinforcementsTicks = 1500 * 12;
-		static readonly string[] Reinforcements = {
+		static readonly string[] Reinforcements =
+												{
 													"2tnk", "2tnk", "2tnk", "2tnk", "2tnk", "2tnk",
 													"1tnk", "1tnk",
 													"jeep",
@@ -186,8 +188,8 @@ namespace OpenRA.Mods.RA.Missions
 			if (world.FrameNumber == ParatroopersTicks)
 			{
 				MissionUtils.Paradrop(world, soviets, Badger1Passengers, badgerEntryPoint1.Location, badgerDropPoint1.Location);
-				MissionUtils.Paradrop(world, soviets, Badger2Passengers, badgerEntryPoint1.Location, badgerDropPoint2.Location);
-				MissionUtils.Paradrop(world, soviets, Badger3Passengers, badgerEntryPoint1.Location, badgerDropPoint3.Location);
+				MissionUtils.Paradrop(world, soviets, Badger2Passengers, badgerEntryPoint1.Location + new CVec(3, 0), badgerDropPoint2.Location);
+				MissionUtils.Paradrop(world, soviets, Badger3Passengers, badgerEntryPoint1.Location + new CVec(6, 0), badgerDropPoint3.Location);
 			}
 			if (world.FrameNumber == FlamersTicks)
 			{
@@ -199,7 +201,8 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			if (world.FrameNumber == ParabombTicks)
 			{
-				MissionUtils.Parabomb(world, soviets, badgerEntryPoint2.Location, parabombPoint.Location);
+				MissionUtils.Parabomb(world, soviets, badgerEntryPoint2.Location, parabombPoint1.Location);
+				MissionUtils.Parabomb(world, soviets, badgerEntryPoint2.Location + new CVec(0, 3), parabombPoint2.Location);
 			}
 			if (world.FrameNumber == SovietVehicleAdditionsTicks)
 			{
@@ -522,7 +525,8 @@ namespace OpenRA.Mods.RA.Missions
 			badgerDropPoint1 = actors["BadgerDropPoint1"];
 			badgerDropPoint2 = actors["BadgerDropPoint2"];
 			badgerDropPoint3 = actors["BadgerDropPoint3"];
-			parabombPoint = actors["ParabombPoint"];
+			parabombPoint1 = actors["ParabombPoint1"];
+			parabombPoint2 = actors["ParabombPoint2"];
 			sovietBarracks = actors["SovietBarracks"];
 			sovietWarFactory = actors["SovietWarFactory"];
 			sovietRallyPoint = actors["SovietRallyPoint"];

@@ -2218,9 +2218,6 @@ Actors:
 	BadgerDropPoint3: waypoint
 		Location: 26,100
 		Owner: Neutral
-	ParabombPoint: waypoint
-		Location: 38,107
-		Owner: Neutral
 	TanksEntryPoint: waypoint
 		Location: 16,86
 		Owner: Neutral
@@ -2400,6 +2397,12 @@ Actors:
 		Owner: Soviets
 	BadgerEntryPoint2: waypoint
 		Location: 119,77
+		Owner: Neutral
+	ParabombPoint1: waypoint
+		Location: 39,105
+		Owner: Neutral
+	ParabombPoint2: waypoint
+		Location: 39,108
 		Owner: Neutral
 
 Smudges:
