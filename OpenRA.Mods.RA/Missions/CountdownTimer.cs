@@ -87,7 +87,7 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			var font = Game.Renderer.Fonts["Bold"];
 			var text = "{0}: {1}".F(Header, WidgetUtils.FormatTime(Timer.TicksLeft));
-			font.DrawTextWithContrast(text, Position, Timer.TicksLeft <= 25 * 10 && Game.LocalTick % 60 <= 30 ? Color.Red : Color.White, Color.Black, 1);
+			font.DrawTextWithContrast(text, Position, Timer.TicksLeft <= 25 * 10 && Game.LocalTick % 50 < 25 ? Color.Red : Color.White, Color.Black, 1);
 		}
 	}
 }

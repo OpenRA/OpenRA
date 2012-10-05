@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			objectives = world.WorldActor.TraitsImplementing<IHasObjectives>().First();
 
 			objectivesButton = gameRoot.Get<ButtonWidget>("OBJECTIVES_BUTTON");
-			objectivesButton.IsHighlighted = () => Game.LocalTick % 60 <= 30 && objectivesButton.Highlighted;
+			objectivesButton.IsHighlighted = () => Game.LocalTick % 50 < 25 && objectivesButton.Highlighted;
 			objectivesButton.OnClick += () => objectivesButton.Highlighted = false;
 
 			objectives.OnObjectivesUpdated += UpdateObjectives;
