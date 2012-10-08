@@ -11,12 +11,7 @@ ide.settings = settings
 
 local function settingsReadSafe(settings,what,default)
   local cr,out = settings:Read(what,default)
-
-  if (cr) then
-    return out
-  else
-    return default
-  end
+  return cr and out or default
 end
 
 -- ----------------------------------------------------------------------------
@@ -133,34 +128,33 @@ function SettingsAppendFileToHistory (filename)
 end
 
 ---
--- () SettingsRestoreFileSession (function)
+-- () SettingsRestoreFileSession (function [, string section])
 -- restores a list of opened files from the file settings
 -- calls the given function with the restored table, a list
 -- of tables containing tables like
 -- {filename = "filename", cursorpos = <cursor position>}
-function SettingsRestoreFileSession(fntab)
-  local listname = "/session"
+function SettingsRestoreFileSession(fntab, section)
+  local listname = section or "/session"
   local path = settings:GetPath()
   settings:SetPath(listname)
   local outtab = {}
-  local couldread = true
-  local id = 1
-  local name
-  while(couldread) do
-    couldread, name = settings:Read(tostring(id), "")
-    local fname,cursorpos = name:match("^(.+);(.-)$")
-    name = fname or name
-    cursorpos = tonumber(cursorpos or 0)
-    couldread = couldread and name ~= ""
-    if (couldread) then
-      table.insert(outtab,{filename = name, cursorpos = cursorpos})
-      id = id + 1
+  local params = {}
+  local ismore, key, index = settings:GetFirstEntry("", 0)
+  while (ismore) do
+    local couldread, value = settings:Read(key, "")
+    if tonumber(key) then
+      local fname,cursorpos = value:match("^(.+);(.-)$")
+      if (couldread and value ~= "") then
+        table.insert(outtab,
+          {filename = fname or value, cursorpos = tonumber(cursorpos) or 0})
+      end
+    else
+      params[key] = tonumber(value) or value
     end
+    ismore, key, index = settings:GetNextEntry(index)
   end
 
-  local index = settingsReadSafe(settings,"index",1)
-
-  if fntab then fntab(outtab,index) end
+  if fntab then fntab(outtab, params) end
 
   settings:SetPath(path)
 
@@ -168,11 +162,11 @@ function SettingsRestoreFileSession(fntab)
 end
 
 ---
--- () SettingsSaveFileList (table opendocs)
+-- () SettingsSaveFileSession (table opendocs, table params [, string section])
 -- saves the list of currently opened documents (passed in the opendocs table)
 -- in the settings.
-function SettingsSaveFileSession(opendocs,index)
-  local listname = "/session"
+function SettingsSaveFileSession(opendocs, params, section)
+  local listname = section or "/session"
   local path = settings:GetPath()
   settings:DeleteGroup(listname)
   settings:SetPath(listname)
@@ -180,14 +174,15 @@ function SettingsSaveFileSession(opendocs,index)
   for i,doc in ipairs(opendocs) do
     settings:Write(tostring(i), doc.filename..";"..doc.cursorpos)
   end
-  settings:Write("index",index)
+
+  -- save all other parameters
+  for k,v in pairs(params) do settings:Write(k, v) end
 
   settings:SetPath(path)
 end
 
 ---
 -- () SettingsRestoreProjectSession (function)
-
 function SettingsRestoreProjectSession(fntab)
   local listname = "/projectsession"
   local path = settings:GetPath()
@@ -196,12 +191,15 @@ function SettingsRestoreProjectSession(fntab)
   local couldread = true
   local id = 1
   local name
-  while(couldread) do
+  while (couldread) do
     couldread, name = settings:Read(tostring(id), "")
     couldread = couldread and name ~= ""
     if (couldread) then
       if (wx.wxDirExists(name)) then
         table.insert(outtab,name)
+
+        local function projsession(...) ProjectConfig(name, {...}) end
+        SettingsRestoreFileSession(projsession, listname .. "/" .. tostring(id))
       end
       id = id + 1
     end
@@ -226,6 +224,11 @@ function SettingsSaveProjectSession(projdirs)
 
   for i,dir in ipairs(projdirs) do
     settings:Write(tostring(i), dir)
+
+    local opendocs, params = ProjectConfig(dir)
+    if opendocs and #opendocs > 0 then
+      SettingsSaveFileSession(opendocs, params, listname .. "/" .. tostring(i))
+    end
   end
 
   settings:SetPath(path)

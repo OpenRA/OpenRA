@@ -18,6 +18,7 @@ acandtip.shorttip = false
 acandtip.nodynwords = true
 
 activateoutput = true
+projectautoopen = true
 
 styles = {
   -- lexer specific (inherit fg/bg from text)

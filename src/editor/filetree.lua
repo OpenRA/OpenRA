@@ -250,6 +250,11 @@ function filetree:updateProjectDir(newdir, cboxsel)
   end
 
   if ((not newdir) or filetree.projdirText == newdir or not wx.wxDirExists(newdir)) then return end
+
+  if ide.config.projectautoopen and filetree.projdirText then
+    StoreRestoreProjectTabs(filetree.projdirText, newdir)
+  end
+
   filetree.projdirText = newdir
 
   PrependStringToArray(filetree.projdirTextArray,newdir,ide.config.projecthistorylength)

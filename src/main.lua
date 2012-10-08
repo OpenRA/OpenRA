@@ -90,6 +90,7 @@ ide = {
   filetree = nil, -- filetree
   findReplace = nil, -- find & replace handling
   settings = nil, -- user settings (window pos, last files..)
+  session = {projects = {}}, -- project configuration for the current session
 
   -- misc
   exitingProgram = false, -- are we currently exiting, ID_EXIT
@@ -364,20 +365,14 @@ SettingsRestoreView()
 -- Load the filenames
 
 do
-  local notebook = ide.frame.notebook
-  local loaded
-
   for _, fileName in ipairs(filenames) do
     if fileName ~= "--" then
       LoadFile(fileName, nil, true)
-      loaded = true
     end
   end
 
-  if notebook:GetPageCount() == 0 then
-    local editor = CreateEditor("untitled.lua")
-    SetupKeywords(editor, "lua")
-  end
+  local notebook = ide.frame.notebook
+  if notebook:GetPageCount() == 0 then NewFile() end
 end
 
 if app.postinit then app.postinit() end
@@ -393,8 +388,4 @@ end
 resumePrint()
 
 ide.frame:Show(true)
-
--- call wx.wxGetApp():MainLoop() last to start the wxWidgets event loop,
--- otherwise the program will exit immediately.
--- Does nothing if the MainLoop is already running.
 wx.wxGetApp():MainLoop()

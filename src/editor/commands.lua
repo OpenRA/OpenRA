@@ -8,8 +8,9 @@ local openDocuments = ide.openDocuments
 local uimgr = frame.uimgr
 
 function NewFile(event)
-  local editor = CreateEditor(ide.config.default.fullname)
+  local editor = CreateEditor()
   SetupKeywords(editor, "lua")
+  AddEditor(editor, ide.config.default.fullname)
 end
 
 -- Find an editor page that hasn't been used at all, eg. an untouched NewFile()
@@ -50,17 +51,18 @@ function LoadFile(filePath, editor, file_must_exist)
   end
 
   local current = editor and editor:GetCurrentPos()
-  editor = editor
-    or findDocumentToReuse()
-    or CreateEditor(wx.wxFileName(filePath):GetFullName()
-      or ide.config.default.fullname)
+  editor = editor or findDocumentToReuse() or CreateEditor()
 
+  editor:Freeze()
   editor:Clear()
   editor:ClearAll()
   SetupKeywords(editor, GetFileExt(filePath))
   editor:MarkerDeleteAll(BREAKPOINT_MARKER)
   editor:MarkerDeleteAll(CURRENT_LINE_MARKER)
   editor:AppendText(file_text)
+  editor:Colourise(0, -1)
+  editor:Thaw()
+
   if current then editor:GotoPos(current) end
   if (ide.config.editor.autotabs) then
     local found = string.find(file_text,"\t") ~= nil
@@ -69,11 +71,14 @@ function LoadFile(filePath, editor, file_must_exist)
 
   editor:EmptyUndoBuffer()
   local id = editor:GetId()
+  if not openDocuments[id] then -- the editor has not been added to notebook
+    AddEditor(editor, wx.wxFileName(filePath):GetFullName()
+      or ide.config.default.fullname)
+  end
   openDocuments[id].filePath = filePath
   openDocuments[id].fileName = wx.wxFileName(filePath):GetFullName()
   openDocuments[id].modTime = GetFileModTime(filePath)
   SetDocumentModified(id, false)
-  editor:Colourise(0, -1)
 
   IndicateFunctions(editor)
 
@@ -104,9 +109,7 @@ local function getExtsString()
 end
 
 function OpenFile(event)
-
   local exts = getExtsString()
-
   local fileDialog = wx.wxFileDialog(ide.frame, "Open file",
     "",
     "",
@@ -460,26 +463,20 @@ function GetOpenFiles()
       local wxfname = wx.wxFileName(document.filePath)
       wxfname:Normalize()
 
-      table.insert(opendocs,{fname=wxfname:GetFullPath(),id=document.index,
-          cursorpos = document.editor:GetCurrentPos()})
+      table.insert(opendocs, {filename=wxfname:GetFullPath(),
+        id=document.index, cursorpos = document.editor:GetCurrentPos()})
     end
   end
 
   -- to keep tab order
   table.sort(opendocs,function(a,b) return (a.id < b.id) end)
 
-  local openfiles = {}
-  for i,doc in ipairs(opendocs) do
-    table.insert(openfiles,{filename = doc.fname, cursorpos = doc.cursorpos} )
-  end
-
   local id = GetEditor()
   id = id and id:GetId()
-
-  return openfiles, id and openDocuments[id].index or 0
+  return opendocs, {index = (id and openDocuments[id].index or 0)}
 end
 
-function SetOpenFiles(nametab,index)
+function SetOpenFiles(nametab,params)
   for i,doc in ipairs(nametab) do
     local editor = LoadFile(doc.filename,nil,true)
     if editor then
@@ -489,7 +486,7 @@ function SetOpenFiles(nametab,index)
       editor:EnsureCaretVisible()
     end
   end
-  notebook:SetSelection(index or 0)
+  notebook:SetSelection(params and params.index or 0)
 end
 
 local beforeFullScreenPerspective
@@ -508,6 +505,75 @@ function ShowFullScreen(setFullScreen)
   uimgr:Update()
   -- protect from systems that don't have ShowFullScreen (GTK on linux?)
   pcall(function() frame:ShowFullScreen(setFullScreen) end)
+end
+
+local function restoreFilesAndInterpreter(files, params)
+  if not files then return end
+  local alreadyopen = notebook:GetPageCount()
+
+  -- open files, but ignore some functions that are not needed;
+  -- as we may be opening multiple files, it doesn't make sense to
+  -- select editor and do some other similar work after each file.
+  local noop, func = function() end, LoadFile
+  local genv = {SetEditorSelection = noop, SettingsAppendFileToHistory = noop}
+  setmetatable(genv, {__index = _G})
+  local env = getfenv(func)
+  setfenv(func, genv)
+  SetOpenFiles(files, params)
+  setfenv(func, env)
+
+  if params.interpreter and ide.interpreter.fname ~= params.interpreter then
+    ProjectSetInterpreter(params.interpreter) -- set the interpreter
+  end
+  if notebook:GetPageCount() > 0 then
+    SetEditorSelection((params.index or 0) + alreadyopen)
+  end
+end
+
+function ProjectConfig(dir, config)
+  if config then ide.session.projects[dir] = config
+  else return unpack(ide.session.projects[dir] or {}) end
+end
+
+function StoreRestoreProjectTabs(curdir, newdir)
+  local win = ide.osname == 'Windows'
+  local function q(s) return s:gsub('([%(%)%.%%%+%-%*%?%[%^%$%]])','%%%1') end
+  local interpreter = ide.interpreter.fname
+  local current, closing, restore = notebook:GetSelection(), 0, false
+
+  if curdir and #curdir > 0 then
+    local lowdir = q(win and string.lower(curdir) or curdir)
+    local projdocs = {}
+    for _, document in ipairs(GetOpenFiles()) do
+      local dpath = win and string.lower(document.filename) or document.filename
+      if dpath:find("^"..lowdir) then
+        table.insert(projdocs, document)
+        closing = closing + (document.id < current and 1 or 0)
+      elseif document.id == current then restore = true end
+    end
+
+    -- adjust for the number of closing tabs on the left from the current one
+    current = current - closing
+
+    -- save opened files from this project
+    ProjectConfig(curdir, {projdocs,
+      {index = notebook:GetSelection() - current, interpreter = interpreter}})
+
+    -- close pages for those files that match the project in the reverse order
+    -- (as ids shift when pages are closed)
+    notebook:Freeze() -- don't animate closing tabs
+    for i = #projdocs, 1, -1 do ClosePage(projdocs[i].id) end
+    notebook:Thaw()
+  end
+
+  restoreFilesAndInterpreter(ProjectConfig(newdir))
+  if restore and current >= 0 then notebook:SetSelection(current) end
+  if notebook:GetPageCount() == 0 then NewFile() end
+
+  -- remove current config as it may change; the current configuration is
+  -- stored with the general config.
+  -- The project configuration will be updated when the project is changed.
+  ProjectConfig(newdir, {})
 end
 
 function CloseWindow(event)

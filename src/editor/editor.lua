@@ -180,6 +180,7 @@ end
 
 -- Set if the document is modified and update the notebook page text
 function SetDocumentModified(id, modified)
+  if not openDocuments[id] then return end
   local pageText = openDocuments[id].fileName or ide.config.default.fullname
 
   if modified then
@@ -282,10 +283,10 @@ function EditorCallTip(editor, pos, x, y)
 end
 
 -- ----------------------------------------------------------------------------
--- Create an editor and add it to the notebook
-function CreateEditor(name)
+-- Create an editor
+function CreateEditor()
   local editor = wxstc.wxStyledTextCtrl(notebook, editorID,
-    wx.wxDefaultPosition, wx.wxDefaultSize,
+    wx.wxDefaultPosition, wx.wxSize(0, 0),
     wx.wxBORDER_STATIC)
 
   editorID = editorID + 1 -- increment so they're always unique
@@ -314,8 +315,6 @@ function CreateEditor(name)
   editor:SetCaretLineVisible(ide.config.editor.caretline and 1 or 0)
 
   editor:SetVisiblePolicy(wxstc.wxSTC_VISIBLE_SLOP, 3)
-  --editor:SetXCaretPolicy(wxstc.wxSTC_CARET_SLOP, 10)
-  --editor:SetYCaretPolicy(wxstc.wxSTC_CARET_SLOP, 3)
 
   editor:SetMarginWidth(0, editor:TextWidth(32, "99999_")) -- line # margin
 
@@ -617,6 +616,12 @@ function CreateEditor(name)
   editor:Connect(ID_QUICKEVAL, wx.wxEVT_COMMAND_MENU_SELECTED,
     function(event) ShellExecuteCode(value) end)
 
+  return editor
+end
+
+-- ----------------------------------------------------------------------------
+-- Add an editor to the notebook
+function AddEditor(editor, name)
   if notebook:AddPage(editor, name, true) then
     local id = editor:GetId()
     local document = {}
@@ -627,9 +632,9 @@ function CreateEditor(name)
     document.modTime = nil
     document.isModified = false
     openDocuments[id] = document
+    return document
   end
-
-  return editor
+  return
 end
 
 function GetSpec(ext,forcespec)
