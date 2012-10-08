@@ -2746,6 +2746,12 @@ Rules:
 			Owner: None
 		RevealsShroud:
 			Range: 0
+	MEDI:
+		Buildable:
+			Prerequisites:
+	SPY:
+		Buildable:
+			Prerequisites: dome
 	MIG:
 		Buildable:
 			Owner: None
