@@ -1003,7 +1003,7 @@ Actors:
 		Location: 46,21
 		Owner: Soviets
 	Actor175: tsla
-		Location: 47,51
+		Location: 48,50
 		Owner: Soviets
 	Actor297: e1
 		Location: 33,25
@@ -1017,8 +1017,8 @@ Actors:
 	Actor411: silo
 		Location: 24,62
 		Owner: Soviets
-	Actor123: apwr
-		Location: 25,55
+	Actor123: dog
+		Location: 32,57
 		Owner: Soviets
 	Actor240: apwr
 		Location: 46,17
@@ -1090,7 +1090,7 @@ Actors:
 		Location: 27,45
 		Owner: Soviets
 	Actor57: fact
-		Location: 46,48
+		Location: 44,50
 		Owner: Soviets
 	Actor343: 3tnk
 		Location: 57,58
@@ -1285,8 +1285,8 @@ Actors:
 	Actor432: tsla
 		Location: 60,65
 		Owner: Soviets
-	Actor117: apwr
-		Location: 25,52
+	Actor117: dog
+		Location: 25,55
 		Owner: Soviets
 	Actor431: brik
 		Location: 16,54
@@ -1294,7 +1294,7 @@ Actors:
 	Actor293: brik
 		Location: 54,67
 		Owner: Soviets
-	Actor290: apwr
+	Actor0: apwr
 		Location: 49,42
 		Owner: Soviets
 	SAM4: sam
@@ -1501,7 +1501,7 @@ Actors:
 	Actor414: t13
 		Location: 74,43
 		Owner: Neutral
-	Actor0: apwr
+	Actor290: apwr
 		Location: 52,42
 		Owner: Soviets
 	Actor54: proc
@@ -1623,8 +1623,8 @@ Actors:
 	Actor563: e1
 		Location: 36,48
 		Owner: Soviets
-	Actor564: e1
-		Location: 45,49
+	Actor804: apwr
+		Location: 61,61
 		Owner: Soviets
 	Actor565: e1
 		Location: 42,56
@@ -1782,10 +1782,9 @@ Actors:
 	Actor617: truk
 		Location: 104,43
 		Owner: Soviets
-	Actor551: 3tnk
-		Location: 54,46
+	Actor551: apwr
+		Location: 49,45
 		Owner: Soviets
-		Facing: 192
 	Actor619: sbag
 		Location: 67,48
 		Owner: Soviets
@@ -2389,8 +2388,8 @@ Actors:
 	Actor344: dog
 		Location: 23,50
 		Owner: Soviets
-	Actor430: dog
-		Location: 55,64
+	Actor291: 3tnk
+		Location: 51,49
 		Owner: Soviets
 	Actor467: dog
 		Location: 49,22
@@ -2413,8 +2412,8 @@ Actors:
 	Actor256: apwr
 		Location: 24,45
 		Owner: Soviets
-	Actor291: afld
-		Location: 57,63
+	Actor430: afld
+		Location: 54,63
 		Owner: Soviets
 	Actor753: afld
 		Location: 51,63
@@ -2563,9 +2562,9 @@ Actors:
 	Actor803: t05
 		Location: 56,45
 		Owner: Neutral
-	Actor804: t07
-		Location: 63,61
-		Owner: Neutral
+	Actor564: apwr
+		Location: 61,58
+		Owner: Soviets
 	Actor805: t01
 		Location: 37,54
 		Owner: Neutral
@@ -2665,6 +2664,63 @@ Actors:
 	SovietReinforcementsEntryPoint2: waypoint
 		Location: 24,16
 		Owner: Neutral
+	Actor836: apwr
+		Location: 52,45
+		Owner: Soviets
+	Actor837: dog
+		Location: 36,61
+		Owner: Soviets
+	Actor838: dog
+		Location: 42,43
+		Owner: Soviets
+	Actor839: dog
+		Location: 39,48
+		Owner: Soviets
+	Actor840: dog
+		Location: 34,51
+		Owner: Soviets
+	Actor841: 3tnk
+		Location: 43,45
+		Owner: Soviets
+	Actor842: 3tnk
+		Location: 30,62
+		Owner: Soviets
+	Actor843: 3tnk
+		Location: 26,56
+		Owner: Soviets
+	Actor844: 3tnk
+		Location: 58,64
+		Owner: Soviets
+	Actor845: 3tnk
+		Location: 49,58
+		Owner: Soviets
+	Actor846: e1
+		Location: 60,61
+		Owner: Soviets
+	Actor847: e1
+		Location: 25,52
+		Owner: Soviets
+	Actor848: e1
+		Location: 20,65
+		Owner: Soviets
+	Actor849: pbox.e3
+		Location: 41,64
+		Owner: Soviets
+	Actor850: pbox.e3
+		Location: 30,64
+		Owner: Soviets
+	Actor851: pbox.e3
+		Location: 44,34
+		Owner: Soviets
+	Actor852: pbox.e3
+		Location: 38,33
+		Owner: Soviets
+	Actor853: pbox.e3
+		Location: 23,32
+		Owner: Soviets
+	Actor854: pbox.e3
+		Location: 17,31
+		Owner: Soviets
 
 Smudges:
 

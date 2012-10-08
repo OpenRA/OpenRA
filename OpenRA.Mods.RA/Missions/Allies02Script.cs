@@ -117,21 +117,27 @@ namespace OpenRA.Mods.RA.Missions
 			"mcv",
 			"truk", "truk", "truk", "truk", "truk", "truk"
 		};
-		const int SovietReinforcementsTicks = 1500 * 22;
-		static readonly string[] SovietReinforcements = { "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "v2rl", "v2rl" };
+		const int SovietReinforcementsTicks = 1500 * 16;
+		static readonly string[] SovietReinforcements =
+		{ 
+			"3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", 
+			"3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", 
+			"v2rl", "v2rl", "v2rl", "v2rl",
+			"ftrk", "ftrk"
+		};
 
-		const int ParatroopersTicks = 1500 * 8;
-		static readonly string[] Badger1Passengers = { "e1", "e1", "e1", "e2", "3tnk" };
-		static readonly string[] Badger2Passengers = { "e1", "e1", "e1", "e2", "e2" };
-		static readonly string[] Badger3Passengers = { "e1", "e1", "e1", "e2", "e2" };
-
-		const int ParabombTicks = 1500 * 5;
+		const int ParabombTicks = 750;
 
 		const int FlamersTicks = 1500 * 2;
 		static readonly string[] Flamers = { "e4", "e4", "e4", "e4", "e4" };
 		const string ApcName = "apc";
 
-		const int TanksTicks = 1500 * 11;
+		const int ParatroopersTicks = 1500 * 5;
+		static readonly string[] Badger1Passengers = { "e1", "e1", "e1", "e2", "3tnk" };
+		static readonly string[] Badger2Passengers = { "e1", "e1", "e1", "e2", "e2" };
+		static readonly string[] Badger3Passengers = { "e1", "e1", "e1", "e2", "e2" };
+
+		const int TanksTicks = 1500 * 8;
 		static readonly string[] Tanks = { "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk" };
 
 		const string SignalFlareName = "flare";
