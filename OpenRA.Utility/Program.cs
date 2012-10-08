@@ -29,6 +29,7 @@ namespace OpenRA.Utility
 				{ "--remap", Command.RemapShp },
 				{ "--r8", Command.ConvertR8ToPng },
 				{ "--transpose", Command.TransposeShp },
+				{ "--docs", Command.ExtractTraitDocs },
 			};
 
 			if (args.Length == 0) { PrintUsage(); return; }

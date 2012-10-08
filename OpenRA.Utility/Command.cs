@@ -14,6 +14,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using OpenRA.FileFormats;
 using OpenRA.FileFormats.Graphics;
@@ -474,6 +475,44 @@ namespace OpenRA.Utility
 			using( var destStream = File.Create(args[2]) )
 				ShpWriter.Write(destStream, srcImage.Width, srcImage.Height,
 					destFrames.Select(f => f.Image));
+		}
+
+		static string NiceTypeName(Type t)
+		{
+			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Dictionary<,>))
+				return "Dictionary<{0},{1}>".F(t.GetGenericArguments().Select(a => NiceTypeName(a)).ToArray ());
+
+			return t.Name;
+		}
+
+		public static void ExtractTraitDocs(string[] args)
+		{
+			Game.modData = new ModData(args[1]);
+			FileSystem.LoadFromManifest(Game.modData.Manifest);
+			Rules.LoadRules(Game.modData.Manifest, new Map());
+
+			foreach( var t in Game.modData.ObjectCreator.GetTypesImplementing<ITraitInfo>() )
+			{
+				if (t.ContainsGenericParameters || t.IsAbstract)
+					continue;		// skip helpers like TraitInfo<T>
+
+				var traitName = t.Name.Replace("Info","");
+				var traitDesc = t.GetCustomAttributes<DescAttribute>(false).Select(a => a.Description).FirstOrDefault();
+
+				Console.WriteLine("{0}:", traitName);
+				var liveTraitInfo = Game.modData.ObjectCreator.CreateBasic(t);
+
+				foreach(var f in t.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy))
+				{
+					var fieldDesc = f.GetCustomAttributes<DescAttribute>(true).Select(a => a.Description).FirstOrDefault();
+					var fieldType = NiceTypeName(f.FieldType);
+					var defaultValue = FieldSaver.SaveField(liveTraitInfo, f.Name).Value.Value;
+					if (string.IsNullOrEmpty(defaultValue))
+						defaultValue = "(none)";
+
+					Console.WriteLine("\t{0}: {2}  # type: {1}", f.Name, fieldType, defaultValue);
+				}
+			}
 		}
 	}
 }

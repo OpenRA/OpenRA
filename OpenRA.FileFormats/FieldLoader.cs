@@ -351,4 +351,11 @@ namespace OpenRA.FileFormats
 	}
 
 	public class FieldFromYamlKeyAttribute : Attribute { }
+
+	// mirrors DescriptionAttribute from System.ComponentModel but we dont want to have to use that everywhere.
+	public class DescAttribute : Attribute
+	{
+		public readonly string Description;
+		public DescAttribute(string description) { Description = description; }
+	}
 }
