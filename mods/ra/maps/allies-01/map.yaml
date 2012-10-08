@@ -351,12 +351,12 @@ Rules:
 		Allies01Script:
 		MissionObjectivesPanel:
 			ObjectivesPanel: MISSION_OBJECTIVES
-	POWR:
-		Health:
-			HP: 100
-	OILB:
-		Health:
-			HP: 100
+	BARL:
+		Explodes:
+			Weapon: BarrelExplode
+	3BRL:
+		Explodes:
+			Weapon: BarrelExplode
 	TRAN:
 		-Selectable:
 		RevealsShroud:
@@ -369,9 +369,6 @@ Rules:
 	EINSTEIN:
 		Passenger:
 			Weight: 0
-	E2:
-		Explodes:
-			Chance: 100
 	JEEP:
 		Cargo:
 			MaxWeight: 0
@@ -380,6 +377,14 @@ Rules:
 Sequences:
 
 Weapons:
+	BarrelExplode:
+		Warhead:
+			Damage: 1800
+			Spread: 10
+			Explosion: self_destruct
+			WaterExplosion: large_splash
+			InfDeath: 4
+			ImpactSound: kaboom22
 	8Inch:
 		ROF: 200
 		Range: 25
