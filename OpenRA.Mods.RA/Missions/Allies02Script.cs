@@ -79,6 +79,8 @@ namespace OpenRA.Mods.RA.Missions
 		Actor yakEntryPoint;
 		Actor yakAttackPoint;
 		Actor yak;
+		Actor sovietReinforcementsEntryPoint1;
+		Actor sovietReinforcementsEntryPoint2;
 
 		Actor einsteinChinook;
 
@@ -92,6 +94,8 @@ namespace OpenRA.Mods.RA.Missions
 
 		CountdownTimer reinforcementsTimer;
 		CountdownTimerWidget reinforcementsTimerWidget;
+		CountdownTimer sovietReinforcementsTimer;
+		CountdownTimerWidget sovietReinforcementsTimerWidget;
 
 		const string InfantryQueueName = "Infantry";
 		const string VehicleQueueName = "Vehicle";
@@ -104,15 +108,17 @@ namespace OpenRA.Mods.RA.Missions
 
 		const int ReinforcementsTicks = 1500 * 12;
 		static readonly string[] Reinforcements =
-												{
-													"2tnk", "2tnk", "2tnk", "2tnk", "2tnk", "2tnk",
-													"1tnk", "1tnk",
-													"jeep",
-													"e1", "e1", "e1", "e1",
-													"e3", "e3",
-													"mcv",
-													"truk", "truk", "truk", "truk", "truk", "truk"
-												};
+		{
+			"2tnk", "2tnk", "2tnk", "2tnk", "2tnk", "2tnk",
+			"1tnk", "1tnk",
+			"jeep",
+			"e1", "e1", "e1", "e1",
+			"e3", "e3",
+			"mcv",
+			"truk", "truk", "truk", "truk", "truk", "truk"
+		};
+		const int SovietReinforcementsTicks = 1500 * 22;
+		static readonly string[] SovietReinforcements = { "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "v2rl", "v2rl" };
 
 		const int ParatroopersTicks = 1500 * 8;
 		static readonly string[] Badger1Passengers = { "e1", "e1", "e1", "e2", "3tnk" };
@@ -183,8 +189,10 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				InitializeSovietFactories();
 				StartReinforcementsTimer();
+				StartSovietReinforcementsTimer();
 			}
 			reinforcementsTimer.Tick();
+			sovietReinforcementsTimer.Tick();
 			if (world.FrameNumber == ParatroopersTicks)
 			{
 				MissionUtils.Paradrop(world, soviets, Badger1Passengers, badgerEntryPoint1.Location, badgerDropPoint1.Location);
@@ -197,7 +205,7 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			if (world.FrameNumber == TanksTicks)
 			{
-				RushSovietTanks();
+				RushSovietUnits();
 			}
 			if (world.FrameNumber == ParabombTicks)
 			{
@@ -400,13 +408,65 @@ namespace OpenRA.Mods.RA.Missions
 
 		void StartReinforcementsTimer()
 		{
-			Sound.Play("timergo1.aud");
-			reinforcementsTimer = new CountdownTimer(ReinforcementsTicks, ReinforcementsTimerExpired, true);
-			reinforcementsTimerWidget = new CountdownTimerWidget(reinforcementsTimer, "Reinforcements arrive in", new float2(Game.viewport.Width * 0.1f, Game.viewport.Height * 0.8f));
+			reinforcementsTimer = new CountdownTimer(ReinforcementsTicks, ReinforcementsTimerExpired, false);
+			reinforcementsTimerWidget = new CountdownTimerWidget(reinforcementsTimer, "Allied reinforcements arrive in: {0}", new float2(Game.viewport.Width * 0.1f, Game.viewport.Height * 0.8f));
 			Ui.Root.AddChild(reinforcementsTimerWidget);
 		}
 
-		void RushSovietTanks()
+		void StartSovietReinforcementsTimer()
+		{
+			Sound.Play("timergo1.aud");
+			sovietReinforcementsTimer = new CountdownTimer(SovietReinforcementsTicks, SovietReinforcementsTimerExpired, true);
+			sovietReinforcementsTimerWidget = new CountdownTimerWidget(sovietReinforcementsTimer, "Soviet reinforcements arrive in: {0}", new float2(Game.viewport.Width * 0.1f, Game.viewport.Height * 0.85f));
+			Ui.Root.AddChild(sovietReinforcementsTimerWidget);
+		}
+
+		void SovietReinforcementsTimerExpired(CountdownTimer countdownTimer)
+		{
+			sovietReinforcementsTimerWidget.Visible = false;
+			SendSovietReinforcements();
+			Sound.Play("sovrein1.aud");
+		}
+
+		void SendSovietReinforcements()
+		{
+			foreach (var entryPoint in new[] { sovietReinforcementsEntryPoint1, sovietReinforcementsEntryPoint2 })
+			{
+				foreach (var unit in SovietReinforcements)
+				{
+					var u = world.CreateActor(unit, new TypeDictionary
+					{
+						new LocationInit(entryPoint.Location),
+						new FacingInit(Util.GetFacing(allies2BasePoint.Location - entryPoint.Location, 0)),
+						new OwnerInit(soviets)
+					});
+					u.QueueActivity(new AttackMove.AttackMoveActivity(u, new Move.Move(allies2BasePoint.Location, 5)));
+				}
+			}
+		}
+
+		void ReinforcementsTimerExpired(CountdownTimer countdownTimer)
+		{
+			reinforcementsTimerWidget.Visible = false;
+			SendReinforcements();
+			Sound.Play("aarrivs1.aud");
+		}
+
+		void SendReinforcements()
+		{
+			foreach (var unit in Reinforcements)
+			{
+				var u = world.CreateActor(unit, new TypeDictionary
+				{
+					new LocationInit(reinforcementsEntryPoint.Location),
+					new FacingInit(0),
+					new OwnerInit(allies2)
+				});
+				u.QueueActivity(new Move.Move(allies2BasePoint.Location));
+			}
+		}
+
+		void RushSovietUnits()
 		{
 			var closestAlliedBuildings = ClosestAlliedBuildings(badgerDropPoint1, 40);
 			if (!closestAlliedBuildings.Any())
@@ -442,27 +502,6 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			apc.QueueActivity(new MoveAdjacentTo(Target.FromActor(closestAlliedBuilding)));
 			apc.QueueActivity(new UnloadCargo(true));
-		}
-
-		void ReinforcementsTimerExpired(CountdownTimer countdownTimer)
-		{
-			reinforcementsTimerWidget.Visible = false;
-			SendReinforcements();
-		}
-
-		void SendReinforcements()
-		{
-			Sound.Play("reinfor1.aud");
-			foreach (var unit in Reinforcements)
-			{
-				var actor = world.CreateActor(unit, new TypeDictionary
-				{
-					new LocationInit(reinforcementsEntryPoint.Location),
-					new FacingInit(0),
-					new OwnerInit(allies2)
-				});
-				actor.QueueActivity(new Move.Move(allies2BasePoint.Location));
-			}
 		}
 
 		void ExtractEinsteinAtLZ()
@@ -537,6 +576,8 @@ namespace OpenRA.Mods.RA.Missions
 			sovietTownAttackPoint2 = actors["SovietTownAttackPoint2"];
 			yakEntryPoint = actors["YakEntryPoint"];
 			yakAttackPoint = actors["YakAttackPoint"];
+			sovietReinforcementsEntryPoint1 = actors["SovietReinforcementsEntryPoint1"];
+			sovietReinforcementsEntryPoint2 = actors["SovietReinforcementsEntryPoint2"];
 			var shroud = w.WorldActor.Trait<Shroud>();
 			shroud.Explore(w, sam1.Location, 2);
 			shroud.Explore(w, sam2.Location, 2);
