@@ -351,12 +351,6 @@ Rules:
 		Allies01Script:
 		MissionObjectivesPanel:
 			ObjectivesPanel: MISSION_OBJECTIVES
-	BARL:
-		Explodes:
-			Weapon: BarrelExplode
-	3BRL:
-		Explodes:
-			Weapon: BarrelExplode
 	TRAN:
 		-Selectable:
 		RevealsShroud:
@@ -377,14 +371,6 @@ Rules:
 Sequences:
 
 Weapons:
-	BarrelExplode:
-		Warhead:
-			Damage: 1800
-			Spread: 10
-			Explosion: self_destruct
-			WaterExplosion: large_splash
-			InfDeath: 4
-			ImpactSound: kaboom22
 	8Inch:
 		ROF: 200
 		Range: 25

@@ -138,6 +138,7 @@ BARL:
 	Health:
 		HP: 10
 	Explodes:
+		Weapon: BarrelExplode
 	Tooltip:
 		Name: Explosive Barrel
 
@@ -148,6 +149,7 @@ BRL3:
 	Health:
 		HP: 10
 	Explodes:
+		Weapon: BarrelExplode
 	Tooltip:
 		Name: Explosive Barrel
 
