@@ -1,18 +1,18 @@
 # ZeroBrane Studio Changelog
 
-## Current master that will become v0.33 (Sep 28 2012)
+## Current master that will become v0.33 (Oct 07 2012)
 
 ### Highlights
-  - Added **Linux support**.
+  - Added **Linux support** (closes #15).
   - Added **Moai auto-complete** (closes #52).
-  - Added Linux/OSX/Windows CMake-based launcher build (thanks to toiffel).
+  - Added **Gideros debugging, auto-complete, and live coding** (closes #62).
 
 ### Improvements
   - Added auto-activation of files requested during debugging.
   - Added editor.autoactivate parameter (false by default) to enable activation.
   - Added zbstudio.sh script to run on OSX/Linux; updated permissions (closes #15).
   - Added variable ratio for sliders in scratchpad.
-  - Added Linux/OSX/Windows launcher CMake-based build (thanks to Arthur ?).
+  - Added Linux/OSX/Windows CMake-based launcher build (thanks to toiffel).
   - Added configuration parameter for the number of characters typed before displaying auto-complete suggestions for dynamic words.
   - Added proper closing of the application after Shutdown/Logoff events (fixes #57).
   - Added Moai auto-complete (closes #52).
@@ -29,20 +29,29 @@
   - Added highlighting rows with updated values in the Watch window.
   - Added 'Add Watch Expression' and 'Evaluate in Console' context menu items in the editor.
   - Added handling of canceling editing in adding a watch.
+  - Added Gideros auto-complete and live coding support (closes #62).
+  - Added Gideros integration on OSX; added search for gideros in default locations on Windows and OSX.
+  - Added Gideros integration and debugging support.
+  - Added debugging-related buttons to the toolbar.
   - Updated configuring toolbar size to improve Linux compatibility.
   - Updated MobDebug to v0.497 to fix issues and improve performance.
   - Updated a warning message about single instance communication.
   - Updated cpath processing to allow Linux version to run side-by-side with Windows and Mac.
   - Updated licensing information.
+  - Enabled scratchpad support in the debugger when interpreter is capable of providing it.
+  - Disabled toggling breakpoints while debugger is running (as they wouldn't be changed anyway).
   - Disabled 'not activated file for debugging' message when auto-activation is disabled.
   - Disabled tooltip when scratchpad is on (fixes #51).
   - Disabled showing calltip when the editor is not in focus.
   - Disabled showing calltip over markup in comments.
+  - Disabled 'Run as Scratchpad' in the menu for those intepreters that don't support scratchpad.
 
 ### Incompatibilities
   - Changed searching for user config in '$HOME/.zbstudio' from '$HOME/.zbs'.
 
 ### Fixes
+  - Fixed an auto-complete issue with mixed case dynamic words (fixes #60).
+  - Fixed 'Trying to solve a NULL hostname' warning message.
   - Fixed a typo that prevented a corner case in autocomplete from working.
   - Fixed inconsistent error messages about various config files.
   - Fixed an issue with auto-complete when dot or colon is used (fixes #56).
