@@ -91,29 +91,20 @@ config = {
     -- some tools/interpreters
   },
   editor = {
-    fontname = "Courier New",
-    -- default font
-    fontsize = 10,
-    -- defailt size
-    caretline = true,
-    -- show active line
-
-    -- input/output filtering of strings
-    -- current filters "GermanUtf8Ascii"
-    iofilter = nil,
-
-    -- use indicator to show function calls
-    -- if spec allows
-    showfncall = true,
-
+    fontname = "Courier New", -- default font
+    fontsize = 10, -- defailt size
+    caretline = true, -- show active line
+    iofilter = nil, -- input/output filtering of strings
+    showfncall = true, -- use indicator to show function calls if spec allows
     tabwidth = 4,
     usetabs = true, -- if false then spaces are used
     usewrap = true, -- if true then the text is wrapped in the editor
     whitespace = false,
     autotabs = true, -- if true test for tabs after file load,
-    -- sets "usetabs" to true for this file
+                     -- sets "usetabs" to true for this file
     calltipdelay = nil, -- delay to show calltip (in ms)
     autoactivate = false, -- auto-activate/open files during debugging
+    smartindent = false, -- use smart indentation if spec allows
   },
 
   default = {

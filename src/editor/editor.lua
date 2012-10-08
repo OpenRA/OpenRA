@@ -413,19 +413,36 @@ function CreateEditor()
       local linetx = editor:GetLine(line)
       local linestart = editor:PositionFromLine(line)
       local localpos = pos-linestart
-
       local linetxtopos = linetx:sub(1,localpos)
 
       if (ch == char_CR and eol==2) or (ch == char_LF and eol==0) then
         if (line > 0) then
           local indent = editor:GetLineIndentation(line - 1)
-          if indent > 0 then
-            editor:SetLineIndentation(line, indent)
-            local tw = editor:GetTabWidth()
-            local ut = editor:GetUseTabs()
-            local indent = ut and (indent / tw) or indent
-            editor:GotoPos(pos+indent)
+          local linedone = editor:GetLine(line - 1)
+
+          -- if the indentation is 0 and the current line is not empty
+          -- then take indentation from the current line (instead of the
+          -- previous one). This may happen when CR is hit at the beginning
+          -- of a line (rather than at the end).
+          if indent == 0 and not linetx:match("^[\010\013]*$") then
+            indent = editor:GetLineIndentation(line)
           end
+
+          local tw = editor:GetTabWidth()
+          local ut = editor:GetUseTabs()
+
+          if ide.config.editor.smartindent
+          and editor.spec.isdecindent and editor.spec.isincindent then
+            local closed, blockend = editor.spec.isdecindent(linedone)
+            local opened = editor.spec.isincindent(linedone)
+            editor:SetLineIndentation(line-1, indent - tw * closed)
+            indent = indent + tw * (opened - blockend)
+            if indent < 0 then indent = 0 end
+          end
+          editor:SetLineIndentation(line, indent)
+
+          indent = ut and (indent / tw) or indent
+          editor:GotoPos(editor:GetCurrentPos()+indent)
         end
 
       elseif ch == ("("):byte() then
