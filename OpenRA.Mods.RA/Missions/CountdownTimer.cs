@@ -18,30 +18,33 @@ namespace OpenRA.Mods.RA.Missions
 	{
 		public int TicksLeft { get; set; }
 
-		public Action<CountdownTimer> OnExpired { get; set; }
-		public Action<CountdownTimer> OnOneMinuteRemaining { get; set; }
-		public Action<CountdownTimer> OnTwoMinutesRemaining { get; set; }
-		public Action<CountdownTimer> OnThreeMinutesRemaining { get; set; }
-		public Action<CountdownTimer> OnFourMinutesRemaining { get; set; }
-		public Action<CountdownTimer> OnFiveMinutesRemaining { get; set; }
-		public Action<CountdownTimer> OnTenMinutesRemaining { get; set; }
-		public Action<CountdownTimer> OnTwentyMinutesRemaining { get; set; }
-		public Action<CountdownTimer> OnThirtyMinutesRemaining { get; set; }
-		public Action<CountdownTimer> OnFortyMinutesRemaining { get; set; }
+		public event Action<CountdownTimer> OnExpired = t => { };
+		public event Action<CountdownTimer> OnOneMinuteRemaining = t => { };
+		public event Action<CountdownTimer> OnTwoMinutesRemaining = t => { };
+		public event Action<CountdownTimer> OnThreeMinutesRemaining = t => { };
+		public event Action<CountdownTimer> OnFourMinutesRemaining = t => { };
+		public event Action<CountdownTimer> OnFiveMinutesRemaining = t => { };
+		public event Action<CountdownTimer> OnTenMinutesRemaining = t => { };
+		public event Action<CountdownTimer> OnTwentyMinutesRemaining = t => { };
+		public event Action<CountdownTimer> OnThirtyMinutesRemaining = t => { };
+		public event Action<CountdownTimer> OnFortyMinutesRemaining = t => { };
 
-		public CountdownTimer(int ticksLeft, Action<CountdownTimer> onExpired)
+		public CountdownTimer(int ticksLeft, Action<CountdownTimer> onExpired, bool withNotifications)
 		{
 			TicksLeft = ticksLeft;
-			OnExpired = onExpired;
-			OnOneMinuteRemaining = t => Sound.Play("1minr.aud");
-			OnTwoMinutesRemaining = t => Sound.Play("2minr.aud");
-			OnThreeMinutesRemaining = t => Sound.Play("3minr.aud");
-			OnFourMinutesRemaining = t => Sound.Play("4minr.aud");
-			OnFiveMinutesRemaining = t => Sound.Play("5minr.aud");
-			OnTenMinutesRemaining = t => Sound.Play("10minr.aud");
-			OnTwentyMinutesRemaining = t => Sound.Play("20minr.aud");
-			OnThirtyMinutesRemaining = t => Sound.Play("30minr.aud");
-			OnFortyMinutesRemaining = t => Sound.Play("40minr.aud");
+			OnExpired += onExpired;
+			if (withNotifications)
+			{
+				OnOneMinuteRemaining += t => Sound.Play("1minr.aud");
+				OnTwoMinutesRemaining += t => Sound.Play("2minr.aud");
+				OnThreeMinutesRemaining += t => Sound.Play("3minr.aud");
+				OnFourMinutesRemaining += t => Sound.Play("4minr.aud");
+				OnFiveMinutesRemaining += t => Sound.Play("5minr.aud");
+				OnTenMinutesRemaining += t => Sound.Play("10minr.aud");
+				OnTwentyMinutesRemaining += t => Sound.Play("20minr.aud");
+				OnThirtyMinutesRemaining += t => Sound.Play("30minr.aud");
+				OnFortyMinutesRemaining += t => Sound.Play("40minr.aud");
+			}
 		}
 
 		public void Tick()

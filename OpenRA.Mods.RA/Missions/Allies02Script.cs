@@ -401,7 +401,7 @@ namespace OpenRA.Mods.RA.Missions
 		void StartReinforcementsTimer()
 		{
 			Sound.Play("timergo1.aud");
-			reinforcementsTimer = new CountdownTimer(ReinforcementsTicks, ReinforcementsTimerExpired);
+			reinforcementsTimer = new CountdownTimer(ReinforcementsTicks, ReinforcementsTimerExpired, true);
 			reinforcementsTimerWidget = new CountdownTimerWidget(reinforcementsTimer, "Reinforcements arrive in", new float2(Game.viewport.Width * 0.1f, Game.viewport.Height * 0.8f));
 			Ui.Root.AddChild(reinforcementsTimerWidget);
 		}
