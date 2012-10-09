@@ -420,7 +420,7 @@ namespace OpenRA.Mods.RA.Missions
 			reinforcementsTimerWidget = new CountdownTimerWidget(
 				reinforcementsTimer,
 				"Allied reinforcements arrive in: {0}",
-				new float2(Game.viewport.Width * 0.2f, Game.viewport.Height * 0.8f));
+				new float2(Game.viewport.Width * 0.35f, Game.viewport.Height * 0.85f));
 			Ui.Root.AddChild(reinforcementsTimerWidget);
 		}
 
@@ -431,7 +431,7 @@ namespace OpenRA.Mods.RA.Missions
 			sovietReinforcementsTimerWidget = new CountdownTimerWidget(
 				sovietReinforcementsTimer,
 				"Soviet reinforcements arrive in: {0}",
-				new float2(Game.viewport.Width * 0.2f, Game.viewport.Height * 0.85f));
+				new float2(Game.viewport.Width * 0.35f, Game.viewport.Height * 0.9f));
 			Ui.Root.AddChild(sovietReinforcementsTimerWidget);
 		}
 
