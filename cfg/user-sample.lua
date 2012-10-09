@@ -4,7 +4,7 @@ Configuration files are loaded in the following order
 
 1. <application>\config.lua
 2. cfg\user.lua
-3. ~\.zbs\user.lua
+3. ~\.zbstudio\user.lua
 4. -cfg commandline strings
 
 --]]--
@@ -14,10 +14,11 @@ Configuration files are loaded in the following order
 local G = ... -- this now points to the global environment in the script
 local luaspec = G.ide.specs['lua']
 luaspec.exts[2] = "luaz"
-luaspec.keywords[1] = luaspec.keywords[1] .. ' foo'
+luaspec.keywords[1] = luaspec.keywords[1] .. ' foo' -- add 'foo' as keyword
 
 -- change font size to 12
 editor.fontsize = 12 -- this is mapped to ide.config.editor.fontsize
+editor.fontname = "Courier New"
 filehistorylength = 20 -- this is mapped to ide.config.filehistorylength
 
 -- specify full path to love2d executable; this is only needed
