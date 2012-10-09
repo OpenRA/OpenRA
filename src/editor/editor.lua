@@ -192,10 +192,16 @@ function SetDocumentModified(id, modified)
 end
 
 function EditorAutoComplete(editor)
-  if (editor == nil or not editor.spec) then return end
+  if not (editor and editor.spec) then return end
+
+  local pos = editor:GetCurrentPos()
+  -- don't do auto-complete in comments or strings.
+  -- the current position and the previous one have default style (0),
+  -- so we need to check two positions back.
+  local style = pos >= 2 and bit.band(editor:GetStyleAt(pos-2),31) or 0
+  if editor.spec.iscomment[style] or editor.spec.isstring[style] then return end
 
   -- retrieve the current line and get a string to the current cursor position in the line
-  local pos = editor:GetCurrentPos()
   local line = editor:GetCurrentLine()
   local linetx = editor:GetLine(line)
   local linestart = editor:PositionFromLine(line)
