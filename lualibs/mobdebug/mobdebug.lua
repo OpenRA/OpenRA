@@ -1,12 +1,12 @@
 --
--- MobDebug 0.498
+-- MobDebug 0.502
 -- Copyright 2011-12 Paul Kulchenko
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
 --
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.498,
+  _VERSION = 0.502,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = 8171
@@ -23,8 +23,18 @@ local require = require
 local setmetatable = setmetatable
 local string = string
 local tonumber = tonumber
-local mosync = mosync
-local jit = jit
+
+-- if strict.lua is used, then need to avoid referencing some global
+-- variables, as they can be undefined;
+-- use rawget to to avoid complaints from strict.lua at run-time.
+-- it's safe to do the initialization here as all these variables
+-- should get defined values (of any) before the debugging starts.
+-- there is also global 'wx' variable, which is checked as part of
+-- the debug loop as 'wx' can be loaded at any time during debugging.
+local genv = _G or _ENV
+local jit = rawget(genv, "jit")
+local mosync = rawget(genv, "mosync")
+local MOAICoroutine = rawget(genv, "MOAICoroutine")
 
 -- check for OS and convert file names to lower case on windows
 -- (its file system is case insensitive, but case preserving), as setting a
@@ -168,6 +178,12 @@ end
 if mosync and mosync.EventMonitor then
   mosync.EventMonitor.RunEventLoop = function(self) end
 end
+
+-- turn jit off based on Mike Pall's comment in this discussion:
+-- http://www.freelists.org/post/luajit/Debug-hooks-and-JIT,2
+-- "You need to turn it off at the start if you plan to receive
+-- reliable hook calls at any later point in time."
+if jit and jit.off then jit.off() end
 
 local socket = mosync and socketMobileLua() or (require "socket")
 
@@ -582,6 +598,7 @@ local function debugger_loop(sfile, sline)
 
   while true do
     local line, err
+    local wx = rawget(genv, "wx") -- use rawread to make strict.lua happy
     if wx and server.settimeout then server:settimeout(0.1) end
     while true do
       line, err = server:receive()
