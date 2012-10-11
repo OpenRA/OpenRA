@@ -441,6 +441,14 @@ function CreateEditor()
           and editor.spec.isdecindent and editor.spec.isincindent then
             local closed, blockend = editor.spec.isdecindent(linedone)
             local opened = editor.spec.isincindent(linedone)
+
+            -- if the current block is already indented, skip reverse indenting
+            if (line > 1) and (closed > 0 or blockend > 0)
+            and editor:GetLineIndentation(line-2) > indent then
+              -- adjust opened first; this is needed when use ENTER after })
+              if blockend == 0 then opened = opened + closed end
+              closed, blockend = 0, 0
+            end
             editor:SetLineIndentation(line-1, indent - tw * closed)
             indent = indent + tw * (opened - blockend)
             if indent < 0 then indent = 0 end
