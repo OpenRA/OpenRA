@@ -27,13 +27,13 @@ local function findDocumentToReuse()
   return editor
 end
 
-function LoadFile(filePath, editor, file_must_exist)
+function LoadFile(filePath, editor, file_must_exist, skipselection)
   -- prevent files from being reopened again
   if (not editor) then
     local filePath = wx.wxFileName(filePath)
     for id, doc in pairs(openDocuments) do
       if doc.filePath and filePath:SameAs(wx.wxFileName(doc.filePath)) then
-        notebook:SetSelection(doc.index)
+        if not skipselection then notebook:SetSelection(doc.index) end
         return doc.editor
       end
     end
@@ -86,7 +86,7 @@ function LoadFile(filePath, editor, file_must_exist)
 
   -- activate the editor; this is needed for those cases when the editor is
   -- created from some other element, for example, from a project tree.
-  SetEditorSelection()
+  if not skipselection then SetEditorSelection() end
 
   return editor
 end
@@ -478,7 +478,7 @@ end
 
 function SetOpenFiles(nametab,params)
   for i,doc in ipairs(nametab) do
-    local editor = LoadFile(doc.filename,nil,true)
+    local editor = LoadFile(doc.filename,nil,true,true) -- skip selection
     if editor then
       editor:SetCurrentPos(doc.cursorpos or 0)
       editor:SetSelectionStart(doc.cursorpos or 0)
@@ -507,10 +507,7 @@ function ShowFullScreen(setFullScreen)
   pcall(function() frame:ShowFullScreen(setFullScreen) end)
 end
 
-local function restoreFilesAndInterpreter(files, params)
-  if not files then return end
-  local alreadyopen = notebook:GetPageCount()
-
+local function restoreFiles(files)
   -- open files, but ignore some functions that are not needed;
   -- as we may be opening multiple files, it doesn't make sense to
   -- select editor and do some other similar work after each file.
@@ -519,15 +516,10 @@ local function restoreFilesAndInterpreter(files, params)
   setmetatable(genv, {__index = _G})
   local env = getfenv(func)
   setfenv(func, genv)
-  SetOpenFiles(files, params)
+  -- provide fake index so that it doesn't activate it as the index may be not
+  -- quite correct if some of the existing files are already open in the IDE.
+  SetOpenFiles(files, {index = #files + notebook:GetPageCount()})
   setfenv(func, env)
-
-  if params.interpreter and ide.interpreter.fname ~= params.interpreter then
-    ProjectSetInterpreter(params.interpreter) -- set the interpreter
-  end
-  if notebook:GetPageCount() > 0 then
-    SetEditorSelection((params.index or 0) + alreadyopen)
-  end
 end
 
 function ProjectConfig(dir, config)
@@ -542,13 +534,18 @@ function StoreRestoreProjectTabs(curdir, newdir)
   local current, closing, restore = notebook:GetSelection(), 0, false
 
   if curdir and #curdir > 0 then
-    local lowdir = q(win and string.lower(curdir) or curdir)
-    local projdocs = {}
+    local lowcurdir = q(win and string.lower(curdir) or curdir)
+    local lownewdir = q(win and string.lower(newdir) or newdir)
+    local projdocs, closdocs = {}, {}
     for _, document in ipairs(GetOpenFiles()) do
       local dpath = win and string.lower(document.filename) or document.filename
-      if dpath:find("^"..lowdir) then
+      if dpath:find("^"..lowcurdir) then
         table.insert(projdocs, document)
         closing = closing + (document.id < current and 1 or 0)
+        -- only close if the file is not in new project as it would be reopened
+        if not dpath:find("^"..lownewdir) then
+          table.insert(closdocs, document)
+        end
       elseif document.id == current then restore = true end
     end
 
@@ -562,13 +559,25 @@ function StoreRestoreProjectTabs(curdir, newdir)
     -- close pages for those files that match the project in the reverse order
     -- (as ids shift when pages are closed)
     notebook:Freeze() -- don't animate closing tabs
-    for i = #projdocs, 1, -1 do ClosePage(projdocs[i].id) end
+    for i = #closdocs, 1, -1 do ClosePage(closdocs[i].id) end
     notebook:Thaw()
   end
 
-  restoreFilesAndInterpreter(ProjectConfig(newdir))
-  if restore and current >= 0 then notebook:SetSelection(current) end
-  if notebook:GetPageCount() == 0 then NewFile() end
+  local files, params = ProjectConfig(newdir)
+  if files then restoreFiles(files) end
+
+  if params.interpreter and ide.interpreter.fname ~= params.interpreter then
+    ProjectSetInterpreter(params.interpreter) -- set the interpreter
+  end
+
+  local index = params.index
+  if notebook:GetPageCount() == 0 then NewFile()
+  elseif restore and current >= 0 then notebook:SetSelection(current)
+  elseif index and index >= 0 and files[index+1] then
+    -- move the editor tab to the front with the file from the config
+    LoadFile(files[index+1].filename, nil, true)
+    SetEditorSelection() -- activate the editor in the active tab
+  end
 
   -- remove current config as it may change; the current configuration is
   -- stored with the general config.
