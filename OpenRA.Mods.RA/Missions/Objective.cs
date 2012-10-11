@@ -31,9 +31,11 @@ namespace OpenRA.Mods.RA.Missions
 	public enum ObjectiveType { Primary, Secondary }
 	public enum ObjectiveStatus { Inactive, InProgress, Completed, Failed }
 
+	public delegate void ObjectivesUpdatedEventHandler(bool notify);
+
 	public interface IHasObjectives
 	{
-		event Action OnObjectivesUpdated;
+		event ObjectivesUpdatedEventHandler OnObjectivesUpdated;
 		IEnumerable<Objective> Objectives { get; }
 	}
 

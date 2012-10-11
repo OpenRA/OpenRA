@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA.Missions
 
 	class Allies02Script : IHasObjectives, IWorldLoaded, ITick
 	{
-		public event Action OnObjectivesUpdated;
+		public event ObjectivesUpdatedEventHandler OnObjectivesUpdated;
 
 		public IEnumerable<Objective> Objectives { get { return objectives.Values; } }
 
@@ -37,18 +37,23 @@ namespace OpenRA.Mods.RA.Missions
 			{ FindEinsteinID, new Objective(ObjectiveType.Primary, FindEinstein, ObjectiveStatus.InProgress) },
 			{ DestroySamSitesID, new Objective(ObjectiveType.Primary, DestroySamSites, ObjectiveStatus.InProgress) },
 			{ ExtractEinsteinID, new Objective(ObjectiveType.Primary, ExtractEinstein, ObjectiveStatus.Inactive) },
-			{ MaintainPresenceID, new Objective(ObjectiveType.Primary, MaintainPresence, ObjectiveStatus.InProgress) }
+			{ MaintainPresenceID, new Objective(ObjectiveType.Primary, MaintainPresence, ObjectiveStatus.InProgress) },
+			{ FewDeathsID, new Objective(ObjectiveType.Secondary, "", ObjectiveStatus.InProgress) }
 		};
 
 		const int FindEinsteinID = 0;
 		const int DestroySamSitesID = 1;
 		const int ExtractEinsteinID = 2;
 		const int MaintainPresenceID = 3;
+		const int FewDeathsID = 4;
 
 		const string FindEinstein = "Find Einstein's crashed helicopter. Tanya must survive.";
 		const string DestroySamSites = "Destroy the SAM sites. Tanya must survive.";
 		const string ExtractEinstein = "Wait for the helicopter and extract Einstein. Tanya and Einstein must survive.";
 		const string MaintainPresence = "Maintain an Allied presence in the area. Reinforcements will arrive soon.";
+		const string FewDeathsTemplate = "Lose fewer than {0}/100 units.";
+
+		const int DeathsThreshold = 100;
 
 		Actor sam1;
 		Actor sam2;
@@ -232,12 +237,19 @@ namespace OpenRA.Mods.RA.Missions
 				BuildSovietUnits();
 				ManageSovietUnits();
 			}
+			objectives[FewDeathsID].Text = FewDeathsTemplate.F(allies1.Deaths + allies2.Deaths);
+			OnObjectivesUpdated(false);
+			if (allies1.Deaths + allies2.Deaths > DeathsThreshold && objectives[FewDeathsID].Status == ObjectiveStatus.InProgress)
+			{
+				objectives[FewDeathsID].Status = ObjectiveStatus.Failed;
+				OnObjectivesUpdated(true);
+			}
 			if (objectives[FindEinsteinID].Status == ObjectiveStatus.InProgress)
 			{
 				if (AlliesNearTown())
 				{
 					objectives[FindEinsteinID].Status = ObjectiveStatus.Completed;
-					OnObjectivesUpdated();
+					OnObjectivesUpdated(true);
 					TransferTownUnitsToAllies();
 					SovietsAttackTown();
 				}
@@ -248,7 +260,7 @@ namespace OpenRA.Mods.RA.Missions
 				{
 					objectives[DestroySamSitesID].Status = ObjectiveStatus.Completed;
 					objectives[ExtractEinsteinID].Status = ObjectiveStatus.InProgress;
-					OnObjectivesUpdated();
+					OnObjectivesUpdated(true);
 					SpawnSignalFlare();
 					Sound.Play("flaren1.aud");
 					ExtractEinsteinAtLZ();
@@ -260,14 +272,18 @@ namespace OpenRA.Mods.RA.Missions
 				{
 					objectives[ExtractEinsteinID].Status = ObjectiveStatus.Failed;
 					objectives[MaintainPresenceID].Status = ObjectiveStatus.Failed;
-					OnObjectivesUpdated();
+					OnObjectivesUpdated(true);
 					MissionFailed("The extraction helicopter was destroyed.");
 				}
 				else if (!world.Map.IsInMap(einsteinChinook.Location) && einsteinChinook.Trait<Cargo>().Passengers.Contains(einstein))
 				{
 					objectives[ExtractEinsteinID].Status = ObjectiveStatus.Completed;
 					objectives[MaintainPresenceID].Status = ObjectiveStatus.Completed;
-					OnObjectivesUpdated();
+					if (objectives[FewDeathsID].Status == ObjectiveStatus.InProgress)
+					{
+						objectives[FewDeathsID].Status = ObjectiveStatus.Completed;
+					}
+					OnObjectivesUpdated(true);
 					MissionAccomplished("Einstein was rescued.");
 				}
 			}
@@ -284,7 +300,7 @@ namespace OpenRA.Mods.RA.Missions
 				if (!world.FindAliveCombatantActorsInCircle(allies2BasePoint.CenterLocation, 20).Any(a => a.HasTrait<Building>() && !a.HasTrait<Wall>() && a.Owner == allies2))
 				{
 					objectives[MaintainPresenceID].Status = ObjectiveStatus.Failed;
-					OnObjectivesUpdated();
+					OnObjectivesUpdated(true);
 					MissionFailed("The Allied reinforcements have been defeated.");
 				}
 			});
@@ -582,7 +598,6 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				Game.MoveViewport(allies2BasePoint.Location.ToFloat2());
 			}
-			OnObjectivesUpdated();
 			PlayMusic();
 			Game.ConnectionStateChanged += StopMusic;
 		}

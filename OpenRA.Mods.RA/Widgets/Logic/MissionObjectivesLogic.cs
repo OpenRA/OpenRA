@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			objectivesButton.OnClick += () => objectivesButton.Highlighted = false;
 
 			objectives.OnObjectivesUpdated += UpdateObjectives;
-			UpdateObjectives();
+			UpdateObjectives(true);
 			Game.ConnectionStateChanged += RemoveHandlers;
 		}
 
@@ -53,9 +53,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			}
 		}
 
-		public void UpdateObjectives()
+		public void UpdateObjectives(bool notify)
 		{
-			objectivesButton.Highlighted = true;
+			if (notify)
+			{
+				objectivesButton.Highlighted = true;
+			}
 			primaryPanel.RemoveChildren();
 			secondaryPanel.RemoveChildren();
 			foreach (var o in objectives.Objectives.Where(o => o.Status != ObjectiveStatus.Inactive))
