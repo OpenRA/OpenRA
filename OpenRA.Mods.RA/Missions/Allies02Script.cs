@@ -239,7 +239,7 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			objectives[FewDeathsID].Text = FewDeathsTemplate.F(allies1.Deaths + allies2.Deaths);
 			OnObjectivesUpdated(false);
-			if (allies1.Deaths + allies2.Deaths > DeathsThreshold && objectives[FewDeathsID].Status == ObjectiveStatus.InProgress)
+			if (allies1.Deaths + allies2.Deaths >= DeathsThreshold && objectives[FewDeathsID].Status == ObjectiveStatus.InProgress)
 			{
 				objectives[FewDeathsID].Status = ObjectiveStatus.Failed;
 				OnObjectivesUpdated(true);
