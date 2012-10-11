@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA.Missions
 			{ FindEinsteinID, new Objective(ObjectiveType.Primary, FindEinstein, ObjectiveStatus.InProgress) },
 			{ DestroySamSitesID, new Objective(ObjectiveType.Primary, DestroySamSites, ObjectiveStatus.InProgress) },
 			{ ExtractEinsteinID, new Objective(ObjectiveType.Primary, ExtractEinstein, ObjectiveStatus.Inactive) },
-			{ MaintainPresenceID, new Objective(ObjectiveType.Secondary, MaintainPresence, ObjectiveStatus.InProgress) }
+			{ MaintainPresenceID, new Objective(ObjectiveType.Primary, MaintainPresence, ObjectiveStatus.InProgress) }
 		};
 
 		const int FindEinsteinID = 0;
