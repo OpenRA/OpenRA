@@ -378,8 +378,8 @@ Actors:
 	Actor330: oilb
 		Location: 65,31
 		Owner: Neutral
-	Actor570: t02
-		Location: 23,73
+	Actor360: t16
+		Location: 21,81
 		Owner: Neutral
 	Actor114: fenc
 		Location: 100,98
@@ -456,8 +456,8 @@ Actors:
 	Actor73: e1
 		Location: 72,109
 		Owner: Soviets
-	Actor179: tc01
-		Location: 22,76
+	Actor361: tc03
+		Location: 27,80
 		Owner: Neutral
 	Actor387: brik
 		Location: 16,43
@@ -537,9 +537,9 @@ Actors:
 	Actor53: e1
 		Location: 109,89
 		Owner: Allies1
-	Actor148: oilb
-		Location: 45,88
-		Owner: Neutral
+	Actor896: e1
+		Location: 25,80
+		Owner: Soviets
 	Actor182: tc02
 		Location: 53,35
 		Owner: Neutral
@@ -1298,9 +1298,6 @@ Actors:
 	Actor206: dome
 		Location: 38,100
 		Owner: Allies2
-	Actor435: oilb
-		Location: 45,85
-		Owner: Neutral
 	Actor204: apwr
 		Location: 37,107
 		Owner: Allies2
@@ -1493,9 +1490,6 @@ Actors:
 	Actor448: e2
 		Location: 54,22
 		Owner: Soviets
-	Actor450: t05
-		Location: 47,84
-		Owner: Neutral
 	Actor468: fenc
 		Location: 29,93
 		Owner: Allies2
@@ -1615,24 +1609,21 @@ Actors:
 	Actor569: e1
 		Location: 31,56
 		Owner: Soviets
-	Actor139: t01
-		Location: 23,72
+	Actor873: brl3
+		Location: 45,79
 		Owner: Neutral
-	Actor357: barb
-		Location: 30,78
-		Owner: Soviets
-	Actor571: t14
-		Location: 26,79
+	Actor179: t16
+		Location: 24,75
 		Owner: Neutral
-	Actor358: barb
-		Location: 31,78
-		Owner: Soviets
-	Actor261: barb
-		Location: 29,78
-		Owner: Soviets
-	Actor359: barb
-		Location: 32,78
-		Owner: Soviets
+	Actor139: tc02
+		Location: 20,72
+		Owner: Neutral
+	Actor570: oilb
+		Location: 43,80
+		Owner: Neutral
+	Actor885: t12
+		Location: 40,77
+		Owner: Neutral
 	Actor584: tc04
 		Location: 52,70
 		Owner: Neutral
@@ -2125,14 +2116,14 @@ Actors:
 	Actor40: tran.husk1
 		Location: 69,87
 		Owner: Allies1
-	Actor360: barb
-		Location: 32,77
-		Owner: Soviets
-	Actor361: barb
-		Location: 32,76
-		Owner: Soviets
+	Actor884: barl
+		Location: 45,80
+		Owner: Neutral
+	Actor357: t05
+		Location: 26,79
+		Owner: Neutral
 	Actor575: tc05
-		Location: 17,88
+		Location: 16,89
 		Owner: Neutral
 	Actor573: 2tnk
 		Location: 34,92
@@ -2141,8 +2132,8 @@ Actors:
 	Actor577: tc02
 		Location: 81,87
 		Owner: Neutral
-	Actor576: tc04
-		Location: 15,89
+	Actor576: tc01
+		Location: 15,90
 		Owner: Neutral
 	Actor574: 2tnk
 		Location: 35,92
@@ -2429,8 +2420,8 @@ Actors:
 	Actor777: fenc
 		Location: 99,56
 		Owner: Soviets
-	Actor778: t02
-		Location: 27,75
+	Actor359: t02
+		Location: 41,81
 		Owner: Neutral
 	Actor779: brik
 		Location: 24,38
@@ -2711,6 +2702,169 @@ Actors:
 	Actor857: brik
 		Location: 45,38
 		Owner: Soviets
+	Actor253: e1
+		Location: 21,90
+		Owner: Allies2
+	Actor255: e1
+		Location: 23,89
+		Owner: Allies2
+	Actor270: e1
+		Location: 27,90
+		Owner: Allies2
+	Actor268: e1
+		Location: 33,90
+		Owner: Allies2
+	Actor269: e1
+		Location: 34,90
+		Owner: Allies2
+	Actor267: jeep
+		Location: 25,89
+		Owner: Allies2
+		Facing: 0
+	Actor882: barl
+		Location: 46,81
+		Owner: Neutral
+	Actor871: brl3
+		Location: 44,82
+		Owner: Neutral
+	Actor874: brl3
+		Location: 34,78
+		Owner: Neutral
+	Actor872: brl3
+		Location: 39,81
+		Owner: Neutral
+	Actor870: brl3
+		Location: 29,79
+		Owner: Neutral
+	Actor450: oilb
+		Location: 40,80
+		Owner: Neutral
+	Actor148: oilb
+		Location: 30,77
+		Owner: Neutral
+	Actor435: oilb
+		Location: 27,77
+		Owner: Neutral
+	Actor868: t10
+		Location: 21,77
+		Owner: Neutral
+	Actor358: t16
+		Location: 40,78
+		Owner: Neutral
+	Actor261: tc01
+		Location: 42,77
+		Owner: Neutral
+	Actor778: t05
+		Location: 48,78
+		Owner: Neutral
+	Actor831: t15
+		Location: 47,82
+		Owner: Neutral
+	Actor899: e1
+		Location: 37,79
+		Owner: Soviets
+	Actor865: t08
+		Location: 24,110
+		Owner: Neutral
+	Actor864: t01
+		Location: 33,109
+		Owner: Neutral
+	Actor863: t05
+		Location: 38,97
+		Owner: Neutral
+	Actor860: tc04
+		Location: 18,78
+		Owner: Neutral
+	Actor862: t07
+		Location: 41,71
+		Owner: Neutral
+	Actor861: tc04
+		Location: 29,73
+		Owner: Neutral
+	Actor867: t01
+		Location: 16,68
+		Owner: Neutral
+	Actor909: oilb
+		Location: 45,86
+		Owner: Neutral
+	Actor883: barl
+		Location: 44,79
+		Owner: Neutral
+	Actor905: v01
+		Location: 20,74
+		Owner: Neutral
+	Actor901: barl
+		Location: 39,80
+		Owner: Neutral
+	Actor888: barl
+		Location: 28,79
+		Owner: Neutral
+	Actor881: barl
+		Location: 43,82
+		Owner: Neutral
+	Actor894: barl
+		Location: 30,75
+		Owner: Soviets
+	Actor891: barl
+		Location: 31,77
+		Owner: Neutral
+	Actor897: barl
+		Location: 25,79
+		Owner: Neutral
+	Actor893: e2
+		Location: 30,81
+		Owner: Soviets
+	Actor878: t15
+		Location: 34,80
+		Owner: Neutral
+	Actor879: barl
+		Location: 40,82
+		Owner: Neutral
+	Actor869: brl3
+		Location: 31,76
+		Owner: Neutral
+	Actor886: barl
+		Location: 33,78
+		Owner: Neutral
+	Actor866: e2
+		Location: 38,77
+		Owner: Soviets
+	Actor859: brl3
+		Location: 25,78
+		Owner: Neutral
+	Actor898: barl
+		Location: 26,77
+		Owner: Neutral
+	Actor907: e2
+		Location: 33,77
+		Owner: Soviets
+	Actor906: v03
+		Location: 16,72
+		Owner: Neutral
+	Actor914: brl3
+		Location: 44,86
+		Owner: Neutral
+	Actor911: tc03
+		Location: 15,92
+		Owner: Neutral
+	Actor912: oilb
+		Location: 45,89
+		Owner: Neutral
+	Actor908: t16
+		Location: 16,91
+		Owner: Neutral
+	Actor919: barl
+		Location: 44,89
+		Owner: Neutral
+	Actor913: brl3
+		Location: 44,91
+		Owner: Neutral
+	Actor922: barl
+		Location: 47,86
+		Owner: Neutral
+	Actor923: barl
+		Location: 47,87
+		Owner: Neutral
 
 Smudges:
 

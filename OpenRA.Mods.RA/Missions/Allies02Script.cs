@@ -94,18 +94,14 @@ namespace OpenRA.Mods.RA.Missions
 
 		CountdownTimer reinforcementsTimer;
 		CountdownTimerWidget reinforcementsTimerWidget;
-		CountdownTimer sovietReinforcementsTimer;
-		CountdownTimerWidget sovietReinforcementsTimerWidget;
 
 		List<Actor> sovietReinforcementsUnits = new List<Actor>();
 
 		const string InfantryQueueName = "Infantry";
 		const string VehicleQueueName = "Vehicle";
-		readonly List<string> sovietInfantry = new List<string> { "e1", "e2", "e3" };
-		readonly List<string> sovietVehicles = new List<string> { "3tnk" };
-		static readonly string[] SovietVehicleAdditions = { "v2rl" };
+		static readonly string[] sovietInfantry = { "e1", "e2", "e3" };
+		static readonly string[] sovietVehicles = { "3tnk", "v2rl" };
 		const int SovietGroupSize = 8;
-		const int SovietVehicleAdditionsTicks = 1500 * 4;
 		const int SovietHelperCash = 2000;
 
 		const int ReinforcementsTicks = 1500 * 12;
@@ -138,7 +134,7 @@ namespace OpenRA.Mods.RA.Missions
 		static readonly string[] Badger2Passengers = { "e1", "e1", "e1", "e2", "e2" };
 		static readonly string[] Badger3Passengers = { "e1", "e1", "e1", "e2", "e2" };
 
-		const int TanksTicks = 1500 * 8;
+		const int TanksTicks = 1500 * 11;
 		static readonly string[] Tanks = { "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk" };
 
 		const string SignalFlareName = "flare";
@@ -196,10 +192,8 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				InitializeSovietFactories();
 				StartReinforcementsTimer();
-				StartSovietReinforcementsTimer();
 			}
 			reinforcementsTimer.Tick();
-			sovietReinforcementsTimer.Tick();
 			if (world.FrameNumber == ParatroopersTicks)
 			{
 				MissionUtils.Paradrop(world, soviets, Badger1Passengers, badgerEntryPoint1.Location, badgerDropPoint1.Location);
@@ -219,9 +213,9 @@ namespace OpenRA.Mods.RA.Missions
 				MissionUtils.Parabomb(world, soviets, badgerEntryPoint2.Location, parabombPoint1.Location);
 				MissionUtils.Parabomb(world, soviets, badgerEntryPoint2.Location + new CVec(0, 3), parabombPoint2.Location);
 			}
-			if (world.FrameNumber == SovietVehicleAdditionsTicks)
+			if (world.FrameNumber == SovietReinforcementsTicks)
 			{
-				sovietVehicles.AddRange(SovietVehicleAdditions);
+				SendSovietReinforcements();
 			}
 			if (yak == null || (yak != null && !yak.IsDead() && (yak.GetCurrentActivity() is FlyCircle || yak.IsIdle)))
 			{
@@ -365,7 +359,6 @@ namespace OpenRA.Mods.RA.Missions
 				}
 			}
 			var idleSovietUnits = world.FindAliveCombatantActorsInCircle(allies2BasePoint.CenterLocation, 20).Where(a => a.Owner == soviets && a.IsIdle && a.HasTrait<IMove>());
-			idleSovietUnits = idleSovietUnits.Union(sovietReinforcementsUnits.Where(a => !a.IsDead() && a.IsIdle && a.HasTrait<IMove>()));
 			foreach (var unit in idleSovietUnits)
 			{
 				var closestAlliedBuilding = ClosestAlliedBuilding(unit, 40);
@@ -416,30 +409,13 @@ namespace OpenRA.Mods.RA.Missions
 
 		void StartReinforcementsTimer()
 		{
-			reinforcementsTimer = new CountdownTimer(ReinforcementsTicks, ReinforcementsTimerExpired, false);
+			Sound.Play("timergo1.aud");
+			reinforcementsTimer = new CountdownTimer(ReinforcementsTicks, ReinforcementsTimerExpired, true);
 			reinforcementsTimerWidget = new CountdownTimerWidget(
 				reinforcementsTimer,
 				"Allied reinforcements arrive in: {0}",
-				new float2(Game.viewport.Width * 0.35f, Game.viewport.Height * 0.85f));
-			Ui.Root.AddChild(reinforcementsTimerWidget);
-		}
-
-		void StartSovietReinforcementsTimer()
-		{
-			Sound.Play("timergo1.aud");
-			sovietReinforcementsTimer = new CountdownTimer(SovietReinforcementsTicks, SovietReinforcementsTimerExpired, true);
-			sovietReinforcementsTimerWidget = new CountdownTimerWidget(
-				sovietReinforcementsTimer,
-				"Soviet reinforcements arrive in: {0}",
 				new float2(Game.viewport.Width * 0.35f, Game.viewport.Height * 0.9f));
-			Ui.Root.AddChild(sovietReinforcementsTimerWidget);
-		}
-
-		void SovietReinforcementsTimerExpired(CountdownTimer countdownTimer)
-		{
-			sovietReinforcementsTimerWidget.Visible = false;
-			SendSovietReinforcements();
-			Sound.Play("sovrein1.aud");
+			Ui.Root.AddChild(reinforcementsTimerWidget);
 		}
 
 		void SendSovietReinforcements()
@@ -454,7 +430,7 @@ namespace OpenRA.Mods.RA.Missions
 						new FacingInit(Util.GetFacing(allies2BasePoint.Location - entryPoint.Location, 0)),
 						new OwnerInit(soviets)
 					});
-					sovietReinforcementsUnits.Add(u);
+					u.QueueActivity(new Move.Move(sovietRallyPoint.Location, 3));
 				}
 			}
 		}
@@ -531,7 +507,8 @@ namespace OpenRA.Mods.RA.Missions
 
 		bool AlliesNearTown()
 		{
-			return world.FindAliveCombatantActorsInCircle(townPoint.CenterLocation, AlliedTownTransferRange).Where(a => a.HasTrait<IMove>()).Any(a => a.Owner == allies1);
+			return world.FindAliveCombatantActorsInCircle(townPoint.CenterLocation, AlliedTownTransferRange)
+				.Any(a => a.Owner == allies1 && a.HasTrait<IMove>());
 		}
 
 		void TransferTownUnitsToAllies()
