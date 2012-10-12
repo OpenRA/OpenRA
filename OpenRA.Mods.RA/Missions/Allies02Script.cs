@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA.Missions
 		const string DestroySamSites = "Destroy the SAM sites. Tanya must survive.";
 		const string ExtractEinstein = "Wait for the helicopter and extract Einstein. Tanya and Einstein must survive.";
 		const string MaintainPresence = "Maintain an Allied presence in the area. Reinforcements will arrive soon.";
-		const string FewDeathsTemplate = "Lose fewer than {0}/100 units.";
+		const string FewDeathsTemplate = "Lose fewer than {0}/{1} units.";
 
 		const int DeathsThreshold = 100;
 
@@ -237,13 +237,7 @@ namespace OpenRA.Mods.RA.Missions
 				BuildSovietUnits();
 				ManageSovietUnits();
 			}
-			objectives[FewDeathsID].Text = FewDeathsTemplate.F(allies1.Deaths + allies2.Deaths);
-			OnObjectivesUpdated(false);
-			if (allies1.Deaths + allies2.Deaths >= DeathsThreshold && objectives[FewDeathsID].Status == ObjectiveStatus.InProgress)
-			{
-				objectives[FewDeathsID].Status = ObjectiveStatus.Failed;
-				OnObjectivesUpdated(true);
-			}
+			UpdateDeaths();
 			if (objectives[FindEinsteinID].Status == ObjectiveStatus.InProgress)
 			{
 				if (AlliesNearTown())
@@ -304,6 +298,18 @@ namespace OpenRA.Mods.RA.Missions
 					MissionFailed("The Allied reinforcements have been defeated.");
 				}
 			});
+		}
+
+		void UpdateDeaths()
+		{
+			var unitDeaths = allies1.Deaths + allies2.Deaths;
+			objectives[FewDeathsID].Text = FewDeathsTemplate.F(unitDeaths, DeathsThreshold);
+			OnObjectivesUpdated(false);
+			if (unitDeaths >= DeathsThreshold && objectives[FewDeathsID].Status == ObjectiveStatus.InProgress)
+			{
+				objectives[FewDeathsID].Status = ObjectiveStatus.Failed;
+				OnObjectivesUpdated(true);
+			}
 		}
 
 		void YakStrafe(IEnumerable<Actor> candidates)
