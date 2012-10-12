@@ -254,7 +254,6 @@
     <Compile Include="Orders\PlaceBuildingOrderGenerator.cs" />
     <Compile Include="Orders\PowerDownOrderGenerator.cs" />
     <Compile Include="Orders\RepairOrderGenerator.cs" />
-    <Compile Include="Orders\SetChronoTankDestination.cs" />
     <Compile Include="Orders\UnitOrderTargeter.cs" />
     <Compile Include="OreRefinery.cs" />
     <Compile Include="PaletteFromCurrentTileset.cs" />

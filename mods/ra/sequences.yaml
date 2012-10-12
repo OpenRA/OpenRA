@@ -2273,3 +2273,8 @@ dtrk:
 	idle:
 		Start: 0
 		Facings: 32
+
+ctnk:
+	idle:
+		Start: 0
+		Facings: 32
