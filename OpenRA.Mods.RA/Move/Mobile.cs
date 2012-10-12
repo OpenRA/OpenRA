@@ -229,15 +229,7 @@ namespace OpenRA.Mods.RA.Move
 
 		public CPos NearestMoveableCell(CPos target, int minRange, int maxRange)
 		{
-			if (CanEnterCell(target))
-				return target;
-
-			foreach (var tile in self.World.FindTilesInCircle(target, maxRange))
-				if (CanEnterCell(tile))
-					return tile;
-
-			// Couldn't find a cell
-			return target;
+			return NearestCell(target, CanEnterCell, minRange, maxRange);
 		}
 
 		public CPos NearestCell(CPos target, Func<CPos, bool> check, int minRange, int maxRange)
