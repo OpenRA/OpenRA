@@ -104,8 +104,10 @@ namespace OpenRA.Mods.RA.Missions
 
 		const string InfantryQueueName = "Infantry";
 		const string VehicleQueueName = "Vehicle";
-		static readonly string[] sovietInfantry = { "e1", "e2", "e3" };
-		static readonly string[] sovietVehicles = { "3tnk", "v2rl" };
+		static readonly string[] SovietInfantry = { "e1", "e2", "e3" };
+		static readonly string[] SovietVehicles1 = { "3tnk" };
+		static readonly string[] SovietVehicles2 = { "3tnk", "v2rl" };
+		const int SovietVehiclesUpgradeTicks = 1500 * 4;
 		const int SovietGroupSize = 8;
 		const int SovietHelperCash = 2000;
 
@@ -353,11 +355,12 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			if (!sovietBarracks.Destroyed)
 			{
-				BuildSovietUnit(InfantryQueueName, sovietInfantry.Random(world.SharedRandom));
+				BuildSovietUnit(InfantryQueueName, SovietInfantry.Random(world.SharedRandom));
 			}
 			if (!sovietWarFactory.Destroyed)
 			{
-				BuildSovietUnit(VehicleQueueName, sovietVehicles.Random(world.SharedRandom));
+				var vehicles = world.FrameNumber >= SovietVehiclesUpgradeTicks ? SovietVehicles2 : SovietVehicles1;
+				BuildSovietUnit(VehicleQueueName, vehicles.Random(world.SharedRandom));
 			}
 		}
 
