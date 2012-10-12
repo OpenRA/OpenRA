@@ -58,7 +58,6 @@ namespace OpenRA.Mods.RA
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			var movement = self.TraitOrDefault<IMove>();
 			if (order.OrderString == "ChronoshiftJump")
 			{
 				if (CanJumpTo(order.TargetLocation))
