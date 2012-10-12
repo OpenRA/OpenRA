@@ -165,13 +165,12 @@ namespace OpenRA.Mods.RA.AI
 		{
 			var bi = Rules.Info[actorType].Traits.Get<BuildingInfo>();
 
-			for (var k = 0; k < MaxBaseDistance; k++)
-				foreach (var t in world.FindTilesInCircle(baseCenter, k))
-					if (world.CanPlaceBuilding(actorType, bi, t, null))
-						if (bi.IsCloseEnoughToBase(world, p, actorType, t))
-							if (NoBuildingsUnder(Util.ExpandFootprint(
-								FootprintUtils.Tiles(actorType, bi, t), false)))
-								return t;
+			foreach (var t in world.FindTilesInCircle(baseCenter, MaxBaseDistance))
+				if (world.CanPlaceBuilding(actorType, bi, t, null))
+					if (bi.IsCloseEnoughToBase(world, p, actorType, t))
+						if (NoBuildingsUnder(Util.ExpandFootprint(
+							FootprintUtils.Tiles(actorType, bi, t), false)))
+							return t;
 
 			return null;		// i don't know where to put it.
 		}
