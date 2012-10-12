@@ -499,7 +499,7 @@ MammothTusk:
 		ContrailLength: 10
 		Inaccuracy: 3
 		Image: DRAGON
-		ROT: 5
+		ROT: 10
 		RangeLimit: 40
 	Warhead:
 		Spread: 6
