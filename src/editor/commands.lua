@@ -566,11 +566,11 @@ function StoreRestoreProjectTabs(curdir, newdir)
   local files, params = ProjectConfig(newdir)
   if files then restoreFiles(files) end
 
-  if params.interpreter and ide.interpreter.fname ~= params.interpreter then
+  if params and params.interpreter and ide.interpreter.fname ~= params.interpreter then
     ProjectSetInterpreter(params.interpreter) -- set the interpreter
   end
 
-  local index = params.index
+  local index = params and params.index
   if notebook:GetPageCount() == 0 then NewFile()
   elseif restore and current >= 0 then notebook:SetSelection(current)
   elseif index and index >= 0 and files[index+1] then
