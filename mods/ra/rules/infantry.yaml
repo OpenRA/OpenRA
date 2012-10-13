@@ -242,7 +242,7 @@ E8:
 		Cost: 1800
 	Tooltip:
 		Name: Volkov
-		Description: Elite commando infantry, armed with \nmodular cannons and grenade launcher.\n  Strong vs Vehicles, Infantry\n  Weak vs Air Units
+		Description: Elite commando infantry, armed with \nmodular cannons and grenade launcher.\n  Strong vs Vehicles, Infantry\n  Weak vs Aircraft
 	Selectable:
 		Voice: VolkovVoice
 		Bounds: 12,17,0,-9
