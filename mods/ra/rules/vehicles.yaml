@@ -584,7 +584,7 @@ DTRK:
 		Cost: 1500
 	Tooltip:
 		Name: Demolition Truck
-		Description: Demolition Truck, actively armed with explosives.\n  Strong vs Everything,\n Weak vs Everything
+		Description: Demolition Truck, actively armed with explosives.\n  Strong vs Everything\n  Weak vs Everything
 	Health:
 		HP: 110
 	Armor:
