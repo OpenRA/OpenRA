@@ -9,6 +9,7 @@
 #endregion
 
 using OpenRA.Traits;
+using System.Linq;
 using OpenRA.Widgets;
 using System.Drawing;
 
@@ -37,6 +38,16 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				Game.OpenWindow("CHEATS_PANEL", new WidgetArgs() {{"onExit", () => {} }});
 			};
 			cheatsButton.IsVisible = () => world.LocalPlayer != null && world.LobbyInfo.GlobalSettings.AllowCheats;
+
+			var iop = world.WorldActor.TraitsImplementing<IObjectivesPanel>().FirstOrDefault();
+			if (iop != null && iop.ObjectivesPanel != null)
+			{
+				var objectivesButton = gameRoot.Get<ButtonWidget>("OBJECTIVES_BUTTON");
+				var objectivesWidget = Game.LoadWidget(world, iop.ObjectivesPanel, Ui.Root, new WidgetArgs());
+				objectivesWidget.Visible = false;
+				objectivesButton.OnClick += () => objectivesWidget.Visible = !objectivesWidget.Visible;
+				objectivesButton.IsVisible = () => world.LocalPlayer != null;
+			}
 
 			optionsBG.Get<ButtonWidget>("DISCONNECT").OnClick = () => LeaveGame(optionsBG, world);
 

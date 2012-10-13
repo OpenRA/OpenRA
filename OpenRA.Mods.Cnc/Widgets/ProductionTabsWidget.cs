@@ -138,8 +138,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 			var rightHover = Ui.MouseOverWidget == this && rightButtonRect.Contains(Viewport.LastMousePos);
 
 			WidgetUtils.DrawPanel("panel-black", rb);
-			ButtonWidget.DrawBackground("button", leftButtonRect, leftDisabled, leftPressed, leftHover);
-			ButtonWidget.DrawBackground("button", rightButtonRect, rightDisabled, rightPressed, rightHover);
+			ButtonWidget.DrawBackground("button", leftButtonRect, leftDisabled, leftPressed, leftHover, false);
+			ButtonWidget.DrawBackground("button", rightButtonRect, rightDisabled, rightPressed, rightHover, false);
 
 			WidgetUtils.DrawRGBA(ChromeProvider.GetImage("scrollbar", leftPressed || leftDisabled ? "left_pressed" : "left_arrow"),
 				new float2(leftButtonRect.Left + 2, leftButtonRect.Top + 2));
@@ -157,7 +157,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 				var rect = new Rectangle(origin.X + ContentWidth, origin.Y, TabWidth, rb.Height);
 				var hover = !leftHover && !rightHover && Ui.MouseOverWidget == this && rect.Contains(Viewport.LastMousePos);
 				var baseName = tab.Queue == CurrentQueue ? "button-toggled" : "button";
-				ButtonWidget.DrawBackground(baseName, rect, false, false, hover);
+				ButtonWidget.DrawBackground(baseName, rect, false, false, hover, false);
 				ContentWidth += TabWidth - 1;
 
 				int2 textSize = font.Measure(tab.Name);

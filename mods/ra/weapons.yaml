@@ -1107,6 +1107,23 @@ UnitExplodeSmall:
 		Explosion: large_explosion
 		InfDeath: 4
 		ImpactSound: kaboom15
+		
+BarrelExplode:
+	Warhead:
+		Damage: 500
+		Spread: 10
+		Versus: 
+			None: 120%
+			Wood: 200%
+			Light: 50%
+			Heavy: 25%
+			Concrete: 10%
+		Explosion: napalm
+		InfDeath: 4
+		ImpactSound: firebl3
+		SmudgeType: Scorch
+		Delay: 5
+		Size: 2,2
 
 Crush:
 	Warhead:
