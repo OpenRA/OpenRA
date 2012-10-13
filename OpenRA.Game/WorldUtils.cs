@@ -58,10 +58,10 @@ namespace OpenRA
 
 		public static IEnumerable<CPos> FindTilesInCircle(this World world, CPos a, int r)
 		{
-			if (r > TilesByDistance.Length)
+			if (r >= TilesByDistance.Length)
 				throw new InvalidOperationException("FindTilesInCircle supports queries for only <= {0}".F(MaxRange));
 
-			for(var i = 0; i < r; i++)
+			for(var i = 0; i <= r; i++)
 			{
 				foreach(var offset in TilesByDistance[i])
 				{
