@@ -1279,15 +1279,15 @@ ChronoTusk:
 		Inaccuracy: 3
 		Image: DRAGON
 		ROT: 10
-		RangeLimit: 35
+		RangeLimit: 10
 	Warhead:
 		Spread: 3
 		Versus:
 			None: 50%
 			Wood: 75%
 			Light: 75%
-			Heavy: 50%
-			Concrete: 25%
+			Heavy: 75%
+			Concrete: 50%
 		Explosion: med_explosion
 		WaterExplosion: med_splash
 		InfDeath: 4
