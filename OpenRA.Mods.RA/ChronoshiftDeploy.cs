@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA
 {
 	class ChronoshiftDeployInfo : ITraitInfo
 	{
-		public readonly int ChargeTime = 60; // seconds
+		public readonly int ChargeTime = 30; // seconds
 		public readonly int JumpDistance = 10;
 		public object Create(ActorInitializer init) { return new ChronoshiftDeploy(init.self, this); }
 	}
