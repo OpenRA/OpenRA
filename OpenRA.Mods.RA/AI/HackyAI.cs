@@ -223,7 +223,7 @@ namespace OpenRA.Mods.RA.AI
 
 			/* pick something worth attacking owned by that player */
 			var targets = world.Actors
-				.Where(a => a.Owner == enemy && a.HasTrait<IOccupySpace>());
+				.Where(a => a.Owner == enemy && a.HasTrait<IOccupySpace>() && !a.HasTrait<Husk>());
 			Actor target = null;
 
 			if (targets.Any())
@@ -325,7 +325,7 @@ namespace OpenRA.Mods.RA.AI
 				foreach (var a1 in attackForce)
 				{
 					var enemyUnits = world.FindUnitsInCircle(a1.CenterLocation, Game.CellSize * 10)
-						.Where(unit => p.Stances[unit.Owner] == Stance.Enemy).ToList();
+						.Where(unit => p.Stances[unit.Owner] == Stance.Enemy && !unit.HasTrait<Husk>()).ToList();
 
 					if (enemyUnits.Count > 0)
 					{
