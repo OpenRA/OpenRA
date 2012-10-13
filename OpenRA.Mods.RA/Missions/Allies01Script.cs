@@ -195,7 +195,7 @@ namespace OpenRA.Mods.RA.Missions
 			foreach (var unit in wave)
 			{
 				var spawnActor = world.SharedRandom.Next(2) == 0 ? attackEntryPoint1 : attackEntryPoint2;
-				var actor = world.CreateActor(unit, new TypeDictionary { new OwnerInit(soviets), new LocationInit(spawnActor.Location) });
+				world.CreateActor(unit, new TypeDictionary { new OwnerInit(soviets), new LocationInit(spawnActor.Location) });
 			}
 		}
 

@@ -100,8 +100,6 @@ namespace OpenRA.Mods.RA.Missions
 		CountdownTimer reinforcementsTimer;
 		CountdownTimerWidget reinforcementsTimerWidget;
 
-		List<Actor> sovietReinforcementsUnits = new List<Actor>();
-
 		const string InfantryQueueName = "Infantry";
 		const string VehicleQueueName = "Vehicle";
 		static readonly string[] SovietInfantry = { "e1", "e2", "e3" };
