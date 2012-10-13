@@ -269,8 +269,8 @@ namespace OpenRA.Mods.RA.AI
 				{
 					Activity act = a.GetCurrentActivity();
 					// A Wait activity is technically idle:
-					if ((act.GetType() != typeof(OpenRA.Mods.RA.Activities.Wait)) &&
-						(act.NextActivity == null || act.NextActivity.GetType() != typeof(OpenRA.Mods.RA.Activities.FindResources)))
+					if (!(act is Activities.Wait) &&
+						(act.NextActivity == null || !(act.NextActivity is Activities.FindResources)))
 						continue;
 				}
 				if (!harv.IsEmpty) continue;
