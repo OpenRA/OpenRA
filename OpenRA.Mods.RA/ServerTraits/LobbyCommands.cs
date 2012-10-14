@@ -278,7 +278,13 @@ namespace OpenRA.Mods.RA.Server
 							c.State = Session.ClientState.NotReady;
 							c.Slot = i < slots.Length ? slots[i++] : null;
 							if (c.Slot != null)
+							{
+								// Remove Bot from slot if slot forbids bots
+								var slot = new Session.Slot();
+								if (c.Bot != null && !slot.AllowBots)
+									server.lobbyInfo.Clients.Remove(c);
 								S.SyncClientToPlayerReference(c, server.Map.Players[c.Slot]);
+							}
 							else if (c.Bot != null)
 								server.lobbyInfo.Clients.Remove(c);
 						}
