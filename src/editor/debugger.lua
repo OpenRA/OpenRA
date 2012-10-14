@@ -818,8 +818,14 @@ end
 
 -- scratchpad functions
 
+local function q(s) return s:gsub('([%(%)%.%%%+%-%*%?%[%^%$%]])','%%%1') end
 function DebuggerRefreshScratchpad()
   if debugger.scratchpad and debugger.scratchpad.updated then
+
+    local scratchpadEditor = debugger.scratchpad.editor
+    local compiled, code = CompileProgram(scratchpadEditor, true)
+    if not compiled then return end
+
     if debugger.scratchpad.running then
       -- break the current execution first
       -- don't try too frequently to avoid overwhelming the debugger
@@ -830,9 +836,6 @@ function DebuggerRefreshScratchpad()
       end
     else
       local clear = ide.frame.menuBar:IsChecked(ID_CLEAROUTPUT)
-      local scratchpadEditor = debugger.scratchpad.editor
-      -- take editor text and remove shebang line
-      local code = scratchpadEditor:GetText():gsub("^#!.-\n", "\n")
       local filePath = DebuggerMakeFileName(scratchpadEditor,
         ide.openDocuments[scratchpadEditor:GetId()].filePath)
 
@@ -849,6 +852,8 @@ function DebuggerRefreshScratchpad()
         debugger.scratchpad.updated = false
         debugger.scratchpad.runs = (debugger.scratchpad.runs or 0) + 1
 
+        if clear then ClearOutput() end
+
         -- the code can be running in two ways under scratchpad:
         -- 1. controlled by the application, requires stopper (most apps)
         -- 2. controlled by some external loop (for example, love2d).
@@ -862,23 +867,19 @@ function DebuggerRefreshScratchpad()
           else _, _, err = debugger.execute(code) end
         else   _, _, err = debugger.loadstring(filePath, code .. stopper) end
 
-        local prefix = "Compilation error"
-
-        if clear then ClearOutput() end
+        -- when execute() is used, it's not possible to distinguish between
+        -- compilation and run-time error, so just report as "Scratchpad error"
+        local prefix = extloop and "Scratchpad error" or "Compilation error"
 
         if not err then
           _, _, err = debugger.handle("run")
           prefix = "Execution error"
         end
         if err and not err:find(errormsg) then
-          local line = err:match('.*%[string "[%w:/%\\_%-%.]+"%]:(%d+)%s*:')
-          -- check if the line number in the error matches the line we added
-          -- to stop the script; if so, compile it the usual way and report.
-          -- the usual way is not used all the time because it is slow
-          if prefix == "Compilation error" and
-             tonumber(line) == scratchpadEditor:GetLineCount()+1 then
-            _, err, line = wxlua.CompileLuaScript(code, filePath)
-            err = err:gsub("Lua:.-\n", "") -- remove "syntax error" part
+          local fragment, line = err:match('.-%[string "([^\010\013]+)"%]:(%d+)%s*:')
+          -- make the code shorter to better see the error message
+          if prefix == "Scratchpad error" and fragment and #fragment > 30 then
+            err = err:gsub(q(fragment), function(s) return s:sub(1,30)..'...' end)
           end
           DisplayOutput(prefix .. (line and " on line " .. line or "") .. ":\n"
             .. err:gsub('stack traceback:.+', ''):gsub('\n+$', '') .. "\n")

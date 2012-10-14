@@ -409,7 +409,10 @@ function CompileProgram(editor, quiet)
   local editorText = editor:GetText():gsub("^#!.-\n", "\n")
   local id = editor:GetId()
   local filePath = DebuggerMakeFileName(editor, openDocuments[id].filePath)
-  local _, errMsg, line_num = wxlua.CompileLuaScript(editorText, filePath)
+  local func, line_num, errMsg, _ = loadstring(editorText, filePath), -1
+  if not func then
+    _, errMsg, line_num = wxlua.CompileLuaScript(editorText, filePath)
+  end
 
   if ide.frame.menuBar:IsChecked(ID_CLEAROUTPUT) then ClearOutput() end
 
@@ -426,7 +429,7 @@ function CompileProgram(editor, quiet)
     end
   end
 
-  return line_num == -1 -- return true if it compiled ok
+  return line_num == -1, editorText -- return true if it compiled ok
 end
 
 ------------------
@@ -529,21 +532,20 @@ end
 
 function StoreRestoreProjectTabs(curdir, newdir)
   local win = ide.osname == 'Windows'
-  local function q(s) return s:gsub('([%(%)%.%%%+%-%*%?%[%^%$%]])','%%%1') end
   local interpreter = ide.interpreter.fname
   local current, closing, restore = notebook:GetSelection(), 0, false
 
   if curdir and #curdir > 0 then
-    local lowcurdir = q(win and string.lower(curdir) or curdir)
-    local lownewdir = q(win and string.lower(newdir) or newdir)
+    local lowcurdir = win and string.lower(curdir) or curdir
+    local lownewdir = win and string.lower(newdir) or newdir
     local projdocs, closdocs = {}, {}
     for _, document in ipairs(GetOpenFiles()) do
       local dpath = win and string.lower(document.filename) or document.filename
-      if dpath:find("^"..lowcurdir) then
+      if dpath:find(lowcurdir, 1, true) then
         table.insert(projdocs, document)
         closing = closing + (document.id < current and 1 or 0)
         -- only close if the file is not in new project as it would be reopened
-        if not dpath:find("^"..lownewdir) then
+        if not dpath:find(lownewdir, 1, true) then
           table.insert(closdocs, document)
         end
       elseif document.id == current then restore = true end
