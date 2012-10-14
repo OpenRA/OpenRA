@@ -145,8 +145,8 @@ function SettingsRestoreFileSession(fntab, section)
     if tonumber(key) then
       local fname,cursorpos = value:match("^(.+);(.-)$")
       if (couldread and value ~= "") then
-        table.insert(outtab,
-          {filename = fname or value, cursorpos = tonumber(cursorpos) or 0})
+        outtab[tonumber(key)] =
+          {filename = fname or value, cursorpos = tonumber(cursorpos) or 0}
       end
     else
       params[key] = tonumber(value) or value
