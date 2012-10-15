@@ -18,9 +18,9 @@ local function DisplayAbout(event)
     <html>
       <body text="#777777">
 	<table border="0" width="100%">
-	  <tr><td><img src="zbstudio/res/zerobrane.png"></center></td></tr>
+	  <tr><td><img src="zbstudio/res/zerobrane.png"></td></tr>
 	  <tr><td>
-	<table cellspacing="3" cellpadding="3">
+	<table cellspacing="3" cellpadding="3" width="100%">
 	  <tr>
 		<td>
 		<b>ZeroBrane Studio (]]..ide.VERSION..[[; using MobDebug ]]..mobdebug._VERSION..[[)</b><br>
@@ -36,6 +36,7 @@ local function DisplayAbout(event)
 		Christoph Kubisch, Eike Decker<br>
 		Licensed under the MIT License.
 		</td>
+		<td><img align="right" src="zbstudio/res/estrela.png"></td>
 	  </tr>
 	  <tr>
 		<td>

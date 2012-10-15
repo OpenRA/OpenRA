@@ -1,73 +1,61 @@
 # Project Description
 
-A simple and extensible Lua IDE and debugger. It supports multiple file
-formats, "api" for autocompletion and tooltips, and custom command-line
-tools. Its main focus is extensibility for target applications using Lua.
+ZeroBrane Studio is a lightweight Lua IDE with code completion, syntax
+highlighting, remote debugger, code analyzer, live coding, and debugging
+support for several Lua engines (LuaJIT, Löve 2D, Moai, Gideros, MobileLua,
+and others).
 
 ## Features
 
-* Written in Lua, so easily customizable
-* Automatically loads several 'plugin' like classes
-  - applications: overall control of applications settings
-  - specs (spec/): file syntax, lexer, keywords
-  - apis (api/): for code-completion and tool-tips
-  - interpreters (interpreters/): how a project is run
-  - config (cfg/): contains style and basic editor settings
-  - tools (tools/): additional tools, e.g. cg compiler, dx fxc compiler
-* Auto-completion for functions, keywords...
-* Function tips
-* Function list in file (quick jump to)
-* Function call highlighting
-* Bracket matching/highlighting
-* Project file browser
-* Experimental type/class guessing for auto-completion
-* Support for different editor styles
-* Console to directly test code snippets with local and remote execution
-* Integrated debugger (with support for local and remote debugging)
+* Written in Lua, so easily customizable.
+* Small, portable, and cross-platform (Windows, Mac OSX, and Linux).
+* Auto-completion for functions, keywords, and custom APIs.
+* Interactive console to directly test code snippets with local and remote execution.
+* Integrated debugger (with support for local and remote debugging).
+* Live coding with Lua ([demo](http://notebook.kulchenko.com/zerobrane/live-coding-in-lua-bret-victor-style)), Löve 2D ([demo](http://notebook.kulchenko.com/zerobrane/live-coding-with-love)), and Gideros ([demo](http://notebook.kulchenko.com/zerobrane/gideros-live-coding-with-zerobrane-studio-ide)).
+* Support for 'plugin' like classes:
+  - applications: overall control of applications settings;
+  - specs (spec/): file syntax, lexer, keywords;
+  - apis (api/): for code-completion and tool-tips;
+  - interpreters (interpreters/): how a project is run;
+  - config (cfg/): contains style and basic editor settings;
+  - tools (tools/): additional tools, e.g. cg compiler, dx fxc compiler.
 
 ## Screenshot
 
 ![ZeroBrane Studio debugger screenshot](http://studio.zerobrane.com/images/debugging.png)
 
-## Frontends
-
-There is currently two front-ends using the same editor engine. The original
-one is `Estrela`, which has a focus on 3d graphics related usage of Lua,
-especially in combination with the luxinia engine or luxinia2 framework.
-The second front-end is `ZeroBrane Studio` (zbstudio) which has a focus
-on using Lua in education, mobile development, and robotics.
-
-Both are part of the standard distribution.
-
 ## Installation
 
 ```bash
 $ git clone git://github.com/pkulchenko/ZeroBraneStudio.git zbstudio
-  or
-$ git clone git://estrelaeditor.git.sourceforge.net/gitroot/estrelaeditor/estrelaeditor estrelaeditor
 ```
 
 ## Usage
 
 ```
-Open File(s):
+Open file(s):
   <exe> <filename> [<filename>...]
   any non-option will be treated as filename
 
-Overriding Config:
-  <exe> [...] -cfg "<luacode overriding config>" [...]
-  e.g.: zbstudio.exe -cfg "singleinstance=false;" somefile.lua
+Overriding default configuration:
+  <exe> -cfg "<luacode overriding config>" [<filename>]
+  e.g.: zbstudio.exe -cfg "editor.fontsize=12" somefile.lua
+
+Loading custom configuration:
+  <exe> -cfg "config/file.lua" [<filename>]
+  e.g.: zbstudio.exe -cfg cfg/estrela.lua
 ```
 
 ## Author
 
-### Estrela Editor
-
-  **Luxinia Dev:** Christoph Kubisch (crazybutcher@luxinia.de)
-
 ### ZeroBrane Studio and MobDebug
 
   **ZeroBrane LLC:** Paul Kulchenko (paul@kulchenko.com)
+
+### Estrela Editor
+
+  **Luxinia Dev:** Christoph Kubisch (crazybutcher@luxinia.de)
 
 ## License
 

@@ -190,6 +190,8 @@ end
 local function addConfig(filename,isstring)
   -- skip those files that don't exist
   if not isstring and not wx.wxFileName(filename):FileExists() then return end
+  -- if it's marked as command, but exists as a file, load it as a file
+  if isstring and wx.wxFileName(filename):FileExists() then isstring = false end
 
   local cfgfn, err, msg
   if isstring
@@ -260,7 +262,6 @@ local function loadInterpreters()
     end
   end
 end
-loadInterpreters()
 
 -- load specs
 local function loadSpecs()
@@ -294,7 +295,6 @@ local function loadSpecs()
     end
   end
 end
-loadSpecs()
 
 -- load tools
 local function loadTools()
@@ -304,7 +304,6 @@ local function loadTools()
     end
   end
 end
-loadTools()
 
 if app.preinit then app.preinit() end
 
@@ -325,6 +324,12 @@ do
   end
   configs = nil
 end
+
+-- load this after preinit and processing configs to allow
+-- each of the lists to be modified
+loadInterpreters()
+loadSpecs()
+loadTools()
 
 ---------------
 -- Load App

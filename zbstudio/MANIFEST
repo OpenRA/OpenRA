@@ -1,12 +1,13 @@
 CHANGELOG.md
 LICENSE
 README.md
-api/lua/baselib.lua
-api/lua/gideros.lua
-api/lua/love2d.lua
-api/lua/moai.lua
-api/readme.txt
+api/lua/*.lua
+api/opencl/*.lua
+api/glsl/*.lua
+api/cg/*.lua
+api/README
 cfg/user-sample.lua
+cfg/estrela.lua
 interpreters/gideros.lua
 interpreters/love2d.lua
 interpreters/luadeb.lua
@@ -51,7 +52,7 @@ lualibs/socket/url.lua
 lualibs/ssl.lua
 lualibs/ssl/https.lua
 lualibs/testwell.lua
-spec/lua.lua
+spec/*.lua
 src/defs.lua
 src/editor/autocomplete.lua
 src/editor/commands.lua
@@ -82,6 +83,7 @@ src/misc/util.lua
 src/preferences/editor.lua
 src/preferences/project.lua
 src/version.lua
+tools/*.lua
 zbstudio/app.lua
 zbstudio/config.lua
 zbstudio/menu_help.lua
@@ -115,4 +117,5 @@ zbstudio/res/16/wxART_REDO.png
 zbstudio/res/16/wxART_REPORT_VIEW-wxART_OTHER_C.png
 zbstudio/res/16/wxART_UNDO.png
 zbstudio/res/32.ico
+zbstudio/res/estrela.png
 zbstudio/res/zerobrane.png

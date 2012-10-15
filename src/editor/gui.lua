@@ -91,7 +91,7 @@ local function createToolBar(frame)
   toolBar:AddSeparator()
   toolBar:AddTool(ID_FIND, "Find", getBitmap(wx.wxART_FIND, wx.wxART_TOOLBAR, toolBmpSize), "Find text")
   toolBar:AddTool(ID_REPLACE, "Replace", getBitmap(wx.wxART_FIND_AND_REPLACE, wx.wxART_TOOLBAR, toolBmpSize), "Find and replace text")
-  if ide.config.path.app ~= 'estrela' then
+  if ide.app.createbitmap then -- custom handler should handle all bitmaps
     toolBar:AddSeparator()
     toolBar:AddTool(ID_START_DEBUG, "Start Debugging", getBitmap("wxART_DEBUG_START", wx.wxART_TOOLBAR, toolBmpSize), "Start debugging")
     toolBar:AddTool(ID_STOP_DEBUG, "Stop Debugging", getBitmap("wxART_DEBUG_STOP", wx.wxART_TOOLBAR, toolBmpSize), "Stop debugging")
