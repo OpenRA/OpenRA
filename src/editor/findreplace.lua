@@ -341,6 +341,11 @@ local function createFindReplaceDialog(replace,infiles)
     findReplaceSizer:Add(replaceTextCombo, 1, wx.wxTOP + wx.wxGROW + wx.wxCENTER, 5)
   end
 
+  -- the StaticBox(Sizer) needs to be created before checkboxes, otherwise
+  -- checkboxes don't get any clicks on OSX (ide.osname == 'Macintosh')
+  -- as the z-order for event traversal appears to be incorrect.
+  local optionsSizer = wx.wxStaticBoxSizer(wx.wxVERTICAL, findDialog, "Options" );
+
   -- Create find/replace option checkboxes
   local wholeWordCheckBox = wx.wxCheckBox(findDialog, wx.wxID_ANY, "Match &whole word")
   local matchCaseCheckBox = wx.wxCheckBox(findDialog, wx.wxID_ANY, "Match &case")
@@ -356,7 +361,7 @@ local function createFindReplaceDialog(replace,infiles)
   optionSizer:Add(matchCaseCheckBox, 0, wx.wxALL + wx.wxGROW + wx.wxCENTER, 3)
   optionSizer:Add(wrapAroundCheckBox, 0, wx.wxALL + wx.wxGROW + wx.wxCENTER, 3)
   optionSizer:Add(regexCheckBox, 0, wx.wxALL + wx.wxGROW + wx.wxCENTER, 3)
-  local optionsSizer = wx.wxStaticBoxSizer(wx.wxVERTICAL, findDialog, "Options" );
+
   optionsSizer:Add(optionSizer, 0, 0, 5)
 
   -- Create scope radiobox
