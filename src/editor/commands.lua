@@ -59,7 +59,7 @@ function LoadFile(filePath, editor, file_must_exist, skipselection)
   SetupKeywords(editor, GetFileExt(filePath))
   editor:MarkerDeleteAll(BREAKPOINT_MARKER)
   editor:MarkerDeleteAll(CURRENT_LINE_MARKER)
-  editor:AppendText(file_text)
+  editor:AppendText(file_text or "")
   editor:Colourise(0, -1)
   editor:Thaw()
 
