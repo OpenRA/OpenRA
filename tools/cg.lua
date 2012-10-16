@@ -22,11 +22,12 @@ return cgbinpath and {
       { ID "cg.compile.input", "&Custom Args\tCtrl-L", "when set a popup for custom compiler args will be envoked", wx.wxITEM_CHECK },
       { ID "cg.compile.gles", "GLSL-ES", "When GLSL file is source use GLSL-ES path", wx.wxITEM_CHECK },
       { },
-      { ID "cg.compile.vertex", "Compile &Vertex\tCtrl-U", "Compile Vertex program (select entry word)" },
-      { ID "cg.compile.fragment", "Compile &Fragment\tCtrl-I", "Compile Fragment program (select entry word)" },
-      { ID "cg.compile.geometry", "Compile &Geometry\tCtrl-J", "Compile Geometry program (select entry word)" },
-      { ID "cg.compile.tessctrl", "Compile T.Ctrl", "Compile T.Ctrl program (select entry word)" },
-      { ID "cg.compile.tesseval", "Compile T.Eval", "Compile T.Eval program (select entry word)" },
+      { ID "cg.compile.vertex", "Compile &Vertex\tCtrl-1", "Compile Vertex program (select entry word)" },
+      { ID "cg.compile.fragment", "Compile &Fragment\tCtrl-2", "Compile Fragment program (select entry word)" },
+      { ID "cg.compile.geometry", "Compile &Geometry\tCtrl-3", "Compile Geometry program (select entry word)" },
+      { ID "cg.compile.tessctrl", "Compile T.Ctrl\tCtrl-4", "Compile T.Ctrl program (select entry word)" },
+      { ID "cg.compile.tesseval", "Compile T.Eval\tCtrl-5", "Compile T.Eval program (select entry word)" },
+      { ID "cg.compile.compute", "Compile Compute\tCtrl-6", "Compile Compute program (select entry word)" },
       { },
       { ID "cg.format.asm", "Annotate ASM", "indent and add comments to Cg ASM output" },
       { ID "cg.format.master", "Build from master", "Creates a new cg file from a master containing special include instrctions." },
@@ -44,17 +45,18 @@ return cgbinpath and {
       [ID "cg.compile.geometry"] = 3,
       [ID "cg.compile.tessctrl"] = 4,
       [ID "cg.compile.tesseval"] = 5,
+      [ID "cg.compile.compute"] = 6,
     }
     data.profiles = {
-      [ID "cg.profile.arb"] = {"arbvp1","arbfp1",false,false,false,ext=".glp", asm=true,},
-      [ID "cg.profile.glsl"] = {"glslv","glslf","glslg",false,false,ext=".glsl"},
-      [ID "cg.profile.nv40"] = {"vp40","fp40",false,false,false,ext=".glp",nvperf=true, asm=true,},
-      [ID "cg.profile.gp4"] = {"gp4vp","gp4fp","gp4gp",false,false,ext=".glp",nvperf=true, asm=true,},
-      [ID "cg.profile.gp5"] = {"gp5vp","gp5fp","gp5gp","gp5tcp","gp5tep",ext=".glp", asm=true,},
-      [ID "cg.profile.dx_2x"] = {"vs_2_0","ps_2_x",false,false,false,ext=".txt"},
-      [ID "cg.profile.dx_3"] = {"vs_3_0","ps_3_0",false,false,false,ext=".txt"},
-      [ID "cg.profile.dx_4"] = {"vs_4_0","ps_4_0","gs_4_0",false,false,ext=".txt"},
-      [ID "cg.profile.dx_5"] = {"vs_5_0","ps_5_0","gs_5_0","ds_5_0","hs_5_0",ext=".txt"},
+      [ID "cg.profile.arb"] = {"arbvp1","arbfp1",false,false,false,false,ext=".glp", asm=true,},
+      [ID "cg.profile.glsl"] = {"glslv","glslf","glslg",false,false,false,ext=".glsl"},
+      [ID "cg.profile.nv40"] = {"vp40","fp40",false,false,false,false,ext=".glp",nvperf=true, asm=true,},
+      [ID "cg.profile.gp4"] = {"gp4vp","gp4fp","gp4gp",false,false,false,ext=".glp",nvperf=true, asm=true,},
+      [ID "cg.profile.gp5"] = {"gp5vp","gp5fp","gp5gp","gp5tcp","gp5tep","gp5cp",ext=".glp", asm=true,},
+      [ID "cg.profile.dx_2x"] = {"vs_2_0","ps_2_x",false,false,false,false,ext=".txt"},
+      [ID "cg.profile.dx_3"] = {"vs_3_0","ps_3_0",false,false,false,false,ext=".txt"},
+      [ID "cg.profile.dx_4"] = {"vs_4_0","ps_4_0","gs_4_0",false,false,false,ext=".txt"},
+      [ID "cg.profile.dx_5"] = {"vs_5_0","ps_5_0","gs_5_0","ds_5_0","hs_5_0",false,ext=".txt"},
     }
     data.domaindefs = {
       " -D_VERTEX_ ",
@@ -62,6 +64,7 @@ return cgbinpath and {
       " -D_GEOMETRY_ ",
       " -D_TESS_CONTROL_ ",
       " -D_TESS_EVAL_ ",
+      " -D_COMPUTE_ ",
     }
     -- Profile related
     menuBar:Check(data.profid, true)
@@ -424,9 +427,9 @@ return cgbinpath and {
       outname = '"'..outname..'"'
 
       local cmdglsl = data.gles and "-ogles -glslWerror -DGL_ES" or "-oglsl -glslWerror -po PaBO2 "
-
       local cmdline = ' "'..fullname..'" -profile '..profile[domain].." "
       cmdline = glsl and cmdline..cmdglsl or cmdline
+      cmdline = glsl and (data.profid == (ID "cg.profile.gp5")) and cmdline.."-po NV_shader_atomic_float -po NV_bindless_texture " or cmdline
       cmdline = args and cmdline..args.." " or cmdline
       cmdline = cmdline..data.domaindefs[domain]
       cmdline = cmdline.."-o "..outname.." "
@@ -506,6 +509,7 @@ return cgbinpath and {
     frame:Connect(ID "cg.compile.geometry",wx.wxEVT_COMMAND_MENU_SELECTED,evCompile)
     frame:Connect(ID "cg.compile.tessctrl",wx.wxEVT_COMMAND_MENU_SELECTED,evCompile)
     frame:Connect(ID "cg.compile.tesseval",wx.wxEVT_COMMAND_MENU_SELECTED,evCompile)
+    frame:Connect(ID "cg.compile.compute",wx.wxEVT_COMMAND_MENU_SELECTED,evCompile)
 
     -- indent asm
     frame:Connect(ID "cg.format.asm", wx.wxEVT_COMMAND_MENU_SELECTED,
