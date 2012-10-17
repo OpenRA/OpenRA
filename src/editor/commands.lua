@@ -489,6 +489,7 @@ function SetOpenFiles(nametab,params)
     end
   end
   notebook:SetSelection(params and params.index or 0)
+  SetEditorSelection()
 end
 
 local beforeFullScreenPerspective
