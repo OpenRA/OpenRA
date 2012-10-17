@@ -92,7 +92,7 @@ config = {
   },
   editor = {
     fontname = "Courier New", -- default font
-    fontsize = 10, -- defailt size
+    fontsize = 10, -- default size
     caretline = true, -- show active line
     iofilter = nil, -- input/output filtering of strings
     showfncall = true, -- use indicator to show function calls if spec allows
@@ -122,6 +122,11 @@ config = {
     -- default font
     fontsize = 10,
     -- defult size
+  }
+
+  filetree = { -- filetree settings
+    fontname = nil, -- no default font as it is system dependent
+    fontsize = nil, -- no default size as it is system dependent
   }
 
   styles = {},

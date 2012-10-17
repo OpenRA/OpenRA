@@ -21,14 +21,14 @@ editor.fontsize = 12 -- this is mapped to ide.config.editor.fontsize
 editor.fontname = "Courier New"
 filehistorylength = 20 -- this is mapped to ide.config.filehistorylength
 
--- specify full path to love2d executable; this is only needed
+-- specify full path to love2d *executable*; this is only needed
 -- if the game folder and the executable are NOT in the same folder.
 path.love2d = 'd:/lua/love/love'
 
--- specify full path to moai executable if it's not in one of PATH folders
+-- specify full path to moai *executable* if it's not in one of PATH folders
 path.moai = 'd:/lua/moai/moai'
 
--- specify full path to gideros executable if it's not in one of PATH folders
+-- specify full path to gideros *executable* if it's not in one of PATH folders
 path.gideros = 'd:/Program Files/Gideros/GiderosPlayer.exe'
 
 -- specify full path to lua interpreter if you need to use your own version
@@ -50,6 +50,9 @@ editor.usewrap = false
 -- to turn dynamic words on and to start suggestions after 4 characters
 acandtip.nodynwords = false
 acandtip.startat = 4
+
+-- to automatically open files requested during debugging
+editor.autoactivate = true
 
 -- specify a list of MOAI entrypoints
 moai = { entrypoints = { "main.lua", "source/main.lua" } }
