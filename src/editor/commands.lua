@@ -168,12 +168,11 @@ function SaveFileAs(editor)
   local fn = wx.wxFileName(filePath)
   fn:Normalize() -- want absolute path for dialog
 
-  local exts = getExtsString()
-
+  local ext = fn:GetExt()
   local fileDialog = wx.wxFileDialog(ide.frame, "Save file as",
     fn:GetPath(wx.wxPATH_GET_VOLUME),
     fn:GetFullName(),
-    exts,
+    "*."..(ext and #ext > 0 and ext or "*"),
     wx.wxFD_SAVE)
 
   if fileDialog:ShowModal() == wx.wxID_OK then
