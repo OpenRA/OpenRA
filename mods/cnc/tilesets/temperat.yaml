@@ -3,6 +3,7 @@ General:
 	Id: TEMPERAT
 	Extensions: .tem, .shp
 	Palette: temperat.pal
+	WaterPaletteRotationBase: 32
 
 Terrain:
 	TerrainType@Clear:

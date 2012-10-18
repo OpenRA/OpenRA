@@ -2,7 +2,8 @@ General:
 	Name: Desert
 	Id: DESERT
 	Extensions: .des, .shp, .tem
-	Palette: desert.pal	
+	Palette: desert.pal
+	WaterPaletteRotationBase: 32
 
 Terrain:
 	TerrainType@Clear:

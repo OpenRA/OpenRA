@@ -17,38 +17,43 @@ namespace OpenRA.Mods.RA
 {
 	class WaterPaletteRotationInfo : ITraitInfo
 	{
-		public readonly int Base = 0x60;
+		public readonly string[] ExcludePalettes = { "cursor", "chrome", "colorpicker" };
 
-		public object Create(ActorInitializer init) { return new WaterPaletteRotation(this); }
+		public object Create(ActorInitializer init) { return new WaterPaletteRotation(init.world, this); }
 	}
 
 	class WaterPaletteRotation : ITick, IPaletteModifier
 	{
 		float t = 0;
-		readonly WaterPaletteRotationInfo info;
 
-		public WaterPaletteRotation(WaterPaletteRotationInfo info) { this.info = info; }
+		readonly WaterPaletteRotationInfo info;
+		readonly World world;
+
+		public WaterPaletteRotation(World world, WaterPaletteRotationInfo info)
+		{
+			this.world = world;
+			this.info = info;
+		}
 
 		public void Tick(Actor self) { t += .25f; }
 
-		static string[] excludePalettes = { "cursor", "chrome", "colorpicker" };
 		static uint[] temp = new uint[7]; /* allocating this on the fly actually hurts our profile */
 
 		public void AdjustPalette(Dictionary<string,Palette> palettes)
 		{
 			foreach (var pal in palettes)
 			{
-				if (excludePalettes.Contains(pal.Key))
+				if (info.ExcludePalettes.Contains(pal.Key))
 					continue;
 
 				var colors = pal.Value.Values;
 				var rotate = (int)t % 7;
 
 				for (var i = 0; i < 7; i++)
-					temp[(rotate + i) % 7] = colors[info.Base + i];
+					temp[(rotate + i) % 7] = colors[world.TileSet.WaterPaletteRotationBase + i];
 
 				for (var i = 0; i < 7; i++)
-					pal.Value.SetColor(info.Base + i, temp[i]);
+					pal.Value.SetColor(world.TileSet.WaterPaletteRotationBase + i, temp[i]);
 			}
 		}
 	}

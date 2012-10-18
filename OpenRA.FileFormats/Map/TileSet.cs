@@ -80,6 +80,7 @@ namespace OpenRA.FileFormats
 		public string Palette;
 		public int TileSize = 24;
 		public string[] Extensions;
+		public int WaterPaletteRotationBase = 0x60; 
 		public Dictionary<string, TerrainTypeInfo> Terrain = new Dictionary<string, TerrainTypeInfo>();
 		public Dictionary<ushort, TileTemplate> Templates = new Dictionary<ushort, TileTemplate>();
 
