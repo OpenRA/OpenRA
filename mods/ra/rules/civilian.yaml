@@ -8,8 +8,6 @@ FCOM:
 		HP: 400
 	Armor:
 		Type: Wood
-	Tooltip:
-		Name: Forward Command
 	RevealsShroud:
 		Range: 10
 	Bib:
@@ -138,7 +136,6 @@ BARL:
 	Health:
 		HP: 10
 	Explodes:
-		Weapon: BarrelExplode
 	Tooltip:
 		Name: Explosive Barrel
 
@@ -149,7 +146,6 @@ BRL3:
 	Health:
 		HP: 10
 	Explodes:
-		Weapon: BarrelExplode
 	Tooltip:
 		Name: Explosive Barrel
 
