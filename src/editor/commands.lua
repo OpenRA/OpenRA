@@ -11,6 +11,7 @@ function NewFile(event)
   local editor = CreateEditor()
   SetupKeywords(editor, "lua")
   AddEditor(editor, ide.config.default.fullname)
+  return editor
 end
 
 -- Find an editor page that hasn't been used at all, eg. an untouched NewFile()
@@ -530,6 +531,71 @@ function ProjectConfig(dir, config)
   else return unpack(ide.session.projects[dir] or {}) end
 end
 
+function SetOpenTabs(params)
+  local recovery, nametab = loadstring("return "..params.recovery)
+  if recovery then recovery, nametab = pcall(recovery) end
+  if not recovery then
+    DisplayOutput("Can't process auto-recovery record; invalid format: "..nametab.."\n")
+    return
+  end
+  DisplayOutput("Found auto-recovery record and restored saved session.\n")
+  for _,doc in ipairs(nametab) do
+    local editor = doc.filename and LoadFile(doc.filename,nil,true,true) or NewFile()
+    local opendoc = openDocuments[editor:GetId()]
+    if doc.content then
+      notebook:SetPageText(opendoc.index, doc.tabname)
+      editor:SetText(doc.content)
+      if doc.filename and doc.modified < opendoc.modTime:GetTicks() then
+        DisplayOutput("File '"..doc.filename.."' has more recent content than restored '"..doc.tabname.."'."
+          .." Please review before saving.\n")
+      end
+    end
+    editor:SetCurrentPos(doc.cursorpos or 0)
+    editor:SetSelectionStart(doc.cursorpos or 0)
+    editor:SetSelectionEnd(doc.cursorpos or 0)
+    editor:EnsureCaretVisible()
+  end
+  notebook:SetSelection(params and params.index or 0)
+  SetEditorSelection()
+end
+
+local function getOpenTabs()
+  local opendocs = {}
+  for id, document in pairs(ide.openDocuments) do
+    table.insert(opendocs, {
+      filename = document.filePath,
+      tabname = notebook:GetPageText(document.index),
+      modified = document.modTime and document.modTime:GetTicks(), -- get number of seconds
+      content = document.isModified and document.editor:GetText() or nil,
+      id = document.index, cursorpos = document.editor:GetCurrentPos()})
+  end
+
+  -- to keep tab order
+  table.sort(opendocs, function(a,b) return (a.id < b.id) end)
+
+  local id = GetEditor()
+  id = id and id:GetId()
+  return opendocs, {index = (id and openDocuments[id].index or 0)}
+end
+
+local function saveAutoRecovery(event)
+  if not ide.config.autorecoverinactivity or not ide.session.lastupdated then return end
+  if ide.session.lastupdated < (ide.session.lastsaved or 0)
+  or ide.session.lastupdated + ide.config.autorecoverinactivity > os.time()
+    then return end
+
+  -- find all open modified files and save them
+  local opentabs, params = getOpenTabs()
+  if #opentabs > 0 then
+    params.recovery = require('mobdebug').line(opentabs, {comment = false})
+    SettingsSaveAll()
+    SettingsSaveFileSession({}, params)
+    ide.settings:Flush()
+  end
+  ide.session.lastsaved = os.time()
+  ide.frame.statusBar:SetStatusText("Auto-recovery record saved.", 1)
+end
+
 function StoreRestoreProjectTabs(curdir, newdir)
   local win = ide.osname == 'Windows'
   local interpreter = ide.interpreter.fname
@@ -604,15 +670,12 @@ function CloseWindow(event)
   end
 
   ShowFullScreen(false)
-  SettingsSaveProjectSession(FileTreeGetProjects())
-  SettingsSaveFileSession(GetOpenFiles())
-  SettingsSaveView()
-  SettingsSaveFramePosition(ide.frame, "MainFrame")
-  SettingsSaveEditorSettings()
+  SettingsSaveAll()
   if DebuggerCloseWatchWindow then DebuggerCloseWatchWindow() end
   if DebuggerCloseStackWindow then DebuggerCloseStackWindow() end
   if DebuggerShutdown then DebuggerShutdown() end
   ide.settings:delete() -- always delete the config
+  if ide.session.timer then ide.session.timer:Stop() end
   event:Skip()
 
   -- without explicit exit() the IDE crashes with SIGILL exception when closed
@@ -620,3 +683,11 @@ function CloseWindow(event)
   if ide.osname == "Macintosh" then os.exit() end
 end
 frame:Connect(wx.wxEVT_CLOSE_WINDOW, CloseWindow)
+
+frame:Connect(wx.wxEVT_TIMER, saveAutoRecovery)
+
+if ide.config.autorecoverinactivity then
+  ide.session.timer = wx.wxTimer(frame)
+  -- check at least 5s to be never more than 5s off
+  ide.session.timer:Start(math.min(5, ide.config.autorecoverinactivity)*1000)
+end

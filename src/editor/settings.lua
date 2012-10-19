@@ -436,3 +436,11 @@ function SettingsSaveEditorSettings()
 
   settings:SetPath(path)
 end
+
+function SettingsSaveAll()
+  SettingsSaveProjectSession(FileTreeGetProjects())
+  SettingsSaveFileSession(GetOpenFiles())
+  SettingsSaveView()
+  SettingsSaveFramePosition(ide.frame, "MainFrame")
+  SettingsSaveEditorSettings()
+end

@@ -90,7 +90,11 @@ ide = {
   filetree = nil, -- filetree
   findReplace = nil, -- find & replace handling
   settings = nil, -- user settings (window pos, last files..)
-  session = {projects = {}}, -- project configuration for the current session
+  session = {
+    projects = {}, -- project configuration for the current session
+    lastupdated = nil, -- timestamp of the last modification in any of the editors
+    lastsaved = nil, -- timestamp of the last recovery information saved
+  },
 
   -- misc
   exitingProgram = false, -- are we currently exiting, ID_EXIT
@@ -361,7 +365,11 @@ dofile "src/version.lua"
 -- load rest of settings
 SettingsRestoreEditorSettings()
 SettingsRestoreFramePosition(ide.frame, "MainFrame")
-SettingsRestoreFileSession(SetOpenFiles)
+SettingsRestoreFileSession(function(tabs, params)
+  if params and params.recovery
+  then return SetOpenTabs(params)
+  else return SetOpenFiles(tabs, params) end
+end)
 SettingsRestoreFileHistory(UpdateFileHistoryUI)
 SettingsRestoreProjectSession(FileTreeSetProjects)
 SettingsRestoreView()

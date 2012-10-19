@@ -20,6 +20,7 @@ acandtip.nodynwords = true
 
 activateoutput = true
 projectautoopen = true
+autorecoverinactivity = 10
 
 styles = {
   -- lexer specific (inherit fg/bg from text)
