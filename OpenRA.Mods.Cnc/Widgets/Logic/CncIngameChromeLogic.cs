@@ -11,6 +11,7 @@
 using System;
 using System.Drawing;
 using OpenRA.Mods.RA.Orders;
+using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
@@ -114,6 +115,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			BindOrderButton<SellOrderGenerator>(world, sidebarRoot, "SELL_BUTTON", "sell");
 			BindOrderButton<RepairOrderGenerator>(world, sidebarRoot, "REPAIR_BUTTON", "repair");
 
+			var powerManager = world.LocalPlayer.PlayerActor.Trait<PowerManager>();
 			var playerResources = world.LocalPlayer.PlayerActor.Trait<PlayerResources>();
 			sidebarRoot.Get<LabelWidget>("CASH").GetText = () =>
 				"${0}".F(playerResources.DisplayCash + playerResources.DisplayOre);
@@ -151,6 +153,30 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 						playerRoot.RemoveChildren();
 						InitObserverWidgets(world, playerRoot);
 					});
+			};
+
+			var siloBar = playerWidgets.Get<ResourceBarWidget>("SILOBAR");
+			siloBar.GetProvided = () => playerResources.OreCapacity;
+			siloBar.GetUsed = () => playerResources.Ore;
+			siloBar.TooltipFormat = "Silo Usage: {0}/{1}";
+			siloBar.RightIndicator = true;
+			siloBar.GetBarColor = () => 
+			{
+				if (playerResources.Ore == playerResources.OreCapacity) return Color.Red;
+				if (playerResources.Ore >= 0.8 * playerResources.OreCapacity) return Color.Orange;
+				return Color.LimeGreen;
+			};
+
+			var powerBar = playerWidgets.Get<ResourceBarWidget>("POWERBAR");
+			powerBar.GetProvided = () => powerManager.PowerProvided;
+			powerBar.GetUsed = () => powerManager.PowerDrained;
+			powerBar.TooltipFormat = "Power Usage: {0}/{1}";
+			powerBar.RightIndicator = false;
+			powerBar.GetBarColor = () => 
+			{
+				if (powerManager.PowerState == PowerState.Critical) return Color.Red;
+				if (powerManager.PowerState == PowerState.Low) return Color.Orange;
+				return Color.LimeGreen;
 			};
 		}
 

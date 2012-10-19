@@ -34,6 +34,9 @@ namespace OpenRA.Mods.RA.Activities
 
 			self.World.AddFrameEndTask(w =>
 			{
+				foreach (var nt in self.TraitsImplementing<INotifyTransform>())
+					nt.OnTransform(self);
+
 				var selected = w.Selection.Contains(self);
 
 				self.Destroy();

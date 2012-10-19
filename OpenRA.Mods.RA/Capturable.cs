@@ -11,6 +11,7 @@
 using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Buildings;
 
 namespace OpenRA.Mods.RA
 {
@@ -37,14 +38,22 @@ namespace OpenRA.Mods.RA
 			this.Info = info;
 		}
 
-		public void BeginCapture(Actor self, Actor captor)
+		public bool BeginCapture(Actor self, Actor captor)
 		{
+			if (!CaptureInProgress && !self.Trait<Building>().Lock())
+				return false;
+
+			if (CaptureInProgress && Captor.Owner.Stances[captor.Owner] == Stance.Ally)
+				return false;
+
 			CaptureProgressTime = 0;
 
 			this.Captor = captor;
 
 			if (self.Owner != self.World.WorldActor.Owner)
 				self.ChangeOwner(self.World.WorldActor.Owner);
+
+			return true;
 		}
 
 		public void Tick(Actor self)
@@ -67,6 +76,7 @@ namespace OpenRA.Mods.RA
 						t.Trait.OnActorCaptured(t.Actor, self, Captor, self.Owner, Captor.Owner);
 
 					Captor = null;
+					self.Trait<Building>().Unlock();
 				});
 			}
 		}

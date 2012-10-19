@@ -91,7 +91,7 @@
 		Description: Produces Carryalls
 	Building:
 		Power: -30
-		Footprint: xxx xxx
+		Footprint: _x_ xxx xxx
 		Dimensions: 3,3
 	Health:
 		HP: 1500
@@ -121,7 +121,7 @@
 		Description: Provides advanced units
 	Building:
 		Power: -30
-		Footprint: xxx xxx
+		Footprint: _x_ xxx xxx
 		Dimensions: 3,3
 	Health:
 		HP: 1000
@@ -257,7 +257,7 @@
 		Description: Produces heavy vehicles.
 	Building:
 		Power: -30
-		Footprint: xxx xxx
+		Footprint: _x_ xxx xxx
 		Dimensions: 3,3
 	Health:
 		HP: 1500

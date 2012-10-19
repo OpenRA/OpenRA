@@ -79,11 +79,11 @@ namespace OpenRA.Widgets
 			var thumbHover = Ui.MouseOverWidget == this && thumbRect.Contains(Viewport.LastMousePos);
 			WidgetUtils.DrawPanel(Background, backgroundRect);
 			WidgetUtils.DrawPanel("scrollpanel-bg", scrollbarRect);
-			ButtonWidget.DrawBackground("button", upButtonRect, upDisabled, UpPressed, upHover);
-			ButtonWidget.DrawBackground("button", downButtonRect, downDisabled, DownPressed, downHover);
+			ButtonWidget.DrawBackground("button", upButtonRect, upDisabled, UpPressed, upHover, false);
+			ButtonWidget.DrawBackground("button", downButtonRect, downDisabled, DownPressed, downHover, false);
 
 			if (thumbHeight > 0)
-				ButtonWidget.DrawBackground("scrollthumb", thumbRect, false, Focused && thumbHover, thumbHover);
+				ButtonWidget.DrawBackground("scrollthumb", thumbRect, false, Focused && thumbHover, thumbHover, false);
 
 			var upOffset = !UpPressed || upDisabled ? 4 : 4 + ButtonDepth;
 			var downOffset = !DownPressed || downDisabled ? 4 : 4 + ButtonDepth;

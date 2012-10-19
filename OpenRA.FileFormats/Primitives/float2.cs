@@ -101,4 +101,18 @@ namespace OpenRA
 		public float LengthSquared { get { return X * X + Y * Y; } }
 		public float Length { get { return (float)Math.Sqrt(LengthSquared); } }
 	}
+
+	public class EWMA
+	{
+		readonly float animRate;
+		float? value;
+
+		public EWMA(float animRate) { this.animRate = animRate; }
+
+		public float Update(float newValue)
+		{
+			value = float2.Lerp(value ?? newValue, newValue, animRate);
+			return value.Value;
+		}
+	}
 }

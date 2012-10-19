@@ -242,13 +242,14 @@ E8:
 		Cost: 1800
 	Tooltip:
 		Name: Volkov
-		Description: Elite commando infantry, armed with \nmodular cannons and grenade launcher.\n  Strong vs Vehicles, Infantry\n  Weak vs Air Units\n
+		Description: Elite commando infantry, armed with \nmodular cannons and grenade launcher.\n  Strong vs Vehicles, Infantry\n  Weak vs Aircraft
 	Selectable:
 		Voice: VolkovVoice
 		Bounds: 12,17,0,-9
 	Health:
 		HP: 150
-	Armor: heavy
+	Armor:
+		Type: Heavy
 	Mobile:
 		Speed: 5
 	RevealsShroud:
@@ -422,8 +423,9 @@ SNIPER:
 	Cloak:
 		InitialDelay: 250
 		CloakDelay: 120
-		CloakSound: appear1.aud
-		UncloakSound: appear1.aud
+		CloakSound:
+		UncloakSound:
+		UncloakOnMove: yes
 	Captures:
 		CaptureTypes: civilianbuilding
 		AllowAllies: true

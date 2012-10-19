@@ -68,7 +68,7 @@ namespace OpenRA.Mods.RA.Air
 			}
 			else if (order.OrderString == "ReturnToBase")
 			{
-				var airfield = ReturnToBase.ChooseAirfield(self);
+				var airfield = ReturnToBase.ChooseAirfield(self, true);
 				if (airfield == null) return;
 
 				UnReserve();

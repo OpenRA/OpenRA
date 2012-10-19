@@ -70,6 +70,9 @@ namespace OpenRA
 
 		static ITraitInfo LoadTraitInfo(string traitName, MiniYaml my)
 		{
+			if (!string.IsNullOrEmpty(my.Value))
+				throw new YamlException("Junk value `{0}` on trait node {1}"
+				.F(my.Value, traitName));
 			var info = Game.CreateObject<ITraitInfo>(traitName + "Info");
 			FieldLoader.Load(info, my);
 			return info;

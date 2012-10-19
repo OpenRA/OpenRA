@@ -290,6 +290,7 @@ TSLA:
 	-RenderBuilding:
 	RenderRangeCircle:
 	-AcceptsSupplies:
+	DrawLineToTarget:
 
 AGUN:
 	Inherits: ^Building
@@ -302,7 +303,7 @@ AGUN:
 		Owner: allies
 		Hotkey: g
 	Valued:
-		Cost: 600
+		Cost: 800
 	Tooltip:
 		Name: AA Gun
 		Description: Anti-Air base defense.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
@@ -330,6 +331,7 @@ AGUN:
 	RenderRangeCircle:
 		RangeCircleType: aa
 	-AcceptsSupplies:
+	DrawLineToTarget:
 
 DOME:
 	RequiresPower:
@@ -342,7 +344,7 @@ DOME:
 		Owner: allies,soviet
 		Hotkey: r
 	Valued:
-		Cost: 1400
+		Cost: 1600
 	Tooltip:
 		Name: Radar Dome
 		Description: Provides an overview of the battlefield.\n  Requires power to operate.
@@ -386,6 +388,7 @@ PBOX:
 		PipCount: 1
 	-EmitInfantryOnSell:
 #	EmitCargoOnSell:
+	DrawLineToTarget:
 	TransformOnPassenger@e1:
 		PassengerTypes: e1
 		OnEnter: pbox.e1
@@ -542,6 +545,7 @@ HBOX:
 		PipCount: 1
 	-EmitInfantryOnSell:
 #	EmitCargoOnSell:
+	DrawLineToTarget:
 	TransformOnPassenger@e1:
 		PassengerTypes: e1
 		OnEnter: HBOX.e1
@@ -701,6 +705,7 @@ GUN:
 	-RenderBuilding:
 	RenderRangeCircle:
 	-AcceptsSupplies:
+	DrawLineToTarget:
 
 FTUR:
 	Inherits: ^Building
@@ -734,6 +739,7 @@ FTUR:
 	IronCurtainable:
 	RenderRangeCircle:
 	-AcceptsSupplies:
+	DrawLineToTarget:
 
 SAM:
 	Inherits: ^Building
@@ -774,6 +780,7 @@ SAM:
 	RequiresPower:
 	CanPowerDown:
 	-AcceptsSupplies:
+	DrawLineToTarget:
 
 ATEK:
 	Inherits: ^Building
@@ -832,7 +839,7 @@ WEAP:
 	Health:
 		HP: 1500
 	Armor:
-		Type: Light
+		Type: Wood
 	RevealsShroud:
 		Range: 4
 	Bib:
@@ -958,7 +965,7 @@ HPAD:
 		Owner: allies
 		Hotkey: i
 	Valued:
-		Cost: 300
+		Cost: 500
 	Tooltip:
 		Name: Helipad
 		Description: Produces and reloads helicopters
@@ -993,7 +1000,7 @@ AFLD:
 		Owner: soviet
 		Hotkey: g
 	Valued:
-		Cost: 300
+		Cost: 500
 	Tooltip:
 		Name: Airstrip
 		Description: Provides radar and off-map support\n  Special Ability: Paratroopers\n  Special Ability: Spy Plane
@@ -1004,7 +1011,7 @@ AFLD:
 	Health:
 		HP: 1000
 	Armor:
-		Type: Heavy
+		Type: Wood
 	RevealsShroud:
 		Range: 7
 	Exit@1:
@@ -1191,6 +1198,23 @@ TENT:
 	PrimaryBuilding:
 	IronCurtainable:
 	ProductionBar:
+	
+KENN:
+	Inherits: ^Building
+	Tooltip:
+		Name: Kennel
+	Building:
+		Power: -10
+	-GivesBuildableArea:
+	Health:
+		HP: 300
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4
+	IronCurtainable:
+	-EmitInfantryOnSell:
+	-AcceptsSupplies:
 
 FIX:
 	Inherits: ^Building
@@ -1201,7 +1225,7 @@ FIX:
 		Owner: allies,soviet
 		Hotkey: d
 	Valued:
-		Cost: 1000
+		Cost: 1200
 	Tooltip:
 		Name: Service Depot
 		Description: Repairs vehicles, reloads minelayers, and \nallows the construction of additional bases.

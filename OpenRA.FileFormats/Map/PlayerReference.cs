@@ -23,6 +23,7 @@ namespace OpenRA.FileFormats
 		public string Bot = null;
 		public bool DefaultStartingUnits = false;
 		public bool AllowBots = true;
+		public bool Required = false;
 
 		public bool LockRace = false;
 		public string Race;

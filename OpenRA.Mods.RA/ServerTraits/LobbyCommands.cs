@@ -53,6 +53,16 @@ namespace OpenRA.Mods.RA.Server
 			return true;
 		}
 
+		void CheckAutoStart(S server, Connection conn, Session.Client client)
+		{
+			var actualPlayers = server.conns
+				.Select(c => server.GetClient(c))
+				.Where(c => c.Slot != null);
+
+			if (actualPlayers.Count() > 0 && actualPlayers.All(c => c.State == Session.ClientState.Ready))
+				InterpretCommand(server, conn, client, "startgame");
+		}
+
 		public bool InterpretCommand(S server, Connection conn, Session.Client client, string cmd)
 		{
 			if (!ValidateCommand(server, conn, client, cmd))
@@ -74,14 +84,19 @@ namespace OpenRA.Mods.RA.Server
 
 						server.SyncLobbyInfo();
 
-						if (server.conns.Count > 0 && server.conns.All(c => server.GetClient(c).State == Session.ClientState.Ready))
-							InterpretCommand(server, conn, client, "startgame");
+						CheckAutoStart(server, conn, client);
 
 						return true;
 					}},
 				{ "startgame",
 					s =>
 					{
+						if (server.lobbyInfo.Slots.Any(sl => sl.Value.Required && 
+							server.lobbyInfo.ClientInSlot(sl.Key) == null))
+						{
+							server.SendChat(conn, "Unable to start the game until required slots are full.");
+							return true;
+						}
 						server.StartGame();
 						return true;
 					}},
@@ -114,6 +129,8 @@ namespace OpenRA.Mods.RA.Server
 						S.SyncClientToPlayerReference(client, server.Map.Players[s]);
 
 						server.SyncLobbyInfo();
+						CheckAutoStart(server, conn, client);
+
 						return true;
 					}},
 				{ "spectate",
@@ -236,6 +253,11 @@ namespace OpenRA.Mods.RA.Server
 							server.SendChatTo( conn, "Only the host can change the map" );
 							return true;
 						}
+						if(!server.ModData.AvailableMaps.ContainsKey(s))
+						{
+							server.SendChatTo( conn, "Map not found");
+							return true;
+						}
 						server.lobbyInfo.GlobalSettings.Map = s;
 						var oldSlots = server.lobbyInfo.Slots.Keys.ToArray();
 						LoadMap(server);
@@ -256,7 +278,12 @@ namespace OpenRA.Mods.RA.Server
 							c.State = Session.ClientState.NotReady;
 							c.Slot = i < slots.Length ? slots[i++] : null;
 							if (c.Slot != null)
+							{
+								// Remove Bot from slot if slot forbids bots
+								if (c.Bot != null && !server.Map.Players[c.Slot].AllowBots)
+									server.lobbyInfo.Clients.Remove(c);
 								S.SyncClientToPlayerReference(c, server.Map.Players[c.Slot]);
+							}
 							else if (c.Bot != null)
 								server.lobbyInfo.Clients.Remove(c);
 						}
@@ -440,7 +467,8 @@ namespace OpenRA.Mods.RA.Server
 				LockRace = pr.LockRace,
 				LockColor = pr.LockColor,
 				LockTeam = pr.LockTeam,
-				LockSpawn = pr.LockSpawn
+				LockSpawn = pr.LockSpawn,
+				Required = pr.Required,
 			};
 		}
 

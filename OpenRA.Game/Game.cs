@@ -302,8 +302,39 @@ namespace OpenRA
 			JoinLocal();
 			viewport = new Viewport(new int2(Renderer.Resolution), Rectangle.Empty, Renderer);
 
-			modData.LoadScreen.StartGame();
-			Settings.Save();
+			if (Game.Settings.Server.Dedicated)
+			{
+				while (true)
+				{
+					Game.Settings.Server.Map = WidgetUtils.ChooseInitialMap(Game.Settings.Server.Map);
+					Game.Settings.Save();
+					Game.CreateServer(new ServerSettings(Game.Settings.Server));
+					while(true)
+					{
+						System.Threading.Thread.Sleep(100);
+
+						if((server.GameStarted)&&(server.conns.Count<=1))
+						{
+							Console.WriteLine("No one is playing, shutting down...");
+							server.Shutdown();
+							break;
+						}
+					}
+					if (Game.Settings.Server.DedicatedLoop)
+					{
+						Console.WriteLine("Starting a new server instance...");
+						continue;
+					}
+					else
+						break;
+				}
+				System.Environment.Exit(0);
+			}
+			else
+			{
+				modData.LoadScreen.StartGame();
+				Settings.Save();
+			}
 		}
 
 		public static void LoadShellMap()

@@ -34,6 +34,9 @@ namespace OpenRA.GameRules
 		public string Map = null;
 		public string[] Ban = null;
 		public int TimeOut = 0;
+		public bool Dedicated = false;
+		public bool DedicatedLoop = true;
+		public string DedicatedMOTD = null;
 
 		public ServerSettings() { }
 
@@ -49,6 +52,9 @@ namespace OpenRA.GameRules
 			Map = other.Map;
 			Ban = other.Ban;
 			TimeOut = other.TimeOut;
+			Dedicated = other.Dedicated;
+			DedicatedLoop = other.DedicatedLoop;
+			DedicatedMOTD = other.DedicatedMOTD;
 		}
 	}
 

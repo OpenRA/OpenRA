@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Buildings;
+using OpenRA.Mods.RA.Move;
 using OpenRA.Traits;
 using XRandom = OpenRA.Thirdparty.Random;
 
@@ -164,13 +165,12 @@ namespace OpenRA.Mods.RA.AI
 		{
 			var bi = Rules.Info[actorType].Traits.Get<BuildingInfo>();
 
-			for (var k = 0; k < MaxBaseDistance; k++)
-				foreach (var t in world.FindTilesInCircle(baseCenter, k))
-					if (world.CanPlaceBuilding(actorType, bi, t, null))
-						if (bi.IsCloseEnoughToBase(world, p, actorType, t))
-							if (NoBuildingsUnder(Util.ExpandFootprint(
-								FootprintUtils.Tiles(actorType, bi, t), false)))
-								return t;
+			foreach (var t in world.FindTilesInCircle(baseCenter, MaxBaseDistance))
+				if (world.CanPlaceBuilding(actorType, bi, t, null))
+					if (bi.IsCloseEnoughToBase(world, p, actorType, t))
+						if (NoBuildingsUnder(Util.ExpandFootprint(
+							FootprintUtils.Tiles(actorType, bi, t), false)))
+							return t;
 
 			return null;		// i don't know where to put it.
 		}
@@ -223,7 +223,7 @@ namespace OpenRA.Mods.RA.AI
 
 			/* pick something worth attacking owned by that player */
 			var targets = world.Actors
-				.Where(a => a.Owner == enemy && a.HasTrait<IOccupySpace>());
+				.Where(a => a.Owner == enemy && a.HasTrait<IOccupySpace>() && !a.HasTrait<Husk>());
 			Actor target = null;
 
 			if (targets.Any())
@@ -269,8 +269,8 @@ namespace OpenRA.Mods.RA.AI
 				{
 					Activity act = a.GetCurrentActivity();
 					// A Wait activity is technically idle:
-					if ((act.GetType() != typeof(OpenRA.Mods.RA.Activities.Wait)) &&
-						(act.NextActivity == null || act.NextActivity.GetType() != typeof(OpenRA.Mods.RA.Activities.FindResources)))
+					if (!(act is Activities.Wait) &&
+						(act.NextActivity == null || !(act.NextActivity is Activities.FindResources)))
 						continue;
 				}
 				if (!harv.IsEmpty) continue;
@@ -325,7 +325,7 @@ namespace OpenRA.Mods.RA.AI
 				foreach (var a1 in attackForce)
 				{
 					var enemyUnits = world.FindUnitsInCircle(a1.CenterLocation, Game.CellSize * 10)
-						.Where(unit => p.Stances[unit.Owner] == Stance.Enemy).ToList();
+						.Where(unit => p.Stances[unit.Owner] == Stance.Enemy && !unit.HasTrait<Husk>()).ToList();
 
 					if (enemyUnits.Count > 0)
 					{
@@ -442,7 +442,11 @@ namespace OpenRA.Mods.RA.AI
 			if (mcv != null)
 			{
 				baseCenter = mcv.Location;
-				world.IssueOrder(new Order("DeployTransform", mcv, false));
+				//Don't transform the mcv if it is a fact
+				if (mcv.HasTrait<Mobile>())
+				{
+					world.IssueOrder(new Order("DeployTransform", mcv, false));
+				}
 			}
 			else
 				BotDebug("AI: Can't find BaseBuildUnit.");

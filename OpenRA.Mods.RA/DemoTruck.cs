@@ -8,44 +8,62 @@
  */
 #endregion
 
+using System.Collections.Generic;
+using System.Drawing;
+using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Buildings;
+using OpenRA.Mods.RA.Orders;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class DemoTruckInfo : TraitInfo<DemoTruck> { }
+	// Exception when overriding Chronoshift event; removed for now, will look into it.
+	class DemoTruckInfo : TraitInfo<DemoTruck>, Requires<ExplodesInfo> {}
 
-	class DemoTruck : Chronoshiftable, INotifyKilled
+	class DemoTruck : IIssueOrder, IResolveOrder, IOrderVoice
 	{
-		// Explode on chronoshift
-		public override bool Teleport(Actor self, CPos targetLocation, int duration, bool killCargo, Actor chronosphere)
+		void Explode(Actor self)
 		{
-			Detonate(self, chronosphere);
-			return false;
-		}
-
-		// Fire primary on death
-		public void Killed(Actor self, AttackInfo e)
-		{
-			Detonate(self, e.Attacker);
-		}
-
-		public void Detonate(Actor self, Actor detonatedBy)
-		{
-			var move = self.TraitOrDefault<IMove>();
-			var info = self.Info.Traits.Get<AttackBaseInfo>();
-			var altitude = move != null ? move.Altitude : 0;
-
-			self.World.AddFrameEndTask( w =>
+			self.World.AddFrameEndTask(w =>
 			{
-				if (self.Destroyed) return;
-				Combat.DoExplosion(self, info.PrimaryWeapon, self.CenterLocation, altitude);
+				self.InflictDamage(self, int.MaxValue, null);
+			});
+		}
 
-				// Remove from world
-				self.Kill(self);
-				detonatedBy.Owner.Kills++;
-				self.Owner.Deaths++;
-				self.Destroy();
-			} );
+		public IEnumerable<IOrderTargeter> Orders
+		{
+			get
+			{
+				yield return new UnitTraitOrderTargeter<Building>("DemoAttack", 5, "attack", true, false) { ForceAttack = false };
+				yield return new DeployOrderTargeter("DemoDeploy", 5);
+			}
+		}
+
+		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
+		{
+			if (order.OrderID == "DemoAttack" || order.OrderID == "DemoDeploy")
+				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
+
+			return null;
+		}
+
+		public string VoicePhraseForOrder(Actor self, Order order)
+		{
+			return "Attack";
+		}
+
+		public void ResolveOrder(Actor self, Order order)
+		{
+			if (order.OrderString == "DemoAttack")
+			{
+				self.World.AddFrameEndTask(w =>
+				{
+					self.QueueActivity(new MoveAdjacentTo(Target.FromOrder(order)));
+					self.QueueActivity(new CallFunc(() => Explode(self)));
+				});
+			}
+			if (order.OrderString == "DemoDeploy")
+				Explode(self);
 		}
 	}
 }

@@ -1,6 +1,6 @@
 Colt45:
 	ROF: 5
-	Range: 5.75
+	Range: 7
 	Report: GUN5
 	Projectile: Bullet
 		Speed: 100
@@ -39,7 +39,6 @@ Vulcan:
 	Report: GUN13
 	Projectile: Bullet
 		Speed: 100
-		ContrailLength: 1000
 	Warhead@1:
 		Spread: 3
 		Versus: 
@@ -500,7 +499,7 @@ MammothTusk:
 		ContrailLength: 10
 		Inaccuracy: 3
 		Image: DRAGON
-		ROT: 5
+		ROT: 10
 		RangeLimit: 40
 	Warhead:
 		Spread: 6
@@ -978,9 +977,46 @@ Atomic:
 		WaterExplosion: nuke
 		InfDeath: 5
 		ImpactSound: kaboom1
-	Warhead@areanuke:
+	Warhead@areanuke1:
 		DamageModel: PerCell
-		Damage: 250
+		Damage: 180
+		Size: 2,1
+		Ore: true
+		Versus: 
+			None: 90%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 50%
+		Delay: 5
+		InfDeath: 5
+		ImpactSound: kaboom22
+	Warhead@areanuke2:
+		DamageModel: PerCell
+		Damage: 180
+		Size: 3,2
+		Ore: true
+		Versus: 
+			None: 90%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 50%
+		Delay: 10
+		InfDeath: 5
+	Warhead@areanuke3:
+		DamageModel: PerCell
+		Damage: 180
+		Size: 4,3
+		Ore: true
+		Versus: 
+			None: 90%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 50%
+		Delay: 15
+		InfDeath: 5
+	Warhead@areanuke4:
+		DamageModel: PerCell
+		Damage: 180
 		SmudgeType: Scorch
 		Size: 5,4
 		Ore: true
@@ -989,9 +1025,61 @@ Atomic:
 			Light: 60%
 			Heavy: 25%
 			Concrete: 50%
-		Delay: 4
+		Delay: 20
+		InfDeath: 5
+
+MiniNuke:
+	Warhead@impact:
+		Damage: 800
+		Spread: 6
+		Ore: true
+		Versus: 
+			None: 90%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 50%
+		Explosion: nuke
+		WaterExplosion: nuke
+		InfDeath: 5
+		ImpactSound: kaboom1
+	Warhead@areanuke1:
+		DamageModel: PerCell
+		Damage: 180
+		Size: 2,1
+		Ore: true
+		Versus: 
+			None: 90%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 50%
+		Delay: 5
 		InfDeath: 5
 		ImpactSound: kaboom22
+	Warhead@areanuke2:
+		DamageModel: PerCell
+		Damage: 180
+		Size: 3,2
+		Ore: true
+		Versus: 
+			None: 90%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 50%
+		Delay: 10
+		InfDeath: 5
+	Warhead@areanuke3:
+		DamageModel: PerCell
+		Damage: 180
+		Size: 4,3
+		SmudgeType: Scorch
+		Ore: true
+		Versus: 
+			None: 90%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 50%
+		Delay: 15
+		InfDeath: 5
 
 UnitExplode:
 	Warhead:
@@ -1019,6 +1107,23 @@ UnitExplodeSmall:
 		Explosion: large_explosion
 		InfDeath: 4
 		ImpactSound: kaboom15
+		
+BarrelExplode:
+	Warhead:
+		Damage: 500
+		Spread: 10
+		Versus: 
+			None: 120%
+			Wood: 200%
+			Light: 50%
+			Heavy: 25%
+			Concrete: 10%
+		Explosion: napalm
+		InfDeath: 4
+		ImpactSound: firebl3
+		SmudgeType: Scorch
+		Delay: 5
+		Size: 2,2
 
 Crush:
 	Warhead:
@@ -1157,3 +1262,34 @@ Sniper:
 			Light: 5%
 			Heavy: 5%
 		InfDeath: 2
+
+ChronoTusk:
+	ROF: 60
+	Range: 6
+	Report: MISSILE6
+	ValidTargets: Ground
+	Projectile: Missile
+		Speed: 35
+		Arm: 2
+		High: true
+		Shadow: false
+		Proximity: true
+		Trail: smokey
+		ContrailLength: 10
+		Inaccuracy: 3
+		Image: DRAGON
+		ROT: 10
+		RangeLimit: 30
+	Warhead:
+		Spread: 3
+		Versus:
+			None: 50%
+			Wood: 75%
+			Light: 75%
+			Heavy: 75%
+			Concrete: 50%
+		Explosion: med_explosion
+		WaterExplosion: med_splash
+		InfDeath: 4
+		SmudgeType: Crater
+		Damage: 20

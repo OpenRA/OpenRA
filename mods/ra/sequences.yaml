@@ -2268,3 +2268,13 @@ e8:
 	die6: electro
 		Start: 0
 		Length: *
+
+dtrk:
+	idle:
+		Start: 0
+		Facings: 32
+
+ctnk:
+	idle:
+		Start: 0
+		Facings: 32
