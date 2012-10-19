@@ -185,12 +185,12 @@ TRAN:
 		Owner: allies
 		Hotkey: t
 	Valued:
-		Cost: 900
+		Cost: 1200
 	Tooltip:
 		Name: Transport Helicopter
 		Description: Fast Infantry Transport Helicopter.\n  Unarmed
 	Health:
-		HP: 120
+		HP: 90
 	Armor: 
 		Type: Light
 	RevealsShroud:
@@ -210,8 +210,8 @@ TRAN:
 	WithShadow:
 	Cargo:
 		Types: Infantry
-		MaxWeight: 8
-		PipCount: 8
+		MaxWeight: 5
+		PipCount: 5
 	IronCurtainable:
 	FallsToEarth:
 		Explosion: UnitExplode
