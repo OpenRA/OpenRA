@@ -11,11 +11,6 @@ Configuration files are loaded in the following order
 
 -- an example of how loaded configuration can be modified from this file
 
-local G = ... -- this now points to the global environment in the script
-local luaspec = G.ide.specs['lua']
-luaspec.exts[2] = "luaz"
-luaspec.keywords[1] = luaspec.keywords[1] .. ' foo' -- add 'foo' as keyword
-
 -- change font size to 12
 editor.fontsize = 12 -- this is mapped to ide.config.editor.fontsize
 editor.fontname = "Courier New"

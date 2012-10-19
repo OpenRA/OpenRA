@@ -56,6 +56,7 @@
 
 ### Incompatibilities
   - Changed searching for user config in '$HOME/.zbstudio' from '$HOME/.zbs'.
+  - Temporarily removed the ability to modify spec-related configuration parameters from configuration files.
 
 ### Fixes
   - Fixed opening a non-existing file from the Recent Files list.
