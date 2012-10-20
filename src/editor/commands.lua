@@ -29,9 +29,11 @@ local function findDocumentToReuse()
 end
 
 function LoadFile(filePath, editor, file_must_exist, skipselection)
+  local filePath = wx.wxFileName(filePath)
+  filePath:Normalize() -- make it absolute and remove all .. and . if possible
+
   -- prevent files from being reopened again
   if (not editor) then
-    local filePath = wx.wxFileName(filePath)
     for id, doc in pairs(openDocuments) do
       if doc.filePath and filePath:SameAs(wx.wxFileName(doc.filePath)) then
         if not skipselection then notebook:SetSelection(doc.index) end
@@ -39,7 +41,7 @@ function LoadFile(filePath, editor, file_must_exist, skipselection)
       end
     end
   end
-  filePath = wx.wxFileName(filePath):GetFullPath()
+  filePath = filePath:GetFullPath()
 
   -- if not opened yet, try open now
   local file_text = FileRead(filePath)

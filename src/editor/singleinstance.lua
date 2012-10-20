@@ -23,12 +23,12 @@ local svr = socket.udp()
 
 local success, errmsg = svr:setsockname("127.0.0.1",port) -- bind on local host
 
-local protocoll = {client = {}, server = {}}
+local protocol = {client = {}, server = {}}
 
-protocoll.client.greeting = "Is this you, my IDE? It's me, a new instance."
-protocoll.server.greeting = "Yes it is me, how may I serve you?"
-protocoll.client.requestloading = "Could you please load this file for me: %s"
-protocoll.server.answerok = "Sure. You may now leave."
+protocol.client.greeting = "Is this you, my IDE? It's me, a new instance."
+protocol.server.greeting = "Yes it is me, how may I serve you?"
+protocol.client.requestloading = "Could you please load this file for me: %s"
+protocol.server.answerok = "Sure. You may now leave."
 
 if success then -- ok, server was started, we are solo
   --TODO: if multiple files are to be opened, each file is handled one by one - we could create a single string instead...
@@ -44,39 +44,36 @@ if success then -- ok, server was started, we are solo
       local msg, err, port = svr:receivefrom() -- receive a msg
       if msg then
         local ip = err -- the errmsg is actually the IP
-        -- DisplayOutput("client sent request: "..tostring(ip)..","..tostring(port).."\n")
-        -- DisplayOutput("UDP.SingleInstanceServer: "..msg.."\n")
-        if msg == protocoll.client.greeting then -- just send back hi
-          svr:sendto(protocoll.server.greeting,ip,port)
-        elseif msg:match(protocoll.client.requestloading:gsub("%%s",".+$")) then -- ok we need to open something
-          local filename = msg:match(protocoll.client.requestloading:gsub("%%s","(.+)$"))
-          -- DisplayOutput("UDP.SingleInstanceServer: open file "..filename.."\n")
-
-          LoadFile(filename, nil, true)
-          svr:sendto(protocoll.server.answerok,ip,port)
-
-          ide.frame:RequestUserAttention() -- let's let the user know we want his attention
+        if msg == protocol.client.greeting then -- just send back hi
+          svr:sendto(protocol.server.greeting,ip,port)
+        elseif msg:match(protocol.client.requestloading:gsub("%%s",".+$")) then -- ok we need to open something
+          svr:sendto(protocol.server.answerok,ip,port)
+          local filename = msg:match(protocol.client.requestloading:gsub("%%s","(.+)$"))
+          if filename then
+            if LoadFile(filename, nil, true)
+            then ide.frame:RequestUserAttention() -- let's let the user know we want his attention
+            else DisplayOutput("Can't open requested file '"..filename.."'.\n") end
+          end
         end
       end
     end)
 else -- something different is running on our port
   local cln = socket.udp()
   cln:setpeername("127.0.0.1",port)
-  cln:settimeout(5) -- two seconds of waiting should be enough, if no response, we asume we are running
-
-  cln:send(protocoll.client.greeting)
+  cln:settimeout(2)
+  cln:send(protocol.client.greeting)
 
   local msg,err = cln:receive()
   local arg = ide.arg
-  if msg and msg == protocoll.server.greeting then
+  if msg and msg == protocol.server.greeting then
     local failed = false
     for index = 2, #arg do
       local fileName = arg[index]
       if fileName ~= "--" then
-        cln:send(protocoll.client.requestloading:format(fileName))
+        cln:send(protocol.client.requestloading:format(fileName))
 
         local msg,err = cln:receive()
-        if msg~=protocoll.server.answerok then
+        if msg ~= protocol.server.answerok then
           failed = true
           print(err,msg)
         else
