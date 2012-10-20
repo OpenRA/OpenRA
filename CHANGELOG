@@ -1,42 +1,266 @@
-NEW:
+20121019:
+	Engine:
+		Add --transpose option to Utility
+		Allow --transpose to do multiple operations in one pass
+		Added category headers in editor (RA temperate theme only)
+		Added selection tool in editor for use with copy-pasting terrain
+		Added tilesetbuilder2 and fixed it for Dune 2000
+		Added tilesetbuilder command line
+		Added tileset extractor
+		Upgraded Visual Studio solution to 2010
+		Tons of performance improvements
+		Prevent too many instances of a single sound playing at once
+		Order results from FindByTilesInCircle by distance
+		Added new data types for cell and pixel coordinate pistion/vectors
+		Fixed issue where port in direct connect was dumped to default by force
+		Fixed pathfinding for units heading in opposite directions to prevent pathing deadlocks
+		Fixed volume and scrollspeed being different from their saved scale at game start
+	All Mods:
+		Added basic dedicated server support
+		Added UPnP support for multiplayer
+		Added option to pause the game (F3 key)
+		Added SimpleTeleport for non-chrono jumps for mission scripting
+		Added WaitFor(predicate) for mission scripting
+		Added support for mission objectives
+		Added indicator to show who is admin of a lobby
+		Added map size label to map chooser
+		Added support to set up player required slots for maps
+		Added hover behavior for all units. Give a unit a nonzero Altitude: in its Mobile: block and the WithShadow: trait to make it hover
+		Allow building speed to be set by CustomSellValue trait
+		Bots are forcefully removed from maps which do not allow them
+		Ignore spectators for lobby readiness check
+		Added CloakInfo.UncloakOnMove option
+		Made UnloadCargo.unloadAll configurable, using all by default
+		Support targetlines for defenses
+		Setting for Capturable trait to waste engineer after capturing a building or not
+		Fixed unloading of infantry from cargo vehicles to be spread out instead of one subcell
+		Fixed crates not being picked up when dropped on a unit
+		Fixed being able to repair when eliminated
+		Fixed spectator chat not using contrast
+		Fixed crash cycling stances while a unit dies
+		Fixed crash spawning corpse for actor which has already been destroyed
+		Fixed filtering of passengers to show with RenderCargo
+		Fixed incorrect working "locks" when capture/sell building races happened
+		Fixed radar click position
+		Fixed shift-tab keyboard shortcut in build palette
+		Added mouse-wheel support for flipping tabs in build palette
+		Harvesters:
+			No longer block each other during low-ore contention and wait for a random amount of time to search for more resources.
+			Refineries show which harvesters are linked by holding down the ALT key.
+			Fixed harvesters for AI to search the entire map when no more resources nearby
+			Made search radius configurable for both initial search from refinery, and search from harvest location
+			Harvesters will return to ordered-to location if told to harvest a specific cell while full after delivery instead of the last successfully harvested cell which may be far away
+		Fixed notable issues when trying to play FMVs
+	Red Alert:
+		Added two missions - Allies01 (single player) and Allies02 (co op)
+		Added new tiles for use in the Temperate theatre, made by Harrison
+		Added new crashed helicopter SHPS
+		Added Hospital & Bio Lab yaml definitions
+		Reenabled PrimaryBuilding support for airfield and helipads
+		Fixed chrono not killing passengers on return
+		Fixed missing chrono effects on unit return
+		Fixed tesla coil ignoring weapon offset
+		Fixed some HackyAI issues, such as having a tank husk fetish
+		Fixed some incorrect/missing music strings in music.yaml
+		Fixed broken Install from CD code
+		Fixed another zombie aircraft bug
+		Balance (General):
+			Added a heal crate (heals all of your units on map, rare occurrence)
+			Removed nuke crate
+			Nuke was made a lot more powerful
+			Nuclear explosions now destroy ore
+			Repair cost for units is always at least 1 per tick
+			Radar Dome cost increased from 1400 to 1600
+			Service Depot cost increased from 1000 to 1200
+			War Factory armor type changed from Heavy to Wood
+			Sam Site/AA Guns will no longer shoot at crashing aircraft
+			Barrel explosions are now more deadly, and chain explosions explode with a delay
+			Churches made garrisonable by Sniper infantry
+		Balance (Soviet):
+			Added Sniper - cloaked infantry with HoldFire stance by default
+			Added Volkov - elite unit meant to replace Tanya
+			Added Demo Truck - armed with a lower damage nuke
+			Mammoth Tank self heal now goes up to 80% health
+			Mammoth Tank turret rotation was slowed down
+			Mammoth Tank tusk rate of turn was doubled
+			Tesla Tank cost lowered from 1500 to 1350
+			Airfield armor changed from Heavy to Wood
+			Airfield cost increased from 300 to 500
+			Iron Curtain duration increased from 10 to 15 seconds, and can't use on enemy units
+		Balance (Allies):
+			Added Chronotank - tank that can "jump" within range of itself
+			Tanya - Colt45 attack range increased from 5.75 to 7
+			Transport Heli - Cost lowered from 1200 to 900, increased hp, increased cargo count to 8
+			AA Gun cost increased from 600 to 800
+			Helipad cost increased from 300 to 500
+		Added map: Ice Woods (Tirili)
+		Added map: Nishnekolymsk (Tirili)
+		Added map: Bomber John (Holloweye)
+		Added map: Bloody Delta (Holloweye)
+		Added map: Room-Warzone (Sunny_S)
+		Added map: Chaos Canyon (Nukem)
+		Added map: Forest Path (Gnx)
+		Updated map: Free Coasts (Ihptru)
+		Replaced map Baywatch with Hasselhoff (Nukem/Zypres)
+	C&C:
+		Added A10 crash site SHP to terrain (via Nyerguds)
+		Balance:
+			Tank shells do 100% vs armor again, turret buffed
+			MRLS issues fixed
+		Sonic Tank moved to end of build menu
+		Fixed structure build menu orders in general
+		Fixed Biolab did providing Visceriod after being captured
+		Fixed tooltips not showing on the build menu
+		Do not shade possible build items in CNC if something else is building
+	Dune 2000:
+		Added Dune 2000!
+
+20120603:
 	Engine:
 		General performance improvements
-		Fixed minimap export breaking subsequent actions in the editor
+		Health.MaxHP is no longer read-only
+		#Comments can be used at end of any lines in yaml files
+		Better error messages for duplicate yaml fields
+		Fixed RenderCargo support for relative altitude
+	Both Mods:
+		Add banlist setting (Server: Ban: IP1, IP2, IP3)
+		Missiles lose guidance and run out of remaining fuel if the target dies
+	Red Alert:
+		Added setting to change CashTick sound frequency when producting structures
+		Re-added camo pillbox for Allies to be garissonable and stealthed
+		Change cargo ownership if capturing actors with cargo
+		Fixed spy resetting exploration if infiltrated enemy had GPS
+		Cannot capture building if yourself or ally is already capturing it
+		Barrels are no longer capturable/sellable
+		Minor AI improvements
+	C&C:
+		Exposed option to toggle shellmap
+		MRLS cost increased to 1200
+		APC gun damage increased
+		Several building hitpoints increase/decreased
+		Several units movement speed adjusted
+		Landed helicopters made targetable by units
+		Mammoth Tank has an 8 second cooldown before regenerating hp
+		Add new Chemball explosion
+		Re-ordered build menu
+		Production hotkeys changed from YUIOP to QWERT
+		Fix crash loading yaml for ArtilleryShell.ContrailLength
+
+20120504:
+	Engine:
+		General performance improvements
+		Added a setting to change sound engine, Sound:Engine: AL ("AL" uses OpenAL, "Null" gives no sound)
+	Both Mods:
+		Warn lobby when a client joins with DEV_VERSION
+		Produced units attack-move to their rallypoint
+		New CloakPaletteEffect trait to add shimmer effect to cloaked units
+		Cargo trait allows for initial passengers when units are built
+		Buildings now take 10 seconds to be captured
+		Capture time length is adjustable
+		Custom starting units can be used for each faction
+		Main menu no longer vanishes after a lobby disconnect
+		Fixed crash selling/capturing buildings simultaneously
+		Fixed crash in StartGame if there were unvalidated connections
+		Improved error messages given with bad MiniYaml indentations
+	Red Alert:
+		Added Spy to Allies
+			Infiltrates refinery to steal 50% of players cash, minimum $500
+			Infiltrates radar dome to reset exploration for enemy team
+			Can assassinate enemy units with force-fire
+		Added Gap Generator to Allies
+		Tanya made exclusive to Allies
+		Artillery explode chance lowered to 75%
+		Flamethrower has new flame art
+		Pillbox includes a garrisoned riflemen when built, and other infantry can garrison the structure
+		Camo pillbox removed
+		Normal AI removed
+		New AI: Rommel and Zhukov
+			Rommel is a modified Hard AI focusing on artillery and V2, and few light vehicles
+			Zhukov is a turtle, but sends large attacks with artillery and V2
+		Added map: Tainted Peak (Nukem)
+		Removed maps: Daejeon, Mjolnir, No Fly Zone
+		Fixed bug letting passengers shoot from transports
+	C&C:
+		A10s speed increased, Napalm Drop damage increased
+		Chinooks now carry up to 10 passengers
+		Sight of all infantry increased by 1
+		Chem Warrior/Flamethrower/Grenadier damage vs certain armor types increased
+		Chem Warrior will walk through tiberium instead of pathing around it
+		Artillery attack range doubled
+		Guard Tower attack range decreased by 1
+		MCV and Construction Yard sight increased
+		Construction Yard armor type changed to Heavy from Wood
+		Harvester armor type changed to Heavy from Light
+		Proability of SpawnVisceriod from 10% to 2%
+		Reduced damage and size of Grenadier death explosions
+		Units do not attack buildings when attack-moving or idle, exception made for defensive structures
+		Lots of AI changes
+		Removed nuke crate, hide-map crate
+		Fixed crash viewing replays
+		Fixed radar not being shown during replay
+
+20120315:
+	Engine:
+		General performance improvements
+		Added setting for direct connection on game launch (Game:ConnectTo: ip:port)
+		Added setting to limit framerate via startup argument (Graphics:CapFrameRate: false)
 		Added owner chooser for new actors in the editor
 		Added actor info panel in the editor (doubleclick)
-		Added a Setup Default Players menu item to map editor
+		Fixed minimap export breaking subsequent actions in the editor
+		Fixed writing of empty replays
+		Fixed issue with LaserZap widths (obelisk shots)
 	Both Mods:
-		Server lobbies upon creation use the previously played map
-		Added support for a Game.ConnectTo argument which allows clients to direct connect to a server when game is launched
+		Always allow buildings to be repaired (removed dependency on Construction Yard)
+		Added a new Defend stance for units
+		Added base under attack notification
+		Spacebar focuses viewport to last under attack notification
+		Ctrl-Shift-Numkey groups units into existing group
 		Helicopters now bob slightly in flight
-		Bots now repair their own buildings
-		Fixed a bug where bots would be unable to set rallypoints for production buildings
-		Bots now maintain a level of aggro on enemy units
-		Made SpawnMPUnits' initial unit configurable
-		Added a dropdown list in the map editor for setting an actor's owner upon placement
+		Bots:
+			Repair their own buildings
+			Maintain a level of aggro on enemy units
+			Moved some bot configuration into system.yaml
+			Fixed being unable to set rallypoints for production buildings
 		Replaced the server browser with a new and awesome one
-		Fixed a bug where infantry squish sounds weren't positioned
-		Fixed a bug where actor priority wasn't correct for doubleclick
-
+		Server lobbies upon creation use the previously played map
+		Made SpawnMPUnits' initial unit configurable
+		Fixed infantry squish sounds not being positioned
+		Fixed actor priority not being correct for doubleclick
+		Fixed poor stance switching detection
+		Semi-fixed naval units repairing from anywhere on map
 	Red Alert:
-		Fixed a crash which occurred when playing an online game with Hard AI
-		Fixed a bug where planes could stack more than 1-per-airfield
-		Fixed a bug where planes would not rearm at airfields
+		Fixed crash which occurred when playing an online game with Hard AI
+		Fixed planes stacking more than 1 per airfield
+		Fixed planes being unable to rearm at airfield
 		Improved logic for sending planes and helicopters back to base
-		Changed MIG to fire 2 missiles per burst instead of 4
-		Changed HELI (longbow) to fire missiles in bursts of 2
-		Added a Show Shellmap setting
-		Changed team color picker to match C&C's
-		Fixed a bug where infantry could not pass over anti-tank mines, and vice versa
-		Fixed a bug where the shellmap would reload unnecessarily when disconnecting from a lobby that hasn't started
-		Added AutoTarget capability to submarines, but they are set to HoldFire stance by default
+		Fixed infantry not able to walk over anti-tank mines, and vice versa
+		Fixed pointless reload of shellmap when disconnecting from lobby
+		Added a setting to toggle shellmap
+		Changed team color chooser to match C&C's
+		Balance:
+			MiG fires in bursts of 2 instead of 4, and damage per missile increased
+			Longbow fires in bursts of 2 instead of 1
+			Submarines are set to HoldFire stance by default
+			Mammoth Tank hp regeneration altered - 25hp per second, after 10 seconds since last unit damage
+			Tesla Tank cost decreased and armor increased
+			Flamethrower now only requires Flame Turret to be built
+			Minelayer (Anti-Tank) mine count reduced from 5 to 3
 		New Map: Bombardment Islands (Sprog)
 		New Map: Engagement (Nukem)
 		New Map: Man to Man (Nukem)
+		New Map: Breaking Point (Nukem)
 		New Map: Asymetric Battle (Seru)
+		New Map: Temperal (Blarget2)
+		New Map: Ares National Park (Wuschel)
+		New Map: Poseidon (Wuschel)
+		New Map: Apollo (Wuschel)
+		Removed Maps: Paramount, Pandemonium, Bavarian Redux
 	C&C:
-		Changed the bot spawn picker to match RA's
+		Changed the bot spawn chooser to match RA's
 		Reduced delay of tooltips
+		Fixed a lobby crash when players joined
+		Balance:
+			Stealth Tanks are set to HoldFire stance by default
 
 20111013:
 	Engine:
