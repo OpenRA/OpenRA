@@ -130,17 +130,26 @@ namespace OpenRA.Mods.RA
 
 		public string GetCursor(World world, CPos xy, MouseInput mi)
 		{
-			var cinfo = self.Trait<ChronoshiftDeploy>();
-			if (cinfo.CanJumpTo(xy, false))
+			if (self.IsInWorld && self.Trait<ChronoshiftDeploy>().CanJumpTo(xy,false))
 				return "chrono-target";
 			else
 				return "move-blocked";
 		}
 
-		public void Tick(World world) { }
+		public void Tick(World world)
+		{
+			if (!self.IsInWorld || self.IsDead())
+				world.CancelInputMode();
+		}
 		public void RenderAfterWorld(WorldRenderer wr, World world) { }
 		public void RenderBeforeWorld(WorldRenderer wr, World world)
 		{
+			if (!self.IsInWorld)
+				return;
+
+			if (self.Owner != self.World.LocalPlayer)
+				return;
+
 			wr.DrawRangeCircle(
 				Color.FromArgb(128, Color.DeepSkyBlue),
 				self.CenterLocation.ToFloat2(), (int)self.Trait<ChronoshiftDeploy>().Info.JumpDistance);
