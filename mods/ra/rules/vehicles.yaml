@@ -625,7 +625,7 @@ CTNK:
 	Mobile:
 		Speed: 8
 	RevealsShroud:
-		Range: 3
+		Range: 6
 	RenderUnit:
 	AutoTarget:
 	AttackFrontal:
