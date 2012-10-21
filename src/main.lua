@@ -121,10 +121,11 @@ function setLuaPaths(mainpath, os)
   -- (luaconf.h) in Windows, any exclamation mark ('!') in the path is replaced
   -- by the path of the directory of the executable file of the current process.
   -- this effectively prevents any path with an exclamation mark from working.
-  -- if the path has an excamation mark, we allow Lua to expand it
-  -- (for use in LUA_PATH/LUA_CPATH)
+  -- if the path has an excamation mark, allow Lua to expand it as this
+  -- expansion happens only once.
   if os == "Windows" and mainpath:find('%!') then mainpath = "!/../" end
-  wx.wxSetEnv("LUA_PATH", package.path .. ';'
+  wx.wxSetEnv("LUA_PATH", package.path .. ";"
+    .. "./?.lua;./?/init.lua;./lua/?.lua;./lua/?/init.lua;"
     .. mainpath.."lualibs/?/?.lua;"..mainpath.."lualibs/?.lua")
 
   local clibs =
