@@ -95,7 +95,7 @@ namespace OpenRA.Mods.RA
 			var movement = self.TraitOrDefault<IMove>();
 
 			if (chargeTick <= 0 // Can jump
-				&& self.World.LocalPlayer.Shroud.IsExplored(xy) // Not in shroud
+				&& self.World.LocalShroud.IsExplored(xy) // Not in shroud
 				&& movement.CanEnterCell(xy) // Can enter cell
 				&& (self.Location - xy).Length <= Info.JumpDistance) // Within jump range
 				return true;
