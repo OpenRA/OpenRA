@@ -154,7 +154,7 @@ function SetEditorSelection(selection)
     FileTreeMarkSelected('')
   end
 
-  ide.session.lastupdated = os.time() -- track UI changes for auto-recovery
+  SetAutoRecoveryMark()
 end
 
 function GetEditorFileAndCurInfo(nochecksave)
@@ -386,7 +386,7 @@ function CreateEditor()
 
   editor:Connect(wxstc.wxEVT_STC_MODIFIED,
     function (event)
-      ide.session.lastupdated = os.time() -- track modifications in any editor
+      SetAutoRecoveryMark()
 
       if (editor.assignscache and editor:GetCurrentLine() ~= editor.assignscache.line) then
         editor.assignscache = false

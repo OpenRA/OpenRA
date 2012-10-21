@@ -148,6 +148,7 @@ function SaveFile(editor, filePath)
       openDocuments[id].fileName = wx.wxFileName(filePath):GetFullName()
       openDocuments[id].modTime = GetFileModTime(filePath)
       SetDocumentModified(id, false)
+      SetAutoRecoveryMark()
       return true
     else
       wx.wxMessageBox("Unable to save file '"..filePath.."': "..err,
@@ -548,7 +549,7 @@ function SetOpenTabs(params)
       notebook:SetPageText(opendoc.index, doc.tabname)
       editor:SetText(doc.content)
       if doc.filename and doc.modified < opendoc.modTime:GetTicks() then
-        DisplayOutput("File '"..doc.filename.."' has more recent content than restored '"..doc.tabname.."'."
+        DisplayOutput("File '"..doc.filename.."' has more recent timestamp than restored '"..doc.tabname.."'."
           .." Please review before saving.\n")
       end
     end
@@ -580,6 +581,10 @@ local function getOpenTabs()
   return opendocs, {index = (id and openDocuments[id].index or 0)}
 end
 
+function SetAutoRecoveryMark()
+  ide.session.lastupdated = os.time()
+end
+
 local function saveAutoRecovery(event)
   if not ide.config.autorecoverinactivity or not ide.session.lastupdated then return end
   if ide.session.lastupdated < (ide.session.lastsaved or 0)
@@ -595,7 +600,7 @@ local function saveAutoRecovery(event)
     ide.settings:Flush()
   end
   ide.session.lastsaved = os.time()
-  ide.frame.statusBar:SetStatusText("Auto-recovery record saved.", 1)
+  ide.frame.statusBar:SetStatusText("Saved auto-recover at "..os.date("%H:%M:%S")..".", 1)
 end
 
 function StoreRestoreProjectTabs(curdir, newdir)
