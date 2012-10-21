@@ -14,8 +14,8 @@ return {
            win and ([[C:\Program Files\Gideros]]..sep..[[D:\Program Files\Gideros]]..sep)
         or mac and ('/Applications/Gideros Studio/Gideros Player.app/Contents/MacOS'..sep)
         or ''
-      local path = (os.getenv('PATH') or '')..sep
-                 ..default
+      local path = default
+                 ..(os.getenv('PATH') or '')..sep
                  ..(os.getenv('HOME') and os.getenv('HOME') .. '/bin' or '')
       local paths = {}
       for p in path:gmatch("[^"..sep.."]+") do
