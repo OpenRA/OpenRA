@@ -628,9 +628,7 @@ function StoreRestoreProjectTabs(curdir, newdir)
 
     -- close pages for those files that match the project in the reverse order
     -- (as ids shift when pages are closed)
-    notebook:Freeze() -- don't animate closing tabs
     for i = #closdocs, 1, -1 do ClosePage(closdocs[i].id) end
-    notebook:Thaw()
   end
 
   local files, params = ProjectConfig(newdir)
