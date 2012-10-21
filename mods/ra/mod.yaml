@@ -8,7 +8,7 @@ Folders:
 	.
 	./mods/ra
 	./mods/ra/bits
-	./mods/ra/packages
+	./mods/ra/bits/desert
 	./mods/ra/uibits
 	~^/Content/ra
 
@@ -25,7 +25,6 @@ Packages:
 	temperat.mix
 	snow.mix
 	interior.mix
-	desert.mix
 	~scores.mix
 	~movies1.mix
 	~movies2.mix
