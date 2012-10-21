@@ -17,8 +17,8 @@ debugger.watchWindow = nil -- the watchWindow, nil when not created
 debugger.watchCtrl = nil -- the child ctrl in the watchWindow
 debugger.stackWindow = nil -- the stackWindow, nil when not created
 debugger.stackCtrl = nil -- the child ctrl in the stackWindow
-debugger.hostname = (function() -- check what address is resolvable
-  local addr = wx.wxIPV4address()
+debugger.hostname = ide.config.debugger.hostname or (function()
+  local addr = wx.wxIPV4address() -- check what address is resolvable
   for _, host in ipairs({wx.wxGetHostName(), wx.wxGetFullHostName()}) do
     if host and #host > 0 and addr:Hostname(host) then return host end
   end

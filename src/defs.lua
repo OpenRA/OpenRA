@@ -114,6 +114,7 @@ config = {
 
   debugger = {
     verbose = false,
+    hostname = nil, -- hostname to use when the detected one is incorrect
   }
 
   outputshell = {

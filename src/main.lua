@@ -42,6 +42,7 @@ ide = {
     },
     debugger = {
       verbose = false,
+      hostname = nil,
     },
     default = {
       name = 'untitled',
