@@ -581,12 +581,12 @@ DTRK:
 		Prerequisites: stek
 		Owner: soviet
 	Valued:
-		Cost: 1500
+		Cost: 2500
 	Tooltip:
 		Name: Demolition Truck
 		Description: Demolition Truck, actively armed with explosives.\n  Strong vs Everything\n  Weak vs Everything
 	Health:
-		HP: 110
+		HP: 50
 	Armor:
 		Type: Light
 	Mobile:
@@ -603,3 +603,34 @@ DTRK:
 	-IronCurtainable:
 	Chronoshiftable:
 		ExplodeInstead: yes
+
+CTNK:
+	Inherits: ^Vehicle
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 140
+		Prerequisites: atek
+		Owner: allies
+	Valued:
+		Cost: 1200
+	Tooltip:
+		Name: Chrono Tank
+		Description: Chrono Tank, teleports to areas within range.\n  Strong vs Vehicles, Buildings\n  Weak vs Tanks
+	Selectable:
+		Bounds: 28,28
+	Health:
+		HP: 200
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 8
+	RevealsShroud:
+		Range: 6
+	RenderUnit:
+	AutoTarget:
+	AttackFrontal:
+		PrimaryWeapon: ChronoTusk
+		SecondaryWeapon: ChronoTusk
+		PrimaryLocalOffset: -4,0,0,0,0, -4,0,0,0,0
+		SecondaryLocalOffset: 4,0,0,0,25, 4,0,0,0,-25
+	ChronoshiftDeploy:
