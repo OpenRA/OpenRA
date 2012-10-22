@@ -67,7 +67,7 @@ return {
     do
       DisplayOutput("Starting the player and waiting for the bridge to connect at '"..gdrbridge.."'.\n")
       local cmd = ('"%s" %s'):format(gdrbridge, 'isconnected')
-      local attempts, connected = 10
+      local attempts, connected = 12
       for _ = 1, attempts do
         local proc = wx.wxProcess()
         proc:Redirect()
@@ -79,7 +79,7 @@ return {
         end
 
         local streamin = proc:GetInputStream()
-        for _ = 1, 10 do
+        for _ = 1, 20 do
           if streamin:CanRead() then
             connected = tonumber(streamin:Read(4096)) == 1
             break end
