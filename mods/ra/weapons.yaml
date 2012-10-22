@@ -1123,7 +1123,7 @@ BarrelExplode:
 		ImpactSound: firebl3
 		SmudgeType: Scorch
 		Delay: 5
-		Size: 2,2
+		Size: 2,1
 
 Crush:
 	Warhead:
