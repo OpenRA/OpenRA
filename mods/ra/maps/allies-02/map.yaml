@@ -2889,6 +2889,8 @@ Rules:
 			InitialStance: ReturnFire
 		Passenger:
 			Weight: 0
+		Buildable:
+			Owner: None
 	EINSTEIN:
 		Passenger:
 			Weight: 0
@@ -2900,12 +2902,20 @@ Rules:
 			Owner: None
 		RevealsShroud:
 			Range: 0
+	TENT:
+		ProvidesCustomPrerequisite:
+			Prerequisite: barracks
+	BARR:
+		ProvidesCustomPrerequisite:
+			Prerequisite: barracks
+		Buildable:
+			Owner: None
 	MEDI:
 		Buildable:
-			Prerequisites:
+			Prerequisites: barracks
 	SPY:
 		Buildable:
-			Prerequisites: dome
+			Prerequisites: barracks, dome
 	MIG:
 		Buildable:
 			Owner: None
@@ -2975,9 +2985,6 @@ Rules:
 	STEK:
 		Buildable:
 			Owner: None
-	BARR:
-		Buildable:
-			Owner: None
 	4TNK:
 		Buildable:
 			Owner: None
@@ -3003,6 +3010,9 @@ Rules:
 		Buildable:
 			Owner: None
 	FTRK:
+		Buildable:
+			Owner: None
+	CTNK:
 		Buildable:
 			Owner: None
 	CRATE:
