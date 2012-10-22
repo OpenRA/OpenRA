@@ -53,7 +53,7 @@ namespace OpenRA.Mods.RA.Missions
 		const string MaintainPresence = "Maintain an Allied presence in the area. Reinforcements will arrive soon.";
 		const string FewDeathsTemplate = "Lose fewer than {0}/{1} units.";
 
-		const int DeathsThreshold = 100;
+		const int DeathsThreshold = 200;
 
 		Actor sam1;
 		Actor sam2;
