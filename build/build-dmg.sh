@@ -20,8 +20,9 @@ cp -pr "../zbstudio/ZeroBraneStudio.app" "${WKDIR}/ZeroBraneStudio.app"
 
 mkdir "${WKDIR}/ZeroBraneStudio.app/Contents/ZeroBraneStudio"
 
-# only pick the files listed in manifests
-(cd ".."; tar cf - $(< zbstudio/MANIFEST) $(< zbstudio/MANIFEST-bin-macos) | (cd "${WKDIR}/ZeroBraneStudio.app/Contents/ZeroBraneStudio/"; tar xf -))
+# only pick the files listed in manifests and 'myprograms' (if exists)
+if [[ -d ../myprograms ]]; then MYPROGRAMS=$(cd ..; find myprograms -iname *.lua); fi
+(cd ".."; tar cf - $MYPROGRAMS $(< zbstudio/MANIFEST) $(< zbstudio/MANIFEST-bin-macos) | (cd "${WKDIR}/ZeroBraneStudio.app/Contents/ZeroBraneStudio/"; tar xf -))
 
 codesign -s "ZeroBrane LLC" ${WKDIR}/ZeroBraneStudio.app
 codesign --signature-size 6400 -s "ZeroBrane LLC" ${WKDIR}/ZeroBraneStudio.app/Contents/ZeroBraneStudio/bin/lua.app
