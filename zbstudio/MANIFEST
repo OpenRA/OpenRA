@@ -8,10 +8,7 @@ api/cg/*.lua
 api/README
 cfg/user-sample.lua
 cfg/estrela.lua
-interpreters/gideros.lua
-interpreters/love2d.lua
-interpreters/luadeb.lua
-interpreters/moai.lua
+interpreters/*.lua
 lualibs/copas/copas.lua
 lualibs/coxpcall/coxpcall.lua
 lualibs/luainspect/ast.lua

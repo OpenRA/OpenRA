@@ -1,6 +1,6 @@
 # ZeroBrane Studio Changelog
 
-## Current master that will become v0.33 (Oct 17 2012)
+## v0.33 (Oct 22 2012)
 
 ### Highlights
   - Added **Linux support**.
@@ -10,6 +10,10 @@
   - Added **re/storing open files and interpreter** when switching project folders.
 
 ### Improvements
+  - Added configuration option to specify hostname when the default one is not reachable (fixes #68).
+  - Added search for Moai and Love2d executables in default locations on OSX and Windows.
+  - Added handling of command line parameters on OSX and Linux; updated documentation.
+  - Added auto-recovery to save/restore editor content (fixes #23).
   - Added syntax aware indentation.
   - Added re/storing open files and interpreter when switching project folders.
   - Added auto-activation of files requested during debugging.
@@ -39,6 +43,8 @@
   - Added debugging-related buttons to the toolbar.
   - Improved reporting of compilation and run-time errors when running as scratchpad.
   - Made debugger strict.lua and LuaJIT friendly (upgraded to MobDebug v0.502).
+  - Updated configuration example to avoid using ide.spec that is not available (fixes #67).
+  - Updated CMake build script to handle wildcards in the MANIFEST.
   - Updated configuring toolbar size to improve Linux compatibility.
   - Updated MobDebug to v0.497 to fix issues and improve performance.
   - Updated a warning message about single instance communication.
@@ -53,6 +59,8 @@
   - Disabled showing calltip over markup in comments.
   - Disabled 'Run as Scratchpad' in the menu for those intepreters that don't support scratchpad.
   - Updated configuration examples to add editor settings and fix user.lua path.
+  - Moved all Estrela features into a separate bundle that can be loaded using cfg/estrela.lua config.
+  - Removed multiple file types offered in Save As dialog.
 
 ### Incompatibilities
   - Changed searching for user config in '$HOME/.zbstudio' from '$HOME/.zbs'.
