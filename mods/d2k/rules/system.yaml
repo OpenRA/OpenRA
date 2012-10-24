@@ -173,7 +173,7 @@ World:
 	PaletteFromFile@effect:
 		Name: effect
 		Filename: temperat.pal
-		ShadowIndex: 4
+		ShadowIndex: 4	
 	PaletteFromRGBA@shadow:
 		Name: shadow
 		R: 0
