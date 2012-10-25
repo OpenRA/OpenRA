@@ -839,11 +839,14 @@ function DebuggerRefreshScratchpad()
       local filePath = DebuggerMakeFileName(scratchpadEditor,
         ide.openDocuments[scratchpadEditor:GetId()].filePath)
 
+      -- wrap into a function call to make "return" to work with scratchpad
+      code = "(function()"..code.."\nend)()"
+
       -- this is a special error message that is generated at the very end
       -- of each script to avoid exiting the (debugee) scratchpad process.
       -- these errors are handled and not reported to the user
       local errormsg = 'execution suspended at ' .. TimeGet()
-      local stopper = "\ndo error('" .. errormsg .. "') end"
+      local stopper = "error('" .. errormsg .. "')"
       -- store if interpreter requires a special handling for external loop
       local extloop = ide.interpreter.scratchextloop
 
@@ -895,19 +898,26 @@ end
 local numberStyle = wxstc.wxSTC_LUA_NUMBER
 
 function DebuggerScratchpadOn(editor)
-  debugger.scratchpad = {editor = editor}
+  -- first check if there is already scratchpad editor.
+  -- this may happen when more than one editor is being added...
 
-  -- check if the debugger is already running; this happens when
-  -- scratchpad is turned on after external script has connected
-  if debugger.server then
-    debugger.scratchpad.updated = true
-    ClearAllCurrentLineMarkers()
-    SetAllEditorsReadOnly(false)
-    ShellSupportRemote(nil) -- disable remote shell
-    DebuggerRefreshScratchpad()
-  elseif not ProjectDebug(true, "scratchpad") then
-    debugger.scratchpad = nil
-    return
+  if debugger.scratchpad and debugger.scratchpad.editors then
+    debugger.scratchpad.editors[editor] = true
+  else
+    debugger.scratchpad = {editor = editor, editors = {[editor] = true}}
+
+    -- check if the debugger is already running; this happens when
+    -- scratchpad is turned on after external script has connected
+    if debugger.server then
+      debugger.scratchpad.updated = true
+      ClearAllCurrentLineMarkers()
+      SetAllEditorsReadOnly(false)
+      ShellSupportRemote(nil) -- disable remote shell
+      DebuggerRefreshScratchpad()
+    elseif not ProjectDebug(true, "scratchpad") then
+      debugger.scratchpad = nil
+      return
+    end
   end
 
   local scratchpadEditor = editor
@@ -922,6 +932,7 @@ function DebuggerScratchpadOn(editor)
         bit.band(evtype,wxstc.wxSTC_PERFORMED_UNDO) ~= 0 or
         bit.band(evtype,wxstc.wxSTC_PERFORMED_REDO) ~= 0) then
       debugger.scratchpad.updated = true
+      debugger.scratchpad.editor = scratchpadEditor
     end
     event:Skip()
   end)
@@ -968,7 +979,7 @@ function DebuggerScratchpadOn(editor)
   scratchpadEditor:Connect(wx.wxEVT_LEFT_UP, function(event)
     if debugger.scratchpad and debugger.scratchpad.point then
       debugger.scratchpad.point = nil
-      debugger.scratchpad.editor:ReleaseMouse()
+      scratchpadEditor:ReleaseMouse()
       wx.wxSetCursor(wx.wxNullCursor) -- restore cursor
     else event:Skip() end
   end)
@@ -1036,13 +1047,14 @@ end
 function DebuggerScratchpadOff()
   if not debugger.scratchpad then return end
 
-  local scratchpadEditor = debugger.scratchpad.editor
-  scratchpadEditor:StyleSetUnderline(numberStyle, false)
-  scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wxstc.wxEVT_STC_MODIFIED)
-  scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wx.wxEVT_MOTION)
-  scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wx.wxEVT_LEFT_DOWN)
-  scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wx.wxEVT_LEFT_UP)
-  scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wx.wxEVT_SET_CURSOR)
+  for scratchpadEditor in pairs(debugger.scratchpad.editors) do
+    scratchpadEditor:StyleSetUnderline(numberStyle, false)
+    scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wxstc.wxEVT_STC_MODIFIED)
+    scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wx.wxEVT_MOTION)
+    scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wx.wxEVT_LEFT_DOWN)
+    scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wx.wxEVT_LEFT_UP)
+    scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wx.wxEVT_SET_CURSOR)
+  end
 
   wx.wxSetCursor(wx.wxNullCursor) -- restore cursor
 

@@ -262,7 +262,8 @@ function ClosePage(selection)
     DynamicWordsRemoveAll(editor)
     local debugger = ide.debugger
     -- check if the window with the scratchpad running is being closed
-    if debugger and debugger.scratchpad and debugger.scratchpad.editor == editor then
+    if debugger and debugger.scratchpad and debugger.scratchpad.editors
+    and debugger.scratchpad.editors[editor] then
       DebuggerScratchpadOff()
     end
     -- check if the debugger is running and is using the current window

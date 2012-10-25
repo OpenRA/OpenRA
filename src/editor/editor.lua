@@ -633,12 +633,17 @@ function CreateEditor()
       menu:AppendSeparator()
       menu:Append(ID_QUICKADDWATCH, "Add Watch Expression")
       menu:Append(ID_QUICKEVAL, "Evaluate in Console")
+      menu:Append(ID_ADDTOSCRATCHPAD, "Add to Scratchpad")
 
       local point = editor:ScreenToClient(event:GetPosition())
       local pos = editor:PositionFromPointClose(point.x, point.y)
       value = pos ~= wxstc.wxSTC_INVALID_POSITION and getValAtPosition(editor, pos) or nil
       menu:Enable(ID_QUICKADDWATCH, value ~= nil)
       menu:Enable(ID_QUICKEVAL, value ~= nil)
+
+      local debugger = ide.debugger
+      menu:Enable(ID_ADDTOSCRATCHPAD, debugger.scratchpad
+        and debugger.scratchpad.editors and not debugger.scratchpad.editors[editor])
 
       -- cancel calltip as it interferes with popup menu
       if editor:CallTipActive() then editor:CallTipCancel() end
@@ -650,6 +655,9 @@ function CreateEditor()
 
   editor:Connect(ID_QUICKEVAL, wx.wxEVT_COMMAND_MENU_SELECTED,
     function(event) ShellExecuteCode(value) end)
+
+  editor:Connect(ID_ADDTOSCRATCHPAD, wx.wxEVT_COMMAND_MENU_SELECTED,
+    function(event) DebuggerScratchpadOn(editor) end)
 
   return editor
 end
