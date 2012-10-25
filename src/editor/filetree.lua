@@ -203,9 +203,10 @@ local projcombobox = wx.wxComboBox(projpanel, ID "filetree.proj.drivecb",
   wx.wxDefaultPosition, wx.wxDefaultSize,
   filetree.projdirTextArray, wx.wxTE_PROCESS_ENTER)
 
-local projbutton = wx.wxButton(projpanel, ID "debug.projectdir.choose", "...",wx.wxDefaultPosition, wx.wxSize(26,20))
+local projbutton = wx.wxButton(projpanel, ID_PROJECTDIRCHOOSE,
+  "...",wx.wxDefaultPosition, wx.wxSize(26,20))
 
-local projtree = wx.wxTreeCtrl(projpanel, ID "filetree.projtree",
+local projtree = wx.wxTreeCtrl(projpanel, wx.wxID_ANY,
   wx.wxDefaultPosition, wx.wxDefaultSize,
   filetree.showroot
   and (wx.wxTR_LINES_AT_ROOT + wx.wxTR_HAS_BUTTONS + wx.wxTR_SINGLE)

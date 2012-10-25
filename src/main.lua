@@ -51,6 +51,8 @@ ide = {
     outputshell = {},
     filetree = {},
 
+    keymap = {}, -- mapping of menu IDs to hot keys
+
     styles = StylesGetDefault(),
     stylesoutshell = StylesGetDefault(),
     interpreter = "_undefined_",
@@ -117,6 +119,8 @@ ide = {
     fNormal = nil,
   }
 }
+
+dofile "src/editor/keymap.lua"
 
 function setLuaPaths(mainpath, os)
   -- (luaconf.h) in Windows, any exclamation mark ('!') in the path is replaced

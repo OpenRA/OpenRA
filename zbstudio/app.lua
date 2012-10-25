@@ -50,14 +50,6 @@ local app = {
     if icons > 0 then ide.frame:SetIcons(bundle) end
 
     local menuBar = ide.frame.menuBar
-    local menu = menuBar:GetMenu(menuBar:FindMenu("&Project"))
-    local itemid = menu:FindItem("Project Directory")
-    if itemid ~= wx.wxNOT_FOUND then menu:Destroy(itemid) end
-
-    menu = menuBar:GetMenu(menuBar:FindMenu("&View"))
-    itemid = menu:FindItem("&Load Config Style...")
-    if itemid ~= wx.wxNOT_FOUND then menu:Destroy(itemid) end
-
     menuBar:Check(ID_CLEAROUTPUT, true)
 
     -- load myprograms/welcome.lua if exists and no projectdir

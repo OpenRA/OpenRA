@@ -81,14 +81,9 @@ style = {
 config = {
   appname = "zbstudio", -- by default the launcher name
 
-  path = {
-    -- path for tools/interpreters
-    luxinia = "C:/luxbin/",
-    -- path to luxinia exe
-
-    projectdir = "",
-    -- the project directory, used by
-    -- some tools/interpreters
+  path = { -- path for tools/interpreters
+    luxinia = "C:/luxbin/", -- path to luxinia exe
+    projectdir = "", -- the project directory, used by some tools/interpreters
   },
   editor = {
     fontname = "Courier New", -- default font
@@ -117,12 +112,9 @@ config = {
     hostname = nil, -- hostname to use when the detected one is incorrect
   }
 
-  outputshell = {
-    -- output and shell settings
-    fontname = "Courier New",
-    -- default font
-    fontsize = 10,
-    -- defult size
+  outputshell = { -- output and shell settings
+    fontname = "Courier New", -- default font
+    fontsize = 10, -- defult size
   }
 
   filetree = { -- filetree settings
@@ -130,17 +122,14 @@ config = {
     fontsize = nil, -- no default size as it is system dependent
   }
 
-  styles = {},
-  -- styles table as above for editor
+  keymap = {}, -- mapping of menu IDs to hot keys
 
-  stylesoutshell = {},
-  -- styles for output/shell
+  styles = {}, -- styles table as above for editor
+  stylesoutshell = {}, -- styles for output/shell
 
-  interpreter = "luadeb",
-  -- the default "project" lua interpreter
+  interpreter = "luadeb", -- the default "project" lua interpreter
 
-  autocomplete = true,
-  -- whether autocomplete is on by default
+  autocomplete = true, -- whether autocomplete is on by default
 
   acandtip = {
     shorttip = false,   -- tooltips are compact during typing
@@ -153,21 +142,14 @@ config = {
     -- 2: leading + any correctly ordered fragments (default)
   }
 
-  savebak = false,
-  -- if bak files are created on save
+  savebak = false, -- if bak files are created on save
 
-  filehistorylength = 20,
-  -- historylength for files
+  filehistorylength = 20, -- historylength for files
 
-  projecthistorylength = 15,
-  -- historylength for project directories
+  projecthistorylength = 15, -- historylength for project directories
 
-  singleinstance = true,
-  -- if true creates a UDP server to exchange messages
-  -- for loading commandline passed files
-
-  singleinstanceport = 0xe493,
-  -- UDP port for single instance communication
+  singleinstance = true, -- if true creates a UDP server to run IDE once and to load files
+  singleinstanceport = 0xe493, -- UDP port for single instance communication
 
   activateoutput = false, -- activate output/console on Run/Debug/Compile
   unhidewindow = false, -- to unhide a gui window

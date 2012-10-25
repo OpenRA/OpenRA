@@ -669,16 +669,16 @@ function DebuggerCreateWatchWindow()
   debugger.watchWindow = watchWindow
 
   local watchMenu = wx.wxMenu{
-    { ID_ADDWATCH, "&Add Watch\tIns" },
-    { ID_EDITWATCH, "&Edit Watch\tF2" },
-    { ID_REMOVEWATCH, "&Remove Watch\tDel" },
-    { ID_EVALUATEWATCH, "Evaluate &Watches" }}
+    { ID_ADDWATCH, "&Add Watch"..KSC(ID_ADDWATCH) },
+    { ID_EDITWATCH, "&Edit Watch"..KSC(ID_EDITWATCH) },
+    { ID_REMOVEWATCH, "&Remove Watch"..KSC(ID_REMOVEWATCH) },
+    { ID_EVALUATEWATCH, "Evaluate &Watches"..KSC(ID_EVALUATEWATCH) }}
 
   local watchMenuBar = wx.wxMenuBar()
   watchMenuBar:Append(watchMenu, "&Watches")
   watchWindow:SetMenuBar(watchMenuBar)
 
-  local watchCtrl = wx.wxListCtrl(watchWindow, ID_WATCH_LISTCTRL,
+  local watchCtrl = wx.wxListCtrl(watchWindow, wx.wxID_ANY,
     wx.wxDefaultPosition, wx.wxDefaultSize,
     wx.wxLC_REPORT + wx.wxLC_EDIT_LABELS)
 

@@ -10,17 +10,17 @@ local menuBar = frame.menuBar
 local findReplace = ide.findReplace
 
 local findMenu = wx.wxMenu{
-  { ID_FIND, "&Find\tCtrl-F", "Find the specified text" },
-  { ID_FINDNEXT, "Find &Next\tF3", "Find the next occurrence of the specified text" },
-  { ID_FINDPREV, "Find &Previous\tShift-F3", "Repeat the search backwards in the file" },
-  { ID_REPLACE, "&Replace\tCtrl-R", "Replaces the specified text with different text" },
+  { ID_FIND, "&Find"..KSC(ID_FIND), "Find the specified text" },
+  { ID_FINDNEXT, "Find &Next"..KSC(ID_FINDNEXT), "Find the next occurrence of the specified text" },
+  { ID_FINDPREV, "Find &Previous"..KSC(ID_FINDPREV), "Repeat the search backwards in the file" },
+  { ID_REPLACE, "&Replace"..KSC(ID_REPLACE), "Replaces the specified text with different text" },
   { },
-  { ID_FIND_IN_FILES, "Find &In Files\tCtrl-Shift-F", " Find specified text in files"},
-  { ID_REPLACE_IN_FILES, "Re&place In Files\tCtrl-Shift-R", " Replace specified text in files"},
+  { ID_FINDINFILES, "Find &In Files"..KSC(ID_FINDINFILES), " Find specified text in files"},
+  { ID_REPLACEINFILES, "Re&place In Files"..KSC(ID_REPLACEINFILES), " Replace specified text in files"},
   { },
-  { ID_GOTOLINE, "&Goto line\tCtrl-G", "Go to a selected line" },
+  { ID_GOTOLINE, "&Goto line"..KSC(ID_GOTOLINE), "Go to a selected line" },
   { },
-  { ID_SORT, "&Sort", "Sort selected lines"}}
+  { ID_SORT, "&Sort"..KSC(ID_SORT), "Sort selected lines"}}
 menuBar:Append(findMenu, "&Search")
 
 function OnUpdateUISearchMenu(event) event:Enable(GetEditor() ~= nil) end
@@ -39,12 +39,12 @@ frame:Connect(ID_REPLACE, wx.wxEVT_COMMAND_MENU_SELECTED,
   end)
 frame:Connect(ID_REPLACE, wx.wxEVT_UPDATE_UI, OnUpdateUISearchMenu)
 
-frame:Connect(ID_FIND_IN_FILES, wx.wxEVT_COMMAND_MENU_SELECTED,
+frame:Connect(ID_FINDINFILES, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
     findReplace:GetSelectedString()
     findReplace:Show(false,true)
   end)
-frame:Connect(ID_REPLACE_IN_FILES, wx.wxEVT_COMMAND_MENU_SELECTED,
+frame:Connect(ID_REPLACEINFILES, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
     findReplace:GetSelectedString()
     findReplace:Show(true,true)

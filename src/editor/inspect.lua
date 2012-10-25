@@ -141,12 +141,11 @@ end
 
 local frame = ide.frame
 local menu = frame.menuBar:GetMenu(frame.menuBar:FindMenu("&Project"))
-local ID_ANALYZE = ID "debug.analyze"
 
 -- insert after "Compile" item
 for item = 0, menu:GetMenuItemCount()-1 do
    if menu:FindItemByPosition(item):GetId() == ID_COMPILE then
-     menu:Insert(item+1, ID_ANALYZE, "Analyze\tShift-F7", "Analyze the source code")
+     menu:Insert(item+1, ID_ANALYZE, "Analyze"..KSC(ID_ANALYZE), "Analyze the source code")
      break
    end
 end

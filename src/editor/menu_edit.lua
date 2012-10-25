@@ -9,26 +9,26 @@ local frame = ide.frame
 local menuBar = frame.menuBar
 
 local editMenu = wx.wxMenu{
-  { ID_CUT, "Cu&t\tCtrl-X", "Cut selected text to clipboard" },
-  { ID_COPY, "&Copy\tCtrl-C", "Copy selected text to the clipboard" },
-  { ID_PASTE, "&Paste\tCtrl-V", "Insert clipboard text at cursor" },
-  { ID_SELECTALL, "Select A&ll\tCtrl-A", "Select all text in the editor" },
+  { ID_CUT, "Cu&t"..KSC(ID_CUT), "Cut selected text to clipboard" },
+  { ID_COPY, "&Copy"..KSC(ID_COPY), "Copy selected text to the clipboard" },
+  { ID_PASTE, "&Paste"..KSC(ID_PASTE), "Insert clipboard text at cursor" },
+  { ID_SELECTALL, "Select A&ll"..KSC(ID_SELECTALL), "Select all text in the editor" },
   { },
-  { ID_UNDO, "&Undo\tCtrl-Z", "Undo the last action" },
-  { ID_REDO, "&Redo\tCtrl-Y", "Redo the last action undone" },
+  { ID_UNDO, "&Undo"..KSC(ID_UNDO), "Undo the last action" },
+  { ID_REDO, "&Redo"..KSC(ID_REDO), "Redo the last action undone" },
   { },
-  { ID "edit.showtooltip", "Show &Tooltip\tCtrl-T", "Show tooltip for current position. Place cursor after opening bracket of function."},
-  { ID_AUTOCOMPLETE, "Complete &Identifier\tCtrl-K", "Complete the current identifier" },
-  { ID_AUTOCOMPLETE_ENABLE, "Auto complete Identifiers", "Auto complete while typing", wx.wxITEM_CHECK },
+  { ID_SHOWTOOLTIP, "Show &Tooltip"..KSC(ID_SHOWTOOLTIP), "Show tooltip for current position. Place cursor after opening bracket of function."},
+  { ID_AUTOCOMPLETE, "Complete &Identifier"..KSC(ID_AUTOCOMPLETE), "Complete the current identifier" },
+  { ID_AUTOCOMPLETEENABLE, "Auto Complete Identifiers"..KSC(ID_AUTOCOMPLETEENABLE), "Auto complete while typing", wx.wxITEM_CHECK },
   { },
-  { ID_COMMENT, "C&omment/Uncomment\tCtrl-U", "Comment or uncomment current or selected lines"},
+  { ID_COMMENT, "C&omment/Uncomment"..KSC(ID_COMMENT), "Comment or uncomment current or selected lines"},
   { },
-  { ID_FOLD, "&Fold/Unfold all\tF12", "Fold or unfold all code folds"},
-  { ID "edit.cleardynamics", "Clear &Dynamic Words", "Resets the dynamic word list for autcompletion."},
+  { ID_FOLD, "&Fold/Unfold all"..KSC(ID_FOLD), "Fold or unfold all code folds"},
+  { ID_CLEARDYNAMICWORDS, "Clear &Dynamic Words"..KSC(ID_CLEARDYNAMICWORDS), "Resets the dynamic word list for autcompletion."},
 }
 menuBar:Append(editMenu, "&Edit")
 
-editMenu:Check(ID_AUTOCOMPLETE_ENABLE, ide.config.autocomplete)
+editMenu:Check(ID_AUTOCOMPLETEENABLE, ide.config.autocomplete)
 
 local function getControlWithFocus()
   local editor = GetEditor()
@@ -88,12 +88,10 @@ for _, event in pairs({ID_CUT, ID_COPY, ID_PASTE, ID_SELECTALL, ID_UNDO, ID_REDO
   frame:Connect(event, wx.wxEVT_UPDATE_UI, OnUpdateUIEditMenu)
 end
 
-frame:Connect(ID "edit.cleardynamics", wx.wxEVT_COMMAND_MENU_SELECTED,
-  function (event)
-    DynamicWordsReset()
-  end)
+frame:Connect(ID_CLEARDYNAMICWORDS, wx.wxEVT_COMMAND_MENU_SELECTED,
+  function () DynamicWordsReset() end)
 
-frame:Connect(ID "edit.showtooltip", wx.wxEVT_COMMAND_MENU_SELECTED,
+frame:Connect(ID_SHOWTOOLTIP, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
     local editor = GetEditor()
 
@@ -104,7 +102,7 @@ frame:Connect(ID "edit.showtooltip", wx.wxEVT_COMMAND_MENU_SELECTED,
 
     EditorCallTip(editor, editor:GetCurrentPos())
   end)
-frame:Connect(ID "edit.showtooltip", wx.wxEVT_UPDATE_UI,
+frame:Connect(ID_SHOWTOOLTIP, wx.wxEVT_UPDATE_UI,
   function (event) event:Enable(GetEditor() ~= nil) end)
 
 frame:Connect(ID_AUTOCOMPLETE, wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -113,7 +111,7 @@ frame:Connect(ID_AUTOCOMPLETE, wx.wxEVT_COMMAND_MENU_SELECTED,
   end)
 frame:Connect(ID_AUTOCOMPLETE, wx.wxEVT_UPDATE_UI, OnUpdateUIEditMenu)
 
-frame:Connect(ID_AUTOCOMPLETE_ENABLE, wx.wxEVT_COMMAND_MENU_SELECTED,
+frame:Connect(ID_AUTOCOMPLETEENABLE, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
     ide.config.autocomplete = event:IsChecked()
   end)

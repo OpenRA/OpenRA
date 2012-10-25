@@ -10,7 +10,6 @@ local menuBar = frame.menuBar
 
 local openDocuments = ide.openDocuments
 local debugger = ide.debugger
-local filetree = ide.filetree
 local bottomnotebook = frame.bottomnotebook
 local uimgr = frame.uimgr
 
@@ -33,8 +32,8 @@ do
   table.sort(interpreternames)
 
   local targetargs = {}
-  for i,v in ipairs(interpreternames) do
-    local id = ID ("debug.interpreter."..lkinterpreters[v])
+  for _,v in ipairs(interpreternames) do
+    local id = ID("debug.interpreter."..lkinterpreters[v])
     local inter = interpreters[id]
     table.insert(targetargs,{id,inter.name,inter.description,wx.wxITEM_CHECK})
   end
@@ -42,37 +41,30 @@ do
 end
 
 local debugTab = {
-  { ID_RUN, "&Run\tF6", "Execute the current project/file" },
-  { ID_RUNNOW, "Run as Scratchpad\tCtrl-F6", "Execute the current project/file and keep updating the code to see immediate results", wx.wxITEM_CHECK },
-  { ID_COMPILE, "&Compile\tF7", "Test compile the Lua file" },
-  { ID_START_DEBUG, "Start &Debugging\tF5", "Start a debugging session" },
-  { ID_ATTACH_DEBUG, "&Start Debugger Server", "Allow a client to start a debugging session" },
+  { ID_RUN, "&Run"..KSC(ID_RUN), "Execute the current project/file" },
+  { ID_RUNNOW, "Run as Scratchpad"..KSC(ID_RUNNOW), "Execute the current project/file and keep updating the code to see immediate results", wx.wxITEM_CHECK },
+  { ID_COMPILE, "&Compile"..KSC(ID_COMPILE), "Test compile the Lua file" },
+  { ID_STARTDEBUG, "Start &Debugging"..KSC(ID_STARTDEBUG), "Start a debugging session" },
+  { ID_ATTACHDEBUG, "&Start Debugger Server"..KSC(ID_ATTACHDEBUG), "Allow a client to start a debugging session" },
   { },
-  { ID_STOP_DEBUG, "S&top Debugging\tShift-F12", "Stop the currently running process" },
-  { ID_STEP, "Step &Into\tF10", "Step into the next line" },
-  { ID_STEP_OVER, "Step &Over\tShift-F10", "Step over the next line" },
-  { ID_STEP_OUT, "Step O&ut\tCtrl-F10", "Step out of the current function" },
-  { ID_TRACE, "Tr&ace", "Trace execution showing each executed line" },
-  { ID_BREAK, "&Break\tShift-F9", "Stop execution of the program at the next executed line of code" },
+  { ID_STOPDEBUG, "S&top Debugging"..KSC(ID_STOPDEBUG), "Stop the currently running process" },
+  { ID_STEP, "Step &Into"..KSC(ID_STEP), "Step into the next line" },
+  { ID_STEPOVER, "Step &Over"..KSC(ID_STEPOVER), "Step over the next line" },
+  { ID_STEPOUT, "Step O&ut"..KSC(ID_STEPOUT), "Step out of the current function" },
+  { ID_TRACE, "Tr&ace"..KSC(ID_TRACE), "Trace execution showing each executed line" },
+  { ID_BREAK, "&Break"..KSC(ID_BREAK), "Stop execution of the program at the next executed line of code" },
   { },
-  { ID_TOGGLEBREAKPOINT, "Toggle Break&point\tF9", "Toggle Breakpoint" },
+  { ID_TOGGLEBREAKPOINT, "Toggle Break&point"..KSC(ID_TOGGLEBREAKPOINT), "Toggle Breakpoint" },
   { },
-  { ID_CLEAROUTPUT, "C&lear Output Window", "Clear the output window before compiling or debugging", wx.wxITEM_CHECK },
+  { ID_CLEAROUTPUT, "C&lear Output Window"..KSC(ID_CLEAROUTPUT), "Clear the output window before compiling or debugging", wx.wxITEM_CHECK },
 }
 
 local debugMenu = wx.wxMenu(debugTab)
-local debugMenuRun = {start="Start &Debugging\tF5", continue="Co&ntinue\tF5"}
-local debugMenuStop = {debugging="S&top Debugging\tShift-F5", process="S&top Process\tShift-F5"}
-
-local targetDirMenu = wx.wxMenu{
-  {ID "debug.projectdir.choose","Choose ..."},
-  {ID "debug.projectdir.fromfile","From current filepath"},
-  {},
-  {ID "debug.projectdir.currentdir",""}
-}
-
+local debugMenuRun = {
+  start="Start &Debugging"..KSC(ID_STARTDEBUG), continue="Co&ntinue"..KSC(ID_STARTDEBUG)}
+local debugMenuStop = {
+  debugging="S&top Debugging"..KSC(ID_STOPDEBUG), process="S&top Process"..KSC(ID_STOPDEBUG)}
 debugMenu:Append(ID_INTERPRETER,"Lua &Interpreter",targetMenu,"Set the interpreter to be used")
-debugMenu:Append(ID_PROJECTDIR,"Project Directory",targetDirMenu,"Set the project directory to be used")
 menuBar:Append(debugMenu, "&Project")
 
 -----------------------------
@@ -80,7 +72,6 @@ menuBar:Append(debugMenu, "&Project")
 
 function ProjectUpdateProjectDir(projdir,skiptree)
   ide.config.path.projectdir = projdir ~= "" and projdir or nil
-  menuBar:SetLabel(ID "debug.projectdir.currentdir",projdir)
   frame:SetStatusText(projdir)
   if (not skiptree) then
     ide.filetree:updateProjectDir(projdir)
@@ -90,7 +81,6 @@ ProjectUpdateProjectDir(ide.config.path.projectdir)
 
 local function projChoose(event)
   local editor = GetEditor()
-  local saved = false
   local fn = wx.wxFileName(
     editor and openDocuments[editor:GetId()].filePath or "")
   fn:Normalize() -- want absolute path for dialog
@@ -99,17 +89,14 @@ local function projChoose(event)
 
   local filePicker = wx.wxDirDialog(frame, "Chose a project directory",
     projectdir ~= "" and projectdir or wx.wxGetCwd(),wx.wxFLP_USE_TEXTCTRL)
-  local res = filePicker:ShowModal(true)
-  if res == wx.wxID_OK then
+  if filePicker:ShowModal(true) == wx.wxID_OK then
     ProjectUpdateProjectDir(filePicker:GetPath())
   end
   return true
 end
 
-frame:Connect(ID "debug.projectdir.choose", wx.wxEVT_COMMAND_MENU_SELECTED,
-  projChoose)
-frame:Connect(ID "debug.projectdir.choose", wx.wxEVT_COMMAND_BUTTON_CLICKED,
-  projChoose)
+frame:Connect(ID_PROJECTDIRCHOOSE, wx.wxEVT_COMMAND_MENU_SELECTED, projChoose)
+frame:Connect(ID_PROJECTDIRCHOOSE, wx.wxEVT_COMMAND_BUTTON_CLICKED, projChoose)
 
 local function projFromFile(event)
   local editor = GetEditor()
@@ -120,10 +107,10 @@ local function projFromFile(event)
   local fn = wx.wxFileName(filepath)
   fn:Normalize() -- want absolute path for dialog
 
-  if ide.interpreter then ProjectUpdateProjectDir(ide.interpreter:fprojdir(fn)) end
+  if ide.interpreter then
+    ProjectUpdateProjectDir(ide.interpreter:fprojdir(fn)) end
 end
-frame:Connect(ID "debug.projectdir.fromfile", wx.wxEVT_COMMAND_MENU_SELECTED,
-  projFromFile)
+frame:Connect(ID_PROJECTDIRFROMFILE, wx.wxEVT_COMMAND_MENU_SELECTED, projFromFile)
 
 ------------------------------------
 -- Interpreter Selection and Running
@@ -153,14 +140,14 @@ local function evSelectInterpreter(event)
   selectInterpreter(event:GetId())
 end
 
-for id,inter in pairs(interpreters) do
+for id in pairs(interpreters) do
   frame:Connect(id,wx.wxEVT_COMMAND_MENU_SELECTED,evSelectInterpreter)
 end
 
 do
   local defaultid = (
     IDget("debug.interpreter."..ide.config.interpreter) or
-    ID ("debug.interpreter."..lastinterpreter)
+    ID("debug.interpreter."..lastinterpreter)
   )
   ide.interpreter = interpreters[defaultid]
   menuBar:Check(defaultid, true)
@@ -236,7 +223,7 @@ end
 -- Actions
 
 frame:Connect(ID_TOGGLEBREAKPOINT, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function (event)
+  function ()
     local editor = GetEditor()
     local line = editor:LineFromPosition(editor:GetCurrentPos())
     DebuggerToggleBreakpoint(editor, line)
@@ -249,7 +236,7 @@ frame:Connect(ID_TOGGLEBREAKPOINT, wx.wxEVT_UPDATE_UI,
   end)
 
 frame:Connect(ID_COMPILE, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function (event)
+  function ()
     local editor = GetEditor()
     ActivateOutput()
     CompileProgram(editor)
@@ -286,11 +273,11 @@ frame:Connect(ID_RUNNOW, wx.wxEVT_UPDATE_UI,
                  and debugger.pid == nil or debugger.scratchpad ~= nil))
   end)
 
-frame:Connect(ID_ATTACH_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function (event)
+frame:Connect(ID_ATTACHDEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
+  function ()
     if (ide.interpreter.fattachdebug) then ide.interpreter:fattachdebug() end
   end)
-frame:Connect(ID_ATTACH_DEBUG, wx.wxEVT_UPDATE_UI,
+frame:Connect(ID_ATTACHDEBUG, wx.wxEVT_UPDATE_UI,
   function (event)
     local editor = GetEditor()
     event:Enable((ide.interpreter) and (ide.interpreter.fattachdebug)
@@ -298,8 +285,8 @@ frame:Connect(ID_ATTACH_DEBUG, wx.wxEVT_UPDATE_UI,
       and (editor ~= nil) and (not debugger.scratchpad))
   end)
 
-frame:Connect(ID_START_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED, function () ProjectDebug() end)
-frame:Connect(ID_START_DEBUG, wx.wxEVT_UPDATE_UI,
+frame:Connect(ID_STARTDEBUG, wx.wxEVT_COMMAND_MENU_SELECTED, function () ProjectDebug() end)
+frame:Connect(ID_STARTDEBUG, wx.wxEVT_UPDATE_UI,
   function (event)
     local editor = GetEditor()
     event:Enable((ide.interpreter) and (ide.interpreter.hasdebugger) and
@@ -308,28 +295,26 @@ frame:Connect(ID_START_DEBUG, wx.wxEVT_UPDATE_UI,
       (editor ~= nil) and (not debugger.scratchpad))
     local label = (debugger.server ~= nil)
       and debugMenuRun.continue or debugMenuRun.start
-    if debugMenu:GetLabel(ID_START_DEBUG) ~= label then
-      debugMenu:SetLabel(ID_START_DEBUG, label)
+    if debugMenu:GetLabel(ID_STARTDEBUG) ~= label then
+      debugMenu:SetLabel(ID_STARTDEBUG, label)
     end
   end)
 
-frame:Connect(ID_STOP_DEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function (event)
-    DebuggerShutdown()
-  end)
-frame:Connect(ID_STOP_DEBUG, wx.wxEVT_UPDATE_UI,
+frame:Connect(ID_STOPDEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
+  function () DebuggerShutdown() end)
+frame:Connect(ID_STOPDEBUG, wx.wxEVT_UPDATE_UI,
   function (event)
     local editor = GetEditor()
     event:Enable((debugger.server ~= nil or debugger.pid ~= nil) and (editor ~= nil))
     local label = (debugger.server == nil and debugger.pid ~= nil)
       and debugMenuStop.process or debugMenuStop.debugging
-    if debugMenu:GetLabel(ID_STOP_DEBUG) ~= label then
-      debugMenu:SetLabel(ID_STOP_DEBUG, label)
+    if debugMenu:GetLabel(ID_STOPDEBUG) ~= label then
+      debugMenu:SetLabel(ID_STOPDEBUG, label)
     end
   end)
 
 frame:Connect(ID_STEP, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function (event)
+  function ()
     ClearAllCurrentLineMarkers()
     debugger.step()
   end)
@@ -340,24 +325,24 @@ frame:Connect(ID_STEP, wx.wxEVT_UPDATE_UI,
       and (editor ~= nil) and (not debugger.scratchpad))
   end)
 
-frame:Connect(ID_STEP_OVER, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function (event)
+frame:Connect(ID_STEPOVER, wx.wxEVT_COMMAND_MENU_SELECTED,
+  function ()
     ClearAllCurrentLineMarkers()
     debugger.over()
   end)
-frame:Connect(ID_STEP_OVER, wx.wxEVT_UPDATE_UI,
+frame:Connect(ID_STEPOVER, wx.wxEVT_UPDATE_UI,
   function (event)
     local editor = GetEditor()
     event:Enable((debugger.server ~= nil) and (not debugger.running)
       and (editor ~= nil) and (not debugger.scratchpad))
   end)
 
-frame:Connect(ID_STEP_OUT, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function (event)
+frame:Connect(ID_STEPOUT, wx.wxEVT_COMMAND_MENU_SELECTED,
+  function ()
     ClearAllCurrentLineMarkers()
     debugger.out()
   end)
-frame:Connect(ID_STEP_OUT, wx.wxEVT_UPDATE_UI,
+frame:Connect(ID_STEPOUT, wx.wxEVT_UPDATE_UI,
   function (event)
     local editor = GetEditor()
     event:Enable((debugger.server ~= nil) and (not debugger.running)
@@ -365,7 +350,7 @@ frame:Connect(ID_STEP_OUT, wx.wxEVT_UPDATE_UI,
   end)
 
 frame:Connect(ID_TRACE, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function (event)
+  function ()
     ClearAllCurrentLineMarkers()
     debugger.trace()
   end)
@@ -377,7 +362,7 @@ frame:Connect(ID_TRACE, wx.wxEVT_UPDATE_UI,
   end)
 
 frame:Connect(ID_BREAK, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function (event)
+  function ()
     if debugger.server then
       debugger.breaknow()
     end

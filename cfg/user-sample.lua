@@ -11,6 +11,10 @@ Configuration files are loaded in the following order
 
 -- an example of how loaded configuration can be modified from this file
 
+-- modify a key mapping; see the full list of IDs in src/editor/keymap.lua
+local G = ...
+keymap[G.ID_STARTDEBUG] = "Ctrl-Shift-D"
+
 -- change font size to 12
 editor.fontsize = 12 -- this is mapped to ide.config.editor.fontsize
 editor.fontname = "Courier New"
