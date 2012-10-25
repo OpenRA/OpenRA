@@ -675,6 +675,7 @@ function CloseWindow(event)
   end
 
   ShowFullScreen(false)
+  ide.frame:Hide() -- hide everything while the IDE exits
   SettingsSaveAll()
   if DebuggerCloseWatchWindow then DebuggerCloseWatchWindow() end
   if DebuggerCloseStackWindow then DebuggerCloseStackWindow() end
