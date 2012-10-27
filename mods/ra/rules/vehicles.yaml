@@ -590,7 +590,7 @@ DTRK:
 	Armor:
 		Type: Light
 	Mobile:
-		Speed: 8
+		Speed: 6
 	RevealsShroud:
 		Range: 3
 	RenderUnit:
