@@ -305,8 +305,8 @@ end
 
 return {
   exec = {
-    name = "luajit ffi string to Estrela api",
-    description = "converts current file to api",
+    name = "luajit ffi string to editor api",
+    description = "converts current file to api, for autocompletion inside this editor",
     fn = exec,
   },
 }

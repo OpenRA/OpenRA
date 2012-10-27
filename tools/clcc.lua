@@ -1,7 +1,9 @@
 -- authors: Luxinia Dev (Eike Decker & Christoph Kubisch)
 ---------------------------------------------------------
 
-return {
+local clccbinpath = os.getenv("CLCC_BIN_PATH")
+
+return clccbinpath and {
   fninit = function(frame,menuBar)
     local myMenu = wx.wxMenu{
       { ID "cl.allplatforms", "&All", "Compiled with all available platforms (otherwise only first)", wx.wxITEM_CHECK },
@@ -48,7 +50,7 @@ return {
       cmdline = cmdline..(data.output and "--output " or "")
       cmdline = cmdline..'"'..fullname..'"'
 
-      cmdline = "bin/clcc.exe"..cmdline
+      cmdline = clccbinpath.."/clcc.exe"..cmdline
 
       -- run compiler process
       CommandLineRun(cmdline,nil,true,nil,nil)
