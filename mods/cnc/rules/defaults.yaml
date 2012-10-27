@@ -27,7 +27,6 @@
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
-		Notification: unitlost.aud
 	AttackMove:
 	AcceptsCloakCrate:
 	WithSmoke:
@@ -61,7 +60,6 @@
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
-		Notification: unitlost.aud
 	AttackMove:
 	AcceptsCloakCrate:
 	WithSmoke:
@@ -86,7 +84,6 @@
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
-		Notification: unitlost.aud
 
 ^Infantry:
 	AppearsOnRadar:
@@ -129,7 +126,6 @@
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
-		Notification: unitlost.aud
 	SpawnViceroid:
 		Probability: 2
 	CrushableInfantry:
@@ -161,7 +157,7 @@
 	AttackFrontal:
 		PrimaryWeapon: Pistol
 	ActorLostNotification:
-		Notification: civdead1.aud
+		Notification: CivilianKilled
 		NotifyAll: true
 	ScaredyCat:
 	RenderInfantryPanic:	
@@ -182,7 +178,6 @@
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
-		Notification: unitlost.aud
 
 ^Ship:
 	AppearsOnRadar:
@@ -200,7 +195,6 @@
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
-		Notification: unitlost.aud
 	AttackMove:
 
 ^Building:
@@ -234,14 +228,10 @@
 		ActorTypes: e6,e1
 	MustBeDestroyed:
 	GivesExperience:
-	CaptureNotification@GDI:
-		Race: gdi
-		Notification: gdicapt1.aud
-	CaptureNotification@NOD:
-		Race: nod
-		Notification: nodcapt1.aud
+	CaptureNotification:
+		Notification: BuildingCaptured
 	ActorLostNotification:
-		Notification: strclost.aud
+		Notification: BuildingLost
 	EditorAppearance:
 		RelativeToTopLeft: yes
 	AutoTargetIgnore:
