@@ -155,9 +155,9 @@ local function treeSetConnectorsAndIcons(tree,treedata)
       local dir = treeGetItemFullName(tree,treedata,item_id)
       treeAddDir(tree,item_id,dir)
       return true
-    end )
+    end)
   tree:Connect( wx.wxEVT_COMMAND_TREE_ITEM_COLLAPSED,
-    function() return true end )
+    function() return true end)
   tree:Connect( wx.wxEVT_COMMAND_TREE_ITEM_ACTIVATED,
     function( event )
       local item_id = event:GetItem()
@@ -177,7 +177,20 @@ local function treeSetConnectorsAndIcons(tree,treedata)
           treeAddDir(tree,tree:GetItemParent(item_id),name)
         end 
       end
-    end )
+    end)
+  -- toggle a folder on
+  tree:Connect( wx.wxEVT_LEFT_DOWN,
+    function( event )
+      local item_id = tree:HitTest(event:GetPosition())
+      -- only toggle if this is a folder and the click is on the label
+      if item_id and tree:GetItemImage(item_id) == 0 then
+        tree:Toggle(item_id)
+        tree:SelectItem(item_id)
+      else
+        event:Skip()
+      end
+      return true
+    end)
 end
 
 -- project
@@ -190,9 +203,10 @@ local projcombobox = wx.wxComboBox(projpanel, ID "filetree.proj.drivecb",
   wx.wxDefaultPosition, wx.wxDefaultSize,
   filetree.projdirTextArray, wx.wxTE_PROCESS_ENTER)
 
-local projbutton = wx.wxButton(projpanel, ID "debug.projectdir.choose", "...",wx.wxDefaultPosition, wx.wxSize(26,20))
+local projbutton = wx.wxButton(projpanel, ID_PROJECTDIRCHOOSE,
+  "...",wx.wxDefaultPosition, wx.wxSize(26,20))
 
-local projtree = wx.wxTreeCtrl(projpanel, ID "filetree.projtree",
+local projtree = wx.wxTreeCtrl(projpanel, wx.wxID_ANY,
   wx.wxDefaultPosition, wx.wxDefaultSize,
   filetree.showroot
   and (wx.wxTR_LINES_AT_ROOT + wx.wxTR_HAS_BUTTONS + wx.wxTR_SINGLE)
@@ -237,6 +251,11 @@ function filetree:updateProjectDir(newdir, cboxsel)
   end
 
   if ((not newdir) or filetree.projdirText == newdir or not wx.wxDirExists(newdir)) then return end
+
+  if ide.config.projectautoopen and filetree.projdirText then
+    StoreRestoreProjectTabs(filetree.projdirText, newdir)
+  end
+
   filetree.projdirText = newdir
 
   PrependStringToArray(filetree.projdirTextArray,newdir,ide.config.projecthistorylength)

@@ -4,12 +4,16 @@ local win = ide.osname == "Windows"
 return {
   name = "Moai",
   description = "Moai mobile platform",
-  api = {"baselib"},
+  api = {"baselib", "moai"},
   frun = function(self,wfilename,rundebug)
     moai = moai or ide.config.path.moai -- check if the path is configured
     if not moai then
       local sep = win and ';' or ':'
-      local path = (os.getenv('PATH') or '')..sep
+      local default =
+           win and ([[C:\Program Files\moai]]..sep..[[D:\Program Files\moai]]..sep)
+        or ''
+      local path = default
+                 ..(os.getenv('PATH') or '')..sep
                  ..(os.getenv('MOAI_BIN') or '')..sep
                  ..(os.getenv('HOME') and os.getenv('HOME') .. '/bin' or '')
       local paths = {}
@@ -81,5 +85,4 @@ return {
   end,
   hasdebugger = true,
   fattachdebug = function(self) DebuggerAttachDefault() end,
-  scratchextloop = true,
 }

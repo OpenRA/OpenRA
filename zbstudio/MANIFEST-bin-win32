@@ -1,0 +1,9 @@
+bin/clibs/mime/core.dll
+bin/clibs/ssl.dll
+bin/clibs/socket/core.dll
+bin/lua.exe
+bin/lua5.1.dll
+bin/lua51.dll
+bin/winapi.dll
+bin/wx.dll
+zbstudio.exe

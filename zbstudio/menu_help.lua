@@ -9,7 +9,7 @@ local menuBar = frame.menuBar
 local mobdebug = require "mobdebug"
 
 local helpMenu = wx.wxMenu{
-  { ID_ABOUT, "&About\tF1", "About ZeroBrane Studio" },
+  { ID_ABOUT, "&About"..KSC(ID_ABOUT), "About ZeroBrane Studio" },
 }
 menuBar:Append(helpMenu, "&Help")
 
@@ -18,12 +18,12 @@ local function DisplayAbout(event)
     <html>
       <body text="#777777">
 	<table border="0" width="100%">
-	  <tr><td><img src="zbstudio/res/zerobrane.png"></center></td></tr>
+	  <tr><td><img src="zbstudio/res/zerobrane.png"></td></tr>
 	  <tr><td>
-	<table cellspacing="3" cellpadding="3">
+	<table cellspacing="3" cellpadding="3" width="100%">
 	  <tr>
 		<td>
-		<b>ZeroBrane Studio (]]..ide.VERSION..[[; using MobDebug ]]..mobdebug._VERSION..[[)</b><br>
+		<b>ZeroBrane Studio (]]..ide.VERSION..[[; MobDebug ]]..mobdebug._VERSION..[[)</b><br>
 		<b>Copyright &copy; 2011-2012 ZeroBrane LLC</b><br>
 		Paul Kulchenko<br>
 		Licensed under the MIT License.
@@ -36,13 +36,14 @@ local function DisplayAbout(event)
 		Christoph Kubisch, Eike Decker<br>
 		Licensed under the MIT License.
 		</td>
+		<td><img align="right" src="zbstudio/res/estrela.png"></td>
 	  </tr>
 	  <tr>
 		<td>
-		<b>Based on wxLua editor sample (]]..wxlua.wxLUA_VERSION_STRING..[[)</b><br>
+		<b>Based on wxLua editor (]]..wxlua.wxLUA_VERSION_STRING..[[)</b><br>
 		<b>Copyright &copy; 2002-2005 Lomtick Software</b><br>
 		J. Winwood, John Labenski<br>
-		Licensed under wxWindows Library License, Version 3.
+		Licensed under wxWindows Library License, v3.
 		</td>
 	  </tr>
 	  <tr>

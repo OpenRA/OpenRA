@@ -42,6 +42,8 @@ function M.show_warnings(top_ast)
     warnings[#warnings+1] = (path or "?") .. "(" .. (linenum or 0) .. "): " .. msg
   end
   local function known(o) return not T.istype[o] end
+  local function index(f) -- build abc.def.xyz name recursively
+    return (f[1].tag == 'Id' and f[1][1] or index(f[1])) .. '.' .. f[2][1] end
   local isseen, globseen = {}, {}
   LA.walk(top_ast, function(ast)
     local line = ast.lineinfo and ast.lineinfo.first[1] or 0
@@ -68,7 +70,7 @@ function M.show_warnings(top_ast)
           local assignment = not func.tag or func.tag == 'Set' or func.tag == 'Localrec'
           local func1 = func[1][1]
           local fname = assignment and func1 and type(func1[1]) == 'string' and func1[1]
-            or (func1.tag == 'Index' and func1[1][1] .. '.' .. func1[2][1])
+            or (func1.tag == 'Index' and index(func1))
           -- "function foo(bar)" => func.tag == 'Set'
           --   `Set{{`Id{"foo"}},{`Function{{`Id{"bar"}},{}}}}
           -- "local function foo(bar)" => func.tag == 'Localrec'
@@ -76,6 +78,8 @@ function M.show_warnings(top_ast)
           -- "print(function(bar) end)" => func.tag == nil
           -- "function tbl:foo(bar)" => func.tag == 'Set'
           --   `Set{{`Index{`Id{"tbl"},`String{"foo"}}},{`Function{{`Id{"self"},`Id{"bar"}},{}}}}
+          -- "function tbl.abc:foo(bar)" => func.tag == 'Set'
+          --   `Set{{`Index{`Index{`Id{"tbl"},`String{"abc"}},`String{"foo"}}},{`Function{{`Id{"self"},`Id{"bar"}},{}}}},
           warn("unused parameter '" .. name .. "'" ..
                (func and assignment
                      and (fname and func.tag
@@ -137,12 +141,11 @@ end
 
 local frame = ide.frame
 local menu = frame.menuBar:GetMenu(frame.menuBar:FindMenu("&Project"))
-local ID_ANALYZE = ID "debug.analyze"
 
 -- insert after "Compile" item
 for item = 0, menu:GetMenuItemCount()-1 do
    if menu:FindItemByPosition(item):GetId() == ID_COMPILE then
-     menu:Insert(item+1, ID_ANALYZE, "Analyze\tShift-F7", "Analyze the source code")
+     menu:Insert(item+1, ID_ANALYZE, "Analyze"..KSC(ID_ANALYZE), "Analyze the source code")
      break
    end
 end

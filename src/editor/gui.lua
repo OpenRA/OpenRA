@@ -68,11 +68,15 @@ end
 local function createToolBar(frame)
   local toolBar = wx.wxToolBar(frame, wx.wxID_ANY,
     wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTB_FLAT + wx.wxTB_NODIVIDER)
-  local funclist = wx.wxChoice.new(toolBar,ID "toolBar.funclist",wx.wxDefaultPosition, wx.wxSize.new(240,16))
+  local funclist = wx.wxChoice.new(toolBar,ID "toolBar.funclist",
+    -- Linux requires a bit larger size for the function list in the toolbar.
+    -- Mac also requires a bit larger size, but setting it to 20 resets
+    -- back to 16 when the toolbar is refreshed.
+    wx.wxDefaultPosition, wx.wxSize.new(240,ide.osname == "Unix" and 24 or 16))
   
-  -- note: Ususally the bmp size isn't necessary, but the HELP icon is not the right size in MSW
+  -- usually the bmp size isn't necessary, but the HELP icon is not the right size in MSW
   local getBitmap = (ide.app.createbitmap or wx.wxArtProvider.GetBitmap)
-  local toolBmpSize = toolBar:GetToolBitmapSize()
+  local toolBmpSize = wx.wxSize(16, 16)
   toolBar:AddTool(ID_NEW, "New", getBitmap(wx.wxART_NORMAL_FILE, wx.wxART_TOOLBAR, toolBmpSize), "Create an empty document")
   toolBar:AddTool(ID_OPEN, "Open", getBitmap(wx.wxART_FILE_OPEN, wx.wxART_TOOLBAR, toolBmpSize), "Open an existing document")
   toolBar:AddTool(ID_SAVE, "Save", getBitmap(wx.wxART_FILE_SAVE, wx.wxART_TOOLBAR, toolBmpSize), "Save the current document")
@@ -87,8 +91,21 @@ local function createToolBar(frame)
   toolBar:AddSeparator()
   toolBar:AddTool(ID_FIND, "Find", getBitmap(wx.wxART_FIND, wx.wxART_TOOLBAR, toolBmpSize), "Find text")
   toolBar:AddTool(ID_REPLACE, "Replace", getBitmap(wx.wxART_FIND_AND_REPLACE, wx.wxART_TOOLBAR, toolBmpSize), "Find and replace text")
+  if ide.app.createbitmap then -- custom handler should handle all bitmaps
+    toolBar:AddSeparator()
+    toolBar:AddTool(ID_STARTDEBUG, "Start Debugging", getBitmap("wxART_DEBUG_START", wx.wxART_TOOLBAR, toolBmpSize), "Start debugging")
+    toolBar:AddTool(ID_STOPDEBUG, "Stop Debugging", getBitmap("wxART_DEBUG_STOP", wx.wxART_TOOLBAR, toolBmpSize), "Stop debugging")
+    toolBar:AddTool(ID_BREAK, "Break", getBitmap("wxART_DEBUG_BREAK", wx.wxART_TOOLBAR, toolBmpSize), "Break running process")
+    toolBar:AddTool(ID_STEP, "Step into", getBitmap("wxART_DEBUG_STEP_INTO", wx.wxART_TOOLBAR, toolBmpSize), "Step into")
+    toolBar:AddTool(ID_STEPOVER, "Step over", getBitmap("wxART_DEBUG_STEP_OVER", wx.wxART_TOOLBAR, toolBmpSize), "Step over")
+    toolBar:AddTool(ID_STEPOUT, "Step out", getBitmap("wxART_DEBUG_STEP_OUT", wx.wxART_TOOLBAR, toolBmpSize), "Step out")
+    toolBar:AddSeparator()
+    toolBar:AddTool(ID_TOGGLEBREAKPOINT, "Toggle breakpoint", getBitmap("wxART_DEBUG_BREAKPOINT_TOGGLE", wx.wxART_TOOLBAR, toolBmpSize), "Toggle breakpoint")
+    toolBar:AddTool(ID_VIEWCALLSTACK, "Stack window", getBitmap("wxART_DEBUG_CALLSTACK", wx.wxART_TOOLBAR, toolBmpSize), "View stack window")
+    toolBar:AddTool(ID_VIEWWATCHWINDOW, "Watch window", getBitmap("wxART_DEBUG_WATCH", wx.wxART_TOOLBAR, toolBmpSize), "View watch window")
+  end
   toolBar:AddSeparator()
-  toolBar:AddTool(ID "debug.projectdir.fromfile", "Update", getBitmap(wx.wxART_GO_DIR_UP , wx.wxART_TOOLBAR, toolBmpSize), "Sets projectdir from file")
+  toolBar:AddTool(ID_PROJECTDIRFROMFILE, "Update", getBitmap(wx.wxART_GO_DIR_UP , wx.wxART_TOOLBAR, toolBmpSize), "Set project directory from current file")
   toolBar:AddSeparator()
   toolBar:AddControl(funclist)
   toolBar:Realize()
@@ -97,7 +114,6 @@ local function createToolBar(frame)
   frame.toolBar = toolBar
   return toolBar
 end
-
 
 local function createNotebook(frame)
   -- notebook for editors

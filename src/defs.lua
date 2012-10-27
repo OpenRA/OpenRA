@@ -79,40 +79,27 @@ style = {
 -- content is optional
 -- config is loaded into existing config table
 config = {
-  appname = "estrela", -- by default the launcher name
+  appname = "zbstudio", -- by default the launcher name
 
-  path = {
-    -- path for tools/interpreters
-    luxinia = "C:/luxbin/",
-    -- path to luxinia exe
-
-    projectdir = "",
-    -- the project directory, used by
-    -- some tools/interpreters
+  path = { -- path for tools/interpreters
+    luxinia = "C:/luxbin/", -- path to luxinia exe
+    projectdir = "", -- the project directory, used by some tools/interpreters
   },
   editor = {
-    fontname = "Courier New",
-    -- default font
-    fontsize = 10,
-    -- defailt size
-    caretline = true,
-    -- show active line
-
-    -- input/output filtering of strings
-    -- current filters "GermanUtf8Ascii"
-    iofilter = nil,
-
-    -- use indicator to show function calls
-    -- if spec allows
-    showfncall = true,
-
+    fontname = "Courier New", -- default font
+    fontsize = 10, -- default size
+    caretline = true, -- show active line
+    iofilter = nil, -- input/output filtering of strings
+    showfncall = true, -- use indicator to show function calls if spec allows
     tabwidth = 4,
     usetabs = true, -- if false then spaces are used
     usewrap = true, -- if true then the text is wrapped in the editor
     whitespace = false,
     autotabs = true, -- if true test for tabs after file load,
-    -- sets "usetabs" to true for this file
+                     -- sets "usetabs" to true for this file
     calltipdelay = nil, -- delay to show calltip (in ms)
+    autoactivate = false, -- auto-activate/open files during debugging
+    smartindent = false, -- use smart indentation if spec allows
   },
 
   default = {
@@ -122,60 +109,53 @@ config = {
 
   debugger = {
     verbose = false,
+    hostname = nil, -- hostname to use when the detected one is incorrect
   }
 
-  outputshell = {
-    -- output and shell settings
-    fontname = "Courier New",
-    -- default font
-    fontsize = 10,
-    -- defult size
+  outputshell = { -- output and shell settings
+    fontname = "Courier New", -- default font
+    fontsize = 10, -- defult size
   }
 
-  styles = {},
-  -- styles table as above for editor
+  filetree = { -- filetree settings
+    fontname = nil, -- no default font as it is system dependent
+    fontsize = nil, -- no default size as it is system dependent
+  }
 
-  stylesoutshell = {},
-  -- styles for output/shell
+  keymap = {}, -- mapping of menu IDs to hot keys
 
-  interpreter = "EstrelaEditor",
-  -- the default "project" lua interpreter
+  styles = {}, -- styles table as above for editor
+  stylesoutshell = {}, -- styles for output/shell
 
-  autocomplete = true,
-  -- whether autocomplete is on by default
+  interpreter = "luadeb", -- the default "project" lua interpreter
+
+  autocomplete = true, -- whether autocomplete is on by default
 
   acandtip = {
-    shorttip = false,
-    -- tooltips are compact during typing
-    nodynwords = false,
-    -- no dynamic words (user entered words)
-    ignorecase = false,
-    -- ignores case when performing comparison with autocomplete list
+    shorttip = false,   -- tooltips are compact during typing
+    nodynwords = false, -- no dynamic words (user entered words)
+    ignorecase = false, -- ignores case when performing comparison with autocomplete list
+    startat = 2,        -- start suggesting dynamic words after 2 characters
     strategy = 0,
     -- 0: is string comparison
     -- 1: substring leading characters (camel case or _ separated)
     -- 2: leading + any correctly ordered fragments (default)
   }
 
-  savebak = false,
-  -- if bak files are created on save
+  savebak = false, -- if bak files are created on save
 
-  filehistorylength = 20,
-  -- historylength for files
+  filehistorylength = 20, -- historylength for files
 
-  projecthistorylength = 15,
-  -- historylength for project directories
+  projecthistorylength = 15, -- historylength for project directories
 
-  singleinstance = true,
-  -- if true creates a UDP server to exchange messages
-  -- for loading commandline passed files
-
-  singleinstanceport = 0xe493,
-  -- UDP port for single instance communication
+  singleinstance = true, -- if true creates a UDP server to run IDE once and to load files
+  singleinstanceport = 0xe493, -- UDP port for single instance communication
 
   activateoutput = false, -- activate output/console on Run/Debug/Compile
   unhidewindow = false, -- to unhide a gui window
   allowinteractivescript = false, -- allow interaction in the output window
+  projectautoopen = false, -- allow auto open/close files on a project switch
+  autorecoverinactivity = nil, -- period of inactivity (s) for autorecover
 }
 
 -- application engine
@@ -320,5 +300,8 @@ interpreter = {
   fprojdir = function(self,wfilename) return "projpath_from_filename" end, -- (opt)
   fattachdebug = function(self) end, -- (opt)
   hasdebugger = false, -- if debugging is available
-  scratchextloop = false, -- (opt) if scratchpad requires handling for external loop
+  scratchextloop = nil, -- (opt) indicates scratchpad support
+    -- nil, no support for scratchpad;
+    -- false, scratchpad supported;
+    -- true, scratchpad supported and requires handling for external loop.
 }

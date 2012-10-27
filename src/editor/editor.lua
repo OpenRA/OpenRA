@@ -153,6 +153,8 @@ function SetEditorSelection(selection)
   else
     FileTreeMarkSelected('')
   end
+
+  SetAutoRecoveryMark()
 end
 
 function GetEditorFileAndCurInfo(nochecksave)
@@ -163,9 +165,7 @@ function GetEditorFileAndCurInfo(nochecksave)
 
   local id = editor:GetId()
   local filepath = openDocuments[id].filePath
-  if (nochecksave and not filepath) then
-    return
-  end
+  if not filepath then return end
 
   local fn = wx.wxFileName(filepath)
   fn:Normalize()
@@ -182,6 +182,7 @@ end
 
 -- Set if the document is modified and update the notebook page text
 function SetDocumentModified(id, modified)
+  if not openDocuments[id] then return end
   local pageText = openDocuments[id].fileName or ide.config.default.fullname
 
   if modified then
@@ -193,10 +194,16 @@ function SetDocumentModified(id, modified)
 end
 
 function EditorAutoComplete(editor)
-  if (editor == nil or not editor.spec) then return end
+  if not (editor and editor.spec) then return end
+
+  local pos = editor:GetCurrentPos()
+  -- don't do auto-complete in comments or strings.
+  -- the current position and the previous one have default style (0),
+  -- so we need to check two positions back.
+  local style = pos >= 2 and bit.band(editor:GetStyleAt(pos-2),31) or 0
+  if editor.spec.iscomment[style] or editor.spec.isstring[style] then return end
 
   -- retrieve the current line and get a string to the current cursor position in the line
-  local pos = editor:GetCurrentPos()
   local line = editor:GetCurrentLine()
   local linetx = editor:GetLine(line)
   local linestart = editor:PositionFromLine(line)
@@ -246,6 +253,7 @@ local function getValAtPosition(editor, pos)
   if start and not selected then
     local style = bit.band(editor:GetStyleAt(linestart+start),31)
     if editor.spec.iscomment[style]
+    or (MarkupIsAny and MarkupIsAny(style)) -- markup in comments
     or editor.spec.isstring[style]
     or style == wxstc.wxSTC_LUA_NUMBER
     or style == wxstc.wxSTC_LUA_WORD then
@@ -272,8 +280,8 @@ function EditorCallTip(editor, pos, x, y)
         -- check if the mouse position is specified and the mouse has moved,
         -- then don't show the tooltip as it's already too late for it.
         if x and y then
-          local mouse = wx.wxGetMouseState()
-          if mouse:GetX() ~= x or mouse:GetY() ~= y then return end
+          local mpos = wx.wxGetMousePosition()
+          if mpos.x ~= x or mpos.y ~= y then return end
         end
         editor:CallTipShow(pos, val) end)
     end
@@ -283,10 +291,10 @@ function EditorCallTip(editor, pos, x, y)
 end
 
 -- ----------------------------------------------------------------------------
--- Create an editor and add it to the notebook
-function CreateEditor(name)
+-- Create an editor
+function CreateEditor()
   local editor = wxstc.wxStyledTextCtrl(notebook, editorID,
-    wx.wxDefaultPosition, wx.wxDefaultSize,
+    wx.wxDefaultPosition, wx.wxSize(0, 0),
     wx.wxBORDER_STATIC)
 
   editorID = editorID + 1 -- increment so they're always unique
@@ -315,8 +323,6 @@ function CreateEditor(name)
   editor:SetCaretLineVisible(ide.config.editor.caretline and 1 or 0)
 
   editor:SetVisiblePolicy(wxstc.wxSTC_VISIBLE_SLOP, 3)
-  --editor:SetXCaretPolicy(wxstc.wxSTC_CARET_SLOP, 10)
-  --editor:SetYCaretPolicy(wxstc.wxSTC_CARET_SLOP, 3)
 
   editor:SetMarginWidth(0, editor:TextWidth(32, "99999_")) -- line # margin
 
@@ -380,6 +386,8 @@ function CreateEditor(name)
 
   editor:Connect(wxstc.wxEVT_STC_MODIFIED,
     function (event)
+      SetAutoRecoveryMark()
+
       if (editor.assignscache and editor:GetCurrentLine() ~= editor.assignscache.line) then
         editor.assignscache = false
       end
@@ -415,19 +423,44 @@ function CreateEditor(name)
       local linetx = editor:GetLine(line)
       local linestart = editor:PositionFromLine(line)
       local localpos = pos-linestart
-
       local linetxtopos = linetx:sub(1,localpos)
 
       if (ch == char_CR and eol==2) or (ch == char_LF and eol==0) then
         if (line > 0) then
           local indent = editor:GetLineIndentation(line - 1)
-          if indent > 0 then
-            editor:SetLineIndentation(line, indent)
-            local tw = editor:GetTabWidth()
-            local ut = editor:GetUseTabs()
-            local indent = ut and (indent / tw) or indent
-            editor:GotoPos(pos+indent)
+          local linedone = editor:GetLine(line - 1)
+
+          -- if the indentation is 0 and the current line is not empty
+          -- then take indentation from the current line (instead of the
+          -- previous one). This may happen when CR is hit at the beginning
+          -- of a line (rather than at the end).
+          if indent == 0 and not linetx:match("^[\010\013]*$") then
+            indent = editor:GetLineIndentation(line)
           end
+
+          local tw = editor:GetTabWidth()
+          local ut = editor:GetUseTabs()
+
+          if ide.config.editor.smartindent
+          and editor.spec.isdecindent and editor.spec.isincindent then
+            local closed, blockend = editor.spec.isdecindent(linedone)
+            local opened = editor.spec.isincindent(linedone)
+
+            -- if the current block is already indented, skip reverse indenting
+            if (line > 1) and (closed > 0 or blockend > 0)
+            and editor:GetLineIndentation(line-2) > indent then
+              -- adjust opened first; this is needed when use ENTER after })
+              if blockend == 0 then opened = opened + closed end
+              closed, blockend = 0, 0
+            end
+            editor:SetLineIndentation(line-1, indent - tw * closed)
+            indent = indent + tw * (opened - blockend)
+            if indent < 0 then indent = 0 end
+          end
+          editor:SetLineIndentation(line, indent)
+
+          indent = ut and (indent / tw) or indent
+          editor:GotoPos(editor:GetCurrentPos()+indent)
         end
 
       elseif ch == ("("):byte() then
@@ -447,10 +480,24 @@ function CreateEditor(name)
 
   editor:Connect(wxstc.wxEVT_STC_DWELLSTART,
     function (event)
-      local mouse = wx.wxGetMouseState()
-      local position = editor:PositionFromPointClose(event:GetX(),event:GetY())
+      -- on Linux DWELLSTART event seems to be generated even for those
+      -- editor windows that are not active. What's worse, when generated
+      -- the event seems to report "old" position when retrieved using
+      -- event:GetX and event:GetY, so instead we use wxGetMousePosition.
+      local linux = ide.osname == 'Unix'
+      if linux and editor ~= GetEditor() then return end
+      -- check if this editor has focus; it may not when Stack/Watch window
+      -- is on top, but DWELL events are still triggered in this case.
+      -- Don't want to show calltip as it is still shown when the focus
+      -- is switched to a different application.
+      local focus = editor:FindFocus()
+      if focus and focus:GetId() ~= editor:GetId() then return end
+      local mpos = wx.wxGetMousePosition()
+      local cpos = editor:ScreenToClient(mpos)
+      local position = editor:PositionFromPointClose(
+        linux and cpos.x or event:GetX(), linux and cpos.y or event:GetY())
       if position ~= wxstc.wxSTC_INVALID_POSITION then
-        EditorCallTip(editor, position, mouse:GetX(), mouse:GetY())
+        EditorCallTip(editor, position, mpos.x, mpos.y)
       end
       event:Skip()
     end)
@@ -458,6 +505,12 @@ function CreateEditor(name)
   editor:Connect(wxstc.wxEVT_STC_DWELLEND,
     function (event)
       if editor:CallTipActive() then editor:CallTipCancel() end
+      event:Skip()
+    end)
+
+  editor:Connect(wx.wxEVT_KILL_FOCUS,
+    function (event)
+      if editor:AutoCompActive() then editor:AutoCompCancel() end
       event:Skip()
     end)
 
@@ -529,6 +582,35 @@ function CreateEditor(name)
         if notebook:GetSelection() == last
         then notebook:SetSelection(first)
         else notebook:AdvanceSelection(true) end
+      elseif (keycode == wx.WXK_DELETE or keycode == wx.WXK_BACK)
+        -- ide.osname == 'Macintosh' has wx.wxMOD_NONE not defined
+        -- for some reason (at least in wxlua 2.8.12.1)
+        and (event:GetModifiers() == (wx.wxMOD_NONE or 0)) then
+        -- Delete and Backspace behave the same way for selected text
+        if #(editor:GetSelectedText()) > 0 then
+          editor:SetTargetStart(editor:GetSelectionStart())
+          editor:SetTargetEnd(editor:GetSelectionEnd())
+        else
+          local pos = editor:GetCurrentPos()
+          if keycode == wx.WXK_BACK then
+            pos = pos - 1
+            if pos < 0 then return end
+          end
+
+          -- check if the modification is to one of "invisible" characters.
+          -- if not, proceed with "normal" processing as there are other
+          -- events that may depend on Backspace, for example, re-calculating
+          -- auto-complete suggestions.
+          local style = bit.band(editor:GetStyleAt(pos), 31)
+          if not MarkupIsSpecial or not MarkupIsSpecial(style) then
+            event:Skip()
+            return
+          end
+
+          editor:SetTargetStart(pos)
+          editor:SetTargetEnd(pos+1)
+        end
+        editor:ReplaceTarget("")
       else
         if ide.osname == 'Macintosh' and event:CmdDown() then
           return -- ignore a key press if Command key is also pressed
@@ -569,6 +651,12 @@ function CreateEditor(name)
   editor:Connect(ID_QUICKEVAL, wx.wxEVT_COMMAND_MENU_SELECTED,
     function(event) ShellExecuteCode(value) end)
 
+  return editor
+end
+
+-- ----------------------------------------------------------------------------
+-- Add an editor to the notebook
+function AddEditor(editor, name)
   if notebook:AddPage(editor, name, true) then
     local id = editor:GetId()
     local document = {}
@@ -579,9 +667,9 @@ function CreateEditor(name)
     document.modTime = nil
     document.isModified = false
     openDocuments[id] = document
+    return document
   end
-
-  return editor
+  return
 end
 
 function GetSpec(ext,forcespec)
@@ -703,15 +791,16 @@ end
 ----------------------------------------------------
 -- function list for current file
 
-funclist:Connect(wx.wxEVT_SET_FOCUS,
+-- wx.wxEVT_SET_FOCUS is not triggered for wxChoice on Mac (wx 2.8.12),
+-- so use wx.wxEVT_LEFT_DOWN instead
+funclist:Connect(ide.osname == 'Macintosh' and wx.wxEVT_LEFT_DOWN or wx.wxEVT_SET_FOCUS,
   function (event)
     event:Skip()
 
-    -- parse current file and update list
     local editor = GetEditor()
+    if (editor and not (editor.spec and editor.spec.isfndef)) then return end
 
-    if (not (editor and editor.spec and editor.spec.isfndef)) then return end
-
+    -- parse current file and update list
     -- first populate with the current label to minimize flicker
     -- then populate the list and update the label
     local current = funclist:GetCurrentSelection()
@@ -722,7 +811,7 @@ funclist:Connect(wx.wxEVT_SET_FOCUS,
     funclist:SetSelection(0)
 
     local lines = 0
-    local linee = editor:GetLineCount()-1
+    local linee = (editor and editor:GetLineCount() or 0)-1
     for line=lines,linee do
       local tx = editor:GetLine(line)
       local s,_,cap,l = editor.spec.isfndef(tx)

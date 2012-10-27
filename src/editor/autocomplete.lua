@@ -11,7 +11,7 @@ local statusBar = ide.frame.statusBar
 
 local function newAPI(api)
   api = api or {}
-  for i,v in pairs(api) do
+  for i in pairs(api) do
     api[i] = nil
   end
   -- tool tip info and reserved names
@@ -36,8 +36,6 @@ local apis = {
   lua = newAPI(),
 }
 
-local config = ide.config.ac
-
 function GetApi(apitype)
   return apis[apitype] or apis["none"]
 end
@@ -58,20 +56,16 @@ local function addAPI(apifile,only,subapis,known) -- relative to API directory
 
   local fn,err = loadfile(apifile)
   if err then
-    print("API file '"..apifile.."' could not be loaded: "..err.."\n")
+    DisplayOutput("Error while loading API file: "..err.."\n")
     return
   end
-  local mt
   local env = apis[ftype] or newAPI()
   apis[ftype] = env
   env = env.ac.childs
-  local suc,res = xpcall(function()return fn(env)end, function(err)
-      DisplayOutput("Error while loading API file: "..apifile..":\n")
-      DisplayOutput(debug.traceback(err))
-      DisplayOutput("\n")
-    end)
-
-  if (suc and res) then
+  local suc,res = pcall(function()return fn(env)end)
+  if (not suc) then
+    DisplayOutput("Error while processing API file: "..res.."\n")
+  elseif (res) then
     local function gennames(tab,prefix)
       for i,v in pairs(tab) do
         v.classname = (prefix and (prefix..".") or "")..i
@@ -89,9 +83,8 @@ local function addAPI(apifile,only,subapis,known) -- relative to API directory
 end
 
 local function loadallAPIs (only,subapis,known)
-  for i,dir in ipairs(FileSysGet("./api/*",wx.wxDIR)) do
-    local files = FileSysGet(dir.."/*.*",wx.wxFILE)
-    for i,file in ipairs(files) do
+  for _, dir in ipairs(FileSysGet("api/*", wx.wxDIR)) do
+    for _, file in ipairs(FileSysGet(dir.."/*.*", wx.wxFILE)) do
       if file:match "%.lua$" then
         addAPI(file,only,subapis,known)
       end
@@ -146,7 +139,7 @@ local function fillTips(api,apibasename,apiname)
         -- build info
         local inf = frontname.."\n"..info.description
         local sentence = info.description:match("^([^\n]+)\n.*")
-        local sentence = sentence and sentence:match("([^%.]+)%..*$")
+        sentence = sentence and sentence:match("([^%.]+)%..*$")
         local infshort = frontname.."\n"..(sentence and sentence.."..." or info.description)
         local infshortbatch = (info.returns and info.args) and frontname or infshort
 
@@ -266,7 +259,7 @@ function ReloadLuaAPI()
   interpreterapi = interpreterapi and interpreterapi.api
   if (interpreterapi) then
     local apinames = {}
-    for i,v in ipairs(interpreterapi) do
+    for _, v in ipairs(interpreterapi) do
       apinames[v] = true
     end
     interpreterapi = apinames
@@ -276,7 +269,7 @@ end
 
 do
   local known = {}
-  for n,spec in pairs(ide.specs) do
+  for _, spec in pairs(ide.specs) do
     if (spec.apitype) then
       known[spec.apitype] = true
     end
@@ -388,7 +381,7 @@ local function getAutoCompApiList(childs,fragment)
     local wlist = cache[childs]
     if not wlist then
       wlist = " "
-      for i,v in pairs(childs) do
+      for i in pairs(childs) do
         wlist = wlist..i.." "
       end
       cache[childs] = wlist
@@ -415,8 +408,8 @@ local function getAutoCompApiList(childs,fragment)
   local t = {}
   cache[childs] = t
 
-  local sub = strat == 1
-  for key, info in pairs(childs) do
+  local sub = strategy == 1
+  for key in pairs(childs) do
     local used = {}
     --
     local kl = key:lower()
@@ -468,7 +461,7 @@ function CreateAutoCompList(editor,key)
   if not (progress) then return end
 
   if (tab == ac) then
-    local obj,krest = rest:match("([%w_]+)[:%.]([%w_]+)%s*$")
+    local _, krest = rest:match("([%w_]+)[:%.]([%w_]+)%s*$")
     if (krest) then
       if (#krest < 3) then return end
       tab = tip.finfo
@@ -480,13 +473,14 @@ function CreateAutoCompList(editor,key)
     rest = rest:gsub("[^%w_]","")
   end
 
-  local last = key:match "([%w_]+)%s*$"
+  local last = key:match("([%w_]+)%s*$")
 
   -- build dynamic word list
   -- only if api search couldnt descend
   -- ie we couldnt find matching sub items
   local dw = ""
-  if (tab == ac) then
+  if (tab == ac and last and #last >= (ide.config.acandtip.startat or 2)) then
+    last = last:lower()
     if dynamicwords[last] then
       local list = dynamicwords[last]
       table.sort(list,function(a,b)
@@ -496,7 +490,7 @@ function CreateAutoCompList(editor,key)
         end)
       -- ignore if word == last and sole user
       for i,v in ipairs(list) do
-        if (v == last and dywordentries[v] == 1) then
+        if (v:lower() == last and dywordentries[v] == 1) then
           table.remove(list,i)
           break
         end
@@ -504,7 +498,6 @@ function CreateAutoCompList(editor,key)
   
       local res = table.concat(list," ")
       dw = res ~= "" and " "..res or ""
-
     end
   end
 
@@ -526,13 +519,13 @@ function CreateAutoCompList(editor,key)
             local ma,mb = 0,0
             g(a,pat,function(...)
                 local l = {...}
-                for i,v in ipairs(l) do
+                for _, v in ipairs(l) do
                   ma = ma + ((v=="") and 0 or 1)
                 end
               end)
             g(b,pat,function(...)
                 local l = {...}
-                for i,v in ipairs(l) do
+                for _, v in ipairs(l) do
                   mb = mb + ((v=="") and 0 or 1)
                 end
               end)

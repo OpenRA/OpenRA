@@ -1,12 +1,12 @@
 --
--- MobDebug 0.489
+-- MobDebug 0.502
 -- Copyright 2011-12 Paul Kulchenko
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
 --
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.489,
+  _VERSION = 0.502,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = 8171
@@ -23,9 +23,25 @@ local require = require
 local setmetatable = setmetatable
 local string = string
 local tonumber = tonumber
-local mosync = mosync
-local jit = jit
-local moai = MOAISim
+
+-- if strict.lua is used, then need to avoid referencing some global
+-- variables, as they can be undefined;
+-- use rawget to to avoid complaints from strict.lua at run-time.
+-- it's safe to do the initialization here as all these variables
+-- should get defined values (of any) before the debugging starts.
+-- there is also global 'wx' variable, which is checked as part of
+-- the debug loop as 'wx' can be loaded at any time during debugging.
+local genv = _G or _ENV
+local jit = rawget(genv, "jit")
+local mosync = rawget(genv, "mosync")
+local MOAICoroutine = rawget(genv, "MOAICoroutine")
+
+-- check for OS and convert file names to lower case on windows
+-- (its file system is case insensitive, but case preserving), as setting a
+-- breakpoint on x:\Foo.lua will not work if the file was loaded as X:\foo.lua.
+local iswindows = os.getenv('WINDIR')
+  or (os.getenv('OS') or ''):match('[Ww]indows')
+  or pcall(require, "winapi")
 
 -- this is a socket class that implements maConnect interface
 local function socketMobileLua() 
@@ -163,6 +179,12 @@ if mosync and mosync.EventMonitor then
   mosync.EventMonitor.RunEventLoop = function(self) end
 end
 
+-- turn jit off based on Mike Pall's comment in this discussion:
+-- http://www.freelists.org/post/luajit/Debug-hooks-and-JIT,2
+-- "You need to turn it off at the start if you plan to receive
+-- reliable hook calls at any later point in time."
+if jit and jit.off then jit.off() end
+
 local socket = mosync and socketMobileLua() or (require "socket")
 
 local debug = require "debug"
@@ -182,15 +204,18 @@ local step_over = false
 local step_level = 0
 local stack_level = 0
 local server
+local rset
+local basedir = ""
 local deferror = "execution aborted at default debugee"
 local debugee = function () 
   local a = 1
   for _ = 1, 10 do a = a + 1 end
   error(deferror)
 end
+local function q(s) return s:gsub('([%(%)%.%%%+%-%*%?%[%^%$%]])','%%%1') end
 
 local serpent = (function() ---- include Serpent module for serialization
-local n, v = "serpent", 0.16 -- (C) 2012 Paul Kulchenko; MIT License
+local n, v = "serpent", 0.18 -- (C) 2012 Paul Kulchenko; MIT License
 local c, d = "Paul Kulchenko", "Serializer and pretty printer of Lua data types"
 local snum = {[tostring(1/0)]='1/0 --[[math.huge]]',[tostring(-1/0)]='-1/0 --[[-math.huge]]',[tostring(0/0)]='0/0'}
 local badtype = {thread = true, userdata = true}
@@ -208,14 +233,14 @@ local function s(t, opts)
   local space, maxl = (opts.compact and '' or ' '), (opts.maxlevel or math.huge)
   local comm = opts.comment and (tonumber(opts.comment) or math.huge)
   local seen, sref, syms, symn = {}, {}, {}, 0
-  local function gensym(val) return tostring(val):gsub("[^%w]",""):gsub("(%d%w+)",
-    function(s) if not syms[s] then symn = symn+1; syms[s] = symn end return syms[s] end) end
+  local function gensym(val) return (tostring(val):gsub("[^%w]",""):gsub("(%d%w+)",
+    function(s) if not syms[s] then symn = symn+1; syms[s] = symn end return syms[s] end)) end
   local function safestr(s) return type(s) == "number" and (huge and snum[tostring(s)] or s)
     or type(s) ~= "string" and tostring(s) -- escape NEWLINE/010 and EOF/026
     or ("%q"):format(s):gsub("\010","n"):gsub("\026","\\026") end
   local function comment(s,l) return comm and (l or 0) < comm and ' --[['..tostring(s)..']]' or '' end
   local function globerr(s,l) return globals[s] and globals[s]..comment(s,l) or not fatal
-    and safestr(tostring(s)) or error("Can't serialize "..tostring(s)) end
+    and safestr(select(2, pcall(tostring, s))) or error("Can't serialize "..tostring(s)) end
   local function safename(path, name) -- generates foo.bar, foo[3], or foo['b a r']
     local n = name == nil and '' or name
     local plain = type(n) == "string" and n:match("^[%l%u_][%w_]*$") and not keyword[n]
@@ -227,16 +252,19 @@ local function s(t, opts)
     table.sort(o, function(a,b)
       return (o[a] and 0 or to[type(a)] or 'z')..(tostring(a):gsub("%d+",padnum))
            < (o[b] and 0 or to[type(b)] or 'z')..(tostring(b):gsub("%d+",padnum)) end) end
-  local function val2str(t, name, indent, path, plainindex, level)
+  local function val2str(t, name, indent, insref, path, plainindex, level)
     local ttype, level = type(t), (level or 0)
     local spath, sname = safename(path, name)
     local tag = plainindex and
       ((type(name) == "number") and '' or name..space..'='..space) or
       (name ~= nil and sname..space..'='..space or '')
-    if seen[t] then
+    if seen[t] then -- if already seen and in sref processing,
+      if insref then return tag..seen[t] end -- then emit right away
       table.insert(sref, spath..space..'='..space..seen[t])
       return tag..'nil'..comment('ref', level)
-    elseif badtype[ttype] then return tag..globerr(t, level)
+    elseif badtype[ttype] then
+      seen[t] = spath
+      return tag..globerr(t, level)
     elseif ttype == 'function' then
       seen[t] = spath
       local ok, res = pcall(string.dump, t)
@@ -245,7 +273,7 @@ local function s(t, opts)
       return tag..(func or globerr(t, level))
     elseif ttype == "table" then
       if level >= maxl then return tag..'{}'..comment('max', level) end
-      seen[t] = spath
+      seen[t] = insref or spath -- set path to use as reference
       if next(t) == nil then return tag..'{}'..comment(t, level) end -- table empty
       local maxn, o, out = #t, {}, {}
       for key = 1, maxn do table.insert(o, key) end
@@ -255,14 +283,15 @@ local function s(t, opts)
         local value, ktype, plainindex = t[key], type(key), n <= maxn and not sparse
         if opts.ignore and opts.ignore[value] -- skip ignored values; do nothing
         or sparse and value == nil then -- skipping nils; do nothing
-        elseif ktype == 'table' or ktype == 'function' then
+        elseif ktype == 'table' or ktype == 'function' or badtype[ktype] then
           if not seen[key] and not globals[key] then
-            table.insert(sref, 'local '..val2str(key,gensym(key),indent)) end
-          table.insert(sref, seen[t]..'['..(seen[key] or globals[key] or gensym(key))
-            ..']'..space..'='..space..(seen[value] or val2str(value,nil,indent)))
+            table.insert(sref, 'placeholder')
+            sref[#sref] = 'local '..val2str(key,gensym(key),indent,gensym(key)) end
+          table.insert(sref, 'placeholder')
+          local path = seen[t]..'['..(seen[key] or globals[key] or gensym(key))..']'
+          sref[#sref] = path..space..'='..space..(seen[value] or val2str(value,nil,indent,path))
         else
-          if badtype[ktype] then plainindex, key = true, '['..globerr(key, level+1)..']' end
-          table.insert(out,val2str(value,key,indent,spath,plainindex,level+1))
+          table.insert(out,val2str(value,key,indent,insref,seen[t],plainindex,level+1))
         end
       end
       local prefix = string.rep(indent or '', level)
@@ -322,35 +351,18 @@ end
 
 local function set_breakpoint(file, line)
   if file == '-' and lastfile then file = lastfile end
-  if not breakpoints[file] then
-    breakpoints[file] = {}
-  end
+  if not breakpoints[file] then breakpoints[file] = {} end
   breakpoints[file][line] = true  
 end
 
 local function remove_breakpoint(file, line)
   if file == '-' and lastfile then file = lastfile end
-  if breakpoints[file] then
-    breakpoints[file][line] = nil
-  end
+  if breakpoints[file] then breakpoints[file][line] = nil end
 end
 
--- moai host uses full path in source files whereas the standard lua
--- interpreter uses relative paths this debugger relies on.
--- to check if there is a breakpoint, do a string search (from the end)
--- to find a potentially matching breakpoint.
--- may have false positives, but good enough as only affects moai debugging.
-local function has_breakpoint_moai(file, line)
-  for fname, lines in pairs(breakpoints) do
-    if #file > #fname and file:find('/'..fname, -#fname-1, true)
-    and lines[line] then return true end
-  end
-  return false
-end
-
+-- this file name is already converted to lower case on windows.
 local function has_breakpoint(file, line)
   return breakpoints[file] and breakpoints[file][line]
-    or moai and has_breakpoint_moai(file, line)
 end
 
 local function restore_vars(vars)
@@ -496,13 +508,19 @@ local function debug_hook(event, line)
       lastsource = caller.source
       file = lastsource
       if string.find(file, "@") == 1 then file = string.sub(file, 2) end
-      -- remove references to the current folder (./ or .\)
-      if string.find(file, "%.[/\\]") == 1 then file = string.sub(file, 3) end
+      if iswindows then file = string.lower(file) end
+      file = string.gsub(file, "\\", "/") -- convert slash
+      -- remove references to the current folder (./)
+      if string.find(file, "%./") == 1 then file = string.sub(file, 3)
+      else file = string.gsub(file, '^'..q(basedir), '') end
       -- fix filenames for loaded strings that may contain scripts with newlines
       if string.find(file, "\n") then
         file = string.sub(string.gsub(file, "\n", ' '), 1, 32) -- limit to 32 chars
       end
-      file = string.gsub(file, "\\", "/") -- convert slash
+
+      -- set to true if we got here; this only needs to be done once per
+      -- session, so do it here to at least avoid setting it for every line.
+      seen_hook = true
       lastfile = file
     end
 
@@ -525,11 +543,10 @@ local function debug_hook(event, line)
       (step_into
       or (step_over and stack_level <= step_level)
       or has_breakpoint(file, line)
-      or (socket.select({server}, {}, 0))[server])
+      or (socket.select(rset, nil, 0))[server])
 
     if getin then
       vars = vars or capture_vars()
-      seen_hook = true
       step_into = false
       step_over = false
       status, res = coroutine.resume(coro_debugger, events.BREAK, vars, file, line)
@@ -573,7 +590,7 @@ end
 
 local function debugger_loop(sfile, sline)
   local command
-  local app
+  local app, osname
   local eval_env = {}
   local function emptyWatch () return false end
   local loaded = {}
@@ -581,6 +598,7 @@ local function debugger_loop(sfile, sline)
 
   while true do
     local line, err
+    local wx = rawget(genv, "wx") -- use rawread to make strict.lua happy
     if wx and server.settimeout then server:settimeout(0.1) end
     while true do
       line, err = server:receive()
@@ -590,13 +608,18 @@ local function debugger_loop(sfile, sline)
         if app then
           local win = app:GetTopWindow()
           local inloop = app:IsMainLoopRunning()
+          osname = osname or wx.wxPlatformInfo.Get():GetOperatingSystemFamilyName()
           if win and not inloop then
             -- process messages in a regular way
             -- and exit as soon as the event loop is idle
-            win:Connect(wx.wxEVT_IDLE, function()
+            if osname == 'Unix' then wx.wxTimer(app):Start(10, true) end
+            local exitLoop = function()
               win:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wx.wxEVT_IDLE)
+              win:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wx.wxEVT_TIMER)
               app:ExitMainLoop()
-            end)
+            end
+            win:Connect(wx.wxEVT_IDLE, exitLoop)
+            win:Connect(wx.wxEVT_TIMER, exitLoop)
             app:MainLoop()
           end
         end
@@ -757,6 +780,14 @@ local function debugger_loop(sfile, sline)
         server:send("401 Error in Execution " .. string.len(file) .. "\n")
         server:send(file)
       end
+    elseif command == "BASEDIR" then
+      local _, _, dir = string.find(line, "^[A-Z]+%s+(.+)%s*$")
+      if dir then
+        basedir = dir
+        server:send("200 OK\n")
+      else
+        server:send("400 Bad Request\n")
+      end
     elseif command == "SUSPEND" then
       -- do nothing; it already fulfilled its role
     elseif command == "STACK" then
@@ -803,6 +834,7 @@ local function start(controller_host, controller_port)
 
   server = socket.connect(controller_host, controller_port)
   if server then
+    rset = {server} -- store hash to avoid recreating it later
     -- check if we are called from the debugger as this may happen
     -- when another debugger function calls start(); only check one level deep
     local this = debug.getinfo(1, "S").source
@@ -838,6 +870,8 @@ local function controller(controller_host, controller_port)
   local exitonerror = not skip -- exit if not running a scratchpad
   server = socket.connect(controller_host, controller_port)
   if server then
+    rset = {server} -- store hash to avoid recreating it later
+
     local function report(trace, err)
       local msg = err .. "\n" .. trace
       server:send("401 Error in Execution " .. string.len(msg) .. "\n")
@@ -921,9 +955,6 @@ local function off()
   end
 end
 
-local basedir = ""
-local function q(s) return s:gsub('([%(%)%.%%%+%-%*%?%[%^%$%]])','%%%1') end
-
 -- Handles server debugging commands 
 local function handle(params, client)
   local _, _, command = string.find(params, "^([a-z]+)")
@@ -968,8 +999,9 @@ local function handle(params, client)
   elseif command == "setb" then
     _, _, _, file, line = string.find(params, "^([a-z]+)%s+(.-)%s+(%d+)%s*$")
     if file and line then
+      if iswindows then file = string.lower(file) end
       file = string.gsub(file, "\\", "/") -- convert slash
-      file = string.gsub(file, q(basedir), '') -- remove basedir
+      file = string.gsub(file, '^'..q(basedir), '') -- remove basedir
       if not breakpoints[file] then breakpoints[file] = {} end
       client:send("SETB " .. file .. " " .. line .. "\n")
       if client:receive() == "200 OK" then 
@@ -1004,8 +1036,9 @@ local function handle(params, client)
   elseif command == "delb" then
     _, _, _, file, line = string.find(params, "^([a-z]+)%s+(.-)%s+(%d+)%s*$")
     if file and line then
+      if iswindows then file = string.lower(file) end
       file = string.gsub(file, "\\", "/") -- convert slash
-      file = string.gsub(file, q(basedir), '') -- remove basedir
+      file = string.gsub(file, '^'..q(basedir), '') -- remove basedir
       if not breakpoints[file] then breakpoints[file] = {} end
       client:send("DELB " .. file .. " " .. line .. "\n")
       if client:receive() == "200 OK" then 
@@ -1082,7 +1115,7 @@ local function handle(params, client)
         file:close()
 
         local file = string.gsub(exp, "\\", "/") -- convert slash
-        file = string.gsub(file, q(basedir), '') -- remove basedir
+        file = string.gsub(file, '^'..q(basedir), '') -- remove basedir
         client:send("LOAD " .. string.len(lines) .. " " .. file .. "\n")
         client:send(lines)
       end
@@ -1153,13 +1186,18 @@ local function handle(params, client)
         print("Error in stack information: " .. err)
         return nil, nil, err
       end
-      local stack = func()
+      local ok, stack = pcall(func)
+      if not ok then
+        print("Error in stack information: " .. stack)
+        return nil, nil, stack
+      end
       for _,frame in ipairs(stack) do
         -- remove basedir from short_src or source
         local src = string.gsub(frame[1][2], "\\", "/") -- convert slash
         if string.find(src, "@") == 1 then src = string.sub(src, 2) end
         if string.find(src, "%./") == 1 then src = string.sub(src, 3) end
-        frame[1][2] = string.gsub(src, q(basedir), '') -- remove basedir
+        if iswindows then src = string.lower(src) end
+        frame[1][2] = string.gsub(src, '^'..q(basedir), '') -- remove basedir
         print(serpent.line(frame[1], {comment = false}))
       end
       return stack
@@ -1174,10 +1212,20 @@ local function handle(params, client)
   elseif command == "basedir" then
     local _, _, dir = string.find(params, "^[a-z]+%s+(.+)$")
     if dir then
+      if iswindows then dir = string.lower(dir) end
       dir = string.gsub(dir, "\\", "/") -- convert slash
       if not string.find(dir, "/$") then dir = dir .. "/" end
       basedir = dir
-      print("New base directory is " .. basedir)
+
+      client:send("BASEDIR "..dir.."\n")
+      local resp = client:receive()
+      local _, _, status = string.find(resp, "^(%d+)%s+%w+%s*$")
+      if status == "200" then
+        print("New base directory is " .. basedir)
+      else
+        print("Unknown error")
+        return nil, nil, "Debugger error: unexpected response after BASEDIR"
+      end
     else
       print(basedir)
     end

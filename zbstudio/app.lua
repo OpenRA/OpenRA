@@ -7,7 +7,7 @@ local CreateBitmap = function(id, client, size)
   local file
   if wx.wxFileName(fileClient):FileExists() then file = fileClient
   elseif wx.wxFileName(fileKey):FileExists() then file = fileKey
-  else return wx.wxNullBitmap end
+  else return wx.wxArtProvider.GetBitmap(id, client, size) end
   local icon = icons[file] or wx.wxBitmap(file)
   icons[file] = icon
   return icon
@@ -17,15 +17,11 @@ local app = {
   createbitmap = CreateBitmap,
   loadfilters = {
     tools = function(file) return false end,
-    specs = function(file) return true end,
-    interpreters = function(file) return true end,
+    specs = function(file) return file:find('^spec[/\\]lua%.lua$') end,
+    interpreters = function(file) return not file:find('estrela') end,
   },
 
   preinit = function ()
-    local artProvider = wx.wxLuaArtProvider()
-    artProvider.CreateBitmap = function(self, ...) return CreateBitmap(...) end
-    wx.wxArtProvider.Push(artProvider)
-
     ide.config.interpreter = "luadeb"
     ide.config.unhidewindow = { -- allow unhiding of GUI windows
       -- 1 - unhide if hidden, 0 - hide if shown
@@ -54,14 +50,6 @@ local app = {
     if icons > 0 then ide.frame:SetIcons(bundle) end
 
     local menuBar = ide.frame.menuBar
-    local menu = menuBar:GetMenu(menuBar:FindMenu("&Project"))
-    local itemid = menu:FindItem("Project Directory")
-    if itemid ~= wx.wxNOT_FOUND then menu:Destroy(itemid) end
-
-    menu = menuBar:GetMenu(menuBar:FindMenu("&View"))
-    itemid = menu:FindItem("&Load Config Style...")
-    if itemid ~= wx.wxNOT_FOUND then menu:Destroy(itemid) end
-
     menuBar:Check(ID_CLEAROUTPUT, true)
 
     -- load myprograms/welcome.lua if exists and no projectdir

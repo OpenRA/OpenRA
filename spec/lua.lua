@@ -3,6 +3,29 @@
 
 local funcdef = "([A-Za-z_][A-Za-z0-9_%.%:]*)%s*"
 local funccall = "([A-Za-z_][A-Za-z0-9_]*)%s*"
+local decindent = {
+  ['else'] = true, ['elseif'] = true, ['end'] = true}
+local incindent = {
+  ['else'] = true, ['elseif'] = true, ['for'] = true, ['do'] = true,
+  ['if'] = true, ['repeat'] = true, ['until'] = true, ['while'] = true}
+local function isfndef(str)
+  local l
+  local s,e,cap,par = string.find(str, "function%s+" .. funcdef .. "(%(.-%))")
+  -- try to match without brackets now, but only at the beginning of the line
+  if (not s) then
+    s,e,cap = string.find(str, "^%s*function%s+" .. funcdef)
+  end
+  -- try to match "foo = function()"
+  if (not s) then
+    s,e,cap,par = string.find(str, funcdef .. "=%s*function%s*(%(.-%))")
+  end
+  if (s) then
+    l = string.find(string.sub(str,1,s-1),"local%s+$")
+    cap = cap .. " " .. (par or "(?)")
+  end
+  return s,e,cap,l
+end
+
 return {
   exts = {"lua", "rockspec"},
   lexer = wxstc.wxSTC_LEX_LUA,
@@ -12,22 +35,29 @@ return {
   isfncall = function(str)
     return string.find(str, funccall .. "%(")
   end,
-  isfndef = function(str)
-    local l
-    local s,e,cap,par = string.find(str, "function%s+" .. funcdef .. "(%(.-%))")
-    -- try to match without brackets now, but only at the beginning of the line
-    if (not s) then
-      s,e,cap = string.find(str, "^%s*function%s+" .. funcdef)
-    end
-    -- try to match "foo = function()"
-    if (not s) then
-      s,e,cap,par = string.find(str, funcdef .. "=%s*function%s*(%(.-%))")
-    end
-    if (s) then
-      l = string.find(string.sub(str,1,s-1),"local%s+$")
-      cap = cap .. " " .. (par or "(?)")
-    end
-    return s,e,cap,l
+  isfndef = isfndef,
+  isdecindent = function(str)
+    -- this handles three different cases:
+    local term = str:match("^%s*(%w+)%s*$")
+    -- (1) 'end', 'elseif', 'else'
+    local match = term and decindent[term]
+    -- (2) 'end)' and 'end}'
+    if not term then term, match = str:match("^%s*(end)%s*([%)%}]+)%s*[,;]?") end
+    -- (3) '},', '};', '),' and ');'
+    if not term then match = str:match("^%s*[%)%}]+%s*[,;]?%s*$") end
+
+    return match and 1 or 0, match and term and 1 or 0
+  end,
+  isincindent = function(str)
+    local term = str:match("^%s*(%w+)[^%w]*")
+    term = term and incindent[term] and 1 or 0
+    local _, opened = str:gsub("([%{%(])", "%1")
+    local _, closed = str:gsub("([%}%)])", "%1")
+    local func = (isfndef(str) or str:match("[^%w]+function%s*%(")) and 1 or 0
+    -- ended should only be used to negate term and func effects
+    local ended = (term + func > 0) and str:match("[^%w]+end%s*$") and 1 or 0
+
+    return opened - closed + func + term - ended
   end,
 
   typeassigns = function(editor)

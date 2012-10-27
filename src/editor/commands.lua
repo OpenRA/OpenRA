@@ -8,8 +8,10 @@ local openDocuments = ide.openDocuments
 local uimgr = frame.uimgr
 
 function NewFile(event)
-  local editor = CreateEditor(ide.config.default.fullname)
+  local editor = CreateEditor()
   SetupKeywords(editor, "lua")
+  AddEditor(editor, ide.config.default.fullname)
+  return editor
 end
 
 -- Find an editor page that hasn't been used at all, eg. an untouched NewFile()
@@ -26,18 +28,20 @@ local function findDocumentToReuse()
   return editor
 end
 
-function LoadFile(filePath, editor, file_must_exist)
+function LoadFile(filePath, editor, file_must_exist, skipselection)
+  local filePath = wx.wxFileName(filePath)
+  filePath:Normalize() -- make it absolute and remove all .. and . if possible
+
   -- prevent files from being reopened again
   if (not editor) then
-    local filePath = wx.wxFileName(filePath)
     for id, doc in pairs(openDocuments) do
       if doc.filePath and filePath:SameAs(wx.wxFileName(doc.filePath)) then
-        notebook:SetSelection(doc.index)
+        if not skipselection then notebook:SetSelection(doc.index) end
         return doc.editor
       end
     end
   end
-  filePath = wx.wxFileName(filePath):GetFullPath()
+  filePath = filePath:GetFullPath()
 
   -- if not opened yet, try open now
   local file_text = FileRead(filePath)
@@ -50,17 +54,18 @@ function LoadFile(filePath, editor, file_must_exist)
   end
 
   local current = editor and editor:GetCurrentPos()
-  editor = editor
-    or findDocumentToReuse()
-    or CreateEditor(wx.wxFileName(filePath):GetFullName()
-      or ide.config.default.fullname)
+  editor = editor or findDocumentToReuse() or CreateEditor()
 
+  editor:Freeze()
   editor:Clear()
   editor:ClearAll()
   SetupKeywords(editor, GetFileExt(filePath))
   editor:MarkerDeleteAll(BREAKPOINT_MARKER)
   editor:MarkerDeleteAll(CURRENT_LINE_MARKER)
-  editor:AppendText(file_text)
+  editor:AppendText(file_text or "")
+  editor:Colourise(0, -1)
+  editor:Thaw()
+
   if current then editor:GotoPos(current) end
   if (ide.config.editor.autotabs) then
     local found = string.find(file_text,"\t") ~= nil
@@ -69,11 +74,14 @@ function LoadFile(filePath, editor, file_must_exist)
 
   editor:EmptyUndoBuffer()
   local id = editor:GetId()
+  if not openDocuments[id] then -- the editor has not been added to notebook
+    AddEditor(editor, wx.wxFileName(filePath):GetFullName()
+      or ide.config.default.fullname)
+  end
   openDocuments[id].filePath = filePath
   openDocuments[id].fileName = wx.wxFileName(filePath):GetFullName()
   openDocuments[id].modTime = GetFileModTime(filePath)
   SetDocumentModified(id, false)
-  editor:Colourise(0, -1)
 
   IndicateFunctions(editor)
 
@@ -81,7 +89,7 @@ function LoadFile(filePath, editor, file_must_exist)
 
   -- activate the editor; this is needed for those cases when the editor is
   -- created from some other element, for example, from a project tree.
-  SetEditorSelection()
+  if not skipselection then SetEditorSelection() end
 
   return editor
 end
@@ -104,9 +112,7 @@ local function getExtsString()
 end
 
 function OpenFile(event)
-
   local exts = getExtsString()
-
   local fileDialog = wx.wxFileDialog(ide.frame, "Open file",
     "",
     "",
@@ -142,6 +148,7 @@ function SaveFile(editor, filePath)
       openDocuments[id].fileName = wx.wxFileName(filePath):GetFullName()
       openDocuments[id].modTime = GetFileModTime(filePath)
       SetDocumentModified(id, false)
+      SetAutoRecoveryMark()
       return true
     else
       wx.wxMessageBox("Unable to save file '"..filePath.."': "..err,
@@ -165,12 +172,11 @@ function SaveFileAs(editor)
   local fn = wx.wxFileName(filePath)
   fn:Normalize() -- want absolute path for dialog
 
-  local exts = getExtsString()
-
+  local ext = fn:GetExt()
   local fileDialog = wx.wxFileDialog(ide.frame, "Save file as",
     fn:GetPath(wx.wxPATH_GET_VOLUME),
     fn:GetFullName(),
-    exts,
+    "*."..(ext and #ext > 0 and ext or "*"),
     wx.wxFD_SAVE)
 
   if fileDialog:ShowModal() == wx.wxID_OK then
@@ -196,7 +202,7 @@ function SaveAll()
     local editor = document.editor
     local filePath = document.filePath
 
-    if document.isModified then
+    if document.isModified or not document.filePath then
       SaveFile(editor, filePath) -- will call SaveFileAs if necessary
     end
   end
@@ -263,11 +269,14 @@ function ClosePage(selection)
     -- abort the debugger if the current marker is in the window being closed
     -- also abort the debugger if it is running, as we don't know what
     -- window will need to be activated when the debugger is paused
-    if debugger and debugger.pid and
+    if debugger and debugger.server and
       (debugger.running or editor:MarkerNext(0, CURRENT_LINE_MARKER_VALUE) >= 0) then
       debugger.terminate()
     end
     removePage(ide.openDocuments[id].index)
+
+    -- disable full screen if the last tab is closed
+    if not (notebook:GetSelection() >= 0) then ShowFullScreen(false) end
   end
 end
 
@@ -403,7 +412,10 @@ function CompileProgram(editor, quiet)
   local editorText = editor:GetText():gsub("^#!.-\n", "\n")
   local id = editor:GetId()
   local filePath = DebuggerMakeFileName(editor, openDocuments[id].filePath)
-  local _, errMsg, line_num = wxlua.CompileLuaScript(editorText, filePath)
+  local func, line_num, errMsg, _ = loadstring(editorText, filePath), -1
+  if not func then
+    _, errMsg, line_num = wxlua.CompileLuaScript(editorText, filePath)
+  end
 
   if ide.frame.menuBar:IsChecked(ID_CLEAROUTPUT) then ClearOutput() end
 
@@ -420,7 +432,7 @@ function CompileProgram(editor, quiet)
     end
   end
 
-  return line_num == -1 -- return true if it compiled ok
+  return line_num == -1, editorText -- return true if it compiled ok
 end
 
 ------------------
@@ -457,28 +469,22 @@ function GetOpenFiles()
       local wxfname = wx.wxFileName(document.filePath)
       wxfname:Normalize()
 
-      table.insert(opendocs,{fname=wxfname:GetFullPath(),id=document.index,
-          cursorpos = document.editor:GetCurrentPos()})
+      table.insert(opendocs, {filename=wxfname:GetFullPath(),
+        id=document.index, cursorpos = document.editor:GetCurrentPos()})
     end
   end
 
   -- to keep tab order
   table.sort(opendocs,function(a,b) return (a.id < b.id) end)
 
-  local openfiles = {}
-  for i,doc in ipairs(opendocs) do
-    table.insert(openfiles,{filename = doc.fname, cursorpos = doc.cursorpos} )
-  end
-
   local id = GetEditor()
   id = id and id:GetId()
-
-  return openfiles, id and openDocuments[id].index or 0
+  return opendocs, {index = (id and openDocuments[id].index or 0)}
 end
 
-function SetOpenFiles(nametab,index)
+function SetOpenFiles(nametab,params)
   for i,doc in ipairs(nametab) do
-    local editor = LoadFile(doc.filename,nil,true)
+    local editor = LoadFile(doc.filename,nil,true,true) -- skip selection
     if editor then
       editor:SetCurrentPos(doc.cursorpos or 0)
       editor:SetSelectionStart(doc.cursorpos or 0)
@@ -486,7 +492,8 @@ function SetOpenFiles(nametab,index)
       editor:EnsureCaretVisible()
     end
   end
-  notebook:SetSelection(index or 0)
+  notebook:SetSelection(params and params.index or 0)
+  SetEditorSelection()
 end
 
 local beforeFullScreenPerspective
@@ -507,7 +514,158 @@ function ShowFullScreen(setFullScreen)
   pcall(function() frame:ShowFullScreen(setFullScreen) end)
 end
 
+local function restoreFiles(files)
+  -- open files, but ignore some functions that are not needed;
+  -- as we may be opening multiple files, it doesn't make sense to
+  -- select editor and do some other similar work after each file.
+  local noop, func = function() end, LoadFile
+  local genv = {SetEditorSelection = noop, SettingsAppendFileToHistory = noop}
+  setmetatable(genv, {__index = _G})
+  local env = getfenv(func)
+  setfenv(func, genv)
+  -- provide fake index so that it doesn't activate it as the index may be not
+  -- quite correct if some of the existing files are already open in the IDE.
+  SetOpenFiles(files, {index = #files + notebook:GetPageCount()})
+  setfenv(func, env)
+end
+
+function ProjectConfig(dir, config)
+  if config then ide.session.projects[dir] = config
+  else return unpack(ide.session.projects[dir] or {}) end
+end
+
+function SetOpenTabs(params)
+  local recovery, nametab = loadstring("return "..params.recovery)
+  if recovery then recovery, nametab = pcall(recovery) end
+  if not recovery then
+    DisplayOutput("Can't process auto-recovery record; invalid format: "..nametab.."\n")
+    return
+  end
+  DisplayOutput("Found auto-recovery record and restored saved session.\n")
+  for _,doc in ipairs(nametab) do
+    local editor = doc.filename and LoadFile(doc.filename,nil,true,true) or NewFile()
+    local opendoc = openDocuments[editor:GetId()]
+    if doc.content then
+      notebook:SetPageText(opendoc.index, doc.tabname)
+      editor:SetText(doc.content)
+      if doc.filename and doc.modified < opendoc.modTime:GetTicks() then
+        DisplayOutput("File '"..doc.filename.."' has more recent timestamp than restored '"..doc.tabname.."'."
+          .." Please review before saving.\n")
+      end
+    end
+    editor:SetCurrentPos(doc.cursorpos or 0)
+    editor:SetSelectionStart(doc.cursorpos or 0)
+    editor:SetSelectionEnd(doc.cursorpos or 0)
+    editor:EnsureCaretVisible()
+  end
+  notebook:SetSelection(params and params.index or 0)
+  SetEditorSelection()
+end
+
+local function getOpenTabs()
+  local opendocs = {}
+  for id, document in pairs(ide.openDocuments) do
+    table.insert(opendocs, {
+      filename = document.filePath,
+      tabname = notebook:GetPageText(document.index),
+      modified = document.modTime and document.modTime:GetTicks(), -- get number of seconds
+      content = document.isModified and document.editor:GetText() or nil,
+      id = document.index, cursorpos = document.editor:GetCurrentPos()})
+  end
+
+  -- to keep tab order
+  table.sort(opendocs, function(a,b) return (a.id < b.id) end)
+
+  local id = GetEditor()
+  id = id and id:GetId()
+  return opendocs, {index = (id and openDocuments[id].index or 0)}
+end
+
+function SetAutoRecoveryMark()
+  ide.session.lastupdated = os.time()
+end
+
+local function saveAutoRecovery(event)
+  if not ide.config.autorecoverinactivity or not ide.session.lastupdated then return end
+  if ide.session.lastupdated < (ide.session.lastsaved or 0)
+  or ide.session.lastupdated + ide.config.autorecoverinactivity > os.time()
+    then return end
+
+  -- find all open modified files and save them
+  local opentabs, params = getOpenTabs()
+  if #opentabs > 0 then
+    params.recovery = require('mobdebug').line(opentabs, {comment = false})
+    SettingsSaveAll()
+    SettingsSaveFileSession({}, params)
+    ide.settings:Flush()
+  end
+  ide.session.lastsaved = os.time()
+  ide.frame.statusBar:SetStatusText("Saved auto-recover at "..os.date("%H:%M:%S")..".", 1)
+end
+
+function StoreRestoreProjectTabs(curdir, newdir)
+  local win = ide.osname == 'Windows'
+  local interpreter = ide.interpreter.fname
+  local current, closing, restore = notebook:GetSelection(), 0, false
+
+  if curdir and #curdir > 0 then
+    local lowcurdir = win and string.lower(curdir) or curdir
+    local lownewdir = win and string.lower(newdir) or newdir
+    local projdocs, closdocs = {}, {}
+    for _, document in ipairs(GetOpenFiles()) do
+      local dpath = win and string.lower(document.filename) or document.filename
+      if dpath:find(lowcurdir, 1, true) then
+        table.insert(projdocs, document)
+        closing = closing + (document.id < current and 1 or 0)
+        -- only close if the file is not in new project as it would be reopened
+        if not dpath:find(lownewdir, 1, true) then
+          table.insert(closdocs, document)
+        end
+      elseif document.id == current then restore = true end
+    end
+
+    -- adjust for the number of closing tabs on the left from the current one
+    current = current - closing
+
+    -- save opened files from this project
+    ProjectConfig(curdir, {projdocs,
+      {index = notebook:GetSelection() - current, interpreter = interpreter}})
+
+    -- close pages for those files that match the project in the reverse order
+    -- (as ids shift when pages are closed)
+    for i = #closdocs, 1, -1 do ClosePage(closdocs[i].id) end
+  end
+
+  local files, params = ProjectConfig(newdir)
+  if files then restoreFiles(files) end
+
+  if params and params.interpreter and ide.interpreter.fname ~= params.interpreter then
+    ProjectSetInterpreter(params.interpreter) -- set the interpreter
+  end
+
+  local index = params and params.index
+  if notebook:GetPageCount() == 0 then NewFile()
+  elseif restore and current >= 0 then notebook:SetSelection(current)
+  elseif index and index >= 0 and files[index+1] then
+    -- move the editor tab to the front with the file from the config
+    LoadFile(files[index+1].filename, nil, true)
+    SetEditorSelection() -- activate the editor in the active tab
+  end
+
+  -- remove current config as it may change; the current configuration is
+  -- stored with the general config.
+  -- The project configuration will be updated when the project is changed.
+  ProjectConfig(newdir, {})
+end
+
 function CloseWindow(event)
+  -- if the app is already exiting, then help it exit; wxwidgets on Windows
+  -- is supposed to report Shutdown/logoff events by setting CanVeto() to
+  -- false, but it doesn't happen. We simply leverage the fact that
+  -- CloseWindow is called several times in this case and exit. Similar
+  -- behavior has been also seen on Linux, so this logic applies everywhere.
+  if ide.exitingProgram then os.exit() end
+
   ide.exitingProgram = true -- don't handle focus events
 
   if not SaveOnExit(event:CanVeto()) then
@@ -517,15 +675,13 @@ function CloseWindow(event)
   end
 
   ShowFullScreen(false)
-  SettingsSaveProjectSession(FileTreeGetProjects())
-  SettingsSaveFileSession(GetOpenFiles())
-  SettingsSaveView()
-  SettingsSaveFramePosition(ide.frame, "MainFrame")
-  SettingsSaveEditorSettings()
+  ide.frame:Hide() -- hide everything while the IDE exits
+  SettingsSaveAll()
   if DebuggerCloseWatchWindow then DebuggerCloseWatchWindow() end
   if DebuggerCloseStackWindow then DebuggerCloseStackWindow() end
   if DebuggerShutdown then DebuggerShutdown() end
   ide.settings:delete() -- always delete the config
+  if ide.session.timer then ide.session.timer:Stop() end
   event:Skip()
 
   -- without explicit exit() the IDE crashes with SIGILL exception when closed
@@ -533,3 +689,11 @@ function CloseWindow(event)
   if ide.osname == "Macintosh" then os.exit() end
 end
 frame:Connect(wx.wxEVT_CLOSE_WINDOW, CloseWindow)
+
+frame:Connect(wx.wxEVT_TIMER, saveAutoRecovery)
+
+if ide.config.autorecoverinactivity then
+  ide.session.timer = wx.wxTimer(frame)
+  -- check at least 5s to be never more than 5s off
+  ide.session.timer:Start(math.min(5, ide.config.autorecoverinactivity)*1000)
+end

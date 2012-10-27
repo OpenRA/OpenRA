@@ -9,21 +9,22 @@ local menuBar = frame.menuBar
 local openDocuments = ide.openDocuments
 
 local fileMenu = wx.wxMenu({
-    { ID_NEW, "&New\tCtrl-N", "Create an empty document" },
-    { ID_OPEN, "&Open...\tCtrl-O", "Open an existing document" },
-    { ID_CLOSE, "&Close page\tCtrl-W", "Close the current editor window" },
+    { ID_NEW, "&New"..KSC(ID_NEW), "Create an empty document" },
+    { ID_OPEN, "&Open..."..KSC(ID_OPEN), "Open an existing document" },
+    { ID_CLOSE, "&Close page"..KSC(ID_CLOSE), "Close the current editor window" },
     { },
-    { ID_SAVE, "&Save\tCtrl-S", "Save the current document" },
-    { ID_SAVEAS, "Save &As...\tAlt-Shift-S", "Save the current document to a file with a new name" },
-    { ID_SAVEALL, "Save A&ll...", "Save all open documents" },
+    { ID_SAVE, "&Save"..KSC(ID_SAVE), "Save the current document" },
+    { ID_SAVEAS, "Save &As..."..KSC(ID_SAVEAS), "Save the current document to a file with a new name" },
+    { ID_SAVEALL, "Save A&ll"..KSC(ID_SAVEALL), "Save all open documents" },
     { },
-    --{ ID "file.recentfiles", "Recent files",},
+    -- placeholder for ID_RECENTFILES
     { },
-    { ID_EXIT, "E&xit", "Exit Program" }})
+    { ID_EXIT, "E&xit"..KSC(ID_EXIT), "Exit Program" }})
 menuBar:Append(fileMenu, "&File")
 
 local filehistorymenu = wx.wxMenu({})
-local filehistory = wx.wxMenuItem(fileMenu,ID"file.recentfiles","Recent files", "File history", wx.wxITEM_NORMAL,filehistorymenu)
+local filehistory = wx.wxMenuItem(fileMenu, ID_RECENTFILES,
+  "Recent files"..KSC(ID_RECENTFILES), "File history", wx.wxITEM_NORMAL,filehistorymenu)
 fileMenu:Insert(8,filehistory)
 function UpdateFileHistoryUI(list)
   -- remove all at first
@@ -63,12 +64,13 @@ frame:Connect(ID_SAVE, wx.wxEVT_COMMAND_MENU_SELECTED,
 frame:Connect(ID_SAVE, wx.wxEVT_UPDATE_UI,
   function (event)
     local editor = GetEditor()
+    local enabled = false
     if editor then
       local id = editor:GetId()
-      if openDocuments[id] then
-        event:Enable(openDocuments[id].isModified or not openDocuments[id].filePath)
-      end
+      enabled = openDocuments[id]
+        and (openDocuments[id].isModified or not openDocuments[id].filePath)
     end
+    event:Enable(enabled)
   end)
 
 frame:Connect(ID_SAVEAS, wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -90,7 +92,7 @@ frame:Connect(ID_SAVEALL, wx.wxEVT_UPDATE_UI,
   function (event)
     local atLeastOneModifiedDocument = false
     for id, document in pairs(openDocuments) do
-      if document.isModified then
+      if document.isModified or not document.filePath then
         atLeastOneModifiedDocument = true
         break
       end

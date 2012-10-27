@@ -1,5 +1,6 @@
 local love2d
 local win = ide.osname == "Windows"
+local mac = ide.osname == "Macintosh"
 
 return {
   name = "Love2d",
@@ -9,7 +10,12 @@ return {
     love2d = love2d or ide.config.path.love2d -- check if the path is configured
     if not love2d then
       local sep = win and ';' or ':'
-      local path = (os.getenv('PATH') or '')..sep
+      local default =
+           win and ([[C:\Program Files\love]]..sep..[[D:\Program Files\love]]..sep)
+        or mac and ('/Applications/love.app/Contents/MacOS'..sep)
+        or ''
+      local path = default
+                 ..(os.getenv('PATH') or '')..sep
                  ..(GetPathWithSep(self:fworkdir(wfilename)))..sep
                  ..(os.getenv('HOME') and GetPathWithSep(os.getenv('HOME'))..'bin' or '')
       local paths = {}

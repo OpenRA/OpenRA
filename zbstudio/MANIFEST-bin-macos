@@ -1,0 +1,13 @@
+bin/libjpeg.8.dylib
+bin/libwx.dylib
+bin/libwxlua-wx28d-2.8.12.dylib
+bin/libwxlua_bind-wx28d-2.8.12.dylib
+bin/libwxlua_debug-wx28d-2.8.12.dylib
+bin/libwxlua_lua51-wx28d-2.8.12.dylib
+bin/libwxlua_socket-wx28d-2.8.12.dylib
+bin/libwxstedit-wx28d-1.6.0.dylib
+bin/lua
+bin/clibs/mime/core.dylib
+bin/clibs/socket/core.dylib
+bin/lua.app/Contents/Info.plist
+bin/lua.app/Contents/MacOS/lua

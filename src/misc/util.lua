@@ -172,6 +172,7 @@ function FileSysGet(dir,spec)
     table.insert(content,(f:gsub("^file:",""))) -- remove file: protocol (wx2.9+)
     f = browse:FindNext()
   end
+  if ide.osname == 'Unix' then table.sort(content) end
   return content
 end
 
