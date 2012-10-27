@@ -49,6 +49,10 @@ function DisplayOutput(...)
   errorlog:MarkerAdd(errorlog:GetLineCount()-1, CURRENT_LINE_MARKER)
   DisplayOutputNoMarker(...)
 end
+function DisplayOutputLn(...)
+  DisplayOutput(...)
+  DisplayOutputNoMarker("\n")
+end
 
 local streamins = {}
 local streamerrs = {}
@@ -124,12 +128,12 @@ function CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
   uid = uid or exename
 
   if (CommandLineRunning(uid)) then
-    DisplayOutput(("Program can't start because conflicting process is running as '%s'.\n")
+    DisplayOutputLn(TR("Program can't start because conflicting process is running as '%s'.")
       :format(cmd))
     return
   end
 
-  DisplayOutput(("Program starting as '%s'.\n"):format(cmd))
+  DisplayOutputLn(TR("Program starting as '%s'."):format(cmd))
 
   local proc = wx.wxProcess(errorlog)
   if (tooutput) then proc:Redirect() end -- redirect the output if requested
@@ -154,11 +158,11 @@ function CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
   -- The return value of -1 in this case indicates that we didn't launch
   -- a new process, but connected to the running one (e.g. DDE under Windows).
   if not pid or pid == -1 or pid == 0 then
-    DisplayOutput(("Program unable to run as '%s'\n"):format(cmd))
+    DisplayOutputLn(TR("Program unable to run as '%s'."):format(cmd))
     return
   end
 
-  DisplayOutput(("Program '%s' started in '%s' (pid: %d).\n")
+  DisplayOutputLn(TR("Program '%s' started in '%s' (pid: %d).")
     :format(uid, (wdir and wdir or wx.wxFileName.GetCwd()), pid))
   customprocs[pid] = {proc=proc, uid=uid, endcallback=endcallback, started = TimeGet()}
 
@@ -176,7 +180,7 @@ function CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
   end
 
   unHideWindow(pid)
-  nameTab(errorlog, "Output (running)")
+  nameTab(errorlog, TR("Output (running)"))
 
   return pid
 end
@@ -252,7 +256,7 @@ errorlog:Connect(wx.wxEVT_END_PROCESS, function(event)
         -- check if editor still exists; it may not if the window is closed
         if editor then editor:SetFocus() end
       end
-      nameTab(errorlog, "Output")
+      nameTab(errorlog, TR("Output"))
       local runtime = TimeGet() - customprocs[pid].started
 
       streamins[pid] = nil
@@ -264,7 +268,7 @@ errorlog:Connect(wx.wxEVT_END_PROCESS, function(event)
       customprocs[pid] = nil
       unHideWindow(0)
       DebuggerStop()
-      DisplayOutput(("Program completed in %.2f seconds (pid: %d).\n")
+      DisplayOutputLn(TR("Program completed in %.2f seconds (pid: %d).")
         :format(runtime, pid))
     end
   end)

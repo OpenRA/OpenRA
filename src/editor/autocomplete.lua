@@ -46,7 +46,7 @@ end
 local function addAPI(apifile,only,subapis,known) -- relative to API directory
   local ftype,fname = apifile:match("api[/\\]([^/\\]+)[/\\](.*)%.")
   if not ftype then
-    print("The API file must be located in a subdirectory of the API directory\n")
+    DisplayOutputLn(TR("The API file must be located in a subdirectory of the API directory."))
     return
   end
   if ((only and ftype ~= only) or (known and not known[ftype])) then 
@@ -56,15 +56,15 @@ local function addAPI(apifile,only,subapis,known) -- relative to API directory
 
   local fn,err = loadfile(apifile)
   if err then
-    DisplayOutput("Error while loading API file: "..err.."\n")
+    DisplayOutputLn(TR("Error while loading API file: %s"):format(err))
     return
   end
   local env = apis[ftype] or newAPI()
   apis[ftype] = env
   env = env.ac.childs
-  local suc,res = pcall(function()return fn(env)end)
+  local suc,res = pcall(function()return fn(env) end)
   if (not suc) then
-    DisplayOutput("Error while processing API file: "..res.."\n")
+    DisplayOutputLn(TR("Error while processing API file: %s"):format(res))
   elseif (res) then
     local function gennames(tab,prefix)
       for i,v in pairs(tab) do
@@ -79,7 +79,6 @@ local function addAPI(apifile,only,subapis,known) -- relative to API directory
       env[i] = v
     end
   end
-
 end
 
 local function loadallAPIs (only,subapis,known)
@@ -550,5 +549,4 @@ function CreateAutoCompList(editor,key)
   local li = (compstr .. dw)
   
   return li ~= "" and (#li > 1024 and li:sub(1,1024).."..." or li)
-
 end

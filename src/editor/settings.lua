@@ -306,25 +306,19 @@ local function loadNotebook(nb,str,fnIdConvert)
   local sel = nb:GetSelection()
 
   -- store old pages
-  local currentpages = {}
+  local currentpages, order = {}, {}
   for i=1,cnt do
     local id = nb:GetPageText(i-1)
     local newid = fnIdConvert and fnIdConvert(id) or id
     currentpages[newid] = currentpages[newid] or {}
     table.insert(currentpages[newid], {page = nb:GetPage(i-1), text = id, index = i-1})
-  end
-  
-  -- remove them
-  for i=cnt,1,-1 do
-    nb:RemovePage(i-1)
+    order[i] = newid
   end
 
+  -- remove them
+  for i=cnt,1,-1 do nb:RemovePage(i-1) end
+
   -- read them and perform splits
-  local direction
-  local splits = {
-    X = wx.wxRIGHT,
-    Y = wx.wxBOTTOM,
-  }
   local t = 0
   local newsel
   local function finishPage(page)
@@ -333,7 +327,9 @@ local function loadNotebook(nb,str,fnIdConvert)
     end
     t = t + 1
   end
-  
+
+  local direction
+  local splits = { X = wx.wxRIGHT, Y = wx.wxBOTTOM }
   for cmd in str:gmatch("([^|]+)") do
     local instr = cmd:match("<(%w)>")
     if (not instr) then
@@ -351,17 +347,17 @@ local function loadNotebook(nb,str,fnIdConvert)
     direction = instr and splits[instr]
   end
   
-  -- add anything we forgot
-  for _,pagelist in pairs(currentpages) do
+  -- add anything we forgot; make sure page groups are in the order specified
+  for i=1,cnt do
+    local pagelist = currentpages[order[i]]
     for _,page in pairs(pagelist) do
       nb:AddPage(page.page, page.text)
       finishPage(page)
     end
   end
   
-  if (newsel) then
-    nb:SetSelection(newsel)
-  end
+  -- set the active page as it was before
+  if (newsel) then nb:SetSelection(newsel) end
 end
 
 function SettingsRestoreView()
@@ -376,6 +372,10 @@ function SettingsRestoreView()
   local layout = settingsReadSafe(settings,"uimgrlayout",layoutcur)
   if (layout ~= layoutcur) then
     uimgr:LoadPerspective(layout)
+    -- unfortunately need to explicitly (re-)assign the caption,
+    -- as it's going to be restored from the config regardless of how
+    -- it is set now (which affects its translation)
+    uimgr:GetPane("projpanel"):Caption(TR("Project"))
     uimgr:Update()
   end
   
@@ -395,7 +395,9 @@ function SettingsRestoreView()
   local layout = settingsReadSafe(settings,"nbbtmlayout",layoutcur)
   if (layout ~= layoutcur) then
     loadNotebook(ide.frame.bottomnotebook,layout,
-      function(name) return name:match("Output") or name end)
+      -- treat "Output (running)" same as "Output"
+      function(name) return
+        name:match(TR("Output")) or name:match("Output") or name end)
   end
 
   settings:SetPath(path)

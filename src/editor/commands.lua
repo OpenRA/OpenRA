@@ -105,23 +105,23 @@ local function getExtsString()
   end
   knownexts = knownexts:len() > 0 and knownexts:sub(1,-2) or nil
 
-  local exts = knownexts and "Known Files ("..knownexts..")|"..knownexts.."|" or ""
-  exts = exts.."All files (*)|*"
+  local exts = knownexts and TR("Known Files").." ("..knownexts..")|"..knownexts.."|" or ""
+  exts = exts..TR("All files").." (*)|*"
 
   return exts
 end
 
 function OpenFile(event)
   local exts = getExtsString()
-  local fileDialog = wx.wxFileDialog(ide.frame, "Open file",
+  local fileDialog = wx.wxFileDialog(ide.frame, TR("Open file"),
     "",
     "",
     exts,
     wx.wxFD_OPEN + wx.wxFD_FILE_MUST_EXIST)
   if fileDialog:ShowModal() == wx.wxID_OK then
     if not LoadFile(fileDialog:GetPath(), nil, true) then
-      wx.wxMessageBox("Unable to load file '"..fileDialog:GetPath().."'.",
-        "Error",
+      wx.wxMessageBox(TR("Unable to load file '%s'."):format(fileDialog:GetPath()),
+        TR("Error"),
         wx.wxOK + wx.wxCENTRE, ide.frame)
     end
   end
@@ -151,8 +151,8 @@ function SaveFile(editor, filePath)
       SetAutoRecoveryMark()
       return true
     else
-      wx.wxMessageBox("Unable to save file '"..filePath.."': "..err,
-        "Error",
+      wx.wxMessageBox(TR("Unable to save file '%s': %s"):format(filePath, err),
+        TR("Error"),
         wx.wxICON_ERROR + wx.wxOK + wx.wxCENTRE, ide.frame)
     end
   end
@@ -173,7 +173,7 @@ function SaveFileAs(editor)
   fn:Normalize() -- want absolute path for dialog
 
   local ext = fn:GetExt()
-  local fileDialog = wx.wxFileDialog(ide.frame, "Save file as",
+  local fileDialog = wx.wxFileDialog(ide.frame, TR("Save file as"),
     fn:GetPath(wx.wxPATH_GET_VOLUME),
     fn:GetFullName(),
     "*."..(ext and #ext > 0 and ext or "*"),
@@ -290,12 +290,12 @@ function SaveModifiedDialog(editor, allow_cancel)
   local filePath = document.filePath
   local fileName = document.fileName
   if document.isModified then
-    local message = "Do you want to save the changes to '"
-      ..(fileName or ide.config.default.name).."'?"
+    local message = TR("Do you want to save the changes to '%s'?")
+      :format(fileName or ide.config.default.name)
     local dlg_styles = wx.wxYES_NO + wx.wxCENTRE + wx.wxICON_QUESTION
     if allow_cancel then dlg_styles = dlg_styles + wx.wxCANCEL end
     local dialog = wx.wxMessageDialog(ide.frame, message,
-      "Save Changes?",
+      TR("Save Changes?"),
       dlg_styles)
     result = dialog:ShowModal()
     dialog:Destroy()
@@ -422,13 +422,14 @@ function CompileProgram(editor, quiet)
 
   compileTotal = compileTotal + 1
   if line_num > -1 then
-    DisplayOutput("Compilation error on line "..tostring(line_num)..":\n"..
-      errMsg:gsub("Lua:.-\n", "").."\n")
+    DisplayOutput(TR("Compilation error")
+      .." "..TR("on line %d"):format(line_num)
+      ..":\n"..errMsg:gsub("Lua:.-\n", ""))
     if not quiet then editor:GotoLine(line_num-1) end
   else
     compileOk = compileOk + 1
     if not quiet then
-      DisplayOutput(("Compilation successful; %.0f%% success rate (%d/%d).\n")
+      DisplayOutputLn(TR("Compilation successful; %.0f%% success rate (%d/%d).")
         :format(compileOk/compileTotal*100, compileOk, compileTotal))
     end
   end
@@ -444,8 +445,9 @@ function SaveIfModified(editor)
   if openDocuments[id].isModified then
     local saved = false
     if not openDocuments[id].filePath then
-      local ret = wx.wxMessageBox("You must save the program before running it.\nPress cancel to abort running.",
-        "Save file?", wx.wxOK + wx.wxCANCEL + wx.wxCENTRE, ide.frame)
+      local ret = wx.wxMessageBox(
+        TR("You must save the program first.").."\n"..TR("Press cancel to abort."),
+        TR("Save file?"), wx.wxOK + wx.wxCANCEL + wx.wxCENTRE, ide.frame)
       if ret == wx.wxOK then
         saved = SaveFileAs(editor)
       end
@@ -539,10 +541,10 @@ function SetOpenTabs(params)
   local recovery, nametab = loadstring("return "..params.recovery)
   if recovery then recovery, nametab = pcall(recovery) end
   if not recovery then
-    DisplayOutput("Can't process auto-recovery record; invalid format: "..nametab.."\n")
+    DisplayOutputLn(TR("Can't process auto-recovery record; invalid format: %s."):format(nametab))
     return
   end
-  DisplayOutput("Found auto-recovery record and restored saved session.\n")
+  DisplayOutputLn(TR("Found auto-recovery record and restored saved session."))
   for _,doc in ipairs(nametab) do
     local editor = doc.filename and LoadFile(doc.filename,nil,true,true) or NewFile()
     local opendoc = openDocuments[editor:GetId()]
@@ -550,8 +552,8 @@ function SetOpenTabs(params)
       notebook:SetPageText(opendoc.index, doc.tabname)
       editor:SetText(doc.content)
       if doc.filename and doc.modified < opendoc.modTime:GetTicks() then
-        DisplayOutput("File '"..doc.filename.."' has more recent timestamp than restored '"..doc.tabname.."'."
-          .." Please review before saving.\n")
+        DisplayOutputLn(TR("File '%s' has more recent timestamp than restored '%s'; please review before saving.")
+          :format(doc.filename, doc.tabname))
       end
     end
     editor:SetCurrentPos(doc.cursorpos or 0)
@@ -601,7 +603,8 @@ local function saveAutoRecovery(event)
     ide.settings:Flush()
   end
   ide.session.lastsaved = os.time()
-  ide.frame.statusBar:SetStatusText("Saved auto-recover at "..os.date("%H:%M:%S")..".", 1)
+  ide.frame.statusBar:SetStatusText(
+    TR("Saved auto-recover at %s."):format(os.date("%H:%M:%S")), 1)
 end
 
 function StoreRestoreProjectTabs(curdir, newdir)

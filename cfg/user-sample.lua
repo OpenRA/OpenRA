@@ -55,3 +55,6 @@ editor.autoactivate = true
 
 -- specify a list of MOAI entrypoints
 moai = { entrypoints = { "main.lua", "source/main.lua" } }
+
+-- specify language to use in the IDE (requires a file in cfg/lang folder)
+language = "ru"

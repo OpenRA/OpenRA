@@ -10,18 +10,18 @@ local menuBar = frame.menuBar
 local findReplace = ide.findReplace
 
 local findMenu = wx.wxMenu{
-  { ID_FIND, "&Find"..KSC(ID_FIND), "Find the specified text" },
-  { ID_FINDNEXT, "Find &Next"..KSC(ID_FINDNEXT), "Find the next occurrence of the specified text" },
-  { ID_FINDPREV, "Find &Previous"..KSC(ID_FINDPREV), "Repeat the search backwards in the file" },
-  { ID_REPLACE, "&Replace"..KSC(ID_REPLACE), "Replaces the specified text with different text" },
+  { ID_FIND, TR("&Find")..KSC(ID_FIND), TR("Find text") },
+  { ID_FINDNEXT, TR("Find &Next")..KSC(ID_FINDNEXT), TR("Find the next text occurrence") },
+  { ID_FINDPREV, TR("Find &Previous")..KSC(ID_FINDPREV), TR("Find the earlier text occurence") },
+  { ID_REPLACE, TR("&Replace")..KSC(ID_REPLACE), TR("Find and replace text") },
   { },
-  { ID_FINDINFILES, "Find &In Files"..KSC(ID_FINDINFILES), " Find specified text in files"},
-  { ID_REPLACEINFILES, "Re&place In Files"..KSC(ID_REPLACEINFILES), " Replace specified text in files"},
+  { ID_FINDINFILES, TR("Find &In Files")..KSC(ID_FINDINFILES), TR("Find text in files") },
+  { ID_REPLACEINFILES, TR("Re&place In Files")..KSC(ID_REPLACEINFILES), TR("Find and replace text in files") },
   { },
-  { ID_GOTOLINE, "&Goto line"..KSC(ID_GOTOLINE), "Go to a selected line" },
+  { ID_GOTOLINE, TR("&Goto Line")..KSC(ID_GOTOLINE), TR("Go to a selected line") },
   { },
-  { ID_SORT, "&Sort"..KSC(ID_SORT), "Sort selected lines"}}
-menuBar:Append(findMenu, "&Search")
+  { ID_SORT, TR("&Sort")..KSC(ID_SORT), TR("Sort selected lines") }}
+menuBar:Append(findMenu, TR("&Search"))
 
 function OnUpdateUISearchMenu(event) event:Enable(GetEditor() ~= nil) end
 
@@ -67,9 +67,9 @@ frame:Connect(ID_GOTOLINE, wx.wxEVT_COMMAND_MENU_SELECTED,
     local editor = GetEditor()
     local linecur = editor:LineFromPosition(editor:GetCurrentPos())
     local linemax = editor:LineFromPosition(editor:GetLength()) + 1
-    local linenum = wx.wxGetNumberFromUser( "Enter line number",
+    local linenum = wx.wxGetNumberFromUser(TR("Enter line number"),
       "1 .. "..tostring(linemax),
-      "Goto Line",
+      TR("Goto Line"),
       linecur, 1, linemax,
       frame)
     if linenum > 0 then

@@ -9,9 +9,10 @@ local menuBar = frame.menuBar
 local mobdebug = require "mobdebug"
 
 local helpMenu = wx.wxMenu{
-  { ID_ABOUT, "&About"..KSC(ID_ABOUT), "About ZeroBrane Studio" },
+  { ID_ABOUT, TR("&About")..KSC(ID_ABOUT), TR("About ZeroBrane Studio") },
 }
-menuBar:Append(helpMenu, "&Help")
+-- do not translate Help menu on Mac as it won't merge with "standard" menus
+menuBar:Append(helpMenu, ide.osname == 'Macintosh' and "&Help" or TR("&Help"))
 
 local function DisplayAbout(event)
   local page = [[
@@ -56,7 +57,7 @@ local function DisplayAbout(event)
       </body>
     </html>]]
 
-  local dlg = wx.wxDialog(frame, wx.wxID_ANY, "About ZeroBrane Studio")
+  local dlg = wx.wxDialog(frame, wx.wxID_ANY, TR("About ZeroBrane Studio"))
   local html = wx.wxLuaHtmlWindow(dlg, wx.wxID_ANY,
     wx.wxDefaultPosition, wx.wxSize(440, 270),
     wx.wxHW_SCROLLBAR_NEVER)

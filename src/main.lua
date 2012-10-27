@@ -51,7 +51,9 @@ ide = {
     outputshell = {},
     filetree = {},
 
-    keymap = {}, -- mapping of menu IDs to hot keys
+    keymap = {},
+    messages = {},
+    language = "en",
 
     styles = StylesGetDefault(),
     stylesoutshell = StylesGetDefault(),
@@ -333,6 +335,10 @@ do
     addConfig(v, true)
   end
   configs = nil
+  local sep = string_Pathsep
+  if ide.config.language then
+    addToTab(ide.config.messages, "cfg"..sep.."i18n"..sep..ide.config.language..".lua")
+  end
 end
 
 -- load this after preinit and processing configs to allow
@@ -344,28 +350,18 @@ loadTools()
 ---------------
 -- Load App
 
-dofile "src/editor/settings.lua"
-dofile "src/editor/singleinstance.lua"
-dofile "src/editor/iofilters.lua"
-
-dofile "src/editor/gui.lua"
-dofile "src/editor/filetree.lua"
-dofile "src/editor/output.lua"
-dofile "src/editor/debugger.lua"
-dofile "src/editor/preferences.lua"
-
-dofile "src/editor/editor.lua"
-dofile "src/editor/autocomplete.lua"
-dofile "src/editor/findreplace.lua"
-dofile "src/editor/commands.lua"
-
-dofile "src/editor/shellbox.lua"
-
-dofile "src/editor/menu.lua"
+for _, file in ipairs({
+    "settings", "singleinstance", "iofilters",
+    "gui", "filetree", "output", "debugger", "preferences",
+    "editor", "findreplace", "commands", "autocomplete", "shellbox",
+    "menu_file", "menu_edit", "menu_search",
+    "menu_view", "menu_project", "menu_tools",
+  }) do
+  dofile("src/editor/"..file..".lua")
+end
 
 dofile "src/preferences/editor.lua"
 dofile "src/preferences/project.lua"
-
 dofile "src/version.lua"
 
 -- load rest of settings
