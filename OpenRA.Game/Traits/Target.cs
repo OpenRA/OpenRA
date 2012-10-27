@@ -39,7 +39,7 @@ namespace OpenRA.Traits
 
 		public static readonly Target None = new Target();
 
-		public bool IsValid { get { return valid && (actor == null || (actor.IsInWorld && actor.Owner == owner)); } }
+		public bool IsValid { get { return valid && (actor == null || (actor.IsInWorld && !actor.IsDead() && actor.Owner == owner)); } }
 		public PPos PxPosition { get { return IsActor ? actor.Trait<IHasLocation>().PxPosition : pos; } }
 		public PPos CenterLocation { get { return PxPosition; } }
 

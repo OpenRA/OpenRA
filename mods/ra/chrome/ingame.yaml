@@ -81,6 +81,14 @@ Container@INGAME_ROOT:
 			Text:Cheats
 			Visible:false
 			Font:Bold
+		Button@OBJECTIVES_BUTTON:
+			X:486
+			Y:0
+			Width:160
+			Height:25
+			Text:Objectives
+			Visible:false
+			Font:Bold
 		RadarBin@INGAME_RADAR_BIN:
 			WorldInteractionController:INTERACTION_CONTROLLER
 		PowerBin@INGAME_POWER_BIN:

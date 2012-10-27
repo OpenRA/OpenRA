@@ -9,6 +9,7 @@
 #endregion
 
 using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
 
@@ -21,17 +22,12 @@ namespace OpenRA.Mods.RA
 
 	public class Sellable : IResolveOrder
 	{
-		[Sync] public bool Selling = false;
-
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Sell" && !Selling)
+			if (order.OrderString == "Sell")
 			{
-				var capturing = self.TraitOrDefault<Capturable>();
-				if (capturing != null && capturing.CaptureInProgress)
+				if (!self.Trait<Building>().Lock())
 					return;
-
-				Selling = true;
 
 				foreach( var ns in self.TraitsImplementing<INotifySold>() )
 					ns.Selling( self );

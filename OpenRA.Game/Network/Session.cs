@@ -64,6 +64,7 @@ namespace OpenRA.Network
 			public bool LockColor;
 			public bool LockTeam;
 			public bool LockSpawn;
+			public bool Required;
 		}
 
 		public class Global
@@ -76,6 +77,8 @@ namespace OpenRA.Network
 			public int RandomSeed = 0;
 			public bool LockTeams = true;	// don't allow team changes after game start.
 			public bool AllowCheats = false;
+			public bool Dedicated;
+			public string DedicatedMOTD;
 		}
 
 		public Session(string[] mods)

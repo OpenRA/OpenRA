@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var last = Game.Settings.Player.LastServer.Split(':');
 			ipField.Text = last.Length > 1 ? last[0] : "localhost";
-			portField.Text = last.Length > 2 ? last[1] : "1234";
+			portField.Text = last.Length == 2 ? last[1] : "1234";
 
 			panel.Get<ButtonWidget>("JOIN_BUTTON").OnClick = () =>
 			{

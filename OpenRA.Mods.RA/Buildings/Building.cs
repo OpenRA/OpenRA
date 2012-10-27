@@ -73,6 +73,17 @@ namespace OpenRA.Mods.RA.Buildings
 		PowerManager PlayerPower;
 		PPos pxPosition;
 
+		[Sync] public bool Locked;	/* shared activity lock: undeploy, sell, capture, etc */
+
+		public bool Lock()
+		{
+			if (Locked) return false;
+			Locked = true;
+			return true;
+		}
+
+		public void Unlock() { Locked = false; }
+
 		public CPos TopLeft { get { return topLeft; } }
 		public PPos PxPosition { get { return pxPosition; } }
 

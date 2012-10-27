@@ -44,4 +44,5 @@ namespace OpenRA.Mods.RA
 	}
 
 	public interface INotifyParachuteLanded { void OnLanded(); }
+	public interface INotifyTransform { void OnTransform(Actor self); }
 }

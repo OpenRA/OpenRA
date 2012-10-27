@@ -233,18 +233,21 @@ namespace OpenRA.Mods.RA
 				+ turret.ScreenSpacePosition);
 		}
 
-		// gets the screen-space position of a barrel.
-		public static PVecInt GetBarrelPosition(Actor self, IFacing facing, Turret turret, Barrel barrel)
+		static PVecInt GetUnitspaceBarrelOffset(Actor self, IFacing facing, Turret turret, Barrel barrel)
 		{
 			var turreted = self.TraitOrDefault<Turreted>();
-
 			if (turreted == null && facing == null)
 				return PVecInt.Zero;
 
 			var turretFacing = turreted != null  ? turreted.turretFacing : facing.Facing;
+			return (PVecInt)(PVecFloat)Util.RotateVectorByFacing(barrel.TurretSpaceOffset.ToFloat2(), turretFacing, .7f);
+		}
 
+		// gets the screen-space position of a barrel.
+		public static PVecInt GetBarrelPosition(Actor self, IFacing facing, Turret turret, Barrel barrel)
+		{
 			return GetTurretPosition(self, facing, turret) + barrel.ScreenSpaceOffset
-				+ (PVecInt)(PVecFloat)Util.RotateVectorByFacing(barrel.TurretSpaceOffset.ToFloat2(), turretFacing, .7f);
+				+ GetUnitspaceBarrelOffset(self, facing, turret, barrel);
 		}
 
 		public static bool IsInRange( PPos attackOrigin, float range, Actor target )

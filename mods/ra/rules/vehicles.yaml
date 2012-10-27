@@ -156,7 +156,7 @@ V2RL:
 	RevealsShroud:
 		Range: 6
 	Turreted:
-		ROT: 2
+		ROT: 1
 	AttackTurreted:
 		PrimaryWeapon: 120mm
 		SecondaryWeapon: MammothTusk
@@ -175,8 +175,8 @@ V2RL:
 	SelfHealing:
 		Step: 1
 		Ticks: 1
-		HealIfBelow: 50%
-		DamageCooldown: 200
+		HealIfBelow: 80%
+		DamageCooldown: 150
 	Selectable:
 		Bounds: 44,38,0,-4
 
@@ -514,13 +514,14 @@ TTNK:
 	Inherits: ^Tank
 	Buildable:
 		Queue: Vehicle
+		BuildPaletteOrder: 130
 		Prerequisites: stek,tsla
 		Owner: soviet
 	Valued:
-		Cost: 1500
+		Cost: 1350
 	Tooltip:
 		Name: Tesla Tank
-		Description: Tank with mounted tesla coil.\n Strong vs Infantry.\n Weak vs Tanks
+		Description: Tank with mounted tesla coil.\n  Strong vs Infantry, Light Vehicles\n  and Buildings  \n  Weak vs Tanks, Aircraft
 	Health:
 		HP: 150
 	Armor:
@@ -548,7 +549,7 @@ FTRK:
 		Cost: 600
 	Tooltip:
 		Name: Flak Truck
-		Description: Flak Truck, good for scouting.\n  Strong vs Light Vehicles\nand Aircraft, Weak vs Tanks 
+		Description: Flak Truck, good for scouting.\n  Strong vs Light Vehicles, Aircraft  \n  Weak vs Tanks
 	Health:
 		HP: 120
 	Armor: 
@@ -571,3 +572,65 @@ FTRK:
 		EmptyWeapon: UnitExplodeSmall
 	Selectable:
 		Bounds: 28,28,0,0
+
+DTRK:
+	Inherits: ^Vehicle
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 140
+		Prerequisites: stek
+		Owner: soviet
+	Valued:
+		Cost: 2500
+	Tooltip:
+		Name: Demolition Truck
+		Description: Demolition Truck, actively armed with explosives.\n  Strong vs Everything\n  Weak vs Everything
+	Health:
+		HP: 50
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 6
+	RevealsShroud:
+		Range: 3
+	RenderUnit:
+	AttackMove:
+		JustMove: yes
+	Explodes:
+		Weapon: MiniNuke
+		EmptyWeapon: MiniNuke
+	DemoTruck:
+	-IronCurtainable:
+	Chronoshiftable:
+		ExplodeInstead: yes
+
+CTNK:
+	Inherits: ^Vehicle
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 140
+		Prerequisites: atek
+		Owner: allies
+	Valued:
+		Cost: 1200
+	Tooltip:
+		Name: Chrono Tank
+		Description: Chrono Tank, teleports to areas within range.\n  Strong vs Vehicles, Buildings\n  Weak vs Tanks
+	Selectable:
+		Bounds: 28,28
+	Health:
+		HP: 200
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 8
+	RevealsShroud:
+		Range: 6
+	RenderUnit:
+	AutoTarget:
+	AttackFrontal:
+		PrimaryWeapon: ChronoTusk
+		SecondaryWeapon: ChronoTusk
+		PrimaryLocalOffset: -4,0,0,0,0, -4,0,0,0,0
+		SecondaryLocalOffset: 4,0,0,0,25, 4,0,0,0,-25
+	ChronoshiftDeploy:

@@ -100,7 +100,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				var sizeWidget = item.Get<LabelWidget>("SIZE");
 				if (sizeWidget != null)
-					sizeWidget.GetText = () => m.Bounds.Width + "x" + m.Bounds.Height;
+				{
+					var size = m.Bounds.Width + "x" + m.Bounds.Height;
+					var numberPlayableCells = m.Bounds.Width * m.Bounds.Height;
+					if (numberPlayableCells >= 120 * 120) size += " (Huge)";
+					else if (numberPlayableCells >= 90 * 90) size += " (Large)";
+					else if (numberPlayableCells >= 60 * 60) size += " (Medium)";
+					else size += " (Small)";
+					sizeWidget.GetText = () => size;
+				}
 
 				scrollpanel.AddChild(item);
 			}

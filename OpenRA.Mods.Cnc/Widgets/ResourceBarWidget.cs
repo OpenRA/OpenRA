@@ -17,22 +17,25 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc.Widgets
 {
-	public class SiloBarWidget : Widget
+	public class ResourceBarWidget : Widget
 	{
 		public readonly string TooltipTemplate = "SIMPLE_TOOLTIP";
 		public readonly string TooltipContainer;
 		Lazy<TooltipContainerWidget> tooltipContainer;
 
 		public float LowStorageThreshold = 0.8f;
-		float? lastCapacityFrac;
-		float? lastStoredFrac;
+		EWMA providedLerp = new EWMA(0.3f);
+		EWMA usedLerp = new EWMA(0.3f);
 
-		readonly PlayerResources pr;
+		public Func<float> GetProvided = () => 0;
+		public Func<float> GetUsed = () => 0;
+		public string TooltipFormat = "";
+		public bool RightIndicator = false;
+		public Func<Color> GetBarColor = () => Color.White;
 
 		[ObjectCreator.UseCtor]
-		public SiloBarWidget(World world)
+		public ResourceBarWidget(World world)
 		{
-			pr = world.LocalPlayer.PlayerActor.Trait<PlayerResources>();
 			tooltipContainer = Lazy.New(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 		}
@@ -40,7 +43,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 		public override void MouseEntered()
 		{
 			if (TooltipContainer == null) return;
-			Func<string> getText = () => "Silo Usage: {0}/{1}".F(pr.Ore, pr.OreCapacity);
+			Func<string> getText = () => TooltipFormat.F(GetUsed(), GetProvided());
 			tooltipContainer.Value.SetTooltip(TooltipTemplate, new WidgetArgs() {{ "getText", getText }});
 		}
 
@@ -52,36 +55,30 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 		public override void Draw()
 		{
-			float scaleBy = 100;
-			var max = Math.Max(pr.OreCapacity, pr.Ore);
+			var scaleBy = 100.0f;
+			var provided = GetProvided();
+			var used = GetUsed();
+			var max = Math.Max(provided, used);
 			while (max >= scaleBy) scaleBy *= 2;
 
-			// Current capacity
-			var capacityFrac = pr.OreCapacity / scaleBy;
-			lastCapacityFrac = capacityFrac = float2.Lerp(lastCapacityFrac.GetValueOrDefault(capacityFrac), capacityFrac, .3f);
+			var providedFrac = providedLerp.Update(provided/scaleBy);
+			var usedFrac = usedLerp.Update(used/scaleBy);
 
 			var color = GetBarColor();
 
 			var b = RenderBounds;
-			var rect = new RectangleF(b.X, float2.Lerp( b.Bottom, b.Top, capacityFrac ),
-				(float)b.Width, capacityFrac*b.Height);
+			var rect = new RectangleF(b.X, float2.Lerp( b.Bottom, b.Top, providedFrac ),
+				b.Width, providedFrac*b.Height);
 			Game.Renderer.LineRenderer.FillRect(rect, color);
 
-			var indicator = ChromeProvider.GetImage("sidebar-bits", "right-indicator");
+			var indicator = ChromeProvider.GetImage("sidebar-bits",
+				RightIndicator ? "right-indicator" : "left-indicator");
 
-			var storedFrac = pr.Ore / scaleBy;
-			lastStoredFrac = storedFrac = float2.Lerp(lastStoredFrac.GetValueOrDefault(storedFrac), storedFrac, .3f);
+			var indicatorX = RightIndicator ? (b.Right - indicator.size.X) : b.Left;
 
-			float2 pos = new float2(b.X, float2.Lerp( b.Bottom, b.Top, storedFrac ) - indicator.size.Y / 2);
+			var pos = new float2(indicatorX, float2.Lerp( b.Bottom, b.Top, usedFrac ) - indicator.size.Y / 2);
 
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(indicator, pos);
-		}
-
-		Color GetBarColor()
-		{
-			if (pr.Ore == pr.OreCapacity) return Color.Red;
-			if (pr.Ore >= LowStorageThreshold * pr.OreCapacity) return Color.Orange;
-			return Color.LimeGreen;
 		}
 	}
 }

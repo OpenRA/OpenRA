@@ -48,6 +48,10 @@ namespace OpenRA.Mods.RA
 
 		bool CanDeploy()
 		{
+			var b = self.TraitOrDefault<Building>();
+			if (b != null && b.Locked)
+				return false;
+
 			return (bi == null || self.World.CanPlaceBuilding(Info.IntoActor, bi, self.Location + (CVec)Info.Offset, self));
 		}
 
@@ -68,7 +72,9 @@ namespace OpenRA.Mods.RA
 		{
 			if (order.OrderString == "DeployTransform")
 			{
-				if (!CanDeploy())
+				var b = self.TraitOrDefault<Building>();
+
+				if (!CanDeploy() || (b != null && !b.Lock()))
 				{
 					foreach (var s in Info.NoTransformSounds)
 						Sound.PlayToPlayer(self.Owner, s);

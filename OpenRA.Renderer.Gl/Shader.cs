@@ -23,6 +23,7 @@ namespace OpenRA.Renderer.Glsl
 	{
 		int program;
 		readonly Dictionary<string, int> samplers = new Dictionary<string, int>();
+		readonly Dictionary<int, ITexture> textures = new Dictionary<int, ITexture>();
 
 		public Shader(GraphicsDevice dev, string type)
 		{
@@ -85,7 +86,7 @@ namespace OpenRA.Renderer.Glsl
 			Gl.glGetObjectParameterivARB( program, Gl.GL_ACTIVE_UNIFORMS, out numUniforms );
 			ErrorHandler.CheckGlError();
 
-			int nextTexUnit = 1;
+			int nextTexUnit = 0;
 			for( int i = 0 ; i < numUniforms ; i++ )
 			{
 				int uLen, uSize, uType, loc;
@@ -103,11 +104,22 @@ namespace OpenRA.Renderer.Glsl
 					++nextTexUnit;
 				}
 			}
+
 		}
 
 		public void Render(Action a)
 		{
 			Gl.glUseProgramObjectARB(program);
+
+			/* bind the textures */
+
+			foreach (var kv in textures)
+			{
+				Gl.glActiveTextureARB( Gl.GL_TEXTURE0_ARB + kv.Key );
+				Gl.glBindTexture( Gl.GL_TEXTURE_2D, ((Texture)kv.Value).texture );
+			}
+
+			/* configure blend state */
 			ErrorHandler.CheckGlError();
 			// Todo: Only enable alpha blending if we need it
 			Gl.glEnable(Gl.GL_BLEND);
@@ -123,18 +135,9 @@ namespace OpenRA.Renderer.Glsl
 		public void SetValue(string name, ITexture t)
 		{
 			if( t == null ) return;
-			Gl.glUseProgramObjectARB(program);
-			ErrorHandler.CheckGlError();
-			var texture = (Texture)t;
 			int texUnit;
 			if( samplers.TryGetValue( name, out texUnit ) )
-			{
-				Gl.glActiveTextureARB( Gl.GL_TEXTURE0_ARB + texUnit );
-				ErrorHandler.CheckGlError();
-				Gl.glBindTexture( Gl.GL_TEXTURE_2D, texture.texture );
-				ErrorHandler.CheckGlError();
-				Gl.glActiveTextureARB( Gl.GL_TEXTURE0_ARB );
-			}
+				textures[texUnit] = t;
 		}
 
 		public void SetValue(string name, float x, float y)

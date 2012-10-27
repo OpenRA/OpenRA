@@ -213,7 +213,6 @@ namespace OpenRA.Mods.Cnc.Widgets
 			if (CurrentQueue == null)
 				return;
 
-			var isBuildingSomething = CurrentQueue.CurrentItem() != null;
 			var buildableItems = CurrentQueue.BuildableItems().OrderBy(a => a.Traits.Get<BuildableInfo>().BuildPaletteOrder);
 
 			// Background
@@ -235,7 +234,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 					clock.Tick();
 					WidgetUtils.DrawSHP(clock.Image, icon.Pos, worldRenderer);
 				}
-				else if (isBuildingSomething || !buildableItems.Any(a => a.Name == icon.Name))
+				else if (!buildableItems.Any(a => a.Name == icon.Name))
 					WidgetUtils.DrawSHP(cantBuild.Image, icon.Pos, worldRenderer);
 			}
 
