@@ -2,10 +2,11 @@
 ---------------------------------------------------------
 
 local dxpath = os.getenv("DXSDK_DIR")
-local dxprofile = ide.config.dxprofile or "dx_4"
+local dxprofile
 
 return dxpath and {
   fninit = function(frame,menuBar)
+    dxprofile = ide.config.dxprofile or "dx_4"
 
     local myMenu = wx.wxMenu{
       { ID "dx.profile.dx_2x", "DX SM&2_x", "DirectX sm2_x profile", wx.wxITEM_CHECK },
