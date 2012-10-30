@@ -124,22 +124,35 @@ ide = {
 
 dofile "src/editor/keymap.lua"
 
-function setLuaPaths(mainpath, os)
+function setLuaPaths(mainpath, osname)
+  -- use LUA_DEV to setup paths for Lua for Windows modules if installed
+  local luadev = osname == "Windows" and os.getenv('LUA_DEV')
+  local luadev_path = (luadev
+    and ('LUA_DEV/?.lua;LUA_DEV/?/init.lua;LUA_DEV/lua/?.lua;LUA_DEV/lua/?/init.lua')
+      :gsub('LUA_DEV', (luadev:gsub('[\\/]$','')))
+    or "")
+  local luadev_cpath = (luadev
+    and ('LUA_DEV/?.dll;LUA_DEV/clibs/?.dll')
+      :gsub('LUA_DEV', (luadev:gsub('[\\/]$','')))
+    or "")
+
   -- (luaconf.h) in Windows, any exclamation mark ('!') in the path is replaced
   -- by the path of the directory of the executable file of the current process.
   -- this effectively prevents any path with an exclamation mark from working.
   -- if the path has an excamation mark, allow Lua to expand it as this
   -- expansion happens only once.
-  if os == "Windows" and mainpath:find('%!') then mainpath = "!/../" end
+  if osname == "Windows" and mainpath:find('%!') then mainpath = "!/../" end
   wx.wxSetEnv("LUA_PATH", package.path .. ";"
-    .. "./?.lua;./?/init.lua;./lua/?.lua;./lua/?/init.lua;"
-    .. mainpath.."lualibs/?/?.lua;"..mainpath.."lualibs/?.lua")
+    .. "./?.lua;./?/init.lua;./lua/?.lua;./lua/?/init.lua" .. ';'
+    .. mainpath.."lualibs/?/?.lua;"..mainpath.."lualibs/?.lua" .. ';'
+    .. luadev_path)
 
   local clibs =
-    os == "Windows" and mainpath.."bin/?.dll;"..mainpath.."bin/clibs/?.dll" or
-    os == "Macintosh" and mainpath.."bin/lib?.dylib;"..mainpath.."bin/clibs/?.dylib" or
-    os == "Unix" and mainpath.."bin/?.so;"..mainpath.."bin/clibs/?.so" or nil
-  if clibs then wx.wxSetEnv("LUA_CPATH", package.cpath .. ';' .. clibs) end
+    osname == "Windows" and mainpath.."bin/?.dll;"..mainpath.."bin/clibs/?.dll" or
+    osname == "Macintosh" and mainpath.."bin/lib?.dylib;"..mainpath.."bin/clibs/?.dylib" or
+    osname == "Unix" and mainpath.."bin/?.so;"..mainpath.."bin/clibs/?.so" or nil
+  if clibs then wx.wxSetEnv("LUA_CPATH",
+    package.cpath .. ';' .. clibs .. ';' .. luadev_cpath) end
 end
 
 ---------------
