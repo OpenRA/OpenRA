@@ -198,64 +198,12 @@ do
   setLuaPaths(GetPathWithSep(ide.editorFilename), ide.osname)
 end
 
--- temporarily replace print() to capture reported error messages to show
--- them later in the Output window after everything is loaded.
-local resumePrint do
-  local errors = {}
-  local origprint = print
-  print = function(...) errors[#errors+1] = {...} end
-  resumePrint = function()
-    print = origprint
-    for _, e in ipairs(errors) do DisplayOutput(unpack(e), "\n") end
-  end
-end
-
------------------------
--- load config
-local function addConfig(filename,isstring)
-  -- skip those files that don't exist
-  if not isstring and not wx.wxFileName(filename):FileExists() then return end
-  -- if it's marked as command, but exists as a file, load it as a file
-  if isstring and wx.wxFileName(filename):FileExists() then isstring = false end
-
-  local cfgfn, err, msg
-  if isstring
-  then msg, cfgfn, err = "string", loadstring(filename)
-  else msg, cfgfn, err = "file", loadfile(filename) end
-
-  if not cfgfn then
-    print(("Error while loading configuration %s: %s"):format(msg, err))
-  else
-    ide.config.os = os
-    ide.config.wxstc = wxstc
-    setfenv(cfgfn,ide.config)
-    local _, err = pcall(function()cfgfn(assert(_G or _ENV))end)
-    if err then
-      print(("Error while processing configuration %s: %s"):format(msg, err))
-    end
-  end
-end
-
-do
-  addConfig(ide.config.path.app.."/config.lua")
-end
-
 ----------------------
 -- process application
 
 ide.app = dofile(ide.config.path.app.."/app.lua")
 local app = ide.app
 assert(app)
-
-do
-  local app = ide.app
-  function GetIDEString(keyword, default)
-    return app.stringtable[keyword] or default or keyword
-  end
-end
-
-----------------------
--- process plugins
 
 local function addToTab(tab,file)
   local cfgfn,err = loadfile(file)
@@ -280,18 +228,18 @@ local function addToTab(tab,file)
 end
 
 -- load interpreters
-local function loadInterpreters()
+local function loadInterpreters(filter)
   for _, file in ipairs(FileSysGet("interpreters/*.*", wx.wxFILE)) do
-    if file:match "%.lua$" and app.loadfilters.interpreters(file) then
+    if file:match "%.lua$" and (filter or app.loadfilters.interpreters)(file) then
       addToTab(ide.interpreters,file)
     end
   end
 end
 
 -- load specs
-local function loadSpecs()
+local function loadSpecs(filter)
   for _, file in ipairs(FileSysGet("spec/*.*", wx.wxFILE)) do
-    if file:match "%.lua$" and app.loadfilters.specs(file) then
+    if file:match "%.lua$" and (filter or app.loadfilters.specs)(file) then
       addToTab(ide.specs,file)
     end
   end
@@ -322,15 +270,71 @@ local function loadSpecs()
 end
 
 -- load tools
-local function loadTools()
+local function loadTools(filter)
   for _, file in ipairs(FileSysGet("tools/*.*", wx.wxFILE)) do
-    if file:match "%.lua$" and app.loadfilters.tools(file) then
+    if file:match "%.lua$" and (filter or app.loadfilters.tools)(file) then
       addToTab(ide.tools,file)
     end
   end
 end
 
+-- temporarily replace print() to capture reported error messages to show
+-- them later in the Output window after everything is loaded.
+local resumePrint do
+  local errors = {}
+  local origprint = print
+  print = function(...) errors[#errors+1] = {...} end
+  resumePrint = function()
+    print = origprint
+    for _, e in ipairs(errors) do DisplayOutput(unpack(e), "\n") end
+  end
+end
+
+-----------------------
+-- load config
+local function addConfig(filename,isstring)
+  -- skip those files that don't exist
+  if not isstring and not wx.wxFileName(filename):FileExists() then return end
+  -- if it's marked as command, but exists as a file, load it as a file
+  if isstring and wx.wxFileName(filename):FileExists() then isstring = false end
+
+  local cfgfn, err, msg
+  if isstring
+  then msg, cfgfn, err = "string", loadstring(filename)
+  else msg, cfgfn, err = "file", loadfile(filename) end
+
+  if not cfgfn then
+    print(("Error while loading configuration %s: %s"):format(msg, err))
+  else
+    ide.config.os = os
+    ide.config.wxstc = wxstc
+    ide.config.load = { interpreters = loadInterpreters,
+      specs = loadSpecs, tools = loadTools }
+    setfenv(cfgfn,ide.config)
+    local _, err = pcall(function()cfgfn(assert(_G or _ENV))end)
+    if err then
+      print(("Error while processing configuration %s: %s"):format(msg, err))
+    end
+  end
+end
+
+function GetIDEString(keyword, default)
+  return app.stringtable[keyword] or default or keyword
+end
+
+----------------------
+-- process config
+
+addConfig(ide.config.path.app.."/config.lua")
+
+----------------------
+-- process plugins
+
 if app.preinit then app.preinit() end
+
+loadInterpreters()
+loadSpecs()
+loadTools()
 
 do
   -- process user config
@@ -356,9 +360,6 @@ end
 
 -- load this after preinit and processing configs to allow
 -- each of the lists to be modified
-loadInterpreters()
-loadSpecs()
-loadTools()
 
 ---------------
 -- Load App
@@ -368,8 +369,8 @@ for _, file in ipairs({
     "gui", "filetree", "output", "debugger", "preferences",
     "editor", "findreplace", "commands", "autocomplete", "shellbox",
     "menu_file", "menu_edit", "menu_search",
-    "menu_view", "menu_project", "menu_tools",
-  }) do
+    "menu_view", "menu_project", "menu_tools", "menu_help",
+    "inspect" }) do
   dofile("src/editor/"..file..".lua")
 end
 

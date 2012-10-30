@@ -8,6 +8,8 @@ api/cg/*.lua
 api/README
 cfg/user-sample.lua
 cfg/estrela.lua
+cfg/i18n/en.lua
+cfg/i18n/ru.lua
 interpreters/*.lua
 lualibs/copas/copas.lua
 lualibs/coxpcall/coxpcall.lua
@@ -61,10 +63,12 @@ src/editor/gui.lua
 src/editor/ids.lua
 src/editor/inspect.lua
 src/editor/iofilters.lua
+src/editor/keymap.lua
 src/editor/markup.lua
 src/editor/menu.lua
 src/editor/menu_edit.lua
 src/editor/menu_file.lua
+src/editor/menu_help.lua
 src/editor/menu_project.lua
 src/editor/menu_search.lua
 src/editor/menu_tools.lua
@@ -83,7 +87,6 @@ src/version.lua
 tools/*.lua
 zbstudio/app.lua
 zbstudio/config.lua
-zbstudio/menu_help.lua
 zbstudio/res/16.ico
 zbstudio/res/16/LICENSE
 zbstudio/res/16/wxART_COPY.png
