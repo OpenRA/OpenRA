@@ -257,8 +257,8 @@ namespace OpenRA.Mods.RA.Missions
 			if (allies2 == null)
 			{
 				allies2 = allies1;
-				attackAtFrame = 500;
-				attackAtFrameIncrement = 500;
+				attackAtFrame = 700;
+				attackAtFrameIncrement = 700;
 			}
 			evacuees = w.Players.Single(p => p.InternalName == "Evacuees");
 			soviets = w.Players.Single(p => p.InternalName == "Soviets");
