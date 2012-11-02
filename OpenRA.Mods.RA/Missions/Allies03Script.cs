@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA.Missions
 		World world;
 		Player allies1;
 		Player allies2;
-		Player evacuees;
+		Player allies;
 		Player soviets;
 
 		Actor exit1TopLeft;
@@ -238,7 +238,7 @@ namespace OpenRA.Mods.RA.Missions
 			foreach (var unit in units)
 			{
 				unit.CancelActivity();
-				unit.ChangeOwner(evacuees);
+				unit.ChangeOwner(allies);
 				unit.QueueActivity(new Move.Move(exit));
 				unit.QueueActivity(new CallFunc(() => { unitsEvacuated++; UpdateUnitsEvacuated(); }));
 				unit.QueueActivity(new RemoveSelf());
@@ -256,7 +256,7 @@ namespace OpenRA.Mods.RA.Missions
 				attackAtFrame = 500;
 				attackAtFrameIncrement = 500;
 			}
-			evacuees = w.Players.Single(p => p.InternalName == "Evacuees");
+			allies = w.Players.Single(p => p.InternalName == "Allies");
 			soviets = w.Players.Single(p => p.InternalName == "Soviets");
 			var actors = w.WorldActor.Trait<SpawnMapActors>().Actors;
 			exit1TopLeft = actors["Exit1TopLeft"];

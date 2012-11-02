@@ -36,7 +36,7 @@ Players:
 		ColorRamp: 153,240,130,10
 		LockSpawn: True
 		LockTeam: True
-		Allies: Allies2,Evacuees
+		Allies: Allies2,Allies
 		Enemies: Soviets
 	PlayerReference@Allies2:
 		Name: Allies2
@@ -48,11 +48,10 @@ Players:
 		ColorRamp: 115,240,130,10
 		LockSpawn: True
 		LockTeam: True
-		Allies: Allies1,Evacuees
+		Allies: Allies1,Allies
 		Enemies: Soviets
-	PlayerReference@Evacuees:
-		Name: Evacuees
-		NonCombatant: True
+	PlayerReference@Allies:
+		Name: Allies
 		Race: allies
 		ColorRamp: 80,240,130,10
 		Allies: Allies1,Allies2
@@ -61,7 +60,7 @@ Players:
 		Name: Soviets
 		Race: soviet
 		ColorRamp: 0,255,128,10
-		Enemies: Allies1,Allies2,Evacuees
+		Enemies: Allies1,Allies2,Allies
 
 Actors:
 	Actor11: t05
@@ -333,7 +332,7 @@ Actors:
 		Owner: Neutral
 	Actor48: fenc
 		Location: 29,27
-		Owner: Evacuees
+		Owner: Allies
 	Actor130: t02
 		Location: 28,16
 		Owner: Neutral
@@ -600,7 +599,7 @@ Actors:
 		Owner: Neutral
 	Actor8: e1
 		Location: 26,46
-		Owner: Evacuees
+		Owner: Allies
 	Actor264: t02
 		Location: 127,17
 		Owner: Neutral
@@ -921,67 +920,67 @@ Actors:
 		Owner: Neutral
 	Actor7: e1
 		Location: 27,50
-		Owner: Evacuees
+		Owner: Allies
 	Actor5: gun
 		Location: 28,51
-		Owner: Evacuees
+		Owner: Allies
 	Actor6: gun
 		Location: 28,44
-		Owner: Evacuees
+		Owner: Allies
 	Actor47: powr
 		Location: 3,37
-		Owner: Evacuees
+		Owner: Allies
 	Actor45: 2tnk
 		Location: 28,28
-		Owner: Evacuees
+		Owner: Allies
 	Actor35: gun
 		Location: 29,29
-		Owner: Evacuees
+		Owner: Allies
 	Actor24: gun
 		Location: 25,30
-		Owner: Evacuees
+		Owner: Allies
 	Actor41: e1
 		Location: 30,28
-		Owner: Evacuees
+		Owner: Allies
 	Actor4: jeep
 		Location: 27,45
-		Owner: Evacuees
+		Owner: Allies
 	Actor40: e1
 		Location: 24,30
-		Owner: Evacuees
+		Owner: Allies
 	Actor46: powr
 		Location: 1,37
-		Owner: Evacuees
+		Owner: Allies
 	Actor49: fenc
 		Location: 28,27
-		Owner: Evacuees
+		Owner: Allies
 	Actor50: fenc
 		Location: 27,27
-		Owner: Evacuees
+		Owner: Allies
 	Actor122: fenc
 		Location: 30,27
-		Owner: Evacuees
+		Owner: Allies
 	Actor124: fenc
 		Location: 31,27
-		Owner: Evacuees
+		Owner: Allies
 	Actor125: fenc
 		Location: 32,27
-		Owner: Evacuees
+		Owner: Allies
 	Actor126: fenc
 		Location: 32,25
-		Owner: Evacuees
+		Owner: Allies
 	Actor128: fenc
 		Location: 32,26
-		Owner: Evacuees
+		Owner: Allies
 	Actor129: fenc
 		Location: 33,25
-		Owner: Evacuees
+		Owner: Allies
 	Actor145: fenc
 		Location: 34,25
-		Owner: Evacuees
+		Owner: Allies
 	Actor146: fenc
 		Location: 35,25
-		Owner: Evacuees
+		Owner: Allies
 	Allies1MovePoint: waypoint
 		Location: 149,24
 		Owner: Neutral
@@ -1086,10 +1085,10 @@ Actors:
 		Owner: Neutral
 	Actor168: powr
 		Location: 1,34
-		Owner: Evacuees
+		Owner: Allies
 	Actor183: powr
 		Location: 3,34
-		Owner: Evacuees
+		Owner: Allies
 
 Smudges:
 
@@ -1158,9 +1157,6 @@ Rules:
 		Buildable:
 			Owner: None
 	TSLA:
-		Buildable:
-			Owner: None
-	AGUN:
 		Buildable:
 			Owner: None
 	FTUR:
