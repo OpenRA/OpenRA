@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA.Missions
 		};
 
 		const int EvacuateID = 0;
-		const int UnitsEvacuatedThreshold = 100;
+		const int UnitsEvacuatedThreshold = 50;
 		int unitsEvacuated;
 		InfoWidget evacuateWidget;
 		const string ShortEvacuateTemplate = "{0}/{1} units evacuated";
@@ -49,14 +49,10 @@ namespace OpenRA.Mods.RA.Missions
 		Player soviets;
 
 		Actor exit1TopLeft;
-		Actor exit1TopRight;
-		Actor exit1BottomLeft;
 		Actor exit1BottomRight;
 		Actor exit1ExitPoint;
 
 		Actor exit2TopLeft;
-		Actor exit2TopRight;
-		Actor exit2BottomLeft;
 		Actor exit2BottomRight;
 		Actor exit2ExitPoint;
 
@@ -76,7 +72,7 @@ namespace OpenRA.Mods.RA.Missions
 		static readonly string[] SovietVehicles = { "3tnk", "3tnk", "3tnk", "3tnk", "v2rl", "v2rl", "ftrk", "apc" };
 		static readonly string[] SovietInfantry = { "e1", "e1", "e1", "e2", "e2", "e3", "e4" };
 
-		const int YakTicks = 1750;
+		const int YakTicks = 2000;
 
 		int attackAtFrame = 300;
 		int attackAtFrameIncrement = 300;
@@ -257,20 +253,16 @@ namespace OpenRA.Mods.RA.Missions
 			if (allies2 == null)
 			{
 				allies2 = allies1;
-				attackAtFrame = 700;
-				attackAtFrameIncrement = 700;
+				attackAtFrame = 500;
+				attackAtFrameIncrement = 500;
 			}
 			evacuees = w.Players.Single(p => p.InternalName == "Evacuees");
 			soviets = w.Players.Single(p => p.InternalName == "Soviets");
 			var actors = w.WorldActor.Trait<SpawnMapActors>().Actors;
 			exit1TopLeft = actors["Exit1TopLeft"];
-			exit1TopRight = actors["Exit1TopRight"];
-			exit1BottomLeft = actors["Exit1BottomLeft"];
 			exit1BottomRight = actors["Exit1BottomRight"];
 			exit1ExitPoint = actors["Exit1ExitPoint"];
 			exit2TopLeft = actors["Exit2TopLeft"];
-			exit2TopRight = actors["Exit2TopRight"];
-			exit2BottomLeft = actors["Exit2BottomLeft"];
 			exit2BottomRight = actors["Exit2BottomRight"];
 			exit2ExitPoint = actors["Exit2ExitPoint"];
 			allies1EntryPoint = actors["Allies1EntryPoint"];
