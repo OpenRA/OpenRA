@@ -1040,7 +1040,7 @@ Actors:
 		Location: 89,79
 		Owner: Neutral
 	SovietRallyPoint2: waypoint
-		Location: 88,35
+		Location: 94,33
 		Owner: Neutral
 	SovietRallyPoint1: waypoint
 		Location: 83,61
@@ -1049,10 +1049,40 @@ Actors:
 		Location: 112,49
 		Owner: Neutral
 	SovietRallyPoint4: waypoint
-		Location: 113,35
+		Location: 116,30
 		Owner: Neutral
 	SovietRallyPoint5: waypoint
 		Location: 131,63
+		Owner: Neutral
+	Actor19: oilb
+		Location: 154,59
+		Owner: Neutral
+	Actor22: oilb
+		Location: 158,57
+		Owner: Neutral
+	Actor138: brl3
+		Location: 154,58
+		Owner: Neutral
+	Actor144: brl3
+		Location: 158,59
+		Owner: Neutral
+	Actor151: barl
+		Location: 159,59
+		Owner: Neutral
+	Actor152: barl
+		Location: 153,61
+		Owner: Neutral
+	Actor154: oilb
+		Location: 169,18
+		Owner: Neutral
+	Actor159: oilb
+		Location: 172,22
+		Owner: Neutral
+	Actor166: brl3
+		Location: 171,18
+		Owner: Neutral
+	Actor167: barl
+		Location: 173,24
 		Owner: Neutral
 
 Smudges:
