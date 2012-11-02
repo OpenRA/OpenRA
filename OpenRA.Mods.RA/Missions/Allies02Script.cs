@@ -320,7 +320,7 @@ namespace OpenRA.Mods.RA.Missions
 					new LocationInit(yakEntryPoint.Location),
 					new OwnerInit(soviets),
 					new FacingInit(Util.GetFacing(yakAttackPoint.Location - yakEntryPoint.Location, 0)),
-					new AltitudeInit(Rules.Info[YakName].Traits.Get<PlaneInfo>().CruiseAltitude),
+					new AltitudeInit(Rules.Info[YakName].Traits.Get<PlaneInfo>().CruiseAltitude)
 				});
 			}
 			if (yak.Trait<LimitedAmmo>().HasAmmo())

@@ -802,8 +802,8 @@ Actors:
 	Exit1TopRight: waypoint
 		Location: 25,44
 		Owner: Neutral
-	Actor801: tc04
-		Location: 129,74
+	SovietEntryPoint5: waypoint
+		Location: 130,79
 		Owner: Neutral
 	Actor17: mine
 		Location: 99,46
@@ -994,24 +994,6 @@ Actors:
 	Allies2EntryPoint: waypoint
 		Location: 175,38
 		Owner: Neutral
-	Actor19: e1
-		Location: 147,27
-		Owner: Soviets
-	Actor22: e1
-		Location: 150,28
-		Owner: Soviets
-	Actor138: e1
-		Location: 163,36
-		Owner: Soviets
-	Actor144: e1
-		Location: 164,39
-		Owner: Soviets
-	Actor151: e2
-		Location: 148,27
-		Owner: Soviets
-	Actor152: e2
-		Location: 164,38
-		Owner: Soviets
 	Exit2TopRight: waypoint
 		Location: 35,16
 		Owner: Neutral
@@ -1068,6 +1050,9 @@ Actors:
 		Owner: Neutral
 	SovietRallyPoint4: waypoint
 		Location: 113,35
+		Owner: Neutral
+	SovietRallyPoint5: waypoint
+		Location: 131,63
 		Owner: Neutral
 
 Smudges:

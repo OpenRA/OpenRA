@@ -64,18 +64,22 @@ namespace OpenRA.Mods.RA.Missions
 		Actor sovietEntryPoint2;
 		Actor sovietEntryPoint3;
 		Actor sovietEntryPoint4;
+		Actor sovietEntryPoint5;
 		CPos[] sovietEntryPoints;
 		Actor sovietRallyPoint1;
 		Actor sovietRallyPoint2;
 		Actor sovietRallyPoint3;
 		Actor sovietRallyPoint4;
+		Actor sovietRallyPoint5;
 		CPos[] sovietRallyPoints;
 
-		static readonly string[] SovietVehicles = { "3tnk", "3tnk", "3tnk", "v2rl", "ftrk", "apc" };
-		static readonly string[] SovietInfantry = { "e1", "e1", "e1", "e1", "e2", "e2", "e3", "e3", "e4", "e4" };
+		static readonly string[] SovietVehicles = { "3tnk", "3tnk", "3tnk", "3tnk", "v2rl", "v2rl", "ftrk", "apc" };
+		static readonly string[] SovietInfantry = { "e1", "e1", "e1", "e2", "e2", "e3", "e4" };
 
-		int attackAtFrame = 250;
-		int attackAtFrameIncrement = 250;
+		const int YakTicks = 1750;
+
+		int attackAtFrame = 300;
+		int attackAtFrameIncrement = 300;
 
 		Actor allies1EntryPoint;
 		Actor allies1MovePoint;
@@ -84,6 +88,7 @@ namespace OpenRA.Mods.RA.Missions
 		Actor allies2MovePoint;
 
 		const string McvName = "mcv";
+		const string YakName = "yak";
 
 		void MissionFailed(string text)
 		{
@@ -129,8 +134,14 @@ namespace OpenRA.Mods.RA.Missions
 				SpawnSovietUnits();
 				attackAtFrame += attackAtFrameIncrement;
 				attackAtFrameIncrement = Math.Max(attackAtFrameIncrement - 5, 100);
-				Game.Debug(attackAtFrame.ToString());
-				Game.Debug(attackAtFrameIncrement.ToString());
+			}
+			if (world.FrameNumber % YakTicks == 1)
+			{
+				AirStrafe(YakName);
+				if (world.SharedRandom.Next(3) == 2)
+				{
+					AirStrafe(YakName);
+				}
 			}
 			ManageSovietUnits();
 			EvacuateAlliedUnits(exit1TopLeft.CenterLocation, exit1BottomRight.CenterLocation, exit1ExitPoint.Location);
@@ -138,6 +149,34 @@ namespace OpenRA.Mods.RA.Missions
 			if (!world.Actors.Any(a => (a.Owner == allies1 || a.Owner == allies2) && a.IsInWorld && !a.IsDead() && ((a.HasTrait<Building>() && !a.HasTrait<Wall>()) || a.HasTrait<BaseBuilding>())))
 			{
 				MissionFailed("The remaining Allied forces in the area have been wiped out.");
+			}
+		}
+
+		void AirStrafe(string actor)
+		{
+			var spawnPoint = world.ChooseRandomEdgeCell();
+			var aircraft = world.CreateActor(actor, new TypeDictionary 
+			{ 
+				new LocationInit(spawnPoint),
+				new OwnerInit(soviets),
+				new AltitudeInit(Rules.Info[actor].Traits.Get<PlaneInfo>().CruiseAltitude)
+			});
+			AirStrafe(aircraft);
+		}
+
+		void AirStrafe(Actor aircraft)
+		{
+			var enemies = world.Actors.Where(u => u.IsInWorld && !u.IsDead() && (u.Owner == allies1 || u.Owner == allies2) && ((u.HasTrait<Building>() && !u.HasTrait<Wall>()) || u.HasTrait<Mobile>()));
+			var targetEnemy = enemies.OrderBy(u => (aircraft.CenterLocation - u.CenterLocation).LengthSquared).FirstOrDefault();
+			if (targetEnemy != null && aircraft.Trait<LimitedAmmo>().HasAmmo())
+			{
+				aircraft.QueueActivity(new FlyAttack(Target.FromActor(targetEnemy)));
+				aircraft.QueueActivity(new CallFunc(() => AirStrafe(aircraft)));
+			}
+			else
+			{
+				aircraft.QueueActivity(new FlyOffMap());
+				aircraft.QueueActivity(new RemoveSelf());
 			}
 		}
 
@@ -155,12 +194,11 @@ namespace OpenRA.Mods.RA.Missions
 			var units = world.Actors.Where(u => u.IsInWorld && !u.IsDead() && u.IsIdle && u.HasTrait<Mobile>() && u.Owner == soviets);
 			foreach (var unit in units)
 			{
-				var enemyUnits = world.FindAliveCombatantActorsInCircle(unit.CenterLocation, 100)
-					.Where(u => (u.Owner == allies1 || u.Owner == allies2) && ((u.HasTrait<Building>() && !u.HasTrait<Wall>()) || u.HasTrait<Mobile>()));
-				var targetEnemyUnit = enemyUnits.OrderBy(u => (unit.CenterLocation - u.CenterLocation).LengthSquared).FirstOrDefault();
-				if (targetEnemyUnit != null)
+				var enemies = world.Actors.Where(u => u.IsInWorld && !u.IsDead() && (u.Owner == allies1 || u.Owner == allies2) && ((u.HasTrait<Building>() && !u.HasTrait<Wall>()) || u.HasTrait<Mobile>()));
+				var targetEnemy = enemies.OrderBy(u => (unit.CenterLocation - u.CenterLocation).LengthSquared).FirstOrDefault();
+				if (targetEnemy != null)
 				{
-					unit.QueueActivity(new AttackMove.AttackMoveActivity(unit, new Move.Move(targetEnemyUnit.Location, 5)));
+					unit.QueueActivity(new AttackMove.AttackMoveActivity(unit, new Attack(Target.FromActor(targetEnemy), 3)));
 				}
 			}
 		}
@@ -174,13 +212,16 @@ namespace OpenRA.Mods.RA.Missions
 				new FacingInit(Util.GetFacing(allies1MovePoint.Location - allies1EntryPoint.Location, 0)) 
 			});
 			unit.QueueActivity(new Move.Move(allies1MovePoint.Location));
-			unit = world.CreateActor(McvName, new TypeDictionary 
-			{ 
-				new LocationInit(allies2EntryPoint.Location), 
-				new OwnerInit(allies2),
-				new FacingInit(Util.GetFacing(allies2MovePoint.Location - allies2EntryPoint.Location, 0))
-			});
-			unit.QueueActivity(new Move.Move(allies2MovePoint.Location));
+			if (allies2 != allies1)
+			{
+				unit = world.CreateActor(McvName, new TypeDictionary 
+				{ 
+					new LocationInit(allies2EntryPoint.Location), 
+					new OwnerInit(allies2),
+					new FacingInit(Util.GetFacing(allies2MovePoint.Location - allies2EntryPoint.Location, 0))
+				});
+				unit.QueueActivity(new Move.Move(allies2MovePoint.Location));
+			}
 		}
 
 		void UpdateUnitsEvacuated()
@@ -212,7 +253,13 @@ namespace OpenRA.Mods.RA.Missions
 		{
 			world = w;
 			allies1 = w.Players.Single(p => p.InternalName == "Allies1");
-			allies2 = w.Players.Single(p => p.InternalName == "Allies2");
+			allies2 = w.Players.SingleOrDefault(p => p.InternalName == "Allies2");
+			if (allies2 == null)
+			{
+				allies2 = allies1;
+				attackAtFrame = 500;
+				attackAtFrameIncrement = 500;
+			}
 			evacuees = w.Players.Single(p => p.InternalName == "Evacuees");
 			soviets = w.Players.Single(p => p.InternalName == "Soviets");
 			var actors = w.WorldActor.Trait<SpawnMapActors>().Actors;
@@ -234,12 +281,14 @@ namespace OpenRA.Mods.RA.Missions
 			sovietEntryPoint2 = actors["SovietEntryPoint2"];
 			sovietEntryPoint3 = actors["SovietEntryPoint3"];
 			sovietEntryPoint4 = actors["SovietEntryPoint4"];
-			sovietEntryPoints = new[] { sovietEntryPoint1, sovietEntryPoint2, sovietEntryPoint3, sovietEntryPoint4 }.Select(p => p.Location).ToArray();
+			sovietEntryPoint5 = actors["SovietEntryPoint5"];
+			sovietEntryPoints = new[] { sovietEntryPoint1, sovietEntryPoint2, sovietEntryPoint3, sovietEntryPoint4, sovietEntryPoint5 }.Select(p => p.Location).ToArray();
 			sovietRallyPoint1 = actors["SovietRallyPoint1"];
 			sovietRallyPoint2 = actors["SovietRallyPoint2"];
 			sovietRallyPoint3 = actors["SovietRallyPoint3"];
 			sovietRallyPoint4 = actors["SovietRallyPoint4"];
-			sovietRallyPoints = new[] { sovietRallyPoint1, sovietRallyPoint2, sovietRallyPoint3, sovietRallyPoint4 }.Select(p => p.Location).ToArray();
+			sovietRallyPoint5 = actors["SovietRallyPoint5"];
+			sovietRallyPoints = new[] { sovietRallyPoint1, sovietRallyPoint2, sovietRallyPoint3, sovietRallyPoint4, sovietRallyPoint5 }.Select(p => p.Location).ToArray();
 			if (w.LocalPlayer == null || w.LocalPlayer == allies1)
 			{
 				Game.MoveViewport(allies1EntryPoint.Location.ToFloat2());
