@@ -123,6 +123,8 @@ config = {
   }
 
   keymap = {}, -- mapping of menu IDs to hot keys
+  messages = {}, -- list of messages in a particular language
+  language = "en", -- current UI language
 
   styles = {}, -- styles table as above for editor
   stylesoutshell = {}, -- styles for output/shell

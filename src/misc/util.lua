@@ -214,12 +214,22 @@ function pairsSorted(t, f)
   local a = {}
   for n in pairs(t) do table.insert(a, n) end
   table.sort(a, f)
-  local i = 0      -- iterator variable
-  local iter = function ()   -- iterator function
+  local i = 0 -- iterator variable
+  local iter = function () -- iterator function
     i = i + 1
     if a[i] == nil then return nil
     else return a[i], t[a[i]]
     end
   end
   return iter
+end
+
+local messages, lang, counter
+function TR(msg, count)
+  lang = lang or ide.config.language
+  messages = messages or ide.config.messages
+  counter = counter or (messages[lang] and messages[lang][0])
+  local message = messages[lang] and messages[lang][msg]
+  return count and counter and message and type(message) == 'table'
+    and message[counter(count)] or message or msg
 end

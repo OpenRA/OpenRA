@@ -74,3 +74,26 @@ ide.config.keymap = {
   [ID_QUICKADDWATCH]    = "",
   [ID_QUICKEVAL]        = "",
 }
+
+--[[
+Accelerator general syntax is any combination of "CTRL", "ALT" and "SHIFT"
+strings (case doesn't matter) separated by either '-' or '+' characters and
+followed by the accelerator itself. The accelerator may be any alphanumeric
+character, any function key (from F1 to F12) or one of the special characters
+listed below (again, case doesn't matter):
+
+  DEL/DELETE   Delete key
+  INS/INSERT   Insert key
+  ENTER/RETURN Enter key
+  PGUP         PageUp key
+  PGDN         PageDown key
+  LEFT         Left cursor arrow key
+  RIGHT        Right cursor arrow key
+  UP           Up cursor arrow key
+  DOWN         Down cursor arrow key
+  HOME         Home key
+  END          End key
+  SPACE        Space
+  TAB          Tab key
+  ESC/ESCAPE   Escape key (Windows only)
+--]]

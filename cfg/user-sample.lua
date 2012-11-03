@@ -10,6 +10,10 @@ Configuration files are loaded in the following order
 --]]--
 
 -- an example of how loaded configuration can be modified from this file
+local G = ... -- this now points to the global environment in the script
+local luaspec = G.ide.specs['lua']
+luaspec.exts[#luaspec.exts+1] = "luaz"
+luaspec.keywords[1] = luaspec.keywords[1] .. ' foo'
 
 -- modify a key mapping; see the full list of IDs in src/editor/keymap.lua
 local G = ...
@@ -55,3 +59,6 @@ editor.autoactivate = true
 
 -- specify a list of MOAI entrypoints
 moai = { entrypoints = { "main.lua", "source/main.lua" } }
+
+-- specify language to use in the IDE (requires a file in cfg/i18n folder)
+language = "ru"

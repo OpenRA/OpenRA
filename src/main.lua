@@ -51,7 +51,9 @@ ide = {
     outputshell = {},
     filetree = {},
 
-    keymap = {}, -- mapping of menu IDs to hot keys
+    keymap = {},
+    messages = {},
+    language = "en",
 
     styles = StylesGetDefault(),
     stylesoutshell = StylesGetDefault(),
@@ -122,22 +124,35 @@ ide = {
 
 dofile "src/editor/keymap.lua"
 
-function setLuaPaths(mainpath, os)
+function setLuaPaths(mainpath, osname)
+  -- use LUA_DEV to setup paths for Lua for Windows modules if installed
+  local luadev = osname == "Windows" and os.getenv('LUA_DEV')
+  local luadev_path = (luadev
+    and ('LUA_DEV/?.lua;LUA_DEV/?/init.lua;LUA_DEV/lua/?.lua;LUA_DEV/lua/?/init.lua')
+      :gsub('LUA_DEV', (luadev:gsub('[\\/]$','')))
+    or "")
+  local luadev_cpath = (luadev
+    and ('LUA_DEV/?.dll;LUA_DEV/clibs/?.dll')
+      :gsub('LUA_DEV', (luadev:gsub('[\\/]$','')))
+    or "")
+
   -- (luaconf.h) in Windows, any exclamation mark ('!') in the path is replaced
   -- by the path of the directory of the executable file of the current process.
   -- this effectively prevents any path with an exclamation mark from working.
   -- if the path has an excamation mark, allow Lua to expand it as this
   -- expansion happens only once.
-  if os == "Windows" and mainpath:find('%!') then mainpath = "!/../" end
+  if osname == "Windows" and mainpath:find('%!') then mainpath = "!/../" end
   wx.wxSetEnv("LUA_PATH", package.path .. ";"
-    .. "./?.lua;./?/init.lua;./lua/?.lua;./lua/?/init.lua;"
-    .. mainpath.."lualibs/?/?.lua;"..mainpath.."lualibs/?.lua")
+    .. "./?.lua;./?/init.lua;./lua/?.lua;./lua/?/init.lua" .. ';'
+    .. mainpath.."lualibs/?/?.lua;"..mainpath.."lualibs/?.lua" .. ';'
+    .. luadev_path)
 
   local clibs =
-    os == "Windows" and mainpath.."bin/?.dll;"..mainpath.."bin/clibs/?.dll" or
-    os == "Macintosh" and mainpath.."bin/lib?.dylib;"..mainpath.."bin/clibs/?.dylib" or
-    os == "Unix" and mainpath.."bin/?.so;"..mainpath.."bin/clibs/?.so" or nil
-  if clibs then wx.wxSetEnv("LUA_CPATH", package.cpath .. ';' .. clibs) end
+    osname == "Windows" and mainpath.."bin/?.dll;"..mainpath.."bin/clibs/?.dll" or
+    osname == "Macintosh" and mainpath.."bin/lib?.dylib;"..mainpath.."bin/clibs/?.dylib" or
+    osname == "Unix" and mainpath.."bin/?.so;"..mainpath.."bin/clibs/?.so" or nil
+  if clibs then wx.wxSetEnv("LUA_CPATH",
+    package.cpath .. ';' .. clibs .. ';' .. luadev_cpath) end
 end
 
 ---------------
@@ -183,64 +198,12 @@ do
   setLuaPaths(GetPathWithSep(ide.editorFilename), ide.osname)
 end
 
--- temporarily replace print() to capture reported error messages to show
--- them later in the Output window after everything is loaded.
-local resumePrint do
-  local errors = {}
-  local origprint = print
-  print = function(...) errors[#errors+1] = {...} end
-  resumePrint = function()
-    print = origprint
-    for _, e in ipairs(errors) do DisplayOutput(unpack(e), "\n") end
-  end
-end
-
------------------------
--- load config
-local function addConfig(filename,isstring)
-  -- skip those files that don't exist
-  if not isstring and not wx.wxFileName(filename):FileExists() then return end
-  -- if it's marked as command, but exists as a file, load it as a file
-  if isstring and wx.wxFileName(filename):FileExists() then isstring = false end
-
-  local cfgfn, err, msg
-  if isstring
-  then msg, cfgfn, err = "string", loadstring(filename)
-  else msg, cfgfn, err = "file", loadfile(filename) end
-
-  if not cfgfn then
-    print(("Error while loading configuration %s: %s"):format(msg, err))
-  else
-    ide.config.os = os
-    ide.config.wxstc = wxstc
-    setfenv(cfgfn,ide.config)
-    local _, err = pcall(function()cfgfn(assert(_G or _ENV))end)
-    if err then
-      print(("Error while processing configuration %s: %s"):format(msg, err))
-    end
-  end
-end
-
-do
-  addConfig(ide.config.path.app.."/config.lua")
-end
-
 ----------------------
 -- process application
 
 ide.app = dofile(ide.config.path.app.."/app.lua")
 local app = ide.app
 assert(app)
-
-do
-  local app = ide.app
-  function GetIDEString(keyword, default)
-    return app.stringtable[keyword] or default or keyword
-  end
-end
-
-----------------------
--- process plugins
 
 local function addToTab(tab,file)
   local cfgfn,err = loadfile(file)
@@ -265,18 +228,18 @@ local function addToTab(tab,file)
 end
 
 -- load interpreters
-local function loadInterpreters()
+local function loadInterpreters(filter)
   for _, file in ipairs(FileSysGet("interpreters/*.*", wx.wxFILE)) do
-    if file:match "%.lua$" and app.loadfilters.interpreters(file) then
+    if file:match "%.lua$" and (filter or app.loadfilters.interpreters)(file) then
       addToTab(ide.interpreters,file)
     end
   end
 end
 
 -- load specs
-local function loadSpecs()
+local function loadSpecs(filter)
   for _, file in ipairs(FileSysGet("spec/*.*", wx.wxFILE)) do
-    if file:match "%.lua$" and app.loadfilters.specs(file) then
+    if file:match "%.lua$" and (filter or app.loadfilters.specs)(file) then
       addToTab(ide.specs,file)
     end
   end
@@ -307,15 +270,71 @@ local function loadSpecs()
 end
 
 -- load tools
-local function loadTools()
+local function loadTools(filter)
   for _, file in ipairs(FileSysGet("tools/*.*", wx.wxFILE)) do
-    if file:match "%.lua$" and app.loadfilters.tools(file) then
+    if file:match "%.lua$" and (filter or app.loadfilters.tools)(file) then
       addToTab(ide.tools,file)
     end
   end
 end
 
+-- temporarily replace print() to capture reported error messages to show
+-- them later in the Output window after everything is loaded.
+local resumePrint do
+  local errors = {}
+  local origprint = print
+  print = function(...) errors[#errors+1] = {...} end
+  resumePrint = function()
+    print = origprint
+    for _, e in ipairs(errors) do DisplayOutput(unpack(e), "\n") end
+  end
+end
+
+-----------------------
+-- load config
+local function addConfig(filename,isstring)
+  -- skip those files that don't exist
+  if not isstring and not wx.wxFileName(filename):FileExists() then return end
+  -- if it's marked as command, but exists as a file, load it as a file
+  if isstring and wx.wxFileName(filename):FileExists() then isstring = false end
+
+  local cfgfn, err, msg
+  if isstring
+  then msg, cfgfn, err = "string", loadstring(filename)
+  else msg, cfgfn, err = "file", loadfile(filename) end
+
+  if not cfgfn then
+    print(("Error while loading configuration %s: %s"):format(msg, err))
+  else
+    ide.config.os = os
+    ide.config.wxstc = wxstc
+    ide.config.load = { interpreters = loadInterpreters,
+      specs = loadSpecs, tools = loadTools }
+    setfenv(cfgfn,ide.config)
+    local _, err = pcall(function()cfgfn(assert(_G or _ENV))end)
+    if err then
+      print(("Error while processing configuration %s: %s"):format(msg, err))
+    end
+  end
+end
+
+function GetIDEString(keyword, default)
+  return app.stringtable[keyword] or default or keyword
+end
+
+----------------------
+-- process config
+
+addConfig(ide.config.path.app.."/config.lua")
+
+----------------------
+-- process plugins
+
 if app.preinit then app.preinit() end
+
+loadInterpreters()
+loadSpecs()
+loadTools()
 
 do
   -- process user config
@@ -333,39 +352,30 @@ do
     addConfig(v, true)
   end
   configs = nil
+  local sep = string_Pathsep
+  if ide.config.language then
+    addToTab(ide.config.messages, "cfg"..sep.."i18n"..sep..ide.config.language..".lua")
+  end
 end
 
 -- load this after preinit and processing configs to allow
 -- each of the lists to be modified
-loadInterpreters()
-loadSpecs()
-loadTools()
 
 ---------------
 -- Load App
 
-dofile "src/editor/settings.lua"
-dofile "src/editor/singleinstance.lua"
-dofile "src/editor/iofilters.lua"
-
-dofile "src/editor/gui.lua"
-dofile "src/editor/filetree.lua"
-dofile "src/editor/output.lua"
-dofile "src/editor/debugger.lua"
-dofile "src/editor/preferences.lua"
-
-dofile "src/editor/editor.lua"
-dofile "src/editor/autocomplete.lua"
-dofile "src/editor/findreplace.lua"
-dofile "src/editor/commands.lua"
-
-dofile "src/editor/shellbox.lua"
-
-dofile "src/editor/menu.lua"
+for _, file in ipairs({
+    "settings", "singleinstance", "iofilters",
+    "gui", "filetree", "output", "debugger", "preferences",
+    "editor", "findreplace", "commands", "autocomplete", "shellbox",
+    "menu_file", "menu_edit", "menu_search",
+    "menu_view", "menu_project", "menu_tools", "menu_help",
+    "inspect" }) do
+  dofile("src/editor/"..file..".lua")
+end
 
 dofile "src/preferences/editor.lua"
 dofile "src/preferences/project.lua"
-
 dofile "src/version.lua"
 
 -- load rest of settings

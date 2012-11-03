@@ -9,24 +9,24 @@ local frame = ide.frame
 local menuBar = frame.menuBar
 
 local editMenu = wx.wxMenu{
-  { ID_CUT, "Cu&t"..KSC(ID_CUT), "Cut selected text to clipboard" },
-  { ID_COPY, "&Copy"..KSC(ID_COPY), "Copy selected text to the clipboard" },
-  { ID_PASTE, "&Paste"..KSC(ID_PASTE), "Insert clipboard text at cursor" },
-  { ID_SELECTALL, "Select A&ll"..KSC(ID_SELECTALL), "Select all text in the editor" },
+  { ID_CUT, TR("Cu&t")..KSC(ID_CUT), TR("Cut selected text to clipboard") },
+  { ID_COPY, TR("&Copy")..KSC(ID_COPY), TR("Copy selected text to clipboard") },
+  { ID_PASTE, TR("&Paste")..KSC(ID_PASTE), TR("Paste text from the clipboard") },
+  { ID_SELECTALL, TR("Select &All")..KSC(ID_SELECTALL), TR("Select all text in the editor") },
   { },
-  { ID_UNDO, "&Undo"..KSC(ID_UNDO), "Undo the last action" },
-  { ID_REDO, "&Redo"..KSC(ID_REDO), "Redo the last action undone" },
+  { ID_UNDO, TR("&Undo")..KSC(ID_UNDO), TR("Undo last edit") },
+  { ID_REDO, TR("&Redo")..KSC(ID_REDO), TR("Redo last edit undone") },
   { },
-  { ID_SHOWTOOLTIP, "Show &Tooltip"..KSC(ID_SHOWTOOLTIP), "Show tooltip for current position. Place cursor after opening bracket of function."},
-  { ID_AUTOCOMPLETE, "Complete &Identifier"..KSC(ID_AUTOCOMPLETE), "Complete the current identifier" },
-  { ID_AUTOCOMPLETEENABLE, "Auto Complete Identifiers"..KSC(ID_AUTOCOMPLETEENABLE), "Auto complete while typing", wx.wxITEM_CHECK },
+  { ID_SHOWTOOLTIP, TR("Show &Tooltip")..KSC(ID_SHOWTOOLTIP), TR("Show tooltip for current position; place cursor after opening bracket of function") },
+  { ID_AUTOCOMPLETE, TR("Complete &Identifier")..KSC(ID_AUTOCOMPLETE), TR("Complete the current identifier") },
+  { ID_AUTOCOMPLETEENABLE, TR("Auto Complete Identifiers")..KSC(ID_AUTOCOMPLETEENABLE), TR("Auto complete while typing"), wx.wxITEM_CHECK },
   { },
-  { ID_COMMENT, "C&omment/Uncomment"..KSC(ID_COMMENT), "Comment or uncomment current or selected lines"},
+  { ID_COMMENT, TR("C&omment/Uncomment")..KSC(ID_COMMENT), TR("Comment or uncomment current or selected lines") },
   { },
-  { ID_FOLD, "&Fold/Unfold all"..KSC(ID_FOLD), "Fold or unfold all code folds"},
-  { ID_CLEARDYNAMICWORDS, "Clear &Dynamic Words"..KSC(ID_CLEARDYNAMICWORDS), "Resets the dynamic word list for autcompletion."},
+  { ID_FOLD, TR("&Fold/Unfold All")..KSC(ID_FOLD), TR("Fold or unfold all code folds") },
+  { ID_CLEARDYNAMICWORDS, TR("Clear &Dynamic Words")..KSC(ID_CLEARDYNAMICWORDS), TR("Resets the dynamic word list for autocompletion") },
 }
-menuBar:Append(editMenu, "&Edit")
+menuBar:Append(editMenu, TR("&Edit"))
 
 editMenu:Check(ID_AUTOCOMPLETEENABLE, ide.config.autocomplete)
 

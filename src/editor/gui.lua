@@ -65,6 +65,11 @@ local function createFrame()
   return frame
 end
 
+local function SCinB(id) -- shortcut in brackets
+  local shortcut = KSC(id):gsub("\t","")
+  return shortcut and #shortcut > 0 and (" ("..shortcut..")") or ""
+end
+
 local function createToolBar(frame)
   local toolBar = wx.wxToolBar(frame, wx.wxID_ANY,
     wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTB_FLAT + wx.wxTB_NODIVIDER)
@@ -77,35 +82,35 @@ local function createToolBar(frame)
   -- usually the bmp size isn't necessary, but the HELP icon is not the right size in MSW
   local getBitmap = (ide.app.createbitmap or wx.wxArtProvider.GetBitmap)
   local toolBmpSize = wx.wxSize(16, 16)
-  toolBar:AddTool(ID_NEW, "New", getBitmap(wx.wxART_NORMAL_FILE, wx.wxART_TOOLBAR, toolBmpSize), "Create an empty document")
-  toolBar:AddTool(ID_OPEN, "Open", getBitmap(wx.wxART_FILE_OPEN, wx.wxART_TOOLBAR, toolBmpSize), "Open an existing document")
-  toolBar:AddTool(ID_SAVE, "Save", getBitmap(wx.wxART_FILE_SAVE, wx.wxART_TOOLBAR, toolBmpSize), "Save the current document")
-  toolBar:AddTool(ID_SAVEALL, "Save All", getBitmap(wx.wxART_NEW_DIR, wx.wxART_TOOLBAR, toolBmpSize), "Save all documents")
+  toolBar:AddTool(ID_NEW, "New", getBitmap(wx.wxART_NORMAL_FILE, wx.wxART_TOOLBAR, toolBmpSize), TR("Create an empty document")..SCinB(ID_NEW))
+  toolBar:AddTool(ID_OPEN, "Open", getBitmap(wx.wxART_FILE_OPEN, wx.wxART_TOOLBAR, toolBmpSize), TR("Open an existing document")..SCinB(ID_OPEN))
+  toolBar:AddTool(ID_SAVE, "Save", getBitmap(wx.wxART_FILE_SAVE, wx.wxART_TOOLBAR, toolBmpSize), TR("Save the current document")..SCinB(ID_SAVE))
+  toolBar:AddTool(ID_SAVEALL, "Save All", getBitmap(wx.wxART_NEW_DIR, wx.wxART_TOOLBAR, toolBmpSize), TR("Save all open documents")..SCinB(ID_SAVEALL))
   toolBar:AddSeparator()
-  toolBar:AddTool(ID_CUT, "Cut", getBitmap(wx.wxART_CUT, wx.wxART_TOOLBAR, toolBmpSize), "Cut the selection")
-  toolBar:AddTool(ID_COPY, "Copy", getBitmap(wx.wxART_COPY, wx.wxART_TOOLBAR, toolBmpSize), "Copy the selection")
-  toolBar:AddTool(ID_PASTE, "Paste", getBitmap(wx.wxART_PASTE, wx.wxART_TOOLBAR, toolBmpSize), "Paste text from the clipboard")
+  toolBar:AddTool(ID_CUT, "Cut", getBitmap(wx.wxART_CUT, wx.wxART_TOOLBAR, toolBmpSize), TR("Cut selected text to clipboard")..SCinB(ID_CUT))
+  toolBar:AddTool(ID_COPY, "Copy", getBitmap(wx.wxART_COPY, wx.wxART_TOOLBAR, toolBmpSize), TR("Copy selected text to clipboard")..SCinB(ID_COPY))
+  toolBar:AddTool(ID_PASTE, "Paste", getBitmap(wx.wxART_PASTE, wx.wxART_TOOLBAR, toolBmpSize), TR("Paste text from the clipboard")..SCinB(ID_PASTE))
   toolBar:AddSeparator()
-  toolBar:AddTool(ID_UNDO, "Undo", getBitmap(wx.wxART_UNDO, wx.wxART_TOOLBAR, toolBmpSize), "Undo last edit")
-  toolBar:AddTool(ID_REDO, "Redo", getBitmap(wx.wxART_REDO, wx.wxART_TOOLBAR, toolBmpSize), "Redo last undo")
+  toolBar:AddTool(ID_UNDO, "Undo", getBitmap(wx.wxART_UNDO, wx.wxART_TOOLBAR, toolBmpSize), TR("Undo last edit")..SCinB(ID_UNDO))
+  toolBar:AddTool(ID_REDO, "Redo", getBitmap(wx.wxART_REDO, wx.wxART_TOOLBAR, toolBmpSize), TR("Redo last edit undone")..SCinB(ID_REDO))
   toolBar:AddSeparator()
-  toolBar:AddTool(ID_FIND, "Find", getBitmap(wx.wxART_FIND, wx.wxART_TOOLBAR, toolBmpSize), "Find text")
-  toolBar:AddTool(ID_REPLACE, "Replace", getBitmap(wx.wxART_FIND_AND_REPLACE, wx.wxART_TOOLBAR, toolBmpSize), "Find and replace text")
+  toolBar:AddTool(ID_FIND, "Find", getBitmap(wx.wxART_FIND, wx.wxART_TOOLBAR, toolBmpSize), TR("Find text")..SCinB(ID_FIND))
+  toolBar:AddTool(ID_REPLACE, "Replace", getBitmap(wx.wxART_FIND_AND_REPLACE, wx.wxART_TOOLBAR, toolBmpSize), TR("Find and replace text")..SCinB(ID_REPLACE))
   if ide.app.createbitmap then -- custom handler should handle all bitmaps
     toolBar:AddSeparator()
-    toolBar:AddTool(ID_STARTDEBUG, "Start Debugging", getBitmap("wxART_DEBUG_START", wx.wxART_TOOLBAR, toolBmpSize), "Start debugging")
-    toolBar:AddTool(ID_STOPDEBUG, "Stop Debugging", getBitmap("wxART_DEBUG_STOP", wx.wxART_TOOLBAR, toolBmpSize), "Stop debugging")
-    toolBar:AddTool(ID_BREAK, "Break", getBitmap("wxART_DEBUG_BREAK", wx.wxART_TOOLBAR, toolBmpSize), "Break running process")
-    toolBar:AddTool(ID_STEP, "Step into", getBitmap("wxART_DEBUG_STEP_INTO", wx.wxART_TOOLBAR, toolBmpSize), "Step into")
-    toolBar:AddTool(ID_STEPOVER, "Step over", getBitmap("wxART_DEBUG_STEP_OVER", wx.wxART_TOOLBAR, toolBmpSize), "Step over")
-    toolBar:AddTool(ID_STEPOUT, "Step out", getBitmap("wxART_DEBUG_STEP_OUT", wx.wxART_TOOLBAR, toolBmpSize), "Step out")
+    toolBar:AddTool(ID_STARTDEBUG, "Start Debugging", getBitmap("wxART_DEBUG_START", wx.wxART_TOOLBAR, toolBmpSize), TR("Start debugging")..SCinB(ID_STARTDEBUG))
+    toolBar:AddTool(ID_STOPDEBUG, "Stop Debugging", getBitmap("wxART_DEBUG_STOP", wx.wxART_TOOLBAR, toolBmpSize), TR("Stop the currently running process")..SCinB(ID_STOPDEBUG))
+    toolBar:AddTool(ID_BREAK, "Break", getBitmap("wxART_DEBUG_BREAK", wx.wxART_TOOLBAR, toolBmpSize), TR("Break execution at the next executed line of code")..SCinB(ID_BREAK))
+    toolBar:AddTool(ID_STEP, "Step into", getBitmap("wxART_DEBUG_STEP_INTO", wx.wxART_TOOLBAR, toolBmpSize), TR("Step into")..SCinB(ID_STEP))
+    toolBar:AddTool(ID_STEPOVER, "Step over", getBitmap("wxART_DEBUG_STEP_OVER", wx.wxART_TOOLBAR, toolBmpSize), TR("Step over")..SCinB(ID_STEPOVER))
+    toolBar:AddTool(ID_STEPOUT, "Step out", getBitmap("wxART_DEBUG_STEP_OUT", wx.wxART_TOOLBAR, toolBmpSize), TR("Step out of the current function")..SCinB(ID_STEPOUT))
     toolBar:AddSeparator()
-    toolBar:AddTool(ID_TOGGLEBREAKPOINT, "Toggle breakpoint", getBitmap("wxART_DEBUG_BREAKPOINT_TOGGLE", wx.wxART_TOOLBAR, toolBmpSize), "Toggle breakpoint")
-    toolBar:AddTool(ID_VIEWCALLSTACK, "Stack window", getBitmap("wxART_DEBUG_CALLSTACK", wx.wxART_TOOLBAR, toolBmpSize), "View stack window")
-    toolBar:AddTool(ID_VIEWWATCHWINDOW, "Watch window", getBitmap("wxART_DEBUG_WATCH", wx.wxART_TOOLBAR, toolBmpSize), "View watch window")
+    toolBar:AddTool(ID_TOGGLEBREAKPOINT, "Toggle breakpoint", getBitmap("wxART_DEBUG_BREAKPOINT_TOGGLE", wx.wxART_TOOLBAR, toolBmpSize), TR("Toggle breakpoint")..SCinB(ID_TOGGLEBREAKPOINT))
+    toolBar:AddTool(ID_VIEWCALLSTACK, "Stack window", getBitmap("wxART_DEBUG_CALLSTACK", wx.wxART_TOOLBAR, toolBmpSize), TR("View the stack window")..SCinB(ID_VIEWCALLSTACK))
+    toolBar:AddTool(ID_VIEWWATCHWINDOW, "Watch window", getBitmap("wxART_DEBUG_WATCH", wx.wxART_TOOLBAR, toolBmpSize), TR("View the watch window")..SCinB(ID_VIEWWATCHWINDOW))
   end
   toolBar:AddSeparator()
-  toolBar:AddTool(ID_PROJECTDIRFROMFILE, "Update", getBitmap(wx.wxART_GO_DIR_UP , wx.wxART_TOOLBAR, toolBmpSize), "Set project directory from current file")
+  toolBar:AddTool(ID_PROJECTDIRFROMFILE, "Update", getBitmap(wx.wxART_GO_DIR_UP , wx.wxART_TOOLBAR, toolBmpSize), TR("Set project directory from current file")..SCinB(ID_PROJECTDIRFROMFILE))
   toolBar:AddSeparator()
   toolBar:AddControl(funclist)
   toolBar:Realize()
@@ -154,14 +159,14 @@ local function createBottomNotebook(frame)
     wxaui.wxAUI_NB_DEFAULT_STYLE + wxaui.wxAUI_NB_TAB_EXTERNAL_MOVE
     - wxaui.wxAUI_NB_CLOSE_ON_ACTIVE_TAB + wx.wxNO_BORDER)
 
-  local errorlog = wxstc.wxStyledTextCtrl(bottomnotebook, ID "output",
+  local errorlog = wxstc.wxStyledTextCtrl(bottomnotebook, wx.wxID_ANY,
     wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxBORDER_STATIC)
 
-  local shellbox = wxstc.wxStyledTextCtrl(bottomnotebook, ID "shell",
+  local shellbox = wxstc.wxStyledTextCtrl(bottomnotebook, wx.wxID_ANY,
     wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxBORDER_STATIC)
 
-  bottomnotebook:AddPage(errorlog, "Output", true)
-  bottomnotebook:AddPage(shellbox, "Local console", false)
+  bottomnotebook:AddPage(errorlog, TR("Output"), true)
+  bottomnotebook:AddPage(shellbox, TR("Local console"), false)
   bottomnotebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CLOSE,
     function (event)
       event:Veto() -- don't allow closing pages in this notebook
@@ -205,7 +210,7 @@ do
               CenterPane():PaneBorder(false):Hide())
               
   mgr:AddPane(frame.projpanel, wxaui.wxAuiPaneInfo():
-              Name("projpanel"):Caption("Project"):
+              Name("projpanel"):Caption(TR("Project")):
               MinSize(200,200):FloatingSize(200,400):
               Left():Layer(1):Position(1):
               CloseButton(true):MaximizeButton(false):PinButton(true):Hide())

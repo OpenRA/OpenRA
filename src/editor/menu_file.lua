@@ -2,29 +2,27 @@
 -- Luxinia Dev (Eike Decker & Christoph Kubisch)
 ---------------------------------------------------------
 local ide = ide
--- Create the File menu and attach the callback functions
-
 local frame = ide.frame
 local menuBar = frame.menuBar
 local openDocuments = ide.openDocuments
 
 local fileMenu = wx.wxMenu({
-    { ID_NEW, "&New"..KSC(ID_NEW), "Create an empty document" },
-    { ID_OPEN, "&Open..."..KSC(ID_OPEN), "Open an existing document" },
-    { ID_CLOSE, "&Close page"..KSC(ID_CLOSE), "Close the current editor window" },
+    { ID_NEW, TR("&New")..KSC(ID_NEW), TR("Create an empty document") },
+    { ID_OPEN, TR("&Open...")..KSC(ID_OPEN), TR("Open an existing document") },
+    { ID_CLOSE, TR("&Close page")..KSC(ID_CLOSE), TR("Close the current editor window") },
     { },
-    { ID_SAVE, "&Save"..KSC(ID_SAVE), "Save the current document" },
-    { ID_SAVEAS, "Save &As..."..KSC(ID_SAVEAS), "Save the current document to a file with a new name" },
-    { ID_SAVEALL, "Save A&ll"..KSC(ID_SAVEALL), "Save all open documents" },
+    { ID_SAVE, TR("&Save")..KSC(ID_SAVE), TR("Save the current document") },
+    { ID_SAVEAS, TR("Save &As...")..KSC(ID_SAVEAS), TR("Save the current document to a file with a new name") },
+    { ID_SAVEALL, TR("Save A&ll")..KSC(ID_SAVEALL), TR("Save all open documents") },
     { },
     -- placeholder for ID_RECENTFILES
     { },
-    { ID_EXIT, "E&xit"..KSC(ID_EXIT), "Exit Program" }})
-menuBar:Append(fileMenu, "&File")
+    { ID_EXIT, TR("E&xit")..KSC(ID_EXIT), TR("Exit program") }})
+menuBar:Append(fileMenu, TR("&File"))
 
 local filehistorymenu = wx.wxMenu({})
 local filehistory = wx.wxMenuItem(fileMenu, ID_RECENTFILES,
-  "Recent files"..KSC(ID_RECENTFILES), "File history", wx.wxITEM_NORMAL,filehistorymenu)
+  TR("Recent Files")..KSC(ID_RECENTFILES), TR("File history"), wx.wxITEM_NORMAL, filehistorymenu)
 fileMenu:Insert(8,filehistory)
 function UpdateFileHistoryUI(list)
   -- remove all at first

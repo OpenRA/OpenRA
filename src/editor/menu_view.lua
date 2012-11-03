@@ -7,15 +7,15 @@ local menuBar = frame.menuBar
 local uimgr = frame.uimgr
 
 local viewMenu = wx.wxMenu {
-  { ID_VIEWFILETREE, "Project/&FileTree Window"..KSC(ID_VIEWFILETREE), "View the project/filetree window" },
-  { ID_VIEWOUTPUT, "&Output/Console Window"..KSC(ID_VIEWOUTPUT), "View the output/console window" },
-  { ID_VIEWWATCHWINDOW, "&Watch Window"..KSC(ID_VIEWWATCHWINDOW), "View the Watch window" },
-  { ID_VIEWCALLSTACK, "&Stack Window"..KSC(ID_VIEWCALLSTACK), "View the Stack window" },
+  { ID_VIEWFILETREE, TR("Project/&FileTree Window")..KSC(ID_VIEWFILETREE), TR("View the project/filetree window") },
+  { ID_VIEWOUTPUT, TR("&Output/Console Window")..KSC(ID_VIEWOUTPUT), TR("View the output/console window") },
+  { ID_VIEWWATCHWINDOW, TR("&Watch Window")..KSC(ID_VIEWWATCHWINDOW), TR("View the watch window") },
+  { ID_VIEWCALLSTACK, TR("&Stack Window")..KSC(ID_VIEWCALLSTACK), TR("View the stack window") },
   { },
-  { ID_VIEWDEFAULTLAYOUT, "&Default Layout"..KSC(ID_VIEWDEFAULTLAYOUT), "Reset to default layout"},
-  { ID_VIEWFULLSCREEN, "Full &Screen"..KSC(ID_VIEWFULLSCREEN), "Switch to or from full screen mode"},
+  { ID_VIEWDEFAULTLAYOUT, TR("&Default Layout")..KSC(ID_VIEWDEFAULTLAYOUT), TR("Reset to default layout") },
+  { ID_VIEWFULLSCREEN, TR("Full &Screen")..KSC(ID_VIEWFULLSCREEN), TR("Switch to or from full screen mode") },
 }
-menuBar:Append(viewMenu, "&View")
+menuBar:Append(viewMenu, TR("&View"))
 
 frame:Connect(ID_VIEWDEFAULTLAYOUT, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)

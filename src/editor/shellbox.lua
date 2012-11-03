@@ -308,7 +308,7 @@ function ShellSupportRemote(client)
   local index = bottomnotebook:GetPageIndex(out)
   if index then
     bottomnotebook:SetPageText(index,
-      client and "Remote console" or "Local console")
+      client and TR("Remote console") or TR("Local console"))
   end
 end
 
@@ -329,9 +329,11 @@ function ShellExecuteCode(code)
 end
 
 local function displayShellIntro()
-  DisplayShellDirect([[Welcome to the interactive Lua interpreter.
-Enter Lua code and press Enter to run it. Use Shift-Enter for multiline code.
-Use 'clear' to clear the shell output and the history. Prepend '=' to show complex values on multiple lines.]])
+  DisplayShellDirect(TR("Welcome to the interactive Lua interpreter.").."\n"
+    ..TR("Enter Lua code and press Enter to run it.")
+    ..TR("Use Shift-Enter for multiline code.").."\n"
+    ..TR("Use 'clear' to clear the shell output and the history.")
+    ..TR("Prepend '=' to show complex values on multiple lines."))
   DisplayShellPrompt('')
 end
 

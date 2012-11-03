@@ -22,22 +22,11 @@ local app = {
   },
 
   preinit = function ()
-    ide.config.interpreter = "luadeb"
-    ide.config.unhidewindow = { -- allow unhiding of GUI windows
-      -- 1 - unhide if hidden, 0 - hide if shown
-      wxWindowClassNR = 1, -- wxwindows applications
-      GLUT = 1, -- opengl applications (for example, moai)
-    }
-    ide.config.allowinteractivescript = true -- allow interaction in the output window
-
     -- this needs to be in pre-init to load the styles
     dofile("src/editor/markup.lua")
   end,
 
   postinit = function ()
-    dofile("zbstudio/menu_help.lua")
-    dofile("src/editor/inspect.lua")
-
     local bundle = wx.wxIconBundle()
     local files = FileSysGet("zbstudio/res/", wx.wxFILE)
     local icons = 0

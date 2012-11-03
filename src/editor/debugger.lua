@@ -156,9 +156,9 @@ local function killClient()
     -- (at least on Windows Vista SP2)
     local ret = wx.wxProcess.Kill(debugger.pid, wx.wxSIGKILL, wx.wxKILL_CHILDREN)
     if ret == wx.wxKILL_OK then
-      DisplayOutput(("Program stopped (pid: %d).\n"):format(debugger.pid))
+      DisplayOutputLn(TR("Program stopped (pid: %d)."):format(debugger.pid))
     elseif ret ~= wx.wxKILL_NO_PROCESS then
-      DisplayOutput(("Unable to stop program (pid: %d), code %d.\n")
+      DisplayOutputLn(TR("Unable to stop program (pid: %d), code %d.")
         :format(debugger.pid, ret))
     end
     debugger.pid = nil
@@ -202,7 +202,7 @@ local function activateDocument(file, line)
 
     if not debugger.missing[file] then -- only report files once per session
       debugger.missing[file] = true
-      DisplayOutput(("Couldn't activate file '%s' for debugging; continuing without it.\n")
+      DisplayOutputLn(TR("Couldn't activate file '%s' for debugging; continuing without it.")
         :format(file))
     end
   end
@@ -287,17 +287,17 @@ end
 
 debugger.listen = function()
   local server = socket.bind("*", debugger.portnumber)
-  DisplayOutput(("Debugger server started at %s:%d.\n")
+  DisplayOutputLn(("Debugger server started at %s:%d.")
     :format(debugger.hostname, debugger.portnumber))
   copas.autoclose = false
   copas.addserver(server, function (skt)
       if debugger.server then
-        DisplayOutput("Refused a request to start a new debugging session as there is one in progress already.\n")
+        DisplayOutputLn(TR("Refused a request to start a new debugging session as there is one in progress already."))
         return
       end
 
       copas.setErrorHandler(function(error)
-        DisplayOutput("Can't start debugging session due to internal error '" .. error .. "'.\n")
+        DisplayOutputLn(TR("Can't start debugging session due to internal error '%s'."):format(error))
         debugger.terminate()
       end)
 
@@ -316,7 +316,8 @@ debugger.listen = function()
         or (wxfilepath and wxfilepath:GetFullPath())
 
       if not startfile then
-        DisplayOutput("Can't start debugging without an opened file or with the current file not being saved ('untitled.lua').\n")
+        DisplayOutputLn(TR("Can't start debugging without an opened file or with the current file not being saved ('%s').")
+          :format(ide.config.default.fullname))
         return debugger.terminate()
       end
 
@@ -334,8 +335,10 @@ debugger.listen = function()
       if (options.startwith) then
         local file, line, err = debugger.loadfile(options.startwith)
         if err then
-          DisplayOutput(("Can't run the entry point script (%s). Compilation error:\n%s\n")
-            :format(options.startwith, err))
+          DisplayOutputLn(TR("Can't run the entry point script ('%s').")
+            :format(options.startwith)
+            .." "..TR("Compilation error")
+            ..":\n"..err)
           return debugger.terminate()
         end
       elseif (options.run) then
@@ -363,7 +366,7 @@ debugger.listen = function()
           end
 
           if not activated then
-            DisplayOutput(("Can't find file '%s' in the current project to activate for debugging. Update the project or open the file in the editor before debugging.\n")
+            DisplayOutputLn(TR("Can't find file '%s' in the current project to activate for debugging. Update the project or open the file in the editor before debugging.")
               :format(file))
             return debugger.terminate()
           end
@@ -372,8 +375,9 @@ debugger.listen = function()
           -- if the interpreter signals scratchpad support, so enable it.
           debugger.scratchable = ide.interpreter.scratchextloop ~= nil
         elseif err then
-          DisplayOutput(("Can't debug the script in the active editor window. Compilation error:\n%s\n")
-            :format(err))
+          DisplayOutputLn(TR("Can't debug the script in the active editor window.")
+            .." "..TR("Compilation error")
+            ..":\n"..err)
           return debugger.terminate()
         else
           debugger.scratchable = true
@@ -388,8 +392,7 @@ debugger.listen = function()
       updateStackSync()
       updateWatchesSync()
 
-      DisplayOutput(("Debugging session started in '%s'.\n")
-        :format(debugger.basedir))
+      DisplayOutputLn(TR("Debugging session started in '%s'."):format(debugger.basedir))
 
       if (options.runstart) then
         ClearAllCurrentLineMarkers()
@@ -410,8 +413,7 @@ debugger.handle = function(command, server)
   os.exit = function () end
   _G.print = function (...)
     if (ide.config.debugger.verbose) then
-      DisplayOutput(...)
-      DisplayOutput("\n")
+      DisplayOutputLn(...)
     end
   end
 
@@ -430,7 +432,7 @@ debugger.exec = function(command)
           local file, line, err = debugger.handle(out or command)
           if out then out = nil end
           if line == nil then
-            if err then DisplayOutput(err .. "\n") end
+            if err then DisplayOutputLn(err) end
             DebuggerStop()
             return
           else
@@ -560,8 +562,8 @@ function DebuggerStop()
     ShellSupportRemote(nil)
     ClearAllCurrentLineMarkers()
     DebuggerScratchpadOff()
-    DisplayOutput(("Debugging session completed (traced %d instruction%s).\n")
-      :format(debugger.stats.line, debugger.stats.line == 1 and '' or 's'))
+    local lines = TR("traced %d instruction", debugger.stats.line):format(debugger.stats.line)
+    DisplayOutputLn(TR("Debugging session completed (%s)."):format(lines))
   else
     -- it's possible that the application couldn't start, or that the
     -- debugger in the application didn't start, which means there is
@@ -604,13 +606,13 @@ function DebuggerCreateStackWindow()
   if (debugger.stackWindow) then return updateStackAndWatches() end
   local width = 360
   local stackWindow = wx.wxFrame(ide.frame, wx.wxID_ANY,
-    "Stack Window",
+    TR("Stack Window"),
     wx.wxDefaultPosition, wx.wxSize(width, 200),
     wx.wxDEFAULT_FRAME_STYLE + wx.wxFRAME_FLOAT_ON_PARENT)
 
   debugger.stackWindow = stackWindow
 
-  local stackCtrl = wx.wxTreeCtrl(stackWindow, ID "debug.stack",
+  local stackCtrl = wx.wxTreeCtrl(stackWindow, wx.wxID_ANY,
     wx.wxDefaultPosition, wx.wxDefaultSize,
     wx.wxTR_LINES_AT_ROOT + wx.wxTR_HAS_BUTTONS + wx.wxTR_SINGLE + wx.wxTR_HIDE_ROOT)
 
@@ -662,20 +664,20 @@ function DebuggerCreateWatchWindow()
   if (debugger.watchWindow) then return updateWatches() end
   local width = 360
   local watchWindow = wx.wxFrame(ide.frame, wx.wxID_ANY,
-    "Watch Window",
+    TR("Watch Window"),
     wx.wxDefaultPosition, wx.wxSize(width, 200),
     wx.wxDEFAULT_FRAME_STYLE + wx.wxFRAME_FLOAT_ON_PARENT)
 
   debugger.watchWindow = watchWindow
 
   local watchMenu = wx.wxMenu{
-    { ID_ADDWATCH, "&Add Watch"..KSC(ID_ADDWATCH) },
-    { ID_EDITWATCH, "&Edit Watch"..KSC(ID_EDITWATCH) },
-    { ID_REMOVEWATCH, "&Remove Watch"..KSC(ID_REMOVEWATCH) },
-    { ID_EVALUATEWATCH, "Evaluate &Watches"..KSC(ID_EVALUATEWATCH) }}
+    { ID_ADDWATCH, TR("&Add Watch")..KSC(ID_ADDWATCH) },
+    { ID_EDITWATCH, TR("&Edit Watch")..KSC(ID_EDITWATCH) },
+    { ID_REMOVEWATCH, TR("&Remove Watch")..KSC(ID_REMOVEWATCH) },
+    { ID_EVALUATEWATCH, TR("Evaluate &Watches")..KSC(ID_EVALUATEWATCH) }}
 
   local watchMenuBar = wx.wxMenuBar()
-  watchMenuBar:Append(watchMenu, "&Watches")
+  watchMenuBar:Append(watchMenu, TR("&Watches"))
   watchWindow:SetMenuBar(watchMenuBar)
 
   local watchCtrl = wx.wxListCtrl(watchWindow, wx.wxID_ANY,
@@ -686,11 +688,11 @@ function DebuggerCreateWatchWindow()
 
   local info = wx.wxListItem()
   info:SetMask(wx.wxLIST_MASK_TEXT + wx.wxLIST_MASK_WIDTH)
-  info:SetText("Expression")
+  info:SetText(TR("Expression"))
   info:SetWidth(width * 0.32)
   watchCtrl:InsertColumn(0, info)
 
-  info:SetText("Value")
+  info:SetText(TR("Value"))
   info:SetWidth(width * 0.56)
   watchCtrl:InsertColumn(1, info)
 
@@ -722,9 +724,9 @@ function DebuggerCreateWatchWindow()
 
   watchWindow:Connect(ID_ADDWATCH, wx.wxEVT_COMMAND_MENU_SELECTED,
     function ()
-      local row = watchCtrl:InsertItem(watchCtrl:GetItemCount(), "Expr")
+      local row = watchCtrl:InsertItem(watchCtrl:GetItemCount(), TR("Expr"))
       watchCtrl:SetItem(row, 0, defaultExpr)
-      watchCtrl:SetItem(row, 1, "Value")
+      watchCtrl:SetItem(row, 1, TR("Value"))
       watchCtrl:EditLabel(row)
     end)
 
@@ -783,9 +785,9 @@ function DebuggerAddWatch(watch)
     if watchCtrl:GetItemText(idx) == watch then return end
   end
 
-  local row = watchCtrl:InsertItem(watchCtrl:GetItemCount(), "Expr")
+  local row = watchCtrl:InsertItem(watchCtrl:GetItemCount(), TR("Expr"))
   watchCtrl:SetItem(row, 0, watch)
-  watchCtrl:SetItem(row, 1, "Value")
+  watchCtrl:SetItem(row, 1, TR("Value"))
 
   updateWatches(row)
 end
@@ -839,11 +841,14 @@ function DebuggerRefreshScratchpad()
       local filePath = DebuggerMakeFileName(scratchpadEditor,
         ide.openDocuments[scratchpadEditor:GetId()].filePath)
 
+      -- wrap into a function call to make "return" to work with scratchpad
+      code = "(function()"..code.."\nend)()"
+
       -- this is a special error message that is generated at the very end
       -- of each script to avoid exiting the (debugee) scratchpad process.
       -- these errors are handled and not reported to the user
       local errormsg = 'execution suspended at ' .. TimeGet()
-      local stopper = "\ndo error('" .. errormsg .. "') end"
+      local stopper = "error('" .. errormsg .. "')"
       -- store if interpreter requires a special handling for external loop
       local extloop = ide.interpreter.scratchextloop
 
@@ -869,20 +874,21 @@ function DebuggerRefreshScratchpad()
 
         -- when execute() is used, it's not possible to distinguish between
         -- compilation and run-time error, so just report as "Scratchpad error"
-        local prefix = extloop and "Scratchpad error" or "Compilation error"
+        local prefix = extloop and TR("Scratchpad error") or TR("Compilation error")
 
         if not err then
           _, _, err = debugger.handle("run")
-          prefix = "Execution error"
+          prefix = TR("Execution error")
         end
         if err and not err:find(errormsg) then
           local fragment, line = err:match('.-%[string "([^\010\013]+)"%]:(%d+)%s*:')
           -- make the code shorter to better see the error message
-          if prefix == "Scratchpad error" and fragment and #fragment > 30 then
+          if prefix == TR("Scratchpad error") and fragment and #fragment > 30 then
             err = err:gsub(q(fragment), function(s) return s:sub(1,30)..'...' end)
           end
-          DisplayOutput(prefix .. (line and " on line " .. line or "") .. ":\n"
-            .. err:gsub('stack traceback:.+', ''):gsub('\n+$', '') .. "\n")
+          DisplayOutputLn(prefix
+            ..(line and (" "..TR("on line %d"):format(line)) or "")
+            ..":\n"..err:gsub('stack traceback:.+', ''):gsub('\n+$', ''))
         end
         debugger.scratchpad.running = false
       end
@@ -895,19 +901,26 @@ end
 local numberStyle = wxstc.wxSTC_LUA_NUMBER
 
 function DebuggerScratchpadOn(editor)
-  debugger.scratchpad = {editor = editor}
+  -- first check if there is already scratchpad editor.
+  -- this may happen when more than one editor is being added...
 
-  -- check if the debugger is already running; this happens when
-  -- scratchpad is turned on after external script has connected
-  if debugger.server then
-    debugger.scratchpad.updated = true
-    ClearAllCurrentLineMarkers()
-    SetAllEditorsReadOnly(false)
-    ShellSupportRemote(nil) -- disable remote shell
-    DebuggerRefreshScratchpad()
-  elseif not ProjectDebug(true, "scratchpad") then
-    debugger.scratchpad = nil
-    return
+  if debugger.scratchpad and debugger.scratchpad.editors then
+    debugger.scratchpad.editors[editor] = true
+  else
+    debugger.scratchpad = {editor = editor, editors = {[editor] = true}}
+
+    -- check if the debugger is already running; this happens when
+    -- scratchpad is turned on after external script has connected
+    if debugger.server then
+      debugger.scratchpad.updated = true
+      ClearAllCurrentLineMarkers()
+      SetAllEditorsReadOnly(false)
+      ShellSupportRemote(nil) -- disable remote shell
+      DebuggerRefreshScratchpad()
+    elseif not ProjectDebug(true, "scratchpad") then
+      debugger.scratchpad = nil
+      return
+    end
   end
 
   local scratchpadEditor = editor
@@ -922,6 +935,7 @@ function DebuggerScratchpadOn(editor)
         bit.band(evtype,wxstc.wxSTC_PERFORMED_UNDO) ~= 0 or
         bit.band(evtype,wxstc.wxSTC_PERFORMED_REDO) ~= 0) then
       debugger.scratchpad.updated = true
+      debugger.scratchpad.editor = scratchpadEditor
     end
     event:Skip()
   end)
@@ -968,7 +982,7 @@ function DebuggerScratchpadOn(editor)
   scratchpadEditor:Connect(wx.wxEVT_LEFT_UP, function(event)
     if debugger.scratchpad and debugger.scratchpad.point then
       debugger.scratchpad.point = nil
-      debugger.scratchpad.editor:ReleaseMouse()
+      scratchpadEditor:ReleaseMouse()
       wx.wxSetCursor(wx.wxNullCursor) -- restore cursor
     else event:Skip() end
   end)
@@ -1036,13 +1050,14 @@ end
 function DebuggerScratchpadOff()
   if not debugger.scratchpad then return end
 
-  local scratchpadEditor = debugger.scratchpad.editor
-  scratchpadEditor:StyleSetUnderline(numberStyle, false)
-  scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wxstc.wxEVT_STC_MODIFIED)
-  scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wx.wxEVT_MOTION)
-  scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wx.wxEVT_LEFT_DOWN)
-  scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wx.wxEVT_LEFT_UP)
-  scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wx.wxEVT_SET_CURSOR)
+  for scratchpadEditor in pairs(debugger.scratchpad.editors) do
+    scratchpadEditor:StyleSetUnderline(numberStyle, false)
+    scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wxstc.wxEVT_STC_MODIFIED)
+    scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wx.wxEVT_MOTION)
+    scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wx.wxEVT_LEFT_DOWN)
+    scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wx.wxEVT_LEFT_UP)
+    scratchpadEditor:Disconnect(wx.wxID_ANY, wx.wxID_ANY, wx.wxEVT_SET_CURSOR)
+  end
 
   wx.wxSetCursor(wx.wxNullCursor) -- restore cursor
 

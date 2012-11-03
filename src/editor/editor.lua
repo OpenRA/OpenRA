@@ -28,9 +28,9 @@ local function updateStatusText(editor)
     local col = 1 + pos - editor:PositionFromLine(line)
 
     texts = {
-      iff(editor:GetOvertype(), "OVR", "INS"),
-      iff(editor:GetReadOnly(), "R/O", "R/W"),
-      "Ln: "..tostring(line + 1).." Col: "..tostring(col) }
+      iff(editor:GetOvertype(), TR("OVR"), TR("INS")),
+      iff(editor:GetReadOnly(), TR("R/O"), TR("R/W")),
+      TR("Ln: %d"):format(line + 1).." "..TR("Col: %d"):format(col) }
   end
 
   if ide.frame then
@@ -103,11 +103,14 @@ local function isFileAlteredOnDisk(editor)
       local modTime = GetFileModTime(filePath)
       if modTime == nil then
         openDocuments[id].modTime = nil
-        wx.wxMessageBox(fileName.." is no longer on the disk.",
+        wx.wxMessageBox(
+          TR("File '%s' no longer exists."):format(fileName),
           GetIDEString("editormessage"),
           wx.wxOK + wx.wxCENTRE, ide.frame)
       elseif not editor:GetReadOnly() and modTime:IsValid() and oldModTime:IsEarlierThan(modTime) then
-        local ret = wx.wxMessageBox(fileName.." has been modified on disk.\nDo you want to reload it?",
+        local ret = wx.wxMessageBox(
+          TR("File '%s' has been modified on disk."):format(fileName)
+          .."\n"..TR("Do you want to reload it?"),
           GetIDEString("editormessage"),
           wx.wxYES_NO + wx.wxCENTRE, ide.frame)
 
@@ -141,7 +144,7 @@ function SetEditorSelection(selection)
   ide.frame:SetTitle(getFileTitle(editor))
 
   if editor then
-    if funclist:IsEmpty() then funclist:Append('Jump to a function definition...', 0) end
+    if funclist:IsEmpty() then funclist:Append(TR("Jump to a function definition..."), 0) end
     funclist:SetSelection(0)
 
     editor:SetFocus()
@@ -623,22 +626,27 @@ function CreateEditor()
   editor:Connect(wx.wxEVT_CONTEXT_MENU,
     function (event)
       local menu = wx.wxMenu()
-      menu:Append(wx.wxID_UNDO, "&Undo")
-      menu:Append(wx.wxID_REDO, "&Redo")
+      menu:Append(wx.wxID_UNDO, TR("&Undo"))
+      menu:Append(wx.wxID_REDO, TR("&Redo"))
       menu:AppendSeparator()
-      menu:Append(wx.wxID_CUT, "Cu&t")
-      menu:Append(wx.wxID_COPY, "&Copy")
-      menu:Append(wx.wxID_PASTE, "&Paste")
-      menu:Append(wx.wxID_SELECTALL, "Select &All")
+      menu:Append(wx.wxID_CUT, TR("Cu&t"))
+      menu:Append(wx.wxID_COPY, TR("&Copy"))
+      menu:Append(wx.wxID_PASTE, TR("&Paste"))
+      menu:Append(wx.wxID_SELECTALL, TR("Select &All"))
       menu:AppendSeparator()
-      menu:Append(ID_QUICKADDWATCH, "Add Watch Expression")
-      menu:Append(ID_QUICKEVAL, "Evaluate in Console")
+      menu:Append(ID_QUICKADDWATCH, TR("Add Watch Expression"))
+      menu:Append(ID_QUICKEVAL, TR("Evaluate in Console"))
+      menu:Append(ID_ADDTOSCRATCHPAD, TR("Add to Scratchpad"))
 
       local point = editor:ScreenToClient(event:GetPosition())
       local pos = editor:PositionFromPointClose(point.x, point.y)
       value = pos ~= wxstc.wxSTC_INVALID_POSITION and getValAtPosition(editor, pos) or nil
       menu:Enable(ID_QUICKADDWATCH, value ~= nil)
       menu:Enable(ID_QUICKEVAL, value ~= nil)
+
+      local debugger = ide.debugger
+      menu:Enable(ID_ADDTOSCRATCHPAD, debugger.scratchpad
+        and debugger.scratchpad.editors and not debugger.scratchpad.editors[editor])
 
       -- cancel calltip as it interferes with popup menu
       if editor:CallTipActive() then editor:CallTipCancel() end
@@ -650,6 +658,9 @@ function CreateEditor()
 
   editor:Connect(ID_QUICKEVAL, wx.wxEVT_COMMAND_MENU_SELECTED,
     function(event) ShellExecuteCode(value) end)
+
+  editor:Connect(ID_ADDTOSCRATCHPAD, wx.wxEVT_COMMAND_MENU_SELECTED,
+    function(event) DebuggerScratchpadOn(editor) end)
 
   return editor
 end

@@ -21,6 +21,14 @@ acandtip.nodynwords = true
 activateoutput = true
 projectautoopen = true
 autorecoverinactivity = 10
+allowinteractivescript = true -- allow interaction in the output window
+
+interpreter = "luadeb"
+unhidewindow = { -- allow unhiding of GUI windows
+  -- 1 - unhide if hidden, 0 - hide if shown
+  wxWindowClassNR = 1, -- wxwindows applications
+  GLUT = 1, -- opengl applications (for example, moai)
+}
 
 styles = {
   -- lexer specific (inherit fg/bg from text)

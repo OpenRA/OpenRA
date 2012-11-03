@@ -2,12 +2,8 @@
 -- Luxinia Dev (Eike Decker & Christoph Kubisch)
 ---------------------------------------------------------
 local ide = ide
-
--- Create the Debug menu and attach the callback functions
-
 local frame = ide.frame
 local menuBar = frame.menuBar
-
 local openDocuments = ide.openDocuments
 local debugger = ide.debugger
 local bottomnotebook = frame.bottomnotebook
@@ -41,31 +37,31 @@ do
 end
 
 local debugTab = {
-  { ID_RUN, "&Run"..KSC(ID_RUN), "Execute the current project/file" },
-  { ID_RUNNOW, "Run as Scratchpad"..KSC(ID_RUNNOW), "Execute the current project/file and keep updating the code to see immediate results", wx.wxITEM_CHECK },
-  { ID_COMPILE, "&Compile"..KSC(ID_COMPILE), "Test compile the Lua file" },
-  { ID_STARTDEBUG, "Start &Debugging"..KSC(ID_STARTDEBUG), "Start a debugging session" },
-  { ID_ATTACHDEBUG, "&Start Debugger Server"..KSC(ID_ATTACHDEBUG), "Allow a client to start a debugging session" },
+  { ID_RUN, TR("&Run")..KSC(ID_RUN), TR("Execute the current project/file") },
+  { ID_RUNNOW, TR("Run as Scratchpad")..KSC(ID_RUNNOW), TR("Execute the current project/file and keep updating the code to see immediate results"), wx.wxITEM_CHECK },
+  { ID_COMPILE, TR("&Compile")..KSC(ID_COMPILE), TR("Compile the current file") },
+  { ID_STARTDEBUG, TR("Start &Debugging")..KSC(ID_STARTDEBUG), TR("Start debugging") },
+  { ID_ATTACHDEBUG, TR("&Start Debugger Server")..KSC(ID_ATTACHDEBUG), TR("Allow external process to start debugging") },
   { },
-  { ID_STOPDEBUG, "S&top Debugging"..KSC(ID_STOPDEBUG), "Stop the currently running process" },
-  { ID_STEP, "Step &Into"..KSC(ID_STEP), "Step into the next line" },
-  { ID_STEPOVER, "Step &Over"..KSC(ID_STEPOVER), "Step over the next line" },
-  { ID_STEPOUT, "Step O&ut"..KSC(ID_STEPOUT), "Step out of the current function" },
-  { ID_TRACE, "Tr&ace"..KSC(ID_TRACE), "Trace execution showing each executed line" },
-  { ID_BREAK, "&Break"..KSC(ID_BREAK), "Stop execution of the program at the next executed line of code" },
+  { ID_STOPDEBUG, TR("S&top Debugging")..KSC(ID_STOPDEBUG), TR("Stop the currently running process") },
+  { ID_STEP, TR("Step &Into")..KSC(ID_STEP), TR("Step into") },
+  { ID_STEPOVER, TR("Step &Over")..KSC(ID_STEPOVER), TR("Step over") },
+  { ID_STEPOUT, TR("Step O&ut")..KSC(ID_STEPOUT), TR("Step out of the current function") },
+  { ID_TRACE, TR("Tr&ace")..KSC(ID_TRACE), TR("Trace execution showing each executed line") },
+  { ID_BREAK, TR("&Break")..KSC(ID_BREAK), TR("Break execution at the next executed line of code") },
   { },
-  { ID_TOGGLEBREAKPOINT, "Toggle Break&point"..KSC(ID_TOGGLEBREAKPOINT), "Toggle Breakpoint" },
+  { ID_TOGGLEBREAKPOINT, TR("Toggle Break&point")..KSC(ID_TOGGLEBREAKPOINT), TR("Toggle breakpoint") },
   { },
-  { ID_CLEAROUTPUT, "C&lear Output Window"..KSC(ID_CLEAROUTPUT), "Clear the output window before compiling or debugging", wx.wxITEM_CHECK },
+  { ID_CLEAROUTPUT, TR("C&lear Output Window")..KSC(ID_CLEAROUTPUT), TR("Clear the output window before compiling or debugging"), wx.wxITEM_CHECK },
 }
 
 local debugMenu = wx.wxMenu(debugTab)
 local debugMenuRun = {
-  start="Start &Debugging"..KSC(ID_STARTDEBUG), continue="Co&ntinue"..KSC(ID_STARTDEBUG)}
+  start=TR("Start &Debugging")..KSC(ID_STARTDEBUG), continue=TR("Co&ntinue")..KSC(ID_STARTDEBUG)}
 local debugMenuStop = {
-  debugging="S&top Debugging"..KSC(ID_STOPDEBUG), process="S&top Process"..KSC(ID_STOPDEBUG)}
-debugMenu:Append(ID_INTERPRETER,"Lua &Interpreter",targetMenu,"Set the interpreter to be used")
-menuBar:Append(debugMenu, "&Project")
+  debugging=TR("S&top Debugging")..KSC(ID_STOPDEBUG), process=TR("S&top Process")..KSC(ID_STOPDEBUG)}
+debugMenu:Append(ID_INTERPRETER,TR("Lua &Interpreter"),targetMenu,TR("Set the interpreter to be used"))
+menuBar:Append(debugMenu, TR("&Project"))
 
 -----------------------------
 -- Project directory handling
@@ -87,7 +83,7 @@ local function projChoose(event)
 
   local projectdir = ide.config.path.projectdir
 
-  local filePicker = wx.wxDirDialog(frame, "Chose a project directory",
+  local filePicker = wx.wxDirDialog(frame, TR("Choose a project directory"),
     projectdir ~= "" and projectdir or wx.wxGetCwd(),wx.wxFLP_USE_TEXTCTRL)
   if filePicker:ShowModal(true) == wx.wxID_OK then
     ProjectUpdateProjectDir(filePicker:GetPath())

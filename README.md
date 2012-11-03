@@ -53,8 +53,12 @@ Loading custom configuration:
 
 ## Where is Estrela?
 
-The projects have been merged again and zbstudio will lead the future. Please reassociate files with zbstudio. To keep your history of files and projects copy the contents of the EstrelaEditor.ini in your HOME directory to ZeroBraneStudio.ini 
-If you have used Estrela for graphics shader authoring or luxinia, create/modify the cfg/user.lua to contain the content of cfg/estrela.lua to load all tools and specifications by default again.
+The projects have been merged again and zbstudio will lead the future.
+Please reassociate files with zbstudio. To keep your history of files and
+projects copy the contents of the `EstrelaEditor.ini` in your HOME directory
+to `ZeroBraneStudio.ini`. If you have used Estrela for graphics shader
+authoring or luxinia, create/modify the `cfg/user.lua` to include the content
+of `cfg/estrela.lua` to load all tools and specifications by default again.
   
 ## License
 
