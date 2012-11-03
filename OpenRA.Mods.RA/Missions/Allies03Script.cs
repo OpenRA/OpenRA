@@ -34,9 +34,12 @@ namespace OpenRA.Mods.RA.Missions
 		Dictionary<int, Objective> objectives = new Dictionary<int, Objective>
 		{
 			{ EvacuateID, new Objective(ObjectiveType.Primary, "Following the rescue of Einstein, the Allies are now being flanked from both sides. Evacuate {0} units before the remaining Allied forces in the area are wiped out.".F(UnitsEvacuatedThreshold), ObjectiveStatus.InProgress) },
+			{ AirbaseID, new Objective(ObjectiveType.Secondary, "Destroy the nearby Soviet airbase.", ObjectiveStatus.InProgress) }
 		};
 
 		const int EvacuateID = 0;
+		const int AirbaseID = 1;
+
 		const int UnitsEvacuatedThreshold = 50;
 		int unitsEvacuated;
 		InfoWidget evacuateWidget;
@@ -69,13 +72,17 @@ namespace OpenRA.Mods.RA.Missions
 		Actor sovietRallyPoint5;
 		CPos[] sovietRallyPoints;
 
-		static readonly string[] SovietVehicles = { "3tnk", "3tnk", "3tnk", "3tnk", "v2rl", "v2rl", "ftrk", "apc" };
-		static readonly string[] SovietInfantry = { "e1", "e1", "e1", "e2", "e2", "e3", "e4" };
+		Actor sovietAirfield1;
+		Actor sovietAirfield2;
+		Actor sovietAirfield3;
+		Actor sovietAirfield4;
 
+		static readonly string[] SovietVehicles = { "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "v2rl", "v2rl", "ftrk", "ftrk", "apc", "apc", "apc" };
+		const int SovietAttackGroupSize = 5;
 		const int YakTicks = 2000;
 
-		int attackAtFrame = 300;
-		int attackAtFrameIncrement = 300;
+		int attackAtFrame;
+		int attackAtFrameIncrement;
 
 		Actor allies1EntryPoint;
 		Actor allies1MovePoint;
@@ -131,33 +138,48 @@ namespace OpenRA.Mods.RA.Missions
 				attackAtFrame += attackAtFrameIncrement;
 				attackAtFrameIncrement = Math.Max(attackAtFrameIncrement - 5, 100);
 			}
-			if (world.FrameNumber % YakTicks == 1)
+			if (world.FrameNumber % YakTicks == 1 && objectives[AirbaseID].Status != ObjectiveStatus.Completed)
 			{
 				AirStrafe(YakName);
-				if (world.SharedRandom.Next(3) == 2)
-				{
-					AirStrafe(YakName);
-				}
 			}
 			ManageSovietUnits();
+			ManageSovietOre();
 			EvacuateAlliedUnits(exit1TopLeft.CenterLocation, exit1BottomRight.CenterLocation, exit1ExitPoint.Location);
 			EvacuateAlliedUnits(exit2TopLeft.CenterLocation, exit2BottomRight.CenterLocation, exit2ExitPoint.Location);
+			CheckSovietAirbase();
 			if (!world.Actors.Any(a => (a.Owner == allies1 || a.Owner == allies2) && a.IsInWorld && !a.IsDead() && ((a.HasTrait<Building>() && !a.HasTrait<Wall>()) || a.HasTrait<BaseBuilding>())))
 			{
 				MissionFailed("The remaining Allied forces in the area have been wiped out.");
 			}
 		}
 
+		void ManageSovietOre()
+		{
+			var res = soviets.PlayerActor.Trait<PlayerResources>();
+			res.TakeOre(res.Ore);
+			res.TakeCash(res.Cash);
+		}
+
 		void AirStrafe(string actor)
 		{
 			var spawnPoint = world.ChooseRandomEdgeCell();
-			var aircraft = world.CreateActor(actor, new TypeDictionary 
-			{ 
-				new LocationInit(spawnPoint),
-				new OwnerInit(soviets),
-				new AltitudeInit(Rules.Info[actor].Traits.Get<PlaneInfo>().CruiseAltitude)
-			});
-			AirStrafe(aircraft);
+			var aircraft = world.Actors.Where(
+				a => a.HasTrait<AttackPlane>() && a.Trait<LimitedAmmo>().FullAmmo() && a.Trait<Plane>().Altitude == 0
+				&& a.Owner == soviets && a.IsIdle && a.IsInWorld);
+			if (aircraft.Count() < 4)
+			{
+				var a = world.CreateActor(actor, new TypeDictionary 
+				{ 
+					new LocationInit(spawnPoint),
+					new OwnerInit(soviets),
+					new AltitudeInit(Rules.Info[actor].Traits.Get<PlaneInfo>().CruiseAltitude)
+				});
+				aircraft = aircraft.Concat(new[] { a });
+			}
+			foreach (var a in aircraft)
+			{
+				AirStrafe(a);
+			}
 		}
 
 		void AirStrafe(Actor aircraft)
@@ -176,25 +198,47 @@ namespace OpenRA.Mods.RA.Missions
 			}
 		}
 
+		void CheckSovietAirbase()
+		{
+			if (objectives[AirbaseID].Status != ObjectiveStatus.Completed && 
+				(sovietAirfield1.Destroyed || sovietAirfield1.Owner != soviets) &&
+				(sovietAirfield2.Destroyed || sovietAirfield2.Owner != soviets) &&
+				(sovietAirfield3.Destroyed || sovietAirfield3.Owner != soviets) &&
+				(sovietAirfield4.Destroyed || sovietAirfield4.Owner != soviets))
+			{
+				objectives[AirbaseID].Status = ObjectiveStatus.Completed;
+				OnObjectivesUpdated(true);
+			}
+		}
+
 		void SpawnSovietUnits()
 		{
 			var route = world.SharedRandom.Next(sovietEntryPoints.Length);
 			var spawnPoint = sovietEntryPoints[route];
 			var rallyPoint = sovietRallyPoints[route];
-			var unit = world.CreateActor(SovietVehicles.Concat(SovietInfantry).Random(world.SharedRandom), new TypeDictionary { new LocationInit(spawnPoint), new OwnerInit(soviets) });
-			unit.QueueActivity(new AttackMove.AttackMoveActivity(unit, new Move.Move(rallyPoint, 5)));
+			var unit = world.CreateActor(SovietVehicles.Random(world.SharedRandom),
+				new TypeDictionary { new LocationInit(spawnPoint), new OwnerInit(soviets) });
+			unit.QueueActivity(new AttackMove.AttackMoveActivity(unit, new Move.Move(rallyPoint, 3)));
 		}
 
 		void ManageSovietUnits()
 		{
-			var units = world.Actors.Where(u => u.IsInWorld && !u.IsDead() && u.IsIdle && u.HasTrait<Mobile>() && u.Owner == soviets);
-			foreach (var unit in units)
+			foreach (var rallyPoint in sovietRallyPoints)
 			{
-				var enemies = world.Actors.Where(u => u.IsInWorld && !u.IsDead() && (u.Owner == allies1 || u.Owner == allies2) && ((u.HasTrait<Building>() && !u.HasTrait<Wall>()) || u.HasTrait<Mobile>()));
-				var targetEnemy = enemies.OrderBy(u => (unit.CenterLocation - u.CenterLocation).LengthSquared).FirstOrDefault();
-				if (targetEnemy != null)
+				var units = world.FindAliveCombatantActorsInCircle(Util.CenterOfCell(rallyPoint), 10)
+					.Where(u => u.IsIdle && u.HasTrait<Mobile>() && u.Owner == soviets);
+				if (units.Count() >= SovietAttackGroupSize)
 				{
-					unit.QueueActivity(new AttackMove.AttackMoveActivity(unit, new Attack(Target.FromActor(targetEnemy), 3)));
+					foreach (var unit in units)
+					{
+						var enemies = world.Actors.Where(u => u.IsInWorld && !u.IsDead() && (u.Owner == allies1 || u.Owner == allies2)
+							&& ((u.HasTrait<Building>() && !u.HasTrait<Wall>()) || u.HasTrait<Mobile>()));
+						var targetEnemy = enemies.OrderBy(u => (unit.CenterLocation - u.CenterLocation).LengthSquared).FirstOrDefault();
+						if (targetEnemy != null)
+						{
+							unit.QueueActivity(new AttackMove.AttackMoveActivity(unit, new Attack(Target.FromActor(targetEnemy), 3)));
+						}
+					}
 				}
 			}
 		}
@@ -240,7 +284,16 @@ namespace OpenRA.Mods.RA.Missions
 				unit.CancelActivity();
 				unit.ChangeOwner(allies);
 				unit.QueueActivity(new Move.Move(exit));
-				unit.QueueActivity(new CallFunc(() => { unitsEvacuated++; UpdateUnitsEvacuated(); }));
+				unit.QueueActivity(new CallFunc(() =>
+				{
+					unitsEvacuated++;
+					var cargo = unit.TraitOrDefault<Cargo>();
+					if (cargo != null)
+					{
+						unitsEvacuated += cargo.Passengers.Count();
+					}
+					UpdateUnitsEvacuated();
+				}));
 				unit.QueueActivity(new RemoveSelf());
 			}
 		}
@@ -250,7 +303,12 @@ namespace OpenRA.Mods.RA.Missions
 			world = w;
 			allies1 = w.Players.Single(p => p.InternalName == "Allies1");
 			allies2 = w.Players.SingleOrDefault(p => p.InternalName == "Allies2");
-			if (allies2 == null)
+			if (allies2 != null)
+			{
+				attackAtFrame = 400;
+				attackAtFrameIncrement = 400;
+			}
+			else
 			{
 				allies2 = allies1;
 				attackAtFrame = 500;
@@ -281,6 +339,10 @@ namespace OpenRA.Mods.RA.Missions
 			sovietRallyPoint4 = actors["SovietRallyPoint4"];
 			sovietRallyPoint5 = actors["SovietRallyPoint5"];
 			sovietRallyPoints = new[] { sovietRallyPoint1, sovietRallyPoint2, sovietRallyPoint3, sovietRallyPoint4, sovietRallyPoint5 }.Select(p => p.Location).ToArray();
+			sovietAirfield1 = actors["SovietAirfield1"];
+			sovietAirfield2 = actors["SovietAirfield2"];
+			sovietAirfield3 = actors["SovietAirfield3"];
+			sovietAirfield4 = actors["SovietAirfield4"];
 			if (w.LocalPlayer == null || w.LocalPlayer == allies1)
 			{
 				Game.MoveViewport(allies1EntryPoint.Location.ToFloat2());

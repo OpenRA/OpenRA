@@ -236,7 +236,10 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			if (objectives[DestroySamSitesID].Status == ObjectiveStatus.InProgress)
 			{
-				if (sam1.Destroyed && sam2.Destroyed && sam3.Destroyed && sam4.Destroyed)
+				if ((sam1.Destroyed || sam1.Owner != soviets) &&
+					(sam2.Destroyed || sam2.Owner != soviets) &&
+					(sam3.Destroyed || sam3.Owner != soviets) &&
+					(sam4.Destroyed || sam4.Owner != soviets))
 				{
 					objectives[DestroySamSitesID].Status = ObjectiveStatus.Completed;
 					objectives[ExtractEinsteinID].Status = ObjectiveStatus.InProgress;
