@@ -408,19 +408,18 @@ debugger.listen = function()
 end
 
 debugger.handle = function(command, server)
-  local _G = _G
-  local os = os
-  os.exit = function () end
-  _G.print = function (...)
-    if (ide.config.debugger.verbose) then
-      DisplayOutputLn(...)
-    end
-  end
+  local verbose = ide.config.debugger.verbose
+  local osexit, gprint
+  osexit, os.exit = os.exit, function () end
+  gprint, _G.print = _G.print, function (...) if (verbose) then DisplayOutputLn(...) end end
 
   debugger.running = true
+  if verbose then DisplayOutputLn("Debugger sent (command):", command) end
   local file, line, err = mobdebug.handle(command, server or debugger.server)
+  if verbose then DisplayOutputLn("Debugger received (file, line, err):", file, line, err) end
   debugger.running = false
 
+  os.exit, _G.print = osexit, gprint
   return file, line, err
 end
 
