@@ -330,9 +330,9 @@ end
 
 local function displayShellIntro()
   DisplayShellDirect(TR("Welcome to the interactive Lua interpreter.").."\n"
-    ..TR("Enter Lua code and press Enter to run it.")
+    ..TR("Enter Lua code and press Enter to run it.").." "
     ..TR("Use Shift-Enter for multiline code.").."\n"
-    ..TR("Use 'clear' to clear the shell output and the history.")
+    ..TR("Use 'clear' to clear the shell output and the history.").." "
     ..TR("Prepend '=' to show complex values on multiple lines."))
   DisplayShellPrompt('')
 end
