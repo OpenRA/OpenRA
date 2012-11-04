@@ -287,7 +287,7 @@ end
 
 debugger.listen = function()
   local server = socket.bind("*", debugger.portnumber)
-  DisplayOutputLn(("Debugger server started at %s:%d.")
+  DisplayOutputLn(TR("Debugger server started at %s:%d.")
     :format(debugger.hostname, debugger.portnumber))
   copas.autoclose = false
   copas.addserver(server, function (skt)
