@@ -160,7 +160,7 @@ namespace OpenRA.Mods.RA.Missions
 			res.TakeCash(res.Cash);
 		}
 
-		void AirStrafe(string actor)
+		void AirStrafe(string withActor)
 		{
 			var spawnPoint = world.ChooseRandomEdgeCell();
 			var aircraft = world.Actors.Where(
@@ -168,11 +168,11 @@ namespace OpenRA.Mods.RA.Missions
 				&& a.Owner == soviets && a.IsIdle && a.IsInWorld);
 			if (aircraft.Count() < 4)
 			{
-				var a = world.CreateActor(actor, new TypeDictionary 
+				var a = world.CreateActor(withActor, new TypeDictionary 
 				{ 
 					new LocationInit(spawnPoint),
 					new OwnerInit(soviets),
-					new AltitudeInit(Rules.Info[actor].Traits.Get<PlaneInfo>().CruiseAltitude)
+					new AltitudeInit(Rules.Info[withActor].Traits.Get<PlaneInfo>().CruiseAltitude)
 				});
 				aircraft = aircraft.Concat(new[] { a });
 			}
@@ -182,19 +182,19 @@ namespace OpenRA.Mods.RA.Missions
 			}
 		}
 
-		void AirStrafe(Actor aircraft)
+		void AirStrafe(Actor self)
 		{
 			var enemies = world.Actors.Where(u => u.IsInWorld && !u.IsDead() && (u.Owner == allies1 || u.Owner == allies2) && ((u.HasTrait<Building>() && !u.HasTrait<Wall>()) || u.HasTrait<Mobile>()));
-			var targetEnemy = enemies.OrderBy(u => (aircraft.CenterLocation - u.CenterLocation).LengthSquared).FirstOrDefault();
-			if (targetEnemy != null && aircraft.Trait<LimitedAmmo>().HasAmmo())
+			var targetEnemy = enemies.OrderBy(u => (self.CenterLocation - u.CenterLocation).LengthSquared).FirstOrDefault();
+			if (targetEnemy != null && self.Trait<LimitedAmmo>().HasAmmo())
 			{
-				aircraft.QueueActivity(new FlyAttack(Target.FromActor(targetEnemy)));
-				aircraft.QueueActivity(new CallFunc(() => AirStrafe(aircraft)));
+				self.QueueActivity(new FlyAttack(Target.FromActor(targetEnemy)));
+				self.QueueActivity(new CallFunc(() => AirStrafe(self)));
 			}
 			else
 			{
-				aircraft.QueueActivity(new FlyOffMap());
-				aircraft.QueueActivity(new RemoveSelf());
+				self.QueueActivity(new FlyOffMap());
+				self.QueueActivity(new RemoveSelf());
 			}
 		}
 
@@ -221,6 +221,17 @@ namespace OpenRA.Mods.RA.Missions
 			unit.QueueActivity(new AttackMove.AttackMoveActivity(unit, new Move.Move(rallyPoint, 3)));
 		}
 
+		void AttackNearestAlliedActor(Actor self)
+		{
+			var enemies = world.Actors.Where(u => u.IsInWorld && !u.IsDead() && (u.Owner == allies1 || u.Owner == allies2)
+				&& ((u.HasTrait<Building>() && !u.HasTrait<Wall>()) || u.HasTrait<Mobile>()));
+			var targetEnemy = enemies.OrderBy(u => (self.CenterLocation - u.CenterLocation).LengthSquared).FirstOrDefault();
+			if (targetEnemy != null)
+			{
+				self.QueueActivity(new AttackMove.AttackMoveActivity(self, new Attack(Target.FromActor(targetEnemy), 3)));
+			}
+		}
+
 		void ManageSovietUnits()
 		{
 			foreach (var rallyPoint in sovietRallyPoints)
@@ -231,15 +242,16 @@ namespace OpenRA.Mods.RA.Missions
 				{
 					foreach (var unit in units)
 					{
-						var enemies = world.Actors.Where(u => u.IsInWorld && !u.IsDead() && (u.Owner == allies1 || u.Owner == allies2)
-							&& ((u.HasTrait<Building>() && !u.HasTrait<Wall>()) || u.HasTrait<Mobile>()));
-						var targetEnemy = enemies.OrderBy(u => (unit.CenterLocation - u.CenterLocation).LengthSquared).FirstOrDefault();
-						if (targetEnemy != null)
-						{
-							unit.QueueActivity(new AttackMove.AttackMoveActivity(unit, new Attack(Target.FromActor(targetEnemy), 3)));
-						}
+						AttackNearestAlliedActor(unit);
 					}
 				}
+			}
+			var scatteredUnits = world.Actors.Where(u => u.IsInWorld && !u.IsDead() && u.HasTrait<Mobile>() && u.IsIdle && u.Owner == soviets)
+				.Except(world.WorldActor.Trait<SpawnMapActors>().Actors.Values)
+				.Except(sovietRallyPoints.SelectMany(rp => world.FindAliveCombatantActorsInCircle(Util.CenterOfCell(rp), 10)));
+			foreach (var unit in scatteredUnits)
+			{
+				AttackNearestAlliedActor(unit);
 			}
 		}
 
