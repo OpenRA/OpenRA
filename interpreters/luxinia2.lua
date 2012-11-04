@@ -1,7 +1,3 @@
-if (not(ide.config.path.luxinia2 and 
-        wx.wxFileExists(ide.config.path.luxinia2..'luajit.exe'))) then 
-  return 
-end
 
 return {
   name = "Luxinia2",
@@ -10,6 +6,7 @@ return {
 
   finitclient = function(self)
     if (not CommandLineRunning(self:fuid(wfilename))) then return end
+    if not ide.config.path.luxinia2 then wx.wxMessageBox("Please define 'path.luxinia2' in your cfg/user.lua (see estrela.lua for examples)"); return end
     local init = dofile(ide.config.path.luxinia2.."/../comserver/client.lua")
     local fenv = {}
     setmetatable(fenv,{__index = _G})

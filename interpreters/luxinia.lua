@@ -1,13 +1,9 @@
-if (not(ide.config.path.luxinia and 
-        wx.wxFileExists(ide.config.path.luxinia..'luxinia.exe'))) then 
-  return 
-end
-
 return {
   name = "Luxinia",
   description = "Luxinia project",
   api = {"luxiniaapi","baselib"},
   frun = function(self,wfilename,withdebug)
+    if not ide.config.path.luxinia then wx.wxMessageBox("Please define 'path.luxinia' in your cfg/user.lua (see estrela.lua for examples)"); return end
     local projdir = ide.config.path.projectdir
     local args = (projdir and projdir:len()>0
       and " -p "..projdir or "")
