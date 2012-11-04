@@ -1,3 +1,25 @@
+NEW:
+	Engine:
+	All Mods:
+	Red Alert:
+		Added Allies03 mission
+		Allies02 - reduced difficulty of the 16 minute reinforcements
+		Allies02 - can build medic and spy at captured barracks
+		Balance:
+			Added missing line of sight for Chronotank
+			Chronotank damage upped from 20 to 30 per rocket and damage improved vs heavy armor
+			Demo truck cost from 1500 to 2500
+			Demo truck health from 110 to 50
+			Demo truck speed from 8 to 6
+			Disguised spies are now invisible under enemy GPS
+		Added missing sequences.yaml definitions for ice actors
+		Fixed Chronotanks teleporting causing a desync
+		Fixed crash during replays when a Chronotank tries to teleport
+		Fixed crash when Chronotank dies while the teleport cursor is shown
+		Fixed crashes in maps Chaos Canyon and Bomber John
+	C&C:
+	Dune 2000:
+
 20121019:
 	Engine:
 		Add --transpose option to Utility
@@ -64,6 +86,7 @@
 		Fixed some incorrect/missing music strings in music.yaml
 		Fixed broken Install from CD code
 		Fixed another zombie aircraft bug
+		Fixed ReturnToBase causing a crash when you had no airfields available (but an ally did)
 		Balance (General):
 			Added a heal crate (heals all of your units on map, rare occurrence)
 			Removed nuke crate
@@ -104,6 +127,7 @@
 		Replaced map Baywatch with Hasselhoff (Nukem/Zypres)
 	C&C:
 		Added A10 crash site SHP to terrain (via Nyerguds)
+		Re-added the Snow tileset (via Nyerguds)
 		Balance:
 			Tank shells do 100% vs armor again, turret buffed
 			MRLS issues fixed
