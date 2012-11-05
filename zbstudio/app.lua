@@ -21,11 +21,6 @@ local app = {
     interpreters = function(file) return not file:find('estrela') end,
   },
 
-  preinit = function ()
-    -- this needs to be in pre-init to load the styles
-    dofile("src/editor/markup.lua")
-  end,
-
   postinit = function ()
     local bundle = wx.wxIconBundle()
     local files = FileSysGet("zbstudio/res/", wx.wxFILE)
