@@ -189,8 +189,7 @@ do
       else
         table.insert(configs,str)
       end
-      index = index+1
-    else
+    elseif arg[index-1] ~= "-cfg" then
       table.insert(filenames,arg[index])
     end
   end
