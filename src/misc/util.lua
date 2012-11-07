@@ -125,7 +125,7 @@ end
 -- Get file modification time, returns a wxDateTime (check IsValid) or nil if
 -- the file doesn't exist
 function GetFileModTime(filePath)
-  if filePath and (string.len(filePath) > 0) then
+  if filePath and #filePath > 0 then
     local fn = wx.wxFileName(filePath)
     if fn:FileExists() then
       return fn:GetModificationTime()
@@ -186,6 +186,15 @@ function GetFullPathIfExists(p, f)
     and file:GetFullPath())
 end
 
+function MergeFullPath(p, f)
+  if not p or not f then return end
+  local file = wx.wxFileName(f)
+  -- Normalize call is needed to make the case of p = '/abc/def' and
+  -- f = 'xyz/main.lua' work correctly. Normalize() returns true if done.
+  return (file:Normalize(wx.wxPATH_NORM_ALL, p)
+    and file:GetFullPath())
+end
+
 function FileWrite(file,content)
   local log = wx.wxLogNull() -- disable error reporting; will report as needed
   local file = wx.wxFile(file, wx.wxFile.write)
@@ -207,6 +216,8 @@ function FileRead(file)
 end
 
 function FileRename(file1, file2) return wx.wxRenameFile(file1, file2) end
+
+function FileCopy(file1, file2) return wx.wxCopyFile(file1, file2) end
 
 TimeGet = pcall(require, "socket") and socket.gettime or os.clock
 

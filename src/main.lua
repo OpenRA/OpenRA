@@ -43,6 +43,7 @@ ide = {
     debugger = {
       verbose = false,
       hostname = nil,
+      port = nil,
     },
     default = {
       name = 'untitled',

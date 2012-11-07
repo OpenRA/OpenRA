@@ -8,8 +8,7 @@ api/cg/*.lua
 api/README
 cfg/user-sample.lua
 cfg/estrela.lua
-cfg/i18n/en.lua
-cfg/i18n/ru.lua
+cfg/i18n/*.lua
 interpreters/*.lua
 lualibs/copas/copas.lua
 lualibs/coxpcall/coxpcall.lua

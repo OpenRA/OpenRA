@@ -110,6 +110,7 @@ config = {
   debugger = {
     verbose = false,
     hostname = nil, -- hostname to use when the detected one is incorrect
+    port = nil, -- port number to use
   }
 
   outputshell = { -- output and shell settings
