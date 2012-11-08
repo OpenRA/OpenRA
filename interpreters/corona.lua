@@ -1,3 +1,5 @@
+-- Copyright 2011-12 Paul Kulchenko, ZeroBrane LLC
+
 local corona
 local win = ide.osname == "Windows"
 local mac = ide.osname == "Macintosh"
@@ -11,7 +13,10 @@ return {
     if not corona then
       local sep = win and ';' or ':'
       local default =
-           win and ([[C:\Program Files\Corona SDK]]..sep..[[D:\Program Files\Corona SDK]]..sep)
+           win and ([[C:\Program Files\Corona SDK]]..sep..[[D:\Program Files\Corona SDK]]..sep..
+                    [[C:\Program Files\Corona Labs\Corona SDK]]..sep..[[D:\Program Files\Corona Labs\Corona SDK]]..sep..
+                    [[C:\Program Files (x86)\Corona SDK]]..sep..[[D:\Program Files (x86)\Corona SDK]]..sep..
+                    [[C:\Program Files (x86)\Corona Labs\Corona SDK]]..sep..[[D:\Program Files (x86)\Corona Labs\Corona SDK]]..sep)
         or mac and ('/Applications/CoronaSDK/Corona Simulator.app/Contents/MacOS'..sep)
         or ''
       local path = default
@@ -29,12 +34,14 @@ return {
       end
     end
 
+    local file = self:fworkdir(wfilename).."/main.lua"
     if rundebug then
       -- start running the application right away
-      DebuggerAttachDefault({runstart=true})
+      DebuggerAttachDefault({runstart=true, startwith = file, redirect = "r"})
 
       -- copy mobdebug.lua to corona/Resources folder
-      local mdbc = MergeFullPath(GetPathWithSep(corona), "Resources/mobdebug.lua")
+      local mdbc = MergeFullPath(GetPathWithSep(corona),
+        mac and "../../../Resource Library/mobdebug.lua" or "Resources/mobdebug.lua")
       local mdbl = MergeFullPath(GetPathWithSep(ide.editorFilename), "lualibs/mobdebug/mobdebug.lua")
       if not wx.wxFileExists(mdbc)
       or GetFileModTime(mdbc):GetTicks() < GetFileModTime(mdbl):GetTicks() then
@@ -43,7 +50,7 @@ return {
       end
     end
 
-    local cmd = ('"%s" -debug "%s"'):format(corona, self:fworkdir(wfilename).."/main.lua")
+    local cmd = ('"%s" -debug "%s"'):format(corona, file)
     -- CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
     return CommandLineRun(cmd,self:fworkdir(wfilename),true,false,nil,nil,
       function() ide.debugger.pid = nil end)

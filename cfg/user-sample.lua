@@ -34,6 +34,9 @@ path.moai = 'd:/lua/moai/moai'
 -- specify full path to gideros *executable* if it's not in one of PATH folders
 path.gideros = 'd:/Program Files/Gideros/GiderosPlayer.exe'
 
+-- specify full path to corona *executable* if it's not in one of PATH folders
+path.corona = 'd:/path/to/Corona SDK/Corona Simulator.exe'
+
 -- specify full path to lua interpreter if you need to use your own version
 path.lua = 'd:/lua/lua'
 

@@ -1,5 +1,5 @@
 -- Integration with MobDebug
--- Copyright 2011-12 Paul Kulchenko
+-- Copyright 2011-12 Paul Kulchenko, ZeroBrane LLC
 -- Original authors: Lomtik Software (J. Winwood & John Labenski)
 -- Luxinia Dev (Eike Decker & Christoph Kubisch)
 
@@ -332,6 +332,11 @@ debugger.listen = function()
 
       reSetBreakpoints()
 
+      if options.redirect then
+        debugger.handle("output stdout " .. options.redirect, nil,
+          { handler = function(m) DisplayOutputNoMarker(m) end })
+      end
+
       if (options.startwith) then
         local file, line, err = debugger.loadfile(options.startwith)
         if err then
@@ -407,7 +412,7 @@ debugger.listen = function()
   debugger.listening = true
 end
 
-debugger.handle = function(command, server)
+debugger.handle = function(command, server, options)
   local verbose = ide.config.debugger.verbose
   local osexit, gprint
   osexit, os.exit = os.exit, function () end
@@ -415,7 +420,7 @@ debugger.handle = function(command, server)
 
   debugger.running = true
   if verbose then DisplayOutputLn("Debugger sent (command):", command) end
-  local file, line, err = mobdebug.handle(command, server or debugger.server)
+  local file, line, err = mobdebug.handle(command, server or debugger.server, options)
   if verbose then DisplayOutputLn("Debugger received (file, line, err):", file, line, err) end
   debugger.running = false
 
@@ -452,7 +457,9 @@ debugger.exec = function(command)
               -- don't get out of "mobdebug", because it may happen with
               -- start() or on() call, which will get us out of the current
               -- file, which is not what we want.
-              out = (file:find('mobdebug%.lua$')
+              -- some engines (for example, Corona SDK) also report file as
+              -- "=?" and line as "0"; in this case repeat the same command
+              out = tonumber(line) == 0 and command or (file:find('mobdebug%.lua$')
                 and (command == 'run' and 'step' or command) or "out")
             end
           end
