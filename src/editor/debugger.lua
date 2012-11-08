@@ -334,7 +334,15 @@ debugger.listen = function()
 
       if options.redirect then
         debugger.handle("output stdout " .. options.redirect, nil,
-          { handler = function(m) DisplayOutputNoMarker(m) end })
+          { handler = function(m)
+              if ide.config.debugger.outputfilter then
+                m = ide.config.debugger.outputfilter(m)
+              elseif m then
+                local max = 240
+                m = #m < max+4 and m or m:sub(1,max) .. "...\n"
+              end
+              if debugger.server and m then DisplayOutputNoMarker(m) end
+            end})
       end
 
       if (options.startwith) then
@@ -416,7 +424,9 @@ debugger.handle = function(command, server, options)
   local verbose = ide.config.debugger.verbose
   local osexit, gprint
   osexit, os.exit = os.exit, function () end
-  gprint, _G.print = _G.print, function (...) if (verbose) then DisplayOutputLn(...) end end
+  if (verbose) then
+    gprint, _G.print = _G.print, function (...) DisplayOutputLn(...) end
+  end
 
   debugger.running = true
   if verbose then DisplayOutputLn("Debugger sent (command):", command) end
@@ -424,7 +434,8 @@ debugger.handle = function(command, server, options)
   if verbose then DisplayOutputLn("Debugger received (file, line, err):", file, line, err) end
   debugger.running = false
 
-  os.exit, _G.print = osexit, gprint
+  os.exit = osexit
+  if (verbose) then _G.print = gprint end
   return file, line, err
 end
 
@@ -457,9 +468,7 @@ debugger.exec = function(command)
               -- don't get out of "mobdebug", because it may happen with
               -- start() or on() call, which will get us out of the current
               -- file, which is not what we want.
-              -- some engines (for example, Corona SDK) also report file as
-              -- "=?" and line as "0"; in this case repeat the same command
-              out = tonumber(line) == 0 and command or (file:find('mobdebug%.lua$')
+              out = (file:find('mobdebug%.lua$')
                 and (command == 'run' and 'step' or command) or "out")
             end
           end

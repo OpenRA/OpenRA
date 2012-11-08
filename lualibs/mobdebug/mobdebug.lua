@@ -1,12 +1,12 @@
 --
--- MobDebug 0.504
+-- MobDebug 0.505
 -- Copyright 2011-12 Paul Kulchenko
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
 --
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.504,
+  _VERSION = 0.505,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = os and os.getenv and os.getenv("MOBDEBUG_PORT") or 8172
@@ -23,7 +23,6 @@ local require = require
 local setmetatable = setmetatable
 local string = string
 local tonumber = tonumber
-local print = print
 
 -- if strict.lua is used, then need to avoid referencing some global
 -- variables, as they can be undefined;
@@ -814,11 +813,19 @@ local function debugger_loop(sfile, sline)
       local _, _, stream, mode = string.find(line, "^[A-Z]+%s+(%w+)%s+([dcr])%s*$")
       if stream and mode and stream == "stdout" then
         -- assign "print" in the global environment
-        genv.print = mode == 'd' and print or function(...)
-          if mode == 'c' then print(...) end
-          local file = table.concat({...}, "\t").."\n"
-          server:send("204 Output " .. stream .. " " .. #file .. "\n" .. file)
-        end
+        genv.print = mode == 'd' and iobase.print or coroutine.wrap(function(...)
+          -- wrapping into coroutine.wrap protects this function from
+          -- being stepped through in the debugger
+          local tbl = {...}
+          while true do
+            if mode == 'c' then iobase.print(unpack(tbl)) end
+            for n = 1, #tbl do
+              tbl[n] = serpent.line(tbl[n], {nocode = true, comment = false}) end
+            local file = table.concat(tbl, "\t").."\n"
+            server:send("204 Output " .. stream .. " " .. #file .. "\n" .. file)
+            tbl = {coroutine.yield()}
+          end
+        end)
         server:send("200 OK\n")
       else
         server:send("400 Bad Request\n")

@@ -40,6 +40,10 @@ path.corona = 'd:/path/to/Corona SDK/Corona Simulator.exe'
 -- specify full path to lua interpreter if you need to use your own version
 path.lua = 'd:/lua/lua'
 
+-- provide output filter for those engines that support redirecting
+-- of "print" output to the IDE (like Corona SDK and Gideros)
+debugger.outputfilter = function(m) return #m < 124 and m or m:sub(1,120).."...\n" end
+
 -- fix an issue with 0d0d0a line endings in MOAI examples,
 -- which may negatively affect breakpoints during debugging
 editor.iofilter = "0d0d0aFix"
@@ -65,3 +69,7 @@ moai = { entrypoints = { "main.lua", "source/main.lua" } }
 
 -- specify language to use in the IDE (requires a file in cfg/i18n folder)
 language = "ru"
+
+-- changing a background color (or other colors in the IDE);
+-- see zbstudio/config.lua for example/details on what other colors to change
+styles.text = {bg = {240,240,220}}

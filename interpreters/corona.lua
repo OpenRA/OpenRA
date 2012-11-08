@@ -37,7 +37,7 @@ return {
     local file = self:fworkdir(wfilename).."/main.lua"
     if rundebug then
       -- start running the application right away
-      DebuggerAttachDefault({runstart=true, startwith = file, redirect = "r"})
+      DebuggerAttachDefault({runstart=true, startwith = file, redirect = "c"})
 
       -- copy mobdebug.lua to corona/Resources folder
       local mdbc = MergeFullPath(GetPathWithSep(corona),
