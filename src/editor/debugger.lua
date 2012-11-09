@@ -443,7 +443,9 @@ debugger.exec = function(command)
   if debugger.server and not debugger.running then
     copas.addthread(function ()
         local out
+        local attempts = 0
         while true do
+          debugger.breaking = false
           local file, line, err = debugger.handle(out or command)
           if out then out = nil end
           if line == nil then
@@ -461,6 +463,14 @@ debugger.exec = function(command)
                 return
               end
             else
+              -- we may be in some unknown location at this point;
+              -- If this happens, stop and report allowing users to set
+              -- breakpoints and step through.
+              if debugger.breaking then
+                DisplayOutputLn(TR("Debugging suspended at %s:%s (couldn't activate the file).")
+                  :format(file, line))
+                return
+              end
               -- redo now; if the call is from the debugger, then repeat
               -- the same command, except when it was "run" (switch to 'step');
               -- this is needed to "break" execution that happens in on() call.
@@ -468,8 +478,13 @@ debugger.exec = function(command)
               -- don't get out of "mobdebug", because it may happen with
               -- start() or on() call, which will get us out of the current
               -- file, which is not what we want.
-              out = (file:find('mobdebug%.lua$')
-                and (command == 'run' and 'step' or command) or "out")
+              -- Some engines (Corona SDK) report =?:0 as the current location.
+              -- repeat the same command, but check if this has been tried
+              -- too many times already; if so, get "out"
+              out = ((tonumber(line) == 0 and attempts < 10) and command
+                or (file:find('mobdebug%.lua$')
+                  and (command == 'run' and 'step' or command) or "out"))
+              attempts = attempts + 1
             end
           end
         end
@@ -535,6 +550,7 @@ debugger.breaknow = function(command)
     debugger.socket:settimeout(0)
     -- restore running status
     debugger.running = running
+    debugger.breaking = true
     -- don't need to do anything else as the earlier call (run, step, etc.)
     -- will get the results (file, line) back and will update the UI
     return file, line, err
