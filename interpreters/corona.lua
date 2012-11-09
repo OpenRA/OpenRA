@@ -34,7 +34,12 @@ return {
       end
     end
 
-    local file = self:fworkdir(wfilename).."/main.lua"
+    local file = GetFullPathIfExists(self:fworkdir(wfilename), 'main.lua')
+    if not file then
+      DisplayOutput("Can't find 'main.lua' file in the current project folder.\n")
+      return
+    end
+
     if rundebug then
       -- start running the application right away
       DebuggerAttachDefault({runstart=true, startwith = file, redirect = "c"})
