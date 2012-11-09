@@ -1,3 +1,5 @@
+-- Copyright 2011-12 Paul Kulchenko, ZeroBrane LLC
+
 local gideros
 local win = ide.osname == "Windows"
 local mac = ide.osname == "Macintosh"
@@ -57,7 +59,7 @@ return {
       return
     end
 
-    if rundebug then DebuggerAttachDefault() end
+    if rundebug then DebuggerAttachDefault({redirect = "c"}) end
 
     local cmd = ('"%s"'):format(gideros)
     -- CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
