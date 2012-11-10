@@ -54,7 +54,7 @@ style = {
   linenumber = stattr,
   bracematch = stattr,
   bracemiss = stattr,
-  escapechar = stattr,
+  ctrlchar = stattr,
   indent = stattr,
   calltip = stattr,
 

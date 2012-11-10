@@ -75,12 +75,12 @@ local specialmapping = {
     if (style.fg) then
       editor:SetSelForeground(1,wx.wxColour(unpack(style.fg)))
     else
-      editor:SetSelForeground(0)
+      editor:SetSelForeground(0,wx.wxWHITE)
     end
     if (style.bg) then
       editor:SetSelBackground(1,wx.wxColour(unpack(style.bg)))
     else
-      editor:SetSelBackground(0)
+      editor:SetSelBackground(0,wx.wxWHITE)
     end
 
   end,
@@ -124,13 +124,27 @@ local specialmapping = {
     local clrbg = style.bg and wx.wxColour(unpack(style.bg))
 
     if (clrfg or clrbg) then
-      applymarker(editor,wxstc.wxSTC_MARKNUM_FOLDEROPEN, clrfg,clrbg)
-      applymarker(editor,wxstc.wxSTC_MARKNUM_FOLDER, clrfg,clrbg)
-      applymarker(editor,wxstc.wxSTC_MARKNUM_FOLDERSUB, clrfg,clrbg)
-      applymarker(editor,wxstc.wxSTC_MARKNUM_FOLDERTAIL, clrfg,clrbg)
-      applymarker(editor,wxstc.wxSTC_MARKNUM_FOLDEREND, clrfg,clrbg)
-      applymarker(editor,wxstc.wxSTC_MARKNUM_FOLDEROPENMID, clrfg,clrbg)
-      applymarker(editor,wxstc.wxSTC_MARKNUM_FOLDERMIDTAIL, clrfg,clrbg)
+      -- foreground and background are defined as opposite to what I'd expect
+      -- for fold markers in Scintilla's terminilogy:
+      -- background is the color of fold lines/boxes and foreground is the color
+      -- of everything around fold lines or inside fold boxes.
+      -- in the following code fg and bg are simply reversed
+      local clrfg, clrbg = clrbg, clrfg
+      applymarker(editor,wxstc.wxSTC_MARKNUM_FOLDEROPEN, clrfg, clrbg)
+      applymarker(editor,wxstc.wxSTC_MARKNUM_FOLDER, clrfg, clrbg)
+      applymarker(editor,wxstc.wxSTC_MARKNUM_FOLDERSUB, clrfg, clrbg)
+      applymarker(editor,wxstc.wxSTC_MARKNUM_FOLDERTAIL, clrfg, clrbg)
+      applymarker(editor,wxstc.wxSTC_MARKNUM_FOLDEREND, clrfg, clrbg)
+      applymarker(editor,wxstc.wxSTC_MARKNUM_FOLDEROPENMID, clrfg, clrbg)
+      applymarker(editor,wxstc.wxSTC_MARKNUM_FOLDERMIDTAIL, clrfg, clrbg)
+    end
+    if clrbg then
+      -- the earlier calls only color the actual markers, but not the
+      -- overall fold background; SetFoldMargin calls below do this.
+      -- http://community.activestate.com/forum-topic/fold-margin-colors
+      -- http://www.scintilla.org/ScintillaDoc.html#SCI_SETFOLDMARGINCOLOUR
+      editor:SetFoldMarginColour(true, clrbg)
+      editor:SetFoldMarginHiColour(true, clrbg)
     end
   end,
 }
@@ -140,7 +154,7 @@ local defaultmapping = {
   linenumber = wxstc.wxSTC_STYLE_LINENUMBER,
   bracematch = wxstc.wxSTC_STYLE_BRACELIGHT,
   bracemiss = wxstc.wxSTC_STYLE_BRACEBAD,
-  escapechar = wxstc.wxSTC_STYLE_CONTROLCHAR,
+  ctrlchar = wxstc.wxSTC_STYLE_CONTROLCHAR,
   indent = wxstc.wxSTC_STYLE_INDENTGUIDE,
   calltip = wxstc.wxSTC_STYLE_CALLTIP,
 }
