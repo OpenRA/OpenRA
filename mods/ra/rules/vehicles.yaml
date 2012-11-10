@@ -619,7 +619,7 @@ CTNK:
 	Selectable:
 		Bounds: 28,28
 	Health:
-		HP: 200
+		HP: 260
 	Armor:
 		Type: Light
 	Mobile:

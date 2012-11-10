@@ -59,6 +59,7 @@ namespace OpenRA.Mods.RA.Effects
 				&& (watcher.Granted || watcher.GrantedAllies)
 				&& !self.Trait<HiddenUnderFog>().IsVisible(self)
 				&& (!self.HasTrait<Cloak>() || !self.Trait<Cloak>().Cloaked)
+				&& (!self.HasTrait<Spy>() || !self.Trait<Spy>().Disguised)
 				)
 			{
 				show = true;

@@ -8,7 +8,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -53,7 +52,7 @@ namespace OpenRA.Mods.RA.Missions
 		const string MaintainPresence = "Maintain an Allied presence in the area. Reinforcements will arrive soon.";
 		const string FewDeathsTemplate = "Lose fewer than {0}/{1} units.";
 
-		const int DeathsThreshold = 100;
+		const int DeathsThreshold = 200;
 
 		Actor sam1;
 		Actor sam2;
@@ -84,8 +83,6 @@ namespace OpenRA.Mods.RA.Missions
 		Actor yakEntryPoint;
 		Actor yakAttackPoint;
 		Actor yak;
-		Actor sovietReinforcementsEntryPoint1;
-		Actor sovietReinforcementsEntryPoint2;
 
 		Actor einsteinChinook;
 
@@ -119,13 +116,6 @@ namespace OpenRA.Mods.RA.Missions
 			"e3", "e3",
 			"mcv",
 			"truk", "truk", "truk", "truk", "truk", "truk"
-		};
-		const int SovietReinforcementsTicks = 1500 * 16;
-		static readonly string[] SovietReinforcements =
-		{ 
-			"3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", 
-			"v2rl", "v2rl", "v2rl", "v2rl",
-			"ftrk", "ftrk"
 		};
 
 		const int ParabombTicks = 750;
@@ -218,10 +208,6 @@ namespace OpenRA.Mods.RA.Missions
 				MissionUtils.Parabomb(world, soviets, badgerEntryPoint2.Location, parabombPoint1.Location);
 				MissionUtils.Parabomb(world, soviets, badgerEntryPoint2.Location + new CVec(0, 3), parabombPoint2.Location);
 			}
-			if (world.FrameNumber == SovietReinforcementsTicks)
-			{
-				SendSovietReinforcements();
-			}
 			if (yak == null || (yak != null && !yak.IsDead() && (yak.GetCurrentActivity() is FlyCircle || yak.IsIdle)))
 			{
 				var alliedUnitsNearYakPoint = world.FindAliveCombatantActorsInCircle(yakAttackPoint.CenterLocation, 10)
@@ -250,7 +236,10 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			if (objectives[DestroySamSitesID].Status == ObjectiveStatus.InProgress)
 			{
-				if (sam1.Destroyed && sam2.Destroyed && sam3.Destroyed && sam4.Destroyed)
+				if ((sam1.Destroyed || sam1.Owner != soviets) &&
+					(sam2.Destroyed || sam2.Owner != soviets) &&
+					(sam3.Destroyed || sam3.Owner != soviets) &&
+					(sam4.Destroyed || sam4.Owner != soviets))
 				{
 					objectives[DestroySamSitesID].Status = ObjectiveStatus.Completed;
 					objectives[ExtractEinsteinID].Status = ObjectiveStatus.InProgress;
@@ -321,7 +310,7 @@ namespace OpenRA.Mods.RA.Missions
 					new LocationInit(yakEntryPoint.Location),
 					new OwnerInit(soviets),
 					new FacingInit(Util.GetFacing(yakAttackPoint.Location - yakEntryPoint.Location, 0)),
-					new AltitudeInit(Rules.Info[YakName].Traits.Get<PlaneInfo>().CruiseAltitude),
+					new AltitudeInit(Rules.Info[YakName].Traits.Get<PlaneInfo>().CruiseAltitude)
 				});
 			}
 			if (yak.Trait<LimitedAmmo>().HasAmmo())
@@ -439,23 +428,6 @@ namespace OpenRA.Mods.RA.Missions
 				"Allied reinforcements arrive in: {0}",
 				new float2(Game.viewport.Width * 0.35f, Game.viewport.Height * 0.9f));
 			Ui.Root.AddChild(reinforcementsTimerWidget);
-		}
-
-		void SendSovietReinforcements()
-		{
-			foreach (var entryPoint in new[] { sovietReinforcementsEntryPoint1, sovietReinforcementsEntryPoint2 })
-			{
-				foreach (var unit in SovietReinforcements)
-				{
-					var u = world.CreateActor(unit, new TypeDictionary
-					{
-						new LocationInit(entryPoint.Location),
-						new FacingInit(Util.GetFacing(allies2BasePoint.Location - entryPoint.Location, 0)),
-						new OwnerInit(soviets)
-					});
-					u.QueueActivity(new Move.Move(sovietRallyPoint.Location, 3));
-				}
-			}
 		}
 
 		void ReinforcementsTimerExpired(CountdownTimer countdownTimer)
@@ -590,8 +562,6 @@ namespace OpenRA.Mods.RA.Missions
 			sovietTownAttackPoint2 = actors["SovietTownAttackPoint2"];
 			yakEntryPoint = actors["YakEntryPoint"];
 			yakAttackPoint = actors["YakAttackPoint"];
-			sovietReinforcementsEntryPoint1 = actors["SovietReinforcementsEntryPoint1"];
-			sovietReinforcementsEntryPoint2 = actors["SovietReinforcementsEntryPoint2"];
 			var shroud = w.WorldActor.Trait<Shroud>();
 			shroud.Explore(w, sam1.Location, 2);
 			shroud.Explore(w, sam2.Location, 2);

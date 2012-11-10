@@ -1197,6 +1197,31 @@ t03:
 		Start: 1
 		Length: 9
 
+ice01:
+	idle:
+		Start: 0
+		Length: *
+
+ice02:
+	idle:
+		Start: 0
+		Length: *
+
+ice03:
+	idle:
+		Start: 0
+		Length: *
+
+ice04:
+	idle:
+		Start: 0
+		Length: *
+
+ice05:
+	idle:
+		Start: 0
+		Length: *
+
 t02:
 	idle:
 		Start: 0
