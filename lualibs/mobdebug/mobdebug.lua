@@ -1,12 +1,12 @@
 --
--- MobDebug 0.505
+-- MobDebug 0.506
 -- Copyright 2011-12 Paul Kulchenko
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
 --
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.505,
+  _VERSION = 0.506,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = os and os.getenv and os.getenv("MOBDEBUG_PORT") or 8172
@@ -874,6 +874,11 @@ local function start(controller_host, controller_port)
     -- start from 16th frame, which is sufficiently large for this check.
     stack_level = stack_depth(16)
 
+    -- provide our own traceback function to report the error remotely
+    do
+      local dtraceback = debug.traceback
+      debug.traceback = function (err) genv.print(dtraceback(err, 3)) end
+    end
     coro_debugger = coroutine.create(debugger_loop)
     debug.sethook(debug_hook, "lcr")
     return coroutine.resume(coro_debugger, file, info.currentline)

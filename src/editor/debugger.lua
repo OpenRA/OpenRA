@@ -335,13 +335,26 @@ debugger.listen = function()
       if options.redirect then
         debugger.handle("output stdout " .. options.redirect, nil,
           { handler = function(m)
+              if not debugger.server then return end
+
+              -- if it's an error returned, then handle the error
+              if m and m:find("stack traceback:", 1, true) then
+                -- this is an error message sent remotely
+                local func = loadstring("return "..m)
+                if func then
+                  DisplayOutputLn(func())
+                  debugger.terminate()
+                  return
+                end
+              end
+
               if ide.config.debugger.outputfilter then
                 m = ide.config.debugger.outputfilter(m)
               elseif m then
                 local max = 240
                 m = #m < max+4 and m or m:sub(1,max) .. "...\n"
               end
-              if debugger.server and m then DisplayOutputNoMarker(m) end
+              if m then DisplayOutputNoMarker(m) end
             end})
       end
 
