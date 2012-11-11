@@ -478,6 +478,7 @@ MGG:
 		Offset: 0,6
 	AttackMove:
 		JustMove: yes
+	RenderShroudCircle:
 
 1TNK.Husk:
 	Inherits: ^Husk
