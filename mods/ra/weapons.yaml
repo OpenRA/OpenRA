@@ -1279,7 +1279,7 @@ ChronoTusk:
 		Inaccuracy: 3
 		Image: DRAGON
 		ROT: 10
-		RangeLimit: 30
+		RangeLimit: 22
 	Warhead:
 		Spread: 3
 		Versus:
