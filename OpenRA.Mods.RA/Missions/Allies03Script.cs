@@ -141,7 +141,7 @@ namespace OpenRA.Mods.RA.Missions
 				attackAtFrame += attackAtFrameIncrement;
 				attackAtFrameIncrement = Math.Max(attackAtFrameIncrement - 5, 100);
 			}
-			if (world.FrameNumber % YakSpawnTicks == 0 && SovietAircraft().Count() < MaxNumberYaks)
+			if (world.FrameNumber % YakSpawnTicks == 0 && SovietAircraft().Count() < MaxNumberYaks && objectives[AirbaseID].Status != ObjectiveStatus.Completed)
 			{
 				SpawnSovietAircraft();
 			}
@@ -150,7 +150,6 @@ namespace OpenRA.Mods.RA.Missions
 				ManageSovietAircraft();
 			}
 			ManageSovietUnits();
-			ManageSovietAircraft();
 			ManageSovietOre();
 			EvacuateAlliedUnits(exit1TopLeft.CenterLocation, exit1BottomRight.CenterLocation, exit1ExitPoint.Location);
 			EvacuateAlliedUnits(exit2TopLeft.CenterLocation, exit2BottomRight.CenterLocation, exit2ExitPoint.Location);
@@ -171,31 +170,32 @@ namespace OpenRA.Mods.RA.Missions
 		void ManageSovietAircraft()
 		{
 			var enemies = world.Actors.Where(u => (u.Owner == allies1 || u.Owner == allies2) && ((u.HasTrait<Building>() && !u.HasTrait<Wall>()) || u.HasTrait<Mobile>()) && u.IsInWorld && !u.IsDead());
-			foreach (var a in SovietAircraft())
+			foreach (var aircraft in SovietAircraft())
 			{
-				var plane = a.Trait<Plane>();
-				var ammo = a.Trait<LimitedAmmo>();
+				var plane = aircraft.Trait<Plane>();
+				var ammo = aircraft.Trait<LimitedAmmo>();
 				if ((plane.Altitude == 0 && ammo.FullAmmo()) || (plane.Altitude != 0 && ammo.HasAmmo()))
 				{
-					if (!a.IsIdle && a.GetCurrentActivity().GetType() != typeof(FlyAttack))
-					{
-						a.CancelActivity();
-					}
-					var enemy = enemies.OrderBy(u => (a.CenterLocation - u.CenterLocation).LengthSquared).FirstOrDefault();
+					var enemy = enemies.OrderBy(u => (aircraft.CenterLocation - u.CenterLocation).LengthSquared)
+						.FirstOrDefault(u => world.FindAliveCombatantActorsInCircle(u.CenterLocation, 10).All(a => !a.HasTrait<CreatesShroud>()));
 					if (enemy != null)
 					{
+						if (!aircraft.IsIdle && aircraft.GetCurrentActivity().GetType() != typeof(FlyAttack))
+						{
+							aircraft.CancelActivity();
+						}
 						if (plane.Altitude == 0)
 						{
 							plane.UnReserve();
 						}
-						a.QueueActivity(new FlyAttack(Target.FromActor(enemy)));
+						aircraft.QueueActivity(new FlyAttack(Target.FromActor(enemy)));
 					}
 				}
-				else if (plane.Altitude != 0 && !LandIsQueued(a))
+				else if (plane.Altitude != 0 && !LandIsQueued(aircraft))
 				{
-					a.CancelActivity();
-					a.QueueActivity(new ReturnToBase(a, null));
-					a.QueueActivity(new ResupplyAircraft());
+					aircraft.CancelActivity();
+					aircraft.QueueActivity(new ReturnToBase(aircraft, null));
+					aircraft.QueueActivity(new ResupplyAircraft());
 				}
 			}
 		}
@@ -254,10 +254,11 @@ namespace OpenRA.Mods.RA.Missions
 		{
 			var enemies = world.Actors.Where(u => u.IsInWorld && !u.IsDead() && (u.Owner == allies1 || u.Owner == allies2)
 				&& ((u.HasTrait<Building>() && !u.HasTrait<Wall>()) || u.HasTrait<Mobile>()));
-			var targetEnemy = enemies.OrderBy(u => (self.CenterLocation - u.CenterLocation).LengthSquared).FirstOrDefault();
-			if (targetEnemy != null)
+			var enemy = enemies.OrderBy(u => (self.CenterLocation - u.CenterLocation).LengthSquared)
+				.FirstOrDefault(u => world.FindAliveCombatantActorsInCircle(u.CenterLocation, 10).All(a => !a.HasTrait<CreatesShroud>()));
+			if (enemy != null)
 			{
-				self.QueueActivity(new AttackMove.AttackMoveActivity(self, new Attack(Target.FromActor(targetEnemy), 3)));
+				self.QueueActivity(new AttackMove.AttackMoveActivity(self, new Attack(Target.FromActor(enemy), 3)));
 			}
 		}
 
