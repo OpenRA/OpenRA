@@ -70,6 +70,13 @@ moai = { entrypoints = { "main.lua", "source/main.lua" } }
 -- specify language to use in the IDE (requires a file in cfg/i18n folder)
 language = "ru"
 
--- changing a background color (or other colors in the IDE);
+-- to change background color (or other colors in the IDE);
 -- see zbstudio/config.lua for example/details on what other colors to change
 styles.text = {bg = {240,240,220}}
+
+-- to change the default color scheme to Tomorrow-based scheme
+-- https://github.com/chriskempson/tomorrow-theme
+-- supported schemes: TomorrowNight, Tomorrow, TomorrowNightEighties,
+-- TomorrowNightBlue, TomorrowNightBright
+local G = ...
+styles = G.loadfile('cfg/tomorrow.lua')('Tomorrow')
