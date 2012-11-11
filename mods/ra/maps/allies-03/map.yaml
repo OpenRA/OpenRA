@@ -114,8 +114,8 @@ Actors:
 	Actor53: tc03
 		Location: 138,53
 		Owner: Neutral
-	Actor2: tc04
-		Location: 53,43
+	Actor2: tc05
+		Location: 64,44
 		Owner: Neutral
 	Actor57: tc04
 		Location: 43,19
@@ -528,11 +528,8 @@ Actors:
 	Actor322: t07
 		Location: 112,65
 		Owner: Neutral
-	Actor321: t07
-		Location: 93,59
-		Owner: Neutral
-	Actor320: t07
-		Location: 95,51
+	Actor246: t06
+		Location: 94,64
 		Owner: Neutral
 	Actor303: t06
 		Location: 101,69
@@ -558,9 +555,6 @@ Actors:
 	Actor360: t11
 		Location: 122,76
 		Owner: Neutral
-	Actor173: oilb
-		Location: 146,46
-		Owner: Neutral
 	Actor187: tc04
 		Location: 99,27
 		Owner: Neutral
@@ -570,21 +564,12 @@ Actors:
 	Actor203: tc05
 		Location: 67,64
 		Owner: Neutral
-	Actor172: barl
-		Location: 74,60
-		Owner: Neutral
-	Actor295: t05
-		Location: 89,54
-		Owner: Neutral
 	Actor350: t10
 		Location: 87,22
 		Owner: Neutral
 	Actor17: proc
 		Location: 168,62
 		Owner: Soviets
-	Actor170: oilb
-		Location: 72,58
-		Owner: Neutral
 	Actor291: t05
 		Location: 91,33
 		Owner: Neutral
@@ -606,14 +591,8 @@ Actors:
 	Actor269: t03
 		Location: 84,37
 		Owner: Neutral
-	Actor256: t02
-		Location: 106,42
-		Owner: Neutral
 	Actor271: t03
 		Location: 79,57
-		Owner: Neutral
-	Actor352: t10
-		Location: 88,57
 		Owner: Neutral
 	SovietEntryPoint4: waypoint
 		Location: 115,16
@@ -624,8 +603,8 @@ Actors:
 	Actor221: tc01
 		Location: 113,73
 		Owner: Neutral
-	Actor224: tc01
-		Location: 65,42
+	Actor215: t05
+		Location: 72,40
 		Owner: Neutral
 	Actor267: t02
 		Location: 123,62
@@ -635,9 +614,6 @@ Actors:
 		Owner: Neutral
 	Actor220: tc01
 		Location: 117,40
-		Owner: Neutral
-	Actor218: tc01
-		Location: 89,63
 		Owner: Neutral
 	Actor158: tc01
 		Location: 23,35
@@ -654,17 +630,14 @@ Actors:
 	Actor211: tc02
 		Location: 75,74
 		Owner: Neutral
-	Actor215: tc02
-		Location: 71,38
+	Actor213: tc04
+		Location: 55,43
 		Owner: Neutral
 	Actor214: tc02
 		Location: 79,47
 		Owner: Neutral
 	Actor38: t15
 		Location: 30,52
-		Owner: Neutral
-	Actor44: t01
-		Location: 55,56
 		Owner: Neutral
 	Actor407: t13
 		Location: 32,62
@@ -741,9 +714,6 @@ Actors:
 	Actor55: t01
 		Location: 37,37
 		Owner: Neutral
-	Actor56: t01
-		Location: 94,41
-		Owner: Neutral
 	Actor760: t03
 		Location: 175,27
 		Owner: Neutral
@@ -776,9 +746,6 @@ Actors:
 		Owner: Neutral
 	Actor780: t03
 		Location: 79,39
-		Owner: Neutral
-	Actor171: brl3
-		Location: 74,59
 		Owner: Neutral
 	Actor398: t05
 		Location: 32,64
@@ -999,26 +966,8 @@ Actors:
 	Exit2ExitPoint: waypoint
 		Location: 16,29
 		Owner: Neutral
-	Actor174: oilb
-		Location: 143,46
-		Owner: Neutral
-	Actor169: oilb
-		Location: 72,54
-		Owner: Neutral
-	Actor175: brl3
-		Location: 148,47
-		Owner: Neutral
-	Actor176: barl
-		Location: 142,47
-		Owner: Neutral
-	Actor177: brl3
-		Location: 142,46
-		Owner: Neutral
-	Actor179: barl
-		Location: 145,48
-		Owner: Neutral
-	Actor180: barl
-		Location: 74,56
+	Actor177: oilb
+		Location: 86,52
 		Owner: Neutral
 	SovietEntryPoint3: waypoint
 		Location: 105,79
@@ -1030,19 +979,19 @@ Actors:
 		Location: 89,79
 		Owner: Neutral
 	SovietRallyPoint2: waypoint
-		Location: 94,33
+		Location: 93,20
 		Owner: Neutral
 	SovietRallyPoint1: waypoint
-		Location: 83,61
+		Location: 89,75
 		Owner: Neutral
 	SovietRallyPoint3: waypoint
-		Location: 112,49
+		Location: 105,75
 		Owner: Neutral
 	SovietRallyPoint4: waypoint
-		Location: 116,30
+		Location: 115,20
 		Owner: Neutral
 	SovietRallyPoint5: waypoint
-		Location: 131,63
+		Location: 130,75
 		Owner: Neutral
 	Actor152: brl3
 		Location: 157,66
@@ -1158,9 +1107,6 @@ Actors:
 	Actor244: e1
 		Location: 160,60
 		Owner: Soviets
-	Actor245: fenc
-		Location: 63,33
-		Owner: Soviets
 	Actor206: fenc
 		Location: 158,53
 		Owner: Soviets
@@ -1206,220 +1152,242 @@ Actors:
 	Actor202: fenc
 		Location: 147,69
 		Owner: Soviets
-	Actor258: fenc
-		Location: 63,34
-		Owner: Soviets
-	Actor259: fenc
-		Location: 63,35
-		Owner: Soviets
-	Actor260: fenc
-		Location: 63,36
-		Owner: Soviets
-	Actor261: fenc
-		Location: 64,36
-		Owner: Soviets
-	Actor262: fenc
-		Location: 64,37
-		Owner: Soviets
-	Actor263: fenc
-		Location: 65,37
-		Owner: Soviets
-	Actor265: fenc
-		Location: 66,37
-		Owner: Soviets
-	Actor266: fenc
-		Location: 66,38
-		Owner: Soviets
-	Actor270: fenc
-		Location: 66,39
-		Owner: Soviets
-	Actor272: fenc
-		Location: 66,40
-		Owner: Soviets
-	Actor275: fenc
-		Location: 66,41
-		Owner: Soviets
-	Actor276: fenc
-		Location: 65,41
-		Owner: Soviets
-	Actor277: fenc
-		Location: 64,41
-		Owner: Soviets
-	Actor281: fenc
-		Location: 64,42
-		Owner: Soviets
-	Actor282: ftur
-		Location: 68,38
-		Owner: Soviets
-	Actor285: e1
-		Location: 67,41
-		Owner: Soviets
-	Actor286: e1
-		Location: 68,35
-		Owner: Soviets
-	Actor288: e2
-		Location: 64,34
-		Owner: Soviets
-	Actor290: dog
-		Location: 67,42
-		Owner: Soviets
 	Actor292: e2
 		Location: 165,59
 		Owner: Soviets
-	Actor293: fenc
-		Location: 61,63
-		Owner: Soviets
-	Actor297: fenc
-		Location: 61,65
-		Owner: Soviets
-	Actor299: fenc
-		Location: 62,65
-		Owner: Soviets
-	Actor300: fenc
-		Location: 62,66
-		Owner: Soviets
-	Actor294: fenc
-		Location: 61,64
-		Owner: Soviets
-	Actor308: dog
-		Location: 61,67
-		Owner: Soviets
-	Actor304: fenc
-		Location: 62,70
-		Owner: Soviets
-	Actor305: fenc
-		Location: 62,71
-		Owner: Soviets
-	Actor306: fenc
-		Location: 62,72
-		Owner: Soviets
-	Actor301: ftur
-		Location: 64,66
-		Owner: Soviets
-	Actor309: e1
-		Location: 63,69
-		Owner: Soviets
-	Actor311: e1
-		Location: 62,67
-		Owner: Soviets
-	Actor313: ftur
-		Location: 130,29
-		Owner: Soviets
-	Actor318: v02
-		Location: 91,54
+	Actor232: t01
+		Location: 72,43
 		Owner: Neutral
-	Actor317: v01.sniper
-		Location: 96,54
-		Owner: Soviets
-	Actor316: e1
-		Location: 130,31
-		Owner: Soviets
-	Actor319: fenc
-		Location: 127,27
-		Owner: Soviets
-	Actor324: fenc
-		Location: 127,28
-		Owner: Soviets
-	Actor325: fenc
-		Location: 127,29
-		Owner: Soviets
-	Actor328: fenc
-		Location: 127,30
-		Owner: Soviets
-	Actor330: v04
-		Location: 101,54
+	Actor224: tc02
+		Location: 58,46
 		Owner: Neutral
-	Actor332: v05
-		Location: 102,51
+	Actor170: mine
+		Location: 114,55
 		Owner: Neutral
-	Actor334: v06
-		Location: 91,60
-		Owner: Neutral
-	Actor336: v04
-		Location: 87,56
-		Owner: Neutral
-	Actor337: v07
-		Location: 106,55
-		Owner: Neutral
-	Actor339: v09
-		Location: 92,53
-		Owner: Neutral
-	Actor340: v10
-		Location: 94,53
-		Owner: Neutral
-	Actor341: wood
-		Location: 100,49
-		Owner: Neutral
-	Actor342: wood
-		Location: 99,49
-		Owner: Neutral
-	Actor343: wood
-		Location: 98,49
-		Owner: Neutral
-	Actor344: wood
-		Location: 97,49
-		Owner: Neutral
-	Actor347: wood
-		Location: 96,49
-		Owner: Neutral
-	Actor348: wood
-		Location: 95,49
-		Owner: Neutral
-	Actor349: wood
-		Location: 94,49
-		Owner: Neutral
-	Actor351: wood
-		Location: 93,49
-		Owner: Neutral
-	Actor353: wood
-		Location: 92,49
-		Owner: Neutral
-	Actor355: wood
-		Location: 91,49
-		Owner: Neutral
-	Actor358: v17
-		Location: 91,62
-		Owner: Neutral
-	Actor357: tc05
-		Location: 88,48
+	Actor169: mine
+		Location: 113,57
 		Owner: Neutral
 	Allies2MovePoint: waypoint
 		Location: 167,38
 		Owner: Neutral
-	Actor359: powr
-		Location: 104,4
-		Owner: Soviets
-	Actor361: powr
-		Location: 106,4
-		Owner: Soviets
-	Actor362: powr
-		Location: 104,7
-		Owner: Soviets
-	Actor413: powr
-		Location: 106,7
-		Owner: Soviets
-	Actor414: e1
-		Location: 98,58
-		Owner: Soviets
-	Actor415: e1
-		Location: 90,56
-		Owner: Soviets
-	Actor416: dog
-		Location: 97,57
-		Owner: Soviets
-	Actor417: e1
-		Location: 98,52
-		Owner: Soviets
 	Actor3: silo
 		Location: 172,59
 		Owner: Soviets
 	Actor33: kenn
 		Location: 162,67
 		Owner: Soviets
+	SovietEntryPoint6: waypoint
+		Location: 53,79
+		Owner: Neutral
+	SovietRallyPoint6: waypoint
+		Location: 53,75
+		Owner: Neutral
+	Actor171: mine
+		Location: 168,73
+		Owner: Neutral
+	Actor176: brl3
+		Location: 84,51
+		Owner: Neutral
+	Actor172: t10
+		Location: 61,50
+		Owner: Neutral
+	Actor256: barl
+		Location: 88,56
+		Owner: Neutral
+	Actor255: barl
+		Location: 87,51
+		Owner: Neutral
+	Actor44: t11
+		Location: 57,54
+		Owner: Neutral
+	Actor249: t11
+		Location: 98,58
+		Owner: Neutral
+	Actor245: tc05
+		Location: 106,43
+		Owner: Neutral
+	Actor179: barl
+		Location: 84,52
+		Owner: Neutral
+	Actor236: brl3
+		Location: 87,55
+		Owner: Neutral
+	Actor258: brl3
+		Location: 88,51
+		Owner: Neutral
+	Actor212: oilb
+		Location: 86,56
+		Owner: Neutral
+	Actor174: brl3
+		Location: 84,55
+		Owner: Neutral
+	Actor175: barl
+		Location: 83,55
+		Owner: Neutral
+	Actor173: oilb
+		Location: 82,56
+		Owner: Neutral
+	Actor56: oilb
+		Location: 82,52
+		Owner: Neutral
+	Actor180: v01.sniper
+		Location: 100,29
+		Owner: Soviets
+	Actor218: v03
+		Location: 90,30
+		Owner: Neutral
+	Actor243: v02
+		Location: 95,30
+		Owner: Neutral
+	Actor247: v04
+		Location: 102,30
+		Owner: Neutral
+	Actor250: v07
+		Location: 104,33
+		Owner: Neutral
+	Actor252: v13
+		Location: 101,33
+		Owner: Neutral
+	Actor251: truk
+		Location: 105,30
+		Owner: Neutral
+	Actor259: v18
+		Location: 105,28
+		Owner: Neutral
+	Actor260: v09
+		Location: 110,30
+		Owner: Neutral
+	Actor261: v08
+		Location: 109,33
+		Owner: Neutral
+	Actor262: v17
+		Location: 104,28
+		Owner: Neutral
+	Actor263: e1
+		Location: 108,34
+		Owner: Soviets
+	Actor265: e1
+		Location: 97,30
+		Owner: Soviets
+	Actor266: e1
+		Location: 92,34
+		Owner: Soviets
+	Actor270: e2
+		Location: 102,33
+		Owner: Soviets
+	Actor272: e3
+		Location: 94,30
+		Owner: Soviets
+	Actor275: e3
+		Location: 100,31
+		Owner: Soviets
+	Actor276: 3tnk
+		Location: 107,30
+		Owner: Soviets
 
 Smudges:
 
 Rules:
+	1TNK.evac:
+		Inherits: ^Tank
+		Valued:
+			Cost: 700
+		Tooltip:
+			Name: Light Tank
+		Health:
+			HP: 220
+		Armor:
+			Type: Heavy
+		Mobile:
+			Speed: 4
+		RevealsShroud:
+			Range: 4
+		Turreted:
+			ROT: 5
+		AttackTurreted:
+			PrimaryWeapon: 25mm
+			PrimaryRecoil: 2
+			PrimaryRecoilRecovery: 0.5
+		RenderUnitTurreted:
+			Image: 1TNK
+		AutoTarget:
+		Explodes:
+			Weapon: UnitExplodeSmall
+			EmptyWeapon: UnitExplodeSmall
+		LeavesHusk:
+			HuskActor: 1TNK.Husk
+	2TNK.evac:
+		Inherits: ^Tank
+		Valued:
+			Cost: 850
+		Tooltip:
+			Name: Medium Tank
+		Health:
+			HP: 450
+		Armor:
+			Type: Heavy
+		Mobile:
+			Speed: 4
+			Crushes: wall, atmine, crate, infantry
+		RevealsShroud:
+			Range: 5
+		Turreted:
+			ROT: 5
+		AttackTurreted:
+			PrimaryWeapon: 90mm
+			PrimaryRecoil: 3
+			PrimaryRecoilRecovery: 0.9
+		RenderUnitTurreted:
+			Image: 2TNK
+		AutoTarget:
+		Explodes:
+			Weapon: UnitExplodeSmall
+			EmptyWeapon: UnitExplodeSmall
+		LeavesHusk:
+			HuskActor: 2TNK.Husk
+		Selectable:
+			Bounds: 30,30
+	TRUK.evac:
+		Inherits: ^Vehicle
+		Valued:
+			Cost: 500
+		Tooltip:
+			Name: Supply Truck
+		Health:
+			HP: 110
+		Armor:
+			Type: Light
+		Mobile:
+			Speed: 4
+		RevealsShroud:
+			Range: 3
+		RenderUnit:
+			Image: TRUK
+		AttackMove:
+			JustMove: yes
+	JEEP.evac:
+		Inherits: ^Vehicle
+		Valued:
+			Cost: 500
+		Tooltip:
+			Name: Ranger
+		Health:
+			HP: 150
+		Armor:
+			Type: Light
+		Mobile:
+			Speed: 4
+		RevealsShroud:
+			Range: 8
+		Turreted:
+			ROT: 10
+		AttackTurreted:
+			PrimaryWeapon: M60mg
+			PrimaryOffset: 0,0,0,-2
+		WithMuzzleFlash:
+		RenderUnitTurreted:
+			Image: JEEP
+		AutoTarget:
 	Player:
 		-ConquestVictoryConditions:
 	World:
@@ -1468,9 +1436,6 @@ Rules:
 	MSLO:
 		Buildable:
 			Owner: None
-	GAP:
-		Buildable:
-			Owner: None
 	SPEN:
 		Buildable:
 			Owner: None
@@ -1490,9 +1455,6 @@ Rules:
 		Buildable:
 			Owner: None
 	SAM:
-		Buildable:
-			Owner: None
-	ATEK:
 		Buildable:
 			Owner: None
 	HPAD:
@@ -1531,6 +1493,12 @@ Rules:
 	CTNK:
 		Buildable:
 			Owner: None
+	MGG:
+		Buildable:
+			Queue: Vehicle
+			BuildPaletteOrder: 150
+			Prerequisites: atek
+			Owner: allies
 
 Sequences:
 
