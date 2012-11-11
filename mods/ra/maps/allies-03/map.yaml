@@ -381,8 +381,8 @@ Actors:
 	Actor149: t17
 		Location: 134,47
 		Owner: Neutral
-	Actor161: tc04
-		Location: 150,77
+	Actor240: tc03
+		Location: 157,78
 		Owner: Neutral
 	Actor156: t05
 		Location: 139,44
@@ -399,9 +399,9 @@ Actors:
 	Actor370: tc02
 		Location: 25,65
 		Owner: Neutral
-	Actor165: tc03
-		Location: 154,78
-		Owner: Neutral
+	Actor165: apwr
+		Location: 154,76
+		Owner: Soviets
 	Actor181: t13
 		Location: 137,71
 		Owner: Neutral
@@ -654,9 +654,9 @@ Actors:
 	Actor386: t07
 		Location: 30,62
 		Owner: Neutral
-	Actor240: t10
-		Location: 149,75
-		Owner: Neutral
+	Actor161: apwr
+		Location: 150,76
+		Owner: Soviets
 	Actor54: t01
 		Location: 56,76
 		Owner: Neutral
@@ -1116,8 +1116,8 @@ Actors:
 	Actor230: 3tnk
 		Location: 157,60
 		Owner: Soviets
-	Actor231: dome
-		Location: 162,74
+	Actor231: kenn
+		Location: 162,59
 		Owner: Soviets
 	Actor235: waypoint
 		Location: 147,51
@@ -1173,7 +1173,7 @@ Actors:
 	Actor3: silo
 		Location: 172,59
 		Owner: Soviets
-	Actor33: kenn
+	Actor33: fact
 		Location: 162,67
 		Owner: Soviets
 	SovietEntryPoint6: waypoint
@@ -1284,6 +1284,24 @@ Actors:
 	Actor276: 3tnk
 		Location: 107,30
 		Owner: Soviets
+	Actor277: dome
+		Location: 165,56
+		Owner: Soviets
+	Actor281: ftur
+		Location: 166,51
+		Owner: Soviets
+	Actor282: ftur
+		Location: 147,58
+		Owner: Soviets
+	Actor286: t12
+		Location: 154,65
+		Owner: Neutral
+	Actor285: t05
+		Location: 148,76
+		Owner: Neutral
+	Actor288: tc02
+		Location: 168,51
+		Owner: Neutral
 
 Smudges:
 
@@ -1311,7 +1329,7 @@ Rules:
 			Owner: None
 	YAK:
 		Buildable:
-			Owner: None
+			Owner: soviet, allies
 	HELI:
 		Buildable:
 			Owner: None
