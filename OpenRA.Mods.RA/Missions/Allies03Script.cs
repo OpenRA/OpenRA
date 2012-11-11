@@ -328,6 +328,10 @@ namespace OpenRA.Mods.RA.Missions
 				unit.QueueActivity(new Move.Move(exit));
 				unit.QueueActivity(new CallFunc(() =>
 				{
+					if (unit.IsDead())
+					{
+						return;
+					}
 					unitsEvacuated++;
 					var cargo = unit.TraitOrDefault<Cargo>();
 					if (cargo != null)
