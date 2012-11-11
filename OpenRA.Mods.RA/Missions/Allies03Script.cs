@@ -141,12 +141,12 @@ namespace OpenRA.Mods.RA.Missions
 				attackAtFrame += attackAtFrameIncrement;
 				attackAtFrameIncrement = Math.Max(attackAtFrameIncrement - 5, 100);
 			}
-			if (world.FrameNumber % YakSpawnTicks == 0 && SovietAircraft().Count() < MaxNumberYaks && objectives[AirbaseID].Status != ObjectiveStatus.Completed)
-			{
-				SpawnSovietAircraft();
-			}
 			if (objectives[AirbaseID].Status != ObjectiveStatus.Completed)
 			{
+				if (world.FrameNumber % YakSpawnTicks == 0 && SovietAircraft().Count() < MaxNumberYaks)
+				{
+					SpawnSovietAircraft();
+				}
 				ManageSovietAircraft();
 			}
 			ManageSovietUnits();
@@ -176,8 +176,7 @@ namespace OpenRA.Mods.RA.Missions
 				var ammo = aircraft.Trait<LimitedAmmo>();
 				if ((plane.Altitude == 0 && ammo.FullAmmo()) || (plane.Altitude != 0 && ammo.HasAmmo()))
 				{
-					var enemy = enemies.OrderBy(u => (aircraft.CenterLocation - u.CenterLocation).LengthSquared)
-						.FirstOrDefault(u => world.FindAliveCombatantActorsInCircle(u.CenterLocation, 10).All(a => !a.HasTrait<CreatesShroud>()));
+					var enemy = enemies.OrderBy(u => (aircraft.CenterLocation - u.CenterLocation).LengthSquared).FirstUnshroudedOrDefault(world, 10);
 					if (enemy != null)
 					{
 						if (!aircraft.IsIdle && aircraft.GetCurrentActivity().GetType() != typeof(FlyAttack))
@@ -254,8 +253,7 @@ namespace OpenRA.Mods.RA.Missions
 		{
 			var enemies = world.Actors.Where(u => u.IsInWorld && !u.IsDead() && (u.Owner == allies1 || u.Owner == allies2)
 				&& ((u.HasTrait<Building>() && !u.HasTrait<Wall>()) || u.HasTrait<Mobile>()));
-			var enemy = enemies.OrderBy(u => (self.CenterLocation - u.CenterLocation).LengthSquared)
-				.FirstOrDefault(u => world.FindAliveCombatantActorsInCircle(u.CenterLocation, 10).All(a => !a.HasTrait<CreatesShroud>()));
+			var enemy = enemies.OrderBy(u => (self.CenterLocation - u.CenterLocation).LengthSquared).FirstUnshroudedOrDefault(world, 10);
 			if (enemy != null)
 			{
 				self.QueueActivity(new AttackMove.AttackMoveActivity(self, new Attack(Target.FromActor(enemy), 3)));

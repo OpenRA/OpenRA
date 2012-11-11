@@ -100,6 +100,11 @@ namespace OpenRA.Mods.RA.Missions
 			badger.QueueActivity(new RemoveSelf());
 		}
 
+		public static Actor FirstUnshroudedOrDefault(this IEnumerable<Actor> actors, World world, int shroudRange)
+		{
+			return actors.FirstOrDefault(u => world.FindAliveCombatantActorsInCircle(u.CenterLocation, shroudRange).All(a => !a.HasTrait<CreatesShroud>()));
+		}
+
 		public static bool AreaSecuredWithUnits(World world, Player player, PPos location, int range)
 		{
 			var units = world.FindAliveCombatantActorsInCircle(location, range).Where(a => a.HasTrait<IMove>());
