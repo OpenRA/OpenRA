@@ -139,7 +139,7 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				SpawnSovietUnits();
 				attackAtFrame += attackAtFrameIncrement;
-				attackAtFrameIncrement = Math.Max(attackAtFrameIncrement - 5, 100);
+				attackAtFrameIncrement = Math.Max(attackAtFrameIncrement - 5, 250);
 			}
 			if (objectives[AirbaseID].Status != ObjectiveStatus.Completed)
 			{
