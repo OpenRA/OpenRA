@@ -1288,106 +1288,6 @@ Actors:
 Smudges:
 
 Rules:
-	1TNK.evac:
-		Inherits: ^Tank
-		Valued:
-			Cost: 700
-		Tooltip:
-			Name: Light Tank
-		Health:
-			HP: 220
-		Armor:
-			Type: Heavy
-		Mobile:
-			Speed: 4
-		RevealsShroud:
-			Range: 4
-		Turreted:
-			ROT: 5
-		AttackTurreted:
-			PrimaryWeapon: 25mm
-			PrimaryRecoil: 2
-			PrimaryRecoilRecovery: 0.5
-		RenderUnitTurreted:
-			Image: 1TNK
-		AutoTarget:
-		Explodes:
-			Weapon: UnitExplodeSmall
-			EmptyWeapon: UnitExplodeSmall
-		LeavesHusk:
-			HuskActor: 1TNK.Husk
-	2TNK.evac:
-		Inherits: ^Tank
-		Valued:
-			Cost: 850
-		Tooltip:
-			Name: Medium Tank
-		Health:
-			HP: 450
-		Armor:
-			Type: Heavy
-		Mobile:
-			Speed: 4
-			Crushes: wall, atmine, crate, infantry
-		RevealsShroud:
-			Range: 5
-		Turreted:
-			ROT: 5
-		AttackTurreted:
-			PrimaryWeapon: 90mm
-			PrimaryRecoil: 3
-			PrimaryRecoilRecovery: 0.9
-		RenderUnitTurreted:
-			Image: 2TNK
-		AutoTarget:
-		Explodes:
-			Weapon: UnitExplodeSmall
-			EmptyWeapon: UnitExplodeSmall
-		LeavesHusk:
-			HuskActor: 2TNK.Husk
-		Selectable:
-			Bounds: 30,30
-	TRUK.evac:
-		Inherits: ^Vehicle
-		Valued:
-			Cost: 500
-		Tooltip:
-			Name: Supply Truck
-		Health:
-			HP: 110
-		Armor:
-			Type: Light
-		Mobile:
-			Speed: 4
-		RevealsShroud:
-			Range: 3
-		RenderUnit:
-			Image: TRUK
-		AttackMove:
-			JustMove: yes
-	JEEP.evac:
-		Inherits: ^Vehicle
-		Valued:
-			Cost: 500
-		Tooltip:
-			Name: Ranger
-		Health:
-			HP: 150
-		Armor:
-			Type: Light
-		Mobile:
-			Speed: 4
-		RevealsShroud:
-			Range: 8
-		Turreted:
-			ROT: 10
-		AttackTurreted:
-			PrimaryWeapon: M60mg
-			PrimaryOffset: 0,0,0,-2
-		WithMuzzleFlash:
-		RenderUnitTurreted:
-			Image: JEEP
-		AutoTarget:
 	Player:
 		-ConquestVictoryConditions:
 	World:
@@ -1499,6 +1399,8 @@ Rules:
 			BuildPaletteOrder: 150
 			Prerequisites: atek
 			Owner: allies
+		CreatesShroud:
+			Range: 6
 
 Sequences:
 
