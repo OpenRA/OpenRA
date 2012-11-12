@@ -81,7 +81,6 @@ namespace OpenRA.Mods.RA.Missions
 
 		static readonly string[] SovietVehicles = { "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "v2rl", "v2rl", "ftrk", "ftrk", "apc", "apc", "apc" };
 		const int SovietAttackGroupSize = 3;
-		const int YakSpawnTicks = 2000;
 		const int MaxNumberYaks = 4;
 
 		int attackAtFrame;
@@ -143,14 +142,10 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			if (objectives[AirbaseID].Status != ObjectiveStatus.Completed)
 			{
-				if (world.FrameNumber % YakSpawnTicks == 0 && SovietAircraft().Count() < MaxNumberYaks)
-				{
-					SpawnSovietAircraft();
-				}
+				BuildSovietAircraft();
 				ManageSovietAircraft();
 			}
 			ManageSovietUnits();
-			ManageSovietOre();
 			EvacuateAlliedUnits(exit1TopLeft.CenterLocation, exit1BottomRight.CenterLocation, exit1ExitPoint.Location);
 			EvacuateAlliedUnits(exit2TopLeft.CenterLocation, exit2BottomRight.CenterLocation, exit2ExitPoint.Location);
 			CheckSovietAirbase();
@@ -158,13 +153,6 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				MissionFailed("The remaining Allied forces in the area have been wiped out.");
 			}
-		}
-
-		void ManageSovietOre()
-		{
-			var res = soviets.PlayerActor.Trait<PlayerResources>();
-			res.TakeOre(res.Ore);
-			res.TakeCash(res.Cash);
 		}
 
 		void ManageSovietAircraft()
@@ -210,15 +198,17 @@ namespace OpenRA.Mods.RA.Missions
 			}
 		}
 
-		void SpawnSovietAircraft()
+		void BuildSovietAircraft()
 		{
-			var spawnPoint = world.ChooseRandomEdgeCell();
-			world.CreateActor(YakName, new TypeDictionary 
-			{ 
-				new LocationInit(spawnPoint),
-				new OwnerInit(soviets),
-				new AltitudeInit(Rules.Info[YakName].Traits.Get<PlaneInfo>().CruiseAltitude)
-			});
+			var queue = MissionUtils.FindQueues(world, soviets, "Plane").FirstOrDefault(q => q.CurrentItem() == null);
+			if (queue == null || SovietAircraft().Count() >= MaxNumberYaks)
+			{
+				return;
+			}
+			if (Game.IsHost)
+			{
+				world.IssueOrder(Order.StartProduction(queue.self, YakName, 1));
+			}
 		}
 
 		IEnumerable<Actor> SovietAircraft()
