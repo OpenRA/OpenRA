@@ -33,14 +33,14 @@ namespace OpenRA.Mods.RA.Missions
 
 		Dictionary<int, Objective> objectives = new Dictionary<int, Objective>
 		{
-			{ EvacuateID, new Objective(ObjectiveType.Primary, "Following the rescue of Einstein, the Allies are now being flanked from both sides. Evacuate {0} units before the remaining Allied forces in the area are wiped out.".F(UnitsEvacuatedThreshold), ObjectiveStatus.InProgress) },
+			{ EvacuateID, new Objective(ObjectiveType.Primary, "Following the rescue of Einstein, the Allies are now being flanked from both sides. Evacuate {0} units before the remaining Allied forces in the area are wiped out.", ObjectiveStatus.InProgress) },
 			{ AirbaseID, new Objective(ObjectiveType.Secondary, "Destroy the nearby Soviet airbase.", ObjectiveStatus.InProgress) }
 		};
 
 		const int EvacuateID = 0;
 		const int AirbaseID = 1;
 
-		const int UnitsEvacuatedThreshold = 50;
+		int unitsEvacuatedThreshold;
 		int unitsEvacuated;
 		InfoWidget evacuateWidget;
 		const string ShortEvacuateTemplate = "{0}/{1} units evacuated";
@@ -79,7 +79,9 @@ namespace OpenRA.Mods.RA.Missions
 		Actor sovietAirfield3;
 		Actor sovietAirfield4;
 
-		static readonly string[] SovietVehicles = { "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "v2rl", "v2rl", "ftrk", "ftrk", "apc", "apc", "apc" };
+		static readonly string[] SovietVehicles1 = { "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "v2rl", "v2rl", "ftrk", "ftrk", "apc", "apc", "apc" };
+		static readonly string[] SovietVehicles2 = { "4tnk", "4tnk", "4tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "v2rl", "v2rl", "ftrk", "apc" };
+		const int SovietVehicles2Ticks = 1500 * 20;
 		const int SovietAttackGroupSize = 3;
 		const int MaxNumberYaks = 4;
 
@@ -142,7 +144,7 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				SpawnSovietUnits();
 				attackAtFrame += attackAtFrameIncrement;
-				attackAtFrameIncrement = Math.Max(attackAtFrameIncrement - 5, 250);
+				attackAtFrameIncrement = Math.Max(attackAtFrameIncrement - 5, 200);
 			}
 			if (world.FrameNumber == ReinforcementsTicks)
 			{
@@ -246,8 +248,16 @@ namespace OpenRA.Mods.RA.Missions
 			var route = world.SharedRandom.Next(sovietEntryPoints.Length);
 			var spawnPoint = sovietEntryPoints[route];
 			var rallyPoint = sovietRallyPoints[route];
-			var unit = world.CreateActor(SovietVehicles.Random(world.SharedRandom),
-				new TypeDictionary { new LocationInit(spawnPoint), new OwnerInit(soviets) });
+			IEnumerable<string> units;
+			if (world.FrameNumber >= SovietVehicles2Ticks)
+			{
+				units = SovietVehicles2;
+			}
+			else
+			{
+				units = SovietVehicles1;
+			}
+			var unit = world.CreateActor(units.Random(world.SharedRandom), new TypeDictionary { new LocationInit(spawnPoint), new OwnerInit(soviets) });
 			unit.QueueActivity(new AttackMove.AttackMoveActivity(unit, new Move.Move(rallyPoint, 3)));
 		}
 
@@ -316,8 +326,8 @@ namespace OpenRA.Mods.RA.Missions
 
 		void UpdateUnitsEvacuated()
 		{
-			evacuateWidget.Text = ShortEvacuateTemplate.F(unitsEvacuated, UnitsEvacuatedThreshold);
-			if (objectives[EvacuateID].Status == ObjectiveStatus.InProgress && unitsEvacuated >= UnitsEvacuatedThreshold)
+			evacuateWidget.Text = ShortEvacuateTemplate.F(unitsEvacuated, unitsEvacuatedThreshold);
+			if (objectives[EvacuateID].Status == ObjectiveStatus.InProgress && unitsEvacuated >= unitsEvacuatedThreshold)
 			{
 				objectives[EvacuateID].Status = ObjectiveStatus.Completed;
 				OnObjectivesUpdated(true);
@@ -361,13 +371,16 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				attackAtFrame = 500;
 				attackAtFrameIncrement = 500;
+				unitsEvacuatedThreshold = 100;
 			}
 			else
 			{
 				allies2 = allies1;
 				attackAtFrame = 600;
 				attackAtFrameIncrement = 600;
+				unitsEvacuatedThreshold = 50;
 			}
+			objectives[EvacuateID].Text = objectives[EvacuateID].Text.F(unitsEvacuatedThreshold);
 			allies = w.Players.Single(p => p.InternalName == "Allies");
 			soviets = w.Players.Single(p => p.InternalName == "Soviets");
 			var actors = w.WorldActor.Trait<SpawnMapActors>().Actors;
