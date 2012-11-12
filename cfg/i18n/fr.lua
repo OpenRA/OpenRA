@@ -56,13 +56,13 @@ return {
   ["Close the current editor window"] = "Fermer la fenêtre d'édition active", -- src\editor\menu_file.lua
   ["Co&ntinue"] = "Continuer", -- src\editor\menu_project.lua
   ["Col: %d"] = "Col: %d", -- src\editor\editor.lua
-  ["Comment or uncomment current or selected lines"] = {"Commenter/Décommenter la ligne active (sélectionnée)","Commenter/Décommenter les lignes actives (sélectionnées)"}, -- src\editor\menu_edit.lua
+  ["Comment or uncomment current or selected lines"] = "Commenter/Décommenter les lignes actives (sélectionnées)", -- src\editor\menu_edit.lua
   ["Compilation error"] = "Erreur de commpilation", -- src\editor\debugger.lua, src\editor\commands.lua
   ["Compilation successful; %.0f%% success rate (%d/%d)."] = "Compilation réussie; taux de succès : %.0f%% (%d/%d).", -- src\editor\commands.lua
   ["Compile the current file"] = "Сompiler le fichier courant", -- src\editor\menu_project.lua
   ["Complete &Identifier"] = "Complétion d'identificateur", -- src\editor\menu_edit.lua
   ["Complete the current identifier"] = "Complétion de l'identificateur courant", -- src\editor\menu_edit.lua
-  ["Copy selected text to clipboard"] = "Cpoier le texte sélectionné dans le presse-papiers", -- src\editor\menu_edit.lua, src\editor\gui.lua
+  ["Copy selected text to clipboard"] = "Copier le texte sélectionné dans le presse-papiers", -- src\editor\menu_edit.lua, src\editor\gui.lua
   ["Couldn't activate file '%s' for debugging; continuing without it."] = "Echec d'activation du fichier '%s' pour débogage; Poursuite du processus en ignorant le fichier.", -- src\editor\debugger.lua
   ["Create an empty document"] = "Créer un document vierge", -- src\editor\menu_file.lua, src\editor\gui.lua
   ["Cu&t"] = "Couper", -- src\editor\editor.lua, src\editor\menu_edit.lua
@@ -175,7 +175,7 @@ return {
   ["Unable to save file '%s': %s"] = "Impossible d'enregistrer le fichier '%s': %s", -- src\editor\commands.lua
   ["Unable to stop program (pid: %d), code %d."] = "Impossible d'arrêter le programme (pid: %d), code %d.", -- src\editor\debugger.lua
   ["Undo last edit"] = "Défaire la dernière édition", -- src\editor\menu_edit.lua, src\editor\gui.lua
-  ["Use 'clear' to clear the shell output and the history."] = "Utiliser 'Nettoyer' pour effacer la sortie console et l`historique.", -- src\editor\shellbox.lua
+  ["Use 'clear' to clear the shell output and the history."] = "Utiliser 'clear' pour effacer la sortie console et l`historique.", -- src\editor\shellbox.lua
   ["Use Shift-Enter for multiline code."] = "Pressez <Shift-Entrée> pour du code multiligne.", -- src\editor\shellbox.lua
   ["Value"] = "Valeur", -- src\editor\debugger.lua
   ["View the output/console window"] = "Voir la sortie en console", -- src\editor\menu_view.lua
