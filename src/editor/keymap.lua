@@ -20,7 +20,7 @@ ide.config.keymap = {
 -- Edit menu
   [ID_CUT]              = "Ctrl-X",
   [ID_COPY]             = "Ctrl-C",
-  [ID_PASTE]            = "Ctrl-P",
+  [ID_PASTE]            = "Ctrl-V",
   [ID_SELECTALL]        = "Ctrl-A",
   [ID_UNDO]             = "Ctrl-Z",
   [ID_REDO]             = "Ctrl-Y",
