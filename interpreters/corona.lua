@@ -40,22 +40,25 @@ return {
       return
     end
 
+    -- can we really do debugging? do if asked and if not on mac OSX where it's not supported
+    local debug = rundebug and not mac
     if rundebug then
       -- start running the application right away
-      DebuggerAttachDefault({runstart=true, startwith = file, redirect = "c"})
+      DebuggerAttachDefault({runstart=true, startwith = file, redirect = debug and "c"})
 
-      -- copy mobdebug.lua to corona/Resources folder
-      local mdbc = MergeFullPath(GetPathWithSep(corona),
-        mac and "../../../Resource Library/mobdebug.lua" or "Resources/mobdebug.lua")
+      -- copy mobdebug.lua to Resources/ folder on Win and to the project folder on OSX
+      -- as copying it to Resources/ folder seems to break the signature of the app.
+      local mdbc = mac and MergeFullPath(self:fworkdir(wfilename), "mobdebug.lua")
+        or MergeFullPath(GetPathWithSep(corona), "Resources/mobdebug.lua")
       local mdbl = MergeFullPath(GetPathWithSep(ide.editorFilename), "lualibs/mobdebug/mobdebug.lua")
       if not wx.wxFileExists(mdbc)
       or GetFileModTime(mdbc):GetTicks() < GetFileModTime(mdbl):GetTicks() then
         FileCopy(mdbl, mdbc)
-        DisplayOutput("Copied ZeroBrane Studio debugger ('mobdebug.lua') to 'Corona SDK/Resource' folder.\n")
+        DisplayOutput(("Copied ZeroBrane Studio debugger ('mobdebug.lua') to '%s' folder.\n"):format(mdbc))
       end
     end
 
-    local cmd = ('"%s" -debug "%s"'):format(corona, file)
+    local cmd = ('"%s" %s"%s"'):format(corona, debug  and "-debug " or "", file)
     -- CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
     return CommandLineRun(cmd,self:fworkdir(wfilename),true,false,nil,nil,
       function() ide.debugger.pid = nil end)
