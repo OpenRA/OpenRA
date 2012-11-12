@@ -83,6 +83,9 @@ namespace OpenRA.Mods.RA.Missions
 		const int SovietAttackGroupSize = 3;
 		const int MaxNumberYaks = 4;
 
+		const int ReinforcementsTicks = 1500 * 4;
+		static readonly string[] Reinforcements = { MggName, MggName, "2tnk", "2tnk", "2tnk", "2tnk", "1tnk", "1tnk", "jeep", "jeep", "e1", "e1", "e1", "e1", "e3", "e3" };
+
 		int attackAtFrame;
 		int attackAtFrameIncrement;
 
@@ -94,6 +97,7 @@ namespace OpenRA.Mods.RA.Missions
 
 		const string McvName = "mcv";
 		const string YakName = "yak";
+		const string MggName = "mgg";
 
 		void MissionFailed(string text)
 		{
@@ -129,7 +133,7 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			if (world.FrameNumber == 1)
 			{
-				SpawnAlliedMcvs();
+				SpawnAlliedUnitForPlayers(McvName);
 				evacuateWidget = new InfoWidget("", new float2(Game.viewport.Width * 0.35f, Game.viewport.Height * 0.9f));
 				Ui.Root.AddChild(evacuateWidget);
 				UpdateUnitsEvacuated();
@@ -140,9 +144,17 @@ namespace OpenRA.Mods.RA.Missions
 				attackAtFrame += attackAtFrameIncrement;
 				attackAtFrameIncrement = Math.Max(attackAtFrameIncrement - 5, 250);
 			}
+			if (world.FrameNumber == ReinforcementsTicks)
+			{
+				Sound.Play("reinfor1.aud");
+				SpawnReinforcements();
+			}
 			if (objectives[AirbaseID].Status != ObjectiveStatus.Completed)
 			{
-				BuildSovietAircraft();
+				if (world.FrameNumber % 25 == 0)
+				{
+					BuildSovietAircraft();
+				}
 				ManageSovietAircraft();
 			}
 			ManageSovietUnits();
@@ -190,7 +202,7 @@ namespace OpenRA.Mods.RA.Missions
 		bool LandIsQueued(Actor actor)
 		{
 			var a = actor.GetCurrentActivity();
-			for (;;)
+			for (; ; )
 			{
 				if (a == null) { return false; }
 				if (a.GetType() == typeof(ReturnToBase) || a.GetType() == typeof(Land)) { return true; }
@@ -273,9 +285,17 @@ namespace OpenRA.Mods.RA.Missions
 			}
 		}
 
-		void SpawnAlliedMcvs()
+		void SpawnReinforcements()
 		{
-			var unit = world.CreateActor(McvName, new TypeDictionary
+			foreach (var unit in Reinforcements)
+			{
+				SpawnAlliedUnitForPlayers(unit);
+			}
+		}
+
+		void SpawnAlliedUnitForPlayers(string actor)
+		{
+			var unit = world.CreateActor(actor, new TypeDictionary
 			{
 				new LocationInit(allies1EntryPoint.Location), 
 				new OwnerInit(allies1),
@@ -284,7 +304,7 @@ namespace OpenRA.Mods.RA.Missions
 			unit.QueueActivity(new Move.Move(allies1MovePoint.Location));
 			if (allies2 != allies1)
 			{
-				unit = world.CreateActor(McvName, new TypeDictionary 
+				unit = world.CreateActor(actor, new TypeDictionary 
 				{ 
 					new LocationInit(allies2EntryPoint.Location), 
 					new OwnerInit(allies2),

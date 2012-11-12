@@ -381,9 +381,6 @@ Actors:
 	Actor149: t17
 		Location: 134,47
 		Owner: Neutral
-	Actor240: tc03
-		Location: 157,78
-		Owner: Neutral
 	Actor156: t05
 		Location: 139,44
 		Owner: Neutral
@@ -399,9 +396,9 @@ Actors:
 	Actor370: tc02
 		Location: 25,65
 		Owner: Neutral
-	Actor165: apwr
-		Location: 154,76
-		Owner: Soviets
+	Actor165: tc03
+		Location: 157,77
+		Owner: Neutral
 	Actor181: t13
 		Location: 137,71
 		Owner: Neutral
@@ -655,7 +652,7 @@ Actors:
 		Location: 30,62
 		Owner: Neutral
 	Actor161: apwr
-		Location: 150,76
+		Location: 154,75
 		Owner: Soviets
 	Actor54: t01
 		Location: 56,76
@@ -1029,8 +1026,8 @@ Actors:
 	Actor183: powr
 		Location: 3,34
 		Owner: Allies
-	Actor185: e1
-		Location: 150,72
+	Actor185: apwr
+		Location: 154,72
 		Owner: Soviets
 	Actor190: ftur
 		Location: 160,53
@@ -1092,8 +1089,8 @@ Actors:
 	Actor242: barr
 		Location: 159,61
 		Owner: Soviets
-	Actor18: apwr
-		Location: 154,73
+	Actor229: apwr
+		Location: 150,75
 		Owner: Soviets
 	Actor237: dog
 		Location: 151,62
@@ -1110,8 +1107,8 @@ Actors:
 	Actor206: fenc
 		Location: 158,53
 		Owner: Soviets
-	Actor229: apwr
-		Location: 150,73
+	Actor18: apwr
+		Location: 150,72
 		Owner: Soviets
 	Actor230: 3tnk
 		Location: 157,60
@@ -1381,6 +1378,9 @@ Rules:
 	AFLD:
 		Buildable:
 			Owner: None
+	ATEK:
+		Buildable:
+			Owner: None
 	STEK:
 		Buildable:
 			Owner: None
@@ -1413,12 +1413,12 @@ Rules:
 			Owner: None
 	MGG:
 		Buildable:
-			Queue: Vehicle
-			BuildPaletteOrder: 150
-			Prerequisites: atek
-			Owner: allies
+			Owner: None
 		CreatesShroud:
 			Range: 6
+	GAP:
+		Buildable:
+			Owner: None
 
 Sequences:
 
