@@ -1299,6 +1299,12 @@ Actors:
 	Actor288: tc02
 		Location: 168,51
 		Owner: Neutral
+	Actor240: mine
+		Location: 159,27
+		Owner: Neutral
+	Actor290: mine
+		Location: 159,26
+		Owner: Neutral
 
 Smudges:
 
