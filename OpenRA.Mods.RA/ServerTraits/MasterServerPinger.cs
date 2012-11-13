@@ -17,7 +17,7 @@ using S = OpenRA.Server.Server;
 
 namespace OpenRA.Mods.RA.Server
 {
-	public class MasterServerPinger : ServerTrait, ITick, INotifySyncLobbyInfo, IStartGame
+	public class MasterServerPinger : ServerTrait, ITick, INotifySyncLobbyInfo, IStartGame, IEndGame
 	{
 		const int MasterPingInterval = 60 * 3;	// 3 minutes. server has a 5 minute TTL for games, so give ourselves a bit
 												// of leeway.
@@ -36,6 +36,7 @@ namespace OpenRA.Mods.RA.Server
 
 		public void LobbyInfoSynced(S server) { PingMasterServer(server); }
 		public void GameStarted(S server) { PingMasterServer(server); }
+		public void GameEnded(S server) { PingMasterServer(server); }
 
 		int lastPing = 0;
 		bool isInitialPing = true;
@@ -63,7 +64,7 @@ namespace OpenRA.Mods.RA.Server
 							 wc.DownloadData(
 								server.Settings.MasterServer + url.F(
 								server.Settings.ExternalPort, Uri.EscapeUriString(server.Settings.Name),
-								server.GameStarted ? 2 : 1,	// todo: post-game states, etc.
+								(server.ShuttingDown ? 3 : (server.GameStarted ? 2 : 1)),	// todo: post-game states, etc.
 								server.lobbyInfo.Clients.Count,
 								Game.CurrentMods.Select(f => "{0}@{1}".F(f.Key, f.Value.Version)).JoinWith(","),
 								server.lobbyInfo.GlobalSettings.Map,

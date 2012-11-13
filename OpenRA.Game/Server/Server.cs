@@ -51,10 +51,23 @@ namespace OpenRA.Server
 		public Map Map;
 		XTimer gameTimeout;
 
-		volatile bool shutdown = false;
+		volatile bool _shutdown = false;
+		public bool ShuttingDown
+		{
+			get { return this._shutdown; }
+		}
+
 		public void Shutdown()
 		{
-			shutdown = true;
+			_shutdown = true;
+		}
+
+		public void EndGame()
+		{
+			foreach (var t in ServerTraits.WithInterface<IEndGame>())
+				t.GameEnded(this);
+			if (Settings.AllowUPnP)
+				RemovePortforward();
 		}
 
 		public Server(IPEndPoint endpoint, string[] mods, ServerSettings settings, ModData modData)
@@ -141,10 +154,9 @@ namespace OpenRA.Server
 					foreach( var c in preConns ) checkRead.Add( c.socket );
 
 					Socket.Select( checkRead, null, null, timeout );
-					if (shutdown)
+					if (_shutdown)
 					{
-						if (Settings.AllowUPnP)
-							RemovePortforward();
+						this.EndGame();
 						break;
 					}
 
@@ -160,10 +172,9 @@ namespace OpenRA.Server
 					foreach (var t in ServerTraits.WithInterface<ITick>())
 						t.Tick(this);
 
-					if (shutdown)
+					if (_shutdown)
 					{
-						if (Settings.AllowUPnP)
-							RemovePortforward();
+						this.EndGame();
 						break;
 					}
 				}
