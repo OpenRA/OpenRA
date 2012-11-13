@@ -19,6 +19,13 @@ namespace OpenRA.Mods.RA.Server
 {
 	public class MasterServerPinger : ServerTrait, ITick, INotifySyncLobbyInfo, IStartGame, IEndGame
 	{
+		protected enum State : int
+		{
+			WaitingPlayers = 1,
+			GameStarted = 2,
+			ShuttingDown = 3
+		}
+
 		const int MasterPingInterval = 60 * 3;	// 3 minutes. server has a 5 minute TTL for games, so give ourselves a bit
 												// of leeway.
 		public int TickTimeout { get { return MasterPingInterval * 10000; } }
@@ -61,14 +68,17 @@ namespace OpenRA.Mods.RA.Server
 						using (var wc = new WebClient())
 						{
 							wc.Proxy = null;
-							int state = server.GameStarted ? 2 : 1;
+							State state = new State();
+
 							if (server.ShuttingDown)
-								state = 3;
+								state = State.ShuttingDown;
+							else
+								state = server.GameStarted ? State.GameStarted : State.WaitingPlayers;
 
 							 wc.DownloadData(
 								server.Settings.MasterServer + url.F(
 								server.Settings.ExternalPort, Uri.EscapeUriString(server.Settings.Name),
-								state,
+								(int) state,
 								server.lobbyInfo.Clients.Count,
 								Game.CurrentMods.Select(f => "{0}@{1}".F(f.Key, f.Value.Version)).JoinWith(","),
 								server.lobbyInfo.GlobalSettings.Map,

@@ -156,7 +156,7 @@ namespace OpenRA.Server
 					Socket.Select( checkRead, null, null, timeout );
 					if (shutdown)
 					{
-						this.EndGame();
+						EndGame();
 						break;
 					}
 
@@ -174,7 +174,7 @@ namespace OpenRA.Server
 
 					if (shutdown)
 					{
-						this.EndGame();
+						EndGame();
 						break;
 					}
 				}
