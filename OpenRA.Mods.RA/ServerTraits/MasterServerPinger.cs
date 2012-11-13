@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA.Server
 {
 	public class MasterServerPinger : ServerTrait, ITick, INotifySyncLobbyInfo, IStartGame, IEndGame
 	{
-		protected enum State : int
+		protected enum ServerState : int
 		{
 			WaitingPlayers = 1,
 			GameStarted = 2,
@@ -68,12 +68,12 @@ namespace OpenRA.Mods.RA.Server
 						using (var wc = new WebClient())
 						{
 							wc.Proxy = null;
-							State state = new State();
+							ServerState state = new ServerState();
 
 							if (server.ShuttingDown)
-								state = State.ShuttingDown;
+								state = ServerState.ShuttingDown;
 							else
-								state = server.GameStarted ? State.GameStarted : State.WaitingPlayers;
+								state = server.GameStarted ? ServerState.GameStarted : ServerState.WaitingPlayers;
 
 							 wc.DownloadData(
 								server.Settings.MasterServer + url.F(
