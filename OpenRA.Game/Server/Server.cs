@@ -51,15 +51,15 @@ namespace OpenRA.Server
 		public Map Map;
 		XTimer gameTimeout;
 
-		volatile bool _shutdown = false;
+		volatile bool shutdown = false;
 		public bool ShuttingDown
 		{
-			get { return this._shutdown; }
+			get { return this.shutdown; }
 		}
 
 		public void Shutdown()
 		{
-			_shutdown = true;
+			shutdown = true;
 		}
 
 		public void EndGame()
@@ -154,7 +154,7 @@ namespace OpenRA.Server
 					foreach( var c in preConns ) checkRead.Add( c.socket );
 
 					Socket.Select( checkRead, null, null, timeout );
-					if (_shutdown)
+					if (shutdown)
 					{
 						this.EndGame();
 						break;
@@ -172,7 +172,7 @@ namespace OpenRA.Server
 					foreach (var t in ServerTraits.WithInterface<ITick>())
 						t.Tick(this);
 
-					if (_shutdown)
+					if (shutdown)
 					{
 						this.EndGame();
 						break;

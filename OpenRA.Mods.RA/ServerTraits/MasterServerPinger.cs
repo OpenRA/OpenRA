@@ -61,10 +61,14 @@ namespace OpenRA.Mods.RA.Server
 						using (var wc = new WebClient())
 						{
 							wc.Proxy = null;
+							int state = server.GameStarted ? 2 : 1;
+							if (server.ShuttingDown)
+								state = 3;
+
 							 wc.DownloadData(
 								server.Settings.MasterServer + url.F(
 								server.Settings.ExternalPort, Uri.EscapeUriString(server.Settings.Name),
-								(server.ShuttingDown ? 3 : (server.GameStarted ? 2 : 1)),	// todo: post-game states, etc.
+								state,
 								server.lobbyInfo.Clients.Count,
 								Game.CurrentMods.Select(f => "{0}@{1}".F(f.Key, f.Value.Version)).JoinWith(","),
 								server.lobbyInfo.GlobalSettings.Map,
