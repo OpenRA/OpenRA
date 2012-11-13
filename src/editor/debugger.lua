@@ -29,8 +29,8 @@ local notebook = ide.frame.notebook
 
 local function updateWatchesSync(num)
   local watchCtrl = debugger.watchCtrl
-  if watchCtrl and debugger.server
-    and not debugger.running and not debugger.scratchpad then
+  if watchCtrl and debugger.server and not debugger.running
+  and not debugger.scratchpad and not (debugger.options or {}).noeval then
     for idx = 0, watchCtrl:GetItemCount() - 1 do
       if not num or idx == num then
         local expression = watchCtrl:GetItemText(idx)
@@ -573,7 +573,8 @@ debugger.breakpoint = function(file, line, state)
   debugger.handleAsync((state and "setb " or "delb ") .. file .. " " .. line)
 end
 debugger.quickeval = function(var, callback)
-  if debugger.server and not debugger.running and not debugger.scratchpad then
+  if debugger.server and not debugger.running
+  and not debugger.scratchpad and not (debugger.options or {}).noeval then
     copas.addthread(function ()
       local _, values, err = debugger.evaluate(var)
       local val = err

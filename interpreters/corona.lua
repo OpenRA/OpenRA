@@ -44,7 +44,8 @@ return {
     local debug = rundebug and not mac
     if rundebug then
       -- start running the application right away
-      DebuggerAttachDefault({runstart=true, startwith = file, redirect = debug and "c"})
+      DebuggerAttachDefault({runstart=true, startwith = file,
+        redirect = debug and "c", noshell = mac or nil, noeval = mac or nil})
 
       -- copy mobdebug.lua to Resources/ folder on Win and to the project folder on OSX
       -- as copying it to Resources/ folder seems to break the signature of the app.
