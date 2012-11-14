@@ -168,36 +168,28 @@ return {
   },
 
   keywords = {
-    [[and break do else elseif end false for function if ipairs pairs
-    in local nil not or repeat return then true until while]],
+    [[and break do else elseif end for function goto if in local not or repeat return then until while]],
 
-    [[_VERSION assert collectgarbage dofile error gcinfo loadfile loadstring
-    print rawget rawset require tonumber tostring type unpack]],
+    [[_G _VERSION _ENV false io.stderr io.stdin io.stdout nil math.huge math.pi
+      package.cpath package.loaded package.loaders package.path package.preload self true]],
 
-    [[_G getfenv getmetatable loadlib next pcall
-    rawequal setfenv setmetatable xpcall
-    string table math coroutine io os debug
-    load module select]],
+    [[assert collectgarbage dofile error getfenv getmetatable ipairs load loadfile loadstring module next
+      pairs pcall print rawequal rawget rawset require select setfenv setmetatable tonumber tostring type unpack xpcall]],
 
-    [[string.byte string.char string.dump string.find string.len
-    string.lower string.rep string.sub string.upper string.format string.gfind string.gsub
-    table.concat table.foreach table.foreachi table.getn table.sort table.insert table.remove table.setn
-    math.abs math.acos math.asin math.atan math.atan2 math.ceil math.cos math.deg math.exp
-    math.floor math.frexp math.ldexp math.log math.log10 math.max math.min math.mod
-    math.pi math.pow math.rad math.random math.randomseed math.sin math.sqrt math.tan
-    string.gmatch string.match string.reverse table.maxn
-    math.cosh math.fmod math.modf math.sinh math.tanh math.huge]],
-
-    [[coroutine.create coroutine.resume coroutine.status
-    coroutine.wrap coroutine.yield
-    io.close io.flush io.input io.lines io.open io.output io.read io.tmpfile io.type io.write
-    io.stdin io.stdout io.stderr
-    os.clock os.date os.difftime os.execute os.exit os.getenv os.remove os.rename
-    os.setlocale os.time os.tmpname
-    coroutine.running package.cpath package.loaded package.loadlib package.path
-    package.preload package.seeall io.popen
-    debug.debug debug.getfenv debug.gethook debug.getinfo debug.getlocal
-    debug.getmetatable debug.getregistry debug.getupvalue debug.setfenv
-    debug.sethook debug.setlocal debug.setmetatable debug.setupvalue debug.traceback]],
+    [[coroutine.create coroutine.resume coroutine.running coroutine.status coroutine.wrap coroutine.yield
+      debug.debug debug.getfenv debug.gethook debug.getinfo debug.getlocal
+      debug.getmetatable debug.getregistry debug.getupvalue debug.setfenv
+      debug.sethook debug.setlocal debug.setmetatable debug.setupvalue debug.traceback
+      io.close io.flush io.input io.lines io.open io.output io.popen io.read io.tmpfile io.type io.write
+      close flush lines read seek setvbuf write
+      math.abs math.acos math.asin math.atan math.atan2 math.ceil math.cos math.cosh math.deg math.exp
+      math.floor math.fmod math.frexp math.ldexp math.log math.log10 math.max math.min math.modf
+      math.pow math.rad math.random math.randomseed math.sin math.sinh math.sqrt math.tan math.tanh
+      os.clock os.date os.difftime os.execute os.exit os.getenv os.remove os.rename os.setlocale os.time os.tmpname
+      package.loadlib package.seeall
+      string.byte string.char string.dump string.find string.format string.gmatch string.gsub string.len
+      string.lower string.match string.rep string.reverse string.sub string.upper
+      byte find format gmatch gsub len lower match rep reverse sub upper
+      table.concat table.insert table.maxn table.remove table.sort]]
   },
 }

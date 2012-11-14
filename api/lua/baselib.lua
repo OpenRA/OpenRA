@@ -193,8 +193,11 @@ local function key (str)
 	api[str] = {type="keyword"}
 	return key
 end
+
 -- keywords - shouldn't be left out
-key "local" "not" "if" "elseif" "else" "end" "do" "while" "repeat" "function" "until" "or"
-	"or" "and" "then" "true" "false" "return" "break" "in"
+key "and" "break" "do" "else" "elseif" "end" "for" "function" "goto" "if"
+    "in" "local" "not" "or" "repeat" "return" "then" "until" "while"
+api["true"] = val()
+api["false"] = val()
 
 return api
