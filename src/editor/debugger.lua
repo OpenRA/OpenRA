@@ -27,6 +27,11 @@ end)()
 
 local notebook = ide.frame.notebook
 
+local CURRENT_LINE_MARKER = StylesGetMarker("currentline")
+local CURRENT_LINE_MARKER_VALUE = 2^CURRENT_LINE_MARKER
+local BREAKPOINT_MARKER = StylesGetMarker("breakpoint")
+local BREAKPOINT_MARKER_VALUE = 2^BREAKPOINT_MARKER
+
 local function updateWatchesSync(num)
   local watchCtrl = debugger.watchCtrl
   if watchCtrl and debugger.server and not debugger.running

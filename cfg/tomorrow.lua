@@ -1,6 +1,15 @@
 local theme = ...
 local function h2d(n) return 0+('0x'..n) end
 local H = function(c) return {h2d(c:sub(1,2), 16), h2d(c:sub(3,4), 16), h2d(c:sub(5,6), 16)} end
+local reddish = function(c, more)
+  local r,g,b = unpack(c)
+  r = r + more
+  local excess = r - 255
+  if excess > 0 then
+    r, g, b = 255, g > excess and g - excess or 0, b > excess and b - excess or 0
+  end
+  return {r, g, b}
+end
 
 local colors = {
   TomorrowNight = {
@@ -76,16 +85,15 @@ local colors = {
 }
 
 local C = colors[theme] or colors.Tomorrow
-
-styles = {
+local styles = {
   -- wxstc.wxSTC_LUA_DEFAULT
   lexerdef = {fg = C.Foreground},
   -- wxstc.wxSTC_LUA_COMMENT, wxstc.wxSTC_LUA_COMMENTLINE, wxstc.wxSTC_LUA_COMMENTDOC
-  comment = {fg = C.Comment, fill= true},
+  comment = {fg = C.Comment, fill = true},
   -- wxstc.wxSTC_LUA_STRING, wxstc.wxSTC_LUA_CHARACTER, wxstc.wxSTC_LUA_LITERALSTRING
   stringtxt = {fg = C.Green},
   -- wxstc.wxSTC_LUA_STRINGEOL
-  stringeol = {fg = C.Green, fill = true, },
+  stringeol = {fg = C.Green, fill = true},
   -- wxstc.wxSTC_LUA_PREPROCESSOR
   preprocessor = {fg = C.Orange},
   -- wxstc.wxSTC_LUA_OPERATOR
@@ -95,7 +103,7 @@ styles = {
 
   -- wxstc.wxSTC_LUA_WORD, wxstc.wxSTC_LUA_WORD#
   keywords0 = {fg = C.Blue, b = true},
-  keywords1 = {fg = C.Aqua, b = true},
+  keywords1 = {fg = C.Aqua, b = false},
   keywords2 = {fg = C.Aqua, b = true},
   keywords3 = {fg = C.Purple, b = true},
   keywords4 = {fg = C.Purple, b = true},
@@ -121,7 +129,7 @@ styles = {
   fold = {fg = C.Comment, bg = C.Background},
   whitespace = {fg = C.Comment, bg = C.Background},
 
-  fncall = {fg = C.Blue, st = wxstc.wxSTC_INDIC_PLAIN},
+  fncall = {fg = C.Purple, st = wxstc.wxSTC_INDIC_PLAIN},
   --[[ other possible values are:
     wxSTC_INDIC_PLAIN	 Single-line underline
     wxSTC_INDIC_SQUIGGLE Squiggly underline
@@ -131,6 +139,13 @@ styles = {
     wxSTC_INDIC_BOX      Box
     wxSTC_INDIC_ROUNDBOX Rounded Box (not suppored in the current version?)
   --]]
+
+  marker = {
+    message = {bg = C.Selection},
+    output = {bg = C.CurrentLine},
+    prompt = {fg = C.Foreground, bg = C.Background},
+    error = {bg = reddish(C.Background, 32)},
+  },
 }
 
 return styles

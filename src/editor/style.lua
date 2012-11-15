@@ -19,30 +19,30 @@
 function StylesGetDefault()
   return {
     -- lexer specific (inherit fg/bg from text)
-    lexerdef = {fg = {128, 128, 128},},
-    comment = {fg = {0, 127, 0 },bg = {240, 240, 220}, fill= true,},
-    stringtxt = {fg = {127, 0, 127},},
+    lexerdef = {fg = {128, 128, 128}},
+    comment = {fg = {0, 127, 0 },bg = {240, 240, 220}, fill= true},
+    stringtxt = {fg = {127, 0, 127}},
     stringeol = {fg = {0, 0, 0 },bg = {224, 192, 224}, fill = true, b = true},
-    preprocessor = {fg = {127, 127, 0 },},
-    operator = {fg = {0, 0, 0 },},
-    number = {fg = {90, 100, 0 },},
+    preprocessor = {fg = {127, 127, 0 }},
+    operator = {fg = {0, 0, 0 }},
+    number = {fg = {90, 100, 0 }},
 
-    keywords0 = {fg = {0, 0, 127}, b = true,},
-    keywords1 = {fg = {127, 0, 0},},
-    keywords2 = {fg = {0, 127, 0},},
-    keywords3 = {fg = {0, 0, 127},},
-    keywords4 = {fg = {127, 0, 95},},
-    keywords5 = {fg = {35, 95, 175},},
-    keywords6 = {fg = {0, 127, 127},},
-    keywords7 = {fg = {240, 255, 255},},
+    keywords0 = {fg = {0, 0, 127}, b = true},
+    keywords1 = {fg = {127, 0, 0}},
+    keywords2 = {fg = {0, 127, 0}},
+    keywords3 = {fg = {0, 0, 127}},
+    keywords4 = {fg = {127, 0, 95}},
+    keywords5 = {fg = {35, 95, 175}},
+    keywords6 = {fg = {0, 127, 127}},
+    keywords7 = {fg = {240, 255, 255}},
 
     -- common (inherit fg/bg from text)
     text = nil, -- let os pick
-    linenumber = {fg = {192, 192, 192},},
+    linenumber = {fg = {192, 192, 192}},
     bracematch = {fg = {0, 0, 255}, b = true},
-    bracemiss = {fg = {255, 0, 0 }, b = true},
+    bracemiss = {fg = {255, 0, 0}, b = true},
     escapechar = nil,
-    indent = {fg = {192, 192, 192},bg = {255, 255, 255},},
+    indent = {fg = {192, 192, 192}, bg = {255, 255, 255}},
     calltip = nil,
 
     -- common special (need custom fg & bg )
@@ -51,12 +51,32 @@ function StylesGetDefault()
     caret = nil,
     caretlinebg = nil,
     fold = nil,
-    whitespace = {fg = {180, 180, 180},},
+    whitespace = {fg = {180, 180, 180}},
 
     -- indicators
-    fncall = {fg = {175,175,255}, st= wxstc.wxSTC_INDIC_BOX},
+    fncall = {fg = {175,175,255}, st = wxstc.wxSTC_STYLE_PLAIN},
+
+    -- markers
+    marker = {
+      currentline = {},
+      breakpoint = {},
+      message = {},
+      output = {},
+      prompt = {},
+      error = {},
+    }
   }
 end
+
+local markers = {
+  breakpoint = {1, wxstc.wxSTC_MARK_CIRCLE, wx.wxColour(220, 0, 0), wx.wxColour(220, 0, 0)},
+  currentline = {2, wxstc.wxSTC_MARK_ARROW, wx.wxBLACK, wx.wxColour(0, 220, 0)},
+  message = {3, wxstc.wxSTC_MARK_CHARACTER+(' '):byte(), wx.wxBLACK, wx.wxColour(220, 220, 220)},
+  output = {4, wxstc.wxSTC_MARK_BACKGROUND, wx.wxBLACK, wx.wxColour(240, 240, 240)},
+  prompt = {5, wxstc.wxSTC_MARK_ARROWS, wx.wxBLACK, wx.wxColour(220, 220, 220)},
+  error = {6, wxstc.wxSTC_MARK_BACKGROUND, wx.wxBLACK, wx.wxColour(255, 220, 220)},
+}
+function StylesGetMarker(marker) return unpack(markers[marker] or {}) end
 
 -- used to fill unset bg colors
 local defaultfg = nil
@@ -145,6 +165,16 @@ local specialmapping = {
       -- http://www.scintilla.org/ScintillaDoc.html#SCI_SETFOLDMARGINCOLOUR
       editor:SetFoldMarginColour(true, clrbg)
       editor:SetFoldMarginHiColour(true, clrbg)
+    end
+  end,
+
+  marker = function(editor,markers)
+    for m, style in pairs(markers) do
+      local id, ch, fg, bg = StylesGetMarker(m)
+      if style.ch then ch = style.ch end
+      if style.fg then fg = wx.wxColour(unpack(style.fg)) end
+      if style.bg then bg = wx.wxColour(unpack(style.bg)) end
+      editor:MarkerDefine(id, ch, fg, bg)
     end
   end,
 }

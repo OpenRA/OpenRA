@@ -3,13 +3,6 @@
 ---------------------------------------------------------
 local ide = ide
 
--- Global variables
--- Markers for editor marker margin
-BREAKPOINT_MARKER = 1
-BREAKPOINT_MARKER_VALUE = 2 -- = 2^BREAKPOINT_MARKER
-CURRENT_LINE_MARKER = 2
-CURRENT_LINE_MARKER_VALUE = 4 -- = 2^CURRENT_LINE_MARKER
-
 -- Pick some reasonable fixed width fonts to use for the editor
 local function setFont(style, config, name, size)
   return wx.wxFont(config.fontsize or size or 10, wx.wxFONTFAMILY_MODERN, style,

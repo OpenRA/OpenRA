@@ -7,6 +7,10 @@ local notebook = frame.notebook
 local openDocuments = ide.openDocuments
 local uimgr = frame.uimgr
 
+local CURRENT_LINE_MARKER = StylesGetMarker("currentline")
+local CURRENT_LINE_MARKER_VALUE = 2^CURRENT_LINE_MARKER
+local BREAKPOINT_MARKER = StylesGetMarker("breakpoint")
+
 function NewFile(event)
   local editor = CreateEditor()
   SetupKeywords(editor, "lua")

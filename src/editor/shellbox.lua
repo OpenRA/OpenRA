@@ -7,9 +7,13 @@ local ide = ide
 
 local bottomnotebook = ide.frame.bottomnotebook
 local out = bottomnotebook.shellbox
-
-local OUTPUT_MARKER = 3
 local remotesend
+
+local PROMPT_MARKER = StylesGetMarker("prompt")
+local PROMPT_MARKER_VALUE = 2^PROMPT_MARKER
+local ERROR_MARKER = StylesGetMarker("error")
+local OUTPUT_MARKER = StylesGetMarker("output")
+local MESSAGE_MARKER = StylesGetMarker("message")
 
 out:SetFont(ide.font.oNormal)
 out:StyleSetFont(wxstc.wxSTC_STYLE_DEFAULT, ide.font.oNormal)
@@ -27,16 +31,17 @@ out:SetWrapStartIndent(0)
 out:SetWrapVisualFlagsLocation(wxstc.wxSTC_WRAPVISUALFLAGLOC_END_BY_TEXT)
 out:SetWrapVisualFlags(wxstc.wxSTC_WRAPVISUALFLAG_END)
 
-out:MarkerDefine(CURRENT_LINE_MARKER, wxstc.wxSTC_MARK_CHARACTER+string.byte('>'), wx.wxBLACK, wx.wxColour(240, 240, 240))
-out:MarkerDefine(BREAKPOINT_MARKER, wxstc.wxSTC_MARK_BACKGROUND, wx.wxBLACK, wx.wxColour(255, 220, 220))
-out:MarkerDefine(OUTPUT_MARKER, wxstc.wxSTC_MARK_BACKGROUND, wx.wxBLACK, wx.wxColour(240, 240, 240))
+out:MarkerDefine(StylesGetMarker("prompt"))
+out:MarkerDefine(StylesGetMarker("error"))
+out:MarkerDefine(StylesGetMarker("output"))
+out:MarkerDefine(StylesGetMarker("message"))
 out:SetReadOnly(false)
 
 SetupKeywords(out,"lua",nil,ide.config.stylesoutshell,ide.font.oNormal,ide.font.oItalic)
 
 local function getPromptLine()
   local totalLines = out:GetLineCount()
-  return out:MarkerPrevious(totalLines+1, CURRENT_LINE_MARKER_VALUE)
+  return out:MarkerPrevious(totalLines+1, PROMPT_MARKER_VALUE)
 end
 
 local function getPromptText()
@@ -84,13 +89,13 @@ local function getNextHistoryLine(forward, promptText)
   if currentHistory == nil then currentHistory = count end
 
   if forward then
-    currentHistory = out:MarkerNext(currentHistory+1, CURRENT_LINE_MARKER_VALUE)
+    currentHistory = out:MarkerNext(currentHistory+1, PROMPT_MARKER_VALUE)
     if currentHistory == -1 then
       currentHistory = count
       return ""
     end
   else
-    currentHistory = out:MarkerPrevious(currentHistory-1, CURRENT_LINE_MARKER_VALUE)
+    currentHistory = out:MarkerPrevious(currentHistory-1, PROMPT_MARKER_VALUE)
     if currentHistory == -1 then
       currentHistory = -1
       return ""
@@ -127,11 +132,11 @@ local function shellPrint(marker, ...)
   local linesAdded = out:GetLineCount() - lines
 
   if marker then
-    if promptLine then out:MarkerDelete(promptLine, CURRENT_LINE_MARKER) end
+    if promptLine then out:MarkerDelete(promptLine, PROMPT_MARKER) end
     for line = insertLineAt, insertLineAt + linesAdded - 1 do
       out:MarkerAdd(line, marker)
     end
-    if promptLine then out:MarkerAdd(promptLine+linesAdded, CURRENT_LINE_MARKER) end
+    if promptLine then out:MarkerAdd(promptLine+linesAdded, PROMPT_MARKER) end
   end
 
   out:EmptyUndoBuffer() -- don't allow the user to undo shell text
@@ -143,14 +148,17 @@ DisplayShell = function (...)
   shellPrint(OUTPUT_MARKER, ...)
 end
 DisplayShellErr = function (...)
-  shellPrint(BREAKPOINT_MARKER, ...)
+  shellPrint(ERROR_MARKER, ...)
+end
+DisplayShellMsg = function (...)
+  shellPrint(MESSAGE_MARKER, ...)
 end
 DisplayShellDirect = function (...)
   shellPrint(nil, ...)
 end
 DisplayShellPrompt = function (...)
   -- don't print anything; just mark the line with a prompt mark
-  out:MarkerAdd(out:GetLineCount()-1, CURRENT_LINE_MARKER)
+  out:MarkerAdd(out:GetLineCount()-1, PROMPT_MARKER)
 end
 
 local function filterTraceError(err, addedret)
@@ -329,7 +337,7 @@ function ShellExecuteCode(code)
 end
 
 local function displayShellIntro()
-  DisplayShellDirect(TR("Welcome to the interactive Lua interpreter.").."\n"
+  DisplayShellMsg(TR("Welcome to the interactive Lua interpreter.").."\n"
     ..TR("Enter Lua code and press Enter to run it.").." "
     ..TR("Use Shift-Enter for multiline code.").."\n"
     ..TR("Use 'clear' to clear the shell output and the history.").." "

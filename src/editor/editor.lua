@@ -333,8 +333,8 @@ function CreateEditor()
   editor:SetMarginType(1, wxstc.wxSTC_MARGIN_SYMBOL)
   editor:SetMarginSensitive(1, true)
 
-  editor:MarkerDefine(BREAKPOINT_MARKER, wxstc.wxSTC_MARK_ROUNDRECT, wx.wxWHITE, wx.wxRED)
-  editor:MarkerDefine(CURRENT_LINE_MARKER, wxstc.wxSTC_MARK_ARROW, wx.wxBLACK, wx.wxGREEN)
+  editor:MarkerDefine(StylesGetMarker("currentline"))
+  editor:MarkerDefine(StylesGetMarker("breakpoint"))
 
   editor:SetMarginWidth(2, 16) -- fold margin
   editor:SetMarginType(2, wxstc.wxSTC_MARGIN_SYMBOL)

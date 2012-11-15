@@ -9,8 +9,9 @@ local errorlog = bottomnotebook.errorlog
 
 -------
 -- setup errorlog
-local INPUT_MARKER = 3
-local INPUT_MARKER_VALUE = 2^INPUT_MARKER
+local MESSAGE_MARKER = StylesGetMarker("message")
+local PROMPT_MARKER = StylesGetMarker("prompt")
+local PROMPT_MARKER_VALUE = 2^PROMPT_MARKER
 
 errorlog:Show(true)
 errorlog:SetFont(ide.font.oNormal)
@@ -18,9 +19,8 @@ errorlog:StyleSetFont(wxstc.wxSTC_STYLE_DEFAULT, ide.font.oNormal)
 errorlog:StyleClearAll()
 errorlog:SetMarginWidth(1, 16) -- marker margin
 errorlog:SetMarginType(1, wxstc.wxSTC_MARGIN_SYMBOL);
-errorlog:MarkerDefine(CURRENT_LINE_MARKER, wxstc.wxSTC_MARK_ARROWS, wx.wxBLACK, wx.wxWHITE)
-errorlog:MarkerDefine(INPUT_MARKER, wxstc.wxSTC_MARK_CHARACTER+string.byte('>'),
-  wx.wxColour(127, 127, 127), wx.wxColour(240, 240, 240))
+errorlog:MarkerDefine(StylesGetMarker("message"))
+errorlog:MarkerDefine(StylesGetMarker("prompt"))
 errorlog:SetReadOnly(true)
 StylesApplyToEditor(ide.config.stylesoutshell,errorlog,ide.font.oNormal,ide.font.oItalic)
 
@@ -46,7 +46,7 @@ function DisplayOutputNoMarker(...)
   errorlog:GotoPos(errorlog:GetLength())
 end
 function DisplayOutput(...)
-  errorlog:MarkerAdd(errorlog:GetLineCount()-1, CURRENT_LINE_MARKER)
+  errorlog:MarkerAdd(errorlog:GetLineCount()-1, MESSAGE_MARKER)
   DisplayOutputNoMarker(...)
 end
 function DisplayOutputLn(...)
@@ -188,7 +188,7 @@ end
 local inputBound -- to track where partial output ends for input editing purposes
 local function getInputLine()
   local totalLines = errorlog:GetLineCount()
-  return errorlog:MarkerPrevious(totalLines+1, INPUT_MARKER_VALUE)
+  return errorlog:MarkerPrevious(totalLines+1, PROMPT_MARKER_VALUE)
 end
 local function getInputText(bound)
   return errorlog:GetTextRange(
@@ -196,8 +196,8 @@ local function getInputText(bound)
 end
 local function updateInputMarker()
   local lastline = errorlog:GetLineCount()-1
-  errorlog:MarkerDeleteAll(INPUT_MARKER)
-  errorlog:MarkerAdd(lastline, INPUT_MARKER)
+  errorlog:MarkerDeleteAll(PROMPT_MARKER)
+  errorlog:MarkerAdd(lastline, PROMPT_MARKER)
   inputBound = #getInputText()
 end
 
@@ -250,8 +250,8 @@ errorlog:Connect(wx.wxEVT_END_PROCESS, function(event)
     if (pid ~= -1) then
       getStreams()
       -- delete markers and set focus to the editor if there is an input marker
-      if errorlog:MarkerPrevious(errorlog:GetLineCount(), INPUT_MARKER_VALUE) > -1 then
-        errorlog:MarkerDeleteAll(INPUT_MARKER)
+      if errorlog:MarkerPrevious(errorlog:GetLineCount(), PROMPT_MARKER_VALUE) > -1 then
+        errorlog:MarkerDeleteAll(PROMPT_MARKER)
         local editor = GetEditor()
         -- check if editor still exists; it may not if the window is closed
         if editor then editor:SetFocus() end
