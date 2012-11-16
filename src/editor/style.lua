@@ -20,41 +20,45 @@ function StylesGetDefault()
   return {
     -- lexer specific (inherit fg/bg from text)
     lexerdef = {fg = {128, 128, 128}},
-    comment = {fg = {0, 127, 0 },bg = {240, 240, 220}, fill= true},
+    comment = {fg = {32, 127, 32}, bg = {250, 250, 240}, fill= true},
     stringtxt = {fg = {127, 0, 127}},
-    stringeol = {fg = {0, 0, 0 },bg = {224, 192, 224}, fill = true, b = true},
-    preprocessor = {fg = {127, 127, 0 }},
-    operator = {fg = {0, 0, 0 }},
-    number = {fg = {90, 100, 0 }},
+    stringeol = {fg = {0, 0, 0}, bg = {224, 192, 224}, fill = true},
+    preprocessor = {fg = {127, 127, 0}},
+    operator = {fg = {0, 0, 0}},
+    number = {fg = {90, 0, 255}},
 
     keywords0 = {fg = {0, 0, 127}, b = true},
-    keywords1 = {fg = {127, 0, 0}},
-    keywords2 = {fg = {0, 127, 0}},
-    keywords3 = {fg = {0, 0, 127}},
-    keywords4 = {fg = {127, 0, 95}},
-    keywords5 = {fg = {35, 95, 175}},
-    keywords6 = {fg = {0, 127, 127}},
-    keywords7 = {fg = {240, 255, 255}},
+    keywords1 = {fg = {127, 0, 0}, b = true},
+    keywords2 = {fg = {0, 127, 0}, b = true},
+    keywords3 = {fg = {0, 0, 127}, b = true},
+    keywords4 = {fg = {127, 0, 95}, b = true},
+    keywords5 = {fg = {35, 95, 175}, b = true},
+    keywords6 = {fg = {0, 127, 127}, b = true},
+    keywords7 = {fg = {240, 255, 255}, b = true},
 
     -- common (inherit fg/bg from text)
     text = nil, -- let os pick
-    linenumber = {fg = {192, 192, 192}},
+    linenumber = {fg = {90, 90, 80}, bg = {240, 240, 240}},
     bracematch = {fg = {0, 0, 255}, b = true},
-    bracemiss = {fg = {255, 0, 0}, b = true},
-    escapechar = nil,
+    bracemiss = {fg = {255, 0, 0 }, b = true},
+    ctrlchar = nil,
     indent = {fg = {192, 192, 192}, bg = {255, 255, 255}},
     calltip = nil,
 
-    -- common special (need custom fg & bg )
+    -- common special (need custom fg & bg)
     calltipbg = nil,
-    sel = nil,
-    caret = nil,
-    caretlinebg = nil,
-    fold = nil,
-    whitespace = {fg = {180, 180, 180}},
+    sel = {bg = {192, 192, 192}},
+    caret = {fg = {0, 0, 0}},
+    caretlinebg = {bg = {240, 240, 230}},
+    fold = {fg = {90, 90, 80}, bg = {250, 250, 250}},
+    whitespace = nil,
 
-    -- indicators
-    fncall = {fg = {175,175,255}, st = wxstc.wxSTC_STYLE_PLAIN},
+    fncall = {fg = {175, 175, 255}, st = wxstc.wxSTC_INDIC_TT},
+
+    -- markup
+    ['|'] = {fg = {127, 0, 127}},
+    ['`'] = {fg = {127, 127, 127}},
+    ['['] = {hs = {32, 32, 127}},
 
     -- markers
     marker = {
@@ -78,10 +82,6 @@ local markers = {
 }
 function StylesGetMarker(marker) return unpack(markers[marker] or {}) end
 
--- used to fill unset bg colors
-local defaultfg = nil
-local defaultbg = nil
-
 local function applymarker(editor,marker,clrfg,clrbg)
   if (clrfg) then
     editor:MarkerSetForeground(marker,clrfg)
@@ -102,16 +102,12 @@ local specialmapping = {
     else
       editor:SetSelBackground(0,wx.wxWHITE)
     end
-
   end,
 
   caret = function(editor,style)
     if (style.fg) then
       editor:SetCaretForeground(wx.wxColour(unpack(style.fg)))
     end
-    --if (style.bg) then
-    -- editor:SetCaretBackground(wx.wxColour(unpack(style.bg)))
-    --end
   end,
 
   caretlinebg = function(editor,style)
@@ -190,6 +186,9 @@ local defaultmapping = {
 }
 
 function StylesApplyToEditor(styles,editor,font,fontitalic,lexerconvert)
+  local defaultfg = styles.text and styles.text.fg and wx.wxColour(unpack(styles.text.fg)) or nil
+  local defaultbg = styles.text and styles.text.bg and wx.wxColour(unpack(styles.text.bg)) or nil
+
   local function applystyle(style,id)
     editor:StyleSetFont(id, style.i and fontitalic or font)
     editor:StyleSetBold(id, style.b or false)
@@ -218,6 +217,7 @@ function StylesApplyToEditor(styles,editor,font,fontitalic,lexerconvert)
       editor:StyleSetBackground(id, style.bg and wx.wxColour(unpack(style.bg)) or defaultbg)
     end
   end
+
   editor:StyleResetDefault()
   editor:SetFont(font)
   if (styles.text) then
@@ -227,18 +227,15 @@ function StylesApplyToEditor(styles,editor,font,fontitalic,lexerconvert)
   end
   editor:StyleClearAll()
 
-  defaultfg = styles.text and styles.text.fg and wx.wxColour(unpack(styles.text.fg)) or nil
-  defaultbg = styles.text and styles.text.bg and wx.wxColour(unpack(styles.text.bg)) or nil
-
   for name,style in pairs(styles) do
     if (specialmapping[name]) then
       specialmapping[name](editor,style)
     elseif (defaultmapping[name]) then
       applystyle(style,defaultmapping[name])
     end
+
     if (lexerconvert and lexerconvert[name]) then
       local targets = lexerconvert[name]
-
       for n,outid in pairs(targets) do
         applystyle(style,outid)
       end
@@ -253,11 +250,13 @@ function StylesApplyToEditor(styles,editor,font,fontitalic,lexerconvert)
     editor:IndicatorSetStyle(0,styles.fncall and styles.fncall.st or wxstc.wxSTC_INDIC_BOX)
     editor:IndicatorSetForeground(0,wx.wxColour(unpack(styles.fncall and styles.fncall.fg or {128,128,128})))
   end
-
-  editor:Colourise(0, -1)
 end
 
 function ReApplySpecAndStyles()
+  -- re-register markup styles as they are special:
+  -- these styles need to be updated as they are based on comment styles
+  if MarkupAddStyles then MarkupAddStyles(ide.config.styles) end
+
   local openDocuments = ide.openDocuments
   for i,doc in pairs(openDocuments) do
     if (doc.editor.spec) then
@@ -273,89 +272,72 @@ function ReApplySpecAndStyles()
   StylesApplyToEditor(ide.config.stylesoutshell,errorlog,ide.font.oNormal,ide.font.oItalic)
 end
 
-function LoadConfigStyle()
+function ApplyStyleConfig(config, style)
+  if not wx.wxIsAbsolutePath(config)
+    then config = MergeFullPath(GetPathWithSep(ide.editorFilename), config) end
+
+  local cfg = {wxstc = wxstc, path = {}, editor = {}, view ={}, acandtip = {}, outputshell = {}, debugger={}}
+  local cfgfn, err = loadfile(config)
+  if not cfgfn then
+    DisplayOutputLn(TR("Error while loading configuration %s: %s"):format(config, err))
+    return
+  end
+
+  setfenv(cfgfn,cfg)
+  cfgfn, err = pcall(cfgfn,style)
+  if not cfgfn then
+    DisplayOutputLn(TR("Error while processing configuration %s: %s"):format(config, err))
+    return
+  end
+
+  -- if no style assigned explicitly, but a table is returned, use it
+  if not (cfg.styles or cfg.stylesoutshell) and type(err) == 'table' then
+    cfg.styles = err
+  end
+
+  if cfg.styles or cfg.stylesoutshell then
+    if (cfg.styles) then
+      ide.config.styles = StylesGetDefault()
+      -- copy
+      for i,s in pairs(cfg.styles) do
+        ide.config.styles[i] = s
+      end
+    end
+    if (cfg.stylesoutshell) then
+      ide.config.stylesoutshell = StylesGetDefault()
+      -- copy
+      for i,s in pairs(cfg.stylesoutshell) do
+        ide.config.stylesoutshell[i] = s
+      end
+    end
+    ReApplySpecAndStyles()
+  end
+end
+
+function LoadStyleConfig()
   local fileDialog = wx.wxFileDialog(ide.frame, "Open Config File",
     "/cfg",
     "",
     "Lua file (*.lua)|*.lua|All files (*)|*",
     wx.wxFD_OPEN + wx.wxFD_FILE_MUST_EXIST)
   if fileDialog:ShowModal() == wx.wxID_OK then
-    local cfg = {wxstc = wxstc, path = {}, editor = {}, view ={}, acandtip = {}, outputshell = {}, debugger={},}
-    local cfgfn,err = loadfile(fileDialog:GetPath())
-    if cfgfn then
-      setfenv(cfgfn,cfg)
-      cfgfn = xpcall(cfgfn,function(err)DisplayOutput("Error while executing configuration file: \n",debug.traceback(err))end)
-    end
-
-    if not (cfgfn and (cfg.styles or cfg.stylesoutshell)) then
-      wx.wxMessageBox("Unable to load config style '"..fileDialog:GetPath().."'.",
-        "Error",
-        wx.wxOK + wx.wxCENTRE, ide.frame)
-    else
-      if (cfg.styles) then
-        ide.config.styles = StylesGetDefault()
-        -- copy
-        for i,s in pairs(cfg.styles) do
-          ide.config.styles[i] = s
-        end
-      end
-      if (cfg.stylesoutshell) then
-        ide.config.stylesoutshell = StylesGetDefault()
-        -- copy
-        for i,s in pairs(cfg.stylesoutshell) do
-          ide.config.stylesoutshell[i] = s
-        end
-      end
-      ReApplySpecAndStyles()
-    end
+    ApplyStyleConfig(fileDialog:GetPath())
   end
   fileDialog:Destroy()
-
 end
 
--- used lexers ?
---[=[
-#define wxSTC_POV_DEFAULT 0
-#define wxSTC_POV_COMMENT 1
-#define wxSTC_POV_COMMENTLINE 2
-#define wxSTC_POV_NUMBER 3
-#define wxSTC_POV_OPERATOR 4
-#define wxSTC_POV_IDENTIFIER 5
-#define wxSTC_POV_STRING 6
-#define wxSTC_POV_STRINGEOL 7
-
-%define wxSTC_C_DEFAULT
-%define wxSTC_C_COMMENT
-%define wxSTC_C_COMMENTLINE
-%define wxSTC_C_COMMENTDOC
-%define wxSTC_C_NUMBER
-%define wxSTC_C_WORD
-%define wxSTC_C_STRING
-%define wxSTC_C_CHARACTER
-%define wxSTC_C_UUID
-%define wxSTC_C_PREPROCESSOR
-%define wxSTC_C_OPERATOR
-%define wxSTC_C_IDENTIFIER
-%define wxSTC_C_STRINGEOL
-%define wxSTC_C_VERBATIM
-%define wxSTC_C_REGEX
-%define wxSTC_C_COMMENTLINEDOC
-%define wxSTC_C_WORD2
-%define wxSTC_C_COMMENTDOCKEYWORD
-%define wxSTC_C_COMMENTDOCKEYWORDERROR
-%define wxSTC_C_GLOBALCLASS
-
-#define wxSTC_LUA_DEFAULT 0
-#define wxSTC_LUA_COMMENT 1
-#define wxSTC_LUA_COMMENTLINE 2
-#define wxSTC_LUA_COMMENTDOC 3
-#define wxSTC_LUA_NUMBER 4
-#define wxSTC_LUA_WORD 5
-#define wxSTC_LUA_STRING 6
-#define wxSTC_LUA_CHARACTER 7
-#define wxSTC_LUA_LITERALSTRING 8
-#define wxSTC_LUA_PREPROCESSOR 9
-#define wxSTC_LUA_OPERATOR 10
-#define wxSTC_LUA_IDENTIFIER 11
-#define wxSTC_LUA_STRINGEOL 12
-]=]
+--[[
+  wxSTC_LUA_DEFAULT 0
+  wxSTC_LUA_COMMENT 1
+  wxSTC_LUA_COMMENTLINE 2
+  wxSTC_LUA_COMMENTDOC 3
+  wxSTC_LUA_NUMBER 4
+  wxSTC_LUA_WORD 5
+  wxSTC_LUA_STRING 6
+  wxSTC_LUA_CHARACTER 7
+  wxSTC_LUA_LITERALSTRING 8
+  wxSTC_LUA_PREPROCESSOR 9
+  wxSTC_LUA_OPERATOR 10
+  wxSTC_LUA_IDENTIFIER 11
+  wxSTC_LUA_STRINGEOL 12
+--]]

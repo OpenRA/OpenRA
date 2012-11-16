@@ -78,9 +78,8 @@ language = "ru"
 styles.text = {bg = {240,240,220}}
 
 -- to change the default color scheme to Tomorrow-based scheme
--- https://github.com/chriskempson/tomorrow-theme
--- supported schemes: TomorrowNight, Tomorrow, TomorrowNightEighties,
--- TomorrowNightBlue, TomorrowNightBright
+-- (https://github.com/chriskempson/tomorrow-theme)
+-- check tomorrow.lua for the list of supported schemes
 local G = ...
 styles = G.loadfile('cfg/tomorrow.lua')('Tomorrow')
 -- also apply the same scheme to Output and Console windows

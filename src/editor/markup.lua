@@ -1,8 +1,6 @@
 -- Copyright (C) Paul Kulchenko 2011-2012
 -- styles for comment markup
 
-local styles = ide.config.styles
-local comment = styles.comment
 local MD_MARK_ITAL = '_' -- italic
 local MD_MARK_BOLD = '**' -- bold
 local MD_MARK_LINK = '[' -- link description start
@@ -15,26 +13,38 @@ local MD_MARK_BOXD = '|' -- highlight
 local MD_MARK_MARK = ' ' -- separator
 local MD_LINK_NEWWINDOW = '+' -- indicator to open a new window for links
 local markup = {
-  [MD_MARK_BOXD] = {st=25, fg={127,0,127}, bg=comment.bg, b=true},
-  [MD_MARK_CODE] = {st=26, fg={127,127,127}, bg=comment.bg, fs=9},
-  [MD_MARK_HEAD] = {st=27, fg=comment.fg, bg=comment.bg, fn="Lucida Console", b=true},
-  [MD_MARK_LINK] = {st=28, fg=comment.fg, bg=comment.bg, u=true, hs={0, 0, 127}},
-  [MD_MARK_BOLD] = {st=29, fg=comment.fg, bg=comment.bg, b=true, fs=11},
-  [MD_MARK_ITAL] = {st=30, fg=comment.fg, bg=comment.bg, i=true},
-  [MD_MARK_MARK] = {st=31, fg=comment.fg, bg=comment.bg, v=false},
+  [MD_MARK_BOXD] = {st=25, fg={127,0,127}, b=true},
+  [MD_MARK_CODE] = {st=26, fg={127,127,127}, fs=9},
+  [MD_MARK_HEAD] = {st=27, fn="Lucida Console", b=true},
+  [MD_MARK_LINK] = {st=28, u=true, hs={32,32,127}},
+  [MD_MARK_BOLD] = {st=29, b=true},
+  [MD_MARK_ITAL] = {st=30, i=true},
+  [MD_MARK_MARK] = {st=31, v=false},
 }
 
 -- allow other editor features to recognize this special markup
 function MarkupIsSpecial(style) return style == 31 end
 function MarkupIsAny(style) return style >= 25 and style <= 31 end
+function MarkupAddStyles(styles)
+  local comment = styles.comment or {}
+  for key,value in pairs(markup) do
+    local style = styles[key] or {}
+    -- copy all style features by value
+    for feature in pairs(value) do
+      style[feature] = style[feature] or value[feature] end
+    style.fg = style.fg or comment.fg
+    style.bg = style.bg or comment.bg
+    styles[key] = style
+  end
+end
 
 local function q(s) return s:gsub('(.)','%%%1') end
 
 local MD_MARK_PTRN = ''  -- combination of all markup marks that can start styling
 for key,value in pairs(markup) do
-  styles[key] = value
   if key ~= MD_MARK_MARK then MD_MARK_PTRN = MD_MARK_PTRN .. q(key) end
 end
+MarkupAddStyles(ide.config.styles)
 
 function MarkupHotspotClick(pos, editor)
   -- check if this is "our" hotspot event

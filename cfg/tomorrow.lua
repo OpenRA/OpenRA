@@ -1,31 +1,26 @@
+-- This is a file that sets color scheme based on Tomorrow format.
+-- Copyright 2011-12 Paul Kulchenko, ZeroBrane LLC
+
+-- Tomorrow colors are from https://github.com/chriskempson/tomorrow-theme
+
 local theme = ...
 local function h2d(n) return 0+('0x'..n) end
 local H = function(c) return {h2d(c:sub(1,2), 16), h2d(c:sub(3,4), 16), h2d(c:sub(5,6), 16)} end
-local reddish = function(c, more)
-  local r,g,b = unpack(c)
-  r = r + more
-  local excess = r - 255
+-- add more of the specified color (keeping all in 0-255 range)
+local mixer = function(c, n, more)
+  if not c or #c == 0 then return c end
+  local c = {c[1], c[2], c[3]} -- create a copy, so it can be modified
+  c[n] = c[n] + more
+  local excess = c[n] - 255
   if excess > 0 then
-    r, g, b = 255, g > excess and g - excess or 0, b > excess and b - excess or 0
+    for clr = 1, 3 do
+      c[clr] = n == clr and 255 or c[clr] > excess and c[clr] - excess or 0
+    end
   end
-  return {r, g, b}
+  return c
 end
 
 local colors = {
-  TomorrowNight = {
-    Background  = H'1d1f21',
-    CurrentLine = H'282a2e',
-    Selection   = H'373b41',
-    Foreground  = H'c5c8c6',
-    Comment     = H'969896',
-    Red         = H'cc6666',
-    Orange      = H'de935f',
-    Yellow      = H'f0c674',
-    Green       = H'b5bd68',
-    Aqua        = H'8abeb7',
-    Blue        = H'81a2be',
-    Purple      = H'b294bb',
-  },
   Tomorrow = {
     Background  = H'ffffff',
     CurrentLine = H'efefef',
@@ -39,6 +34,20 @@ local colors = {
     Aqua        = H'3e999f',
     Blue        = H'4271ae',
     Purple      = H'8959a8',
+  },
+  TomorrowNight = {
+    Background  = H'1d1f21',
+    CurrentLine = H'282a2e',
+    Selection   = H'373b41',
+    Foreground  = H'c5c8c6',
+    Comment     = H'969896',
+    Red         = H'cc6666',
+    Orange      = H'de935f',
+    Yellow      = H'f0c674',
+    Green       = H'b5bd68',
+    Aqua        = H'8abeb7',
+    Blue        = H'81a2be',
+    Purple      = H'b294bb',
   },
   TomorrowNightEighties = {
     Background  = H'2d2d2d',
@@ -85,7 +94,7 @@ local colors = {
 }
 
 local C = colors[theme] or colors.Tomorrow
-local styles = {
+return {
   -- wxstc.wxSTC_LUA_DEFAULT
   lexerdef = {fg = C.Foreground},
   -- wxstc.wxSTC_LUA_COMMENT, wxstc.wxSTC_LUA_COMMENTLINE, wxstc.wxSTC_LUA_COMMENTDOC
@@ -114,7 +123,7 @@ local styles = {
   -- common (inherit fg/bg from text)
   -- wxstc.wxSTC_LUA_IDENTIFIER
   text = {fg = C.Foreground, bg = C.Background},
-  linenumber = {fg = C.Foreground},
+  linenumber = {fg = C.Comment},
   bracematch = {fg = C.Orange, b = true},
   bracemiss = {fg = C.Red, b = true},
   ctrlchar = nil,
@@ -140,12 +149,15 @@ local styles = {
     wxSTC_INDIC_ROUNDBOX Rounded Box (not suppored in the current version?)
   --]]
 
+  -- markup
+  ['['] = {hs = mixer(C.Comment, 3, 64)},
+  ['|'] = {fg = mixer(mixer(C.Comment, 1, 64), 3, 64)},
+
+  -- markers
   marker = {
     message = {bg = C.Selection},
     output = {bg = C.CurrentLine},
     prompt = {fg = C.Foreground, bg = C.Background},
-    error = {bg = reddish(C.Background, 32)},
+    error = {bg = mixer(C.Background, 1, 32)},
   },
 }
-
-return styles
