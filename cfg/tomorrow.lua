@@ -2,6 +2,7 @@
 -- Copyright 2011-12 Paul Kulchenko, ZeroBrane LLC
 
 -- Tomorrow colors are from https://github.com/chriskempson/tomorrow-theme
+-- Zenburn colors are from https://github.com/jnurmine/Zenburn/blob/master/colors/zenburn.vim (contributed by Srdjan Marković)
 
 local theme = ...
 local function h2d(n) return 0+('0x'..n) end
@@ -90,6 +91,20 @@ local colors = {
     Aqua        = H'70c0b1',
     Blue        = H'7aa6da',
     Purple      = H'c397d8',
+  },
+  Zenburn = {
+    Background  = H'3f3f3f',
+    CurrentLine = H'363636',
+    Selection   = H'1f1f1f',
+    Foreground  = H'dcdccc',
+    Comment     = H'7f9f7f',
+    Red         = H'8cd0d3',
+    Orange      = H'dfaf8f',
+    Yellow      = H'e3ceab',
+    Green       = H'cc9393',
+    Aqua        = H'dca3a3',
+    Blue        = H'f0dfaf',
+    Purple      = H'efef8f',
   },
 }
 
