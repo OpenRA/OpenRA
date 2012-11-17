@@ -127,19 +127,19 @@ digits-ordos: chrome-ordos.png
 
 tabs-selected: tabs.png
 	atreides-Building: 0,0,27,41
-	atreides-Defense: 0,40,27,41
+	atreides-Armor: 0,40,27,41
 	atreides-Infantry: 0,80,27,41
 	atreides-Vehicle: 0,120,27,41
 	atreides-Aircraft: 0,160,27,41
 	atreides-Starport: 0,200,27,41
 	harkonnen-Building: 80,0,27,41
-	harkonnen-Defense: 80,40,27,41
+	harkonnen-Armor: 80,40,27,41
 	harkonnen-Infantry: 80,80,27,41
 	harkonnen-Vehicle: 80,120,27,41
 	harkonnen-Aircraft: 80,160,27,41
 	harkonnen-Starport: 80,200,27,41
 	ordos-Building: 160,0,27,41
-	ordos-Defense: 160,40,27,41
+	ordos-Armor: 160,40,27,41
 	ordos-Infantry: 160,80,27,41
 	ordos-Vehicle: 160,120,27,41
 	ordos-Aircraft: 160,160,27,41
@@ -147,19 +147,19 @@ tabs-selected: tabs.png
 
 tabs-ready: tabs.png
 	atreides-Building: 27,0,27,41
-	atreides-Defense: 27,40,27,41
+	atreides-Armor: 27,40,27,41
 	atreides-Infantry: 27,80,27,41
 	atreides-Vehicle: 27,120,27,41
 	atreides-Aircraft: 27,160,27,41
 	atreides-Starport: 27,200,27,41
 	harkonnen-Building: 107,0,27,41
-	harkonnen-Defense: 107,40,27,41
+	harkonnen-Armor: 107,40,27,41
 	harkonnen-Infantry: 107,80,27,41
 	harkonnen-Vehicle: 107,120,27,41
 	harkonnen-Aircraft: 107,160,27,41
 	harkonnen-Starport: 107,200,27,41
 	ordos-Building: 187,0,27,41
-	ordos-Defense: 187,40,27,41
+	ordos-Armor: 187,40,27,41
 	ordos-Infantry: 187,80,27,41
 	ordos-Vehicle: 187,120,27,41
 	ordos-Aircraft: 187,160,27,41
@@ -167,19 +167,19 @@ tabs-ready: tabs.png
 
 tabs-normal: tabs.png
 	atreides-Building: 54,0,27,41
-	atreides-Defense: 54,40,27,41
+	atreides-Armor: 54,40,27,41
 	atreides-Infantry: 54,80,27,41
 	atreides-Vehicle: 54,120,27,41
 	atreides-Aircraft: 54,160,27,41
 	atreides-Starport: 54,200,27,41
 	harkonnen-Building: 134,0,27,41
-	harkonnen-Defense: 134,40,27,41
+	harkonnen-Armor: 134,40,27,41
 	harkonnen-Infantry: 134,80,27,41
 	harkonnen-Vehicle: 134,120,27,41
 	harkonnen-Aircraft: 134,160,27,41
 	harkonnen-Starport: 134,200,27,41
 	ordos-Building: 214,0,27,41
-	ordos-Defense: 214,40,27,41
+	ordos-Armor: 214,40,27,41
 	ordos-Infantry: 214,80,27,41
 	ordos-Vehicle: 214,120,27,41
 	ordos-Aircraft: 214,160,27,41
