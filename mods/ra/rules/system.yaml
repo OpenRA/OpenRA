@@ -182,7 +182,7 @@ Player:
 			harv: 10%
 		SquadSize: 7
 	PlayerColorPalette:
-		BasePalette: terrain
+		BasePalette: player
 		RemapIndex: 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95
 	DebugResourceCash:
 	DebugResourceOre:
@@ -208,6 +208,9 @@ World:
 		Maximum: 3
 		SpawnInterval: 120
 		WaterChance: .2
+	PlayerPaletteFromCurrentTileset:
+		Name: player
+		ShadowIndex: 4
 	PaletteFromCurrentTileset:
 		Name: terrain
 		ShadowIndex: 3,4

@@ -8,6 +8,7 @@ Folders:
 	.
 	./mods/ra
 	./mods/ra/bits
+	./mods/ra/packages
 	./mods/ra/uibits
 	~^/Content/ra
 
@@ -24,6 +25,7 @@ Packages:
 	temperat.mix
 	snow.mix
 	interior.mix
+	desert.mix
 	~scores.mix
 	~movies1.mix
 	~movies2.mix
@@ -79,6 +81,7 @@ TileSets:
 	mods/ra/tilesets/snow.yaml
 	mods/ra/tilesets/interior.yaml
 	mods/ra/tilesets/temperat.yaml
+	mods/ra/tilesets/desert.yaml
 
 Music:
 	mods/ra/music.yaml
