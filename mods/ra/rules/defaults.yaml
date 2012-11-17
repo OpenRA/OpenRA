@@ -352,3 +352,19 @@
 		HP: 750
 	ProximityCaptor:
 		Types:Bridge
+#Desert Terrain Expansion:
+^Rock:
+	Tooltip:
+		Name: Rock
+	RenderBuilding:
+		Palette: terrain
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+	AppearsOnRadar:
+	RadarColorFromTerrain:
+		Terrain: Tree
+	EditorAppearance:
+		RelativeToTopLeft: yes
+	ProximityCaptor:
+		Types:Tree

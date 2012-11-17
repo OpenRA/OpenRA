@@ -2328,3 +2328,32 @@ ctnk:
 	idle:
 		Start: 0
 		Facings: 32
+
+#Desert Terrain Expansion 
+rock1:
+	idle:
+		Start: 0
+
+rock2:
+	idle:
+		Start: 0
+
+rock3:
+	idle:
+		Start: 0
+
+rock4:
+	idle:
+		Start: 0
+
+rock5:
+	idle:
+		Start: 0
+
+rock6:
+	idle:
+		Start: 0
+
+rock7:
+	idle:
+		Start: 0
