@@ -1,3 +1,13 @@
+90mm:
+	idle: 
+		Start: 0
+		Facings: 32
+
+laserfire:
+	idle: veh-hit2
+		Start: 0
+		Length: *
+
 dmcv:
 	idle:
 		Start: 0
@@ -8,9 +18,10 @@ harvester:
 		Start: 0
 		Facings: 32
 	harvest:
-		Start: 0
-		Length: 0
+		Start: 32
+		Length: 8
 		Facings: 8
+		Tick: 150
 	dock: unload
 		Start: 0
 		Length: 10
@@ -18,35 +29,7 @@ harvester:
 		Start: 10
 		Length: 1
 
-walla:
-	idle:
-		Start: 0
-		Length: 16
-	scratched-idle:
-		Start: 0
-		Length: 16
-	damaged-idle:
-		Start: 16
-		Length: 16
-	critical-idle:
-		Start: 16
-		Length: 16
-
-wallh:
-	idle:
-		Start: 0
-		Length: 16
-	scratched-idle:
-		Start: 0
-		Length: 16
-	damaged-idle:
-		Start: 16
-		Length: 16
-	critical-idle:
-		Start: 16
-		Length: 16
-
-wallo:
+wall:
 	idle:
 		Start: 0
 		Length: 16
@@ -73,7 +56,7 @@ orni:
 		Start: 0
 		Facings: 32
 		Length: 3
-		Tick: 160
+		Tick: 90
 
 trike:
 	idle:
@@ -82,11 +65,22 @@ trike:
 	unload:
 		Start: 0
 		Facings: 32
+	muzzle: minigun
+		Start: 0
+		Length: 6
+		Facings: 8
 
 quad:
 	idle:
 		Start: 0
 		Facings: 32
+	unload:
+		Start: 0
+		Facings: 32
+	muzzle: minigun
+		Start: 0
+		Length: 6
+		Facings: 8
 
 siegetank:
 	idle:
@@ -106,7 +100,7 @@ sonictank:
 		Start: 0
 		Facings: 32
 
-guntowera:
+guntower:
 	idle:
 		Start: 0
 		Facings: 1
@@ -122,11 +116,11 @@ guntowera:
 	damaged-recoil:
 		Start: 0
 		Facings: 1
-	turret: gunturreta
+	turret: gunturret
 		Start: 0
 		Facings: 32
 
-guntowerh:
+rockettower:
 	idle:
 		Start: 0
 		Facings: 1
@@ -142,86 +136,7 @@ guntowerh:
 	damaged-recoil:
 		Start: 0
 		Facings: 1
-	turret: gunturreth
-		Start: 0
-		Facings: 32
-
-guntowero:
-	idle:
-		Start: 0
-		Facings: 1
-	recoil:
-		Start: 0
-		Facings: 1
-	make: silomake
-		Start: 0
-		Length: *
-	damaged-idle:
-		Start: 0
-		Facings: 1
-	damaged-recoil:
-		Start: 0
-		Facings: 1
-	turret: gunturreto
-		Start: 0
-		Facings: 32
-
-rockettowera:
-	idle:
-		Start: 0
-		Facings: 1
-	recoil:
-		Start: 0
-		Facings: 1
-	make: silomake
-		Start: 0
-		Length: *
-	damaged-idle:
-		Start: 0
-		Facings: 1
-	damaged-recoil:
-		Start: 0
-		Facings: 1
-	turret: rocketturreta
-		Start: 0
-		Facings: 32
-
-rockettowerh:
-	idle:
-		Start: 0
-		Facings: 1
-	recoil:
-		Start: 0
-		Facings: 1
-	make: silomake
-		Start: 0
-		Length: *
-	damaged-idle:
-		Start: 0
-		Facings: 1
-	damaged-recoil:
-		Start: 0
-		Facings: 1
-	turret: rocketturreth
-		Start: 0
-		Facings: 32
-rockettowero:
-	idle:
-		Start: 0
-		Facings: 1
-	recoil:
-		Start: 0
-		Facings: 1
-	make: silomake
-		Start: 0
-		Length: *
-	damaged-idle:
-		Start: 0
-		Facings: 1
-	damaged-recoil:
-		Start: 0
-		Facings: 1
-	turret: rocketturreto
+	turret: rocketturret
 		Start: 0
 		Facings: 32
 
@@ -244,7 +159,7 @@ rifle:
 		Start: 8
 		Length: 6
 		Facings: 8
-		Tick: 120
+		Tick: 110
 	shoot:
 		Start: 56
 		Length: 5
@@ -258,7 +173,7 @@ rifle:
 		Start: 112
 		Length: 3
 		Facings: 8
-		Tick: 120
+		Tick: 110
 	standup-0:
 		Start: 96
 		Length: 1
@@ -270,27 +185,41 @@ rifle:
 		Facings: 8
 		Tick: 120
 	die1: rifledeath
-		Start: 0
-		Length: 5
-	die2: rifledeath
-		Start: 5
-		Length: 7
-	die3: rifledeath
 		Start: 12
-		Length: 7
+		Length: 12
+		Tick: 80
+	die2: rifledeath
+		Start: 12
+		Length: 12
+		Tick: 80
+	die3: rifledeath
+		Start: 36
+		Length: 12
+		Tick: 80
 	die4: rifledeath
-		Start: 19
-		Length: 7
+		Start: 24
+		Length: 12
+		Tick: 80
 	die5: rifledeath
-		Start: 26
-		Length: 7
+		Start: 0
+		Length: 12
+		Tick: 80
 	die6: rifledeath
-		Start: 26
-		Length: 7
+		Start: 12
+		Length: 12
+		Tick: 80
 	die-crushed: rifledeath
-		Start: 54
-		Length: 22
-		Tick: 1600
+		Start: 48
+		Length: 12
+		Tick: 160
+	idle1: rifledeath
+		Start: 60
+		Length: 8
+		Tick: 160
+	idle2: rifledeath
+		Start: 68
+		Length: 8
+		Tick: 160
 
 bazooka:
 	stand:
@@ -330,28 +259,42 @@ bazooka:
 		Length: 5
 		Facings: 8
 		Tick: 120
-	die1: rifledeath
-		Start: 0
-		Length: 5
-	die2: rifledeath
-		Start: 5
-		Length: 7
-	die3: rifledeath
-		Start: 12
-		Length: 7
-	die4: rifledeath
-		Start: 19
-		Length: 7
-	die5: rifledeath
-		Start: 26
-		Length: 7
-	die6: rifledeath
-		Start: 26
-		Length: 7
-	die-crushed: rifledeath
-		Start: 54
-		Length: 22
-		Tick: 1600
+	die1:
+		Start: 176
+		Length: 8
+		Tick: 120
+	die2:
+		Start: 184
+		Length: 8
+		Tick: 120
+	die3:
+		Start: 192
+		Length: 8
+		Tick: 120
+	die4:
+		Start: 200
+		Length: 8
+		Tick: 120
+	die5:
+		Start: 176
+		Length: 8
+		Tick: 120
+	die6:
+		Start: 184
+		Length: 8
+		Tick: 120
+	die-crushed:
+		Start: 208
+		Length: 8
+		Tick: 240
+	idle1:
+		Start: 216
+		Length: 8
+		Tick: 160
+	idle2:
+		Start: 224
+		Length: 8
+		Tick: 160
 
 engineer:
 	stand:
@@ -364,29 +307,35 @@ engineer:
 		Start: 8
 		Length: 6
 		Facings: 8
-		Tick: 120
+		Tick: 110
 	die1: rifledeath
-		Start: 0
-		Length: 5
-	die2: rifledeath
-		Start: 5
-		Length: 7
-	die3: rifledeath
 		Start: 12
-		Length: 7
+		Length: 12
+		Tick: 80
+	die2: rifledeath
+		Start: 12
+		Length: 12
+		Tick: 80
+	die3: rifledeath
+		Start: 36
+		Length: 12
+		Tick: 80
 	die4: rifledeath
-		Start: 19
-		Length: 7
+		Start: 24
+		Length: 12
+		Tick: 80
 	die5: rifledeath
-		Start: 26
-		Length: 7
+		Start: 0
+		Length: 12
+		Tick: 80
 	die6: rifledeath
-		Start: 26
-		Length: 7
+		Start: 12
+		Length: 12
+		Tick: 80
 	die-crushed: rifledeath
-		Start: 54
-		Length: 22
-		Tick: 1600
+		Start: 48
+		Length: 12
+		Tick: 160
 
 thumper:
 	stand:
@@ -400,28 +349,38 @@ thumper:
 		Length: 6
 		Facings: 8
 		Tick: 120
+	heal:
+		Start: 60
+		Length: 4
+		Tick: 480
 	die1: rifledeath
-		Start: 0
-		Length: 5
-	die2: rifledeath
-		Start: 5
-		Length: 7
-	die3: rifledeath
 		Start: 12
-		Length: 7
+		Length: 12
+		Tick: 80
+	die2: rifledeath
+		Start: 12
+		Length: 12
+		Tick: 80
+	die3: rifledeath
+		Start: 36
+		Length: 12
+		Tick: 80
 	die4: rifledeath
-		Start: 19
-		Length: 7
+		Start: 24
+		Length: 12
+		Tick: 80
 	die5: rifledeath
-		Start: 26
-		Length: 7
+		Start: 0
+		Length: 12
+		Tick: 80
 	die6: rifledeath
-		Start: 26
-		Length: 7
+		Start: 12
+		Length: 12
+		Tick: 80
 	die-crushed: rifledeath
-		Start: 54
-		Length: 22
-		Tick: 1600
+		Start: 48
+		Length: 12
+		Tick: 160
 
 thumping:
 	idle: thumper
@@ -448,28 +407,58 @@ fremen:
 		Length: 6
 		Facings: 8
 		Tick: 120
-	die1: rifledeath
-		Start: 0
+	shoot:
+		Start: 56
 		Length: 5
-	die2: rifledeath
-		Start: 5
-		Length: 7
-	die3: rifledeath
+		Facings: 8
+		Tick: 120
+	prone-stand:
+		Start: 104
+		Length: 1
+		Facings: 8
+	prone-run:
+		Start: 112
+		Length: 3
+		Facings: 8
+		Tick: 120
+	standup-0:
+		Start: 96
+		Length: 1
+		Facings: 8
+		Tick: 120
+	prone-shoot:
+		Start: 136
+		Length: 5
+		Facings: 8
+		Tick: 120
+	die1: rifledeath
 		Start: 12
-		Length: 7
+		Length: 12
+		Tick: 80
+	die2: rifledeath
+		Start: 12
+		Length: 12
+		Tick: 80
+	die3: rifledeath
+		Start: 36
+		Length: 12
+		Tick: 80
 	die4: rifledeath
-		Start: 19
-		Length: 7
+		Start: 24
+		Length: 12
+		Tick: 80
 	die5: rifledeath
-		Start: 26
-		Length: 7
+		Start: 0
+		Length: 12
+		Tick: 80
 	die6: rifledeath
-		Start: 26
-		Length: 7
+		Start: 12
+		Length: 12
+		Tick: 80
 	die-crushed: rifledeath
-		Start: 54
-		Length: 22
-		Tick: 1600
+		Start: 48
+		Length: 12
+		Tick: 160
 
 saboteur:
 	stand:
@@ -482,29 +471,35 @@ saboteur:
 		Start: 8
 		Length: 4
 		Facings: 8
-		Tick: 120
+		Tick: 100
 	die1: rifledeath
-		Start: 0
-		Length: 5
-	die2: rifledeath
-		Start: 5
-		Length: 7
-	die3: rifledeath
 		Start: 12
-		Length: 7
+		Length: 12
+		Tick: 80
+	die2: rifledeath
+		Start: 12
+		Length: 12
+		Tick: 80
+	die3: rifledeath
+		Start: 36
+		Length: 12
+		Tick: 80
 	die4: rifledeath
-		Start: 19
-		Length: 7
+		Start: 24
+		Length: 12
+		Tick: 80
 	die5: rifledeath
-		Start: 26
-		Length: 7
+		Start: 0
+		Length: 12
+		Tick: 80
 	die6: rifledeath
-		Start: 26
-		Length: 7
+		Start: 12
+		Length: 12
+		Tick: 80
 	die-crushed: rifledeath
-		Start: 54
-		Length: 22
-		Tick: 1600
+		Start: 48
+		Length: 12
+		Tick: 160
 
 sardaukar:
 	stand:
@@ -515,31 +510,61 @@ sardaukar:
 		Facings: 8
 	run:
 		Start: 8
-		Length: 4
+		Length: 6
+		Facings: 8
+		Tick: 120
+	shoot:
+		Start: 56
+		Length: 5
+		Facings: 8
+		Tick: 120
+	prone-stand:
+		Start: 104
+		Length: 1
+		Facings: 8
+	prone-run:
+		Start: 112
+		Length: 3
+		Facings: 8
+		Tick: 120
+	standup-0:
+		Start: 96
+		Length: 1
+		Facings: 8
+		Tick: 120
+	prone-shoot:
+		Start: 136
+		Length: 5
 		Facings: 8
 		Tick: 120
 	die1: rifledeath
-		Start: 0
-		Length: 5
-	die2: rifledeath
-		Start: 5
-		Length: 7
-	die3: rifledeath
 		Start: 12
-		Length: 7
+		Length: 12
+		Tick: 80
+	die2: rifledeath
+		Start: 12
+		Length: 12
+		Tick: 80
+	die3: rifledeath
+		Start: 36
+		Length: 12
+		Tick: 80
 	die4: rifledeath
-		Start: 19
-		Length: 7
+		Start: 24
+		Length: 12
+		Tick: 80
 	die5: rifledeath
-		Start: 26
-		Length: 7
+		Start: 0
+		Length: 12
+		Tick: 80
 	die6: rifledeath
-		Start: 26
-		Length: 7
+		Start: 12
+		Length: 12
+		Tick: 80
 	die-crushed: rifledeath
-		Start: 54
-		Length: 22
-		Tick: 1600
+		Start: 48
+		Length: 12
+		Tick: 160
 
 conyarda:
 	idle:
@@ -549,23 +574,31 @@ conyarda:
 		Length: *
 	damaged-idle:
 		Start: 1
-#	build: cranea
-#		Start: 0
-#		Length: 14
-#		Tick: 75
-#	damaged-build: cranea
-#		Start: 0
-#		Length: 14
-#		Tick: 75
+	#build: cranea
+	#	Start: 0
+	#	Length: 14
+	#	Tick: 75
+	#damaged-build: cranea
+	#	Start: 0
+	#	Length: 14
+	#	Tick: 75
 
-repaira:
+repair:
 	idle:
 		Start: 0
+	active:
+		Start: 0
+		Length: 10
+		Tick: 60
+	damaged-active:
+		Start: 10
+		Length: 10
+		Tick: 60
 	make: repairmake
 		Start: 0
 		Length: *
 	damaged-idle:
-		Start: 1
+		Start: 10
 
 starporta:
 	idle:
@@ -584,11 +617,13 @@ starporta:
 pwra:
 	idle:
 		Start: 0
+		Length: 6
+		Tick: 160
 	make: wtrpmake
 		Start: 0
 		Length: *
 	damaged-idle:
-		Start: 1
+		Start: 6
 
 barra:
 	idle:
@@ -648,14 +683,18 @@ hightecha:
 	damaged-idle:
 		Start: 1
 
-researcha:
+research:
 	idle:
 		Start: 0
+		Length: 20
+		Tick: 80
 	make: researchmake
 		Start: 0
 		Length: *
 	damaged-idle:
-		Start: 1
+		Start: 20
+		Length: 20
+		Tick: 80
 
 palacea:
 	idle:
@@ -724,15 +763,6 @@ conyardh:
 	damaged-idle:
 		Start: 1
 
-repairh:
-	idle:
-		Start: 0
-	make: repairmake
-		Start: 0
-		Length: *
-	damaged-idle:
-		Start: 1
-
 starporth:
 	idle:
 		Start: 0
@@ -750,11 +780,13 @@ starporth:
 pwrh:
 	idle:
 		Start: 0
+		Length: 6
+		Tick: 160
 	make: wtrpmake
 		Start: 0
 		Length: *
 	damaged-idle:
-		Start: 1
+		Start: 6
 
 barrh:
 	idle:
@@ -814,15 +846,6 @@ hightechh:
 	damaged-idle:
 		Start: 1
 
-researchh:
-	idle:
-		Start: 0
-	make: researchmake
-		Start: 0
-		Length: *
-	damaged-idle:
-		Start: 1
-
 palaceh:
 	idle:
 		Start: 0
@@ -830,8 +853,15 @@ palaceh:
 		Start: 0
 		Length: *
 	damaged-idle:
+		Start: 7
+	active:
 		Start: 1
-
+		Length: 6
+		Tick: 160
+	damaged-active:
+		Start: 8
+		Length: 6
+		Tick: 160
 
 lighth:
 	idle:
@@ -895,15 +925,6 @@ conyardo:
 	damaged-idle:
 		Start: 1
 
-repairo:
-	idle:
-		Start: 0
-	make: repairmake
-		Start: 0
-		Length: *
-	damaged-idle:
-		Start: 1
-
 starporto:
 	idle:
 		Start: 0
@@ -921,11 +942,13 @@ starporto:
 pwro:
 	idle:
 		Start: 0
+		Length: 6
+		Tick: 160
 	make: wtrpmake
 		Start: 0
 		Length: *
 	damaged-idle:
-		Start: 1
+		Start: 6
 
 barro:
 	idle:
@@ -980,15 +1003,6 @@ hightecho:
 	idle:
 		Start: 0
 	make: highmake
-		Start: 0
-		Length: *
-	damaged-idle:
-		Start: 1
-
-researcho:
-	idle:
-		Start: 0
-	make: researchmake
 		Start: 0
 		Length: *
 	damaged-idle:
@@ -1059,6 +1073,10 @@ raider:
 	unload:
 		Start: 0
 		Facings: 32
+	muzzle: minigun
+		Start: 0
+		Length: 6
+		Facings: 8
 
 deviatortank:
 	idle:
@@ -1145,9 +1163,14 @@ explosion:
 	napalm: napalm2
 		Start: 0
 		Length: *
+	napalm2: napalm2
+		Start: 0
+		Length: *
+		Tick: 60
 	nuke: atomsfx
 		Start: 0
 		Length: *
+		Tick: 60
 	med_splash: h2o_exp2
 		Start: 0
 		Length: *
@@ -1354,3 +1377,17 @@ plates:
 	critical-idle:
 		Start: 0
 		Length: 6
+
+fire:
+	1: fire1
+		Start: 0
+		Length: *
+	2: fire2
+		Start: 0
+		Length: *
+	3: fire3
+		Start: 0
+		Length: *
+	4: fire4
+		Start: 0
+		Length: *

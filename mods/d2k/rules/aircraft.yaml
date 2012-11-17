@@ -1,8 +1,5 @@
 ^CARRYALL:
 	Inherits: ^Helicopter
-	Buildable:
-		Queue: Aircraft
-		BuildPaletteOrder: 110
 	Valued:
 		Cost: 1200
 	Tooltip:
@@ -10,19 +7,25 @@
 		Description: Fast drop ship.\n  Unarmed
 		Icon: carryallicon
 	Health:
-		HP: 500
+		HP: 250
 	Armor: 
 		Type: Light
 	RevealsShroud:
 		Range: 12
 	Helicopter:
 		InitialFacing: 0
-		ROT: 5
-		Speed: 18
+		ROT: 4
+		Speed: 20
 		LandableTerrainTypes: Sand, Rock, Transition, Spice, Dune
-		RepairBuildings: repaira,repairo,repairh
+		RepairBuildings: repair
 		RearmBuildings: starporta,starporto,starporth
 		MinimalLandAltitude: 25
+	SmokeTrailWhenDamaged@0:
+		Offset: 15, -12
+		Interval: 3
+	SmokeTrailWhenDamaged@1:
+		Offset: -15, -12
+		Interval: 3
 	RenderUnit:
 	RenderCargo:
 		RelativeAltitude: 20
@@ -35,7 +38,7 @@
 	FallsToEarth:
 		Spins: no
 		Moves: yes
-		Explosion: UnitExplode
+		Explosion: UnitExplodeScale
 
 FRIGATE:
 	ParaDrop:
@@ -46,18 +49,20 @@ FRIGATE:
 		Description: Supply spacecraft
 	Plane:
 		ROT: 5
-		Speed: 35
-		RepairBuildings: repaira,repairo,repairh
+		Speed: 30
+		RepairBuildings: repair
 		RearmBuildings: starporta,starporto,starporth
 	Health:
-		HP: 25
+		HP: 500
+	-TargetableAircraft:
+	-AppearsOnRadar:
 	Armor:
 		Type: Heavy
 	RenderUnit:
 		Image: frigate
 	WithShadow:
 	Cargo:
-		MaxWeight: 10
+		MaxWeight: 20
 		PipCount: 10
 	Invulnerable:
 	-Selectable:
@@ -66,12 +71,6 @@ FRIGATE:
 
 ORNI:
 	Inherits: ^Helicopter
-	Buildable:
-		Queue: Aircraft
-		BuildPaletteOrder: 90
-		Prerequisites: researcha
-		BuiltAt: hightecha
-		Owner: atreides
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -90,9 +89,9 @@ ORNI:
 	Helicopter:
 		LandWhenIdle: false
 		InitialFacing: 20
-		ROT: 4
-		Speed: 20
-		RepairBuildings: repaira,repairo,repairh
+		ROT: 6
+		Speed: 30
+		RepairBuildings: repair
 		RearmBuildings: starporta,starporto,starporth
 	RenderUnit:
 	WithShadow:
@@ -100,8 +99,8 @@ ORNI:
 		Bounds: 38,32,0,0
 	FallsToEarth:
 		Spins: no
-		Moves: no
-		Explosion: UnitExplode
+		Moves: yes
+		Explosion: UnitExplodeScale
 	SmokeTrailWhenDamaged:
 		Offset: 0,-10
 
@@ -111,16 +110,16 @@ ORNI.bomber:
 		Weapon: Napalm
 	Inherits: ^Plane
 	Health:
-		HP: 60
+		HP: 100
 	Armor:
 		Type: Light
 	Plane:
 		ROT: 5
-		Speed: 25
-		RepairBuildings: repaira,repairo,repairh
+		Speed: 35
+		RepairBuildings: repair
 		RearmBuildings: starporta,starporto,starporth
 	LimitedAmmo:
-		Ammo: 8
+		Ammo: 5
 	RenderUnit:
 		Image: orni
 	WithShadow:
@@ -131,23 +130,29 @@ ORNI.bomber:
 	FallsToEarth:
 		Spins: no
 		Moves: yes
-		Explosion: UnitExplode
+		Explosion: UnitExplodeScale
 	SmokeTrailWhenDamaged:
 		Offset: 0,-10
 
 CARRYALL.infantry:
 	ParaDrop:
-		LZRange: 4
+		LZRange: 5
 	Inherits: ^Plane
 	Health:
-		HP: 60
+		HP: 200
 	Armor:
 		Type: Light
 	Plane:
-		ROT: 5
+		ROT: 4
 		Speed: 25
-		RepairBuildings: repaira,repairo,repairh
+		RepairBuildings: repair
 		RearmBuildings: starporta,starporto,starporth
+	SmokeTrailWhenDamaged@0:
+		Offset: 15, -12
+		Interval: 3
+	SmokeTrailWhenDamaged@1:
+		Offset: -15, -12
+		Interval: 3
 	RenderUnit:
 		Image: carryall
 	WithShadow:
@@ -161,4 +166,11 @@ CARRYALL.infantry:
 	FallsToEarth:
 		Spins: no
 		Moves: yes
-		Explosion: UnitExplode
+		Explosion: UnitExplodeScale
+
+BADR:
+	Inherits: CARRYALL.infantry
+	ParaDrop:
+		LZRange: 4
+	Tooltip:
+		Name: Crate Carryall
