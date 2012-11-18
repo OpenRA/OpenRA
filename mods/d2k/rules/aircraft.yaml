@@ -102,8 +102,6 @@ ORNI:
 		Spins: no
 		Moves: no
 		Explosion: UnitExplode
-	SmokeTrailWhenDamaged:
-		Offset: 0,-10
 
 ORNI.bomber:
 	CarpetBomb:
@@ -132,12 +130,11 @@ ORNI.bomber:
 		Spins: no
 		Moves: yes
 		Explosion: UnitExplode
-	SmokeTrailWhenDamaged:
-		Offset: 0,-10
 
 CARRYALL.infantry:
 	ParaDrop:
 		LZRange: 4
+		ChuteSound:
 	Inherits: ^Plane
 	Health:
 		HP: 60
