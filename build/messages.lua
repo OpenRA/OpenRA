@@ -9,6 +9,11 @@
 -- You can also update an existing file with new messages by running:
 --  > bin\lua.exe build/messages.lua cfg/i18n/ru.lua
 
+local iswindows = os.getenv('WINDIR') or (os.getenv('OS') or ''):match('[Ww]indows')
+if iswindows or not pcall(require, "wx") then
+  package.cpath = (iswindows and 'bin/?.dll;' or 'bin/lib?.dylib;') .. package.cpath
+end
+
 require "wx"
 
 function FileSysGet(dir,spec)
