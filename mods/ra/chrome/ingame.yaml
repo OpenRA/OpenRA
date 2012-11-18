@@ -287,6 +287,18 @@ Container@OBSERVER_ROOT:
 			Text:Options
 			Font:Bold
 			Key:escape
+		Background@RADAR_BG:
+			X:WINDOW_RIGHT-255
+			Y:5
+			Width:250
+			Height:250
+			Children:
+				Radar@INGAME_RADAR:
+					X:10
+					Y:10
+					Width:PARENT_RIGHT-19
+					Height:PARENT_BOTTOM-19
+					WorldInteractionController:INTERACTION_CONTROLLER
 		WorldTooltip:
 		Background@INGAME_OPTIONS_BG:
 			X:(WINDOW_RIGHT - WIDTH)/2
