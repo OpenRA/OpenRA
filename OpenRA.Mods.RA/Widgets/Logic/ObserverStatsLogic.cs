@@ -8,15 +8,13 @@
  */
 #endregion
 
+using System;
+using System.Drawing;
 using System.Linq;
+using OpenRA.Mods.RA.Buildings;
+using OpenRA.Network;
 using OpenRA.Traits;
 using OpenRA.Widgets;
-using OpenRA.Network;
-using System.Collections.Generic;
-using OpenRA.Mods.RA.Buildings;
-using System.Drawing;
-using OpenRA.Graphics;
-using System;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
 {
