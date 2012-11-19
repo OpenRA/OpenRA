@@ -459,7 +459,7 @@ Container@OBSERVER_ROOT:
 								ScrollItem@TEAM_TEMPLATE:
 									X:0
 									Y:0
-									Width:PARENT_RIGHT-30
+									Width:PARENT_RIGHT-35
 									Height:25
 									Children:
 										Label@TEAM:
@@ -471,7 +471,7 @@ Container@OBSERVER_ROOT:
 								ScrollItem@PLAYER_TEMPLATE:
 									X:0
 									Y:0
-									Width:PARENT_RIGHT-30
+									Width:PARENT_RIGHT-35
 									Height:25
 									Children:
 										Image@FACTION_FLAG:
