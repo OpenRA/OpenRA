@@ -45,6 +45,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			optionsBG.Get<ButtonWidget>("MUSIC").OnClick = () => Ui.OpenWindow("MUSIC_MENU");
 			optionsBG.Get<ButtonWidget>("RESUME").OnClick = () => optionsBG.Visible = false;
 			optionsBG.Get<ButtonWidget>("SURRENDER").IsVisible = () => false;
+
+			Ui.Root.Get<ButtonWidget>("INGAME_STATS_BUTTON").OnClick = () =>
+			{
+				var stats = gameRoot.Get("OBSERVER_STATS");
+				stats.Visible = !stats.Visible;
+			};
 		}
 
 		void UnregisterEvents()

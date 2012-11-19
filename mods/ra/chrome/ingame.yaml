@@ -287,6 +287,13 @@ Container@OBSERVER_ROOT:
 			Text:Options
 			Font:Bold
 			Key:escape
+		Button@INGAME_STATS_BUTTON:
+			X:162
+			Y:0
+			Width:160
+			Height:25
+			Text:Players
+			Font:Bold
 		Background@RADAR_BG:
 			X:WINDOW_RIGHT-255
 			Y:5
@@ -384,6 +391,124 @@ Container@OBSERVER_ROOT:
 					Y:205
 					Width:170
 					Height:40
+		Container@OBSERVER_STATS:
+			Logic:ObserverStatsLogic
+			X:25
+			Y:50
+			Width:565
+			Height:400
+			Visible:false
+			Children:
+				Background@BACKGROUND:
+					Width:PARENT_RIGHT
+					Height:PARENT_BOTTOM
+					Background:dialog
+					Children:
+						Label@TITLE:
+							X:0
+							Y:15
+							Width:PARENT_RIGHT
+							Height:25
+							Font:Bold
+							Align:Center
+							Text:Players
+						Label@PLAYER_HEADER:
+							X:85
+							Y:40
+							Width:160
+							Height:25
+							Font:Bold
+							Text:Player
+						Label@CASH_HEADER:
+							X:245
+							Y:40
+							Width:80
+							Height:25
+							Font:Bold
+							Text:Cash
+						Label@POWER_HEADER
+							X:325
+							Y:40
+							Width:80
+							Height:25
+							Font:Bold
+							Text:Power
+						Label@KILLS_HEADER:
+							X:405
+							Y:40
+							Width:40
+							Height:25
+							Font:Bold
+							Text:Kills
+							Align:Right
+						Label@DEATHS_HEADER:
+							X:465
+							Y:40
+							Width:40
+							Height:25
+							Font:Bold
+							Text:Deaths
+							Align:Right
+						ScrollPanel@PLAYERS:
+							X:25
+							Y:70
+							Width:PARENT_RIGHT-50
+							Height:PARENT_BOTTOM-45-50
+							ItemSpacing:5
+							Children:
+								ScrollItem@TEAM_TEMPLATE:
+									X:0
+									Y:0
+									Width:PARENT_RIGHT-30
+									Height:25
+									Children:
+										Label@TEAM:
+											X:0
+											Y:0
+											Width:PARENT_RIGHT
+											Height:PARENT_BOTTOM
+											Font:Bold
+								ScrollItem@PLAYER_TEMPLATE:
+									X:0
+									Y:0
+									Width:PARENT_RIGHT-30
+									Height:25
+									Children:
+										Image@FACTION_FLAG:
+											X:15
+											Y:5
+											Width:40
+											Height:PARENT_BOTTOM
+											ImageName:random
+											ImageCollection:flags
+										Label@PLAYER:
+											X:55
+											Y:0
+											Width:160
+											Height:PARENT_BOTTOM
+											Font:Bold
+										Label@CASH:
+											X:215
+											Y:0
+											Width:80
+											Height:PARENT_BOTTOM
+										Label@POWER:
+											X:295
+											Y:0
+											Width:80
+											Height:PARENT_BOTTOM
+										Label@KILLS:
+											X:375
+											Y:0
+											Width:40
+											Height:PARENT_BOTTOM
+											Align:Right
+										Label@DEATHS:
+											X:415
+											Y:0
+											Width:40
+											Height:PARENT_BOTTOM
+											Align:Right
 Background@FMVPLAYER:
 	Width:WINDOW_RIGHT
 	Height:WINDOW_BOTTOM
