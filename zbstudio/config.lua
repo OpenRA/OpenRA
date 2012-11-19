@@ -26,6 +26,8 @@ allowinteractivescript = true -- allow interaction in the output window
 interpreter = "luadeb"
 unhidewindow = { -- allow unhiding of GUI windows
   -- 1 - unhide if hidden, 0 - hide if shown
-  wxWindowClassNR = 1, -- wxwindows applications
+  wxWindowClassNR = 1, -- wxwindows applications (wxFrame)
+  wxMDIFrameClassNR = 1, -- wxwindows applications (wxMDIFrame)
+  ['#32770'] = 1, -- wxwindows applications (wxDialog)
   GLUT = 1, -- opengl applications (for example, moai)
 }
