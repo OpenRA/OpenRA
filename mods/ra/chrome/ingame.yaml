@@ -395,7 +395,7 @@ Container@OBSERVER_ROOT:
 			Logic:ObserverStatsLogic
 			X:25
 			Y:50
-			Width:565
+			Width:805
 			Height:400
 			Visible:false
 			Children:
@@ -434,7 +434,7 @@ Container@OBSERVER_ROOT:
 							Font:Bold
 							Text:Power
 						Label@KILLS_HEADER:
-							X:405
+							X:385
 							Y:40
 							Width:40
 							Height:25
@@ -442,13 +442,21 @@ Container@OBSERVER_ROOT:
 							Text:Kills
 							Align:Right
 						Label@DEATHS_HEADER:
-							X:465
+							X:445
 							Y:40
 							Width:40
 							Height:25
 							Font:Bold
 							Text:Deaths
 							Align:Right
+						Label@PRODUCTION_HEADER
+							X:485
+							Y:40
+							Width:PARENT_RIGHT-525
+							Height:25
+							Font:Bold
+							Text:Production
+							Align:Center
 						ScrollPanel@PLAYERS:
 							X:25
 							Y:70
@@ -498,7 +506,7 @@ Container@OBSERVER_ROOT:
 											Width:80
 											Height:PARENT_BOTTOM
 										Label@KILLS:
-											X:375
+											X:355
 											Y:0
 											Width:40
 											Height:PARENT_BOTTOM
@@ -509,6 +517,36 @@ Container@OBSERVER_ROOT:
 											Width:40
 											Height:PARENT_BOTTOM
 											Align:Right
+										ObserverBuildIcon@BUILDING_ICON:
+											X:480
+											Y:0
+											Width:40
+											Height:PARENT_BOTTOM
+										ObserverBuildIcon@DEFENSE_ICON:
+											X:520
+											Y:0
+											Width:40
+											Height:PARENT_BOTTOM
+										ObserverBuildIcon@VEHICLE_ICON:
+											X:560
+											Y:0
+											Width:40
+											Height:PARENT_BOTTOM
+										ObserverBuildIcon@INFANTRY_ICON:
+											X:600
+											Y:0
+											Width:40
+											Height:PARENT_BOTTOM
+										ObserverBuildIcon@SHIP_ICON:
+											X:640
+											Y:0
+											Width:40
+											Height:PARENT_BOTTOM
+										ObserverBuildIcon@PLANE_ICON:
+											X:680
+											Y:0
+											Width:40
+											Height:PARENT_BOTTOM
 Background@FMVPLAYER:
 	Width:WINDOW_RIGHT
 	Height:WINDOW_BOTTOM

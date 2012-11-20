@@ -80,6 +80,30 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					template.Get<LabelWidget>("KILLS").GetText = () => player.Kills.ToString();
 					template.Get<LabelWidget>("DEATHS").GetText = () => player.Deaths.ToString();
 
+					var building = template.Get<ObserverBuildIconWidget>("BUILDING_ICON");
+					building.GetPlayer = () => player;
+					building.GetQueue = () => "Building";
+
+					var defense = template.Get<ObserverBuildIconWidget>("DEFENSE_ICON");
+					defense.GetPlayer = () => player;
+					defense.GetQueue = () => "Defense";
+
+					var vehicle = template.Get<ObserverBuildIconWidget>("VEHICLE_ICON");
+					vehicle.GetPlayer = () => player;
+					vehicle.GetQueue = () => "Vehicle";
+
+					var infantry = template.Get<ObserverBuildIconWidget>("INFANTRY_ICON");
+					infantry.GetPlayer = () => player;
+					infantry.GetQueue = () => "Infantry";
+
+					var ship = template.Get<ObserverBuildIconWidget>("SHIP_ICON");
+					ship.GetPlayer = () => player;
+					ship.GetQueue = () => "Ship";
+
+					var plane = template.Get<ObserverBuildIconWidget>("PLANE_ICON");
+					plane.GetPlayer = () => player;
+					plane.GetQueue = () => "Plane";
+
 					playersPanel.AddChild(template);
 				}
 			}
