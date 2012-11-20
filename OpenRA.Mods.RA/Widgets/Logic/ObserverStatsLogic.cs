@@ -55,9 +55,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					var template = ScrollItemWidget.Setup(playerTemplate, () => false, null);
 					template.OnClick = () =>
 					{
-						var index = playersPanel.Children.Where(c => c.GetOrNull("PLAYER") != null).ToList().FindIndex(w => w == template);
-						var selectedPlayer = teams.SelectMany(x => x).ElementAt(index);
-						var playerBase = world.Actors.FirstOrDefault(a => !a.IsDead() && a.HasTrait<BaseBuilding>() && a.Owner == selectedPlayer);
+						var playerBase = world.Actors.FirstOrDefault(a => !a.IsDead() && a.HasTrait<BaseBuilding>() && a.Owner == player);
 						if (playerBase != null)
 						{
 							Game.MoveViewport(playerBase.Location.ToFloat2());
