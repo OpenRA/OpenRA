@@ -283,6 +283,18 @@ return {
     type = "class",
     description = "Box2D body.",
     childs = {
+      DYNAMIC = {
+        type = "value",
+        description = "",
+      },
+      KINEMATIC = {
+        type = "value",
+        description = "",
+      },
+      STATIC = {
+        type = "value",
+        description = "",
+      },
       addChain = {
         type = "function",
         description = "Create and add a set of collision edges to teh body.",
@@ -955,6 +967,30 @@ return {
     type = "class",
     description = "Box2D world.",
     childs = {
+      DEBUG_DRAW_SHAPES = {
+        type = "value",
+        description = "",
+      },
+      DEBUG_DRAW_JOINTS = {
+        type = "value",
+        description = "",
+      },
+      DEBUG_DRAW_BOUNDS = {
+        type = "value",
+        description = "",
+      },
+      DEBUG_DRAW_PAIRS = {
+        type = "value",
+        description = "",
+      },
+      DEBUG_DRAW_CENTERS = {
+        type = "value",
+        description = "",
+      },
+      DEBUG_DRAW_DEFAULT = {
+        type = "value",
+        description = "",
+      },
       addBody = {
         type = "function",
         description = "Create and add a body to the world.",
@@ -1237,6 +1273,30 @@ return {
     type = "class",
     description = "Action to dynamically fit a camera transform to a set of targets given a viewport and world space constraints.",
     childs = {
+      FITTING_MODE_SEEK_LOC = {
+        type = "value",
+        description = "",
+      },
+      FITTING_MODE_SEEK_SCALE = {
+        type = "value",
+        description = "",
+      },
+      FITTING_MODE_APPLY_ANCHORS = {
+        type = "value",
+        description = "",
+      },
+      FITTING_MODE_APPLY_BOUNDS = {
+        type = "value",
+        description = "",
+      },
+      FITTING_MODE_DEFAULT = {
+        type = "value",
+        description = "",
+      },
+      FITTING_MODE_MASK = {
+        type = "value",
+        description = "",
+      },
       clearAnchors = {
         type = "function",
         description = "Remove all camera anchors from the fitter.",
@@ -1477,6 +1537,18 @@ return {
     type = "class",
     description = "Chipmunk Body.",
     childs = {
+      NONE = {
+        type = "value",
+        description = "",
+      },
+      REMOVE_BODY = {
+        type = "value",
+        description = "",
+      },
+      REMOVE_BODY_AND_SHAPES = {
+        type = "value",
+        description = "",
+      },
       activate = {
         type = "function",
         description = "Activates a body after it has been put to sleep (physics will now be processed for this body again).",
@@ -2203,6 +2275,34 @@ return {
     type = "class",
     description = "Singleton for managing rendering of world space debug vectors.",
     childs = {
+      PARTITION_CELLS = {
+        type = "value",
+        description = "",
+      },
+      PARTITION_PADDED_CELLS = {
+        type = "value",
+        description = "",
+      },
+      PROP_MODEL_BOUNDS = {
+        type = "value",
+        description = "",
+      },
+      PROP_WORLD_BOUNDS = {
+        type = "value",
+        description = "",
+      },
+      TEXT_BOX = {
+        type = "value",
+        description = "",
+      },
+      TEXT_BOX_BASELINES = {
+        type = "value",
+        description = "",
+      },
+      TEXT_BOX_LAYOUT = {
+        type = "value",
+        description = "",
+      },
       setStyle = {
         type = "function",
         description = "Sets the particulars of a given debug line style.",
@@ -2481,6 +2581,26 @@ return {
     type = "class",
     description = "MOAIFileStream opens a system file handle for eading or writing.",
     childs = {
+      READ = {
+        type = "value",
+        description = "",
+      },
+      READ_WRITE = {
+        type = "value",
+        description = "",
+      },
+      READ_WRITE_AFFIRM = {
+        type = "value",
+        description = "",
+      },
+      READ_WRITE_NEW = {
+        type = "value",
+        description = "",
+      },
+      WRITE = {
+        type = "value",
+        description = "",
+      },
       close = {
         type = "function",
         description = "Close and release the associated file handle.",
@@ -2589,6 +2709,14 @@ return {
     type = "class",
     description = "MOAIFont is the top level object for managing sets of glyphs associated with a single font face. An instance of MOAIFont may contain glyph sets for multiple sizes of the font. Alternatively, a separate instance of MOAIFont may be used for each font size. Using a single font object for each size of a font face can make it easier to unload font sizes that are no longer needed.</p>",
     childs = {
+      FONT_AUTOLOAD_KERNING = {
+        type = "value",
+        description = "",
+      },
+      DEFAULT_FLAGS = {
+        type = "value",
+        description = "",
+      },
       getFilename = {
         type = "function",
         description = "Returns the filename of the font.",
@@ -2727,6 +2855,10 @@ return {
     type = "class",
     description = "Interface to the graphics singleton.",
     childs = {
+      EVENT_RESIZE = {
+        type = "value",
+        description = "",
+      },
       getMaxTextureUnits = {
         type = "function",
         description = "Returns the total number of texture units available on the device.",
@@ -3093,6 +3225,58 @@ return {
     type = "class",
     description = "Represents spatial configuration of a grid. The grid is made up of cells. Inside of each cell is a tile. The tile can be larger or smaller than the cell and also offset from the cell. By default, tiles are the same size of their cells and are no offset.",
     childs = {
+      TILE_BOTTOM_CENTER = {
+        type = "value",
+        description = "",
+      },
+      TILE_CENTER = {
+        type = "value",
+        description = "",
+      },
+      TILE_LEFT_BOTTOM = {
+        type = "value",
+        description = "",
+      },
+      TILE_LEFT_CENTER = {
+        type = "value",
+        description = "",
+      },
+      TILE_LEFT_TOP = {
+        type = "value",
+        description = "",
+      },
+      TILE_RIGHT_BOTTOM = {
+        type = "value",
+        description = "",
+      },
+      TILE_RIGHT_CENTER = {
+        type = "value",
+        description = "",
+      },
+      TILE_RIGHT_TOP = {
+        type = "value",
+        description = "",
+      },
+      TILE_TOP_CENTER = {
+        type = "value",
+        description = "",
+      },
+      SQUARE_SHAPE = {
+        type = "value",
+        description = "",
+      },
+      DIAMOND_SHAPE = {
+        type = "value",
+        description = "",
+      },
+      OBLIQUE_SHAPE = {
+        type = "value",
+        description = "",
+      },
+      HEX_SHAPE = {
+        type = "value",
+        description = "",
+      },
       cellAddrToCoord = {
         type = "function",
         description = "Returns the coordinate of a cell given an address.",
@@ -3201,6 +3385,26 @@ return {
     type = "class",
     description = "Object for performing asynchronous HTTP/HTTPS tasks.",
     childs = {
+      HTTP_GET = {
+        type = "value",
+        description = "",
+      },
+      HTTP_HEAD = {
+        type = "value",
+        description = "",
+      },
+      HTTP_POST = {
+        type = "value",
+        description = "",
+      },
+      HTTP_PUT = {
+        type = "value",
+        description = "",
+      },
+      HTTP_DELETE = {
+        type = "value",
+        description = "",
+      },
       getResponseHeader = {
         type = "function",
         description = "Returns the response header given its name, or nil if it wasn't provided by the server. Header names are case-insensitive and if multiple responses are given, they will be concatenated with a comma separating the values.",
@@ -3309,6 +3513,14 @@ return {
     type = "class",
     description = "Image/bitmap class.",
     childs = {
+      FILTER_LINEAR = {
+        type = "value",
+        description = "",
+      },
+      FILTER_NEAREST = {
+        type = "value",
+        description = "",
+      },
       bleedRect = {
         type = "function",
         description = "'Bleeds' the interior of the rectangle out by one pixel.",
@@ -3549,6 +3761,54 @@ return {
     type = "class",
     description = "Scene controls class.",
     childs = {
+      SORT_NONE = {
+        type = "value",
+        description = "",
+      },
+      SORT_ISO = {
+        type = "value",
+        description = "",
+      },
+      SORT_PRIORITY_ASCENDING = {
+        type = "value",
+        description = "",
+      },
+      SORT_PRIORITY_DESCENDING = {
+        type = "value",
+        description = "",
+      },
+      SORT_X_ASCENDING = {
+        type = "value",
+        description = "",
+      },
+      SORT_X_DESCENDING = {
+        type = "value",
+        description = "",
+      },
+      SORT_Y_ASCENDING = {
+        type = "value",
+        description = "",
+      },
+      SORT_Y_DESCENDING = {
+        type = "value",
+        description = "",
+      },
+      SORT_Z_ASCENDING = {
+        type = "value",
+        description = "",
+      },
+      SORT_Z_DESCENDING = {
+        type = "value",
+        description = "",
+      },
+      SORT_VECTOR_ASCENDING = {
+        type = "value",
+        description = "",
+      },
+      SORT_VECTOR_DESCENDING = {
+        type = "value",
+        description = "",
+      },
       clear = {
         type = "function",
         description = "Remove all props from the layer's partition.",
@@ -3675,6 +3935,42 @@ return {
     type = "class",
     description = "2D layer.",
     childs = {
+      SORT_NONE = {
+        type = "value",
+        description = "",
+      },
+      SORT_PRIORITY_ASCENDING = {
+        type = "value",
+        description = "",
+      },
+      SORT_PRIORITY_DESCENDING = {
+        type = "value",
+        description = "",
+      },
+      SORT_X_ASCENDING = {
+        type = "value",
+        description = "",
+      },
+      SORT_X_DESCENDING = {
+        type = "value",
+        description = "",
+      },
+      SORT_Y_ASCENDING = {
+        type = "value",
+        description = "",
+      },
+      SORT_Y_DESCENDING = {
+        type = "value",
+        description = "",
+      },
+      SORT_VECTOR_ASCENDING = {
+        type = "value",
+        description = "",
+      },
+      SORT_VECTOR_DESCENDING = {
+        type = "value",
+        description = "",
+      },
       clear = {
         type = "function",
         description = "Remove all props from the layer's partition.",
@@ -3825,6 +4121,22 @@ return {
     type = "class",
     description = "Singleton for managing debug log messages and log level.",
     childs = {
+      LOG_NONE = {
+        type = "value",
+        description = "",
+      },
+      LOG_ERROR = {
+        type = "value",
+        description = "",
+      },
+      LOG_WARNING = {
+        type = "value",
+        description = "",
+      },
+      LOG_STATUS = {
+        type = "value",
+        description = "",
+      },
       closeFile = {
         type = "function",
         description = "Resets log output to stdout.",
@@ -3891,6 +4203,34 @@ return {
     type = "class",
     description = "Loads a texture and renders the contents of a vertex buffer. Grid drawing not supported.",
     childs = {
+      GL_POINTS = {
+        type = "value",
+        description = "",
+      },
+      GL_LINES = {
+        type = "value",
+        description = "",
+      },
+      GL_TRIANGLES = {
+        type = "value",
+        description = "",
+      },
+      GL_LINE_LOOP = {
+        type = "value",
+        description = "",
+      },
+      GL_LINE_STRIP = {
+        type = "value",
+        description = "",
+      },
+      GL_TRIANGLE_FAN = {
+        type = "value",
+        description = "",
+      },
+      GL_TRIANGLE_STRIP = {
+        type = "value",
+        description = "",
+      },
       setIndexBuffer = {
         type = "function",
         description = "Set the index buffer to render.",
@@ -4143,6 +4483,18 @@ return {
     type = "class",
     description = "Particle force.",
     childs = {
+      FORCE = {
+        type = "value",
+        description = "",
+      },
+      GRAVITY = {
+        type = "value",
+        description = "",
+      },
+      OFFSET = {
+        type = "value",
+        description = "",
+      },
       initAttractor = {
         type = "function",
         description = "Greater force is exerted on particles as they approach attractor.",
@@ -4209,6 +4561,66 @@ return {
     type = "class",
     description = "Particle script.",
     childs = {
+      PARTICLE_X = {
+        type = "value",
+        description = "",
+      },
+      PARTICLE_Y = {
+        type = "value",
+        description = "",
+      },
+      PARTICLE_DX = {
+        type = "value",
+        description = "",
+      },
+      PARTICLE_DY = {
+        type = "value",
+        description = "",
+      },
+      SPRITE_X_LOC = {
+        type = "value",
+        description = "",
+      },
+      SPRITE_Y_LOC = {
+        type = "value",
+        description = "",
+      },
+      SPRITE_ROT = {
+        type = "value",
+        description = "",
+      },
+      SPRITE_X_SCL = {
+        type = "value",
+        description = "",
+      },
+      SPRITE_Y_SCL = {
+        type = "value",
+        description = "",
+      },
+      SPRITE_RED = {
+        type = "value",
+        description = "",
+      },
+      SPRITE_GREEN = {
+        type = "value",
+        description = "",
+      },
+      SPRITE_BLUE = {
+        type = "value",
+        description = "",
+      },
+      SPRITE_OPACITY = {
+        type = "value",
+        description = "",
+      },
+      SPRITE_GLOW = {
+        type = "value",
+        description = "",
+      },
+      SPRITE_IDX = {
+        type = "value",
+        description = "",
+      },
       add = {
         type = "function",
         description = "r0 = v0 + v1",
@@ -4491,6 +4903,18 @@ return {
     type = "class",
     description = "Class for optimizing spatial queries against sets of primitives. Configure for performance; default behavior is a simple list.",
     childs = {
+      PLANE_XY = {
+        type = "value",
+        description = "",
+      },
+      PLANE_XZ = {
+        type = "value",
+        description = "",
+      },
+      PLANE_YZ = {
+        type = "value",
+        description = "",
+      },
       clear = {
         type = "function",
         description = "Remove all props from the partition.",
@@ -4701,6 +5125,126 @@ return {
     type = "class",
     description = "Base class for props.",
     childs = {
+      FRAME_FROM_DECK = {
+        type = "value",
+        description = "",
+      },
+      FRAME_FROM_PARENT = {
+        type = "value",
+        description = "",
+      },
+      FRAME_FROM_SELF = {
+        type = "value",
+        description = "",
+      },
+      BLEND_NORMAL = {
+        type = "value",
+        description = "",
+      },
+      BLEND_ADD = {
+        type = "value",
+        description = "",
+      },
+      BLEND_MULTIPLY = {
+        type = "value",
+        description = "",
+      },
+      GL_ONE = {
+        type = "value",
+        description = "",
+      },
+      GL_ZERO = {
+        type = "value",
+        description = "",
+      },
+      GL_DST_ALPHA = {
+        type = "value",
+        description = "",
+      },
+      GL_DST_COLOR = {
+        type = "value",
+        description = "",
+      },
+      GL_SRC_COLOR = {
+        type = "value",
+        description = "",
+      },
+      GL_ONE_MINUS_DST_ALPHA = {
+        type = "value",
+        description = "",
+      },
+      GL_ONE_MINUS_DST_COLOR = {
+        type = "value",
+        description = "",
+      },
+      GL_ONE_MINUS_SRC_ALPHA = {
+        type = "value",
+        description = "",
+      },
+      GL_ONE_MINUS_SRC_COLOR = {
+        type = "value",
+        description = "",
+      },
+      GL_SRC_ALPHA = {
+        type = "value",
+        description = "",
+      },
+      GL_SRC_ALPHA_SATURATE = {
+        type = "value",
+        description = "",
+      },
+      DEPTH_TEST_DISABLE = {
+        type = "value",
+        description = "",
+      },
+      DEPTH_TEST_NEVER = {
+        type = "value",
+        description = "",
+      },
+      DEPTH_TEST_LESS = {
+        type = "value",
+        description = "",
+      },
+      DEPTH_TEST_EQUAL = {
+        type = "value",
+        description = "",
+      },
+      DEPTH_TEST_LESS_EQUAL = {
+        type = "value",
+        description = "",
+      },
+      DEPTH_TEST_GREATER = {
+        type = "value",
+        description = "",
+      },
+      DEPTH_TEST_NOTEQUAL = {
+        type = "value",
+        description = "",
+      },
+      DEPTH_TEST_GREATER_EQUAL = {
+        type = "value",
+        description = "",
+      },
+      DEPTH_TEST_ALWAYS = {
+        type = "value",
+        description = "",
+      },
+      CULL_NONE = {
+        type = "value",
+        description = "",
+      },
+      CULL_ALL = {
+        type = "value",
+        description = "",
+      },
+      CULL_BACK = {
+        type = "value",
+        description = "",
+      },
+      CULL_FRONT = {
+        type = "value",
+        description = "",
+      },
       getBounds = {
         type = "function",
         description = "Return the prop's local bounds or 'nil' if prop bounds is global or missing. The bounds are in model space and will be overidden by the prop's bounds if it's been set (using setBounds ())",
@@ -5151,6 +5695,42 @@ return {
     type = "class",
     description = "Programmable shader class.",
     childs = {
+      UNIFORM_COLOR = {
+        type = "value",
+        description = "",
+      },
+      UNIFORM_FLOAT = {
+        type = "value",
+        description = "",
+      },
+      UNIFORM_INT = {
+        type = "value",
+        description = "",
+      },
+      UNIFORM_PEN_COLOR = {
+        type = "value",
+        description = "",
+      },
+      UNIFORM_SAMPLER = {
+        type = "value",
+        description = "",
+      },
+      UNIFORM_TRANSFORM = {
+        type = "value",
+        description = "",
+      },
+      UNIFORM_VIEW_PROJ = {
+        type = "value",
+        description = "",
+      },
+      UNIFORM_WORLD = {
+        type = "value",
+        description = "",
+      },
+      UNIFORM_WORLD_VIEW_PROJ = {
+        type = "value",
+        description = "",
+      },
       clearUniform = {
         type = "function",
         description = "Clears a uniform mapping.",
@@ -5217,6 +5797,50 @@ return {
     type = "class",
     description = "Sim timing and settings class.",
     childs = {
+      EVENT_FINALIZE = {
+        type = "value",
+        description = "",
+      },
+      SIM_LOOP_FORCE_STEP = {
+        type = "value",
+        description = "",
+      },
+      SIM_LOOP_ALLOW_BOOST = {
+        type = "value",
+        description = "",
+      },
+      SIM_LOOP_ALLOW_SPIN = {
+        type = "value",
+        description = "",
+      },
+      SIM_LOOP_NO_DEFICIT = {
+        type = "value",
+        description = "",
+      },
+      SIM_LOOP_NO_SURPLUS = {
+        type = "value",
+        description = "",
+      },
+      SIM_LOOP_RESET_CLOCK = {
+        type = "value",
+        description = "",
+      },
+      SIM_LOOP_ALLOW_SOAK = {
+        type = "value",
+        description = "",
+      },
+      LOOP_FLAGS_DEFAULT = {
+        type = "value",
+        description = "",
+      },
+      LOOP_FLAGS_FIXED = {
+        type = "value",
+        description = "",
+      },
+      LOOP_FLAGS_MULTISTEP = {
+        type = "value",
+        description = "",
+      },
       DEFAULT_STEPS_PER_SECOND = {
         type = "value",
         description = "Value is 60",
@@ -5435,6 +6059,18 @@ return {
     type = "class",
     description = "Interface for reading/writing binary data.",
     childs = {
+      SEEK_CUR = {
+        type = "value",
+        description = "",
+      },
+      SEEK_END = {
+        type = "value",
+        description = "",
+      },
+      SEEK_SET = {
+        type = "value",
+        description = "",
+      },
       flush = {
         type = "function",
         description = "Forces any remaining buffered data into the stream.",
@@ -5711,6 +6347,18 @@ return {
     type = "class",
     description = "The text box manages styling, laying out and displaying text. You can attach named styles to the text box to be applied to the text using style escapes. You can also inline style escapes to control color. Style escapes may be nested.</p>",
     childs = {
+      LEFT_JUSTIFY = {
+        type = "value",
+        description = "",
+      },
+      CENTER_JUSTIFY = {
+        type = "value",
+        description = "",
+      },
+      RIGHT_JUSTIFY = {
+        type = "value",
+        description = "",
+      },
       clearHighlights = {
         type = "function",
         description = "Removes all highlights currently associated with the text box.",
@@ -5927,6 +6575,30 @@ return {
     type = "class",
     description = "Base class for texture resources.",
     childs = {
+      GL_LINEAR = {
+        type = "value",
+        description = "",
+      },
+      GL_LINEAR_MIPMAP_LINEAR = {
+        type = "value",
+        description = "",
+      },
+      GL_LINEAR_MIPMAP_NEAREST = {
+        type = "value",
+        description = "",
+      },
+      GL_NEAREST = {
+        type = "value",
+        description = "",
+      },
+      GL_NEAREST_MIPMAP_LINEAR = {
+        type = "value",
+        description = "",
+      },
+      GL_NEAREST_MIPMAP_NEAREST = {
+        type = "value",
+        description = "",
+      },
       getSize = {
         type = "function",
         description = "Returns the width and height of the texture's source image. Avoid using the texture width and height to compute UV coordinates from pixels, as this will prevent texture resolution swapping.",
@@ -6005,6 +6677,34 @@ return {
     type = "class",
     description = "Timer class for driving curves and animations.",
     childs = {
+      NORMAL = {
+        type = "value",
+        description = "",
+      },
+      REVERSE = {
+        type = "value",
+        description = "",
+      },
+      CONTINUE = {
+        type = "value",
+        description = "",
+      },
+      CONTINUE_REVERSE = {
+        type = "value",
+        description = "",
+      },
+      LOOP = {
+        type = "value",
+        description = "",
+      },
+      LOOP_REVERSE = {
+        type = "value",
+        description = "",
+      },
+      PING_PONG = {
+        type = "value",
+        description = "",
+      },
       EVENT_TIMER_KEYFRAME = {
         type = "value",
         description = "ID of event stop callback. Signature is: nil onKeyframe ( MOAITimer self, number keyframe, number timesExecuted, number time, number value )",
@@ -6069,6 +6769,22 @@ return {
     type = "class",
     description = "Multitouch sensor. Tracks up to 16 simultaneous touches.",
     childs = {
+      TOUCH_DOWN = {
+        type = "value",
+        description = "",
+      },
+      TOUCH_MOVE = {
+        type = "value",
+        description = "",
+      },
+      TOUCH_UP = {
+        type = "value",
+        description = "",
+      },
+      TOUCH_CANCEL = {
+        type = "value",
+        description = "",
+      },
       down = {
         type = "function",
         description = "Checks to see if the screen was touched during the last iteration.",
@@ -6724,7 +7440,7 @@ foreach my $cfile (@list) {
         # has closing */; just redo the processing if that's the case.
         redo if m!^\*/!;
       }
-      push(@consts, [$1, $2]) if $lib && /\@const\s+(\S+)(?:\s+(.+))/;
+      push(@consts, [$1, $2 || ""]) if $lib && /\@const\s+(\S+)(?:\s+(.+))?/;
     }
   }
   close(H);
