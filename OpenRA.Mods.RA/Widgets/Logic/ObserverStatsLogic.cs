@@ -52,15 +52,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				foreach (var p in team)
 				{
 					var player = p;
-					var template = ScrollItemWidget.Setup(playerTemplate, () => false, null);
-					template.OnClick = () =>
+					var template = ScrollItemWidget.Setup(playerTemplate, () => false, () =>
 					{
 						var playerBase = world.Actors.FirstOrDefault(a => !a.IsDead() && a.HasTrait<BaseBuilding>() && a.Owner == player);
 						if (playerBase != null)
 						{
 							Game.MoveViewport(playerBase.Location.ToFloat2());
 						}
-					};
+					});
 
 					var flag = template.Get<ImageWidget>("FACTION_FLAG");
 					flag.GetImageName = () => player.Country.Race;
