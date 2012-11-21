@@ -425,7 +425,7 @@ debugger.listen = function()
 
       DisplayOutputLn(TR("Debugging session started in '%s'."):format(debugger.basedir))
 
-      if (options.runstart) then
+      if (options.runstart and not debugger.scratchpad) then
         ClearAllCurrentLineMarkers()
         debugger.run()
       end
