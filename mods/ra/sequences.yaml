@@ -2217,31 +2217,6 @@ boxes09:
 		Start: 0
 		Length: *
 
-ice01:
-	idle:
-		Start: 0
-		Length: *
-
-ice02:
-	idle:
-		Start: 0
-		Length: *
-
-ice03:
-	idle:
-		Start: 0
-		Length: *
-
-ice04:
-	idle:
-		Start: 0
-		Length: *
-
-ice05:
-	idle:
-		Start: 0
-		Length: *
-
 gpsdot:
 	Infantry:
 		Start: 0
