@@ -171,7 +171,11 @@ namespace OpenRA.Mods.RA.Missions
 
 		void ManageSovietAircraft()
 		{
-			var enemies = world.Actors.Where(u => (u.Owner == allies1 || u.Owner == allies2) && ((u.HasTrait<Building>() && !u.HasTrait<Wall>()) || u.HasTrait<Mobile>()) && u.IsInWorld && !u.IsDead());
+			var enemies = world.Actors
+				.Where(u => (u.Owner == allies1 || u.Owner == allies2)
+				&& ((u.HasTrait<Building>() && !u.HasTrait<Wall>()) || u.HasTrait<Mobile>()) && u.IsInWorld && !u.IsDead()
+				&& (!u.HasTrait<Spy>() || !u.Trait<Spy>().Disguised || (u.Trait<Spy>().Disguised && u.Trait<Spy>().disguisedAsPlayer != soviets)));
+
 			foreach (var aircraft in SovietAircraft())
 			{
 				var plane = aircraft.Trait<Plane>();
@@ -263,8 +267,10 @@ namespace OpenRA.Mods.RA.Missions
 
 		void AttackNearestAlliedActor(Actor self)
 		{
-			var enemies = world.Actors.Where(u => u.IsInWorld && !u.IsDead() && (u.Owner == allies1 || u.Owner == allies2)
-				&& ((u.HasTrait<Building>() && !u.HasTrait<Wall>()) || u.HasTrait<Mobile>()));
+			var enemies = world.Actors
+				.Where(u => (u.Owner == allies1 || u.Owner == allies2)
+				&& ((u.HasTrait<Building>() && !u.HasTrait<Wall>()) || u.HasTrait<Mobile>()) && u.IsInWorld && !u.IsDead()
+				&& (!u.HasTrait<Spy>() || !u.Trait<Spy>().Disguised || (u.Trait<Spy>().Disguised && u.Trait<Spy>().disguisedAsPlayer != soviets)));
 			var enemy = enemies.OrderBy(u => (self.CenterLocation - u.CenterLocation).LengthSquared).FirstUnshroudedOrDefault(world, 10);
 			if (enemy != null)
 			{
