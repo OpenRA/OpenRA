@@ -71,6 +71,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 					var res = player.PlayerActor.Trait<PlayerResources>();
 					template.Get<LabelWidget>("CASH").GetText = () => "$" + (res.DisplayCash + res.DisplayOre);
+					template.Get<LabelWidget>("INCOME").GetText = () => "$" + res.IncomePerMin;
+					var change = template.Get<LabelWidget>("INCOME_CHANGE");
+					change.GetText = () => Math.Round(res.IncomeChange * 100, 1, MidpointRounding.AwayFromZero) + "%";
+					change.GetColor = () =>
+					{
+						if (res.IncomeChange < 0) return Color.Red;
+						if (res.IncomeChange > 0) return Color.LimeGreen;
+						else return Color.White;
+					};
 
 					var powerRes = player.PlayerActor.Trait<PowerManager>();
 					var power = template.Get<LabelWidget>("POWER");
@@ -80,29 +89,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					template.Get<LabelWidget>("KILLS").GetText = () => player.Kills.ToString();
 					template.Get<LabelWidget>("DEATHS").GetText = () => player.Deaths.ToString();
 
-					var building = template.Get<ObserverBuildIconWidget>("BUILDING_ICON");
-					building.GetPlayer = () => player;
-					building.GetQueue = () => "Building";
-
-					var defense = template.Get<ObserverBuildIconWidget>("DEFENSE_ICON");
-					defense.GetPlayer = () => player;
-					defense.GetQueue = () => "Defense";
-
-					var vehicle = template.Get<ObserverBuildIconWidget>("VEHICLE_ICON");
-					vehicle.GetPlayer = () => player;
-					vehicle.GetQueue = () => "Vehicle";
-
-					var infantry = template.Get<ObserverBuildIconWidget>("INFANTRY_ICON");
-					infantry.GetPlayer = () => player;
-					infantry.GetQueue = () => "Infantry";
-
-					var ship = template.Get<ObserverBuildIconWidget>("SHIP_ICON");
-					ship.GetPlayer = () => player;
-					ship.GetQueue = () => "Ship";
-
-					var plane = template.Get<ObserverBuildIconWidget>("PLANE_ICON");
-					plane.GetPlayer = () => player;
-					plane.GetQueue = () => "Plane";
+					var production = template.Get<ObserverBuildIconsWidget>("PRODUCTION_ICONS");
+					production.GetPlayer = () => player;
 
 					playersPanel.AddChild(template);
 				}

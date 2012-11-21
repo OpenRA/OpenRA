@@ -382,7 +382,7 @@
     <Compile Include="Widgets\Logic\ServerCreationLogic.cs" />
     <Compile Include="Widgets\Logic\SettingsMenuLogic.cs" />
     <Compile Include="Widgets\MoneyBinWidget.cs" />
-    <Compile Include="Widgets\ObserverBuildIconWidget.cs" />
+    <Compile Include="Widgets\ObserverBuildIconsWidget.cs" />
     <Compile Include="Widgets\OrderButtonWidget.cs" />
     <Compile Include="Widgets\PowerBinWidget.cs" />
     <Compile Include="Widgets\RadarBinWidget.cs" />

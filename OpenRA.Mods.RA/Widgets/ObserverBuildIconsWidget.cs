@@ -13,19 +13,19 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Widgets;
+using System.Drawing;
 
 namespace OpenRA.Mods.RA.Widgets
 {
-	public class ObserverBuildIconWidget : Widget
+	public class ObserverBuildIconsWidget : Widget
 	{
 		public Func<Player> GetPlayer;
-		public Func<string> GetQueue;
 		Dictionary<string, Sprite> iconSprites;
 		World world;
 		WorldRenderer worldRenderer;
 
 		[ObjectCreator.UseCtor]
-		public ObserverBuildIconWidget(World world, WorldRenderer worldRenderer)
+		public ObserverBuildIconsWidget(World world, WorldRenderer worldRenderer)
 			: base()
 		{
 			iconSprites = Rules.Info.Values.Where(u => u.Traits.Contains<BuildableInfo>() && u.Name[0] != '^')
@@ -36,11 +36,10 @@ namespace OpenRA.Mods.RA.Widgets
 			this.worldRenderer = worldRenderer;
 		}
 
-		protected ObserverBuildIconWidget(ObserverBuildIconWidget other)
+		protected ObserverBuildIconsWidget(ObserverBuildIconsWidget other)
 			: base(other)
 		{
 			GetPlayer = other.GetPlayer;
-			GetQueue = other.GetQueue;
 			iconSprites = other.iconSprites;
 			world = other.world;
 			worldRenderer = other.worldRenderer;
@@ -49,32 +48,30 @@ namespace OpenRA.Mods.RA.Widgets
 		public override void Draw()
 		{
 			var player = GetPlayer();
-			var queue = GetQueue();
-			if (player == null || queue == null)
+			if (player == null)
 			{
 				return;
 			}
-			var production = world.ActorsWithTrait<ProductionQueue>()
-				.Where(a => a.Actor.Owner == player && a.Trait.Info.Type == queue)
-				.Select(a => a.Trait)
-				.FirstOrDefault();
-			if (production == null)
+			var queues = world.ActorsWithTrait<ProductionQueue>()
+				.Where(a => a.Actor.Owner == player)
+				.Select((a, i) => new { a.Trait, i });
+			foreach (var queue in queues)
 			{
-				return;
+				var item = queue.Trait.CurrentItem();
+				if (item == null)
+				{
+					return;
+				}
+				var sprite = iconSprites[item.Item];
+				var size = sprite.size / new float2(2, 2);
+				var location = new float2(RenderBounds.Location) + new float2(queue.i * (int)size.Length, 0);
+				WidgetUtils.DrawSHP(sprite, location, worldRenderer, size);
 			}
-			var item = production.CurrentItem();
-			if (item == null)
-			{
-				return;
-			}
-			var location = new float2(RenderBounds.Location);
-			var sprite = iconSprites[item.Item];
-			WidgetUtils.DrawSHP(sprite, location, worldRenderer, sprite.size / new float2(2, 2));
 		}
 
 		public override Widget Clone()
 		{
-			return new ObserverBuildIconWidget(this);
+			return new ObserverBuildIconsWidget(this);
 		}
 	}
 }

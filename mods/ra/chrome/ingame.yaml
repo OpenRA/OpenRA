@@ -395,7 +395,7 @@ Container@OBSERVER_ROOT:
 			Logic:ObserverStatsLogic
 			X:25
 			Y:50
-			Width:805
+			Width:950
 			Height:400
 			Visible:false
 			Children:
@@ -426,15 +426,22 @@ Container@OBSERVER_ROOT:
 							Height:25
 							Font:Bold
 							Text:Cash
-						Label@POWER_HEADER
+						Label@INCOME_HEADER:
 							X:325
+							Y:40
+							Width:160
+							Height:25
+							Font:Bold
+							Text:Income
+						Label@POWER_HEADER
+							X:445
 							Y:40
 							Width:80
 							Height:25
 							Font:Bold
 							Text:Power
 						Label@KILLS_HEADER:
-							X:385
+							X:525
 							Y:40
 							Width:40
 							Height:25
@@ -442,7 +449,7 @@ Container@OBSERVER_ROOT:
 							Text:Kills
 							Align:Right
 						Label@DEATHS_HEADER:
-							X:445
+							X:585
 							Y:40
 							Width:40
 							Height:25
@@ -450,9 +457,9 @@ Container@OBSERVER_ROOT:
 							Text:Deaths
 							Align:Right
 						Label@PRODUCTION_HEADER
-							X:485
+							X:625
 							Y:40
-							Width:PARENT_RIGHT-525
+							Width:PARENT_RIGHT-625
 							Height:25
 							Font:Bold
 							Text:Production
@@ -500,52 +507,37 @@ Container@OBSERVER_ROOT:
 											Y:0
 											Width:80
 											Height:PARENT_BOTTOM
-										Label@POWER:
+										Label@INCOME:
 											X:295
+											Y:0
+											Width:60
+											Height:PARENT_BOTTOM
+										Label@INCOME_CHANGE
+											X:355
+											Y:0
+											Width:40
+											Height:PARENT_BOTTOM
+										Label@POWER:
+											X:415
 											Y:0
 											Width:80
 											Height:PARENT_BOTTOM
 										Label@KILLS:
-											X:355
+											X:495
 											Y:0
 											Width:40
 											Height:PARENT_BOTTOM
 											Align:Right
 										Label@DEATHS:
-											X:415
+											X:555
 											Y:0
 											Width:40
 											Height:PARENT_BOTTOM
 											Align:Right
-										ObserverBuildIcon@BUILDING_ICON:
-											X:480
+										ObserverBuildIcons@PRODUCTION_ICONS:
+											X:615
 											Y:0
-											Width:40
-											Height:PARENT_BOTTOM
-										ObserverBuildIcon@DEFENSE_ICON:
-											X:520
-											Y:0
-											Width:40
-											Height:PARENT_BOTTOM
-										ObserverBuildIcon@VEHICLE_ICON:
-											X:560
-											Y:0
-											Width:40
-											Height:PARENT_BOTTOM
-										ObserverBuildIcon@INFANTRY_ICON:
-											X:600
-											Y:0
-											Width:40
-											Height:PARENT_BOTTOM
-										ObserverBuildIcon@SHIP_ICON:
-											X:640
-											Y:0
-											Width:40
-											Height:PARENT_BOTTOM
-										ObserverBuildIcon@PLANE_ICON:
-											X:680
-											Y:0
-											Width:40
+											Width:240
 											Height:PARENT_BOTTOM
 Background@FMVPLAYER:
 	Width:WINDOW_RIGHT

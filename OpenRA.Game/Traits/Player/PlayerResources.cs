@@ -86,6 +86,10 @@ namespace OpenRA.Traits
 		public int DisplayCash;
 		public int DisplayOre;
 
+		public int IncomePerMin;
+		public double IncomeChange;
+		int incomeCounter;
+
 		public bool CanGiveOre(int amount)
 		{
 			return Ore + amount <= OreCapacity;
@@ -100,6 +104,8 @@ namespace OpenRA.Traits
 				nextSiloAdviceTime = 0;
 				Ore = OreCapacity;
 			}
+
+			incomeCounter += num;
 		}
 
 		public bool TakeOre(int num)
@@ -113,6 +119,7 @@ namespace OpenRA.Traits
 		public void GiveCash(int num)
 		{
 			Cash += num;
+			incomeCounter += num;
 		}
 
 		public bool TakeCash(int num)
@@ -184,7 +191,14 @@ namespace OpenRA.Traits
 			{
 				DisplayOre -= move;
 				playCashTickDown(self);
-                        }
+			}
+
+			if (self.World.FrameNumber % 1500 == 0)
+			{
+				IncomeChange = IncomePerMin == 0 ? 0 : (double)(incomeCounter - IncomePerMin) / IncomePerMin;
+				IncomePerMin = incomeCounter;
+				incomeCounter = 0;
+			}
 		}
 		
 		
