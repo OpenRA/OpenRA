@@ -2033,26 +2033,26 @@ Templates:
 		Size: 3,2
 		Tiles:
 			1: Rock
-			3: River
+			3: Beach
 			4: Rock
-			5: River
+			5: Beach
 	Template@401:
 		Id: 401
 		Image: sh20
 		Size: 4,1
 		Tiles:
-			0: River
+			0: Beach
 			1: Rock
 			2: Rock
-			3: River
+			3: Beach
 	Template@402:
 		Id: 402
 		Image: sh21
 		Size: 3,1
 		Tiles:
 			0: Rock
-			1: Clear
-			2: River
+			1: Beach
+			2: Beach
 	Template@403:
 		Id: 403
 		Image: sh22
@@ -2061,12 +2061,12 @@ Templates:
 			1: Rock
 			2: Rock
 			3: Rock
-			6: River
+			6: Beach
 			7: Water
 			8: Water
 			9: Rock
-			10: River
-			11: River
+			10: Beach
+			11: Beach
 	Template@404:
 		Id: 404
 		Image: sh23
@@ -2074,8 +2074,8 @@ Templates:
 		Tiles:
 			0: Clear
 			1: Clear
-			2: River
-			3: River
+			2: Beach
+			3: Beach
 	Template@405:
 		Id: 405
 		Image: sh24
@@ -2089,15 +2089,15 @@ Templates:
 			5: Clear
 			6: River
 			7: Water
-			8: River
+			8: Beach
 	Template@406:
 		Id: 406
 		Image: sh25
 		Size: 3,2
 		Tiles:
-			0: River
-			1: River
-			2: River
+			0: Beach
+			1: Beach
+			2: Beach
 			3: Clear
 			4: Clear
 			5: Rock
@@ -2106,39 +2106,39 @@ Templates:
 		Image: sh26
 		Size: 3,2
 		Tiles:
-			0: River
-			1: Rock
-			2: River
-			4: Rock
+			0: Beach
+			1: Beach
+			2: Beach
+			4: Clear
 			5: Clear
 	Template@408:
 		Id: 408
 		Image: sh27
 		Size: 4,1
 		Tiles:
-			0: River
-			1: River
-			2: River
+			0: Beach
+			1: Beach
+			2: Beach
 			3: Rock
 	Template@409:
 		Id: 409
 		Image: sh28
 		Size: 3,1
 		Tiles:
-			0: River
-			1: River
-			2: River
+			0: Beach
+			1: Beach
+			2: Beach
 	Template@410:
 		Id: 410
 		Image: sh29
 		Size: 6,2
 		Tiles:
-			0: River
-			1: River
+			0: Beach
+			1: Beach
 			2: Rock
-			3: River
-			4: River
-			5: River
+			3: Beach
+			4: Beach
+			5: Beach
 			7: Clear
 			8: Clear
 			9: Clear
@@ -2147,8 +2147,8 @@ Templates:
 		Image: sh30
 		Size: 2,2
 		Tiles:
-			0: River
-			1: River
+			0: Beach
+			1: Beach
 			2: Rock
 	Template@412:
 		Id: 412
@@ -2186,18 +2186,19 @@ Templates:
 		Image: sh39
 		Size: 1,1
 		Tiles:
-			0:Clear
+			0: Clear
 	Template@417:
 		Id: 417
 		Image: sh40
 		Size: 3,3
 		Tiles:
-			1: River
-			2: River
-			3: Clear
+			0: Clear
+			1: Beach
+			2: Rock
+			3: Beach
 			4: Water
-			5: River
-			6: River
+			5: Water
+			6: Beach
 			7: Water
 			8: Water
 	Template@418:
@@ -2207,11 +2208,11 @@ Templates:
 		Tiles:
 			0: Water
 			1: Water
-			2: River
+			2: Beach
 			3: Water
-			4: River
+			4: Beach
 			5: Clear
-			6: River
+			6: Beach
 			7: Rock
 			8: Clear
 	Template@419:
@@ -2219,24 +2220,24 @@ Templates:
 		Image: sh42
 		Size: 1,2
 		Tiles:
-			0: River
-			1: River
+			0: Beach
+			1: Beach
 	Template@420:
 		Id: 420
 		Image: sh43
 		Size: 1,3
 		Tiles:
-			0: River
+			0: Beach
 			1: Clear
-			2: River
+			2: Beach
 	Template@421:
 		Id: 421
 		Image: sh44
 		Size: 1,3
 		Tiles:
-			0: River
+			0: Beach
 			1: Clear
-			2: River
+			2: Beach
 	Template@441:
 		Id: 441
 		Image: sh64
@@ -2253,8 +2254,8 @@ Templates:
 		Image: sh45
 		Size: 1,2
 		Tiles:
-			0: River
-			1: River
+			0: Beach
+			1: Beach
 	Template@423:
 		Id: 423
 		Image: sh46
@@ -2262,12 +2263,12 @@ Templates:
 		Tiles:
 			0: Clear
 			1: Clear
-			2: River
+			2: Beach
 			3: Clear
-			4: River
+			4: Beach
 			5: Water
-			6: River
-			7: River
+			6: Beach
+			7: Water
 			8: Water
 	Template@442:
 		Id: 442
@@ -2285,31 +2286,31 @@ Templates:
 		Image: sh47
 		Size: 3,3
 		Tiles:
-			0: River
+			0: Beach
 			1: Rock
-			3: River
+			3: Beach
 			4: Clear
 			6: Water
-			7: River
-			8: River
+			7: Beach
+			8: Beach
 	Template@425:
 		Id: 425
 		Image: sh48
 		Size: 3,3
 		Tiles:
-			0: River
-			3: River
-			6: River
-			7: River
-			8: River
+			0: Beach
+			3: Beach
+			6: Beach
+			7: Beach
+			8: Beach
 	Template@426:
 		Id: 426
 		Image: sh49
 		Size: 3,3
 		Tiles:
 			1: Water
-			2: River
-			3: River
+			2: Beach
+			3: Beach
 			4: Rock
 			5: Rock
 			6: Clear
@@ -2321,39 +2322,39 @@ Templates:
 		Size: 4,3
 		Tiles:
 			1: Water
-			2: River
-			3: River
-			4: River
+			2: Water
+			3: Beach
+			4: Rock
 			5: Rock
 			6: Rock
-			8: River
+			8: Beach
 			9: Clear
 	Template@428:
 		Id: 428
 		Image: sh51
 		Size: 4,3
 		Tiles:
-			0: River
+			0: Beach
 			1: Water
 			4: Clear
-			5: River
+			5: Water
 			6: Water
 			8: Rock
 			9: Rock
-			10: River
-			11: River
+			10: Beach
+			11: Water
 	Template@429:
 		Id: 429
 		Image: sh52
 		Size: 4,3
 		Tiles:
-			0: River
-			1: River
-			2: River
+			0: Water
+			1: Beach
+			2: Beach
 			3: Rock
-			6: River
+			6: Water
 			7: Rock
-			10: River
+			10: Water
 			11: River
 	Template@430:
 		Id: 430
@@ -2363,7 +2364,7 @@ Templates:
 			0: Clear
 			1: Clear
 			2: Clear
-			3: River
+			3: Beach
 			4: Clear
 			5: River
 			6: Water
@@ -2380,7 +2381,7 @@ Templates:
 			0: Clear
 			1: Tree
 			2: River
-			3: River
+			3: Beach
 			4: Water
 			5: River
 	Template@432:
@@ -2388,12 +2389,12 @@ Templates:
 		Image: sh55
 		Size: 3,2
 		Tiles:
-			0: River
+			0: Rock
 			1: Rock
 			2: Clear
 			3: Water
-			4: River
-			5: River
+			4: Rock
+			5: Rock
 	Template@433:
 		Id: 433
 		Image: sh56
@@ -2401,7 +2402,7 @@ Templates:
 		Tiles:
 			1: Water
 			2: River
-			3: River
+			3: Beach
 			4: Rock
 			5: Rock
 	Template@434:
@@ -2409,28 +2410,28 @@ Templates:
 		Image: sh57
 		Size: 3,2
 		Tiles:
-			0: River
-			3: River
-			4: River
+			0: Beach
+			3: Beach
+			4: Water
 			5: River
 	Template@435:
 		Id: 435
 		Image: sh58
 		Size: 2,3
 		Tiles:
-			0: River
-			2: River
+			0: Beach
+			2: Beach
 			3: Water
 			4: Clear
-			5: River
+			5: Beach
 	Template@436:
 		Id: 436
 		Image: sh59
 		Size: 2,3
 		Tiles:
 			0: Clear
-			1: River
-			2: River
+			1: Beach
+			2: Beach
 			3: River
 			4: River
 			5: River
@@ -2440,42 +2441,42 @@ Templates:
 		Size: 2,3
 		Tiles:
 			0: Water
-			1: River
-			2: River
+			1: Beach
+			2: Beach
 			3: Clear
-			4: River
+			4: Beach
 			5: Clear
 	Template@438:
 		Id: 438
 		Image: sh61
 		Size: 2,3
 		Tiles:
-			0: River
+			0: Beach
 			1: Clear
 			2: Water
-			3: River
+			3: Beach
 			4: Clear
-			5: River
+			5: Beach
 	Template@439:
 		Id: 439
 		Image: sh62
 		Size: 6,1
 		Tiles:
-			0: River
-			1: River
-			2: River
-			3: River
-			4: River
-			5: River
+			0: Beach
+			1: Beach
+			2: Beach
+			3: Beach
+			4: Beach
+			5: Beach
 	Template@440:
 		Id: 440
 		Image: sh63
 		Size: 4,1
 		Tiles:
-			0: River
-			1: River
-			2: River
-			3: River
+			0: Beach
+			1: Beach
+			2: Beach
+			3: Beach
 	Template@600:
 		Id: 600
 		Image: f01
