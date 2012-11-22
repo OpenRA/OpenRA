@@ -45,7 +45,7 @@ Players:
 		LockRace: True
 		Race: allies
 		LockColor: True
-		ColorRamp: 115,240,130,10
+		ColorRamp: 80,240,130,10
 		LockSpawn: True
 		LockTeam: True
 		Allies: Allies1,Allies
@@ -53,7 +53,7 @@ Players:
 	PlayerReference@Allies:
 		Name: Allies
 		Race: allies
-		ColorRamp: 80,240,130,10
+		ColorRamp: 115,240,130,10
 		Allies: Allies1,Allies2
 		Enemies: Soviets
 	PlayerReference@Soviets:

@@ -83,10 +83,12 @@ namespace OpenRA.Mods.RA.Missions
 		Actor yakEntryPoint;
 		Actor yakAttackPoint;
 		Actor yak;
+		Actor procPoint;
 
 		Actor einsteinChinook;
 
 		World world;
+		Player allies;
 		Player allies1;
 		Player allies2;
 		Player soviets;
@@ -103,7 +105,7 @@ namespace OpenRA.Mods.RA.Missions
 		static readonly string[] SovietVehicles1 = { "3tnk" };
 		static readonly string[] SovietVehicles2 = { "3tnk", "v2rl" };
 		const int SovietVehiclesUpgradeTicks = 1500 * 4;
-		const int SovietGroupSize = 8;
+		const int SovietGroupSize = 20;
 		const int SovietHelperCash = 2000;
 
 		const int ReinforcementsTicks = 1500 * 12;
@@ -189,6 +191,10 @@ namespace OpenRA.Mods.RA.Missions
 				StartReinforcementsTimer();
 			}
 			reinforcementsTimer.Tick();
+			if (world.FrameNumber == TanksTicks)
+			{
+				RushSovietUnits();
+			}
 			if (world.FrameNumber == ParatroopersTicks)
 			{
 				MissionUtils.Paradrop(world, soviets, Badger1Passengers, badgerEntryPoint1.Location, badgerDropPoint1.Location);
@@ -198,10 +204,6 @@ namespace OpenRA.Mods.RA.Missions
 			if (world.FrameNumber == FlamersTicks)
 			{
 				RushSovietFlamers();
-			}
-			if (world.FrameNumber == TanksTicks)
-			{
-				RushSovietUnits();
 			}
 			if (world.FrameNumber == ParabombTicks)
 			{
@@ -530,7 +532,12 @@ namespace OpenRA.Mods.RA.Missions
 		{
 			world = w;
 			allies1 = w.Players.Single(p => p.InternalName == "Allies1");
-			allies2 = w.Players.Single(p => p.InternalName == "Allies2");
+			allies2 = w.Players.SingleOrDefault(p => p.InternalName == "Allies2");
+			if (allies2 == null)
+			{
+				allies2 = allies1;
+			}
+			allies = w.Players.Single(p => p.InternalName == "Allies");
 			soviets = w.Players.Single(p => p.InternalName == "Soviets");
 			var actors = w.WorldActor.Trait<SpawnMapActors>().Actors;
 			sam1 = actors["SAM1"];
@@ -562,6 +569,16 @@ namespace OpenRA.Mods.RA.Missions
 			sovietTownAttackPoint2 = actors["SovietTownAttackPoint2"];
 			yakEntryPoint = actors["YakEntryPoint"];
 			yakAttackPoint = actors["YakAttackPoint"];
+			procPoint = actors["ProcPoint"];
+			foreach (var actor in world.Actors.Where(a => a.Owner == allies).OrderBy(a => a.HasTrait<PowerManager>()))
+			{
+				actor.ChangeOwner(allies2);
+			}
+			world.CreateActor(true, "proc", new TypeDictionary
+			{
+				new OwnerInit(allies2), 
+				new LocationInit(procPoint.Location)
+			});
 			var shroud = w.WorldActor.Trait<Shroud>();
 			shroud.Explore(w, sam1.Location, 2);
 			shroud.Explore(w, sam2.Location, 2);

@@ -36,7 +36,7 @@ Players:
 		ColorRamp: 153,240,130,10
 		LockSpawn: True
 		LockTeam: True
-		Allies: Allies2
+		Allies: Allies2,Allies
 		Enemies: Soviets
 	PlayerReference@Allies2:
 		Name: Allies2
@@ -48,13 +48,19 @@ Players:
 		ColorRamp: 80,240,130,10
 		LockSpawn: True
 		LockTeam: True
-		Allies: Allies1
+		Allies: Allies1,Allies
+		Enemies: Soviets
+	PlayerReference@Allies:
+		Name: Allies
+		Race: allies
+		ColorRamp: 115,240,130,10
+		Allies: Allies1,Allies2
 		Enemies: Soviets
 	PlayerReference@Soviets:
 		Name: Soviets
 		Race: soviet
 		ColorRamp: 0,255,128,10
-		Enemies: Allies1,Allies2
+		Enemies: Allies1,Allies2,Allies
 
 Actors:
 	Actor1: v07
@@ -1288,19 +1294,19 @@ Actors:
 		Owner: Soviets
 	Actor452: tent
 		Location: 40,95
-		Owner: Allies2
+		Owner: Allies
 	Actor170: weap
 		Location: 23,103
-		Owner: Allies2
+		Owner: Allies
 	Actor460: t08
 		Location: 40,110
 		Owner: Neutral
 	Actor206: dome
 		Location: 38,100
-		Owner: Allies2
+		Owner: Allies
 	Actor204: apwr
 		Location: 37,107
-		Owner: Allies2
+		Owner: Allies
 	Actor169: tsla
 		Location: 17,39
 		Owner: Soviets
@@ -1321,7 +1327,7 @@ Actors:
 		Owner: Soviets
 	Actor83: apwr
 		Location: 37,104
-		Owner: Allies2
+		Owner: Allies
 	Actor162: mine
 		Location: 19,95
 		Owner: Neutral
@@ -1475,12 +1481,12 @@ Actors:
 	Actor290: apwr
 		Location: 52,42
 		Owner: Soviets
-	Actor54: proc
+	ProcPoint: waypoint
 		Location: 25,95
-		Owner: Allies2
+		Owner: Neutral
 	Actor455: fenc
 		Location: 31,93
-		Owner: Allies2
+		Owner: Allies
 	Actor446: spen
 		Location: 58,17
 		Owner: Soviets
@@ -1492,69 +1498,69 @@ Actors:
 		Owner: Soviets
 	Actor468: fenc
 		Location: 29,93
-		Owner: Allies2
+		Owner: Allies
 	Actor456: fenc
 		Location: 41,93
-		Owner: Allies2
+		Owner: Allies
 	Actor531: fenc
 		Location: 45,93
-		Owner: Allies2
+		Owner: Allies
 	Actor461: fenc
 		Location: 44,93
-		Owner: Allies2
+		Owner: Allies
 	Actor458: fenc
 		Location: 43,93
-		Owner: Allies2
+		Owner: Allies
 	Actor453: fenc
 		Location: 27,93
-		Owner: Allies2
+		Owner: Allies
 	Actor470: fenc
 		Location: 26,93
-		Owner: Allies2
+		Owner: Allies
 	Actor454: pbox.e1
 		Location: 32,93
-		Owner: Allies2
+		Owner: Allies
 	Actor465: fenc
 		Location: 30,93
-		Owner: Allies2
+		Owner: Allies
 	Actor473: pbox.e1
 		Location: 40,93
-		Owner: Allies2
+		Owner: Allies
 	Actor472: gun
 		Location: 41,92
-		Owner: Allies2
+		Owner: Allies
 	Actor451: fenc
 		Location: 28,93
-		Owner: Allies2
+		Owner: Allies
 	Actor478: fenc
 		Location: 24,91
-		Owner: Allies2
+		Owner: Allies
 	Actor484: fenc
 		Location: 23,91
-		Owner: Allies2
+		Owner: Allies
 	Actor476: fenc
 		Location: 25,92
-		Owner: Allies2
+		Owner: Allies
 	Actor475: gun
 		Location: 31,92
-		Owner: Allies2
+		Owner: Allies
 	Actor471: fenc
 		Location: 25,93
-		Owner: Allies2
+		Owner: Allies
 	Actor477: fenc
 		Location: 25,91
-		Owner: Allies2
+		Owner: Allies
 	Actor534: 1tnk
 		Location: 37,90
-		Owner: Allies2
+		Owner: Allies
 		Facing: 0
 	Actor398: 1tnk
 		Location: 36,90
-		Owner: Allies2
+		Owner: Allies
 		Facing: 0
 	Actor457: fenc
 		Location: 42,93
-		Owner: Allies2
+		Owner: Allies
 	BadgerDropPoint1: waypoint
 		Location: 19,96
 		Owner: Neutral
@@ -2127,7 +2133,7 @@ Actors:
 		Owner: Neutral
 	Actor573: 2tnk
 		Location: 34,92
-		Owner: Allies2
+		Owner: Allies
 		Facing: 0
 	Actor577: tc02
 		Location: 81,87
@@ -2137,14 +2143,14 @@ Actors:
 		Owner: Neutral
 	Actor574: 2tnk
 		Location: 35,92
-		Owner: Allies2
+		Owner: Allies
 		Facing: 0
 	Actor578: v11
 		Location: 64,84
 		Owner: Neutral
 	Actor546: 1tnk
 		Location: 38,90
-		Owner: Allies2
+		Owner: Allies
 		Facing: 0
 	BadgerDropPoint2: waypoint
 		Location: 34,106
@@ -2698,22 +2704,22 @@ Actors:
 		Owner: Soviets
 	Actor253: e1
 		Location: 21,90
-		Owner: Allies2
+		Owner: Allies
 	Actor255: e1
 		Location: 23,89
-		Owner: Allies2
+		Owner: Allies
 	Actor270: e1
 		Location: 27,90
-		Owner: Allies2
+		Owner: Allies
 	Actor268: e1
 		Location: 33,90
-		Owner: Allies2
+		Owner: Allies
 	Actor269: e1
 		Location: 34,90
-		Owner: Allies2
+		Owner: Allies
 	Actor267: jeep
 		Location: 25,89
-		Owner: Allies2
+		Owner: Allies
 		Facing: 0
 	Actor882: barl
 		Location: 46,81

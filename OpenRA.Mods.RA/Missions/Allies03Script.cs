@@ -82,7 +82,7 @@ namespace OpenRA.Mods.RA.Missions
 		static readonly string[] SovietVehicles1 = { "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "v2rl", "v2rl", "ftrk", "ftrk", "apc", "apc", "apc" };
 		static readonly string[] SovietVehicles2 = { "4tnk", "4tnk", "4tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "v2rl", "v2rl", "ftrk", "apc" };
 		const int SovietVehicles2Ticks = 1500 * 20;
-		const int SovietAttackGroupSize = 3;
+		const int SovietGroupSize = 3;
 		const int MaxNumberYaks = 4;
 
 		const int ReinforcementsTicks = 1500 * 4;
@@ -163,7 +163,8 @@ namespace OpenRA.Mods.RA.Missions
 			EvacuateAlliedUnits(exit1TopLeft.CenterLocation, exit1BottomRight.CenterLocation, exit1ExitPoint.Location);
 			EvacuateAlliedUnits(exit2TopLeft.CenterLocation, exit2BottomRight.CenterLocation, exit2ExitPoint.Location);
 			CheckSovietAirbase();
-			if (!world.Actors.Any(a => (a.Owner == allies1 || a.Owner == allies2) && a.IsInWorld && !a.IsDead() && ((a.HasTrait<Building>() && !a.HasTrait<Wall>()) || a.HasTrait<BaseBuilding>())))
+			if (!world.Actors.Any(a => (a.Owner == allies1 || a.Owner == allies2) && a.IsInWorld && !a.IsDead()
+				&& ((a.HasTrait<Building>() && !a.HasTrait<Wall>()) || a.HasTrait<BaseBuilding>())))
 			{
 				MissionFailed("The remaining Allied forces in the area have been wiped out.");
 			}
@@ -284,7 +285,7 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				var units = world.FindAliveCombatantActorsInCircle(Util.CenterOfCell(rallyPoint), 10)
 					.Where(u => u.IsIdle && u.HasTrait<Mobile>() && u.Owner == soviets);
-				if (units.Count() >= SovietAttackGroupSize)
+				if (units.Count() >= SovietGroupSize)
 				{
 					foreach (var unit in units)
 					{
