@@ -58,7 +58,7 @@ namespace OpenRA.Server
 		public Map Map;
 		XTimer gameTimeout;
 
-		protected ServerState pState = new ServerState();
+		protected volatile ServerState pState = new ServerState();
 		public ServerState State
 		{
 			get { return pState; }
