@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA.Server
 
 		public static bool ValidateCommand(S server, Connection conn, Session.Client client, string cmd)
 		{
-			if (server.GameStarted)
+			if (server.State == ServerState.GameStarted)
 			{
 				server.SendChatTo(conn, "Cannot change state when game started. ({0})".F(cmd));
 				return false;

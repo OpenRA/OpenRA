@@ -20,6 +20,7 @@ namespace OpenRA.Server
 	public interface INotifyServerShutdown { void ServerShutdown(Server server); }
 	public interface IStartGame { void GameStarted(Server server); }
 	public interface IClientJoined { void ClientJoined(Server server, Connection conn); }
+	public interface IEndGame { void GameEnded(Server server); }
 	public interface ITick
 	{
 		void Tick(Server server);
@@ -28,7 +29,7 @@ namespace OpenRA.Server
 
 	public abstract class ServerTrait {}
 
-	public class DebugServerTrait : ServerTrait, IInterpretCommand, IStartGame, INotifySyncLobbyInfo, INotifyServerStart, INotifyServerShutdown
+	public class DebugServerTrait : ServerTrait, IInterpretCommand, IStartGame, INotifySyncLobbyInfo, INotifyServerStart, INotifyServerShutdown, IEndGame
 	{
 		public bool InterpretCommand(Server server, Connection conn, Session.Client client, string cmd)
 		{
@@ -54,6 +55,11 @@ namespace OpenRA.Server
 		public void ServerShutdown(Server server)
 		{
 			Console.WriteLine("ServerShutdown()");
+		}
+
+		public void GameEnded(Server server)
+		{
+			Console.WriteLine("GameEnded()");
 		}
 	}
 }
