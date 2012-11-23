@@ -115,7 +115,7 @@ namespace OpenRA.GameRules
 		public float ViewportEdgeScrollStep = 10f;
 
 		// Internal game settings
-		public int Timestep = 10;
+		public int Timestep = 40;
 
 		public string ConnectTo = "";
 	}
