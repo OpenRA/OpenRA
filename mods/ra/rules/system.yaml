@@ -319,7 +319,7 @@ World:
 		WaterChance: .2
 	PaletteFromCurrentTileset:
 		Name: terrain
-		ShadowIndex: 4
+		ShadowIndex: 3,4
 	PaletteFromFile@chrome:
 		Name: chrome
 		Filename: temperat.pal

@@ -248,7 +248,7 @@ namespace OpenRA
 		}
 
 		// Returns true if played successfully
-		public static bool PlayPredefined(Player p, Actor voicedUnit, string type, string definition, string variant)
+		public static bool PlayPredefined(Player p, Actor voicedUnit, string type, string definition, string variant, bool attentuateVolume)
 		{
 			if (definition == null) return false;
 
@@ -282,10 +282,13 @@ namespace OpenRA
 					prefix = rules.Prefixes[variant][ID % rules.Prefixes[variant].Length];
 			}
 
-			if (p == null)
-				Play(prefix + clip + suffix);
-			else
-				PlayToPlayer(p, prefix + clip + suffix);
+			var name = prefix + clip + suffix;
+
+			if (!String.IsNullOrEmpty(name)	&& (p == null || p == p.World.LocalPlayer))
+				soundEngine.Play2D(sounds[name],
+					false, true, float2.Zero,
+					InternalSoundVolume, attentuateVolume);
+
 			return true;
 		}
 
@@ -298,9 +301,9 @@ namespace OpenRA
 			if (mi == null) return false;
 			if (mi.Voice == null) return false;
 
-                        var type = mi.Voice.ToLowerInvariant();
+			var type = mi.Voice.ToLowerInvariant();
 
-			return PlayPredefined(null, voicedUnit, type, phrase, variant);
+			return PlayPredefined(null, voicedUnit, type, phrase, variant, true);
 		}
 
 		public static bool PlayNotification(Player player, string type, string notification, string variant)
@@ -308,7 +311,7 @@ namespace OpenRA
 			if (type == null) return false;
 			if (notification == null) return false;
 
-			return PlayPredefined(player, null, type.ToLowerInvariant(), notification, variant);
+			return PlayPredefined(player, null, type.ToLowerInvariant(), notification, variant, false);
 		}
 	}
 
