@@ -292,7 +292,7 @@ Container@OBSERVER_ROOT:
 			Y:0
 			Width:160
 			Height:25
-			Text:Players
+			Text:Statistics
 			Font:Bold
 		Background@RADAR_BG:
 			X:WINDOW_RIGHT-255
@@ -411,8 +411,14 @@ Container@OBSERVER_ROOT:
 							Height:25
 							Font:Bold
 							Align:Center
-							Text:Players
-						Container@BASIC_STATS:
+							Text:Statistics
+						DropDownButton@STATS_DROPDOWN:
+							X:PARENT_RIGHT-140
+							Y:15
+							Width:125
+							Height:25
+							Font:Bold
+						Container@BASIC_STATS_HEADERS:
 							X:0
 							Y:0
 							Width:PARENT_RIGHT
@@ -435,19 +441,19 @@ Container@OBSERVER_ROOT:
 								Label@INCOME_HEADER:
 									X:325
 									Y:40
-									Width:160
+									Width:60
 									Height:25
 									Font:Bold
 									Text:Income
 								Label@POWER_HEADER
-									X:445
+									X:405
 									Y:40
 									Width:80
 									Height:25
 									Font:Bold
 									Text:Power
 								Label@KILLS_HEADER:
-									X:525
+									X:485
 									Y:40
 									Width:40
 									Height:25
@@ -455,7 +461,7 @@ Container@OBSERVER_ROOT:
 									Text:Kills
 									Align:Right
 								Label@DEATHS_HEADER:
-									X:585
+									X:545
 									Y:40
 									Width:40
 									Height:25
@@ -463,14 +469,56 @@ Container@OBSERVER_ROOT:
 									Text:Deaths
 									Align:Right
 								Label@PRODUCTION_HEADER
-									X:625
+									X:585
 									Y:40
 									Width:PARENT_RIGHT-625
 									Height:25
 									Font:Bold
 									Text:Production
 									Align:Center
-						ScrollPanel@PLAYERS_PANEL:
+						Container@ECONOMIC_STATS_HEADERS:
+							X:0
+							Y:0
+							Width:PARENT_RIGHT
+							Height:PARENT_BOTTOM
+							Children:
+								Label@PLAYER_HEADER:
+									X:85
+									Y:40
+									Width:160
+									Height:25
+									Font:Bold
+									Text:Player
+								Label@CASH_HEADER:
+									X:245
+									Y:40
+									Width:80
+									Height:25
+									Font:Bold
+									Text:Cash
+								Label@INCOME_HEADER:
+									X:325
+									Y:40
+									Width:120
+									Height:25
+									Font:Bold
+									Text:Income
+								Label@TOTAL_ASSETS_HEADER
+									X:445
+									Y:40
+									Width:60
+									Height:25
+									Font:Bold
+									Text:Assets
+								Label@NUMBER_HARVESTERS_HEADER
+									X:525
+									Y:40
+									Width:60
+									Height:25
+									Font:Bold
+									Text:Harvesters
+									Align:Right
+						ScrollPanel@PLAYER_STATS_PANEL:
 							X:25
 							Y:70
 							Width:PARENT_RIGHT-50
@@ -518,33 +566,73 @@ Container@OBSERVER_ROOT:
 											Y:0
 											Width:60
 											Height:PARENT_BOTTOM
-										Label@INCOME_CHANGE
-											X:355
-											Y:0
-											Width:40
-											Height:PARENT_BOTTOM
 										Label@POWER:
-											X:415
+											X:375
 											Y:0
 											Width:80
 											Height:PARENT_BOTTOM
 										Label@KILLS:
-											X:495
+											X:455
 											Y:0
 											Width:40
 											Height:PARENT_BOTTOM
 											Align:Right
 										Label@DEATHS:
-											X:555
+											X:515
 											Y:0
 											Width:40
 											Height:PARENT_BOTTOM
 											Align:Right
 										ObserverBuildIcons@PRODUCTION_ICONS:
-											X:615
+											X:575
 											Y:0
 											Width:240
 											Height:PARENT_BOTTOM
+								ScrollItem@ECONOMIC_PLAYER_TEMPLATE:
+									X:0
+									Y:0
+									Width:PARENT_RIGHT-35
+									Height:25
+									Children:
+										Image@FACTION_FLAG:
+											X:20
+											Y:5
+											Width:35
+											Height:PARENT_BOTTOM-5
+											ImageName:random
+											ImageCollection:flags
+										Label@PLAYER:
+											X:55
+											Y:0
+											Width:160
+											Height:PARENT_BOTTOM
+											Font:Bold
+										Label@CASH:
+											X:215
+											Y:0
+											Width:80
+											Height:PARENT_BOTTOM
+										Label@INCOME:
+											X:295
+											Y:0
+											Width:60
+											Height:PARENT_BOTTOM
+										Label@INCOME_CHANGE:
+											X:355
+											Y:0
+											Width:60
+											Height:PARENT_BOTTOM
+										Label@TOTAL_ASSETS:
+											X:415
+											Y:0
+											Width:60
+											Height:PARENT_BOTTOM
+										Label@NUMBER_HARVESTERS:
+											X:495
+											Y:0
+											Width:60
+											Height:PARENT_BOTTOM
+											Align:Right
 Background@FMVPLAYER:
 	Width:WINDOW_RIGHT
 	Height:WINDOW_BOTTOM
