@@ -490,10 +490,10 @@ Container@OBSERVER_ROOT:
 									Height:25
 									Children:
 										Image@FACTION_FLAG:
-											X:15
+											X:20
 											Y:5
-											Width:40
-											Height:PARENT_BOTTOM
+											Width:35
+											Height:PARENT_BOTTOM-5
 											ImageName:random
 											ImageCollection:flags
 										Label@PLAYER:

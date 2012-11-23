@@ -36,10 +36,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var players = world.Players.Where(p => !p.NonCombatant);
 
 			widget.Height = (200 + (Math.Min(8, players.Count()) * 25)).ToString();
-			var args = new WidgetArgs();
-			widget.Initialize(args);
-			widget.Get("BACKGROUND").Initialize(args);
-			widget.Get("PLAYERS").Initialize(args);
+			Initialize(widget, widget.Get("BACKGROUND"), widget.Get("PLAYERS"));
 
 			var teams = players.GroupBy(p => (world.LobbyInfo.ClientWithIndex(p.ClientIndex) ?? new Session.Client()).Team).OrderBy(g => g.Key);
 			foreach (var t in teams)
@@ -94,6 +91,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 					playersPanel.AddChild(template);
 				}
+			}
+		}
+
+		static void Initialize(params Widget[] widgets)
+		{
+			var args = new WidgetArgs();
+			foreach (var widget in widgets)
+			{
+				widget.Initialize(args);
 			}
 		}
 
