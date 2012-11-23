@@ -17,7 +17,7 @@ using System.Drawing;
 
 namespace OpenRA.Mods.RA.Widgets
 {
-	public class ObserverBuildIconsWidget : Widget
+	public class ObserverProductionIconsWidget : Widget
 	{
 		public Func<Player> GetPlayer;
 		Dictionary<string, Sprite> iconSprites;
@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Widgets
 		Dictionary<ProductionQueue, Animation> clocks;
 
 		[ObjectCreator.UseCtor]
-		public ObserverBuildIconsWidget(World world, WorldRenderer worldRenderer)
+		public ObserverProductionIconsWidget(World world, WorldRenderer worldRenderer)
 			: base()
 		{
 			iconSprites = Rules.Info.Values.Where(u => u.Traits.Contains<BuildableInfo>() && u.Name[0] != '^')
@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA.Widgets
 			clocks = new Dictionary<ProductionQueue, Animation>();
 		}
 
-		protected ObserverBuildIconsWidget(ObserverBuildIconsWidget other)
+		protected ObserverProductionIconsWidget(ObserverProductionIconsWidget other)
 			: base(other)
 		{
 			GetPlayer = other.GetPlayer;
@@ -101,7 +101,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 		public override Widget Clone()
 		{
-			return new ObserverBuildIconsWidget(this);
+			return new ObserverProductionIconsWidget(this);
 		}
 	}
 }
