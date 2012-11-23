@@ -20,15 +20,17 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 {
 	public class ObserverStatsLogic
 	{
+		ContainerWidget basicStats;
 		ScrollPanelWidget playersPanel;
-		ScrollItemWidget playerTemplate;
+		ScrollItemWidget basicPlayerTemplate;
 		ScrollItemWidget teamTemplate;
 
 		[ObjectCreator.UseCtor]
 		public ObserverStatsLogic(World world, Widget widget)
 		{
-			playersPanel = widget.Get<ScrollPanelWidget>("PLAYERS");
-			playerTemplate = playersPanel.Get<ScrollItemWidget>("PLAYER_TEMPLATE");
+			basicStats = widget.Get<ContainerWidget>("BASIC_STATS");
+			playersPanel = widget.Get<ScrollPanelWidget>("PLAYERS_PANEL");
+			basicPlayerTemplate = playersPanel.Get<ScrollItemWidget>("BASIC_PLAYER_TEMPLATE");
 			teamTemplate = playersPanel.Get<ScrollItemWidget>("TEAM_TEMPLATE");
 			playersPanel.RemoveChildren();
 			playersPanel.Layout = new GridLayout(playersPanel);
@@ -36,7 +38,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var players = world.Players.Where(p => !p.NonCombatant);
 
 			widget.Height = (200 + (Math.Min(8, players.Count()) * 25)).ToString();
-			Initialize(widget, widget.Get("BACKGROUND"), widget.Get("PLAYERS"));
+			Initialize(widget, widget.Get("BACKGROUND"), widget.Get("PLAYERS_PANEL"));
 
 			var teams = players.GroupBy(p => (world.LobbyInfo.ClientWithIndex(p.ClientIndex) ?? new Session.Client()).Team).OrderBy(g => g.Key);
 			foreach (var t in teams)
@@ -49,7 +51,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				foreach (var p in team)
 				{
 					var player = p;
-					var template = ScrollItemWidget.Setup(playerTemplate, () => false, () =>
+					var template = ScrollItemWidget.Setup(basicPlayerTemplate, () => false, () =>
 					{
 						var playerBase = world.Actors.FirstOrDefault(a => !a.IsDead() && a.HasTrait<BaseBuilding>() && a.Owner == player);
 						if (playerBase != null)
