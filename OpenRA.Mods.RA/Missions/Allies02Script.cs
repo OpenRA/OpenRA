@@ -105,7 +105,6 @@ namespace OpenRA.Mods.RA.Missions
 		static readonly string[] SovietVehicles2 = { "3tnk", "v2rl" };
 		const int SovietVehiclesUpgradeTicks = 1500 * 4;
 		const int SovietGroupSize = 20;
-		const int SovietHelperCash = 2000;
 
 		const int ReinforcementsTicks = 1500 * 12;
 		static readonly string[] Reinforcements =
@@ -220,7 +219,6 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			if (world.FrameNumber % 25 == 0)
 			{
-				AddSovietCashIfRequired();
 				BuildSovietUnits();
 				ManageSovietUnits();
 			}
@@ -326,22 +324,8 @@ namespace OpenRA.Mods.RA.Missions
 			}
 		}
 
-		void AddSovietCashIfRequired()
-		{
-			var resources = soviets.PlayerActor.Trait<PlayerResources>();
-			if (resources.Cash < SovietHelperCash)
-			{
-				resources.GiveCash(SovietHelperCash);
-			}
-		}
-
 		void BuildSovietUnits()
 		{
-			var powerManager = soviets.PlayerActor.Trait<PowerManager>();
-			if (powerManager.ExcessPower < 0)
-			{
-				return;
-			}
 			if (!sovietBarracks.Destroyed)
 			{
 				BuildSovietUnit(InfantryQueueName, SovietInfantry.Random(world.SharedRandom));
