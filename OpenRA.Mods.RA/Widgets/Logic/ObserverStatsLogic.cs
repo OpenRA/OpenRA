@@ -23,11 +23,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	{
 		ContainerWidget basicStatsHeaders;
 		ContainerWidget economicStatsHeaders;
-		ContainerWidget supportStatsHeaders;
+		ContainerWidget productionStatsHeaders;
 		ScrollPanelWidget playerStatsPanel;
 		ScrollItemWidget basicPlayerTemplate;
 		ScrollItemWidget economicPlayerTemplate;
-		ScrollItemWidget supportPlayerTemplate;
+		ScrollItemWidget productionPlayerTemplate;
 		ScrollItemWidget teamTemplate;
 		DropDownButtonWidget statsDropDown;
 		LabelWidget title;
@@ -44,14 +44,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			basicStatsHeaders = widget.Get<ContainerWidget>("BASIC_STATS_HEADERS");
 			economicStatsHeaders = widget.Get<ContainerWidget>("ECONOMIC_STATS_HEADERS");
-			supportStatsHeaders = widget.Get<ContainerWidget>("SUPPORT_STATS_HEADERS");
+			productionStatsHeaders = widget.Get<ContainerWidget>("PRODUCTION_STATS_HEADERS");
 
 			playerStatsPanel = widget.Get<ScrollPanelWidget>("PLAYER_STATS_PANEL");
 			playerStatsPanel.Layout = new GridLayout(playerStatsPanel);
 
 			basicPlayerTemplate = playerStatsPanel.Get<ScrollItemWidget>("BASIC_PLAYER_TEMPLATE");
 			economicPlayerTemplate = playerStatsPanel.Get<ScrollItemWidget>("ECONOMIC_PLAYER_TEMPLATE");
-			supportPlayerTemplate = playerStatsPanel.Get<ScrollItemWidget>("SUPPORT_PLAYER_TEMPLATE");
+			productionPlayerTemplate = playerStatsPanel.Get<ScrollItemWidget>("PRODUCTION_PLAYER_TEMPLATE");
 
 			teamTemplate = playerStatsPanel.Get<ScrollItemWidget>("TEAM_TEMPLATE");
 
@@ -85,13 +85,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					},
 					new StatsDropDownOption 
 					{
-						Title = "Support",
-						IsSelected = () => supportStatsHeaders.Visible,
+						Title = "Production",
+						IsSelected = () => productionStatsHeaders.Visible,
 						OnClick = () => 
 						{
 							ClearStats();
-							statsDropDown.GetText = () => "Support";
-							LoadStats(SupportStats);
+							statsDropDown.GetText = () => "Production";
+							LoadStats(ProductionStats);
 						}
 					}
 				};
@@ -116,7 +116,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			playerStatsPanel.Children.Clear();
 			basicStatsHeaders.Visible = false;
 			economicStatsHeaders.Visible = false;
-			supportStatsHeaders.Visible = false;
+			productionStatsHeaders.Visible = false;
 		}
 
 		void LoadStats(Func<Player, ScrollItemWidget> forEachPlayer)
@@ -137,14 +137,17 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			}
 		}
 
-		ScrollItemWidget SupportStats(Player player)
+		ScrollItemWidget ProductionStats(Player player)
 		{
-			supportStatsHeaders.Visible = true;
-			var template = SetupPlayerScrollItemWidget(supportPlayerTemplate, player);
+			productionStatsHeaders.Visible = true;
+			var template = SetupPlayerScrollItemWidget(productionPlayerTemplate, player);
 
 			AddPlayerFlagAndName(template, player);
 
-			var supportPowers = template.Get<ObserverSupportPowerIconsWidget>("SUPPORT_POWERS");
+			var production = template.Get<ObserverProductionIconsWidget>("PRODUCTION_ICONS");
+			production.GetPlayer = () => player;
+
+			var supportPowers = template.Get<ObserverSupportPowerIconsWidget>("SUPPORT_POWER_ICONS");
 			supportPowers.GetPlayer = () => player;
 
 			return template;
@@ -159,12 +162,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var res = player.PlayerActor.Trait<PlayerResources>();
 			template.Get<LabelWidget>("CASH").GetText = () => "$" + (res.DisplayCash + res.DisplayOre);
-			template.Get<LabelWidget>("INCOME").GetText = () => "$" + res.IncomePerMin;
+			template.Get<LabelWidget>("INCOME").GetText = () => "$" + res.IncomePerMinute;
 			var change = template.Get<LabelWidget>("INCOME_CHANGE");
 			change.GetText = () => Math.Round(res.IncomeChange * 100, 1, MidpointRounding.AwayFromZero) + "%";
 			change.GetColor = () =>
 			{
-				var c = Math.Round(res.IncomeChange, 1, MidpointRounding.AwayFromZero);
+				var c = Math.Round(res.IncomeChange * 100, 1, MidpointRounding.AwayFromZero);
 				if (c < 0) return Color.Red;
 				if (c > 0) return Color.LimeGreen;
 				return Color.White;
@@ -178,8 +181,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			template.Get<LabelWidget>("TOTAL_EARNED").GetText = () => "$" + res.TotalEarned;
 			template.Get<LabelWidget>("TOTAL_SPENT").GetText = () => "$" + res.TotalSpent;
 
-			var numHarvesters = template.Get<LabelWidget>("NUMBER_HARVESTERS");
-			numHarvesters.GetText = () => world.Actors.Count(a => a.Owner == player && !a.IsDead() && a.HasTrait<Harvester>()).ToString();
+			var harvesters = template.Get<LabelWidget>("NUMBER_HARVESTERS");
+			harvesters.GetText = () => world.Actors.Count(a => a.Owner == player && !a.IsDead() && a.HasTrait<Harvester>()).ToString();
 
 			return template;
 		}
@@ -193,7 +196,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var res = player.PlayerActor.Trait<PlayerResources>();
 			template.Get<LabelWidget>("CASH").GetText = () => "$" + (res.DisplayCash + res.DisplayOre);
-			template.Get<LabelWidget>("INCOME").GetText = () => "$" + res.IncomePerMin;
+			template.Get<LabelWidget>("INCOME").GetText = () => "$" + res.IncomePerMinute;
 
 			var powerRes = player.PlayerActor.Trait<PowerManager>();
 			var power = template.Get<LabelWidget>("POWER");
@@ -202,9 +205,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			template.Get<LabelWidget>("KILLS").GetText = () => player.Kills.ToString();
 			template.Get<LabelWidget>("DEATHS").GetText = () => player.Deaths.ToString();
-
-			var production = template.Get<ObserverProductionIconsWidget>("PRODUCTION_ICONS");
-			production.GetPlayer = () => player;
+			template.Get<LabelWidget>("ORDERS").GetText = () => OrderCounter.OrdersPerMinute(player.PlayerActor.Trait<OrderCounter>(), world).ToString("F1");
 
 			return template;
 		}

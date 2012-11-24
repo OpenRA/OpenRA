@@ -86,7 +86,7 @@ namespace OpenRA.Traits
 		public int DisplayCash;
 		public int DisplayOre;
 
-		public int IncomePerMin;
+		public int IncomePerMinute;
 		int incomeCounter;
 
 		public double IncomeChange;
@@ -206,8 +206,8 @@ namespace OpenRA.Traits
 
 			if (self.World.FrameNumber % 1500 == 0)
 			{
-				IncomeChange = IncomePerMin == 0 ? 0 : (double)(incomeCounter - IncomePerMin) / IncomePerMin;
-				IncomePerMin = incomeCounter;
+				IncomeChange = IncomePerMinute == 0 ? 0 : (double)(incomeCounter - IncomePerMinute) / IncomePerMinute;
+				IncomePerMinute = incomeCounter;
 				incomeCounter = 0;
 			}
 		}

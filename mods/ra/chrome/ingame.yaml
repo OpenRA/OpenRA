@@ -468,14 +468,14 @@ Container@OBSERVER_ROOT:
 									Font:Bold
 									Text:Deaths
 									Align:Right
-								Label@PRODUCTION_HEADER
-									X:585
+								Label@ORDERS_HEADER:
+									X:605
 									Y:40
-									Width:PARENT_RIGHT-625
+									Width:40
 									Height:25
 									Font:Bold
-									Text:Production
-									Align:Center
+									Text:APM
+									Align:Right
 						Container@ECONOMIC_STATS_HEADERS:
 							X:0
 							Y:0
@@ -532,7 +532,7 @@ Container@OBSERVER_ROOT:
 									Font:Bold
 									Text:Harvesters
 									Align:Right
-						Container@SUPPORT_STATS_HEADERS:
+						Container@PRODUCTION_STATS_HEADERS:
 							X:0
 							Y:0
 							Width:PARENT_RIGHT
@@ -545,14 +545,20 @@ Container@OBSERVER_ROOT:
 									Height:25
 									Font:Bold
 									Text:Player
-								Label@SUPPORT_POWERS_HEADER:
+								Label@PRODUCTION_HEADER
 									X:245
 									Y:40
-									Width:300
+									Width:320
+									Height:25
+									Font:Bold
+									Text:Production
+								Label@SUPPORT_POWERS_HEADER:
+									X:565
+									Y:40
+									Width:320
 									Height:25
 									Font:Bold
 									Text:Support Powers
-									Align:Center
 						ScrollPanel@PLAYER_STATS_PANEL:
 							X:25
 							Y:70
@@ -618,11 +624,12 @@ Container@OBSERVER_ROOT:
 											Width:40
 											Height:PARENT_BOTTOM
 											Align:Right
-										ObserverProductionIcons@PRODUCTION_ICONS:
+										Label@ORDERS:
 											X:575
 											Y:0
-											Width:240
+											Width:40
 											Height:PARENT_BOTTOM
+											Align:Right
 								ScrollItem@ECONOMIC_PLAYER_TEMPLATE:
 									X:0
 									Y:0
@@ -678,7 +685,7 @@ Container@OBSERVER_ROOT:
 											Width:60
 											Height:PARENT_BOTTOM
 											Align:Right
-								ScrollItem@SUPPORT_PLAYER_TEMPLATE:
+								ScrollItem@PRODUCTION_PLAYER_TEMPLATE:
 									X:0
 									Y:0
 									Width:PARENT_RIGHT-35
@@ -697,10 +704,15 @@ Container@OBSERVER_ROOT:
 											Width:160
 											Height:PARENT_BOTTOM
 											Font:Bold
-										ObserverSupportPowerIcons@SUPPORT_POWERS:
+										ObserverProductionIcons@PRODUCTION_ICONS:
 											X:215
 											Y:0
-											Width:300
+											Width:320
+											Height:PARENT_BOTTOM
+										ObserverSupportPowerIcons@SUPPORT_POWER_ICONS:
+											X:535
+											Y:0
+											Width:320
 											Height:PARENT_BOTTOM
 Background@FMVPLAYER:
 	Width:WINDOW_RIGHT
