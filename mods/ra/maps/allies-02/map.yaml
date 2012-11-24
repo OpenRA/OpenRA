@@ -1481,9 +1481,9 @@ Actors:
 	Actor290: apwr
 		Location: 52,42
 		Owner: Soviets
-	ProcPoint: waypoint
+	Actor924: proc.nofreeactor
 		Location: 25,95
-		Owner: Neutral
+		Owner: Allies
 	Actor455: fenc
 		Location: 31,93
 		Owner: Allies
@@ -1854,15 +1854,6 @@ Actors:
 		Owner: Soviets
 	Actor340: e1
 		Location: 77,58
-		Owner: Soviets
-	Actor630: 3tnk
-		Location: 35,65
-		Owner: Soviets
-	Actor633: 3tnk
-		Location: 36,66
-		Owner: Soviets
-	Actor634: 3tnk
-		Location: 37,65
 		Owner: Soviets
 	Actor55: wood
 		Location: 79,94
@@ -2878,6 +2869,14 @@ Rules:
 		Allies02Script:
 		MissionObjectivesPanel:
 			ObjectivesPanel: MISSION_OBJECTIVES
+	PROC.NoFreeActor:
+		Inherits: PROC
+		-FreeActor:
+		-Buildable:
+		RenderBuilding:
+			Image: PROC
+		ProvidesCustomPrerequisite:
+			Prerequisite: proc
 	TRAN.Husk1:
 		Burns:
 			Damage: 0

@@ -83,7 +83,6 @@ namespace OpenRA.Mods.RA.Missions
 		Actor yakEntryPoint;
 		Actor yakAttackPoint;
 		Actor yak;
-		Actor procPoint;
 
 		Actor einsteinChinook;
 
@@ -282,7 +281,8 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			world.AddFrameEndTask(w =>
 			{
-				if (!world.FindAliveCombatantActorsInCircle(allies2BasePoint.CenterLocation, 20).Any(a => a.HasTrait<Building>() && !a.HasTrait<Wall>() && a.Owner == allies2))
+				if (!world.FindAliveCombatantActorsInCircle(allies2BasePoint.CenterLocation, 20)
+					.Any(a => a.HasTrait<Building>() && !a.HasTrait<Wall>() && (a.Owner == allies || a.Owner == allies2)))
 				{
 					objectives[MaintainPresenceID].Status = ObjectiveStatus.Failed;
 					OnObjectivesUpdated(true);
@@ -569,16 +569,7 @@ namespace OpenRA.Mods.RA.Missions
 			sovietTownAttackPoint2 = actors["SovietTownAttackPoint2"];
 			yakEntryPoint = actors["YakEntryPoint"];
 			yakAttackPoint = actors["YakAttackPoint"];
-			procPoint = actors["ProcPoint"];
-			foreach (var actor in world.Actors.Where(a => a.Owner == allies).OrderBy(a => a.HasTrait<PowerManager>()))
-			{
-				actor.ChangeOwner(allies2);
-			}
-			world.CreateActor(true, "proc", new TypeDictionary
-			{
-				new OwnerInit(allies2), 
-				new LocationInit(procPoint.Location)
-			});
+			SetupAlliedBase(actors);
 			var shroud = w.WorldActor.Trait<Shroud>();
 			shroud.Explore(w, sam1.Location, 2);
 			shroud.Explore(w, sam2.Location, 2);
@@ -594,6 +585,32 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			PlayMusic();
 			Game.ConnectionStateChanged += StopMusic;
+		}
+
+		void SetupAlliedBase(Dictionary<string, Actor> actors)
+		{
+			world.AddFrameEndTask(w =>
+			{
+				foreach (var actor in actors.Where(a => a.Value.Owner == allies))
+				{
+					actor.Value.ChangeOwner(allies2);
+					if (actor.Value.Info.Name == "proc.nofreeactor")
+					{
+						CreateAlliedHarvester(actor.Value.Location);
+					}
+				}
+			});
+		}
+
+		void CreateAlliedHarvester(CPos location)
+		{
+			var actor = world.CreateActor("harv", new TypeDictionary
+			{
+				new LocationInit(location + new CVec(1, 2)),
+				new OwnerInit(allies2),
+				new FacingInit(64)
+			});
+			actor.QueueActivity(new FindResources());
 		}
 
 		void PlayMusic()
