@@ -151,6 +151,10 @@ namespace OpenRA.Mods.RA.Missions
 				Sound.Play("reinfor1.aud");
 				SpawnReinforcements();
 			}
+			if (world.FrameNumber % 25 == 0)
+			{
+				ManageSovietUnits();
+			}
 			if (objectives[AirbaseID].Status != ObjectiveStatus.Completed)
 			{
 				if (world.FrameNumber % 25 == 0)
@@ -159,7 +163,6 @@ namespace OpenRA.Mods.RA.Missions
 				}
 				ManageSovietAircraft();
 			}
-			ManageSovietUnits();
 			EvacuateAlliedUnits(exit1TopLeft.CenterLocation, exit1BottomRight.CenterLocation, exit1ExitPoint.Location);
 			EvacuateAlliedUnits(exit2TopLeft.CenterLocation, exit2BottomRight.CenterLocation, exit2ExitPoint.Location);
 			CheckSovietAirbase();
