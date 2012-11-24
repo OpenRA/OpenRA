@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Mods.RA.Buildings;
+using OpenRA.Mods.RA.Orders;
 using OpenRA.Network;
 using OpenRA.Traits;
 using OpenRA.Widgets;
