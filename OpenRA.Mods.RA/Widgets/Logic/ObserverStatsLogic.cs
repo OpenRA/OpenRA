@@ -24,13 +24,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		ContainerWidget basicStatsHeaders;
 		ContainerWidget economicStatsHeaders;
 		ContainerWidget productionStatsHeaders;
+		ContainerWidget combatStatsHeaders;
 		ScrollPanelWidget playerStatsPanel;
 		ScrollItemWidget basicPlayerTemplate;
 		ScrollItemWidget economicPlayerTemplate;
 		ScrollItemWidget productionPlayerTemplate;
+		ScrollItemWidget combatPlayerTemplate;
 		ScrollItemWidget teamTemplate;
 		DropDownButtonWidget statsDropDown;
-		LabelWidget title;
 		IEnumerable<Player> players;
 		World world;
 
@@ -40,11 +41,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			this.world = world;
 			players = world.Players.Where(p => !p.NonCombatant);
 
-			title = widget.Get<LabelWidget>("TITLE");
-
 			basicStatsHeaders = widget.Get<ContainerWidget>("BASIC_STATS_HEADERS");
 			economicStatsHeaders = widget.Get<ContainerWidget>("ECONOMIC_STATS_HEADERS");
 			productionStatsHeaders = widget.Get<ContainerWidget>("PRODUCTION_STATS_HEADERS");
+			combatStatsHeaders = widget.Get<ContainerWidget>("COMBAT_STATS_HEADERS");
 
 			playerStatsPanel = widget.Get<ScrollPanelWidget>("PLAYER_STATS_PANEL");
 			playerStatsPanel.Layout = new GridLayout(playerStatsPanel);
@@ -52,6 +52,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			basicPlayerTemplate = playerStatsPanel.Get<ScrollItemWidget>("BASIC_PLAYER_TEMPLATE");
 			economicPlayerTemplate = playerStatsPanel.Get<ScrollItemWidget>("ECONOMIC_PLAYER_TEMPLATE");
 			productionPlayerTemplate = playerStatsPanel.Get<ScrollItemWidget>("PRODUCTION_PLAYER_TEMPLATE");
+			combatPlayerTemplate = playerStatsPanel.Get<ScrollItemWidget>("COMBAT_PLAYER_TEMPLATE");
 
 			teamTemplate = playerStatsPanel.Get<ScrollItemWidget>("TEAM_TEMPLATE");
 
@@ -93,6 +94,17 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 							statsDropDown.GetText = () => "Production";
 							LoadStats(ProductionStats);
 						}
+					},
+					new StatsDropDownOption 
+					{
+						Title = "Combat",
+						IsSelected = () => combatStatsHeaders.Visible,
+						OnClick = () => 
+						{
+							ClearStats();
+							statsDropDown.GetText = () => "Combat";
+							LoadStats(CombatStats);
+						}
 					}
 				};
 				Func<StatsDropDownOption, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
@@ -101,7 +113,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					item.Get<LabelWidget>("LABEL").GetText = () => option.Title;
 					return item;
 				};
-				statsDropDown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 100, options, setupItem);
+				statsDropDown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 150, options, setupItem);
 			};
 
 			widget.Height = (200 + (Math.Min(8, players.Count()) * 25)).ToString();
@@ -117,6 +129,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			basicStatsHeaders.Visible = false;
 			economicStatsHeaders.Visible = false;
 			productionStatsHeaders.Visible = false;
+			combatStatsHeaders.Visible = false;
 		}
 
 		void LoadStats(Func<Player, ScrollItemWidget> forEachPlayer)
@@ -135,6 +148,27 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					playerStatsPanel.AddChild(forEachPlayer(player));
 				}
 			}
+		}
+
+		ScrollItemWidget CombatStats(Player player)
+		{
+			combatStatsHeaders.Visible = true;
+			var template = SetupPlayerScrollItemWidget(combatPlayerTemplate, player);
+
+			AddPlayerFlagAndName(template, player);
+
+			template.Get<LabelWidget>("MAP_CONTROL").GetText = () =>
+			{
+				var total = world.Map.Bounds.Width * world.Map.Bounds.Height;
+				var controlled = world.Actors
+					.Where(a => !a.IsDead() && a.IsInWorld && a.Owner == player && a.HasTrait<RevealsShroud>())
+					.SelectMany(a => world.FindTilesInCircle(a.Location, a.Trait<RevealsShroud>().RevealRange))
+					.Distinct()
+					.Count();
+				return Round((double)controlled / total * 100).ToString("F1") + "%";
+			};
+
+			return template;
 		}
 
 		ScrollItemWidget ProductionStats(Player player)
@@ -164,10 +198,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			template.Get<LabelWidget>("CASH").GetText = () => "$" + (res.DisplayCash + res.DisplayOre);
 			template.Get<LabelWidget>("INCOME").GetText = () => "$" + res.IncomePerMinute;
 			var change = template.Get<LabelWidget>("INCOME_CHANGE");
-			change.GetText = () => Math.Round(res.IncomeChange * 100, 1, MidpointRounding.AwayFromZero) + "%";
+			change.GetText = () => Round(res.IncomeChange * 100) + "%";
 			change.GetColor = () =>
 			{
-				var c = Math.Round(res.IncomeChange * 100, 1, MidpointRounding.AwayFromZero);
+				var c = Round(res.IncomeChange * 100);
 				if (c < 0) return Color.Red;
 				if (c > 0) return Color.LimeGreen;
 				return Color.White;
@@ -220,6 +254,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					Game.MoveViewport(playerBase.Location.ToFloat2());
 				}
 			});
+		}
+
+		static double Round(double value)
+		{
+			return Math.Round(value, 1, MidpointRounding.AwayFromZero);
 		}
 
 		static void AddPlayerFlagAndName(ScrollItemWidget template, Player player)

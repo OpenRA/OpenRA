@@ -10,13 +10,13 @@
 
 namespace OpenRA.Traits
 {
-	class RevealsShroudInfo : ITraitInfo
+	public class RevealsShroudInfo : ITraitInfo
 	{
 		public readonly int Range = 0;
 		public object Create(ActorInitializer init) { return new RevealsShroud(this); }
 	}
 
-	class RevealsShroud : ITick
+	public class RevealsShroud : ITick
 	{
 		RevealsShroudInfo Info;
 		CPos previousLocation;
