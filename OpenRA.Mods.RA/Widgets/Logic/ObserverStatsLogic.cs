@@ -175,6 +175,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				.Where(a => a.Owner == player && !a.IsDead() && a.Info.Traits.WithInterface<ValuedInfo>().Any())
 				.Sum(a => a.Info.Traits.WithInterface<ValuedInfo>().First().Cost);
 
+			template.Get<LabelWidget>("TOTAL_EARNED").GetText = () => "$" + res.TotalEarned;
+			template.Get<LabelWidget>("TOTAL_SPENT").GetText = () => "$" + res.TotalSpent;
+
 			var numHarvesters = template.Get<LabelWidget>("NUMBER_HARVESTERS");
 			numHarvesters.GetText = () => world.Actors.Count(a => a.Owner == player && !a.IsDead() && a.HasTrait<Harvester>()).ToString();
 

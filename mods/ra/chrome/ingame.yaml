@@ -510,8 +510,22 @@ Container@OBSERVER_ROOT:
 									Height:25
 									Font:Bold
 									Text:Assets
+								Label@TOTAL_EARNED_HEADER
+									X:505
+									Y:40
+									Width:60
+									Height:25
+									Font:Bold
+									Text:Earned
+								Label@TOTAL_SPENT_HEADER
+									X:565
+									Y:40
+									Width:60
+									Height:25
+									Font:Bold
+									Text:Spent
 								Label@NUMBER_HARVESTERS_HEADER
-									X:525
+									X:645
 									Y:40
 									Width:60
 									Height:25
@@ -648,8 +662,18 @@ Container@OBSERVER_ROOT:
 											Y:0
 											Width:60
 											Height:PARENT_BOTTOM
+										Label@TOTAL_EARNED:
+											X:475
+											Y:0
+											Width:60
+											Height:PARENT_BOTTOM
+										Label@TOTAL_SPENT:
+											X:535
+											Y:0
+											Width:60
+											Height:PARENT_BOTTOM
 										Label@NUMBER_HARVESTERS:
-											X:495
+											X:615
 											Y:0
 											Width:60
 											Height:PARENT_BOTTOM

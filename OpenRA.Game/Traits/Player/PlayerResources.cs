@@ -87,8 +87,12 @@ namespace OpenRA.Traits
 		public int DisplayOre;
 
 		public int IncomePerMin;
-		public double IncomeChange;
 		int incomeCounter;
+
+		public double IncomeChange;
+
+		public int TotalEarned;
+		public int TotalSpent;
 
 		public bool CanGiveOre(int amount)
 		{
@@ -98,20 +102,25 @@ namespace OpenRA.Traits
 		public void GiveOre(int num)
 		{
 			Ore += num;
+			incomeCounter += num;
+			TotalEarned += num;
 
 			if (Ore > OreCapacity)
 			{
 				nextSiloAdviceTime = 0;
+
+				incomeCounter -= Ore - OreCapacity;
+				TotalEarned -= Ore - OreCapacity;
+
 				Ore = OreCapacity;
 			}
-
-			incomeCounter += num;
 		}
 
 		public bool TakeOre(int num)
 		{
 			if (Ore < num) return false;
 			Ore -= num;
+			TotalSpent += num;
 
 			return true;
 		}
@@ -120,6 +129,7 @@ namespace OpenRA.Traits
 		{
 			Cash += num;
 			incomeCounter += num;
+			TotalEarned += num;
 		}
 
 		public bool TakeCash(int num)
@@ -128,6 +138,7 @@ namespace OpenRA.Traits
 
 			// Spend ore before cash
 			Ore -= num;
+			TotalSpent += num;
 			if (Ore < 0)
 			{
 				Cash += Ore;
