@@ -594,23 +594,13 @@ namespace OpenRA.Mods.RA.Missions
 				foreach (var actor in actors.Where(a => a.Value.Owner == allies))
 				{
 					actor.Value.ChangeOwner(allies2);
-					if (actor.Value.Info.Name == "proc.nofreeactor")
-					{
-						CreateAlliedHarvester(actor.Value.Location);
-					}
 				}
+				world.CreateActor("proc", new TypeDictionary
+				{
+					new LocationInit(actors["Allies2ProcPoint"].Location),
+					new OwnerInit(allies2)
+				});
 			});
-		}
-
-		void CreateAlliedHarvester(CPos location)
-		{
-			var actor = world.CreateActor("harv", new TypeDictionary
-			{
-				new LocationInit(location + new CVec(1, 2)),
-				new OwnerInit(allies2),
-				new FacingInit(64)
-			});
-			actor.QueueActivity(new FindResources());
 		}
 
 		void PlayMusic()
