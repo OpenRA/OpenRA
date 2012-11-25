@@ -9,6 +9,7 @@
 #endregion
 
 using System.Linq;
+using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -22,14 +23,20 @@ namespace OpenRA.Mods.RA
 	{
 		World world;
 		Player player;
+		public double MapControl;
+		public int OrderCount;
+		public int KillsCost;
+		public int DeathsCost;
+		public int UnitsKilled;
+		public int UnitsDead;
+		public int BuildingsKilled;
+		public int BuildingsDead;
 
 		public PlayerStatistics(Actor self)
 		{
 			world = self.World;
 			player = self.Owner;
 		}
-
-		public double MapControl;
 
 		void UpdateMapControl()
 		{
@@ -48,8 +55,6 @@ namespace OpenRA.Mods.RA
 				UpdateMapControl();
 			}
 		}
-
-		public int OrderCount;
 
 		public void ResolveOrder(Actor self, Order order)
 		{
@@ -71,6 +76,33 @@ namespace OpenRA.Mods.RA
 				return;
 			}
 			OrderCount++;
+		}
+	}
+
+	public class UpdatesPlayerStatisticsInfo : TraitInfo<UpdatesPlayerStatistics> { }
+
+	public class UpdatesPlayerStatistics : INotifyKilled
+	{
+		public void Killed(Actor self, AttackInfo e)
+		{
+			var attackerStats = e.Attacker.Owner.PlayerActor.Trait<PlayerStatistics>();
+			var defenderStats = self.Owner.PlayerActor.Trait<PlayerStatistics>();
+			if (self.HasTrait<Building>())
+			{
+				attackerStats.BuildingsKilled++;
+				defenderStats.BuildingsDead++;
+			}
+			if (self.HasTrait<IMove>())
+			{
+				attackerStats.UnitsKilled++;
+				defenderStats.UnitsDead++;
+			}
+			if (self.HasTrait<Valued>())
+			{
+				var cost = self.Info.Traits.Get<ValuedInfo>().Cost;
+				attackerStats.KillsCost += cost;
+				defenderStats.DeathsCost += cost;
+			}
 		}
 	}
 }

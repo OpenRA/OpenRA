@@ -32,6 +32,7 @@
 	GpsDot:
 		String:Vehicle
 	WithSmoke:
+	UpdatesPlayerStatistics:
 
 ^Tank:
 	AppearsOnRadar:
@@ -67,6 +68,7 @@
 	GpsDot:
 		String:Vehicle
 	WithSmoke:
+	UpdatesPlayerStatistics:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -114,6 +116,7 @@
 	RepairableNear:
 		Buildings: hosp
 		CloseEnough: 1
+	UpdatesPlayerStatistics:
 
 ^Ship:
 	AppearsOnRadar:
@@ -141,6 +144,7 @@
 	GpsDot:
 		String:Ship
 	WithSmoke:
+	UpdatesPlayerStatistics:
 
 ^Plane:
 	AppearsOnRadar:
@@ -169,6 +173,7 @@
 	GivesBounty:
 	GpsDot:
 		String:Plane
+	UpdatesPlayerStatistics:
 
 ^Helicopter:
 	Inherits: ^Plane
@@ -210,6 +215,7 @@
 	Sellable:
 	AcceptsSupplies:
 	GivesBounty:
+	UpdatesPlayerStatistics:
 
 ^Wall:
 	AppearsOnRadar:
@@ -242,6 +248,7 @@
 	ProximityCaptor:
 		Types:Wall
 	Sellable:
+	UpdatesPlayerStatistics:
 
 ^TechBuilding:
 	Inherits: ^Building

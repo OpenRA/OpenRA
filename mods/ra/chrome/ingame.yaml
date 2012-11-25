@@ -445,7 +445,7 @@ Container@OBSERVER_ROOT:
 									Height:25
 									Font:Bold
 									Text:Earned/min
-								Label@POWER_HEADER
+								Label@POWER_HEADER:
 									X:425
 									Y:40
 									Width:80
@@ -503,28 +503,28 @@ Container@OBSERVER_ROOT:
 									Height:25
 									Font:Bold
 									Text:Earned/min
-								Label@ASSETS_HEADER
+								Label@ASSETS_HEADER:
 									X:425
 									Y:40
 									Width:60
 									Height:25
 									Font:Bold
 									Text:Assets
-								Label@EARNED_HEADER
+								Label@EARNED_HEADER:
 									X:505
 									Y:40
 									Width:60
 									Height:25
 									Font:Bold
 									Text:Earned
-								Label@SPENT_HEADER
+								Label@SPENT_HEADER:
 									X:585
 									Y:40
 									Width:60
 									Height:25
 									Font:Bold
 									Text:Spent
-								Label@HARVESTERS_HEADER
+								Label@HARVESTERS_HEADER:
 									X:665
 									Y:40
 									Width:60
@@ -545,7 +545,7 @@ Container@OBSERVER_ROOT:
 									Height:25
 									Font:Bold
 									Text:Player
-								Label@PRODUCTION_HEADER
+								Label@PRODUCTION_HEADER:
 									X:245
 									Y:40
 									Width:320
@@ -579,6 +579,52 @@ Container@OBSERVER_ROOT:
 									Height:25
 									Font:Bold
 									Text:Control
+								Label@KILLS_COST_HEADER:
+									X:325
+									Y:40
+									Width:60
+									Height:25
+									Font:Bold
+									Text:Kills
+								Label@DEATHS_COST_HEADER:
+									X:405
+									Y:40
+									Width:60
+									Height:25
+									Font:Bold
+									Text:Deaths
+								Label@UNITS_KILLED_HEADER:
+									X:505
+									Y:40
+									Width:40
+									Height:25
+									Font:Bold
+									Text:Units Killed
+									Align:Right
+								Label@UNITS_DEAD_HEADER:
+									X:605
+									Y:40
+									Width:40
+									Height:25
+									Font:Bold
+									Text:Units Dead
+									Align:Right
+								Label@BUILDINGS_KILLED_HEADER:
+									X:725
+									Y:40
+									Width:40
+									Height:25
+									Font:Bold
+									Text:Bld Destroyed
+									Align:Right
+								Label@BUILDINGS_DEAD_HEADER:
+									X:825
+									Y:40
+									Width:40
+									Height:25
+									Font:Bold
+									Text:Bld Lost
+									Align:Right
 						ScrollPanel@PLAYER_STATS_PANEL:
 							X:25
 							Y:70
@@ -748,11 +794,45 @@ Container@OBSERVER_ROOT:
 											Width:160
 											Height:PARENT_BOTTOM
 											Font:Bold
-										Label@CONTROL
+										Label@CONTROL:
 											X:215
 											Y:0
 											Width:60
 											Height:PARENT_BOTTOM
+										Label@KILLS_COST:
+											X:295
+											Y:0
+											Width:60
+											Height:PARENT_BOTTOM
+										Label@DEATHS_COST:
+											X:375
+											Y:0
+											Width:60
+											Height:PARENT_BOTTOM
+										Label@UNITS_KILLED:
+											X:475
+											Y:0
+											Width:40
+											Height:PARENT_BOTTOM
+											Align:Right
+										Label@UNITS_DEAD:
+											X:575
+											Y:0
+											Width:40
+											Height:PARENT_BOTTOM
+											Align:Right
+										Label@BUILDINGS_KILLED:
+											X:695
+											Y:0
+											Width:40
+											Height:PARENT_BOTTOM
+											Align:Right
+										Label@BUILDINGS_DEAD:
+											X:795
+											Y:0
+											Width:40
+											Height:PARENT_BOTTOM
+											Align:Right
 Background@FMVPLAYER:
 	Width:WINDOW_RIGHT
 	Height:WINDOW_BOTTOM
