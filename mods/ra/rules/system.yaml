@@ -190,7 +190,7 @@ Player:
 	GpsWatcher:
 	Shroud:
 	BaseAttackNotifier:
-	OrderCounter:
+	PlayerStatistics:
 
 World:	
 	OpenWidgetAtGameStart:

@@ -438,22 +438,22 @@ Container@OBSERVER_ROOT:
 									Height:25
 									Font:Bold
 									Text:Cash
-								Label@INCOME_HEADER:
+								Label@EARNED_MIN_HEADER:
 									X:325
 									Y:40
 									Width:60
 									Height:25
 									Font:Bold
-									Text:Income
+									Text:Earned/min
 								Label@POWER_HEADER
-									X:405
+									X:425
 									Y:40
 									Width:80
 									Height:25
 									Font:Bold
 									Text:Power
 								Label@KILLS_HEADER:
-									X:485
+									X:505
 									Y:40
 									Width:40
 									Height:25
@@ -461,20 +461,20 @@ Container@OBSERVER_ROOT:
 									Text:Kills
 									Align:Right
 								Label@DEATHS_HEADER:
-									X:545
+									X:565
 									Y:40
 									Width:40
 									Height:25
 									Font:Bold
 									Text:Deaths
 									Align:Right
-								Label@ORDERS_HEADER:
-									X:605
+								Label@ACTIONS_MIN_HEADER:
+									X:665
 									Y:40
 									Width:40
 									Height:25
 									Font:Bold
-									Text:APM
+									Text:Actions/min
 									Align:Right
 						Container@ECONOMIC_STATS_HEADERS:
 							X:0
@@ -496,36 +496,36 @@ Container@OBSERVER_ROOT:
 									Height:25
 									Font:Bold
 									Text:Cash
-								Label@INCOME_HEADER:
+								Label@EARNED_MIN_HEADER:
 									X:325
 									Y:40
-									Width:120
+									Width:60
 									Height:25
 									Font:Bold
-									Text:Income
-								Label@TOTAL_ASSETS_HEADER
-									X:445
+									Text:Earned/min
+								Label@ASSETS_HEADER
+									X:425
 									Y:40
 									Width:60
 									Height:25
 									Font:Bold
 									Text:Assets
-								Label@TOTAL_EARNED_HEADER
+								Label@EARNED_HEADER
 									X:505
 									Y:40
 									Width:60
 									Height:25
 									Font:Bold
 									Text:Earned
-								Label@TOTAL_SPENT_HEADER
-									X:565
+								Label@SPENT_HEADER
+									X:585
 									Y:40
 									Width:60
 									Height:25
 									Font:Bold
 									Text:Spent
-								Label@NUMBER_HARVESTERS_HEADER
-									X:645
+								Label@HARVESTERS_HEADER
+									X:665
 									Y:40
 									Width:60
 									Height:25
@@ -572,13 +572,13 @@ Container@OBSERVER_ROOT:
 									Height:25
 									Font:Bold
 									Text:Player
-								Label@MAP_CONTROL_HEADER:
+								Label@CONTROL_HEADER:
 									X:245
 									Y:40
 									Width:60
 									Height:25
 									Font:Bold
-									Text:Map Control
+									Text:Control
 						ScrollPanel@PLAYER_STATS_PANEL:
 							X:25
 							Y:70
@@ -622,30 +622,30 @@ Container@OBSERVER_ROOT:
 											Y:0
 											Width:80
 											Height:PARENT_BOTTOM
-										Label@INCOME:
+										Label@EARNED_MIN:
 											X:295
 											Y:0
 											Width:60
 											Height:PARENT_BOTTOM
 										Label@POWER:
-											X:375
+											X:395
 											Y:0
 											Width:80
 											Height:PARENT_BOTTOM
 										Label@KILLS:
-											X:455
+											X:475
 											Y:0
 											Width:40
 											Height:PARENT_BOTTOM
 											Align:Right
 										Label@DEATHS:
-											X:515
+											X:535
 											Y:0
 											Width:40
 											Height:PARENT_BOTTOM
 											Align:Right
-										Label@ORDERS:
-											X:575
+										Label@ACTIONS_MIN:
+											X:635
 											Y:0
 											Width:40
 											Height:PARENT_BOTTOM
@@ -674,33 +674,28 @@ Container@OBSERVER_ROOT:
 											Y:0
 											Width:80
 											Height:PARENT_BOTTOM
-										Label@INCOME:
+										Label@EARNED_MIN:
 											X:295
 											Y:0
 											Width:60
 											Height:PARENT_BOTTOM
-										Label@INCOME_CHANGE:
-											X:355
+										Label@ASSETS:
+											X:395
 											Y:0
 											Width:60
 											Height:PARENT_BOTTOM
-										Label@TOTAL_ASSETS:
-											X:415
-											Y:0
-											Width:60
-											Height:PARENT_BOTTOM
-										Label@TOTAL_EARNED:
+										Label@EARNED:
 											X:475
 											Y:0
 											Width:60
 											Height:PARENT_BOTTOM
-										Label@TOTAL_SPENT:
-											X:535
+										Label@SPENT:
+											X:555
 											Y:0
 											Width:60
 											Height:PARENT_BOTTOM
-										Label@NUMBER_HARVESTERS:
-											X:615
+										Label@HARVESTERS:
+											X:635
 											Y:0
 											Width:60
 											Height:PARENT_BOTTOM
@@ -753,7 +748,7 @@ Container@OBSERVER_ROOT:
 											Width:160
 											Height:PARENT_BOTTOM
 											Font:Bold
-										Label@MAP_CONTROL
+										Label@CONTROL
 											X:215
 											Y:0
 											Width:60

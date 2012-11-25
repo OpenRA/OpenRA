@@ -256,7 +256,6 @@
     <Compile Include="NukePaletteEffect.cs" />
     <Compile Include="NullLoadScreen.cs" />
     <Compile Include="OpenWidgetAtGameStart.cs" />
-    <Compile Include="Orders\OrderCounter.cs" />
     <Compile Include="Orders\DeployOrderTargeter.cs" />
     <Compile Include="Orders\EnterBuildingOrderTargeter.cs" />
     <Compile Include="Orders\PlaceBuildingOrderGenerator.cs" />
@@ -271,6 +270,7 @@
     <Compile Include="ParaDrop.cs" />
     <Compile Include="ParachuteAttachment.cs" />
     <Compile Include="Passenger.cs" />
+    <Compile Include="Player\PlayerStatistics.cs" />
     <Compile Include="Player\ActorGroupProxy.cs" />
     <Compile Include="Player\AllyRepair.cs" />
     <Compile Include="Player\ClassicProductionQueue.cs" />

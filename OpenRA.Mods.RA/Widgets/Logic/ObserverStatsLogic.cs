@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Mods.RA.Buildings;
-using OpenRA.Mods.RA.Orders;
 using OpenRA.Network;
 using OpenRA.Traits;
 using OpenRA.Widgets;
@@ -71,7 +70,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						{
 							ClearStats();
 							statsDropDown.GetText = () => "Basic";
-							LoadStats(BasicStats);
+							DisplayStats(BasicStats);
 						}
 					},
 					new StatsDropDownOption 
@@ -82,7 +81,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						{
 							ClearStats();
 							statsDropDown.GetText = () => "Economic";
-							LoadStats(EconomicStats);
+							DisplayStats(EconomicStats);
 						}
 					},
 					new StatsDropDownOption 
@@ -93,7 +92,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						{
 							ClearStats();
 							statsDropDown.GetText = () => "Production";
-							LoadStats(ProductionStats);
+							DisplayStats(ProductionStats);
 						}
 					},
 					new StatsDropDownOption 
@@ -104,7 +103,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						{
 							ClearStats();
 							statsDropDown.GetText = () => "Combat";
-							LoadStats(CombatStats);
+							DisplayStats(CombatStats);
 						}
 					}
 				};
@@ -121,7 +120,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			InitializeWidgets(widget, widget.Get("BACKGROUND"), widget.Get("PLAYER_STATS_PANEL"));
 
 			ClearStats();
-			LoadStats(BasicStats);
+			DisplayStats(BasicStats);
 		}
 
 		void ClearStats()
@@ -133,7 +132,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			combatStatsHeaders.Visible = false;
 		}
 
-		void LoadStats(Func<Player, ScrollItemWidget> forEachPlayer)
+		void DisplayStats(Func<Player, ScrollItemWidget> forEachPlayer)
 		{
 			var teams = players.GroupBy(p => (world.LobbyInfo.ClientWithIndex(p.ClientIndex) ?? new Session.Client()).Team).OrderBy(g => g.Key);
 			foreach (var t in teams)
@@ -158,16 +157,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			AddPlayerFlagAndName(template, player);
 
-			template.Get<LabelWidget>("MAP_CONTROL").GetText = () =>
-			{
-				var total = world.Map.Bounds.Width * world.Map.Bounds.Height;
-				var controlled = world.Actors
-					.Where(a => !a.IsDead() && a.IsInWorld && a.Owner == player && a.HasTrait<RevealsShroud>())
-					.SelectMany(a => world.FindTilesInCircle(a.Location, a.Trait<RevealsShroud>().RevealRange))
-					.Distinct()
-					.Count();
-				return Round((double)controlled / total * 100).ToString("F1") + "%";
-			};
+			var stats = player.PlayerActor.Trait<PlayerStatistics>();
+			template.Get<LabelWidget>("CONTROL").GetText = () => MapControl(stats.MapControl);
 
 			return template;
 		}
@@ -179,11 +170,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			AddPlayerFlagAndName(template, player);
 
-			var production = template.Get<ObserverProductionIconsWidget>("PRODUCTION_ICONS");
-			production.GetPlayer = () => player;
-
-			var supportPowers = template.Get<ObserverSupportPowerIconsWidget>("SUPPORT_POWER_ICONS");
-			supportPowers.GetPlayer = () => player;
+			template.Get<ObserverProductionIconsWidget>("PRODUCTION_ICONS").GetPlayer = () => player;
+			template.Get<ObserverSupportPowerIconsWidget>("SUPPORT_POWER_ICONS").GetPlayer = () => player;
 
 			return template;
 		}
@@ -196,27 +184,18 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			AddPlayerFlagAndName(template, player);
 
 			var res = player.PlayerActor.Trait<PlayerResources>();
-			template.Get<LabelWidget>("CASH").GetText = () => "$" + (res.DisplayCash + res.DisplayOre);
-			template.Get<LabelWidget>("INCOME").GetText = () => "$" + res.IncomePerMinute;
-			var change = template.Get<LabelWidget>("INCOME_CHANGE");
-			change.GetText = () => Round(res.IncomeChange * 100) + "%";
-			change.GetColor = () =>
-			{
-				var c = Round(res.IncomeChange * 100);
-				if (c < 0) return Color.Red;
-				if (c > 0) return Color.LimeGreen;
-				return Color.White;
-			};
 
-			var assets = template.Get<LabelWidget>("TOTAL_ASSETS");
+			template.Get<LabelWidget>("CASH").GetText = () => "$" + (res.DisplayCash + res.DisplayOre);
+			template.Get<LabelWidget>("EARNED_MIN").GetText = () => EarnedPerMinute(res.Earned);
+			template.Get<LabelWidget>("EARNED").GetText = () => "$" + res.Earned;
+			template.Get<LabelWidget>("SPENT").GetText = () => "$" + res.Spent;
+
+			var assets = template.Get<LabelWidget>("ASSETS");
 			assets.GetText = () => "$" + world.Actors
 				.Where(a => a.Owner == player && !a.IsDead() && a.Info.Traits.WithInterface<ValuedInfo>().Any())
 				.Sum(a => a.Info.Traits.WithInterface<ValuedInfo>().First().Cost);
 
-			template.Get<LabelWidget>("TOTAL_EARNED").GetText = () => "$" + res.TotalEarned;
-			template.Get<LabelWidget>("TOTAL_SPENT").GetText = () => "$" + res.TotalSpent;
-
-			var harvesters = template.Get<LabelWidget>("NUMBER_HARVESTERS");
+			var harvesters = template.Get<LabelWidget>("HARVESTERS");
 			harvesters.GetText = () => world.Actors.Count(a => a.Owner == player && !a.IsDead() && a.HasTrait<Harvester>()).ToString();
 
 			return template;
@@ -231,7 +210,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var res = player.PlayerActor.Trait<PlayerResources>();
 			template.Get<LabelWidget>("CASH").GetText = () => "$" + (res.DisplayCash + res.DisplayOre);
-			template.Get<LabelWidget>("INCOME").GetText = () => "$" + res.IncomePerMinute;
+			template.Get<LabelWidget>("EARNED_MIN").GetText = () => EarnedPerMinute(res.Earned);
 
 			var powerRes = player.PlayerActor.Trait<PowerManager>();
 			var power = template.Get<LabelWidget>("POWER");
@@ -240,7 +219,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			template.Get<LabelWidget>("KILLS").GetText = () => player.Kills.ToString();
 			template.Get<LabelWidget>("DEATHS").GetText = () => player.Deaths.ToString();
-			template.Get<LabelWidget>("ORDERS").GetText = () => OrderCounter.OrdersPerMinute(player.PlayerActor.Trait<OrderCounter>(), world).ToString("F1");
+
+			var stats = player.PlayerActor.Trait<PlayerStatistics>();
+			template.Get<LabelWidget>("ACTIONS_MIN").GetText = () => OrdersPerMinute(stats.OrderCount);
 
 			return template;
 		}
@@ -257,9 +238,19 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			});
 		}
 
-		static double Round(double value)
+		string MapControl(double control)
 		{
-			return Math.Round(value, 1, MidpointRounding.AwayFromZero);
+			return (control * 100).ToString("F1") + "%";
+		}
+
+		string OrdersPerMinute(double orders)
+		{
+			return (world.FrameNumber == 0 ? 0 : orders / (world.FrameNumber / 1500.0)).ToString("F1");
+		}
+
+		string EarnedPerMinute(double earned)
+		{
+			return "$" + (world.FrameNumber == 0 ? 0 : earned / (world.FrameNumber / 1500.0)).ToString("F2");
 		}
 
 		static void AddPlayerFlagAndName(ScrollItemWidget template, Player player)
