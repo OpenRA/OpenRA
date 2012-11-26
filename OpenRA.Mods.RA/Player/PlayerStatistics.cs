@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
@@ -23,12 +24,26 @@ namespace OpenRA.Mods.RA
 	{
 		World world;
 		Player player;
+
 		public double MapControl;
 		public int OrderCount;
+
+		public int EarnedThisMinute 
+		{
+			get
+			{
+				return player.PlayerActor.Trait<PlayerResources>().Earned - earnedAtBeginningOfMinute;
+			}
+		}
+		public Queue<int> EarnedSamples = new Queue<int>(100);
+		int earnedAtBeginningOfMinute;
+
 		public int KillsCost;
 		public int DeathsCost;
+
 		public int UnitsKilled;
 		public int UnitsDead;
+
 		public int BuildingsKilled;
 		public int BuildingsDead;
 
@@ -48,9 +63,23 @@ namespace OpenRA.Mods.RA
 				.Count() / total;
 		}
 
+		void UpdateEarnedThisMinute()
+		{
+			EarnedSamples.Enqueue(EarnedThisMinute);
+			earnedAtBeginningOfMinute = player.PlayerActor.Trait<PlayerResources>().Earned;
+			if (EarnedSamples.Count > 100)
+			{
+				EarnedSamples.Dequeue();
+			}
+		}
+
 		public void Tick(Actor self)
 		{
-			if (self.World.FrameNumber % 250 == 1)
+			if (self.World.FrameNumber % 1500 == 0)
+			{
+				UpdateEarnedThisMinute();
+			}
+			if (self.World.FrameNumber % 250 == 0)
 			{
 				UpdateMapControl();
 			}
@@ -92,7 +121,7 @@ namespace OpenRA.Mods.RA
 				attackerStats.BuildingsKilled++;
 				defenderStats.BuildingsDead++;
 			}
-			if (self.HasTrait<IMove>())
+			else if (self.HasTrait<IMove>())
 			{
 				attackerStats.UnitsKilled++;
 				defenderStats.UnitsDead++;
