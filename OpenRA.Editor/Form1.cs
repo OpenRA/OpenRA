@@ -140,10 +140,8 @@ namespace OpenRA.Editor
 			tileset.LoadTiles();
 			int[] ShadowIndex = { 3, 4 };
 			var palette = new Palette(FileSystem.Open(tileset.Palette), ShadowIndex);
-			/* PlayerPalette is only used in RA desert terrain
-			 * TODO: use the palette as defined in YAML
-			 * defaults are wrong for DESERT rocks, trees, walls and ore mine
-			 */
+
+			// required for desert terrain in RA
 			var playerPalette = tileset.PlayerPalette ?? tileset.Palette;
 			var PlayerPalette = new Palette(FileSystem.Open(playerPalette), ShadowIndex);
 
@@ -217,7 +215,13 @@ namespace OpenRA.Editor
 					if (etf != null && etf.RequireTilesets != null
 						&& !etf.RequireTilesets.Contains(tileset.Id)) continue;
 
-					var template = RenderUtils.RenderActor(info, tileset, PlayerPalette);
+					var TemplatePalette = PlayerPalette;
+					var rsi = info.Traits.GetOrDefault<RenderSimpleInfo>();
+					// exception for desert buildings
+					if (rsi != null && rsi.Palette != null && rsi.Palette.Contains("terrain"))
+						TemplatePalette = palette;
+
+					var template = RenderUtils.RenderActor(info, tileset, TemplatePalette);
 					var ibox = new PictureBox
 					{
 						Image = template.Bitmap,

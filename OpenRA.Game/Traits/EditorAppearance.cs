@@ -13,6 +13,7 @@ namespace OpenRA.Traits
 	public class EditorAppearanceInfo : TraitInfo<EditorAppearance>
 	{
 		public readonly bool RelativeToTopLeft = false;
+		public readonly bool UseTerrainPalette = false;
 	}
 
 	public class EditorAppearance { }

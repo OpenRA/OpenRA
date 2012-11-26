@@ -237,12 +237,13 @@
 	GivesExperience:
 	EditorAppearance:
 		RelativeToTopLeft: yes
+		UseTerrainPalette: true
 	AutoTargetIgnore:
 	ProximityCaptor:
 		Types:Wall
 	Sellable:
 
-^CivBuilding:
+^TechBuilding:
 	Inherits: ^Building
 	-RepairableBuilding:
 	Health:
@@ -258,6 +259,11 @@
 	-Sellable:
 	-Capturable:
 	-CapturableBar:
+
+^CivBuilding:
+	Inherits: ^TechBuilding
+	EditorAppearance:
+		UseTerrainPalette: true
 
 ^CivField:
 	Inherits: ^CivBuilding
@@ -281,6 +287,7 @@
 		Terrain: Tree
 	EditorAppearance:
 		RelativeToTopLeft: yes
+		UseTerrainPalette: true
 	ProximityCaptor:
 		Types:Tree
 
@@ -369,10 +376,11 @@
 		Terrain: Tree
 	EditorAppearance:
 		RelativeToTopLeft: yes
+		UseTerrainPalette: true
 	ProximityCaptor:
 		Types:Tree
 
-^DesertCivBuilding
+^DesertCivBuilding:
 	Inherits: ^CivBuilding
 	RenderBuilding:
 		Palette: terrain

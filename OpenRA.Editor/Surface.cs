@@ -308,7 +308,10 @@ namespace OpenRA.Editor
 		public void DrawActor(SGraphics g, CPos p, ActorTemplate t, ColorPalette cp)
 		{
 			var centered = t.Appearance == null || !t.Appearance.RelativeToTopLeft;
-			DrawImage(g, t.Bitmap, p, centered, cp);
+			var actorPalette = cp;
+			if (t.Appearance != null && t.Appearance.UseTerrainPalette)
+				actorPalette = Palette.AsSystemPalette();
+			DrawImage(g, t.Bitmap, p, centered, actorPalette);
 		}
 
 		float2 GetDrawPosition(CPos location, Bitmap bmp, bool centered)
