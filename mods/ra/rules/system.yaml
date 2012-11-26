@@ -182,7 +182,7 @@ Player:
 			harv: 10%
 		SquadSize: 7
 	PlayerColorPalette:
-		BasePalette: terrain
+		BasePalette: player
 		RemapIndex: 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95
 	DebugResourceCash:
 	DebugResourceOre:
@@ -208,6 +208,9 @@ World:
 		Maximum: 3
 		SpawnInterval: 120
 		WaterChance: .2
+	PlayerPaletteFromCurrentTileset:
+		Name: player
+		ShadowIndex: 4
 	PaletteFromCurrentTileset:
 		Name: terrain
 		ShadowIndex: 3,4
@@ -265,7 +268,7 @@ World:
 	ResourceClaimLayer:
 	ResourceType@ore:
 		ResourceType: 1
-		Palette: terrain
+		Palette: player
 		SpriteNames: gold01,gold02,gold03,gold04
 		ValuePerUnit: 25
 		Name: Ore
@@ -274,7 +277,7 @@ World:
 		AllowUnderActors: false
 	ResourceType@gem:
 		ResourceType: 2
-		Palette: terrain
+		Palette: player
 		SpriteNames: gem01,gem02,gem03,gem04
 		ValuePerUnit: 50
 		Name: Gems

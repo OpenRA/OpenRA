@@ -1,5 +1,5 @@
 FCOM:
-	Inherits: ^CivBuilding
+	Inherits: ^TechBuilding
 	Building:
 		Power: -200
 		Footprint: xx xx
@@ -15,7 +15,7 @@ FCOM:
 	Bib:
 
 HOSP:
-	Inherits: ^CivBuilding
+	Inherits: ^TechBuilding
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -38,6 +38,8 @@ V01:
 	Capturable:
 		Type: civilianbuilding
 		CaptureCompleteTime: 0
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V01.SNIPER:
 	Inherits: V01
@@ -61,78 +63,114 @@ V01.SNIPER:
 		SkipMakeAnims: true
 		BecomeNeutral: true
 	-Capturable:
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V02:
 	Inherits: ^CivBuilding
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V03:
 	Inherits: ^CivBuilding
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V04:
 	Inherits: ^CivBuilding
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V05:
 	Inherits: ^CivBuilding
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V06:
 	Inherits: ^CivBuilding
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V07:
 	Inherits: ^CivBuilding
 	Building:
 		Footprint: xx
 		Dimensions: 2,1
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V08:
 	Inherits: ^CivBuilding
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V09:
 	Inherits: ^CivBuilding
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V10:
 	Inherits: ^CivBuilding
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V11:
 	Inherits: ^CivBuilding
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V12:
 	Inherits: ^CivBuilding
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V13:
 	Inherits: ^CivBuilding
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V14:
 	Inherits: ^CivField
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V15:
 	Inherits: ^CivField
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V16:
 	Inherits: ^CivField
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V17:
 	Inherits: ^CivField
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 V18:
 	Inherits: ^CivField
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 BARL:
-	Inherits: ^CivBuilding
+	Inherits: ^TechBuilding
 	Selectable:
 		Priority: 0
 	Health:
@@ -143,7 +181,7 @@ BARL:
 		Name: Explosive Barrel
 
 BRL3:
-	Inherits: ^CivBuilding
+	Inherits: ^TechBuilding
 	Selectable:
 		Priority: 0
 	Health:
@@ -154,7 +192,7 @@ BRL3:
 		Name: Explosive Barrel
 
 MISS:
-	Inherits: ^CivBuilding
+	Inherits: ^TechBuilding
 	Selectable:
 		Priority: 0
 	Building:
@@ -167,7 +205,7 @@ MISS:
 	Bib:
 
 BIO:
-	Inherits: ^CivBuilding
+	Inherits: ^TechBuilding
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
@@ -176,7 +214,7 @@ BIO:
 
 
 OILB:
-	Inherits: ^CivBuilding
+	Inherits: ^TechBuilding
 	Selectable:
 		Priority: 0
 	Building:
@@ -284,3 +322,93 @@ SBRIDGE4:
 	Building:
 		Footprint: ____ ____
 		Dimensions: 4,2
+
+#Desert Terrain Expansion
+V20:
+	Inherits: ^DesertCivBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+
+V21:
+	Inherits: ^DesertCivBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+
+V22:
+	Inherits: ^DesertCivBuilding
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+
+V23:
+	Inherits: ^DesertCivBuilding
+
+V24:
+	Inherits: ^DesertCivBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+
+V25:
+	Inherits: ^DesertCivBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Tooltip:
+		Name: Church
+
+V26:
+	Inherits: ^DesertCivBuilding
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+
+V27:
+	Inherits: ^DesertCivBuilding
+
+V28:
+	Inherits: ^DesertCivBuilding
+
+V29:
+	Inherits: ^DesertCivBuilding
+
+V30:
+	Inherits: ^DesertCivBuilding
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+
+V31:
+	Inherits: ^DesertCivBuilding
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+
+V32:
+	Inherits: ^DesertCivBuilding
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+
+V33:
+	Inherits: ^DesertCivBuilding
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+
+V34:
+	Inherits: ^DesertCivBuilding
+
+V35:
+	Inherits: ^DesertCivBuilding
+
+V36:
+	Inherits: ^DesertCivBuilding
+
+V37:
+	Inherits: ^DesertCivBuilding
+	Building:
+		Footprint: __xx_ ___xx
+		Dimensions: 5,2

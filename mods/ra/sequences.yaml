@@ -2303,3 +2303,163 @@ ctnk:
 	idle:
 		Start: 0
 		Facings: 32
+
+#Desert Terrain Expansion 
+rock1:
+	idle:
+		Start: 0
+
+rock2:
+	idle:
+		Start: 0
+
+rock3:
+	idle:
+		Start: 0
+
+rock4:
+	idle:
+		Start: 0
+
+rock5:
+	idle:
+		Start: 0
+
+rock6:
+	idle:
+		Start: 0
+
+rock7:
+	idle:
+		Start: 0
+
+t04:
+	idle:
+		Start: 0
+	burn:
+		Start: 1
+		Length: 9
+
+v20:
+	idle:
+		Start: 0
+		Length: 3
+		Tick: 120
+	damaged-idle:
+		Start: 3
+		Length: 3
+		Tick: 120
+
+v21:
+	idle:
+		Start: 0
+		Length: 3
+		Tick: 120
+	damaged-idle:
+		Start: 3
+		Length: 3
+		Tick: 120
+
+v22:
+	idle:
+		Start: 0
+		Length: 3
+		Tick: 120
+	damaged-idle:
+		Start: 3
+		Length: 3
+		Tick: 120
+
+v23:
+	idle:
+		Start: 0
+		Length: 3
+		Tick: 120
+	damaged-idle:
+		Start: 3
+		Length: 3
+		Tick: 120
+
+v24:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v25:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v26:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v27:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v28:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v29:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v30:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 2
+
+v31:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v32:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v33:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v34:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v35:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v36:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v37:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1

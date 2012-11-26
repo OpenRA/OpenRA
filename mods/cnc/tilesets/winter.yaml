@@ -2,7 +2,8 @@ General:
 	Name: Winter
 	Id: WINTER
 	Extensions: .win, .shp, .tem
-	Palette: winter.pal	
+	Palette: winter.pal
+	WaterPaletteRotationBase: 32
 
 Terrain:
 	TerrainType@Clear:
