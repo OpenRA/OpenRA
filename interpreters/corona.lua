@@ -7,7 +7,7 @@ local mac = ide.osname == "Macintosh"
 return {
   name = "Corona",
   description = "Corona SDK mobile framework",
-  api = {"baselib"},
+  api = {"baselib", "corona"},
   frun = function(self,wfilename,rundebug)
     corona = corona or ide.config.path.corona -- check if the path is configured
     if not corona then
