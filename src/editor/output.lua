@@ -93,7 +93,7 @@ local function unHideWindow(pidAssign)
     local wins = winapi.find_all_windows(function(w)
       return w:get_process():get_pid() == pid
     end)
-    local any = ide.config.unhidewindow.any
+    local any = ide.interpreter.unhideanywindow
     local show, hide, ignore = 1, 2, 0
     for _,win in pairs(wins) do
       -- win:get_class_name() can return nil if the window is already gone

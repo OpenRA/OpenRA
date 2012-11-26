@@ -26,7 +26,6 @@ allowinteractivescript = true -- allow interaction in the output window
 interpreter = "luadeb"
 unhidewindow = { -- allow unhiding of GUI windows
   -- 1 - show if hidden, 0 - ignore, 2 -- hide if shown
-  any = true, -- allow to unhide any hidden window not explicitly listed
   ConsoleWindowClass = 0,
   IME = 0,
   ['MSCTFIME UI'] = 0,
