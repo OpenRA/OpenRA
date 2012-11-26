@@ -1,3 +1,5 @@
+-- Copyright 2011-12 Paul Kulchenko, ZeroBrane LLC
+
 return {
   MOAIAction = {
     type = "class",

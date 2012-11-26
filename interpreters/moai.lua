@@ -10,7 +10,8 @@ return {
     if not moai then
       local sep = win and ';' or ':'
       local default =
-           win and ([[C:\Program Files\moai]]..sep..[[D:\Program Files\moai]]..sep)
+           win and ([[C:\Program Files\moai]]..sep..[[D:\Program Files\moai]]..sep..
+                    [[C:\Program Files (x86)\moai]]..sep..[[D:\Program Files (x86)\moai]]..sep)
         or ''
       local path = default
                  ..(os.getenv('PATH') or '')..sep

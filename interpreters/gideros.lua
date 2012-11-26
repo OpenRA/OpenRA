@@ -13,7 +13,8 @@ return {
     if not gideros then
       local sep = win and ';' or ':'
       local default =
-           win and ([[C:\Program Files\Gideros]]..sep..[[D:\Program Files\Gideros]]..sep)
+           win and ([[C:\Program Files\Gideros]]..sep..[[D:\Program Files\Gideros]]..sep..
+                    [[C:\Program Files (x86)\Gideros]]..sep..[[D:\Program Files (x86)\Gideros]]..sep)
         or mac and ('/Applications/Gideros Studio/Gideros Player.app/Contents/MacOS'..sep)
         or ''
       local path = default

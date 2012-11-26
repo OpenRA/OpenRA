@@ -1,3 +1,5 @@
+-- Copyright 2011-12 Paul Kulchenko, ZeroBrane LLC
+
 local love2d
 local win = ide.osname == "Windows"
 local mac = ide.osname == "Macintosh"
@@ -11,7 +13,8 @@ return {
     if not love2d then
       local sep = win and ';' or ':'
       local default =
-           win and ([[C:\Program Files\love]]..sep..[[D:\Program Files\love]]..sep)
+           win and ([[C:\Program Files\love]]..sep..[[D:\Program Files\love]]..sep..
+                    [[C:\Program Files (x86)\love]]..sep..[[D:\Program Files (x86)\love]]..sep)
         or mac and ('/Applications/love.app/Contents/MacOS'..sep)
         or ''
       local path = default

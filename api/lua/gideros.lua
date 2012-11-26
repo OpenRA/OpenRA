@@ -1,3 +1,5 @@
+-- Copyright 2011-12 Paul Kulchenko, ZeroBrane LLC
+
 -- converted from Resources/gideros_annot.api.
 -- the conversion script is at the bottom of this file.
 

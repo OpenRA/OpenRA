@@ -1,7 +1,9 @@
+-- Copyright 2011-12 Paul Kulchenko, ZeroBrane LLC
+
 -- converted from love_api.lua (https://love2d.org/forums/viewtopic.php?f=3&t=1796&start=30)
 -- (as of Nov 1, 2012)
 -- the conversion script is at the bottom of this file
--- remove misplaced "{}," in pause, resume, rewind, stop, setColor, and setScissor.
+-- removed misplaced "{}," in pause, resume, rewind, stop, setColor, and setScissor.
 
 local love = {
  childs = {
