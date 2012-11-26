@@ -3,36 +3,48 @@ T01:
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT,SNOW
 
 T02:
 	Inherits: ^Tree
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT,SNOW
 
 T03:
 	Inherits: ^Tree
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT,SNOW
 
 T05:
 	Inherits: ^Tree
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT,SNOW
 
 T06:
 	Inherits: ^Tree
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT,SNOW
 
 T07:
 	Inherits: ^Tree
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT,SNOW
 
 T08:
 	Inherits: ^Tree
@@ -40,55 +52,69 @@ T08:
 		Footprint: x_
 		Dimensions: 2,1
 	
-
 T10:
 	Inherits: ^Tree
 	Building:
 		Footprint: __ xx
 		Dimensions: 2,2
-	
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT,SNOW
 
 T11:
 	Inherits: ^Tree
 	Building:
 		Footprint: __ xx
 		Dimensions: 2,2
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT,SNOW
 
 T12:
 	Inherits: ^Tree
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT,SNOW
 
 T13:
 	Inherits: ^Tree
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT,SNOW
 
 T14:
 	Inherits: ^Tree
 	Building:
 		Footprint: ___ xx_
 		Dimensions: 3,2
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT,SNOW
 
 T15:
 	Inherits: ^Tree
 	Building:
 		Footprint: ___ xx_
 		Dimensions: 3,2
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT,SNOW
 
 T16:
 	Inherits: ^Tree
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT,SNOW
 
 T17:
 	Inherits: ^Tree
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT,SNOW
 
 TC01:
 	Inherits: ^Tree
@@ -101,24 +127,32 @@ TC02:
 	Building:
 		Footprint: _x_ xx_
 		Dimensions: 3,2
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT,SNOW
 
 TC03:
 	Inherits: ^Tree
 	Building:
 		Footprint: xx_ xx_
 		Dimensions: 3,2
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT,SNOW
 
 TC04:
 	Inherits: ^Tree
 	Building:
 		Footprint: ____ xxx_ x___
 		Dimensions: 4,3
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT,SNOW
 
 TC05:
 	Inherits: ^Tree
 	Building:
 		Footprint: __x_ xxx_ _xx_
 		Dimensions: 4,3
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT,SNOW
 
 MINE:
 	Inherits: ^Tree
@@ -182,6 +216,8 @@ ICE01:
 		Dimensions: 2,2
 	Tooltip:
 		Name: Ice Floe
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT,SNOW
 
 ICE02:
 	Inherits: ^Tree
@@ -190,6 +226,8 @@ ICE02:
 		Dimensions: 1,2
 	Tooltip:
 		Name: Ice Floe
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT,SNOW
 
 ICE03:
 	Inherits: ^Tree
@@ -198,16 +236,22 @@ ICE03:
 		Dimensions: 2,1
 	Tooltip:
 		Name: Ice Floe
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT,SNOW
 
 ICE04:
 	Inherits: ^Tree
 	Tooltip:
 		Name: Ice Floe
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT,SNOW
 
 ICE05:
 	Inherits: ^Tree
 	Tooltip:
 		Name: Ice Floe
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT,SNOW
 
 # Desert Terrain Expansion
 ROCK1:
@@ -215,33 +259,45 @@ ROCK1:
 	Building:
 		Footprint: ___ xx_
 		Dimensions: 3,2
+
 ROCK2:
 	Inherits: ^Rock
 	Building:
 		Footprint: xx_
 		Dimensions: 3,1
+
 ROCK3:
 	Inherits: ^Rock
 	Building:
 		Footprint: ___ xx_
 		Dimensions: 3,2
+
 ROCK4:
 	Inherits: ^Rock
 	Building:
 		Footprint: x_
 		Dimensions: 2,1
+
 ROCK5:
 	Inherits: ^Rock
 	Building:
 		Footprint: x_
 		Dimensions: 2,1
+
 ROCK6:
 	Inherits: ^Rock
 	Building:
 		Footprint: ___ xxx
 		Dimensions: 3,2
+
 ROCK7:
 	Inherits: ^Rock
 	Building:
 		Footprint: xxxx_
 		Dimensions: 5,1
+
+T04:
+	Inherits: ^Tree
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
