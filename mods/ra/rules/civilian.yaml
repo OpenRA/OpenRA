@@ -39,7 +39,7 @@ V01:
 		Type: civilianbuilding
 		CaptureCompleteTime: 0
 	EditorTilesetFilter:
-		RequireTilesets: TEMPERAT,SNOW
+		ExcludeTilesets: DESERT
 
 V01.SNIPER:
 	Inherits: V01
@@ -64,7 +64,7 @@ V01.SNIPER:
 		BecomeNeutral: true
 	-Capturable:
 	EditorTilesetFilter:
-		RequireTilesets: TEMPERAT,SNOW
+		ExcludeTilesets: DESERT
 
 V02:
 	Inherits: ^CivBuilding
@@ -72,7 +72,7 @@ V02:
 		Footprint: xx xx
 		Dimensions: 2,2
 	EditorTilesetFilter:
-		RequireTilesets: TEMPERAT,SNOW
+		ExcludeTilesets: DESERT
 
 V03:
 	Inherits: ^CivBuilding
@@ -80,7 +80,7 @@ V03:
 		Footprint: xx xx
 		Dimensions: 2,2
 	EditorTilesetFilter:
-		RequireTilesets: TEMPERAT,SNOW
+		ExcludeTilesets: DESERT
 
 V04:
 	Inherits: ^CivBuilding
@@ -88,7 +88,7 @@ V04:
 		Footprint: xx xx
 		Dimensions: 2,2
 	EditorTilesetFilter:
-		RequireTilesets: TEMPERAT,SNOW
+		ExcludeTilesets: DESERT
 
 V05:
 	Inherits: ^CivBuilding
@@ -96,7 +96,7 @@ V05:
 		Footprint: xx
 		Dimensions: 2,1
 	EditorTilesetFilter:
-		RequireTilesets: TEMPERAT,SNOW
+		ExcludeTilesets: DESERT
 
 V06:
 	Inherits: ^CivBuilding
@@ -104,7 +104,7 @@ V06:
 		Footprint: xx
 		Dimensions: 2,1
 	EditorTilesetFilter:
-		RequireTilesets: TEMPERAT,SNOW
+		ExcludeTilesets: DESERT
 
 V07:
 	Inherits: ^CivBuilding
@@ -112,62 +112,62 @@ V07:
 		Footprint: xx
 		Dimensions: 2,1
 	EditorTilesetFilter:
-		RequireTilesets: TEMPERAT,SNOW
+		ExcludeTilesets: DESERT
 
 V08:
 	Inherits: ^CivBuilding
 	EditorTilesetFilter:
-		RequireTilesets: TEMPERAT,SNOW
+		ExcludeTilesets: DESERT
 
 V09:
 	Inherits: ^CivBuilding
 	EditorTilesetFilter:
-		RequireTilesets: TEMPERAT,SNOW
+		ExcludeTilesets: DESERT
 
 V10:
 	Inherits: ^CivBuilding
 	EditorTilesetFilter:
-		RequireTilesets: TEMPERAT,SNOW
+		ExcludeTilesets: DESERT
 
 V11:
 	Inherits: ^CivBuilding
 	EditorTilesetFilter:
-		RequireTilesets: TEMPERAT,SNOW
+		ExcludeTilesets: DESERT
 
 V12:
 	Inherits: ^CivBuilding
 	EditorTilesetFilter:
-		RequireTilesets: TEMPERAT,SNOW
+		ExcludeTilesets: DESERT
 
 V13:
 	Inherits: ^CivBuilding
 	EditorTilesetFilter:
-		RequireTilesets: TEMPERAT,SNOW
+		ExcludeTilesets: DESERT
 
 V14:
 	Inherits: ^CivField
 	EditorTilesetFilter:
-		RequireTilesets: TEMPERAT,SNOW
+		ExcludeTilesets: DESERT
 
 V15:
 	Inherits: ^CivField
 	EditorTilesetFilter:
-		RequireTilesets: TEMPERAT,SNOW
+		ExcludeTilesets: DESERT
 
 V16:
 	Inherits: ^CivField
 	EditorTilesetFilter:
-		RequireTilesets: TEMPERAT,SNOW
+		ExcludeTilesets: DESERT
 
 V17:
 	Inherits: ^CivField
 	EditorTilesetFilter:
-		RequireTilesets: TEMPERAT,SNOW
+		ExcludeTilesets: DESERT
 
 V18:
 	Inherits: ^CivField
 	EditorTilesetFilter:
-		RequireTilesets: TEMPERAT,SNOW
+		ExcludeTilesets: DESERT
 
 BARL:
 	Inherits: ^CivBuilding
