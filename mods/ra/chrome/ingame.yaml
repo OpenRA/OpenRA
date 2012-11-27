@@ -873,7 +873,8 @@ Container@OBSERVER_ROOT:
 											ValueFormat:${0}
 											XAxisValueFormat:{0}
 											YAxisValueFormat:${0:F0}
-											VisibleNodeCount:20
+											XAxisSize:20
+											YAxisSize:10
 											XAxisLabel:m
 											YAxisLabel:$
 											DisplayYAxisZero:false
