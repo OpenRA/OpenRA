@@ -153,8 +153,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var graph = template.Get<ObserverStatsGraphWidget>("EARNED_THIS_MIN_GRAPH");
 			graph.GetDataSource = () => players.Select(p => Pair.New(p, p.PlayerActor.Trait<PlayerStatistics>().EarnedSamples.Select(s => (float)s)));
-			graph.GetDataScale = () => 1 / 100f;
-			graph.GetLastValueFormat = () => "${0}";
 
 			playerStatsPanel.AddChild(template);
 		}

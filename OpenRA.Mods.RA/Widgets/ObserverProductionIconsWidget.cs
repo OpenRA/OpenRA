@@ -79,8 +79,8 @@ namespace OpenRA.Mods.RA.Widgets
 
 				var clock = clocks[queue.Trait];
 				clock.PlayFetchIndex("idle",
-					() => (item.TotalTime - item.RemainingTime)
-						* (clock.CurrentSequence.Length - 1) / item.TotalTime);
+					() => item.TotalTime == 0 ? 0 : ((item.TotalTime - item.RemainingTime)
+						* (clock.CurrentSequence.Length - 1) / item.TotalTime));
 				clock.Tick();
 				WidgetUtils.DrawSHP(clock.Image, location, worldRenderer, size);
 

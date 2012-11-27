@@ -862,14 +862,21 @@ Container@OBSERVER_ROOT:
 								Container@EARNED_THIS_MIN_GRAPH_TEMPLATE:
 									X:0
 									Y:0
-									Width:PARENT_RIGHT-35
-									Height:300
+									Width:PARENT_RIGHT-100
+									Height:PARENT_BOTTOM-50
 									Children:
 										ObserverStatsGraph@EARNED_THIS_MIN_GRAPH:
 											X:0
 											Y:0
-											Width:800
+											Width:PARENT_RIGHT
 											Height:PARENT_BOTTOM
+											ValueFormat:${0}
+											XAxisValueFormat:{0}
+											YAxisValueFormat:${0:F0}
+											VisibleNodeCount:20
+											XAxisLabel:m
+											YAxisLabel:$
+											DisplayYAxisZero:false
 Background@FMVPLAYER:
 	Width:WINDOW_RIGHT
 	Height:WINDOW_BOTTOM
