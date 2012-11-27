@@ -16,10 +16,9 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Widgets
 {
-	public class ObserverStatsGraphWidget : Widget
+	public class GraphWidget : Widget
 	{
 		public Func<IEnumerable<Pair<Player, IEnumerable<float>>>> GetDataSource;
-		public Func<float> GetDataScale;
 		public Func<string> GetValueFormat;
 		public Func<string> GetXAxisValueFormat;
 		public Func<string> GetYAxisValueFormat;
@@ -27,7 +26,9 @@ namespace OpenRA.Widgets
 		public Func<int> GetYAxisSize;
 		public Func<string> GetXAxisLabel;
 		public Func<string> GetYAxisLabel;
-		public Func<bool> GetDisplayYAxisZero;
+		public Func<bool> GetDisplayFirstYAxisValue;
+		public Func<string> GetLabelFont;
+		public Func<string> GetAxisFont;
 		public string ValueFormat = "{0}";
 		public string XAxisValueFormat = "{0}";
 		public string YAxisValueFormat = "{0}";
@@ -35,9 +36,11 @@ namespace OpenRA.Widgets
 		public int YAxisSize = 10;
 		public string XAxisLabel = "";
 		public string YAxisLabel = "";
-		public bool DisplayYAxisZero = true;
+		public bool DisplayFirstYAxisValue = false;
+		public string LabelFont;
+		public string AxisFont;
 
-		public ObserverStatsGraphWidget()
+		public GraphWidget()
 			: base()
 		{
 			GetValueFormat = () => ValueFormat;
@@ -47,10 +50,12 @@ namespace OpenRA.Widgets
 			GetYAxisSize = () => YAxisSize;
 			GetXAxisLabel = () => XAxisLabel;
 			GetYAxisLabel = () => YAxisLabel;
-			GetDisplayYAxisZero = () => DisplayYAxisZero;
+			GetDisplayFirstYAxisValue = () => DisplayFirstYAxisValue;
+			GetLabelFont = () => LabelFont;
+			GetAxisFont = () => AxisFont;
 		}
 
-		protected ObserverStatsGraphWidget(ObserverStatsGraphWidget other)
+		protected GraphWidget(GraphWidget other)
 			: base(other)
 		{
 			GetDataSource = other.GetDataSource;
@@ -61,7 +66,9 @@ namespace OpenRA.Widgets
 			GetYAxisSize = other.GetYAxisSize;
 			GetXAxisLabel = other.GetXAxisLabel;
 			GetYAxisLabel = other.GetYAxisLabel;
-			GetDisplayYAxisZero = other.GetDisplayYAxisZero;
+			GetDisplayFirstYAxisValue = other.GetDisplayFirstYAxisValue;
+			GetLabelFont = other.GetLabelFont;
+			GetAxisFont = other.GetAxisFont;
 			ValueFormat = other.ValueFormat;
 			XAxisValueFormat = other.XAxisValueFormat;
 			YAxisValueFormat = other.YAxisValueFormat;
@@ -69,12 +76,16 @@ namespace OpenRA.Widgets
 			YAxisSize = other.YAxisSize;
 			XAxisLabel = other.XAxisLabel;
 			YAxisLabel = other.YAxisLabel;
-			DisplayYAxisZero = other.DisplayYAxisZero;
+			DisplayFirstYAxisValue = other.DisplayFirstYAxisValue;
+			LabelFont = other.LabelFont;
+			AxisFont = other.AxisFont;
 		}
 
 		public override void Draw()
 		{
-			if (GetDataSource == null || !GetDataSource().Any())
+			if (GetDataSource == null || !GetDataSource().Any()
+				|| GetLabelFont == null || GetLabelFont() == null
+				|| GetAxisFont == null || GetAxisFont() == null)
 			{
 				return;
 			}
@@ -89,8 +100,8 @@ namespace OpenRA.Widgets
 			Game.Renderer.LineRenderer.DrawLine(origin + new float2(width, 0), origin + new float2(width, -height), Color.White, Color.White);
 			Game.Renderer.LineRenderer.DrawLine(origin + new float2(0, -height), origin + new float2(width, -height), Color.White, Color.White);
 
-			var tinyBold = Game.Renderer.Fonts["TinyBold"];
-			var bold = Game.Renderer.Fonts["Bold"];
+			var tiny = Game.Renderer.Fonts[GetLabelFont()];
+			var bold = Game.Renderer.Fonts[GetAxisFont()];
 
 			var xAxisSize = GetXAxisSize();
 			var yAxisSize = GetYAxisSize();
@@ -109,15 +120,15 @@ namespace OpenRA.Widgets
 			for (int n = visibleNodeStart, x = 0; n <= visibleNodeEnd; n++, x += xStep)
 			{
 				Game.Renderer.LineRenderer.DrawLine(origin + new float2(x, 0), origin + new float2(x, -5), Color.White, Color.White);
-				tinyBold.DrawText(GetXAxisValueFormat().F(n), origin + new float2(x, 2), Color.White);
+				tiny.DrawText(GetXAxisValueFormat().F(n), origin + new float2(x, 2), Color.White);
 			} 
 			bold.DrawText(GetXAxisLabel(), origin + new float2(width / 2, 20), Color.White);
 
-			for (var y = (GetDisplayYAxisZero() ? 0f : yStep); y <= height; y += yStep)
+			for (var y = (GetDisplayFirstYAxisValue() ? 0f : yStep); y <= height; y += yStep)
 			{
 				var value = y / scale;
 				Game.Renderer.LineRenderer.DrawLine(origin + new float2(width - 5, -y), origin + new float2(width, -y), Color.White, Color.White);
-				tinyBold.DrawText(GetYAxisValueFormat().F(value), origin + new float2(width + 2, -y), Color.White);
+				tiny.DrawText(GetYAxisValueFormat().F(value), origin + new float2(width + 2, -y), Color.White);
 			}
 			bold.DrawText(GetYAxisLabel(), origin + new float2(width + 40, -(height / 2)), Color.White);
 
@@ -146,18 +157,18 @@ namespace OpenRA.Widgets
 					if (value != 0)
 					{
 						var scaledValue = value * scale;
-						tinyBold.DrawText(GetValueFormat().F(value), origin + new float2(x, -scaledValue - 2), color);
+						tiny.DrawText(GetValueFormat().F(value), origin + new float2(x, -scaledValue - 2), color);
 					}
 				}
 
-				tinyBold.DrawText(player.PlayerName, new float2(rect.Left, rect.Top) + new float2(5, 10 * playerNameOffset + 3), color);
+				tiny.DrawText(player.PlayerName, new float2(rect.Left, rect.Top) + new float2(5, 10 * playerNameOffset + 3), color);
 				playerNameOffset++;
 			}
 		}
 
 		public override Widget Clone()
 		{
-			return new ObserverStatsGraphWidget(this);
+			return new GraphWidget(this);
 		}
 	}
 }

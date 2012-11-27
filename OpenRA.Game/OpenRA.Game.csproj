@@ -192,6 +192,7 @@
     <Compile Include="Widgets\ChromeMetrics.cs" />
     <Compile Include="Widgets\ColorBlockWidget.cs" />
     <Compile Include="Widgets\DropDownButtonWidget.cs" />
+    <Compile Include="Widgets\GraphWidget.cs" />
     <Compile Include="Widgets\GridLayout.cs" />
     <Compile Include="Widgets\ImageWidget.cs" />
     <Compile Include="Widgets\LabelWidget.cs" />

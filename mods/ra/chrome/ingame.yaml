@@ -865,7 +865,7 @@ Container@OBSERVER_ROOT:
 									Width:PARENT_RIGHT-100
 									Height:PARENT_BOTTOM-50
 									Children:
-										ObserverStatsGraph@EARNED_THIS_MIN_GRAPH:
+										Graph@EARNED_THIS_MIN_GRAPH:
 											X:0
 											Y:0
 											Width:PARENT_RIGHT
@@ -878,6 +878,8 @@ Container@OBSERVER_ROOT:
 											XAxisLabel:m
 											YAxisLabel:$
 											DisplayYAxisZero:false
+											LabelFont:TinyBold
+											AxisFont:Bold
 Background@FMVPLAYER:
 	Width:WINDOW_RIGHT
 	Height:WINDOW_BOTTOM
