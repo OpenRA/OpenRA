@@ -16,9 +16,9 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Widgets
 {
-	public class GraphWidget : Widget
+	public class LineGraphWidget : Widget
 	{
-		public Func<IEnumerable<Pair<Player, IEnumerable<float>>>> GetDataSource;
+		public Func<IEnumerable<LineGraphSeries>> GetSeries;
 		public Func<string> GetValueFormat;
 		public Func<string> GetXAxisValueFormat;
 		public Func<string> GetYAxisValueFormat;
@@ -40,7 +40,7 @@ namespace OpenRA.Widgets
 		public string LabelFont;
 		public string AxisFont;
 
-		public GraphWidget()
+		public LineGraphWidget()
 			: base()
 		{
 			GetValueFormat = () => ValueFormat;
@@ -55,10 +55,10 @@ namespace OpenRA.Widgets
 			GetAxisFont = () => AxisFont;
 		}
 
-		protected GraphWidget(GraphWidget other)
+		protected LineGraphWidget(LineGraphWidget other)
 			: base(other)
 		{
-			GetDataSource = other.GetDataSource;
+			GetSeries = other.GetSeries;
 			GetValueFormat = other.GetValueFormat;
 			GetXAxisValueFormat = other.GetXAxisValueFormat;
 			GetYAxisValueFormat = other.GetYAxisValueFormat;
@@ -83,7 +83,7 @@ namespace OpenRA.Widgets
 
 		public override void Draw()
 		{
-			if (GetDataSource == null || !GetDataSource().Any()
+			if (GetSeries == null || !GetSeries().Any()
 				|| GetLabelFont == null || GetLabelFont() == null
 				|| GetAxisFont == null || GetAxisFont() == null)
 			{
@@ -109,22 +109,22 @@ namespace OpenRA.Widgets
 			var xStep = width / xAxisSize;
 			var yStep = height / yAxisSize;
 
-			var actualNodeCount = GetDataSource().First().Second.Count();
+			var actualNodeCount = GetSeries().First().Points.Count();
 			var visibleNodeStart = Math.Max(0, actualNodeCount - xAxisSize);
 			var visibleNodeEnd = Math.Max(actualNodeCount, xAxisSize);
 
-			float maxValue = GetDataSource().Select(p => p.Second).SelectMany(d => d).Max();
-			var scale = (100 / maxValue) * 3;
+			var maxValue = GetSeries().Select(p => p.Points).SelectMany(d => d).Max();
+			var scale = 100 / maxValue * 3;
 
 			//todo: make this stuff not draw outside of the RenderBounds
 			for (int n = visibleNodeStart, x = 0; n <= visibleNodeEnd; n++, x += xStep)
 			{
 				Game.Renderer.LineRenderer.DrawLine(origin + new float2(x, 0), origin + new float2(x, -5), Color.White, Color.White);
 				tiny.DrawText(GetXAxisValueFormat().F(n), origin + new float2(x, 2), Color.White);
-			} 
+			}
 			bold.DrawText(GetXAxisLabel(), origin + new float2(width / 2, 20), Color.White);
 
-			for (var y = (GetDisplayFirstYAxisValue() ? 0f : yStep); y <= height; y += yStep)
+			for (var y = (GetDisplayFirstYAxisValue() ? 0 : yStep); y <= height; y += yStep)
 			{
 				var value = y / scale;
 				Game.Renderer.LineRenderer.DrawLine(origin + new float2(width - 5, -y), origin + new float2(width, -y), Color.White, Color.White);
@@ -132,17 +132,17 @@ namespace OpenRA.Widgets
 			}
 			bold.DrawText(GetYAxisLabel(), origin + new float2(width + 40, -(height / 2)), Color.White);
 
-			var playerNameOffset = 0;
-			foreach (var playerDataPair in GetDataSource())
+			var keyOffset = 0;
+			foreach (var series in GetSeries())
 			{
-				var player = playerDataPair.First;
-				var data = playerDataPair.Second;
-				var color = player.ColorRamp.GetColor(0);
-				if (data.Any())
+				var key = series.Key;
+				var color = series.Color;
+				var points = series.Points;
+				if (points.Any())
 				{
-					data = data.Reverse().Take(xAxisSize).Reverse();
-					var scaledData = data.Select(d => d * scale);
-					var x = 0f;
+					points = points.Reverse().Take(xAxisSize).Reverse();
+					var scaledData = points.Select(d => d * scale);
+					var x = 0;
 					scaledData.Aggregate((a, b) =>
 					{
 						Game.Renderer.LineRenderer.DrawLine(
@@ -153,7 +153,7 @@ namespace OpenRA.Widgets
 						return b;
 					});
 
-					var value = data.Last();
+					var value = points.Last();
 					if (value != 0)
 					{
 						var scaledValue = value * scale;
@@ -161,14 +161,28 @@ namespace OpenRA.Widgets
 					}
 				}
 
-				tiny.DrawText(player.PlayerName, new float2(rect.Left, rect.Top) + new float2(5, 10 * playerNameOffset + 3), color);
-				playerNameOffset++;
+				tiny.DrawText(key, new float2(rect.Left, rect.Top) + new float2(5, 10 * keyOffset + 3), color);
+				keyOffset++;
 			}
 		}
 
 		public override Widget Clone()
 		{
-			return new GraphWidget(this);
+			return new LineGraphWidget(this);
+		}
+	}
+
+	public class LineGraphSeries
+	{
+		public string Key;
+		public Color Color;
+		public IEnumerable<float> Points;
+
+		public LineGraphSeries(string key, Color color, IEnumerable<float> points)
+		{
+			Key = key;
+			Color = color;
+			Points = points;
 		}
 	}
 }

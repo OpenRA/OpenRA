@@ -151,8 +151,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			earnedThisMinuteGraphHeaders.Visible = true;
 			var template = earnedThisMinuteGraphTemplate.Clone();
 
-			var graph = template.Get<GraphWidget>("EARNED_THIS_MIN_GRAPH");
-			graph.GetDataSource = () => players.Select(p => Pair.New(p, p.PlayerActor.Trait<PlayerStatistics>().EarnedSamples.Select(s => (float)s)));
+			var graph = template.Get<LineGraphWidget>("EARNED_THIS_MIN_GRAPH");
+			graph.GetSeries = () =>
+				players.Select(p => new LineGraphSeries(
+					p.PlayerName,
+					p.ColorRamp.GetColor(0),
+					p.PlayerActor.Trait<PlayerStatistics>().EarnedSamples.Select(s => (float)s)
+					));
 
 			playerStatsPanel.AddChild(template);
 		}
