@@ -372,11 +372,7 @@ debugger.listen = function()
             ..":\n"..err)
           return debugger.terminate()
         end
-      elseif (options.run) then
-        -- do nothing here
-      elseif (debugger.scratchpad) then
-        debugger.scratchpad.updated = true
-      else
+      elseif not (options.run or debugger.scratchpad) then
         local file, line, err = debugger.loadfile(startfile)
         -- "load" can work in two ways: (1) it can load the requested file
         -- OR (2) it can "refuse" to load it if the client was started
@@ -425,14 +421,17 @@ debugger.listen = function()
 
       DisplayOutputLn(TR("Debugging session started in '%s'."):format(debugger.basedir))
 
-      if (options.runstart and not debugger.scratchpad) then
-        ClearAllCurrentLineMarkers()
-        debugger.run()
-      end
-
-      if (options.run) then
-        local file, line = debugger.handle("run")
-        activateDocument(file, line)
+      if (debugger.scratchpad) then
+        debugger.scratchpad.updated = true
+      else
+        if (options.runstart) then
+          ClearAllCurrentLineMarkers()
+          debugger.run()
+        end
+        if (options.run) then
+          local file, line = debugger.handle("run")
+          activateDocument(file, line)
+        end
       end
     end)
   debugger.listening = true
