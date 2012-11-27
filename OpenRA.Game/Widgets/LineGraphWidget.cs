@@ -114,7 +114,7 @@ namespace OpenRA.Widgets
 			var visibleNodeEnd = Math.Max(actualNodeCount, xAxisSize);
 
 			var maxValue = GetSeries().Select(p => p.Points).SelectMany(d => d).Max();
-			var scale = 100 / maxValue * 3;
+			var scale = 100 / Math.Max(5000, maxValue) * 3;
 
 			//todo: make this stuff not draw outside of the RenderBounds
 			for (int n = visibleNodeStart, x = 0; n <= visibleNodeEnd; n++, x += xStep)
