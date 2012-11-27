@@ -285,7 +285,7 @@ debugger.shell = function(expression, isstatement)
         end
 
         -- refresh Stack and Watch windows if executed a statement (and no err)
-        if isstatement and not err and not addret and #values == 0 then
+        if isstatement and not err and not addedret and #values == 0 then
           updateStackSync() updateWatchesSync() end
       end)
   end
@@ -473,6 +473,10 @@ debugger.exec = function(command)
           if line == nil then
             if err then DisplayOutputLn(err) end
             DebuggerStop()
+            return
+          elseif not debugger.server then
+            -- it is possible that while debugger.handle call was executing
+            -- the debugging was terminated; simply return in this case.
             return
           else
             if activateDocument(file, line) then
