@@ -202,7 +202,6 @@ local debuggers = {
 function ProjectDebug(skipcheck, debtype)
   if (debugger.server ~= nil) then
     if (not debugger.running) then
-      ClearAllCurrentLineMarkers()
       debugger.run()
     end
   else
@@ -311,7 +310,6 @@ frame:Connect(ID_STOPDEBUG, wx.wxEVT_UPDATE_UI,
 
 frame:Connect(ID_STEP, wx.wxEVT_COMMAND_MENU_SELECTED,
   function ()
-    ClearAllCurrentLineMarkers()
     debugger.step()
   end)
 frame:Connect(ID_STEP, wx.wxEVT_UPDATE_UI,
@@ -323,7 +321,6 @@ frame:Connect(ID_STEP, wx.wxEVT_UPDATE_UI,
 
 frame:Connect(ID_STEPOVER, wx.wxEVT_COMMAND_MENU_SELECTED,
   function ()
-    ClearAllCurrentLineMarkers()
     debugger.over()
   end)
 frame:Connect(ID_STEPOVER, wx.wxEVT_UPDATE_UI,
@@ -335,7 +332,6 @@ frame:Connect(ID_STEPOVER, wx.wxEVT_UPDATE_UI,
 
 frame:Connect(ID_STEPOUT, wx.wxEVT_COMMAND_MENU_SELECTED,
   function ()
-    ClearAllCurrentLineMarkers()
     debugger.out()
   end)
 frame:Connect(ID_STEPOUT, wx.wxEVT_UPDATE_UI,
@@ -347,7 +343,6 @@ frame:Connect(ID_STEPOUT, wx.wxEVT_UPDATE_UI,
 
 frame:Connect(ID_TRACE, wx.wxEVT_COMMAND_MENU_SELECTED,
   function ()
-    ClearAllCurrentLineMarkers()
     debugger.trace()
   end)
 frame:Connect(ID_TRACE, wx.wxEVT_UPDATE_UI,

@@ -462,6 +462,10 @@ debugger.exec = function(command)
         local out
         local attempts = 0
         while true do
+          -- clear markers before running the command
+          -- don't clear if running trace as the marker is then invisible,
+          -- and it needs to be visible during tracing
+          if not debugger.loop then ClearAllCurrentLineMarkers() end
           debugger.breaking = false
           local file, line, err = debugger.handle(out or command)
           if out then out = nil end
@@ -480,6 +484,8 @@ debugger.exec = function(command)
                 return
               end
             else
+              -- clear the marker as it wasn't cleared earlier
+              if debugger.loop then ClearAllCurrentLineMarkers() end
               -- we may be in some unknown location at this point;
               -- If this happens, stop and report allowing users to set
               -- breakpoints and step through.
