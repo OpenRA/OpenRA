@@ -103,6 +103,9 @@ namespace OpenRA.Widgets
 			var tiny = Game.Renderer.Fonts[GetLabelFont()];
 			var bold = Game.Renderer.Fonts[GetAxisFont()];
 
+			var maxValue = GetSeries().Select(p => p.Points).SelectMany(d => d).Max();
+			var scale = 200 / Math.Max(5000, (float)Math.Round(maxValue / 1000, 0, MidpointRounding.AwayFromZero) * 1000);
+
 			var xAxisSize = GetXAxisSize();
 			var yAxisSize = GetYAxisSize();
 
@@ -113,9 +116,6 @@ namespace OpenRA.Widgets
 			var visibleNodeStart = Math.Max(0, actualNodeCount - xAxisSize);
 			var visibleNodeEnd = Math.Max(actualNodeCount, xAxisSize);
 
-			var maxValue = GetSeries().Select(p => p.Points).SelectMany(d => d).Max();
-			var scale = 100 / Math.Max(5000, maxValue) * 3;
-
 			//todo: make this stuff not draw outside of the RenderBounds
 			for (int n = visibleNodeStart, x = 0; n <= visibleNodeEnd; n++, x += xStep)
 			{
@@ -124,11 +124,16 @@ namespace OpenRA.Widgets
 			}
 			bold.DrawText(GetXAxisLabel(), origin + new float2(width / 2, 20), Color.White);
 
-			for (var y = (GetDisplayFirstYAxisValue() ? 0 : yStep); y <= height; y += yStep)
+			var y = (GetDisplayFirstYAxisValue() ? 0 : yStep);
+			for (; y < height; y += yStep)
 			{
 				var value = y / scale;
 				Game.Renderer.LineRenderer.DrawLine(origin + new float2(width - 5, -y), origin + new float2(width, -y), Color.White, Color.White);
 				tiny.DrawText(GetYAxisValueFormat().F(value), origin + new float2(width + 2, -y), Color.White);
+			}
+			if (height - y > yStep / 2)
+			{
+				tiny.DrawText(GetYAxisValueFormat().F(height / scale), origin + new float2(width + 2, -height), Color.White);
 			}
 			bold.DrawText(GetYAxisLabel(), origin + new float2(width + 40, -(height / 2)), Color.White);
 
