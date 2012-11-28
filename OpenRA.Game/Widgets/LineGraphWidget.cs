@@ -95,47 +95,21 @@ namespace OpenRA.Widgets
 			var width = rect.Width;
 			var height = rect.Height;
 
-			Game.Renderer.LineRenderer.DrawLine(origin, origin + new float2(width, 0), Color.White, Color.White);
-			Game.Renderer.LineRenderer.DrawLine(origin, origin + new float2(0, -height), Color.White, Color.White);
-			Game.Renderer.LineRenderer.DrawLine(origin + new float2(width, 0), origin + new float2(width, -height), Color.White, Color.White);
-			Game.Renderer.LineRenderer.DrawLine(origin + new float2(0, -height), origin + new float2(width, -height), Color.White, Color.White);
-
 			var tiny = Game.Renderer.Fonts[GetLabelFont()];
 			var bold = Game.Renderer.Fonts[GetAxisFont()];
-
-			var maxValue = GetSeries().Select(p => p.Points).SelectMany(d => d).Max();
-			var scale = 200 / Math.Max(5000, (float)Math.Round(maxValue / 1000, 0, MidpointRounding.AwayFromZero) * 1000);
 
 			var xAxisSize = GetXAxisSize();
 			var yAxisSize = GetYAxisSize();
 
+			var maxValue = GetSeries().Select(p => p.Points).SelectMany(d => d).Max();
+			var scale = 200 / Math.Max(5000, (float)Math.Ceiling(maxValue / 1000) * 1000);
+
 			var xStep = width / xAxisSize;
 			var yStep = height / yAxisSize;
 
-			var actualNodeCount = GetSeries().First().Points.Count();
-			var visibleNodeStart = Math.Max(0, actualNodeCount - xAxisSize);
-			var visibleNodeEnd = Math.Max(actualNodeCount, xAxisSize);
-
-			//todo: make this stuff not draw outside of the RenderBounds
-			for (int n = visibleNodeStart, x = 0; n <= visibleNodeEnd; n++, x += xStep)
-			{
-				Game.Renderer.LineRenderer.DrawLine(origin + new float2(x, 0), origin + new float2(x, -5), Color.White, Color.White);
-				tiny.DrawText(GetXAxisValueFormat().F(n), origin + new float2(x, 2), Color.White);
-			}
-			bold.DrawText(GetXAxisLabel(), origin + new float2(width / 2, 20), Color.White);
-
-			var y = (GetDisplayFirstYAxisValue() ? 0 : yStep);
-			for (; y < height; y += yStep)
-			{
-				var value = y / scale;
-				Game.Renderer.LineRenderer.DrawLine(origin + new float2(width - 5, -y), origin + new float2(width, -y), Color.White, Color.White);
-				tiny.DrawText(GetYAxisValueFormat().F(value), origin + new float2(width + 2, -y), Color.White);
-			}
-			if (height - y > yStep / 2)
-			{
-				tiny.DrawText(GetYAxisValueFormat().F(height / scale), origin + new float2(width + 2, -height), Color.White);
-			}
-			bold.DrawText(GetYAxisLabel(), origin + new float2(width + 40, -(height / 2)), Color.White);
+			var pointCount = GetSeries().First().Points.Count();
+			var pointStart = Math.Max(0, pointCount - xAxisSize);
+			var pointEnd = Math.Max(pointCount, xAxisSize);
 
 			var keyOffset = 0;
 			foreach (var series in GetSeries())
@@ -161,14 +135,34 @@ namespace OpenRA.Widgets
 					var value = points.Last();
 					if (value != 0)
 					{
-						var scaledValue = value * scale;
-						tiny.DrawText(GetValueFormat().F(value), origin + new float2(x, -scaledValue - 2), color);
+						tiny.DrawText(GetValueFormat().F(value), origin + new float2(x, -value * scale - 2), color);
 					}
 				}
 
 				tiny.DrawText(key, new float2(rect.Left, rect.Top) + new float2(5, 10 * keyOffset + 3), color);
 				keyOffset++;
 			}
+
+			//todo: make this stuff not draw outside of the RenderBounds
+			for (int n = pointStart, x = 0; n <= pointEnd; n++, x += xStep)
+			{
+				Game.Renderer.LineRenderer.DrawLine(origin + new float2(x, 0), origin + new float2(x, -5), Color.White, Color.White);
+				tiny.DrawText(GetXAxisValueFormat().F(n), origin + new float2(x, 2), Color.White);
+			}
+			bold.DrawText(GetXAxisLabel(), origin + new float2(width / 2, 20), Color.White);
+
+			for (var y = (GetDisplayFirstYAxisValue() ? 0 : yStep); y <= height; y += yStep)
+			{
+				var yValue = y / scale;
+				Game.Renderer.LineRenderer.DrawLine(origin + new float2(width - 5, -y), origin + new float2(width, -y), Color.White, Color.White);
+				tiny.DrawText(GetYAxisValueFormat().F(yValue), origin + new float2(width + 2, -y), Color.White);
+			}
+			bold.DrawText(GetYAxisLabel(), origin + new float2(width + 40, -(height / 2)), Color.White);
+
+			Game.Renderer.LineRenderer.DrawLine(origin, origin + new float2(width, 0), Color.White, Color.White);
+			Game.Renderer.LineRenderer.DrawLine(origin, origin + new float2(0, -height), Color.White, Color.White);
+			Game.Renderer.LineRenderer.DrawLine(origin + new float2(width, 0), origin + new float2(width, -height), Color.White, Color.White);
+			Game.Renderer.LineRenderer.DrawLine(origin + new float2(0, -height), origin + new float2(width, -height), Color.White, Color.White);
 		}
 
 		public override Widget Clone()
