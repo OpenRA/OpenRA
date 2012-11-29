@@ -18,7 +18,7 @@ Bounds: 16,16,96,96
 
 UseAsShellmap: False
 
-Type: Mission
+Type: Campaign
 
 Players:
 	PlayerReference@Neutral:
