@@ -1,15 +1,16 @@
 --
--- MobDebug 0.507
+-- MobDebug 0.508
 -- Copyright 2011-12 Paul Kulchenko
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
 --
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.507,
+  _VERSION = 0.508,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
-  port = os and os.getenv and os.getenv("MOBDEBUG_PORT") or 8172
+  port = os and os.getenv and os.getenv("MOBDEBUG_PORT") or 8172,
+  yieldtimeout = 0.02,
 }
 
 local coroutine = coroutine
@@ -217,7 +218,7 @@ end
 local function q(s) return s:gsub('([%(%)%.%%%+%-%*%?%[%^%$%]])','%%%1') end
 
 local serpent = (function() ---- include Serpent module for serialization
-local n, v = "serpent", 0.19 -- (C) 2012 Paul Kulchenko; MIT License
+local n, v = "serpent", 0.20 -- (C) 2012 Paul Kulchenko; MIT License
 local c, d = "Paul Kulchenko", "Serializer and pretty printer of Lua data types"
 local snum = {[tostring(1/0)]='1/0 --[[math.huge]]',[tostring(-1/0)]='-1/0 --[[-math.huge]]',[tostring(0/0)]='0/0'}
 local badtype = {thread = true, userdata = true}
@@ -277,7 +278,7 @@ local function s(t, opts)
       if level >= maxl then return tag..'{}'..comment('max', level) end
       seen[t] = insref or spath -- set path to use as reference
       if getmetatable(t) and getmetatable(t).__tostring
-        then return tag..safestr(tostring(t))..comment("meta",l) end
+        then return tag..safestr(tostring(t))..comment("meta", level) end
       if next(t) == nil then return tag..'{}'..comment(t, level) end -- table empty
       local maxn, o, out = #t, {}, {}
       for key = 1, maxn do table.insert(o, key) end
@@ -603,7 +604,7 @@ local function debugger_loop(sfile, sline)
   while true do
     local line, err
     local wx = rawget(genv, "wx") -- use rawread to make strict.lua happy
-    if wx and server.settimeout then server:settimeout(0.1) end
+    if (wx or mobdebug.yield) and server.settimeout then server:settimeout(mobdebug.yieldtimeout) end
     while true do
       line, err = server:receive()
       if not line and err == "timeout" then
@@ -626,6 +627,7 @@ local function debugger_loop(sfile, sline)
             win:Connect(wx.wxEVT_TIMER, exitLoop)
             app:MainLoop()
           end
+        elseif mobdebug.yield then mobdebug.yield()
         end
       else
         break
@@ -1412,6 +1414,7 @@ mobdebug.moai = moai
 mobdebug.coro = coro
 mobdebug.line = serpent.line
 mobdebug.dump = serpent.dump
+mobdebug.yield = nil -- callback
 
 -- this is needed to make "require 'modebug'" to work when mobdebug
 -- module is loaded manually
