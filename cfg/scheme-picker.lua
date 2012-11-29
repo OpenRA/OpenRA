@@ -6,6 +6,10 @@
   - [TomorrowNightBright](macro:shell(ApplyStyleConfig('cfg/tomorrow.lua','TomorrowNightBright')))
   - [TomorrowNightEighties](macro:shell(ApplyStyleConfig('cfg/tomorrow.lua','TomorrowNightEighties')))
   - [Zenburn](macro:shell(ApplyStyleConfig('cfg/tomorrow.lua','Zenburn')))
+  - [Monokai](macro:shell(ApplyStyleConfig('cfg/tomorrow.lua','Monokai')))
+  - [SolarizedDark](macro:shell(ApplyStyleConfig('cfg/tomorrow.lua','SolarizedDark')))
+  - [SolarizedLight](macro:shell(ApplyStyleConfig('cfg/tomorrow.lua','SolarizedLight')))
+
   - [ZeroBrane Studio](macro:shell(ide.config.styles = StylesGetDefault(); ReApplySpecAndStyles()))
 
 2. [Apply the same scheme to Output/Console windows](macro:shell(ide.config.stylesoutshell = ide.config.styles; ReApplySpecAndStyles())).

@@ -1,24 +1,25 @@
 -- This is a file that sets color scheme based on Tomorrow format.
 -- Copyright 2011-12 Paul Kulchenko, ZeroBrane LLC
 
--- Tomorrow colors are from https://github.com/chriskempson/tomorrow-theme
--- Zenburn colors are from https://github.com/jnurmine/Zenburn/blob/master/colors/zenburn.vim (contributed by Srdjan Marković)
+-- Tomorrow colors from https://github.com/chriskempson/tomorrow-theme
+-- Zenburn colors from https://github.com/jnurmine/Zenburn/blob/master/colors/zenburn.vim (contributed by Srdjan Marković)
+-- Monokai colors from http://www.monokai.nl/blog/2006/07/15/textmate-color-theme/
+-- Solarized colors from https://github.com/altercation/vim-colors-solarized
 
 local theme = ...
+
 local function h2d(n) return 0+('0x'..n) end
-local H = function(c) return {h2d(c:sub(1,2), 16), h2d(c:sub(3,4), 16), h2d(c:sub(5,6), 16)} end
--- add more of the specified color (keeping all in 0-255 range)
-local mixer = function(c, n, more)
-  if not c or #c == 0 then return c end
-  local c = {c[1], c[2], c[3]} -- create a copy, so it can be modified
-  c[n] = c[n] + more
-  local excess = c[n] - 255
-  if excess > 0 then
-    for clr = 1, 3 do
-      c[clr] = n == clr and 255 or c[clr] > excess and c[clr] - excess or 0
-    end
-  end
-  return c
+local function H(c, bg) c = c:gsub('#','')
+  -- since alpha is not implemented, convert RGBA to RGB
+  -- assuming 0 is transparent and 255 is opaque
+  -- based on http://stackoverflow.com/a/2645218/1442917
+  local bg = bg and H(bg) or {255, 255, 255}
+  local a = #c > 6 and h2d(c:sub(7,8))/255 or 1
+  local r, g, b = h2d(c:sub(1,2)), h2d(c:sub(3,4)), h2d(c:sub(5,6))
+  return {
+    math.min(255, math.floor((1-a)*bg[1]+a*r)),
+    math.min(255, math.floor((1-a)*bg[2]+a*g)),
+    math.min(255, math.floor((1-a)*bg[3]+a*b))}
 end
 
 local colors = {
@@ -106,7 +107,63 @@ local colors = {
     Blue        = H'f0dfaf',
     Purple      = H'efef8f',
   },
+  Monokai = {
+    Background  = H'272822',
+    CurrentLine = H'49483E',
+    Selection   = H'49483E',
+    Foreground  = H'F8F8F2',
+    Comment     = H'75715E',
+    Red         = H'AE81FF',
+    Orange      = H'AE81FF',
+    Yellow      = H'F8F8F2',
+    Green       = H'E6DB74',
+    Aqua        = H'66D9EF',
+    Blue        = H'F92672',
+    Purple      = H'A6E22E',
+  },
+  SolarizedDark = {
+    Background  = H'042029',
+    CurrentLine = H'0A2933',
+    Selection   = H'073642',
+    Foreground  = H'839496',
+    Comment     = H'586E75',
+    Red         = H'D33682',
+    Orange      = H'B58900',
+    Yellow      = H'839496',
+    Green       = H'2AA198',
+    Aqua        = H'839496',
+    Blue        = H'859900',
+    Purple      = H'268BD2',
+  },
+  SolarizedLight = {
+    Background  = H'FDF6E3',
+    CurrentLine = H'EEE8D5',
+    Selection   = H'E0E0D0',
+    Foreground  = H'586E75',
+    Comment     = H'93A1A1',
+    Red         = H'D33682',
+    Orange      = H'B58900',
+    Yellow      = H'586E75',
+    Green       = H'2AA198',
+    Aqua        = H'586E75',
+    Blue        = H'859900',
+    Purple      = H'268BD2',
+  },
 }
+
+-- add more of the specified color (keeping all in 0-255 range)
+local mixer = function(c, n, more)
+  if not c or #c == 0 then return c end
+  local c = {c[1], c[2], c[3]} -- create a copy, so it can be modified
+  c[n] = c[n] + more
+  local excess = c[n] - 255
+  if excess > 0 then
+    for clr = 1, 3 do
+      c[clr] = n == clr and 255 or c[clr] > excess and c[clr] - excess or 0
+    end
+  end
+  return c
+end
 
 local C = colors[theme] or colors.Tomorrow
 return {
@@ -141,8 +198,8 @@ return {
   linenumber = {fg = C.Comment},
   bracematch = {fg = C.Orange, b = true},
   bracemiss = {fg = C.Red, b = true},
-  ctrlchar = nil,
-  indent = {fg = C.Foreground, bg = C.Background},
+  ctrlchar = {fg = C.Yellow},
+  indent = {fg = C.Comment},
   calltip = nil,
 
   -- common special (need custom fg & bg)
@@ -176,3 +233,19 @@ return {
     error = {bg = mixer(C.Background, 1, 32)},
   },
 }
+
+--[[
+
+---- Solarized license ----
+
+Copyright (c) 2011 Ethan Schoonover
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+---- Zenburn license ----
+
+GNU GPL, http://www.gnu.org/licenses/gpl.html
+
+--]]

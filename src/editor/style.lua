@@ -276,17 +276,18 @@ function ApplyStyleConfig(config, style)
   if not wx.wxIsAbsolutePath(config)
     then config = MergeFullPath(GetPathWithSep(ide.editorFilename), config) end
 
-  local cfg = {wxstc = wxstc, path = {}, editor = {}, view ={}, acandtip = {}, outputshell = {}, debugger={}}
+  local cfg = {wxstc = wxstc, math = math, print = DisplayOutputLn,
+    path = {}, editor = {}, view ={}, acandtip = {}, outputshell = {}, debugger={}}
   local cfgfn, err = loadfile(config)
   if not cfgfn then
-    DisplayOutputLn(TR("Error while loading configuration %s: %s"):format(config, err))
+    DisplayOutputLn(TR("Error while loading configuration file: %s"):format(err))
     return
   end
 
   setfenv(cfgfn,cfg)
   cfgfn, err = pcall(cfgfn,style)
   if not cfgfn then
-    DisplayOutputLn(TR("Error while processing configuration %s: %s"):format(config, err))
+    DisplayOutputLn(TR("Error while processing configuration file: %s"):format(err))
     return
   end
 
