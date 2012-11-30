@@ -204,7 +204,11 @@ local debuggers = {
 
 function ProjectDebug(skipcheck, debtype)
   if (debugger.server ~= nil) then
-    if (not debugger.running) then
+    if (debugger.scratchpad and debugger.scratchpad.paused) then
+      debugger.scratchpad.paused = nil
+      debugger.scratchpad.updated = true
+      ShellSupportRemote(nil) -- disable remote while Scratchpad running
+    elseif (not debugger.running) then
       debugger.run()
     end
   else
@@ -290,7 +294,7 @@ frame:Connect(ID_STARTDEBUG, wx.wxEVT_UPDATE_UI,
     event:Enable((ide.interpreter) and (ide.interpreter.hasdebugger) and
       ((debugger.server == nil and debugger.pid == nil) or
        (debugger.server ~= nil and not debugger.running)) and
-      (editor ~= nil) and (not debugger.scratchpad))
+      (editor ~= nil) and (not debugger.scratchpad or debugger.scratchpad.paused))
     local label = (debugger.server ~= nil)
       and debugMenuRun.continue or debugMenuRun.start
     if debugMenu:GetLabel(ID_STARTDEBUG) ~= label then
@@ -359,13 +363,18 @@ frame:Connect(ID_BREAK, wx.wxEVT_COMMAND_MENU_SELECTED,
   function ()
     if debugger.server then
       debugger.breaknow()
+      if debugger.scratchpad then
+        debugger.scratchpad.paused = true
+        ShellSupportRemote(debugger.shell)
+      end
     end
   end)
 frame:Connect(ID_BREAK, wx.wxEVT_UPDATE_UI,
   function (event)
     local editor = GetEditor()
     event:Enable((debugger.server ~= nil) and (debugger.running)
-      and (editor ~= nil) and (not debugger.scratchpad))
+      and (editor ~= nil)
+      and (not debugger.scratchpad or not debugger.scratchpad.paused))
   end)
 
 frame:Connect(wx.wxEVT_IDLE,

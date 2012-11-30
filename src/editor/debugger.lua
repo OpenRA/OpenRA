@@ -240,7 +240,8 @@ debugger.shell = function(expression, isstatement)
   -- check if the debugger is running and may be waiting for a response.
   -- allow that request to finish, otherwise updateWatchesSync() does nothing.
   if debugger.running then debugger.update() end
-  if debugger.server and not debugger.running and not debugger.scratchpad then
+  if debugger.server and not debugger.running
+  and (not debugger.scratchpad or debugger.scratchpad.paused) then
     copas.addthread(function ()
         -- exec command is not expected to return anything.
         -- eval command returns 0 or more results.
@@ -882,7 +883,7 @@ end
 
 local function q(s) return s:gsub('([%(%)%.%%%+%-%*%?%[%^%$%]])','%%%1') end
 function DebuggerRefreshScratchpad()
-  if debugger.scratchpad and debugger.scratchpad.updated then
+  if debugger.scratchpad and debugger.scratchpad.updated and not debugger.scratchpad.paused then
 
     local scratchpadEditor = debugger.scratchpad.editor
     local compiled, code = CompileProgram(scratchpadEditor, true)
