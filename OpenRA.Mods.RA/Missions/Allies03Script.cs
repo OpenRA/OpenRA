@@ -90,6 +90,7 @@ namespace OpenRA.Mods.RA.Missions
 
 		int attackAtFrame;
 		int attackAtFrameIncrement;
+		int minAttackAtFrame;
 
 		Actor allies1EntryPoint;
 		Actor allies1MovePoint;
@@ -144,7 +145,7 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				SpawnSovietUnits();
 				attackAtFrame += attackAtFrameIncrement;
-				attackAtFrameIncrement = Math.Max(attackAtFrameIncrement - 5, 200);
+				attackAtFrameIncrement = Math.Max(attackAtFrameIncrement - 5, minAttackAtFrame);
 			}
 			if (world.FrameNumber == ReinforcementsTicks)
 			{
@@ -381,6 +382,7 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				attackAtFrame = 500;
 				attackAtFrameIncrement = 500;
+				minAttackAtFrame = 200;
 				unitsEvacuatedThreshold = 100;
 			}
 			else
@@ -388,6 +390,7 @@ namespace OpenRA.Mods.RA.Missions
 				allies2 = allies1;
 				attackAtFrame = 600;
 				attackAtFrameIncrement = 600;
+				minAttackAtFrame = 100;
 				unitsEvacuatedThreshold = 50;
 			}
 			objectives[EvacuateID].Text = objectives[EvacuateID].Text.F(unitsEvacuatedThreshold);
