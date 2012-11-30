@@ -154,9 +154,11 @@ local function getNameToRun(skipcheck)
 
   -- test compile it before we run it, if successful then ask to save
   -- only compile if lua api
-  if (editor.spec.apitype and
+  if editor.spec.apitype and
     editor.spec.apitype == "lua" and
-    (not CompileProgram(editor, true) and not skipcheck)) then
+    (not skipcheck) and
+    (not ide.interpreter.skipcompile) and
+    (not CompileProgram(editor, true)) then
     return
   end
 
@@ -180,6 +182,7 @@ function ActivateOutput()
 end
 
 local function runInterpreter(wfilename, withdebugger)
+  if ide.frame.menuBar:IsChecked(ID_CLEAROUTPUT) then ClearOutput() end
   ActivateOutput()
 
   ClearAllCurrentLineMarkers()

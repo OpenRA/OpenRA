@@ -307,4 +307,5 @@ interpreter = {
     -- nil, no support for scratchpad;
     -- false, scratchpad supported;
     -- true, scratchpad supported and requires handling for external loop.
+  skipcompile = nil, -- don't compile before running if true
 }
