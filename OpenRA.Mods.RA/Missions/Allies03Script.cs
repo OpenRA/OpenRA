@@ -174,6 +174,11 @@ namespace OpenRA.Mods.RA.Missions
 			}
 		}
 
+		Actor FirstUnshroudedOrDefault(IEnumerable<Actor> actors, World world, int shroudRange)
+		{
+			return actors.FirstOrDefault(u => world.FindAliveCombatantActorsInCircle(u.CenterLocation, shroudRange).All(a => !a.HasTrait<CreatesShroud>()));
+		}
+
 		void ManageSovietAircraft()
 		{
 			var enemies = world.Actors
@@ -187,7 +192,7 @@ namespace OpenRA.Mods.RA.Missions
 				var ammo = aircraft.Trait<LimitedAmmo>();
 				if ((plane.Altitude == 0 && ammo.FullAmmo()) || (plane.Altitude != 0 && ammo.HasAmmo()))
 				{
-					var enemy = enemies.OrderBy(u => (aircraft.CenterLocation - u.CenterLocation).LengthSquared).FirstUnshroudedOrDefault(world, 10);
+					var enemy = FirstUnshroudedOrDefault(enemies.OrderBy(u => (aircraft.CenterLocation - u.CenterLocation).LengthSquared), world, 10);
 					if (enemy != null)
 					{
 						if (!aircraft.IsIdle && aircraft.GetCurrentActivity().GetType() != typeof(FlyAttack))
@@ -276,7 +281,7 @@ namespace OpenRA.Mods.RA.Missions
 				.Where(u => (u.Owner == allies1 || u.Owner == allies2)
 				&& ((u.HasTrait<Building>() && !u.HasTrait<Wall>()) || u.HasTrait<Mobile>()) && u.IsInWorld && !u.IsDead()
 				&& (!u.HasTrait<Spy>() || !u.Trait<Spy>().Disguised || (u.Trait<Spy>().Disguised && u.Trait<Spy>().disguisedAsPlayer != soviets)));
-			var enemy = enemies.OrderBy(u => (self.CenterLocation - u.CenterLocation).LengthSquared).FirstUnshroudedOrDefault(world, 10);
+			var enemy = FirstUnshroudedOrDefault(enemies.OrderBy(u => (self.CenterLocation - u.CenterLocation).LengthSquared), world, 10);
 			if (enemy != null)
 			{
 				self.QueueActivity(new AttackMove.AttackMoveActivity(self, new Attack(Target.FromActor(enemy), 3)));
