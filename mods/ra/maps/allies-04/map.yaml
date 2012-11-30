@@ -1,0 +1,260 @@
+Selectable: True
+
+MapFormat: 5
+
+RequiresMod: ra
+
+Title: Allies 04
+
+Description: Allies' fourth mission
+
+Author: Scott_NZ
+
+Tileset: TEMPERAT
+
+MapSize: 128,128
+
+Bounds: 16,16,96,96
+
+UseAsShellmap: False
+
+Type: Campaign
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Race: allies
+	PlayerReference@Allies1:
+		Name: Allies1
+		Playable: True
+		AllowBots: False
+		LockRace: True
+		Race: allies
+		LockColor: True
+		ColorRamp: 153,240,130,10
+		LockSpawn: True
+		LockTeam: True
+		Allies: Allies2,Allies
+		Enemies: Soviets
+	PlayerReference@Allies2:
+		Name: Allies2
+		Playable: True
+		AllowBots: False
+		LockRace: True
+		Race: allies
+		LockColor: True
+		ColorRamp: 80,240,130,10
+		LockSpawn: True
+		LockTeam: True
+		Allies: Allies1,Allies
+		Enemies: Soviets
+	PlayerReference@Allies:
+		Name: Allies
+		Race: allies
+		ColorRamp: 115,240,130,10
+		Allies: Allies1,Allies2
+		Enemies: Soviets
+	PlayerReference@Soviets:
+		Name: Soviets
+		Race: soviet
+		ColorRamp: 0,255,128,10
+		Enemies: Allies1,Allies2,Allies
+
+Actors:
+	Actor2: v07
+		Location: 58,83
+		Owner: Neutral
+	Actor3: truk
+		Location: 100,25
+		Owner: Soviets
+	Actor1: v05
+		Location: 54,89
+		Owner: Neutral
+	Actor56: t01
+		Location: 68,97
+		Owner: Neutral
+	Actor5: v03
+		Location: 66,84
+		Owner: Neutral
+	Actor25: t16
+		Location: 69,64
+		Owner: Neutral
+	Actor68: t08
+		Location: 65,93
+		Owner: Neutral
+	Actor26: tc04
+		Location: 69,61
+		Owner: Neutral
+	Actor27: t02
+		Location: 68,63
+		Owner: Neutral
+	Actor28: t07
+		Location: 67,78
+		Owner: Neutral
+	Actor30: t08
+		Location: 81,88
+		Owner: Neutral
+	Actor31: t14
+		Location: 84,88
+		Owner: Neutral
+	Actor33: t10
+		Location: 73,83
+		Owner: Neutral
+	Actor8: v07
+		Location: 66,95
+		Owner: Neutral
+	Actor0: v04
+		Location: 58,90
+		Owner: Neutral
+	Actor41: t12
+		Location: 73,69
+		Owner: Neutral
+	Actor44: tc05
+		Location: 92,80
+		Owner: Neutral
+	Actor47: t05
+		Location: 75,89
+		Owner: Neutral
+	Actor10: v02
+		Location: 71,89
+		Owner: Neutral
+	Actor50: t08
+		Location: 82,67
+		Owner: Neutral
+	Actor51: t11
+		Location: 80,66
+		Owner: Neutral
+	Actor52: t05
+		Location: 83,68
+		Owner: Neutral
+	Actor53: t07
+		Location: 83,71
+		Owner: Neutral
+	Actor54: t02
+		Location: 82,74
+		Owner: Neutral
+	Actor57: t07
+		Location: 74,64
+		Owner: Neutral
+	Actor49: tc02
+		Location: 63,79
+		Owner: Neutral
+	Actor75: t17
+		Location: 84,95
+		Owner: Neutral
+	Actor48: t14
+		Location: 63,90
+		Owner: Neutral
+	Actor66: tc03
+		Location: 87,89
+		Owner: Neutral
+	Actor77: t16
+		Location: 103,84
+		Owner: Neutral
+	Actor78: tc04
+		Location: 103,78
+		Owner: Neutral
+	Actor80: tc05
+		Location: 79,81
+		Owner: Neutral
+	Actor81: t06
+		Location: 111,82
+		Owner: Neutral
+	Actor82: t03
+		Location: 110,76
+		Owner: Neutral
+	Actor84: tc02
+		Location: 94,75
+		Owner: Neutral
+	Actor9: v01
+		Location: 72,94
+		Owner: Neutral
+	Actor114: tc02
+		Location: 96,58
+		Owner: Neutral
+	Actor113: tc05
+		Location: 86,59
+		Owner: Neutral
+	Actor115: t07
+		Location: 96,63
+		Owner: Neutral
+	Actor15: weap
+		Location: 99,23
+		Owner: Soviets
+	Actor18: barr
+		Location: 102,34
+		Owner: Soviets
+	Actor20: silo
+		Location: 102,17
+		Owner: Soviets
+	Actor17: apwr
+		Location: 108,19
+		Owner: Soviets
+	Actor16: apwr
+		Location: 108,16
+		Owner: Soviets
+	Actor19: proc
+		Location: 107,30
+		Owner: Soviets
+	Actor63: ftur
+		Location: 109,38
+		Owner: Soviets
+	Actor62: ftur
+		Location: 99,38
+		Owner: Soviets
+	Actor61: kenn
+		Location: 107,26
+		Owner: Soviets
+	Actor60: fix
+		Location: 96,29
+		Owner: Soviets
+	Actor59: silo
+		Location: 101,17
+		Owner: Soviets
+	Actor58: silo
+		Location: 101,18
+		Owner: Soviets
+	Actor38: silo
+		Location: 102,18
+		Owner: Soviets
+	Actor64: spef
+		Location: 91,22
+		Owner: Soviets
+	Actor65: truk
+		Location: 100,26
+		Owner: Soviets
+	Actor74: 3tnk
+		Location: 102,31
+		Owner: Soviets
+	Actor76: fenc
+		Location: 98,38
+		Owner: Soviets
+	Actor83: fenc
+		Location: 97,38
+		Owner: Soviets
+	Actor85: fenc
+		Location: 96,38
+		Owner: Soviets
+	Actor86: fenc
+		Location: 95,38
+		Owner: Soviets
+	Actor87: fenc
+		Location: 110,38
+		Owner: Soviets
+	Actor88: fenc
+		Location: 111,38
+		Owner: Soviets
+
+Smudges:
+
+Rules:
+
+Sequences:
+
+Weapons:
+
+Voices:
+
+Notifications:
