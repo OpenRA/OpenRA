@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA.Missions
 		Dictionary<int, Objective> objectives = new Dictionary<int, Objective>
 		{
 			{ EvacuateID, new Objective(ObjectiveType.Primary, "Following the rescue of Einstein, the Allies are now being flanked from both sides. Evacuate {0} units before the remaining Allied forces in the area are wiped out.", ObjectiveStatus.InProgress) },
-			{ AirbaseID, new Objective(ObjectiveType.Secondary, "Destroy the nearby Soviet airbase.", ObjectiveStatus.InProgress) }
+			{ AirbaseID, new Objective(ObjectiveType.Secondary, "Destroy the nearby Soviet airbases.", ObjectiveStatus.InProgress) }
 		};
 
 		const int EvacuateID = 0;
@@ -74,19 +74,16 @@ namespace OpenRA.Mods.RA.Missions
 		Actor sovietRallyPoint6;
 		CPos[] sovietRallyPoints;
 
-		Actor sovietAirfield1;
-		Actor sovietAirfield2;
-		Actor sovietAirfield3;
-		Actor sovietAirfield4;
+		Actor[] sovietAirfields;
 
 		static readonly string[] SovietVehicles1 = { "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "v2rl", "v2rl", "ftrk", "ftrk", "apc", "apc", "apc" };
 		static readonly string[] SovietVehicles2 = { "4tnk", "4tnk", "4tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "v2rl", "v2rl", "ftrk", "apc" };
 		const int SovietVehicles2Ticks = 1500 * 20;
 		const int SovietGroupSize = 3;
-		const int MaxNumberYaks = 4;
 
 		const int ReinforcementsTicks = 1500 * 4;
-		static readonly string[] Reinforcements = { MggName, MggName, "2tnk", "2tnk", "2tnk", "2tnk", "1tnk", "1tnk", "jeep", "jeep", "e1", "e1", "e1", "e1", "e3", "e3" };
+		static readonly string[] Reinforcements = { "mgg", "mgg", "2tnk", "2tnk", "2tnk", "2tnk", "1tnk", "1tnk", "jeep", "jeep", "e1", "e1", "e1", "e1", "e3", "e3" };
+		int currentReinforcement;
 
 		int attackAtFrame;
 		int attackAtFrameIncrement;
@@ -100,7 +97,6 @@ namespace OpenRA.Mods.RA.Missions
 
 		const string McvName = "mcv";
 		const string YakName = "yak";
-		const string MggName = "mgg";
 
 		void MissionFailed(string text)
 		{
@@ -136,7 +132,7 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			if (world.FrameNumber == 1)
 			{
-				SpawnAlliedUnitForPlayers(McvName);
+				SpawnAlliedUnit(McvName);
 				evacuateWidget = new InfoWidget("", new float2(Game.viewport.Width * 0.35f, Game.viewport.Height * 0.9f));
 				Ui.Root.AddChild(evacuateWidget);
 				UpdateUnitsEvacuated();
@@ -147,10 +143,16 @@ namespace OpenRA.Mods.RA.Missions
 				attackAtFrame += attackAtFrameIncrement;
 				attackAtFrameIncrement = Math.Max(attackAtFrameIncrement - 5, minAttackAtFrame);
 			}
-			if (world.FrameNumber == ReinforcementsTicks)
+			if (world.FrameNumber >= ReinforcementsTicks && currentReinforcement < Reinforcements.Length)
 			{
-				Sound.Play("reinfor1.aud");
-				SpawnReinforcements();
+				if (world.FrameNumber == ReinforcementsTicks)
+				{
+					Sound.Play("reinfor1.aud");
+				}
+				if (world.FrameNumber % 25 == 0)
+				{
+					SpawnAlliedUnit(Reinforcements[currentReinforcement++]);
+				}
 			}
 			if (world.FrameNumber % 25 == 0)
 			{
@@ -229,7 +231,7 @@ namespace OpenRA.Mods.RA.Missions
 		void BuildSovietAircraft()
 		{
 			var queue = MissionUtils.FindQueues(world, soviets, "Plane").FirstOrDefault(q => q.CurrentItem() == null);
-			if (queue == null || SovietAircraft().Count() >= MaxNumberYaks)
+			if (queue == null || SovietAircraft().Count() >= sovietAirfields.Length)
 			{
 				return;
 			}
@@ -246,11 +248,7 @@ namespace OpenRA.Mods.RA.Missions
 
 		void CheckSovietAirbase()
 		{
-			if (objectives[AirbaseID].Status != ObjectiveStatus.Completed
-				&& (sovietAirfield1.Destroyed || sovietAirfield1.Owner != soviets)
-				&& (sovietAirfield2.Destroyed || sovietAirfield2.Owner != soviets)
-				&& (sovietAirfield3.Destroyed || sovietAirfield3.Owner != soviets)
-				&& (sovietAirfield4.Destroyed || sovietAirfield4.Owner != soviets))
+			if (objectives[AirbaseID].Status != ObjectiveStatus.Completed && sovietAirfields.All(a => a.IsDead() || a.Owner != soviets))
 			{
 				objectives[AirbaseID].Status = ObjectiveStatus.Completed;
 				OnObjectivesUpdated(true);
@@ -311,15 +309,7 @@ namespace OpenRA.Mods.RA.Missions
 			}
 		}
 
-		void SpawnReinforcements()
-		{
-			foreach (var unit in Reinforcements)
-			{
-				SpawnAlliedUnitForPlayers(unit);
-			}
-		}
-
-		void SpawnAlliedUnitForPlayers(string actor)
+		void SpawnAlliedUnit(string actor)
 		{
 			var unit = world.CreateActor(actor, new TypeDictionary
 			{
@@ -426,10 +416,7 @@ namespace OpenRA.Mods.RA.Missions
 			sovietRallyPoint5 = actors["SovietRallyPoint5"];
 			sovietRallyPoint6 = actors["SovietRallyPoint6"];
 			sovietRallyPoints = new[] { sovietRallyPoint1, sovietRallyPoint2, sovietRallyPoint3, sovietRallyPoint4, sovietRallyPoint5, sovietRallyPoint6 }.Select(p => p.Location).ToArray();
-			sovietAirfield1 = actors["SovietAirfield1"];
-			sovietAirfield2 = actors["SovietAirfield2"];
-			sovietAirfield3 = actors["SovietAirfield3"];
-			sovietAirfield4 = actors["SovietAirfield4"];
+			sovietAirfields = actors.Values.Where(a => a.Owner == soviets && a.HasTrait<Production>() && a.Info.Traits.Get<ProductionInfo>().Produces.Contains("Plane")).ToArray();
 			if (w.LocalPlayer == null || w.LocalPlayer == allies1)
 			{
 				Game.MoveViewport(allies1EntryPoint.Location.ToFloat2());

@@ -117,6 +117,7 @@ namespace OpenRA.Mods.RA.Missions
 			"mcv",
 			"truk", "truk", "truk", "truk", "truk", "truk"
 		};
+		int currentReinforcement = -1;
 
 		const int ParabombTicks = 750;
 
@@ -216,6 +217,10 @@ namespace OpenRA.Mods.RA.Missions
 				{
 					YakStrafe(alliedUnitsNearYakPoint);
 				}
+			}
+			if (currentReinforcement > -1 && currentReinforcement < Reinforcements.Length && world.FrameNumber % 25 == 0)
+			{
+				SpawnAlliedUnit(Reinforcements[currentReinforcement++]);
 			}
 			if (world.FrameNumber % 25 == 0)
 			{
@@ -419,22 +424,19 @@ namespace OpenRA.Mods.RA.Missions
 		void ReinforcementsTimerExpired(CountdownTimer countdownTimer)
 		{
 			reinforcementsTimerWidget.Visible = false;
-			SendReinforcements();
+			currentReinforcement++;
 			Sound.Play("aarrivs1.aud");
 		}
 
-		void SendReinforcements()
+		void SpawnAlliedUnit(string unit)
 		{
-			foreach (var unit in Reinforcements)
+			var u = world.CreateActor(unit, new TypeDictionary
 			{
-				var u = world.CreateActor(unit, new TypeDictionary
-				{
-					new LocationInit(reinforcementsEntryPoint.Location),
-					new FacingInit(0),
-					new OwnerInit(allies2)
-				});
-				u.QueueActivity(new Move.Move(allies2BasePoint.Location));
-			}
+				new LocationInit(reinforcementsEntryPoint.Location),
+				new FacingInit(0),
+				new OwnerInit(allies2)
+			});
+			u.QueueActivity(new Move.Move(allies2BasePoint.Location));
 		}
 
 		void RushSovietUnits()
