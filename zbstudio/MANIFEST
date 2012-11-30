@@ -8,6 +8,7 @@ api/cg/*.lua
 api/README
 cfg/user-sample.lua
 cfg/estrela.lua
+cfg/scheme-picker.lua
 cfg/tomorrow.lua
 cfg/i18n/*.lua
 interpreters/*.lua

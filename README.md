@@ -29,15 +29,15 @@ and others). It originated from the [Estrela Editor](http://www.luxinia.de/index
 
 ```
 Open file(s):
-  <zbstudio> <filename> [<filename>...]
+  zbstudio <filename> [<filename>...]
   any non-option will be treated as filename
 
 Overriding default configuration:
-  <zbstudio> -cfg "<luacode overriding config>" [<filename>]
+  zbstudio -cfg "<luacode overriding config>" [<filename>]
   e.g.: zbstudio -cfg "editor.fontsize=12" somefile.lua
 
 Loading custom configuration:
-  <zbstudio> -cfg "config/file.lua" [<filename>]
+  zbstudio -cfg config/file.lua [<filename>]
   e.g.: zbstudio -cfg cfg/estrela.lua
 ```
 

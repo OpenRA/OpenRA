@@ -1,5 +1,72 @@
 # ZeroBrane Studio Changelog
 
+## Current master that will become v0.34 (Nov 29 2012)
+
+### Highlights
+  - Added **internationalization** support (with Russian, Italian, Spanish, and French translations).
+  - Added **key binding** configuration for menu and toolbar items.
+  - Added **Corona SDK integration** with debugging and auto-complete.
+  - Added **Moai scratchpad support**.
+  - Added **color scheme support** with several schemes included.
+
+### Special thanks
+  - To Srdjan Markovic for Corona auto-complete support and Zenburn color scheme.
+  - To Roland Yonaba for French translation.
+  - To Leo Bartoloni for Italian translation.
+  - To Inigo Sola for Spanish translation.
+  - To toiffel for Russian translation and several patches.
+
+### Improvements
+  - Added more color schemes (Solarized and Monokai).
+  - Added customized yield function for debugging (MobDebug v0.508; closes #81).
+  - Added proper hiding of current line marker during debugging (except when tracing).
+  - Added Corona auto-complete support (thanks to Srdjan Markovic).
+  - Added logic to show application windows without explicitly listing their class (closes #80); Windows only.
+  - Added Moai scratchpad support.
+  - Added missing constants to Moai API.
+  - Added setting focus on the window when a file is loaded in the existing instance.
+  - Added two more wxwindow window classes to the list of windows to show (Windows).
+  - Added scheme picker script to test color schemes from the IDE.
+  - Added Zenburn as a color scheme.
+  - Added styling for markers and Output/Console windows.
+  - Added Italian translation (thanks to Leo Bartoloni).
+  - Added Spanish translation (thanks to Inigo Sola).
+  - Added reporting of run-time errors from remote processes (helps #73).
+  - Added 'tomorrow' color theme.
+  - Added redirect of remote 'print' commands for Gideros applications.
+  - Added check for 'main.lua' in Corona projects.
+  - Added ability to suspend a running application even when there is no editor tab or file to activate.
+  - Added serialization of remote 'print' results and an output filter for debugging (helps #73).
+  - Added redirect of remote 'print' commands to the Output window in the IDE (helps #73).
+  - Added Corona SDK support (closes #73).
+  - Added French translation (thanks to Roland Yonaba).
+  - Added (more) verbose output to debugger to assist in troubleshooting.
+  - Added handling of LUA_DEV to make loading Lua for Windows libraries working out of the box (fixes #71).
+  - Added internationalization support (closes #70).
+  - Added notes about estrela being gone and compatibility.
+  - Added multi-tab support for scratchpad.
+  - Added documentation on accelerator/shortcut syntax.
+  - Added key map to change key binding for menu and toolbar items from a config file (closes #64).
+  - Added hiding IDE while closing and saving configuration.
+  - Completed reorganization of front-end processing (closes #67 and #5).
+  - Disabled editor autoactivation during debugging when tracing is on.
+  - Disabled functions that are not available under Corona on OSX (helps #73).
+  - Extended list of default folders for interpreters where executables are searched for.
+  - Finished Russian translation
+  - Limited auto-showing windows to Lua interpreter only (related to #80).
+  - Updated MobDebug to v0.507 to fix serialization issues (closes #77).
+  - Updated style processing to support styling of markup and allow dynamic switching of color schemes.
+  - Updated Lua keyword definitions to improve grouping for styling (closes #79).
+  - Updated love2d api to an updated version as of 11/1/2012 (fixes #78).
+
+### Fixes
+  - Fixed an issue with breakpoints not available after aborting tracing on Linux/OSX.
+  - Fixed an issue with running scratchpad when entry points are configured.
+  - Fixed Linux launcher to pass filename parameter to the IDE.
+  - Fixed fold style to properly set background color.
+  - Fixed an issue with a config file being loaded into the editor when specified in the command line.
+  - Fixed an issue with markdown formatting not working after setting styles from a config file (fixes #74).
+
 ## v0.33 (Oct 22 2012)
 
 ### Highlights
@@ -8,6 +75,11 @@
   - Added **Gideros debugging, auto-complete, and live coding**.
   - Added **syntax aware indentation**.
   - Added **re/storing open files and interpreter** when switching project folders.
+
+### Special thanks
+  - To Andy Bower and Atilim Cetin for their assistance with Gideros integration and live coding.
+  - To toiffel for Linux/OSX/Windows CMake-based launcher build.
+  - To Christoph Kubisch for help with Estrela merge.
 
 ### Improvements
   - Added configuration option to specify hostname when the default one is not reachable (fixes #68).
