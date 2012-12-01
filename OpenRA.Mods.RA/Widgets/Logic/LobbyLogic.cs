@@ -239,11 +239,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			chatPanel.ScrollToBottom();
 			Sound.PlayNotification(null, "Sounds", "ChatLine", null);
 		}
-
+		
 		void UpdateCurrentMap()
 		{
 			if (MapUid == orderManager.LobbyInfo.GlobalSettings.Map) return;
 			MapUid = orderManager.LobbyInfo.GlobalSettings.Map;
+			
+			// this can happen only on a dedicated server so we do not check if AllowDownloading is true
+			if (!Game.modData.AvailableMaps.ContainsKey(MapUid))
+				Game.DownloadMap(MapUid);
 			Map = new Map(Game.modData.AvailableMaps[MapUid].Path);
 
 			var title = Ui.Root.Get<LabelWidget>("TITLE");

@@ -114,7 +114,12 @@ namespace OpenRA.Network
 
 						// Check that the map exists on the client
 						if (!Game.modData.AvailableMaps.ContainsKey(request.Map))
-							throw new InvalidOperationException("Missing map {0}".F(request.Map));
+						{
+							if (Game.Settings.Game.AllowDownloading)
+								Game.DownloadMap(request.Map);
+							else
+								throw new InvalidOperationException("Missing map {0}".F(request.Map));
+						}
 
 						var info = new Session.Client()
 						{

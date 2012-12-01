@@ -11,6 +11,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.IO;
 using OpenRA.Network;
 using OpenRA.FileFormats;
 using OpenRA.Server;
@@ -255,8 +257,19 @@ namespace OpenRA.Mods.RA.Server
 						}
 						if(!server.ModData.AvailableMaps.ContainsKey(s))
 						{
-							server.SendChatTo( conn, "Map not found");
-							return true;
+							if(Game.Settings.Game.AllowDownloading)
+							{
+                                server.SendChatTo(conn, "Map wasn't found on dedicated server, will try to download it from content website...");
+								if (Game.DownloadMap(s))
+									server.SendChatTo( conn, "Map was uploaded to dedicated server!");
+								else
+									server.SendChatTo(conn, "Map was not found on content website or could not connect");
+							}
+							else
+							{
+								server.SendChatTo( conn, "Map not found");
+								return true;
+							}
 						}
 						server.lobbyInfo.GlobalSettings.Map = s;
 						var oldSlots = server.lobbyInfo.Slots.Keys.ToArray();
