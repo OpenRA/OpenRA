@@ -32,11 +32,22 @@ return {
     end
 
     do
-      -- add templates/?.lua.in
-      local luain = GetPathWithSep(gslshell).."templates/?.lua.in"
+      -- add path to GSL-shell modules and templates/?.lua.in
+      local gslpath = GetPathWithSep(gslshell)
+      local luapath = gslpath.."?.lua;"..gslpath.."templates/?.lua.in"
+      local luacpath = gslpath.."?.dll"
+
+      -- add GSL-shell modules to the end of LUA_PATH
       local _, path = wx.wxGetEnv("LUA_PATH")
-      if path and not path:find(luain, 1, true) then
-        wx.wxSetEnv("LUA_PATH", path..";"..luain)
+      if path and not path:find(gslpath, 1, true) then
+        wx.wxSetEnv("LUA_PATH", path..";"..luapath)
+      end
+
+      -- add GSL-shell modules to the beginning of LUA_CPATH to make luajit
+      -- friendly luasocket to load before it loads luasocket shipped with ZBS
+      local _, cpath = wx.wxGetEnv("LUA_CPATH")
+      if cpath and not cpath:find(gslpath, 1, true) then
+        wx.wxSetEnv("LUA_CPATH", luacpath..";"..cpath)
       end
     end
 
