@@ -34,8 +34,8 @@ return {
     do
       -- add path to GSL-shell modules and templates/?.lua.in
       local gslpath = GetPathWithSep(gslshell)
-      local luapath = gslpath.."?.lua;"..gslpath.."templates/?.lua.in"
-      local luacpath = gslpath.."?.dll"
+      local luapath = gslpath.."gsl-shell/?.lua;"..gslpath.."gsl-shell/templates/?.lua.in"
+      local luacpath = gslpath.."gsl-shell/?.dll"
 
       -- add GSL-shell modules to the end of LUA_PATH
       local _, path = wx.wxGetEnv("LUA_PATH")
