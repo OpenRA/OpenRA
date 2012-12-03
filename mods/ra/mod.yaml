@@ -10,16 +10,21 @@ Folders:
 	./mods/ra/bits
 	./mods/ra/bits/desert
 	./mods/ra/uibits
+	./mods/ra/packages/
+#	./mods/ra/packages/de
 	~^/Content/ra
 
 Packages:
 	~main.mix
 	redalert.mix
 	conquer.mix
-	hires.mix
 	local.mix
-	sounds.mix
+	textless.mix
+	hires.mix
 	speech.mix
+	~speech2.mix
+	~speech3.mix
+	sounds.mix
 	allies.mix
 	russian.mix
 	temperat.mix
