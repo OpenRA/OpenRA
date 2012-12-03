@@ -105,8 +105,8 @@ MEDIC:
 	Passenger:
 		PipType: Blue
 	-AutoTarget:
-	#AttackMove:
-		#JustMove: true
+	AttackMove:
+		JustMove: true
 	RenderInfantry:
 		Image: THUMPER
 
