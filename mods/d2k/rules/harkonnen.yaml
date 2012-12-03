@@ -20,106 +20,49 @@ REFH:
 		Owner: harkonnen
 	RenderBuildingWarFactory:
 		Image: REFH
-	FreeActor:
-		Actor: HARVESTERH
-		InitialActivity: FindResources
-		SpawnOffset: 1,2
-		Facing: 64
 
-HARVESTERH:
-	Inherits: ^HARVESTER
-	Buildable:
-		Prerequisites: heavyh,refh
-		Owner: harkonnen
-	RenderUnit:
-		Image: HARVESTER
+#TRIKEH:
+#	Inherits: ^TRIKE
+#	Buildable:
+#		Prerequisites: lighth
+#		Owner: harkonnen
+#		BuiltAt: lighth
+#	Valued:
+#		Cost: 250
+#	Tooltip:
+#		Name: Scout Quad
+#		Description: Heavy Scout\n Strong vs Infantry
+#		Icon: quadicon
+#	Health:
+#		HP: 125
+#	Mobile:
+#		ROT: 9
+#		Speed: 11
+#	AttackFrontal:
+#		PrimaryWeapon: M60mg
+#		PrimaryLocalOffset: 0,-1,0,-3,0
+#	RenderUnit:
+#		Image: QUAD
 
-HARVESTERH.starport:
-	Inherits: HARVESTERH
-	Buildable:
-		Queue: Starport
-		BuiltAt: starporth
-	Valued:
-		Cost: 895
-
-TRIKEH:
-	Inherits: ^TRIKE
-	Buildable:
-		Prerequisites: lighth
-		Owner: harkonnen
-	RenderUnit:
-		Image: TRIKE
-
-TRIKEH.starport:
-	Inherits: TRIKEH
-	Buildable:
-		Queue: Starport
-		BuiltAt: starporth
-	Valued:
-		Cost: 149
-
-QUADH:
-	Inherits: ^QUAD
-	Buildable:
-		Prerequisites: lighth
-		Owner: harkonnen
-	RenderUnit:
-		Image: QUAD
-
-QUADH.starport:
-	Inherits: QUADH
-	Buildable:
-		Queue: Starport
-		BuiltAt: starporth
-	Valued:
-		Cost: 295
-
-SIEGETANKH:
-	Inherits: ^SIEGETANK
-	Buildable:
-		Prerequisites: heavyh, radarh
-		Owner: harkonnen
-	RenderUnitTurreted:
-		Image: SIEGETANK
-
-SIEGETANKH.starport:
-	Inherits: SIEGETANKH
-	Buildable:
-		Queue: Starport
-		BuiltAt: starporta
-	Valued:
-		Cost: 495
-
-MISSILETANKH:
-	Inherits: ^MISSILETANK
-	Buildable:
-		Prerequisites: heavyh
-		Owner: harkonnen
-	RenderUnit:
-		Image: MISSILETANK
-
-MISSILETANKH.starport:
-	Inherits: MISSILETANKH
-	Buildable:
-		Queue: Starport
-		BuiltAt: starporth
-	Valued:
-		Cost: 599
+#TRIKEH.starport:
+#	Inherits: ^TRIKE
+#	Buildable:
+#		Prerequisites: lighth
+#		Owner: harkonnen
+#		Queue: Starport
+#		BuiltAt: starporth
+#	Valued:
+#		Cost: 149
+#	RenderUnit:
+#		Image: TRIKE
 
 CARRYALLH:
 	Inherits: ^CARRYALL
-	Buildable:
-		Prerequisites: hightechh
-		BuiltAt: hightechh
-		Owner: harkonnen
 	RenderUnit:
 		Image: CARRYALL
 
 CARRYALLH.starport:
 	Inherits: CARRYALLH
-	Buildable:
-		Queue: Starport
-		BuiltAt: starporth
 	Valued:
 		Cost: 999
 
@@ -128,24 +71,7 @@ BARRH:
 	Buildable:
 		Prerequisites: pwrh
 		Owner: harkonnen
-
-GUNTOWERH:
-	Inherits: ^GUNTOWER
-	Buildable:
-		Prerequisites: conyardh
-		Owner: harkonnen
-
-ROCKETTOWERH:
-	Inherits: ^ROCKETTOWER
-	Buildable:
-		Prerequisites: radarh
-		Owner: harkonnen
-
-WALLH:
-	Inherits: ^WALL
-	Buildable:
-		Prerequisites: conyardh
-		Owner: harkonnen
+	-RepairsUnits:
 
 HIGHTECHH:
 	Inherits: ^HIGHTECH
@@ -153,28 +79,24 @@ HIGHTECHH:
 		Prerequisites: radarh
 		Owner: harkonnen
 
-RESEARCHH:
-	Inherits: ^RESEARCH
-	Buildable:
-		Prerequisites: radarh,heavyh
-		Owner: harkonnen
-
 PALACEH:
 	Inherits: ^PALACE
 	Buildable:
-		Prerequisites: researchh
+		Prerequisites: hightechh
 		Owner: harkonnen
+	Tooltip:
+		Description: Provides elite infantry\n  Special Ability: Death Hand Missile
 	NukePower:
 		Image: deathhandicon
 		ChargeTime: 540
 		Description: Death Hand
-		LongDesc: Launches a nuclear missile at a target location.
+		LongDesc: Launches a nuclear missile at a target location
 		BeginChargeSound: HI_PREP.AUD
 		EndChargeSound: HI_DHRDY.AUD
 		SelectTargetSound: 
-		LaunchSound: HI_LAUNC.AUD
+		LaunchSound:
 		MissileWeapon: atomic
-		SpawnOffset: 10,0
+		SpawnOffset: 28,12
 	CanPowerDown:
 	RequiresPower:
 	SupportPowerChargeBar:
@@ -210,22 +132,17 @@ RADARH:
 STARPORTH:
 	Inherits: ^STARPORT
 	Buildable:
-		Prerequisites: radarh
-		Owner: harkonnen
-
-REPAIRH:
-	Inherits: ^REPAIR
-	Buildable:
-		Prerequisites: heavyh
+		Prerequisites: radarh,hightechh
 		Owner: harkonnen
 
 MCVH:
 	Inherits: ^MCV
 	Buildable:
-		Prerequisites: heavyh,repairh
+		Prerequisites: heavyh,repair
 		Owner: harkonnen
+		BuiltAt: heavyh
 	Transforms:
-		Facing: 10
+		Facing: 16
 		IntoActor: conyardh
 		Offset:-1,-1
 		NoTransformSounds: HI_DPLOY.AUD
@@ -247,7 +164,19 @@ COMBATH:
 	Buildable:
 		Prerequisites: heavyh
 		Owner: harkonnen
+		BuiltAt: heavyh
+	Health:
+		HP: 400
 	RenderUnitTurreted:
+		Image: COMBATH
+	LeavesHusk:
+		HuskActor: Combath.Husk
+
+COMBATH.Husk:
+	Inherits: ^COMBAT.Husk
+	Tooltip:
+		Icon: combathicon
+	RenderUnit:
 		Image: COMBATH
 
 COMBATH.starport:
@@ -256,61 +185,76 @@ COMBATH.starport:
 		Queue: Starport
 		BuiltAt: starporth
 	Valued:
-		Cost: 595
+		Cost: 489
 
 DEVAST:
 	Inherits: ^Tank
 	Buildable:
-		Queue: Vehicle
+		Queue: Armor
 		BuildPaletteOrder: 100
-		Prerequisites: repairh,researchh
+		Prerequisites: heavyh,research
 		Owner: harkonnen
+		BuiltAt: heavyh
+		Hotkey: d
 	Valued:
-		Cost: 1800
+		Cost: 1200
 	Tooltip:
 		Name: Devastator
-		Description: Big and slow tank.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
+		Description: Super Heavy Tank\n  Strong vs Tanks\n  Weak vs Artillery, Aircraft
+		Icon: devasticon
 	Health:
-		HP: 900
+		HP: 650
 	Armor:
 		Type: Heavy
 	Mobile:
-		Speed: 3
+		ROT: 3
+		Speed: 4
 		Crushes: crate, infantry
 	RevealsShroud:
-		Range: 6
+		Range: 7
 	RenderUnit:
 	AttackFrontal:
 		PrimaryWeapon: 120mm
-		PrimaryLocalOffset: -4,-5,0,0,0, 4,-5,0,0,0
-		PrimaryRecoil: 4
-		PrimaryRecoilRecovery: 0.7
+		PrimaryLocalOffset: 5,-16,0,-2,0, -4,-16,0,-2,0
 	AutoTarget:
+		InitialStance: Defend
 	Explodes:
-		Weapon: UnitExplodeSmall
-		EmptyWeapon: UnitExplodeSmall
-	LeavesHusk:
+		Weapon: UnitExplodeScale
+		EmptyWeapon: UnitExplodeScale
 	Selectable:
 		Bounds: 44,38,0,0
+	LeavesHusk:
+		HuskActor: Devast.Husk
+
+DEVAST.Husk:
+	Inherits: ^Husk
+	Health:
+		HP: 125
+	Tooltip:
+		Icon: devasticon
+	RenderUnit:
+		Image: DEVAST
 
 SARDAUKAR:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
-		BuildPaletteOrder: 110
+		BuildPaletteOrder: 80
 		Prerequisites: palaceh
 		Owner: harkonnen
+		Hotkey: d
 	Valued:
-		Cost: 800
+		Cost: 400
 	Tooltip:
 		Name: Sardaukar
-		Description: Heavy infantry.
+		Description: Elite asssault infantry\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery
 	Selectable:
 		Bounds: 12,17,0,0
+		Voice: GenericVoice
 	Health:
-		HP: 150
+		HP: 80
 	Mobile:
-		Speed: 5
+		Speed: 4
 	RevealsShroud:
 		Range: 6
 	TakeCover:
@@ -318,5 +262,4 @@ SARDAUKAR:
 	RenderInfantryProne:
 	AttackFrontal:
 		PrimaryWeapon: Vulcan
-		SecondaryWeapon: Dragon
-		PrimaryOffset: 0,0,0,-13
+		SecondaryWeapon: Slung
