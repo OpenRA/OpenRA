@@ -66,9 +66,6 @@ Actors:
 	Actor2: v07
 		Location: 58,83
 		Owner: Neutral
-	Actor3: truk
-		Location: 100,25
-		Owner: Soviets
 	Actor1: v05
 		Location: 54,89
 		Owner: Neutral
@@ -180,72 +177,6 @@ Actors:
 	Actor115: t07
 		Location: 96,63
 		Owner: Neutral
-	Actor15: weap
-		Location: 99,23
-		Owner: Soviets
-	Actor18: barr
-		Location: 102,34
-		Owner: Soviets
-	Actor20: silo
-		Location: 102,17
-		Owner: Soviets
-	Actor17: apwr
-		Location: 108,19
-		Owner: Soviets
-	Actor16: apwr
-		Location: 108,16
-		Owner: Soviets
-	Actor19: proc
-		Location: 107,30
-		Owner: Soviets
-	Actor63: ftur
-		Location: 109,38
-		Owner: Soviets
-	Actor62: ftur
-		Location: 99,38
-		Owner: Soviets
-	Actor61: kenn
-		Location: 107,26
-		Owner: Soviets
-	Actor60: fix
-		Location: 96,29
-		Owner: Soviets
-	Actor59: silo
-		Location: 101,17
-		Owner: Soviets
-	Actor58: silo
-		Location: 101,18
-		Owner: Soviets
-	Actor38: silo
-		Location: 102,18
-		Owner: Soviets
-	Actor64: spef
-		Location: 91,22
-		Owner: Soviets
-	Actor65: truk
-		Location: 100,26
-		Owner: Soviets
-	Actor74: 3tnk
-		Location: 102,31
-		Owner: Soviets
-	Actor76: fenc
-		Location: 98,38
-		Owner: Soviets
-	Actor83: fenc
-		Location: 97,38
-		Owner: Soviets
-	Actor85: fenc
-		Location: 96,38
-		Owner: Soviets
-	Actor86: fenc
-		Location: 95,38
-		Owner: Soviets
-	Actor87: fenc
-		Location: 110,38
-		Owner: Soviets
-	Actor88: fenc
-		Location: 111,38
-		Owner: Soviets
 
 Smudges:
 
