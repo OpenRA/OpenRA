@@ -20,10 +20,18 @@ namespace OpenRA.Editor
 	{
 		public string MapFolderPath;
 
+		public bool DirectoryIsEmpty(string path)
+		{
+			return !Directory.GetFileSystemEntries(path).Any();
+		}
+
 		public MapSelect(string currentMod)
 		{
-			MapFolderPath = new string[] { Environment.CurrentDirectory, "mods", currentMod, "maps" }
+			MapFolderPath = new string[] { Platform.SupportDir, "maps", currentMod }
 				.Aggregate(Path.Combine);
+
+			if (!Directory.Exists(MapFolderPath))
+				Directory.CreateDirectory(MapFolderPath);
 
 			InitializeComponent();
 			MapIconsList.Images.Add(pictureBox1.Image);
@@ -33,6 +41,9 @@ namespace OpenRA.Editor
 		{
 			MapList.Items.Clear();
 			txtPathOut.Text = MapFolderPath;
+
+			if (DirectoryIsEmpty(MapFolderPath))
+				return;
 
 			foreach (var map in ModData.FindMapsIn(MapFolderPath))
 			{
