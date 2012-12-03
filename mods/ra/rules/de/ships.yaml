@@ -1,0 +1,29 @@
+SS:
+	Tooltip:
+		Name: U-Boot
+		Description: Mit Torpedos bewaffnetes Jagd-U-Boot.\n  Stark gegen Schiffe\n  Schwach gegen alles andere\n  Spezialfähigkeit: Abtauchen
+
+MSUB:
+	Tooltip:
+		Name: Raketen-U-Boot
+		Description: Unterseeboot gegen Bodenziele, bewaffnet mit \nballistischen Langstreckenraketen.\n  Stark gegen Gebäude\n  Schwach gegen alles andere\n  Spezialfähigkeit: Abtauchen
+
+DD:
+	Tooltip:
+		Name: Zerstörer
+		Description: Schnelles Mehrzweckschiff. \n  Stark gegen U-Boote, Fluggerät\n  Schwach gegen Infantrie, Panzer
+
+CA:
+	Tooltip:
+		Name: Kreuzer
+		Description: Sehr langsames Artillerieschiff. \n  Stark gegen Gebäude\n  Schwach gegen Schiffe, U-Boote
+
+LST:
+	Tooltip:
+		Name: Transporter
+		Description: Universalmarinetransporter.\nKann Infantrie und Panzer transportieren.\n  Unbewaffnet
+
+PT:
+	Tooltip:
+		Name: Kanonenboot
+		Description: Leichtes Aufklärungs- und Begleitschiff. \n  Stark gegen Schiffe, U-Boote\n  Schwach gegen Flugzeuge

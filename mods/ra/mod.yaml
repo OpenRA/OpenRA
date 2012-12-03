@@ -11,7 +11,7 @@ Folders:
 	./mods/ra/bits/desert
 	./mods/ra/uibits
 	./mods/ra/packages/
-#	./mods/ra/packages/de
+	./mods/ra/packages/de
 	~^/Content/ra
 
 Packages:
@@ -44,6 +44,7 @@ Rules:
 	mods/ra/rules/trees.yaml
 	mods/ra/rules/aircraft.yaml
 	mods/ra/rules/ships.yaml
+	mods/ra/rules/de/ships.yaml
 
 Sequences:
 	mods/ra/sequences.yaml
@@ -58,19 +59,19 @@ Assemblies:
 	mods/ra/OpenRA.Mods.RA.dll
 
 ChromeLayout:
-	mods/ra/chrome/gameinit.yaml
-	mods/ra/chrome/ingame.yaml
-	mods/ra/chrome/mainmenu.yaml
-	mods/ra/chrome/settings.yaml
-	mods/ra/chrome/lobby.yaml
-	mods/ra/chrome/map-chooser.yaml
-	mods/ra/chrome/create-server.yaml
-	mods/ra/chrome/serverbrowser.yaml
-	mods/ra/chrome/replaybrowser.yaml
-	mods/ra/chrome/dropdowns.yaml
-	mods/ra/chrome/modchooser.yaml
-	mods/ra/chrome/cheats.yaml
-	mods/ra/chrome/objectives.yaml
+	mods/ra/chrome/en/gameinit.yaml
+	mods/ra/chrome/en/ingame.yaml
+	mods/ra/chrome/de/mainmenu.yaml
+	mods/ra/chrome/en/settings.yaml
+	mods/ra/chrome/en/lobby.yaml
+	mods/ra/chrome/en/map-chooser.yaml
+	mods/ra/chrome/en/create-server.yaml
+	mods/ra/chrome/en/serverbrowser.yaml
+	mods/ra/chrome/en/replaybrowser.yaml
+	mods/ra/chrome/en/dropdowns.yaml
+	mods/ra/chrome/en/modchooser.yaml
+	mods/ra/chrome/en/cheats.yaml
+	mods/ra/chrome/en/objectives.yaml
 
 Weapons:
 	mods/ra/weapons.yaml

@@ -9,9 +9,6 @@ SS:
 		Hotkey: b
 	Valued:
 		Cost: 950
-	Tooltip:
-		Name: Submarine
-		Description: Submerged anti-ship unit armed with \ntorpedoes.\n  Strong vs Ships\n  Weak vs Everything\n  Special Ability: Submerge
 	Health:
 		HP: 250
 	Armor:
@@ -56,9 +53,6 @@ MSUB:
 		Hotkey: m
 	Valued:
 		Cost: 2400
-	Tooltip:
-		Name: Missile Submarine
-		Description: Submerged anti-ground unit armed with \nlong-range ballistic missiles.\n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: Submerge
 	Health:
 		HP: 400
 	Armor:
@@ -102,9 +96,6 @@ DD:
 		Hotkey: r
 	Valued:
 		Cost: 1000
-	Tooltip:
-		Name: Destroyer
-		Description: Fast multi-role ship. \n  Strong vs Submarines, Aircraft\n  Weak vs Infantry, Tanks
 	Health:
 		HP: 400
 	Armor:
@@ -143,9 +134,6 @@ CA:
 		Hotkey: c
 	Valued:
 		Cost: 2400
-	Tooltip:
-		Name: Cruiser
-		Description: Very slow long-range ship. \n  Strong vs Buildings\n  Weak vs Ships, Submarines
 	Health:
 		HP: 800
 	Armor:
@@ -185,9 +173,6 @@ LST:
 		Hotkey: t
 	Valued:
 		Cost: 700
-	Tooltip:
-		Name: Transport
-		Description: General-purpose naval transport.\nCan carry infantry and tanks.\n  Unarmed
 	Health:
 		HP: 350
 	Armor:
@@ -218,9 +203,6 @@ PT:
 		Hotkey: g
 	Valued:
 		Cost: 500
-	Tooltip:
-		Name: Gunboat
-		Description: Light scout & support ship. \n  Strong vs Ships, Submarines\n  Weak vs Aircraft
 	Health:
 		HP: 200
 	Armor:
