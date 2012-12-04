@@ -372,9 +372,9 @@ frame:Connect(ID_BREAK, wx.wxEVT_COMMAND_MENU_SELECTED,
 frame:Connect(ID_BREAK, wx.wxEVT_UPDATE_UI,
   function (event)
     local editor = GetEditor()
-    event:Enable((debugger.server ~= nil) and (debugger.running)
-      and (editor ~= nil)
-      and (not debugger.scratchpad or not debugger.scratchpad.paused))
+    event:Enable((debugger.server ~= nil) and (editor ~= nil)
+      and (debugger.running
+           or (debugger.scratchpad and not debugger.scratchpad.paused)))
   end)
 
 frame:Connect(wx.wxEVT_IDLE,

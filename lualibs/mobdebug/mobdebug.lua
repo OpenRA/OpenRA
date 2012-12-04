@@ -1,12 +1,12 @@
 --
--- MobDebug 0.508
+-- MobDebug 0.5084
 -- Copyright 2011-12 Paul Kulchenko
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
 --
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.508,
+  _VERSION = 0.5084,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = os and os.getenv and os.getenv("MOBDEBUG_PORT") or 8172,
@@ -409,9 +409,9 @@ local function restore_vars(vars)
   end
 end
 
-local function capture_vars()
+local function capture_vars(level)
   local vars = {}
-  local func = debug.getinfo(3, "f").func
+  local func = debug.getinfo(level or 3, "f").func
   local i = 1
   while true do
     local name, value = debug.getupvalue(func, i)
@@ -421,7 +421,7 @@ local function capture_vars()
   end
   i = 1
   while true do
-    local name, value = debug.getlocal(3, i)
+    local name, value = debug.getlocal(level or 3, i)
     if not name then break end
     if string.sub(name, 1, 1) ~= '(' then vars[name] = value end
     i = i + 1
@@ -629,6 +629,8 @@ local function debugger_loop(sfile, sline)
           end
         elseif mobdebug.yield then mobdebug.yield()
         end
+      elseif not line and err == "closed" then
+        error("Debugger connection unexpectedly closed")
       else
         break
       end
@@ -936,8 +938,8 @@ local function controller(controller_host, controller_port)
           report(debug.traceback(coro_debugee), tostring(err))
           if exitonerror then break end
           -- resume once more to clear the response the debugger wants to send
-          local status, err = coroutine.resume(coro_debugger, events.RESTART)
-          if status and err == "exit" then break end
+          local status, err = coroutine.resume(coro_debugger, events.RESTART, capture_vars(2))
+          if not status or status and err == "exit" then break end
         end
       end
     end
