@@ -53,17 +53,17 @@ Assemblies:
 
 ChromeLayout:
 	mods/d2k/chrome/gameinit.yaml
-	mods/ra/chrome/ingame.yaml
+	mods/ra/chrome/en/ingame.yaml
 	mods/d2k/chrome/mainmenu.yaml
-	mods/ra/chrome/settings.yaml
+	mods/ra/chrome/en/settings.yaml
 	mods/d2k/chrome/lobby.yaml
-	mods/ra/chrome/map-chooser.yaml
-	mods/ra/chrome/create-server.yaml
-	mods/ra/chrome/serverbrowser.yaml
-	mods/ra/chrome/replaybrowser.yaml
-	mods/ra/chrome/dropdowns.yaml
-	mods/ra/chrome/modchooser.yaml
-	mods/ra/chrome/cheats.yaml
+	mods/ra/chrome/en/map-chooser.yaml
+	mods/ra/chrome/en/create-server.yaml
+	mods/ra/chrome/en/serverbrowser.yaml
+	mods/ra/chrome/en/replaybrowser.yaml
+	mods/ra/chrome/en/dropdowns.yaml
+	mods/ra/chrome/en/modchooser.yaml
+	mods/ra/chrome/en/cheats.yaml
 
 Weapons:
 	mods/d2k/weapons.yaml
