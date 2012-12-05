@@ -1,4 +1,4 @@
-#region Copyright & License Information
+﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -174,10 +174,10 @@ namespace OpenRA.Editor
 			// Add waypoint actors
 			foreach( var kv in wps )
 			{
-				var a = new ActorReference("mpspawn");
+				var a = new ActorReference("waypoint");
 				a.Add(new LocationInit((CPos)kv.Second));
 				a.Add(new OwnerInit("Neutral"));
-				Map.Actors.Value.Add("spawn" + kv.First, a);
+				Map.Actors.Value.Add("waypoint" + kv.First, a);
 			}
 
 		}
