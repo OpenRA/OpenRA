@@ -162,7 +162,7 @@ namespace OpenRA.Editor
 			LoadSmudges(file, "SMUDGE");
 
 			foreach (var p in Players)
-				LoadPlayer(file, p, (legacyMapFormat == IniMapFormat.RedAlert));
+				LoadPlayer(file, p);
 
 			var wps = file.GetSection("Waypoints")
 					.Where(kv => int.Parse(kv.Value) > 0)
@@ -412,10 +412,61 @@ namespace OpenRA.Editor
 			}
 		}
 
-		void LoadPlayer(IniFile file, string section, bool isRA)
+		void LoadPlayer(IniFile file, string section)
 		{
-			var c = section == "BadGuy" ? "red" :
-						isRA ? "blue" : "gold";
+			string c;
+			string race;
+			switch (section)
+			{
+				case "Spain":
+					c = "gold";
+					race = "allies";
+					break;
+				case "Greece":
+					c = "blue";
+					race = "allies";
+					break;
+				case "USSR":
+					c = "red";
+					race = "soviet";
+					break;
+				case "England":
+					c = "green";
+					race = "allies";
+					break;
+				case "Ukraine":
+					c = "orange";
+					race = "soviet";
+					break;
+				case "Germany":
+					c = "salmon";
+					race = "allies";
+					break;
+				case "France":
+					c = "teal";
+					race = "allies";
+					break;
+				case "Turkey":
+					c = "salmon";
+					race = "allies";
+					break;
+				case "GoodGuy":
+					c = "gold";
+					race = "gdi";
+					break;
+				case "BadGuy":
+					c = "red";
+					race = "nod";
+					break;
+				case "Neutral":
+					c = "neutral";
+					race = "allies";
+					break;
+				default:
+					c = "neutral";
+					race = "allies";
+					break;
+			}
 
 			var color = namedColorMapping[c];
 
@@ -424,7 +475,7 @@ namespace OpenRA.Editor
 				Name = section,
 				OwnsWorld = section == "Neutral",
 				NonCombatant = section == "Neutral",
-				Race = isRA ? (section == "BadGuy" ? "soviet" : "allies") : (section == "BadGuy" ? "nod" : "gdi"),
+				Race = race,
 				ColorRamp = new ColorRamp(
 						(byte)((color.First.GetHue() / 360.0f) * 255),
 						(byte)(color.First.GetSaturation() * 255),

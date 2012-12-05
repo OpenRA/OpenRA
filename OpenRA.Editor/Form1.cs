@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -397,6 +397,7 @@ namespace OpenRA.Editor
 					map.ResizeCordon((int)nmd.cordonLeft.Value, (int)nmd.cordonTop.Value,
 						(int)nmd.cordonRight.Value, (int)nmd.cordonBottom.Value);
 
+					map.Players.Clear();
 					map.MakeDefaultPlayers();
 
 					NewMap(map);
@@ -526,6 +527,7 @@ namespace OpenRA.Editor
 		void SetupDefaultPlayers(object sender, EventArgs e)
 		{
 			dirty = true;
+			surface1.Map.Players.Clear();
 			surface1.Map.MakeDefaultPlayers();
 
 			surface1.Chunks.Clear();

@@ -385,18 +385,17 @@ namespace OpenRA
 
 		public void MakeDefaultPlayers()
 		{
-			Players.Clear();
-
 			var firstRace = OpenRA.Rules.Info["world"].Traits
 				.WithInterface<CountryInfo>().First(c => c.Selectable).Race;
 
-			Players.Add("Neutral", new PlayerReference
-			{
-				Name = "Neutral",
-				Race = firstRace,
-				OwnsWorld = true,
-				NonCombatant = true
-			});
+			if (!Players.ContainsKey("Neutral"))
+				Players.Add("Neutral", new PlayerReference
+				{
+					Name = "Neutral",
+					Race = firstRace,
+					OwnsWorld = true,
+					NonCombatant = true
+				});
 
 			var numSpawns = GetSpawnPoints().Length;
 			for (var index = 0; index < numSpawns; index++)
