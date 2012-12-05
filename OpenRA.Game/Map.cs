@@ -400,6 +400,9 @@ namespace OpenRA
 			var numSpawns = GetSpawnPoints().Length;
 			for (var index = 0; index < numSpawns; index++)
 			{
+				if (Players.ContainsKey("Multi{0}".F(index)))
+					continue;
+
 				var p = new PlayerReference
 				{
 					Name = "Multi{0}".F(index),
