@@ -23,13 +23,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	public class ObserverStatsLogic
 	{
 		ContainerWidget basicStatsHeaders;
-		ContainerWidget economicStatsHeaders;
+		ContainerWidget economyStatsHeaders;
 		ContainerWidget productionStatsHeaders;
 		ContainerWidget combatStatsHeaders;
 		ContainerWidget earnedThisMinuteGraphHeaders;
 		ScrollPanelWidget playerStatsPanel;
 		ScrollItemWidget basicPlayerTemplate;
-		ScrollItemWidget economicPlayerTemplate;
+		ScrollItemWidget economyPlayerTemplate;
 		ScrollItemWidget productionPlayerTemplate;
 		ScrollItemWidget combatPlayerTemplate;
 		ContainerWidget earnedThisMinuteGraphTemplate;
@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			players = world.Players.Where(p => !p.NonCombatant);
 
 			basicStatsHeaders = widget.Get<ContainerWidget>("BASIC_STATS_HEADERS");
-			economicStatsHeaders = widget.Get<ContainerWidget>("ECONOMIC_STATS_HEADERS");
+			economyStatsHeaders = widget.Get<ContainerWidget>("ECONOMY_STATS_HEADERS");
 			productionStatsHeaders = widget.Get<ContainerWidget>("PRODUCTION_STATS_HEADERS");
 			combatStatsHeaders = widget.Get<ContainerWidget>("COMBAT_STATS_HEADERS");
 			earnedThisMinuteGraphHeaders = widget.Get<ContainerWidget>("EARNED_THIS_MIN_GRAPH_HEADERS");
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			playerStatsPanel.Layout = new GridLayout(playerStatsPanel);
 
 			basicPlayerTemplate = playerStatsPanel.Get<ScrollItemWidget>("BASIC_PLAYER_TEMPLATE");
-			economicPlayerTemplate = playerStatsPanel.Get<ScrollItemWidget>("ECONOMIC_PLAYER_TEMPLATE");
+			economyPlayerTemplate = playerStatsPanel.Get<ScrollItemWidget>("ECONOMY_PLAYER_TEMPLATE");
 			productionPlayerTemplate = playerStatsPanel.Get<ScrollItemWidget>("PRODUCTION_PLAYER_TEMPLATE");
 			combatPlayerTemplate = playerStatsPanel.Get<ScrollItemWidget>("COMBAT_PLAYER_TEMPLATE");
 			earnedThisMinuteGraphTemplate = playerStatsPanel.Get<ContainerWidget>("EARNED_THIS_MIN_GRAPH_TEMPLATE");
@@ -80,13 +80,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					},
 					new StatsDropDownOption 
 					{
-						Title = "Economic",
-						IsSelected = () => economicStatsHeaders.Visible,
+						Title = "Economy",
+						IsSelected = () => economyStatsHeaders.Visible,
 						OnClick = () => 
 						{
 							ClearStats();
-							statsDropDown.GetText = () => "Economic";
-							DisplayStats(EconomicStats);
+							statsDropDown.GetText = () => "Economy";
+							DisplayStats(EconomyStats);
 						}
 					},
 					new StatsDropDownOption 
@@ -140,7 +140,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			playerStatsPanel.Children.Clear();
 			basicStatsHeaders.Visible = false;
-			economicStatsHeaders.Visible = false;
+			economyStatsHeaders.Visible = false;
 			productionStatsHeaders.Visible = false;
 			combatStatsHeaders.Visible = false;
 			earnedThisMinuteGraphHeaders.Visible = false;
@@ -212,10 +212,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			return template;
 		}
 
-		ScrollItemWidget EconomicStats(Player player)
+		ScrollItemWidget EconomyStats(Player player)
 		{
-			economicStatsHeaders.Visible = true;
-			var template = SetupPlayerScrollItemWidget(economicPlayerTemplate, player);
+			economyStatsHeaders.Visible = true;
+			var template = SetupPlayerScrollItemWidget(economyPlayerTemplate, player);
 
 			AddPlayerFlagAndName(template, player);
 

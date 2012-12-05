@@ -476,7 +476,7 @@ Container@OBSERVER_ROOT:
 									Font:Bold
 									Text:Actions/min
 									Align:Right
-						Container@ECONOMIC_STATS_HEADERS:
+						Container@ECONOMY_STATS_HEADERS:
 							X:0
 							Y:0
 							Width:PARENT_RIGHT
@@ -717,7 +717,7 @@ Container@OBSERVER_ROOT:
 											Width:40
 											Height:PARENT_BOTTOM
 											Align:Right
-								ScrollItem@ECONOMIC_PLAYER_TEMPLATE:
+								ScrollItem@ECONOMY_PLAYER_TEMPLATE:
 									X:0
 									Y:0
 									Width:PARENT_RIGHT-35
