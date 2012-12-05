@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -162,7 +162,7 @@ namespace OpenRA.Editor
 			LoadSmudges(file, "SMUDGE");
 
 			foreach (var p in Players)
-				LoadPlayer(file, p);
+				LoadPlayer(file, p, (legacyMapFormat == IniMapFormat.RedAlert));
 
 			var wps = file.GetSection("Waypoints")
 					.Where(kv => int.Parse(kv.Value) > 0)
@@ -412,7 +412,7 @@ namespace OpenRA.Editor
 			}
 		}
 
-		void LoadPlayer(IniFile file, string section)
+		void LoadPlayer(IniFile file, string section, bool isRA)
 		{
 			string c;
 			string race;
@@ -451,12 +451,12 @@ namespace OpenRA.Editor
 					race = "allies";
 					break;
 				case "GoodGuy":
-					c = "gold";
-					race = "gdi";
+					c = isRA? "blue" : "gold";
+					race = isRA ? "allies" : "gdi";
 					break;
 				case "BadGuy":
 					c = "red";
-					race = "nod";
+					race = isRA ? "soviet" : "nod";
 					break;
 				case "Neutral":
 					c = "neutral";
