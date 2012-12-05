@@ -76,14 +76,22 @@ namespace OpenRA.Mods.RA.Missions
 
 		Actor[] sovietAirfields;
 
+		Rectangle paradropBox;
+
 		static readonly string[] SovietVehicles1 = { "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "v2rl", "v2rl", "ftrk", "ftrk", "apc", "apc", "apc" };
 		static readonly string[] SovietVehicles2 = { "4tnk", "4tnk", "4tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "v2rl", "v2rl", "ftrk", "apc" };
-		const int SovietVehicles2Ticks = 1500 * 20;
+		const int SovietVehicles2Ticks = 1500 * 15;
 		const int SovietGroupSize = 3;
 
 		const int ReinforcementsTicks = 1500 * 4;
 		static readonly string[] Reinforcements = { "mgg", "mgg", "2tnk", "2tnk", "2tnk", "2tnk", "1tnk", "1tnk", "jeep", "jeep", "e1", "e1", "e1", "e1", "e3", "e3" };
 		int currentReinforcement;
+
+		const int ParadropTicks = 1500 * 25;
+		const int ParadropIncrement = 200;
+		static readonly string[] ParadropTerrainTypes = { "Clear", "Road", "Rough", "Beach", "Ore" };
+		static readonly string[] SovietParadroppers = { "e1", "e1", "e3", "e3", "e4" };
+		int paradrops = 25;
 
 		int attackAtFrame;
 		int attackAtFrameIncrement;
@@ -153,6 +161,25 @@ namespace OpenRA.Mods.RA.Missions
 				{
 					SpawnAlliedUnit(Reinforcements[currentReinforcement++]);
 				}
+			}
+			if (world.FrameNumber == ParadropTicks)
+			{
+				Sound.Play("sovfapp1.aud");
+			}
+			if (world.FrameNumber >= ParadropTicks && paradrops > 0 && world.FrameNumber % ParadropIncrement == 0)
+			{
+				CPos lz;
+				CPos entry;
+				do
+				{
+					var x = world.SharedRandom.Next(paradropBox.X, paradropBox.X + paradropBox.Width);
+					var y = world.SharedRandom.Next(paradropBox.Y, paradropBox.Y + paradropBox.Height);
+					entry = new CPos(0, y);
+					lz = new CPos(x, y);
+				}
+				while (!ParadropTerrainTypes.Contains(world.GetTerrainType(lz)));
+				MissionUtils.Paradrop(world, soviets, SovietParadroppers, entry, lz);
+				paradrops--;
 			}
 			if (world.FrameNumber % 25 == 0)
 			{
@@ -417,6 +444,9 @@ namespace OpenRA.Mods.RA.Missions
 			sovietRallyPoint6 = actors["SovietRallyPoint6"];
 			sovietRallyPoints = new[] { sovietRallyPoint1, sovietRallyPoint2, sovietRallyPoint3, sovietRallyPoint4, sovietRallyPoint5, sovietRallyPoint6 }.Select(p => p.Location).ToArray();
 			sovietAirfields = actors.Values.Where(a => a.Owner == soviets && a.HasTrait<Production>() && a.Info.Traits.Get<ProductionInfo>().Produces.Contains("Plane")).ToArray();
+			var topLeft = actors["ParadropBoxTopLeft"];
+			var bottomRight = actors["ParadropBoxBottomRight"];
+			paradropBox = new Rectangle(topLeft.Location.X, topLeft.Location.Y, bottomRight.Location.X - topLeft.Location.X, bottomRight.Location.Y - topLeft.Location.Y);
 			if (w.LocalPlayer == null || w.LocalPlayer == allies1)
 			{
 				Game.MoveViewport(allies1EntryPoint.Location.ToFloat2());

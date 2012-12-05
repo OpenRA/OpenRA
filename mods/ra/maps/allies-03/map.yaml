@@ -1413,6 +1413,12 @@ Actors:
 	Actor172: barl
 		Location: 90,55
 		Owner: Soviets
+	ParadropBoxBottomRight: waypoint
+		Location: 170,72
+		Owner: Neutral
+	ParadropBoxTopLeft: waypoint
+		Location: 78,27
+		Owner: Neutral
 
 Smudges:
 
