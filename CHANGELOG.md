@@ -1,6 +1,6 @@
 # ZeroBrane Studio Changelog
 
-## Current master that will become v0.34 (Nov 29 2012)
+## Current master that will become v0.34 (Dec 06 2012)
 
 ### Highlights
   - Added **internationalization** support (with Russian, Italian, Spanish, and French translations).
@@ -8,6 +8,8 @@
   - Added **Corona SDK integration** with debugging and auto-complete.
   - Added **Moai scratchpad support**.
   - Added **color scheme support** with several schemes included.
+  - Added **GSL-shell support**.
+  - Added ability to pause and resume scratchpad.
 
 ### Special thanks
   - To Srdjan Markovic for Corona auto-complete support and Zenburn color scheme.
@@ -15,8 +17,13 @@
   - To Leo Bartoloni for Italian translation.
   - To Inigo Sola for Spanish translation.
   - To toiffel for Russian translation and several patches.
+  - To Fringale for spec and API files cleanup and update for Lua 5.2.
+  - To Marcel van Herk for assistance with scratchpad break/resume functionality.
 
 ### Improvements
+  - Added ability to pause scratchpad when the script is completed (closes #83).
+  - Added ability to pause and resume scratchpad.
+  - Added GSL-shell support (closes #72).
   - Added more color schemes (Solarized and Monokai).
   - Added customized yield function for debugging (MobDebug v0.508; closes #81).
   - Added proper hiding of current line marker during debugging (except when tracing).
@@ -52,14 +59,17 @@
   - Disabled editor autoactivation during debugging when tracing is on.
   - Disabled functions that are not available under Corona on OSX (helps #73).
   - Extended list of default folders for interpreters where executables are searched for.
-  - Finished Russian translation
+  - Finished Russian translation.
   - Limited auto-showing windows to Lua interpreter only (related to #80).
+  - Updated spec and API files for Lua 5.2 (thanks to Fringale).
   - Updated MobDebug to v0.507 to fix serialization issues (closes #77).
   - Updated style processing to support styling of markup and allow dynamic switching of color schemes.
   - Updated Lua keyword definitions to improve grouping for styling (closes #79).
   - Updated love2d api to an updated version as of 11/1/2012 (fixes #78).
 
 ### Fixes
+  - Fixed a font zooming bug with Ctrl+MouseWheel.
+  - Fixed file marking in the project tree after opening a new file.
   - Fixed an issue with breakpoints not available after aborting tracing on Linux/OSX.
   - Fixed an issue with running scratchpad when entry points are configured.
   - Fixed Linux launcher to pass filename parameter to the IDE.
