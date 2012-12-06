@@ -1,6 +1,7 @@
-
 return {
-  
+  -- covers both Lua 5.1 and Lua 5.2; All Lua 5.2 specific items are marked
+  -- with FUNCTION/ARGUMENT/ARGS/VALUE ADDED/DEPRECATED IN Lua 5.2.
+
   -- Keywords
   ["and"] = {type = "keyword"},
   ["break"] = {type = "keyword"},
@@ -30,7 +31,7 @@ return {
   -- Basic library
   _ENV = {
     type = "value",
-    description = "VALUE ADDED IN LUA 5.2.",
+    description = "VALUE ADDED IN Lua 5.2.",
   },
   _G = {
     type = "value",
@@ -48,7 +49,7 @@ return {
   },
   collectgarbage = {
     type = "function",
-    description = "This function is a generic interface to the garbage collector.\n\nIt performs different functions according to its first argument, opt:\n\n* \"collect\": performs a full garbage-collection cycle. This is the default option.\n\n* \"stop\": stops automatic execution of the garbage collector. The collector will run only when explicitly invoked, until a call to restart it.\n\n* \"restart\": restarts automatic execution of the garbage collector.\n\n* \"count\": returns the total memory in use by Lua (in Kbytes) and a second value with the total memory in bytes modulo 1024 (SECOND RETURN ADDED IN LUA 5.2). The first value has a fractional part, so the following equality is always true:\n\nk, b = collectgarbage(\"count\")\n\nassert(k*1024 == math.floor(k)*1024 + b)\n\n(The second result is useful when Lua is compiled with a non floating-point type for numbers.)\n\n* \"step\": performs a garbage-collection step. The step \"size\" is controlled by arg (larger values mean more steps) in a non-specified way. If you want to control the step size you must experimentally tune the value of arg. Returns true if the step finished a collection cycle.\n\n* \"setpause\": sets arg as the new value for the pause of the collector. Returns the previous value for pause.\n\n* \"setstepmul\": sets arg as the new value for the step multiplier of the collector. Returns the previous value for step.\n\n* \"isrunning\": returns a boolean that tells whether the collector is running (i.e., not stopped). VALUE ADDED IN LUA 5.2.\n\n* \"generational\": changes the collector to generational mode. This is an experimental feature. VALUE ADDED IN LUA 5.2.\n\n* \"incremental\": changes the collector to incremental mode. This is the default mode. VALUE ADDED IN LUA 5.2.",
+    description = "This function is a generic interface to the garbage collector.\n\nIt performs different functions according to its first argument, opt:\n\n* \"collect\": performs a full garbage-collection cycle. This is the default option.\n\n* \"stop\": stops automatic execution of the garbage collector. The collector will run only when explicitly invoked, until a call to restart it.\n\n* \"restart\": restarts automatic execution of the garbage collector.\n\n* \"count\": returns the total memory in use by Lua (in Kbytes) and a second value with the total memory in bytes modulo 1024 (SECOND RETURN ADDED IN Lua 5.2). The first value has a fractional part, so the following equality is always true:\n\nk, b = collectgarbage(\"count\")\n\nassert(k*1024 == math.floor(k)*1024 + b)\n\n(The second result is useful when Lua is compiled with a non floating-point type for numbers.)\n\n* \"step\": performs a garbage-collection step. The step \"size\" is controlled by arg (larger values mean more steps) in a non-specified way. If you want to control the step size you must experimentally tune the value of arg. Returns true if the step finished a collection cycle.\n\n* \"setpause\": sets arg as the new value for the pause of the collector. Returns the previous value for pause.\n\n* \"setstepmul\": sets arg as the new value for the step multiplier of the collector. Returns the previous value for step.\n\n* \"isrunning\": returns a boolean that tells whether the collector is running (i.e., not stopped). VALUE ADDED IN Lua 5.2.\n\n* \"generational\": changes the collector to generational mode. This is an experimental feature. VALUE ADDED IN Lua 5.2.\n\n* \"incremental\": changes the collector to incremental mode. This is the default mode. VALUE ADDED IN Lua 5.2.",
     args = "([opt: string [, arg: number]])",
     returns = "(...)",
   },
@@ -66,7 +67,7 @@ return {
   },
   getfenv = {
     type = "function",
-    description = "Returns the current environment in use by the function.\n\nf can be a Lua function or a number that specifies the function at that stack level: Level 1 is the function calling getfenv. If the given function is not a Lua function, or if f is 0, getfenv returns the global environment. The default for f is 1.\n\nFUNCTION DEPRECATED IN LUA 5.2.",
+    description = "Returns the current environment in use by the function.\n\nf can be a Lua function or a number that specifies the function at that stack level: Level 1 is the function calling getfenv. If the given function is not a Lua function, or if f is 0, getfenv returns the global environment. The default for f is 1.\n\nFUNCTION DEPRECATED IN Lua 5.2.",
     args = "([f: function|number])",
     returns = "(table)",
   },
@@ -78,25 +79,25 @@ return {
   },
   ipairs = {
     type = "function",
-    description = "If t has a metamethod __ipairs, calls it with t as argument and returns the first three results from the call. METAMETHOD BEHAVIOR ADDED IN LUA 5.2.\n\nOtherwise, returns three values: an iterator function, the table t, and 0, so that the construction\n\nfor i,v in ipairs(t) do body end\n\nwill iterate over the pairs (1,t[1]), (2,t[2]), ..., up to the first integer key absent from the table.",
+    description = "If t has a metamethod __ipairs, calls it with t as argument and returns the first three results from the call. METAMETHOD BEHAVIOR ADDED IN Lua 5.2.\n\nOtherwise, returns three values: an iterator function, the table t, and 0, so that the construction\n\nfor i,v in ipairs(t) do body end\n\nwill iterate over the pairs (1,t[1]), (2,t[2]), ..., up to the first integer key absent from the table.",
     args = "(t: table)",
     returns = "(function, table, number)",
   },
   load = {
     type = "function",
-    description = "Loads a chunk.\n\nIf ld is a string, the chunk is this string. If ld is a function, load calls it repeatedly to get the chunk pieces. Each call to ld must return a string that concatenates with previous results. A return of an empty string, nil, or no value signals the end of the chunk.\n\nIf there are no syntactic errors, returns the compiled chunk as a function; otherwise, returns nil plus the error message.\n\nIf the resulting function has upvalues, the first upvalue is set to the value of the global environment or to env, if that parameter is given. When loading main chunks, the first upvalue will be the _ENV variable. ARGUMENT ADDED IN LUA 5.2.\n\nsource is used as the source of the chunk for error messages and debug information. When absent, it defaults to ld, if ld is a string, or to \"=(load)\" otherwise.\n\nThe string mode controls whether the chunk can be text or binary (that is, a precompiled chunk). It may be the string \"b\" (only binary chunks), \"t\" (only text chunks), or \"bt\" (both binary and text). The default is \"bt\". ARGUMENT ADDED IN LUA 5.2.",
+    description = "Loads a chunk.\n\nIf ld is a string, the chunk is this string. If ld is a function, load calls it repeatedly to get the chunk pieces. Each call to ld must return a string that concatenates with previous results. A return of an empty string, nil, or no value signals the end of the chunk.\n\nIf there are no syntactic errors, returns the compiled chunk as a function; otherwise, returns nil plus the error message.\n\nIf the resulting function has upvalues, the first upvalue is set to the value of the global environment or to env, if that parameter is given. When loading main chunks, the first upvalue will be the _ENV variable. ARGUMENT ADDED IN Lua 5.2.\n\nsource is used as the source of the chunk for error messages and debug information. When absent, it defaults to ld, if ld is a string, or to \"=(load)\" otherwise.\n\nThe string mode controls whether the chunk can be text or binary (that is, a precompiled chunk). It may be the string \"b\" (only binary chunks), \"t\" (only text chunks), or \"bt\" (both binary and text). The default is \"bt\". ARGUMENT ADDED IN Lua 5.2.",
     args = "(ld: string|function [, source: string [, mode: string [, env: table]]])",
     returns = "(function|nil [, string])",
   },
   loadfile = {
     type = "function",
-    description = "Loads a chunk from file filename or from the standard input, if no file name is given.\n\nIf there are no syntactic errors, returns the compiled chunk as a function; otherwise, returns nil plus the error message.\n\nIf the resulting function has upvalues, the first upvalue is set to the value of the global environment or to env, if that parameter is given. ARGUMENT ADDED IN LUA 5.2. When loading main chunks, the first upvalue will be the _ENV variable.\n\nThe string mode controls whether the chunk can be text or binary (that is, a precompiled chunk). It may be the string \"b\" (only binary chunks), \"t\" (only text chunks), or \"bt\" (both binary and text). The default is \"bt\". ARGUMENT ADDED IN LUA 5.2.",
+    description = "Loads a chunk from file filename or from the standard input, if no file name is given.\n\nIf there are no syntactic errors, returns the compiled chunk as a function; otherwise, returns nil plus the error message.\n\nIf the resulting function has upvalues, the first upvalue is set to the value of the global environment or to env, if that parameter is given. ARGUMENT ADDED IN Lua 5.2. When loading main chunks, the first upvalue will be the _ENV variable.\n\nThe string mode controls whether the chunk can be text or binary (that is, a precompiled chunk). It may be the string \"b\" (only binary chunks), \"t\" (only text chunks), or \"bt\" (both binary and text). The default is \"bt\". ARGUMENT ADDED IN Lua 5.2.",
     args = "([filename: string [, mode: string [, env: table]]])",
     returns = "(function|nil [, string])",
   },
   loadstring = {
     type = "function",
-    description = "Loads a chunk from the given string.\n\nIf there are no errors, returns the compiled chunk as a function; otherwise, returns nil plus the error message. The environment of the returned function is the global environment.\n\nTo load and run a given string, use the idiom\n\nassert(loadstring(s))()\n\nWhen absent, chunkname defaults to the given string.\n\nFUNCTION DEPRECATED IN LUA 5.2.",
+    description = "Loads a chunk from the given string.\n\nIf there are no errors, returns the compiled chunk as a function; otherwise, returns nil plus the error message. The environment of the returned function is the global environment.\n\nTo load and run a given string, use the idiom\n\nassert(loadstring(s))()\n\nWhen absent, chunkname defaults to the given string.\n\nFUNCTION DEPRECATED IN Lua 5.2.",
     args = "(string: string [, chunkname: string])",
     returns = "(function|nil [, string])",
   },
@@ -108,7 +109,7 @@ return {
   },
   pairs = {
     type = "function",
-    description = "If t has a metamethod __pairs, calls it with t as argument and returns the first three results from the call. METAMETHOD BEHAVIOR ADDED IN LUA 5.2.\n\nOtherwise, returns three values: the next function, the table t, and nil, so that the construction\n\nfor k,v in pairs(t) do body end\n\nwill iterate over all key–value pairs of table t.\n\nSee function next for the caveats of modifying the table during its traversal.",
+    description = "If t has a metamethod __pairs, calls it with t as argument and returns the first three results from the call. METAMETHOD BEHAVIOR ADDED IN Lua 5.2.\n\nOtherwise, returns three values: the next function, the table t, and nil, so that the construction\n\nfor k,v in pairs(t) do body end\n\nwill iterate over all key–value pairs of table t.\n\nSee function next for the caveats of modifying the table during its traversal.",
     args = "(t: table)",
     returns = "(function, table, nil)",
   },
@@ -138,7 +139,7 @@ return {
   },
   rawlen = {
     type = "function",
-    description = "Returns the length of the object v, which must be a table or a string, without invoking any metamethod.\n\nReturns an integer number.\n\nFUNCTION ADDED IN LUA 5.2.",
+    description = "Returns the length of the object v, which must be a table or a string, without invoking any metamethod.\n\nReturns an integer number.\n\nFUNCTION ADDED IN Lua 5.2.",
     args = "(v: table|string)",
     returns = "(number)",
   },
@@ -150,13 +151,13 @@ return {
   },
   select = {
     type = "function",
-    description = "If index is a number, returns all arguments after argument number index.\n\nA negative number indexes from the end (-1 is the last argument). NEGATIVE VALUE ADDED IN LUA 5.2.\n\nOtherwise, index must be the string \"#\", and select returns the total number of extra arguments it received.",
+    description = "If index is a number, returns all arguments after argument number index.\n\nA negative number indexes from the end (-1 is the last argument). NEGATIVE VALUE ADDED IN Lua 5.2.\n\nOtherwise, index must be the string \"#\", and select returns the total number of extra arguments it received.",
     args = "(index: number|string, ...)",
     returns = "(...)",
   },
   setfenv = {
     type = "function",
-    description = "Sets the environment to be used by the given function.\n\nf can be a Lua function or a number that specifies the function at that stack level: Level 1 is the function calling setfenv. setfenv returns the given function.\n\nAs a special case, when f is 0 setfenv changes the environment of the running thread. In this case, setfenv returns no values.\n\nFUNCTION DEPRECATED IN LUA 5.2.",
+    description = "Sets the environment to be used by the given function.\n\nf can be a Lua function or a number that specifies the function at that stack level: Level 1 is the function calling setfenv. setfenv returns the given function.\n\nAs a special case, when f is 0 setfenv changes the environment of the running thread. In this case, setfenv returns no values.\n\nFUNCTION DEPRECATED IN Lua 5.2.",
     args = "(f: function|number, table: table)",
     returns = "([function])",
   },
@@ -186,14 +187,14 @@ return {
   },
   unpack = {
     type = "function",
-    description = "Returns the elements from the given table.\n\nThis function is equivalent to\n\nreturn list[i], list[i+1], ···, list[j]\n\nexcept that the above code can be written only for a fixed number of elements. By default, i is 1 and j is the length of the list, as defined by the length operator.\n\nFUNCTION DEPRECATED IN LUA 5.2.",
+    description = "Returns the elements from the given table.\n\nThis function is equivalent to\n\nreturn list[i], list[i+1], ···, list[j]\n\nexcept that the above code can be written only for a fixed number of elements. By default, i is 1 and j is the length of the list, as defined by the length operator.\n\nFUNCTION DEPRECATED IN Lua 5.2.",
     args = "(list: table [, i: number [, j: number]])",
     returns = "(...)",
   },
   xpcall = {
     type = "function",
-    description = "Calls function f with the given arguments in protected mode, using msgh as a message handler.\n\nThis means that any error inside f is not propagated; instead, xpcall catches the error, calls the msgh function with the original error object, and returns a status code. Its first result is the status code (a boolean), which is true if the call succeeds without errors. In such case, xpcall also returns all results from the call, after this first result. In case of any error, xpcall returns false plus the result from msgh.\n\nADDITIONAL ARGS ADDED IN LUA 5.2.",
-    args = "(f: function, msgh: function [, arg1: any, ···])",
+    description = "Calls function f with the given arguments in protected mode, using msgh as a message handler.\n\nThis means that any error inside f is not propagated; instead, xpcall catches the error, calls the msgh function with the original error object, and returns a status code. Its first result is the status code (a boolean), which is true if the call succeeds without errors. In such case, xpcall also returns all results from the call, after this first result. In case of any error, xpcall returns false plus the result from msgh.\n\nADDITIONAL ARGS ADDED IN Lua 5.2.",
+    args = "(f: function, msgh: function [, arg1: any, ...])",
     returns = "(boolean, ...)",
   },
 
@@ -216,7 +217,7 @@ return {
       },
       running = {
         type = "function",
-        description = "Returns the running coroutine plus a boolean, true when the running coroutine is the main one.\n\nBOOLEAN RETURN ADDED IN LUA 5.2.",
+        description = "Returns the running coroutine plus a boolean, true when the running coroutine is the main one.\n\nBOOLEAN RETURN ADDED IN Lua 5.2.",
         args = "()",
         returns = "(thread, boolean)",
       },
@@ -244,7 +245,7 @@ return {
   -- Module/Package library
   module = {
     type = "function",
-    description = "Creates a module.\n\nIf there is a table in package.loaded[name], this table is the module. Otherwise, if there is a global table t with the given name, this table is the module. Otherwise creates a new table t and sets it as the value of the global name and the value of package.loaded[name]. This function also initializes t._NAME with the given name, t._M with the module (t itself), and t._PACKAGE with the package name (the full module name minus last component; see below). Finally, module sets t as the new environment of the current function and the new value of package.loaded[name], so that require returns t.\n\nIf name is a compound name (that is, one with components separated by dots), module creates (or reuses, if they already exist) tables for each component.\n\nThis function can receive optional options after the module name, where each option is a function to be applied over the module.\n\nFUNCTION DEPRECATED IN LUA 5.2.",
+    description = "Creates a module.\n\nIf there is a table in package.loaded[name], this table is the module. Otherwise, if there is a global table t with the given name, this table is the module. Otherwise creates a new table t and sets it as the value of the global name and the value of package.loaded[name]. This function also initializes t._NAME with the given name, t._M with the module (t itself), and t._PACKAGE with the package name (the full module name minus last component; see below). Finally, module sets t as the new environment of the current function and the new value of package.loaded[name], so that require returns t.\n\nIf name is a compound name (that is, one with components separated by dots), module creates (or reuses, if they already exist) tables for each component.\n\nThis function can receive optional options after the module name, where each option is a function to be applied over the module.\n\nFUNCTION DEPRECATED IN Lua 5.2.",
     args = "(name: string [, ...])",
     returns = "()",
   },
@@ -260,7 +261,7 @@ return {
     childs = {
       config = {
         type = "value",
-        description = "A string describing some compile-time configurations for packages.\n\nThis string is a sequence of lines:\n\n* The first line is the directory separator string. Default is '\\' for Windows and '/' for all other systems.\n\n* The second line is the character that separates templates in a path. Default is ';'.\n\n* The third line is the string that marks the substitution points in a template. Default is '?'.\n\n* The fourth line is a string that, in a path in Windows, is replaced by the executable's directory. Default is '!'.\n\n* The fifth line is a mark to ignore all text before it when building the luaopen_ function name. Default is '-'.\n\nVALUE ADDED IN LUA 5.2.",
+        description = "A string describing some compile-time configurations for packages.\n\nThis string is a sequence of lines:\n\n* The first line is the directory separator string. Default is '\\' for Windows and '/' for all other systems.\n\n* The second line is the character that separates templates in a path. Default is ';'.\n\n* The third line is the string that marks the substitution points in a template. Default is '?'.\n\n* The fourth line is a string that, in a path in Windows, is replaced by the executable's directory. Default is '!'.\n\n* The fifth line is a mark to ignore all text before it when building the luaopen_ function name. Default is '-'.\n\nVALUE ADDED IN Lua 5.2.",
       },
       cpath = {
         type = "value",
@@ -272,11 +273,11 @@ return {
       },
       loaders = {
         type = "value",
-        description = "A table used by require to control how to load modules.\n\nEach entry in this table is a searcher function. When looking for a module, require calls each of these searchers in ascending order, with the module name (the argument given to require) as its sole parameter. The function can return another function (the module loader) or a string explaining why it did not find that module (or nil if it has nothing to say). Lua initializes this table with four functions.\n\nThe first searcher simply looks for a loader in the package.preload table.\n\nThe second searcher looks for a loader as a Lua library, using the path stored at package.path. A path is a sequence of templates separated by semicolons. For each template, the searcher will change each interrogation mark in the template by filename, which is the module name with each dot replaced by a \"directory separator\" (such as \"/\" in Unix); then it will try to open the resulting file name.\n\nThe third searcher looks for a loader as a C library, using the path given by the variable package.cpath. Once it finds a C library, this searcher first uses a dynamic link facility to link the application with the library. Then it tries to find a C function inside the library to be used as the loader. The name of this C function is the string \"luaopen_\" concatenated with a copy of the module name where each dot is replaced by an underscore. Moreover, if the module name has a hyphen, its prefix up to (and including) the first hyphen is removed.\n\nThe fourth searcher tries an all-in-one loader. It searches the C path for a library for the root name of the given module. If found, it looks into it for an open function for the submodule. With this facility, a package can pack several C submodules into one single library, with each submodule keeping its original open function.\n\nVALUE DEPRECATED IN LUA 5.2.",
+        description = "A table used by require to control how to load modules.\n\nEach entry in this table is a searcher function. When looking for a module, require calls each of these searchers in ascending order, with the module name (the argument given to require) as its sole parameter. The function can return another function (the module loader) or a string explaining why it did not find that module (or nil if it has nothing to say). Lua initializes this table with four functions.\n\nThe first searcher simply looks for a loader in the package.preload table.\n\nThe second searcher looks for a loader as a Lua library, using the path stored at package.path. A path is a sequence of templates separated by semicolons. For each template, the searcher will change each interrogation mark in the template by filename, which is the module name with each dot replaced by a \"directory separator\" (such as \"/\" in Unix); then it will try to open the resulting file name.\n\nThe third searcher looks for a loader as a C library, using the path given by the variable package.cpath. Once it finds a C library, this searcher first uses a dynamic link facility to link the application with the library. Then it tries to find a C function inside the library to be used as the loader. The name of this C function is the string \"luaopen_\" concatenated with a copy of the module name where each dot is replaced by an underscore. Moreover, if the module name has a hyphen, its prefix up to (and including) the first hyphen is removed.\n\nThe fourth searcher tries an all-in-one loader. It searches the C path for a library for the root name of the given module. If found, it looks into it for an open function for the submodule. With this facility, a package can pack several C submodules into one single library, with each submodule keeping its original open function.\n\nVALUE DEPRECATED IN Lua 5.2.",
       },
       loadlib = {
         type = "function",
-        description = "Dynamically links the host program with the C library libname.\n\nIf funcname is \"*\", then it only links with the library, making the symbols exported by the library available to other dynamically linked libraries. VALUE ADDED IN LUA 5.2.\n\nOtherwise, it looks for a function funcname inside the library and returns this function as a C function. (So, funcname must follow the prototype lua_CFunction).\n\nThis is a low-level function. It completely bypasses the package and module system. Unlike require, it does not perform any path searching and does not automatically adds extensions. libname must be the complete file name of the C library, including if necessary a path and an extension. funcname must be the exact name exported by the C library (which may depend on the C compiler and linker used).\n\nThis function is not supported by Standard C. As such, it is only available on some platforms (Windows, Linux, Mac OS X, Solaris, BSD, plus other Unix systems that support the dlfcn standard).",
+        description = "Dynamically links the host program with the C library libname.\n\nIf funcname is \"*\", then it only links with the library, making the symbols exported by the library available to other dynamically linked libraries. VALUE ADDED IN Lua 5.2.\n\nOtherwise, it looks for a function funcname inside the library and returns this function as a C function. (So, funcname must follow the prototype lua_CFunction).\n\nThis is a low-level function. It completely bypasses the package and module system. Unlike require, it does not perform any path searching and does not automatically adds extensions. libname must be the complete file name of the C library, including if necessary a path and an extension. funcname must be the exact name exported by the C library (which may depend on the C compiler and linker used).\n\nThis function is not supported by Standard C. As such, it is only available on some platforms (Windows, Linux, Mac OS X, Solaris, BSD, plus other Unix systems that support the dlfcn standard).",
         args = "(libname: string, funcname: string)",
         returns = "([function])",
       },
@@ -290,17 +291,17 @@ return {
       },
       searchers = {
         type = "value",
-        description = "A table used by require to control how to load modules.\n\nEach entry in this table is a searcher function. When looking for a module, require calls each of these searchers in ascending order, with the module name (the argument given to require) as its sole parameter. The function can return another function (the module loader) plus an extra value that will be passed to that loader, or a string explaining why it did not find that module (or nil if it has nothing to say).\n\nLua initializes this table with four searcher functions.\n\nThe first searcher simply looks for a loader in the package.preload table.\n\nThe second searcher looks for a loader as a Lua library, using the path stored at package.path. The search is done as described in function package.searchpath.\n\nThe third searcher looks for a loader as a C library, using the path given by the variable package.cpath. Again, the search is done as described in function package.searchpath. Once it finds a C library, this searcher first uses a dynamic link facility to link the application with the library. Then it tries to find a C function inside the library to be used as the loader. The name of this C function is the string \"luaopen_\" concatenated with a copy of the module name where each dot is replaced by an underscore. Moreover, if the module name has a hyphen, its prefix up to (and including) the first hyphen is removed.\n\nThe fourth searcher tries an all-in-one loader. It searches the C path for a library for the root name of the given module. If found, it looks into it for an open function for the submodule. With this facility, a package can pack several C submodules into one single library, with each submodule keeping its original open function.\n\nAll searchers except the first one (preload) return as the extra value the file name where the module was found, as returned by package.searchpath. The first searcher returns no extra value.\n\nVALUE ADDED IN LUA 5.2.",
+        description = "A table used by require to control how to load modules.\n\nEach entry in this table is a searcher function. When looking for a module, require calls each of these searchers in ascending order, with the module name (the argument given to require) as its sole parameter. The function can return another function (the module loader) plus an extra value that will be passed to that loader, or a string explaining why it did not find that module (or nil if it has nothing to say).\n\nLua initializes this table with four searcher functions.\n\nThe first searcher simply looks for a loader in the package.preload table.\n\nThe second searcher looks for a loader as a Lua library, using the path stored at package.path. The search is done as described in function package.searchpath.\n\nThe third searcher looks for a loader as a C library, using the path given by the variable package.cpath. Again, the search is done as described in function package.searchpath. Once it finds a C library, this searcher first uses a dynamic link facility to link the application with the library. Then it tries to find a C function inside the library to be used as the loader. The name of this C function is the string \"luaopen_\" concatenated with a copy of the module name where each dot is replaced by an underscore. Moreover, if the module name has a hyphen, its prefix up to (and including) the first hyphen is removed.\n\nThe fourth searcher tries an all-in-one loader. It searches the C path for a library for the root name of the given module. If found, it looks into it for an open function for the submodule. With this facility, a package can pack several C submodules into one single library, with each submodule keeping its original open function.\n\nAll searchers except the first one (preload) return as the extra value the file name where the module was found, as returned by package.searchpath. The first searcher returns no extra value.\n\nVALUE ADDED IN Lua 5.2.",
       },
       searchpath = {
         type = "function",
-        description = "Searches for the given name in the given path.\n\nA path is a string containing a sequence of templates separated by semicolons. For each template, the function replaces each interrogation mark (if any) in the template with a copy of name wherein all occurrences of sep (a dot, by default) were replaced by rep (the system's directory separator, by default), and then tries to open the resulting file name.\n\nReturns the resulting name of the first file that it can open in read mode (after closing the file), or nil plus an error message if none succeeds. (This error message lists all file names it tried to open.)\n\nFUNCTION ADDED IN LUA 5.2.",
+        description = "Searches for the given name in the given path.\n\nA path is a string containing a sequence of templates separated by semicolons. For each template, the function replaces each interrogation mark (if any) in the template with a copy of name wherein all occurrences of sep (a dot, by default) were replaced by rep (the system's directory separator, by default), and then tries to open the resulting file name.\n\nReturns the resulting name of the first file that it can open in read mode (after closing the file), or nil plus an error message if none succeeds. (This error message lists all file names it tried to open.)\n\nFUNCTION ADDED IN Lua 5.2.",
         args = "(name: string, path: string [, sep: string [, rep: string]])",
         returns = "(string|nil [, string])",
       },
       seeall = {
         type = "function",
-        description = "Sets a metatable for module with its __index field referring to the global environment, so that this module inherits values from the global environment.\n\nTo be used as an option to function module.\n\nFUNCTION DEPRECATED IN LUA 5.2.",
+        description = "Sets a metatable for module with its __index field referring to the global environment, so that this module inherits values from the global environment.\n\nTo be used as an option to function module.\n\nFUNCTION DEPRECATED IN Lua 5.2.",
         args = "(module: table)",
         returns = "()",
       },
@@ -338,7 +339,7 @@ return {
       },
       format = {
         type = "function",
-        description = "Returns a formatted version of its variable number of arguments following the description given in its first argument (which must be a string).\n\nThe format string follows the same rules as the C function sprintf. The only differences are that the options/modifiers *, h, L, l, n, and p are not supported and that there is an extra option, q. The q option formats a string between double quotes, using escape sequences when necessary to ensure that it can safely be read back by the Lua interpreter.\n\nOptions A and a (when available) (VALUES ADDED IN LUA 5.2), E, e, f, G, and g all expect a number as argument. Options c, d, i, o, u, X, and x also expect a number, but the range of that number may be limited by the underlying C implementation. For options o, u, X, and x, the number cannot be negative. Option q expects a string; option s expects a string without embedded zeros. If the argument to option s is not a string, it is converted to one following the same rules of tostring (BEHAVIOR ADDED IN LUA 5.2).",
+        description = "Returns a formatted version of its variable number of arguments following the description given in its first argument (which must be a string).\n\nThe format string follows the same rules as the C function sprintf. The only differences are that the options/modifiers *, h, L, l, n, and p are not supported and that there is an extra option, q. The q option formats a string between double quotes, using escape sequences when necessary to ensure that it can safely be read back by the Lua interpreter.\n\nOptions A and a (when available) (VALUES ADDED IN Lua 5.2), E, e, f, G, and g all expect a number as argument. Options c, d, i, o, u, X, and x also expect a number, but the range of that number may be limited by the underlying C implementation. For options o, u, X, and x, the number cannot be negative. Option q expects a string; option s expects a string without embedded zeros. If the argument to option s is not a string, it is converted to one following the same rules of tostring (BEHAVIOR ADDED IN Lua 5.2).",
         args = "(formatstring, ...)",
         returns = "(string)",
       },
@@ -374,7 +375,7 @@ return {
       },
       rep = {
         type = "function",
-        description = "Returns a string that is the concatenation of n copies of the string s separated by the string sep.\n\nThe default value for sep is the empty string (that is, no separator). ARGUMENT ADDED IN LUA 5.2.",
+        description = "Returns a string that is the concatenation of n copies of the string s separated by the string sep.\n\nThe default value for sep is the empty string (that is, no separator). ARGUMENT ADDED IN Lua 5.2.",
         args = "(s: string, n: number [, sep: string])",
         returns = "(string)",
       },
@@ -418,13 +419,13 @@ return {
       },
       maxn = {
         type = "function",
-        description = "Returns the largest positive numerical index of the given table, or zero if the table has no positive numerical indices.\n\n(To do its job this function does a linear traversal of the whole table.)\n\nFUNCTION DEPRECATED IN LUA 5.2.",
+        description = "Returns the largest positive numerical index of the given table, or zero if the table has no positive numerical indices.\n\n(To do its job this function does a linear traversal of the whole table.)\n\nFUNCTION DEPRECATED IN Lua 5.2.",
         args = "(table: table)",
         returns = "(number)",
       },
       pack = {
         type = "function",
-        description = "Returns a new table with all parameters stored into keys 1, 2, etc. and with a field \"n\" with the total number of parameters.\n\nNote that the resulting table may not be a sequence.\n\nFUNCTION ADDED IN LUA 5.2.",
+        description = "Returns a new table with all parameters stored into keys 1, 2, etc. and with a field \"n\" with the total number of parameters.\n\nNote that the resulting table may not be a sequence.\n\nFUNCTION ADDED IN Lua 5.2.",
         args = "(...)",
         returns = "(table)",
       },
@@ -442,7 +443,7 @@ return {
       },
       unpack = {
         type = "function",
-        description = "Returns the elements from the given table.\n\nThis function is equivalent to\n\nreturn list[i], list[i+1], ···, list[j]\n\nBy default, i is 1 and j is #list.\n\nFUNCTION ADDED IN LUA 5.2.",
+        description = "Returns the elements from the given table.\n\nThis function is equivalent to\n\nreturn list[i], list[i+1], ···, list[j]\n\nBy default, i is 1 and j is #list.\n\nFUNCTION ADDED IN Lua 5.2.",
         args = "(list: table [, i: number [, j: number]])",
         returns = "(...)",
       },
@@ -544,13 +545,13 @@ return {
       },
       log = {
         type = "function",
-        description = "Returns the logarithm of x in the given base.\n\nThe default for base is e (so that the function returns the natural logarithm of x). ARGUMENT ADDED IN LUA 5.2.",
+        description = "Returns the logarithm of x in the given base.\n\nThe default for base is e (so that the function returns the natural logarithm of x). ARGUMENT ADDED IN Lua 5.2.",
         args = "(x: number [, base: number])",
         returns = "(number)",
       },
       log10 = {
         type = "function",
-        description = "Returns the base-10 logarithm of x.\n\nFUNCTION DEPRECATED IN LUA 5.2.",
+        description = "Returns the base-10 logarithm of x.\n\nFUNCTION DEPRECATED IN Lua 5.2.",
         args = "(x: number)",
         returns = "(number)",
       },
@@ -640,73 +641,73 @@ return {
     childs = {
       arshift = {
         type = "function",
-        description = "Returns the number x shifted disp bits to the right.\n\nThe number disp may be any representable integer. Negative displacements shift to the left.\n\nThis shift operation is what is called arithmetic shift. Vacant bits on the left are filled with copies of the higher bit of x; vacant bits on the right are filled with zeros. In particular, displacements with absolute values higher than 31 result in zero or 0xFFFFFFFF (all original bits are shifted out).\n\nFUNCTION ADDED IN LUA 5.2.",
+        description = "Returns the number x shifted disp bits to the right.\n\nThe number disp may be any representable integer. Negative displacements shift to the left.\n\nThis shift operation is what is called arithmetic shift. Vacant bits on the left are filled with copies of the higher bit of x; vacant bits on the right are filled with zeros. In particular, displacements with absolute values higher than 31 result in zero or 0xFFFFFFFF (all original bits are shifted out).\n\nFUNCTION ADDED IN Lua 5.2.",
         args = "(x: number, disp: number)",
         returns = "(number)",
       },
       band = {
         type = "function",
-        description = "Returns the bitwise and of its operands.\n\nFUNCTION ADDED IN LUA 5.2.",
+        description = "Returns the bitwise and of its operands.\n\nFUNCTION ADDED IN Lua 5.2.",
         args = "(...)",
         returns = "(number)",
       },
       bnot = {
         type = "function",
-        description = "Returns the bitwise negation of x.\n\nFor any integer x, the following identity holds:\n\nassert(bit32.bnot(x) == (-1 - x) % 2^32)\n\nFUNCTION ADDED IN LUA 5.2.",
+        description = "Returns the bitwise negation of x.\n\nFor any integer x, the following identity holds:\n\nassert(bit32.bnot(x) == (-1 - x) % 2^32)\n\nFUNCTION ADDED IN Lua 5.2.",
         args = "(x: number)",
         returns = "(number)",
       },
       bor = {
         type = "function",
-        description = "Returns the bitwise or of its operands.\n\nFUNCTION ADDED IN LUA 5.2.",
+        description = "Returns the bitwise or of its operands.\n\nFUNCTION ADDED IN Lua 5.2.",
         args = "(...)",
         returns = "(number)",
       },
       btest = {
         type = "function",
-        description = "Returns a boolean signaling whether the bitwise and of its operands is different from zero.\n\nFUNCTION ADDED IN LUA 5.2.",
+        description = "Returns a boolean signaling whether the bitwise and of its operands is different from zero.\n\nFUNCTION ADDED IN Lua 5.2.",
         args = "(...)",
         returns = "(boolean)",
       },
       bxor = {
         type = "function",
-        description = "Returns the bitwise exclusive or of its operands.\n\nFUNCTION ADDED IN LUA 5.2.",
+        description = "Returns the bitwise exclusive or of its operands.\n\nFUNCTION ADDED IN Lua 5.2.",
         args = "(...)",
         returns = "(number)",
       },
       extract = {
         type = "function",
-        description = "Returns the unsigned number formed by the bits field to field + width - 1 from n.\n\nBits are numbered from 0 (least significant) to 31 (most significant). All accessed bits must be in the range [0, 31].\n\nThe default for width is 1.\n\nFUNCTION ADDED IN LUA 5.2.",
+        description = "Returns the unsigned number formed by the bits field to field + width - 1 from n.\n\nBits are numbered from 0 (least significant) to 31 (most significant). All accessed bits must be in the range [0, 31].\n\nThe default for width is 1.\n\nFUNCTION ADDED IN Lua 5.2.",
         args = "(n: number, field: number [, width: number])",
         returns = "(number)",
       },
       replace = {
         type = "function",
-        description = "Returns a copy of n with the bits field to field + width - 1 replaced by the value v\n\nBits are numbered from 0 (least significant) to 31 (most significant). All accessed bits must be in the range [0, 31].\n\nThe default for width is 1.\n\nFUNCTION ADDED IN LUA 5.2.",
+        description = "Returns a copy of n with the bits field to field + width - 1 replaced by the value v\n\nBits are numbered from 0 (least significant) to 31 (most significant). All accessed bits must be in the range [0, 31].\n\nThe default for width is 1.\n\nFUNCTION ADDED IN Lua 5.2.",
         args = "(n: number, v: number, field: number [, width: number])",
         returns = "(number)",
       },
       lrotate = {
         type = "function",
-        description = "Returns the number x rotated disp bits to the left.\n\nThe number disp may be any representable integer.\n\nFor any valid displacement, the following identity holds:\n\nassert(bit32.lrotate(x, disp) == bit32.lrotate(x, disp % 32))\n\nIn particular, negative displacements rotate to the right.\n\nFUNCTION ADDED IN LUA 5.2.",
+        description = "Returns the number x rotated disp bits to the left.\n\nThe number disp may be any representable integer.\n\nFor any valid displacement, the following identity holds:\n\nassert(bit32.lrotate(x, disp) == bit32.lrotate(x, disp % 32))\n\nIn particular, negative displacements rotate to the right.\n\nFUNCTION ADDED IN Lua 5.2.",
         args = "(x: number, disp: number)",
         returns = "(number)",
       },
       lshift = {
         type = "function",
-        description = "Returns the number x shifted disp bits to the left.\n\nThe number disp may be any representable integer. Negative displacements shift to the right. In any direction, vacant bits are filled with zeros. In particular, displacements with absolute values higher than 31 result in zero (all bits are shifted out).\n\nFor positive displacements, the following equality holds:\n\nassert(bit32.lshift(b, disp) == (b * 2^disp) % 2^32)\n\nFUNCTION ADDED IN LUA 5.2.",
+        description = "Returns the number x shifted disp bits to the left.\n\nThe number disp may be any representable integer. Negative displacements shift to the right. In any direction, vacant bits are filled with zeros. In particular, displacements with absolute values higher than 31 result in zero (all bits are shifted out).\n\nFor positive displacements, the following equality holds:\n\nassert(bit32.lshift(b, disp) == (b * 2^disp) % 2^32)\n\nFUNCTION ADDED IN Lua 5.2.",
         args = "(x: number, disp: number)",
         returns = "(number)",
       },
       rrotate = {
         type = "function",
-        description = "Returns the number x rotated disp bits to the right.\n\nThe number disp may be any representable integer.\n\nFor any valid displacement, the following identity holds:\n\nassert(bit32.rrotate(x, disp) == bit32.rrotate(x, disp % 32))\n\nIn particular, negative displacements rotate to the left.\n\nFUNCTION ADDED IN LUA 5.2.",
+        description = "Returns the number x rotated disp bits to the right.\n\nThe number disp may be any representable integer.\n\nFor any valid displacement, the following identity holds:\n\nassert(bit32.rrotate(x, disp) == bit32.rrotate(x, disp % 32))\n\nIn particular, negative displacements rotate to the left.\n\nFUNCTION ADDED IN Lua 5.2.",
         args = "(x: number, disp: number)",
         returns = "(number)",
       },
       rshift = {
         type = "function",
-        description = "Returns the number x shifted disp bits to the right.\n\nThe number disp may be any representable integer. Negative displacements shift to the left. In any direction, vacant bits are filled with zeros. In particular, displacements with absolute values higher than 31 result in zero (all bits are shifted out).\n\nFor positive displacements, the following equality holds:\n\nassert(bit32.rshift(b, disp) == math.floor(b % 2^32 / 2^disp))\n\nThis shift operation is what is called logical shift.\n\nFUNCTION ADDED IN LUA 5.2.",
+        description = "Returns the number x shifted disp bits to the right.\n\nThe number disp may be any representable integer. Negative displacements shift to the left. In any direction, vacant bits are filled with zeros. In particular, displacements with absolute values higher than 31 result in zero (all bits are shifted out).\n\nFor positive displacements, the following equality holds:\n\nassert(bit32.rshift(b, disp) == math.floor(b % 2^32 / 2^disp))\n\nThis shift operation is what is called logical shift.\n\nFUNCTION ADDED IN Lua 5.2.",
         args = "(x: number, disp: number)",
         returns = "(number)",
       },
@@ -738,7 +739,7 @@ return {
       },
       lines = {
         type = "function",
-        description = "Opens the given file name in read mode and returns an iterator function that, each time it is called, reads the file according to the given formats.\n\nWhen no format is given, uses \"*l\" as a default. ARGUMENT ADDED IN LUA 5.2.\n\nWhen the iterator function detects the end of file, it returns nil (to finish the loop) and automatically closes the file.\n\nThe call io.lines() (with no file name) is equivalent to io.input():lines(); that is, it iterates over the lines of the default input file. In this case it does not close the file when the loop ends.\n\nIn case of errors this function raises the error, instead of returning an error code.",
+        description = "Opens the given file name in read mode and returns an iterator function that, each time it is called, reads the file according to the given formats.\n\nWhen no format is given, uses \"*l\" as a default. ARGUMENT ADDED IN Lua 5.2.\n\nWhen the iterator function detects the end of file, it returns nil (to finish the loop) and automatically closes the file.\n\nThe call io.lines() (with no file name) is equivalent to io.input():lines(); that is, it iterates over the lines of the default input file. In this case it does not close the file when the loop ends.\n\nIn case of errors this function raises the error, instead of returning an error code.",
         args = "([filename: string, ...])",
         returns = "(function)",
       },
@@ -788,7 +789,7 @@ return {
   },
   close = {
     type = "function",
-    description = "Closes file.\n\nNote that files are automatically closed when their handles are garbage collected, but that takes an unpredictable amount of time to happen.\n\nWhen closing a file handle created with io.popen, file:close returns the same values returned by os.execute. RETURN SPECIAL CASE ADDED IN LUA 5.2.",
+    description = "Closes file.\n\nNote that files are automatically closed when their handles are garbage collected, but that takes an unpredictable amount of time to happen.\n\nWhen closing a file handle created with io.popen, file:close returns the same values returned by os.execute. RETURN SPECIAL CASE ADDED IN Lua 5.2.",
     args = "(file: file)",
     returns = "(boolean|nil [, string, number])",
   },
@@ -800,13 +801,13 @@ return {
   },
   lines = {
     type = "function",
-    description = "Returns an iterator function that, each time it is called, reads the file according to the given formats.\n\nWhen no format is given, uses \"*l\" as a default. ARGUMENT ADDED IN LUA 5.2.\n\nUnlike io.lines, this function does not close the file when the loop ends.\n\nIn case of errors this function raises the error, instead of returning an error code.",
+    description = "Returns an iterator function that, each time it is called, reads the file according to the given formats.\n\nWhen no format is given, uses \"*l\" as a default. ARGUMENT ADDED IN Lua 5.2.\n\nUnlike io.lines, this function does not close the file when the loop ends.\n\nIn case of errors this function raises the error, instead of returning an error code.",
     args = "(file: file, ...)",
     returns = "(function)",
   },
   read = {
     type = "function",
-    description = "Reads the file file, according to the given formats, which specify what to read.\n\nFor each format, the function returns a string (or a number) with the characters read, or nil if it cannot read data with the specified format. When called without formats, it uses a default format that reads the next line (see below).\n\nThe available formats are\n\n* \"*n\": reads a number; this is the only format that returns a number instead of a string.\n\n* \"*a\": reads the whole file, starting at the current position. On end of file, it returns the empty string.\n\n* \"*l\": reads the next line skipping the end of line, returning nil on end of file. This is the default format.\n\n* \"*L\": reads the next line keeping the end of line (if present), returning nil on end of file. VALUE ADDED IN LUA 5.2.\n\n* number: reads a string with up to this number of bytes, returning nil on end of file. If number is zero, it reads nothing and returns an empty string, or nil on end of file.",
+    description = "Reads the file file, according to the given formats, which specify what to read.\n\nFor each format, the function returns a string (or a number) with the characters read, or nil if it cannot read data with the specified format. When called without formats, it uses a default format that reads the next line (see below).\n\nThe available formats are\n\n* \"*n\": reads a number; this is the only format that returns a number instead of a string.\n\n* \"*a\": reads the whole file, starting at the current position. On end of file, it returns the empty string.\n\n* \"*l\": reads the next line skipping the end of line, returning nil on end of file. This is the default format.\n\n* \"*L\": reads the next line keeping the end of line (if present), returning nil on end of file. VALUE ADDED IN Lua 5.2.\n\n* number: reads a string with up to this number of bytes, returning nil on end of file. If number is zero, it reads nothing and returns an empty string, or nil on end of file.",
     args = "(file: file, ...)",
     returns = "(...)",
   },
@@ -824,7 +825,7 @@ return {
   },
   write = {
     type = "function",
-    description = "Writes the value of each of its arguments to file.\n\nThe arguments must be strings or numbers.\n\nIn case of success, this function returns file (RETURN CHANGED IN LUA 5.2, BOOLEAN IN LUA 5.1). Otherwise it returns nil plus a string describing the error.",
+    description = "Writes the value of each of its arguments to file.\n\nThe arguments must be strings or numbers.\n\nIn case of success, this function returns file (RETURN CHANGED IN Lua 5.2, BOOLEAN IN LUA 5.1). Otherwise it returns nil plus a string describing the error.",
     args = "(file: file, ...)",
     returns = "(file|nil [, string])",
   },
@@ -834,11 +835,11 @@ return {
     type = "lib",
     description = "This library is implemented through table os.",
     childs = {
-    	clock = {
-	      type = "function",
-	      description = "Returns an approximation of the amount in seconds of CPU time used by the program.",
-	      args = "()",
-	      returns = "(number)",
+      clock = {
+        type = "function",
+        description = "Returns an approximation of the amount in seconds of CPU time used by the program.",
+        args = "()",
+        returns = "(number)",
       },
       date = {
         type = "function",
@@ -854,13 +855,13 @@ return {
       },
       execute = {
         type = "function",
-        description = "This function is equivalent to the C function system. It passes command to be executed by an operating system shell.\n\nRETURNS IN LUA 5.2:\n\nIts first result is true if the command terminated successfully, or nil otherwise. After this first result the function returns a string and a number, as follows:\n\n* \"exit\": the command terminated normally; the following number is the exit status of the command.\n\n* \"signal\": the command was terminated by a signal; the following number is the signal that terminated the command.\n\nWhen called without a command, os.execute returns a boolean that is true if a shell is available.\n\nRETURNS IN LUA 5.1:\n\nIt returns a status code, which is system-dependent. If command is absent, then it returns nonzero if a shell is available and zero otherwise.",
+        description = "This function is equivalent to the C function system. It passes command to be executed by an operating system shell.\n\nRETURNS IN Lua 5.2:\n\nIts first result is true if the command terminated successfully, or nil otherwise. After this first result the function returns a string and a number, as follows:\n\n* \"exit\": the command terminated normally; the following number is the exit status of the command.\n\n* \"signal\": the command was terminated by a signal; the following number is the signal that terminated the command.\n\nWhen called without a command, os.execute returns a boolean that is true if a shell is available.\n\nRETURNS IN LUA 5.1:\n\nIt returns a status code, which is system-dependent. If command is absent, then it returns nonzero if a shell is available and zero otherwise.",
         args = "([command: string])",
         returns = "(boolean|nil [, string, number])",
       },
       exit = {
         type = "function",
-        description = "Calls the C function exit to terminate the host program.\n\nIf code is true, the returned status is EXIT_SUCCESS; if code is false, the returned status is EXIT_FAILURE; if code is a number, the returned status is this number. The default value for code is true. BOOLEAN VALUE ADDED IN LUA 5.2.\n\nIf the optional second argument close is true, closes the Lua state before exiting. ARGUMENT ADDED IN LUA 5.2.",
+        description = "Calls the C function exit to terminate the host program.\n\nIf code is true, the returned status is EXIT_SUCCESS; if code is false, the returned status is EXIT_FAILURE; if code is a number, the returned status is this number. The default value for code is true. BOOLEAN VALUE ADDED IN Lua 5.2.\n\nIf the optional second argument close is true, closes the Lua state before exiting. ARGUMENT ADDED IN Lua 5.2.",
         args = "([code: boolean|number [, close: boolean]])",
         returns = "()",
       },
@@ -908,7 +909,7 @@ return {
     type = "lib",
     description = "This library provides the functionality of the debug interface to Lua programs.\n\nYou should exert care when using this library. Several of its functions violate basic assumptions about Lua code (e.g., that variables local to a function cannot be accessed from outside; that userdata metatables cannot be changed by Lua code; that Lua programs do not crash) and therefore can compromise otherwise secure code. Moreover, some functions in this library may be slow.\n\nAll functions in this library are provided inside the debug table. All functions that operate over a thread have an optional first argument which is the thread to operate over. The default is always the current thread.",
     childs = {
-    	debug = {
+      debug = {
         type = "function",
         description = "Enters an interactive mode with the user, running each string that the user enters.\n\nUsing simple commands and other debug facilities, the user can inspect global and local variables, change their values, evaluate expressions, and so on. A line containing only the word cont finishes this function, so that the caller continues its execution.\n\nNote that commands for debug.debug are not lexically nested within any function and so have no direct access to local variables.",
         args = "()",
@@ -916,7 +917,7 @@ return {
       },
       getfenv = {
         type = "function",
-        description = "Returns the environment of object o.\n\nFUNCTION DEPRECATED IN LUA 5.2.",
+        description = "Returns the environment of object o.\n\nFUNCTION DEPRECATED IN Lua 5.2.",
         args = "(o: any)",
         returns = "(table)",
       },
@@ -934,7 +935,7 @@ return {
       },
       getlocal = {
         type = "function",
-        description = "This function returns the name and the value of the local variable with index local of the function at level f of the stack.\n\nThis function accesses not only explicit local variables, but also parameters, temporaries, etc.\n\nThe first parameter or local variable has index 1, and so on, until the last active variable. Negative indices refer to vararg parameters; -1 is the first vararg parameter (NEGATIVE VALUE ADDED IN LUA 5.2). The function returns nil if there is no variable with the given index, and raises an error when called with a level out of range. (You can call debug.getinfo to check whether the level is valid.)\n\nVariable names starting with '(' (open parentheses) represent internal variables (loop control variables, temporaries, varargs, and C function locals).\n\nThe parameter f may also be a function. In that case, getlocal returns only the name of function parameters. VALUE ADDED IN LUA 5.2.",
+        description = "This function returns the name and the value of the local variable with index local of the function at level f of the stack.\n\nThis function accesses not only explicit local variables, but also parameters, temporaries, etc.\n\nThe first parameter or local variable has index 1, and so on, until the last active variable. Negative indices refer to vararg parameters; -1 is the first vararg parameter (NEGATIVE VALUE ADDED IN Lua 5.2). The function returns nil if there is no variable with the given index, and raises an error when called with a level out of range. (You can call debug.getinfo to check whether the level is valid.)\n\nVariable names starting with '(' (open parentheses) represent internal variables (loop control variables, temporaries, varargs, and C function locals).\n\nThe parameter f may also be a function. In that case, getlocal returns only the name of function parameters. VALUE ADDED IN Lua 5.2.",
         args = "([thread: thread,] f: number|function, local: number)",
         returns = "(string|nil, any)",
       },
@@ -958,13 +959,13 @@ return {
       },
       getuservalue = {
         type = "function",
-        description = "Returns the Lua value associated to u.\n\nIf u is not a userdata, returns nil.\n\nFUNCTION ADDED IN LUA 5.2.",
+        description = "Returns the Lua value associated to u.\n\nIf u is not a userdata, returns nil.\n\nFUNCTION ADDED IN Lua 5.2.",
         args = "(u: userdata)",
         returns = "(table|nil)",
       },
       setfenv = {
         type = "function",
-        description = "Sets the environment of the given object to the given table. Returns object.\n\nFUNCTION DEPRECATED IN LUA 5.2.",
+        description = "Sets the environment of the given object to the given table. Returns object.\n\nFUNCTION DEPRECATED IN Lua 5.2.",
         args = "(object: any, table: table)",
         returns = "(any)",
       },
@@ -982,7 +983,7 @@ return {
       },
       setmetatable = {
         type = "function",
-        description = "Sets the metatable for the given value to the given table (which can be nil).\n\nReturns value. RETURN ADDED IN LUA 5.2.",
+        description = "Sets the metatable for the given value to the given table (which can be nil).\n\nReturns value. RETURN ADDED IN Lua 5.2.",
         args = "(value: any, table: table|nil)",
         returns = "(any)",
       },
@@ -994,7 +995,7 @@ return {
       },
       setuservalue = {
         type = "function",
-        description = "Sets the given value as the Lua value associated to the given udata.\n\nvalue must be a table or nil; udata must be a full userdata.\n\nReturns udata.\n\nFUNCTION ADDED IN LUA 5.2.",
+        description = "Sets the given value as the Lua value associated to the given udata.\n\nvalue must be a table or nil; udata must be a full userdata.\n\nReturns udata.\n\nFUNCTION ADDED IN Lua 5.2.",
         args = "(udata: userdata, value: table|nil)",
         returns = "(userdata)",
       },
@@ -1006,13 +1007,13 @@ return {
       },
       upvalueid = {
         type = "function",
-        description = "Returns an unique identifier (as a light userdata) for the upvalue numbered n from the given function.\n\nThese unique identifiers allow a program to check whether different closures share upvalues. Lua closures that share an upvalue (that is, that access a same external local variable) will return identical ids for those upvalue indices.\n\nFUNCTION ADDED IN LUA 5.2.",
+        description = "Returns an unique identifier (as a light userdata) for the upvalue numbered n from the given function.\n\nThese unique identifiers allow a program to check whether different closures share upvalues. Lua closures that share an upvalue (that is, that access a same external local variable) will return identical ids for those upvalue indices.\n\nFUNCTION ADDED IN Lua 5.2.",
         args = "(f: function, n: number)",
         returns = "(userdata)",
       },
       upvaluejoin = {
         type = "function",
-        description = "Make the n1-th upvalue of the Lua closure f1 refer to the n2-th upvalue of the Lua closure f2.\n\nFUNCTION ADDED IN LUA 5.2.",
+        description = "Make the n1-th upvalue of the Lua closure f1 refer to the n2-th upvalue of the Lua closure f2.\n\nFUNCTION ADDED IN Lua 5.2.",
         args = "(f1: function, n1: number, f2: function, n2: number)",
         returns = "()",
       },
