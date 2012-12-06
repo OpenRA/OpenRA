@@ -422,14 +422,6 @@ namespace OpenRA.Editor
 					c = "gold";
 					race = "allies";
 					break;
-				case "Greece":
-					c = "blue";
-					race = "allies";
-					break;
-				case "USSR":
-					c = "red";
-					race = "soviet";
-					break;
 				case "England":
 					c = "green";
 					race = "allies";
@@ -439,7 +431,7 @@ namespace OpenRA.Editor
 					race = "soviet";
 					break;
 				case "Germany":
-					c = "salmon";
+					c = "black";
 					race = "allies";
 					break;
 				case "France":
@@ -450,22 +442,18 @@ namespace OpenRA.Editor
 					c = "salmon";
 					race = "allies";
 					break;
-				case "Italy":
-					c = "blue";
-					race = "allies";
-					break;
+				case "Greece":
 				case "GoodGuy":
 					c = isRA? "blue" : "gold";
 					race = isRA ? "allies" : "gdi";
 					break;
+				case "USSR":
 				case "BadGuy":
 					c = "red";
 					race = isRA ? "soviet" : "nod";
 					break;
+				case "Special":
 				case "Neutral":
-					c = "neutral";
-					race = isRA ? "allies" : "gdi";
-					break;
 				default:
 					c = "neutral";
 					race = isRA ? "allies" : "gdi";
