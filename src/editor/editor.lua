@@ -150,9 +150,7 @@ function SetEditorSelection(selection)
     editor:SetFocus()
     editor:SetSTCFocus(true)
     local id = editor:GetId()
-    if openDocuments[id] and openDocuments[id].filePath then
-      FileTreeMarkSelected(openDocuments[id].filePath)
-    end
+    FileTreeMarkSelected(openDocuments[id] and openDocuments[id].filePath or '')
   else
     FileTreeMarkSelected('')
   end
