@@ -479,6 +479,23 @@ MGG:
 	AttackMove:
 		JustMove: yes
 	RenderShroudCircle:
+	Explodes:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
+	LeavesHusk:
+		HuskActor: MGG.Husk
+
+MGG.Husk:
+	Inherits: ^Husk
+	Tooltip:
+		Name: Husk (Mobile Gap Generator)
+	RenderUnit:
+		Image: mgg
+	ThrowsParticle@spinner:
+		Anim: spinner-idle
+		Spread: 3,3
+		Speed: 6
+		AnimKey: spinner-idle
 
 1TNK.Husk:
 	Inherits: ^Husk
