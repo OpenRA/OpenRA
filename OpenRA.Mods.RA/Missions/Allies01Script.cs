@@ -318,6 +318,9 @@ namespace OpenRA.Mods.RA.Missions
 			attackEntryPoint1 = actors["SovietAttackEntryPoint1"];
 			attackEntryPoint2 = actors["SovietAttackEntryPoint2"];
 			SetAlliedUnitsToDefensiveStance();
+			var alliesRes = allies.PlayerActor.Trait<PlayerResources>();
+			alliesRes.TakeCash(alliesRes.Cash);
+			alliesRes.TakeOre(alliesRes.Ore);
 			Game.MoveViewport(insertionLZ.Location.ToFloat2());
 			Game.ConnectionStateChanged += StopMusic;
 			Media.PlayFMVFullscreen(w, "ally1.vqa", () =>
