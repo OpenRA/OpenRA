@@ -179,6 +179,7 @@ BARL:
 		Weapon: BarrelExplode
 	Tooltip:
 		Name: Explosive Barrel
+	AutoTargetIgnore:
 
 BRL3:
 	Inherits: ^TechBuilding
@@ -190,6 +191,7 @@ BRL3:
 		Weapon: BarrelExplode
 	Tooltip:
 		Name: Explosive Barrel
+	AutoTargetIgnore:
 
 MISS:
 	Inherits: ^TechBuilding
