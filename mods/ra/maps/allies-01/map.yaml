@@ -37,7 +37,7 @@ Players:
 		LockRace: True
 		Race: allies
 		LockColor: True
-		ColorRamp: 153,240,130,10
+		ColorRamp: 161,134,200,30
 		LockSpawn: True
 		LockTeam: True
 		Allies: Creeps
@@ -45,7 +45,7 @@ Players:
 	PlayerReference@Soviets:
 		Name: Soviets
 		Race: soviet
-		ColorRamp: 0,255,128,10
+		ColorRamp: 3,255,127,28
 		Enemies: Allies,Creeps
 
 Actors:
