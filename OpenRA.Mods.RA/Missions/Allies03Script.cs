@@ -80,18 +80,22 @@ namespace OpenRA.Mods.RA.Missions
 
 		static readonly string[] SovietVehicles1 = { "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "v2rl", "v2rl", "ftrk", "ftrk", "apc", "apc", "apc" };
 		static readonly string[] SovietVehicles2 = { "4tnk", "4tnk", "4tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "v2rl", "v2rl", "ftrk", "apc" };
-		const int SovietVehicles2Ticks = 1500 * 15;
+		const int SovietVehicles2Ticks = 1500 * 16;
 		const int SovietGroupSize = 3;
 
-		const int ReinforcementsTicks = 1500 * 4;
-		static readonly string[] Reinforcements = { "mgg", "mgg", "2tnk", "2tnk", "2tnk", "2tnk", "1tnk", "1tnk", "jeep", "jeep", "e1", "e1", "e1", "e1", "e3", "e3" };
-		int currentReinforcement;
+		const int ReinforcementsTicks1 = 1500 * 4;
+		static readonly string[] Reinforcements1 = { "mgg", "2tnk", "2tnk", "2tnk", "2tnk", "1tnk", "1tnk", "jeep", "jeep", "e1", "e1", "e1", "e1", "e3", "e3" };
+		int currentReinforcement1;
 
-		const int ParadropTicks = 1500 * 25;
+		const int ReinforcementsTicks2 = 1500 * 10;
+		static readonly string[] Reinforcements2 = { "mgg", "2tnk", "2tnk", "2tnk", "2tnk", "truk", "truk", "truk", "truk", "truk", "truk", "1tnk", "1tnk", "jeep", "jeep" };
+		int currentReinforcement2;
+
+		const int ParadropTicks = 1500 * 20;
 		const int ParadropIncrement = 200;
 		static readonly string[] ParadropTerrainTypes = { "Clear", "Road", "Rough", "Beach", "Ore" };
 		static readonly string[] SovietParadroppers = { "e1", "e1", "e3", "e3", "e4" };
-		int paradrops = 25;
+		int paradrops = 50;
 
 		int attackAtFrame;
 		int attackAtFrameIncrement;
@@ -151,16 +155,15 @@ namespace OpenRA.Mods.RA.Missions
 				attackAtFrame += attackAtFrameIncrement;
 				attackAtFrameIncrement = Math.Max(attackAtFrameIncrement - 5, minAttackAtFrame);
 			}
-			if (world.FrameNumber >= ReinforcementsTicks && currentReinforcement < Reinforcements.Length)
+			if (world.FrameNumber >= ReinforcementsTicks1 && currentReinforcement1 < Reinforcements1.Length)
 			{
-				if (world.FrameNumber == ReinforcementsTicks)
-				{
-					Sound.Play("reinfor1.aud");
-				}
-				if (world.FrameNumber % 25 == 0)
-				{
-					SpawnAlliedUnit(Reinforcements[currentReinforcement++]);
-				}
+				if (world.FrameNumber == ReinforcementsTicks1) { Sound.Play("reinfor1.aud"); }
+				if (world.FrameNumber % 25 == 0) { SpawnAlliedUnit(Reinforcements1[currentReinforcement1++]); }
+			}
+			if (world.FrameNumber >= ReinforcementsTicks2 && currentReinforcement2 < Reinforcements2.Length)
+			{
+				if (world.FrameNumber == ReinforcementsTicks2) { Sound.Play("reinfor1.aud"); }
+				if (world.FrameNumber % 25 == 0) { SpawnAlliedUnit(Reinforcements2[currentReinforcement2++]); }
 			}
 			if (world.FrameNumber == ParadropTicks)
 			{
