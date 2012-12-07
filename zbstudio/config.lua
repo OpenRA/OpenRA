@@ -29,8 +29,5 @@ unhidewindow = { -- allow unhiding of GUI windows
   ConsoleWindowClass = 0,
   IME = 0,
   ['MSCTFIME UI'] = 0,
-  wxWindowClassNR = 1, -- wxwindows applications (wxFrame)
-  wxMDIFrameClassNR = 1, -- wxwindows applications (wxMDIFrame)
-  ['#32770'] = 1, -- wxwindows applications (wxDialog)
   GLUT = 1, -- opengl applications (for example, moai)
 }
