@@ -380,21 +380,14 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				unit.CancelActivity();
 				unit.ChangeOwner(allies);
-				unit.QueueActivity(new Move.Move(exit));
-				unit.QueueActivity(new CallFunc(() =>
+				unitsEvacuated++;
+				var cargo = unit.TraitOrDefault<Cargo>();
+				if (cargo != null)
 				{
-					if (unit.IsDead())
-					{
-						return;
-					}
-					unitsEvacuated++;
-					var cargo = unit.TraitOrDefault<Cargo>();
-					if (cargo != null)
-					{
-						unitsEvacuated += cargo.Passengers.Count();
-					}
-					UpdateUnitsEvacuated();
-				}));
+					unitsEvacuated += cargo.Passengers.Count();
+				}
+				UpdateUnitsEvacuated();
+				unit.QueueActivity(new Move.Move(exit));
 				unit.QueueActivity(new RemoveSelf());
 			}
 		}
