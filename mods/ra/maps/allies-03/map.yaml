@@ -1444,9 +1444,6 @@ Rules:
 	MIG:
 		Buildable:
 			Owner: None
-	YAK:
-		Buildable:
-			Owner: soviet, allies
 	HELI:
 		Buildable:
 			Owner: None
@@ -1454,6 +1451,12 @@ Rules:
 		Buildable:
 			Owner: None
 	SS:
+		Buildable:
+			Owner: None
+	ARTY:
+		Buildable:
+			Owner: None
+	AGUN:
 		Buildable:
 			Owner: None
 	MSUB:

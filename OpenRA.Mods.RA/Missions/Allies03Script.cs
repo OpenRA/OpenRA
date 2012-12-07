@@ -95,7 +95,8 @@ namespace OpenRA.Mods.RA.Missions
 		const int ParadropIncrement = 200;
 		static readonly string[] ParadropTerrainTypes = { "Clear", "Road", "Rough", "Beach", "Ore" };
 		static readonly string[] SovietParadroppers = { "e1", "e1", "e3", "e3", "e4" };
-		int paradrops = 50;
+		int paradrops = 20;
+		const int maxSovietYaks = 2;
 
 		int attackAtFrame;
 		int attackAtFrameIncrement;
@@ -261,7 +262,7 @@ namespace OpenRA.Mods.RA.Missions
 		void BuildSovietAircraft()
 		{
 			var queue = MissionUtils.FindQueues(world, soviets, "Plane").FirstOrDefault(q => q.CurrentItem() == null);
-			if (queue == null || SovietAircraft().Count() >= sovietAirfields.Length)
+			if (queue == null || SovietAircraft().Count() >= maxSovietYaks)
 			{
 				return;
 			}
