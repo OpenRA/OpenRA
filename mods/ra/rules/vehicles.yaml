@@ -496,6 +496,7 @@ MGG.Husk:
 		Spread: 3,3
 		Speed: 6
 		AnimKey: spinner-idle
+		Offset: 0,6
 
 1TNK.Husk:
 	Inherits: ^Husk
