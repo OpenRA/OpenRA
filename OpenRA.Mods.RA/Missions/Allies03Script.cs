@@ -78,18 +78,18 @@ namespace OpenRA.Mods.RA.Missions
 
 		Rectangle paradropBox;
 
-		static readonly string[] SovietVehicles1 = { "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "v2rl", "v2rl", "ftrk", "ftrk", "apc", "apc", "apc" };
-		static readonly string[] SovietVehicles2 = { "4tnk", "4tnk", "4tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "v2rl", "v2rl", "ftrk", "apc" };
-		const int SovietVehicles2Ticks = 1500 * 16;
-		const int SovietGroupSize = 3;
-
-		const int ReinforcementsTicks1 = 1500 * 4;
+		const int ReinforcementsTicks1 = 1500 * 5;
 		static readonly string[] Reinforcements1 = { "mgg", "2tnk", "2tnk", "2tnk", "2tnk", "1tnk", "1tnk", "jeep", "jeep", "e1", "e1", "e1", "e1", "e3", "e3" };
 		int currentReinforcement1;
 
 		const int ReinforcementsTicks2 = 1500 * 10;
 		static readonly string[] Reinforcements2 = { "mgg", "2tnk", "2tnk", "2tnk", "2tnk", "truk", "truk", "truk", "truk", "truk", "truk", "1tnk", "1tnk", "jeep", "jeep" };
 		int currentReinforcement2;
+
+		static readonly string[] SovietVehicles1 = { "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "v2rl", "v2rl", "ftrk", "ftrk", "apc", "apc", "apc" };
+		static readonly string[] SovietVehicles2 = { "4tnk", "4tnk", "4tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "v2rl", "v2rl", "ftrk", "apc" };
+		const int SovietVehicles2Ticks = 1500 * 15;
+		const int SovietGroupSize = 5;
 
 		const int ParadropTicks = 1500 * 20;
 		const int ParadropIncrement = 200;
