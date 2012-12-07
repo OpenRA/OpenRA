@@ -342,23 +342,23 @@ namespace OpenRA.Mods.RA.Missions
 
 		void SpawnAlliedUnit(string actor)
 		{
-			var unit = world.CreateActor(actor, new TypeDictionary
-			{
-				new LocationInit(allies1EntryPoint.Location), 
-				new OwnerInit(allies1),
-				new FacingInit(Util.GetFacing(allies1MovePoint.Location - allies1EntryPoint.Location, 0)) 
-			});
-			unit.QueueActivity(new Move.Move(allies1MovePoint.Location));
+			var unit = SpawnAndMove(actor, allies1, allies1EntryPoint.Location, allies1MovePoint.Location);
 			if (allies2 != allies1)
 			{
-				unit = world.CreateActor(actor, new TypeDictionary 
-				{ 
-					new LocationInit(allies2EntryPoint.Location), 
-					new OwnerInit(allies2),
-					new FacingInit(Util.GetFacing(allies2MovePoint.Location - allies2EntryPoint.Location, 0))
-				});
-				unit.QueueActivity(new Move.Move(allies2MovePoint.Location));
+				unit = SpawnAndMove(actor, allies2, allies2EntryPoint.Location, allies2MovePoint.Location);
 			}
+		}
+
+		Actor SpawnAndMove(string actor, Player owner, CPos entry, CPos to)
+		{
+			var unit = world.CreateActor(actor, new TypeDictionary
+			{
+				new OwnerInit(owner),
+				new LocationInit(entry),
+				new FacingInit(Util.GetFacing(to - entry, 0))
+			});
+			unit.QueueActivity(new Move.Move(to));
+			return unit;
 		}
 
 		void UpdateUnitsEvacuated()
