@@ -33,12 +33,18 @@ namespace OpenRA.Mods.RA.Missions
 
 		Dictionary<int, Objective> objectives = new Dictionary<int, Objective>
 		{
-			{ EvacuateID, new Objective(ObjectiveType.Primary, "Following the rescue of Einstein, the Allies are now being flanked from both sides. Evacuate {0} units before the remaining Allied forces in the area are wiped out.", ObjectiveStatus.InProgress) },
-			{ AirbaseID, new Objective(ObjectiveType.Secondary, "Destroy the nearby Soviet airbases.", ObjectiveStatus.InProgress) }
+			{ EvacuateID, new Objective(ObjectiveType.Primary, Evacuate, ObjectiveStatus.InProgress) },
+			{ AirbaseID, new Objective(ObjectiveType.Secondary, Airbase, ObjectiveStatus.InProgress) },
+			{ GapGeneratorID, new Objective(ObjectiveType.Secondary, GapGenerator , ObjectiveStatus.InProgress) }
 		};
 
 		const int EvacuateID = 0;
 		const int AirbaseID = 1;
+		const int GapGeneratorID = 2;
+
+		const string Evacuate = "Following the rescue of Einstein, the Allies are now being flanked from both sides. Evacuate {0} units before the remaining Allied forces in the area are wiped out.";
+		const string Airbase = "Destroy the nearby Soviet airbases.";
+		const string GapGenerator = "Einstein has recently developed a technology which allows us to obscure units from the enemy. Evacuate at least one prototype mobile gap generator intact.";
 
 		int unitsEvacuatedThreshold;
 		int unitsEvacuated;
@@ -86,9 +92,9 @@ namespace OpenRA.Mods.RA.Missions
 		static readonly string[] Reinforcements2 = { "mgg", "2tnk", "2tnk", "2tnk", "2tnk", "truk", "truk", "truk", "truk", "truk", "truk", "1tnk", "1tnk", "jeep", "jeep" };
 		int currentReinforcement2;
 
-		static readonly string[] SovietVehicles1 = { "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "v2rl", "v2rl", "ftrk", "ftrk", "apc", "apc", "apc" };
-		static readonly string[] SovietVehicles2 = { "4tnk", "4tnk", "4tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "v2rl", "v2rl", "ftrk", "apc" };
-		const int SovietVehicles2Ticks = 1500 * 15;
+		static readonly string[] SovietUnits1 = { "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "v2rl", "v2rl", "ftrk", "apc", "e1", "e1", "e2", "e3", "e3", "e4" };
+		static readonly string[] SovietUnits2 = { "4tnk", "4tnk", "4tnk", "4tnk", "3tnk", "3tnk", "3tnk", "3tnk", "v2rl", "v2rl", "ftrk", "apc", "e1", "e1", "e2", "e3", "e3", "e4" };
+		const int SovietUnits2Ticks = 1500 * 15;
 		const int SovietGroupSize = 5;
 
 		const int ParadropTicks = 1500 * 20;
@@ -292,13 +298,13 @@ namespace OpenRA.Mods.RA.Missions
 			var spawnPoint = sovietEntryPoints[route];
 			var rallyPoint = sovietRallyPoints[route];
 			IEnumerable<string> units;
-			if (world.FrameNumber >= SovietVehicles2Ticks)
+			if (world.FrameNumber >= SovietUnits2Ticks)
 			{
-				units = SovietVehicles2;
+				units = SovietUnits2;
 			}
 			else
 			{
-				units = SovietVehicles1;
+				units = SovietUnits1;
 			}
 			var unit = world.CreateActor(units.Random(world.SharedRandom), new TypeDictionary { new LocationInit(spawnPoint), new OwnerInit(soviets) });
 			unit.QueueActivity(new AttackMove.AttackMoveActivity(unit, new Move.Move(rallyPoint, 3)));
@@ -381,6 +387,12 @@ namespace OpenRA.Mods.RA.Missions
 				unit.CancelActivity();
 				unit.ChangeOwner(allies);
 				unitsEvacuated++;
+				var createsShroud = unit.TraitOrDefault<CreatesShroud>();
+				if (createsShroud != null && objectives[GapGeneratorID].Status == ObjectiveStatus.InProgress)
+				{
+					objectives[GapGeneratorID].Status = ObjectiveStatus.Completed;
+					OnObjectivesUpdated(true);
+				}
 				var cargo = unit.TraitOrDefault<Cargo>();
 				if (cargo != null)
 				{
