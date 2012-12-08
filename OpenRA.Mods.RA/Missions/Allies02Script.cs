@@ -190,32 +190,35 @@ namespace OpenRA.Mods.RA.Missions
 				StartReinforcementsTimer();
 			}
 			reinforcementsTimer.Tick();
-			if (world.FrameNumber == TanksTicks)
-			{
-				RushSovietUnits();
-			}
 			if (world.FrameNumber == ParatroopersTicks)
 			{
 				MissionUtils.Paradrop(world, soviets, Badger1Passengers, badgerEntryPoint1.Location, badgerDropPoint1.Location);
 				MissionUtils.Paradrop(world, soviets, Badger2Passengers, badgerEntryPoint1.Location + new CVec(3, 0), badgerDropPoint2.Location);
 				MissionUtils.Paradrop(world, soviets, Badger3Passengers, badgerEntryPoint1.Location + new CVec(6, 0), badgerDropPoint3.Location);
 			}
-			if (world.FrameNumber == FlamersTicks)
-			{
-				RushSovietFlamers();
-			}
 			if (world.FrameNumber == ParabombTicks)
 			{
 				MissionUtils.Parabomb(world, soviets, badgerEntryPoint2.Location, parabombPoint1.Location);
 				MissionUtils.Parabomb(world, soviets, badgerEntryPoint2.Location + new CVec(0, 3), parabombPoint2.Location);
 			}
-			if (yak == null || (yak != null && !yak.IsDead() && (yak.GetCurrentActivity() is FlyCircle || yak.IsIdle)))
+			if (allies1 != allies2)
 			{
-				var alliedUnitsNearYakPoint = world.FindAliveCombatantActorsInCircle(yakAttackPoint.CenterLocation, 10)
-					.Where(a => a.Owner != soviets && a.HasTrait<IMove>() && a != tanya && a != einstein && a != engineer);
-				if (alliedUnitsNearYakPoint.Any())
+				if (world.FrameNumber == TanksTicks)
 				{
-					YakStrafe(alliedUnitsNearYakPoint);
+					RushSovietUnits();
+				}
+				if (world.FrameNumber == FlamersTicks)
+				{
+					RushSovietFlamers();
+				}
+				if (yak == null || (yak != null && !yak.IsDead() && (yak.GetCurrentActivity() is FlyCircle || yak.IsIdle)))
+				{
+					var alliedUnitsNearYakPoint = world.FindAliveCombatantActorsInCircle(yakAttackPoint.CenterLocation, 10)
+						.Where(a => a.Owner != soviets && a.HasTrait<IMove>() && a != tanya && a != einstein && a != engineer);
+					if (alliedUnitsNearYakPoint.Any())
+					{
+						YakStrafe(alliedUnitsNearYakPoint);
+					}
 				}
 			}
 			if (currentReinforcement > -1 && currentReinforcement < Reinforcements.Length && world.FrameNumber % 25 == 0)
