@@ -317,6 +317,25 @@ namespace OpenRA.Mods.RA.Server
 						server.SyncLobbyInfo();
 						return true;
 					}},
+				{ "difficulty",
+					s =>
+						{
+							if (!client.IsAdmin)
+							{
+								server.SendChatTo(conn, "Only the host can set that option");
+								return true;
+							}
+							if ((server.Map.Difficulties == null && s != null) || (server.Map.Difficulties != null && !server.Map.Difficulties.Contains(s)))
+							{
+								server.SendChatTo(conn, "Unsupported difficulty selected: {0}".F(s));
+								server.SendChatTo(conn, "Supported difficulties: {0}".F(server.Map.Difficulties.JoinWith(",")));
+								return true;
+							}
+
+							server.lobbyInfo.GlobalSettings.Difficulty = s;
+							server.SyncLobbyInfo();
+							return true;
+					}},
 				{ "kick",
 					s =>
 					{

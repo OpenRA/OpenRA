@@ -37,6 +37,7 @@ namespace OpenRA
 		public string Description;
 		public string Author;
 		public string Tileset;
+		public string[] Difficulties;
 
 		[FieldLoader.Ignore] public Lazy<Dictionary<string, ActorReference>> Actors;
 
@@ -178,6 +179,7 @@ namespace OpenRA
 				"Description",
 				"Author",
 				"Tileset",
+				"Difficulties",
 				"MapSize",
 				"Bounds",
 				"UseAsShellmap",
