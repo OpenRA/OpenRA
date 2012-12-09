@@ -1924,7 +1924,7 @@ Templates:
 		Tiles:
 			0: Rock
 			1: Rock
-			2: River
+			2: Rock
 			3: Rock
 			4: Rock
 			5: Rock
@@ -1938,7 +1938,7 @@ Templates:
 			2: Rock
 			3: Rock
 			4: Rock
-			5: River
+			5: Rock
 	Template@340:
 		Id: 340
 		Image: wc41
@@ -1947,7 +1947,7 @@ Templates:
 			0: Rock
 			1: Rock
 			2: Rock
-			3: River
+			3: Rock
 			4: Rock
 			5: Rock
 	Template@341:
@@ -1955,7 +1955,7 @@ Templates:
 		Image: wc42
 		Size: 3,2
 		Tiles:
-			0: River
+			0: Rock
 			1: Rock
 			2: Rock
 			3: Rock
@@ -1967,7 +1967,7 @@ Templates:
 		Size: 2,3
 		Tiles:
 			0: Rock
-			1: River
+			1: Rock
 			2: Rock
 			3: Rock
 			4: Rock
@@ -1982,7 +1982,7 @@ Templates:
 			2: Rock
 			3: Rock
 			4: Rock
-			5: River
+			5: Rock
 	Template@344:
 		Id: 344
 		Image: wc45
@@ -1992,7 +1992,7 @@ Templates:
 			1: Rock
 			2: Rock
 			3: Rock
-			4: River
+			4: Rock
 			5: Rock
 	Template@345:
 		Id: 345
@@ -2003,7 +2003,7 @@ Templates:
 			1: Rock
 			2: Rock
 			3: Rock
-			4: River
+			4: Rock
 			5: Rock
 	Template@346:
 		Id: 346
