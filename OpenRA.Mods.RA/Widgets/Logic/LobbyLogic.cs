@@ -159,12 +159,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var difficulty = lobby.Get<DropDownButtonWidget>("DIFFICULTY_DROPDOWNBUTTON");
 			difficulty.IsVisible = () => Map != null && Map.Difficulties != null && Map.Difficulties.Any();
 			difficulty.IsDisabled = () => !Game.IsHost || gameStarting || orderManager.LocalClient == null || orderManager.LocalClient.IsReady;
-			difficulty.GetText = () => orderManager.LobbyInfo.GlobalSettings.Difficulty;
+			difficulty.GetText = () => orderManager.LobbyInfo.GlobalSettings.Difficulty ?? "";
 			difficulty.OnMouseDown = _ =>
 			{
 				var options = Map.Difficulties.Select(d => new DifficultyDropDownOption
 				{
-					Title = d,
+					Title = d ?? "",
 					IsSelected = () => orderManager.LobbyInfo.GlobalSettings.Difficulty == d,
 					OnClick = () => orderManager.IssueOrder(Order.Command("difficulty {0}".F(d)))
 				});
