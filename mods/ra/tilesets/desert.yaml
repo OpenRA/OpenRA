@@ -5,6 +5,7 @@ General:
 	Palette: desert.pal
 	PlayerPalette: temperat.pal
 	WaterPaletteRotationBase: 32
+	EditorTemplateOrder: Terrain, Debris, Road, Cliffs, Water Cliffs, Beach, River, Bridge
 
 Terrain:
 	TerrainType@Clear:
@@ -69,6 +70,7 @@ Templates:
 		Id: 255
 		Image: clear1
 		Size: 1,1
+		Category: Terrain
 		Tiles:
 			0: Clear
 			1: Clear
@@ -90,6 +92,7 @@ Templates:
 		Id: 65535
 		Image: clear1
 		Size: 1,1
+		Category: Terrain
 		Tiles:
 			0: Clear
 			1: Clear
@@ -111,12 +114,14 @@ Templates:
 		Id:	256
 		Image: w1
 		Size: 1,1
+		Category: Terrain
 		Tiles:
 			0: Water
 	Template@257:
 		Id:	257
 		Image: sh17
 		Size: 2,2
+		Category: Terrain
 		Tiles:
 			0: Water
 			1: Water
@@ -126,6 +131,7 @@ Templates:
 		Id:	258
 		Image: sh18
 		Size: 2,2
+		Category: Terrain
 		Tiles:
 			0: Water
 			1: Water
