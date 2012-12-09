@@ -102,7 +102,7 @@ namespace OpenRA.Mods.RA.Missions
 		static readonly string[] ParadropTerrainTypes = { "Clear", "Road", "Rough", "Beach", "Ore" };
 		static readonly string[] SovietParadroppers = { "e1", "e1", "e3", "e3", "e4" };
 		int paradrops = 20;
-		const int maxSovietYaks = 2;
+		int maxSovietYaks;
 
 		int attackAtFrame;
 		int attackAtFrameIncrement;
@@ -407,23 +407,26 @@ namespace OpenRA.Mods.RA.Missions
 		public void WorldLoaded(World w)
 		{
 			world = w;
+			var diff = w.LobbyInfo.GlobalSettings.Difficulty;
+			Game.Debug("{0} difficulty selected".F(diff));
 			allies1 = w.Players.Single(p => p.InternalName == "Allies1");
 			allies2 = w.Players.SingleOrDefault(p => p.InternalName == "Allies2");
 			if (allies2 != null)
 			{
 				attackAtFrame = 500;
 				attackAtFrameIncrement = 500;
-				minAttackAtFrame = 200;
-				unitsEvacuatedThreshold = 100;
+				minAttackAtFrame = diff == "Hard" ? 50 : 100;
+				unitsEvacuatedThreshold = diff == "Hard" ? 200 : 100;
 			}
 			else
 			{
 				allies2 = allies1;
 				attackAtFrame = 600;
 				attackAtFrameIncrement = 600;
-				minAttackAtFrame = 100;
-				unitsEvacuatedThreshold = 50;
+				minAttackAtFrame = diff == "Hard" ? 100 : 200;
+				unitsEvacuatedThreshold = diff == "Hard" ? 100 : 50;
 			}
+			maxSovietYaks = diff == "Hard" ? 4 : 2;
 			objectives[EvacuateID].Text = objectives[EvacuateID].Text.F(unitsEvacuatedThreshold);
 			allies = w.Players.Single(p => p.InternalName == "Allies");
 			soviets = w.Players.Single(p => p.InternalName == "Soviets");
