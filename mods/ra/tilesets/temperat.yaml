@@ -2899,7 +2899,7 @@ Templates:
 		Id: 125
 		Image: falls1
 		Size: 3,3
-		Category: Water Cliffs
+		Category: River
 		Tiles:
 			0: Rock
 			1: Rock
@@ -2929,7 +2929,7 @@ Templates:
 		Id: 127
 		Image: falls2
 		Size: 3,2
-		Category: Water Cliffs
+		Category: River
 		Tiles:
 			0: Rock
 			1: Rock
