@@ -961,7 +961,7 @@ HPAD:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 90
-#		Prerequisites: dome
+		Prerequisites: dome
 		Owner: allies
 		Hotkey: i
 	Valued:
@@ -996,7 +996,7 @@ AFLD:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 50
-#		Prerequisites: dome
+		Prerequisites: dome
 		Owner: soviet
 		Hotkey: g
 	Valued:
@@ -1214,6 +1214,7 @@ KENN:
 		Range: 4
 	IronCurtainable:
 	-EmitInfantryOnSell:
+	-AcceptsSupplies:
 
 FIX:
 	Inherits: ^Building

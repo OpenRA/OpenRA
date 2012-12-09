@@ -228,7 +228,7 @@ Container@PLAYER_WIDGETS:
 							Width:30
 							Height:30
 							Key: r
-							TooltipText: Vehicle
+							TooltipText: Vehicles
 							TooltipContainer:TOOLTIP_CONTAINER
 							Children:
 								Image@ICON:

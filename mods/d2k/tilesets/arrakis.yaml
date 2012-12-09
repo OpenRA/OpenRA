@@ -365,7 +365,7 @@ Templates:
 		Id: 28
 		Image: BASE28
 		Size: 2,2
-		Category: Rock
+		Category: Rock-Detail
 		PickAny: False
 		Tiles:
 			1: Rough
@@ -754,10 +754,10 @@ Templates:
 		Category: Rock-Detail
 		PickAny: False
 		Tiles:
-			3: Transition
-			2: Transition
-			0: Transition
-			1: Transition
+			3: Rough
+			2: Rough
+			0: Rough
+			1: Rough
 	Template@66:
 		Id: 66
 		Image: BASE66
@@ -998,7 +998,7 @@ Templates:
 		Category: Rock-Detail
 		PickAny: False
 		Tiles:
-			0: Rock
+			0: Rough
 	Template@93:
 		Id: 93
 		Image: BASE93
@@ -1020,9 +1020,9 @@ Templates:
 		PickAny: False
 		Tiles:
 			1: Rock
-			3: Rock
-			2: Rock
-			0: Rock
+			3: Rough
+			2: Rough
+			0: Rough
 	Template@95:
 		Id: 95
 		Image: BASE95
@@ -1030,7 +1030,7 @@ Templates:
 		Category: Rock-Detail
 		PickAny: False
 		Tiles:
-			0: Rock
+			0: Rough
 			1: Rock
 	Template@96:
 		Id: 96
@@ -1946,7 +1946,7 @@ Templates:
 		Tiles:
 			0: Cliff
 			2: Cliff
-			3: Transition
+			3: Cliff
 			1: Transition
 	Template@199:
 		Id: 199
@@ -3420,7 +3420,7 @@ Templates:
 			0: Rough
 			2: Rough
 			3: Rough
-			1: Sand
+			1: Rock
 	Template@349:
 		Id: 349
 		Image: BGBS10
@@ -3800,12 +3800,12 @@ Templates:
 		Category: Sand-Detail
 		PickAny: False
 		Tiles:
-			1: Sand
-			3: Sand
+			1: Rough
+			3: Rough
 			5: Sand
 			4: Sand
-			2: Sand
-			0: Sand
+			2: Rough
+			0: Rough
 	Template@385:
 		Id: 385
 		Image: ICE24
@@ -3813,10 +3813,10 @@ Templates:
 		Category: Sand-Detail
 		PickAny: False
 		Tiles:
-			0: Sand
-			2: Sand
-			3: Sand
-			1: Sand
+			0: Rough
+			2: Rough
+			3: Rough
+			1: Rough
 	Template@386:
 		Id: 386
 		Image: ICE25
@@ -3824,9 +3824,9 @@ Templates:
 		Category: Sand-Detail
 		PickAny: False
 		Tiles:
-			0: Sand
-			2: Sand
-			3: Sand
+			0: Rough
+			2: Rough
+			3: Rough
 			1: Sand
 	Template@387:
 		Id: 387
@@ -4000,8 +4000,8 @@ Templates:
 		Category: Sand-Detail
 		PickAny: False
 		Tiles:
-			0: Sand
-			1: Sand
+			0: Rough
+			1: Rough
 	Template@404:
 		Id: 404
 		Image: ICE43
@@ -4009,8 +4009,8 @@ Templates:
 		Category: Sand-Detail
 		PickAny: False
 		Tiles:
-			0: Sand
-			1: Sand
+			0: Rough
+			1: Rough
 	Template@405:
 		Id: 405
 		Image: ICE44
@@ -4018,8 +4018,8 @@ Templates:
 		Category: Sand-Detail
 		PickAny: False
 		Tiles:
-			0: Sand
-			1: Sand
+			0: Rough
+			1: Rough
 	Template@406:
 		Id: 406
 		Image: ICE45
@@ -4027,8 +4027,8 @@ Templates:
 		Category: Sand-Detail
 		PickAny: False
 		Tiles:
-			0: Sand
-			1: Sand
+			0: Rough
+			1: Rough
 	Template@407:
 		Id: 407
 		Image: ICE46
@@ -4036,8 +4036,8 @@ Templates:
 		Category: Sand-Detail
 		PickAny: False
 		Tiles:
-			1: Sand
-			0: Sand
+			1: Rough
+			0: Rough
 	Template@408:
 		Id: 408
 		Image: TREE00
@@ -4045,7 +4045,7 @@ Templates:
 		Category: Sand-Detail
 		PickAny: False
 		Tiles:
-			0: Sand
+			0: Rough
 	Template@409:
 		Id: 409
 		Image: TREE01
@@ -4053,7 +4053,7 @@ Templates:
 		Category: Sand-Detail
 		PickAny: False
 		Tiles:
-			0: Sand
+			0: Rough
 	Template@410:
 		Id: 410
 		Image: TREE02
@@ -4700,10 +4700,10 @@ Templates:
 		Tiles:
 			0: Sand
 			4: Cliff
-			8: Cliff
+			8: Rough
 			9: Cliff
 			10: Cliff
-			11: Sand
+			11: Rough
 			7: Sand
 			3: Sand
 			2: Cliff
@@ -4717,10 +4717,10 @@ Templates:
 		Category: BaseBorder-Cliff
 		PickAny: False
 		Tiles:
-			3: Sand
-			2: Sand
-			0: Sand
-			1: Sand
+			3: Cliff
+			2: Cliff
+			0: Cliff
+			1: Cliff
 	Template@476:
 		Id: 476
 		Image: WAST31
@@ -4741,8 +4741,8 @@ Templates:
 		Category: Sand-Detail
 		PickAny: False
 		Tiles:
-			0: Concrete
-			1: Concrete
+			0: Rough
+			1: Rough
 	Template@478:
 		Id: 478
 		Image: WAST33
@@ -4767,9 +4767,9 @@ Templates:
 		PickAny: False
 		Tiles:
 			0: Sand
-			1: Sand
-			2: Sand
-			3: Sand
+			1: Cliff
+			2: Cliff
+			3: Rough
 	Template@481:
 		Id: 481
 		Image: WAST36

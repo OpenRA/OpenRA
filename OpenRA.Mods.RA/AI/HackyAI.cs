@@ -150,7 +150,8 @@ namespace OpenRA.Mods.RA.AI
 
         public bool TargetIsValid
         {
-            get { return (target != null && !target.IsDead() && !target.Destroyed && target.IsInWorld); }
+            get { return (target != null && !target.IsDead() && !target.Destroyed
+                && target.IsInWorld && !target.HasTrait<Husk>()); }
         }
 
         //**********************************************************************************

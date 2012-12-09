@@ -42,7 +42,7 @@ namespace OpenRA.Editor
 				tilePalette.ResumeLayout();
 				actorPalette.ResumeLayout();
 				resourcePalette.ResumeLayout();
-				surface1.Bind(null, null, null);
+				surface1.Bind(null, null, null, null);
 				pmMiniMap.Image = null;
 				currentMod = toolStripComboBox1.SelectedItem as string;
 
@@ -141,7 +141,11 @@ namespace OpenRA.Editor
 			int[] ShadowIndex = { 3, 4 };
 			var palette = new Palette(FileSystem.Open(tileset.Palette), ShadowIndex);
 
-			surface1.Bind(map, tileset, palette);
+			// required for desert terrain in RA
+			var playerPalette = tileset.PlayerPalette ?? tileset.Palette;
+			var PlayerPalette = new Palette(FileSystem.Open(playerPalette), ShadowIndex);
+
+			surface1.Bind(map, tileset, palette, PlayerPalette);
 			// construct the palette of tiles
 			var palettes = new[] { tilePalette, actorPalette, resourcePalette };
 			foreach (var p in palettes) { p.Visible = false; p.SuspendLayout(); }
@@ -211,7 +215,13 @@ namespace OpenRA.Editor
 					if (etf != null && etf.RequireTilesets != null
 						&& !etf.RequireTilesets.Contains(tileset.Id)) continue;
 
-					var template = RenderUtils.RenderActor(info, tileset, palette);
+					var TemplatePalette = PlayerPalette;
+					var rsi = info.Traits.GetOrDefault<RenderSimpleInfo>();
+					// exception for desert buildings
+					if (rsi != null && rsi.Palette != null && rsi.Palette.Contains("terrain"))
+						TemplatePalette = palette;
+
+					var template = RenderUtils.RenderActor(info, tileset, TemplatePalette);
 					var ibox = new PictureBox
 					{
 						Image = template.Bitmap,
@@ -242,7 +252,7 @@ namespace OpenRA.Editor
 			{
 				try
 				{
-					var template = RenderUtils.RenderResourceType(a, tileset.Extensions, palette);
+					var template = RenderUtils.RenderResourceType(a, tileset.Extensions, PlayerPalette);
 					var ibox = new PictureBox
 					{
 						Image = template.Bitmap,
@@ -317,7 +327,7 @@ namespace OpenRA.Editor
 				if ((int)rd.width.Value != surface1.Map.MapSize.X || (int)rd.height.Value != surface1.Map.MapSize.Y)
 				{
 					surface1.Map.Resize((int)rd.width.Value, (int)rd.height.Value);
-					surface1.Bind(surface1.Map, surface1.TileSet, surface1.Palette);	// rebind it to invalidate all caches
+					surface1.Bind(surface1.Map, surface1.TileSet, surface1.Palette, surface1.PlayerPalette);	// rebind it to invalidate all caches
 				}
 
 				surface1.Invalidate();

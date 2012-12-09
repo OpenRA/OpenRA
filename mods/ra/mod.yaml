@@ -8,6 +8,7 @@ Folders:
 	.
 	./mods/ra
 	./mods/ra/bits
+	./mods/ra/bits/desert
 	./mods/ra/uibits
 	~^/Content/ra
 
@@ -64,6 +65,7 @@ ChromeLayout:
 	mods/ra/chrome/dropdowns.yaml
 	mods/ra/chrome/modchooser.yaml
 	mods/ra/chrome/cheats.yaml
+	mods/ra/chrome/objectives.yaml
 
 Weapons:
 	mods/ra/weapons.yaml
@@ -78,6 +80,7 @@ TileSets:
 	mods/ra/tilesets/snow.yaml
 	mods/ra/tilesets/interior.yaml
 	mods/ra/tilesets/temperat.yaml
+	mods/ra/tilesets/desert.yaml
 
 Music:
 	mods/ra/music.yaml

@@ -3,6 +3,7 @@ General:
 	Id: SNOW
 	Extensions: .sno, .shp, .tem
 	Palette: snow.pal
+	WaterPaletteRotationBase: 32
 
 Terrain:
 	TerrainType@Clear:

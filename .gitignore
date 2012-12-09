@@ -13,9 +13,6 @@ mods/*/*.dll
 # ReSharper crap
 _ReSharper.*/
 
-# Red Alert binary files
-mods/*/packages/*.[mM][iI][xX]
-
 #binary stuff
 /*.dll
 *.pdb

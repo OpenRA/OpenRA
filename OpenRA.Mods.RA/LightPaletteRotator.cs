@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA
 			t += .5f;
 		}
 
-		static readonly string[] ExcludePalettes = { "cursor", "chrome", "colorpicker" };
+		static readonly string[] ExcludePalettes = { "cursor", "chrome", "colorpicker", "terrain" };
 
 		public void AdjustPalette(Dictionary<string,Palette> palettes)
 		{

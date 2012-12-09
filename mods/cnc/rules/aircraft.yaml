@@ -14,7 +14,6 @@ TRAN:
 	Selectable:
 		Bounds: 41,41
 	Helicopter:
-		RearmBuildings: hpad
 		LandWhenIdle: true
 		ROT: 5
 		Speed: 15
@@ -55,7 +54,6 @@ HELI:
 	Selectable:
 		Bounds: 30,24
 	Helicopter:
-		RearmBuildings: hpad
 		ROT: 4
 		Speed: 20
 	Health:
@@ -102,7 +100,6 @@ ORCA:
 	Selectable:
 		Bounds: 30,24
 	Helicopter:
-		RearmBuildings: hpad
 		ROT: 4
 		Speed: 20
 	Health:

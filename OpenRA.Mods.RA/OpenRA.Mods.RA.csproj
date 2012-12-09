@@ -269,6 +269,7 @@
     <Compile Include="Orders\RepairOrderGenerator.cs" />
     <Compile Include="Orders\UnitOrderTargeter.cs" />
     <Compile Include="OreRefinery.cs" />
+    <Compile Include="PlayerPaletteFromCurrentTileset.cs" />
     <Compile Include="PaletteFromCurrentTileset.cs" />
     <Compile Include="PaletteFromFile.cs" />
     <Compile Include="PaletteFromRGBA.cs" />
@@ -446,6 +447,8 @@
   <PropertyGroup>
     <PostBuildEvent>mkdir "$(SolutionDir)mods/ra/"
 copy "$(TargetPath)" "$(SolutionDir)mods/ra/"
-cd "$(SolutionDir)"</PostBuildEvent>
+copy "FuzzyLogicLibrary.dll" "$(SolutionDir)"
+cd "$(SolutionDir)"
+</PostBuildEvent>
   </PropertyGroup>
 </Project>
