@@ -126,14 +126,15 @@ local function fillTips(api,apibasename,apiname)
         frontname = frontname:gsub("\t","")
         frontname = frontname:gsub("("..("[^\n]"):rep(60)..".-[%s,%)%]:%.])([^%)])","%1\n %2")
 
-        info.description = info.description:gsub("\n\n","<br>")
-        info.description = info.description:gsub("[^%s]\n[^%s]","")
-        info.description = info.description:gsub("\n"," ")
-        info.description = info.description:gsub("<br>","\n")
-        info.description = info.description:gsub("[^%s]\t[^%s]"," ")
-        info.description = info.description:gsub("\t%s","")
-        info.description = info.description:gsub("%s\t","")
-        info.description = info.description:gsub("("..("[^\n]"):rep(60)..".-[%s,%)%]:%.])","%1\n")
+        info.description = info.description
+          :gsub("\n\n","<br>")
+          :gsub("[^%s]\n[^%s]","")
+          :gsub("\n"," ")
+          :gsub("<br>","\n")
+          :gsub("[^%s]\t[^%s]"," ")
+          :gsub("\t%s","")
+          :gsub("%s\t","")
+          :gsub("("..("[^\n]"):rep(60)..".-[%s,%)%]:%.])","%1\n")
 
         -- build info
         local inf = frontname.."\n"..info.description
@@ -231,7 +232,7 @@ end
 
 function GetTipInfo(editor, content, short)
   local caller = content:match("([%w_]+)%(%s*$")
-  local class = caller and content:match("([%w_]+)[%.:]"..caller.."%(%s*$")
+  local class = caller and content:match("([%w_]+)[%.:]"..caller.."%(%s*$") or ""
   local tip = editor.api.tip
 
   local classtab = short and tip.shortfinfoclass or tip.finfoclass
