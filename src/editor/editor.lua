@@ -287,6 +287,13 @@ function EditorCallTip(editor, pos, x, y)
         editor:CallTipShow(pos, val) end)
     end
   elseif tip then
+    -- only shorten if shown on mouse-over. Use shortcut to get full info.
+    local shortento = 550
+    local showtooltip = ide.frame.menuBar:FindItem(ID_SHOWTOOLTIP)
+    if x and y and #tip > shortento then
+      tip = tip:sub(1, shortento):gsub("%W*%w*$","").."...\n"
+        ..TR("Use '%s' to see full description."):format(showtooltip:GetLabel())
+    end
     editor:CallTipShow(pos, tip)
   end
 end
