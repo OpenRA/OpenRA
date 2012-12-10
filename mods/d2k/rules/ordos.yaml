@@ -27,6 +27,24 @@ BARRO:
 		Prerequisites: pwro
 		Owner: ordos
 
+GUNTOWERO:
+	Inherits: ^GUNTOWER
+	Buildable:
+		Prerequisites: conyardo
+		Owner: ordos
+
+ROCKETTOWERO:
+	Inherits: ^ROCKETTOWER
+	Buildable:
+		Prerequisites: radaro
+		Owner: ordos
+
+WALLO:
+	Inherits: ^WALL
+	Buildable:
+		Prerequisites: conyardo
+		Owner: ordos
+
 HIGHTECHO:
 	Inherits: ^HIGHTECH
 	Buildable:
@@ -49,6 +67,26 @@ PALACEO:
 	CanPowerDown:
 	RequiresPower:
 	SupportPowerChargeBar:
+
+RESEARCHO:
+	Inherits: ^RESEARCH
+	Buildable:
+		Prerequisites: radaro,hightecho
+		Owner: ordos
+	Tooltip:
+		Name: IX Research Center
+		Description: Unlocks experimental tanks\n  Special Ability: Carryall Combat Drop
+	ParatroopersPower:
+		Image: carryallicon
+		UnitType: carryall.infantry
+		FlareTime: 0
+		ChargeTime: 360
+		Description: Paratroopers
+		LongDesc: A Carryall drops a squad of Infantry \nanywhere on the map
+		Prerequisites: hightecho
+		DropItems: RIFLE, RIFLE, BAZOOKA, BAZOOKA, ENGINEER, BAZOOKA, RIFLE, RIFLE
+		SelectTargetSound:
+		FlareType:
 
 SILOO:
 	Inherits: ^SILO
@@ -89,7 +127,6 @@ MCVO:
 	Buildable:
 		Prerequisites: heavyo,repair
 		Owner: ordos
-		BuiltAt: heavyo
 	Transforms:
 		Facing: 16
 		IntoActor: conyardo
@@ -102,7 +139,6 @@ MCVO.starport:
 	Inherits: MCVO
 	Buildable:
 		Queue: Starport
-		BuiltAt: starporto
 	Valued:
 		Cost: 1499
 
@@ -113,7 +149,6 @@ COMBATO:
 	Buildable:
 		Prerequisites: heavyo
 		Owner: ordos
-		BuiltAt: heavyo
 	Mobile:
 		Speed: 9
 		Crushes: crate, infantry
@@ -135,16 +170,14 @@ COMBATO.starport:
 	Inherits: COMBATO
 	Buildable:
 		Queue: Starport
-		BuiltAt: starporto
 	Valued:
 		Cost: 489
 
-TRIKEO:
-	Inherits: ^TRIKE
+RAIDER:
+	Inherits: TRIKE
 	Buildable:
 		Prerequisites: lighto
 		Owner: ordos
-		BuiltAt: lighto
 	Valued:
 		Cost: 250
 	Tooltip:
@@ -163,29 +196,12 @@ TRIKEO:
 		PrimaryOffset: 0,-6,0,-3
 		#PrimaryLocalOffset: 1,0,0,-3,0, -1,0,0,-3,0
 
-
-
-#TRIKEO.starport:
-#	Inherits: ^TRIKE
-#	Buildable:
-#		Queue: Starport
-#		Prerequisites: lighto
-#		Owner: ordos
-#		BuiltAt: starporto
-#	RenderUnit:
-#		Image: TRIKE
-#	Valued:
-#		Cost: 149
-
-CARRYALLO:
-	Inherits: ^CARRYALL
-	RenderUnit:
-		Image: CARRYALL
-
-CARRYALLO.starport:
-	Inherits: CARRYALLO
+RAIDER.starport:
+	Inherits: RAIDER
+	Buildable:
+		Queue: Starport
 	Valued:
-		Cost: 999
+		Cost: 149
 
 DEVIATORTANK:
 	Inherits: ^Tank
@@ -200,7 +216,6 @@ DEVIATORTANK:
 		BuildPaletteOrder: 50
 		Prerequisites: heavyo,research
 		Owner: ordos
-		BuiltAt: heavyo
 		Hotkey: d
 	Mobile:
 		ROT: 3

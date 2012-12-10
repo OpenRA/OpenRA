@@ -42,8 +42,6 @@ ENGINEER:
 		HP: 25
 	Mobile:
 		Speed: 5
-	Passenger:
-		PipType: Yellow
 	EngineerRepair:
 	Captures:
 	#TakeCover:
@@ -83,7 +81,7 @@ MEDIC:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 60
-		Owner: atreides,ordos
+		Owner: atreides, ordos
 		Prerequisites: research
 		Hotkey: m
 	Valued:
@@ -102,14 +100,11 @@ MEDIC:
 	AutoHeal:
 	AttackMedic:
 		PrimaryWeapon: Heal
-	Passenger:
-		PipType: Blue
 	-AutoTarget:
 	AttackMove:
 		JustMove: true
 	RenderInfantry:
 		Image: THUMPER
-
 
 #THUMPER:
 #	Inherits: ^Infantry

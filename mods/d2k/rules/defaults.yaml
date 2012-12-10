@@ -139,7 +139,7 @@
 		Types:Infantry
 	GivesBounty:
 	CrushableInfantry:
-		CrushSound: squishy2.aud
+		CrushSound: CRUSH1.aud
 	RepairableNear:
 		Buildings: barra, barro
 		CloseEnough: 1

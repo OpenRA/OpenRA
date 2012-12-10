@@ -1,4 +1,4 @@
-^CARRYALL:
+CARRYALL:
 	Inherits: ^Helicopter
 	Valued:
 		Cost: 1200
@@ -18,7 +18,7 @@
 		Speed: 20
 		LandableTerrainTypes: Sand, Rock, Transition, Spice, Dune
 		RepairBuildings: repair
-		RearmBuildings: starporta,starporto,starporth
+		RearmBuildings: starport
 		MinimalLandAltitude: 25
 	SmokeTrailWhenDamaged@0:
 		Offset: 15, -12
@@ -51,7 +51,7 @@ FRIGATE:
 		ROT: 5
 		Speed: 30
 		RepairBuildings: repair
-		RearmBuildings: starporta,starporto,starporth
+		RearmBuildings: starport
 	Health:
 		HP: 500
 	-TargetableAircraft:
@@ -92,7 +92,7 @@ ORNI:
 		ROT: 6
 		Speed: 30
 		RepairBuildings: repair
-		RearmBuildings: starporta,starporto,starporth
+		RearmBuildings: starport
 	RenderUnit:
 	WithShadow:
 	Selectable:
@@ -117,7 +117,7 @@ ORNI.bomber:
 		ROT: 5
 		Speed: 35
 		RepairBuildings: repair
-		RearmBuildings: starporta,starporto,starporth
+		RearmBuildings: starport
 	LimitedAmmo:
 		Ammo: 5
 	RenderUnit:
@@ -147,7 +147,7 @@ CARRYALL.infantry:
 		ROT: 4
 		Speed: 25
 		RepairBuildings: repair
-		RearmBuildings: starporta,starporto,starporth
+		RearmBuildings: starport
 	SmokeTrailWhenDamaged@0:
 		Offset: 15, -12
 		Interval: 3

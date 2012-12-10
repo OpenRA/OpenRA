@@ -47,9 +47,8 @@ HARVESTER:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Armor
-		Prerequisites: Heavy Factory,Spice Refinery
+		Prerequisites: heavy, refinery
 		Owner: atreides, harkonnen, ordos
-		BuiltAt: heavya, heavyh, heavyo
 		BuildPaletteOrder: 10
 		Hotkey: h
 	Valued:
@@ -102,16 +101,17 @@ HARVESTER.starport:
 	Inherits: HARVESTER
 	Buildable:
 		Queue: Starport
-		BuiltAt: starporta, starporth, starporto
 	Valued:
 		Cost: 895
 
-^TRIKE:
+TRIKE:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 15
 		Hotkey: w
+		Prerequisites: light
+		Owner: harkonnen, atreides
 	Valued:
 		Cost: 250
 	Tooltip:
@@ -130,7 +130,7 @@ HARVESTER.starport:
 	RevealsShroud:
 		Range: 8
 	RenderUnit:
-	WithMuzzleFlash:
+		Image: TRIKE
 	AttackFrontal:
 		PrimaryWeapon: M60mg
 		PrimaryOffset: 0,-6,0,-3
@@ -140,21 +140,28 @@ HARVESTER.starport:
 	Explodes:
 		Weapon: UnitExplodeTiny
 		EmptyWeapon: UnitExplodeTiny
-	#Cargo:
-	#	Types: Infantry
-	#	MaxWeight: 1
-	#	PipCount: 1
-	#	UnloadFacing: 220
+	Cargo:
+		Types: Infantry
+		MaxWeight: 1
+		PipCount: 1
+		UnloadFacing: 220
+
+TRIKE.starport:
+	Inherits: TRIKE
+	Buildable:
+		Queue: Starport
+		Prerequisites: starport
+	Valued:
+		Cost: 149
 
 QUAD:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Vehicle
-		Prerequisites: Light Factory
-		Owner: atreides, harkonnen, ordos
-		BuiltAt: lighta, lighth, lighto
 		BuildPaletteOrder: 20
 		Hotkey: q
+		Prerequisites: light
+		Owner: harkonnen, atreides
 	Valued:
 		Cost: 400
 	Tooltip:
@@ -187,7 +194,7 @@ QUAD.starport:
 	Inherits: QUAD
 	Buildable:
 		Queue: Starport
-		BuiltAt: starporta, starporth, starporto
+		Prerequisites: light
 	Valued:
 		Cost: 295
 
@@ -242,9 +249,8 @@ SIEGETANK:
 	Inherits: ^Tank
 	Buildable:
 		Queue: Armor
-		Prerequisites: Heavy Factory,Outpost
+		Prerequisites: heavy, radar
 		Owner: atreides, harkonnen, ordos
-		BuiltAt: heavya, heavyh, heavyo
 		BuildPaletteOrder: 30
 		Hotkey: t
 	Valued:
@@ -298,7 +304,6 @@ SIEGETANK.starport:
 	Inherits: SIEGETANK
 	Buildable:
 		Queue: Starport
-		BuiltAt: starporta, starporth, starporto
 	Valued:
 		Cost: 594
 
@@ -312,9 +317,8 @@ MISSILETANK:
 		Icon: missiletankicon
 	Buildable:
 		Queue: Armor
-		Prerequisites: Heavy Factory,High Tech Facility
+		Prerequisites: heavy, hightech
 		Owner: atreides, harkonnen
-		BuiltAt: heavya, heavyh
 		BuildPaletteOrder: 40
 		Hotkey: r
 	Mobile:
@@ -353,6 +357,5 @@ MISSILETANK.starport:
 	Buildable:
 		Queue: Starport
 		Owner: atreides, harkonnen, ordos
-		BuiltAt: starporta, starporth, starporto
 	Valued:
 		Cost: 699

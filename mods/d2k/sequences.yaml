@@ -3,11 +3,6 @@
 		Start: 0
 		Facings: 32
 
-laserfire:
-	idle: veh-hit2
-		Start: 0
-		Length: *
-
 dmcv:
 	idle:
 		Start: 0
@@ -29,7 +24,35 @@ harvester:
 		Start: 10
 		Length: 1
 
-wall:
+walla:
+	idle:
+		Start: 0
+		Length: 16
+	scratched-idle:
+		Start: 0
+		Length: 16
+	damaged-idle:
+		Start: 16
+		Length: 16
+	critical-idle:
+		Start: 16
+		Length: 16
+
+wallh:
+	idle:
+		Start: 0
+		Length: 16
+	scratched-idle:
+		Start: 0
+		Length: 16
+	damaged-idle:
+		Start: 16
+		Length: 16
+	critical-idle:
+		Start: 16
+		Length: 16
+
+wallo:
 	idle:
 		Start: 0
 		Length: 16
@@ -65,22 +88,11 @@ trike:
 	unload:
 		Start: 0
 		Facings: 32
-	muzzle: minigun
-		Start: 0
-		Length: 6
-		Facings: 8
 
 quad:
 	idle:
 		Start: 0
 		Facings: 32
-	unload:
-		Start: 0
-		Facings: 32
-	muzzle: minigun
-		Start: 0
-		Length: 6
-		Facings: 8
 
 siegetank:
 	idle:
@@ -100,7 +112,7 @@ sonictank:
 		Start: 0
 		Facings: 32
 
-guntower:
+guntowera:
 	idle:
 		Start: 0
 		Facings: 1
@@ -116,11 +128,11 @@ guntower:
 	damaged-recoil:
 		Start: 0
 		Facings: 1
-	turret: gunturret
+	turret: gunturreta
 		Start: 0
 		Facings: 32
 
-rockettower:
+guntowerh:
 	idle:
 		Start: 0
 		Facings: 1
@@ -136,7 +148,86 @@ rockettower:
 	damaged-recoil:
 		Start: 0
 		Facings: 1
-	turret: rocketturret
+	turret: gunturreth
+		Start: 0
+		Facings: 32
+
+guntowero:
+	idle:
+		Start: 0
+		Facings: 1
+	recoil:
+		Start: 0
+		Facings: 1
+	make: silomake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 0
+		Facings: 1
+	damaged-recoil:
+		Start: 0
+		Facings: 1
+	turret: gunturreto
+		Start: 0
+		Facings: 32
+
+rockettowera:
+	idle:
+		Start: 0
+		Facings: 1
+	recoil:
+		Start: 0
+		Facings: 1
+	make: silomake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 0
+		Facings: 1
+	damaged-recoil:
+		Start: 0
+		Facings: 1
+	turret: rocketturreta
+		Start: 0
+		Facings: 32
+
+rockettowerh:
+	idle:
+		Start: 0
+		Facings: 1
+	recoil:
+		Start: 0
+		Facings: 1
+	make: silomake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 0
+		Facings: 1
+	damaged-recoil:
+		Start: 0
+		Facings: 1
+	turret: rocketturreth
+		Start: 0
+		Facings: 32
+rockettowero:
+	idle:
+		Start: 0
+		Facings: 1
+	recoil:
+		Start: 0
+		Facings: 1
+	make: silomake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 0
+		Facings: 1
+	damaged-recoil:
+		Start: 0
+		Facings: 1
+	turret: rocketturreto
 		Start: 0
 		Facings: 32
 
@@ -1046,10 +1137,6 @@ raider:
 	unload:
 		Start: 0
 		Facings: 32
-	muzzle: minigun
-		Start: 0
-		Length: 6
-		Facings: 8
 
 deviatortank:
 	idle:

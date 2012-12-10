@@ -321,8 +321,8 @@ SonicBeam:
 	ROF: 85
 	Range: 8.5
 	Report: SONIC1
-	#Charges: yes
-	Projectile: TeslaZap
+	Projectile: Bullet
+		Speed: 100
 	Warhead:
 		Spread: 1
 		Versus: 

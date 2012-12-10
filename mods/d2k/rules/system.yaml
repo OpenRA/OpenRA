@@ -76,9 +76,9 @@ Player:
 			starporta: 0.1%
 			starporth: 0.1%
 			starporto: 0.1%
-			research: 0.1%
-			guntower: 7%
-			rockettower: 7%
+			researcha: 0.1%
+			researchh: 0.1%
+			researcho: 0.1%
 			powra: 30%
 			powrh: 30%
 			powro: 30%
@@ -89,9 +89,7 @@ Player:
 			fremen: 0.5%
 			sardaukar: 1.5%
 			harvester: 0.1%
-			trikea.starport: 5%
-			#trikeh.starport: 5%
-			#trikeo.starport: 5%
+			trike.starport: 5%
 			quad.starport: 7.5%
 			siegetank.starport: 5%
 			missiletank.starport: 7.5%
@@ -101,9 +99,8 @@ Player:
 			sonictank: 10%
 			devast: 10%
 			deviatortank: 7.5%
-			trikea: 10%
-			#trikeh: 10%
-			trikeo: 10%
+			trike: 10%
+			raider: 10%
 			quad: 15%
 			siegetank: 10%
 			missiletank: 15%
@@ -140,8 +137,9 @@ Player:
 			palacea: 0.1%
 			palaceh: 0.1%
 			palaceo: 0.1%
-			guntower: 5%
-			rockettower: 10%
+			researcha: 0.1%
+			researchh: 0.1%
+			researcho: 0.1%
 			powra: 32%
 			powrh: 32%
 			powro: 32%
@@ -152,9 +150,7 @@ Player:
 			fremen: 0.25%
 			sardaukar: 1%
 			harvester: 0.1%
-			trikea.starport: 7.5%
-			#trikeh.starport: 7.5%
-			#trikeo.starport: 7.5%
+			trike.starport: 7.5%
 			quad.starport: 12.5%
 			siegetank.starport: 5%
 			missiletank.starport: 7.5%
@@ -164,9 +160,8 @@ Player:
 			sonictank: 10%
 			devast: 10%
 			deviatortank: 7.5%
-			trikea: 15%
-			#trikeh: 15%
-			trikeo: 15%
+			trike: 15%
+			raider: 15%
 			quad: 25%
 			siegetank: 10%
 			missiletank: 15%
@@ -203,12 +198,12 @@ Player:
 			starporta: 0.1%
 			starporth: 0.1%
 			starporto: 0.1%
-			research: 0.1%
+			researcha: 0.1%
+			researchh: 0.1%
+			researcho: 0.1%
 			palacea: 0.1%
 			palaceh: 0.1%
 			palaceo: 0.1%
-			guntower: 10%
-			rockettower: 5%
 			powra: 30%
 			powrh: 30%
 			powro: 30%
@@ -219,9 +214,7 @@ Player:
 			fremen: 1%
 			sardaukar: 3%
 			harvester: 0.1%
-			trikea.starport: 5%
-			#trikeh.starport: 5%
-			#trikeo.starport: 5%
+			trike.starport: 5%
 			quad.starport: 7.5%
 			siegetank.starport: 5%
 			missiletank.starport: 7.5%
@@ -231,9 +224,8 @@ Player:
 			sonictank: 10%
 			devast: 10%
 			deviatortank: 7.5%
-			trikea: 10%
-			#trikeh: 10%
-			trikeo: 10%
+			trike: 10%
+			raider: 10%
 			quad: 15%
 			siegetank: 10%
 			missiletank: 15%
@@ -408,18 +400,15 @@ CRATE:
 		SelectionShares: 3
 		NoBaseSelectionShares: 9001
 		Unit: mcvo
-	GiveUnitCrateAction@TrikeA:
-		SelectionShares: 13#8
-		Unit: trikea
-	#GiveUnitCrateAction@TrikeH:
-	#	SelectionShares: 6
-	#	Unit: trikeh
+	GiveUnitCrateAction@Trike:
+		SelectionShares: 8
+		Unit: trike
 	GiveUnitCrateAction@Quad:
 		SelectionShares: 18
-		Unit: quad
-	GiveUnitCrateAction@TrikeO:
+		Unit: raider
+	GiveUnitCrateAction@Raider:
 		SelectionShares: 5
-		Unit: trikeo
+		Unit: raider
 	GiveUnitCrateAction@SiegeTank:
 		SelectionShares: 18
 		Unit: siegetank
