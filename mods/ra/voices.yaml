@@ -95,4 +95,4 @@ VolkovVoice:
 		Select: iromsec,iromsee
 		Move: irommoc,irommoe,irommod
 		Attack: iromata,iromatb,iromatc,iromatd,iromate
-		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman6,dedman7,dedman8,dedman10
+		Die: dedbot1,dedbot2,dedbot3,dedbot4,dedbot5,dedbot6,dedbot7,dedbot8,dedbot10
