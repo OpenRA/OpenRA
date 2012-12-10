@@ -197,7 +197,7 @@ SONICTANK:
 	RenderUnit:
 		Image: SONICTANK
 	AttackFrontal:
-		PrimaryWeapon: TTankZap
+		PrimaryWeapon: SonicBeam
 		PrimaryLocalOffset: 0,-15,0,-10,0
 	AutoTarget:
 		InitialStance: Defend

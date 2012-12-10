@@ -408,8 +408,7 @@ WALL:
 		Value: 0
 	Tooltip:
 		Name: Concrete Wall
-		Description: Stops units and blocks enemy fire
-		Icon: wallicon
+		Description: Stop units and blocks enemy fire.
 	AppearsOnRadar:
 	Building:
 		BuildSounds: CHUNG.aud
