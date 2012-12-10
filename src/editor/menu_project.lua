@@ -55,12 +55,17 @@ local debugTab = {
   { ID_CLEAROUTPUT, TR("C&lear Output Window")..KSC(ID_CLEAROUTPUT), TR("Clear the output window before compiling or debugging"), wx.wxITEM_CHECK },
 }
 
+local targetDirMenu = wx.wxMenu{
+  {ID_PROJECTDIRCHOOSE, TR("Choose ...")..KSC(ID_PROJECTDIRCHOOSE), TR("Choose a project directory")},
+  {ID_PROJECTDIRFROMFILE, TR("Set From Current File")..KSC(ID_PROJECTDIRFROMFILE), TR("Set project directory from current file")},
+}
 local debugMenu = wx.wxMenu(debugTab)
 local debugMenuRun = {
   start=TR("Start &Debugging")..KSC(ID_STARTDEBUG), continue=TR("Co&ntinue")..KSC(ID_STARTDEBUG)}
 local debugMenuStop = {
   debugging=TR("S&top Debugging")..KSC(ID_STOPDEBUG), process=TR("S&top Process")..KSC(ID_STOPDEBUG)}
-debugMenu:Append(ID_INTERPRETER,TR("Lua &Interpreter"),targetMenu,TR("Set the interpreter to be used"))
+debugMenu:Append(ID_PROJECTDIR, TR("Project Directory"), targetDirMenu, TR("Set the project directory to be used"))
+debugMenu:Append(ID_INTERPRETER, TR("Lua &Interpreter"), targetMenu, TR("Set the interpreter to be used"))
 menuBar:Append(debugMenu, TR("&Project"))
 
 -----------------------------
