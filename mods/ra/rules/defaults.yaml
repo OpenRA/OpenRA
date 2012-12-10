@@ -262,6 +262,8 @@
 
 ^CivBuilding:
 	Inherits: ^TechBuilding
+	RenderBuilding:
+		Palette: terrain
 	EditorAppearance:
 		UseTerrainPalette: true
 
