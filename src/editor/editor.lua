@@ -496,16 +496,20 @@ function CreateEditor()
       -- event:GetX and event:GetY, so instead we use wxGetMousePosition.
       local linux = ide.osname == 'Unix'
       if linux and editor ~= GetEditor() then return end
+
       -- check if this editor has focus; it may not when Stack/Watch window
       -- is on top, but DWELL events are still triggered in this case.
       -- Don't want to show calltip as it is still shown when the focus
       -- is switched to a different application.
       local focus = editor:FindFocus()
       if focus and focus:GetId() ~= editor:GetId() then return end
+
+      -- event:GetX() and event:GetY() positions don't correspond to
+      -- the correct positions calculated using ScreenToClient (at least
+      -- on Windows and Linux), so use what's calculated.
       local mpos = wx.wxGetMousePosition()
       local cpos = editor:ScreenToClient(mpos)
-      local position = editor:PositionFromPointClose(
-        linux and cpos.x or event:GetX(), linux and cpos.y or event:GetY())
+      local position = editor:PositionFromPointClose(cpos.x, cpos.y)
       if position ~= wxstc.wxSTC_INVALID_POSITION then
         EditorCallTip(editor, position, mpos.x, mpos.y)
       end
