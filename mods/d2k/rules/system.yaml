@@ -191,12 +191,18 @@ Player:
 			heavya: 0.1%
 			heavyh: 0.1%
 			heavyo: 0.1%
+			repaira: 0.1%
+			repairh: 0.1%
+			repairo: 0.1%
 			radara: 0.1%
 			radaro: 0.1%
 			radarh: 0.1%
 			hightecha: 0.1%
 			hightechh: 0.1%
 			hightecho: 0.1%
+			starporta: 0.1%
+			starporth: 0.1%
+			starporto: 0.1%
 			research: 0.1%
 			palacea: 0.1%
 			palaceh: 0.1%
