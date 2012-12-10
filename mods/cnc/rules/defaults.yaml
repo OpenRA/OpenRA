@@ -294,6 +294,10 @@
 	Tooltip:
 		Name: Field
 	-WithBuildingExplosion:
+	RenderBuilding:
+		Palette: terrain
+	EditorAppearance:
+		UseTerrainPalette: true
 
 ^CivFieldHusk:
 	AppearsOnRadar:
