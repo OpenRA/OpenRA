@@ -101,7 +101,7 @@ namespace OpenRA.Mods.RA.Missions
 		const int ParadropIncrement = 200;
 		static readonly string[] ParadropTerrainTypes = { "Clear", "Road", "Rough", "Beach", "Ore" };
 		static readonly string[] SovietParadroppers = { "e1", "e1", "e3", "e3", "e4" };
-		int paradrops = 20;
+		int paradrops;
 		int maxSovietYaks;
 
 		int attackAtFrame;
@@ -174,13 +174,13 @@ namespace OpenRA.Mods.RA.Missions
 				if (world.FrameNumber == ReinforcementsTicks2) { Sound.Play("reinfor1.aud"); }
 				if (world.FrameNumber % 25 == 0) { SpawnAlliedUnit(Reinforcements2[currentReinforcement2++]); }
 			}
-			if (difficulty != "Easy")
+			if (paradrops > 0)
 			{
 				if (world.FrameNumber == ParadropTicks)
 				{
 					Sound.Play("sovfapp1.aud");
 				}
-				if (world.FrameNumber >= ParadropTicks && paradrops > 0 && world.FrameNumber % ParadropIncrement == 0)
+				if (world.FrameNumber >= ParadropTicks && world.FrameNumber % ParadropIncrement == 0)
 				{
 					CPos lz;
 					CPos entry;
@@ -412,27 +412,25 @@ namespace OpenRA.Mods.RA.Missions
 		public void WorldLoaded(World w)
 		{
 			world = w;
+
 			difficulty = w.LobbyInfo.GlobalSettings.Difficulty;
 			Game.Debug("{0} difficulty selected".F(difficulty));
+
 			allies1 = w.Players.Single(p => p.InternalName == "Allies1");
 			allies2 = w.Players.SingleOrDefault(p => p.InternalName == "Allies2");
-			if (allies2 != null)
-			{
-				attackAtFrame = 500;
-				attackAtFrameIncrement = 500;
-				minAttackAtFrame = difficulty == "Hard" ? 50 : 100;
-				unitsEvacuatedThreshold = difficulty == "Hard" ? 200 : 100;
-			}
-			else
+			if (allies2 == null)
 			{
 				allies2 = allies1;
-				attackAtFrame = 600;
-				attackAtFrameIncrement = 600;
-				minAttackAtFrame = difficulty == "Hard" ? 100 : 200;
-				unitsEvacuatedThreshold = difficulty == "Hard" ? 100 : 50;
 			}
+
+			attackAtFrame = attackAtFrameIncrement = difficulty == "Hard" || difficulty == "Normal" ? 500 : 600;
+			minAttackAtFrame = difficulty == "Hard" || difficulty == "Normal" ? 100 : 150;
+			unitsEvacuatedThreshold = difficulty == "Hard" ? 200 : difficulty == "Normal" ? 100 : 50;
 			maxSovietYaks = difficulty == "Hard" ? 4 : difficulty == "Normal" ? 2 : 0;
+			paradrops = difficulty == "Hard" ? 40 : difficulty == "Normal" ? 20 : 0;
+
 			objectives[EvacuateID].Text = objectives[EvacuateID].Text.F(unitsEvacuatedThreshold);
+
 			allies = w.Players.Single(p => p.InternalName == "Allies");
 			soviets = w.Players.Single(p => p.InternalName == "Soviets");
 			var actors = w.WorldActor.Trait<SpawnMapActors>().Actors;
