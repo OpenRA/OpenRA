@@ -94,10 +94,10 @@ namespace OpenRA.Mods.RA.Missions
 
 		static readonly string[] SovietUnits1 = { "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "v2rl", "v2rl", "ftrk", "apc", "e1", "e1", "e2", "e3", "e3", "e4" };
 		static readonly string[] SovietUnits2 = { "4tnk", "4tnk", "4tnk", "4tnk", "3tnk", "3tnk", "3tnk", "3tnk", "v2rl", "v2rl", "ftrk", "apc", "e1", "e1", "e2", "e3", "e3", "e4" };
-		const int SovietUnits2Ticks = 1500 * 15;
+		int sovietUnits2Ticks;
 		const int SovietGroupSize = 5;
 
-		const int ParadropTicks = 1500 * 20;
+		int sovietParadropTicks;
 		const int ParadropIncrement = 200;
 		static readonly string[] ParadropTerrainTypes = { "Clear", "Road", "Rough", "Beach", "Ore" };
 		static readonly string[] SovietParadroppers = { "e1", "e1", "e3", "e3", "e4" };
@@ -176,11 +176,11 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			if (sovietParadrops > 0)
 			{
-				if (world.FrameNumber == ParadropTicks)
+				if (world.FrameNumber == sovietParadropTicks)
 				{
 					Sound.Play("sovfapp1.aud");
 				}
-				if (world.FrameNumber >= ParadropTicks && world.FrameNumber % ParadropIncrement == 0)
+				if (world.FrameNumber >= sovietParadropTicks && world.FrameNumber % ParadropIncrement == 0)
 				{
 					CPos lz;
 					CPos entry;
@@ -261,13 +261,11 @@ namespace OpenRA.Mods.RA.Missions
 
 		bool LandIsQueued(Actor actor)
 		{
-			var a = actor.GetCurrentActivity();
-			for (; ; )
+			for (var a = actor.GetCurrentActivity(); a != null; a = a.NextActivity)
 			{
-				if (a == null) { return false; }
-				if (a.GetType() == typeof(ReturnToBase) || a.GetType() == typeof(Land)) { return true; }
-				a = a.NextActivity;
+				if (a is ReturnToBase || a is Land) { return true; }
 			}
+			return false;
 		}
 
 		void BuildSovietAircraft()
@@ -303,7 +301,7 @@ namespace OpenRA.Mods.RA.Missions
 			var spawnPoint = sovietEntryPoints[route];
 			var rallyPoint = sovietRallyPoints[route];
 			IEnumerable<string> units;
-			if (world.FrameNumber >= SovietUnits2Ticks)
+			if (world.FrameNumber >= sovietUnits2Ticks)
 			{
 				units = SovietUnits2;
 			}
@@ -428,6 +426,8 @@ namespace OpenRA.Mods.RA.Missions
 			unitsEvacuatedThreshold = difficulty == "Hard" ? 200 : difficulty == "Normal" ? 100 : 50;
 			maxSovietYaks = difficulty == "Hard" ? 4 : difficulty == "Normal" ? 2 : 0;
 			sovietParadrops = difficulty == "Hard" ? 40 : difficulty == "Normal" ? 20 : 0;
+			sovietParadropTicks = difficulty == "Hard" ? 1500 * 17 : 1500 * 20;
+			sovietUnits2Ticks = difficulty == "Hard" ? 1500 * 12 : 1500 * 15;
 
 			objectives[EvacuateID].Text = objectives[EvacuateID].Text.F(unitsEvacuatedThreshold);
 
