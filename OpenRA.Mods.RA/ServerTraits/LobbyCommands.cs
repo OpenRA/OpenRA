@@ -498,6 +498,12 @@ namespace OpenRA.Mods.RA.Server
 				.Select(p => MakeSlotFromPlayerReference(p.Value))
 				.Where(s => s != null)
 				.ToDictionary(s => s.PlayerReference, s => s);
+
+			if (server.Map.Difficulties != null && server.Map.Difficulties.Any())
+				if (!server.Map.Difficulties.Contains(server.lobbyInfo.GlobalSettings.Difficulty))
+					server.lobbyInfo.GlobalSettings.Difficulty = server.Map.Difficulties.First();
+				else
+					server.lobbyInfo.GlobalSettings.Difficulty = null;
 		}
 	}
 }
