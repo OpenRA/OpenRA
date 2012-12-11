@@ -101,7 +101,7 @@ namespace OpenRA.Mods.RA.Missions
 		const int ParadropIncrement = 200;
 		static readonly string[] ParadropTerrainTypes = { "Clear", "Road", "Rough", "Beach", "Ore" };
 		static readonly string[] SovietParadroppers = { "e1", "e1", "e3", "e3", "e4" };
-		int paradrops;
+		int sovietParadrops;
 		int maxSovietYaks;
 
 		int attackAtFrame;
@@ -174,7 +174,7 @@ namespace OpenRA.Mods.RA.Missions
 				if (world.FrameNumber == ReinforcementsTicks2) { Sound.Play("reinfor1.aud"); }
 				if (world.FrameNumber % 25 == 0) { SpawnAlliedUnit(Reinforcements2[currentReinforcement2++]); }
 			}
-			if (paradrops > 0)
+			if (sovietParadrops > 0)
 			{
 				if (world.FrameNumber == ParadropTicks)
 				{
@@ -193,7 +193,7 @@ namespace OpenRA.Mods.RA.Missions
 					}
 					while (!ParadropTerrainTypes.Contains(world.GetTerrainType(lz)));
 					MissionUtils.Paradrop(world, soviets, SovietParadroppers, entry, lz);
-					paradrops--;
+					sovietParadrops--;
 				}
 			}
 			if (world.FrameNumber % 25 == 0)
@@ -427,7 +427,7 @@ namespace OpenRA.Mods.RA.Missions
 			minAttackAtFrame = difficulty == "Hard" || difficulty == "Normal" ? 100 : 150;
 			unitsEvacuatedThreshold = difficulty == "Hard" ? 200 : difficulty == "Normal" ? 100 : 50;
 			maxSovietYaks = difficulty == "Hard" ? 4 : difficulty == "Normal" ? 2 : 0;
-			paradrops = difficulty == "Hard" ? 40 : difficulty == "Normal" ? 20 : 0;
+			sovietParadrops = difficulty == "Hard" ? 40 : difficulty == "Normal" ? 20 : 0;
 
 			objectives[EvacuateID].Text = objectives[EvacuateID].Text.F(unitsEvacuatedThreshold);
 
