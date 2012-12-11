@@ -117,6 +117,8 @@ namespace OpenRA.Mods.RA.Missions
 		const string McvName = "mcv";
 		const string YakName = "yak";
 
+		string difficulty;
+
 		void MissionFailed(string text)
 		{
 			if (allies1.WinState != WinState.Undefined)
@@ -172,24 +174,27 @@ namespace OpenRA.Mods.RA.Missions
 				if (world.FrameNumber == ReinforcementsTicks2) { Sound.Play("reinfor1.aud"); }
 				if (world.FrameNumber % 25 == 0) { SpawnAlliedUnit(Reinforcements2[currentReinforcement2++]); }
 			}
-			if (world.FrameNumber == ParadropTicks)
+			if (difficulty != "Easy")
 			{
-				Sound.Play("sovfapp1.aud");
-			}
-			if (world.FrameNumber >= ParadropTicks && paradrops > 0 && world.FrameNumber % ParadropIncrement == 0)
-			{
-				CPos lz;
-				CPos entry;
-				do
+				if (world.FrameNumber == ParadropTicks)
 				{
-					var x = world.SharedRandom.Next(paradropBox.X, paradropBox.X + paradropBox.Width);
-					var y = world.SharedRandom.Next(paradropBox.Y, paradropBox.Y + paradropBox.Height);
-					entry = new CPos(0, y);
-					lz = new CPos(x, y);
+					Sound.Play("sovfapp1.aud");
 				}
-				while (!ParadropTerrainTypes.Contains(world.GetTerrainType(lz)));
-				MissionUtils.Paradrop(world, soviets, SovietParadroppers, entry, lz);
-				paradrops--;
+				if (world.FrameNumber >= ParadropTicks && paradrops > 0 && world.FrameNumber % ParadropIncrement == 0)
+				{
+					CPos lz;
+					CPos entry;
+					do
+					{
+						var x = world.SharedRandom.Next(paradropBox.X, paradropBox.X + paradropBox.Width);
+						var y = world.SharedRandom.Next(paradropBox.Y, paradropBox.Y + paradropBox.Height);
+						entry = new CPos(0, y);
+						lz = new CPos(x, y);
+					}
+					while (!ParadropTerrainTypes.Contains(world.GetTerrainType(lz)));
+					MissionUtils.Paradrop(world, soviets, SovietParadroppers, entry, lz);
+					paradrops--;
+				}
 			}
 			if (world.FrameNumber % 25 == 0)
 			{
@@ -407,26 +412,26 @@ namespace OpenRA.Mods.RA.Missions
 		public void WorldLoaded(World w)
 		{
 			world = w;
-			var diff = w.LobbyInfo.GlobalSettings.Difficulty;
-			Game.Debug("{0} difficulty selected".F(diff));
+			difficulty = w.LobbyInfo.GlobalSettings.Difficulty;
+			Game.Debug("{0} difficulty selected".F(difficulty));
 			allies1 = w.Players.Single(p => p.InternalName == "Allies1");
 			allies2 = w.Players.SingleOrDefault(p => p.InternalName == "Allies2");
 			if (allies2 != null)
 			{
 				attackAtFrame = 500;
 				attackAtFrameIncrement = 500;
-				minAttackAtFrame = diff == "Hard" ? 50 : 100;
-				unitsEvacuatedThreshold = diff == "Hard" ? 200 : 100;
+				minAttackAtFrame = difficulty == "Hard" ? 50 : 100;
+				unitsEvacuatedThreshold = difficulty == "Hard" ? 200 : 100;
 			}
 			else
 			{
 				allies2 = allies1;
 				attackAtFrame = 600;
 				attackAtFrameIncrement = 600;
-				minAttackAtFrame = diff == "Hard" ? 100 : 200;
-				unitsEvacuatedThreshold = diff == "Hard" ? 100 : 50;
+				minAttackAtFrame = difficulty == "Hard" ? 100 : 200;
+				unitsEvacuatedThreshold = difficulty == "Hard" ? 100 : 50;
 			}
-			maxSovietYaks = diff == "Hard" ? 4 : 2;
+			maxSovietYaks = difficulty == "Hard" ? 4 : difficulty == "Normal" ? 2 : 0;
 			objectives[EvacuateID].Text = objectives[EvacuateID].Text.F(unitsEvacuatedThreshold);
 			allies = w.Players.Single(p => p.InternalName == "Allies");
 			soviets = w.Players.Single(p => p.InternalName == "Soviets");

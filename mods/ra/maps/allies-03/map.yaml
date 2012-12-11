@@ -20,7 +20,7 @@ UseAsShellmap: False
 
 Type: Campaign
 
-Difficulties: Normal, Hard
+Difficulties: Easy, Normal, Hard
 
 Players:
 	PlayerReference@Neutral:
