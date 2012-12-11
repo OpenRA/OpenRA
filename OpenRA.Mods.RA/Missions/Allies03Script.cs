@@ -154,7 +154,7 @@ namespace OpenRA.Mods.RA.Missions
 			if (world.FrameNumber == 1)
 			{
 				SpawnAlliedUnit(McvName);
-				evacuateWidget = new InfoWidget("", new float2(Game.viewport.Width * 0.35f, Game.viewport.Height * 0.9f));
+				evacuateWidget = new InfoWidget("");
 				Ui.Root.AddChild(evacuateWidget);
 				UpdateUnitsEvacuated();
 			}

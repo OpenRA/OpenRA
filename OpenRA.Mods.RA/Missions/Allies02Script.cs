@@ -417,10 +417,7 @@ namespace OpenRA.Mods.RA.Missions
 		{
 			Sound.Play("timergo1.aud");
 			reinforcementsTimer = new CountdownTimer(ReinforcementsTicks, ReinforcementsTimerExpired, true);
-			reinforcementsTimerWidget = new CountdownTimerWidget(
-				reinforcementsTimer,
-				"Allied reinforcements arrive in: {0}",
-				new float2(Game.viewport.Width * 0.35f, Game.viewport.Height * 0.9f));
+			reinforcementsTimerWidget = new CountdownTimerWidget(reinforcementsTimer, "Allied reinforcements arrive in: {0}");
 			Ui.Root.AddChild(reinforcementsTimerWidget);
 		}
 
