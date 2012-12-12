@@ -261,6 +261,7 @@ namespace OpenRA.Mods.RA.Server
 						server.lobbyInfo.GlobalSettings.Map = s;
 						var oldSlots = server.lobbyInfo.Slots.Keys.ToArray();
 						LoadMap(server);
+						SetDefaultDifficulty(server);
 
 						// Reassign players into new slots based on their old slots:
 						//  - Observers remain as observers
@@ -474,7 +475,12 @@ namespace OpenRA.Mods.RA.Server
 			return a(cmdValue);
 		}
 
-		public void ServerStarted(S server) { LoadMap(server); }
+		public void ServerStarted(S server) 
+		{
+			LoadMap(server);
+			SetDefaultDifficulty(server);
+		}
+
 		static Session.Slot MakeSlotFromPlayerReference(PlayerReference pr)
 		{
 			if (!pr.Playable) return null;
@@ -498,14 +504,16 @@ namespace OpenRA.Mods.RA.Server
 				.Select(p => MakeSlotFromPlayerReference(p.Value))
 				.Where(s => s != null)
 				.ToDictionary(s => s.PlayerReference, s => s);
+		}
 
+		static void SetDefaultDifficulty(S server)
+		{
 			if (server.Map.Difficulties != null && server.Map.Difficulties.Any())
 			{
 				if (!server.Map.Difficulties.Contains(server.lobbyInfo.GlobalSettings.Difficulty))
 					server.lobbyInfo.GlobalSettings.Difficulty = server.Map.Difficulties.First();
 			}
-			else
-				server.lobbyInfo.GlobalSettings.Difficulty = null;
+			else server.lobbyInfo.GlobalSettings.Difficulty = null;
 		}
 	}
 }
