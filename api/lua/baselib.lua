@@ -199,7 +199,7 @@ return {
   },
 
   -- Coroutine library
-  coroutine ={
+  coroutine = {
     type = "lib",
     description = "The operations related to coroutines comprise a sub-library of the basic library and come inside the table coroutine.\n\nLua supports coroutines, also called collaborative multithreading. A coroutine in Lua represents an independent thread of execution. Unlike threads in multithread systems, however, a coroutine only suspends its execution by explicitly calling a yield function.",
     childs = {
@@ -223,7 +223,7 @@ return {
       },
       status = {
         type = "function",
-        description = "Returns the status of coroutine co, as a string: \"running\", if the coroutine is running (that is, it called status); \"suspended\", if the coroutine is suspended in a call to yield, or if it has not started running yet; \"normal\" if the coroutine is active but not running (that is, it has resumed another coroutine); and \"dead\" if the coroutine has finished its body function, or if it has stopped with an error.",
+        description = "Returns the status of coroutine co, as a string.\n\nThe status can be one of the following: \"running\", if the coroutine is running (that is, it called status); \"suspended\", if the coroutine is suspended in a call to yield, or if it has not started running yet; \"normal\" if the coroutine is active but not running (that is, it has resumed another coroutine); and \"dead\" if the coroutine has finished its body function, or if it has stopped with an error.",
         args = "(co: thread)",
         returns = "(string)",
       },
@@ -255,7 +255,7 @@ return {
     args = "(modname: string)",
     returns = "(any)",
   },
-  package ={
+  package = {
     type = "lib",
     description = "The package library provides basic facilities for loading modules in Lua.\n\nIt exports one function directly in the global environment: require. Everything else is exported in a table package.",
     childs = {
@@ -309,7 +309,7 @@ return {
   },
 
   -- String library
-  string ={
+  string = {
     type = "lib",
     description = "This library provides generic functions for string manipulation, such as finding and extracting substrings, and pattern matching.\n\nWhen indexing a string in Lua, the first character is at position 1 (not at 0, as in C). Indices are allowed to be negative and are interpreted as indexing backwards, from the end of the string. Thus, the last character is at position -1, and so on.\n\nThe string library provides all its functions inside the table string. It also sets a metatable for strings where the __index field points to the string table. Therefore, you can use the string functions in object-oriented style. For instance, string.byte(s,i) can be written as s:byte(i).\n\nThe string library assumes one-byte character encodings.",
     childs = {
@@ -401,7 +401,7 @@ return {
   },
 
   -- Table library
-  table ={
+  table = {
     type = "lib",
     description = "This library provides generic functions for table manipulation. It provides all its functions inside the table table.\n\nRemember that, whenever an operation needs the length of a table, the table should be a proper sequence or have a __len metamethod. All functions ignore non-numeric keys in tables given as arguments.\n\nFor performance reasons, all table accesses (get/set) performed by these functions are raw.",
     childs = {
@@ -451,7 +451,7 @@ return {
   },
 
   -- Math library
-  math ={
+  math = {
     type = "lib",
     description = "This library is an interface to the standard C math library. It provides all its functions inside the table math.",
     childs = {
@@ -635,7 +635,7 @@ return {
   },
 
   -- Bitwise library
-  bit32 ={
+  bit32 = {
     type = "lib",
     description = "This library provides bitwise operations. It provides all its functions inside the table bit32.\n\nUnless otherwise stated, all functions accept numeric arguments in the range (-2^51,+2^51); each argument is normalized to the remainder of its division by 2^32 and truncated to an integer (in some unspecified way), so that its final value falls in the range [0,2^32 - 1]. Similarly, all results are in the range [0,2^32 - 1]. Note that bit32.bnot(0) is 0xFFFFFFFF, which is different from -1.",
     childs = {
@@ -683,7 +683,7 @@ return {
       },
       replace = {
         type = "function",
-        description = "Returns a copy of n with the bits field to field + width - 1 replaced by the value v\n\nBits are numbered from 0 (least significant) to 31 (most significant). All accessed bits must be in the range [0, 31].\n\nThe default for width is 1.\n\nFUNCTION ADDED IN Lua 5.2.",
+        description = "Returns a copy of n with the bits field to field + width - 1 replaced by the value v.\n\nBits are numbered from 0 (least significant) to 31 (most significant). All accessed bits must be in the range [0, 31].\n\nThe default for width is 1.\n\nFUNCTION ADDED IN Lua 5.2.",
         args = "(n: number, v: number, field: number [, width: number])",
         returns = "(number)",
       },
@@ -715,10 +715,13 @@ return {
   },
 
   -- I/O library
-  io ={
+  io = {
     type = "lib",
     description = "The I/O library provides two different styles for file manipulation. The first one uses implicit file descriptors; that is, there are operations to set a default input file and a default output file, and all input/output operations are over these default files. The second style uses explicit file descriptors.\n\nWhen using implicit file descriptors, all operations are supplied by table io. When using explicit file descriptors, the operation io.open returns a file descriptor and then all operations are supplied as methods of the file descriptor.\n\nThe table io also provides three predefined file descriptors with their usual meanings from C: io.stdin, io.stdout, and io.stderr. The I/O library never closes these files.\n\nUnless otherwise stated, all I/O functions return nil on failure (plus an error message as a second result and a system-dependent error code as a third result) and some value different from nil on success.",
     childs = {
+      stdin = { type = "value" },
+      stdout = { type = "value" },
+      stderr = { type = "value" },
       close = {
         type = "function",
         description = "Closes file. Equivalent to file:close().\n\nWithout a file, closes the default output file.",
@@ -729,7 +732,7 @@ return {
         type = "function",
         description = "Saves any written data to the default output file. Equivalent to io.output():flush().",
         args = "()",
-        returns = "(boolean|nil [, string, number])",
+        returns = "()",
       },
       input = {
         type = "function",
@@ -747,7 +750,7 @@ return {
         type = "function",
         description = "This function opens a file, in the mode specified in the string mode.\n\nIt returns a new file handle, or, in case of errors, nil plus an error message.\n\nThe mode string can be any of the following:\n\n* \"r\": read mode (the default);\n\n* \"w\": write mode;\n\n* \"a\": append mode;\n\n* \"r+\": update mode, all previous data is preserved;\n\n* \"w+\": update mode, all previous data is erased;\n\n* \"a+\": append update mode, previous data is preserved, writing is only allowed at the end of file.\n\nThe mode string can also have a 'b' at the end, which is needed in some systems to open the file in binary mode.",
         args = "(filename: string [, mode: string])",
-        returns = "(boolean|nil [, string, number])",
+        returns = "(file|nil [, string])",
       },
       output = {
         type = "function",
@@ -759,7 +762,7 @@ return {
         type = "function",
         description = "Starts program prog in a separated process and returns a file handle that you can use to read data from this program (if mode is \"r\", the default) or to write data to this program (if mode is \"w\").\n\nThis function is system dependent and is not available on all platforms.",
         args = "(prog: string [, mode: string])",
-        returns = "(file|nil [, string, number])",
+        returns = "(file|nil [, string])",
       },
       read = {
         type = "function",
@@ -787,51 +790,58 @@ return {
       },
     },
   },
-  close = {
-    type = "function",
-    description = "Closes file.\n\nNote that files are automatically closed when their handles are garbage collected, but that takes an unpredictable amount of time to happen.\n\nWhen closing a file handle created with io.popen, file:close returns the same values returned by os.execute. RETURN SPECIAL CASE ADDED IN Lua 5.2.",
-    args = "(file: file)",
-    returns = "(boolean|nil [, string, number])",
-  },
-  flush = {
-    type = "function",
-    description = "Saves any written data to file.",
-    args = "(file: file)",
-    returns = "(boolean|nil [, string, number])",
-  },
-  lines = {
-    type = "function",
-    description = "Returns an iterator function that, each time it is called, reads the file according to the given formats.\n\nWhen no format is given, uses \"*l\" as a default. ARGUMENT ADDED IN Lua 5.2.\n\nUnlike io.lines, this function does not close the file when the loop ends.\n\nIn case of errors this function raises the error, instead of returning an error code.",
-    args = "(file: file, ...)",
-    returns = "(function)",
-  },
-  read = {
-    type = "function",
-    description = "Reads the file file, according to the given formats, which specify what to read.\n\nFor each format, the function returns a string (or a number) with the characters read, or nil if it cannot read data with the specified format. When called without formats, it uses a default format that reads the next line (see below).\n\nThe available formats are\n\n* \"*n\": reads a number; this is the only format that returns a number instead of a string.\n\n* \"*a\": reads the whole file, starting at the current position. On end of file, it returns the empty string.\n\n* \"*l\": reads the next line skipping the end of line, returning nil on end of file. This is the default format.\n\n* \"*L\": reads the next line keeping the end of line (if present), returning nil on end of file. VALUE ADDED IN Lua 5.2.\n\n* number: reads a string with up to this number of bytes, returning nil on end of file. If number is zero, it reads nothing and returns an empty string, or nil on end of file.",
-    args = "(file: file, ...)",
-    returns = "(...)",
-  },
-  seek = {
-    type = "function",
-    description = "Sets and gets the file position, measured from the beginning of the file, to the position given by offset plus a base specified by the string whence, as follows:\n\n* \"set\": base is position 0 (beginning of the file);\n\n* \"cur\": base is current position;\n\n* \"end\": base is end of file;\n\nIn case of success, seek returns the final file position, measured in bytes from the beginning of the file. If seek fails, it returns nil, plus a string describing the error.\n\The default value for whence is \"cur\", and for offset is 0. Therefore, the call file:seek() returns the current file position, without changing it; the call file:seek(\"set\") sets the position to the beginning of the file (and returns 0); and the call file:seek(\"end\") sets the position to the end of the file, and returns its size.",
-    args = "(file: file, [whence: string [, offset: number]])",
-    returns = "(number|nil [, string])",
-  },
-  setvbuf = {
-    type = "function",
-    description = "Sets the buffering mode for an output file.\n\nThere are three available modes:\n\n* \"no\": no buffering; the result of any output operation appears immediately.\n\n* \"full\": full buffering; output operation is performed only when the buffer is full or when you explicitly flush the file (see io.flush).\n\n* \"line\": line buffering; output is buffered until a newline is output or there is any input from some special files (such as a terminal device).\n\nFor the last two cases, size specifies the size of the buffer, in bytes. The default is an appropriate size.",
-    args = "(file: file, mode: string [, size: number])",
-    returns = "(boolean|nil [, string, number])",
-  },
-  write = {
-    type = "function",
-    description = "Writes the value of each of its arguments to file.\n\nThe arguments must be strings or numbers.\n\nIn case of success, this function returns file (RETURN CHANGED IN Lua 5.2, BOOLEAN IN LUA 5.1). Otherwise it returns nil plus a string describing the error.",
-    args = "(file: file, ...)",
-    returns = "(file|nil [, string])",
+
+  f = {
+    type = "class",
+    description = "Pseudoclass for operations on file handles.",
+    childs = {
+      close = {
+        type = "function",
+        description = "Closes file.\n\nNote that files are automatically closed when their handles are garbage collected, but that takes an unpredictable amount of time to happen.\n\nWhen closing a file handle created with io.popen, file:close returns the same values returned by os.execute. RETURN SPECIAL CASE ADDED IN Lua 5.2.",
+        args = "(file: file)",
+        returns = "(boolean|nil [, string, number])",
+      },
+      flush = {
+        type = "function",
+        description = "Saves any written data to file.",
+        args = "(file: file)",
+        returns = "(boolean|nil [, string])",
+      },
+      lines = {
+        type = "function",
+        description = "Returns an iterator function that, each time it is called, reads the file according to the given formats.\n\nWhen no format is given, uses \"*l\" as a default. ARGUMENT ADDED IN Lua 5.2.\n\nUnlike io.lines, this function does not close the file when the loop ends.\n\nIn case of errors this function raises the error, instead of returning an error code.",
+        args = "(file: file, ...)",
+        returns = "(function)",
+      },
+      read = {
+        type = "function",
+        description = "Reads the file file, according to the given formats, which specify what to read.\n\nFor each format, the function returns a string (or a number) with the characters read, or nil if it cannot read data with the specified format. When called without formats, it uses a default format that reads the next line (see below).\n\nThe available formats are\n\n* \"*n\": reads a number; this is the only format that returns a number instead of a string.\n\n* \"*a\": reads the whole file, starting at the current position. On end of file, it returns the empty string.\n\n* \"*l\": reads the next line skipping the end of line, returning nil on end of file. This is the default format.\n\n* \"*L\": reads the next line keeping the end of line (if present), returning nil on end of file. VALUE ADDED IN Lua 5.2.\n\n* number: reads a string with up to this number of bytes, returning nil on end of file. If number is zero, it reads nothing and returns an empty string, or nil on end of file.",
+        args = "(file: file, ...)",
+        returns = "(...)",
+      },
+      seek = {
+        type = "function",
+        description = "Sets and gets the file position, measured from the beginning of the file, to the position given by offset plus a base specified by the string whence.\n\nThe string whence is specified as follows:\n\n* \"set\": base is position 0 (beginning of the file);\n\n* \"cur\": base is current position;\n\n* \"end\": base is end of file.\n\nIn case of success, seek returns the final file position, measured in bytes from the beginning of the file. If seek fails, it returns nil, plus a string describing the error.\n\The default value for whence is \"cur\", and for offset is 0. Therefore, the call file:seek() returns the current file position, without changing it; the call file:seek(\"set\") sets the position to the beginning of the file (and returns 0); and the call file:seek(\"end\") sets the position to the end of the file, and returns its size.",
+        args = "(file: file, [whence: string [, offset: number]])",
+        returns = "(number|nil [, string])",
+      },
+      setvbuf = {
+        type = "function",
+        description = "Sets the buffering mode for an output file.\n\nThere are three available modes:\n\n* \"no\": no buffering; the result of any output operation appears immediately.\n\n* \"full\": full buffering; output operation is performed only when the buffer is full or when you explicitly flush the file (see io.flush).\n\n* \"line\": line buffering; output is buffered until a newline is output or there is any input from some special files (such as a terminal device).\n\nFor the last two cases, size specifies the size of the buffer, in bytes. The default is an appropriate size.",
+        args = "(file: file, mode: string [, size: number])",
+        returns = "(boolean|nil [, string])",
+      },
+      write = {
+        type = "function",
+        description = "Writes the value of each of its arguments to file.\n\nThe arguments must be strings or numbers.\n\nIn case of success, this function returns file (RETURN CHANGED IN Lua 5.2, BOOLEAN IN LUA 5.1). Otherwise it returns nil plus a string describing the error.",
+        args = "(file: file, ...)",
+        returns = "(file|nil [, string])",
+      },
+    },
   },
 
-	-- OS library
-  os ={
+  -- OS library
+  os = {
     type = "lib",
     description = "This library is implemented through table os.",
     childs = {
@@ -905,7 +915,7 @@ return {
   },
 
   -- Debug library
-  debug ={
+  debug = {
     type = "lib",
     description = "This library provides the functionality of the debug interface to Lua programs.\n\nYou should exert care when using this library. Several of its functions violate basic assumptions about Lua code (e.g., that variables local to a function cannot be accessed from outside; that userdata metatables cannot be changed by Lua code; that Lua programs do not crash) and therefore can compromise otherwise secure code. Moreover, some functions in this library may be slow.\n\nAll functions in this library are provided inside the debug table. All functions that operate over a thread have an optional first argument which is the thread to operate over. The default is always the current thread.",
     childs = {
