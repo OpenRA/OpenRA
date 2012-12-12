@@ -271,6 +271,10 @@ local function getValAtPosition(editor, pos)
 end
 
 function EditorCallTip(editor, pos, x, y)
+  -- don't show anything if the calltip is active; this may happen after
+  -- typing function name, while the mouse is over a different function.
+  if editor:CallTipActive() then return end
+
   local var, linetxtopos = getValAtPosition(editor, pos)
   local tip = linetxtopos and GetTipInfo(editor,linetxtopos.."(",false)
   if ide.debugger and ide.debugger.server then
@@ -288,11 +292,12 @@ function EditorCallTip(editor, pos, x, y)
     end
   elseif tip then
     -- only shorten if shown on mouse-over. Use shortcut to get full info.
-    local shortento = 550
+    local shortento = 450
     local showtooltip = ide.frame.menuBar:FindItem(ID_SHOWTOOLTIP)
-    if x and y and #tip > shortento then
-      tip = tip:sub(1, shortento):gsub("%W*%w*$","").."...\n"
+    local suffix = "...\n"
         ..TR("Use '%s' to see full description."):format(showtooltip:GetLabel())
+    if x and y and #tip > shortento then
+      tip = tip:sub(1, shortento-#suffix):gsub("%W*%w*$","")..suffix
     end
     editor:CallTipShow(pos, tip)
   end
