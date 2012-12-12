@@ -143,6 +143,7 @@ config = {
     -- 0: is string comparison
     -- 1: substring leading characters (camel case or _ separated)
     -- 2: leading + any correctly ordered fragments (default)
+    width = 60, -- width of the tooltip text (in characters)
   }
 
   savebak = false, -- if bak files are created on save

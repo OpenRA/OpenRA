@@ -95,6 +95,8 @@ end
 -- ToolTip and reserved words list
 -- also fixes function descriptions
 
+local tipwidth = math.max(20, ide.config.acandtip.width or 60)
+local widthmask = ("[^\n]"):rep(tipwidth-10)..("[^\n]?"):rep(10)
 local function fillTips(api,apibasename,apiname)
   local apiac = api.ac
   local tclass = api.tip
@@ -122,24 +124,19 @@ local function fillTips(api,apibasename,apiname)
 
         -- fix description
         local frontname = (info.returns or "(?)").." "..libstr..key.." "..(info.args or "(?)")
-        frontname = frontname:gsub("\n"," ")
-        frontname = frontname:gsub("\t","")
-        frontname = frontname:gsub("("..("[^\n]"):rep(60)..".-[%s,%)%]:%.])([^%)])","%1\n %2")
+        frontname = frontname
+          :gsub("\n"," ")
+          :gsub("\t","")
+          :gsub("("..widthmask..")[ \t]([^%)])","%1\n %2")
 
         info.description = info.description
-          :gsub("\n\n","<br>")
-          :gsub("[^%s]\n[^%s]","")
-          :gsub("\n"," ")
-          :gsub("<br>","\n")
-          :gsub("[^%s]\t[^%s]"," ")
-          :gsub("\t%s","")
-          :gsub("%s\t","")
-          :gsub("("..("[^\n]"):rep(60)..".-[%s,%)%]:%.])","%1\n")
+          :gsub("\n\n","<br>"):gsub("\n"," "):gsub("<br>","\n")
+          :gsub("[ \t]+"," ")
+          :gsub("("..widthmask..") ","%1\n")
 
         -- build info
         local inf = frontname.."\n"..info.description
-        local sentence = info.description:match("^([^\n]+)\n.*")
-        sentence = sentence and sentence:match("([^%.]+)%..*$")
+        local sentence = info.description:match("^(.-)%. ?\n")
         local infshort = frontname.."\n"..(sentence and sentence.."..." or info.description)
         local infshortbatch = (info.returns and info.args) and frontname or infshort
 

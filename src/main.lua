@@ -65,6 +65,7 @@ ide = {
       shorttip = false,
       ignorecase = false,
       strategy = 2,
+      width = 60,
     },
 
     activateoutput = false, -- activate output/console on Run/Debug/Compile
