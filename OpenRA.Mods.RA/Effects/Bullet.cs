@@ -153,7 +153,7 @@ namespace OpenRA.Mods.RA.Effects
 				var altitude = float2.Lerp(Args.srcAltitude, Args.destAltitude, at);
 				var pos = float2.Lerp(Args.src.ToFloat2(), Args.dest.ToFloat2(), at) - new float2(0, altitude);
 
-				if (Args.firedBy.World.LocalShroud.IsVisible(((PPos) pos.ToInt2()).ToCPos()))
+				if (Args.firedBy.World.RenderedShroud.IsVisible(((PPos) pos.ToInt2()).ToCPos()))
 				{
 					if (Info.High || Info.Angle > 0)
 					{

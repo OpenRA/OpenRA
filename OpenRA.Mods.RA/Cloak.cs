@@ -92,14 +92,27 @@ namespace OpenRA.Mods.RA
 				lastPos = self.Location;
 			}
 		}
-
+		
 		public bool IsVisible(Actor self)
 		{
-			if (!Cloaked || self.Owner == self.World.LocalPlayer ||
-				self.World.LocalPlayer == null ||
-				self.Owner.Stances[self.World.LocalPlayer] == Stance.Ally)
-				return true;
+			return IsVisible(null, self);
+		}
 
+		public bool IsVisible(Shroud s, Actor self)
+		{			
+		    if (self.World.LocalPlayer != null) {
+			    if (s == null) {
+    				if (!Cloaked || self.Owner == self.World.LocalPlayer ||
+    					self.Owner.Stances[self.World.LocalPlayer] == Stance.Ally)
+    					return true;
+    			}
+    			else {
+    				if (!Cloaked || self.Owner == s.Owner ||
+    					self.Owner.Stances[s.Owner] == Stance.Ally)
+    					return true;
+    			}
+			}
+			
 			return self.World.ActorsWithTrait<DetectCloaked>().Any(a =>
 				a.Actor.Owner.Stances[self.Owner] != Stance.Ally &&
 				(self.Location - a.Actor.Location).Length < a.Actor.Info.Traits.Get<DetectCloakedInfo>().Range);

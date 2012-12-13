@@ -54,6 +54,9 @@ namespace OpenRA.Mods.RA.Activities
 
 			if (!Target.IsValid)
 				return NextActivity;
+				
+			if (!self.Owner.HasFogVisibility() && Target.Actor != null && Target.Actor.HasTrait<Mobile>() && !self.Owner.Shroud.IsTargetable(Target.Actor))
+				return NextActivity;
 
 			if (targetable != null && !targetable.TargetableBy(Target.Actor, self))
 				return NextActivity;
