@@ -478,6 +478,7 @@ function CreateEditor()
       elseif ch == ("("):byte() then
         local tip = GetTipInfo(editor,linetxtopos,ide.config.acandtip.shorttip)
         if tip then
+          if editor:CallTipActive() then editor:CallTipCancel() end
           editor:CallTipShow(pos,tip)
         end
 
