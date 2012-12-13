@@ -216,7 +216,8 @@ function EditorAutoComplete(editor)
 
   -- know now which string is to be completed
   local userList = CreateAutoCompList(editor,lt)
-  if userList and string.len(userList) > 0 then
+  -- don't show the list if the only option is what's already typed
+  if userList and #userList > 0 and userList ~= lt then
     editor:UserListShow(1, userList)
   elseif editor:AutoCompActive() then
     editor:AutoCompCancel()
