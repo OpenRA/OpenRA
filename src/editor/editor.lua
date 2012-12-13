@@ -211,12 +211,8 @@ function EditorAutoComplete(editor)
   local localpos = pos-linestart
 
   local lt = linetx:sub(1,localpos)
-  lt = lt:gsub("%s*("..editor.spec.sep..")%s*",function(a) return a end)
-  lt = lt:gsub("%s*%b[]%s*","")
-  lt = lt:gsub("%s*%b()%s*","")
-  lt = lt:gsub("%s*%b{}%s*","")
+  lt = lt:gsub("%s*(["..editor.spec.sep.."])%s*", "%1")
   lt = lt:match("[^%[%(%s]*$")
-  lt = lt:gsub("%s","")
 
   -- know now which string is to be completed
   local userList = CreateAutoCompList(editor,lt)
@@ -486,7 +482,7 @@ function CreateEditor()
 
       elseif ide.config.autocomplete then -- code completion prompt
         local trigger = linetxtopos:match("["..editor.spec.sep.."%w_]+$")
-        if (trigger and (#trigger > 1 or trigger:match("[%.:]"))) then
+        if (trigger and (#trigger > 1 or trigger:match("["..editor.spec.sep.."]"))) then
           ide.frame:AddPendingEvent(wx.wxCommandEvent(
             wx.wxEVT_COMMAND_MENU_SELECTED, ID_AUTOCOMPLETE))
         end
