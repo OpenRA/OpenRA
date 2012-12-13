@@ -3,7 +3,8 @@
 -- converted from love_api.lua (https://love2d.org/forums/viewtopic.php?f=3&t=1796&start=30)
 -- (as of Nov 1, 2012)
 -- the conversion script is at the bottom of this file
--- removed misplaced "{}," in pause, resume, rewind, stop, setColor, and setScissor.
+-- manually removed "linear clamped", "exponent clamped", and "inverse clamped"
+-- values as those can't be entered through auto-complete.
 
 local love = {
  childs = {
@@ -15,24 +16,12 @@ local love = {
        description = "Exponential attenuation.",
        type = "value"
       },
-      ["exponent clamped"] = {
-       description = "Exponential attenuation. Gain is clamped.",
-       type = "value"
-      },
       inverse = {
        description = "Inverse distance attenuation.",
        type = "value"
       },
-      ["inverse clamped"] = {
-       description = "Inverse distance attenuation. Gain is clamped.",
-       type = "value"
-      },
       linear = {
        description = "Linear attenuation.",
-       type = "value"
-      },
-      ["linear clamped"] = {
-       description = "Linear attenuation. Gain is clamped.",
        type = "value"
       },
       none = {
