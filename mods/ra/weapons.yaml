@@ -105,16 +105,16 @@ Vulcan:
 		Damage: 10
 		Delay: 10
 		
-Maverick:
+MaverickAG:
 	ROF: 30
 	Range: 9
 	MinRange: 3
 	Report: MISSILE7
-	Burst: 2
+	Burst: 4
 	BurstDelay: 7
 	ValidTargets: Ground
 	Projectile: Missile
-		Speed: 30
+		Speed: 45
 		Arm: 2
 		High: true
 		Shadow: false
@@ -135,6 +135,39 @@ Maverick:
 		Explosion: med_explosion
 		WaterExplosion: med_splash
 		InfDeath: 4
+		SmudgeType: Crater
+		Damage: 70
+		
+MaverickAA:
+	ROF: 30
+	Range: 9
+	MinRange: 3
+	Report: MISSILE7
+	Burst: 2
+	BurstDelay: 1
+	ValidTargets: Air
+	Projectile: Missile
+		Speed: 60
+		Arm: 2
+		High: true
+		Shadow: false
+		Proximity: true
+#		Trail: smokey
+		ContrailLength: 10
+		Inaccuracy: 3
+		Image: DRAGON
+		ROT: 5
+		RangeLimit: 60
+	Warhead:
+		Spread: 3
+		Versus: 
+			None: 30%
+			Wood: 75%
+			Light: 75%
+			Concrete: 50%
+		Explosion: med_explosion
+		WaterExplosion: med_splash
+		InfDeath: 3
 		SmudgeType: Crater
 		Damage: 70
 		
