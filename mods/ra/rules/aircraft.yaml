@@ -96,13 +96,15 @@ MIG:
 	RevealsShroud:
 		Range: 12
 	AttackPlane:
-		PrimaryWeapon: Maverick
+		PrimaryWeapon: MaverickAG
 		PrimaryLocalOffset: -15,0,0,0,-10, 15,0,0,0,6
+		SecondaryWeapon: MaverickAA
+		SecondaryLocalOffset: -15,0,0,0,-10, 15,0,0,0,6
 		FacingTolerance: 20
 	Plane:
 		InitialFacing: 192
 		ROT: 5
-		Speed: 20
+		Speed: 25
 		RearmBuildings: afld
 	RenderUnit:
 	WithShadow:
@@ -261,7 +263,7 @@ HELI:
 		LandWhenIdle: false
 		InitialFacing: 20
 		ROT: 4
-		Speed: 16
+		Speed: 18
 	RenderUnit:
 	WithRotor:
 		Offset: 0,0,0,-2
