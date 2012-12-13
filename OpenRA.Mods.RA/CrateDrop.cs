@@ -95,6 +95,10 @@ namespace OpenRA.Mods.RA
 						new AltitudeInit( Rules.Info["badr"].Traits.Get<AircraftInfo>().CruiseAltitude ),
 					});
 
+
+					var autoTargetIgnore = new AutoTargetIgnore();
+					plane.AddTrait(autoTargetIgnore);
+
 					plane.CancelActivity();
 					plane.QueueActivity(new FlyAttack(Target.FromCell(p)));
 					plane.Trait<ParaDrop>().SetLZ(p);
