@@ -1,6 +1,6 @@
 # ZeroBrane Studio Changelog
 
-## Current master that will become v0.34 (Dec 06 2012)
+## v0.34 (Dec 12 2012)
 
 ### Highlights
   - Added **internationalization** support (with Russian, Italian, Spanish, and French translations).
@@ -21,6 +21,9 @@
   - To Marcel van Herk for assistance with scratchpad break/resume functionality.
 
 ### Improvements
+  - Added an option to specify the width of the calltip.
+  - Added showing short descriptions in tooltip for functions without lib/package.
+  - Added 'Project Directory' menu.
   - Added ability to pause scratchpad when the script is completed (closes #83).
   - Added ability to pause and resume scratchpad.
   - Added GSL-shell support (closes #72).
@@ -58,16 +61,29 @@
   - Completed reorganization of front-end processing (closes #67 and #5).
   - Disabled editor autoactivation during debugging when tracing is on.
   - Disabled functions that are not available under Corona on OSX (helps #73).
+  - Disabled showing auto-complete when the only option is already typed.
+  - Disabled showing a calltip on mouse over when it's already active.
   - Extended list of default folders for interpreters where executables are searched for.
   - Finished Russian translation.
   - Limited auto-showing windows to Lua interpreter only (related to #80).
+  - Removed window types from config as they are no longer needed to be listed.
+  - Switched to showing short tooltips by default as some of the updated Lua API descriptions are very long.
+  - Updated descriptions for io.* functions; moved file:* functions to a pseudo library (f); helps #84.
+  - Updated LICENSE to add remdebug license information.
+  - Updated tooltip to show shortened descriptions on mouse-over.
   - Updated spec and API files for Lua 5.2 (thanks to Fringale).
   - Updated MobDebug to v0.507 to fix serialization issues (closes #77).
   - Updated style processing to support styling of markup and allow dynamic switching of color schemes.
   - Updated Lua keyword definitions to improve grouping for styling (closes #79).
   - Updated love2d api to an updated version as of 11/1/2012 (fixes #78).
 
+### Incompatibilities
+  - The default port in the debugger has been changed from 8171 to 8172 to avoid conflicts with existing RemDebug implementations.
+
 ### Fixes
+  - Fixed an issue with overlapping auto-complete suggestions.
+  - Fixed auto-complete not working after closed brackets.
+  - Fixed tooltip being shown when mouse moving outside of the editor area.
   - Fixed a font zooming bug with Ctrl+MouseWheel.
   - Fixed file marking in the project tree after opening a new file.
   - Fixed an issue with breakpoints not available after aborting tracing on Linux/OSX.

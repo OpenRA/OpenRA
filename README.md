@@ -2,8 +2,8 @@
 
 [ZeroBrane Studio](http://studio.zerobrane.com/) is a lightweight Lua IDE with code completion, syntax
 highlighting, remote debugger, code analyzer, live coding, and debugging
-support for several Lua engines (LuaJIT, Löve 2D, Moai, Gideros, MobileLua,
-and others). It originated from the [Estrela Editor](http://www.luxinia.de/index.php/Estrela/).
+support for several Lua engines (LuaJIT, Löve 2D, Moai, Gideros, Corona,
+MobileLua, GSL-shell, and others). It originated from the [Estrela Editor](http://www.luxinia.de/index.php/Estrela/).
 
 ## Features
 
