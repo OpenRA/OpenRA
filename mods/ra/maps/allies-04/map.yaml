@@ -751,7 +751,7 @@ Actors:
 		Location: 88,77
 		Owner: Soviets
 	Actor52: hpad
-		Location: 84,72
+		Location: 83,65
 		Owner: Soviets
 	Actor387: powr
 		Location: 89,64
@@ -1287,6 +1287,21 @@ Actors:
 	Actor407: t05
 		Location: 75,98
 		Owner: Neutral
+	PatrolPoint13: waypoint
+		Location: 81,86
+		Owner: Neutral
+	PatrolPoint12: waypoint
+		Location: 74,78
+		Owner: Neutral
+	PatrolPoint11: waypoint
+		Location: 77,70
+		Owner: Neutral
+	PatrolPoint15: waypoint
+		Location: 88,73
+		Owner: Neutral
+	PatrolPoint14: waypoint
+		Location: 91,83
+		Owner: Neutral
 
 Smudges:
 
@@ -1305,6 +1320,32 @@ Rules:
 	SPY:
 		RevealsShroud:
 			Range: 10
+		Health:
+			HP: 100
+	DOG.Patrol:
+		Inherits: ^Infantry
+		Valued:
+			Cost: 200
+		Tooltip:
+			Name: Attack Dog
+			Description: Anti-infantry unit. Not fooled by the \nSpy's disguise.\n  Strong vs Infantry\n  Weak vs Vehicles
+		Selectable:
+			Voice: DogVoice
+			Bounds: 12,17,-1,-4
+		Health:
+			HP: 12
+		Mobile:
+			Speed: 4
+		RevealsShroud:
+			Range: 5
+		AutoTarget:
+		AttackLeap:
+			PrimaryWeapon: DogJaw
+			CanAttackGround: no
+		RenderInfantry:
+			Image: dog
+			IdleAnimations: idle1,idle2
+		IgnoresDisguise:
 
 Sequences:
 
