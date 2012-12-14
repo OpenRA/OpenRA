@@ -960,42 +960,39 @@ Actors:
 	Actor300: dog
 		Location: 41,49
 		Owner: Soviets
-	Actor301: barr
-		Location: 94,91
+	Actor338: ss
+		Location: 57,64
 		Owner: Soviets
-	Actor302: powr
-		Location: 91,91
-		Owner: Soviets
-	Actor303: e2
-		Location: 93,94
-		Owner: Soviets
-	Actor304: fenc
-		Location: 96,91
-		Owner: Soviets
-	Actor305: fenc
-		Location: 96,92
-		Owner: Soviets
-	Actor306: fenc
-		Location: 96,93
-		Owner: Soviets
-	Actor308: tc05
-		Location: 86,101
+	LstUnloadPoint: waypoint
+		Location: 56,101
 		Owner: Neutral
-	Actor309: tc05
-		Location: 86,102
+	Actor301: mine
+		Location: 101,55
 		Owner: Neutral
-	Actor310: tc03
-		Location: 79,102
+	Actor337: ss
+		Location: 19,80
+		Owner: Soviets
+	Actor316: ss
+		Location: 32,92
+		Owner: Soviets
+	Actor336: ss
+		Location: 46,80
+		Owner: Soviets
+	Actor308: tc02
+		Location: 78,104
 		Owner: Neutral
+	Actor309: t15
+		Location: 72,101
+		Owner: Neutral
+	Actor310: oilb
+		Location: 77,17
+		Owner: Soviets
 	Actor307: tc02
 		Location: 82,97
 		Owner: Neutral
-	Actor311: tc02
-		Location: 77,100
-		Owner: Neutral
-	Actor312: t02
-		Location: 78,102
-		Owner: Neutral
+	Actor311: oilb
+		Location: 32,76
+		Owner: Soviets
 	Actor313: e1
 		Location: 70,94
 		Owner: Soviets
@@ -1005,8 +1002,8 @@ Actors:
 	Actor315: e1
 		Location: 68,86
 		Owner: Soviets
-	Actor316: tsla
-		Location: 103,35
+	Actor302: tsla
+		Location: 103,34
 		Owner: Soviets
 	Actor317: e2
 		Location: 106,26
@@ -1062,14 +1059,14 @@ Actors:
 	Actor335: e2
 		Location: 77,20
 		Owner: Soviets
-	Actor336: e1
-		Location: 99,93
+	LstExitPoint: waypoint
+		Location: 48,111
+		Owner: Neutral
+	Actor305: ss
+		Location: 19,101
 		Owner: Soviets
-	Actor337: barl
-		Location: 100,93
-		Owner: Soviets
-	Actor338: brl3
-		Location: 99,92
+	Actor92: ss
+		Location: 25,98
 		Owner: Soviets
 	Actor258: apwr
 		Location: 32,56
@@ -1272,6 +1269,24 @@ Actors:
 	Actor403: powr
 		Location: 56,31
 		Owner: Soviets
+	LstEntryPoint: waypoint
+		Location: 16,107
+		Owner: Neutral
+	Actor404: ss
+		Location: 80,33
+		Owner: Soviets
+	Actor405: ss
+		Location: 65,47
+		Owner: Soviets
+	Actor406: ss
+		Location: 20,56
+		Owner: Soviets
+	Actor312: t17
+		Location: 88,100
+		Owner: Neutral
+	Actor407: t05
+		Location: 75,98
+		Owner: Neutral
 
 Smudges:
 
@@ -1282,6 +1297,14 @@ Rules:
 		-CrateDrop:
 		-SpawnMPUnits:
 		-MPStartLocations:
+		Allies04Script:
+		MissionObjectivesPanel:
+			ObjectivesPanel: MISSION_OBJECTIVES
+	LST:
+		-Selectable:
+	SPY:
+		RevealsShroud:
+			Range: 10
 
 Sequences:
 
