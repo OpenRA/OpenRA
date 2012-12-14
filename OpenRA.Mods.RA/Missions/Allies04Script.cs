@@ -46,13 +46,57 @@ namespace OpenRA.Mods.RA.Missions
 		Player soviets;
 		World world;
 
+		static readonly string[] DogPatrol = { "e1", "dog.patrol", "dog.patrol" };
+		static readonly string[] InfantryPatrol = { "e1", "e1", "e1", "e1", "e1" };
+
+		Actor[] patrol1;
+		CPos[] patrolPoints1;
+		int currentPatrolPoint1;
+		Actor[] patrol2;
+		CPos[] patrolPoints2;
+		int currentPatrolPoint2 = 3;
+		Actor[] patrol3;
+		CPos[] patrolPoints3;
+		int currentPatrolPoint3;
+		Actor[] patrol4;
+		CPos[] patrolPoints4;
+		int currentPatrolPoint4;
+		Actor[] patrol5;
+		CPos[] patrolPoints5;
+		int currentPatrolPoint5;
+
 		public void Tick(Actor self)
 		{
 			if (world.FrameNumber == 1)
 			{
 				InsertSpies();
 			}
-			PatrolTick();
+			PatrolTick(ref patrol1, ref currentPatrolPoint1, soviets, DogPatrol, patrolPoints1);
+			PatrolTick(ref patrol2, ref currentPatrolPoint2, soviets, InfantryPatrol, patrolPoints2);
+			PatrolTick(ref patrol3, ref currentPatrolPoint3, soviets, DogPatrol, patrolPoints3);
+			PatrolTick(ref patrol4, ref currentPatrolPoint4, soviets, DogPatrol, patrolPoints4);
+			PatrolTick(ref patrol5, ref currentPatrolPoint5, soviets, DogPatrol, patrolPoints5);
+		}
+
+		void PatrolTick(ref Actor[] patrolActors, ref int currentPoint, Player owner, string[] actorNames, CPos[] points)
+		{
+			if (patrolActors == null)
+			{
+				var td = new TypeDictionary { new OwnerInit(owner), new LocationInit(points[currentPoint]) };
+				patrolActors = actorNames.Select(f => world.CreateActor(f, td)).ToArray();
+			}
+			var leader = patrolActors[0];
+			if (!leader.IsDead() && leader.IsIdle && leader.IsInWorld)
+			{
+				currentPoint = (currentPoint + 1) % points.Length;
+				leader.QueueActivity(new AttackMove.AttackMoveActivity(leader, new Move.Move(points[currentPoint], 0)));
+				leader.QueueActivity(new Wait(50));
+				foreach (var follower in patrolActors.Skip(1))
+				{
+					follower.QueueActivity(new Wait(world.SharedRandom.Next(0, 25)));
+					follower.QueueActivity(new AttackMove.AttackMoveActivity(follower, new Move.Move(points[currentPoint], 0)));
+				}
+			}
 		}
 
 		void InsertSpies()
@@ -77,44 +121,18 @@ namespace OpenRA.Mods.RA.Missions
 			lst.QueueActivity(new RemoveSelf());
 		}
 
-		static readonly string[] DogPatrol = { "e1", "dog.patrol", "dog.patrol" };
-
-		IEnumerable<Actor> patrol1;
-		CPos[] patrolPoints1;
-		int currentPatrolPoint1;
-
-		void PatrolTick()
-		{
-			if (patrol1 == null)
-			{
-				var td = new TypeDictionary { new OwnerInit(soviets), new LocationInit(patrolPoints1.First()) };
-				patrol1 = DogPatrol.Select(f => world.CreateActor(f, td)).ToArray();
-			}
-			var leader = patrol1.First();
-			if (!leader.IsDead() && leader.IsIdle && leader.IsInWorld)
-			{
-				currentPatrolPoint1 = (currentPatrolPoint1 + 1) % patrolPoints1.Count();
-				leader.QueueActivity(new AttackMove.AttackMoveActivity(leader, new Move.Move(patrolPoints1[currentPatrolPoint1])));
-				leader.QueueActivity(new Wait(50));
-				foreach (var follower in patrol1.Skip(1))
-				{
-					follower.QueueActivity(new Wait(world.SharedRandom.Next(0, 25)));
-					follower.QueueActivity(new AttackMove.AttackMoveActivity(follower, new Move.Move(patrolPoints1[currentPatrolPoint1])));
-				}
-			}
-		}
-
 		void SetupSubStances()
 		{
-			if (Game.IsHost)
+			if (!Game.IsHost)
 			{
-				foreach (var actor in world.Actors.Where(a => a.IsInWorld && a.Owner == soviets && !a.IsDead() && a.HasTrait<TargetableSubmarine>()))
+				return;
+			}
+			foreach (var actor in world.Actors.Where(a => a.IsInWorld && a.Owner == soviets && !a.IsDead() && a.HasTrait<TargetableSubmarine>()))
+			{
+				world.IssueOrder(new Order("SetUnitStance", actor, false)
 				{
-					world.IssueOrder(new Order("SetUnitStance", actor, false)
-					{
-						TargetLocation = new CPos((int)UnitStance.Defend, 0)
-					});
-				}
+					TargetLocation = new CPos((int)UnitStance.Defend, 0)
+				});
 			}
 		}
 
@@ -139,7 +157,31 @@ namespace OpenRA.Mods.RA.Missions
 				actors["PatrolPoint12"].Location,
 				actors["PatrolPoint13"].Location,
 				actors["PatrolPoint14"].Location,
-				actors["PatrolPoint15"].Location 
+				actors["PatrolPoint15"].Location
+			};
+			patrolPoints2 = patrolPoints1;
+			patrolPoints3 = new[] 
+			{
+				actors["PatrolPoint21"].Location,
+				actors["PatrolPoint22"].Location,
+				actors["PatrolPoint23"].Location,
+				actors["PatrolPoint24"].Location,
+				actors["PatrolPoint25"].Location
+			};
+			patrolPoints4 = new[] 
+			{
+				actors["PatrolPoint31"].Location,
+				actors["PatrolPoint32"].Location,
+				actors["PatrolPoint33"].Location,
+				actors["PatrolPoint34"].Location
+			};
+			patrolPoints5 = new[] 
+			{
+				actors["PatrolPoint41"].Location,
+				actors["PatrolPoint42"].Location,
+				actors["PatrolPoint43"].Location,
+				actors["PatrolPoint44"].Location,
+				actors["PatrolPoint45"].Location
 			};
 			SetupSubStances();
 			Game.MoveViewport(lstEntryPoint.Location.ToFloat2());

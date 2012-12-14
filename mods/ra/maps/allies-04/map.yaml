@@ -504,18 +504,18 @@ Actors:
 	Actor118: ftur
 		Location: 98,40
 		Owner: Soviets
-	Actor149: silo
-		Location: 95,27
+	Actor149: fact
+		Location: 95,25
 		Owner: Soviets
+	Actor151: v01
+		Location: 89,50
+		Owner: Neutral
 	Actor150: silo
-		Location: 96,28
+		Location: 110,28
 		Owner: Soviets
-	Actor151: silo
-		Location: 97,27
-		Owner: Soviets
-	Actor152: silo
-		Location: 96,26
-		Owner: Soviets
+	Actor152: v07
+		Location: 79,45
+		Owner: Neutral
 	Actor153: apwr
 		Location: 97,16
 		Owner: Soviets
@@ -741,7 +741,7 @@ Actors:
 	Actor225: fenc
 		Location: 95,36
 		Owner: Soviets
-	Actor224: 4tnk.husk
+	Actor224: 4tnk
 		Location: 103,30
 		Owner: Soviets
 	Actor223: 4tnk
@@ -945,8 +945,8 @@ Actors:
 	Actor295: t07
 		Location: 84,40
 		Owner: Neutral
-	Actor296: t06
-		Location: 91,49
+	PatrolPoint22: waypoint
+		Location: 92,49
 		Owner: Neutral
 	Actor297: v08
 		Location: 72,78
@@ -1302,6 +1302,117 @@ Actors:
 	PatrolPoint14: waypoint
 		Location: 91,83
 		Owner: Neutral
+	PatrolPoint21: waypoint
+		Location: 105,45
+		Owner: Neutral
+	PatrolPoint23: waypoint
+		Location: 78,53
+		Owner: Neutral
+	PatrolPoint24: waypoint
+		Location: 92,56
+		Owner: Neutral
+	PatrolPoint25: waypoint
+		Location: 106,53
+		Owner: Neutral
+	Actor409: e1
+		Location: 76,59
+		Owner: Soviets
+	Actor410: e1
+		Location: 78,59
+		Owner: Soviets
+	Actor411: dog
+		Location: 75,58
+		Owner: Soviets
+	Actor412: sbag
+		Location: 76,60
+		Owner: Soviets
+	Actor413: sbag
+		Location: 75,60
+		Owner: Soviets
+	Actor414: sbag
+		Location: 74,60
+		Owner: Soviets
+	Actor415: sbag
+		Location: 78,60
+		Owner: Soviets
+	Actor416: sbag
+		Location: 79,60
+		Owner: Soviets
+	Actor417: sbag
+		Location: 73,60
+		Owner: Soviets
+	PatrolPoint31: waypoint
+		Location: 83,101
+		Owner: Neutral
+	PatrolPoint32: waypoint
+		Location: 71,96
+		Owner: Neutral
+	PatrolPoint33: waypoint
+		Location: 71,87
+		Owner: Neutral
+	PatrolPoint34: waypoint
+		Location: 92,85
+		Owner: Neutral
+	Actor296: kenn
+		Location: 90,68
+		Owner: Soviets
+	Actor303: v10
+		Location: 97,47
+		Owner: Neutral
+	Actor304: v08
+		Location: 78,45
+		Owner: Neutral
+	Actor306: v04
+		Location: 87,50
+		Owner: Neutral
+	Actor408: dog
+		Location: 108,42
+		Owner: Soviets
+	Actor418: dog
+		Location: 109,74
+		Owner: Soviets
+	Actor419: e1
+		Location: 108,75
+		Owner: Soviets
+	Actor420: e1
+		Location: 110,75
+		Owner: Soviets
+	Actor421: sbag
+		Location: 108,73
+		Owner: Soviets
+	Actor422: sbag
+		Location: 109,73
+		Owner: Soviets
+	Actor423: sbag
+		Location: 110,73
+		Owner: Soviets
+	Actor424: sbag
+		Location: 111,73
+		Owner: Soviets
+	PatrolPoint43: waypoint
+		Location: 109,51
+		Owner: Neutral
+	PatrolPoint42: waypoint
+		Location: 109,44
+		Owner: Neutral
+	PatrolPoint41: waypoint
+		Location: 102,41
+		Owner: Neutral
+	PatrolPoint45: waypoint
+		Location: 93,42
+		Owner: Neutral
+	PatrolPoint44: waypoint
+		Location: 96,53
+		Owner: Neutral
+	Actor425: dog
+		Location: 79,22
+		Owner: Soviets
+	Actor426: dog
+		Location: 93,19
+		Owner: Soviets
+	Actor427: dog
+		Location: 104,24
+		Owner: Soviets
 
 Smudges:
 
