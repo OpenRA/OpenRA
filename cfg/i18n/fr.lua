@@ -1,6 +1,6 @@
 return {
   [0] = function(c) return c == 1 and 1 or 2 end, -- plural
-  ["&About"] = "&A propos", -- src\editor\menu_help.lua
+  ["&About"] = "&À propos", -- src\editor\menu_help.lua
   ["&Add Watch"] = "Ajouter un point d'observation", -- src\editor\debugger.lua
   ["&Break"] = "Interrompre", -- src\editor\menu_project.lua
   ["&Close page"] = "Fermer la page", -- src\editor\menu_file.lua
@@ -10,7 +10,7 @@ return {
   ["&Edit Watch"] = "Editer le point d'observation", -- src\editor\debugger.lua
   ["&Edit"] = "Editer", -- src\editor\menu_edit.lua
   ["&File"] = "Fichier", -- src\editor\menu_file.lua
-  ["&Find"] = "Trouver", -- src\editor\menu_search.lua
+  ["&Find"] = "Rechercher", -- src\editor\menu_search.lua
   ["&Fold/Unfold All"] = "Replier/Déplier tout", -- src\editor\menu_edit.lua
   ["&Goto Line"] = "Aller à la ligne", -- src\editor\menu_search.lua
   ["&Help"] = "Aide", -- src\editor\menu_help.lua
@@ -32,7 +32,7 @@ return {
   ["&View"] = "Vue", -- src\editor\menu_view.lua
   ["&Watch Window"] = "Fenêtre d'observation", -- src\editor\menu_view.lua
   ["&Watches"] = "Points d'observation", -- src\editor\debugger.lua
-  ["About ZeroBrane Studio"] = "A propos de ZeroBrane Studio", -- src\editor\menu_help.lua
+  ["About ZeroBrane Studio"] = "À propos de ZeroBrane Studio", -- src\editor\menu_help.lua
   ["Add Watch Expression"] = "Ajouter une expression", -- src\editor\editor.lua
   ["Add to Scratchpad"] = "Ajouter au brouillon", -- src\editor\editor.lua
   ["All files"] = "Tous les fichiers", -- src\editor\commands.lua
@@ -48,7 +48,7 @@ return {
   ["Can't find file '%s' in the current project to activate for debugging. Update the project or open the file in the editor before debugging."] = "Fichier '%s' non trouvé dans le projet en cours pour le débogage. Mettez le projet à jour ou ouvrez le fichier dans l'éditeur avant débogage.", -- src\editor\debugger.lua
   ["Can't process auto-recovery record; invalid format: %s."] = "Impossible de restaurer automatiquement l'enregistrement; Format invalide: %s.", -- src\editor\commands.lua
   ["Can't run the entry point script ('%s')."] = "Impossible d'exécuter le point d'entrée du script (%s).", -- src\editor\debugger.lua
-  ["Can't start debugging session due to internal error '%s'."] = "Impossible de démarrer la session de débogage: erreur interne '%s'.'", -- src\editor\debugger.lua
+  ["Can't start debugging session due to internal error '%s'."] = "Impossible de lancer la session de débogage: erreur interne '%s'.'", -- src\editor\debugger.lua
   ["Can't start debugging without an opened file or with the current file not being saved ('%s')."] = "Impossible de déboguer sans fichier ouvert ou si le fichier en cours d'édition n'a pas été enregistré ('%s').", -- src\editor\debugger.lua
   ["Choose a project directory"] = "Choisissez un répertoire de projet", -- src\editor\menu_project.lua
   ["Clear &Dynamic Words"] = "Effacer les mots dynamiques", -- src\editor\menu_edit.lua
@@ -72,7 +72,7 @@ return {
   ["Debugging session started in '%s'."] = "Session de débogage démarrée dans '%s'.", -- src\editor\debugger.lua
   ["Do you want to reload it?"] = "Voulez -vous le charger à nouveau?", -- src\editor\editor.lua
   ["Do you want to save the changes to '%s'?"] = "Voulez-vous sauvegarder les changements dans '%s'?", -- src\editor\commands.lua
-  ["E&xit"] = "Sortie", -- src\editor\menu_file.lua
+  ["E&xit"] = "Quitter", -- src\editor\menu_file.lua
   ["Enter Lua code and press Enter to run it."] = "Entrer du code Lua et pressez <Entrée> pour l`exécuter.", -- src\editor\shellbox.lua
   ["Enter line number"] = "Entrez le numéro de ligne", -- src\editor\menu_search.lua
   ["Error while loading API file: %s"] = "Erreur lors du chargement du fichier d'API: %s", -- src\editor\autocomplete.lua
@@ -117,9 +117,9 @@ return {
   ["Output"] = "Sortie", -- src\editor\output.lua, src\editor\settings.lua, src\editor\gui.lua
   ["Paste text from the clipboard"] = "Coller le texte depuis le presse-papiers", -- src\editor\menu_edit.lua, src\editor\gui.lua
   ["Prepend '=' to show complex values on multiple lines."] = "Préfixer '=' afin de mettre en évidence les valeurs complexes sur les lignes multiples", -- src\editor\shellbox.lua
-  ["Press cancel to abort."] = "Appuyer annuler pour arrêter.", -- src\editor\commands.lua
+  ["Press cancel to abort."] = "Cliquez sur Annuler pour annuler.", -- src\editor\commands.lua
   ["Program '%s' started in '%s' (pid: %d)."] = "Programme '%s' démarré dans '%s' (pid: %d).", -- src\editor\output.lua
-  ["Program can't start because conflicting process is running as '%s'."] = "Le programme ne peut démarrer à cause d'un processus conflictuel '%s' en cours d'exécution.", -- src\editor\output.lua
+  ["Program can't start because conflicting process is running as '%s'."] = "Le programme ne peut démarrer à cause d'un conflit de processus avec '%s' (en cours d'exécution).", -- src\editor\output.lua
   ["Program completed in %.2f seconds (pid: %d)."] = "Programme terminé en %.2f secondes (pid: %d).", -- src\editor\output.lua
   ["Program starting as '%s'."] = "Programme démarré en tant que '%s'.", -- src\editor\output.lua
   ["Program stopped (pid: %d)."] = "Programme stoppé (pid: %d).", -- src\editor\debugger.lua
@@ -135,7 +135,7 @@ return {
   ["Remote console"] = "Console à distance", -- src\editor\shellbox.lua
   ["Reset to default layout"] = "Retourner à l'affiche par défaut", -- src\editor\menu_view.lua
   ["Resets the dynamic word list for autocompletion"] = "Redéfinir la liste des mots dynamiques pour auto-complétion", -- src\editor\menu_edit.lua
-  ["Run as Scratchpad"] = "Exécuter en Brouillon", -- src\editor\menu_project.lua
+  ["Run as Scratchpad"] = "Exécuter au Brouillon", -- src\editor\menu_project.lua
   ["S&top Debugging"] = "Arrêter le débogueur", -- src\editor\menu_project.lua
   ["S&top Process"] = "Arrêter le processus", -- src\editor\menu_project.lua
   ["Save &As..."] = "Enregitrer sous...", -- src\editor\menu_file.lua
@@ -152,12 +152,12 @@ return {
   ["Select all text in the editor"] = "Sélectionner tout le texte dans l'éditeur", -- src\editor\menu_edit.lua
   ["Set project directory from current file"] = "Définir le répertoire de projet depuis le fichier courant", -- src\editor\gui.lua
   ["Set the interpreter to be used"] = "Définir l'interpréteur à utiliser", -- src\editor\menu_project.lua
-  ["Show &Tooltip"] = "Affichier l'info-bulle", -- src\editor\menu_edit.lua
+  ["Show &Tooltip"] = "Afficher l'info-bulle", -- src\editor\menu_edit.lua
   ["Show tooltip for current position; place cursor after opening bracket of function"] = "Afficher l'info-bulle pour la position actuelle; placer le curseur après avoir ouvert les parenthèses d'arguments de fontion", -- src\editor\menu_edit.lua
   ["Sort selected lines"] = "trier les fichiers sélectionnés", -- src\editor\menu_search.lua
   ["Stack Window"] = "Fenêtre de pile d'éxécution", -- src\editor\debugger.lua
-  ["Start &Debugging"] = "Démarrer le débogage", -- src\editor\menu_project.lua
-  ["Start debugging"] = "Démarrer le débogage", -- src\editor\menu_project.lua, src\editor\gui.lua
+  ["Start &Debugging"] = "Lancer le débogage", -- src\editor\menu_project.lua
+  ["Start debugging"] = "Lancer le débogage", -- src\editor\menu_project.lua, src\editor\gui.lua
   ["Step &Into"] = "Pas dans", -- src\editor\menu_project.lua
   ["Step &Over"] = "Pas sur", -- src\editor\menu_project.lua
   ["Step O&ut"] = "Pas en dehors de", -- src\editor\menu_project.lua
@@ -167,8 +167,8 @@ return {
   ["Stop the currently running process"] = "Arrêter le processus en cours", -- src\editor\menu_project.lua, src\editor\gui.lua
   ["Switch to or from full screen mode"] = "Passer au/Quitter le mode Plein Ecran", -- src\editor\menu_view.lua
   ["The API file must be located in a subdirectory of the API directory."] = "Le fichier d'API doit être placé dans un sous-répertoire du répertoire d'API.", -- src\editor\autocomplete.lua
-  ["Toggle Break&point"] = "Basculer en Point d'Interruption", -- src\editor\menu_project.lua
-  ["Toggle breakpoint"] = "Basculer en point d'interruption", -- src\editor\menu_project.lua, src\editor\gui.lua
+  ["Toggle Break&point"] = "Créer un Point d'Interruption", -- src\editor\menu_project.lua
+  ["Toggle breakpoint"] = "Créer un point d'interruption", -- src\editor\menu_project.lua, src\editor\gui.lua
   ["Tr&ace"] = "Tracer", -- src\editor\menu_project.lua
   ["Trace execution showing each executed line"] = "Traçage d'exécution du code", -- src\editor\menu_project.lua
   ["Unable to load file '%s'."] = "Impossible de charger le le fichier '%s'.", -- src\editor\commands.lua
