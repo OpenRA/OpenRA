@@ -72,6 +72,19 @@ menuBar:Append(debugMenu, TR("&Project"))
 -- Project directory handling
 
 function ProjectUpdateProjectDir(projdir,skiptree)
+  local dir = wx.wxFileName.DirName(projdir)
+
+  -- wxwidgets 2.9.x may report the last folder twice (depending on how the
+  -- user selects the folder), which makes the selected folder incorrect.
+  -- check if the last segment is repeated and drop it.
+  if not wx.wxDirExists(projdir) then
+    local dirs = dir:GetDirs()
+    if #dirs > 1 and dirs[-1] == dirs[-2] then dir:RemoveLastDir() end
+    if not wx.wxDirExists(dir:GetFullPath()) then return end
+  end
+
+  projdir = dir:GetPath(wx.wxPATH_GET_VOLUME) -- no trailing slash
+
   ide.config.path.projectdir = projdir ~= "" and projdir or nil
   frame:SetStatusText(projdir)
   if (not skiptree) then
@@ -89,7 +102,7 @@ local function projChoose(event)
   local projectdir = ide.config.path.projectdir
 
   local filePicker = wx.wxDirDialog(frame, TR("Choose a project directory"),
-    projectdir ~= "" and projectdir or wx.wxGetCwd(),wx.wxFLP_USE_TEXTCTRL)
+    projectdir ~= "" and projectdir or wx.wxGetCwd(), wx.wxDIRP_DIR_MUST_EXIST)
   if filePicker:ShowModal(true) == wx.wxID_OK then
     ProjectUpdateProjectDir(filePicker:GetPath())
   end
