@@ -17,19 +17,17 @@ local app = {
   createbitmap = CreateBitmap,
   loadfilters = {
     tools = function(file) return false end,
-    specs = function(file) return file:find('^spec[/\\]lua%.lua$') end,
+    specs = function(file) return file:find('spec[/\\]lua%.lua$') end,
     interpreters = function(file) return not file:find('estrela') end,
   },
 
   postinit = function ()
     local bundle = wx.wxIconBundle()
-    local files = FileSysGet("zbstudio/res/", wx.wxFILE)
+    local files = FileSysGet("zbstudio/res/*.ico", wx.wxFILE)
     local icons = 0
     for i,file in ipairs(files) do
-      if GetFileExt(file) == "ico" then
-        icons = icons + 1
-        bundle:AddIcon(file, wx.wxBITMAP_TYPE_ICO)
-      end
+      icons = icons + 1
+      bundle:AddIcon(file, wx.wxBITMAP_TYPE_ICO)
     end
     if icons > 0 then ide.frame:SetIcons(bundle) end
 

@@ -240,7 +240,7 @@ end
 -- load specs
 local function loadSpecs(filter)
   for _, file in ipairs(FileSysGet("spec/*.*", wx.wxFILE)) do
-    if file:match "%.lua$" and (filter or app.loadfilters.specs)(file) then
+    if file:match("%.lua$") and (filter or app.loadfilters.specs)(file) then
       addToTab(ide.specs,file)
     end
   end
