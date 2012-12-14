@@ -55,7 +55,7 @@ local function treeAddDir(tree,parent_id,rootdir)
 
   -- append directories
   for _,dir in ipairs(FileSysGet(search,wx.wxDIR)) do
-    local name = dir:match("%"..string_Pathsep.."("..stringset_File.."+)$")
+    local name = dir:match("("..stringset_File.."+)$")
     local icon = 0
     local item = items[name .. icon]
     if item then -- existing item
@@ -79,7 +79,7 @@ local function treeAddDir(tree,parent_id,rootdir)
 
   -- then append files
   for _,file in ipairs(FileSysGet(search,wx.wxFILE)) do
-    local name = file:match("%"..string_Pathsep.."("..stringset_File.."+)$")
+    local name = file:match("("..stringset_File.."+)$")
     local known = GetSpec(GetFileExt(name))
     local icon = known and 1 or 2
     local item = items[name .. icon]

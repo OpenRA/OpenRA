@@ -169,7 +169,14 @@ function FileSysGet(dir,spec)
   end
   local f = browse:FindFirst(dir,spec)
   while #f>0 do
-    table.insert(content,(f:gsub("^file:",""))) -- remove file: protocol (wx2.9+)
+    if f:match("^file:") then -- remove file: protocol (wx2.9+)
+      f = f:gsub("^file:/?","")
+        :gsub('%%(%x%x)', function(n) return string.char(tonumber(n, 16)) end)
+    end
+    local file = wx.wxFileName(f)
+    -- normalize path if possible to correct separators for the local FS
+    table.insert(content,
+      file:Normalize(wx.wxPATH_NORM_ALL) and file:GetFullPath() or f)
     f = browse:FindNext()
   end
   if ide.osname == 'Unix' then table.sort(content) end
