@@ -66,11 +66,13 @@ end
 local function createToolBar(frame)
   local toolBar = wx.wxToolBar(frame, wx.wxID_ANY,
     wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTB_FLAT + wx.wxTB_NODIVIDER)
-  local funclist = wx.wxChoice.new(toolBar,ID "toolBar.funclist",
+  local funclist = wx.wxChoice.new(toolBar, ID "toolBar.funclist",
     -- Linux requires a bit larger size for the function list in the toolbar.
     -- Mac also requires a bit larger size, but setting it to 20 resets
     -- back to 16 when the toolbar is refreshed.
-    wx.wxDefaultPosition, wx.wxSize.new(240,ide.osname == "Unix" and 24 or 16))
+    -- Windows with wxwidgets 2.9.x also requires a larger size.
+    wx.wxDefaultPosition, wx.wxSize.new(240,
+      (ide.osname == "Unix" or ide.osname == "Windows") and 24 or 16))
   
   -- usually the bmp size isn't necessary, but the HELP icon is not the right size in MSW
   local getBitmap = (ide.app.createbitmap or wx.wxArtProvider.GetBitmap)
