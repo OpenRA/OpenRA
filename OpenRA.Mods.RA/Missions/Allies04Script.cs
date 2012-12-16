@@ -19,6 +19,7 @@ using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Network;
 using OpenRA.Traits;
+using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Missions
 {
@@ -33,12 +34,12 @@ namespace OpenRA.Mods.RA.Missions
 		Dictionary<int, Objective> objectives = new Dictionary<int, Objective>
 		{
 			{ InfiltrateID, new Objective(ObjectiveType.Primary, "", ObjectiveStatus.InProgress) },
-			{ DestroyID, new Objective(ObjectiveType.Primary, "Secure the Soviet research laboratory and destroy the rest of the Soviet base.", ObjectiveStatus.Inactive) }
+			{ DestroyID, new Objective(ObjectiveType.Primary, "Secure the Soviet research laboratory and destroy the rest of the Soviet base. Ensure that the Soviet research laboratory is not destroyed.", ObjectiveStatus.Inactive) }
 		};
 
 		const int InfiltrateID = 0;
 		const int DestroyID = 1;
-		const string Infiltrate = "The Soviets are currently developing a new defensive system named the \"Iron Curtain\" at their main research laboratories. Get our {0} into the Soviet research laboratories undetected.";
+		const string Infiltrate = "The Soviets are currently developing a new defensive system named the \"Iron Curtain\" at their main research laboratory. Get our {0} into the laboratory undetected.";
 
 		Actor lstEntryPoint;
 		Actor lstUnloadPoint;
@@ -55,6 +56,9 @@ namespace OpenRA.Mods.RA.Missions
 		bool allies1SpyInfiltratedLab;
 		bool allies2SpyInfiltratedLab;
 		int frameInfiltrated = -1;
+
+		CountdownTimer destroyBaseTimer;
+		CountdownTimerWidget destroyBaseTimerWidget;
 
 		Player allies;
 		Player allies1;
@@ -128,10 +132,24 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				SendHind(hind1EntryPoint, hind1Points, hind1ExitPoint);
 			}
-			if (frameInfiltrated != -1 && world.FrameNumber == frameInfiltrated + 100)
+			if (frameInfiltrated != -1)
 			{
-				Sound.Play("aarrivs1.aud");
-				world.AddFrameEndTask(w => SendReinforcements());
+				if (world.FrameNumber == frameInfiltrated + 100)
+				{
+					Sound.Play("aarrivs1.aud");
+					world.AddFrameEndTask(w => SendReinforcements());
+				}
+				else if (world.FrameNumber >= frameInfiltrated + 200)
+				{
+					if (world.FrameNumber == frameInfiltrated + 200)
+					{
+						Sound.Play("timergo1.aud");
+						destroyBaseTimer = new CountdownTimer(1500 * 25, OnDestroyBaseTimerExpired, true);
+						destroyBaseTimerWidget = new CountdownTimerWidget(destroyBaseTimer, "Secure lab: {0}");
+						Ui.Root.AddChild(destroyBaseTimerWidget);
+					}
+					destroyBaseTimer.Tick();
+				}
 			}
 			PatrolTick(ref patrol1, ref currentPatrolPoint1, soviets, DogPatrol, patrolPoints1);
 			PatrolTick(ref patrol2, ref currentPatrolPoint2, soviets, InfantryPatrol, patrolPoints2);
@@ -148,7 +166,7 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			else if (lab.Destroyed)
 			{
-				MissionFailed("The research laboratory was destroyed.");
+				MissionFailed("The Soviet research laboratory was destroyed.");
 			}
 			else if (!world.Actors.Any(a => (a.Owner == allies1 || a.Owner == allies2) && !a.IsDead()
 				&& (a.HasTrait<Building>() && !a.HasTrait<Wall>()) || a.HasTrait<BaseBuilding>()))
@@ -165,6 +183,19 @@ namespace OpenRA.Mods.RA.Missions
 				OnObjectivesUpdated(true);
 				MissionAccomplished("The Soviet research laboratory has been secured successfully.");
 			}
+		}
+
+		void OnDestroyBaseTimerExpired(CountdownTimer t)
+		{
+			if (!world.Actors.Any(a => a.Owner == soviets && a.IsInWorld && !a.IsDead()
+				&& a.HasTrait<Building>() && !a.HasTrait<Wall>() && !a.HasTrait<Allies04TrivialBuilding>() && a != lab)
+				&& objectives[InfiltrateID].Status == ObjectiveStatus.Completed)
+			{
+				return;
+			}
+			objectives[DestroyID].Status = ObjectiveStatus.Failed;
+			OnObjectivesUpdated(true);
+			MissionFailed("The Soviet research laboratory was not secured in time.");
 		}
 
 		void ManageSovietOre()
