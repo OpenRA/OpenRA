@@ -145,7 +145,7 @@ namespace OpenRA.Mods.RA.Missions
 					{
 						Sound.Play("timergo1.aud");
 						destroyBaseTimer = new CountdownTimer(1500 * 25, OnDestroyBaseTimerExpired, true);
-						destroyBaseTimerWidget = new CountdownTimerWidget(destroyBaseTimer, "Secure lab: {0}");
+						destroyBaseTimerWidget = new CountdownTimerWidget(destroyBaseTimer, "Secure lab in: {0}");
 						Ui.Root.AddChild(destroyBaseTimerWidget);
 					}
 					destroyBaseTimer.Tick();
