@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Render;
 using OpenRA.Network;
 using OpenRA.Traits;
 
@@ -36,6 +37,8 @@ namespace OpenRA.Mods.RA.Missions
 		Actor lstEntryPoint;
 		Actor lstUnloadPoint;
 		Actor lstExitPoint;
+		Actor hijackTruck;
+		Actor hijackTruckGuard;
 
 		Actor allies1Spy;
 		Actor allies2Spy;
@@ -76,6 +79,14 @@ namespace OpenRA.Mods.RA.Missions
 			PatrolTick(ref patrol3, ref currentPatrolPoint3, soviets, DogPatrol, patrolPoints3);
 			PatrolTick(ref patrol4, ref currentPatrolPoint4, soviets, DogPatrol, patrolPoints4);
 			PatrolTick(ref patrol5, ref currentPatrolPoint5, soviets, DogPatrol, patrolPoints5);
+			ManageSovietOre();
+		}
+
+		void ManageSovietOre()
+		{
+			var res = soviets.PlayerActor.Trait<PlayerResources>();
+			res.TakeOre(res.Ore);
+			res.TakeCash(res.Cash);
 		}
 
 		void PatrolTick(ref Actor[] patrolActors, ref int currentPoint, Player owner, string[] actorNames, CPos[] points)
@@ -151,6 +162,8 @@ namespace OpenRA.Mods.RA.Missions
 			lstEntryPoint = actors["LstEntryPoint"];
 			lstUnloadPoint = actors["LstUnloadPoint"];
 			lstExitPoint = actors["LstExitPoint"];
+			hijackTruck = actors["HijackTruck"];
+			hijackTruckGuard = actors["HijackTruckGuard"];
 			patrolPoints1 = new[] 
 			{
 				actors["PatrolPoint11"].Location,
@@ -206,6 +219,60 @@ namespace OpenRA.Mods.RA.Missions
 				Sound.StopMusic();
 				Game.ConnectionStateChanged -= StopMusic;
 			}
+		}
+	}
+
+	class Allies04HijackableInfo : ITraitInfo
+	{
+		public object Create(ActorInitializer init) { return new Allies04Hijackable(init.self); }
+	}
+
+	class Allies04Hijackable : IAcceptSpy, INotifyPassengerExited
+	{
+		public Player OldOwner;
+
+		public Allies04Hijackable(Actor self)
+		{
+			OldOwner = self.Owner;
+		}
+
+		public void OnInfiltrate(Actor self, Actor spy)
+		{
+			if (self.Trait<Cargo>().IsEmpty(self))
+			{
+				self.ChangeOwner(spy.Owner);
+			}
+			self.Trait<Cargo>().Load(self, spy);
+		}
+
+		public void PassengerExited(Actor self, Actor passenger)
+		{
+			if (self.Trait<Cargo>().IsEmpty(self))
+			{
+				self.CancelActivity();
+				self.ChangeOwner(OldOwner);
+			}
+		}
+	}
+
+	class Allies04RenderHijackedInfo : RenderUnitInfo
+	{
+		public override object Create(ActorInitializer init) { return new Allies04RenderHijacked(init.self, this); }
+	}
+
+	class Allies04RenderHijacked : RenderUnit, IRenderModifier
+	{
+		Allies04Hijackable hijackable;
+
+		public Allies04RenderHijacked(Actor self, Allies04RenderHijackedInfo info)
+			: base(self)
+		{
+			hijackable = self.Trait<Allies04Hijackable>();
+		}
+
+		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
+		{
+			return r.Select(a => a.WithPalette(Palette(hijackable.OldOwner)));
 		}
 	}
 }

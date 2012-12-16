@@ -468,7 +468,7 @@ Actors:
 	Actor136: dome
 		Location: 107,25
 		Owner: Soviets
-	Actor137: weap
+	HijackFactory: weap
 		Location: 98,32
 		Owner: Soviets
 	Actor138: sam
@@ -768,7 +768,7 @@ Actors:
 	Actor229: v2rl
 		Location: 96,19
 		Owner: Soviets
-	Actor230: e1
+	HijackTruckGuard: e1
 		Location: 65,34
 		Owner: Soviets
 	Actor50: fenc
@@ -852,6 +852,7 @@ Actors:
 	Actor264: v2rl
 		Location: 50,36
 		Owner: Soviets
+		Facing: 192
 	Actor266: 3tnk
 		Location: 88,70
 		Owner: Soviets
@@ -1263,6 +1264,7 @@ Actors:
 	Actor328: v2rl
 		Location: 27,37
 		Owner: Soviets
+		Facing: 64
 	Actor366: powr
 		Location: 35,54
 		Owner: Soviets
@@ -1413,6 +1415,10 @@ Actors:
 	Actor427: dog
 		Location: 104,24
 		Owner: Soviets
+	HijackTruck: truk.hijackable
+		Location: 99,34
+		Owner: Soviets
+		Facing: 160
 
 Smudges:
 
@@ -1433,13 +1439,13 @@ Rules:
 			Range: 10
 		Health:
 			HP: 100
+		DontDestroyWhenInfiltrating:
 	DOG.Patrol:
 		Inherits: ^Infantry
 		Valued:
 			Cost: 200
 		Tooltip:
 			Name: Attack Dog
-			Description: Anti-infantry unit. Not fooled by the \nSpy's disguise.\n  Strong vs Infantry\n  Weak vs Vehicles
 		Selectable:
 			Voice: DogVoice
 			Bounds: 12,17,-1,-4
@@ -1457,9 +1463,37 @@ Rules:
 			Image: dog
 			IdleAnimations: idle1,idle2
 		IgnoresDisguise:
+	TRUK.Hijackable:
+		Inherits: ^Vehicle
+		Cargo:
+			MaxWeight: 2
+			PipCount: 2
+		AutoTargetIgnore:
+		Allies04Hijackable:
+		Allies04RenderHijacked:
+			Image: TRUK
+		Selectable:
+			Voice: SpyVoice
+		Valued:
+			Cost: 500
+		Tooltip:
+			Name: Supply Truck
+		Health:
+			HP: 110
+		Armor:
+			Type: Light
+		Mobile:
+			Speed: 9
+		RevealsShroud:
+			Range: 10
+		AttackMove:
+			JustMove: yes
 
 Sequences:
-
+	truk:
+		unload:
+			Start: 0
+			Facings: 32
 Weapons:
 
 Voices:
