@@ -251,16 +251,17 @@ E8:
 		Cost: 1800
 	Tooltip:
 		Name: Volkov
-		Description: Elite commando infantry, armed with \nmodular cannons and grenade launcher.\n  Strong vs Vehicles, Infantry\n  Weak vs Aircraft
+		Description: Elite commando cyborg, armed with \nmodular cannons and grenade launcher.\n  Strong vs Vehicles, Infantry\n  Weak vs Aircraft
 	Selectable:
 		Voice: VolkovVoice
 		Bounds: 12,17,0,-9
 	Health:
-		HP: 150
+		HP: 200
 	Armor:
-		Type: Heavy
+		Type: Cybernetic
 	Mobile:
 		Speed: 5
+		Crushes: atmine, crate
 	RevealsShroud:
 		Range: 4
 	Passenger:
@@ -271,8 +272,12 @@ E8:
 	TakeCover:
 	-RenderInfantry:
 	RenderInfantryProne:
-		IdleAnimations: idle1	
-	-CrushableInfantry:
+		IdleAnimations: idle1
+	CrushableInfantry:
+		CrushSound: crunchy2.aud
+	RepairableNear:
+		Buildings: fix
+		CloseEnough: 1
 
 MEDI:
 	Inherits: ^Infantry
