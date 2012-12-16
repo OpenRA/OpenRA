@@ -252,6 +252,10 @@ namespace OpenRA.Mods.RA.Missions
 				self.CancelActivity();
 				self.ChangeOwner(OldOwner);
 			}
+			else if (self.Owner == passenger.Owner)
+			{
+				self.ChangeOwner(self.Trait<Cargo>().Passengers.First().Owner);
+			}
 		}
 	}
 
