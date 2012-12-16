@@ -214,6 +214,8 @@ namespace OpenRA.Mods.RA.Missions
 			if (!world.Actors.Any(a => (a.Owner == allies1 || a.Owner == allies2) && a.IsInWorld && !a.IsDead()
 				&& ((a.HasTrait<Building>() && !a.HasTrait<Wall>()) || a.HasTrait<BaseBuilding>())))
 			{
+				objectives[EvacuateID].Status = ObjectiveStatus.Failed;
+				OnObjectivesUpdated(true);
 				MissionFailed("The remaining Allied forces in the area have been wiped out.");
 			}
 		}
