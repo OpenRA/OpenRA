@@ -768,8 +768,8 @@ Actors:
 	Actor229: v2rl
 		Location: 96,19
 		Owner: Soviets
-	HijackTruckGuard: e1
-		Location: 65,34
+	Actor137: e1
+		Location: 66,34
 		Owner: Soviets
 	Actor50: fenc
 		Location: 81,68
@@ -1419,6 +1419,36 @@ Actors:
 		Location: 99,34
 		Owner: Soviets
 		Facing: 160
+	BaseGuard: e1
+		Location: 63,36
+		Owner: Soviets
+	Actor429: cycl
+		Location: 63,33
+		Owner: Soviets
+	Actor428: cycl
+		Location: 63,34
+		Owner: Soviets
+	Actor230: cycl
+		Location: 63,35
+		Owner: Soviets
+	Actor430: sbag
+		Location: 68,34
+		Owner: Soviets
+	Actor431: sbag
+		Location: 68,33
+		Owner: Soviets
+	Actor432: cycl
+		Location: 63,32
+		Owner: Soviets
+	Actor433: sbag
+		Location: 63,37
+		Owner: Soviets
+	BaseGuardMovePos: waypoint
+		Location: 62,37
+		Owner: Neutral
+	BaseGuardTruckPos: waypoint
+		Location: 64,36
+		Owner: Neutral
 
 Smudges:
 
@@ -1494,6 +1524,7 @@ Sequences:
 		unload:
 			Start: 0
 			Facings: 32
+
 Weapons:
 
 Voices:

@@ -38,7 +38,11 @@ namespace OpenRA.Mods.RA.Missions
 		Actor lstUnloadPoint;
 		Actor lstExitPoint;
 		Actor hijackTruck;
-		Actor hijackTruckGuard;
+		Actor baseGuard;
+		Actor baseGuardMovePos;
+		Actor baseGuardTruckPos;
+		int baseGuardWait = 100;
+		bool baseGuardMoved;
 
 		Actor allies1Spy;
 		Actor allies2Spy;
@@ -80,6 +84,7 @@ namespace OpenRA.Mods.RA.Missions
 			PatrolTick(ref patrol4, ref currentPatrolPoint4, soviets, DogPatrol, patrolPoints4);
 			PatrolTick(ref patrol5, ref currentPatrolPoint5, soviets, DogPatrol, patrolPoints5);
 			ManageSovietOre();
+			BaseGuardTick();
 		}
 
 		void ManageSovietOre()
@@ -87,6 +92,25 @@ namespace OpenRA.Mods.RA.Missions
 			var res = soviets.PlayerActor.Trait<PlayerResources>();
 			res.TakeOre(res.Ore);
 			res.TakeCash(res.Cash);
+		}
+
+		void BaseGuardTick()
+		{
+			if (!baseGuardMoved && !baseGuard.IsDead() && baseGuard.IsInWorld)
+			{
+				if (hijackTruck.Location == baseGuardTruckPos.Location)
+				{
+					if (--baseGuardWait <= 0)
+					{
+						baseGuard.QueueActivity(new Move.Move(baseGuardMovePos.Location));
+						baseGuardMoved = true;
+					}
+				}
+				else
+				{
+					baseGuardWait = 100;
+				}
+			}
 		}
 
 		void PatrolTick(ref Actor[] patrolActors, ref int currentPoint, Player owner, string[] actorNames, CPos[] points)
@@ -163,7 +187,9 @@ namespace OpenRA.Mods.RA.Missions
 			lstUnloadPoint = actors["LstUnloadPoint"];
 			lstExitPoint = actors["LstExitPoint"];
 			hijackTruck = actors["HijackTruck"];
-			hijackTruckGuard = actors["HijackTruckGuard"];
+			baseGuard = actors["BaseGuard"];
+			baseGuardMovePos = actors["BaseGuardMovePos"];
+			baseGuardTruckPos = actors["BaseGuardTruckPos"];
 			patrolPoints1 = new[] 
 			{
 				actors["PatrolPoint11"].Location,
