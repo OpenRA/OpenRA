@@ -237,7 +237,7 @@ namespace OpenRA.Mods.RA.Missions
 				currentPoint = (currentPoint + 1) % points.Length;
 				leader.QueueActivity(new AttackMove.AttackMoveActivity(leader, new Move.Move(points[currentPoint], 0)));
 				leader.QueueActivity(new Wait(50));
-				foreach (var follower in patrolActors.Skip(1))
+				foreach (var follower in patrolActors.Skip(1).Where(a => !a.IsDead() && a.IsInWorld))
 				{
 					follower.QueueActivity(new Wait(world.SharedRandom.Next(0, 25)));
 					follower.QueueActivity(new AttackMove.AttackMoveActivity(follower, new Move.Move(points[currentPoint], 0)));

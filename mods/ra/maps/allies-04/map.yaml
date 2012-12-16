@@ -108,8 +108,8 @@ Actors:
 	Actor41: t12
 		Location: 73,69
 		Owner: Neutral
-	Actor44: tc05
-		Location: 92,80
+	Actor44: t13
+		Location: 83,78
 		Owner: Neutral
 	Actor47: v01
 		Location: 70,84
@@ -708,9 +708,6 @@ Actors:
 	Actor216: mine
 		Location: 103,57
 		Owner: Neutral
-	Actor217: fenc
-		Location: 89,77
-		Owner: Soviets
 	Actor218: fenc
 		Location: 81,65
 		Owner: Soviets
@@ -720,14 +717,8 @@ Actors:
 	Actor220: fenc
 		Location: 81,67
 		Owner: Soviets
-	Actor114: fenc
-		Location: 87,77
-		Owner: Soviets
 	Actor221: 4tnk
 		Location: 39,46
-		Owner: Soviets
-	Actor54: fenc
-		Location: 86,77
 		Owner: Soviets
 	Actor228: e1
 		Location: 102,34
@@ -746,9 +737,6 @@ Actors:
 		Owner: Soviets
 	Actor223: 4tnk
 		Location: 43,57
-		Owner: Soviets
-	Actor115: fenc
-		Location: 88,77
 		Owner: Soviets
 	Actor52: hpad
 		Location: 83,65
@@ -1605,6 +1593,21 @@ Actors:
 	ReinforcementsUnloadPoint: waypoint
 		Location: 92,103
 		Owner: Neutral
+	Actor474: mine
+		Location: 95,86
+		Owner: Neutral
+	Actor480: fenc
+		Location: 87,74
+		Owner: Soviets
+	Actor485: fenc
+		Location: 86,74
+		Owner: Soviets
+	Actor486: fenc
+		Location: 85,74
+		Owner: Soviets
+	Actor487: fenc
+		Location: 84,74
+		Owner: Soviets
 
 Smudges:
 
