@@ -367,6 +367,8 @@ Rules:
 		Cargo:
 			MaxWeight: 0
 			PipCount: 0
+	STEK:
+		AutoTargetIgnore:
 
 Sequences:
 

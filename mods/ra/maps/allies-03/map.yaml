@@ -1434,6 +1434,9 @@ Rules:
 		Allies03Script:
 		MissionObjectivesPanel:
 			ObjectivesPanel: MISSION_OBJECTIVES
+	YAK:
+		Buildable:
+			Owner: soviet, allies
 	E7:
 		Buildable:
 			Owner: None

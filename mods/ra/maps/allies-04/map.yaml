@@ -1621,16 +1621,67 @@ Rules:
 		Allies04Script:
 		MissionObjectivesPanel:
 			ObjectivesPanel: MISSION_OBJECTIVES
-	LST:
-		-Selectable:
-	SPY:
+	MISS:
+		AutoTargetIgnore:
+	LST.Unselectable:
+		Inherits: ^Ship
+		Valued:
+			Cost: 700
+		Tooltip:
+			Name: Transport
+		Health:
+			HP: 350
+		Armor:
+			Type: Heavy
+		Mobile:
+			ROT: 10
+			Speed: 8
 		RevealsShroud:
-			Range: 8
+			Range: 6
+		RenderUnit:
+			Image: LST
+		Cargo:
+			Types: Infantry, Vehicle
+			MaxWeight: 5
+			PipCount: 5
+		IronCurtainable:
+		RepairableNear:
+		AttackMove:
+			JustMove: true
+		-Selectable:
+	SPY.Strong:
+		Inherits: ^Infantry
+		RevealsShroud:
+			Range: 5
 		Health:
 			HP: 100
 		DontDestroyWhenInfiltrating:
+		Spy:
+		RenderSpy:
+			Image: SPY
+			IdleAnimations: idle1,idle2
+		Valued:
+			Cost: 500
+		Tooltip:
+			Name: Spy
+		Selectable:
+			Voice: SpyVoice
+			Bounds: 12,17,0,-9
+		Mobile:
+			Speed: 4
+		Passenger:
+			PipType: Yellow
+		TakeCover:
+		-AutoTarget:
+		AttackMove:
+			JustMove: true
+		-RenderInfantry:
+		AttackFrontal:
+			PrimaryWeapon: SilencedPPK
 	DOG.Patrol:
 		Inherits: ^Infantry
+		Mobile:
+			Speed: 4
 		Valued:
 			Cost: 200
 		Tooltip:
@@ -1640,8 +1691,6 @@ Rules:
 			Bounds: 12,17,-1,-4
 		Health:
 			HP: 12
-		Mobile:
-			Speed: 4
 		RevealsShroud:
 			Range: 5
 		AutoTarget:
@@ -1649,7 +1698,7 @@ Rules:
 			PrimaryWeapon: DogJaw
 			CanAttackGround: no
 		RenderInfantry:
-			Image: dog
+			Image: DOG
 			IdleAnimations: idle1,idle2
 		IgnoresDisguise:
 	TRUK.Hijackable:
@@ -1664,6 +1713,8 @@ Rules:
 			Image: TRUK
 		Selectable:
 			Voice: SpyVoice
+		RevealsShroud:
+			Range: 5
 		Valued:
 			Cost: 500
 		Tooltip:
@@ -1674,12 +1725,53 @@ Rules:
 			Type: Light
 		Mobile:
 			Speed: 9
-		RevealsShroud:
-			Range: 8
 		AttackMove:
 			JustMove: yes
-	HIND:
+	HIND.AutoTarget
+		Inherits: ^Helicopter
 		AutoTarget:
+		Valued:
+			Cost: 1000
+		Tooltip:
+			Name: Hind
+		Health:
+			HP: 150
+		Armor:
+			Type: Light
+		RevealsShroud:
+			Range: 10
+		AttackHeli:
+			PrimaryWeapon: ChainGun
+			SecondaryWeapon: ChainGun
+			PrimaryOffset: -5,-2,0,2
+			SecondaryOffset: 5,-2,0,2
+			FacingTolerance: 20
+		Helicopter:
+			RearmBuildings: hpad
+			LandWhenIdle: false
+			InitialFacing: 20
+			ROT: 4
+			Speed: 12
+		RenderUnit:
+			Image: HIND
+		WithRotor:
+		WithShadow:
+		LimitedAmmo:
+			Ammo: 24
+			PipCount: 6
+			ReloadTicks: 8
+		IronCurtainable:
+		Selectable:
+			Bounds: 38,32,0,0
+		WithMuzzleFlash:
+		FallsToEarth:
+			Explosion: UnitExplode
+		SmokeTrailWhenDamaged:
+			Offset: 0,-10
+	BARL:
+		Allies04TrivialBuilding:
+	BRL3:
+		Allies04TrivialBuilding
 	E7:
 		Buildable:
 			Owner: None

@@ -150,13 +150,15 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				MissionFailed("The research laboratory was destroyed.");
 			}
-			else if (!world.Actors.Any(a => (a.Owner == allies1 || a.Owner == allies2) && !a.IsDead() && (a.HasTrait<Building>() && !a.HasTrait<Wall>()) || a.HasTrait<BaseBuilding>()))
+			else if (!world.Actors.Any(a => (a.Owner == allies1 || a.Owner == allies2) && !a.IsDead()
+				&& (a.HasTrait<Building>() && !a.HasTrait<Wall>()) || a.HasTrait<BaseBuilding>()))
 			{
 				objectives[DestroyID].Status = ObjectiveStatus.Failed;
 				OnObjectivesUpdated(true);
 				MissionFailed("The remaining Allied forces in the area have been wiped out.");
 			}
-			else if (!world.Actors.Any(a => a.Owner == soviets && a.IsInWorld && !a.IsDead() && a.HasTrait<Building>() && !a.HasTrait<Wall>() && a != lab)
+			else if (!world.Actors.Any(a => a.Owner == soviets && a.IsInWorld && !a.IsDead()
+				&& a.HasTrait<Building>() && !a.HasTrait<Wall>() && !a.HasTrait<Allies04TrivialBuilding>() && a != lab)
 				&& objectives[InfiltrateID].Status == ObjectiveStatus.Completed)
 			{
 				objectives[DestroyID].Status = ObjectiveStatus.Completed;
@@ -206,7 +208,7 @@ namespace OpenRA.Mods.RA.Missions
 
 		void SendReinforcements()
 		{
-			var lst = world.CreateActor("lst", new TypeDictionary 
+			var lst = world.CreateActor("lst.unselectable", new TypeDictionary 
 			{ 
 				new OwnerInit(allies1),
 				new LocationInit(reinforcementsEntryPoint.Location)
@@ -247,12 +249,12 @@ namespace OpenRA.Mods.RA.Missions
 
 		void SendHind(CPos start, IEnumerable<PPos> points, CPos exit)
 		{
-			var hind = world.CreateActor("hind", new TypeDictionary
+			var hind = world.CreateActor("hind.autotarget", new TypeDictionary
 			{
 				new OwnerInit(soviets),
 				new LocationInit(start),
 				new FacingInit(Util.GetFacing(points.First().ToCPos() - start, 0)),
-				new AltitudeInit(Rules.Info["hind"].Traits.Get<HelicopterInfo>().CruiseAltitude),
+				new AltitudeInit(Rules.Info["hind.autotarget"].Traits.Get<HelicopterInfo>().CruiseAltitude),
 			});
 			foreach (var point in points.Concat(new[] { Util.CenterOfCell(exit) }))
 			{
@@ -263,16 +265,16 @@ namespace OpenRA.Mods.RA.Missions
 
 		void InsertSpies()
 		{
-			var lst = world.CreateActor("lst", new TypeDictionary 
+			var lst = world.CreateActor("lst.unselectable", new TypeDictionary 
 			{ 
 				new OwnerInit(allies1),
 				new LocationInit(lstEntryPoint.Location)
 			});
-			allies1Spy = world.CreateActor(false, "spy", new TypeDictionary { new OwnerInit(allies1) });
+			allies1Spy = world.CreateActor(false, "spy.strong", new TypeDictionary { new OwnerInit(allies1) });
 			lst.Trait<Cargo>().Load(lst, allies1Spy);
 			if (allies1 != allies2)
 			{
-				allies2Spy = world.CreateActor(false, "spy", new TypeDictionary { new OwnerInit(allies2) });
+				allies2Spy = world.CreateActor(false, "spy.strong", new TypeDictionary { new OwnerInit(allies2) });
 				lst.Trait<Cargo>().Load(lst, allies2Spy);
 			}
 			lst.QueueActivity(new Move.Move(lstUnloadPoint.Location));
@@ -460,4 +462,8 @@ namespace OpenRA.Mods.RA.Missions
 			a(spy);
 		}
 	}
+
+	class Allies04TrivialBuildingInfo : TraitInfo<Allies04TrivialBuilding> { }
+
+	class Allies04TrivialBuilding { }
 }
