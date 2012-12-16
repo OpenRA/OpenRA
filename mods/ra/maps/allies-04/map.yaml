@@ -1771,7 +1771,7 @@ Rules:
 	BARL:
 		Allies04TrivialBuilding:
 	BRL3:
-		Allies04TrivialBuilding
+		Allies04TrivialBuilding:
 	E7:
 		Buildable:
 			Owner: None
