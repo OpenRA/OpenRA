@@ -1652,8 +1652,9 @@ Rules:
 	TRUK.Hijackable:
 		Inherits: ^Vehicle
 		Cargo:
-			MaxWeight: 2
-			PipCount: 2
+			Types: Infantry
+			MaxWeight: 5
+			PipCount: 5
 		AutoTargetIgnore:
 		Allies04Hijackable:
 		Allies04RenderHijacked:
