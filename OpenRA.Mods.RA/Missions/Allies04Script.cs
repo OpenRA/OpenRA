@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA.Missions
 		Dictionary<int, Objective> objectives = new Dictionary<int, Objective>
 		{
 			{ InfiltrateID, new Objective(ObjectiveType.Primary, "", ObjectiveStatus.InProgress) },
-			{ DestroyID, new Objective(ObjectiveType.Primary, "Secure the Soviet research laboratory and destroy the rest of the Soviet base. Ensure that the Soviet research laboratory is not destroyed.", ObjectiveStatus.Inactive) }
+			{ DestroyID, new Objective(ObjectiveType.Primary, "Secure the laboratory and destroy the rest of the Soviet base. Ensure that the laboratory is not destroyed.", ObjectiveStatus.Inactive) }
 		};
 
 		const int InfiltrateID = 0;
