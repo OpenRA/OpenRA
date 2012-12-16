@@ -1772,6 +1772,8 @@ Rules:
 		Allies04TrivialBuilding:
 	BRL3:
 		Allies04TrivialBuilding:
+	OILB:
+		Allies04TrivialBuilding:
 	E7:
 		Buildable:
 			Owner: None
