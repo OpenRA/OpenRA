@@ -756,7 +756,7 @@ e3:
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600		
+		Tick: 1600
 	prone-stand:
 		Start: 144
 		Length: 4
@@ -810,7 +810,7 @@ e6:
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600		
+		Tick: 1600
 	prone-stand:
 		Start: 82
 		Length: 4
@@ -888,7 +888,7 @@ medi:
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600		
+		Tick: 1600
 	prone-stand:
 		Start: 130
 		Length: 4
@@ -1352,7 +1352,7 @@ dog:
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600		
+		Tick: 1600
 	shoot: dogbullt
 		Start: 0
 		Length: 4
@@ -1407,7 +1407,7 @@ spy:
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600		
+		Tick: 1600
 	prone-stand:
 		Start: 144
 		Length: 4
@@ -1470,7 +1470,7 @@ e7:
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600		
+		Tick: 1600
 	prone-stand:
 		Start: 128
 		Length: 4
@@ -1528,7 +1528,7 @@ e4:
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600		
+		Tick: 1600
 	prone-stand:
 		Start: 208
 		Length: 4
@@ -1949,7 +1949,7 @@ c1:
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600		
+		Tick: 1600
 	run:
 		Start: 56
 		Length: 6
@@ -1992,7 +1992,7 @@ c2:
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600		
+		Tick: 1600
 	run:
 		Start: 56
 		Length: 6
@@ -2035,7 +2035,7 @@ einstein:
 	die-crushed: corpse1
 		Start: 0
 		Length: 6
-		Tick: 1600		
+		Tick: 1600
 
 parabomb:
 	open:
@@ -2243,6 +2243,7 @@ overlay:
 	target-invalid:
 		Start: 1
 
+#Volkov
 e8:
 	stand:
 		Start: 0
@@ -2293,6 +2294,10 @@ e8:
 	die6: electro
 		Start: 0
 		Length: *
+	die-crushed: botwreck1
+		Start: 0
+		Length: 6
+		Tick: 1600
 
 dtrk:
 	idle:

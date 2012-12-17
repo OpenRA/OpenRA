@@ -15,21 +15,25 @@ namespace OpenRA.Graphics
 {
 	public class ShroudRenderer
 	{
-		Traits.Shroud shroud;
+		World world;
+		Traits.Shroud shroud {
+			get {
+				return world.RenderedShroud;
+			}
+		}
+		
 		Sprite[] shadowBits = Game.modData.SpriteLoader.LoadAllSprites("shadow");
 		Sprite[,] sprites, fogSprites;
 
-		bool dirty = true;
 		Map map;
 
 		public ShroudRenderer(World world)
 		{
-			this.shroud = world.LocalShroud;
+			this.world = world;
 			this.map = world.Map;
 
 			sprites = new Sprite[map.MapSize.X, map.MapSize.Y];
 			fogSprites = new Sprite[map.MapSize.X, map.MapSize.Y];
-			shroud.Dirty += () => dirty = true;
 		}
 
 		static readonly byte[][] SpecialShroudTiles =
@@ -103,9 +107,9 @@ namespace OpenRA.Graphics
 
 		internal void Draw( WorldRenderer wr )
 		{
-			if (dirty)
+			if (shroud != null && shroud.dirty)
 			{
-				dirty = false;
+				shroud.dirty = false;
 				for (int i = map.Bounds.Left; i < map.Bounds.Right; i++)
 					for (int j = map.Bounds.Top; j < map.Bounds.Bottom; j++)
 						sprites[i, j] = ChooseShroud(i, j);

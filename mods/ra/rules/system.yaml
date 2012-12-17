@@ -451,6 +451,7 @@ Player:
 	DebugResourceOre:
 	DebugResourceOreCapacity:
 	GpsWatcher:
+	Shroud:
 	BaseAttackNotifier:
 
 World:	
@@ -621,6 +622,10 @@ CRATE:
 	HideMapCrateAction:
 		SelectionShares: 5
 		Effect: hide-map
+	HealUnitsCrateAction:
+		Notification: heal2.aud
+		SelectionShares: 2
+		Effect: heal		
 	RevealMapCrateAction:
 		SelectionShares: 1
 		Effect: reveal-map

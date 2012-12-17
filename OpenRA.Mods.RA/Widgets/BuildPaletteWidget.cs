@@ -26,6 +26,10 @@ namespace OpenRA.Mods.RA.Widgets
 		public int Columns = 3;
 		public int Rows = 5;
 
+		public string ReadyText = "";
+		public string HoldText = "";
+		public string RequiresText = "";
+
 		ProductionQueue CurrentQueue;
 		List<ProductionQueue> VisibleQueues;
 
@@ -291,8 +295,8 @@ namespace OpenRA.Mods.RA.Widgets
 
 		string GetOverlayForItem(ProductionItem item)
 		{
-			if (item.Paused) return "ON HOLD";
-			if (item.Done) return "READY";
+			if (item.Paused) return HoldText;
+			if (item.Done) return ReadyText;
 			return WidgetUtils.FormatTime(item.RemainingTimeActual);
 		}
 
@@ -323,16 +327,6 @@ namespace OpenRA.Mods.RA.Widgets
 
 		static string Description( string a )
 		{
-			// hack hack hack - going to die soon anyway
-			if (a == "barracks")
-				return "Infantry production";
-			if (a == "vehicleproduction")
-				return "Vehicle production";
-			if (a == "techcenter")
-				return "Tech Center";
-			if (a == "anypower")
-				return "Power Plant";
-
 			ActorInfo ai;
 			Rules.Info.TryGetValue(a.ToLowerInvariant(), out ai);
 			if (ai != null && ai.Traits.Contains<TooltipInfo>())
@@ -484,7 +478,7 @@ namespace OpenRA.Mods.RA.Widgets
 				var prereqs = buildable.Prerequisites
 					.Select( a => Description( a ) );
 				Game.Renderer.Fonts["Regular"].DrawText(
-					"Requires {0}".F(prereqs.JoinWith(", ")),
+					"{0} {1}".F(RequiresText, prereqs.JoinWith(", ")),
 					p.ToInt2(),
 					Color.White);
 

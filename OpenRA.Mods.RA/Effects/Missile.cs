@@ -154,7 +154,7 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<Renderable> Render()
 		{
-			if (Args.firedBy.World.LocalShroud.IsVisible(PxPosition.ToCPos()))
+			if (Args.firedBy.World.RenderedShroud.IsVisible(PxPosition.ToCPos()))
 				yield return new Renderable(anim.Image, PxPosition.ToFloat2() - 0.5f * anim.Image.size - new float2(0, Altitude),
 					Args.weapon.Underwater ? "shadow" : "effect", PxPosition.Y);
 

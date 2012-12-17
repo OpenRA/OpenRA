@@ -58,15 +58,12 @@ namespace OpenRA.Mods.RA
 		public void RefreshGps(Actor atek)
 		{
 			RefreshGranted();
-
+			
 			foreach (TraitPair<GpsWatcher> i in atek.World.ActorsWithTrait<GpsWatcher>())
 				i.Trait.RefreshGranted();
 
-			if (atek.World.LocalPlayer == null)
-				return;
-
-			if ((Granted || GrantedAllies) && (atek.World.LocalPlayer.Stances[atek.Owner] == Stance.Ally))
-				atek.World.WorldActor.Trait<Shroud>().ExploreAll(atek.World);
+			if ((Granted || GrantedAllies) && atek.World.LocalPlayer != null && (atek.World.LocalPlayer.Stances[atek.Owner] == Stance.Ally))
+				atek.Owner.Shroud.ExploreAll(atek.World);
 		}
 
 		void RefreshGranted()
@@ -74,6 +71,9 @@ namespace OpenRA.Mods.RA
 			Granted = (actors.Count > 0 && Launched);
 			GrantedAllies = owner.World.ActorsWithTrait<GpsWatcher>().Any(p =>
 					p.Actor.Owner.Stances[owner] == Stance.Ally && p.Trait.Granted);
+					
+			if (Granted || GrantedAllies)
+				owner.Shroud.ExploreAll(owner.World);
 		}
 	}
 

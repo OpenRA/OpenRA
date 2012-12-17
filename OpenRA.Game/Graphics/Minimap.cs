@@ -139,7 +139,7 @@ namespace OpenRA.Graphics
 
 				foreach (var t in world.ActorsWithTrait<IRadarSignature>())
 				{
-					if (!world.LocalShroud.IsVisible(t.Actor))
+					if (!world.RenderedShroud.IsVisible(t.Actor))
 						continue;
 
 					var color = t.Trait.RadarSignatureColor(t.Actor);
@@ -158,7 +158,7 @@ namespace OpenRA.Graphics
 			var map = world.Map;
 			var size = Exts.NextPowerOf2(Math.Max(map.Bounds.Width, map.Bounds.Height));
 			var bitmap = new Bitmap(size, size);
-			if (world.LocalShroud.Disabled)
+			if (world.RenderedShroud.Disabled)
 				return bitmap;
 
 			var bitmapData = bitmap.LockBits(bitmap.Bounds(),
@@ -176,9 +176,9 @@ namespace OpenRA.Graphics
 					{
 						var mapX = x + map.Bounds.Left;
 						var mapY = y + map.Bounds.Top;
-						if (!world.LocalShroud.IsExplored(mapX, mapY))
+						if (!world.RenderedShroud.IsExplored(mapX, mapY))
 							*(c + (y * bitmapData.Stride >> 2) + x) = shroud;
-						else if (!world.LocalShroud.IsVisible(mapX,mapY))
+						else if (!world.RenderedShroud.IsVisible(mapX,mapY))
 							*(c + (y * bitmapData.Stride >> 2) + x) = fog;
 					}
 			}

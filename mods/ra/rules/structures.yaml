@@ -1002,7 +1002,7 @@ AFLD:
 	Valued:
 		Cost: 500
 	Tooltip:
-		Name: Airstrip
+		Name: Airfield
 		Description: Provides radar and off-map support\n  Special Ability: Paratroopers\n  Special Ability: Spy Plane
 	Building:
 		Power: -20
@@ -1464,3 +1464,24 @@ WOOD:
 		HP: 100
 	Armor: 
 		Type: Wood
+
+# custom prerequisites:
+BARRACKS:
+	Tooltip:
+		Name: Infantry Production
+		Description: Infantry Production
+
+VEHICLEPRODUCTION:
+	Tooltip:
+		Name: Vehicle Production
+		Description: Vehicle Production
+
+TECHCENTER:
+	Tooltip:
+		Name: Tech Center
+		Description: Tech Center
+
+ANYPOWER:
+	Tooltip:
+		Name: Power Plant
+		Description: Power Plant
