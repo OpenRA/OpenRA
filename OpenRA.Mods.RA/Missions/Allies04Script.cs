@@ -80,6 +80,9 @@ namespace OpenRA.Mods.RA.Missions
 		Actor reinforcementsEntryPoint;
 		Actor reinforcementsUnloadPoint;
 
+		string difficulty;
+		int destroyBaseTicks;
+
 		void MissionFailed(string text)
 		{
 			if (allies1.WinState != WinState.Undefined)
@@ -132,7 +135,7 @@ namespace OpenRA.Mods.RA.Missions
 					if (world.FrameNumber == frameInfiltrated + 200)
 					{
 						Sound.Play("timergo1.aud");
-						destroyBaseTimer = new CountdownTimer(1500 * 25, OnDestroyBaseTimerExpired, true);
+						destroyBaseTimer = new CountdownTimer(destroyBaseTicks, OnDestroyBaseTimerExpired, true);
 						destroyBaseTimerWidget = new CountdownTimerWidget(destroyBaseTimer, "Secure lab in: {0}");
 						Ui.Root.AddChild(destroyBaseTimerWidget);
 					}
@@ -331,6 +334,10 @@ namespace OpenRA.Mods.RA.Missions
 		public void WorldLoaded(World w)
 		{
 			world = w;
+
+			difficulty = w.LobbyInfo.GlobalSettings.Difficulty;
+			Game.Debug("{0} difficulty selected".F(difficulty));
+
 			allies1 = w.Players.Single(p => p.InternalName == "Allies1");
 			allies2 = w.Players.SingleOrDefault(p => p.InternalName == "Allies2");
 			if (allies2 == null)
@@ -339,6 +346,9 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			allies = w.Players.Single(p => p.InternalName == "Allies");
 			soviets = w.Players.Single(p => p.InternalName == "Soviets");
+
+			destroyBaseTicks = difficulty == "Hard" ? 1500 * 20 : difficulty == "Normal" ? 1500 * 25 : 1500 * 30;
+
 			var actors = w.WorldActor.Trait<SpawnMapActors>().Actors;
 			lstEntryPoint = actors["LstEntryPoint"];
 			lstUnloadPoint = actors["LstUnloadPoint"];
