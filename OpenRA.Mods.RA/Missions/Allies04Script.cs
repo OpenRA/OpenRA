@@ -66,24 +66,12 @@ namespace OpenRA.Mods.RA.Missions
 		Player soviets;
 		World world;
 
-		static readonly string[] DogPatrol = { "e1", "dog.patrol", "dog.patrol" };
-		static readonly string[] InfantryPatrol = { "e1", "e1", "e1", "e1", "e1" };
-
-		Actor[] patrol1;
+		Patrol[] patrols;
 		CPos[] patrolPoints1;
-		int currentPatrolPoint1;
-		Actor[] patrol2;
 		CPos[] patrolPoints2;
-		int currentPatrolPoint2 = 3;
-		Actor[] patrol3;
 		CPos[] patrolPoints3;
-		int currentPatrolPoint3;
-		Actor[] patrol4;
 		CPos[] patrolPoints4;
-		int currentPatrolPoint4;
-		Actor[] patrol5;
 		CPos[] patrolPoints5;
-		int currentPatrolPoint5;
 
 		CPos hind1EntryPoint;
 		PPos[] hind1Points;
@@ -151,11 +139,10 @@ namespace OpenRA.Mods.RA.Missions
 					destroyBaseTimer.Tick();
 				}
 			}
-			PatrolTick(ref patrol1, ref currentPatrolPoint1, soviets, DogPatrol, patrolPoints1);
-			PatrolTick(ref patrol2, ref currentPatrolPoint2, soviets, InfantryPatrol, patrolPoints2);
-			PatrolTick(ref patrol3, ref currentPatrolPoint3, soviets, DogPatrol, patrolPoints3);
-			PatrolTick(ref patrol4, ref currentPatrolPoint4, soviets, DogPatrol, patrolPoints4);
-			PatrolTick(ref patrol5, ref currentPatrolPoint5, soviets, DogPatrol, patrolPoints5);
+			foreach (var patrol in patrols)
+			{
+				patrol.DoPatrol();
+			}
 			ManageSovietOre();
 			BaseGuardTick();
 			if (allies1Spy.IsDead() || (allies2Spy != null && allies2Spy.IsDead()))
@@ -244,7 +231,7 @@ namespace OpenRA.Mods.RA.Missions
 				new OwnerInit(allies1),
 				new LocationInit(reinforcementsEntryPoint.Location)
 			});
-			lst.Trait<Cargo>().Load(lst, world.CreateActor(false, "mcv", new TypeDictionary { new OwnerInit(allies1) } ));
+			lst.Trait<Cargo>().Load(lst, world.CreateActor(false, "mcv", new TypeDictionary { new OwnerInit(allies1) }));
 			if (allies1 != allies2)
 			{
 				lst.Trait<Cargo>().Load(lst, world.CreateActor(false, "mcv", new TypeDictionary { new OwnerInit(allies2) }));
@@ -257,23 +244,33 @@ namespace OpenRA.Mods.RA.Missions
 			lst.QueueActivity(new RemoveSelf());
 		}
 
-		void PatrolTick(ref Actor[] patrolActors, ref int currentPoint, Player owner, string[] actorNames, CPos[] points)
+		class Patrol
 		{
-			if (patrolActors == null)
+			Actor[] actors;
+			CPos[] points;
+			int pointIndex;
+			World world;
+
+			public Patrol(World world, string[] actorNames, Player owner, CPos[] points, int pointIndex)
 			{
-				var td = new TypeDictionary { new OwnerInit(owner), new LocationInit(points[currentPoint]) };
-				patrolActors = actorNames.Select(f => world.CreateActor(f, td)).ToArray();
+				this.world = world;
+				this.points = points;
+				this.pointIndex = pointIndex;
+				var td = new TypeDictionary { new OwnerInit(owner), new LocationInit(points[pointIndex]) };
+				this.actors = actorNames.Select(a => world.CreateActor(a, td)).ToArray();
 			}
-			var leader = patrolActors[0];
-			if (!leader.IsDead() && leader.IsIdle && leader.IsInWorld)
+
+			public void DoPatrol()
 			{
-				currentPoint = (currentPoint + 1) % points.Length;
-				leader.QueueActivity(new AttackMove.AttackMoveActivity(leader, new Move.Move(points[currentPoint], 0)));
-				leader.QueueActivity(new Wait(50));
-				foreach (var follower in patrolActors.Skip(1).Where(a => !a.IsDead() && a.IsInWorld))
+				if (actors.Any(a => a.IsDead() || !a.IsIdle || !a.IsInWorld))
 				{
-					follower.QueueActivity(new Wait(world.SharedRandom.Next(0, 25)));
-					follower.QueueActivity(new AttackMove.AttackMoveActivity(follower, new Move.Move(points[currentPoint], 0)));
+					return;
+				}
+				pointIndex = (pointIndex + 1) % points.Length;
+				foreach (var actor in actors.Where(a => !a.IsDead() && a.IsInWorld))
+				{
+					actor.QueueActivity(new Wait(world.SharedRandom.Next(50, 75)));
+					actor.QueueActivity(new AttackMove.AttackMoveActivity(actor, new Move.Move(points[pointIndex], 0)));
 				}
 			}
 		}
@@ -393,6 +390,14 @@ namespace OpenRA.Mods.RA.Missions
 			hind1ExitPoint = actors["Hind1ExitPoint"].Location;
 			reinforcementsEntryPoint = actors["ReinforcementsEntryPoint"];
 			reinforcementsUnloadPoint = actors["ReinforcementsUnloadPoint"];
+			patrols = new[]
+			{
+				new Patrol(world, new[]{ "e1", "e1", "e1", "e1", "e1" }, soviets, patrolPoints1, 0),
+				new Patrol(world, new[]{ "e1", "dog.patrol", "dog.patrol" }, soviets, patrolPoints2, 3),
+				new Patrol(world, new[]{ "e1", "dog.patrol", "dog.patrol" }, soviets, patrolPoints3, 0),
+				new Patrol(world, new[]{ "e1", "dog.patrol", "dog.patrol" }, soviets, patrolPoints4, 0),
+				new Patrol(world, new[]{ "e1", "dog.patrol", "dog.patrol" }, soviets, patrolPoints5, 0),
+			};
 			objectives[InfiltrateID].Text = Infiltrate.F(allies1 != allies2 ? "spies" : "spy");
 			OnObjectivesUpdated(false);
 			SetupSubStances();
