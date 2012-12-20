@@ -180,8 +180,10 @@ namespace OpenRA.Mods.RA.Missions
 		void ManageSovietOre()
 		{
 			var res = soviets.PlayerActor.Trait<PlayerResources>();
-			res.TakeOre(res.Ore);
-			res.TakeCash(res.Cash);
+			if (res.Ore > res.OreCapacity * 0.8)
+			{
+				res.TakeOre(res.OreCapacity / 10);
+			}
 		}
 
 		void SpawnSignalFlare()

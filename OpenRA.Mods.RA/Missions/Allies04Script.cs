@@ -192,8 +192,10 @@ namespace OpenRA.Mods.RA.Missions
 		void ManageSovietOre()
 		{
 			var res = soviets.PlayerActor.Trait<PlayerResources>();
-			res.TakeOre(res.Ore);
-			res.TakeCash(res.Cash);
+			if (res.Ore > res.OreCapacity * 0.8)
+			{
+				res.TakeOre(res.OreCapacity / 10);
+			}
 		}
 
 		void BaseGuardTick()
@@ -513,4 +515,30 @@ namespace OpenRA.Mods.RA.Missions
 	class Allies04TrivialBuildingInfo : TraitInfo<Allies04TrivialBuilding> { }
 
 	class Allies04TrivialBuilding { }
+
+	class Allies04TryRepairBuildingInfo : ITraitInfo
+	{
+		public readonly string Player;
+
+		public object Create(ActorInitializer init) { return new Allies04TryRepairBuilding(this); }
+	}
+
+	class Allies04TryRepairBuilding : INotifyDamage
+	{
+		Allies04TryRepairBuildingInfo info;
+
+		public Allies04TryRepairBuilding(Allies04TryRepairBuildingInfo info)
+		{
+			this.info = info;
+		}
+
+		public void Damaged(Actor self, AttackInfo e)
+		{
+			if (self.HasTrait<RepairableBuilding>() && self.Owner.InternalName == info.Player && Game.IsHost
+				&& e.DamageState > DamageState.Undamaged && e.PreviousDamageState == DamageState.Undamaged)
+			{
+				self.World.IssueOrder(new Order("RepairBuilding", self.Owner.PlayerActor, false) { TargetActor = self });
+			}
+		}
+	}
 }
