@@ -257,7 +257,7 @@ install: all
 	@$(INSTALL_PROGRAM) -d $(BIN_INSTALL_DIR)
 	@$(INSTALL_PROGRAM) -m +rx openra $(BIN_INSTALL_DIR)
 	@$(INSTALL_PROGRAM) -m +rx openra-editor $(BIN_INSTALL_DIR)
-
+	@chmod -R 755 ($INSTALL_DIR/
 uninstall:
 	@-rm -r $(INSTALL_DIR)
 	@-rm $(DESTDIR)$(bindir)/openra
