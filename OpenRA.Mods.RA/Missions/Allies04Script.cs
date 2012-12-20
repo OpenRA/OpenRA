@@ -128,17 +128,18 @@ namespace OpenRA.Mods.RA.Missions
 				if (world.FrameNumber == frameInfiltrated + 100)
 				{
 					Sound.Play("aarrivs1.aud");
+					Game.MoveViewport(reinforcementsUnloadPoint.Location.ToFloat2());
 					world.AddFrameEndTask(w => SendReinforcements());
 				}
-				else if (world.FrameNumber >= frameInfiltrated + 200)
+				if (world.FrameNumber == frameInfiltrated + 200)
 				{
-					if (world.FrameNumber == frameInfiltrated + 200)
-					{
-						Sound.Play("timergo1.aud");
-						destroyBaseTimer = new CountdownTimer(destroyBaseTicks, OnDestroyBaseTimerExpired, true);
-						destroyBaseTimerWidget = new CountdownTimerWidget(destroyBaseTimer, "Secure lab in: {0}");
-						Ui.Root.AddChild(destroyBaseTimerWidget);
-					}
+					Sound.Play("timergo1.aud");
+					destroyBaseTimer = new CountdownTimer(destroyBaseTicks, OnDestroyBaseTimerExpired, true);
+					destroyBaseTimerWidget = new CountdownTimerWidget(destroyBaseTimer, "Secure lab in: {0}");
+					Ui.Root.AddChild(destroyBaseTimerWidget);
+				}
+				if (world.FrameNumber >= frameInfiltrated + 200)
+				{
 					destroyBaseTimer.Tick();
 				}
 			}
