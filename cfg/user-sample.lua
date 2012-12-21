@@ -96,3 +96,18 @@ stylesoutshell = styles
 
 -- to disable indicators (underlining) on function calls
 editor.showfncall = false
+
+-- to change the color of the indicator used for function calls
+styles.fncall.fg = {240,0,0}
+
+-- to change the type of the indicator used for function calls
+styles.fncall.st = wxstc.wxSTC_INDIC_PLAIN
+  --[[ other possible values are:
+    wxSTC_INDIC_PLAIN	 Single-line underline
+    wxSTC_INDIC_SQUIGGLE Squiggly underline
+    wxSTC_INDIC_TT	 Line of small T-shapes
+    wxSTC_INDIC_DIAGONAL Diagonal hatching
+    wxSTC_INDIC_STRIKE	 Strike-out
+    wxSTC_INDIC_BOX      Box
+    wxSTC_INDIC_ROUNDBOX Rounded Box (not suppored in the current version?)
+  --]]
