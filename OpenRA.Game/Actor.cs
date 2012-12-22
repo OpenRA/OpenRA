@@ -43,6 +43,8 @@ namespace OpenRA
 				return HasLocation.PxPosition;
 			}
 		}
+		
+		public Shroud.ActorVisibility Sight;
 
 		[Sync]
 		public Player Owner;
@@ -85,6 +87,16 @@ namespace OpenRA
 				return (firstSprite.Sprite.size * firstSprite.Scale).ToInt2();
 			});
 
+			if(this.HasTrait<RevealsShroud>())
+			{
+				Sight = new Shroud.ActorVisibility
+				{
+					range = this.Trait<RevealsShroud>().RevealRange,
+					vis = Shroud.GetVisOrigins(this).ToArray()
+				};
+					
+			}
+			
 			ApplyIRender = x => x.Render(this);
 			ApplyRenderModifier = (m, p) => p.ModifyRender(this, m);
 
@@ -98,6 +110,11 @@ namespace OpenRA
 			ExtendedBounds.Invalidate();
 
 			currentActivity = Util.RunActivity( this, currentActivity );
+		}
+		
+		public void UpdateSight()
+		{
+			Sight.vis = Shroud.GetVisOrigins(this).ToArray();
 		}
 
 		public bool IsIdle

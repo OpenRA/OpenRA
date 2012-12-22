@@ -8,21 +8,18 @@
  */
 #endregion
 
-using System.Linq;
+using System;
 using OpenRA.Traits;
-using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA
 {
-	class InfiltrateForExplorationInfo : TraitInfo<InfiltrateForExploration> {}
-
-	class InfiltrateForExploration : IAcceptSpy
+	public static class PlayerExts
 	{
-		public void OnInfiltrate(Actor self, Actor spy)
+		public static bool HasFogVisibility( this Player a )
 		{
-			spy.Owner.Shroud.MergeShroud(self.Owner.Shroud);
-			if (!self.Owner.HasFogVisibility())
-			    self.Owner.Shroud.ResetExploration();
+		    var gpsWatcher = a.PlayerActor.TraitOrDefault<GpsWatcher>();
+			return gpsWatcher != null && (gpsWatcher.Granted || gpsWatcher.GrantedAllies);
 		}
+
 	}
 }

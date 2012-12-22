@@ -41,10 +41,29 @@ namespace OpenRA
 		public Player LocalPlayer { get; private set; }
 		public readonly Shroud LocalShroud;
 
+		public Player RenderedPlayer;
+		public Shroud RenderedShroud {
+			get {
+				if(RenderedPlayer == null)
+				{
+					return LocalShroud;
+				}else{
+					return RenderedPlayer.Shroud;
+				}
+			}
+		}
+		
+
 		public void SetLocalPlayer(string pr)
 		{
 			if (!(orderManager.Connection is ReplayConnection))
-				LocalPlayer = Players.FirstOrDefault(p => p.InternalName == pr);
+			{
+	 			LocalPlayer = Players.FirstOrDefault(p => p.InternalName == pr);
+				RenderedPlayer = LocalPlayer;
+			}else{
+				
+			}
+				
 		}
 
 		public readonly Actor WorldActor;
@@ -138,6 +157,7 @@ namespace OpenRA
 			a.IsInWorld = false;
 			actors.Remove(a);
 			ActorRemoved(a);
+			
 		}
 
 		public void Add(IEffect b) { effects.Add(b); }

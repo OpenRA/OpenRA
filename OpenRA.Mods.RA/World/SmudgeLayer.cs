@@ -83,7 +83,7 @@ namespace OpenRA.Mods.RA
 			{
 				if (!cliprect.Contains(kv.Key.X,kv.Key.Y))
 					continue;
-				if (localPlayer != null && !localPlayer.Shroud.IsExplored(kv.Key))
+				if (localPlayer != null && !world.RenderedShroud.IsExplored(kv.Key))
 					continue;
 
 				smudgeSprites[kv.Value.type- 1][kv.Value.index].DrawAt(wr, kv.Key.ToPPos().ToFloat2(), "terrain");

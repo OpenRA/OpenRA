@@ -54,7 +54,7 @@ namespace OpenRA.Traits
 
 		void DrawPips(WorldRenderer wr, Actor self, float2 basePosition)
 		{
-			if (self.Owner != self.World.LocalPlayer) return;
+			if (self.Owner != self.World.RenderedPlayer) return;
 
 			var pipSources = self.TraitsImplementing<IPips>();
 			if (pipSources.Count() == 0)
@@ -95,7 +95,7 @@ namespace OpenRA.Traits
 
 		void DrawTags(WorldRenderer wr, Actor self, float2 basePosition)
 		{
-			if (self.Owner != self.World.LocalPlayer) return;
+			if (self.Owner != self.World.RenderedPlayer) return;
 
 			// If a mod wants to implement a unit with multiple tags, then they are placed on multiple rows
 			var tagxyBase = basePosition + new float2(-16, 2); // Correct for the offset in the shp file
