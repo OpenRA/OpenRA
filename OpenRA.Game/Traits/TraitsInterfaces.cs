@@ -83,7 +83,7 @@ namespace OpenRA.Traits
 		Color RadarSignatureColor(Actor self);
 	}
 
-	public interface IVisibilityModifier { bool IsVisible(Actor self); }
+	public interface IVisibilityModifier { bool IsVisible(Shroud s, Actor self); }
 	public interface IRadarColorModifier { Color RadarColorOverride(Actor self); }
 	public interface IHasLocation { PPos PxPosition { get; } }
 
@@ -226,7 +226,7 @@ namespace OpenRA.Traits
 	public interface ILintPass { void Run(Action<string> emitError, Action<string> emitWarning); }
 
 	public interface IObjectivesPanel { string ObjectivesPanel { get; } }
-
+	
 	public static class DisableExts
 	{
 		public static bool IsDisabled(this Actor a)

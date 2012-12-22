@@ -36,7 +36,7 @@ namespace OpenRA
 		public readonly PlayerReference PlayerReference;
 		public bool IsBot;
 
-		public Shroud Shroud { get { return World.LocalShroud; } }
+		public Shroud Shroud;
 		public World World { get; private set; }
 
 		static CountryInfo ChooseCountry(World world, string name)
@@ -68,7 +68,7 @@ namespace OpenRA
 			else
 			{
 				// Map player
-				ClientIndex = 0; // Owned by the host (todo: fix this)
+				ClientIndex = -1; // Owned by the host (todo: fix this)
 				ColorRamp = pr.ColorRamp;
 				PlayerName = pr.Name;
 				NonCombatant = pr.NonCombatant;
@@ -76,7 +76,8 @@ namespace OpenRA
 				Country = ChooseCountry(world, pr.Race);
 			}
 			PlayerActor = world.CreateActor("Player", new TypeDictionary { new OwnerInit(this) });
-
+			Shroud = PlayerActor.Trait<Shroud>();
+			Shroud.Owner = this;
 			// Enable the bot logic on the host
 			IsBot = botType != null;
 			if (IsBot && Game.IsHost)

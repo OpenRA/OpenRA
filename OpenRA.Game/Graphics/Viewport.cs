@@ -202,7 +202,7 @@ namespace OpenRA.Graphics
 				cachedScroll = scrollPosition;
 			}
 
-			var b = world.LocalShroud.Bounds;
+			var b = world.RenderedShroud.Bounds;
 			return (b.HasValue) ? Rectangle.Intersect(cachedRect, b.Value) : cachedRect;
 		}
 	}
