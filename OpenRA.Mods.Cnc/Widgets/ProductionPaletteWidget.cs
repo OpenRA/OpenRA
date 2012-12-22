@@ -36,6 +36,9 @@ namespace OpenRA.Mods.Cnc.Widgets
 		public readonly string TooltipContainer;
 		public readonly string TooltipTemplate = "PRODUCTION_TOOLTIP";
 
+		public readonly string ReadyText = "";
+		public readonly string HoldText = "";
+
 		public string TooltipActor { get; private set; }
 		public readonly World world;
 
@@ -54,8 +57,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 		Animation cantBuild, clock;
 		Rectangle eventBounds = Rectangle.Empty;
 		readonly WorldRenderer worldRenderer;
-		readonly SpriteFont overlayFont;
-		readonly float2 holdOffset, readyOffset, timeOffset, queuedOffset;
+		SpriteFont overlayFont;
+		float2 holdOffset, readyOffset, timeOffset, queuedOffset;
 
 		[ObjectCreator.UseCtor]
 		public ProductionPaletteWidget(World world, WorldRenderer worldRenderer)
@@ -75,12 +78,6 @@ namespace OpenRA.Mods.Cnc.Widgets
 					u => u.Name,
 					u => Game.modData.SpriteLoader.LoadAllSprites(
 						u.Traits.Get<TooltipInfo>().Icon ?? (u.Name + "icon"))[0]);
-
-			overlayFont = Game.Renderer.Fonts["TinyBold"];
-			holdOffset = new float2(32,24) - overlayFont.Measure("On Hold") / 2;
-			readyOffset = new float2(32,24) - overlayFont.Measure("Ready") / 2;
-			timeOffset = new float2(32,24) - overlayFont.Measure(WidgetUtils.FormatTime(0)) / 2;
-			queuedOffset = new float2(4,2);
 		}
 
 		public override void Tick()
@@ -210,6 +207,12 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 		public override void Draw()
 		{
+			overlayFont = Game.Renderer.Fonts["TinyBold"];
+			timeOffset = new float2(32,24) - overlayFont.Measure(WidgetUtils.FormatTime(0)) / 2;
+			queuedOffset = new float2(4,2);
+			holdOffset = new float2(32,24) - overlayFont.Measure(HoldText) / 2;
+			readyOffset = new float2(32,24) - overlayFont.Measure(ReadyText) / 2;
+
 			if (CurrentQueue == null)
 				return;
 
@@ -247,11 +250,11 @@ namespace OpenRA.Mods.Cnc.Widgets
 					var first = icon.Queued[0];
 					var waiting = first != CurrentQueue.CurrentItem() && !first.Done;
 					if (first.Done)
-						overlayFont.DrawTextWithContrast("Ready",
+						overlayFont.DrawTextWithContrast(ReadyText,
 														 icon.Pos + readyOffset,
 														 Color.White, Color.Black, 1);
 					else if (first.Paused)
-						overlayFont.DrawTextWithContrast("On Hold",
+						overlayFont.DrawTextWithContrast(HoldText,
 														 icon.Pos + holdOffset,
 														 Color.White, Color.Black, 1);
 					else if (!waiting)
