@@ -90,16 +90,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 		static string ActorName( string a )
 		{
-			// hack hack hack - going to die soon anyway
-			if (a == "barracks")
-				return "Infantry Production";
-			if (a == "vehicleproduction")
-				return "Vehicle Production";
-			if (a == "techcenter")
-				return "Tech Center";
-			if (a == "anypower")
-				return "Power Plant";
-
 			ActorInfo ai;
 			Rules.Info.TryGetValue(a.ToLowerInvariant(), out ai);
 			if (ai != null && ai.Traits.Contains<TooltipInfo>())
