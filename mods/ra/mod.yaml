@@ -89,19 +89,19 @@ Assemblies:
 	mods/ra/OpenRA.Mods.RA.dll
 
 ChromeLayout:
-	mods/ra/chrome/en/gameinit.yaml
-	mods/ra/chrome/en/ingame.yaml
-	mods/ra/chrome/en/mainmenu.yaml
-	mods/ra/chrome/en/settings.yaml
-	mods/ra/chrome/en/lobby.yaml
-	mods/ra/chrome/en/map-chooser.yaml
-	mods/ra/chrome/en/create-server.yaml
-	mods/ra/chrome/en/serverbrowser.yaml
-	mods/ra/chrome/en/replaybrowser.yaml
-	mods/ra/chrome/en/dropdowns.yaml
-	mods/ra/chrome/en/modchooser.yaml
-	mods/ra/chrome/en/cheats.yaml
-	mods/ra/chrome/en/objectives.yaml
+	mods/ra/chrome/pl/gameinit.yaml
+	mods/ra/chrome/pl/ingame.yaml
+	mods/ra/chrome/pl/mainmenu.yaml
+	mods/ra/chrome/pl/settings.yaml
+	mods/ra/chrome/pl/lobby.yaml
+	mods/ra/chrome/pl/map-chooser.yaml
+	mods/ra/chrome/pl/create-server.yaml
+	mods/ra/chrome/pl/serverbrowser.yaml
+	mods/ra/chrome/pl/replaybrowser.yaml
+	mods/ra/chrome/pl/dropdowns.yaml
+	mods/ra/chrome/pl/modchooser.yaml
+	mods/ra/chrome/pl/cheats.yaml
+	mods/ra/chrome/pl/objectives.yaml
 
 Weapons:
 	mods/ra/weapons.yaml
