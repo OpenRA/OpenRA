@@ -23,6 +23,9 @@ namespace OpenRA.Mods.Cnc.Widgets
 	{
 		public int Spacing = 10;
 
+		public readonly string ReadyText = "";
+		public readonly string HoldText = "";
+
 		Dictionary<string, Sprite> iconSprites;
 		Animation clock;
 		Dictionary<Rectangle, SupportPowerIcon> Icons = new Dictionary<Rectangle, SupportPowerIcon>();
@@ -36,8 +39,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 		public override Rectangle EventBounds { get { return eventBounds; } }
 		readonly WorldRenderer worldRenderer;
 		readonly SupportPowerManager spm;
-		readonly SpriteFont overlayFont;
-		readonly float2 holdOffset, readyOffset, timeOffset;
+		SpriteFont overlayFont;
+		float2 holdOffset, readyOffset, timeOffset;
 
 		[ObjectCreator.UseCtor]
 		public SupportPowersWidget(World world, WorldRenderer worldRenderer)
@@ -54,11 +57,6 @@ namespace OpenRA.Mods.Cnc.Widgets
 					u => Game.modData.SpriteLoader.LoadAllSprites(u)[0]);
 
 			clock = new Animation("clock");
-
-			overlayFont = Game.Renderer.Fonts["TinyBold"];
-			holdOffset = new float2(32,24) - overlayFont.Measure("On Hold") / 2;
-			readyOffset = new float2(32,24) - overlayFont.Measure("Ready") / 2;
-			timeOffset = new float2(32,24) - overlayFont.Measure(WidgetUtils.FormatTime(0)) / 2;
 		}
 
 		public class SupportPowerIcon
@@ -94,6 +92,11 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 		public override void Draw()
 		{
+			overlayFont = Game.Renderer.Fonts["TinyBold"];
+			holdOffset = new float2(32,24) - overlayFont.Measure(HoldText) / 2;
+			readyOffset = new float2(32,24) - overlayFont.Measure(ReadyText) / 2;
+			timeOffset = new float2(32,24) - overlayFont.Measure(WidgetUtils.FormatTime(0)) / 2;
+
 			// Background
 			foreach (var rect in Icons.Keys)
 				WidgetUtils.DrawPanel("panel-black", rect.InflateBy(1,1,1,1));
@@ -115,11 +118,11 @@ namespace OpenRA.Mods.Cnc.Widgets
 			foreach (var p in Icons.Values)
 			{
 				if (p.Power.Ready)
-					overlayFont.DrawTextWithContrast("Ready",
+					overlayFont.DrawTextWithContrast(ReadyText,
 						p.Pos + readyOffset,
 						Color.White, Color.Black, 1);
 				else if (!p.Power.Active)
-					overlayFont.DrawTextWithContrast("On Hold",
+					overlayFont.DrawTextWithContrast(HoldText,
 						p.Pos + holdOffset,
 						Color.White, Color.Black, 1);
 				else
