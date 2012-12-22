@@ -20,6 +20,9 @@ namespace OpenRA.Mods.RA.Widgets
 {
 	class SupportPowerBinWidget : Widget
 	{
+		public string ReadyText = "";
+		public string HoldText = "";
+
 		Dictionary<string, Sprite> spsprites;
 		Animation clock;
 		readonly List<Pair<Rectangle, Action<MouseInput>>> buttons = new List<Pair<Rectangle,Action<MouseInput>>>();
@@ -148,7 +151,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 				WidgetUtils.DrawSHP(clock.Image, drawPos, worldRenderer);
 
-				var overlay = sp.Ready ? "READY" : sp.Active ? null : "ON HOLD";
+				var overlay = sp.Ready ? ReadyText : sp.Active ? null : HoldText;
 				var font = Game.Renderer.Fonts["TinyBold"];
 				if (overlay != null)
 				{

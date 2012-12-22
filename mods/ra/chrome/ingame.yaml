@@ -53,6 +53,8 @@ Container@INGAME_ROOT:
 		SupportPowerBin@INGAME_POWERS_BIN:
 			X:0
 			Y:25
+			ReadyText: READY
+			HoldText: ON HOLD
 		BuildPalette@INGAME_BUILD_PALETTE:
 			X:WINDOW_RIGHT - 250
 			Y:280
