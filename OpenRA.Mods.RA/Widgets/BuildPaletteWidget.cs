@@ -323,16 +323,6 @@ namespace OpenRA.Mods.RA.Widgets
 
 		static string Description( string a )
 		{
-			// hack hack hack - going to die soon anyway
-			if (a == "barracks")
-				return "Infantry production";
-			if (a == "vehicleproduction")
-				return "Vehicle production";
-			if (a == "techcenter")
-				return "Tech Center";
-			if (a == "anypower")
-				return "Power Plant";
-
 			ActorInfo ai;
 			Rules.Info.TryGetValue(a.ToLowerInvariant(), out ai);
 			if (ai != null && ai.Traits.Contains<TooltipInfo>())

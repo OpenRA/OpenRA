@@ -1464,3 +1464,24 @@ WOOD:
 		HP: 100
 	Armor: 
 		Type: Wood
+
+# custom prerequisites:
+BARRACKS:
+	Tooltip:
+		Name: Infantry Production
+		Description: Infantry Production
+
+VEHICLEPRODUCTION:
+	Tooltip:
+		Name: Vehicle Production
+		Description: Vehicle Production
+
+TECHCENTER:
+	Tooltip:
+		Name: Tech Center
+		Description: Tech Center
+
+ANYPOWER:
+	Tooltip:
+		Name: Power Plant
+		Description: Power Plant
