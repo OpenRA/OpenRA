@@ -113,6 +113,12 @@ STARPORTH:
 	Buildable:
 		Prerequisites: radarh,hightechh
 		Owner: harkonnen
+		
+REPAIRH:
+	Inherits: ^REPAIR
+	Buildable:
+		Prerequisites: heavyh
+		Owner: harkonnen
 
 MCVH:
 	Inherits: ^MCV

@@ -21,7 +21,6 @@ RIFLE:
 	TakeCover:
 	-RenderInfantry:
 	RenderInfantryProne:
-		IdleAnimations: idle1,idle2
 
 ENGINEER:
 	Inherits: ^Infantry
@@ -74,7 +73,6 @@ BAZOOKA:
 	TakeCover:
 	-RenderInfantry:
 	RenderInfantryProne:
-		IdleAnimations: idle1,idle2
 
 MEDIC:
 	Inherits: ^Infantry

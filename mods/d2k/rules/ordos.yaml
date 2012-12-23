@@ -121,6 +121,12 @@ STARPORTO:
 	Buildable:
 		Prerequisites: radaro,hightecho
 		Owner: ordos
+		
+REPAIRO:
+	Inherits: ^REPAIR
+	Buildable:
+		Prerequisites: heavyo
+		Owner: ordos
 
 MCVO:
 	Inherits: ^MCV
