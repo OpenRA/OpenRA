@@ -8,9 +8,6 @@ V2RL:
 		Hotkey: v
 	Valued:
 		Cost: 700
-	Tooltip:
-		Name: V2 Rocket
-		Description: Long-range rocket artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
 	Health:
 		HP: 150
 	Armor:
@@ -36,9 +33,6 @@ V2RL:
 		Hotkey: g
 	Valued:
 		Cost: 700
-	Tooltip:
-		Name: Light Tank
-		Description: Light Tank, good for scouting.\n  Strong vs Light Vehicles\n  Weak vs Tanks, Aircraft
 	Health:
 		HP: 220
 	Armor:
@@ -71,9 +65,6 @@ V2RL:
 		Hotkey: f
 	Valued:
 		Cost: 850
-	Tooltip:
-		Name: Medium Tank
-		Description: Allied Main Battle Tank.\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
 	Health:
 		HP: 450
 	Armor:
@@ -109,9 +100,6 @@ V2RL:
 		Hotkey: h
 	Valued:
 		Cost: 1150
-	Tooltip:
-		Name: Heavy Tank
-		Description: Soviet Main Battle Tank, with dual cannons\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
 	Health:
 		HP: 550
 	Armor:
@@ -148,9 +136,6 @@ V2RL:
 		Hotkey: m
 	Valued:
 		Cost: 1800
-	Tooltip:
-		Name: Mammoth Tank
-		Description: Big and slow tank, with anti-air capability.\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry
 	Health:
 		HP: 900
 	Armor:
@@ -195,9 +180,6 @@ ARTY:
 		Hotkey: r
 	Valued:
 		Cost: 600
-	Tooltip:
-		Name: Artillery
-		Description: Long-range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
 	Health:
 		HP: 75
 	Armor:
@@ -225,9 +207,6 @@ HARV:
 		Hotkey: e
 	Valued:
 		Cost: 1100
-	Tooltip:
-		Name: Ore Truck
-		Description: Collects Ore and Gems for processing.\n  Unarmed
 	Selectable:
 		Priority: 7
 		Bounds: 42,42
@@ -268,9 +247,6 @@ MCV:
 		Hotkey: b
 	Valued:
 		Cost: 2000
-	Tooltip:
-		Name: Mobile Construction Vehicle
-		Description: Deploys into another Construction Yard.\n  Unarmed
 	Selectable:
 		Priority: 3
 		Bounds: 42,42
@@ -305,9 +281,6 @@ JEEP:
 		Hotkey: n
 	Valued:
 		Cost: 500
-	Tooltip:
-		Name: Ranger
-		Description: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
 	Health:
 		HP: 150
 	Armor:
@@ -340,9 +313,6 @@ APC:
 		Hotkey: c
 	Valued:
 		Cost: 850
-	Tooltip:
-		Name: Armored Personnel Carrier
-		Description: Tough infantry transport.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
 	Health:
 		HP: 300
 	Armor:
@@ -374,9 +344,7 @@ MNLY.AP:
 	Valued:
 		Cost: 800
 	Tooltip:
-		Name: Minelayer (Anti-Personnel)
 		Icon: MNLYICON
-		Description: Lays mines to destroy unwary enemy units.\n  Unarmed
 	Health:
 		HP: 100
 	Armor:
@@ -406,9 +374,7 @@ MNLY.AT:
 	Valued:
 		Cost: 800
 	Tooltip:
-		Name: Minelayer (Anti-Tank)
 		Icon: MNLYICON
-		Description: Lays mines to destroy unwary enemy units.\n  Unarmed
 	Health:
 		HP: 100
 	Armor:
@@ -437,9 +403,6 @@ TRUK:
 		Hotkey: u
 	Valued:
 		Cost: 500
-	Tooltip:
-		Name: Supply Truck
-		Description: Transports cash to other players.\n  Unarmed
 	Health:
 		HP: 110
 	Armor:
@@ -456,8 +419,6 @@ TRUK:
 
 1TNK.Husk:
 	Inherits: ^Husk
-	Tooltip:
-		Name: Husk (Light Tank)
 	RenderUnit:
 		Image: 1tnk
 	ThrowsParticle@turret:
@@ -468,8 +429,6 @@ TRUK:
 
 2TNK.Husk:
 	Inherits: ^Husk
-	Tooltip:
-		Name: Husk (Medium Tank)
 	RenderUnit:
 		Image: 2tnk
 	ThrowsParticle@turret:
@@ -480,8 +439,6 @@ TRUK:
 
 3TNK.Husk:
 	Inherits: ^Husk
-	Tooltip:
-		Name: Husk (Heavy Tank)
 	RenderUnit:
 		Image: 3tnk
 	ThrowsParticle@turret:
@@ -492,8 +449,6 @@ TRUK:
 
 4TNK.Husk:
 	Inherits: ^Husk
-	Tooltip:
-		Name: Husk (Mammoth Tank)
 	RenderUnit:
 		Image: 4tnk
 	ThrowsParticle@turret:
@@ -504,22 +459,16 @@ TRUK:
 
 HARV.FullHusk:
 	Inherits: ^Husk
-	Tooltip:
-		Name: Husk (Harvester)
 	RenderUnit:
 		Image: hhusk
 
 HARV.EmptyHusk:
 	Inherits: ^Husk
-	Tooltip:
-		Name: Husk (Harvester)
 	RenderUnit:
 		Image: hhusk2
 
 MCV.Husk:
 	Inherits: ^Husk
-	Tooltip:
-		Name: Husk (MCV)
 	RenderUnit:
 		Image: mcvhusk
 
@@ -533,9 +482,6 @@ TTNK:
 		Hotkey: l
 	Valued:
 		Cost: 1350
-	Tooltip:
-		Name: Tesla Tank
-		Description: Tank with mounted tesla coil.\n  Strong vs Infantry, Light Vehicles\n  and Buildings  \n  Weak vs Tanks, Aircraft
 	Health:
 		HP: 150
 	Armor:
@@ -562,9 +508,6 @@ FTRK:
 		Hotkey: k
 	Valued:
 		Cost: 600
-	Tooltip:
-		Name: Flak Truck
-		Description: Flak Truck, good for scouting.\n  Strong vs Light Vehicles, Aircraft  \n  Weak vs Tanks
 	Health:
 		HP: 120
 	Armor: 
@@ -598,9 +541,6 @@ DTRK:
 		Hotkey: o
 	Valued:
 		Cost: 2500
-	Tooltip:
-		Name: Demolition Truck
-		Description: Demolition Truck, actively armed with explosives.\n  Strong vs Everything\n  Weak vs Everything
 	Health:
 		HP: 50
 	Armor:
@@ -630,9 +570,6 @@ CTNK:
 		Hotkey: j
 	Valued:
 		Cost: 1200
-	Tooltip:
-		Name: Chrono Tank
-		Description: Chrono Tank, teleports to areas within range.\n  Strong vs Vehicles, Buildings\n  Weak vs Tanks
 	Selectable:
 		Bounds: 28,28
 	Health:

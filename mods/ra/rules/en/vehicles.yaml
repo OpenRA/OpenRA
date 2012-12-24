@@ -1,0 +1,112 @@
+V2RL:
+	Tooltip:
+		Name: V2 Rocket
+		Description: Long-range rocket artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
+
+1TNK:
+	Tooltip:
+		Name: Light Tank
+		Description: Light Tank, good for scouting.\n  Strong vs Light Vehicles\n  Weak vs Tanks, Aircraft
+
+2TNK:
+	Tooltip:
+		Name: Medium Tank
+		Description: Allied Main Battle Tank.\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
+
+3TNK:
+	Tooltip:
+		Name: Heavy Tank
+		Description: Soviet Main Battle Tank, with dual cannons\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
+
+4TNK:
+	Tooltip:
+		Name: Mammoth Tank
+		Description: Big and slow tank, with anti-air capability.\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry
+
+ARTY:
+	Tooltip:
+		Name: Artillery
+		Description: Long-range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
+
+HARV:
+	Tooltip:
+		Name: Ore Truck
+		Description: Collects Ore and Gems for processing.\n  Unarmed
+
+MCV:
+	Tooltip:
+		Name: Mobile Construction Vehicle
+		Description: Deploys into another Construction Yard.\n  Unarmed
+
+JEEP:
+	Tooltip:
+		Name: Ranger
+		Description: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
+
+APC:
+	Tooltip:
+		Name: Armored Personnel Carrier
+		Description: Tough infantry transport.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
+
+MNLY.AP:
+	Tooltip:
+		Name: Minelayer (Anti-Personnel)
+		Description: Lays mines to destroy unwary enemy units.\n  Unarmed
+
+MNLY.AT:
+	Tooltip:
+		Name: Minelayer (Anti-Tank)
+		Description: Lays mines to destroy unwary enemy units.\n  Unarmed
+
+TRUK:
+	Tooltip:
+		Name: Supply Truck
+		Description: Transports cash to other players.\n  Unarmed
+
+1TNK.Husk:
+	Tooltip:
+		Name: Husk (Light Tank)
+
+2TNK.Husk:
+	Tooltip:
+		Name: Husk (Medium Tank)
+
+3TNK.Husk:
+	Tooltip:
+		Name: Husk (Heavy Tank)
+
+4TNK.Husk:
+	Tooltip:
+		Name: Husk (Mammoth Tank)
+
+HARV.FullHusk:
+	Tooltip:
+		Name: Husk (Harvester)
+
+HARV.EmptyHusk:
+	Tooltip:
+		Name: Husk (Harvester)
+
+MCV.Husk:
+	Tooltip:
+		Name: Husk (MCV)
+
+TTNK:
+	Tooltip:
+		Name: Tesla Tank
+		Description: Tank with mounted tesla coil.\n  Strong vs Infantry, Light Vehicles\n  and Buildings  \n  Weak vs Tanks, Aircraft
+
+FTRK:
+	Tooltip:
+		Name: Flak Truck
+		Description: Flak Truck, good for scouting.\n  Strong vs Light Vehicles, Aircraft  \n  Weak vs Tanks
+
+DTRK:
+	Tooltip:
+		Name: Demolition Truck
+		Description: Demolition Truck, actively armed with explosives.\n  Strong vs Everything\n  Weak vs Everything
+
+CTNK:
+	Tooltip:
+		Name: Chrono Tank
+		Description: Chrono Tank, teleports to areas within range.\n  Strong vs Vehicles, Buildings\n  Weak vs Tanks

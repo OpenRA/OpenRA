@@ -17,8 +17,6 @@ BADR:
 #		Types: Infantry, Vehicle
 	-Selectable:
 	-GainsExperience:
-	Tooltip:
-		Name: Badger
 	Contrail@1:
 		ContrailOffset: 11, -11
 	Contrail@2:
@@ -56,8 +54,6 @@ BADR.bomber:
 	IronCurtainable:	
 	-Selectable:
 	-GainsExperience:
-	Tooltip:
-		Name: Badger
 	Contrail@1:
 		ContrailOffset: 11, -11
 	Contrail@2:
@@ -86,9 +82,6 @@ MIG:
 		Hotkey: m
 	Valued:
 		Cost: 2000
-	Tooltip:
-		Name: Mig Attack Plane
-		Description: Fast Ground-Attack Plane.\n  Strong vs Buildings\n  Weak vs Infantry, Light Vehicles
 	Health:
 		HP: 70
 	Armor:
@@ -135,9 +128,6 @@ YAK:
 		Hotkey: y
 	Valued:
 		Cost: 1000
-	Tooltip:
-		Name: Yak Attack Plane
-		Description: Anti-Tanks & Anti-Infantry Plane.\n  Strong vs Infantry, Tanks\n  Weak vs Buildings
 	Health:
 		HP: 60
 	Armor:
@@ -186,9 +176,6 @@ TRAN:
 		Hotkey: t
 	Valued:
 		Cost: 900
-	Tooltip:
-		Name: Transport Helicopter
-		Description: Fast Infantry Transport Helicopter.\n  Unarmed
 	Health:
 		HP: 120
 	Armor: 
@@ -218,15 +205,11 @@ TRAN:
 		
 TRAN.Husk1:
 	Inherits: ^Husk
-	Tooltip:
-		Name: Husk (Transport Helicopter)
 	RenderUnit:
 		Image: tran1husk
 
 TRAN.Husk2:
 	Inherits: ^Husk
-	Tooltip:
-		Name: Husk (Transport Helicopter)
 	RenderUnit:
 		Image: tran2husk
 
@@ -241,9 +224,6 @@ HELI:
 		Hotkey: l
 	Valued:
 		Cost: 2000
-	Tooltip:
-		Name: Longbow
-		Description: Helicopter Gunship with AG Missiles.\n  Strong vs Tanks\n  Weak vs Infantry
 	Health:
 		HP: 120
 	Armor:
@@ -285,9 +265,6 @@ HIND:
 		Hotkey: h
 	Valued:
 		Cost: 1000
-	Tooltip:
-		Name: Hind
-		Description: Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles.\n  Weak vs Tanks
 	Health:
 		HP: 150
 	Armor:

@@ -8,8 +8,6 @@ FCOM:
 		HP: 400
 	Armor:
 		Type: Wood
-	Tooltip:
-		Name: Forward Command
 	RevealsShroud:
 		Range: 10
 	Bib:
@@ -19,8 +17,6 @@ HOSP:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	Tooltip:
-		Name: Hospital
 	RepairsUnits:
 
 V01:
@@ -28,8 +24,6 @@ V01:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	Tooltip:
-		Name: Church
 	RevealsShroud:
 		Range: 10
 	TransformOnCapture:
@@ -177,8 +171,6 @@ BARL:
 		HP: 10
 	Explodes:
 		Weapon: BarrelExplode
-	Tooltip:
-		Name: Explosive Barrel
 
 BRL3:
 	Inherits: ^TechBuilding
@@ -188,8 +180,6 @@ BRL3:
 		HP: 10
 	Explodes:
 		Weapon: BarrelExplode
-	Tooltip:
-		Name: Explosive Barrel
 
 MISS:
 	Inherits: ^TechBuilding
@@ -209,8 +199,6 @@ BIO:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	Tooltip:
-		Name: Biological Lab
 
 
 OILB:
@@ -233,8 +221,6 @@ OILB:
 	CashTrickler:
 		Period: 250
 		Amount: 50
-	Tooltip:
-		Name: Oil Derrick
 
 BR1:
 	Inherits: ^Bridge

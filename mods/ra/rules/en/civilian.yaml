@@ -1,0 +1,29 @@
+FCOM:
+	Tooltip:
+		Name: Forward Command
+
+
+HOSP:
+	Tooltip:
+		Name: Hospital
+
+V01:
+	Tooltip:
+		Name: Church
+
+BARL:
+	Tooltip:
+		Name: Explosive Barrel
+
+BRL3:
+	Tooltip:
+		Name: Explosive Barrel
+
+BIO:
+	Tooltip:
+		Name: Biological Lab
+
+
+OILB:
+	Tooltip:
+		Name: Oil Derrick

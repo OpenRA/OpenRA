@@ -1,0 +1,32 @@
+BADR:
+	Tooltip:
+		Name: Bombardier Blaireau
+
+BADR.bomber:
+	Tooltip:
+		Name: Bombardier Blaireau
+
+MIG:
+	Tooltip:
+		Name: Mig
+		Description: Avion d'attaque au sol rapide.\n  Fort contre les Batiments\n  Faible contre l'Infanterie et les Vehicules Legers
+
+YAK:
+	Tooltip:
+		Name: Yak
+		Description: Avion Anti-Tanks et Anti-Infanterie.\n  Fort contre l'Infanterie et les Tanks\n Faible contre les Batiments
+
+TRAN:
+	Tooltip:
+		Name: Helicoptere Chinook
+		Description: Transporteur d'Infanterie rapide.\n  |Desarme|
+
+HELI:
+	Tooltip:
+		Name: Helicoptere d'attaque Apache Longbow
+		Description: Helicoptere arme de Missiles.\n  Fort contre les Tanks\n  Faible contre l'Infanterie
+
+HIND:
+	Tooltip:
+		Name: Hind
+		Description: Helicoptere arme de Mitrailleuses.\n  Fort contre l'Infanterie et les Vehicules Legers.\n  Faible contre les Tanks

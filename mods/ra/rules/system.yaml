@@ -38,7 +38,6 @@ Player:
 	ActorGroupProxy:
 	DeveloperMode:
 	HackyAI@EasyAI:
-		Name:Easy AI
 		BuildingFractions:
 			proc: 30%
 			powr: 35%
@@ -68,7 +67,6 @@ Player:
 			3tnk: 50%
 		SquadSize: 20
 	HackyAI@HardAI:
-		Name:Hard AI
 		BuildingFractions:
 			proc: 30%
 			powr: 35%
@@ -97,7 +95,6 @@ Player:
 			3tnk: 50%
 		SquadSize: 10
 	HackyAI@OptiAI:
-		Name:Eisenhower AI
 		BuildingFractions:
 			proc: 25.1%
 			powr: 35%
@@ -125,7 +122,6 @@ Player:
 			v2rl: 30%
 		SquadSize: 10
 	HackyAI@ZhukovAI:
-		Name:Zhukov AI
 		BuildingFractions:
 			proc: 20%
 			powr: 35%
@@ -155,7 +151,6 @@ Player:
 			3tnk: 15%
 		SquadSize: 25
 	HackyAI@RommelAI:
-		Name:Rommel AI
 		BuildingFractions:
 			proc: 30%
 			powr: 35%
@@ -259,29 +254,27 @@ World:
 		IsFog: yes
 		Name: fog
 	Country@0:
-		Name: Allies
 		Race: allies
 	Country@1:
-		Name: Soviet
 		Race: soviet
 	BibLayer:
 	ResourceLayer:
 	ResourceClaimLayer:
 	ResourceType@ore:
+		Name: Ore
 		ResourceType: 1
 		Palette: player
 		SpriteNames: gold01,gold02,gold03,gold04
 		ValuePerUnit: 25
-		Name: Ore
 		PipColor: Yellow
 		AllowedTerrainTypes: Clear,Road
 		AllowUnderActors: false
 	ResourceType@gem:
+		Name: Gems
 		ResourceType: 2
 		Palette: player
 		SpriteNames: gem01,gem02,gem03,gem04
 		ValuePerUnit: 50
-		Name: Gems
 		PipColor: Red
 		AllowedTerrainTypes: Clear,Road
 		AllowUnderActors: false
@@ -316,7 +309,6 @@ MINP:
 	BelowUnits:
 	InvisibleToEnemy:
 	Tooltip:
-		Name: Anti-Personnel Mine
 		Icon: jmin
 	ProximityCaptor:
 		Types:Mine
@@ -333,14 +325,11 @@ MINV:
 	BelowUnits:
 	InvisibleToEnemy:
 	Tooltip:
-		Name: Anti-Tank Mine
 		Icon: jmin
 	ProximityCaptor:
 		Types:Mine
 
 CRATE:
-	Tooltip:
-		Name: Crate
 	Crate:
 		Lifetime: 120
 		TerrainTypes: Clear, Rough, Road, Water, Ore, Beach
@@ -418,16 +407,12 @@ FLARE:
 	RenderFlare:
 		Image: smokland
 	HiddenUnderFog:
-	Tooltip:
-		Name: Flare
 	ProximityCaptor:
 		Types: Flare
 
 powerproxy.parabombs:
 	AirstrikePower:
 		Image: pbmbicon
-		Description: Parabombs (Single Use)
-		LongDesc: A Badger drops a load of parachuted\nbombs on your target.
 		OneShot: yes
 		AllowMultiple: yes
 		UnitType: badr.bomber
@@ -437,8 +422,6 @@ powerproxy.parabombs:
 powerproxy.sonarpulse:
 	SonarPulsePower:
 		Image: sonricon
-		Description: Sonar Pulse (Single Use)
-		LongDesc: Reveals all submarines on the map for a \nshort time.
 		AllowMultiple: yes
 		OneShot: yes
 		EndChargeSound: pulse1.aud

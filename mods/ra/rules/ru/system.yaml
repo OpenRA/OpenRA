@@ -1,0 +1,39 @@
+Player:
+	HackyAI@EasyAI:
+		Name:Лёгкий AI
+#	HackyAI@NormalAI:
+#		Name:Средний AI
+	HackyAI@HardAI:
+		Name:Сложный AI
+
+World:	
+	Country@0:
+		Name: Альянс
+	Country@1:
+		Name: Советы
+
+MINP:
+	Tooltip:
+		Name: Противопехотная Мина
+
+MINV:
+	Tooltip:
+		Name: Противотанковая Мина
+
+CRATE:
+	Tooltip:
+		Name: Ящик
+
+FLARE:
+	Tooltip:
+		Name: Сигнальный Огонь
+
+powerproxy.parabombs:
+	AirstrikePower:
+		Description: Парабомбы (Одиночный)
+		LongDesc: Самолёт сбрасывает бомбы на парашюте \nна определённую цель.
+
+powerproxy.sonarpulse:
+	SonarPulsePower:
+		Description: Сонарный Пульс (Одиночный)
+		LongDesc: Открывает местонахождение всех подлодок \n на карте, на время.

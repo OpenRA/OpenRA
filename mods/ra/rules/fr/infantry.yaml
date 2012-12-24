@@ -1,0 +1,57 @@
+DOG:
+	Tooltip:
+		Name: Chien d'attaque
+		Description: Unite Anti-Infanterie. Detecte les \n Espions deguises.\n  Fort contre l'Infanterie\n  Faible contre les Vehicules
+
+E1:
+	Tooltip:
+		Name: Mitrailleurs
+		Description: Unite principale de base.\n  Fort contre l'Infanterie\n  Faible contre les Vehicules
+
+E2:
+	Tooltip:
+		Name: Grenadier
+		Description: Infanterie armee de grenades. \n  Fort contre les Batiments et l'Infanterie\n Faible contre les Vehicules
+
+E3:
+	Tooltip:
+		Name: Bazookas
+		Description: Infanterie Anti-tanks/Anti-aviation.\n  Fort contre les Tanks et l'Aviation\n  Faible contre l'Infanterie
+
+E4:
+	Tooltip:
+		Name: Infanterie lance-flammes
+		Description: Unite avancee anti-infanterie.\n  Fort contre l'Infanterie et les Batiments\n  Faible contre les Vehicules
+
+E6:
+	Tooltip:
+		Name: Ingenieurs
+		Description: Infiltre et capture les Batiments.\n  Fort contre Rien\n Faible contre Tout.
+
+SPY:
+	SpyToolTip:
+		Name: Espion
+		Description: Infiltre les Batiments ennemis pour \ns'informer. L'effet exact depend du \nBatiment infiltre.\n Fort contre Rien\n  Faible contre Tout\n  Abilite Speciale: Deguisement
+
+E7:
+	Tooltip:
+		Name: Tanya
+		Description: Commando d'Elite, armee de \ndeux pistolets et de C4.\n  Forte contre l'Infanterie et les Batiments\n  Faible contre les Vehicules\n  Abilite Speciale: Detruit les Batiments au C4
+
+MEDI:
+	Tooltip:
+		Name: Medecin
+		Description: Soigne les unites proches.\n  Fort contre Rien\n  Faible contre Tout
+
+C1:
+	Tooltip:
+		Name: Homme Civil
+
+C2:
+	Tooltip:
+		Name: Femme Civile
+
+SHOK:
+	Tooltip:
+		Name: Soldat Tesla
+		Description: Infanterie avec des Bobines Tesla\n Fort contre l'Infanterie\n Faible contre les Vehicules

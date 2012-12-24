@@ -1,0 +1,60 @@
+ScrollPanel@LABEL_DROPDOWN_TEMPLATE:
+	Id:LABEL_DROPDOWN_TEMPLATE
+	Width:DROPDOWN_WIDTH
+	Children:
+		ScrollItem@TEMPLATE:
+			Id:TEMPLATE
+			Width:PARENT_RIGHT-27
+			Height:25
+			X:2
+			Y:0
+			Visible:false
+			Children:
+				Label@LABEL:
+					Id:LABEL
+					X:10
+					Width:PARENT_RIGHT-20
+					Height:25
+
+ScrollPanel@RACE_DROPDOWN_TEMPLATE:
+	Id:RACE_DROPDOWN_TEMPLATE
+	Width:DROPDOWN_WIDTH
+	Children:
+		ScrollItem@TEMPLATE:
+			Id:TEMPLATE
+			Width:PARENT_RIGHT-27
+			Height:25
+			X:2
+			Y:0
+			Visible:false
+			Children:
+				Image@FLAG:
+					Id:FLAG
+					X:5
+					Y:5
+					Width:30
+					Height:15
+				Label@LABEL:
+					Id:LABEL
+					X:40
+					Width:60
+					Height:25
+
+ScrollPanel@TEAM_DROPDOWN_TEMPLATE:
+	Id:TEAM_DROPDOWN_TEMPLATE
+	Width:DROPDOWN_WIDTH
+	Children:
+		ScrollItem@TEMPLATE:
+			Id:TEMPLATE
+			Width:PARENT_RIGHT-27
+			Height:25
+			X:2
+			Y:0
+			Visible:false
+			Children:
+				Label@LABEL:
+					Id:LABEL
+					X:0
+					Width:PARENT_RIGHT
+					Height:25
+					Align:Center

@@ -6,7 +6,7 @@ SS:
 MSUB:
 	Tooltip:
 		Name: Raketen-U-Boot
-		Description: Unterseeboot gegen Bodenziele, bewaffnet mit \nballistischen Langstreckenraketen.\n  Stark gegen Gebäude\n  Schwach gegen alles andere\n  Spezialfähigkeit: Abtauchen
+		Description: Unterseeboot gegen Bodenziele, bewaffnet \nmit ballistischen Langstreckenraketen.\n  Stark gegen Gebäude\n  Schwach gegen alles andere\n  Spezialfähigkeit: Abtauchen
 
 DD:
 	Tooltip:

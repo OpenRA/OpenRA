@@ -1,0 +1,15 @@
+^CivBuilding:
+	Tooltip:
+		Name: Batiment Civil
+
+^CivField:
+	Tooltip:
+		Name: Champ
+
+^Tree:
+	Tooltip:
+		Name: Arbre
+
+^Bridge:
+	Tooltip:
+		Name: Pont

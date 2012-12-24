@@ -44,7 +44,37 @@ Rules:
 	mods/ra/rules/trees.yaml
 	mods/ra/rules/aircraft.yaml
 	mods/ra/rules/ships.yaml
-	mods/ra/rules/de/ships.yaml
+
+	mods/ra/rules/ru/defaults.yaml
+	mods/ra/rules/ru/system.yaml
+	mods/ra/rules/ru/vehicles.yaml
+	mods/ra/rules/ru/structures.yaml
+	mods/ra/rules/ru/infantry.yaml
+	mods/ra/rules/ru/civilian.yaml
+	mods/ra/rules/ru/trees.yaml
+	mods/ra/rules/ru/aircraft.yaml
+	mods/ra/rules/ru/ships.yaml
+
+#	mods/ra/rules/fr/defaults.yaml
+#	mods/ra/rules/fr/system.yaml
+#	mods/ra/rules/fr/vehicles.yaml
+#	mods/ra/rules/fr/structures.yaml
+#	mods/ra/rules/fr/infantry.yaml
+#	mods/ra/rules/fr/civilian.yaml
+#	mods/ra/rules/fr/trees.yaml
+#	mods/ra/rules/fr/aircraft.yaml
+#	mods/ra/rules/fr/ships.yaml
+
+# Fallback to English if strings are missing:
+	mods/ra/rules/en/defaults.yaml
+	mods/ra/rules/en/system.yaml
+	mods/ra/rules/en/vehicles.yaml
+	mods/ra/rules/en/structures.yaml
+	mods/ra/rules/en/infantry.yaml
+	mods/ra/rules/en/civilian.yaml
+	mods/ra/rules/en/trees.yaml
+	mods/ra/rules/en/aircraft.yaml
+	mods/ra/rules/en/ships.yaml
 
 Sequences:
 	mods/ra/sequences.yaml
@@ -61,7 +91,7 @@ Assemblies:
 ChromeLayout:
 	mods/ra/chrome/en/gameinit.yaml
 	mods/ra/chrome/en/ingame.yaml
-	mods/ra/chrome/de/mainmenu.yaml
+	mods/ra/chrome/en/mainmenu.yaml
 	mods/ra/chrome/en/settings.yaml
 	mods/ra/chrome/en/lobby.yaml
 	mods/ra/chrome/en/map-chooser.yaml

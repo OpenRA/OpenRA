@@ -3,8 +3,6 @@ MSLO:
 	Valued:
 		Cost: 2500
 	Tooltip:
-		Name: Missile Silo
-		Description: Launches a devastating nuclear strike.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks\n  Special Ability: Nuclear Missile
 		Icon: msloicon2
 	Buildable:
 		Queue: Defense
@@ -43,9 +41,6 @@ GAP:
 	CanPowerDown:
 	Valued:
 		Cost: 1000
-	Tooltip:
-		Name: Gap Generator
-		Description: Regenerates the shroud nearby, \nobscuring the area.\n  Unarmed
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 100
@@ -72,9 +67,6 @@ SPEN:
 		Proxy: powerproxy.sonarpulse
 	Valued:
 		Cost: 800
-	Tooltip:
-		Name: Sub Pen
-		Description: Produces and repairs submarines and \ntransports
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 30
@@ -133,9 +125,6 @@ SYRD:
 		Hotkey: y
 	Valued:
 		Cost: 1000
-	Tooltip:
-		Name: Shipyard
-		Description: Produces and repairs ships
 	TargetableBuilding:
 		TargetTypes: Ground, Water
 	Building:
@@ -188,9 +177,6 @@ IRON:
 		Hotkey: c
 	Valued:
 		Cost: 1500
-	Tooltip:
-		Name: Iron Curtain
-		Description: Makes a group of units invulnerable for a \nshort time.\n  Special Ability: Invulnerability
 	Building:
 		Power: -200
 		Footprint: xx xx
@@ -206,8 +192,6 @@ IRON:
 	IronCurtainPower:
 		Image: infxicon
 		ChargeTime: 120
-		Description: Invulnerability
-		LongDesc: Makes a group of units invulnerable\nfor 15 seconds.
 		Duration: 15
 		SelectTargetSound: slcttgt1.aud
 		BeginChargeSound: ironchg1.aud
@@ -226,9 +210,6 @@ PDOX:
 		Hotkey: o
 	Valued:
 		Cost: 1500
-	Tooltip:
-		Name: Chronosphere
-		Description: Teleports a unit from one place \nto another, for a limited time.\n  Special Ability: Chronoshift
 	Building:
 		Power: -200
 		Footprint: xx xx
@@ -244,8 +225,6 @@ PDOX:
 	ChronoshiftPower:
 		Image: warpicon
 		ChargeTime: 120
-		Description: Chronoshift
-		LongDesc: Teleport a group of vehicles across\nthe map for 30 seconds.
 		SelectTargetSound: slcttgt1.aud
 		BeginChargeSound: chrochr1.aud
 		EndChargeSound: chrordy1.aud
@@ -266,9 +245,6 @@ TSLA:
 		Hotkey: u
 	Valued:
 		Cost: 1500
-	Tooltip:
-		Name: Tesla Coil
-		Description: Advanced base defense. Requires power\nto operate.\n  Strong vs Tanks, Infantry\n  Weak vs Aircraft
 	Building:
 		Power: -150
 		Footprint: _ x
@@ -304,9 +280,6 @@ AGUN:
 		Hotkey: g
 	Valued:
 		Cost: 800
-	Tooltip:
-		Name: AA Gun
-		Description: Anti-Air base defense.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
 	Building:
 		Power: -50
 		Footprint: _ x
@@ -345,9 +318,6 @@ DOME:
 		Hotkey: r
 	Valued:
 		Cost: 1600
-	Tooltip:
-		Name: Radar Dome
-		Description: Provides an overview of the battlefield.\n  Requires power to operate.
 	Building:
 		Power: -40
 		Footprint: xx xx
@@ -365,8 +335,6 @@ DOME:
 
 PBOX:
 	Inherits: ^Building
-	Tooltip:
-		Name: Pillbox (Unarmed)
 	Building:
 		Power: -15
 	-GivesBuildableArea:
@@ -434,8 +402,6 @@ PBOX.E1:
 		Owner: allies
 		Hotkey: p
 	Tooltip:
-		Name: Pillbox (Guns)
-		Description: Basic defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
 		Icon: PBOXICON
 	RenderBuilding:
 		Image: PBOX
@@ -450,15 +416,11 @@ PBOX.E1:
 
 #PBOX.E2:
 #	Inherits: PBOX
-#	Tooltip:
-#		Name: Pillbox (Grenades)
 #	RenderBuilding:
 #		Image: PBOX
 
 PBOX.E3:
 	Inherits: PBOX
-	Tooltip:
-		Name: Pillbox (Rockets)
 	RenderBuilding:
 		Image: PBOX
 	RenderRangeCircle:
@@ -469,8 +431,6 @@ PBOX.E3:
 
 PBOX.E4:
 	Inherits: PBOX
-	Tooltip:
-		Name: Pillbox (Flamethrower)
 	RenderBuilding:
 		Image: PBOX
 	RenderRangeCircle:
@@ -481,8 +441,6 @@ PBOX.E4:
 
 PBOX.E7:
 	Inherits: PBOX
-	Tooltip:
-		Name: Pillbox (Tanya)
 	RenderBuilding:
 		Image: PBOX
 	RenderRangeCircle:
@@ -493,8 +451,6 @@ PBOX.E7:
 
 PBOX.SHOK:
 	Inherits: PBOX
-	Tooltip:
-		Name: Pillbox (Tesla)
 	RenderBuilding:
 		Image: PBOX
 	RenderRangeCircle:
@@ -505,8 +461,6 @@ PBOX.SHOK:
 
 PBOX.SNIPER:
 	Inherits: PBOX
-	Tooltip:
-		Name: Pillbox (Sniper)
 	RenderBuilding:
 		Image: PBOX
 	RenderRangeCircle:
@@ -517,8 +471,6 @@ PBOX.SNIPER:
 
 HBOX:
 	Inherits: ^Building
-	Tooltip:
-		Name: Camo Pillbox (Unarmed)
 	Building:
 		Power: -15
 	-GivesBuildableArea:
@@ -591,8 +543,6 @@ HBOX.E1:
 		Owner: allies
 		Hotkey: p
 	Tooltip:
-		Name: Camo Pillbox (Guns)
-		Description: Hidden defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
 		Icon: HBOXICON
 	RenderBuilding:
 		Image: HBOX
@@ -607,15 +557,11 @@ HBOX.E1:
 
 #HBOX.E2:
 #	Inherits: HBOX
-#	Tooltip:
-#		Name: Camo Pillbox (Grenades)
 #	RenderBuilding:
 #		Image: HBOX
 
 HBOX.E3:
 	Inherits: HBOX
-	Tooltip:
-		Name: Camo Pillbox (Rockets)
 	RenderBuilding:
 		Image: HBOX
 	RenderRangeCircle:
@@ -626,8 +572,6 @@ HBOX.E3:
 
 HBOX.E4:
 	Inherits: HBOX
-	Tooltip:
-		Name: Camo Pillbox (Flamethrower)
 	RenderBuilding:
 		Image: HBOX
 	RenderRangeCircle:
@@ -638,8 +582,6 @@ HBOX.E4:
 
 HBOX.E7:
 	Inherits: HBOX
-	Tooltip:
-		Name: Camo Pillbox (Tanya)
 	RenderBuilding:
 		Image: HBOX
 	RenderRangeCircle:
@@ -650,8 +592,6 @@ HBOX.E7:
 
 HBOX.SHOK:
 	Inherits: HBOX
-	Tooltip:
-		Name: Camo Pillbox (Tesla)
 	RenderBuilding:
 		Image: HBOX
 	RenderRangeCircle:
@@ -662,8 +602,6 @@ HBOX.SHOK:
 
 HBOX.SNIPER:
 	Inherits: HBOX
-	Tooltip:
-		Name: Camo Pillbox (Sniper)
 	RenderBuilding:
 		Image: HBOX
 	RenderRangeCircle:
@@ -682,9 +620,6 @@ GUN:
 		Hotkey: t
 	Valued:
 		Cost: 600
-	Tooltip:
-		Name: Turret
-		Description: Anti-Armor base defense.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
 	Building:
 		Power: -40
 	-GivesBuildableArea:
@@ -717,9 +652,6 @@ FTUR:
 		Hotkey: t
 	Valued:
 		Cost: 600
-	Tooltip:
-		Name: Flame Tower
-		Description: Anti-Infantry base defense.\n  Strong vs Infantry\n  Weak vs Aircraft
 	Building:
 		Power: -20
 	-GivesBuildableArea:
@@ -751,9 +683,6 @@ SAM:
 		Hotkey: y
 	Valued:
 		Cost: 750
-	Tooltip:
-		Name: SAM Site
-		Description: Anti-Air base defense.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
 	Building:
 		Power: -20
 		Footprint: xx
@@ -792,9 +721,6 @@ ATEK:
 		Hotkey: t
 	Valued:
 		Cost: 1500
-	Tooltip:
-		Name: Allied Tech Center
-		Description: Provides Allied advanced technologies.\n  Special Ability: GPS Satellite
 	ProvidesCustomPrerequisite:
 		Prerequisite: techcenter
 	Building:
@@ -813,8 +739,6 @@ ATEK:
 		Image: gpssicon
 		OneShot: yes
 		ChargeTime: 480
-		Description: GPS Satellite
-		LongDesc: Reveals the entire map
 		RevealDelay: 15
 		LaunchSound: satlnch1.aud
 	SupportPowerChargeBar:
@@ -829,9 +753,6 @@ WEAP:
 		Hotkey: w
 	Valued:
 		Cost: 2000
-	Tooltip:
-		Name: War Factory
-		Description: Produces tanks & light vehicles.
 	Building:
 		Power: -30
 		Footprint: xxx xxx
@@ -873,8 +794,6 @@ FACT:
 	IronCurtainable: 
 	Valued:
 		Cost: 2500
-	Tooltip:
-		Name: Construction Yard
 	CustomSellValue:
 		Value: 2500
 	BaseBuilding:
@@ -894,9 +813,6 @@ PROC:
 		Hotkey: e
 	Valued:
 		Cost: 1400
-	Tooltip:
-		Name: Ore Refinery
-		Description: Converts Ore and Gems into money
 	Building:
 		Power: -30
 		Footprint: _x_ xxx x==
@@ -936,9 +852,6 @@ SILO:
 		Hotkey: o
 	Valued:
 		Cost: 150
-	Tooltip:
-		Name: Silo
-		Description: Stores excess harvested Ore
 	Building:
 		Power: -10
 	-GivesBuildableArea:
@@ -966,9 +879,6 @@ HPAD:
 		Hotkey: i
 	Valued:
 		Cost: 500
-	Tooltip:
-		Name: Helipad
-		Description: Produces and reloads helicopters
 	Building:
 		Power: -10
 		Footprint: xx xx
@@ -1001,9 +911,6 @@ AFLD:
 		Hotkey: g
 	Valued:
 		Cost: 500
-	Tooltip:
-		Name: Airfield
-		Description: Provides radar and off-map support\n  Special Ability: Paratroopers\n  Special Ability: Spy Plane
 	Building:
 		Power: -20
 		Footprint: xxx xxx
@@ -1051,9 +958,6 @@ POWR:
 		Hotkey: p
 	Valued:
 		Cost: 300
-	Tooltip:
-		Name: Power Plant
-		Description: Provides power for other structures
 	ProvidesCustomPrerequisite:
 		Prerequisite: anypower
 	Building:
@@ -1079,9 +983,6 @@ APWR:
 		Hotkey: l
 	Valued:
 		Cost: 500
-	Tooltip:
-		Name: Advanced Power Plant
-		Description: Provides more power, cheaper than the \nstandard Power Plant
 	ProvidesCustomPrerequisite:
 		Prerequisite: anypower
 	Building:
@@ -1107,9 +1008,6 @@ STEK:
 		Hotkey: t
 	Valued:
 		Cost: 1500
-	Tooltip:
-		Name: Soviet Tech Center
-		Description: Provides Soviet advanced technologies
 	ProvidesCustomPrerequisite:
 		Prerequisite: techcenter
 	Building:
@@ -1135,9 +1033,6 @@ BARR:
 		Hotkey: b
 	Valued:
 		Cost: 400
-	Tooltip:
-		Name: Soviet Barracks
-		Description: Produces infantry
 	Building:
 		Power: -20
 		Footprint: xx xx
@@ -1172,9 +1067,6 @@ TENT:
 		Hotkey: b
 	Valued:
 		Cost: 400
-	Tooltip:
-		Name: Allied Barracks
-		Description: Produces infantry
 	Building:
 		Power: -20
 		Footprint: xx xx
@@ -1201,8 +1093,6 @@ TENT:
 	
 KENN:
 	Inherits: ^Building
-	Tooltip:
-		Name: Kennel
 	Building:
 		Power: -10
 	-GivesBuildableArea:
@@ -1226,9 +1116,6 @@ FIX:
 		Hotkey: d
 	Valued:
 		Cost: 1200
-	Tooltip:
-		Name: Service Depot
-		Description: Repairs vehicles, reloads minelayers, and \nallows the construction of additional bases.
 	Building:
 		Power: -30
 		Footprint: _x_ xxx _x_
@@ -1302,15 +1189,11 @@ SYRF:
 	Inherits: ^Building
 	Valued:
 		Cost: 50
-	Tooltip:
-		Name: Fake Shipyard
 #	Buildable:
 #		BuildPaletteOrder: 900
 #		Prerequisites: anypower
 #		Owner: allies
 #		Cost: 50
-#		Description: Fake Shipyard
-#		LongDesc: Looks like a Shipyard
 #		Hotkey: z
 	TargetableBuilding:
 		TargetTypes: Ground, Water
@@ -1354,15 +1237,11 @@ DOMF:
 	Inherits: ^Building
 	Valued:
 		Cost: 50
-	Tooltip:
-		Name: Fake Radar Dome
 #	Buildable:
 #		BuildPaletteOrder: 900
 #		Prerequisites: proc
 #		Owner: allies
 #		Cost: 50
-#		Description: Fake Radar Dome
-#		LongDesc: Looks like a Radar Dome
 #		Hotkey: v
 	Building:
 		Power: -2
@@ -1391,9 +1270,6 @@ SBAG:
 		Cost: 25
 	CustomSellValue:
 		Value: 0
-	Tooltip:
-		Name: Sandbag Wall
-		Description: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
 	Health:
 		HP: 300
 	Armor:
@@ -1411,9 +1287,6 @@ FENC:
 		Cost: 25
 	CustomSellValue:
 		Value: 0
-	Tooltip:
-		Name: Wire Fence
-		Description: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
 	Health:
 		HP: 300
 	Armor:
@@ -1431,9 +1304,6 @@ BRIK:
 		Cost: 100
 	CustomSellValue:
 		Value: 0
-	Tooltip:
-		Name: Concrete Wall
-		Description: Stop units and blocks enemy fire.
 	SoundOnDamageTransition:
 		DamagedSound: crmble2.aud
 		DestroyedSound: kaboom30.aud

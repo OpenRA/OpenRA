@@ -1,0 +1,41 @@
+Player:
+	HackyAI@EasyAI:
+		Name:Easy AI
+	HackyAI@HardAI:
+		Name:Hard AI
+	HackyAI@OptiAI:
+		Name:Eisenhower AI
+	HackyAI@ZhukovAI:
+		Name:Zhukov AI
+	HackyAI@RommelAI:
+		Name:Rommel AI
+	Country@0:
+		Name: Allies
+	Country@1:
+		Name: Soviet
+
+MINP:
+	Tooltip:
+		Name: Anti-Personnel Mine
+
+MINV:
+	Tooltip:
+		Name: Anti-Tank Mine
+
+CRATE:
+	Tooltip:
+		Name: Crate
+
+FLARE:
+	Tooltip:
+		Name: Flare
+
+powerproxy.parabombs:
+	AirstrikePower:
+		Description: Parabombs (Single Use)
+		LongDesc: A Badger drops a load of parachuted\nbombs on your target.
+
+powerproxy.sonarpulse:
+	SonarPulsePower:
+		Description: Sonar Pulse (Single Use)
+		LongDesc: Reveals all submarines on the map for a \nshort time.
