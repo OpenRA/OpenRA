@@ -1,0 +1,31 @@
+^CivInfantry:
+	Tooltip:
+		Name: Гражданский
+
+^CivBuilding:
+	Tooltip:
+		Name: Гражданское Здание
+
+^CivBuildingHusk:
+	Tooltip:
+		Name: Гражданское Здание (Уничтожено)
+
+^CivField:
+	Tooltip:
+		Name: Поле
+
+^CivFieldHusk:
+	Tooltip:
+		Name: Поле (Уничтожено)
+
+^Tree:
+	Tooltip:
+		Name: Дерево
+
+^Rock:
+	Tooltip:
+		Name: Гора
+
+^Bridge:
+	Tooltip:
+		Name: Мост

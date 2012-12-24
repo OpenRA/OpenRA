@@ -5,8 +5,6 @@ V19:
 	Building:
 		Footprint: x
 		Dimensions: 1,1
-	Tooltip:
-		Name: Oil Derrick
 	LeavesHusk: 
 		HuskActor: V19.Husk
 
@@ -16,8 +14,6 @@ V19.Husk:
 	Building:
 		Footprint: x
 		Dimensions: 1,1
-	Tooltip:
-		Name: Oil Derrick (Destroyed)
 
 # Hospital
 HOSP:
@@ -25,8 +21,6 @@ HOSP:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	Tooltip:
-		Name: Hospital
 	LeavesHusk: 
 		HuskActor: HOSP.Husk
 	RepairsUnits:
@@ -36,8 +30,6 @@ HOSP.Husk:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	Tooltip:
-		Name: Hospital (Destroyed)
 
 # Bio Lab
 BIO:
@@ -45,8 +37,6 @@ BIO:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	Tooltip:
-		Name: Biological Lab
 	Exit@1:
 		SpawnOffset: 0,-10
 		ExitCell: 0,-1
@@ -68,8 +58,6 @@ BIO.Husk:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	Tooltip:
-		Name: Biological Lab (Destroyed)
 
 # Prison / Tech Center
 MISS:
@@ -78,5 +66,3 @@ MISS:
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 3,2
-	Tooltip:
-		Name: Tech Center

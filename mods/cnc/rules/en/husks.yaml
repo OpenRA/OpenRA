@@ -1,0 +1,55 @@
+MCV.Husk:
+	Tooltip:
+		Name: Mobile Construction Vehicle (Destroyed)
+
+HARV.Husk:
+	Tooltip:
+		Name: Harvester (Destroyed)
+
+APC.Husk:
+	Tooltip:
+		Name: Armored Personnel Carrier (Destroyed)
+
+FTNK.Husk:
+	Tooltip:
+		Name: Flame Tank (Destroyed)
+
+ARTY.Husk:
+	Tooltip:
+		Name: Artillery (Destroyed)
+
+BGGY.Husk:
+	Tooltip:
+		Name: Nod Buggy (Destroyed)
+
+BIKE.Husk:
+	Tooltip:
+		Name: Recon Bike (Destroyed)
+
+JEEP.Husk:
+	Tooltip:
+		Name: Hum-Vee (Destroyed)
+
+LTNK.Husk:
+	Tooltip:
+		Name: Light Tank (Destroyed)
+
+MTNK.Husk:
+	Tooltip:
+		Name: Medium Tank (Destroyed)
+
+HTNK.Husk:
+	Tooltip:
+		Name: Mammoth Tank (Destroyed)
+
+MSAM.Husk:
+	Tooltip:
+		Name: Rocket Launcher (Destroyed)
+
+MLRS.Husk:
+	Tooltip:
+		Name: SSM Launcher (Destroyed)
+
+STNK.Husk:
+	Tooltip:
+		Name: Stealth Tank (Destroyed)

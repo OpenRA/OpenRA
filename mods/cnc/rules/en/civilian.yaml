@@ -1,0 +1,19 @@
+V01:
+	Tooltip:
+		Name: Church
+
+V01.Husk:
+	Tooltip:
+		Name: Church (Destroyed)
+
+BARB:
+	Tooltip:
+		Name: Wire Fence
+
+WOOD:
+	Tooltip:
+		Name: Wooden Fence
+
+VICE:
+	Tooltip:
+		Name: Viceroid

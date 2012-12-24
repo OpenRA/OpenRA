@@ -3,8 +3,6 @@ V01:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	Tooltip:
-		Name: Church
 	LeavesHusk: 
 		HuskActor: V01.Husk
 	EditorTilesetFilter:
@@ -15,8 +13,6 @@ V01.Husk:
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
-	Tooltip:
-		Name: Church (Destroyed)
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
 
@@ -281,17 +277,15 @@ BARB:
 	Armor:
 		Type: Light
 	Tooltip:
-		Name: Wire Fence
 		Icon: barbicnh
 
 WOOD:
 	Inherits: ^Wall
 	Health:
 		HP: 100
-		Armor:
-			Type: Wood
-		Tooltip:
-		Name: Wooden Fence
+	Armor:
+		Type: Wood
+	Tooltip:
 		Icon: woodicnh
 
 BRIDGE1:
@@ -402,8 +396,6 @@ VICE:
 	GivesExperience:
 	Valued:
 		Cost: 1000
-	Tooltip:
-		Name: Viceroid
 	AttackFrontal:
 		PrimaryWeapon: Chemspray
 	AttackWander:

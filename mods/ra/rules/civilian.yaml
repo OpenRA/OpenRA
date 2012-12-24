@@ -19,6 +19,7 @@ HOSP:
 		Dimensions: 2,2
 	RepairsUnits:
 
+# church
 V01:
 	Inherits: ^CivBuilding
 	Building:

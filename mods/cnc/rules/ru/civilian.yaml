@@ -1,0 +1,19 @@
+V01:
+	Tooltip:
+		Name: Церковь
+
+V01.Husk:
+	Tooltip:
+		Name: Церковь (Уничтожена)
+
+BARB:
+	Tooltip:
+		Name: Колючая Проволока
+
+WOOD:
+	Tooltip:
+		Name: Деревянный Забор
+
+VICE:
+	Tooltip:
+		Name: Мутант

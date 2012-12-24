@@ -1,0 +1,27 @@
+V19:
+	Tooltip:
+		Name: Oil Derrick
+
+V19.Husk:
+	Tooltip:
+		Name: Oil Derrick (Destroyed)
+
+HOSP:
+	Tooltip:
+		Name: Hospital
+
+HOSP.Husk:
+	Tooltip:
+		Name: Hospital (Destroyed)
+
+BIO:
+	Tooltip:
+		Name: Biological Lab
+
+BIO.Husk:
+	Tooltip:
+		Name: Biological Lab (Destroyed)
+
+MISS:
+	Tooltip:
+		Name: Tech Center

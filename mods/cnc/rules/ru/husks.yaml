@@ -1,0 +1,55 @@
+MCV.Husk:
+	Tooltip:
+		Name: Мобильный Строительный Грузовик (Обломки)
+
+HARV.Husk:
+	Tooltip:
+		Name: Комбайн (Обломки)
+
+APC.Husk:
+	Tooltip:
+		Name: Боевой Бронетранспортёр (Обломки)
+
+FTNK.Husk:
+	Tooltip:
+		Name: Огнемётный Танк (Обломки)
+
+ARTY.Husk:
+	Tooltip:
+		Name: Артиллерия (Обломки)
+
+BGGY.Husk:
+	Tooltip:
+		Name: Nod Багги (Обломки)
+
+BIKE.Husk:
+	Tooltip:
+		Name: Мотоцикл (Обломки)
+
+JEEP.Husk:
+	Tooltip:
+		Name: Хам-Ви (Обломки)
+
+LTNK.Husk:
+	Tooltip:
+		Name: Лёгкий Танк (Обломки)
+
+MTNK.Husk:
+	Tooltip:
+		Name: Средний Танк (Обломки)
+
+HTNK.Husk:
+	Tooltip:
+		Name: Мамонт (Обломки)
+
+MSAM.Husk:
+	Tooltip:
+		Name: Ракетница (Обломки)
+
+MLRS.Husk:
+	Tooltip:
+		Name: Ракетница SSM (Обломки)
+
+STNK.Husk:
+	Tooltip:
+		Name: Невидимый Танк (Обломки)
