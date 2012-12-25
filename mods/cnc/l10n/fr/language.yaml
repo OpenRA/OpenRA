@@ -1,0 +1,29 @@
+Metadata:
+
+Folders:
+	./mods/cnc/packages/fr
+
+Packages:
+	~talk.mix
+
+Rules:
+
+ChromeLayout:
+	mods/cnc/chrome/en/install.yaml
+	mods/cnc/chrome/en/mainmenu.yaml
+	mods/cnc/chrome/en/serverbrowser.yaml
+	mods/cnc/chrome/en/createserver.yaml
+	mods/cnc/chrome/en/directconnect.yaml
+	mods/cnc/chrome/en/lobby.yaml
+	mods/cnc/chrome/en/connection.yaml
+	mods/cnc/chrome/en/mapchooser.yaml
+	mods/cnc/chrome/en/replaybrowser.yaml
+	mods/cnc/chrome/en/ingame.yaml
+	mods/cnc/chrome/en/ingamemenu.yaml
+	mods/cnc/chrome/en/music.yaml
+	mods/cnc/chrome/en/modchooser.yaml
+	mods/cnc/chrome/en/settings.yaml
+	mods/cnc/chrome/en/cheats.yaml
+	mods/cnc/chrome/en/dialogs.yaml
+	mods/cnc/chrome/en/objectives.yaml
+	mods/cnc/chrome/en/tooltips.yaml

@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2012 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -8,8 +8,10 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 
 namespace OpenRA.FileFormats
 {
@@ -17,19 +19,33 @@ namespace OpenRA.FileFormats
 
 	public class Manifest
 	{
-		public readonly string[]
-			Mods, Folders, Packages, Rules, ServerTraits,
-			Sequences, Cursors, Chrome, Assemblies, ChromeLayout,
-			Weapons, Voices, Notifications, Music, Movies, TileSets, ChromeMetrics;
+		public readonly string[] Mods = { };
+		public readonly string[] Folders = { };
+		public readonly string[] Packages = { };
+		public readonly string[] Rules = { };
+		public readonly string[] ServerTraits = { };
+		public readonly string[] Sequences = { };
+		public readonly string[] Cursors = { };
+		public readonly string[] Chrome = { };
+		public readonly string[] Assemblies = { };
+		public readonly string[] ChromeLayout = { };
+		public readonly string[] Weapons = { };
+		public readonly string[] Voices = { };
+		public readonly string[] Notifications = { };
+		public readonly string[] Music = { };
+		public readonly string[] Movies = { };
+		public readonly string[] TileSets = { };
+		public readonly string[] ChromeMetrics = { };
 		public readonly MiniYaml LoadScreen;
 		public readonly Dictionary<string, Pair<string,int>> Fonts;
 		public readonly int TileSize = 24;
 
-		public Manifest(string[] mods)
+		public Manifest(string lang, string[] mods)
 		{
 			Mods = mods;
 			var yaml = new MiniYaml(null, mods
-				.Select(m => MiniYaml.FromFile("mods/" + m + "/mod.yaml"))
+				.Select(m => MiniYaml.FromFile(
+				new[] { "mods", m, "mod.yaml" }.Aggregate(Path.Combine)))
 				.Aggregate(MiniYaml.MergeLiberal)).NodesDict;
 
 			// Todo: Use fieldloader
@@ -57,6 +73,29 @@ namespace OpenRA.FileFormats
 
 			if (yaml.ContainsKey("TileSize"))
 				TileSize = int.Parse(yaml["TileSize"].Value);
+
+			if (yaml.ContainsKey("Languages"))
+			{
+				//Fallback to English if strings are missing
+				yaml = new MiniYaml(null, mods
+				.Select(m => MiniYaml.FromFile(
+				new[] { "mods", m, "l10n", "en", "language.yaml" }.Aggregate(Path.Combine)))
+				.Aggregate(MiniYaml.MergeLiberal)).NodesDict;
+				Rules = YamlList(yaml, "Rules").Concat(Rules).ToArray();
+				ChromeLayout = YamlList(yaml, "ChromeLayout").Concat(Rules).ToArray();
+
+				Console.WriteLine("Mod supports translation, loading language: {0}", lang);
+				yaml = new MiniYaml(null, mods
+				.Select(m => MiniYaml.FromFile(
+				new[] { "mods", m, "l10n", lang, "language.yaml" }.Aggregate(Path.Combine)))
+				.Aggregate(MiniYaml.MergeLiberal)).NodesDict;
+				Folders = YamlList(yaml, "Folders").Concat(Folders).ToArray();
+				Packages = YamlList(yaml, "Packages").Concat(Packages).ToArray();
+				Rules = YamlList(yaml, "Rules").Concat(Rules).ToArray();
+				// TODO: chrome layout does not merge yet
+				ChromeLayout = YamlList(yaml, "ChromeLayout");
+			}
+
 		}
 
 		static string[] YamlList(Dictionary<string, MiniYaml> yaml, string key)

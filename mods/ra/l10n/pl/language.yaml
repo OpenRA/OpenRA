@@ -1,0 +1,22 @@
+Metadata:
+
+Folders:
+
+Packages:
+
+Rules:
+
+ChromeLayout:
+	mods/ra/chrome/pl/gameinit.yaml
+	mods/ra/chrome/pl/ingame.yaml
+	mods/ra/chrome/pl/mainmenu.yaml
+	mods/ra/chrome/pl/settings.yaml
+	mods/ra/chrome/pl/lobby.yaml
+	mods/ra/chrome/pl/map-chooser.yaml
+	mods/ra/chrome/pl/create-server.yaml
+	mods/ra/chrome/pl/serverbrowser.yaml
+	mods/ra/chrome/pl/replaybrowser.yaml
+	mods/ra/chrome/pl/dropdowns.yaml
+	mods/ra/chrome/pl/modchooser.yaml
+	mods/ra/chrome/pl/cheats.yaml
+	mods/ra/chrome/pl/objectives.yaml

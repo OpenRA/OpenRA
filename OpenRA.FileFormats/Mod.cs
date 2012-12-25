@@ -30,7 +30,7 @@ namespace OpenRA.FileFormats
 			var ret = new Dictionary<string, Mod>();
 			foreach (var m in mods)
 			{
-				var yamlPath = new[] { "mods", m, "mod.yaml" }.Aggregate( Path.Combine );
+				var yamlPath = new[] { "mods", m, "mod.yaml" }.Aggregate(Path.Combine);
 				if (!File.Exists(yamlPath))
 					continue;
 

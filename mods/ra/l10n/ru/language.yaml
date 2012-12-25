@@ -1,0 +1,32 @@
+Folders:
+
+Packages:
+
+Rules:
+	mods/ra/rules/ru/defaults.yaml
+	mods/ra/rules/ru/system.yaml
+	mods/ra/rules/ru/vehicles.yaml
+	mods/ra/rules/ru/structures.yaml
+	mods/ra/rules/ru/infantry.yaml
+	mods/ra/rules/ru/civilian.yaml
+	mods/ra/rules/ru/trees.yaml
+	mods/ra/rules/ru/aircraft.yaml
+	mods/ra/rules/ru/ships.yaml
+
+ChromeLayout:
+# the russian layout dates to the 2011-09-06 release
+	mods/ra/chrome/en/gameinit.yaml
+	mods/ra/chrome/en/ingame.yaml
+	mods/ra/chrome/en/mainmenu.yaml
+	mods/ra/chrome/en/settings.yaml
+	mods/ra/chrome/en/lobby.yaml
+	mods/ra/chrome/en/map-chooser.yaml
+	mods/ra/chrome/en/create-server.yaml
+	mods/ra/chrome/en/serverbrowser.yaml
+	mods/ra/chrome/en/replaybrowser.yaml
+	mods/ra/chrome/en/dropdowns.yaml
+	mods/ra/chrome/en/modchooser.yaml
+	mods/ra/chrome/en/cheats.yaml
+	mods/ra/chrome/en/objectives.yaml
+
+Languages:

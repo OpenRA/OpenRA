@@ -333,7 +333,7 @@ namespace OpenRA.Utility
 			var templateNames = args.Skip(3);
 			int[] ShadowIndex = { 3, 4 };
 
-			var manifest = new Manifest(mods);
+			var manifest = new Manifest("en", mods);
 			FileSystem.LoadFromManifest(manifest);
 
 			var tileset = manifest.TileSets.Select( a => new TileSet(a) )
@@ -380,7 +380,7 @@ namespace OpenRA.Utility
 			var mods = args[1].Split(',');
 			var files = args.Skip(2);
 
-			var manifest = new Manifest(mods);
+			var manifest = new Manifest("en", mods);
 			FileSystem.LoadFromManifest(manifest);
 
 			foreach( var f in files )

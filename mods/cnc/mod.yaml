@@ -10,17 +10,12 @@ Folders:
 	./mods/cnc/bits
 	./mods/cnc/uibits
 	./mods/cnc/packages
-#	./mods/cnc/packages/de
-	./mods/cnc/packages/en
-#	./mods/cnc/packages/fr
-#	./mods/cnc/packages/ja
 	~^/Content/cnc
 
 Packages:
-	textless.mix
+	~textless.mix #enables icons without text
 	overrides.mix
 	bluetib.mix
-	~talk.mix
 	speech.mix
 	conquer.mix
 	sounds.mix
@@ -49,31 +44,6 @@ Rules:
 	mods/cnc/rules/aircraft.yaml
 	mods/cnc/rules/husks.yaml
 
-#	mods/cnc/rules/ru/defaults.yaml
-#	mods/cnc/rules/ru/structures.yaml
-#	mods/cnc/rules/ru/infantry.yaml
-#	mods/cnc/rules/ru/vehicles.yaml
-#	mods/cnc/rules/ru/trees.yaml
-#	mods/cnc/rules/ru/civilian.yaml
-#	mods/cnc/rules/ru/civilian-desert.yaml
-#	mods/cnc/rules/ru/tech.yaml
-#	mods/cnc/rules/ru/ships.yaml
-#	mods/cnc/rules/ru/aircraft.yaml
-#	mods/cnc/rules/ru/husks.yaml
-
-# Fallback to English if strings are missing:
-	mods/cnc/rules/en/defaults.yaml
-	mods/cnc/rules/en/structures.yaml
-	mods/cnc/rules/en/infantry.yaml
-	mods/cnc/rules/en/vehicles.yaml
-	mods/cnc/rules/en/trees.yaml
-	mods/cnc/rules/en/civilian.yaml
-	mods/cnc/rules/en/civilian-desert.yaml
-	mods/cnc/rules/en/tech.yaml
-	mods/cnc/rules/en/ships.yaml
-	mods/cnc/rules/en/aircraft.yaml
-	mods/cnc/rules/en/husks.yaml
-
 Sequences:
 	mods/cnc/sequences/structures.yaml
 	mods/cnc/sequences/vehicles.yaml
@@ -95,24 +65,6 @@ Assemblies:
 	mods/cnc/OpenRA.Mods.Cnc.dll
 
 ChromeLayout:
-	mods/cnc/chrome/en/install.yaml
-	mods/cnc/chrome/en/mainmenu.yaml
-	mods/cnc/chrome/en/serverbrowser.yaml
-	mods/cnc/chrome/en/createserver.yaml
-	mods/cnc/chrome/en/directconnect.yaml
-	mods/cnc/chrome/en/lobby.yaml
-	mods/cnc/chrome/en/connection.yaml
-	mods/cnc/chrome/en/mapchooser.yaml
-	mods/cnc/chrome/en/replaybrowser.yaml
-	mods/cnc/chrome/en/ingame.yaml
-	mods/cnc/chrome/en/ingamemenu.yaml
-	mods/cnc/chrome/en/music.yaml
-	mods/cnc/chrome/en/modchooser.yaml
-	mods/cnc/chrome/en/settings.yaml
-	mods/cnc/chrome/en/cheats.yaml
-	mods/cnc/chrome/en/dialogs.yaml
-	mods/cnc/chrome/en/objectives.yaml
-	mods/cnc/chrome/en/tooltips.yaml
 
 Weapons:
 	mods/cnc/weapons.yaml
@@ -145,6 +97,8 @@ LoadScreen: CncLoadScreen
 ServerTraits:
 	LobbyCommands
 	MasterServerPinger
+
+Languages:
 
 ChromeMetrics:
 	mods/cnc/metrics.yaml

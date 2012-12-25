@@ -280,7 +280,7 @@ namespace OpenRA
 				orderManager.Dispose();
 
 			// Discard any invalid mods, set RA as default
-			var mm = mods.Where( m => Mod.AllMods.ContainsKey( m ) ).ToArray();
+			var mm = mods.Where(m => Mod.AllMods.ContainsKey(m)).ToArray();
 			if (mm.Length == 0) mm = new[] { "ra" };
 			Console.WriteLine("Loading mods: {0}", mm.JoinWith(","));
 			Settings.Game.Mods = mm;
@@ -289,7 +289,7 @@ namespace OpenRA
 			Sound.StopVideo();
 			Sound.Initialize();
 
-			modData = new ModData( mm );
+			modData = new ModData(Settings.Game.Language, mm);
 			Renderer.InitializeFonts(modData.Manifest);
 			modData.LoadInitialAssets();
 
