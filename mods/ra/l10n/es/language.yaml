@@ -1,22 +1,12 @@
 Folders:
-	~mods/ra/packages/ru
+	~mods/ra/packages/es
 
 Packages:
 	~WOLAPI.MIX
 
 Rules:
-	mods/ra/rules/ru/defaults.yaml
-	mods/ra/rules/ru/system.yaml
-	mods/ra/rules/ru/vehicles.yaml
-	mods/ra/rules/ru/structures.yaml
-	mods/ra/rules/ru/infantry.yaml
-	mods/ra/rules/ru/civilian.yaml
-	mods/ra/rules/ru/trees.yaml
-	mods/ra/rules/ru/aircraft.yaml
-	mods/ra/rules/ru/ships.yaml
 
 ChromeLayout:
-# the russian layout dates to the 2011-09-06 release
 	mods/ra/chrome/en/gameinit.yaml
 	mods/ra/chrome/en/ingame.yaml
 	mods/ra/chrome/en/mainmenu.yaml
