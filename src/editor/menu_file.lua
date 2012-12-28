@@ -9,7 +9,7 @@ local openDocuments = ide.openDocuments
 local fileMenu = wx.wxMenu({
     { ID_NEW, TR("&New")..KSC(ID_NEW), TR("Create an empty document") },
     { ID_OPEN, TR("&Open...")..KSC(ID_OPEN), TR("Open an existing document") },
-    { ID_CLOSE, TR("&Close page")..KSC(ID_CLOSE), TR("Close the current editor window") },
+    { ID_CLOSE, TR("&Close Page")..KSC(ID_CLOSE), TR("Close the current editor window") },
     { },
     { ID_SAVE, TR("&Save")..KSC(ID_SAVE), TR("Save the current document") },
     { ID_SAVEAS, TR("Save &As...")..KSC(ID_SAVEAS), TR("Save the current document to a file with a new name") },

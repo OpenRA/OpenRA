@@ -3,7 +3,7 @@ return {
   ["&About"] = "&О программе", -- src\editor\menu_help.lua
   ["&Add Watch"] = "&Добавить выражение", -- src\editor\debugger.lua
   ["&Break"] = "Пр&ервать", -- src\editor\menu_project.lua
-  ["&Close page"] = "&Закрыть", -- src\editor\menu_file.lua
+  ["&Close Page"] = "&Закрыть", -- src\editor\menu_file.lua
   ["&Compile"] = "&Компилировать", -- src\editor\menu_project.lua
   ["&Copy"] = "&Копировать", -- src\editor\editor.lua, src\editor\menu_edit.lua
   ["&Default Layout"] = "Вид по &умолчанию", -- src\editor\menu_view.lua

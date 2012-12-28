@@ -6,7 +6,7 @@ return {
   ["&About"] = "&Acerca de...", -- src\editor\menu_help.lua
   ["&Add Watch"] = "Añadir observación", -- src\editor\debugger.lua
   ["&Break"] = "Ruptura", -- src\editor\menu_project.lua
-  ["&Close page"] = "Cerrar página", -- src\editor\menu_file.lua
+  ["&Close Page"] = "Cerrar página", -- src\editor\menu_file.lua
   ["&Compile"] = "Compilar", -- src\editor\menu_project.lua
   ["&Copy"] = "Copiar", -- src\editor\editor.lua, src\editor\menu_edit.lua
   ["&Default Layout"] = "Diseño por defecto", -- src\editor\menu_view.lua

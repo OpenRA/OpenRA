@@ -3,7 +3,7 @@ return {
   ["&About"] = "&À propos", -- src\editor\menu_help.lua
   ["&Add Watch"] = "Ajouter un point d'observation", -- src\editor\debugger.lua
   ["&Break"] = "Interrompre", -- src\editor\menu_project.lua
-  ["&Close page"] = "Fermer la page", -- src\editor\menu_file.lua
+  ["&Close Page"] = "Fermer la page", -- src\editor\menu_file.lua
   ["&Compile"] = "Compiler", -- src\editor\menu_project.lua
   ["&Copy"] = "Copier", -- src\editor\editor.lua, src\editor\menu_edit.lua
   ["&Default Layout"] = "Affichage par défaut", -- src\editor\menu_view.lua
