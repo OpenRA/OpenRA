@@ -1,3 +1,59 @@
+C1:
+	Inherits: ^CivInfantry
+
+C2:
+	Inherits: ^CivInfantry
+	Selectable:
+		Voice: CivilianFemaleVoice
+
+C3:
+	Inherits: ^CivInfantry
+	RenderInfantry:
+		Image: C1
+
+C4:
+	Inherits: ^CivInfantry
+	Selectable:
+		Voice: CivilianFemaleVoice
+	RenderInfantry:
+		Image: C2
+
+C5:
+	Inherits: ^CivInfantry
+	RenderInfantry:
+		Image: C1
+
+C6:
+	Inherits: ^CivInfantry
+	Selectable:
+		Voice: CivilianFemaleVoice
+	RenderInfantry:
+		Image: C2
+
+C7:
+	Inherits: ^CivInfantry
+	RenderInfantry:
+		Image: C1
+
+C8:
+	Inherits: ^CivInfantry
+	Selectable:
+		Voice: CivilianFemaleVoice
+	RenderInfantry:
+		Image: C2
+
+C9:
+	Inherits: ^CivInfantry
+	RenderInfantry:
+		Image: C1
+
+C10:
+	Inherits: ^CivInfantry
+	Selectable:
+		Voice: CivilianFemaleVoice
+	RenderInfantry:
+		Image: C2
+
 FCOM:
 	Inherits: ^TechBuilding
 	Building:

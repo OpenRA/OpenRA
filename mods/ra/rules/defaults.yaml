@@ -201,7 +201,7 @@
 	WithBuildingExplosion:
 	RepairableBuilding:
 	EmitInfantryOnSell:
-		ActorTypes: e1,e1,e1,c1,c2,e6
+		ActorTypes: e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,e6,e6,e6,e6,e6
 	MustBeDestroyed:
 	GivesExperience:
 #	FrozenUnderFog:
@@ -266,6 +266,26 @@
 	-Sellable:
 	-Capturable:
 	-CapturableBar:
+
+^CivInfantry:
+	Inherits: ^Infantry
+	Selectable:
+		Voice: CivilianMaleVoice
+		Bounds: 12,17,0,-9
+	Valued:
+		Cost: 70
+	Tooltip:
+		Name: Civilian
+	Health:
+		HP: 20
+	Mobile:
+		Speed: 4
+	RevealsShroud:
+		Range: 2
+	AttackFrontal:
+		PrimaryWeapon: Pistol
+	ProximityCaptor:
+		Types:CivilianInfantry
 
 ^CivBuilding:
 	Inherits: ^TechBuilding

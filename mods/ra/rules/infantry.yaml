@@ -348,47 +348,6 @@ MECH:
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
-
-C1:
-	Inherits: ^Infantry
-	Selectable:
-		Voice: CivilianMaleVoice
-		Bounds: 12,17,0,-9
-	Valued:
-		Cost: 70
-	Tooltip:
-		Name: Civilian
-	Health:
-		HP: 20
-	Mobile:
-		Speed: 4
-	RevealsShroud:
-		Range: 2
-	AttackFrontal:
-		PrimaryWeapon: Pistol
-	ProximityCaptor:
-		Types:CivilianInfantry
-
-C2:
-	Inherits: ^Infantry
-	Selectable:
-		Voice: CivilianFemaleVoice
-		Bounds: 12,17,0,-9
-	Valued:
-		Cost: 70
-	Tooltip:
-		Name: Civilian
-	Health:
-		HP: 20
-	Mobile:
-		Speed: 4
-	RevealsShroud:
-		Range: 2
-	AttackFrontal:
-		PrimaryWeapon: Pistol
-	ProximityCaptor:
-		Types:CivilianInfantry
-
 EINSTEIN:
 	Inherits: ^Infantry
 	Selectable:
