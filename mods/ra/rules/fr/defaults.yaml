@@ -1,6 +1,6 @@
 ^CivBuilding:
 	Tooltip:
-		Name: Batiment Civil
+		Name: Bâtiment Civil
 
 ^CivField:
 	Tooltip:
@@ -10,6 +10,19 @@
 	Tooltip:
 		Name: Arbre
 
+^Box:
+	Tooltip:
+		Name: Boxes
+
+^Ice:
+	Tooltip:
+		Name: Banquise
+
 ^Bridge:
 	Tooltip:
 		Name: Pont
+
+#Terrain Expansion
+^SmallBridge:
+	Tooltip:
+		Name: Petit pont

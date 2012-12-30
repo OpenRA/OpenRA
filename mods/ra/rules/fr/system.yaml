@@ -1,16 +1,18 @@
 Player:
 	HackyAI@EasyAI:
 		Name:IA Facile
-#	HackyAI@NormalAI:
-#		Name:IA Normale
 	HackyAI@HardAI:
 		Name:IA Difficile
-
-World:	
+	HackyAI@OptiAI:
+		Name:IA Eisenhower
+	HackyAI@ZhukovAI:
+		Name:IA Zhukov
+	HackyAI@RommelAI:
+		Name:IA Rommel
 	Country@0:
-		Name: Allies
+		Name: Alliés
 	Country@1:
-		Name: Soviets
+		Name: Soviet
 
 MINP:
 	Tooltip:
@@ -31,9 +33,9 @@ FLARE:
 powerproxy.parabombs:
 	AirstrikePower:
 		Description: Parabombes (Utilisation Unique)
-		LongDesc: Un avion droppe un chargement parachute de \nbombes sur la cible.
+		LongDesc: Un avion largue un chargement de bombes freinées sur la cible.
 
 powerproxy.sonarpulse:
 	SonarPulsePower:
 		Description: Sonar (Utilisation Unique)
-		LongDesc: Revele tout les sous-marins sur la carte pour \nun court moment.
+		LongDesc: Révèle tous les sous-marins sur la carte pour un court moment.

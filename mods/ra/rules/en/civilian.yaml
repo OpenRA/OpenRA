@@ -2,7 +2,6 @@ FCOM:
 	Tooltip:
 		Name: Forward Command
 
-
 HOSP:
 	Tooltip:
 		Name: Hospital
@@ -22,7 +21,6 @@ BRL3:
 BIO:
 	Tooltip:
 		Name: Biological Lab
-
 
 OILB:
 	Tooltip:
