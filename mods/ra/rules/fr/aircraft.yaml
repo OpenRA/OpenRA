@@ -31,8 +31,8 @@ TRAN.Husk2:
 
 HELI:
 	Tooltip:
-		Name: Hélicoptère d'attaque Apache Longbow
-		Description: Hélicoptère armé de missiles.\n  Fort contre les Tanks\n  Faible contre l'Infanterie
+		Name: Hélicoptère d'attaque
+		Description: Apache Longbow armé de missiles.\n  Fort contre les Tanks\n  Faible contre l'Infanterie
 
 HIND:
 	Tooltip:
