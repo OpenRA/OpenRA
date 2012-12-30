@@ -11,7 +11,7 @@ Background@INSTALL_PANEL:
 			Y:20
 			Width:PARENT_RIGHT
 			Height:25
-			Text:Installation Requise
+			Text:Installation requise
 			Align:Center
 			Font:Bold
 		Label@DESC1:
@@ -26,7 +26,7 @@ Background@INSTALL_PANEL:
 			Y:70
 			Width:PARENT_RIGHT
 			Height:25
-			Text:Ce contenu peut etre telecharge, ou copie a partir du CD original.
+			Text:Ce contenu peut être téléchargé, ou copié à partir du CD original.
 			Align:Center
 		Button@DOWNLOAD_BUTTON:
 			Id:DOWNLOAD_BUTTON
@@ -34,7 +34,7 @@ Background@INSTALL_PANEL:
 			Y:PARENT_BOTTOM - 45
 			Width:120
 			Height:25
-			Text:Telecharger
+			Text:Télécharger
 			Font:Bold
 		Button@INSTALL_BUTTON:
 			Id:INSTALL_BUTTON
@@ -66,7 +66,7 @@ Background@INSTALL_DOWNLOAD_PANEL:
 			Y:20
 			Width:PARENT_RIGHT
 			Height:25
-			Text:Telechargement du contenu d'Alerte Rouge
+			Text:Téléchargement du contenu d'Alerte Rouge
 			Align:Center
 			Font:Bold
 		ProgressBar@PROGRESS_BAR:
@@ -89,7 +89,7 @@ Background@INSTALL_DOWNLOAD_PANEL:
 			Width:120
 			Height:25
 			Visible: false
-			Text:Reessayer
+			Text:Réessayer
 			Font:Bold
 			Key:return
 		Button@CANCEL_BUTTON:
@@ -146,13 +146,13 @@ Background@INSTALL_FROMCD_PANEL:
 					Y:50
 					Width:PARENT_RIGHT
 					Height:25
-					Text:Disque non trouve.
+					Text:Disque non trouvé.
 					Align:Center
 				Label@INFO2:
 					Y:70
 					Width:PARENT_RIGHT
 					Height:25
-					Text:Veuillez inserer un des CD's d'Alerte Rouge puis cliquez sur Reessayer.
+					Text:Veuillez insérer un des CD's d'Alerte Rouge puis cliquez sur Réessayer.
 					Align:Center
 		Button@RETRY_BUTTON:
 			Id:RETRY_BUTTON
@@ -160,7 +160,7 @@ Background@INSTALL_FROMCD_PANEL:
 			Y:PARENT_BOTTOM - 45
 			Width:120
 			Height:25
-			Text:Reessayer
+			Text:Réessayer
 			Font:Bold
 			Key:return
 		Button@BACK_BUTTON:

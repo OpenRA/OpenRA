@@ -72,7 +72,7 @@ Background@REPLAYBROWSER_BG:
 					Align:Right
 					Width:70
 					Height:20
-					Text:Duree:
+					Text:Durée:
 					Font:Bold
 				Label@DURATION:
 					Id:DURATION

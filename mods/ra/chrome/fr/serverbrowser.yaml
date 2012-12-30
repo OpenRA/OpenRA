@@ -90,7 +90,7 @@ Background@JOINSERVER_BG:
 			Y:PARENT_BOTTOM - 45
 			Width:120
 			Height:25
-			Text:Raffraichir
+			Text:Rafraîchir
 			Font:Bold
 		Button@JOIN_BUTTON:
 			Id:JOIN_BUTTON
@@ -181,7 +181,7 @@ Background@CONNECTIONFAILED_PANEL:
 			Y:20
 			Width:450
 			Height:25
-			Text:Echec connexion
+			Text:Échec de connexion
 			Align:Center
 			Font:Bold
 		Label@CONNECTING_DESC:
@@ -198,7 +198,7 @@ Background@CONNECTIONFAILED_PANEL:
 			Y:PARENT_BOTTOM - 45
 			Width:160
 			Height:25
-			Text:Reessayer
+			Text:Réessayer
 			Font:Bold
 			Key:return
 		Button@ABORT_BUTTON:

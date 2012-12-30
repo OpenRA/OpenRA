@@ -12,7 +12,7 @@ Background@SETTINGS_MENU:
 			Y:20
 			Width:450
 			Height:25
-			Text:Parametres
+			Text:Paramètres
 			Align:Center
 			Font:Bold
 		Button@BUTTON_CLOSE:
@@ -90,12 +90,12 @@ Background@SETTINGS_MENU:
 					Y:30
 					Width:200
 					Height:20
-					Text: Activer Defilement au Bord
+					Text: Activer défilement au bord
 				Label@EDGE_SCROLL_AMOUNT_LABEL:
 					Id:EDGE_SCROLL_AMOUNT_LABEL
 					X:0
 					Y:70
-					Text: Vitesse Defilement
+					Text: Vitesse défilement
 				Slider@EDGE_SCROLL_AMOUNT:
 					Id:EDGE_SCROLL_AMOUNT
 					X:130
@@ -111,14 +111,14 @@ Background@SETTINGS_MENU:
 					Y:90
 					Width:200
 					Height:20
-					Text: Inverser Defilement Souris
+					Text: Inverser défilement Souris
 				Checkbox@TEAMCHAT_TOGGLE:
 					Id:TEAMCHAT_TOGGLE
 					X:0
 					Y:120
 					Width:200
 					Height:20
-					Text: Shift-Entree pour Chat en Equipe
+					Text: Shift-Entrée pour Chat en Équipe
 				Checkbox@SHOW_SHELL:
 					Id:SHOW_SHELLMAP
 					X:0
@@ -158,6 +158,17 @@ Background@SETTINGS_MENU:
 					Width:250
 					Height:20
 					Ticks:5
+				Label@SOUND_TICK_TYPE_LABEL:
+					X:0
+					Y:70
+					Text: Cash ticks
+				DropDownButton@CASH_TICK_TYPE:
+					X:100
+					Y:60
+					Width:250
+					Height:25
+					Font:Regular
+					Text:Extreme
 		Container@DISPLAY_PANE:
 			Id:DISPLAY_PANE
 			X:37
@@ -166,24 +177,37 @@ Background@SETTINGS_MENU:
 			Height:PARENT_BOTTOM - 100
 			Visible: false
 			Children:
-				Label@MODE_LABEL:
+				Label@RENDERER_LABEL:
 					X:0
 					Y:0
+					Width:75
+					Height:25
+					Text:Renderer:
+				DropDownButton@GRAPHICS_RENDERER:
+					X:80
+					Y:1
+					Width:120
+					Height:25
+					Font:Regular
+					Text:OpenGL
+				Label@MODE_LABEL:
+					X:0
+					Y:30
 					Width:45
 					Height:25
 					Text:Mode:
 				DropDownButton@MODE_DROPDOWN:
 					Id:MODE_DROPDOWN
 					X:50
-					Y:1
+					Y:30
 					Width:170
 					Height:25
 					Font:Regular
-					Text:Fenetre
-				Container@WINDOWRES:
+					Text:Fenêtré
+				Container@WINDOW_RESOLUTION:
 					Id:WINDOW_RESOLUTION
-					X:220
-					Y:0
+					X:225
+					Y:30
 					Children:
 						Label@At:
 							Text:@
@@ -192,7 +216,7 @@ Background@SETTINGS_MENU:
 							Height:25
 							Width:25
 							Align:Center
-						TextField@SCREEN_WIDTH:
+						TextField@WINDOW_WIDTH:
 							Id:WINDOW_WIDTH
 							X:25
 							Width:45
@@ -206,26 +230,26 @@ Background@SETTINGS_MENU:
 							Height:25
 							Width:15
 							Align:Center
-						TextField@SCREEN_HEIGHT:
+						TextField@WINDOW_HEIGHT:
 							Id:WINDOW_HEIGHT
 							X:85
 							Width:45
 							Height:25
 							MaxLength:5
 				Label@VIDEO_DESC:
-					Y:25
+					Y:60
 					Width:PARENT_RIGHT
 					Height:25
 					Font:Tiny
 					Align:Center
-					Text:Changement de Mode/Resolution sera applique au redemarrage du jeu
+					Text:Changement de Mode/Resolution seront appliqués au redémarrage du jeu
 				Checkbox@PIXELDOUBLE_CHECKBOX:
 					Id:PIXELDOUBLE_CHECKBOX
-					Y:50
+					Y:90
 					Width:200
 					Height:20
 					Font:Regular
-					Text:Activer Doublage Pixels/Zoom
+					Text:Activer le doublement des pixels (Zoom)
 		Container@DEBUG_PANE:
 			Id:DEBUG_PANE
 			X:37
@@ -240,11 +264,11 @@ Background@SETTINGS_MENU:
 					Y:0
 					Width:300
 					Height:20
-					Text:Montre les infos de Performances
+					Text:Montre les infos de performances
 				Checkbox@CHECKUNSYNCED_CHECKBOX:
 					Id:CHECKUNSYNCED_CHECKBOX
 					X:0
 					Y:30
 					Width:300
 					Height:20
-					Text:Verifie la synchronisation du code
+					Text:Vérifie la synchronisation du code
