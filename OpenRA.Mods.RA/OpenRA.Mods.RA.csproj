@@ -247,6 +247,7 @@
     <Compile Include="Missions\MissionUtils.cs" />
     <Compile Include="Missions\MissionWidgets.cs" />
     <Compile Include="Missions\Objective.cs" />
+    <Compile Include="Missions\Soviet01ClassicScript.cs" />
     <Compile Include="Modifiers\FrozenUnderFog.cs" />
     <Compile Include="Modifiers\HiddenUnderFog.cs" />
     <Compile Include="Move\Drag.cs" />
