@@ -30,7 +30,7 @@ Background@MAINMENU_BG:
 			Y:110
 			Width:160
 			Height:25
-			Text:Creer Partie
+			Text:Créer Partie
 			Font:Bold
 		Button@MAINMENU_BUTTON_DIRECTCONNECT:
 			Id:MAINMENU_BUTTON_DIRECTCONNECT
@@ -46,7 +46,7 @@ Background@MAINMENU_BG:
 			Y:190
 			Width:160
 			Height:25
-			Text:Parametres
+			Text:Paramètres
 			Font:Bold
 		Button@MAINMENU_BUTTON_MODS:
 			Id:MAINMENU_BUTTON_MODS
@@ -256,7 +256,7 @@ Background@MUSIC_MENU:
 			Y:110
 			Width:100
 			Height:20
-			Text:Aleatoire
+			Text:Aléatoire
 		Checkbox@REPEAT:
 			Id:REPEAT
 			X:PARENT_RIGHT - 150

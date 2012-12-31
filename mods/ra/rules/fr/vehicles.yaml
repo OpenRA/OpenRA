@@ -1,102 +1,112 @@
 V2RL:
 	Tooltip:
 		Name: Lance-roquettes V2
-		Description: Artillerie Rocket longue portee.\n  Fort contre l'Infanterie et les Batiments\n  Faible contre les Tanks et l'Aviation
+		Description: Artillerie lance-missiles longue portée.\n  Fort contre l'Infanterie et les Bâtiments\n  Faible contre les Tanks et l'Aviation
 
 1TNK:
 	Tooltip:
-		Name: Tank leger
-		Description: Tank leger, bon pour explorer.\n  Fort contre les Vehicules Legers\n  Faible contre les Tanks et l'Aviation
+		Name: Tank léger
+		Description: Tank léger d'exploration.\n  Fort contre les Véhicules Legers\n  Faible contre les Tanks et l'Aviation
 
 2TNK:
 	Tooltip:
 		Name: Tank moyen
-		Description: Tank principal Allie.\n  Fort contre les Tanks et Vehicules Legers\n  Faible contre l'Infanterie et l'Aviation
+		Description: Tank principal Allié.\n  Fort contre les Tanks et Véhicules Legers\n  Faible contre l'Infanterie et l'Aviation
 
 3TNK:
 	Tooltip:
 		Name: Tank lourd
-		Description: Tank principal Soviet, arme de canon double\n  Fort contre les Tanks et Vehicules Legers\n Faible contre l'Infanterie et l'Aviation
+		Description: Tank principal Soviétique, armé d'un double canon\n  Fort contre les Tanks et Véhicules Legers\n  Faible contre l'Infanterie et l'Aviation
 
 4TNK:
 	Tooltip:
 		Name: Tank Mammouth
-		Description: Tank lourd et lent, avec missiles anti-aeriens.\n  Fort contre les Tanks et l'Aviation\n  Faible contre l'Infanterie
+		Description: Tank lourd et lent, muni de missiles anti-aériens.\n  Fort contre les Tanks et l'Aviation\n  Faible contre l'Infanterie
 
 ARTY:
 	Tooltip:
 		Name: Artillerie
-		Description: Artillerie longue portee.\n  Fort contre l'Infanterie et les Batiments\n  Faible contre les Tanks et l'Aviation
+		Description: Artillerie longue portée.\n  Fort contre l'Infanterie et les Bâtiments\n  Faible contre les Tanks et l'Aviation
 
 HARV:
 	Tooltip:
 		Name: Collecteur
-		Description: Collecte l'Or et les Gemmes.\n  |Desarme|
+		Description: Collecte l'Or et les Gemmes.\n  |Désarmé|
 
 MCV:
 	Tooltip:
 		Name: VCM
-		Description: Se deploie en Chantier de Construction.\n  |Desarme|
+		Description: Véhicule de Construction Mobile\nSe déploie en Chantier de Construction.\n  |Désarmé|
 
 JEEP:
 	Tooltip:
 		Name: Ranger
-		Description: Vehicule Anti-infanterie rapide.\n  Fort contre l'Infanterie\n  Faible contre les Tanks et l'Aviation
+		Description: Véhicule anti-infanterie rapide.\n  Fort contre l'Infanterie\n  Faible contre les Tanks et l'Aviation
 
 APC:
 	Tooltip:
-		Name: VBT
-		Description: Vehicule de transport d'Infanterie.\n  Fort contre l'Infanterie et Vehicules legers\n  Faible contre les Tanks et l'Aviation
+		Name: VBT (Véhicule Blindé de Transport)
+		Description: Véhicule de transport d'Infanterie.\n  Fort contre l'Infanterie et Véhicules légers\n  Faible contre les Tanks et l'Aviation
 
 MNLY.AP:
 	Tooltip:
-		Name: Poseur de mines AP
-		Description: Pose des mines pour tuer l'Infanterie \nennemie.\n  |Desarme|
+		Name: Poseur de mines AP (Anti-personnel)
+		Description: Pose des mines touchant l'Infanterie\nennemie.\n  |Désarmé|
 
 MNLY.AT:
 	Tooltip:
 		Name: Poseur de mines AT (Anti-Tank)
-		Description: Pose des mines pour detruire les Tanks ennemis.\n  |Desarme|
+		Description: Pose des mines détruisant les Tanks\nennemis.\n  |Désarmé|
 
 TRUK:
 	Tooltip:
-		Name: Camion de Marchandise
-		Description: Transporte l'argent aux autres joueurs.\n  |Desarme|
+		Name: Camion de ravitaillement
+		Description: Transporte de l'argent aux autres joueurs.\n  |Désarmé|
 
 1TNK.Husk:
 	Tooltip:
-		Name: Husk (Light Tank)
+		Name: Husk (Tank léger)
 
 2TNK.Husk:
 	Tooltip:
-		Name: Husk (Medium Tank)
+		Name: Husk (Tank moyen)
 
 3TNK.Husk:
 	Tooltip:
-		Name: Husk (Heavy Tank)
+		Name: Husk (Tank lourd)
 
 4TNK.Husk:
 	Tooltip:
-		Name: Husk (Mammoth Tank)
+		Name: Husk (Tank Mammouth)
 
 HARV.FullHusk:
 	Tooltip:
-		Name: Husk (Harvester)
+		Name: Husk (Collecteur)
 
 HARV.EmptyHusk:
 	Tooltip:
-		Name: Husk (Harvester)
+		Name: Husk (Collecteur)
 
 MCV.Husk:
 	Tooltip:
-		Name: Husk (MCV)
+		Name: Husk (VCM)
 
 TTNK:
 	Tooltip:
 		Name: Tank Tesla
-		Description: Tank avec une Bobine Tesla.\n Fort contre l'Infanterie.\n Faible contre les Tanks
+		Description: Tank équipé d'une bobine Tesla.\n  Fort contre l'Infanterie\n  Faible contre les Tanks
 
 FTRK:
 	Tooltip:
-		Name: Camion Flak
-		Description: Camion Flak, bon pour explorer.\n  Fort contre les Vehicules legers\net l'Aviation, Faible contre les Tanks 
+		Name: Camion anti-aérien
+		Description: Camion anti-aérien, bon pour l'exploration.\n  Fort contre les Véhicules légers et l'Aviation\n  Faible contre les Tanks 
+
+DTRK:
+	Tooltip:
+		Name: Camion de démolition
+		Description: Camion bourré d'explosifs.\n  Fort contre tout\n  Faible contre tout
+
+CTNK:
+	Tooltip:
+		Name: Chrono Tank
+		Description: Peut se téléporter sur une courte distance.\n  Fort contre les Véhicules et les Bâtiments\n  Faible contre les Tanks

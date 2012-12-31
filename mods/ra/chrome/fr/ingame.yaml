@@ -2,7 +2,7 @@ Container@INGAME_ROOT:
 	Id:INGAME_ROOT
 	Logic:IngameChromeLogic
 	Children:
-		WorldInteractionController:
+		WorldInteractionController@INTERACTION_CONTROLLER:
 			Id:INTERACTION_CONTROLLER
 			X:0
 			Y:0
@@ -62,12 +62,17 @@ Container@INGAME_ROOT:
 			Id:INGAME_POWERS_BIN
 			X:0
 			Y:25
+			ReadyText: Prêt
+			HoldText: En pause
 		BuildPalette@INGAME_BUILD_PALETTE:
 			Id:INGAME_BUILD_PALETTE
 			X:WINDOW_RIGHT - 250
 			Y:280
 			Width:250
 			Height:500
+			ReadyText: Prêt
+			HoldText: En pause
+			RequiresText: Requiert
 		Button@INGAME_OPTIONS_BUTTON:
 			Id:INGAME_OPTIONS_BUTTON
 			X:0
@@ -85,13 +90,20 @@ Container@INGAME_ROOT:
 			Height:25
 			Text:Diplomatie
 			Font:Bold
-		Button@INGAME_DEVELOPERMODE_BUTTON:
-			Id:INGAME_DEVELOPERMODE_BUTTON
+		Button@CHEATS_BUTTON:
 			X:324
 			Y:0
 			Width:160
 			Height:25
-			Text:Mode Developpeur
+			Text:Codes
+			Visible:false
+			Font:Bold
+		Button@OBJECTIVES_BUTTON:
+			X:486
+			Y:0
+			Width:160
+			Height:25
+			Text:Objectifs
 			Visible:false
 			Font:Bold
 		RadarBin@INGAME_RADAR_BIN:
@@ -115,7 +127,7 @@ Container@INGAME_ROOT:
 					Height:30
 					Image:sell
 					Description:Vendre
-					LongDesc:Vendre un batiment, permet la recuperation d'une partie de leur cout de \nproduction
+					LongDesc:Vend un bâtiment, permet de récupérer d'une partie de son coût de production
 				OrderButton@POWER_DOWN:
 					Id:POWER_DOWN
 					Logic:OrderButtonsChromeLogic
@@ -124,8 +136,8 @@ Container@INGAME_ROOT:
 					Width:30
 					Height:30
 					Image:power
-					Description:Couper Energie
-					LongDesc:Desactive les structures innutiles pour que leur \nenergie soit utilisee ailleurs.
+					Description:Couper le courant
+					LongDesc:Désactive les structures inutiles pour économiser l'énergie
 				OrderButton@REPAIR:
 					Id:REPAIR
 					Logic:OrderButtonsChromeLogic
@@ -134,8 +146,8 @@ Container@INGAME_ROOT:
 					Width:30
 					Height:30
 					Image:repair
-					Description:Reparrer
-					LongDesc:Reparre les batiments endomages
+					Description:Réparer
+					LongDesc:Répare les bâtiments endommagés
 		WorldTooltip:
 		Background@INGAME_OPTIONS_BG:
 			Id:INGAME_OPTIONS_BG
@@ -168,7 +180,7 @@ Container@INGAME_ROOT:
 					Y:100
 					Width:160
 					Height:25
-					Text:Parametres
+					Text:Paramètres
 					Font:Bold
 				Button@MUSIC:
 					Id:MUSIC
@@ -228,86 +240,6 @@ Container@INGAME_ROOT:
 			Width: 760
 			Height: 30
 			UseContrast: yes
-		Background@DEVELOPERMODE_BG:
-			Id:DEVELOPERMODE_BG
-			Logic:DeveloperModeLogic
-			X:(WINDOW_RIGHT - WIDTH)/2
-			Y:(WINDOW_BOTTOM - HEIGHT)/2
-			Width:350
-			Height:370
-			Visible:false
-			Children:
-				Label@LABEL_TITLE:
-					Id:LABEL_TITLE
-					X:(PARENT_RIGHT - WIDTH)/2
-					Y:20
-					Width:250
-					Height:25
-					Text:Mode developpeur
-					Align:Center
-				Checkbox@CHECKBOX_SHROUD
-					Id:CHECKBOX_SHROUD
-					X:30
-					Y:50
-					Height:20
-					Width:PARENT_RIGHT - 30
-					Text:Desactiver le voile
-				Button@GIVE_EXPLORATION
-					Id:GIVE_EXPLORATION
-					X:30
-					Y:80
-					Width:200
-					Height:20
-					Text: Donner l'exploration
-				Checkbox@CHECKBOX_PATHDEBUG:
-					Id:CHECKBOX_PATHDEBUG
-					X:30
-					Y:110
-					Width:PARENT_RIGHT - 30
-					Height:20
-					Text:Montrer le chemin des unites
-				Button@GIVE_CASH
-					Id:GIVE_CASH
-					X:30
-					Y:140
-					Width:200
-					Height:20
-					Text: Donner de l'argent
-				Checkbox@INSTANT_BUILD
-					Id:INSTANT_BUILD
-					X:30
-					Y:170
-					Width:PARENT_RIGHT - 30
-					Height:20
-					Text:Construction instantanee
-				Checkbox@INSTANT_CHARGE
-					Id:INSTANT_CHARGE
-					X:30
-					Y:200
-					Width:PARENT_RIGHT - 30
-					Height:20
-					Text:Electricite instantanee
-				Checkbox@ENABLE_TECH
-					Id:ENABLE_TECH
-					X:30
-					Y:230
-					Width:PARENT_RIGHT - 30
-					Height:20
-					Text:Construire tout
-				Checkbox@UNLIMITED_POWER
-					Id:UNLIMITED_POWER
-					X:30
-					Y:260
-					Width:PARENT_RIGHT - 30
-					Height:20
-					Text:Electricite illimitee
-				Checkbox@BUILD_ANYWHERE
-					Id:BUILD_ANYWHERE
-					X:30
-					Y:290
-					Width:PARENT_RIGHT - 30
-					Height:20
-					Text:Construire n'importe ou
 		Background@PERF_BG:
 			ClickThrough:true
 			Id:PERF_BG
@@ -335,7 +267,7 @@ Container@OBSERVER_ROOT:
 	Visible:true
 	Logic:IngameObserverChromeLogic
 	Children:
-		WorldInteractionController:
+		WorldInteractionController@INTERACTION_CONTROLLER:
 			X:0
 			Y:0
 			Width:WINDOW_RIGHT
@@ -425,7 +357,7 @@ Container@OBSERVER_ROOT:
 					Y:100
 					Width:160
 					Height:25
-					Text:Parametres
+					Text:Paramètres
 					Font:Bold
 				Button@MUSIC:
 					Id:MUSIC
@@ -493,7 +425,7 @@ Background@FMVPLAYER:
 	Height:WINDOW_BOTTOM
 	Background:dialog4
 	Children:
-		VqaPlayer:
+		VqaPlayer@PLAYER:
 			Id:PLAYER
 			X:0
 			Y:0

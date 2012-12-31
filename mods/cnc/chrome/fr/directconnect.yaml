@@ -1,0 +1,57 @@
+Container@DIRECTCONNECT_PANEL:
+	Logic:DirectConnectLogic
+	X:(WINDOW_RIGHT - WIDTH)/2
+	Y:(WINDOW_BOTTOM - 90)/2
+	Width:370
+	Height:125
+	Children:
+		Label@TITLE:
+			Width:PARENT_RIGHT
+			Y:0-25
+			Font:BigBold
+			Contrast:true
+			Align:Center
+			Text:Se connecter au serveur
+		Background@bg:
+			Width:370
+			Height:90
+			Background:panel-black
+			Children:
+				Label@ADDRESS_LABEL:
+					X:50
+					Y:14
+					Width:95
+					Height:25
+					Align:Right
+					Text:Adresse:
+				TextField@IP:
+					X:150
+					Y:15
+					Width:200
+					Height:25
+				Label@ADDRESS_LABEL:
+					X:50
+					Y:49
+					Width:95
+					Height:25
+					Align:Right
+					Text:Port:
+				TextField@PORT:
+					X:150
+					Y:50
+					Width:200
+					Height:25
+		Button@BACK_BUTTON:
+			Key:escape
+			X:0
+			Y:89
+			Width:140
+			Height:35
+			Text:Retour
+		Button@JOIN_BUTTON:
+			Key:return
+			X:230
+			Y:89
+			Width:140
+			Height:35
+			Text:Se connecter

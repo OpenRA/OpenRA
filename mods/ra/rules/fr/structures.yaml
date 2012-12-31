@@ -1,94 +1,150 @@
 MSLO:
 	Tooltip:
 		Name: Silo de Missiles
-		Description: Lance un missile nucleaire devastateur.\n  Fort contre l'Infanterie, les Batiments\n  Faible contre les Tanks\n  Abilite speciale: Missile Nucleaire
+		Description: Lance un missile nucléaire dévastateur.\n  Fort contre l'Infanterie, les Bâtiments\n  Faible contre les Tanks\n  Capacité spéciale: Missile Nucléaire
 	NukePower:
 		Description: Bombe Atomique
-		LongDesc: Lance un missile nucleaire a l'endroit designe.
+		LongDesc: Lance un missile nucléaire à l'endroit désigné.
 
 GAP:
 	Tooltip:
-		Name: Generateur d'Ombre
-		Description: Regenere le brouillard de guerre a proximite, \nobscurcit la zone.\n  |Desarme|
+		Name: Générateur d'Ombre
+		Description: Génère un brouillard de guerre à proximité,\nobscurcit la zone.\n  |Désarmé|
 
 SPEN:
 	Tooltip:
 		Name: Port sous-marin
-		Description: Produit et repare les sous-marins et les \ntransports
+		Description: Produit et répare les sous-marins et les bateaux de transport
 
 SYRD:
 	Tooltip:
 		Name: Chantier naval
-		Description: Produit et repare les bateaux
+		Description: Produit et répare les bateaux
 
 IRON:
 	Tooltip:
 		Name: Rideau de fer
-		Description: Rend un groupe d'unites invulnerables pour \nun court instant.\n  Abilite Speciale: Invulnerabilite
+		Description: Rend un groupe d'unités invulnérables pour\nun court instant.\n  Capacité spéciale: Invulnérabilité
 	IronCurtainPower:
-		Description: Invulnerabilite
-		LongDesc: Rend un groupe d'unites invulnerables\npour 10 secondes.
+		Description: Invulnérabilité
+		LongDesc: Rend un groupe d'unités invulnérable pendant 15 secondes.
 
 PDOX:
 	Tooltip:
-		Name: Chronosphere
-		Description: Teleporte une unite d'un endroit a un autre,\n pour une duree limitee.\n  Abilite Speciale: Chronotransfert
+		Name: Chronosphère
+		Description: Téléporte une unite d'un endroit à un autre,\npour une durée limitée.\n  Capacité spéciale: Chronotransfert
 	ChronoshiftPower:
 		Description: Chronotransfert
-		LongDesc: Teleporte un groupe de vehicules sur\nla carte pour 30 secondes.
+		LongDesc: Téléporte un groupe de véhicules sur la carte pour 30 secondes.
 
 TSLA:
 	Tooltip:
 		Name: Bobine de Tesla
-		Description: Defense de base avancee. Requiert de \nl'electricite pour fonctionner.\n  Fort contre les Tanks, l'Infanterie\n  Faible contre l'Aviation
+		Description: Défense avancée. Requiert de l'électricité pour fonctionner.\n  Fort contre les Tanks, l'Infanterie\n  Faible contre l'Aviation
 
 AGUN:
 	Tooltip:
-		Name: AA Gun
-		Description: Canon anti-aerien.\n  Fort contre l'Aviation\n  Faible contre l'Infanterie et les Tanks
+		Name: DCA
+		Description: Canon anti-aérien.\n  Fort contre l'Aviation\n  Faible contre l'Infanterie et les Tanks
 
 DOME:
 	Tooltip:
 		Name: Dome Radar
-		Description: Donne une vue aerienne du champ de \nbataille.\n  Requiert de l'electicite pour fonctionner.
+		Description: Donne une vue aérienne du champ\nde bataille.\n  Requiert de l'électicité pour fonctionner.
 
 PBOX:
 	Tooltip:
-		Name: Bunker
-		Description: Structure defensive basique.\n  Fort contre l'Infanterie et les Vehicules \nLegers\n  Faible contre les Tanks et l'Aviation
+		Name: Bunker (Désarmé)
+
+PBOX.E1:
+	Tooltip:
+		Name: Bunker (Mitrailleuse)
+		Description: Structure defensive basique.\n  Fort contre l'Infanterie et les\nVéhicules Légers\n  Faible contre les Tanks et l'Aviation
+
+#PBOX.E2:
+#	Tooltip:
+#		Name: Bunker (Grenades)
+
+PBOX.E3:
+	Tooltip:
+		Name: Bunker (Missiles)
+
+PBOX.E4:
+	Tooltip:
+		Name: Bunker (Lance-flammes)
+
+PBOX.E7:
+	Tooltip:
+		Name: Bunker (Tanya)
+
+PBOX.SHOK:
+	Tooltip:
+		Name: Bunker (Tesla)
+
+PBOX.SNIPER:
+	Tooltip:
+		Name: Bunker (Sniper)
 
 HBOX:
 	Tooltip:
-		Name: Bunker Camoufle
-		Description: Structure defensive invisible.\n  Fort contre l'Infanterie et les Vehicules \nLegers\n  Faible contre les Tanks et l'Aviation
+		Name: Bunker camouflé (Désarmé)
+
+HBOX.E1:
+	Tooltip:
+		Name: Bunker camouflé (Mitrailleuse)
+		Description: Structure defensive invisible.\n  Fort contre l'Infanterie et les\nVéhicules Légers\n  Faible contre les Tanks et l'Aviation
+
+#HBOX.E2:
+#	Tooltip:
+#		Name: Bunker camouflé (Grenades)
+
+HBOX.E3:
+	Tooltip:
+		Name: Bunker camouflé (Missiles)
+
+HBOX.E4:
+	Tooltip:
+		Name: Bunker camouflé (Lance-flammes)
+
+HBOX.E7:
+	Tooltip:
+		Name: Bunker camouflé (Tanya)
+
+HBOX.SHOK:
+	Tooltip:
+		Name: Bunker camouflé (Tesla)
+
+HBOX.SNIPER:
+	Tooltip:
+		Name: Bunker camouflé (Sniper)
 
 GUN:
 	Tooltip:
 		Name: Tourelle
-		Description: Defense de base anti-blindes.\n  Fort contre les Tanks\n  Faible contre l'Infanterie et l'Aviation
+		Description: Defense de base anti-blindés.\n  Fort contre les Tanks\n  Faible contre l'Infanterie et l'Aviation
 
 FTUR:
 	Tooltip:
 		Name: Tour lance-flammes
-		Description: Defense de base anti-infanterie.\n  Fort contre l'Infanterie\n  Faible contre l'Aviation
+		Description: Défense de base anti-infanterie.\n  Fort contre l'Infanterie\n  Faible contre l'Aviation
 
 SAM:
 	Tooltip:
 		Name: Missiles SAM
-		Description: Defense de base anti-aviation.\n  Fort contre l'Aviation\n  Faible contre l'Infanterie et les Tanks
+		Description: Défense anti-aérienne de base.\n  Fort contre l'Aviation\n  Faible contre l'Infanterie et les Tanks
 
 ATEK:
 	Tooltip:
-		Name: Centre Technique Allie
-		Description: Permet la production d'unites avancees \nalliees.\n  Abilite Speciale: Satellite GPS 
+		Name: Centre Technique Allié
+		Description: Permet la production d'unités avancées\nalliée.\n  Capacité spéciale: Satellite GPS 
 	GpsPower:
 		Description: Satellite GPS
-		LongDesc: Revele la carte entiere
+		LongDesc: Révèle toute la carte
 
 WEAP:
 	Tooltip:
 		Name: Usine d'Armement
-		Description: Produit les tanks et vehicules legers.
+		Description: Produit les tanks et véhicules légers.
 
 FACT:
 	Tooltip:
@@ -101,54 +157,58 @@ PROC:
 
 SILO:
 	Tooltip:
-		Name: Silo de minerai
-		Description: Stocke le minerai recolte
+		Name: Silo à minerai
+		Description: Stocke le minerai récolté
 
 HPAD:
 	Tooltip:
-		Name: Heliport
-		Description: Produit et recharge les helicopteres
+		Name: Héliport
+		Description: Produit et recharge les hélicoptères
 
 AFLD:
 	Tooltip:
-		Name: Piste d'atterissage
-		Description: Permet la construction d'avions et le \nsupport aerien\n  Abilite Speciale: Parachutistes\n  Abilite Speciale: Avion Espion
+		Name: Piste d'atterrissage
+		Description: Permet la construction d'avions et le support aérien\n  Capacité spéciale: Parachutistes\n  Capacité spéciale: Avion Espion
 	SpyPlanePower:
 		Description: Avion Espion
-		LongDesc: Revele une zone de la carte.
+		LongDesc: Révèle une zone de la carte.
 	ParatroopersPower:
 		Description: Parachutistes
-		LongDesc: Un avion parachute une escouade de mitrailleurs \nn'importe ou sur la carte
+		LongDesc: Un avion parachute une escouade de mitrailleurs n'importe ou sur la carte
 	
 POWR:
 	Tooltip:
-		Name: Centrale electrique
-		Description: Procure de l'electricite aux autres structures
+		Name: Centrale électrique
+		Description: Procure de l'électricité pour les autres structures
 
 APWR:
 	Tooltip:
-		Name: Centrale electrique avancee
-		Description: Procure plus d'electricite, moins chere que les\n centrales electriques standards
+		Name: Centrale électrique avancée
+		Description: Procure plus d'électricité, moins chère que\nles centrales électriques standards
 
 STEK:
 	Tooltip:
 		Name: Centre Technique Soviet
-		Description: Permet la production d'unites avancees \nsoviets.
+		Description: Permet la production d'unités avancées soviets.
 
 BARR:
 	Tooltip:
 		Name: Caserne Soviet
-		Description: Produit l'infanterie Sovietique
+		Description: Produit l'infanterie soviétique
 
 TENT:
 	Tooltip:
-		Name: Caserne Alliee
-		Description: Produit l'infanterie Alliee
+		Name: Caserne Alliée
+		Description: Produit l'infanterie alliée
+
+KENN:
+	Tooltip:
+		Name: Niche
 
 FIX:
 	Tooltip:
 		Name: Centre de service
-		Description: Repare les vehicules, recharge les poseurs \nde mines AT/AP, et permet la construction\n de bases additionnelles.
+		Description: Répare les véhicules, recharge les poseurs\nde mines AT/AP, et permet la construction\nde bases additionnelles.
 
 FACF:
 #	Buildable:
@@ -161,8 +221,6 @@ WEAF:
 #		LongDesc: Ressemble a une Usine d'armement.
 
 SYRF:
-	Tooltip:
-		Name: Chantier naval leurre
 #	Buildable:
 #		Description: Chantier naval leurre
 #		LongDesc: Ressemble a un Chantier naval.
@@ -176,15 +234,15 @@ DOMF:
 
 SBAG:
 	Tooltip:
-		Name: Barriere de sacs de sable
-		Description: Stoppe l'infanterie et bloque les tirs ennemis.\nPeut etre ecrase par les tanks
+		Name: Barrière de sacs de sable
+		Description: Stoppe l'infanterie et bloque les tirs ennemis.\nPeut être écrasé par les tanks
 
 FENC:
 	Tooltip:
-		Name: Cloture barbelee
-		Description: Stoppe l'infanterie et bloque les tirs ennemis.\nPeut etre ecrase par les tanks
+		Name: Cloture barbelée
+		Description: Stoppe l'infanterie et bloque les tirs ennemis.\nPeut être écrasé par les tanks
 
 BRIK:
 	Tooltip:
-		Name: Mur en beton
+		Name: Mur en béton
 		Description: Stoppe les unites et bloque les tirs ennemis.

@@ -12,7 +12,7 @@ Background@CREATESERVER_BG:
 			Y:20
 			Width:400
 			Height:25
-			Text:Creer un Serveur
+			Text:Créer un Serveur
 			Align:Center
 			Font:Bold
 		Label@SERVER_NAME_LABEL:
@@ -54,7 +54,7 @@ Background@CREATESERVER_BG:
 			Width:95
 			Height:25
 			Align: Right
-			Text:Port d'ecoute:
+			Text:Port d'écoute:
 		TextField@LISTEN_PORT:
 			Id:LISTEN_PORT
 			X:310
@@ -68,14 +68,20 @@ Background@CREATESERVER_BG:
 			Y:130
 			Width:300
 			Height:20
-			Text:Partie en Ligne
+			Text:Publier la partie
+		Checkbox@UPNP_CHECKBOX:
+			X:165
+			Y:165
+			Width:300
+			Height:20
+			Text:Activer la translation UPnP
 		Button@CREATE_BUTTON:
 			Id:CREATE_BUTTON
 			X:130
 			Y:PARENT_BOTTOM - 45
 			Width:120
 			Height:25
-			Text:Creer
+			Text:Créer
 			Font:Bold
 			Key:return
 		Button@BACK_BUTTON:
