@@ -23,8 +23,6 @@ MSLO:
 	NukePower:
 		Image: atomicon
 		ChargeTime: 540
-		Description: Atom Bomb
-		LongDesc: Launches a nuclear missile at a target location.
 		BeginChargeSound: aprep1.aud
 		EndChargeSound: aready1.aud
 		SelectTargetSound: slcttgt1.aud
@@ -940,8 +938,6 @@ AFLD:
 	ParatroopersPower:
 		Image: pinficon
 		ChargeTime: 360
-		Description: Paratroopers
-		LongDesc: A Badger drops a squad of Riflemen \nanywhere on the map
 		Prerequisites: AFLD
 		DropItems: E1,E1,E1,E3,E3
 		SelectTargetSound: slcttgt1.aud
@@ -1139,8 +1135,6 @@ FACF:
 #		BuildPaletteOrder: 900
 #		Owner: allies
 #		Cost: 50
-#		Description: Fake Construction Yard
-#		LongDesc: Looks like a Construction Yard.
 #		Hotkey: c
 	Building:
 		Power: -2
@@ -1165,8 +1159,6 @@ WEAF:
 #		Prerequisites: proc
 #		Owner: allies
 #		Cost: 50
-#		Description: Fake War Factory
-#		LongDesc: Looks like a War Factory.
 #		Hotkey: x
 	Building:
 		Power: -2
@@ -1337,21 +1329,9 @@ WOOD:
 
 # custom prerequisites:
 BARRACKS:
-	Tooltip:
-		Name: Infantry Production
-		Description: Infantry Production
 
 VEHICLEPRODUCTION:
-	Tooltip:
-		Name: Vehicle Production
-		Description: Vehicle Production
 
 TECHCENTER:
-	Tooltip:
-		Name: Tech Center
-		Description: Tech Center
 
 ANYPOWER:
-	Tooltip:
-		Name: Power Plant
-		Description: Power Plant

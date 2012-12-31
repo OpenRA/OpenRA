@@ -246,3 +246,24 @@ BRIK:
 	Tooltip:
 		Name: Mur en béton
 		Description: Stoppe les unites et bloque les tirs ennemis.
+
+# custom prerequisites:
+BARRACKS:
+	Tooltip:
+		Name: Production d'infanterie
+		Description: Production d'infanterie
+
+VEHICLEPRODUCTION:
+	Tooltip:
+		Name: Production de véhicules
+		Description: Production de véhicules
+
+TECHCENTER:
+	Tooltip:
+		Name: Centre Technique
+		Description: Centre Technique
+
+ANYPOWER:
+	Tooltip:
+		Name: Centrale électrique
+		Description: Centrale électrique
