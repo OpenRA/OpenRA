@@ -1,0 +1,80 @@
+Container@CHEATS_PANEL:
+	Logic:CheatsLogic
+	X:(WINDOW_RIGHT - WIDTH)/2
+	Y:(WINDOW_BOTTOM - 110)/2
+	Width:590
+	Height:145
+	Children:
+		Label@TITLE:
+			Width:590
+			Y:0-25
+			Font:BigBold
+			Contrast:true
+			Align:Center
+			Text:Codes
+		Background@bg:
+			Width:590
+			Height:110
+			Background:panel-black
+			Children:
+				Checkbox@INSTANT_BUILD:
+					X:15
+					Y:15
+					Width:200
+					Height:20
+					Text:Construction instantannée
+				Checkbox@ENABLE_TECH:
+					X:15
+					Y:45
+					Width:200
+					Height:20
+					Text:Construire tout
+				Checkbox@BUILD_ANYWHERE:
+					X:15
+					Y:75
+					Width:200
+					Height:20
+					Text:Construire partout
+				Checkbox@UNLIMITED_POWER:
+					X:200
+					Y:15
+					Width:200
+					Height:20
+					Text:Énergie illimité
+				Checkbox@INSTANT_CHARGE:
+					X:200
+					Y:45
+					Width:200
+					Height:20
+					Text:Chargement instantannée de pouvoirs
+				Checkbox@DISABLE_SHROUD:
+					X:400
+					Y:15
+					Height:20
+					Width:200
+					Text:Désactiver le brouillard
+				Checkbox@SHOW_UNIT_PATHS:
+					X:400
+					Y:45
+					Width:200
+					Height:20
+					Text:Montrer le trajet des unités
+		Button@CLOSE:
+			Key:escape
+			X:0
+			Y:109
+			Width:140
+			Height:35
+			Text:Fermer
+		Button@GIVE_CASH:
+			X:300
+			Y:109
+			Width:140
+			Height:35
+			Text:Donner de l'argent
+		Button@GIVE_EXPLORATION:
+			X:450
+			Y:109
+			Width:140
+			Height:35
+			Text:Explorer tout
