@@ -260,6 +260,8 @@ MISS:
 		HP: 400
 	Armor:
 		Type: Wood
+	Tooltip:
+		Name: Technology Center
 	Bib:
 
 BIO:
