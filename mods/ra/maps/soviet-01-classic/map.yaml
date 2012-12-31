@@ -575,7 +575,7 @@ Actors:
 		Owner: France
 		Health: 0.4140625
 		Facing: 0
-	Actor122: v01
+	Church: v01
 		Location: 40,63
 		Owner: France
 		Health: 0.5390625
@@ -585,7 +585,7 @@ Actors:
 		Owner: France
 		Health: 0.6640625
 		Facing: 96
-	StartJeep: jeep
+	StartJeep: jeep.explodes
 		Location: 44,76
 		Owner: France
 		Health: 0.5195313
@@ -759,10 +759,10 @@ Actors:
 	waypoint15: waypoint
 		Location: 58,54
 		Owner: Neutral
-	waypoint16: waypoint
+	StartJeepMovePoint: waypoint
 		Location: 47,66
 		Owner: Neutral
-	StartJeepMovePoint: waypoint
+	waypoint17: waypoint
 		Location: 49,68
 		Owner: Neutral
 	waypoint18: waypoint
@@ -771,7 +771,7 @@ Actors:
 	waypoint19: waypoint
 		Location: 55,64
 		Owner: Neutral
-	waypoint20: waypoint
+	ParadropEntryPoint1: waypoint
 		Location: 67,65
 		Owner: Neutral
 	waypoint21: waypoint
@@ -816,13 +816,13 @@ Actors:
 	waypoint82: waypoint
 		Location: 44,77
 		Owner: Neutral
-	waypoint84: waypoint
+	ParadropEntryPoint2: waypoint
 		Location: 32,70
 		Owner: Neutral
-	waypoint94: waypoint
+	ParadropPoint2: waypoint
 		Location: 47,65
 		Owner: Neutral
-	waypoint95: waypoint
+	ParadropPoint1: waypoint
 		Location: 47,67
 		Owner: Neutral
 	waypoint96: waypoint
@@ -910,6 +910,13 @@ Rules:
 	YAK:
 		Plane:
 			RearmBuildings: afld.noproduction
+	JEEP.Explodes:
+		Inherits: JEEP
+		RenderUnitTurreted:
+			Image: JEEP
+		Tooltip:
+			Icon: jeepicon
+		Explodes:
 
 Sequences:
 

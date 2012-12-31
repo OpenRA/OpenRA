@@ -15,7 +15,6 @@ using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Air;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Move;
-using OpenRA.Network;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 
@@ -46,11 +45,22 @@ namespace OpenRA.Mods.RA.Missions
 
 		Actor startJeep;
 		Actor startJeepMovePoint;
+		Actor church;
+		bool startJeepParadropped;
+		bool churchParadropped;
+
+		Actor paradropPoint1;
+		Actor paradropEntryPoint1;
+		Actor paradropPoint2;
+		Actor paradropEntryPoint2;
 
 		Actor airfield1;
 		Actor airfield2;
 		Actor airfield3;
 		Actor[] airfields;
+
+		const string BadgerName = "badr";
+		static readonly string[] Reinforcements = { "e1", "e1", "e1", "e2", "e2" };
 
 		void MissionFailed()
 		{
@@ -89,6 +99,18 @@ namespace OpenRA.Mods.RA.Missions
 				objectives[DestroyID].Status = ObjectiveStatus.Failed;
 				MissionFailed();
 			}
+			if (!startJeepParadropped && startJeep.IsDead())
+			{
+				Sound.Play("reinfor1.aud");
+				MissionUtils.Paradrop(world, ussr, Reinforcements, paradropEntryPoint1.Location, paradropPoint1.Location);
+				startJeepParadropped = true;
+			}
+			if (!churchParadropped && church.IsDead())
+			{
+				Sound.Play("reinfor1.aud");
+				MissionUtils.Paradrop(world, ussr, Reinforcements, paradropEntryPoint2.Location, paradropPoint2.Location);
+				churchParadropped = true;
+			}
 		}
 
 		void LandYaks()
@@ -111,7 +133,8 @@ namespace OpenRA.Mods.RA.Missions
 
 		void MoveJeep()
 		{
-			startJeep.QueueActivity(new MoveAdjacentTo(Target.FromActor(startJeepMovePoint)));
+			startJeep.QueueActivity(new Move.Move(startJeepMovePoint.Location, 0));
+			startJeep.QueueActivity(new Turn(128));
 			startJeep.QueueActivity(new CallFunc(() =>
 			{
 				var bridge = world.Actors
@@ -132,6 +155,11 @@ namespace OpenRA.Mods.RA.Missions
 			var actors = w.WorldActor.Trait<SpawnMapActors>().Actors;
 			startJeep = actors["StartJeep"];
 			startJeepMovePoint = actors["StartJeepMovePoint"];
+			paradropPoint1 = actors["ParadropPoint1"];
+			paradropEntryPoint1 = actors["ParadropEntryPoint1"];
+			paradropPoint2 = actors["ParadropPoint2"];
+			paradropEntryPoint2 = actors["ParadropEntryPoint2"];
+			church = actors["Church"];
 			airfield1 = actors["Airfield1"];
 			airfield2 = actors["Airfield2"];
 			airfield3 = actors["Airfield3"];
