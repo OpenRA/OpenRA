@@ -569,8 +569,7 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				Game.MoveViewport(allies2BasePoint.Location.ToFloat2());
 			}
-			PlayMusic();
-			Game.ConnectionStateChanged += StopMusic;
+			MissionUtils.PlayMissionMusic();
 		}
 
 		void SetupAlliedBase(Dictionary<string, Actor> actors)
@@ -587,25 +586,6 @@ namespace OpenRA.Mods.RA.Missions
 					new OwnerInit(allies2)
 				});
 			});
-		}
-
-		void PlayMusic()
-		{
-			if (!Rules.InstalledMusic.Any())
-			{
-				return;
-			}
-			var track = Rules.InstalledMusic.Random(Game.CosmeticRandom);
-			Sound.PlayMusicThen(track.Value, PlayMusic);
-		}
-
-		void StopMusic(OrderManager orderManager)
-		{
-			if (!orderManager.GameStarted)
-			{
-				Sound.StopMusic();
-				Game.ConnectionStateChanged -= StopMusic;
-			}
 		}
 	}
 }

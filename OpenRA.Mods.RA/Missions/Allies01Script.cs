@@ -324,35 +324,15 @@ namespace OpenRA.Mods.RA.Missions
 			alliesRes.TakeCash(alliesRes.Cash);
 			alliesRes.TakeOre(alliesRes.Ore);
 			Game.MoveViewport(insertionLZ.Location.ToFloat2());
-			Game.ConnectionStateChanged += StopMusic;
 			Media.PlayFMVFullscreen(w, "ally1.vqa", () =>
 			{
 				Media.PlayFMVFullscreen(w, "landing.vqa", () =>
 				{
 					InsertTanyaAtLZ();
 					SendPatrol();
-					PlayMusic();
+					MissionUtils.PlayMissionMusic();
 				});
 			});
-		}
-
-		void PlayMusic()
-		{
-			if (!Rules.InstalledMusic.Any())
-			{
-				return;
-			}
-			var track = Rules.InstalledMusic.Random(Game.CosmeticRandom);
-			Sound.PlayMusicThen(track.Value, PlayMusic);
-		}
-
-		void StopMusic(OrderManager orderManager)
-		{
-			if (!orderManager.GameStarted)
-			{
-				Sound.StopMusic();
-				Game.ConnectionStateChanged -= StopMusic;
-			}
 		}
 	}
 }

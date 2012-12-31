@@ -472,28 +472,8 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				Game.MoveViewport(allies2EntryPoint.Location.ToFloat2());
 			}
-			PlayMusic();
 			OnObjectivesUpdated(false);
-			Game.ConnectionStateChanged += StopMusic;
-		}
-
-		void PlayMusic()
-		{
-			if (!Rules.InstalledMusic.Any())
-			{
-				return;
-			}
-			var track = Rules.InstalledMusic.Random(Game.CosmeticRandom);
-			Sound.PlayMusicThen(track.Value, PlayMusic);
-		}
-
-		void StopMusic(OrderManager orderManager)
-		{
-			if (!orderManager.GameStarted)
-			{
-				Sound.StopMusic();
-				Game.ConnectionStateChanged -= StopMusic;
-			}
+			MissionUtils.PlayMissionMusic();
 		}
 	}
 }

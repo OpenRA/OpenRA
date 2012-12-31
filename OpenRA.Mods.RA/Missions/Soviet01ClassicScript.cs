@@ -135,32 +135,12 @@ namespace OpenRA.Mods.RA.Missions
 			airfield3 = actors["Airfield3"];
 			airfields = new[] { airfield1, airfield2, airfield3 };
 			Game.MoveViewport(startJeep.Location.ToFloat2());
-			Game.ConnectionStateChanged += StopMusic;
 			Media.PlayFMVFullscreen(w, "soviet1.vqa", () =>
 			{
-				PlayMusic();
+				MissionUtils.PlayMissionMusic();
 				LandYaks();
 				MoveJeep();
 			});
-		}
-
-		void PlayMusic()
-		{
-			if (!Rules.InstalledMusic.Any())
-			{
-				return;
-			}
-			var track = Rules.InstalledMusic.Random(Game.CosmeticRandom);
-			Sound.PlayMusicThen(track.Value, PlayMusic);
-		}
-
-		void StopMusic(OrderManager orderManager)
-		{
-			if (!orderManager.GameStarted)
-			{
-				Sound.StopMusic();
-				Game.ConnectionStateChanged -= StopMusic;
-			}
 		}
 	}
 }

@@ -34,11 +34,12 @@ namespace OpenRA.Mods.RA.Missions
 		Dictionary<int, Objective> objectives = new Dictionary<int, Objective>
 		{
 			{ InfiltrateID, new Objective(ObjectiveType.Primary, "", ObjectiveStatus.InProgress) },
-			{ DestroyID, new Objective(ObjectiveType.Primary, "Secure the laboratory and destroy the rest of the Soviet base. Ensure that the laboratory is not destroyed.", ObjectiveStatus.Inactive) }
+			{ DestroyID, new Objective(ObjectiveType.Primary, Destroy, ObjectiveStatus.Inactive) }
 		};
 
 		const int InfiltrateID = 0;
 		const int DestroyID = 1;
+		const string Destroy = "Secure the laboratory and destroy the rest of the Soviet base. Ensure that the laboratory is not destroyed.";
 		const string Infiltrate = "The Soviets are currently developing a new defensive system named the \"Iron Curtain\" at their main research laboratory. Get our {0} into the laboratory undetected.";
 
 		Actor lstEntryPoint;
@@ -415,27 +416,7 @@ namespace OpenRA.Mods.RA.Missions
 			OnObjectivesUpdated(false);
 			SetupSubStances();
 			Game.MoveViewport(lstEntryPoint.Location.ToFloat2());
-			PlayMusic();
-			Game.ConnectionStateChanged += StopMusic;
-		}
-
-		void PlayMusic()
-		{
-			if (!Rules.InstalledMusic.Any())
-			{
-				return;
-			}
-			var track = Rules.InstalledMusic.Random(Game.CosmeticRandom);
-			Sound.PlayMusicThen(track.Value, PlayMusic);
-		}
-
-		void StopMusic(OrderManager orderManager)
-		{
-			if (!orderManager.GameStarted)
-			{
-				Sound.StopMusic();
-				Game.ConnectionStateChanged -= StopMusic;
-			}
+			MissionUtils.PlayMissionMusic();
 		}
 	}
 
