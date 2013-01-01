@@ -52,7 +52,7 @@ namespace OpenRA.Mods.RA.Air
 
 			var speed = .2f * aircraft.MovementSpeed;
 
-            /* if the aircraft is on the ground, it will take off to the cruise altitude first before approaching */
+			/* if the aircraft is on the ground, it will take off to the cruise altitude first before approaching */
 			var altitude = aircraft.Altitude;
 			if (altitude == 0) altitude = self.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
 
