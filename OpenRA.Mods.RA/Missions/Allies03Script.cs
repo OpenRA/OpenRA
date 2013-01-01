@@ -43,10 +43,10 @@ namespace OpenRA.Mods.RA.Missions
 		const int GapGeneratorID = 2;
 
 		const string Evacuate = "Following the rescue of Einstein, the Allies are now being flanked from both sides."
-								+ "Evacuate {0} units before the remaining Allied forces in the area are wiped out.";
+								+ " Evacuate {0} units before the remaining Allied forces in the area are wiped out.";
 		const string Airbase = "Destroy the nearby Soviet airbases.";
 		const string GapGenerator = "Einstein has recently developed a technology which allows us to obscure units from the enemy."
-								+ "Evacuate at least one prototype mobile gap generator intact.";
+								+ " Evacuate at least one prototype mobile gap generator intact.";
 
 		int unitsEvacuatedThreshold;
 		int unitsEvacuated;

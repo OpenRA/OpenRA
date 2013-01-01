@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA.Missions
 		const int DestroyID = 1;
 		const string Destroy = "Secure the laboratory and destroy the rest of the Soviet base. Ensure that the laboratory is not destroyed.";
 		const string Infiltrate = "The Soviets are currently developing a new defensive system named the \"Iron Curtain\" at their main research laboratory."
-								+ "Get our {0} into the laboratory undetected.";
+								+ " Get our {0} into the laboratory undetected.";
 
 		Actor lstEntryPoint;
 		Actor lstUnloadPoint;
