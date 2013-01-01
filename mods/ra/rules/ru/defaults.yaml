@@ -10,19 +10,19 @@
 	Tooltip:
 		Name: Дерево
 
+^Box:
+	Tooltip:
+		Name: Коробки
+
 ^Ice:
 	Tooltip:
-		Name: Ice Floe
+		Name: Льдина
 
 ^Bridge:
 	Tooltip:
 		Name: Мост
 
-^Box:
-	Tooltip:
-		Name: Коробки
-
 #Terrain Expansion
 ^SmallBridge:
 	Tooltip:
-		Name: небольшой мост
+		Name: Небольшой мост

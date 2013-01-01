@@ -1,3 +1,11 @@
+FCOM:
+	Tooltip:
+		Name: Командующий центр
+
+HOSP:
+	Tooltip:
+		Name: Больница
+
 V01:
 	Tooltip:
 		Name: Церковь
@@ -9,6 +17,10 @@ BARL:
 BRL3:
 	Tooltip:
 		Name: Взрывоопасная Бочка
+
+BIO:
+	Tooltip:
+		Name: Биологическая лаборатория
 
 OILB:
 	Tooltip:

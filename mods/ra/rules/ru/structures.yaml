@@ -26,16 +26,16 @@ IRON:
 		Name: Железный Занавес
 		Description: Делает группу войск неуязвимыми \nна короткое время.\n  Спец возможность: Неуязвимость
 	IronCurtainPower:
-		Description: Invulnerability
-		LongDesc: Makes a group of units invulnerable\nfor 10 seconds.
+		Description: Неуязвимость
+		LongDesc: Делает группу войск неуязвимыми\nна 15 секунд.
 
 PDOX:
 	Tooltip:
 		Name: Хроносфера
 		Description: Телепортирует группу войск из одного \nместа в другое, на время.\n  Спец возможность: Хроносдвиг
 	ChronoshiftPower:
-		Description: Chronoshift
-		LongDesc: Teleport a group of vehicles across\nthe map for 30 seconds.
+		Description: Хроносдвиг
+		LongDesc: Телепортирует группу войск из одного \nместа в другое, на 30 секунд.
 
 TSLA:
 	Tooltip:
@@ -54,13 +54,69 @@ DOME:
 
 PBOX:
 	Tooltip:
-		Name: Пулемётное Укрепление
+		Name: Пулемётное Укрепление (невооружено)
+
+PBOX.E1:
+	Tooltip:
+		Name: Пулемётное Укрепление (Автомат)
 		Description: Первичная защитная структура.\n  Сильные против пехоты, лёгкой техники\n  Слабые против танков, авиации
+
+#PBOX.E2:
+#	Tooltip:
+#		Name: Пулемётное Укрепление (Гранаты)
+
+PBOX.E3:
+	Tooltip:
+		Name: Пулемётное Укрепление (Ракеты)
+
+PBOX.E4:
+	Tooltip:
+		Name: Пулемётное Укрепление (Огнемёт)
+
+PBOX.E7:
+	Tooltip:
+		Name: Пулемётное Укрепление (Таня)
+
+PBOX.SHOK:
+	Tooltip:
+		Name: Пулемётное Укрепление (Тесла)
+
+PBOX.SNIPER:
+	Tooltip:
+		Name: Пулемётное Укрепление (Снайпер)
 
 HBOX:
 	Tooltip:
-		Name: Камо Пулемётное Укрепление
+		Name: Камо Пулемётное Укрепление (невооружено)
+
+HBOX.E1:
+	Tooltip:
+		Name: Камо Пулемётное Укрепление (Автомат)
 		Description: Скрытая защитная структура.\n  Сильные против пехоты, лёгкой техники\n  Слабые против танков, авиации
+
+#HBOX.E2:
+#	Tooltip:
+#		Name: Камо Пулемётное Укрепление (Гранаты)
+
+HBOX.E3:
+	Tooltip:
+		Name: Камо Пулемётное Укрепление (Ракеты)
+
+HBOX.E4:
+	Tooltip:
+		Name: Камо Пулемётное Укрепление (Огнемёт)
+
+HBOX.E7:
+	Tooltip:
+		Name: Камо Пулемётное Укрепление (Таня)
+
+HBOX.SHOK:
+	Tooltip:
+		Name: Камо Пулемётное Укрепление (Тесла)
+
+HBOX.SNIPER:
+	Tooltip:
+		Name: Камо Пулемётное Укрепление (Снайпер)
 
 GUN:
 	Tooltip:
@@ -128,7 +184,7 @@ POWR:
 APWR:
 	Tooltip:
 		Name: Передовая Электростанция
-		Description: Обеспечивает больше энергии чем обычная электростанция
+		Description: Обеспечивает большей энергией\n чем обычная электростанция
 
 STEK:
 	Tooltip:
@@ -145,25 +201,26 @@ TENT:
 		Name: Бараки Альянса
 		Description: Производит пехоту
 
+KENN:
+	Tooltip:
+		Name: Конура
+
 FIX:
 	Tooltip:
 		Name: Сервисное Депо
-		Description: Ремонтирует транспорт\n перезаряжает миноукладчики\n  и позволяет строить дополнительные базы.
+		Description: Ремонтирует транспорт\n перезаряжает миноукладчики\n и позволяет строить дополнительные базы
 
 FACF:
 #	Buildable:
-#		Description: Поддёльный Строительный Двор
+#		Description: Поддельный Строительный Двор
 #		LongDesc: Кажется что это строительный двор.
 
 WEAF:
 #	Buildable:
 #		Description: Поддельный Военный Завод
 #		LongDesc: Кажется что это военный завод.
-#		Hotkey: x
 
 SYRF:
-	Tooltip:
-		Name: Поддельный Порт
 #	Buildable:
 #		Description: Поддельный Порт
 #		LongDesc: Кажется что это порт
@@ -189,3 +246,24 @@ BRIK:
 	Tooltip:
 		Name: Бетонная Стена
 		Description: Останавливает войска и блокирует\n вражеский огонь.
+
+# custom prerequisites:
+BARRACKS:
+	Tooltip:
+		Name: Производство пехоты
+		Description: Производство пехоты
+
+VEHICLEPRODUCTION:
+	Tooltip:
+		Name: Производство техники
+		Description: Производство техники
+
+TECHCENTER:
+	Tooltip:
+		Name: Тех Центр
+		Description: Тех Центр
+
+ANYPOWER:
+	Tooltip:
+		Name: Электростанция
+		Description: Электростанция

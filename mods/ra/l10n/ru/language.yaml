@@ -1,3 +1,8 @@
+Metadata:
+	Title: Red Alert
+	Description: OpenRA - Переосмысление и обновление классической игры
+	Author: Разработчики OpenRA
+
 Folders:
 	~mods/ra/packages/ru
 
@@ -16,7 +21,6 @@ Rules:
 	mods/ra/rules/ru/ships.yaml
 
 ChromeLayout:
-# the russian layout dates to the 2011-09-06 release
 	mods/ra/chrome/en/gameinit.yaml
 	mods/ra/chrome/en/ingame.yaml
 	mods/ra/chrome/en/mainmenu.yaml
