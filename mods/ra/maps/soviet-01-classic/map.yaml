@@ -235,7 +235,7 @@ Actors:
 		Owner: France
 		Health: 0.5195313
 		Facing: 0
-	Actor54: v07
+	Actor54: v07.civilians
 		Location: 54,65
 		Owner: France
 		Health: 0.4375
@@ -570,7 +570,7 @@ Actors:
 		Owner: GoodGuy
 		Health: 1
 		Facing: 0
-	Actor121: v05
+	Actor121: v05.civilians
 		Location: 48,62
 		Owner: France
 		Health: 0.4140625
@@ -585,7 +585,7 @@ Actors:
 		Owner: France
 		Health: 0.6640625
 		Facing: 96
-	StartJeep: jeep.explodes
+	StartJeep: jeep
 		Location: 44,76
 		Owner: France
 		Health: 0.5195313
@@ -910,13 +910,20 @@ Rules:
 	YAK:
 		Plane:
 			RearmBuildings: afld.noproduction
-	JEEP.Explodes:
-		Inherits: JEEP
-		RenderUnitTurreted:
-			Image: JEEP
-		Tooltip:
-			Icon: jeepicon
+	JEEP:
 		Explodes:
+	V05.Civilians:
+		Inherits: V05
+		RenderBuilding:
+			Image: V05
+		Soviet01ClassicContainsActors:
+			Actors: c3, c4, c7
+	V07.Civilians:
+		Inherits: V07
+		RenderBuilding:
+			Image: V07
+		Soviet01ClassicContainsActors:
+			Actors: c1, c6
 
 Sequences:
 

@@ -173,4 +173,40 @@ namespace OpenRA.Mods.RA.Missions
 			});
 		}
 	}
+
+	class Soviet01ClassicContainsActorsInfo : ITraitInfo
+	{
+		public readonly string[] Actors = { };
+
+		public object Create(ActorInitializer init) { return new Soviet01ClassicContainsActors(this); }
+	}
+
+	class Soviet01ClassicContainsActors : INotifyDamage
+	{
+		bool spawned;
+		Soviet01ClassicContainsActorsInfo info;
+
+		public Soviet01ClassicContainsActors(Soviet01ClassicContainsActorsInfo info)
+		{
+			this.info = info;
+		}
+
+		public void Damaged(Actor self, AttackInfo e)
+		{
+			if (spawned || self.IsDead())
+			{
+				return;
+			}
+			foreach (var actor in info.Actors)
+			{
+				var unit = self.World.CreateActor(actor, new TypeDictionary
+				{
+					new OwnerInit(self.Owner),
+					new LocationInit(self.Location)
+				});
+				unit.Trait<Mobile>().Nudge(unit, unit, true);
+			}
+			spawned = true;
+		}
+	}
 }

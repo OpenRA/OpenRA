@@ -505,7 +505,7 @@ namespace OpenRA.Mods.RA.Missions
 		public object Create(ActorInitializer init) { return new Allies04TryRepairBuilding(this); }
 	}
 
-	class Allies04TryRepairBuilding : INotifyDamage
+	class Allies04TryRepairBuilding : INotifyDamageStateChanged
 	{
 		Allies04TryRepairBuildingInfo info;
 
@@ -514,7 +514,7 @@ namespace OpenRA.Mods.RA.Missions
 			this.info = info;
 		}
 
-		public void Damaged(Actor self, AttackInfo e)
+		public void DamageStateChanged(Actor self, AttackInfo e)
 		{
 			if (self.HasTrait<RepairableBuilding>() && self.Owner.InternalName == info.Player && Game.IsHost
 				&& e.DamageState > DamageState.Undamaged && e.PreviousDamageState == DamageState.Undamaged)
