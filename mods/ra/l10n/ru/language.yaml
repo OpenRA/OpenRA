@@ -1,3 +1,8 @@
+Metadata:
+	Title: Red Alert
+	Description: OpenRA - Переосмысление и обновление классической игры
+	Author: Разработчики OpenRA
+
 Folders:
 	~mods/ra/packages/ru
 
@@ -16,19 +21,18 @@ Rules:
 	mods/ra/rules/ru/ships.yaml
 
 ChromeLayout:
-# the russian layout dates to the 2011-09-06 release
-	mods/ra/chrome/en/gameinit.yaml
-	mods/ra/chrome/en/ingame.yaml
-	mods/ra/chrome/en/mainmenu.yaml
-	mods/ra/chrome/en/settings.yaml
-	mods/ra/chrome/en/lobby.yaml
-	mods/ra/chrome/en/map-chooser.yaml
-	mods/ra/chrome/en/create-server.yaml
-	mods/ra/chrome/en/serverbrowser.yaml
-	mods/ra/chrome/en/replaybrowser.yaml
-	mods/ra/chrome/en/dropdowns.yaml
-	mods/ra/chrome/en/modchooser.yaml
-	mods/ra/chrome/en/cheats.yaml
-	mods/ra/chrome/en/objectives.yaml
+	mods/ra/chrome/ru/gameinit.yaml
+	mods/ra/chrome/ru/ingame.yaml
+	mods/ra/chrome/ru/mainmenu.yaml
+	mods/ra/chrome/ru/settings.yaml
+	mods/ra/chrome/ru/lobby.yaml
+	mods/ra/chrome/ru/map-chooser.yaml
+	mods/ra/chrome/ru/create-server.yaml
+	mods/ra/chrome/ru/serverbrowser.yaml
+	mods/ra/chrome/ru/replaybrowser.yaml
+	mods/ra/chrome/ru/dropdowns.yaml
+	mods/ra/chrome/ru/modchooser.yaml
+	mods/ra/chrome/ru/cheats.yaml
+	mods/ra/chrome/ru/objectives.yaml
 
 Languages:

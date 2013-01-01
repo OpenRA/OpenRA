@@ -1,20 +1,18 @@
 Background@SERVER_LOBBY:
-	Id:SERVER_LOBBY
 	Logic:LobbyLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Width:800
 	Height:600
 	Children:
-		Label@LOBBY_TITLE:
-			Id:LOBBY_TITLE
+		Label@TITLE:
 			X:0
 			Y:17
 			Align:Center
 			Width:800
 			Height:20
 			Font:Bold
-			Text:OpenRA Мультиплеерное лобби
+			Text:OpenRA Многопользовательское Лобби
 		Background@LOBBY_MAP_BG:
 			X:PARENT_RIGHT-268
 			Y:50
@@ -22,22 +20,19 @@ Background@SERVER_LOBBY:
 			Height:252
 			Background:dialog3
 			Children:
-				MapPreview@LOBBY_MAP_PREVIEW:
-					Id:LOBBY_MAP_PREVIEW
+				MapPreview@MAP_PREVIEW:
 					X:4
 					Y:4
 					Width:244
 					Height:244
 		ScrollPanel@PLAYERS:
-			Id:PLAYERS
 			X:20
 			Y:67
 			ItemSpacing:5
 			Width:504
 			Height:235
 			Children:
-				Container@TEMPLATE_LOCAL:
-					Id:TEMPLATE_LOCAL
+				Container@TEMPLATE_EDITABLE_PLAYER:
 					X:5
 					Y:0
 					Width:475
@@ -45,61 +40,75 @@ Background@SERVER_LOBBY:
 					Visible:false
 					Children:
 						TextField@NAME:
-							Id:NAME
 							Text:Имя
 							Width:150
 							Height:25
 							X:0
 							Y:0
 							MaxLength:16
+						Image@ISADMIN:
+							Width:16
+							Height:16
+							X:150
+							Y:4
+							ImageName:isadmin
+							ImageCollection:misc
+						DropDownButton@BOT_DROPDOWN:
+							Text:Имя
+							Width:150
+							Height:25
+							Font:Regular
+							Visible:false
 						DropDownButton@COLOR:
-							Id:COLOR
 							Width:80
 							Height:25
 							X:160
 							Y:0
 							Children:
 								ColorBlock@COLORBLOCK:
-									Id:COLORBLOCK
 									X:5
 									Y:6
 									Width:PARENT_RIGHT-35
 									Height:PARENT_BOTTOM-12
 						DropDownButton@FACTION:
-							Id:FACTION
 							Width:130
 							Height:25
 							X:250
 							Y:0
 							Children:
 								Image@FACTIONFLAG:
-									Id:FACTIONFLAG
 									Width:30
 									Height:15
 									X:5
 									Y:5
 								Label@FACTIONNAME:
-									Id:FACTIONNAME
-									Text:Группа
+									Text:Фракция
 									Width:60
 									Height:25
 									X:40
 									Y:0
 						DropDownButton@TEAM:
-							Id:TEAM
 							Text:Команда
 							Width:48
 							Height:25
 							X:390
 							Y:0
-						Checkbox@STATUS:
-							Id:STATUS
+						Checkbox@STATUS_CHECKBOX:
 							X:448
 							Y:2
 							Width:20
 							Height:20
-				Container@TEMPLATE_REMOTE:
-					Id:TEMPLATE_REMOTE
+							Visible:false
+						Image@STATUS_IMAGE:
+							Visible:false
+							X:450
+							Y:4
+							Width:20
+							Height:20
+							ImageCollection:checkbox-bits
+							ImageName:checked
+							Visible:false
+				Container@TEMPLATE_NONEDITABLE_PLAYER:
 					X:5
 					Y:0
 					Width:475
@@ -107,14 +116,19 @@ Background@SERVER_LOBBY:
 					Visible:false
 					Children:
 						Label@NAME:
-							Id:NAME
 							Text:Имя
 							Width:145
 							Height:25
 							X:5
 							Y:0-1
+						Image@ISADMIN:
+							Width:16
+							Height:16
+							X:150
+							Y:4
+							ImageName:isadmin
+							ImageCollection:misc
 						Button@KICK:
-							Id:KICK
 							Text:X
 							Width:25
 							Height:23
@@ -122,47 +136,44 @@ Background@SERVER_LOBBY:
 							Y:2
 							Font:Bold
 						ColorBlock@COLOR:
-							Id:COLOR
 							X:165
 							Y:6
 							Width:45
 							Height:13
 						Label@FACTION:
-							Id:FACTION
 							Width:130
 							Height:25
 							X:250
 							Y:0
 							Children:
 								Image@FACTIONFLAG:
-									Id:FACTIONFLAG
 									Width:30
 									Height:15
 									X:5
 									Y:5
 								Label@FACTIONNAME:
-									Id:FACTIONNAME
-									Text:Группа
+									Text:Фракция
 									Width:60
 									Height:25
 									X:40
 									Y:0
 						Label@TEAM:
-							Id:TEAM
 							Text:Команда
 							Width:23
 							Height:25
 							Align:Center
 							X:390
 							Y:0
-						Checkbox@STATUS:
-							Id:STATUS
-							X:448
-							Y:2
+						Image@STATUS_IMAGE:
+							Visible:false
+							X:450
+							Y:4
 							Width:20
 							Height:20
+							ImageCollection:checkbox-bits
+							ImageName:checked
+
 				Container@TEMPLATE_EMPTY:
-					Id:TEMPLATE_EMPTY
 					X:5
 					Y:0
 					Width:475
@@ -170,61 +181,32 @@ Background@SERVER_LOBBY:
 					Visible:false
 					Children:
 						Label@NAME:
-							Id:NAME
 							Text:Имя
 							Width:145
 							Height:25
 							X:5
 							Y:0-1
-						Button@JOIN:
-							Id:JOIN
-							Text:Играть в этом слоте
-							Width:278
-							Height:25
-							X:160
-							Y:0
-						Label@BOT:
-							Id:BOT
-							Text:Бот
-							Width:278
-							Height:25
-							X:160
-							Y:0
-							Align:Center
-							Font:Bold
-				Container@TEMPLATE_EMPTY_HOST:
-					Id:TEMPLATE_EMPTY_HOST
-					X:5
-					Y:0
-					Width:400
-					Height:25
-					Visible:false
-					Children:
-						DropDownButton@NAME:
-							Id:NAME
+						DropDownButton@NAME_HOST:
 							Text:Имя
 							Width:150
 							Height:25
 							X:0
 							Y:0
+							Visible:false
 						Button@JOIN:
-							Id:JOIN
 							Text:Играть в этом слоте
 							Width:278
 							Height:25
 							X:160
 							Y:0
-						Label@BOT:
-							Id:BOT
-							Text:Бот
-							Width:278
-							Height:25
-							X:160
-							Y:0
-							Align:Center
-							Font:Bold
-				Container@TEMPLATE_LOCAL_SPECTATOR:
-					Id:TEMPLATE_LOCAL_SPECTATOR
+						Image@ISADMIN:
+							Width:16
+							Height:16
+							X:150
+							Y:4
+							ImageName:isadmin
+							ImageCollection:misc
+				Container@TEMPLATE_EDITABLE_SPECTATOR:
 					X:5
 					Y:0
 					Width:475
@@ -232,20 +214,17 @@ Background@SERVER_LOBBY:
 					Visible:false
 					Children:
 						TextField@NAME:
-							Id:NAME
 							Text:Имя
 							Width:150
 							Height:25
 							MaxLength:16
 						DropDownButton@COLOR:
-							Id:COLOR
 							Width:80
 							Height:25
 							X:160
 							Font:Regular
 							Children:
 								ColorBlock@COLORBLOCK:
-									Id:COLORBLOCK
 									X:5
 									Y:6
 									Width:PARENT_RIGHT-35
@@ -258,14 +237,28 @@ Background@SERVER_LOBBY:
 							Y:0
 							Align:Center
 							Font:Bold
-						Checkbox@STATUS:
-							Id:STATUS
+						Checkbox@STATUS_CHECKBOX:
 							X:448
 							Y:2
 							Width:20
 							Height:20
-				Container@TEMPLATE_REMOTE_SPECTATOR:
-					Id:TEMPLATE_REMOTE_SPECTATOR
+						Image@STATUS_IMAGE:
+							Visible:false
+							X:450
+							Y:4
+							Width:20
+							Height:20
+							ImageCollection:checkbox-bits
+							ImageName:checked
+						Image@ISADMIN:
+							Width:16
+							Height:16
+							X:150
+							Y:4
+							ImageName:isadmin
+							ImageCollection:misc
+
+				Container@TEMPLATE_NONEDITABLE_SPECTATOR:
 					X:5
 					Y:0
 					Width:475
@@ -273,14 +266,19 @@ Background@SERVER_LOBBY:
 					Visible:false
 					Children:
 						Label@NAME:
-							Id:NAME
 							Text:Имя
 							Width:145
 							Height:25
 							X:5
 							Y:0-1
+						Image@ISADMIN:
+							Width:16
+							Height:16
+							X:130
+							Y:4
+							ImageName:isadmin
+							ImageCollection:misc
 						Button@KICK:
-							Id:KICK
 							Text:X
 							Width:25
 							Height:23
@@ -288,7 +286,6 @@ Background@SERVER_LOBBY:
 							Y:2
 							Font:Bold
 						ColorBlock@COLOR:
-							Id:COLOR
 							X:165
 							Y:6
 							Width:45
@@ -301,14 +298,15 @@ Background@SERVER_LOBBY:
 							Y:0
 							Align:Center
 							Font:Bold
-						Checkbox@STATUS:
-							Id:STATUS
-							X:448
-							Y:2
+						Image@STATUS_IMAGE:
+							Visible:false
+							X:450
+							Y:4
 							Width:20
 							Height:20
+							ImageCollection:checkbox-bits
+							ImageName:checked
 				Container@TEMPLATE_NEW_SPECTATOR:
-					Id:TEMPLATE_NEW_SPECTATOR
 					X:5
 					Y:0
 					Width:475
@@ -316,7 +314,6 @@ Background@SERVER_LOBBY:
 					Visible:false
 					Children:
 						Button@SPECTATE:
-							Id:SPECTATE
 							Text:Наблюдать
 							Font:Regular
 							Width:278
@@ -328,7 +325,6 @@ Background@SERVER_LOBBY:
 			Y:40
 			Children:
 				Label@LABEL_LOBBY_NAME:
-					Id:LABEL_LOBBY_NAME
 					Width:150
 					Height:25
 					X:0
@@ -337,7 +333,6 @@ Background@SERVER_LOBBY:
 					Align:Center
 					Font:Bold
 				Label@LABEL_LOBBY_COLOR:
-					Id:LABEL_LOBBY_COLOR
 					Width:80
 					Height:25
 					X:160
@@ -346,16 +341,14 @@ Background@SERVER_LOBBY:
 					Align:Center
 					Font:Bold
 				Label@LABEL_LOBBY_FACTION:
-					Id:LABEL_LOBBY_FACTION
 					Width:130
 					Height:25
 					X:250
 					Y:0
-					Text:Группа
+					Text:Фракция
 					Align:Center
 					Font:Bold
 				Label@LABEL_LOBBY_TEAM:
-					Id:LABEL_LOBBY_TEAM
 					Width:48
 					Height:25
 					X:390
@@ -364,7 +357,6 @@ Background@SERVER_LOBBY:
 					Align:Center
 					Font:Bold
 				Label@LABEL_LOBBY_STATUS:
-					Id:LABEL_LOBBY_STATUS
 					X:448
 					Y:0
 					Width:20
@@ -373,22 +365,42 @@ Background@SERVER_LOBBY:
 					Align:Left
 					Font:Bold
 		Button@CHANGEMAP_BUTTON:
-			Id:CHANGEMAP_BUTTON
 			X:PARENT_RIGHT-154
 			Y:PARENT_BOTTOM-269
 			Width:120
 			Height:25
-			Text:Сменить карту
+			Text:Изменить карту
 			Font:Bold
-		ChatDisplay@CHAT_DISPLAY:
-			Id:CHAT_DISPLAY
+		ScrollPanel@CHAT_DISPLAY:
 			X:20
-			Notification: rabeep1.aud
-			Height:230
 			Y:PARENT_BOTTOM - 289
 			Width:PARENT_RIGHT - 200
+			Height:230
+			ItemSpacing:1
+			Children:
+				Container@CHAT_TEMPLATE:
+					Width:PARENT_RIGHT-27
+					Height:16
+					X:2
+					Y:0
+					Children:
+						Label@TIME:
+							X:3
+							Width:50
+							Height:15
+							VAlign:Top
+						Label@NAME:
+							X:45
+							Width:50
+							Height:15
+							VAlign:Top
+						Label@TEXT:
+							X:55
+							Width:PARENT_RIGHT - 60
+							Height:15
+							WordWrap:true
+							VAlign:Top
 		Label@LABEL_CHATTYPE:
-			Id:LABEL_CHATTYPE
 			Width:65
 			Height:25
 			X:0
@@ -396,50 +408,51 @@ Background@SERVER_LOBBY:
 			Text:Чат:
 			Align:Right
 		TextField@CHAT_TEXTFIELD:
-			Id:CHAT_TEXTFIELD
 			X:70
 			Y:PARENT_BOTTOM - 49
 			Width:550
 			Height:25
 		Button@START_GAME_BUTTON:
-			Id:START_GAME_BUTTON
 			X:PARENT_RIGHT-154
 			Y:PARENT_BOTTOM-49
 			Width:120
 			Height:25
-			Text:Старт игры
+			Text:Начать игру
 			Font:Bold
 		Button@DISCONNECT_BUTTON:
-			Id:DISCONNECT_BUTTON
 			X:PARENT_RIGHT-154
 			Y:PARENT_BOTTOM-189+25
 			Width:120
 			Height:25
-			Text:Разъединить
+			Text:Отключиться
 			Font:Bold
 		Checkbox@ALLOWCHEATS_CHECKBOX:
-			Id:ALLOWCHEATS_CHECKBOX
 			X: PARENT_RIGHT-154
 			Y: PARENT_BOTTOM-229
 			Width: 80
 			Height: 20
 			Text: Разрешить читы
 Background@COLOR_CHOOSER:
-	Id:COLOR_CHOOSER
+	Logic:ColorPickerLogic
 	Background:dialog2
 	Width:310
 	Height:120
 	Children:
-		Button@BUTTON_OK:
-			Id:BUTTON_OK
+		Button@SAVE_BUTTON:
 			X:210
 			Y:85
 			Width:90
 			Height:25
-			Text:Ok
+			Text:Сохранить
+			Font:Bold
+		Button@RANDOM_BUTTON:
+			X:115
+			Y:85
+			Width:90
+			Height:25
+			Text:Случайный
 			Font:Bold
 		ShpImage@FACT:
-			Id:FACT
 			X:220
 			Y:10
 			Image:fact
@@ -452,7 +465,6 @@ Background@COLOR_CHOOSER:
 			Align: Right
 			Text: Оттенок:
 		Slider@HUE:
-			Id:HUE_SLIDER
 			X:43
 			Y:10
 			Width:160
@@ -466,7 +478,6 @@ Background@COLOR_CHOOSER:
 			Align: Right
 			Text: Насыщенность:	
 		Slider@SAT:
-			Id:SAT_SLIDER
 			X:43
 			Y:35
 			Width:160
@@ -478,9 +489,8 @@ Background@COLOR_CHOOSER:
 			Width:40
 			Height:20
 			Align: Right
-			Text: Свечение:	
+			Text: Яркость:	
 		Slider@LUM:
-			Id:LUM_SLIDER
 			X:43
 			Y:60
 			Width:160
@@ -488,19 +498,3 @@ Background@COLOR_CHOOSER:
 			Ticks:5
 			MinimumValue: 0.2
 			MaximumValue: 1
-		Label@RANGE_LABEL:
-			X:0
-			Y:80
-			Width:40
-			Height:20
-			Align: Right
-			Text: Расстояние:	
-		Slider@RANGE:
-			Id:RANGE_SLIDER
-			X:43
-			Y:85
-			Width:160
-			Height:20
-			Ticks:5
-			MinimumValue: 0
-			MaximumValue: 0.25
