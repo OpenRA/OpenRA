@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA.Render
 
 		protected override string NormalizeInfantrySequence(Actor self, string baseSequence)
 		{
-			var prefix = sc != null && sc.Panicked ? "panic-" : "";
+			var prefix = sc != null && sc.Panicking ? "panic-" : "";
 
 			if (anim.HasSequence(prefix + baseSequence))
 				return prefix + baseSequence;
@@ -40,15 +40,15 @@ namespace OpenRA.Mods.RA.Render
 
 		protected override bool AllowIdleAnimation(Actor self)
 		{
-			return base.AllowIdleAnimation(self) && !sc.Panicked;
+			return base.AllowIdleAnimation(self) && !sc.Panicking;
 		}
 
 		public override void Tick (Actor self)
 		{
-			if (wasPanic != sc.Panicked)
+			if (wasPanic != sc.Panicking)
 				dirty = true;
 
-			wasPanic = sc.Panicked;
+			wasPanic = sc.Panicking;
 			base.Tick(self);
 		}
 	}

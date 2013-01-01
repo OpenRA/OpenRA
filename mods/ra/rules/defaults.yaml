@@ -286,6 +286,9 @@
 		PrimaryWeapon: Pistol
 	ProximityCaptor:
 		Types:CivilianInfantry
+	-RenderInfantry:
+	RenderInfantryPanic:
+	ScaredyCat:
 
 ^CivBuilding:
 	Inherits: ^TechBuilding
