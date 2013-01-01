@@ -31,6 +31,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			widget.Get<ButtonWidget>("BUTTON_CANCEL").OnClick = () => { Ui.CloseWindow(); onExit(); };
 
 			scrollpanel = widget.Get<ScrollPanelWidget>("MAP_LIST");
+			scrollpanel.ScrollVelocity = 40f;
+
 			itemTemplate = scrollpanel.Get<ScrollItemWidget>("MAP_TEMPLATE");
 
 			var gameModeDropdown = widget.GetOrNull<DropDownButtonWidget>("GAMEMODE_FILTER");
