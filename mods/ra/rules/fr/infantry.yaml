@@ -1,22 +1,22 @@
 DOG:
 	Tooltip:
 		Name: Chien d'attaque
-		Description: Unite Anti-Infanterie. Détecte les Espions déguisés.\n  Fort contre l'Infanterie\n  Faible contre les Véhicules
+		Description: Unite Anti-Infanterie.\nDétecte les Espions déguisés.\n  Fort contre l'Infanterie\n  Faible contre les Véhicules
 
 E1:
 	Tooltip:
-		Name: Mitrailleurs
+		Name: Mitrailleur
 		Description: Unité d'infanterie de base.\n  Fort contre l'Infanterie\n  Faible contre les Véhicules
 
 E2:
 	Tooltip:
 		Name: Grenadier
-		Description: Infanterie armée de grenades.\n  Fort contre les Bâtiments et l'Infanterie\n Faible contre les Véhicules
+		Description: Infanterie armée de grenades.\n  Fort contre les Bâtiments et l'Infanterie\n  Faible contre les Véhicules
 
 E3:
 	Tooltip:
-		Name: Bazookas
-		Description: Infanterie Anti-tanks/Anti-aviation.\n  Fort contre les Tanks et l'Aviation\n  Faible contre l'Infanterie
+		Name: Bazooka
+		Description: Infanterie Anti-tank/Anti-aviation.\n  Fort contre les Tanks et l'Aviation\n  Faible contre l'Infanterie
 
 E4:
 	Tooltip:
@@ -25,13 +25,13 @@ E4:
 
 E6:
 	Tooltip:
-		Name: Ingénieurs
+		Name: Ingénieur
 		Description: Infiltre et capture les Bâtiments.\n  Fort contre Rien\n  Faible contre Tout.
 
 SPY:
 	SpyToolTip:
 		Name: Espion
-		Description: Infiltre les Bâtiments ennemis pour \ns'informer. L'effet exact depend du \nBâtiment infiltre.\n Fort contre Rien\n  Faible contre Tout\n  Capacité spéciale: Déguisement
+		Description: Infiltre les Bâtiments ennemis pour\ns'informer. L'effet exact dépend du\nBâtiment infiltré.\n  Fort contre Rien\n  Faible contre Tout\n  Capacité spéciale: Déguisement
 
 E7:
 	Tooltip:
@@ -41,20 +41,20 @@ E7:
 E8:
 	Tooltip:
 		Name: Volkov
-		Description: Unité cyborg d'élite, armé\nd'un cannon modulaire et d'un lance grenades.\n  Fort contre les Véhicules et l'Infanterie\n  Faible contre les Avions
+		Description: Cyborg d'élite, armé d'un canon\nmodulaire et d'un lance-grenades.\n  Fort contre les Véhicules et l'Infanterie\n  Faible contre les Avions
 
 MEDI:
 	Tooltip:
 		Name: Médecin
-		Description: Soigne les unites proches.\n  Fort contre Rien\n  Faible contre Tout
+		Description: Soigne les unités proches.\n  Fort contre Rien\n  Faible contre Tout
 
 C1:
 	Tooltip:
-		Name: Homme Civil
+		Name: Civil
 
 C2:
 	Tooltip:
-		Name: Femme Civile
+		Name: Civile
 
 EINSTEIN:
 	Tooltip:
@@ -63,7 +63,7 @@ EINSTEIN:
 SHOK:
 	Tooltip:
 		Name: Soldat Tesla
-		Description: Infanterie munie de bobines Tesla\n Fort contre l'Infanterie\n Faible contre les Véhicules
+		Description: Infanterie munie de bobines Tesla.\n  Fort contre l'Infanterie\n  Faible contre les Véhicules
 
 SNIPER:
 	Tooltip:

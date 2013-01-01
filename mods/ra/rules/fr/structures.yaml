@@ -14,12 +14,12 @@ GAP:
 SPEN:
 	Tooltip:
 		Name: Port sous-marin
-		Description: Produit et répare les sous-marins et les bateaux de transport
+		Description: Produit et répare les sous-marins et les bateaux de transport.
 
 SYRD:
 	Tooltip:
 		Name: Chantier naval
-		Description: Produit et répare les bateaux
+		Description: Produit et répare les bateaux.
 
 IRON:
 	Tooltip:
@@ -40,7 +40,7 @@ PDOX:
 TSLA:
 	Tooltip:
 		Name: Bobine de Tesla
-		Description: Défense avancée. Requiert de l'électricité pour fonctionner.\n  Fort contre les Tanks, l'Infanterie\n  Faible contre l'Aviation
+		Description: Défense avancée.\n  Requiert de l'électricité pour fonctionner.\n  Fort contre les Tanks, l'Infanterie\n  Faible contre l'Aviation
 
 AGUN:
 	Tooltip:
@@ -92,7 +92,7 @@ HBOX:
 HBOX.E1:
 	Tooltip:
 		Name: Bunker camouflé (Mitrailleuse)
-		Description: Structure defensive invisible.\n  Fort contre l'Infanterie et les\nVéhicules Légers\n  Faible contre les Tanks et l'Aviation
+		Description: Structure défensive invisible.\n  Fort contre l'Infanterie et les\nVéhicules Légers\n  Faible contre les Tanks et l'Aviation
 
 #HBOX.E2:
 #	Tooltip:
@@ -121,7 +121,7 @@ HBOX.SNIPER:
 GUN:
 	Tooltip:
 		Name: Tourelle
-		Description: Defense de base anti-blindés.\n  Fort contre les Tanks\n  Faible contre l'Infanterie et l'Aviation
+		Description: Défense anti-blindés.\n  Fort contre les Tanks\n  Faible contre l'Infanterie et l'Aviation
 
 FTUR:
 	Tooltip:
@@ -136,15 +136,15 @@ SAM:
 ATEK:
 	Tooltip:
 		Name: Centre Technique Allié
-		Description: Permet la production d'unités avancées\nalliée.\n  Capacité spéciale: Satellite GPS 
+		Description: Permet la production d'unités alliés\nplus avancées.\n  Capacité spéciale: Satellite GPS 
 	GpsPower:
 		Description: Satellite GPS
-		LongDesc: Révèle toute la carte
+		LongDesc: Révèle toute la carte.
 
 WEAP:
 	Tooltip:
 		Name: Usine d'Armement
-		Description: Produit les tanks et véhicules légers.
+		Description: Produit tanks et véhicules légers.
 
 FACT:
 	Tooltip:
@@ -153,53 +153,53 @@ FACT:
 PROC:
 	Tooltip:
 		Name: Raffinerie de minerai
-		Description: Convertit l'Or et les Gemmes en argent
+		Description: Convertit l'Or et les Gemmes en argent.
 
 SILO:
 	Tooltip:
 		Name: Silo à minerai
-		Description: Stocke le minerai récolté
+		Description: Stocke le minerai récolté.
 
 HPAD:
 	Tooltip:
 		Name: Héliport
-		Description: Produit et recharge les hélicoptères
+		Description: Produit et recharge les hélicoptères.
 
 AFLD:
 	Tooltip:
 		Name: Piste d'atterrissage
-		Description: Permet la construction d'avions et le support aérien\n  Capacité spéciale: Parachutistes\n  Capacité spéciale: Avion Espion
+		Description: Permet la construction d'avions et\nle support aérien.\n  Capacité spéciale: Parachutistes\n  Capacité spéciale: Avion Espion
 	SpyPlanePower:
 		Description: Avion Espion
 		LongDesc: Révèle une zone de la carte.
 	ParatroopersPower:
 		Description: Parachutistes
-		LongDesc: Un avion parachute une escouade de mitrailleurs n'importe ou sur la carte
-	
+		LongDesc: Un avion parachute une escouade de mitrailleurs\nn'importe ou sur la carte.
+
 POWR:
 	Tooltip:
 		Name: Centrale électrique
-		Description: Procure de l'électricité pour les autres structures
+		Description: Procure de l'énergie pour les autres structures.
 
 APWR:
 	Tooltip:
 		Name: Centrale électrique avancée
-		Description: Procure plus d'électricité, moins chère que\nles centrales électriques standards
+		Description: Procure plus d'électricité et moins chère que\nles centrales électriques standards.
 
 STEK:
 	Tooltip:
 		Name: Centre Technique Soviet
-		Description: Permet la production d'unités avancées soviets.
+		Description: Permet la production d'unités\navancées sovietiques.
 
 BARR:
 	Tooltip:
-		Name: Caserne Soviet
-		Description: Produit l'infanterie soviétique
+		Name: Caserne Sovietique
+		Description: Produit l'infanterie soviétique.
 
 TENT:
 	Tooltip:
 		Name: Caserne Alliée
-		Description: Produit l'infanterie alliée
+		Description: Produit l'infanterie alliée.
 
 KENN:
 	Tooltip:
@@ -234,13 +234,13 @@ DOMF:
 
 SBAG:
 	Tooltip:
-		Name: Barrière de sacs de sable
-		Description: Stoppe l'infanterie et bloque les tirs ennemis.\nPeut être écrasé par les tanks
+		Name: Sacs de sable
+		Description: Stoppe l'infanterie et bloque les tirs ennemis.\nPeut être écrasé par les tanks.
 
 FENC:
 	Tooltip:
-		Name: Cloture barbelée
-		Description: Stoppe l'infanterie et bloque les tirs ennemis.\nPeut être écrasé par les tanks
+		Name: Clôture barbelée
+		Description: Stoppe l'infanterie et bloque les tirs ennemis.\nPeut être écrasé par les tanks.
 
 BRIK:
 	Tooltip:
