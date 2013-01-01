@@ -1,9 +1,7 @@
 Container@INGAME_ROOT:
-	Id:INGAME_ROOT
 	Logic:IngameChromeLogic
 	Children:
 		WorldInteractionController@INTERACTION_CONTROLLER:
-			Id:INTERACTION_CONTROLLER
 			X:0
 			Y:0
 			Width:WINDOW_RIGHT
@@ -19,15 +17,12 @@ Container@INGAME_ROOT:
 			Width:WINDOW_RIGHT
 			Height:WINDOW_BOTTOM
 		Timer@GAME_TIMER:
-			Id:GAME_TIMER
 			X: WINDOW_RIGHT/2
 			Y: 0-10
 		StrategicProgress@STRATEGIC_PROGRESS:
-			Id:STRATEGIC_PROGRESS
 			X: WINDOW_RIGHT/2
 			Y: 40
 		Background@POSTGAME_BG:
-			Id:POSTGAME_BG
 			X:(WINDOW_RIGHT - WIDTH)/2
 			Y:(WINDOW_BOTTOM - HEIGHT)/2
 			Width:400
@@ -36,14 +31,12 @@ Container@INGAME_ROOT:
 			Visible:false
 			Children:
 				Label@TEXT:
-					Id:TEXT
 					X:(PARENT_RIGHT - WIDTH)/2
 					Y:0
 					Width:200
 					Height:80
 					Align:Center
 				Button@POSTGAME_OBSERVE:
-					Id:POSTGAME_OBSERVE
 					X:10
 					Y:(PARENT_BOTTOM - HEIGHT - 10)
 					Width:150
@@ -51,7 +44,6 @@ Container@INGAME_ROOT:
 					Font:Bold
 					Text:Observer
 				Button@POSTGAME_QUIT:
-					Id:POSTGAME_QUIT
 					X:(PARENT_RIGHT - WIDTH - 10)
 					Y:(PARENT_BOTTOM - HEIGHT - 10)
 					Width:150
@@ -59,13 +51,11 @@ Container@INGAME_ROOT:
 					Font:Bold
 					Text:Quitter
 		SupportPowerBin@INGAME_POWERS_BIN:
-			Id:INGAME_POWERS_BIN
 			X:0
 			Y:25
 			ReadyText: Prêt
 			HoldText: En pause
 		BuildPalette@INGAME_BUILD_PALETTE:
-			Id:INGAME_BUILD_PALETTE
 			X:WINDOW_RIGHT - 250
 			Y:280
 			Width:250
@@ -74,7 +64,6 @@ Container@INGAME_ROOT:
 			HoldText: En pause
 			RequiresText: Requiert
 		Button@INGAME_OPTIONS_BUTTON:
-			Id:INGAME_OPTIONS_BUTTON
 			X:0
 			Y:0
 			Width:160
@@ -83,7 +72,6 @@ Container@INGAME_ROOT:
 			Font:Bold
 			Key: escape
 		Button@INGAME_DIPLOMACY_BUTTON:
-			Id:INGAME_DIPLOMACY_BUTTON
 			X:162
 			Y:0
 			Width:160
@@ -107,19 +95,15 @@ Container@INGAME_ROOT:
 			Visible:false
 			Font:Bold
 		RadarBin@INGAME_RADAR_BIN:
-			Id:INGAME_RADAR_BIN
 			WorldInteractionController:INTERACTION_CONTROLLER
 		PowerBin@INGAME_POWER_BIN:
-			Id:INGAME_POWER_BIN
 		MoneyBin@INGAME_MONEY_BIN:
-			Id:INGAME_MONEY_BIN
 			X:WINDOW_RIGHT - WIDTH
 			Y:0
 			Width:320
 			Height: 32
 			Children:
 				OrderButton@SELL:
-					Id:SELL
 					Logic:OrderButtonsChromeLogic
 					X:3
 					Y:0
@@ -129,7 +113,6 @@ Container@INGAME_ROOT:
 					Description:Vendre
 					LongDesc:Vend un bâtiment, permet de récupérer d'une partie de son coût de production
 				OrderButton@POWER_DOWN:
-					Id:POWER_DOWN
 					Logic:OrderButtonsChromeLogic
 					X:39
 					Y:0
@@ -139,7 +122,6 @@ Container@INGAME_ROOT:
 					Description:Couper le courant
 					LongDesc:Désactive les structures inutiles pour économiser l'énergie
 				OrderButton@REPAIR:
-					Id:REPAIR
 					Logic:OrderButtonsChromeLogic
 					X:75
 					Y:0
@@ -150,7 +132,6 @@ Container@INGAME_ROOT:
 					LongDesc:Répare les bâtiments endommagés
 		WorldTooltip:
 		Background@INGAME_OPTIONS_BG:
-			Id:INGAME_OPTIONS_BG
 			X:(WINDOW_RIGHT - WIDTH)/2
 			Y:(WINDOW_BOTTOM - HEIGHT)/2
 			Width:300
@@ -158,7 +139,6 @@ Container@INGAME_ROOT:
 			Visible:false
 			Children:
 				Label@LABEL_TITLE:
-					Id:LABEL_TITLE
 					X:(PARENT_RIGHT - WIDTH)/2
 					Y:20
 					Width:250
@@ -167,15 +147,14 @@ Container@INGAME_ROOT:
 					Align:Center
 					Font:Bold
 				Button@RESUME:
-					Id:RESUME
 					X:(PARENT_RIGHT - WIDTH)/2
 					Y:60
 					Width:160
 					Height:25
 					Text:Reprendre
 					Font:Bold
+					Key:escape
 				Button@SETTINGS:
-					Id:SETTINGS
 					X:(PARENT_RIGHT - WIDTH)/2
 					Y:100
 					Width:160
@@ -183,7 +162,6 @@ Container@INGAME_ROOT:
 					Text:Paramètres
 					Font:Bold
 				Button@MUSIC:
-					Id:MUSIC
 					X:(PARENT_RIGHT - WIDTH)/2
 					Y:140
 					Width:160
@@ -191,7 +169,6 @@ Container@INGAME_ROOT:
 					Text:Musique
 					Font:Bold
 				Button@SURRENDER:
-					Id:SURRENDER
 					X:(PARENT_RIGHT - WIDTH)/2
 					Y:180
 					Width:160
@@ -199,7 +176,6 @@ Container@INGAME_ROOT:
 					Text:Abandonner
 					Font:Bold
 				Button@DISCONNECT:
-					Id:DISCONNECT
 					X:(PARENT_RIGHT - WIDTH)/2
 					Y:220
 					Width:160
@@ -207,7 +183,6 @@ Container@INGAME_ROOT:
 					Text:Quitter la Mission
 					Font:Bold
 		Background@DIPLOMACY_BG:
-			Id:DIPLOMACY_BG
 			Logic:DiplomacyLogic
 			X:(WINDOW_RIGHT - WIDTH)/2
 			Y:(WINDOW_BOTTOM - HEIGHT)/2
@@ -216,7 +191,6 @@ Container@INGAME_ROOT:
 			Visible:false
 			Children:
 				Label@LABEL_TITLE:
-					Id:LABEL_TITLE
 					X:(PARENT_RIGHT - WIDTH)/2
 					Y:20
 					Width:250
@@ -225,7 +199,6 @@ Container@INGAME_ROOT:
 					Align:Center
 					Font:Bold
 		ChatDisplay@CHAT_DISPLAY:
-			Id:CHAT_DISPLAY
 			X:250
 			Y:WINDOW_BOTTOM - HEIGHT - 30
 			Width: 760
@@ -234,7 +207,6 @@ Container@INGAME_ROOT:
 			RemoveTime:250
 			UseContrast: yes
 		ChatEntry@CHAT_ENTRY:
-			Id:CHAT_ENTRY
 			X:250
 			Y:WINDOW_BOTTOM - HEIGHT
 			Width: 760
@@ -242,7 +214,6 @@ Container@INGAME_ROOT:
 			UseContrast: yes
 		Background@PERF_BG:
 			ClickThrough:true
-			Id:PERF_BG
 			Background:dialog4
 			Logic:PerfDebugLogic
 			X:10
@@ -251,19 +222,16 @@ Container@INGAME_ROOT:
 			Height: 250
 			Children:
 				PerfGraph@GRAPH:
-					Id:GRAPH
 					X:5
 					Y:5
 					Width:200
 					Height:200
 				Label@TEXT:
-					Id:TEXT
 					X:20
 					Y:205
 					Width:170
 					Height:40
 Container@OBSERVER_ROOT:
-	Id:OBSERVER_ROOT
 	Visible:true
 	Logic:IngameObserverChromeLogic
 	Children:
@@ -278,11 +246,9 @@ Container@OBSERVER_ROOT:
 			Width:WINDOW_RIGHT
 			Height:WINDOW_BOTTOM
 		Timer@GAME_TIMER:
-			Id:GAME_TIMER
 			X: WINDOW_RIGHT/2
 			Y: 0-10
 		Background@POSTGAME_BG:
-			Id:POSTGAME_BG
 			X:(WINDOW_RIGHT - WIDTH)/2
 			Y:(WINDOW_BOTTOM - HEIGHT)/2
 			Width:400
@@ -291,14 +257,12 @@ Container@OBSERVER_ROOT:
 			Visible:false
 			Children:
 				Label@TEXT:
-					Id:TEXT
 					X:(PARENT_RIGHT - WIDTH)/2
 					Y:0
 					Width:200
 					Height:80
 					Align:Center
 				Button@POSTGAME_OBSERVE:
-					Id:POSTGAME_OBSERVE
 					X:10
 					Y:(PARENT_BOTTOM - HEIGHT - 10)
 					Width:150
@@ -306,7 +270,6 @@ Container@OBSERVER_ROOT:
 					Font:Bold
 					Text:Observer
 				Button@POSTGAME_QUIT:
-					Id:POSTGAME_QUIT
 					X:(PARENT_RIGHT - WIDTH - 10)
 					Y:(PARENT_BOTTOM - HEIGHT - 10)
 					Width:150
@@ -314,20 +277,18 @@ Container@OBSERVER_ROOT:
 					Font:Bold
 					Text:Quitter
 		SupportPowerBin@INGAME_POWERS_BIN:
-			Id:INGAME_POWERS_BIN
 			X:0
 			Y:25
 		Button@INGAME_OPTIONS_BUTTON:
-			Id:INGAME_OPTIONS_BUTTON
 			X:0
 			Y:0
 			Width:160
 			Height:25
 			Text:Options
 			Font:Bold
+			Key:escape
 		WorldTooltip:
 		Background@INGAME_OPTIONS_BG:
-			Id:INGAME_OPTIONS_BG
 			X:(WINDOW_RIGHT - WIDTH)/2
 			Y:(WINDOW_BOTTOM - HEIGHT)/2
 			Width:300
@@ -335,7 +296,6 @@ Container@OBSERVER_ROOT:
 			Visible:false
 			Children:
 				Label@LABEL_TITLE:
-					Id:LABEL_TITLE
 					X:(PARENT_RIGHT - WIDTH)/2
 					Y:20
 					Width:250
@@ -344,15 +304,14 @@ Container@OBSERVER_ROOT:
 					Align:Center
 					Font:Bold
 				Button@RESUME:
-					Id:RESUME
 					X:(PARENT_RIGHT - WIDTH)/2
 					Y:60
 					Width:160
 					Height:25
 					Text:Reprendre
 					Font:Bold
+					Key:escape
 				Button@SETTINGS:
-					Id:SETTINGS
 					X:(PARENT_RIGHT - WIDTH)/2
 					Y:100
 					Width:160
@@ -360,7 +319,6 @@ Container@OBSERVER_ROOT:
 					Text:Paramètres
 					Font:Bold
 				Button@MUSIC:
-					Id:MUSIC
 					X:(PARENT_RIGHT - WIDTH)/2
 					Y:140
 					Width:160
@@ -368,7 +326,6 @@ Container@OBSERVER_ROOT:
 					Text:Musique
 					Font:Bold
 				Button@SURRENDER:
-					Id:SURRENDER
 					X:(PARENT_RIGHT - WIDTH)/2
 					Y:180
 					Width:160
@@ -376,7 +333,6 @@ Container@OBSERVER_ROOT:
 					Text:Abandonner
 					Font:Bold
 				Button@DISCONNECT:
-					Id:DISCONNECT
 					X:(PARENT_RIGHT - WIDTH)/2
 					Y:220
 					Width:160
@@ -384,22 +340,21 @@ Container@OBSERVER_ROOT:
 					Text:Quitter la Mission
 					Font:Bold
 		ChatDisplay@CHAT_DISPLAY:
-			Id:CHAT_DISPLAY
 			X:250
 			Y:WINDOW_BOTTOM - HEIGHT - 30
 			Width: 760
 			Height: 200
 			DrawBackground: False
 			RemoveTime:250
+			UseContrast: yes
 		ChatEntry@CHAT_ENTRY:
-			Id:CHAT_ENTRY
 			X:250
 			Y:WINDOW_BOTTOM - HEIGHT
 			Width: 760
 			Height: 30
+			UseContrast: yes
 		Background@PERF_BG:
 			ClickThrough:true
-			Id:PERF_BG
 			Background:dialog4
 			Logic:PerfDebugLogic
 			X:10
@@ -408,25 +363,21 @@ Container@OBSERVER_ROOT:
 			Height: 250
 			Children:
 				PerfGraph@GRAPH:
-					Id:GRAPH
 					X:5
 					Y:5
 					Width:200
 					Height:200
 				Label@TEXT:
-					Id:TEXT
 					X:20
 					Y:205
 					Width:170
 					Height:40
 Background@FMVPLAYER:
-	Id:FMVPLAYER
 	Width:WINDOW_RIGHT
 	Height:WINDOW_BOTTOM
 	Background:dialog4
 	Children:
 		VqaPlayer@PLAYER:
-			Id:PLAYER
 			X:0
 			Y:0
 			Width:WINDOW_RIGHT
