@@ -1,0 +1,19 @@
+V01:
+	Tooltip:
+		Name: Église
+
+V01.Husk:
+	Tooltip:
+		Name: Église (Détruite)
+
+BARB:
+	Tooltip:
+		Name: Clôture grillagé
+
+WOOD:
+	Tooltip:
+		Name: Clôture en bois
+
+VICE:
+	Tooltip:
+		Name: Viceroïd
