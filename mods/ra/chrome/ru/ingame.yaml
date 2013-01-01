@@ -53,15 +53,15 @@ Container@INGAME_ROOT:
 		SupportPowerBin@INGAME_POWERS_BIN:
 			X:0
 			Y:25
-			ReadyText: READY
-			HoldText: ON HOLD
+			ReadyText: ГОТОВ
+			HoldText: ПАУЗА
 		BuildPalette@INGAME_BUILD_PALETTE:
 			X:WINDOW_RIGHT - 250
 			Y:280
 			Width:250
 			Height:500
-			ReadyText: Готов
-			HoldText: Пауза
+			ReadyText: ГОТОВ
+			HoldText: ПАУЗА
 			RequiresText: Требует
 		Button@INGAME_OPTIONS_BUTTON:
 			X:0
