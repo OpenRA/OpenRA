@@ -110,8 +110,8 @@ Container@INGAME_ROOT:
 					Width:30
 					Height:30
 					Image:sell
-					Description:Sell
-					LongDesc:Sell buildings, reclaiming a \nproportion of their build cost
+					Description:Продать
+					LongDesc:Продавать строения, за часть \nих стоимости
 				OrderButton@POWER_DOWN:
 					Logic:OrderButtonsChromeLogic
 					X:39
@@ -119,8 +119,8 @@ Container@INGAME_ROOT:
 					Width:30
 					Height:30
 					Image:power
-					Description:Powerdown
-					LongDesc:Disable unneeded structures so their \npower can be used elsewhere
+					Description:Отключение
+					LongDesc:Отключить ненужные строения, их энергия \nможет быть использована в других целях
 				OrderButton@REPAIR:
 					Logic:OrderButtonsChromeLogic
 					X:75
@@ -128,8 +128,8 @@ Container@INGAME_ROOT:
 					Width:30
 					Height:30
 					Image:repair
-					Description:Repair
-					LongDesc:Repair damaged buildings
+					Description:Ремонт
+					LongDesc:Отремонтировать повреждённые строения
 		WorldTooltip:
 		Background@INGAME_OPTIONS_BG:
 			X:(WINDOW_RIGHT - WIDTH)/2
