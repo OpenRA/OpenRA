@@ -500,7 +500,7 @@ namespace OpenRA.Mods.RA.Missions
 
 	class Allies04TryRepairBuildingInfo : ITraitInfo
 	{
-		public readonly string Player;
+		public readonly string Player = null;
 
 		public object Create(ActorInitializer init) { return new Allies04TryRepairBuilding(this); }
 	}
