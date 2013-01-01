@@ -1,153 +1,93 @@
 Background@JOINSERVER_BG:
-	Id:JOINSERVER_BG
 	Logic:ServerBrowserLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
-	Width:700
-	Height:410
+	Width:540
+	Height:535
 	Children:
 		Label@JOINSERVER_LABEL_TITLE:
-			Id:JOINSERVER_LABEL_TITLE
 			X:0
 			Y:20
 			Width:PARENT_RIGHT
 			Height:25
-			Text:Соединиться с сервером
+			Text:Зайти на сервер
 			Align:Center
 			Font:Bold
 		ScrollPanel@SERVER_LIST:
-			Id:SERVER_LIST
 			X:20
 			Y:50
-			Width:390
-			Height:300
+			Width:500
+			Height:425
 			Children:
 				ScrollItem@SERVER_TEMPLATE:
-					Id:SERVER_TEMPLATE
 					Width:PARENT_RIGHT-27
-					Height:25
+					Height:68
 					X:2
 					Y:0
 					Children:
+						MapPreview@MAP_PREVIEW:
+							X:2
+							Y:2
+							Width:64
+							Height:64
+							ShowSpawnPoints:no
 						Label@TITLE:
-							X:10
-							Id:TITLE
+							X:70
 							Width:200
 							Height:25
-		Label@JOINSERVER_PROGRESS_TITLE:
-			Id:JOINSERVER_PROGRESS_TITLE
-			X:150
+							Font:Bold
+						Label@MAP:
+							X:70
+							Y:20
+							Width:250
+							Height:25
+						Label@PLAYERS:
+							X:70
+							Y:40
+							Width:50
+							Height:25
+						Label@STATE:
+							Width:140
+							X:PARENT_RIGHT-150
+							Align:Right
+							Height:25
+							Font:Bold
+						Label@IP:
+							Width:140
+							X:PARENT_RIGHT-150
+							Y:20
+							Align:Right
+							Height:25
+						Label@VERSION:
+							Width:140
+							X:PARENT_RIGHT-150
+							Y:40
+							Align:Right
+							Height:25
+						
+		Label@PROGRESS_LABEL:
+			X:(PARENT_RIGHT - WIDTH) / 2
 			Y:PARENT_BOTTOM / 2 - HEIGHT
 			Width:150
 			Height:30
-			Text:Поиск игр...
-			Align:Center
-		Container@SERVER_INFO:
-			Id:SERVER_INFO
-			X:0
-			Y:0
-			Width:PARENT_RIGHT
-			Height:PARENT_BOTTOM
-			Visible:false
-			Children:
-				MapPreview@MAP_PREVIEW:
-					Id:MAP_PREVIEW
-					X:PARENT_RIGHT-241
-					Y:30
-					Width:192
-					Height:192
-				Label@SERVER_IP_LABEL:
-					Id:SERVER_IP_LABEL
-					X:PARENT_RIGHT - 200 - WIDTH
-					Y:230
-					Align:Right
-					Width:70
-					Height:20
-					Text:Сервер:
-					Font:Bold
-				Label@SERVER_IP:
-					Id:SERVER_IP
-					X:PARENT_RIGHT - 195
-					Y:230
-					Align:Left
-					Width:70
-					Height:20
-				Label@MAP_PLAYERS_LABEL:
-					Id:MAP_PLAYERS_LABEL
-					X:PARENT_RIGHT - 200 - WIDTH
-					Y:250
-					Align:Right
-					Width:70
-					Height:20
-					Text:Игроки:
-					Font:Bold
-				Label@MAP_PLAYERS:
-					Id:MAP_PLAYERS
-					X:PARENT_RIGHT - 195
-					Y:250
-					Align:Left
-					Width:70
-					Height:20
-				Label@MAP_TITLE_LABEL:
-					Id:MAP_TITLE_LABEL
-					X:PARENT_RIGHT - 200 - WIDTH
-					Y:270
-					Align:Right
-					Width:70
-					Height:20
-					Text:Карта:
-					Font:Bold
-				Label@MAP_TITLE:
-					Id:MAP_TITLE
-					X:PARENT_RIGHT - 195
-					Y:270
-					Align:Left
-					Width:70
-					Height:20
-				Label@SERVER_MODS_LABEL:
-					Id:SERVER_MODS_LABEL
-					X:PARENT_RIGHT - 200 - WIDTH
-					Y:290
-					Align:Right
-					Width:70
-					Height:20
-					Text:Моды:
-					Font:Bold
-				Label@SERVER_MODS:
-					Id:SERVER_MODS
-					X:PARENT_RIGHT - 195
-					Y:293
-					Align:Left
-					VAlign:Top
-					Width:70
-					Height:20
-		Button@DIRECTCONNECT_BUTTON:
-			Id:DIRECTCONNECT_BUTTON
-			X:20
-			Y:PARENT_BOTTOM - 45
-			Width:120
-			Height:25
-			Text:Прямой контакт
-			Font:Bold
+			Text:Получение списка игр...
+			Align:Center	
 		Button@REFRESH_BUTTON:
-			Id:REFRESH_BUTTON
-			X:160
+			X:20
 			Y:PARENT_BOTTOM - 45
 			Width:120
 			Height:25
 			Text:Обновить
 			Font:Bold
 		Button@JOIN_BUTTON:
-			Id:JOIN_BUTTON
 			X:PARENT_RIGHT - 140 - 130
 			Y:PARENT_BOTTOM - 45
 			Width:120
 			Height:25
-			Text:Присоединиться
+			Text:Подключиться
 			Font:Bold
 			Key:return
-		Button@CANCEL_BUTTON:
-			Id:CANCEL_BUTTON
+		Button@BACK_BUTTON:
 			X:PARENT_RIGHT - 140
 			Y:PARENT_BOTTOM - 45
 			Width:120
@@ -156,7 +96,6 @@ Background@JOINSERVER_BG:
 			Font:Bold
 			Key:escape
 Background@DIRECTCONNECT_BG:
-	Id:DIRECTCONNECT_BG
 	Logic:DirectConnectLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
@@ -164,40 +103,41 @@ Background@DIRECTCONNECT_BG:
 	Height:155
 	Children:
 		Label@DIRECTCONNECT_LABEL_TITLE:
-			Id:DIRECTCONNECT_LABEL_TITLE
 			X:0
 			Y:20
 			Width:400
 			Height:25
-			Text:Прямой контакт
+			Text:Прямое подключение
 			Align:Center
 			Font:Bold
 		Label@ADDRESS_LABEL:
-			Id:ADDRESS_LABEL
 			X:50
 			Y:59
 			Width:95
 			Height:25
 			Align:Right
 			Text:Адрес сервера:
-		TextField@SERVER_ADDRESS:
-			Id:SERVER_ADDRESS
+		TextField@IP:
 			X:150
 			Y:60
-			Width:200
+			Width:160
 			MaxLength:50
 			Height:25
+		TextField@PORT:
+			X:315
+			Y:60
+			Width:55
+			MaxLength:5
+			Height:25
 		Button@JOIN_BUTTON:
-			Id:JOIN_BUTTON
 			X:130
 			Y:PARENT_BOTTOM - 45
 			Width:120
 			Height:25
-			Text:Присоединиться
+			Text:Подключиться
 			Font:Bold
 			Key:return
-		Button@CANCEL_BUTTON:
-			Id:CANCEL_BUTTON
+		Button@BACK_BUTTON:
 			X:260
 			Y:PARENT_BOTTOM - 45
 			Width:120
@@ -205,8 +145,7 @@ Background@DIRECTCONNECT_BG:
 			Text:Отмена
 			Font:Bold
 			Key:escape
-Background@CONNECTION_FAILED_BG:
-	Id:CONNECTION_FAILED_BG
+Background@CONNECTIONFAILED_PANEL:
 	Logic:ConnectionFailedLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
@@ -214,24 +153,21 @@ Background@CONNECTION_FAILED_BG:
 	Height:150
 	Children:
 		Label@CONNECTION_FAILED_TITLE:
-			Id:CONNECTION_FAILED_TITLE
 			X:0
 			Y:20
 			Width:450
 			Height:25
-			Text:Соединение не удалось
+			Text:Ошибка подключения
 			Align:Center
 			Font:Bold
-		Label@CONNECTION_FAILED_DESC:
-			Id:CONNECTION_FAILED_DESC
+		Label@CONNECTING_DESC:
 			X:0
 			Y:60
 			Width:PARENT_RIGHT
 			Height:25
-			Text:Невозможно соединиться с AAA.BBB.CCC.DDD:EEEE
+			Text:Не смог подключиться к AAA.BBB.CCC.DDD:EEEE
 			Align:Center
-		Button@CONNECTION_BUTTON_RETRY:
-			Id:CONNECTION_BUTTON_RETRY
+		Button@RETRY_BUTTON:
 			X:PARENT_RIGHT - 360
 			Y:PARENT_BOTTOM - 45
 			Width:160
@@ -239,8 +175,7 @@ Background@CONNECTION_FAILED_BG:
 			Text:Повторить
 			Font:Bold
 			Key:return
-		Button@CONNECTION_BUTTON_CANCEL:
-			Id:CONNECTION_BUTTON_CANCEL
+		Button@ABORT_BUTTON:
 			X:PARENT_RIGHT - 180
 			Y:PARENT_BOTTOM - 45
 			Width:160
@@ -248,37 +183,33 @@ Background@CONNECTION_FAILED_BG:
 			Text:Отмена
 			Font:Bold
 			Key:escape
-Background@CONNECTING_BG:
-	Id:CONNECTING_BG
-	Logic:ConnectionDialogsLogic
+Background@CONNECTING_PANEL:
+	Logic:ConnectionLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Width:450
 	Height:150
 	Children:
 		Label@CONNECTING_TITLE:
-			Id:CONNECTING_TITLE
 			X:0
 			Y:20
 			Width:450
 			Height:25
-			Text:Соединение
+			Text:Подключение
 			Align:Center
 			Font:Bold
 		Label@CONNECTING_DESC:
-			Id:CONNECTING_DESC
 			X:0
 			Y:60
 			Width:PARENT_RIGHT
 			Height:25
-			Text:Соединяется с AAA.BBB.CCC.DDD:EEEE...
+			Text:Подключение к AAA.BBB.CCC.DDD:EEEE...
 			Align:Center
-		Button@CONNECTION_BUTTON_ABORT:
-			Id:CONNECTION_BUTTON_ABORT
+		Button@ABORT_BUTTON:
 			X:PARENT_RIGHT - 180
 			Y:PARENT_BOTTOM - 45
 			Width:160
 			Height:25
-			Text:Прервать
+			Text:Разорвать
 			Font:Bold
 			Key:escape
