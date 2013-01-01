@@ -111,7 +111,7 @@ Container@INGAME_ROOT:
 					Height:30
 					Image:sell
 					Description:Vendre
-					LongDesc:Vend un bâtiment, permet de récupérer d'une partie de son coût de production
+					LongDesc:Vend un bâtiment et récupère d'une partie de son coût de production
 				OrderButton@POWER_DOWN:
 					Logic:OrderButtonsChromeLogic
 					X:39

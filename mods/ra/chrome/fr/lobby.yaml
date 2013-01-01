@@ -314,7 +314,7 @@ Background@SERVER_LOBBY:
 					Visible:false
 					Children:
 						Button@SPECTATE:
-							Text:Observer
+							Text:Spectateur
 							Font:Regular
 							Width:278
 							Height:25

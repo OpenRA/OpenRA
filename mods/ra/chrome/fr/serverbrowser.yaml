@@ -116,7 +116,7 @@ Background@DIRECTCONNECT_BG:
 			Width:95
 			Height:25
 			Align:Right
-			Text:Adresse du Serveur:
+			Text:Adresse du serveur:
 		TextField@IP:
 			X:150
 			Y:60
