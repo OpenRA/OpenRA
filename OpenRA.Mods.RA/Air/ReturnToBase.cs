@@ -53,8 +53,8 @@ namespace OpenRA.Mods.RA.Air
 			var speed = .2f * aircraft.MovementSpeed;
 
             /* if the aircraft is on the ground, it will take off to the cruise altitude first before approaching */
-            var altitude = aircraft.Altitude;
-            if (altitude == 0) altitude = self.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
+			var altitude = aircraft.Altitude;
+			if (altitude == 0) altitude = self.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
 
 			var approachStart = landPos.ToFloat2() - new float2(altitude * speed, 0);
 			var turnRadius = (128f / self.Info.Traits.Get<AircraftInfo>().ROT) * speed / (float)Math.PI;
