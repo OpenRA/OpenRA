@@ -62,7 +62,7 @@ Container@INGAME_ROOT:
 			Height:500
 			ReadyText: READY
 			HoldText: ON HOLD
-			RequiresText: Requires
+			RequiresText: Требует
 		Button@INGAME_OPTIONS_BUTTON:
 			X:0
 			Y:0
