@@ -60,8 +60,8 @@ Container@INGAME_ROOT:
 			Y:280
 			Width:250
 			Height:500
-			ReadyText: READY
-			HoldText: ON HOLD
+			ReadyText: Готов
+			HoldText: Пауза
 			RequiresText: Требует
 		Button@INGAME_OPTIONS_BUTTON:
 			X:0
