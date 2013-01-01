@@ -1,12 +1,16 @@
 Player:
 	HackyAI@EasyAI:
 		Name:Лёгкий AI
-#	HackyAI@NormalAI:
-#		Name:Средний AI
 	HackyAI@HardAI:
 		Name:Сложный AI
+	HackyAI@OptiAI:
+		Name:Эйзенхауэр AI
+	HackyAI@ZhukovAI:
+		Name:Жуков AI
+	HackyAI@RommelAI:
+		Name:Роммель AI
 
-World:	
+World:
 	Country@0:
 		Name: Альянс
 	Country@1:
