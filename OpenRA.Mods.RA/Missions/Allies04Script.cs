@@ -168,9 +168,7 @@ namespace OpenRA.Mods.RA.Missions
 				OnObjectivesUpdated(true);
 				MissionFailed("The remaining Allied forces in the area have been wiped out.");
 			}
-			else if (!world.Actors.Any(a => a.Owner == soviets && a.IsInWorld && !a.IsDead()
-				&& a.HasTrait<Building>() && !a.HasTrait<Wall>() && !a.HasTrait<Allies04TrivialBuilding>() && a != lab)
-				&& objectives[InfiltrateID].Status == ObjectiveStatus.Completed)
+			else if (SovietBaseDestroyed() && objectives[InfiltrateID].Status == ObjectiveStatus.Completed)
 			{
 				objectives[DestroyID].Status = ObjectiveStatus.Completed;
 				OnObjectivesUpdated(true);
@@ -178,11 +176,15 @@ namespace OpenRA.Mods.RA.Missions
 			}
 		}
 
+		bool SovietBaseDestroyed()
+		{
+			return !world.Actors.Any(a => a.Owner == soviets && a.IsInWorld && !a.IsDead()
+				&& a.HasTrait<Building>() && !a.HasTrait<Wall>() && !a.HasTrait<Allies04TrivialBuilding>() && a != lab);
+		}
+
 		void OnDestroyBaseTimerExpired(CountdownTimer t)
 		{
-			if (!world.Actors.Any(a => a.Owner == soviets && a.IsInWorld && !a.IsDead()
-				&& a.HasTrait<Building>() && !a.HasTrait<Wall>() && !a.HasTrait<Allies04TrivialBuilding>() && a != lab)
-				&& objectives[InfiltrateID].Status == ObjectiveStatus.Completed)
+			if (SovietBaseDestroyed() && objectives[InfiltrateID].Status == ObjectiveStatus.Completed)
 			{
 				return;
 			}
@@ -407,11 +409,11 @@ namespace OpenRA.Mods.RA.Missions
 			reinforcementsUnloadPoint = actors["ReinforcementsUnloadPoint"];
 			patrols = new[]
 			{
-				new Patrol(world, new[]{ "e1", "e1", "e1", "e1", "e1" }, soviets, patrolPoints1, 0),
-				new Patrol(world, new[]{ "e1", "dog.patrol", "dog.patrol" }, soviets, patrolPoints2, 3),
-				new Patrol(world, new[]{ "e1", "dog.patrol", "dog.patrol" }, soviets, patrolPoints3, 0),
-				new Patrol(world, new[]{ "e1", "dog.patrol", "dog.patrol" }, soviets, patrolPoints4, 0),
-				new Patrol(world, new[]{ "e1", "dog.patrol", "dog.patrol" }, soviets, patrolPoints5, 0),
+				new Patrol(world, new[] { "e1", "e1", "e1", "e1", "e1" }, soviets, patrolPoints1, 0),
+				new Patrol(world, new[] { "e1", "dog.patrol", "dog.patrol" }, soviets, patrolPoints2, 3),
+				new Patrol(world, new[] { "e1", "dog.patrol", "dog.patrol" }, soviets, patrolPoints3, 0),
+				new Patrol(world, new[] { "e1", "dog.patrol", "dog.patrol" }, soviets, patrolPoints4, 0),
+				new Patrol(world, new[] { "e1", "dog.patrol", "dog.patrol" }, soviets, patrolPoints5, 0),
 			};
 			objectives[InfiltrateID].Text = Infiltrate.F(allies1 != allies2 ? "spies" : "spy");
 			OnObjectivesUpdated(false);
