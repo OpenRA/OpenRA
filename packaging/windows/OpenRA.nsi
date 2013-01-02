@@ -83,6 +83,7 @@ Section "Client" Client
 	File "${SRCDIR}\OpenRA.Renderer.Cg.dll"
 	File "${SRCDIR}\OpenRA.Renderer.Null.dll"
 	File "${SRCDIR}\ICSharpCode.SharpZipLib.dll"
+	File "${SRCDIR}\FuzzyLogicLibrary.dll"
 	File "${SRCDIR}\COPYING"
 	File "${SRCDIR}\HACKING"
 	File "${SRCDIR}\INSTALL"
@@ -260,6 +261,7 @@ Function ${UN}Clean
 	Delete $INSTDIR\OpenRA.Renderer.Null.dll
 	Delete $INSTDIR\OpenRA.Renderer.SdlCommon.dll
 	Delete $INSTDIR\ICSharpCode.SharpZipLib.dll
+	Delete $INSTDIR\FuzzyLogicLibrary.dll
 	Delete $INSTDIR\Tao.*.dll
 	Delete $INSTDIR\COPYING
 	Delete $INSTDIR\HACKING
