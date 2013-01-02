@@ -168,13 +168,13 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			if (world.FrameNumber >= ReinforcementsTicks1 && currentReinforcement1 < Reinforcements1.Length)
 			{
-				if (world.FrameNumber == ReinforcementsTicks1) { Sound.Play("reinfor1.aud"); }
-				if (world.FrameNumber % 25 == 0) { SpawnAlliedUnit(Reinforcements1[currentReinforcement1++]); }
+				if (world.FrameNumber == ReinforcementsTicks1) Sound.Play("reinfor1.aud");
+				if (world.FrameNumber % 25 == 0) SpawnAlliedUnit(Reinforcements1[currentReinforcement1++]);
 			}
 			if (world.FrameNumber >= ReinforcementsTicks2 && currentReinforcement2 < Reinforcements2.Length)
 			{
-				if (world.FrameNumber == ReinforcementsTicks2) { Sound.Play("reinfor1.aud"); }
-				if (world.FrameNumber % 25 == 0) { SpawnAlliedUnit(Reinforcements2[currentReinforcement2++]); }
+				if (world.FrameNumber == ReinforcementsTicks2) Sound.Play("reinfor1.aud");
+				if (world.FrameNumber % 25 == 0) SpawnAlliedUnit(Reinforcements2[currentReinforcement2++]);
 			}
 			if (sovietParadrops > 0)
 			{

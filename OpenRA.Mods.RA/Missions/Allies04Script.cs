@@ -248,6 +248,14 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			lst.QueueActivity(new Move.Move(reinforcementsUnloadPoint.Location));
 			lst.QueueActivity(new Wait(10));
+			lst.QueueActivity(new CallFunc(() =>
+			{
+				allies1.PlayerActor.Trait<PlayerResources>().GiveCash(allies1 == allies2 ? 5000 : 2500);
+				if (allies1 != allies2)
+				{
+					allies2.PlayerActor.Trait<PlayerResources>().GiveCash(2500);
+				}
+			}));
 			lst.QueueActivity(new UnloadCargo(true));
 			lst.QueueActivity(new Wait(10));
 			lst.QueueActivity(new Move.Move(reinforcementsEntryPoint.Location));
@@ -418,6 +426,15 @@ namespace OpenRA.Mods.RA.Missions
 			objectives[InfiltrateID].Text = Infiltrate.F(allies1 != allies2 ? "spies" : "spy");
 			OnObjectivesUpdated(false);
 			SetupSubStances();
+			var res = allies1.PlayerActor.Trait<PlayerResources>();
+			res.TakeOre(res.Ore);
+			res.TakeCash(res.Cash);
+			if (allies1 != allies2)
+			{
+				res = allies2.PlayerActor.Trait<PlayerResources>();
+				res.TakeOre(res.Ore);
+				res.TakeCash(res.Cash);
+			}
 			Game.MoveViewport(lstEntryPoint.Location.ToFloat2());
 			MissionUtils.PlayMissionMusic();
 		}
