@@ -61,7 +61,7 @@ MSAM:
 MLRS:
 	Tooltip:
 		Name: SSM Launcher
-		Description: Long range artillery.\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks, Aircraft
+		Description: Long range artillery with napalm.\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks, Aircraft
 
 STNK:
 	Tooltip:
