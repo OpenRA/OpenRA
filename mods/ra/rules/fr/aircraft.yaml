@@ -9,17 +9,17 @@ BADR.bomber:
 MIG:
 	Tooltip:
 		Name: Mig
-		Description: Avion d'attaque au sol rapide.\n  Fort contre les Bâtiments\n  Faible contre l'Infanterie et les Véhicules Legers
+		Description: Avion d'attaque au sol rapide.\n  Fort contre les bâtiments\n  Faible contre l'infanterie et les véhicules Legers
 
 YAK:
 	Tooltip:
 		Name: Yak
-		Description: Avion Anti-Tanks et Anti-Infanterie.\n  Fort contre l'Infanterie et les Tanks\n  Faible contre les Bâtiments
+		Description: Avion Anti-tanks et Anti-infanterie.\n  Fort contre l'infanterie et les tanks\n  Faible contre les bâtiments
 
 TRAN:
 	Tooltip:
 		Name: Hélicoptère Chinook
-		Description: Transporteur d'Infanterie rapide.\n  |Désarmé|
+		Description: Transporteur d'infanterie rapide.\n  (Désarmé)
 
 TRAN.Husk1:
 	Tooltip:
@@ -32,9 +32,9 @@ TRAN.Husk2:
 HELI:
 	Tooltip:
 		Name: Hélicoptère d'attaque
-		Description: Apache Longbow armé de missiles.\n  Fort contre les Tanks\n  Faible contre l'Infanterie
+		Description: Apache Longbow armé de missiles.\n  Fort contre les tanks\n  Faible contre l'infanterie
 
 HIND:
 	Tooltip:
 		Name: Hind
-		Description: Hélicoptère armé de mitrailleuses.\n  Fort contre l'Infanterie et les Véhicules\nLegers.\n  Faible contre les Tanks
+		Description: Hélicoptère armé de mitrailleuses.\n  Fort contre l'infanterie et les véhicules\nLegers.\n  Faible contre les tanks

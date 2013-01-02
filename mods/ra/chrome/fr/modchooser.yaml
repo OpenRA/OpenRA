@@ -6,7 +6,7 @@ Background@MODS_PANEL:
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Children:
 		Label@TITLE:
-			Text:Selection du Mod
+			Text:Sélection du mod
 			Width:PARENT_RIGHT
 			Y:20
 			Font:Bold
@@ -81,4 +81,4 @@ Background@MODS_PANEL:
 			Width:160
 			Height:25
 			Font:Bold
-			Text:Charger Mod
+			Text:Charger le mod

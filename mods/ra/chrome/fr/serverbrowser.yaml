@@ -10,7 +10,7 @@ Background@JOINSERVER_BG:
 			Y:20
 			Width:PARENT_RIGHT
 			Height:25
-			Text:Rejoindre Serveur
+			Text:Rejoindre un serveur
 			Align:Center
 			Font:Bold
 		ScrollPanel@SERVER_LIST:
@@ -107,7 +107,7 @@ Background@DIRECTCONNECT_BG:
 			Y:20
 			Width:400
 			Height:25
-			Text:Connexion Directe
+			Text:Connexion directe
 			Align:Center
 			Font:Bold
 		Label@ADDRESS_LABEL:
