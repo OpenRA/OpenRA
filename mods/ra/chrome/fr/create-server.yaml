@@ -10,7 +10,7 @@ Background@CREATESERVER_BG:
 			Y:20
 			Width:400
 			Height:25
-			Text:Créer un Serveur
+			Text:Créer un serveur
 			Align:Center
 			Font:Bold
 		Label@SERVER_NAME_LABEL:
@@ -19,7 +19,7 @@ Background@CREATESERVER_BG:
 			Width:95
 			Height:25
 			Align: Right
-			Text:Nom de la Partie:
+			Text:Nom de la partie:
 		TextField@SERVER_NAME:
 			X:150
 			Y:60
@@ -33,14 +33,14 @@ Background@CREATESERVER_BG:
 			Width:95
 			Height:25
 			Align: Right
-			Text:Port Externe:
+			Text:Port externe:
 		TextField@EXTERNAL_PORT:
 			X:150
 			Y:95
 			Width:50
 			MaxLength:5
 			Height:25
-			Text:Partie d'OpenRA
+			Text:Partie OpenRA
 		Label@LISTEN_PORT_LABEL:
 			X:210
 			Y:94

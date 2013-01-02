@@ -6,17 +6,17 @@ SS:
 MSUB:
 	Tooltip:
 		Name: Sous-marin lance-missiles
-		Description: Submersible armée de missiles ballistiques mer-sol de longue portée.\n  Fort contre les Bâtiments\n  Faible contre tout\n  Capacité spéciale: Submersion
+		Description: Submersible armée de missiles ballistiques mer-sol de longue portée.\n  Fort contre les bâtiments\n  Faible contre tout\n  Capacité spéciale: Submersion
 
 DD:
 	Tooltip:
 		Name: Contre-torpilleur
-		Description: Navire polyvalent et rapide.\n  Fort contre les Sous-marins et l'Aviation\n  Faible contre l'Infanterie et les Tanks
+		Description: Navire polyvalent et rapide.\n  Fort contre les Sous-marins et l'aviation\n  Faible contre l'infanterie et les tanks
 
 CA:
 	Tooltip:
 		Name: Croiseur
-		Description: Navire longue portée et très lent.\n  Fort contre les Bâtiments\n  Faible contre les Navires et Sous-marins.
+		Description: Navire longue portée et très lent.\n  Fort contre les bâtiments\n  Faible contre les Navires et Sous-marins.
 
 LST:
 	Tooltip:
@@ -26,4 +26,4 @@ LST:
 PT:
 	Tooltip:
 		Name: Aviso-torpilleur
-		Description: Navire de soutient rapide et léger.\n  Fort contre les Navires et les Sous-marins\n  Faible contre l'Aviation
+		Description: Navire de soutient rapide et léger.\n  Fort contre les Navires et les Sous-marins\n  Faible contre l'aviation

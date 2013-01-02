@@ -1,52 +1,52 @@
 DOG:
 	Tooltip:
 		Name: Chien d'attaque
-		Description: Unite Anti-Infanterie.\nDétecte les Espions déguisés.\n  Fort contre l'Infanterie\n  Faible contre les Véhicules
+		Description: Unite Anti-infanterie.\nDétecte les Espions déguisés.\n  Fort contre l'infanterie\n  Faible contre les véhicules
 
 E1:
 	Tooltip:
 		Name: Mitrailleur
-		Description: Unité d'infanterie de base.\n  Fort contre l'Infanterie\n  Faible contre les Véhicules
+		Description: Unité d'infanterie de base.\n  Fort contre l'infanterie\n  Faible contre les véhicules
 
 E2:
 	Tooltip:
 		Name: Grenadier
-		Description: Infanterie armée de grenades.\n  Fort contre les Bâtiments et l'Infanterie\n  Faible contre les Véhicules
+		Description: infanterie armée de grenades.\n  Fort contre les bâtiments et l'infanterie\n  Faible contre les véhicules
 
 E3:
 	Tooltip:
 		Name: Bazooka
-		Description: Infanterie Anti-tank/Anti-aviation.\n  Fort contre les Tanks et l'Aviation\n  Faible contre l'Infanterie
+		Description: infanterie Anti-tank/Anti-aviation.\n  Fort contre les tanks et l'aviation\n  Faible contre l'infanterie
 
 E4:
 	Tooltip:
 		Name: Infanterie lance-flammes
-		Description: Unite avancée anti-infanterie.\n  Fort contre l'Infanterie et les Bâtiments\n  Faible contre les Véhicules
+		Description: Unite avancée anti-infanterie.\n  Fort contre l'infanterie et les bâtiments\n  Faible contre les véhicules
 
 E6:
 	Tooltip:
 		Name: Ingénieur
-		Description: Infiltre et capture les Bâtiments.\n  Fort contre Rien\n  Faible contre Tout.
+		Description: Infiltre et capture les bâtiments.\n  Fort contre rien\n  Faible contre tout.
 
 SPY:
 	SpyToolTip:
 		Name: Espion
-		Description: Infiltre les Bâtiments ennemis pour\ns'informer. L'effet exact dépend du\nBâtiment infiltré.\n  Fort contre Rien\n  Faible contre Tout\n  Capacité spéciale: Déguisement
+		Description: Infiltre les bâtiments ennemis pour\ns'informer. L'effet exact dépend du\nbâtiment infiltré.\n  Fort contre rien\n  Faible contre tout\n  Capacité spéciale: Déguisement
 
 E7:
 	Tooltip:
 		Name: Tanya
-		Description: Commando d'Élite, armée de \ndeux pistolets et de C4.\n  Forte contre l'Infanterie et les Bâtiments\n  Faible contre les Véhicules\n  Capacité spéciale: Détruit les Bâtiments\nau C4
+		Description: Commando d'Élite, armée de \ndeux pistolets et de C4.\n  Forte contre l'infanterie et les bâtiments\n  Faible contre les véhicules\n  Capacité spéciale: Détruit les bâtiments\nau C4
 
 E8:
 	Tooltip:
 		Name: Volkov
-		Description: Cyborg d'élite, armé d'un canon\nmodulaire et d'un lance-grenades.\n  Fort contre les Véhicules et l'Infanterie\n  Faible contre les Avions
+		Description: Cyborg d'élite, armé d'un canon\nmodulaire et d'un lance-grenades.\n  Fort contre les véhicules et l'infanterie\n  Faible contre l'aviation
 
 MEDI:
 	Tooltip:
 		Name: Médecin
-		Description: Soigne les unités proches.\n  Fort contre Rien\n  Faible contre Tout
+		Description: Soigne les unités proches.\n  Fort contre rien\n  Faible contre tout
 
 C1:
 	Tooltip:
@@ -63,9 +63,9 @@ EINSTEIN:
 SHOK:
 	Tooltip:
 		Name: Soldat Tesla
-		Description: Infanterie munie de bobines Tesla.\n  Fort contre l'Infanterie\n  Faible contre les Véhicules
+		Description: infanterie munie de bobines Tesla.\n  Fort contre l'infanterie\n  Faible contre les véhicules
 
 SNIPER:
 	Tooltip:
 		Name: Sniper
-		Description: Unité d'infanterie d'élite.\n  Fort contre l'Infanterie\n  Faible contre les Véhicules
+		Description: Unité d'infanterie d'élite.\n  Fort contre l'infanterie\n  Faible contre les véhicules

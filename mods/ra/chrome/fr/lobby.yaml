@@ -12,7 +12,7 @@ Background@SERVER_LOBBY:
 			Width:800
 			Height:20
 			Font:Bold
-			Text:Lobby Multijoueur d'OpenRA
+			Text:Lobby Multijoueur
 		Background@LOBBY_MAP_BG:
 			X:PARENT_RIGHT-268
 			Y:50

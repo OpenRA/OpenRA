@@ -78,7 +78,7 @@ Background@SETTINGS_MENU:
 					Y:30
 					Width:200
 					Height:20
-					Text: Activer défilement au bord
+					Text: Activer le défilement aux bords
 				Label@EDGE_SCROLL_AMOUNT_LABEL:
 					X:0
 					Y:70
@@ -96,7 +96,7 @@ Background@SETTINGS_MENU:
 					Y:90
 					Width:200
 					Height:20
-					Text: Inverser défilement Souris
+					Text: Inverser le défilement souris
 				Checkbox@TEAMCHAT_TOGGLE:
 					X:0
 					Y:120
@@ -139,7 +139,7 @@ Background@SETTINGS_MENU:
 				Label@SOUND_TICK_TYPE_LABEL:
 					X:0
 					Y:70
-					Text: Bruit d'encaissement
+					Text: Son cagnotte
 				DropDownButton@CASH_TICK_TYPE:
 					X:100
 					Y:60
