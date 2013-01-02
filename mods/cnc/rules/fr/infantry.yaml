@@ -11,7 +11,7 @@ E2:
 E3:
 	Tooltip:
 		Name: Lance-roquette
-		Description: Infanterie Anti-tank/Anti-avion.\n  Fort contre les tanks et l'aviation\n  Faible contre l'infanterie
+		Description: Infanterie anti-tank/anti-avion.\n  Fort contre les tanks et l'aviation\n  Faible contre l'infanterie
 
 E4:
 	Tooltip:
@@ -31,7 +31,7 @@ E6:
 RMBO:
 	Tooltip:
 		Name: Commando
-		Description: Infanterie d'élite armée d'un sniper.\n  Fort contre l'infanterie et les bâtiments\n  Faible contre les véhicules
+		Description: Infanterie d'élite armée d'un sniper et de C4.\n  Fort contre l'infanterie et les bâtiments\n  Faible contre les véhicules
 
 PVICE:
 	Tooltip:

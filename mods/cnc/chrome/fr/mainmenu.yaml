@@ -106,13 +106,13 @@ Container@MENU_BACKGROUND:
 							Y:0
 							Width:140
 							Height:35
-							Text:Créer server
+							Text:Créer serveur
 						Button@JOIN_BUTTON:
 							X:150
 							Y:0
 							Width:140
 							Height:35
-							Text:Trouver serveur
+							Text:Chercher serveur
 						Button@DIRECTCONNECT_BUTTON:
 							X:300
 							Y:0

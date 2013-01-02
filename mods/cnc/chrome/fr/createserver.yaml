@@ -42,7 +42,7 @@ Container@CREATESERVER_PANEL:
 					Width:90
 					Height:25
 					Align:Right
-					Text:Nom du serveur:
+					Text:Nom:
 				TextField@SERVER_NAME:
 					X:110
 					Y:15
@@ -109,4 +109,4 @@ Container@CREATESERVER_PANEL:
 			Y:259
 			Width:140
 			Height:35
-			Text:Commencer
+			Text:Créer

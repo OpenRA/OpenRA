@@ -6,7 +6,7 @@ Container@MODS_PANEL:
 	Height:535
 	Children:
 		Label@TITLE:
-			Text:Select Mod
+			Text:Choisir mod
 			Width:740
 			Y:0-25
 			Font:BigBold
@@ -85,4 +85,4 @@ Container@MODS_PANEL:
 			Y:499
 			Width:140
 			Height:35
-			Text:Charger Mod
+			Text:Charger mod

@@ -55,15 +55,15 @@ HTNK:
 
 MSAM:
 	Tooltip:
-		Name: Lance-missiles Sol-Sol
+		Name: LMM (Lance-Missiles Mobile)
 		Description: Artillerie longue portée.\n  Fort contre l'infanterie et les bâtiments\n  Faible contre les tanks et l'aviation
 
 MLRS:
 	Tooltip:
-		Name: LMM (Lance-Missiles Mobile)
-		Description: Artillerie longue portée.\n  Fort contre l'infanterie et les bâtiments\n  Faible contre les tanks et l'aviation
+		Name: Lance-missiles Sol-Sol
+		Description: Artillerie au napalm longue portée.\n  Fort contre l'infanterie et les bâtiments\n  Faible contre les tanks et l'aviation
 
 STNK:
 	Tooltip:
 		Name: Tank furtif
-		Description: Tank lance-missiles qui peut dévier la lumière\nautour de lui pour devenir invisible\n  Fort contre l'infanterie et l'aviation\n  Faible contre les tanks
+		Description: Tank lance-missiles qui peut dévier la lumière\nenvironnante pour devenir invisible.\n  Fort contre l'infanterie et l'aviation\n  Faible contre les tanks
