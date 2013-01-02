@@ -1,0 +1,31 @@
+^CivInfantry:
+	Tooltip:
+		Name: Civil
+
+^CivBuilding:
+	Tooltip:
+		Name: Bâtiment civil
+
+^CivBuildingHusk:
+	Tooltip:
+		Name: Bâtiment civil (Détruit)
+
+^CivField:
+	Tooltip:
+		Name: Champs
+
+^CivFieldHusk:
+	Tooltip:
+		Name: Champs (Ravagés)
+
+^Tree:
+	Tooltip:
+		Name: Arbre
+
+^Rock:
+	Tooltip:
+		Name: Rocher
+
+^Bridge:
+	Tooltip:
+		Name: Pont

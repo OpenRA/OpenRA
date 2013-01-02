@@ -7,17 +7,17 @@ Packages:
 	~talk.mix
 
 Rules:
-	mods/cnc/rules/en/defaults.yaml
-	mods/cnc/rules/en/structures.yaml
-	mods/cnc/rules/en/infantry.yaml
-	mods/cnc/rules/en/vehicles.yaml
-	mods/cnc/rules/en/trees.yaml
-	mods/cnc/rules/en/civilian.yaml
-	mods/cnc/rules/en/civilian-desert.yaml
-	mods/cnc/rules/en/tech.yaml
-	mods/cnc/rules/en/ships.yaml
-	mods/cnc/rules/en/aircraft.yaml
-	mods/cnc/rules/en/husks.yaml
+	mods/cnc/rules/fr/defaults.yaml
+	mods/cnc/rules/fr/structures.yaml
+	mods/cnc/rules/fr/infantry.yaml
+	mods/cnc/rules/fr/vehicles.yaml
+	mods/cnc/rules/fr/trees.yaml
+	mods/cnc/rules/fr/civilian.yaml
+	mods/cnc/rules/fr/civilian-desert.yaml
+	mods/cnc/rules/fr/tech.yaml
+	mods/cnc/rules/fr/ships.yaml
+	mods/cnc/rules/fr/aircraft.yaml
+	mods/cnc/rules/fr/husks.yaml
 
 ChromeLayout:
 	mods/cnc/chrome/fr/install.yaml

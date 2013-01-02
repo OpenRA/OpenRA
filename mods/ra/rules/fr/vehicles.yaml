@@ -16,12 +16,12 @@ V2RL:
 3TNK:
 	Tooltip:
 		Name: Tank lourd
-		Description: Tank principal Soviétique, armé d'un double canon\n  Fort contre les Tanks et Véhicules Legers\n  Faible contre l'Infanterie et l'Aviation
+		Description: Tank principal Soviétique, armé\nd'un double canon.\n  Fort contre les Tanks et Véhicules Legers\n  Faible contre l'Infanterie et l'Aviation
 
 4TNK:
 	Tooltip:
 		Name: Tank Mammouth
-		Description: Tank lourd et lent, muni de missiles anti-aériens.\n  Fort contre les Tanks et l'Aviation\n  Faible contre l'Infanterie
+		Description: Tank lourd et lent, muni de missiles\nanti-aériens.\n  Fort contre les Tanks et l'Aviation\n  Faible contre l'Infanterie
 
 ARTY:
 	Tooltip:
@@ -31,7 +31,7 @@ ARTY:
 HARV:
 	Tooltip:
 		Name: Collecteur
-		Description: Collecte l'Or et les Gemmes.\n  |Désarmé|
+		Description: Collecte l'Or et les Gemmes.\n  (Désarmé)
 
 MCV:
 	Tooltip:
@@ -51,17 +51,17 @@ APC:
 MNLY.AP:
 	Tooltip:
 		Name: Poseur de mines AP (Anti-personnel)
-		Description: Pose des mines touchant l'Infanterie\nennemie.\n  |Désarmé|
+		Description: Pose des mines touchant l'Infanterie\nennemie.\n  (Désarmé)
 
 MNLY.AT:
 	Tooltip:
 		Name: Poseur de mines AT (Anti-Tank)
-		Description: Pose des mines détruisant les Tanks\nennemis.\n  |Désarmé|
+		Description: Pose des mines détruisant les Tanks\nennemis.\n  (Désarmé)
 
 TRUK:
 	Tooltip:
 		Name: Camion de ravitaillement
-		Description: Transporte de l'argent aux autres joueurs.\n  |Désarmé|
+		Description: Transporte de l'argent aux autres joueurs.\n  (Désarmé)
 
 1TNK.Husk:
 	Tooltip:

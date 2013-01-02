@@ -5,7 +5,7 @@ MSLO:
 	NukePower:
 		Description: Atom Bomb
 		LongDesc: Launches a nuclear missile at a target location.
-	
+
 GAP:
 	Tooltip:
 		Name: Gap Generator
@@ -175,7 +175,7 @@ AFLD:
 	ParatroopersPower:
 		Description: Paratroopers
 		LongDesc: A Badger drops a squad of Riflemen \nanywhere on the map
-	
+
 POWR:
 	Tooltip:
 		Name: Power Plant
@@ -200,7 +200,7 @@ TENT:
 	Tooltip:
 		Name: Allied Barracks
 		Description: Produces infantry
-	
+
 KENN:
 	Tooltip:
 		Name: Kennel
