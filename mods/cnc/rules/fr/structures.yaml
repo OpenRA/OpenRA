@@ -1,42 +1,42 @@
 FACT:
 	Tooltip:
 		Name: Chantier de construction
-		Description: Produit les structures
+		Description: Produit les structures.
 
 NUKE:
 	Tooltip:
 		Name: Centrale électrique
-		Description: Produit de l'énergie
+		Description: Produit de l'énergie.
 
 PROC:
 	Tooltip:
 		Name: Raffinerie de tibérium
-		Description: Convertit le tibérium en crédits
+		Description: Convertit le tibérium en crédits.
 
 SILO:
 	Tooltip:
 		Name: Silo à tibérium
-		Description: Entrepose le tibérium raffiné
+		Description: Entrepose le tibérium raffiné.
 
 PYLE:
 	Tooltip:
 		Name: Caserne
-		Description: Entraîne l'infanterie
+		Description: Entraîne l'infanterie.
 
 HAND:
 	Tooltip:
 		Name: Main de Nod
-		Description: Entraîne l'infanterie
+		Description: Entraîne l'infanterie.
 
 AFLD:
 	Tooltip:
 		Name: Piste d'atterissage
-		Description: Zone de réception de l'armement
+		Description: Zone de réception de l'armement.
 
 WEAP:
 	Tooltip:
 		Name: Usine d'armement
-		Description: Usine d'assemblage de tanks
+		Description: Usine d'assemblage de véhicules.
 
 HQ:
 	Tooltip:
@@ -59,7 +59,7 @@ FIX:
 HPAD:
 	Tooltip:
 		Name: Heliport
-		Description: Produit, recharge et\nrépare les  hélicoptères
+		Description: Produit, recharge et\nrépare les hélicoptères.
 
 EYE:
 	Tooltip:
@@ -67,7 +67,7 @@ EYE:
 		Description: Permet de contrôler le canon à ions.\n  Nécessite de l'énergie.
 	IonCannonPower:
 		Description: Canon à ions
-		LongDesc: Lance une frappe du canon à ions.\nEndommage instantannément une petite zone.
+		LongDesc: Lance une frappe depuis un canon à ions orbital.\nEndommage instantannément une petite zone.
 
 TMPL:
 	Tooltip:

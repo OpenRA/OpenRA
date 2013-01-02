@@ -11,7 +11,7 @@ Container@MAPCHOOSER_PANEL:
 			Font:BigBold
 			Contrast:true
 			Align:Center
-			Text: Select Map
+			Text:Choisir carte
 		Background@bg:
 			Width:790
 			Height:500
@@ -68,7 +68,7 @@ Container@MAPCHOOSER_PANEL:
 					Y:499
 					Width:140
 					Height:35
-					Text:Cancel
+					Text:Annuler
 				Button@BUTTON_OK:
 					Key:return
 					X:790 - WIDTH
