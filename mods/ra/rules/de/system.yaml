@@ -1,0 +1,43 @@
+Player:
+	HackyAI@EasyAI:
+		Name:Leichte KI
+	HackyAI@HardAI:
+		Name:Schwere KI
+	HackyAI@OptiAI:
+		Name:Eisenhower KI
+	HackyAI@ZhukovAI:
+		Name:Zhukov KI
+	HackyAI@RommelAI:
+		Name:Rommel KI
+
+World:
+	Country@0:
+		Name: Allierte
+	Country@1:
+		Name: Sowjets
+
+MINP:
+	Tooltip:
+		Name: Antipersonenmine
+
+MINV:
+	Tooltip:
+		Name: Panzerabwehrmine
+
+CRATE:
+	Tooltip:
+		Name: Kiste
+
+FLARE:
+	Tooltip:
+		Name: Fackel
+
+powerproxy.parabombs:
+	AirstrikePower:
+		Description: Fallschirmbomben (einmalige Verwendung)
+		LongDesc: Ein Bomber wirft eine Ladung\nFallschirmbomben auf das Ziel.
+
+powerproxy.sonarpulse:
+	SonarPulsePower:
+		Description: Sonarimpuls (einmalige Verwendung)
+		LongDesc: Deckt alle U-Boote \nfür kurze Zeit auf.

@@ -82,7 +82,7 @@ namespace OpenRA.FileFormats
 				new[] { "mods", m, "l10n", "en", "language.yaml" }.Aggregate(Path.Combine)))
 				.Aggregate(MiniYaml.MergeLiberal)).NodesDict;
 				Rules = YamlList(yaml, "Rules").Concat(Rules).ToArray();
-				ChromeLayout = YamlList(yaml, "ChromeLayout").Concat(Rules).ToArray();
+				// TODO: chrome layout does not merge yet properly with nodes of the same name
 
 				Console.WriteLine("Mod supports translation, loading language: {0}", lang);
 				yaml = new MiniYaml(null, mods
@@ -92,8 +92,7 @@ namespace OpenRA.FileFormats
 				Folders = YamlList(yaml, "Folders").Concat(Folders).ToArray();
 				Packages = YamlList(yaml, "Packages").Concat(Packages).ToArray();
 				Rules = YamlList(yaml, "Rules").Concat(Rules).ToArray();
-				// TODO: chrome layout does not merge yet
-				ChromeLayout = YamlList(yaml, "ChromeLayout");
+				ChromeLayout = YamlList(yaml, "ChromeLayout").Concat(ChromeLayout).ToArray();
 			}
 
 		}

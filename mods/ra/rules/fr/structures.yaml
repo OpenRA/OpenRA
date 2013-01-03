@@ -1,5 +1,6 @@
 MSLO:
 	Tooltip:
+		Icon: msloicon
 		Name: Silo de Missiles
 		Description: Lance un missile nucléaire dévastateur.\n  Fort contre l'Infanterie, les Bâtiments\n  Faible contre les Tanks\n  Capacité spéciale: Missile Nucléaire
 	NukePower:
@@ -226,8 +227,6 @@ SYRF:
 #		LongDesc: Ressemble a un Chantier naval.
 
 DOMF:
-	Tooltip:
-		Name: Dome radar leurre
 #	Buildable:
 #		Description: Dome radar leurre
 #		LongDesc: Ressemble a un Dome radar

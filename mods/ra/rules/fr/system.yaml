@@ -9,6 +9,8 @@ Player:
 		Name:IA Zhukov
 	HackyAI@RommelAI:
 		Name:IA Rommel
+
+World:
 	Country@0:
 		Name: Alliés
 	Country@1:
