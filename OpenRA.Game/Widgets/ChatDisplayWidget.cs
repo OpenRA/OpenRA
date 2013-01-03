@@ -56,7 +56,7 @@ namespace OpenRA.Widgets
 				}
 
 				var text = WidgetUtils.WrapText(line.Text, chatLogArea.Width - inset, font);
-				var textLines = text.Split(new[] { '\n' }, System.StringSplitOptions.RemoveEmptyEntries).Count();
+				var textLines = text.Split(new[] { '\n' }).Count();
 				chatpos.Y -= 20 * textLines;
 
 				if (owner != null)
