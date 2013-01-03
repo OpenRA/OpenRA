@@ -467,7 +467,12 @@ namespace OpenRA
 				Game.modData.AvailableMaps.Add(mapHash, new Map(mapPath));
 				return true;
 			}
-			catch (WebException) { return false; }
+			catch (WebException e)
+			{
+				Log.Write("debug", "Could not download map '{0}'", mapHash);
+				Log.Write("debug", e.ToString());
+				return false;
+			}
 		}
 	}
 }
