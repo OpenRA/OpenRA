@@ -111,3 +111,6 @@ styles.fncall.st = wxstc.wxSTC_INDIC_PLAIN
     wxSTC_INDIC_BOX      Box
     wxSTC_INDIC_ROUNDBOX Rounded Box (not suppored in the current version?)
   --]]
+
+-- to enable additional spec files (like spec/cpp.lua)
+load.specs(function(file) return file:find('spec[/\\]cpp%.lua$') end)
