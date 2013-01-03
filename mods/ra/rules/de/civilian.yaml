@@ -1,0 +1,27 @@
+FCOM:
+	Tooltip:
+		Name: Außenposten
+
+HOSP:
+	Tooltip:
+		Name: Krankenhaus
+
+V01:
+	Tooltip:
+		Name: Kirche
+
+BARL:
+	Tooltip:
+		Name: Explosive Tonne
+
+BRL3:
+	Tooltip:
+		Name: Explosive Tonnen
+
+BIO:
+	Tooltip:
+		Name: Biolabor
+
+OILB:
+	Tooltip:
+		Name: Ölbohrturm

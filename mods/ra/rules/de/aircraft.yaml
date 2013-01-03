@@ -1,0 +1,40 @@
+BADR:
+	Tooltip:
+		Name: Bomber
+
+BADR.bomber:
+	Tooltip:
+		Name: Bomber
+
+MIG:
+	Tooltip:
+		Name: Mig Angriffsflugzeug
+		Description: Schneller Luft-Boden Kampfflieger.\n  Stark gegen Gebäude\n  Schwach gegen Infantrie, leichte Fahrzeuge
+
+YAK:
+	Tooltip:
+		Name: Yak Jagdflugzeug
+		Description: Panzerabwehr & Anti-Infantrie Flugzeug.\n  Stark gegen Infantrie, Panzer\n  Schwach gegen Gebäude
+
+TRAN:
+	Tooltip:
+		Name: Transporthubschrauber
+		Description: Schneller Personentransporthelikopter.\n  Unbewaffnet
+
+TRAN.Husk1:
+	Tooltip:
+		Name: Wrack (Transporthubschrauber)
+
+TRAN.Husk2:
+	Tooltip:
+		Name: Wrack (Transporthubschrauber)
+
+HELI:
+	Tooltip:
+		Name: Longbow
+		Description: Kampfhubschrauber mit Flugabwehrraketen.\n  Stark gegen Panzer\n  Schwach gegen Infantrie
+
+HIND:
+	Tooltip:
+		Name: Hind
+		Description: Kampfhubschrauber mit Maschinenkanonen.\n  Stark gegen Infantrie, leichte Fahrzeuge.\n  Schwach gegen Panzer

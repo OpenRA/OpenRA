@@ -2,8 +2,6 @@ MSLO:
 	Inherits: ^Building
 	Valued:
 		Cost: 2500
-	Tooltip:
-		Icon: msloicon2
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 130

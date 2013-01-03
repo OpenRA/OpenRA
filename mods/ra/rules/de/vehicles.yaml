@@ -1,0 +1,112 @@
+V2RL:
+	Tooltip:
+		Name: V2-Rakete
+		Description: Langstrecken-Boden-Boden-Rakete.\n  Stark gegen Infantrie, Gebäude\n  Schwach gegen Panzer, Fluggerät
+
+1TNK:
+	Tooltip:
+		Name: Leichter Panzer
+		Description: Leichter Erkundungspanzer.\n  Stark gegen leichte Fahrzeuge\n  Schwach gegen Panzer, Fluggerät
+
+2TNK:
+	Tooltip:
+		Name: Mittlerer Panzer
+		Description: Allierter Hauptkampfpanzer.\n  Stark gegen Panzer, leichte Fahrzeuge\n  Schwach gegen Infantrie, Fluggerät
+
+3TNK:
+	Tooltip:
+		Name: Schwerer Panzer
+		Description: Sowjetischer Hauptkampfpanzer, mit Doppellaufkanone\n  Stark gegen Panzer, leichte Fahrzeuge\n  Schwach gegen Infantrie, Fluggerät
+
+4TNK:
+	Tooltip:
+		Name: Mammutpanzer
+		Description: Großer und langsamer Panzer, mit Flugabwehrraketen.\n  Stark gegen Panzer, Fluggerät\n  Schwach gegen Infantrie
+
+ARTY:
+	Tooltip:
+		Name: Artillerie
+		Description: Großkalibrige Langstreckenkanone.\n  Stark gegen Infantrie, Gebäude\n  Schwach gegen Panzer, Fluggerät
+
+HARV:
+	Tooltip:
+		Name: Sammler
+		Description: Transportiert Erz und Edelsteine.\n  Unbewaffnet
+
+MCV:
+	Tooltip:
+		Name: Mobiles Baufahrzeug
+		Description: Transformiert sich in einen Bauhof.\n  Unbewaffnet
+
+JEEP:
+	Tooltip:
+		Name: Geländewagen
+		Description: Schneller Aufklärungs- & Anti-Infantrie-Fahrzeug.\n  Stark gegen Infantrie\n  Schwach gegen Panzer, Fluggerät
+
+APC:
+	Tooltip:
+		Name: Transportpanzer
+		Description: Gepanzerter Infantrietransporter.\n  Stark gegen Infantrie, leichte Fahrzeuge\n  Schwach gegen Panzer, Fluggerät
+
+MNLY.AP:
+	Tooltip:
+		Name: Minenleger (Anti-Personen)
+		Description: Legt Minen um unachtsame Feinde zu zerstören.\n  Unbewaffnet
+
+MNLY.AT:
+	Tooltip:
+		Name: Minenleger (Anti-Panzer)
+		Description: Legt Minen um unachtsame Feinde zu zerstören.\n  Unbewaffnet
+
+TRUK:
+	Tooltip:
+		Name: Versorgungslaster
+		Description: Transportiert Geld zu einem Mitspieler.\n  Unbewaffnet
+
+1TNK.Husk:
+	Tooltip:
+		Name: Wrack (Leichter Panzer)
+
+2TNK.Husk:
+	Tooltip:
+		Name: Wrack (Mittlerer Panzer)
+
+3TNK.Husk:
+	Tooltip:
+		Name: Wrack (Schwerer Panzer)
+
+4TNK.Husk:
+	Tooltip:
+		Name: Wrack (Mammutpanzer)
+
+HARV.FullHusk:
+	Tooltip:
+		Name: Wrack (Sammler)
+
+HARV.EmptyHusk:
+	Tooltip:
+		Name: Wrack (Sammler)
+
+MCV.Husk:
+	Tooltip:
+		Name: Wrack (Baufahrzeug)
+
+TTNK:
+	Tooltip:
+		Name: Tesla-Panzer
+		Description: Panzer mit Teslaspulen.\n  Stark gegen Infantrie, leichte Fahrzeuge\n  and Gebäude  \n  Schwach gegen Panzer, Fluggerät
+
+FTRK:
+	Tooltip:
+		Name: Flak-Laster
+		Description: Flugabwehrwagen & Aufklärer.\n  Stark gegen leichte Fahrzeuge, Fluggerät  \n  Schwach gegen Panzer
+
+DTRK:
+	Tooltip:
+		Name: Zerstörungslaster
+		Description: Mit Sprengladungen versehender Lastwagen.\n  Stark gegen alles\n  Schwach gegen alles
+
+CTNK:
+	Tooltip:
+		Name: Chrono-Panzer
+		Description: Fähig zur Teleportation mit begrenzter Reichweite.\n  Stark gegen Fahrzeuge, Gebäude\n  Schwach gegen Panzer
