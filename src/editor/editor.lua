@@ -300,6 +300,16 @@ function EditorCallTip(editor, pos, x, y)
   end
 end
 
+function EditorIsModified(editor)
+  local modified = false
+  if editor then
+    local id = editor:GetId()
+    modified = openDocuments[id]
+      and (openDocuments[id].isModified or not openDocuments[id].filePath)
+  end
+  return modified
+end
+
 -- ----------------------------------------------------------------------------
 -- Create an editor
 function CreateEditor()
@@ -640,13 +650,13 @@ function CreateEditor()
   editor:Connect(wx.wxEVT_CONTEXT_MENU,
     function (event)
       local menu = wx.wxMenu()
-      menu:Append(wx.wxID_UNDO, TR("&Undo"))
-      menu:Append(wx.wxID_REDO, TR("&Redo"))
+      menu:Append(ID_UNDO, TR("&Undo"))
+      menu:Append(ID_REDO, TR("&Redo"))
       menu:AppendSeparator()
-      menu:Append(wx.wxID_CUT, TR("Cu&t"))
-      menu:Append(wx.wxID_COPY, TR("&Copy"))
-      menu:Append(wx.wxID_PASTE, TR("&Paste"))
-      menu:Append(wx.wxID_SELECTALL, TR("Select &All"))
+      menu:Append(ID_CUT, TR("Cu&t"))
+      menu:Append(ID_COPY, TR("&Copy"))
+      menu:Append(ID_PASTE, TR("&Paste"))
+      menu:Append(ID_SELECTALL, TR("Select &All"))
       menu:AppendSeparator()
       menu:Append(ID_QUICKADDWATCH, TR("Add Watch Expression"))
       menu:Append(ID_QUICKEVAL, TR("Evaluate in Console"))

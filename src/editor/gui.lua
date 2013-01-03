@@ -143,6 +143,47 @@ local function createNotebook(frame)
       event:Veto() -- don't propagate the event as the page is already closed
     end)
 
+  local selection
+  notebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_TAB_RIGHT_UP,
+    function (event)
+      selection = event:GetSelection() -- save tab index the event is for
+      local menu = wx.wxMenu()
+      menu:Append(ID_CLOSE, TR("&Close Page"))
+      menu:Append(ID_CLOSEALL, TR("Close A&ll Pages"))
+      menu:Append(ID_CLOSEOTHER, TR("Close &Other Pages"))
+      menu:AppendSeparator()
+      menu:Append(ID_SAVE, TR("&Save"))
+      menu:Append(ID_SAVEAS, TR("Save &As..."))
+      notebook:PopupMenu(menu)
+    end)
+
+  local function IfAtLeastOneTab(event) event:Enable(notebook:GetPageCount() > 0) end
+  local function IfModified(event) event:Enable(EditorIsModified(GetEditor(selection))) end
+
+  notebook:Connect(ID_SAVE, wx.wxEVT_COMMAND_MENU_SELECTED, function ()
+      local editor = GetEditor(selection)
+      SaveFile(editor, openDocuments[editor:GetId()].filePath)
+    end)
+  notebook:Connect(ID_SAVE, wx.wxEVT_UPDATE_UI, IfModified)
+  notebook:Connect(ID_SAVEAS, wx.wxEVT_COMMAND_MENU_SELECTED, function()
+      SaveFileAs(GetEditor(selection))
+    end)
+  notebook:Connect(ID_SAVEAS, wx.wxEVT_UPDATE_UI, IfAtLeastOneTab)
+  notebook:Connect(ID_CLOSE, wx.wxEVT_COMMAND_MENU_SELECTED, function()
+      ClosePage(selection)
+    end)
+  notebook:Connect(ID_CLOSE, wx.wxEVT_UPDATE_UI, IfAtLeastOneTab)
+  notebook:Connect(ID_CLOSEALL, wx.wxEVT_COMMAND_MENU_SELECTED, function()
+      CloseAllPagesExcept(nil)
+    end)
+  notebook:Connect(ID_CLOSEALL, wx.wxEVT_UPDATE_UI, IfAtLeastOneTab)
+  notebook:Connect(ID_CLOSEOTHER, wx.wxEVT_COMMAND_MENU_SELECTED, function ()
+      CloseAllPagesExcept(selection)
+    end)
+  notebook:Connect(ID_CLOSEOTHER, wx.wxEVT_UPDATE_UI, function (event)
+      event:Enable(notebook:GetPageCount() > 1)
+    end)
+
   frame.notebook = notebook
   return notebook
 end

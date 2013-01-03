@@ -285,6 +285,21 @@ function ClosePage(selection)
   end
 end
 
+function CloseAllPagesExcept(selection)
+  local toclose = {}
+  for _, document in pairs(ide.openDocuments) do
+    table.insert(toclose, document.index)
+  end
+
+  table.sort(toclose)
+
+  -- close pages for those files that match the project in the reverse order
+  -- (as ids shift when pages are closed)
+  for i = #toclose, 1, -1 do
+    if toclose[i] ~= selection then ClosePage(toclose[i]) end
+  end
+end
+
 -- Show a dialog to save a file before closing editor.
 -- returns wxID_YES, wxID_NO, or wxID_CANCEL if allow_cancel
 function SaveModifiedDialog(editor, allow_cancel)

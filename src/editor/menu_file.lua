@@ -4,6 +4,7 @@
 local ide = ide
 local frame = ide.frame
 local menuBar = frame.menuBar
+local notebook = frame.notebook
 local openDocuments = ide.openDocuments
 
 local fileMenu = wx.wxMenu({
@@ -49,37 +50,22 @@ end
 frame:Connect(ID_NEW, wx.wxEVT_COMMAND_MENU_SELECTED, NewFile)
 frame:Connect(ID_OPEN, wx.wxEVT_COMMAND_MENU_SELECTED, OpenFile)
 frame:Connect(ID_SAVE, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function (event)
+  function ()
     local editor = GetEditor()
-    local id = editor:GetId()
-    local filePath = openDocuments[id].filePath
-    if (filePath) then
-      SaveFile(editor, filePath)
-    else
-      SaveFileAs(editor)
-    end
+    SaveFile(editor, openDocuments[editor:GetId()].filePath)
   end)
 frame:Connect(ID_SAVE, wx.wxEVT_UPDATE_UI,
   function (event)
-    local editor = GetEditor()
-    local enabled = false
-    if editor then
-      local id = editor:GetId()
-      enabled = openDocuments[id]
-        and (openDocuments[id].isModified or not openDocuments[id].filePath)
-    end
-    event:Enable(enabled)
+    event:Enable(EditorIsModified(GetEditor()))
   end)
 
 frame:Connect(ID_SAVEAS, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function (event)
-    local editor = GetEditor()
-    SaveFileAs(editor)
+  function ()
+    SaveFileAs(GetEditor())
   end)
 frame:Connect(ID_SAVEAS, wx.wxEVT_UPDATE_UI,
   function (event)
-    local editor = GetEditor()
-    event:Enable(editor ~= nil)
+    event:Enable(GetEditor() ~= nil)
   end)
 
 frame:Connect(ID_SAVEALL, wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -100,7 +86,7 @@ frame:Connect(ID_SAVEALL, wx.wxEVT_UPDATE_UI,
 
 frame:Connect(ID_CLOSE, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
-    ClosePage() -- this will find the current editor
+    ClosePage() -- this will find the current editor tab
   end)
 frame:Connect(ID_CLOSE, wx.wxEVT_UPDATE_UI,
   function (event)
