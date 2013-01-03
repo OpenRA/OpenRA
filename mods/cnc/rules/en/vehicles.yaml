@@ -11,7 +11,7 @@ HARV:
 APC:
 	Tooltip:
 		Name: Armored Personnel Carrier
-		Description: Armored infantry transport and mobile AA\n  Strong vs Aircraft\n  Weak vs Tanks, Infantry
+		Description: Armored infantry transport and mobile AA\n  Strong vs Aircraft, Infantry\n  Weak vs Tanks
 
 ARTY:
 	Tooltip:

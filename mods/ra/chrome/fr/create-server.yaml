@@ -1,5 +1,4 @@
 Background@CREATESERVER_BG:
-	Id:CREATESERVER_BG
 	Logic:ServerCreationLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
@@ -7,7 +6,6 @@ Background@CREATESERVER_BG:
 	Height:240
 	Children:
 		Label@LABEL_TITLE:
-			Id:LABEL_TITLE
 			X:0
 			Y:20
 			Width:400
@@ -16,7 +14,6 @@ Background@CREATESERVER_BG:
 			Align:Center
 			Font:Bold
 		Label@SERVER_NAME_LABEL:
-			Id:SERVER_NAME_LABEL
 			X:50
 			Y:59
 			Width:95
@@ -24,7 +21,6 @@ Background@CREATESERVER_BG:
 			Align: Right
 			Text:Nom de la Partie:
 		TextField@SERVER_NAME:
-			Id:SERVER_NAME
 			X:150
 			Y:60
 			Width:210
@@ -32,7 +28,6 @@ Background@CREATESERVER_BG:
 			Height:25
 			Text:Partie OpenRA
 		Label@EXTERNAL_PORT_LABEL:
-			Id:EXTERNAL_PORT_LABEL
 			X:50
 			Y:94
 			Width:95
@@ -40,15 +35,13 @@ Background@CREATESERVER_BG:
 			Align: Right
 			Text:Port Externe:
 		TextField@EXTERNAL_PORT:
-			Id:EXTERNAL_PORT
 			X:150
 			Y:95
 			Width:50
 			MaxLength:5
 			Height:25
-			Text:Partie OpenRA
+			Text:Partie d'OpenRA
 		Label@LISTEN_PORT_LABEL:
-			Id:LISTEN_PORT_LABEL
 			X:210
 			Y:94
 			Width:95
@@ -56,14 +49,12 @@ Background@CREATESERVER_BG:
 			Align: Right
 			Text:Port d'écoute:
 		TextField@LISTEN_PORT:
-			Id:LISTEN_PORT
 			X:310
 			Y:95
 			Width:50
 			MaxLength:5
 			Height:25
 		Checkbox@ADVERTISE_CHECKBOX:
-			Id:ADVERTISE_CHECKBOX
 			X:165
 			Y:130
 			Width:300
@@ -76,7 +67,6 @@ Background@CREATESERVER_BG:
 			Height:20
 			Text:Activer la translation UPnP
 		Button@CREATE_BUTTON:
-			Id:CREATE_BUTTON
 			X:130
 			Y:PARENT_BOTTOM - 45
 			Width:120
@@ -85,7 +75,6 @@ Background@CREATESERVER_BG:
 			Font:Bold
 			Key:return
 		Button@BACK_BUTTON:
-			Id:BACK_BUTTON
 			X:260
 			Y:PARENT_BOTTOM - 45
 			Width:120

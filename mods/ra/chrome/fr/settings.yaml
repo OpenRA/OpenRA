@@ -1,5 +1,4 @@
 Background@SETTINGS_MENU:
-	Id:SETTINGS_MENU
 	Logic:SettingsMenuLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM- HEIGHT)/2
@@ -7,7 +6,6 @@ Background@SETTINGS_MENU:
 	Height: 350
 	Children:
 		Label@SETTINGS_LABEL_TITLE:
-			Id:SETTINGS_LABEL_TITLE
 			X:0
 			Y:20
 			Width:450
@@ -16,7 +14,6 @@ Background@SETTINGS_MENU:
 			Align:Center
 			Font:Bold
 		Button@BUTTON_CLOSE:
-			Id:BUTTON_CLOSE
 			X:PARENT_RIGHT - 180
 			Y:PARENT_BOTTOM - 45
 			Width:160
@@ -25,22 +22,19 @@ Background@SETTINGS_MENU:
 			Font:Bold
 			Key:escape
 		Container@TAB_CONTAINER:
-			Id:TAB_CONTAINER
 			X:0
 			Y:50
 			Width:PARENT_RIGHT
 			Height:25
 			Children:
 				Button@GENERAL:
-					Id:GENERAL
 					X:45
 					Y:0
 					Width:90
 					Height:25
-					Text:General
+					Text:Général
 					Font:Bold
 				Button@AUDIO:
-					Id:AUDIO
 					X:135
 					Y:0
 					Width:90
@@ -48,7 +42,6 @@ Background@SETTINGS_MENU:
 					Text:Audio
 					Font:Bold
 				Button@DISPLAY:
-					Id:DISPLAY
 					X:225
 					Y:0
 					Width:90
@@ -56,7 +49,6 @@ Background@SETTINGS_MENU:
 					Text:Affichage
 					Font:Bold
 				Button@DEBUG:
-					Id:DEBUG
 					X:315
 					Y:0
 					Width:90
@@ -64,7 +56,6 @@ Background@SETTINGS_MENU:
 					Text:Debug
 					Font:Bold
 		Container@GENERAL_PANE:
-			Id:GENERAL_PANE
 			X:37
 			Y:100
 			Width:PARENT_RIGHT - 37
@@ -72,12 +63,10 @@ Background@SETTINGS_MENU:
 			Visible: true
 			Children:
 				Label@SETTINGS_PLAYER_NAME:
-					Id:SETTINGS_PLAYER_NAME
 					X:0
 					Y:10
 					Text: Pseudo:
 				TextField@NAME:
-					Id:NAME
 					Text:Nom
 					Width:139
 					Height:25
@@ -85,19 +74,16 @@ Background@SETTINGS_MENU:
 					Y:0
 					MaxLength:16
 				Checkbox@EDGE_SCROLL:
-					Id:EDGE_SCROLL
 					X:0
 					Y:30
 					Width:200
 					Height:20
 					Text: Activer défilement au bord
 				Label@EDGE_SCROLL_AMOUNT_LABEL:
-					Id:EDGE_SCROLL_AMOUNT_LABEL
 					X:0
 					Y:70
 					Text: Vitesse défilement
 				Slider@EDGE_SCROLL_AMOUNT:
-					Id:EDGE_SCROLL_AMOUNT
 					X:130
 					Y:60
 					Width:250
@@ -106,28 +92,24 @@ Background@SETTINGS_MENU:
 					MinimumValue: 10
 					MaximumValue: 50
 				Checkbox@INVERSE_SCROLL:
-					Id:INVERSE_SCROLL
 					X:0
 					Y:90
 					Width:200
 					Height:20
 					Text: Inverser défilement Souris
 				Checkbox@TEAMCHAT_TOGGLE:
-					Id:TEAMCHAT_TOGGLE
 					X:0
 					Y:120
 					Width:200
 					Height:20
-					Text: Shift-Entrée pour Chat en Équipe
-				Checkbox@SHOW_SHELL:
-					Id:SHOW_SHELLMAP
+					Text: Shift-Entrée pour chatter en équipe
+				Checkbox@SHOW_SHELLMAP:
 					X:0
 					Y:150
 					Width:200
 					Height:20
 					Text: Montrer le Shellmap
 		Container@AUDIO_PANE:
-			Id:AUDIO_PANE
 			X:37
 			Y:100
 			Width:PARENT_RIGHT - 37
@@ -135,24 +117,20 @@ Background@SETTINGS_MENU:
 			Visible: false
 			Children:
 				Label@SOUND_VOLUME_LABEL:
-					Id:SOUND_VOLUME_LABEL
 					X:0
 					Y:10
 					Text: Vol. Son
 				Slider@SOUND_VOLUME:
-					Id:SOUND_VOLUME
 					X:100
 					Y:0
 					Width:250
 					Height:20
 					Ticks:5
 				Label@MUSIC_VOLUME_LABEL:
-					Id:MUSIC_VOLUME_LABEL
 					X:0
 					Y:40
 					Text: Vol. Musique
 				Slider@MUSIC_VOLUME:
-					Id:MUSIC_VOLUME
 					X:100
 					Y:30
 					Width:250
@@ -161,16 +139,15 @@ Background@SETTINGS_MENU:
 				Label@SOUND_TICK_TYPE_LABEL:
 					X:0
 					Y:70
-					Text: Cash ticks
+					Text: Bruit d'encaissement
 				DropDownButton@CASH_TICK_TYPE:
 					X:100
 					Y:60
 					Width:250
 					Height:25
 					Font:Regular
-					Text:Extreme
+					Text:Extrême
 		Container@DISPLAY_PANE:
-			Id:DISPLAY_PANE
 			X:37
 			Y:100
 			Width:PARENT_RIGHT - 37
@@ -182,7 +159,7 @@ Background@SETTINGS_MENU:
 					Y:0
 					Width:75
 					Height:25
-					Text:Renderer:
+					Text:Rendu:
 				DropDownButton@GRAPHICS_RENDERER:
 					X:80
 					Y:1
@@ -197,7 +174,6 @@ Background@SETTINGS_MENU:
 					Height:25
 					Text:Mode:
 				DropDownButton@MODE_DROPDOWN:
-					Id:MODE_DROPDOWN
 					X:50
 					Y:30
 					Width:170
@@ -205,7 +181,6 @@ Background@SETTINGS_MENU:
 					Font:Regular
 					Text:Fenêtré
 				Container@WINDOW_RESOLUTION:
-					Id:WINDOW_RESOLUTION
 					X:225
 					Y:30
 					Children:
@@ -217,7 +192,6 @@ Background@SETTINGS_MENU:
 							Width:25
 							Align:Center
 						TextField@WINDOW_WIDTH:
-							Id:WINDOW_WIDTH
 							X:25
 							Width:45
 							Height:25
@@ -231,7 +205,6 @@ Background@SETTINGS_MENU:
 							Width:15
 							Align:Center
 						TextField@WINDOW_HEIGHT:
-							Id:WINDOW_HEIGHT
 							X:85
 							Width:45
 							Height:25
@@ -244,14 +217,12 @@ Background@SETTINGS_MENU:
 					Align:Center
 					Text:Changement de Mode/Resolution seront appliqués au redémarrage du jeu
 				Checkbox@PIXELDOUBLE_CHECKBOX:
-					Id:PIXELDOUBLE_CHECKBOX
 					Y:90
 					Width:200
 					Height:20
 					Font:Regular
 					Text:Activer le doublement des pixels (Zoom)
 		Container@DEBUG_PANE:
-			Id:DEBUG_PANE
 			X:37
 			Y:100
 			Width:PARENT_RIGHT - 37
@@ -259,14 +230,12 @@ Background@SETTINGS_MENU:
 			Visible: false
 			Children:
 				Checkbox@PERFDEBUG_CHECKBOX:
-					Id:PERFDEBUG_CHECKBOX
 					X:0
 					Y:0
 					Width:300
 					Height:20
 					Text:Montre les infos de performances
 				Checkbox@CHECKUNSYNCED_CHECKBOX:
-					Id:CHECKUNSYNCED_CHECKBOX
 					X:0
 					Y:30
 					Width:300

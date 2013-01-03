@@ -1,0 +1,55 @@
+MCV.Husk:
+	Tooltip:
+		Name: Véhicule de Construction Mobile (Détruit)
+
+HARV.Husk:
+	Tooltip:
+		Name: Collecteur (Détruit)
+
+APC.Husk:
+	Tooltip:
+		Name: Véhicule Blindé de Transport (Détruit)
+
+FTNK.Husk:
+	Tooltip:
+		Name: Tank lance-flamme (Détruit)
+
+ARTY.Husk:
+	Tooltip:
+		Name: Artillerie mobile (Détruite)
+
+BGGY.Husk:
+	Tooltip:
+		Name: Buggy Nod (Détruit)
+
+BIKE.Husk:
+	Tooltip:
+		Name: Moto de reconnaissance (Détruite)
+
+JEEP.Husk:
+	Tooltip:
+		Name: Humm-Vee (Détruit)
+
+LTNK.Husk:
+	Tooltip:
+		Name: Tank léger (Détruit)
+
+MTNK.Husk:
+	Tooltip:
+		Name: Tank moyen (Détruit)
+
+HTNK.Husk:
+	Tooltip:
+		Name: Tank Mammouth (Détruit)
+
+MSAM.Husk:
+	Tooltip:
+		Name: Lance-Missiles Sol-Sol (Détruit)
+
+MLRS.Husk:
+	Tooltip:
+		Name: Lance-Missiles Mobile (Détruit)
+
+STNK.Husk:
+	Tooltip:
+		Name: Tank furtif (Détruit)

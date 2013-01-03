@@ -1,0 +1,134 @@
+FACT:
+	Tooltip:
+		Name: Chantier de construction
+		Description: Produit les structures
+
+NUKE:
+	Tooltip:
+		Name: Centrale électrique
+		Description: Produit de l'énergie
+
+PROC:
+	Tooltip:
+		Name: Raffinerie de tibérium
+		Description: Convertit le tibérium en crédits
+
+SILO:
+	Tooltip:
+		Name: Silo à tibérium
+		Description: Entrepose le tibérium raffiné
+
+PYLE:
+	Tooltip:
+		Name: Caserne
+		Description: Entraîne l'infanterie
+
+HAND:
+	Tooltip:
+		Name: Main de Nod
+		Description: Entraîne l'infanterie
+
+AFLD:
+	Tooltip:
+		Name: Piste d'atterissage
+		Description: Zone de réception de l'armement
+
+WEAP:
+	Tooltip:
+		Name: Usine d'armement
+		Description: Usine d'assemblage de tanks
+
+HQ:
+	Tooltip:
+		Name: Centre de Communications
+		Description: Fournit une vue d'ensemble du champ de bataille.\n  Nécessite de l'énergie pour fonctionner.
+	AirstrikePower:
+		Description: Frappe aérienne
+		LongDesc: Lance une frappe aérienne au napalm.\nBrûle bâtiments et infanterie sur une ligne droite.
+
+NUK2:
+	Tooltip:
+		Name: Centrale électrique avancée
+		Description: Fournit plus d'énergie qu'une\ncentale classique et pour moins chère.
+
+FIX:
+	Tooltip:
+		Name: Centre de réparation
+		Description: Répare les véhicules et permet\nla construction de nouvelles bases.
+
+HPAD:
+	Tooltip:
+		Name: Heliport
+		Description: Produit, recharge et\nrépare les  hélicoptères
+
+EYE:
+	Tooltip:
+		Name: Centre de Communications Avancé
+		Description: Permet de contrôler le canon à ions.\n  Nécessite de l'énergie.
+	IonCannonPower:
+		Description: Canon à ions
+		LongDesc: Lance une frappe du canon à ions.\nEndommage instantannément une petite zone.
+
+TMPL:
+	Tooltip:
+		Name: Temple de Nod
+		Description: Lieu de prière et silo à missiles secret.\n  Nécessite de l'énergie.
+	NukePower:
+		Description: Frappe Nucléaire
+		LongDesc: Lance une frappe nucléaire.\nEndommage lourdement une large zone.
+
+OBLI:
+	Tooltip:
+		Name: Obelisque de Lumière
+		Description: Défense avancée.\n  Nécessite de l'énergie.\n  Fort contre les tanks et l'infanterie\n  Faible contre l'aviation
+
+CYCL:
+	Tooltip:
+		Name: Clôture grillagée
+		Description: Bloque l'infanterie et le feu ennemi.\nPeut être écrasé par les tanks.
+
+SBAG:
+	Tooltip:
+		Name: Mur de sable
+		Description: Bloque l'infanterie et le feu ennemi.\nPeut être écrasé par les tanks.
+
+BRIK:
+	Tooltip:
+		Name: Mur de béton
+		Description: Bloque l'infanterie et le feu ennemi.
+
+GUN:
+	Tooltip:
+		Name: Tourelle
+		Description: Défense anti-blindé.\n  Fort contre les tanks\n  Faible contre l'infanterie et l'aviation
+
+SAM:
+	Tooltip:
+		Name: Missile SAM
+		Description: Défense anti-aérienne.\n  Fort contre l'aviation\n  Faible contre l'infanterie et les tanks
+	
+GTWR:
+	Tooltip:
+		Name: Tour de garde
+		Description: Défense de base.\n  Fort contre l'infanterie\n  Faible contre les tanks et l'aviation
+
+ATWR:
+	Tooltip:
+		Name: Tour de garde avancée
+		Description: Défense anti-blindé.\n  Fort contre les véhicules légers et les tanks\n  Faible contre l'infanterie
+
+# custom prerequisites:
+BARRACKS:
+	Tooltip:
+		Name: Production d'infanterie
+		Description: Production d'infanterie
+
+VEHICLEPRODUCTION:
+	Tooltip:
+		Name: Production de véhicules
+		Description: Production de véhicules
+
+ANYPOWER:
+	Tooltip:
+		Name: Centrale électrique
+		Description: Centrale électrique

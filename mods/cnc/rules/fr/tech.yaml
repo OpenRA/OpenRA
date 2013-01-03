@@ -1,0 +1,27 @@
+V19:
+	Tooltip:
+		Name: Derrick pétrolier
+
+V19.Husk:
+	Tooltip:
+		Name: Derrick pétrolier (Détruit)
+
+HOSP:
+	Tooltip:
+		Name: Hôpital
+
+HOSP.Husk:
+	Tooltip:
+		Name: Hôpital (Détruit)
+
+BIO:
+	Tooltip:
+		Name: Laboratoire biologique
+
+BIO.Husk:
+	Tooltip:
+		Name: Laboratoire biologique (Détruit)
+
+MISS:
+	Tooltip:
+		Name: Centre technique

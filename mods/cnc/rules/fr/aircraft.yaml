@@ -1,0 +1,22 @@
+TRAN:
+	Tooltip:
+		Name: Hélicoptère Chinook
+		Description: Hélicoptère de transport de troupes rapide.\n  Désarmé
+
+HELI:
+	Tooltip:
+		Name: Apache Longbow
+		Description: Hélicoptère armé de chainguns.\n  Fort contre l'infanterie et les blindés légers\n  Faible contre les chars
+
+ORCA:
+	Tooltip:
+		Name: Orca
+		Description: Hélicoptère armé de missiles AG.\n  Fort contre les bâtiments et les chars\n  Faible contre l'infanterie
+
+C17:
+	Tooltip:
+		Name: Avion de ravitaillement
+
+A10:
+	Tooltip:
+		Name: Bombardier A10	

@@ -1,12 +1,12 @@
 SS:
 	Tooltip:
 		Name: Sous-marin
-		Description: Unite anti-navires submersible armée de torpilles.\n  Fort contre les Navires\n  Faible contre Tout\n  Capacité spéciale: Submersion
+		Description: Submersible anti-navires armée de torpilles.\n  Fort contre les Navires\n  Faible contre Tout\n  Capacité spéciale: Submersion
 
 MSUB:
 	Tooltip:
 		Name: Sous-marin lance-missiles
-		Description: Unite submersible armée de missiles ballistiques mer-sol de longue portée.\n  Fort contre les Bâtiments\n  Faible contre tout\n  Capacité spéciale: Submersion
+		Description: Submersible armée de missiles ballistiques mer-sol de longue portée.\n  Fort contre les Bâtiments\n  Faible contre tout\n  Capacité spéciale: Submersion
 
 DD:
 	Tooltip:
@@ -16,14 +16,14 @@ DD:
 CA:
 	Tooltip:
 		Name: Croiseur
-		Description: Navire longue portée très lent.\n  Fort contre les Bâtiments\n  Faible contre les Navires et Sous-marins.
+		Description: Navire longue portée et très lent.\n  Fort contre les Bâtiments\n  Faible contre les Navires et Sous-marins.
 
 LST:
 	Tooltip:
 		Name: Transport maritime
-		Description: Transporteur de base.\nPeut emporter Soldats et Tanks.\n  |Désarmé|
+		Description: Transporteur de troupes.\nPeut emporter soldats et tanks.\n  (Désarmé)
 
 PT:
 	Tooltip:
 		Name: Aviso-torpilleur
-		Description: Navire de support rapide et léger.\n  Fort contre les Navires et les Sous-marins\n  Faible contre l'Aviation
+		Description: Navire de soutient rapide et léger.\n  Fort contre les Navires et les Sous-marins\n  Faible contre l'Aviation
