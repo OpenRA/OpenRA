@@ -11,7 +11,7 @@ HARV:
 APC:
 	Tooltip:
 		Name: VBT
-		Description: Véhicule Blindé de Transport personnel\nTransporteur armé d'une mitrailleuse\n  Fort contre l'infanterie et l'aviation\n  Faible contre les tanks
+		Description: Véhicule Blindé de Transport personnel\nTransporteur armé d'une mitrailleuse.\n  Fort contre l'infanterie et l'aviation\n  Faible contre les tanks
 
 ARTY:
 	Tooltip:

@@ -40,7 +40,6 @@ Background@CREATESERVER_BG:
 			Width:50
 			MaxLength:5
 			Height:25
-			Text:Partie OpenRA
 		Label@LISTEN_PORT_LABEL:
 			X:210
 			Y:94

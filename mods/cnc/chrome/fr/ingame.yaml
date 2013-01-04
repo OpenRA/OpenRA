@@ -206,7 +206,7 @@ Container@PLAYER_WIDGETS:
 							Width:30
 							Height:30
 							Key: w
-							TooltipText: Défense
+							TooltipText: Défenses
 							TooltipContainer:TOOLTIP_CONTAINER
 							Children:
 								Image@ICON:

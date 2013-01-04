@@ -75,7 +75,7 @@ Container@CONQUEST_OBJECTIVES:
 							X:380
 							Width:70
 							Height:25
-							Text:Morts
+							Text:Pertes
 							Font:Bold
 							Align:Center
 				ScrollPanel@PLAYER_LIST:
