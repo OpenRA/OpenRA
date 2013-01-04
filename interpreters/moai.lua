@@ -63,6 +63,14 @@ return {
       end
       f:write(code)
       f:close()
+
+      -- add mobdebug as the first path to LUA_PATH to provide a workaround
+      -- for a MOAI issue: https://github.com/pkulchenko/ZeroBraneStudio/issues/96
+      local mdb = MergeFullPath(GetPathWithSep(ide.editorFilename), "lualibs/mobdebug/?.lua")
+      local _, path = wx.wxGetEnv("LUA_PATH")
+      if path and path:find(mdb, 1, true) ~= 1 then
+        wx.wxSetEnv("LUA_PATH", mdb..";"..path)
+      end
     end
 
     file = file or wfilename:GetFullPath()
