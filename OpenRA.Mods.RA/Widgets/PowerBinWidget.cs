@@ -99,6 +99,21 @@ namespace OpenRA.Mods.RA.Widgets
 			var powerDrainLevel = new float2(lastPowerDrainedPos.Value - indicator.size.X / 2, barStart.Y - 1);
 
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(indicator, powerDrainLevel);
+
+			// Render the tooltip
+			var rect = new Rectangle((int) barStart.X, (int) barStart.Y, powerSize.Width, powerSize.Height);
+			
+			if (rect.InflateBy(0, 5, 0, 5).Contains(Viewport.LastMousePos))
+			{
+				var pos = new int2(rect.Left + 5, rect.Top + 5);
+
+				var border = WidgetUtils.GetBorderSizes("dialog4");
+				WidgetUtils.DrawPanel("dialog4", rect.InflateBy(0, 0, 0, 50 + border[1]));
+
+				Game.Renderer.Fonts["Bold"].DrawText("Power", pos, Color.White);
+				pos += new int2(0, 20);
+				Game.Renderer.Fonts["Regular"].DrawText("Provided: {0}\nDrained: {1}".F(power.PowerProvided, power.PowerDrained), pos, Color.White);
+			}
 		}
 	}
 }
