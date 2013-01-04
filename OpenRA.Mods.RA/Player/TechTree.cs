@@ -34,20 +34,21 @@ namespace OpenRA.Mods.RA
 
 		public void ActorChanged(Actor a)
 		{
-			if (a.Owner == player && a.HasTrait<ITechTreePrerequisite>())
+			var bi = a.Info.Traits.GetOrDefault<BuildableInfo>();
+			if (a.Owner == player && (a.HasTrait<ITechTreePrerequisite>() || (bi != null && bi.BuildLimit > 0)))
 				Update();
 		}
 
 		public void Update()
 		{
-			var buildings = GatherBuildings(player);
+			var buildables = GatherBuildables(player);
 			foreach(var w in watchers)
-				w.Update(buildings);
+				w.Update(buildables);
 		}
 
-		public void Add(string key, List<string> prerequisites, ITechTreeElement tte)
+		public void Add(string key, BuildableInfo info, ITechTreeElement tte)
 		{
-			watchers.Add(new Watcher( key, prerequisites, tte ));
+			watchers.Add(new Watcher( key, info, tte ));
 		}
 
 		public void Remove(string key)
@@ -55,17 +56,23 @@ namespace OpenRA.Mods.RA
 			watchers.RemoveAll(x => x.key == key);
 		}
 
-		static Cache<string, List<Actor>> GatherBuildings( Player player )
+		static Cache<string, List<Actor>> GatherBuildables( Player player )
 		{
 			var ret = new Cache<string, List<Actor>>( x => new List<Actor>() );
 			if (player == null)
 				return ret;
 
-
+			// Add buildables that provide prerequisites
 			foreach (var b in player.World.ActorsWithTrait<ITechTreePrerequisite>()
 					.Where(a => a.Actor.IsInWorld && !a.Actor.IsDead() && a.Actor.Owner == player))
 				foreach (var p in b.Trait.ProvidesPrerequisites)
 					ret[ p ].Add( b.Actor );
+
+			// Add buildables that have a build limit set and are not already in the list
+			player.World.ActorsWithTrait<Buildable>()
+				  .Where(a => a.Actor.Info.Traits.Get<BuildableInfo>().BuildLimit > 0 && !a.Actor.IsDead() && a.Actor.Owner == player && ret.Keys.All(k => k != a.Actor.Info.Name))
+				  .ToList()
+				  .ForEach(b => ret[b.Actor.Info.Name].Add(b.Actor));
 
 			return ret;
 		}
@@ -74,30 +81,30 @@ namespace OpenRA.Mods.RA
 		{
 			public readonly string key;
 			// strings may be either actor type, or "alternate name" key
-			public readonly List<string> prerequisites;
+			public readonly string[] prerequisites;
 			public readonly ITechTreeElement watcher;
 			bool hasPrerequisites;
+			int buildLimit;
 
-			public Watcher(string key, List<string> prerequisites, ITechTreeElement watcher)
+			public Watcher(string key, BuildableInfo info, ITechTreeElement watcher)
 			{
 				this.key = key;
-				this.prerequisites = prerequisites;
+				this.prerequisites = info.Prerequisites;
 				this.watcher = watcher;
 				this.hasPrerequisites = false;
+				this.buildLimit = info.BuildLimit;
 			}
 
-			bool HasPrerequisites(Cache<string, List<Actor>> buildings)
+			bool HasPrerequisites(Cache<string, List<Actor>> buildables)
 			{
-				foreach (var p in prerequisites)
-					if (p.StartsWith("!") ^
-						!buildings.Keys.Contains(p.Replace("!","")))
-						return false;
-				return true;
+				return prerequisites.All(p => !(p.StartsWith("!") ^ !buildables.Keys.Contains(p.Replace("!", ""))));
 			}
 
-			public void Update(Cache<string, List<Actor>> buildings)
+			public void Update(Cache<string, List<Actor>> buildables)
 			{
-				var nowHasPrerequisites = HasPrerequisites(buildings);
+				var hasReachedBuildLimit = buildLimit > 0 && buildables[key].Count >= buildLimit;
+
+				var nowHasPrerequisites = HasPrerequisites(buildables) && !hasReachedBuildLimit;
 
 				if( nowHasPrerequisites && !hasPrerequisites )
 					watcher.PrerequisitesAvailable(key);
