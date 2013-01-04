@@ -4,13 +4,14 @@ MSLO:
 		Cost: 2500
 	Tooltip:
 		Name: Missile Silo
-		Description: Launches a devastating nuclear strike.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks\n  Special Ability: Nuclear Missile
+		Description: Launches a devastating nuclear strike.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks\n  Special Ability: Nuclear Missile\n\nMaximum 1 can be built
 		Icon: msloicon2
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 130
 		Prerequisites: techcenter
 		Owner: soviet,allies
+		BuildLimit: 1
 	Building:
 		Power: -100
 		Footprint: xx
