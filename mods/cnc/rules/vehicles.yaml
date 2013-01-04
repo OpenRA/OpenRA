@@ -3,9 +3,7 @@ MCV:
 	Valued:
 		Cost: 2000
 	Tooltip:
-		Name: Mobile Construction Vehicle
 		Icon: mcvicnh
-		Description: Deploys into another Construction Yard.\n  Unarmed
 	Buildable:
 		BuildPaletteOrder: 70
 		Prerequisites: fix
@@ -41,9 +39,7 @@ HARV:
 	Valued:
 		Cost: 1200
 	Tooltip:
-		Name: Harvester
 		Icon: harvicnh
-		Description: Collects Tiberium for processing.\n  Unarmed
 	Buildable:
 		BuildPaletteOrder: 10
 		Prerequisites: proc
@@ -79,9 +75,7 @@ APC:
 	Valued:
 		Cost: 700
 	Tooltip:
-		Name: Armored Personnel Carrier
 		Icon: apcicnh
-		Description: Armored infantry transport and mobile AA\n  Strong vs Aircraft\n  Weak vs Tanks, Infantry
 	Buildable:
 		BuildPaletteOrder: 30
 		Prerequisites: pyle
@@ -117,9 +111,7 @@ ARTY:
 	Valued:
 		Cost: 600
 	Tooltip:
-		Name: Artillery
 		Icon:artyicnh
-		Description: Long-range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
 	Buildable:
 		BuildPaletteOrder: 40
 		Prerequisites: hq
@@ -147,9 +139,7 @@ FTNK:
 	Valued:
 		Cost: 800
 	Tooltip:
-		Name: Flame Tank
 		Icon: ftnkicnh
-		Description: Heavily armored flame-throwing vehicle.\n  Strong vs Infantry, Buildings\n  Weak vs Aircraft
 	Buildable:
 		BuildPaletteOrder: 50
 		Prerequisites: hq
@@ -181,9 +171,7 @@ BGGY:
 	Valued:
 		Cost: 300
 	Tooltip:
-		Name: Nod Buggy
 		Icon: bggyicnh
-		Description: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: afld
@@ -213,9 +201,7 @@ BIKE:
 	Valued:
 		Cost: 400
 	Tooltip:
-		Name: Recon Bike
 		Icon: bikeicnh
-		Description: Fast scout vehicle, armed with \nrockets.\n  Strong vs Vehicles, Aircraft\n  Weak vs Infantry
 	Buildable:
 		BuildPaletteOrder: 30
 		Prerequisites: afld
@@ -250,9 +236,7 @@ JEEP:
 	Valued:
 		Cost: 400
 	Tooltip:
-		Name: Hum-Vee
 		Icon: jeepicnh
-		Description: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: weap
@@ -282,9 +266,7 @@ LTNK:
 	Valued:
 		Cost: 600
 	Tooltip:
-		Name: Light Tank
 		Icon: ltnkicnh
-		Description: Light Tank, good for scouting.\n  Strong vs Light Vehicles\n  Weak vs Tanks, Aircraft
 	Buildable:
 		BuildPaletteOrder: 30
 		Prerequisites: hq
@@ -317,9 +299,7 @@ MTNK:
 	Valued:
 		Cost: 800
 	Tooltip:
-		Name: Medium Tank
 		Icon: mtnkicnh
-		Description: General-Purpose GDI Tank.\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
 	Buildable:
 		BuildPaletteOrder: 30
 		Prerequisites: hq
@@ -354,9 +334,7 @@ HTNK:
 	Valued:
 		Cost: 1500
 	Tooltip:
-		Name: Mammoth Tank
 		Icon: htnkicnh
-		Description: Heavily armored GDI Tank.\n  Strong vs Everything
 	Buildable:
 		BuildPaletteOrder: 60
 		Prerequisites: eye
@@ -399,9 +377,7 @@ MSAM:
 	Valued:
 		Cost: 1200
 	Tooltip:
-		Name: Rocket Launcher
 		Icon: msamicnh
-		Description: Long range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
 	Buildable:
 		BuildPaletteOrder: 50
 		Prerequisites: hq
@@ -430,9 +406,7 @@ MLRS:
 	Valued:
 		Cost: 750
 	Tooltip:
-		Name: SSM Launcher
 		Icon: mlrsicnh
-		Description: Long range artillery.\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks, Aircraft
 #	Buildable:
 #		BuildPaletteOrder: 60
 #		Prerequisites: hq
@@ -464,9 +438,7 @@ STNK:
 	Valued:
 		Cost: 900
 	Tooltip:
-		Name: Stealth Tank
 		Icon: stnkicnh
-		Description: Missile tank that can bend light around \nitself to become invisible\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks
 	Buildable:
 		BuildPaletteOrder: 90
 		Prerequisites: tmpl

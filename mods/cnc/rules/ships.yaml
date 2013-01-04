@@ -3,7 +3,6 @@ BOAT:
 	Valued:
 		Cost: 300
 	Tooltip:
-		Name: Gunboat
 		Icon: boaticnh
 	Health:
 		HP: 700
@@ -31,8 +30,6 @@ LST:
 	Inherits: ^Ship
 	Valued:
 		Cost: 300
-	Tooltip:
-		Name: Landing Craft
 	Mobile:
 		Crushes: crate
 		TerrainSpeeds:
@@ -63,4 +60,3 @@ LST:
 		PipCount: 5
 	AttackMove:
 		JustMove: true
-

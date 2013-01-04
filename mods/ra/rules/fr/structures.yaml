@@ -1,0 +1,268 @@
+MSLO:
+	Tooltip:
+		Icon: msloicon
+		Name: Silo de Missiles
+		Description: Lance un missile nucléaire dévastateur.\n  Fort contre l'infanterie, les bâtiments\n  Faible contre les tanks\n  Capacité spéciale: Missile Nucléaire
+	NukePower:
+		Description: Bombe Atomique
+		LongDesc: Lance un missile nucléaire à l'endroit désigné.
+
+GAP:
+	Tooltip:
+		Name: Générateur d'Ombre
+		Description: Génère un brouillard de guerre à proximité,\nobscurcit la zone.\n  (Désarmé)
+
+SPEN:
+	Tooltip:
+		Name: Port sous-marin
+		Description: Produit et répare les sous-marins et les bateaux de transport.
+
+SYRD:
+	Tooltip:
+		Name: Chantier naval
+		Description: Produit et répare les bateaux.
+
+IRON:
+	Tooltip:
+		Name: Rideau de fer
+		Description: Rend un groupe d'unités invulnérables pour\nun court instant.\n  Capacité spéciale: Invulnérabilité
+	IronCurtainPower:
+		Description: Invulnérabilité
+		LongDesc: Rend un groupe d'unités invulnérable pendant 15 secondes.
+
+PDOX:
+	Tooltip:
+		Name: Chronosphère
+		Description: Téléporte une unite d'un endroit à un autre,\npour une durée limitée.\n  Capacité spéciale: Chronotransfert
+	ChronoshiftPower:
+		Description: Chronotransfert
+		LongDesc: Téléporte un groupe de véhicules n'importe où\nsur la carte pendant 30 secondes.
+
+TSLA:
+	Tooltip:
+		Name: Bobine de Tesla
+		Description: Défense avancée.\n  Requiert de l'électricité pour fonctionner.\n  Fort contre les tanks, l'infanterie\n  Faible contre l'aviation
+
+AGUN:
+	Tooltip:
+		Name: DCA
+		Description: Canon anti-aérien.\n  Fort contre l'aviation\n  Faible contre l'infanterie et les tanks
+
+DOME:
+	Tooltip:
+		Name: Dome Radar
+		Description: Donne une vue aérienne du champ\nde bataille.\n  Requiert de l'électicité pour fonctionner.
+
+PBOX:
+	Tooltip:
+		Name: Bunker (Désarmé)
+
+PBOX.E1:
+	Tooltip:
+		Name: Bunker (Mitrailleuse)
+		Description: Structure defensive basique.\n  Fort contre l'infanterie et les\nvéhicules Légers\n  Faible contre les tanks et l'aviation
+
+#PBOX.E2:
+#	Tooltip:
+#		Name: Bunker (Grenades)
+
+PBOX.E3:
+	Tooltip:
+		Name: Bunker (Missiles)
+
+PBOX.E4:
+	Tooltip:
+		Name: Bunker (Lance-flammes)
+
+PBOX.E7:
+	Tooltip:
+		Name: Bunker (Tanya)
+
+PBOX.SHOK:
+	Tooltip:
+		Name: Bunker (Tesla)
+
+PBOX.SNIPER:
+	Tooltip:
+		Name: Bunker (Sniper)
+
+HBOX:
+	Tooltip:
+		Name: Bunker camouflé (Désarmé)
+
+HBOX.E1:
+	Tooltip:
+		Name: Bunker camouflé (Mitrailleuse)
+		Description: Structure défensive invisible.\n  Fort contre l'infanterie et les\nvéhicules Légers\n  Faible contre les tanks et l'aviation
+
+#HBOX.E2:
+#	Tooltip:
+#		Name: Bunker camouflé (Grenades)
+
+HBOX.E3:
+	Tooltip:
+		Name: Bunker camouflé (Missiles)
+
+HBOX.E4:
+	Tooltip:
+		Name: Bunker camouflé (Lance-flammes)
+
+HBOX.E7:
+	Tooltip:
+		Name: Bunker camouflé (Tanya)
+
+HBOX.SHOK:
+	Tooltip:
+		Name: Bunker camouflé (Tesla)
+
+HBOX.SNIPER:
+	Tooltip:
+		Name: Bunker camouflé (Sniper)
+
+GUN:
+	Tooltip:
+		Name: Tourelle
+		Description: Défense anti-blindés.\n  Fort contre les tanks\n  Faible contre l'infanterie et l'aviation
+
+FTUR:
+	Tooltip:
+		Name: Tour lance-flammes
+		Description: Défense de base anti-infanterie.\n  Fort contre l'infanterie\n  Faible contre l'aviation
+
+SAM:
+	Tooltip:
+		Name: Missiles SAM
+		Description: Défense anti-aérienne de base.\n  Fort contre l'aviation\n  Faible contre l'infanterie et les tanks
+
+ATEK:
+	Tooltip:
+		Name: Centre Technique Allié
+		Description: Permet la production d'unités alliés\nplus avancées.\n  Capacité spéciale: Satellite GPS 
+	GpsPower:
+		Description: Satellite GPS
+		LongDesc: Révèle toute la carte.
+
+WEAP:
+	Tooltip:
+		Name: Usine d'Armement
+		Description: Produit tanks et véhicules légers.
+
+FACT:
+	Tooltip:
+		Name: Chantier de construction
+
+PROC:
+	Tooltip:
+		Name: Raffinerie de minerai
+		Description: Convertit l'Or et les Gemmes en argent.
+
+SILO:
+	Tooltip:
+		Name: Silo à minerai
+		Description: Stocke le minerai récolté.
+
+HPAD:
+	Tooltip:
+		Name: Héliport
+		Description: Produit et recharge les hélicoptères.
+
+AFLD:
+	Tooltip:
+		Name: Piste d'atterrissage
+		Description: Permet la construction d'avions et\nle support aérien.\n  Capacité spéciale: Parachutistes\n  Capacité spéciale: Avion Espion
+	SpyPlanePower:
+		Description: Avion Espion
+		LongDesc: Révèle une zone de la carte.
+	ParatroopersPower:
+		Description: Parachutistes
+		LongDesc: Un avion parachute une escouade de mitrailleurs\nn'importe ou sur la carte.
+
+POWR:
+	Tooltip:
+		Name: Centrale électrique
+		Description: Procure de l'énergie pour les autres structures.
+
+APWR:
+	Tooltip:
+		Name: Centrale électrique avancée
+		Description: Procure plus d'électricité et moins chère que\nles centrales électriques standards.
+
+STEK:
+	Tooltip:
+		Name: Centre Technique Soviet
+		Description: Permet la production d'unités\navancées sovietiques.
+
+BARR:
+	Tooltip:
+		Name: Caserne Sovietique
+		Description: Produit l'infanterie soviétique.
+
+TENT:
+	Tooltip:
+		Name: Caserne Alliée
+		Description: Produit l'infanterie alliée.
+
+KENN:
+	Tooltip:
+		Name: Niche
+
+FIX:
+	Tooltip:
+		Name: Centre de service
+		Description: Répare les véhicules, recharge les poseurs\nde mines AT/AP, et permet la construction\nde bases additionnelles.
+
+FACF:
+#	Buildable:
+#		Description: Chantier de construction leurre
+#		LongDesc: Ressemble a un Chantier de construction.
+
+WEAF:
+#	Buildable:
+#		Description: Usine d'armement leurre
+#		LongDesc: Ressemble a une Usine d'armement.
+
+SYRF:
+#	Buildable:
+#		Description: Chantier naval leurre
+#		LongDesc: Ressemble a un Chantier naval.
+
+DOMF:
+#	Buildable:
+#		Description: Dome radar leurre
+#		LongDesc: Ressemble a un Dome radar
+
+SBAG:
+	Tooltip:
+		Name: Sacs de sable
+		Description: Stoppe l'infanterie et bloque les tirs ennemis.\nPeut être écrasé par les tanks.
+
+FENC:
+	Tooltip:
+		Name: Clôture barbelée
+		Description: Stoppe l'infanterie et bloque les tirs ennemis.\nPeut être écrasé par les tanks.
+
+BRIK:
+	Tooltip:
+		Name: Mur en béton
+		Description: Stoppe les unites et bloque les tirs ennemis.
+
+# custom prerequisites:
+BARRACKS:
+	Tooltip:
+		Name: Production d'infanterie
+		Description: Production d'infanterie
+
+VEHICLEPRODUCTION:
+	Tooltip:
+		Name: Production de véhicules
+		Description: Production de véhicules
+
+TECHCENTER:
+	Tooltip:
+		Name: Centre Technique
+		Description: Centre Technique
+
+ANYPOWER:
+	Tooltip:
+		Name: Centrale électrique
+		Description: Centrale électrique

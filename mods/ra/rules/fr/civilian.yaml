@@ -1,0 +1,27 @@
+FCOM:
+	Tooltip:
+		Name: Poste avancé
+
+HOSP:
+	Tooltip:
+		Name: Hôpital
+
+V01:
+	Tooltip:
+		Name: Église
+
+BARL:
+	Tooltip:
+		Name: Baril Explosif
+
+BRL3:
+	Tooltip:
+		Name: Baril Explosif
+
+BIO:
+	Tooltip:
+		Name: Laboratoire Biologique
+
+OILB:
+	Tooltip:
+		Name: Derrick Pétrolier

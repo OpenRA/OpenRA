@@ -1,0 +1,71 @@
+DOG:
+	Tooltip:
+		Name: Attack Dog
+		Description: Anti-infantry unit. Not fooled by the \nSpy's disguise.\n  Strong vs Infantry\n  Weak vs Vehicles
+
+E1:
+	Tooltip:
+		Name: Rifle Infantry
+		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles
+
+E2:
+	Tooltip:
+		Name: Grenadier
+		Description: Infantry armed with grenades. \n  Strong vs Buildings, Infantry\n  Weak vs Vehicles
+
+E3:
+	Tooltip:
+		Name: Rocket Soldier
+		Description: Anti-tank/Anti-aircraft infantry.\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry
+
+E4:
+	Tooltip:
+		Name: Flamethrower
+		Description: Advanced Anti-infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
+
+E6:
+	Tooltip:
+		Name: Engineer
+		Description: Infiltrates and captures enemy structures.\n  Strong vs Nothing\n  Weak vs Everything
+
+SPY:
+	SpyToolTip:
+		Name: Spy
+		Description: Infiltrates enemy structures to gather \nintelligence. Exact effect depends on the \nbuilding infiltrated.\n  Strong vs Nothing\n  Weak vs Everything\n  Special Ability: Disguised
+
+E7:
+	Tooltip:
+		Name: Tanya
+		Description: Elite commando infantry, armed with \ndual pistols and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles\n  Special Ability: Destroy Building with C4
+
+E8:
+	Tooltip:
+		Name: Volkov
+		Description: Elite commando cyborg, armed with \nmodular cannons and grenade launcher.\n  Strong vs Vehicles, Infantry\n  Weak vs Aircraft
+
+MEDI:
+	Tooltip:
+		Name: Medic
+		Description: Heals nearby infantry.\n  Strong vs Nothing\n  Weak vs Everything
+
+C1:
+	Tooltip:
+		Name: Civilian
+
+C2:
+	Tooltip:
+		Name: Civilian
+
+EINSTEIN:
+	Tooltip:
+		Name: Prof. Einstein
+
+SHOK:
+	Tooltip:
+		Name: Tesla Trooper
+		Description: Infantry with tesla coils\n Strong vs Infantry\n Weak vs Vehicles
+
+SNIPER:
+	Tooltip:
+		Name: Sniper
+		Description: Elite sniper infantry unit.\n  Strong vs Infantry\n  Weak vs Vehicles

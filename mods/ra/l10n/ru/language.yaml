@@ -1,0 +1,37 @@
+Metadata:
+	Title: Red Alert
+	Description: OpenRA - Переосмысление и обновление классической игры
+	Author: Разработчики OpenRA
+
+Folders:
+	~mods/ra/packages/ru
+
+Packages:
+	~WOLAPI.MIX
+
+Rules:
+	mods/ra/rules/ru/defaults.yaml
+	mods/ra/rules/ru/system.yaml
+	mods/ra/rules/ru/vehicles.yaml
+	mods/ra/rules/ru/structures.yaml
+	mods/ra/rules/ru/infantry.yaml
+	mods/ra/rules/ru/civilian.yaml
+	mods/ra/rules/ru/trees.yaml
+	mods/ra/rules/ru/aircraft.yaml
+	mods/ra/rules/ru/ships.yaml
+
+ChromeLayout:
+	mods/ra/chrome/ru/gameinit.yaml
+	mods/ra/chrome/ru/ingame.yaml
+	mods/ra/chrome/ru/mainmenu.yaml
+	mods/ra/chrome/ru/settings.yaml
+	mods/ra/chrome/ru/lobby.yaml
+	mods/ra/chrome/ru/map-chooser.yaml
+	mods/ra/chrome/ru/create-server.yaml
+	mods/ra/chrome/ru/serverbrowser.yaml
+	mods/ra/chrome/ru/replaybrowser.yaml
+	mods/ra/chrome/ru/modchooser.yaml
+	mods/ra/chrome/ru/cheats.yaml
+	mods/ra/chrome/ru/objectives.yaml
+
+Languages:

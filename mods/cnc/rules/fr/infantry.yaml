@@ -1,0 +1,38 @@
+E1:
+	Tooltip:
+		Name: Mitrailleur
+		Description: Infanterie de base.\n  Fort contre l'infanterie\n  Faible contre les véhicules
+
+E2:
+	Tooltip:
+		Name: Grenadier
+		Description: Infanterie armée de grenades.\n  Fort contre les bâtiments et l'infanterie\n  Faible contre les véhicules
+	
+E3:
+	Tooltip:
+		Name: Lance-roquette
+		Description: Infanterie anti-tank/anti-avion.\n  Fort contre les tanks et l'aviation\n  Faible contre l'infanterie
+
+E4:
+	Tooltip:
+		Name: Infanterie Lance-flamme
+		Description: Unité anti-infanterie avancée.\n  Fort contre l'infanterie et les bâtiments\n  Faible contre les véhicules
+
+E5:
+	Tooltip:
+		Name: Chimicommando
+		Description: Unité anti-infanterie avancée.\n  Fort contre l'infanterie\n  Faible contre les véhicules
+
+E6:
+	Tooltip:
+		Name: Ingénieur
+		Description: Infiltre et capture les structures ennemis.\n  Fort contre rien\n  Faible contre tout
+
+RMBO:
+	Tooltip:
+		Name: Commando
+		Description: Infanterie d'élite armée d'un sniper et de C4.\n  Fort contre l'infanterie et les bâtiments\n  Faible contre les véhicules
+
+PVICE:
+	Tooltip:
+		Description: Abomination mutante, dégoulinante de tibérium liquide.\n  Fort contre l'infanteie et les bâtiments\n  Faible contre l'aviation

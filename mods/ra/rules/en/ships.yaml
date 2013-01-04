@@ -1,0 +1,29 @@
+SS:
+	Tooltip:
+		Name: Submarine
+		Description: Submerged anti-ship unit armed with \ntorpedoes.\n  Strong vs Ships\n  Weak vs Everything\n  Special Ability: Submerge
+
+MSUB:
+	Tooltip:
+		Name: Missile Submarine
+		Description: Submerged anti-ground unit armed with \nlong-range ballistic missiles.\n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: Submerge
+
+DD:
+	Tooltip:
+		Name: Destroyer
+		Description: Fast multi-role ship. \n  Strong vs Submarines, Aircraft\n  Weak vs Infantry, Tanks
+
+CA:
+	Tooltip:
+		Name: Cruiser
+		Description: Very slow long-range ship. \n  Strong vs Buildings\n  Weak vs Ships, Submarines
+
+LST:
+	Tooltip:
+		Name: Transport
+		Description: General-purpose naval transport.\nCan carry infantry and tanks.\n  Unarmed
+
+PT:
+	Tooltip:
+		Name: Gunboat
+		Description: Light scout & support ship. \n  Strong vs Ships, Submarines\n  Weak vs Aircraft

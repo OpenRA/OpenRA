@@ -1,0 +1,242 @@
+Player:
+	PlaceBuilding:
+	TechTree:
+	SupportPowerManager:
+	ConquestVictoryConditions:
+		WinNotification:accom1.aud
+		LoseNotification:fail1.aud
+	PowerManager:
+	PlayerResources:
+		InitialCash: 5000
+	ActorGroupProxy:
+	DeveloperMode:
+	HackyAI@EasyAI:
+		Name:Лёгкий AI
+		BuildingFractions:
+			proc: 20%
+			pyle: 5%
+			hand: 5%
+			weap: 5%
+			hq: 2%
+			afld: 5%
+			gtwr: 5%
+			gun: 5%
+			atwr: 5%
+			obli: 5%
+			sam: 1%
+			eye: 1%
+			tmpl: 1%
+			silo: 5%
+			fix: 1%
+		UnitsToBuild:
+			e1: 0%
+			e2: 0%
+			e3: 0%
+			e4: 0%
+			e5: 0%
+			bggy: 0%
+			bike: 0%
+			1tnk: 0%
+			jeep: 0%
+			mtnk: 0%
+			arty: 0%
+	HackyAI@NormalAI:
+		Name:Средний AI
+		BuildingFractions:
+			proc: 20%
+			pyle: 5%
+			hand: 5%
+			weap: 5%
+			hq: 2%
+			afld: 5%
+			gtwr: 5%
+			gun: 5%
+			atwr: 5%
+			obli: 5%
+			sam: 1%
+			eye: 1%
+			tmpl: 1%
+			silo: 5%
+			fix: 1%
+			hpad: 1%
+		UnitsToBuild:
+			e1: 0%
+			e2: 0%
+			e3: 0%
+			e4: 0%
+			e5: 0%
+			rmbo: 0%
+			bggy: 0%
+			bike: 0%
+			1tnk: 0%
+			jeep: 0%
+			mtnk: 0%
+			arty: 0%
+			apc: 0%
+			ftnk: 0%
+			htnk: 0%
+			msam: 0%
+			mlrs: 0%
+			stnk: 0%
+			heli: 0%
+			orca: 0%
+	PlayerColorPalette:
+		BasePalette: terrain
+		PaletteFormat: cnc
+	SurrenderOnDisconnect:
+	
+World:
+	LoadWidgetAtGameStart:
+		Widget: INGAME_ROOT
+	CncMenuPaletteEffect:
+	ScreenShaker:
+	NukePaletteEffect:
+	CncWaterPaletteRotation:
+	BuildingInfluence:
+	BridgeLayer:
+		Bridges: bridge1, bridge2, bridge3, bridge4
+	PaletteFromCurrentTileset@terrain:
+		Name: terrain
+	PaletteFromCurrentTileset@static:
+		Name: staticterrain
+	PaletteFromFile@chrome:
+		Name: chrome
+		Filename: temperat.pal
+	PaletteFromFile@effect:
+		Name: effect
+		Filename: temperat.pal
+	PaletteFromRGBA@shadow:
+		Name: shadow
+		R: 0
+		G: 0
+		B: 0
+		A: 140
+	PaletteFromRGBA@highlight:
+		Name: highlight
+		R: 255
+		G: 255
+		B: 255
+		A: 128
+	PaletteFromRGBA@disabled:
+		Name: disabled
+		R: 0
+		G: 0
+		B: 0
+		A: 180
+	CncColorPickerPaletteModifier:
+	ShroudPalette@shroud:
+	ShroudPalette@fog:
+		IsFog: yes
+		Name: fog
+	Country@gdi:
+		Name: GDI
+		Race: gdi
+	Country@nod:
+		Name: Nod
+		Race: nod
+	ProductionQueueFromSelection:
+		ProductionTabsWidget: PRODUCTION_TABS
+	BibLayer:
+	ResourceLayer:
+	ResourceType@green-tib:
+		ResourceType: 1
+		Palette: staticterrain
+		TerrainType: Tiberium
+		SpriteNames: ti1,ti2,ti3,ti4,ti5,ti6,ti7,ti8,ti9,ti10,ti11,ti12
+		ValuePerUnit: 45
+		Name: Tiberium
+		PipColor: Green
+		AllowedTerrainTypes: Clear,Road
+		AllowUnderActors: false
+	ResourceType@blue-tib:
+		ResourceType: 2
+		Palette: staticterrain
+		TerrainType: BlueTiberium
+		SpriteNames: bti1,bti2,bti3,bti4,bti5,bti6,bti7,bti8,bti9,bti10,bti11,bti12
+		ValuePerUnit: 75
+		Name: Blue Tiberium
+		PipColor: Blue
+		AllowedTerrainTypes: Clear,Road
+		AllowUnderActors: false
+	SmudgeLayer@SCORCH:
+		Type:Scorch
+		SmokePercentage:50
+		Types:sc1,sc2,sc3,sc4,sc5,sc6
+		Depths:1,1,1,1,1,1
+	SmudgeLayer@CRATER:
+		Type:Crater
+		Types:cr1,cr2,cr3,cr4,cr5,cr6
+		Depths:5,5,5,5,5,5
+	SpawnMapActors:
+	CreateMPPlayers:
+	SpawnMPUnits:
+	MPStartLocations:
+	EvaAlerts:
+		RadarUp: comcntr1.aud
+		RadarDown: powrdn1.aud
+		BuildingCannotPlaceAudio: deploy1.aud
+		CashTickUp:
+		CashTickDown:
+		LowPower: lopower1.aud
+		SilosNeeded: silos1.aud
+		PrimaryBuildingSelected: pribldg1.aud
+		AbilityInsufficientPower: nopower1.aud
+		LevelUp: text2.aud
+	SpatialBins:
+		BinSize: 4
+	Shroud:
+	CrateSpawner:
+		Minimum: 1
+		Maximum: 3
+		SpawnInterval: 120
+		WaterChance: 0
+	PathFinder:
+	ValidateOrder:
+	ConquestObjectivesPanel:
+		ObjectivesPanel: CONQUEST_OBJECTIVES
+
+CRATE:
+	Tooltip:
+		Name: Ящик
+	Crate:
+		Lifetime: 120
+		TerrainTypes: Clear, Rough, Road, Tiberium, BlueTiberium, Beach
+	GiveCashCrateAction:
+		Amount: 1000
+		SelectionShares: 20
+		UseCashTick: yes
+	RevealMapCrateAction:
+		SelectionShares: 1
+		Effect: reveal-map
+	HideMapCrateAction:
+		SelectionShares: 5
+		Effect: hide-map
+	LevelUpCrateAction:
+		SelectionShares: 20
+	ExplodeCrateAction@fire:
+		Weapon: Napalm.Crate
+		SelectionShares: 5
+	ExplodeCrateAction@boom:
+		Weapon: Atomic
+		SelectionShares: 5
+	CloakCrateAction:
+		SelectionShares: 5
+		InitialDelay: 15
+		CloakDelay: 125
+		CloakSound: appear1.aud
+		UncloakSound: appear1.aud
+		Effect: cloak
+	GiveMcvCrateAction:
+		SelectionShares: 2
+		NoBaseSelectionShares: 9001
+		Unit: mcv
+	RenderSimple:
+	BelowUnits:
+
+mpspawn:
+	Waypoint:
+	RenderEditorOnly:
+
+waypoint:
+	Waypoint:
+	RenderEditorOnly:

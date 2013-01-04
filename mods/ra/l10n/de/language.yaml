@@ -1,0 +1,39 @@
+Metadata:
+	Title: Alarmstufe Rot
+	Description: OpenRA Neuauflage des Klassikers
+	Author: Die OpenRA Entwickler
+
+Folders:
+	./mods/ra/packages/de
+	./mods/ra/packages
+
+Packages:
+	textless.mix
+#	icons.mix
+	speech2.mix
+	speech3.mix
+
+Rules:
+	mods/ra/rules/de/defaults.yaml
+	mods/ra/rules/de/system.yaml
+	mods/ra/rules/de/vehicles.yaml
+	mods/ra/rules/de/structures.yaml
+	mods/ra/rules/de/infantry.yaml
+	mods/ra/rules/de/civilian.yaml
+	mods/ra/rules/de/trees.yaml
+	mods/ra/rules/de/aircraft.yaml
+	mods/ra/rules/de/ships.yaml
+
+ChromeLayout:
+	mods/ra/chrome/de/gameinit.yaml
+	mods/ra/chrome/de/ingame.yaml
+	mods/ra/chrome/de/mainmenu.yaml
+	mods/ra/chrome/de/settings.yaml
+	mods/ra/chrome/de/lobby.yaml
+	mods/ra/chrome/de/map-chooser.yaml
+	mods/ra/chrome/de/create-server.yaml
+	mods/ra/chrome/de/serverbrowser.yaml
+	mods/ra/chrome/de/replaybrowser.yaml
+	mods/ra/chrome/de/modchooser.yaml
+	mods/ra/chrome/de/cheats.yaml
+	mods/ra/chrome/de/objectives.yaml

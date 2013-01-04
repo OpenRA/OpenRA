@@ -1,0 +1,40 @@
+BADR:
+	Tooltip:
+		Name: Badger
+
+BADR.bomber:
+	Tooltip:
+		Name: Badger
+
+MIG:
+	Tooltip:
+		Name: Mig Attack Plane
+		Description: Fast Ground-Attack Plane.\n  Strong vs Buildings\n  Weak vs Infantry, Light Vehicles
+
+YAK:
+	Tooltip:
+		Name: Yak Attack Plane
+		Description: Anti-Tanks & Anti-Infantry Plane.\n  Strong vs Infantry, Tanks\n  Weak vs Buildings
+
+TRAN:
+	Tooltip:
+		Name: Transport Helicopter
+		Description: Fast Infantry Transport Helicopter.\n  Unarmed
+
+TRAN.Husk1:
+	Tooltip:
+		Name: Husk (Transport Helicopter)
+
+TRAN.Husk2:
+	Tooltip:
+		Name: Husk (Transport Helicopter)
+
+HELI:
+	Tooltip:
+		Name: Longbow
+		Description: Helicopter Gunship with AG Missiles.\n  Strong vs Tanks\n  Weak vs Infantry
+
+HIND:
+	Tooltip:
+		Name: Hind
+		Description: Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles.\n  Weak vs Tanks

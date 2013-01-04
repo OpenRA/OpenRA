@@ -1,0 +1,101 @@
+Background@SIMPLE_TOOLTIP:
+	Logic:SimpleTooltipLogic
+	Background:panel-black
+	Height:25
+	Children:
+		Label@LABEL:
+			X:5
+			Height:23
+			Font:Bold
+
+Background@BUTTON_TOOLTIP:
+	Logic:ButtonTooltipLogic
+	Background:panel-black
+	Height:25
+	Children:
+		Label@LABEL:
+			X:5
+			Height:23
+			Font:Bold
+		Label@HOTKEY:
+			Color:255,255,0
+			Height:23
+			Font:Bold
+
+Background@WORLD_TOOLTIP:
+	Logic:WorldTooltipLogic
+	Background:panel-black
+	Width:141
+	Children:
+		Label@LABEL:
+			X:5
+			Height:23
+			Font:Bold
+		Image@FLAG:
+			X:5
+			Y:24
+			Width:32
+			Height:16
+		Label@OWNER:
+			X:42
+			Y:19
+			Height:23
+			Font:Bold
+
+Background@PRODUCTION_TOOLTIP:
+	Logic:ProductionTooltipLogic
+	Background:panel-black
+	Width:200
+	Height:65
+	Children:
+		Label@NAME:
+			X:5
+			Height:23
+			Font:Bold
+		Label@REQUIRES:
+			X:5
+			Y:19
+			Height:23
+			Font:TinyBold
+		Label@DESC:
+			X:5
+			Y:39
+			Height:23
+			Font:TinyBold
+			VAlign:Top
+		Label@COST:
+			Height:23
+			Font:Bold
+		Label@TIME:
+			Y:19
+			Height:23
+			Font:Bold
+		Label@POWER:
+			Y:39
+			Height:23
+			Font:Bold
+		Label@TIME:
+			Y:39
+			Height:23
+			Font:Bold
+
+Background@SUPPORT_POWER_TOOLTIP:
+	Logic:SupportPowerTooltipLogic
+	Background:panel-black
+	Width:200
+	Height:25
+	Children:
+		Label@NAME:
+			X:5
+			Height:20
+			Font:Bold
+		Label@TIME:
+			X:20
+			Y:6
+			Font:TinyBold
+			VAlign:Top
+		Label@DESC:
+			X:5
+			Y:20
+			Font:TinyBold
+			VAlign:Top

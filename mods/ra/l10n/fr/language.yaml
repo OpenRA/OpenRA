@@ -1,0 +1,37 @@
+Metadata:
+	Title: Alerte Rouge
+	Description: La version OpenRA du jeu classique
+	Author: Les Développeurs d'OpenRA
+
+Folders:
+	./mods/ra/packages/fr
+
+Packages:
+	icons.mix
+	speech2.mix
+	speech3.mix
+
+Rules:
+	mods/ra/rules/fr/defaults.yaml
+	mods/ra/rules/fr/system.yaml
+	mods/ra/rules/fr/vehicles.yaml
+	mods/ra/rules/fr/structures.yaml
+	mods/ra/rules/fr/infantry.yaml
+	mods/ra/rules/fr/civilian.yaml
+	mods/ra/rules/fr/trees.yaml
+	mods/ra/rules/fr/aircraft.yaml
+	mods/ra/rules/fr/ships.yaml
+
+ChromeLayout:
+	mods/ra/chrome/fr/gameinit.yaml
+	mods/ra/chrome/fr/ingame.yaml
+	mods/ra/chrome/fr/mainmenu.yaml
+	mods/ra/chrome/fr/settings.yaml
+	mods/ra/chrome/fr/lobby.yaml
+	mods/ra/chrome/fr/map-chooser.yaml
+	mods/ra/chrome/fr/create-server.yaml
+	mods/ra/chrome/fr/serverbrowser.yaml
+	mods/ra/chrome/fr/replaybrowser.yaml
+	mods/ra/chrome/fr/modchooser.yaml
+	mods/ra/chrome/fr/cheats.yaml
+	mods/ra/chrome/fr/objectives.yaml

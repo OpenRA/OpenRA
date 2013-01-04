@@ -1,0 +1,29 @@
+SS:
+	Tooltip:
+		Name: Sous-marin
+		Description: Submersible anti-navires armée de torpilles.\n  Fort contre les Navires\n  Faible contre Tout\n  Capacité spéciale: Submersion
+
+MSUB:
+	Tooltip:
+		Name: Sous-marin lance-missiles
+		Description: Submersible armée de missiles ballistiques mer-sol de longue portée.\n  Fort contre les bâtiments\n  Faible contre tout\n  Capacité spéciale: Submersion
+
+DD:
+	Tooltip:
+		Name: Contre-torpilleur
+		Description: Navire polyvalent et rapide.\n  Fort contre les Sous-marins et l'aviation\n  Faible contre l'infanterie et les tanks
+
+CA:
+	Tooltip:
+		Name: Croiseur
+		Description: Navire longue portée et très lent.\n  Fort contre les bâtiments\n  Faible contre les Navires et Sous-marins.
+
+LST:
+	Tooltip:
+		Name: Transport maritime
+		Description: Transporteur de troupes.\nPeut emporter soldats et tanks.\n  (Désarmé)
+
+PT:
+	Tooltip:
+		Name: Aviso-torpilleur
+		Description: Navire de soutient rapide et léger.\n  Fort contre les Navires et les Sous-marins\n  Faible contre l'aviation

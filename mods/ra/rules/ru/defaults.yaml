@@ -1,0 +1,28 @@
+^CivBuilding:
+	Tooltip:
+		Name: Гражданское Здание
+
+^CivField:
+	Tooltip:
+		Name: Поле
+
+^Tree:
+	Tooltip:
+		Name: Дерево
+
+^Box:
+	Tooltip:
+		Name: Коробки
+
+^Ice:
+	Tooltip:
+		Name: Льдина
+
+^Bridge:
+	Tooltip:
+		Name: Мост
+
+#Terrain Expansion
+^SmallBridge:
+	Tooltip:
+		Name: Небольшой мост

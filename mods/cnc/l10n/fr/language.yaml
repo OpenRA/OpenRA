@@ -1,0 +1,40 @@
+Metadata:
+
+Folders:
+	./mods/cnc/packages/fr
+
+Packages:
+	~talk.mix
+
+Rules:
+	mods/cnc/rules/fr/defaults.yaml
+	mods/cnc/rules/fr/structures.yaml
+	mods/cnc/rules/fr/infantry.yaml
+	mods/cnc/rules/fr/vehicles.yaml
+	mods/cnc/rules/fr/trees.yaml
+	mods/cnc/rules/fr/civilian.yaml
+	mods/cnc/rules/fr/civilian-desert.yaml
+	mods/cnc/rules/fr/tech.yaml
+	mods/cnc/rules/fr/ships.yaml
+	mods/cnc/rules/fr/aircraft.yaml
+	mods/cnc/rules/fr/husks.yaml
+
+ChromeLayout:
+	mods/cnc/chrome/fr/install.yaml
+	mods/cnc/chrome/fr/mainmenu.yaml
+	mods/cnc/chrome/fr/serverbrowser.yaml
+	mods/cnc/chrome/fr/createserver.yaml
+	mods/cnc/chrome/fr/directconnect.yaml
+	mods/cnc/chrome/fr/lobby.yaml
+	mods/cnc/chrome/fr/connection.yaml
+	mods/cnc/chrome/fr/mapchooser.yaml
+	mods/cnc/chrome/fr/replaybrowser.yaml
+	mods/cnc/chrome/fr/ingame.yaml
+	mods/cnc/chrome/fr/ingamemenu.yaml
+	mods/cnc/chrome/fr/music.yaml
+	mods/cnc/chrome/fr/modchooser.yaml
+	mods/cnc/chrome/fr/settings.yaml
+	mods/cnc/chrome/fr/cheats.yaml
+	mods/cnc/chrome/fr/dialogs.yaml
+	mods/cnc/chrome/fr/objectives.yaml
+	mods/cnc/chrome/fr/tooltips.yaml

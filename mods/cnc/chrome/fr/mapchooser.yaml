@@ -1,0 +1,78 @@
+Container@MAPCHOOSER_PANEL:
+	Logic:MapChooserLogic
+	X:(WINDOW_RIGHT - WIDTH)/2
+	Y:(WINDOW_BOTTOM - 500)/2
+	Width:740
+	Height:535
+	Children:
+		Label@TITLE:
+			Width:790
+			Y:0-25
+			Font:BigBold
+			Contrast:true
+			Align:Center
+			Text:Choisir carte
+		Background@bg:
+			Width:790
+			Height:500
+			Background:panel-black
+			Children:
+				ScrollPanel@MAP_LIST:
+					X:15
+					Y:30
+					Width:PARENT_RIGHT - 30
+					Height:455
+					Children:
+						ScrollItem@MAP_TEMPLATE:
+							Width:180
+							Height:208
+							X:2
+							Y:0
+							Visible:false
+							Children:
+								Label@TITLE:
+									X:2
+									Y:PARENT_BOTTOM-47
+									Width:PARENT_RIGHT-4
+									Height:25
+									Align:Center
+								Label@DETAILS:
+									Width:PARENT_RIGHT-4
+									X:2
+									Y:PARENT_BOTTOM-35
+									Align:Center
+									Height:25
+									Font:Tiny
+								Label@AUTHOR:
+									Width:PARENT_RIGHT-4
+									X:2
+									Y:PARENT_BOTTOM-26
+									Align:Center
+									Height:25
+									Font:Tiny
+								Label@SIZE:
+									Width:PARENT_RIGHT-4
+									X:2
+									Y:PARENT_BOTTOM-17
+									Align:Center
+									Height:25
+									Font:Tiny
+								MapPreview@PREVIEW:
+									X:(PARENT_RIGHT - WIDTH)/2
+									Y:4
+									Width:160
+									Height:160
+				Button@BUTTON_CANCEL:
+					Key:escape
+					X:0
+					Y:499
+					Width:140
+					Height:35
+					Text:Annuler
+				Button@BUTTON_OK:
+					Key:return
+					X:790 - WIDTH
+					Y:499
+					Width:140
+					Height:35
+					Text:Ok

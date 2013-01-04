@@ -1,0 +1,31 @@
+# Oil Derrick
+V19:
+	Tooltip:
+		Name: Нефтяная Вышка
+
+V19.Husk:
+	Tooltip:
+		Name: Нефтяная Вышка (Уничтожена)
+
+# Hospital
+HOSP:
+	Tooltip:
+		Name: Госпиталь
+
+HOSP.Husk:
+	Tooltip:
+		Name: Госпиталь (Уничтожен)
+
+# Bio Lab
+BIO:
+	Tooltip:
+		Name: Био Лаборатория
+
+BIO.Husk:
+	Tooltip:
+		Name: Био Лаборатория (Уничтожена)
+
+# Prison / Tech Center
+MISS:
+	Tooltip:
+		Name: Тех Центр

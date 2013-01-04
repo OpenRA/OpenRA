@@ -45,7 +45,8 @@ namespace RALint
 				FieldLoader.UnknownFieldAction = (s, f) => EmitError("FieldLoader: Missing field `{0}` on `{1}`".F(s, f.Name));
 
 				AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
-				Game.modData = new ModData(mods);
+				//TODO: check all available translations for errors
+				Game.modData = new ModData("en", mods);
 				Rules.LoadRules(Game.modData.Manifest, new Map());
 
 				foreach (var customPassType in Game.modData.ObjectCreator

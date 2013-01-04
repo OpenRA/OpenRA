@@ -1,0 +1,22 @@
+TRAN:
+	Tooltip:
+		Name: Chinook Transport
+		Description: Fast Infantry Transport Helicopter.\n  Unarmed
+
+HELI:
+	Tooltip:
+		Name: Apache Longbow
+		Description: Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks
+
+ORCA:
+	Tooltip:
+		Name: Orca
+		Description: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
+
+C17:
+	Tooltip:
+		Name: Supply Aircraft
+
+A10:
+	Tooltip:
+		Name: A10 Bomber

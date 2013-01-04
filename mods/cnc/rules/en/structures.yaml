@@ -1,0 +1,134 @@
+FACT:
+	Tooltip:
+		Name: Construction Yard
+		Description: Builds structures
+
+NUKE:
+	Tooltip:
+		Name: Power Plant
+		Description: Generates power
+
+PROC:
+	Tooltip:
+		Name: Tiberium Refinery
+		Description: Processes raw Tiberium\ninto useable resources
+
+SILO:
+	Tooltip:
+		Name: Tiberium Silo
+		Description: Stores processed Tiberium
+
+PYLE:
+	Tooltip:
+		Name: Barracks
+		Description: Trains infantry
+
+HAND:
+	Tooltip:
+		Name: Hand of Nod
+		Description: Trains infantry
+
+AFLD:
+	Tooltip:
+		Name: Airstrip
+		Description: Provides a dropzone\nfor vehicle reinforcements
+
+WEAP:
+	Tooltip:
+		Name: Weapons Factory
+		Description: Assembly point for\nvehicle reinforcements
+
+HQ:
+	Tooltip:
+		Name: Communications Center
+		Description: Provides an overview of the battlefield.\n  Requires power to operate.
+	AirstrikePower:
+		Description: Air Strike
+		LongDesc: Deploy an aerial napalm strike.\nBurns buildings and infantry along a line.
+
+NUK2:
+	Tooltip:
+		Name: Advanced Power Plant
+		Description: Provides more power, cheaper than the \nstandard Power Plant
+
+FIX:
+	Tooltip:
+		Name: Repair Facility
+		Description: Repairs vehicles and allows the\nconstruction of additional bases.
+
+HPAD:
+	Tooltip:
+		Name: Helipad
+		Description: Produces, rearms and\nrepairs helicopters
+
+EYE:
+	Tooltip:
+		Name: Advanced Communications Center
+		Description: Provides access to the Ion Cannon.\n  Requires power to operate.
+	IonCannonPower:
+		Description: Ion Cannon
+		LongDesc: Initiate an Ion Cannon strike.\nApplies instant damage to a small area.
+
+TMPL:
+	Tooltip:
+		Name: Temple of Nod
+		Description: Place of worship and secret missile silo.\n  Requires power to operate.
+	NukePower:
+		Description: Nuclear Strike
+		LongDesc: Launch a tactical nuke.\nApplies heavy damage over a large area.
+
+OBLI:
+	Tooltip:
+		Name: Obelisk of Light
+		Description: Advanced base defense.\n  Requires power to operate.\n  Strong vs Tanks, Infantry\n  Weak vs Aircraft
+
+CYCL:
+	Tooltip:
+		Name: Chain Link Barrier
+		Description: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
+
+SBAG:
+	Tooltip:
+		Name: Sandbag Barrier
+		Description: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
+
+BRIK:
+	Tooltip:
+		Name: Concrete Barrier
+		Description: Stop units and blocks enemy fire.
+
+GUN:
+	Tooltip:
+		Name: Turret
+		Description: Anti-Armor base defense.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
+
+SAM:
+	Tooltip:
+		Name: SAM Site
+		Description: Anti-Air base defense.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
+	
+GTWR:
+	Tooltip:
+		Name: Guard Tower
+		Description: Basic defensive structure.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
+
+ATWR:
+	Tooltip:
+		Name: Advanced Guard Tower
+		Description: Anti-armor defensive structure.\n  Strong vs Light Vehicles, Tanks\n  Weak vs Infantry
+
+# custom prerequisites:
+BARRACKS:
+	Tooltip:
+		Name: Infantry Production
+		Description: Infantry Production
+
+VEHICLEPRODUCTION:
+	Tooltip:
+		Name: Vehicle Production
+		Description: Vehicle Production
+
+ANYPOWER:
+	Tooltip:
+		Name: Power Plant
+		Description: Power Plant

@@ -1,7 +1,6 @@
 MCV.Husk:
 	Inherits: ^Husk
 	Tooltip:
-		Name: Mobile Construction Vehicle (Destroyed)
 		Icon: mcvicnh
 	RenderUnit:
 		Image: mcv
@@ -9,7 +8,6 @@ MCV.Husk:
 HARV.Husk:
 	Inherits: ^Husk
 	Tooltip:
-		Name: Harvester (Destroyed)
 		Icon: harvicnh
 	RenderUnit:
 		Image: harv
@@ -17,7 +15,6 @@ HARV.Husk:
 APC.Husk:
 	Inherits: ^Husk
 	Tooltip:
-		Name: Armored Personnel Carrier (Destroyed)
 		Icon: apcicnh
 	RenderUnit:
 		Image: apc
@@ -26,7 +23,6 @@ APC.Husk:
 FTNK.Husk:
 	Inherits: ^Husk
 	Tooltip:
-		Name: Flame Tank (Destroyed)
 		Icon: ftnkicnh
 	RenderUnit:
 		Image: ftnk
@@ -35,7 +31,6 @@ FTNK.Husk:
 ARTY.Husk:
 	Inherits: ^Husk
 	Tooltip:
-		Name: Artillery (Destroyed)
 		Icon: artyicnh
 	RenderUnit:
 		Image: arty
@@ -43,7 +38,6 @@ ARTY.Husk:
 BGGY.Husk:
 	Inherits: ^Husk
 	Tooltip:
-		Name: Nod Buggy (Destroyed)
 		Icon: bggyicnh
 	RenderUnit:
 		Image: bggy
@@ -51,7 +45,6 @@ BGGY.Husk:
 BIKE.Husk:
 	Inherits: ^Husk
 	Tooltip:
-		Name: Recon Bike (Destroyed)
 		Icon: bikeicnh
 	RenderUnit:
 		Image: bike
@@ -59,7 +52,6 @@ BIKE.Husk:
 JEEP.Husk:
 	Inherits: ^Husk
 	Tooltip:
-		Name: Hum-Vee (Destroyed)
 		Icon: jeepicnh
 	RenderUnit:
 		Image: jeep
@@ -67,7 +59,6 @@ JEEP.Husk:
 LTNK.Husk:
 	Inherits: ^Husk
 	Tooltip:
-		Name: Light Tank (Destroyed)
 		Icon: ltnkicnh
 	RenderUnit:
 		Image: ltnk
@@ -80,7 +71,6 @@ LTNK.Husk:
 MTNK.Husk:
 	Inherits: ^Husk
 	Tooltip:
-		Name: Medium Tank (Destroyed)
 		Icon: mtnkicnh
 	RenderUnit:
 		Image: mtnk
@@ -93,7 +83,6 @@ MTNK.Husk:
 HTNK.Husk:
 	Inherits: ^Husk
 	Tooltip:
-		Name: Mammoth Tank (Destroyed)
 		Icon: htnkicnh
 	RenderUnit:
 		Image: htnk
@@ -106,7 +95,6 @@ HTNK.Husk:
 MSAM.Husk:
 	Inherits: ^Husk
 	Tooltip:
-		Name: Rocket Launcher (Destroyed)
 		Icon: msamicnh
 	RenderUnit:
 		Image: msam
@@ -119,7 +107,6 @@ MSAM.Husk:
 MLRS.Husk:
 	Inherits: ^Husk
 	Tooltip:
-		Name: SSM Launcher (Destroyed)
 		Icon: mlrsicnh
 	RenderUnit:
 		Image: mlrs
@@ -132,7 +119,6 @@ MLRS.Husk:
 STNK.Husk:
 	Inherits: ^Husk
 	Tooltip:
-		Name: Stealth Tank (Destroyed)
 		Icon: stnkicnh
 	RenderUnit:
 		Image: stnk

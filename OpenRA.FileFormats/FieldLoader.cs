@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2012 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -21,47 +21,47 @@ namespace OpenRA.FileFormats
 	{
 		public static Func<string,Type,string,object> InvalidValueAction = (s,t,f) =>
 		{
-			throw new InvalidOperationException("FieldLoader: Cannot parse `{0}` into `{1}.{2}` ".F(s,f,t) );
+			throw new InvalidOperationException("FieldLoader: Cannot parse `{0}` into `{1}.{2}` ".F(s,f,t));
 		};
 
 		public static Action<string,Type> UnknownFieldAction = (s,f) =>
 		{
-			throw new NotImplementedException( "FieldLoader: Missing field `{0}` on `{1}`".F( s, f.Name ) );
+			throw new NotImplementedException("FieldLoader: Missing field `{0}` on `{1}`".F(s, f.Name));
 		};
 
-		public static void Load( object self, MiniYaml my )
+		public static void Load(object self, MiniYaml my)
 		{
 			var loadDict = typeLoadInfo[ self.GetType() ];
 
-			foreach( var kv in loadDict )
+			foreach(var kv in loadDict)
 			{
 				object val;
-				if( kv.Value != null )
-					val = kv.Value( kv.Key.Name, kv.Key.FieldType, my );
-				else if( !TryGetValueFromYaml( kv.Key.Name, kv.Key.FieldType, my, out val ) )
+				if(kv.Value != null)
+					val = kv.Value(kv.Key.Name, kv.Key.FieldType, my);
+				else if(!TryGetValueFromYaml(kv.Key.Name, kv.Key.FieldType, my, out val))
 					continue;
 
-				kv.Key.SetValue( self, val );
+				kv.Key.SetValue(self, val);
 			}
 		}
 
-		static bool TryGetValueFromYaml( string fieldName, Type fieldType, MiniYaml yaml, out object ret )
+		static bool TryGetValueFromYaml(string fieldName, Type fieldType, MiniYaml yaml, out object ret)
 		{
 			ret = null;
-			var n = yaml.Nodes.Where( x=>x.Key == fieldName ).ToList();
-			if( n.Count == 0 )
+			var n = yaml.Nodes.Where(x=>x.Key == fieldName).ToList();
+			if (n.Count == 0)
 				return false;
-			if( n.Count == 1 && n[ 0 ].Value.Nodes.Count == 0 )
+			if (n.Count == 1 && n[0].Value.Nodes.Count == 0)
 			{
-				ret = GetValue( fieldName, fieldType, n[ 0 ].Value.Value );
+				ret = GetValue(fieldName, fieldType, n[0].Value.Value);
 				return true;
 			}
-			else if ( n.Count > 1 )
+			else if (n.Count > 1)
 			{
 				throw new InvalidOperationException("The field {0} has multiple definitions:\n{1}"
 					.F(fieldName, n.Select(m => "\t- " + m.Location).JoinWith("\n")));
 			}
-			throw new InvalidOperationException( "TryGetValueFromYaml: unable to load field {0} (of type {1})".F( fieldName, fieldType ) );
+			throw new InvalidOperationException("TryGetValueFromYaml: unable to load field {0} (of type {1})".F(fieldName, fieldType));
 		}
 
 		public static T Load<T>(MiniYaml y) where T : new()
@@ -100,23 +100,23 @@ namespace OpenRA.FileFormats
 			return (T) GetValue( field, typeof(T), value );
 		}
 
-		public static object GetValue( string field, Type fieldType, string x )
+		public static object GetValue(string field, Type fieldType, string x)
 		{
 			if (x != null) x = x.Trim();
-			if( fieldType == typeof( int ) )
+			if( fieldType == typeof(int))
 			{
 				int res;
 				if (int.TryParse(x,out res))
 					return res;
-				return InvalidValueAction(x,fieldType, field);
+				return InvalidValueAction(x, fieldType, field);
 			}
 
-			else if( fieldType == typeof( ushort ) )
+			else if( fieldType == typeof(ushort))
 			{
 				ushort res;
 				if (ushort.TryParse(x,out res))
 					return res;
-				return InvalidValueAction(x,fieldType, field);
+				return InvalidValueAction(x, fieldType, field);
 			}
 
 			else if (fieldType == typeof(float))
@@ -124,7 +124,7 @@ namespace OpenRA.FileFormats
 				float res;
 				if (float.TryParse(x.Replace("%",""),  NumberStyles.Any, NumberFormatInfo.InvariantInfo, out res))
 					return res * (x.Contains( '%' ) ? 0.01f : 1f);
-				return InvalidValueAction(x,fieldType, field);
+				return InvalidValueAction(x, fieldType, field);
 			}
 
 			else if (fieldType == typeof(decimal))
@@ -132,7 +132,7 @@ namespace OpenRA.FileFormats
 				decimal res;
 				if (decimal.TryParse(x.Replace("%",""),  NumberStyles.Any, NumberFormatInfo.InvariantInfo, out res))
 					return res * (x.Contains( '%' ) ? 0.01m : 1m);
-				return InvalidValueAction(x,fieldType, field);
+				return InvalidValueAction(x, fieldType, field);
 			}
 
 			else if (fieldType == typeof(string))
@@ -145,7 +145,7 @@ namespace OpenRA.FileFormats
 					return Color.FromArgb(int.Parse(parts[0]).Clamp(0, 255), int.Parse(parts[1]).Clamp(0, 255), int.Parse(parts[2]).Clamp(0, 255));
 				if (parts.Length == 4)
 					return Color.FromArgb(int.Parse(parts[0]).Clamp(0, 255), int.Parse(parts[1]).Clamp(0, 255), int.Parse(parts[2]).Clamp(0, 255), int.Parse(parts[3]).Clamp(0, 255));
-				return InvalidValueAction(x,fieldType, field);
+				return InvalidValueAction(x, fieldType, field);
 			}
 
 			else if (fieldType == typeof(ColorRamp))

@@ -150,8 +150,6 @@
 		Bounds: 12,17,0,-9
 	Valued:
 		Cost: 70
-	Tooltip:
-		Name: Civilian
 	Mobile:
 		Speed: 4
 	Health:
@@ -266,8 +264,6 @@
 	-Capturable:
 	-CapturableBar:
 	-Sellable:
-	Tooltip:
-		Name: Civilian Building
 
 ^CivBuildingHusk:
 	AppearsOnRadar:
@@ -277,8 +273,6 @@
 	RenderBuilding:
 	EditorAppearance:
 		RelativeToTopLeft: yes
-	Tooltip:
-		Name: Civilian Building (Destroyed)
 
 ^TechBuilding:
 	Inherits: ^CivBuilding
@@ -291,8 +285,6 @@
 ^CivField:
 	Inherits: ^CivBuilding
 	-Selectable:
-	Tooltip:
-		Name: Field
 	-WithBuildingExplosion:
 	RenderBuilding:
 		Palette: terrain
@@ -306,8 +298,6 @@
 		Footprint: _
 	EditorAppearance:
 		RelativeToTopLeft: yes
-	Tooltip:
-		Name: Field (Destroyed)
 	BelowUnits:
 
 ^Wall:
@@ -338,8 +328,6 @@
 	Sellable:
 
 ^Tree:
-	Tooltip:
-		Name: Tree
 	RenderBuilding:
 		Palette: staticterrain
 	Building:
@@ -352,8 +340,6 @@
 		RelativeToTopLeft: yes
 		
 ^Rock:
-	Tooltip:
-		Name: Rock
 	RenderBuilding:
 		Palette: staticterrain
 	Building:
@@ -384,8 +370,6 @@
 #		AllowEnemies: true
 
 ^Bridge:
-	Tooltip:
-		Name: Bridge
 	TargetableBuilding:
 		TargetTypes: Ground, Water
 	BelowUnits:

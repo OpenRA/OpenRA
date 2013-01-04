@@ -1,0 +1,69 @@
+MCV:
+	Tooltip:
+		Name: VCM
+		Description: Véhicule de construction Mobile\nSe déploie pour donner une nouvelle base.\n  Désarmé
+
+HARV:
+	Tooltip:
+		Name: Collecteur
+		Description: Récolte le tibérium.\n  Désarmé
+
+APC:
+	Tooltip:
+		Name: VBT
+		Description: Véhicule Blindé de Transport personnel\nTransporteur armé d'une mitrailleuse.\n  Fort contre l'infanterie et l'aviation\n  Faible contre les tanks
+
+ARTY:
+	Tooltip:
+		Name: Artillerie mobile
+		Description: Artillerie longue portée.\n  Fort contre l'infanterie et les bâtiments\n  Faible contre les tanks et l'aviation
+
+FTNK:
+	Tooltip:
+		Name: Tank Lance-flammes
+		Description: Blindé équipé de lance-flammes.\n  Fort contre l'infanterie et les bâtiments\n  Faible contre l'aviation
+
+BGGY:
+	Tooltip:
+		Name: Buggy
+		Description: Unité de reconnaissance anti-infanterie.\n  Fort contre l'infanterie\n  Faible contre les tanks et l'aviation
+
+BIKE:
+	Tooltip:
+		Name: Moto de reconnaissance
+		Description: Unité de reconnaissance équipée de roquettes.\n  Fort contre les véhicules et les bâtiments\n  Faible contre l'infanterie
+
+JEEP:
+	Tooltip:
+		Name: Humm-Vee
+		Description: Unité de reconnaissance anti-infanterie.\n  Fort contre l'infanterie\n  Faible contre les tanks et l'aviation
+
+LTNK:
+	Tooltip:
+		Name: Tank léger
+		Description: Tank de reconnaissance.\n  Fort contre les véhicules légers\n  Faible contre les tanks et l'aviation
+
+MTNK:
+	Tooltip:
+		Name: Tank moyen
+		Description: Tank à tout faire du GDI.\n  Fort contre les tanks et les véhicules légers\n  Faible contre l'infanterie et l'aviation
+
+HTNK:
+	Tooltip:
+		Name: Tank Mammouth
+		Description: Tank lourdement blindé du GDI.\n  Fort contre tout
+
+MSAM:
+	Tooltip:
+		Name: LMM (Lance-Missiles Mobile)
+		Description: Artillerie longue portée.\n  Fort contre l'infanterie et les bâtiments\n  Faible contre les tanks et l'aviation
+
+MLRS:
+	Tooltip:
+		Name: Lance-missiles Sol-Sol
+		Description: Artillerie au napalm longue portée.\n  Fort contre l'infanterie et les bâtiments\n  Faible contre les tanks et l'aviation
+
+STNK:
+	Tooltip:
+		Name: Tank furtif
+		Description: Tank lance-missiles qui peut dévier la lumière\nenvironnante pour devenir invisible.\n  Fort contre l'infanterie et l'aviation\n  Faible contre les tanks

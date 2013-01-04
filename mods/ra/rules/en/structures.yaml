@@ -1,0 +1,267 @@
+MSLO:
+	Tooltip:
+		Icon: msloicon2
+		Name: Missile Silo
+		Description: Launches a devastating nuclear strike.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks\n  Special Ability: Nuclear Missile
+	NukePower:
+		Description: Atom Bomb
+		LongDesc: Launches a nuclear missile at a target location.
+
+GAP:
+	Tooltip:
+		Name: Gap Generator
+		Description: Regenerates the shroud nearby, \nobscuring the area.\n  Unarmed
+
+SPEN:
+	Tooltip:
+		Name: Sub Pen
+		Description: Produces and repairs submarines and \ntransports
+
+SYRD:
+	Tooltip:
+		Name: Shipyard
+		Description: Produces and repairs ships
+
+IRON:
+	Tooltip:
+		Name: Iron Curtain
+		Description: Makes a group of units invulnerable for a \nshort time.\n  Special Ability: Invulnerability
+	IronCurtainPower:
+		Description: Invulnerability
+		LongDesc: Makes a group of units invulnerable\nfor 15 seconds.
+
+PDOX:
+	Tooltip:
+		Name: Chronosphere
+		Description: Teleports a unit from one place \nto another, for a limited time.\n  Special Ability: Chronoshift
+	ChronoshiftPower:
+		Description: Chronoshift
+		LongDesc: Teleport a group of vehicles across\nthe map for 30 seconds.
+
+TSLA:
+	Tooltip:
+		Name: Tesla Coil
+		Description: Advanced base defense. Requires power\nto operate.\n  Strong vs Tanks, Infantry\n  Weak vs Aircraft
+
+AGUN:
+	Tooltip:
+		Name: AA Gun
+		Description: Anti-Air base defense.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
+
+DOME:
+	Tooltip:
+		Name: Radar Dome
+		Description: Provides an overview of the battlefield.\n  Requires power to operate.
+
+PBOX:
+	Tooltip:
+		Name: Pillbox (Unarmed)
+
+PBOX.E1:
+	Tooltip:
+		Name: Pillbox (Guns)
+		Description: Basic defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
+
+#PBOX.E2:
+#	Tooltip:
+#		Name: Pillbox (Grenades)
+
+PBOX.E3:
+	Tooltip:
+		Name: Pillbox (Rockets)
+
+PBOX.E4:
+	Tooltip:
+		Name: Pillbox (Flamethrower)
+
+PBOX.E7:
+	Tooltip:
+		Name: Pillbox (Tanya)
+
+PBOX.SHOK:
+	Tooltip:
+		Name: Pillbox (Tesla)
+
+PBOX.SNIPER:
+	Tooltip:
+		Name: Pillbox (Sniper)
+
+HBOX:
+	Tooltip:
+		Name: Camo Pillbox (Unarmed)
+
+HBOX.E1:
+	Tooltip:
+		Name: Camo Pillbox (Guns)
+		Description: Hidden defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
+
+#HBOX.E2:
+#	Tooltip:
+#		Name: Camo Pillbox (Grenades)
+
+HBOX.E3:
+	Tooltip:
+		Name: Camo Pillbox (Rockets)
+
+HBOX.E4:
+	Tooltip:
+		Name: Camo Pillbox (Flamethrower)
+
+HBOX.E7:
+	Tooltip:
+		Name: Camo Pillbox (Tanya)
+
+HBOX.SHOK:
+	Tooltip:
+		Name: Camo Pillbox (Tesla)
+
+HBOX.SNIPER:
+	Tooltip:
+		Name: Camo Pillbox (Sniper)
+
+GUN:
+	Tooltip:
+		Name: Turret
+		Description: Anti-Armor base defense.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
+
+FTUR:
+	Tooltip:
+		Name: Flame Tower
+		Description: Anti-Infantry base defense.\n  Strong vs Infantry\n  Weak vs Aircraft
+
+SAM:
+	Tooltip:
+		Name: SAM Site
+		Description: Anti-Air base defense.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
+
+ATEK:
+	Tooltip:
+		Name: Allied Tech Center
+		Description: Provides Allied advanced technologies.\n  Special Ability: GPS Satellite
+	GpsPower:
+		Description: GPS Satellite
+		LongDesc: Reveals the entire map
+
+WEAP:
+	Tooltip:
+		Name: War Factory
+		Description: Produces tanks & light vehicles.
+
+FACT:
+	Tooltip:
+		Name: Construction Yard
+
+PROC:
+	Tooltip:
+		Name: Ore Refinery
+		Description: Converts Ore and Gems into money
+
+SILO:
+	Tooltip:
+		Name: Silo
+		Description: Stores excess harvested Ore
+
+HPAD:
+	Tooltip:
+		Name: Helipad
+		Description: Produces and reloads helicopters
+
+AFLD:
+	Tooltip:
+		Name: Airfield
+		Description: Provides radar and off-map support\n  Special Ability: Paratroopers\n  Special Ability: Spy Plane
+	SpyPlanePower:
+		Description: Spy Plane
+		LongDesc: Reveals an area of the map.
+	ParatroopersPower:
+		Description: Paratroopers
+		LongDesc: A Badger drops a squad of infantry \nanywhere on the map
+POWR:
+	Tooltip:
+		Name: Power Plant
+		Description: Provides power for other structures
+
+APWR:
+	Tooltip:
+		Name: Advanced Power Plant
+		Description: Provides more power, cheaper than the \nstandard Power Plant
+
+STEK:
+	Tooltip:
+		Name: Soviet Tech Center
+		Description: Provides Soviet advanced technologies
+
+BARR:
+	Tooltip:
+		Name: Soviet Barracks
+		Description: Produces infantry
+
+TENT:
+	Tooltip:
+		Name: Allied Barracks
+		Description: Produces infantry
+
+KENN:
+	Tooltip:
+		Name: Kennel
+
+FIX:
+	Tooltip:
+		Name: Service Depot
+		Description: Repairs vehicles, reloads minelayers, and \nallows the construction of additional bases.
+
+FACF:
+#	Buildable:
+#		Description: Fake Construction Yard
+#		LongDesc: Looks like a Construction Yard.
+
+WEAF:
+#	Buildable:
+#		Description: Fake War Factory
+#		LongDesc: Looks like a War Factory.
+
+SYRF:
+#	Buildable:
+#		Description: Fake Shipyard
+#		LongDesc: Looks like a Shipyard
+
+DOMF:
+#	Buildable:
+#		Description: Fake Radar Dome
+#		LongDesc: Looks like a Radar Dome
+
+SBAG:
+	Tooltip:
+		Name: Sandbag Wall
+		Description: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
+
+FENC:
+	Tooltip:
+		Name: Wire Fence
+		Description: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
+
+BRIK:
+	Tooltip:
+		Name: Concrete Wall
+		Description: Stop units and blocks enemy fire.
+
+# custom prerequisites:
+BARRACKS:
+	Tooltip:
+		Name: Infantry Production
+		Description: Infantry Production
+
+VEHICLEPRODUCTION:
+	Tooltip:
+		Name: Vehicle Production
+		Description: Vehicle Production
+
+TECHCENTER:
+	Tooltip:
+		Name: Tech Center
+		Description: Tech Center
+
+ANYPOWER:
+	Tooltip:
+		Name: Power Plant
+		Description: Power Plant

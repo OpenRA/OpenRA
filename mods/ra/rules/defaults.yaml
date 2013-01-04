@@ -250,8 +250,6 @@
 		HP: 400
 	Armor:
 		Type: Wood
-	Tooltip:
-		Name: Civilian Building
 	ProximityCaptor:
 		Types:CivilianBuilding
 	-AcceptsSupplies:
@@ -270,15 +268,11 @@
 ^CivField:
 	Inherits: ^CivBuilding
 	-Selectable:
-	Tooltip:
-		Name: Field
 	-ProximityCaptor:
 	ProximityCaptor:
 		Types:CivilianField
 
 ^Tree:
-	Tooltip:
-		Name: Tree
 	RenderBuilding:
 		Palette: terrain
 	Building:
@@ -292,6 +286,14 @@
 		UseTerrainPalette: true
 	ProximityCaptor:
 		Types:Tree
+
+^Ice:
+	Inherits: ^Tree
+
+^Box:
+	Inherits: ^Tree
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 ^Husk:
 	Husk:
@@ -307,8 +309,6 @@
 		Types:Husk
 
 ^Bridge:
-	Tooltip:
-		Name: Bridge
 	BelowUnits:
 	TargetableBuilding:
 		TargetTypes: Ground, Water
@@ -322,9 +322,10 @@
 	AutoTargetIgnore:
 
 #Temperate Terrain Expansion
+^SmallBridge:
+
 ^SVBridge:
-	Tooltip:
-		Name: Small Bridge
+	Inherits: ^SmallBridge
 	BelowUnits:
 	TargetableBuilding:
 		TargetTypes: Ground, Water
@@ -337,8 +338,7 @@
 		Types:Bridge
 
 ^SHBridge:
-	Tooltip:
-		Name: Small Bridge
+	Inherits: ^SmallBridge
 	BelowUnits:
 	TargetableBuilding:
 		TargetTypes: Ground, Water
@@ -351,8 +351,7 @@
 		Types:Bridge
 
 ^STDBridge:
-	Tooltip:
-		Name: Small Bridge
+	Inherits: ^SmallBridge
 	BelowUnits:
 	TargetableBuilding:
 		TargetTypes: Ground, Water

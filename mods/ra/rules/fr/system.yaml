@@ -1,0 +1,43 @@
+Player:
+	HackyAI@EasyAI:
+		Name:IA Facile
+	HackyAI@HardAI:
+		Name:IA Difficile
+	HackyAI@OptiAI:
+		Name:IA Eisenhower
+	HackyAI@ZhukovAI:
+		Name:IA Zhukov
+	HackyAI@RommelAI:
+		Name:IA Rommel
+
+World:
+	Country@0:
+		Name: Alliés
+	Country@1:
+		Name: Soviet
+
+MINP:
+	Tooltip:
+		Name: Mine Anti-Personnel
+
+MINV:
+	Tooltip:
+		Name: Mine Anti-Tanks
+
+CRATE:
+	Tooltip:
+		Name: Caisse
+
+FLARE:
+	Tooltip:
+		Name: Flare
+
+powerproxy.parabombs:
+	AirstrikePower:
+		Description: Parabombes (Utilisation Unique)
+		LongDesc: Un avion largue un chargement de bombes freinées sur la cible.
+
+powerproxy.sonarpulse:
+	SonarPulsePower:
+		Description: Sonar (Utilisation Unique)
+		LongDesc: Révèle tous les sous-marins sur la carte pour un court moment.

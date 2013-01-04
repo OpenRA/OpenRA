@@ -30,14 +30,14 @@ namespace OpenRA
 		public SpriteLoader SpriteLoader;
 		public HardwarePalette Palette { get; private set; }
 
-		public ModData( params string[] mods )
+		public ModData(string language, params string[] mods)
 		{
-			Manifest = new Manifest( mods );
-			ObjectCreator = new ObjectCreator( Manifest );
+			Manifest = new Manifest(language, mods);
+			ObjectCreator = new ObjectCreator(Manifest);
 			LoadScreen = ObjectCreator.CreateObject<ILoadScreen>(Manifest.LoadScreen.Value);
 			LoadScreen.Init(Manifest.LoadScreen.NodesDict.ToDictionary(x => x.Key, x => x.Value.Value));
 			LoadScreen.Display();
-			WidgetLoader = new WidgetLoader( this );
+			WidgetLoader = new WidgetLoader(this);
 		}
 
 		public void LoadInitialAssets()

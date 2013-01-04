@@ -9,6 +9,7 @@ Folders:
 	./mods/ra
 	./mods/ra/bits
 	./mods/ra/bits/desert
+	./mods/ra/packages
 	./mods/ra/uibits
 	~^/Content/ra
 
@@ -16,10 +17,10 @@ Packages:
 	~main.mix
 	redalert.mix
 	conquer.mix
-	hires.mix
 	local.mix
-	sounds.mix
+	hires.mix
 	speech.mix
+	sounds.mix
 	allies.mix
 	russian.mix
 	temperat.mix
@@ -28,6 +29,8 @@ Packages:
 	~scores.mix
 	~movies1.mix
 	~movies2.mix
+	aftermath.mix
+	counterstrike.mix
 
 Rules:
 	mods/ra/rules/defaults.yaml
@@ -53,19 +56,7 @@ Assemblies:
 	mods/ra/OpenRA.Mods.RA.dll
 
 ChromeLayout:
-	mods/ra/chrome/gameinit.yaml
-	mods/ra/chrome/ingame.yaml
-	mods/ra/chrome/mainmenu.yaml
-	mods/ra/chrome/settings.yaml
-	mods/ra/chrome/lobby.yaml
-	mods/ra/chrome/map-chooser.yaml
-	mods/ra/chrome/create-server.yaml
-	mods/ra/chrome/serverbrowser.yaml
-	mods/ra/chrome/replaybrowser.yaml
 	mods/ra/chrome/dropdowns.yaml
-	mods/ra/chrome/modchooser.yaml
-	mods/ra/chrome/cheats.yaml
-	mods/ra/chrome/objectives.yaml
 
 Weapons:
 	mods/ra/weapons.yaml
@@ -122,3 +113,5 @@ Fonts:
 	TinyBold:
 		Font:FreeSansBold.ttf
 		Size:10
+
+Languages:

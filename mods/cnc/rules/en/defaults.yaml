@@ -1,0 +1,31 @@
+^CivInfantry:
+	Tooltip:
+		Name: Civilian
+
+^CivBuilding:
+	Tooltip:
+		Name: Civilian Building
+
+^CivBuildingHusk:
+	Tooltip:
+		Name: Civilian Building (Destroyed)
+
+^CivField:
+	Tooltip:
+		Name: Field
+
+^CivFieldHusk:
+	Tooltip:
+		Name: Field (Destroyed)
+
+^Tree:
+	Tooltip:
+		Name: Tree
+
+^Rock:
+	Tooltip:
+		Name: Rock
+
+^Bridge:
+	Tooltip:
+		Name: Bridge

@@ -1,0 +1,69 @@
+MCV:
+	Tooltip:
+		Name: Mobile Construction Vehicle
+		Description: Deploys into another Construction Yard.\n  Unarmed
+
+HARV:
+	Tooltip:
+		Name: Harvester
+		Description: Collects Tiberium for processing.\n  Unarmed
+
+APC:
+	Tooltip:
+		Name: Armored Personnel Carrier
+		Description: Armored infantry transport and mobile AA\n  Strong vs Aircraft, Infantry\n  Weak vs Tanks
+
+ARTY:
+	Tooltip:
+		Name: Artillery
+		Description: Long-range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
+
+FTNK:
+	Tooltip:
+		Name: Flame Tank
+		Description: Heavily armored flame-throwing vehicle.\n  Strong vs Infantry, Buildings\n  Weak vs Aircraft
+
+BGGY:
+	Tooltip:
+		Name: Nod Buggy
+		Description: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
+
+BIKE:
+	Tooltip:
+		Name: Recon Bike
+		Description: Fast scout vehicle, armed with \nrockets.\n  Strong vs Vehicles, Aircraft\n  Weak vs Infantry
+
+JEEP:
+	Tooltip:
+		Name: Hum-Vee
+		Description: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
+
+LTNK:
+	Tooltip:
+		Name: Light Tank
+		Description: Light Tank, good for scouting.\n  Strong vs Light Vehicles\n  Weak vs Tanks, Aircraft
+
+MTNK:
+	Tooltip:
+		Name: Medium Tank
+		Description: General-Purpose GDI Tank.\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
+
+HTNK:
+	Tooltip:
+		Name: Mammoth Tank
+		Description: Heavily armored GDI Tank.\n  Strong vs Everything
+
+MSAM:
+	Tooltip:
+		Name: Rocket Launcher
+		Description: Long range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
+
+MLRS:
+	Tooltip:
+		Name: SSM Launcher
+		Description: Long range artillery with napalm.\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks, Aircraft
+
+STNK:
+	Tooltip:
+		Name: Stealth Tank
+		Description: Missile tank that can bend light around \nitself to become invisible\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks
