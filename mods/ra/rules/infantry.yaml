@@ -213,11 +213,12 @@ E7:
 		Prerequisites: techcenter
 		Owner: allies
 		Hotkey: y
+		BuildLimit: 1
 	Valued:
 		Cost: 1200
 	Tooltip:
 		Name: Tanya
-		Description: Elite commando infantry, armed with \ndual pistols and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles\n  Special Ability: Destroy Building with C4
+		Description: Elite commando infantry, armed with \ndual pistols and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles\n  Special Ability: Destroy Building with C4\n\nMaximum 1 can be trained
 	Selectable:
 		Voice: TanyaVoice
 		Bounds: 12,17,0,-9
@@ -247,11 +248,12 @@ E8:
 		Prerequisites: stek
 		Owner: soviet
 		Hotkey: v
+		BuildLimit: 1
 	Valued:
 		Cost: 1800
 	Tooltip:
 		Name: Volkov
-		Description: Elite commando cyborg, armed with \nmodular cannons and grenade launcher.\n  Strong vs Vehicles, Infantry\n  Weak vs Aircraft
+		Description: Elite commando cyborg, armed with \nmodular cannons and grenade launcher.\n  Strong vs Vehicles, Infantry\n  Weak vs Aircraft\n\nMaximum 1 can be trained
 	Selectable:
 		Voice: VolkovVoice
 		Bounds: 12,17,0,-9
