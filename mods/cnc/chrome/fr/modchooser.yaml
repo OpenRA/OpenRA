@@ -6,7 +6,7 @@ Container@MODS_PANEL:
 	Height:535
 	Children:
 		Label@TITLE:
-			Text:Choisir mod
+			Text:Choix du mod
 			Width:740
 			Y:0-25
 			Font:BigBold
