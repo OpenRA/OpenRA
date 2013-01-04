@@ -10,7 +10,7 @@ Background@REPLAYBROWSER_BG:
 			Y:20
 			Width:PARENT_RIGHT
 			Height:25
-			Text:Choix du Replay
+			Text:Choix du replay
 			Align:Center
 			Font:Bold
 		ScrollPanel@REPLAY_LIST:

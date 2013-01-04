@@ -22,7 +22,7 @@ Container@CHEATS_PANEL:
 					Y:15
 					Width:200
 					Height:20
-					Text:Construction instantannée
+					Text:Construction rapide
 				Checkbox@ENABLE_TECH:
 					X:15
 					Y:45
@@ -40,25 +40,25 @@ Container@CHEATS_PANEL:
 					Y:15
 					Width:200
 					Height:20
-					Text:Énergie illimité
+					Text:Énergie illimitée
 				Checkbox@INSTANT_CHARGE:
 					X:200
 					Y:45
 					Width:200
 					Height:20
-					Text:Chargement instantannée de pouvoirs
+					Text:Pouvoirs instantannés
 				Checkbox@DISABLE_SHROUD:
 					X:400
 					Y:15
 					Height:20
 					Width:200
-					Text:Désactiver le brouillard
+					Text:Désactiver brouillard
 				Checkbox@SHOW_UNIT_PATHS:
 					X:400
 					Y:45
 					Width:200
 					Height:20
-					Text:Montrer le trajet des unités
+					Text:Trajet des unités
 		Button@CLOSE:
 			Key:escape
 			X:0

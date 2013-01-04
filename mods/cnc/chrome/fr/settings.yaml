@@ -62,14 +62,14 @@ Container@SETTINGS_PANEL:
 					Width:300
 					Height:20
 					Font:Regular
-					Text:Montrer les performances (Text)
+					Text:Montrer les performances (texte)
 				Checkbox@PERFGRAPH_CHECKBOX:
 					X:15
 					Y:150
 					Width:300
 					Height:20
 					Font:Regular
-					Text:Montrer les performances (Graph)
+					Text:Montrer les performances (graphique)
 				Checkbox@CHECKUNSYNCED_CHECKBOX:
 					X:15
 					Y:180
@@ -265,7 +265,7 @@ Container@SETTINGS_PANEL:
 					Width:240
 					Height:20
 					Font:Regular
-					Text:Shift-Entrée pour activer le chat par équipe
+					Text:Shift-Entrée pour chatter en équipe
 		Button@GENERAL_BUTTON:
 			Y:289
 			Width:140

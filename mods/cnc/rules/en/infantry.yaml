@@ -31,7 +31,7 @@ E6:
 RMBO:
 	Tooltip:
 		Name: Commando
-		Description: Elite sniper infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
+		Description: Elite sniper infantry unit with C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
 
 PVICE:
 	Tooltip:

@@ -61,7 +61,7 @@ Container@INSTALL_PANEL:
 					Width:PARENT_RIGHT-185
 					Height:25
 					WordWrap:true
-					Text:OpenRA peut télécharger ces fichiers (exception faites des videos et des musiques) à partir d'internet, ou vous pouvez les récupérer depuis les CDs originaux de C&C.
+					Text:OpenRA peut télécharger ces fichiers (exception faite des vidéos et des musiques) à partir d'internet, ou vous pouvez les copier depuis les CDs originaux de C&C.
 					Font:Bold
 		Button@QUIT_BUTTON:
 			Y:149
@@ -145,7 +145,7 @@ Container@INSTALL_FROMCD_PANEL:
 							Width:PARENT_RIGHT-185
 							Height:25
 							WordWrap:true
-							Text:Insérer l'un des CD originaux de C&C, puis cliquer sur Réessayer SVP.
+							Text:Insérer l'un des CD originaux de C&C, puis cliquer sur Réessayer.
 							Font:Bold
 		Button@BACK_BUTTON:
 			Key:escape

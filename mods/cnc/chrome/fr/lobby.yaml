@@ -56,7 +56,7 @@ Container@SERVER_LOBBY:
 							Visible:false
 							Children:
 								TextField@NAME:
-									Text:Name
+									Text:Nom
 									Width:205
 									Height:25
 									MaxLength:16
@@ -69,7 +69,7 @@ Container@SERVER_LOBBY:
 									ImageName:isadmin
 									ImageCollection:misc
 								DropDownButton@BOT_DROPDOWN:
-									Text:Name
+									Text:Nom
 									Width:205
 									Height:25
 									Font:Regular
@@ -131,7 +131,7 @@ Container@SERVER_LOBBY:
 							Visible:false
 							Children:
 								Label@NAME:
-									Text:Name
+									Text:Nom
 									Width:200
 									Height:25
 									X:5
@@ -194,13 +194,13 @@ Container@SERVER_LOBBY:
 							Visible:false
 							Children:
 								DropDownButton@NAME_HOST:
-									Text:Name
+									Text:Nom
 									Width:205
 									Height:25
 									Font:Regular
 									Visible:false
 								Label@NAME:
-									Text:Name
+									Text:Nom
 									Width:200
 									Height:25
 									X:5
@@ -214,7 +214,7 @@ Container@SERVER_LOBBY:
 									ImageName:isadmin
 									ImageCollection:misc
 								Button@JOIN:
-									Text:Play in this slot
+									Text:Jouer dans cet emplacement
 									Font:Regular
 									Width:315-55
 									Height:25
@@ -228,7 +228,7 @@ Container@SERVER_LOBBY:
 							Visible:false
 							Children:
 								TextField@NAME:
-									Text:Name
+									Text:Nom
 									Width:205
 									Height:25
 									MaxLength:16
@@ -252,7 +252,7 @@ Container@SERVER_LOBBY:
 											Width:PARENT_RIGHT-35
 											Height:PARENT_BOTTOM-12
 								Label@SPECTATOR:
-									Text:Spectator
+									Text:Spectateur
 									Width:220-55
 									Height:25
 									X:280
@@ -297,7 +297,7 @@ Container@SERVER_LOBBY:
 									Width:35
 									Height:13
 								Label@SPECTATOR:
-									Text:Spectator
+									Text:Spectateur
 									Width:220-55
 									Height:25
 									X:280
@@ -320,7 +320,7 @@ Container@SERVER_LOBBY:
 							Visible:false
 							Children:
 								Button@SPECTATE:
-									Text:Spectate
+									Text:Observer
 									Font:Regular
 									Width:470
 									Height:25

@@ -235,7 +235,7 @@ Container@INSTALL_MUSIC_PANEL:
 							Width:PARENT_RIGHT-185
 							Height:25
 							WordWrap:true
-							Text:Insérer l'un des disuqes originaux de C&C et cliquer sur Réessayer, SVP.
+							Text:Insérer l'un des disques originaux de C&C et cliquer sur Réessayer.
 							Font:Bold
 		Button@BACK_BUTTON:
 			Key:escape
