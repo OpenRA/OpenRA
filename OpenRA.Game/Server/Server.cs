@@ -315,7 +315,7 @@ namespace OpenRA.Server
 
 				lobbyInfo.Clients.Add(client);
 				//Assume that first validated client is server admin
-				if(lobbyInfo.Clients.Count==1)
+				if(lobbyInfo.Clients.Where(c1 => c1.Bot == null).Count()==1)
 					client.IsAdmin=true;
 
 				OpenRA.Network.Session.Client clientAdmin = lobbyInfo.Clients.Where(c1 => c1.IsAdmin).Single();
@@ -503,10 +503,10 @@ namespace OpenRA.Server
 				// reassign admin if necessary
 				if ( lobbyInfo.GlobalSettings.Dedicated && dropClient.IsAdmin && !GameStarted)
 				{
-					if (lobbyInfo.Clients.Count() > 0)
+					if (lobbyInfo.Clients.Where(c1 => c1.Bot == null).Count() > 0)
 					{
 						// client was not alone on the server but he was admin: set admin to the last connected client
-						OpenRA.Network.Session.Client lastClient = lobbyInfo.Clients.Last();
+						OpenRA.Network.Session.Client lastClient = lobbyInfo.Clients.Where(c1 => c1.Bot == null).Last();
 						lastClient.IsAdmin = true;
 						SendChat(toDrop, "Admin left! {0} is a new admin now!".F(lastClient.Name));
 					}
