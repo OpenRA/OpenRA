@@ -3,7 +3,7 @@ return {
   ["&About"] = "&À propos", -- src\editor\menu_help.lua
   ["&Add Watch"] = "Ajouter un point d'observation", -- src\editor\debugger.lua
   ["&Break"] = "Interrompre", -- src\editor\menu_project.lua
-  ["&Close Page"] = "Fermer la page", -- src\editor\menu_file.lua
+  ["&Close Page"] = "Fermer la page", -- src\editor\menu_file.lua, src\editor\gui.lua
   ["&Compile"] = "Compiler", -- src\editor\menu_project.lua
   ["&Copy"] = "Copier", -- src\editor\editor.lua, src\editor\menu_edit.lua
   ["&Default Layout"] = "Affichage par défaut", -- src\editor\menu_view.lua
@@ -23,7 +23,7 @@ return {
   ["&Remove Watch"] = "Supprimer le point d'observation", -- src\editor\debugger.lua
   ["&Replace"] = "Remplacer", -- src\editor\menu_search.lua
   ["&Run"] = "Exécuter", -- src\editor\menu_project.lua
-  ["&Save"] = "Enregister", -- src\editor\menu_file.lua
+  ["&Save"] = "Enregister", -- src\editor\menu_file.lua, src\editor\gui.lua
   ["&Search"] = "Rechercher", -- src\editor\menu_search.lua
   ["&Sort"] = "Trier", -- src\editor\menu_search.lua
   ["&Stack Window"] = "Pile d'exécution", -- src\editor\menu_view.lua
@@ -50,9 +50,12 @@ return {
   ["Can't run the entry point script ('%s')."] = "Impossible d'exécuter le point d'entrée du script (%s).", -- src\editor\debugger.lua
   ["Can't start debugging session due to internal error '%s'."] = "Impossible de lancer la session de débogage: erreur interne '%s'.'", -- src\editor\debugger.lua
   ["Can't start debugging without an opened file or with the current file not being saved ('%s')."] = "Impossible de déboguer sans fichier ouvert ou si le fichier en cours d'édition n'a pas été enregistré ('%s').", -- src\editor\debugger.lua
+  ["Choose ..."] = "Choisir...", -- src\editor\menu_project.lua
   ["Choose a project directory"] = "Choisissez un répertoire de projet", -- src\editor\menu_project.lua
   ["Clear &Dynamic Words"] = "Effacer les mots dynamiques", -- src\editor\menu_edit.lua
   ["Clear the output window before compiling or debugging"] = "Nettoyer la fenêtre de sortie avant compilation ou débogage", -- src\editor\menu_project.lua
+  ["Close &Other Pages"] = "Fermer les &autres pages", -- src\editor\gui.lua
+  ["Close A&ll Pages"] = "Fermer &toutes les pages", -- src\editor\gui.lua
   ["Close the current editor window"] = "Fermer la fenêtre d'édition active", -- src\editor\menu_file.lua
   ["Co&ntinue"] = "Continuer", -- src\editor\menu_project.lua
   ["Col: %d"] = "Col: %d", -- src\editor\editor.lua
@@ -70,13 +73,16 @@ return {
   ["Debugger server started at %s:%d."] = "Débogueur démarré à %s:%s", -- src\editor\debugger.lua
   ["Debugging session completed (%s)."] = "Session de débogage terminée (%s).", -- src\editor\debugger.lua
   ["Debugging session started in '%s'."] = "Session de débogage démarrée dans '%s'.", -- src\editor\debugger.lua
+  ["Debugging suspended at %s:%s (couldn't activate the file)."] = "Débogage interrompu à %s:%s (impossible d'activer le fichier).", -- src\editor\debugger.lua
   ["Do you want to reload it?"] = "Voulez -vous le charger à nouveau?", -- src\editor\editor.lua
   ["Do you want to save the changes to '%s'?"] = "Voulez-vous sauvegarder les changements dans '%s'?", -- src\editor\commands.lua
   ["E&xit"] = "Quitter", -- src\editor\menu_file.lua
   ["Enter Lua code and press Enter to run it."] = "Entrer du code Lua et pressez <Entrée> pour l`exécuter.", -- src\editor\shellbox.lua
   ["Enter line number"] = "Entrez le numéro de ligne", -- src\editor\menu_search.lua
   ["Error while loading API file: %s"] = "Erreur lors du chargement du fichier d'API: %s", -- src\editor\autocomplete.lua
+  ["Error while loading configuration file: %s"] = "Erreur lors du chargement du fichier de configuration : %s", -- src\editor\style.lua
   ["Error while processing API file: %s"] = "Erreur lors de la lecture du fichier d'API: %s", -- src\editor\autocomplete.lua
+  ["Error while processing configuration file: %s"] = "Erreur lors de la lecture du fichier de configuration : %s", -- src\editor\style.lua
   ["Error"] = "Erreur", -- src\editor\commands.lua
   ["Evaluate &Watches"] = "Evaluer les points d'observation", -- src\editor\debugger.lua
   ["Evaluate in Console"] = "Evaluer en console", -- src\editor\editor.lua
@@ -124,6 +130,7 @@ return {
   ["Program starting as '%s'."] = "Programme démarré en tant que '%s'.", -- src\editor\output.lua
   ["Program stopped (pid: %d)."] = "Programme stoppé (pid: %d).", -- src\editor\debugger.lua
   ["Program unable to run as '%s'."] = "Impossible d'écuter le programme en tant que '%s'.", -- src\editor\output.lua
+  ["Project Directory"] = "Répertoire de projet", -- src\editor\menu_project.lua
   ["Project"] = "Projet", -- src\editor\settings.lua, src\editor\gui.lua
   ["Project/&FileTree Window"] = "Projet/Arborescence de fichiers", -- src\editor\menu_view.lua
   ["R/O"] = "R/O", -- src\editor\editor.lua
@@ -138,7 +145,7 @@ return {
   ["Run as Scratchpad"] = "Exécuter au Brouillon", -- src\editor\menu_project.lua
   ["S&top Debugging"] = "Arrêter le débogueur", -- src\editor\menu_project.lua
   ["S&top Process"] = "Arrêter le processus", -- src\editor\menu_project.lua
-  ["Save &As..."] = "Enregitrer sous...", -- src\editor\menu_file.lua
+  ["Save &As..."] = "Enregitrer sous...", -- src\editor\menu_file.lua, src\editor\gui.lua
   ["Save A&ll"] = "Enregister tout", -- src\editor\menu_file.lua
   ["Save Changes?"] = "Enregister les modifications?", -- src\editor\commands.lua
   ["Save all open documents"] = "Enregister tous les documents ouverts", -- src\editor\menu_file.lua, src\editor\gui.lua
@@ -150,8 +157,10 @@ return {
   ["Scratchpad error"] = "Erreur dans le Brouillon", -- src\editor\debugger.lua
   ["Select &All"] = "Sélectionner tout", -- src\editor\editor.lua, src\editor\menu_edit.lua
   ["Select all text in the editor"] = "Sélectionner tout le texte dans l'éditeur", -- src\editor\menu_edit.lua
-  ["Set project directory from current file"] = "Définir le répertoire de projet depuis le fichier courant", -- src\editor\gui.lua
+  ["Set From Current File"] = "Définir depuis le fichier courant", -- src\editor\menu_project.lua
+  ["Set project directory from current file"] = "Définir le répertoire de projet depuis le fichier courant", -- src\editor\menu_project.lua, src\editor\gui.lua
   ["Set the interpreter to be used"] = "Définir l'interpréteur à utiliser", -- src\editor\menu_project.lua
+  ["Set the project directory to be used"] = "Définir le répertoire de projet à utiliser", -- src\editor\menu_project.lua
   ["Show &Tooltip"] = "Afficher l'info-bulle", -- src\editor\menu_edit.lua
   ["Show tooltip for current position; place cursor after opening bracket of function"] = "Afficher l'info-bulle pour la position actuelle; placer le curseur après avoir ouvert les parenthèses d'arguments de fontion", -- src\editor\menu_edit.lua
   ["Sort selected lines"] = "trier les fichiers sélectionnés", -- src\editor\menu_search.lua
@@ -175,6 +184,7 @@ return {
   ["Unable to save file '%s': %s"] = "Impossible d'enregistrer le fichier '%s': %s", -- src\editor\commands.lua
   ["Unable to stop program (pid: %d), code %d."] = "Impossible d'arrêter le programme (pid: %d), code %d.", -- src\editor\debugger.lua
   ["Undo last edit"] = "Défaire la dernière édition", -- src\editor\menu_edit.lua, src\editor\gui.lua
+  ["Use '%s' to see full description."] = "Utilisez '%s' pour voir la description complète.", -- src\editor\editor.lua
   ["Use 'clear' to clear the shell output and the history."] = "Utiliser 'clear' pour effacer la sortie console et l`historique.", -- src\editor\shellbox.lua
   ["Use Shift-Enter for multiline code."] = "Pressez <Shift-Entrée> pour du code multiligne.", -- src\editor\shellbox.lua
   ["Value"] = "Valeur", -- src\editor\debugger.lua
