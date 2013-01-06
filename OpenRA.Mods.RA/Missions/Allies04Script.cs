@@ -16,8 +16,8 @@ using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Air;
 using OpenRA.Mods.RA.Buildings;
+using OpenRA.Mods.RA.Move;
 using OpenRA.Mods.RA.Render;
-using OpenRA.Network;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
@@ -66,6 +66,7 @@ namespace OpenRA.Mods.RA.Missions
 		Player allies1;
 		Player allies2;
 		Player soviets;
+		Player neutral;
 		World world;
 
 		Patrol[] patrols;
@@ -84,6 +85,8 @@ namespace OpenRA.Mods.RA.Missions
 
 		string difficulty;
 		int destroyBaseTicks;
+
+		int nextCivilianMove = 1;
 
 		void MissionFailed(string text)
 		{
@@ -173,6 +176,16 @@ namespace OpenRA.Mods.RA.Missions
 				objectives[DestroyID].Status = ObjectiveStatus.Completed;
 				OnObjectivesUpdated(true);
 				MissionAccomplished("The Soviet research laboratory has been secured successfully.");
+			}
+			if (world.FrameNumber == nextCivilianMove)
+			{
+				var civilians = world.Actors.Where(a => !a.IsDead() && a.IsInWorld && a.Owner == neutral && a.HasTrait<Mobile>());
+				if (civilians.Any())
+				{
+					var civilian = civilians.Random(world.SharedRandom);
+					civilian.Trait<Mobile>().Nudge(civilian, civilian, true);
+					nextCivilianMove += world.SharedRandom.Next(1, 75);
+				}
 			}
 		}
 
@@ -361,6 +374,7 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			allies = w.Players.Single(p => p.InternalName == "Allies");
 			soviets = w.Players.Single(p => p.InternalName == "Soviets");
+			neutral = w.Players.Single(p => p.InternalName == "Neutral");
 
 			destroyBaseTicks = difficulty == "Hard" ? 1500 * 20 : difficulty == "Normal" ? 1500 * 25 : 1500 * 30;
 
