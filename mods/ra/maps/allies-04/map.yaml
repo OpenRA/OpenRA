@@ -281,6 +281,7 @@ Actors:
 	Actor59: sam
 		Location: 47,60
 		Owner: Soviets
+		TurretFacing: 160
 	Actor61: apwr
 		Location: 45,49
 		Owner: Soviets
@@ -308,6 +309,7 @@ Actors:
 	Actor65: sam
 		Location: 50,37
 		Owner: Soviets
+		TurretFacing: 192
 	Actor70: spen
 		Location: 39,71
 		Owner: Soviets
@@ -317,6 +319,7 @@ Actors:
 	Actor64: sam
 		Location: 28,43
 		Owner: Soviets
+		TurretFacing: 48
 	Actor72: spen
 		Location: 23,76
 		Owner: Soviets
@@ -602,6 +605,7 @@ Actors:
 	Actor175: sam
 		Location: 30,58
 		Owner: Soviets
+		TurretFacing: 96
 	Actor181: t12
 		Location: 27,54
 		Owner: Neutral
@@ -1565,6 +1569,7 @@ Actors:
 	Actor415: sam
 		Location: 77,102
 		Owner: Soviets
+		TurretFacing: 128
 	Actor475: brl3
 		Location: 79,97
 		Owner: Soviets
