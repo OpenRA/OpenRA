@@ -144,6 +144,11 @@ namespace OpenRA.Mods.RA.Server
 				{ "slot_close",
 					s =>
 					{
+						if (Game.Settings.Server.LockSpotClose)
+						{
+							server.SendChatTo(conn, "No rights!");
+							return true;
+						}
 						if (!ValidateSlotCommand( server, conn, client, s, true ))
 							return false;
 
@@ -248,6 +253,11 @@ namespace OpenRA.Mods.RA.Server
 				{ "map",
 					s =>
 					{
+						if (Game.Settings.Server.LockMapChange)
+						{
+							server.SendChatTo(conn, "No rights!");
+							return true;
+						}
 						if (!client.IsAdmin)
 						{
 							server.SendChatTo( conn, "Only the host can change the map" );
@@ -307,6 +317,8 @@ namespace OpenRA.Mods.RA.Server
 				{ "allowcheats",
 					s =>
 					{
+						if (Game.Settings.Server.LockCheats)
+							return true;
 						if (!client.IsAdmin)
 						{
 							server.SendChatTo( conn, "Only the host can set that option" );
@@ -320,7 +332,11 @@ namespace OpenRA.Mods.RA.Server
 				{ "kick",
 					s =>
 					{
-
+						if (Game.Settings.Server.LockKick)
+						{
+							server.SendChatTo(conn, "No rights!");
+							return true;
+						}
 						if (!client.IsAdmin)
 						{
 							server.SendChatTo( conn, "Only the host can kick players" );
@@ -459,6 +475,8 @@ namespace OpenRA.Mods.RA.Server
 		static Session.Slot MakeSlotFromPlayerReference(PlayerReference pr)
 		{
 			if (!pr.Playable) return null;
+			if (Game.Settings.Server.LockBots)
+				pr.AllowBots = false;
 			return new Session.Slot
 			{
 				PlayerReference = pr.Name,
