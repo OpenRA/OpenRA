@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA.Crates
 	class GiveUnitCrateActionInfo : CrateActionInfo
 	{
 		[ActorReference]
-		public readonly string[] Unit = null;
+		public readonly string[] Units = null;
 		public readonly string Owner = null;
 
 		public override object Create(ActorInitializer init) { return new GiveUnitCrateAction(init.self, this); }
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA.Crates
 
 		public override int GetSelectionShares(Actor collector)
 		{
-			var unit = Info.Unit.First();
+			var unit = Info.Units.First();
 			var bi = Rules.Info[unit].Traits.GetOrDefault<BuildableInfo>();
 
 			// this unit is not buildable by the collector's country, so
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.RA.Crates
 
 		public override void Activate(Actor collector)
 		{
-			foreach (var unit in Info.Unit)
+			foreach (var unit in Info.Units)
 			{
 				var tmpUnit = unit; // avoiding access to modified closure
 
