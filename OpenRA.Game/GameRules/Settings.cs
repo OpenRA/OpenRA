@@ -37,6 +37,12 @@ namespace OpenRA.GameRules
 		public bool Dedicated = false;
 		public bool DedicatedLoop = true;
 		public string DedicatedMOTD = null;
+		public bool LockBots = false;
+		public bool LockKick = false;
+		public bool LockCheats = false;
+		public bool LockMapChange = false;
+		public bool LockForceStart = false;
+		public bool LockSpotClose = false;
 
 		public ServerSettings() { }
 
@@ -55,6 +61,12 @@ namespace OpenRA.GameRules
 			Dedicated = other.Dedicated;
 			DedicatedLoop = other.DedicatedLoop;
 			DedicatedMOTD = other.DedicatedMOTD;
+			LockBots = other.LockBots;
+			LockKick = other.LockKick;
+			LockCheats = other.LockCheats;
+			LockMapChange = other.LockMapChange;
+			LockForceStart = other.LockForceStart;
+			LockSpotClose = other.LockSpotClose;
 		}
 	}
 

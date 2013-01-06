@@ -156,7 +156,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						"allowcheats {0}".F(!orderManager.LobbyInfo.GlobalSettings.AllowCheats)));
 
 			var startGameButton = lobby.Get<ButtonWidget>("START_GAME_BUTTON");
-			startGameButton.IsVisible = () => Game.IsHost;
+			startGameButton.IsVisible = () => Game.IsHost && !Game.Settings.Server.LockForceStart;
 			startGameButton.IsDisabled = () => gameStarting;
 			startGameButton.OnClick = () =>
 			{
