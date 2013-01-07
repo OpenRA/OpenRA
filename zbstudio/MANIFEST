@@ -6,10 +6,7 @@ api/opencl/*.lua
 api/glsl/*.lua
 api/cg/*.lua
 api/README
-cfg/user-sample.lua
-cfg/estrela.lua
-cfg/scheme-picker.lua
-cfg/tomorrow.lua
+cfg/*.lua
 cfg/i18n/*.lua
 interpreters/*.lua
 lualibs/copas/copas.lua
