@@ -36,7 +36,6 @@ namespace OpenRA.GameRules
 		public int TimeOut = 0;
 		public bool Dedicated = false;
 		public bool DedicatedLoop = true;
-		public string DedicatedMOTD = null;
 
 		public ServerSettings() { }
 
@@ -54,7 +53,6 @@ namespace OpenRA.GameRules
 			TimeOut = other.TimeOut;
 			Dedicated = other.Dedicated;
 			DedicatedLoop = other.DedicatedLoop;
-			DedicatedMOTD = other.DedicatedMOTD;
 		}
 	}
 
