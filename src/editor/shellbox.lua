@@ -261,7 +261,7 @@ local function executeShellCode(tx)
   tx = tx:gsub("^%s*=%s*","")
   fn, err = loadstring("return "..tx)
   if not forceexpression and err and
-     (err:find("'<eof>' expected near '") or
+     (err:find("'?<eof>'? expected near '") or
       err:find("'%(' expected near") or
       err:find("unexpected symbol near '")) then
     fn, err = loadstring(tx)

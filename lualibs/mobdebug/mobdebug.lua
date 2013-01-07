@@ -1,12 +1,12 @@
 --
--- MobDebug 0.5084
+-- MobDebug 0.511
 -- Copyright 2011-12 Paul Kulchenko
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
 --
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.5084,
+  _VERSION = 0.511,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = os and os.getenv and os.getenv("MOBDEBUG_PORT") or 8172,
@@ -16,6 +16,7 @@ local mobdebug = {
 local coroutine = coroutine
 local error = error
 local getfenv = getfenv
+local setfenv = setfenv
 local loadstring = loadstring
 local io = io
 local os = os
@@ -37,11 +38,29 @@ local jit = rawget(genv, "jit")
 local mosync = rawget(genv, "mosync")
 local MOAICoroutine = rawget(genv, "MOAICoroutine")
 
+if not setfenv then -- Lua 5.2
+  -- based on http://lua-users.org/lists/lua-l/2010-06/msg00314.html
+  -- this assumes f is a function
+  local function findenv(f)
+    local level = 1
+    repeat
+      local name, value = debug.getupvalue(f, level)
+      if name == '_ENV' then return level, value end
+      level = level + 1
+    until name == nil
+    return nil end
+  getfenv = function (f) return(select(2, findenv(f)) or _G) end
+  setfenv = function (f, t)
+    local level = findenv(f)
+    if level then debug.setupvalue(f, level, t) end
+    return f end
+end
+
 -- check for OS and convert file names to lower case on windows
 -- (its file system is case insensitive, but case preserving), as setting a
 -- breakpoint on x:\Foo.lua will not work if the file was loaded as X:\foo.lua.
-local iswindows = os.getenv('WINDIR')
-  or (os.getenv('OS') or ''):match('[Ww]indows')
+local iswindows = os and os.getenv and (os.getenv('WINDIR')
+  or (os.getenv('OS') or ''):match('[Ww]indows'))
   or pcall(require, "winapi")
 
 -- this is a socket class that implements maConnect interface
@@ -437,7 +456,7 @@ local function stack_depth(start_depth)
   return start_depth
 end
 
-local function is_safe(stack_level, conservative)
+local function is_safe(stack_level)
   -- the stack grows up: 0 is getinfo, 1 is is_safe, 2 is debug_hook, 3 is user function
   if stack_level == 3 then return true end
   local main = debug.getinfo(3, "S").source
@@ -446,7 +465,7 @@ local function is_safe(stack_level, conservative)
     -- return if it is not safe to abort
     local info = debug.getinfo(i, "S")
     if not info then return true end
-    if conservative and info.source ~= main or info.what == "C" then return false end
+    if info.what == "C" then return false end
   end
   return true
 end
