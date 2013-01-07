@@ -314,6 +314,41 @@ MEDI:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
 
+MECH:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 70
+		Owner: allies
+		Prerequisites: fix
+		Hotkey: k
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Mechanic
+		Description: Repairs nearby vehicles.\n  Strong vs Nothing\n  Weak vs Everything
+	Selectable:
+		Voice: MechanicVoice
+		Bounds: 12,17,0,-9
+	Health:
+		HP: 80
+	Mobile:
+		Speed: 4
+	RevealsShroud:
+		Range: 3
+	Passenger:
+		PipType: Yellow
+	AutoHeal:
+	AttackMedic:
+		PrimaryWeapon: Repair
+	TakeCover:
+	-AutoTarget:
+	AttackMove:
+		JustMove: true
+	-RenderInfantry:
+	RenderInfantryProne:
+		IdleAnimations: idle1,idle2
+
 C1:
 	Inherits: ^Infantry
 	Selectable:
