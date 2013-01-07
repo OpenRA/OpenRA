@@ -119,7 +119,6 @@ namespace OpenRA.Server
 			lobbyInfo.GlobalSettings.ServerName = settings.Name;
 			lobbyInfo.GlobalSettings.Ban = settings.Ban;
 			lobbyInfo.GlobalSettings.Dedicated = settings.Dedicated;
-			lobbyInfo.GlobalSettings.DedicatedMOTD = settings.DedicatedMOTD;
 
 			foreach (var t in ServerTraits.WithInterface<INotifyServerStart>())
 				t.ServerStarted(this);
@@ -328,11 +327,15 @@ namespace OpenRA.Server
 
 				SyncLobbyInfo();
 				SendChat(newConn, "has joined the game.");
-				
+
+				if ( File.Exists("{0}motd_{1}.txt".F(Platform.SupportDir, lobbyInfo.GlobalSettings.Mods[0])) )
+				{
+					var motd = System.IO.File.ReadAllText("{0}motd_{1}.txt".F(Platform.SupportDir, lobbyInfo.GlobalSettings.Mods[0]));
+					SendChatTo(newConn, motd);
+				}
+
 				if ( lobbyInfo.GlobalSettings.Dedicated )
 				{
-					if (lobbyInfo.GlobalSettings.DedicatedMOTD != null)
-						SendChatTo(newConn, lobbyInfo.GlobalSettings.DedicatedMOTD);
 					if (client.IsAdmin)
 						SendChatTo(newConn, "    You are admin now!");
 					else
