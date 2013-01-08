@@ -512,6 +512,7 @@ Actors:
 	Actor304: 3tnk
 		Location: 106,38
 		Owner: Soviets
+		Facing: 96
 	Actor488: t02
 		Location: 110,28
 		Owner: Neutral
@@ -886,6 +887,7 @@ Actors:
 	Actor272: 3tnk
 		Location: 102,37
 		Owner: Soviets
+		Facing: 160
 	Actor280: t16
 		Location: 87,41
 		Owner: Neutral
