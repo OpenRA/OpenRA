@@ -62,7 +62,6 @@ namespace OpenRA.Mods.RA.Missions
 		CountdownTimer destroyBaseTimer;
 		CountdownTimerWidget destroyBaseTimerWidget;
 
-		Player allies;
 		Player allies1;
 		Player allies2;
 		Player soviets;
@@ -372,7 +371,6 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				allies2 = allies1;
 			}
-			allies = w.Players.Single(p => p.InternalName == "Allies");
 			soviets = w.Players.Single(p => p.InternalName == "Soviets");
 			neutral = w.Players.Single(p => p.InternalName == "Neutral");
 

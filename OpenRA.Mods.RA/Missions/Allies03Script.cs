@@ -355,10 +355,10 @@ namespace OpenRA.Mods.RA.Missions
 
 		void SpawnAlliedUnit(string actor)
 		{
-			var unit = SpawnAndMove(actor, allies1, allies1EntryPoint.Location, allies1MovePoint.Location);
+			SpawnAndMove(actor, allies1, allies1EntryPoint.Location, allies1MovePoint.Location);
 			if (allies2 != allies1)
 			{
-				unit = SpawnAndMove(actor, allies2, allies2EntryPoint.Location, allies2MovePoint.Location);
+				SpawnAndMove(actor, allies2, allies2EntryPoint.Location, allies2MovePoint.Location);
 			}
 		}
 
