@@ -7,6 +7,39 @@ CONYARDA:
 		Offset:1,1
 		Facing: 270
 
+GUNTOWERA:
+	Inherits: ^GUNTOWER
+	Buildable:
+		Prerequisites: conyarda
+		Owner: atreides
+	LeavesHusk:
+		HuskActor: GuntowerA.Husk
+
+GUNTOWERA.Husk:
+	Inherits: ^GUNTOWER.Husk
+	RenderUnit:
+		Image: GUNTOWERA
+
+
+ROCKETTOWERA:
+	Inherits: ^ROCKETTOWER
+	Buildable:
+		Prerequisites: radara
+		Owner: atreides
+	LeavesHusk:
+		HuskActor: RockettowerA.Husk
+
+ROCKETTOWERA.Husk:
+	Inherits: ^ROCKETTOWER.Husk
+	RenderUnit:
+		Image: ROCKETTOWERA
+
+WALLA:
+	Inherits: ^WALL
+	Buildable:
+		Prerequisites: conyarda
+		Owner: atreides
+
 PWRA:
 	Inherits: ^POWER
 	Buildable:
@@ -20,34 +53,6 @@ REFA:
 		Owner: atreides
 	RenderBuildingWarFactory:
 		Image: REFA
-
-TRIKEA:
-	Inherits: ^TRIKE
-	Buildable:
-		Prerequisites: Light Factory#lighta
-		Owner: atreides, harkonnen
-		BuiltAt: lighta, lighth
-	RenderUnit:
-		Image: TRIKE
-
-TRIKEA.starport:
-	Inherits: TRIKEA
-	Buildable:
-		Owner: atreides, harkonnen, ordos
-		Queue: Starport
-		BuiltAt: starporta, starporth, starporto
-	Valued:
-		Cost: 149
-
-CARRYALLA:
-	Inherits: ^CARRYALL
-	RenderUnit:
-		Image: CARRYALL
-
-CARRYALLA.starport:
-	Inherits: CARRYALLA
-	Valued:
-		Cost: 999
 
 BARRA:
 	Inherits: ^BARRACKS
@@ -78,6 +83,12 @@ PALACEA:
 	CanPowerDown:
 	RequiresPower:
 	SupportPowerChargeBar:
+
+RESEARCHA:
+	Inherits: ^RESEARCH
+	Buildable:
+		Prerequisites: radara,hightecha
+		Owner: atreides
 
 SILOA:
 	Inherits: ^SILO
@@ -113,12 +124,17 @@ STARPORTA:
 		Prerequisites: heavya,hightecha
 		Owner: atreides
 
+REPAIRA:
+	Inherits: ^REPAIR
+	Buildable:
+		Prerequisites: heavya
+		Owner: atreides
+
 MCVA:
 	Inherits: ^MCV
 	Buildable:
 		Prerequisites: heavya,repair
 		Owner: atreides
-		BuiltAt: heavya
 	Transforms:
 		Facing: 16
 		IntoActor: conyarda
@@ -131,7 +147,6 @@ MCVA.starport:
 	Inherits: MCVA
 	Buildable:
 		Queue: Starport
-		BuiltAt: starporta
 	Valued:
 		Cost: 1499
 
@@ -142,7 +157,6 @@ COMBATA:
 	Buildable:
 		Prerequisites: heavya
 		Owner: atreides
-		BuiltAt: heavya
 	AttackTurreted:
 		PrimaryWeapon: 90mma
 		PrimaryRecoil: 4
@@ -164,7 +178,6 @@ COMBATA.starport:
 	Inherits: COMBATA
 	Buildable:
 		Queue: Starport
-		BuiltAt: starporta
 	Valued:
 		Cost: 489
 
@@ -173,9 +186,8 @@ SONICTANK:
 	Buildable:
 		Queue: Armor
 		BuildPaletteOrder: 100
-		Prerequisites: heavya,research
+		Prerequisites: heavya,researcha
 		Owner: atreides
-		BuiltAt: heavya
 		Hotkey: o
 	Valued:
 		Cost: 1100
@@ -197,7 +209,7 @@ SONICTANK:
 	RenderUnit:
 		Image: SONICTANK
 	AttackFrontal:
-		PrimaryWeapon: TTankZap
+		PrimaryWeapon: SonicBeam
 		PrimaryLocalOffset: 0,-15,0,-10,0
 	AutoTarget:
 		InitialStance: Defend

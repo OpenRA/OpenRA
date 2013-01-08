@@ -7,6 +7,24 @@ CONYARDH:
 		Offset:1,1
 		Facing: 270
 
+GUNTOWERH:
+	Inherits: ^GUNTOWER
+	Buildable:
+		Prerequisites: conyardh
+		Owner: harkonnen
+
+ROCKETTOWERH:
+	Inherits: ^ROCKETTOWER
+	Buildable:
+		Prerequisites: radarh
+		Owner: harkonnen
+
+WALLH:
+	Inherits: ^WALL
+	Buildable:
+		Prerequisites: conyardh
+		Owner: harkonnen
+
 PWRH:
 	Inherits: ^POWER
 	Buildable:
@@ -21,51 +39,6 @@ REFH:
 	RenderBuildingWarFactory:
 		Image: REFH
 
-#TRIKEH:
-#	Inherits: ^TRIKE
-#	Buildable:
-#		Prerequisites: lighth
-#		Owner: harkonnen
-#		BuiltAt: lighth
-#	Valued:
-#		Cost: 250
-#	Tooltip:
-#		Name: Scout Quad
-#		Description: Heavy Scout\n Strong vs Infantry
-#		Icon: quadicon
-#	Health:
-#		HP: 125
-#	Mobile:
-#		ROT: 9
-#		Speed: 11
-#	AttackFrontal:
-#		PrimaryWeapon: M60mg
-#		PrimaryLocalOffset: 0,-1,0,-3,0
-#	RenderUnit:
-#		Image: QUAD
-
-#TRIKEH.starport:
-#	Inherits: ^TRIKE
-#	Buildable:
-#		Prerequisites: lighth
-#		Owner: harkonnen
-#		Queue: Starport
-#		BuiltAt: starporth
-#	Valued:
-#		Cost: 149
-#	RenderUnit:
-#		Image: TRIKE
-
-CARRYALLH:
-	Inherits: ^CARRYALL
-	RenderUnit:
-		Image: CARRYALL
-
-CARRYALLH.starport:
-	Inherits: CARRYALLH
-	Valued:
-		Cost: 999
-
 BARRH:
 	Inherits: ^BARRACKS
 	Buildable:
@@ -77,6 +50,12 @@ HIGHTECHH:
 	Inherits: ^HIGHTECH
 	Buildable:
 		Prerequisites: radarh
+		Owner: harkonnen
+
+RESEARCHH:
+	Inherits: ^RESEARCH
+	Buildable:
+		Prerequisites: radarh,hightechh
 		Owner: harkonnen
 
 PALACEH:
@@ -134,13 +113,18 @@ STARPORTH:
 	Buildable:
 		Prerequisites: radarh,hightechh
 		Owner: harkonnen
+		
+REPAIRH:
+	Inherits: ^REPAIR
+	Buildable:
+		Prerequisites: heavyh
+		Owner: harkonnen
 
 MCVH:
 	Inherits: ^MCV
 	Buildable:
 		Prerequisites: heavyh,repair
 		Owner: harkonnen
-		BuiltAt: heavyh
 	Transforms:
 		Facing: 16
 		IntoActor: conyardh
@@ -153,7 +137,6 @@ MCVH.starport:
 	Inherits: MCVH
 	Buildable:
 		Queue: Starport
-		BuiltAt: starporth
 	Valued:
 		Cost: 1499
 
@@ -164,7 +147,6 @@ COMBATH:
 	Buildable:
 		Prerequisites: heavyh
 		Owner: harkonnen
-		BuiltAt: heavyh
 	Health:
 		HP: 400
 	RenderUnitTurreted:
@@ -183,7 +165,6 @@ COMBATH.starport:
 	Inherits: COMBATH
 	Buildable:
 		Queue: Starport
-		BuiltAt: starporth
 	Valued:
 		Cost: 489
 
@@ -192,9 +173,8 @@ DEVAST:
 	Buildable:
 		Queue: Armor
 		BuildPaletteOrder: 100
-		Prerequisites: heavyh,research
+		Prerequisites: heavyh,researchh
 		Owner: harkonnen
-		BuiltAt: heavyh
 		Hotkey: d
 	Valued:
 		Cost: 1200

@@ -84,7 +84,7 @@
 	PrimaryBuilding:
 	ProductionBar:
 	ProvidesCustomPrerequisite:
-		Prerequisite: Barracks
+		Prerequisite: barracks
 	RepairsUnits:
 		ValuePercentage: 0
 
@@ -112,14 +112,12 @@
 	RevealsShroud:
 		Range: 4
 	ProvidesCustomPrerequisite:
-		Prerequisite: High Tech Facility
+		Prerequisite: hightech
 
-RESEARCH:
+^RESEARCH:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: Outpost,High Tech Facility
-		Owner: atreides, harkonnen, ordos
 		BuildPaletteOrder: 65
 		Hotkey: v
 	Selectable:
@@ -128,18 +126,7 @@ RESEARCH:
 		Cost: 2500
 	Tooltip:
 		Name: IX Research Center
-		Description: Unlocks experimental tanks\n  Special Ability: Carryall Combat Drop
-	ParatroopersPower:
-		Image: carryallicon
-		UnitType: carryall.infantry
-		FlareTime: 0
-		ChargeTime: 360
-		Description: Paratroopers
-		LongDesc: A Carryall drops a squad of Infantry \nanywhere on the map
-		Prerequisites: HIGHTECHO
-		DropItems: RIFLE, RIFLE, BAZOOKA, BAZOOKA, ENGINEER, BAZOOKA, RIFLE, RIFLE
-		SelectTargetSound:
-		FlareType:
+		Description: Unlocks experimental weapons
 	Building:
 		Power: -40
 		Footprint: xxx xxx
@@ -150,6 +137,10 @@ RESEARCH:
 		Type: Wood
 	RevealsShroud:
 		Range: 4
+	ProvidesCustomPrerequisite:
+		Prerequisite: research
+	RenderBuilding:
+		Image: RESEARCH
 
 ^PALACE:
 	Inherits: ^Building
@@ -163,7 +154,7 @@ RESEARCH:
 		Cost: 4000
 	Tooltip:
 		Name: Palace
-		Description: Unlocks elite infantry\n  Special Ability: Ornithopter Strike
+		Description: Unlocks elite units\n  Special Ability: superweapon
 	Building:
 		Power: -50
 		Footprint: _x_ xxx =xx
@@ -175,7 +166,7 @@ RESEARCH:
 	RevealsShroud:
 		Range: 8
 	ProvidesCustomPrerequisite:
-		Prerequisite: TPal
+		Prerequisite: palace
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 2
@@ -213,13 +204,13 @@ RESEARCH:
 		Capacity: 3000
 	CustomSellValue:
 		Value: 500
-	ProvidesCustomPrerequisite:
-		Prerequisite: Spice Refinery
 	FreeActor:
 		Actor: HARVESTER
 		InitialActivity: FindResources
 		SpawnOffset: 2,1
 		Facing: 160
+	ProvidesCustomPrerequisite:
+		Prerequisite: refinery
 
 ^SILO:
 	Inherits: ^Building
@@ -285,7 +276,7 @@ RESEARCH:
 	PrimaryBuilding:
 	ProductionBar:
 	ProvidesCustomPrerequisite:
-		Prerequisite: Light Factory
+		Prerequisite: light
 
 ^HEAVY:
 	Inherits: ^Building
@@ -321,7 +312,7 @@ RESEARCH:
 	PrimaryBuilding:
 	ProductionBar:
 	ProvidesCustomPrerequisite:
-		Prerequisite: Heavy Factory
+		Prerequisite: heavy
 
 ^RADAR:
 	RequiresPower:
@@ -350,7 +341,7 @@ RESEARCH:
 		Range: 10
 	ProvidesRadar:
 	ProvidesCustomPrerequisite:
-		Prerequisite: Outpost
+		Prerequisite: radar
 	DetectCloaked:
 		Range: 2
 
@@ -391,12 +382,12 @@ RESEARCH:
 	PrimaryBuilding:
 	RequiresPower:
 	CanPowerDown:
+	ProvidesCustomPrerequisite:
+		Prerequisite: starport
 
-WALL:
+^WALL:
 	Buildable:
 		Queue: Building
-		Prerequisites: Barracks
-		Owner: atreides, harkonnen, ordos
 		BuildPaletteOrder: 25
 		#Hotkey: g
 	SoundOnDamageTransition:
@@ -408,8 +399,7 @@ WALL:
 		Value: 0
 	Tooltip:
 		Name: Concrete Wall
-		Description: Stops units and blocks enemy fire
-		Icon: wallicon
+		Description: Stop units and blocks enemy fire.
 	AppearsOnRadar:
 	Building:
 		BuildSounds: CHUNG.aud
@@ -439,12 +429,10 @@ WALL:
 		Types:Wall
 	Sellable:
 
-GUNTOWER:
+^GUNTOWER:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: Outpost
-		Owner: atreides, harkonnen, ordos
 		BuildPaletteOrder: 40
 		Hotkey: g
 	Valued:
@@ -452,10 +440,11 @@ GUNTOWER:
 	Tooltip:
 		Name: Gun Tower
 		Description: Defensive structure\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
-		Icon: turreticon
 	Building:
 		Power: -20
 		Adjacent: 4
+		BuildSounds: CHUNG.aud
+		SellSounds: CHUNG.aud
 	Selectable:
 		Bounds: 32,32
 		Priority: 3
@@ -470,7 +459,7 @@ GUNTOWER:
 	-RenderBuilding:
 	#-AutoTargetIgnore:
 	RenderBuildingSeparateTurret:
-	#	HasMakeAnimation: false
+		HasMakeAnimation: false
 	Turreted:
 		ROT: 6
 		InitialFacing: 128
@@ -478,42 +467,36 @@ GUNTOWER:
 		PrimaryWeapon: TurretGun
 		PrimaryLocalOffset: 0,-11,0,-7,0
 	AutoTarget:
-	LeavesHusk:
-		HuskActor: Guntower.Husk
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 3
 
-GUNTOWER.Husk:
+^GUNTOWER.Husk:
 	Inherits: ^TowerHusk
 	Tooltip:
 		Name: Destroyed Tower
-		Icon: turreticon
-	RenderUnit:
-		Image: GUNTOWER
 	ThrowsParticle@turret:
 		Anim: turret
 		Spread: 4,4
 		Speed: 6
 		AnimKey: turret
 
-ROCKETTOWER:
+^ROCKETTOWER:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: Outpost, High Tech Facility
-		Owner: atreides, harkonnen, ordos
 		BuildPaletteOrder: 55
 		Hotkey: m
 	Valued:
 		Cost: 800
 	Tooltip:
-		Name: Missile Tower
-		Icon: rturreticon
+		Name: Rocket Tower
 		Description: Defensive structure\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks\n\n  Requires power to operate
 	Building:
 		Power: -30
 		Adjacent: 4
+		BuildSounds: CHUNG.aud
+		SellSounds: CHUNG.aud
 	Selectable:
 		Bounds: 32,32
 		Priority: 3
@@ -528,7 +511,7 @@ ROCKETTOWER:
 	-RenderBuilding:
 	#-AutoTargetIgnore:
 	RenderBuildingSeparateTurret:
-	#	HasMakeAnimation: false
+		HasMakeAnimation: false
 	AttackTurreted:
 		PrimaryWeapon: TowerMissile
 		PrimaryLocalOffset: 14,-2,0,-11,0, -14,-2,0,-11,0
@@ -538,31 +521,24 @@ ROCKETTOWER:
 	AutoTarget:
 	RequiresPower:
 	CanPowerDown:
-	LeavesHusk:
-		HuskActor: Rockettower.Husk
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 3
 
-ROCKETTOWER.Husk:
+^ROCKETTOWER.Husk:
 	Inherits: ^TowerHusk
 	Tooltip:
 		Name: Destroyed Tower
-		Icon: rturreticon
-	RenderUnit:
-		Image: ROCKETTOWER
 	ThrowsParticle@turret:
 		Anim: turret
 		Spread: 4,4
 		Speed: 6
 		AnimKey: turret
 
-REPAIR:
+^REPAIR:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: Outpost
-		Owner: atreides, harkonnen, ordos
 		BuildPaletteOrder: 45
 		Hotkey: e
 	Valued:
@@ -587,6 +563,10 @@ REPAIR:
 		ValuePercentage: 50
 	RallyPoint:
 		RallyPoint: 1,3
+	RenderBuilding:
+		Image: REPAIR
+	ProvidesCustomPrerequisite:
+		Prerequisite: REPAIR
 
 SIETCH:
 	Inherits: ^Building
@@ -625,50 +605,53 @@ HEAVYC:
 	RenderBuildingWarFactory:
 		Image: HEAVYC
 
-#4PLATES:
-#	Inherits: ^WALL
-#	Buildable:
-#		BuildPaletteOrder: 2000
-#		Owner: atreides, harkonnen, ordos
-#	Tooltip:
-#		Name: Fundament
-#		Description: Pretty useless at the moment.
-#		Icon: 4plateicon
-#	Building:
-#		TerrainTypes: Rock
-#		Footprint: =
-#	BelowUnits:
-#	LineBuild:
-#		Range: 4
-#	RenderBuildingWall:
-#		HasMakeAnimation: false
-#		Image: PLATES
-#	Wall:
-#		CrushClasses: plates
-#	-SelectionDecorations:
-#	-Selectable:
+# custom prerequisites:
+BARRACKS:
+	Tooltip:
+		Name: Barracks
+		Description: Barracks
 
-#6PLATES:
-#	Inherits: ^WALL
-#	Buildable:
-#		BuildPaletteOrder: 3000
-#		Owner: atreides, harkonnen, ordos
-#	Valued:
-#		Cost: 120
-#	Tooltip:
-#		Name: Fundament
-#		Description: Pretty useless at the moment.
-#		Icon: 6plateicon
-#	Building:
-#		TerrainTypes: Rock
-#		Footprint: =
-#	BelowUnits:
-#	LineBuild:
-#		Range: 6
-#	RenderBuildingWall:
-#		HasMakeAnimation: false
-#		Image: PLATES
-#	Wall:
-#		CrushClasses: plates
-#	-SelectionDecorations:
-#	-Selectable:
+HIGHTECH:
+	Tooltip:
+		Name: High Tech Facility
+		Description: High Tech Facility
+
+RESEARCH:
+	Tooltip:
+		Name: IX Research Center
+		Description: IX Research Center
+
+PALACE:
+	Tooltip:
+		Name: Palace
+		Description: Palace
+
+REFINERY:
+	Tooltip:
+		Name: Spice Refinery
+		Description: Spice Refinery
+
+LIGHT:
+	Tooltip:
+		Name: Light Factory
+		Description: Light Factory
+
+HEAVY:
+	Tooltip:
+		Name: Heavy Factory
+		Description: Heavy Factory
+
+REPAIR:
+	Tooltip:
+		Name: Repair Pad
+		Description: Repair Pad
+
+RADAR:
+	Tooltip:
+		Name: Outpost
+		Description: Outpost
+
+STARPORT:
+	Tooltip:
+		Name: Starport
+		Description: Starport
