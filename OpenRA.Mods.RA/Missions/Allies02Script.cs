@@ -87,6 +87,7 @@ namespace OpenRA.Mods.RA.Missions
 		Actor einsteinChinook;
 
 		World world;
+		Player allies;
 		Player allies1;
 		Player allies2;
 		Player soviets;
@@ -103,8 +104,7 @@ namespace OpenRA.Mods.RA.Missions
 		static readonly string[] SovietVehicles1 = { "3tnk" };
 		static readonly string[] SovietVehicles2 = { "3tnk", "v2rl" };
 		const int SovietVehiclesUpgradeTicks = 1500 * 4;
-		const int SovietGroupSize = 8;
-		const int SovietHelperCash = 2000;
+		const int SovietGroupSize = 20;
 
 		const int ReinforcementsTicks = 1500 * 12;
 		static readonly string[] Reinforcements =
@@ -117,6 +117,7 @@ namespace OpenRA.Mods.RA.Missions
 			"mcv",
 			"truk", "truk", "truk", "truk", "truk", "truk"
 		};
+		int currentReinforcement = -1;
 
 		const int ParabombTicks = 750;
 
@@ -195,31 +196,37 @@ namespace OpenRA.Mods.RA.Missions
 				MissionUtils.Paradrop(world, soviets, Badger2Passengers, badgerEntryPoint1.Location + new CVec(3, 0), badgerDropPoint2.Location);
 				MissionUtils.Paradrop(world, soviets, Badger3Passengers, badgerEntryPoint1.Location + new CVec(6, 0), badgerDropPoint3.Location);
 			}
-			if (world.FrameNumber == FlamersTicks)
-			{
-				RushSovietFlamers();
-			}
-			if (world.FrameNumber == TanksTicks)
-			{
-				RushSovietUnits();
-			}
 			if (world.FrameNumber == ParabombTicks)
 			{
 				MissionUtils.Parabomb(world, soviets, badgerEntryPoint2.Location, parabombPoint1.Location);
 				MissionUtils.Parabomb(world, soviets, badgerEntryPoint2.Location + new CVec(0, 3), parabombPoint2.Location);
 			}
-			if (yak == null || (yak != null && !yak.IsDead() && (yak.GetCurrentActivity() is FlyCircle || yak.IsIdle)))
+			if (allies1 != allies2)
 			{
-				var alliedUnitsNearYakPoint = world.FindAliveCombatantActorsInCircle(yakAttackPoint.CenterLocation, 10)
-					.Where(a => a.Owner != soviets && a.HasTrait<IMove>() && a != tanya && a != einstein && a != engineer);
-				if (alliedUnitsNearYakPoint.Any())
+				if (world.FrameNumber == TanksTicks)
 				{
-					YakStrafe(alliedUnitsNearYakPoint);
+					RushSovietUnits();
 				}
+				if (world.FrameNumber == FlamersTicks)
+				{
+					RushSovietFlamers();
+				}
+				if (yak == null || (yak != null && !yak.IsDead() && (yak.GetCurrentActivity() is FlyCircle || yak.IsIdle)))
+				{
+					var alliedUnitsNearYakPoint = world.FindAliveCombatantActorsInCircle(yakAttackPoint.CenterLocation, 10)
+						.Where(a => a.Owner != soviets && a.HasTrait<IMove>() && a != tanya && a != einstein && a != engineer);
+					if (alliedUnitsNearYakPoint.Any())
+					{
+						YakStrafe(alliedUnitsNearYakPoint);
+					}
+				}
+			}
+			if (currentReinforcement > -1 && currentReinforcement < Reinforcements.Length && world.FrameNumber % 25 == 0)
+			{
+				SpawnAlliedUnit(Reinforcements[currentReinforcement++]);
 			}
 			if (world.FrameNumber % 25 == 0)
 			{
-				AddSovietCashIfRequired();
 				BuildSovietUnits();
 				ManageSovietUnits();
 			}
@@ -236,10 +243,10 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			if (objectives[DestroySamSitesID].Status == ObjectiveStatus.InProgress)
 			{
-				if ((sam1.Destroyed || sam1.Owner != soviets) &&
-					(sam2.Destroyed || sam2.Owner != soviets) &&
-					(sam3.Destroyed || sam3.Owner != soviets) &&
-					(sam4.Destroyed || sam4.Owner != soviets))
+				if ((sam1.Destroyed || sam1.Owner != soviets)
+					&& (sam2.Destroyed || sam2.Owner != soviets)
+					&& (sam3.Destroyed || sam3.Owner != soviets)
+					&& (sam4.Destroyed || sam4.Owner != soviets))
 				{
 					objectives[DestroySamSitesID].Status = ObjectiveStatus.Completed;
 					objectives[ExtractEinsteinID].Status = ObjectiveStatus.InProgress;
@@ -280,7 +287,8 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			world.AddFrameEndTask(w =>
 			{
-				if (!world.FindAliveCombatantActorsInCircle(allies2BasePoint.CenterLocation, 20).Any(a => a.HasTrait<Building>() && !a.HasTrait<Wall>() && a.Owner == allies2))
+				if (!world.FindAliveCombatantActorsInCircle(allies2BasePoint.CenterLocation, 20)
+					.Any(a => a.HasTrait<Building>() && !a.HasTrait<Wall>() && (a.Owner == allies || a.Owner == allies2)))
 				{
 					objectives[MaintainPresenceID].Status = ObjectiveStatus.Failed;
 					OnObjectivesUpdated(true);
@@ -324,22 +332,8 @@ namespace OpenRA.Mods.RA.Missions
 			}
 		}
 
-		void AddSovietCashIfRequired()
-		{
-			var resources = soviets.PlayerActor.Trait<PlayerResources>();
-			if (resources.Cash < SovietHelperCash)
-			{
-				resources.GiveCash(SovietHelperCash);
-			}
-		}
-
 		void BuildSovietUnits()
 		{
-			var powerManager = soviets.PlayerActor.Trait<PowerManager>();
-			if (powerManager.ExcessPower < 0)
-			{
-				return;
-			}
 			if (!sovietBarracks.Destroyed)
 			{
 				BuildSovietUnit(InfantryQueueName, SovietInfantry.Random(world.SharedRandom));
@@ -423,32 +417,26 @@ namespace OpenRA.Mods.RA.Missions
 		{
 			Sound.Play("timergo1.aud");
 			reinforcementsTimer = new CountdownTimer(ReinforcementsTicks, ReinforcementsTimerExpired, true);
-			reinforcementsTimerWidget = new CountdownTimerWidget(
-				reinforcementsTimer,
-				"Allied reinforcements arrive in: {0}",
-				new float2(Game.viewport.Width * 0.35f, Game.viewport.Height * 0.9f));
+			reinforcementsTimerWidget = new CountdownTimerWidget(reinforcementsTimer, "Allied reinforcements arrive in: {0}");
 			Ui.Root.AddChild(reinforcementsTimerWidget);
 		}
 
 		void ReinforcementsTimerExpired(CountdownTimer countdownTimer)
 		{
 			reinforcementsTimerWidget.Visible = false;
-			SendReinforcements();
+			currentReinforcement++;
 			Sound.Play("aarrivs1.aud");
 		}
 
-		void SendReinforcements()
+		void SpawnAlliedUnit(string unit)
 		{
-			foreach (var unit in Reinforcements)
+			var u = world.CreateActor(unit, new TypeDictionary
 			{
-				var u = world.CreateActor(unit, new TypeDictionary
-				{
-					new LocationInit(reinforcementsEntryPoint.Location),
-					new FacingInit(0),
-					new OwnerInit(allies2)
-				});
-				u.QueueActivity(new Move.Move(allies2BasePoint.Location));
-			}
+				new LocationInit(reinforcementsEntryPoint.Location),
+				new FacingInit(0),
+				new OwnerInit(allies2)
+			});
+			u.QueueActivity(new Move.Move(allies2BasePoint.Location));
 		}
 
 		void RushSovietUnits()
@@ -530,7 +518,12 @@ namespace OpenRA.Mods.RA.Missions
 		{
 			world = w;
 			allies1 = w.Players.Single(p => p.InternalName == "Allies1");
-			allies2 = w.Players.Single(p => p.InternalName == "Allies2");
+			allies2 = w.Players.SingleOrDefault(p => p.InternalName == "Allies2");
+			if (allies2 == null)
+			{
+				allies2 = allies1;
+			}
+			allies = w.Players.Single(p => p.InternalName == "Allies");
 			soviets = w.Players.Single(p => p.InternalName == "Soviets");
 			var actors = w.WorldActor.Trait<SpawnMapActors>().Actors;
 			sam1 = actors["SAM1"];
@@ -562,6 +555,7 @@ namespace OpenRA.Mods.RA.Missions
 			sovietTownAttackPoint2 = actors["SovietTownAttackPoint2"];
 			yakEntryPoint = actors["YakEntryPoint"];
 			yakAttackPoint = actors["YakAttackPoint"];
+			SetupAlliedBase(actors);
 			var shroud = w.WorldActor.Trait<Shroud>();
 			shroud.Explore(w, sam1.Location, 2);
 			shroud.Explore(w, sam2.Location, 2);
@@ -575,27 +569,23 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				Game.MoveViewport(allies2BasePoint.Location.ToFloat2());
 			}
-			PlayMusic();
-			Game.ConnectionStateChanged += StopMusic;
+			MissionUtils.PlayMissionMusic();
 		}
 
-		void PlayMusic()
+		void SetupAlliedBase(Dictionary<string, Actor> actors)
 		{
-			if (!Rules.InstalledMusic.Any())
+			world.AddFrameEndTask(w =>
 			{
-				return;
-			}
-			var track = Rules.InstalledMusic.Random(Game.CosmeticRandom);
-			Sound.PlayMusicThen(track.Value, PlayMusic);
-		}
-
-		void StopMusic(OrderManager orderManager)
-		{
-			if (!orderManager.GameStarted)
-			{
-				Sound.StopMusic();
-				Game.ConnectionStateChanged -= StopMusic;
-			}
+				foreach (var actor in actors.Where(a => a.Value.Owner == allies))
+				{
+					actor.Value.ChangeOwner(allies2);
+				}
+				world.CreateActor("proc", new TypeDictionary
+				{
+					new LocationInit(actors["Allies2ProcPoint"].Location),
+					new OwnerInit(allies2)
+				});
+			});
 		}
 	}
 }

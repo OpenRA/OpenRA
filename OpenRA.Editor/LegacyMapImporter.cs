@@ -174,10 +174,10 @@ namespace OpenRA.Editor
 			// Add waypoint actors
 			foreach( var kv in wps )
 			{
-				var a = new ActorReference("mpspawn");
+				var a = new ActorReference("waypoint");
 				a.Add(new LocationInit((CPos)kv.Second));
 				a.Add(new OwnerInit("Neutral"));
-				Map.Actors.Value.Add("spawn" + kv.First, a);
+				Map.Actors.Value.Add("waypoint" + kv.First, a);
 			}
 
 		}
@@ -414,8 +414,51 @@ namespace OpenRA.Editor
 
 		void LoadPlayer(IniFile file, string section, bool isRA)
 		{
-			var c = section == "BadGuy" ? "red" :
-						isRA ? "blue" : "gold";
+			string c;
+			string race;
+			switch (section)
+			{
+				case "Spain":
+					c = "gold";
+					race = "allies";
+					break;
+				case "England":
+					c = "green";
+					race = "allies";
+					break;
+				case "Ukraine":
+					c = "orange";
+					race = "soviet";
+					break;
+				case "Germany":
+					c = "black";
+					race = "allies";
+					break;
+				case "France":
+					c = "teal";
+					race = "allies";
+					break;
+				case "Turkey":
+					c = "salmon";
+					race = "allies";
+					break;
+				case "Greece":
+				case "GoodGuy":
+					c = isRA? "blue" : "gold";
+					race = isRA ? "allies" : "gdi";
+					break;
+				case "USSR":
+				case "BadGuy":
+					c = "red";
+					race = isRA ? "soviet" : "nod";
+					break;
+				case "Special":
+				case "Neutral":
+				default:
+					c = "neutral";
+					race = isRA ? "allies" : "gdi";
+					break;
+			}
 
 			var color = namedColorMapping[c];
 
@@ -424,7 +467,7 @@ namespace OpenRA.Editor
 				Name = section,
 				OwnsWorld = section == "Neutral",
 				NonCombatant = section == "Neutral",
-				Race = isRA ? (section == "BadGuy" ? "soviet" : "allies") : (section == "BadGuy" ? "nod" : "gdi"),
+				Race = race,
 				ColorRamp = new ColorRamp(
 						(byte)((color.First.GetHue() / 360.0f) * 255),
 						(byte)(color.First.GetSaturation() * 255),

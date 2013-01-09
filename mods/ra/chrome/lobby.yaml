@@ -426,6 +426,13 @@ Background@SERVER_LOBBY:
 			Height:25
 			Text:Disconnect
 			Font:Bold
+		DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
+			X:PARENT_RIGHT-154
+			Y:PARENT_BOTTOM-219+25
+			Width:120
+			Height:25
+			Font:Bold
+			Visible:false
 		Checkbox@ALLOWCHEATS_CHECKBOX:
 			X: PARENT_RIGHT-154
 			Y: PARENT_BOTTOM-229

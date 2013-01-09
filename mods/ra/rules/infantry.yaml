@@ -213,11 +213,12 @@ E7:
 		Prerequisites: techcenter
 		Owner: allies
 		Hotkey: y
+		BuildLimit: 1
 	Valued:
 		Cost: 1200
 	Tooltip:
 		Name: Tanya
-		Description: Elite commando infantry, armed with \ndual pistols and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles\n  Special Ability: Destroy Building with C4
+		Description: Elite commando infantry, armed with \ndual pistols and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles\n  Special Ability: Destroy Building with C4\n\nMaximum 1 can be trained
 	Selectable:
 		Voice: TanyaVoice
 		Bounds: 12,17,0,-9
@@ -247,11 +248,12 @@ E8:
 		Prerequisites: stek
 		Owner: soviet
 		Hotkey: v
+		BuildLimit: 1
 	Valued:
 		Cost: 1800
 	Tooltip:
 		Name: Volkov
-		Description: Elite commando cyborg, armed with \nmodular cannons and grenade launcher.\n  Strong vs Vehicles, Infantry\n  Weak vs Aircraft
+		Description: Elite commando cyborg, armed with \nmodular cannons and grenade launcher.\n  Strong vs Vehicles, Infantry\n  Weak vs Aircraft\n\nMaximum 1 can be trained
 	Selectable:
 		Voice: VolkovVoice
 		Bounds: 12,17,0,-9
@@ -314,46 +316,40 @@ MEDI:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
 
-C1:
+MECH:
 	Inherits: ^Infantry
-	Selectable:
-		Voice: CivilianMaleVoice
-		Bounds: 12,17,0,-9
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 70
+		Owner: allies
+		Prerequisites: fix
+		Hotkey: k
 	Valued:
-		Cost: 70
+		Cost: 800
 	Tooltip:
-		Name: Civilian
+		Name: Mechanic
+		Description: Repairs nearby vehicles.\n  Strong vs Nothing\n  Weak vs Everything
+	Selectable:
+		Voice: MechanicVoice
+		Bounds: 12,17,0,-9
 	Health:
-		HP: 20
+		HP: 80
 	Mobile:
 		Speed: 4
 	RevealsShroud:
-		Range: 2
-	AttackFrontal:
-		PrimaryWeapon: Pistol
-	ProximityCaptor:
-		Types:CivilianInfantry
-
-C2:
-	Inherits: ^Infantry
-	Selectable:
-		Voice: CivilianFemaleVoice
-		Bounds: 12,17,0,-9
-	Valued:
-		Cost: 70
-	Tooltip:
-		Name: Civilian
-	Health:
-		HP: 20
-	Mobile:
-		Speed: 4
-	RevealsShroud:
-		Range: 2
-	AttackFrontal:
-		PrimaryWeapon: Pistol
-	ProximityCaptor:
-		Types:CivilianInfantry
-
+		Range: 3
+	Passenger:
+		PipType: Yellow
+	AutoHeal:
+	AttackMedic:
+		PrimaryWeapon: Repair
+	TakeCover:
+	-AutoTarget:
+	AttackMove:
+		JustMove: true
+	-RenderInfantry:
+	RenderInfantryProne:
+		IdleAnimations: idle1,idle2
 EINSTEIN:
 	Inherits: ^Infantry
 	Selectable:

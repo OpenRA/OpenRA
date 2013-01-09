@@ -87,6 +87,9 @@ namespace OpenRA.Traits
 		public int DisplayOre;
         public bool AlertSilo;
 
+		public int Earned;
+		public int Spent;
+
 		public bool CanGiveOre(int amount)
 		{
 			return Ore + amount <= OreCapacity;
@@ -95,10 +98,13 @@ namespace OpenRA.Traits
 		public void GiveOre(int num)
 		{
 			Ore += num;
+			Earned += num;
 
 			if (Ore > OreCapacity)
 			{
 				nextSiloAdviceTime = 0;
+
+				Earned -= Ore - OreCapacity;
 				Ore = OreCapacity;
 			}
 		}
@@ -107,6 +113,7 @@ namespace OpenRA.Traits
 		{
 			if (Ore < num) return false;
 			Ore -= num;
+			Spent += num;
 
 			return true;
 		}
@@ -114,6 +121,7 @@ namespace OpenRA.Traits
 		public void GiveCash(int num)
 		{
 			Cash += num;
+			Earned += num;
 		}
 
 		public bool TakeCash(int num)
@@ -122,6 +130,7 @@ namespace OpenRA.Traits
 
 			// Spend ore before cash
 			Ore -= num;
+			Spent += num;
 			if (Ore < 0)
 			{
 				Cash += Ore;
@@ -190,7 +199,7 @@ namespace OpenRA.Traits
 			{
 				DisplayOre -= move;
 				playCashTickDown(self);
-                        }
+			}
 		}
 		
 		

@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA.Server
 
 		public static bool ValidateCommand(S server, Connection conn, Session.Client client, string cmd)
 		{
-			if (server.GameStarted)
+			if (server.State == ServerState.GameStarted)
 			{
 				server.SendChatTo(conn, "Cannot change state when game started. ({0})".F(cmd));
 				return false;
@@ -261,6 +261,7 @@ namespace OpenRA.Mods.RA.Server
 						server.lobbyInfo.GlobalSettings.Map = s;
 						var oldSlots = server.lobbyInfo.Slots.Keys.ToArray();
 						LoadMap(server);
+						SetDefaultDifficulty(server);
 
 						// Reassign players into new slots based on their old slots:
 						//  - Observers remain as observers
@@ -314,6 +315,25 @@ namespace OpenRA.Mods.RA.Server
 						}
 
 						bool.TryParse(s, out server.lobbyInfo.GlobalSettings.AllowCheats);
+						server.SyncLobbyInfo();
+						return true;
+					}},
+				{ "difficulty",
+					s =>
+					{
+						if (!client.IsAdmin)
+						{
+							server.SendChatTo(conn, "Only the host can set that option");
+							return true;
+						}
+						if ((server.Map.Difficulties == null && s != null) || (server.Map.Difficulties != null && !server.Map.Difficulties.Contains(s)))
+						{
+							server.SendChatTo(conn, "Unsupported difficulty selected: {0}".F(s));
+							server.SendChatTo(conn, "Supported difficulties: {0}".F(server.Map.Difficulties.JoinWith(",")));
+							return true;
+						}
+
+						server.lobbyInfo.GlobalSettings.Difficulty = s;
 						server.SyncLobbyInfo();
 						return true;
 					}},
@@ -455,7 +475,12 @@ namespace OpenRA.Mods.RA.Server
 			return a(cmdValue);
 		}
 
-		public void ServerStarted(S server) { LoadMap(server); }
+		public void ServerStarted(S server) 
+		{
+			LoadMap(server);
+			SetDefaultDifficulty(server);
+		}
+
 		static Session.Slot MakeSlotFromPlayerReference(PlayerReference pr)
 		{
 			if (!pr.Playable) return null;
@@ -479,6 +504,16 @@ namespace OpenRA.Mods.RA.Server
 				.Select(p => MakeSlotFromPlayerReference(p.Value))
 				.Where(s => s != null)
 				.ToDictionary(s => s.PlayerReference, s => s);
+		}
+
+		static void SetDefaultDifficulty(S server)
+		{
+			if (server.Map.Difficulties != null && server.Map.Difficulties.Any())
+			{
+				if (!server.Map.Difficulties.Contains(server.lobbyInfo.GlobalSettings.Difficulty))
+					server.lobbyInfo.GlobalSettings.Difficulty = server.Map.Difficulties.First();
+			}
+			else server.lobbyInfo.GlobalSettings.Difficulty = null;
 		}
 	}
 }

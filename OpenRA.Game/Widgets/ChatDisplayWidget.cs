@@ -46,19 +46,26 @@ namespace OpenRA.Widgets
 
 			foreach (var line in recentLines.AsEnumerable().Reverse())
 			{
-				chatpos.Y -= 20;
 				var inset = 0;
+				string owner = null;
 
 				if (!string.IsNullOrEmpty(line.Owner))
 				{
-					var owner = line.Owner + ":";
+					owner = line.Owner + ":";
 					inset = font.Measure(owner).X + 10;
+				}
 
+				var text = WidgetUtils.WrapText(line.Text, chatLogArea.Width - inset, font);
+				var textLines = text.Split(new[] { '\n' }).Count();
+				chatpos.Y -= 20 * textLines;
+
+				if (owner != null)
+				{
 					font.DrawTextWithContrast(owner, chatpos,
 						line.Color, Color.Black, UseContrast ? 1 : 0);
 				}
 
-				font.DrawTextWithContrast(line.Text, chatpos + new int2(inset, 0),
+				font.DrawTextWithContrast(text, chatpos + new int2(inset, 0),
 					Color.White, Color.Black, UseContrast ? 1 : 0);
 			}
 

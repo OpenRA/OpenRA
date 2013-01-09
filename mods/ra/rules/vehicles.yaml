@@ -453,6 +453,50 @@ TRUK:
 		Payload: 500
 	AttackMove:
 		JustMove: yes
+		
+MGG:
+	Inherits: ^Vehicle
+	#Buildable:
+	#	Queue: Vehicle
+	#	BuildPaletteOrder: 150
+	#	Prerequisites: atek
+	#	Owner: allies
+	Valued:
+		Cost: 1500
+	Tooltip:
+		Name: Mobile Gap Generator
+		Description: Regenerates the shroud nearby, \nobscuring the area.\n  Unarmed
+	Health:
+		HP: 200
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 6
+	RevealsShroud:
+		Range: 6
+	RenderUnitSpinner:
+		Offset: 0,6
+	AttackMove:
+		JustMove: yes
+	RenderShroudCircle:
+	Explodes:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
+	LeavesHusk:
+		HuskActor: MGG.Husk
+
+MGG.Husk:
+	Inherits: ^Husk
+	Tooltip:
+		Name: Husk (Mobile Gap Generator)
+	RenderUnit:
+		Image: mgg
+	ThrowsParticle@spinner:
+		Anim: spinner-idle
+		Spread: 3,3
+		Speed: 6
+		AnimKey: spinner-idle
+		Offset: 0,6
 
 1TNK.Husk:
 	Inherits: ^Husk

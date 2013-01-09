@@ -76,6 +76,8 @@ namespace OpenRA.Mods.RA.Missions
 		const string TanyaName = "e7";
 		const string SignalFlareName = "flare";
 
+		string difficulty;
+
 		void MissionFailed(string text)
 		{
 			if (allies.WinState != WinState.Undefined)
@@ -122,6 +124,10 @@ namespace OpenRA.Mods.RA.Missions
 					SendShips();
 					objectives[FindEinsteinID].Status = ObjectiveStatus.Completed;
 					objectives[ExtractEinsteinID].Status = ObjectiveStatus.InProgress;
+					if (difficulty == "Easy")
+					{
+						ExtractEinsteinAtLZ();
+					}
 					OnObjectivesUpdated(true);
 					currentAttackWaveFrameNumber = world.FrameNumber;
 				}
@@ -134,20 +140,23 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			if (objectives[ExtractEinsteinID].Status == ObjectiveStatus.InProgress)
 			{
-				SendAttackWave();
-				if (world.FrameNumber >= currentAttackWaveFrameNumber + 600)
+				if (difficulty != "Easy")
 				{
-					Sound.Play("enmyapp1.aud");
-					SpawnAttackWave(AttackWave);
-					currentAttackWave++;
-					currentAttackWaveFrameNumber = world.FrameNumber;
-					if (currentAttackWave >= EinsteinChinookAttackWave)
+					SendAttackWave();
+					if (world.FrameNumber >= currentAttackWaveFrameNumber + 600)
 					{
-						SpawnAttackWave(LastAttackWaveAddition);
-					}
-					if (currentAttackWave == EinsteinChinookAttackWave)
-					{
-						ExtractEinsteinAtLZ();
+						Sound.Play("enmyapp1.aud");
+						SpawnAttackWave(AttackWave);
+						currentAttackWave++;
+						currentAttackWaveFrameNumber = world.FrameNumber;
+						if (currentAttackWave >= EinsteinChinookAttackWave)
+						{
+							SpawnAttackWave(LastAttackWaveAddition);
+						}
+						if (currentAttackWave == EinsteinChinookAttackWave)
+						{
+							ExtractEinsteinAtLZ();
+						}
 					}
 				}
 				if (einsteinChinook != null)
@@ -180,8 +189,10 @@ namespace OpenRA.Mods.RA.Missions
 		void ManageSovietOre()
 		{
 			var res = soviets.PlayerActor.Trait<PlayerResources>();
-			res.TakeOre(res.Ore);
-			res.TakeCash(res.Cash);
+			if (res.Ore > res.OreCapacity * 0.8)
+			{
+				res.TakeOre(res.OreCapacity / 10);
+			}
 		}
 
 		void SpawnSignalFlare()
@@ -304,8 +315,13 @@ namespace OpenRA.Mods.RA.Missions
 		public void WorldLoaded(World w)
 		{
 			world = w;
+
+			difficulty = w.LobbyInfo.GlobalSettings.Difficulty;
+			Game.Debug("{0} difficulty selected".F(difficulty));
+
 			allies = w.Players.Single(p => p.InternalName == "Allies");
 			soviets = w.Players.Single(p => p.InternalName == "Soviets");
+
 			var actors = w.WorldActor.Trait<SpawnMapActors>().Actors;
 			insertionLZ = actors["InsertionLZ"];
 			extractionLZ = actors["ExtractionLZ"];
@@ -318,36 +334,21 @@ namespace OpenRA.Mods.RA.Missions
 			attackEntryPoint1 = actors["SovietAttackEntryPoint1"];
 			attackEntryPoint2 = actors["SovietAttackEntryPoint2"];
 			SetAlliedUnitsToDefensiveStance();
+
+			var alliesRes = allies.PlayerActor.Trait<PlayerResources>();
+			alliesRes.TakeCash(alliesRes.Cash);
+			alliesRes.TakeOre(alliesRes.Ore);
+
 			Game.MoveViewport(insertionLZ.Location.ToFloat2());
-			Game.ConnectionStateChanged += StopMusic;
 			Media.PlayFMVFullscreen(w, "ally1.vqa", () =>
 			{
 				Media.PlayFMVFullscreen(w, "landing.vqa", () =>
 				{
 					InsertTanyaAtLZ();
 					SendPatrol();
-					PlayMusic();
+					MissionUtils.PlayMissionMusic();
 				});
 			});
-		}
-
-		void PlayMusic()
-		{
-			if (!Rules.InstalledMusic.Any())
-			{
-				return;
-			}
-			var track = Rules.InstalledMusic.Random(Game.CosmeticRandom);
-			Sound.PlayMusicThen(track.Value, PlayMusic);
-		}
-
-		void StopMusic(OrderManager orderManager)
-		{
-			if (!orderManager.GameStarted)
-			{
-				Sound.StopMusic();
-				Game.ConnectionStateChanged -= StopMusic;
-			}
 		}
 	}
 }

@@ -151,7 +151,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			var spawns = map.GetSpawnPoints();
 			return orderManager.LobbyInfo.Clients
-				.Where( c => c.SpawnPoint != 0 )
+				.Where( c => c.SpawnPoint != 0)
 				.ToDictionary(
 					c => spawns[c.SpawnPoint - 1],
 					c => c.ColorRamp.GetColor(0));
@@ -173,8 +173,19 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (selectedSpawn == 0 || !owned)
 			{
 				var locals = orderManager.LobbyInfo.Clients.Where(c => c.Index == orderManager.LocalClient.Index || (Game.IsHost && c.Bot != null));
-				var playerToMove = locals.Where(c => (selectedSpawn == 0) ^ (c.SpawnPoint == 0)).FirstOrDefault();
+				var playerToMove = locals.FirstOrDefault(c => (selectedSpawn == 0) ^ (c.SpawnPoint == 0));
 				orderManager.IssueOrder(Order.Command("spawn {0} {1}".F((playerToMove ?? orderManager.LocalClient).Index, selectedSpawn)));
+			}
+		}
+
+		public static void ShowSpawnPointTooltip(OrderManager orderManager, int spawnPoint, int2 position)
+		{
+			var client = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.SpawnPoint == spawnPoint);
+			if (client != null)
+			{
+				var rect = new Rectangle(position.X, position.Y, Game.Renderer.Fonts["Regular"].Measure(client.Name).X + 15, 25);
+				WidgetUtils.DrawPanel("dialog4", rect);
+				Game.Renderer.Fonts["Regular"].DrawText(client.Name, position + new int2(5, 5), Color.White);
 			}
 		}
 	}

@@ -1,10 +1,14 @@
 NEW:
 	Engine:
 	All Mods:
+		Map editor now saves and loads from OpenRA user folder
 	Red Alert:
 		Added Allies03 mission
-		Allies02 - reduced difficulty of the 16 minute reinforcements
-		Allies02 - can build medic and spy at captured barracks
+		Allies02 mission - reduced difficulty of the 16 minute reinforcements
+		Allies02 mission - can build medic and spy at captured barracks
+		Added Desert tileset - original and new tiles ported from Tiberium Dawn by Harrison, code by Matt
+		Fixed graphics for craters for Snow maps (art by MrFibble)
+		Ice Floe actors work in maps now
 		Balance:
 			Added missing line of sight for Chronotank
 			Chronotank damage upped from 20 to 30 per rocket and damage improved vs heavy armor
@@ -12,13 +16,21 @@ NEW:
 			Demo truck health from 110 to 50
 			Demo truck speed from 8 to 6
 			Disguised spies are now invisible under enemy GPS
-		Added missing sequences.yaml definitions for ice actors
-		Fixed Chronotanks teleporting causing a desync
-		Fixed crash during replays when a Chronotank tries to teleport
-		Fixed crash when Chronotank dies while the teleport cursor is shown
-		Fixed crashes in maps Chaos Canyon and Bomber John
+		Replaced supply truck SHP with aftermath supply truck SHP (it has a shadow)
+		Added hotkeys for aircraft, vehicles, ships, infantry
+		Removed sound attentuation for PlayNotification sounds - fixes the Extreme cashtick sounds
+		Fixed broken shadows on GPS dot
+		Fixed Chronotank teleport causing a desync
+		Fixed replay crash when a Chronotank tries to teleport
+		Fixed Chronotank death causing a crash before teleporting
+		Fixed maps Chaos Canyon and Bomber John
+		Added map: Room Convergence (Sunny Sproket)
+		Added map: Ghost Town (hamb)
+		Updated map: Bombardment Islands (czech army)
 	C&C:
+		Corrected music.yaml track titles
 	Dune 2000:
+		Fixed crash when attack-moving medics
 
 20121019:
 	Engine:

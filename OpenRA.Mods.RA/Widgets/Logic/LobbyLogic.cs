@@ -110,7 +110,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			mapPreview.IsVisible = () => Map != null;
 			mapPreview.Map = () => Map;
 			mapPreview.OnMouseDown = mi => LobbyUtils.SelectSpawnPoint( orderManager, mapPreview, Map, mi );
-			mapPreview.SpawnColors = () => LobbyUtils.GetSpawnColors( orderManager, Map );
+			mapPreview.OnTooltip = (spawnPoint, pos) => LobbyUtils.ShowSpawnPointTooltip(orderManager, spawnPoint, pos);
+			mapPreview.SpawnColors = () => LobbyUtils.GetSpawnColors(orderManager, Map);
 
 			var mapTitle = lobby.GetOrNull<LabelWidget>("MAP_TITLE");
 			if (mapTitle != null)
@@ -154,6 +155,27 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				|| orderManager.LocalClient.IsReady;
 			allowCheats.OnClick = () =>	orderManager.IssueOrder(Order.Command(
 						"allowcheats {0}".F(!orderManager.LobbyInfo.GlobalSettings.AllowCheats)));
+
+			var difficulty = lobby.Get<DropDownButtonWidget>("DIFFICULTY_DROPDOWNBUTTON");
+			difficulty.IsVisible = () => Map != null && Map.Difficulties != null && Map.Difficulties.Any();
+			difficulty.IsDisabled = () => !Game.IsHost || gameStarting || orderManager.LocalClient == null || orderManager.LocalClient.IsReady;
+			difficulty.GetText = () => orderManager.LobbyInfo.GlobalSettings.Difficulty;
+			difficulty.OnMouseDown = _ =>
+			{
+				var options = Map.Difficulties.Select(d => new DifficultyDropDownOption
+				{
+					Title = d,
+					IsSelected = () => orderManager.LobbyInfo.GlobalSettings.Difficulty == d,
+					OnClick = () => orderManager.IssueOrder(Order.Command("difficulty {0}".F(d)))
+				});
+				Func<DifficultyDropDownOption, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
+				{
+					var item = ScrollItemWidget.Setup(template, option.IsSelected, option.OnClick);
+					item.Get<LabelWidget>("LABEL").GetText = () => option.Title;
+					return item;
+				};
+				difficulty.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count() * 30, options, setupItem);
+			};
 
 			var startGameButton = lobby.Get<ButtonWidget>("START_GAME_BUTTON");
 			startGameButton.IsVisible = () => Game.IsHost;
@@ -442,6 +464,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		void CycleReady()
 		{
 			orderManager.IssueOrder(Order.Command("ready"));
+		}
+
+		class DifficultyDropDownOption
+		{
+			public string Title;
+			public Func<bool> IsSelected;
+			public Action OnClick;
 		}
 	}
 }

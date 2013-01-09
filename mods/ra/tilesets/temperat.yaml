@@ -3,6 +3,7 @@ General:
 	Id: TEMPERAT
 	Extensions: .tem, .shp
 	Palette: temperat.pal
+	EditorTemplateOrder: Terrain, Debris, Road, Cliffs, Water Cliffs, Beach, River, Bridge
 
 Terrain:
 	TerrainType@Clear:
@@ -52,6 +53,7 @@ Templates:
 		Id: 255
 		Image: clear1
 		Size: 1,1
+		Category: Terrain
 		Tiles:
 			0: Clear
 			1: Clear
@@ -73,6 +75,7 @@ Templates:
 		Id: 65535
 		Image: clear1
 		Size: 1,1
+		Category: Terrain
 		Tiles:
 			0: Clear
 			1: Clear
@@ -90,6 +93,23 @@ Templates:
 			13: Clear
 			14: Clear
 			15: Clear
+	Template@1:
+		Id: 1
+		Image: w1
+		Size: 1,1
+		Category: Terrain
+		Tiles:
+			0: Water
+	Template@2:
+		Id: 2
+		Image: w2
+		Size: 2,2
+		Category: Terrain
+		Tiles:
+			0: Water
+			1: Water
+			2: Water
+			3: Water
 	Template@3:
 		Id: 3
 		Image: sh01
@@ -945,21 +965,6 @@ Templates:
 		Tiles:
 			0: Rock
 			1: Rock
-	Template@1:
-		Id: 1
-		Image: w1
-		Size: 1,1
-		Tiles:
-			0: Water
-	Template@2:
-		Id: 2
-		Image: w2
-		Size: 2,2
-		Tiles:
-			0: Water
-			1: Water
-			2: Water
-			3: Water
 	Template@135:
 		Id: 135
 		Image: s01
@@ -2899,7 +2904,7 @@ Templates:
 		Id: 125
 		Image: falls1
 		Size: 3,3
-		Category: Water Cliffs
+		Category: River
 		Tiles:
 			0: Rock
 			1: Rock
@@ -2929,7 +2934,7 @@ Templates:
 		Id: 127
 		Image: falls2
 		Size: 3,2
-		Category: Water Cliffs
+		Category: River
 		Tiles:
 			0: Rock
 			1: Rock
@@ -3411,6 +3416,8 @@ Templates:
 			1: Rock
 			2: Rock
 			3: Rock
+			4: Rock
+			5: Rock
 		Category: Water Cliffs
 	Template@551:
 		Id: 551
@@ -3421,6 +3428,8 @@ Templates:
 			1: Rock
 			2: Rock
 			3: Rock
+			4: Rock
+			5: Rock
 		Category: Water Cliffs
 	Template@552:
 		Id: 552
@@ -3431,6 +3440,8 @@ Templates:
 			1: Rock
 			2: Rock
 			3: Rock
+			4: Rock
+			5: Rock
 		Category: Water Cliffs
 	Template@553:
 		Id: 553
@@ -3441,6 +3452,8 @@ Templates:
 			1: Rock
 			2: Rock
 			3: Rock
+			4: Rock
+			5: Rock
 		Category: Water Cliffs
 	Template@554:
 		Id: 554
@@ -3451,6 +3464,8 @@ Templates:
 			1: Rock
 			2: Rock
 			3: Rock
+			4: Rock
+			5: Rock
 		Category: Water Cliffs
 	Template@555:
 		Id: 555
@@ -3461,6 +3476,8 @@ Templates:
 			1: Rock
 			2: Rock
 			3: Rock
+			4: Rock
+			5: Rock
 		Category: Water Cliffs
 	Template@556:
 		Id: 556
@@ -3471,6 +3488,8 @@ Templates:
 			1: Rock
 			2: Rock
 			3: Rock
+			4: Rock
+			5: Rock
 		Category: Water Cliffs
 	Template@557:
 		Id: 557
@@ -3481,6 +3500,8 @@ Templates:
 			1: Rock
 			2: Rock
 			3: Rock
+			4: Rock
+			5: Rock
 		Category: Water Cliffs
 	Template@580:
 		Id: 580

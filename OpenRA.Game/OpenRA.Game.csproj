@@ -195,6 +195,7 @@
     <Compile Include="Widgets\GridLayout.cs" />
     <Compile Include="Widgets\ImageWidget.cs" />
     <Compile Include="Widgets\LabelWidget.cs" />
+    <Compile Include="Widgets\LineGraphWidget.cs" />
     <Compile Include="Widgets\ListLayout.cs" />
     <Compile Include="Widgets\MapPreviewWidget.cs" />
     <Compile Include="Widgets\PasswordFieldWidget.cs" />

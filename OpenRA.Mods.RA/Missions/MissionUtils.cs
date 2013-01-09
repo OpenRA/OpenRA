@@ -16,6 +16,7 @@ using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Air;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
+using OpenRA.Network;
 
 namespace OpenRA.Mods.RA.Missions
 {
@@ -140,6 +141,28 @@ namespace OpenRA.Mods.RA.Missions
 		public static Actor UnitContaining(this World world, Actor actor)
 		{
 			return world.Actors.FirstOrDefault(a => a.HasTrait<Cargo>() && a.Trait<Cargo>().Passengers.Contains(actor));
+		}
+
+		public static void PlayMissionMusic()
+		{
+			if (!Rules.InstalledMusic.Any()) return;
+			Game.ConnectionStateChanged += StopMusic;
+			PlayMusic();
+		}
+
+		static void PlayMusic()
+		{
+			var track = Rules.InstalledMusic.Random(Game.CosmeticRandom);
+			Sound.PlayMusicThen(track.Value, PlayMusic);
+		}
+
+		static void StopMusic(OrderManager orderManager)
+		{
+			if (!orderManager.GameStarted)
+			{
+				Sound.StopMusic();
+				Game.ConnectionStateChanged -= StopMusic;
+			}
 		}
 	}
 }

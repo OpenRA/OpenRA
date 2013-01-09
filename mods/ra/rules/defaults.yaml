@@ -32,6 +32,7 @@
 	GpsDot:
 		String:Vehicle
 	WithSmoke:
+	UpdatesPlayerStatistics:
 
 ^Tank:
 	AppearsOnRadar:
@@ -67,6 +68,7 @@
 	GpsDot:
 		String:Vehicle
 	WithSmoke:
+	UpdatesPlayerStatistics:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -114,6 +116,7 @@
 	RepairableNear:
 		Buildings: hosp
 		CloseEnough: 1
+	UpdatesPlayerStatistics:
 
 ^Ship:
 	AppearsOnRadar:
@@ -141,6 +144,7 @@
 	GpsDot:
 		String:Ship
 	WithSmoke:
+	UpdatesPlayerStatistics:
 
 ^Plane:
 	AppearsOnRadar:
@@ -169,6 +173,7 @@
 	GivesBounty:
 	GpsDot:
 		String:Plane
+	UpdatesPlayerStatistics:
 
 ^Helicopter:
 	Inherits: ^Plane
@@ -196,7 +201,7 @@
 	WithBuildingExplosion:
 	RepairableBuilding:
 	EmitInfantryOnSell:
-		ActorTypes: e1,e1,e1,c1,c2,e6
+		ActorTypes: e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,e6,e6,e6,e6,e6
 	MustBeDestroyed:
 	GivesExperience:
 #	FrozenUnderFog:
@@ -210,6 +215,7 @@
 	Sellable:
 	AcceptsSupplies:
 	GivesBounty:
+	UpdatesPlayerStatistics:
 
 ^Wall:
 	AppearsOnRadar:
@@ -242,6 +248,7 @@
 	ProximityCaptor:
 		Types:Wall
 	Sellable:
+	UpdatesPlayerStatistics:
 
 ^TechBuilding:
 	Inherits: ^Building
@@ -259,6 +266,29 @@
 	-Sellable:
 	-Capturable:
 	-CapturableBar:
+
+^CivInfantry:
+	Inherits: ^Infantry
+	Selectable:
+		Voice: CivilianMaleVoice
+		Bounds: 12,17,0,-9
+	Valued:
+		Cost: 70
+	Tooltip:
+		Name: Civilian
+	Health:
+		HP: 20
+	Mobile:
+		Speed: 4
+	RevealsShroud:
+		Range: 2
+	AttackFrontal:
+		PrimaryWeapon: Pistol
+	ProximityCaptor:
+		Types:CivilianInfantry
+	-RenderInfantry:
+	RenderInfantryPanic:
+	ScaredyCat:
 
 ^CivBuilding:
 	Inherits: ^TechBuilding

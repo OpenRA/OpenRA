@@ -951,6 +951,23 @@ Heal:
 		InfDeath: 1
 		Damage: -50
 
+Repair:
+	ROF: 80
+	Range: 4
+	Report: FIXIT1
+	Projectile: Bullet
+		Speed: 100
+	Warhead:
+		Spread: 5
+		Versus: 
+			Wood: 0%
+			Light: 40%
+			Heavy: 100%
+			Concrete: 0%
+			Cybernetic: 40%
+		InfDeath: 1
+		Damage: -20
+
 SilencedPPK:
 	ROF: 80
 	Range: 2.5
