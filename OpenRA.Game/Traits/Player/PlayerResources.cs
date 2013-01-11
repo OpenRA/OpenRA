@@ -85,7 +85,7 @@ namespace OpenRA.Traits
 
 		public int DisplayCash;
 		public int DisplayOre;
-        public bool AlertSilo;
+		public bool AlertSilo;
 
 		public int Earned;
 		public int Spent;
@@ -157,18 +157,18 @@ namespace OpenRA.Traits
 			if (Ore > OreCapacity)
 				Ore = OreCapacity;
 
-            if (--nextSiloAdviceTime <= 0)
-            {
-                if (Ore > 0.8 * OreCapacity)
-                {
-                    Sound.PlayNotification(Owner, "Speech", "SilosNeeded", Owner.Country.Race);
-                    AlertSilo = true;
-                }
-                else
-                    AlertSilo = false;
+			if (--nextSiloAdviceTime <= 0)
+			{
+				if (Ore > 0.8 * OreCapacity)
+				{
+					Sound.PlayNotification(Owner, "Speech", "SilosNeeded", Owner.Country.Race);
+					AlertSilo = true;
+				}
+				else
+					AlertSilo = false;
 
-                nextSiloAdviceTime = AdviceInterval;
-            }
+				nextSiloAdviceTime = AdviceInterval;
+			}
 
 			var diff = Math.Abs(Cash - DisplayCash);
 			var move = Math.Min(Math.Max((int)(diff * displayCashFracPerFrame),
