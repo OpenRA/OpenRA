@@ -960,13 +960,14 @@ Repair:
 	Warhead:
 		Spread: 5
 		Versus: 
+			None: 0%
 			Wood: 0%
 			Light: 40%
 			Heavy: 100%
 			Concrete: 0%
 			Cybernetic: 40%
 		InfDeath: 1
-		Damage: -20
+		Damage: -10
 
 SilencedPPK:
 	ROF: 80

@@ -156,26 +156,29 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			allowCheats.OnClick = () =>	orderManager.IssueOrder(Order.Command(
 						"allowcheats {0}".F(!orderManager.LobbyInfo.GlobalSettings.AllowCheats)));
 
-			var difficulty = lobby.Get<DropDownButtonWidget>("DIFFICULTY_DROPDOWNBUTTON");
-			difficulty.IsVisible = () => Map != null && Map.Difficulties != null && Map.Difficulties.Any();
-			difficulty.IsDisabled = () => !Game.IsHost || gameStarting || orderManager.LocalClient == null || orderManager.LocalClient.IsReady;
-			difficulty.GetText = () => orderManager.LobbyInfo.GlobalSettings.Difficulty;
-			difficulty.OnMouseDown = _ =>
+			var difficulty = lobby.GetOrNull<DropDownButtonWidget>("DIFFICULTY_DROPDOWNBUTTON");
+			if (difficulty != null)
 			{
-				var options = Map.Difficulties.Select(d => new DifficultyDropDownOption
+				difficulty.IsVisible = () => Map != null && Map.Difficulties != null && Map.Difficulties.Any();
+				difficulty.IsDisabled = () => !Game.IsHost || gameStarting || orderManager.LocalClient == null || orderManager.LocalClient.IsReady;
+				difficulty.GetText = () => orderManager.LobbyInfo.GlobalSettings.Difficulty;
+				difficulty.OnMouseDown = _ =>
 				{
-					Title = d,
-					IsSelected = () => orderManager.LobbyInfo.GlobalSettings.Difficulty == d,
-					OnClick = () => orderManager.IssueOrder(Order.Command("difficulty {0}".F(d)))
-				});
-				Func<DifficultyDropDownOption, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
-				{
-					var item = ScrollItemWidget.Setup(template, option.IsSelected, option.OnClick);
-					item.Get<LabelWidget>("LABEL").GetText = () => option.Title;
-					return item;
+					var options = Map.Difficulties.Select(d => new DifficultyDropDownOption
+					{
+						Title = d,
+						IsSelected = () => orderManager.LobbyInfo.GlobalSettings.Difficulty == d,
+						OnClick = () => orderManager.IssueOrder(Order.Command("difficulty {0}".F(d)))
+					});
+					Func<DifficultyDropDownOption, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
+					{
+						var item = ScrollItemWidget.Setup(template, option.IsSelected, option.OnClick);
+						item.Get<LabelWidget>("LABEL").GetText = () => option.Title;
+						return item;
+					};
+					difficulty.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count() * 30, options, setupItem);
 				};
-				difficulty.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count() * 30, options, setupItem);
-			};
+			}
 
 			var startGameButton = lobby.Get<ButtonWidget>("START_GAME_BUTTON");
 			startGameButton.IsVisible = () => Game.IsHost;
