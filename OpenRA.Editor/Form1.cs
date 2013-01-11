@@ -47,7 +47,7 @@ namespace OpenRA.Editor
 				currentMod = toolStripComboBox1.SelectedItem as string;
 
 				Text = "OpenRA Editor (mod:{0})".F(currentMod);
-				Game.modData = new ModData(currentMod);
+				Game.modData = new ModData("en", currentMod);
 				FileSystem.LoadFromManifest(Game.modData.Manifest);
 				Rules.LoadRules(Game.modData.Manifest, new Map());
 				loadedMapName = null;
