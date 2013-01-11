@@ -67,6 +67,25 @@ function LoadFile(filePath, editor, file_must_exist, skipselection)
   editor:MarkerDeleteAll(BREAKPOINT_MARKER)
   editor:MarkerDeleteAll(CURRENT_LINE_MARKER)
   editor:AppendText(file_text or "")
+
+  -- check the editor as it can be empty if the file has malformed UTF8
+  if file_text and #file_text > 0 and #(editor:GetText()) == 0 then
+    local replacement, invalid = "\022"
+    file_text, invalid = fixUTF8(file_text, replacement)
+    if #invalid > 0 then
+      editor:AppendText(file_text)
+      local lastline = nil
+      for _, n in ipairs(invalid) do
+        local line = editor:LineFromPosition(n)
+        if line ~= lastline then
+          DisplayOutputLn(("%s:%d: %s")
+            :format(filePath, line+1, TR("Replaced an invalid UTF8 character with %s."):format(replacement)))
+          lastline = line
+        end
+      end
+    end
+  end
+
   editor:Colourise(0, -1)
   editor:Thaw()
 
