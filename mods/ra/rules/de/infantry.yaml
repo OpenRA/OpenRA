@@ -1,0 +1,71 @@
+DOG:
+	Tooltip:
+		Name: Kampfhund
+		Description: Anti-Personen-Einheit. Wird von der \nVerkleidung eines Spions nicht getäuscht.\n  Stark gegen Infantrie\n  Schwach gegen Fahrzeuge
+
+E1:
+	Tooltip:
+		Name: Schütze
+		Description: Universalinfantrie.\n  Stark gegen Infantrie\n  Schwach gegen Fahrzeuge
+
+E2:
+	Tooltip:
+		Name: Grenadier
+		Description: Infantrie mit Handgranaten. \n  Stark gegen Gebäude, Infantrie\n  Schwach gegen Fahrzeuge
+
+E3:
+	Tooltip:
+		Name: Raketensoldat
+		Description: Panzerabwehr/Flugabwehr Infantrie.\n  Stark gegen Panzer, Fluggerät\n  Schwach gegen Infantrie
+
+E4:
+	Tooltip:
+		Name: Flammenwerfer
+		Description: Advanced Anti-Infantrie unit.\n  Stark gegen Infantrie, Gebäude\n  Schwach gegen Fahrzeuge
+
+E6:
+	Tooltip:
+		Name: Ingenieur
+		Description: Infiltriert und erorbert feindliche Gebäude.\n  Stark gegen nichts\n  Schwach gegen alles
+
+SPY:
+	SpyToolTip:
+		Name: Spion
+		Description: Infiltriert feindliche Gebäude zu \nnachrichtendienstlichen Zwecken. Effekt für den \nGegner ist abhängig vom Gebäudetyp.\n  Stark gegen nichts\n  Schwach gegen alles\n  Spezialfähigkeit: Verkleidung
+
+E7:
+	Tooltip:
+		Name: Tanya
+		Description: Elite-Kommando-Infantrie, bewaffnet \nmit zwei Pistolen und C4.\n  Stark gegen Infantrie, Gebäude\n  Schwach gegen Fahrzeuge\n  Spezialfähigkeit: Sprengt Gebäude mit C4
+
+E8:
+	Tooltip:
+		Name: Volkov
+		Description: Elite-Kommando-Cyborg, bewaffnet \nmit Kanonen und Granatwerfer.\n  Stark gegen Vehicles, Infantrie\n  Schwach gegen Fluggerät
+
+MEDI:
+	Tooltip:
+		Name: Sanitäter
+		Description: Heilt Infantrie.\n  Stark gegen nichts\n  Schwach gegen alles
+
+C1:
+	Tooltip:
+		Name: Zivilist
+
+C2:
+	Tooltip:
+		Name: Zivilist
+
+EINSTEIN:
+	Tooltip:
+		Name: Prof. Einstein
+
+SHOK:
+	Tooltip:
+		Name: Tesla-Soldat
+		Description: Infantrie mit Teslaspulen\n Stark gegen Infantrie\n Schwach gegen Fahrzeuge
+
+SNIPER:
+	Tooltip:
+		Name: Scharfschütze
+		Description: Elite-Heckenschütze\n  Stark gegen Infantrie\n  Schwach gegen Fahrzeuge

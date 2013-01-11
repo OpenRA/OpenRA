@@ -30,7 +30,6 @@ ChromeLayout:
 	mods/ra/chrome/ru/create-server.yaml
 	mods/ra/chrome/ru/serverbrowser.yaml
 	mods/ra/chrome/ru/replaybrowser.yaml
-	mods/ra/chrome/ru/dropdowns.yaml
 	mods/ra/chrome/ru/modchooser.yaml
 	mods/ra/chrome/ru/cheats.yaml
 	mods/ra/chrome/ru/objectives.yaml

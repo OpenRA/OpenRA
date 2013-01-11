@@ -1,0 +1,267 @@
+MSLO:
+	Tooltip:
+		Name: Raketensilo
+		Description: Startet verheerende Nuklearwaffen.\n  Stark gegen Infantrie, Gebäude\n  Schwach gegen Panzer\n  Spezialfähigkeit: Nuklearrakete
+	NukePower:
+		Description: Atombombe
+		LongDesc: Schießt eine Nuklearrakete auf ein Zielgebiet.
+	
+GAP:
+	Tooltip:
+		Name: Schattengenerator
+		Description: Regeneriert den umgebenden Schatten, \nverhüllt die Umgebung.\n  Unbewaffnet
+
+SPEN:
+	Tooltip:
+		Name: U-Boot-Werft
+		Description: Produziert und repariert \n U-Boote und Transporter
+
+SYRD:
+	Tooltip:
+		Name: Schiffswerft
+		Description: Produziert und repariert Schiffe
+
+IRON:
+	Tooltip:
+		Name: Eiserner Vorhang
+		Description: Macht eine Gruppe von Einheiten \nfür kurze Zeit unverwundbar.\n  Spezialfähigkeit: Unverwundtbarkeit
+	IronCurtainPower:
+		Description: Unverwundtbarkeit
+		LongDesc: Macht eine Gruppe von Einheiten\nfür 15 Sekunden unverwundbar.
+
+PDOX:
+	Tooltip:
+		Name: Chronosphäre
+		Description: Teleportiert Einheiten für bestimmte \nZeit an andere Orte.\n  Spezialfähigkeit: Zeitsprung
+	ChronoshiftPower:
+		Description: Zeitsprung
+		LongDesc: Teleportiert eine Gruppe von Fahrzeugen\nfür 30 Sekunden an einen beliebigen Ort.
+
+TSLA:
+	Tooltip:
+		Name: Teslaspule
+		Description: Fortschrittliche Basisverteidigung.\nBenötigt Energie zur Aktivierung.\n  Stark gegen Panzer, Infantrie\n  Schwach gegen Fluggerät
+
+AGUN:
+	Tooltip:
+		Name: Flak
+		Description: Flugabwehrkanone.\n  Stark gegen Fluggerät\n  Schwach gegen Infantrie, Panzer
+
+DOME:
+	Tooltip:
+		Name: Radarkuppel
+		Description: Ermöglicht einen Überblick auf das Schlachtfeld.\n  Benötigt Energie zum Betrieb.
+
+PBOX:
+	Tooltip:
+		Name: Schutzbunker (Unbewaffnet)
+
+PBOX.E1:
+	Tooltip:
+		Name: Waffenbunker (Maschinengewehr)
+		Description: Einfache Basisverteidigung.\n  Stark gegen Infantrie, Light Vehicles\n  Schwach gegen Panzer, Fluggerät
+
+#PBOX.E2:
+#	Tooltip:
+#		Name: Waffenbunker (Granaten)
+
+PBOX.E3:
+	Tooltip:
+		Name: Waffenbunker (Raketen)
+
+PBOX.E4:
+	Tooltip:
+		Name: Waffenbunker (Flammenwerfer)
+
+PBOX.E7:
+	Tooltip:
+		Name: Waffenbunker (Tanya)
+
+PBOX.SHOK:
+	Tooltip:
+		Name: Waffenbunker (Tesla)
+
+PBOX.SNIPER:
+	Tooltip:
+		Name: Waffenbunker (Scharfschütze)
+
+HBOX:
+	Tooltip:
+		Name: Tarnschutzbunker (Unbewaffnet)
+
+HBOX.E1:
+	Tooltip:
+		Name: Tarnbunker (Maschinengewehr)
+		Description: Versteckte Abwehrstellung.\n  Stark gegen Infantrie, Light Vehicles\n  Schwach gegen Panzer, Fluggerät
+
+#HBOX.E2:
+#	Tooltip:
+#		Name: Tarnbunker (Granaten)
+
+HBOX.E3:
+	Tooltip:
+		Name: Tarnbunker (Raketen)
+
+HBOX.E4:
+	Tooltip:
+		Name: Tarnbunker (Flammenwerfer)
+
+HBOX.E7:
+	Tooltip:
+		Name: Tarnbunker (Tanya)
+
+HBOX.SHOK:
+	Tooltip:
+		Name: Tarnbunker (Tesla)
+
+HBOX.SNIPER:
+	Tooltip:
+		Name: Tarnbunker (Scharfschütze)
+
+GUN:
+	Tooltip:
+		Name: Panzerturm
+		Description: Panzerabwehr-Basisverteidigung.\n  Stark gegen Panzer\n  Schwach gegen Infantrie, Fluggerät
+
+FTUR:
+	Tooltip:
+		Name: Flammenturm
+		Description: Anti-Infantrie-Basisverteidigung.\n  Stark gegen Infantrie\n  Schwach gegen Fluggerät
+
+SAM:
+	Tooltip:
+		Name: Flugabwehrraketen-Stellung
+		Description: Boden-Luft-Raketen-Basisverteidigung.\n  Stark gegen Fluggerät\n  Schwach gegen Infantrie, Panzer
+
+ATEK:
+	Tooltip:
+		Name: Alliertes Technologiezentrum
+		Description: Bietet fortschrittliche allierte Technik.\n  Spezialfähigkeit: Spionagesatellit
+	GpsPower:
+		Description: Spionagesatellit
+		LongDesc: Deckt die Karte auf, zeigt feindliche Einheiten.
+
+WEAP:
+	Tooltip:
+		Name: Waffenfabrik
+		Description: Produziert Panzer & leichte Fahrzeuge.
+
+FACT:
+	Tooltip:
+		Name: Bauhof
+
+PROC:
+	Tooltip:
+		Name: Erzraffinerie
+		Description: Wandelt Erz und Edelsteine in Geld um.
+
+SILO:
+	Tooltip:
+		Name: Silo
+		Description: Lagert überschüssige Ressourcen.
+
+HPAD:
+	Tooltip:
+		Name: Hubschrauberlandeplatz
+		Description: Produziert und bewaffnet Helikopter.
+
+AFLD:
+	Tooltip:
+		Name: Flugfeld
+		Description: Landebahn für Flugzeuge.\n  Spezialfähigkeit: Fallschirmjäger\n  Spezialfähigkeit: Spionageflugzeug
+	SpyPlanePower:
+		Description: Spionageflugzeug
+		LongDesc: Deckt ausgewählten Teil der Karte auf.
+	ParatroopersPower:
+		Description: Fallschirmjäger
+		LongDesc: Transportflugzeug setzt Infantrie \nauf der Karte ab.
+	
+POWR:
+	Tooltip:
+		Name: Kraftwerk
+		Description: Erzeugt Energie für andere Gebäude
+
+APWR:
+	Tooltip:
+		Name: Großkraftwerk
+		Description: Erzeugt mehr Energie, \neffizienter als normales Kraftwerk
+
+STEK:
+	Tooltip:
+		Name: Sowjetisches Technologiezentrum
+		Description: Stellt fortschrittliche sowjetisches Technik bereit.
+
+BARR:
+	Tooltip:
+		Name: Sowjetische Barracken
+		Description: Produziert Infantrie
+
+TENT:
+	Tooltip:
+		Name: Alliierte Barracken
+		Description: Produziert Infantrie
+	
+KENN:
+	Tooltip:
+		Name: Hundehütte
+
+FIX:
+	Tooltip:
+		Name: Werkstatt
+		Description: Repariert Fahrzeug, bewaffnet Minenleger, und \nermöglicht die Konstruktion von Brückenköpfen.
+
+FACF:
+#	Buildable:
+#		Description: Bauhof (Attrappe)
+#		LongDesc: Sieht aus wie ein Bauhof.
+
+WEAF:
+#	Buildable:
+#		Description: Waffenfabrik (Attrappe)
+#		LongDesc: Sieht aus wie eine Waffenfabrik.
+
+SYRF:
+#	Buildable:
+#		Description: Schiffswerft (Attrappe)
+#		LongDesc: Sieht aus wie eine Schiffswerft.
+
+DOMF:
+#	Buildable:
+#		Description: Radarkuppel (Attrappe)
+#		LongDesc: Sieht aus wie eine Radarkuppel.
+
+SBAG:
+	Tooltip:
+		Name: Sandsäcke
+		Description: Behindert Infantrie und blockiert Geschosse.\nKann von Panzern zerquetscht werden..
+
+FENC:
+	Tooltip:
+		Name: Stacheldraht
+		Description: Behindert Infantrie und blockiert Geschosse.\nKann von Panzern zerquetscht werden..
+
+BRIK:
+	Tooltip:
+		Name: Betonmauer
+		Description: Behindert Einheiten und blockiert Geschosse
+
+# custom prerequisites:
+BARRACKS:
+	Tooltip:
+		Name: Infantrie-Produktion
+		Description: Produziert Infantrie.
+
+VEHICLEPRODUCTION:
+	Tooltip:
+		Name: Fahrzeug-Produktion
+		Description: Produziert Fahrzeuge
+
+TECHCENTER:
+	Tooltip:
+		Name: Technologiezentrum
+		Description: Bietet fortschrittliche Technik.
+
+ANYPOWER:
+	Tooltip:
+		Name: Kraftwerk
+		Description: Erzeugt Energie.

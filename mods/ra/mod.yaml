@@ -9,12 +9,11 @@ Folders:
 	./mods/ra
 	./mods/ra/bits
 	./mods/ra/bits/desert
+	./mods/ra/packages
 	./mods/ra/uibits
-	~./mods/ra/packages
 	~^/Content/ra
 
 Packages:
-	~textless.mix #enables icons without text
 	~main.mix
 	redalert.mix
 	conquer.mix
@@ -30,6 +29,8 @@ Packages:
 	~scores.mix
 	~movies1.mix
 	~movies2.mix
+	aftermath.mix
+	counterstrike.mix
 
 Rules:
 	mods/ra/rules/defaults.yaml
@@ -55,6 +56,7 @@ Assemblies:
 	mods/ra/OpenRA.Mods.RA.dll
 
 ChromeLayout:
+	mods/ra/chrome/dropdowns.yaml
 
 Weapons:
 	mods/ra/weapons.yaml

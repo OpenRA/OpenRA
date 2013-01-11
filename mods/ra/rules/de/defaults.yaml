@@ -1,0 +1,28 @@
+^CivBuilding:
+	Tooltip:
+		Name: Ziviles Gebäude
+
+^CivField:
+	Tooltip:
+		Name: Feld
+
+^Tree:
+	Tooltip:
+		Name: Baum
+
+^Box:
+	Tooltip:
+		Name: Kisten
+
+^Ice:
+	Tooltip:
+		Name: Eisscholle
+
+^Bridge:
+	Tooltip:
+		Name: Brücke
+
+#Terrain Expansion
+^SmallBridge:
+	Tooltip:
+		Name: Kleine Brücke

@@ -1,5 +1,6 @@
 MSLO:
 	Tooltip:
+		Icon: msloicon2
 		Name: Missile Silo
 		Description: Launches a devastating nuclear strike.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks\n  Special Ability: Nuclear Missile
 	NukePower:
@@ -174,8 +175,7 @@ AFLD:
 		LongDesc: Reveals an area of the map.
 	ParatroopersPower:
 		Description: Paratroopers
-		LongDesc: A Badger drops a squad of Riflemen \nanywhere on the map
-
+		LongDesc: A Badger drops a squad of infantry \nanywhere on the map
 POWR:
 	Tooltip:
 		Name: Power Plant
@@ -226,8 +226,6 @@ SYRF:
 #		LongDesc: Looks like a Shipyard
 
 DOMF:
-	Tooltip:
-		Name: Fake Radar Dome
 #	Buildable:
 #		Description: Fake Radar Dome
 #		LongDesc: Looks like a Radar Dome
