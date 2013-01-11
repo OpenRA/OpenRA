@@ -1,0 +1,303 @@
+Selectable: True
+
+MapFormat: 5
+
+Title: NOD_01
+
+Description: Recreation of first Nod mission from Cnc
+
+Author: Dan9550
+
+Tileset: DESERT
+
+MapSize: 64,64
+
+Bounds: 21,14,37,24
+
+UseAsShellmap: False
+
+Type: Mission
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Race: gdi
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Race: gdi
+	PlayerReference@GDI:
+		Name: GDI
+		Race: gdi
+		ColorRamp: 31,222,183,24
+		Allies: Creeps
+		Enemies: NOD
+	PlayerReference@NOD:
+		Name: NOD
+		Playable: True
+		AllowBots: False
+		LockRace: True
+		Race: nod
+		LockColor: True
+		ColorRamp: 3,255,127,28
+		LockSpawn: True
+		LockTeam: True
+		Enemies: GDI,Neutral
+
+Actors:
+	Actor0: rock2
+		Location: 54,14
+		Owner: Neutral
+	Actor1: t08
+		Location: 47,15
+		Owner: Neutral
+	Actor2: t18
+		Location: 32,16
+		Owner: Neutral
+	Actor3: t08
+		Location: 47,16
+		Owner: Neutral
+	Actor4: t08
+		Location: 21,18
+		Owner: Neutral
+	Actor5: t18
+		Location: 32,21
+		Owner: Neutral
+	Actor6: t08
+		Location: 27,22
+		Owner: Neutral
+	Actor7: t08
+		Location: 23,24
+		Owner: Neutral
+	Actor8: rock1
+		Location: 21,25
+		Owner: Neutral
+	Actor9: t08
+		Location: 56,25
+		Owner: Neutral
+	Actor10: t08
+		Location: 23,26
+		Owner: Neutral
+	Actor11: t08
+		Location: 24,26
+		Owner: Neutral
+	Actor12: t08
+		Location: 28,30
+		Owner: Neutral
+	Actor13: t08
+		Location: 50,30
+		Owner: Neutral
+	Actor14: t08
+		Location: 39,31
+		Owner: Neutral
+	Actor15: rock1
+		Location: 31,34
+		Owner: Neutral
+	Actor16: t08
+		Location: 55,37
+		Owner: Neutral
+	Actor17: t08
+		Location: 30,51
+		Owner: Neutral
+	Actor18: t08
+		Location: 58,53
+		Owner: Neutral
+	Actor19: t08
+		Location: 43,56
+		Owner: Neutral
+	Actor20: rock1
+		Location: 24,58
+		Owner: Neutral
+	Actor21: t08
+		Location: 52,58
+		Owner: Neutral
+	Actor22: rock1
+		Location: 55,58
+		Owner: Neutral
+	Actor23: t08
+		Location: 29,59
+		Owner: Neutral
+	Actor24: rock2
+		Location: 31,61
+		Owner: Neutral
+	Vil01: v21
+		Location: 29,23
+		Owner: Neutral
+	Vil02: v24
+		Location: 22,24
+		Owner: Neutral
+	Vil03: v24
+		Location: 21,16
+		Owner: Neutral
+	Vil04: v32
+		Location: 21,20
+		Owner: Neutral
+	Vil05: v27
+		Location: 22,21
+		Owner: Neutral
+	Vil06: v20
+		Location: 21,21
+		Owner: Neutral
+	Vil07: v26
+		Location: 22,23
+		Owner: Neutral
+	Vil08: v20
+		Location: 27,23
+		Owner: Neutral
+	Vil09: v22
+		Location: 26,23
+		Owner: Neutral
+	Vil10: v23
+		Location: 26,22
+		Owner: Neutral
+	Vil11: v26
+		Location: 26,21
+		Owner: Neutral
+	Vil12: v25
+		Location: 29,21
+		Owner: Neutral
+	Vil13: v30
+		Location: 32,18
+		Owner: Neutral
+	Civ01: c9
+		Location: 28,20
+		Owner: Neutral
+	Civ02: c6
+		Location: 28,19
+		Owner: Neutral
+	Civ03: c8
+		Location: 27,19
+		Owner: Neutral
+	Civ04: c7
+		Location: 29,20
+		Owner: Neutral
+	Civ05: c4
+		Location: 31,19
+		Owner: Neutral
+	Civ06: c2
+		Location: 30,19
+		Owner: Neutral
+	Civ07: c5
+		Location: 29,19
+		Owner: Neutral
+	Nikoomba: c10
+		Location: 29,16
+		Owner: Neutral
+	Actor46: e1
+		Location: 28,28
+		Owner: GDI
+	Actor47: e1
+		Location: 29,28
+		Owner: GDI
+	Actor48: e1
+		Location: 29,30
+		Owner: GDI
+	Actor49: e1
+		Location: 33,35
+		Owner: GDI
+	Actor50: e1
+		Location: 34,36
+		Owner: GDI
+	Actor51: e1
+		Location: 41,19
+		Owner: GDI
+	Actor52: e1
+		Location: 40,19
+		Owner: GDI
+	Actor53: e1
+		Location: 40,18
+		Owner: GDI
+	Actor54: e1
+		Location: 40,31
+		Owner: GDI
+	Actor55: e1
+		Location: 43,34
+		Owner: GDI
+	Actor56: e1
+		Location: 46,22
+		Owner: GDI
+	Actor57: e1
+		Location: 51,25
+		Owner: GDI
+	Actor58: e1
+		Location: 51,30
+		Owner: GDI
+	Actor59: e1
+		Location: 55,33
+		Owner: GDI
+	Actor60: e1
+		Location: 56,32
+		Owner: GDI
+	Actor61: e1
+		Location: 52,17
+		Owner: NOD
+	Actor62: e1
+		Location: 51,17
+		Owner: NOD
+	Actor63: e1
+		Location: 51,16
+		Owner: NOD
+	Actor64: e1
+		Location: 52,16
+		Owner: NOD
+	Actor65: e1
+		Location: 55,17
+		Owner: NOD
+	Actor66: e1
+		Location: 56,17
+		Owner: NOD
+	Actor67: e1
+		Location: 56,16
+		Owner: NOD
+	Actor68: e1
+		Location: 55,16
+		Owner: NOD
+	Actor69: bggy
+		Location: 53,16
+		Owner: NOD
+	Actor70: bggy
+		Location: 54,16
+		Owner: NOD
+	NODReinforceNthA: waypoint
+		Location: 52,18
+		Owner: NOD
+	GDIReinforceNth: waypoint
+		Location: 24,15
+		Owner: GDI
+	NODReinforceNthB: waypoint
+		Location: 55,18
+		Owner: NOD
+	Actor27: jeep
+		Location: 31,28
+		Owner: GDI
+	Actor28: jeep
+		Location: 28,29
+		Owner: GDI
+
+Smudges:
+
+Rules:
+	Player:
+		-ConquestVictoryConditions:
+	World:
+		-CrateSpawner:
+		-SpawnMPUnits:
+		-MPStartLocations:
+		PlayMusicOnMapLoad:
+			Music: aoi2
+		Nod01Script:
+		MissionObjectivesPanel:
+			ObjectivesPanel: MISSION_OBJECTIVES
+	C10:
+		Tooltip:
+			Name: Nikoomba
+
+Sequences:
+
+Weapons:
+
+Voices:
+
+Notifications:
