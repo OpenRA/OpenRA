@@ -3,7 +3,7 @@ return {
   ["&About"] = "&О программе", -- src\editor\menu_help.lua
   ["&Add Watch"] = "&Добавить выражение", -- src\editor\debugger.lua
   ["&Break"] = "Пр&ервать", -- src\editor\menu_project.lua
-  ["&Close Page"] = "&Закрыть", -- src\editor\menu_file.lua
+  ["&Close Page"] = "&Закрыть", -- src\editor\menu_file.lua, src\editor\gui.lua
   ["&Compile"] = "&Компилировать", -- src\editor\menu_project.lua
   ["&Copy"] = "&Копировать", -- src\editor\editor.lua, src\editor\menu_edit.lua
   ["&Default Layout"] = "Вид по &умолчанию", -- src\editor\menu_view.lua
@@ -23,7 +23,7 @@ return {
   ["&Remove Watch"] = "&Удалить выражение", -- src\editor\debugger.lua
   ["&Replace"] = "За&менить", -- src\editor\menu_search.lua
   ["&Run"] = "За&пустить", -- src\editor\menu_project.lua
-  ["&Save"] = "&Сохранить", -- src\editor\menu_file.lua
+  ["&Save"] = "&Сохранить", -- src\editor\menu_file.lua, src\editor\gui.lua
   ["&Search"] = "По&иск", -- src\editor\menu_search.lua
   ["&Sort"] = "&Cортировать", -- src\editor\menu_search.lua
   ["&Stack Window"] = "Окно &стека", -- src\editor\menu_view.lua
@@ -50,9 +50,12 @@ return {
   ["Can't run the entry point script ('%s')."] = "Ошибка выполнения стартового скрипта ('%s').", -- src\editor\debugger.lua
   ["Can't start debugging session due to internal error '%s'."] = "Невозможно начать отладочную сессию из-за внутренней ошибки '%s'.", -- src\editor\debugger.lua
   ["Can't start debugging without an opened file or with the current file not being saved ('%s')."] = "Невозможно начать отладку без открытого файла или с несохраненным текущим файлом ('%s').", -- src\editor\debugger.lua
+  ["Choose ..."] = "Выбрать ...", -- src\editor\menu_project.lua
   ["Choose a project directory"] = "Выберите каталог проекта", -- src\editor\menu_project.lua
   ["Clear &Dynamic Words"] = "Очистить &динамические слова", -- src\editor\menu_edit.lua
   ["Clear the output window before compiling or debugging"] = "Очистить окно вывода перед компиляцией или отладкой", -- src\editor\menu_project.lua
+  ["Close &Other Pages"] = "Закрыть &остальные вкладки", -- src\editor\gui.lua
+  ["Close A&ll Pages"] = "Закрыть &все вкладки", -- src\editor\gui.lua
   ["Close the current editor window"] = "Закрыть текущее окно редактирования", -- src\editor\menu_file.lua
   ["Co&ntinue"] = "Пр&одолжить", -- src\editor\menu_project.lua
   ["Col: %d"] = "Стб: %d", -- src\editor\editor.lua
@@ -70,13 +73,16 @@ return {
   ["Debugger server started at %s:%d."] = "Сервер отладки запущен на %s:%d.", -- src\editor\debugger.lua
   ["Debugging session completed (%s)."] = "Отладочная сессия завершена (%s).", -- src\editor\debugger.lua
   ["Debugging session started in '%s'."] = "Отладочная сессия запущена в '%s'.", -- src\editor\debugger.lua
+  ["Debugging suspended at %s:%s (couldn't activate the file)."] = "Отладка остановлена на %s:%s (невозможно открыть файл).", -- src\editor\debugger.lua
   ["Do you want to reload it?"] = "Перезагрузить его?", -- src\editor\editor.lua
   ["Do you want to save the changes to '%s'?"] = "Сохранить изменения в '%s'?", -- src\editor\commands.lua
   ["E&xit"] = "Вы&ход", -- src\editor\menu_file.lua
   ["Enter Lua code and press Enter to run it."] = "Введите код на Lua и нажмите Enter для выполнения.", -- src\editor\shellbox.lua
   ["Enter line number"] = "Введите номер строки", -- src\editor\menu_search.lua
   ["Error while loading API file: %s"] = "Ошибка загрузки файла определений API: %s", -- src\editor\autocomplete.lua
+  ["Error while loading configuration file: %s"] = "Ошибка загрузки файла конфигурации: %s", -- src\editor\style.lua
   ["Error while processing API file: %s"] = "Ошибка обработки файла определений API: %s", -- src\editor\autocomplete.lua
+  ["Error while processing configuration file: %s"] = "Ошибка обработки файла конфигурации: %s", -- src\editor\style.lua
   ["Error"] = "Ошибка", -- src\editor\commands.lua
   ["Evaluate &Watches"] = "&Вычислить выражения", -- src\editor\debugger.lua
   ["Evaluate in Console"] = "Выполнить в консоли", -- src\editor\editor.lua
@@ -124,6 +130,7 @@ return {
   ["Program starting as '%s'."] = "Программа запускается как '%s'.", -- src\editor\output.lua
   ["Program stopped (pid: %d)."] = "Программа завершена (pid: %d).", -- src\editor\debugger.lua
   ["Program unable to run as '%s'."] = "Программа не может быть запущена как '%s'.", -- src\editor\output.lua
+  ["Project Directory"] = "Каталог проекта", -- src\editor\menu_project.lua
   ["Project"] = "Проект", -- src\editor\settings.lua, src\editor\gui.lua
   ["Project/&FileTree Window"] = "Окно &проекта/списка файлов", -- src\editor\menu_view.lua
   ["R/O"] = "R/O", -- src\editor\editor.lua
@@ -138,7 +145,7 @@ return {
   ["Run as Scratchpad"] = "Запустить как черновик", -- src\editor\menu_project.lua
   ["S&top Debugging"] = "&Завершить отладку", -- src\editor\menu_project.lua
   ["S&top Process"] = "&Завершить процесс", -- src\editor\menu_project.lua
-  ["Save &As..."] = "Сохранить &как...", -- src\editor\menu_file.lua
+  ["Save &As..."] = "Сохранить &как...", -- src\editor\menu_file.lua, src\editor\gui.lua
   ["Save A&ll"] = "Сохранить &все", -- src\editor\menu_file.lua
   ["Save Changes?"] = "Сохранить изменения?", -- src\editor\commands.lua
   ["Save all open documents"] = "Сохранить все открытые документы", -- src\editor\menu_file.lua, src\editor\gui.lua
@@ -150,8 +157,10 @@ return {
   ["Scratchpad error"] = "Ошибка в черновике", -- src\editor\debugger.lua
   ["Select &All"] = "Выделить &все", -- src\editor\editor.lua, src\editor\menu_edit.lua
   ["Select all text in the editor"] = "Выделить весь текст в редакторе", -- src\editor\menu_edit.lua
-  ["Set project directory from current file"] = "Установить каталог проекта по текущему файлу", -- src\editor\gui.lua
+  ["Set From Current File"] = "Установить по текущему файлу", -- src\editor\menu_project.lua
+  ["Set project directory from current file"] = "Установить каталог проекта по текущему файлу", -- src\editor\menu_project.lua, src\editor\gui.lua
   ["Set the interpreter to be used"] = "Установить используемый интерпретатор", -- src\editor\menu_project.lua
+  ["Set the project directory to be used"] = "Установить используемый каталог проекта", -- src\editor\menu_project.lua
   ["Show &Tooltip"] = "Показать &подсказку", -- src\editor\menu_edit.lua
   ["Show tooltip for current position; place cursor after opening bracket of function"] = "Показать подсказку в текущей позиции; переместите курсор в позицию после открывающей скобки функции", -- src\editor\menu_edit.lua
   ["Sort selected lines"] = "Отсортировать выделенные строки", -- src\editor\menu_search.lua
@@ -175,6 +184,7 @@ return {
   ["Unable to save file '%s': %s"] = "Ошибка сохранения файла '%s': %s", -- src\editor\commands.lua
   ["Unable to stop program (pid: %d), code %d."] = "Невозможно завершить программу (pid: %d), код %d.", -- src\editor\debugger.lua
   ["Undo last edit"] = "Отменить последнее действие", -- src\editor\menu_edit.lua, src\editor\gui.lua
+  ["Use '%s' to see full description."] = "Используйте '%s' для полного описания.", -- src\editor\editor.lua
   ["Use 'clear' to clear the shell output and the history."] = "Используйте команду 'clear' для очистки содержимого окна и истории.", -- src\editor\shellbox.lua
   ["Use Shift-Enter for multiline code."] = "Используйте Shift-Enter для многострочного кода.", -- src\editor\shellbox.lua
   ["Value"] = "Значение", -- src\editor\debugger.lua
