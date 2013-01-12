@@ -323,7 +323,7 @@ MECH:
 		BuildPaletteOrder: 70
 		Owner: allies
 		Prerequisites: fix
-		Hotkey: k
+		Hotkey: c
 	Valued:
 		Cost: 800
 	Tooltip:
