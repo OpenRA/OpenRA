@@ -208,7 +208,7 @@ Container@SETTINGS_PANEL:
 					Width:250
 					Height:20
 					Font:Regular
-					Text:Left-Click Orders (Coming soon!)
+					Text:Left-Click Orders
 				Label@SCROLL_TITLE:
 					Font:Bold
 					Text:Scroll Behavior

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -52,54 +52,71 @@ namespace OpenRA.Widgets
 		public override bool HandleMouseInput(MouseInput mi)
 		{
 			var xy = Game.viewport.ViewToWorldPx(mi);
+
+			var UseClassicMouseStyle = Game.Settings.Game.UseClassicMouseStyle;
+
+			var HasBox = (SelectionBox != null) ? true : false;
+			var MultiClick = (mi.MultiTapCount >= 2) ? true : false;
+			var NothingSelected = !world.Selection.Actors.Any();
+			
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Down)
 			{
 				if (!TakeFocus(mi))
 					return false;
-
+				
 				dragStart = dragEnd = xy;
-				ApplyOrders(world, xy, mi);
+				
+				if (UseClassicMouseStyle)
+						ApplyOrders(world, xy, mi);
 			}
-
+			
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Move)
 				dragEnd = xy;
-
+			
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Up)
 			{
 				if (world.OrderGenerator is UnitOrderGenerator)
 				{
-					if (mi.MultiTapCount == 2)
+					if ((UseClassicMouseStyle && NothingSelected) || (!UseClassicMouseStyle))
 					{
-						var unit = SelectActorsInBox(world, xy, xy, _ => true).FirstOrDefault();
-
-						var visibleWorld = Game.viewport.ViewBounds(world);
-						var topLeft = Game.viewport.ViewToWorldPx(new int2(visibleWorld.Left, visibleWorld.Top));
-						var bottomRight = Game.viewport.ViewToWorldPx(new int2(visibleWorld.Right, visibleWorld.Bottom));
-						var newSelection = SelectActorsInBox(world, topLeft, bottomRight, 
-							a => unit != null && a.Info.Name == unit.Info.Name && a.Owner == unit.Owner);
-
-						world.Selection.Combine(world, newSelection, true, false);
-					}
-					else
-					{
-						var newSelection = SelectActorsInBox(world, dragStart, xy, _ => true);
-						world.Selection.Combine(world, newSelection, mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == xy);
+						if (MultiClick)
+						{
+							var unit = SelectActorsInBox(world, xy, xy, _ => true).FirstOrDefault();
+							
+							var visibleWorld = Game.viewport.ViewBounds(world);
+							var topLeft = Game.viewport.ViewToWorldPx(new int2(visibleWorld.Left, visibleWorld.Top));
+							var bottomRight = Game.viewport.ViewToWorldPx(new int2(visibleWorld.Right, visibleWorld.Bottom));
+							var newSelection2 = SelectActorsInBox(world, topLeft, bottomRight, 
+							                                      a => unit != null && a.Info.Name == unit.Info.Name && a.Owner == unit.Owner);
+							
+							world.Selection.Combine(world, newSelection2, true, false);
+						}
+						else
+						{
+							var newSelection = SelectActorsInBox(world, dragStart, xy, _ => true);
+							world.Selection.Combine(world, newSelection, mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == xy);
+						}
 					}
 				}
-
+				
 				dragStart = dragEnd = xy;
 				LoseFocus(mi);
 			}
-
+			
 			if (mi.Button == MouseButton.None && mi.Event == MouseInputEvent.Move)
 				dragStart = dragEnd = xy;
-
+			
 			if (mi.Button == MouseButton.Right && mi.Event == MouseInputEvent.Down)
-				if (SelectionBox == null)	/* don't issue orders while selecting */
+			{
+				if (UseClassicMouseStyle)
+					world.Selection.Clear();
+				else if (!HasBox)	// don't issue orders while selecting
 					ApplyOrders(world, xy, mi);
-
+			}
+			
 			return true;
 		}
+
 
 		public Pair<PPos, PPos>? SelectionBox
 		{
@@ -115,14 +132,14 @@ namespace OpenRA.Widgets
 			if (world.OrderGenerator == null) return;
 
 			var orders = world.OrderGenerator.Order(world, xy.ToCPos(), mi).ToArray();
-			orders.Do( o => world.IssueOrder( o ) );
+			orders.Do(o => world.IssueOrder(o));
 
 			world.PlayVoiceForOrders(orders);
 		}
 
 		public override string GetCursor(int2 pos)
 		{
-			return Sync.CheckSyncUnchanged( world, () =>
+			return Sync.CheckSyncUnchanged(world, () =>
 			{
 				if (SelectionBox != null)
 					return null;	/* always show an arrow while selecting */
@@ -130,12 +147,12 @@ namespace OpenRA.Widgets
 				var mi = new MouseInput
 				{
 					Location = pos,
-					Button = MouseButton.Right,
+					Button = Game.Settings.Game.UseClassicMouseStyle ? MouseButton.Left : MouseButton.Right,
 					Modifiers = Game.GetModifierKeys()
 				};
 
 				// TODO: fix this up.
-				return world.OrderGenerator.GetCursor( world, Game.viewport.ViewToWorld(mi), mi );
+				return world.OrderGenerator.GetCursor(world, Game.viewport.ViewToWorld(mi), mi);
 			} );
 		}
 
@@ -148,7 +165,7 @@ namespace OpenRA.Widgets
 					world.Selection.DoControlGroup(world, e.KeyName[0] - '0', e.Modifiers);
 					return true;
 				}
-				else if(e.KeyName == "pause" || e.KeyName == "f3")
+				else if (e.KeyName == "pause" || e.KeyName == "f3")
 				{
 					world.IssueOrder(Order.PauseRequest());
 				}
@@ -164,11 +181,11 @@ namespace OpenRA.Widgets
 		IEnumerable<Actor> SelectActorsInBox(World world, PPos a, PPos b, Func<Actor, bool> cond)
 		{
 			return world.FindUnits(a, b)
-				.Where( x => x.HasTrait<Selectable>() && world.RenderedShroud.IsVisible(x) && cond(x) )
+				.Where(x => x.HasTrait<Selectable>() && world.RenderedShroud.IsVisible(x) && cond(x))
 				.GroupBy(x => x.GetSelectionPriority())
 				.OrderByDescending(g => g.Key)
-				.Select( g => g.AsEnumerable() )
-				.DefaultIfEmpty( NoActors )
+				.Select(g => g.AsEnumerable())
+				.DefaultIfEmpty(NoActors)
 				.FirstOrDefault();
 		}
 	}
