@@ -289,6 +289,7 @@ OILB:
 		Range: 3
 	Capturable:
 	CapturableBar:
+	EngineerRepairable:
 	-MustBeDestroyed:
 	CashTrickler:
 		Period: 250

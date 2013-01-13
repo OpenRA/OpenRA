@@ -1,9 +1,13 @@
 NEW:
 	Engine:
+		Removed mouse capture while composing text in chat
 	All Mods:
 		Map editor now saves and loads from OpenRA user folder
+		Fixed map editor failing to import legacy maps
 	Red Alert:
 		Added Allies03 mission
+		Added Allies04 mission
+		Added Soviet01Classic mission
 		Allies02 mission - reduced difficulty of the 16 minute reinforcements
 		Allies02 mission - can build medic and spy at captured barracks
 		Added Desert tileset - original and new tiles ported from Tiberium Dawn by Harrison, code by Matt
@@ -27,6 +31,10 @@ NEW:
 		Added map: Room Convergence (Sunny Sproket)
 		Added map: Ghost Town (hamb)
 		Updated map: Bombardment Islands (czech army)
+		Added mechanic
+		Added in-game player statistics for observers
+		Added support for map difficulties
+		Oil derricks are now repairable by engineers
 	C&C:
 		Corrected music.yaml track titles
 	Dune 2000:

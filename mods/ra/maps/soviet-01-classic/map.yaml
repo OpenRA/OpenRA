@@ -403,7 +403,7 @@ Actors:
 	Actor87: barl
 		Location: 40,52
 		Owner: GoodGuy
-		Health: 0.09765625
+		Health: 1
 		Facing: 0
 	Actor88: barl
 		Location: 39,64
