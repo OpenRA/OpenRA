@@ -463,7 +463,7 @@ namespace OpenRA
 				if(!Directory.Exists(dirPath))
 					Directory.CreateDirectory(dirPath);
 				var mapPath = "{1}{0}{2}".F(Path.DirectorySeparatorChar, dirPath, mapHash+".oramap");
-				Console.Write("Trying to download map to {0} ...  ".F(mapPath));
+				Console.Write("Trying to download map to {0} ... ".F(mapPath));
 				WebClient webClient = new WebClient();
 				webClient.DownloadFile("http://content.open-ra.org/map/" + mapHash, mapPath);
 				Game.modData.AvailableMaps.Add(mapHash, new Map(mapPath));

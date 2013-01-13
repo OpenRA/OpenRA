@@ -274,7 +274,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				if (Game.Settings.Game.AllowDownloading)
 					Game.DownloadMap(MapUid);
 				else
-					throw new InvalidOperationException("Server has changed map and you have Downloading turned off");
+					throw new InvalidOperationException("Server's new map doesn't exist on your system and Downloading turned off");
 			Map = new Map(Game.modData.AvailableMaps[MapUid].Path);
 
 			var title = Ui.Root.Get<LabelWidget>("TITLE");
