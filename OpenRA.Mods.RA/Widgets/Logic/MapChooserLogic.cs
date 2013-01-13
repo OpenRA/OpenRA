@@ -10,6 +10,7 @@
 
 using System;
 using System.Linq;
+using System.Threading;
 using OpenRA.FileFormats;
 using OpenRA.Widgets;
 
@@ -21,7 +22,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		ScrollPanelWidget scrollpanel;
 		ScrollItemWidget itemTemplate;
 		string gameMode;
-		
+
 		[ObjectCreator.UseCtor]
 		internal MapChooserLogic(Widget widget, string initialMap, Action onExit, Action<Map> onSelect)
 		{
@@ -38,18 +39,18 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var gameModeDropdown = widget.GetOrNull<DropDownButtonWidget>("GAMEMODE_FILTER");
 			if (gameModeDropdown != null)
 			{
-				var selectableMaps = Game.modData.AvailableMaps.Where(m => m.Value.Selectable);
+				var selectableMaps = Game.modData.AvailableMaps.Where(m => m.Value.Selectable).ToList();
 				var gameModes = selectableMaps
 					.GroupBy(m => m.Value.Type)
 					.Select(g => Pair.New(g.Key, g.Count())).ToList();
 
 				// 'all game types' extra item
-				gameModes.Insert( 0, Pair.New( null as string, selectableMaps.Count() ) );
+				gameModes.Insert(0, Pair.New(null as string, selectableMaps.Count()));
 
-				Func<Pair<string,int>, string> showItem =
-					x => "{0} ({1})".F( x.First ?? "All Game Types", x.Second );
+				Func<Pair<string, int>, string> showItem =
+					x => "{0} ({1})".F(x.First ?? "All Game Types", x.Second);
 
-				Func<Pair<string,int>, ScrollItemWidget, ScrollItemWidget> setupItem = (ii, template) =>
+				Func<Pair<string, int>, ScrollItemWidget, ScrollItemWidget> setupItem = (ii, template) =>
 				{
 					var item = ScrollItemWidget.Setup(template,
 						() => gameMode == ii.First,
@@ -64,7 +65,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				gameModeDropdown.GetText = () => showItem(gameModes.First(m => m.First == gameMode));
 			}
 
-			EnumerateMaps();
+			new Thread(EnumerateMaps).Start();
 		}
 
 		void EnumerateMaps()
@@ -91,6 +92,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				previewWidget.IgnoreMouseOver = true;
 				previewWidget.IgnoreMouseInput = true;
 				previewWidget.Map = () => m;
+				previewWidget.LoadMapPreview();
 
 				var detailsWidget = item.Get<LabelWidget>("DETAILS");
 				if (detailsWidget != null)
@@ -112,7 +114,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					sizeWidget.GetText = () => size;
 				}
 
-				scrollpanel.AddChild(item);
+				Game.RunAfterTick(() => scrollpanel.AddChild(item));
 			}
 		}
 	}

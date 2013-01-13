@@ -26,7 +26,7 @@ namespace OpenRA.Widgets
 		public bool IgnoreMouseInput = false;
 		public bool ShowSpawnPoints = true;
 
-		static Cache<Map,Bitmap> PreviewCache = new Cache<Map, Bitmap>(stub => Minimap.RenderMapPreview( new Map( stub.Path )));
+		static readonly Cache<Map,Bitmap> PreviewCache = new Cache<Map, Bitmap>(stub => Minimap.RenderMapPreview( new Map( stub.Path )));
 
 		public MapPreviewWidget() : base() { }
 
@@ -117,6 +117,17 @@ namespace OpenRA.Widgets
 					}
 				}
 			}
+		}
+
+		/// <summary>
+		/// Forces loading the preview into the map cache.
+		/// </summary>
+		public Bitmap LoadMapPreview()
+		{
+			var map = Map();
+			if( map == null ) return null;
+
+			return PreviewCache[map];
 		}
 	}
 }
