@@ -376,34 +376,37 @@ CRATE:
 	GiveUnitCrateAction@jeep:
 		SelectionShares: 7
 		Units: jeep
+		GivenTo: allies
 	GiveUnitCrateAction@arty:
 		SelectionShares: 6
 		Units: arty
+		GivenTo: allies
 	GiveUnitCrateAction@v2rl:
 		SelectionShares: 6
 		Units: v2rl
+		GivenTo: soviet
 	GiveUnitCrateAction@1tnk:
 		SelectionShares: 5
 		Units: 1tnk
+		GivenTo: allies
 	GiveUnitCrateAction@squad1:
 		SelectionShares: 5
 		Units: e1,e1,e3
+	GiveUnitCrateAction@squad2:
+		SelectionShares: 5
+		Units: e1,e3,e4
+		GivenTo: soviet
 	GiveUnitCrateAction@2tnk:
 		SelectionShares: 4
 		Units: 2tnk
+		GivenTo: allies
 	GiveUnitCrateAction@3tnk:
 		SelectionShares: 4
 		Units: 3tnk
+		GivenTo: soviet
 	GiveUnitCrateAction@4tnk:
 		SelectionShares: 3
 		Units: 4tnk
-	GiveUnitCrateAction@squad2:
-		SelectionShares: 2
-		Units: 1tnk,1tnk,2tnk
-		GivenTo: allies
-	GiveUnitCrateAction@squad3:
-		SelectionShares: 2
-		Units: 3tnk,3tnk
 		GivenTo: soviet
 	RenderSimple:
 	BelowUnits:
