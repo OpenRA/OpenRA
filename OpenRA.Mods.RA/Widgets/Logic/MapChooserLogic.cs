@@ -22,6 +22,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		ScrollPanelWidget scrollpanel;
 		ScrollItemWidget itemTemplate;
 		string gameMode;
+		Thread mapLoaderThread;
 
 		[ObjectCreator.UseCtor]
 		internal MapChooserLogic(Widget widget, string initialMap, Action onExit, Action<Map> onSelect)
@@ -54,7 +55,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				{
 					var item = ScrollItemWidget.Setup(template,
 						() => gameMode == ii.First,
-						() => { gameMode = ii.First; EnumerateMaps(); });
+						() => { gameMode = ii.First; EnumerateMapsAsync(); });
 					item.Get<LabelWidget>("LABEL").GetText = () => showItem(ii);
 					return item;
 				};
@@ -65,12 +66,21 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				gameModeDropdown.GetText = () => showItem(gameModes.First(m => m.First == gameMode));
 			}
 
-			new Thread(EnumerateMaps).Start();
+			EnumerateMapsAsync();
+		}
+
+		void EnumerateMapsAsync()
+		{
+			if (mapLoaderThread != null && mapLoaderThread.IsAlive) 
+				mapLoaderThread.Abort(); // violent, but should be fine since we are not doing anything sensitive in this thread
+
+			mapLoaderThread = new Thread(EnumerateMaps);
+			mapLoaderThread.Start();
 		}
 
 		void EnumerateMaps()
 		{
-			scrollpanel.RemoveChildren();
+			Game.RunAfterTick(() => scrollpanel.RemoveChildren()); // queue removal in case another thread added any items to the game queue
 			scrollpanel.Layout = new GridLayout(scrollpanel);
 			scrollpanel.ScrollToTop();
 
