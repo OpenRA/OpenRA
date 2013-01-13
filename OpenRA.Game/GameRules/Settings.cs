@@ -116,6 +116,7 @@ namespace OpenRA.GameRules
 		public int Timestep = 40;
 
 		public string ConnectTo = "";
+		public bool AllowDownloading = true;
 	}
 
 	public class Settings

@@ -269,6 +269,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			if (MapUid == orderManager.LobbyInfo.GlobalSettings.Map) return;
 			MapUid = orderManager.LobbyInfo.GlobalSettings.Map;
+
+			if (!Game.modData.AvailableMaps.ContainsKey(MapUid))
+				if (Game.Settings.Game.AllowDownloading)
+					Game.DownloadMap(MapUid);
+				else
+					throw new InvalidOperationException("Server has changed map and you have Downloading turned off");
 			Map = new Map(Game.modData.AvailableMaps[MapUid].Path);
 
 			var title = Ui.Root.Get<LabelWidget>("TITLE");
