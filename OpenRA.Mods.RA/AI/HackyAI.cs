@@ -184,12 +184,11 @@ namespace OpenRA.Mods.RA.AI
 				int y = 0;
 				int countUnits = 0;
 				foreach (var u in units)
-					if (u.Location != null)
-					{
-						x += u.Location.X;
-						y += u.Location.Y;
-						countUnits++;
-					}
+				{
+					x += u.Location.X;
+					y += u.Location.Y;
+					countUnits++;
+				}
 				x = x / countUnits;
 				y = y / countUnits;
 				return (x != 0 && y != 0) ? new CPos?(new CPos(x, y)) : null;
@@ -915,16 +914,15 @@ namespace OpenRA.Mods.RA.AI
 			Func<PPos, CPos, CPos?> findPos = (PPos pos, CPos center) =>
 			{
 				for (var k = MaxBaseDistance; k >= 0; k--)
-					if (pos != null)
-					{
-						var tlist = world.FindTilesInCircle(center, k)
-							.OrderBy(a => (new PPos(a.ToPPos().X, a.ToPPos().Y) - pos).LengthSquared);
-						foreach (var t in tlist)
-							if (world.CanPlaceBuilding(actorType, bi, t, null))
-								if (bi.IsCloseEnoughToBase(world, p, actorType, t))
-									if (NoBuildingsUnder(Util.ExpandFootprint(FootprintUtils.Tiles(actorType, bi, t), false)))
-										return t;
-					}
+				{
+					var tlist = world.FindTilesInCircle(center, k)
+						.OrderBy(a => (new PPos(a.ToPPos().X, a.ToPPos().Y) - pos).LengthSquared);
+					foreach (var t in tlist)
+						if (world.CanPlaceBuilding(actorType, bi, t, null))
+							if (bi.IsCloseEnoughToBase(world, p, actorType, t))
+								if (NoBuildingsUnder(Util.ExpandFootprint(FootprintUtils.Tiles(actorType, bi, t), false)))
+									return t;
+				}
 				return null;
 			};
 
@@ -1003,7 +1001,7 @@ namespace OpenRA.Mods.RA.AI
 				.Where(a => a.Owner == enemy && a.HasTrait<IOccupySpace>());
 			Actor target = null;
 
-			if (targets.Any() && baseCenter != null)
+			if (targets.Any())
 				target = targets.ClosestTo(baseCenter.ToPPos());
 
 			if (target == null)
