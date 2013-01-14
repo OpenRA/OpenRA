@@ -13,6 +13,8 @@ NEW:
 		Added Desert tileset - original and new tiles ported from Tiberium Dawn by Harrison, code by Matt
 		Fixed graphics for craters for Snow maps (art by MrFibble)
 		Ice Floe actors work in maps now
+		"Mud" added back into the game
+		Reworked Volkov's sounds
 		Balance:
 			Added missing line of sight for Chronotank
 			Chronotank damage upped from 20 to 30 per rocket and damage improved vs heavy armor
@@ -20,6 +22,8 @@ NEW:
 			Demo truck health from 110 to 50
 			Demo truck speed from 8 to 6
 			Disguised spies are now invisible under enemy GPS
+			Volkov's Armor reworked
+			Heroes are now limited to one per player
 		Replaced supply truck SHP with aftermath supply truck SHP (it has a shadow)
 		Added hotkeys for aircraft, vehicles, ships, infantry
 		Removed sound attentuation for PlayNotification sounds - fixes the Extreme cashtick sounds
