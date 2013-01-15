@@ -231,7 +231,7 @@ spec = {
   linecomment = "//",
   -- string for linecomments
 
-  sep = "[%.:]",
+  sep = "%.:",
   -- class.function separator match string,
   -- e.g in lua both . and : are allowed
   -- default is "\1" which should yield no matches

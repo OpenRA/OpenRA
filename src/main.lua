@@ -246,7 +246,7 @@ local function loadSpecs(filter)
   end
 
   for _, spec in pairs(ide.specs) do
-    spec.sep = spec.sep or ""
+    spec.sep = spec.sep or "\1" -- default separator doesn't match anything
     spec.iscomment = {}
     spec.iskeyword0 = {}
     spec.isstring = {}
