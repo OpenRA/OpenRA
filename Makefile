@@ -1,8 +1,8 @@
 CSC         = gmcs
-CSFLAGS     = -nologo -warn:4 -debug:+ -debug:full -optimize- -codepage:utf8 -unsafe
+CSFLAGS     = -nologo -warn:4 -debug:+ -debug:full -optimize- -codepage:utf8 -unsafe -warnaserror
 DEFINE      = DEBUG;TRACE
-COMMON_LIBS	= System.dll System.Core.dll System.Drawing.dll System.Xml.dll thirdparty/ICSharpCode.SharpZipLib.dll
-PHONY		= core tools package all mods clean distclean
+COMMON_LIBS = System.dll System.Core.dll System.Drawing.dll System.Xml.dll thirdparty/ICSharpCode.SharpZipLib.dll
+PHONY       = core tools package all mods clean distclean
 
 .SUFFIXES:
 core: game renderers mods utility tsbuild
@@ -17,10 +17,10 @@ distclean: clean
 #
 # Core binaries
 #
-fileformats_SRCS	:= $(shell find OpenRA.FileFormats/ -iname '*.cs')
-fileformats_TARGET	= OpenRA.FileFormats.dll
-fileformats_KIND	= library
-fileformats_LIBS	= $(COMMON_LIBS) thirdparty/Tao/Tao.Sdl.dll System.Windows.Forms.dll
+fileformats_SRCS		:= $(shell find OpenRA.FileFormats/ -iname '*.cs')
+fileformats_TARGET		= OpenRA.FileFormats.dll
+fileformats_KIND		= library
+fileformats_LIBS		= $(COMMON_LIBS) thirdparty/Tao/Tao.Sdl.dll System.Windows.Forms.dll
 PROGRAMS 			= fileformats
 fileformats: $(fileformats_TARGET)
 
@@ -116,8 +116,8 @@ editor_TARGET			= OpenRA.Editor.exe
 editor_KIND			= winexe
 editor_DEPS			= $(fileformats_TARGET) $(game_TARGET)
 editor_LIBS			= $(COMMON_LIBS) System.Windows.Forms.dll System.Data.dll $(editor_DEPS)
-editor_EXTRA		= -resource:OpenRA.Editor.Form1.resources -resource:OpenRA.Editor.MapSelect.resources
-editor_FLAGS		= -win32icon:OpenRA.Editor/OpenRA.Editor.Icon.ico
+editor_EXTRA			= -resource:OpenRA.Editor.Form1.resources -resource:OpenRA.Editor.MapSelect.resources
+editor_FLAGS			= -win32icon:OpenRA.Editor/OpenRA.Editor.Icon.ico
 
 PROGRAMS 			+= editor
 OpenRA.Editor.MapSelect.resources:
@@ -142,7 +142,7 @@ tsbuild_KIND		= winexe
 tsbuild_DEPS		= $(fileformats_TARGET) $(game_TARGET)
 tsbuild_LIBS		= $(COMMON_LIBS) $(tsbuild_DEPS) System.Windows.Forms.dll
 tsbuild_EXTRA		= -resource:OpenRA.TilesetBuilder.frmBuilder.resources -resource:OpenRA.TilesetBuilder.frmNew.resources -resource:OpenRA.TilesetBuilder.Surface.resources
-PROGRAMS 			+= tsbuild
+PROGRAMS 		+= tsbuild
 OpenRA.TilesetBuilder.frmBuilder.resources:
 	resgen2 OpenRA.TilesetBuilder/frmBuilder.resx OpenRA.TilesetBuilder.frmBuilder.resources 1> /dev/null
 OpenRA.TilesetBuilder.frmNew.resources:
@@ -163,9 +163,9 @@ fixheader.exe: packaging/fixheader.cs
 utility_SRCS		:= $(shell find OpenRA.Utility/ -iname '*.cs')
 utility_TARGET		= OpenRA.Utility.exe
 utility_KIND		= exe
-utility_DEPS        = $(fileformats_TARGET) $(game_TARGET)
-utility_LIBS        = $(COMMON_LIBS) $(utility_DEPS) thirdparty/ICSharpCode.SharpZipLib.dll System.Windows.Forms.dll
-PROGRAMS 			+= utility
+utility_DEPS		= $(fileformats_TARGET) $(game_TARGET)
+utility_LIBS		= $(COMMON_LIBS) $(utility_DEPS) thirdparty/ICSharpCode.SharpZipLib.dll System.Windows.Forms.dll
+PROGRAMS 		+= utility
 utility: $(utility_TARGET)
 
 .PHONY: $(PHONY) $(PROGRAMS)
