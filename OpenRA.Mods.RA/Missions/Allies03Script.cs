@@ -17,7 +17,6 @@ using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Air;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Move;
-using OpenRA.Network;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
@@ -437,6 +436,7 @@ namespace OpenRA.Mods.RA.Missions
 
 			allies = w.Players.Single(p => p.InternalName == "Allies");
 			soviets = w.Players.Single(p => p.InternalName == "Soviets");
+
 			var actors = w.WorldActor.Trait<SpawnMapActors>().Actors;
 			exit1TopLeft = actors["Exit1TopLeft"];
 			exit1BottomRight = actors["Exit1BottomRight"];
@@ -466,6 +466,7 @@ namespace OpenRA.Mods.RA.Missions
 			var topLeft = actors["ParadropBoxTopLeft"];
 			var bottomRight = actors["ParadropBoxBottomRight"];
 			paradropBox = new Rectangle(topLeft.Location.X, topLeft.Location.Y, bottomRight.Location.X - topLeft.Location.X, bottomRight.Location.Y - topLeft.Location.Y);
+			
 			if (w.LocalPlayer == null || w.LocalPlayer == allies1)
 			{
 				Game.MoveViewport(allies1EntryPoint.Location.ToFloat2());
@@ -474,6 +475,7 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				Game.MoveViewport(allies2EntryPoint.Location.ToFloat2());
 			}
+
 			OnObjectivesUpdated(false);
 			MissionUtils.PlayMissionMusic();
 		}

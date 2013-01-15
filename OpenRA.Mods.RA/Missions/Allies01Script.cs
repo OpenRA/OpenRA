@@ -340,15 +340,25 @@ namespace OpenRA.Mods.RA.Missions
 			alliesRes.TakeOre(alliesRes.Ore);
 
 			Game.MoveViewport(insertionLZ.Location.ToFloat2());
-			Media.PlayFMVFullscreen(w, "ally1.vqa", () =>
+
+			if (MissionUtils.IsSingleClient(world))
 			{
-				Media.PlayFMVFullscreen(w, "landing.vqa", () =>
+				Media.PlayFMVFullscreen(w, "ally1.vqa", () =>
 				{
-					InsertTanyaAtLZ();
-					SendPatrol();
-					MissionUtils.PlayMissionMusic();
+					Media.PlayFMVFullscreen(w, "landing.vqa", () =>
+					{
+						InsertTanyaAtLZ();
+						SendPatrol();
+						MissionUtils.PlayMissionMusic();
+					});
 				});
-			});
+			}
+			else
+			{
+				InsertTanyaAtLZ();
+				SendPatrol();
+				MissionUtils.PlayMissionMusic();
+			}
 		}
 	}
 }

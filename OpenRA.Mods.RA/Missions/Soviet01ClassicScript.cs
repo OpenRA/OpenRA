@@ -150,8 +150,10 @@ namespace OpenRA.Mods.RA.Missions
 		public void WorldLoaded(World w)
 		{
 			world = w;
+
 			ussr = w.Players.Single(p => p.InternalName == "USSR");
 			france = w.Players.Single(p => p.InternalName == "France");
+
 			var actors = w.WorldActor.Trait<SpawnMapActors>().Actors;
 			startJeep = actors["StartJeep"];
 			startJeepMovePoint = actors["StartJeepMovePoint"];
@@ -164,13 +166,24 @@ namespace OpenRA.Mods.RA.Missions
 			airfield2 = actors["Airfield2"];
 			airfield3 = actors["Airfield3"];
 			airfields = new[] { airfield1, airfield2, airfield3 };
+
 			Game.MoveViewport(startJeep.Location.ToFloat2());
-			Media.PlayFMVFullscreen(w, "soviet1.vqa", () =>
+
+			if (MissionUtils.IsSingleClient(world))
 			{
-				MissionUtils.PlayMissionMusic();
+				Media.PlayFMVFullscreen(w, "soviet1.vqa", () =>
+				{
+					LandYaks();
+					MoveJeep();
+					MissionUtils.PlayMissionMusic();
+				});
+			}
+			else
+			{
 				LandYaks();
 				MoveJeep();
-			});
+				MissionUtils.PlayMissionMusic();
+			}
 		}
 	}
 
