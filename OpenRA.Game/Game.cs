@@ -241,6 +241,8 @@ namespace OpenRA
 
 		internal static void Initialize(Arguments args)
 		{
+			var WillNeverBeUsed = true;
+
 			Console.WriteLine("Platform is {0}", Platform.CurrentPlatform);
 
 			AppDomain.CurrentDomain.AssemblyResolve += FileSystem.ResolveAssembly;
