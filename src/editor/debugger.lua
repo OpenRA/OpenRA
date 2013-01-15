@@ -109,7 +109,9 @@ local function updateStackSync()
                           or " (defined in "..call[2]..")"))
       local callitem = stackCtrl:AppendItem(root, text, 0)
       for name,val in pairs(frame[2]) do
-        local value, comment = val[1], val[2]
+        -- comment can be not necessarily a string for tables with metatables
+        -- that provide its own __tostring method
+        local value, comment = val[1], tostring(val[2])
         local text = ("%s = %s%s"):
           format(name, mobdebug.line(value, params),
                  simpleType[type(value)] and "" or ("  --[["..comment.."]]"))
