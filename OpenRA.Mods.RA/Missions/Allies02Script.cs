@@ -517,6 +517,7 @@ namespace OpenRA.Mods.RA.Missions
 		public void WorldLoaded(World w)
 		{
 			world = w;
+
 			allies1 = w.Players.Single(p => p.InternalName == "Allies1");
 			allies2 = w.Players.SingleOrDefault(p => p.InternalName == "Allies2");
 			if (allies2 == null)
@@ -525,6 +526,7 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			allies = w.Players.Single(p => p.InternalName == "Allies");
 			soviets = w.Players.Single(p => p.InternalName == "Soviets");
+
 			var actors = w.WorldActor.Trait<SpawnMapActors>().Actors;
 			sam1 = actors["SAM1"];
 			sam2 = actors["SAM2"];
@@ -555,12 +557,15 @@ namespace OpenRA.Mods.RA.Missions
 			sovietTownAttackPoint2 = actors["SovietTownAttackPoint2"];
 			yakEntryPoint = actors["YakEntryPoint"];
 			yakAttackPoint = actors["YakAttackPoint"];
+
 			SetupAlliedBase(actors);
+
 			var shroud = w.WorldActor.Trait<Shroud>();
 			shroud.Explore(w, sam1.Location, 2);
 			shroud.Explore(w, sam2.Location, 2);
 			shroud.Explore(w, sam3.Location, 2);
 			shroud.Explore(w, sam4.Location, 2);
+
 			if (w.LocalPlayer == null || w.LocalPlayer == allies1)
 			{
 				Game.MoveViewport(chinookHusk.Location.ToFloat2());
@@ -569,6 +574,7 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				Game.MoveViewport(allies2BasePoint.Location.ToFloat2());
 			}
+
 			MissionUtils.PlayMissionMusic();
 		}
 

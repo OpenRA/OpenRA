@@ -143,6 +143,11 @@ namespace OpenRA.Mods.RA.Missions
 			return world.Actors.FirstOrDefault(a => a.HasTrait<Cargo>() && a.Trait<Cargo>().Passengers.Contains(actor));
 		}
 
+		public static bool IsSingleClient(World world)
+		{
+			return world.LobbyInfo.Clients.Count() == 1;
+		}
+
 		public static void PlayMissionMusic()
 		{
 			if (!Rules.InstalledMusic.Any()) return;
