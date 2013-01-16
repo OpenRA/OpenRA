@@ -233,6 +233,11 @@ local function createenv ()
     end
   end
 
+  local os = { exit = function()
+    ide.frame:AddPendingEvent(wx.wxCommandEvent(
+      wx.wxEVT_COMMAND_MENU_SELECTED, ID_EXIT))
+  end }
+  env.os = setmetatable(os, {__index = _G.os})
   env.print = DisplayShell
   env.dofile = dofile
   env.loadfile = loadfile
