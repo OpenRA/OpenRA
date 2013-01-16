@@ -57,45 +57,53 @@ namespace OpenRA.Widgets
 
 			var HasBox = (SelectionBox != null) ? true : false;
 			var MultiClick = (mi.MultiTapCount >= 2) ? true : false;
-			var NothingSelected = !world.Selection.Actors.Any();
-			
+
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Down)
 			{
 				if (!TakeFocus(mi))
 					return false;
 				
 				dragStart = dragEnd = xy;
-				
-				if (UseClassicMouseStyle)
-						ApplyOrders(world, xy, mi);
+
+				//place buildings
+				if (!UseClassicMouseStyle || (UseClassicMouseStyle && !world.Selection.Actors.Any()) )
+					ApplyOrders(world, xy, mi);
 			}
 			
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Move)
 				dragEnd = xy;
-			
+
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Up)
 			{
+				if (UseClassicMouseStyle && Focused)
+				{
+					//order units around
+					if (!HasBox && world.Selection.Actors.Any() && !MultiClick)
+					{
+						ApplyOrders(world, xy, mi);
+						LoseFocus(mi);
+						return true;
+					}
+				}
+
 				if (world.OrderGenerator is UnitOrderGenerator)
 				{
-					if ((UseClassicMouseStyle && NothingSelected) || (!UseClassicMouseStyle))
+					if (MultiClick)
 					{
-						if (MultiClick)
-						{
-							var unit = SelectActorsInBox(world, xy, xy, _ => true).FirstOrDefault();
+						var unit = SelectActorsInBox(world, xy, xy, _ => true).FirstOrDefault();
+
+						var visibleWorld = Game.viewport.ViewBounds(world);
+						var topLeft = Game.viewport.ViewToWorldPx(new int2(visibleWorld.Left, visibleWorld.Top));
+						var bottomRight = Game.viewport.ViewToWorldPx(new int2(visibleWorld.Right, visibleWorld.Bottom));
+						var newSelection2= SelectActorsInBox(world, topLeft, bottomRight, 
+						                                      a => unit != null && a.Info.Name == unit.Info.Name && a.Owner == unit.Owner);
 							
-							var visibleWorld = Game.viewport.ViewBounds(world);
-							var topLeft = Game.viewport.ViewToWorldPx(new int2(visibleWorld.Left, visibleWorld.Top));
-							var bottomRight = Game.viewport.ViewToWorldPx(new int2(visibleWorld.Right, visibleWorld.Bottom));
-							var newSelection2 = SelectActorsInBox(world, topLeft, bottomRight, 
-							                                      a => unit != null && a.Info.Name == unit.Info.Name && a.Owner == unit.Owner);
-							
-							world.Selection.Combine(world, newSelection2, true, false);
-						}
-						else
-						{
-							var newSelection = SelectActorsInBox(world, dragStart, xy, _ => true);
-							world.Selection.Combine(world, newSelection, mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == xy);
-						}
+						world.Selection.Combine(world, newSelection2, true, false);
+					}
+					else
+					{
+						var newSelection = SelectActorsInBox(world, dragStart, xy, _ => true);
+						world.Selection.Combine(world, newSelection, mi.Modifiers.HasModifier(Modifiers.Shift), dragStart == xy);
 					}
 				}
 				
@@ -110,7 +118,8 @@ namespace OpenRA.Widgets
 			{
 				if (UseClassicMouseStyle)
 					world.Selection.Clear();
-				else if (!HasBox)	// don't issue orders while selecting
+
+				if (!HasBox)	// don't issue orders while selecting
 					ApplyOrders(world, xy, mi);
 			}
 			
