@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -134,23 +134,23 @@ namespace OpenRA.Network
 
 		void OutOfSync(int frame, int index)
 		{
-			var orders = frameData.OrdersForFrame( world, frame );
+			var orders = frameData.OrdersForFrame(world, frame);
 
 			// Invalid index
 			if (index >= orders.Count())
 				OutOfSync(frame);
 
-			throw new InvalidOperationException("Out of sync in frame {0}.\n {1}".F(frame, orders.ElementAt(index).Order.ToString()));
+			throw new InvalidOperationException("Out of sync in frame {0}.\n {1}\n Compare syncreport.log with other players.".F(frame, orders.ElementAt(index).Order.ToString()));
 		}
 
 		void OutOfSync(int frame)
 		{
-			throw new InvalidOperationException("Out of sync in frame {0}.\n".F(frame));
+			throw new InvalidOperationException("Out of sync in frame {0}.\n Compare syncreport.log with other players.".F(frame));
 		}
 
 		void OutOfSync(int frame, string blame)
 		{
-			throw new InvalidOperationException("Out of sync in frame {0}: Blame {1}.\n".F(frame, blame));
+			throw new InvalidOperationException("Out of sync in frame {0}: Blame {1}.\n Compare syncreport.log with other players.".F(frame, blame));
 		}
 
 		public bool IsReadyForNextFrame
