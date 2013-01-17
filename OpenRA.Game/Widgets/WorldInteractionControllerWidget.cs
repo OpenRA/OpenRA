@@ -156,7 +156,7 @@ namespace OpenRA.Widgets
 				var mi = new MouseInput
 				{
 					Location = pos,
-					Button = Game.Settings.Game.UseClassicMouseStyle ? MouseButton.Left : MouseButton.Right,
+					Button = Game.mouseButtonPreference.Action,
 					Modifiers = Game.GetModifierKeys()
 				};
 
