@@ -29,6 +29,8 @@ namespace OpenRA
 	{
 		public static int CellSize { get { return modData.Manifest.TileSize; } }
 
+		public static MouseButtonPreference mouseButtonPreference = new MouseButtonPreference();
+
 		public static ModData modData;
 		static WorldRenderer worldRenderer;
 
