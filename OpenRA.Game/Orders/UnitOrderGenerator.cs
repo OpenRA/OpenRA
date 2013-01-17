@@ -69,15 +69,13 @@ namespace OpenRA.Orders
 
 		static UnitOrderResult OrderForUnit(Actor self, CPos xy, MouseInput mi, Actor underCursor)
 		{
-			var ActionMouseButton = (Game.Settings.Game.UseClassicMouseStyle) ? MouseButton.Left : MouseButton.Right;
-
 			if (self.Owner != self.World.LocalPlayer)
 				return null;
 
 			if (self.Destroyed)
 				return null;
 
-			if (mi.Button == ActionMouseButton)
+			if (mi.Button == Game.mouseButtonPreference.Action)
 			{
 				foreach( var o in self.TraitsImplementing<IIssueOrder>()
 					.SelectMany(trait => trait.Orders

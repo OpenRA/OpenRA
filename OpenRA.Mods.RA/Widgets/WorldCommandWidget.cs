@@ -86,11 +86,9 @@ namespace OpenRA.Mods.RA.Widgets
 			var actors = World.Selection.Actors
 				.Where(a => a.Owner == World.LocalPlayer).ToArray();
 
-			var ActionMouseButton = (Game.Settings.Game.UseClassicMouseStyle) ? MouseButton.Left : MouseButton.Right;
-
 			if (actors.Length > 0)
 				World.OrderGenerator = new GenericSelectTarget(actors, "AttackMove",
-				                                               "attackmove", ActionMouseButton);
+				                                               "attackmove", Game.mouseButtonPreference.Action);
 
 			return true;
 		}
