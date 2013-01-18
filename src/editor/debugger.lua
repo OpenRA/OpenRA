@@ -32,6 +32,8 @@ local CURRENT_LINE_MARKER_VALUE = 2^CURRENT_LINE_MARKER
 local BREAKPOINT_MARKER = StylesGetMarker("breakpoint")
 local BREAKPOINT_MARKER_VALUE = 2^BREAKPOINT_MARKER
 
+local function q(s) return s:gsub('([%(%)%.%%%+%-%*%?%[%^%$%]])','%%%1') end
+
 local function updateWatchesSync(num)
   local watchCtrl = debugger.watchCtrl
   if watchCtrl and debugger.server and not debugger.running
@@ -172,7 +174,7 @@ local function killClient()
   end
 end
 
-local function activateDocument(file, line)
+local function activateDocument(file, line, skipauto)
   if not file then return end
 
   if not wx.wxIsAbsolutePath(file) and debugger.basedir then
@@ -199,7 +201,7 @@ local function activateDocument(file, line)
     end
   end
 
-  if not activated and not indebugger and not debugger.loop
+  if not (activated or indebugger or debugger.loop or skipauto)
   and ide.config.editor.autoactivate then
     -- found file, but can't activate yet (because this part may be executed
     -- in a different co-routine), so schedule pending activation.
@@ -383,16 +385,52 @@ debugger.listen = function()
         -- with start() method, which can't load new files
         -- if file and line are set, this indicates option #2
         if file and line then
-          local activated = activateDocument(file, line)
+          local activated = activateDocument(file, line, true)
 
           -- if not found, check using full file path and reset basedir
           if not activated and not wx.wxIsAbsolutePath(file) then
-            activated = activateDocument(startpath..file, line)
+            activated = activateDocument(startpath..file, line, true)
             if activated then
               debugger.basedir = startpath
               debugger.handle("basedir " .. debugger.basedir)
               -- reset breakpoints again as basedir has changed
               reSetBreakpoints()
+            end
+          end
+
+          -- if not found and the files doesn't exist, it may be
+          -- a remote call; try to map it to the project folder
+          if not activated and not wx.wxFileName(file):FileExists() then
+            -- file is /foo/bar/my.lua; basedir is d:\local\path\
+            -- check for d:\local\path\my.lua, d:\local\path\bar\my.lua, ...
+            -- wxwidgets on Windows handles \\ and / as separators, but on OSX
+            -- and Linux it only handles 'native' separator;
+            -- need to translate for GetDirs to work.
+            local file = file:gsub("\\", "/")
+            local parts = wx.wxFileName(file):GetDirs()
+            local name = wx.wxFileName(file):GetFullName()
+
+            -- find the longest remote path that can be mapped locally
+            local longestpath, remotedir
+            while true do
+              local mapped = GetFullPathIfExists(basedir, name)
+              if mapped then
+                longestpath = mapped
+                remotedir = file:gsub(q(name):gsub("/", ".").."$", "")
+              end
+              if #parts == 0 then break end
+              name = table.remove(parts, #parts) .. "/" .. name
+            end
+
+            -- if found a local mapping under basedir
+            activated = longestpath and activateDocument(longestpath, line, true)
+            if activated then
+              -- find remote basedir by removing the tail from remote file
+              debugger.handle("basedir " .. debugger.basedir .. "\t" .. remotedir)
+              -- reset breakpoints again as remote basedir has changed
+              reSetBreakpoints()
+              DisplayOutputLn(TR("Mapped remote request for '%s' to '%s'.")
+                :format(remotedir, debugger.basedir))
             end
           end
 
@@ -883,7 +921,6 @@ end
 
 -- scratchpad functions
 
-local function q(s) return s:gsub('([%(%)%.%%%+%-%*%?%[%^%$%]])','%%%1') end
 function DebuggerRefreshScratchpad()
   if debugger.scratchpad and debugger.scratchpad.updated and not debugger.scratchpad.paused then
 

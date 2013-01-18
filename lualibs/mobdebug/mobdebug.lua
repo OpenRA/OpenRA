@@ -1,12 +1,12 @@
 --
--- MobDebug 0.514
+-- MobDebug 0.515
 -- Copyright 2011-12 Paul Kulchenko
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
 --
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.514,
+  _VERSION = 0.515,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = os and os.getenv and os.getenv("MOBDEBUG_PORT") or 8172,
@@ -342,6 +342,17 @@ return { _NAME = n, _COPYRIGHT = c, _DESCRIPTION = d, _VERSION = v, serialize = 
   block = function(a, opts) return s(a, merge({indent = '  ', sortkeys = true, comment = true}, opts)) end }
 end)() ---- end of Serpent module
 
+local function removebasedir(path, basedir)
+  if iswindows then
+    -- check if the lowercased path matches the basedir
+    -- if so, return substring of the original path (to not lowercase it)
+    return path:lower():find('^'..q(basedir:lower()))
+      and path:sub(#basedir+1) or path
+  else
+    return string.gsub(path, '^'..q(basedir), '')
+  end
+end
+
 local function stack(start)
   local function vars(f)
     local func = debug.getinfo(f, "f").func
@@ -368,8 +379,16 @@ local function stack(start)
   for i = (start or 0), 100 do
     local source = debug.getinfo(i, "Snl")
     if not source then break end
+
+    -- remove basedir from source
+    local src = source.source
+    if src:find("@") == 1 then
+      src = src:sub(2):gsub("\\", "/")
+      if src:find("%./") == 1 then src = src:sub(3) end
+    end
+
     table.insert(stack, {
-      {source.name, source.source, source.linedefined,
+      {source.name, removebasedir(src, basedir), source.linedefined,
        source.currentline, source.what, source.namewhat, source.short_src},
       vars(i+1)})
     if source.what == 'main' then break end
@@ -378,13 +397,15 @@ local function stack(start)
 end
 
 local function set_breakpoint(file, line)
-  if file == '-' and lastfile then file = lastfile end
+  if file == '-' and lastfile then file = lastfile
+  elseif iswindows then file = string.lower(file) end
   if not breakpoints[file] then breakpoints[file] = {} end
   breakpoints[file][line] = true  
 end
 
 local function remove_breakpoint(file, line)
-  if file == '-' and lastfile then file = lastfile end
+  if file == '-' and lastfile then file = lastfile
+  elseif iswindows then file = string.lower(file) end
   if breakpoints[file] then breakpoints[file][line] = nil end
 end
 
@@ -541,15 +562,21 @@ local function debug_hook(event, line)
     if (lastsource ~= caller.source) then
       lastsource = caller.source
       file = lastsource
-      if string.find(file, "@") == 1 then file = string.sub(file, 2) end
-      if iswindows then file = string.lower(file) end
-      file = string.gsub(file, "\\", "/") -- convert slash
-      -- remove references to the current folder (./)
-      if string.find(file, "%./") == 1 then file = string.sub(file, 3)
-      else file = string.gsub(file, '^'..q(basedir), '') end
-      -- fix filenames for loaded strings that may contain scripts with newlines
-      if string.find(file, "\n") then
-        file = string.sub(string.gsub(file, "\n", ' '), 1, 32) -- limit to 32 chars
+      if file:find("@") == 1 then
+        file = file:sub(2):gsub("\\", "/")
+        -- need this conversion to be applied to relative and absolute
+        -- file names as you may write "require 'Foo'" on Windows to
+        -- load "foo.lua" (as it's case insensitive) and breakpoints
+        -- set on foo.lua will not work if not converted to the same case.
+        if iswindows then file = string.lower(file) end
+        if file:find("%./") == 1 then file = file:sub(3)
+        else file = file:gsub('^'..q(basedir), '') end
+      end
+
+      -- fix filenames for loaded strings that may contain scripts with newlines;
+      -- some filesystems may allow "\n" in filenames, which is not supported here.
+      if file:find("\n") then
+        file = file:gsub("\n", ' '):sub(1, 32) -- limit to 32 chars
       end
 
       -- set to true if we got here; this only needs to be done once per
@@ -825,7 +852,7 @@ local function debugger_loop(sfile, sline)
     elseif command == "BASEDIR" then
       local _, _, dir = string.find(line, "^[A-Z]+%s+(.+)%s*$")
       if dir then
-        basedir = dir
+        basedir = iswindows and string.lower(dir) or dir
         server:send("200 OK\n")
       else
         server:send("400 Bad Request\n")
@@ -1083,12 +1110,11 @@ local function handle(params, client, options)
   elseif command == "setb" then
     _, _, _, file, line = string.find(params, "^([a-z]+)%s+(.-)%s+(%d+)%s*$")
     if file and line then
-      if iswindows then file = string.lower(file) end
       file = string.gsub(file, "\\", "/") -- convert slash
-      file = string.gsub(file, '^'..q(basedir), '') -- remove basedir
-      if not breakpoints[file] then breakpoints[file] = {} end
+      file = removebasedir(file, basedir)
       client:send("SETB " .. file .. " " .. line .. "\n")
       if client:receive() == "200 OK" then 
+        if not breakpoints[file] then breakpoints[file] = {} end
         breakpoints[file][line] = true
       else
         print("Error: breakpoint not inserted")
@@ -1120,13 +1146,11 @@ local function handle(params, client, options)
   elseif command == "delb" then
     _, _, _, file, line = string.find(params, "^([a-z]+)%s+(.-)%s+(%d+)%s*$")
     if file and line then
-      if iswindows then file = string.lower(file) end
       file = string.gsub(file, "\\", "/") -- convert slash
-      file = string.gsub(file, '^'..q(basedir), '') -- remove basedir
-      if not breakpoints[file] then breakpoints[file] = {} end
+      file = removebasedir(file, basedir)
       client:send("DELB " .. file .. " " .. line .. "\n")
       if client:receive() == "200 OK" then 
-        breakpoints[file][line] = nil
+        if breakpoints[file] then breakpoints[file][line] = nil end
       else
         print("Error: breakpoint not removed")
       end
@@ -1199,7 +1223,7 @@ local function handle(params, client, options)
         file:close()
 
         local file = string.gsub(exp, "\\", "/") -- convert slash
-        file = string.gsub(file, '^'..q(basedir), '') -- remove basedir
+        file = removebasedir(file, basedir)
         client:send("LOAD " .. #lines .. " " .. file .. "\n")
         client:send(lines)
       end
@@ -1289,12 +1313,6 @@ local function handle(params, client, options)
         return nil, nil, stack
       end
       for _,frame in ipairs(stack) do
-        -- remove basedir from short_src or source
-        local src = string.gsub(frame[1][2], "\\", "/") -- convert slash
-        if string.find(src, "@") == 1 then src = string.sub(src, 2) end
-        if string.find(src, "%./") == 1 then src = string.sub(src, 3) end
-        if iswindows then src = string.lower(src) end
-        frame[1][2] = string.gsub(src, '^'..q(basedir), '') -- remove basedir
         print(serpent.line(frame[1], {comment = false}))
       end
       return stack
@@ -1327,12 +1345,14 @@ local function handle(params, client, options)
   elseif command == "basedir" then
     local _, _, dir = string.find(params, "^[a-z]+%s+(.+)$")
     if dir then
-      if iswindows then dir = string.lower(dir) end
       dir = string.gsub(dir, "\\", "/") -- convert slash
       if not string.find(dir, "/$") then dir = dir .. "/" end
+
+      local remdir = dir:match("\t(.+)")
+      if remdir then dir = dir:gsub("/?\t.+", "/") end
       basedir = dir
 
-      client:send("BASEDIR "..dir.."\n")
+      client:send("BASEDIR "..(remdir or dir).."\n")
       local resp = client:receive()
       local _, _, status = string.find(resp, "^(%d+)%s+%w+%s*$")
       if status == "200" then
