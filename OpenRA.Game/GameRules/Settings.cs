@@ -120,6 +120,37 @@ namespace OpenRA.GameRules
 		public string ConnectTo = "";
 	}
 
+	public class KeySettings
+	{
+		public Modifiers ModifierToBuild = Modifiers.None;
+		public Modifiers ModifierToCycle = Modifiers.Alt;
+		public Modifiers ModifierToSelectTab = Modifiers.Ctrl;
+
+		public string PauseKey = "f3";
+
+		public string FocusBaseKey = "backspace";
+		public string FocusLastEventKey = "space";
+		public string SellKey = "v";
+		public string PowerDownKey = "b";
+		public string RepairKey = "n";
+
+		public string AttackMoveKey = "q";
+		public string StopKey = "w";
+		public string ScatterKey = "e";
+		public string StanceCycleKey = "r";
+		public string DeployKey = "t";
+
+		public string BuildingsTabKey = "g";
+		public string DefenseTabKey = "x";
+		public string VehicleTabKey = "s";
+		public string InfantryTabKey = "a";
+		public string ShipTabKey = "d";
+		public string PlaneTabKey = "f";
+
+		public string PlaceNormalBuildingKey = "f1";
+		public string PlaceDefenseBuildingKey = "f2";
+	}
+
 	public class Settings
 	{
 		string SettingsFile;
@@ -129,6 +160,7 @@ namespace OpenRA.GameRules
 		public SoundSettings Sound = new SoundSettings();
 		public GraphicSettings Graphics = new GraphicSettings();
 		public ServerSettings Server = new ServerSettings();
+		public KeySettings Keys = new KeySettings();
 		public DebugSettings Debug = new DebugSettings();
 
 		public Dictionary<string, object> Sections;
@@ -143,6 +175,7 @@ namespace OpenRA.GameRules
 				{"Sound", Sound},
 				{"Graphics", Graphics},
 				{"Server", Server},
+				{"Keys", Keys},
 				{"Debug", Debug},
 			};
 

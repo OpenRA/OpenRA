@@ -167,14 +167,16 @@ namespace OpenRA.Widgets
 
 		public override bool HandleKeyPress(KeyInput e)
 		{
+			var KeyConfig = Game.Settings.Keys;
+
 			if (e.Event == KeyInputEvent.Down)
 			{
 				if (e.KeyName.Length == 1 && char.IsDigit(e.KeyName[0]))
 				{
-					world.Selection.DoControlGroup(world, e.KeyName[0] - '0', e.Modifiers);
+					world.Selection.DoControlGroup(world, e.KeyName[0] - '0', e.Modifiers, e.MultiTapCount);
 					return true;
 				}
-				else if (e.KeyName == "pause" || e.KeyName == "f3")
+				else if (e.KeyName == "pause" || e.KeyName == KeyConfig.PauseKey)
 				{
 					world.IssueOrder(Order.PauseRequest());
 				}

@@ -30,6 +30,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			tabs.Get<ButtonWidget>("GENERAL").OnClick = () => FlipToTab("GENERAL_PANE");
 			tabs.Get<ButtonWidget>("AUDIO").OnClick = () => FlipToTab("AUDIO_PANE");
 			tabs.Get<ButtonWidget>("DISPLAY").OnClick = () => FlipToTab("DISPLAY_PANE");
+			tabs.Get<ButtonWidget>("KEYS").OnClick = () => FlipToTab("KEYS_PANE");
 			tabs.Get<ButtonWidget>("DEBUG").OnClick = () => FlipToTab("DEBUG_PANE");
 			FlipToTab("GENERAL_PANE");
 
@@ -59,7 +60,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var inversescroll = general.Get<CheckboxWidget>("INVERSE_SCROLL");
 			inversescroll.IsChecked = () => Game.Settings.Game.MouseScroll == MouseScrollType.Inverted;
-			inversescroll.OnClick = () => Game.Settings.Game.MouseScroll = (Game.Settings.Game.MouseScroll == MouseScrollType.Inverted) ? MouseScrollType.Standard : MouseScrollType.Inverted;
+			inversescroll.OnClick = () => Game.Settings.Game.MouseScroll = (Game.Settings.Game.MouseScroll == MouseScrollType.Inverted) ?
+												MouseScrollType.Standard : MouseScrollType.Inverted;
 
 			var teamchatCheckbox = general.Get<CheckboxWidget>("TEAMCHAT_TOGGLE");
 			teamchatCheckbox.IsChecked = () => Game.Settings.Game.TeamChatToggle;
@@ -119,6 +121,162 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				gs.PixelDouble ^= true;
 				Game.viewport.Zoom = gs.PixelDouble ? 2 : 1;
 			};
+
+			// Keys
+			var keys = bg.Get("KEYS_PANE");
+
+			var keyConfig = Game.Settings.Keys;
+
+			var modifierToBuildDropdown = keys.Get<DropDownButtonWidget>("MODIFIERTOBUILD_DROPDOWN");
+			modifierToBuildDropdown.OnMouseDown = _
+				=> ShowHotkeyModifierDropdown(modifierToBuildDropdown, keyConfig.ModifierToBuild, m => keyConfig.ModifierToBuild = m);
+			modifierToBuildDropdown.GetText = ()
+				=> keyConfig.ModifierToBuild == Modifiers.None ? "<Hotkey>"
+					: keyConfig.ModifierToBuild == Modifiers.Alt ? "Alt + <Hotkey>"
+					: "Ctrl + <Hotkey>";
+
+			var modifierToCycleDropdown = keys.Get<DropDownButtonWidget>("MODIFIERTOCYCLE_DROPDOWN");
+			modifierToCycleDropdown.OnMouseDown = _
+				=> ShowHotkeyModifierDropdown(modifierToCycleDropdown, keyConfig.ModifierToCycle, m => keyConfig.ModifierToCycle = m);
+			modifierToCycleDropdown.GetText = ()
+				=> keyConfig.ModifierToCycle == Modifiers.None ? "<Hotkey>"
+					: keyConfig.ModifierToCycle == Modifiers.Alt ? "Alt + <Hotkey>"
+					: "Ctrl + <Hotkey>";
+
+			var modifierToSelectTabDropdown = keys.Get<DropDownButtonWidget>("MODIFIERTOSELECTTAB_DROPDOWN");
+			modifierToSelectTabDropdown.OnMouseDown = _
+				=> ShowHotkeyModifierDropdown(modifierToSelectTabDropdown, keyConfig.ModifierToSelectTab,
+								m => keyConfig.ModifierToSelectTab = m);
+			modifierToSelectTabDropdown.GetText = ()
+				=> keyConfig.ModifierToSelectTab == Modifiers.None ? "<Hotkey>"
+					: keyConfig.ModifierToSelectTab == Modifiers.Alt ? "Alt + <Hotkey>"
+					: "Ctrl + <Hotkey>";
+
+			var specialHotkeyList = keys.Get<ScrollPanelWidget>("SPECIALHOTKEY_LIST");
+
+			var specialHotkeyTemplate = specialHotkeyList.Get<ScrollItemWidget>("SPECIALHOTKEY_TEMPLATE");
+
+			var pauseKey = ScrollItemWidget.Setup(specialHotkeyTemplate, () => false, () => {});
+			pauseKey.Get<LabelWidget>("FUNCTION").GetText = () => "Pause the game:";
+			SetupKeyBinding(pauseKey.Get<TextFieldWidget>("HOTKEY"),
+			() => keyConfig.PauseKey, k => keyConfig.PauseKey = k);
+			specialHotkeyList.AddChild(pauseKey);
+
+			var viewportToBase = ScrollItemWidget.Setup(specialHotkeyTemplate, () => false, () => {});
+			viewportToBase.Get<LabelWidget>("FUNCTION").GetText = () => "Move Viewport to Base:";
+			SetupKeyBinding(viewportToBase.Get<TextFieldWidget>("HOTKEY"),
+			() => keyConfig.FocusBaseKey, k => keyConfig.FocusBaseKey = k);
+			specialHotkeyList.AddChild(viewportToBase);
+
+			var lastEventKey = ScrollItemWidget.Setup(specialHotkeyTemplate, () => false, () => {});
+			lastEventKey.Get<LabelWidget>("FUNCTION").GetText = () => "Move Viewport to Last Event:";
+			SetupKeyBinding(lastEventKey.Get<TextFieldWidget>("HOTKEY"),
+			() => keyConfig.FocusLastEventKey, k => keyConfig.FocusLastEventKey = k);
+			specialHotkeyList.AddChild(lastEventKey);
+
+			var sellKey = ScrollItemWidget.Setup(specialHotkeyTemplate, () => false, () => {});
+			sellKey.Get<LabelWidget>("FUNCTION").GetText = () => "Switch to Sell-Cursor:";
+			SetupKeyBinding(sellKey.Get<TextFieldWidget>("HOTKEY"),
+			() => keyConfig.SellKey, k => keyConfig.SellKey = k);
+			specialHotkeyList.AddChild(sellKey);
+
+			var powerDownKey = ScrollItemWidget.Setup(specialHotkeyTemplate, () => false, () => {});
+			powerDownKey.Get<LabelWidget>("FUNCTION").GetText = () => "Switch to Power-Down-Cursor:";
+			SetupKeyBinding(powerDownKey.Get<TextFieldWidget>("HOTKEY"),
+			() => keyConfig.PowerDownKey, k => keyConfig.PowerDownKey = k);
+			specialHotkeyList.AddChild(powerDownKey);
+
+			var repairKey = ScrollItemWidget.Setup(specialHotkeyTemplate, () => false, () => {});
+			repairKey.Get<LabelWidget>("FUNCTION").GetText = () => "Switch to Repair-Cursor:";
+			SetupKeyBinding(repairKey.Get<TextFieldWidget>("HOTKEY"),
+			() => keyConfig.RepairKey, k => keyConfig.RepairKey = k);
+			specialHotkeyList.AddChild(repairKey);
+
+			var unitCommandHotkeyList = keys.Get<ScrollPanelWidget>("UNITCOMMANDHOTKEY_LIST");
+
+			var unitCommandHotkeyTemplate = unitCommandHotkeyList.Get<ScrollItemWidget>("UNITCOMMANDHOTKEY_TEMPLATE");
+
+			var attackKey = ScrollItemWidget.Setup(unitCommandHotkeyTemplate, () => false, () => {});
+			attackKey.Get<LabelWidget>("FUNCTION").GetText = () => "Attack Move:";
+			SetupKeyBinding(attackKey.Get<TextFieldWidget>("HOTKEY"),
+			() => keyConfig.AttackMoveKey, k => keyConfig.AttackMoveKey = k);
+			unitCommandHotkeyList.AddChild(attackKey);
+
+			var stopKey = ScrollItemWidget.Setup(unitCommandHotkeyTemplate, () => false, () => {});
+			stopKey.Get<LabelWidget>("FUNCTION").GetText = () => "Stop:";
+			SetupKeyBinding(stopKey.Get<TextFieldWidget>("HOTKEY"),
+			() => keyConfig.StopKey, k => keyConfig.StopKey = k);
+			unitCommandHotkeyList.AddChild(stopKey);
+
+			var scatterKey = ScrollItemWidget.Setup(unitCommandHotkeyTemplate, () => false, () => {});
+			scatterKey.Get<LabelWidget>("FUNCTION").GetText = () => "Scatter:";
+			SetupKeyBinding(scatterKey.Get<TextFieldWidget>("HOTKEY"),
+			() => keyConfig.ScatterKey, k => keyConfig.ScatterKey = k);
+			unitCommandHotkeyList.AddChild(scatterKey);
+
+			var stanceCycleKey = ScrollItemWidget.Setup(unitCommandHotkeyTemplate, () => false, () => {});
+			stanceCycleKey.Get<LabelWidget>("FUNCTION").GetText = () => "Cycle Stance:";
+			SetupKeyBinding(stanceCycleKey.Get<TextFieldWidget>("HOTKEY"),
+			() => keyConfig.StanceCycleKey, k => keyConfig.StanceCycleKey = k);
+			unitCommandHotkeyList.AddChild(stanceCycleKey);
+
+			var deployKey = ScrollItemWidget.Setup(unitCommandHotkeyTemplate, () => false, () => {});
+			deployKey.Get<LabelWidget>("FUNCTION").GetText = () => "Deploy:";
+			SetupKeyBinding(deployKey.Get<TextFieldWidget>("HOTKEY"),
+			() => keyConfig.DeployKey, k => keyConfig.DeployKey = k);
+			unitCommandHotkeyList.AddChild(deployKey);
+
+			var productionQueueHotkeyList = keys.Get<ScrollPanelWidget>("PRODUCTIONQUEUEHOTKEY_LIST");
+
+			var productionQueueTemplate = productionQueueHotkeyList.Get<ScrollItemWidget>("PRODUCTIONQUEUEHOTKEY_TEMPLATE");
+
+			var placeNormalBuildingKey = ScrollItemWidget.Setup(productionQueueTemplate, () => false, () => {});
+			placeNormalBuildingKey.Get<LabelWidget>("FUNCTION").GetText = () => "Place Normal-Building:";
+			SetupKeyBinding(placeNormalBuildingKey.Get<TextFieldWidget>("HOTKEY"),
+			() => keyConfig.PlaceNormalBuildingKey, k => keyConfig.PlaceNormalBuildingKey = k);
+			productionQueueHotkeyList.AddChild(placeNormalBuildingKey);
+
+			var placeDefenseBuildingKey = ScrollItemWidget.Setup(productionQueueTemplate, () => false, () => {});
+			placeDefenseBuildingKey.Get<LabelWidget>("FUNCTION").GetText = () => "Place Defense-Building:";
+			SetupKeyBinding(placeDefenseBuildingKey.Get<TextFieldWidget>("HOTKEY"),
+			() => keyConfig.PlaceDefenseBuildingKey, k => keyConfig.PlaceDefenseBuildingKey = k);
+			productionQueueHotkeyList.AddChild(placeDefenseBuildingKey);
+
+			var buildingsTabKey = ScrollItemWidget.Setup(productionQueueTemplate, () => false, () => {});
+			buildingsTabKey.Get<LabelWidget>("FUNCTION").GetText = () => "Select Buildings Tab on Build Palette:";
+			SetupKeyBinding(buildingsTabKey.Get<TextFieldWidget>("HOTKEY"),
+			() => keyConfig.BuildingsTabKey, k => keyConfig.BuildingsTabKey = k);
+			productionQueueHotkeyList.AddChild(buildingsTabKey);
+
+			var defenseTabKey = ScrollItemWidget.Setup(productionQueueTemplate, () => false, () => {});
+			defenseTabKey.Get<LabelWidget>("FUNCTION").GetText = () => "Select Defense Tab on Build Palette:";
+			SetupKeyBinding(defenseTabKey.Get<TextFieldWidget>("HOTKEY"),
+			() => keyConfig.DefenseTabKey, k => keyConfig.DefenseTabKey = k);
+			productionQueueHotkeyList.AddChild(defenseTabKey);
+
+			var vehicleTabKey = ScrollItemWidget.Setup(productionQueueTemplate, () => false, () => {});
+			vehicleTabKey.Get<LabelWidget>("FUNCTION").GetText = () => "Select Vehicles Tab on Build Palette:";
+			SetupKeyBinding(vehicleTabKey.Get<TextFieldWidget>("HOTKEY"),
+			() => keyConfig.VehicleTabKey, k => keyConfig.VehicleTabKey = k);
+			productionQueueHotkeyList.AddChild(vehicleTabKey);
+
+			var infantryTabKey = ScrollItemWidget.Setup(productionQueueTemplate, () => false, () => {});
+			infantryTabKey.Get<LabelWidget>("FUNCTION").GetText = () => "Select Infantry Tab on Build Palette:";
+			SetupKeyBinding(infantryTabKey.Get<TextFieldWidget>("HOTKEY"),
+			() => keyConfig.InfantryTabKey, k => keyConfig.InfantryTabKey = k );
+			productionQueueHotkeyList.AddChild(infantryTabKey);
+
+			var shipTabKey = ScrollItemWidget.Setup(productionQueueTemplate, () => false, () => {});
+			shipTabKey.Get<LabelWidget>("FUNCTION").GetText = () => "Select Ship Tab on Build Palette:";
+			SetupKeyBinding(shipTabKey.Get<TextFieldWidget>("HOTKEY"),
+			() => keyConfig.ShipTabKey, k => keyConfig.ShipTabKey = k );
+			productionQueueHotkeyList.AddChild(shipTabKey);
+
+			var planeTabKey = ScrollItemWidget.Setup(productionQueueTemplate, () => false, () => {});
+			planeTabKey.Get<LabelWidget>("FUNCTION").GetText = () => "Select Plane Tab on Build Palette:";
+			SetupKeyBinding(planeTabKey.Get<TextFieldWidget>("HOTKEY"),
+			() => keyConfig.PlaneTabKey, k => keyConfig.PlaneTabKey = k );
+			productionQueueHotkeyList.AddChild(planeTabKey);
 
 			// Debug
 			var debug = bg.Get("DEBUG_PANE");
@@ -197,6 +355,43 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, setupItem);
 			return true;
+		}
+
+		public static bool ShowHotkeyModifierDropdown(DropDownButtonWidget dropdown, Modifiers m, Action<Modifiers> am)
+		{
+			var options = new Dictionary<string, Modifiers>()
+			{
+				{ "<Hotkey>", Modifiers.None },
+				{ "Alt + <Hotkey>", Modifiers.Alt  },
+				{ "Ctrl + <Hotkey>", Modifiers.Ctrl },
+			};
+
+			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
+			{
+				var item = ScrollItemWidget.Setup(itemTemplate,
+					() => m == options[o],
+					() => am(options[o]));
+				item.Get<LabelWidget>("LABEL").GetText = () => o;
+				return item;
+			};
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys.ToList(), setupItem);
+			return true;
+		}
+
+		void SetupKeyBinding(TextFieldWidget textBox, Func<string> getValue, Action<string> setValue)
+		{
+			textBox.Text = getValue();
+
+			textBox.OnLoseFocus = () =>
+			{
+				textBox.Text.Trim();
+				if (textBox.Text.Length == 0)
+				textBox.Text = getValue();
+				else
+				setValue(textBox.Text);
+			};
+
+			textBox.OnEnterKey = () => { textBox.LoseFocus(); return true; };
 		}
 
 		public static bool ShowRendererDropdown(DropDownButtonWidget dropdown, GraphicSettings s)
