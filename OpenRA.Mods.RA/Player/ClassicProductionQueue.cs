@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.RA.Buildings;
@@ -70,6 +71,31 @@ namespace OpenRA.Mods.RA
 				}
 			}
 			return false;
+		}
+
+		public override int GetBuildTime(String unitString)
+		{
+			var unit = Rules.Info[unitString];
+			if (unit == null || ! unit.Traits.Contains<BuildableInfo>())
+				return 0;
+
+			if (self.World.LobbyInfo.GlobalSettings.AllowCheats && self.Owner.PlayerActor.Trait<DeveloperMode>().FastBuild) return 0;
+			var cost = unit.Traits.Contains<ValuedInfo>() ? unit.Traits.Get<ValuedInfo>().Cost : 0;
+
+			var selfsameBuildings = self.World.ActorsWithTrait<Production>()
+				.Where(p => p.Trait.Info.Produces.Contains(unit.Traits.Get<BuildableInfo>().Queue))
+				.Where(p => p.Actor.Owner == self.Owner).ToArray();
+
+			var speedUp = 1 - (selfsameBuildings.First().Trait.Info.SpeedUp * (selfsameBuildings.Count() - 1))
+				.Clamp(0, selfsameBuildings.First().Trait.Info.MaxSpeedUp);
+
+			var time = cost
+				* Info.BuildSpeed
+				* (25 * 60) /* frames per min */
+				* speedUp
+				 / 1000;
+
+			return (int) time;
 		}
 	}
 }

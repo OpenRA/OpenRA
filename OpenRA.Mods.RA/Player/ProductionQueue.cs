@@ -253,7 +253,7 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		public int GetBuildTime(String unitString)
+		virtual public int GetBuildTime(String unitString)
 		{
 			var unit = Rules.Info[unitString];
 			if (unit == null || ! unit.Traits.Contains<BuildableInfo>())
@@ -263,7 +263,7 @@ namespace OpenRA.Mods.RA
 			var cost = unit.Traits.Contains<ValuedInfo>() ? unit.Traits.Get<ValuedInfo>().Cost : 0;
 			var time = cost
 				* Info.BuildSpeed
-				* (25 * 60) /* frames per min */				/* todo: build acceleration, if we do that */
+				* (25 * 60) /* frames per min */
 				 / 1000;
 
 			if (unit.Traits.Contains<CustomBuildTimeValueInfo>())
