@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -43,105 +43,55 @@ namespace OpenRA.Mods.RA.Widgets
 
 		bool ProcessInput(KeyInput e)
 		{
-			var KeyName = e.KeyName;
-			var KeyConfig = Game.Settings.Keys;
-
 			if (e.Event == KeyInputEvent.Down)
 			{
-				if ((e.Modifiers == KeyConfig.ModifierToCycle) || (e.MultiTapCount >= 2))
+				if (e.Modifiers == Game.Settings.Keys.ModifierToSelectTab)
 				{
-					if (e.MultiTapCount == 2)
-						World.Selection.Clear();
-
-					if (KeyName == KeyConfig.BuildingsTabKey)
-						return CycleProductionBuildings("BaseType", true);
-
-					if (KeyName == KeyConfig.InfantryTabKey)
-						return CycleProductionBuildings("BarracksType", true);
-
-					if (KeyName == KeyConfig.VehicleTabKey)
-						return CycleProductionBuildings("WarFactoryType", true);
-
-					if (KeyName == KeyConfig.ShipTabKey)
-						return CycleProductionBuildings("DockType", true);
-
-					if (KeyName == KeyConfig.PlaneTabKey)
-						return CycleProductionBuildings("AirportType", true);
-
-					if (KeyName == KeyConfig.DefenseTabKey)
-					{
-						CycleProductionBuildings("BaseType", true);
-						Ui.Root.Get<BuildPaletteWidget>("INGAME_BUILD_PALETTE")
-							.SetCurrentTab(World.LocalPlayer.PlayerActor.TraitsImplementing<ProductionQueue>()
-								.FirstOrDefault( q => q.Info.Type == "Defense" ));
-						return true;
-					}
+					if (e.KeyName == Game.Settings.Keys.FirstTabKey)
+						return SwitchToTab(0);
+					if (e.KeyName == Game.Settings.Keys.SecondTabKey)
+						return SwitchToTab(1);
+					if (e.KeyName == Game.Settings.Keys.ThirdTabKey)
+						return SwitchToTab(2);
+					if (e.KeyName == Game.Settings.Keys.FourthTabKey)
+						return SwitchToTab(3);
+					if (e.KeyName == Game.Settings.Keys.FifthTabKey)
+						return SwitchToTab(4);
+					if (e.KeyName == Game.Settings.Keys.SixthTabKey)
+						return SwitchToTab(5);
 				}
 
-				if ((e.Modifiers == KeyConfig.ModifierToSelectTab) && (e.MultiTapCount == 1))
-				{
-					if (KeyName == KeyConfig.BuildingsTabKey)
-						return CycleProductionBuildings("BaseType", false);
+				if (e.KeyName == Game.Settings.Keys.FocusBaseKey)
+					return CycleBases();
 
-					if (KeyName == KeyConfig.InfantryTabKey)
-						return CycleProductionBuildings("BarracksType", false);
-
-					if (KeyName == KeyConfig.VehicleTabKey)
-						return CycleProductionBuildings("WarFactoryType", false);
-
-					if (KeyName == KeyConfig.ShipTabKey)
-						return CycleProductionBuildings("DockType", false);
-
-					if (KeyName == KeyConfig.PlaneTabKey)
-						return CycleProductionBuildings("AirportType", false);
-
-					if (KeyName == KeyConfig.DefenseTabKey)
-					{
-						CycleProductionBuildings("BaseType", false);
-						Ui.Root.Get<BuildPaletteWidget>("INGAME_BUILD_PALETTE")
-							.SetCurrentTab(World.LocalPlayer.PlayerActor.TraitsImplementing<ProductionQueue>()
-								.FirstOrDefault( q => q.Info.Type == "Defense" ));
-						return true;
-					}
-				}
-
-				if (KeyName == KeyConfig.FocusBaseKey)
-					return CycleProductionBuildings("BaseType", true);
-
-				if (KeyName == KeyConfig.FocusLastEventKey)
+				if (e.KeyName == Game.Settings.Keys.FocusLastEventKey)
 					return GotoLastEvent();
 
-				if (KeyName == KeyConfig.SellKey)
+				if (e.KeyName == Game.Settings.Keys.SellKey)
 					return PerformSwitchToSellMode();
 
-				if (KeyName == KeyConfig.PowerDownKey)
+				if (e.KeyName == Game.Settings.Keys.PowerDownKey)
 					return PerformSwitchToPowerDownMode();
 
-				if (KeyName == KeyConfig.RepairKey)
+				if (e.KeyName == Game.Settings.Keys.RepairKey)
 					return PerformSwitchToRepairMode();
-
-				if (KeyName == KeyConfig.PlaceNormalBuildingKey)
-					return PerformPlaceNormalBuilding();
-
-				if (KeyName == KeyConfig.PlaceDefenseBuildingKey)
-					return PerformPlaceDefenseBuilding();
 
 				if (!World.Selection.Actors.Any())	// Put all functions, that are no unit-functions, before this line!
 					return false;
 
-				if ((KeyName == KeyConfig.AttackMoveKey) && unitsSelected())
+				if ((e.KeyName == Game.Settings.Keys.AttackMoveKey) && unitsSelected())
 					return PerformAttackMove();
 
-				if ((KeyName == KeyConfig.StopKey) && unitsSelected())
+				if ((e.KeyName == Game.Settings.Keys.StopKey) && unitsSelected())
 					return PerformStop();
 
-				if ((KeyName == KeyConfig.ScatterKey) && unitsSelected())
+				if ((e.KeyName == Game.Settings.Keys.ScatterKey) && unitsSelected())
 					return PerformScatter();
 
-				if (KeyName == KeyConfig.DeployKey)
+				if (e.KeyName == Game.Settings.Keys.DeployKey)
 					return PerformDeploy();
 
-				if ((KeyName == KeyConfig.StanceCycleKey) && unitsSelected())
+				if ((e.KeyName == Game.Settings.Keys.StanceCycleKey) && unitsSelected())
 					return PerformStanceCycle();
 			}
 
@@ -218,28 +168,23 @@ namespace OpenRA.Mods.RA.Widgets
 			return true;
 		}
 
-		bool CycleProductionBuildings(string DesiredBuildingType, bool ChangeViewport)
+		bool CycleBases()
 		{
-			var buildings = World.ActorsWithTrait<ProductionBuilding>()
-					.Where(a => a.Actor.Owner ==
-				       World.LocalPlayer && a.Actor.Info.Traits.Get<ProductionBuildingInfo>().BuildingType == DesiredBuildingType)
-					.OrderByDescending(a => a.Actor.IsPrimaryBuilding()).ToArray();
+			var bases = World.ActorsWithTrait<BaseBuilding>()
+				.Where( a => a.Actor.Owner == World.LocalPlayer ).ToArray();
+			if (!bases.Any()) return true;
 
-			if (!buildings.Any()) return true;
-
-			var next = buildings
+			var next = bases
 				.Select(b => b.Actor)
 				.SkipWhile(b => !World.Selection.Actors.Contains(b))
 				.Skip(1)
 				.FirstOrDefault();
 
 			if (next == null)
-				next = buildings.Select(b => b.Actor).First();
+				next = bases.Select(b => b.Actor).First();
 
 			World.Selection.Combine(World, new Actor[] { next }, false, true);
-			if (ChangeViewport)
-				Game.viewport.Center(World.Selection.Actors);
-
+			Game.viewport.Center(World.Selection.Actors);
 			return true;
 		}
 
@@ -275,16 +220,6 @@ namespace OpenRA.Mods.RA.Widgets
 		{
 			World.ToggleInputMode<RepairOrderGenerator>();
 			return true;
-		}
-
-		private bool PerformPlaceNormalBuilding()
-		{
-			return SwitchToTab(0);
-		}
-
-		private bool PerformPlaceDefenseBuilding()
-		{
-			return SwitchToTab(1);
 		}
 
 		bool unitsSelected()

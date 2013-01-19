@@ -146,7 +146,7 @@ namespace OpenRA.Mods.RA.Widgets
 		{
 			if (e.Event == KeyInputEvent.Up) return false;
 
-			if (e.KeyName == "tab")
+			if (e.KeyName == Game.Settings.Keys.CycleTabsKey)
 			{
 				TabChange(e.Modifiers.HasModifier(Modifiers.Shift));
 				return true;
@@ -501,10 +501,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 			var toBuild = CurrentQueue.BuildableItems().FirstOrDefault(b => b.Traits.Get<BuildableInfo>().Hotkey == key);
 
-			var KeyConfig = Game.Settings.Keys;
-
-			if ( (toBuild != null)
-				&& (!toBuild.Traits.Contains<ProductionBuildingInfo>() || (e.Modifiers == KeyConfig.ModifierToBuild)) )
+			if (toBuild != null && e.Modifiers == Game.Settings.Keys.ModifierToBuild)
 			{
 				Sound.PlayNotification(null, "Sounds", "TabClick", null);
 				HandleBuildPalette(world, toBuild.Name, true);

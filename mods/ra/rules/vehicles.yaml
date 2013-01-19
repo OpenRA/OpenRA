@@ -295,8 +295,6 @@ MCV:
 	LeavesHusk:
 		HuskActor: MCV.Husk
 	BaseBuilding:
-	ProductionBuilding:
-		BuildingType: BaseType
 
 JEEP:
 	Inherits: ^Vehicle

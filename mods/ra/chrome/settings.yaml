@@ -250,7 +250,7 @@ Background@SETTINGS_MENU:
 				Label@KEYS_MODIFIERTOBUILD_NAME:
 					X:0
 					Y:30
-					Text: Build:
+					Text: Build item on Build Palette:
 				DropDownButton@MODIFIERTOBUILD_DROPDOWN:
 					X:310
 					Y:20
@@ -258,31 +258,20 @@ Background@SETTINGS_MENU:
 					Height:25
 					Font:Regular
 					Text:
-				Label@KEYS_MODIFIERTOCYCLE_NAME:
+				Label@KEYS_MODIFIERTOSELECTTAB_NAME:
 					X:0
 					Y:60
-					Text: Cycle:
-				DropDownButton@MODIFIERTOCYCLE_DROPDOWN:
+					Text: Select corresponding Tab on Build Palette:
+				DropDownButton@MODIFIERTOSELECTTAB_DROPDOWN:
 					X:310
 					Y:50
 					Width:139
 					Height:25
 					Font:Regular
 					Text:
-				Label@KEYS_MODIFIERTOSELECTTAB_NAME:
-					X:0
-					Y:90
-					Text: Select corresponding Tab on Build Palette only:
-				DropDownButton@MODIFIERTOSELECTTAB_DROPDOWN:
-					X:310
-					Y:80
-					Width:139
-					Height:25
-					Font:Regular
-					Text:
 				ScrollPanel@PRODUCTIONQUEUEHOTKEY_LIST:
 					X:0
-					Y:120
+					Y:90
 					Width:449
 					Height:75
 					Children:
@@ -304,12 +293,12 @@ Background@SETTINGS_MENU:
 									MaxLength:16
 				Label@KEYS_SPECIALHOTKEYSHEADLINE:
 					X:0
-					Y:220
+					Y:190
 					Text: Special Hotkeys:
 					Font:Bold
 				ScrollPanel@SPECIALHOTKEY_LIST:
 					X:0
-					Y:240
+					Y:210
 					Width:449
 					Height:75
 					Children:
@@ -331,12 +320,12 @@ Background@SETTINGS_MENU:
 									MaxLength:16
 				Label@KEYS_UNITCOMMANDSHEADLINE:
 					X:0
-					Y:340
+					Y:310
 					Text: Hotkeys for Unit Commands:
 					Font:Bold
 				ScrollPanel@UNITCOMMANDHOTKEY_LIST:
 					X:0
-					Y:360
+					Y:330
 					Width:449
 					Height:75
 					Children:

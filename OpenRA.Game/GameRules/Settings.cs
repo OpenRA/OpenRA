@@ -123,7 +123,6 @@ namespace OpenRA.GameRules
 	public class KeySettings
 	{
 		public Modifiers ModifierToBuild = Modifiers.None;
-		public Modifiers ModifierToCycle = Modifiers.Alt;
 		public Modifiers ModifierToSelectTab = Modifiers.Ctrl;
 
 		public string PauseKey = "f3";
@@ -140,15 +139,14 @@ namespace OpenRA.GameRules
 		public string StanceCycleKey = "r";
 		public string DeployKey = "t";
 
-		public string BuildingsTabKey = "g";
-		public string DefenseTabKey = "x";
-		public string VehicleTabKey = "s";
-		public string InfantryTabKey = "a";
-		public string ShipTabKey = "d";
-		public string PlaneTabKey = "f";
+		public string CycleTabsKey = "tab";
 
-		public string PlaceNormalBuildingKey = "f1";
-		public string PlaceDefenseBuildingKey = "f2";
+		public string FirstTabKey = "g";
+		public string SecondTabKey = "x";
+		public string ThirdTabKey = "s";
+		public string FourthTabKey = "a";
+		public string FifthTabKey = "d";
+		public string SixthTabKey = "f";
 	}
 
 	public class Settings

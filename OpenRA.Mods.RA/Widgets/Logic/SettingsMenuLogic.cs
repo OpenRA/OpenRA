@@ -135,14 +135,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					: keyConfig.ModifierToBuild == Modifiers.Alt ? "Alt + <Hotkey>"
 					: "Ctrl + <Hotkey>";
 
-			var modifierToCycleDropdown = keys.Get<DropDownButtonWidget>("MODIFIERTOCYCLE_DROPDOWN");
-			modifierToCycleDropdown.OnMouseDown = _
-				=> ShowHotkeyModifierDropdown(modifierToCycleDropdown, keyConfig.ModifierToCycle, m => keyConfig.ModifierToCycle = m);
-			modifierToCycleDropdown.GetText = ()
-				=> keyConfig.ModifierToCycle == Modifiers.None ? "<Hotkey>"
-					: keyConfig.ModifierToCycle == Modifiers.Alt ? "Alt + <Hotkey>"
-					: "Ctrl + <Hotkey>";
-
 			var modifierToSelectTabDropdown = keys.Get<DropDownButtonWidget>("MODIFIERTOSELECTTAB_DROPDOWN");
 			modifierToSelectTabDropdown.OnMouseDown = _
 				=> ShowHotkeyModifierDropdown(modifierToSelectTabDropdown, keyConfig.ModifierToSelectTab,
@@ -230,52 +222,46 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var productionQueueTemplate = productionQueueHotkeyList.Get<ScrollItemWidget>("PRODUCTIONQUEUEHOTKEY_TEMPLATE");
 
-			var placeNormalBuildingKey = ScrollItemWidget.Setup(productionQueueTemplate, () => false, () => {});
-			placeNormalBuildingKey.Get<LabelWidget>("FUNCTION").GetText = () => "Place Normal-Building:";
-			SetupKeyBinding(placeNormalBuildingKey.Get<TextFieldWidget>("HOTKEY"),
-			() => keyConfig.PlaceNormalBuildingKey, k => keyConfig.PlaceNormalBuildingKey = k);
-			productionQueueHotkeyList.AddChild(placeNormalBuildingKey);
-
-			var placeDefenseBuildingKey = ScrollItemWidget.Setup(productionQueueTemplate, () => false, () => {});
-			placeDefenseBuildingKey.Get<LabelWidget>("FUNCTION").GetText = () => "Place Defense-Building:";
-			SetupKeyBinding(placeDefenseBuildingKey.Get<TextFieldWidget>("HOTKEY"),
-			() => keyConfig.PlaceDefenseBuildingKey, k => keyConfig.PlaceDefenseBuildingKey = k);
-			productionQueueHotkeyList.AddChild(placeDefenseBuildingKey);
+			var cycleTabsKey = ScrollItemWidget.Setup(productionQueueTemplate, () => false, () => {});
+			cycleTabsKey.Get<LabelWidget>("FUNCTION").GetText = () => "Cycle through build palette:";
+			SetupKeyBinding(cycleTabsKey.Get<TextFieldWidget>("HOTKEY"),
+			() => keyConfig.CycleTabsKey, k => keyConfig.CycleTabsKey = k);
+			productionQueueHotkeyList.AddChild(cycleTabsKey);
 
 			var buildingsTabKey = ScrollItemWidget.Setup(productionQueueTemplate, () => false, () => {});
-			buildingsTabKey.Get<LabelWidget>("FUNCTION").GetText = () => "Select Buildings Tab on Build Palette:";
+			buildingsTabKey.Get<LabelWidget>("FUNCTION").GetText = () => "Select 1st Tab:";
 			SetupKeyBinding(buildingsTabKey.Get<TextFieldWidget>("HOTKEY"),
-			() => keyConfig.BuildingsTabKey, k => keyConfig.BuildingsTabKey = k);
+			() => keyConfig.FirstTabKey, k => keyConfig.FirstTabKey = k);
 			productionQueueHotkeyList.AddChild(buildingsTabKey);
 
 			var defenseTabKey = ScrollItemWidget.Setup(productionQueueTemplate, () => false, () => {});
-			defenseTabKey.Get<LabelWidget>("FUNCTION").GetText = () => "Select Defense Tab on Build Palette:";
+			defenseTabKey.Get<LabelWidget>("FUNCTION").GetText = () => "Select 2nd Tab:";
 			SetupKeyBinding(defenseTabKey.Get<TextFieldWidget>("HOTKEY"),
-			() => keyConfig.DefenseTabKey, k => keyConfig.DefenseTabKey = k);
+			() => keyConfig.SecondTabKey, k => keyConfig.SecondTabKey = k);
 			productionQueueHotkeyList.AddChild(defenseTabKey);
 
 			var vehicleTabKey = ScrollItemWidget.Setup(productionQueueTemplate, () => false, () => {});
-			vehicleTabKey.Get<LabelWidget>("FUNCTION").GetText = () => "Select Vehicles Tab on Build Palette:";
+			vehicleTabKey.Get<LabelWidget>("FUNCTION").GetText = () => "Select 3rd Tab:";
 			SetupKeyBinding(vehicleTabKey.Get<TextFieldWidget>("HOTKEY"),
-			() => keyConfig.VehicleTabKey, k => keyConfig.VehicleTabKey = k);
+			() => keyConfig.ThirdTabKey, k => keyConfig.ThirdTabKey = k);
 			productionQueueHotkeyList.AddChild(vehicleTabKey);
 
 			var infantryTabKey = ScrollItemWidget.Setup(productionQueueTemplate, () => false, () => {});
-			infantryTabKey.Get<LabelWidget>("FUNCTION").GetText = () => "Select Infantry Tab on Build Palette:";
+			infantryTabKey.Get<LabelWidget>("FUNCTION").GetText = () => "Select 4th Tab:";
 			SetupKeyBinding(infantryTabKey.Get<TextFieldWidget>("HOTKEY"),
-			() => keyConfig.InfantryTabKey, k => keyConfig.InfantryTabKey = k );
+			() => keyConfig.FourthTabKey, k => keyConfig.FourthTabKey = k );
 			productionQueueHotkeyList.AddChild(infantryTabKey);
 
 			var shipTabKey = ScrollItemWidget.Setup(productionQueueTemplate, () => false, () => {});
-			shipTabKey.Get<LabelWidget>("FUNCTION").GetText = () => "Select Ship Tab on Build Palette:";
+			shipTabKey.Get<LabelWidget>("FUNCTION").GetText = () => "Select 5th Tab:";
 			SetupKeyBinding(shipTabKey.Get<TextFieldWidget>("HOTKEY"),
-			() => keyConfig.ShipTabKey, k => keyConfig.ShipTabKey = k );
+			() => keyConfig.FifthTabKey, k => keyConfig.FifthTabKey = k );
 			productionQueueHotkeyList.AddChild(shipTabKey);
 
 			var planeTabKey = ScrollItemWidget.Setup(productionQueueTemplate, () => false, () => {});
-			planeTabKey.Get<LabelWidget>("FUNCTION").GetText = () => "Select Plane Tab on Build Palette:";
+			planeTabKey.Get<LabelWidget>("FUNCTION").GetText = () => "Select 6th Tab:";
 			SetupKeyBinding(planeTabKey.Get<TextFieldWidget>("HOTKEY"),
-			() => keyConfig.PlaneTabKey, k => keyConfig.PlaneTabKey = k );
+			() => keyConfig.SixthTabKey, k => keyConfig.SixthTabKey = k );
 			productionQueueHotkeyList.AddChild(planeTabKey);
 
 			// Debug
