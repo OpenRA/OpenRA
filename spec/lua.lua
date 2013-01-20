@@ -33,7 +33,7 @@ return {
   linecomment = "--",
   sep = "%.:",
   isfncall = function(str)
-    return string.find(str, funccall .. "%(")
+    return string.find(str, funccall .. "[%({'\"]")
   end,
   isfndef = isfndef,
   isdecindent = function(str)
