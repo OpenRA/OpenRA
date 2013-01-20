@@ -1898,6 +1898,8 @@ Rules:
 		Allies04TrivialBuilding:
 	OILB:
 		Allies04TrivialBuilding:
+	V01.Sniper:
+		Allies04TrivialBuilding:
 	E7:
 		Buildable:
 			Owner: None
