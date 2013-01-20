@@ -90,7 +90,7 @@ namespace OpenRA.Network
 
 				case "StartGame":
 					{
-						Game.AddChatLine(Color.White, "Server", "The game has started.");
+						Game.Debug("The game has started.");
 						Game.StartGame(orderManager.LobbyInfo.GlobalSettings.Map, false);
 						break;
 					}
@@ -103,7 +103,7 @@ namespace OpenRA.Network
 						{
 							orderManager.GamePaused = !orderManager.GamePaused;
 							var pausetext = "The game is {0} by {1}".F( orderManager.GamePaused ? "paused" : "un-paused", client.Name );
-							Game.AddChatLine(Color.White, "", pausetext);
+							Game.Debug(pausetext);
 						}
 						break;
 					}
