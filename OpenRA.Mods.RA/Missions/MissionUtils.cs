@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Activities;
@@ -168,6 +169,40 @@ namespace OpenRA.Mods.RA.Missions
 				Sound.StopMusic();
 				Game.ConnectionStateChanged -= StopMusic;
 			}
+		}
+
+		public static void CoopMissionAccomplished(World world, string text, params Player[] players)
+		{
+			if (players.First().WinState != WinState.Undefined)
+				return;
+
+			foreach (var player in players)
+				player.WinState = WinState.Won;
+
+			if (text != null)
+				Game.AddChatLine(Color.Blue, "Mission accomplished", text);
+
+			Sound.Play("misnwon1.aud");
+		}
+
+		public static void CoopMissionFailed(World world, string text, params Player[] players)
+		{
+			if (players.First().WinState != WinState.Undefined)
+				return;
+
+			foreach (var player in players)
+			{
+				player.WinState = WinState.Lost;
+				foreach (var actor in world.Actors.Where(a => a.IsInWorld && a.Owner == player && !a.IsDead()))
+				{
+					actor.Kill(actor);
+				}
+			}
+			
+			if (text != null)
+				Game.AddChatLine(Color.Red, "Mission failed", text);
+
+			Sound.Play("misnlst1.aud");
 		}
 	}
 }

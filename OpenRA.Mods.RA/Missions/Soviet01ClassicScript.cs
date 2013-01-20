@@ -62,28 +62,14 @@ namespace OpenRA.Mods.RA.Missions
 		const string BadgerName = "badr";
 		static readonly string[] Reinforcements = { "e1", "e1", "e1", "e2", "e2" };
 
-		void MissionFailed()
+		void MissionAccomplished(string text)
 		{
-			if (ussr.WinState != WinState.Undefined)
-			{
-				return;
-			}
-			ussr.WinState = WinState.Lost;
-			foreach (var actor in world.Actors.Where(a => a.IsInWorld && a.Owner == ussr && !a.IsDead()))
-			{
-				actor.Kill(actor);
-			}
-			Sound.Play("misnlst1.aud");
+			MissionUtils.CoopMissionAccomplished(world, text, ussr);
 		}
 
-		void MissionAccomplished()
+		void MissionFailed(string text)
 		{
-			if (ussr.WinState != WinState.Undefined)
-			{
-				return;
-			}
-			ussr.WinState = WinState.Won;
-			Sound.Play("misnwon1.aud");
+			MissionUtils.CoopMissionFailed(world, text, ussr);
 		}
 
 		public void Tick(Actor self)
@@ -92,12 +78,12 @@ namespace OpenRA.Mods.RA.Missions
 			if (!unitsAndBuildings.Any(a => a.Owner == france))
 			{
 				objectives[DestroyID].Status = ObjectiveStatus.Completed;
-				MissionAccomplished();
+				MissionAccomplished("We destroyed the resistance.");
 			}
 			else if (!unitsAndBuildings.Any(a => a.Owner == ussr))
 			{
 				objectives[DestroyID].Status = ObjectiveStatus.Failed;
-				MissionFailed();
+				MissionFailed("We were destroyed by the resistance.");
 			}
 			if (!startJeepParadropped && startJeep.IsDead())
 			{

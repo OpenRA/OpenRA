@@ -78,30 +78,14 @@ namespace OpenRA.Mods.RA.Missions
 
 		string difficulty;
 
-		void MissionFailed(string text)
-		{
-			if (allies.WinState != WinState.Undefined)
-			{
-				return;
-			}
-			allies.WinState = WinState.Lost;
-			foreach (var actor in world.Actors.Where(a => a.IsInWorld && a.Owner == allies && !a.IsDead()))
-			{
-				actor.Kill(actor);
-			}
-			Game.AddChatLine(Color.Red, "Mission failed", text);
-			Sound.Play("misnlst1.aud");
-		}
-
 		void MissionAccomplished(string text)
 		{
-			if (allies.WinState != WinState.Undefined)
-			{
-				return;
-			}
-			allies.WinState = WinState.Won;
-			Game.AddChatLine(Color.Blue, "Mission accomplished", text);
-			Sound.Play("misnwon1.aud");
+			MissionUtils.CoopMissionAccomplished(world, text, allies);
+		}
+
+		void MissionFailed(string text)
+		{
+			MissionUtils.CoopMissionFailed(world, text, allies);
 		}
 
 		public void Tick(Actor self)
@@ -171,7 +155,7 @@ namespace OpenRA.Mods.RA.Missions
 					{
 						objectives[ExtractEinsteinID].Status = ObjectiveStatus.Completed;
 						OnObjectivesUpdated(true);
-						MissionAccomplished("Einstein was rescued.");
+						MissionAccomplished("Einstein was rescued");
 					}
 				}
 			}

@@ -142,36 +142,16 @@ namespace OpenRA.Mods.RA.Missions
 
 		void MissionFailed(string text)
 		{
-			if (allies1.WinState != WinState.Undefined)
-			{
-				return;
-			}
-			allies1.WinState = allies2.WinState = WinState.Lost;
+			MissionUtils.CoopMissionFailed(world, text, allies1, allies2);
 			if (reinforcementsTimer != null)
 			{
 				reinforcementsTimerWidget.Visible = false;
 			}
-			foreach (var actor in world.Actors.Where(a => a.IsInWorld && (a.Owner == allies1 || a.Owner == allies2) && !a.IsDead()))
-			{
-				actor.Kill(actor);
-			}
-			Game.AddChatLine(Color.Red, "Mission failed", text);
-			Sound.Play("misnlst1.aud");
 		}
 
 		void MissionAccomplished(string text)
 		{
-			if (allies1.WinState != WinState.Undefined)
-			{
-				return;
-			}
-			allies1.WinState = allies2.WinState = WinState.Won;
-			if (reinforcementsTimer != null)
-			{
-				reinforcementsTimerWidget.Visible = false;
-			}
-			Game.AddChatLine(Color.Blue, "Mission accomplished", text);
-			Sound.Play("misnwon1.aud");
+			MissionUtils.CoopMissionAccomplished(world, text, allies1, allies2);
 		}
 
 		public void Tick(Actor self)
