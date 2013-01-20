@@ -134,10 +134,11 @@ namespace OpenRA.Mods.RA.Widgets
 
 		bool PerformDeploy()
 		{
-			/* hack: three orders here -- ReturnToBase, DeployTransform, Unload. */
+			/* hack: multiple orders here */
 			PerformKeyboardOrderOnSelection(a => new Order("ReturnToBase", a, false));
 			PerformKeyboardOrderOnSelection(a => new Order("DeployTransform", a, false));
 			PerformKeyboardOrderOnSelection(a => new Order("Unload", a, false));
+			PerformKeyboardOrderOnSelection(a => new Order("DemoDeploy", a, false));
 			return true;
 		}
 
