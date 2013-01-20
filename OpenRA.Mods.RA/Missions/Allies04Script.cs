@@ -370,7 +370,7 @@ namespace OpenRA.Mods.RA.Missions
 			neutral = w.Players.Single(p => p.InternalName == "Neutral");
 			objectives[InfiltrateID].Text = Infiltrate.F(allies1 != allies2 ? "spies" : "spy");
 
-			destroyBaseTicks = difficulty == "Hard" ? 1500 * 20 : difficulty == "Normal" ? 1500 * 25 : 1500 * 30;
+			destroyBaseTicks = difficulty == "Hard" ? 1500 * 25 : difficulty == "Normal" ? 1500 * 28 : 1500 * 31;
 
 			var actors = w.WorldActor.Trait<SpawnMapActors>().Actors;
 			lstEntryPoint = actors["LstEntryPoint"];
