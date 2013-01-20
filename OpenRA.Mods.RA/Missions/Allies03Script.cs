@@ -278,10 +278,7 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				return;
 			}
-			if (Game.IsHost)
-			{
-				world.IssueOrder(Order.StartProduction(queue.self, YakName, 1));
-			}
+			queue.ResolveOrder(queue.self, Order.StartProduction(queue.self, YakName, 1));
 		}
 
 		IEnumerable<Actor> SovietAircraft()

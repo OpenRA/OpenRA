@@ -299,16 +299,7 @@ namespace OpenRA.Mods.RA.Missions
 		{
 			foreach (var actor in world.Actors.Where(a => a.IsInWorld && a.Owner == allies && !a.IsDead()))
 			{
-				var at = actor.TraitOrDefault<AutoTarget>();
-				if (at != null)
-				{
-					at.predictedStance = UnitStance.Defend;
-				}
-				var order = new Order("SetUnitStance", actor, false) { TargetLocation = new CPos((int)UnitStance.Defend, 0) };
-				if (Game.IsHost)
-				{
-					world.IssueOrder(order);
-				}
+				actor.Trait<AutoTarget>().stance = UnitStance.Defend;
 			}
 		}
 
