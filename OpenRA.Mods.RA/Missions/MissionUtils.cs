@@ -15,8 +15,8 @@ using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Air;
 using OpenRA.Mods.RA.Buildings;
-using OpenRA.Traits;
 using OpenRA.Network;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Missions
 {

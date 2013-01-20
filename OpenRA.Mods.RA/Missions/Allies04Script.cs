@@ -87,6 +87,11 @@ namespace OpenRA.Mods.RA.Missions
 
 		int nextCivilianMove = 1;
 
+		Actor bridgeTank;
+		Actor bridgeAttackPoint;
+		Actor bridge;
+		bool attackingBridge;
+
 		void MissionFailed(string text)
 		{
 			if (allies1.WinState != WinState.Undefined)
@@ -123,7 +128,7 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				InsertSpies();
 			}
-			if (world.FrameNumber == 600)
+			if (world.FrameNumber == 25 * 25)
 			{
 				SendHind(hind1EntryPoint, hind1Points, hind1ExitPoint);
 			}
@@ -145,6 +150,19 @@ namespace OpenRA.Mods.RA.Missions
 				if (world.FrameNumber >= frameInfiltrated + 200)
 				{
 					destroyBaseTimer.Tick();
+				}
+				if (world.FrameNumber == frameInfiltrated + 1500 * 12 && !bridgeTank.IsDead() && bridgeTank.IsInWorld && !bridge.IsDead())
+				{
+					bridgeTank.QueueActivity(new Attack(Target.FromPos(bridge.CenterLocation), 4));
+					attackingBridge = true;
+				}
+				if (bridge.IsDead() && attackingBridge)
+				{
+					if (!bridgeTank.IsDead())
+					{
+						bridgeTank.CancelActivity();
+					}
+					attackingBridge = false;
 				}
 			}
 			foreach (var patrol in patrols)
@@ -235,8 +253,8 @@ namespace OpenRA.Mods.RA.Missions
 
 		void OnLabInfiltrated(Actor spy)
 		{
-			if (spy == allies1Spy) { allies1SpyInfiltratedLab = true; }
-			else if (spy == allies2Spy) { allies2SpyInfiltratedLab = true; }
+			if (spy == allies1Spy) allies1SpyInfiltratedLab = true;
+			else if (spy == allies2Spy) allies2SpyInfiltratedLab = true;
 			if (allies1SpyInfiltratedLab && (allies2SpyInfiltratedLab || allies2Spy == null))
 			{
 				objectives[InfiltrateID].Status = ObjectiveStatus.Completed;
@@ -345,16 +363,9 @@ namespace OpenRA.Mods.RA.Missions
 
 		void SetupSubStances()
 		{
-			if (!Game.IsHost)
-			{
-				return;
-			}
 			foreach (var actor in world.Actors.Where(a => a.IsInWorld && a.Owner == soviets && !a.IsDead() && a.HasTrait<TargetableSubmarine>()))
 			{
-				world.IssueOrder(new Order("SetUnitStance", actor, false)
-				{
-					TargetLocation = new CPos((int)UnitStance.Defend, 0)
-				});
+				actor.Trait<AutoTarget>().stance = UnitStance.Defend;
 			}
 		}
 
@@ -373,6 +384,7 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			soviets = w.Players.Single(p => p.InternalName == "Soviets");
 			neutral = w.Players.Single(p => p.InternalName == "Neutral");
+			objectives[InfiltrateID].Text = Infiltrate.F(allies1 != allies2 ? "spies" : "spy");
 
 			destroyBaseTicks = difficulty == "Hard" ? 1500 * 20 : difficulty == "Normal" ? 1500 * 25 : 1500 * 30;
 
@@ -435,9 +447,17 @@ namespace OpenRA.Mods.RA.Missions
 				new Patrol(world, new[] { "e1", "dog.patrol", "dog.patrol" }, soviets, patrolPoints4, 0),
 				new Patrol(world, new[] { "e1", "dog.patrol", "dog.patrol" }, soviets, patrolPoints5, 0),
 			};
-			objectives[InfiltrateID].Text = Infiltrate.F(allies1 != allies2 ? "spies" : "spy");
+			
+			bridgeTank = actors["BridgeTank"];
+			bridgeAttackPoint = actors["BridgeAttackPoint"];
+			bridge = world.Actors
+				.Where(a => a.HasTrait<Bridge>() && !a.IsDead())
+				.OrderBy(a => (a.Location - bridgeAttackPoint.Location).LengthSquared)
+				.FirstOrDefault();
+
 			OnObjectivesUpdated(false);
 			SetupSubStances();
+
 			var res = allies1.PlayerActor.Trait<PlayerResources>();
 			res.TakeOre(res.Ore);
 			res.TakeCash(res.Cash);
@@ -447,6 +467,7 @@ namespace OpenRA.Mods.RA.Missions
 				res.TakeOre(res.Ore);
 				res.TakeCash(res.Cash);
 			}
+
 			Game.MoveViewport(lstEntryPoint.Location.ToFloat2());
 			MissionUtils.PlayMissionMusic();
 		}
@@ -529,29 +550,31 @@ namespace OpenRA.Mods.RA.Missions
 
 	class Allies04TrivialBuilding { }
 
-	class Allies04TryRepairBuildingInfo : ITraitInfo
+	class Allies04MaintainBuildingInfo : ITraitInfo
 	{
 		public readonly string Player = null;
 
-		public object Create(ActorInitializer init) { return new Allies04TryRepairBuilding(this); }
+		public object Create(ActorInitializer init) { return new Allies04MaintainBuilding(this); }
 	}
 
-	class Allies04TryRepairBuilding : INotifyDamageStateChanged
+	class Allies04MaintainBuilding : INotifyDamageStateChanged
 	{
-		Allies04TryRepairBuildingInfo info;
+		Allies04MaintainBuildingInfo info;
 
-		public Allies04TryRepairBuilding(Allies04TryRepairBuildingInfo info)
+		public Allies04MaintainBuilding(Allies04MaintainBuildingInfo info)
 		{
 			this.info = info;
 		}
 
 		public void DamageStateChanged(Actor self, AttackInfo e)
 		{
-			if (self.HasTrait<RepairableBuilding>() && self.Owner.InternalName == info.Player && Game.IsHost
-				&& e.DamageState > DamageState.Undamaged && e.PreviousDamageState == DamageState.Undamaged)
-			{
-				self.World.IssueOrder(new Order("RepairBuilding", self.Owner.PlayerActor, false) { TargetActor = self });
-			}
+			if (self.Owner.InternalName != info.Player) return;
+
+			if (self.HasTrait<Sellable>() && e.DamageState == DamageState.Critical && e.PreviousDamageState < DamageState.Critical)
+				self.Trait<Sellable>().Sell(self);
+
+			else if (self.HasTrait<RepairableBuilding>() && e.DamageState > DamageState.Undamaged && e.PreviousDamageState == DamageState.Undamaged)
+				self.Trait<RepairableBuilding>().RepairBuilding(self, self.Owner);
 		}
 	}
 }

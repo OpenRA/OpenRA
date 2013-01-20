@@ -25,20 +25,23 @@ namespace OpenRA.Mods.RA
 		public void ResolveOrder(Actor self, Order order)
 		{
 			if (order.OrderString == "Sell")
-			{
-				if (!self.Trait<Building>().Lock())
-					return;
+				Sell(self);
+		}
 
-				foreach( var ns in self.TraitsImplementing<INotifySold>() )
-					ns.Selling( self );
+		public void Sell(Actor self)
+		{
+			if (!self.Trait<Building>().Lock())
+				return;
 
-				self.CancelActivity();
+			foreach (var ns in self.TraitsImplementing<INotifySold>())
+				ns.Selling(self);
 
-				var rb = self.TraitOrDefault<RenderBuilding>();
-				if (rb != null && self.Info.Traits.Get<RenderBuildingInfo>().HasMakeAnimation)
-					self.QueueActivity(new MakeAnimation(self, true, () => rb.PlayCustomAnim(self, "make")));
-				self.QueueActivity(new Sell());
-			}
+			self.CancelActivity();
+
+			var rb = self.TraitOrDefault<RenderBuilding>();
+			if (rb != null && self.Info.Traits.Get<RenderBuildingInfo>().HasMakeAnimation)
+				self.QueueActivity(new MakeAnimation(self, true, () => rb.PlayCustomAnim(self, "make")));
+			self.QueueActivity(new Sell());
 		}
 	}
 }
