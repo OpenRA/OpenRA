@@ -132,10 +132,8 @@ namespace OpenRA.Mods.RA.Missions
 
 		public void Tick(Actor self)
 		{
-			if (allies1.WinState != WinState.Undefined)
-			{
-				return;
-			}
+			if (allies1.WinState != WinState.Undefined) return;
+
 			if (world.FrameNumber == 1)
 			{
 				SpawnAlliedUnit(McvName);
@@ -149,22 +147,25 @@ namespace OpenRA.Mods.RA.Missions
 				attackAtFrame += attackAtFrameIncrement;
 				attackAtFrameIncrement = Math.Max(attackAtFrameIncrement - 5, minAttackAtFrame);
 			}
-			if (world.FrameNumber >= ReinforcementsTicks1 && currentReinforcement1 < Reinforcements1.Length)
+
+			if (world.FrameNumber == ReinforcementsTicks1 || world.FrameNumber == ReinforcementsTicks2)
+				Sound.Play("reinfor1.aud");
+
+			if (world.FrameNumber % 25 == 0)
 			{
-				if (world.FrameNumber == ReinforcementsTicks1) Sound.Play("reinfor1.aud");
-				if (world.FrameNumber % 25 == 0) SpawnAlliedUnit(Reinforcements1[currentReinforcement1++]);
+				if (world.FrameNumber >= ReinforcementsTicks1 && currentReinforcement1 < Reinforcements1.Length)
+					SpawnAlliedUnit(Reinforcements1[currentReinforcement1++]);
+
+				if (world.FrameNumber >= ReinforcementsTicks2 && currentReinforcement2 < Reinforcements2.Length)
+					SpawnAlliedUnit(Reinforcements2[currentReinforcement2++]);
 			}
-			if (world.FrameNumber >= ReinforcementsTicks2 && currentReinforcement2 < Reinforcements2.Length)
-			{
-				if (world.FrameNumber == ReinforcementsTicks2) Sound.Play("reinfor1.aud");
-				if (world.FrameNumber % 25 == 0) SpawnAlliedUnit(Reinforcements2[currentReinforcement2++]);
-			}
+
+
 			if (sovietParadrops > 0)
 			{
 				if (world.FrameNumber == sovietParadropTicks)
-				{
 					Sound.Play("sovfapp1.aud");
-				}
+
 				if (world.FrameNumber >= sovietParadropTicks && world.FrameNumber % ParadropIncrement == 0)
 				{
 					CPos lz;
@@ -182,20 +183,21 @@ namespace OpenRA.Mods.RA.Missions
 				}
 			}
 			if (world.FrameNumber % 25 == 0)
-			{
 				ManageSovietUnits();
-			}
+
 			if (objectives[AirbaseID].Status != ObjectiveStatus.Completed)
 			{
 				if (world.FrameNumber % 25 == 0)
-				{
 					BuildSovietAircraft();
-				}
+
 				ManageSovietAircraft();
 			}
+
 			EvacuateAlliedUnits(exit1TopLeft.CenterLocation, exit1BottomRight.CenterLocation, exit1ExitPoint.Location);
 			EvacuateAlliedUnits(exit2TopLeft.CenterLocation, exit2BottomRight.CenterLocation, exit2ExitPoint.Location);
+
 			CheckSovietAirbase();
+
 			if (!world.Actors.Any(a => (a.Owner == allies1 || a.Owner == allies2) && a.IsInWorld && !a.IsDead()
 				&& ((a.HasTrait<Building>() && !a.HasTrait<Wall>()) || a.HasTrait<BaseBuilding>())))
 			{
@@ -227,13 +229,11 @@ namespace OpenRA.Mods.RA.Missions
 					if (enemy != null)
 					{
 						if (!aircraft.IsIdle && aircraft.GetCurrentActivity().GetType() != typeof(FlyAttack))
-						{
 							aircraft.CancelActivity();
-						}
+
 						if (plane.Altitude == 0)
-						{
 							plane.UnReserve();
-						}
+
 						aircraft.QueueActivity(new FlyAttack(Target.FromActor(enemy)));
 					}
 				}
@@ -249,19 +249,15 @@ namespace OpenRA.Mods.RA.Missions
 		bool LandIsQueued(Actor actor)
 		{
 			for (var a = actor.GetCurrentActivity(); a != null; a = a.NextActivity)
-			{
-				if (a is ReturnToBase || a is Land) { return true; }
-			}
+				if (a is ReturnToBase || a is Land) return true;
 			return false;
 		}
 
 		void BuildSovietAircraft()
 		{
 			var queue = MissionUtils.FindQueues(world, soviets, "Plane").FirstOrDefault(q => q.CurrentItem() == null);
-			if (queue == null || SovietAircraft().Count() >= maxSovietYaks)
-			{
-				return;
-			}
+			if (queue == null || SovietAircraft().Count() >= maxSovietYaks) return;
+
 			queue.ResolveOrder(queue.self, Order.StartProduction(queue.self, YakName, 1));
 		}
 
@@ -284,16 +280,19 @@ namespace OpenRA.Mods.RA.Missions
 			var route = world.SharedRandom.Next(sovietEntryPoints.Length);
 			var spawnPoint = sovietEntryPoints[route];
 			var rallyPoint = sovietRallyPoints[route];
+
 			IEnumerable<string> units;
 			if (world.FrameNumber >= sovietUnits2Ticks)
-			{
 				units = SovietUnits2;
-			}
 			else
-			{
 				units = SovietUnits1;
-			}
-			var unit = world.CreateActor(units.Random(world.SharedRandom), new TypeDictionary { new LocationInit(spawnPoint), new OwnerInit(soviets) });
+
+			var unit = world.CreateActor(units.Random(world.SharedRandom),
+				new TypeDictionary
+				{
+					new LocationInit(spawnPoint),
+					new OwnerInit(soviets)
+				});
 			unit.QueueActivity(new AttackMove.AttackMoveActivity(unit, new Move.Move(rallyPoint, 3)));
 		}
 
@@ -303,11 +302,10 @@ namespace OpenRA.Mods.RA.Missions
 				.Where(u => (u.Owner == allies1 || u.Owner == allies2)
 				&& ((u.HasTrait<Building>() && !u.HasTrait<Wall>()) || u.HasTrait<Mobile>()) && u.IsInWorld && !u.IsDead()
 				&& (!u.HasTrait<Spy>() || !u.Trait<Spy>().Disguised || (u.Trait<Spy>().Disguised && u.Trait<Spy>().disguisedAsPlayer != soviets)));
+
 			var enemy = FirstUnshroudedOrDefault(enemies.OrderBy(u => (self.CenterLocation - u.CenterLocation).LengthSquared), world, 10);
 			if (enemy != null)
-			{
 				self.QueueActivity(new AttackMove.AttackMoveActivity(self, new Attack(Target.FromActor(enemy), 3)));
-			}
 		}
 
 		void ManageSovietUnits()
@@ -319,27 +317,23 @@ namespace OpenRA.Mods.RA.Missions
 				if (units.Count() >= SovietGroupSize)
 				{
 					foreach (var unit in units)
-					{
 						AttackNearestAlliedActor(unit);
-					}
 				}
 			}
+
 			var scatteredUnits = world.Actors.Where(u => u.IsInWorld && !u.IsDead() && u.HasTrait<Mobile>() && u.IsIdle && u.Owner == soviets)
 				.Except(world.WorldActor.Trait<SpawnMapActors>().Actors.Values)
 				.Except(sovietRallyPoints.SelectMany(rp => world.FindAliveCombatantActorsInCircle(Util.CenterOfCell(rp), 10)));
+
 			foreach (var unit in scatteredUnits)
-			{
 				AttackNearestAlliedActor(unit);
-			}
 		}
 
 		void SpawnAlliedUnit(string actor)
 		{
 			SpawnAndMove(actor, allies1, allies1EntryPoint.Location, allies1MovePoint.Location);
-			if (allies2 != allies1)
-			{
+			if (allies1 != allies2)
 				SpawnAndMove(actor, allies2, allies2EntryPoint.Location, allies2MovePoint.Location);
-			}
 		}
 
 		Actor SpawnAndMove(string actor, Player owner, CPos entry, CPos to)
@@ -369,22 +363,24 @@ namespace OpenRA.Mods.RA.Missions
 		{
 			var units = world.FindAliveCombatantActorsInBox(a, b)
 				.Where(u => u.HasTrait<Mobile>() && !u.HasTrait<Aircraft>() && (u.Owner == allies1 || u.Owner == allies2));
+
 			foreach (var unit in units)
 			{
 				unit.CancelActivity();
 				unit.ChangeOwner(allies);
 				unitsEvacuated++;
+
 				var createsShroud = unit.TraitOrDefault<CreatesShroud>();
 				if (createsShroud != null && objectives[GapGeneratorID].Status == ObjectiveStatus.InProgress)
 				{
 					objectives[GapGeneratorID].Status = ObjectiveStatus.Completed;
 					OnObjectivesUpdated(true);
 				}
+
 				var cargo = unit.TraitOrDefault<Cargo>();
 				if (cargo != null)
-				{
 					unitsEvacuated += cargo.Passengers.Count();
-				}
+
 				UpdateUnitsEvacuated();
 				unit.QueueActivity(new Move.Move(exit));
 				unit.QueueActivity(new RemoveSelf());
@@ -449,13 +445,10 @@ namespace OpenRA.Mods.RA.Missions
 			paradropBox = new Rectangle(topLeft.Location.X, topLeft.Location.Y, bottomRight.Location.X - topLeft.Location.X, bottomRight.Location.Y - topLeft.Location.Y);
 			
 			if (w.LocalPlayer == null || w.LocalPlayer == allies1)
-			{
 				Game.MoveViewport(allies1EntryPoint.Location.ToFloat2());
-			}
+
 			else
-			{
 				Game.MoveViewport(allies2EntryPoint.Location.ToFloat2());
-			}
 
 			OnObjectivesUpdated(false);
 			MissionUtils.PlayMissionMusic();

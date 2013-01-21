@@ -104,18 +104,14 @@ namespace OpenRA.Mods.RA.Missions
 
 		public void Tick(Actor self)
 		{
-			if (allies1.WinState != WinState.Undefined)
-			{
-				return;
-			}
+			if (allies1.WinState != WinState.Undefined) return;
+
 			if (world.FrameNumber == 1)
-			{
 				InsertSpies();
-			}
+
 			if (world.FrameNumber == 25 * 25)
-			{
 				SendHind(hind1EntryPoint, hind1Points, hind1ExitPoint);
-			}
+
 			if (frameInfiltrated != -1)
 			{
 				if (world.FrameNumber == frameInfiltrated + 100)
@@ -131,10 +127,10 @@ namespace OpenRA.Mods.RA.Missions
 					destroyBaseTimerWidget = new CountdownTimerWidget(destroyBaseTimer, "Secure lab in: {0}");
 					Ui.Root.AddChild(destroyBaseTimerWidget);
 				}
+
 				if (world.FrameNumber >= frameInfiltrated + 200)
-				{
 					destroyBaseTimer.Tick();
-				}
+
 				if (world.FrameNumber == frameInfiltrated + 1500 * 12 && !bridgeTank.IsDead() && bridgeTank.IsInWorld && !bridge.IsDead())
 				{
 					bridgeTank.QueueActivity(new Attack(Target.FromPos(bridge.CenterLocation), 4));
@@ -149,12 +145,14 @@ namespace OpenRA.Mods.RA.Missions
 					attackingBridge = false;
 				}
 			}
+
 			foreach (var patrol in patrols)
-			{
 				patrol.DoPatrol();
-			}
+
 			ManageSovietOre();
+
 			BaseGuardTick();
+
 			if (allies1Spy.IsDead() || (allies2Spy != null && allies2Spy.IsDead()))
 			{
 				objectives[InfiltrateID].Status = ObjectiveStatus.Failed;
@@ -162,9 +160,8 @@ namespace OpenRA.Mods.RA.Missions
 				MissionFailed("{0} spy was killed.".F(allies1 != allies2 ? "A" : "The"));
 			}
 			else if (lab.Destroyed)
-			{
 				MissionFailed("The Soviet research laboratory was destroyed.");
-			}
+
 			else if (!world.Actors.Any(a => (a.Owner == allies1 || a.Owner == allies2) && !a.IsDead()
 				&& (a.HasTrait<Building>() && !a.HasTrait<Wall>()) || a.HasTrait<BaseBuilding>()))
 			{
@@ -198,10 +195,7 @@ namespace OpenRA.Mods.RA.Missions
 
 		void OnDestroyBaseTimerExpired(CountdownTimer t)
 		{
-			if (SovietBaseDestroyed() && objectives[InfiltrateID].Status == ObjectiveStatus.Completed)
-			{
-				return;
-			}
+			if (SovietBaseDestroyed() && objectives[InfiltrateID].Status == ObjectiveStatus.Completed) return;
 			objectives[DestroyID].Status = ObjectiveStatus.Failed;
 			OnObjectivesUpdated(true);
 			MissionFailed("The Soviet research laboratory was not secured in time.");
@@ -211,34 +205,27 @@ namespace OpenRA.Mods.RA.Missions
 		{
 			var res = soviets.PlayerActor.Trait<PlayerResources>();
 			if (res.Ore > res.OreCapacity * 0.8)
-			{
 				res.TakeOre(res.OreCapacity / 10);
-			}
 		}
 
 		void BaseGuardTick()
 		{
-			if (baseGuardTicks <= 0 || baseGuard.IsDead() || !baseGuard.IsInWorld)
-			{
-				return;
-			}
+			if (baseGuardTicks <= 0 || baseGuard.IsDead() || !baseGuard.IsInWorld) return;
+
 			if (hijackTruck.Location == baseGuardTruckPos.Location)
 			{
 				if (--baseGuardTicks <= 0)
-				{
 					baseGuard.QueueActivity(new Move.Move(baseGuardMovePos.Location));
-				}
 			}
 			else
-			{
 				baseGuardTicks = 100;
-			}
 		}
 
 		void OnLabInfiltrated(Actor spy)
 		{
 			if (spy == allies1Spy) allies1SpyInfiltratedLab = true;
 			else if (spy == allies2Spy) allies2SpyInfiltratedLab = true;
+
 			if (allies1SpyInfiltratedLab && (allies2SpyInfiltratedLab || allies2Spy == null))
 			{
 				objectives[InfiltrateID].Status = ObjectiveStatus.Completed;
@@ -260,6 +247,7 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				lst.Trait<Cargo>().Load(lst, world.CreateActor(false, "mcv", new TypeDictionary { new OwnerInit(allies2) }));
 			}
+
 			lst.QueueActivity(new Move.Move(reinforcementsUnloadPoint.Location));
 			lst.QueueActivity(new Wait(10));
 			lst.QueueActivity(new CallFunc(() =>
@@ -294,10 +282,8 @@ namespace OpenRA.Mods.RA.Missions
 
 			public void DoPatrol()
 			{
-				if (actors.Any(a => a.IsDead() || !a.IsIdle || !a.IsInWorld))
-				{
-					return;
-				}
+				if (actors.Any(a => a.IsDead() || !a.IsIdle || !a.IsInWorld)) return;
+
 				pointIndex = (pointIndex + 1) % points.Length;
 				foreach (var actor in actors.Where(a => !a.IsDead() && a.IsInWorld))
 				{
@@ -316,10 +302,10 @@ namespace OpenRA.Mods.RA.Missions
 				new FacingInit(Util.GetFacing(points.First().ToCPos() - start, 0)),
 				new AltitudeInit(Rules.Info["hind.autotarget"].Traits.Get<HelicopterInfo>().CruiseAltitude),
 			});
+
 			foreach (var point in points.Concat(new[] { Util.CenterOfCell(exit) }))
-			{
 				hind.QueueActivity(new AttackMove.AttackMoveActivity(hind, new HeliFly(point)));
-			}
+
 			hind.QueueActivity(new RemoveSelf());
 		}
 
@@ -330,6 +316,7 @@ namespace OpenRA.Mods.RA.Missions
 				new OwnerInit(allies1),
 				new LocationInit(lstEntryPoint.Location)
 			});
+
 			allies1Spy = world.CreateActor(false, "spy.strong", new TypeDictionary { new OwnerInit(allies1) });
 			lst.Trait<Cargo>().Load(lst, allies1Spy);
 			if (allies1 != allies2)
@@ -337,6 +324,7 @@ namespace OpenRA.Mods.RA.Missions
 				allies2Spy = world.CreateActor(false, "spy.strong", new TypeDictionary { new OwnerInit(allies2) });
 				lst.Trait<Cargo>().Load(lst, allies2Spy);
 			}
+
 			lst.QueueActivity(new Move.Move(lstUnloadPoint.Location));
 			lst.QueueActivity(new Wait(10));
 			lst.QueueActivity(new UnloadCargo(true));
@@ -348,9 +336,7 @@ namespace OpenRA.Mods.RA.Missions
 		void SetupSubStances()
 		{
 			foreach (var actor in world.Actors.Where(a => a.IsInWorld && a.Owner == soviets && !a.IsDead() && a.HasTrait<TargetableSubmarine>()))
-			{
 				actor.Trait<AutoTarget>().stance = UnitStance.Defend;
-			}
 		}
 
 		public void WorldLoaded(World w)
@@ -366,6 +352,7 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				allies2 = allies1;
 			}
+
 			soviets = w.Players.Single(p => p.InternalName == "Soviets");
 			neutral = w.Players.Single(p => p.InternalName == "Neutral");
 			objectives[InfiltrateID].Text = Infiltrate.F(allies1 != allies2 ? "spies" : "spy");
@@ -423,6 +410,7 @@ namespace OpenRA.Mods.RA.Missions
 			hind1ExitPoint = actors["Hind1ExitPoint"].Location;
 			reinforcementsEntryPoint = actors["ReinforcementsEntryPoint"];
 			reinforcementsUnloadPoint = actors["ReinforcementsUnloadPoint"];
+
 			patrols = new[]
 			{
 				new Patrol(world, new[] { "e1", "e1", "e1", "e1", "e1" }, soviets, patrolPoints1, 0),
@@ -474,9 +462,8 @@ namespace OpenRA.Mods.RA.Missions
 		public void OnInfiltrate(Actor self, Actor spy)
 		{
 			if (self.Trait<Cargo>().IsEmpty(self))
-			{
 				self.ChangeOwner(spy.Owner);
-			}
+
 			self.Trait<Cargo>().Load(self, spy);
 		}
 
@@ -488,9 +475,7 @@ namespace OpenRA.Mods.RA.Missions
 				self.ChangeOwner(OldOwner);
 			}
 			else if (self.Owner == passenger.Owner)
-			{
 				self.ChangeOwner(self.Trait<Cargo>().Passengers.First().Owner);
-			}
 		}
 	}
 
@@ -534,25 +519,16 @@ namespace OpenRA.Mods.RA.Missions
 
 	class Allies04TrivialBuilding { }
 
-	class Allies04MaintainBuildingInfo : ITraitInfo
+	class Allies04MaintainBuildingInfo : TraitInfo<Allies04MaintainBuilding>
 	{
 		public readonly string Player = null;
-
-		public object Create(ActorInitializer init) { return new Allies04MaintainBuilding(this); }
 	}
 
 	class Allies04MaintainBuilding : INotifyDamageStateChanged
 	{
-		Allies04MaintainBuildingInfo info;
-
-		public Allies04MaintainBuilding(Allies04MaintainBuildingInfo info)
-		{
-			this.info = info;
-		}
-
 		public void DamageStateChanged(Actor self, AttackInfo e)
 		{
-			if (self.Owner.InternalName != info.Player) return;
+			if (self.Owner.InternalName != self.Info.Traits.Get<Allies04MaintainBuildingInfo>().Player) return;
 
 			if (self.HasTrait<Sellable>() && e.DamageState == DamageState.Critical && e.PreviousDamageState < DamageState.Critical)
 				self.Trait<Sellable>().Sell(self);

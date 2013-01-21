@@ -9,13 +9,11 @@
 #endregion
 
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Air;
 using OpenRA.Mods.RA.Move;
-using OpenRA.Network;
 using OpenRA.Scripting;
 using OpenRA.Traits;
 
@@ -90,31 +88,16 @@ namespace OpenRA.Mods.RA.Missions
 
 		public void Tick(Actor self)
 		{
-			if (allies.WinState != WinState.Undefined)
-			{
-				return;
-			}
+			if (allies.WinState != WinState.Undefined) return;
+
 			if (world.FrameNumber % 1000 == 0)
-			{
 				Sound.Play(Taunts[world.SharedRandom.Next(Taunts.Length)]);
-			}
+
 			if (objectives[FindEinsteinID].Status == ObjectiveStatus.InProgress)
 			{
 				if (AlliesControlLab())
-				{
-					SpawnSignalFlare();
-					Sound.Play("flaren1.aud");
-					SpawnEinsteinAtLab();
-					SendShips();
-					objectives[FindEinsteinID].Status = ObjectiveStatus.Completed;
-					objectives[ExtractEinsteinID].Status = ObjectiveStatus.InProgress;
-					if (difficulty == "Easy")
-					{
-						ExtractEinsteinAtLZ();
-					}
-					OnObjectivesUpdated(true);
-					currentAttackWaveFrameNumber = world.FrameNumber;
-				}
+					LabSecured();
+
 				if (lab.Destroyed)
 				{
 					objectives[FindEinsteinID].Status = ObjectiveStatus.Failed;
@@ -126,21 +109,19 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				if (difficulty != "Easy")
 				{
-					SendAttackWave();
+					ManageSovietUnits();
 					if (world.FrameNumber >= currentAttackWaveFrameNumber + 600)
 					{
 						Sound.Play("enmyapp1.aud");
-						SpawnAttackWave(AttackWave);
+						SpawnSovietUnits(AttackWave);
 						currentAttackWave++;
 						currentAttackWaveFrameNumber = world.FrameNumber;
+
 						if (currentAttackWave >= EinsteinChinookAttackWave)
-						{
-							SpawnAttackWave(LastAttackWaveAddition);
-						}
+							SpawnSovietUnits(LastAttackWaveAddition);
+
 						if (currentAttackWave == EinsteinChinookAttackWave)
-						{
 							ExtractEinsteinAtLZ();
-						}
 					}
 				}
 				if (einsteinChinook != null)
@@ -159,24 +140,38 @@ namespace OpenRA.Mods.RA.Missions
 					}
 				}
 			}
+
 			if (tanya != null && tanya.Destroyed)
-			{
 				MissionFailed("Tanya was killed.");
-			}
+
 			else if (einstein != null && einstein.Destroyed)
-			{
 				MissionFailed("Einstein was killed.");
-			}
+
 			ManageSovietOre();
+		}
+
+		void LabSecured()
+		{
+			SpawnSignalFlare();
+			Sound.Play("flaren1.aud");
+			SpawnEinsteinAtLab();
+			SendShips();
+			objectives[FindEinsteinID].Status = ObjectiveStatus.Completed;
+			objectives[ExtractEinsteinID].Status = ObjectiveStatus.InProgress;
+
+			if (difficulty == "Easy")
+				ExtractEinsteinAtLZ();
+
+			OnObjectivesUpdated(true);
+			currentAttackWaveFrameNumber = world.FrameNumber;
 		}
 
 		void ManageSovietOre()
 		{
 			var res = soviets.PlayerActor.Trait<PlayerResources>();
+
 			if (res.Ore > res.OreCapacity * 0.8)
-			{
 				res.TakeOre(res.OreCapacity / 10);
-			}
 		}
 
 		void SpawnSignalFlare()
@@ -184,7 +179,7 @@ namespace OpenRA.Mods.RA.Missions
 			world.CreateActor(SignalFlareName, new TypeDictionary { new OwnerInit(allies), new LocationInit(extractionLZ.Location) });
 		}
 
-		void SpawnAttackWave(IEnumerable<string> wave)
+		void SpawnSovietUnits(IEnumerable<string> wave)
 		{
 			foreach (var unit in wave)
 			{
@@ -193,7 +188,7 @@ namespace OpenRA.Mods.RA.Missions
 			}
 		}
 
-		void SendAttackWave()
+		void ManageSovietUnits()
 		{
 			foreach (var unit in world.Actors.Where(a => a != world.WorldActor && a.IsInWorld && a.Owner == soviets && !a.IsDead() && a.IsIdle
 				&& a.HasTrait<Mobile>() && a.HasTrait<AttackBase>()))
@@ -202,20 +197,17 @@ namespace OpenRA.Mods.RA.Missions
 				if (einstein != null)
 				{
 					if (einstein.IsInWorld)
-					{
 						innerActivity = new Attack(Target.FromActor(einstein), 3);
-					}
+
 					else
 					{
 						var container = world.UnitContaining(einstein);
+
 						if (container != null && !container.HasTrait<Aircraft>() && container.HasTrait<Mobile>())
-						{
 							innerActivity = new Attack(Target.FromActor(container), 3);
-						}
+
 						else
-						{
 							innerActivity = new Move.Move(extractionLZ.Location, 3);
-						}
 					}
 					unit.QueueActivity(new AttackMove.AttackMoveActivity(unit, innerActivity));
 				}
@@ -225,10 +217,12 @@ namespace OpenRA.Mods.RA.Missions
 		void SendPatrol()
 		{
 			for (int i = 0; i < Patrol.Length; i++)
-			{
-				var actor = world.CreateActor(Patrol[i], new TypeDictionary { new OwnerInit(soviets), new LocationInit(insertionLZ.Location + new CVec(-1 + i, 10 + i * 2)) });
-				actor.QueueActivity(new Move.Move(insertionLZ.Location));
-			}
+				world.CreateActor(Patrol[i], new TypeDictionary
+				{
+					new OwnerInit(soviets),
+					new LocationInit(insertionLZ.Location + new CVec(-1 + i, 10 + i * 2))
+				})
+				.QueueActivity(new Move.Move(insertionLZ.Location));
 		}
 
 		bool AlliesControlLab()
@@ -245,11 +239,12 @@ namespace OpenRA.Mods.RA.Missions
 		void SendShips()
 		{
 			for (int i = 0; i < Ships.Length; i++)
-			{
-				var actor = world.CreateActor(Ships[i],
-					new TypeDictionary { new OwnerInit(allies), new LocationInit(shipSpawnPoint.Location + new CVec(i * 2, 0)) });
-				actor.QueueActivity(new Move.Move(shipMovePoint.Location + new CVec(i * 4, 0)));
-			}
+				world.CreateActor(Ships[i], new TypeDictionary
+				{
+					new OwnerInit(allies),
+					new LocationInit(shipSpawnPoint.Location + new CVec(i * 2, 0))
+				})
+				.QueueActivity(new Move.Move(shipMovePoint.Location + new CVec(i * 4, 0)));
 		}
 
 		void ExtractEinsteinAtLZ()
@@ -282,9 +277,7 @@ namespace OpenRA.Mods.RA.Missions
 		void SetAlliedUnitsToDefensiveStance()
 		{
 			foreach (var actor in world.Actors.Where(a => a.IsInWorld && a.Owner == allies && !a.IsDead() && a.HasTrait<AutoTarget>()))
-			{
 				actor.Trait<AutoTarget>().stance = UnitStance.Defend;
-			}
 		}
 
 		public void WorldLoaded(World w)
@@ -317,17 +310,14 @@ namespace OpenRA.Mods.RA.Missions
 			Game.MoveViewport(insertionLZ.Location.ToFloat2());
 
 			if (MissionUtils.IsSingleClient(world))
-			{
 				Media.PlayFMVFullscreen(w, "ally1.vqa", () =>
-				{
 					Media.PlayFMVFullscreen(w, "landing.vqa", () =>
 					{
 						InsertTanyaAtLZ();
 						SendPatrol();
 						MissionUtils.PlayMissionMusic();
-					});
-				});
-			}
+					})
+				);
 			else
 			{
 				InsertTanyaAtLZ();

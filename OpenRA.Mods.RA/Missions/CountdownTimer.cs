@@ -14,7 +14,7 @@ namespace OpenRA.Mods.RA.Missions
 {
 	public class CountdownTimer
 	{
-		public int TicksLeft { get; set; }
+		public int TicksLeft;
 
 		public event Action<CountdownTimer> OnExpired = t => { };
 		public event Action<CountdownTimer> OnOneMinuteRemaining = t => { };
@@ -47,22 +47,21 @@ namespace OpenRA.Mods.RA.Missions
 
 		public void Tick()
 		{
-			if (TicksLeft > 0)
+			if (TicksLeft <= 0) return;
+
+			TicksLeft--;
+			switch (TicksLeft)
 			{
-				TicksLeft--;
-				switch (TicksLeft)
-				{
-					case 1500 * 00: OnExpired(this); break;
-					case 1500 * 01: OnOneMinuteRemaining(this); break;
-					case 1500 * 02: OnTwoMinutesRemaining(this); break;
-					case 1500 * 03: OnThreeMinutesRemaining(this); break;
-					case 1500 * 04: OnFourMinutesRemaining(this); break;
-					case 1500 * 05: OnFiveMinutesRemaining(this); break;
-					case 1500 * 10: OnTenMinutesRemaining(this); break;
-					case 1500 * 20: OnTwentyMinutesRemaining(this); break;
-					case 1500 * 30: OnThirtyMinutesRemaining(this); break;
-					case 1500 * 40: OnFortyMinutesRemaining(this); break;
-				}
+				case 1500 * 00: OnExpired(this); break;
+				case 1500 * 01: OnOneMinuteRemaining(this); break;
+				case 1500 * 02: OnTwoMinutesRemaining(this); break;
+				case 1500 * 03: OnThreeMinutesRemaining(this); break;
+				case 1500 * 04: OnFourMinutesRemaining(this); break;
+				case 1500 * 05: OnFiveMinutesRemaining(this); break;
+				case 1500 * 10: OnTenMinutesRemaining(this); break;
+				case 1500 * 20: OnTwentyMinutesRemaining(this); break;
+				case 1500 * 30: OnThirtyMinutesRemaining(this); break;
+				case 1500 * 40: OnFortyMinutesRemaining(this); break;
 			}
 		}
 	}

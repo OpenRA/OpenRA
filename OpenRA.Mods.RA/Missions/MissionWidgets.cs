@@ -15,8 +15,8 @@ namespace OpenRA.Mods.RA.Missions
 {
 	public class CountdownTimerWidget : Widget
 	{
-		public CountdownTimer Timer { get; set; }
-		public string Format { get; set; }
+		public CountdownTimer Timer;
+		public string Format;
 
 		public CountdownTimerWidget(CountdownTimer timer, string format)
 		{
@@ -26,10 +26,8 @@ namespace OpenRA.Mods.RA.Missions
 
 		public override void Draw()
 		{
-			if (!IsVisible())
-			{
-				return;
-			}
+			if (!IsVisible()) return;
+
 			var font = Game.Renderer.Fonts["Bold"];
 			var text = Format.F(WidgetUtils.FormatTime(Timer.TicksLeft));
 			var pos = new float2(Game.viewport.Width * 0.5f - font.Measure(text).X / 2, Game.viewport.Height * 0.1f);
@@ -39,19 +37,14 @@ namespace OpenRA.Mods.RA.Missions
 
 	public class InfoWidget : Widget
 	{
-		public string Text { get; set; }
+		public string Text;
 
-		public InfoWidget(string text)
-		{
-			Text = text;
-		}
+		public InfoWidget(string text) { Text = text; }
 
 		public override void Draw()
 		{
-			if (!IsVisible())
-			{
-				return;
-			}
+			if (!IsVisible()) return;
+
 			var font = Game.Renderer.Fonts["Bold"];
 			var pos = new float2(Game.viewport.Width * 0.5f - font.Measure(Text).X / 2, Game.viewport.Height * 0.1f);
 			font.DrawTextWithContrast(Text, pos, Color.White, Color.Black, 1);

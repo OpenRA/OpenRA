@@ -111,7 +111,9 @@ namespace OpenRA.Mods.RA.Missions
 					new FacingInit(Util.GetFacing(airfield.Location - entry, 0)),
 					new AltitudeInit(Rules.Info["yak"].Traits.Get<PlaneInfo>().CruiseAltitude)
 				});
+
 				while (yak.Trait<LimitedAmmo>().TakeAmmo()) { }
+
 				yak.QueueActivity(new ReturnToBase(yak, airfield));
 				yak.QueueActivity(new ResupplyAircraft());
 			}

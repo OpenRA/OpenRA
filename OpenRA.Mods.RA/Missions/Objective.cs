@@ -8,7 +8,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using OpenRA.Traits;
 
@@ -16,9 +15,9 @@ namespace OpenRA.Mods.RA.Missions
 {
 	public class Objective
 	{
-		public ObjectiveType Type { get; set; }
-		public string Text { get; set; }
-		public ObjectiveStatus Status { get; set; }
+		public ObjectiveType Type;
+		public string Text;
+		public ObjectiveStatus Status;
 
 		public Objective(ObjectiveType type, string text, ObjectiveStatus status)
 		{
