@@ -39,6 +39,7 @@ ide = {
     editor = {
       usetabs = true,
       autotabs = true,
+      foldcompact = true,
     },
     debugger = {
       verbose = false,

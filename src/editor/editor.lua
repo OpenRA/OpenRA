@@ -362,7 +362,7 @@ function CreateEditor()
     wxstc.wxSTC_FOLDFLAG_LINEAFTER_CONTRACTED)
 
   editor:SetProperty("fold", "1")
-  editor:SetProperty("fold.compact", "1")
+  editor:SetProperty("fold.compact", ide.config.editor.foldcompact and "1" or "0")
   editor:SetProperty("fold.comment", "1")
 
   do

@@ -100,6 +100,7 @@ config = {
     calltipdelay = nil, -- delay to show calltip (in ms)
     autoactivate = false, -- auto-activate/open files during debugging
     smartindent = false, -- use smart indentation if spec allows
+    foldcompact = true, -- use compact fold that includes empty lines
   },
 
   default = {
