@@ -371,6 +371,24 @@ Rules:
 			PipCount: 0
 	STEK:
 		AutoTargetIgnore:
+	^Vehicle:
+		GivesBounty:
+		
+	^Tank:
+		GivesBounty:
+			Percentage: 0
+	^Infantry:
+		GivesBounty:
+			Percentage: 0
+	^Ship:
+		GivesBounty:
+			Percentage: 0
+	^Plane:
+		GivesBounty:
+			Percentage: 0
+	^Building:
+		GivesBounty:
+			Percentage: 0
 
 Sequences:
 
