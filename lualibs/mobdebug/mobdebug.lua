@@ -1,12 +1,12 @@
 --
--- MobDebug 0.515
+-- MobDebug 0.516
 -- Copyright 2011-12 Paul Kulchenko
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
 --
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.515,
+  _VERSION = 0.516,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = os and os.getenv and os.getenv("MOBDEBUG_PORT") or 8172,
@@ -560,18 +560,19 @@ local function debug_hook(event, line)
     -- grab the filename and fix it if needed
     local file = lastfile
     if (lastsource ~= caller.source) then
-      lastsource = caller.source
-      file = lastsource
-      if file:find("@") == 1 then
-        file = file:sub(2):gsub("\\", "/")
-        -- need this conversion to be applied to relative and absolute
-        -- file names as you may write "require 'Foo'" on Windows to
-        -- load "foo.lua" (as it's case insensitive) and breakpoints
-        -- set on foo.lua will not work if not converted to the same case.
-        if iswindows then file = string.lower(file) end
-        if file:find("%./") == 1 then file = file:sub(3)
-        else file = file:gsub('^'..q(basedir), '') end
-      end
+      file, lastsource = caller.source, caller.source
+      -- the easiest/fastest way would be to check for file names starting
+      -- with '@', but users can supply names that may not use '@',
+      -- for example when they call loadstring('...', 'filename.lua').
+      -- so we handle all sources as filenames
+      file = file:gsub("^@", ""):gsub("\\", "/")
+      -- need this conversion to be applied to relative and absolute
+      -- file names as you may write "require 'Foo'" on Windows to
+      -- load "foo.lua" (as it's case insensitive) and breakpoints
+      -- set on foo.lua will not work if not converted to the same case.
+      if iswindows then file = string.lower(file) end
+      if file:find("%./") == 1 then file = file:sub(3)
+      else file = file:gsub('^'..q(basedir), '') end
 
       -- fix filenames for loaded strings that may contain scripts with newlines;
       -- some filesystems may allow "\n" in filenames, which is not supported here.
@@ -757,7 +758,7 @@ local function debugger_loop(sfile, sline)
         else
           local chunk = server:receive(size)
           if chunk then -- LOAD a new script for debugging
-            local func, res = loadstring(chunk, name)
+            local func, res = loadstring(chunk, "@"..name)
             if func then
               server:send("200 OK 0\n")
               debugee = func
