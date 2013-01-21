@@ -24,7 +24,6 @@ typedef void varfuncvoid (void *L,...);
 // from lua.h
 #define LUA_GLOBALSINDEX	(-10002)
 
-
 static voidfunc *luaL_newstate;
 static varfunc *luaL_loadbuffer;
 static varfunc *luaL_openlibs;
@@ -146,13 +145,12 @@ int main (int argc, char *argv[])
 #endif
   HINSTANCE hinstLib;
 
-
   char buffer[MAX_PATH],*file;
 
   if (!GetFullPathName(argv[0],MAX_PATH,buffer,&file)) {
     MessageBox(NULL,
       TEXT("Couldn't find the correct working directory"),
-      TEXT("Failed to start estrela"),
+      TEXT("Failed to start editor"),
       MB_OK|MB_ICONERROR);
     return 0;
   }
@@ -207,18 +205,18 @@ int main (int argc, char *argv[])
         else
           MessageBox(NULL,
           TEXT("An unexpected error occured while loading the lua chunk."),
-          TEXT("Failed to start estrela"),
+          TEXT("Failed to start editor"),
           MB_OK|MB_ICONERROR);
       } else
         MessageBox(NULL,
         TEXT("Couldn't initialize a luastate"),
-        TEXT("Failed to start estrela"),
+        TEXT("Failed to start editor"),
         MB_OK|MB_ICONERROR);
     } else {
       MessageBox(NULL,
         TEXT("Could not load all functions that are supposed to be located in the lua5.1.dll\n"
         "This is not supposed to be happening..."),
-        TEXT("Failed to start estrela"),
+        TEXT("Failed to start editor"),
         MB_OK|MB_ICONERROR);
     }
 
@@ -227,10 +225,9 @@ int main (int argc, char *argv[])
   } else {
     MessageBox(NULL,
       TEXT("The lua5.1.dll could not be found or loaded, please check the working directory of the application.\n"),
-      TEXT("Failed to initialize estrela"),
+      TEXT("Failed to initialize editor"),
       MB_OK|MB_ICONERROR);
   }
-
 
   return 0;
 }
