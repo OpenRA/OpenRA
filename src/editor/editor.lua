@@ -340,6 +340,12 @@ function CreateEditor()
     editor:SetWrapVisualFlagsLocation(wxstc.wxSTC_WRAPVISUALFLAGLOC_END_BY_TEXT)
   end
 
+  if (ide.config.editor.defaulteol == wxstc.wxSTC_EOL_CRLF
+     or ide.config.editor.defaulteol == wxstc.wxSTC_EOL_LF) then
+    editor:SetEOLMode(ide.config.editor.defaulteol)
+  -- else: keep wxStyledTextCtrl default behavior (CRLF on Windows, LF on Unix)
+  end
+
   editor:SetCaretLineVisible(ide.config.editor.caretline and 1 or 0)
 
   editor:SetVisiblePolicy(wxstc.wxSTC_VISIBLE_SLOP, 3)
@@ -447,7 +453,7 @@ function CreateEditor()
       local localpos = pos-linestart
       local linetxtopos = linetx:sub(1,localpos)
 
-      if (ch == char_CR and eol==2) or (ch == char_LF and eol==0) then
+      if (ch == char_LF) then
         if (line > 0) then
           local indent = editor:GetLineIndentation(line - 1)
           local linedone = editor:GetLine(line - 1)

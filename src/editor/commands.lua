@@ -96,6 +96,22 @@ function LoadFile(filePath, editor, file_must_exist, skipselection)
     local found = string.find(file_text,"\t") ~= nil
     editor:SetUseTabs(found)
   end
+  
+  -- Auto-detect CRLF/LF line-endings
+  local foundcrlf = string.find(file_text,"\r\n") ~= nil
+  local foundlf = (string.find(file_text,"[^\r]\n") ~= nil)
+    or (string.find(file_text,"^\n") ~= nil) -- edge case: file beginning with LF and having no other LF
+  if foundcrlf and foundlf then -- file with mixed line-endings
+    DisplayOutputLn(("%s: %s")
+      :format(filePath, TR("Mixed end-of-line encodings detected.")..' '..
+        TR("Use '%s' to show line endings and '%s' to convert them.")
+      :format("GetEditor():SetViewEOL(1)", "GetEditor():ConvertEOLs(GetEditor():GetEOLMode())")))
+  elseif foundcrlf then
+    editor:SetEOLMode(wxstc.wxSTC_EOL_CRLF)
+  elseif foundlf then
+    editor:SetEOLMode(wxstc.wxSTC_EOL_LF)
+  -- else (e.g. file is 1 line long or uses another line-ending): use default EOL mode
+  end
 
   editor:EmptyUndoBuffer()
   local id = editor:GetId()

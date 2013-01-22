@@ -101,6 +101,8 @@ config = {
     autoactivate = false, -- auto-activate/open files during debugging
     smartindent = false, -- use smart indentation if spec allows
     foldcompact = true, -- use compact fold that includes empty lines
+    defaulteol = nil, -- default line-endings for new files; valid values are
+                      -- wxstc.wxSTC_EOL_CRLF, wxstc.wxSTC_EOL_LF and nil (OS default)
   },
 
   default = {
