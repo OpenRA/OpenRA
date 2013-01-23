@@ -373,7 +373,7 @@ Rules:
 		AutoTargetIgnore:
 	^Vehicle:
 		GivesBounty:
-		
+			Percentage: 0
 	^Tank:
 		GivesBounty:
 			Percentage: 0
