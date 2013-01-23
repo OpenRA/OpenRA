@@ -28,6 +28,7 @@ namespace OpenRA.Traits
 		public Player Owner;
 		public int[,] visibleCells;
 		public bool[,] exploredCells;
+		public bool[,] foggedCells;
 		public Rectangle? exploredBounds;
 		bool disabled = false;
 		public bool dirty = true;
@@ -41,7 +42,7 @@ namespace OpenRA.Traits
 		{
 			get { return world.IsShellmap || (world.LocalPlayer == null && Owner == null);; }
 		}
-		
+
 		public Rectangle? Bounds
 		{
 			get { return Disabled ? null : exploredBounds; }
@@ -61,6 +62,7 @@ namespace OpenRA.Traits
 			map = world.Map;
 			visibleCells = new int[map.MapSize.X, map.MapSize.Y];
 			exploredCells = new bool[map.MapSize.X, map.MapSize.Y];
+			foggedCells = new bool[map.MapSize.X, map.MapSize.Y];
 			world.ActorAdded += AddActor;
 			world.ActorRemoved += RemoveActor;
 			Dirty += () => dirty = true;
@@ -91,7 +93,7 @@ namespace OpenRA.Traits
 			if (!a.HasTrait<RevealsShroud>()) return;
 			if (a.Owner == null || Owner == null) return;
 			if(a.Owner.Stances[Owner] != Stance.Ally) return;
-			
+
 			ActorVisibility v = a.Sight;
 
 			if (v.range == 0) return;		// don't bother for things that can't see
@@ -102,6 +104,7 @@ namespace OpenRA.Traits
 				{
 					++visibleCells[q.X, q.Y];
 					exploredCells[q.X, q.Y] = true;
+					foggedCells[q.X, q.Y] = true;
 				}
 
 				var box = new Rectangle(p.X - v.range, p.Y - v.range, 2 * v.range + 1, 2 * v.range + 1);
@@ -124,20 +127,34 @@ namespace OpenRA.Traits
 
 			foreach (var p in v.vis)
 				foreach (var q in FindVisibleTiles(a.World, p, range))
-					exploredCells[q.X, q.Y] = visibleCells[q.X, q.Y] > 0;
+					foggedCells[q.X, q.Y] = visibleCells[q.X, q.Y] > 0;
 
 			if (!Disabled)
 				Dirty();
 		}
-		
+
+		public void UnhideActor(Actor a, ActorVisibility v, int range) {
+	 		if (a.Owner.World.LocalPlayer == null
+				|| a.Owner.Stances[a.Owner.World.LocalPlayer] == Stance.Ally) return;
+
+	 		foreach (var p in v.vis)
+				foreach (var q in FindVisibleTiles(a.World, p, range))
+					foggedCells[q.X, q.Y] = exploredCells[q.X, q.Y];
+
+	 		if (!Disabled)
+				Dirty();
+		}
+
 		public void MergeShroud(Shroud s) {
-		    for (int i = map.Bounds.Left; i < map.Bounds.Right; i++) {
+			for (int i = map.Bounds.Left; i < map.Bounds.Right; i++) {
 				for (int j = map.Bounds.Top; j < map.Bounds.Bottom; j++) {
-				    if (s.exploredCells[i,j] == true)
-					    exploredCells[i, j] = true;
+					if (s.exploredCells[i,j] == true)
+						exploredCells[i, j] = true;
+					if (s.foggedCells[i,j] == true)
+						foggedCells[i, j] = true;
 				}
-			exploredBounds = Rectangle.Union(exploredBounds.Value, s.exploredBounds.Value);
-		    }
+				exploredBounds = Rectangle.Union(exploredBounds.Value, s.exploredBounds.Value);
+			}
 		}
 
 		public void UpdatePlayerStance(World w, Player player, Stance oldStance, Stance newStance)
@@ -157,14 +174,14 @@ namespace OpenRA.Traits
 				foreach (var a in w.Actors.Where( a => a.Owner == player ))
 					AddActor(a);
 		}
-		
+
 		public int Explored()
 		{
 			int seen = 0;
 			for (int i = map.Bounds.Left; i < map.Bounds.Right; i++)
 				for (int j = map.Bounds.Top; j < map.Bounds.Bottom; j++)
-					if(exploredCells[i, j]) seen++;
-			
+					if(foggedCells[i, j]) seen++;
+
 			return seen;
 		}
 
@@ -184,9 +201,17 @@ namespace OpenRA.Traits
 		{
 			if (!a.HasTrait<RevealsShroud>())return;
 			if (a.Owner == null || Owner == null) return;
-			if(a.Owner.Stances[Owner] != Stance.Ally) return;
 
 			ActorVisibility v = a.Sight;
+
+			if(a.Owner.Stances[Owner] != Stance.Ally) {
+				if (a.HasTrait<CreatesShroud>()) {
+					foreach (var p in v.vis)
+						foreach (var q in FindVisibleTiles(a.World, p, v.range))
+							foggedCells[q.X, q.Y] = exploredCells[q.X, q.Y];
+				}
+				return;
+			}
 
 			foreach (var p in v.vis)
 				foreach (var q in FindVisibleTiles(a.World, p, v.range))
@@ -206,8 +231,10 @@ namespace OpenRA.Traits
 
 		public void Explore(World world, CPos center, int range)
 		{
-			foreach (var q in FindVisibleTiles(world, center, range))
+			foreach (var q in FindVisibleTiles(world, center, range)) {
 				exploredCells[q.X, q.Y] = true;
+				foggedCells[q.X, q.Y] = true;
+			}
 
 			var box = new Rectangle(center.X - range, center.Y - range, 2 * range + 1, 2 * range + 1);
 			exploredBounds = (exploredBounds.HasValue) ? Rectangle.Union(exploredBounds.Value, box) : box;
@@ -218,9 +245,12 @@ namespace OpenRA.Traits
 
 		public void ExploreAll(World world)
 		{
-			for (int i = map.Bounds.Left; i < map.Bounds.Right; i++)
-				for (int j = map.Bounds.Top; j < map.Bounds.Bottom; j++)
+			for (int i = map.Bounds.Left; i < map.Bounds.Right; i++) {
+				for (int j = map.Bounds.Top; j < map.Bounds.Bottom; j++) {
 					exploredCells[i, j] = true;
+					foggedCells[i, j] = true;
+				}
+			}
 			exploredBounds = world.Map.Bounds;
 
 			if (!Disabled)
@@ -232,6 +262,10 @@ namespace OpenRA.Traits
 			for (var j = 0; j <= exploredCells.GetUpperBound(1); j++)
 				for (var i = 0; i <= exploredCells.GetUpperBound(0); i++)
 					exploredCells[i, j] = visibleCells[i, j] > 0;
+
+			for (var j = 0; j <= foggedCells.GetUpperBound(1); j++)
+				for (var i = 0; i <= foggedCells.GetUpperBound(0); i++)
+					foggedCells[i, j] = visibleCells[i, j] > 0;
 
 			if (!Disabled)
 				Dirty();
@@ -246,7 +280,7 @@ namespace OpenRA.Traits
 			if (Disabled || Observing)
 				return true;
 
-			return exploredCells[x,y];
+			return foggedCells[x,y];
 		}
 
 		public bool IsVisible(CPos xy) { return IsVisible(xy.X, xy.Y); }
@@ -271,10 +305,10 @@ namespace OpenRA.Traits
 				return false;
 
 			if(Owner == null) return true;
-			
+
 			return Disabled || Observing || a.Owner.Stances[Owner] == Stance.Ally || GetVisOrigins(a).Any(o => IsExplored(o));
 		}
-		
+
 		public bool IsTargetable(Actor a) {
 			if (a.TraitsImplementing<IVisibilityModifier>().Any(t => !t.IsVisible(this, a)))
 				return false;
