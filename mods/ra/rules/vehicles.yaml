@@ -456,11 +456,12 @@ TRUK:
 		
 MGG:
 	Inherits: ^Vehicle
-	#Buildable:
-	#	Queue: Vehicle
-	#	BuildPaletteOrder: 150
-	#	Prerequisites: atek
-	#	Owner: allies
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 150
+		Prerequisites: atek
+		Owner: allies
+		Hotkey: s
 	Valued:
 		Cost: 1500
 	Tooltip:
@@ -478,6 +479,8 @@ MGG:
 		Offset: 0,6
 	AttackMove:
 		JustMove: yes
+	CreatesShroud:
+		Range: 4
 	RenderShroudCircle:
 	Explodes:
 		Weapon: UnitExplodeSmall
