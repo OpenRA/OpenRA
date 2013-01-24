@@ -139,9 +139,7 @@ namespace OpenRA.Mods.RA.Missions
 				if (bridge.IsDead() && attackingBridge)
 				{
 					if (!bridgeTank.IsDead())
-					{
 						bridgeTank.CancelActivity();
-					}
 					attackingBridge = false;
 				}
 			}
@@ -232,6 +230,9 @@ namespace OpenRA.Mods.RA.Missions
 				objectives[DestroyID].Status = ObjectiveStatus.InProgress;
 				OnObjectivesUpdated(true);
 				frameInfiltrated = world.FrameNumber;
+
+				foreach (var actor in world.Actors.Where(a => !a.IsDead() && a.HasTrait<Allies04TransformOnLabInfiltrate>()))
+					actor.QueueActivity(false, new Transform(actor, actor.Info.Traits.Get<Allies04TransformOnLabInfiltrateInfo>().ToActor));
 			}
 		}
 
@@ -244,20 +245,18 @@ namespace OpenRA.Mods.RA.Missions
 			});
 			lst.Trait<Cargo>().Load(lst, world.CreateActor(false, "mcv", new TypeDictionary { new OwnerInit(allies1) }));
 			if (allies1 != allies2)
-			{
 				lst.Trait<Cargo>().Load(lst, world.CreateActor(false, "mcv", new TypeDictionary { new OwnerInit(allies2) }));
-			}
 
 			lst.QueueActivity(new Move.Move(reinforcementsUnloadPoint.Location));
 			lst.QueueActivity(new Wait(10));
+
 			lst.QueueActivity(new CallFunc(() =>
 			{
 				allies1.PlayerActor.Trait<PlayerResources>().GiveCash(allies1 == allies2 ? 5000 : 2500);
 				if (allies1 != allies2)
-				{
 					allies2.PlayerActor.Trait<PlayerResources>().GiveCash(2500);
-				}
 			}));
+
 			lst.QueueActivity(new UnloadCargo(true));
 			lst.QueueActivity(new Wait(10));
 			lst.QueueActivity(new Move.Move(reinforcementsEntryPoint.Location));
@@ -516,7 +515,6 @@ namespace OpenRA.Mods.RA.Missions
 	}
 
 	class Allies04TrivialBuildingInfo : TraitInfo<Allies04TrivialBuilding> { }
-
 	class Allies04TrivialBuilding { }
 
 	class Allies04MaintainBuildingInfo : TraitInfo<Allies04MaintainBuilding>
@@ -537,4 +535,12 @@ namespace OpenRA.Mods.RA.Missions
 				self.Trait<RepairableBuilding>().RepairBuilding(self, self.Owner);
 		}
 	}
+
+	class Allies04TransformOnLabInfiltrateInfo : TraitInfo<Allies04TransformOnLabInfiltrate>
+	{
+		[ActorReference]
+		public readonly string ToActor = null;
+	}
+
+	class Allies04TransformOnLabInfiltrate { }
 }
