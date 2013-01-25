@@ -170,7 +170,7 @@ function FileSysGet(dir,spec)
   local f = browse:FindFirst(dir,spec)
   while #f>0 do
     if f:match("^file:") then -- remove file: protocol (wx2.9+)
-      f = f:gsub("^file:/?","")
+      f = f:gsub(ide.osname == "Windows" and "^file:/?" or "^file:","")
         :gsub('%%(%x%x)', function(n) return string.char(tonumber(n, 16)) end)
     end
     local file = wx.wxFileName(f)
