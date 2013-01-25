@@ -228,6 +228,8 @@ function FileCopy(file1, file2) return wx.wxCopyFile(file1, file2) end
 
 TimeGet = pcall(require, "socket") and socket.gettime or os.clock
 
+function isBinary(text) return text:find("[^\7\8\9\10\12\13\27\32-\255]") end
+
 function pairsSorted(t, f)
   local a = {}
   for n in pairs(t) do table.insert(a, n) end

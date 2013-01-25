@@ -68,8 +68,10 @@ function LoadFile(filePath, editor, file_must_exist, skipselection)
   editor:MarkerDeleteAll(CURRENT_LINE_MARKER)
   editor:AppendText(file_text or "")
 
-  -- check the editor as it can be empty if the file has malformed UTF8
-  if file_text and #file_text > 0 and #(editor:GetText()) == 0 then
+  -- check the editor as it can be empty if the file has malformed UTF8;
+  -- skip binary files as they may have any sequences; can't show them anyway.
+  if file_text and #file_text > 0 and not isBinary(file_text)
+  and #(editor:GetText()) == 0 then
     local replacement, invalid = "\022"
     file_text, invalid = fixUTF8(file_text, replacement)
     if #invalid > 0 then
