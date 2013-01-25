@@ -1329,18 +1329,6 @@ Actors:
 	Actor417: sbag
 		Location: 73,60
 		Owner: Soviets
-	PatrolPoint31: waypoint
-		Location: 83,101
-		Owner: Neutral
-	PatrolPoint32: waypoint
-		Location: 71,96
-		Owner: Neutral
-	PatrolPoint33: waypoint
-		Location: 71,87
-		Owner: Neutral
-	PatrolPoint34: waypoint
-		Location: 92,85
-		Owner: Neutral
 	Actor296: kenn
 		Location: 90,68
 		Owner: Soviets
@@ -1730,6 +1718,18 @@ Actors:
 	Actor513: e1
 		Location: 110,34
 		Owner: Soviets
+	PatrolPoint31: waypoint
+		Location: 79,71
+		Owner: Neutral
+	PatrolPoint32: waypoint
+		Location: 78,46
+		Owner: Neutral
+	PatrolPoint33: waypoint
+		Location: 100,48
+		Owner: Neutral
+	PatrolPoint34: waypoint
+		Location: 92,70
+		Owner: Neutral
 
 Smudges:
 
