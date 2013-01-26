@@ -1,0 +1,123 @@
+Metadata:
+	Title: Classic Red Alert (WIP)
+	Description: Closely resembling the original
+	Version: {DEV_VERSION}
+	Author: The OpenRA Developers
+
+Folders:
+	.
+	./mods/ra
+	./mods/ra/bits
+	./mods/ra-classic/maps
+	./mods/ra/uibits
+	~^/Content/ra
+
+Packages:
+	~main.mix
+	redalert.mix
+	conquer.mix
+	hires.mix
+	local.mix
+	sounds.mix
+	speech.mix
+	allies.mix
+	russian.mix
+	temperat.mix
+	snow.mix
+	interior.mix
+	~scores.mix
+	~movies1.mix
+	~movies2.mix
+
+Rules:
+	mods/ra-classic/rules/defaults.yaml
+	mods/ra-classic/rules/system.yaml
+	mods/ra-classic/rules/vehicles.yaml
+	mods/ra-classic/rules/structures.yaml
+	mods/ra-classic/rules/infantry.yaml
+	mods/ra-classic/rules/civilian.yaml
+	mods/ra-classic/rules/trees.yaml
+	mods/ra-classic/rules/aircraft.yaml
+	mods/ra-classic/rules/ships.yaml
+
+Sequences:
+	mods/ra/sequences.yaml
+
+Cursors:
+	mods/ra/cursors.yaml
+
+Chrome:
+	mods/ra/chrome.yaml
+	
+Assemblies:
+	mods/ra/OpenRA.Mods.RA.dll
+
+ChromeLayout:
+	mods/ra/chrome/gameinit.yaml
+	mods/ra/chrome/ingame.yaml
+	mods/ra/chrome/mainmenu.yaml
+	mods/ra/chrome/settings.yaml
+	mods/ra/chrome/lobby.yaml
+	mods/ra/chrome/map-chooser.yaml
+	mods/ra/chrome/create-server.yaml
+	mods/ra/chrome/serverbrowser.yaml
+	mods/ra/chrome/replaybrowser.yaml
+	mods/ra/chrome/dropdowns.yaml
+	mods/ra/chrome/modchooser.yaml
+	mods/ra/chrome/cheats.yaml
+	mods/ra/chrome/objectives.yaml
+
+Weapons:
+	mods/ra-classic/weapons.yaml
+	
+Voices:
+	mods/ra/voices.yaml
+
+Notifications:
+	mods/ra/notifications.yaml
+	
+TileSets:
+	mods/ra/tilesets/snow.yaml
+	mods/ra/tilesets/interior.yaml
+	mods/ra/tilesets/temperat.yaml
+
+Music:
+	mods/ra/music.yaml
+	mods/ra/music-cs.yaml
+	mods/ra/music-am.yaml
+
+Movies:
+	mods/ra/movies1.yaml
+	mods/ra/movies2.yaml
+
+LoadScreen: RALoadScreen
+	InstallerMenuWidget: INSTALL_PANEL
+	TestFile: redalert.mix
+	PackageURL: http://open-ra.org/get-dependency.php?file=ra-packages
+
+ServerTraits:
+	LobbyCommands
+	MasterServerPinger
+
+ChromeMetrics:
+	mods/ra/metrics.yaml
+
+Fonts:
+	Regular:
+		Font:FreeSans.ttf
+		Size:14
+	Bold:
+		Font:FreeSansBold.ttf
+		Size:14
+	Title:
+		Font:titles.ttf
+		Size:48
+	BigBold:
+		Font:FreeSansBold.ttf
+		Size:24
+	Tiny:
+		Font:FreeSans.ttf
+		Size:10
+	TinyBold:
+		Font:FreeSansBold.ttf
+		Size:10
