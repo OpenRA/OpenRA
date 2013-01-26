@@ -79,6 +79,7 @@ ChromeLayout:
 
 Weapons:
 	mods/cnc/weapons.yaml
+	mods/cnc/explosions.yaml
 
 Movies:
 	mods/cnc/movies-gdi.yaml
