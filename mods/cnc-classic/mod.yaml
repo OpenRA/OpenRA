@@ -48,7 +48,7 @@ Sequences:
 	mods/cnc/sequences/vehicles.yaml
 	mods/cnc/sequences/infantry.yaml
 	mods/cnc/sequences/map.yaml
-	mods/cnc/sequences/misc.yaml
+	mods/cnc-classic/sequences/misc.yaml
 	# Low priority sequences that break the batch when used
 	mods/cnc/sequences/civilian.yaml
 	mods/cnc/sequences/campaign.yaml
