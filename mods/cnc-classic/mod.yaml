@@ -1,6 +1,6 @@
 Metadata:
-	Title: C&C
-	Description: OpenRA Reimagining of the classic game
+	Title: C&C Classic (WIP)
+	Description: Try to emulate the original
 	Version: {DEV_VERSION}
 	Author: The OpenRA Developers
 
@@ -8,7 +8,9 @@ Folders:
 	.
 	./mods/cnc
 	./mods/cnc/bits
+	./mods/cnc-classic/uibits
 	./mods/cnc/uibits
+	./mods/ra/uibits
 	~^/Content/cnc
 
 Packages:
@@ -29,25 +31,24 @@ Packages:
 	~transit.mix
 
 Rules:
-	mods/cnc/rules/defaults.yaml
-	mods/cnc/rules/system.yaml
-	mods/cnc/rules/structures.yaml
-	mods/cnc/rules/infantry.yaml
-	mods/cnc/rules/vehicles.yaml
-	mods/cnc/rules/trees.yaml
-	mods/cnc/rules/civilian.yaml
-	mods/cnc/rules/civilian-desert.yaml
-	mods/cnc/rules/tech.yaml
-	mods/cnc/rules/ships.yaml
-	mods/cnc/rules/aircraft.yaml
-	mods/cnc/rules/husks.yaml
+	mods/cnc-classic/rules/defaults.yaml
+	mods/cnc-classic/rules/system.yaml
+	mods/cnc-classic/rules/structures.yaml
+	mods/cnc-classic/rules/infantry.yaml
+	mods/cnc-classic/rules/vehicles.yaml
+	mods/cnc-classic/rules/trees.yaml
+	mods/cnc-classic/rules/civilian.yaml
+	mods/cnc-classic/rules/civilian-desert.yaml
+	mods/cnc-classic/rules/tech.yaml
+	mods/cnc-classic/rules/ships.yaml
+	mods/cnc-classic/rules/aircraft.yaml
 
 Sequences:
 	mods/cnc/sequences/structures.yaml
 	mods/cnc/sequences/vehicles.yaml
 	mods/cnc/sequences/infantry.yaml
 	mods/cnc/sequences/map.yaml
-	mods/cnc/sequences/misc.yaml
+	mods/cnc-classic/sequences/misc.yaml
 	# Low priority sequences that break the batch when used
 	mods/cnc/sequences/civilian.yaml
 	mods/cnc/sequences/campaign.yaml
@@ -55,35 +56,29 @@ Cursors:
 	mods/cnc/cursors.yaml
 
 Chrome:
-	mods/cnc/chrome.yaml
+	mods/cnc-classic/chrome.yaml
 	
 Assemblies:
 	mods/ra/OpenRA.Mods.RA.dll
 	mods/cnc/OpenRA.Mods.Cnc.dll
 
 ChromeLayout:
-	mods/cnc/chrome/install.yaml
-	mods/cnc/chrome/mainmenu.yaml
-	mods/cnc/chrome/serverbrowser.yaml
-	mods/cnc/chrome/createserver.yaml
-	mods/cnc/chrome/directconnect.yaml
-	mods/cnc/chrome/lobby.yaml
-	mods/cnc/chrome/connection.yaml
-	mods/cnc/chrome/mapchooser.yaml
-	mods/cnc/chrome/replaybrowser.yaml
-	mods/cnc/chrome/ingame.yaml
-	mods/cnc/chrome/ingamemenu.yaml
-	mods/cnc/chrome/music.yaml
-	mods/cnc/chrome/modchooser.yaml
-	mods/cnc/chrome/settings.yaml
-	mods/cnc/chrome/cheats.yaml
-	mods/cnc/chrome/dialogs.yaml
-	mods/cnc/chrome/objectives.yaml
-	mods/cnc/chrome/tooltips.yaml
+	mods/ra/chrome/gameinit.yaml
+	mods/ra/chrome/ingame.yaml
+	mods/ra/chrome/mainmenu.yaml
+	mods/ra/chrome/settings.yaml
+	mods/ra/chrome/lobby.yaml
+	mods/ra/chrome/map-chooser.yaml
+	mods/ra/chrome/create-server.yaml
+	mods/ra/chrome/serverbrowser.yaml
+	mods/ra/chrome/replaybrowser.yaml
+	mods/ra/chrome/dropdowns.yaml
+	mods/ra/chrome/modchooser.yaml
+	mods/ra/chrome/cheats.yaml
+	mods/ra/chrome/objectives.yaml
 
 Weapons:
 	mods/cnc/weapons.yaml
-	mods/cnc/explosions.yaml
 
 Movies:
 	mods/cnc/movies-gdi.yaml
@@ -93,7 +88,7 @@ Voices:
 	mods/cnc/voices.yaml
 
 Notifications:
-	mods/cnc/notifications.yaml
+	mods/cnc-classic/notifications.yaml
 
 Music:
 	mods/cnc/music.yaml
@@ -104,10 +99,11 @@ TileSets:
 	mods/cnc/tilesets/snow.yaml
 	mods/cnc/tilesets/temperat.yaml
 
-LoadScreen: CncLoadScreen
+
+LoadScreen: RALoadScreen
 	InstallerMenuWidget: INSTALL_PANEL
-	InstallerBackgroundWidget: INSTALL_BACKGROUND
 	TestFile: conquer.mix
+	LoadScreenImage: mods/cnc-classic/uibits/loadscreen.png
 	PackageURL: http://open-ra.org/get-dependency.php?file=cnc-packages
 
 ServerTraits:
@@ -115,7 +111,7 @@ ServerTraits:
 	MasterServerPinger
 
 ChromeMetrics:
-	mods/cnc/metrics.yaml
+	mods/ra/metrics.yaml
 
 Fonts:
 	Regular:
