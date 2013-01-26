@@ -1,0 +1,348 @@
+^Vehicle:
+	AppearsOnRadar:
+	Mobile:
+		Crushes: crate
+		TerrainSpeeds:
+			Clear: 60
+			Rough: 40
+			Road: 100
+			Tiberium: 40
+			BlueTiberium: 40
+			Beach: 40
+		ROT: 5
+	SelectionDecorations:
+	Selectable:
+		Voice: VehicleVoice
+	TargetableUnit:
+		TargetTypes: Ground
+	Buildable:
+		Queue: Vehicle
+	Repairable:
+	Passenger:
+		CargoType: Vehicle
+	ActorLostNotification:
+		Notification: unitlost.aud
+	AttackMove:
+	AcceptsCloakCrate:
+	WithSmoke:
+
+^Tank:
+	AppearsOnRadar:
+	Mobile:
+		Crushes: wall, crate, infantry
+		TerrainSpeeds:
+			Clear: 80
+			Rough: 70
+			Road: 100
+			Tiberium: 70
+			BlueTiberium: 70
+			Beach: 70
+		ROT: 5
+	SelectionDecorations:
+	Selectable: 
+		Voice: VehicleVoice
+	TargetableUnit:
+		TargetTypes: Ground
+	Buildable:
+		Queue: Vehicle
+	Repairable:
+	Passenger: 
+		CargoType: Vehicle
+	ActorLostNotification:
+		Notification: unitlost.aud
+	AttackMove:
+	AcceptsCloakCrate:
+	WithSmoke:
+
+^Helicopter:
+	AppearsOnRadar:
+		UseLocation: yes
+	TargetableAircraft:
+		TargetTypes: Air
+		GroundedTargetTypes: Ground
+	SelectionDecorations:
+	Selectable:
+		Voice: VehicleVoice
+	Helicopter:
+		RepairBuildings: hpad
+		RearmBuildings:
+		LandWhenIdle: false
+	Buildable:
+		Queue: Aircraft
+	ActorLostNotification:
+		Notification: unitlost.aud
+
+^Infantry:
+	AppearsOnRadar:
+	Health:
+		Radius: 3
+	Armor:
+		Type: None
+	RevealsShroud:
+		Range: 5
+	AutoTarget:
+		ScanRadius: 4
+	Mobile:
+		Crushes: crate
+		SharesCell: true
+		TerrainSpeeds:
+			Clear: 90
+			Rough: 80
+			Road: 100
+			Tiberium: 70
+				PathingCost: 1000
+			BlueTiberium: 70
+				PathingCost: 1000
+			Beach: 80
+	SelectionDecorations:
+	Selectable:
+		Voice: GenericVoice
+	TargetableUnit:
+		TargetTypes: Ground
+	Buildable:
+		Queue: Infantry
+	TakeCover:
+		BarrelOffset: 0,-2,0,4
+	RenderInfantryProne:
+	AttackMove:
+	Passenger:
+		CargoType: Infantry
+	PoisonedByTiberium:
+	ActorLostNotification:
+		Notification: unitlost.aud
+	SpawnViceroid:
+		Probability: 2
+	CrushableInfantry:
+
+^CivInfantry:
+	Inherits: ^Infantry
+	-Buildable:
+	-AutoTarget:
+	-TakeCover:
+	-RenderInfantryProne:
+	AppearsOnRadar:
+	SelectionDecorations:
+	Selectable:
+		Voice: CivilianMaleVoice
+		Bounds: 12,17,0,-9
+	Valued:
+		Cost: 70
+	Tooltip:
+		Name: Civilian
+	Mobile:
+		Speed: 4
+	Health:
+		HP: 25
+	RevealsShroud:
+		Range: 2
+	AttackFrontal:
+		PrimaryWeapon: Pistol
+	ActorLostNotification:
+		Notification: civdead1.aud
+		NotifyAll: true
+	ScaredyCat:
+	RenderInfantryPanic:
+	AttackMove:
+		JustMove: yes
+	CrushableInfantry:
+
+^Plane:
+	AppearsOnRadar:
+		UseLocation: yes
+	SelectionDecorations:
+	Selectable:
+		Voice: GenericVoice
+	TargetableUnit:
+		TargetTypes: Air
+	ActorLostNotification:
+		Notification: unitlost.aud
+
+^Ship:
+	AppearsOnRadar:
+	Mobile:
+		Crushes: crate
+		TerrainSpeeds:
+			Water: 100
+	SelectionDecorations:
+	Selectable:
+		Voice: GenericVoice
+	TargetableUnit:
+		TargetTypes: Ground, Water
+	ActorLostNotification:
+		Notification: unitlost.aud
+	AttackMove:
+
+^Building:
+	AppearsOnRadar:
+	SelectionDecorations:
+	Selectable:
+		Priority: 3
+	TargetableBuilding:
+		TargetTypes: Ground
+	Armor:
+		Type: Wood
+	RepairableBuilding:
+		RepairPercent: 40
+		RepairStep: 14
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+		BuildSounds: constru2.aud, hvydoor1.aud
+		SellSounds: cashturn.aud
+		TerrainTypes: Clear,Road
+	SoundOnDamageTransition:
+		DamagedSound: xplos.aud
+		DestroyedSound: xplobig4.aud
+	Buildable:
+		Queue: Building
+	GivesBuildableArea:
+	RenderBuilding:
+	WithBuildingExplosion:
+	DeadBuildingState:
+	EmitInfantryOnSell:
+		ActorTypes: e6,e1
+	MustBeDestroyed:
+	CaptureNotification@GDI:
+		Race: gdi
+		Notification: gdicapt1.aud
+	CaptureNotification@NOD:
+		Race: nod
+		Notification: nodcapt1.aud
+	ActorLostNotification:
+		Notification: strclost.aud
+	EditorAppearance:
+		RelativeToTopLeft: yes
+	AutoTargetIgnore:
+	ShakeOnDeath:
+	Sellable:
+	Capturable:
+	CapturableBar:
+
+^CivBuilding:
+	Inherits: ^Building
+	-DeadBuildingState:
+	-Buildable:
+	-GivesBuildableArea:
+	Health:
+		HP: 400
+	Armor: 
+		Type: Wood
+	Building:
+	RenderBuilding:
+	WithBuildingExplosion:
+	-RepairableBuilding:
+	-Capturable:
+	-CapturableBar:
+	-Sellable:
+	Tooltip:
+		Name: Civilian Building
+
+^CivBuildingHusk:
+	AppearsOnRadar:
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+	RenderBuilding:
+	EditorAppearance:
+		RelativeToTopLeft: yes
+	Tooltip:
+		Name: Civilian Building (Destroyed)
+
+^TechBuilding:
+	Inherits: ^CivBuilding
+	Capturable:
+	CapturableBar:
+	RepairableBuilding:
+	RevealsShroud:
+		Range: 3
+
+^CivField:
+	Inherits: ^CivBuilding
+	-Selectable:
+	Tooltip:
+		Name: Field
+	-WithBuildingExplosion:
+	RenderBuilding:
+		Palette: terrain
+	EditorAppearance:
+		UseTerrainPalette: true
+
+^CivFieldHusk:
+	AppearsOnRadar:
+	Building:
+		Dimensions: 1,1
+		Footprint: _
+	EditorAppearance:
+		RelativeToTopLeft: yes
+	Tooltip:
+		Name: Field (Destroyed)
+	BelowUnits:
+
+^Wall:
+	AppearsOnRadar:
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+		BuildSounds: hvydoor1.aud
+		Adjacent: 7
+		TerrainTypes: Clear,Road
+	TargetableBuilding:
+		TargetTypes: Ground
+	Wall:
+		CrushClasses: wall
+		CrushSound: sandbag2.aud
+	LineBuild:
+		Range: 8
+	SelectionDecorations:
+	Selectable:
+		Priority: 1
+	RenderBuildingWall:
+		HasMakeAnimation: false
+		Palette: staticterrain
+	EditorAppearance:
+		RelativeToTopLeft: yes
+	AutoTargetIgnore:
+	Sellable:
+
+^Tree:
+	Tooltip:
+		Name: Tree
+	RenderBuilding:
+		Palette: staticterrain
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+	AppearsOnRadar:
+	RadarColorFromTerrain:
+		Terrain: Tree
+	EditorAppearance:
+		RelativeToTopLeft: yes
+		
+^Rock:
+	Tooltip:
+		Name: Rock
+	RenderBuilding:
+		Palette: staticterrain
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+	AppearsOnRadar:
+	RadarColorFromTerrain:
+		Terrain: Tree
+	EditorAppearance:
+		RelativeToTopLeft: yes
+
+^Bridge:
+	Tooltip:
+		Name: Bridge
+	TargetableBuilding:
+		TargetTypes: Ground, Water
+	BelowUnits:
+	Health:
+		HP: 500
+	SoundOnDamageTransition:
+		DamagedSound: xplos.aud
+		DestroyedSound: xplobig4.aud
+	Building:
+		Footprint: ______ ______ ______ ______
+		Dimensions: 6,4
