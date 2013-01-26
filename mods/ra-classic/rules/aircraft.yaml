@@ -14,15 +14,9 @@ BADR:
 	IronCurtainable:
 	Cargo:
 		MaxWeight: 10
-#		Types: Infantry, Vehicle
 	-Selectable:
-	-GainsExperience:
 	Tooltip:
 		Name: Badger
-	Contrail@1:
-		ContrailOffset: 11, -11
-	Contrail@2:
-		ContrailOffset: -11, -11
 	FallsToEarth:
 		Spins: no
 		Moves: yes
@@ -53,15 +47,10 @@ BADR.bomber:
 	RenderUnit:
 		Image: badr
 	WithShadow:
-	IronCurtainable:	
+	IronCurtainable:
 	-Selectable:
-	-GainsExperience:
 	Tooltip:
 		Name: Badger
-	Contrail@1:
-		ContrailOffset: 11, -11
-	Contrail@2:
-		ContrailOffset: -11, -11
 	FallsToEarth:
 		Spins: no
 		Moves: yes
@@ -80,16 +69,16 @@ MIG:
 	Buildable:
 		Queue: Plane
 		BuildPaletteOrder: 100
-		Prerequisites: afld, stek
+		Prerequisites: afld
 		BuiltAt: afld
 		Owner: soviet
 	Valued:
-		Cost: 2000
+		Cost: 1200
 	Tooltip:
 		Name: Mig Attack Plane
 		Description: Fast Ground-Attack Plane.\n  Strong vs Buildings\n  Weak vs Infantry, Light Vehicles
 	Health:
-		HP: 70
+		HP: 50
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -106,15 +95,11 @@ MIG:
 	RenderUnit:
 	WithShadow:
 	LimitedAmmo:
-		Ammo: 8
+		Ammo: 3
 	IronCurtainable:
 	ReturnOnIdle:
 	Selectable:
 		Bounds: 44,40,0,0
-	Contrail@1:
-		ContrailOffset: 16,-14
-	Contrail@2:
-		ContrailOffset: -16,-14
 	FallsToEarth:
 		Spins: no
 		Moves: yes
@@ -132,7 +117,7 @@ YAK:
 		BuiltAt: afld
 		Owner: soviet
 	Valued:
-		Cost: 1000
+		Cost: 800
 	Tooltip:
 		Name: Yak Attack Plane
 		Description: Anti-Tanks & Anti-Infantry Plane.\n  Strong vs Infantry, Tanks\n  Weak vs Buildings
@@ -143,8 +128,8 @@ YAK:
 	RevealsShroud:
 		Range: 10
 	AttackPlane:
-		PrimaryWeapon: ChainGun.Yak
-		SecondaryWeapon: ChainGun.Yak
+		PrimaryWeapon: ChainGun
+		SecondaryWeapon: ChainGun
 		PrimaryOffset: -5,-6,0,0
 		SecondaryOffset: 5,-6,0,0
 		FacingTolerance: 20
@@ -156,14 +141,12 @@ YAK:
 	RenderUnit:
 	WithShadow:
 	LimitedAmmo:
-		Ammo: 18
+		Ammo: 15
 		PipCount: 6
 		ReloadTicks: 11
 	IronCurtainable:
 	ReturnOnIdle:
 	WithMuzzleFlash:
-	Contrail:
-		ContrailOffset: 0, -20
 	FallsToEarth:
 		Spins: no
 		Moves: yes
@@ -171,7 +154,7 @@ YAK:
 	SmokeTrailWhenDamaged:
 		Offset: 0, -20
 		Interval: 2
-		
+
 
 TRAN:
 	Inherits: ^Helicopter
@@ -180,7 +163,7 @@ TRAN:
 		BuildPaletteOrder: 110
 		Prerequisites: hpad
 		BuiltAt: hpad
-		Owner: allies
+		Owner: soviet
 	Valued:
 		Cost: 1200
 	Tooltip:
@@ -212,45 +195,29 @@ TRAN:
 	IronCurtainable:
 	FallsToEarth:
 		Explosion: UnitExplode
-		
-TRAN.Husk1:
-	Inherits: ^Husk
-	Tooltip:
-		Name: Husk (Transport Helicopter)
-	RenderUnit:
-		Image: tran1husk
-
-TRAN.Husk2:
-	Inherits: ^Husk
-	Tooltip:
-		Name: Husk (Transport Helicopter)
-	RenderUnit:
-		Image: tran2husk
 
 HELI:
 	Inherits: ^Helicopter
 	Buildable:
 		Queue: Plane
 		BuildPaletteOrder: 90
-		Prerequisites: hpad, atek
+		Prerequisites: hpad
 		BuiltAt: hpad
 		Owner: allies
 	Valued:
-		Cost: 2000
+		Cost: 1200
 	Tooltip:
 		Name: Longbow
-		Description: Helicopter Gunship with AG Missiles.\n  Strong vs Tanks\n  Weak vs Infantry
+		Description: Helicopter AG Missiles.\n  Strong vs Tanks\n  Weak vs Infantry
 	Health:
-		HP: 120
+		HP: 225
 	Armor:
-		Type: Light
+		Type: Heavy
 	RevealsShroud:
 		Range: 12
 	AttackHeli:
 		PrimaryWeapon: HellfireAG
-		SecondaryWeapon: HellfireAA
 		PrimaryOffset: -5,0,0,2
-		SecondaryOffset: 5,0,0,2
 		FacingTolerance: 20
 	Helicopter:
 		RearmBuildings: hpad
@@ -263,7 +230,7 @@ HELI:
 		Offset: 0,0,0,-2
 	WithShadow:
 	LimitedAmmo:
-		Ammo: 8
+		Ammo: 6
 	IronCurtainable:
 	FallsToEarth:
 		Explosion: UnitExplode
@@ -277,16 +244,16 @@ HIND:
 		BuildPaletteOrder: 90
 		Prerequisites: hpad
 		BuiltAt: hpad
-		Owner: allies
+		Owner: soviet
 	Valued:
-		Cost: 1000
+		Cost: 1200
 	Tooltip:
 		Name: Hind
-		Description: Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles.\n  Weak vs Tanks
+		Description: Helicopter with Chainguns.\n  Strong vs Infantry, Light Vehicles.\n  Weak vs Tanks
 	Health:
-		HP: 150
+		HP: 225
 	Armor:
-		Type: Light
+		Type: Heavy
 	RevealsShroud:
 		Range: 10
 	AttackHeli:
@@ -305,7 +272,7 @@ HIND:
 	WithRotor:
 	WithShadow:
 	LimitedAmmo:
-		Ammo: 24
+		Ammo: 12
 		PipCount: 6
 		ReloadTicks: 8
 	IronCurtainable:
@@ -330,11 +297,6 @@ U2:
 	WithShadow:
 	IronCurtainable:
 	-Selectable:
-	-GainsExperience:
-	Contrail@1:
-		ContrailOffset: 16, -17
-	Contrail@2:
-		ContrailOffset: -16, -17
 	FallsToEarth:
 		Spins: no
 		Moves: yes

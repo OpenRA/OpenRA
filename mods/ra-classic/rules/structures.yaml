@@ -1,17 +1,51 @@
+KENN:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 30
+		Prerequisites: barr
+		Owner: soviet
+	Valued:
+		Cost: 200
+	Tooltip:
+		Name: Dog Kennel
+		Description: Dog kennel
+	Building:
+		Power: -10
+		Dimensions: 1,1
+	Health:
+		HP: 400
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4
+	Bib:
+#	RallyPoint:
+#	Exit@1:
+#		SpawnOffset: -4,19
+#		ExitCell: 0,2
+#	Exit@2:
+#		SpawnOffset: -17,15
+#		ExitCell: 0,2
+#	Production:
+#		Produces: Infantry
+#	PrimaryBuilding:
+	IronCurtainable:
+#	ProductionBar:
+
 MSLO:
 	Inherits: ^Building
 	Valued:
 		Cost: 2500
 	Tooltip:
 		Name: Missile Silo
-		Description: Launches a devastating nuclear strike.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks\n  Special Ability: Nuclear Missile\n\nMaximum 1 can be built
+		Description: Launches a devastating nuclear strike.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks\n  Special Ability: Nuclear Missile
 		Icon: msloicon2
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 130
 		Prerequisites: techcenter
 		Owner: soviet,allies
-		BuildLimit: 1
 	Building:
 		Power: -100
 		Footprint: xx
@@ -43,7 +77,7 @@ GAP:
 	RequiresPower:
 	CanPowerDown:
 	Valued:
-		Cost: 1000
+		Cost: 500
 	Tooltip:
 		Name: Gap Generator
 		Description: Regenerates the shroud nearby, \nobscuring the area.\n  Unarmed
@@ -53,17 +87,17 @@ GAP:
 		Prerequisites: atek
 		Owner: allies
 	Building:
-		Power: -60
+		Power: -90
 		Footprint: _ x
 		Dimensions: 1,2
 	Health:
-		HP: 1000
+		HP: 700
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 6
+		Range: 10
 	CreatesShroud:
-		Range: 6
+		Range: 10
 	IronCurtainable:
 	RenderShroudCircle:
 
@@ -72,7 +106,7 @@ SPEN:
 	InfiltrateForSupportPower:
 		Proxy: powerproxy.sonarpulse
 	Valued:
-		Cost: 800
+		Cost: 650
 	Tooltip:
 		Name: Sub Pen
 		Description: Produces and repairs submarines and \ntransports
@@ -133,7 +167,7 @@ SYRD:
 		Owner: allies
 		Hotkey: y
 	Valued:
-		Cost: 1000
+		Cost: 650
 	Tooltip:
 		Name: Shipyard
 		Description: Produces and repairs ships
@@ -188,7 +222,7 @@ IRON:
 		Owner: soviet
 		Hotkey: c
 	Valued:
-		Cost: 1500
+		Cost: 2800
 	Tooltip:
 		Name: Iron Curtain
 		Description: Makes a group of units invulnerable for a \nshort time.\n  Special Ability: Invulnerability
@@ -208,8 +242,8 @@ IRON:
 		Image: infxicon
 		ChargeTime: 120
 		Description: Invulnerability
-		LongDesc: Makes a group of units invulnerable\nfor 15 seconds.
-		Duration: 15
+		LongDesc: Makes a group of units invulnerable\nfor 10 seconds.
+		Duration: 10
 		SelectTargetSound: slcttgt1.aud
 		BeginChargeSound: ironchg1.aud
 		EndChargeSound: ironrdy1.aud
@@ -226,7 +260,7 @@ PDOX:
 		Owner: allies
 		Hotkey: o
 	Valued:
-		Cost: 1500
+		Cost: 2800
 	Tooltip:
 		Name: Chronosphere
 		Description: Teleports a unit from one place \nto another, for a limited time.\n  Special Ability: Chronoshift
@@ -253,7 +287,6 @@ PDOX:
 		Duration: 30
 		KillCargo: yes
 	SupportPowerChargeBar:
-	-AcceptsSupplies:
 
 TSLA:
 	Inherits: ^Building
@@ -276,7 +309,7 @@ TSLA:
 		Dimensions: 1,2
 	-GivesBuildableArea:
 	Health:
-		HP: 400
+		HP: 600
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -290,8 +323,6 @@ TSLA:
 	IronCurtainable:
 	-RenderBuilding:
 	RenderRangeCircle:
-	-AcceptsSupplies:
-	DrawLineToTarget:
 
 AGUN:
 	Inherits: ^Building
@@ -304,7 +335,7 @@ AGUN:
 		Owner: allies
 		Hotkey: g
 	Valued:
-		Cost: 800
+		Cost: 600
 	Tooltip:
 		Name: AA Gun
 		Description: Anti-Air base defense.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
@@ -331,8 +362,6 @@ AGUN:
 	-RenderBuilding:
 	RenderRangeCircle:
 		RangeCircleType: aa
-	-AcceptsSupplies:
-	DrawLineToTarget:
 
 DOME:
 	RequiresPower:
@@ -345,7 +374,7 @@ DOME:
 		Owner: allies,soviet
 		Hotkey: r
 	Valued:
-		Cost: 1600
+		Cost: 1000
 	Tooltip:
 		Name: Radar Dome
 		Description: Provides an overview of the battlefield.\n  Requires power to operate.
@@ -366,8 +395,16 @@ DOME:
 
 PBOX:
 	Inherits: ^Building
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 20
+		Prerequisites: tent
+		Owner: allies
+		Hotkey: p
 	Tooltip:
-		Name: Pillbox (Unarmed)
+		Name: Pillbox
+		Description: Basic defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
+		Icon: PBOXICON
 	Building:
 		Power: -15
 	-GivesBuildableArea:
@@ -378,148 +415,29 @@ PBOX:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 6
+		Range: 5
 	IronCurtainable:
-	-AcceptsSupplies:
-	Turreted:
-		ROT: 255
-	Cargo:
-		Types: Infantry
-		MaxWeight: 1
-		PipCount: 1
-	-EmitInfantryOnSell:
-#	EmitCargoOnSell:
-	DrawLineToTarget:
-	TransformOnPassenger@e1:
-		PassengerTypes: e1
-		OnEnter: pbox.e1
-		OnExit: pbox
-		SkipMakeAnims: true
-#	TransformOnPassenger@e2:
-#		PassengerTypes: e2
-#		OnEnter: pbox.e2
-#		OnExit: pbox
-#		SkipMakeAnims: true
-	TransformOnPassenger@e3:
-		PassengerTypes: e3
-		OnEnter: pbox.e3
-		OnExit: pbox
-		SkipMakeAnims: true
-	TransformOnPassenger@e4:
-		PassengerTypes: e4
-		OnEnter: pbox.e4
-		OnExit: pbox
-		SkipMakeAnims: true
-	TransformOnPassenger@e7:
-		PassengerTypes: e7
-		OnEnter: pbox.e7
-		OnExit: pbox
-		SkipMakeAnims: true
-	TransformOnPassenger@SHOK:
-		PassengerTypes: shok
-		OnEnter: pbox.shok
-		OnExit: pbox
-		SkipMakeAnims: true
-	TransformOnPassenger@Sniper:
-		PassengerTypes: sniper
-		OnEnter: pbox.sniper
-		OnExit: pbox
-		SkipMakeAnims: true
-
-PBOX.E1:
-	Inherits: PBOX
-	Buildable:
-		Queue: Defense
-		BuildPaletteOrder: 20
-		Prerequisites: tent
-		Owner: allies
-		Hotkey: p
-	Tooltip:
-		Name: Pillbox (Guns)
-		Description: Basic defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
-		Icon: PBOXICON
-	RenderBuilding:
-		Image: PBOX
 	RenderRangeCircle:
 	AutoTarget:
 	AttackTurreted:
 		PrimaryWeapon: Vulcan
 		PrimaryLocalOffset: 0,-11,0,0,0
 	WithMuzzleFlash:
-	Cargo:
-		InitialUnits: e1
-
-#PBOX.E2:
-#	Inherits: PBOX
-#	Tooltip:
-#		Name: Pillbox (Grenades)
-#	RenderBuilding:
-#		Image: PBOX
-
-PBOX.E3:
-	Inherits: PBOX
-	Tooltip:
-		Name: Pillbox (Rockets)
-	RenderBuilding:
-		Image: PBOX
-	RenderRangeCircle:
-	AutoTarget:
-	AttackTurreted:
-		PrimaryWeapon: Dragon
-		PrimaryLocalOffset: 0,-11,0,0,0
-
-PBOX.E4:
-	Inherits: PBOX
-	Tooltip:
-		Name: Pillbox (Flamethrower)
-	RenderBuilding:
-		Image: PBOX
-	RenderRangeCircle:
-	AutoTarget:
-	AttackTurreted:
-		PrimaryWeapon: Flamer
-		PrimaryLocalOffset: 0,-11,0,0,0
-
-PBOX.E7:
-	Inherits: PBOX
-	Tooltip:
-		Name: Pillbox (Tanya)
-	RenderBuilding:
-		Image: PBOX
-	RenderRangeCircle:
-	AutoTarget:
-	AttackTurreted:
-		PrimaryWeapon: Colt45
-		PrimaryLocalOffset: 0,-11,0,0,0
-
-PBOX.SHOK:
-	Inherits: PBOX
-	Tooltip:
-		Name: Pillbox (Tesla)
-	RenderBuilding:
-		Image: PBOX
-	RenderRangeCircle:
-	AutoTarget:
-	AttackTurreted:
-		PrimaryWeapon: PortaTesla
-		PrimaryLocalOffset: 0,-11,0,0,0
-
-PBOX.SNIPER:
-	Inherits: PBOX
-	Tooltip:
-		Name: Pillbox (Sniper)
-	RenderBuilding:
-		Image: PBOX
-	RenderRangeCircle:
-	AutoTarget:
-	AttackTurreted:
-		PrimaryWeapon: Sniper
-		PrimaryLocalOffset: 0,-11,0,0,0
-
+	Turreted:
+		ROT: 255
+	
 HBOX:
 	Inherits: ^Building
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 20
+		Prerequisites: tent
+		Owner: allies
+#		Hotkey: p
 	Tooltip:
-		Name: Camo Pillbox (Unarmed)
+		Name: Camo Pillbox
+		Description: Hidden defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
+		Icon: HBOXICON
 	Building:
 		Power: -15
 	-GivesBuildableArea:
@@ -530,148 +448,16 @@ HBOX:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 6
-	Cloak:
-		InitialDelay: 125
-		CloakDelay: 60
-		CloakSound: appear1.aud
-		UncloakSound: appear1.aud
+		Range: 5
 	IronCurtainable:
-	-AcceptsSupplies:
-	Turreted:
-		ROT: 255
-	Cargo:
-		Types: Infantry
-		MaxWeight: 1
-		PipCount: 1
-	-EmitInfantryOnSell:
-#	EmitCargoOnSell:
-	DrawLineToTarget:
-	TransformOnPassenger@e1:
-		PassengerTypes: e1
-		OnEnter: HBOX.e1
-		OnExit: HBOX
-		SkipMakeAnims: true
-#	TransformOnPassenger@e2:
-#		PassengerTypes: e2
-#		OnEnter: HBOX.e2
-#		OnExit: HBOX
-#		SkipMakeAnims: true
-	TransformOnPassenger@e3:
-		PassengerTypes: e3
-		OnEnter: HBOX.e3
-		OnExit: HBOX
-		SkipMakeAnims: true
-	TransformOnPassenger@e4:
-		PassengerTypes: e4
-		OnEnter: HBOX.e4
-		OnExit: HBOX
-		SkipMakeAnims: true
-	TransformOnPassenger@e7:
-		PassengerTypes: e7
-		OnEnter: HBOX.e7
-		OnExit: HBOX
-		SkipMakeAnims: true
-	TransformOnPassenger@SHOK:
-		PassengerTypes: shok
-		OnEnter: HBOX.shok
-		OnExit: HBOX
-		SkipMakeAnims: true
-	TransformOnPassenger@Sniper:
-		PassengerTypes: sniper
-		OnEnter: HBOX.sniper
-		OnExit: HBOX
-		SkipMakeAnims: true
-
-HBOX.E1:
-	Inherits: HBOX
-	Buildable:
-		Queue: Defense
-		BuildPaletteOrder: 20
-		Prerequisites: tent
-		Owner: allies
-		Hotkey: p
-	Tooltip:
-		Name: Camo Pillbox (Guns)
-		Description: Hidden defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
-		Icon: HBOXICON
-	RenderBuilding:
-		Image: HBOX
 	RenderRangeCircle:
 	AutoTarget:
 	AttackTurreted:
 		PrimaryWeapon: Vulcan
 		PrimaryLocalOffset: 0,-11,0,0,0
 	WithMuzzleFlash:
-	Cargo:
-		InitialUnits: e1
-
-#HBOX.E2:
-#	Inherits: HBOX
-#	Tooltip:
-#		Name: Camo Pillbox (Grenades)
-#	RenderBuilding:
-#		Image: HBOX
-
-HBOX.E3:
-	Inherits: HBOX
-	Tooltip:
-		Name: Camo Pillbox (Rockets)
-	RenderBuilding:
-		Image: HBOX
-	RenderRangeCircle:
-	AutoTarget:
-	AttackTurreted:
-		PrimaryWeapon: Dragon
-		PrimaryLocalOffset: 0,-11,0,0,0
-
-HBOX.E4:
-	Inherits: HBOX
-	Tooltip:
-		Name: Camo Pillbox (Flamethrower)
-	RenderBuilding:
-		Image: HBOX
-	RenderRangeCircle:
-	AutoTarget:
-	AttackTurreted:
-		PrimaryWeapon: Flamer
-		PrimaryLocalOffset: 0,-11,0,0,0
-
-HBOX.E7:
-	Inherits: HBOX
-	Tooltip:
-		Name: Camo Pillbox (Tanya)
-	RenderBuilding:
-		Image: HBOX
-	RenderRangeCircle:
-	AutoTarget:
-	AttackTurreted:
-		PrimaryWeapon: Colt45
-		PrimaryLocalOffset: 0,-11,0,0,0
-
-HBOX.SHOK:
-	Inherits: HBOX
-	Tooltip:
-		Name: Camo Pillbox (Tesla)
-	RenderBuilding:
-		Image: HBOX
-	RenderRangeCircle:
-	AutoTarget:
-	AttackTurreted:
-		PrimaryWeapon: PortaTesla
-		PrimaryLocalOffset: 0,-11,0,0,0
-
-HBOX.SNIPER:
-	Inherits: HBOX
-	Tooltip:
-		Name: Camo Pillbox (Sniper)
-	RenderBuilding:
-		Image: HBOX
-	RenderRangeCircle:
-	AutoTarget:
-	AttackTurreted:
-		PrimaryWeapon: Sniper
-		PrimaryLocalOffset: 0,-11,0,0,0
+	Turreted:
+		ROT: 255
 
 GUN:
 	Inherits: ^Building
@@ -682,19 +468,19 @@ GUN:
 		Owner: allies
 		Hotkey: t
 	Valued:
-		Cost: 600
+		Cost: 800
 	Tooltip:
 		Name: Turret
 		Description: Anti-Armor base defense.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
 	Building:
-		Power: -40
+		Power: -55
 	-GivesBuildableArea:
 	Health:
 		HP: 400
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 7
+		Range: 6
 	Turreted:
 		ROT: 12
 		InitialFacing: 50
@@ -705,8 +491,6 @@ GUN:
 	IronCurtainable:
 	-RenderBuilding:
 	RenderRangeCircle:
-	-AcceptsSupplies:
-	DrawLineToTarget:
 
 FTUR:
 	Inherits: ^Building
@@ -739,8 +523,6 @@ FTUR:
 	AutoTarget:
 	IronCurtainable:
 	RenderRangeCircle:
-	-AcceptsSupplies:
-	DrawLineToTarget:
 
 SAM:
 	Inherits: ^Building
@@ -780,8 +562,6 @@ SAM:
 		RangeCircleType: aa
 	RequiresPower:
 	CanPowerDown:
-	-AcceptsSupplies:
-	DrawLineToTarget:
 
 ATEK:
 	Inherits: ^Building
@@ -838,9 +618,9 @@ WEAP:
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Health:
-		HP: 1500
+		HP: 1000
 	Armor:
-		Type: Wood
+		Type: Light
 	RevealsShroud:
 		Range: 4
 	Bib:
@@ -879,10 +659,6 @@ FACT:
 	CustomSellValue:
 		Value: 2500
 	BaseBuilding:
-	Transforms:
-		IntoActor: mcv
-		Offset:1,1
-		Facing: 96
 	ProductionBar:
 		
 PROC:
@@ -894,7 +670,7 @@ PROC:
 		Owner: allies,soviet
 		Hotkey: e
 	Valued:
-		Cost: 1400
+		Cost: 2000
 	Tooltip:
 		Name: Ore Refinery
 		Description: Converts Ore and Gems into money
@@ -914,7 +690,6 @@ PROC:
 		PipCount: 17
 		Capacity: 2000
 	IronCurtainable:
-	DrawLineToTarget:
 	CustomSellValue:
 		Value: 600
 	FreeActor:
@@ -963,10 +738,10 @@ HPAD:
 		Queue: Building
 		BuildPaletteOrder: 90
 		Prerequisites: dome
-		Owner: allies
+		Owner: allies,soviet
 		Hotkey: i
 	Valued:
-		Cost: 500
+		Cost: 1500
 	Tooltip:
 		Name: Helipad
 		Description: Produces and reloads helicopters
@@ -990,7 +765,6 @@ HPAD:
 	Reservable:
 	IronCurtainable:
 	ProductionBar:
-	PrimaryBuilding:
 
 AFLD:
 	Inherits: ^Building
@@ -1001,18 +775,18 @@ AFLD:
 		Owner: soviet
 		Hotkey: g
 	Valued:
-		Cost: 500
+		Cost: 600
 	Tooltip:
 		Name: Airfield
 		Description: Provides radar and off-map support\n  Special Ability: Paratroopers\n  Special Ability: Spy Plane
 	Building:
-		Power: -20
+		Power: -30
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Health:
 		HP: 1000
 	Armor:
-		Type: Wood
+		Type: Heavy
 	RevealsShroud:
 		Range: 7
 	Exit@1:
@@ -1041,7 +815,6 @@ AFLD:
 		SelectTargetSound: slcttgt1.aud
 	ProductionBar:
 	SupportPowerChargeBar:
-	PrimaryBuilding:
 	
 POWR:
 	Inherits: ^Building
@@ -1075,7 +848,7 @@ APWR:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 20
-		Prerequisites: dome
+		Prerequisites: powr
 		Owner: allies,soviet
 		Hotkey: l
 	Valued:
@@ -1135,7 +908,7 @@ BARR:
 		Owner: soviet
 		Hotkey: b
 	Valued:
-		Cost: 400
+		Cost: 300
 	Tooltip:
 		Name: Soviet Barracks
 		Description: Produces infantry
@@ -1172,7 +945,7 @@ TENT:
 		Owner: allies
 		Hotkey: b
 	Valued:
-		Cost: 400
+		Cost: 300
 	Tooltip:
 		Name: Allied Barracks
 		Description: Produces infantry
@@ -1199,23 +972,6 @@ TENT:
 	PrimaryBuilding:
 	IronCurtainable:
 	ProductionBar:
-	
-KENN:
-	Inherits: ^Building
-	Tooltip:
-		Name: Kennel
-	Building:
-		Power: -10
-	-GivesBuildableArea:
-	Health:
-		HP: 300
-	Armor:
-		Type: Wood
-	RevealsShroud:
-		Range: 4
-	IronCurtainable:
-	-EmitInfantryOnSell:
-	-AcceptsSupplies:
 
 FIX:
 	Inherits: ^Building
@@ -1249,13 +1005,14 @@ FIX:
 
 FACF:
 	Inherits: ^Building
-#	Buildable:
-#		BuildPaletteOrder: 900
-#		Owner: allies
-#		Cost: 50
-#		Description: Fake Construction Yard
-#		LongDesc: Looks like a Construction Yard.
-#		Hotkey: c
+	Buildable:
+		BuildPaletteOrder: 900
+		Owner: allies
+		Cost: 50
+	Tooltip:
+		Name: Fake Construction Yard
+		Description: Fake Construction Yard
+		LongDesc: Looks like a Construction Yard.
 	Building:
 		Power: -2
 		Footprint: xxx xxx xxx
@@ -1274,14 +1031,15 @@ FACF:
 
 WEAF:
 	Inherits: ^Building
-#	Buildable:
-#		BuildPaletteOrder: 900
-#		Prerequisites: proc
-#		Owner: allies
-#		Cost: 50
-#		Description: Fake War Factory
-#		LongDesc: Looks like a War Factory.
-#		Hotkey: x
+	Buildable:
+		BuildPaletteOrder: 900
+		Prerequisites: proc
+		Owner: allies
+		Cost: 50
+	Tooltip:
+		Name: Fake War Factory
+		Description: Fake War Factory
+		LongDesc: Looks like a War Factory.
 	Building:
 		Power: -2
 		Footprint: xxx xxx
@@ -1305,14 +1063,13 @@ SYRF:
 		Cost: 50
 	Tooltip:
 		Name: Fake Shipyard
-#	Buildable:
-#		BuildPaletteOrder: 900
-#		Prerequisites: anypower
-#		Owner: allies
-#		Cost: 50
-#		Description: Fake Shipyard
-#		LongDesc: Looks like a Shipyard
-#		Hotkey: z
+		Description: Fake Shipyard
+		LongDesc: Looks like a Shipyard
+	Buildable:
+		BuildPaletteOrder: 900
+		Prerequisites: anypower
+		Owner: allies
+		Cost: 50
 	TargetableBuilding:
 		TargetTypes: Ground, Water
 	Building:
@@ -1357,14 +1114,13 @@ DOMF:
 		Cost: 50
 	Tooltip:
 		Name: Fake Radar Dome
-#	Buildable:
-#		BuildPaletteOrder: 900
-#		Prerequisites: proc
-#		Owner: allies
-#		Cost: 50
-#		Description: Fake Radar Dome
-#		LongDesc: Looks like a Radar Dome
-#		Hotkey: v
+		Description: Fake Radar Dome
+		LongDesc: Looks like a Radar Dome
+	Buildable:
+		BuildPaletteOrder: 900
+		Prerequisites: proc
+		Owner: allies
+		Cost: 50
 	Building:
 		Power: -2
 		Footprint: xx xx
@@ -1396,7 +1152,7 @@ SBAG:
 		Name: Sandbag Wall
 		Description: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
 	Health:
-		HP: 300
+		HP: 1
 	Armor:
 		Type: Wood
 
@@ -1416,7 +1172,7 @@ FENC:
 		Name: Wire Fence
 		Description: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
 	Health:
-		HP: 300
+		HP: 1
 	Armor:
 		Type: Wood
 
@@ -1429,7 +1185,7 @@ BRIK:
 		Owner: allies,soviet
 		Hotkey: w
 	Valued:
-		Cost: 100
+		Cost: 50
 	CustomSellValue:
 		Value: 0
 	Tooltip:
@@ -1439,7 +1195,7 @@ BRIK:
 		DamagedSound: crmble2.aud
 		DestroyedSound: kaboom30.aud
 	Health:
-		HP: 500
+		HP: 1
 	Armor:
 		Type: Concrete
 	Wall:
@@ -1448,21 +1204,21 @@ BRIK:
 CYCL:
 	Inherits: ^Wall
 	Health:
-		HP: 100
+		HP: 1
 	Armor: 
-		Type: Wood
+		Type: None
 		
 BARB:
 	Inherits: ^Wall
 	Health:
-		HP: 100
+		HP: 1
 	Armor:
 		Type: Wood
 
 WOOD:
 	Inherits: ^Wall
 	Health:
-		HP: 100
+		HP: 1
 	Armor: 
 		Type: Wood
 
@@ -1481,7 +1237,6 @@ TECHCENTER:
 	Tooltip:
 		Name: Tech Center
 		Description: Tech Center
-
 ANYPOWER:
 	Tooltip:
 		Name: Power Plant
