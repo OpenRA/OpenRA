@@ -1,0 +1,254 @@
+V01:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Tooltip:
+		Name: Church
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+
+V02:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+
+V03:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+
+V04:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+
+V05:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+
+V06:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+
+V07:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+
+V08:
+	Inherits: ^CivBuilding
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+
+V09:
+	Inherits: ^CivBuilding
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+
+V10:
+	Inherits: ^CivBuilding
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+
+V11:
+	Inherits: ^CivBuilding
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+
+V12:
+	Inherits: ^CivBuilding
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+
+V13:
+	Inherits: ^CivBuilding
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+
+V14:
+	Inherits: ^CivField
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+
+V15:
+	Inherits: ^CivField
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+
+V16:
+	Inherits: ^CivField
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+
+V17:
+	Inherits: ^CivField
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+
+V18:
+	Inherits: ^CivField
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+
+ARCO:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+
+BARB:
+	Inherits: ^Wall
+	Health:
+		HP: 100
+	Armor:
+		Type: Light
+	Tooltip:
+		Name: Wire Fence
+		Icon: barbicnh
+
+WOOD:
+	Inherits: ^Wall
+	Health:
+		HP: 100
+		Armor:
+			Type: Wood
+		Tooltip:
+		Name: Wooden Fence
+		Icon: woodicnh
+
+BRIDGE1:
+	Inherits: ^Bridge
+	Bridge:
+		Template: 165
+		DestroyedTemplate: 166
+	Building:
+		Footprint: ____ ____ ____ ____
+		Dimensions: 4,4
+
+BRIDGE2:
+	Inherits: ^Bridge
+	Bridge:
+		Template: 167
+		DestroyedTemplate: 168
+	Building:
+		Footprint: _____ _____ _____ _____ _____
+		Dimensions: 5,5
+
+BRIDGE3:
+	Inherits: ^Bridge
+	Bridge:
+		Template: 169
+		DestroyedTemplate: 170
+	Building:
+		Footprint: ______ ______ ______ ______ ______
+		Dimensions: 6,5
+
+BRIDGE4:
+	Inherits: ^Bridge
+	Bridge:
+		Template: 171
+		DestroyedTemplate: 172
+	Building:
+		Footprint: ______ ______ ______ ______
+		Dimensions: 6,4
+
+C1:
+	Inherits: ^CivInfantry
+	Selectable:
+		Voice: CivilianMaleVoice
+
+C2:
+	Inherits: ^CivInfantry
+	Selectable:
+		Voice: CivilianFemaleVoice
+
+C3:
+	Inherits: ^CivInfantry
+
+C4:
+	Inherits: ^CivInfantry
+	Selectable:
+		Voice: CivilianFemaleVoice
+
+C5:
+	Inherits: ^CivInfantry
+
+C6:
+	Inherits: ^CivInfantry
+	Selectable:
+		Voice: CivilianFemaleVoice
+
+C7:
+	Inherits: ^CivInfantry
+
+C8:
+	Inherits: ^CivInfantry
+	Selectable:
+		Voice: CivilianFemaleVoice
+
+C9:
+	Inherits: ^CivInfantry
+
+C10:
+	Inherits: ^CivInfantry
+	Selectable:
+		Voice: CivilianFemaleVoice
+
+VICE:
+	AppearsOnRadar:
+	Health:
+		Radius: 3
+		HP: 400
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4
+	Mobile:
+		Speed: 5
+		TerrainSpeeds:
+			Clear: 90
+			Rough: 80
+			Road: 100
+			Tiberium: 70
+			BlueTiberium: 70
+			Beach: 80
+	Selectable:
+		Voice: GenericVoice
+	TargetableUnit:
+		TargetTypes: Ground
+	AutoTarget:
+		ScanRadius: 4
+	AttackMove:
+	HiddenUnderFog:
+	GainsExperience:
+	GivesExperience:
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Viceroid
+	AttackFrontal:
+		PrimaryWeapon: Chemspray
+	AttackWander:
+	RenderUnit:
+	WithMuzzleFlash:
