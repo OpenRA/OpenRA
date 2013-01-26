@@ -397,9 +397,7 @@ namespace OpenRA.Mods.RA.Missions
 			allies1 = w.Players.Single(p => p.InternalName == "Allies1");
 			allies2 = w.Players.SingleOrDefault(p => p.InternalName == "Allies2");
 			if (allies2 == null)
-			{
 				allies2 = allies1;
-			}
 
 			attackAtFrame = attackAtFrameIncrement = difficulty == "Hard" || difficulty == "Normal" ? 500 : 600;
 			minAttackAtFrame = difficulty == "Hard" || difficulty == "Normal" ? 100 : 150;

@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Activities;
@@ -43,9 +42,6 @@ namespace OpenRA.Mods.RA.Missions
 		const string Infiltrate = "The Soviets are currently developing a new defensive system named the \"Iron Curtain\" at their main research laboratory."
 								+ " Get our {0} into the laboratory undetected.";
 
-		Actor lstEntryPoint;
-		Actor lstUnloadPoint;
-		Actor lstExitPoint;
 		Actor hijackTruck;
 		Actor baseGuard;
 		Actor baseGuardMovePos;
@@ -82,6 +78,10 @@ namespace OpenRA.Mods.RA.Missions
 		Actor reinforcementsEntryPoint;
 		Actor reinforcementsUnloadPoint;
 
+		Actor spyReinforcementsEntryPoint;
+		Actor spyReinforcementsUnloadPoint;
+		Actor spyReinforcementsExitPoint;
+
 		string difficulty;
 		int destroyBaseTicks;
 
@@ -93,9 +93,7 @@ namespace OpenRA.Mods.RA.Missions
 		bool attackingBridge;
 
 		bool attackingTown = true;
-		Actor townTopLeft;
-		Actor townBottomRight;
-		IEnumerable<Actor> townAttackers;
+		Actor[] townAttackers;
 
 		void MissionFailed(string text)
 		{
@@ -113,9 +111,6 @@ namespace OpenRA.Mods.RA.Missions
 
 			if (world.FrameNumber == 1)
 				InsertSpies();
-
-			if (world.FrameNumber == 25 * 25)
-				SendHind(hind1EntryPoint, hind1Points, hind1ExitPoint);
 
 			if (frameInfiltrated != -1)
 			{
@@ -141,24 +136,27 @@ namespace OpenRA.Mods.RA.Missions
 					bridgeTank.QueueActivity(new Attack(Target.FromPos(bridge.CenterLocation), 4));
 					attackingBridge = true;
 				}
-				if (bridge.IsDead() && attackingBridge)
+				if (attackingBridge && bridge.IsDead())
 				{
 					if (!bridgeTank.IsDead())
 						bridgeTank.CancelActivity();
 					attackingBridge = false;
 				}
+
+				if (world.FrameNumber == frameInfiltrated + 1500 * 6)
+					foreach (var attacker in townAttackers.Where(a => !a.IsDead() && a.IsInWorld))
+						attacker.QueueActivity(new AttackMove.AttackMoveActivity(attacker, new Move.Move(reinforcementsUnloadPoint.Location + new CVec(10, -15), 3)));
 			}
 
 			if (attackingTown)
 			{
-				Game.Debug(townAttackers.Count().ToString());
 				foreach (var attacker in townAttackers.Where(a => a.IsIdle && !a.IsDead() && a.IsInWorld))
 				{
-					Game.Debug("foo " + attacker);
 					var enemies = world.Actors.Where(u => u.Owner == neutral
-						&& ((u.HasTrait<Building>() && !u.HasTrait<Wall>()) || u.HasTrait<Mobile>()) && u.IsInWorld && !u.IsDead());
+						&& ((u.HasTrait<Building>() && !u.HasTrait<Wall>() && !u.HasTrait<Bridge>()) || u.HasTrait<Mobile>())
+						&& u.HasTrait<ITargetable>() && u.HasTrait<Health>() && !u.Trait<Health>().IsDead && u.IsInWorld);
 
-					var enemy = enemies.OrderBy(u => (self.CenterLocation - u.CenterLocation).LengthSquared).FirstOrDefault();
+					var enemy = enemies.OrderBy(u => (attacker.CenterLocation - u.CenterLocation).LengthSquared).FirstOrDefault();
 					if (enemy != null)
 						attacker.QueueActivity(new AttackMove.AttackMoveActivity(attacker, new Attack(Target.FromActor(enemy), 3)));
 					else
@@ -316,28 +314,12 @@ namespace OpenRA.Mods.RA.Missions
 			}
 		}
 
-		void SendHind(CPos start, IEnumerable<PPos> points, CPos exit)
-		{
-			var hind = world.CreateActor("hind.autotarget", new TypeDictionary
-			{
-				new OwnerInit(soviets),
-				new LocationInit(start),
-				new FacingInit(Util.GetFacing(points.First().ToCPos() - start, 0)),
-				new AltitudeInit(Rules.Info["hind.autotarget"].Traits.Get<HelicopterInfo>().CruiseAltitude),
-			});
-
-			foreach (var point in points.Concat(new[] { Util.CenterOfCell(exit) }))
-				hind.QueueActivity(new AttackMove.AttackMoveActivity(hind, new HeliFly(point)));
-
-			hind.QueueActivity(new RemoveSelf());
-		}
-
 		void InsertSpies()
 		{
 			var lst = world.CreateActor("lst.unselectable", new TypeDictionary 
 			{ 
 				new OwnerInit(allies1),
-				new LocationInit(lstEntryPoint.Location)
+				new LocationInit(spyReinforcementsEntryPoint.Location)
 			});
 
 			allies1Spy = world.CreateActor(false, "spy.strong", new TypeDictionary { new OwnerInit(allies1) });
@@ -348,11 +330,11 @@ namespace OpenRA.Mods.RA.Missions
 				lst.Trait<Cargo>().Load(lst, allies2Spy);
 			}
 
-			lst.QueueActivity(new Move.Move(lstUnloadPoint.Location));
+			lst.QueueActivity(new Move.Move(spyReinforcementsUnloadPoint.Location));
 			lst.QueueActivity(new Wait(10));
 			lst.QueueActivity(new UnloadCargo(true));
 			lst.QueueActivity(new Wait(10));
-			lst.QueueActivity(new Move.Move(lstExitPoint.Location));
+			lst.QueueActivity(new Move.Move(spyReinforcementsExitPoint.Location));
 			lst.QueueActivity(new RemoveSelf());
 		}
 
@@ -372,9 +354,7 @@ namespace OpenRA.Mods.RA.Missions
 			allies1 = w.Players.Single(p => p.InternalName == "Allies1");
 			allies2 = w.Players.SingleOrDefault(p => p.InternalName == "Allies2");
 			if (allies2 == null)
-			{
 				allies2 = allies1;
-			}
 
 			soviets = w.Players.Single(p => p.InternalName == "Soviets");
 			neutral = w.Players.Single(p => p.InternalName == "Neutral");
@@ -383,9 +363,11 @@ namespace OpenRA.Mods.RA.Missions
 			destroyBaseTicks = difficulty == "Hard" ? 1500 * 25 : difficulty == "Normal" ? 1500 * 28 : 1500 * 31;
 
 			var actors = w.WorldActor.Trait<SpawnMapActors>().Actors;
-			lstEntryPoint = actors["LstEntryPoint"];
-			lstUnloadPoint = actors["LstUnloadPoint"];
-			lstExitPoint = actors["LstExitPoint"];
+
+			spyReinforcementsEntryPoint = actors["SpyReinforcementsEntryPoint"];
+			spyReinforcementsUnloadPoint = actors["SpyReinforcementsUnloadPoint"];
+			spyReinforcementsExitPoint = actors["SpyReinforcementsExitPoint"];
+
 			hijackTruck = actors["HijackTruck"];
 			baseGuard = actors["BaseGuard"];
 			baseGuardMovePos = actors["BaseGuardMovePos"];
@@ -442,7 +424,7 @@ namespace OpenRA.Mods.RA.Missions
 				new Patrol(world, new[] { "e1", "dog.patrol", "dog.patrol" }, soviets, patrolPoints4, 0),
 				new Patrol(world, new[] { "e1", "dog.patrol", "dog.patrol" }, soviets, patrolPoints5, 0),
 			};
-			
+
 			bridgeTank = actors["BridgeTank"];
 			bridgeAttackPoint = actors["BridgeAttackPoint"];
 			bridge = world.Actors
@@ -450,11 +432,15 @@ namespace OpenRA.Mods.RA.Missions
 				.OrderBy(a => (a.Location - bridgeAttackPoint.Location).LengthSquared)
 				.FirstOrDefault();
 
-			townTopLeft = actors["TownTopLeft"];
-			townBottomRight = actors["TownBottomRight"];
-			Game.Debug(world.FindAliveCombatantActorsInBox(townTopLeft.CenterLocation, townBottomRight.CenterLocation).JoinWith(","));
-			townAttackers = world.FindAliveCombatantActorsInBox(townTopLeft.CenterLocation, townBottomRight.CenterLocation)
-				.Where(a => a.Owner == soviets && a.HasTrait<IMove>() && a.HasTrait<AttackBase>()).ToArray();
+			var ta1 = actors["TownAttacker1"];
+			var ta2 = actors["TownAttacker2"];
+			var ta3 = actors["TownAttacker3"];
+			var ta4 = actors["TownAttacker4"];
+			var ta5 = actors["TownAttacker5"];
+			var ta6 = actors["TownAttacker6"];
+			var ta7 = actors["TownAttacker7"];
+
+			townAttackers = new[] { ta1, ta2, ta3, ta4, ta5, ta6, ta7 };
 
 			OnObjectivesUpdated(false);
 			SetupSubStances();
@@ -469,7 +455,7 @@ namespace OpenRA.Mods.RA.Missions
 				res.TakeCash(res.Cash);
 			}
 
-			Game.MoveViewport(lstEntryPoint.Location.ToFloat2());
+			Game.MoveViewport(spyReinforcementsEntryPoint.Location.ToFloat2());
 			MissionUtils.PlayMissionMusic();
 		}
 	}

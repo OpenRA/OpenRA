@@ -28,6 +28,7 @@ Players:
 		OwnsWorld: True
 		NonCombatant: True
 		Race: allies
+		Enemies: Soviets
 	PlayerReference@Allies1:
 		Name: Allies1
 		Playable: True
@@ -62,7 +63,7 @@ Players:
 		Name: Soviets
 		Race: soviet
 		ColorRamp: 3,255,127,28
-		Enemies: Allies1,Allies2,Allies
+		Enemies: Allies1,Allies2,Allies,Neutral
 
 Actors:
 	Actor2: v07
@@ -956,9 +957,6 @@ Actors:
 	Actor338: ss
 		Location: 57,64
 		Owner: Soviets
-	LstUnloadPoint: waypoint
-		Location: 56,101
-		Owner: Neutral
 	Actor301: mine
 		Location: 101,55
 		Owner: Neutral
@@ -1052,14 +1050,11 @@ Actors:
 	Actor335: e2
 		Location: 77,20
 		Owner: Soviets
-	LstExitPoint: waypoint
+	SpyReinforcementsExitPoint: waypoint
 		Location: 48,111
 		Owner: Neutral
 	Actor305: ss
 		Location: 19,101
-		Owner: Soviets
-	Actor92: ss
-		Location: 25,98
 		Owner: Soviets
 	Actor258: apwr
 		Location: 32,56
@@ -1260,7 +1255,7 @@ Actors:
 	Actor403: powr
 		Location: 56,31
 		Owner: Soviets
-	LstEntryPoint: waypoint
+	SpyReinforcementsEntryPoint: waypoint
 		Location: 16,107
 		Owner: Neutral
 	Actor404: ss
@@ -1751,39 +1746,33 @@ Actors:
 	Actor521: v18
 		Location: 59,96
 		Owner: Neutral
-	Actor522: e4
+	TownAttacker6: e4
 		Location: 70,97
 		Owner: Soviets
-	Actor523: e4
+	TownAttacker4: e4
 		Location: 70,91
 		Owner: Soviets
-	Actor524: e4
+	TownAttacker1: e4
 		Location: 70,82
 		Owner: Soviets
-	Actor525: e1
+	TownAttacker2: e1
 		Location: 70,87
 		Owner: Soviets
-	Actor526: e1
+	TownAttacker5: e1
 		Location: 70,93
 		Owner: Soviets
-	Actor528: e2
+	TownAttacker3: 3tnk
 		Location: 74,87
 		Owner: Soviets
-	Actor527: e2
+	TownAttacker7: 3tnk
 		Location: 73,97
 		Owner: Soviets
-	TownBottomLeft: waypoint
-		Location: 53,98
+	SpyReinforcementsUnloadPoint: waypoint
+		Location: 52,94
 		Owner: Neutral
-	TownBottomRight: waypoint
-		Location: 75,98
-		Owner: Neutral
-	TownTopRight: waypoint
-		Location: 75,80
-		Owner: Neutral
-	TownTopLeft: waypoint
-		Location: 53,80
-		Owner: Neutral
+	Actor522: ss
+		Location: 43,100
+		Owner: Soviets
 
 Smudges:
 
@@ -1944,47 +1933,6 @@ Rules:
 			Speed: 9
 		AttackMove:
 			JustMove: yes
-	HIND.AutoTarget:
-		Inherits: ^Helicopter
-		AutoTarget:
-		Valued:
-			Cost: 1000
-		Tooltip:
-			Name: Hind
-		Health:
-			HP: 150
-		Armor:
-			Type: Light
-		RevealsShroud:
-			Range: 10
-		AttackHeli:
-			PrimaryWeapon: ChainGun
-			SecondaryWeapon: ChainGun
-			PrimaryOffset: -5,-2,0,2
-			SecondaryOffset: 5,-2,0,2
-			FacingTolerance: 20
-		Helicopter:
-			RearmBuildings: hpad
-			LandWhenIdle: false
-			InitialFacing: 20
-			ROT: 4
-			Speed: 12
-		RenderUnit:
-			Image: HIND
-		WithRotor:
-		WithShadow:
-		LimitedAmmo:
-			Ammo: 24
-			PipCount: 6
-			ReloadTicks: 8
-		IronCurtainable:
-		Selectable:
-			Bounds: 38,32,0,0
-		WithMuzzleFlash:
-		FallsToEarth:
-			Explosion: UnitExplode
-		SmokeTrailWhenDamaged:
-			Offset: 0,-10
 	BARL:
 		Allies04TrivialBuilding:
 	BRL3:

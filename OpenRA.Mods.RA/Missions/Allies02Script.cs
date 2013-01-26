@@ -481,9 +481,8 @@ namespace OpenRA.Mods.RA.Missions
 			allies1 = w.Players.Single(p => p.InternalName == "Allies1");
 			allies2 = w.Players.SingleOrDefault(p => p.InternalName == "Allies2");
 			if (allies2 == null)
-			{
 				allies2 = allies1;
-			}
+
 			allies = w.Players.Single(p => p.InternalName == "Allies");
 			soviets = w.Players.Single(p => p.InternalName == "Soviets");
 
