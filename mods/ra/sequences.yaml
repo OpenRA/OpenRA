@@ -2054,6 +2054,49 @@ c2:
 		Start: 56
 		Length: 6
 		Facings: 8
+		
+c3:
+	stand:
+		Start: 0
+		Facings: 8
+	panic-stand:
+		Start: 8
+		Length: 6
+		Facings: 8
+	panic-run:
+		Start: 8
+		Length: 6
+		Facings: 8
+	shoot:
+		Start: 120
+		Length: 4
+		Facings: 8
+	die1:
+		Start: 152
+		Length: 8
+	die2:
+		Start: 160
+		Length: 8
+	die3:
+		Start: 168
+		Length: 12
+	die4:
+		Start: 180
+		Length: 18
+	die5:
+		Start: 160
+		Length: 8
+	die6: electro
+		Start: 0
+		Length: *
+	die-crushed: corpse1
+		Start: 0
+		Length: 6
+		Tick: 1600
+	run:
+		Start: 56
+		Length: 6
+		Facings: 8
 
 einstein:
 	stand:

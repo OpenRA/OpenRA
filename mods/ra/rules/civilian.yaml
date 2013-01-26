@@ -8,8 +8,6 @@ C2:
 
 C3:
 	Inherits: ^CivInfantry
-	RenderInfantryPanic:
-		Image: C1
 
 C4:
 	Inherits: ^CivInfantry
