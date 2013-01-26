@@ -479,9 +479,9 @@ Actors:
 	Actor12: sam
 		Location: 34,27
 		Owner: Soviets
-	Actor143: e1
-		Location: 61,98
-		Owner: Soviets
+	Actor297: v08
+		Location: 68,95
+		Owner: Neutral
 	Actor142: fenc
 		Location: 91,16
 		Owner: Soviets
@@ -941,8 +941,8 @@ Actors:
 	PatrolPoint22: waypoint
 		Location: 92,49
 		Owner: Neutral
-	Actor297: v08
-		Location: 72,78
+	Actor515: wood
+		Location: 66,100
 		Owner: Neutral
 	Actor298: t01
 		Location: 90,61
@@ -1088,8 +1088,8 @@ Actors:
 	Actor347: v17
 		Location: 61,97
 		Owner: Neutral
-	Actor348: v03
-		Location: 60,95
+	Actor348: v06
+		Location: 60,96
 		Owner: Neutral
 	Actor349: v14
 		Location: 66,83
@@ -1166,8 +1166,8 @@ Actors:
 	Actor373: tc03
 		Location: 94,100
 		Owner: Neutral
-	Actor374: v07
-		Location: 76,77
+	Actor374: wood
+		Location: 67,100
 		Owner: Neutral
 	Actor375: e1
 		Location: 89,47
@@ -1729,6 +1729,60 @@ Actors:
 		Owner: Neutral
 	PatrolPoint34: waypoint
 		Location: 92,70
+		Owner: Neutral
+	Actor516: wood
+		Location: 65,100
+		Owner: Neutral
+	Actor143: v11
+		Location: 72,95
+		Owner: Neutral
+	Actor517: wood
+		Location: 64,100
+		Owner: Neutral
+	Actor518: wood
+		Location: 63,100
+		Owner: Neutral
+	Actor519: wood
+		Location: 63,99
+		Owner: Neutral
+	Actor520: wood
+		Location: 63,98
+		Owner: Neutral
+	Actor521: v18
+		Location: 59,96
+		Owner: Neutral
+	Actor522: e4
+		Location: 70,97
+		Owner: Soviets
+	Actor523: e4
+		Location: 70,91
+		Owner: Soviets
+	Actor524: e4
+		Location: 70,82
+		Owner: Soviets
+	Actor525: e1
+		Location: 70,87
+		Owner: Soviets
+	Actor526: e1
+		Location: 70,93
+		Owner: Soviets
+	Actor528: e2
+		Location: 74,87
+		Owner: Soviets
+	Actor527: e2
+		Location: 73,97
+		Owner: Soviets
+	TownBottomLeft: waypoint
+		Location: 53,98
+		Owner: Neutral
+	TownBottomRight: waypoint
+		Location: 75,98
+		Owner: Neutral
+	TownTopRight: waypoint
+		Location: 75,80
+		Owner: Neutral
+	TownTopLeft: waypoint
+		Location: 53,80
 		Owner: Neutral
 
 Smudges:

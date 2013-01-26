@@ -92,6 +92,11 @@ namespace OpenRA.Mods.RA.Missions
 		Actor bridge;
 		bool attackingBridge;
 
+		bool attackingTown = true;
+		Actor townTopLeft;
+		Actor townBottomRight;
+		IEnumerable<Actor> townAttackers;
+
 		void MissionFailed(string text)
 		{
 			MissionUtils.CoopMissionFailed(world, text, allies1, allies2);
@@ -144,6 +149,26 @@ namespace OpenRA.Mods.RA.Missions
 				}
 			}
 
+			if (attackingTown)
+			{
+				Game.Debug(townAttackers.Count().ToString());
+				foreach (var attacker in townAttackers.Where(a => a.IsIdle && !a.IsDead() && a.IsInWorld))
+				{
+					Game.Debug("foo " + attacker);
+					var enemies = world.Actors.Where(u => u.Owner == neutral
+						&& ((u.HasTrait<Building>() && !u.HasTrait<Wall>()) || u.HasTrait<Mobile>()) && u.IsInWorld && !u.IsDead());
+
+					var enemy = enemies.OrderBy(u => (self.CenterLocation - u.CenterLocation).LengthSquared).FirstOrDefault();
+					if (enemy != null)
+						attacker.QueueActivity(new AttackMove.AttackMoveActivity(attacker, new Attack(Target.FromActor(enemy), 3)));
+					else
+					{
+						attackingTown = false;
+						break;
+					}
+				}
+			}
+
 			foreach (var patrol in patrols)
 				patrol.DoPatrol();
 
@@ -159,7 +184,6 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			else if (lab.Destroyed)
 				MissionFailed("The Soviet research laboratory was destroyed.");
-
 			else if (!world.Actors.Any(a => (a.Owner == allies1 || a.Owner == allies2) && !a.IsDead()
 				&& (a.HasTrait<Building>() && !a.HasTrait<Wall>()) || a.HasTrait<BaseBuilding>()))
 			{
@@ -425,6 +449,12 @@ namespace OpenRA.Mods.RA.Missions
 				.Where(a => a.HasTrait<Bridge>() && !a.IsDead())
 				.OrderBy(a => (a.Location - bridgeAttackPoint.Location).LengthSquared)
 				.FirstOrDefault();
+
+			townTopLeft = actors["TownTopLeft"];
+			townBottomRight = actors["TownBottomRight"];
+			Game.Debug(world.FindAliveCombatantActorsInBox(townTopLeft.CenterLocation, townBottomRight.CenterLocation).JoinWith(","));
+			townAttackers = world.FindAliveCombatantActorsInBox(townTopLeft.CenterLocation, townBottomRight.CenterLocation)
+				.Where(a => a.Owner == soviets && a.HasTrait<IMove>() && a.HasTrait<AttackBase>()).ToArray();
 
 			OnObjectivesUpdated(false);
 			SetupSubStances();
