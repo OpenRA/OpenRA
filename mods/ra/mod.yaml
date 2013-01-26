@@ -92,6 +92,7 @@ Movies:
 	mods/ra/movies2.yaml
 
 LoadScreen: RALoadScreen
+	LoadScreenImage: mods/ra/uibits/loadscreen.png
 	InstallerMenuWidget: INSTALL_PANEL
 	TestFile: redalert.mix
 	PackageURL: http://open-ra.org/get-dependency.php?file=ra-packages
