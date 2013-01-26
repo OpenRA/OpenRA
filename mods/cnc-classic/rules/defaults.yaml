@@ -1,42 +1,18 @@
 ^Vehicle:
 	AppearsOnRadar:
+	RevealsShroud:
+		Range: 5
+	#	Range: 3
+	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from what we want for now, to properly emulate
 	Mobile:
 		Crushes: crate
 		TerrainSpeeds:
-			Clear: 60
-			Rough: 40
-			Road: 100
-			Tiberium: 40
-			BlueTiberium: 40
-			Beach: 40
-		ROT: 5
-	SelectionDecorations:
-	Selectable:
-		Voice: VehicleVoice
-	TargetableUnit:
-		TargetTypes: Ground
-	Buildable:
-		Queue: Vehicle
-	Repairable:
-	Passenger:
-		CargoType: Vehicle
-	ActorLostNotification:
-		Notification: unitlost.aud
-	AttackMove:
-	AcceptsCloakCrate:
-	WithSmoke:
-
-^Tank:
-	AppearsOnRadar:
-	Mobile:
-		Crushes: wall, crate, infantry
-		TerrainSpeeds:
-			Clear: 80
-			Rough: 70
-			Road: 100
-			Tiberium: 70
-			BlueTiberium: 70
-			Beach: 70
+			Clear: 25
+			Rough: 25
+			Road: 25
+			Tiberium: 25
+			BlueTiberium: 25
+			Beach: 25
 		ROT: 5
 	SelectionDecorations:
 	Selectable: 
@@ -45,21 +21,68 @@
 		TargetTypes: Ground
 	Buildable:
 		Queue: Vehicle
-	Repairable:
+	Repairable: 
+	Chronoshiftable: 
 	Passenger: 
 		CargoType: Vehicle
+	IronCurtainable: 
+	HiddenUnderFog:
+	GainsExperience:
+	GivesExperience:
+	DrawLineToTarget:
 	ActorLostNotification:
 		Notification: unitlost.aud
 	AttackMove:
 	AcceptsCloakCrate:
 	WithSmoke:
+	Explodes:
+		Weapon: UnitExplodeSmall
+
+^Tank:
+	AppearsOnRadar:
+	RevealsShroud:
+		Range: 5
+	#	Range: 3
+	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from what we want for now, to properly emulate
+	Mobile:
+		Crushes: wall, crate, infantry
+		TerrainSpeeds:
+			Clear: 25
+			Rough: 25
+			Road: 25
+			Tiberium: 25
+			BlueTiberium: 25
+			Beach: 25
+		ROT: 5
+	SelectionDecorations:
+	Selectable: 
+		Voice: VehicleVoice
+	TargetableUnit:
+		TargetTypes: Ground
+	Buildable:
+		Queue: Vehicle
+	Repairable: 
+	Chronoshiftable: 
+	Passenger: 
+		CargoType: Vehicle
+	IronCurtainable: 
+	HiddenUnderFog:
+	GainsExperience:
+	GivesExperience:
+	DrawLineToTarget:
+	ActorLostNotification:
+		Notification: unitlost.aud
+	AttackMove:
+	AcceptsCloakCrate:
+	WithSmoke:
+	Explodes:
+		Weapon: UnitExplodeSmall
 
 ^Helicopter:
 	AppearsOnRadar:
 		UseLocation: yes
-	TargetableAircraft:
+	TargetableUnit:
 		TargetTypes: Air
-		GroundedTargetTypes: Ground
 	SelectionDecorations:
 	Selectable:
 		Voice: VehicleVoice
@@ -69,6 +92,10 @@
 		LandWhenIdle: false
 	Buildable:
 		Queue: Aircraft
+	HiddenUnderFog:
+	GainsExperience:
+	GivesExperience:
+	DrawLineToTarget:
 	ActorLostNotification:
 		Notification: unitlost.aud
 
@@ -79,7 +106,9 @@
 	Armor:
 		Type: None
 	RevealsShroud:
-		Range: 5
+	#	Range: 4
+		Range: 3
+	# default range value for infantry is 1 in C&C, but OpenRA renders vision slightly differently.
 	AutoTarget:
 		ScanRadius: 4
 	Mobile:
@@ -87,13 +116,13 @@
 		SharesCell: true
 		TerrainSpeeds:
 			Clear: 90
-			Rough: 80
-			Road: 100
-			Tiberium: 70
+			Rough: 90
+			Road: 90
+			Tiberium: 90
 				PathingCost: 1000
-			BlueTiberium: 70
+			BlueTiberium: 90
 				PathingCost: 1000
-			Beach: 80
+			Beach: 90
 	SelectionDecorations:
 	Selectable:
 		Voice: GenericVoice
@@ -107,12 +136,18 @@
 	AttackMove:
 	Passenger:
 		CargoType: Infantry
+	HiddenUnderFog:
 	PoisonedByTiberium:
+	GainsExperience:
+	GivesExperience:
+	DrawLineToTarget:
 	ActorLostNotification:
 		Notification: unitlost.aud
 	SpawnViceroid:
 		Probability: 2
 	CrushableInfantry:
+	DetectCloaked:
+		Range: 1
 
 ^CivInfantry:
 	Inherits: ^Infantry
@@ -126,22 +161,24 @@
 		Voice: CivilianMaleVoice
 		Bounds: 12,17,0,-9
 	Valued:
-		Cost: 70
+		Cost: 10
 	Tooltip:
 		Name: Civilian
 	Mobile:
 		Speed: 4
 	Health:
-		HP: 25
+	#	HP: 25
+		HP: 5
 	RevealsShroud:
-		Range: 2
+		Range: 3	#arbitrary. Assuming it should be 1, like infantry.
+	# In practice, it seems that OpenRA renders vision range differently. Assuming it should be 1 for this unit.
 	AttackFrontal:
 		PrimaryWeapon: Pistol
 	ActorLostNotification:
 		Notification: civdead1.aud
 		NotifyAll: true
 	ScaredyCat:
-	RenderInfantryPanic:
+	RenderInfantryPanic:	
 	AttackMove:
 		JustMove: yes
 	CrushableInfantry:
@@ -154,6 +191,10 @@
 		Voice: GenericVoice
 	TargetableUnit:
 		TargetTypes: Air
+	HiddenUnderFog:
+	GainsExperience:
+	GivesExperience:
+	DrawLineToTarget:
 	ActorLostNotification:
 		Notification: unitlost.aud
 
@@ -168,6 +209,10 @@
 		Voice: GenericVoice
 	TargetableUnit:
 		TargetTypes: Ground, Water
+	HiddenUnderFog:
+	GainsExperience:
+	GivesExperience:
+	DrawLineToTarget:
 	ActorLostNotification:
 		Notification: unitlost.aud
 	AttackMove:
@@ -200,8 +245,10 @@
 	WithBuildingExplosion:
 	DeadBuildingState:
 	EmitInfantryOnSell:
+		ValuePercent: 40
 		ActorTypes: e6,e1
 	MustBeDestroyed:
+	GivesExperience:
 	CaptureNotification@GDI:
 		Race: gdi
 		Notification: gdicapt1.aud
@@ -254,7 +301,9 @@
 	CapturableBar:
 	RepairableBuilding:
 	RevealsShroud:
-		Range: 3
+		Range: 5
+	#	Range: 3
+	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from what we want for now, to properly emulate
 
 ^CivField:
 	Inherits: ^CivBuilding
@@ -262,10 +311,6 @@
 	Tooltip:
 		Name: Field
 	-WithBuildingExplosion:
-	RenderBuilding:
-		Palette: terrain
-	EditorAppearance:
-		UseTerrainPalette: true
 
 ^CivFieldHusk:
 	AppearsOnRadar:
@@ -287,7 +332,7 @@
 		Adjacent: 7
 		TerrainTypes: Clear,Road
 	TargetableBuilding:
-		TargetTypes: Ground
+		TargetTypes: Ground, Wall
 	Wall:
 		CrushClasses: wall
 		CrushSound: sandbag2.aud
@@ -299,6 +344,34 @@
 	RenderBuildingWall:
 		HasMakeAnimation: false
 		Palette: staticterrain
+	GivesExperience:
+	EditorAppearance:
+		RelativeToTopLeft: yes
+	AutoTargetIgnore:
+	Sellable:
+
+^HeavyWall:
+	AppearsOnRadar:
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+		BuildSounds: hvydoor1.aud
+		Adjacent: 7
+		TerrainTypes: Clear,Road
+	TargetableBuilding:
+		TargetTypes: Ground, Wall
+	Wall:
+		CrushClasses: wall
+		CrushSound: sandbag2.aud
+	LineBuild:
+		Range: 8
+	SelectionDecorations:
+	Selectable:
+		Priority: 1
+	RenderBuildingWall:
+		HasMakeAnimation: false
+		Palette: staticterrain
+	GivesExperience:
 	EditorAppearance:
 		RelativeToTopLeft: yes
 	AutoTargetIgnore:
@@ -331,6 +404,24 @@
 		Terrain: Tree
 	EditorAppearance:
 		RelativeToTopLeft: yes
+
+^Husk:
+	Health:
+		HP: 140
+	Armor: 
+		Type: Light
+	Husk:
+	HiddenUnderFog:
+	AppearsOnRadar:
+	Burns:
+	TargetableUnit:
+	TransformOnCapture:
+		ForceHealthPercentage: 25
+#	Capturable:
+#		Type: husk
+#		AllowAllies: true
+#		AllowNeutral: true
+#		AllowEnemies: true
 
 ^Bridge:
 	Tooltip:
