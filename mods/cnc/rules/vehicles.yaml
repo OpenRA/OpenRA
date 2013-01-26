@@ -482,7 +482,7 @@ STNK:
 	Cloak:
 		InitialDelay: 125
 		CloakDelay: 125
-		CloakSound: appear1.aud
+		CloakSound: trans1.aud
 		UncloakSound: appear1.aud
 	AttackFrontal:
 		PrimaryWeapon: 227mm.stnk
