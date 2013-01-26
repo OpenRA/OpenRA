@@ -9,6 +9,7 @@ Folders:
 	./mods/ra
 	./mods/ra/bits
 	./mods/ra-classic/maps
+	./mods/ra-classic/uibits
 	./mods/ra/uibits
 	~^/Content/ra
 
