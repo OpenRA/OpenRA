@@ -3,9 +3,8 @@ DOG:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 30
-		Prerequisites: barr
+		Prerequisites: kenn
 		Owner: soviet
-		Hotkey: o
 	Valued:
 		Cost: 200
 	Tooltip:
@@ -17,7 +16,7 @@ DOG:
 	Health:
 		HP: 12
 	Mobile:
-		Speed: 7
+		Speed: 4
 	RevealsShroud:
 		Range: 5
 	AutoTarget:
@@ -34,7 +33,6 @@ E1:
 		Queue: Infantry
 		BuildPaletteOrder: 10
 		Owner: allies,soviet
-		Hotkey: i
 	Valued:
 		Cost: 100
 	Tooltip:
@@ -60,7 +58,6 @@ E2:
 		BuildPaletteOrder: 10
 		Owner: soviet
 		Prerequisites: barr
-		Hotkey: g
 	Valued:
 		Cost: 160
 	Tooltip:
@@ -82,7 +79,7 @@ E2:
 		IdleAnimations: idle1,idle2
 	Explodes:
 		Weapon: UnitExplodeSmall
-		Chance: 50		
+		Chance: 50
 
 E3:
 	Inherits: ^Infantry
@@ -90,7 +87,6 @@ E3:
 		Queue: Infantry
 		BuildPaletteOrder: 20
 		Owner: allies,soviet
-		Hotkey: r
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -118,7 +114,6 @@ E4:
 		BuildPaletteOrder: 60
 		Prerequisites: ftur
 		Owner: soviet
-		Hotkey: t
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -138,14 +133,13 @@ E4:
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
-
+		
 E6:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 50
 		Owner: soviet,allies
-		Hotkey: e
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -169,7 +163,7 @@ E6:
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
-
+		
 SPY:
 	Inherits: ^Infantry
 	Buildable:
@@ -177,7 +171,6 @@ SPY:
 		BuildPaletteOrder: 60
 		Prerequisites: dome, tent
 		Owner: allies
-		Hotkey: p
 	Valued:
 		Cost: 500
 	SpyToolTip:
@@ -202,23 +195,19 @@ SPY:
 	-RenderInfantry:
 	RenderSpy:
 		IdleAnimations: idle1,idle2
-	AttackFrontal:
-		PrimaryWeapon: SilencedPPK
-
+		
 E7:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 110
 		Prerequisites: techcenter
-		Owner: allies
-		Hotkey: y
-		BuildLimit: 1
+		Owner: allies,soviet
 	Valued:
 		Cost: 1200
 	Tooltip:
 		Name: Tanya
-		Description: Elite commando infantry, armed with \ndual pistols and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles\n  Special Ability: Destroy Building with C4\n\nMaximum 1 can be trained
+		Description: Elite commando infantry, armed with \ndual pistols and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles\n  Special Ability: Destroy Building with C4
 	Selectable:
 		Voice: TanyaVoice
 		Bounds: 12,17,0,-9
@@ -240,47 +229,6 @@ E7:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
 
-E8:
-	Inherits: ^Infantry
-	Buildable:
-		Queue: Infantry
-		BuildPaletteOrder: 110
-		Prerequisites: stek
-		Owner: soviet
-		Hotkey: v
-		BuildLimit: 1
-	Valued:
-		Cost: 1800
-	Tooltip:
-		Name: Volkov
-		Description: Elite commando cyborg, armed with \nmodular cannons and grenade launcher.\n  Strong vs Vehicles, Infantry\n  Weak vs Aircraft\n\nMaximum 1 can be trained
-	Selectable:
-		Voice: VolkovVoice
-		Bounds: 12,17,0,-9
-	Health:
-		HP: 200
-	Armor:
-		Type: Cybernetic
-	Mobile:
-		Speed: 5
-		Crushes: atmine, crate
-	RevealsShroud:
-		Range: 4
-	Passenger:
-		PipType: Red
-	AttackFrontal:
-		PrimaryWeapon: VolkAT
-		SecondaryWeapon: VolkNapalm
-	TakeCover:
-	-RenderInfantry:
-	RenderInfantryProne:
-		IdleAnimations: idle1
-	CrushableInfantry:
-		CrushSound: crunchy2.aud
-	RepairableNear:
-		Buildings: fix
-		CloseEnough: 1
-
 MEDI:
 	Inherits: ^Infantry
 	Buildable:
@@ -288,9 +236,8 @@ MEDI:
 		BuildPaletteOrder: 20
 		Owner: allies
 		Prerequisites: tent
-		Hotkey: m
 	Valued:
-		Cost: 300
+		Cost: 800
 	Tooltip:
 		Name: Medic
 		Description: Heals nearby infantry.\n  Strong vs Nothing\n  Weak vs Everything
@@ -323,7 +270,6 @@ MECH:
 		BuildPaletteOrder: 70
 		Owner: allies
 		Prerequisites: fix
-		Hotkey: c
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -350,6 +296,7 @@ MECH:
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
+
 EINSTEIN:
 	Inherits: ^Infantry
 	Selectable:
@@ -375,11 +322,10 @@ SHOK:
 	Inherits: ^Infantry
 	Buildable:
 		Queue: Infantry
-		Prerequisites: stek,tsla
+		Prerequisites: tsla
 		Owner: soviet
-		Hotkey: l
 	Valued:
-		Cost: 500
+		Cost: 900
 	Tooltip:
 		Name: Tesla Trooper
 		Description: Infantry with tesla coils\n Strong vs Infantry\n Weak vs Vehicles
@@ -400,45 +346,3 @@ SHOK:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
 	-CrushableInfantry:
-
-SNIPER:
-	Inherits: ^Infantry
-	Valued:
-		Cost: 700
-	Tooltip:
-		Icon: snipericon
-		Name: Sniper
-		Description: Elite sniper infantry unit.\n  Strong vs Infantry\n  Weak vs Vehicles
-	Buildable:
-		Queue: Infantry
-		BuildPaletteOrder: 50
-		Owner: soviet
-		Prerequisites: dome
-		Hotkey: n
-	Selectable:
-		Bounds: 12,17,0,-6
-	Mobile:
-		Speed: 4
-	Health:
-		HP: 200
-	Passenger:
-		PipType: Red
-	RevealsShroud:
-		Range: 6
-	AutoTarget:
-		InitialStance: HoldFire
-	AttackFrontal:
-		PrimaryWeapon: Sniper
-	TakeCover:
-	-RenderInfantry:
-	RenderInfantryProne:
-		IdleAnimations: idle1,idle2
-	Cloak:
-		InitialDelay: 250
-		CloakDelay: 120
-		CloakSound:
-		UncloakSound:
-		UncloakOnMove: yes
-	Captures:
-		CaptureTypes: civilianbuilding
-		AllowAllies: true

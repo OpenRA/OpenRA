@@ -20,15 +20,10 @@
 		CargoType: Vehicle
 	IronCurtainable: 
 	AttackMove:
-	HiddenUnderFog:
-	GainsExperience:
-	GivesExperience:
-	DrawLineToTarget:
 	ActorLostNotification:
 		Notification: unitlst1.aud
 	ProximityCaptor:
 		Types:Vehicle
-	GivesBounty:
 	GpsDot:
 		String:Vehicle
 	WithSmoke:
@@ -56,15 +51,10 @@
 		CargoType: Vehicle
 	IronCurtainable:
 	AttackMove:
-	HiddenUnderFog:
-	GainsExperience:
-	GivesExperience:
-	DrawLineToTarget:
 	ActorLostNotification:
 		Notification: unitlst1.aud
 	ProximityCaptor:
 		Types:Tank
-	GivesBounty:
 	GpsDot:
 		String:Vehicle
 	WithSmoke:
@@ -97,25 +87,17 @@
 	AttackMove:
 	Passenger:
 		CargoType: Infantry
-	HiddenUnderFog:
 	TeslaInstantKills:
-	GainsExperience:
-	GivesExperience:
-	DrawLineToTarget:
 	ActorLostNotification:
 		Notification: unitlst1.aud
 	ProximityCaptor:
 		Types:Infantry
-	GivesBounty:
 	GpsDot:
 		String:Infantry
 	ParachuteAttachment:
 		Offset: 0,-10
 	CrushableInfantry:
 		CrushSound: squishy2.aud
-	RepairableNear:
-		Buildings: hosp
-		CloseEnough: 1
 	UpdatesPlayerStatistics:
 
 ^Ship:
@@ -131,16 +113,11 @@
 		TargetTypes: Ground, Water
 	DetectCloaked:
 		Range: 3
-	HiddenUnderFog:
 	AttackMove:
-	GainsExperience:
-	GivesExperience:
-	DrawLineToTarget:
 	ActorLostNotification:
 		Notification: navylst1.aud
 	ProximityCaptor:
 		Types:Ship
-	GivesBounty:
 	GpsDot:
 		String:Ship
 	WithSmoke:
@@ -156,9 +133,6 @@
 		TargetTypes: Air
 		GroundedTargetTypes: Ground
 	HiddenUnderFog:
-	GainsExperience:
-	GivesExperience:
-	DrawLineToTarget:
 	ActorLostNotification:
 		Notification: aunitl1.aud
 	DebugAircraftFacing:
@@ -170,7 +144,6 @@
 	EjectOnDeath:
 		PilotActor: E1
 		SuccessRate: 50
-	GivesBounty:
 	GpsDot:
 		String:Plane
 	UpdatesPlayerStatistics:
@@ -202,10 +175,8 @@
 	RepairableBuilding:
 	EngineerRepairable:
 	EmitInfantryOnSell:
-		ActorTypes: e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,e1,c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,e6,e6,e6,e6,e6
+		ActorTypes: e1,e1,e1,c1,c2,e6
 	MustBeDestroyed:
-	GivesExperience:
-#	FrozenUnderFog:
 	CaptureNotification:
 		Notification: strucap1.aud
 	EditorAppearance:
@@ -214,9 +185,6 @@
 	ProximityCaptor:
 		Types:Building
 	Sellable:
-	AcceptsSupplies:
-	GivesBounty:
-	UpdatesPlayerStatistics:
 
 ^Wall:
 	AppearsOnRadar:
@@ -249,7 +217,6 @@
 	ProximityCaptor:
 		Types:Wall
 	Sellable:
-	UpdatesPlayerStatistics:
 
 ^TechBuilding:
 	Inherits: ^Building
@@ -263,7 +230,6 @@
 		Name: Civilian Building
 	ProximityCaptor:
 		Types:CivilianBuilding
-	-AcceptsSupplies:
 	-GivesBuildableArea:
 	-Sellable:
 	-Capturable:
@@ -352,69 +318,3 @@
 	ProximityCaptor:
 		Types:Bridge
 	AutoTargetIgnore:
-
-#Temperate Terrain Expansion
-^SVBridge:
-	Tooltip:
-		Name: Small Bridge
-	BelowUnits:
-	TargetableBuilding:
-		TargetTypes: Ground, Water
-	Building:
-		Footprint: ___ ___
-		Dimensions: 3,2
-	Health:
-		HP: 750
-	ProximityCaptor:
-		Types:Bridge
-
-^SHBridge:
-	Tooltip:
-		Name: Small Bridge
-	BelowUnits:
-	TargetableBuilding:
-		TargetTypes: Ground, Water
-	Building:
-		Footprint: __ __ __
-		Dimensions: 2,3
-	Health:
-		HP: 750
-	ProximityCaptor:
-		Types:Bridge
-
-^STDBridge:
-	Tooltip:
-		Name: Small Bridge
-	BelowUnits:
-	TargetableBuilding:
-		TargetTypes: Ground, Water
-	Building:
-		Footprint: ____ ____
-		Dimensions: 4,2
-	Health:
-		HP: 750
-	ProximityCaptor:
-		Types:Bridge
-
-#Desert Terrain Expansion:
-^Rock:
-	Tooltip:
-		Name: Rock
-	RenderBuilding:
-		Palette: terrain
-	Building:
-		Footprint: __ x_
-		Dimensions: 2,2
-	AppearsOnRadar:
-	RadarColorFromTerrain:
-		Terrain: Tree
-	EditorAppearance:
-		RelativeToTopLeft: yes
-		UseTerrainPalette: true
-	ProximityCaptor:
-		Types:Tree
-
-^DesertCivBuilding:
-	Inherits: ^CivBuilding
-	RenderBuilding:
-		Palette: terrain

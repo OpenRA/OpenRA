@@ -34,7 +34,7 @@ Player:
 	PowerManager:
 	AllyRepair:
 	PlayerResources:
-		InitialCash: 5000
+		InitialCash: 10000
 	ActorGroupProxy:
 	DeveloperMode:
 	HackyAI@EasyAI:
@@ -96,91 +96,6 @@ Player:
 			2tnk: 25%
 			3tnk: 50%
 		SquadSize: 10
-	HackyAI@OptiAI:
-		Name:Eisenhower AI
-		BuildingFractions:
-			proc: 25.1%
-			powr: 35%
-			tent: 0.1%
-			barr: 0.1%
-			weap: 0.1%
-			fix: 0.1%
-			dome: 0.1%
-			atek: 0.1%
-			stek: 0.1%
-		UnitsToBuild:
-			e1: 50%
-			e2: 1%
-			e3: 10%
-			medi: 0.01%
-			e7: 0.01%
-			apc: 10%
-			jeep: 10%
-			ftrk: 25%
-			1tnk: 25%
-			2tnk: 50%
-			3tnk: 75%
-			4tnk: 100%
-			arty: 30%
-			v2rl: 30%
-		SquadSize: 10
-	HackyAI@ZhukovAI:
-		Name:Zhukov AI
-		BuildingFractions:
-			proc: 20%
-			powr: 35%
-			tent: 1%
-			barr: 1%
-			weap: 1%
-			pbox.e1: 4%
-			hbox.e1: 3%
-			gun: 10%
-			ftur: 10%
-			tsla: 5%
-			dome: 10%
-			fix: 0.1%
-			agun: 7%
-			sam: 7%
-			atek: 1%
-			stek: 1%
-		UnitsToBuild:
-			e1: 4%
-			e3: 1%
-			harv: 10%
-			ftrk: 5%
-			v2rl: 40%
-			arty: 40%
-			1tnk: 15%
-			2tnk: 15%
-			3tnk: 15%
-		SquadSize: 25
-	HackyAI@RommelAI:
-		Name:Rommel AI
-		BuildingFractions:
-			proc: 30%
-			powr: 35%
-			tent: 1%
-			barr: 1%
-			weap: 1%
-			pbox.e1: 7%
-			gun: 7%
-			ftur: 10%
-			tsla: 5%
-			fix: 0.1%
-			dome: 10%
-			agun: 5%
-			sam: 1%
-			atek: 1%
-			stek: 1%
-		UnitsToBuild:
-			e1: 5%
-			e3: 10%
-			3tnk: 75%
-			2tnk: 75%
-			v2rl: 15%
-			arty: 15%
-			harv: 10%
-		SquadSize: 7
 	PlayerColorPalette:
 		BasePalette: player
 		RemapIndex: 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95
@@ -192,7 +107,7 @@ Player:
 	BaseAttackNotifier:
 	PlayerStatistics:
 
-World:	
+World:
 	OpenWidgetAtGameStart:
 		Widget: INGAME_ROOT
 		ObserverWidget: OBSERVER_ROOT
@@ -204,8 +119,8 @@ World:
 	BuildingInfluence:
 	ChooseBuildTabOnSelect:
 	BridgeLayer:
-		Bridges: bridge1, bridge2, br1, br2, br3, sbridge1, sbridge2, sbridge3, sbridge4
-	CrateDrop:
+		Bridges: bridge1, bridge2, br1, br2, br3
+	CrateSpawner:
 		Minimum: 1
 		Maximum: 3
 		SpawnInterval: 120
@@ -346,7 +261,7 @@ CRATE:
 		Lifetime: 120
 		TerrainTypes: Clear, Rough, Road, Water, Ore, Beach
 	GiveCashCrateAction:
-		Amount: 1000
+		Amount: 2000
 		SelectionShares: 50
 		UseCashTick: yes
 	LevelUpCrateAction:
@@ -360,10 +275,6 @@ CRATE:
 	HideMapCrateAction:
 		SelectionShares: 5
 		Effect: hide-map
-	HealUnitsCrateAction:
-		Notification: heal2.aud
-		SelectionShares: 2
-		Effect: heal
 	RevealMapCrateAction:
 		SelectionShares: 1
 		Effect: reveal-map

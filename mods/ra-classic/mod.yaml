@@ -70,17 +70,17 @@ ChromeLayout:
 
 Weapons:
 	mods/ra-classic/weapons.yaml
-	
+
 Voices:
 	mods/ra/voices.yaml
 
 Notifications:
 	mods/ra/notifications.yaml
-	
+
 TileSets:
 	mods/ra/tilesets/snow.yaml
 	mods/ra/tilesets/interior.yaml
-	mods/ra/tilesets/temperat.yaml
+	mods/ra-classic/tilesets/temperat.yaml
 
 Music:
 	mods/ra/music.yaml

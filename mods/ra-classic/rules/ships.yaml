@@ -6,19 +6,18 @@ SS:
 		Prerequisites: spen
 		BuiltAt: spen
 		Owner: soviet
-		Hotkey: b
 	Valued:
 		Cost: 950
 	Tooltip:
 		Name: Submarine
 		Description: Submerged anti-ship unit armed with \ntorpedoes.\n  Strong vs Ships\n  Weak vs Everything\n  Special Ability: Submerge
 	Health:
-		HP: 250
+		HP: 120
 	Armor:
 		Type: Light
 	Mobile:
-		ROT: 4
-		Speed: 5
+		ROT: 7
+		Speed: 6
 	RevealsShroud:
 		Range: 6
 	-TargetableUnit:
@@ -44,7 +43,7 @@ SS:
 	AutoTarget:
 		InitialStance: HoldFire
 	AttackMove:
-
+	
 MSUB:
 	Inherits: ^Ship
 	Buildable:
@@ -53,19 +52,18 @@ MSUB:
 		Prerequisites: spen,stek
 		BuiltAt: spen
 		Owner: soviet
-		Hotkey: m
 	Valued:
-		Cost: 2400
+		Cost: 1650
 	Tooltip:
 		Name: Missile Submarine
 		Description: Submerged anti-ground unit armed with \nlong-range ballistic missiles.\n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: Submerge
 	Health:
-		HP: 400
+		HP: 150
 	Armor:
 		Type: Light
 	Mobile:
-		ROT: 3
-		Speed: 3
+		ROT: 7
+		Speed: 5
 	RevealsShroud:
 		Range: 6
 	RenderUnit:
@@ -96,10 +94,9 @@ DD:
 	Buildable:
 		Queue: Ship
 		BuildPaletteOrder: 70
-		Prerequisites: syrd,dome
+		Prerequisites: syrd
 		BuiltAt: syrd
 		Owner: allies
-		Hotkey: r
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -140,19 +137,18 @@ CA:
 		Prerequisites: syrd,atek
 		BuiltAt: syrd
 		Owner: allies
-		Hotkey: c
 	Valued:
-		Cost: 2400
+		Cost: 2000
 	Tooltip:
 		Name: Cruiser
 		Description: Very slow long-range ship. \n  Strong vs Buildings\n  Weak vs Ships, Submarines
 	Health:
-		HP: 800
+		HP: 700
 	Armor:
 		Type: Heavy
 	Mobile:
-		ROT: 2
-		Speed: 2
+		ROT: 5
+		Speed: 4
 	RevealsShroud:
 		Range: 7
 	Turreted:
@@ -182,7 +178,6 @@ LST:
 		Queue: Ship
 		BuildPaletteOrder: 30
 		Owner: allies,soviet
-		Hotkey: t
 	Valued:
 		Cost: 700
 	Tooltip:
@@ -194,7 +189,7 @@ LST:
 		Type: Heavy
 	Mobile:
 		ROT: 10
-		Speed: 8
+		Speed: 14
 	RevealsShroud:
 		Range: 6
 	RenderUnit:
@@ -215,7 +210,6 @@ PT:
 		Prerequisites: syrd
 		BuiltAt: syrd
 		Owner: allies
-		Hotkey: g
 	Valued:
 		Cost: 500
 	Tooltip:
