@@ -58,13 +58,13 @@ explosion:
 	2: piffpiff
 		Start: 0
 		Length: *
-	3: napalm2
+	3: napalm2		#napalm explosion
 		Start: 0
 		Length: *
-	4: veh-hit3
+	4: veh-hit3		#small vehicle explosion
 		Start: 0
 		Length: *
-	5: veh-hit2
+	5: veh-hit2		#grenadier pop - like artillery explosion but smaller
 		Start: 0
 		Length: *
 	1w: piff
@@ -82,7 +82,13 @@ explosion:
 	5w: veh-hit2
 		Start: 0
 		Length: *
-	8: art-exp1
+	8: art-exp1		#artillery explosion
+		Start: 0
+		Length: *
+	big_napalm: napalm3	#biggest napalm explosion
+		Start: 0
+		Length: *
+	veh1: veh-hit1		# resembles building explosion, but smaller. For Orcas, etc.
 		Start: 0
 		Length: *
 	building: fball1
