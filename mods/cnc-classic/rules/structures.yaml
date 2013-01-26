@@ -20,6 +20,8 @@ FACT:
 	Bib:
 	Production:
 		Produces: Building,Defense
+		SpeedUp: 0.25
+		MaxSpeedUp: 0.75
 	Transforms:
 		IntoActor: mcv
 		Offset:1,1
@@ -157,8 +159,11 @@ PYLE:
 		ExitCell: 1,1
 	Production:
 		Produces: Infantry
+		SpeedUp: 0.25
+		MaxSpeedUp: 0.75
 	ProductionBar:
-	
+	PrimaryBuilding:
+
 HAND:
 	Inherits: ^Building
 	Valued:
@@ -188,7 +193,10 @@ HAND:
 		ExitCell: 1,2
 	Production:
 		Produces: Infantry
+		SpeedUp: 0.25
+		MaxSpeedUp: 0.75
 	ProductionBar:
+	PrimaryBuilding:
 
 AFLD:
 	Inherits: ^Building
@@ -221,7 +229,10 @@ AFLD:
 		ExitCell: 3,1
 	ProductionAirdrop:
 		Produces: Vehicle
+		SpeedUp: 0.25
+		MaxSpeedUp: 0.75
 	ProductionBar:
+	PrimaryBuilding:
 
 WEAP:
 	Inherits: ^Building
@@ -255,7 +266,10 @@ WEAP:
 		ExitCell: 0,2
 	Production:
 		Produces: Vehicle
+		SpeedUp: 0.25
+		MaxSpeedUp: 0.75
 	ProductionBar:
+	PrimaryBuilding:
 
 HQ:
 	RequiresPower:
@@ -317,7 +331,7 @@ NUK2:
 	RevealsShroud:
 		Range: 4
 	Bib:
-		
+
 FIX:
 	Inherits: ^Building
 	Valued:
@@ -342,7 +356,7 @@ FIX:
 	Reservable:
 	RepairsUnits:
 	RallyPoint:
-	
+
 HPAD:
 	Inherits: ^Building
 	Valued:
@@ -367,11 +381,14 @@ HPAD:
 		SpawnOffset: 0,-6
 	Production:
 		Produces: Aircraft
+		SpeedUp: 0.25
+		MaxSpeedUp: 0.75
 	BelowUnits:
 	Reservable:
 	RepairsUnits:
 	RallyPoint:
 	ProductionBar:
+	PrimaryBuilding:
 
 EYE:
 	RequiresPower:
