@@ -3,9 +3,8 @@ V2RL:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 40
-		Prerequisites: dome
+		Prerequisites: weap,dome
 		Owner: soviet
-		Hotkey: v
 	Valued:
 		Cost: 700
 	Tooltip:
@@ -25,7 +24,7 @@ V2RL:
 	AutoTarget:
 	Explodes:
 		Weapon: SCUD
-		EmptyWeapon:
+		EmptyWeapon: SCUD
 
 1TNK:
 	Inherits: ^Tank
@@ -33,18 +32,18 @@ V2RL:
 		Queue: Vehicle
 		BuildPaletteOrder: 40
 		Owner: allies
-		Hotkey: g
 	Valued:
 		Cost: 700
 	Tooltip:
 		Name: Light Tank
 		Description: Light Tank, good for scouting.\n  Strong vs Light Vehicles\n  Weak vs Tanks, Aircraft
 	Health:
-		HP: 220
+		HP: 300
 	Armor:
 		Type: Heavy
 	Mobile:
 		Speed: 9
+		Crushes: wall, atmine, crate, infantry
 	RevealsShroud:
 		Range: 4
 	Turreted:
@@ -58,28 +57,24 @@ V2RL:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
-	LeavesHusk:
-		HuskActor: 1TNK.Husk
-
+	
 2TNK:
 	Inherits: ^Tank
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 60
-		Prerequisites: fix
 		Owner: allies
-		Hotkey: f
 	Valued:
-		Cost: 850
+		Cost: 800
 	Tooltip:
 		Name: Medium Tank
 		Description: Allied Main Battle Tank.\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
 	Health:
-		HP: 450
+		HP: 400
 	Armor:
 		Type: Heavy
 	Mobile:
-		Speed: 6
+		Speed: 8
 		Crushes: wall, atmine, crate, infantry
 	RevealsShroud:
 		Range: 5
@@ -94,8 +89,6 @@ V2RL:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
-	LeavesHusk:
-		HuskActor: 2TNK.Husk
 	Selectable:
 		Bounds: 30,30
 
@@ -104,20 +97,18 @@ V2RL:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 40
-		Prerequisites: fix
 		Owner: soviet
-		Hotkey: h
 	Valued:
-		Cost: 1150
+		Cost: 950
 	Tooltip:
 		Name: Heavy Tank
 		Description: Soviet Main Battle Tank, with dual cannons\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
 	Health:
-		HP: 550
+		HP: 400
 	Armor:
 		Type: Heavy
 	Mobile:
-		Speed: 5
+		Speed: 7
 		Crushes: wall, atmine, crate, infantry
 	RevealsShroud:
 		Range: 5
@@ -133,8 +124,6 @@ V2RL:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
-	LeavesHusk:
-		HuskActor: 3TNK.Husk
 	Selectable:
 		Bounds: 30,30
 
@@ -143,25 +132,24 @@ V2RL:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 100
-		Prerequisites: fix,stek
+		Prerequisites: weap,stek
 		Owner: soviet
-		Hotkey: m
 	Valued:
-		Cost: 1800
+		Cost: 1700
 	Tooltip:
 		Name: Mammoth Tank
 		Description: Big and slow tank, with anti-air capability.\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry
 	Health:
-		HP: 900
+		HP: 600
 	Armor:
 		Type: Heavy
 	Mobile:
-		Speed: 3
+		Speed: 4
 		Crushes: wall, atmine, crate, infantry
 	RevealsShroud:
 		Range: 6
 	Turreted:
-		ROT: 1
+		ROT: 2
 	AttackTurreted:
 		PrimaryWeapon: 120mm
 		SecondaryWeapon: MammothTusk
@@ -169,19 +157,16 @@ V2RL:
 		SecondaryLocalOffset: -7,2,0,0,25, 7,2,0,0,-25
 		PrimaryRecoil: 4
 		PrimaryRecoilRecovery: 0.7
-		SecondaryRecoil: 1
 	RenderUnitTurreted:
 	AutoTarget:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
-	LeavesHusk:
-		HuskActor: 4TNK.Husk
 	SelfHealing:
 		Step: 1
 		Ticks: 1
-		HealIfBelow: 80%
-		DamageCooldown: 150
+		HealIfBelow: 50%
+		DamageCooldown: 200
 	Selectable:
 		Bounds: 44,38,0,-4
 
@@ -190,9 +175,7 @@ ARTY:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 80
-		Prerequisites: dome
 		Owner: allies
-		Hotkey: r
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -222,9 +205,8 @@ HARV:
 		BuildPaletteOrder: 10
 		Prerequisites: proc
 		Owner: allies,soviet
-		Hotkey: e
 	Valued:
-		Cost: 1100
+		Cost: 1400
 	Tooltip:
 		Name: Ore Truck
 		Description: Collects Ore and Gems for processing.\n  Unarmed
@@ -252,12 +234,10 @@ HARV:
 	-AttackMove:
 	GpsDot:
 		String:Harvester
-	LeavesHusk:
-		HuskActor: HARV.EmptyHusk
-	HarvesterHuskModifier:
-		FullHuskActor: HARV.FullHusk
-		FullnessThreshold: 50
-
+	Explodes:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
+	
 MCV:
 	Inherits: ^Vehicle
 	Buildable:
@@ -265,9 +245,8 @@ MCV:
 		BuildPaletteOrder: 110
 		Prerequisites: fix
 		Owner: allies,soviet
-		Hotkey: b
 	Valued:
-		Cost: 2000
+		Cost: 2500
 	Tooltip:
 		Name: Mobile Construction Vehicle
 		Description: Deploys into another Construction Yard.\n  Unarmed
@@ -291,10 +270,11 @@ MCV:
 		NoTransformSounds: nodeply1.aud
 	RenderUnit:
 	MustBeDestroyed:
+	Explodes:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
 	BaseBuilding:
 	-AttackMove:
-	LeavesHusk:
-		HuskActor: MCV.Husk
 
 JEEP:
 	Inherits: ^Vehicle
@@ -302,9 +282,8 @@ JEEP:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
 		Owner: allies
-		Hotkey: n
 	Valued:
-		Cost: 500
+		Cost: 600
 	Tooltip:
 		Name: Ranger
 		Description: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
@@ -314,9 +293,9 @@ JEEP:
 		Type: Light
 	Mobile:
 		ROT: 10
-		Speed: 12
+		Speed: 10
 	RevealsShroud:
-		Range: 8
+		Range: 6
 	Turreted:
 		ROT: 10
 	AttackTurreted:
@@ -324,31 +303,29 @@ JEEP:
 		PrimaryOffset: 0,0,0,-2
 	WithMuzzleFlash:
 	RenderUnitTurreted:
+	Explodes:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
 	AutoTarget:
-	Cargo:
-		Types: Infantry
-		MaxWeight: 1
-		PipCount: 1
-		UnloadFacing: 220
 
 APC:
 	Inherits: ^Tank
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 50
-		Owner: soviet
-		Hotkey: c
+		Owner: allies
 	Valued:
-		Cost: 850
+		Cost: 800
 	Tooltip:
 		Name: Armored Personnel Carrier
 		Description: Tough infantry transport.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
 	Health:
-		HP: 300
+		HP: 200
 	Armor:
 		Type: Heavy
 	Mobile:
 		Speed: 10
+		Crushes: wall, atmine, crate, infantry
 	RevealsShroud:
 		Range: 5
 	AttackFrontal:
@@ -357,6 +334,9 @@ APC:
 	RenderUnit:
 	WithMuzzleFlash:
 	AutoTarget:
+	Explodes:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
@@ -370,7 +350,6 @@ MNLY.AP:
 		BuildPaletteOrder: 30
 		Prerequisites: fix
 		Owner: soviet
-		Hotkey: p
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -383,6 +362,7 @@ MNLY.AP:
 		Type: Heavy
 	Mobile:
 		Speed: 9
+		Crushes: wall, atmine, crate, infantry
 	RevealsShroud:
 		Range: 5
 	RenderUnit:
@@ -394,6 +374,9 @@ MNLY.AP:
 		Ammo: 5
 	AttackMove:
 		JustMove: true
+	Explodes:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
 
 MNLY.AT:
 	Inherits: ^Tank
@@ -402,7 +385,6 @@ MNLY.AT:
 		BuildPaletteOrder: 30
 		Prerequisites: fix
 		Owner: allies
-		Hotkey: i
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -415,6 +397,8 @@ MNLY.AT:
 		Type: Heavy
 	Mobile:
 		Speed: 9
+		Crushes: wall, atmine, crate, infantry
+		ROT: 
 	RevealsShroud:
 		Range: 5
 	RenderUnit:
@@ -426,165 +410,23 @@ MNLY.AT:
 		Ammo: 3
 	AttackMove:
 		JustMove: true
-
-TRUK:
-	Inherits: ^Vehicle
-	Buildable:
-		Queue: Vehicle
-		BuildPaletteOrder: 120
-		Prerequisites: weap
-		Owner: allies, soviet
-		Hotkey: u
-	Valued:
-		Cost: 500
-	Tooltip:
-		Name: Supply Truck
-		Description: Transports cash to other players.\n  Unarmed
-	Health:
-		HP: 110
-	Armor:
-		Type: Light
-	Mobile:
-		Speed: 9
-	RevealsShroud:
-		Range: 3
-	RenderUnit:
-	SupplyTruck:
-		Payload: 500
-	AttackMove:
-		JustMove: yes
-		
-MGG:
-	Inherits: ^Vehicle
-	Buildable:
-		Queue: Vehicle
-		BuildPaletteOrder: 150
-		Prerequisites: atek
-		Owner: allies
-		Hotkey: s
-	Valued:
-		Cost: 1500
-	Tooltip:
-		Name: Mobile Gap Generator
-		Description: Regenerates the shroud nearby, \nobscuring the area.\n  Unarmed
-	Health:
-		HP: 200
-	Armor:
-		Type: Light
-	Mobile:
-		Speed: 6
-	RevealsShroud:
-		Range: 6
-	RenderUnitSpinner:
-		Offset: 0,6
-	AttackMove:
-		JustMove: yes
-	CreatesShroud:
-		Range: 4
-	RenderShroudCircle:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
-	LeavesHusk:
-		HuskActor: MGG.Husk
-
-MGG.Husk:
-	Inherits: ^Husk
-	Tooltip:
-		Name: Husk (Mobile Gap Generator)
-	RenderUnit:
-		Image: mgg
-	ThrowsParticle@spinner:
-		Anim: spinner-idle
-		Spread: 3,3
-		Speed: 6
-		AnimKey: spinner-idle
-		Offset: 0,6
-
-1TNK.Husk:
-	Inherits: ^Husk
-	Tooltip:
-		Name: Husk (Light Tank)
-	RenderUnit:
-		Image: 1tnk
-	ThrowsParticle@turret:
-		Anim: turret
-		Spread: 3,3
-		Speed: 6
-		AnimKey: turret
-
-2TNK.Husk:
-	Inherits: ^Husk
-	Tooltip:
-		Name: Husk (Medium Tank)
-	RenderUnit:
-		Image: 2tnk
-	ThrowsParticle@turret:
-		Anim: turret
-		Spread: 3,3
-		Speed: 6
-		AnimKey: turret
-
-3TNK.Husk:
-	Inherits: ^Husk
-	Tooltip:
-		Name: Husk (Heavy Tank)
-	RenderUnit:
-		Image: 3tnk
-	ThrowsParticle@turret:
-		Anim: turret
-		Spread: 3,3
-		Speed: 6
-		AnimKey: turret
-
-4TNK.Husk:
-	Inherits: ^Husk
-	Tooltip:
-		Name: Husk (Mammoth Tank)
-	RenderUnit:
-		Image: 4tnk
-	ThrowsParticle@turret:
-		Anim: turret
-		Spread: 3,3
-		Speed: 6
-		AnimKey: turret
-
-HARV.FullHusk:
-	Inherits: ^Husk
-	Tooltip:
-		Name: Husk (Harvester)
-	RenderUnit:
-		Image: hhusk
-
-HARV.EmptyHusk:
-	Inherits: ^Husk
-	Tooltip:
-		Name: Husk (Harvester)
-	RenderUnit:
-		Image: hhusk2
-
-MCV.Husk:
-	Inherits: ^Husk
-	Tooltip:
-		Name: Husk (MCV)
-	RenderUnit:
-		Image: mcvhusk
 
 TTNK:
 	Inherits: ^Tank
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 130
-		Prerequisites: stek,tsla
+		Prerequisites: tsla
 		Owner: soviet
-		Hotkey: l
 	Valued:
-		Cost: 1350
+		Cost: 1500
 	Tooltip:
 		Name: Tesla Tank
-		Description: Tank with mounted tesla coil.\n  Strong vs Infantry, Light Vehicles\n  and Buildings  \n  Weak vs Tanks, Aircraft
+		Description: Tank with mounted tesla coil.\n Strong vs Infantry.\n Weak vs Tanks
 	Health:
-		HP: 150
+		HP: 110
 	Armor:
 		Type: Light
 	Mobile:
@@ -599,41 +441,9 @@ TTNK:
 	Selectable:
 		Bounds: 28,28,0,0
 	AutoTarget:
-
-FTRK:
-	Inherits: ^Vehicle
-	Buildable:
-		Queue: Vehicle
-		BuildPaletteOrder: 30
-		Owner: soviet
-		Hotkey: k
-	Valued:
-		Cost: 600
-	Tooltip:
-		Name: Flak Truck
-		Description: Flak Truck, good for scouting.\n  Strong vs Light Vehicles, Aircraft  \n  Weak vs Tanks
-	Health:
-		HP: 120
-	Armor: 
-		Type: Light
-	Mobile:
-		ROT: 10
-		Speed: 9
-	RevealsShroud:
-		Range: 4
-	Turreted:
-		ROT: 5
-	AttackTurreted:
-		PrimaryWeapon: FLAK-23
-		PrimaryOffset: 0,5,0,-4
-		PrimaryRecoil: 2
-	RenderUnitTurreted:
-	AutoTarget:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
-	Selectable:
-		Bounds: 28,28,0,0
 
 DTRK:
 	Inherits: ^Vehicle
@@ -642,7 +452,6 @@ DTRK:
 		BuildPaletteOrder: 140
 		Prerequisites: stek
 		Owner: soviet
-		Hotkey: o
 	Valued:
 		Cost: 2500
 	Tooltip:
@@ -674,7 +483,6 @@ CTNK:
 		BuildPaletteOrder: 140
 		Prerequisites: atek
 		Owner: allies
-		Hotkey: j
 	Valued:
 		Cost: 1200
 	Tooltip:
@@ -698,3 +506,4 @@ CTNK:
 		PrimaryLocalOffset: -4,0,0,0,0, -4,0,0,0,0
 		SecondaryLocalOffset: 4,0,0,0,25, 4,0,0,0,-25
 	ChronoshiftDeploy:
+		EmptyWeapon: UnitExplodeSmall
