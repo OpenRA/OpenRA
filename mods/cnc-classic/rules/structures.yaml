@@ -801,7 +801,26 @@ ATWR:
 		ROT:255
 	AutoTarget:
 	-AutoTargetIgnore:
-#	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 4
-	RenderRangeCircle:
+
+# custom prerequisites:
+BARRACKS:
+	Tooltip:
+		Name: Infantry Production
+		Description: Infantry Production
+
+VEHICLEPRODUCTION:
+	Tooltip:
+		Name: Vehicle Production
+		Description: Vehicle Production
+
+ANYPOWER:
+	Tooltip:
+		Name: Power Plant
+		Description: Power Plant
+
+HPAD:
+	Tooltip:
+		Name: Helipad
+		Description: Helipad

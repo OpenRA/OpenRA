@@ -78,8 +78,8 @@ ChromeLayout:
 	mods/ra/chrome/objectives.yaml
 
 Weapons:
-	mods/cnc/weapons.yaml
-	mods/cnc/explosions.yaml
+	mods/cnc-classic/weapons.yaml
+	mods/cnc-classic/explosions.yaml
 
 Movies:
 	mods/cnc/movies-gdi.yaml
