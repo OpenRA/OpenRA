@@ -114,3 +114,8 @@ styles.fncall.st = wxstc.wxSTC_INDIC_PLAIN
 
 -- to enable additional spec files (like spec/cpp.lua)
 load.specs(function(file) return file:find('spec[/\\]cpp%.lua$') end)
+
+-- to specify a default EOL encoding to be used for new files:
+-- `wxstc.wxSTC_EOL_CRLF` or `wxstc.wxSTC_EOL_LF`;
+-- `nil` means OS default: CRLF on Windows and LF on all other systems.
+editor.defaulteol = wxstc.wxSTC_EOL_LF
