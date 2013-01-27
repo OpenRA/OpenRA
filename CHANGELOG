@@ -1,9 +1,26 @@
 NEW:
 	Engine:
 		Removed mouse capture while composing text in chat
-	All Mods:
+		Allow classic left-click mouse orders (optional)
+		Asynchronous loading of minimaps in the map chooser dialog
+		Fix bots being able to become admin status on dedicated servers
+		Spawnpoint map tooltips now display players name in lobby
+		Fixed word wrap when chatting ingame
+		Added a tooltip that shows provided and drained power
+		Allow MOTD to be fetched from file for dedicated servers
+ 		Changed scroll velocity in map chooser to be better suited for mouse scrolling
+		Fixed grounded airplane not landing properly when ordered to another airstrip or service depot
+		Added per player shrouds (units can't shoot enemies covered in unexplored terrain)
+		Don't hardcode READY/HOLD and custom prerequisites anymore for easier translation
+		Removed sound attentuation for PlayNotification sounds - fixes the Extreme cashtick sounds
+	Editor:
 		Map editor now saves and loads from OpenRA user folder
 		Fixed map editor failing to import legacy maps
+		Template categories are now ordered by what is specified in the tileset yaml
+		Added terrain category types to RA Snow tileset
+		Fixed terrain categories for two river tiles in RA Temperat
+		Add terrain category types to RA desert tileset
+		Fixed wrong palette remapping for neutral buildings
 	Red Alert:
 		Added Allies03 mission
 		Added Allies04 mission
@@ -12,9 +29,8 @@ NEW:
 		Allies02 mission - can build medic and spy at captured barracks
 		Added Desert tileset - original and new tiles ported from Tiberium Dawn by Harrison, code by Matt
 		Fixed graphics for craters for Snow maps (art by MrFibble)
-		Ice Floe actors work in maps now
-		"Mud" added back into the game
-		Reworked Volkov's sounds
+		Ice Floe actors work in maps now (sequences were missing)
+		Brought back music track "Mud" into the playlist
 		Balance:
 			Added missing line of sight for Chronotank
 			Chronotank damage upped from 20 to 30 per rocket and damage improved vs heavy armor
@@ -22,11 +38,14 @@ NEW:
 			Demo truck health from 110 to 50
 			Demo truck speed from 8 to 6
 			Disguised spies are now invisible under enemy GPS
-			Volkov's Armor reworked
-			Heroes are now limited to one per player
-		Replaced supply truck SHP with aftermath supply truck SHP (it has a shadow)
+			Heroes and missile silos are now limited to one per player
+			Volkov got a new armor type: cybernetic for individual balancing
+			More health points for Volkov to make him the 4tnk equivalent of infantry
+			Medics can't heal Volkov, send him to repair pad or mechanic instead
+			Dogs can't eat Volkov and tanks need two attempts to crush him
+		Reworked Volkov death sounds/dieing animations (Cyborg version from German RA)
+		Replaced supply truck graphics with aftermath SHP which has a shadow (via Arda)
 		Added hotkeys for aircraft, vehicles, ships, infantry
-		Removed sound attentuation for PlayNotification sounds - fixes the Extreme cashtick sounds
 		Fixed broken shadows on GPS dot
 		Fixed Chronotank teleport causing a desync
 		Fixed replay crash when a Chronotank tries to teleport
@@ -39,10 +58,30 @@ NEW:
 		Added in-game player statistics for observers
 		Added support for map difficulties
 		Oil derricks are now repairable by engineers
+		Added new map: "Bad Neighbors" (Nukem)
+		Renamed airstrip to airfield in tooltip.
+		Don't remap civilian buildings/fields in-game.
 	C&C:
 		Corrected music.yaml track titles
+		Fix wrong civilian field remapping in-game
 	Dune 2000:
-		Fixed crash when attack-moving medics
+		Merged the Rounded Edges Mod by Jes and Bellator:
+			Bibs have been removed
+			Building offset and selection boxes adapted
+			Units and turrets leave husks
+			Siege tank barrel won't rotate anymore
+    			AI capable of building all units using all queues
+    			Bullet traces
+    			Windtrap and IX Research building animations
+    			New unit balance (mix of Dune II, Dune 2000 and Red Alert)
+    			Repair pad animation
+    			No more obsessive "silos needed"
+    			Defense building queue → heavy armor queue
+    			Medics (using thumper graphics)
+    			No buildable aircrafts anymore
+    			Harvesting has been slowed down
+			Replace blank shellmap with random multiplayer stills
+			Starport requires energy to operate
 
 20121019:
 	Engine:
