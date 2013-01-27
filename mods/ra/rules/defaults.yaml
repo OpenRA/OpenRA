@@ -367,6 +367,7 @@
 		HP: 750
 	ProximityCaptor:
 		Types:Bridge
+	AutoTargetIgnore:
 
 ^SHBridge:
 	Tooltip:
@@ -381,6 +382,7 @@
 		HP: 750
 	ProximityCaptor:
 		Types:Bridge
+	AutoTargetIgnore:
 
 ^STDBridge:
 	Tooltip:
@@ -395,6 +397,7 @@
 		HP: 750
 	ProximityCaptor:
 		Types:Bridge
+	AutoTargetIgnore:
 
 #Desert Terrain Expansion:
 ^Rock:
