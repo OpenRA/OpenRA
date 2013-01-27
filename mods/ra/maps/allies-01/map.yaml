@@ -289,7 +289,7 @@ Actors:
 	InsertionLZ: waypoint
 		Location: 22,10
 		Owner: Neutral
-	Lab: stek
+	Lab: stek.autotargetignore
 		Location: 20,24
 		Owner: Soviets
 	Actor24: e2
@@ -365,7 +365,12 @@ Rules:
 	EINSTEIN:
 		Passenger:
 			Weight: 0
-	STEK:
+	STEK.AutoTargetIgnore:
+		Inherits: STEK
+		RenderBuilding:
+			Image: STEK
+		Tooltip:
+			Icon: STEK
 		AutoTargetIgnore:
 	^Vehicle:
 		GivesBounty:

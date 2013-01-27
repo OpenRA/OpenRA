@@ -150,7 +150,7 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				foreach (var attacker in townAttackers.Where(u => u.IsIdle && !u.IsDead() && u.IsInWorld))
 				{
-					var enemies = world.Actors.Where(u => u.Owner == neutral
+					var enemies = world.Actors.Where(u => u.Owner == neutral && u.HasTrait<ITargetable>()
 						&& ((u.HasTrait<Building>() && !u.HasTrait<Wall>() && !u.HasTrait<Bridge>()) || u.HasTrait<Mobile>()) && !u.IsDead() && u.IsInWorld);
 
 					var enemy = enemies.OrderBy(u => (attacker.CenterLocation - u.CenterLocation).LengthSquared).FirstOrDefault();
@@ -283,7 +283,7 @@ namespace OpenRA.Mods.RA.Missions
 				self.QueueActivity(new RemoveSelf());
 			}));
 			lst.QueueActivity(new UnloadCargo(true));
-			lst.QueueActivity(new Transform(lst, "lst.unselectable.nocargo"));
+			lst.QueueActivity(new Transform(lst, "lst.unselectable.nocargo") { SkipMakeAnims = true });
 		}
 
 		class Patrol
@@ -340,7 +340,7 @@ namespace OpenRA.Mods.RA.Missions
 			lst.QueueActivity(new Move.Move(spyReinforcementsUnloadPoint.Location));
 			lst.QueueActivity(new Wait(10));
 			lst.QueueActivity(new UnloadCargo(true));
-			lst.QueueActivity(new Transform(lst, "lst.unselectable.nocargo"));
+			lst.QueueActivity(new Transform(lst, "lst.unselectable.nocargo") { SkipMakeAnims = true });
 		}
 
 		void SetupSubStances()

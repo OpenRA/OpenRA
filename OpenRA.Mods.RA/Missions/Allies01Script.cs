@@ -11,11 +11,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
-using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Air;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Scripting;
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Activities;
 
 namespace OpenRA.Mods.RA.Missions
 {
@@ -155,18 +155,21 @@ namespace OpenRA.Mods.RA.Missions
 			Sound.Play("flaren1.aud");
 			SpawnEinsteinAtLab();
 			SendShips();
+			lab.QueueActivity(new Transform(lab, "stek") { SkipMakeAnims = true });
+
 			objectives[FindEinsteinID].Status = ObjectiveStatus.Completed;
 			objectives[ExtractEinsteinID].Status = ObjectiveStatus.InProgress;
-
-			if (difficulty == "Easy")
-				ExtractEinsteinAtLZ();
-
 			OnObjectivesUpdated(true);
 			currentAttackWaveFrameNumber = world.FrameNumber;
 
-			var infantry = MissionUtils.FindQueues(world, soviets, "Infantry").FirstOrDefault();
-			if (infantry != null)
-				infantry.ResolveOrder(infantry.self, Order.StartProduction(infantry.self, "e1", 5));
+			if (difficulty == "Easy")
+				ExtractEinsteinAtLZ();
+			else
+			{
+				var infantry = MissionUtils.FindQueues(world, soviets, "Infantry").FirstOrDefault();
+				if (infantry != null)
+					infantry.ResolveOrder(infantry.self, Order.StartProduction(infantry.self, "e1", 5));
+			}
 		}
 
 		void ManageSovietOre()
