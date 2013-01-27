@@ -5,9 +5,6 @@ lst:
 	unload:
 		Start: 0
 		Facings: 4
-	roof:
-		Start: 0
-		Facings: 4
 
 boat:
 	left:
