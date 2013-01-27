@@ -311,7 +311,7 @@ namespace OpenRA.Mods.RA.Missions
 			foreach (var rallyPoint in sovietRallyPoints)
 			{
 				var units = world.FindAliveCombatantActorsInCircle(Util.CenterOfCell(rallyPoint), 10)
-					.Where(u => u.IsIdle && u.HasTrait<Mobile>() && u.Owner == soviets);
+					.Where(u => u.IsIdle && u.HasTrait<Mobile>() && u.HasTrait<AttackBase>() && u.Owner == soviets);
 				if (units.Count() >= SovietGroupSize)
 				{
 					foreach (var unit in units)

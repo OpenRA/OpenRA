@@ -148,11 +148,10 @@ namespace OpenRA.Mods.RA.Missions
 
 			if (attackingTown)
 			{
-				foreach (var attacker in townAttackers.Where(a => a.IsIdle && !a.IsDead() && a.IsInWorld))
+				foreach (var attacker in townAttackers.Where(u => u.IsIdle && !u.IsDead() && u.IsInWorld))
 				{
 					var enemies = world.Actors.Where(u => u.Owner == neutral
-						&& ((u.HasTrait<Building>() && !u.HasTrait<Wall>() && !u.HasTrait<Bridge>()) || u.HasTrait<Mobile>())
-						&& u.HasTrait<ITargetable>() && u.HasTrait<Health>() && !u.Trait<Health>().IsDead && u.IsInWorld);
+						&& ((u.HasTrait<Building>() && !u.HasTrait<Wall>() && !u.HasTrait<Bridge>()) || u.HasTrait<Mobile>()) && !u.IsDead() && u.IsInWorld);
 
 					var enemy = enemies.OrderBy(u => (attacker.CenterLocation - u.CenterLocation).LengthSquared).FirstOrDefault();
 					if (enemy != null)

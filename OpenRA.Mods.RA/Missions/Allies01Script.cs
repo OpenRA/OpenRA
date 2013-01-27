@@ -110,9 +110,8 @@ namespace OpenRA.Mods.RA.Missions
 				if (difficulty != "Easy")
 				{
 					ManageSovietUnits();
-					if (world.FrameNumber >= currentAttackWaveFrameNumber + 600)
+					if (world.FrameNumber >= currentAttackWaveFrameNumber + 400)
 					{
-						Sound.Play("enmyapp1.aud");
 						SpawnSovietUnits(AttackWave);
 						currentAttackWave++;
 						currentAttackWaveFrameNumber = world.FrameNumber;
@@ -190,15 +189,27 @@ namespace OpenRA.Mods.RA.Missions
 
 		void ManageSovietUnits()
 		{
-			foreach (var unit in world.Actors.Where(a => a.IsInWorld && a.Owner == soviets && !a.IsDead() && a.IsIdle
-				&& a.HasTrait<Mobile>() && a.HasTrait<AttackBase>()))
+			foreach (var unit in world.Actors.Where(u => u.IsInWorld && u.Owner == soviets && !u.IsDead() && u.IsIdle
+				&& u.HasTrait<Mobile>() && u.HasTrait<AttackBase>()))
 			{
-				Activity inner;
-				if (einstein != null && einstein.IsInWorld)
-					inner = new Attack(Target.FromActor(einstein), 3);
-				else
-					inner = new Move.Move(extractionLZ.Location, 3);
-				unit.QueueActivity(new AttackMove.AttackMoveActivity(unit, inner));
+				Activity innerActivity;
+				if (einstein != null)
+				{
+					if (einstein.IsInWorld)
+						innerActivity = new Move.Move(Target.FromActor(einstein), 3);
+
+					else
+					{
+						var container = world.UnitContaining(einstein);
+
+						if (container != null && !container.HasTrait<Aircraft>() && container.HasTrait<Mobile>())
+							innerActivity = new Move.Move(Target.FromActor(container), 3);
+
+						else
+							innerActivity = new Move.Move(extractionLZ.Location, 3);
+					}
+					unit.QueueActivity(new AttackMove.AttackMoveActivity(unit, innerActivity));
+				}
 			}
 		}
 
