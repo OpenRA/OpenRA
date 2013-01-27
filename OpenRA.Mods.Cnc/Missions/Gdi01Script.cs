@@ -20,7 +20,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc
 {
-	class Gdi01ScriptInfo : TraitInfo<Gdi01Script>, Requires<LoadWidgetAtGameStartInfo> { }
+	class Gdi01ScriptInfo : TraitInfo<Gdi01Script> { }
 
 	class Gdi01Script: IWorldLoaded, ITick
 	{
@@ -52,8 +52,6 @@ namespace OpenRA.Mods.Cnc
 			{
 				Sound.StopMusic();
 				Game.Disconnect();
-				Ui.ResetAll();
-				Game.LoadShellMap();
 			};
 			Game.RunAfterDelay(5000, () => Scripting.Media.PlayFMVFullscreen(w, "consyard.vqa", afterFMV));
 		}
@@ -68,8 +66,6 @@ namespace OpenRA.Mods.Cnc
 			{
 				Sound.StopMusic();
 				Game.Disconnect();
-				Ui.ResetAll();
-				Game.LoadShellMap();
 			};
 			Game.RunAfterDelay(5000, () => Scripting.Media.PlayFMVFullscreen(w, "gameover.vqa", afterFMV));
 		}
@@ -93,14 +89,14 @@ namespace OpenRA.Mods.Cnc
 					{
 						var a = self.World.CreateActor(i.ToLowerInvariant(), new TypeDictionary
 						{
-							new OwnerInit( Players["BadGuy"] ),
-							new FacingInit( 0 ),
-							new LocationInit ( Actors["nod0"].Location ),
+							new OwnerInit(Players["BadGuy"]),
+							new FacingInit(0),
+							new LocationInit(Actors["nod0"].Location),
 						});
 						var mobile = a.Trait<Mobile>();
-						a.QueueActivity( mobile.MoveTo( Actors["nod1"].Location, 2 ) );
-						a.QueueActivity( mobile.MoveTo( Actors["nod2"].Location, 2 ) );
-						a.QueueActivity( mobile.MoveTo( Actors["nod3"].Location, 2 ) );
+						a.QueueActivity(mobile.MoveTo(Actors["nod1"].Location, 2 ));
+						a.QueueActivity(mobile.MoveTo(Actors["nod2"].Location, 2 ));
+						a.QueueActivity(mobile.MoveTo(Actors["nod3"].Location, 2 ));
 						// Todo: Queue hunt order
 					}
 				});
@@ -172,8 +168,8 @@ namespace OpenRA.Mods.Cnc
 		{
 			var self = Actors[ "Gunboat" ];
 			var mobile = self.Trait<Mobile>();
-			self.QueueActivity(mobile.ScriptedMove( Actors["gunboatLeft"].Location ));
-			self.QueueActivity(mobile.ScriptedMove( Actors["gunboatRight"].Location ));
+			self.QueueActivity(mobile.ScriptedMove(Actors["gunboatLeft"].Location));
+			self.QueueActivity(mobile.ScriptedMove(Actors["gunboatRight"].Location));
 			self.QueueActivity(new CallFunc(() => SetGunboatPath()));
 		}
 
