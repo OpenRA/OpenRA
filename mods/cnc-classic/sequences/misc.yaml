@@ -244,3 +244,8 @@ overlay:
 		Start: 0
 	target-invalid:
 		Start: 1
+
+moveflsh:
+	idle:
+		Start: 0
+		Length: *
