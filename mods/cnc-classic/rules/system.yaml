@@ -207,9 +207,6 @@ CRATE:
 		Effect: reveal-map
 	LevelUpCrateAction:
 		SelectionShares: 20
-	ExplodeCrateAction@fire:
-		Weapon: Napalm.Crate
-		SelectionShares: 5
 	CloakCrateAction:
 		SelectionShares: 5
 		InitialDelay: 15
