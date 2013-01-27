@@ -33,9 +33,6 @@ MCV:
 	AttackMove:
 		JustMove:true
 	BaseBuilding:
-	LeavesHusk:
-		HuskActor: MCV.Husk
-	-GainsExperience:
 	-AcceptsCloakCrate:
 	Explodes:
 		Weapon: McvExplode
@@ -74,9 +71,6 @@ HARV:
 	RenderUnit:
 	AttackMove:
 		JustMove:true
-	#LeavesHusk:
-	#	HuskActor: HARV.Husk
-	-GainsExperience:
 	Explodes:
 		Weapon: McvExplode
 
@@ -111,8 +105,6 @@ JEEP:
 	WithMuzzleFlash:
 	RenderUnitTurreted:
 	AutoTarget:
-	#LeavesHusk:
-	#	HuskActor: JEEP.Husk
 
 APC:
 	Inherits: ^Tank
@@ -150,8 +142,6 @@ APC:
 		MaxWeight: 5
 		PipCount: 5
 		UnloadFacing: 220
-	#LeavesHusk:
-	#	HuskActor: APC.Husk
 
 BGGY:
 	Inherits: ^Vehicle
@@ -184,8 +174,6 @@ BGGY:
 	WithMuzzleFlash:
 	RenderUnitTurreted:
 	AutoTarget:
-	#LeavesHusk:
-	#	HuskActor: BGGY.Husk
 
 BIKE:
 	Inherits: ^Vehicle
@@ -216,8 +204,6 @@ BIKE:
 		PrimaryLocalOffset: -4,0,0,0,25, 4,0,0,0,-25
 	RenderUnit:
 	AutoTarget:
-	#LeavesHusk:
-	#	HuskActor: BIKE.Husk
 
 ARTY:
 	Inherits: ^Tank
@@ -250,8 +236,6 @@ ARTY:
 	Explodes:
 		Weapon: UnitExplode
 		EmptyWeapon: UnitExplode
-	#LeavesHusk:
-	#	HuskActor: ARTY.Husk
 
 FTNK:
 	Inherits: ^Tank
@@ -286,8 +270,6 @@ FTNK:
 	Explodes:
 		Weapon: BigNapalmExplode
 		EmptyWeapon: BigNapalmExplode
-	#LeavesHusk:
-	#	HuskActor: FTNK.Husk
 
 LTNK:
 	Inherits: ^Tank
@@ -320,8 +302,6 @@ LTNK:
 		PrimaryLocalOffset: 0,3,0,-2,0
 	RenderUnitTurreted:
 	AutoTarget:
-	#LeavesHusk:
-	#	HuskActor: LTNK.Husk
 
 MTNK:
 	Inherits: ^Tank
@@ -355,8 +335,6 @@ MTNK:
 		PrimaryLocalOffset: 0,0,0,-1,0
 	RenderUnitTurreted:
 	AutoTarget:
-	#LeavesHusk:
-	#	HuskActor: MTNK.Husk
 	Selectable:
 		Bounds: 34,34
 
@@ -398,8 +376,6 @@ HTNK:
 	SelfHealing:
 		Ticks: 10
 		DamageCooldown: 200
-	#LeavesHusk:
-	#	HuskActor: HTNK.Husk
 	Explodes:
 		Weapon: MammothExplode
 	Selectable:
@@ -437,8 +413,6 @@ MSAM:
 	AutoTarget:
 	Explodes:
 		Weapon: MammothExplode
-	#LeavesHusk:
-	#	HuskActor: MSAM.Husk
 
 MLRS:
 	Inherits: ^Tank
@@ -476,8 +450,6 @@ MLRS:
 	Explodes:
 		Weapon: BigNapalmExplode
 		EmptyWeapon: BigNapalmExplode
-	#LeavesHusk:
-	#	HuskActor: MLRS.Husk
 
 STNK:
 	Inherits: ^Tank
@@ -514,5 +486,3 @@ STNK:
 	AutoTarget:
 		InitialStance: HoldFire
 	TargetableUnit:
-	#LeavesHusk:
-	#	HuskActor: STNK.Husk
