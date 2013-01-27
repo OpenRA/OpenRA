@@ -23,20 +23,6 @@ FACT:
 		IntoActor: mcv
 		Offset:1,1
 		Facing: 108
-	ProductionQueue@Building:
-		Type: Building
-		Group: Building
-		BuildSpeed: .5
-		LowPowerSlowdown: 3
-		QueuedAudio: Building
-		ReadyAudio: ConstructionComplete
-	ProductionQueue@Defense:
-		Type: Defense
-		Group: Defense
-		BuildSpeed: .5
-		LowPowerSlowdown: 3
-		QueuedAudio: Building
-		ReadyAudio: ConstructionComplete
 	BaseBuilding:
 	ProductionBar:
 	Bib:
@@ -102,6 +88,8 @@ PROC:
 		Bounds: 73,72
 	CustomSellValue:
 		Value: 600
+	CustomBuildTimeValue:
+		Value: 80
 	FreeActor:
 		Actor: HARV
 		InitialActivity: FindResources
@@ -354,11 +342,6 @@ HPADGDI:
 	Reservable:
 	RepairsUnits:
 	RallyPoint:
-	ProductionQueue:
-		Type: Aircraft
-		Group: Aircraft
-		BuildSpeed: .5
-		LowPowerSlowdown: 3
 	ProductionBar:
 	Bib:
 
@@ -399,11 +382,6 @@ HPADNOD:
 	Reservable:
 	RepairsUnits:
 	RallyPoint:
-	ProductionQueue:
-		Type: Aircraft
-		Group: Aircraft
-		BuildSpeed: .5
-		LowPowerSlowdown: 3
 	ProductionBar:
 	Bib:
 
