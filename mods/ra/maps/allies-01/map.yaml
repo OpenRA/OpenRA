@@ -365,10 +365,6 @@ Rules:
 	EINSTEIN:
 		Passenger:
 			Weight: 0
-	JEEP:
-		Cargo:
-			MaxWeight: 0
-			PipCount: 0
 	STEK:
 		AutoTargetIgnore:
 	^Vehicle:

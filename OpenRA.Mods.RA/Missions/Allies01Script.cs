@@ -163,6 +163,10 @@ namespace OpenRA.Mods.RA.Missions
 
 			OnObjectivesUpdated(true);
 			currentAttackWaveFrameNumber = world.FrameNumber;
+
+			var infantry = MissionUtils.FindQueues(world, soviets, "Infantry").FirstOrDefault();
+			if (infantry != null)
+				infantry.ResolveOrder(infantry.self, Order.StartProduction(infantry.self, "e1", 5));
 		}
 
 		void ManageSovietOre()
