@@ -54,7 +54,6 @@ LST:
 	RevealsShroud:
 		Range: 7
 	RenderUnit:
-	WithRoof:
 	RenderCargo:
 	-Selectable:
 	Cargo:
