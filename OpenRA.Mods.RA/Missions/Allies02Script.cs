@@ -482,7 +482,7 @@ namespace OpenRA.Mods.RA.Missions
 			allies1 = w.Players.Single(p => p.InternalName == "Allies1");
 			allies2 = w.Players.SingleOrDefault(p => p.InternalName == "Allies2");
 
-			var res = allies1.PlayerActor.Trait<PlayerResources>().Cash = 5000;
+			allies1.PlayerActor.Trait<PlayerResources>().Cash = 5000;
 			if (allies2 == null)
 				allies2 = allies1;
 			else
