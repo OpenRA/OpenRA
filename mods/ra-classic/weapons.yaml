@@ -842,7 +842,7 @@ Atomic:
 		Damage: 1000
 		Spread: 6
 		Ore: true
-		Versus: 
+		Versus:
 			None: 90%
 			Light: 60%
 			Heavy: 25%
@@ -894,7 +894,7 @@ MiniNuke:
 			Cybernetic: 40%
 		Delay: 5
 		InfDeath: 5
- 		ImpactSound: kaboom22
+		ImpactSound: kaboom22
 	Warhead@areanuke2:
 		DamageModel: PerCell
 		Damage: 180
@@ -994,7 +994,7 @@ APMine:
 		ImpactSound: mine1
 		InfDeath: 3
 		Explosion: napalm
-		
+
 Demolish:
 	Warhead:
 		ImpactSound: kaboom25
