@@ -51,7 +51,7 @@ Sequences:
 	mods/cnc/sequences/misc.yaml
 	# Low priority sequences that break the batch when used
 	mods/cnc/sequences/civilian.yaml
-	mods/cnc/sequences/campaign.yaml
+	mods/cnc-classic/sequences/campaign.yaml
 Cursors:
 	mods/cnc/cursors.yaml
 

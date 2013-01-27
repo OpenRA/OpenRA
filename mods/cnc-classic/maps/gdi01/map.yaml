@@ -1,12 +1,12 @@
-Selectable: False
+Selectable: True
 
 MapFormat: 5
 
-RequiresMod: cnc
+RequiresMod: cnc-classic
 
 Title: Storm the Beachhead
 
-Description: Remake of the first GDI Mission
+Description: Conversion of the first GDI Mission
 
 Author: Westwood Studios
 
@@ -18,7 +18,7 @@ Bounds: 35,39,27,23
 
 UseAsShellmap: False
 
-Type: Conquest
+Type: Campaign
 
 Players:
 	PlayerReference@BadGuy:
@@ -450,6 +450,8 @@ Rules:
 		Gdi01Script:
 	Player:
 		-ConquestVictoryConditions:
+	PROC:
+		-Buildable:
 	SILO:
 		-Buildable:
 	WEAP:
@@ -460,13 +462,11 @@ Rules:
 		-Buildable:
 	FIX:
 		-Buildable:
-	HPAD:
+	HPADGDI:
 		-Buildable:
 	EYE:
 		-Buildable:
-	SBAG:
-		-Buildable:
-	BRIK:
+	GUN:
 		-Buildable:
 	GTWR:
 		-Buildable:
