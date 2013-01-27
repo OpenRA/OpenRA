@@ -2,14 +2,14 @@
 # is in order from simple to advanced: infantry, vehicles, tanks, air, sea, buildings, superweapons, misc.
 
 Pistol:
-  ROF: 7
+	ROF: 7
 	Range: 1.75
 	Report: GUN18
 	Projectile: Bullet
 		Speed: 100
 	Warhead:
 		Spread: 3
-		Versus: 
+		Versus:
 			None: 100%
 			Wood: 50%
 			Light: 50%

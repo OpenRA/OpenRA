@@ -173,7 +173,6 @@ E6:
 		JustMove: true
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
-	-GainsExperience:
 
 RMBO:
 	Inherits: ^Infantry
