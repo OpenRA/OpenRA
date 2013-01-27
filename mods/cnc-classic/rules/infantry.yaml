@@ -208,22 +208,3 @@ RMBO:
 		IdleAnimations: idle1,idle2,idle3
 	AnnounceOnBuild:
 	AnnounceOnKill:
-
-PVICE:
-	Inherits:VICE
-	-AttackWander
-	Mobile:
-		Crushes: crate
-	Buildable:
-		Queue: Biolab
-		BuildPaletteOrder: 40
-		Owner: gdi, nod
-		Prerequisites: bio
-	Tooltip:
-		Description: Mutated abomination that spits liquid tiberium.\n  Strong vs Infantry, Buildings\n  Weak vs Aircraft
-		Icon: viceicnh
-	DrawLineToTarget:
-	Selectable:
-		Voice: DinoVoice
-	ActorLostNotification:
-		Notification: unitlost.aud

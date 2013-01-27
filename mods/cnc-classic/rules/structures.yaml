@@ -23,20 +23,6 @@ FACT:
 		IntoActor: mcv
 		Offset:1,1
 		Facing: 108
-	ProductionQueue@Building:
-		Type: Building
-		Group: Building
-		BuildSpeed: .5
-		LowPowerSlowdown: 3
-		QueuedAudio: Building
-		ReadyAudio: ConstructionComplete
-	ProductionQueue@Defense:
-		Type: Defense
-		Group: Defense
-		BuildSpeed: .5
-		LowPowerSlowdown: 3
-		QueuedAudio: Building
-		ReadyAudio: ConstructionComplete
 	BaseBuilding:
 	ProductionBar:
 	Bib:
@@ -102,6 +88,8 @@ PROC:
 		Bounds: 73,72
 	CustomSellValue:
 		Value: 600
+	CustomBuildTimeValue:
+		Value: 80
 	FreeActor:
 		Actor: HARV
 		InitialActivity: FindResources
@@ -202,16 +190,11 @@ PYLE:
 		ExitCell: 0,1
 	Exit@2:
 		SpawnOffset: 7,7
-		ExitCell: 1,1	
-	Production:		
+		ExitCell: 1,1
+	Production:
 		Produces: Infantry
-	ProductionQueue:
-		Type: Infantry
-		Group: Infantry
-		BuildSpeed: .5
-		LowPowerSlowdown: 3
 	ProductionBar:
-	
+
 HAND:
 	Inherits: ^Building
 	Valued:
@@ -243,11 +226,6 @@ HAND:
 		ExitCell: 1,2
 	Production:
 		Produces: Infantry
-	ProductionQueue:
-		Type: Infantry
-		Group: Infantry
-		BuildSpeed: .5
-		LowPowerSlowdown: 3
 	ProductionBar:
 
 AFLD:
@@ -285,11 +263,6 @@ AFLD:
 		ExitCell: 3,1
 	ProductionAirdrop:
 		Produces: Vehicle
-	ProductionQueue:
-		Type: Vehicle
-		Group: Vehicle
-		BuildSpeed: .5
-		LowPowerSlowdown: 3
 	ProductionBar:
 
 WEAP:
@@ -329,11 +302,6 @@ WEAP:
 		ExitCell: 0,2
 	Production:
 		Produces: Vehicle
-	ProductionQueue:
-		Type: Vehicle
-		Group: Vehicle
-		BuildSpeed: .5
-		LowPowerSlowdown: 3
 	ProductionBar:
 
 HPADGDI:
@@ -374,11 +342,6 @@ HPADGDI:
 	Reservable:
 	RepairsUnits:
 	RallyPoint:
-	ProductionQueue:
-		Type: Aircraft
-		Group: Aircraft
-		BuildSpeed: .5
-		LowPowerSlowdown: 3
 	ProductionBar:
 	Bib:
 
@@ -419,11 +382,6 @@ HPADNOD:
 	Reservable:
 	RepairsUnits:
 	RallyPoint:
-	ProductionQueue:
-		Type: Aircraft
-		Group: Aircraft
-		BuildSpeed: .5
-		LowPowerSlowdown: 3
 	ProductionBar:
 	Bib:
 

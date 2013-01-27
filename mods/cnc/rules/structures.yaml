@@ -123,8 +123,6 @@ PROC:
 		Bounds: 73,72
 	CustomSellValue:
 		Value: 300
-	CustomBuildTimeValue:
-		Value: 80
 	FreeActor:
 		Actor: HARV
 		InitialActivity: FindResources
