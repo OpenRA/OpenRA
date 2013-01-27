@@ -68,6 +68,9 @@ namespace OpenRA.Mods.RA.Activities
 
 				var a = w.CreateActor( ToActor, init );
 
+				foreach (var nt in self.TraitsImplementing<INotifyTransformed>())
+					nt.OnTransformed(a);
+
 				if (selected)
 					w.Selection.Add(w, a);
 			});

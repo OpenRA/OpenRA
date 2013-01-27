@@ -278,10 +278,14 @@ namespace OpenRA.Mods.RA.Missions
 					allies2.PlayerActor.Trait<PlayerResources>().GiveCash(2500);
 			}));
 
+			lst.AddTrait(new Allies04TransformedAction(self =>
+			{
+				self.QueueActivity(new Wait(10));
+				self.QueueActivity(new Move.Move(reinforcementsEntryPoint.Location));
+				self.QueueActivity(new RemoveSelf());
+			}));
 			lst.QueueActivity(new UnloadCargo(true));
-			lst.QueueActivity(new Wait(10));
-			lst.QueueActivity(new Move.Move(reinforcementsEntryPoint.Location));
-			lst.QueueActivity(new RemoveSelf());
+			lst.QueueActivity(new Transform(lst, "lst.unselectable.nocargo"));
 		}
 
 		class Patrol
@@ -329,12 +333,16 @@ namespace OpenRA.Mods.RA.Missions
 				lst.Trait<Cargo>().Load(lst, allies2Spy);
 			}
 
+			lst.AddTrait(new Allies04TransformedAction(self =>
+			{
+				self.QueueActivity(new Wait(10));
+				self.QueueActivity(new Move.Move(spyReinforcementsExitPoint.Location));
+				self.QueueActivity(new RemoveSelf());
+			}));
 			lst.QueueActivity(new Move.Move(spyReinforcementsUnloadPoint.Location));
 			lst.QueueActivity(new Wait(10));
 			lst.QueueActivity(new UnloadCargo(true));
-			lst.QueueActivity(new Wait(10));
-			lst.QueueActivity(new Move.Move(spyReinforcementsExitPoint.Location));
-			lst.QueueActivity(new RemoveSelf());
+			lst.QueueActivity(new Transform(lst, "lst.unselectable.nocargo"));
 		}
 
 		void SetupSubStances()
@@ -412,7 +420,7 @@ namespace OpenRA.Mods.RA.Missions
 			patrols = new List<Patrol>
 			{
 				new Patrol(world, new[] { "e1", "e1", "e1", "e1", "e1" }, soviets, patrolPoints1, 0),
-				new Patrol(world, new[] { "e1", "dog.patrol", "dog.patrol" }, soviets, patrolPoints2, 4),
+				new Patrol(world, new[] { "e1", "dog.patrol", "dog.patrol" }, soviets, patrolPoints2, 2),
 				new Patrol(world, new[] { "e1", "dog.patrol", "dog.patrol" }, soviets, patrolPoints4, 0),
 				new Patrol(world, new[] { "e1", "dog.patrol", "dog.patrol" }, soviets, patrolPoints5, 0),
 			};
@@ -553,4 +561,19 @@ namespace OpenRA.Mods.RA.Missions
 	}
 
 	class Allies04TransformOnLabInfiltrate { }
+
+	class Allies04TransformedAction : INotifyTransformed
+	{
+		Action<Actor> a;
+
+		public Allies04TransformedAction(Action<Actor> a)
+		{
+			this.a = a;
+		}
+
+		public void OnTransformed(Actor toActor)
+		{
+			a(toActor);
+		}
+	}
 }

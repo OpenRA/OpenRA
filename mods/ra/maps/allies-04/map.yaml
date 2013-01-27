@@ -1089,9 +1089,6 @@ Actors:
 	Actor349: v14
 		Location: 66,83
 		Owner: Neutral
-	Actor350: v12
-		Location: 64,82
-		Owner: Neutral
 	Actor351: t11
 		Location: 62,100
 		Owner: Neutral
@@ -1848,31 +1845,17 @@ Rules:
 		Allies04TransformOnLabInfiltrate:
 			ToActor: SPEN
 	LST.Unselectable:
-		Inherits: ^Ship
-		Valued:
-			Cost: 700
-		Tooltip:
-			Name: Transport
-		Health:
-			HP: 350
-		Armor:
-			Type: Heavy
-		Mobile:
-			ROT: 10
-			Speed: 8
-		RevealsShroud:
-			Range: 6
+		Inherits: LST
 		RenderUnit:
 			Image: LST
-		Cargo:
-			Types: Infantry, Vehicle
-			MaxWeight: 5
-			PipCount: 5
-		IronCurtainable:
-		RepairableNear:
-		AttackMove:
-			JustMove: true
+		Tooltip:
+			Icon: lsticon
 		-Selectable:
+	LST.Unselectable.NoCargo:
+		Inherits: LST.Unselectable
+		Cargo:
+			MaxWeight: 0
+			PipCount: 0
 	SPY.Strong:
 		Inherits: ^Infantry
 		RevealsShroud:
