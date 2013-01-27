@@ -30,7 +30,7 @@ E2:
 		Icon: e2icnh
 	Buildable:
 		BuildPaletteOrder: 40
-		Prerequisites: hq
+		Prerequisites: pyle
 		Owner: gdi
 	Selectable:
 		Bounds: 12,17,0,-6
@@ -63,8 +63,20 @@ E3:
 		Bounds: 12,17,0,-6
 	Mobile:
 		Speed: 3
+		TerrainSpeeds:
+			Clear: 100
+			Rough: 100
+			Road: 100
+			Tiberium: 100
+				PathingCost: 1000
+			BlueTiberium: 100
+				PathingCost: 1000
+			Beach: 100
 	Health:
-		HP: 45
+		HP: 25
+	RevealsShroud:
+		Range: 3
+	# range value is 1 in C&C, but OpenRA renders vision slightly differently
 	AttackFrontal:
 		PrimaryWeapon: Rockets
 		PrimaryOffset: 1,-6,0,-8
@@ -83,13 +95,13 @@ E4:
 	Buildable:
 		BuildPaletteOrder: 40
 		Owner: nod
-		Prerequisites: hq
+		Prerequisites: hand
 	Selectable:
 		Bounds: 12,17,0,-6
 	Mobile:
 		Speed: 5
 	Health:
-		HP: 90
+		HP: 70
 	AttackFrontal:
 		PrimaryWeapon: Flamethrower
 		PrimaryOffset: 0,-2,2,-4
@@ -97,6 +109,7 @@ E4:
 	WithMuzzleFlash:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
+#explodes somehow
 
 E5:
 	Inherits: ^Infantry
@@ -115,12 +128,12 @@ E5:
 	Mobile:
 		Speed: 4
 		TerrainSpeeds:
-			Tiberium: 80
-				PathingCost: 80
-			BlueTiberium: 80
-				PathingCost: 80
+			Tiberium: 100
+				PathingCost: 100
+			BlueTiberium: 100
+				PathingCost: 100
 	Health:
-		HP: 90
+		HP: 70
 	AttackFrontal:
 		PrimaryWeapon: Chemspray
 		PrimaryOffset: 0,-2,2,-9
@@ -147,6 +160,9 @@ E6:
 		Speed: 4
 	Health:
 		HP: 25
+	RevealsShroud:
+		Range: 4
+	# range value is 2 in C&C, but OpenRA renders vision slightly differently
 	Passenger:
 		PipType: Yellow
 	EngineerRepair:
@@ -157,6 +173,7 @@ E6:
 		JustMove: true
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
+	-GainsExperience:
 
 RMBO:
 	Inherits: ^Infantry
@@ -168,19 +185,20 @@ RMBO:
 		Description: Elite sniper infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
 	Buildable:
 		BuildPaletteOrder: 50
-		Owner: gdi
-		Prerequisites: eye
+		Owner: gdi, nod
+		Prerequisites: techbuilding
 	Selectable:
 		Bounds: 12,17,0,-6
 		Voice: CommandoVoice
 	Mobile:
 		Speed: 5
 	Health:
-		HP: 200
+		HP: 100
 	Passenger:
 		PipType: Red
 	RevealsShroud:
-		Range: 6
+		Range: 7
+	# range value is 5 in C&C, but OpenRA renders vision slightly differently
 	AutoTarget:
 		ScanRadius: 5
 	C4Demolition:
@@ -191,3 +209,22 @@ RMBO:
 		IdleAnimations: idle1,idle2,idle3
 	AnnounceOnBuild:
 	AnnounceOnKill:
+
+PVICE:
+	Inherits:VICE
+	-AttackWander
+	Mobile:
+		Crushes: crate
+	Buildable:
+		Queue: Biolab
+		BuildPaletteOrder: 40
+		Owner: gdi, nod
+		Prerequisites: bio
+	Tooltip:
+		Description: Mutated abomination that spits liquid tiberium.\n  Strong vs Infantry, Buildings\n  Weak vs Aircraft
+		Icon: viceicnh
+	DrawLineToTarget:
+	Selectable:
+		Voice: DinoVoice
+	ActorLostNotification:
+		Notification: unitlost.aud
