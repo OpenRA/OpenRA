@@ -1,6 +1,5 @@
-
 UnitExplodeSmall:
-  Warhead:
+	Warhead:
 #		Damage: 40
 #		Spread: 10
 #		Versus: 
@@ -11,7 +10,6 @@ UnitExplodeSmall:
 		Explosion: 4
 		InfDeath: 4
 		ImpactSound: xplobig4
-
 
 UnitExplode:
 	Warhead:
