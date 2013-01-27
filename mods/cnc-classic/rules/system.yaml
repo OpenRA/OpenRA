@@ -84,7 +84,7 @@ Player:
 	BaseAttackNotifier:
 	PlayerStatistics:
 
-World:	
+World:
 	OpenWidgetAtGameStart:
 		Widget: INGAME_ROOT
 		ObserverWidget: OBSERVER_ROOT

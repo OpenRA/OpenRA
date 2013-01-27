@@ -21,15 +21,9 @@
 		TargetTypes: Ground
 	Buildable:
 		Queue: Vehicle
-	Repairable: 
-	Chronoshiftable: 
-	Passenger: 
+	Repairable:
+	Passenger:
 		CargoType: Vehicle
-	IronCurtainable: 
-	HiddenUnderFog:
-	GainsExperience:
-	GivesExperience:
-	DrawLineToTarget:
 	ActorLostNotification:
 		Notification: unitlost.aud
 	AttackMove:
@@ -61,15 +55,8 @@
 		TargetTypes: Ground
 	Buildable:
 		Queue: Vehicle
-	Repairable: 
-	Chronoshiftable: 
-	Passenger: 
+	Passenger:
 		CargoType: Vehicle
-	IronCurtainable: 
-	HiddenUnderFog:
-	GainsExperience:
-	GivesExperience:
-	DrawLineToTarget:
 	ActorLostNotification:
 		Notification: unitlost.aud
 	AttackMove:
@@ -92,10 +79,6 @@
 		LandWhenIdle: false
 	Buildable:
 		Queue: Aircraft
-	HiddenUnderFog:
-	GainsExperience:
-	GivesExperience:
-	DrawLineToTarget:
 	ActorLostNotification:
 		Notification: unitlost.aud
 
@@ -136,11 +119,7 @@
 	AttackMove:
 	Passenger:
 		CargoType: Infantry
-	HiddenUnderFog:
 	PoisonedByTiberium:
-	GainsExperience:
-	GivesExperience:
-	DrawLineToTarget:
 	ActorLostNotification:
 		Notification: unitlost.aud
 	SpawnViceroid:
@@ -178,7 +157,7 @@
 		Notification: civdead1.aud
 		NotifyAll: true
 	ScaredyCat:
-	RenderInfantryPanic:	
+	RenderInfantryPanic:
 	AttackMove:
 		JustMove: yes
 	CrushableInfantry:
@@ -191,10 +170,6 @@
 		Voice: GenericVoice
 	TargetableUnit:
 		TargetTypes: Air
-	HiddenUnderFog:
-	GainsExperience:
-	GivesExperience:
-	DrawLineToTarget:
 	ActorLostNotification:
 		Notification: unitlost.aud
 
@@ -209,10 +184,6 @@
 		Voice: GenericVoice
 	TargetableUnit:
 		TargetTypes: Ground, Water
-	HiddenUnderFog:
-	GainsExperience:
-	GivesExperience:
-	DrawLineToTarget:
 	ActorLostNotification:
 		Notification: unitlost.aud
 	AttackMove:
@@ -248,7 +219,6 @@
 		ValuePercent: 40
 		ActorTypes: e6,e1
 	MustBeDestroyed:
-	GivesExperience:
 	CaptureNotification@GDI:
 		Race: gdi
 		Notification: gdicapt1.aud
@@ -344,7 +314,6 @@
 	RenderBuildingWall:
 		HasMakeAnimation: false
 		Palette: staticterrain
-	GivesExperience:
 	EditorAppearance:
 		RelativeToTopLeft: yes
 	AutoTargetIgnore:
@@ -371,7 +340,6 @@
 	RenderBuildingWall:
 		HasMakeAnimation: false
 		Palette: staticterrain
-	GivesExperience:
 	EditorAppearance:
 		RelativeToTopLeft: yes
 	AutoTargetIgnore:
@@ -390,7 +358,7 @@
 		Terrain: Tree
 	EditorAppearance:
 		RelativeToTopLeft: yes
-		
+
 ^Rock:
 	Tooltip:
 		Name: Rock
@@ -404,24 +372,6 @@
 		Terrain: Tree
 	EditorAppearance:
 		RelativeToTopLeft: yes
-
-^Husk:
-	Health:
-		HP: 140
-	Armor: 
-		Type: Light
-	Husk:
-	HiddenUnderFog:
-	AppearsOnRadar:
-	Burns:
-	TargetableUnit:
-	TransformOnCapture:
-		ForceHealthPercentage: 25
-#	Capturable:
-#		Type: husk
-#		AllowAllies: true
-#		AllowNeutral: true
-#		AllowEnemies: true
 
 ^Bridge:
 	Tooltip:
