@@ -1846,6 +1846,8 @@ Rules:
 			ToActor: SPEN
 	LST.Unselectable:
 		Inherits: LST
+		Buildable:
+			Owner: none
 		RenderUnit:
 			Image: LST
 		Tooltip:
