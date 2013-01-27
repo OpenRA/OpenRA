@@ -1412,18 +1412,6 @@ Actors:
 	BaseGuardTruckPos: waypoint
 		Location: 64,36
 		Owner: Neutral
-	Hind1EntryPoint: waypoint
-		Location: 88,111
-		Owner: Neutral
-	Hind1Point1: waypoint
-		Location: 67,91
-		Owner: Neutral
-	Hind1Point2: waypoint
-		Location: 61,68
-		Owner: Neutral
-	Hind1ExitPoint: waypoint
-		Location: 80,16
-		Owner: Neutral
 	Actor411: e2
 		Location: 73,53
 		Owner: Soviets
@@ -1773,6 +1761,36 @@ Actors:
 	Actor522: ss
 		Location: 43,100
 		Owner: Soviets
+	Actor92: hosp
+		Location: 57,78
+		Owner: Neutral
+	Actor523: v02
+		Location: 56,87
+		Owner: Neutral
+	Actor524: v03
+		Location: 60,90
+		Owner: Neutral
+	Actor525: c1
+		Location: 55,90
+		Owner: Neutral
+	Actor526: c9
+		Location: 60,94
+		Owner: Neutral
+	Actor527: v11
+		Location: 59,94
+		Owner: Neutral
+	Actor528: brl3
+		Location: 60,95
+		Owner: Neutral
+	Actor529: barl
+		Location: 59,95
+		Owner: Neutral
+	Actor530: brl3
+		Location: 58,94
+		Owner: Neutral
+	Actor533: brl3
+		Location: 54,88
+		Owner: Neutral
 
 Smudges:
 

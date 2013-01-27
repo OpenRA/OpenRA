@@ -64,16 +64,12 @@ namespace OpenRA.Mods.RA.Missions
 		Player neutral;
 		World world;
 
-		Patrol[] patrols;
+		List<Patrol> patrols;
 		CPos[] patrolPoints1;
 		CPos[] patrolPoints2;
 		CPos[] patrolPoints3;
 		CPos[] patrolPoints4;
 		CPos[] patrolPoints5;
-
-		CPos hind1EntryPoint;
-		PPos[] hind1Points;
-		CPos hind1ExitPoint;
 
 		Actor reinforcementsEntryPoint;
 		Actor reinforcementsUnloadPoint;
@@ -145,7 +141,10 @@ namespace OpenRA.Mods.RA.Missions
 
 				if (world.FrameNumber == frameInfiltrated + 1500 * 6)
 					foreach (var attacker in townAttackers.Where(a => !a.IsDead() && a.IsInWorld))
+					{
+						attacker.CancelActivity();
 						attacker.QueueActivity(new AttackMove.AttackMoveActivity(attacker, new Move.Move(reinforcementsUnloadPoint.Location + new CVec(10, -15), 3)));
+					}
 			}
 
 			if (attackingTown)
@@ -406,24 +405,19 @@ namespace OpenRA.Mods.RA.Missions
 			};
 			lab = actors["Lab"];
 			lab.AddTrait(new Allies04InfiltrateAction(OnLabInfiltrated));
-			hind1EntryPoint = actors["Hind1EntryPoint"].Location;
-			hind1Points = new[]
-			{
-				actors["Hind1Point1"].CenterLocation,
-				actors["Hind1Point2"].CenterLocation
-			};
-			hind1ExitPoint = actors["Hind1ExitPoint"].Location;
+
 			reinforcementsEntryPoint = actors["ReinforcementsEntryPoint"];
 			reinforcementsUnloadPoint = actors["ReinforcementsUnloadPoint"];
 
-			patrols = new[]
+			patrols = new List<Patrol>
 			{
 				new Patrol(world, new[] { "e1", "e1", "e1", "e1", "e1" }, soviets, patrolPoints1, 0),
-				new Patrol(world, new[] { "e1", "dog.patrol", "dog.patrol" }, soviets, patrolPoints2, 3),
-				new Patrol(world, new[] { "e1", "dog.patrol", "dog.patrol" }, soviets, patrolPoints3, 0),
+				new Patrol(world, new[] { "e1", "dog.patrol", "dog.patrol" }, soviets, patrolPoints2, 4),
 				new Patrol(world, new[] { "e1", "dog.patrol", "dog.patrol" }, soviets, patrolPoints4, 0),
 				new Patrol(world, new[] { "e1", "dog.patrol", "dog.patrol" }, soviets, patrolPoints5, 0),
 			};
+			if (difficulty == "Hard")
+				patrols.Add(new Patrol(world, new[] { "e1", "e1", "dog.patrol" }, soviets, patrolPoints3, 0));
 
 			bridgeTank = actors["BridgeTank"];
 			bridgeAttackPoint = actors["BridgeAttackPoint"];
