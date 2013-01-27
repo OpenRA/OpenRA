@@ -30,7 +30,8 @@ Player:
 	PowerManager:
 	AllyRepair:
 	PlayerResources:
-		InitialCash: 10000
+		InitialCash: 5000
+		AdviceInterval: 500
 	ActorGroupProxy:
 	DeveloperMode:
 	HackyAI@Default:
@@ -198,7 +199,7 @@ CRATE:
 		Lifetime: 120
 		TerrainTypes: Clear, Rough, Road, Tiberium, BlueTiberium, Beach
 	GiveCashCrateAction:
-		Amount: 1000
+		Amount: 2000
 		SelectionShares: 20
 		UseCashTick: yes
 	RevealMapCrateAction:
