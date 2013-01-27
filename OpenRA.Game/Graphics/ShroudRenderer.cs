@@ -105,7 +105,7 @@ namespace OpenRA.Graphics
 			return shadowBits[SpecialShroudTiles[u ^ uSides][v]];
 		}
 
-		internal void Draw( WorldRenderer wr )
+		internal void Draw(WorldRenderer wr)
 		{
 			if (shroud != null && shroud.dirty)
 			{
@@ -120,11 +120,12 @@ namespace OpenRA.Graphics
 			}
 
 			var clipRect = Game.viewport.WorldBounds(wr.world);
-			DrawShroud( wr, clipRect, fogSprites, "fog" );
-			DrawShroud( wr, clipRect, sprites, "shroud" );
+			if (wr.world.WorldActor.HasTrait<Fog>())
+				DrawShroud(wr, clipRect, fogSprites, "fog");
+			DrawShroud(wr, clipRect, sprites, "shroud");
 		}
 
-		void DrawShroud( WorldRenderer wr, Rectangle clip, Sprite[,] s, string pal )
+		void DrawShroud(WorldRenderer wr, Rectangle clip, Sprite[,] s, string pal)
 		{
 			var shroudPalette = wr.GetPaletteIndex(pal);
 
