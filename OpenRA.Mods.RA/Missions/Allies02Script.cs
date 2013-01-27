@@ -459,7 +459,8 @@ namespace OpenRA.Mods.RA.Missions
 
 		void TransferTownUnitsToAllies()
 		{
-			foreach (var unit in world.FindAliveNonCombatantActorsInCircle(townPoint.CenterLocation, AlliedTownTransferRange).Where(a => a.HasTrait<IMove>()))
+			foreach (var unit in world.FindAliveNonCombatantActorsInCircle(townPoint.CenterLocation, AlliedTownTransferRange)
+				.Where(a => a.HasTrait<IMove>()))
 				unit.ChangeOwner(allies1);
 		}
 
@@ -480,8 +481,14 @@ namespace OpenRA.Mods.RA.Missions
 
 			allies1 = w.Players.Single(p => p.InternalName == "Allies1");
 			allies2 = w.Players.SingleOrDefault(p => p.InternalName == "Allies2");
+
+			var res = allies1.PlayerActor.Trait<PlayerResources>().Cash = 5000;
 			if (allies2 == null)
 				allies2 = allies1;
+			else
+			{
+				allies2.PlayerActor.Trait<PlayerResources>().Cash = 5000;
+			}
 
 			allies = w.Players.Single(p => p.InternalName == "Allies");
 			soviets = w.Players.Single(p => p.InternalName == "Soviets");

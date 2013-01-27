@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Activities;
-using OpenRA.Mods.RA.Air;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Mods.RA.Render;
@@ -360,8 +359,14 @@ namespace OpenRA.Mods.RA.Missions
 
 			allies1 = w.Players.Single(p => p.InternalName == "Allies1");
 			allies2 = w.Players.SingleOrDefault(p => p.InternalName == "Allies2");
+
+			allies1.PlayerActor.Trait<PlayerResources>().Cash = 0;
 			if (allies2 == null)
 				allies2 = allies1;
+			else
+			{
+				allies2.PlayerActor.Trait<PlayerResources>().Cash = 0;
+			}
 
 			soviets = w.Players.Single(p => p.InternalName == "Soviets");
 			neutral = w.Players.Single(p => p.InternalName == "Neutral");
@@ -446,16 +451,6 @@ namespace OpenRA.Mods.RA.Missions
 
 			OnObjectivesUpdated(false);
 			SetupSubStances();
-
-			var res = allies1.PlayerActor.Trait<PlayerResources>();
-			res.TakeOre(res.Ore);
-			res.TakeCash(res.Cash);
-			if (allies1 != allies2)
-			{
-				res = allies2.PlayerActor.Trait<PlayerResources>();
-				res.TakeOre(res.Ore);
-				res.TakeCash(res.Cash);
-			}
 
 			Game.MoveViewport(spyReinforcementsEntryPoint.Location.ToFloat2());
 			MissionUtils.PlayMissionMusic();

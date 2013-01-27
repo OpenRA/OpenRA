@@ -190,27 +190,15 @@ namespace OpenRA.Mods.RA.Missions
 
 		void ManageSovietUnits()
 		{
-			foreach (var unit in world.Actors.Where(a => a != world.WorldActor && a.IsInWorld && a.Owner == soviets && !a.IsDead() && a.IsIdle
+			foreach (var unit in world.Actors.Where(a => a.IsInWorld && a.Owner == soviets && !a.IsDead() && a.IsIdle
 				&& a.HasTrait<Mobile>() && a.HasTrait<AttackBase>()))
 			{
-				Activity innerActivity;
-				if (einstein != null)
-				{
-					if (einstein.IsInWorld)
-						innerActivity = new Attack(Target.FromActor(einstein), 3);
-
-					else
-					{
-						var container = world.UnitContaining(einstein);
-
-						if (container != null && !container.HasTrait<Aircraft>() && container.HasTrait<Mobile>())
-							innerActivity = new Attack(Target.FromActor(container), 3);
-
-						else
-							innerActivity = new Move.Move(extractionLZ.Location, 3);
-					}
-					unit.QueueActivity(new AttackMove.AttackMoveActivity(unit, innerActivity));
-				}
+				Activity inner;
+				if (einstein != null && einstein.IsInWorld)
+					inner = new Attack(Target.FromActor(einstein), 3);
+				else
+					inner = new Move.Move(extractionLZ.Location, 3);
+				unit.QueueActivity(new AttackMove.AttackMoveActivity(unit, inner));
 			}
 		}
 
@@ -290,6 +278,8 @@ namespace OpenRA.Mods.RA.Missions
 			allies = w.Players.Single(p => p.InternalName == "Allies");
 			soviets = w.Players.Single(p => p.InternalName == "Soviets");
 
+			allies.PlayerActor.Trait<PlayerResources>().Cash = 0;
+
 			var actors = w.WorldActor.Trait<SpawnMapActors>().Actors;
 			insertionLZ = actors["InsertionLZ"];
 			extractionLZ = actors["ExtractionLZ"];
@@ -302,10 +292,6 @@ namespace OpenRA.Mods.RA.Missions
 			attackEntryPoint1 = actors["SovietAttackEntryPoint1"];
 			attackEntryPoint2 = actors["SovietAttackEntryPoint2"];
 			SetAlliedUnitsToDefensiveStance();
-
-			var alliesRes = allies.PlayerActor.Trait<PlayerResources>();
-			alliesRes.TakeCash(alliesRes.Cash);
-			alliesRes.TakeOre(alliesRes.Ore);
 
 			Game.MoveViewport(insertionLZ.Location.ToFloat2());
 

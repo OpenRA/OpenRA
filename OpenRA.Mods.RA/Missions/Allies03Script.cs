@@ -298,10 +298,8 @@ namespace OpenRA.Mods.RA.Missions
 
 		void AttackNearestAlliedActor(Actor self)
 		{
-			var enemies = world.Actors
-				.Where(u => (u.Owner == allies1 || u.Owner == allies2)
-				&& ((u.HasTrait<Building>() && !u.HasTrait<Wall>()) || u.HasTrait<Mobile>()) && u.IsInWorld && !u.IsDead()
-				&& (!u.HasTrait<Spy>() || !u.Trait<Spy>().Disguised || (u.Trait<Spy>().Disguised && u.Trait<Spy>().disguisedAsPlayer != soviets)));
+			var enemies = world.Actors.Where(u => u.AppearsHostileTo(self) && (u.Owner == allies1 || u.Owner == allies2)
+					&& ((u.HasTrait<Building>() && !u.HasTrait<Wall>()) || u.HasTrait<Mobile>()) && u.IsInWorld && !u.IsDead());
 
 			var enemy = FirstUnshroudedOrDefault(enemies.OrderBy(u => (self.CenterLocation - u.CenterLocation).LengthSquared), world, 10);
 			if (enemy != null)
@@ -396,8 +394,19 @@ namespace OpenRA.Mods.RA.Missions
 
 			allies1 = w.Players.Single(p => p.InternalName == "Allies1");
 			allies2 = w.Players.SingleOrDefault(p => p.InternalName == "Allies2");
+
+			var res = allies1.PlayerActor.Trait<PlayerResources>();
 			if (allies2 == null)
+			{
+				res.Cash = 10000;
 				allies2 = allies1;
+			}
+			else
+			{
+				res.Cash = 5000;
+				res = allies2.PlayerActor.Trait<PlayerResources>();
+				res.Cash = 5000;
+			}
 
 			attackAtFrame = attackAtFrameIncrement = difficulty == "Hard" || difficulty == "Normal" ? 500 : 600;
 			minAttackAtFrame = difficulty == "Hard" || difficulty == "Normal" ? 100 : 150;
@@ -441,7 +450,7 @@ namespace OpenRA.Mods.RA.Missions
 			var topLeft = actors["ParadropBoxTopLeft"];
 			var bottomRight = actors["ParadropBoxBottomRight"];
 			paradropBox = new Rectangle(topLeft.Location.X, topLeft.Location.Y, bottomRight.Location.X - topLeft.Location.X, bottomRight.Location.Y - topLeft.Location.Y);
-			
+
 			if (w.LocalPlayer == null || w.LocalPlayer == allies1)
 				Game.MoveViewport(allies1EntryPoint.Location.ToFloat2());
 
