@@ -477,7 +477,7 @@ STNK:
 		InitialDelay: 125
 		CloakDelay: 125
 		CloakSound: trans1.aud
-		UncloakSound: trans1.aud
+		UncloakSound: appear1.aud
 	AttackFrontal:
 		PrimaryWeapon: 227mm.stnk
 		PrimaryOffset: 0,-5,0,-3
