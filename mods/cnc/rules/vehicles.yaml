@@ -1,3 +1,5 @@
+# Units are ordered from basic to advanced: Light Vehicles, Artillery, Artillery, Adv. Vehicles, Tanks
+
 MCV:
 	Inherits: ^Vehicle
 	Valued:
@@ -74,6 +76,38 @@ HARV:
 		HuskActor: HARV.Husk
 	-GainsExperience:
 
+JEEP:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 400
+	Tooltip:
+		Name: Hum-Vee
+		Icon: jeepicnh
+		Description: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
+	Buildable:
+		BuildPaletteOrder: 20
+		Prerequisites: weap
+		Owner: gdi
+	Mobile:
+		ROT: 10
+		Speed: 14
+	Health:
+		HP: 150
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 7
+	Turreted:
+		ROT: 10
+	AttackTurreted:
+		PrimaryWeapon: MachineGun
+		PrimaryOffset: 0,2,0,-4
+	WithMuzzleFlash:
+	RenderUnitTurreted:
+	AutoTarget:
+	LeavesHusk:
+		HuskActor: JEEP.Husk
+
 APC:
 	Inherits: ^Tank
 	Valued:
@@ -81,7 +115,7 @@ APC:
 	Tooltip:
 		Name: Armored Personnel Carrier
 		Icon: apcicnh
-		Description: Armored infantry transport and mobile AA\n  Strong vs Aircraft\n  Weak vs Tanks, Infantry
+		Description: Armored infantry transport and mobile AA\n  Strong vs Aircraft\n 
 	Buildable:
 		BuildPaletteOrder: 30
 		Prerequisites: pyle
@@ -111,70 +145,6 @@ APC:
 		UnloadFacing: 220
 	LeavesHusk:
 		HuskActor: APC.Husk
-
-ARTY:
-	Inherits: ^Tank
-	Valued:
-		Cost: 600
-	Tooltip:
-		Name: Artillery
-		Icon:artyicnh
-		Description: Long-range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
-	Buildable:
-		BuildPaletteOrder: 40
-		Prerequisites: hq
-		Owner: nod
-	Mobile:
-		ROT: 2
-		Speed: 6
-	Health:
-		HP: 75
-	Armor:
-		Type: Light
-	RevealsShroud:
-		Range: 6
-	AttackFrontal:
-		PrimaryWeapon: ArtilleryShell
-		PrimaryOffset: 0,-7,0,-3
-	RenderUnit:
-	Explodes:
-	AutoTarget:
-	LeavesHusk:
-		HuskActor: ARTY.Husk
-
-FTNK:
-	Inherits: ^Tank
-	Valued:
-		Cost: 800
-	Tooltip:
-		Name: Flame Tank
-		Icon: ftnkicnh
-		Description: Heavily armored flame-throwing vehicle.\n  Strong vs Infantry, Buildings\n  Weak vs Aircraft
-	Buildable:
-		BuildPaletteOrder: 50
-		Prerequisites: hq
-		Owner: nod
-	Mobile:
-		ROT: 5
-		Speed: 9
-	Health:
-		HP: 350
-	Armor:
-		Type: Light
-	RevealsShroud:
-		Range: 4
-	AttackFrontal:
-		PrimaryWeapon: BigFlamer
-		PrimaryOffset: 0,-5,3,2
-		PrimaryLocalOffset: 2,0,0,0,0, -2,0,0,0,0
-	RenderUnit:
-	AutoTarget:
-	WithMuzzleFlash:
-	Explodes:
-		Weapon: BigFlamer
-		EmptyWeapon: BigFlamer
-	LeavesHusk:
-		HuskActor: FTNK.Husk
 
 BGGY:
 	Inherits: ^Vehicle
@@ -245,37 +215,172 @@ BIKE:
 	LeavesHusk:
 		HuskActor: BIKE.Husk
 	
-JEEP:
-	Inherits: ^Vehicle
+ARTY:
+	Inherits: ^Tank
 	Valued:
-		Cost: 400
+		Cost: 600
 	Tooltip:
-		Name: Hum-Vee
-		Icon: jeepicnh
-		Description: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
+		Name: Artillery
+		Icon:artyicnh
+		Description: Long-range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
 	Buildable:
-		BuildPaletteOrder: 20
-		Prerequisites: weap
+		BuildPaletteOrder: 40
+		Prerequisites: hq
+		Owner: nod
+	Mobile:
+		ROT: 2
+		Speed: 6
+	Health:
+		HP: 75
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 6
+	AttackFrontal:
+		PrimaryWeapon: ArtilleryShell
+		PrimaryOffset: 0,-7,0,-3
+	RenderUnit:
+	Explodes:
+	AutoTarget:
+	LeavesHusk:
+		HuskActor: ARTY.Husk
+
+#	GDI MRLS (rocket launcher vehicle): don't be confused by the mis-naming. 
+MSAM:	
+	Inherits: ^Tank
+	Valued:
+		Cost: 1200
+	Tooltip:
+		Name: Rocket Launcher
+		Icon: msamicnh
+		Description: Long range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
+	Buildable:
+		BuildPaletteOrder: 50
+		Prerequisites: hq
 		Owner: gdi
 	Mobile:
-		ROT: 10
+		Speed: 6
+	Health:
+		HP: 120
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 10
+	Turreted:
+		ROT: 255
+	AttackFrontal:
+		PrimaryWeapon: 227mm
+		PrimaryOffset: 0,6,0,-3
+		PrimaryLocalOffset: 3,-5,0,0,0, -3,-5,0,0,0
+	RenderUnitTurretedAim:
+	AutoTarget:
+	LeavesHusk:
+		HuskActor: MSAM.Husk
+
+# Nod SSM (Scud launcher): Currently unused due to balance issues. 
+MLRS:	
+	Inherits: ^Tank
+	Valued:
+		Cost: 750
+	Tooltip:
+		Name: SSM Launcher
+		Icon: mlrsicnh
+		Description: Long range artillery.\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks, Aircraft
+#	Buildable:
+#		BuildPaletteOrder: 60
+#		Prerequisites: hq
+#		Owner: nod
+	Mobile:
+		Speed: 6
+	Health:
+		HP: 120
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 10
+	Turreted:
+		ROT: 5
+	AttackTurreted:
+		PrimaryWeapon: HonestJohn
+		SecondaryWeapon: HonestJohn
+		PrimaryOffset: 0,3,0,-3
+		PrimaryLocalOffset: -4,0,0,0,0
+		SecondaryLocalOffset: 4,0,0,0,0
+		AlignIdleTurrets: true
+	RenderUnitTurretedAim:
+	AutoTarget:
+	LeavesHusk:
+		HuskActor: MLRS.Husk
+
+FTNK:
+	Inherits: ^Tank
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Flame Tank
+		Icon: ftnkicnh
+		Description: Heavily armored flame-throwing vehicle.\n  Strong vs Infantry, Buildings\n  Weak vs Aircraft
+	Buildable:
+		BuildPaletteOrder: 60
+		Prerequisites: hq
+		Owner: nod
+	Mobile:
+		ROT: 5
+		Speed: 9
+	Health:
+		HP: 350
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 4
+	AttackFrontal:
+		PrimaryWeapon: BigFlamer
+		PrimaryOffset: 0,-5,3,2
+		PrimaryLocalOffset: 2,0,0,0,0, -2,0,0,0,0
+	RenderUnit:
+	AutoTarget:
+	WithMuzzleFlash:
+	Explodes:
+		Weapon: BigFlamer
+		EmptyWeapon: BigFlamer
+	LeavesHusk:
+		HuskActor: FTNK.Husk
+
+STNK:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 900
+	Tooltip:
+		Name: Stealth Tank
+		Icon: stnkicnh
+		Description: Missile tank that can bend light around \nitself to become invisible\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks
+	Buildable:
+		BuildPaletteOrder: 90
+		Prerequisites: tmpl,fix
+		Owner: nod
+	Mobile:
 		Speed: 14
 	Health:
 		HP: 150
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 7
-	Turreted:
-		ROT: 10
-	AttackTurreted:
-		PrimaryWeapon: MachineGun
-		PrimaryOffset: 0,2,0,-4
-	WithMuzzleFlash:
-	RenderUnitTurreted:
+		Range: 4
+	Cloak:
+		InitialDelay: 125
+		CloakDelay: 125
+		CloakSound: appear1.aud
+		UncloakSound: appear1.aud
+	AttackFrontal:
+		PrimaryWeapon: 227mm.stnk
+		PrimaryOffset: 0,-5,0,-3
+		PrimaryLocalOffset: 1,0,0,0,0, -1,0,0,0,0
+	RenderUnit:
 	AutoTarget:
+		InitialStance: HoldFire
+	TargetableUnit:
 	LeavesHusk:
-		HuskActor: JEEP.Husk
+		HuskActor: STNK.Husk
 
 LTNK:
 	Inherits: ^Tank
@@ -286,8 +391,8 @@ LTNK:
 		Icon: ltnkicnh
 		Description: Light Tank, good for scouting.\n  Strong vs Light Vehicles\n  Weak vs Tanks, Aircraft
 	Buildable:
-		BuildPaletteOrder: 30
-		Prerequisites: hq
+		BuildPaletteOrder: 40
+		Prerequisites: fix
 		Owner: nod
 	Mobile:
 		Speed: 9
@@ -321,8 +426,8 @@ MTNK:
 		Icon: mtnkicnh
 		Description: General-Purpose GDI Tank.\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
 	Buildable:
-		BuildPaletteOrder: 30
-		Prerequisites: hq
+		BuildPaletteOrder: 40
+		Prerequisites: fix
 		Owner: gdi
 	Mobile:
 		Speed: 7
@@ -359,7 +464,7 @@ HTNK:
 		Description: Heavily armored GDI Tank.\n  Strong vs Everything
 	Buildable:
 		BuildPaletteOrder: 60
-		Prerequisites: eye
+		Prerequisites: eye,fix
 		Owner: gdi
 	Mobile:
 		Crushes: wall, heavywall, crate, infantry
@@ -394,103 +499,4 @@ HTNK:
 	Selectable:
 		Bounds: 40,38,0,-3
 
-MSAM:
-	Inherits: ^Tank
-	Valued:
-		Cost: 1200
-	Tooltip:
-		Name: Rocket Launcher
-		Icon: msamicnh
-		Description: Long range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
-	Buildable:
-		BuildPaletteOrder: 50
-		Prerequisites: hq
-		Owner: gdi
-	Mobile:
-		Speed: 6
-	Health:
-		HP: 120
-	Armor:
-		Type: Light
-	RevealsShroud:
-		Range: 10
-	Turreted:
-		ROT: 255
-	AttackFrontal:
-		PrimaryWeapon: 227mm
-		PrimaryOffset: 0,6,0,-3
-		PrimaryLocalOffset: 3,-5,0,0,0, -3,-5,0,0,0
-	RenderUnitTurretedAim:
-	AutoTarget:
-	LeavesHusk:
-		HuskActor: MSAM.Husk
 
-MLRS:
-	Inherits: ^Tank
-	Valued:
-		Cost: 750
-	Tooltip:
-		Name: SSM Launcher
-		Icon: mlrsicnh
-		Description: Long range artillery.\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks, Aircraft
-#	Buildable:
-#		BuildPaletteOrder: 60
-#		Prerequisites: hq
-#		Owner: nod
-	Mobile:
-		Speed: 6
-	Health:
-		HP: 120
-	Armor:
-		Type: Light
-	RevealsShroud:
-		Range: 10
-	Turreted:
-		ROT: 5
-	AttackTurreted:
-		PrimaryWeapon: HonestJohn
-		SecondaryWeapon: HonestJohn
-		PrimaryOffset: 0,3,0,-3
-		PrimaryLocalOffset: -4,0,0,0,0
-		SecondaryLocalOffset: 4,0,0,0,0
-		AlignIdleTurrets: true
-	RenderUnitTurretedAim:
-	AutoTarget:
-	LeavesHusk:
-		HuskActor: MLRS.Husk
-
-STNK:
-	Inherits: ^Vehicle
-	Valued:
-		Cost: 900
-	Tooltip:
-		Name: Stealth Tank
-		Icon: stnkicnh
-		Description: Missile tank that can bend light around \nitself to become invisible\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks
-	Buildable:
-		BuildPaletteOrder: 90
-		Prerequisites: tmpl
-		Owner: nod
-	Mobile:
-		Speed: 14
-	Health:
-		HP: 150
-	Armor:
-		Type: Light
-	RevealsShroud:
-		Range: 4
-	Cloak:
-		InitialDelay: 125
-		CloakDelay: 125
-		CloakSound: appear1.aud
-		UncloakSound: appear1.aud
-	AttackFrontal:
-		PrimaryWeapon: 227mm.stnk
-		PrimaryOffset: 0,-5,0,-3
-		PrimaryLocalOffset: 1,0,0,0,0, -1,0,0,0,0
-	RenderUnit:
-	AutoTarget:
-		InitialStance: HoldFire
-	TargetableUnit:
-	LeavesHusk:
-		HuskActor: STNK.Husk
