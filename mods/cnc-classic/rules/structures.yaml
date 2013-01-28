@@ -641,7 +641,7 @@ GUN:
 		Queue: Defense
 		BuildPaletteOrder: 40
 		Prerequisites: barracks
-		Owner: gdi,nod
+		Owner: nod
 	Building:
 		Power: -20
 	-GivesBuildableArea:
@@ -720,7 +720,7 @@ GTWR:
 		Queue: Defense
 		BuildPaletteOrder: 50
 		Prerequisites: barracks
-		Owner: gdi,nod
+		Owner: gdi
 	Building:
 		Power: -10
 	-GivesBuildableArea:
