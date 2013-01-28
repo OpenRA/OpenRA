@@ -1,3 +1,5 @@
+# Arranged structures in order, from basic to advanced: Buildings, Defenses, Walls, Misc.
+
 FACT:
 	Inherits: ^Building
 	-Buildable:
@@ -65,6 +67,30 @@ NUKE:
 		Range: 4
 	Bib:
 
+NUK2:
+	Inherits: ^Building
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Advanced Power Plant
+		Icon:nuk2icnh
+		Description: Provides more power, cheaper than the \nstandard Power Plant
+	ProvidesCustomPrerequisite:
+		Prerequisite: anypower
+	Buildable:
+		BuildPaletteOrder: 30
+		Prerequisites: hq
+		Owner: gdi,nod
+	Building:
+		Power: 200
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 650
+	RevealsShroud:
+		Range: 4
+	Bib:
+
 PROC:
 	Inherits: ^Building
 	Valued:
@@ -74,7 +100,7 @@ PROC:
 		Icon: procicnh
 		Description: Processes raw Tiberium\ninto useable resources
 	Buildable:
-		BuildPaletteOrder: 30
+		BuildPaletteOrder: 20
 		Prerequisites: anypower
 		Owner: gdi,nod
 	Building:
@@ -225,7 +251,7 @@ AFLD:
 	ProvidesCustomPrerequisite:
 		Prerequisite: vehicleproduction
 	Buildable:
-		BuildPaletteOrder: 60
+		BuildPaletteOrder: 50
 		Prerequisites: proc
 		Owner: nod
 	Building:
@@ -264,7 +290,7 @@ WEAP:
 	ProvidesCustomPrerequisite:
 		Prerequisite: vehicleproduction
 	Buildable:
-		BuildPaletteOrder: 60
+		BuildPaletteOrder: 50
 		Prerequisites: proc
 		Owner: gdi
 	Building:
@@ -292,102 +318,16 @@ WEAP:
 		LowPowerSlowdown: 3
 	ProductionBar:
 
-HQ:
-	RequiresPower:
-	CanPowerDown:
-	Inherits: ^Building
-	Valued:
-		Cost: 1000
-	Tooltip:
-		Name: Communications Center
-		Icon: hqicnh
-		Description: Provides an overview of the battlefield.\n  Requires power to operate.
-	Buildable:
-		BuildPaletteOrder: 80
-		Prerequisites: proc
-		Owner: gdi,nod
-	Building:
-		Power: -40
-		Footprint: x_ xx
-		Dimensions: 2,2
-	Health:
-		HP: 1000
-	RevealsShroud:
-		Range: 10
-	Bib:
-	ProvidesRadar:
-	RenderDetectionCircle:
-	DetectCloaked:
-		Range: 8
-	AirstrikePower:
-		Image: bombicnh
-		ChargeTime: 240
-		Description: Air Strike
-		LongDesc: Deploy an aerial napalm strike.\nBurns buildings and infantry along a line.
-		EndChargeSound: airredy1.aud
-		SelectTargetSound: select1.aud
-		UnitType: a10
-	SupportPowerChargeBar:
-
-NUK2:
-	Inherits: ^Building
-	Valued:
-		Cost: 500
-	Tooltip:
-		Name: Advanced Power Plant
-		Icon:nuk2icnh
-		Description: Provides more power, cheaper than the \nstandard Power Plant
-	ProvidesCustomPrerequisite:
-		Prerequisite: anypower
-	Buildable:
-		BuildPaletteOrder: 90
-		Prerequisites: hq
-		Owner: gdi,nod
-	Building:
-		Power: 200
-		Footprint: xx xx
-		Dimensions: 2,2
-	Health:
-		HP: 650
-	RevealsShroud:
-		Range: 4
-	Bib:
-		
-FIX:
-	Inherits: ^Building
-	Valued:
-		Cost: 1200
-	Tooltip:
-		Name: Repair Facility
-		Icon: fixicnh
-		Description: Repairs vehicles and allows the\nconstruction of additional bases.
-	Buildable:
-		BuildPaletteOrder: 70
-		Prerequisites: vehicleproduction
-		Owner: gdi,nod
-	Building:
-		Power: -30
-		Footprint: _x_ xxx _x_
-		Dimensions: 3,3
-	Health:
-		HP: 800
-	RevealsShroud:
-		Range: 5
-	BelowUnits:
-	Reservable:
-	RepairsUnits:
-	RallyPoint:
-	
 HPAD:
 	Inherits: ^Building
 	Valued:
-		Cost: 1500
+		Cost: 1000
 	Tooltip:
 		Name: Helipad
 		Icon:hpadicnh
 		Description: Produces, rearms and\nrepairs helicopters
 	Buildable:
-		BuildPaletteOrder: 50
+		BuildPaletteOrder: 60
 		Prerequisites: barracks
 		Owner: gdi,nod
 	Building:
@@ -413,6 +353,68 @@ HPAD:
 		LowPowerSlowdown: 3
 	ProductionBar:
 
+HQ:
+	RequiresPower:
+	CanPowerDown:
+	Inherits: ^Building
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Communications Center
+		Icon: hqicnh
+		Description: Provides an overview of the battlefield.\n  Requires power to operate.
+	Buildable:
+		BuildPaletteOrder: 70
+		Prerequisites: proc
+		Owner: gdi,nod
+	Building:
+		Power: -40
+		Footprint: x_ xx
+		Dimensions: 2,2
+	Health:
+		HP: 1000
+	RevealsShroud:
+		Range: 10
+	Bib:
+	ProvidesRadar:
+	RenderDetectionCircle:
+	DetectCloaked:
+		Range: 8
+	AirstrikePower:
+		Image: bombicnh
+		ChargeTime: 240
+		Description: Air Strike
+		LongDesc: Deploy an aerial napalm strike.\nBurns buildings and infantry along a line.
+		EndChargeSound: airredy1.aud
+		SelectTargetSound: select1.aud
+		UnitType: a10
+	SupportPowerChargeBar:
+
+FIX:
+	Inherits: ^Building
+	Valued:
+		Cost: 1200
+	Tooltip:
+		Name: Repair Facility
+		Icon: fixicnh
+		Description: Repairs vehicles and allows the\nconstruction of additional bases.
+	Buildable:
+		BuildPaletteOrder: 80
+		Prerequisites: vehicleproduction
+		Owner: gdi,nod
+	Building:
+		Power: -30
+		Footprint: _x_ xxx _x_
+		Dimensions: 3,3
+	Health:
+		HP: 800
+	RevealsShroud:
+		Range: 5
+	BelowUnits:
+	Reservable:
+	RepairsUnits:
+	RallyPoint:
+	
 EYE:
 	RequiresPower:
 	CanPowerDown:
@@ -486,6 +488,78 @@ TMPL:
 		MissileWeapon: atomic
 	SupportPowerChargeBar:
 
+GUN:
+	Inherits: ^Building
+	Valued:
+		Cost: 600
+	Tooltip:
+		Name: Turret
+		Icon: gunicnh
+		Description: Anti-Armor base defense.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 45
+		Prerequisites: barracks
+		Owner: gdi,nod
+	Building:
+		Power: -20
+	-GivesBuildableArea:
+	Health:
+		HP: 400
+	RevealsShroud:
+		Range: 7
+	Turreted:
+		ROT: 12
+		InitialFacing: 50
+	RenderBuildingTurreted:
+	AttackTurreted:
+		PrimaryWeapon: TurretGun
+		PrimaryLocalOffset: 0,4,0,-2,0
+	AutoTarget:
+	-AutoTargetIgnore:
+	-RenderBuilding:
+	-DeadBuildingState:
+	RenderRangeCircle:
+	RenderDetectionCircle:
+	DetectCloaked:
+		Range: 3
+
+SAM:
+	Inherits: ^Building
+	RequiresPower:
+	Valued:
+		Cost: 750
+	Tooltip:
+		Name: SAM Site
+		Icon: samicnh
+		Description: Anti-Air base defense.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 50
+		Prerequisites: hand
+		Owner: nod
+	Building:
+		Power: -20
+		Footprint: xx
+		Dimensions: 2,1
+	-GivesBuildableArea:
+	Health:
+		HP: 400
+	Armor: 
+		Type: Heavy
+	RevealsShroud:
+		Range: 5
+	Turreted:
+		ROT: 7
+		InitialFacing: 0
+	RenderBuildingTurreted:
+	AttackPopupTurreted:
+		PrimaryWeapon: SAMMissile
+	WithMuzzleFlash:
+	AutoTarget:
+	-RenderBuilding:
+	RenderRangeCircle:
+
 OBLI:
 	RequiresPower:
 	Inherits: ^Building
@@ -527,142 +601,6 @@ OBLI:
 	DetectCloaked:
 		Range: 6
 
-CYCL:
-	Inherits: ^Wall
-	Valued:
-		Cost: 25
-	CustomSellValue:
-		Value: 0
-	Tooltip:
-		Name: Chain Link Barrier
-		Icon:cyclicnh
-		Description: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
-	Buildable:
-		Queue: Defense
-		BuildPaletteOrder: 20
-		Prerequisites: fact
-		Owner: nod
-	Health:
-		HP: 100
-	Armor: 
-		Type: Light
-
-SBAG:
-	Inherits: ^Wall
-	Valued:
-		Cost: 25
-	CustomSellValue:
-		Value: 0
-	Tooltip:
-		Name: Sandbag Barrier
-		Icon:sbagicnh
-		Description: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
-	Buildable:
-		Queue: Defense
-		BuildPaletteOrder: 20
-		Prerequisites: fact
-		Owner: gdi
-	Health:
-		HP: 100
-	Armor: 
-		Type: Light
-
-BRIK:
-	Inherits: ^Wall
-	Valued:
-		Cost: 100
-	CustomSellValue:
-		Value: 0
-	Tooltip:
-		Name: Concrete Barrier
-		Icon:brikicnh
-		Description: Stop units and blocks enemy fire.
-	Buildable:
-		Queue: Defense
-		BuildPaletteOrder: 30
-		Prerequisites: vehicleproduction
-		Owner: gdi,nod
-	Health:
-		HP: 250
-	Armor: 
-		Type: Heavy
-	Wall:
-		CrushClasses: heavywall
-		-CrushSound:
-	SoundOnDamageTransition:
-		DestroyedSound: crumble.aud
-
-GUN:
-	Inherits: ^Building
-	Valued:
-		Cost: 600
-	Tooltip:
-		Name: Turret
-		Icon: gunicnh
-		Description: Anti-Armor base defense.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
-	Buildable:
-		Queue: Defense
-		BuildPaletteOrder: 45
-		Prerequisites: barracks
-		Owner: gdi,nod
-	Building:
-		Power: -20
-	-GivesBuildableArea:
-	Health:
-		HP: 400
-	RevealsShroud:
-		Range: 7
-	Turreted:
-		ROT: 12
-		InitialFacing: 50
-	RenderBuildingTurreted:
-	AttackTurreted:
-		PrimaryWeapon: TurretGun
-		PrimaryLocalOffset: 0,4,0,-2,0
-	AutoTarget:
-	-AutoTargetIgnore:
-	-RenderBuilding:
-	-DeadBuildingState:
-	RenderRangeCircle:
-	RenderDetectionCircle:
-	DetectCloaked:
-		Range: 3
-SAM:
-	Inherits: ^Building
-	RequiresPower:
-	Valued:
-		Cost: 750
-	Tooltip:
-		Name: SAM Site
-		Icon: samicnh
-		Description: Anti-Air base defense.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
-	Buildable:
-		Queue: Defense
-		BuildPaletteOrder: 50
-		Prerequisites: hand
-		Owner: nod
-	Building:
-		Power: -20
-		Footprint: xx
-		Dimensions: 2,1
-	-GivesBuildableArea:
-	Health:
-		HP: 400
-	Armor: 
-		Type: Heavy
-	RevealsShroud:
-		Range: 5
-	Turreted:
-		ROT: 7
-		InitialFacing: 0
-	RenderBuildingTurreted:
-	AttackPopupTurreted:
-		PrimaryWeapon: SAMMissile
-	WithMuzzleFlash:
-	AutoTarget:
-	-RenderBuilding:
-	RenderRangeCircle:
-	
 GTWR:
 	Inherits: ^Building
 	Valued:
@@ -734,6 +672,71 @@ ATWR:
 	DetectCloaked:
 		Range: 6
 	RenderRangeCircle:
+
+SBAG:
+	Inherits: ^Wall
+	Valued:
+		Cost: 25
+	CustomSellValue:
+		Value: 0
+	Tooltip:
+		Name: Sandbag Barrier
+		Icon:sbagicnh
+		Description: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 20
+		Prerequisites: fact
+		Owner: gdi
+	Health:
+		HP: 100
+	Armor: 
+		Type: Light
+
+CYCL:
+	Inherits: ^Wall
+	Valued:
+		Cost: 25
+	CustomSellValue:
+		Value: 0
+	Tooltip:
+		Name: Chain Link Barrier
+		Icon:cyclicnh
+		Description: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 20
+		Prerequisites: fact
+		Owner: nod
+	Health:
+		HP: 100
+	Armor: 
+		Type: Light
+
+BRIK:
+	Inherits: ^Wall
+	Valued:
+		Cost: 100
+	CustomSellValue:
+		Value: 0
+	Tooltip:
+		Name: Concrete Barrier
+		Icon:brikicnh
+		Description: Stop units and blocks enemy fire.
+	Buildable:
+		Queue: Defense
+		BuildPaletteOrder: 30
+		Prerequisites: vehicleproduction
+		Owner: gdi,nod
+	Health:
+		HP: 250
+	Armor: 
+		Type: Heavy
+	Wall:
+		CrushClasses: heavywall
+		-CrushSound:
+	SoundOnDamageTransition:
+		DestroyedSound: crumble.aud
 
 # custom prerequisites:
 BARRACKS:
