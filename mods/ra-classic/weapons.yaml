@@ -588,7 +588,7 @@ RedEye:
 	ROF: 160
 	Range: 22
 	Burst: 2
-	Report: TURRET1
+	Report: TANK6
 	Projectile: Bullet
 		Speed: 6
 		High: true
