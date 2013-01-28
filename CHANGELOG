@@ -43,7 +43,7 @@ NEW:
 			More health points for Volkov to make him the 4tnk equivalent of infantry
 			Medics can't heal Volkov, send him to repair pad or mechanic instead
 			Dogs can't eat Volkov and tanks need two attempts to crush him
-		Reworked Volkov death sounds/dieing animations (Cyborg version from German RA)
+		Reworked Volkov death sounds/animations (Cyborg version from German RA)
 		Replaced supply truck graphics with aftermath SHP which has a shadow (via Arda)
 		Added hotkeys for aircraft, vehicles, ships, infantry
 		Fixed broken shadows on GPS dot
@@ -78,7 +78,7 @@ NEW:
     			No more obsessive "silos needed"
     			Defense building queue → heavy armor queue
     			Medics (using thumper graphics)
-    			No buildable aircrafts anymore
+    			Aircraft are no longer buildable
     			Harvesting has been slowed down
 			Replace blank shellmap with random multiplayer stills
 			Starport requires energy to operate
