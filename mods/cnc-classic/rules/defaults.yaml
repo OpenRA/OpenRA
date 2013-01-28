@@ -208,7 +208,7 @@
 		TerrainTypes: Clear,Road
 	SoundOnDamageTransition:
 		DamagedSound: xplos.aud
-		DestroyedSound: xplobig4.aud
+		DestroyedSound: crumble.aud
 	Buildable:
 		Queue: Building
 	GivesBuildableArea:
