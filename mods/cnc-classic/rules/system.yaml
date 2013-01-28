@@ -1,12 +1,37 @@
 Player:
-	PlaceBuilding:
 	TechTree:
+	ClassicProductionQueue@Building:
+		Type: Building
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+		QueuedAudio: Building
+		ReadyAudio: ConstructionComplete
+	ClassicProductionQueue@Defense:
+		Type: Defense
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+		QueuedAudio: Building
+		ReadyAudio: ConstructionComplete
+	ClassicProductionQueue@Vehicle:
+		Type: Vehicle
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+	ClassicProductionQueue@Infantry:
+		Type: Infantry
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+	ClassicProductionQueue@Aircraft:
+		Type: Aircraft
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+	PlaceBuilding:
 	SupportPowerManager:
 	ConquestVictoryConditions:
 	PowerManager:
 	AllyRepair:
 	PlayerResources:
 		InitialCash: 5000
+		AdviceInterval: 500
 	ActorGroupProxy:
 	DeveloperMode:
 	HackyAI@Default:
@@ -52,20 +77,30 @@ Player:
 	PlayerColorPalette:
 		BasePalette: terrain
 		RemapIndex: 176, 178, 180, 182, 184, 186, 189, 191, 177, 179, 181, 183, 185, 187, 188, 190
-	BaseAttackNotifier:
+	DebugResourceCash:
+	DebugResourceOre:
+	DebugResourceOreCapacity:
 	Shroud:
+	BaseAttackNotifier:
+	PlayerStatistics:
 
 World:
-	LoadWidgetAtGameStart:
+	OpenWidgetAtGameStart:
 		Widget: INGAME_ROOT
-	CncMenuPaletteEffect:
+		ObserverWidget: OBSERVER_ROOT
 	CloakPaletteEffect:
 	ScreenShaker:
-	NukePaletteEffect:
 	WaterPaletteRotation:
+	NukePaletteEffect:
 	BuildingInfluence:
+	ChooseBuildTabOnSelect:
 	BridgeLayer:
 		Bridges: bridge1, bridge2, bridge3, bridge4
+	CrateSpawner:
+		Minimum: 1
+		Maximum: 3
+		SpawnInterval: 120
+		WaterChance: 0
 	PaletteFromCurrentTileset@terrain:
 		Name: terrain
 		ShadowIndex: 4
@@ -115,8 +150,6 @@ World:
 	Country@nod:
 		Name: Nod
 		Race: nod
-	ProductionQueueFromSelection:
-		ProductionTabsWidget: PRODUCTION_TABS
 	BibLayer:
 	ResourceLayer:
 	ResourceClaimLayer:
@@ -151,21 +184,13 @@ World:
 		Depths:5,5,5,5,5,5
 	SpawnMapActors:
 	CreateMPPlayers:
-	SpawnMPUnits:
 	MPStartLocations:
+	SpawnMPUnits:
 	SpatialBins:
 		BinSize: 4
 	Shroud:
-	Fog:
-	CrateSpawner:
-		Minimum: 1
-		Maximum: 3
-		SpawnInterval: 120
-		WaterChance: 0
 	PathFinder:
 	ValidateOrder:
-	ConquestObjectivesPanel:
-		ObjectivesPanel: CONQUEST_OBJECTIVES
 
 CRATE:
 	Tooltip:
@@ -174,7 +199,7 @@ CRATE:
 		Lifetime: 120
 		TerrainTypes: Clear, Rough, Road, Tiberium, BlueTiberium, Beach
 	GiveCashCrateAction:
-		Amount: 1000
+		Amount: 2000
 		SelectionShares: 20
 		UseCashTick: yes
 	RevealMapCrateAction:
@@ -182,14 +207,11 @@ CRATE:
 		Effect: reveal-map
 	LevelUpCrateAction:
 		SelectionShares: 20
-	ExplodeCrateAction@fire:
-		Weapon: Napalm.Crate
-		SelectionShares: 5
 	CloakCrateAction:
 		SelectionShares: 5
 		InitialDelay: 15
 		CloakDelay: 125
-		CloakSound: appear1.aud
+		CloakSound: trans1.aud
 		UncloakSound: appear1.aud
 		Effect: cloak
 	GiveMcvCrateAction:
@@ -198,6 +220,9 @@ CRATE:
 		Unit: mcv
 	RenderSimple:
 	BelowUnits:
+	ProximityCaptor:
+		Types:Crate
+	Passenger:
 
 mpspawn:
 	Waypoint:

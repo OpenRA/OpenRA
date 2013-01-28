@@ -2,7 +2,7 @@ FACT:
 	Inherits: ^Building
 	-Buildable:
 	Valued:
-		Cost: 2000
+		Cost: 5000
 	Tooltip:
 		Name: Construction Yard
 		Icon: mcvicnh
@@ -12,34 +12,20 @@ FACT:
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Health:
-		HP: 2000
-	Armor: 
-		Type: Heavy
+		HP: 800
 	RevealsShroud:
-		Range: 10
-	Bib:
+		Range: 5
+	#	Range: 3
+	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from what we want for now, to properly emulate
 	Production:
 		Produces: Building,Defense
 	Transforms:
 		IntoActor: mcv
 		Offset:1,1
 		Facing: 108
-	ProductionQueue@Building:
-		Type: Building
-		Group: Building
-		BuildSpeed: .4
-		LowPowerSlowdown: 3
-		QueuedAudio: Building
-		ReadyAudio: ConstructionComplete
-	ProductionQueue@Defense:
-		Type: Defense
-		Group: Defense
-		BuildSpeed: .4
-		LowPowerSlowdown: 3
-		QueuedAudio: Building
-		ReadyAudio: ConstructionComplete
 	BaseBuilding:
 	ProductionBar:
+	Bib:
 
 NUKE:
 	Inherits: ^Building
@@ -48,13 +34,12 @@ NUKE:
 	Tooltip:
 		Name: Power Plant
 		Icon: nukeicnh
-		Description: Generates power
+		Description: Provides power for other structures
 	ProvidesCustomPrerequisite:
 		Prerequisite: anypower
 	Buildable:
 		BuildPaletteOrder: 10
 		Owner: gdi,nod
-		Prerequisites: fact
 	Building:
 		Power: 100
 		Footprint: x_ xx
@@ -63,18 +48,20 @@ NUKE:
 		HP: 400
 	RevealsShroud:
 		Range: 4
+	#	Range: 2
+	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from what we want for now, to properly emulate
 	Bib:
 
 PROC:
 	Inherits: ^Building
 	Valued:
-		Cost: 1500
+		Cost: 2000
 	Tooltip:
 		Name: Tiberium Refinery
 		Icon: procicnh
-		Description: Processes raw Tiberium\ninto useable resources
+		Description: Processes raw Tiberium into useable resources
 	Buildable:
-		BuildPaletteOrder: 30
+		BuildPaletteOrder: 20
 		Prerequisites: anypower
 		Owner: gdi,nod
 	Building:
@@ -85,18 +72,24 @@ PROC:
 		HP: 900
 	RevealsShroud:
 		Range: 6
+	#	Range: 4
+	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from what we want for now, to properly emulate
 	Bib:
 	TiberiumRefinery:
 		DockOffset: 0,2
-		TickRate: 15
+		TickLifetime: 30
+		TickVelocity: 1
+		TickRate: 125
 	StoresOre:
 		PipColor: Green
-		PipCount: 18
-		Capacity: 1800
+		PipCount: 10
+		Capacity: 1000
 	Selectable:
 		Bounds: 73,72
 	CustomSellValue:
-		Value: 300
+		Value: 600
+	CustomBuildTimeValue:
+		Value: 80
 	FreeActor:
 		Actor: HARV
 		InitialActivity: FindResources
@@ -104,6 +97,32 @@ PROC:
 		Facing: 64
 	-RenderBuilding:
 	RenderBuildingRefinery:
+
+NUK2:
+	Inherits: ^Building
+	Valued:
+		Cost: 700
+	Tooltip:
+		Name: Advanced Power Plant
+		Icon:nuk2icnh
+		Description: Provides more power, cheaper than the \nstandard Power Plant
+	ProvidesCustomPrerequisite:
+		Prerequisite: anypower
+	Buildable:
+		BuildPaletteOrder: 30
+		Prerequisites: nuke
+		Owner: gdi,nod
+	Building:
+		Power: 200
+		Footprint: x_ xx
+		Dimensions: 2,2
+	Health:
+		HP: 600
+	RevealsShroud:
+		Range: 4
+	#	Range: 2
+	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from what we want for now, to properly emulate
+	Bib:
 
 SILO:
 	Inherits: ^Building
@@ -122,20 +141,23 @@ SILO:
 		Power: -10
 		Footprint: xx
 		Dimensions: 2,1
-	-GivesBuildableArea:
+	GivesBuildableArea:
 	Health:
 		HP: 300
 	RevealsShroud:
 		Range: 4
+	#	Range: 2
+	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from what we want for now, to properly emulate
 	RenderBuildingSilo:
 	StoresOre:
-		PipCount: 12
+		PipCount: 15
 		PipColor: Green
-		Capacity: 1200
+		Capacity: 1500
 	Selectable:
 		Bounds: 49,24
 	-RenderBuilding:
 	-EmitInfantryOnSell:
+	Bib:
 
 PYLE:
 	Inherits: ^Building
@@ -156,9 +178,11 @@ PYLE:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 500
+		HP: 800
 	RevealsShroud:
 		Range: 5
+	#	Range: 3
+	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from what we want for now, to properly emulate
 	Bib:
 	RallyPoint:
 	Exit@1:
@@ -166,16 +190,11 @@ PYLE:
 		ExitCell: 0,1
 	Exit@2:
 		SpawnOffset: 7,7
-		ExitCell: 1,1	
-	Production:		
+		ExitCell: 1,1
+	Production:
 		Produces: Infantry
-	ProductionQueue:
-		Type: Infantry
-		Group: Infantry
-		BuildSpeed: .4
-		LowPowerSlowdown: 3
 	ProductionBar:
-	
+
 HAND:
 	Inherits: ^Building
 	Valued:
@@ -195,9 +214,11 @@ HAND:
 		Footprint: __ xx xx
 		Dimensions: 2,3
 	Health:
-		HP: 500
+		HP: 800
 	RevealsShroud:
 		Range: 5
+	#	Range: 3
+	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from what we want for now, to properly emulate
 	Bib:
 	RallyPoint:
 	Exit@1:
@@ -205,11 +226,6 @@ HAND:
 		ExitCell: 1,2
 	Production:
 		Produces: Infantry
-	ProductionQueue:
-		Type: Infantry
-		Group: Infantry
-		BuildSpeed: .4
-		LowPowerSlowdown: 3
 	ProductionBar:
 
 AFLD:
@@ -219,11 +235,11 @@ AFLD:
 	Tooltip:
 		Name: Airstrip
 		Icon: afldicnh
-		Description: Provides a dropzone\nfor vehicle reinforcements
+		Description: Provides a dropzone for vehicle reinforcements
 	ProvidesCustomPrerequisite:
 		Prerequisite: vehicleproduction
 	Buildable:
-		BuildPaletteOrder: 60
+		BuildPaletteOrder: 50
 		Prerequisites: proc
 		Owner: nod
 	Building:
@@ -231,9 +247,13 @@ AFLD:
 		Footprint: xxxx xxxx
 		Dimensions: 4,2
 	Health:
-		HP: 1750
+		HP: 1000
+	Armor: 
+		Type: Heavy
 	RevealsShroud:
 		Range: 7
+	#	Range: 5
+	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from what we want for now, to properly emulate
 	Bib:
 	RallyPoint:
 		RallyPoint: 4,2
@@ -243,26 +263,21 @@ AFLD:
 		ExitCell: 3,1
 	ProductionAirdrop:
 		Produces: Vehicle
-	ProductionQueue:
-		Type: Vehicle
-		Group: Vehicle
-		BuildSpeed: .4
-		LowPowerSlowdown: 3
-		ReadyAudio:
 	ProductionBar:
 
 WEAP:
+#light
 	Inherits: ^Building
 	Valued:
 		Cost: 2000
 	Tooltip:
 		Name: Weapons Factory
 		Icon: weapicnh
-		Description: Assembly point for\nvehicle reinforcements
+		Description: Assembly point for vehicle reinforcements
 	ProvidesCustomPrerequisite:
 		Prerequisite: vehicleproduction
 	Buildable:
-		BuildPaletteOrder: 60
+		BuildPaletteOrder: 50
 		Prerequisites: proc
 		Owner: gdi
 	Building:
@@ -270,9 +285,13 @@ WEAP:
 		Footprint: ___ xxx ===
 		Dimensions: 3,3
 	Health:
-		HP: 1750
+		HP: 400
+	Armor: 
+		Type: Light
 	RevealsShroud:
-		Range: 4
+		Range: 5
+	#	Range: 3
+	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from what we want for now, to properly emulate
 	Bib:
 	-RenderBuilding:
 	RenderBuildingWarFactory:
@@ -283,12 +302,88 @@ WEAP:
 		ExitCell: 0,2
 	Production:
 		Produces: Vehicle
-	ProductionQueue:
-		Type: Vehicle
-		Group: Vehicle
-		BuildSpeed: .4
-		LowPowerSlowdown: 3
 	ProductionBar:
+
+HPADGDI:
+	Inherits: ^Building
+	Valued:
+		Cost: 1500
+	CustomSellValue:
+		Value: 300
+	Tooltip:
+		Name: Helipad (GDI)
+		Icon:hpadicnh
+		Description: Produces and reloads helicopters
+	ProvidesCustomPrerequisite:
+		Prerequisite: hpad
+	Buildable:
+		BuildPaletteOrder: 60
+		Prerequisites: barracks
+		Owner: gdi
+	Building:
+		Power: -10
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 800
+	RevealsShroud:
+		Range: 5
+	#	Range: 3
+	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from what we want for now, to properly emulate
+	FreeActor:
+		Actor: ORCA
+		Facing: 3
+	Exit@1:
+#		SpawnOffset: 0,0
+		SpawnOffset: 0,-6
+	Production:
+		Produces: Aircraft
+	BelowUnits:
+	Reservable:
+	RepairsUnits:
+	RallyPoint:
+	ProductionBar:
+	Bib:
+
+HPADNOD:
+	Inherits: ^Building
+	Valued:
+		Cost: 1500
+	CustomSellValue:
+		Value: 300
+	Tooltip:
+		Name: Helipad (Nod)
+		Icon:hpadicnh
+		Description: Produces and reloads helicopters
+	ProvidesCustomPrerequisite:
+		Prerequisite: hpad
+	Buildable:
+		BuildPaletteOrder: 60
+		Prerequisites: barracks
+		Owner: nod
+	Building:
+		Power: -10
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 800
+	RevealsShroud:
+		Range: 5
+	#	Range: 3
+	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from what we want for now, to properly emulate
+	FreeActor:
+		Actor: HELI
+	Exit@1:
+		SpawnOffset: 0,0
+#		SpawnOffset: 0,-6
+	Production:
+		Produces: Aircraft
+	BelowUnits:
+	Reservable:
+	RepairsUnits:
+	RallyPoint:
+	ProductionBar:
+	Bib:
 
 HQ:
 	RequiresPower:
@@ -301,7 +396,7 @@ HQ:
 		Icon: hqicnh
 		Description: Provides an overview of the battlefield.\n  Requires power to operate.
 	Buildable:
-		BuildPaletteOrder: 80
+		BuildPaletteOrder: 70
 		Prerequisites: proc
 		Owner: gdi,nod
 	Building:
@@ -311,46 +406,21 @@ HQ:
 	Health:
 		HP: 1000
 	RevealsShroud:
-		Range: 10
+		Range: 12
+	#	Range: 10
+	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from what we want for now, to properly emulate
 	Bib:
 	ProvidesRadar:
-	RenderDetectionCircle:
-	DetectCloaked:
-		Range: 8
-	AirstrikePower:
-		Image: bombicnh
-		ChargeTime: 240
-		Description: Air Strike
-		LongDesc: Deploy an aerial napalm strike.\nBurns buildings and infantry along a line.
-		EndChargeSound: airredy1.aud
-		SelectTargetSound: select1.aud
-		UnitType: a10
-	SupportPowerChargeBar:
+#	AirstrikePower:
+#		Image: bombicnh
+#		ChargeTime: 240
+#		Description: Air Strike
+#		LongDesc: Deploy an aerial napalm strike.\nBurns buildings and infantry along a line.
+#		EndChargeSound: airredy1.aud
+#		SelectTargetSound: select1.aud
+#		UnitType: a10
+#	SupportPowerChargeBar:
 
-NUK2:
-	Inherits: ^Building
-	Valued:
-		Cost: 500
-	Tooltip:
-		Name: Advanced Power Plant
-		Icon:nuk2icnh
-		Description: Provides more power, cheaper than the \nstandard Power Plant
-	ProvidesCustomPrerequisite:
-		Prerequisite: anypower
-	Buildable:
-		BuildPaletteOrder: 90
-		Prerequisites: hq
-		Owner: gdi,nod
-	Building:
-		Power: 200
-		Footprint: xx xx
-		Dimensions: 2,2
-	Health:
-		HP: 650
-	RevealsShroud:
-		Range: 4
-	Bib:
-		
 FIX:
 	Inherits: ^Building
 	Valued:
@@ -360,7 +430,7 @@ FIX:
 		Icon: fixicnh
 		Description: Repairs vehicles and allows the\nconstruction of additional bases.
 	Buildable:
-		BuildPaletteOrder: 70
+		BuildPaletteOrder: 80
 		Prerequisites: vehicleproduction
 		Owner: gdi,nod
 	Building:
@@ -371,56 +441,26 @@ FIX:
 		HP: 800
 	RevealsShroud:
 		Range: 5
+	#	Range: 3
+	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from what we want for now, to properly emulate
 	BelowUnits:
 	Reservable:
 	RepairsUnits:
 	RallyPoint:
 	
-HPAD:
-	Inherits: ^Building
-	Valued:
-		Cost: 1500
-	Tooltip:
-		Name: Helipad
-		Icon:hpadicnh
-		Description: Produces, rearms and\nrepairs helicopters
-	Buildable:
-		BuildPaletteOrder: 50
-		Prerequisites: barracks
-		Owner: gdi,nod
-	Building:
-		Power: -10
-		Footprint: xx xx
-		Dimensions: 2,2
-	Health:
-		HP: 400
-	RevealsShroud:
-		Range: 5
-	Exit@1:
-		SpawnOffset: 0,-6
-	Production:
-		Produces: Aircraft
-	BelowUnits:
-	Reservable:
-	RepairsUnits:
-	RallyPoint:
-	ProductionQueue:
-		Type: Aircraft
-		Group: Aircraft
-		BuildSpeed: .4
-		LowPowerSlowdown: 3
-	ProductionBar:
-
 EYE:
+#wood
 	RequiresPower:
 	CanPowerDown:
 	Inherits: ^Building
 	Valued:
-		Cost: 1800
+		Cost: 2800
 	Tooltip:
 		Name: Advanced Communications Center
 		Icon: eyeicnh
 		Description: Provides access to the Ion Cannon.\n  Requires power to operate.
+	ProvidesCustomPrerequisite:
+		Prerequisite: techbuilding
 	Buildable:
 		BuildPaletteOrder: 100
 		Prerequisites: hq
@@ -432,15 +472,14 @@ EYE:
 	Health:
 		HP: 1000
 	RevealsShroud:
-		Range: 10
+		Range: 12
+	#	Range: 10
+	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from what we want for now, to properly emulate
 	Bib:
 	ProvidesRadar:
-	RenderDetectionCircle:
-	DetectCloaked:
-		Range: 8
 	IonCannonPower:
 		Image: ionicnh
-		ChargeTime: 180
+		ChargeTime: 280
 		Description: Ion Cannon
 		LongDesc: Initiate an Ion Cannon strike.\nApplies instant damage to a small area.
 		BeginChargeSound: ionchrg1.aud
@@ -449,16 +488,19 @@ EYE:
 		SelectTargetSound: select1.aud
 	SupportPowerChargeBar:
 
+
 TMPL:
 	RequiresPower:
 	CanPowerDown:
 	Inherits: ^Building
 	Valued:
-		Cost: 2000
+		Cost: 3000
 	Tooltip:
 		Name: Temple of Nod
 		Icon: tmplicnh
-		Description: Place of worship and secret missile silo.\n  Requires power to operate.
+		Description: Place of worship and secret missile silo.\nRequires power to operate.
+	ProvidesCustomPrerequisite:
+		Prerequisite: techbuilding
 	Buildable:
 		BuildPaletteOrder: 100
 		Prerequisites: hq
@@ -469,12 +511,16 @@ TMPL:
 		Dimensions: 3,3
 	Health:
 		HP: 2000
+	Armor: 
+		Type: Light
 	RevealsShroud:
 		Range: 6
+	#	Range: 4
+	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from what we want for now, to properly emulate
 	Bib:
 	NukePower:
 		Image: atomicnh
-		ChargeTime: 300
+		ChargeTime: 405
 		Description: Nuclear Strike
 		LongDesc: Launch a tactical nuke.\nApplies heavy damage over a large area.
 		BeginChargeSound: 
@@ -492,11 +538,11 @@ OBLI:
 	Tooltip:
 		Name: Obelisk of Light
 		Icon:obliicnh
-		Description: Advanced base defense.\n  Requires power to operate.\n  Strong vs Tanks, Infantry\n  Weak vs Aircraft
+		Description: Advanced base defense. Requires power\nto operate.\n  Strong vs Tanks, Infantry\n  Weak vs Aircraft
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 60
-		Prerequisites: tmpl
+		Prerequisites: hq
 		Owner: nod
 	Building:
 		Power: -150
@@ -506,9 +552,12 @@ OBLI:
 	Health:
 		HP: 400
 	Armor: 
-		Type: Heavy
+		Type: Light
 	RevealsShroud:
-		Range: 8
+		Range: 9
+	#	Range: 5
+	# RevealShroud range was set to equal 1 + its weapon range (due to possible rendering issues with shroud for OpenRA). 
+	# (Range of Obelisk laser is 7.5)
 	RenderBuildingCharge:
 		ChargeAudio: obelpowr.aud
 	AttackTurreted:
@@ -521,16 +570,16 @@ OBLI:
 	-RenderBuilding:
 	RenderRangeCircle:
 	-EmitInfantryOnSell:
-	RenderDetectionCircle:
+#	RenderDetectionCircle:
 	DetectCloaked:
-		Range: 6
+		Range: 5
 
 CYCL:
 	Inherits: ^Wall
 	Valued:
-		Cost: 25
-	CustomSellValue:
-		Value: 0
+		Cost: 75
+#	CustomSellValue:
+#		Value: 0
 	Tooltip:
 		Name: Chain Link Barrier
 		Icon:cyclicnh
@@ -539,18 +588,18 @@ CYCL:
 		Queue: Defense
 		BuildPaletteOrder: 20
 		Prerequisites: fact
-		Owner: nod
+		Owner: gdi, nod
 	Health:
-		HP: 100
+		HP: 50
 	Armor: 
-		Type: Light
+		Type: Wall
 
 SBAG:
 	Inherits: ^Wall
 	Valued:
-		Cost: 25
-	CustomSellValue:
-		Value: 0
+		Cost: 50
+#	CustomSellValue:
+#		Value: 0
 	Tooltip:
 		Name: Sandbag Barrier
 		Icon:sbagicnh
@@ -559,18 +608,18 @@ SBAG:
 		Queue: Defense
 		BuildPaletteOrder: 20
 		Prerequisites: fact
-		Owner: gdi
+		Owner: gdi, nod
 	Health:
-		HP: 100
+		HP: 25
 	Armor: 
-		Type: Light
+		Type: Wall
 
 BRIK:
-	Inherits: ^Wall
+	Inherits: ^HeavyWall
 	Valued:
 		Cost: 100
-	CustomSellValue:
-		Value: 0
+#	CustomSellValue:
+#		Value: 0
 	Tooltip:
 		Name: Concrete Barrier
 		Icon:brikicnh
@@ -581,9 +630,9 @@ BRIK:
 		Prerequisites: vehicleproduction
 		Owner: gdi,nod
 	Health:
-		HP: 250
+		HP: 200
 	Armor: 
-		Type: Heavy
+		Type: Concrete
 	Wall:
 		CrushClasses: heavywall
 		-CrushSound:
@@ -600,7 +649,7 @@ GUN:
 		Description: Anti-Armor base defense.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 45
+		BuildPaletteOrder: 40
 		Prerequisites: barracks
 		Owner: gdi,nod
 	Building:
@@ -608,8 +657,12 @@ GUN:
 	-GivesBuildableArea:
 	Health:
 		HP: 400
+	Armor: 
+		Type: Heavy
 	RevealsShroud:
 		Range: 7
+	#	Range: 5
+	# RevealShroud range was set to equal 1 + its weapon range (6) (due to possible rendering issues with shroud for OpenRA)
 	Turreted:
 		ROT: 12
 		InitialFacing: 50
@@ -622,9 +675,10 @@ GUN:
 	-RenderBuilding:
 	-DeadBuildingState:
 	RenderRangeCircle:
-	RenderDetectionCircle:
+#	RenderDetectionCircle:
 	DetectCloaked:
-		Range: 3
+		Range: 5
+
 SAM:
 	Inherits: ^Building
 	RequiresPower:
@@ -649,7 +703,9 @@ SAM:
 	Armor: 
 		Type: Heavy
 	RevealsShroud:
+	#	Range: 3
 		Range: 5
+	# Range set to arbitrary length more in line with what you would expect from a guard tower. (SAM missile's range is 15)
 	Turreted:
 		ROT: 7
 		InitialFacing: 0
@@ -662,25 +718,28 @@ SAM:
 	RenderRangeCircle:
 	
 GTWR:
+#wood
 	Inherits: ^Building
 	Valued:
 		Cost: 500
 	Tooltip:
 		Name: Guard Tower
 		Icon: gtwricnh
-		Description: Basic defensive structure.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
+		Description: Basic defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 40
+		BuildPaletteOrder: 50
 		Prerequisites: barracks
 		Owner: gdi,nod
 	Building:
 		Power: -10
 	-GivesBuildableArea:
 	Health:
-		HP: 600
+		HP: 400
 	RevealsShroud:
 		Range: 6
+	#	Range: 3
+	# RevealShroud range was set to equal 1 + its weapon range (due to possible rendering issues with shroud for OpenRA)
 	AttackTurreted:
 		PrimaryWeapon: HighV
 		PrimaryOffset: 0,0,0,-6
@@ -689,7 +748,7 @@ GTWR:
 	-AutoTargetIgnore:
 	DetectCloaked:
 		Range: 3
-	RenderDetectionCircle:
+#	RenderDetectionCircle:
 	RenderRangeCircle:
 	WithMuzzleFlash:
 	Turreted:
@@ -715,11 +774,13 @@ ATWR:
 		Dimensions: 1,2
 	-GivesBuildableArea:
 	Health:
-		HP: 800
+		HP: 600
 	Armor: 
-		Type: Heavy
+		Type: Light
 	RevealsShroud:
-		Range: 8
+		Range: 7
+	#	Range: 4
+	# RevealShroud range was set to equal its weapon range +1 (due to possible rendering issues with shroud for OpenRA)
 	AttackTurreted:
 		PrimaryWeapon: TowerMissle
 		PrimaryOffset: 0,0,5,2
@@ -728,10 +789,8 @@ ATWR:
 		ROT:255
 	AutoTarget:
 	-AutoTargetIgnore:
-	RenderDetectionCircle:
 	DetectCloaked:
-		Range: 6
-	RenderRangeCircle:
+		Range: 4
 
 # custom prerequisites:
 BARRACKS:
@@ -748,3 +807,8 @@ ANYPOWER:
 	Tooltip:
 		Name: Power Plant
 		Description: Power Plant
+
+HPAD:
+	Tooltip:
+		Name: Helipad
+		Description: Helipad

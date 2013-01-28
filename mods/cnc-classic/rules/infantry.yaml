@@ -1,0 +1,210 @@
+E1:
+	Inherits: ^Infantry
+	Valued:
+		Cost: 100
+	Tooltip:
+		Name: Minigunner
+		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles
+		Icon: e1icnh
+	Buildable:
+		BuildPaletteOrder: 10
+		Owner: gdi, nod
+	Selectable:
+		Bounds: 12,17,0,-6
+	Mobile:
+		Speed: 4
+	Health:
+		HP: 50
+	AttackFrontal:
+		PrimaryWeapon: M16
+	RenderInfantryProne:
+		IdleAnimations: idle1,idle2,idle3,idle4
+
+E2:
+	Inherits: ^Infantry
+	Valued:
+		Cost: 160
+	Tooltip:
+		Name: Grenadier
+		Description: Infantry armed with grenades. \n  Strong vs Buildings, Infantry\n  Weak vs Vehicles
+		Icon: e2icnh
+	Buildable:
+		BuildPaletteOrder: 40
+		Prerequisites: pyle
+		Owner: gdi
+	Selectable:
+		Bounds: 12,17,0,-6
+	Mobile:
+		Speed: 5
+	Health:
+		HP: 50
+	AttackFrontal:
+		PrimaryWeapon: Grenade
+		PrimaryOffset: 0,0,0,-10
+		FireDelay: 15
+	RenderInfantryProne:
+		IdleAnimations: idle1,idle2
+	Explodes:
+		Weapon: GrenadierExplode
+		Chance: 50
+	
+E3:
+	Inherits: ^Infantry
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Rocket Soldier
+		Description: Anti-tank/Anti-aircraft infantry. \n  Strong vs Tanks, Aircraft\n  Weak vs Infantry
+		Icon: e3icnh
+	Buildable:
+		BuildPaletteOrder: 20
+		Owner: nod, gdi
+	Selectable:
+		Bounds: 12,17,0,-6
+	Mobile:
+		Speed: 3
+		TerrainSpeeds:
+			Clear: 100
+			Rough: 100
+			Road: 100
+			Tiberium: 100
+				PathingCost: 1000
+			BlueTiberium: 100
+				PathingCost: 1000
+			Beach: 100
+	Health:
+		HP: 25
+	RevealsShroud:
+		Range: 3
+	# range value is 1 in C&C, but OpenRA renders vision slightly differently
+	AttackFrontal:
+		PrimaryWeapon: Rockets
+		PrimaryOffset: 1,-6,0,-8
+		FireDelay: 5
+	RenderInfantryProne:
+		IdleAnimations: idle1,idle2
+
+E4:
+	Inherits: ^Infantry
+	Valued:
+		Cost: 200
+	Tooltip:
+		Name: Flamethrower
+		Description: Advanced Anti-infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
+		Icon: e4icnh
+	Buildable:
+		BuildPaletteOrder: 40
+		Owner: nod
+		Prerequisites: hand
+	Selectable:
+		Bounds: 12,17,0,-6
+	Mobile:
+		Speed: 5
+	Health:
+		HP: 70
+	AttackFrontal:
+		PrimaryWeapon: Flamethrower
+		PrimaryOffset: 0,-2,2,-4
+		FireDelay: 3
+	WithMuzzleFlash:
+	RenderInfantryProne:
+		IdleAnimations: idle1,idle2
+#explodes somehow
+
+E5:
+	Inherits: ^Infantry
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Chem Warrior
+		Description: Advanced Anti-infantry unit.\n  Strong vs Infantry\n  Weak vs Vehicles
+		Icon: e5icnh
+	Buildable:
+		BuildPaletteOrder: 50
+		Owner: nod
+		Prerequisites: tmpl
+	Selectable:
+		Bounds: 12,17,0,-6
+	Mobile:
+		Speed: 4
+		TerrainSpeeds:
+			Tiberium: 100
+				PathingCost: 100
+			BlueTiberium: 100
+				PathingCost: 100
+	Health:
+		HP: 70
+	AttackFrontal:
+		PrimaryWeapon: Chemspray
+		PrimaryOffset: 0,-2,2,-9
+		FireDelay: 3
+	WithMuzzleFlash:
+	-PoisonedByTiberium:
+	RenderInfantryProne:
+		IdleAnimations: idle1,idle2
+
+E6:
+	Inherits: ^Infantry
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Engineer
+		Description: Infiltrates and captures enemy structures.\n  Strong vs Nothing\n  Weak vs Everything
+		Icon: e6icnh
+	Buildable:
+		BuildPaletteOrder: 30
+		Owner: gdi,nod
+	Selectable:
+		Bounds: 12,17,0,-6
+	Mobile:
+		Speed: 4
+	Health:
+		HP: 25
+	RevealsShroud:
+		Range: 4
+	# range value is 2 in C&C, but OpenRA renders vision slightly differently
+	Passenger:
+		PipType: Yellow
+	EngineerRepair:
+	Captures:
+		CaptureTypes: building, husk
+	-AutoTarget:
+	AttackMove:
+		JustMove: true
+	RenderInfantryProne:
+		IdleAnimations: idle1,idle2
+
+RMBO:
+	Inherits: ^Infantry
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Icon: rmboicnh
+		Name: Commando
+		Description: Elite sniper infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
+	Buildable:
+		BuildPaletteOrder: 50
+		Owner: gdi, nod
+		Prerequisites: techbuilding
+	Selectable:
+		Bounds: 12,17,0,-6
+		Voice: CommandoVoice
+	Mobile:
+		Speed: 5
+	Health:
+		HP: 100
+	Passenger:
+		PipType: Red
+	RevealsShroud:
+		Range: 7
+	# range value is 5 in C&C, but OpenRA renders vision slightly differently
+	AutoTarget:
+		ScanRadius: 5
+	C4Demolition:
+		C4Delay: 45
+	AttackFrontal:
+		PrimaryWeapon: Sniper
+	RenderInfantryProne:
+		IdleAnimations: idle1,idle2,idle3
+	AnnounceOnBuild:
+	AnnounceOnKill:
