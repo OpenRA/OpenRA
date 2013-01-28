@@ -1,7 +1,7 @@
 TRAN:
 	Inherits: ^Helicopter
 	Valued:
-		Cost: 1500
+		Cost: 750
 	Tooltip:
 		Name: Chinook Transport
 		Icon:tranicnh
