@@ -399,6 +399,39 @@ DELPHI:
 	RenderInfantryPanic:
 	ScaredyCat:
 
+CHAN:
+	Inherits: ^CivInfantry
+	Tooltip:
+		Name: Agent Chan
+
+GNRL:
+	Inherits: ^CivInfantry
+	Tooltip:
+		Name: General
+
+THF:
+	Inherits: ^Infantry
+	Valued:
+		Cost: 400
+	Tooltip:
+		Name: Thief
+		Description: Steals enemy credits.\n  Strong vs Nothing\n  Weak vs Everything\n
+	Selectable:
+		Voice: ThiefVoice
+		Bounds: 12,17,0,-9
+	Health:
+		HP: 25
+	Mobile:
+		Speed: 4
+	RevealsShroud:
+		Range: 5
+	Passenger:
+		PipType: Yellow
+	TakeCover:
+	-AutoTarget:
+	AttackMove:
+		JustMove: true
+
 SHOK:
 	Inherits: ^Infantry
 	Buildable:
