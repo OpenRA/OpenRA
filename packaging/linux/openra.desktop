@@ -1,9 +1,10 @@
 [Desktop Entry]
 Type=Application
-Version={VERSION}
+Version=1.0
 Name=OpenRA
-Comment=Reimagining of Red Alert and Command & Conquer
+GenericName=Real Time Strategy Game
+Comment=Reimagining of Red Alert and Tiberian Dawn
 Icon=openra
-Exec=/usr/bin/openra
+Exec=openra
 Terminal=false
-Categories=Game;
+Categories=Game;StrategyGame;

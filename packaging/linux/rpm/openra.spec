@@ -5,7 +5,7 @@ Name: %{name}
 Version: %{version}
 Release: 1
 Summary: Open Source rebuild of the Red Alert game engine using Mono/OpenGL.
-License: GPL3
+License: GPL-3.0
 URL: http://open-ra.org
 Group: Amusements/Games
 Packager: Matthew Bowra-Dean <matthew@ijw.co.nz>
@@ -15,9 +15,9 @@ Source: %{name}-%{version}.tar.gz
 Buildroot: /tmp/openra
 
 %description
-A multiplayer reimplementation of the Command & Conquer: Red Alert game 
+A multiplayer reimplementation of the Command & Conquer: Red Alert game
 engine in .NET/Mono, OpenGL, OpenAL and SDL. Has extensive modding support
-and includes Command & Conquer as an official mod.
+and includes Command & Conquer: Tiberian Dawn as an official mod.
 
 %build
 
