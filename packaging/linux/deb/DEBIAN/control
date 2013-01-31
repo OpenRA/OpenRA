@@ -2,7 +2,7 @@ Package: openra
 Version: {VERSION}
 Architecture: all
 Maintainer: Chris Forbes <chrisf@ijw.co.nz>
-Installed-Size: {SIZE}	
+Installed-Size: {SIZE}
 Depends: libopenal1, mono-runtime (>= 2.6.7), libmono-winforms2.0-cil, libfreetype6, libsdl1.2debian, libgl1-mesa-glx, libgl1-mesa-dri, libmono-i18n2.0-cil
 Section: games
 Priority: extra
