@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
@@ -24,7 +25,7 @@ namespace OpenRA.Mods.RA.Missions
 
 	class Soviet01ClassicScript : IHasObjectives, IWorldLoaded, ITick
 	{
-		public event ObjectivesUpdatedEventHandler OnObjectivesUpdated = notify => { };
+		public event Action<bool> OnObjectivesUpdated = notify => { };
 
 		public IEnumerable<Objective> Objectives { get { return objectives.Values; } }
 

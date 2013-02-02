@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using OpenRA.Traits;
 
@@ -30,11 +31,9 @@ namespace OpenRA.Mods.RA.Missions
 	public enum ObjectiveType { Primary, Secondary }
 	public enum ObjectiveStatus { Inactive, InProgress, Completed, Failed }
 
-	public delegate void ObjectivesUpdatedEventHandler(bool notify);
-
 	public interface IHasObjectives
 	{
-		event ObjectivesUpdatedEventHandler OnObjectivesUpdated;
+		event Action<bool> OnObjectivesUpdated;
 		IEnumerable<Objective> Objectives { get; }
 	}
 

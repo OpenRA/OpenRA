@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA.Missions
 
 	class Allies04Script : IHasObjectives, IWorldLoaded, ITick
 	{
-		public event ObjectivesUpdatedEventHandler OnObjectivesUpdated = notify => { };
+		public event Action<bool> OnObjectivesUpdated = notify => { };
 
 		public IEnumerable<Objective> Objectives { get { return objectives.Values; } }
 

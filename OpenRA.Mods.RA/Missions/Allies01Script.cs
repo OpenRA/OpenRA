@@ -8,14 +8,15 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Air;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Scripting;
 using OpenRA.Traits;
-using OpenRA.Mods.RA.Activities;
 
 namespace OpenRA.Mods.RA.Missions
 {
@@ -23,7 +24,7 @@ namespace OpenRA.Mods.RA.Missions
 
 	class Allies01Script : IHasObjectives, IWorldLoaded, ITick
 	{
-		public event ObjectivesUpdatedEventHandler OnObjectivesUpdated = notify => { };
+		public event Action<bool> OnObjectivesUpdated = notify => { };
 
 		public IEnumerable<Objective> Objectives { get { return objectives.Values; } }
 
