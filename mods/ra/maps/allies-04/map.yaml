@@ -1849,7 +1849,7 @@ Rules:
 	LST.Unselectable:
 		Inherits: LST
 		Buildable:
-			Owner: none
+			Owner: None
 		RenderUnit:
 			Image: LST
 		Tooltip:
@@ -1861,59 +1861,33 @@ Rules:
 			MaxWeight: 0
 			PipCount: 0
 	SPY.Strong:
-		Inherits: ^Infantry
-		RevealsShroud:
-			Range: 5
+		Inherits: SPY
+		Buildable:
+			Owner: None
+		SpyToolTip:
+			Icon: SPY
+		RenderSpy:
+			Image: SPY
 		Health:
 			HP: 100
 		DontDestroyWhenInfiltrating:
-		Spy:
-		RenderSpy:
-			Image: SPY
-			IdleAnimations: idle1,idle2
-		Valued:
-			Cost: 500
-		Tooltip:
-			Name: Spy
-		Selectable:
-			Voice: SpyVoice
-			Bounds: 12,17,0,-9
-		Mobile:
-			Speed: 4
-		Passenger:
-			PipType: Yellow
-		TakeCover:
-		-AutoTarget:
-		AttackMove:
-			JustMove: true
-		-RenderInfantry:
-		AttackFrontal:
-			PrimaryWeapon: SilencedPPK
-	DOG.Patrol:
-		Inherits: ^Infantry
-		Mobile:
-			Speed: 4
-		Valued:
-			Cost: 200
-		Tooltip:
-			Name: Attack Dog
-		Selectable:
-			Voice: DogVoice
-			Bounds: 12,17,-1,-4
-		Health:
-			HP: 12
 		RevealsShroud:
-			Range: 5
-		AutoTarget:
-		AttackLeap:
-			PrimaryWeapon: DogJaw
-			CanAttackGround: no
+			Range: 6
+		Spy:
+	DOG.Patrol:
+		Inherits: DOG
+		Buildable:
+			Owner: None
+		Tooltip:
+			Icon: DOG
+		Mobile:
+			Speed: 4
 		RenderInfantry:
 			Image: DOG
-			IdleAnimations: idle1,idle2
-		IgnoresDisguise:
 	TRUK.Hijackable:
-		Inherits: ^Vehicle
+		Inherits: TRUK
+		Buildable:
+			Owner: None
 		Cargo:
 			Types: Infantry
 			MaxWeight: 5
@@ -1922,22 +1896,10 @@ Rules:
 		Allies04Hijackable:
 		Allies04RenderHijacked:
 			Image: TRUK
-		Selectable:
-			Voice: SpyVoice
-		RevealsShroud:
-			Range: 5
-		Valued:
-			Cost: 500
 		Tooltip:
-			Name: Supply Truck
-		Health:
-			HP: 110
-		Armor:
-			Type: Light
-		Mobile:
-			Speed: 9
-		AttackMove:
-			JustMove: yes
+			Icon: TRUK
+		-SupplyTruck:
+		-RenderUnit:
 	BARL:
 		Allies04TrivialBuilding:
 	BRL3:
@@ -2020,9 +1982,6 @@ Rules:
 		Buildable:
 			Owner: None
 	MNLY.AT:
-		Buildable:
-			Owner: None
-	TRUK:
 		Buildable:
 			Owner: None
 	TTNK:
