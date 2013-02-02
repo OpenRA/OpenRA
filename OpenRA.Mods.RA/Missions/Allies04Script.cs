@@ -177,7 +177,7 @@ namespace OpenRA.Mods.RA.Missions
 				OnObjectivesUpdated(true);
 				MissionFailed("{0} spy was killed.".F(allies1 != allies2 ? "A" : "The"));
 			}
-			else if (lab.Destroyed)
+			else if (lab.IsDead())
 				MissionFailed("The Soviet research laboratory was destroyed.");
 			else if (!world.Actors.Any(a => (a.Owner == allies1 || a.Owner == allies2) && !a.IsDead()
 				&& (a.HasTrait<Building>() && !a.HasTrait<Wall>()) || a.HasTrait<BaseBuilding>()))
@@ -251,7 +251,9 @@ namespace OpenRA.Mods.RA.Missions
 				frameInfiltrated = world.FrameNumber;
 
 				foreach (var actor in world.Actors.Where(a => !a.IsDead() && a.HasTrait<Allies04TransformOnLabInfiltrate>()))
-					actor.QueueActivity(false, new Transform(actor, actor.Info.Traits.Get<Allies04TransformOnLabInfiltrateInfo>().ToActor));
+					actor.QueueActivity(false, new Transform(actor, actor.Info.Traits.Get<Allies04TransformOnLabInfiltrateInfo>().ToActor) { SkipMakeAnims = true });
+
+				lab.AddTrait(new Allies04TransformedAction(self => lab = self));
 			}
 		}
 
@@ -299,7 +301,7 @@ namespace OpenRA.Mods.RA.Missions
 				this.points = points;
 				this.pointIndex = pointIndex;
 				var td = new TypeDictionary { new OwnerInit(owner), new LocationInit(points[pointIndex]) };
-				this.actors = actorNames.Select(a => world.CreateActor(a, td)).ToArray();
+				actors = actorNames.Select(a => world.CreateActor(a, td)).ToArray();
 			}
 
 			public void DoPatrol()
@@ -363,9 +365,7 @@ namespace OpenRA.Mods.RA.Missions
 			if (allies2 == null)
 				allies2 = allies1;
 			else
-			{
 				allies2.PlayerActor.Trait<PlayerResources>().Cash = 0;
-			}
 
 			soviets = w.Players.Single(p => p.InternalName == "Soviets");
 			neutral = w.Players.Single(p => p.InternalName == "Neutral");

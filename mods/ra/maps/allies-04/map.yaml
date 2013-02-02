@@ -1806,6 +1806,8 @@ Rules:
 			Player: Soviets
 	MISS:
 		AutoTargetIgnore:
+		Allies04TransformOnLabInfiltrate:
+			ToActor: MISS
 	PROC.NoInfiltrate:
 		Inherits: PROC
 		-Buildable:
