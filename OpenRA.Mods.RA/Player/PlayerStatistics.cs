@@ -58,7 +58,7 @@ namespace OpenRA.Mods.RA
 			var total = (double)world.Map.Bounds.Width * world.Map.Bounds.Height;
 			MapControl = world.Actors
 				.Where(a => !a.IsDead() && a.IsInWorld && a.Owner == player && a.HasTrait<RevealsShroud>())
-				.SelectMany(a => world.FindTilesInCircle(a.Location, a.Trait<RevealsShroud>().RevealRange))
+				.SelectMany(a => world.FindTilesInCircle(a.Location, a.Trait<RevealsShroud>().RevealRange.Clamp(0, 50)))
 				.Distinct()
 				.Count() / total;
 		}
@@ -68,21 +68,15 @@ namespace OpenRA.Mods.RA
 			EarnedSamples.Enqueue(EarnedThisMinute);
 			earnedAtBeginningOfMinute = player.PlayerActor.Trait<PlayerResources>().Earned;
 			if (EarnedSamples.Count > 100)
-			{
 				EarnedSamples.Dequeue();
-			}
 		}
 
 		public void Tick(Actor self)
 		{
 			if (self.World.FrameNumber % 1500 == 1)
-			{
 				UpdateEarnedThisMinute();
-			}
 			if (self.World.FrameNumber % 250 == 0)
-			{
 				UpdateMapControl();
-			}
 		}
 
 		public void ResolveOrder(Actor self, Order order)
@@ -100,10 +94,7 @@ namespace OpenRA.Mods.RA
 				case "SyncInfo":
 					return;
 			}
-			if (order.OrderString.StartsWith("Dev"))
-			{
-				return;
-			}
+			if (order.OrderString.StartsWith("Dev")) return;
 			OrderCount++;
 		}
 	}
