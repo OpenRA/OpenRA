@@ -24,7 +24,7 @@ Players:
 	PlayerReference@GoodGuy:
 		Name: GoodGuy
 		Race: allies
-		ColorRamp: 161,134,236,30
+		ColorRamp: 161,134,200,30
 		Allies: France,Germany,Turkey
 		Enemies: USSR
 	PlayerReference@France:
@@ -555,12 +555,12 @@ Actors:
 		Owner: GoodGuy
 		Health: 1
 		Facing: 0
-	Actor118: pbox
+	Actor118: pbox.e1
 		Location: 46,55
 		Owner: France
 		Health: 1
 		Facing: 0
-	Actor119: pbox
+	Actor119: pbox.e1
 		Location: 48,54
 		Owner: France
 		Health: 1

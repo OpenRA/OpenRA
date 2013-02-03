@@ -75,6 +75,8 @@ namespace OpenRA.Mods.RA.Missions
 
 		public void Tick(Actor self)
 		{
+			if (ussr.WinState != WinState.Undefined) return;
+
 			var unitsAndBuildings = world.Actors.Where(a => !a.IsDead() && a.IsInWorld && (a.HasTrait<Mobile>() || (a.HasTrait<Building>() && !a.HasTrait<Wall>())));
 			if (!unitsAndBuildings.Any(a => a.Owner == france))
 			{
