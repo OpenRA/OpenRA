@@ -52,12 +52,8 @@ namespace OpenRA.Mods.RA.Missions
         CPos[] sovietRallyPoints;
 
         Actor sovietinfantryentry1;
-        Actor sovietinfantryentry2;
-        CPos[] sovietEntryPointInf;
         Actor sovietinfantryrally1;
-        Actor sovietinfantryrally2;
-        CPos[] sovietRallyPointInf;
-
+      
         Actor BadgerEntryPoint1;
         Actor BadgerEntryPoint2;
         Actor ParaDrop1;
@@ -87,8 +83,6 @@ namespace OpenRA.Mods.RA.Missions
 
         const int ParadropTicks = 750;
         static readonly string[] Badger1Passengers = { "e1", "e1", "e1", "e2", "e2" };
-        static readonly string[] Badger2Passengers = { "e1", "e1", "e1", "e2", "e2" };
-        static readonly string[] Badger3Passengers = { "e1", "e1", "e4", "e3", "e3" };
 
         const int FactoryClearRange = 10;
         static readonly string[] Squad1 = { "e1", "e1" };
@@ -97,37 +91,15 @@ namespace OpenRA.Mods.RA.Missions
         static readonly string[] SovietInfantry = { "e1", "e1", "e1", "e1", "e2", "e2", "e2", "e4", "e4", "e3", };
         static readonly string[] Reinforcements = { "2tnk", "2tnk", "2tnk", "2tnk", "2tnk", "1tnk", "1tnk", "1tnk", "arty", "arty", "arty", "jeep", "jeep" };
         const int SovietAttackGroupSize = 5;
-        const int SovietInfantryGroupSize = 10;
+        const int SovietInfantryGroupSize = 7;
 
         const int TimerTicks = 1500 * 25;
+        bool SpawningSovietUnits = true;
+        bool SpawningInfantry = true;
 
         void MissionAccomplished(string text)
         {
-            if (allies.WinState != WinState.Undefined)
-            {
-                return;
-            }
-            allies.WinState = WinState.Won;
-            Game.AddChatLine(Color.Blue, "Mission accomplished", text);
-            Sound.Play("misnwon1.aud");
-        }
-
-        void SendSquad1()
-        {
-            for (int i = 0; i < Squad1.Length; i++)
-            {
-                var actor = world.CreateActor(Squad1[i], new TypeDictionary { new OwnerInit(soviets), new LocationInit(alliesbase1.Location + new CVec(-2 + i, -6 + i * 2)) });
-                actor.QueueActivity(new Move.Move(alliesbase1.Location + new CVec(-2, -5)));
-            }
-        }
-
-        void SendSquad2()
-        {
-            for (int i = 0; i < Squad2.Length; i++)
-            {
-                var actor = world.CreateActor(Squad2[i], new TypeDictionary { new OwnerInit(soviets), new LocationInit(alliesbase2.Location + new CVec(-9 + i, -2 + i * 2)) });
-                actor.QueueActivity(new Move.Move(alliesbase2.Location + new CVec(-3, -1)));
-            }
+            MissionUtils.CoopMissionAccomplished(world, text, allies);
         }
 
         public void Tick(Actor self)
@@ -149,8 +121,7 @@ namespace OpenRA.Mods.RA.Missions
             {
                 attackAtFrameInf += attackAtFrameIncrementInf;
                 attackAtFrameIncrementInf = Math.Max(attackAtFrameIncrementInf - 5, 100);
-                SpawnSovietInfantry();
-                ManageSovietInfantry();
+                SpawnSovietInfantry(SovietInfantry);
             }
             if (barrack1.Destroyed)
             {
@@ -159,15 +130,13 @@ namespace OpenRA.Mods.RA.Missions
             if (world.FrameNumber == ParadropTicks)
             {
                 MissionUtils.Paradrop(world, soviets, Badger1Passengers, BadgerEntryPoint1.Location, ParaDrop1.Location);
-                MissionUtils.Paradrop(world, soviets, Badger2Passengers, BadgerEntryPoint2.Location, ParaDrop2.Location);
+                MissionUtils.Paradrop(world, soviets, Badger1Passengers, BadgerEntryPoint2.Location, ParaDrop2.Location);
             }
             if (world.FrameNumber == ParadropTicks * 2)
-                {
-                    {
-                        MissionUtils.Paradrop(world, soviets, Badger3Passengers, BadgerEntryPoint1.Location, alliesbase2.Location);
-                        MissionUtils.Paradrop(world, soviets, Badger3Passengers, BadgerEntryPoint2.Location, alliesbase1.Location);
-                    }
-                }
+            {
+                MissionUtils.Paradrop(world, soviets, Badger1Passengers, BadgerEntryPoint1.Location, alliesbase2.Location);
+                MissionUtils.Paradrop(world, soviets, Badger1Passengers, BadgerEntryPoint2.Location, alliesbase1.Location);
+            }
             if (world.FrameNumber == 1500 * 23)
             {
                 attackAtFrame = 100;
@@ -188,21 +157,45 @@ namespace OpenRA.Mods.RA.Missions
             }
         }
 
-        void SpawnSovietInfantry()
+        void SendSquad1()
         {
-            if (SpawningInfantry == true)
+            for (int i = 0; i < Squad1.Length; i++)
             {
-                var route = world.SharedRandom.Next(sovietEntryPointInf.Length);
-                var spawnPoint = sovietEntryPointInf[route];
-                var rallyPoint = sovietRallyPointInf[route];
-                var inf = world.CreateActor(SovietInfantry.Random(world.SharedRandom), new TypeDictionary { new LocationInit(spawnPoint), new OwnerInit(soviets) });
-                inf.QueueActivity(new AttackMove.AttackMoveActivity(inf, new Move.Move(rallyPoint, 3)));
+                var actor = world.CreateActor(Squad1[i], new TypeDictionary { new OwnerInit(soviets), new LocationInit(alliesbase1.Location + new CVec(-2 + i, -6 + i * 2)) });
+                actor.QueueActivity(new Move.Move(alliesbase1.Location));
+            }
+        }
+
+        void SendSquad2()
+        {
+            for (int i = 0; i < Squad2.Length; i++)
+            {
+                var actor = world.CreateActor(Squad2[i], new TypeDictionary { new OwnerInit(soviets), new LocationInit(alliesbase2.Location + new CVec(-9 + i, -2 + i * 2)) });
+                actor.QueueActivity(new Move.Move(alliesbase2.Location));
+            }
+        }
+
+        void SpawnSovietInfantry(string[] unit)
+        {
+            if (SpawningInfantry)
+            {
+                var units = world.CreateActor((SovietInfantry).Random(world.SharedRandom), new TypeDictionary { new LocationInit(sovietinfantryentry1.Location), new OwnerInit(soviets) });
+                units.QueueActivity(new Move.Move(sovietinfantryrally1.Location, 3));
+                var unitsincircle = world.FindAliveCombatantActorsInCircle(sovietinfantryrally1.CenterLocation, 5)
+                    .Where(a => a.Owner == soviets && a.IsIdle && a.HasTrait<IMove>());
+                if (unitsincircle.Count() >= SovietInfantryGroupSize)
+                {
+                    foreach (var scatteredunits in unitsincircle)
+                    {
+                        AttackNearestAlliedActor(scatteredunits);
+                    }
+                }
             }
         }
 
         void SpawnSovietUnits()
         {
-            if (SpawningSovietUnits == true)
+            if (SpawningSovietUnits)
             {
                 var route = world.SharedRandom.Next(sovietEntryPoints.Length);
                 var spawnPoint = sovietEntryPoints[route];
@@ -212,10 +205,6 @@ namespace OpenRA.Mods.RA.Missions
                 unit.QueueActivity(new AttackMove.AttackMoveActivity(unit, new Move.Move(rallyPoint, 3)));
             }
         }
-
-        bool SpawningSovietUnits = true;
-
-        bool SpawningInfantry = true;
 
         void AttackNearestAlliedActor(Actor self)
         {
@@ -233,29 +222,6 @@ namespace OpenRA.Mods.RA.Missions
             var res = soviets.PlayerActor.Trait<PlayerResources>();
             res.TakeOre(res.Ore);
             res.TakeCash(res.Cash);
-        }
-
-        void ManageSovietInfantry()
-        {
-            foreach (var rallyPoint in sovietRallyPointInf)
-            {
-                var infs = world.FindAliveCombatantActorsInCircle(Util.CenterOfCell(rallyPoint), 4)
-                    .Where(u => u.IsIdle && u.HasTrait<Mobile>() && u.Owner == soviets);
-                if (infs.Count() >= SovietInfantryGroupSize)
-                {
-                    foreach (var inf in infs)
-                    {
-                        AttackNearestAlliedActor(inf);
-                    }
-                }
-            }
-            var scatteredInfs = world.Actors.Where(u => u.IsInWorld && !u.IsDead() && u.HasTrait<Mobile>() && u.IsIdle && u.Owner == soviets)
-                .Except(world.WorldActor.Trait<SpawnMapActors>().Actors.Values)
-                .Except(sovietRallyPoints.SelectMany(rp => world.FindAliveCombatantActorsInCircle(Util.CenterOfCell(rp), 4)));
-            foreach (var inf in scatteredInfs)
-            {
-                AttackNearestAlliedActor(inf);
-            }
         }
 
         void ManageSovietUnits()
@@ -318,7 +284,7 @@ namespace OpenRA.Mods.RA.Missions
         public void WorldLoaded(World w)
         {
             world = w;
-            allies = w.Players.Single(p => p.InternalName == "Allies");
+            allies = w.Players.SingleOrDefault(p => p.InternalName == "Allies");
             if (allies != null)
             {
                 attackAtFrameInf = 300;
@@ -349,11 +315,7 @@ namespace OpenRA.Mods.RA.Missions
             BadgerEntryPoint2 = actors["BadgerEntryPoint2"];
             sovietEntryPoint7 = actors["sovietEntryPoint7"];
             sovietinfantryentry1 = actors["SovietInfantryEntry1"];
-            sovietinfantryentry2 = actors["SovietInfantryEntry2"];
-            sovietEntryPointInf = new[] { sovietinfantryentry1, sovietinfantryentry2 }.Select(p => p.Location).ToArray();
             sovietinfantryrally1 = actors["SovietInfantryRally1"];
-            sovietinfantryrally2 = actors["SovietInfantryRally2"];
-            sovietRallyPointInf = new[] { sovietinfantryrally1, sovietinfantryrally2 }.Select(p => p.Location).ToArray();
             ParaDrop1 = actors["ParaDrop1"];
             ParaDrop2 = actors["ParaDrop2"];
             ParaBomb1 = actors["ParaBomb1"];
