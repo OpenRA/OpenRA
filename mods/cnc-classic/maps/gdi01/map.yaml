@@ -480,6 +480,9 @@ Rules:
 		-Buildable:
 	RMBO:
 		-Buildable:
+	BOAT:
+		Mobile:
+			OnRails: false # workaround a crash
 
 Sequences:
 
