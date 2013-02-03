@@ -1,12 +1,12 @@
 --
--- MobDebug 0.516
+-- MobDebug 0.5162
 -- Copyright 2011-12 Paul Kulchenko
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
 --
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.516,
+  _VERSION = 0.5162,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = os and os.getenv and os.getenv("MOBDEBUG_PORT") or 8172,
@@ -655,10 +655,10 @@ local function stringify_results(status, ...)
   return pcall(serpent.dump, t, {sparse = false})
 end
 
-local function debugger_loop(sfile, sline)
+local function debugger_loop(sev, svars, sfile, sline)
   local command
   local app, osname
-  local eval_env = {}
+  local eval_env = svars or {}
   local function emptyWatch () return false end
   local loaded = {}
   for k in pairs(package.loaded) do loaded[k] = true end
@@ -953,7 +953,7 @@ local function start(controller_host, controller_port)
     end
     coro_debugger = coroutine.create(debugger_loop)
     debug.sethook(debug_hook, "lcr")
-    local ok, res = coroutine.resume(coro_debugger, file, info.currentline)
+    local ok, res = coroutine.resume(coro_debugger, events.RESTART, capture_vars(), file, info.currentline)
     if not ok and res then error(res, 2) end
     return true
   else
@@ -1005,6 +1005,13 @@ local function controller(controller_host, controller_port)
           report(debug.traceback(coro_debugee), tostring(err))
           if exitonerror then break end
           -- resume once more to clear the response the debugger wants to send
+          -- need to use capture_vars(2) as three would be the level of
+          -- the caller for controller(), but because of the tail call,
+          -- the caller may not exist;
+          -- This is not entirely safe as the user may see the local
+          -- variable from console, but they will be reset anyway.
+          -- This functionality is used when scratchpad is paused to
+          -- gain access to remote console to modify global variables.
           local status, err = coroutine.resume(coro_debugger, events.RESTART, capture_vars(2))
           if not status or status and err == "exit" then break end
         end
@@ -1463,6 +1470,22 @@ local function moai()
   end
 end
 
+-- this is a function that removes all hooks and closes the socket to
+-- report back to the controller that the debugging is done.
+-- the script that called `done` can still continue.
+local function done()
+  if not (isrunning() and server) then return end
+
+  if not jit then
+    for co, debugged in pairs(coroutines) do
+      if debugged then debug.sethook(co) end
+    end
+  end
+
+  debug.sethook()
+  server:close()
+end
+
 -- make public functions available
 mobdebug.listen = listen
 mobdebug.loop = loop
@@ -1474,6 +1497,7 @@ mobdebug.on = on
 mobdebug.off = off
 mobdebug.moai = moai
 mobdebug.coro = coro
+mobdebug.done = done
 mobdebug.line = serpent.line
 mobdebug.dump = serpent.dump
 mobdebug.yield = nil -- callback
