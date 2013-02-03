@@ -350,6 +350,7 @@ MECH:
 	-RenderInfantry:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
+
 EINSTEIN:
 	Inherits: ^Infantry
 	Selectable:
@@ -369,7 +370,34 @@ EINSTEIN:
 	AttackMove:
 		JustMove: true
 	ProximityCaptor:
-		Types:CivilianInfantry
+		Types: CivilianInfantry
+	-RenderInfantry:
+	RenderInfantryPanic:
+	ScaredyCat:
+
+DELPHI:
+	Inherits: ^Infantry
+	Selectable:
+		Voice: CivilianMaleVoice
+		Bounds: 12,17,0,-9
+	Valued:
+		Cost: 10
+	Tooltip:
+		Name: Agent Delphi
+	Health:
+		HP: 25
+	Mobile:
+		Speed: 5
+	RevealsShroud:
+		Range: 2
+	-AutoTarget:
+	AttackMove:
+		JustMove: true
+	ProximityCaptor:
+		Types: CivilianInfantry
+	-RenderInfantry:
+	RenderInfantryPanic:
+	ScaredyCat:
 
 SHOK:
 	Inherits: ^Infantry

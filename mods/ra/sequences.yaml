@@ -2136,6 +2136,45 @@ einstein:
 		Start: 0
 		Length: 6
 		Tick: 1600
+		
+delphi:
+	stand:
+		Start: 0
+		Facings: 8
+	panic-run:
+		Start: 8
+		Length: 6
+		Facings: 8
+	panic-stand:
+		Start: 8
+		Length: 6
+		Facings: 8
+	run:
+		Start: 56
+		Length: 6
+		Facings: 8
+	die1:
+		Start: 115
+		Length: 8
+	die2:
+		Start: 123
+		Length: 8
+	die3:
+		Start: 135
+		Length: 12
+	die4:
+		Start: 147
+		Length: 17
+	die5:
+		Start: 123
+		Length: 8
+	die6: electro
+		Start: 0
+		Length: *
+	die-crushed: corpse1
+		Start: 0
+		Length: 6
+		Tick: 1600
 
 parabomb:
 	open:
