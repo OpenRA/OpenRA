@@ -1216,7 +1216,7 @@ APMine:
 			Light: 0%
 			Heavy: 0%
 			Concrete: 0%
-			Cybernetic: 40%
+			Cybernetic: 80%
 		ImpactSound: mine1
 		InfDeath: 3
 		Explosion: napalm
