@@ -222,6 +222,11 @@ V18:
 	Inherits: ^CivField
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+		
+V19:
+	Inherits: ^CivBuilding
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
 
 BARL:
 	Inherits: ^TechBuilding
