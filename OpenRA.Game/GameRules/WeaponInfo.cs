@@ -86,7 +86,7 @@ namespace OpenRA.GameRules
 	public class WeaponInfo
 	{
 		public readonly float Range = 0;
-		public readonly string Report = null;
+		public readonly string[] Report = null;
 		public readonly int ROF = 1;
 		public readonly int Burst = 1;
 		public readonly bool Charges = false;

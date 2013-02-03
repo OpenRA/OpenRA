@@ -154,7 +154,7 @@ namespace OpenRA.Mods.RA
 			};
 
 			if (args.weapon.Report != null)
-				Sound.Play(args.weapon.Report + ".aud", pos);
+				Sound.Play(args.weapon.Report.Random(attacker.World.SharedRandom) + ".aud", pos);
 
 			DoImpacts(args);
 		}
