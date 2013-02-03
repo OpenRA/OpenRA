@@ -58,19 +58,14 @@ namespace OpenRA.Mods.RA.Missions
         Actor BadgerEntryPoint2;
         Actor ParaDrop1;
         Actor ParaDrop2;
-        Actor ParaBomb1;
-        Actor ParaBomb2;
         Actor sovietEntryPoint7;
 
         Actor alliesbase1;
         Actor alliesbase2;
-        Actor alliesbase3;
         Actor alliesbase;
-        Actor alliesEntryPoint;
         Actor sam1;
         Actor sam2;
         Actor barrack1;
-        Actor factory;
         World world;
 
         CountdownTimer CountDownTimer;
@@ -96,6 +91,7 @@ namespace OpenRA.Mods.RA.Missions
         const int TimerTicks = 1500 * 25;
         bool SpawningSovietUnits = true;
         bool SpawningInfantry = true;
+        string difficulty;
 
         void MissionAccomplished(string text)
         {
@@ -121,7 +117,7 @@ namespace OpenRA.Mods.RA.Missions
             {
                 attackAtFrameInf += attackAtFrameIncrementInf;
                 attackAtFrameIncrementInf = Math.Max(attackAtFrameIncrementInf - 5, 100);
-                SpawnSovietInfantry(SovietInfantry);
+                SpawnSovietInfantry();
             }
             if (barrack1.Destroyed)
             {
@@ -145,6 +141,7 @@ namespace OpenRA.Mods.RA.Missions
             if (world.FrameNumber == 1500 * 25)
             {
                 SpawningSovietUnits = false;
+                SpawningInfantry = false;
             }
             if (objectives[DestroySovietsID].Status == ObjectiveStatus.InProgress)
             {
@@ -175,20 +172,18 @@ namespace OpenRA.Mods.RA.Missions
             }
         }
 
-        void SpawnSovietInfantry(string[] unit)
+        void SpawnSovietInfantry()
         {
             if (SpawningInfantry)
             {
                 var units = world.CreateActor((SovietInfantry).Random(world.SharedRandom), new TypeDictionary { new LocationInit(sovietinfantryentry1.Location), new OwnerInit(soviets) });
                 units.QueueActivity(new Move.Move(sovietinfantryrally1.Location, 3));
-                var unitsincircle = world.FindAliveCombatantActorsInCircle(sovietinfantryrally1.CenterLocation, 5)
+                var unitsincircle = world.FindAliveCombatantActorsInCircle(Util.CenterOfCell(sovietinfantryrally1.Location), 10)
                     .Where(a => a.Owner == soviets && a.IsIdle && a.HasTrait<IMove>());
                 if (unitsincircle.Count() >= SovietInfantryGroupSize)
                 {
                     foreach (var scatteredunits in unitsincircle)
-                    {
                         AttackNearestAlliedActor(scatteredunits);
-                    }
                 }
             }
         }
@@ -251,10 +246,8 @@ namespace OpenRA.Mods.RA.Missions
         {
             Sound.Play("timergo1.aud");
             CountDownTimer = new CountdownTimer(TimerTicks, CountDownTimerExpired, true);
-            CountDownTimerWidget = new CountdownTimerWidget(
-                CountDownTimer,
-                "Survive: {0}",
-                new float2(Game.viewport.Width * 0.5f, Game.viewport.Height * 0.9f));
+            CountDownTimerWidget = new CountdownTimerWidget(CountDownTimer, "Survive: {0}");
+            new float2(Game.viewport.Width * 0.5f, Game.viewport.Height * 0.9f);
             Ui.Root.AddChild(CountDownTimerWidget);
         }
 
@@ -284,6 +277,13 @@ namespace OpenRA.Mods.RA.Missions
         public void WorldLoaded(World w)
         {
             world = w;
+
+            difficulty = w.LobbyInfo.GlobalSettings.Difficulty;
+            Game.Debug("{0} difficulty selected".F(difficulty));
+
+            attackAtFrame = attackAtFrameIncrement = difficulty == "Hard" || difficulty == "Normal" ? 350 : 450;
+            attackAtFrameInf = attackAtFrameIncrementInf = difficulty == "Hard" || difficulty == "Normal" ? 200 : 300;
+            
             allies = w.Players.SingleOrDefault(p => p.InternalName == "Allies");
             if (allies != null)
             {
@@ -309,8 +309,6 @@ namespace OpenRA.Mods.RA.Missions
             alliesbase = actors["alliesbase"];
             alliesbase1 = actors["alliesbase1"];
             alliesbase2 = actors["alliesbase2"];
-            alliesbase3 = actors["alliesbase3"];
-            alliesEntryPoint = actors["alliesEntryPoint"];
             BadgerEntryPoint1 = actors["BadgerEntryPoint1"];
             BadgerEntryPoint2 = actors["BadgerEntryPoint2"];
             sovietEntryPoint7 = actors["sovietEntryPoint7"];
@@ -318,12 +316,9 @@ namespace OpenRA.Mods.RA.Missions
             sovietinfantryrally1 = actors["SovietInfantryRally1"];
             ParaDrop1 = actors["ParaDrop1"];
             ParaDrop2 = actors["ParaDrop2"];
-            ParaBomb1 = actors["ParaBomb1"];
-            ParaBomb2 = actors["ParaBomb2"];
             barrack1 = actors["Barrack1"];
             sam1 = actors["Sam1"];
             sam2 = actors["Sam2"];
-            factory = actors["Factory"];
             var shroud = w.WorldActor.Trait<Shroud>();
             shroud.Explore(w, sam1.Location, 4);
             shroud.Explore(w, sam2.Location, 4);
@@ -331,6 +326,7 @@ namespace OpenRA.Mods.RA.Missions
             StartCountDownTimer();
             SendSquad1();
             SendSquad2();
+            MissionUtils.PlayMissionMusic();
         }
     }
 }

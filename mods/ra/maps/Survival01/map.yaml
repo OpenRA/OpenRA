@@ -16,6 +16,8 @@ Bounds: 4,4,88,56
 
 UseAsShellmap: False
 
+Difficulties: Normal, Hard
+
 Type: Survival
 
 Players:
@@ -1170,12 +1172,6 @@ Actors:
 		Owner: Neutral
 	Actor346: t15
 		Location: 57,24
-		Owner: Neutral
-	SovietInfantryEntry2: waypoint
-		Location: 28,8
-		Owner: Neutral
-	SovietInfantryRally2: waypoint
-		Location: 25,33
 		Owner: Neutral
 
 Smudges:
