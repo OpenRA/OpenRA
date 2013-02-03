@@ -227,6 +227,8 @@ V19:
 	Inherits: ^CivBuilding
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
+	Tooltip:
+		Name: Oil Pump
 
 BARL:
 	Inherits: ^TechBuilding
