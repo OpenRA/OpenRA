@@ -60,7 +60,7 @@ namespace OpenRA.Mods.RA
 		{
 			if (order.OrderString == "ChronoshiftJump")
 			{
-				if (CanJumpTo(order.TargetLocation))
+				if (CanJumpTo(order.TargetLocation, true))
 				{
 					self.CancelActivity();
 					self.QueueActivity(new Teleport(null, order.TargetLocation, true));
@@ -90,14 +90,14 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		public bool CanJumpTo(CPos xy)
+		public bool CanJumpTo(CPos xy, bool ignoreVis)
 		{
 			var movement = self.TraitOrDefault<IMove>();
 
 			if (chargeTick <= 0 // Can jump
-				&& self.World.LocalPlayer.Shroud.IsExplored(xy) // Not in shroud
+				&& (self.Location - xy).Length <= Info.JumpDistance // Within jump range
 				&& movement.CanEnterCell(xy) // Can enter cell
-				&& (self.Location - xy).Length <= Info.JumpDistance) // Within jump range
+				&& (ignoreVis || self.World.LocalShroud.IsExplored(xy))) // Not in shroud						
 				return true;
 			else
 				return false;
@@ -121,7 +121,7 @@ namespace OpenRA.Mods.RA
 			var queued = mi.Modifiers.HasModifier(Modifiers.Shift);
 
 			var cinfo = self.Trait<ChronoshiftDeploy>();
-			if (cinfo.CanJumpTo(xy))
+			if (cinfo.CanJumpTo(xy, false))
 			{
 				self.World.CancelInputMode();
 				yield return new Order("ChronoshiftJump", self, queued) { TargetLocation = xy };
@@ -130,17 +130,26 @@ namespace OpenRA.Mods.RA
 
 		public string GetCursor(World world, CPos xy, MouseInput mi)
 		{
-			var cinfo = self.Trait<ChronoshiftDeploy>();
-			if (cinfo.CanJumpTo(xy))
+			if (self.IsInWorld && self.Trait<ChronoshiftDeploy>().CanJumpTo(xy,false))
 				return "chrono-target";
 			else
 				return "move-blocked";
 		}
 
-		public void Tick(World world) { }
+		public void Tick(World world)
+		{
+			if (!self.IsInWorld || self.IsDead())
+				world.CancelInputMode();
+		}
 		public void RenderAfterWorld(WorldRenderer wr, World world) { }
 		public void RenderBeforeWorld(WorldRenderer wr, World world)
 		{
+			if (!self.IsInWorld)
+				return;
+
+			if (self.Owner != self.World.LocalPlayer)
+				return;
+
 			wr.DrawRangeCircle(
 				Color.FromArgb(128, Color.DeepSkyBlue),
 				self.CenterLocation.ToFloat2(), (int)self.Trait<ChronoshiftDeploy>().Info.JumpDistance);

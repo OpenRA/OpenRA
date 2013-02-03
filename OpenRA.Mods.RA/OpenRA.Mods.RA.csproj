@@ -240,9 +240,11 @@
     <Compile Include="Minelayer.cs" />
     <Compile Include="Missions\Allies01Script.cs" />
     <Compile Include="Missions\Allies02Script.cs" />
+    <Compile Include="Missions\Allies03Script.cs" />
     <Compile Include="Missions\CountdownTimer.cs" />
     <Compile Include="Missions\DefaultShellmapScript.cs" />
     <Compile Include="Missions\MissionUtils.cs" />
+    <Compile Include="Missions\MissionWidgets.cs" />
     <Compile Include="Missions\Objective.cs" />
     <Compile Include="Modifiers\FrozenUnderFog.cs" />
     <Compile Include="Modifiers\HiddenUnderFog.cs" />

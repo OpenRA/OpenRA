@@ -24,13 +24,18 @@ namespace OpenRA.Mods.RA.Missions
 		public static IEnumerable<Actor> FindAliveCombatantActorsInCircle(this World world, PPos location, int range)
 		{
 			return world.FindUnitsInCircle(location, Game.CellSize * range)
-				.Where(a => a.IsInWorld && a != world.WorldActor && !a.IsDead() && !a.Owner.NonCombatant);
+				.Where(u => u.IsInWorld && u != world.WorldActor && !u.IsDead() && !u.Owner.NonCombatant);
+		}
+
+		public static IEnumerable<Actor> FindAliveCombatantActorsInBox(this World world, PPos a, PPos b)
+		{
+			return world.FindUnits(a, b).Where(u => u.IsInWorld && u != world.WorldActor && !u.IsDead() && !u.Owner.NonCombatant);
 		}
 
 		public static IEnumerable<Actor> FindAliveNonCombatantActorsInCircle(this World world, PPos location, int range)
 		{
 			return world.FindUnitsInCircle(location, Game.CellSize * range)
-				.Where(a => a.IsInWorld && a != world.WorldActor && !a.IsDead() && a.Owner.NonCombatant);
+				.Where(u => u.IsInWorld && u != world.WorldActor && !u.IsDead() && u.Owner.NonCombatant);
 		}
 
 		public static Actor ExtractUnitWithChinook(World world, Player owner, Actor unit, CPos entry, CPos lz, CPos exit)

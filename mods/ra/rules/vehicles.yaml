@@ -5,6 +5,7 @@ V2RL:
 		BuildPaletteOrder: 40
 		Prerequisites: dome
 		Owner: soviet
+		Hotkey: v
 	Valued:
 		Cost: 700
 	Tooltip:
@@ -32,6 +33,7 @@ V2RL:
 		Queue: Vehicle
 		BuildPaletteOrder: 40
 		Owner: allies
+		Hotkey: g
 	Valued:
 		Cost: 700
 	Tooltip:
@@ -66,6 +68,7 @@ V2RL:
 		BuildPaletteOrder: 60
 		Prerequisites: fix
 		Owner: allies
+		Hotkey: f
 	Valued:
 		Cost: 850
 	Tooltip:
@@ -103,6 +106,7 @@ V2RL:
 		BuildPaletteOrder: 40
 		Prerequisites: fix
 		Owner: soviet
+		Hotkey: h
 	Valued:
 		Cost: 1150
 	Tooltip:
@@ -141,6 +145,7 @@ V2RL:
 		BuildPaletteOrder: 100
 		Prerequisites: fix,stek
 		Owner: soviet
+		Hotkey: m
 	Valued:
 		Cost: 1800
 	Tooltip:
@@ -187,6 +192,7 @@ ARTY:
 		BuildPaletteOrder: 80
 		Prerequisites: dome
 		Owner: allies
+		Hotkey: r
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -216,6 +222,7 @@ HARV:
 		BuildPaletteOrder: 10
 		Prerequisites: proc
 		Owner: allies,soviet
+		Hotkey: e
 	Valued:
 		Cost: 1100
 	Tooltip:
@@ -258,6 +265,7 @@ MCV:
 		BuildPaletteOrder: 110
 		Prerequisites: fix
 		Owner: allies,soviet
+		Hotkey: b
 	Valued:
 		Cost: 2000
 	Tooltip:
@@ -294,6 +302,7 @@ JEEP:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
 		Owner: allies
+		Hotkey: n
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -328,6 +337,7 @@ APC:
 		Queue: Vehicle
 		BuildPaletteOrder: 50
 		Owner: soviet
+		Hotkey: c
 	Valued:
 		Cost: 850
 	Tooltip:
@@ -360,6 +370,7 @@ MNLY.AP:
 		BuildPaletteOrder: 30
 		Prerequisites: fix
 		Owner: soviet
+		Hotkey: p
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -391,6 +402,7 @@ MNLY.AT:
 		BuildPaletteOrder: 30
 		Prerequisites: fix
 		Owner: allies
+		Hotkey: i
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -422,6 +434,7 @@ TRUK:
 		BuildPaletteOrder: 120
 		Prerequisites: weap
 		Owner: allies, soviet
+		Hotkey: u
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -517,6 +530,7 @@ TTNK:
 		BuildPaletteOrder: 130
 		Prerequisites: stek,tsla
 		Owner: soviet
+		Hotkey: l
 	Valued:
 		Cost: 1350
 	Tooltip:
@@ -545,6 +559,7 @@ FTRK:
 		Queue: Vehicle
 		BuildPaletteOrder: 30
 		Owner: soviet
+		Hotkey: k
 	Valued:
 		Cost: 600
 	Tooltip:
@@ -580,17 +595,18 @@ DTRK:
 		BuildPaletteOrder: 140
 		Prerequisites: stek
 		Owner: soviet
+		Hotkey: o
 	Valued:
-		Cost: 1500
+		Cost: 2500
 	Tooltip:
 		Name: Demolition Truck
 		Description: Demolition Truck, actively armed with explosives.\n  Strong vs Everything\n  Weak vs Everything
 	Health:
-		HP: 110
+		HP: 50
 	Armor:
 		Type: Light
 	Mobile:
-		Speed: 8
+		Speed: 6
 	RevealsShroud:
 		Range: 3
 	RenderUnit:
@@ -611,6 +627,7 @@ CTNK:
 		BuildPaletteOrder: 140
 		Prerequisites: atek
 		Owner: allies
+		Hotkey: j
 	Valued:
 		Cost: 1200
 	Tooltip:
@@ -619,13 +636,13 @@ CTNK:
 	Selectable:
 		Bounds: 28,28
 	Health:
-		HP: 200
+		HP: 260
 	Armor:
 		Type: Light
 	Mobile:
 		Speed: 8
 	RevealsShroud:
-		Range: 3
+		Range: 6
 	RenderUnit:
 	AutoTarget:
 	AttackFrontal:

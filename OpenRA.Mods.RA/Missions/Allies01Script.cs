@@ -8,7 +8,6 @@
  */
 #endregion
 
-using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -201,14 +200,8 @@ namespace OpenRA.Mods.RA.Missions
 
 		void SendAttackWave()
 		{
-			foreach (var unit in world.Actors.Where(
-				a => a != world.WorldActor
-				&& a.IsInWorld
-				&& a.Owner == soviets
-				&& !a.IsDead()
-				&& a.IsIdle
-				&& a.HasTrait<Mobile>()
-				&& a.HasTrait<AttackBase>()))
+			foreach (var unit in world.Actors.Where(a => a != world.WorldActor && a.IsInWorld && a.Owner == soviets && !a.IsDead() && a.IsIdle
+				&& a.HasTrait<Mobile>() && a.HasTrait<AttackBase>()))
 			{
 				Activity innerActivity;
 				if (einstein != null)
