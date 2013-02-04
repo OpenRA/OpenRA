@@ -195,7 +195,7 @@ namespace OpenRA.Mods.RA.Missions
 				}
 			}
 			if (!world.Actors.Any(a => a.Owner == greece && a.IsInWorld && !a.IsDead()
-				&& ((a.HasTrait<Building>() && !a.HasTrait<Wall>()) || a.HasTrait<BaseBuilding>())))
+				&& ((a.HasTrait<Building>() && !a.HasTrait<Wall>()) || a.HasTrait<BaseBuilding>() || a.HasTrait<Mobile>())))
 			{
 				objectives[BriefingID].Status = ObjectiveStatus.Failed;
 				OnObjectivesUpdated(true);
