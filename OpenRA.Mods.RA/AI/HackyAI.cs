@@ -281,7 +281,7 @@ namespace OpenRA.Mods.RA.AI
 
 			var newUnits = self.World.ActorsWithTrait<IMove>()
 				.Where(a => a.Actor.Owner == p && !a.Actor.HasTrait<BaseBuilding>()
-					&& !activeUnits.Contains(a.Actor))
+					&& !activeUnits.Contains(a.Actor) && a.Actor.IsInWorld)
 					.Select(a => a.Actor).ToArray();
 
 			foreach (var a in newUnits)
