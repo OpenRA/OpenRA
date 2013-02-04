@@ -49,6 +49,7 @@ Players:
 		OwnsWorld: True
 		NonCombatant: True
 		Race: allies
+		Enemies: Turkey
 	PlayerReference@Ukraine:
 		Name: Ukraine
 		Race: soviet
@@ -59,7 +60,7 @@ Players:
 		Name: Turkey
 		Race: allies
 		ColorRamp: 14,123,167,28
-		Enemies: Greece,BadGuy,USSR,Ukraine
+		Enemies: Greece,BadGuy,USSR,Ukraine,Neutral
 	PlayerReference@Creeps:
 		Name: Creeps
 		NonCombatant: True
@@ -1783,7 +1784,7 @@ Actors:
 		Owner: Neutral
 		Health: 0.1367188
 		Facing: 0
-	Actor513: hosp
+	Hospital: hosp
 		Location: 43,43
 		Owner: Neutral
 		Health: 1
@@ -2430,13 +2431,13 @@ Actors:
 	AlliedBaseTopLeft: waypoint
 		Location: 19,16
 		Owner: Neutral
-	waypoint19: waypoint
+	HospitalCivilianSpawnPoint: waypoint
 		Location: 44,43
 		Owner: Neutral
 	waypoint20: waypoint
 		Location: 43,48
 		Owner: Neutral
-	waypoint21: waypoint
+	HospitalSuperTankPoint: waypoint
 		Location: 47,46
 		Owner: Neutral
 	waypoint22: waypoint
@@ -2460,7 +2461,7 @@ Actors:
 	waypoint28: waypoint
 		Location: 86,40
 		Owner: Neutral
-	waypoint29: waypoint
+	ProvingGroundsCameraPoint: waypoint
 		Location: 85,55
 		Owner: Neutral
 	waypoint30: waypoint
@@ -2535,6 +2536,7 @@ Rules:
 			SecondStartUnits: e1, e1, e1, e3, e3
 			ThirdStartUnits: spy, e6, e6
 			FirstBaseUnits: 1tnk, 1tnk, 2tnk, arty, arty
+			CivilianEvacuees: c1, c2, c5, c7, c8
 		MissionObjectivesPanel:
 			ObjectivesPanel: MISSION_OBJECTIVES
 	DEMITRI:
@@ -2723,7 +2725,7 @@ Weapons:
 			Image: 120MM
 		Warhead:
 			Spread: 3
-			Versus: 
+			Versus:
 				None: 20%
 				Wood: 75%
 				Light: 75%
