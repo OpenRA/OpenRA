@@ -2,7 +2,7 @@
 -- an abstract syntax tree (AST)
 local file = debug.getinfo(1, "S").source
 if string.find(file, "@") == 1 then file = string.sub(file, 2) end
-package.path = package.path .. ';' .. string.gsub(file, "metalua%.lua$", "?.lua")
+package.path = string.gsub(file, "metalua%.lua$", "?.lua") .. ';' .. package.path
 
 -- these modules are sufficient to build an AST from a source file/string
 require "lexer"
