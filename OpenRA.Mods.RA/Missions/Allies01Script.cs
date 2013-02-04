@@ -147,7 +147,7 @@ namespace OpenRA.Mods.RA.Missions
 			else if (einstein != null && einstein.Destroyed)
 				MissionFailed("Einstein was killed.");
 
-			ManageSovietOre();
+			MissionUtils.CapOre(soviets);
 		}
 
 		void LabSecured()
@@ -171,14 +171,6 @@ namespace OpenRA.Mods.RA.Missions
 				if (infantry != null)
 					infantry.ResolveOrder(infantry.self, Order.StartProduction(infantry.self, "e1", 5));
 			}
-		}
-
-		void ManageSovietOre()
-		{
-			var res = soviets.PlayerActor.Trait<PlayerResources>();
-
-			if (res.Ore > res.OreCapacity * 0.8)
-				res.TakeOre(res.OreCapacity / 10);
 		}
 
 		void SpawnSignalFlare()

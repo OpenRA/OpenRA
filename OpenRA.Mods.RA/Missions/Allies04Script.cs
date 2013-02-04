@@ -167,7 +167,7 @@ namespace OpenRA.Mods.RA.Missions
 			foreach (var patrol in patrols)
 				patrol.DoPatrol();
 
-			ManageSovietOre();
+			MissionUtils.CapOre(soviets);
 
 			BaseGuardTick();
 
@@ -216,13 +216,6 @@ namespace OpenRA.Mods.RA.Missions
 			objectives[DestroyID].Status = ObjectiveStatus.Failed;
 			OnObjectivesUpdated(true);
 			MissionFailed("The Soviet research laboratory was not secured in time.");
-		}
-
-		void ManageSovietOre()
-		{
-			var res = soviets.PlayerActor.Trait<PlayerResources>();
-			if (res.Ore > res.OreCapacity * 0.8)
-				res.TakeOre(res.OreCapacity / 10);
 		}
 
 		void BaseGuardTick()

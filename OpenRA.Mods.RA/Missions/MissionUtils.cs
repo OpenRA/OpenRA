@@ -205,18 +205,26 @@ namespace OpenRA.Mods.RA.Missions
 			Sound.Play("misnlst1.aud");
 		}
 
-		public static void SpawnAndMoveActors(World world, Player player, string[] actorNames, CPos entry, CPos move, int facing)
+		public static Actor CreateActor(this World world, bool addToWorld, string name, Player owner, CPos? location, int? facing)
 		{
-			foreach (var actor in actorNames)
-			{
-				world.CreateActor(actor, new TypeDictionary
-				{ 
-					new LocationInit(entry),
-					new OwnerInit(player),
-					new FacingInit(facing)
-				})
-				.QueueActivity(new Move.Move(move));
-			}
+			var td = new TypeDictionary { new OwnerInit(owner) };
+			if (location.HasValue)
+				td.Add(new LocationInit(location.Value));
+			if (facing.HasValue)
+				td.Add(new FacingInit(facing.Value));
+			return world.CreateActor(addToWorld, name, td);
+		}
+
+		public static Actor CreateActor(this World world, string name, Player owner, CPos? location, int? facing)
+		{
+			return CreateActor(world, true, name, owner, location, facing);
+		}
+
+		public static void CapOre(Player player)
+		{
+			var res = player.PlayerActor.Trait<PlayerResources>();
+			if (res.Ore > res.OreCapacity * 0.8)
+				res.Ore = (int)(res.OreCapacity * 0.8);
 		}
 	}
 
