@@ -246,6 +246,7 @@
     <Compile Include="Missions\DefaultShellmapScript.cs" />
     <Compile Include="Missions\MissionUtils.cs" />
     <Compile Include="Missions\MissionWidgets.cs" />
+    <Compile Include="Missions\MonsterTankMadnessScript.cs" />
     <Compile Include="Missions\Objective.cs" />
     <Compile Include="Missions\Soviet01ClassicScript.cs" />
     <Compile Include="Modifiers\FrozenUnderFog.cs" />

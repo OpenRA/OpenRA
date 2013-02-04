@@ -204,5 +204,34 @@ namespace OpenRA.Mods.RA.Missions
 
 			Sound.Play("misnlst1.aud");
 		}
+
+		public static void SpawnAndMoveActors(World world, Player player, string[] actorNames, CPos entry, CPos move, int facing)
+		{
+			foreach (var actor in actorNames)
+			{
+				world.CreateActor(actor, new TypeDictionary
+				{ 
+					new LocationInit(entry),
+					new OwnerInit(player),
+					new FacingInit(facing)
+				})
+				.QueueActivity(new Move.Move(move));
+			}
+		}
+	}
+
+	class TransformedAction : INotifyTransformed
+	{
+		Action<Actor> a;
+
+		public TransformedAction(Action<Actor> a)
+		{
+			this.a = a;
+		}
+
+		public void OnTransformed(Actor toActor)
+		{
+			a(toActor);
+		}
 	}
 }

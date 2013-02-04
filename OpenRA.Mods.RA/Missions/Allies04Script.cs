@@ -253,7 +253,7 @@ namespace OpenRA.Mods.RA.Missions
 				foreach (var actor in world.Actors.Where(a => !a.IsDead() && a.HasTrait<Allies04TransformOnLabInfiltrate>()))
 					actor.QueueActivity(false, new Transform(actor, actor.Info.Traits.Get<Allies04TransformOnLabInfiltrateInfo>().ToActor) { SkipMakeAnims = true });
 
-				lab.AddTrait(new Allies04TransformedAction(self => lab = self));
+				lab.AddTrait(new TransformedAction(self => lab = self));
 			}
 		}
 
@@ -278,7 +278,7 @@ namespace OpenRA.Mods.RA.Missions
 					allies2.PlayerActor.Trait<PlayerResources>().GiveCash(2500);
 			}));
 
-			lst.AddTrait(new Allies04TransformedAction(self =>
+			lst.AddTrait(new TransformedAction(self =>
 			{
 				self.QueueActivity(new Wait(10));
 				self.QueueActivity(new Move.Move(reinforcementsEntryPoint.Location));
@@ -333,7 +333,7 @@ namespace OpenRA.Mods.RA.Missions
 				lst.Trait<Cargo>().Load(lst, allies2Spy);
 			}
 
-			lst.AddTrait(new Allies04TransformedAction(self =>
+			lst.AddTrait(new TransformedAction(self =>
 			{
 				self.QueueActivity(new Wait(10));
 				self.QueueActivity(new Move.Move(spyReinforcementsExitPoint.Location));
@@ -555,19 +555,4 @@ namespace OpenRA.Mods.RA.Missions
 	}
 
 	class Allies04TransformOnLabInfiltrate { }
-
-	class Allies04TransformedAction : INotifyTransformed
-	{
-		Action<Actor> a;
-
-		public Allies04TransformedAction(Action<Actor> a)
-		{
-			this.a = a;
-		}
-
-		public void OnTransformed(Actor toActor)
-		{
-			a(toActor);
-		}
-	}
 }
