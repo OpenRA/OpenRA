@@ -594,6 +594,7 @@ OBLI:
 	Turreted:
 		ROT:255
 	AutoTarget:
+	-AutoTargetIgnore:
 	-RenderBuilding:
 	RenderRangeCircle:
 	-EmitInfantryOnSell:
