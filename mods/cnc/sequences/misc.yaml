@@ -85,16 +85,31 @@ explosion:
 	8: art-exp1
 		Start: 0
 		Length: *
-	building: fball1
-		Start: 0
-		Length: *
 	6: atomsfx
 		Start: 0
 		Length: *
 	6w: atomsfx
 		Start: 0
 		Length: *
-	chemball: chemball
+	piff: piff
+		Start: 0
+		Length: *
+	piffs: piffpiff
+		Start: 0
+		Length: *
+	small_napalm: napalm1
+		Start: 0
+		Length: *
+	med_napalm: napalm2		#air-strike's napalm bomblets' explosion
+		Start: 0
+		Length: *
+	big_napalm: napalm3		#huge
+		Start: 0
+		Length: *
+	chemball: chemball		#same size as small_napalm, but bright green.
+		Start: 0
+		Length: *
+	building: fball1
 		Start: 0
 		Length: *
 
