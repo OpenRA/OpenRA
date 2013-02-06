@@ -7,7 +7,7 @@ MCV:
 		Icon: mcvicnh
 		Description: Deploys into another Construction Yard.\n  Unarmed
 	Buildable:
-		BuildPaletteOrder: 70
+		BuildPaletteOrder: 10
 		Prerequisites: fix
 		Owner: gdi,nod
 	Selectable:
@@ -35,6 +35,9 @@ MCV:
 		HuskActor: MCV.Husk
 	-GainsExperience:
 	-AcceptsCloakCrate:
+	Explodes:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
 
 HARV:
 	Inherits: ^Tank
@@ -73,6 +76,9 @@ HARV:
 	LeavesHusk:
 		HuskActor: HARV.Husk
 	-GainsExperience:
+	Explodes:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
 
 APC:
 	Inherits: ^Tank
@@ -94,7 +100,7 @@ APC:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 5
+		Range: 6
 	Turreted:
 		ROT: 10
 	AttackTurreted:
@@ -196,7 +202,7 @@ BGGY:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 5
+		Range: 7
 	Turreted:
 		ROT: 10
 	AttackTurreted:
@@ -296,7 +302,7 @@ LTNK:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 4
+		Range: 6
 	Turreted:
 		ROT: 5
 	AttackTurreted:
@@ -321,7 +327,7 @@ MTNK:
 		Icon: mtnkicnh
 		Description: General-Purpose GDI Tank.\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
 	Buildable:
-		BuildPaletteOrder: 30
+		BuildPaletteOrder: 40
 		Prerequisites: hq
 		Owner: gdi
 	Mobile:
@@ -424,6 +430,9 @@ MSAM:
 	AutoTarget:
 	LeavesHusk:
 		HuskActor: MSAM.Husk
+	Explodes:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
 
 MLRS:
 	Inherits: ^Tank
@@ -434,7 +443,7 @@ MLRS:
 		Icon: mlrsicnh
 		Description: Long range artillery.\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks, Aircraft
 #	Buildable:
-#		BuildPaletteOrder: 60
+#		BuildPaletteOrder: 85
 #		Prerequisites: hq
 #		Owner: nod
 	Mobile:
@@ -458,6 +467,9 @@ MLRS:
 	AutoTarget:
 	LeavesHusk:
 		HuskActor: MLRS.Husk
+	Explodes:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
 
 STNK:
 	Inherits: ^Vehicle
@@ -483,7 +495,7 @@ STNK:
 		InitialDelay: 125
 		CloakDelay: 125
 		CloakSound: appear1.aud
-		UncloakSound: appear1.aud
+		UncloakSound: trans1.aud
 	AttackFrontal:
 		PrimaryWeapon: 227mm.stnk
 		PrimaryOffset: 0,-5,0,-3
