@@ -22,17 +22,12 @@ UnitExplodeSmall:
 			Heavy: 25%
 		Explosion: 8
 		InfDeath: 4
-		ImpactSound: xplos
+		ImpactSound: xplobig4
 
 GrenadierExplode:
 	Warhead:
 		Damage: 10
-		Spread: 3
-		Versus:
-			None: 90%
-			Wood: 75%
-			Light: 60%
-			Heavy: 25%
+		Spread: 9
 		Explosion: 8
 		InfDeath: 3
 		ImpactSound: xplos
@@ -71,8 +66,8 @@ IonCannon:
 		Spread: 6
 		Ore: true
 		Versus: 
-			None: 90%
-			Wood: 60%
+			None: 100%
+			Wood: 100%
 			Light: 60%
 			Heavy: 25%
 		InfDeath: 5
@@ -373,6 +368,7 @@ Chemspray:
 			Light: 75%
 			Heavy: 50%
 		InfDeath: 6
+		Explosion: chemball
 		SmudgeType: Scorch
 		ImpactSound: xplos
 
@@ -712,7 +708,7 @@ Napalm:
 		Explosion: 3
 		ImpactSound: flamer2
 		SmudgeType: Scorch
-		Damage: 100
+		Damage: 120
 
 Napalm.Crate:
 	Warhead:
@@ -806,7 +802,24 @@ Tiberium:
 		PreventProne: yes
 
 APCGun:
-	ROF: 10
+	ROF: 20
+	Range: 5
+	Report: gun20
+	ValidTargets: Ground
+	Projectile: Bullet
+		Speed: 100
+	Warhead:
+		Spread: 3
+		Versus:
+			Wood: 50%	
+			None: 50%	
+			Light: 75%	
+			Heavy: 75%	
+		Explosion: 5
+		Damage: 25
+
+APCGun.AA:
+	ROF: 20
 	Range: 7
 	Report: gun20
 	ValidTargets: Air
@@ -816,6 +829,6 @@ APCGun:
 	Warhead:
 		Spread: 5
 		Versus:
-			Light: 100%
+			Heavy: 50%
 		Explosion: 5
-		Damage: 12
+		Damage: 25
