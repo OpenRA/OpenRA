@@ -68,7 +68,6 @@ namespace OpenRA.Mods.RA.Missions
 		Actor startBridgeEndPoint;
 		Actor alliedBaseTopLeft;
 		Actor alliedBaseBottomRight;
-		Actor alliedBaseProc;
 		Actor alliedBaseEntryPoint;
 		Actor alliedBaseMovePoint;
 
@@ -302,7 +301,6 @@ namespace OpenRA.Mods.RA.Missions
 			startBridgeEndPoint = actors["StartBridgeEndPoint"];
 			alliedBaseTopLeft = actors["AlliedBaseTopLeft"];
 			alliedBaseBottomRight = actors["AlliedBaseBottomRight"];
-			alliedBaseProc = actors["AlliedBaseProc"];
 			alliedBaseEntryPoint = actors["AlliedBaseEntryPoint"];
 			alliedBaseMovePoint = actors["AlliedBaseMovePoint"];
 
