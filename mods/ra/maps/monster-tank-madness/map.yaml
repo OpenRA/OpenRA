@@ -1434,7 +1434,7 @@ Actors:
 		Owner: BadGuy
 		Health: 1
 		Facing: 0
-	Actor443: dome
+	SuperTankDome: dome.NoInfiltrate
 		Location: 90,32
 		Owner: BadGuy
 		Health: 1
@@ -2601,6 +2601,14 @@ Rules:
 			HP: 2000
 	SILO:
 		InfiltrateForCash:
+	DOME.NoInfiltrate:
+		Inherits: DOME
+		-Buildable:
+		Tooltip:
+			Icon: domeicon
+		RenderBuilding:
+			Image: DOME
+		-InfiltrateForExploration:
 	PROC.NoFreeActor:
 		Inherits: PROC
 		-Buildable:

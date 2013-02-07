@@ -8,16 +8,17 @@
  */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Air;
 using OpenRA.Mods.RA.Buildings;
+using OpenRA.Mods.RA.Move;
 using OpenRA.Network;
 using OpenRA.Traits;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 
 namespace OpenRA.Mods.RA.Missions
 {
@@ -226,6 +227,16 @@ namespace OpenRA.Mods.RA.Missions
 			if (res.Ore > res.OreCapacity * 0.8)
 				res.Ore = (int)(res.OreCapacity * 0.8);
 		}
+
+		public static void AttackNearestLandActor(bool queued, Actor self, Player enemyPlayer)
+		{
+			var enemies = self.World.Actors.Where(u => u.AppearsHostileTo(self) && u.Owner == enemyPlayer
+					&& ((u.HasTrait<Building>() && !u.HasTrait<Wall>()) || u.HasTrait<Mobile>()) && u.IsInWorld && !u.IsDead());
+
+			var enemy = enemies.OrderBy(u => (self.CenterLocation - u.CenterLocation).LengthSquared).FirstOrDefault();
+			if (enemy != null)
+				self.QueueActivity(queued, new AttackMove.AttackMoveActivity(self, new Attack(Target.FromActor(enemy), 3)));
+		}
 	}
 
 	class TransformedAction : INotifyTransformed
@@ -240,6 +251,21 @@ namespace OpenRA.Mods.RA.Missions
 		public void OnTransformed(Actor toActor)
 		{
 			a(toActor);
+		}
+	}
+
+	class InfiltrateAction : IAcceptSpy
+	{
+		Action<Actor> a;
+
+		public InfiltrateAction(Action<Actor> a)
+		{
+			this.a = a;
+		}
+
+		public void OnInfiltrate(Actor self, Actor spy)
+		{
+			a(spy);
 		}
 	}
 }

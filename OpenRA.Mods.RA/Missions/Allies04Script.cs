@@ -245,8 +245,6 @@ namespace OpenRA.Mods.RA.Missions
 
 				foreach (var actor in world.Actors.Where(a => !a.IsDead() && a.HasTrait<Allies04TransformOnLabInfiltrate>()))
 					actor.QueueActivity(false, new Transform(actor, actor.Info.Traits.Get<Allies04TransformOnLabInfiltrateInfo>().ToActor) { SkipMakeAnims = true });
-
-				lab.AddTrait(new TransformedAction(self => lab = self));
 			}
 		}
 
@@ -408,8 +406,10 @@ namespace OpenRA.Mods.RA.Missions
 				actors["PatrolPoint44"].Location,
 				actors["PatrolPoint45"].Location
 			};
+
 			lab = actors["Lab"];
-			lab.AddTrait(new Allies04InfiltrateAction(OnLabInfiltrated));
+			lab.AddTrait(new InfiltrateAction(OnLabInfiltrated));
+			lab.AddTrait(new TransformedAction(self => lab = self));
 
 			reinforcementsEntryPoint = actors["ReinforcementsEntryPoint"];
 			reinforcementsUnloadPoint = actors["ReinforcementsUnloadPoint"];
@@ -501,21 +501,6 @@ namespace OpenRA.Mods.RA.Missions
 		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
 		{
 			return r.Select(a => a.WithPalette(Palette(hijackable.OldOwner)));
-		}
-	}
-
-	class Allies04InfiltrateAction : IAcceptSpy
-	{
-		Action<Actor> a;
-
-		public Allies04InfiltrateAction(Action<Actor> a)
-		{
-			this.a = a;
-		}
-
-		public void OnInfiltrate(Actor self, Actor spy)
-		{
-			a(spy);
 		}
 	}
 

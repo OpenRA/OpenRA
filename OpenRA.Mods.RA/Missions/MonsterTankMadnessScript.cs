@@ -60,6 +60,7 @@ namespace OpenRA.Mods.RA.Missions
 		Player neutral;
 		Player greece;
 		Player ussr;
+		Player badGuy;
 		Player turkey;
 
 		Actor startEntryPoint;
@@ -87,12 +88,14 @@ namespace OpenRA.Mods.RA.Missions
 		Actor hospitalCivilianSpawnPoint;
 		Actor hospitalSuperTankPoint;
 
+		Actor superTankDome;
+
 		bool demitriExtracted;
 		bool hospitalEvacuated;
-
-		bool superTanksAttackingGreece;
+		bool superTanksDestroyed;
 
 		int baseTransferredTick = -1;
+		int superTankDomeInfiltratedTick = -1;
 
 		void MissionAccomplished(string text)
 		{
@@ -135,7 +138,7 @@ namespace OpenRA.Mods.RA.Missions
 					baseTransferredTick = world.FrameNumber;
 				}
 			}
-			else
+			else if (superTankDomeInfiltratedTick == -1)
 			{
 				if (world.FrameNumber == baseTransferredTick + 25 * 120)
 					foreach (var tank in superTanks.Where(t => !t.IsDead() && t.IsInWorld))
@@ -145,20 +148,30 @@ namespace OpenRA.Mods.RA.Missions
 					foreach (var tank in superTanks.Where(t => !t.IsDead() && t.IsInWorld))
 						tank.QueueActivity(false, new Move.Move(alliedBaseBottomRight.Location, 2));
 
-				else if (world.FrameNumber == baseTransferredTick + 25 * 260)
+				else if (world.FrameNumber == baseTransferredTick + 25 * 300)
 					foreach (var tank in superTanks.Where(t => !t.IsDead() && t.IsInWorld))
 						tank.QueueActivity(false, new Move.Move(demitriTriggerAreaCenter.Location, 2));
 
-				else if (world.FrameNumber == baseTransferredTick + 25 * 500)
+				else if (world.FrameNumber == baseTransferredTick + 25 * 540)
 					foreach (var tank in superTanks.Where(t => !t.IsDead() && t.IsInWorld))
-					{
-						tank.QueueActivity(false, new AttackMove.AttackMoveActivity(tank, new Move.Move(demitriLZ.Location, 2)));
-						superTanksAttackingGreece = true;
-					}
-
-				if (superTanksAttackingGreece)
+						tank.QueueActivity(false, new Move.Move(demitriLZ.Location, 4));
+			}
+			else
+			{
+				if (world.FrameNumber % 25 == 0)
 					foreach (var tank in superTanks.Where(t => !t.IsDead() && t.IsInWorld && t.IsIdle))
-						AttackNearestAlliedActor(tank);
+						MissionUtils.AttackNearestLandActor(false, tank, ussr);
+				if (world.FrameNumber == superTankDomeInfiltratedTick + 25 * 300)
+				{
+					foreach (var actor in world.Actors.Where(a => !a.IsDead() && (a.Owner == ussr || a.Owner == badGuy)))
+						actor.Kill(actor);
+				}
+				if (world.FrameNumber == superTankDomeInfiltratedTick + 25 * 325)
+				{
+					foreach (var tank in superTanks.Where(t => !t.IsDead()))
+						tank.Kill(tank);
+					superTanksDestroyed = true;
+				}
 			}
 			if (!demitriExtracted)
 			{
@@ -201,16 +214,16 @@ namespace OpenRA.Mods.RA.Missions
 				OnObjectivesUpdated(true);
 				MissionFailed("The remaining Allied forces in the area have been wiped out.");
 			}
-		}
-
-		void AttackNearestAlliedActor(Actor self)
-		{
-			var enemies = world.Actors.Where(u => u.AppearsHostileTo(self) && u.Owner == greece
-					&& ((u.HasTrait<Building>() && !u.HasTrait<Wall>()) || u.HasTrait<Mobile>()) && u.IsInWorld && !u.IsDead());
-
-			var enemy = enemies.OrderBy(u => (self.CenterLocation - u.CenterLocation).LengthSquared).FirstOrDefault();
-			if (enemy != null)
-				self.QueueActivity(new AttackMove.AttackMoveActivity(self, new Attack(Target.FromActor(enemy), 3)));
+			if (superTankDomeInfiltratedTick == -1 && superTankDome.IsDead())
+			{
+				objectives[BriefingID].Status = ObjectiveStatus.Failed;
+				OnObjectivesUpdated(true);
+				MissionFailed("The Soviet radar dome was destroyed.");
+			}
+			if (superTanksDestroyed && demitriExtracted)
+				objectives[BriefingID].Status = ObjectiveStatus.Completed;
+				OnObjectivesUpdated(true);
+				MissionUtils.CoopMissionAccomplished(world, "Dr. Demitri has been extracted and the super tanks have been dealt with.", greece);
 		}
 
 		void TransferActorToAllies(Actor actor)
@@ -256,6 +269,18 @@ namespace OpenRA.Mods.RA.Missions
 				.QueueActivity(new Move.Move(alliedBaseMovePoint.Location, 0));
 		}
 
+		void OnSuperTankDomeInfiltrated(Actor spy)
+		{
+			if (superTankDomeInfiltratedTick != -1) return;
+			superTankDome.QueueActivity(new Transform(superTankDome, "dome") { SkipMakeAnims = true });
+			turkey.Stances[greece] = turkey.Stances[neutral] = Stance.Ally;
+			greece.Stances[turkey] = neutral.Stances[turkey] = Stance.Ally;
+			greece.Shroud.ExploreAll(world);
+			foreach (var tank in superTanks.Where(t => !t.IsDead() && t.IsInWorld))
+				MissionUtils.AttackNearestLandActor(false, tank, ussr);
+			superTankDomeInfiltratedTick = world.FrameNumber;
+		}
+
 		public void WorldLoaded(World w)
 		{
 			world = w;
@@ -263,6 +288,7 @@ namespace OpenRA.Mods.RA.Missions
 			neutral = w.Players.Single(p => p.InternalName == "Neutral");
 			greece = w.Players.Single(p => p.InternalName == "Greece");
 			ussr = w.Players.Single(p => p.InternalName == "USSR");
+			badGuy = w.Players.Single(p => p.InternalName == "BadGuy");
 			turkey = w.Players.Single(p => p.InternalName == "Turkey");
 
 			greece.PlayerActor.Trait<PlayerResources>().Cash = 0;
@@ -291,6 +317,10 @@ namespace OpenRA.Mods.RA.Missions
 
 			provingGroundsCameraPoint = actors["ProvingGroundsCameraPoint"];
 			world.CreateActor("camera", greece, provingGroundsCameraPoint.Location, null);
+
+			superTankDome = actors["SuperTankDome"];
+			superTankDome.AddTrait(new InfiltrateAction(OnSuperTankDomeInfiltrated));
+			superTankDome.AddTrait(new TransformedAction(self => superTankDome = self));
 
 			Game.MoveViewport(startEntryPoint.Location.ToFloat2());
 			MissionUtils.PlayMissionMusic();
