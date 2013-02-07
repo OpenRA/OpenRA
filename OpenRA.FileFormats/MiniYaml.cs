@@ -200,8 +200,8 @@ namespace OpenRA.FileFormats
 
 			var ret = new List<MiniYamlNode>();
 
-			var aDict = a.ToDictionary( x => x.Key );
-			var bDict = b.ToDictionary( x => x.Key );
+			var aDict = a.ToDictionaryWithConflictLog(x => x.Key, "MiniYaml.Merge", null, x => "{0} (at {1})".F(x.Key, x.Location));
+			var bDict = b.ToDictionaryWithConflictLog(x => x.Key, "MiniYaml.Merge", null, x => "{0} (at {1})".F(x.Key, x.Location));
 			var keys = aDict.Keys.Union( bDict.Keys ).ToList();
 
 			var noInherit = keys.Where(x => x.Length > 0 && x[0] == '-')
