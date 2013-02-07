@@ -221,9 +221,11 @@ namespace OpenRA.Mods.RA.Missions
 				MissionFailed("The Soviet radar dome was destroyed.");
 			}
 			if (superTanksDestroyed && demitriExtracted)
+			{
 				objectives[BriefingID].Status = ObjectiveStatus.Completed;
 				OnObjectivesUpdated(true);
-				MissionUtils.CoopMissionAccomplished(world, "Dr. Demitri has been extracted and the super tanks have been dealt with.", greece);
+				MissionAccomplished("Dr. Demitri has been extracted and the super tanks have been dealt with.");
+			}
 		}
 
 		void TransferActorToAllies(Actor actor)
