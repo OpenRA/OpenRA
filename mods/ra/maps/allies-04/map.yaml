@@ -1900,6 +1900,10 @@ Rules:
 			Icon: TRUK
 		-SupplyTruck:
 		-RenderUnit:
+		Selectable:
+			Voice: SpyVoice
+		RevealsShroud:	
+			Range: 6
 	BARL:
 		Allies04TrivialBuilding:
 	BRL3:
