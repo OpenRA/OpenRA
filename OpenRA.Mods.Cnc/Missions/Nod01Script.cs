@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -16,7 +17,6 @@ using OpenRA.Mods.Cnc;
 using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Mods.RA.Activities;
-//using OpenRA.Mods.RA.Air;
 using OpenRA.Network;
 using OpenRA.Scripting;
 using OpenRA.Traits;
@@ -205,35 +205,12 @@ namespace OpenRA.Mods.Cnc.Missions
             nr2 = actors["NODReinforceNthB"];
             gr1 = actors["GDIReinforceNth"];
             Game.MoveViewport(nr1.Location.ToFloat2());
-            //Game.ConnectionStateChanged += StopMusic;
-            //causes an exception atm
-            //Media.PlayFMVFullscreen(w, "nod1.vqa", () =>
-            //{
-            //    Media.PlayFMVFullscreen(w, "landing.vqa", () =>
-            //    {
-            //        PlayMusic();
-            //    });
-            //});
-        }
-
-        void PlayMusic()
-        {
-            if (!Rules.InstalledMusic.Any())
-            {
-                return;
-            }
-            //somehow get this to play aoi, did it in the map.yaml
-            var track = Rules.InstalledMusic.Random(Game.CosmeticRandom);
-            Sound.PlayMusicThen(track.Value, PlayMusic);
-        }
-
-        void StopMusic(OrderManager orderManager)
-        {
-            if (!orderManager.GameStarted)
-            {
-                Sound.StopMusic();
-                Game.ConnectionStateChanged -= StopMusic;
-            }
+			Action afterFMV = () =>
+			{
+				Sound.PlayMusic(Rules.Music["aoi"]);
+			};
+			Game.RunAfterDelay(0, () => Media.PlayFMVFullscreen(w, "nod1pre.vqa", () =>
+			                            Media.PlayFMVFullscreen(w, "nod1.vqa", afterFMV)));
         }
     }
 }
