@@ -2,9 +2,9 @@ Selectable: True
 
 MapFormat: 5
 
-Title: NOD_01
+Title: Nikoomba's Demise
 
-Description: Recreation of first Nod mission from Cnc
+Description: Conversion of first Nod mission from Cnc
 
 Author: Dan9550
 
@@ -16,7 +16,7 @@ Bounds: 21,14,37,24
 
 UseAsShellmap: False
 
-Type: Mission
+Type: Campaign
 
 Players:
 	PlayerReference@Neutral:
@@ -285,11 +285,7 @@ Rules:
 		-CrateSpawner:
 		-SpawnMPUnits:
 		-MPStartLocations:
-		PlayMusicOnMapLoad:
-			Music: aoi2
 		Nod01Script:
-		MissionObjectivesPanel:
-			ObjectivesPanel: MISSION_OBJECTIVES
 	C10:
 		Tooltip:
 			Name: Nikoomba
