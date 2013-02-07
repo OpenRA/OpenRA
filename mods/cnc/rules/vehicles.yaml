@@ -101,6 +101,9 @@ APC:
 		PrimaryWeapon: APCGun
 		PrimaryOffset: 0,0,0,0
 		PrimaryLocalOffset: 2,-2,0,-7,0, -2,-2,0,-7,0
+		SecondaryWeapon: APCGun.AA
+		SecondaryOffset: 0,0,0,0
+		SecondaryLocalOffset: 2,-2,0,-7,0, -2,-2,0,-7,0
 	WithMuzzleFlash:
 	RenderUnitTurreted:
 	AutoTarget:
