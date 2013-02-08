@@ -139,19 +139,19 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			else if (superTankDomeInfiltratedTick == -1)
 			{
-				if (world.FrameNumber == baseTransferredTick + 25 * 120)
+				if (world.FrameNumber == baseTransferredTick + 25 * 100)
 					foreach (var tank in superTanks.Where(t => !t.IsDead() && t.IsInWorld))
 						tank.QueueActivity(false, new Move.Move(hospitalSuperTankPoint.Location, 2));
 
-				else if (world.FrameNumber == baseTransferredTick + 25 * 200)
+				else if (world.FrameNumber == baseTransferredTick + 25 * 180)
 					foreach (var tank in superTanks.Where(t => !t.IsDead() && t.IsInWorld))
 						tank.QueueActivity(false, new Move.Move(alliedBaseBottomRight.Location, 2));
 
-				else if (world.FrameNumber == baseTransferredTick + 25 * 300)
+				else if (world.FrameNumber == baseTransferredTick + 25 * 280)
 					foreach (var tank in superTanks.Where(t => !t.IsDead() && t.IsInWorld))
 						tank.QueueActivity(false, new Move.Move(demitriTriggerAreaCenter.Location, 2));
 
-				else if (world.FrameNumber == baseTransferredTick + 25 * 540)
+				else if (world.FrameNumber == baseTransferredTick + 25 * 480)
 					foreach (var tank in superTanks.Where(t => !t.IsDead() && t.IsInWorld))
 						tank.QueueActivity(false, new Move.Move(demitriLZ.Location, 4));
 			}
@@ -160,12 +160,12 @@ namespace OpenRA.Mods.RA.Missions
 				if (world.FrameNumber % 25 == 0)
 					foreach (var tank in superTanks.Where(t => !t.IsDead() && t.IsInWorld && t.IsIdle))
 						MissionUtils.AttackNearestLandActor(false, tank, ussr);
-				if (world.FrameNumber == superTankDomeInfiltratedTick + 25 * 300)
+				if (world.FrameNumber == superTankDomeInfiltratedTick + 25 * 180)
 				{
 					foreach (var actor in world.Actors.Where(a => !a.IsDead() && (a.Owner == ussr || a.Owner == badGuy)))
 						actor.Kill(actor);
 				}
-				if (world.FrameNumber == superTankDomeInfiltratedTick + 25 * 325)
+				if (world.FrameNumber == superTankDomeInfiltratedTick + 25 * 181)
 				{
 					foreach (var tank in superTanks.Where(t => !t.IsDead()))
 						tank.Kill(tank);
