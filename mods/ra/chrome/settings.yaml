@@ -2,13 +2,13 @@ Background@SETTINGS_MENU:
 	Logic:SettingsMenuLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM- HEIGHT)/2
-	Width: 450
-	Height: 350
+	Width: 540
+	Height: 400
 	Children:
 		Label@SETTINGS_LABEL_TITLE:
 			X:0
 			Y:20
-			Width:450
+			Width:540
 			Height:25
 			Text:Settings
 			Align:Center
@@ -48,8 +48,15 @@ Background@SETTINGS_MENU:
 					Height:25
 					Text:Display
 					Font:Bold
-				Button@DEBUG:
+				Button@KEYS:
 					X:315
+					Y:0
+					Width:90
+					Height:25
+					Text:Keys
+					Font:Bold
+				Button@DEBUG:
+					X:405
 					Y:0
 					Width:90
 					Height:25
@@ -228,6 +235,67 @@ Background@SETTINGS_MENU:
 					Height:20
 					Font:Regular
 					Text:Enable Pixel Doubling
+		Container@KEYS_PANE:
+			X:37
+			Y:100
+			Width:PARENT_RIGHT - 37
+			Height:PARENT_BOTTOM - 100
+			Visible: false
+			Children:
+				Label@KEYS_SPECIALHOTKEYSHEADLINE:
+					X:0
+					Y:0
+					Text: Special Hotkeys:
+					Font:Bold
+				ScrollPanel@SPECIALHOTKEY_LIST:
+					X:0
+					Y:20
+					Width:449
+					Height:85
+					Children:
+						ScrollItem@SPECIALHOTKEY_TEMPLATE:
+							Width:PARENT_RIGHT-27
+							Height:25
+							X:2
+							Y:0
+							Visible:false
+							Children:
+								Label@FUNCTION:
+									X:10
+									Width:200
+									Height:25
+								TextField@HOTKEY:
+									X:250
+									Width:139
+									Height:25
+									MaxLength:16
+				Label@KEYS_UNITCOMMANDSHEADLINE:
+					X:0
+					Y:130
+					Text: Hotkeys for Unit Commands:
+					Font:Bold
+				ScrollPanel@UNITCOMMANDHOTKEY_LIST:
+					X:0
+					Y:150
+					Width:449
+					Height:85
+					Children:
+						ScrollItem@UNITCOMMANDHOTKEY_TEMPLATE:
+							Width:PARENT_RIGHT-27
+							Height:25
+							X:2
+							Y:0
+							Visible:false
+							Children:
+								Label@FUNCTION:
+									X:10
+									Width:200
+									Height:25
+								TextField@HOTKEY:
+									X:250
+									Width:139
+									Height:25
+									MaxLength:16
 		Container@DEBUG_PANE:
 			X:37
 			Y:100
