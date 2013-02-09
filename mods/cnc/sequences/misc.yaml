@@ -121,7 +121,7 @@ explosion:
 	small_poof: veh-hit2		#for Grenades; tower missiles; boat missiles; APC AA gun.
 		Start: 0
 		Length: *
-	big_poof: art-exp1		#For UnitExplode (artillery); artillery shell hit; GrenadierExplode, 
+	poof: art-exp1			#For UnitExplode (artillery); artillery shell hit; GrenadierExplode, 
 		Start: 0
 		Length: *
 	small_building: veh-hit1	#like "building' explosion, but much smaller. (Used for heli-explosion in C&C Gold?)
