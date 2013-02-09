@@ -189,6 +189,7 @@ local function activateDocument(file, line, skipauto)
     if document.filePath and fileName:SameAs(wx.wxFileName(document.filePath)) then
       local editor = document.editor
       local selection = document.index
+      RequestAttention()
       notebook:SetSelection(selection)
       SetEditorSelection(selection)
       ClearAllCurrentLineMarkers()
