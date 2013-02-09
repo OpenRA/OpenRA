@@ -291,10 +291,10 @@ MCV:
 		NoTransformSounds: nodeply1.aud
 	RenderUnit:
 	MustBeDestroyed:
-	BaseBuilding:
 	-AttackMove:
 	LeavesHusk:
 		HuskActor: MCV.Husk
+	BaseBuilding:
 
 JEEP:
 	Inherits: ^Vehicle

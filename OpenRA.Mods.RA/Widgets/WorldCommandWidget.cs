@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -9,6 +9,8 @@
 #endregion
 
 using System;
+using OpenRA.Mods.RA.Buildings;
+using OpenRA.Mods.RA.Orders;
 using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
@@ -22,14 +24,6 @@ namespace OpenRA.Mods.RA.Widgets
 	public class WorldCommandWidget : Widget
 	{
 		public World World { get { return OrderManager.world; } }
-
-		public string AttackMoveKey = "a";
-		public string StopKey = "s";
-		public string ScatterKey = "x";
-		public string DeployKey = "f";
-		public string StanceCycleKey = "z";
-		public string BaseCycleKey = "backspace";
-		public string GotoLastEventKey = "space";
 
 		public readonly OrderManager OrderManager;
 
@@ -49,30 +43,55 @@ namespace OpenRA.Mods.RA.Widgets
 
 		bool ProcessInput(KeyInput e)
 		{
-			if (e.Modifiers == Modifiers.None && e.Event == KeyInputEvent.Down)
+			if (e.Event == KeyInputEvent.Down)
 			{
-				if (e.KeyName == BaseCycleKey)
+				if (e.Modifiers == Game.Settings.Keys.ModifierToSelectTab)
+				{
+					if (e.KeyName == Game.Settings.Keys.FirstTabKey)
+						return SwitchToTab(0);
+					if (e.KeyName == Game.Settings.Keys.SecondTabKey)
+						return SwitchToTab(1);
+					if (e.KeyName == Game.Settings.Keys.ThirdTabKey)
+						return SwitchToTab(2);
+					if (e.KeyName == Game.Settings.Keys.FourthTabKey)
+						return SwitchToTab(3);
+					if (e.KeyName == Game.Settings.Keys.FifthTabKey)
+						return SwitchToTab(4);
+					if (e.KeyName == Game.Settings.Keys.SixthTabKey)
+						return SwitchToTab(5);
+				}
+
+				if (e.KeyName == Game.Settings.Keys.FocusBaseKey)
 					return CycleBases();
 
-				if (e.KeyName == GotoLastEventKey)
+				if (e.KeyName == Game.Settings.Keys.FocusLastEventKey)
 					return GotoLastEvent();
 
-				if (!World.Selection.Actors.Any())
+				if (e.KeyName == Game.Settings.Keys.SellKey)
+					return PerformSwitchToSellMode();
+
+				if (e.KeyName == Game.Settings.Keys.PowerDownKey)
+					return PerformSwitchToPowerDownMode();
+
+				if (e.KeyName == Game.Settings.Keys.RepairKey)
+					return PerformSwitchToRepairMode();
+
+				if (!World.Selection.Actors.Any())	// Put all functions, that are no unit-functions, before this line!
 					return false;
 
-				if (e.KeyName == AttackMoveKey)
+				if ((e.KeyName == Game.Settings.Keys.AttackMoveKey) && unitsSelected())
 					return PerformAttackMove();
 
-				if (e.KeyName == StopKey)
+				if ((e.KeyName == Game.Settings.Keys.StopKey) && unitsSelected())
 					return PerformStop();
 
-				if (e.KeyName == ScatterKey)
+				if ((e.KeyName == Game.Settings.Keys.ScatterKey) && unitsSelected())
 					return PerformScatter();
 
-				if (e.KeyName == DeployKey)
+				if (e.KeyName == Game.Settings.Keys.DeployKey)
 					return PerformDeploy();
 
-				if (e.KeyName == StanceCycleKey)
+				if ((e.KeyName == Game.Settings.Keys.StanceCycleKey) && unitsSelected())
 					return PerformStanceCycle();
 			}
 
@@ -115,10 +134,11 @@ namespace OpenRA.Mods.RA.Widgets
 
 		bool PerformDeploy()
 		{
-			/* hack: three orders here -- ReturnToBase, DeployTransform, Unload. */
+			/* hack: multiple orders here */
 			PerformKeyboardOrderOnSelection(a => new Order("ReturnToBase", a, false));
 			PerformKeyboardOrderOnSelection(a => new Order("DeployTransform", a, false));
 			PerformKeyboardOrderOnSelection(a => new Order("Unload", a, false));
+			PerformKeyboardOrderOnSelection(a => new Order("DemoDeploy", a, false));
 			return true;
 		}
 
@@ -182,6 +202,56 @@ namespace OpenRA.Mods.RA.Widgets
 				return true;
 
 			Game.viewport.Center(eventNotifier.lastAttackLocation.ToFloat2());
+			return true;
+		}
+
+		private bool PerformSwitchToSellMode()
+		{
+			World.ToggleInputMode<SellOrderGenerator>();
+			return true;
+		}
+
+		private bool PerformSwitchToPowerDownMode()
+		{
+			World.ToggleInputMode<PowerDownOrderGenerator>();
+			return true;
+		}
+
+		private bool PerformSwitchToRepairMode()
+		{
+			World.ToggleInputMode<RepairOrderGenerator>();
+			return true;
+		}
+
+		bool unitsSelected()
+		{
+			if (World.Selection.Actors.Any( a => a.Owner == World.LocalPlayer && !a.HasTrait<Building>() )) return true;
+
+			return false;
+		}
+
+		private bool SwitchToTab(int num)
+		{
+			var types = World.Actors.Where(a => a.IsInWorld && (a.World.LocalPlayer == a.Owner))
+								  .SelectMany(a => a.TraitsImplementing<Production>())
+								  .SelectMany(t => t.Info.Produces)
+								  .ToArray();
+
+			if (types.Length == 0)
+				return false;
+			var tabs = World.LocalPlayer.PlayerActor.TraitsImplementing<ProductionQueue>().Where(t => types.Contains(t.Info.Type)).ToArray();
+			if (tabs.Length <= num)
+				return false;
+
+			var tab = tabs[num];
+			Ui.Root.Get<BuildPaletteWidget>("INGAME_BUILD_PALETTE")
+				.SetCurrentTab(tab);
+
+			if ((tab.Queue.Count() > 0) && (tab.CurrentDone))
+			{
+				if (Rules.Info[tab.CurrentItem().Item].Traits.Contains<BuildingInfo>())
+					World.OrderGenerator = new PlaceBuildingOrderGenerator(tab.self, tab.CurrentItem().Item);
+			}
 			return true;
 		}
 	}
