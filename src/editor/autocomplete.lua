@@ -206,23 +206,30 @@ local function resolveAssign(editor,tx)
     return tab,a
   end
 
-  local classname
-  local c = ""
+  local c
   if (assigns) then
     -- find assign
-    for w,s in tx:gmatch("([%w_]*)([%.:]?)") do
-
-      local old = classname
-      classname = classname or (assigns[c..w])
-      if (s ~= "" and old ~= classname) then
-        c = classname..s
-      else
-        c = c..w..s
+    local change = true
+    while (change) do
+      local classname = nil
+      c = ""
+      change = false
+      for w,s in tx:gmatch("([%w_]*)([%.:]?)") do
+        local old = classname
+        classname = classname or (assigns[c..w])
+        if (s ~= "" and old ~= classname) then
+          c = classname..s
+          change = true
+        else
+          c = c..w..s
+        end
       end
+      tx = c
     end
   else
     c = tx
   end
+  
   -- then work from api
   return getclass(ac,c)
 end
