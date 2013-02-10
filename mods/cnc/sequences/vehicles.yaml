@@ -185,7 +185,7 @@ apc:
 		Facings: 32
 	muzzle: apcmuz
 		Start: 0
-		Length: 6
+		Length: 3
 		Facings: 8
 	close:
 		Start: 32
