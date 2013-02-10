@@ -119,3 +119,12 @@ load.specs(function(file) return file:find('spec[/\\]cpp%.lua$') end)
 -- `wxstc.wxSTC_EOL_CRLF` or `wxstc.wxSTC_EOL_LF`;
 -- `nil` means OS default: CRLF on Windows and LF on all other systems.
 editor.defaulteol = wxstc.wxSTC_EOL_LF
+
+-- to turn off checking for mixed end-of-line encodings in loaded files
+editor.checkeol = false
+
+-- to force execution to continue immediately after starting debugging;
+-- set to `false` to disable (the interpreter will stop on the first line or
+-- when debugging starts); some interpreters may use `true` or `false`
+-- by default, but can be still reconfigured with this setting.
+debugger.runonstart = true

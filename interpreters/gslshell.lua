@@ -51,7 +51,9 @@ return {
       end
     end
 
-    if rundebug then DebuggerAttachDefault() end
+    if rundebug then
+      DebuggerAttachDefault({runstart = ide.config.debugger.runonstart == true})
+    end
 
     local cmd = ('"%s" "%s"'):format(gslshell, wfilename:GetFullPath())
     -- CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)

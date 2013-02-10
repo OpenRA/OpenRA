@@ -101,6 +101,8 @@ config = {
     autoactivate = false, -- auto-activate/open files during debugging
     smartindent = false, -- use smart indentation if spec allows
     foldcompact = true, -- use compact fold that includes empty lines
+    checkeol = true, -- check for eol encoding on loaded files and use it
+                     -- also report mixed eol encodings
     defaulteol = nil, -- default line-endings for new files; valid values are
                       -- wxstc.wxSTC_EOL_CRLF, wxstc.wxSTC_EOL_LF and nil (OS default)
   },
@@ -114,6 +116,8 @@ config = {
     verbose = false,
     hostname = nil, -- hostname to use when the detected one is incorrect
     port = nil, -- port number to use
+    runonstart = nil, -- if debugger should run immediately after starting
+    -- default values are different for different interpreters
   }
 
   outputshell = { -- output and shell settings

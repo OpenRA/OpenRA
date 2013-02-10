@@ -189,6 +189,7 @@ local function activateDocument(file, line, skipauto)
     if document.filePath and fileName:SameAs(wx.wxFileName(document.filePath)) then
       local editor = document.editor
       local selection = document.index
+      RequestAttention()
       notebook:SetSelection(selection)
       SetEditorSelection(selection)
       ClearAllCurrentLineMarkers()
@@ -384,7 +385,14 @@ debugger.listen = function()
         -- OR (2) it can "refuse" to load it if the client was started
         -- with start() method, which can't load new files
         -- if file and line are set, this indicates option #2
-        if file and line then
+        if err then
+          DisplayOutputLn(TR("Can't debug the script in the active editor window.")
+            .." "..TR("Compilation error")
+            ..":\n"..err)
+          return debugger.terminate()
+        elseif options.runstart then
+          -- do nothing as no activation is required; the script will be run
+        elseif file and line then
           local activated = activateDocument(file, line, true)
 
           -- if not found, check using full file path and reset basedir
@@ -443,11 +451,6 @@ debugger.listen = function()
           -- debugger may still be available for scratchpad,
           -- if the interpreter signals scratchpad support, so enable it.
           debugger.scratchable = ide.interpreter.scratchextloop ~= nil
-        elseif err then
-          DisplayOutputLn(TR("Can't debug the script in the active editor window.")
-            .." "..TR("Compilation error")
-            ..":\n"..err)
-          return debugger.terminate()
         else
           debugger.scratchable = true
           activateDocument(startfile, 1)
@@ -653,6 +656,9 @@ end
 function DebuggerShutdown()
   if debugger.server then debugger.terminate() end
   if debugger.pid then killClient() end
+  -- wait for a little bit as in some rare cases when closing the debugger
+  -- with a running application under OSX, the process crashes (wxlua2.8.12).
+  if ide.osname == "Macintosh" then wx.wxMilliSleep(100) end
 end
 
 function DebuggerStop()
