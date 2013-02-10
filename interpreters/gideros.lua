@@ -86,7 +86,7 @@ return {
     end
 
     if rundebug then DebuggerAttachDefault(
-      {redirect = "c", runstart = ide.config.debugger.runonstart == true}) end
+      {redirect = "c", runstart = ide.config.debugger.runonstart ~= false}) end
 
     local pid
     local remote = ide.config.gideros and ide.config.gideros.remote
@@ -99,7 +99,7 @@ return {
     else
       local cmd = ('"%s"'):format(gideros)
       -- CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
-      pid = CommandLineRun(cmd,self:fworkdir(wfilename),not mac,not remote,nil,nil,
+      pid = CommandLineRun(cmd,self:fworkdir(wfilename),not mac,true,nil,nil,
         function() ide.debugger.pid = nil end)
       if not pid then return end
     end
