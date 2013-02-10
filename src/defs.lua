@@ -116,6 +116,8 @@ config = {
     verbose = false,
     hostname = nil, -- hostname to use when the detected one is incorrect
     port = nil, -- port number to use
+    runonstart = nil, -- if debugger should run immediately after starting
+    -- default values are different for different interpreters
   }
 
   outputshell = { -- output and shell settings

@@ -44,7 +44,8 @@ return {
     local debug = rundebug and not mac
     if rundebug then
       -- start running the application right away
-      DebuggerAttachDefault({runstart=true, startwith = file,
+      DebuggerAttachDefault({startwith = file,
+        runstart = ide.config.debugger.runonstart ~= false,
         redirect = debug and "c", noshell = mac or nil, noeval = mac or nil})
 
       -- copy mobdebug.lua to Resources/ folder on Win and to the project folder on OSX
@@ -59,7 +60,7 @@ return {
       end
     end
 
-    local cmd = ('"%s" %s"%s"'):format(corona, debug  and "-debug " or "", file)
+    local cmd = ('"%s" %s"%s"'):format(corona, debug and "-debug " or "", file)
     -- CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
     return CommandLineRun(cmd,self:fworkdir(wfilename),true,false,nil,nil,
       function() ide.debugger.pid = nil end)

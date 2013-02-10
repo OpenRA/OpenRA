@@ -38,7 +38,9 @@ return {
       return
     end
 
-    if rundebug then DebuggerAttachDefault() end
+    if rundebug then
+      DebuggerAttachDefault({runstart = ide.config.debugger.runonstart == true})
+    end
 
     local cmd = ('"%s" "%s"%s'):format(love2d,
       self:fworkdir(wfilename), rundebug and ' -debug' or '')

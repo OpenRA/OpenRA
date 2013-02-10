@@ -46,7 +46,8 @@ return {
 
     if rundebug then
       -- start running the application right away
-      DebuggerAttachDefault({runstart=true, startwith = file})
+      DebuggerAttachDefault({startwith = file,
+        runstart = ide.config.debugger.runonstart ~= false})
       local code = (
 [[xpcall(function() 
     io.stdout:setvbuf('no')
