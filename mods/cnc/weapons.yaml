@@ -69,7 +69,7 @@ IonCannon:
 			None: 100%
 			Wood: 100%
 			Light: 60%
-			Heavy: 25%
+			Heavy: 45%
 		InfDeath: 5
 	Warhead@area:
 		DamageModel: PerCell
@@ -193,7 +193,7 @@ M16:
 		Damage: 15
 
 Rockets:
-	ROF: 60
+	ROF: 50
 	Range: 6
 	Report: BAZOOK1
 	ValidTargets: Ground, Air
@@ -212,9 +212,10 @@ Rockets:
 		Spread: 3
 		Versus: 
 			None: 50%
-			Wood: 75%
+			Wood: 100%
 			Light: 75%
-			Heavy: 50%
+			Heavy: 100%
+			Concrete: 25%
 		InfDeath: 4
 		Explosion: 4
 		ImpactSound: xplos
@@ -222,7 +223,7 @@ Rockets:
 		Damage: 40
 
 BikeRockets:
-	ROF: 60
+	ROF: 80
 	Range: 7
 	Report: BAZOOK1
 	ValidTargets: Ground, Air
@@ -242,15 +243,16 @@ BikeRockets:
 	Warhead:
 		Spread: 3
 		Versus: 
-			None: 50%
-			Wood: 30%
-			Light: 75%
-			Heavy: 30%
+			None: 25%
+			Wood: 75%
+			Light: 100%
+			Heavy: 75%
+			Concrete: 50%
 		InfDeath: 4
 		Explosion: 4
 		ImpactSound: xplos
 		SmudgeType: Crater
-		Damage: 35
+		Damage: 40
 
 OrcaAGMissiles:
 	ROF: 10
@@ -395,19 +397,20 @@ Grenade:
 		Damage: 50
 
 70mm:
-	ROF: 60
+	ROF: 30
 	Range: 4
 	Report: TNKFIRE3
 	Projectile: Bullet
 		Image: 120MM
-		Speed: 40
+		Speed: 60
 	Warhead:
 		Spread: 3
 		Versus: 
 			None: 30%
 			Wood: 75%
-			Light: 75%
+			Light: 100%
 			Heavy: 100%
+			Concrete: 50%
 		InfDeath: 4
 		Explosion: 4
 		ImpactSound: xplos
@@ -435,7 +438,7 @@ Grenade:
 		Damage: 30
 
 120mm:
-	ROF: 80
+	ROF: 40
 	Range: 4.75
 	Report: TNKFIRE6
 	Projectile: Bullet
@@ -446,8 +449,9 @@ Grenade:
 		Versus: 
 			None: 30%
 			Wood: 75%
-			Light: 75%
+			Light: 100%
 			Heavy: 100%
+			Concrete: 50%
 		InfDeath: 4
 		Explosion: 4
 		ImpactSound: xplos
@@ -455,10 +459,11 @@ Grenade:
 		Damage: 40
 
 120mmDual:
-	ROF: 80
+	ROF: 40
 	Range: 4.75
 	Report: TNKFIRE6
 	Burst: 2
+	BurstDelay: 5
 	Projectile: Bullet
 		Image: 120MM
 		Speed: 40
@@ -467,8 +472,9 @@ Grenade:
 		Versus: 
 			None: 30%
 			Wood: 75%
-			Light: 75%
+			Light: 100%
 			Heavy: 100%
+			Concrete: 50%
 		InfDeath: 4
 		Explosion: 4
 		ImpactSound: xplos
@@ -553,7 +559,7 @@ MammothMissiles:
 			Heavy: 50%
 		InfDeath: 4
 		Explosion: 4
-		ImpactSound: xplos
+		ImpactSound: xplobig4
 		SmudgeType: Crater
 		Damage: 100
 
@@ -703,7 +709,7 @@ Napalm:
 			None: 90%
 			Wood: 100%
 			Light: 60%
-			Heavy: 25%
+			Heavy: 50%
 		InfDeath: 5
 		Explosion: 3
 		ImpactSound: flamer2
