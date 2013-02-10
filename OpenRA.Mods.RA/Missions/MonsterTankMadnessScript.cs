@@ -8,14 +8,13 @@
  */
 #endregion
 
+using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Buildings;
+using OpenRA.Mods.RA.Move;
+using OpenRA.Traits;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using OpenRA.Traits;
-using OpenRA.FileFormats;
-using OpenRA.Mods.RA.Activities;
-using OpenRA.Mods.RA.Move;
-using OpenRA.Mods.RA.Buildings;
 
 namespace OpenRA.Mods.RA.Missions
 {
@@ -45,15 +44,25 @@ namespace OpenRA.Mods.RA.Missions
 
 		Dictionary<int, Objective> objectives = new Dictionary<int, Objective>
 		{
-			{ BriefingID, new Objective(ObjectiveType.Primary, Briefing, ObjectiveStatus.InProgress) }
+			{ FindOutpostID, new Objective(ObjectiveType.Primary, FindOutpost, ObjectiveStatus.InProgress) },
+			{ EvacuateDemitriID, new Objective(ObjectiveType.Primary, EvacuateDemitri, ObjectiveStatus.InProgress) },
+			{ InfiltrateRadarDomeID, new Objective(ObjectiveType.Primary, InfiltrateRadarDome, ObjectiveStatus.InProgress) },
 		};
 
-		const int BriefingID = 0;
-		const string Briefing = "Dr. Demitri, creator of a Soviet Super Tank, wants to defect."
-							+ " We planned to extract him while the Soviets were testing their new weapon, but something has gone wrong."
-							+ " The Super Tanks are out of control, and Demitri is missing -- likely hiding in the village to the far south."
-							+ " Find our outpost and start repairs on it, then find and evacuate Demitri."
-							+ " As for the tanks, we can reprogram them. Send a spy into the Soviet radar dome in the NE, turning the tanks on their creators.";
+		const int FindOutpostID = 0;
+		const string FindOutpost = "Find our outpost and start repairs on it.";
+
+		const int EvacuateDemitriID = 1;
+		const string EvacuateDemitri = "Find and evacuate Dr. Demitri. He is missing -- likely hiding in the village to the far south.";
+
+		const int InfiltrateRadarDomeID = 2;
+		const string InfiltrateRadarDome = "Reprogram the Super Tanks by sending a spy into the Soviet radar dome.";
+
+		//const string Briefing = "Dr. Demitri, creator of a Soviet Super Tank, wants to defect."
+		//					+ " We planned to extract him while the Soviets were testing their new weapon, but something has gone wrong."
+		//					+ " The Super Tanks are out of control, and Demitri is missing -- likely hiding in the village to the far south."
+		//					+ " Find our outpost and start repairs on it, then find and evacuate Demitri."
+		//					+ " As for the tanks, we can reprogram them. Send a spy into the Soviet radar dome in the NE, turning the tanks on their creators.";
 
 		World world;
 
@@ -89,7 +98,6 @@ namespace OpenRA.Mods.RA.Missions
 
 		Actor superTankDome;
 
-		bool demitriExtracted;
 		bool hospitalEvacuated;
 		bool superTanksDestroyed;
 
@@ -135,6 +143,8 @@ namespace OpenRA.Mods.RA.Missions
 					foreach (var actor in actorsInBase)
 						TransferActorToAllies(actor);
 					baseTransferredTick = world.FrameNumber;
+					objectives[FindOutpostID].Status = ObjectiveStatus.Completed;
+					OnObjectivesUpdated(true);
 				}
 			}
 			else if (superTankDomeInfiltratedTick == -1)
@@ -172,13 +182,13 @@ namespace OpenRA.Mods.RA.Missions
 					superTanksDestroyed = true;
 				}
 			}
-			if (!demitriExtracted)
+			if (objectives[EvacuateDemitriID].Status != ObjectiveStatus.Completed)
 			{
 				if (demitri == null)
 				{
 					if (demitriChurch.IsDead())
 					{
-						objectives[BriefingID].Status = ObjectiveStatus.Failed;
+						objectives[EvacuateDemitriID].Status = ObjectiveStatus.Failed;
 						OnObjectivesUpdated(true);
 						MissionFailed("Dr. Demitri was killed.");
 					}
@@ -195,7 +205,7 @@ namespace OpenRA.Mods.RA.Missions
 				}
 				else if (demitri.IsDead())
 				{
-					objectives[BriefingID].Status = ObjectiveStatus.Failed;
+					objectives[EvacuateDemitriID].Status = ObjectiveStatus.Failed;
 					OnObjectivesUpdated(true);
 					MissionFailed("Dr. Demitri was killed.");
 				}
@@ -203,26 +213,23 @@ namespace OpenRA.Mods.RA.Missions
 				{
 					demitriLZFlare.Destroy();
 					SpawnAndMoveAlliedBaseUnits(info.FirstBaseUnits);
-					demitriExtracted = true;
+					objectives[EvacuateDemitriID].Status = ObjectiveStatus.Completed;
+					OnObjectivesUpdated(true);
 				}
 			}
 			if (!world.Actors.Any(a => a.Owner == greece && a.IsInWorld && !a.IsDead()
 				&& ((a.HasTrait<Building>() && !a.HasTrait<Wall>()) || a.HasTrait<BaseBuilding>() || a.HasTrait<Mobile>())))
 			{
-				objectives[BriefingID].Status = ObjectiveStatus.Failed;
-				OnObjectivesUpdated(true);
 				MissionFailed("The remaining Allied forces in the area have been wiped out.");
 			}
 			if (superTankDomeInfiltratedTick == -1 && superTankDome.IsDead())
 			{
-				objectives[BriefingID].Status = ObjectiveStatus.Failed;
+				objectives[InfiltrateRadarDomeID].Status = ObjectiveStatus.Failed;
 				OnObjectivesUpdated(true);
 				MissionFailed("The Soviet radar dome was destroyed.");
 			}
-			if (superTanksDestroyed && demitriExtracted)
+			if (superTanksDestroyed && objectives[EvacuateDemitriID].Status == ObjectiveStatus.Completed)
 			{
-				objectives[BriefingID].Status = ObjectiveStatus.Completed;
-				OnObjectivesUpdated(true);
 				MissionAccomplished("Dr. Demitri has been extracted and the super tanks have been dealt with.");
 			}
 		}
@@ -280,6 +287,8 @@ namespace OpenRA.Mods.RA.Missions
 			foreach (var tank in superTanks.Where(t => !t.IsDead() && t.IsInWorld))
 				MissionUtils.AttackNearestLandActor(false, tank, ussr);
 			superTankDomeInfiltratedTick = world.FrameNumber;
+			objectives[InfiltrateRadarDomeID].Status = ObjectiveStatus.Completed;
+			OnObjectivesUpdated(true);
 		}
 
 		public void WorldLoaded(World w)
