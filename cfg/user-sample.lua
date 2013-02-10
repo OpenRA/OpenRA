@@ -119,3 +119,6 @@ load.specs(function(file) return file:find('spec[/\\]cpp%.lua$') end)
 -- `wxstc.wxSTC_EOL_CRLF` or `wxstc.wxSTC_EOL_LF`;
 -- `nil` means OS default: CRLF on Windows and LF on all other systems.
 editor.defaulteol = wxstc.wxSTC_EOL_LF
+
+-- to turn off checking for mixed end-of-line encodings in loaded files
+editor.checkeol = false
