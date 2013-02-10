@@ -105,9 +105,6 @@ return {
         local varname = "([%w_%.]+)"
         local identifier = "([%w_%.:%s]+)"
         
-        -- FIXME identifier could be class.var [ x ]
-        -- (contain spaces..)
-
         -- special hint
         local typ,var = tx:match("%s*%-%-=%s*"..varname.."%s+"..identifier)
         if (var and typ) then
