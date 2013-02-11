@@ -266,12 +266,7 @@ end
 
 function RequestAttention()
   local frame = ide.frame
-  if frame:IsActive() then return end
-  frame:Iconize(false) -- restore if minimized
-  frame:SetFocus()
-  frame:Raise() -- bring to front
-  frame:Show(true) -- show if hidden
-  if ide.osname ~= "Windows" then frame:RequestUserAttention() end
+  if not frame:IsActive() then frame:RequestUserAttention() end
 end
 
 local messages, lang, counter
