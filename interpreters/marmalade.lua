@@ -77,7 +77,8 @@ return {
 
     if rundebug then
       -- start running the application right away
-      DebuggerAttachDefault({redirect = "c", basedir = datadir})
+      DebuggerAttachDefault({redirect = mac and "r" or "c", basedir = datadir,
+        runstart = ide.config.debugger.runonstart ~= false})
 
       -- copy mobdebug.lua to the configured datadir or project folder
       local mdbc = MergeFullPath(datadir or projdir, "mobdebug.lua")
