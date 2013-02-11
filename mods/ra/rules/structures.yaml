@@ -17,9 +17,9 @@ MSLO:
 		Footprint: xx
 		Dimensions: 2,1
 	Health:
-		HP: 400
+		HP: 1000
 	Armor:
-		Type: Heavy
+		Type: Wood
 	RevealsShroud:
 		Range: 5
 	IronCurtainable:
@@ -197,7 +197,7 @@ IRON:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 400
+		HP: 1000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -235,7 +235,7 @@ PDOX:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 400
+		HP: 1000
 	Armor:
 		Type: Wood
 	RevealsShroud:
@@ -376,7 +376,7 @@ PBOX:
 	Health:
 		HP: 400
 	Armor:
-		Type: Wood
+		Type: Heavy
 	RevealsShroud:
 		Range: 6
 	IronCurtainable:
@@ -528,7 +528,7 @@ HBOX:
 	Health:
 		HP: 600
 	Armor:
-		Type: Wood
+		Type: Heavy
 	RevealsShroud:
 		Range: 6
 	Cloak:
@@ -863,9 +863,9 @@ FACT:
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
 	Health:
-		HP: 1000
+		HP: 1500
 	Armor:
-		Type: Heavy
+		Type: Wood
 	RevealsShroud:
 		Range: 5
 	Bib:
