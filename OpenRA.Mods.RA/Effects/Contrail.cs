@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA
 
 		public void Tick(Actor self)
 		{
-			history.Tick(self.CenterLocation - new PVecInt(0, move.Altitude) - Combat.GetTurretPosition(self, facing, contrailTurret));
+			history.Tick(self.CenterLocation - new PVecInt(0, move.Altitude) - (PVecInt)Combat.GetTurretPosition(self, facing, contrailTurret).ToInt2());
 		}
 
 		public void RenderAfterWorld(WorldRenderer wr, Actor self) { history.Render(self); }

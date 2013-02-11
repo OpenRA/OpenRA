@@ -126,7 +126,7 @@ namespace OpenRA.Mods.RA
 				firedBy = self,
 				target = target,
 
-				src = (self.CenterLocation + Combat.GetBarrelPosition(self, facing, Turret, barrel)),
+				src = (self.CenterLocation + (PVecInt)Combat.GetBarrelPosition(self, facing, Turret, barrel).ToInt2()),
 				srcAltitude = move != null ? move.Altitude : 0,
 				dest = target.CenterLocation,
 				destAltitude = destMove != null ? destMove.Altitude : 0,
