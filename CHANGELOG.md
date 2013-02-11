@@ -1,5 +1,71 @@
 # ZeroBrane Studio Changelog
 
+## v0.35 (Feb 10 2013)
+
+### Highlights
+  - Added support for **debugging Lua 5.2 scripts**.
+  - Added support for **cross-platform remote debugging**.
+  - Added support for starting Gideros **on-device debugging**.
+  - Added support for live coding, script reloading, and coroutine debugging under LuaJIT.
+  - Added **Marmalade Quick** support.
+  - Added **live-coding for Corona** interpreter.
+  - Added editor tab popup menu with 'Close All', 'Close Other', and other items.
+
+### Special thanks
+  - To Roland Yonaba and Fringale for updates to French translation.
+  - To Fringale for enhanced line-endings handling.
+  - To toiffel for build improvements, continuous work on wxwidgets 2.9 support, and several patches.
+  - To Andy Bower for the stream of feedback on live coding and on-device debugging.
+
+### Improvements
+  - Added `debugger.runonstart` option to configure if debugging should run immediately after starting.
+  - Added `editor.checkeol` option to configure checking for eol encoding in loaded files.
+  - Added Marmalade Quick support.
+  - Added support for starting Gideros on-device debugging.
+  - Added requesting user attention when stopped during debugging.
+  - Added example for `defaulteol` configuration option.
+  - Added configuration option for compact folding (`editor.`).
+  - Added support for cross-platform remote debugging.
+  - Added support for script reloading and coroutine debugging under LuaJIT (MobDebug 0.514).
+  - Added Russian translation for new messages.
+  - Added handling of malformed UTF8 characters in files (fixes #97).
+  - Added support for debugging Lua 5.2 scripts.
+  - Added workaround for Moai require path issue (fixes #96; fixes #87).
+  - Added editor tab popup menu with 'Close All', 'Close Other', and other items.
+  - Added C/CPP specification file and a configuration example.
+  - Added XCode-like key mapping.
+  - Added removing of file: prefix and url decoding of filepaths (helps #89).
+  - Added a workaround for returning incorrect project folder (helps #89).
+  - Adjusted handling of filepath to work with relative and absolute paths (helps #89).
+  - Enabled live-coding for Corona interpreter.
+  - Improved line-endings handling (Fringale).
+  - Improved reporting of stack and serialization run-time errors.
+  - Updated Gideros interpreter to run debugging immediately after starting; Use `debugger.runonstart = false` to disable.
+  - Updated Linux startup script to use online versions of wxlua packages (deb files).
+  - Updated handling of file: prefix as it's different on Windows and OSX (helps #89).
+  - Updated messages in the starter script.
+  - Updated function call parsing to recognize "func{}" and "func''" syntax.
+  - Updated os.exit() call in local console to exit gracefully.
+  - Updated French translation with various fixes and tweaks (Fringale).
+  - Updated French translation with newly added strings (Fringale).
+  - Updated 'Close page' and its translations.
+  - Updated configuration examples and documentation (helps #55).
+  - Updated the size of the function list dropdown on Windows (helps #89).
+  - Typos fixes, small changes in French translation (Roland Yonaba).
+
+### Incompatibilities
+  - Gideros debugging is changed to start immediately; use `debugger.runonstart = false` to disable.
+  - Removed mosync support from the debugger into a separate module.
+  - Added mixed end-of-line reporting; use `editor.checkeol = false` to disable.
+  - Added reporting of malformed UTF-8.
+
+### Fixes
+  - Fixed a rare crash on OSX when closing IDE with an application running under debugger.
+  - Fixed path handling for metalua to avoid conflicts with other modules that may include lexer.lua file.
+  - Fixed executing commands in the Remote console immediately after `mobdebug.start()` (closes #100).
+  - Fixed invalid escape sequence that fails under LuaJIT.
+  - Fixed an issue with spec files when a separator (sep) is not specified.
+
 ## v0.34 (Dec 12 2012)
 
 ### Highlights

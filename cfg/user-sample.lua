@@ -117,7 +117,8 @@ load.specs(function(file) return file:find('spec[/\\]cpp%.lua$') end)
 
 -- to specify a default EOL encoding to be used for new files:
 -- `wxstc.wxSTC_EOL_CRLF` or `wxstc.wxSTC_EOL_LF`;
--- `nil` means OS default: CRLF on Windows and LF on all other systems.
+-- `nil` means OS default: CRLF on Windows and OSX and LF on Linux/Unix.
+-- CRLF as a default on OSX is a bug and is likely to change in future versions.
 editor.defaulteol = wxstc.wxSTC_EOL_LF
 
 -- to turn off checking for mixed end-of-line encodings in loaded files
@@ -128,3 +129,6 @@ editor.checkeol = false
 -- when debugging starts); some interpreters may use `true` or `false`
 -- by default, but can be still reconfigured with this setting.
 debugger.runonstart = true
+
+-- to set compact fold that doesn't include empty lines after a block
+editor.foldcompact = true
