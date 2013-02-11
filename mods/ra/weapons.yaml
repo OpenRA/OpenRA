@@ -159,6 +159,7 @@ FireballLauncher:
 		Spread: 5
 		Versus: 
 			None: 90%
+			Wood: 50%
 			Light: 60%
 			Heavy: 25%
 			Cybernetic: 30%
@@ -495,7 +496,7 @@ TurretGun:
 		Spread: 3
 		Versus: 
 			None: 20%
-			Wood: 75%
+			Wood: 50%
 			Light: 75%
 			Cybernetic: 50%
 			Concrete: 50%
@@ -679,6 +680,8 @@ TeslaZap:
 		Spread: 1
 		InfDeath: 6
 		Damage: 100
+		Versus:
+			Wood: 60%
 
 Nike:
 	ROF: 15
