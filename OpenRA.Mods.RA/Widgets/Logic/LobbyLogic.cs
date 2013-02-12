@@ -144,6 +144,19 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			};
 			mapButton.IsVisible = () => mapButton.Visible && Game.IsHost;
 
+			var randomMapButton = lobby.Get<ButtonWidget>("RANDOMMAP_BUTTON");
+			randomMapButton.OnClick = () =>
+			{
+				if (Game.modData.AvailableMaps.Any())
+				{
+					var mapUid = Game.modData.AvailableMaps.Random(Game.CosmeticRandom).Key;
+					orderManager.IssueOrder(Order.Command("map " + mapUid));
+					Game.Settings.Server.Map = mapUid;
+					Game.Settings.Save();
+				}
+			};
+			randomMapButton.IsVisible = () => mapButton.Visible && Game.IsHost;
+
 			var disconnectButton = lobby.Get<ButtonWidget>("DISCONNECT_BUTTON");
 			disconnectButton.OnClick = () => { CloseWindow(); onExit(); };
 
