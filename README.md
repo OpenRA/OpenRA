@@ -2,7 +2,7 @@
 
 [ZeroBrane Studio](http://studio.zerobrane.com/) is a lightweight Lua IDE with code completion, syntax
 highlighting, remote debugger, code analyzer, live coding, and debugging
-support for several Lua engines (LuaJIT, Löve 2D, Moai, Gideros, Corona,
+support for several Lua engines (LuaJIT, Löve 2D, Moai, Gideros, Corona, Marmalade Quick,
 MobileLua, GSL-shell, and others). It originated from the [Estrela Editor](http://www.luxinia.de/index.php/Estrela/).
 
 ## Features
@@ -12,7 +12,7 @@ MobileLua, GSL-shell, and others). It originated from the [Estrela Editor](http:
 * Auto-completion for functions, keywords, and custom APIs.
 * Interactive console to directly test code snippets with local and remote execution.
 * Integrated debugger (with support for local and remote debugging).
-* Live coding with Lua ([demo](http://notebook.kulchenko.com/zerobrane/live-coding-in-lua-bret-victor-style)), Löve 2D ([demo](http://notebook.kulchenko.com/zerobrane/live-coding-with-love)), and Gideros ([demo](http://notebook.kulchenko.com/zerobrane/gideros-live-coding-with-zerobrane-studio-ide)).
+* Live coding with Lua ([demo](http://notebook.kulchenko.com/zerobrane/live-coding-in-lua-bret-victor-style)), Löve 2D ([demo](http://notebook.kulchenko.com/zerobrane/live-coding-with-love)), Gideros ([demo](http://notebook.kulchenko.com/zerobrane/gideros-live-coding-with-zerobrane-studio-ide)), [Moai](http://notebook.kulchenko.com/zerobrane/live-coding-with-moai-and-zerobrane-studio), and [Corona SDK](http://notebook.kulchenko.com/zerobrane/debugging-and-live-coding-with-corona-sdk-applications-and-zerobrane-studio).
 * Support for plugin-like components:
   - applications: overall control of applications settings;
   - specs (spec/): file syntax, lexer, keywords (e.g. glsl);
@@ -53,7 +53,7 @@ Loading custom configuration:
 
 ## Where is Estrela?
 
-The projects have been merged again and zbstudio will lead the future.
+The projects have been merged and zbstudio will lead the future.
 Please reassociate files with zbstudio. To keep your history of files and
 projects copy the contents of the `EstrelaEditor.ini` in your HOME directory
 to `ZeroBraneStudio.ini`. If you have used Estrela for graphics shader
