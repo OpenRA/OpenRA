@@ -1,0 +1,365 @@
+Player:
+	TechTree:
+	ClassicProductionQueue@Building:
+		Type: Building
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+		QueuedAudio: Building
+		ReadyAudio: ConstructionComplete
+	ClassicProductionQueue@Defense:
+		Type: Defense
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+		QueuedAudio: Building
+		ReadyAudio: ConstructionComplete
+	ClassicProductionQueue@Vehicle:
+		Type: Vehicle
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+	ClassicProductionQueue@Infantry:
+		Type: Infantry
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+	ClassicProductionQueue@Ship:
+		Type: Ship
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+	ClassicProductionQueue@Plane:
+		Type: Plane
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+	PlaceBuilding:
+	SupportPowerManager:
+	ConquestVictoryConditions:
+	PowerManager:
+	AllyRepair:
+	PlayerResources:
+		InitialCash: 10000
+	ActorGroupProxy:
+	DeveloperMode:
+	HackyAI@EasyAI:
+		Name:Easy AI
+		BuildingFractions:
+			proc: 30%
+			powr: 35%
+			barr: 1%
+			tent: 1%
+			weap: 1%
+			pbox.e1: 7%
+			gun: 7%
+			tsla: 5%
+			ftur: 10%
+			agun: 5%
+			sam: 5%
+			atek: 1%
+			stek: 1%
+			fix: 0.1%
+			dome: 10%
+		UnitsToBuild:
+			e1: 50%
+			e3: 10%
+			apc: 30%
+			jeep: 40%
+			arty: 15%
+			v2rl: 40%
+			ftrk: 50%
+			1tnk: 70%
+			2tnk: 25%
+			3tnk: 50%
+		SquadSize: 20
+	HackyAI@HardAI:
+		Name:Hard AI
+		BuildingFractions:
+			proc: 30%
+			powr: 35%
+			tent: 1%
+			barr: 1%
+			weap: 1%
+			pbox.e1: 7%
+			gun: 7%
+			ftur: 10%
+			tsla: 5%
+			fix: 0.1%
+			dome: 10%
+			agun: 5%
+			sam: 1%
+			atek: 1%
+			stek: 1%
+		UnitsToBuild:
+			e1: 50%
+			e3: 10%
+			harv: 10%
+			apc: 30%
+			jeep: 40%
+			ftrk: 50%
+			1tnk: 70%
+			2tnk: 25%
+			3tnk: 50%
+		SquadSize: 10
+	PlayerColorPalette:
+		BasePalette: player
+		RemapIndex: 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95
+	DebugResourceCash:
+	DebugResourceOre:
+	DebugResourceOreCapacity:
+	GpsWatcher:
+	Shroud:
+	BaseAttackNotifier:
+	PlayerStatistics:
+
+World:
+	OpenWidgetAtGameStart:
+		Widget: INGAME_ROOT
+		ObserverWidget: OBSERVER_ROOT
+	ScreenShaker:
+	WaterPaletteRotation:
+	ChronoshiftPaletteEffect:
+	NukePaletteEffect:
+	LightPaletteRotator:
+	BuildingInfluence:
+	ChooseBuildTabOnSelect:
+	BridgeLayer:
+		Bridges: bridge1, bridge2, br1, br2, br3
+	CrateSpawner:
+		Minimum: 1
+		Maximum: 3
+		SpawnInterval: 120
+		WaterChance: .2
+	PlayerPaletteFromCurrentTileset:
+		Name: player
+		ShadowIndex: 4
+	PaletteFromCurrentTileset:
+		Name: terrain
+		ShadowIndex: 3,4
+	PaletteFromFile@chrome:
+		Name: chrome
+		Filename: temperat.pal
+		ShadowIndex: 3
+	PaletteFromFile@effect:
+		Name: effect
+		Filename: temperat.pal
+		ShadowIndex: 4
+	PaletteFromRGBA@shadow:
+		Name: shadow
+		R: 0
+		G: 0
+		B: 0
+		A: 140
+	PaletteFromRGBA@cloak:
+		Name: cloak
+		R: 0
+		G: 0
+		B: 0
+		A: 140
+	PaletteFromRGBA@highlight:
+		Name: highlight
+		R: 255
+		G: 255
+		B: 255
+		A: 128
+	PaletteFromRGBA@invuln:
+		Name: invuln
+		R: 128
+		G: 0
+		B: 0
+		A: 128
+	PaletteFromRGBA@disabled:
+		Name: disabled
+		R: 0
+		G: 0
+		B: 0
+		A: 180
+	ColorPickerPaletteModifier:
+	ShroudPalette@shroud:
+	ShroudPalette@fog:
+		IsFog: yes
+		Name: fog
+	Country@0:
+		Name: Allies
+		Race: allies
+	Country@1:
+		Name: Soviet
+		Race: soviet
+	BibLayer:
+	ResourceLayer:
+	ResourceClaimLayer:
+	ResourceType@ore:
+		ResourceType: 1
+		Palette: player
+		SpriteNames: gold01,gold02,gold03,gold04
+		ValuePerUnit: 25
+		Name: Ore
+		PipColor: Yellow
+		AllowedTerrainTypes: Clear,Road
+		AllowUnderActors: false
+	ResourceType@gem:
+		ResourceType: 2
+		Palette: player
+		SpriteNames: gem01,gem02,gem03,gem04
+		ValuePerUnit: 50
+		Name: Gems
+		PipColor: Red
+		AllowedTerrainTypes: Clear,Road
+		AllowUnderActors: false
+	SmudgeLayer@SCORCH:
+		Type:Scorch
+		SmokePercentage:50
+		Types:sc1,sc2,sc3,sc4,sc5,sc6
+		Depths:1,1,1,1,1,1
+	SmudgeLayer@CRATER:
+		Type:Crater
+		Types:cr1,cr2,cr3,cr4,cr5,cr6
+		Depths:5,5,5,5,5,5
+	SpawnMapActors:
+	CreateMPPlayers:
+	MPStartLocations:
+	SpawnMPUnits:
+	SpatialBins:
+		BinSize: 4
+	Shroud:
+	PathFinder:
+	ValidateOrder:
+
+MINP:
+	Mine:
+		Weapon: APMine
+		CrushClasses: apmine,atmine
+		DetonateClasses: apmine
+		AvoidFriendly: yes
+	Health:
+		HP: 1
+	RenderSimple:
+	BelowUnits:
+	InvisibleToEnemy:
+	Tooltip:
+		Name: Anti-Personnel Mine
+		Icon: jmin
+	ProximityCaptor:
+		Types:Mine
+
+MINV:
+	Mine:
+		Weapon: ATMine
+		CrushClasses: atmine,apmine
+		DetonateClasses: atmine
+		AvoidFriendly: yes
+	Health:
+		HP: 1
+	RenderSimple:
+	BelowUnits:
+	InvisibleToEnemy:
+	Tooltip:
+		Name: Anti-Tank Mine
+		Icon: jmin
+	ProximityCaptor:
+		Types:Mine
+
+CRATE:
+	Tooltip:
+		Name: Crate
+	Crate:
+		Lifetime: 120
+		TerrainTypes: Clear, Rough, Road, Water, Ore, Beach
+	GiveCashCrateAction:
+		Amount: 2000
+		SelectionShares: 50
+		UseCashTick: yes
+	LevelUpCrateAction:
+		SelectionShares: 40
+	ExplodeCrateAction@fire:
+		Weapon: CrateNapalm
+		SelectionShares: 5
+	ExplodeCrateAction@boom:
+		Weapon: CrateExplosion
+		SelectionShares: 5
+	HideMapCrateAction:
+		SelectionShares: 5
+		Effect: hide-map
+	RevealMapCrateAction:
+		SelectionShares: 1
+		Effect: reveal-map
+	SupportPowerCrateAction@parabombs:
+		SelectionShares: 5
+		Proxy: powerproxy.parabombs
+	GiveMcvCrateAction:
+		SelectionShares: 2
+		NoBaseSelectionShares: 9001
+		Unit: mcv
+	GiveUnitCrateAction@jeep:
+		SelectionShares: 7
+		Unit: jeep
+	GiveUnitCrateAction@arty:
+		SelectionShares: 6
+		Unit: arty
+	GiveUnitCrateAction@v2rl:
+		SelectionShares: 6
+		Unit: v2rl
+	GiveUnitCrateAction@1tnk:
+		SelectionShares: 5
+		Unit: 1tnk
+	GiveUnitCrateAction@2tnk:
+		SelectionShares: 4
+		Unit: 2tnk
+	GiveUnitCrateAction@3tnk:
+		SelectionShares: 4
+		Unit: 3tnk
+	GiveUnitCrateAction@4tnk:
+		SelectionShares: 3
+		Unit: 4tnk
+	RenderSimple:
+	BelowUnits:
+	ProximityCaptor:
+		Types:Crate
+	Passenger:
+
+CAMERA:
+	Aircraft:
+	Health:
+		HP:1000
+	RevealsShroud:
+		Range: 10	
+	ProximityCaptor:
+		Types:Camera
+
+FLARE:
+	Aircraft:
+	Health:
+		HP:1000
+	RevealsShroud:
+		Range: 3
+	RenderFlare:
+		Image: smokland
+	HiddenUnderFog:
+	Tooltip:
+		Name: Flare
+	ProximityCaptor:
+		Types: Flare
+
+powerproxy.parabombs:
+	AirstrikePower:
+		Image: pbmbicon
+		Description: Parabombs (Single Use)
+		LongDesc: A Badger drops a load of parachuted\nbombs on your target.
+		OneShot: yes
+		AllowMultiple: yes
+		UnitType: badr.bomber
+		SelectTargetSound: slcttgt1.aud
+		FlareType: flare
+
+powerproxy.sonarpulse:
+	SonarPulsePower:
+		Image: sonricon
+		Description: Sonar Pulse (Single Use)
+		LongDesc: Reveals all submarines on the map for a \nshort time.
+		AllowMultiple: yes
+		OneShot: yes
+		EndChargeSound: pulse1.aud
+		SelectTargetSound: slcttgt1.aud
+
+mpspawn:
+	Waypoint:
+	RenderEditorOnly:
+
+waypoint:
+	Waypoint:
+	RenderEditorOnly:
