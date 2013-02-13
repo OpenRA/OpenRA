@@ -884,6 +884,7 @@ FACT:
 		Offset:1,1
 		Facing: 96
 	ProductionBar:
+	-Sellable:
 		
 PROC:
 	Inherits: ^Building
