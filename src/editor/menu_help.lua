@@ -25,7 +25,7 @@ local function DisplayAbout(event)
 	  <tr>
 		<td>
 		<b>ZeroBrane Studio (]]..ide.VERSION..[[; MobDebug ]]..mobdebug._VERSION..[[)</b><br>
-		<b>Copyright &copy; 2011-2012 ZeroBrane LLC</b><br>
+		<b>Copyright &copy; 2011-2013 ZeroBrane LLC</b><br>
 		Paul Kulchenko<br>
 		Licensed under the MIT License.
 		</td>
@@ -59,11 +59,10 @@ local function DisplayAbout(event)
 
   local dlg = wx.wxDialog(frame, wx.wxID_ANY, TR("About ZeroBrane Studio"))
   local html = wx.wxLuaHtmlWindow(dlg, wx.wxID_ANY,
-    wx.wxDefaultPosition, wx.wxSize(440, 270),
+    wx.wxDefaultPosition, wx.wxSize(450, 500),
     wx.wxHW_SCROLLBAR_NEVER)
   local line = wx.wxStaticLine(dlg, wx.wxID_ANY)
   local button = wx.wxButton(dlg, wx.wxID_OK, "OK")
-
   button:SetDefault()
 
   html:SetBorders(0)
