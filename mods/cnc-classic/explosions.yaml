@@ -1,0 +1,94 @@
+UnitExplodeSmall:
+	Warhead:
+#		Damage: 40
+#		Spread: 10
+#		Versus: 
+#			None: 90%
+#			Wood: 75%
+#			Light: 60%
+#			Heavy: 25%
+		Explosion: 4
+		InfDeath: 4
+		ImpactSound: xplobig4
+
+UnitExplode:
+	Warhead:
+		Damage: 500
+		Spread: 10
+		Versus: 
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
+		Explosion: 8
+		InfDeath: 4
+		ImpactSound: xplobig6
+
+NapalmExplode:
+	Warhead:
+		Spread: 8
+		Versus: 
+			None: 90%
+			Wood: 100%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 50%
+		InfDeath: 5
+		Explosion: 3
+#		Explosion: big_napalm
+		ImpactSound: xplobig6
+		SmudgeType: Scorch
+		Damage: 50
+
+BigNapalmExplode:	# For Flame tank, etc.
+	Warhead:
+		Damage: 50
+		Spread: 18
+		Versus: 
+			None: 90%
+			Wood: 100%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 50%
+		InfDeath: 5
+		Explosion: big_napalm
+		ImpactSound: xplobig6
+		SmudgeType: Scorch
+
+GrenadierExplode:
+	Warhead:
+		Damage: 25
+		Spread: 10
+		Versus:
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
+		Explosion: 5
+		InfDeath: 3
+		ImpactSound: xplosml2
+
+MammothExplode:		#Big artillery explosion, without as much damage
+	Warhead:
+		Damage: 50
+		Spread: 18
+		Versus: 
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
+		Explosion: 8
+		InfDeath: 4
+		ImpactSound: xplobig6
+
+McvExplode:
+	Warhead:
+		Explosion: building
+		InfDeath: 4
+		ImpactSound: xplobig6
+
+HeliExplode:
+	Warhead:
+		Explosion: veh1
+		InfDeath: 4
+		ImpactSound: xplos

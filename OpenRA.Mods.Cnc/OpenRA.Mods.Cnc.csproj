@@ -81,6 +81,7 @@
     <Compile Include="IonCannonPower.cs" />
     <Compile Include="Missions\CncShellmapScript.cs" />
     <Compile Include="Missions\Gdi01Script.cs" />
+    <Compile Include="Missions\Nod01Script.cs" />
     <Compile Include="PoisonedByTiberium.cs" />
     <Compile Include="ProductionAirdrop.cs" />
     <Compile Include="ProductionQueueFromSelection.cs" />
