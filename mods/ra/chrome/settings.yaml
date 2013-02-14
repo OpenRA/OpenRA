@@ -327,11 +327,11 @@ Background@SETTINGS_MENU:
 				Label@PERFTEXT_SAMPLE_LABEL:
 					X:0
 					Y:160
-					Text:Trait Report Threshold in Ticks:
+					Text:Slow Trait Report Threshold in Seconds:
 				Slider@LONG_TICK_THRESHOLD:
 					X:0
 					Y:170
-					Width:350
+					Width:370
 					Height:20
 					Ticks:5
 					MinimumValue: 0.0001
