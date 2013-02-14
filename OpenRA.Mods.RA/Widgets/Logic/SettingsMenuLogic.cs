@@ -137,6 +137,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				Game.viewport.Zoom = gs.PixelDouble ? 2 : 1;
 			};
 
+			var capFrameRateCheckbox = display.Get<CheckboxWidget>("CAPFRAMERATE_CHECKBOX");
+			capFrameRateCheckbox.IsChecked = () => gs.CapFramerate;
+			capFrameRateCheckbox.OnClick = () => gs.CapFramerate ^= true;
+
+			var maxFrameRate = display.Get<TextFieldWidget>("MAX_FRAMERATE");
+			maxFrameRate.Text = gs.MaxFramerate.ToString();
+
 			// Debug
 			var debug = bg.Get("DEBUG_PANE");
 
@@ -170,6 +177,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				int.TryParse(windowWidth.Text, out x);
 				int.TryParse(windowHeight.Text, out y);
 				gs.WindowedSize = new int2(x,y);
+				int.TryParse(maxFrameRate.Text, out gs.MaxFramerate);
 				Game.Settings.Save();
 				Ui.CloseWindow();
 			};
