@@ -23,11 +23,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			// Perf text
 			var perfText = perfRoot.Get<LabelWidget>("TEXT");
+			perfText.IsVisible = () => Game.Settings.Debug.PerfText;
 			perfText.GetText = () => "Render {0} ({5}={2:F1} ms)\nTick {4} ({3:F1} ms)".F(
 					Game.RenderFrame,
 					Game.NetFrameNumber,
-					PerfHistory.items["render"].LastValue,
-					PerfHistory.items["tick_time"].LastValue,
+					PerfHistory.items["render"].Average(Game.Settings.Debug.Samples),
+					PerfHistory.items["tick_time"].Average(Game.Settings.Debug.Samples),
 					Game.LocalTick,
 					PerfHistory.items["batches"].LastValue);
 		}
