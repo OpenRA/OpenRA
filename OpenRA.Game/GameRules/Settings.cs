@@ -88,7 +88,7 @@ namespace OpenRA.GameRules
 		public float VideoVolume = 0.5f;
 		public bool Shuffle = false;
 		public bool Repeat = false;
-		public bool ShellmapMusic = true;
+		public bool MapMusic = true;
 		public string Engine = "AL";
 		
 		public SoundCashTicks SoundCashTickType = SoundCashTicks.Extreme;
