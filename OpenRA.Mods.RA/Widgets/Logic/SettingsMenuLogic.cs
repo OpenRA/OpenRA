@@ -195,13 +195,29 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			// Debug
 			var debug = bg.Get("DEBUG_PANE");
 
-			var perfgraphCheckbox = debug.Get<CheckboxWidget>("PERFDEBUG_CHECKBOX");
+			var perfgraphCheckbox = debug.Get<CheckboxWidget>("PERFGRAPH_CHECKBOX");
 			perfgraphCheckbox.IsChecked = () => Game.Settings.Debug.PerfGraph;
 			perfgraphCheckbox.OnClick = () => Game.Settings.Debug.PerfGraph ^= true;
+
+			var perftextCheckbox = debug.Get<CheckboxWidget>("PERFTEXT_CHECKBOX");
+			perftextCheckbox.IsChecked = () => Game.Settings.Debug.PerfText;
+			perftextCheckbox.OnClick = () => Game.Settings.Debug.PerfText ^= true;
+
+			var sampleSlider = debug.Get<SliderWidget>("PERFTEXT_SAMPLE_AMOUNT");
+			sampleSlider.Value = sampleSlider.MaximumValue-Game.Settings.Debug.Samples;
+			sampleSlider.OnChange += x => Game.Settings.Debug.Samples = (int)sampleSlider.MaximumValue-(int)Math.Round(x);
 
 			var checkunsyncedCheckbox = debug.Get<CheckboxWidget>("CHECKUNSYNCED_CHECKBOX");
 			checkunsyncedCheckbox.IsChecked = () => Game.Settings.Debug.SanityCheckUnsyncedCode;
 			checkunsyncedCheckbox.OnClick = () => Game.Settings.Debug.SanityCheckUnsyncedCode ^= true;
+
+			var botdebugCheckbox = debug.Get<CheckboxWidget>("BOTDEBUG_CHECKBOX");
+			botdebugCheckbox.IsChecked = () => Game.Settings.Debug.BotDebug;
+			botdebugCheckbox.OnClick = () => Game.Settings.Debug.BotDebug ^= true;
+
+			var longTickThreshold = debug.Get<SliderWidget>("LONG_TICK_THRESHOLD");
+			longTickThreshold.Value = Game.Settings.Debug.LongTickThreshold;
+			longTickThreshold.OnChange += x => Game.Settings.Debug.LongTickThreshold = x;
 
 			bg.Get<ButtonWidget>("BUTTON_CLOSE").OnClick = () =>
 			{

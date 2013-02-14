@@ -332,15 +332,51 @@ Background@SETTINGS_MENU:
 			Height:PARENT_BOTTOM - 100
 			Visible: false
 			Children:
-				Checkbox@PERFDEBUG_CHECKBOX:
+				Checkbox@PERFGRAPH_CHECKBOX:
 					X:0
 					Y:0
 					Width:300
 					Height:20
-					Text:Show Performance Information
-				Checkbox@CHECKUNSYNCED_CHECKBOX:
+					Text:Show Performance Graph
+				Checkbox@PERFTEXT_CHECKBOX:
 					X:0
 					Y:30
 					Width:300
 					Height:20
+					Text:Show Performance Text
+				Label@PERFTEXT_SAMPLE_LABEL:
+					X:30
+					Y:70
+					Text:Update Rate
+				Slider@PERFTEXT_SAMPLE_AMOUNT:
+					X:130
+					Y:60
+					Width:250
+					Height:20
+					Ticks:5
+					MinimumValue: 1
+					MaximumValue: 50
+				Checkbox@CHECKUNSYNCED_CHECKBOX:
+					X:0
+					Y:90
+					Width:300
+					Height:20
 					Text:Check Sync around Unsynced Code
+				Checkbox@BOTDEBUG_CHECKBOX:
+					X:0
+					Y:120
+					Width:300
+					Height:20
+					Text:Show Bot Debug Messages
+				Label@PERFTEXT_SAMPLE_LABEL:
+					X:0
+					Y:160
+					Text:Slow Trait Report Threshold in (mili)seconds
+				Slider@LONG_TICK_THRESHOLD:
+					X:0
+					Y:170
+					Width:380
+					Height:20
+					Ticks:25
+					MinimumValue: 0.0001
+					MaximumValue: 0.01
