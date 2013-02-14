@@ -86,10 +86,23 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			musicslider.OnChange += x => Sound.MusicVolume = x;
 			musicslider.Value = Sound.MusicVolume;
 
+			var videoslider = audio.Get<SliderWidget>("VIDEO_VOLUME");
+			videoslider.OnChange += x => Sound.VideoVolume = x;
+			videoslider.Value = Sound.VideoVolume;
+
 			var cashticksdropdown = audio.Get<DropDownButtonWidget>("CASH_TICK_TYPE");
 			cashticksdropdown.OnMouseDown = _ => ShowSoundTickDropdown(cashticksdropdown, soundSettings);
 			cashticksdropdown.GetText = () => soundSettings.SoundCashTickType == SoundCashTicks.Extreme ?
 				"Extreme" : soundSettings.SoundCashTickType == SoundCashTicks.Normal ? "Normal" : "Disabled";
+
+			var mapMusicCheckbox = audio.Get<CheckboxWidget>("MAP_MUSIC_CHECKBOX");
+			mapMusicCheckbox.IsChecked = () => Game.Settings.Sound.MapMusic;
+			mapMusicCheckbox.OnClick = () => Game.Settings.Sound.MapMusic ^= true;
+
+			var soundEngineDropdown = audio.Get<DropDownButtonWidget>("SOUND_ENGINE");
+			soundEngineDropdown.OnMouseDown = _ => ShowSoundEngineDropdown(soundEngineDropdown, soundSettings);
+			soundEngineDropdown.GetText = () => soundSettings.Engine == "AL" ?
+				"OpenAL" : soundSettings.Engine == "Null" ? "None" : "OpenAL";
 
 			
 			// Display
@@ -291,6 +304,27 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var item = ScrollItemWidget.Setup(itemTemplate,
 					() => s.Renderer == options[o],
 					() => s.Renderer = options[o]);
+				item.Get<LabelWidget>("LABEL").GetText = () => o;
+				return item;
+			};
+
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, setupItem);
+			return true;
+		}
+
+		public static bool ShowSoundEngineDropdown(DropDownButtonWidget dropdown, SoundSettings s)
+		{
+			var options = new Dictionary<string, string>()
+			{
+				{ "OpenAL", "AL" },
+				{ "None", "Null" },
+			};
+
+			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
+			{
+				var item = ScrollItemWidget.Setup(itemTemplate,
+					() => s.Engine == options[o],
+					() => s.Engine = options[o]);
 				item.Get<LabelWidget>("LABEL").GetText = () => o;
 				return item;
 			};

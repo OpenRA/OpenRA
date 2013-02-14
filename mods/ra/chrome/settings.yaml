@@ -149,17 +149,46 @@ Background@SETTINGS_MENU:
 					Width:250
 					Height:20
 					Ticks:5
-				Label@SOUND_TICK_TYPE_LABEL:
+				Label@VIDEO_VOLUME_LABEL:
 					X:0
 					Y:70
+					Text: Video Volume
+				Slider@VIDEO_VOLUME:
+					X:100
+					Y:60
+					Width:250
+					Height:20
+					Ticks:5
+				Label@SOUND_TICK_TYPE_LABEL:
+					X:0
+					Y:100
 					Text: Cash ticks
 				DropDownButton@CASH_TICK_TYPE:
 					X:100
-					Y:60
+					Y:90
 					Width:250
 					Height:25
 					Font:Regular
 					Text:Extreme
+				Checkbox@MAP_MUSIC_CHECKBOX:
+					X:0
+					Y:120
+					Width:200
+					Height:20
+					Text: Autoplay Music After Map Load
+				Label@SOUND_ENGINE_LABEL:
+					X:0
+					Y:150
+					Width:75
+					Height:25
+					Text:Sound Engine:
+				DropDownButton@SOUND_ENGINE:
+					X:100
+					Y:150
+					Width:120
+					Height:25
+					Font:Regular
+					Text:OpenAL
 		Container@DISPLAY_PANE:
 			X:37
 			Y:100

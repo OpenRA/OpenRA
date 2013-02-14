@@ -109,8 +109,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			musicSlider.Value = soundSettings.MusicVolume;
 
 			var shellmapMusicCheckbox = generalPane.Get<CheckboxWidget>("SHELLMAP_MUSIC");
-			shellmapMusicCheckbox.IsChecked = () => soundSettings.ShellmapMusic;
-			shellmapMusicCheckbox.OnClick = () => soundSettings.ShellmapMusic ^= true;
+			shellmapMusicCheckbox.IsChecked = () => soundSettings.MapMusic;
+			shellmapMusicCheckbox.OnClick = () => soundSettings.MapMusic ^= true;
 
 			// Input pane
 			var inputPane = panel.Get("INPUT_CONTROLS");
