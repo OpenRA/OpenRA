@@ -73,6 +73,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			useClassicMouseStyleCheckbox.IsChecked = () => Game.Settings.Game.UseClassicMouseStyle;
 			useClassicMouseStyleCheckbox.OnClick = () => Game.Settings.Game.UseClassicMouseStyle ^= true;
 
+			var timeStepSlider = general.Get<SliderWidget>("GAME_SPEED_AMOUNT");
+			timeStepSlider.Value = timeStepSlider.MaximumValue-Game.Settings.Game.Timestep;
+			timeStepSlider.OnChange += x => Game.Settings.Game.Timestep = (int)timeStepSlider.MaximumValue-(int)Math.Round(x);
+
 			// Audio
 			var audio = bg.Get("AUDIO_PANE");
 			var soundSettings = Game.Settings.Sound;
