@@ -318,6 +318,19 @@ namespace OpenRA.Mods.RA.Server
 						server.SyncLobbyInfo();
 						return true;
 					}},
+				{ "crates",
+					s =>
+					{
+						if (!client.IsAdmin)
+						{
+							server.SendChatTo(conn, "Only the host can set that option");
+							return true;
+						}
+
+						bool.TryParse(s, out server.lobbyInfo.GlobalSettings.Crates);
+						server.SyncLobbyInfo();
+						return true;
+					}},
 				{ "difficulty",
 					s =>
 					{

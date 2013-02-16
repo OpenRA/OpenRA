@@ -432,9 +432,15 @@ Background@SERVER_LOBBY:
 			Width: 80
 			Height: 20
 			Text: Allow Cheats
+		Checkbox@CRATES_CHECKBOX:
+			X: PARENT_RIGHT-154
+			Y: PARENT_BOTTOM-154
+			Width: 80
+			Height: 20
+			Text: Crates
 		Button@DISCONNECT_BUTTON:
 			X:PARENT_RIGHT-154
-			Y:PARENT_BOTTOM-129
+			Y:PARENT_BOTTOM-99
 			Width:120
 			Height:25
 			Text:Disconnect

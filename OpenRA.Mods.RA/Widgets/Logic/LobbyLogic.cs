@@ -169,6 +169,16 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			allowCheats.OnClick = () =>	orderManager.IssueOrder(Order.Command(
 						"allowcheats {0}".F(!orderManager.LobbyInfo.GlobalSettings.AllowCheats)));
 
+			var crates = lobby.GetOrNull<CheckboxWidget>("CRATES_CHECKBOX");
+			if (crates != null)
+			{
+				crates.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.Crates;
+				crates.IsDisabled = () => !Game.IsHost || gameStarting || orderManager.LocalClient == null
+					|| orderManager.LocalClient.IsReady; // maybe disable the checkbox if a map forcefully removes CrateDrop?
+				crates.OnClick = () => orderManager.IssueOrder(Order.Command(
+					"crates {0}".F(!orderManager.LobbyInfo.GlobalSettings.Crates)));
+			}
+
 			var difficulty = lobby.GetOrNull<DropDownButtonWidget>("DIFFICULTY_DROPDOWNBUTTON");
 			if (difficulty != null)
 			{

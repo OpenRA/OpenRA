@@ -79,6 +79,7 @@ namespace OpenRA.Network
 			public bool AllowCheats = false;
 			public bool Dedicated;
 			public string Difficulty;
+			public bool Crates = true;
 		}
 
 		public Session(string[] mods)
