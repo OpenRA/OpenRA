@@ -34,6 +34,8 @@ namespace OpenRA.Mods.RA
 
 		public void Tick(Actor self)
 		{
+			if (!self.World.LobbyInfo.GlobalSettings.Crates) return;
+
 			if (--ticks <= 0)
 			{
 				var info = self.Info.Traits.Get<CrateSpawnerInfo>();
