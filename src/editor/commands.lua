@@ -745,12 +745,15 @@ function CloseWindow(event)
   ide.settings:delete() -- always delete the config
   if ide.session.timer then ide.session.timer:Stop() end
   event:Skip()
-
-  -- without explicit exit() the IDE crashes with SIGILL exception when closed
-  -- on MacOS compiled under 64bit with wxwidgets 2.9.3
-  if ide.osname == "Macintosh" then os.exit() end
 end
 frame:Connect(wx.wxEVT_CLOSE_WINDOW, CloseWindow)
+
+function DestroyWindow(event)
+  if event:GetEventObject():DynamicCast("wxObject") == frame:DynamicCast("wxObject") then
+    frame.uimgr:UnInit()
+  end
+end
+frame:Connect(wx.wxEVT_DESTROY, DestroyWindow)
 
 frame:Connect(wx.wxEVT_TIMER, saveAutoRecovery)
 
