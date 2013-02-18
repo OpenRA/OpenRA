@@ -367,10 +367,6 @@ function CreateEditor()
   editor:SetFoldFlags(wxstc.wxSTC_FOLDFLAG_LINEBEFORE_CONTRACTED +
     wxstc.wxSTC_FOLDFLAG_LINEAFTER_CONTRACTED)
 
-  editor:SetProperty("fold", "1")
-  editor:SetProperty("fold.compact", ide.config.editor.foldcompact and "1" or "0")
-  editor:SetProperty("fold.comment", "1")
-
   do
     local fg, bg = wx.wxWHITE, wx.wxColour(128, 128, 128)
     editor:MarkerDefine(wxstc.wxSTC_MARKNUM_FOLDEROPEN, wxstc.wxSTC_MARK_BOXMINUS, fg, bg)
@@ -824,6 +820,12 @@ function SetupKeywords(editor, ext, forcespec, styles, font, fontitalic)
     editor.api = GetApi("none")
     editor.spec = ide.specs.none
   end
+
+  -- need to set folding property after lexer is set, otherwise
+  -- the folds are not shown (wxwidgets 2.9.5)
+  editor:SetProperty("fold", "1")
+  editor:SetProperty("fold.compact", ide.config.editor.foldcompact and "1" or "0")
+  editor:SetProperty("fold.comment", "1")
 
   StylesApplyToEditor(styles or ide.config.styles, editor,
     font or ide.font.eNormal,fontitalic or ide.font.eItalic,lexerstyleconvert)
