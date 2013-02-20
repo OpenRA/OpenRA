@@ -6,24 +6,34 @@ Player:
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
+		SpeedUp: 0.25
+		MaxSpeedUp: 0.75
 	ClassicProductionQueue@Defense:
 		Type: Defense
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		ReadyAudio: ConstructionComplete
+		SpeedUp: 0.25
+		MaxSpeedUp: 0.75
 	ClassicProductionQueue@Vehicle:
 		Type: Vehicle
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
+		SpeedUp: 0.25
+		MaxSpeedUp: 0.75
 	ClassicProductionQueue@Infantry:
 		Type: Infantry
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
+		SpeedUp: 0.25
+		MaxSpeedUp: 0.75
 	ClassicProductionQueue@Aircraft:
 		Type: Aircraft
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
+		SpeedUp: 0.25
+		MaxSpeedUp: 0.75
 	PlaceBuilding:
 	SupportPowerManager:
 	ConquestVictoryConditions:
