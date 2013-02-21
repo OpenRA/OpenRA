@@ -141,6 +141,7 @@
     <Compile Include="Graphics\ShpTSReader.cs" />
     <Compile Include="FileFormats\XccLocalDatabase.cs" />
     <Compile Include="FileFormats\XccGlobalDatabase.cs" />
+    <Compile Include="Graphics\VxlReader.cs" />
     <Compile Include="StreamExts.cs" />
   </ItemGroup>
   <ItemGroup>
