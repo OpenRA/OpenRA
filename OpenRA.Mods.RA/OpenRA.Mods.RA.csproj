@@ -439,6 +439,7 @@
     <Compile Include="Render\WithTurret.cs" />
     <Compile Include="Widgets\Logic\AssetBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\ConvertGameFilesLogic.cs" />
+    <Compile Include="VoxelNormalsPalette.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
