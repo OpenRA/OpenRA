@@ -76,6 +76,13 @@ namespace OpenRA.FileFormats
 			colors = (uint[])p.colors.Clone();
 		}
 
+		public Palette(uint[] data)
+		{
+			if (data.Length != 256)
+				throw new InvalidDataException("Attempting to create palette with incorrect array size");
+			colors = (uint[])data.Clone();
+		}
+
 		public ColorPalette AsSystemPalette()
 		{
 			ColorPalette pal;

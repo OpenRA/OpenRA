@@ -407,6 +407,7 @@
     <Compile Include="Widgets\Logic\CheatsLogic.cs" />
     <Compile Include="CloakPaletteEffect.cs" />
     <Compile Include="Widgets\ColorPreviewManagerWidget.cs" />
+    <Compile Include="FogPalette.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
