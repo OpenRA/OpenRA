@@ -34,7 +34,7 @@ namespace OpenRA.Graphics
 				}
 
 			foreach (var s in sequences.NodesDict["Palettes"].Nodes)
-				Game.modData.Palette.AddPalette(s.Key, new Palette(FileSystem.Open(s.Value.Value), ShadowIndex));
+				Game.modData.Palette.AddPalette(s.Key, new Palette(FileSystem.Open(s.Value.Value), ShadowIndex), false);
 
 			foreach (var s in sequences.NodesDict["Cursors"].Nodes)
 				LoadSequencesForCursor(s.Key, s.Value);

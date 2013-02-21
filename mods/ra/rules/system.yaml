@@ -228,6 +228,7 @@ World:
 		Name: colorpicker
 		Filename: temperat.pal
 		ShadowIndex: 4
+		AllowModifiers: false
 	PaletteFromRGBA@shadow:
 		Name: shadow
 		R: 0

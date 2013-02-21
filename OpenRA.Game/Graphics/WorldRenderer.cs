@@ -37,7 +37,7 @@ namespace OpenRA.Graphics
 
 		public int GetPaletteIndex(string name) { return palette.GetPaletteIndex(name); }
 		public Palette GetPalette(string name) { return palette.GetPalette(name); }
-		public void AddPalette(string name, Palette pal) { palette.AddPalette(name, pal); }
+		public void AddPalette(string name, Palette pal, bool allowModifiers) { palette.AddPalette(name, pal, allowModifiers); }
 
 		class SpriteComparer : IComparer<Renderable>
 		{

@@ -27,12 +27,12 @@ namespace OpenRA.Mods.RA
 	{
 		readonly ShroudPaletteInfo info;
 
-		public ShroudPalette( ShroudPaletteInfo info ) { this.info = info; }
+		public ShroudPalette(ShroudPaletteInfo info) { this.info = info; }
 
-		public void InitPalette( WorldRenderer wr )
+		public void InitPalette(WorldRenderer wr)
 		{
-			var pal = wr.GetPalette( "terrain" );
-			wr.AddPalette( info.Name, new Palette( pal, new ShroudPaletteRemap( info.IsFog ) ) );
+			var pal = wr.GetPalette("terrain");
+			wr.AddPalette(info.Name, new Palette(pal, new ShroudPaletteRemap(info.IsFog)), false);
 		}
 	}
 

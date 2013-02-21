@@ -23,6 +23,7 @@ namespace OpenRA.Mods.RA
 		public readonly int G = 0;
 		public readonly int B = 0;
 		public readonly int A = 255;
+		public readonly bool AllowModifiers = true;
 
 		public object Create(ActorInitializer init) { return new PaletteFromRGBA(init.world, this); }
 	}
@@ -43,7 +44,7 @@ namespace OpenRA.Mods.RA
 			{
 				// TODO: This shouldn't rely on a base palette
 				var pal = wr.GetPalette("terrain");
-				wr.AddPalette(info.Name, new Palette(pal, new SingleColorRemap(Color.FromArgb(info.A, info.R, info.G, info.B))));
+				wr.AddPalette(info.Name, new Palette(pal, new SingleColorRemap(Color.FromArgb(info.A, info.R, info.G, info.B))), info.AllowModifiers);
 			}
 		}
 	}

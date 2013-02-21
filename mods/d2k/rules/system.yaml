@@ -273,6 +273,7 @@ World:
 		Name: colorpicker
 		Filename: d2k.pal
 		ShadowIndex: 4
+		AllowModifiers: false
 	PaletteFromRGBA@shadow:
 		Name: shadow
 		R: 0

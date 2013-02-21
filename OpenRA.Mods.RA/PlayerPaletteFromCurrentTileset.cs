@@ -17,6 +17,7 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly string Name = null;
 		public readonly int[] ShadowIndex = { };
+		public readonly bool AllowModifiers = true;
 
 		public object Create(ActorInitializer init) { return new PlayerPaletteFromCurrentTileset(init.world, this); }
 	}
@@ -35,7 +36,7 @@ namespace OpenRA.Mods.RA
 		public void InitPalette (OpenRA.Graphics.WorldRenderer wr)
 		{
 			string Filename = world.TileSet.PlayerPalette == null ? world.TileSet.Palette : world.TileSet.PlayerPalette;
-			wr.AddPalette(info.Name, new Palette(FileSystem.Open(Filename), info.ShadowIndex));
+			wr.AddPalette(info.Name, new Palette(FileSystem.Open(Filename), info.ShadowIndex), info.AllowModifiers);
 		}
 	}
 }
