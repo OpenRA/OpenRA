@@ -39,6 +39,12 @@ namespace OpenRA.FileFormats
 			get { return colors; }
 		}
 
+		public void ApplyRemap(IPaletteRemap r)
+		{
+			for(int i = 0; i < 256; i++)
+				colors[i] = (uint)r.GetRemappedColor(Color.FromArgb((int)colors[i]),i).ToArgb();
+		}
+
 		public Palette(Stream s, int[] remapShadow)
 		{
 			colors = new uint[256];
@@ -61,9 +67,8 @@ namespace OpenRA.FileFormats
 
 		public Palette(Palette p, IPaletteRemap r)
 		{
-			colors = new uint[256];
-			for(int i = 0; i < 256; i++)
-				colors[i] = (uint)r.GetRemappedColor(Color.FromArgb((int)p.colors[i]),i).ToArgb();
+			colors = (uint[])p.colors.Clone();
+			ApplyRemap(r);
 		}
 
 		public Palette(Palette p)

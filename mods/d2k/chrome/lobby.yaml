@@ -5,6 +5,8 @@ Background@SERVER_LOBBY:
 	Width:800
 	Height:600
 	Children:
+		ColorPreviewManager@COLOR_MANAGER:
+			RemapIndices: 255, 254, 253, 252, 251, 250, 249, 248, 247, 246, 245, 244, 243, 242, 241, 240
 		Label@TITLE:
 			X:0
 			Y:17
