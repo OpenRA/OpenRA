@@ -150,5 +150,18 @@ namespace OpenRA.Renderer.Glsl
 			Gl.glUniform2fARB(param,x,y);
 			ErrorHandler.CheckGlError();
 		}
+
+		public void SetMatrix(string name, float[] mtx)
+		{
+			if (mtx.Length != 16)
+				throw new InvalidDataException("Invalid 4x4 matrix");
+
+			Gl.glUseProgramObjectARB(program);
+			ErrorHandler.CheckGlError();
+			int param = Gl.glGetUniformLocationARB(program, name);
+			ErrorHandler.CheckGlError();
+			Gl.glUniformMatrix4fv(param, 1, Gl.GL_FALSE, mtx);
+			ErrorHandler.CheckGlError();
+		}
 	}
 }

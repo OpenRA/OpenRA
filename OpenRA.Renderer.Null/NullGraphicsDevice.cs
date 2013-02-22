@@ -60,6 +60,7 @@ namespace OpenRA.Renderer.Null
 	{
 		public void SetVec(string name, float x, float y) { }
 		public void SetTexture(string param, ITexture texture) { }
+		public void SetMatrix(string param, float[] mtx) { }
 		public void Commit() { }
 		public void Render(Action a) { }
 	}

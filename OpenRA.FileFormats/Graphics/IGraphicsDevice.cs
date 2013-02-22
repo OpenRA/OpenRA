@@ -62,6 +62,7 @@ namespace OpenRA.FileFormats.Graphics
 	{
 		void SetVec(string name, float x, float y);
 		void SetTexture(string param, ITexture texture);
+		void SetMatrix(string param, float[] mtx);
 		void Render(Action a);
 	}
 

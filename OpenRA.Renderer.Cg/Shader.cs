@@ -81,5 +81,15 @@ namespace OpenRA.Renderer.Cg
 			if (param != IntPtr.Zero)
 				Tao.Cg.CgGl.cgGLSetParameter2f(param, x, y);
 		}
+
+		public void SetMatrix(string name, float[] mtx)
+		{
+			if (mtx.Length != 16)
+				throw new InvalidDataException("Invalid 4x4 matrix");
+
+			var param = Tao.Cg.Cg.cgGetNamedEffectParameter(effect, name);
+			if (param != IntPtr.Zero)
+				Tao.Cg.CgGl.cgGLSetMatrixParameterfr(param, mtx);
+		}
 	}
 }
