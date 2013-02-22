@@ -348,7 +348,7 @@ function FileTreeMarkSelected(file)
       projtree:SetItemBold(item_id, true)
     end
     curr_file = file
-    projtree:Refresh() -- to force refresh on Mac (ide.osname == 'Macintosh')
+    if ide.osname == 'Macintosh' then projtree:Refresh() end -- to force refresh on Mac
   end
 end
 
