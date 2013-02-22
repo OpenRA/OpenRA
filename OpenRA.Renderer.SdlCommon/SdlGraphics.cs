@@ -133,6 +133,20 @@ namespace OpenRA.Renderer.SdlCommon
 			ErrorHandler.CheckGlError();
 		}
 
+		public void EnableDepthBuffer()
+		{
+			Gl.glClear(Gl.GL_DEPTH_BUFFER_BIT);
+			ErrorHandler.CheckGlError();
+			Gl.glEnable(Gl.GL_DEPTH_TEST);
+			ErrorHandler.CheckGlError();
+		}
+
+		public void DisableDepthBuffer()
+		{
+			Gl.glDisable(Gl.GL_DEPTH_TEST);
+			ErrorHandler.CheckGlError();
+		}
+
 		public void EnableScissor(int left, int top, int width, int height)
 		{
 			if (width < 0) width = 0;

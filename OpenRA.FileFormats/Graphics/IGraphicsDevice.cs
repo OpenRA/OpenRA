@@ -50,6 +50,9 @@ namespace OpenRA.FileFormats.Graphics
 		void SetLineWidth( float width );
 		void EnableScissor( int left, int top, int width, int height );
 		void DisableScissor();
+
+		void EnableDepthBuffer();
+		void DisableDepthBuffer();
 	}
 
 	public interface IVertexBuffer<T>

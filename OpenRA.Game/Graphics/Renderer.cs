@@ -186,5 +186,17 @@ namespace OpenRA.Graphics
 			Flush();
 			Device.DisableScissor();
 		}
+
+		public void EnableDepthBuffer()
+		{
+			Flush();
+			Device.EnableDepthBuffer();
+		}
+
+		public void DisableDepthBuffer()
+		{
+			Flush();
+			Device.DisableDepthBuffer();
+		}
 	}
 }

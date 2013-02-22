@@ -38,6 +38,9 @@ namespace OpenRA.Renderer.Null
 		public void EnableScissor(int left, int top, int width, int height) { }
 		public void DisableScissor() { }
 
+		public void EnableDepthBuffer() { }
+		public void DisableDepthBuffer() { }
+
 		public void Clear() { }
 		public void Present() { }
 
