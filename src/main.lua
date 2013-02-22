@@ -21,7 +21,7 @@ package.path  = 'lualibs/?.lua;lualibs/?/?.lua;lualibs/?/init.lua;lualibs/?/?/?.
 require("wx")
 require("bit")
 
-dofile "src/misc/util.lua"
+dofile "src/util.lua"
 
 -----------
 -- IDE
@@ -367,7 +367,7 @@ end
 
 for _, file in ipairs({
     "markup", "settings", "singleinstance", "iofilters",
-    "gui", "filetree", "output", "debugger", "preferences",
+    "gui", "filetree", "output", "debugger",
     "editor", "findreplace", "commands", "autocomplete", "shellbox",
     "menu_file", "menu_edit", "menu_search",
     "menu_view", "menu_project", "menu_tools", "menu_help",
@@ -375,8 +375,6 @@ for _, file in ipairs({
   dofile("src/editor/"..file..".lua")
 end
 
-dofile "src/preferences/editor.lua"
-dofile "src/preferences/project.lua"
 dofile "src/version.lua"
 
 -- load rest of settings

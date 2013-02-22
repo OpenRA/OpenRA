@@ -71,15 +71,12 @@ src/editor/menu_search.lua
 src/editor/menu_tools.lua
 src/editor/menu_view.lua
 src/editor/output.lua
-src/editor/preferences.lua
 src/editor/settings.lua
 src/editor/shellbox.lua
 src/editor/singleinstance.lua
 src/editor/style.lua
 src/main.lua
-src/misc/util.lua
-src/preferences/editor.lua
-src/preferences/project.lua
+src/util.lua
 src/version.lua
 tools/*.lua
 zbstudio/app.lua
