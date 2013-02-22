@@ -164,7 +164,7 @@ int main (int argc, char *argv[])
 
 
   SetDllDirectory(".\\bin\\");
-  hinstLib = LoadLibrary("lua5.1.dll");
+  hinstLib = LoadLibrary("lua51.dll");
   if (hinstLib != NULL)
   {
     luaL_newstate = (voidfunc*) GetProcAddress(hinstLib, "luaL_newstate");
@@ -214,7 +214,7 @@ int main (int argc, char *argv[])
         MB_OK|MB_ICONERROR);
     } else {
       MessageBox(NULL,
-        TEXT("Could not load all functions that are supposed to be located in the lua5.1.dll\n"
+        TEXT("Could not load all functions that are supposed to be located in the lua51.dll\n"
         "This is not supposed to be happening..."),
         TEXT("Failed to start editor"),
         MB_OK|MB_ICONERROR);
@@ -224,7 +224,7 @@ int main (int argc, char *argv[])
     FreeLibrary(hinstLib);
   } else {
     MessageBox(NULL,
-      TEXT("The lua5.1.dll could not be found or loaded, please check the working directory of the application.\n"),
+      TEXT("The lua51.dll could not be found or loaded, please check the working directory of the application.\n"),
       TEXT("Failed to initialize editor"),
       MB_OK|MB_ICONERROR);
   }
