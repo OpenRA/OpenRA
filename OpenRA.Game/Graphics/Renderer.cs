@@ -50,11 +50,11 @@ namespace OpenRA.Graphics
 			TempBufferCount = Game.Settings.Graphics.NumTempBuffers;
 			SheetSize = Game.Settings.Graphics.SheetSize;
 
-			WorldSpriteShader = device.CreateShader("world-shp");
-			WorldLineShader = device.CreateShader("world-line");
-			LineShader = device.CreateShader("chrome-line");
-			RgbaSpriteShader = device.CreateShader("chrome-rgba");
-			SpriteShader = device.CreateShader("chrome-shp");
+			WorldSpriteShader = device.CreateShader("shp");
+			WorldLineShader = device.CreateShader("line");
+			LineShader = device.CreateShader("line");
+			RgbaSpriteShader = device.CreateShader("rgba");
+			SpriteShader = device.CreateShader("shp");
 
 			WorldSpriteRenderer = new SpriteRenderer(this, WorldSpriteShader);
 			WorldLineRenderer = new LineRenderer(this, WorldLineShader);
@@ -82,9 +82,9 @@ namespace OpenRA.Graphics
 
 			SetShaderParams(WorldSpriteShader, zr1, r2, scroll);
 			SetShaderParams(WorldLineShader, zr1, r2, scroll);
-			SetShaderParams(LineShader, r1, r2, scroll);
-			SetShaderParams(RgbaSpriteShader, r1, r2, scroll);
-			SetShaderParams(SpriteShader, r1, r2, scroll);
+			SetShaderParams(LineShader, r1, r2, float2.Zero);
+			SetShaderParams(RgbaSpriteShader, r1, r2, float2.Zero);
+			SetShaderParams(SpriteShader, r1, r2, float2.Zero);
 		}
 
 		void SetShaderParams(IShader s, float2 r1, float2 r2, float2 scroll)
