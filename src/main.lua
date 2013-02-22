@@ -168,6 +168,7 @@ do
 
   ide.arg = arg
   ide.osname = wx.wxPlatformInfo.Get():GetOperatingSystemFamilyName()
+  ide.wxver = string.match(wx.wxVERSION_STRING, "[%d%.]+")
 
   -- on Windows use GetExecutablePath, which is Unicode friendly,
   -- whereas wxGetCwd() is not (at least in wxlua 2.8.12.2).
