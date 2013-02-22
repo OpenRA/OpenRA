@@ -190,8 +190,10 @@ end
 function ActivateOutput()
   if not ide.config.activateoutput then return end
   -- show output/errorlog pane
-  uimgr:GetPane("bottomnotebook"):Show(true)
-  uimgr:Update()
+  if not uimgr:GetPane("bottomnotebook"):IsShown() then
+    uimgr:GetPane("bottomnotebook"):Show(true)
+    uimgr:Update()
+  end
   -- activate output/errorlog window
   local index = bottomnotebook:GetPageIndex(bottomnotebook.errorlog)
   if bottomnotebook:GetSelection() ~= index then
