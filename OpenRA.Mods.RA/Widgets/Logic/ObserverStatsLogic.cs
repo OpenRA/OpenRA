@@ -156,7 +156,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				players.Select(p => new LineGraphSeries(
 					p.PlayerName,
 					p.ColorRamp.GetColor(0),
-					p.PlayerActor.Trait<PlayerStatistics>().EarnedSamples.Select(s => (float)s)
+					(p.PlayerActor.TraitOrDefault<PlayerStatistics>() ?? new PlayerStatistics(p.PlayerActor)).EarnedSamples.Select(s => (float)s)
 					));
 
 			playerStatsPanel.AddChild(template);
@@ -187,10 +187,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			AddPlayerFlagAndName(template, player);
 
-			var stats = player.PlayerActor.Trait<PlayerStatistics>();
+			var stats = player.PlayerActor.TraitOrDefault<PlayerStatistics>();
+			if (stats == null) return template;
 			template.Get<LabelWidget>("CONTROL").GetText = () => MapControl(stats.MapControl);
-			template.Get<LabelWidget>("KILLS_COST").GetText = () => "$" + stats.KillsCost.ToString();
-			template.Get<LabelWidget>("DEATHS_COST").GetText = () => "$" + stats.DeathsCost.ToString();
+			template.Get<LabelWidget>("KILLS_COST").GetText = () => "$" + stats.KillsCost;
+			template.Get<LabelWidget>("DEATHS_COST").GetText = () => "$" + stats.DeathsCost;
 			template.Get<LabelWidget>("UNITS_KILLED").GetText = () => stats.UnitsKilled.ToString();
 			template.Get<LabelWidget>("UNITS_DEAD").GetText = () => stats.UnitsDead.ToString();
 			template.Get<LabelWidget>("BUILDINGS_KILLED").GetText = () => stats.BuildingsKilled.ToString();
@@ -220,7 +221,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			AddPlayerFlagAndName(template, player);
 
 			var res = player.PlayerActor.Trait<PlayerResources>();
-			var stats = player.PlayerActor.Trait<PlayerStatistics>();
+			var stats = player.PlayerActor.TraitOrDefault<PlayerStatistics>();
+			if (stats == null) return template;
 
 			template.Get<LabelWidget>("CASH").GetText = () => "$" + (res.DisplayCash + res.DisplayOre);
 			template.Get<LabelWidget>("EARNED_MIN").GetText = () => AverageEarnedPerMinute(res.Earned);
@@ -258,7 +260,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			template.Get<LabelWidget>("KILLS").GetText = () => player.Kills.ToString();
 			template.Get<LabelWidget>("DEATHS").GetText = () => player.Deaths.ToString();
 
-			var stats = player.PlayerActor.Trait<PlayerStatistics>();
+			var stats = player.PlayerActor.TraitOrDefault<PlayerStatistics>();
+			if (stats == null) return template;
 			template.Get<LabelWidget>("ACTIONS_MIN").GetText = () => AverageOrdersPerMinute(stats.OrderCount);
 
 			return template;

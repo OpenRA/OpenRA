@@ -101,7 +101,7 @@ namespace OpenRA.Widgets
 			var xAxisSize = GetXAxisSize();
 			var yAxisSize = GetYAxisSize();
 
-			var maxValue = GetSeries().Select(p => p.Points).SelectMany(d => d).Max();
+			var maxValue = GetSeries().Select(p => p.Points).SelectMany(d => d).Concat(new[] { 0f }).Max();
 			var scale = 200 / Math.Max(5000, (float)Math.Ceiling(maxValue / 1000) * 1000);
 
 			var xStep = width / xAxisSize;
