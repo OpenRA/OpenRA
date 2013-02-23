@@ -1,0 +1,35 @@
+#region Copyright & License Information
+/*
+ * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * This file is part of OpenRA, which is free software. It is made
+ * available to you under the terms of the GNU General Public License
+ * as published by the Free Software Foundation. For more information,
+ * see COPYING.
+ */
+#endregion
+
+using System;
+using System.Collections.Generic;
+using OpenRA.Traits;
+
+namespace OpenRA.Graphics
+{
+	public struct VoxelAnimation
+	{
+		public readonly Voxel Voxel;
+		public readonly Func<WVec> OffsetFunc;
+		public readonly Func<IEnumerable<WRot>> RotationFunc;
+		public readonly Func<bool> DisableFunc;
+		public readonly Func<uint> FrameFunc;
+
+		public VoxelAnimation(Voxel voxel, Func<WVec> offset, Func<IEnumerable<WRot>> rotation, Func<bool> disable, Func<uint> frame)
+		{
+			Voxel = voxel;
+			OffsetFunc = offset;
+			RotationFunc = rotation;
+			DisableFunc = disable;
+			FrameFunc = frame;
+		}
+	}
+}
+
