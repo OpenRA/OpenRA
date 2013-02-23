@@ -18,7 +18,7 @@ namespace OpenRA.Mods.RA.Effects
 	public class Parachute : IEffect
 	{
 		readonly Animation anim;
-		readonly string palette;
+		readonly PaletteReference palette;
 		readonly Animation paraAnim;
 		readonly PPos location;
 
@@ -76,7 +76,7 @@ namespace OpenRA.Mods.RA.Effects
 		public IEnumerable<Renderable> Render()
 		{
 			var pos = location.ToFloat2() - new float2(0, altitude);
-			yield return new Renderable(anim.Image, location.ToFloat2() - .5f * anim.Image.size, "shadow", 0);
+			yield return new Renderable(anim.Image, location.ToFloat2() - .5f * anim.Image.size, PaletteReference.FromName("shadow"), 0);
 			yield return new Renderable(anim.Image, pos - .5f * anim.Image.size, palette, 2);
 			yield return new Renderable(paraAnim.Image, pos - .5f * paraAnim.Image.size + offset, palette, 3);
 		}

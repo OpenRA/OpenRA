@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA.Effects
 		{
 			yield return new Renderable(anim.Image,
 				pos.ToFloat2() - .5f * anim.Image.size - new int2(0,altitude),
-				"effect", (int)pos.Y - altitude);
+				PaletteReference.FromName("effect"), (int)pos.Y - altitude);
 		}
 
 		public Player Owner { get { return null; } }

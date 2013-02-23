@@ -27,8 +27,10 @@ namespace OpenRA.Traits
 		{
 			var anim = new Animation(RenderSimple.GetImage(building), () => 0);
 			anim.PlayRepeating("idle");
+
+			var pal = Palette ?? (owner != null ? PlayerPalette + owner.InternalName : null);
 			yield return new Renderable(anim.Image, 0.5f * anim.Image.size * (1 - Scale), 
-				Palette ?? (owner != null ? PlayerPalette + owner.InternalName : null), 0, Scale);
+				PaletteReference.FromName(pal), 0, Scale);
 		}
 	}
 
@@ -77,7 +79,10 @@ namespace OpenRA.Traits
 			anim.PlayRepeating("idle");
 		}
 
-		public string Palette(Player p) { return Info.Palette ?? Info.PlayerPalette + p.InternalName; }
+		public PaletteReference Palette(Player p)
+		{
+			return PaletteReference.FromName(Info.Palette ?? Info.PlayerPalette + p.InternalName);
+		}
 
 		public virtual IEnumerable<Renderable> Render(Actor self)
 		{

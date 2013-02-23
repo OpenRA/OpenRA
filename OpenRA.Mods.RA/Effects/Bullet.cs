@@ -158,15 +158,15 @@ namespace OpenRA.Mods.RA.Effects
 					if (Info.High || Info.Angle > 0)
 					{
 						if (Info.Shadow)
-							yield return new Renderable(anim.Image, pos - .5f * anim.Image.size, "shadow", (int)pos.Y);
+							yield return new Renderable(anim.Image, pos - .5f * anim.Image.size, PaletteReference.FromName("shadow"), (int)pos.Y);
 
 						var highPos = pos - new float2(0, GetAltitude());
 
-						yield return new Renderable(anim.Image, highPos - .5f * anim.Image.size, "effect", (int)pos.Y);
+						yield return new Renderable(anim.Image, highPos - .5f * anim.Image.size, PaletteReference.FromName("effect"), (int)pos.Y);
 					}
 					else
 						yield return new Renderable(anim.Image, pos - .5f * anim.Image.size,
-							Args.weapon.Underwater ? "shadow" : "effect", (int)pos.Y);
+							PaletteReference.FromName(Args.weapon.Underwater ? "shadow" : "effect"), (int)pos.Y);
 				}
 			}
 

@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using OpenRA.Effects;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Effects
@@ -37,7 +38,7 @@ namespace OpenRA.Mods.RA.Effects
 				yield break;
 
 			foreach (var r in a.Render())
-				yield return r.WithPalette("invuln");
+				yield return r.WithPalette(PaletteReference.FromName("invuln"));
 		}
 	}
 }

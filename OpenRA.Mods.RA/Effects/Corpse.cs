@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA.Effects
 	{
 		readonly Animation anim;
 		readonly float2 pos;
-		readonly string palette;
+		readonly PaletteReference palette;
 
 		public Corpse(Actor fromActor, string sequence)
 		{

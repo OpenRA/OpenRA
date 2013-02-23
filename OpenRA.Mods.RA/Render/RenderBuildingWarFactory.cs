@@ -34,7 +34,8 @@ namespace OpenRA.Mods.RA.Render
 			var anim = new Animation(RenderSimple.GetImage(building), () => 0);
 			anim.PlayRepeating("idle-top");
 			var rb = building.Traits.Get<RenderBuildingInfo>();
-			yield return new Renderable(anim.Image, rb.Origin + 0.5f*anim.Image.size*(1 - Scale), p.First().Palette, 0, Scale);
+			yield return new Renderable(anim.Image, rb.Origin + 0.5f*anim.Image.size*(1 - Scale),
+				p.First().Palette, 0, Scale);
 		}
 	}
 

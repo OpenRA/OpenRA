@@ -156,7 +156,7 @@ namespace OpenRA.Mods.RA.Effects
 		{
 			if (Args.firedBy.World.RenderedShroud.IsVisible(PxPosition.ToCPos()))
 				yield return new Renderable(anim.Image, PxPosition.ToFloat2() - 0.5f * anim.Image.size - new float2(0, Altitude),
-					Args.weapon.Underwater ? "shadow" : "effect", PxPosition.Y);
+					PaletteReference.FromName(Args.weapon.Underwater ? "shadow" : "effect"), PxPosition.Y);
 
 			if (Trail != null)
 				Trail.Render(Args.firedBy);

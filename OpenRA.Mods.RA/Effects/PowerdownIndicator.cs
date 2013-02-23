@@ -37,8 +37,8 @@ namespace OpenRA.Mods.RA.Effects
 		public IEnumerable<Renderable> Render()
 		{
 			if (!a.Destroyed && (a.World.LocalPlayer == null || a.Owner.Stances[a.Owner.World.LocalPlayer] == Stance.Ally))
-				yield return new Renderable(anim.Image,
-					a.CenterLocation.ToFloat2() - .5f * anim.Image.size, "chrome", (int)a.CenterLocation.Y);
+				yield return new Renderable(anim.Image,	a.CenterLocation.ToFloat2() - .5f * anim.Image.size,
+					PaletteReference.FromName("chrome"), (int)a.CenterLocation.Y);
 		}
 	}
 }

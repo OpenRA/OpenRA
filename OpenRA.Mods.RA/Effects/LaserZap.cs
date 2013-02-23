@@ -77,8 +77,8 @@ namespace OpenRA.Mods.RA.Effects
 		public IEnumerable<Renderable> Render()
 		{
 			if (explosion != null)
-				yield return new Renderable(explosion.Image,
-					args.dest.ToFloat2() - .5f * explosion.Image.size, "effect", (int)args.dest.Y);
+				yield return new Renderable(explosion.Image, args.dest.ToFloat2() - .5f * explosion.Image.size,
+				                            PaletteReference.FromName("effect"), (int)args.dest.Y);
 
 			if (ticks >= info.BeamDuration)
 				yield break;

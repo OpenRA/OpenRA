@@ -17,6 +17,33 @@ using OpenRA.Traits;
 
 namespace OpenRA.Graphics
 {
+	public class PaletteReference
+	{
+		string name;
+		int index;
+		public PaletteReference(string name, int index)
+		{
+			this.name = name;
+			this.index = index;
+		}
+
+		public static PaletteReference FromName(string name)
+		{
+			return new PaletteReference(name, -1);
+		}
+
+		public int RowIndex(WorldRenderer wr)
+		{
+			if (index == -1)
+			{
+				// Too spammy to enable by default
+				//Log.Write("perf", "Late resolution of palette reference {0}", name);
+				index = wr.GetPaletteIndex(name);
+			}
+			return index;
+		}
+	}
+
 	public class WorldRenderer
 	{
 		public readonly World world;
@@ -78,7 +105,7 @@ namespace OpenRA.Graphics
 			terrainRenderer.Draw(this, Game.viewport);
 			foreach (var a in world.traitDict.ActorsWithTraitMultiple<IRenderAsTerrain>(world))
 				foreach (var r in a.Trait.RenderAsTerrain(a.Actor))
-					r.Sprite.DrawAt(r.Pos, this.GetPaletteIndex(r.Palette), r.Scale);
+					r.Sprite.DrawAt(r.Pos, r.Palette.RowIndex(this), r.Scale);
 
 			foreach (var a in world.Selection.Actors)
 				if (!a.Destroyed)
@@ -91,7 +118,7 @@ namespace OpenRA.Graphics
 				world.OrderGenerator.RenderBeforeWorld(this, world);
 
 			foreach (var image in SpritesToRender())
-				image.Sprite.DrawAt(image.Pos, this.GetPaletteIndex(image.Palette), image.Scale);
+				image.Sprite.DrawAt(image.Pos, image.Palette.RowIndex(this), image.Scale);
 
 			// added for contrails
 			foreach (var a in world.ActorsWithTrait<IPostRender>())

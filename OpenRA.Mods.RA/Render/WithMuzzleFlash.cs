@@ -61,7 +61,7 @@ namespace OpenRA.Mods.RA.Render
 		{
 			foreach (var a in muzzleFlashes.Values)
 				if (a.DisableFunc == null || !a.DisableFunc())
-					yield return a.Image(self, "effect");
+					yield return a.Image(self, PaletteReference.FromName("effect"));
 		}
 
 		public void Tick(Actor self)

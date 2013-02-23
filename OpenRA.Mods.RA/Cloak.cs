@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -73,7 +74,7 @@ namespace OpenRA.Mods.RA
 				return rs;
 
 			if (Cloaked && IsVisible(self))
-				return rs.Select(a => a.WithPalette(info.Palette));
+				return rs.Select(a => a.WithPalette(PaletteReference.FromName(info.Palette)));
 			else
 				return Nothing;
 		}

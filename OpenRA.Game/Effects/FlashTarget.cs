@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Effects
@@ -39,7 +40,7 @@ namespace OpenRA.Effects
 
 			if (remainingTicks % 2 == 0)
 				foreach (var r in target.Render())
-					yield return r.WithPalette("highlight");
+					yield return r.WithPalette(PaletteReference.FromName("highlight"));
 		}
 	}
 }
