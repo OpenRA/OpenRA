@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 using OpenRA.Mods.RA.Orders;
 
@@ -31,7 +32,7 @@ namespace OpenRA.Mods.RA.Render
 			disguisedAsSprite = spy.disguisedAsSprite;
 		}
 
-		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
+		public IEnumerable<Renderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<Renderable> r)
 		{
 			return spy.disguisedAsPlayer != null ? r.Select(a => a.WithPalette(Palette(spy.disguisedAsPlayer))) : r;
 		}

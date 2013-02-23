@@ -68,13 +68,13 @@ namespace OpenRA.Mods.RA
 
 		static readonly Renderable[] Nothing = { };
 
-		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> rs)
+		public IEnumerable<Renderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<Renderable> r)
 		{
 			if (remainingTime > 0)
-				return rs;
+				return r;
 
 			if (Cloaked && IsVisible(self))
-				return rs.Select(a => a.WithPalette(PaletteReference.FromName(info.Palette)));
+				return r.Select(a => a.WithPalette(wr.Palette(info.Palette)));
 			else
 				return Nothing;
 		}

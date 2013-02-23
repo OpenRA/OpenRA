@@ -39,7 +39,7 @@ namespace OpenRA.Effects
 				yield break;
 
 			if (remainingTicks % 2 == 0)
-				foreach (var r in target.Render())
+				foreach (var r in target.Render(wr))
 					yield return r.WithPalette(wr.Palette("highlight"));
 		}
 	}

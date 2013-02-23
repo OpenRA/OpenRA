@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA
@@ -98,7 +99,7 @@ namespace OpenRA
 			}
 			
 			ApplyIRender = x => x.Render(this);
-			ApplyRenderModifier = (m, p) => p.ModifyRender(this, m);
+			ApplyRenderModifier = (m, p, wr) => p.ModifyRender(this, wr, m);
 
 			Bounds = Cached.New( () => CalculateBounds(false) );
 			ExtendedBounds = Cached.New( () => CalculateBounds(true) );
@@ -109,7 +110,7 @@ namespace OpenRA
 			Bounds.Invalidate();
 			ExtendedBounds.Invalidate();
 
-			currentActivity = Util.RunActivity( this, currentActivity );
+			currentActivity = Traits.Util.RunActivity( this, currentActivity );
 		}
 		
 		public void UpdateSight()
@@ -126,12 +127,12 @@ namespace OpenRA
 
 		// note: these delegates are cached to avoid massive allocation.
 		Func<IRender, IEnumerable<Renderable>> ApplyIRender;
-		Func<IEnumerable<Renderable>, IRenderModifier, IEnumerable<Renderable>> ApplyRenderModifier;
-		public IEnumerable<Renderable> Render()
+		Func<IEnumerable<Renderable>, IRenderModifier, WorldRenderer, IEnumerable<Renderable>> ApplyRenderModifier;
+		public IEnumerable<Renderable> Render(WorldRenderer wr)
 		{
 			var mods = TraitsImplementing<IRenderModifier>();
 			var sprites = TraitsImplementing<IRender>().SelectMany(ApplyIRender);
-			return mods.Aggregate(sprites, ApplyRenderModifier);
+			return mods.Aggregate(sprites, (m,p) => ApplyRenderModifier(m,p,wr));
 		}
 
 		// When useAltitude = true, the bounding box is extended

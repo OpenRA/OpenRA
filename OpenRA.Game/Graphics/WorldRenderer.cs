@@ -92,7 +92,7 @@ namespace OpenRA.Graphics
 				bounds.BottomRightAsCPos().ToPPos()
 			);
 
-			var renderables = actors.SelectMany(a => a.Render())
+			var renderables = actors.SelectMany(a => a.Render(this))
 				.OrderBy(r => r, comparer);
 
 			var effects = world.Effects.SelectMany(e => e.Render(this));

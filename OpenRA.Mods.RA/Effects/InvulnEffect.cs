@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA.Effects
 			if (a.Destroyed) // Tick will clean up
 				yield break;
 
-			foreach (var r in a.Render())
+			foreach (var r in a.Render(wr))
 				yield return r.WithPalette(wr.Palette("invuln"));
 		}
 	}

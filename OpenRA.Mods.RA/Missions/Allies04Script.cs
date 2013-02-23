@@ -16,6 +16,7 @@ using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Mods.RA.Render;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
@@ -505,7 +506,7 @@ namespace OpenRA.Mods.RA.Missions
 			hijackable = self.Trait<Allies04Hijackable>();
 		}
 
-		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
+		public IEnumerable<Renderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<Renderable> r)
 		{
 			return r.Select(a => a.WithPalette(Palette(hijackable.OldOwner)));
 		}
