@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA.Effects
 				world.AddFrameEndTask(w => w.Remove(this));
 		}
 
-		public IEnumerable<Renderable> Render()
+		public IEnumerable<Renderable> Render(WorldRenderer wr)
 		{
 			if (building.IsInWorld && building.Owner == building.World.LocalPlayer
 				&& building.World.Selection.Actors.Contains(building))

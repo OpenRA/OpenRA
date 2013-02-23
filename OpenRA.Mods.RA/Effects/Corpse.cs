@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA.Effects
 
 		public void Tick( World world ) { anim.Tick(); }
 
-		public IEnumerable<Renderable> Render()
+		public IEnumerable<Renderable> Render(WorldRenderer wr)
 		{
 			yield return new Renderable(anim.Image, pos - .5f * anim.Image.size, palette, (int)pos.Y);
 		}

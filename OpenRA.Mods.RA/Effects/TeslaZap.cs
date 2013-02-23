@@ -62,7 +62,7 @@ namespace OpenRA.Mods.RA.Effects
 			}
 		}
 
-		public IEnumerable<Renderable> Render() { return renderables; }
+		public IEnumerable<Renderable> Render(WorldRenderer wr) { return renderables; }
 
 		static IEnumerable<Renderable> DrawZapWandering(PPos from, PPos to, Sequence s)
 		{

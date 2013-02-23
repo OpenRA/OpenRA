@@ -32,13 +32,13 @@ namespace OpenRA.Mods.RA.Effects
 				world.AddFrameEndTask(w => w.Remove(this));
 		}
 
-		public IEnumerable<Renderable> Render()
+		public IEnumerable<Renderable> Render(WorldRenderer wr)
 		{
 			if (a.Destroyed) // Tick will clean up
 				yield break;
 
 			foreach (var r in a.Render())
-				yield return r.WithPalette(PaletteReference.FromName("invuln"));
+				yield return r.WithPalette(wr.Palette("invuln"));
 		}
 	}
 }

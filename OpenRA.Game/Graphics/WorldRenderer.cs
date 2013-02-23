@@ -95,7 +95,7 @@ namespace OpenRA.Graphics
 			var renderables = actors.SelectMany(a => a.Render())
 				.OrderBy(r => r, comparer);
 
-			var effects = world.Effects.SelectMany(e => e.Render());
+			var effects = world.Effects.SelectMany(e => e.Render(this));
 
 			return renderables.Concat(effects);
 		}

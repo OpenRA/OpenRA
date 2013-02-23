@@ -9,13 +9,14 @@
 #endregion
 
 using System.Collections.Generic;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Effects
 {
 	public interface IEffect
 	{
-		void Tick( World world );
-		IEnumerable<Renderable> Render();
+		void Tick(World world);
+		IEnumerable<Renderable> Render(WorldRenderer r);
 	}
 }
