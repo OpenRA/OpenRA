@@ -229,6 +229,7 @@
     <Compile Include="Graphics\Voxel.cs" />
     <Compile Include="Graphics\VoxelRenderer.cs" />
     <Compile Include="Graphics\VoxelLoader.cs" />
+    <Compile Include="Graphics\VoxelProvider.cs" />
     <Compile Include="Traits\BodyOrientation.cs" />
   </ItemGroup>
   <ItemGroup>

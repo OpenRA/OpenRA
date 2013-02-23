@@ -78,7 +78,7 @@ namespace OpenRA
 			SpriteLoader = new SpriteLoader(Rules.TileSets[map.Tileset].Extensions, SheetBuilder);
 			// TODO: Don't load the sequences for assets that are not used in this tileset. Maybe use the existing EditorTilesetFilters.
 			SequenceProvider.Initialize(Manifest.Sequences, map.Sequences);
-
+			VoxelProvider.Initialize(Manifest.VoxelSequences, map.VoxelSequences);
 			return map;
 		}
 

@@ -35,6 +35,7 @@ namespace OpenRA.Graphics
 	{
 		SheetBuilder sheetBuilder;
 
+		Cache<Pair<string,string>, Voxel> voxels;
 		IVertexBuffer<Vertex> vertexBuffer;
 		List<Vertex[]> vertices;
 		int totalVertexCount;
@@ -42,6 +43,7 @@ namespace OpenRA.Graphics
 
 		public VoxelLoader()
 		{
+			voxels = new Cache<Pair<string,string>, Voxel>(LoadFile);
 			vertices = new List<Vertex[]>();
 			totalVertexCount = 0;
 			cachedVertexCount = 0;
@@ -189,6 +191,18 @@ namespace OpenRA.Graphics
 					RefreshBuffer();
 				return vertexBuffer;
 			}
+		}
+
+		Voxel LoadFile(Pair<string,string> files)
+		{
+			var vxl = new VxlReader(FileSystem.OpenWithExts(files.First, ".vxl"));
+			var hva = new HvaReader(FileSystem.OpenWithExts(files.Second, ".hva"));
+			return new Voxel(this, vxl, hva);
+		}
+
+		public Voxel Load(string vxl, string hva)
+		{
+			return voxels[Pair.New(vxl, hva)];
 		}
 	}
 }
