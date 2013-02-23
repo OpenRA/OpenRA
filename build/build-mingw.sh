@@ -202,6 +202,10 @@ if [ $BUILD_LUASOCKET ]; then
   cp "$INSTALL_DIR/lib/lua/5.1/socket/core.dll" "$BIN_DIR/clibs/socket"
 fi
 
+# To build lua5.1.dll proxy:
+# (1) get mkforwardlib-gcc.lua from http://lua-users.org/wiki/LuaProxyDllThree
+# (2) run it as "lua mkforwardlib-gcc.lua lua51 lua5.1 X86"
+
 # show a message about successful completion
 echo "*** Build has been successfully completed ***"
 exit 0
