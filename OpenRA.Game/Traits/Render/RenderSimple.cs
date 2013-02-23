@@ -23,14 +23,12 @@ namespace OpenRA.Traits
 
 		public virtual object Create(ActorInitializer init) { return new RenderSimple(init.self); }
 
-		public virtual IEnumerable<Renderable> RenderPreview(ActorInfo building, Player owner)
+		public virtual IEnumerable<Renderable> RenderPreview(ActorInfo building, PaletteReference pr)
 		{
 			var anim = new Animation(RenderSimple.GetImage(building), () => 0);
 			anim.PlayRepeating("idle");
 
-			var pal = Palette ?? (owner != null ? PlayerPalette + owner.InternalName : null);
-			yield return new Renderable(anim.Image, 0.5f * anim.Image.size * (1 - Scale), 
-				PaletteReference.FromName(pal), 0, Scale);
+			yield return new Renderable(anim.Image, 0.5f * anim.Image.size * (1 - Scale), pr, 0, Scale);
 		}
 	}
 

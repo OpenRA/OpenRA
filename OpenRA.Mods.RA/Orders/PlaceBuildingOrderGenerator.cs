@@ -30,10 +30,11 @@ namespace OpenRA.Mods.RA.Orders
 			Producer = producer;
 			Building = name;
 			BuildingInfo = Rules.Info[Building].Traits.Get<BuildingInfo>();
+			var rbi = Rules.Info[Building].Traits.Get<RenderBuildingInfo>();
+			var pr = PaletteReference.FromName(rbi.Palette ?? (producer.Owner != null ?
+				rbi.PlayerPalette + producer.Owner.InternalName : null));
 
-			Preview = Rules.Info[Building].Traits.Get<RenderBuildingInfo>()
-								.RenderPreview(Rules.Info[Building], producer.Owner);
-
+			Preview = rbi.RenderPreview(Rules.Info[Building], pr);
 			buildOk = SequenceProvider.GetSequence("overlay", "build-valid").GetSprite(0);
 			buildBlocked = SequenceProvider.GetSequence("overlay", "build-invalid").GetSprite(0);
 		}
