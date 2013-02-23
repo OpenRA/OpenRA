@@ -50,6 +50,7 @@ namespace OpenRA.Graphics
 		internal readonly TerrainRenderer terrainRenderer;
 		internal readonly ShroudRenderer shroudRenderer;
 		internal readonly HardwarePalette palette;
+		internal Cache<string, PaletteReference> palettes;
 
 		internal WorldRenderer(World world)
 		{
@@ -60,8 +61,15 @@ namespace OpenRA.Graphics
 
 			terrainRenderer = new TerrainRenderer(world, this);
 			shroudRenderer = new ShroudRenderer(world);
+			palettes = new Cache<string, PaletteReference>(CreatePaletteReference);
 		}
 
+		PaletteReference CreatePaletteReference(string name)
+		{
+			return new PaletteReference(name, palette.GetPaletteIndex(name));
+		}
+
+		public PaletteReference Palette(string name) { return palettes[name]; }
 		public int GetPaletteIndex(string name) { return palette.GetPaletteIndex(name); }
 		public Palette GetPalette(string name) { return palette.GetPalette(name); }
 		public void AddPalette(string name, Palette pal, bool allowModifiers) { palette.AddPalette(name, pal, allowModifiers); }
