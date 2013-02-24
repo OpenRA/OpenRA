@@ -35,10 +35,8 @@ namespace OpenRA.Mods.RA
 			if (IsSuitableCell(pilot, self.Location) && r > 100 - info.SuccessRate && aircraft.Altitude > 10
 				&& self.Owner.WinState != WinState.Lost)
 			{
-				self.World.AddFrameEndTask(w => w.Add(
-						new Parachute(pilot.Owner,
-							Util.CenterOfCell(self.CenterLocation.ToCPos()),
-							aircraft.Altitude, pilot)));
+				self.World.AddFrameEndTask(w => w.Add(new Parachute(pilot,
+						Util.CenterOfCell(self.CenterLocation.ToCPos()), aircraft.Altitude)));
 
 				Sound.Play(info.ChuteSound, self.CenterLocation);
 			}
