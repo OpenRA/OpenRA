@@ -78,7 +78,7 @@ namespace OpenRA.Traits
 			anim.PlayRepeating("idle");
 		}
 
-		public PaletteReference Palette(Player p, WorldRenderer wr)
+		protected PaletteReference Palette(Player p, WorldRenderer wr)
 		{
 			return wr.Palette(Info.Palette ?? Info.PlayerPalette + p.InternalName);
 		}
