@@ -19,25 +19,21 @@ namespace OpenRA.Mods.RA.Effects
 	{
 		readonly Animation anim;
 		readonly float2 pos;
-		readonly RenderSimple rs;
-		readonly Player p;
+		readonly string paletteName;
 
-		public Corpse(Actor fromActor, string sequence)
+		public Corpse(World world, float2 pos, string image, string sequence, string paletteName)
 		{
-			p = fromActor.Owner;
-			rs = fromActor.Trait<RenderSimple>();
-			anim = new Animation(rs.GetImage(fromActor));
-			anim.PlayThen(sequence,
-				() => fromActor.World.AddFrameEndTask(w => w.Remove(this)));
-
-			pos = fromActor.CenterLocation.ToFloat2();
+			this.pos = pos;
+			this.paletteName = paletteName;
+			anim = new Animation(image);
+			anim.PlayThen(sequence, () => world.AddFrameEndTask(w => w.Remove(this)));
 		}
 
-		public void Tick( World world ) { anim.Tick(); }
+		public void Tick(World world) { anim.Tick(); }
 
 		public IEnumerable<Renderable> Render(WorldRenderer wr)
 		{
-			yield return new Renderable(anim.Image, pos - .5f * anim.Image.size, rs.Palette(p, wr), (int)pos.Y);
+			yield return new Renderable(anim.Image, pos - .5f * anim.Image.size, wr.Palette(paletteName), (int)pos.Y);
 		}
 	}
 }
