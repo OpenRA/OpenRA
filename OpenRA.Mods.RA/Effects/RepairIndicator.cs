@@ -20,6 +20,7 @@ namespace OpenRA.Mods.RA.Effects
 	{
 		Actor building;
 		Player player;
+		RenderSimple rs;
 		Animation anim = new Animation("allyrepair");
 
 		public RepairIndicator(Actor building, Player player)
@@ -27,6 +28,7 @@ namespace OpenRA.Mods.RA.Effects
 			this.building = building;
 			this.player = player;
 			anim.PlayRepeating("repair");
+			rs = building.Trait<RenderSimple>();
 		}
 
 		public void Tick(World world)
@@ -44,10 +46,8 @@ namespace OpenRA.Mods.RA.Effects
 		{
 			if (!building.Destroyed)
 			{
-				var palette = building.Trait<RenderSimple>().Palette(player);
-
 				yield return new Renderable(anim.Image,
-					building.CenterLocation.ToFloat2() - .5f * anim.Image.size, palette, (int)building.CenterLocation.Y);
+					building.CenterLocation.ToFloat2() - .5f * anim.Image.size, rs.Palette(player, wr), (int)building.CenterLocation.Y);
 			}
 		}
 	}

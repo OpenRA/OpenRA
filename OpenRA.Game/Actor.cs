@@ -93,8 +93,8 @@ namespace OpenRA
 					vis = Shroud.GetVisOrigins(this).ToArray()
 				};
 			}
-			
-			ApplyIRender = x => x.Render(this);
+
+			ApplyIRender = (x, wr) => x.Render(this, wr);
 			ApplyRenderModifier = (m, p, wr) => p.ModifyRender(this, wr, m);
 
 			Bounds = Cached.New(() => CalculateBounds(false));
@@ -122,12 +122,12 @@ namespace OpenRA
 		OpenRA.FileFormats.Lazy<int2> Size;
 
 		// note: these delegates are cached to avoid massive allocation.
-		Func<IRender, IEnumerable<Renderable>> ApplyIRender;
+		Func<IRender, WorldRenderer, IEnumerable<Renderable>> ApplyIRender;
 		Func<IEnumerable<Renderable>, IRenderModifier, WorldRenderer, IEnumerable<Renderable>> ApplyRenderModifier;
 		public IEnumerable<Renderable> Render(WorldRenderer wr)
 		{
 			var mods = TraitsImplementing<IRenderModifier>();
-			var sprites = TraitsImplementing<IRender>().SelectMany(ApplyIRender);
+			var sprites = TraitsImplementing<IRender>().SelectMany(x => ApplyIRender(x, wr));
 			return mods.Aggregate(sprites, (m,p) => ApplyRenderModifier(m,p,wr));
 		}
 

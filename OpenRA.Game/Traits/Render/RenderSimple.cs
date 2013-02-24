@@ -78,17 +78,17 @@ namespace OpenRA.Traits
 			anim.PlayRepeating("idle");
 		}
 
-		public PaletteReference Palette(Player p)
+		public PaletteReference Palette(Player p, WorldRenderer wr)
 		{
-			return PaletteReference.FromName(Info.Palette ?? Info.PlayerPalette + p.InternalName);
+			return wr.Palette(Info.Palette ?? Info.PlayerPalette + p.InternalName);
 		}
 
-		public virtual IEnumerable<Renderable> Render(Actor self)
+		public virtual IEnumerable<Renderable> Render(Actor self, WorldRenderer wr)
 		{
 			foreach (var a in anims.Values)
 				if (a.DisableFunc == null || !a.DisableFunc())
 				{
-					Renderable ret = a.Image(self, Palette(self.Owner));
+					Renderable ret = a.Image(self, Palette(self.Owner, wr));
 					if (Info.Scale != 1f)
 						ret = ret.WithScale(Info.Scale).WithPos(ret.Pos + 0.5f * ret.Sprite.size * (1 - Info.Scale));
 					yield return ret;

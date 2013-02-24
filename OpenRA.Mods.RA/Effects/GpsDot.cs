@@ -71,7 +71,7 @@ namespace OpenRA.Mods.RA.Effects
 			if (show && !self.Destroyed)
 			{
 				var p = self.CenterLocation;
-				yield return new Renderable(anim.Image, p.ToFloat2() - 0.5f * anim.Image.size, rs.Palette(self.Owner), p.Y)
+				yield return new Renderable(anim.Image, p.ToFloat2() - 0.5f * anim.Image.size, rs.Palette(self.Owner, wr), p.Y)
 					.WithScale(1.5f);
 			}
 		}

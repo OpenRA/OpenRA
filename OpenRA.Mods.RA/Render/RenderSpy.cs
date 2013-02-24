@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA.Render
 
 		public IEnumerable<Renderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<Renderable> r)
 		{
-			return spy.disguisedAsPlayer != null ? r.Select(a => a.WithPalette(Palette(spy.disguisedAsPlayer))) : r;
+			return spy.disguisedAsPlayer != null ? r.Select(a => a.WithPalette(Palette(spy.disguisedAsPlayer, wr))) : r;
 		}
 
 		public override void Tick(Actor self)

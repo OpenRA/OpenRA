@@ -508,7 +508,7 @@ namespace OpenRA.Mods.RA.Missions
 
 		public IEnumerable<Renderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<Renderable> r)
 		{
-			return r.Select(a => a.WithPalette(Palette(hijackable.OldOwner)));
+			return r.Select(a => a.WithPalette(Palette(hijackable.OldOwner, wr)));
 		}
 	}
 
