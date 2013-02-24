@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Graphics;
 
 namespace OpenRA.Traits
@@ -32,7 +33,7 @@ namespace OpenRA.Traits
 		}
 	}
 
-	public class RenderSimple : IRender, ITick
+	public class RenderSimple : IRender, IAutoSelectionSize, ITick
 	{
 		public Dictionary<string, AnimationWithOffset> anims = new Dictionary<string, AnimationWithOffset>();
 
@@ -92,6 +93,14 @@ namespace OpenRA.Traits
 						ret = ret.WithScale(Info.Scale).WithPos(ret.Pos + 0.5f * ret.Sprite.size * (1 - Info.Scale));
 					yield return ret;
 				}
+		}
+
+		public int2 SelectionSize(Actor self)
+		{
+			return anims.Values.Where(b => (b.DisableFunc == null || !b.DisableFunc())
+			                                && b.Animation.CurrentSequence != null)
+				.Select(a => (a.Animation.Image.size*Info.Scale).ToInt2())
+				.FirstOrDefault();
 		}
 
 		public virtual void Tick(Actor self)

@@ -74,7 +74,7 @@ namespace OpenRA
 					AddTrait(trait.Create(init));
 			}
 
-			Move = Lazy.New( () => TraitOrDefault<IMove>() );
+			Move = Lazy.New(() => TraitOrDefault<IMove>());
 
 			Size = Lazy.New(() =>
 			{
@@ -82,27 +82,23 @@ namespace OpenRA
 				if (si != null && si.Bounds != null)
 					return new int2(si.Bounds[0], si.Bounds[1]);
 
-				// auto size from render
-				var firstSprite = TraitsImplementing<IRender>().SelectMany(ApplyIRender).FirstOrDefault();
-				if (firstSprite.Sprite == null) return int2.Zero;
-				return (firstSprite.Sprite.size * firstSprite.Scale).ToInt2();
+				return TraitsImplementing<IAutoSelectionSize>().Select(x => x.SelectionSize(this)).FirstOrDefault();
 			});
 
-			if(this.HasTrait<RevealsShroud>())
+			if (this.HasTrait<RevealsShroud>())
 			{
 				Sight = new Shroud.ActorVisibility
 				{
 					range = this.Trait<RevealsShroud>().RevealRange,
 					vis = Shroud.GetVisOrigins(this).ToArray()
 				};
-					
 			}
 			
 			ApplyIRender = x => x.Render(this);
 			ApplyRenderModifier = (m, p, wr) => p.ModifyRender(this, wr, m);
 
-			Bounds = Cached.New( () => CalculateBounds(false) );
-			ExtendedBounds = Cached.New( () => CalculateBounds(true) );
+			Bounds = Cached.New(() => CalculateBounds(false));
+			ExtendedBounds = Cached.New(() => CalculateBounds(true));
 		}
 
 		public void Tick()
