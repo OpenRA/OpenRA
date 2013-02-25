@@ -561,9 +561,13 @@ function CreateEditor()
       SetDocumentModified(editor:GetId(), true)
     end)
 
-  editor:Connect(wxstc.wxEVT_STC_UPDATEUI,
+  editor:Connect(wxstc.wxEVT_STC_PAINTED,
     function ()
       updateStatusText(editor)
+    end)
+
+  editor:Connect(wxstc.wxEVT_STC_UPDATEUI,
+    function ()
       updateBraceMatch(editor)
       for _,iv in ipairs(editor.ev) do
         local line = editor:LineFromPosition(iv[1])
