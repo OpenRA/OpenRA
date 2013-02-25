@@ -143,22 +143,14 @@ namespace OpenRA
 			var si = Info.Traits.GetOrDefault<SelectableInfo>();
 			if (si != null && si.Bounds != null && si.Bounds.Length > 2)
 			{
-#if true
 				loc += new PVecInt(si.Bounds[2], si.Bounds[3]);
-#else
-				loc.X += si.Bounds[2];
-				loc.Y += si.Bounds[3];
-#endif
 			}
 
 			var move = Move.Value;
 			if (move != null)
 			{
-#if true
 				loc -= new PVecInt(0, move.Altitude);
-#else
-				loc.Y -= move.Altitude;
-#endif
+
 				if (useAltitude)
 					size = new PVecInt(size.X, size.Y + move.Altitude);
 			}
