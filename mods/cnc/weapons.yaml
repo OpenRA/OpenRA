@@ -107,6 +107,7 @@ HighV:
 	Report: GUN8
 	Projectile: Bullet
 		Speed: 100
+		High: yes
 	Warhead:
 		Damage: 40
 		Spread: 3
@@ -116,7 +117,7 @@ HighV:
 			Light: 50%
 			Heavy: 25%
 		InfDeath: 2
-		Explosion: 1
+		Explosion: piffs
 
 HeliAGGun:
 	ROF: 20
@@ -129,14 +130,14 @@ HeliAGGun:
 		Speed: 100
 	Warhead:
 		Damage: 20
-		Spread: 3
+		Spread: 6
 		Versus: 
 			None: 100%
 			Wood: 50%
 			Light: 50%
 			Heavy: 25%
 		InfDeath: 2
-		Explosion: 1
+		Explosion: piffs
 
 HeliAAGun:
 	ROF: 20
@@ -156,7 +157,7 @@ HeliAAGun:
 			Light: 50%
 			Heavy: 25%
 		InfDeath: 2
-		Explosion: 1
+		Explosion: piffs
 
 Pistol:
 	ROF: 7
@@ -330,6 +331,7 @@ Flamethrower:
 			Light: 75%
 			Heavy: 25%
 		InfDeath: 5
+		Explosion: small_napalm
 		ImpactSound: flamer2
 		SmudgeType: Scorch
 		Damage: 35
@@ -350,7 +352,7 @@ BigFlamer:
 			Light: 50%
 			Heavy: 25%
 		InfDeath: 5
-		Explosion: 3
+		Explosion: med_napalm
 		ImpactSound: flamer2
 		SmudgeType: Scorch
 		Damage: 90
@@ -558,7 +560,7 @@ MammothMissiles:
 			Light: 100%
 			Heavy: 50%
 		InfDeath: 4
-		Explosion: 4
+		Explosion: med_frag
 		ImpactSound: xplobig4
 		SmudgeType: Crater
 		Damage: 100
@@ -615,7 +617,7 @@ ArtilleryShell:
 			Light: 60%
 			Heavy: 25%
 		InfDeath: 3
-		Explosion: 8
+		Explosion: poof
 		SmudgeType: Crater
 		ImpactSound: XPLOSML2
 
@@ -635,7 +637,7 @@ MachineGun:
 			Heavy: 20%
 			Concrete: 10%
 		InfDeath: 2
-		Explosion: 2
+		Explosion: piffs
 		Damage: 15
 
 BoatMissile:
@@ -670,7 +672,7 @@ BoatMissile:
 
 TowerMissle:
 	ROF: 40
-	Range: 7
+	Range: 7.5
 	Report: ROCKET2
 	ValidTargets: Ground, Air
 	Burst: 2
@@ -694,7 +696,7 @@ TowerMissle:
 			Light: 60%
 			Heavy: 25%
 		InfDeath: 3
-		Explosion: 5
+		Explosion: med_frag
 		ImpactSound: xplos
 		SmudgeType: Crater
 		Damage: 60
@@ -711,10 +713,10 @@ Napalm:
 			Light: 60%
 			Heavy: 50%
 		InfDeath: 5
-		Explosion: 3
+		Explosion: med_napalm
 		ImpactSound: flamer2
 		SmudgeType: Scorch
-		Damage: 120
+		Damage: 130
 
 Napalm.Crate:
 	Warhead:
@@ -761,15 +763,15 @@ SAMMissile:
 	Warhead: AP
 		Spread: 3
 		Versus: 
-			None: 30%
-			Wood: 75%
-			Light: 75%
-			Heavy: 50%
+			None: 100%
+			Wood: 100%
+			Light: 100%
+			Heavy: 75%
 		InfDeath: 4
 		Explosion: 4
 		ImpactSound: xplos
 		SmudgeType: Crater
-		Damage: 50
+		Damage: 60
 
 HonestJohn:
 	ROF: 200
@@ -821,7 +823,7 @@ APCGun:
 			None: 50%	
 			Light: 100%	
 			Heavy: 50%	
-		Explosion: 5
+		Explosion: small_poof
 		Damage: 25
 
 APCGun.AA:
@@ -836,5 +838,5 @@ APCGun.AA:
 		Spread: 5
 		Versus:
 			Heavy: 50%
-		Explosion: 5
+		Explosion: small_poof
 		Damage: 25
