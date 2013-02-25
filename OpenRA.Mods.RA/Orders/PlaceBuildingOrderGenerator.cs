@@ -21,20 +21,17 @@ namespace OpenRA.Mods.RA.Orders
 	{
 		readonly Actor Producer;
 		readonly string Building;
-		readonly IEnumerable<Renderable> Preview;
 		readonly BuildingInfo BuildingInfo;
+		IEnumerable<Renderable> preview;
 		Sprite buildOk, buildBlocked;
+		bool initialized = false;
 
 		public PlaceBuildingOrderGenerator(Actor producer, string name)
 		{
 			Producer = producer;
 			Building = name;
 			BuildingInfo = Rules.Info[Building].Traits.Get<BuildingInfo>();
-			var rbi = Rules.Info[Building].Traits.Get<RenderBuildingInfo>();
-			var pr = PaletteReference.FromName(rbi.Palette ?? (producer.Owner != null ?
-				rbi.PlayerPalette + producer.Owner.InternalName : null));
 
-			Preview = rbi.RenderPreview(Rules.Info[Building], pr);
 			buildOk = SequenceProvider.GetSequence("overlay", "build-valid").GetSprite(0);
 			buildBlocked = SequenceProvider.GetSequence("overlay", "build-invalid").GetSprite(0);
 		}
@@ -90,7 +87,17 @@ namespace OpenRA.Mods.RA.Orders
 			}
 			else
 			{
-				foreach (var r in Preview)
+				if (!initialized)
+				{
+					var rbi = Rules.Info[Building].Traits.Get<RenderBuildingInfo>();
+					var palette = rbi.Palette ?? (Producer.Owner != null ?
+					                              rbi.PlayerPalette + Producer.Owner.InternalName : null);
+
+					preview = rbi.RenderPreview(Rules.Info[Building], wr.Palette(palette));
+					initialized = true;
+				}
+
+				foreach (var r in preview)
 					r.Sprite.DrawAt(topLeft.ToPPos().ToFloat2() + r.Pos,
 									r.Palette.RowIndex(wr),
 									r.Scale*r.Sprite.size);
