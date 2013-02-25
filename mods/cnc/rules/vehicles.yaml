@@ -7,7 +7,7 @@ MCV:
 		Icon: mcvicnh
 		Description: Deploys into another Construction Yard.\n  Unarmed
 	Buildable:
-		BuildPaletteOrder: 10
+		BuildPaletteOrder: 100
 		Prerequisites: fix
 		Owner: gdi,nod
 	Selectable:
@@ -53,7 +53,7 @@ HARV:
 		Owner: gdi,nod
 	Selectable:
 		Priority: 7
-		Bounds: 44,44
+		Bounds: 36,36
 	Harvester:
 		Resources: Tiberium, Blue Tiberium
 		PipCount: 5
@@ -172,7 +172,7 @@ FTNK:
 	AttackFrontal:
 		PrimaryWeapon: BigFlamer
 		PrimaryOffset: 0,-5,3,2
-		PrimaryLocalOffset: 2,0,0,0,0, -2,0,0,0,0
+		PrimaryLocalOffset: 5,0,0,0,0, -5,0,0,0,0
 	RenderUnit:
 	AutoTarget:
 	WithMuzzleFlash:
@@ -217,7 +217,7 @@ BGGY:
 BIKE:
 	Inherits: ^Vehicle
 	Valued:
-		Cost: 400
+		Cost: 500
 	Tooltip:
 		Name: Recon Bike
 		Icon: bikeicnh
@@ -227,15 +227,15 @@ BIKE:
 		Prerequisites: afld
 		Owner: nod
 	Mobile:
-		ROT: 10
-		Speed: 20
+		ROT: 12
+		Speed: 15
 		TerrainSpeeds:
-			Clear: 42
-			Rough: 25
+			Clear: 70
+			Rough: 35
 			Road: 100
-			Tiberium: 25
-			BlueTiberium: 25
-			Beach: 25
+			Tiberium: 35
+			BlueTiberium: 35
+			Beach: 35
 	Health:
 		HP: 120
 	Armor: 
@@ -267,7 +267,7 @@ JEEP:
 		ROT: 10
 		Speed: 14
 	Health:
-		HP: 150
+		HP: 160
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -353,7 +353,7 @@ MTNK:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
 	Selectable:
-		Bounds: 34,34
+		Bounds: 28,28
 
 HTNK:
 	Inherits: ^Tank
@@ -398,7 +398,7 @@ HTNK:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
 	Selectable:
-		Bounds: 40,38,0,-3
+		Bounds: 34,34,0,-3
 
 MSAM:
 	Inherits: ^Tank
@@ -485,6 +485,7 @@ STNK:
 		Owner: nod
 	Mobile:
 		Speed: 14
+		Crushes: crate, infantry
 	Health:
 		HP: 150
 	Armor:
@@ -492,8 +493,8 @@ STNK:
 	RevealsShroud:
 		Range: 4
 	Cloak:
-		InitialDelay: 125
-		CloakDelay: 125
+		InitialDelay: 80
+		CloakDelay: 80
 		CloakSound: appear1.aud
 		UncloakSound: trans1.aud
 	AttackFrontal:
