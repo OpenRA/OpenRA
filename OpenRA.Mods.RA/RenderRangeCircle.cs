@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA
 
 			wr.DrawRangeCircle(
 				Color.FromArgb(128, Color.Yellow),
-				self.CenterLocation.ToFloat2(), (int)self.Trait<AttackBase>().GetMaximumRange());
+				self.CenterLocation.ToFloat2(), self.Trait<AttackBase>().GetMaximumRange());
 		}
 	}
 }
