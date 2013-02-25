@@ -99,7 +99,7 @@ namespace OpenRA.Mods.RA.Orders
 
 				foreach (var r in preview)
 					r.Sprite.DrawAt(topLeft.ToPPos().ToFloat2() + r.Pos,
-									r.Palette.RowIndex(wr),
+									r.Palette.Index,
 									r.Scale*r.Sprite.size);
 
 				var res = world.WorldActor.Trait<ResourceLayer>();

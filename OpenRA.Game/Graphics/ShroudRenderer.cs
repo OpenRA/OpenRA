@@ -149,14 +149,14 @@ namespace OpenRA.Graphics
 					{
 						s[starti, j].DrawAt(
 							Game.CellSize * new float2(starti, j),
-							pal.RowIndex(wr),
+							pal.Index,
 							new float2(Game.CellSize * (i - starti), Game.CellSize));
 						starti = i + 1;
 					}
 
 					s[i, j].DrawAt(
 						Game.CellSize * new float2(i, j),
-						pal.RowIndex(wr));
+						pal.Index);
 					starti = i + 1;
 					last = s[i, j];
 				}
@@ -164,7 +164,7 @@ namespace OpenRA.Graphics
 				if (starti < clip.Right)
 					s[starti, j].DrawAt(
 						Game.CellSize * new float2(starti, j),
-						pal.RowIndex(wr),
+						pal.Index,
 						new float2(Game.CellSize * (clip.Right - starti), Game.CellSize));
 			}
 		}
