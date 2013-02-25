@@ -367,6 +367,13 @@ function CreateEditor()
   editor:SetFoldFlags(wxstc.wxSTC_FOLDFLAG_LINEBEFORE_CONTRACTED +
     wxstc.wxSTC_FOLDFLAG_LINEAFTER_CONTRACTED)
 
+  -- allow multiple selection and multi-cursor editing if supported
+  if ide.wxver >= "2.9.5" then
+    editor:SetMultipleSelection(1)
+    editor:SetAdditionalCaretsBlink(1)
+    editor:SetAdditionalSelectionTyping(1)
+  end
+
   do
     local fg, bg = wx.wxWHITE, wx.wxColour(128, 128, 128)
     editor:MarkerDefine(wxstc.wxSTC_MARKNUM_FOLDEROPEN, wxstc.wxSTC_MARK_BOXMINUS, fg, bg)
