@@ -39,7 +39,7 @@ namespace OpenRA.Graphics
 
 			int nv = 0;
 
-			var terrainPalette = Game.modData.Palette.GetPaletteIndex("terrain");
+			var terrainPalette = wr.Palette("terrain").Index;
 
 			for( int j = map.Bounds.Top; j < map.Bounds.Bottom; j++ )
 				for( int i = map.Bounds.Left; i < map.Bounds.Right; i++ )

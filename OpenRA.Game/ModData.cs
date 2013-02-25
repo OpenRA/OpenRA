@@ -28,7 +28,6 @@ namespace OpenRA
 		public ILoadScreen LoadScreen = null;
 		public SheetBuilder SheetBuilder;
 		public SpriteLoader SpriteLoader;
-		public HardwarePalette Palette { get; private set; }
 
 		public ModData( params string[] mods )
 		{
@@ -51,13 +50,11 @@ namespace OpenRA
 
 			AvailableMaps = FindMaps(Manifest.Mods);
 
-			Palette = new HardwarePalette();
 			ChromeMetrics.Initialize(Manifest.ChromeMetrics);
 			ChromeProvider.Initialize(Manifest.Chrome);
 			SheetBuilder = new SheetBuilder(TextureChannel.Red);
 			SpriteLoader = new SpriteLoader(new string[] { ".shp" }, SheetBuilder);
 			CursorProvider.Initialize(Manifest.Cursors);
-			Palette.Update(new IPaletteModifier[] { });
 		}
 
 		public Map PrepareMap(string uid)
