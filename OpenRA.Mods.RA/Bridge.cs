@@ -135,10 +135,18 @@ namespace OpenRA.Mods.RA
 			return bridges.GetBridge(self.Location + new CVec(offset[0], offset[1]));
 		}
 
-		public IEnumerable<Renderable> RenderAsTerrain(Actor self)
+		bool initializePalettes = true;
+		PaletteReference terrainPalette;
+		public IEnumerable<Renderable> RenderAsTerrain(WorldRenderer wr, Actor self)
 		{
+			if (initializePalettes)
+			{
+				terrainPalette = wr.Palette("terrain");
+				initializePalettes = false;
+			}
+
 			foreach (var t in TileSprites[currentTemplate])
-				yield return new Renderable(t.Value, t.Key.ToPPos().ToFloat2(), "terrain", Game.CellSize * t.Key.Y);
+				yield return new Renderable(t.Value, t.Key.ToPPos().ToFloat2(), terrainPalette, Game.CellSize * t.Key.Y);
 		}
 
 		bool IsIntact(Bridge b)

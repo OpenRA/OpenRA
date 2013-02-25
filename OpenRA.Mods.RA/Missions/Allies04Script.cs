@@ -16,6 +16,7 @@ using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Mods.RA.Render;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
@@ -495,19 +496,21 @@ namespace OpenRA.Mods.RA.Missions
 		public override object Create(ActorInitializer init) { return new Allies04RenderHijacked(init.self, this); }
 	}
 
-	class Allies04RenderHijacked : RenderUnit, IRenderModifier
+	class Allies04RenderHijacked : RenderUnit
 	{
 		Allies04Hijackable hijackable;
+		Allies04RenderHijackedInfo info;
 
 		public Allies04RenderHijacked(Actor self, Allies04RenderHijackedInfo info)
 			: base(self)
 		{
+			this.info = info;
 			hijackable = self.Trait<Allies04Hijackable>();
 		}
 
-		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
+		protected override string PaletteName(Actor self)
 		{
-			return r.Select(a => a.WithPalette(Palette(hijackable.OldOwner)));
+			return info.Palette ?? info.PlayerPalette + hijackable.OldOwner.InternalName;
 		}
 	}
 

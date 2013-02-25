@@ -97,23 +97,23 @@ namespace OpenRA.Mods.RA
 			return Level > 0 ? Info.SpeedModifier[Level - 1] : 1m;
 		}
 
-		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> rs)
+		public IEnumerable<Renderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<Renderable> r)
 		{
 			if (self.Owner == self.World.LocalPlayer && Level > 0)
-				return InnerModifyRender(self, rs);
+				return InnerModifyRender(self, wr, r);
 			else
-				return rs;
+				return r;
 		}
 
-		IEnumerable<Renderable> InnerModifyRender(Actor self, IEnumerable<Renderable> rs)
+		IEnumerable<Renderable> InnerModifyRender(Actor self, WorldRenderer wr, IEnumerable<Renderable> r)
 		{
-			foreach (var r in rs)
-				yield return r;
+			foreach (var rs in r)
+				yield return rs;
 
 			RankAnim.Tick();	// HACK
 			var bounds = self.Bounds.Value;
-			yield return new Renderable(RankAnim.Image,
-				new float2(bounds.Right - 6, bounds.Bottom - 8), "effect", self.CenterLocation.Y);
+			yield return new Renderable(RankAnim.Image, new float2(bounds.Right - 6, bounds.Bottom - 8),
+				wr.Palette("effect"), self.CenterLocation.Y);
 		}
 	}
 

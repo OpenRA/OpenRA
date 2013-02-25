@@ -152,11 +152,11 @@ namespace OpenRA.Mods.RA.Effects
 				Combat.DoImpacts(Args);
 		}
 
-		public IEnumerable<Renderable> Render()
+		public IEnumerable<Renderable> Render(WorldRenderer wr)
 		{
 			if (Args.firedBy.World.RenderedShroud.IsVisible(PxPosition.ToCPos()))
 				yield return new Renderable(anim.Image, PxPosition.ToFloat2() - 0.5f * anim.Image.size - new float2(0, Altitude),
-					Args.weapon.Underwater ? "shadow" : "effect", PxPosition.Y);
+					wr.Palette(Args.weapon.Underwater ? "shadow" : "effect"), PxPosition.Y);
 
 			if (Trail != null)
 				Trail.Render(Args.firedBy);

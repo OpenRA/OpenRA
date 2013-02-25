@@ -15,65 +15,76 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Effects
 {
-	class GpsDotInfo : ITraitInfo, Requires<RenderSimpleInfo>
+	class GpsDotInfo : ITraitInfo
 	{
 		public readonly string String = "Infantry";
+		public readonly string IndicatorPalettePrefix = "player";
+
 		public object Create(ActorInitializer init)
 		{
-			return new GpsDot(init, String);
+			return new GpsDot(init.self, this);
 		}
 	}
 
 	class GpsDot : IEffect
 	{
 		Actor self;
-		GpsWatcher watcher;
-		RenderSimple rs;
-		bool show = false;
+		GpsDotInfo info;
 		Animation anim;
 
-		public GpsDot(ActorInitializer init, string s)
-		{
-			anim = new Animation("gpsdot");
-			anim.PlayRepeating(s);
+		GpsWatcher watcher;
+		HiddenUnderFog huf;
+		Spy spy;
+		bool show = false;
 
-			self = init.self;
-			rs = self.Trait<RenderSimple>();
+		public GpsDot(Actor self, GpsDotInfo info)
+		{
+			this.self = self;
+			this.info = info;
+			anim = new Animation("gpsdot");
+			anim.PlayRepeating(info.String);
+
 			self.World.AddFrameEndTask(w => w.Add(this));
-			if(self.World.LocalPlayer != null)
+			if (self.World.LocalPlayer != null)
 				watcher = self.World.LocalPlayer.PlayerActor.Trait<GpsWatcher>();
 		}
 
+		bool firstTick = true;
 		public void Tick(World world)
 		{
-			show = false;
-
 			if (self.Destroyed)
 				world.AddFrameEndTask(w => w.Remove(this));
 
-			if (world.LocalPlayer == null)
+			if (world.LocalPlayer == null || !self.IsInWorld || self.Destroyed)
 				return;
 
-			if (
-				self.IsInWorld
-				&& (watcher.Granted || watcher.GrantedAllies)
-				&& !self.Trait<HiddenUnderFog>().IsVisible(self.World.RenderedShroud, self) // WRONG
-				&& (!self.HasTrait<Cloak>() || !self.Trait<Cloak>().Cloaked)
-				&& (!self.HasTrait<Spy>() || !self.Trait<Spy>().Disguised)
-				)
+			// Can be granted at runtime via a crate, so can't cache
+			var cloak = self.TraitOrDefault<Cloak>();
+
+			if (firstTick)
 			{
-				show = true;
+				huf = self.TraitOrDefault<HiddenUnderFog>();
+				spy = self.TraitOrDefault<Spy>();
+				firstTick = false;
 			}
+
+			var hasGps = (watcher != null && (watcher.Granted || watcher.GrantedAllies));
+			var hasDot = (huf != null && !huf.IsVisible(self.World.RenderedShroud, self)); // WRONG (why?)
+			var dotHidden = (cloak != null && cloak.Cloaked) || (spy != null && spy.Disguised);
+
+			show = hasGps && hasDot && !dotHidden;
 		}
 
-		public IEnumerable<Renderable> Render()
+		public IEnumerable<Renderable> Render(WorldRenderer wr)
 		{
-			if (show && !self.Destroyed)
-			{
-				var p = self.CenterLocation;
-				yield return new Renderable(anim.Image, p.ToFloat2() - 0.5f * anim.Image.size, rs.Palette(self.Owner), p.Y)
-					.WithScale(1.5f);
-			}
+			if (!show || self.Destroyed)
+				yield break;
+
+			var p = self.CenterLocation;
+			var palette = wr.Palette(info.IndicatorPalettePrefix+self.Owner.InternalName);
+			yield return new Renderable(anim.Image, p.ToFloat2() - 0.5f * anim.Image.size, palette, p.Y)
+				.WithScale(1.5f);
+
 		}
 	}
 }

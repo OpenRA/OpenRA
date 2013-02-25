@@ -20,13 +20,15 @@ namespace OpenRA.Mods.RA.Effects
 	{
 		readonly Actor building;
 		readonly RA.RallyPoint rp;
+		readonly string palettePrefix;
 		public Animation flag = new Animation("rallypoint");
 		public Animation circles = new Animation("rallypoint");
 
-		public RallyPoint(Actor building)
+		public RallyPoint(Actor building, string palettePrefix)
 		{
 			this.building = building;
 			rp = building.Trait<RA.RallyPoint>();
+			this.palettePrefix = palettePrefix;
 			flag.PlayRepeating("flag");
 			circles.Play("circles");
 		}
@@ -46,13 +48,13 @@ namespace OpenRA.Mods.RA.Effects
 				world.AddFrameEndTask(w => w.Remove(this));
 		}
 
-		public IEnumerable<Renderable> Render()
+		public IEnumerable<Renderable> Render(WorldRenderer wr)
 		{
 			if (building.IsInWorld && building.Owner == building.World.LocalPlayer
 				&& building.World.Selection.Actors.Contains(building))
 			{
 				var pos = Traits.Util.CenterOfCell(rp.rallyPoint);
-				var palette = building.Trait<RenderSimple>().Palette(building.Owner);
+				var palette = wr.Palette(palettePrefix+building.Owner.InternalName);
 
 				yield return new Renderable(circles.Image,
 					pos.ToFloat2() - .5f * circles.Image.size,

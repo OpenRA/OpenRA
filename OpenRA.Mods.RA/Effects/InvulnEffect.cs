@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using OpenRA.Effects;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Effects
@@ -31,13 +32,13 @@ namespace OpenRA.Mods.RA.Effects
 				world.AddFrameEndTask(w => w.Remove(this));
 		}
 
-		public IEnumerable<Renderable> Render()
+		public IEnumerable<Renderable> Render(WorldRenderer wr)
 		{
 			if (a.Destroyed) // Tick will clean up
 				yield break;
 
-			foreach (var r in a.Render())
-				yield return r.WithPalette("invuln");
+			foreach (var r in a.Render(wr))
+				yield return r.WithPalette(wr.Palette("invuln"));
 		}
 	}
 }

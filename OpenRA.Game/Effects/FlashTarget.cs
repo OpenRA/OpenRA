@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Effects
@@ -32,14 +33,14 @@ namespace OpenRA.Effects
 				world.AddFrameEndTask(w => w.Remove(this));
 		}
 
-		public IEnumerable<Renderable> Render()
+		public IEnumerable<Renderable> Render(WorldRenderer wr)
 		{
 			if (!target.IsInWorld)
 				yield break;
 
 			if (remainingTicks % 2 == 0)
-				foreach (var r in target.Render())
-					yield return r.WithPalette("highlight");
+				foreach (var r in target.Render(wr))
+					yield return r.WithPalette(wr.Palette("highlight"));
 		}
 	}
 }
