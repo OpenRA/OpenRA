@@ -569,10 +569,24 @@ function ShowFullScreen(setFullScreen)
     beforeFullScreenPerspective = nil
   end
 
-  uimgr:GetPane("toolBar"):Show(not setFullScreen)
   uimgr:Update()
+
+  -- On OSX, toolbar and status bar are not hidden when switched to
+  -- full screen: http://trac.wxwidgets.org/ticket/14259; do manually.
+  -- need to turn off before showing full screen and turn on after,
+  -- otherwise the window is restored incorrectly and is reduced in size.
+  if ide.osname == 'Macintosh' and setFullScreen then
+    frame:GetStatusBar():Hide()
+    frame:GetToolBar():Hide()
+  end
+
   -- protect from systems that don't have ShowFullScreen (GTK on linux?)
   pcall(function() frame:ShowFullScreen(setFullScreen) end)
+
+  if ide.osname == 'Macintosh' and not setFullScreen then
+    frame:GetStatusBar():Show()
+    frame:GetToolBar():Show()
+  end
 end
 
 local function restoreFiles(files)
