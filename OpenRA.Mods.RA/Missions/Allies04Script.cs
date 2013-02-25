@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Activities;
@@ -533,4 +534,27 @@ namespace OpenRA.Mods.RA.Missions
 	}
 
 	class Allies04TransformOnLabInfiltrate { }
+
+	class Allies04HazyPaletteEffectInfo : TraitInfo<Allies04HazyPaletteEffect> { }
+
+	class Allies04HazyPaletteEffect : IPaletteModifier
+	{
+		static readonly string[] ExcludePalettes = { "cursor", "chrome", "colorpicker", "fog", "shroud" };
+
+		public void AdjustPalette(Dictionary<string, Palette> palettes)
+		{
+			foreach (var pal in palettes)
+			{
+				if (ExcludePalettes.Contains(pal.Key))
+					continue;
+
+				for (var x = 0; x < 256; x++)
+				{
+					var from = pal.Value.GetColor(x);
+					var to = Color.FromArgb(from.A, Color.FromKnownColor(KnownColor.DarkOrange));
+					pal.Value.SetColor(x, Exts.ColorLerp(0.15f, from, to));
+				}
+			}
+		}
+	}
 }

@@ -1799,6 +1799,7 @@ Rules:
 		-SpawnMPUnits:
 		-MPStartLocations:
 		Allies04Script:
+		Allies04HazyPaletteEffect:
 		MissionObjectivesPanel:
 			ObjectivesPanel: MISSION_OBJECTIVES
 	^Building:
