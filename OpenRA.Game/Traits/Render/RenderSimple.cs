@@ -33,7 +33,7 @@ namespace OpenRA.Traits
 		}
 	}
 
-	public class RenderSimple : IRender, IAutoSelectionSize, ITick
+	public class RenderSimple : IRender, IAutoSelectionSize, ITick, INotifyOwnerChanged
 	{
 		public Dictionary<string, AnimationWithOffset> anims = new Dictionary<string, AnimationWithOffset>();
 
@@ -56,7 +56,6 @@ namespace OpenRA.Traits
 			return Info.Image ?? actor.Name;
 		}
 
-		string cachedImage = null;
 		public string GetImage(Actor self)
 		{
 			if (cachedImage != null)
@@ -66,6 +65,9 @@ namespace OpenRA.Traits
 		}
 
 		RenderSimpleInfo Info;
+		string cachedImage = null;
+		bool initializePalette = true;
+		protected PaletteReference palette;
 
 		public RenderSimple(Actor self, Func<int> baseFacing)
 		{
@@ -78,17 +80,26 @@ namespace OpenRA.Traits
 			anim.PlayRepeating("idle");
 		}
 
-		protected PaletteReference Palette(Player p, WorldRenderer wr)
+		protected virtual string PaletteName(Actor self)
 		{
-			return wr.Palette(Info.Palette ?? Info.PlayerPalette + p.InternalName);
+			return Info.Palette ?? Info.PlayerPalette + self.Owner.InternalName;
 		}
+
+		protected void UpdatePalette() { initializePalette = true; }
+		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner) { UpdatePalette(); }
 
 		public virtual IEnumerable<Renderable> Render(Actor self, WorldRenderer wr)
 		{
+			if (initializePalette)
+			{
+				palette = wr.Palette(PaletteName(self));
+				initializePalette = false;
+			}
+
 			foreach (var a in anims.Values)
 				if (a.DisableFunc == null || !a.DisableFunc())
 				{
-					Renderable ret = a.Image(self, Palette(self.Owner, wr));
+					Renderable ret = a.Image(self, palette);
 					if (Info.Scale != 1f)
 						ret = ret.WithScale(Info.Scale).WithPos(ret.Pos + 0.5f * ret.Sprite.size * (1 - Info.Scale));
 					yield return ret;

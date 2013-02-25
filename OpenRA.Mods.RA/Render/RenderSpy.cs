@@ -21,20 +21,23 @@ namespace OpenRA.Mods.RA.Render
 		public override object Create(ActorInitializer init) { return new RenderSpy(init.self, this); }
 	}
 
-	class RenderSpy : RenderInfantryProne, IRenderModifier
+	class RenderSpy : RenderInfantryProne
 	{
+		RenderSpyInfo info;
 		string disguisedAsSprite;
 		Spy spy;
 
 		public RenderSpy(Actor self, RenderSpyInfo info) : base(self, info)
 		{
+			this.info = info;
 			spy = self.Trait<Spy>();
 			disguisedAsSprite = spy.disguisedAsSprite;
 		}
 
-		public IEnumerable<Renderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<Renderable> r)
+		protected override string PaletteName(Actor self)
 		{
-			return spy.disguisedAsPlayer != null ? r.Select(a => a.WithPalette(Palette(spy.disguisedAsPlayer, wr))) : r;
+			var player = spy.disguisedAsPlayer != null ? spy.disguisedAsPlayer : self.Owner;
+			return info.Palette ?? info.PlayerPalette + player.InternalName;
 		}
 
 		public override void Tick(Actor self)
@@ -46,6 +49,7 @@ namespace OpenRA.Mods.RA.Render
 					anim.ChangeImage(disguisedAsSprite, "stand");
 				else
 					anim.ChangeImage(GetImage(self), "stand");
+				UpdatePalette();
 			}
 			base.Tick(self);
 		}

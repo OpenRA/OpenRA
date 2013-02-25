@@ -496,19 +496,21 @@ namespace OpenRA.Mods.RA.Missions
 		public override object Create(ActorInitializer init) { return new Allies04RenderHijacked(init.self, this); }
 	}
 
-	class Allies04RenderHijacked : RenderUnit, IRenderModifier
+	class Allies04RenderHijacked : RenderUnit
 	{
 		Allies04Hijackable hijackable;
+		Allies04RenderHijackedInfo info;
 
 		public Allies04RenderHijacked(Actor self, Allies04RenderHijackedInfo info)
 			: base(self)
 		{
+			this.info = info;
 			hijackable = self.Trait<Allies04Hijackable>();
 		}
 
-		public IEnumerable<Renderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<Renderable> r)
+		protected override string PaletteName(Actor self)
 		{
-			return r.Select(a => a.WithPalette(Palette(hijackable.OldOwner, wr)));
+			return info.Palette ?? info.PlayerPalette + hijackable.OldOwner.InternalName;
 		}
 	}
 
