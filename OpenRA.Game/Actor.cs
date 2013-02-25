@@ -254,10 +254,15 @@ namespace OpenRA
 		{
 			World.AddFrameEndTask(w =>
 			{
+				var oldOwner = Owner;
+
 				// momentarily remove from world so the ownership queries don't get confused
 				w.Remove(this);
 				Owner = newOwner;
 				w.Add(this);
+
+				foreach (var t in this.TraitsImplementing<INotifyOwnerChanged>())
+					t.OnOwnerChanged(this, oldOwner, newOwner);
 			});
 		}
 	}
