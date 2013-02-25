@@ -1754,11 +1754,12 @@ Actors:
 		Owner: BadGuy
 		Health: 1
 		Facing: 0
-	AlliedBaseProc: proc.nofreeactor
+	AlliedBaseProc: proc
 		Location: 27,25
 		Owner: Neutral
 		Health: 0.3476563
 		Facing: 0
+		FreeActor: False
 	Actor508: silo
 		Location: 36,18
 		Owner: Neutral
@@ -2609,14 +2610,6 @@ Rules:
 		RenderBuilding:
 			Image: DOME
 		-InfiltrateForExploration:
-	PROC.NoFreeActor:
-		Inherits: PROC
-		-Buildable:
-		RenderBuilding:
-			Image: PROC
-		Tooltip:
-			Icon: procicon
-		-FreeActor:
 	V19:
 		AutoTargetIgnore:
 	TRAN:

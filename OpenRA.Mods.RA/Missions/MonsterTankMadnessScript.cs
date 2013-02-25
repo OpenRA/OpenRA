@@ -8,13 +8,13 @@
  */
 #endregion
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Traits;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace OpenRA.Mods.RA.Missions
 {
@@ -137,11 +137,10 @@ namespace OpenRA.Mods.RA.Missions
 
 			if (baseTransferredTick == -1)
 			{
-				var actorsInBase = world.FindUnits(alliedBaseTopLeft.CenterLocation, alliedBaseBottomRight.CenterLocation).Where(a => !a.IsDead() && a.IsInWorld);
+				var actorsInBase = world.FindUnits(alliedBaseTopLeft.CenterLocation, alliedBaseBottomRight.CenterLocation).Where(a => a != a.Owner.PlayerActor);
 				if (actorsInBase.Any(a => a.Owner == greece))
 				{
-					foreach (var actor in actorsInBase)
-						TransferActorToAllies(actor);
+					SetupAlliedBase(actorsInBase);
 					baseTransferredTick = world.FrameNumber;
 					objectives[FindOutpostID].Status = ObjectiveStatus.Completed;
 					OnObjectivesUpdated(true);
@@ -234,20 +233,22 @@ namespace OpenRA.Mods.RA.Missions
 			}
 		}
 
-		void TransferActorToAllies(Actor actor)
+		void SetupAlliedBase(IEnumerable<Actor> actors)
 		{
-			// hack hack hack
-			actor.ChangeOwner(greece);
-			if (actor.Info.Name == "pbox")
+			foreach (var actor in actors)
 			{
-				actor.AddTrait(new TransformedAction(s => s.Trait<Cargo>().Load(s, world.CreateActor(false, "e1", greece, null, null))));
-				actor.QueueActivity(new Transform(actor, "hbox.e1") { SkipMakeAnims = true });
+				// hack hack hack
+				actor.ChangeOwner(greece);
+				if (actor.Info.Name == "pbox")
+				{
+					actor.AddTrait(new TransformedAction(s => s.Trait<Cargo>().Load(s, world.CreateActor(false, "e1", greece, null, null))));
+					actor.QueueActivity(new Transform(actor, "hbox.e1") { SkipMakeAnims = true });
+				}
+				else if (actor.Info.Name == "proc")
+					actor.QueueActivity(new Transform(actor, "proc") { SkipMakeAnims = true });
+				foreach (var c in actor.TraitsImplementing<INotifyCapture>())
+					c.OnCapture(actor, actor, neutral, greece);
 			}
-			else if (actor.Info.Name == "proc.nofreeactor")
-				actor.QueueActivity(new Transform(actor, "proc") { SkipMakeAnims = true });
-			var building = actor.TraitOrDefault<Building>();
-			if (building != null)
-				building.OnCapture(actor, actor, neutral, greece);
 		}
 
 		void EvacuateCivilians()
