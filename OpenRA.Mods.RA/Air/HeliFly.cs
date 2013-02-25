@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA.Air
 			}
 
 			var dist = Dest - aircraft.PxPosition;
-			if (float2.WithinEpsilon(float2.Zero, dist.ToFloat2(), 2))
+			if (Math.Abs(dist.X) < 2 && Math.Abs(dist.Y) < 2)
 			{
 				aircraft.SubPxPosition = Dest.ToPSubPos();
 				return NextActivity;
