@@ -64,30 +64,19 @@ local function SCinB(id) -- shortcut in brackets
 end
 
 local function createToolBar(frame)
-  local toolBar = wx.wxToolBar(frame, wx.wxID_ANY,
-    wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTB_FLAT + wx.wxTB_NODIVIDER)
+  local toolBar = frame:CreateToolBar(wx.wxTB_FLAT + wx.wxTB_NODIVIDER, wx.wxID_ANY)
   local funclist = wx.wxChoice.new(toolBar, ID "toolBar.funclist",
-    -- Linux requires a bit larger size for the function list in the toolbar.
-    -- Mac also requires a bit larger size, but setting it to 20 resets
-    -- back to 16 when the toolbar is refreshed.
-    -- Windows with wxwidgets 2.9.x also requires a larger size.
-    wx.wxDefaultPosition, wx.wxSize.new(240,
-      (ide.osname == "Unix" or ide.osname == "Windows") and 24 or 16))
+    wx.wxDefaultPosition, wx.wxSize.new(240, 24))
   
-  -- usually the bmp size isn't necessary, but the HELP icon is not the right size in MSW
+  -- there are two sets of icons: use 24 on OSX and 16 on others.
+  local toolBmpSize =
+    ide.osname == 'Macintosh' and wx.wxSize(24, 24) or wx.wxSize(16, 16)
   local getBitmap = (ide.app.createbitmap or wx.wxArtProvider.GetBitmap)
-  local toolBmpSize = wx.wxSize(16, 16)
   toolBar:AddTool(ID_NEW, "New", getBitmap(wx.wxART_NORMAL_FILE, wx.wxART_TOOLBAR, toolBmpSize), TR("Create an empty document")..SCinB(ID_NEW))
   toolBar:AddTool(ID_OPEN, "Open", getBitmap(wx.wxART_FILE_OPEN, wx.wxART_TOOLBAR, toolBmpSize), TR("Open an existing document")..SCinB(ID_OPEN))
   toolBar:AddTool(ID_SAVE, "Save", getBitmap(wx.wxART_FILE_SAVE, wx.wxART_TOOLBAR, toolBmpSize), TR("Save the current document")..SCinB(ID_SAVE))
   toolBar:AddTool(ID_SAVEALL, "Save All", getBitmap(wx.wxART_NEW_DIR, wx.wxART_TOOLBAR, toolBmpSize), TR("Save all open documents")..SCinB(ID_SAVEALL))
-  toolBar:AddSeparator()
-  toolBar:AddTool(ID_CUT, "Cut", getBitmap(wx.wxART_CUT, wx.wxART_TOOLBAR, toolBmpSize), TR("Cut selected text to clipboard")..SCinB(ID_CUT))
-  toolBar:AddTool(ID_COPY, "Copy", getBitmap(wx.wxART_COPY, wx.wxART_TOOLBAR, toolBmpSize), TR("Copy selected text to clipboard")..SCinB(ID_COPY))
-  toolBar:AddTool(ID_PASTE, "Paste", getBitmap(wx.wxART_PASTE, wx.wxART_TOOLBAR, toolBmpSize), TR("Paste text from the clipboard")..SCinB(ID_PASTE))
-  toolBar:AddSeparator()
-  toolBar:AddTool(ID_UNDO, "Undo", getBitmap(wx.wxART_UNDO, wx.wxART_TOOLBAR, toolBmpSize), TR("Undo last edit")..SCinB(ID_UNDO))
-  toolBar:AddTool(ID_REDO, "Redo", getBitmap(wx.wxART_REDO, wx.wxART_TOOLBAR, toolBmpSize), TR("Redo last edit undone")..SCinB(ID_REDO))
+  toolBar:AddTool(ID_PROJECTDIRFROMFILE, "Update", getBitmap(wx.wxART_GO_DIR_UP , wx.wxART_TOOLBAR, toolBmpSize), TR("Set project directory from current file")..SCinB(ID_PROJECTDIRFROMFILE))
   toolBar:AddSeparator()
   toolBar:AddTool(ID_FIND, "Find", getBitmap(wx.wxART_FIND, wx.wxART_TOOLBAR, toolBmpSize), TR("Find text")..SCinB(ID_FIND))
   toolBar:AddTool(ID_REPLACE, "Replace", getBitmap(wx.wxART_FIND_AND_REPLACE, wx.wxART_TOOLBAR, toolBmpSize), TR("Find and replace text")..SCinB(ID_REPLACE))
@@ -104,8 +93,6 @@ local function createToolBar(frame)
     toolBar:AddTool(ID_VIEWCALLSTACK, "Stack window", getBitmap("wxART_DEBUG_CALLSTACK", wx.wxART_TOOLBAR, toolBmpSize), TR("View the stack window")..SCinB(ID_VIEWCALLSTACK))
     toolBar:AddTool(ID_VIEWWATCHWINDOW, "Watch window", getBitmap("wxART_DEBUG_WATCH", wx.wxART_TOOLBAR, toolBmpSize), TR("View the watch window")..SCinB(ID_VIEWWATCHWINDOW))
   end
-  toolBar:AddSeparator()
-  toolBar:AddTool(ID_PROJECTDIRFROMFILE, "Update", getBitmap(wx.wxART_GO_DIR_UP , wx.wxART_TOOLBAR, toolBmpSize), TR("Set project directory from current file")..SCinB(ID_PROJECTDIRFROMFILE))
   toolBar:AddSeparator()
   toolBar:AddControl(funclist)
   toolBar:Realize()
@@ -235,12 +222,6 @@ do
   local frame = ide.frame
   local mgr = frame.uimgr
 
-  mgr:AddPane(frame.toolBar, wxaui.wxAuiPaneInfo():
-              Name("toolBar"):Caption("Main Toolbar"):
-              MinSize(300,16):
-              ToolbarPane():Top():CloseButton(false):
-              LeftDockable(false):RightDockable(false):Hide())
-              
   mgr:AddPane(frame.notebook, wxaui.wxAuiPaneInfo():
               Name("notebook"):
               CenterPane():PaneBorder(false):Hide())
@@ -257,7 +238,6 @@ do
               Bottom():Layer(1):Position(1):
               CloseButton(true):MaximizeButton(false):PinButton(true):Hide())
               
-  mgr:GetPane("toolBar"):Show(true)
   mgr:GetPane("bottomnotebook"):Show(true)
   mgr:GetPane("projpanel"):Show(true)
   mgr:GetPane("notebook"):Show(true)

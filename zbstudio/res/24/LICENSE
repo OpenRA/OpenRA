@@ -1,6 +1,5 @@
-Icons are based on the icon set used in LuaEdit. Some of the icons
-have been modified to avoid using the last line that is not displayed
-correctly in wxLua.
+Icons are based on the icon set used in LuaEdit.
+These icons have been manually converted and updated for 24 pixels.
 
 These icons are licenced under MIT license by permission from
 Jean-Francois Goulet (granted on 2012/01/02).
