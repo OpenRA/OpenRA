@@ -21,10 +21,12 @@ namespace OpenRA.Graphics
 	{
 		public readonly string Name;
 		public readonly int Index;
-		public PaletteReference(string name, int index)
+		public readonly Palette Palette;
+		public PaletteReference(string name, int index, Palette palette)
 		{
 			Name = name;
 			Index = index;
+			Palette = palette;
 		}
 	}
 
@@ -40,22 +42,21 @@ namespace OpenRA.Graphics
 		{
 			this.world = world;
 			this.palette = Game.modData.Palette;
-			foreach( var pal in world.traitDict.ActorsWithTraitMultiple<IPalette>( world ) )
+			palettes = new Cache<string, PaletteReference>(CreatePaletteReference);
+			foreach (var pal in world.traitDict.ActorsWithTraitMultiple<IPalette>(world))
 				pal.Trait.InitPalette( this );
 
 			terrainRenderer = new TerrainRenderer(world, this);
 			shroudRenderer = new ShroudRenderer(world);
-			palettes = new Cache<string, PaletteReference>(CreatePaletteReference);
 		}
 
 		PaletteReference CreatePaletteReference(string name)
 		{
-			return new PaletteReference(name, palette.GetPaletteIndex(name));
+			return new PaletteReference(name, palette.GetPaletteIndex(name), palette.GetPalette(name));
 		}
 
 		public PaletteReference Palette(string name) { return palettes[name]; }
 		public int GetPaletteIndex(string name) { return palette.GetPaletteIndex(name); }
-		public Palette GetPalette(string name) { return palette.GetPalette(name); }
 		public void AddPalette(string name, Palette pal, bool allowModifiers) { palette.AddPalette(name, pal, allowModifiers); }
 
 		class SpriteComparer : IComparer<Renderable>

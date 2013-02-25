@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA.Widgets
 		public override void Initialize(WidgetArgs args)
 		{
 			base.Initialize(args);
-			preview = worldRenderer.GetPalette(Palette);
+			preview = worldRenderer.Palette(Palette).Palette;
 		}
 
 		public override void Tick()

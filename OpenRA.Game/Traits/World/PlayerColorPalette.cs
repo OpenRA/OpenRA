@@ -37,7 +37,7 @@ namespace OpenRA.Traits
 		public void InitPalette( WorldRenderer wr )
 		{
 			var paletteName = "{0}{1}".F( info.BaseName, owner.InternalName );
-			var newpal = new Palette(wr.GetPalette(info.BasePalette),
+			var newpal = new Palette(wr.Palette(info.BasePalette).Palette,
 							 new PlayerColorRemap(info.RemapIndex, owner.ColorRamp));
 			wr.AddPalette(paletteName, newpal, info.AllowModifiers);
 		}
