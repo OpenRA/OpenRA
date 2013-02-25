@@ -52,7 +52,11 @@ namespace OpenRA.Graphics
 
 		PaletteReference CreatePaletteReference(string name)
 		{
-			return new PaletteReference(name, palette.GetPaletteIndex(name), palette.GetPalette(name));
+			var pal = palette.GetPalette(name);
+			if (pal == null)
+				throw new InvalidOperationException("Palette `{0}` does not exist".F(name));
+
+			return new PaletteReference(name, palette.GetPaletteIndex(name), pal);
 		}
 
 		public PaletteReference Palette(string name) { return palettes[name]; }
