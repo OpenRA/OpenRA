@@ -119,17 +119,10 @@ namespace OpenRA.Mods.RA.Missions
 
 		const int ParabombTicks = 750;
 
-		const int FlamersTicks = 1500 * 2;
-		static readonly string[] Flamers = { "e4", "e4", "e4", "e4", "e4" };
-		const string ApcName = "apc";
-
 		const int ParatroopersTicks = 1500 * 5;
 		static readonly string[] Badger1Passengers = { "e1", "e1", "e1", "e2", "3tnk" };
 		static readonly string[] Badger2Passengers = { "e1", "e1", "e1", "e2", "e2" };
 		static readonly string[] Badger3Passengers = { "e1", "e1", "e1", "e2", "e2" };
-
-		const int TanksTicks = 1500 * 11;
-		static readonly string[] Tanks = { "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk" };
 
 		const string SignalFlareName = "flare";
 		const string YakName = "yak";
