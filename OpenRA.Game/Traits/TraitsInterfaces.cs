@@ -209,7 +209,7 @@ namespace OpenRA.Traits
 
 	public interface IPostRenderSelection { void RenderAfterWorld(WorldRenderer wr); }
 	public interface IPreRenderSelection { void RenderBeforeWorld(WorldRenderer wr, Actor self); }
-	public interface IRenderAsTerrain { IEnumerable<Renderable> RenderAsTerrain(Actor self); }
+	public interface IRenderAsTerrain { IEnumerable<Renderable> RenderAsTerrain(WorldRenderer wr, Actor self); }
 
 	public interface ITargetable
 	{

@@ -112,7 +112,7 @@ namespace OpenRA.Graphics
 
 			terrainRenderer.Draw(this, Game.viewport);
 			foreach (var a in world.traitDict.ActorsWithTraitMultiple<IRenderAsTerrain>(world))
-				foreach (var r in a.Trait.RenderAsTerrain(a.Actor))
+				foreach (var r in a.Trait.RenderAsTerrain(this, a.Actor))
 					r.Sprite.DrawAt(r.Pos, r.Palette.RowIndex(this), r.Scale);
 
 			foreach (var a in world.Selection.Actors)
