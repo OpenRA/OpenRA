@@ -126,8 +126,6 @@ function LoadFile(filePath, editor, file_must_exist, skipselection)
   openDocuments[id].modTime = GetFileModTime(filePath)
   SetDocumentModified(id, false)
 
-  IndicateFunctions(editor)
-
   SettingsAppendFileToHistory(filePath)
 
   -- activate the editor; this is needed for those cases when the editor is
@@ -231,7 +229,7 @@ function SaveFileAs(editor)
       FileTreeMarkSelected(filePath)
       SetupKeywords(editor, GetFileExt(filePath))
       IndicateFunctions(editor)
-      if MarkupStyle then MarkupStyle(editor) end
+      MarkupStyle(editor)
       saved = true
     end
   end

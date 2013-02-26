@@ -576,12 +576,16 @@ function CreateEditor()
   editor:Connect(wxstc.wxEVT_STC_UPDATEUI,
     function ()
       updateBraceMatch(editor)
+      local minupdated
       for _,iv in ipairs(editor.ev) do
         local line = editor:LineFromPosition(iv[1])
+        if not minupdated or line < minupdated then minupdated = line end
         IndicateFunctions(editor,line,line+iv[2])
-        if MarkupStyle then MarkupStyle(editor,line,line+iv[2]+1) end
       end
-      if MarkupStyleRefresh then MarkupStyleRefresh(editor, editor.ev) end
+      local firstline = editor:DocLineFromVisible(editor:GetFirstVisibleLine())
+      local lastline = math.min(editor:GetLineCount(),
+        editor:DocLineFromVisible(editor:GetFirstVisibleLine() + editor:LinesOnScreen()))
+      MarkupStyle(editor,minupdated or firstline,lastline)
       editor.ev = {}
     end)
 
