@@ -227,9 +227,12 @@ function SaveFileAs(editor)
       SetEditorSelection() -- update title of the editor
       FileTreeRefresh() -- refresh the tree to reflect the new file
       FileTreeMarkSelected(filePath)
-      SetupKeywords(editor, GetFileExt(filePath))
-      IndicateFunctions(editor)
-      MarkupStyle(editor)
+      if ext ~= GetFileExt(filePath) then
+        -- new extension, so setup new keywords and re-apply indicators
+        SetupKeywords(editor, GetFileExt(filePath))
+        IndicateFunctions(editor)
+        MarkupStyle(editor)
+      end
       saved = true
     end
   end
