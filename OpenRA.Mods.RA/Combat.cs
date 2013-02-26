@@ -153,7 +153,7 @@ namespace OpenRA.Mods.RA
 				facing = 0
 			};
 
-			if (args.weapon.Report != null)
+			if (args.weapon.Report != null && args.weapon.Report.Any())
 				Sound.Play(args.weapon.Report.Random(attacker.World.SharedRandom) + ".aud", pos);
 
 			DoImpacts(args);

@@ -148,7 +148,7 @@ namespace OpenRA.Mods.RA
 					if (projectile != null)
 						self.World.Add(projectile);
 
-					if (args.weapon.Report != null)
+					if (args.weapon.Report != null && args.weapon.Report.Any())
 						Sound.Play(args.weapon.Report.Random(self.World.SharedRandom) + ".aud", self.CenterLocation);
 				}
 			});

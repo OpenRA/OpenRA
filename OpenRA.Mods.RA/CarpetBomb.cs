@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Traits;
 
@@ -56,7 +57,7 @@ namespace OpenRA.Mods.RA
 
 				self.World.Add(args.weapon.Projectile.Create(args));
 
-				if (args.weapon.Report != null)
+				if (args.weapon.Report != null && args.weapon.Report.Any())
 					Sound.Play(args.weapon.Report.Random(self.World.SharedRandom) + ".aud", self.CenterLocation);
 			}
 		}
