@@ -198,7 +198,7 @@ BGGY:
 		ROT: 12
 		Speed: 12
 	Health:
-		HP: 140
+		HP: 120
 	Armor:
 		Type: Light
 	RevealsShroud:
