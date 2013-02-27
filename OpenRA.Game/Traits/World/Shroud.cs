@@ -137,6 +137,9 @@ namespace OpenRA.Traits
 	 		if (a.Owner.World.LocalPlayer == null
 				|| a.Owner.Stances[a.Owner.World.LocalPlayer] == Stance.Ally) return;
 
+			if (v == null)
+				return;
+
 	 		foreach (var p in v.vis)
 				foreach (var q in FindVisibleTiles(a.World, p, range))
 					foggedCells[q.X, q.Y] = exploredCells[q.X, q.Y];
