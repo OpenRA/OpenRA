@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA.Server
 
 		public void Tick(S server)
 		{
-			if (Environment.TickCount - lastPing > MasterPingInterval * 1000)
+			if ((Environment.TickCount - lastPing > MasterPingInterval * 1000) || isInitialPing)
 				PingMasterServer(server);
 			else
 				lock (masterServerMessages)
