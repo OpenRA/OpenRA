@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Graphics;
 
 namespace OpenRA.Traits
@@ -23,16 +24,16 @@ namespace OpenRA.Traits
 
 		public virtual object Create(ActorInitializer init) { return new RenderSimple(init.self); }
 
-		public virtual IEnumerable<Renderable> RenderPreview(ActorInfo building, Player owner)
+		public virtual IEnumerable<Renderable> RenderPreview(ActorInfo building, PaletteReference pr)
 		{
 			var anim = new Animation(RenderSimple.GetImage(building), () => 0);
 			anim.PlayRepeating("idle");
-			yield return new Renderable(anim.Image, 0.5f * anim.Image.size * (1 - Scale), 
-				Palette ?? (owner != null ? PlayerPalette + owner.InternalName : null), 0, Scale);
+
+			yield return new Renderable(anim.Image, 0.5f * anim.Image.size * (1 - Scale), pr, 0, Scale);
 		}
 	}
 
-	public class RenderSimple : IRender, ITick
+	public class RenderSimple : IRender, IAutoSelectionSize, ITick, INotifyOwnerChanged
 	{
 		public Dictionary<string, AnimationWithOffset> anims = new Dictionary<string, AnimationWithOffset>();
 
@@ -55,7 +56,6 @@ namespace OpenRA.Traits
 			return Info.Image ?? actor.Name;
 		}
 
-		string cachedImage = null;
 		public string GetImage(Actor self)
 		{
 			if (cachedImage != null)
@@ -65,6 +65,9 @@ namespace OpenRA.Traits
 		}
 
 		RenderSimpleInfo Info;
+		string cachedImage = null;
+		bool initializePalette = true;
+		protected PaletteReference palette;
 
 		public RenderSimple(Actor self, Func<int> baseFacing)
 		{
@@ -77,18 +80,38 @@ namespace OpenRA.Traits
 			anim.PlayRepeating("idle");
 		}
 
-		public string Palette(Player p) { return Info.Palette ?? Info.PlayerPalette + p.InternalName; }
-
-		public virtual IEnumerable<Renderable> Render(Actor self)
+		protected virtual string PaletteName(Actor self)
 		{
+			return Info.Palette ?? Info.PlayerPalette + self.Owner.InternalName;
+		}
+
+		protected void UpdatePalette() { initializePalette = true; }
+		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner) { UpdatePalette(); }
+
+		public virtual IEnumerable<Renderable> Render(Actor self, WorldRenderer wr)
+		{
+			if (initializePalette)
+			{
+				palette = wr.Palette(PaletteName(self));
+				initializePalette = false;
+			}
+
 			foreach (var a in anims.Values)
 				if (a.DisableFunc == null || !a.DisableFunc())
 				{
-					Renderable ret = a.Image(self, Palette(self.Owner));
+					Renderable ret = a.Image(self, palette);
 					if (Info.Scale != 1f)
 						ret = ret.WithScale(Info.Scale).WithPos(ret.Pos + 0.5f * ret.Sprite.size * (1 - Info.Scale));
 					yield return ret;
 				}
+		}
+
+		public int2 SelectionSize(Actor self)
+		{
+			return anims.Values.Where(b => (b.DisableFunc == null || !b.DisableFunc())
+			                                && b.Animation.CurrentSequence != null)
+				.Select(a => (a.Animation.Image.size*Info.Scale).ToInt2())
+				.FirstOrDefault();
 		}
 
 		public virtual void Tick(Actor self)

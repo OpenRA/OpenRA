@@ -26,7 +26,7 @@ namespace OpenRA.Traits
 		public readonly bool AllowUnderActors = false;
 
 		public Sprite[][] Sprites;
-		public int PaletteIndex;
+		public PaletteReference PaletteRef;
 
 		public PipType PipColor = PipType.Yellow;
 

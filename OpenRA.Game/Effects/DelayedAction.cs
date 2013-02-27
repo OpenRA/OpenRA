@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Effects
@@ -25,12 +26,12 @@ namespace OpenRA.Effects
 			this.delay = delay;
 		}
 
-		public void Tick( World world )
+		public void Tick(World world)
 		{
 			if (--delay <= 0)
 				world.AddFrameEndTask(w => { w.Remove(this); a(); });
 		}
 
-		public IEnumerable<Renderable> Render() { yield break; }
+		public IEnumerable<Renderable> Render(WorldRenderer wr) { yield break; }
 	}
 }

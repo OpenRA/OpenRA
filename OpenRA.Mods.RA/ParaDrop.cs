@@ -55,11 +55,9 @@ namespace OpenRA.Mods.RA
 
 					var aircraft = self.Trait<IMove>();
 					self.World.AddFrameEndTask(w => w.Add(
-						new Parachute(
-							self.Owner,
+						new Parachute(a,
 							Util.CenterOfCell(self.CenterLocation.ToCPos()),
-							aircraft.Altitude, a
-						)
+							aircraft.Altitude)
 					));
 
 					Sound.Play(info.ChuteSound, self.CenterLocation);

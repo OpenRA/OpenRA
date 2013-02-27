@@ -121,7 +121,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		}
 
 		public static void ShowColorDropDown(DropDownButtonWidget color, Session.Client client,
-			OrderManager orderManager, ColorPickerPaletteModifier preview)
+			OrderManager orderManager, ColorPreviewManagerWidget preview)
 		{
 			Action<ColorRamp> onSelect = c =>
 			{

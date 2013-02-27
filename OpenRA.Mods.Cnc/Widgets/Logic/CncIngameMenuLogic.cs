@@ -10,6 +10,7 @@
 
 using System;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
@@ -20,7 +21,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		Widget menu;
 
 		[ObjectCreator.UseCtor]
-		public CncIngameMenuLogic(Widget widget, World world, Action onExit)
+		public CncIngameMenuLogic(Widget widget, World world, Action onExit, WorldRenderer worldRenderer)
 		{
 			var resumeDisabled = false;
 			menu = widget.Get("INGAME_MENU");
@@ -72,6 +73,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				Ui.OpenWindow("SETTINGS_PANEL", new WidgetArgs()
 				{
 					{ "world", world },
+					{ "worldRenderer", worldRenderer },
 					{ "onExit", () => hideButtons = false },
 				});
 			};
