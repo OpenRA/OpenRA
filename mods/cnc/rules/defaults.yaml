@@ -249,6 +249,7 @@
 	Sellable:
 	Capturable:
 	CapturableBar:
+	C4Demolishable:
 
 ^CivBuilding:
 	Inherits: ^Building
@@ -336,6 +337,7 @@
 		RelativeToTopLeft: yes
 	AutoTargetIgnore:
 	Sellable:
+	C4Demolishable:
 
 ^Tree:
 	Tooltip:

@@ -7,11 +7,11 @@ Colt45:
 	Warhead:
 		Spread: 1
 		Versus:
-			Wood: 5%
+			Wood: 0%
 			Light: 5%
 			Heavy: 5%
 			Cybernetic: 5%
-			Concrete: 5%
+			Concrete: 0%
 		Explosion: piff
 		InfDeath: 2
 		Damage: 50

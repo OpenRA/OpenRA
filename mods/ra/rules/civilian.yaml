@@ -241,6 +241,9 @@ BARL:
 	Tooltip:
 		Name: Explosive Barrel
 	AutoTargetIgnore:
+	Armor:
+		Type: Light
+	-C4Demolishable:
 
 BRL3:
 	Inherits: ^TechBuilding
@@ -253,6 +256,9 @@ BRL3:
 	Tooltip:
 		Name: Explosive Barrel
 	AutoTargetIgnore:
+	Armor:
+		Type: Light
+	-C4Demolishable:
 
 MISS:
 	Inherits: ^TechBuilding
