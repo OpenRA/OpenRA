@@ -5,11 +5,11 @@ fact:
 	idle:
 		Start: 0
 		Length: 4
-		Tick: 80
+		Tick: 100
 	damaged-idle:
 		Start: 24
 		Length: 4
-		Tick: 80
+		Tick: 100
 	damaged-build:
 		Start: 28
 		Length: 20
@@ -23,14 +23,14 @@ nuke:
 	idle:
 		Start: 0
 		Length: 4
-		Tick: 400
+		Tick: 1000
 	damaged-idle:
 		Start: 4
 		Length: 4
-		Tick: 400
+		Tick: 1000
 	dead:
 		Start: 8
-		Tick: 400
+		Tick: 1000
 	make: nukemake
 		Start: 0
 		Length: *
@@ -39,11 +39,11 @@ proc:
 	idle:
 		Start: 0
 		Length: 6
-		Tick: 60
+		Tick: 120
 	damaged-idle:
 		Start: 30
 		Length: 6
-		Tick: 60
+		Tick: 120
 	dead:
 		Start: 60
 	make: procmake
@@ -84,11 +84,14 @@ pyle:
 	idle:
 		Start: 0
 		Length: 10
+		Tick: 100		
 	damaged-idle:
 		Start: 10
 		Length: 10
+		Tick: 100		
 	dead:
 		Start: 20
+		Tick: 100
 	make: pylemake
 		Start: 0
 		Length: *
@@ -139,11 +142,11 @@ hq:
 	idle:
 		Start: 0
 		Length: 16
-		Tick: 200
+		Tick: 100
 	damaged-idle:
 		Start: 16
 		Length: 16
-		Tick: 200
+		Tick: 100
 	dead:
 		Start: 32
 	make: hqmake
@@ -154,11 +157,11 @@ nuk2:
 	idle:
 		Start: 0
 		Length: 4
-		Tick: 400
+		Tick: 1000
 	damaged-idle:
 		Start: 4
 		Length: 4
-		Tick: 400
+		Tick: 1000
 	dead:
 		Start: 8
 	make: nuk2make
@@ -173,9 +176,11 @@ hpad:
 	active:
 		Start: 1
 		Length: 6
+		Tick: 100
 	damaged-active:
 		Start: 8
 		Length: 6
+		Tick: 100		
 	dead:
 		Start: 14
 	make: hpadmake
@@ -203,11 +208,11 @@ eye:
 	idle:
 		Start: 0
 		Length: 16
-		Tick: 200
+		Tick: 100
 	damaged-idle:
 		Start: 16
 		Length: 16
-		Tick: 200
+		Tick: 100
 	dead:
 		Start: 32
 	make: eyemake
