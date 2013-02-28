@@ -130,6 +130,21 @@ local function createNotebook(frame)
       event:Veto() -- don't propagate the event as the page is already closed
     end)
 
+  -- tabs can be dragged around which may change their indexes;
+  -- when this happens stored indexes need to be updated to reflect the change.
+  -- there is DRAG_DONE event that I'd prefer to use, but it
+  -- doesn't fire for some reason using wxwidgets 2.9.5 (tested on Windows).
+  if ide.wxver >= "2.9.5" then
+    notebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_END_DRAG,
+      function (event)
+        for page = 0, notebook:GetPageCount()-1 do
+          local editor = GetEditor(page)
+          if editor then ide.openDocuments[editor:GetId()].index = page end
+        end
+        event:Skip()
+      end)
+  end
+
   local selection
   notebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_TAB_RIGHT_UP,
     function (event)
