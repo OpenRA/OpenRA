@@ -26,10 +26,6 @@ dofile "src/util.lua"
 -----------
 -- IDE
 --
--- Setup important defaults
-dofile "src/editor/ids.lua"
-dofile "src/editor/style.lua"
-
 ide = {
   config = {
     path = {
@@ -56,8 +52,8 @@ ide = {
     messages = {},
     language = "en",
 
-    styles = StylesGetDefault(),
-    stylesoutshell = StylesGetDefault(),
+    styles = nil,
+    stylesoutshell = nil,
     interpreter = "_undefined_",
 
     autocomplete = true,
@@ -121,10 +117,18 @@ ide = {
     oNormal = nil,
     oItalic = nil,
     fNormal = nil,
-  }
+  },
+
+  osname = wx.wxPlatformInfo.Get():GetOperatingSystemFamilyName(),
+  wxver = string.match(wx.wxVERSION_STRING, "[%d%.]+"),
 }
 
+dofile "src/editor/ids.lua"
+dofile "src/editor/style.lua"
 dofile "src/editor/keymap.lua"
+
+ide.config.styles = StylesGetDefault()
+ide.config.stylesoutshell = StylesGetDefault()
 
 function setLuaPaths(mainpath, osname)
   -- use LUA_DEV to setup paths for Lua for Windows modules if installed
@@ -167,8 +171,6 @@ do
   assert(type(fullPath) == "string", "first argument must be application name")
 
   ide.arg = arg
-  ide.osname = wx.wxPlatformInfo.Get():GetOperatingSystemFamilyName()
-  ide.wxver = string.match(wx.wxVERSION_STRING, "[%d%.]+")
 
   -- on Windows use GetExecutablePath, which is Unicode friendly,
   -- whereas wxGetCwd() is not (at least in wxlua 2.8.12.2).
