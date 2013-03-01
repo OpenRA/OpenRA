@@ -183,9 +183,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var client = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.SpawnPoint == spawnPoint);
 			if (client != null)
 			{
-				var rect = new Rectangle(position.X, position.Y, Game.Renderer.Fonts["Regular"].Measure(client.Name).X + 15, 25);
-				WidgetUtils.DrawPanel("dialog4", rect);
-				Game.Renderer.Fonts["Regular"].DrawText(client.Name, position + new int2(5, 5), Color.White);
+				Game.Renderer.Fonts["Bold"].DrawTextWithContrast(client.Name, position + new int2(5, 5), Color.White, Color.Black, 1);
 			}
 		}
 	}
