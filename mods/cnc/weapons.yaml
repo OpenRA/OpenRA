@@ -103,7 +103,7 @@ Sniper:
 
 HighV:
 	ROF: 40
-	Range: 5
+	Range: 6
 	Report: GUN8
 	Projectile: Bullet
 		Speed: 100
@@ -224,12 +224,12 @@ Rockets:
 		Damage: 40
 
 BikeRockets:
-	ROF: 60
-	Range: 7
+	ROF: 45
+	Range: 6
 	Report: BAZOOK1
 	ValidTargets: Ground, Air
 	Burst: 2
-	BurstDelay: 0
+	BurstDelay: 15
 	Projectile: Missile
 		Arm: 0
 		High: yes
@@ -253,7 +253,7 @@ BikeRockets:
 		Explosion: 4
 		ImpactSound: xplos
 		SmudgeType: Crater
-		Damage: 40
+		Damage: 25
 
 OrcaAGMissiles:
 	ROF: 10
@@ -327,7 +327,7 @@ Flamethrower:
 		Spread: 8
 		Versus: 
 			None: 90%
-			Wood: 200%
+			Wood: 150%
 			Light: 75%
 			Heavy: 25%
 		InfDeath: 5
@@ -380,7 +380,7 @@ Grenade:
 	ROF: 50
 	Range: 5
 	Projectile: Bullet
-		Speed: 8
+		Speed: 12
 		High: yes
 		Angle: .1
 		Inaccuracy: 5
@@ -494,7 +494,7 @@ TurretGun:
 		Spread: 3
 		Versus: 
 			None: 30%
-			Wood: 75%
+			Wood: 25%
 			Light: 75%
 			Heavy: 100%
 		InfDeath: 4
@@ -672,7 +672,7 @@ BoatMissile:
 
 TowerMissle:
 	ROF: 40
-	Range: 7.5
+	Range: 8
 	Report: ROCKET2
 	ValidTargets: Ground, Air
 	Burst: 2
@@ -691,10 +691,10 @@ TowerMissle:
 	Warhead:
 		Spread: 6
 		Versus: 
-			None: 90%
-			Wood: 75%
-			Light: 60%
-			Heavy: 25%
+			None: 50%
+			Wood: 25%
+			Light: 100%
+			Heavy: 75%
 		InfDeath: 3
 		Explosion: med_frag
 		ImpactSound: xplos
@@ -744,6 +744,8 @@ Laser:
 		InfDeath: 5
 		SmudgeType: Scorch
 		Damage: 200
+		Versus:
+			Wood: 50%
 
 SAMMissile:
 	ROF: 50
