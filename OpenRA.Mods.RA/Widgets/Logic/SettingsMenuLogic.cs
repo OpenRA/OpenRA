@@ -73,6 +73,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			useClassicMouseStyleCheckbox.IsChecked = () => Game.Settings.Game.UseClassicMouseStyle;
 			useClassicMouseStyleCheckbox.OnClick = () => Game.Settings.Game.UseClassicMouseStyle ^= true;
 
+			var timeStepSlider = general.Get<SliderWidget>("GAME_SPEED_AMOUNT");
+			timeStepSlider.Value = timeStepSlider.MaximumValue-Game.Settings.Game.Timestep;
+			timeStepSlider.OnChange += x => Game.Settings.Game.Timestep = (int)timeStepSlider.MaximumValue-(int)Math.Round(x);
+
 			// Audio
 			var audio = bg.Get("AUDIO_PANE");
 			var soundSettings = Game.Settings.Sound;
@@ -85,10 +89,23 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			musicslider.OnChange += x => Sound.MusicVolume = x;
 			musicslider.Value = Sound.MusicVolume;
 
+			var videoslider = audio.Get<SliderWidget>("VIDEO_VOLUME");
+			videoslider.OnChange += x => Sound.VideoVolume = x;
+			videoslider.Value = Sound.VideoVolume;
+
 			var cashticksdropdown = audio.Get<DropDownButtonWidget>("CASH_TICK_TYPE");
 			cashticksdropdown.OnMouseDown = _ => ShowSoundTickDropdown(cashticksdropdown, soundSettings);
 			cashticksdropdown.GetText = () => soundSettings.SoundCashTickType == SoundCashTicks.Extreme ?
 				"Extreme" : soundSettings.SoundCashTickType == SoundCashTicks.Normal ? "Normal" : "Disabled";
+
+			var mapMusicCheckbox = audio.Get<CheckboxWidget>("MAP_MUSIC_CHECKBOX");
+			mapMusicCheckbox.IsChecked = () => Game.Settings.Sound.MapMusic;
+			mapMusicCheckbox.OnClick = () => Game.Settings.Sound.MapMusic ^= true;
+
+			var soundEngineDropdown = audio.Get<DropDownButtonWidget>("SOUND_ENGINE");
+			soundEngineDropdown.OnMouseDown = _ => ShowSoundEngineDropdown(soundEngineDropdown, soundSettings);
+			soundEngineDropdown.GetText = () => soundSettings.Engine == "AL" ?
+				"OpenAL" : soundSettings.Engine == "Null" ? "None" : "OpenAL";
 
 			
 			// Display
@@ -120,16 +137,39 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				Game.viewport.Zoom = gs.PixelDouble ? 2 : 1;
 			};
 
+			var capFrameRateCheckbox = display.Get<CheckboxWidget>("CAPFRAMERATE_CHECKBOX");
+			capFrameRateCheckbox.IsChecked = () => gs.CapFramerate;
+			capFrameRateCheckbox.OnClick = () => gs.CapFramerate ^= true;
+
+			var maxFrameRate = display.Get<TextFieldWidget>("MAX_FRAMERATE");
+			maxFrameRate.Text = gs.MaxFramerate.ToString();
+
 			// Debug
 			var debug = bg.Get("DEBUG_PANE");
 
-			var perfgraphCheckbox = debug.Get<CheckboxWidget>("PERFDEBUG_CHECKBOX");
+			var perfgraphCheckbox = debug.Get<CheckboxWidget>("PERFGRAPH_CHECKBOX");
 			perfgraphCheckbox.IsChecked = () => Game.Settings.Debug.PerfGraph;
 			perfgraphCheckbox.OnClick = () => Game.Settings.Debug.PerfGraph ^= true;
+
+			var perftextCheckbox = debug.Get<CheckboxWidget>("PERFTEXT_CHECKBOX");
+			perftextCheckbox.IsChecked = () => Game.Settings.Debug.PerfText;
+			perftextCheckbox.OnClick = () => Game.Settings.Debug.PerfText ^= true;
+
+			var sampleSlider = debug.Get<SliderWidget>("PERFTEXT_SAMPLE_AMOUNT");
+			sampleSlider.Value = sampleSlider.MaximumValue-Game.Settings.Debug.Samples;
+			sampleSlider.OnChange += x => Game.Settings.Debug.Samples = (int)sampleSlider.MaximumValue-(int)Math.Round(x);
 
 			var checkunsyncedCheckbox = debug.Get<CheckboxWidget>("CHECKUNSYNCED_CHECKBOX");
 			checkunsyncedCheckbox.IsChecked = () => Game.Settings.Debug.SanityCheckUnsyncedCode;
 			checkunsyncedCheckbox.OnClick = () => Game.Settings.Debug.SanityCheckUnsyncedCode ^= true;
+
+			var botdebugCheckbox = debug.Get<CheckboxWidget>("BOTDEBUG_CHECKBOX");
+			botdebugCheckbox.IsChecked = () => Game.Settings.Debug.BotDebug;
+			botdebugCheckbox.OnClick = () => Game.Settings.Debug.BotDebug ^= true;
+
+			var longTickThreshold = debug.Get<SliderWidget>("LONG_TICK_THRESHOLD");
+			longTickThreshold.Value = Game.Settings.Debug.LongTickThreshold;
+			longTickThreshold.OnChange += x => Game.Settings.Debug.LongTickThreshold = x;
 
 			bg.Get<ButtonWidget>("BUTTON_CLOSE").OnClick = () =>
 			{
@@ -137,6 +177,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				int.TryParse(windowWidth.Text, out x);
 				int.TryParse(windowHeight.Text, out y);
 				gs.WindowedSize = new int2(x,y);
+				int.TryParse(maxFrameRate.Text, out gs.MaxFramerate);
 				Game.Settings.Save();
 				Ui.CloseWindow();
 			};
@@ -212,6 +253,27 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var item = ScrollItemWidget.Setup(itemTemplate,
 					() => s.Renderer == options[o],
 					() => s.Renderer = options[o]);
+				item.Get<LabelWidget>("LABEL").GetText = () => o;
+				return item;
+			};
+
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, setupItem);
+			return true;
+		}
+
+		public static bool ShowSoundEngineDropdown(DropDownButtonWidget dropdown, SoundSettings s)
+		{
+			var options = new Dictionary<string, string>()
+			{
+				{ "OpenAL", "AL" },
+				{ "None", "Null" },
+			};
+
+			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
+			{
+				var item = ScrollItemWidget.Setup(itemTemplate,
+					() => s.Engine == options[o],
+					() => s.Engine = options[o]);
 				item.Get<LabelWidget>("LABEL").GetText = () => o;
 				return item;
 			};

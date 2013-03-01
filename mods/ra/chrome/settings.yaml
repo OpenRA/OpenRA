@@ -3,7 +3,7 @@ Background@SETTINGS_MENU:
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM- HEIGHT)/2
 	Width: 450
-	Height: 350
+	Height: 450
 	Children:
 		Label@SETTINGS_LABEL_TITLE:
 			X:0
@@ -115,6 +115,18 @@ Background@SETTINGS_MENU:
 					Width:200
 					Height:20
 					Text: Left-Click Orders
+				Label@GAME_SPEED_AMOUNT_LABEL:
+					X:0
+					Y:220
+					Text: Game Speed
+				Slider@GAME_SPEED_AMOUNT:
+					X:130
+					Y:210
+					Width:250
+					Height:20
+					Ticks:5
+					MinimumValue: 1
+					MaximumValue: 80
 		Container@AUDIO_PANE:
 			X:37
 			Y:100
@@ -142,17 +154,46 @@ Background@SETTINGS_MENU:
 					Width:250
 					Height:20
 					Ticks:5
-				Label@SOUND_TICK_TYPE_LABEL:
+				Label@VIDEO_VOLUME_LABEL:
 					X:0
 					Y:70
+					Text: Video Volume
+				Slider@VIDEO_VOLUME:
+					X:100
+					Y:60
+					Width:250
+					Height:20
+					Ticks:5
+				Label@SOUND_TICK_TYPE_LABEL:
+					X:0
+					Y:100
 					Text: Cash ticks
 				DropDownButton@CASH_TICK_TYPE:
 					X:100
-					Y:60
+					Y:90
 					Width:250
 					Height:25
 					Font:Regular
 					Text:Extreme
+				Checkbox@MAP_MUSIC_CHECKBOX:
+					X:0
+					Y:120
+					Width:200
+					Height:20
+					Text: Autoplay Music After Map Load
+				Label@SOUND_ENGINE_LABEL:
+					X:0
+					Y:150
+					Width:75
+					Height:25
+					Text:Sound Engine:
+				DropDownButton@SOUND_ENGINE:
+					X:100
+					Y:150
+					Width:120
+					Height:25
+					Font:Regular
+					Text:OpenAL
 		Container@DISPLAY_PANE:
 			X:37
 			Y:100
@@ -228,6 +269,18 @@ Background@SETTINGS_MENU:
 					Height:20
 					Font:Regular
 					Text:Enable Pixel Doubling
+				Checkbox@CAPFRAMERATE_CHECKBOX:
+					Y:120
+					Width:200
+					Height:20
+					Font:Regular
+					Text:Cap Framerate @ 
+				TextField@MAX_FRAMERATE:
+					X:150
+					Y:120
+					Width:45
+					Height:25
+					MaxLength:3
 		Container@DEBUG_PANE:
 			X:37
 			Y:100
@@ -235,15 +288,51 @@ Background@SETTINGS_MENU:
 			Height:PARENT_BOTTOM - 100
 			Visible: false
 			Children:
-				Checkbox@PERFDEBUG_CHECKBOX:
+				Checkbox@PERFGRAPH_CHECKBOX:
 					X:0
 					Y:0
 					Width:300
 					Height:20
-					Text:Show Performance Information
-				Checkbox@CHECKUNSYNCED_CHECKBOX:
+					Text:Show Performance Graph
+				Checkbox@PERFTEXT_CHECKBOX:
 					X:0
 					Y:30
 					Width:300
 					Height:20
+					Text:Show Performance Text
+				Label@PERFTEXT_SAMPLE_LABEL:
+					X:30
+					Y:70
+					Text:Update Rate
+				Slider@PERFTEXT_SAMPLE_AMOUNT:
+					X:130
+					Y:60
+					Width:250
+					Height:20
+					Ticks:5
+					MinimumValue: 1
+					MaximumValue: 50
+				Checkbox@CHECKUNSYNCED_CHECKBOX:
+					X:0
+					Y:90
+					Width:300
+					Height:20
 					Text:Check Sync around Unsynced Code
+				Checkbox@BOTDEBUG_CHECKBOX:
+					X:0
+					Y:120
+					Width:300
+					Height:20
+					Text:Show Bot Debug Messages
+				Label@PERFTEXT_SAMPLE_LABEL:
+					X:0
+					Y:160
+					Text:Slow Trait Report Threshold in Seconds:
+				Slider@LONG_TICK_THRESHOLD:
+					X:0
+					Y:170
+					Width:370
+					Height:20
+					Ticks:5
+					MinimumValue: 0.0001
+					MaximumValue: 0.01
