@@ -129,72 +129,50 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var specialHotkeyTemplate = specialHotkeyList.Get<ScrollItemWidget>("SPECIALHOTKEY_TEMPLATE");
 
 			var pauseKey = ScrollItemWidget.Setup(specialHotkeyTemplate, () => false, () => {});
-			pauseKey.Get<LabelWidget>("FUNCTION").GetText = () => "Pause the game:";
-			SetupKeyBinding(pauseKey.Get<TextFieldWidget>("HOTKEY"),
-			() => keyConfig.PauseKey, k => keyConfig.PauseKey = k);
+			SetupKeyBinding(pauseKey, "Pause the game:", () => keyConfig.PauseKey, k => keyConfig.PauseKey = k);
 			specialHotkeyList.AddChild(pauseKey);
 
 			var viewportToBase = ScrollItemWidget.Setup(specialHotkeyTemplate, () => false, () => {});
-			viewportToBase.Get<LabelWidget>("FUNCTION").GetText = () => "Move Viewport to Base:";
-			SetupKeyBinding(viewportToBase.Get<TextFieldWidget>("HOTKEY"),
-			() => keyConfig.CycleBaseKey, k => keyConfig.CycleBaseKey = k);
+			SetupKeyBinding(viewportToBase, "Move Viewport to Base:", () => keyConfig.CycleBaseKey, k => keyConfig.CycleBaseKey = k);
 			specialHotkeyList.AddChild(viewportToBase);
 
 			var lastEventKey = ScrollItemWidget.Setup(specialHotkeyTemplate, () => false, () => {});
-			lastEventKey.Get<LabelWidget>("FUNCTION").GetText = () => "Move Viewport to Last Event:";
-			SetupKeyBinding(lastEventKey.Get<TextFieldWidget>("HOTKEY"),
-			() => keyConfig.GotoLastEventKey, k => keyConfig.GotoLastEventKey = k);
+			SetupKeyBinding(lastEventKey, "Move Viewport to Last Event:", () => keyConfig.GotoLastEventKey, k => keyConfig.GotoLastEventKey = k);
 			specialHotkeyList.AddChild(lastEventKey);
 
 			var sellKey = ScrollItemWidget.Setup(specialHotkeyTemplate, () => false, () => {});
-			sellKey.Get<LabelWidget>("FUNCTION").GetText = () => "Switch to Sell-Cursor:";
-			SetupKeyBinding(sellKey.Get<TextFieldWidget>("HOTKEY"),
-			() => keyConfig.SellKey, k => keyConfig.SellKey = k);
+			SetupKeyBinding(sellKey, "Switch to Sell-Cursor:", () => keyConfig.SellKey, k => keyConfig.SellKey = k);
 			specialHotkeyList.AddChild(sellKey);
 
 			var powerDownKey = ScrollItemWidget.Setup(specialHotkeyTemplate, () => false, () => {});
-			powerDownKey.Get<LabelWidget>("FUNCTION").GetText = () => "Switch to Power-Down-Cursor:";
-			SetupKeyBinding(powerDownKey.Get<TextFieldWidget>("HOTKEY"),
-			() => keyConfig.PowerDownKey, k => keyConfig.PowerDownKey = k);
+			SetupKeyBinding(powerDownKey, "Switch to Power-Down-Cursor:", () => keyConfig.PowerDownKey, k => keyConfig.PowerDownKey = k);
 			specialHotkeyList.AddChild(powerDownKey);
 
 			var repairKey = ScrollItemWidget.Setup(specialHotkeyTemplate, () => false, () => {});
-			repairKey.Get<LabelWidget>("FUNCTION").GetText = () => "Switch to Repair-Cursor:";
-			SetupKeyBinding(repairKey.Get<TextFieldWidget>("HOTKEY"),
-			() => keyConfig.RepairKey, k => keyConfig.RepairKey = k);
+			SetupKeyBinding(repairKey, "Switch to Repair-Cursor:", () => keyConfig.RepairKey, k => keyConfig.RepairKey = k);
 			specialHotkeyList.AddChild(repairKey);
 
 			var unitCommandHotkeyList = keys.Get<ScrollPanelWidget>("UNITCOMMANDHOTKEY_LIST");
 			var unitCommandHotkeyTemplate = unitCommandHotkeyList.Get<ScrollItemWidget>("UNITCOMMANDHOTKEY_TEMPLATE");
 
 			var attackKey = ScrollItemWidget.Setup(unitCommandHotkeyTemplate, () => false, () => {});
-			attackKey.Get<LabelWidget>("FUNCTION").GetText = () => "Attack Move:";
-			SetupKeyBinding(attackKey.Get<TextFieldWidget>("HOTKEY"),
-			() => keyConfig.AttackMoveKey, k => keyConfig.AttackMoveKey = k);
+			SetupKeyBinding(attackKey, "Attack Move:", () => keyConfig.AttackMoveKey, k => keyConfig.AttackMoveKey = k);
 			unitCommandHotkeyList.AddChild(attackKey);
 
 			var stopKey = ScrollItemWidget.Setup(unitCommandHotkeyTemplate, () => false, () => {});
-			stopKey.Get<LabelWidget>("FUNCTION").GetText = () => "Stop:";
-			SetupKeyBinding(stopKey.Get<TextFieldWidget>("HOTKEY"),
-			() => keyConfig.StopKey, k => keyConfig.StopKey = k);
+			SetupKeyBinding(stopKey, "Stop:", () => keyConfig.StopKey, k => keyConfig.StopKey = k);
 			unitCommandHotkeyList.AddChild(stopKey);
 
 			var scatterKey = ScrollItemWidget.Setup(unitCommandHotkeyTemplate, () => false, () => {});
-			scatterKey.Get<LabelWidget>("FUNCTION").GetText = () => "Scatter:";
-			SetupKeyBinding(scatterKey.Get<TextFieldWidget>("HOTKEY"),
-			() => keyConfig.ScatterKey, k => keyConfig.ScatterKey = k);
+			SetupKeyBinding(scatterKey, "Scatter:", () => keyConfig.ScatterKey, k => keyConfig.ScatterKey = k);
 			unitCommandHotkeyList.AddChild(scatterKey);
 
 			var stanceCycleKey = ScrollItemWidget.Setup(unitCommandHotkeyTemplate, () => false, () => {});
-			stanceCycleKey.Get<LabelWidget>("FUNCTION").GetText = () => "Cycle Stance:";
-			SetupKeyBinding(stanceCycleKey.Get<TextFieldWidget>("HOTKEY"),
-			() => keyConfig.StanceCycleKey, k => keyConfig.StanceCycleKey = k);
+			SetupKeyBinding(stanceCycleKey, "Cycle Stance:", () => keyConfig.StanceCycleKey, k => keyConfig.StanceCycleKey = k);
 			unitCommandHotkeyList.AddChild(stanceCycleKey);
 
 			var deployKey = ScrollItemWidget.Setup(unitCommandHotkeyTemplate, () => false, () => {});
-			deployKey.Get<LabelWidget>("FUNCTION").GetText = () => "Deploy:";
-			SetupKeyBinding(deployKey.Get<TextFieldWidget>("HOTKEY"),
-			() => keyConfig.DeployKey, k => keyConfig.DeployKey = k);
+			SetupKeyBinding(deployKey, "Deploy:", () => keyConfig.DeployKey, k => keyConfig.DeployKey = k);
 			unitCommandHotkeyList.AddChild(deployKey);
 
 			// Debug
@@ -276,17 +254,21 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			return true;
 		}
 
-		void SetupKeyBinding(TextFieldWidget textBox, Func<string> getValue, Action<string> setValue)
+		void SetupKeyBinding(ScrollItemWidget keyWidget, string description, Func<string> getValue, Action<string> setValue)
 		{
+			keyWidget.Get<LabelWidget>("FUNCTION").GetText = () => description;
+
+			var textBox = keyWidget.Get<TextFieldWidget>("HOTKEY");
+
 			textBox.Text = getValue();
 
 			textBox.OnLoseFocus = () =>
 			{
 				textBox.Text.Trim();
 				if (textBox.Text.Length == 0)
-				textBox.Text = getValue();
+					textBox.Text = getValue();
 				else
-				setValue(textBox.Text);
+					setValue(textBox.Text);
 			};
 
 			textBox.OnEnterKey = () => { textBox.LoseFocus(); return true; };

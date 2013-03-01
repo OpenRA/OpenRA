@@ -188,19 +188,19 @@ namespace OpenRA.Mods.RA.Widgets
 			return true;
 		}
 
-		private bool PerformSwitchToSellMode ()
+		bool PerformSwitchToSellMode()
 		{
-			World.ToggleInputMode<SellOrderGenerator> ();
+			World.ToggleInputMode<SellOrderGenerator>();
 			return true;
 		}
 
-		private bool PerformSwitchToPowerDownMode ()
+		bool PerformSwitchToPowerDownMode()
 		{
-			World.ToggleInputMode<PowerDownOrderGenerator> ();
+			World.ToggleInputMode<PowerDownOrderGenerator>();
 			return true;
 		}
 
-		private bool PerformSwitchToRepairMode ()
+		bool PerformSwitchToRepairMode()
 		{
 			World.ToggleInputMode<RepairOrderGenerator>();
 			return true;
