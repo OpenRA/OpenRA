@@ -1,0 +1,488 @@
+MCV:
+	Inherits: ^Tank
+	Valued:
+		Cost: 5000
+	Tooltip:
+		Name: Mobile Construction Vehicle
+		Icon: mcvicnh
+		Description: Deploys into another Construction Yard.\n  Unarmed
+	Buildable:
+		BuildPaletteOrder: 70
+		Prerequisites: fix
+		Owner: gdi,nod
+	Selectable:
+		Priority: 3
+	Mobile:
+		Speed: 12
+	Health:
+		HP: 600
+	Armor: 
+		Type: Light
+	RevealsShroud:
+		Range: 4
+	#	Range: 2
+	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from C&C Gold values for now to properly emulate.
+	Transforms:
+		IntoActor: fact
+		Offset:-1,-1
+		Facing: 108
+		TransformSounds: constru2.aud, hvydoor1.aud
+		NoTransformSounds: deploy1.aud
+	RenderUnit:
+	MustBeDestroyed:
+	AttackMove:
+		JustMove:true
+	BaseBuilding:
+	-AcceptsCloakCrate:
+	Explodes:
+		Weapon: McvExplode
+
+HARV:
+	Inherits: ^Tank
+	Valued:
+		Cost: 1400
+	Tooltip:
+		Name: Harvester
+		Icon: harvicnh
+		Description: Collects Tiberium for processing.\n  Unarmed
+	Buildable:
+		BuildPaletteOrder: 10
+		Prerequisites: proc
+		Owner: gdi,nod
+	Selectable:
+		Priority: 7
+		Bounds: 44,44
+	Harvester:
+		Resources: Tiberium, Blue Tiberium
+		PipCount: 7
+		Capacity: 28
+		UnloadTicksPerBale: 16
+		FullyLoadedSpeed: 100%
+	Mobile:
+		Speed: 12
+	Health:
+		HP: 600
+	Armor: 
+		Type: Light
+	RevealsShroud:
+		Range: 4
+	#	Range: 2
+	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from C&C Gold values for now to properly emulate.
+	RenderUnit:
+	AttackMove:
+		JustMove:true
+	Explodes:
+		Weapon: McvExplode
+
+JEEP:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 400
+	Tooltip:
+		Name: Hum-Vee
+		Icon: jeepicnh
+		Description: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
+	Buildable:
+		BuildPaletteOrder: 20
+		Prerequisites: weap
+		Owner: gdi
+	Mobile:
+		ROT: 10
+		Speed: 30
+	Health:
+		HP: 150
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 4
+	#	Range: 2
+	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from C&C Gold values for now to properly emulate.
+	Turreted:
+		ROT: 10
+	AttackTurreted:
+		PrimaryWeapon: MachineGun
+		PrimaryOffset: 0,2,0,-4
+	WithMuzzleFlash:
+	RenderUnitTurreted:
+	AutoTarget:
+
+APC:
+	Inherits: ^Tank
+	Valued:
+		Cost: 700
+	Tooltip:
+		Name: Armored Personnel Carrier
+		Icon: apcicnh
+		Description: Armored infantry transport and mobile AA\n  Strong vs Aircraft\n  Weak vs Tanks, Infantry
+	Buildable:
+		BuildPaletteOrder: 30
+		Prerequisites: pyle
+		Owner: gdi
+	Mobile:
+		ROT: 5
+		Speed: 26
+	Health:
+		HP: 200
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 6
+	#	Range: 4
+	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from C&C Gold values for now to properly emulate.
+	Turreted:
+		ROT: 10
+	AttackTurreted:
+		PrimaryWeapon: MachineGun
+		PrimaryOffset: 0,0,0,0
+	WithMuzzleFlash:
+	RenderUnitTurreted:
+	AutoTarget:
+	Cargo:
+		Types: Infantry
+		MaxWeight: 5
+		PipCount: 5
+		UnloadFacing: 220
+
+BGGY:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Nod Buggy
+		Icon: bggyicnh
+		Description: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
+	Buildable:
+		BuildPaletteOrder: 20
+		Prerequisites: afld
+		Owner: nod
+	Mobile:
+		ROT: 10
+		Speed: 30
+	Health:
+		HP: 140
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 4
+	#	Range: 2
+	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from C&C Gold values for now to properly emulate.
+	Turreted:
+		ROT: 10
+	AttackTurreted:
+		PrimaryWeapon: MachineGun
+		PrimaryOffset: 0,1,0,-3
+	WithMuzzleFlash:
+	RenderUnitTurreted:
+	AutoTarget:
+
+BIKE:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Recon Bike
+		Icon: bikeicnh
+		Description: Fast scout vehicle, armed with \nrockets.\n  Strong vs Vehicles, Aircraft\n  Weak vs Infantry
+	Buildable:
+		BuildPaletteOrder: 30
+		Prerequisites: afld
+		Owner: nod
+	Mobile:
+		ROT: 10
+		Speed: 40
+	Health:
+		HP: 160
+	Armor: 
+		Type: Wood
+	RevealsShroud:
+		Range: 4
+	#	Range: 2
+	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from C&C Gold values for now to properly emulate.
+	AttackFrontal:
+		PrimaryWeapon: BikeRockets
+		PrimaryOffset: 0,0,0,-2
+		PrimaryLocalOffset: -4,0,0,0,25, 4,0,0,0,-25
+	RenderUnit:
+	AutoTarget:
+
+ARTY:
+	Inherits: ^Tank
+	Valued:
+		Cost: 450
+	Tooltip:
+		Name: Artillery
+		Icon:artyicnh
+		Description: Long-range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
+	Buildable:
+		BuildPaletteOrder: 40
+		Prerequisites: hq
+		Owner: nod
+	Mobile:
+		ROT: 2
+		Speed: 12
+	Health:
+		HP: 75
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 6
+	#	Range: 4
+	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from C&C Gold values for now to properly emulate.
+	AttackFrontal:
+		PrimaryWeapon: ArtilleryShell
+		PrimaryOffset: 0,-7,0,-3
+	RenderUnit:
+	AutoTarget:
+	Explodes:
+		Weapon: UnitExplode
+		EmptyWeapon: UnitExplode
+
+FTNK:
+	Inherits: ^Tank
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Flame Tank
+		Icon: ftnkicnh
+		Description: Heavily armored flame-throwing vehicle.\n  Strong vs Infantry, Buildings\n  Weak vs Aircraft
+	Buildable:
+		BuildPaletteOrder: 50
+		Prerequisites: hq
+		Owner: nod
+	Mobile:
+		ROT: 5
+		Speed: 18
+	Health:
+		HP: 300
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 6
+	#	Range: 4
+	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from C&C Gold values for now to properly emulate.
+	AttackFrontal:
+		PrimaryWeapon: BigFlamer
+		PrimaryOffset: 0,-5,3,2
+		PrimaryLocalOffset: 2,0,0,0,0, -2,0,0,0,0
+	RenderUnit:
+	AutoTarget:
+	WithMuzzleFlash:
+	Explodes:
+		Weapon: BigNapalmExplode
+		EmptyWeapon: BigNapalmExplode
+
+LTNK:
+	Inherits: ^Tank
+	Valued:
+		Cost: 600
+	Tooltip:
+		Name: Light Tank
+		Icon: ltnkicnh
+		Description: Light Tank, good for scouting.\n  Strong vs Light Vehicles\n  Weak vs Tanks, Aircraft
+	Buildable:
+		BuildPaletteOrder: 30
+		Prerequisites: afld
+		Owner: nod
+	Mobile:
+		Speed: 18
+	Health:
+		HP: 300
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 5
+	#	Range: 3
+	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from C&C Gold values for now to properly emulate.
+	Turreted:
+		ROT: 5
+	AttackTurreted:
+		PrimaryWeapon: 70mm
+		PrimaryRecoil: 2
+		PrimaryRecoilRecovery: 0.4
+		PrimaryLocalOffset: 0,3,0,-2,0
+	RenderUnitTurreted:
+	AutoTarget:
+
+MTNK:
+	Inherits: ^Tank
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Medium Tank
+		Icon: mtnkicnh
+		Description: General-Purpose GDI Tank.\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
+	Buildable:
+		BuildPaletteOrder: 30
+		Prerequisites: weap
+		Owner: gdi
+	Mobile:
+		Speed: 18
+	Health:
+		HP: 400
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 5
+	#	Range: 3
+	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from C&C Gold values for now to properly emulate.
+	Turreted:
+		ROT: 5
+	AttackTurreted:
+	#	PrimaryWeapon: 120mm
+		PrimaryWeapon: 105mm
+		PrimaryRecoil: 3
+		PrimaryRecoilRecovery: 0.6
+		PrimaryLocalOffset: 0,0,0,-1,0
+	RenderUnitTurreted:
+	AutoTarget:
+	Selectable:
+		Bounds: 34,34
+
+HTNK:
+	Inherits: ^Tank
+	Valued:
+		Cost: 1500
+	Tooltip:
+		Name: Mammoth Tank
+		Icon: htnkicnh
+		Description: Heavily armored GDI Tank.\n  Strong vs Everything
+	Buildable:
+		BuildPaletteOrder: 60
+		Prerequisites: fix
+		Owner: gdi
+	Mobile:
+		Crushes: wall, heavywall, crate, infantry
+		Speed: 12
+	Health:
+		HP: 600
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 6
+#		Range: 4
+# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from C&C Gold values for now to properly emulate.
+	Turreted:
+		ROT: 2
+	AttackTurreted:
+		PrimaryWeapon: 120mmDual
+		SecondaryWeapon: MammothMissiles
+		PrimaryLocalOffset: -5,-5,0,-10,0, 5,-5,0,-10,0
+		SecondaryLocalOffset: -9,2,0,0,25, 9,2,0,0,-25
+		PrimaryRecoil: 4
+		SecondaryRecoil: 1
+		PrimaryRecoilRecovery: 1
+	RenderUnitTurreted:
+	AutoTarget:
+	SelfHealing:
+		Ticks: 10
+		DamageCooldown: 200
+	Explodes:
+		Weapon: MammothExplode
+	Selectable:
+		Bounds: 40,38,0,-3
+
+MSAM:
+	Inherits: ^Tank
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Rocket Launcher
+		Icon: msamicnh
+		Description: Long range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
+	Buildable:
+		BuildPaletteOrder: 50
+		Prerequisites: techbuilding
+		Owner: gdi, nod
+	Mobile:
+		Speed: 18
+	Health:
+		HP: 100
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 6
+	#	Range: 4
+	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from C&C Gold values for now to properly emulate.
+	Turreted:
+		ROT: 255
+	AttackFrontal:
+		PrimaryWeapon: 227mm
+		PrimaryOffset: 0,6,0,-3
+		PrimaryLocalOffset: 3,-5,0,0,0, -3,-5,0,0,0
+	RenderUnitTurretedAim:
+	AutoTarget:
+	Explodes:
+		Weapon: MammothExplode
+
+MLRS:
+	Inherits: ^Tank
+	Valued:
+		Cost: 750
+	Tooltip:
+		Name: SSM Launcher
+		Icon: mlrsicnh
+		Description: Long range artillery.\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks, Aircraft
+	Buildable:
+		BuildPaletteOrder: 60
+		Prerequisites: obli
+		Owner: nod
+	Mobile:
+		Speed: 18
+	Health:
+		HP: 120
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 6
+	#	Range: 4
+	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from C&C Gold values for now to properly emulate.
+	Turreted:
+		ROT: 5
+	AttackFrontal:
+		PrimaryWeapon: HonestJohn
+		SecondaryWeapon: HonestJohn
+		PrimaryOffset: 0,3,0,-3
+		PrimaryLocalOffset: -4,0,0,0,0
+		SecondaryLocalOffset: 4,0,0,0,0
+	#	AlignIdleTurrets: true
+	RenderUnitTurretedAim:
+	AutoTarget:
+	Explodes:
+		Weapon: BigNapalmExplode
+		EmptyWeapon: BigNapalmExplode
+
+STNK:
+	Inherits: ^Tank
+	Valued:
+		Cost: 900
+	Tooltip:
+		Name: Stealth Tank
+		Icon: stnkicnh
+		Description: Missile tank that can bend light around \nitself to become invisible\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks
+	Buildable:
+		BuildPaletteOrder: 90
+		Prerequisites: hq
+		Owner: nod
+	Mobile:
+		Speed: 30
+	Health:
+		HP: 110
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 6
+	#	Range: 4
+	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from C&C Gold values for now to properly emulate.
+	Cloak:
+		InitialDelay: 125
+		CloakDelay: 125
+		CloakSound: trans1.aud
+		UncloakSound: appear1.aud
+	AttackFrontal:
+		PrimaryWeapon: 227mm.stnk
+		PrimaryOffset: 0,-5,0,-3
+		PrimaryLocalOffset: 1,0,0,0,0, -1,0,0,0,0
+	RenderUnit:
+	AutoTarget:
+		InitialStance: HoldFire
+	TargetableUnit:

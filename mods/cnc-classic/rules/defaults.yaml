@@ -1,0 +1,389 @@
+^Vehicle:
+	AppearsOnRadar:
+	RevealsShroud:
+		Range: 5
+	#	Range: 3
+	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from what we want for now, to properly emulate
+	Mobile:
+		Crushes: crate
+		TerrainSpeeds:
+			Clear: 25
+			Rough: 25
+			Road: 25
+			Tiberium: 25
+			BlueTiberium: 25
+			Beach: 25
+		ROT: 5
+	SelectionDecorations:
+	Selectable: 
+		Voice: VehicleVoice
+	TargetableUnit:
+		TargetTypes: Ground
+	Buildable:
+		Queue: Vehicle
+	Repairable:
+	Passenger:
+		CargoType: Vehicle
+	ActorLostNotification:
+		Notification: unitlost.aud
+	AttackMove:
+	AcceptsCloakCrate:
+	WithSmoke:
+	Explodes:
+		Weapon: UnitExplodeSmall
+
+^Tank:
+	AppearsOnRadar:
+	RevealsShroud:
+		Range: 5
+	#	Range: 3
+	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from what we want for now, to properly emulate
+	Mobile:
+		Crushes: wall, crate, infantry
+		TerrainSpeeds:
+			Clear: 25
+			Rough: 25
+			Road: 25
+			Tiberium: 25
+			BlueTiberium: 25
+			Beach: 25
+		ROT: 5
+	SelectionDecorations:
+	Selectable: 
+		Voice: VehicleVoice
+	TargetableUnit:
+		TargetTypes: Ground
+	Buildable:
+		Queue: Vehicle
+	Passenger:
+		CargoType: Vehicle
+	ActorLostNotification:
+		Notification: unitlost.aud
+	AttackMove:
+	AcceptsCloakCrate:
+	WithSmoke:
+	Explodes:
+		Weapon: UnitExplodeSmall
+
+^Helicopter:
+	AppearsOnRadar:
+		UseLocation: yes
+	TargetableUnit:
+		TargetTypes: Air
+	SelectionDecorations:
+	Selectable:
+		Voice: VehicleVoice
+	Helicopter:
+		RepairBuildings: hpad
+		RearmBuildings:
+		LandWhenIdle: false
+	Buildable:
+		Queue: Aircraft
+	ActorLostNotification:
+		Notification: unitlost.aud
+
+^Infantry:
+	AppearsOnRadar:
+	Health:
+		Radius: 3
+	Armor:
+		Type: None
+	RevealsShroud:
+	#	Range: 4
+		Range: 3
+	# default range value for infantry is 1 in C&C, but OpenRA renders vision slightly differently.
+	AutoTarget:
+		ScanRadius: 4
+	Mobile:
+		Crushes: crate
+		SharesCell: true
+		TerrainSpeeds:
+			Clear: 90
+			Rough: 90
+			Road: 90
+			Tiberium: 90
+				PathingCost: 1000
+			BlueTiberium: 90
+				PathingCost: 1000
+			Beach: 90
+	SelectionDecorations:
+	Selectable:
+		Voice: GenericVoice
+	TargetableUnit:
+		TargetTypes: Ground
+	Buildable:
+		Queue: Infantry
+	TakeCover:
+		BarrelOffset: 0,-2,0,4
+	RenderInfantryProne:
+	AttackMove:
+	Passenger:
+		CargoType: Infantry
+	PoisonedByTiberium:
+	ActorLostNotification:
+		Notification: unitlost.aud
+	SpawnViceroid:
+		Probability: 2
+	CrushableInfantry:
+	DetectCloaked:
+		Range: 1
+
+^CivInfantry:
+	Inherits: ^Infantry
+	-Buildable:
+	-AutoTarget:
+	-TakeCover:
+	-RenderInfantryProne:
+	AppearsOnRadar:
+	SelectionDecorations:
+	Selectable:
+		Voice: CivilianMaleVoice
+		Bounds: 12,17,0,-9
+	Valued:
+		Cost: 10
+	Tooltip:
+		Name: Civilian
+	Mobile:
+		Speed: 4
+	Health:
+	#	HP: 25
+		HP: 5
+	RevealsShroud:
+		Range: 3	#arbitrary. Assuming it should be 1, like infantry.
+	# In practice, it seems that OpenRA renders vision range differently. Assuming it should be 1 for this unit.
+	AttackFrontal:
+		PrimaryWeapon: Pistol
+	ActorLostNotification:
+		Notification: civdead1.aud
+		NotifyAll: true
+	ScaredyCat:
+	RenderInfantryPanic:
+	AttackMove:
+		JustMove: yes
+	CrushableInfantry:
+
+^Plane:
+	AppearsOnRadar:
+		UseLocation: yes
+	SelectionDecorations:
+	Selectable:
+		Voice: GenericVoice
+	TargetableUnit:
+		TargetTypes: Air
+	ActorLostNotification:
+		Notification: unitlost.aud
+
+^Ship:
+	AppearsOnRadar:
+	Mobile:
+		Crushes: crate
+		TerrainSpeeds:
+			Water: 100
+	SelectionDecorations:
+	Selectable:
+		Voice: GenericVoice
+	TargetableUnit:
+		TargetTypes: Ground, Water
+	ActorLostNotification:
+		Notification: unitlost.aud
+	AttackMove:
+
+^Building:
+	AppearsOnRadar:
+	SelectionDecorations:
+	Selectable:
+		Priority: 3
+	TargetableBuilding:
+		TargetTypes: Ground
+	Armor:
+		Type: Wood
+	RepairableBuilding:
+		RepairPercent: 40
+		RepairStep: 14
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+		BuildSounds: constru2.aud, hvydoor1.aud
+		SellSounds: cashturn.aud
+		TerrainTypes: Clear,Road
+	SoundOnDamageTransition:
+		DamagedSound: xplos.aud
+		DestroyedSound: crumble.aud
+	Buildable:
+		Queue: Building
+	GivesBuildableArea:
+	RenderBuilding:
+	WithBuildingExplosion:
+	DeadBuildingState:
+	EmitInfantryOnSell:
+		ValuePercent: 40
+		ActorTypes: e6,e1
+	MustBeDestroyed:
+	CaptureNotification@GDI:
+		Race: gdi
+		Notification: gdicapt1.aud
+	CaptureNotification@NOD:
+		Race: nod
+		Notification: nodcapt1.aud
+	ActorLostNotification:
+		Notification: strclost.aud
+	EditorAppearance:
+		RelativeToTopLeft: yes
+	AutoTargetIgnore:
+	ShakeOnDeath:
+	Sellable:
+	Capturable:
+	CapturableBar:
+
+^CivBuilding:
+	Inherits: ^Building
+	-DeadBuildingState:
+	-Buildable:
+	-GivesBuildableArea:
+	Health:
+		HP: 400
+	Armor: 
+		Type: Wood
+	Building:
+	RenderBuilding:
+	WithBuildingExplosion:
+	-RepairableBuilding:
+	-Capturable:
+	-CapturableBar:
+	-Sellable:
+	Tooltip:
+		Name: Civilian Building
+
+^CivBuildingHusk:
+	AppearsOnRadar:
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+	RenderBuilding:
+	EditorAppearance:
+		RelativeToTopLeft: yes
+	Tooltip:
+		Name: Civilian Building (Destroyed)
+
+^TechBuilding:
+	Inherits: ^CivBuilding
+	Capturable:
+	CapturableBar:
+	RepairableBuilding:
+	RevealsShroud:
+		Range: 5
+	#	Range: 3
+	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from what we want for now, to properly emulate
+
+^CivField:
+	Inherits: ^CivBuilding
+	-Selectable:
+	Tooltip:
+		Name: Field
+	-WithBuildingExplosion:
+
+^CivFieldHusk:
+	AppearsOnRadar:
+	Building:
+		Dimensions: 1,1
+		Footprint: _
+	EditorAppearance:
+		RelativeToTopLeft: yes
+	Tooltip:
+		Name: Field (Destroyed)
+	BelowUnits:
+
+^Wall:
+	AppearsOnRadar:
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+		BuildSounds: hvydoor1.aud
+		Adjacent: 7
+		TerrainTypes: Clear,Road
+	TargetableBuilding:
+		TargetTypes: Ground, Wall
+	Wall:
+		CrushClasses: wall
+		CrushSound: sandbag2.aud
+	LineBuild:
+		Range: 8
+	SelectionDecorations:
+	Selectable:
+		Priority: 1
+	RenderBuildingWall:
+		HasMakeAnimation: false
+		Palette: staticterrain
+	EditorAppearance:
+		RelativeToTopLeft: yes
+	AutoTargetIgnore:
+	Sellable:
+
+^HeavyWall:
+	AppearsOnRadar:
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+		BuildSounds: hvydoor1.aud
+		Adjacent: 7
+		TerrainTypes: Clear,Road
+	TargetableBuilding:
+		TargetTypes: Ground, Wall
+	Wall:
+		CrushClasses: wall
+		CrushSound: sandbag2.aud
+	LineBuild:
+		Range: 8
+	SelectionDecorations:
+	Selectable:
+		Priority: 1
+	RenderBuildingWall:
+		HasMakeAnimation: false
+		Palette: staticterrain
+	EditorAppearance:
+		RelativeToTopLeft: yes
+	AutoTargetIgnore:
+	Sellable:
+
+^Tree:
+	Tooltip:
+		Name: Tree
+	RenderBuilding:
+		Palette: staticterrain
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+	AppearsOnRadar:
+	RadarColorFromTerrain:
+		Terrain: Tree
+	EditorAppearance:
+		RelativeToTopLeft: yes
+
+^Rock:
+	Tooltip:
+		Name: Rock
+	RenderBuilding:
+		Palette: staticterrain
+	Building:
+		Footprint: __ x_
+		Dimensions: 2,2
+	AppearsOnRadar:
+	RadarColorFromTerrain:
+		Terrain: Tree
+	EditorAppearance:
+		RelativeToTopLeft: yes
+
+^Bridge:
+	Tooltip:
+		Name: Bridge
+	TargetableBuilding:
+		TargetTypes: Ground, Water
+	BelowUnits:
+	Health:
+		HP: 500
+	SoundOnDamageTransition:
+		DamagedSound: xplos.aud
+		DestroyedSound: xplobig4.aud
+	Building:
+		Footprint: ______ ______ ______ ______
+		Dimensions: 6,4
