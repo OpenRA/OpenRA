@@ -166,6 +166,7 @@
 		TerrainTypes: Clear,Road
 	GivesBuildableArea:
 	Capturable:
+		CaptureCompleteTime: 0
 	CapturableBar:
 	SoundOnDamageTransition:
 		DamagedSound: kaboom1.aud

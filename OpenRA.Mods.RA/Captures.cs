@@ -23,6 +23,7 @@ namespace OpenRA.Mods.RA
 	{
 		public string[] CaptureTypes = {"building"};
 		public bool WastedAfterwards = true;
+		public bool Sabotage = false;
 		public object Create(ActorInitializer init) { return new Captures(init.self, this); }
 	}
 

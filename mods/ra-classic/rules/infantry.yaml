@@ -156,6 +156,7 @@ E6:
 		PipType: Yellow
 	EngineerRepair:
 	Captures:
+		Sabotage: yes
 	TakeCover:
 	-AutoTarget:
 	AttackMove:
