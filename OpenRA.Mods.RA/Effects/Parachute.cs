@@ -66,6 +66,11 @@ namespace OpenRA.Mods.RA.Effects
 		{
 			var rc = cargo.Render(wr).Select(a => a.WithPos(a.Pos - new float2(0, altitude))
 			                                    .WithZOffset(a.ZOffset + (int)altitude));
+
+			// Don't render anything if the cargo is invisible (e.g. under fog)
+			if (!rc.Any())
+				yield break;
+
 			foreach (var c in rc)
 			{
 				yield return c.WithPos(location.ToFloat2() - .5f * c.Sprite.size).WithPalette(wr.Palette("shadow")).WithZOffset(0);
