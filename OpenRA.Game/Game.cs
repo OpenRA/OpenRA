@@ -385,7 +385,7 @@ namespace OpenRA
 
 		public static void Debug(string s, params object[] args)
 		{
-			AddChatLine(Color.White, "Debug", String.Format(s,args));
+			AddChatLine(Color.White, "", String.Format(s,args));
 		}
 
 		public static void Disconnect()
