@@ -114,8 +114,8 @@ HighV:
 		Versus: 
 			None: 100%
 			Wood: 50%
-			Light: 50%
-			Heavy: 25%
+			Light: 100%
+			Heavy: 50%
 		InfDeath: 2
 		Explosion: piffs
 
@@ -213,7 +213,7 @@ Rockets:
 		Spread: 3
 		Versus: 
 			None: 50%
-			Wood: 100%
+			Wood: 85%
 			Light: 100%
 			Heavy: 100%
 			Concrete: 25%
@@ -221,7 +221,7 @@ Rockets:
 		Explosion: 4
 		ImpactSound: xplos
 		SmudgeType: Crater
-		Damage: 40
+		Damage: 30
 
 BikeRockets:
 	ROF: 45
@@ -327,7 +327,7 @@ Flamethrower:
 		Spread: 8
 		Versus: 
 			None: 90%
-			Wood: 150%
+			Wood: 100%
 			Light: 75%
 			Heavy: 25%
 		InfDeath: 5
@@ -622,9 +622,9 @@ ArtilleryShell:
 		ImpactSound: XPLOSML2
 
 MachineGun:
-	ROF: 30
+	ROF: 20
 	Range: 4
-	Burst: 5
+	Burst: 4
 	Report: MGUN11
 	Projectile: Bullet
 		Speed: 100
@@ -632,13 +632,13 @@ MachineGun:
 		Spread: 3
 		Versus: 
 			None: 100%
-			Wood: 20%
-			Light: 50%
-			Heavy: 20%
+			Wood: 30%
+			Light: 75%
+			Heavy: 30%
 			Concrete: 10%
 		InfDeath: 2
 		Explosion: piffs
-		Damage: 15
+		Damage: 10
 
 BoatMissile:
 	ROF: 35
