@@ -46,6 +46,10 @@ Terrain:
 		Type: Ore
 		AcceptsSmudgeType: Crater, Scorch
 		Color: 148, 128, 96
+	TerrainType@Gems:
+		Type: Gems
+		AcceptsSmudgeType: Crater, Scorch
+		Color: 132, 112, 255
 
 Templates:
 	Template@255:
