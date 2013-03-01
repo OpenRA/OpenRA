@@ -34,7 +34,7 @@ namespace OpenRA.Graphics
 		{
 			if (nv > 0)
 			{
-				shader.SetValue( "DiffuseTexture", currentSheet.Texture );
+				shader.SetTexture("DiffuseTexture", currentSheet.Texture);
 				shader.Render(() =>
 				{
 					var vb = renderer.GetTempVertexBuffer();

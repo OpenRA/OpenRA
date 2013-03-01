@@ -67,7 +67,7 @@ namespace OpenRA.Renderer.Cg
 			Tao.Cg.CgGl.cgGLDisableProfile(dev.vertexProfile);
 		}
 
-		public void SetValue(string name, ITexture t)
+		public void SetTexture(string name, ITexture t)
 		{
 			var texture = (Texture)t;
 			var param = Tao.Cg.Cg.cgGetNamedEffectParameter(effect, name);
@@ -75,7 +75,7 @@ namespace OpenRA.Renderer.Cg
 				Tao.Cg.CgGl.cgGLSetupSampler(param, texture.texture);
 		}
 
-		public void SetValue(string name, float x, float y)
+		public void SetVec(string name, float x, float y)
 		{
 			var param = Tao.Cg.Cg.cgGetNamedEffectParameter(effect, name);
 			if (param != IntPtr.Zero)

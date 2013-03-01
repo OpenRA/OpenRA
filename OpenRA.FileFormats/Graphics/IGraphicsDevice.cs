@@ -61,9 +61,9 @@ namespace OpenRA.FileFormats.Graphics
 
 	public interface IShader
 	{
-		void SetValue( string name, float x, float y );
-		void SetValue( string param, ITexture texture );
-		void Render( Action a );
+		void SetVec(string name, float x, float y);
+		void SetTexture(string param, ITexture texture);
+		void Render(Action a);
 	}
 
 	public interface ITexture
