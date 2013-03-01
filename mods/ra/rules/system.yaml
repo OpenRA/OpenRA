@@ -279,6 +279,7 @@ World:
 		PipColor: Yellow
 		AllowedTerrainTypes: Clear,Road
 		AllowUnderActors: false
+		TerrainType: Ore
 	ResourceType@gem:
 		ResourceType: 2
 		Palette: player
@@ -288,6 +289,7 @@ World:
 		PipColor: Red
 		AllowedTerrainTypes: Clear,Road
 		AllowUnderActors: false
+		TerrainType: Gems
 	SmudgeLayer@SCORCH:
 		Type:Scorch
 		SmokePercentage:50
