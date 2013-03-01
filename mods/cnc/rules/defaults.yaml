@@ -370,6 +370,7 @@
 	HiddenUnderFog:
 	AppearsOnRadar:
 	Burns:
+		Interval: 2
 	TargetableUnit:
 	TransformOnCapture:
 		ForceHealthPercentage: 25
