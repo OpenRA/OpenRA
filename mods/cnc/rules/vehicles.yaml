@@ -8,6 +8,7 @@ MCV:
 		Description: Deploys into another Construction Yard.\n  Unarmed
 	Buildable:
 		BuildPaletteOrder: 100
+		Queue: None			#Until multiple construction queues are removed, mcv is OP. 
 		Prerequisites: fix
 		Owner: gdi,nod
 	Selectable:
