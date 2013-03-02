@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -47,8 +47,11 @@ namespace OpenRA.Mods.RA.Widgets
 				if (e.KeyName == Game.Settings.Keys.CycleBaseKey)
 					return CycleBases();
 
-				if (e.KeyName == Game.Settings.Keys.GotoLastEventKey)
-					return GotoLastEvent();
+				if (e.KeyName == Game.Settings.Keys.ToLastEventKey)
+					return ToLastEvent();
+
+				if (e.KeyName == Game.Settings.Keys.ToSelectionKey)
+					return ToSelection();
 
 				if (e.KeyName == Game.Settings.Keys.SellKey)
 					return PerformSwitchToSellMode();
@@ -168,11 +171,11 @@ namespace OpenRA.Mods.RA.Widgets
 				next = bases.Select(b => b.Actor).First();
 
 			World.Selection.Combine(World, new Actor[] { next }, false, true);
-			Game.viewport.Center(World.Selection.Actors);
-			return true;
+
+			return ToSelection();
 		}
 
-		bool GotoLastEvent()
+		bool ToLastEvent()
 		{
 			if (World.LocalPlayer == null)
 				return true;
@@ -185,6 +188,12 @@ namespace OpenRA.Mods.RA.Widgets
 				return true;
 
 			Game.viewport.Center(eventNotifier.lastAttackLocation.ToFloat2());
+			return true;
+		}
+
+		bool ToSelection()
+		{
+			Game.viewport.Center(World.Selection.Actors);
 			return true;
 		}
 
