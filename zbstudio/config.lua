@@ -8,7 +8,16 @@ editor.calltipdelay = 500
 editor.smartindent = true
 
 local G = ... -- this now points to the global environment
-if G.ide.osname == 'Macintosh' then filetree.fontsize = 11 end
+if G.ide.osname == 'Macintosh' then
+  local defaultsize = 11
+  filetree.fontsize = defaultsize
+  if ide.wxver >= "2.9.5" then
+    editor.fontsize = defaultsize
+    editor.fontname = "Monaco"
+    outputshell.fontsize = defaultsize
+    outputshell.fontname = "Monaco"
+  end
+end
 
 filehistorylength = 20
 
