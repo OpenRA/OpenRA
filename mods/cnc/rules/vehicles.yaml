@@ -56,7 +56,7 @@ HARV:
 		Priority: 7
 		Bounds: 36,36
 	Harvester:
-		Resources: Tiberium, Blue Tiberium
+		Resources: Tiberium, BlueTiberium
 		PipCount: 5
 		Capacity: 15
 		# How far away from our linked proc (refinery) to find resources (in cells):
