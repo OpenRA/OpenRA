@@ -21,20 +21,22 @@ namespace OpenRA.Mods.RA
 		public readonly int2 SpawnOffset = int2.Zero;
 		public readonly int Facing = 0;
 
-		public object Create( ActorInitializer init ) { return new FreeActor(init.self, this); }
+		public object Create( ActorInitializer init ) { return new FreeActor(init, this); }
 	}
 
 	public class FreeActor
 	{
-		public FreeActor(Actor self, FreeActorInfo info)
+		public FreeActor(ActorInitializer init, FreeActorInfo info)
 		{
-			self.World.AddFrameEndTask(
+			if (init.Contains<FreeActorInit>() && !init.Get<FreeActorInit>().value) return;
+
+			init.self.World.AddFrameEndTask(
 				w =>
 				{
 					var a = w.CreateActor(info.Actor, new TypeDictionary
 					{
-						new LocationInit( self.Location + (CVec)info.SpawnOffset ),
-						new OwnerInit( self.Owner ),
+						new LocationInit( init.self.Location + (CVec)info.SpawnOffset ),
+						new OwnerInit( init.self.Owner ),
 						new FacingInit( info.Facing ),
 					});
 
@@ -42,5 +44,14 @@ namespace OpenRA.Mods.RA
 						a.QueueActivity(Game.CreateObject<Activity>(info.InitialActivity));
 				});
 		}
+	}
+
+	public class FreeActorInit : IActorInit<bool>
+	{
+		[FieldFromYamlKey]
+		public readonly bool value = true;
+		public FreeActorInit() { }
+		public FreeActorInit(bool init) { value = init; }
+		public bool Value(World world) { return value; }
 	}
 }

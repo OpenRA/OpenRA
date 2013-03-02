@@ -17,7 +17,7 @@ namespace OpenRA.Mods.RA
 {
 	class WaterPaletteRotationInfo : ITraitInfo
 	{
-		public readonly string[] ExcludePalettes = { "cursor", "chrome", "colorpicker", "player" };
+		public readonly string[] ExcludePalettes = {};
 
 		public object Create(ActorInitializer init) { return new WaterPaletteRotation(init.world, this); }
 	}

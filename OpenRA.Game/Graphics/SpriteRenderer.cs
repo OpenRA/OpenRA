@@ -49,12 +49,12 @@ namespace OpenRA.Graphics
 
 		public void DrawSprite(Sprite s, float2 location, WorldRenderer wr, string palette)
 		{
-			DrawSprite(s, location, wr.GetPaletteIndex(palette), s.size);
+			DrawSprite(s, location, wr.Palette(palette).Index, s.size);
 		}
 
 		public void DrawSprite(Sprite s, float2 location, WorldRenderer wr, string palette, float2 size)
 		{
-			DrawSprite(s, location, wr.GetPaletteIndex(palette), size);
+			DrawSprite(s, location, wr.Palette(palette).Index, size);
 		}
 
 		public void DrawSprite(Sprite s, float2 location, int paletteIndex, float2 size)

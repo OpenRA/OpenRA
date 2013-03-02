@@ -14,11 +14,12 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class RallyPointInfo : ITraitInfo, Requires<RenderSimpleInfo>
+	public class RallyPointInfo : ITraitInfo
 	{
 		public readonly int[] RallyPoint = { 1, 3 };
+		public readonly string IndicatorPalettePrefix = "player";
 
-		public object Create(ActorInitializer init) { return new RallyPoint(init.self); }
+		public object Create(ActorInitializer init) { return new RallyPoint(init.self, this); }
 	}
 
 	public class RallyPoint : IIssueOrder, IResolveOrder, ISync
@@ -26,11 +27,10 @@ namespace OpenRA.Mods.RA
 		[Sync] public CPos rallyPoint;
 		public int nearEnough = 1;
 
-		public RallyPoint(Actor self)
+		public RallyPoint(Actor self, RallyPointInfo info)
 		{
-			var info = self.Info.Traits.Get<RallyPointInfo>();
 			rallyPoint = self.Location + new CVec(info.RallyPoint[0], info.RallyPoint[1]);
-			self.World.AddFrameEndTask(w => w.Add(new Effects.RallyPoint(self)));
+			self.World.AddFrameEndTask(w => w.Add(new Effects.RallyPoint(self, info.IndicatorPalettePrefix)));
 		}
 
 		public IEnumerable<IOrderTargeter> Orders

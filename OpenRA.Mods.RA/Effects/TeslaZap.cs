@@ -29,27 +29,35 @@ namespace OpenRA.Mods.RA.Effects
 	class TeslaZap : IEffect
 	{
 		readonly ProjectileArgs Args;
+		readonly TeslaZapInfo Info;
+		IEnumerable<Renderable> renderables;
 		int timeUntilRemove = 2; // # of frames
 		bool doneDamage = false;
-
-		readonly List<Renderable> renderables = new List<Renderable>();
+		bool initialized = false;
 
 		public TeslaZap(TeslaZapInfo info, ProjectileArgs args)
 		{
 			Args = args;
-			var bright = SequenceProvider.GetSequence(info.Image, "bright");
-			var dim = SequenceProvider.GetSequence(info.Image, "dim");
-
-			for( var n = 0; n < info.DimZaps; n++ )
-				renderables.AddRange(DrawZapWandering(args.src, args.dest, dim));
-			for( var n = 0; n < info.BrightZaps; n++ )
-				renderables.AddRange(DrawZapWandering(args.src, args.dest, bright));
+			Info = info;
 		}
 
-		public void Tick( World world )
+		public IEnumerable<Renderable> GenerateRenderables(WorldRenderer wr)
 		{
-			if( timeUntilRemove <= 0 )
-				world.AddFrameEndTask( w => w.Remove( this ) );
+			var bright = SequenceProvider.GetSequence(Info.Image, "bright");
+			var dim = SequenceProvider.GetSequence(Info.Image, "dim");
+
+			for (var n = 0; n < Info.DimZaps; n++)
+				foreach (var z in DrawZapWandering(wr, Args.src, Args.dest, dim))
+					yield return z;
+			for (var n = 0; n < Info.BrightZaps; n++)
+				foreach (var z in DrawZapWandering(wr, Args.src, Args.dest, bright))
+					yield return z;
+		}
+
+		public void Tick(World world)
+		{
+			if (timeUntilRemove <= 0)
+				world.AddFrameEndTask(w => w.Remove(this));
 			--timeUntilRemove;
 
 			if (!doneDamage)
@@ -62,9 +70,18 @@ namespace OpenRA.Mods.RA.Effects
 			}
 		}
 
-		public IEnumerable<Renderable> Render() { return renderables; }
+		public IEnumerable<Renderable> Render(WorldRenderer wr)
+		{
+			if (!initialized)
+			{
+				renderables = GenerateRenderables(wr);
+				initialized = true;
+			}
 
-		static IEnumerable<Renderable> DrawZapWandering(PPos from, PPos to, Sequence s)
+			return renderables;
+		}
+
+		static IEnumerable<Renderable> DrawZapWandering(WorldRenderer wr, PPos from, PPos to, Sequence s)
 		{
 			var z = float2.Zero;	/* hack */
 			var dist = to - from;
@@ -76,22 +93,22 @@ namespace OpenRA.Mods.RA.Effects
 				var p1 = from.ToFloat2() + (1 / 3f) * dist.ToFloat2() + Game.CosmeticRandom.Gauss1D(1) * .2f * dist.Length * norm;
 				var p2 = from.ToFloat2() + (2 / 3f) * dist.ToFloat2() + Game.CosmeticRandom.Gauss1D(1) * .2f * dist.Length * norm;
 
-				renderables.AddRange(DrawZap(from.ToFloat2(), p1, s, out p1));
-				renderables.AddRange(DrawZap(p1, p2, s, out p2));
-				renderables.AddRange(DrawZap(p2, to.ToFloat2(), s, out z));
+				renderables.AddRange(DrawZap(wr, from.ToFloat2(), p1, s, out p1));
+				renderables.AddRange(DrawZap(wr, p1, p2, s, out p2));
+				renderables.AddRange(DrawZap(wr, p2, to.ToFloat2(), s, out z));
 			}
 			else
 			{
 				var p1 = from.ToFloat2() + (1 / 2f) * dist.ToFloat2() + Game.CosmeticRandom.Gauss1D(1) * .2f * dist.Length * norm;
 
-				renderables.AddRange(DrawZap(from.ToFloat2(), p1, s, out p1));
-				renderables.AddRange(DrawZap(p1, to.ToFloat2(), s, out z));
+				renderables.AddRange(DrawZap(wr, from.ToFloat2(), p1, s, out p1));
+				renderables.AddRange(DrawZap(wr, p1, to.ToFloat2(), s, out z));
 			}
 
 			return renderables;
 		}
 
-		static IEnumerable<Renderable> DrawZap(float2 from, float2 to, Sequence s, out float2 p)
+		static IEnumerable<Renderable> DrawZap(WorldRenderer wr, float2 from, float2 to, Sequence s, out float2 p)
 		{
 			var dist = to - from;
 			var q = new float2(-dist.Y, dist.X);
@@ -104,7 +121,8 @@ namespace OpenRA.Mods.RA.Effects
 				var step = steps.Where(t => (to - (z + new float2(t[0],t[1]))).LengthSquared < (to - z).LengthSquared )
 					.OrderBy(t => Math.Abs(float2.Dot(z + new float2(t[0], t[1]), q) + c)).First();
 
-				rs.Add(new Renderable(s.GetSprite(step[4]), z + new float2(step[2], step[3]), "effect", (int)from.Y));
+				rs.Add(new Renderable(s.GetSprite(step[4]), z + new float2(step[2], step[3]),
+					wr.Palette("effect"), (int)from.Y));
 				z += new float2(step[0], step[1]);
 				if( rs.Count >= 1000 )
 					break;

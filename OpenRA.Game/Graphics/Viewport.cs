@@ -133,7 +133,7 @@ namespace OpenRA.Graphics
 
 				renderer.SpriteRenderer.DrawSprite(cursorSprite,
 					Viewport.LastMousePos - cursorSequence.Hotspot,
-					Game.modData.Palette.GetPaletteIndex(cursorSequence.Palette),
+					wr.Palette(cursorSequence.Palette).Index,
 					cursorSprite.size);
 			}
 

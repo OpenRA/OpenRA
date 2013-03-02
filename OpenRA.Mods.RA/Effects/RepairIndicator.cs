@@ -20,34 +20,35 @@ namespace OpenRA.Mods.RA.Effects
 	{
 		Actor building;
 		Player player;
+		string palettePrefix;
 		Animation anim = new Animation("allyrepair");
+		RepairableBuilding rb;
 
-		public RepairIndicator(Actor building, Player player)
+		public RepairIndicator(Actor building, string palettePrefix, Player player)
 		{
 			this.building = building;
 			this.player = player;
+			this.palettePrefix = palettePrefix;
+			rb = building.Trait<RepairableBuilding>();
 			anim.PlayRepeating("repair");
 		}
 
 		public void Tick(World world)
 		{
-			if (!building.IsInWorld ||
-				building.IsDead() ||
-				building.Trait<RepairableBuilding>().Repairer == null ||
-				building.Trait<RepairableBuilding>().Repairer != player)
+			if (!building.IsInWorld || building.IsDead() ||
+				rb.Repairer == null || rb.Repairer != player)
 				world.AddFrameEndTask(w => w.Remove(this));
 
 			anim.Tick();
 		}
 
-		public IEnumerable<Renderable> Render()
+		public IEnumerable<Renderable> Render(WorldRenderer wr)
 		{
 			if (!building.Destroyed)
 			{
-				var palette = building.Trait<RenderSimple>().Palette(player);
-
 				yield return new Renderable(anim.Image,
-					building.CenterLocation.ToFloat2() - .5f * anim.Image.size, palette, (int)building.CenterLocation.Y);
+					building.CenterLocation.ToFloat2() - .5f * anim.Image.size,
+					wr.Palette(palettePrefix+player.InternalName), (int)building.CenterLocation.Y);
 			}
 		}
 	}

@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.RA;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc
@@ -39,7 +40,7 @@ namespace OpenRA.Mods.Cnc
 			Info = info;
 		}
 
-		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
+		public IEnumerable<Renderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<Renderable> r)
 		{
 			foreach (var c in cargo.Passengers)
 			{
@@ -55,7 +56,7 @@ namespace OpenRA.Mods.Cnc
 					Info.PassengerTypes.Contains(p.Trait<Passenger>().info.CargoType))
 				: cargo.Passengers;
 
-			return r.Concat(visiblePassengers.SelectMany(a => a.Render())
+			return r.Concat(visiblePassengers.SelectMany(a => a.Render(wr))
 				.Select(a => a.WithPos(a.Pos - new float2(0, Info.RelativeAltitude))
 			        .WithZOffset(a.ZOffset + Info.RelativeAltitude)));
 		}

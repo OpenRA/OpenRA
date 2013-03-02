@@ -32,7 +32,7 @@ namespace OpenRA.Graphics
 			this.DisableFunc = d;
 		}
 
-		public Renderable Image(Actor self, string pal)
+		public Renderable Image(Actor self, PaletteReference pal)
 		{
 			var p = self.CenterLocation;
 			var loc = p.ToFloat2() - 0.5f * Animation.Image.size

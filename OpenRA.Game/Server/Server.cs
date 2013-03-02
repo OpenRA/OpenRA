@@ -374,6 +374,8 @@ namespace OpenRA.Server
 				return;
 			if (pr.LockColor)
 				c.ColorRamp = pr.ColorRamp;
+			else
+				c.ColorRamp = c.PreferredColorRamp;
 			if (pr.LockRace)
 				c.Country = pr.Race;
 			if (pr.LockSpawn)

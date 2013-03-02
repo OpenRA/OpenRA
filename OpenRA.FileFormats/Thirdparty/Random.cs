@@ -20,6 +20,7 @@ namespace OpenRA.Thirdparty
 		int index = 0;
 
 		public int Last;
+		public int TotalCount = 0;
 
 		public Random() : this(Environment.TickCount) { }
 
@@ -41,13 +42,14 @@ namespace OpenRA.Thirdparty
 			y ^= y >> 18;
 
 			index = (index + 1) % 624;
+			TotalCount++;
 			Last = (int)(y % int.MaxValue);
 			return Last;
 		}
 
 		public int Next(int low, int high) { return low + Next() % (high - low); }
 		public int Next(int high) { return Next() % high; }
-		public double NextDouble() { return Math.Abs(Next() / (double)0x7fffffff); }
+		public float NextFloat() { return Math.Abs(Next() / (float)0x7fffffff); }
 
 		void Generate()
 		{

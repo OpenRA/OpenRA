@@ -126,7 +126,7 @@ namespace OpenRA.Mods.RA
 				firedBy = self,
 				target = target,
 
-				src = (self.CenterLocation + Combat.GetBarrelPosition(self, facing, Turret, barrel)),
+				src = (self.CenterLocation + (PVecInt)Combat.GetBarrelPosition(self, facing, Turret, barrel).ToInt2()),
 				srcAltitude = move != null ? move.Altitude : 0,
 				dest = target.CenterLocation,
 				destAltitude = destMove != null ? destMove.Altitude : 0,
@@ -148,7 +148,7 @@ namespace OpenRA.Mods.RA
 					if (projectile != null)
 						self.World.Add(projectile);
 
-					if (args.weapon.Report != null)
+					if (args.weapon.Report != null && args.weapon.Report.Any())
 						Sound.Play(args.weapon.Report.Random(self.World.SharedRandom) + ".aud", self.CenterLocation);
 				}
 			});

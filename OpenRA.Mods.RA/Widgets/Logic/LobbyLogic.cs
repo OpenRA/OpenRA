@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		string MapUid;
 		Map Map;
 
-		ColorPickerPaletteModifier PlayerPalettePreview;
+		ColorPreviewManagerWidget colorPreview;
 
 		readonly Action OnGameStart;
 		readonly Action onExit;
@@ -96,8 +96,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			Game.ConnectionStateChanged += ConnectionStateChanged;
 
 			UpdateCurrentMap();
-			PlayerPalettePreview = world.WorldActor.Trait<ColorPickerPaletteModifier>();
-			PlayerPalettePreview.Ramp = Game.Settings.Player.ColorRamp;
 			Players = lobby.Get<ScrollPanelWidget>("PLAYERS");
 			EditablePlayerTemplate = Players.Get("TEMPLATE_EDITABLE_PLAYER");
 			NonEditablePlayerTemplate = Players.Get("TEMPLATE_NONEDITABLE_PLAYER");
@@ -105,6 +103,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			EditableSpectatorTemplate = Players.Get("TEMPLATE_EDITABLE_SPECTATOR");
 			NonEditableSpectatorTemplate = Players.Get("TEMPLATE_NONEDITABLE_SPECTATOR");
 			NewSpectatorTemplate = Players.Get("TEMPLATE_NEW_SPECTATOR");
+			colorPreview = lobby.Get<ColorPreviewManagerWidget>("COLOR_MANAGER");
+			colorPreview.Ramp = Game.Settings.Player.ColorRamp;
 
 			var mapPreview = lobby.Get<MapPreviewWidget>("MAP_PREVIEW");
 			mapPreview.IsVisible = () => Map != null;
@@ -168,6 +168,16 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				|| orderManager.LocalClient.IsReady;
 			allowCheats.OnClick = () =>	orderManager.IssueOrder(Order.Command(
 						"allowcheats {0}".F(!orderManager.LobbyInfo.GlobalSettings.AllowCheats)));
+
+			var crates = lobby.GetOrNull<CheckboxWidget>("CRATES_CHECKBOX");
+			if (crates != null)
+			{
+				crates.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.Crates;
+				crates.IsDisabled = () => !Game.IsHost || gameStarting || orderManager.LocalClient == null
+					|| orderManager.LocalClient.IsReady; // maybe disable the checkbox if a map forcefully removes CrateDrop?
+				crates.OnClick = () => orderManager.IssueOrder(Order.Command(
+					"crates {0}".F(!orderManager.LobbyInfo.GlobalSettings.Crates)));
+			}
 
 			var difficulty = lobby.GetOrNull<DropDownButtonWidget>("DIFFICULTY_DROPDOWNBUTTON");
 			if (difficulty != null)
@@ -354,7 +364,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 					var color = template.Get<DropDownButtonWidget>("COLOR");
 					color.IsDisabled = () => slot.LockColor || ready;
-					color.OnMouseDown = _ => LobbyUtils.ShowColorDropDown(color, client, orderManager, PlayerPalettePreview);
+					color.OnMouseDown = _ => LobbyUtils.ShowColorDropDown(color, client, orderManager, colorPreview);
 
 					var colorBlock = color.Get<ColorBlockWidget>("COLORBLOCK");
 					colorBlock.GetColor = () => client.ColorRamp.GetColor(0);
@@ -434,7 +444,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 					var color = template.Get<DropDownButtonWidget>("COLOR");
 					color.IsDisabled = () => ready;
-					color.OnMouseDown = _ => LobbyUtils.ShowColorDropDown(color, c, orderManager, PlayerPalettePreview);
+					color.OnMouseDown = _ => LobbyUtils.ShowColorDropDown(color, c, orderManager, colorPreview);
 
 					var colorBlock = color.Get<ColorBlockWidget>("COLORBLOCK");
 					colorBlock.GetColor = () => c.ColorRamp.GetColor(0);

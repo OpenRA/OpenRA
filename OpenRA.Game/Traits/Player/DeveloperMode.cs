@@ -76,8 +76,7 @@ namespace OpenRA.Traits
 				case "DevShroud":
 					{
 						DisableShroud ^= true;
-						if (self.World.LocalPlayer == self.Owner)
-							self.World.RenderedShroud.Disabled = DisableShroud;
+						self.Owner.Shroud.Disabled = DisableShroud;
 						break;
 					}
 				case "DevPathDebug":
@@ -87,8 +86,7 @@ namespace OpenRA.Traits
 					}
 				case "DevGiveExploration":
 					{
-						if (self.World.LocalPlayer == self.Owner)
-							self.World.LocalPlayer.Shroud.ExploreAll(self.World);
+						self.Owner.Shroud.ExploreAll(self.World);
 						break;
 					}
 				case "DevUnlimitedPower":

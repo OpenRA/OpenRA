@@ -40,9 +40,9 @@ namespace OpenRA.Mods.RA.Effects
 			}
 		}
 
-		public IEnumerable<Renderable> Render()
+		public IEnumerable<Renderable> Render(WorldRenderer wr)
 		{
-			yield return new Renderable(doors.Image, pos, "effect", (int)doorOffset.Y);
+			yield return new Renderable(doors.Image, pos, wr.Palette("effect"), (int)doorOffset.Y);
 		}
 	}
 }

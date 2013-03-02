@@ -852,9 +852,6 @@ Actors:
 	Actor301: tc04
 		Location: 27,33
 		Owner: Neutral
-	Actor265: miss
-		Location: 27,23
-		Owner: Soviets
 	Actor402: brik
 		Location: 22,67
 		Owner: Soviets
@@ -1481,9 +1478,10 @@ Actors:
 	Actor290: apwr
 		Location: 52,42
 		Owner: Soviets
-	Allies2ProcPoint: waypoint
+	Actor875: proc
 		Location: 25,95
 		Owner: Allies
+		FreeActor: False
 	Actor455: fenc
 		Location: 31,93
 		Owner: Allies
@@ -1517,13 +1515,13 @@ Actors:
 	Actor470: fenc
 		Location: 26,93
 		Owner: Allies
-	Actor454: pbox.e1
+	Actor454: pbox
 		Location: 32,93
 		Owner: Allies
 	Actor465: fenc
 		Location: 30,93
 		Owner: Allies
-	Actor473: pbox.e1
+	Actor473: pbox
 		Location: 40,93
 		Owner: Allies
 	Actor472: gun
@@ -2877,7 +2875,7 @@ Rules:
 			Damage: 0
 	E7:
 		AutoTarget:
-			InitialStance: ReturnFire
+			InitialStance: Defend
 		Passenger:
 			Weight: 0
 		Buildable:
@@ -3004,6 +3002,9 @@ Rules:
 		Buildable:
 			Owner: None
 	CTNK:
+		Buildable:
+			Owner: None
+	MGG:
 		Buildable:
 			Owner: None
 	CRATE:

@@ -42,7 +42,9 @@ namespace OpenRA.Network
 		public class Client
 		{
 			public int Index;
-			public ColorRamp ColorRamp;
+			public ColorRamp PreferredColorRamp; // Color that the client normally uses from settings.yaml.
+			public ColorRamp ColorRamp; // Actual color that the client is using.
+										// Usually the same as PreferredColorRamp but can be different on maps with locked colors.
 			public string Country;
 			public int SpawnPoint;
 			public string Name;
@@ -79,6 +81,7 @@ namespace OpenRA.Network
 			public bool AllowCheats = false;
 			public bool Dedicated;
 			public string Difficulty;
+			public bool Crates = true;
 		}
 
 		public Session(string[] mods)

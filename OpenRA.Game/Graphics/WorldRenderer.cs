@@ -17,27 +17,56 @@ using OpenRA.Traits;
 
 namespace OpenRA.Graphics
 {
+	public class PaletteReference
+	{
+		public readonly string Name;
+		public readonly int Index;
+		public readonly Palette Palette;
+		public PaletteReference(string name, int index, Palette palette)
+		{
+			Name = name;
+			Index = index;
+			Palette = palette;
+		}
+	}
+
 	public class WorldRenderer
 	{
 		public readonly World world;
 		internal readonly TerrainRenderer terrainRenderer;
 		internal readonly ShroudRenderer shroudRenderer;
 		internal readonly HardwarePalette palette;
+		internal Cache<string, PaletteReference> palettes;
 
 		internal WorldRenderer(World world)
 		{
 			this.world = world;
-			this.palette = Game.modData.Palette;
-			foreach( var pal in world.traitDict.ActorsWithTraitMultiple<IPalette>( world ) )
+			palette = new HardwarePalette();
+			foreach (var p in CursorProvider.Palettes)
+				palette.AddPalette(p.Key, p.Value, false);
+
+			palettes = new Cache<string, PaletteReference>(CreatePaletteReference);
+			foreach (var pal in world.traitDict.ActorsWithTraitMultiple<IPalette>(world))
 				pal.Trait.InitPalette( this );
+
+			// Generate initial palette texture
+			palette.Update(new IPaletteModifier[] {});
 
 			terrainRenderer = new TerrainRenderer(world, this);
 			shroudRenderer = new ShroudRenderer(world);
 		}
 
-		public int GetPaletteIndex(string name) { return palette.GetPaletteIndex(name); }
-		public Palette GetPalette(string name) { return palette.GetPalette(name); }
-		public void AddPalette(string name, Palette pal) { palette.AddPalette(name, pal); }
+		PaletteReference CreatePaletteReference(string name)
+		{
+			var pal = palette.GetPalette(name);
+			if (pal == null)
+				throw new InvalidOperationException("Palette `{0}` does not exist".F(name));
+
+			return new PaletteReference(name, palette.GetPaletteIndex(name), pal);
+		}
+
+		public PaletteReference Palette(string name) { return palettes[name]; }
+		public void AddPalette(string name, Palette pal, bool allowModifiers) { palette.AddPalette(name, pal, allowModifiers); }
 
 		class SpriteComparer : IComparer<Renderable>
 		{
@@ -57,10 +86,10 @@ namespace OpenRA.Graphics
 				bounds.BottomRightAsCPos().ToPPos()
 			);
 
-			var renderables = actors.SelectMany(a => a.Render())
+			var renderables = actors.SelectMany(a => a.Render(this))
 				.OrderBy(r => r, comparer);
 
-			var effects = world.Effects.SelectMany(e => e.Render());
+			var effects = world.Effects.SelectMany(e => e.Render(this));
 
 			return renderables.Concat(effects);
 		}
@@ -77,8 +106,8 @@ namespace OpenRA.Graphics
 
 			terrainRenderer.Draw(this, Game.viewport);
 			foreach (var a in world.traitDict.ActorsWithTraitMultiple<IRenderAsTerrain>(world))
-				foreach (var r in a.Trait.RenderAsTerrain(a.Actor))
-					r.Sprite.DrawAt(r.Pos, this.GetPaletteIndex(r.Palette), r.Scale);
+				foreach (var r in a.Trait.RenderAsTerrain(this, a.Actor))
+					r.Sprite.DrawAt(r.Pos, r.Palette.Index, r.Scale);
 
 			foreach (var a in world.Selection.Actors)
 				if (!a.Destroyed)
@@ -91,7 +120,7 @@ namespace OpenRA.Graphics
 				world.OrderGenerator.RenderBeforeWorld(this, world);
 
 			foreach (var image in SpritesToRender())
-				image.Sprite.DrawAt(image.Pos, this.GetPaletteIndex(image.Palette), image.Scale);
+				image.Sprite.DrawAt(image.Pos, image.Palette.Index, image.Scale);
 
 			// added for contrails
 			foreach (var a in world.ActorsWithTrait<IPostRender>())

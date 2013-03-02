@@ -20,6 +20,7 @@ namespace OpenRA.Mods.RA
 		public readonly string Tileset = null;
 		public readonly string Filename = null;
 		public readonly int[] ShadowIndex = { };
+		public readonly bool AllowModifiers = true;
 
 		public object Create(ActorInitializer init) { return new PaletteFromFile(init.world, this); }
 	}
@@ -34,10 +35,10 @@ namespace OpenRA.Mods.RA
 			this.info = info;
 		}
 
-		public void InitPalette( WorldRenderer wr )
+		public void InitPalette(WorldRenderer wr)
 		{
-			if( info.Tileset == null || info.Tileset.ToLowerInvariant() == world.Map.Tileset.ToLowerInvariant() )
-				wr.AddPalette( info.Name, new Palette( FileSystem.Open( info.Filename ), info.ShadowIndex ) );
+			if (info.Tileset == null || info.Tileset.ToLowerInvariant() == world.Map.Tileset.ToLowerInvariant())
+				wr.AddPalette(info.Name, new Palette(FileSystem.Open(info.Filename), info.ShadowIndex), info.AllowModifiers);
 		}
 	}
 }

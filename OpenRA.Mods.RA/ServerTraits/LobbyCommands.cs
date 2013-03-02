@@ -230,7 +230,7 @@ namespace OpenRA.Mods.RA.Server
 							var hue = (byte)server.Random.Next(255);
 							var sat = (byte)server.Random.Next(255);
 							var lum = (byte)server.Random.Next(51,255);
-							bot.ColorRamp = new ColorRamp(hue, sat, lum, 10);
+							bot.ColorRamp = bot.PreferredColorRamp = new ColorRamp(hue, sat, lum, 10);
 
 							server.lobbyInfo.Clients.Add(bot);
 						}
@@ -315,6 +315,19 @@ namespace OpenRA.Mods.RA.Server
 						}
 
 						bool.TryParse(s, out server.lobbyInfo.GlobalSettings.AllowCheats);
+						server.SyncLobbyInfo();
+						return true;
+					}},
+				{ "crates",
+					s =>
+					{
+						if (!client.IsAdmin)
+						{
+							server.SendChatTo(conn, "Only the host can set that option");
+							return true;
+						}
+
+						bool.TryParse(s, out server.lobbyInfo.GlobalSettings.Crates);
 						server.SyncLobbyInfo();
 						return true;
 					}},
@@ -459,7 +472,7 @@ namespace OpenRA.Mods.RA.Server
 							return true;
 
 						var ci = parts[1].Split(',').Select(cc => int.Parse(cc)).ToArray();
-						targetClient.ColorRamp = new ColorRamp((byte)ci[0], (byte)ci[1], (byte)ci[2], (byte)ci[3]);
+						targetClient.ColorRamp = targetClient.PreferredColorRamp = new ColorRamp((byte)ci[0], (byte)ci[1], (byte)ci[2], (byte)ci[3]);
 						server.SyncLobbyInfo();
 						return true;
 					}}

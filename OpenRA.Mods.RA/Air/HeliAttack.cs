@@ -38,13 +38,12 @@ namespace OpenRA.Mods.RA.Air
 			}
 
 			var attack = self.Trait<AttackHeli>();
-			var range = attack.GetMaximumRange() * 0.625f;
 			var dist = target.CenterLocation - self.CenterLocation;
 
 			var desiredFacing = Util.GetFacing(dist, aircraft.Facing);
 			aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, aircraft.ROT);
 
-			if( !float2.WithinEpsilon( float2.Zero, dist.ToFloat2(), range * Game.CellSize ) )
+			if (!Combat.IsInRange(self.CenterLocation, attack.GetMaximumRange(), target))
 				aircraft.TickMove(PSubPos.PerPx * aircraft.MovementSpeed, desiredFacing);
 
 			attack.DoAttack( self, target );

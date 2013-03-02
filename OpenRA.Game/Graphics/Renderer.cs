@@ -50,20 +50,20 @@ namespace OpenRA.Graphics
 			TempBufferCount = Game.Settings.Graphics.NumTempBuffers;
 			SheetSize = Game.Settings.Graphics.SheetSize;
 
-			WorldSpriteShader = device.CreateShader("world-shp");
-			WorldLineShader = device.CreateShader("world-line");
-			LineShader = device.CreateShader("chrome-line");
-			RgbaSpriteShader = device.CreateShader("chrome-rgba");
-			SpriteShader = device.CreateShader("chrome-shp");
+			WorldSpriteShader = device.CreateShader("shp");
+			WorldLineShader = device.CreateShader("line");
+			LineShader = device.CreateShader("line");
+			RgbaSpriteShader = device.CreateShader("rgba");
+			SpriteShader = device.CreateShader("shp");
 
-			WorldSpriteRenderer = new SpriteRenderer( this, WorldSpriteShader );
+			WorldSpriteRenderer = new SpriteRenderer(this, WorldSpriteShader);
 			WorldLineRenderer = new LineRenderer(this, WorldLineShader);
 			LineRenderer = new LineRenderer(this, LineShader);
-			RgbaSpriteRenderer = new SpriteRenderer( this, RgbaSpriteShader );
-			SpriteRenderer = new SpriteRenderer( this, SpriteShader );
+			RgbaSpriteRenderer = new SpriteRenderer(this, RgbaSpriteShader);
+			SpriteRenderer = new SpriteRenderer(this, SpriteShader);
 
-			for( int i = 0 ; i < TempBufferCount ; i++ )
-				tempBuffers.Enqueue( device.CreateVertexBuffer( TempBufferSize ) );
+			for (int i = 0; i < TempBufferCount; i++)
+				tempBuffers.Enqueue(device.CreateVertexBuffer(TempBufferSize));
 		}
 
 		public void InitializeFonts(Manifest m)
@@ -80,22 +80,22 @@ namespace OpenRA.Graphics
 			float2 r2 = new float2(-1, 1);
 			var zr1 = zoom*r1;
 
-			SetShaderParams( WorldSpriteShader, zr1, r2, scroll );
-			SetShaderParams( WorldLineShader, zr1, r2, scroll );
-			SetShaderParams( LineShader, r1, r2, scroll );
-			SetShaderParams( RgbaSpriteShader, r1, r2, scroll );
-			SetShaderParams( SpriteShader, r1, r2, scroll );
+			SetShaderParams(WorldSpriteShader, zr1, r2, scroll);
+			SetShaderParams(WorldLineShader, zr1, r2, scroll);
+			SetShaderParams(LineShader, r1, r2, float2.Zero);
+			SetShaderParams(RgbaSpriteShader, r1, r2, float2.Zero);
+			SetShaderParams(SpriteShader, r1, r2, float2.Zero);
 		}
 
-		void SetShaderParams( IShader s, float2 r1, float2 r2, float2 scroll )
+		void SetShaderParams(IShader s, float2 r1, float2 r2, float2 scroll)
 		{
-			s.SetValue( "Palette", PaletteTexture );
-			s.SetValue( "Scroll", (int) scroll.X, (int) scroll.Y );
-			s.SetValue( "r1", r1.X, r1.Y );
-			s.SetValue( "r2", r2.X, r2.Y );
+			s.SetValue("Palette", PaletteTexture);
+			s.SetValue("Scroll", (int)scroll.X, (int)scroll.Y);
+			s.SetValue("r1", r1.X, r1.Y);
+			s.SetValue("r2", r2.X, r2.Y);
 		}
 
-		public void EndFrame( IInputHandler inputHandler )
+		public void EndFrame(IInputHandler inputHandler)
 		{
 			Flush();
 			device.PumpInput(inputHandler);
@@ -129,17 +129,17 @@ namespace OpenRA.Graphics
 		// which makes the window non-interactive in Windowed/Pseudofullscreen mode.
 		static Screen FixOSX() { return Screen.PrimaryScreen; }
 
-		internal static void Initialize( WindowMode windowMode )
+		internal static void Initialize(WindowMode windowMode)
 		{
 			if (Platform.CurrentPlatform == PlatformType.OSX)
 				FixOSX();
 
-			var resolution = GetResolution( windowMode );
+			var resolution = GetResolution(windowMode);
 			
-			string renderer = Game.Settings.Server.Dedicated?"Null":Game.Settings.Graphics.Renderer;
-			var rendererPath = Path.GetFullPath( "OpenRA.Renderer.{0}.dll".F(renderer) );
+			string renderer = Game.Settings.Server.Dedicated ? "Null" : Game.Settings.Graphics.Renderer;
+			var rendererPath = Path.GetFullPath("OpenRA.Renderer.{0}.dll".F(renderer));
 			
-			device = CreateDevice( Assembly.LoadFile( rendererPath ), resolution.Width, resolution.Height, windowMode );
+			device = CreateDevice(Assembly.LoadFile(rendererPath), resolution.Width, resolution.Height, windowMode);
 		}
 
 		static Size GetResolution(WindowMode windowmode)
@@ -150,12 +150,12 @@ namespace OpenRA.Graphics
 			return new Size(size.X, size.Y);
 		}
 
-		static IGraphicsDevice CreateDevice( Assembly rendererDll, int width, int height, WindowMode window )
+		static IGraphicsDevice CreateDevice(Assembly rendererDll, int width, int height, WindowMode window)
 		{
-			foreach( RendererAttribute r in rendererDll.GetCustomAttributes( typeof( RendererAttribute ), false ) )
+			foreach (RendererAttribute r in rendererDll.GetCustomAttributes(typeof(RendererAttribute), false))
 			{
-				var factory = (IDeviceFactory) r.Type.GetConstructor( Type.EmptyTypes ).Invoke( null );
-				return factory.Create( new Size( width, height ), window );
+				var factory = (IDeviceFactory)r.Type.GetConstructor(Type.EmptyTypes).Invoke(null);
+				return factory.Create(new Size(width, height), window);
 			}
 
 			throw new InvalidOperationException("Renderer DLL is missing RendererAttribute to tell us what type to use!");
@@ -164,7 +164,7 @@ namespace OpenRA.Graphics
 		internal IVertexBuffer<Vertex> GetTempVertexBuffer()
 		{
 			var ret = tempBuffers.Dequeue();
-			tempBuffers.Enqueue( ret );
+			tempBuffers.Enqueue(ret);
 			return ret;
 		}
 
@@ -176,8 +176,8 @@ namespace OpenRA.Graphics
 			get { return currentBatchRenderer; }
 			set
 			{
-				if( currentBatchRenderer == value ) return;
-				if( currentBatchRenderer != null )
+				if (currentBatchRenderer == value) return;
+				if (currentBatchRenderer != null)
 					currentBatchRenderer.Flush();
 				currentBatchRenderer = value;
 			}
@@ -186,7 +186,7 @@ namespace OpenRA.Graphics
 		public void EnableScissor(int left, int top, int width, int height)
 		{
 			Flush();
-			Device.EnableScissor( left, top, width, height );
+			Device.EnableScissor(left, top, width, height);
 		}
 
 		public void DisableScissor()

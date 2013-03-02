@@ -25,11 +25,13 @@ namespace OpenRA.Graphics
 		ITexture texture;
 		Dictionary<string, Palette> palettes;
 		Dictionary<string, int> indices;
+		Dictionary<string, bool> allowsMods;
 
 		public HardwarePalette()
 		{
 			palettes = new Dictionary<string, Palette>();
 			indices = new Dictionary<string, int>();
+			allowsMods = new Dictionary<string, bool>();
 			texture = Game.Renderer.Device.CreateTexture();
 		}
 
@@ -49,22 +51,24 @@ namespace OpenRA.Graphics
 			return ret;
 		}
 
-		public void AddPalette(string name, Palette p)
+		public void AddPalette(string name, Palette p, bool allowModifiers)
 		{
 			if (palettes.ContainsKey(name))
 				throw new InvalidOperationException("Palette {0} has already been defined".F(name));
 
 			palettes.Add(name, p);
 			indices.Add(name, allocated++);
+			allowsMods.Add(name, allowModifiers);
 		}
 
 		uint[,] data = new uint[MaxPalettes, 256];
 		public void Update(IEnumerable<IPaletteModifier> paletteMods)
 		{
 			var copy = palettes.ToDictionary(p => p.Key, p => new Palette(p.Value));
+			var modifiable = copy.Where(p => allowsMods[p.Key]).ToDictionary(p => p.Key, p => p.Value);
 
 			foreach (var mod in paletteMods)
-				mod.AdjustPalette(copy);
+				mod.AdjustPalette(modifiable);
 
 			foreach (var pal in copy)
 			{

@@ -10,12 +10,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Mods.RA.Render;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
@@ -488,19 +490,21 @@ namespace OpenRA.Mods.RA.Missions
 		public override object Create(ActorInitializer init) { return new Allies04RenderHijacked(init.self, this); }
 	}
 
-	class Allies04RenderHijacked : RenderUnit, IRenderModifier
+	class Allies04RenderHijacked : RenderUnit
 	{
 		Allies04Hijackable hijackable;
+		Allies04RenderHijackedInfo info;
 
 		public Allies04RenderHijacked(Actor self, Allies04RenderHijackedInfo info)
 			: base(self)
 		{
+			this.info = info;
 			hijackable = self.Trait<Allies04Hijackable>();
 		}
 
-		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
+		protected override string PaletteName(Actor self)
 		{
-			return r.Select(a => a.WithPalette(Palette(hijackable.OldOwner)));
+			return info.Palette ?? info.PlayerPalette + hijackable.OldOwner.InternalName;
 		}
 	}
 
@@ -533,4 +537,27 @@ namespace OpenRA.Mods.RA.Missions
 	}
 
 	class Allies04TransformOnLabInfiltrate { }
+
+	class Allies04HazyPaletteEffectInfo : TraitInfo<Allies04HazyPaletteEffect> { }
+
+	class Allies04HazyPaletteEffect : IPaletteModifier
+	{
+		static readonly string[] ExcludePalettes = { "cursor", "chrome", "colorpicker", "fog", "shroud" };
+
+		public void AdjustPalette(Dictionary<string, Palette> palettes)
+		{
+			foreach (var pal in palettes)
+			{
+				if (ExcludePalettes.Contains(pal.Key))
+					continue;
+
+				for (var x = 0; x < 256; x++)
+				{
+					var from = pal.Value.GetColor(x);
+					var to = Color.FromArgb(from.A, Color.FromKnownColor(KnownColor.DarkOrange));
+					pal.Value.SetColor(x, Exts.ColorLerp(0.15f, from, to));
+				}
+			}
+		}
+	}
 }

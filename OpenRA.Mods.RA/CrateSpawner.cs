@@ -34,6 +34,8 @@ namespace OpenRA.Mods.RA
 
 		public void Tick(Actor self)
 		{
+			if (!self.World.LobbyInfo.GlobalSettings.Crates) return;
+
 			if (--ticks <= 0)
 			{
 				var info = self.Info.Traits.Get<CrateSpawnerInfo>();
@@ -52,7 +54,7 @@ namespace OpenRA.Mods.RA
 		void SpawnCrate(Actor self, CrateSpawnerInfo info)
 		{
 			var threshold = 100;
-			var inWater = self.World.SharedRandom.NextDouble() < info.WaterChance;
+			var inWater = self.World.SharedRandom.NextFloat() < info.WaterChance;
 
 			for (var n = 0; n < threshold; n++ )
 			{

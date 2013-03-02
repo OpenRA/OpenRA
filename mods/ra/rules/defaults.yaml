@@ -217,6 +217,7 @@
 	AcceptsSupplies:
 	GivesBounty:
 	UpdatesPlayerStatistics:
+	C4Demolishable:
 
 ^Wall:
 	AppearsOnRadar:
@@ -250,6 +251,7 @@
 		Types:Wall
 	Sellable:
 	UpdatesPlayerStatistics:
+	C4Demolishable:
 
 ^TechBuilding:
 	Inherits: ^Building

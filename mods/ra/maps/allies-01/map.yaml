@@ -359,7 +359,7 @@ Rules:
 			Range: 0
 	E7:
 		AutoTarget:
-			InitialStance: ReturnFire
+			InitialStance: Defend
 		Passenger:
 			Weight: 0
 	EINSTEIN:

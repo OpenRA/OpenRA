@@ -85,9 +85,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			settingsMenu.Get<ButtonWidget>("SETTINGS_BUTTON").OnClick = () =>
 			{
 				Menu = MenuType.None;
-				Ui.OpenWindow("SETTINGS_PANEL", new WidgetArgs()
+				Game.OpenWindow("SETTINGS_PANEL", new WidgetArgs()
 				{
-					{ "world", world },
 					{ "onExit", () => Menu = MenuType.Settings },
 				});
 			};

@@ -24,15 +24,10 @@ namespace OpenRA.Mods.RA
 			t += .5f;
 		}
 
-		static readonly string[] ExcludePalettes = { "cursor", "chrome", "colorpicker", "terrain" };
-
 		public void AdjustPalette(Dictionary<string,Palette> palettes)
 		{
 			foreach (var pal in palettes)
 			{
-				if (ExcludePalettes.Contains(pal.Key))
-					continue;
-
 				var rotate = (int)t % 18;
 				if (rotate > 9)
 					rotate = 18 - rotate;

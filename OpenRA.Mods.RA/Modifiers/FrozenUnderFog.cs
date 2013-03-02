@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -24,7 +25,7 @@ namespace OpenRA.Mods.RA
 		}
 
 		Renderable[] cache = { };
-		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
+		public IEnumerable<Renderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<Renderable> r)
 		{
 			if (IsVisible(self.World.RenderedShroud, self))
 				cache = r.ToArray();

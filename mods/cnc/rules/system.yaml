@@ -80,6 +80,11 @@ World:
 		Name: effect
 		Filename: temperat.pal
 		ShadowIndex: 4
+	PaletteFromFile@colorpicker:
+		Name: colorpicker
+		Filename: temperat.pal
+		ShadowIndex: 4
+		AllowModifiers: false
 	PaletteFromRGBA@shadow:
 		Name: shadow
 		R: 0
@@ -104,11 +109,8 @@ World:
 		G: 0
 		B: 0
 		A: 180
-	ColorPickerPaletteModifier:
-	ShroudPalette@shroud:
-	ShroudPalette@fog:
-		IsFog: yes
-		Name: fog
+	ShroudPalette:
+	FogPalette:
 	Country@gdi:
 		Name: GDI
 		Race: gdi

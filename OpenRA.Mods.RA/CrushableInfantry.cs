@@ -13,10 +13,11 @@ using System.Linq;
 using OpenRA.Traits;
 using OpenRA.Mods.RA.Effects;
 using OpenRA.Mods.RA.Move;
+using OpenRA.Mods.RA.Render;
 
 namespace OpenRA.Mods.RA
 {
-	class CrushableInfantryInfo : ITraitInfo, Requires<MobileInfo>
+	class CrushableInfantryInfo : ITraitInfo, Requires<MobileInfo>, Requires<RenderInfantryInfo>
 	{
 		public readonly string CrushSound = "squish2.aud";
 		public readonly string CorpseSequence = "die-crushed";
@@ -29,11 +30,13 @@ namespace OpenRA.Mods.RA
 	{
 		readonly Actor self;
 		readonly CrushableInfantryInfo Info;
+		readonly RenderInfantry ri;
 
 		public CrushableInfantry(Actor self, CrushableInfantryInfo info)
 		{
 			this.self = self;
 			this.Info = info;
+			ri = self.Trait<RenderInfantry>();
 		}
 
 		public void WarnCrush(Actor crusher)
@@ -45,12 +48,7 @@ namespace OpenRA.Mods.RA
 		public void OnCrush(Actor crusher)
 		{
 			Sound.Play(Info.CrushSound, crusher.CenterLocation);
-			self.World.AddFrameEndTask(w =>
-			{
-				if (!self.Destroyed)
-					w.Add(new Corpse(self, Info.CorpseSequence));
-			});
-
+			ri.SpawnCorpse(self, Info.CorpseSequence);
 			self.Kill(crusher);
 		}
 

@@ -224,6 +224,11 @@ World:
 		Name: effect
 		Filename: temperat.pal
 		ShadowIndex: 4
+	PaletteFromFile@colorpicker:
+		Name: colorpicker
+		Filename: temperat.pal
+		ShadowIndex: 4
+		AllowModifiers: false
 	PaletteFromRGBA@shadow:
 		Name: shadow
 		R: 0
@@ -254,11 +259,8 @@ World:
 		G: 0
 		B: 0
 		A: 180
-	ColorPickerPaletteModifier:
-	ShroudPalette@shroud:
-	ShroudPalette@fog:
-		IsFog: yes
-		Name: fog
+	ShroudPalette:
+	FogPalette:
 	Country@0:
 		Name: Allies
 		Race: allies
@@ -277,6 +279,7 @@ World:
 		PipColor: Yellow
 		AllowedTerrainTypes: Clear,Road
 		AllowUnderActors: false
+		TerrainType: Ore
 	ResourceType@gem:
 		ResourceType: 2
 		Palette: player
@@ -286,6 +289,7 @@ World:
 		PipColor: Red
 		AllowedTerrainTypes: Clear,Road
 		AllowUnderActors: false
+		TerrainType: Gems
 	SmudgeLayer@SCORCH:
 		Type:Scorch
 		SmokePercentage:50

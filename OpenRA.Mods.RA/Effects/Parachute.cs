@@ -9,6 +9,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Graphics;
 using OpenRA.Traits;
@@ -17,8 +18,6 @@ namespace OpenRA.Mods.RA.Effects
 {
 	public class Parachute : IEffect
 	{
-		readonly Animation anim;
-		readonly string palette;
 		readonly Animation paraAnim;
 		readonly PPos location;
 
@@ -28,29 +27,19 @@ namespace OpenRA.Mods.RA.Effects
 		float altitude;
 		const float fallRate = .3f;
 
-		public Parachute(Player owner, PPos location, int altitude, Actor cargo)
+		public Parachute(Actor cargo, PPos location, int altitude)
 		{
 			this.location = location;
 			this.altitude = altitude;
 			this.cargo = cargo;
 
-			var rs = cargo.Trait<RenderSimple>();
-			var image = rs.anim.Name;
-			palette = rs.Palette(owner);
-
-			anim = new Animation(image);
-			if (anim.HasSequence("idle"))
-				anim.PlayFetchIndex("idle", () => 0);
-			else
-				anim.PlayFetchIndex("stand", () => 0);
-			anim.Tick();
-
 			var pai = cargo.Info.Traits.GetOrDefault<ParachuteAttachmentInfo>();
-
 			paraAnim = new Animation(pai != null ? pai.ParachuteSprite : "parach");
 			paraAnim.PlayThen("open", () => paraAnim.PlayRepeating("idle"));
 
 			if (pai != null) offset = pai.Offset;
+
+			cargo.Trait<ITeleportable>().SetPxPosition(cargo, location);
 		}
 
 		public void Tick(World world)
@@ -73,12 +62,23 @@ namespace OpenRA.Mods.RA.Effects
 					});
 		}
 
-		public IEnumerable<Renderable> Render()
+		public IEnumerable<Renderable> Render(WorldRenderer wr)
 		{
+			var rc = cargo.Render(wr).Select(a => a.WithPos(a.Pos - new float2(0, altitude))
+			                                    .WithZOffset(a.ZOffset + (int)altitude));
+
+			// Don't render anything if the cargo is invisible (e.g. under fog)
+			if (!rc.Any())
+				yield break;
+
+			foreach (var c in rc)
+			{
+				yield return c.WithPos(location.ToFloat2() - .5f * c.Sprite.size).WithPalette(wr.Palette("shadow")).WithZOffset(0);
+				yield return c.WithZOffset(2);
+			}
+
 			var pos = location.ToFloat2() - new float2(0, altitude);
-			yield return new Renderable(anim.Image, location.ToFloat2() - .5f * anim.Image.size, "shadow", 0);
-			yield return new Renderable(anim.Image, pos - .5f * anim.Image.size, palette, 2);
-			yield return new Renderable(paraAnim.Image, pos - .5f * paraAnim.Image.size + offset, palette, 3);
+			yield return new Renderable(paraAnim.Image, pos - .5f * paraAnim.Image.size + offset, rc.First().Palette, 3);
 		}
 	}
 }

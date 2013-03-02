@@ -25,9 +25,9 @@ namespace OpenRA.Mods.RA.Render
 		public readonly float2 Origin = float2.Zero;
 		public override object Create(ActorInitializer init) { return new RenderBuilding(init, this);}
 
-		public override IEnumerable<Renderable> RenderPreview(ActorInfo building, Player owner)
+		public override IEnumerable<Renderable> RenderPreview(ActorInfo building, PaletteReference pr)
 		{
-			return base.RenderPreview(building, owner)
+			return base.RenderPreview(building, pr)
 				.Select(a => a.WithPos(a.Pos + building.Traits.Get<RenderBuildingInfo>().Origin));
 		}
 	}
@@ -54,7 +54,7 @@ namespace OpenRA.Mods.RA.Render
 				self.QueueActivity(new CallFunc(() => Complete(self)));
 		}
 
-		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
+		public IEnumerable<Renderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<Renderable> r)
 		{
 			var disabled = self.IsDisabled();
 			foreach (var a in r)
@@ -62,7 +62,7 @@ namespace OpenRA.Mods.RA.Render
 				var ret = a.WithPos(a.Pos - Info.Origin);
 				yield return ret;
 				if (disabled)
-					yield return ret.WithPalette("disabled").WithZOffset(1);
+					yield return ret.WithPalette(wr.Palette("disabled")).WithZOffset(1);
 			}
 		}
 

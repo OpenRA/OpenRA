@@ -6,6 +6,7 @@
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
  */
+
 #endregion
 
 using System;
@@ -17,6 +18,7 @@ using OpenRA.GameRules;
 using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Widgets.Logic;
 using OpenRA.Widgets;
+using OpenRA.Mods.RA.Widgets;
 
 namespace OpenRA.Mods.Cnc.Widgets.Logic
 {
@@ -25,7 +27,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		enum PanelType { General, Input }
 
 		PanelType Settings = PanelType.General;
-		ColorPickerPaletteModifier playerPalettePreview;
+		ColorPreviewManagerWidget colorPreview;
 		World world;
 
 		[ObjectCreator.UseCtor]
@@ -52,8 +54,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			var nameTextfield = generalPane.Get<TextFieldWidget>("NAME_TEXTFIELD");
 			nameTextfield.Text = playerSettings.Name;
 
-			playerPalettePreview = world.WorldActor.Trait<ColorPickerPaletteModifier>();
-			playerPalettePreview.Ramp = playerSettings.ColorRamp;
+			colorPreview = panel.Get<ColorPreviewManagerWidget>("COLOR_MANAGER");
+			colorPreview.Ramp = playerSettings.ColorRamp;
 
 			var colorDropdown = generalPane.Get<DropDownButtonWidget>("COLOR");
 			colorDropdown.OnMouseDown = _ => ShowColorPicker(colorDropdown, playerSettings);
@@ -153,8 +155,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 		bool ShowColorPicker(DropDownButtonWidget color, PlayerSettings s)
 		{
-			Action<ColorRamp> onSelect = c => { s.ColorRamp = c; color.RemovePanel(); };
-			Action<ColorRamp> onChange = c => {	playerPalettePreview.Ramp = c; };
+			Action<ColorRamp> onSelect = c => {s.ColorRamp = c; color.RemovePanel();};
+			Action<ColorRamp> onChange = c => {colorPreview.Ramp = c;};
 
 			var colorChooser = Game.LoadWidget(world, "COLOR_CHOOSER", null, new WidgetArgs()
 			{

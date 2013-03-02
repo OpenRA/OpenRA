@@ -153,7 +153,7 @@ namespace OpenRA.Mods.RA
 				facing = 0
 			};
 
-			if (args.weapon.Report != null)
+			if (args.weapon.Report != null && args.weapon.Report.Any())
 				Sound.Play(args.weapon.Report.Random(attacker.World.SharedRandom) + ".aud", pos);
 
 			DoImpacts(args);
@@ -208,18 +208,18 @@ namespace OpenRA.Mods.RA
 			return false;
 		}
 
-		static float2 GetRecoil(Actor self, float recoil)
+		static PVecFloat GetRecoil(Actor self, float recoil)
 		{
 			if (!self.HasTrait<RenderUnitTurreted>())
-				return float2.Zero;
+				return PVecFloat.Zero;
 
 			var facing = self.Trait<Turreted>().turretFacing;
 			var localRecoil = new float2(0, recoil);	// vector in turret-space.
 
-			return Util.RotateVectorByFacing(localRecoil, facing, .7f);
+			return (PVecFloat)Util.RotateVectorByFacing(localRecoil, facing, .7f);
 		}
 
-		public static PVecInt GetTurretPosition(Actor self, IFacing facing, Turret turret)
+		public static PVecFloat GetTurretPosition(Actor self, IFacing facing, Turret turret)
 		{
 			if (facing == null) return turret.ScreenSpacePosition;	/* things that don't have a rotating base don't need the turrets repositioned */
 
@@ -228,23 +228,23 @@ namespace OpenRA.Mods.RA
 			var bodyFacing = facing.Facing;
 			var quantizedFacing = Util.QuantizeFacing(bodyFacing, numDirs) * (256 / numDirs);
 
-			return (PVecInt) ((PVecFloat)(Util.RotateVectorByFacing(turret.UnitSpacePosition.ToFloat2(), quantizedFacing, .7f)
-				+ GetRecoil(self, turret.Recoil))
-				+ turret.ScreenSpacePosition);
+			return (PVecFloat)Util.RotateVectorByFacing(turret.UnitSpacePosition.ToFloat2(), quantizedFacing, .7f)
+				+ GetRecoil(self, turret.Recoil)
+				+ (PVecFloat)turret.ScreenSpacePosition.ToFloat2();
 		}
 
-		static PVecInt GetUnitspaceBarrelOffset(Actor self, IFacing facing, Turret turret, Barrel barrel)
+		static PVecFloat GetUnitspaceBarrelOffset(Actor self, IFacing facing, Turret turret, Barrel barrel)
 		{
 			var turreted = self.TraitOrDefault<Turreted>();
 			if (turreted == null && facing == null)
-				return PVecInt.Zero;
+				return PVecFloat.Zero;
 
 			var turretFacing = turreted != null  ? turreted.turretFacing : facing.Facing;
-			return (PVecInt)(PVecFloat)Util.RotateVectorByFacing(barrel.TurretSpaceOffset.ToFloat2(), turretFacing, .7f);
+			return (PVecFloat)Util.RotateVectorByFacing(barrel.TurretSpaceOffset.ToFloat2(), turretFacing, .7f);
 		}
 
 		// gets the screen-space position of a barrel.
-		public static PVecInt GetBarrelPosition(Actor self, IFacing facing, Turret turret, Barrel barrel)
+		public static PVecFloat GetBarrelPosition(Actor self, IFacing facing, Turret turret, Barrel barrel)
 		{
 			return GetTurretPosition(self, facing, turret) + barrel.ScreenSpaceOffset
 				+ GetUnitspaceBarrelOffset(self, facing, turret, barrel);

@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -18,7 +19,7 @@ namespace OpenRA.Mods.RA
 
 	class BelowUnits : IRenderModifier
 	{
-		public IEnumerable<Renderable> ModifyRender(Actor self, IEnumerable<Renderable> r)
+		public IEnumerable<Renderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<Renderable> r)
 		{
 			return r.Select(a => a.WithZOffset((int) -a.Sprite.size.Y));
 		}

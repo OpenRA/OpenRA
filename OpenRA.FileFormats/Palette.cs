@@ -39,6 +39,12 @@ namespace OpenRA.FileFormats
 			get { return colors; }
 		}
 
+		public void ApplyRemap(IPaletteRemap r)
+		{
+			for(int i = 0; i < 256; i++)
+				colors[i] = (uint)r.GetRemappedColor(Color.FromArgb((int)colors[i]),i).ToArgb();
+		}
+
 		public Palette(Stream s, int[] remapShadow)
 		{
 			colors = new uint[256];
@@ -61,14 +67,20 @@ namespace OpenRA.FileFormats
 
 		public Palette(Palette p, IPaletteRemap r)
 		{
-			colors = new uint[256];
-			for(int i = 0; i < 256; i++)
-				colors[i] = (uint)r.GetRemappedColor(Color.FromArgb((int)p.colors[i]),i).ToArgb();
+			colors = (uint[])p.colors.Clone();
+			ApplyRemap(r);
 		}
 
 		public Palette(Palette p)
 		{
 			colors = (uint[])p.colors.Clone();
+		}
+
+		public Palette(uint[] data)
+		{
+			if (data.Length != 256)
+				throw new InvalidDataException("Attempting to create palette with incorrect array size");
+			colors = (uint[])data.Clone();
 		}
 
 		public ColorPalette AsSystemPalette()
@@ -87,6 +99,21 @@ namespace OpenRA.FileFormats
 
 			return pal;
 		}
+
+		public Bitmap AsBitmap()
+        {
+            var b = new Bitmap(256, 1, PixelFormat.Format32bppArgb);
+            var data = b.LockBits(new Rectangle(0, 0, b.Width, b.Height),
+			                      ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+            unsafe
+            {
+                uint* c = (uint*)data.Scan0;
+                for (var x = 0; x < 256; x++)
+	                *(c + x) = colors[x];
+            }
+            b.UnlockBits(data);
+			return b;
+        }
 
 		public static Palette Load(string filename, int[] remap)
 		{

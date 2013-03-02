@@ -109,30 +109,6 @@ namespace OpenRA.Mods.RA.Missions
 			return units.Any() && units.All(a => a.Owner == player);
 		}
 
-		public static Actor ClosestPlayerUnit(World world, Player player, PPos location, int range)
-		{
-			return ClosestPlayerUnits(world, player, location, range).FirstOrDefault();
-		}
-
-		public static IEnumerable<Actor> ClosestPlayerUnits(World world, Player player, PPos location, int range)
-		{
-			return world.FindAliveCombatantActorsInCircle(location, range)
-				.Where(a => a.Owner == player && a.HasTrait<IMove>())
-				.OrderBy(a => (location - a.CenterLocation).LengthSquared);
-		}
-
-		public static Actor ClosestPlayerBuilding(World world, Player player, PPos location, int range)
-		{
-			return ClosestPlayerBuildings(world, player, location, range).FirstOrDefault();
-		}
-
-		public static IEnumerable<Actor> ClosestPlayerBuildings(World world, Player player, PPos location, int range)
-		{
-			return world.FindAliveCombatantActorsInCircle(location, range)
-				.Where(a => a.Owner == player && a.HasTrait<Building>() && !a.HasTrait<Wall>())
-				.OrderBy(a => (location - a.CenterLocation).LengthSquared);
-		}
-
 		public static IEnumerable<ProductionQueue> FindQueues(World world, Player player, string category)
 		{
 			return world.ActorsWithTrait<ProductionQueue>()
@@ -231,7 +207,7 @@ namespace OpenRA.Mods.RA.Missions
 		public static void AttackNearestLandActor(bool queued, Actor self, Player enemyPlayer)
 		{
 			var enemies = self.World.Actors.Where(u => u.AppearsHostileTo(self) && u.Owner == enemyPlayer
-					&& ((u.HasTrait<Building>() && !u.HasTrait<Wall>()) || u.HasTrait<Mobile>()) && u.IsInWorld && !u.IsDead());
+					&& ((u.HasTrait<Building>() && !u.HasTrait<Wall>()) || (u.HasTrait<Mobile>() && !u.HasTrait<Aircraft>())) && u.IsInWorld && !u.IsDead());
 
 			var enemy = enemies.OrderBy(u => (self.CenterLocation - u.CenterLocation).LengthSquared).FirstOrDefault();
 			if (enemy != null)

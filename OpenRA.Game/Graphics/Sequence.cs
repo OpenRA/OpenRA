@@ -18,12 +18,13 @@ namespace OpenRA.Graphics
 	public class Sequence
 	{
 		readonly Sprite[] sprites;
-		readonly int start, length, facings, tick;
+		readonly int start, length, stride, facings, tick;
 
 		public readonly string Name;
 		public int Start { get { return start; } }
 		public int End { get { return start + length; } }
 		public int Length { get { return length; } }
+		public int Stride { get { return stride; } }
 		public int Facings { get { return facings; } }
 		public int Tick { get { return tick; } }
 
@@ -43,6 +44,10 @@ namespace OpenRA.Graphics
 			else
 				length = int.Parse(d["Length"].Value);
 
+			if (d.ContainsKey("Stride"))
+				stride = int.Parse(d["Stride"].Value);
+			else
+				stride = length;
 
 			if(d.ContainsKey("Facings"))
 				facings = int.Parse(d["Facings"].Value);
@@ -54,10 +59,15 @@ namespace OpenRA.Graphics
 			else
 				tick = 40;
 
-			if (start < 0 || start + facings * length > sprites.Length)
+			if (length > stride)
+				throw new InvalidOperationException(
+					"{0}: Sequence {1}.{2}: Length must be <= stride"
+						.F(info.Nodes[0].Location, unit, name));
+
+			if (start < 0 || start + facings * stride > sprites.Length)
 				throw new InvalidOperationException(
 					"{6}: Sequence {0}.{1} uses frames [{2}..{3}] of SHP `{4}`, but only 0..{5} actually exist"
-					.F(unit, name, start, start + facings * length - 1, srcOverride ?? unit, sprites.Length - 1,
+					.F(unit, name, start, start + facings * stride - 1, srcOverride ?? unit, sprites.Length - 1,
 					info.Nodes[0].Location));
 		}
 
@@ -69,7 +79,7 @@ namespace OpenRA.Graphics
 		public Sprite GetSprite(int frame, int facing)
 		{
 			var f = Traits.Util.QuantizeFacing( facing, facings );
-			return sprites[ (f * length) + ( frame % length ) + start ];
+			return sprites[ (f * stride) + ( frame % length ) + start ];
 		}
 	}
 }

@@ -32,8 +32,6 @@ namespace OpenRA.Mods.RA
 			if (remainingFrames > 0)
 				remainingFrames--;
 		}
-		
-		static List<string> excludePalettes = new List<string>{"cursor", "chrome", "colorpicker", "shroud", "fog"};
 
 		public void AdjustPalette(Dictionary<string,Palette> palettes)
 		{
@@ -44,9 +42,6 @@ namespace OpenRA.Mods.RA
 			
 			foreach (var pal in palettes)
 			{
-				if (excludePalettes.Contains(pal.Key))
-					continue;
-
 				for (var x = 0; x < 256; x++)
 				{
 					var orig = pal.Value.GetColor(x);

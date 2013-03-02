@@ -19,6 +19,7 @@ namespace OpenRA.Graphics
 {
 	public static class CursorProvider
 	{
+		public static Dictionary<string, Palette> Palettes { get; private set; }
 		static Dictionary<string, CursorSequence> cursors;
 
 		public static void Initialize(string[] sequenceFiles)
@@ -28,13 +29,14 @@ namespace OpenRA.Graphics
 			int[] ShadowIndex = { };
 
 			if (sequences.NodesDict.ContainsKey("ShadowIndex"))
-				{
-					Array.Resize(ref ShadowIndex, ShadowIndex.Length + 1);
-					ShadowIndex[ShadowIndex.Length - 1] = Convert.ToInt32(sequences.NodesDict["ShadowIndex"].Value);
-				}
+			{
+				Array.Resize(ref ShadowIndex, ShadowIndex.Length + 1);
+				ShadowIndex[ShadowIndex.Length - 1] = Convert.ToInt32(sequences.NodesDict["ShadowIndex"].Value);
+			}
 
+			Palettes = new Dictionary<string, Palette>();
 			foreach (var s in sequences.NodesDict["Palettes"].Nodes)
-				Game.modData.Palette.AddPalette(s.Key, new Palette(FileSystem.Open(s.Value.Value), ShadowIndex));
+				Palettes.Add(s.Key, new Palette(FileSystem.Open(s.Value.Value), ShadowIndex));
 
 			foreach (var s in sequences.NodesDict["Cursors"].Nodes)
 				LoadSequencesForCursor(s.Key, s.Value);

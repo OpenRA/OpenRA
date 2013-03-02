@@ -9,6 +9,7 @@
 #endregion
 
 using System.Collections.Generic;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
@@ -23,6 +24,6 @@ namespace OpenRA.Mods.RA.Render
 		public RenderEditorOnly(Actor self) : base(self, () => 0) { }
 
 		static readonly Renderable[] Nothing = { };
-		public override IEnumerable<Renderable> Render(Actor self) { return Nothing; }
+		public override IEnumerable<Renderable> Render(Actor self, WorldRenderer wr) { return Nothing; }
 	}
 }

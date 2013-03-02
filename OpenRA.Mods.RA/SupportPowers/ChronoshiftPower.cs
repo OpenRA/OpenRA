@@ -243,9 +243,9 @@ namespace OpenRA.Mods.RA
 				{
 					if (manager.self.Owner.Shroud.IsTargetable(unit)) {
 						var targetCell = unit.Location + (xy - sourceLocation);
-						foreach (var r in unit.Render())
+						foreach (var r in unit.Render(wr))
                             r.Sprite.DrawAt(r.Pos - Traits.Util.CenterOfCell(unit.Location).ToFloat2() + Traits.Util.CenterOfCell(targetCell).ToFloat2(),
-								wr.GetPaletteIndex(r.Palette),
+								r.Palette.Index,
 								r.Scale*r.Sprite.size);
 					}
 				}

@@ -58,7 +58,7 @@ namespace OpenRA
 
 		static string ChooseReplayFilename()
 		{
-			return DateTime.UtcNow.ToString("OpenRA-yyyy-MM-ddTHHmmssZ.rep");
+			return DateTime.UtcNow.ToString("OpenRA-yyyy-MM-ddTHHmmssZ");
 		}
 
 		static void JoinInner(OrderManager om)

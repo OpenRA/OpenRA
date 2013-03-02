@@ -5,6 +5,8 @@ Background@SERVER_LOBBY:
 	Width:800
 	Height:600
 	Children:
+		ColorPreviewManager@COLOR_MANAGER:
+			RemapIndices: 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95
 		Label@TITLE:
 			X:0
 			Y:17
@@ -432,9 +434,15 @@ Background@SERVER_LOBBY:
 			Width: 80
 			Height: 20
 			Text: Allow Cheats
+		Checkbox@CRATES_CHECKBOX:
+			X: PARENT_RIGHT-154
+			Y: PARENT_BOTTOM-154
+			Width: 80
+			Height: 20
+			Text: Crates
 		Button@DISCONNECT_BUTTON:
 			X:PARENT_RIGHT-154
-			Y:PARENT_BOTTOM-129
+			Y:PARENT_BOTTOM-99
 			Width:120
 			Height:25
 			Text:Disconnect
