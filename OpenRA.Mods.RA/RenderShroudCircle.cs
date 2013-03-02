@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA
 
 			wr.DrawRangeCircle(
 				Color.FromArgb(128, Color.Cyan),
-				self.CenterLocation.ToFloat2(), (int)self.Info.Traits.Get<CreatesShroudInfo>().Range);
+				self.CenterLocation.ToFloat2(), self.Info.Traits.Get<CreatesShroudInfo>().Range);
 		}
 	}
 }

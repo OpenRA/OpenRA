@@ -57,7 +57,7 @@ namespace OpenRA.Mods.RA.Effects
 
 			if (info.Inaccuracy > 0)
 			{
-				var factor = ((Args.dest - Args.src).Length / (float)Game.CellSize) / args.weapon.Range;
+				var factor = ((Args.dest - Args.src).Length / Game.CellSize) / (float)args.weapon.Range;
 				Args.dest += (PVecInt) (info.Inaccuracy * factor * args.firedBy.World.SharedRandom.Gauss2D(2)).ToInt2();
 			}
 

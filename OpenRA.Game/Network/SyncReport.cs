@@ -36,6 +36,7 @@ namespace OpenRA.Network
 		{
 			report.Frame = orderManager.NetFrameNumber;
 			report.SyncedRandom = orderManager.world.SharedRandom.Last;
+			report.TotalCount = orderManager.world.SharedRandom.TotalCount;
 			report.Traits.Clear();
 			foreach (var a in orderManager.world.ActorsWithTrait<ISync>())
 			{
@@ -58,7 +59,7 @@ namespace OpenRA.Network
 				if (r.Frame == frame)
 				{
 					Log.Write("sync", "Sync for net frame {0} -------------", r.Frame);
-					Log.Write("sync", "SharedRandom: "+r.SyncedRandom);
+					Log.Write("sync", "SharedRandom: {0} (#{1})", r.SyncedRandom, r.TotalCount);
 					Log.Write("sync", "Synced Traits:");
 					foreach (var a in r.Traits)
 						Log.Write("sync", "\t {0} {1} {2} {3} ({4})".F(
@@ -77,6 +78,7 @@ namespace OpenRA.Network
 		{
 			public int Frame;
 			public int SyncedRandom;
+			public int TotalCount;
 			public List<TraitReport> Traits = new List<TraitReport>();
 		}
 
