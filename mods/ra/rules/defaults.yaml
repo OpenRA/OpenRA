@@ -7,6 +7,7 @@
 			Rough: 40
 			Road: 100
 			Ore: 70
+			Gems: 70
 			Beach: 40
 		ROT: 5
 	SelectionDecorations:
@@ -43,6 +44,7 @@
 			Rough: 70
 			Road: 100
 			Ore: 70
+			Gems: 70
 			Beach: 70
 		ROT: 5
 	SelectionDecorations:
@@ -86,6 +88,7 @@
 			Rough: 80
 			Road: 100
 			Ore: 80
+			Gems: 80
 			Beach: 80
 	SelectionDecorations:
 	Selectable:
