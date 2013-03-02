@@ -120,6 +120,26 @@ namespace OpenRA.GameRules
 		public string ConnectTo = "";
 	}
 
+	public class KeySettings
+	{
+		public string PauseKey = "f3";
+
+		public string CycleBaseKey = "backspace";
+		public string GotoLastEventKey = "space";
+		public string SellKey = "v";
+		public string PowerDownKey = "b";
+		public string RepairKey = "n";
+
+		public string AttackMoveKey = "a";
+		public string StopKey = "s";
+		public string ScatterKey = "x";
+		public string StanceCycleKey = "z";
+		public string DeployKey = "f";
+
+		public string CycleTabsKey = "tab";
+	}
+
+
 	public class Settings
 	{
 		string SettingsFile;
@@ -130,6 +150,7 @@ namespace OpenRA.GameRules
 		public GraphicSettings Graphics = new GraphicSettings();
 		public ServerSettings Server = new ServerSettings();
 		public DebugSettings Debug = new DebugSettings();
+		public KeySettings Keys = new KeySettings();
 
 		public Dictionary<string, object> Sections;
 
@@ -144,6 +165,7 @@ namespace OpenRA.GameRules
 				{"Graphics", Graphics},
 				{"Server", Server},
 				{"Debug", Debug},
+				{"Keys", Keys},
 			};
 
 			// Override fieldloader to ignore invalid entries

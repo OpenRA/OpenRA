@@ -30,6 +30,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			tabs.Get<ButtonWidget>("GENERAL").OnClick = () => FlipToTab("GENERAL_PANE");
 			tabs.Get<ButtonWidget>("AUDIO").OnClick = () => FlipToTab("AUDIO_PANE");
 			tabs.Get<ButtonWidget>("DISPLAY").OnClick = () => FlipToTab("DISPLAY_PANE");
+			tabs.Get<ButtonWidget>("KEYS").OnClick = () => FlipToTab("KEYS_PANE");
 			tabs.Get<ButtonWidget>("DEBUG").OnClick = () => FlipToTab("DEBUG_PANE");
 			FlipToTab("GENERAL_PANE");
 
@@ -120,6 +121,60 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				Game.viewport.Zoom = gs.PixelDouble ? 2 : 1;
 			};
 
+			// Keys
+			var keys = bg.Get("KEYS_PANE");
+			var keyConfig = Game.Settings.Keys;
+
+			var specialHotkeyList = keys.Get<ScrollPanelWidget>("SPECIALHOTKEY_LIST");
+			var specialHotkeyTemplate = specialHotkeyList.Get<ScrollItemWidget>("SPECIALHOTKEY_TEMPLATE");
+
+			var pauseKey = ScrollItemWidget.Setup(specialHotkeyTemplate, () => false, () => {});
+			SetupKeyBinding(pauseKey, "Pause the game:", () => keyConfig.PauseKey, k => keyConfig.PauseKey = k);
+			specialHotkeyList.AddChild(pauseKey);
+
+			var viewportToBase = ScrollItemWidget.Setup(specialHotkeyTemplate, () => false, () => {});
+			SetupKeyBinding(viewportToBase, "Move Viewport to Base:", () => keyConfig.CycleBaseKey, k => keyConfig.CycleBaseKey = k);
+			specialHotkeyList.AddChild(viewportToBase);
+
+			var lastEventKey = ScrollItemWidget.Setup(specialHotkeyTemplate, () => false, () => {});
+			SetupKeyBinding(lastEventKey, "Move Viewport to Last Event:", () => keyConfig.GotoLastEventKey, k => keyConfig.GotoLastEventKey = k);
+			specialHotkeyList.AddChild(lastEventKey);
+
+			var sellKey = ScrollItemWidget.Setup(specialHotkeyTemplate, () => false, () => {});
+			SetupKeyBinding(sellKey, "Switch to Sell-Cursor:", () => keyConfig.SellKey, k => keyConfig.SellKey = k);
+			specialHotkeyList.AddChild(sellKey);
+
+			var powerDownKey = ScrollItemWidget.Setup(specialHotkeyTemplate, () => false, () => {});
+			SetupKeyBinding(powerDownKey, "Switch to Power-Down-Cursor:", () => keyConfig.PowerDownKey, k => keyConfig.PowerDownKey = k);
+			specialHotkeyList.AddChild(powerDownKey);
+
+			var repairKey = ScrollItemWidget.Setup(specialHotkeyTemplate, () => false, () => {});
+			SetupKeyBinding(repairKey, "Switch to Repair-Cursor:", () => keyConfig.RepairKey, k => keyConfig.RepairKey = k);
+			specialHotkeyList.AddChild(repairKey);
+
+			var unitCommandHotkeyList = keys.Get<ScrollPanelWidget>("UNITCOMMANDHOTKEY_LIST");
+			var unitCommandHotkeyTemplate = unitCommandHotkeyList.Get<ScrollItemWidget>("UNITCOMMANDHOTKEY_TEMPLATE");
+
+			var attackKey = ScrollItemWidget.Setup(unitCommandHotkeyTemplate, () => false, () => {});
+			SetupKeyBinding(attackKey, "Attack Move:", () => keyConfig.AttackMoveKey, k => keyConfig.AttackMoveKey = k);
+			unitCommandHotkeyList.AddChild(attackKey);
+
+			var stopKey = ScrollItemWidget.Setup(unitCommandHotkeyTemplate, () => false, () => {});
+			SetupKeyBinding(stopKey, "Stop:", () => keyConfig.StopKey, k => keyConfig.StopKey = k);
+			unitCommandHotkeyList.AddChild(stopKey);
+
+			var scatterKey = ScrollItemWidget.Setup(unitCommandHotkeyTemplate, () => false, () => {});
+			SetupKeyBinding(scatterKey, "Scatter:", () => keyConfig.ScatterKey, k => keyConfig.ScatterKey = k);
+			unitCommandHotkeyList.AddChild(scatterKey);
+
+			var stanceCycleKey = ScrollItemWidget.Setup(unitCommandHotkeyTemplate, () => false, () => {});
+			SetupKeyBinding(stanceCycleKey, "Cycle Stance:", () => keyConfig.StanceCycleKey, k => keyConfig.StanceCycleKey = k);
+			unitCommandHotkeyList.AddChild(stanceCycleKey);
+
+			var deployKey = ScrollItemWidget.Setup(unitCommandHotkeyTemplate, () => false, () => {});
+			SetupKeyBinding(deployKey, "Deploy:", () => keyConfig.DeployKey, k => keyConfig.DeployKey = k);
+			unitCommandHotkeyList.AddChild(deployKey);
+
 			// Debug
 			var debug = bg.Get("DEBUG_PANE");
 
@@ -197,6 +252,26 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, setupItem);
 			return true;
+		}
+
+		void SetupKeyBinding(ScrollItemWidget keyWidget, string description, Func<string> getValue, Action<string> setValue)
+		{
+			keyWidget.Get<LabelWidget>("FUNCTION").GetText = () => description;
+
+			var textBox = keyWidget.Get<TextFieldWidget>("HOTKEY");
+
+			textBox.Text = getValue();
+
+			textBox.OnLoseFocus = () =>
+			{
+				textBox.Text.Trim();
+				if (textBox.Text.Length == 0)
+					textBox.Text = getValue();
+				else
+					setValue(textBox.Text);
+			};
+
+			textBox.OnEnterKey = () => { textBox.LoseFocus(); return true; };
 		}
 
 		public static bool ShowRendererDropdown(DropDownButtonWidget dropdown, GraphicSettings s)
