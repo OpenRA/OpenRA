@@ -63,13 +63,6 @@ Container@SERVER_LOBBY:
 									Height:25
 									MaxLength:16
 									Visible:false
-								Image@ISADMIN:
-									Width:16
-									Height:16
-									X:192
-									Y:4
-									ImageName:isadmin
-									ImageCollection:misc
 								DropDownButton@BOT_DROPDOWN:
 									Text:Name
 									Width:205
@@ -138,13 +131,6 @@ Container@SERVER_LOBBY:
 									Height:25
 									X:5
 									Y:0-1
-								Image@ISADMIN:
-									Width:16
-									Height:16
-									X:192
-									Y:4
-									ImageName:isadmin
-									ImageCollection:misc
 								Button@KICK:
 									Text:X
 									Width:25
@@ -208,13 +194,6 @@ Container@SERVER_LOBBY:
 									X:5
 									Y:0-1
 									Visible:false
-								Image@ISADMIN:
-									Width:16
-									Height:16
-									X:192
-									Y:4
-									ImageName:isadmin
-									ImageCollection:misc
 								Button@JOIN:
 									Text:Play in this slot
 									Font:Regular
@@ -234,13 +213,6 @@ Container@SERVER_LOBBY:
 									Width:205
 									Height:25
 									MaxLength:16
-								Image@ISADMIN:
-									Width:16
-									Height:16
-									X:192
-									Y:4
-									ImageName:isadmin
-									ImageCollection:misc
 								DropDownButton@COLOR:
 									Width:70
 									Height:25
@@ -279,13 +251,6 @@ Container@SERVER_LOBBY:
 									Height:25
 									X:5
 									Y:0-1
-								Image@ISADMIN:
-									Width:16
-									Height:16
-									X:192
-									Y:4
-									ImageName:isadmin
-									ImageCollection:misc
 								Button@KICK:
 									Text:X
 									Width:25
