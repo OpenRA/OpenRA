@@ -78,7 +78,7 @@ namespace OpenRA.Mods.RA
 
 		void SpawnCrate(Actor self)
 		{
-			var inWater = self.World.SharedRandom.NextDouble() < Info.WaterChance;
+			var inWater = self.World.SharedRandom.NextFloat() < Info.WaterChance;
 			var pp = ChooseDropCell(self, inWater, 100);
 			if (pp == null)	return;
 
