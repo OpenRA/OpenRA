@@ -42,7 +42,7 @@ function StylesGetDefault()
     bracematch = {fg = {0, 0, 255}, b = true},
     bracemiss = {fg = {255, 0, 0 }, b = true},
     ctrlchar = nil,
-    indent = {fg = {192, 192, 192}, bg = {255, 255, 255}},
+    indent = {fg = {192, 192, 230}, bg = {255, 255, 255}},
     calltip = nil,
 
     -- common special (need custom fg & bg)
@@ -53,7 +53,8 @@ function StylesGetDefault()
     fold = {fg = {90, 90, 80}, bg = {250, 250, 250}},
     whitespace = nil,
 
-    fncall = {fg = {175, 175, 255}, st = wxstc.wxSTC_INDIC_TT},
+    fncall = {fg = {128, 128, 255},
+      st = ide.wxver >= "2.9.5" and wxstc.wxSTC_INDIC_ROUNDBOX or wxstc.wxSTC_INDIC_TT},
 
     -- markup
     ['|'] = {fg = {127, 0, 127}},
