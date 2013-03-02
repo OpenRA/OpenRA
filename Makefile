@@ -246,13 +246,19 @@ install: all
 	@cp thirdparty/Tao/* $(INSTALL_DIR)
 	@$(INSTALL_PROGRAM) thirdparty/ICSharpCode.SharpZipLib.dll $(INSTALL_DIR)
 
-	@echo "#!/bin/sh" > openra
-	@echo "cd "$(datadir)"/openra" >> openra
-	@echo "exec mono "$(datadir)"/openra/OpenRA.Game.exe \"$$""@\"" >> openra
+	@echo "#!/bin/sh" 				>  openra
+	@echo 'BINDIR=$$(dirname $$(readlink -f $$0))'	>> openra
+	@echo 'ROOTDIR="$${BINDIR%'"$(bindir)"'}"' 	>> openra
+	@echo 'DATADIR="$${ROOTDIR}/'"$(datadir)"'"'	>> openra
+	@echo 'cd "$${DATADIR}/openra"' 		>> openra
+	@echo 'exec mono OpenRA.Game.exe "$$@"' 	>> openra
 
-	@echo "#!/bin/sh" > openra-editor
-	@echo "cd "$(datadir)"/openra" >> openra-editor
-	@echo "exec mono "$(datadir)"/openra/OpenRA.Editor.exe \"$$""@\"" >> openra-editor
+	@echo "#!/bin/sh" 				>  openra-editor
+	@echo 'BINDIR=$$(dirname $$(readlink -f $$0))'	>> openra-editor
+	@echo 'ROOTDIR="$${BINDIR%'"$(bindir)"'}"' 	>> openra-editor
+	@echo 'DATADIR="$${ROOTDIR}/'"$(datadir)"'"'	>> openra-editor
+	@echo 'cd "$${DATADIR}/openra"'			>> openra-editor
+	@echo 'exec mono OpenRA.Editor.exe "$$@"'	>> openra-editor
 
 	@$(INSTALL_PROGRAM) -d $(BIN_INSTALL_DIR)
 	@$(INSTALL_PROGRAM) -m +rx openra $(BIN_INSTALL_DIR)
