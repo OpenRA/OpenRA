@@ -137,9 +137,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			specialHotkeyList.AddChild(viewportToBase);
 
 			var lastEventKey = ScrollItemWidget.Setup(specialHotkeyTemplate, () => false, () => {});
-			SetupKeyBinding(lastEventKey, "Move Viewport to Last Event:", () => keyConfig.GotoLastEventKey, k => keyConfig.GotoLastEventKey = k);
+			SetupKeyBinding(lastEventKey, "Move Viewport to Last Event:", () => keyConfig.ToLastEventKey, k => keyConfig.ToLastEventKey = k);
 			specialHotkeyList.AddChild(lastEventKey);
 
+			var viewportToSelectionKey = ScrollItemWidget.Setup(specialHotkeyTemplate, () => false, () => {});
+			SetupKeyBinding(viewportToSelectionKey, "Move Viewport to Selection:", () => keyConfig.ToSelectionKey, k => keyConfig.ToSelectionKey = k);
+			specialHotkeyList.AddChild(viewportToSelectionKey);
+			
 			var sellKey = ScrollItemWidget.Setup(specialHotkeyTemplate, () => false, () => {});
 			SetupKeyBinding(sellKey, "Switch to Sell-Cursor:", () => keyConfig.SellKey, k => keyConfig.SellKey = k);
 			specialHotkeyList.AddChild(sellKey);
