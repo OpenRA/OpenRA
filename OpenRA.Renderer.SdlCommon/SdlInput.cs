@@ -67,8 +67,12 @@ namespace OpenRA.Renderer.SdlCommon
 						var button = MakeButton( e.button.button );
 						lastButtonBits |= button;
 
-						inputHandler.OnMouseInput( new MouseInput(
-							MouseInputEvent.Down, button, new int2( e.button.x, e.button.y ), mods, 1 ) );
+						var pos = new int2( e.button.x, e.button.y );
+
+						inputHandler.OnMouseInput(new MouseInput(
+													MouseInputEvent.Down, button, pos, mods,
+													MultiTapDetection.DetectFromMouse(e.button.button, pos)
+						));
 					} break;
 
 				case Sdl.SDL_MOUSEBUTTONUP:
@@ -83,9 +87,10 @@ namespace OpenRA.Renderer.SdlCommon
 						lastButtonBits &= ~button;
 
 						var pos = new int2( e.button.x, e.button.y );
-						inputHandler.OnMouseInput( new MouseInput(
+						inputHandler.OnMouseInput(new MouseInput(
 							MouseInputEvent.Up, button, pos, mods,
-							MultiTapDetection.DetectFromMouse( e.button.button, pos )));
+							MultiTapDetection.InfoFromMouse(e.button.button)
+						));
 					} break;
 
 				case Sdl.SDL_MOUSEMOTION:
@@ -99,13 +104,16 @@ namespace OpenRA.Renderer.SdlCommon
 
 				case Sdl.SDL_KEYDOWN:
 					{
+						var keyName = Sdl.SDL_GetKeyName( e.key.keysym.sym );
+
 						var keyEvent = new KeyInput
 						{
 							Event = KeyInputEvent.Down,
 							Modifiers = mods,
 							UnicodeChar = (char)e.key.keysym.unicode,
 							KeyName = Sdl.SDL_GetKeyName( e.key.keysym.sym ),
-							VirtKey = e.key.keysym.sym
+							VirtKey = e.key.keysym.sym,
+							MultiTapCount = MultiTapDetection.DetectFromKeyboard(keyName)
 						};
 
 						if( !HandleSpecialKey( keyEvent ) )
@@ -123,7 +131,7 @@ namespace OpenRA.Renderer.SdlCommon
 							UnicodeChar = (char)e.key.keysym.unicode,
 							KeyName = Sdl.SDL_GetKeyName( e.key.keysym.sym ),
 							VirtKey = e.key.keysym.sym,
-							MultiTapCount = MultiTapDetection.DetectFromKeyboard(keyName)
+							MultiTapCount = MultiTapDetection.InfoFromKeyboard(keyName)
 						};
 
 						inputHandler.OnKeyInput( keyEvent );
