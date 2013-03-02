@@ -174,7 +174,7 @@ namespace OpenRA.Widgets
 					world.Selection.DoControlGroup(world, e.KeyName[0] - '0', e.Modifiers, e.MultiTapCount);
 					return true;
 				}
-				else if (e.KeyName == "pause" || e.KeyName == "f3")
+				else if (e.KeyName == Game.Settings.Keys.PauseKey)
 				{
 					world.IssueOrder(Order.PauseRequest());
 				}
