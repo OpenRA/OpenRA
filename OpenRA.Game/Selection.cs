@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -64,7 +64,7 @@ namespace OpenRA
 
 		Cache<int, List<Actor>> controlGroups = new Cache<int, List<Actor>>(_ => new List<Actor>());
 
-		public void DoControlGroup(World world, int group, Modifiers mods)
+		public void DoControlGroup(World world, int group, Modifiers mods, int MultiTapCount)
 		{
 			var addModifier = Platform.CurrentPlatform == PlatformType.OSX ? Modifiers.Meta : Modifiers.Ctrl;
 			if (mods.HasModifier(addModifier))
@@ -82,7 +82,7 @@ namespace OpenRA
 				return;
 			}
 
-			if (mods.HasModifier(Modifiers.Alt))
+			if (mods.HasModifier(Modifiers.Alt) || MultiTapCount >= 2)
 			{
 				Game.viewport.Center(controlGroups[group]);
 				return;

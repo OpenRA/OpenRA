@@ -125,7 +125,8 @@ namespace OpenRA.GameRules
 		public string PauseKey = "f3";
 
 		public string CycleBaseKey = "backspace";
-		public string GotoLastEventKey = "space";
+		public string ToLastEventKey = "space";
+		public string ToSelectionKey = "home";
 		public string SellKey = "v";
 		public string PowerDownKey = "b";
 		public string RepairKey = "n";
