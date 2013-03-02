@@ -119,6 +119,7 @@ namespace OpenRA.Network
 						var info = new Session.Client()
 						{
 							Name = Game.Settings.Player.Name,
+							PreferredColorRamp = Game.Settings.Player.ColorRamp,
 							ColorRamp = Game.Settings.Player.ColorRamp,
 							Country = "random",
 							SpawnPoint = 0,
