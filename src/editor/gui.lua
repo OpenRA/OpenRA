@@ -4,16 +4,16 @@
 local ide = ide
 
 -- Pick some reasonable fixed width fonts to use for the editor
-local function setFont(style, config, name, size)
+local function setFont(style, config)
   return wx.wxFont(config.fontsize or size or 10, wx.wxFONTFAMILY_MODERN, style,
-    wx.wxFONTWEIGHT_NORMAL, false, config.fontname or name,
+    wx.wxFONTWEIGHT_NORMAL, false, config.fontname or "",
     config.fontencoding or wx.wxFONTENCODING_DEFAULT)
 end
-ide.font.eNormal = setFont(wx.wxFONTSTYLE_NORMAL, ide.config.editor, wx.__WXMSW__ and "Courier New" or "")
-ide.font.eItalic = setFont(wx.wxFONTSTYLE_ITALIC, ide.config.editor, wx.__WXMSW__ and "Courier New" or "")
+ide.font.eNormal = setFont(wx.wxFONTSTYLE_NORMAL, ide.config.editor)
+ide.font.eItalic = setFont(wx.wxFONTSTYLE_ITALIC, ide.config.editor)
 
-ide.font.oNormal = setFont(wx.wxFONTSTYLE_NORMAL, ide.config.outputshell, wx.__WXMSW__ and "Courier New" or "")
-ide.font.oItalic = setFont(wx.wxFONTSTYLE_ITALIC, ide.config.outputshell, wx.__WXMSW__ and "Courier New" or "")
+ide.font.oNormal = setFont(wx.wxFONTSTYLE_NORMAL, ide.config.outputshell)
+ide.font.oItalic = setFont(wx.wxFONTSTYLE_ITALIC, ide.config.outputshell)
 
 -- treeCtrl font requires slightly different handling
 local gui, config = wx.wxTreeCtrl():GetFont(), ide.config.filetree
