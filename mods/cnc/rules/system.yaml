@@ -28,8 +28,8 @@ Player:
 			eye: 1%
 			tmpl: 1%
 			silo: 4%
-			fix: 1%
-			hpad: 2%
+#			fix: 1%
+#			hpad: 2%
 		UnitsToBuild:
 			e1: 14%
 			e3: 7%
@@ -138,7 +138,7 @@ World:
 		TerrainType: BlueTiberium
 		SpriteNames: bti1,bti2,bti3,bti4,bti5,bti6,bti7,bti8,bti9,bti10,bti11,bti12
 		ValuePerUnit: 75
-		Name: Blue Tiberium
+		Name: BlueTiberium
 		PipColor: Blue
 		AllowedTerrainTypes: Clear,Road
 		AllowUnderActors: false
@@ -160,7 +160,7 @@ World:
 	Shroud:
 	CrateSpawner:
 		Minimum: 1
-		Maximum: 3
+		Maximum: 6
 		SpawnInterval: 120
 		WaterChance: 0
 	PathFinder:
@@ -172,30 +172,28 @@ CRATE:
 	Tooltip:
 		Name: Crate
 	Crate:
-		Lifetime: 120
+		Lifetime: 240
 		TerrainTypes: Clear, Rough, Road, Tiberium, BlueTiberium, Beach
 	GiveCashCrateAction:
 		Amount: 1000
-		SelectionShares: 20
+		SelectionShares: 20000
 		UseCashTick: yes
 	RevealMapCrateAction:
-		SelectionShares: 1
+		SelectionShares: 1000
 		Effect: reveal-map
-	LevelUpCrateAction:
-		SelectionShares: 20
 	ExplodeCrateAction@fire:
 		Weapon: Napalm.Crate
-		SelectionShares: 5
+		SelectionShares: 5000
 	CloakCrateAction:
-		SelectionShares: 5
+		SelectionShares: 5000
 		InitialDelay: 15
-		CloakDelay: 125
+		CloakDelay: 80
 		CloakSound: trans1.aud
-		UncloakSound: appear1.aud
+		UncloakSound: trans1.aud
 		Effect: cloak
 	GiveMcvCrateAction:
-		SelectionShares: 2
-		NoBaseSelectionShares: 9001
+		SelectionShares: 1
+		NoBaseSelectionShares: 9000001
 		Unit: mcv
 	RenderSimple:
 	BelowUnits:
