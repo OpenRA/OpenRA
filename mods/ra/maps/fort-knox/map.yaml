@@ -1,0 +1,124 @@
+Selectable: True
+
+MapFormat: 5
+
+Title: Fort Knox
+
+Description: A money map where you have to collect gems. The queues offer speedup when more of the same production buildings exist.
+
+Author: Matt
+
+Tileset: INTERIOR
+
+MapSize: 128,128
+
+Bounds: 16,16,96,96
+
+UseAsShellmap: False
+
+Type: Conquest
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Race: allies
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		DefaultStartingUnits: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi1:
+		Name: Multi1
+		Playable: True
+		DefaultStartingUnits: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi2:
+		Name: Multi2
+		Playable: True
+		DefaultStartingUnits: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi3:
+		Name: Multi3
+		Playable: True
+		DefaultStartingUnits: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Race: allies
+		Enemies: Multi0,Multi1,Multi2,Multi3
+
+Actors:
+	Actor0: mpspawn
+		Location: 61,29
+		Owner: Multi0
+	Actor1: mpspawn
+		Location: 61,82
+		Owner: Multi2
+	Actor2: mpspawn
+		Location: 66,45
+		Owner: Multi1
+	Actor3: mpspawn
+		Location: 66,98
+		Owner: Multi3
+
+Smudges:
+
+Rules:
+# No planes, this is an indoor map.
+	CRATE:
+		Crate:
+			TerrainTypes:
+# No dirt patches below buildings.
+	World:
+		-BibLayer:
+# Avoid running out of money when gems are gone.
+	FACT:
+		CashTrickler:
+			Period: 250
+			Amount: 100
+# Spam your enemy!
+	Player:
+		ClassicProductionQueue@Building:
+			SpeedUp: 0.25
+			MaxSpeedUp: 0.75
+		ClassicProductionQueue@Defense:
+			SpeedUp: 0.25
+			MaxSpeedUp: 0.75
+		ClassicProductionQueue@Vehicle:
+			SpeedUp: 0.25
+			MaxSpeedUp: 0.75
+		ClassicProductionQueue@Infantry:
+			SpeedUp: 0.25
+			MaxSpeedUp: 0.75
+		ClassicProductionQueue@Ship:
+			SpeedUp: 0.25
+			MaxSpeedUp: 0.75
+		ClassicProductionQueue@Plane:
+			SpeedUp: 0.25
+			MaxSpeedUp: 0.75
+# I said no planes from the outside! Workaround bogus yaml removals.
+	AFLD:
+		SpyPlanePower:
+			Prerequisites: TECH
+		ParatroopersPower:
+			Prerequisites: TECH
+# This is a nuke resistance vault.
+	-MSLO:
+# Carrier rockets are against the house rules.
+	ATEK:
+		GpsPower:
+			Prerequisites: TECH
+Sequences:
+
+Weapons:
+
+Voices:
+
+Notifications:

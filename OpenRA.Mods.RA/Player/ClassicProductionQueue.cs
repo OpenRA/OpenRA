@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.RA.Buildings;
@@ -17,13 +18,21 @@ namespace OpenRA.Mods.RA
 {
 	public class ClassicProductionQueueInfo : ProductionQueueInfo, Requires<TechTreeInfo>, Requires<PowerManagerInfo>, Requires<PlayerResourcesInfo>
 	{
+		public readonly float SpeedUp = 0;
+		public readonly float MaxSpeedUp = 0;
+
 		public override object Create(ActorInitializer init) { return new ClassicProductionQueue(init.self, this); }
 	}
 
 	public class ClassicProductionQueue : ProductionQueue, ISync
 	{
-		public ClassicProductionQueue( Actor self, ClassicProductionQueueInfo info )
-			: base(self, self, info) {}
+		public new ClassicProductionQueueInfo Info;
+
+		public ClassicProductionQueue(Actor self, ClassicProductionQueueInfo info)
+			: base(self, self, info)
+		{
+			this.Info = info;
+		}
 
 		[Sync] bool isActive = false;
 
@@ -70,6 +79,33 @@ namespace OpenRA.Mods.RA
 				}
 			}
 			return false;
+		}
+
+		public override int GetBuildTime(String unitString)
+		{
+			var unit = Rules.Info[unitString];
+			if (unit == null || ! unit.Traits.Contains<BuildableInfo>())
+				return 0;
+
+			if (self.World.LobbyInfo.GlobalSettings.AllowCheats && self.Owner.PlayerActor.Trait<DeveloperMode>().FastBuild) return 0;
+			var cost = unit.Traits.Contains<ValuedInfo>() ? unit.Traits.Get<ValuedInfo>().Cost : 0;
+
+			var selfsameBuildings = self.World.ActorsWithTrait<Production>()
+				.Where(p => p.Trait.Info.Produces.Contains(unit.Traits.Get<BuildableInfo>().Queue))
+				.Where(p => p.Actor.Owner == self.Owner).ToArray();
+
+			var selfsameQueue = Rules.Info["player"].Traits.WithInterface<ClassicProductionQueueInfo>()
+				.First(p => selfsameBuildings.First().Trait.Info.Produces.Contains(p.Type));
+
+			var speedUp = 1 - (selfsameQueue.SpeedUp * (selfsameBuildings.Count() - 1)).Clamp(0, selfsameQueue.MaxSpeedUp);
+
+			var time = cost
+				* Info.BuildSpeed
+				* (25 * 60) /* frames per min */
+				* speedUp
+				 / 1000;
+
+			return (int) time;
 		}
 	}
 }
