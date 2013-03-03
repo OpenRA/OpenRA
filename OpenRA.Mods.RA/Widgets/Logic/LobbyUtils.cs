@@ -23,6 +23,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	{
 		public static void SetupNameWidget(OrderManager orderManager, Session.Client c, TextFieldWidget name)
 		{
+			if (c.IsAdmin)
+				name.Font = "Bold";
 			name.Text = c.Name;
 			name.OnEnterKey = () =>
 			{

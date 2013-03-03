@@ -540,6 +540,3 @@ scrollitem-hover: dialog.png
 	corner-tr: 594,0,1,1
 	corner-bl: 512,82,1,1
 	corner-br: 594,82,1,1
-
-misc: misc.png
-	isadmin: 0,0,16,16

@@ -399,6 +399,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				{	// Non-editable player in slot
 					template = NonEditablePlayerTemplate.Clone();
 					template.Get<LabelWidget>("NAME").GetText = () => client.Name;
+					if (client.IsAdmin)
+						template.Get<LabelWidget>("NAME").Font = "Bold";
 					var color = template.Get<ColorBlockWidget>("COLOR");
 					color.GetColor = () => client.ColorRamp.GetColor(0);
 
@@ -420,8 +422,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					kickButton.IsDisabled = () => orderManager.LocalClient.IsReady;
 					kickButton.OnClick = () => orderManager.IssueOrder(Order.Command("kick " + client.Index));
 				}
-
-				template.Get<ImageWidget>("ISADMIN").IsVisible = () => client != null && client.IsAdmin;
 
 				template.IsVisible = () => true;
 				Players.AddChild(template);
@@ -458,6 +458,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				{
 					template = NonEditableSpectatorTemplate.Clone();
 					template.Get<LabelWidget>("NAME").GetText = () => c.Name;
+					if (client.IsAdmin)
+						template.Get<LabelWidget>("NAME").Font = "Bold";
 					var color = template.Get<ColorBlockWidget>("COLOR");
 					color.GetColor = () => c.ColorRamp.GetColor(0);
 
@@ -468,8 +470,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					kickButton.IsDisabled = () => orderManager.LocalClient.IsReady;
 					kickButton.OnClick = () => orderManager.IssueOrder(Order.Command("kick " + c.Index));
 				}
-
-				template.Get<ImageWidget>("ISADMIN").IsVisible = () => c.IsAdmin;
 
 				template.IsVisible = () => true;
 				Players.AddChild(template);
