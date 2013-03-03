@@ -3,12 +3,12 @@
 	Mobile:
 		Crushes: crate
 		TerrainSpeeds:
-			Clear: 60
-			Rough: 40
+			Clear: 80
+			Rough: 50
 			Road: 100
-			Tiberium: 40
-			BlueTiberium: 40
-			Beach: 40
+			Tiberium: 50
+			BlueTiberium: 50
+			Beach: 50
 		ROT: 5
 	SelectionDecorations:
 	Selectable: 
@@ -65,6 +65,9 @@
 	AttackMove:
 	AcceptsCloakCrate:
 	WithSmoke:
+	Explodes:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
 
 ^Helicopter:
 	AppearsOnRadar:
@@ -376,6 +379,7 @@
 	HiddenUnderFog:
 	AppearsOnRadar:
 	Burns:
+		Interval: 2
 	TargetableUnit:
 	TransformOnCapture:
 		ForceHealthPercentage: 25
