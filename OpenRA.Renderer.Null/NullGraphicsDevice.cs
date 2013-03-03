@@ -41,6 +41,9 @@ namespace OpenRA.Renderer.Null
 		public void EnableDepthBuffer() { }
 		public void DisableDepthBuffer() { }
 
+		public void EnableStencilBuffer() { }
+		public void DisableStencilBuffer() { }
+
 		public void Clear() { }
 		public void Present() { }
 
