@@ -534,11 +534,11 @@ MammothMissiles:
 		Damage: 75
 
 227mm: 
-	ROF: 150
+	ROF: 140
 	Range: 14
 	MinRange: 3
 	Burst: 2
-	BurstDelay: 10
+	BurstDelay: 20
 	Report: ROCKET1
 	ValidTargets: Ground
 	Projectile: Bullet
