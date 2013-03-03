@@ -842,3 +842,33 @@ APCGun.AA:
 			Heavy: 50%
 		Explosion: small_poof
 		Damage: 25
+
+Patriot:
+	ROF: 100
+	Range: 10
+	MinRange: 2
+	Burst: 2
+	BurstDelay: 35
+	Report:	ROCKET2
+	ValidTargets: Air
+	Projectile: Missile
+		High: yes
+		Shadow: no
+		Image: patriot
+		Trail: smokey
+		ROT: 20
+		Speed: 40
+		RangeLimit: 35
+		Angle: .15
+	Warhead: AP
+		Spread: 14		
+		Versus: 
+			None: 100%	
+			Wood: 100%
+			Light: 100%
+			Heavy: 75%
+		InfDeath: 4	
+		Explosion: poof
+		ImpactSound: xplos
+		SmudgeType: Crater
+		Damage: 55
