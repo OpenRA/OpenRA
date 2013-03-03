@@ -7,13 +7,14 @@ MCV:
 		Icon: mcvicnh
 		Description: Deploys into another Construction Yard.\n  Unarmed
 	Buildable:
-		BuildPaletteOrder: 70
+		BuildPaletteOrder: 100
+		Queue: None
 		Prerequisites: fix
 		Owner: gdi,nod
 	Selectable:
 		Priority: 3
 	Mobile:
-		Speed: 6
+		Speed: 4
 	Health:
 		HP: 750
 	Armor: 
@@ -35,6 +36,9 @@ MCV:
 		HuskActor: MCV.Husk
 	-GainsExperience:
 	-AcceptsCloakCrate:
+	Explodes:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
 
 HARV:
 	Inherits: ^Tank
@@ -50,9 +54,9 @@ HARV:
 		Owner: gdi,nod
 	Selectable:
 		Priority: 7
-		Bounds: 44,44
+		Bounds: 36,36
 	Harvester:
-		Resources: Tiberium, Blue Tiberium
+		Resources: Tiberium, BlueTiberium
 		PipCount: 5
 		Capacity: 15
 		# How far away from our linked proc (refinery) to find resources (in cells):
@@ -87,20 +91,23 @@ APC:
 		Prerequisites: pyle
 		Owner: gdi
 	Mobile:
-		ROT: 5
-		Speed: 10
+		ROT: 8
+		Speed: 9
 	Health:
 		HP: 200
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 5
+		Range: 7
 	Turreted:
 		ROT: 10
 	AttackTurreted:
 		PrimaryWeapon: APCGun
 		PrimaryOffset: 0,0,0,0
 		PrimaryLocalOffset: 2,-2,0,-7,0, -2,-2,0,-7,0
+		SecondaryWeapon: APCGun.AA
+		SecondaryOffset: 0,0,0,0
+		SecondaryLocalOffset: 2,-2,0,-7,0, -2,-2,0,-7,0
 	WithMuzzleFlash:
 	RenderUnitTurreted:
 	AutoTarget:
@@ -139,6 +146,7 @@ ARTY:
 	RenderUnit:
 	Explodes:
 	AutoTarget:
+		InitialStance: Defend
 	LeavesHusk:
 		HuskActor: ARTY.Husk
 
@@ -155,8 +163,8 @@ FTNK:
 		Prerequisites: hq
 		Owner: nod
 	Mobile:
-		ROT: 5
-		Speed: 9
+		ROT: 7
+		Speed: 8
 	Health:
 		HP: 350
 	Armor:
@@ -166,7 +174,7 @@ FTNK:
 	AttackFrontal:
 		PrimaryWeapon: BigFlamer
 		PrimaryOffset: 0,-5,3,2
-		PrimaryLocalOffset: 2,0,0,0,0, -2,0,0,0,0
+		PrimaryLocalOffset: 5,0,0,0,0, -5,0,0,0,0
 	RenderUnit:
 	AutoTarget:
 	WithMuzzleFlash:
@@ -189,14 +197,14 @@ BGGY:
 		Prerequisites: afld
 		Owner: nod
 	Mobile:
-		ROT: 10
-		Speed: 16
+		ROT: 12
+		Speed: 12
 	Health:
-		HP: 140
+		HP: 120
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 5
+		Range: 7
 	Turreted:
 		ROT: 10
 	AttackTurreted:
@@ -211,7 +219,7 @@ BGGY:
 BIKE:
 	Inherits: ^Vehicle
 	Valued:
-		Cost: 400
+		Cost: 500
 	Tooltip:
 		Name: Recon Bike
 		Icon: bikeicnh
@@ -221,21 +229,21 @@ BIKE:
 		Prerequisites: afld
 		Owner: nod
 	Mobile:
-		ROT: 10
-		Speed: 20
+		ROT: 12
+		Speed: 15
 		TerrainSpeeds:
-			Clear: 42
-			Rough: 25
+			Clear: 70
+			Rough: 35
 			Road: 100
-			Tiberium: 25
-			BlueTiberium: 25
-			Beach: 25
+			Tiberium: 35
+			BlueTiberium: 35
+			Beach: 35
 	Health:
 		HP: 120
 	Armor: 
 		Type: Light
 	RevealsShroud:
-		Range: 7
+		Range: 8
 	AttackFrontal:
 		PrimaryWeapon: BikeRockets
 		PrimaryOffset: 0,0,0,-2
@@ -258,14 +266,14 @@ JEEP:
 		Prerequisites: weap
 		Owner: gdi
 	Mobile:
-		ROT: 10
-		Speed: 14
+		ROT: 11
+		Speed: 11
 	Health:
-		HP: 150
+		HP: 160
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 7
+		Range: 8
 	Turreted:
 		ROT: 10
 	AttackTurreted:
@@ -290,13 +298,14 @@ LTNK:
 		Prerequisites: hq
 		Owner: nod
 	Mobile:
-		Speed: 9
+		ROT: 7	
+		Speed: 8
 	Health:
 		HP: 300
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 4
+		Range: 6
 	Turreted:
 		ROT: 5
 	AttackTurreted:
@@ -321,11 +330,12 @@ MTNK:
 		Icon: mtnkicnh
 		Description: General-Purpose GDI Tank.\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
 	Buildable:
-		BuildPaletteOrder: 30
+		BuildPaletteOrder: 40
 		Prerequisites: hq
 		Owner: gdi
 	Mobile:
-		Speed: 7
+		
+		Speed: 6
 	Health:
 		HP: 400
 	Armor:
@@ -347,7 +357,7 @@ MTNK:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
 	Selectable:
-		Bounds: 34,34
+		Bounds: 28,28
 
 HTNK:
 	Inherits: ^Tank
@@ -392,7 +402,7 @@ HTNK:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
 	Selectable:
-		Bounds: 40,38,0,-3
+		Bounds: 34,34,0,-3
 
 MSAM:
 	Inherits: ^Tank
@@ -407,7 +417,7 @@ MSAM:
 		Prerequisites: hq
 		Owner: gdi
 	Mobile:
-		Speed: 6
+		Speed: 8
 	Health:
 		HP: 120
 	Armor:
@@ -434,7 +444,7 @@ MLRS:
 		Icon: mlrsicnh
 		Description: Long range artillery.\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks, Aircraft
 #	Buildable:
-#		BuildPaletteOrder: 60
+#		BuildPaletteOrder: 85
 #		Prerequisites: hq
 #		Owner: nod
 	Mobile:
@@ -472,18 +482,20 @@ STNK:
 		Prerequisites: tmpl
 		Owner: nod
 	Mobile:
-		Speed: 14
+		ROT: 8
+		Speed: 10
+		Crushes: crate, infantry
 	Health:
 		HP: 150
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 4
+		Range: 7
 	Cloak:
-		InitialDelay: 125
-		CloakDelay: 125
+		InitialDelay: 80
+		CloakDelay: 80
 		CloakSound: trans1.aud
-		UncloakSound: appear1.aud
+		UncloakSound: trans1.aud
 	AttackFrontal:
 		PrimaryWeapon: 227mm.stnk
 		PrimaryOffset: 0,-5,0,-3
