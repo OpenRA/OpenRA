@@ -24,20 +24,22 @@ namespace OpenRA.Renderer.Cg
 	{
 		public IGraphicsDevice Create(Size size, WindowMode windowMode)
 		{
+			Console.WriteLine("Using Cg renderer");
 			return new GraphicsDevice(size, windowMode);
 		}
 	}
 
-	public class GraphicsDevice : IGraphicsDevice
+	public class GraphicsDevice : SdlGraphics
 	{
-		Size windowSize;
+		static string[] RequiredExtensions =
+		{
+			"GL_ARB_vertex_program",
+			"GL_ARB_fragment_program",
+			"GL_ARB_vertex_buffer_object"
+		};
+
 		internal IntPtr cgContext;
 		internal int vertexProfile, fragmentProfile;
-
-		IntPtr surf;
-		SdlInput input;
-
-		public Size WindowSize { get { return windowSize; } }
 
 		static Tao.Cg.Cg.CGerrorCallbackFuncDelegate CgErrorCallback = () =>
 		{
@@ -48,19 +50,8 @@ namespace OpenRA.Renderer.Cg
 		};
 
 		public GraphicsDevice(Size size, WindowMode window)
+			: base(size, window, RequiredExtensions)
 		{
-			Console.WriteLine("Using Cg renderer");
-			windowSize = size;
-
-			var extensions = new []
-			{
-				"GL_ARB_vertex_program",
-				"GL_ARB_fragment_program",
-				"GL_ARB_vertex_buffer_object",
-			};
-
-			surf = SdlGraphics.InitializeSdlGl(ref windowSize, window, extensions);
-
 			cgContext = Tao.Cg.Cg.cgCreateContext();
 
 			Tao.Cg.Cg.cgSetErrorCallback(CgErrorCallback);
@@ -69,54 +60,8 @@ namespace OpenRA.Renderer.Cg
 			Tao.Cg.CgGl.cgGLSetManageTextureParameters(cgContext, true);
 			vertexProfile = CgGl.cgGLGetLatestProfile(CgGl.CG_GL_VERTEX);
 			fragmentProfile = CgGl.cgGLGetLatestProfile(CgGl.CG_GL_FRAGMENT);
-
-			Gl.glEnableClientState(Gl.GL_VERTEX_ARRAY);
-			ErrorHandler.CheckGlError();
-			Gl.glEnableClientState(Gl.GL_TEXTURE_COORD_ARRAY);
-			ErrorHandler.CheckGlError();
-
-			Sdl.SDL_SetModState(0);	// i have had enough.
-
-			input = new SdlInput(surf);
 		}
 
-		public void EnableScissor(int left, int top, int width, int height)
-		{
-			if (width < 0) width = 0;
-			if (height < 0) height = 0;
-
-			Gl.glScissor(left, windowSize.Height - ( top + height ), width, height);
-			ErrorHandler.CheckGlError();
-			Gl.glEnable(Gl.GL_SCISSOR_TEST);
-			ErrorHandler.CheckGlError();
-		}
-
-		public void DisableScissor()
-		{
-			Gl.glDisable(Gl.GL_SCISSOR_TEST);
-			ErrorHandler.CheckGlError();
-		}
-
-		public void Clear() { SdlGraphics.Clear(); }
-		public void Present() { Sdl.SDL_GL_SwapBuffers(); }
-		public void PumpInput(IInputHandler inputHandler) { input.PumpInput(inputHandler); }
-
-		public void DrawPrimitives(PrimitiveType pt, int firstVertex, int numVertices)
-		{
-			SdlGraphics.DrawPrimitives(pt, firstVertex, numVertices);
-		}
-
-		public void SetLineWidth(float width)
-		{
-			Gl.glLineWidth(width);
-			ErrorHandler.CheckGlError();
-		}
-
-		public IVertexBuffer<Vertex> CreateVertexBuffer(int size) { return new VertexBuffer<Vertex>(size); }
-		public ITexture CreateTexture() { return new Texture(); }
-		public ITexture CreateTexture(Bitmap bitmap) { return new Texture(bitmap); }
-		public IShader CreateShader(string name) { return new Shader(this, name); }
-
-		public int GpuMemoryUsed { get { return 0; } }
+		public override IShader CreateShader(string name) { return new Shader(this, name); }
 	}
 }

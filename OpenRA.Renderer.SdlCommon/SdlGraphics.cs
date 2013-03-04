@@ -18,9 +18,30 @@ using Tao.Sdl;
 
 namespace OpenRA.Renderer.SdlCommon
 {
-	public static class SdlGraphics
+	public abstract class SdlGraphics : IGraphicsDevice
 	{
-		public static IntPtr InitializeSdlGl( ref Size size, WindowMode window, string[] requiredExtensions )
+		Size windowSize;
+		IntPtr surf;
+		SdlInput input;
+
+		public Size WindowSize { get { return windowSize; } }
+
+		public SdlGraphics(Size size, WindowMode window, string[] extensions)
+		{
+			windowSize = size;
+			surf = InitializeSdlGl(ref windowSize, window, extensions);
+
+			Gl.glEnableClientState(Gl.GL_VERTEX_ARRAY);
+			ErrorHandler.CheckGlError();
+			Gl.glEnableClientState(Gl.GL_TEXTURE_COORD_ARRAY);
+			ErrorHandler.CheckGlError();
+
+			Sdl.SDL_SetModState(0);
+
+			input = new SdlInput(surf);
+		}
+
+		IntPtr InitializeSdlGl(ref Size size, WindowMode window, string[] requiredExtensions)
 		{
 			Sdl.SDL_Init( Sdl.SDL_INIT_NOPARACHUTE | Sdl.SDL_INIT_VIDEO );
 			Sdl.SDL_GL_SetAttribute( Sdl.SDL_GL_DOUBLEBUFFER, 1 );
@@ -30,7 +51,7 @@ namespace OpenRA.Renderer.SdlCommon
 			Sdl.SDL_GL_SetAttribute( Sdl.SDL_GL_ALPHA_SIZE, 0 );
 
 			int windowFlags = 0;
-			switch( window )
+			switch (window)
 			{
 			case WindowMode.Fullscreen:
 				windowFlags |= Sdl.SDL_FULLSCREEN;
@@ -59,14 +80,14 @@ namespace OpenRA.Renderer.SdlCommon
 
 			Console.WriteLine("Using resolution: {0}x{1}", size.Width, size.Height);
 
-			var surf = Sdl.SDL_SetVideoMode( size.Width, size.Height, 0, Sdl.SDL_OPENGL | windowFlags );
+			var surf = Sdl.SDL_SetVideoMode(size.Width, size.Height, 0, Sdl.SDL_OPENGL | windowFlags);
 			if (surf == IntPtr.Zero)
 				Console.WriteLine("Failed to set video mode.");
 
-			Sdl.SDL_WM_SetCaption( "OpenRA", "OpenRA" );
-			Sdl.SDL_ShowCursor( 0 );
-			Sdl.SDL_EnableUNICODE( 1 );
-			Sdl.SDL_EnableKeyRepeat( Sdl.SDL_DEFAULT_REPEAT_DELAY, Sdl.SDL_DEFAULT_REPEAT_INTERVAL );
+			Sdl.SDL_WM_SetCaption("OpenRA", "OpenRA");
+			Sdl.SDL_ShowCursor(0);
+			Sdl.SDL_EnableUNICODE(1);
+			Sdl.SDL_EnableKeyRepeat(Sdl.SDL_DEFAULT_REPEAT_DELAY, Sdl.SDL_DEFAULT_REPEAT_INTERVAL);
 
 			ErrorHandler.CheckGlError();
 
@@ -86,7 +107,7 @@ namespace OpenRA.Renderer.SdlCommon
 			return surf;
 		}
 
-		static int ModeFromPrimitiveType(PrimitiveType pt)
+		int ModeFromPrimitiveType(PrimitiveType pt)
 		{
 			switch(pt)
 			{
@@ -98,19 +119,49 @@ namespace OpenRA.Renderer.SdlCommon
 			throw new NotImplementedException();
 		}
 
-		public static void DrawPrimitives(PrimitiveType pt, int firstVertex, int numVertices)
+		public void DrawPrimitives(PrimitiveType pt, int firstVertex, int numVertices)
 		{
 			Gl.glDrawArrays(ModeFromPrimitiveType(pt), firstVertex, numVertices);
 			ErrorHandler.CheckGlError();
 		}
 
-		public static void Clear()
+		public void Clear()
 		{
 			Gl.glClearColor(0, 0, 0, 0);
 			ErrorHandler.CheckGlError();
 			Gl.glClear(Gl.GL_COLOR_BUFFER_BIT);
 			ErrorHandler.CheckGlError();
 		}
+
+		public void EnableScissor(int left, int top, int width, int height)
+		{
+			if (width < 0) width = 0;
+			if (height < 0) height = 0;
+
+			Gl.glScissor(left, windowSize.Height - (top + height), width, height);
+			ErrorHandler.CheckGlError();
+			Gl.glEnable(Gl.GL_SCISSOR_TEST);
+			ErrorHandler.CheckGlError();
+		}
+
+		public void DisableScissor()
+		{
+			Gl.glDisable(Gl.GL_SCISSOR_TEST);
+			ErrorHandler.CheckGlError();
+		}
+
+		public void SetLineWidth(float width)
+		{
+			Gl.glLineWidth(width);
+			ErrorHandler.CheckGlError();
+		}
+
+		public void Present() { Sdl.SDL_GL_SwapBuffers(); }
+		public void PumpInput(IInputHandler inputHandler) { input.PumpInput(inputHandler); }
+		public IVertexBuffer<Vertex> CreateVertexBuffer(int size) { return new VertexBuffer<Vertex>(size); }
+		public ITexture CreateTexture() { return new Texture(); }
+		public ITexture CreateTexture(Bitmap bitmap) { return new Texture(bitmap); }
+		public abstract IShader CreateShader(string name);
 	}
 }
 

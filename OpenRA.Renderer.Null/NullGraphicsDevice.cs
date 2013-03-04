@@ -54,8 +54,6 @@ namespace OpenRA.Renderer.Null
 		public ITexture CreateTexture() { return new NullTexture(); }
 		public ITexture CreateTexture(Bitmap bitmap) { return new NullTexture(); }
 		public IShader CreateShader(string name) { return new NullShader(); }
-
-		public int GpuMemoryUsed { get { return 0; } }
 	}
 
 	public class NullShader : IShader

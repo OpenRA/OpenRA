@@ -40,7 +40,6 @@ namespace OpenRA.FileFormats.Graphics
 		IShader CreateShader( string name );
 
 		Size WindowSize { get; }
-		int GpuMemoryUsed { get; }
 
 		void Clear();
 		void Present();
