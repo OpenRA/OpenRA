@@ -248,7 +248,7 @@ BikeRockets:
 	Warhead:
 		Spread: 3
 		Versus: 
-			None: 75%
+			None: 65%
 			Wood: 50%
 			Light: 100%
 			Heavy: 100%
@@ -257,7 +257,7 @@ BikeRockets:
 		Explosion: 4
 		ImpactSound: xplos
 		SmudgeType: Crater
-		Damage: 25
+		Damage: 28
 
 OrcaAGMissiles:
 	ROF: 10
@@ -403,7 +403,7 @@ Grenade:
 		Damage: 50
 
 70mm:
-	ROF: 30
+	ROF: 45
 	Range: 4
 	Report: TNKFIRE3
 	Projectile: Bullet
@@ -444,7 +444,7 @@ Grenade:
 		Damage: 30
 
 120mm:
-	ROF: 40
+	ROF: 60
 	Range: 4.75
 	Report: TNKFIRE6
 	Projectile: Bullet
@@ -465,7 +465,7 @@ Grenade:
 		Damage: 40
 
 120mmDual:
-	ROF: 40
+	ROF: 60
 	Range: 4.75
 	Report: TNKFIRE6
 	Burst: 2
@@ -593,7 +593,7 @@ MammothMissiles:
 			None: 35%
 			Wood: 90%
 			Light: 100%
-			Heavy: 100%
+			Heavy: 90%
 		InfDeath: 4
 		Explosion: 4
 		ImpactSound: xplos
@@ -617,7 +617,7 @@ ArtilleryShell:
 		Spread: 6
 		Versus: 
 			None: 90%
-			Wood: 75%
+			Wood: 50%
 			Light: 60%
 			Heavy: 25%
 		InfDeath: 3
