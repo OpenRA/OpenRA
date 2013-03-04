@@ -837,7 +837,7 @@ APCGun.AA:
 	ROF: 20
 	Range: 7
 	Report: gun20
-	ValidTargets: Ground
+	ValidTargets: Air
 	Projectile: Bullet
 		Speed: 100
 		High: true
