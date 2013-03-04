@@ -19,10 +19,21 @@ require "wx"
 function FileSysGet(dir,spec)
   local content = {}
   local browse = wx.wxFileSystem()
+  local cwd = wx.wxGetCwd()
   if not wx.wxFileName(dir):DirExists() then return content end
   local f = browse:FindFirst(dir,spec)
   while #f>0 do
-    table.insert(content,(f:gsub("^file:",""))) -- drop file: protocol (wx2.9+)
+    if f:match("^file:") then -- remove file: protocol (wx2.9+)
+      f = f:gsub(iswindows and "^file:/?" or "^file:","")
+        :gsub('%%(%x%x)', function(n) return string.char(tonumber(n, 16)) end)
+    end
+    -- wx2.9+ return absolute path here instead of expected relative; fix it
+    if wx.wxIsAbsolutePath(f) then
+      local relative = wx.wxFileName(f)
+      relative:MakeRelativeTo(cwd)
+      f = relative:GetFullPath()
+    end
+    table.insert(content, f)
     f = browse:FindNext()
   end
   return content
