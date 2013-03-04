@@ -26,11 +26,6 @@ namespace OpenRA.Graphics
 		internal static int SheetSize;
 		internal static int TempBufferSize;
 		internal static int TempBufferCount;
-		internal IShader WorldSpriteShader { get; private set; }
-		internal IShader WorldLineShader { get; private set; }
-		internal IShader LineShader { get; private set; }
-		internal IShader RgbaSpriteShader { get; private set; }
-		internal IShader SpriteShader { get; private set; }
 
 		public SpriteRenderer WorldSpriteRenderer { get; private set; }
 		public LineRenderer WorldLineRenderer { get; private set; }
@@ -50,17 +45,11 @@ namespace OpenRA.Graphics
 			TempBufferCount = Game.Settings.Graphics.NumTempBuffers;
 			SheetSize = Game.Settings.Graphics.SheetSize;
 
-			WorldSpriteShader = device.CreateShader("shp");
-			WorldLineShader = device.CreateShader("line");
-			LineShader = device.CreateShader("line");
-			RgbaSpriteShader = device.CreateShader("rgba");
-			SpriteShader = device.CreateShader("shp");
-
-			WorldSpriteRenderer = new SpriteRenderer(this, WorldSpriteShader);
-			WorldLineRenderer = new LineRenderer(this, WorldLineShader);
-			LineRenderer = new LineRenderer(this, LineShader);
-			RgbaSpriteRenderer = new SpriteRenderer(this, RgbaSpriteShader);
-			SpriteRenderer = new SpriteRenderer(this, SpriteShader);
+			WorldSpriteRenderer = new SpriteRenderer(this, device.CreateShader("shp"));
+			WorldLineRenderer = new LineRenderer(this, device.CreateShader("line"));
+			LineRenderer = new LineRenderer(this, device.CreateShader("line"));
+			RgbaSpriteRenderer = new SpriteRenderer(this, device.CreateShader("rgba"));
+			SpriteRenderer = new SpriteRenderer(this, device.CreateShader("shp"));
 
 			for (int i = 0; i < TempBufferCount; i++)
 				tempBuffers.Enqueue(device.CreateVertexBuffer(TempBufferSize));
@@ -76,23 +65,11 @@ namespace OpenRA.Graphics
 		public void BeginFrame(float2 scroll, float zoom)
 		{
 			device.Clear();
-			float2 r1 = new float2(2f/Resolution.Width, -2f/Resolution.Height);
-			float2 r2 = new float2(-1, 1);
-			var zr1 = zoom*r1;
-
-			SetShaderParams(WorldSpriteShader, zr1, r2, scroll);
-			SetShaderParams(WorldLineShader, zr1, r2, scroll);
-			SetShaderParams(LineShader, r1, r2, float2.Zero);
-			SetShaderParams(RgbaSpriteShader, r1, r2, float2.Zero);
-			SetShaderParams(SpriteShader, r1, r2, float2.Zero);
-		}
-
-		void SetShaderParams(IShader s, float2 r1, float2 r2, float2 scroll)
-		{
-			s.SetTexture("Palette", PaletteTexture);
-			s.SetVec("Scroll", (int)scroll.X, (int)scroll.Y);
-			s.SetVec("r1", r1.X, r1.Y);
-			s.SetVec("r2", r2.X, r2.Y);
+			WorldSpriteRenderer.SetShaderParams(PaletteTexture, Resolution, zoom, scroll);
+			WorldLineRenderer.SetShaderParams(PaletteTexture, Resolution, zoom, scroll);
+			SpriteRenderer.SetShaderParams(PaletteTexture, Resolution, 1f, float2.Zero);
+			LineRenderer.SetShaderParams(PaletteTexture, Resolution, 1f, float2.Zero);
+			RgbaSpriteRenderer.SetShaderParams(PaletteTexture, Resolution, 1f, float2.Zero);
 		}
 
 		public void EndFrame(IInputHandler inputHandler)
