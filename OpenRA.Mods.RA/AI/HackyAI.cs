@@ -215,8 +215,27 @@ namespace OpenRA.Mods.RA.AI
 			{
 				if (!a.IsIdle)
 					if (a.GetCurrentActivity().GetType() == typeof(OpenRA.Mods.RA.Activities.Attack) ||
+						a.GetCurrentActivity().GetType() == typeof(FlyAttack) ||
 						(a.GetCurrentActivity().NextActivity != null &&
-						a.GetCurrentActivity().NextActivity.GetType() == typeof(OpenRA.Mods.RA.Activities.Attack)))
+						(a.GetCurrentActivity().NextActivity.GetType() == typeof(OpenRA.Mods.RA.Activities.Attack) || 
+						a.GetCurrentActivity().NextActivity.GetType() == typeof(FlyAttack)) )
+						)
+						return true;
+				return false;
+			}
+
+			protected static bool CanAttackTarget(Actor a, Actor target)
+			{
+				if (!a.HasTrait<AttackBase>()) return false;
+				if (!target.HasTrait<TargetableUnit<TargetableUnitInfo>>() &&
+					!target.HasTrait<TargetableBuilding>()) return false;
+
+				foreach (var weap in a.Trait<AttackBase>().Weapons)
+					if (target.HasTrait<TargetableUnit<TargetableUnitInfo>>() && 
+						weap.Info.ValidTargets.Intersect(target.Trait<TargetableUnit<TargetableUnitInfo>>().TargetTypes) != null)
+						return true;
+					else if (target.HasTrait<TargetableBuilding>() && 
+						weap.Info.ValidTargets.Intersect(target.Trait<TargetableBuilding>().TargetTypes) != null)
 						return true;
 				return false;
 			}
@@ -334,7 +353,20 @@ namespace OpenRA.Mods.RA.AI
 
 			protected static bool IsReloadable(Actor a)
 			{
-				return a.TraitOrDefault<Reloads>() != null;
+				return a.HasTrait<Reloads>();
+			}
+
+			protected static bool IsRearm(Actor a)
+			{
+				if (a.GetCurrentActivity() == null) return false;
+				if (a.GetCurrentActivity().GetType() == typeof(OpenRA.Mods.RA.Activities.Rearm) ||
+					a.GetCurrentActivity().GetType() == typeof(ResupplyAircraft) ||
+					(a.GetCurrentActivity().NextActivity != null &&
+					 (a.GetCurrentActivity().NextActivity.GetType() == typeof(OpenRA.Mods.RA.Activities.Rearm) ||
+					 a.GetCurrentActivity().NextActivity.GetType() == typeof(ResupplyAircraft)))
+					)
+					return true;
+				return false;
 			}
 		}
 
@@ -397,9 +429,18 @@ namespace OpenRA.Mods.RA.AI
 					if (BusyAttack(a))
 						continue;
 					if (!IsReloadable(a))
+					{
 						if (!HasAmmo(a))
+						{
+							if (IsRearm(a))
+								continue;
+							owner.world.IssueOrder(new Order("ReturnToBase", a, false));
 							continue;
-					if (owner.Target.HasTrait<ITargetable>())
+						}
+						if (IsRearm(a))
+							continue;
+					}
+					if (owner.Target.HasTrait<ITargetable>() && CanAttackTarget(a, owner.Target))
 						owner.world.IssueOrder(new Order("Attack", a, false) { TargetActor = owner.Target });
 				}
 			}
@@ -420,6 +461,8 @@ namespace OpenRA.Mods.RA.AI
 					if (!IsReloadable(a))
 						if (!FullAmmo(a))
 						{
+							if (IsRearm(a))
+								continue;
 							owner.world.IssueOrder(new Order("ReturnToBase", a, false));
 							continue;
 						}
@@ -703,7 +746,10 @@ namespace OpenRA.Mods.RA.AI
 		{
 			var buildableThings = queue.BuildableItems();
 			if (!buildableThings.Any()) return null;
-			return buildableThings.ElementAtOrDefault(random.Next(buildableThings.Count()));
+			var unit = buildableThings.ElementAtOrDefault(random.Next(buildableThings.Count()));
+			if (HasAdequateAirUnits(unit))
+				return unit;
+			return null;
 		}
 
 		ActorInfo ChooseUnitToBuild(ProductionQueue queue)
@@ -719,7 +765,8 @@ namespace OpenRA.Mods.RA.AI
 			foreach (var unit in Info.UnitsToBuild)
 				if (buildableThings.Any(b => b.Name == unit.Key))
 					if (myUnits.Count(a => a == unit.Key) < unit.Value * myUnits.Length)
-						return Rules.Info[unit.Key];
+						if (HasAdequateAirUnits(Rules.Info[unit.Key]))
+							return Rules.Info[unit.Key];
 
 			return null;
 		}
@@ -727,6 +774,11 @@ namespace OpenRA.Mods.RA.AI
 		int CountBuilding(string frac, Player owner)
 		{
 			return world.ActorsWithTrait<Building>().Where(a => a.Actor.Owner == owner && a.Actor.Info.Name == frac).Count();
+		}
+
+		int CountUnits(string unit, Player owner)
+		{
+			return world.ActorsWithTrait<IMove>().Where(a => a.Actor.Owner == owner && a.Actor.Info.Name == unit).Count();
 		}
 
 		int? CountBuildingByCommonName(string commonName, Player owner)
@@ -753,7 +805,7 @@ namespace OpenRA.Mods.RA.AI
 		{
 			if (!names.Any() || !names.ContainsKey(commonName)) return null;
 			return Rules.Info.Where(k => names[commonName].Contains(k.Key) &&
-				k.Value.Traits.Get<BuildableInfo>().Owner.Contains(owner.Country.Race)).Random(random).Value; //random is shit*/
+				k.Value.Traits.Get<BuildableInfo>().Owner.Contains(owner.Country.Race)).Random(random).Value; //random is shit
 		}
 
 		bool HasAdequatePower()
@@ -763,21 +815,21 @@ namespace OpenRA.Mods.RA.AI
 				playerPower.PowerProvided > playerPower.PowerDrained * 1.2;
 		}
 
-		public bool HasAdequateFact()
+		bool HasAdequateFact()
 		{
 			if (CountBuildingByCommonName("ConstructionYard", p) == 0 && CountBuildingByCommonName("VehiclesFactory", p) > 0)
 				return false;
 			return true;
 		}
 
-		public bool HasAdequateProc()
+		bool HasAdequateProc()
 		{
 			if (CountBuildingByCommonName("Refinery", p) == 0 && CountBuildingByCommonName("Power", p) > 0)
 				return false;
 			return true;
 		}
 
-		public bool HasMinimumProc()
+		bool HasMinimumProc()
 		{
 			if (CountBuildingByCommonName("Refinery", p) < 2 && CountBuildingByCommonName("Power", p) > 0 &&
 				CountBuildingByCommonName("Barracks",p) > 0)
@@ -785,7 +837,7 @@ namespace OpenRA.Mods.RA.AI
 			return true;
 		}
 
-		public bool HasAdequateNumber(string frac, Player owner)
+		bool HasAdequateNumber(string frac, Player owner)
 		{
 			if (Info.BuildingLimits.ContainsKey(frac))
 				if (CountBuilding(frac, owner) < Info.BuildingLimits[frac])
@@ -793,6 +845,20 @@ namespace OpenRA.Mods.RA.AI
 				else
 					return false;
 
+			return true;
+		}
+
+		//for mods like RA (number of building must match the number of aircraft)
+		bool HasAdequateAirUnits(ActorInfo actorInfo)
+		{
+			if (!actorInfo.Traits.Contains<ReloadsInfo>() && actorInfo.Traits.Contains<LimitedAmmoInfo>() 
+				&& actorInfo.Traits.Contains<AircraftInfo>())
+			{
+				var countOwnAir = CountUnits(actorInfo.Name, p);
+				var countBuildings = CountBuilding(actorInfo.Traits.Get<AircraftInfo>().RearmBuildings.FirstOrDefault(), p);
+				if (countOwnAir >= countBuildings)
+					return false;
+			}
 			return true;
 		}
 
@@ -1301,7 +1367,10 @@ namespace OpenRA.Mods.RA.AI
 			foreach (var q in Info.UnitQueues)
 			{
 				if (unitsHangingAroundTheBase.Count < 12)
+				{
 					BuildUnit(q, true);
+					continue;
+				}
 				BuildUnit(q, false);
 			}
 		}
