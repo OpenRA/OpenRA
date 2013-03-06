@@ -18,10 +18,10 @@ namespace OpenRA.Traits
 		public object Create(ActorInitializer init) { return new CreatesShroud(this); }
 	}
 
-	public class CreatesShroud : ITick
+	public class CreatesShroud : ITick, ISync
 	{
 		CreatesShroudInfo Info;
-		CPos previousLocation;
+		[Sync] CPos previousLocation;
 		Shroud.ActorVisibility v;
 
 		public CreatesShroud(CreatesShroudInfo info)
@@ -37,20 +37,20 @@ namespace OpenRA.Traits
 			if (previousLocation != self.Location && v != null) {
 				previousLocation = self.Location;
 
-				var shrouds = self.World.ActorsWithTrait<Traits.Shroud>().Select(s => s.Actor.Owner.Shroud);
+				var shrouds = self.World.ActorsWithTrait<Shroud>().Select(s => s.Actor.Owner.Shroud);
 				foreach (var shroud in shrouds) {
 					shroud.UnhideActor(self, v, Info.Range);
 				}
 			}
 
 			if (!self.TraitsImplementing<IDisable>().Any(d => d.Disabled)) {
-				var shrouds = self.World.ActorsWithTrait<Traits.Shroud>().Select(s => s.Actor.Owner.Shroud);
+				var shrouds = self.World.ActorsWithTrait<Shroud>().Select(s => s.Actor.Owner.Shroud);
 				foreach (var shroud in shrouds) {
 					shroud.HideActor(self, Info.Range);
 				}
 			}
 			else {
-				var shrouds = self.World.ActorsWithTrait<Traits.Shroud>().Select(s => s.Actor.Owner.Shroud);
+				var shrouds = self.World.ActorsWithTrait<Shroud>().Select(s => s.Actor.Owner.Shroud);
 				foreach (var shroud in shrouds) {
 					shroud.UnhideActor(self, v, Info.Range);
 				}

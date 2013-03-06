@@ -20,19 +20,19 @@ namespace OpenRA.Traits
 		public object Create(ActorInitializer init) { return new Shroud(init.world); }
 	}
 
-	public class Shroud
+	public class Shroud : ISync
 	{
 		Map map;
 		World world;
 
-		public Player Owner;
+		[Sync] public Player Owner;
 		public int[,] visibleCells;
 		public bool[,] exploredCells;
 		public bool[,] foggedCells;
 		public Rectangle? exploredBounds;
 		bool disabled = false;
 		public bool dirty = true;
-		public bool Disabled
+		[Sync] public bool Disabled
 		{
 			get { return disabled; }
 			set { disabled = value; Dirty(); }
@@ -70,7 +70,7 @@ namespace OpenRA.Traits
 
 		// cache of positions that were added, so no matter what crazy trait code does, it
 		// can't make us invalid.
-		public class ActorVisibility { public int range; public CPos[] vis; }
+		public class ActorVisibility { [Sync] public int range; [Sync] public CPos[] vis; }
 		public Dictionary<Actor, ActorVisibility> vis = new Dictionary<Actor, ActorVisibility>();
 
 		static IEnumerable<CPos> FindVisibleTiles(World world, CPos a, int r)

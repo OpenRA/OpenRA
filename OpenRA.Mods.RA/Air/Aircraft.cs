@@ -102,12 +102,9 @@ namespace OpenRA.Mods.RA.Air
 
 
 		protected readonly Actor self;
-		[Sync]
-		public int Facing { get; set; }
-		[Sync]
-		public int Altitude { get; set; }
-		[Sync]
-		public PSubPos SubPxPosition;
+		[Sync] public int Facing { get; set; }
+		[Sync] public int Altitude { get; set; }
+		[Sync] public PSubPos SubPxPosition;
 		public PPos PxPosition { get { return SubPxPosition.ToPPos(); } }
 		public CPos TopLeft { get { return PxPosition.ToCPos(); } }
 
