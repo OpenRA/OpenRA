@@ -150,7 +150,8 @@ namespace OpenRA.Mods.RA.AI
 
 		public bool TargetIsValid
 		{
-			get { return (target != null && !target.IsDead() && !target.Destroyed && target.IsInWorld); }
+			get { return (target != null && !target.IsDead() && !target.Destroyed
+				&& target.IsInWorld && !target.HasTrait<Husk>()); }
 		}
 
 		//**********************************************************************************
@@ -508,7 +509,8 @@ namespace OpenRA.Mods.RA.AI
 				var enemyUnits = owner.world.FindUnitsInCircle(owner.Target.CenterLocation, Game.CellSize * 10)
 					.Where(unit => owner.bot.p.Stances[unit.Owner] == Stance.Enemy).ToList();
 				if (enemyUnits.Any())
-				{			  
+
+				{
 					owner.attackOrFleeFuzzy.CalculateFuzzy(owner.units, enemyUnits);
 					if (owner.attackOrFleeFuzzy.CanAttack)
 					{
@@ -1178,8 +1180,8 @@ namespace OpenRA.Mods.RA.AI
 				foreach (var a in unitsHangingAroundTheBase)
 					if (!a.HasTrait<Aircraft>())
 						attackForce.units.Add(a);
-				unitsHangingAroundTheBase.Clear();	
-			}  
+				unitsHangingAroundTheBase.Clear();
+			}
 		}
 
 		void TryToRushAttack()

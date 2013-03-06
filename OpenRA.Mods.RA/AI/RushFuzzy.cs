@@ -27,8 +27,8 @@ namespace OpenRA.Mods.RA.AI
 							"and ((EnemyHealth is NearDead) or (EnemyHealth is Injured) or (EnemyHealth is Normal)) " +
 							"and (RelativeAttackPower is Strong) " +
 							"and ((RelativeSpeed is Slow) or (RelativeSpeed is Equal) or (RelativeSpeed is Fast))) " +
-							"then AttackOrFlee is Attack"));			 
-			
+							"then AttackOrFlee is Attack"));
+
 			fuzzyEngine.Rules.Add(fuzzyEngine.ParseRule("if ((OwnHealth is Normal) " +
 							"and ((EnemyHealth is NearDead) or (EnemyHealth is Injured) or (EnemyHealth is Normal)) " +
 							"and ((RelativeAttackPower is Weak) or (RelativeAttackPower is Equal)) " +
