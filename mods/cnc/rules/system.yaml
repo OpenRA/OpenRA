@@ -11,6 +11,26 @@ Player:
 	DeveloperMode:
 	HackyAI@Default:
 		Name:Easy AI
+		BuildingCommonNames:
+			ConstructionYard: fact
+			Refinery: proc
+			Power: nuke,nuk2
+			Barracks: pyle,hand
+			VehiclesFactory: weap,afld
+			Silo: silo
+		UnitsCommonNames:
+			Mcv: mcv
+		BuildingLimits:
+			proc: 4
+			pyle: 2
+			hand: 2
+			hq: 1
+			weap: 2
+			afld: 2
+			hpad: 1
+			eye: 1
+			tmpl: 1
+			fix: 1
 		BuildingFractions:
 			proc: 20%
 			nuke: 9%
