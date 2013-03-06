@@ -9,7 +9,6 @@
 #endregion
 
 using System.Collections.Generic;
-using OpenRA.Mods.RA.Effects;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -24,15 +23,13 @@ namespace OpenRA.Mods.RA
 
 	public class RallyPoint : IIssueOrder, IResolveOrder, ISync
 	{
-		[Sync]
-		public CPos rallyPoint;
+		[Sync] public CPos rallyPoint;
 		public int nearEnough = 1;
 
-		public RallyPoint(Actor self)
+		public RallyPoint(Actor self, RallyPointInfo info)
 		{
-			var info = self.Info.Traits.Get<RallyPointInfo>();
 			rallyPoint = self.Location + new CVec(info.RallyPoint[0], info.RallyPoint[1]);
-			self.World.AddFrameEndTask(w => w.Add(new Effects.RallyPoint(self)));
+			self.World.AddFrameEndTask(w => w.Add(new Effects.RallyPoint(self, info.IndicatorPalettePrefix)));
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
