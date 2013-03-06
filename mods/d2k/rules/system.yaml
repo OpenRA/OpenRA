@@ -52,13 +52,13 @@ Player:
 		Name:Omnius
 		UnitQueues: Infantry, Vehicle, Armor, Starport
 		RallypointTestBuilding: conyarda
-		BuildingGeneralNames:
+		BuildingCommonNames:
 			ConstructionYard: conyarda,conyardh,conyardo
 			Refinery: refa,refh,refo
 			Power: pwra,pwrh,pwro
 			VehiclesFactory: lighta,lighth,lighto,heavya,heavyh,heavyo
 			Silo: siloa, siloh, siloo
-		UnitsGeneralNames:
+		UnitsCommonNames:
 			Mcv: mcva,mcvh,mcvo
 		BuildingLimits:
 			refa: 4

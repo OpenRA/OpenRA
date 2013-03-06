@@ -43,11 +43,11 @@ namespace OpenRA.Mods.RA.AI
 		[FieldLoader.LoadUsing("LoadBuildings")]
 		public readonly Dictionary<string, float> BuildingFractions = null;
 
-		[FieldLoader.LoadUsing("LoadUnitsGeneralNames")]
-		public readonly Dictionary<string, string[]> UnitsGeneralNames = null;
+		[FieldLoader.LoadUsing("LoadUnitsCommonNames")]
+		public readonly Dictionary<string, string[]> UnitsCommonNames = null;
 
-		[FieldLoader.LoadUsing("LoadBuildingsGeneralNames")]
-		public readonly Dictionary<string, string[]> BuildingGeneralNames = null;
+		[FieldLoader.LoadUsing("LoadBuildingsCommonNames")]
+		public readonly Dictionary<string, string[]> BuildingCommonNames = null;
 
 		[FieldLoader.LoadUsing("LoadBuildingLimits")]
 		public readonly Dictionary<string, int> BuildingLimits = null;
@@ -74,8 +74,8 @@ namespace OpenRA.Mods.RA.AI
 		static object LoadUnits(MiniYaml y) { return LoadActorList(y, "UnitsToBuild"); }
 		static object LoadBuildings(MiniYaml y) { return LoadActorList(y, "BuildingFractions"); }
 
-		static object LoadUnitsGeneralNames(MiniYaml y) { return LoadListList(y, "UnitsGeneralNames"); }
-		static object LoadBuildingsGeneralNames(MiniYaml y) { return LoadListList(y, "BuildingGeneralNames"); }
+		static object LoadUnitsCommonNames(MiniYaml y) { return LoadListList(y, "UnitsCommonNames"); }
+		static object LoadBuildingsCommonNames(MiniYaml y) { return LoadListList(y, "BuildingCommonNames"); }
 
 		static object LoadBuildingLimits(MiniYaml y) { return LoadList<int>(y, "BuildingLimits"); }
 
@@ -177,7 +177,7 @@ namespace OpenRA.Mods.RA.AI
 				return flee(enemyAroundUnit);
 			}
 
-			protected CPos? AverageUnitsPosition(List<Actor> units)
+			protected static CPos? AverageUnitsPosition(List<Actor> units)
 			{
 				int x = 0;
 				int y = 0;
@@ -194,14 +194,14 @@ namespace OpenRA.Mods.RA.AI
 				return (x != 0 && y != 0) ? new CPos?(new CPos(x, y)) : null;
 			}
 
-			protected void GoToRandomOwnBuilding(Squad owner)
+			protected static void GoToRandomOwnBuilding(Squad owner)
 			{
 				var loc = RandomBuildingLocation(owner);
 				foreach (var a in owner.units)
 					owner.world.IssueOrder(new Order("Move", a, false) { TargetLocation = loc });
 			}
 
-			protected CPos RandomBuildingLocation(Squad owner)
+			protected static CPos RandomBuildingLocation(Squad owner)
 			{
 				var location = owner.bot.baseCenter;
 				var buildings = owner.world.ActorsWithTrait<Building>()
@@ -211,7 +211,7 @@ namespace OpenRA.Mods.RA.AI
 				return location;
 			}
 
-			protected bool BusyAttack(Actor a)
+			protected static bool BusyAttack(Actor a)
 			{
 				if (!a.IsIdle)
 					if (a.GetCurrentActivity().GetType() == typeof(OpenRA.Mods.RA.Activities.Attack) ||
@@ -228,7 +228,7 @@ namespace OpenRA.Mods.RA.AI
 		{
 			protected const int missileUnitsMultiplier = 3;
 
-			protected int CountAntiAirUnits(List<Actor> units)
+			protected static int CountAntiAirUnits(List<Actor> units)
 			{
 				int missileUnitsCount = 0;
 				foreach (var unit in units)
@@ -259,7 +259,7 @@ namespace OpenRA.Mods.RA.AI
 				});
 			}
 
-			protected Actor FindDefenselessTarget(Squad owner)
+			protected static Actor FindDefenselessTarget(Squad owner)
 			{
 				Actor target = null;
 				FindSafePlace(owner, out target, true);
@@ -267,7 +267,7 @@ namespace OpenRA.Mods.RA.AI
 				return target == null ? null : target;
 			}
 
-			protected CPos? FindSafePlace(Squad owner, out Actor detectedEnemyTarget, bool needTarget)
+			protected static CPos? FindSafePlace(Squad owner, out Actor detectedEnemyTarget, bool needTarget)
 			{
 				World world = owner.world;
 				detectedEnemyTarget = null;
@@ -293,13 +293,13 @@ namespace OpenRA.Mods.RA.AI
 				return null;
 			}
 
-			protected bool NearToPosSafely(Squad owner, PPos loc)
+			protected static bool NearToPosSafely(Squad owner, PPos loc)
 			{
 				Actor a;
 				return NearToPosSafely(owner, loc, out a);
 			}
 
-			protected bool NearToPosSafely(Squad owner, PPos loc, out Actor detectedEnemyTarget)
+			protected static bool NearToPosSafely(Squad owner, PPos loc, out Actor detectedEnemyTarget)
 			{
 				detectedEnemyTarget = null;
 				var unitsAroundPos = owner.world.FindUnitsInCircle(loc, Game.CellSize * dangerRadius)
@@ -320,19 +320,19 @@ namespace OpenRA.Mods.RA.AI
 				return true;
 			}
 
-			protected bool FullAmmo(Actor a)
+			protected static bool FullAmmo(Actor a)
 			{
 				var limitedAmmo = a.TraitOrDefault<LimitedAmmo>();
 				return (limitedAmmo != null && limitedAmmo.FullAmmo());
 			}
 
-			protected bool HasAmmo(Actor a)
+			protected static bool HasAmmo(Actor a)
 			{
 				var limitedAmmo = a.TraitOrDefault<LimitedAmmo>();
 				return (limitedAmmo != null && limitedAmmo.HasAmmo());
 			}
 
-			protected bool IsReloadable(Actor a)
+			protected static bool IsReloadable(Actor a)
 			{
 				return a.TraitOrDefault<Reloads>() != null;
 			}
@@ -729,30 +729,30 @@ namespace OpenRA.Mods.RA.AI
 			return world.ActorsWithTrait<Building>().Where(a => a.Actor.Owner == owner && a.Actor.Info.Name == frac).Count();
 		}
 
-		int? CountBuildingByGeneralName(string generalName, Player owner)
+		int? CountBuildingByCommonName(string commonName, Player owner)
 		{
-			if(Info.BuildingGeneralNames.ContainsKey(generalName))
+			if(Info.BuildingCommonNames.ContainsKey(commonName))
 				return world.ActorsWithTrait<Building>()
-					.Where(a => a.Actor.Owner == owner && Info.BuildingGeneralNames[generalName].Contains(a.Actor.Info.Name)).Count();
+					.Where(a => a.Actor.Owner == owner && Info.BuildingCommonNames[commonName].Contains(a.Actor.Info.Name)).Count();
 			return null;
 		}
 
-		ActorInfo GetBuildingInfoByGeneralName(string generalName, Player owner)
+		ActorInfo GetBuildingInfoByCommonName(string commonName, Player owner)
 		{
-			if (generalName == "ConstructionYard")
-				return Rules.Info.Where(k => Info.BuildingGeneralNames[generalName].Contains(k.Key)).Random(random).Value;
-			return GetInfoByGeneralName(Info.BuildingGeneralNames, generalName, owner);
+			if (commonName == "ConstructionYard")
+				return Rules.Info.Where(k => Info.BuildingCommonNames[commonName].Contains(k.Key)).Random(random).Value;
+			return GetInfoByCommonName(Info.BuildingCommonNames, commonName, owner);
 		}
 
-		ActorInfo GetUnitInfoByGeneralName(string generalName, Player owner)
+		ActorInfo GetUnitInfoByCommonName(string commonName, Player owner)
 		{
-			return GetInfoByGeneralName(Info.UnitsGeneralNames, generalName, owner);
+			return GetInfoByCommonName(Info.UnitsCommonNames, commonName, owner);
 		}
 
-		ActorInfo GetInfoByGeneralName(Dictionary<string, string[]> names, string generalName, Player owner)
+		ActorInfo GetInfoByCommonName(Dictionary<string, string[]> names, string commonName, Player owner)
 		{
-			if (names[generalName] == null) return null;
-			return Rules.Info.Where(k => names[generalName].Contains(k.Key) &&
+			if (!names.Any() || !names.ContainsKey(commonName)) return null;
+			return Rules.Info.Where(k => names[commonName].Contains(k.Key) &&
 				k.Value.Traits.Get<BuildableInfo>().Owner.Contains(owner.Country.Race)).Random(random).Value; //random is shit*/
 		}
 
@@ -765,24 +765,24 @@ namespace OpenRA.Mods.RA.AI
 
 		public bool HasAdequateFact()
 		{
-			if (CountBuildingByGeneralName("ConstructionYard", p) == 0 && CountBuildingByGeneralName("VehiclesFactory", p) > 0)
+			if (CountBuildingByCommonName("ConstructionYard", p) == 0 && CountBuildingByCommonName("VehiclesFactory", p) > 0)
 				return false;
 			return true;
 		}
 
 		public bool HasAdequateProc()
 		{
-			if (CountBuildingByGeneralName("Refinery", p) == 0 && CountBuildingByGeneralName("Power", p) > 0)
+			if (CountBuildingByCommonName("Refinery", p) == 0 && CountBuildingByCommonName("Power", p) > 0)
 				return false;
 			return true;
 		}
 
 		public bool HasMinimumProc()
 		{
-			if (CountBuildingByGeneralName("Refinery", p) < 2 && CountBuildingByGeneralName("Power", p) > 0 &&
-				CountBuildingByGeneralName("Barracks",p) > 0)
+			if (CountBuildingByCommonName("Refinery", p) < 2 && CountBuildingByCommonName("Power", p) > 0 &&
+				CountBuildingByCommonName("Barracks",p) > 0)
 				return false;
-			return true;   
+			return true;
 		}
 
 		public bool HasAdequateNumber(string frac, Player owner)
@@ -808,10 +808,10 @@ namespace OpenRA.Mods.RA.AI
 						.OrderByDescending(a => GetPowerProvidedBy(a)).FirstOrDefault();
 
 				if (playerResource.AlertSilo)
-					return GetBuildingInfoByGeneralName("Silo", p);
+					return GetBuildingInfoByCommonName("Silo", p);
 
 				if (!HasAdequateProc() || !HasMinimumProc())
-					return GetBuildingInfoByGeneralName("Refinery", p);
+					return GetBuildingInfoByCommonName("Refinery", p);
 			}
 			var myBuildings = p.World
 				.ActorsWithTrait<Building>()
@@ -1229,7 +1229,7 @@ namespace OpenRA.Mods.RA.AI
 						{
 							if (mcv.IsMoving()) return;
 							var maxBaseDistance = world.Map.MapSize.X > world.Map.MapSize.Y ? world.Map.MapSize.X : world.Map.MapSize.Y;
-							ActorInfo aInfo = GetUnitInfoByGeneralName("Mcv",p);
+							ActorInfo aInfo = GetUnitInfoByCommonName("Mcv",p);
 							if (aInfo == null) return;
 							string intoActor = aInfo.Traits.Get<TransformsInfo>().IntoActor;
 							var desiredLocation = ChooseBuildLocation(intoActor, false, maxBaseDistance, BuildingType.Building);
@@ -1297,7 +1297,7 @@ namespace OpenRA.Mods.RA.AI
 				return;
 			if (!HasAdequateFact())
 				if (!self.World.Actors.Where(a => a.Owner == p && a.HasTrait<BaseBuilding>() && a.HasTrait<Mobile>()).Any())
-					BuildUnit("Vehicle", GetUnitInfoByGeneralName("Mcv",p).Name);
+					BuildUnit("Vehicle", GetUnitInfoByCommonName("Mcv",p).Name);
 			foreach (var q in Info.UnitQueues)
 			{
 				if (unitsHangingAroundTheBase.Count < 12)

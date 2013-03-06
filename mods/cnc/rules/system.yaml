@@ -52,14 +52,14 @@ Player:
 		SquadSize: 15
 	HackyAI@Normal:
 		Name:Normal AI
-		BuildingGeneralNames:
+		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
 			Power: nuke,nuk2
 			Barracks: pyle,hand
 			VehiclesFactory: weap,afld
 			Silo: silo
-		UnitsGeneralNames:
+		UnitsCommonNames:
 			Mcv: mcv
 		BuildingLimits:
 			proc: 4
@@ -92,11 +92,11 @@ Player:
 			silo: 7%
 			fix: 1%
 		UnitsToBuild:
-			e1: 30% #gdi, nod
-			e2: 30% #gdi
-			e3: 30% #gdi, nod
-			e4: 30% #nod
-			e5: 30% #nod
+			e1: 30%
+			e2: 30%
+			e3: 30%
+			e4: 30%
+			e5: 30%
 			harv: 1%
 			bggy: 10%
 			ftnk: 10%
