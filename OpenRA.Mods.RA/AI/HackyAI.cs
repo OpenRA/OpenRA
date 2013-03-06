@@ -506,7 +506,7 @@ namespace OpenRA.Mods.RA.AI
 				Actor leader = owner.units.ClosestTo(owner.Target.CenterLocation);
 				if (leader == null)
 					return;
-				var ownUnits = owner.world.FindUnitsInCircle(leader.CenterLocation, Game.CellSize * 8)
+				var ownUnits = owner.world.FindUnitsInCircle(leader.CenterLocation, Game.CellSize * owner.units.Count/3)
 					.Where(a => a.Owner == owner.units.FirstOrDefault().Owner && owner.units.Contains(a)).ToList();
 				if (ownUnits.Count < owner.units.Count)
 				{
@@ -613,7 +613,7 @@ namespace OpenRA.Mods.RA.AI
 					}
 				}
 				foreach (var a in owner.units)
-					owner.world.IssueOrder(new Order("Attack", a, false) { TargetActor = owner.Target });
+					owner.world.IssueOrder(new Order("AttackMove", a, false) { TargetLocation = owner.Target.Location });
 			}
 
 			public void Exit(Squad owner) { }
@@ -867,10 +867,10 @@ namespace OpenRA.Mods.RA.AI
 					return enemyBase != null ? findPos(enemyBase.CenterLocation, defenseCenter) : null;
 
 				case BuildingType.Refinery:
-					var pos = world.FindTilesInCircle(baseCenter, MaxBaseDistance)
+					var tilesPos = world.FindTilesInCircle(baseCenter, MaxBaseDistance)
 						.Where(a => resourceTypes.Contains(world.GetTerrainType(new CPos(a.X, a.Y))))
-						.OrderBy(a => (new PPos(a.ToPPos().X, a.ToPPos().Y) - baseCenter.ToPPos()).LengthSquared).First();
-					return findPos(pos.ToPPos(), baseCenter);
+						.OrderBy(a => (new PPos(a.ToPPos().X, a.ToPPos().Y) - baseCenter.ToPPos()).LengthSquared);
+					return tilesPos.Any() ? findPos(tilesPos.First().ToPPos(), baseCenter) : null;
 
 				case BuildingType.Building:
 					for (var k = 0; k < maxBaseDistance; k++)
