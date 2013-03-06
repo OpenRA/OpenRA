@@ -90,12 +90,28 @@ namespace OpenRA.Mods.RA.Move
 			using (new PerfSample("Pathfinder"))
 			{
 				using (search)
+				{
+					List<CPos> path = null;
+
 					while (!search.queue.Empty)
 					{
 						var p = search.Expand(world);
 						if (search.heuristic(p) == 0)
-							return MakePath(search.cellInfo, p);
+						{
+							path = MakePath(search.cellInfo, p);
+							break;
+						}
 					}
+
+					var dbg = world.WorldActor.TraitOrDefault<DebugOverlay>();
+					if (dbg != null)
+					{
+						dbg.AddLayer(search.considered.Select(p => new Pair<CPos, int>(p, search.cellInfo[p.X, p.Y].MinCost)), search.maxCost, search.owner);
+					}
+
+					if (path != null)
+						return path;
+				}
 
 				// no path exists
 				return new List<CPos>(0);
@@ -120,8 +136,7 @@ namespace OpenRA.Mods.RA.Move
 
 		public List<CPos> FindBidiPath(			/* searches from both ends toward each other */
 			PathSearch fromSrc,
-			PathSearch fromDest,
-			Player onBehalfOf)
+			PathSearch fromDest)
 		{
 			using (new PerfSample("Pathfinder"))
 			{
@@ -156,8 +171,8 @@ namespace OpenRA.Mods.RA.Move
 					var dbg = world.WorldActor.TraitOrDefault<DebugOverlay>();
 					if (dbg != null)
 					{
-						dbg.AddLayer(fromSrc.considered.Select(p => new Pair<CPos, int>(p, fromSrc.cellInfo[p.X, p.Y].MinCost)), fromSrc.maxCost, onBehalfOf);
-						dbg.AddLayer(fromDest.considered.Select(p => new Pair<CPos, int>(p, fromDest.cellInfo[p.X, p.Y].MinCost)), fromDest.maxCost, onBehalfOf);
+						dbg.AddLayer(fromSrc.considered.Select(p => new Pair<CPos, int>(p, fromSrc.cellInfo[p.X, p.Y].MinCost)), fromSrc.maxCost, fromSrc.owner);
+						dbg.AddLayer(fromDest.considered.Select(p => new Pair<CPos, int>(p, fromDest.cellInfo[p.X, p.Y].MinCost)), fromDest.maxCost, fromDest.owner);
 					}
 
 					if (path != null)

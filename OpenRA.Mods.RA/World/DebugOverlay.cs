@@ -50,7 +50,7 @@ namespace OpenRA.Mods.RA
 
 			var qr = Game.Renderer.WorldQuadRenderer;
 			bool doDim = refreshTick - world.FrameNumber <= 0;
-			if (doDim) refreshTick = world.FrameNumber + 15;
+			if (doDim) refreshTick = world.FrameNumber + 25;
 
 			foreach (var pair in layers)
 			{
