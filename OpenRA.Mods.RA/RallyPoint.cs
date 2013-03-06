@@ -1,4 +1,4 @@
-#region Copyright & License Information
+﻿#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -24,13 +24,15 @@ namespace OpenRA.Mods.RA
 
 	public class RallyPoint : IIssueOrder, IResolveOrder, ISync
 	{
-		[Sync] public CPos rallyPoint;
+		[Sync]
+		public CPos rallyPoint;
 		public int nearEnough = 1;
 
-		public RallyPoint(Actor self, RallyPointInfo info)
+		public RallyPoint(Actor self)
 		{
+			var info = self.Info.Traits.Get<RallyPointInfo>();
 			rallyPoint = self.Location + new CVec(info.RallyPoint[0], info.RallyPoint[1]);
-			self.World.AddFrameEndTask(w => w.Add(new Effects.RallyPoint(self, info.IndicatorPalettePrefix)));
+			self.World.AddFrameEndTask(w => w.Add(new Effects.RallyPoint(self)));
 		}
 
 		public IEnumerable<IOrderTargeter> Orders

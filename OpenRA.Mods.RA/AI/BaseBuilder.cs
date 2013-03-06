@@ -74,7 +74,13 @@ namespace OpenRA.Mods.RA.AI
 						lastThinkTick = ai.ticks;
 
 						/* place the building */
-						var location = ai.ChooseBuildLocation(currentBuilding.Item);
+						BuildingType type = BuildingType.Building;
+						if(Rules.Info[currentBuilding.Item].Traits.Contains<AttackBaseInfo>())
+							type = BuildingType.Defense;
+						else if(Rules.Info[currentBuilding.Item].Traits.Contains<OreRefineryInfo>())
+							type = BuildingType.Refinery;
+
+						var location = ai.ChooseBuildLocation(currentBuilding.Item, type);
 						if (location == null)
 						{
 							HackyAI.BotDebug("AI: Nowhere to place {0}".F(currentBuilding.Item));

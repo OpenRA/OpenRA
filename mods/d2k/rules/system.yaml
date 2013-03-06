@@ -52,6 +52,42 @@ Player:
 		Name:Omnius
 		UnitQueues: Infantry, Vehicle, Armor, Starport
 		RallypointTestBuilding: conyarda
+		BuildingGeneralNames:
+			ConstructionYard: conyarda,conyardh,conyardo
+			Refinery: refa,refh,refo
+			Power: pwra,pwrh,pwro
+			VehiclesFactory: lighta,lighth,lighto,heavya,heavyh,heavyo
+			Silo: siloa, siloh, siloo
+		UnitsGeneralNames:
+			Mcv: mcva,mcvh,mcvo
+		BuildingLimits:
+			refa: 4
+			refh: 4
+			refo: 4
+			barra: 1
+			barrh: 1
+			barro: 1
+			lighta: 1
+			lighth: 1
+			lighto: 1
+			heavya: 1
+			heavyh: 1
+			heavyo: 1
+			researcha: 1
+			researchh: 1
+			researcho: 1
+			repaira: 1
+			repairh: 1
+			repairo: 1
+			radara: 1
+			radaro: 1
+			radarh: 1
+			hightecha: 1
+			hightechh: 1
+			hightecho: 1
+			palacea: 1
+			palaceh: 1
+			palaceo: 1
 		BuildingFractions:
 			refa: 20.1%
 			refh: 20.1%
