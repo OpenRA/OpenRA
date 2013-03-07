@@ -74,8 +74,8 @@
 	Selectable:
 		Voice: VehicleVoice
 	Helicopter:
-		RepairBuildings: hpad
-		RearmBuildings:
+		RepairBuildings: fix
+		RearmBuildings: hpad
 		LandWhenIdle: false
 	Buildable:
 		Queue: Aircraft

@@ -304,7 +304,7 @@ WEAP:
 		Produces: Vehicle
 	ProductionBar:
 
-HPADGDI:
+HPAD.GDI:
 	Inherits: ^Building
 	Valued:
 		Cost: 1500
@@ -316,6 +316,8 @@ HPADGDI:
 		Description: Produces and reloads helicopters
 	ProvidesCustomPrerequisite:
 		Prerequisite: hpad
+	RenderBuilding:
+		Image: hpad
 	Buildable:
 		BuildPaletteOrder: 60
 		Prerequisites: barracks
@@ -333,6 +335,7 @@ HPADGDI:
 	FreeActor:
 		Actor: ORCA
 		Facing: 3
+		SpawnOffset: 1,2
 	Exit@1:
 #		SpawnOffset: 0,0
 		SpawnOffset: 0,-6
@@ -345,7 +348,7 @@ HPADGDI:
 	ProductionBar:
 	Bib:
 
-HPADNOD:
+HPAD.NOD:
 	Inherits: ^Building
 	Valued:
 		Cost: 1500
@@ -357,6 +360,8 @@ HPADNOD:
 		Description: Produces and reloads helicopters
 	ProvidesCustomPrerequisite:
 		Prerequisite: hpad
+	RenderBuilding:
+		Image: hpad
 	Buildable:
 		BuildPaletteOrder: 60
 		Prerequisites: barracks
@@ -373,6 +378,7 @@ HPADNOD:
 	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from what we want for now, to properly emulate
 	FreeActor:
 		Actor: HELI
+		SpawnOffset: 1,1
 	Exit@1:
 		SpawnOffset: 0,0
 #		SpawnOffset: 0,-6
