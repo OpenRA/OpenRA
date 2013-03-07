@@ -308,8 +308,6 @@
 	Wall:
 		CrushClasses: wall
 		CrushSound: sandbag2.aud
-	LineBuild:
-		Range: 8
 	SelectionDecorations:
 	Selectable:
 		Priority: 1

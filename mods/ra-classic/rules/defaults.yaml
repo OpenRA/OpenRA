@@ -200,8 +200,6 @@
 		DestroyedSound: sandbag2.aud
 	Wall:
 		CrushClasses: wall
-	LineBuild:
-		Range: 8
 	SelectionDecorations:
 	Selectable:
 		Priority: 1
