@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -178,6 +178,7 @@
     <Compile Include="Traits\ValidateOrder.cs" />
     <Compile Include="Traits\Waypoint.cs" />
     <Compile Include="Traits\World\Country.cs" />
+    <Compile Include="Traits\World\Fog.cs" />
     <Compile Include="Traits\World\PlayerColorPalette.cs" />
     <Compile Include="Traits\World\ResourceLayer.cs" />
     <Compile Include="Traits\World\ResourceType.cs" />

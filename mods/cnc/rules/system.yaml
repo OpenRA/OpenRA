@@ -158,6 +158,7 @@ World:
 	SpatialBins:
 		BinSize: 4
 	Shroud:
+	Fog:
 	CrateSpawner:
 		Minimum: 1
 		Maximum: 6
