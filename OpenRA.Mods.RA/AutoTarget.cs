@@ -25,13 +25,14 @@ namespace OpenRA.Mods.RA
 
 	public enum UnitStance { HoldFire, ReturnFire, Defend, AttackAnything };
 
-	public class AutoTarget : INotifyIdle, INotifyDamage, ITick, IResolveOrder
+	public class AutoTarget : INotifyIdle, INotifyDamage, ITick, IResolveOrder, ISync
 	{
 		readonly AutoTargetInfo Info;
 		readonly AttackBase attack;
 
 		[Sync] int nextScanTime = 0;
-		[Sync] public UnitStance stance;
+		public UnitStance stance;
+		[Sync] public int stanceNumber { get { return (int)stance; } }
 		public UnitStance predictedStance;		/* NOT SYNCED: do not refer to this anywhere other than UI code */
 
 		public AutoTarget(Actor self, AutoTargetInfo info)
