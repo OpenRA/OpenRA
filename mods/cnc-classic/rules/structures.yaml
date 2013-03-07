@@ -59,7 +59,7 @@ PROC:
 	Tooltip:
 		Name: Tiberium Refinery
 		Icon: procicnh
-		Description: Processes raw Tiberium into useable resources
+		Description: Processes raw Tiberium to sell it for cash.
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: anypower
@@ -89,7 +89,7 @@ PROC:
 	CustomSellValue:
 		Value: 600
 	CustomBuildTimeValue:
-		Value: 80
+		Value: 900
 	FreeActor:
 		Actor: HARV
 		InitialActivity: FindResources

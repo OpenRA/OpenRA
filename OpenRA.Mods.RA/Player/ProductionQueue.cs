@@ -259,15 +259,10 @@ namespace OpenRA.Mods.RA
 			if (unit == null || ! unit.Traits.Contains<BuildableInfo>())
 				return 0;
 
-			if (self.World.LobbyInfo.GlobalSettings.AllowCheats && self.Owner.PlayerActor.Trait<DeveloperMode>().FastBuild) return 0;
-			var cost = unit.Traits.Contains<ValuedInfo>() ? unit.Traits.Get<ValuedInfo>().Cost : 0;
-			var time = cost
-				* Info.BuildSpeed
-				* (25 * 60) /* frames per min */
-				 / 1000;
+			if (self.World.LobbyInfo.GlobalSettings.AllowCheats && self.Owner.PlayerActor.Trait<DeveloperMode>().FastBuild)
+				return 0;
 
-			if (unit.Traits.Contains<CustomBuildTimeValueInfo>())
-				time = unit.Traits.Get<CustomBuildTimeValueInfo>().Value * (1 / Info.BuildSpeed);
+			var time = unit.GetBuildTime() * Info.BuildSpeed;
 
 			return (int) time;
 		}

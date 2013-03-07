@@ -87,8 +87,8 @@ namespace OpenRA.Mods.RA
 			if (unit == null || ! unit.Traits.Contains<BuildableInfo>())
 				return 0;
 
-			if (self.World.LobbyInfo.GlobalSettings.AllowCheats && self.Owner.PlayerActor.Trait<DeveloperMode>().FastBuild) return 0;
-			var cost = unit.Traits.Contains<ValuedInfo>() ? unit.Traits.Get<ValuedInfo>().Cost : 0;
+			if (self.World.LobbyInfo.GlobalSettings.AllowCheats && self.Owner.PlayerActor.Trait<DeveloperMode>().FastBuild)
+				return 0;
 
 			var selfsameBuildings = self.World.ActorsWithTrait<Production>()
 				.Where(p => p.Trait.Info.Produces.Contains(unit.Traits.Get<BuildableInfo>().Queue))
@@ -99,11 +99,8 @@ namespace OpenRA.Mods.RA
 
 			var speedUp = 1 - (selfsameQueue.SpeedUp * (selfsameBuildings.Count() - 1)).Clamp(0, selfsameQueue.MaxSpeedUp);
 
-			var time = cost
-				* Info.BuildSpeed
-				* (25 * 60) /* frames per min */
-				* speedUp
-				 / 1000;
+			var time = unit.GetBuildTime() * Info.BuildSpeed * speedUp;
+
 
 			return (int) time;
 		}
