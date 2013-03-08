@@ -85,13 +85,13 @@ if [ ! "$(which cmake)" ]; then
 fi
 
 # check for svn
-if [ ! "$(which svn)" ]; then
+if [[ ($BUILD_WXWIDGETS || $BUILD_LUA) && ! "$(which svn)" ]]; then
   echo "Error: svn isn't found. Please install console SVN client."
   exit 1
 fi
 
 # check for git
-if [ ! "$(which git)" ]; then
+if [[ $BUILD_WINAPI && ! "$(which git)" ]]; then
   echo "Error: git isn't found. Please install console GIT client."
   exit 1
 fi
@@ -139,13 +139,16 @@ if [ $BUILD_WXLUA ]; then
   cd "$WXLUA_BASENAME/wxLua"
   sed -i 's|:-/\(.\)/|:-\1:/|' "$INSTALL_DIR/bin/wx-config"
   sed -i 's/execute_process(COMMAND/& sh/' build/CMakewxAppLib.cmake modules/wxstedit/build/CMakewxAppLib.cmake
+  # the following patches wxlua source to fix live coding support in wxlua apps
+  # http://www.mail-archive.com/wxlua-users@lists.sourceforge.net/msg03225.html
+  sed -i 's/\(m_wxlState = wxLuaState(wxlState.GetLuaState(), wxLUASTATE_GETSTATE|wxLUASTATE_ROOTSTATE);\)/\/\/ removed by ZBS build process \/\/ \1/' modules/wxlua/wxlcallb.cpp
   cp "$INSTALL_DIR/lib/libwxscintilla-2.9.a" "$INSTALL_DIR/lib/libwx_mswu_scintilla-2.9.a"
   echo "set_target_properties(wxLuaModule PROPERTIES LINK_FLAGS -static)" >> modules/luamodule/CMakeLists.txt
   cmake -G "MSYS Makefiles" -DBUILD_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=FALSE \
     -DwxWidgets_CONFIG_EXECUTABLE="$INSTALL_DIR/bin/wx-config" \
     -DwxLuaBind_COMPONENTS="stc;html;aui;adv;core;net;base" -DwxLua_LUA_LIBRARY_USE_BUILTIN=FALSE \
     -DwxLua_LUA_INCLUDE_DIR="$INSTALL_DIR/include" -DwxLua_LUA_LIBRARY="$INSTALL_DIR/lib/lua51.dll" .
-  make || { echo "Error: failed to build wxLua"; exit 1; }
+  make $MAKEFLAGS || { echo "Error: failed to build wxLua"; exit 1; }
   make install/strip
   [ -f "$INSTALL_DIR/bin/libwx.dll" ] || { echo "Error: libwx.dll isn't found"; exit 1; }
   cd ../..
