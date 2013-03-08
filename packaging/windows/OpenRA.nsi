@@ -94,6 +94,7 @@ Section "Client" CLIENT
 	SetOutPath "$INSTDIR\glsl"
 	File "${SRCDIR}\glsl\*.frag"
 	File "${SRCDIR}\glsl\*.vert"
+	File /r "${SRCDIR}\gseries"
 SectionEnd
 
 Section "Editor" EDITOR
@@ -119,6 +120,8 @@ SectionGroup /e "Mods"
 		File /r "${SRCDIR}\mods\ra\sequences"
 		File /r "${SRCDIR}\mods\ra\tilesets"
 		File /r "${SRCDIR}\mods\ra\uibits"
+		File /r "${SRCDIR}\mods\ra\gseries\splashes\15"
+		File /r "${SRCDIR}\mods\ra\gseries\ui\15"
 	SectionEnd
 	Section "C&C" CNC
 		RMDir /r "$INSTDIR\mods\cnc"
@@ -131,6 +134,8 @@ SectionGroup /e "Mods"
 		File /r "${SRCDIR}\mods\cnc\sequences"
 		File /r "${SRCDIR}\mods\cnc\tilesets"
 		File /r "${SRCDIR}\mods\cnc\uibits"
+		File /r "${SRCDIR}\mods\cnc\gseries\splashes\15"
+		File /r "${SRCDIR}\mods\cnc\gseries\ui\15"
 	SectionEnd
 	Section "Dune 2000" D2K
 		RMDir /r "$INSTDIR\mods\d2k"
@@ -143,6 +148,8 @@ SectionGroup /e "Mods"
 		File /r "${SRCDIR}\mods\d2k\tilesets"
 		File /r "${SRCDIR}\mods\d2k\sequences"
 		File /r "${SRCDIR}\mods\d2k\uibits"
+		File /r "${SRCDIR}\mods\d2k\gseries\splashes\15"
+		File /r "${SRCDIR}\mods\d2k\gseries\ui\15"
 	SectionEnd
 SectionGroupEnd
 

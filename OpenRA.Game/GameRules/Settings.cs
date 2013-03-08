@@ -139,6 +139,8 @@ namespace OpenRA.GameRules
 
 		public bool AllowDownloading = true;
 		public string MapRepository = "http://content.open-ra.org/map/";
+
+		public bool EnableGSeriesLCD = false;
 	}
 
 	public class KeySettings

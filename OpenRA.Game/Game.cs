@@ -186,6 +186,7 @@ namespace OpenRA
 							world.Tick();
 
 							PerfHistory.Tick();
+
 						}
 						else
 							if (orderManager.NetFrameNumber == 0)
@@ -193,6 +194,8 @@ namespace OpenRA
 
 						Sync.CheckSyncUnchanged(world, () => world.TickRender(worldRenderer));
 						viewport.Tick();
+
+						GSeries.Tick();
 					}
 				}
 		}
@@ -209,6 +212,8 @@ namespace OpenRA
 		{
 			BeforeGameStart();
 
+			GSeries.Loading();
+
 			var map = modData.PrepareMap(mapUID);
 			viewport = new Viewport(new int2(Renderer.Resolution), map.Bounds, Renderer);
 			orderManager.world = new World(modData.Manifest, map, orderManager, isShellmap);
@@ -224,7 +229,10 @@ namespace OpenRA
 			worldRenderer.RefreshPalette();
 
 			if (!isShellmap)
+			{
 				Sound.PlayNotification(null, "Speech", "StartGame", null);
+				GSeries.InGameInitialize();
+			}
 		}
 
 		public static bool IsHost
@@ -273,6 +281,9 @@ namespace OpenRA
 			Renderer.Initialize( Game.Settings.Graphics.Mode );
 			Renderer = new Renderer();
 
+			//Init G15 Support (Windows, Linux)
+			GSeries.Initialize();
+
 			Console.WriteLine("Available mods:");
 			foreach(var mod in Mod.AllMods)
 				Console.WriteLine("\t{0}: {1} ({2})", mod.Key, mod.Value.Title, mod.Value.Version);
@@ -317,12 +328,17 @@ namespace OpenRA
 			Renderer.InitializeFonts(modData.Manifest);
 			modData.InitializeLoaders();
 
+			GSeries.Loading();
+
 			PerfHistory.items["render"].hasNormalTick = false;
 			PerfHistory.items["batches"].hasNormalTick = false;
 			PerfHistory.items["render_widgets"].hasNormalTick = false;
 			PerfHistory.items["render_flip"].hasNormalTick = false;
 
 			JoinLocal();
+
+			GSeries.ModInit();
+
 			viewport = new Viewport(new int2(Renderer.Resolution), Rectangle.Empty, Renderer);
 
 			if (Game.Settings.Server.Dedicated)
@@ -417,6 +433,8 @@ namespace OpenRA
 			orderManager.Dispose();
 			CloseServer();
 			JoinLocal();
+			GSeries.InGameInitialize();
+			GSeries.Loading();
 		}
 
 		public static void CloseServer()

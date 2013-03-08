@@ -37,7 +37,7 @@
 CSC         = gmcs
 CSFLAGS     = -nologo -warn:4 -debug:full -optimize- -codepage:utf8 -unsafe -warnaserror
 DEFINE      = DEBUG;TRACE
-COMMON_LIBS = System.dll System.Core.dll System.Drawing.dll System.Xml.dll thirdparty/ICSharpCode.SharpZipLib.dll thirdparty/FuzzyLogicLibrary.dll thirdparty/Mono.Nat.dll
+COMMON_LIBS = System.dll System.Core.dll System.Drawing.dll System.Xml.dll thirdparty/ICSharpCode.SharpZipLib.dll thirdparty/FuzzyLogicLibrary.dll thirdparty/Mono.Nat.dll thirdparty/dbus-sharp.dll
 
 
 
@@ -65,7 +65,6 @@ INSTALL_DATA = $(INSTALL) -m644
 # program targets
 CORE = fileformats rcg rgl rsdl rnull game utility geoip
 TOOLS = editor tsbuild ralint
-
 VERSION     = $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev/null || echo git-`git rev-parse --short HEAD`)
 
 
@@ -319,6 +318,7 @@ install-core: default
 
 	@$(CP_R) glsl "$(DATA_INSTALL_DIR)"
 	@$(CP_R) cg "$(DATA_INSTALL_DIR)"
+	@$(CP_R) gseries "$(DATA_INSTALL_DIR)"
 	@$(CP) *.ttf "$(DATA_INSTALL_DIR)"
 	@$(CP) thirdparty/Tao/* "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) thirdparty/ICSharpCode.SharpZipLib.dll "$(DATA_INSTALL_DIR)"
@@ -326,6 +326,8 @@ install-core: default
 	@$(INSTALL_PROGRAM) thirdparty/SharpFont.dll "$(DATA_INSTALL_DIR)"
 	@$(CP) thirdparty/SharpFont.dll.config "$(DATA_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) thirdparty/Mono.Nat.dll "$(DATA_INSTALL_DIR)"
+	@$(CP) thirdparty/dbus-sharp.dll.config "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) thirdparty/dbus-sharp.dll "$(DATA_INSTALL_DIR)"
 
 	@echo "#!/bin/sh" 				>  openra
 	@echo 'BINDIR=$$(dirname $$(readlink -f $$0))'	>> openra
