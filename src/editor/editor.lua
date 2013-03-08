@@ -348,7 +348,7 @@ function CreateEditor()
 
   editor:SetCaretLineVisible(ide.config.editor.caretline and 1 or 0)
 
-  editor:SetVisiblePolicy(wxstc.wxSTC_VISIBLE_SLOP, 3)
+  editor:SetVisiblePolicy(wxstc.wxSTC_VISIBLE_STRICT, 3)
 
   editor:SetMarginWidth(0, editor:TextWidth(32, "99999_")) -- line # margin
 

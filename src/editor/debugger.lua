@@ -194,8 +194,15 @@ local function activateDocument(file, line, skipauto)
       SetEditorSelection(selection)
       ClearAllCurrentLineMarkers()
       if line then
-        editor:MarkerAdd(line-1, CURRENT_LINE_MARKER)
-        editor:EnsureVisibleEnforcePolicy(line-1)
+        local line = line - 1 -- editor line operations are zero-based
+        editor:MarkerAdd(line, CURRENT_LINE_MARKER)
+        local firstline = editor:DocLineFromVisible(editor:GetFirstVisibleLine())
+        local lastline = math.min(editor:GetLineCount(),
+          editor:DocLineFromVisible(editor:GetFirstVisibleLine() + editor:LinesOnScreen()))
+        -- if the line is already on the screen, then don't enforce policy
+        if line <= firstline or line >= lastline then
+          editor:EnsureVisibleEnforcePolicy(line)
+        end
       end
       activated = editor
       break
