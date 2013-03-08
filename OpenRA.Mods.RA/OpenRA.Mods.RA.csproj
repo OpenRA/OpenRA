@@ -42,6 +42,7 @@
     <WarningLevel>4</WarningLevel>
     <CustomCommands>
       <CustomCommands>
+        <Command type="AfterBuild" command="cp ../thirdparty/FuzzyLogicLibrary.dll ../" workingdir="${ProjectDir}" />
         <Command type="AfterBuild" command="cp ${TargetFile} ../mods/ra" workingdir="${ProjectDir}" />
         <Command type="AfterBuild" command="mono RALint.exe ra" workingdir="${ProjectDir}/../" />
       </CustomCommands>
@@ -456,6 +457,7 @@
   <PropertyGroup>
     <PostBuildEvent>mkdir "$(SolutionDir)mods/ra/"
 copy "$(TargetPath)" "$(SolutionDir)mods/ra/"
+copy "thirdparty/FuzzyLogicLibrary.dll" "$(SolutionDir)"
 cd "$(SolutionDir)"</PostBuildEvent>
   </PropertyGroup>
 </Project>
