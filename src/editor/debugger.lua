@@ -123,7 +123,7 @@ local function updateStackSync()
         end
       end
       for name,val in pairs(frame[3]) do
-        local value, comment = val[1], val[2]
+        local value, comment = val[1], tostring(val[2])
         local text = ("%s = %s%s"):
           format(name, mobdebug.line(value, params),
                  simpleType[type(value)] and "" or ("  --[["..comment.."]]"))
