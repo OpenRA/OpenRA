@@ -2535,11 +2535,14 @@ Rules:
 		MonsterTankMadnessScript:
 			FirstStartUnits: 1tnk, 1tnk, 2tnk, 2tnk
 			SecondStartUnits: e1, e1, e1, e3, e3
-			ThirdStartUnits: spy, e6, e6
+			ThirdStartUnits: thf, e6, e6
 			FirstBaseUnits: 1tnk, 1tnk, 2tnk, arty, arty
 			CivilianEvacuees: c1, c2, c5, c7, c8
 		MissionObjectivesPanel:
 			ObjectivesPanel: MISSION_OBJECTIVES
+	SPY:
+		Infiltrates:
+			InfiltrateTypes: MissionObjective
 	DEMITRI:
 		Inherits: DELPHI
 		Tooltip:

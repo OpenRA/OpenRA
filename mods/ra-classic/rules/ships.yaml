@@ -1,0 +1,239 @@
+SS:
+	Inherits: ^Ship
+	Buildable:
+		Queue: Ship
+		BuildPaletteOrder: 50
+		Prerequisites: spen
+		BuiltAt: spen
+		Owner: soviet
+	Valued:
+		Cost: 950
+	Tooltip:
+		Name: Submarine
+		Description: Submerged anti-ship unit armed with \ntorpedoes.\n  Strong vs Ships\n  Weak vs Everything\n  Special Ability: Submerge
+	Health:
+		HP: 120
+	Armor:
+		Type: Light
+	Mobile:
+		ROT: 7
+		Speed: 6
+	RevealsShroud:
+		Range: 6
+	-TargetableUnit:
+	TargetableSubmarine:
+		TargetTypes: Ground, Water
+		CloakedTargetTypes: Underwater
+	RenderUnit:
+	Cloak:
+		InitialDelay: 0
+		CloakDelay: 50
+		CloakSound: subshow1.aud
+		UncloakSound: subshow1.aud
+	AttackFrontal:
+		PrimaryWeapon: TorpTube
+		PrimaryLocalOffset: -4,0,0,0,0, 4,0,0,0,0
+		FireDelay: 2
+	Selectable:
+		Bounds: 38,38
+	Chronoshiftable:
+	IronCurtainable:
+	RepairableNear:
+	-DetectCloaked:
+	AutoTarget:
+		InitialStance: HoldFire
+	AttackMove:
+	
+MSUB:
+	Inherits: ^Ship
+	Buildable:
+		Queue: Ship
+		BuildPaletteOrder: 60
+		Prerequisites: spen,stek
+		BuiltAt: spen
+		Owner: soviet
+	Valued:
+		Cost: 1650
+	Tooltip:
+		Name: Missile Submarine
+		Description: Submerged anti-ground unit armed with \nlong-range ballistic missiles.\n  Strong vs Buildings\n  Weak vs Everything\n  Special Ability: Submerge
+	Health:
+		HP: 150
+	Armor:
+		Type: Light
+	Mobile:
+		ROT: 7
+		Speed: 5
+	RevealsShroud:
+		Range: 6
+	RenderUnit:
+	-TargetableUnit:
+	TargetableSubmarine:
+		TargetTypes: Ground, Water
+		CloakedTargetTypes: Underwater
+	Cloak:
+		InitialDelay: 0
+		CloakDelay: 100
+		CloakSound: subshow1.aud
+		UncloakSound: subshow1.aud
+	AttackFrontal:
+		PrimaryWeapon: SubMissile
+		FireDelay: 2
+	Selectable:
+		Bounds: 44,44
+	Chronoshiftable:
+	IronCurtainable:
+	RepairableNear:
+	-DetectCloaked:
+	AutoTarget:
+		InitialStance: HoldFire
+	AttackMove:
+
+DD:
+	Inherits: ^Ship
+	Buildable:
+		Queue: Ship
+		BuildPaletteOrder: 70
+		Prerequisites: syrd
+		BuiltAt: syrd
+		Owner: allies
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Destroyer
+		Description: Fast multi-role ship. \n  Strong vs Submarines, Aircraft\n  Weak vs Infantry, Tanks
+	Health:
+		HP: 400
+	Armor:
+		Type: Heavy
+	Mobile:
+		ROT: 7
+		Speed: 6
+	RevealsShroud:
+		Range: 6
+	Turreted:
+		ROT: 7
+	AttackTurreted:
+		PrimaryWeapon: Stinger
+		SecondaryWeapon: DepthCharge
+		PrimaryOffset: 0,-8,0,-3
+		PrimaryLocalOffset: -4,0,0,0,-20, 4,0,0,0,20
+	Selectable:
+		Bounds: 38,38
+	RenderUnitTurreted:
+	AutoTarget:
+	Chronoshiftable:
+	IronCurtainable:
+	RepairableNear:
+	DetectCloaked:
+		Range: 4
+	RenderDetectionCircle:
+
+CA:
+	Inherits: ^Ship
+	Buildable:
+		Queue: Ship
+		BuildPaletteOrder: 100
+		Prerequisites: syrd,atek
+		BuiltAt: syrd
+		Owner: allies
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: Cruiser
+		Description: Very slow long-range ship. \n  Strong vs Buildings\n  Weak vs Ships, Submarines
+	Health:
+		HP: 700
+	Armor:
+		Type: Heavy
+	Mobile:
+		ROT: 5
+		Speed: 4
+	RevealsShroud:
+		Range: 7
+	Turreted:
+		ROT: 3
+	AttackTurreted:
+		PrimaryWeapon: 8Inch
+		SecondaryWeapon: 8Inch
+		PrimaryOffset: 0,17,0,-2
+		SecondaryOffset: 0,-17,0,-2
+		PrimaryLocalOffset: -4,-5,0,0,0, 4,-5,0,0,0
+		SecondaryLocalOffset: -4,-5,0,0,0, 4,-5,0,0,0
+		PrimaryRecoil: 4
+		SecondaryRecoil: 4
+		PrimaryRecoilRecovery: 0.8
+		SecondaryRecoilRecovery: 0.8
+	Selectable:
+		Bounds: 44,44
+	RenderUnitTurreted:
+	AutoTarget:
+	Chronoshiftable:
+	IronCurtainable:
+	RepairableNear:
+
+LST:
+	Inherits: ^Ship
+	Buildable:
+		Queue: Ship
+		BuildPaletteOrder: 30
+		Owner: allies,soviet
+	Valued:
+		Cost: 700
+	Tooltip:
+		Name: Transport
+		Description: General-purpose naval transport.\nCan carry infantry and tanks.\n  Unarmed
+	Health:
+		HP: 350
+	Armor:
+		Type: Heavy
+	Mobile:
+		ROT: 10
+		Speed: 14
+	RevealsShroud:
+		Range: 6
+	RenderUnit:
+	Cargo:
+		Types: Infantry, Vehicle
+		MaxWeight: 5
+		PipCount: 5
+	IronCurtainable:
+	RepairableNear:
+	AttackMove:
+		JustMove: true
+
+PT:
+	Inherits: ^Ship
+	Buildable:
+		Queue: Ship
+		BuildPaletteOrder: 50
+		Prerequisites: syrd
+		BuiltAt: syrd
+		Owner: allies
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Gunboat
+		Description: Light scout & support ship. \n  Strong vs Ships, Submarines\n  Weak vs Aircraft
+	Health:
+		HP: 200
+	Armor:
+		Type: Heavy
+	Mobile:
+		ROT: 7
+		Speed: 9
+	RevealsShroud:
+		Range: 7
+	Turreted:
+		ROT: 7
+	AttackTurreted:
+		PrimaryWeapon: 2Inch
+		SecondaryWeapon: DepthCharge
+		PrimaryOffset: 0,-6,0,-1
+	Selectable:
+		Bounds: 32,32
+	RenderUnitTurreted:
+	AutoTarget:
+	Chronoshiftable:
+	IronCurtainable:
+	RepairableNear:

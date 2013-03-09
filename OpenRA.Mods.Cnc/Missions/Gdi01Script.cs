@@ -17,10 +17,11 @@ using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Traits;
 using OpenRA.Widgets;
+using OpenRA.Scripting;
 
-namespace OpenRA.Mods.Cnc
+namespace OpenRA.Mods.Cnc.Missions
 {
-	class Gdi01ScriptInfo : TraitInfo<Gdi01Script>, Requires<LoadWidgetAtGameStartInfo> { }
+	class Gdi01ScriptInfo : TraitInfo<Gdi01Script> { }
 
 	class Gdi01Script: IWorldLoaded, ITick
 	{
@@ -34,44 +35,37 @@ namespace OpenRA.Mods.Cnc
 			var b = w.Map.Bounds;
 			Game.MoveViewport(new CPos(b.Left + b.Width/2, b.Top + b.Height/2).ToFloat2());
 
-			Scripting.Media.PlayFMVFullscreen(w, "gdi1.vqa",
-				() => Scripting.Media.PlayFMVFullscreen(w, "landing.vqa", () =>
-				{
-					Sound.PlayMusic(Rules.Music["aoi"]);
-					started = true;
-				}));
+			Action afterFMV = () =>
+			{
+				Sound.PlayMusic(Rules.Music["aoi"]);
+				started = true;
+			};
+			Game.RunAfterDelay(0, () => Media.PlayFMVFullscreen(w, "gdi1.vqa", () =>
+			                            Media.PlayFMVFullscreen(w, "landing.vqa", afterFMV)));
 		}
 
 		public void OnVictory(World w)
 		{
-			started = false;
-			Sound.PlayToPlayer(Players["GoodGuy"], "accom1.aud");
-			Players["GoodGuy"].WinState = WinState.Won;
-
 			Action afterFMV = () =>
 			{
+				Players["GoodGuy"].WinState = WinState.Won;
+				started = false;
 				Sound.StopMusic();
-				Game.Disconnect();
-				Ui.ResetAll();
-				Game.LoadShellMap();
+				Sound.PlayToPlayer(Players["GoodGuy"], "accom1.aud");
 			};
-			Game.RunAfterDelay(5000, () => Scripting.Media.PlayFMVFullscreen(w, "consyard.vqa", afterFMV));
+			Game.RunAfterDelay(0, () => Media.PlayFMVFullscreen(w, "consyard.vqa", afterFMV));
 		}
 
 		public void OnLose(World w)
 		{
-			started = false;
-			Sound.PlayToPlayer(Players["GoodGuy"], "fail1.aud");
-			Players["GoodGuy"].WinState = WinState.Lost;
-
 			Action afterFMV = () =>
 			{
+				Players["GoodGuy"].WinState = WinState.Lost;
+				started = false;
 				Sound.StopMusic();
-				Game.Disconnect();
-				Ui.ResetAll();
-				Game.LoadShellMap();
+				Sound.PlayToPlayer(Players["GoodGuy"], "fail1.aud");
 			};
-			Game.RunAfterDelay(5000, () => Scripting.Media.PlayFMVFullscreen(w, "gameover.vqa", afterFMV));
+			Game.RunAfterDelay(0, () => Media.PlayFMVFullscreen(w, "gameover.vqa", afterFMV));
 		}
 
 		int ticks = 0;
@@ -93,14 +87,14 @@ namespace OpenRA.Mods.Cnc
 					{
 						var a = self.World.CreateActor(i.ToLowerInvariant(), new TypeDictionary
 						{
-							new OwnerInit( Players["BadGuy"] ),
-							new FacingInit( 0 ),
-							new LocationInit ( Actors["nod0"].Location ),
+							new OwnerInit(Players["BadGuy"]),
+							new FacingInit(0),
+							new LocationInit(Actors["nod0"].Location),
 						});
 						var mobile = a.Trait<Mobile>();
-						a.QueueActivity( mobile.MoveTo( Actors["nod1"].Location, 2 ) );
-						a.QueueActivity( mobile.MoveTo( Actors["nod2"].Location, 2 ) );
-						a.QueueActivity( mobile.MoveTo( Actors["nod3"].Location, 2 ) );
+						a.QueueActivity(mobile.MoveTo(Actors["nod1"].Location, 2 ));
+						a.QueueActivity(mobile.MoveTo(Actors["nod2"].Location, 2 ));
+						a.QueueActivity(mobile.MoveTo(Actors["nod3"].Location, 2 ));
 						// Todo: Queue hunt order
 					}
 				});
@@ -172,8 +166,9 @@ namespace OpenRA.Mods.Cnc
 		{
 			var self = Actors[ "Gunboat" ];
 			var mobile = self.Trait<Mobile>();
-			self.QueueActivity(mobile.ScriptedMove( Actors["gunboatLeft"].Location ));
-			self.QueueActivity(mobile.ScriptedMove( Actors["gunboatRight"].Location ));
+			self.Trait<AutoTarget>().stance = UnitStance.AttackAnything; //TODO: this is ignored
+			self.QueueActivity(mobile.ScriptedMove(Actors["gunboatLeft"].Location));
+			self.QueueActivity(mobile.ScriptedMove(Actors["gunboatRight"].Location));
 			self.QueueActivity(new CallFunc(() => SetGunboatPath()));
 		}
 

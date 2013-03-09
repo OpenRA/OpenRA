@@ -22,9 +22,16 @@ namespace OpenRA.Mods.RA.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (IsCanceled) return NextActivity;
-			if (target == null || !target.IsInWorld || target.IsDead()) return NextActivity;
-			if (target.Owner == self.Owner) return NextActivity;
+			var capturesInfo = self.Info.Traits.Get<CapturesInfo>();
+			var health = target.Trait<Health>();
+			int damage = (int)(0.25 * health.MaxHP);
+
+			if (IsCanceled)
+				return NextActivity;
+			if (target == null || !target.IsInWorld || target.IsDead())
+				return NextActivity;
+			if (target.Owner == self.Owner)
+				return NextActivity;
 
 			// Need to be next to building, TODO: stop capture when going away
 			var mobile = self.Trait<Mobile>();
@@ -32,10 +39,14 @@ namespace OpenRA.Mods.RA.Activities
 			if ((nearest - mobile.toCell).LengthSquared > 2)
 				return Util.SequenceActivities(new MoveAdjacentTo(Target.FromActor(target)), this);
 
-			if (!target.Trait<Capturable>().BeginCapture(target, self))
-				return NextActivity;
+			if (!capturesInfo.Sabotage || (capturesInfo.Sabotage && health.DamageState == DamageState.Heavy))
+			{
+				if (!target.Trait<Capturable>().BeginCapture(target, self))
+					return NextActivity;
+			}
+			else
+			   	target.InflictDamage(self, damage, null);
 
-			var capturesInfo = self.Info.Traits.Get<CapturesInfo>();
 			if (capturesInfo != null && capturesInfo.WastedAfterwards)
 				self.World.AddFrameEndTask(w => self.Destroy());
 

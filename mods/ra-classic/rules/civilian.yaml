@@ -1,0 +1,276 @@
+C1:
+	Inherits: ^CivInfantry
+
+C2:
+	Inherits: ^CivInfantry
+	Selectable:
+		Voice: CivilianFemaleVoice
+
+C3:
+	Inherits: ^CivInfantry
+	RenderInfantryPanic:
+		Image: C1
+
+C4:
+	Inherits: ^CivInfantry
+	Selectable:
+		Voice: CivilianFemaleVoice
+	RenderInfantryPanic:
+		Image: C2
+
+C5:
+	Inherits: ^CivInfantry
+	RenderInfantryPanic:
+		Image: C1
+
+C6:
+	Inherits: ^CivInfantry
+	Selectable:
+		Voice: CivilianFemaleVoice
+	RenderInfantryPanic:
+		Image: C2
+
+C7:
+	Inherits: ^CivInfantry
+	RenderInfantryPanic:
+		Image: C1
+
+C8:
+	Inherits: ^CivInfantry
+	Selectable:
+		Voice: CivilianFemaleVoice
+	RenderInfantryPanic:
+		Image: C2
+
+C9:
+	Inherits: ^CivInfantry
+	RenderInfantryPanic:
+		Image: C1
+
+C10:
+	Inherits: ^CivInfantry
+	Selectable:
+		Voice: CivilianFemaleVoice
+	RenderInfantryPanic:
+		Image: C2
+
+FCOM:
+	Inherits: ^TechBuilding
+	Building:
+		Power: -200
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 400
+	Armor:
+		Type: Wood
+	Tooltip:
+		Name: Forward Command
+	RevealsShroud:
+		Range: 10
+	Bib:
+
+HOSP:
+	Inherits: ^TechBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Tooltip:
+		Name: Hospital
+	RepairsUnits:
+
+V01:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Tooltip:
+		Name: Church
+
+V02:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+
+V03:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+
+V04:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+
+V05:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+
+V06:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+
+V07:
+	Inherits: ^CivBuilding
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+
+V08:
+	Inherits: ^CivBuilding
+
+V09:
+	Inherits: ^CivBuilding
+
+V10:
+	Inherits: ^CivBuilding
+
+V11:
+	Inherits: ^CivBuilding
+
+V12:
+	Inherits: ^CivBuilding
+
+V13:
+	Inherits: ^CivBuilding
+
+V14:
+	Inherits: ^CivField
+
+V15:
+	Inherits: ^CivField
+
+V16:
+	Inherits: ^CivField
+
+V17:
+	Inherits: ^CivField
+
+V18:
+	Inherits: ^CivField
+
+BARL:
+	Inherits: ^TechBuilding
+	Selectable:
+		Priority: 0
+	Health:
+		HP: 10
+	Explodes:
+		Weapon: BarrelExplode
+	Tooltip:
+		Name: Explosive Barrel
+	AutoTargetIgnore:
+
+BRL3:
+	Inherits: ^TechBuilding
+	Selectable:
+		Priority: 0
+	Health:
+		HP: 10
+	Explodes:
+		Weapon: BarrelExplode
+	Tooltip:
+		Name: Explosive Barrel
+	AutoTargetIgnore:
+
+MISS:
+	Inherits: ^TechBuilding
+	Selectable:
+		Priority: 0
+	Building:
+		Footprint: xxx xxx
+		Dimensions: 3,2
+	Health:
+		HP: 400
+	Armor:
+		Type: Wood
+	Tooltip:
+		Name: Technology Center
+	Bib:
+
+BIO:
+	Inherits: ^TechBuilding
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Tooltip:
+		Name: Biological Lab
+
+
+OILB:
+	Inherits: ^TechBuilding
+	Selectable:
+		Priority: 0
+	Building:
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 400
+	Armor:
+		Type: Wood
+	Bib:
+	RevealsShroud:
+		Range: 3
+	Capturable:
+	CapturableBar:
+	EngineerRepairable:
+	-MustBeDestroyed:
+	Tooltip:
+		Name: Oil Derrick
+
+BR1:
+	Inherits: ^Bridge
+	Bridge:
+		Template: 235
+		DamagedTemplate: 236
+		DestroyedTemplate: 237
+		SouthOffset: 0,2
+
+BR2:
+	Inherits: ^Bridge
+	Bridge:
+		Template: 238
+		DamagedTemplate: 239
+		DestroyedTemplate: 240
+		NorthOffset: 3,0
+
+BR3:
+	Inherits: ^Bridge
+	Bridge:
+		Long: yes
+		ShorePieces: br1,br2
+		Template: 241
+		DamagedTemplate: 242
+		DestroyedTemplate: 243
+		DestroyedPlusNorthTemplate: 245
+		DestroyedPlusSouthTemplate: 244
+		DestroyedPlusBothTemplate: 246
+		NorthOffset: 2,0
+		SouthOffset: 0,1
+
+BRIDGE1:
+	Inherits: ^Bridge
+	Bridge:
+		Template: 131
+		DamagedTemplate: 378
+		DestroyedTemplate: 132
+	Building:
+		Footprint: _____ _____ _____
+		Dimensions: 5,3
+
+BRIDGE2:
+	Inherits: ^Bridge
+	Bridge:
+		Template: 133
+		DamagedTemplate: 379
+		DestroyedTemplate: 134
+	Building:
+		Footprint: _____ _____
+		Dimensions: 5,2
