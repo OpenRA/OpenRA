@@ -25,16 +25,16 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new InfiltrateForCash(this); }
 	}
 
-	class InfiltrateForCash : IAcceptSpy
+	class InfiltrateForCash : IAcceptInfiltrator
 	{
 		InfiltrateForCashInfo info;
 
 		public InfiltrateForCash(InfiltrateForCashInfo info) { this.info = info; }
 
-		public void OnInfiltrate(Actor self, Actor spy)
+		public void OnInfiltrate(Actor self, Actor infiltrator)
 		{
 			var targetResources = self.Owner.PlayerActor.Trait<PlayerResources>();
-			var spyResources = spy.Owner.PlayerActor.Trait<PlayerResources>();
+			var spyResources = infiltrator.Owner.PlayerActor.Trait<PlayerResources>();
 
 			var toTake = (targetResources.Cash + targetResources.Ore) * info.Percentage / 100;
 			var toGive = Math.Max(toTake, info.Minimum);
@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA
 			Sound.PlayToPlayer(self.Owner, info.SoundToVictim);
 
 			self.World.AddFrameEndTask(w => w.Add(new CashTick(toGive, 30, 2, self.CenterLocation,
-				spy.Owner.ColorRamp.GetColor(0))));
+			                                                   infiltrator.Owner.ColorRamp.GetColor(0))));
 		}
 	}
 }

@@ -190,13 +190,45 @@ SPY:
 		PipType: Yellow
 	TakeCover:
 	Spy:
+	Infiltrates:
+		InfiltrateTypes: SupportPower, Exploration
 	-AutoTarget:
 	AttackMove:
 		JustMove: true
 	-RenderInfantry:
 	RenderSpy:
 		IdleAnimations: idle1,idle2
-		
+
+THF:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 60
+		Prerequisites: techcenter, tent
+		Owner: allies
+	Valued:
+		Cost: 400
+	Tooltip:
+		Name: Thief
+		Description: Steals enemy credits.\n  Strong vs Nothing\n  Weak vs Everything\n
+	Selectable:
+		Voice: ThiefVoice
+		Bounds: 12,17,0,-9
+	Health:
+		HP: 25
+	Mobile:
+		Speed: 4
+	RevealsShroud:
+		Range: 5
+	Passenger:
+		PipType: Yellow
+	Infiltrates:
+		InfiltrateTypes: Cash
+	TakeCover:
+	-AutoTarget:
+	AttackMove:
+		JustMove: true
+
 E7:
 	Inherits: ^Infantry
 	Buildable:

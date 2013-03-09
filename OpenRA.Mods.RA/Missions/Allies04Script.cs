@@ -410,7 +410,7 @@ namespace OpenRA.Mods.RA.Missions
 			};
 
 			lab = actors["Lab"];
-			lab.AddTrait(new InfiltrateAction(OnLabInfiltrated));
+			lab.AddTrait(new InfiltrateForMissionObjective(OnLabInfiltrated));
 			lab.AddTrait(new TransformedAction(self => lab = self));
 
 			reinforcementsEntryPoint = actors["ReinforcementsEntryPoint"];
@@ -456,13 +456,17 @@ namespace OpenRA.Mods.RA.Missions
 		public object Create(ActorInitializer init) { return new Allies04Hijackable(init.self); }
 	}
 
-	class Allies04Hijackable : IAcceptSpy, INotifyPassengerExited
+	class Allies04Hijackable : IAcceptInfiltrator, INotifyPassengerExited
 	{
 		public Player OldOwner;
+
+		void OnTruckHijacked(Actor spy) { }
 
 		public Allies04Hijackable(Actor self)
 		{
 			OldOwner = self.Owner;
+
+			self.AddTrait(new InfiltrateForMissionObjective(OnTruckHijacked));
 		}
 
 		public void OnInfiltrate(Actor self, Actor spy)

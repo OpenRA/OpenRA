@@ -196,6 +196,8 @@ SPY:
 		PipType: Yellow
 	TakeCover:
 	Spy:
+	Infiltrates:
+		InfiltrateTypes: Cash, SupportPower, Exploration
 	-AutoTarget:
 	AttackMove:
 		JustMove: true
@@ -427,6 +429,8 @@ THF:
 		Range: 5
 	Passenger:
 		PipType: Yellow
+	Infiltrates:
+		InfiltrateTypes: Cash
 	TakeCover:
 	-AutoTarget:
 	AttackMove:

@@ -329,7 +329,7 @@ namespace OpenRA.Mods.RA.Missions
 			world.CreateActor("camera", greece, provingGroundsCameraPoint.Location, null);
 
 			superTankDome = actors["SuperTankDome"];
-			superTankDome.AddTrait(new InfiltrateAction(OnSuperTankDomeInfiltrated));
+			superTankDome.AddTrait(new InfiltrateForMissionObjective(OnSuperTankDomeInfiltrated));
 			superTankDome.AddTrait(new TransformedAction(self => superTankDome = self));
 
 			Game.MoveViewport(startEntryPoint.Location.ToFloat2());

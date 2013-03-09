@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA.Activities
 			if( !target.OccupiesSpace.OccupiedCells().Any( x => x.First == self.Location ) )
 				return NextActivity;
 
-			foreach (var t in target.TraitsImplementing<IAcceptSpy>())
+			foreach (var t in target.TraitsImplementing<IAcceptInfiltrator>())
 				t.OnInfiltrate(target, self);
 
 			if (self.HasTrait<DontDestroyWhenInfiltrating>())

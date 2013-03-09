@@ -16,11 +16,11 @@ namespace OpenRA.Mods.RA
 {
 	class InfiltrateForExplorationInfo : TraitInfo<InfiltrateForExploration> {}
 
-	class InfiltrateForExploration : IAcceptSpy
+	class InfiltrateForExploration : IAcceptInfiltrator
 	{
-		public void OnInfiltrate(Actor self, Actor spy)
+		public void OnInfiltrate(Actor self, Actor infiltrator)
 		{
-			spy.Owner.Shroud.MergeShroud(self.Owner.Shroud);
+			infiltrator.Owner.Shroud.MergeShroud(self.Owner.Shroud);
 			if (!self.Owner.HasFogVisibility())
 			    self.Owner.Shroud.ResetExploration();
 		}
