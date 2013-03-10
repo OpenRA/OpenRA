@@ -47,8 +47,7 @@ namespace OpenRA
 		
 		public Shroud.ActorVisibility Sight;
 
-		[Sync]
-		public Player Owner;
+		[Sync] public Player Owner;
 
 		Activity currentActivity;
 		public Group Group;

@@ -22,13 +22,13 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new ScaredyCat(init.self, this); }
 	}
 
-	class ScaredyCat : ITick, INotifyIdle, INotifyDamage, INotifyAttack, ISpeedModifier
+	class ScaredyCat : ITick, INotifyIdle, INotifyDamage, INotifyAttack, ISpeedModifier, ISync
 	{
 		readonly ScaredyCatInfo Info;
-		readonly Actor Self;
+		[Sync] readonly Actor Self;
 
-		public int PanicStartedTick;
-		public bool Panicking { get { return PanicStartedTick > 0; } }
+		[Sync] public int PanicStartedTick;
+		[Sync] public bool Panicking { get { return PanicStartedTick > 0; } }
 
 		public ScaredyCat(Actor self, ScaredyCatInfo info)
 		{

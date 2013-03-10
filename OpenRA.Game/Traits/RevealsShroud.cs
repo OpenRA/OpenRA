@@ -16,10 +16,10 @@ namespace OpenRA.Traits
 		public object Create(ActorInitializer init) { return new RevealsShroud(this); }
 	}
 
-	public class RevealsShroud : ITick
+	public class RevealsShroud : ITick, ISync
 	{
 		RevealsShroudInfo Info;
-		CPos previousLocation;
+		[Sync] CPos previousLocation;
 
 		public RevealsShroud(RevealsShroudInfo info)
 		{

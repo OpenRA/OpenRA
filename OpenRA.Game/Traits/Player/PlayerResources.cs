@@ -75,13 +75,10 @@ namespace OpenRA.Traits
 			AdviceInterval = info.AdviceInterval;
 		}
 
-		[Sync]
-		public int Cash;
+		[Sync] public int Cash;
 
-		[Sync]
-		public int Ore;
-		[Sync]
-		public int OreCapacity;
+		[Sync] public int Ore;
+		[Sync] public int OreCapacity;
 
 		public int DisplayCash;
 		public int DisplayOre;
