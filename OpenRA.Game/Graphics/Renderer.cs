@@ -69,6 +69,7 @@ namespace OpenRA.Graphics
 			device.Clear();
 			WorldSpriteRenderer.SetShaderParams(PaletteTexture, Resolution, zoom, scroll);
 			WorldLineRenderer.SetShaderParams(PaletteTexture, Resolution, zoom, scroll);
+			WorldQuadRenderer.SetShaderParams(PaletteTexture, Resolution, zoom, scroll);
 			SpriteRenderer.SetShaderParams(PaletteTexture, Resolution, 1f, float2.Zero);
 			LineRenderer.SetShaderParams(PaletteTexture, Resolution, 1f, float2.Zero);
 			RgbaSpriteRenderer.SetShaderParams(PaletteTexture, Resolution, 1f, float2.Zero);
