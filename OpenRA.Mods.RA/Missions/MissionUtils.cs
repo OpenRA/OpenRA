@@ -230,11 +230,11 @@ namespace OpenRA.Mods.RA.Missions
 		}
 	}
 
-	class InfiltrateAction : IAcceptSpy
+	class InfiltrateForMissionObjective : IAcceptInfiltrator
 	{
 		Action<Actor> a;
 
-		public InfiltrateAction(Action<Actor> a)
+		public InfiltrateForMissionObjective(Action<Actor> a)
 		{
 			this.a = a;
 		}

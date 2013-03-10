@@ -1,0 +1,245 @@
+Player:
+	TechTree:
+	ClassicProductionQueue@Building:
+		Type: Building
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+		QueuedAudio: Building
+		ReadyAudio: ConstructionComplete
+		SpeedUp: 0.25
+		MaxSpeedUp: 0.75
+	ClassicProductionQueue@Defense:
+		Type: Defense
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+		QueuedAudio: Building
+		ReadyAudio: ConstructionComplete
+		SpeedUp: 0.25
+		MaxSpeedUp: 0.75
+	ClassicProductionQueue@Vehicle:
+		Type: Vehicle
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+		SpeedUp: 0.25
+		MaxSpeedUp: 0.75
+	ClassicProductionQueue@Infantry:
+		Type: Infantry
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+		SpeedUp: 0.25
+		MaxSpeedUp: 0.75
+	ClassicProductionQueue@Aircraft:
+		Type: Aircraft
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+		SpeedUp: 0.25
+		MaxSpeedUp: 0.75
+	PlaceBuilding:
+	SupportPowerManager:
+	ConquestVictoryConditions:
+	PowerManager:
+	AllyRepair:
+	PlayerResources:
+		InitialCash: 5000
+		AdviceInterval: 500
+	ActorGroupProxy:
+	DeveloperMode:
+	HackyAI@Default:
+		Name:Easy AI
+		BuildingFractions:
+			proc: 20%
+			nuke: 9%
+			pyle: 5%
+			hand: 5%
+			hq: 4%
+			nuk2: 9%
+			weap: 9%
+			afld: 9%
+			gtwr: 5%
+			gun: 5%
+			atwr: 9%
+			obli: 7%
+			sam: 7%
+			eye: 1%
+			tmpl: 1%
+			silo: 4%
+			fix: 1%
+			hpad: 2%
+		UnitsToBuild:
+			e1: 14%
+			e3: 7%
+			e2: 10%
+			e4: 7%
+			e5: 5%
+			harv: 1%
+			bggy: 5%
+			bike: 40%
+			ltnk: 25%
+			ftnk: 10%
+			arty: 60%
+			stnk: 40%
+			jeep: 5%
+			mtnk: 20%
+			msam: 40%
+			htnk: 50%
+			heli: 5%
+			orca: 5%
+	PlayerColorPalette:
+		BasePalette: terrain
+		RemapIndex: 176, 178, 180, 182, 184, 186, 189, 191, 177, 179, 181, 183, 185, 187, 188, 190
+	DebugResourceCash:
+	DebugResourceOre:
+	DebugResourceOreCapacity:
+	Shroud:
+	BaseAttackNotifier:
+	PlayerStatistics:
+
+World:
+	OpenWidgetAtGameStart:
+		Widget: INGAME_ROOT
+		ObserverWidget: OBSERVER_ROOT
+	CloakPaletteEffect:
+	ScreenShaker:
+	WaterPaletteRotation:
+	NukePaletteEffect:
+	BuildingInfluence:
+	ChooseBuildTabOnSelect:
+	BridgeLayer:
+		Bridges: bridge1, bridge2, bridge3, bridge4
+	CrateSpawner:
+		Minimum: 1
+		Maximum: 3
+		SpawnInterval: 120
+		WaterChance: 0
+	PaletteFromCurrentTileset@terrain:
+		Name: terrain
+		ShadowIndex: 4
+	PaletteFromCurrentTileset@static:
+		Name: staticterrain
+		ShadowIndex: 4
+	PaletteFromFile@chrome:
+		Name: chrome
+		Filename: temperat.pal
+		ShadowIndex: 3
+	PaletteFromFile@effect:
+		Name: effect
+		Filename: temperat.pal
+		ShadowIndex: 4
+	PaletteFromFile@colorpicker:
+		Name: colorpicker
+		Filename: temperat.pal
+		ShadowIndex: 4
+		AllowModifiers: false
+	PaletteFromRGBA@shadow:
+		Name: shadow
+		R: 0
+		G: 0
+		B: 0
+		A: 140
+	PaletteFromRGBA@cloak:
+		Name: cloak
+		R: 0
+		G: 0
+		B: 0
+		A: 140
+	PaletteFromRGBA@highlight:
+		Name: highlight
+		R: 255
+		G: 255
+		B: 255
+		A: 128
+	PaletteFromRGBA@disabled:
+		Name: disabled
+		R: 0
+		G: 0
+		B: 0
+		A: 180
+	ShroudPalette:
+	FogPalette:
+	Country@gdi:
+		Name: GDI
+		Race: gdi
+	Country@nod:
+		Name: Nod
+		Race: nod
+	BibLayer:
+	ResourceLayer:
+	ResourceClaimLayer:
+	ResourceType@green-tib:
+		ResourceType: 1
+		Palette: staticterrain
+		TerrainType: Tiberium
+		SpriteNames: ti1,ti2,ti3,ti4,ti5,ti6,ti7,ti8,ti9,ti10,ti11,ti12
+		ValuePerUnit: 35
+		Name: Tiberium
+		PipColor: Green
+		AllowedTerrainTypes: Clear,Road
+		AllowUnderActors: false
+	ResourceType@blue-tib:
+		ResourceType: 2
+		Palette: staticterrain
+		TerrainType: BlueTiberium
+		SpriteNames: bti1,bti2,bti3,bti4,bti5,bti6,bti7,bti8,bti9,bti10,bti11,bti12
+		ValuePerUnit: 75
+		Name: Blue Tiberium
+		PipColor: Blue
+		AllowedTerrainTypes: Clear,Road
+		AllowUnderActors: false
+	SmudgeLayer@SCORCH:
+		Type:Scorch
+		SmokePercentage:50
+		Types:sc1,sc2,sc3,sc4,sc5,sc6
+		Depths:1,1,1,1,1,1
+	SmudgeLayer@CRATER:
+		Type:Crater
+		Types:cr1,cr2,cr3,cr4,cr5,cr6
+		Depths:5,5,5,5,5,5
+	SpawnMapActors:
+	CreateMPPlayers:
+	MPStartLocations:
+	SpawnMPUnits:
+	SpatialBins:
+		BinSize: 4
+	Shroud:
+	PathFinder:
+	ValidateOrder:
+
+CRATE:
+	Tooltip:
+		Name: Crate
+	Crate:
+		Lifetime: 120
+		TerrainTypes: Clear, Rough, Road, Tiberium, BlueTiberium, Beach
+	GiveCashCrateAction:
+		Amount: 2000
+		SelectionShares: 20
+		UseCashTick: yes
+	RevealMapCrateAction:
+		SelectionShares: 1
+		Effect: reveal-map
+	LevelUpCrateAction:
+		SelectionShares: 20
+	CloakCrateAction:
+		SelectionShares: 5
+		InitialDelay: 15
+		CloakDelay: 125
+		CloakSound: trans1.aud
+		UncloakSound: appear1.aud
+		Effect: cloak
+	GiveMcvCrateAction:
+		SelectionShares: 2
+		NoBaseSelectionShares: 9001
+		Unit: mcv
+	RenderSimple:
+	BelowUnits:
+	ProximityCaptor:
+		Types:Crate
+	Passenger:
+
+mpspawn:
+	Waypoint:
+	RenderEditorOnly:
+
+waypoint:
+	Waypoint:
+	RenderEditorOnly:

@@ -301,27 +301,27 @@ Actors:
 	Actor83: ftur
 		Location: 67,34
 		Owner: Soviets
-	Actor73: spen.noinfiltrate
+	Actor73: spen
 		Location: 31,82
 		Owner: Soviets
-	Actor37: dome.noinfiltrate
+	Actor37: dome
 		Location: 44,57
 		Owner: Soviets
 	Actor65: sam
 		Location: 50,37
 		Owner: Soviets
 		TurretFacing: 192
-	Actor70: spen.noinfiltrate
+	Actor70: spen
 		Location: 39,71
 		Owner: Soviets
-	Actor71: spen.noinfiltrate
+	Actor71: spen
 		Location: 25,68
 		Owner: Soviets
 	Actor64: sam
 		Location: 28,43
 		Owner: Soviets
 		TurretFacing: 48
-	Actor72: spen.noinfiltrate
+	Actor72: spen
 		Location: 23,76
 		Owner: Soviets
 	Actor88: tsla
@@ -465,13 +465,13 @@ Actors:
 	Actor130: apwr
 		Location: 101,16
 		Owner: Soviets
-	Actor134: proc.noinfiltrate
+	Actor134: proc
 		Location: 106,30
 		Owner: Soviets
 	Actor135: fix
 		Location: 102,25
 		Owner: Soviets
-	Actor136: dome.noinfiltrate
+	Actor136: dome
 		Location: 107,25
 		Owner: Soviets
 	HijackFactory: weap
@@ -1312,7 +1312,7 @@ Actors:
 	Actor414: sbag
 		Location: 74,60
 		Owner: Soviets
-	Actor412: proc.noinfiltrate
+	Actor412: proc
 		Location: 84,68
 		Owner: Soviets
 	Actor472: brl3
@@ -1809,44 +1809,6 @@ Rules:
 		AutoTargetIgnore:
 		Allies04TransformOnLabInfiltrate:
 			ToActor: MISS
-	PROC.NoInfiltrate:
-		Inherits: PROC
-		-Buildable:
-		RenderBuilding:
-			Image: PROC
-		Tooltip:
-			Icon: procicon
-		-InfiltrateForCash:
-		Allies04TransformOnLabInfiltrate:
-			ToActor: PROC.NoFreeActor
-	PROC.NoFreeActor:
-		Inherits: PROC
-		-Buildable:
-		RenderBuilding:
-			Image: PROC
-		Tooltip:
-			Icon: procicon
-		-FreeActor:
-	DOME.NoInfiltrate:
-		Inherits: DOME
-		-Buildable:
-		RenderBuilding:
-			Image: DOME
-		Tooltip:
-			Icon: domeicon
-		-InfiltrateForExploration:
-		Allies04TransformOnLabInfiltrate:
-			ToActor: DOME
-	SPEN.NoInfiltrate:
-		Inherits: SPEN
-		-Buildable:
-		RenderBuilding:
-			Image: SPEN
-		Tooltip:
-			Icon: spenicon
-		-InfiltrateForSupportPower:
-		Allies04TransformOnLabInfiltrate:
-			ToActor: SPEN
 	LST.Unselectable:
 		Inherits: LST
 		Buildable:
@@ -1875,6 +1837,8 @@ Rules:
 		RevealsShroud:
 			Range: 6
 		Spy:
+		Infiltrates:
+			InfiltrateTypes: MissionObjective
 	DOG.Patrol:
 		Inherits: DOG
 		Buildable:

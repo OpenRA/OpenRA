@@ -129,8 +129,9 @@ namespace OpenRA.Graphics
 			}
 
 			var clipRect = Game.viewport.WorldBounds(wr.world);
-			DrawShroud(wr, clipRect, fogSprites, fogPalette);
 			DrawShroud(wr, clipRect, sprites, shroudPalette);
+			if (wr.world.WorldActor.HasTrait<Fog>())
+				DrawShroud(wr, clipRect, fogSprites, fogPalette);
 		}
 
 		void DrawShroud(WorldRenderer wr, Rectangle clip, Sprite[,] s, PaletteReference pal)
