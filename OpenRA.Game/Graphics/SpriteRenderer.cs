@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Drawing;
 using OpenRA.FileFormats.Graphics;
 
 namespace OpenRA.Graphics
@@ -27,14 +28,11 @@ namespace OpenRA.Graphics
 			this.shader = shader;
 		}
 
-		public SpriteRenderer(Renderer renderer)
-			: this(renderer, renderer.SpriteShader) { }
-
 		public void Flush()
 		{
 			if (nv > 0)
 			{
-				shader.SetValue( "DiffuseTexture", currentSheet.Texture );
+				shader.SetTexture("DiffuseTexture", currentSheet.Texture);
 				shader.Render(() =>
 				{
 					var vb = renderer.GetTempVertexBuffer();
@@ -72,7 +70,6 @@ namespace OpenRA.Graphics
 			nv += 4;
 		}
 
-
 		// For RGBASpriteRenderer, which doesn't use palettes
 		public void DrawSprite(Sprite s, float2 location)
 		{
@@ -82,6 +79,20 @@ namespace OpenRA.Graphics
 		public void DrawSprite(Sprite s, float2 location, float2 size)
 		{
 			DrawSprite(s, location, 0, size);
+		}
+
+		public void DrawVertexBuffer(IVertexBuffer<Vertex> buffer, int start, int length, PrimitiveType type, Sheet sheet)
+		{
+			shader.SetTexture("DiffuseTexture", sheet.Texture);
+			shader.Render(() => renderer.DrawBatch(buffer, start, length, type));
+		}
+
+		public void SetShaderParams(ITexture palette, Size screen, float zoom, float2 scroll)
+		{
+			shader.SetTexture("Palette", palette);
+			shader.SetVec("Scroll", (int)scroll.X, (int)scroll.Y);
+			shader.SetVec("r1", zoom*2f/screen.Width, -zoom*2f/screen.Height);
+			shader.SetVec("r2", -1, 1);
 		}
 	}
 }

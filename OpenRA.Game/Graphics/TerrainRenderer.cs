@@ -84,11 +84,9 @@ namespace OpenRA.Graphics
 
 			if( lastRow < firstRow ) lastRow = firstRow;
 
-			Game.Renderer.WorldSpriteShader.SetValue( "DiffuseTexture", terrainSheet.Texture );
-			Game.Renderer.WorldSpriteShader.Render(() =>
-				Game.Renderer.DrawBatch(vertexBuffer,
-					verticesPerRow * firstRow, verticesPerRow * (lastRow - firstRow),
-					PrimitiveType.QuadList));
+			Game.Renderer.WorldSpriteRenderer.DrawVertexBuffer(
+				vertexBuffer, verticesPerRow * firstRow, verticesPerRow * (lastRow - firstRow),
+				PrimitiveType.QuadList, terrainSheet);
 
 			foreach (var r in world.WorldActor.TraitsImplementing<IRenderOverlay>())
 				r.Render( wr );
