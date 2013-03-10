@@ -24,13 +24,13 @@ namespace OpenRA.Mods.RA.Server
 		{
 			if (!server.lobbyInfo.Slots.ContainsKey(arg))
 			{
-				Log.Write("server", "Invalid slot: {0}", arg );
+				Log.Write("server", "Invalid slot: {0}", arg);
 				return false;
 			}
-			
+
 			if (requiresHost && !client.IsAdmin)
 			{
-				server.SendChatTo( conn, "Only the host can do that" );
+				server.SendChatTo(conn, "Only the host can do that");
 				return false;
 			}
 
@@ -318,6 +318,47 @@ namespace OpenRA.Mods.RA.Server
 						server.SyncLobbyInfo();
 						return true;
 					}},
+				{ "assignteams",
+					s =>
+					{
+						if (!client.IsAdmin)
+						{
+							server.SendChatTo(conn, "Only the host can set that option");
+							return true;
+						}
+
+						int teams;
+						if (!int.TryParse(s, out teams))
+						{
+							server.SendChatTo(conn, "Number of teams could not be parsed: {0}".F(s));
+							return true;
+						}
+
+						teams = teams.Clamp(2, 8);
+
+						var clients = server.lobbyInfo.Slots
+							.Select(slot => server.lobbyInfo.Clients.SingleOrDefault(c => c.Slot == slot.Key))
+							.Where(c => c != null && !server.lobbyInfo.Slots[c.Slot].LockTeam).ToArray();
+
+						var teamSizes = new int[clients.Length];
+
+						for (var i = 0; i < clients.Length; i++)
+							teamSizes[i % teams]++;
+
+						var clientIndex = 0;
+						for (var team = 1; team <= teams; team++)
+						{
+							for (var teamClientIndex = 0; teamClientIndex < teamSizes[team - 1]; clientIndex++, teamClientIndex++)
+							{
+								var cl = clients[clientIndex];
+								if (cl.Bot == null)
+									cl.State = Session.ClientState.NotReady;
+								cl.Team = team;
+							}
+						}
+						server.SyncLobbyInfo();
+						return true;
+					}},
 				{ "crates",
 					s =>
 					{
@@ -481,14 +522,14 @@ namespace OpenRA.Mods.RA.Server
 			var cmdName = cmd.Split(' ').First();
 			var cmdValue = cmd.Split(' ').Skip(1).JoinWith(" ");
 
-			Func<string,bool> a;
+			Func<string, bool> a;
 			if (!dict.TryGetValue(cmdName, out a))
 				return false;
 
 			return a(cmdValue);
 		}
 
-		public void ServerStarted(S server) 
+		public void ServerStarted(S server)
 		{
 			LoadMap(server);
 			SetDefaultDifficulty(server);
