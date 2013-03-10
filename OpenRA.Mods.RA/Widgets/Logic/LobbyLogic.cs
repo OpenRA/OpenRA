@@ -163,7 +163,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (assignTeams != null)
 			{
 				assignTeams.IsVisible = () => Game.IsHost;
-				assignTeams.IsDisabled = () => gameStarting || orderManager.LocalClient == null || orderManager.LocalClient.IsReady;
+				assignTeams.IsDisabled = () => gameStarting || orderManager.LobbyInfo.Clients.Count < 2
+					|| orderManager.LocalClient == null || orderManager.LocalClient.IsReady;
 
 				assignTeams.OnMouseDown = _ =>
 				{

@@ -333,15 +333,18 @@ namespace OpenRA.Mods.RA.Server
 							server.SendChatTo(conn, "Number of teams could not be parsed: {0}".F(s));
 							return true;
 						}
-
 						teams = teams.Clamp(2, 8);
 
 						var clients = server.lobbyInfo.Slots
 							.Select(slot => server.lobbyInfo.Clients.SingleOrDefault(c => c.Slot == slot.Key))
 							.Where(c => c != null && !server.lobbyInfo.Slots[c.Slot].LockTeam).ToArray();
+						if (clients.Length < 2)
+						{
+							server.SendChatTo(conn, "Not enough clients to assign teams");
+							return true;
+						}
 
 						var teamSizes = new int[clients.Length];
-
 						for (var i = 0; i < clients.Length; i++)
 							teamSizes[i % teams]++;
 
