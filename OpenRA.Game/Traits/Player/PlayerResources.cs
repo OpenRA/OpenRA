@@ -82,6 +82,7 @@ namespace OpenRA.Traits
 
 		public int DisplayCash;
 		public int DisplayOre;
+		public bool AlertSilo;
 
 		public int Earned;
 		public int Spent;
@@ -155,8 +156,13 @@ namespace OpenRA.Traits
 
 			if (--nextSiloAdviceTime <= 0)
 			{
-				if (Ore > 0.8*OreCapacity)
+				if (Ore > 0.8 * OreCapacity)
+				{
 					Sound.PlayNotification(Owner, "Speech", "SilosNeeded", Owner.Country.Race);
+					AlertSilo = true;
+				}
+				else
+					AlertSilo = false;
 
 				nextSiloAdviceTime = AdviceInterval;
 			}
