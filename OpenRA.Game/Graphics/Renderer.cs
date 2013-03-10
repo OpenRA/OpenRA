@@ -28,6 +28,7 @@ namespace OpenRA.Graphics
 		internal static int TempBufferCount;
 
 		public SpriteRenderer WorldSpriteRenderer { get; private set; }
+		public QuadRenderer WorldQuadRenderer { get; private set; }
 		public LineRenderer WorldLineRenderer { get; private set; }
 		public LineRenderer LineRenderer { get; private set; }
 		public SpriteRenderer RgbaSpriteRenderer { get; private set; }
@@ -48,6 +49,7 @@ namespace OpenRA.Graphics
 			WorldSpriteRenderer = new SpriteRenderer(this, device.CreateShader("shp"));
 			WorldLineRenderer = new LineRenderer(this, device.CreateShader("line"));
 			LineRenderer = new LineRenderer(this, device.CreateShader("line"));
+			WorldQuadRenderer = new QuadRenderer(this, device.CreateShader("line"));
 			RgbaSpriteRenderer = new SpriteRenderer(this, device.CreateShader("rgba"));
 			SpriteRenderer = new SpriteRenderer(this, device.CreateShader("shp"));
 
@@ -67,6 +69,7 @@ namespace OpenRA.Graphics
 			device.Clear();
 			WorldSpriteRenderer.SetShaderParams(PaletteTexture, Resolution, zoom, scroll);
 			WorldLineRenderer.SetShaderParams(PaletteTexture, Resolution, zoom, scroll);
+			WorldQuadRenderer.SetShaderParams(PaletteTexture, Resolution, zoom, scroll);
 			SpriteRenderer.SetShaderParams(PaletteTexture, Resolution, 1f, float2.Zero);
 			LineRenderer.SetShaderParams(PaletteTexture, Resolution, 1f, float2.Zero);
 			RgbaSpriteRenderer.SetShaderParams(PaletteTexture, Resolution, 1f, float2.Zero);
