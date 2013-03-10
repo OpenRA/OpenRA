@@ -43,29 +43,29 @@ namespace OpenRA.Mods.RA.Buildings
 				return true;
 
 			var buildingMaxBounds = (CVec)Dimensions;
-			if( Rules.Info[ buildingName ].Traits.Contains<BibInfo>() )
+			if (Rules.Info[buildingName].Traits.Contains<BibInfo>())
 				buildingMaxBounds += new CVec(0, 1);
 
-			var scanStart = world.ClampToWorld( topLeft - new CVec( Adjacent, Adjacent ) );
+			var scanStart = world.ClampToWorld(topLeft - new CVec(Adjacent, Adjacent));
 			var scanEnd = world.ClampToWorld(topLeft + buildingMaxBounds + new CVec(Adjacent, Adjacent));
 
 			var nearnessCandidates = new List<CPos>();
 
 			var bi = world.WorldActor.Trait<BuildingInfluence>();
 
-			for( int y = scanStart.Y ; y < scanEnd.Y ; y++ )
-				for( int x = scanStart.X ; x < scanEnd.X ; x++ )
+			for (var y = scanStart.Y; y < scanEnd.Y; y++)
+				for (var x = scanStart.X; x < scanEnd.X; x++)
 				{
-					var at = bi.GetBuildingAt( new CPos( x, y ) );
-					if( at != null && at.Owner.Stances[ p ] == Stance.Ally && at.HasTrait<GivesBuildableArea>() )
-						nearnessCandidates.Add( new CPos( x, y ) );
+					var at = bi.GetBuildingAt(new CPos(x, y));
+					if (at != null && at.Owner.Stances[p] == Stance.Ally && at.HasTrait<GivesBuildableArea>())
+						nearnessCandidates.Add(new CPos(x, y));
 				}
 
-			var buildingTiles = FootprintUtils.Tiles( buildingName, this, topLeft ).ToList();
+			var buildingTiles = FootprintUtils.Tiles(buildingName, this, topLeft).ToList();
 			return nearnessCandidates
-				.Any( a => buildingTiles
-					.Any( b => Math.Abs( a.X - b.X ) <= Adjacent
-							&& Math.Abs( a.Y - b.Y ) <= Adjacent ) );
+				.Any(a => buildingTiles
+					.Any(b => Math.Abs(a.X - b.X) <= Adjacent
+						&& Math.Abs(a.Y - b.Y) <= Adjacent));
 		}
 	}
 
