@@ -68,20 +68,25 @@ function M.show_warnings(top_ast)
         if name ~= 'self' then
           local func = parent.parent and parent.parent.parent
           local assignment = not func.tag or func.tag == 'Set' or func.tag == 'Localrec'
+          -- anonymous functions can also be defined in expressions,
+          -- for example, 'Op' or 'Return' tags
+          local expression = not assignment and func.tag
           local func1 = func[1][1]
-          local fname = assignment and func1 and type(func1[1]) == 'string' and func1[1]
-            or (func1.tag == 'Index' and index(func1))
+          local fname = assignment and func1 and type(func1[1]) == 'string'
+            and func1[1] or (func1 and func1.tag == 'Index' and index(func1))
           -- "function foo(bar)" => func.tag == 'Set'
           --   `Set{{`Id{"foo"}},{`Function{{`Id{"bar"}},{}}}}
           -- "local function foo(bar)" => func.tag == 'Localrec'
           -- "local _, foo = 1, function(bar)" => func.tag == 'Local'
           -- "print(function(bar) end)" => func.tag == nil
+          -- "a = a or function(bar) end" => func.tag == nil
+          -- "return(function(bar) end)" => func.tag == 'Return'
           -- "function tbl:foo(bar)" => func.tag == 'Set'
           --   `Set{{`Index{`Id{"tbl"},`String{"foo"}}},{`Function{{`Id{"self"},`Id{"bar"}},{}}}}
           -- "function tbl.abc:foo(bar)" => func.tag == 'Set'
           --   `Set{{`Index{`Index{`Id{"tbl"},`String{"abc"}},`String{"foo"}}},{`Function{{`Id{"self"},`Id{"bar"}},{}}}},
           warn("unused parameter '" .. name .. "'" ..
-               (func and assignment
+               (func and (assignment or expression)
                      and (fname and func.tag
                                and (" in function '" .. fname .. "'")
                                or " in anonymous function")
