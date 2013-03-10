@@ -19,7 +19,7 @@ using OpenRA.Mods.RA.Activities;
 
 namespace OpenRA.Mods.RA.Render
 {
-	public class RenderBuildingInfo : RenderSimpleInfo
+	public class RenderBuildingInfo : RenderSimpleInfo, Requires<BuildingInfo>, IPlaceBuildingDecoration
 	{
 		public readonly bool HasMakeAnimation = true;
 		public readonly float2 Origin = float2.Zero;
@@ -29,6 +29,15 @@ namespace OpenRA.Mods.RA.Render
 		{
 			return base.RenderPreview(building, pr)
 				.Select(a => a.WithPos(a.Pos + building.Traits.Get<RenderBuildingInfo>().Origin));
+		}
+
+		public void Render(WorldRenderer wr, World w, ActorInfo ai, PPos centerLocation)
+		{
+			if (!ai.Traits.Get<BuildingInfo>().RequiresBaseProvider)
+				return;
+
+			foreach (var a in w.ActorsWithTrait<BaseProvider>())
+				a.Trait.RenderBeforeWorld(wr, a.Actor);
 		}
 	}
 

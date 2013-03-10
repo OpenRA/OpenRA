@@ -422,6 +422,7 @@
     <Compile Include="Infiltrates.cs" />
     <Compile Include="Armament.cs" />
     <Compile Include="DebugMuzzlePositions.cs" />
+    <Compile Include="Buildings\BaseProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

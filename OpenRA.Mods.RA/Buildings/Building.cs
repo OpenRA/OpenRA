@@ -31,16 +31,39 @@ namespace OpenRA.Mods.RA.Buildings
 		[Desc("x means space it blocks, _ is a part that is passable by actors.")]
 		public readonly string Footprint = "x";
 		public readonly int2 Dimensions = new int2(1, 1);
+		public readonly bool RequiresBaseProvider = false;
 
 		public readonly string[] BuildSounds = {"placbldg.aud", "build5.aud"};
 		public readonly string[] SellSounds = {"cashturn.aud"};
 
 		public object Create(ActorInitializer init) { return new Building(init, this); }
 
+		public PPos CenterLocation(CPos topLeft)
+		{
+			return (PPos)((2 * topLeft.ToInt2() + Dimensions) * Game.CellSize / 2);
+		}
+
+		bool HasBaseProvider(World world, Player p, CPos topLeft)
+		{
+			var center = CenterLocation(topLeft);
+			foreach (var bp in world.ActorsWithTrait<BaseProvider>())
+			{
+				if (bp.Actor.Owner.Stances[p] != Stance.Ally || !bp.Trait.Ready())
+					continue;
+
+				if (Combat.IsInRange(center, bp.Trait.Info.Range, bp.Actor.CenterLocation))
+					return true;
+			}
+			return false;
+		}
+
 		public bool IsCloseEnoughToBase(World world, Player p, string buildingName, CPos topLeft)
 		{
 			if (p.PlayerActor.Trait<DeveloperMode>().BuildAnywhere)
 				return true;
+
+			if (RequiresBaseProvider && !HasBaseProvider(world, p, topLeft))
+				return false;
 
 			var buildingMaxBounds = (CVec)Dimensions;
 			if (Rules.Info[buildingName].Traits.Contains<BibInfo>())
@@ -103,7 +126,7 @@ namespace OpenRA.Mods.RA.Buildings
 
 			occupiedCells = FootprintUtils.UnpathableTiles( self.Info.Name, Info, TopLeft )
 				.Select(c => Pair.New(c, SubCell.FullCell)).ToArray();
-			pxPosition = (PPos) (( 2 * topLeft.ToInt2() + Info.Dimensions ) * Game.CellSize / 2);
+			pxPosition = Info.CenterLocation(topLeft);
 		}
 
 		public int GetPowerUsage()
