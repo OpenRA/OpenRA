@@ -49,163 +49,232 @@ rock7:
 tc04:
 	idle:
 		Start: 0
-	burn:
+	damaged-idle:
 		Start: 1
-		Length: 9
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
 
 tc05:
 	idle:
 		Start: 0
-	burn:
+	damaged-idle:
 		Start: 1
-		Length: 9
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
 
 tc03:
 	idle:
 		Start: 0
-	burn:
+	damaged-idle:
 		Start: 1
-		Length: 9
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
 
 tc02:
 	idle:
 		Start: 0
-	burn:
+	damaged-idle:
 		Start: 1
-		Length: 9
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
 
 tc01:
 	idle:
 		Start: 0
-	burn:
+	damaged-idle:
 		Start: 1
-		Length: 9
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
 
 t18:
 	idle:
 		Start: 0
-	burn:
+	damaged-idle:
 		Start: 1
-		Length: 9
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
 
 t17:
 	idle:
 		Start: 0
-	burn:
+	damaged-idle:
 		Start: 1
-		Length: 9
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
 
 t16:
 	idle:
 		Start: 0
-	burn:
+	damaged-idle:
 		Start: 1
-		Length: 9
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
 
 t15:
 	idle:
 		Start: 0
-	burn:
+	damaged-idle:
 		Start: 1
-		Length: 9
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
 
 t14:
 	idle:
 		Start: 0
-	burn:
+	damaged-idle:
 		Start: 1
-		Length: 9
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
 
 t13:
 	idle:
 		Start: 0
-	burn:
+	damaged-idle:
 		Start: 1
-		Length: 9
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
 
 t12:
 	idle:
 		Start: 0
-	burn:
+	damaged-idle:
 		Start: 1
-		Length: 9
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
 
 t11:
 	idle:
 		Start: 0
-	burn:
+	damaged-idle:
 		Start: 1
-		Length: 9
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
 
 t10:
 	idle:
 		Start: 0
-	burn:
+	damaged-idle:
 		Start: 1
-		Length: 9
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
 
 t09:
 	idle:
 		Start: 0
-	burn:
+	damaged-idle:
 		Start: 1
-		Length: 9
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
 
 t08:
 	idle:
 		Start: 0
-	burn:
+	damaged-idle:
 		Start: 1
-		Length: 9
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
 
 t07:
 	idle:
 		Start: 0
-	burn:
+	damaged-idle:
 		Start: 1
-		Length: 9
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
 
 t06:
 	idle:
 		Start: 0
-	burn:
+	damaged-idle:
 		Start: 1
-		Length: 9
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
 
 t05:
 	idle:
 		Start: 0
-	burn:
+	damaged-idle:
 		Start: 1
-		Length: 9
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
 
 t04:
 	idle:
 		Start: 0
-	burn:
+	damaged-idle:
 		Start: 1
-		Length: 9
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
 
 t03:
 	idle:
 		Start: 0
-	burn:
+	damaged-idle:
 		Start: 1
-		Length: 9
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
 
 t02:
 	idle:
 		Start: 0
-	burn:
+	damaged-idle:
 		Start: 1
-		Length: 9
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
 
 t01:
 	idle:
 		Start: 0
-	burn:
+	damaged-idle:
 		Start: 1
-		Length: 9
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
 
 v01:
 	idle:
