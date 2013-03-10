@@ -73,7 +73,7 @@ namespace OpenRA.Traits
 						self.Trait<PlayerResources>().GiveCash(Info.Cash);
 						break;
 					}
-				case "DevShroud":
+				case "DevShroudDisable":
 					{
 						DisableShroud ^= true;
 						self.Owner.Shroud.Disabled = DisableShroud;
@@ -87,6 +87,11 @@ namespace OpenRA.Traits
 				case "DevGiveExploration":
 					{
 						self.Owner.Shroud.ExploreAll(self.World);
+						break;
+					}
+				case "DevResetExploration":
+					{
+						self.Owner.Shroud.ResetExploration();
 						break;
 					}
 				case "DevUnlimitedPower":

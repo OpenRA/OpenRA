@@ -260,7 +260,7 @@ namespace OpenRA.Traits
 				Dirty();
 		}
 
-		public void ResetExploration()		// for `hide map` crate
+		public void ResetExploration()
 		{
 			for (var j = 0; j <= exploredCells.GetUpperBound(1); j++)
 				for (var i = 0; i <= exploredCells.GetUpperBound(0); i++)
