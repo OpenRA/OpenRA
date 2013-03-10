@@ -3,7 +3,7 @@ Background@CHEATS_PANEL:
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Width:350
-	Height:420
+	Height:450
 	Visible:true
 	Children:
 		Label@LABEL_TITLE:
@@ -75,6 +75,12 @@ Background@CHEATS_PANEL:
 			Width:PARENT_RIGHT - 30
 			Height:20
 			Text:Build Anywhere
+		Checkbox@SHOW_ASTAR:
+			X:30
+			Y:320
+			Width:PARENT_RIGHT - 30
+			Height:20
+			Text:Show A* Cost
 		Button@CLOSE:
 			X:30
 			Y:360

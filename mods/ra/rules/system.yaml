@@ -455,7 +455,7 @@ Player:
 	BaseAttackNotifier:
 	PlayerStatistics:
 
-World:	
+World:
 	OpenWidgetAtGameStart:
 		Widget: INGAME_ROOT
 		ObserverWidget: OBSERVER_ROOT
@@ -562,6 +562,7 @@ World:
 		Type:Crater
 		Types:cr1,cr2,cr3,cr4,cr5,cr6
 		Depths:5,5,5,5,5,5
+	DebugOverlay:
 	SpawnMapActors:
 	CreateMPPlayers:
 	MPStartLocations:

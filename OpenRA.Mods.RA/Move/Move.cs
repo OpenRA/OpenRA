@@ -49,8 +49,9 @@ namespace OpenRA.Mods.RA.Move
 		{
 			this.getPath = (self,mobile) =>
 				self.World.WorldActor.Trait<PathFinder>().FindPath(
-					PathSearch.FromPoint( self.World, mobile.Info, self, mobile.toCell, destination, false )
-					.WithIgnoredBuilding( ignoreBuilding ));
+					PathSearch.FromPoint(self.World, mobile.Info, self, mobile.toCell, destination, false)
+					.WithIgnoredBuilding(ignoreBuilding)
+				);
 
 			this.destination = destination;
 			this.nearEnough = 0;
