@@ -177,6 +177,7 @@ A10:
 		Weapon: Napalm
 		Range: 3
 	-Selectable:
+	-TargetableUnit:
 	-GainsExperience:
 	FlyAwayOnIdle:
 
