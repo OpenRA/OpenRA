@@ -15,46 +15,61 @@ namespace OpenRA.Mods.RA
 
 	class DebugOverlay : IRenderOverlay, IWorldLoaded
 	{
-		int[,] layer;
+		Dictionary<Player, int[,]> layers;
 		int refreshTick;
 		World world;
+		public bool Visible;
 
 		public void WorldLoaded(World w)
 		{
 			this.world = w;
-			this.layer = new int[w.Map.MapSize.X, w.Map.MapSize.Y];
 			this.refreshTick = 0;
+			this.layers = new Dictionary<Player, int[,]>(8);
+			// Enabled via Cheats menu
+			this.Visible = false;
 		}
 
-		public void AddLayer(IEnumerable<Pair<CPos, int>> cellWeights, int maxWeight)
+		public void AddLayer(IEnumerable<Pair<CPos, int>> cellWeights, int maxWeight, Player pl)
 		{
 			if (maxWeight == 0) return;
 
+			int[,] layer;
+			if (!layers.TryGetValue(pl, out layer))
+			{
+				layer = new int[world.Map.MapSize.X, world.Map.MapSize.Y];
+				layers.Add(pl, layer);
+			}
+
 			foreach (var p in cellWeights)
-				layer[p.First.X, p.First.Y] = layer[p.First.X, p.First.Y] / 2 + (p.Second * 128 / maxWeight);
+				layer[p.First.X, p.First.Y] = Math.Min(128, (layer[p.First.X, p.First.Y] / 2) + ((maxWeight - p.Second) * 64 / maxWeight));
 		}
 
 		public void Render(WorldRenderer wr)
 		{
+			if (!Visible) return;
+
 			var qr = Game.Renderer.WorldQuadRenderer;
-			bool doSwap = refreshTick - world.FrameNumber <= 0;
-			if (doSwap) refreshTick = world.FrameNumber + 20;
+			bool doDim = refreshTick - world.FrameNumber <= 0;
+			if (doDim) refreshTick = world.FrameNumber + 15;
 
-			for (int j = world.Map.Bounds.Top; j <= world.Map.Bounds.Bottom; ++j)
-				for (int i = world.Map.Bounds.Left; i <= world.Map.Bounds.Right; ++i)
-				{
-					if (!world.Map.IsInMap(i, j)) continue;
+			foreach (var pair in layers)
+			{
+				Color c = (pair.Key != null) ? pair.Key.ColorRamp.GetColor(0f) : Color.PaleTurquoise;
+				var layer = pair.Value;
 
-					var cell = new CPos(i, j);
-					var pix = cell.ToPPos();
-
-					var w = Math.Max(0, Math.Min(layer[i, j], 224));
-					if (doSwap)
+				for (int j = world.Map.Bounds.Top; j <= world.Map.Bounds.Bottom; ++j)
+					for (int i = world.Map.Bounds.Left; i <= world.Map.Bounds.Right; ++i)
 					{
-						layer[i, j] = layer[i, j] * 4 / 5;
+						var ploc = new CPos(i, j).ToPPos();
+
+						var w = Math.Max(0, Math.Min(layer[i, j], 128));
+						if (doDim)
+						{
+							layer[i, j] = layer[i, j] * 4 / 5;
+						}
+						qr.FillRect(new RectangleF(ploc.X, ploc.Y, Game.CellSize, Game.CellSize), Color.FromArgb(w, c));
 					}
-					qr.FillRect(new RectangleF(pix.X, pix.Y, Game.CellSize, Game.CellSize), Color.FromArgb(w, Color.White));
-				}
+			}
 		}
 	}
 }

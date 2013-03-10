@@ -120,7 +120,8 @@ namespace OpenRA.Mods.RA.Move
 
 		public List<CPos> FindBidiPath(			/* searches from both ends toward each other */
 			PathSearch fromSrc,
-			PathSearch fromDest)
+			PathSearch fromDest,
+			Player onBehalfOf)
 		{
 			using (new PerfSample("Pathfinder"))
 			{
@@ -155,8 +156,8 @@ namespace OpenRA.Mods.RA.Move
 					var dbg = world.WorldActor.TraitOrDefault<DebugOverlay>();
 					if (dbg != null)
 					{
-						dbg.AddLayer(fromSrc.considered.Select(p => new Pair<CPos, int>(p, fromSrc.cellInfo[p.X, p.Y].MinCost)), fromSrc.maxCost);
-						dbg.AddLayer(fromDest.considered.Select(p => new Pair<CPos, int>(p, fromDest.cellInfo[p.X, p.Y].MinCost)), fromDest.maxCost);
+						dbg.AddLayer(fromSrc.considered.Select(p => new Pair<CPos, int>(p, fromSrc.cellInfo[p.X, p.Y].MinCost)), fromSrc.maxCost, onBehalfOf);
+						dbg.AddLayer(fromDest.considered.Select(p => new Pair<CPos, int>(p, fromDest.cellInfo[p.X, p.Y].MinCost)), fromDest.maxCost, onBehalfOf);
 					}
 
 					if (path != null)
