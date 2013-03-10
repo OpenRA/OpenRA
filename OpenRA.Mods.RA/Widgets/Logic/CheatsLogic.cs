@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var shroudCheckbox = widget.Get<CheckboxWidget>("DISABLE_SHROUD");
 			shroudCheckbox.IsChecked = () => devTrait.DisableShroud;
-			shroudCheckbox.OnClick = () => Order(world, "DevShroud");
+			shroudCheckbox.OnClick = () => Order(world, "DevShroudDisable");
 
 			var pathCheckbox = widget.Get<CheckboxWidget>("SHOW_UNIT_PATHS");
 			pathCheckbox.IsChecked = () => devTrait.PathDebug;
@@ -55,6 +55,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			widget.Get<ButtonWidget>("GIVE_EXPLORATION").OnClick = () =>
 				world.IssueOrder(new Order("DevGiveExploration", world.LocalPlayer.PlayerActor, false));
+
+			widget.Get<ButtonWidget>("RESET_EXPLORATION").OnClick = () =>
+				world.IssueOrder(new Order("DevResetExploration", world.LocalPlayer.PlayerActor, false));
 
 			widget.Get<ButtonWidget>("CLOSE").OnClick = () => { Ui.CloseWindow(); onExit(); };
 		}
