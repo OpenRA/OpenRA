@@ -265,7 +265,7 @@ E8:
 		Type: Cybernetic
 	Mobile:
 		Speed: 5
-		Crushes: atmine, crate
+		Crushes: apmine, crate
 	RevealsShroud:
 		Range: 4
 	Passenger:

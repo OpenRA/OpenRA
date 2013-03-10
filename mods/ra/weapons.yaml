@@ -1207,7 +1207,7 @@ ATMine:
 			None: 0%
 			Wood: 0%
 			Concrete: 0%
-			Cybernetic: 60%
+			Cybernetic: 0%
 		ImpactSound: mineblo1
 		Explosion: large_explosion
 
@@ -1219,7 +1219,7 @@ APMine:
 			Light: 0%
 			Heavy: 0%
 			Concrete: 0%
-			Cybernetic: 0%
+			Cybernetic: 80%
 		ImpactSound: mine1
 		InfDeath: 3
 		Explosion: napalm
