@@ -264,6 +264,18 @@ Background@SETTINGS_MENU:
 					Height:20
 					Font:Regular
 					Text:Enable Pixel Doubling
+				Checkbox@CAPFRAMERATE_CHECKBOX:
+					Y:120
+					Width:200
+					Height:20
+					Font:Regular
+					Text:Cap Framerate @ 
+				TextField@MAX_FRAMERATE:
+					X:150
+					Y:120
+					Width:45
+					Height:25
+					MaxLength:3
 		Container@KEYS_PANE:
 			X:37
 			Y:100
