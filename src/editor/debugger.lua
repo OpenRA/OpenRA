@@ -656,9 +656,6 @@ end
 function DebuggerShutdown()
   if debugger.server then debugger.terminate() end
   if debugger.pid then killClient() end
-  -- wait for a little bit as in some rare cases when closing the debugger
-  -- with a running application under OSX, the process crashes (wxlua2.8.12).
-  if ide.osname == "Macintosh" then wx.wxMilliSleep(100) end
 end
 
 function DebuggerStop()

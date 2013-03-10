@@ -760,6 +760,8 @@ function CloseWindow(event)
   ide.settings:delete() -- always delete the config
   if ide.session.timer then ide.session.timer:Stop() end
   event:Skip()
+  -- this is to fix a crash on OSX when closing with debugging in progress
+  if ide.osname == "Macintosh" then os.exit() end
 end
 frame:Connect(wx.wxEVT_CLOSE_WINDOW, CloseWindow)
 
