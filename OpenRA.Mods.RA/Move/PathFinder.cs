@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.Support;
 using OpenRA.Traits;
 
@@ -125,20 +126,42 @@ namespace OpenRA.Mods.RA.Move
 			{
 				using (fromSrc)
 				using (fromDest)
+				{
+					List<CPos> path = null;
+
 					while (!fromSrc.queue.Empty && !fromDest.queue.Empty)
 					{
 						/* make some progress on the first search */
 						var p = fromSrc.Expand(world);
 
-						if (fromDest.cellInfo[p.X, p.Y].Seen && fromDest.cellInfo[p.X, p.Y].MinCost < float.PositiveInfinity)
-							return MakeBidiPath(fromSrc, fromDest, p);
+						if (fromDest.cellInfo[p.X, p.Y].Seen &&
+							fromDest.cellInfo[p.X, p.Y].MinCost < float.PositiveInfinity)
+						{
+							path = MakeBidiPath(fromSrc, fromDest, p);
+							break;
+						}
 
 						/* make some progress on the second search */
 						var q = fromDest.Expand(world);
 
-						if (fromSrc.cellInfo[q.X, q.Y].Seen && fromSrc.cellInfo[q.X, q.Y].MinCost < float.PositiveInfinity)
-							return MakeBidiPath(fromSrc, fromDest, q);
+						if (fromSrc.cellInfo[q.X, q.Y].Seen &&
+							fromSrc.cellInfo[q.X, q.Y].MinCost < float.PositiveInfinity)
+						{
+							path = MakeBidiPath(fromSrc, fromDest, q);
+							break;
+						}
 					}
+
+					var dbg = world.WorldActor.TraitOrDefault<DebugOverlay>();
+					if (dbg != null)
+					{
+						dbg.AddLayer(fromSrc.considered.Select(p => new Pair<CPos, int>(p, fromSrc.cellInfo[p.X, p.Y].MinCost)), fromSrc.maxCost);
+						dbg.AddLayer(fromDest.considered.Select(p => new Pair<CPos, int>(p, fromDest.cellInfo[p.X, p.Y].MinCost)), fromDest.maxCost);
+					}
+
+					if (path != null)
+						return path;
+				}
 
 				return new List<CPos>(0);
 			}

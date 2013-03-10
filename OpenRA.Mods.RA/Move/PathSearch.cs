@@ -26,7 +26,8 @@ namespace OpenRA.Mods.RA.Move
 		public bool checkForBlocked;
 		public Actor ignoreBuilding;
 		public bool inReverse;
-
+		public HashSet<CPos> considered;
+		public int maxCost;
 		MobileInfo mobileInfo;
 		Actor self;
 		public Player owner { get { return self.Owner; } }
@@ -39,6 +40,8 @@ namespace OpenRA.Mods.RA.Move
 			this.self = self;
 			customCost = null;
 			queue = new PriorityQueue<PathDistance>();
+			considered = new HashSet<CPos>();
+			maxCost = 0;
 		}
 
 		public PathSearch InReverse()
@@ -108,14 +111,20 @@ namespace OpenRA.Mods.RA.Move
 					return p.Location;
 			}
 
+			// This current cell is ok; check all immediate directions:
+			considered.Add(p.Location);
+
 			foreach( CVec d in directions )
 			{
 				CPos newHere = p.Location + d;
 
-				if (!world.Map.IsInMap(newHere.X, newHere.Y)) continue;
+				// Is this direction flat-out unusable or already seen?
+				if (!world.Map.IsInMap(newHere.X, newHere.Y))
+					continue;
 				if (cellInfo[newHere.X, newHere.Y].Seen)
 					continue;
 
+				// Now we may seriously consider this direction using heuristics:
 				var costHere = mobileInfo.MovementCostForCell(world, newHere);
 
 				if (costHere == int.MaxValue)
@@ -134,8 +143,12 @@ namespace OpenRA.Mods.RA.Move
 				int cellCost = costHere;
 				if (d.X * d.Y != 0) cellCost = (cellCost * 34) / 24;
 
+				int userCost = 0;
 				if (customCost != null)
-					cellCost += customCost(newHere);
+				{
+					userCost = customCost(newHere);
+					cellCost += userCost;
+				}
 
 				// directional bonuses for smoother flow!
 				if (LaneBias != 0)
@@ -151,6 +164,7 @@ namespace OpenRA.Mods.RA.Move
 
 				int newCost = cellInfo[p.Location.X, p.Location.Y].MinCost + cellCost;
 
+				// Cost is even higher; next direction:
 				if (newCost >= cellInfo[newHere.X, newHere.Y].MinCost)
 					continue;
 
@@ -158,7 +172,11 @@ namespace OpenRA.Mods.RA.Move
 				cellInfo[newHere.X, newHere.Y].MinCost = newCost;
 
 				queue.Add(new PathDistance(newCost + est, newHere));
+
+				if (newCost > maxCost) maxCost = newCost;
+				considered.Add(newHere);
 			}
+
 			return p.Location;
 		}
 
