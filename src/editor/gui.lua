@@ -42,8 +42,8 @@ local function createFrame()
   local menuBar = wx.wxMenuBar()
   local statusBar = frame:CreateStatusBar(6)
   local section_width = statusBar:GetTextExtent("OVRW")
-  statusBar:SetStatusStyles({wx.wxSB_RAISED, wx.wxSB_RAISED, wx.wxSB_RAISED,
-    wx.wxSB_RAISED, wx.wxSB_RAISED, wx.wxSB_RAISED})
+  statusBar:SetStatusStyles({wx.wxSB_FLAT, wx.wxSB_FLAT, wx.wxSB_FLAT,
+    wx.wxSB_FLAT, wx.wxSB_FLAT, wx.wxSB_FLAT})
   statusBar:SetStatusWidths(
     {-1, section_width*6, section_width, section_width, section_width*4, section_width*4})
   statusBar:SetStatusText(GetIDEString("statuswelcome"))
