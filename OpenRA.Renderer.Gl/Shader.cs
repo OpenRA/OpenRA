@@ -132,15 +132,16 @@ namespace OpenRA.Renderer.Glsl
 			ErrorHandler.CheckGlError();
 		}
 
-		public void SetValue(string name, ITexture t)
+		public void SetTexture(string name, ITexture t)
 		{
-			if( t == null ) return;
+			if (t == null)
+				return;
 			int texUnit;
-			if( samplers.TryGetValue( name, out texUnit ) )
+			if (samplers.TryGetValue(name, out texUnit))
 				textures[texUnit] = t;
 		}
 
-		public void SetValue(string name, float x, float y)
+		public void SetVec(string name, float x, float y)
 		{
 			Gl.glUseProgramObjectARB(program);
 			ErrorHandler.CheckGlError();

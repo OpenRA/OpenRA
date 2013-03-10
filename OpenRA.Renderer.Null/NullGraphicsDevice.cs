@@ -54,14 +54,12 @@ namespace OpenRA.Renderer.Null
 		public ITexture CreateTexture() { return new NullTexture(); }
 		public ITexture CreateTexture(Bitmap bitmap) { return new NullTexture(); }
 		public IShader CreateShader(string name) { return new NullShader(); }
-
-		public int GpuMemoryUsed { get { return 0; } }
 	}
 
 	public class NullShader : IShader
 	{
-		public void SetValue(string name, float x, float y) { }
-		public void SetValue(string param, ITexture texture) { }
+		public void SetVec(string name, float x, float y) { }
+		public void SetTexture(string param, ITexture texture) { }
 		public void Commit() { }
 		public void Render(Action a) { }
 	}
