@@ -125,6 +125,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				.ToDictionary(a => a.Race, a => a.Name);
 			CountryNames.Add("random", "Any");
 
+			var gameStarting = false;
+
 			var mapButton = lobby.Get<ButtonWidget>("CHANGEMAP_BUTTON");
 			mapButton.OnClick = () =>
 			{
@@ -157,10 +159,33 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				randomMapButton.IsVisible = () => mapButton.Visible && Game.IsHost;
 			}
 
+			var assignTeams = lobby.GetOrNull<DropDownButtonWidget>("ASSIGNTEAMS_DROPDOWNBUTTON");
+			if (assignTeams != null)
+			{
+				assignTeams.IsVisible = () => Game.IsHost;
+				assignTeams.IsDisabled = () => gameStarting || orderManager.LobbyInfo.Clients.Count(c => c.Slot != null) < 2
+					|| orderManager.LocalClient == null || orderManager.LocalClient.IsReady;
+
+				assignTeams.OnMouseDown = _ =>
+				{
+					var options = Enumerable.Range(2, orderManager.LobbyInfo.Clients.Count(c => c.Slot != null).Clamp(2, 8) - 1).Select(d => new DropDownOption
+					{
+						Title = "{0} Teams".F(d),
+						IsSelected = () => false,
+						OnClick = () => orderManager.IssueOrder(Order.Command("assignteams {0}".F(d.ToString())))
+					});
+					Func<DropDownOption, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
+					{
+						var item = ScrollItemWidget.Setup(template, option.IsSelected, option.OnClick);
+						item.Get<LabelWidget>("LABEL").GetText = () => option.Title;
+						return item;
+					};
+					assignTeams.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count() * 30, options, setupItem);
+				};
+			}
+
 			var disconnectButton = lobby.Get<ButtonWidget>("DISCONNECT_BUTTON");
 			disconnectButton.OnClick = () => { CloseWindow(); onExit(); };
-
-			var gameStarting = false;
 
 			var allowCheats = lobby.Get<CheckboxWidget>("ALLOWCHEATS_CHECKBOX");
 			allowCheats.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.AllowCheats;
@@ -187,13 +212,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				difficulty.GetText = () => orderManager.LobbyInfo.GlobalSettings.Difficulty;
 				difficulty.OnMouseDown = _ =>
 				{
-					var options = Map.Difficulties.Select(d => new DifficultyDropDownOption
+					var options = Map.Difficulties.Select(d => new DropDownOption
 					{
 						Title = d,
 						IsSelected = () => orderManager.LobbyInfo.GlobalSettings.Difficulty == d,
 						OnClick = () => orderManager.IssueOrder(Order.Command("difficulty {0}".F(d)))
 					});
-					Func<DifficultyDropDownOption, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
+					Func<DropDownOption, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
 					{
 						var item = ScrollItemWidget.Setup(template, option.IsSelected, option.OnClick);
 						item.Get<LabelWidget>("LABEL").GetText = () => option.Title;
@@ -492,7 +517,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			orderManager.IssueOrder(Order.Command("ready"));
 		}
 
-		class DifficultyDropDownOption
+		class DropDownOption
 		{
 			public string Title;
 			public Func<bool> IsSelected;

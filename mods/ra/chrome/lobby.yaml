@@ -386,22 +386,30 @@ Background@SERVER_LOBBY:
 			Height:25
 			Text:Random Map
 			Font:Bold
-		DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
+		DropDownButton@ASSIGNTEAMS_DROPDOWNBUTTON:
 			X:PARENT_RIGHT-154
 			Y:PARENT_BOTTOM-229
 			Width:120
 			Height:25
 			Font:Bold
 			Visible:false
+			Text:Assign
+		DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
+			X:PARENT_RIGHT-154
+			Y:PARENT_BOTTOM-199
+			Width:120
+			Height:25
+			Font:Bold
+			Visible:false
 		Checkbox@ALLOWCHEATS_CHECKBOX:
 			X: PARENT_RIGHT-154
-			Y: PARENT_BOTTOM-179
+			Y: PARENT_BOTTOM-169
 			Width: 80
 			Height: 20
 			Text: Allow Cheats
 		Checkbox@CRATES_CHECKBOX:
 			X: PARENT_RIGHT-154
-			Y: PARENT_BOTTOM-154
+			Y: PARENT_BOTTOM-144
 			Width: 80
 			Height: 20
 			Text: Crates
