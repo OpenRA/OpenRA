@@ -11,6 +11,26 @@ Player:
 	DeveloperMode:
 	HackyAI@Default:
 		Name:Easy AI
+		BuildingCommonNames:
+			ConstructionYard: fact
+			Refinery: proc
+			Power: nuke,nuk2
+			Barracks: pyle,hand
+			VehiclesFactory: weap,afld
+			Silo: silo
+		UnitsCommonNames:
+			Mcv: mcv
+		BuildingLimits:
+			proc: 4
+			pyle: 2
+			hand: 2
+			hq: 1
+			weap: 2
+			afld: 2
+			hpad: 1
+			eye: 1
+			tmpl: 1
+			fix: 1
 		BuildingFractions:
 			proc: 20%
 			nuke: 9%
@@ -49,6 +69,68 @@ Player:
 			htnk: 50%
 			heli: 5%
 			orca: 5%
+		SquadSize: 15
+	HackyAI@Normal:
+		Name:Normal AI
+		BuildingCommonNames:
+			ConstructionYard: fact
+			Refinery: proc
+			Power: nuke,nuk2
+			Barracks: pyle,hand
+			VehiclesFactory: weap,afld
+			Silo: silo
+		UnitsCommonNames:
+			Mcv: mcv
+		BuildingLimits:
+			proc: 4
+			pyle: 2
+			hand: 2
+			hq: 1
+			weap: 2
+			afld: 2
+			hpad: 1
+			eye: 1
+			tmpl: 1
+			fix: 1
+		BuildingFractions:
+			proc: 17%
+			nuke: 1%
+			pyle: 2%
+			hand: 2%
+			hq: 1%
+			nuk2: 18%
+			weap: 5%
+			afld: 5%
+			hpad: 4%
+			gtwr: 5%
+			gun: 5%
+			atwr: 9%
+			obli: 7%
+			eye: 1%
+			tmpl: 1%
+			sam: 7%
+			silo: 7%
+			fix: 1%
+		UnitsToBuild:
+			e1: 30%
+			e2: 30%
+			e3: 30%
+			e4: 30%
+			e5: 30%
+			harv: 1%
+			bggy: 10%
+			ftnk: 10%
+			arty: 40%
+			bike: 10%
+			heli: 10%
+			ltnk: 40%
+			stnk: 40%
+			orca: 10%
+			msam: 50%
+			htnk: 50%
+			jeep: 20%
+			mtnk: 50%
+		SquadSize: 15
 	PlayerColorPalette:
 		BasePalette: terrain
 		RemapIndex: 176, 178, 180, 182, 184, 186, 189, 191, 177, 179, 181, 183, 185, 187, 188, 190
