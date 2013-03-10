@@ -107,7 +107,7 @@ local function createNotebook(frame)
   local notebook = wxaui.wxAuiNotebook(frame, wx.wxID_ANY,
   wx.wxDefaultPosition, wx.wxDefaultSize,
   wxaui.wxAUI_NB_DEFAULT_STYLE + wxaui.wxAUI_NB_TAB_EXTERNAL_MOVE
-  + wx.wxNO_BORDER)
+  + wxaui.wxAUI_NB_WINDOWLIST_BUTTON + wx.wxNO_BORDER)
 
   -- the following group of event handlers allows the active editor
   -- to get/keep focus after execution of Run and other commands
