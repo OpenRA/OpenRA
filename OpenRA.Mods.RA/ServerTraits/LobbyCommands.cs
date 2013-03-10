@@ -335,25 +335,30 @@ namespace OpenRA.Mods.RA.Server
 						}
 						teams = teams.Clamp(2, 8);
 
-						var clients = server.lobbyInfo.Slots
+						var players = server.lobbyInfo.Slots
 							.Select(slot => server.lobbyInfo.Clients.SingleOrDefault(c => c.Slot == slot.Key))
 							.Where(c => c != null && !server.lobbyInfo.Slots[c.Slot].LockTeam).ToArray();
-						if (clients.Length < 2)
+						if (players.Length < 2)
 						{
-							server.SendChatTo(conn, "Not enough clients to assign teams");
+							server.SendChatTo(conn, "Not enough players to assign teams");
+							return true;
+						}
+						if (teams > players.Length)
+						{
+							server.SendChatTo(conn, "Too many teams for the number of players");
 							return true;
 						}
 
-						var teamSizes = new int[clients.Length];
-						for (var i = 0; i < clients.Length; i++)
+						var teamSizes = new int[players.Length];
+						for (var i = 0; i < players.Length; i++)
 							teamSizes[i % teams]++;
 
-						var clientIndex = 0;
+						var playerIndex = 0;
 						for (var team = 1; team <= teams; team++)
 						{
-							for (var teamClientIndex = 0; teamClientIndex < teamSizes[team - 1]; clientIndex++, teamClientIndex++)
+							for (var teamPlayerIndex = 0; teamPlayerIndex < teamSizes[team - 1]; playerIndex++, teamPlayerIndex++)
 							{
-								var cl = clients[clientIndex];
+								var cl = players[playerIndex];
 								if (cl.Bot == null)
 									cl.State = Session.ClientState.NotReady;
 								cl.Team = team;

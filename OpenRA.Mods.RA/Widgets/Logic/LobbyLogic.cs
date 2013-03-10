@@ -163,12 +163,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (assignTeams != null)
 			{
 				assignTeams.IsVisible = () => Game.IsHost;
-				assignTeams.IsDisabled = () => gameStarting || orderManager.LobbyInfo.Clients.Count < 2
+				assignTeams.IsDisabled = () => gameStarting || orderManager.LobbyInfo.Clients.Count(c => c.Slot != null) < 2
 					|| orderManager.LocalClient == null || orderManager.LocalClient.IsReady;
 
 				assignTeams.OnMouseDown = _ =>
 				{
-					var options = Enumerable.Range(2, orderManager.LobbyInfo.Clients.Count.Clamp(2, 8) - 1).Select(d => new DropDownOption
+					var options = Enumerable.Range(2, orderManager.LobbyInfo.Clients.Count(c => c.Slot != null).Clamp(2, 8) - 1).Select(d => new DropDownOption
 					{
 						Title = "{0} Teams".F(d),
 						IsSelected = () => false,
