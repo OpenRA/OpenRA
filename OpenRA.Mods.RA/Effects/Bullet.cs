@@ -57,8 +57,9 @@ namespace OpenRA.Mods.RA.Effects
 
 			if (info.Inaccuracy > 0)
 			{
-				var factor = ((Args.dest - Args.src).Length / Game.CellSize) / (float)args.weapon.Range;
+				var factor = ((Args.dest - Args.src).ToCVec().Length) / args.weapon.Range;
 				Args.dest += (PVecInt) (info.Inaccuracy * factor * args.firedBy.World.SharedRandom.Gauss2D(2)).ToInt2();
+				Log.Write("debug", "Bullet with Inaccuracy; factor: #{0}; Projectile dest: {1}", factor, Args.dest);
 			}
 
 			if (Info.Image != null)
