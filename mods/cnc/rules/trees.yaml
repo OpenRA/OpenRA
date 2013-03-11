@@ -22,6 +22,18 @@ SPLIT3:
 	RadarColorFromTerrain:
 		Terrain: Tiberium
 
+SPLITBLUE:
+	Inherits: ^Tree
+	RenderBuilding:
+		Palette: staticterrain
+	SeedsResource:
+		ResourceType:BlueTiberium
+		Interval: 55
+	Tooltip:
+		Name: Blossom Tree (blue)
+	RadarColorFromTerrain:
+		Terrain: BlueTiberium
+
 ROCK1:
 	Inherits: ^Rock
 ROCK2:
