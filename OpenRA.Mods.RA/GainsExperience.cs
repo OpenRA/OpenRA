@@ -99,7 +99,7 @@ namespace OpenRA.Mods.RA
 
 		public IEnumerable<Renderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<Renderable> r)
 		{
-			if ((self.Owner == self.World.LocalPlayer || self.World.LocalPlayer == null) && Level > 0)
+			if (self.Owner == self.World.LocalPlayer && Level > 0)
 				return InnerModifyRender(self, wr, r);
 			else
 				return r;
