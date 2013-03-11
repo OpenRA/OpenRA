@@ -9,13 +9,23 @@ split2:
 		Start: 54
 
 split3:
-	make:
+	make: split2
 		Start: 0
 		Length: 30
-	active:
+	active: split2
 		Start: 30
 		Length: 24
-	idle:
+	idle: split2
+		Start: 54
+
+splitblue:
+	make: split3
+		Start: 0
+		Length: 30
+	active: split3
+		Start: 30
+		Length: 24
+	idle: split3
 		Start: 54
 
 rock1:
