@@ -23,7 +23,7 @@ cp -R $BUILTDIR/* "$ROOTDIR/usr/share/openra/" || exit 3
 
 # Desktop Icons
 mkdir -p $ROOTDIR/usr/share/applications/
-desktop-file-install --dir $ROOTDIR/usr/share/applications/ openra.desktop
+cp openra.desktop "$ROOTDIR/usr/share/applications/"
 
 mkdir -p $ROOTDIR/usr/share/icons/
 cp -r hicolor $ROOTDIR/usr/share/icons/
