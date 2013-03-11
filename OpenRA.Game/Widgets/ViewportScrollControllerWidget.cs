@@ -95,65 +95,60 @@ namespace OpenRA.Widgets
             Edge = ScrollDirection.None;
             if (Game.Settings.Game.ViewportEdgeScroll && Game.HasInputFocus)
             {
-                // First let's check if the mouse is on the corners:
-                if (Viewport.LastMousePos.X >= Game.viewport.Width - EdgeCornerScrollThreshold &&
-                    Viewport.LastMousePos.Y >= Game.viewport.Height - EdgeCornerScrollThreshold) //Bottom Right
-                {
-                    Edge = Edge.Set(ScrollDirection.Right, true);
-                    Scroll();
-                    Edge = Edge.Set(ScrollDirection.Down, true);
-                    Scroll();
-                    return;
-                }
-                if (Viewport.LastMousePos.X < EdgeCornerScrollThreshold &&
-                   Viewport.LastMousePos.Y >= Game.viewport.Height - EdgeCornerScrollThreshold) //Bottom Left
-                {
-                    Edge = Edge.Set(ScrollDirection.Left, true);
-                    Scroll();
-                    Edge = Edge.Set(ScrollDirection.Down, true);
-                    Scroll();
-                    return;
-                }
-
-                if (Viewport.LastMousePos.X >= Game.viewport.Width - EdgeCornerScrollThreshold &&
-                   Viewport.LastMousePos.Y < EdgeCornerScrollThreshold) //Top Right
-                {
-                    Edge = Edge.Set(ScrollDirection.Right, true);
-                    Scroll();
-                    Edge = Edge.Set(ScrollDirection.Up, true);
-                    Scroll();
-                    return;
-                }
-
-                if (Viewport.LastMousePos.X < EdgeCornerScrollThreshold &&
-                    Viewport.LastMousePos.Y < EdgeCornerScrollThreshold) //Top Left
-                {
-                    Edge = Edge.Set(ScrollDirection.Left, true);
-                    Scroll();
-                    Edge = Edge.Set(ScrollDirection.Up, true);
-                    Scroll();
-                    return;
-                }
-
-
-                //Check for corner ends here now let's check the edges:
-
-                // Check for edge-scroll
-                if (Viewport.LastMousePos.X < EdgeScrollThreshold)
-                    Edge = Edge.Set(ScrollDirection.Left, true);
-                if (Viewport.LastMousePos.Y < EdgeScrollThreshold)
-                    Edge = Edge.Set(ScrollDirection.Up, true);
-                if (Viewport.LastMousePos.X >= Game.viewport.Width - EdgeScrollThreshold)
-                    Edge = Edge.Set(ScrollDirection.Right, true);
-                if (Viewport.LastMousePos.Y >= Game.viewport.Height - EdgeScrollThreshold)
-                    Edge = Edge.Set(ScrollDirection.Down, true);
-
+                CheckForDirections();
                 Scroll();
-                //Check for edge-scroll ends here.
             }
 
 
         }
+
+        private ScrollDirection CheckForDirections()
+        {
+            // First let's check if the mouse is on the corners:
+            if (Viewport.LastMousePos.X >= Game.viewport.Width - EdgeCornerScrollThreshold &&
+                Viewport.LastMousePos.Y >= Game.viewport.Height - EdgeCornerScrollThreshold) //Bottom Right
+            {
+                Edge = Edge.Set(ScrollDirection.Right | ScrollDirection.Down, true);
+                return Edge;
+            }
+            else if (Viewport.LastMousePos.X < EdgeCornerScrollThreshold &&
+               Viewport.LastMousePos.Y >= Game.viewport.Height - EdgeCornerScrollThreshold) //Bottom Left
+            {
+                Edge = Edge.Set(ScrollDirection.Down | ScrollDirection.Left, true);
+                return Edge;
+            }
+
+            else if (Viewport.LastMousePos.X >= Game.viewport.Width - EdgeCornerScrollThreshold &&
+                Viewport.LastMousePos.Y < EdgeCornerScrollThreshold) //Top Right
+            {
+                Edge = Edge.Set(ScrollDirection.Right | ScrollDirection.Up, true);
+                return Edge;
+            }
+
+            else if (Viewport.LastMousePos.X < EdgeCornerScrollThreshold &&
+                Viewport.LastMousePos.Y < EdgeCornerScrollThreshold) //Top Left
+            {
+                Edge = Edge.Set(ScrollDirection.Left | ScrollDirection.Up, true);
+                return Edge;
+            }
+
+            //Check for corner ends here now let's check the edges:
+
+            // Check for edge-scroll
+            if (Viewport.LastMousePos.X < EdgeScrollThreshold)
+                Edge = Edge.Set(ScrollDirection.Left, true);
+            if (Viewport.LastMousePos.Y < EdgeScrollThreshold)
+                Edge = Edge.Set(ScrollDirection.Up, true);
+            if (Viewport.LastMousePos.X >= Game.viewport.Width - EdgeScrollThreshold)
+                Edge = Edge.Set(ScrollDirection.Right, true);
+            if (Viewport.LastMousePos.Y >= Game.viewport.Height - EdgeScrollThreshold)
+                Edge = Edge.Set(ScrollDirection.Down, true);
+
+
+            //Check for edge-scroll ends here.
+            return Edge;
+        }
+
 
         public void Scroll()
         {
