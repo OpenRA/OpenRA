@@ -460,7 +460,8 @@
   <PropertyGroup>
     <PostBuildEvent>mkdir "$(SolutionDir)mods/ra/"
 copy "$(TargetPath)" "$(SolutionDir)mods/ra/"
-copy "thirdparty/FuzzyLogicLibrary.dll" "$(SolutionDir)"
+cd "$(SolutionDir)thirdparty/"
+copy "FuzzyLogicLibrary.dll" "$(SolutionDir)"
 cd "$(SolutionDir)"</PostBuildEvent>
   </PropertyGroup>
 </Project>
