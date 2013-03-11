@@ -107,9 +107,7 @@ namespace OpenRA.Mods.RA
 		Actor ChooseTarget(Actor self, float range)
 		{
 			var info = self.Info.Traits.Get<AttackBaseInfo>();
-			nextScanTime = (int)(25 * (info.ScanTimeAverage +
-				(self.World.SharedRandom.NextFloat() * 2 - 1) * info.ScanTimeSpread));
-			Log.Write("debug", "Actor {0}; nextScanTime: {1}", self.ActorID, nextScanTime);
+			nextScanTime = self.World.SharedRandom.Next(info.MinimumScanTimeInterval, info.MaximumScanTimeInterval);
 
 			var inRange = self.World.FindUnitsInCircle(self.CenterLocation, (int)(Game.CellSize * range));
 
