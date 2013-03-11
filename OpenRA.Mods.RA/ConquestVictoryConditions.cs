@@ -60,9 +60,9 @@ namespace OpenRA.Mods.RA
 			foreach (var a in self.World.Actors.Where(a => a.Owner == self.Owner))
 				a.Kill(a);
 
+			self.Owner.Shroud.Disabled = true;
 			if (self.Owner == self.World.LocalPlayer)
 			{
-				self.World.RenderedShroud.Disabled = true;
 				Game.RunAfterDelay(Info.NotificationDelay, () =>
 				{
 					if (Game.IsCurrentWorld(self.World))
@@ -77,9 +77,9 @@ namespace OpenRA.Mods.RA
 			self.Owner.WinState = WinState.Won;
 
 			Game.Debug("{0} is victorious.".F(self.Owner.PlayerName));
+			self.Owner.Shroud.Disabled = true;
 			if (self.Owner == self.World.LocalPlayer)
 			{
-				self.World.RenderedShroud.Disabled = true;
 				Game.RunAfterDelay(Info.NotificationDelay, () => Sound.PlayNotification(self.Owner, "Speech", "Win", self.Owner.Country.Race));
 			}
 		}

@@ -35,7 +35,12 @@ namespace OpenRA.Mods.Cnc
 		public void Killed(Actor self, AttackInfo e)
 		{
 			if (!rs.anim.HasSequence("dead")) return;
-			rs.anim.PlayRepeating("dead");
+			
+			if (rs.anim.GetSequence("dead").Length > 1)
+				rs.anim.Play("dead");
+			else
+				rs.anim.PlayRepeating("dead");
+			
 			self.World.AddFrameEndTask(
 				w => w.Add(
 					new DelayedAction(info.LingerTime,

@@ -36,8 +36,8 @@ namespace OpenRA.Mods.RA
 		public readonly bool AlignIdleTurrets = false;
 		public readonly bool CanAttackGround = true;
 
-		public readonly float ScanTimeAverage = 2f;
-		public readonly float ScanTimeSpread = .5f;
+		public readonly int MinimumScanTimeInterval = 30;
+		public readonly int MaximumScanTimeInterval = 60;
 
 		public abstract object Create(ActorInitializer init);
 

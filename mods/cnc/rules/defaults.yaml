@@ -355,7 +355,15 @@
 		Terrain: Tree
 	EditorAppearance:
 		RelativeToTopLeft: yes
-		
+	Health:
+		HP: 500
+	DeadBuildingState:
+	Armor:
+		Type: Wood
+	TargetableBuilding:
+		TargetTypes: Ground
+	AutoTargetIgnore:
+
 ^Rock:
 	Tooltip:
 		Name: Rock
