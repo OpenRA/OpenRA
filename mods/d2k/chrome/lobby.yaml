@@ -331,13 +331,6 @@ Background@SERVER_LOBBY:
 					Text:Ready
 					Align:Left
 					Font:Bold
-		Button@CHANGEMAP_BUTTON:
-			X:PARENT_RIGHT-154
-			Y:PARENT_BOTTOM-269
-			Width:120
-			Height:25
-			Text:Change Map
-			Font:Bold
 		ScrollPanel@CHAT_DISPLAY:
 			X:20
 			Y:PARENT_BOTTOM - 289
@@ -379,6 +372,54 @@ Background@SERVER_LOBBY:
 			Y:PARENT_BOTTOM - 49
 			Width:550
 			Height:25
+		Button@CHANGEMAP_BUTTON:
+			X:PARENT_RIGHT-154
+			Y:PARENT_BOTTOM-289
+			Width:120
+			Height:25
+			Text:Change Map
+			Font:Bold
+		Button@RANDOMMAP_BUTTON:
+			X:PARENT_RIGHT-154
+			Y:PARENT_BOTTOM-259
+			Width:120
+			Height:25
+			Text:Random Map
+			Font:Bold
+		DropDownButton@ASSIGNTEAMS_DROPDOWNBUTTON:
+			X:PARENT_RIGHT-154
+			Y:PARENT_BOTTOM-229
+			Width:120
+			Height:25
+			Font:Bold
+			Visible:false
+			Text:Assign
+		DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
+			X:PARENT_RIGHT-154
+			Y:PARENT_BOTTOM-199
+			Width:120
+			Height:25
+			Font:Bold
+			Visible:false
+		Checkbox@ALLOWCHEATS_CHECKBOX:
+			X: PARENT_RIGHT-154
+			Y: PARENT_BOTTOM-169
+			Width: 80
+			Height: 20
+			Text: Allow Cheats
+		Checkbox@CRATES_CHECKBOX:
+			X: PARENT_RIGHT-154
+			Y: PARENT_BOTTOM-144
+			Width: 80
+			Height: 20
+			Text: Crates
+		Button@DISCONNECT_BUTTON:
+			X:PARENT_RIGHT-154
+			Y:PARENT_BOTTOM-99
+			Width:120
+			Height:25
+			Text:Disconnect
+			Font:Bold
 		Button@START_GAME_BUTTON:
 			X:PARENT_RIGHT-154
 			Y:PARENT_BOTTOM-49
@@ -386,19 +427,6 @@ Background@SERVER_LOBBY:
 			Height:25
 			Text:Start Game
 			Font:Bold
-		Button@DISCONNECT_BUTTON:
-			X:PARENT_RIGHT-154
-			Y:PARENT_BOTTOM-189+25
-			Width:120
-			Height:25
-			Text:Disconnect
-			Font:Bold
-		Checkbox@ALLOWCHEATS_CHECKBOX:
-			X: PARENT_RIGHT-154
-			Y: PARENT_BOTTOM-229
-			Width: 80
-			Height: 20
-			Text: Allow Cheats
 Background@COLOR_CHOOSER:
 	Logic:ColorPickerLogic
 	Background:dialog2
@@ -443,7 +471,7 @@ Background@COLOR_CHOOSER:
 			Width:40
 			Height:20
 			Align: Right
-			Text: Sat:	
+			Text: Sat:
 		Slider@SAT:
 			X:43
 			Y:35
