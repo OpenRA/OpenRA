@@ -31,6 +31,41 @@ NEW:
 		Refactored palette remapping rendering code as a preparation for upcoming Voxel support
 		Fixed crashes when attempting to watch replays in non-RA mods
 		Added support for randomized weapon reports
+		Added pathfinder Debug overlay visualization A* search cost per cell in player color tints
+		Attempt to improve A* algorithm
+		Add "Assign Teams" lobby drop down button for admins to randomize teams
+		Added hidden settings to the GUI:
+			Cap Framerate checkbox and FPS limit
+			Autoplay music after map load
+			Sound engine backend drop down selection box
+			Performance graph text update rate
+			Show bot debug message checkbox
+			Slow trait report threshold slider
+		We now use Travis Continous Integration and enforce a strict no compiler warnings policy
+		Adapted to dpkg's "--instdir"-like options to allow installations of different openra next to each other on Debian GNU/Linux
+		Better AI Bots:
+			Removed the AI attack bottleneck where the whole squad had to be killed completely before a new one was started
+			Units will attack/rush/retreat based on own and opponents health/speed using fuzzy logic while staying in squads
+			Protect harvesters and base buildings when they are attacked
+			Place defense building in the direction of the enemy
+			Place refineries in vicinity to the nearest ressource fields
+			Support for aircraft and ships
+			Try to kill off unprotected enemy targets with aircraft
+			Don't ignore percentage to build for units in yaml configuration
+			Will maintain adequate numbers of refineries and silos
+			Will now try to use super weapons
+			Added a cap for maximum building count
+		Give the users some hints in exception.log when crashing due to desyncs
+		Log projectile destination (innaccuracy calculation) and nextScanTime (auto-target) to debug.log to investigate desyncs
+		Added Shroud, CreatesShroud and RevealsShroud as well as AutoTarget and ScaredyCat (panicking infantry) to syncreport.log
+		Refactoring: cleaned up code duplication to ease the addition of new renderers
+		Added a new reset exploration developer cheat (like hide-map crate, opposite of give exploration)
+		Support for classic mods (not yet packaged):
+			Speedup production queues if multiple of the same building exist
+			Engineer capture rules which require/do damage at first
+			Fixed CustomBuildTimeValue related desync
+			Added a trait to turn off fog of war
+			Separated spy disguise and infiltration for thief
 	Editor:
 		Map editor now saves and loads from OpenRA user folder
 		Fixed map editor failing to import legacy maps
@@ -44,6 +79,7 @@ NEW:
 		Added Allies04 mission
 		Added Soviet01Classic mission
 		Added MonsterTankMadness mission
+		Added Survival01 mission
 		Added Desert tileset - original and new tiles ported from Tiberium Dawn by Harrison, code by Matt
 		Fixed graphics for craters for Snow maps (art by MrFibble)
 		Ice Floe actors work in maps now (sequences were missing)
@@ -91,6 +127,8 @@ NEW:
 		Added Mobile Gap Generator
 		Shroud creators now temporarily create shroud
 		Added support for Nyerguds music upgrade pack
+		Added unused actors for legacy map import (thief, chan, general, mobile radar jammer)
+		You can now define the LoadScreenImage in mod.yaml and easily replace it with your own
 	C&C:
 		Removed custom build time for tiberium refinery to avoid desync crashes
 		Infantry detect cloaked units in adjacent tile.
@@ -100,11 +138,31 @@ NEW:
 		Fix wrong civilian field remapping in-game
 		Slowed down structure building animations
 		Obelisk now AutoTargeted properly by units
-		Communications Center HP reduced so it can be nuked. 
+		Communications Center HP reduced so it can be nuked.
 		Airfield HP reduced so it can be destroyed by simultaneous airstrike + ion cannon.
 		Halved Chinook price from $1500 to $750
 		Reduced Helipad price reduced to $1000 (was $1500)
 		Changed sounds for cloaking and building destruction
+		Vehicle speeds adjusted, now 80% on clear, like tanks
+		Husks burn 10 seconds now instead of 40
+		Tanks UnitExplodeSmall now by default
+		Blue tiberium now poisons infantry
+		Crates no longer provide MCVs if you already got one
+		Levelup crate removed
+		Crate lifetime increased
+		Increased shroud for Buggy, Bike, LTNK and APC.
+		APC speed reduced 10 -> 9
+		MLRS speed increased 6 -> 7
+		Rotation speeds increased for: bike, buggy, jeep, APC, stnk, ftnk, ltnk
+		Bike speed increased on clear, reduced on road
+		MCV now slightly slower
+		NOD buggy hitpoints reduced 140 -> 120
+		Temporarily disabled AI building of HPAD and FIX since they can't use them
+		MCV are not buildable anymore to workaround base-walking and turret spam
+		Scaled back tank firing rate a bit (was 2x, now 1.5x)
+		Reduced Artillery damage vs. wood from 75% to 50%.
+		Slight tweak to recon bike damage (25 -> 28)
+		Slight tweak to Stealth Tank damage vs. heavy armor (100% -> 90%)
 	Dune 2000:
 		Merged the Rounded Edges Mod by Jes and Bellator:
 			Bibs have been removed
