@@ -146,7 +146,7 @@ namespace OpenRA.Widgets
         }
 
 
-        public void Scroll()
+        void Scroll()
         {
             if (Keyboard != ScrollDirection.None || Edge != ScrollDirection.None)
             {
