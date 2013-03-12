@@ -40,13 +40,10 @@ return {
       return
     end
 
-    -- can we really do debugging? do if asked and if not on mac OSX where it's not supported
-    local debug = rundebug and not mac
     if rundebug then
       -- start running the application right away
-      DebuggerAttachDefault({startwith = file,
-        runstart = ide.config.debugger.runonstart ~= false,
-        redirect = debug and "c", noshell = mac or nil, noeval = mac or nil})
+      DebuggerAttachDefault({startwith = file, redirect = mac and "r" or "c",
+        runstart = ide.config.debugger.runonstart ~= false})
 
       -- copy mobdebug.lua to Resources/ folder on Win and to the project folder on OSX
       -- as copying it to Resources/ folder seems to break the signature of the app.
@@ -60,7 +57,7 @@ return {
       end
     end
 
-    local cmd = ('"%s" %s"%s"'):format(corona, debug and "-debug " or "", file)
+    local cmd = ('"%s" %s"%s"'):format(corona, rundebug and "-debug 1 -project " or "", file)
     -- CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
     return CommandLineRun(cmd,self:fworkdir(wfilename),true,false,nil,nil,
       function() ide.debugger.pid = nil end)
