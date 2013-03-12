@@ -1,3 +1,2 @@
-1 ICON "16.ico"
-2 ICON "32.ico"
+icon ICON "zbstudio.ico"
 1 RT_MANIFEST zbstudio.manifest
