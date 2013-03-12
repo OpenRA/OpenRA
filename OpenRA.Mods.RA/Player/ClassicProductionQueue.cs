@@ -18,8 +18,9 @@ namespace OpenRA.Mods.RA
 {
 	public class ClassicProductionQueueInfo : ProductionQueueInfo, Requires<TechTreeInfo>, Requires<PowerManagerInfo>, Requires<PlayerResourcesInfo>
 	{
-		public readonly float SpeedUp = 0;
-		public readonly float MaxSpeedUp = 0;
+		public readonly bool SpeedUp = false;
+		public readonly int BuildTimeSpeedUpDivisor = 2;
+		public readonly int MaxBuildTimeReductionSteps = 6;
 
 		public override object Create(ActorInitializer init) { return new ClassicProductionQueue(init.self, this); }
 	}
@@ -90,19 +91,21 @@ namespace OpenRA.Mods.RA
 			if (self.World.LobbyInfo.GlobalSettings.AllowCheats && self.Owner.PlayerActor.Trait<DeveloperMode>().FastBuild)
 				return 0;
 
-			var selfsameBuildings = self.World.ActorsWithTrait<Production>()
-				.Where(p => p.Trait.Info.Produces.Contains(unit.Traits.Get<BuildableInfo>().Queue))
-				.Where(p => p.Actor.Owner == self.Owner).ToArray();
+			var time = (int) (unit.GetBuildTime() * Info.BuildSpeedModifier);
 
-			var selfsameQueue = Rules.Info["player"].Traits.WithInterface<ClassicProductionQueueInfo>()
-				.First(p => selfsameBuildings.First().Trait.Info.Produces.Contains(p.Type));
+			if (Info.SpeedUp)
+			{
+				var selfsameBuildings = self.World.ActorsWithTrait<Production>()
+					.Where(p => p.Trait.Info.Produces.Contains(unit.Traits.Get<BuildableInfo>().Queue))
+						.Where(p => p.Actor.Owner == self.Owner).ToArray();
 
-			var speedUp = 1 - (selfsameQueue.SpeedUp * (selfsameBuildings.Count() - 1)).Clamp(0, selfsameQueue.MaxSpeedUp);
+				var BuildTimeReductionSteps = Math.Min(selfsameBuildings.Count(), Info.MaxBuildTimeReductionSteps);
 
-			var time = unit.GetBuildTime() * Info.BuildSpeed * speedUp;
+				for (int i = 1; i < BuildTimeReductionSteps; i++)
+					time /= Info.BuildTimeSpeedUpDivisor;
+			}
 
-
-			return (int) time;
+			return time;
 		}
 	}
 }
