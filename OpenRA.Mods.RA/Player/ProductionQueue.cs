@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA
 		public readonly string Type = null;
 		public readonly string Group = null;
 
-		public float BuildSpeed = 0.4f;
+		public float BuildSpeedModifier = 0.4f;
 		public readonly int LowPowerSlowdown = 3;
 
 		public readonly string ReadyAudio = "UnitReady";
@@ -262,7 +262,7 @@ namespace OpenRA.Mods.RA
 			if (self.World.LobbyInfo.GlobalSettings.AllowCheats && self.Owner.PlayerActor.Trait<DeveloperMode>().FastBuild)
 				return 0;
 
-			var time = unit.GetBuildTime() * Info.BuildSpeed;
+			var time = unit.GetBuildTime() * Info.BuildSpeedModifier;
 
 			return (int) time;
 		}
