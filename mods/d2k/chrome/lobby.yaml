@@ -11,10 +11,17 @@ Background@SERVER_LOBBY:
 			X:0
 			Y:17
 			Align:Center
-			Width:800
+			Width:530
 			Height:20
 			Font:Bold
 			Text:OpenD2k Multiplayer Lobby
+		Label@MAP_TITLE:
+			X:532
+			Y:17
+			Align:Center
+			Width:250
+			Height:20
+			Font:Bold
 		Background@LOBBY_MAP_BG:
 			X:PARENT_RIGHT-268
 			Y:50
