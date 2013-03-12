@@ -53,6 +53,7 @@ namespace OpenRA.Network
 			public string Country;
 			public int SpawnPoint;
 			public string Name;
+			public string IpAddress;
 			public ClientState State;
 			public int Team;
 			public string Slot;	// slot ID, or null for observer

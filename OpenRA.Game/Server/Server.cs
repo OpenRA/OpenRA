@@ -263,11 +263,13 @@ namespace OpenRA.Server
 					return;
 				}
 
+				client.IpAddress = ((IPEndPoint)newConn.socket.RemoteEndPoint).Address.ToString();
+
 				// Check if IP is banned
 				if (lobbyInfo.GlobalSettings.Ban != null)
 				{
-					var remote_addr = ((IPEndPoint)newConn.socket.RemoteEndPoint).Address.ToString();
-					if (lobbyInfo.GlobalSettings.Ban.Contains(remote_addr))
+
+					if (lobbyInfo.GlobalSettings.Ban.Contains(client.IpAddress))
 					{
 						Console.WriteLine("Rejected connection from "+client.Name+"("+newConn.socket.RemoteEndPoint+"); Banned.");
 						Log.Write("server", "Rejected connection from {0}; Banned.",
