@@ -642,6 +642,10 @@ FACT:
 		Power: 0
 		Footprint: xxx xxx xxx
 		Dimensions: 3,3
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 1000
+		Owner: None
 	Health:
 		HP: 1000
 	Armor:
@@ -651,11 +655,12 @@ FACT:
 	Bib:
 	Production:
 		Produces: Building,Defense
-	IronCurtainable: 
+	IronCurtainable:
 	Valued:
 		Cost: 2500
 	Tooltip:
 		Name: Construction Yard
+		Description: Builds base structures.
 	CustomSellValue:
 		Value: 2500
 	BaseBuilding:
