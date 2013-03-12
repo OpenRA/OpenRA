@@ -22,16 +22,16 @@ namespace OpenRA.Mods.RA.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			var capturesInfo = self.Info.Traits.Get<CapturesInfo>();
-			var health = target.Trait<Health>();
-			int damage = (int)(0.25 * health.MaxHP);
-
 			if (IsCanceled)
 				return NextActivity;
 			if (target == null || !target.IsInWorld || target.IsDead())
 				return NextActivity;
 			if (target.Owner == self.Owner)
 				return NextActivity;
+
+			var capturesInfo = self.Info.Traits.Get<CapturesInfo>();
+			var health = target.Trait<Health>();
+			int damage = (int)(0.25 * health.MaxHP);
 
 			// Need to be next to building, TODO: stop capture when going away
 			var mobile = self.Trait<Mobile>();
