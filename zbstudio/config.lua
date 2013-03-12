@@ -14,9 +14,12 @@ if G.ide.osname == 'Macintosh' then
   if G.ide.wxver >= "2.9.5" then
     editor.fontsize = defaultsize
     editor.fontname = "Monaco"
-    outputshell.fontsize = defaultsize
-    outputshell.fontname = "Monaco"
+    outputshell.fontsize = editor.fontsize
+    outputshell.fontname = editor.fontname
   end
+elseif G.ide.osname == 'Windows' then
+  editor.fontname = "Courier New"
+  outputshell.fontname = editor.fontname
 end
 
 filehistorylength = 20
