@@ -82,9 +82,10 @@ ORNI:
 		Type: Light
 	RevealsShroud:
 		Range: 10
+	Armament:
+		Weapon: ChainGun
+		LocalOffset: -5,-2,0,2,0
 	AttackHeli:
-		PrimaryWeapon: ChainGun
-		PrimaryOffset: -5,-2,0,2
 		FacingTolerance: 20
 	Helicopter:
 		LandWhenIdle: false

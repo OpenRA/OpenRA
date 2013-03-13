@@ -541,8 +541,9 @@ SPICEBLOOM:
 #	AttackMove:
 #		JustMove: true
 #	AttackWander:
+#	Armament:
+#		Weapon: WormJaw
 #	AttackLeap:
-#		PrimaryWeapon: WormJaw
 #		CanAttackGround: no
 #	RenderInfantry:
 #	BelowUnits:

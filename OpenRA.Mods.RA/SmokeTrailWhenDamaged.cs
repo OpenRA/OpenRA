@@ -43,7 +43,7 @@ namespace OpenRA.Mods.RA
 				{
 					var facing = self.Trait<IFacing>();
 					var altitude = new PVecInt(0, move.Altitude);
-					position = (self.CenterLocation - (PVecInt)Combat.GetTurretPosition(self, facing, smokeTurret).ToInt2());
+					position = (self.CenterLocation - (PVecInt)smokeTurret.PxPosition(self, facing).ToInt2());
 
 					if (self.World.RenderedShroud.IsVisible(position.ToCPos()))
 						self.World.AddFrameEndTask(

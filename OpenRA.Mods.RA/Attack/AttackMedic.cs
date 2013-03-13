@@ -29,10 +29,10 @@ namespace OpenRA.Mods.RA
 
 		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
 		{
-			var weapon = ChooseWeaponForTarget(newTarget);
-			if( weapon == null )
+			var weapon = ChooseArmamentForTarget(newTarget);
+			if (weapon == null)
 				return null;
-			return new Activities.Heal(newTarget, Math.Max(0, (int)weapon.Info.Range), allowMove);
+			return new Activities.Heal(newTarget, Math.Max(0, (int)weapon.Weapon.Range), allowMove);
 		}
 	}
 }

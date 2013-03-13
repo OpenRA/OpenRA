@@ -131,10 +131,10 @@ HARVESTER.starport:
 		Range: 8
 	RenderUnit:
 	WithMuzzleFlash:
+	Armament:
+		Weapon: M60mg
+		LocalOffset: 0,-6,0,-3, 0
 	AttackFrontal:
-		PrimaryWeapon: M60mg
-		PrimaryOffset: 0,-6,0,-3
-		#PrimaryLocalOffset: 1,-1,0,-3,0, -1,-1,0,-3,0
 	AutoTarget:
 		InitialStance: Defend
 	Explodes:
@@ -172,9 +172,10 @@ QUAD:
 		Range: 7
 	RenderUnit:
 		Image: QUAD
+	Armament:
+		Weapon: QuadRockets
+		LocalOffset: 0,-3,0,-2,0 #-4
 	AttackFrontal:
-		PrimaryWeapon: QuadRockets
-		PrimaryLocalOffset: 0,-3,0,-2,0 #-4
 	AutoTarget:
 		InitialStance: Defend
 	Explodes:
@@ -213,12 +214,13 @@ QUAD.starport:
 		Range: 6
 	Turreted:
 		ROT: 6
+		AlignWhenIdle: true
+	Armament:
+		Weapon: 90mm
+		Recoil: 4
+		RecoilRecovery: 0.8
+		LocalOffset: 0,-2,0,-3,0
 	AttackTurreted:
-		AlignIdleTurrets: true
-		PrimaryWeapon: 90mm
-		PrimaryRecoil: 4
-		PrimaryRecoilRecovery: 0.8
-		PrimaryLocalOffset: 0,-2,0,-3,0
 	RenderUnitTurreted:
 	AutoTarget:
 		InitialStance: Defend
@@ -265,11 +267,12 @@ SIEGETANK:
 		Range: 5
 	Turreted:
 		ROT: 3
+	Armament:
+		Weapon: 155mm
+		Recoil: 7
+		RecoilRecovery: 0.45
+		LocalOffset: 0,-4,0,-7,0
 	AttackFrontal:
-		PrimaryWeapon: 155mm
-		PrimaryRecoil: 7
-		PrimaryRecoilRecovery: 0.45
-		PrimaryLocalOffset: 0,-4,0,-7,0
 	RenderUnitTurreted:
 		Image: SIEGETANK
 	Explodes:
@@ -328,9 +331,10 @@ MISSILETANK:
 		Range: 6
 	RenderUnit:
 		Image: MISSILETANK
+	Armament:
+		Weapon: 227mm
+		LocalOffset: 3,5,0,-4,0, -6,5,0,-4,0
 	AttackFrontal:
-		PrimaryWeapon: 227mm
-		PrimaryLocalOffset: 3,5,0,-4,0, -6,5,0,-4,0
 	AutoTarget:
 		InitialStance: Defend
 	Explodes:

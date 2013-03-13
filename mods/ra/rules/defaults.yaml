@@ -289,8 +289,9 @@
 		Speed: 4
 	RevealsShroud:
 		Range: 2
+	Armament:
+		Weapon: Pistol
 	AttackFrontal:
-		PrimaryWeapon: Pistol
 	ProximityCaptor:
 		Types:CivilianInfantry
 	-RenderInfantry:

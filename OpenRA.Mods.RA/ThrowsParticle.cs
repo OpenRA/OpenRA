@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA
 
 			alt = 0;
 			facing = Turreted.GetInitialTurretFacing( init, 0 );
-			pos = Combat.GetTurretPosition(self, ifacing, new Turret(info.Offset)).ToFloat2();
+			pos = new Turret(info.Offset).PxPosition(self, ifacing).ToFloat2();
 
 			v = Game.CosmeticRandom.Gauss2D(1) * info.Spread.RelOffset();
 			dfacing = Game.CosmeticRandom.Gauss1D(2) * info.ROT;

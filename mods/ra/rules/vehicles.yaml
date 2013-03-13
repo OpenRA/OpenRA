@@ -19,8 +19,9 @@ V2RL:
 		Speed: 7
 	RevealsShroud:
 		Range: 5
+	Armament:
+		Weapon: SCUD
 	AttackFrontal:
-		PrimaryWeapon: SCUD
 	RenderUnitReload:
 	AutoTarget:
 	Explodes:
@@ -49,10 +50,11 @@ V2RL:
 		Range: 4
 	Turreted:
 		ROT: 5
+	Armament:
+		Weapon: 25mm
+		Recoil: 2
+		RecoilRecovery: 0.5
 	AttackTurreted:
-		PrimaryWeapon: 25mm
-		PrimaryRecoil: 2
-		PrimaryRecoilRecovery: 0.5
 	RenderUnitTurreted:
 	AutoTarget:
 	Explodes:
@@ -85,10 +87,11 @@ V2RL:
 		Range: 5
 	Turreted:
 		ROT: 5
+	Armament:
+		Weapon: 90mm
+		Recoil: 3
+		RecoilRecovery: 0.9
 	AttackTurreted:
-		PrimaryWeapon: 90mm
-		PrimaryRecoil: 3
-		PrimaryRecoilRecovery: 0.9
 	RenderUnitTurreted:
 	AutoTarget:
 	Explodes:
@@ -123,11 +126,12 @@ V2RL:
 		Range: 5
 	Turreted:
 		ROT: 5
+	Armament:
+		Weapon: 105mm
+		Recoil: 3
+		RecoilRecovery: 0.9
+		LocalOffset: 2,0,0,0,0, -2,0,0,0,0
 	AttackTurreted:
-		PrimaryWeapon: 105mm
-		PrimaryRecoil: 3
-		PrimaryRecoilRecovery: 0.9
-		PrimaryLocalOffset: 2,0,0,0,0, -2,0,0,0,0
 	RenderUnitTurreted:
 	AutoTarget:
 	Explodes:
@@ -162,14 +166,16 @@ V2RL:
 		Range: 6
 	Turreted:
 		ROT: 1
+	Armament@PRIMARY:
+		Weapon: 120mm
+		LocalOffset: -4,-5,0,0,0, 4,-5,0,0,0
+		Recoil: 4
+		RecoilRecovery: 0.7
+	Armament@SECONDARY:
+		Weapon: MammothTusk
+		LocalOffset: -7,2,0,0,25, 7,2,0,0,-25
+		Recoil: 1
 	AttackTurreted:
-		PrimaryWeapon: 120mm
-		SecondaryWeapon: MammothTusk
-		PrimaryLocalOffset: -4,-5,0,0,0, 4,-5,0,0,0
-		SecondaryLocalOffset: -7,2,0,0,25, 7,2,0,0,-25
-		PrimaryRecoil: 4
-		PrimaryRecoilRecovery: 0.7
-		SecondaryRecoil: 1
 	RenderUnitTurreted:
 	AutoTarget:
 	Explodes:
@@ -207,8 +213,9 @@ ARTY:
 		Speed: 6
 	RevealsShroud:
 		Range: 5
+	Armament:
+		Weapon: 155mm
 	AttackFrontal:
-		PrimaryWeapon: 155mm
 	RenderUnit:
 	Explodes:
 		Weapon: UnitExplode
@@ -319,9 +326,10 @@ JEEP:
 		Range: 8
 	Turreted:
 		ROT: 10
+		Offset: 0,0,0,-2
+	Armament:
+		Weapon: M60mg
 	AttackTurreted:
-		PrimaryWeapon: M60mg
-		PrimaryOffset: 0,0,0,-2
 	WithMuzzleFlash:
 	RenderUnitTurreted:
 	AutoTarget:
@@ -351,9 +359,10 @@ APC:
 		Speed: 10
 	RevealsShroud:
 		Range: 5
+	Armament:
+		Weapon: M60mg
+		LocalOffset: 0,0,0,-4,0
 	AttackFrontal:
-		PrimaryWeapon: M60mg
-		PrimaryOffset: 0,0,0,-4
 	RenderUnit:
 	WithMuzzleFlash:
 	AutoTarget:
@@ -614,9 +623,10 @@ TTNK:
 		Crushes: wall, atmine, crate, infantry
 	RevealsShroud:
 		Range: 7
+	Armament:
+		Weapon: TTankZap
+		LocalOffset: 0,0,0,-5,0
 	AttackFrontal:
-		PrimaryWeapon: TTankZap
-		PrimaryOffset: 0,0,0,-5
 	RenderUnitSpinner:
 	Selectable:
 		Bounds: 28,28,0,0
@@ -645,10 +655,11 @@ FTRK:
 		Range: 4
 	Turreted:
 		ROT: 5
+		Offset: 0,5,0,-4
+	Armament:
+		Weapon: FLAK-23
+		Recoil: 2
 	AttackTurreted:
-		PrimaryWeapon: FLAK-23
-		PrimaryOffset: 0,5,0,-4
-		PrimaryRecoil: 2
 	RenderUnitTurreted:
 	AutoTarget:
 	Explodes:
@@ -714,9 +725,11 @@ CTNK:
 		Range: 6
 	RenderUnit:
 	AutoTarget:
+	Armament@PRIMARY:
+		Weapon: ChronoTusk
+		LocalOffset: -4,0,0,0,0, -4,0,0,0,0
+	Armament@SECONDARY:
+		Weapon: ChronoTusk
+		LocalOffset: 4,0,0,0,25, 4,0,0,0,-25
 	AttackFrontal:
-		PrimaryWeapon: ChronoTusk
-		SecondaryWeapon: ChronoTusk
-		PrimaryLocalOffset: -4,0,0,0,0, -4,0,0,0,0
-		SecondaryLocalOffset: 4,0,0,0,25, 4,0,0,0,-25
 	ChronoshiftDeploy:

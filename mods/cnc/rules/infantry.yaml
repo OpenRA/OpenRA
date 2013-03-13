@@ -15,8 +15,9 @@ E1:
 		Speed: 4
 	Health:
 		HP: 50
+	Armament:
+		Weapon: M16
 	AttackFrontal:
-		PrimaryWeapon: M16
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2,idle3,idle4
 	DetectCloaked:
@@ -40,10 +41,11 @@ E2:
 		Speed: 5
 	Health:
 		HP: 50
-	AttackFrontal:
-		PrimaryWeapon: Grenade
-		PrimaryOffset: 0,0,0,-10
+	Armament:
+		Weapon: Grenade
+		LocalOffset: 0,0,0,-10,0
 		FireDelay: 15
+	AttackFrontal:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
 	Explodes:
@@ -70,10 +72,11 @@ E3:
 		Speed: 3
 	Health:
 		HP: 45
-	AttackFrontal:
-		PrimaryWeapon: Rockets
-		PrimaryOffset: 1,-6,0,-8
+	Armament:
+		Weapon: Rockets
+		LocalOffset: 1,-6,0,-8,0
 		FireDelay: 5
+	AttackFrontal:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
 	DetectCloaked:
@@ -97,10 +100,11 @@ E4:
 		Speed: 5
 	Health:
 		HP: 90
-	AttackFrontal:
-		PrimaryWeapon: Flamethrower
-		PrimaryOffset: 0,-2,2,-4
+	Armament:
+		Weapon: Flamethrower
+		LocalOffset: 0,-2,2,-4,0
 		FireDelay: 3
+	AttackFrontal:
 	WithMuzzleFlash:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
@@ -130,10 +134,11 @@ E5:
 				PathingCost: 80
 	Health:
 		HP: 90
-	AttackFrontal:
-		PrimaryWeapon: Chemspray
-		PrimaryOffset: 0,-2,2,-9
+	Armament:
+		Weapon: Chemspray
+		LocalOffset: 0,-2,2,-9,0
 		FireDelay: 3
+	AttackFrontal:
 	WithMuzzleFlash:
 	-PoisonedByTiberium:
 	RenderInfantryProne:
@@ -197,8 +202,9 @@ RMBO:
 		ScanRadius: 5
 	C4Demolition:
 		C4Delay: 45
+	Armament:
+		Weapon: Sniper
 	AttackFrontal:
-		PrimaryWeapon: Sniper
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2,idle3
 	AnnounceOnBuild:

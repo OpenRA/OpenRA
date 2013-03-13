@@ -31,9 +31,10 @@ namespace OpenRA.Mods.RA.Render
 
 			spinnerAnim.PlayRepeating("spinner");
 
+			var turret = new Turret(info.Offset);
 			anims.Add("spinner", new AnimationWithOffset(
 				spinnerAnim,
-				() => Combat.GetTurretPosition( self, facing, new Turret(info.Offset)).ToFloat2(),
+				() => turret.PxPosition(self, facing).ToFloat2(),
 				null ) { ZOffset = 1 } );
 		}
 	}

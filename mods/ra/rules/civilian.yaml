@@ -103,9 +103,10 @@ V01.SNIPER:
 	AutoTarget:
 	Turreted:
 		ROT: 255
+	Armament:
+		Weapon: Sniper
+		LocalOffset: 0,-11,0,0,0
 	AttackTurreted:
-		PrimaryWeapon: Sniper
-		PrimaryLocalOffset: 0,-11,0,0,0
 	Cargo:
 		InitialUnits: sniper
 		Types: Infantry

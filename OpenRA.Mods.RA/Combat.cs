@@ -208,48 +208,6 @@ namespace OpenRA.Mods.RA
 			return false;
 		}
 
-		static PVecFloat GetRecoil(Actor self, float recoil)
-		{
-			if (!self.HasTrait<RenderUnitTurreted>())
-				return PVecFloat.Zero;
-
-			var facing = self.Trait<Turreted>().turretFacing;
-			var localRecoil = new float2(0, recoil);	// vector in turret-space.
-
-			return (PVecFloat)Util.RotateVectorByFacing(localRecoil, facing, .7f);
-		}
-
-		public static PVecFloat GetTurretPosition(Actor self, IFacing facing, Turret turret)
-		{
-			if (facing == null) return turret.ScreenSpacePosition;	/* things that don't have a rotating base don't need the turrets repositioned */
-
-			var ru = self.TraitOrDefault<RenderUnit>();
-			var numDirs = (ru != null) ? ru.anim.CurrentSequence.Facings : 8;
-			var bodyFacing = facing.Facing;
-			var quantizedFacing = Util.QuantizeFacing(bodyFacing, numDirs) * (256 / numDirs);
-
-			return (PVecFloat)Util.RotateVectorByFacing(turret.UnitSpacePosition.ToFloat2(), quantizedFacing, .7f)
-				+ GetRecoil(self, turret.Recoil)
-				+ (PVecFloat)turret.ScreenSpacePosition.ToFloat2();
-		}
-
-		static PVecFloat GetUnitspaceBarrelOffset(Actor self, IFacing facing, Turret turret, Barrel barrel)
-		{
-			var turreted = self.TraitOrDefault<Turreted>();
-			if (turreted == null && facing == null)
-				return PVecFloat.Zero;
-
-			var turretFacing = turreted != null  ? turreted.turretFacing : facing.Facing;
-			return (PVecFloat)Util.RotateVectorByFacing(barrel.TurretSpaceOffset.ToFloat2(), turretFacing, .7f);
-		}
-
-		// gets the screen-space position of a barrel.
-		public static PVecFloat GetBarrelPosition(Actor self, IFacing facing, Turret turret, Barrel barrel)
-		{
-			return GetTurretPosition(self, facing, turret) + barrel.ScreenSpaceOffset
-				+ GetUnitspaceBarrelOffset(self, facing, turret, barrel);
-		}
-
 		public static bool IsInRange( PPos attackOrigin, float range, Actor target )
 		{
 			var rsq = range * range * Game.CellSize * Game.CellSize;

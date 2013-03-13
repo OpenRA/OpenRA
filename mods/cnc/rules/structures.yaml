@@ -510,9 +510,10 @@ GUN:
 		ROT: 12
 		InitialFacing: 50
 	RenderBuildingTurreted:
+	Armament:
+		Weapon: TurretGun
+		LocalOffset: 0,4,0,-2,0
 	AttackTurreted:
-		PrimaryWeapon: TurretGun
-		PrimaryLocalOffset: 0,4,0,-2,0
 	AutoTarget:
 	-AutoTargetIgnore:
 	-RenderBuilding:
@@ -551,8 +552,9 @@ SAM:
 		ROT: 7
 		InitialFacing: 0
 	RenderBuildingTurreted:
+	Armament:
+		Weapon: SAMMissile
 	AttackPopupTurreted:
-		PrimaryWeapon: SAMMissile
 	WithMuzzleFlash:
 	AutoTarget:
 	-RenderBuilding:
@@ -585,10 +587,11 @@ OBLI:
 		Range: 8
 	RenderBuildingCharge:
 		ChargeAudio: obelpowr.aud
-	AttackTurreted:
-		PrimaryWeapon: Laser
-		PrimaryOffset: 0,0,-2,-17
+	Armament:
+		Weapon: Laser
+		LocalOffset: 0,0,-2,-17,0
 		FireDelay: 8
+	AttackTurreted:
 	Turreted:
 		ROT:255
 	AutoTarget:
@@ -620,10 +623,10 @@ GTWR:
 		HP: 600
 	RevealsShroud:
 		Range: 7
+	Armament:
+		Weapon: HighV
+		LocalOffset: 0,-6,0,-6,0
 	AttackTurreted:
-		PrimaryWeapon: HighV
-		PrimaryOffset: 0,0,0,-6
-		PrimaryLocalOffset: 0,-6,0,0,0
 	AutoTarget:
 	-AutoTargetIgnore:
 	DetectCloaked:
@@ -659,10 +662,10 @@ ATWR:
 		Type: Heavy
 	RevealsShroud:
 		Range: 9
+	Armament:
+		Weapon: TowerMissle
+		LocalOffset: 7,-7,5,2,-25, -7,-7,5,2,25
 	AttackTurreted:
-		PrimaryWeapon: TowerMissle
-		PrimaryOffset: 0,0,5,2
-		PrimaryLocalOffset: 7,-7,0,0,-25, -7,-7,0,0,25
 	Turreted:
 		ROT:255
 	AutoTarget:

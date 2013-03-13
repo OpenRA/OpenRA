@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 
@@ -28,10 +29,15 @@ namespace OpenRA.Mods.RA
 
 		public override void DoAttack(Actor self, Target target)
 		{
-			if( !CanAttack( self, target ) ) return;
+			if (!CanAttack(self, target))
+				return;
 
-			var weapon = Weapons[0].Info;
-			if( !Combat.IsInRange( self.CenterLocation, weapon.Range, target ) ) return;
+			var a = ChooseArmamentForTarget(target);
+			if (a == null)
+				return;
+
+			if (!Combat.IsInRange(self.CenterLocation, a.Weapon.Range, target))
+				return;
 
 			self.CancelActivity();
 			self.QueueActivity(new Leap(self, target));
@@ -39,10 +45,10 @@ namespace OpenRA.Mods.RA
 
 		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
 		{
-			var weapon = ChooseWeaponForTarget(newTarget);
-			if( weapon == null )
+			var a = ChooseArmamentForTarget(newTarget);
+			if (a == null)
 				return null;
-			return new Activities.Attack(newTarget, Math.Max(0, (int)weapon.Info.Range), allowMove);
+			return new Activities.Attack(newTarget, Math.Max(0, (int)a.Weapon.Range), allowMove);
 		}
 	}
 }

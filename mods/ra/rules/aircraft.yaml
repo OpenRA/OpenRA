@@ -95,9 +95,10 @@ MIG:
 		Type: Light
 	RevealsShroud:
 		Range: 12
+	Armament:
+		Weapon: Maverick
+		LocalOffset: -15,0,0,0,-10, 15,0,0,0,6
 	AttackPlane:
-		PrimaryWeapon: Maverick
-		PrimaryLocalOffset: -15,0,0,0,-10, 15,0,0,0,6
 		FacingTolerance: 20
 	Plane:
 		InitialFacing: 192
@@ -144,11 +145,13 @@ YAK:
 		Type: Light
 	RevealsShroud:
 		Range: 10
+	Armament@PRIMARY:
+		Weapon: ChainGun.Yak
+		LocalOffset: -5,-6,0,0,0
+	Armament@SECONDARY:
+		Weapon: ChainGun.Yak
+		LocalOffset: 5,-6,0,0,0
 	AttackPlane:
-		PrimaryWeapon: ChainGun.Yak
-		SecondaryWeapon: ChainGun.Yak
-		PrimaryOffset: -5,-6,0,0
-		SecondaryOffset: 5,-6,0,0
 		FacingTolerance: 20
 	Plane:
 		RearmBuildings: afld
@@ -250,11 +253,13 @@ HELI:
 		Type: Light
 	RevealsShroud:
 		Range: 12
+	Armament@PRIMARY:
+		Weapon: HellfireAA
+		LocalOffset: -5,0,0,2,0
+	Armament@SECONDARY:
+		Weapon: HellfireAG
+		Offset: 5,0,0,2,0
 	AttackHeli:
-		PrimaryWeapon: HellfireAG
-		SecondaryWeapon: HellfireAA
-		PrimaryOffset: -5,0,0,2
-		SecondaryOffset: 5,0,0,2
 		FacingTolerance: 20
 	Helicopter:
 		RearmBuildings: hpad
@@ -294,11 +299,13 @@ HIND:
 		Type: Light
 	RevealsShroud:
 		Range: 10
+	Armament@PRIMARY:
+		Weapon: ChainGun
+		LocalOffset: -5,-2,0,2,0
+	Armament@SECONDARY:
+		Weapon: ChainGun
+		LocalOffset: -5,-2,0,2,0
 	AttackHeli:
-		PrimaryWeapon: ChainGun
-		SecondaryWeapon: ChainGun
-		PrimaryOffset: -5,-2,0,2
-		SecondaryOffset: 5,-2,0,2
 		FacingTolerance: 20
 	Helicopter:
 		RearmBuildings: hpad
