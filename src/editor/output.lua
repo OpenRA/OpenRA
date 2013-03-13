@@ -140,9 +140,9 @@ function CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
   local proc = wx.wxProcess(errorlog)
   if (tooutput) then proc:Redirect() end -- redirect the output if requested
 
-  -- manipulate working directory
+  -- set working directory if specified
   local oldcwd
-  if (wdir) then
+  if (wdir and #wdir > 0) then -- directory can be empty; ignore in this case
     oldcwd = wx.wxFileName.GetCwd()
     oldcwd = wx.wxFileName.SetCwd(wdir) and oldcwd
   end
