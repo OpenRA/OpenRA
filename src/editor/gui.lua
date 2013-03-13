@@ -65,8 +65,9 @@ end
 
 local function createToolBar(frame)
   local toolBar = frame:CreateToolBar(wx.wxTB_FLAT + wx.wxTB_NODIVIDER, wx.wxID_ANY)
+  -- wxChoice is a bit too narrow on Linux, so make it a bit larger
   local funclist = wx.wxChoice.new(toolBar, ID "toolBar.funclist",
-    wx.wxDefaultPosition, wx.wxSize.new(240, 24))
+    wx.wxDefaultPosition, wx.wxSize.new(240, ide.osname == 'Unix' and 28 or 24))
   
   -- there are two sets of icons: use 24 on OSX and 16 on others.
   local toolBmpSize =
