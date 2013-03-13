@@ -290,7 +290,7 @@ namespace OpenRA.Server
 						newConn.socket.RemoteEndPoint);
 
 					SendOrderTo(newConn, "ServerError", "Your mods don't match the server");
-					DropClient(newConn);
+                    DropClient(newConn, "Your mods don't match the server");
 					return;
 				}
 				
@@ -458,9 +458,10 @@ namespace OpenRA.Server
 			DispatchOrders(asConn, 0, new ServerOrder("Chat", text).Serialize());
 		}
 
-		public void SendDisconnected(Connection asConn)
+
+		public void SendDisconnected(Connection asConn,string connectionDisconnectionReason)
 		{
-			DispatchOrders(asConn, 0, new ServerOrder("Disconnected", "").Serialize());
+            DispatchOrders(asConn, 0, new ServerOrder(connectionDisconnectionReason == "" ? "Disconnected" : connectionDisconnectionReason, "").Serialize());
 		}
 
 		void InterpretServerOrder(Connection conn, ServerOrder so)
@@ -508,7 +509,12 @@ namespace OpenRA.Server
 			return lobbyInfo.ClientWithIndex(conn.PlayerIndex);
 		}
 
-		public void DropClient(Connection toDrop)
+        public void DropClient(Connection toDrop)
+        {
+            DropClient(toDrop, ""); // "" Means no connection drop reason.
+        }
+
+		public void DropClient(Connection toDrop,string connectionDropReason)
 		{
 			if (preConns.Contains(toDrop))
 				preConns.Remove(toDrop);
@@ -520,7 +526,7 @@ namespace OpenRA.Server
 				OpenRA.Network.Session.Client dropClient = lobbyInfo.Clients.Where(c1 => c1.Index == toDrop.PlayerIndex).Single();
 				
 				if (State == ServerState.GameStarted)
-					SendDisconnected(toDrop); /* Report disconnection */
+					SendDisconnected(toDrop,""); /* Report disconnection */
 
 				lobbyInfo.Clients.RemoveAll(c => c.Index == toDrop.PlayerIndex);
 
@@ -544,6 +550,8 @@ namespace OpenRA.Server
 
 			try
 			{
+                if (connectionDropReason != "")
+                    SendDisconnected(toDrop, connectionDropReason);
 				toDrop.socket.Disconnect(false);
 			}
 			catch { }

@@ -145,6 +145,36 @@ Background@DIRECTCONNECT_BG:
 			Text:Cancel
 			Font:Bold
 			Key:escape
+Background@CONNECTIONDROPSTATEVERSIONMISMATCH_PANEL:
+	Logic:ConnectionDroppedLogic
+	X:(WINDOW_RIGHT - WIDTH)/2
+	Y:(WINDOW_BOTTOM - HEIGHT)/2
+	Width:450
+	Height:150
+	Children:
+		Label@CONNECTION_FAILED_TITLE:
+			X:0
+			Y:20
+			Width:450
+			Height:25
+			Text:Connection Failed
+			Align:Center
+			Font:Bold
+		Label@CONNECTING_DESC:
+			X:0
+			Y:60
+			Width:PARENT_RIGHT
+			Height:25
+			Text:Your game version is not matching with the server.
+			Align:Center
+		Button@ABORT_BUTTON:
+			X:PARENT_RIGHT - 180
+			Y:PARENT_BOTTOM - 45
+			Width:160
+			Height:25
+			Text:Ok
+			Font:Bold
+			Key:escape
 Background@CONNECTIONFAILED_PANEL:
 	Logic:ConnectionFailedLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
