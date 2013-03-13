@@ -5,7 +5,7 @@ local function exePath()
   local macExe = mainpath..'bin/lua.app/Contents/MacOS/lua'
   return ide.config.path.lua or
         (ide.osname == "Windows" and mainpath..[[bin\lua.exe]]
-     or (ide.osname == "Unix" and [[lua]]) -- using installed lua
+     or (ide.osname == "Unix" and mainpath..([[bin/linux/%s/lua]]):format(ide.osarch))
      or (wx.wxFileExists(macExe) and macExe or mainpath..[[bin/lua]]))
 end
 

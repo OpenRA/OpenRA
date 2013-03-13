@@ -3,18 +3,23 @@
 
 -- put bin/ and lualibs/ first to avoid conflicts with included modules
 -- that may have other versions present somewhere else in path/cpath.
--- don't need to do this on Linux where we expect all the libraries
--- and binaries to be installed in *regular* places.
 local iswindows = os.getenv('WINDIR') or (os.getenv('OS') or ''):match('[Ww]indows')
+local islinux = not iswindows and not os.getenv('DYLD_LIBRARY_PATH') and io.open("/proc")
+local arch = "x86" -- use 32bit by default
 
-if iswindows or not pcall(require, "wx")
-  or wx.wxPlatformInfo.Get():GetOperatingSystemFamilyName() == 'Macintosh' then
-  package.cpath = (iswindows
-    and 'bin/?.dll;bin/clibs/?.dll;'
-     or 'bin/clibs/?.dylib;bin/lib?.dylib;')
-    .. package.cpath
+if islinux then
+  local file = io.popen("arch")
+  if file then
+    arch = file:read("*a"):find("x86_64") and "x64" or "x86"
+    file:close()
+  end
 end
 
+package.cpath = (
+  iswindows and 'bin/?.dll;bin/clibs/?.dll;' or
+  islinux and ('bin/linux/%s/lib?.so;bin/linux/%s/clibs/?.so;'):format(arch,arch) or
+  --[[isosx]] 'bin/lib?.dylib;bin/clibs/?.dylib;')
+    .. package.cpath
 package.path  = 'lualibs/?.lua;lualibs/?/?.lua;lualibs/?/init.lua;lualibs/?/?/?.lua;lualibs/?/?/init.lua;'
               .. package.path
 
@@ -120,6 +125,7 @@ ide = {
   },
 
   osname = wx.wxPlatformInfo.Get():GetOperatingSystemFamilyName(),
+  osarch = arch,
   wxver = string.match(wx.wxVERSION_STRING, "[%d%.]+"),
 }
 
@@ -130,7 +136,7 @@ dofile "src/editor/keymap.lua"
 ide.config.styles = StylesGetDefault()
 ide.config.stylesoutshell = StylesGetDefault()
 
-function setLuaPaths(mainpath, osname)
+local function setLuaPaths(mainpath, osname)
   -- use LUA_DEV to setup paths for Lua for Windows modules if installed
   local luadev = osname == "Windows" and os.getenv('LUA_DEV')
   local luadev_path = (luadev
@@ -156,7 +162,9 @@ function setLuaPaths(mainpath, osname)
   local clibs =
     osname == "Windows" and mainpath.."bin/?.dll;"..mainpath.."bin/clibs/?.dll" or
     osname == "Macintosh" and mainpath.."bin/lib?.dylib;"..mainpath.."bin/clibs/?.dylib" or
-    osname == "Unix" and mainpath.."bin/?.so;"..mainpath.."bin/clibs/?.so" or nil
+    osname == "Unix" and mainpath..("bin/linux/%s/lib?.so;"):format(arch)
+                       ..mainpath..("bin/linux/%s/clibs/?.so"):format(arch) or
+    nil
   if clibs then wx.wxSetEnv("LUA_CPATH",
     package.cpath .. ';' .. clibs .. ';' .. luadev_cpath) end
 end
