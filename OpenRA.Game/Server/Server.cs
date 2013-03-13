@@ -28,9 +28,9 @@ namespace OpenRA.Server
 {
 	public enum ServerState : int
 	{
-	       WaitingPlayers = 1,
-	       GameStarted = 2,
-	       ShuttingDown = 3
+		   WaitingPlayers = 1,
+		   GameStarted = 2,
+		   ShuttingDown = 3
 	}
 
 	public class Server
@@ -205,7 +205,7 @@ namespace OpenRA.Server
 				if (UPnP.NAT.DeleteForwardingRule(Port, ProtocolType.Tcp))
 					Log.Write("server", "Port {0} (TCP) forwarding rules has been removed.", Port);
 			}
-  			catch (Exception e)
+			catch (Exception e)
 			{
 				OpenRA.Log.Write("server", "Can not remove UPnP portforwarding rules: {0}", e);
 			}
@@ -282,7 +282,7 @@ namespace OpenRA.Server
 				var valid = mods.All( m => m.Contains('@')) && //valid format
 							mods.Count() == Game.CurrentMods.Count() &&  //same number
 							mods.Select( m => Pair.New(m.Split('@')[0], m.Split('@')[1])).All(kv => Game.CurrentMods.ContainsKey(kv.First) &&
-					 		(kv.Second == "{DEV_VERSION}" || Game.CurrentMods[kv.First].Version == "{DEV_VERSION}" || kv.Second == Game.CurrentMods[kv.First].Version));
+							(kv.Second == "{DEV_VERSION}" || Game.CurrentMods[kv.First].Version == "{DEV_VERSION}" || kv.Second == Game.CurrentMods[kv.First].Version));
 				
 				if (!valid)
 				{
@@ -290,7 +290,7 @@ namespace OpenRA.Server
 						newConn.socket.RemoteEndPoint);
 
 					SendOrderTo(newConn, "ServerError", "Your mods don't match the server");
-                    DropClient(newConn, "Your mods don't match the server");
+					DropClient(newConn, "Your mods don't match the server");
 					return;
 				}
 				
@@ -461,7 +461,7 @@ namespace OpenRA.Server
 
 		public void SendDisconnected(Connection asConn,string connectionDisconnectionReason)
 		{
-            DispatchOrders(asConn, 0, new ServerOrder(connectionDisconnectionReason == "" ? "Disconnected" : connectionDisconnectionReason, "").Serialize());
+			DispatchOrders(asConn, 0, new ServerOrder(connectionDisconnectionReason == "" ? "Disconnected" : connectionDisconnectionReason, "").Serialize());
 		}
 
 		void InterpretServerOrder(Connection conn, ServerOrder so)
@@ -509,10 +509,10 @@ namespace OpenRA.Server
 			return lobbyInfo.ClientWithIndex(conn.PlayerIndex);
 		}
 
-        public void DropClient(Connection toDrop)
-        {
-            DropClient(toDrop, ""); // "" Means no connection drop reason.
-        }
+		public void DropClient(Connection toDrop)
+		{
+			DropClient(toDrop, ""); // "" Means no connection drop reason.
+		}
 
 		public void DropClient(Connection toDrop,string connectionDropReason)
 		{
@@ -550,8 +550,8 @@ namespace OpenRA.Server
 
 			try
 			{
-                if (connectionDropReason != "")
-                    SendDisconnected(toDrop, connectionDropReason);
+				if (connectionDropReason != "")
+					SendDisconnected(toDrop, connectionDropReason);
 				toDrop.socket.Disconnect(false);
 			}
 			catch { }
@@ -593,10 +593,10 @@ namespace OpenRA.Server
 			{
 				gameTimeout = new XTimer(Settings.TimeOut);
 				gameTimeout.Elapsed += (_,e) =>
-                                {
-                                    Console.WriteLine("Timeout at {0}!!!", e.SignalTime);
-                                    Environment.Exit(0);
-                                };
+								{
+									Console.WriteLine("Timeout at {0}!!!", e.SignalTime);
+									Environment.Exit(0);
+								};
 				gameTimeout.Enabled = true;
 			}
 		}

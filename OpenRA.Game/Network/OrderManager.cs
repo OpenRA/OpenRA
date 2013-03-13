@@ -84,18 +84,18 @@ namespace OpenRA.Network
 				( clientId, packet ) =>
 				{
 					var frame = BitConverter.ToInt32( packet, 0 );
-                    if (packet.Length == 5 && packet[4] == 0xBF)
-                        frameData.ClientQuit(clientId, frame);
-                    else if (packet.Length >= 5 && packet[4] == 0x65)
-                        CheckSync(packet);
-                    else if (packet.ToOrderList(null).Any(o => o.TargetString == "Your mods don't match the server"))
-                    {
-                        Connection.ConnectionDropState = ConnectionDropState.VersionMismatch;
-                    }
-                    else if (frame == 0)
-                        immediatePackets.Add(Pair.New(clientId, packet));
-                    else
-                        frameData.AddFrameOrders(clientId, frame, packet);
+					if (packet.Length == 5 && packet[4] == 0xBF)
+						frameData.ClientQuit(clientId, frame);
+					else if (packet.Length >= 5 && packet[4] == 0x65)
+						CheckSync(packet);
+					else if (packet.ToOrderList(null).Any(o => o.TargetString == "Your mods don't match the server"))
+					{
+						Connection.ConnectionDropState = ConnectionDropState.VersionMismatch;
+					}
+					else if (frame == 0)
+						immediatePackets.Add(Pair.New(clientId, packet));
+					else
+						frameData.AddFrameOrders(clientId, frame, packet);
 				} );
 
 			foreach( var p in immediatePackets )
@@ -104,7 +104,7 @@ namespace OpenRA.Network
 		}
 
 
-        
+		
 
 		Dictionary<int, byte[]> syncForFrame = new Dictionary<int, byte[]>();
 
