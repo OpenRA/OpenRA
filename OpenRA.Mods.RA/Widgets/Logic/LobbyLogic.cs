@@ -78,11 +78,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					{ "port", om.Port }
 				});
 				}
-
-
-
-
-
 			}
 
 		}
