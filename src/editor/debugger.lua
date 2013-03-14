@@ -493,9 +493,7 @@ debugger.handle = function(command, server, options)
   local verbose = ide.config.debugger.verbose
   local osexit, gprint
   osexit, os.exit = os.exit, function () end
-  if (verbose) then
-    gprint, _G.print = _G.print, function (...) DisplayOutputLn(...) end
-  end
+  gprint, _G.print = _G.print, function (...) if verbose then DisplayOutputLn(...) end end
 
   debugger.running = true
   if verbose then DisplayOutputLn("Debugger sent (command):", command) end
@@ -504,7 +502,7 @@ debugger.handle = function(command, server, options)
   debugger.running = false
 
   os.exit = osexit
-  if (verbose) then _G.print = gprint end
+  _G.print = gprint
   return file, line, err
 end
 
