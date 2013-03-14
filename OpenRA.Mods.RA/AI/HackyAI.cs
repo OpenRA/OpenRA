@@ -1318,7 +1318,8 @@ namespace OpenRA.Mods.RA.AI
 				{
 					var attackLocation = FindAttackLocationToSupportPower(5);
 					if (attackLocation == null) return;
-					sp.Activate(new Order() { TargetLocation = attackLocation.Value });
+
+					world.IssueOrder(new Order(sp.Info.OrderName, supportPowerMngr.self, false) { TargetLocation = attackLocation.Value });
 				}
 			}
 		}
