@@ -17,7 +17,9 @@ if G.ide.osname == 'Macintosh' then
     outputshell.fontsize = editor.fontsize
     outputshell.fontname = editor.fontname
   end
-elseif G.ide.osname == 'Windows' then
+else
+  -- set Courier New in all other cases (Linux and Windows), otherwise
+  -- a proportional font gets used by default, which doesn't look right.
   editor.fontname = "Courier New"
   outputshell.fontname = editor.fontname
 end
