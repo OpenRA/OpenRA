@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ "$(arch)" = "x86_64" ]; then
+if [ "$(uname -m)" = "x86_64" ]; then
   FPIC="-fpic"
   ARCH="x64"
 else

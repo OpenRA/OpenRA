@@ -8,7 +8,7 @@ local islinux = not iswindows and not os.getenv('DYLD_LIBRARY_PATH') and io.open
 local arch = "x86" -- use 32bit by default
 
 if islinux then
-  local file = io.popen("arch")
+  local file = io.popen("uname -m")
   if file then
     arch = file:read("*a"):find("x86_64") and "x64" or "x86"
     file:close()
