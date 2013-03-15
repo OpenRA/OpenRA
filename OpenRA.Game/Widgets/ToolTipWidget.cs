@@ -8,31 +8,23 @@
  */
 #endregion
 
+using OpenRA.Graphics;
 using System;
 using System.Drawing;
-using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
 {
 
 
-	public class ToolTipWidget : Widget
+	public class ToolTipWidget : LabelWidget
 	{
-		public string Text = null;
-		public TextAlign Align = TextAlign.Left;
-		public TextVAlign VAlign = TextVAlign.Middle;
-		public string Font = "Regular";
-		public Color Color = Color.Yellow;
-		public bool Contrast = false;
-		public Color ContrastColor = Color.Black;
-		public bool WordWrap = false;
-		public Func<string> GetText;
-		public Func<Color> GetColor;
-		public Func<Color> GetContrastColor;
+		public Widget RelatedControl;
+		public bool IsRendered = true;
 
 		public ToolTipWidget()
 			: base()
 		{
+			this.Color = Color.Yellow;
 			GetText = () => Text;
 			GetColor = () => Color;
 			GetContrastColor = () => ContrastColor;
@@ -53,37 +45,46 @@ namespace OpenRA.Widgets
 			GetContrastColor = other.GetContrastColor;
 		}
 
+	   
+
+
 		public override void Draw()
 		{
-			SpriteFont font = Game.Renderer.Fonts[Font];
-			var text = GetText();
-			if (text == null)
-				return;
 
-			int2 textSize = font.Measure(text);
-			int2 position = new int2(Viewport.LastMousePos.X-5,Viewport.LastMousePos.Y+15);
+			if (RelatedControl != null && Ui.MouseOverWidget != null && Ui.MouseOverWidget.GetType() == RelatedControl.GetType() && Ui.MouseOverWidget is ScrollItemWidget && ((ScrollItemWidget)Ui.MouseOverWidget).Depressed == true && Ui.MouseOverWidget.RenderBounds.Contains(Viewport.LastMousePos))
+			{
+				this.IsRendered = true;
+				SpriteFont font = Game.Renderer.Fonts[Font];
+				var text = GetText();
+				if (text == null)
+					return;
 
-			if (VAlign == TextVAlign.Middle)
-				position += new int2(0, (Bounds.Height - textSize.Y) / 2);
+				int2 textSize = font.Measure(text);
+				int2 position = new int2(Viewport.LastMousePos.X - 5, Viewport.LastMousePos.Y + 15);
 
-			if (VAlign == TextVAlign.Bottom)
-				position += new int2(0, Bounds.Height - textSize.Y);
+				if (VAlign == TextVAlign.Middle)
+					position += new int2(0, (Bounds.Height - textSize.Y) / 2);
 
-			if (Align == TextAlign.Center)
-				position += new int2((Bounds.Width - textSize.X) / 2, 0);
+				if (VAlign == TextVAlign.Bottom)
+					position += new int2(0, Bounds.Height - textSize.Y);
 
-			if (Align == TextAlign.Right)
-				position += new int2(Bounds.Width - textSize.X, 0);
+				if (Align == TextAlign.Center)
+					position += new int2((Bounds.Width - textSize.X) / 2, 0);
 
-			if (WordWrap)
-				text = WidgetUtils.WrapText(text, Bounds.Width, font);
+				if (Align == TextAlign.Right)
+					position += new int2(Bounds.Width - textSize.X, 0);
 
-			var color = GetColor();
-			var contrast = GetContrastColor();
-			if (Contrast)
-				font.DrawTextWithContrast(text, position, color, contrast, 2);
-			else
-				font.DrawText(text, position, color);
+				if (WordWrap)
+					text = WidgetUtils.WrapText(text, Bounds.Width, font);
+
+				var color = GetColor();
+				var contrast = GetContrastColor();
+				if (Contrast)
+					font.DrawTextWithContrast(text, position, color, contrast, 2);
+				else
+					font.DrawText(text, position, color);
+			}
+
 		}
 
 		public override Widget Clone() { return new ToolTipWidget(this); }

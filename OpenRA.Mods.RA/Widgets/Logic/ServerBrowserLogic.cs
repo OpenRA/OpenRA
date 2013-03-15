@@ -154,16 +154,18 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var item = ScrollItemWidget.Setup(serverTemplate, () => currentServer == game, () =>
 					{
 						currentServer = game;
+						
 						panel.Children.Remove(panel.Children.Where(c => c is ToolTipWidget).SingleOrDefault());
 						if (game.Name.Length > 29)
 						{
 							ToolTipWidget toolTip = new ToolTipWidget();
+							toolTip.RelatedControl = serverTemplate;
 							toolTip.Text = game.Name;
 							panel.AddChild(toolTip);
 						}
 					}
 				);
-
+			   
 			  
 				var preview = item.Get<MapPreviewWidget>("MAP_PREVIEW");
 				preview.Map = () => GetMapPreview(game);
