@@ -30,6 +30,7 @@ namespace OpenRA.Widgets
 		public Func<string> GetText;
 		public Func<Color> GetColor;
 		public Func<Color> GetContrastColor;
+		public object Tag;
 
 		public LabelWidget()
 			: base()

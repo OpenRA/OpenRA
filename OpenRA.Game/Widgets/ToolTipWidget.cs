@@ -11,6 +11,7 @@
 using OpenRA.Graphics;
 using System;
 using System.Drawing;
+using System.Timers;
 
 namespace OpenRA.Widgets
 {
@@ -18,8 +19,8 @@ namespace OpenRA.Widgets
 
 	public class ToolTipWidget : LabelWidget
 	{
-		public Widget RelatedControl;
 		public bool IsRendered = true;
+		int2 lastMousePosition = Viewport.LastMousePos;
 
 		public ToolTipWidget()
 			: base()
@@ -28,6 +29,12 @@ namespace OpenRA.Widgets
 			GetText = () => Text;
 			GetColor = () => Color;
 			GetContrastColor = () => ContrastColor;
+			Timer t = new Timer(3000);
+			t.Elapsed += (object s, ElapsedEventArgs arg) =>
+			{
+				lastMousePosition = Viewport.LastMousePos;
+			};
+			t.Start();
 		}
 
 		protected ToolTipWidget(ToolTipWidget other)
@@ -43,47 +50,59 @@ namespace OpenRA.Widgets
 			GetText = other.GetText;
 			GetColor = other.GetColor;
 			GetContrastColor = other.GetContrastColor;
+			Timer t = new Timer(3000);
+			t.Elapsed += (object s, ElapsedEventArgs arg) =>
+			{
+				lastMousePosition = Viewport.LastMousePos;
+			};
+			t.Start();
 		}
 
-	   
+
 
 
 		public override void Draw()
 		{
+			if (Ui.MouseOverWidget == null)
+				return;
 
-			if (RelatedControl != null && Ui.MouseOverWidget != null && Ui.MouseOverWidget.GetType() == RelatedControl.GetType() && Ui.MouseOverWidget is ScrollItemWidget && ((ScrollItemWidget)Ui.MouseOverWidget).Depressed == true && Ui.MouseOverWidget.RenderBounds.Contains(Viewport.LastMousePos))
-			{
-				this.IsRendered = true;
-				SpriteFont font = Game.Renderer.Fonts[Font];
-				var text = GetText();
-				if (text == null)
-					return;
+			if (Viewport.LastMousePos.X != lastMousePosition.X || Viewport.LastMousePos.Y != lastMousePosition.Y)
+				return;
 
-				int2 textSize = font.Measure(text);
-				int2 position = new int2(Viewport.LastMousePos.X - 5, Viewport.LastMousePos.Y + 15);
+			if (Ui.MouseOverWidget != null && Ui.MouseOverWidget.Get<LabelWidget>("TITLE") != null && this.Tag != null && Ui.MouseOverWidget.Get<LabelWidget>("TITLE").Tag.ToString() != this.Tag.ToString())
+				return;
 
-				if (VAlign == TextVAlign.Middle)
-					position += new int2(0, (Bounds.Height - textSize.Y) / 2);
+			this.IsRendered = true;
+			SpriteFont font = Game.Renderer.Fonts[Font];
+			var text = GetText();
+			if (text == null)
+				return;
 
-				if (VAlign == TextVAlign.Bottom)
-					position += new int2(0, Bounds.Height - textSize.Y);
+			int2 textSize = font.Measure(text);
+			int2 position = new int2(Viewport.LastMousePos.X - 5, Viewport.LastMousePos.Y + 15);
 
-				if (Align == TextAlign.Center)
-					position += new int2((Bounds.Width - textSize.X) / 2, 0);
+			if (VAlign == TextVAlign.Middle)
+				position += new int2(0, (Bounds.Height - textSize.Y) / 2);
 
-				if (Align == TextAlign.Right)
-					position += new int2(Bounds.Width - textSize.X, 0);
+			if (VAlign == TextVAlign.Bottom)
+				position += new int2(0, Bounds.Height - textSize.Y);
 
-				if (WordWrap)
-					text = WidgetUtils.WrapText(text, Bounds.Width, font);
+			if (Align == TextAlign.Center)
+				position += new int2((Bounds.Width - textSize.X) / 2, 0);
 
-				var color = GetColor();
-				var contrast = GetContrastColor();
-				if (Contrast)
-					font.DrawTextWithContrast(text, position, color, contrast, 2);
-				else
-					font.DrawText(text, position, color);
-			}
+			if (Align == TextAlign.Right)
+				position += new int2(Bounds.Width - textSize.X, 0);
+
+			if (WordWrap)
+				text = WidgetUtils.WrapText(text, Bounds.Width, font);
+
+			var color = GetColor();
+			var contrast = GetContrastColor();
+			if (Contrast)
+				font.DrawTextWithContrast(text, position, color, contrast, 2);
+			else
+				font.DrawText(text, position, color);
+
 
 		}
 

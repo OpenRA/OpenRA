@@ -15,6 +15,7 @@ using System.Drawing;
 using OpenRA.FileFormats;
 using OpenRA.Network;
 using OpenRA.Widgets;
+using System.Timers;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
 {
@@ -159,9 +160,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						if (game.Name.Length > 29)
 						{
 							ToolTipWidget toolTip = new ToolTipWidget();
-							toolTip.RelatedControl = serverTemplate;
-							toolTip.Text = game.Name;
 							panel.AddChild(toolTip);
+							Timer t = new Timer(1000);
+							t.Elapsed += (object s, ElapsedEventArgs arg) =>
+								{
+									toolTip.Tag = toolTip.Text = game.Name;
+									t.Stop();
+								};
+							t.Start();
 						}
 					}
 				);
@@ -173,6 +179,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				var title = item.Get<LabelWidget>("TITLE");
 				title.GetText = () => game.Name.LimitString(29);
+				title.Tag = game.Name;
 
 				// TODO: Use game.MapTitle once the server supports it
 				var maptitle = item.Get<LabelWidget>("MAP");
