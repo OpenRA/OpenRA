@@ -124,6 +124,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		public void RefreshServerList(Widget panel, IEnumerable<GameServer> games)
 		{
 			var sl = panel.Get<ScrollPanelWidget>("SERVER_LIST");
+			
 
 			sl.RemoveChildren();
 			currentServer = null;
@@ -149,14 +150,27 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				var canJoin = game.CanJoin();
 
-				var item = ScrollItemWidget.Setup(serverTemplate, () => currentServer == game, () => currentServer = game);
 
+				var item = ScrollItemWidget.Setup(serverTemplate, () => currentServer == game, () =>
+					{
+						currentServer = game;
+						panel.Children.Remove(panel.Children.Where(c => c is ToolTipWidget).SingleOrDefault());
+						if (game.Name.Length > 29)
+						{
+							ToolTipWidget toolTip = new ToolTipWidget();
+							toolTip.Text = game.Name;
+							panel.AddChild(toolTip);
+						}
+					}
+				);
+
+			  
 				var preview = item.Get<MapPreviewWidget>("MAP_PREVIEW");
 				preview.Map = () => GetMapPreview(game);
 				preview.IsVisible = () => GetMapPreview(game) != null;
 
 				var title = item.Get<LabelWidget>("TITLE");
-				title.GetText = () => game.Name;
+				title.GetText = () => game.Name.LimitString(29);
 
 				// TODO: Use game.MapTitle once the server supports it
 				var maptitle = item.Get<LabelWidget>("MAP");
