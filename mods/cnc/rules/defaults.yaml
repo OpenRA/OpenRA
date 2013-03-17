@@ -90,6 +90,9 @@
 	DrawLineToTarget:
 	ActorLostNotification:
 		Notification: unitlost.aud
+	Explodes:
+		Weapon: HeliExplode
+		EmptyWeapon: HeliExplode
 
 ^Infantry:
 	AppearsOnRadar:

@@ -178,8 +178,8 @@ FTNK:
 	AutoTarget:
 	WithMuzzleFlash:
 	Explodes:
-		Weapon: BigFlamer
-		EmptyWeapon: BigFlamer
+		Weapon: FlametankExplode
+		EmptyWeapon: FlametankExplode
 	LeavesHusk:
 		HuskActor: FTNK.Husk
 

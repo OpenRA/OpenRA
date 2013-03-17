@@ -25,6 +25,7 @@ e1:
 		Start: 16
 		Length: 6
 		Facings: 8
+		Tick: 100
 	shoot:
 		Start: 64
 		Length: 8
@@ -37,6 +38,7 @@ e1:
 		Start: 144
 		Length: 4
 		Facings: 8
+		Tick: 100
 	# stand -> prone transition
 	liedown:
 		Start: 128
@@ -119,6 +121,7 @@ e2:
 		Start: 16
 		Length: 6
 		Facings: 8
+		Tick: 100
 	shoot:
 		Start: 64
 		Length: 20
@@ -141,6 +144,7 @@ e2:
 		Start: 240
 		Length: 4
 		Facings: 8
+		Tick: 100
 	prone-shoot:
 		Start: 288
 		Length: 12
@@ -204,6 +208,7 @@ e3:
 		Start: 16
 		Length: 6
 		Facings: 8
+		Tick: 100
 	shoot:
 		Start: 64
 		Length: 8
@@ -226,6 +231,7 @@ e3:
 		Start: 144
 		Length: 4
 		Facings: 8
+		Tick: 100
 	prone-shoot:
 		Start: 192
 		Length: 10
@@ -289,6 +295,7 @@ e4:
 		Start: 16
 		Length: 6
 		Facings: 8
+		Tick: 100
 	shoot:
 		Start: 64
 		Length: 16
@@ -311,6 +318,7 @@ e4:
 		Start: 208
 		Length: 4
 		Facings: 8
+		Tick: 100
 	prone-shoot:
 		Start: 256
 		Length: 16
@@ -377,6 +385,7 @@ e5:
 		Start: 16
 		Length: 6
 		Facings: 8
+		Tick: 100
 	shoot:
 		Start: 64
 		Length: 16
@@ -399,6 +408,7 @@ e5:
 		Start: 208
 		Length: 4
 		Facings: 8
+		Tick: 100
 	prone-shoot:
 		Start: 256
 		Length: 16
@@ -465,6 +475,7 @@ e6:
 		Start: 16
 		Length: 6
 		Facings: 8
+		Tick: 100
 	# stand -> prone transition
 	liedown:
 		Start: 66
@@ -483,6 +494,7 @@ e6:
 		Start: 82
 		Length: 4
 		Facings: 8
+		Tick: 100
 	idle1:
 		Start: 114
 		Length: 6
@@ -541,6 +553,7 @@ rmbo:
 		Start: 16
 		Length: 6
 		Facings: 8
+		Tick: 100
 	shoot:
 		Start: 64
 		Length: 4
@@ -563,6 +576,7 @@ rmbo:
 		Start: 112
 		Length: 4
 		Facings: 8
+		Tick: 100
 	prone-shoot:
 		Start: 160
 		Length: 4

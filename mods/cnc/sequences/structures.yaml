@@ -2,6 +2,7 @@ fact:
 	build:
 		Start: 4
 		Length: 20
+		Tick: 100
 	idle:
 		Start: 0
 		Length: 4
@@ -13,6 +14,7 @@ fact:
 	damaged-build:
 		Start: 28
 		Length: 20
+		Tick: 100
 	dead:
 		Start: 48
 	make: factmake
