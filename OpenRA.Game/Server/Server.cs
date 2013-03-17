@@ -540,6 +540,8 @@ namespace OpenRA.Server
 
 				if (conns.Count != 0 || lobbyInfo.GlobalSettings.Dedicated)
 					SyncLobbyInfo();
+				if ( !lobbyInfo.GlobalSettings.Dedicated && dropClient.IsAdmin )
+					Shutdown();
 			}
 
 			try
