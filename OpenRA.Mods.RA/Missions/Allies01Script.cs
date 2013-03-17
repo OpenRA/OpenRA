@@ -306,7 +306,7 @@ namespace OpenRA.Mods.RA.Missions
 
 			Game.MoveViewport(insertionLZ.Location.ToFloat2());
 
-			if (MissionUtils.IsSingleClient(world))
+			if (w.LobbyInfo.IsSinglePlayer)
 				Media.PlayFMVFullscreen(w, "ally1.vqa", () =>
 					Media.PlayFMVFullscreen(w, "landing.vqa", () =>
 					{

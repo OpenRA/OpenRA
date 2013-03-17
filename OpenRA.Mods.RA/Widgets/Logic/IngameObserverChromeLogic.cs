@@ -30,7 +30,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var optionsBG = gameRoot.Get("INGAME_OPTIONS_BG");
 
 			r.Get<ButtonWidget>("INGAME_OPTIONS_BUTTON").OnClick = () =>
+			{
 				optionsBG.Visible = !optionsBG.Visible;
+				if (world.LobbyInfo.IsSinglePlayer)
+					world.IssueOrder(Order.PauseGame());
+			};
 
 			optionsBG.Get<ButtonWidget>("DISCONNECT").OnClick = () =>
 			{
@@ -43,14 +47,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			optionsBG.Get<ButtonWidget>("SETTINGS").OnClick = () => Ui.OpenWindow("SETTINGS_MENU");
 			optionsBG.Get<ButtonWidget>("MUSIC").OnClick = () => Ui.OpenWindow("MUSIC_MENU");
-			optionsBG.Get<ButtonWidget>("RESUME").OnClick = () => optionsBG.Visible = false;
+			optionsBG.Get<ButtonWidget>("RESUME").OnClick = () =>
+			{
+				optionsBG.Visible = false;
+				if (world.LobbyInfo.IsSinglePlayer)
+					world.IssueOrder(Order.PauseGame());
+			};
 			optionsBG.Get<ButtonWidget>("SURRENDER").IsVisible = () => false;
 
-			Ui.Root.Get<ButtonWidget>("INGAME_STATS_BUTTON").OnClick = () =>
-			{
-				var stats = gameRoot.Get("OBSERVER_STATS");
-				stats.Visible = !stats.Visible;
-			};
+			Ui.Root.Get<ButtonWidget>("INGAME_STATS_BUTTON").OnClick = () => gameRoot.Get("OBSERVER_STATS").Visible ^= true;
 		}
 
 		void UnregisterEvents()

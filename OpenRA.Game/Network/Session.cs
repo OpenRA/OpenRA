@@ -37,6 +37,11 @@ namespace OpenRA.Network
 			return Slots.FirstOrDefault(s => !s.Value.Closed && ClientInSlot(s.Key) == null).Key;
 		}
 
+		public bool IsSinglePlayer
+		{
+			get { return Clients.Count(c => c.Bot == null) == 1; }
+		}
+
 		public enum ClientState { NotReady, Ready, Disconnected = 1000 }
 
 		public class Client
