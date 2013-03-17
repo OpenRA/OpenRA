@@ -141,7 +141,7 @@ SILO:
 		Description: Stores processed Tiberium
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 15
+		BuildPaletteOrder: 35
 		Prerequisites: proc
 		Owner: gdi,nod
 	Building:
@@ -619,7 +619,7 @@ GTWR:
 	Health:
 		HP: 600
 	RevealsShroud:
-		Range: 6
+		Range: 7
 	AttackTurreted:
 		PrimaryWeapon: HighV
 		PrimaryOffset: 0,0,0,-6
@@ -649,16 +649,16 @@ ATWR:
 		Prerequisites: hq
 		Owner: gdi
 	Building:
-		Power: -20
+		Power: -30
 		Footprint: _ x
 		Dimensions: 1,2
 	-GivesBuildableArea:
 	Health:
-		HP: 800
+		HP: 600
 	Armor: 
 		Type: Heavy
 	RevealsShroud:
-		Range: 8
+		Range: 9
 	AttackTurreted:
 		PrimaryWeapon: TowerMissle
 		PrimaryOffset: 0,0,5,2
