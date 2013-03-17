@@ -23,10 +23,15 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly string RangeCircleType = null;
 
-		public void Render(WorldRenderer wr, World w, ActorInfo ai, PPos centerLocation)
+		public void Render (WorldRenderer wr, World w, ActorInfo ai, PPos centerLocation)
 		{
+			
+			var col = Color.FromArgb (128, Color.Yellow);
+			if (w.Map.Tileset.Equals ("SNOW"))
+				col = Color.FromArgb (128, Color.Black);
+			
 			wr.DrawRangeCircle(
-				Color.FromArgb(128, Color.Yellow),
+				col,
 				centerLocation.ToFloat2(),
 				ai.Traits.Get<AttackBaseInfo>().GetMaximumRange());
 
@@ -39,13 +44,17 @@ namespace OpenRA.Mods.RA
 
 	class RenderRangeCircle : IPreRenderSelection
 	{
-		public void RenderBeforeWorld(WorldRenderer wr, Actor self)
+		public void RenderBeforeWorld (WorldRenderer wr, Actor self)
 		{
 			if (self.Owner != self.World.LocalPlayer)
 				return;
 
+			var col = Color.FromArgb (128, Color.Yellow);
+			if (wr.world.Map.Tileset.Equals ("SNOW"))
+				col = Color.FromArgb (128, Color.Black);
+			
 			wr.DrawRangeCircle(
-				Color.FromArgb(128, Color.Yellow),
+				col,
 				self.CenterLocation.ToFloat2(), self.Trait<AttackBase>().GetMaximumRange());
 		}
 	}
