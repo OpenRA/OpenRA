@@ -1,5 +1,4 @@
 
-
 FlametankExplode:
 	Warhead:
 		Damage: 100		
@@ -7,6 +6,14 @@ FlametankExplode:
 		Explosion: big_napalm
 		InfDeath: 5
 		ImpactSound: xplobig6
+
+HeliCrash:
+	Warhead:
+		Damage: 40
+		Spread: 10
+		Explosion: poof
+		InfDeath: 4
+		ImpactSound: xplos
 
 HeliExplode:
 	Warhead:
