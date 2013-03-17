@@ -1,3 +1,32 @@
+
+
+FlametankExplode:
+	Warhead:
+		Damage: 100		
+		Spread: 24		
+		Explosion: big_napalm
+		InfDeath: 5
+		ImpactSound: xplobig6
+
+HeliExplode:
+	Warhead:
+		Explosion: small_building
+		InfDeath: 4
+		ImpactSound: xplos
+
+FlamethrowerExplode:
+	Warhead:
+		Damage: 10
+		Spread: 9
+		Versus:
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
+		Explosion: small_napalm
+		InfDeath: 5
+		ImpactSound: flamer2
+		
 UnitExplode:
 	Warhead:
 		Damage: 500
@@ -20,7 +49,7 @@ UnitExplodeSmall:
 			Wood: 75%
 			Light: 60%
 			Heavy: 25%
-		Explosion: 8
+		Explosion: big_frag
 		InfDeath: 4
 		ImpactSound: xplobig4
 
@@ -33,9 +62,9 @@ GrenadierExplode:
 			Wood: 75%
 			Light: 60%
 			Heavy: 25%
-		Explosion: 8
+		Explosion: poof
 		InfDeath: 3
-		ImpactSound: xplos
+		ImpactSound: xplosml2
 
 Atomic:
 	Warhead@impact:
