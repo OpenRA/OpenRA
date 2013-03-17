@@ -1,4 +1,3 @@
-
 FlametankExplode:
 	Warhead:
 		Damage: 100		
@@ -21,19 +20,6 @@ HeliExplode:
 		InfDeath: 4
 		ImpactSound: xplos
 
-FlamethrowerExplode:
-	Warhead:
-		Damage: 10
-		Spread: 9
-		Versus:
-			None: 90%
-			Wood: 75%
-			Light: 60%
-			Heavy: 25%
-		Explosion: small_napalm
-		InfDeath: 5
-		ImpactSound: flamer2
-		
 UnitExplode:
 	Warhead:
 		Damage: 500
