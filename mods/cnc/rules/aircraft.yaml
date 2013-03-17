@@ -38,7 +38,11 @@ TRAN:
 		MaxWeight: 10
 		PipCount: 10
 	FallsToEarth:
-
+		Explosion: HeliCrash
+	Explodes:
+		Weapon: HeliExplode
+		EmptyWeapon: HeliExplode
+		
 HELI:
 	Inherits: ^Helicopter
 	Valued:
@@ -84,7 +88,11 @@ HELI:
 	WithMuzzleFlash:
 	WithShadow:
 	FallsToEarth:
+		Explosion: HeliCrash
 	AutoTarget:
+	Explodes:
+		Weapon: HeliExplode
+		EmptyWeapon: HeliExplode
 
 ORCA:
 	Inherits: ^Helicopter
@@ -128,7 +136,11 @@ ORCA:
 	RenderUnit:
 	WithShadow:
 	FallsToEarth:
+		Explosion: HeliCrash
 	AutoTarget:
+	Explodes:
+		Weapon: HeliExplode
+		EmptyWeapon: HeliExplode
 
 C17:
 	ParaDrop:
@@ -164,7 +176,7 @@ A10:
 		ROT: 4
 		Speed: 40
 	Health:
-		HP: 60
+		HP: 150
 	Armor:
 		Type: Heavy
 	RevealsShroud:
