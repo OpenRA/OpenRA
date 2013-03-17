@@ -26,12 +26,8 @@ namespace OpenRA.Mods.RA
 		public void Render(WorldRenderer wr, World w, ActorInfo ai, PPos centerLocation)
 		{
 			
-			var col = Color.FromArgb(128, Color.Yellow);
-			if (w.Map.Tileset == "SNOW")
-				col = Color.FromArgb(128, Color.Black);
-			
 			wr.DrawRangeCircle(
-				col,
+				GetCircleColor(w),
 				centerLocation.ToFloat2(),
 				ai.Traits.Get<AttackBaseInfo>().GetMaximumRange());
 
@@ -39,6 +35,14 @@ namespace OpenRA.Mods.RA
 				if (a.Actor.Owner == a.Actor.World.LocalPlayer)
 					if (a.Actor.Info.Traits.Get<RenderRangeCircleInfo>().RangeCircleType == RangeCircleType)
 						a.Trait.RenderBeforeWorld(wr, a.Actor);
+		}
+		
+		public Color GetCircleColor(World w)
+		{
+			if (w.Map.Tileset == "SNOW")
+				return Color.FromArgb(128, Color.Black);
+			
+			return Color.FromArgb(128, Color.Yellow);
 		}
 	}
 
@@ -48,13 +52,9 @@ namespace OpenRA.Mods.RA
 		{
 			if (self.Owner != self.World.LocalPlayer)
 				return;
-
-			var col = Color.FromArgb(128, Color.Yellow);
-			if (wr.world.Map.Tileset == "SNOW")
-				col = Color.FromArgb(128, Color.Black);
-			
+					
 			wr.DrawRangeCircle(
-				col,
+				self.Info.Traits.Get<RenderRangeCircleInfo>().GetCircleColor(wr.world),
 				self.CenterLocation.ToFloat2(), self.Trait<AttackBase>().GetMaximumRange());
 		}
 	}
