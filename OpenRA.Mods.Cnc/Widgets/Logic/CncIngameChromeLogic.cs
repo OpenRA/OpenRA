@@ -92,9 +92,17 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			}
 
 			ingameRoot.IsVisible = () => false;
+			if (world.LobbyInfo.IsSinglePlayer)
+				world.IssueOrder(Order.PauseGame());
 			Game.LoadWidget(world, "INGAME_MENU", Ui.Root, new WidgetArgs()
 			{
-				{ "onExit", () => ingameRoot.IsVisible = () => true }
+				{ "onExit", () =>
+					{
+						ingameRoot.IsVisible = () => true;
+						if (world.LobbyInfo.IsSinglePlayer)
+							world.IssueOrder(Order.PauseGame());
+					}
+				}
 			});
 		}
 
