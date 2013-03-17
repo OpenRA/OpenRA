@@ -160,7 +160,7 @@ namespace OpenRA.Mods.RA.Missions
 
 			Game.MoveViewport(startJeep.Location.ToFloat2());
 
-			if (MissionUtils.IsSingleClient(world))
+			if (w.LobbyInfo.IsSinglePlayer)
 			{
 				Media.PlayFMVFullscreen(w, "soviet1.vqa", () =>
 				{
