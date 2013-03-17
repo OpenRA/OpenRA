@@ -8,7 +8,6 @@ MCV:
 		Description: Deploys into another Construction Yard.\n  Unarmed
 	Buildable:
 		BuildPaletteOrder: 100
-		Queue: None
 		Prerequisites: fix
 		Owner: gdi,nod
 	Selectable:
@@ -139,7 +138,7 @@ ARTY:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 6
+		Range: 9
 	AttackFrontal:
 		PrimaryWeapon: ArtilleryShell
 		PrimaryOffset: 0,-7,0,-3
@@ -170,7 +169,7 @@ FTNK:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 4
+		Range: 5
 	AttackFrontal:
 		PrimaryWeapon: BigFlamer
 		PrimaryOffset: 0,-5,3,2
@@ -294,7 +293,7 @@ LTNK:
 		Icon: ltnkicnh
 		Description: Light Tank, good for scouting.\n  Strong vs Light Vehicles\n  Weak vs Tanks, Aircraft
 	Buildable:
-		BuildPaletteOrder: 30
+		BuildPaletteOrder: 40
 		Prerequisites: hq
 		Owner: nod
 	Mobile:
@@ -341,7 +340,7 @@ MTNK:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 5
+		Range: 6
 	Turreted:
 		ROT: 5
 	AttackTurreted:
@@ -440,11 +439,11 @@ MLRS:
 	Valued:
 		Cost: 750
 	Tooltip:
-		Name: SSM Launcher
+		Name: Surface-to-Air Missile Launcher
 		Icon: mlrsicnh
-		Description: Long range artillery.\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks, Aircraft
+		Description: Powerful anti-air unit.\nCannot attack ground units.
 #	Buildable:
-#		BuildPaletteOrder: 85
+#		BuildPaletteOrder: 70
 #		Prerequisites: hq
 #		Owner: nod
 	Mobile:
@@ -458,14 +457,16 @@ MLRS:
 	Turreted:
 		ROT: 5
 	AttackTurreted:
-		PrimaryWeapon: HonestJohn
-		SecondaryWeapon: HonestJohn
+		PrimaryWeapon: Patriot
 		PrimaryOffset: 0,3,0,-3
-		PrimaryLocalOffset: -4,0,0,0,0
-		SecondaryLocalOffset: 4,0,0,0,0
+		PrimaryLocalOffset: -4,0,0,0,0, 4,0,0,0,0
 		AlignIdleTurrets: true
 	RenderUnitTurretedAim:
 	AutoTarget:
+	Explodes:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
+	RenderRangeCircle:
 	LeavesHusk:
 		HuskActor: MLRS.Husk
 
