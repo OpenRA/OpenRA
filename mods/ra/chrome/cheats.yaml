@@ -43,7 +43,7 @@ Background@CHEATS_PANEL:
 			Y:140
 			Width:150
 			Height:20
-			Text: Give $ 20.000 Cash
+			Text: Give $20000 Cash
 			Height:25
 		Checkbox@INSTANT_BUILD:
 			X:30
