@@ -99,7 +99,8 @@ if [ $BUILD_WXWIDGETS ]; then
   svn co "$WXWIDGETS_URL" "$WXWIDGETS_BASENAME" || { echo "Error: failed to checkout wxWidgets"; exit 1; }
   cd "$WXWIDGETS_BASENAME"
   ./configure --prefix="$INSTALL_DIR" --disable-debug --disable-shared --enable-unicode \
-    --with-libjpeg=builtin --with-libpng=builtin --with-libtiff=no --with-expat=builtin --with-zlib=builtin \
+    --with-libjpeg=builtin --with-libpng=builtin --with-libtiff=no --with-expat=no \
+    --with-zlib=builtin --disable-richtext \
     --enable-macosx_arch=$MACOSX_ARCH --with-macosx-version-min=$MACOSX_VERSION --with-macosx-sdk="$MACOSX_SDK_PATH" \
     --with-osx_cocoa CFLAGS="-Os" CXXFLAGS="-Os"
   make $MAKEFLAGS || { echo "Error: failed to build wxWidgets"; exit 1; }

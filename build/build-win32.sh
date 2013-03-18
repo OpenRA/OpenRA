@@ -111,7 +111,8 @@ if [ $BUILD_WXWIDGETS ]; then
   svn revert -R "$WXWIDGETS_BASENAME"
   cd "$WXWIDGETS_BASENAME"
   ./configure --prefix="$INSTALL_DIR" --disable-debug --disable-shared --enable-unicode \
-    --with-libjpeg=builtin --with-libpng=builtin --with-libtiff=no --with-expat=builtin --with-zlib=builtin \
+    --with-libjpeg=builtin --with-libpng=builtin --with-libtiff=no --with-expat=no \
+    --with-zlib=builtin --disable-richtext \
     CFLAGS="-Os -fno-keep-inline-dllexport" CXXFLAGS="-Os -fno-keep-inline-dllexport"
   make $MAKEFLAGS || { echo "Error: failed to build wxWidgets"; exit 1; }
   make install
