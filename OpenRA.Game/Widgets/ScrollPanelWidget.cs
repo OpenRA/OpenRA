@@ -14,7 +14,7 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
 {
-	public interface ILayout { void AdjustChild(Widget w); }
+	public interface ILayout { void AdjustChild(Widget w); void AdjustChildren(); }
 
 	public class ScrollPanelWidget : Widget
 	{
@@ -94,6 +94,8 @@ namespace OpenRA.Widgets
 				new float2(downButtonRect.Left + downOffset, downButtonRect.Top + downOffset));
 
 			Game.Renderer.EnableScissor(backgroundRect.X + 1, backgroundRect.Y + 1, backgroundRect.Width - 2, backgroundRect.Height - 2);
+
+			Layout.AdjustChildren();
 
 			foreach (var child in Children)
 				child.DrawOuter();

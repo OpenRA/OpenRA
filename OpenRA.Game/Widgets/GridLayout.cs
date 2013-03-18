@@ -41,6 +41,11 @@ namespace OpenRA.Widgets
 
 			widget.ContentHeight = Math.Max(widget.ContentHeight, pos.Y + widget.ItemSpacing + w.Bounds.Height);
 		}
+
+		public void AdjustChildren()
+		{
+
+		}
 	}
 }
 
