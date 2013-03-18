@@ -345,7 +345,7 @@ OrcaAAMissiles:
 
 Flamethrower:
 	ROF: 50
-	Range: 3
+	Range: 2.5
 	Report: FLAMER2
 	Projectile: Bullet
 		Speed: 100
