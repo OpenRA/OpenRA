@@ -325,21 +325,24 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		void UpdatePlayerList()
 		{
-			// This causes problems for people who are in the process of editing their names (the widgets vanish from beneath them)
-			// Todo: handle this nicer
-			Players.RemoveChildren();
-
+			var idx = 0;
 			foreach (var kv in orderManager.LobbyInfo.Slots)
 			{
 				var key = kv.Key;
 				var slot = kv.Value;
 				var client = orderManager.LobbyInfo.ClientInSlot(key);
-				Widget template;
+				Widget template = null;
+
+				// get template for possible reuse
+				if (idx < Players.Children.Count)
+					template = Players.Children [idx];
 
 				// Empty slot
 				if (client == null)
 				{
-					template = EmptySlotTemplate.Clone();
+					if (template == null || template.Id != EmptySlotTemplate.Id)
+						template = EmptySlotTemplate.Clone();
+
 					Func<string> getText = () => slot.Closed ? "Closed" : "Open";
 					var ready = orderManager.LocalClient.IsReady;
 
@@ -367,7 +370,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				else if ((client.Index == orderManager.LocalClient.Index) ||
 						 (client.Bot != null && Game.IsHost))
 				{
-					template = EditablePlayerTemplate.Clone();
+					if (template == null || template.Id != EditablePlayerTemplate.Id)
+						template = EditablePlayerTemplate.Clone();
+
 					var botReady = client.Bot != null && Game.IsHost && orderManager.LocalClient.IsReady;
 					var ready = botReady || client.IsReady;
 
@@ -422,7 +427,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				}
 				else
 				{	// Non-editable player in slot
-					template = NonEditablePlayerTemplate.Clone();
+					if (template == null || template.Id != NonEditablePlayerTemplate.Id)
+						template = NonEditablePlayerTemplate.Clone();
+
 					template.Get<LabelWidget>("NAME").GetText = () => client.Name;
 					if (client.IsAdmin)
 						template.Get<LabelWidget>("NAME").Font = "Bold";
@@ -449,20 +456,32 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				}
 
 				template.IsVisible = () => true;
-				Players.AddChild(template);
+
+				if (idx >= Players.Children.Count)
+					Players.AddChild(template);
+				else if (Players.Children[idx].Id != template.Id)
+					Players.ReplaceChild(Players.Children[idx], template);
+
+				idx++;
 			}
 
 			// Add spectators
 			foreach (var client in orderManager.LobbyInfo.Clients.Where(client => client.Slot == null))
 			{
-				Widget template;
+				Widget template = null;
 				var c = client;
 				var ready = c.IsReady;
+
+				// get template for possible reuse
+				if (idx < Players.Children.Count)
+					template = Players.Children[idx];
 
 				// Editable spectator
 				if (c.Index == orderManager.LocalClient.Index)
 				{
-					template = EditableSpectatorTemplate.Clone();
+					if (template == null || template.Id != EditableSpectatorTemplate.Id)
+						template = EditableSpectatorTemplate.Clone();
+
 					var name = template.Get<TextFieldWidget>("NAME");
 					name.IsDisabled = () => ready;
 					LobbyUtils.SetupNameWidget(orderManager, c, name);
@@ -481,7 +500,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				// Non-editable spectator
 				else
 				{
-					template = NonEditableSpectatorTemplate.Clone();
+					if (template == null || template.Id != NonEditableSpectatorTemplate.Id)
+						template = NonEditableSpectatorTemplate.Clone();
+
 					template.Get<LabelWidget>("NAME").GetText = () => c.Name;
 					if (client.IsAdmin)
 						template.Get<LabelWidget>("NAME").Font = "Bold";
@@ -497,19 +518,40 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				}
 
 				template.IsVisible = () => true;
-				Players.AddChild(template);
+
+				if (idx >= Players.Children.Count)
+					Players.AddChild(template);
+				else if (Players.Children[idx].Id != template.Id)
+					Players.ReplaceChild(Players.Children[idx], template);
+
+				idx++;
 			}
+
 
 			// Spectate button
 			if (orderManager.LocalClient.Slot != null)
 			{
-				var spec = NewSpectatorTemplate.Clone();
+				Widget spec = null;
+				if (idx < Players.Children.Count)
+					spec = Players.Children[idx];
+				if (spec == null || spec.Id != NewSpectatorTemplate.Id)
+					spec = NewSpectatorTemplate.Clone();
+
 				var btn = spec.Get<ButtonWidget>("SPECTATE");
 				btn.OnClick = () => orderManager.IssueOrder(Order.Command("spectate"));
 				btn.IsDisabled = () => orderManager.LocalClient.IsReady;
 				spec.IsVisible = () => true;
-				Players.AddChild(spec);
+
+				if (idx >= Players.Children.Count)
+					Players.AddChild(spec);
+				else if (Players.Children[idx].Id != spec.Id)
+					Players.ReplaceChild(Players.Children[idx], spec);
+
+				idx++;
 			}
+
+			while (Players.Children.Count > idx)
+				Players.RemoveChild(Players.Children[idx]);
 		}
 
 		void CycleReady()

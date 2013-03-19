@@ -14,7 +14,7 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
 {
-	public interface ILayout { void AdjustChild(Widget w); }
+	public interface ILayout { void AdjustChild(Widget w); void AdjustChildren(); }
 
 	public class ScrollPanelWidget : Widget
 	{
@@ -49,6 +49,25 @@ namespace OpenRA.Widgets
 			Layout.AdjustChild(child);
 			base.AddChild(child);
 		}
+
+		public override void RemoveChild(Widget child)
+		{
+			base.RemoveChild(child);
+			Layout.AdjustChildren();
+			Scroll(0);
+		}
+
+		public void ReplaceChild(Widget oldChild, Widget newChild)
+		{
+
+			oldChild.Removed();
+			newChild.Parent = this;
+			Children[Children.IndexOf(oldChild)] = newChild;
+			Layout.AdjustChildren();
+			Scroll(0);
+		}
+
+
 
 		public override void DrawOuter()
 		{
