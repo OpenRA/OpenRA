@@ -50,9 +50,9 @@ namespace OpenRA.Mods.RA
 		}
 	}
 
-	public abstract class AttackBase : IIssueOrder, IResolveOrder, ITick, IExplodeModifier, IOrderVoice
+	public abstract class AttackBase : IIssueOrder, IResolveOrder, ITick, IExplodeModifier, IOrderVoice, ISync
 	{
-		public bool IsAttacking { get; internal set; }
+		[Sync] public bool IsAttacking { get; internal set; }
 
 		public List<Weapon> Weapons = new List<Weapon>();
 		public List<Turret> Turrets = new List<Turret>();
