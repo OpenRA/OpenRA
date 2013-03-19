@@ -11,6 +11,7 @@
 using System.Drawing;
 using OpenRA.Graphics;
 using OpenRA.Traits;
+using System.Collections.Generic;
 
 namespace OpenRA.Mods.RA
 {
@@ -23,10 +24,15 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly string RangeCircleType = null;
 
+		public readonly Color DefaultCircleColor = Color.Yellow;
+		public readonly Dictionary<string, Color> CircleColors =
+					new Dictionary<string, Color>() { {"SNOW", Color.Black}	};
+
 		public void Render(WorldRenderer wr, World w, ActorInfo ai, PPos centerLocation)
 		{
+			
 			wr.DrawRangeCircle(
-				Color.FromArgb(128, Color.Yellow),
+				GetCircleColor(w),
 				centerLocation.ToFloat2(),
 				ai.Traits.Get<AttackBaseInfo>().GetMaximumRange());
 
@@ -34,6 +40,15 @@ namespace OpenRA.Mods.RA
 				if (a.Actor.Owner == a.Actor.World.LocalPlayer)
 					if (a.Actor.Info.Traits.Get<RenderRangeCircleInfo>().RangeCircleType == RangeCircleType)
 						a.Trait.RenderBeforeWorld(wr, a.Actor);
+		}
+		
+		public Color GetCircleColor(World w)
+		{
+			var col = DefaultCircleColor;
+			if (CircleColors.ContainsKey(w.Map.Tileset))
+				col = CircleColors[w.Map.Tileset];
+			
+			return Color.FromArgb(128, col);
 		}
 	}
 
@@ -43,9 +58,9 @@ namespace OpenRA.Mods.RA
 		{
 			if (self.Owner != self.World.LocalPlayer)
 				return;
-
+					
 			wr.DrawRangeCircle(
-				Color.FromArgb(128, Color.Yellow),
+				self.Info.Traits.Get<RenderRangeCircleInfo>().GetCircleColor(wr.world),
 				self.CenterLocation.ToFloat2(), self.Trait<AttackBase>().GetMaximumRange());
 		}
 	}
