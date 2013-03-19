@@ -19,21 +19,7 @@ namespace OpenRA
 {
 	public static class Exts
 	{
-		public static string LimitString(this string str,int lengthLimit)
-		{
-			if (!string.IsNullOrEmpty(str))
-			{
-				if (str.Length > lengthLimit)
-					return str.Substring(0, lengthLimit) + "...";
-				else
-					return str;
-			}
-			else
-			{
-				return "";
-			}
-		}
-
+		
 		public static string F(this string fmt, params object[] args)
 		{
 			return string.Format(fmt, args);

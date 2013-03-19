@@ -31,6 +31,7 @@ namespace OpenRA.Widgets
 		public Func<Color> GetColor;
 		public Func<Color> GetContrastColor;
 		public object Tag;
+		public int2 Position;
 
 		public LabelWidget()
 			: base()
@@ -63,7 +64,7 @@ namespace OpenRA.Widgets
 				return;
 
 			int2 textSize = font.Measure(text);
-			int2 position = RenderOrigin;
+			int2 position = Position == new int2(0,0)?RenderOrigin:Position;
 
 			if (VAlign == TextVAlign.Middle)
 				position += new int2(0, (Bounds.Height - textSize.Y)/2);

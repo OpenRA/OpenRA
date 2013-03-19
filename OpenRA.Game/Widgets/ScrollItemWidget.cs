@@ -41,7 +41,6 @@ namespace OpenRA.Widgets
 			if (state != null)
 			{
 				WidgetUtils.DrawPanel(state, RenderBounds);
-				Depressed = true;
 			}
 		}
 
