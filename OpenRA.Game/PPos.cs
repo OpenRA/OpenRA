@@ -29,8 +29,6 @@ namespace OpenRA
 		public static explicit operator PVecInt(PPos a) { return new PVecInt(a.X, a.Y); }
 		public static explicit operator PVecFloat(PPos a) { return new PVecFloat(a.X, a.Y); }
 
-		public static PPos operator /(PPos a, int b) { return new PPos(a.X / b , a.Y / b); }
-		public static PPos operator +(PPos a, PPos b) { return new PPos(a.X + b.X, a.Y + b.Y); }
 		public static PPos operator +(PPos a, PVecInt b) { return new PPos(a.X + b.X, a.Y + b.Y); }
 		public static PVecInt operator -(PPos a, PPos b) { return new PVecInt(a.X - b.X, a.Y - b.Y); }
 		public static PPos operator -(PPos a, PVecInt b) { return new PPos(a.X - b.X, a.Y - b.Y); }
@@ -44,6 +42,25 @@ namespace OpenRA
 		public static PPos Lerp(PPos a, PPos b, int mul, int div)
 		{
 			return a + ((PVecInt)(b - a) * mul / div);
+		}
+
+		public static PPos Average(params PPos[] list)
+		{
+			if (list == null || list.Length == 0)
+				throw new ArgumentException("PPos: Cannot calculate average of empty list.");
+
+			var x = 0;
+			var y = 0;
+			foreach(var pos in list)
+			{
+				x += pos.X;
+				y += pos.Y;
+			}
+
+			x /= list.Length;
+			y /= list.Length;
+
+			return new PPos(x,y);
 		}
 
 		public float2 ToFloat2() { return new float2(X, Y); }

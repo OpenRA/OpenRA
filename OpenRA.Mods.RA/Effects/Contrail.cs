@@ -88,10 +88,8 @@ namespace OpenRA.Mods.RA
 
 			for (int i = positions.Count - 1 - StartSkip; i >= 4; --i)
 			{
-				var conPos = positions[i] + positions[i-1] + positions[i-2] + positions[i-3];
-				conPos /= 4;
-				var nextPos = positions[i-1] + positions[i-2] + positions[i-3] + positions[i-4];
-				nextPos /= 4;
+				var conPos = PPos.Average(positions[i], positions[i-1], positions[i-2], positions[i-3]);
+				var nextPos = PPos.Average(positions[i-1], positions[i-2], positions[i-3], positions[i-4]);
 
 				if (self.World.RenderedShroud.IsVisible(conPos.ToCPos()) ||
 					self.World.RenderedShroud.IsVisible(nextPos.ToCPos()))
