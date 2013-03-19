@@ -19,9 +19,9 @@ namespace OpenRA.Mods.RA
 		public override object Create(ActorInitializer init) { return new AttackLeap(init.self, this); }
 	}
 
-	class AttackLeap : AttackFrontal
+	class AttackLeap : AttackFrontal, ISync
 	{
-		internal bool IsLeaping;
+		[Sync] internal bool IsLeaping;
 
 		public AttackLeap(Actor self, AttackLeapInfo info)
 			: base(self, info) {}

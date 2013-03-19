@@ -21,10 +21,10 @@ namespace OpenRA.Mods.RA
 		public override object Create(ActorInitializer init) { return new AttackTesla(init.self); }
 	}
 
-	class AttackTesla : AttackOmni, ITick, INotifyAttack
+	class AttackTesla : AttackOmni, ITick, INotifyAttack, ISync
 	{
-		int charges;
-		int timeToRecharge;
+		[Sync] int charges;
+		[Sync] int timeToRecharge;
 
 		public AttackTesla( Actor self )
 			: base( self )
