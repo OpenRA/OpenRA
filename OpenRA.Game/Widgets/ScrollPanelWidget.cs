@@ -50,6 +50,25 @@ namespace OpenRA.Widgets
 			base.AddChild(child);
 		}
 
+		public override void RemoveChild(Widget child)
+		{
+			base.RemoveChild(child);
+			Layout.AdjustChildren();
+			Scroll(0);
+		}
+
+		public void ReplaceChild(Widget oldChild, Widget newChild)
+		{
+
+			oldChild.Removed();
+			newChild.Parent = this;
+			Children[Children.IndexOf(oldChild)] = newChild;
+			Layout.AdjustChildren();
+			Scroll(0);
+		}
+
+
+
 		public override void DrawOuter()
 		{
 			if (!IsVisible())
@@ -94,8 +113,6 @@ namespace OpenRA.Widgets
 				new float2(downButtonRect.Left + downOffset, downButtonRect.Top + downOffset));
 
 			Game.Renderer.EnableScissor(backgroundRect.X + 1, backgroundRect.Y + 1, backgroundRect.Width - 2, backgroundRect.Height - 2);
-
-			Layout.AdjustChildren();
 
 			foreach (var child in Children)
 				child.DrawOuter();

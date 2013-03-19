@@ -21,10 +21,9 @@ namespace OpenRA.Widgets
 			if (widget.Children.Count == 0)
 				widget.ContentHeight = widget.ItemSpacing;
 
-			w.Bounds.Y += widget.ContentHeight;
+			w.Bounds.Y = widget.ContentHeight;
 			widget.ContentHeight += w.Bounds.Height + widget.ItemSpacing;
 		}
-
 
 		public void AdjustChildren()
 		{

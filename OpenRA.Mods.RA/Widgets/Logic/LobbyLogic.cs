@@ -325,9 +325,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		void UpdatePlayerList()
 		{
-			// This causes problems for people who are in the process of editing their names (the widgets vanish from beneath them)
-			// Todo: handle this nicer
-
 			var idx = 0;
 			foreach (var kv in orderManager.LobbyInfo.Slots)
 			{
@@ -343,7 +340,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				// Empty slot
 				if (client == null)
 				{
-					//template = EmptySlotTemplate.Clone();
 					if (template == null || template.Id != EmptySlotTemplate.Id)
 						template = EmptySlotTemplate.Clone();
 
@@ -463,12 +459,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				if (idx >= Players.Children.Count)
 					Players.AddChild(template);
-				else if (Players.Children [idx].Id != template.Id)
-				{
-					Players.Children [idx].Removed();
-					template.Parent = Players;
-					Players.Children [idx] = template;
-				}
+				else if (Players.Children[idx].Id != template.Id)
+					Players.ReplaceChild(Players.Children[idx], template);
+
 				idx++;
 			}
 
@@ -481,7 +474,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				// get template for possible reuse
 				if (idx < Players.Children.Count)
-				template = Players.Children[idx];
+					template = Players.Children[idx];
 
 				// Editable spectator
 				if (c.Index == orderManager.LocalClient.Index)
@@ -528,28 +521,37 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				if (idx >= Players.Children.Count)
 					Players.AddChild(template);
-				else if (Players.Children [idx].Id != template.Id)
-				{
-					Players.Children [idx].Removed();
-					template.Parent = Players;
-					Players.Children [idx] = template;
-				}
+				else if (Players.Children[idx].Id != template.Id)
+					Players.ReplaceChild(Players.Children[idx], template);
+
 				idx++;
 			}
 
-			for (var i = idx; i < Players.Children.Count; i++)
-				Players.RemoveChild(Players.Children[i]);
 
 			// Spectate button
 			if (orderManager.LocalClient.Slot != null)
 			{
-				var spec = NewSpectatorTemplate.Clone();
+				Widget spec = null;
+				if (idx < Players.Children.Count)
+					spec = Players.Children[idx];
+				if (spec == null || spec.Id != NewSpectatorTemplate.Id)
+					spec = NewSpectatorTemplate.Clone();
+
 				var btn = spec.Get<ButtonWidget>("SPECTATE");
 				btn.OnClick = () => orderManager.IssueOrder(Order.Command("spectate"));
 				btn.IsDisabled = () => orderManager.LocalClient.IsReady;
 				spec.IsVisible = () => true;
-				Players.AddChild(spec);
+
+				if (idx >= Players.Children.Count)
+					Players.AddChild(spec);
+				else if (Players.Children[idx].Id != spec.Id)
+					Players.ReplaceChild(Players.Children[idx], spec);
+
+				idx++;
 			}
+
+			while (Players.Children.Count > idx)
+				Players.RemoveChild(Players.Children[idx]);
 		}
 
 		void CycleReady()
