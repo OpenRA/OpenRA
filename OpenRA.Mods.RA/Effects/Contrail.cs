@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly int[] ContrailOffset = {0, 0};
 
-		public readonly int TrailLength = 20;
+		public readonly int TrailLength = 25;
 		public readonly Color Color = Color.White;
 		public readonly bool UsePlayerColor = true;
 
@@ -86,10 +86,12 @@ namespace OpenRA.Mods.RA
 			Color trailStart = Color;
 			Color trailEnd = Color.FromArgb(trailStart.A - 255 / TrailLength, trailStart.R, trailStart.G, trailStart.B);
 
-			for (int i = positions.Count - 1 - StartSkip; i >= 1; --i)
+			for (int i = positions.Count - 1 - StartSkip; i >= 4; --i)
 			{
-				var conPos = positions[i];
-				var nextPos = positions[i - 1];
+				var conPos = positions[i] + positions[i-1] + positions[i-2] + positions[i-3];
+				conPos /= 4;
+				var nextPos = positions[i-1] + positions[i-2] + positions[i-3] + positions[i-4];
+				nextPos /= 4;
 
 				if (self.World.RenderedShroud.IsVisible(conPos.ToCPos()) ||
 					self.World.RenderedShroud.IsVisible(nextPos.ToCPos()))
