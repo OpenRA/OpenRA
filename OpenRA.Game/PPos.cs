@@ -44,6 +44,25 @@ namespace OpenRA
 			return a + ((PVecInt)(b - a) * mul / div);
 		}
 
+		public static PPos Average(params PPos[] list)
+		{
+			if (list == null || list.Length == 0)
+				throw new ArgumentException("PPos: Cannot calculate average of empty list.");
+
+			var x = 0;
+			var y = 0;
+			foreach(var pos in list)
+			{
+				x += pos.X;
+				y += pos.Y;
+			}
+
+			x /= list.Length;
+			y /= list.Length;
+
+			return new PPos(x,y);
+		}
+
 		public float2 ToFloat2() { return new float2(X, Y); }
 		public int2 ToInt2() { return new int2(X, Y); }
 		public CPos ToCPos() { return new CPos((int)(1f / Game.CellSize * X), (int)(1f / Game.CellSize * Y)); }
