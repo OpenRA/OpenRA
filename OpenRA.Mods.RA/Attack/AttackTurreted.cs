@@ -22,11 +22,11 @@ namespace OpenRA.Mods.RA
 		public override object Create(ActorInitializer init) { return new AttackTurreted( init.self ); }
 	}
 
-	class AttackTurreted : AttackBase, INotifyBuildComplete
+	class AttackTurreted : AttackBase, INotifyBuildComplete, ISync
 	{
 		protected Target target;
 		protected Turreted turret;
-		protected bool buildComplete;
+		[Sync] protected bool buildComplete;
 
 		public AttackTurreted(Actor self) : base(self)
 		{
