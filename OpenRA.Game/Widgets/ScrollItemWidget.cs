@@ -39,7 +39,9 @@ namespace OpenRA.Widgets
 				null;
 
 			if (state != null)
+			{
 				WidgetUtils.DrawPanel(state, RenderBounds);
+			}
 		}
 
 		public override Widget Clone() { return new ScrollItemWidget(this); }

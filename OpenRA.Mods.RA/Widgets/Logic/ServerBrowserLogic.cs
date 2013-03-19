@@ -30,10 +30,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			switch (searchStatus)
 			{
-				case SearchStatus.Fetching:	return "Fetching game list...";
-				case SearchStatus.Failed:	return "Failed to contact master server.";
-				case SearchStatus.NoGames:	return "No games found.";
-				default:					return "";
+				case SearchStatus.Fetching: return "Fetching game list...";
+				case SearchStatus.Failed: return "Failed to contact master server.";
+				case SearchStatus.NoGames: return "No games found.";
+				default: return "";
 			}
 		}
 
@@ -108,7 +108,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			return (game == null) ? null : Game.modData.FindMapByUid(game.Map);
 		}
 
-		static string GenerateModLabel(KeyValuePair<string,string> mod)
+		static string GenerateModLabel(KeyValuePair<string, string> mod)
 		{
 			if (Mod.AllMods.ContainsKey(mod.Key))
 				return "{0} ({1})".F(Mod.AllMods[mod.Key].Title, mod.Value);
@@ -124,6 +124,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		public void RefreshServerList(Widget panel, IEnumerable<GameServer> games)
 		{
 			var sl = panel.Get<ScrollPanelWidget>("SERVER_LIST");
+			
 
 			sl.RemoveChildren();
 			currentServer = null;
@@ -149,14 +150,55 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				var canJoin = game.CanJoin();
 
-				var item = ScrollItemWidget.Setup(serverTemplate, () => currentServer == game, () => currentServer = game);
+				Func<string> getName = () =>
+					{
+						string Name = game.Name;
+						int length = game.Name.Length;
+						while (Game.Renderer.Fonts["Regular"].Measure(Name).Length > (Convert.ToInt32(serverTemplate.Bounds.Width) - Game.Renderer.Fonts["Regular"].Measure(GetStateLabel(game)).Length - serverTemplate.Get<MapPreviewWidget>("MAP_PREVIEW").Bounds.Width) - Game.Renderer.Fonts["Regular"].Measure("...").Length - 60)
+						{
+							if (!string.IsNullOrEmpty(game.Name))
+							{
+								Name = game.Name.Substring(0, length);
+								length--;
+							}
+						}
+						if (game.Name.Length != Name.Length)
+						{
+							return Name + "...";
+						}
+						else
+						{
+							return game.Name;
+						}
+					};
 
+				var item = ScrollItemWidget.Setup(serverTemplate, () => currentServer == game, () =>
+					{
+						currentServer = game;
+						
+						panel.Children.Remove(panel.Children.Where(c => c is ToolTipWidget).SingleOrDefault());
+						if (game.Name.Length > getName().Length)
+						{
+							ToolTipWidget toolTip = new ToolTipWidget();
+							panel.AddChild(toolTip);
+							toolTip.Tag =   Ui.MouseOverWidget;
+							toolTip.Text = game.Name;
+						}
+					}
+				);
+			   
+			  
 				var preview = item.Get<MapPreviewWidget>("MAP_PREVIEW");
 				preview.Map = () => GetMapPreview(game);
 				preview.IsVisible = () => GetMapPreview(game) != null;
 
 				var title = item.Get<LabelWidget>("TITLE");
-				title.GetText = () => game.Name;
+				title.GetText = () =>     
+				{
+					return getName();
+				};
+				
+				title.Tag = game.Name;
 
 				// TODO: Use game.MapTitle once the server supports it
 				var maptitle = item.Get<LabelWidget>("MAP");
