@@ -15,8 +15,6 @@ using System.Timers;
 
 namespace OpenRA.Widgets
 {
-
-
 	public class ToolTipWidget : LabelWidget
 	{
 		public bool IsRendered = true;
@@ -46,9 +44,6 @@ namespace OpenRA.Widgets
 			GetContrastColor = other.GetContrastColor;
 		}
 
-
-
-
 		public override void Draw()
 		{
 			if (Ui.MouseOverWidget == null)
@@ -63,9 +58,6 @@ namespace OpenRA.Widgets
 			this.IsRendered = true;
 			base.Position = new int2(Viewport.LastMousePos.X, Viewport.LastMousePos.Y + 15);
 			base.Draw();
-		   
-			
-
 		}
 
 		public override Widget Clone() { return new ToolTipWidget(this); }
