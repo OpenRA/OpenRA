@@ -11,6 +11,7 @@
 using System.Drawing;
 using OpenRA.Graphics;
 using OpenRA.Traits;
+using System.Collections.Generic;
 
 namespace OpenRA.Mods.RA
 {
@@ -22,6 +23,10 @@ namespace OpenRA.Mods.RA
 	class RenderRangeCircleInfo : TraitInfo<RenderRangeCircle>, IPlaceBuildingDecoration
 	{
 		public readonly string RangeCircleType = null;
+
+		public readonly Color DefaultCircleColor = Color.Yellow;
+		public readonly Dictionary<string, Color> CircleColors =
+					new Dictionary<string, Color>() { {"SNOW", Color.Black}	};
 
 		public void Render(WorldRenderer wr, World w, ActorInfo ai, PPos centerLocation)
 		{
@@ -39,10 +44,11 @@ namespace OpenRA.Mods.RA
 		
 		public Color GetCircleColor(World w)
 		{
-			if (w.Map.Tileset == "SNOW")
-				return Color.FromArgb(128, Color.Black);
+			var col = DefaultCircleColor;
+			if (CircleColors.ContainsKey(w.Map.Tileset))
+				col = CircleColors[w.Map.Tileset];
 			
-			return Color.FromArgb(128, Color.Yellow);
+			return Color.FromArgb(128, col);
 		}
 	}
 
