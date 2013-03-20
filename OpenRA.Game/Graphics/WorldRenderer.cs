@@ -199,6 +199,16 @@ namespace OpenRA.Graphics
 			}
 		}
 
+		public void DrawRangeCircleWithContrast(Color fg, float2 location, float range, Color bg, int offset)
+		{
+			if (offset > 0) {
+				DrawRangeCircle(bg, location, range + (float) offset/Game.CellSize);
+				DrawRangeCircle(bg, location, range - (float) offset/Game.CellSize);
+			}
+
+			DrawRangeCircle(fg, location, range);
+		}
+
 		public void RefreshPalette()
 		{
 			palette.Update( world.WorldActor.TraitsImplementing<IPaletteModifier>() );
