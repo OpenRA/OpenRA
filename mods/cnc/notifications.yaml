@@ -28,6 +28,8 @@ Sounds:
 		CashTickUp:
 		CashTickDown:
 		LevelUp: text2
+		DisablePower: bleep11
+		EnablePower: bleep12
 		ChatLine: scold1
 		TabClick: button
 		ClickSound: button

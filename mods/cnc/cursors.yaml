@@ -273,3 +273,15 @@ Cursors:
 			length:1
 			x:12
 			y:12
+
+	nopower: cursor
+		powerdown-blocked:
+			start:0
+			length: 1
+			x: 12
+			y: 12
+		powerdown:
+			start:1
+			length: 3
+			x: 12
+			y: 12
