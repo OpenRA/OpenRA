@@ -14,7 +14,7 @@ namespace OpenRA.Mods.RA.Air
 {
 	public class FlyAttack : Activity
 	{
-		readonly Target Target;
+		public readonly Target Target;
 		Activity inner;
 
 		public FlyAttack(Target target) { Target = target; }

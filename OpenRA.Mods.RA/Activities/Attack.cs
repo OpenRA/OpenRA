@@ -17,7 +17,7 @@ namespace OpenRA.Mods.RA.Activities
 	/* non-turreted attack */
 	public class Attack : Activity
 	{
-		protected Target Target;
+		public Target Target;
 		ITargetable targetable;
 		int Range;
 		bool AllowMovement;
