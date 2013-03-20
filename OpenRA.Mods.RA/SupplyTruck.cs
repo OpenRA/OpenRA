@@ -13,12 +13,15 @@ using System.Drawing;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Orders;
+using OpenRA.FileFormats;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Donate money to building if it has the AcceptSupplies: trait.")]
 	class SupplyTruckInfo : ITraitInfo
 	{
+		[Desc("The amount of cash the owner of the building recieves.")]
 		public readonly int Payload = 500;
 		public object Create(ActorInitializer init) { return new SupplyTruck(this); }
 	}

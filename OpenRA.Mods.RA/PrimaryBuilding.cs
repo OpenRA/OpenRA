@@ -11,10 +11,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.RA.Orders;
+using OpenRA.FileFormats;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Used together with ClassicProductionQueue.")]
 	class PrimaryBuildingInfo : TraitInfo<PrimaryBuilding> { }
 
 	class PrimaryBuilding : IIssueOrder, IResolveOrder, ITags
@@ -54,7 +56,7 @@ namespace OpenRA.Mods.RA
 				return;
 			}
 
-			// THIS IS SHIT
+			// TODO: THIS IS SHIT
 			// Cancel existing primaries
 			foreach (var p in self.Info.Traits.Get<ProductionInfo>().Produces)
 				foreach (var b in self.World

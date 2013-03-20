@@ -492,7 +492,7 @@ namespace OpenRA.Utility
 			Rules.LoadRules(Game.modData.Manifest, new Map());
 
 			Console.WriteLine("## Documentation");
-			Console.WriteLine("This documentation is aimed at modders and contributers of OpenRA. Please do not edit it directly, but add new `[Desc(\"String\")]` tags to the source code. This file has been automatically generated on {0}.\n", DateTime.Now);
+			Console.WriteLine("This documentation is aimed at modders and contributers of OpenRA. It displays all traits with default values and developer commentary. Please do not edit it directly, but add new `[Desc(\"String\")]` tags to the source code. This file has been automatically generated on {0}. Type `make docs` to create a new one and put it on https://github.com/OpenRA/OpenRA/wiki/Traits afterwards. A copy of this is compiled to HTML and shipped with every release during the automated packaging process.\n", DateTime.Now);
 			Console.WriteLine("```yaml\n\n");
 
 			foreach(var t in Game.modData.ObjectCreator.GetTypesImplementing<ITraitInfo>())
@@ -502,23 +502,21 @@ namespace OpenRA.Utility
 
 				var traitName = t.Name.Replace("Info","");
 				var traitDesc = t.GetCustomAttributes<DescAttribute>(false).Select(a => a.Description).FirstOrDefault();
-				if (string.IsNullOrEmpty(traitDesc))
-					traitDesc = "Trait documentation is missing.";
+				if (!string.IsNullOrEmpty(traitDesc))
+					traitDesc = " # {0}".F(traitDesc);
 
-				Console.WriteLine("\t{0}: # {1}", traitName, traitDesc);
+				Console.WriteLine("\t{0}:{1}", traitName, traitDesc);
 				var liveTraitInfo = Game.modData.ObjectCreator.CreateBasic(t);
 
 				foreach(var f in t.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy))
 				{
 					var fieldDesc = f.GetCustomAttributes<DescAttribute>(true).Select(a => a.Description).FirstOrDefault();
-					if (string.IsNullOrEmpty(fieldDesc))
-						fieldDesc = "No description provided.";
+					if (!string.IsNullOrEmpty(fieldDesc))
+						fieldDesc = ", {0}".F(fieldDesc);
 					var fieldType = NiceTypeName(f.FieldType);
 					var defaultValue = FieldSaver.SaveField(liveTraitInfo, f.Name).Value.Value;
-					if (string.IsNullOrEmpty(defaultValue))
-						defaultValue = "";
 
-					Console.WriteLine("\t\t{0}: {2}  # Type: {1}, {3}", f.Name, fieldType, defaultValue, fieldDesc);
+					Console.WriteLine("\t\t{0}: {2}  # Type: {1}{3}", f.Name, fieldType, defaultValue, fieldDesc);
 				}
 			}
 			Console.WriteLine("\n```");

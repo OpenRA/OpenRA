@@ -8,13 +8,12 @@
  */
 #endregion
 
+using OpenRA.FileFormats;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Buildings
 {
-	// allow a nonstandard sell/repair value to avoid
-	// buy-sell exploits like c&c's PROC.
-
+	[Desc("Allow a non-standard sell/repair value to avoid buy-sell exploits.")]
 	public class CustomSellValueInfo : TraitInfo<CustomSellValue>
 	{
 		public readonly int Value = 0;

@@ -13,12 +13,19 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Player recives a unit for free once the building is placed. This also works for structures.\n" +
+	      "\t # If you want more then one unit to appear copy this section and assign IDs like FreeActor@2, ...")]
 	public class FreeActorInfo : ITraitInfo
 	{
 		[ActorReference]
+		[Desc("Name of actor (HARV for refineries)")]
 		public readonly string Actor = null;
+		[Desc("What the unit should start doing. Warning: If this is no harvester\n" +
+		      "\t # it will break, when you add FindResources here.")]
 		public readonly string InitialActivity = null;
+		[Desc("Offset relative to structure-center in 2D (e.g. 1, 2)")]
 		public readonly int2 SpawnOffset = int2.Zero;
+		[Desc("Which direction the unit should face.")]
 		public readonly int Facing = 0;
 
 		public object Create( ActorInitializer init ) { return new FreeActor(init, this); }

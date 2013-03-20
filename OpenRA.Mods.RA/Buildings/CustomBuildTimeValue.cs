@@ -8,12 +8,12 @@
  */
 #endregion
 
+using OpenRA.FileFormats;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Buildings
 {
-	// allow a nonstandard build time value for a cnc classic mod
-
+	[Desc("Overrides the build time calculated by actor value.")]
 	public class CustomBuildTimeValueInfo : TraitInfo<CustomBuildTimeValue>
 	{
 		public readonly int Value = 0;

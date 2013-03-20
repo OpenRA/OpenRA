@@ -18,13 +18,16 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("This unit has access to build queues.")]
 	public class ProductionInfo : ITraitInfo
 	{
+		[Desc("e.g. Infantry, Vehicles, Aircraft, Buildings")]
 		public readonly string[] Produces = { };
 
 		public virtual object Create(ActorInitializer init) { return new Production(this); }
 	}
 
+	[Desc("Where the unit should leave the building. Multiples are allowed if IDs are added: Exit@2, ...")]
 	public class ExitInfo : TraitInfo<Exit>
 	{
 		public readonly int2 SpawnOffset = int2.Zero;	// in px relative to CenterLocation
