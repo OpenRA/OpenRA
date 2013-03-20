@@ -8,9 +8,6 @@ local CreateBitmap = function(id, client, size)
   if wx.wxFileName(fileClient):FileExists() then file = fileClient
   elseif wx.wxFileName(fileKey):FileExists() then file = fileKey
   else return wx.wxArtProvider.GetBitmap(id, client, size) end
-  -- disable error reporting from libpng on Linux as it complaints about
-  -- different versions of libpng (as specified by wxwidgets vs system one)
-  local nowarning = ide.osname == 'Unix' and wx.wxLogNull()
   local icon = icons[file] or wx.wxBitmap(file)
   icons[file] = icon
   return icon

@@ -101,11 +101,13 @@ if [ $BUILD_WXWIDGETS ]; then
   svn co "$WXWIDGETS_URL" "$WXWIDGETS_BASENAME" || { echo "Error: failed to checkout wxWidgets"; exit 1; }
   cd "$WXWIDGETS_BASENAME"
   ./configure --prefix="$INSTALL_DIR" --disable-debug --disable-shared --enable-unicode \
-    --with-libjpeg=builtin --with-libpng=sys --with-libtiff=no --with-expat=no \
-    --with-zlib=builtin --disable-richtext --with-gtk=2 \
+    --with-libjpeg=builtin --with-libpng=builtin --with-libtiff=no --with-expat=no \
+    --with-zlib=sys --disable-richtext --with-gtk=2 \
     CFLAGS="-Os -fPIC" CXXFLAGS="-Os -fPIC"
-  -- patch PNG_LIBPNG_VER_STRING to make it work with older libpng versions
-  sed -i 's/\(#define PNG_LIBPNG_VER_STRING\).*/\1 "1.2.0"/' src/png/png.h
+  # patch PNG_LIBPNG_VER_STRING to make it work with older libpng versions
+  sed -i 's/\(#define PNG_LIBPNG_VER_STRING\).*/\1 (png_get_header_ver(NULL))/' src/png/png.h
+  # use unsigned long png_uint_32 on 64bit platforms
+  sed -i 's/#if defined(INT_MAX) && (INT_MAX > 0x7ffffffeL)/#if 0/' src/png/pngconf.h
   make $MAKEFLAGS || { echo "Error: failed to build wxWidgets"; exit 1; }
   make install
   cd ..
@@ -138,7 +140,7 @@ if [ $BUILD_WXLUA ]; then
     -DwxLuaBind_COMPONENTS="stc;html;aui;adv;core;net;base" -DwxLua_LUA_LIBRARY_USE_BUILTIN=FALSE \
     -DwxLua_LUA_INCLUDE_DIR="$INSTALL_DIR/include" -DwxLua_LUA_LIBRARY="$INSTALL_DIR/lib/liblua.a" .
   # update linker command to exclude wxpng library from libwx.so
-  sed -i 's/-lwxpng-2.9 //' modules/luamodule/CMakeFiles/wxLuaModule.dir/link.txt 
+  sed -i 's/-lwxpng[^ ]* //' modules/luamodule/CMakeFiles/wxLuaModule.dir/link.txt 
   (cd modules/luamodule; make $MAKEFLAGS) || { echo "Error: failed to build wxLua"; exit 1; }
   (cd modules/luamodule; make install/strip)
   [ -f "$INSTALL_DIR/lib/libwx.so" ] || { echo "Error: libwx.so isn't found"; exit 1; }

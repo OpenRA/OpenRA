@@ -124,9 +124,7 @@ ide = {
     fNormal = nil,
   },
 
-  -- on some Linux platforms (Fedora 18 for example), calling
-  -- GetOperatingSystemFamilyName throws "lsb_release: command not found"
-  osname = islinux and 'Unix' or wx.wxPlatformInfo.Get():GetOperatingSystemFamilyName(),
+  osname = wx.wxPlatformInfo.Get():GetOperatingSystemFamilyName(),
   osarch = arch,
   wxver = string.match(wx.wxVERSION_STRING, "[%d%.]+"),
 }
