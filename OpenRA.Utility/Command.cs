@@ -491,28 +491,37 @@ namespace OpenRA.Utility
 			FileSystem.LoadFromManifest(Game.modData.Manifest);
 			Rules.LoadRules(Game.modData.Manifest, new Map());
 
-			foreach( var t in Game.modData.ObjectCreator.GetTypesImplementing<ITraitInfo>() )
+			Console.WriteLine("## Documentation");
+			Console.WriteLine("This documentation is aimed at modders and contributers of OpenRA. Please do not edit it directly, but add new `[Desc(\"String\")]` tags to the source code. This file has been automatically generated on {0}.\n", DateTime.Now);
+			Console.WriteLine("```yaml\n\n");
+
+			foreach(var t in Game.modData.ObjectCreator.GetTypesImplementing<ITraitInfo>())
 			{
 				if (t.ContainsGenericParameters || t.IsAbstract)
 					continue;		// skip helpers like TraitInfo<T>
 
 				var traitName = t.Name.Replace("Info","");
 				var traitDesc = t.GetCustomAttributes<DescAttribute>(false).Select(a => a.Description).FirstOrDefault();
+				if (string.IsNullOrEmpty(traitDesc))
+					traitDesc = "Trait documentation is missing.";
 
-				Console.WriteLine("{0}:", traitName);
+				Console.WriteLine("\t{0}: # {1}", traitName, traitDesc);
 				var liveTraitInfo = Game.modData.ObjectCreator.CreateBasic(t);
 
 				foreach(var f in t.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy))
 				{
 					var fieldDesc = f.GetCustomAttributes<DescAttribute>(true).Select(a => a.Description).FirstOrDefault();
+					if (string.IsNullOrEmpty(fieldDesc))
+						fieldDesc = "No description provided.";
 					var fieldType = NiceTypeName(f.FieldType);
 					var defaultValue = FieldSaver.SaveField(liveTraitInfo, f.Name).Value.Value;
 					if (string.IsNullOrEmpty(defaultValue))
-						defaultValue = "(none)";
+						defaultValue = "";
 
-					Console.WriteLine("\t{0}: {2}  # type: {1}", f.Name, fieldType, defaultValue);
+					Console.WriteLine("\t\t{0}: {2}  # Type: {1}, {3}", f.Name, fieldType, defaultValue, fieldDesc);
 				}
 			}
+			Console.WriteLine("\n```");
 		}
 	}
 }
