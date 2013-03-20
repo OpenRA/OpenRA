@@ -6,9 +6,13 @@
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
  */
+
+
+
 #endregion
 
 using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Air;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -38,8 +42,34 @@ namespace OpenRA.Mods.RA
 			if (chronoshiftReturnTicks == 0)
 			{
 				self.CancelActivity();
+				stopAttackers(self);
 				// Todo: need a new Teleport method that will move to the closest available cell
 				self.QueueActivity(new Teleport(chronosphere, chronoshiftOrigin, killCargo));
+			}
+		}
+
+		protected void stopAttackers(Actor self)
+		{
+			foreach (Actor a in self.World.Actors)
+			{
+				if (a.GetCurrentActivity() is Attack)
+				{
+					var attack = (Attack) a.GetCurrentActivity();
+					if (attack.Target.IsActor && attack.Target.Actor == self)
+						attack.Cancel(a);
+				}
+				else if (a.GetCurrentActivity() is FlyAttack)
+				{
+					var attack = (FlyAttack) a.GetCurrentActivity();
+					if (attack.Target.IsActor && attack.Target.Actor == self)
+						attack.Cancel(a);
+				}
+				else if (a.GetCurrentActivity() is HeliAttack)
+				{
+					var attack = (HeliAttack) a.GetCurrentActivity();
+					if (attack.Target.IsActor && attack.Target.Actor == self)
+						attack.Cancel(a);
+				}
 			}
 		}
 
@@ -62,6 +92,8 @@ namespace OpenRA.Mods.RA
 				});
 				return true;
 			}
+
+			stopAttackers(self);
 
 			/// Set up return-to-sender info
 			chronoshiftOrigin = self.Location;
