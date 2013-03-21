@@ -20,6 +20,7 @@ namespace OpenRA.Mods.RA
 {
 	public class GainsExperienceInfo : ITraitInfo, Requires<ValuedInfo>
 	{
+		[Desc("XP requirements for each level, as multiples of our own cost.")]
 		public readonly float[] CostThreshold = { 2, 4, 8, 16 };
 		public readonly float[] FirepowerModifier = { 1.1f, 1.15f, 1.2f, 1.5f };
 		public readonly float[] ArmorModifier = { 1.1f, 1.2f, 1.3f, 1.5f };

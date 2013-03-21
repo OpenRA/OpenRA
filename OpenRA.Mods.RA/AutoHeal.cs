@@ -10,9 +10,11 @@
 
 using System.Linq;
 using OpenRA.Traits;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Used together with AttackMedic: to make the healer do it's job automatically to nearby units.")]
 	class AutoHealInfo : TraitInfo<AutoHeal>, Requires<AttackBaseInfo> { }
 
 	class AutoHeal : INotifyIdle

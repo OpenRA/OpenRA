@@ -8,14 +8,17 @@
  */
 #endregion
 
+using OpenRA.FileFormats;
 using OpenRA.Traits;
 using System.Drawing;
 using System.Linq;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("The actor will automatically engage the enemy when it is in range.")]
 	public class AutoTargetInfo : ITraitInfo, Requires<AttackBaseInfo>
 	{
+		[Desc("It will try to hunt down the enemy if it is not set to defend.")]
 		public readonly bool AllowMovement = true;
 		public readonly int ScanRadius = -1;
 		public readonly UnitStance InitialStance = UnitStance.AttackAnything;
@@ -128,7 +131,7 @@ namespace OpenRA.Mods.RA
 			}
 		}
 	}
-
+	[Desc("Will not get automatically targeted by enemy (like walls)")]
 	class AutoTargetIgnoreInfo : TraitInfo<AutoTargetIgnore> { }
 	class AutoTargetIgnore { }
 }

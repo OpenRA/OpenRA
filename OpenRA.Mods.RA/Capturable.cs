@@ -10,18 +10,22 @@
 
 using System.Linq;
 using OpenRA.Effects;
+using OpenRA.FileFormats;
 using OpenRA.Traits;
 using OpenRA.Mods.RA.Buildings;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("This actor can be captured by a unit with Captures: trait.")]
 	public class CapturableInfo : ITraitInfo
 	{
 		public readonly string Type = "building";
 		public readonly bool AllowAllies = false;
 		public readonly bool AllowNeutral = true;
 		public readonly bool AllowEnemies = true;
-		public readonly int CaptureCompleteTime = 10; // seconds
+		[Desc("Seconds it takes to change the owner.\n" +
+		      "\t# It stays neutral during this period. You might want to add a CapturableBar: trait, too.")]
+		public readonly int CaptureCompleteTime = 10;
 
 		public object Create(ActorInitializer init) { return new Capturable(this); }
 	}

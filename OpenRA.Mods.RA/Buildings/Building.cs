@@ -16,14 +16,19 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Buildings
 {
+	[Desc("Remove this trait to limit base-walking by cheap or defensive buildings.")]
 	public class GivesBuildableAreaInfo : TraitInfo<GivesBuildableArea> {}
 	public class GivesBuildableArea {}
 
 	public class BuildingInfo : ITraitInfo, UsesInit<LocationInit>
 	{
+		[Desc("If negative, it will drain power, if positive, it will provide power.")]
 		public readonly int Power = 0;
+		[Desc("Where you are allowed to place the building (Water, Clear, ...)")]
 		public readonly string[] TerrainTypes = {};
+		[Desc("The range to the next building it can be constructed. Set it higher for walls.")]
 		public readonly int Adjacent = 2;
+		[Desc("x means space it blocks, _ is a part that is passable by actors (like bridges).")]
 		public readonly string Footprint = "x";
 		public readonly int2 Dimensions = new int2(1, 1);
 

@@ -12,11 +12,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Traits
 {
 	public class RenderSimpleInfo : ITraitInfo
 	{
+		[Desc("Defaults to the actor name.")]
 		public readonly string Image = null;
 		public readonly string Palette = null;
 		public readonly string PlayerPalette = "player";

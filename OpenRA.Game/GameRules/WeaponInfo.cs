@@ -18,21 +18,35 @@ namespace OpenRA.GameRules
 {
 	public class WarheadInfo
 	{
-		public readonly int Spread = 1;									// distance (in pixels) from the explosion center at which damage is 1/2.
+		[Desc("Distance (in pixels) from the explosion center at which damage is 1/2.")]
+		public readonly int Spread = 1;
 		[FieldLoader.LoadUsing( "LoadVersus" )]
-		public readonly Dictionary<string, float> Versus; 				// damage vs each armortype
-		public readonly bool Ore = false;								// can this damage ore?
-		public readonly string Explosion = null;						// explosion effect to use
-		public readonly string WaterExplosion = null;					// explosion effect on hitting water (usually a splash)
-		public readonly string[] SmudgeType = { };						// type of smudge to apply
-		public readonly int[] Size = { 0, 0 };							// size of the explosion. provide 2 values for a ring effect (outer/inner)
-		public readonly int InfDeath = 1;								// infantry death animation to use
-		public readonly string ImpactSound = null;						// sound to play on impact
-		public readonly string WaterImpactSound = null;					// sound to play on impact with water
-		public readonly int Damage = 0;									// how much (raw) damage to deal
-		public readonly int Delay = 0;									// delay in ticks before dealing the damage. 0=instant (old model)
-		public readonly DamageModel DamageModel = DamageModel.Normal;	// which damage model to use
-		public readonly bool PreventProne = false;						// whether we should prevent prone response in infantry.
+		[Desc("Damage vs each armortype. 0% = can't target.")]
+		public readonly Dictionary<string, float> Versus;
+		[Desc("Can this damage ore?")]
+		public readonly bool Ore = false;
+		[Desc("Explosion effect to use.")]
+		public readonly string Explosion = null;
+		[Desc("Explosion effect on hitting water (usually a splash).")]
+		public readonly string WaterExplosion = null;
+		[Desc("Type of smudge to apply to terrain.")]
+		public readonly string[] SmudgeType = { };
+		[Desc("Size of the explosion. provide 2 values for a ring effect (outer/inner).")]
+		public readonly int[] Size = { 0, 0 };
+		[Desc("Infantry death animation to use")]
+		public readonly int InfDeath = 1;
+		[Desc("Sound to play on impact.")]
+		public readonly string ImpactSound = null;
+		[Desc("Sound to play on impact with water")]
+		public readonly string WaterImpactSound = null;
+		[Desc("How much (raw) damage to deal")]
+		public readonly int Damage = 0;
+		[Desc("Delay in ticks before dealing the damage, 0 = instant (old model).")]
+		public readonly int Delay = 0;
+		[Desc("Which damage model to use.")]
+		public readonly DamageModel DamageModel = DamageModel.Normal;
+		[Desc("Whether we should prevent prone response for infantry.")]
+		public readonly bool PreventProne = false;
 
 		public float EffectivenessAgainst(Actor self)
 		{
@@ -87,6 +101,7 @@ namespace OpenRA.GameRules
 	{
 		public readonly float Range = 0;
 		public readonly string[] Report = null;
+		[Desc("Rate of Fire")]
 		public readonly int ROF = 1;
 		public readonly int Burst = 1;
 		public readonly bool Charges = false;

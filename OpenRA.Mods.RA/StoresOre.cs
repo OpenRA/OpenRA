@@ -9,12 +9,14 @@
 #endregion
 
 using System.Collections.Generic;
+using OpenRA.FileFormats;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
 	class StoresOreInfo : ITraitInfo
 	{
+		[Desc("Number of little squares used to display how filled unit is.")]
 		public readonly int PipCount = 0;
 		public readonly PipType PipColor = PipType.Yellow;
 		public readonly int Capacity = 0;

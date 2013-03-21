@@ -9,10 +9,11 @@
 #endregion
 
 using OpenRA.Traits;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA
 {
-	/* tag trait for "bases": mcv/fact */
+	[Desc("Tag trait for construction yard and MCVs. Used by the cycle bases hotkey to identify actors.")]
 	public class BaseBuildingInfo : TraitInfo<BaseBuilding> { }
 	public class BaseBuilding { }
 }

@@ -8,10 +8,12 @@
  */
 #endregion
 
+using OpenRA.FileFormats;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Tag trait for SupplyTruck: actors.")]
 	class AcceptsSuppliesInfo : TraitInfo<AcceptsSupplies> {}
 
 	class AcceptsSupplies {}
