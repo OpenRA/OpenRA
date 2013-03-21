@@ -22,6 +22,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	{
 		GameServer currentServer;
 		ScrollItemWidget serverTemplate;
+		Action OpenLobby;
+		Action OnExit;
 
 		enum SearchStatus { Fetching, Failed, NoGames, Hidden }
 		SearchStatus searchStatus = SearchStatus.Fetching;
@@ -41,6 +43,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		public ServerBrowserLogic(Widget widget, Action openLobby, Action onExit)
 		{
 			var panel = widget;
+			OpenLobby = openLobby;
+			OnExit = onExit;
 			var sl = panel.Get<ScrollPanelWidget>("SERVER_LIST");
 
 			// Menu buttons
@@ -56,17 +60,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var join = panel.Get<ButtonWidget>("JOIN_BUTTON");
 			join.IsDisabled = () => currentServer == null || !currentServer.CanJoin();
-			join.OnClick = () =>
-			{
-				if (currentServer == null)
-					return;
-
-				var host = currentServer.Address.Split(':')[0];
-				var port = int.Parse(currentServer.Address.Split(':')[1]);
-
-				Ui.CloseWindow();
-				ConnectionLogic.Connect(host, port, openLobby, onExit);
-			};
+			join.OnClick = () => Join(currentServer);
 
 			panel.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
 
@@ -80,6 +74,18 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			progressText.GetText = ProgressLabelText;
 
 			ServerList.Query(games => RefreshServerList(panel, games));
+		}
+
+		void Join(GameServer server)
+		{
+			if (server == null || !server.CanJoin())
+					return;
+
+			var host = server.Address.Split(':')[0];
+			var port = int.Parse(server.Address.Split(':')[1]);
+
+			Ui.CloseWindow();
+			ConnectionLogic.Connect(host, port, OpenLobby, OnExit);
 		}
 
 		string GetPlayersLabel(GameServer game)
@@ -149,7 +155,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				var canJoin = game.CanJoin();
 
-				var item = ScrollItemWidget.Setup(serverTemplate, () => currentServer == game, () => currentServer = game);
+				var item = ScrollItemWidget.Setup(serverTemplate, () => currentServer == game, () => currentServer = game, () => Join(game));
 
 				var preview = item.Get<MapPreviewWidget>("MAP_PREVIEW");
 				preview.Map = () => GetMapPreview(game);

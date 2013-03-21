@@ -52,5 +52,12 @@ namespace OpenRA.Widgets
 			w.OnClick = onClick;
 			return w;
 		}
+
+		public static ScrollItemWidget Setup(ScrollItemWidget template, Func<bool> isSelected, Action onClick, Action onDoubleClick)
+		{
+			var w = Setup(template, isSelected, onClick);
+			w.OnDoubleClick = onDoubleClick;
+			return w;
+		}
 	}
 }
