@@ -79,7 +79,14 @@ namespace OpenRA.Widgets
 
 			if (composing)
 			{
-				if (e.KeyName == "backspace")
+				if (e.KeyName == "escape")
+				{
+					composing = false;
+					content = "";
+					LoseFocus();
+					return true;
+				}
+				else if (e.KeyName == "backspace")
 				{
 					if (content.Length > 0)
 						content = content.Remove(content.Length - 1);
