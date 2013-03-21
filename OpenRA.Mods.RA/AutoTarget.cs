@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA
 		readonly AutoTargetInfo Info;
 		readonly AttackBase attack;
 
-		[Sync] int nextScanTime = 0;
+		[Sync] public int nextScanTime = 0;
 		public UnitStance stance;
 		[Sync] public int stanceNumber { get { return (int)stance; } }
 		public UnitStance predictedStance;		/* NOT SYNCED: do not refer to this anywhere other than UI code */
@@ -148,5 +148,17 @@ namespace OpenRA.Mods.RA
 		readonly AutoTarget a;
 		public DebugRetiliateAgainstAggressor(Actor self){ a = self.Trait<AutoTarget>(); }
 		[Sync] public int Aggressor { get { return a.AggressorID; } }
+	}
+
+	public class DebugNextAutoTargetScanTimeInfo : ITraitInfo, Requires<AutoTargetInfo>
+	{
+		public object Create(ActorInitializer init) { return new DebugNextAutoTargetScanTime(init.self); }
+	}
+	
+	public class DebugNextAutoTargetScanTime : ISync
+	{
+		readonly AutoTarget a;
+		public DebugNextAutoTargetScanTime(Actor self){ a = self.Trait<AutoTarget>(); }
+		[Sync] public int NextAutoTargetScanTime { get { return a.nextScanTime; } }
 	}
 }
