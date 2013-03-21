@@ -10,6 +10,7 @@ URL: http://open-ra.org
 Group: Amusements/Games
 Packager: Matthew Bowra-Dean <matthew@ijw.co.nz>
 Requires: mono-core mono-devel SDL openal
+Suggests: Cg
 Prefix: /usr
 Source: %{name}-%{version}.tar.gz
 Buildroot: /tmp/openra
