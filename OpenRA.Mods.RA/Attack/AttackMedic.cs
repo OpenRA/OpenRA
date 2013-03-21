@@ -10,9 +10,13 @@
 
 using System;
 using OpenRA.Traits;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Give the unit a \"heal-weapon\".\n" +
+	      "\t# It conflicts with any other weapon or Attack*: trait because it will hurt friendlies during the\n" +
+	      "\t# heal process then. It also won't work with buildings (use RepairsUnits: for them).")]
 	public class AttackMedicInfo : AttackFrontalInfo
 	{
 		public override object Create( ActorInitializer init ) { return new AttackMedic( init.self, this ); }

@@ -11,14 +11,19 @@
 using System.Linq;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Effects;
+using OpenRA.FileFormats;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("You get money for playing this actor.")]
 	class GivesBountyInfo : TraitInfo<GivesBounty>
 	{
+		[Desc("Calculated by Cost or CustomSellValue so they have to be set to avoid crashes.")]
 		public readonly int Percentage = 10;
+		[Desc("Higher ranked units give higher bounties.")]
 		public readonly int LevelMod = 125;
+		[Desc("Destroying creeps and enemies is rewarded.")]
 		public readonly Stance[] Stances = {Stance.Neutral, Stance.Enemy};
 	}
 

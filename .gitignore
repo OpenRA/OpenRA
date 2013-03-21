@@ -55,3 +55,7 @@ OpenRA.Launcher.Mac/OpenRA.xcodeproj/*.mode1v3
 # KDE crap
 *.kate-swp
 *.directory
+
+# auto-generated documentation
+DOCUMENTATION.md
+*.html

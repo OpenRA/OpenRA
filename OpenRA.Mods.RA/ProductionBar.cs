@@ -10,10 +10,12 @@
 
 using System.Drawing;
 using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Visualizes the remaining build time of actor produced here.")]
 	class ProductionBarInfo : ITraitInfo
 	{
 		public object Create(ActorInitializer init) { return new ProductionBar( init.self ); }

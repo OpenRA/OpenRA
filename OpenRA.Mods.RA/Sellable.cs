@@ -12,9 +12,11 @@ using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Building can be sold")]
 	public class SellableInfo : TraitInfo<Sellable>
 	{
 		public readonly int RefundPercent = 50;

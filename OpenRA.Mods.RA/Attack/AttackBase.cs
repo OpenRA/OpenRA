@@ -20,6 +20,7 @@ namespace OpenRA.Mods.RA
 	public abstract class AttackBaseInfo : ITraitInfo
 	{
 		[WeaponReference]
+		[Desc("Has to be defined here and in weapons.yaml.")]
 		public readonly string PrimaryWeapon = null;
 		[WeaponReference]
 		public readonly string SecondaryWeapon = null;

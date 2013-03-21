@@ -10,10 +10,12 @@
 
 using System.Drawing;
 using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Visualize the remaining CaptureCompleteTime from Capturable: trait.")]
 	class CapturableBarInfo : ITraitInfo, Requires<CapturableInfo>
 	{
 		public object Create(ActorInitializer init) { return new CapturableBar(init.self); }

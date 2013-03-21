@@ -8,11 +8,16 @@
  */
 #endregion
 
+using OpenRA.FileFormats;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class GivesExperienceInfo : TraitInfo<GivesExperience> { public readonly int Experience = -1;	}
+	class GivesExperienceInfo : TraitInfo<GivesExperience>
+	{
+		[Desc("if -1, use the value of the unit cost.")]
+		public readonly int Experience = -1;
+	}
 
 	class GivesExperience : INotifyKilled
 	{

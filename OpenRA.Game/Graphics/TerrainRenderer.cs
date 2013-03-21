@@ -50,7 +50,7 @@ namespace OpenRA.Graphics
 					nv += 4;
 
 					if (tileMapping[map.MapTiles.Value[i, j]].sheet != terrainSheet)
-						throw new InvalidOperationException("Terrain sprites span multiple sheets");
+						throw new InvalidOperationException("Terrain sprites span multiple sheets. Try increasing Game.Settings.Graphics.SheetSize.");
 				}
 
 			vertexBuffer = Game.Renderer.Device.CreateVertexBuffer( vertices.Length );

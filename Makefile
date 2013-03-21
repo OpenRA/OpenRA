@@ -7,7 +7,7 @@ PHONY       = core tools package all mods clean distclean
 .SUFFIXES:
 core: game renderers mods utility tsbuild
 tools: editor ralint tsbuild
-package: core editor
+package: core editor docs
 mods: mod_ra mod_cnc mod_d2k
 all: core tools
 clean: 
@@ -204,6 +204,10 @@ INSTALL_DIR = $(DESTDIR)$(datadir)/openra
 INSTALL = install
 INSTALL_PROGRAM = $(INSTALL)
 CORE = fileformats rcg rgl rsdl rnull game editor utility tsbuild
+
+# Documentation (d2k depends on all mod libraries)
+docs:
+	@mono --debug OpenRA.Utility.exe --docs d2k > DOCUMENTATION.md
 
 install: all
 	@-echo "Installing OpenRA to $(INSTALL_DIR)"

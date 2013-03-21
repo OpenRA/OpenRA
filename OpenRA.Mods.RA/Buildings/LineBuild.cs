@@ -8,12 +8,15 @@
  */
 #endregion
 
+using OpenRA.FileFormats;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Buildings
 {
+	[Desc("Place the second actor in line to build more of the same at once (used for walls).")]
 	public class LineBuildInfo : TraitInfo<LineBuild>
 	{
+		[Desc("The maximum allowed length of the line.")]
 		public readonly int Range = 5;
 	}
 

@@ -8,13 +8,17 @@
  */
 #endregion
 
+using OpenRA.FileFormats;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Unit will reload its limited ammo itself.")]
 	public class ReloadsInfo : ITraitInfo, Requires<LimitedAmmoInfo>
 	{
+		[Desc("How much ammo is reloaded after a certain period.")]
 		public readonly int Count = 0;
+		[Desc("How long it takes to do so.")]
 		public readonly int Period = 50;
 
 		public object Create(ActorInitializer init) { return new Reloads(init.self, this); }

@@ -18,9 +18,11 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc
 {
+	[Desc("Deliver the unit in production via skylift.")]
 	public class ProductionAirdropInfo : ProductionInfo
 	{
 		public readonly string ReadyAudio = "Reinforce";
+		[Desc("Cargo aircraft used.")]
 		[ActorReference] public readonly string ActorType = "c17";
 
 		public override object Create(ActorInitializer init) { return new ProductionAirdrop(this); }

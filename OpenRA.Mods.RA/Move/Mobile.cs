@@ -18,17 +18,22 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Move
 {
+	[Desc("Unit is able to move.")]
 	public class MobileInfo : ITraitInfo, IFacingInfo, UsesInit<FacingInit>, UsesInit<LocationInit>, UsesInit<SubCellInit>
 	{
 		[FieldLoader.LoadUsing("LoadSpeeds")]
+		[Desc("Set Water: 0 for ground units and lower the value on rough terrain.")]
 		public readonly Dictionary<string, TerrainInfo> TerrainSpeeds;
+		[Desc("e.g. crate, wall, infantry")]
 		public readonly string[] Crushes;
 		public readonly int WaitAverage = 60;
 		public readonly int WaitSpread = 20;
 		public readonly int InitialFacing = 128;
+		[Desc("Rate of Turning")]
 		public readonly int ROT = 255;
 		public readonly int Speed = 1;
 		public readonly bool OnRails = false;
+		[Desc("Allow multiple (infantry) units in one cell.")]
 		public readonly bool SharesCell = false;
 		public readonly int Altitude;
 
