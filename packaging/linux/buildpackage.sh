@@ -21,6 +21,9 @@ cp -T openra-bin $ROOTDIR/usr/bin/openra
 mkdir -p $ROOTDIR/usr/share/openra/
 cp -R $BUILTDIR/* "$ROOTDIR/usr/share/openra/" || exit 3
 
+# Desura launch scripts
+cp ../../*.sh "$ROOTDIR/usr/share/openra/" || exit 3
+
 # Desktop Icons
 mkdir -p $ROOTDIR/usr/share/applications/
 cp openra.desktop "$ROOTDIR/usr/share/applications/"
