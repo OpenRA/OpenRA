@@ -52,21 +52,22 @@ namespace OpenRA.Mods.RA
 		{
 			foreach (Actor a in self.World.Actors)
 			{
-				if (a.GetCurrentActivity() is Attack)
+				Activity activity = a.GetCurrentActivity();
+				if (activity is Attack)
 				{
-					var attack = (Attack) a.GetCurrentActivity();
+					var attack = (Attack) activity;
 					if (attack.Target.IsActor && attack.Target.Actor == self)
 						attack.Cancel(a);
 				}
-				else if (a.GetCurrentActivity() is FlyAttack)
+				else if (activity is FlyAttack)
 				{
-					var attack = (FlyAttack) a.GetCurrentActivity();
+					var attack = (FlyAttack) activity;
 					if (attack.Target.IsActor && attack.Target.Actor == self)
 						attack.Cancel(a);
 				}
-				else if (a.GetCurrentActivity() is HeliAttack)
+				else if (activity is HeliAttack)
 				{
-					var attack = (HeliAttack) a.GetCurrentActivity();
+					var attack = (HeliAttack) activity;
 					if (attack.Target.IsActor && attack.Target.Actor == self)
 						attack.Cancel(a);
 				}
