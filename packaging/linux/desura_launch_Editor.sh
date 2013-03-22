@@ -1,9 +1,9 @@
-#!/bin/bash
+#!/bin/sh
 
-cd "`dirname "$(readlink -f "$0")"`"
+cd "`dirname "\`readlink -f "$0"\`"`" 
 
 if [ -e "desura_prelaunch.sh" ]; then
-	source desura_prelaunch.sh
+	. desura_prelaunch.sh
 fi
 
 BIN_PATH="$HOME/.desura/games/openra/launch-editor.sh"
@@ -18,7 +18,7 @@ libGLU_Path="$HOME/.desura/tools/93/"
 libalut_Path="$HOME/.desura/tools/195/"
 
 if [ -n $ARGS ]; then
-	LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$libSDL_Path:$libopenal_Path:$libCgGL_PATH:$libCg_PATH:$libfreetype_Path:$libGLU_Path:$libalut_Path $BIN_PATH $ARGS $@
+	LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${libSDL_Path}:${libopenal_Path}:${libCgGL_PATH}:${libCg_PATH}:${libfreetype_Path}:${libGLU_Path}:${libalut_Path} ${BIN_PATH} ${ARGS} $@
 else
-	LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$libSDL_Path:$libopenal_Path:$libCgGL_PATH:$libCg_PATH:$libfreetype_Path:$libGLU_Path:$libalut_Path $BIN_PATH $@
+	LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${libSDL_Path}:${libopenal_Path}:${libCgGL_PATH}:${libCg_PATH}:${libfreetype_Path}:${libGLU_Path}:${libalut_Path} ${BIN_PATH} $@
 fi
