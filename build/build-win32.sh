@@ -147,10 +147,11 @@ if [ $BUILD_WXLUA ]; then
   echo "set_target_properties(wxLuaModule PROPERTIES LINK_FLAGS -static)" >> modules/luamodule/CMakeLists.txt
   cmake -G "MSYS Makefiles" -DBUILD_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=FALSE \
     -DwxWidgets_CONFIG_EXECUTABLE="$INSTALL_DIR/bin/wx-config" \
+    -DwxWidgets_COMPONENTS="stc;html;aui;adv;core;net;base" \
     -DwxLuaBind_COMPONENTS="stc;html;aui;adv;core;net;base" -DwxLua_LUA_LIBRARY_USE_BUILTIN=FALSE \
     -DwxLua_LUA_INCLUDE_DIR="$INSTALL_DIR/include" -DwxLua_LUA_LIBRARY="$INSTALL_DIR/lib/lua51.dll" .
-  make $MAKEFLAGS || { echo "Error: failed to build wxLua"; exit 1; }
-  make install/strip
+  (cd modules/luamodule; make $MAKEFLAGS) || { echo "Error: failed to build wxLua"; exit 1; }
+  (cd modules/luamodule; make install/strip)
   [ -f "$INSTALL_DIR/bin/libwx.dll" ] || { echo "Error: libwx.dll isn't found"; exit 1; }
   cd ../..
   rm -rf "$WXLUA_BASENAME"

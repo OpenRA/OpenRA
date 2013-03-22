@@ -138,10 +138,11 @@ if [ $BUILD_WXLUA ]; then
   cmake -G "Unix Makefiles" -DBUILD_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=FALSE \
     -DCMAKE_OSX_ARCHITECTURES=$MACOSX_ARCH -DCMAKE_OSX_DEPLOYMENT_TARGET=$MACOSX_VERSION CMAKE_OSX_SYSROOT="$MACOSX_SDK_PATH" \
     -DCMAKE_C_COMPILER=/usr/bin/gcc -DCMAKE_CXX_COMPILER=/usr/bin/g++ -DwxWidgets_CONFIG_EXECUTABLE="$INSTALL_DIR/bin/wx-config" \
+    -DwxWidgets_COMPONENTS="stc;html;aui;adv;core;net;base" \
     -DwxLuaBind_COMPONENTS="stc;html;aui;adv;core;net;base" -DwxLua_LUA_LIBRARY_USE_BUILTIN=FALSE \
     -DwxLua_LUA_INCLUDE_DIR="$INSTALL_DIR/include" -DwxLua_LUA_LIBRARY="$INSTALL_DIR/lib/liblua.dylib" .
-  make $MAKEFLAGS || { echo "Error: failed to build wxLua"; exit 1; }
-  make install/strip
+  (cd modules/luamodule; make $MAKEFLAGS) || { echo "Error: failed to build wxLua"; exit 1; }
+  (cd modules/luamodule; make install/strip)
   strip -u -r "$INSTALL_DIR/lib/libwx.dylib"
   [ -f "$INSTALL_DIR/lib/libwx.dylib" ] || { echo "Error: libwx.dylib isn't found"; exit 1; }
   cd ../..
