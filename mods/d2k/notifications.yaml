@@ -19,6 +19,7 @@ Speech:
 		BaseAttack: ATACK
 		HarvesterAttack: HATTK
 		Leave: ABORT
+		StartGame:
 		UnitReady: UNRDY
 		NoRoom: NROOM
 		Training: TRAIN
