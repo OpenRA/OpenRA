@@ -849,42 +849,50 @@ end
 ----------------------------------------------------
 -- function list for current file
 
--- wx.wxEVT_SET_FOCUS is not triggered for wxChoice on Mac (wx 2.8.12),
--- so use wx.wxEVT_LEFT_DOWN instead
-funclist:Connect(ide.osname == 'Macintosh' and wx.wxEVT_LEFT_DOWN or wx.wxEVT_SET_FOCUS,
-  function (event)
-    event:Skip()
+local function refreshFunctionList(event)
+  event:Skip()
 
-    local editor = GetEditor()
-    if (editor and not (editor.spec and editor.spec.isfndef)) then return end
+  local editor = GetEditor()
+  if (editor and not (editor.spec and editor.spec.isfndef)) then return end
 
-    -- parse current file and update list
-    -- first populate with the current label to minimize flicker
-    -- then populate the list and update the label
-    local current = funclist:GetCurrentSelection()
-    local label = funclist:GetString(current)
-    local default = funclist:GetString(0)
-    funclist:Clear()
-    funclist:Append(current ~= wx.wxNOT_FOUND and label or default, 0)
-    funclist:SetSelection(0)
+  -- parse current file and update list
+  -- first populate with the current label to minimize flicker
+  -- then populate the list and update the label
+  local current = funclist:GetCurrentSelection()
+  local label = funclist:GetString(current)
+  local default = funclist:GetString(0)
+  funclist:Clear()
+  funclist:Append(current ~= wx.wxNOT_FOUND and label or default, 0)
+  funclist:SetSelection(0)
 
-    local lines = 0
-    local linee = (editor and editor:GetLineCount() or 0)-1
-    for line=lines,linee do
-      local tx = editor:GetLine(line)
-      local s,_,cap,l = editor.spec.isfndef(tx)
-      if (s) then
-        local ls = editor:PositionFromLine(line)
-        local style = bit.band(editor:GetStyleAt(ls+s),31)
-        if not (editor.spec.iscomment[style] or editor.spec.isstring[style]) then
-          funclist:Append((l and "  " or "")..cap,line)
-        end
+  local lines = 0
+  local linee = (editor and editor:GetLineCount() or 0)-1
+  for line=lines,linee do
+    local tx = editor:GetLine(line)
+    local s,_,cap,l = editor.spec.isfndef(tx)
+    if (s) then
+      local ls = editor:PositionFromLine(line)
+      local style = bit.band(editor:GetStyleAt(ls+s),31)
+      if not (editor.spec.iscomment[style] or editor.spec.isstring[style]) then
+        funclist:Append((l and "  " or "")..cap,line)
       end
     end
+  end
 
-    funclist:SetString(0, default)
-    funclist:SetSelection(current ~= wx.wxNOT_FOUND and current or 0)
-  end)
+  funclist:SetString(0, default)
+  funclist:SetSelection(current ~= wx.wxNOT_FOUND and current or 0)
+end
+
+-- wx.wxEVT_SET_FOCUS is not triggered for wxChoice on Mac (wx 2.8.12),
+-- so use wx.wxEVT_LEFT_DOWN instead; none of the events are triggered for
+-- wxChoice on Linux (wx 2.9.5+), so use EVT_ENTER_WINDOW attached to the
+-- toolbar itself until something better is available.
+if ide.osname == 'Unix' then
+  ide.frame.toolBar:Connect(wx.wxEVT_ENTER_WINDOW, refreshFunctionList)
+else
+  local event = ide.osname == 'Macintosh' and wx.wxEVT_LEFT_DOWN or wx.wxEVT_SET_FOCUS
+  funclist:Connect(event, refreshFunctionList)
+end
 
 funclist:Connect(wx.wxEVT_COMMAND_CHOICE_SELECTED,
   function (event)
