@@ -15,7 +15,7 @@ namespace OpenRA.Mods.RA
 {
 	class GivesExperienceInfo : TraitInfo<GivesExperience>
 	{
-		[Desc("if -1, use the value of the unit cost.")]
+		[Desc("If -1, use the value of the unit cost.")]
 		public readonly int Experience = -1;
 	}
 

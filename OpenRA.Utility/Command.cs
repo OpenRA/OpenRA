@@ -477,10 +477,10 @@ namespace OpenRA.Utility
 					destFrames.Select(f => f.Image));
 		}
 
-		static string NiceTypeName(Type t)
+		static string FriendlyTypeName(Type t)
 		{
 			if (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Dictionary<,>))
-				return "Dictionary<{0},{1}>".F(t.GetGenericArguments().Select(a => NiceTypeName(a)).ToArray ());
+				return "Dictionary<{0},{1}>".F(t.GetGenericArguments().Select(FriendlyTypeName).ToArray());
 
 			return t.Name;
 		}
@@ -492,34 +492,42 @@ namespace OpenRA.Utility
 			Rules.LoadRules(Game.modData.Manifest, new Map());
 
 			Console.WriteLine("## Documentation");
-			Console.WriteLine("This documentation is aimed at modders and contributers of OpenRA. It displays all traits with default values and developer commentary. Please do not edit it directly, but add new `[Desc(\"String\")]` tags to the source code. This file has been automatically generated on {0}. Type `make docs` to create a new one and put it on https://github.com/OpenRA/OpenRA/wiki/Traits afterwards. A copy of this is compiled to HTML and shipped with every release during the automated packaging process.\n", DateTime.Now);
-			Console.WriteLine("```yaml\n\n");
+			Console.WriteLine(
+				"This documentation is aimed at modders and contributers of OpenRA. It displays all traits with default values and developer commentary. " +
+				"Please do not edit it directly, but add new `[Desc(\"String\")]` tags to the source code. This file has been automatically generated on {0}. " +
+				"Type `make docs` to create a new one and put it on https://github.com/OpenRA/OpenRA/wiki/Traits afterwards. " +
+				"A copy of this is compiled to HTML and shipped with every release during the automated packaging process.", DateTime.Now);
+			Console.WriteLine("```yaml");
+			Console.WriteLine();
 
-			foreach(var t in Game.modData.ObjectCreator.GetTypesImplementing<ITraitInfo>())
+			foreach (var t in Game.modData.ObjectCreator.GetTypesImplementing<ITraitInfo>())
 			{
 				if (t.ContainsGenericParameters || t.IsAbstract)
-					continue;		// skip helpers like TraitInfo<T>
+					continue; // skip helpers like TraitInfo<T>
 
-				var traitName = t.Name.Replace("Info","");
-				var traitDesc = t.GetCustomAttributes<DescAttribute>(false).Select(a => a.Description).FirstOrDefault();
-				if (!string.IsNullOrEmpty(traitDesc))
-					traitDesc = " # {0}".F(traitDesc);
+				var traitName = t.Name.EndsWith("Info") ? t.Name.Substring(0, t.Name.Length - 4) : t.Name;
+				var traitDescLines = t.GetCustomAttributes<DescAttribute>(false).SelectMany(d => d.Lines);
+				Console.WriteLine("{0}:{1}", traitName, traitDescLines.Count() == 1 ? " # " + traitDescLines.First() : "");
+				if (traitDescLines.Count() >= 2)
+					foreach (var line in traitDescLines)
+						Console.WriteLine("\t# {0}", line);
 
-				Console.WriteLine("\t{0}:{1}", traitName, traitDesc);
 				var liveTraitInfo = Game.modData.ObjectCreator.CreateBasic(t);
 
-				foreach(var f in t.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy))
+				foreach (var f in t.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy))
 				{
-					var fieldDesc = f.GetCustomAttributes<DescAttribute>(true).Select(a => a.Description).FirstOrDefault();
-					if (!string.IsNullOrEmpty(fieldDesc))
-						fieldDesc = ", {0}".F(fieldDesc);
-					var fieldType = NiceTypeName(f.FieldType);
+					var fieldDescLines = f.GetCustomAttributes<DescAttribute>(true).SelectMany(d => d.Lines);
+					var fieldType = FriendlyTypeName(f.FieldType);
 					var defaultValue = FieldSaver.SaveField(liveTraitInfo, f.Name).Value.Value;
-
-					Console.WriteLine("\t\t{0}: {2}  # Type: {1}{3}", f.Name, fieldType, defaultValue, fieldDesc);
+					Console.WriteLine("\t{0}: {1} # Type: {2}{3}", f.Name, defaultValue, fieldType, fieldDescLines.Count() == 1 ? ". " + fieldDescLines.First() : "");
+					if (fieldDescLines.Count() >= 2)
+						foreach (var line in fieldDescLines)
+							Console.WriteLine("\t# {0}", line);
 				}
 			}
-			Console.WriteLine("\n```");
+
+			Console.WriteLine();
+			Console.WriteLine("```");
 		}
 	}
 }
