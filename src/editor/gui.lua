@@ -110,20 +110,11 @@ local function createNotebook(frame)
   wxaui.wxAUI_NB_DEFAULT_STYLE + wxaui.wxAUI_NB_TAB_EXTERNAL_MOVE
   + wxaui.wxAUI_NB_WINDOWLIST_BUTTON + wx.wxNO_BORDER)
 
-  -- the following group of event handlers allows the active editor
-  -- to get/keep focus after execution of Run and other commands
-  local current -- the currently active editor, needed by the focus selection
-  local function onPageChange(event)
-    current = event:GetSelection() -- update the active editor reference
-    SetEditorSelection(current)
-    event:Skip() -- skip to let page change
-  end
-  notebook:Connect(wx.wxEVT_SET_FOCUS, -- Notepad tabs shouldn't be selectable,
+  -- wxEVT_SET_FOCUS could be used, but it only works on Windows with wx2.9.5+
+  notebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CHANGED,
     function (event)
-      SetEditorSelection(current) -- select the currently active editor
+      SetEditorSelection(notebook:GetSelection())
     end)
-  notebook:Connect(wx.wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, onPageChange)
-  notebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CHANGED, onPageChange)
 
   notebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CLOSE,
     function (event)
