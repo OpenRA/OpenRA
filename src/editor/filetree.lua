@@ -228,11 +228,12 @@ treeSetConnectorsAndIcons(projtree,filetree.projdata)
 -- ---------------
 
 function filetree:updateProjectDir(newdir, cboxsel)
-  if (newdir and newdir:sub(-3,-2) == string_Pathsep) then
-    newdir = newdir:sub(0,-2)
-  end
+  if (not newdir) or not wx.wxDirExists(newdir) then return end
+  local dirname = wx.wxFileName.DirName(newdir)
 
-  if ((not newdir) or filetree.projdirText == newdir or not wx.wxDirExists(newdir)) then return end
+  if dirname:SameAs(wx.wxFileName.DirName(filetree.projdirText)) then return end
+  -- strip the last path separator if any
+  local newdir = dirname:GetPath(wx.wxPATH_GET_VOLUME)
 
   if ide.config.projectautoopen and filetree.projdirText then
     StoreRestoreProjectTabs(filetree.projdirText, newdir)
