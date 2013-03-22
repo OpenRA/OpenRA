@@ -24,6 +24,10 @@ BUILD_FLAGS="-O2 -shared -s -I $INSTALL_DIR/include -L $INSTALL_DIR/lib $FPIC"
 WXWIDGETS_BASENAME="wxWidgets"
 WXWIDGETS_URL="http://svn.wxwidgets.org/svn/wx/wxWidgets/trunk"
 
+LIBPNG_BASENAME="libpng-1.6.0"
+LIBPNG_FILENAME="$LIBPNG_BASENAME.tar.gz"
+LIBPNG_URL="http://sourceforge.net/projects/libpng/files/libpng16/1.6.0/libpng-1.6.0.tar.gz/download"
+
 LUA_BASENAME="lua-5.1.5"
 LUA_FILENAME="$LUA_BASENAME.tar.gz"
 LUA_URL="http://www.lua.org/ftp/$LUA_FILENAME"
@@ -98,20 +102,25 @@ mkdir -p "$INSTALL_DIR" || { echo "Error: cannot create directory $INSTALL_DIR";
 
 # build wxWidgets
 if [ $BUILD_WXWIDGETS ]; then
+  # first build get/configure libpng as v1.6 is needed
+  wget -c "$LIBPNG_URL" -O "$LIBPNG_FILENAME" || { echo "Error: failed to download lbpng"; exit 1; }
+  tar -xzf "$LIBPNG_FILENAME"
+  (cd "$LIBPNG_BASENAME"; ./configure --with-libpng-prefix=wxpng_; make $MAKEFLAGS)
+
   svn co "$WXWIDGETS_URL" "$WXWIDGETS_BASENAME" || { echo "Error: failed to checkout wxWidgets"; exit 1; }
+  # replace src/png with the libpng folder
+  rm -rf "$WXWIDGETS_BASENAME/src/png"
+  mv "$LIBPNG_BASENAME" "$WXWIDGETS_BASENAME/src/png"
+
   cd "$WXWIDGETS_BASENAME"
   ./configure --prefix="$INSTALL_DIR" --disable-debug --disable-shared --enable-unicode \
     --with-libjpeg=builtin --with-libpng=builtin --with-libtiff=no --with-expat=no \
-    --with-zlib=sys --disable-richtext --with-gtk=2 \
+    --with-zlib=builtin --disable-richtext --with-gtk=2 \
     CFLAGS="-Os -fPIC" CXXFLAGS="-Os -fPIC"
-  # patch PNG_LIBPNG_VER_STRING to make it work with older libpng versions
-  sed -i 's/\(#define PNG_LIBPNG_VER_STRING\).*/\1 (png_get_header_ver(NULL))/' src/png/png.h
-  # use unsigned long png_uint_32 on 64bit platforms
-  sed -i 's/#if defined(INT_MAX) && (INT_MAX > 0x7ffffffeL)/#if 0/' src/png/pngconf.h
   make $MAKEFLAGS || { echo "Error: failed to build wxWidgets"; exit 1; }
   make install
   cd ..
-  rm -rf "$WXWIDGETS_BASENAME"
+  rm -rf "$WXWIDGETS_BASENAME" "$LIBPNG_FILENAME"
 fi
 
 # build Lua
@@ -139,8 +148,6 @@ if [ $BUILD_WXLUA ]; then
     -DwxWidgets_COMPONENTS="stc;html;aui;adv;core;net;base" \
     -DwxLuaBind_COMPONENTS="stc;html;aui;adv;core;net;base" -DwxLua_LUA_LIBRARY_USE_BUILTIN=FALSE \
     -DwxLua_LUA_INCLUDE_DIR="$INSTALL_DIR/include" -DwxLua_LUA_LIBRARY="$INSTALL_DIR/lib/liblua.a" .
-  # update linker command to exclude wxpng library from libwx.so
-  sed -i 's/-lwxpng[^ ]* //' modules/luamodule/CMakeFiles/wxLuaModule.dir/link.txt 
   (cd modules/luamodule; make $MAKEFLAGS) || { echo "Error: failed to build wxLua"; exit 1; }
   (cd modules/luamodule; make install/strip)
   [ -f "$INSTALL_DIR/lib/libwx.so" ] || { echo "Error: libwx.so isn't found"; exit 1; }
