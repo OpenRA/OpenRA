@@ -735,7 +735,7 @@ function StoreRestoreProjectTabs(curdir, newdir)
   ProjectConfig(newdir, {})
 end
 
-function CloseWindow(event)
+local function closeWindow(event)
   -- if the app is already exiting, then help it exit; wxwidgets on Windows
   -- is supposed to report Shutdown/logoff events by setting CanVeto() to
   -- false, but it doesn't happen. We simply leverage the fact that
@@ -752,25 +752,24 @@ function CloseWindow(event)
   end
 
   ShowFullScreen(false)
-  ide.frame:Hide() -- hide everything while the IDE exits
+  frame:Hide() -- hide everything while the IDE exits
   SettingsSaveAll()
   if DebuggerCloseWatchWindow then DebuggerCloseWatchWindow() end
   if DebuggerCloseStackWindow then DebuggerCloseStackWindow() end
   if DebuggerShutdown then DebuggerShutdown() end
-  ide.settings:delete() -- always delete the config
+  ide.settings:delete() -- delete the config to save changes
   if ide.session.timer then ide.session.timer:Stop() end
-  event:Skip()
-  -- this is to fix a crash on OSX when closing with debugging in progress
-  if ide.osname == "Macintosh" then os.exit() end
-end
-frame:Connect(wx.wxEVT_CLOSE_WINDOW, CloseWindow)
+  frame.uimgr:UnInit()
 
-function DestroyWindow(event)
-  if event:GetEventObject():DynamicCast("wxObject") == frame:DynamicCast("wxObject") then
-    frame.uimgr:UnInit()
-  end
+  event:Skip()
+
+  -- this is to fix a crash on OSX when closing with debugging in progress.
+  if ide.osname == "Macintosh" then os.exit() end
+
+  -- this is to fix a crash on Linux 32/64bit during GC cleanup in wxlua.
+  if ide.osname == "Unix" then os.exit() end
 end
-frame:Connect(wx.wxEVT_DESTROY, DestroyWindow)
+frame:Connect(wx.wxEVT_CLOSE_WINDOW, closeWindow)
 
 frame:Connect(wx.wxEVT_TIMER, saveAutoRecovery)
 
