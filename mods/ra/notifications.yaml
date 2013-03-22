@@ -12,6 +12,7 @@ Speech:
 		BaseAttack: baseatk1
 		HarvesterAttack:
 		Leave: bct1
+		StartGame: bctrinit
 		UnitReady: unitrdy1
 		NoBuild: nobuild1
 		Training: train1
