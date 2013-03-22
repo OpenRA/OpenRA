@@ -17,9 +17,9 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA
 {
-	[Desc("Attach this to an actor (usually a building) to let it produce units or construct buildings.\n" +
-	      "\t# If one builds another actor of this type, he will get a separate queue to create two actors\n" +
-	      "\t# at the same time. Will only work together with the Production: trait.")]
+	[Desc("Attach this to an actor (usually a building) to let it produce units or construct buildings.", 
+		"If one builds another actor of this type, he will get a separate queue to create two actors", 
+		"at the same time. Will only work together with the Production: trait.")]
 	public class ProductionQueueInfo : ITraitInfo
 	{
 		[Desc("What kind of production will be added (e.g. Building, Infantry, Vehicle, ...)")]
@@ -32,22 +32,21 @@ namespace OpenRA.Mods.RA
 		[Desc("The build time is multiplied with this value on low power.")]
 		public readonly int LowPowerSlowdown = 3;
 
-		[Desc("Notification played when production is complete.\n" +
-		      "\t# The filename of the audio is defined per faction in notifications.yaml.")]
+		[Desc("Notification played when production is complete.", 
+			"The filename of the audio is defined per faction in notifications.yaml.")]
 		public readonly string ReadyAudio = "UnitReady";
-		[Desc("Notification played when you can't train another unit\n" +
-		      "\t# when the build limit exceeded or the exit is jammed.\n" +
-		      "\t# The filename of the audio is defined per faction in notifications.yaml.")]
+		[Desc("Notification played when you can't train another unit",
+			"when the build limit exceeded or the exit is jammed.",
+			"The filename of the audio is defined per faction in notifications.yaml.")]
 		public readonly string BlockedAudio = "NoBuild";
-		[Desc("Notification played when user clicks on the build palette icon.\n" +
-		      "\t# The filename of the audio is defined per faction in notifications.yaml.")]
+		[Desc("Notification played when user clicks on the build palette icon.",
+			"The filename of the audio is defined per faction in notifications.yaml.")]
 		public readonly string QueuedAudio = "Training";
-		[Desc("Notification played when player right-clicks\n" +
-		      "\t# on the build palette icon. The filename of the audio is defined per faction in notifications.yaml.")]
+		[Desc("Notification played when player right-clicks on the build palette icon.",
+			"The filename of the audio is defined per faction in notifications.yaml.")]
 		public readonly string OnHoldAudio = "OnHold";
-		[Desc("Notification played when player right-clicks\n" +
-		      "\t# on a build palette icon that is already on hold.\n" +
-		      "\t# The filename of the audio is defined per faction in notifications.yaml.")]
+		[Desc("Notification played when player right-clicks on a build palette icon that is already on hold.",
+			"The filename of the audio is defined per faction in notifications.yaml.")]
 		public readonly string CancelledAudio = "Cancelled";
 
 		public virtual object Create(ActorInitializer init) { return new ProductionQueue(init.self, init.self.Owner.PlayerActor, this); }

@@ -23,8 +23,7 @@ namespace OpenRA.Mods.RA
 		public readonly bool AllowAllies = false;
 		public readonly bool AllowNeutral = true;
 		public readonly bool AllowEnemies = true;
-		[Desc("Seconds it takes to change the owner.\n" +
-		      "\t# It stays neutral during this period. You might want to add a CapturableBar: trait, too.")]
+		[Desc("Seconds it takes to change the owner.", "It stays neutral during this period. You might want to add a CapturableBar: trait, too.")]
 		public readonly int CaptureCompleteTime = 10;
 
 		public object Create(ActorInitializer init) { return new Capturable(this); }
