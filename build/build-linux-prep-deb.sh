@@ -1,8 +1,7 @@
 #!/bin/bash
 
-# this script installs all prerequisites to build ZBS binary files on Linux
+# this script installs prerequisites to build binary files on Linux with deb
 
-# ldd --version; gcc -v
 sudo apt-get install git-core
 sudo apt-get install g++
 sudo apt-get install subversion
