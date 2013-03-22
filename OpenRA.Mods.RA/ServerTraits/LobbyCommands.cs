@@ -292,7 +292,7 @@ namespace OpenRA.Mods.RA.Server
 						server.SyncLobbyInfo();
 						return true;
 					}},
-				{ "lockteams",
+				{ "fragilealliance",
 					s =>
 					{
 						if (!client.IsAdmin)
@@ -301,7 +301,7 @@ namespace OpenRA.Mods.RA.Server
 							return true;
 						}
 
-						bool.TryParse(s, out server.lobbyInfo.GlobalSettings.LockTeams);
+						bool.TryParse(s, out server.lobbyInfo.GlobalSettings.FragileAlliances);
 						server.SyncLobbyInfo();
 						return true;
 					}},

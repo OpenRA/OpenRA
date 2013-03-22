@@ -82,7 +82,7 @@ namespace OpenRA.Network
 			public string[] Mods = { "ra" };	// mod names
 			public int OrderLatency = 3;
 			public int RandomSeed = 0;
-			public bool LockTeams = true;	// don't allow team changes after game start.
+			public bool FragileAlliances = false;	// Allow diplomatic stance changes after game start.
 			public bool AllowCheats = false;
 			public bool Dedicated;
 			public string Difficulty;

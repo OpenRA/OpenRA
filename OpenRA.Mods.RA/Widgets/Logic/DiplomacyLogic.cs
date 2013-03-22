@@ -111,6 +111,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					GetText = () => world.LocalPlayer.Stances[ pp ].ToString(),
 				};
 
+				if (!p.World.LobbyInfo.GlobalSettings.FragileAlliances)
+					myStance.Disabled = true;
+
 				myStance.OnMouseDown = mi => ShowDropDown(pp, myStance);
 
 				bg.AddChild(myStance);
@@ -138,7 +141,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		void SetStance(ButtonWidget bw, Player p, Stance ss)
 		{
-			if (p.World.LobbyInfo.GlobalSettings.LockTeams)
+			if (!p.World.LobbyInfo.GlobalSettings.FragileAlliances)
 				return;	// team changes are banned
 
 			// NOTE(jsd): Abuse of the type system here with `CPos`
