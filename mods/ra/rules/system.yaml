@@ -511,9 +511,11 @@ World:
 		ObserverWidget: OBSERVER_ROOT
 	ScreenShaker:
 	WaterPaletteRotation:
+		ExcludePalettes: player
 	ChronoshiftPaletteEffect:
 	NukePaletteEffect:
 	LightPaletteRotator:
+		ExcludePalettes: terrain
 	BuildingInfluence:
 	ChooseBuildTabOnSelect:
 	BridgeLayer:
