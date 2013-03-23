@@ -313,7 +313,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			Sound.PlayNotification(null, "Sounds", "ChatLine", null);
 		}
 
-		void UpdateCurrentMap ()
+		void UpdateCurrentMap()
 		{
 			if (MapUid == orderManager.LobbyInfo.GlobalSettings.Map)
 				return;
