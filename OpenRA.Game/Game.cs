@@ -455,5 +455,29 @@ namespace OpenRA
 
 			Game.JoinServer(host, port);
 		}
+
+		public static bool DownloadMap(string mapHash)
+		{
+			try
+			{
+				var mod = Game.CurrentMods.FirstOrDefault().Value.Id;
+				var dirPath = "{1}maps{0}{2}".F(Path.DirectorySeparatorChar, Platform.SupportDir, mod);
+				if(!Directory.Exists(dirPath))
+					Directory.CreateDirectory(dirPath);
+				var mapPath = "{1}{0}{2}".F(Path.DirectorySeparatorChar, dirPath, mapHash+".oramap");
+				Console.Write("Trying to download map to {0} ... ".F(mapPath));
+				WebClient webClient = new WebClient();
+				webClient.DownloadFile(Game.Settings.Game.MapRepository + mapHash, mapPath);
+				Game.modData.AvailableMaps.Add(mapHash, new Map(mapPath));
+				Console.WriteLine("done");
+				return true;
+			}
+			catch (WebException e)
+			{
+				Log.Write("debug", "Could not download map '{0}'", mapHash);
+				Log.Write("debug", e.ToString());
+				return false;
+			}
+		}
 	}
 }
