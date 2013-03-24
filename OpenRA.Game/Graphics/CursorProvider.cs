@@ -20,7 +20,6 @@ namespace OpenRA.Graphics
 {
 	public static class CursorProvider
 	{
-		public static Dictionary<string, Palette> Palettes { get; private set; }
 		public static HardwarePalette Palette;
 		static Dictionary<string, CursorSequence> cursors;
 
@@ -36,12 +35,12 @@ namespace OpenRA.Graphics
 				ShadowIndex[ShadowIndex.Length - 1] = Convert.ToInt32(sequences.NodesDict["ShadowIndex"].Value);
 			}
 
-			Palettes = new Dictionary<string, Palette>();
+			var palettes = new Dictionary<string, Palette>();
 			foreach (var s in sequences.NodesDict["Palettes"].Nodes)
-				Palettes.Add(s.Key, new Palette(FileSystem.Open(s.Value.Value), ShadowIndex));
+				palettes.Add(s.Key, new Palette(FileSystem.Open(s.Value.Value), ShadowIndex));
 
 			Palette = new HardwarePalette();
-			foreach (var p in CursorProvider.Palettes)
+			foreach (var p in palettes)
 				Palette.AddPalette(p.Key, p.Value, false);
 
 			// Generate initial palette texture
