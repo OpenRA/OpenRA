@@ -546,6 +546,8 @@ namespace OpenRA.Mods.RA.Server
 		static Session.Slot MakeSlotFromPlayerReference(PlayerReference pr)
 		{
 			if (!pr.Playable) return null;
+			if (Game.Settings.Server.LockBots || Game.Settings.Server.Dedicated)
+				pr.AllowBots = false;
 			return new Session.Slot
 			{
 				PlayerReference = pr.Name,
