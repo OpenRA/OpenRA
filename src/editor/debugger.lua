@@ -13,10 +13,8 @@ debugger.server = nil -- DebuggerServer object when debugging, else nil
 debugger.running = false -- true when the debuggee is running
 debugger.listening = false -- true when the debugger is listening for a client
 debugger.portnumber = ide.config.debugger.port or mobdebug.port -- the port # to use for debugging
-debugger.watchWindow = nil -- the watchWindow, nil when not created
-debugger.watchCtrl = nil -- the child ctrl in the watchWindow
-debugger.stackWindow = nil -- the stackWindow, nil when not created
-debugger.stackCtrl = nil -- the child ctrl in the stackWindow
+debugger.watchCtrl = nil -- the watch ctrl that shows watch information
+debugger.stackCtrl = nil -- the stack ctrl that shows stack information
 debugger.hostname = ide.config.debugger.hostname or (function()
   local addr = wx.wxIPV4address() -- check what address is resolvable
   for _, host in ipairs({wx.wxGetHostName(), wx.wxGetFullHostName()}) do
@@ -644,8 +642,214 @@ debugger.quickeval = function(var, callback)
   end
 end
 
+-- need imglist to be a file local variable as SetImageList takes ownership
+-- of it and if done inside a function, icons do not work as expected
+local imglist = wx.wxImageList(16,16)
+do
+  local getBitmap = (ide.app.createbitmap or wx.wxArtProvider.GetBitmap)
+  local size = wx.wxSize(16,16)
+  -- 0 = stack call
+  imglist:Add(getBitmap(wx.wxART_GO_FORWARD, wx.wxART_OTHER, size))
+  -- 1 = local variables
+  imglist:Add(getBitmap(wx.wxART_LIST_VIEW, wx.wxART_OTHER, size))
+  -- 2 = upvalues
+  imglist:Add(getBitmap(wx.wxART_REPORT_VIEW, wx.wxART_OTHER, size))
+end
+
+local width, height = 360, 200
+function debuggerCreateStackWindow()
+  local stackCtrl = wx.wxTreeCtrl(ide.frame, wx.wxID_ANY,
+    wx.wxDefaultPosition, wx.wxSize(width, height),
+    wx.wxTR_LINES_AT_ROOT + wx.wxTR_HAS_BUTTONS + wx.wxTR_SINGLE + wx.wxTR_HIDE_ROOT)
+
+  debugger.stackCtrl = stackCtrl
+
+  stackCtrl:SetImageList(imglist)
+
+  stackCtrl:Connect( wx.wxEVT_COMMAND_TREE_ITEM_EXPANDING,
+    function (event)
+      local item_id = event:GetItem()
+      local count = stackCtrl:GetChildrenCount(item_id, false)
+      if count > 0 then return true end
+
+      local image = stackCtrl:GetItemImage(item_id)
+      local num = 1
+      for name,value in pairs(stackItemValue[item_id:GetValue()]) do
+        local strval = mobdebug.line(value, {comment = false, nocode = true})
+        local text = type(name) == "number"
+          and (num == name and strval or ("[%s] = %s"):format(name, strval))
+          or ("%s = %s"):format(tostring(name), strval)
+        local item = stackCtrl:AppendItem(item_id, text, image)
+        if checkIfExpandable(value, item) then
+          stackCtrl:SetItemHasChildren(item, true)
+        end
+        num = num + 1
+      end
+
+      stackCtrl:SortChildren(item_id)
+      return true
+    end)
+  stackCtrl:Connect( wx.wxEVT_COMMAND_TREE_ITEM_COLLAPSED,
+    function() return true end)
+
+  local notebook = wxaui.wxAuiNotebook(frame, wx.wxID_ANY,
+    wx.wxDefaultPosition, wx.wxDefaultSize,
+    wxaui.wxAUI_NB_DEFAULT_STYLE + wxaui.wxAUI_NB_TAB_EXTERNAL_MOVE
+    + wx.wxNO_BORDER)
+  notebook:AddPage(stackCtrl, TR("Stack"), true)
+
+  local mgr = ide.frame.uimgr
+  mgr:AddPane(notebook, wxaui.wxAuiPaneInfo():
+              Name("stackview"):Float():
+              MinSize(height,height):FloatingSize(width,height):
+              PinButton(true):Hide())
+  mgr:Update()
+end
+
+local function debuggerCreateWatchWindow()
+  local watchCtrl = wx.wxListCtrl(frame, wx.wxID_ANY,
+    wx.wxDefaultPosition, wx.wxDefaultSize,
+    wx.wxLC_REPORT + wx.wxLC_EDIT_LABELS)
+
+  debugger.watchCtrl = watchCtrl
+
+  local info = wx.wxListItem()
+  info:SetMask(wx.wxLIST_MASK_TEXT + wx.wxLIST_MASK_WIDTH)
+  info:SetText(TR("Expression"))
+  info:SetWidth(width * 0.32)
+  watchCtrl:InsertColumn(0, info)
+
+  info:SetText(TR("Value"))
+  info:SetWidth(width * 0.56)
+  watchCtrl:InsertColumn(1, info)
+
+  local watchMenu = wx.wxMenu{
+    { ID_ADDWATCH, TR("&Add Watch")..KSC(ID_ADDWATCH) },
+    { ID_EDITWATCH, TR("&Edit Watch")..KSC(ID_EDITWATCH) },
+    { ID_DELETEWATCH, TR("&Delete Watch")..KSC(ID_DELETEWATCH) }}
+
+  local function findSelectedWatchItem()
+    local count = watchCtrl:GetSelectedItemCount()
+    if count > 0 then
+      for idx = 0, watchCtrl:GetItemCount() - 1 do
+        if watchCtrl:GetItemState(idx, wx.wxLIST_STATE_FOCUSED) ~= 0 then
+          return idx
+        end
+      end
+    end
+    return -1
+  end
+
+  local defaultExpr = ""
+  local function addWatch()
+    local row = watchCtrl:InsertItem(watchCtrl:GetItemCount(), TR("Expr"))
+    watchCtrl:SetItem(row, 0, defaultExpr)
+    watchCtrl:SetItem(row, 1, TR("Value"))
+    watchCtrl:EditLabel(row)
+  end
+
+  local function editWatch()
+    local row = findSelectedWatchItem()
+    if row >= 0 then watchCtrl:EditLabel(row) end
+  end
+
+  local function deleteWatch()
+    local row = findSelectedWatchItem()
+    if row >= 0 then watchCtrl:DeleteItem(row) end
+  end
+
+  watchCtrl:Connect(wx.wxEVT_CONTEXT_MENU,
+    function (event)
+      watchCtrl:PopupMenu(watchMenu)
+    end)
+
+  watchCtrl:Connect(wx.wxEVT_KEY_DOWN,
+    function (event)
+      local keycode = event:GetKeyCode()
+      if (keycode == wx.WXK_DELETE) then return deleteWatch()
+      elseif (keycode == wx.WXK_INSERT) then return addWatch()
+      elseif (keycode == wx.WXK_F2) then return editWatch()
+      end
+      event:Skip()
+    end)
+
+  watchCtrl:Connect(ID_ADDWATCH, wx.wxEVT_COMMAND_MENU_SELECTED, addWatch)
+
+  watchCtrl:Connect(ID_EDITWATCH, wx.wxEVT_COMMAND_MENU_SELECTED, editWatch)
+  watchCtrl:Connect(ID_EDITWATCH, wx.wxEVT_UPDATE_UI,
+    function (event) event:Enable(watchCtrl:GetSelectedItemCount() > 0) end)
+
+  watchCtrl:Connect(ID_DELETEWATCH, wx.wxEVT_COMMAND_MENU_SELECTED, deleteWatch)
+  watchCtrl:Connect(ID_DELETEWATCH, wx.wxEVT_UPDATE_UI,
+    function (event) event:Enable(watchCtrl:GetSelectedItemCount() > 0) end)
+
+  watchCtrl:Connect(wx.wxEVT_COMMAND_LIST_END_LABEL_EDIT,
+    function (event)
+      local row = event:GetIndex()
+      if event:IsEditCancelled() then
+        if watchCtrl:GetItemText(row) == defaultExpr then
+          watchCtrl:DeleteItem(row)
+        end
+      else
+        watchCtrl:SetItem(row, 0, event:GetText())
+        updateWatches(row)
+      end
+      event:Skip()
+    end)
+
+  local notebook = wxaui.wxAuiNotebook(frame, wx.wxID_ANY,
+    wx.wxDefaultPosition, wx.wxDefaultSize,
+    wxaui.wxAUI_NB_DEFAULT_STYLE + wxaui.wxAUI_NB_TAB_EXTERNAL_MOVE
+    + wx.wxNO_BORDER)
+  notebook:AddPage(watchCtrl, TR("Watch"), true)
+
+  local mgr = ide.frame.uimgr
+  mgr:AddPane(notebook, wxaui.wxAuiPaneInfo():
+              Name("watchview"):Float():
+              MinSize(height,height):FloatingSize(width,height):
+              PinButton(true):Hide())
+  mgr:Update()
+end
+
+debuggerCreateStackWindow()
+debuggerCreateWatchWindow()
+
 ----------------------------------------------
 -- public api
+
+function DebuggerShowStackWindow()
+  local mgr = ide.frame.uimgr
+  if (not mgr:GetPane("stackview"):IsShown()) then
+    mgr:GetPane("stackview"):Show()
+    mgr:Update()
+  end
+  updateStackAndWatches()
+end
+
+function DebuggerShowWatchWindow()
+  local mgr = ide.frame.uimgr
+  if (not mgr:GetPane("watchview"):IsShown()) then
+    mgr:GetPane("watchview"):Show()
+    mgr:Update()
+  end
+  updateStackAndWatches()
+end
+
+function DebuggerAddWatch(watch)
+  DebuggerShowWatchWindow()
+
+  local watchCtrl = debugger.watchCtrl
+  -- check if this expression is already on the list
+  for idx = 0, watchCtrl:GetItemCount() - 1 do
+    if watchCtrl:GetItemText(idx) == watch then return end
+  end
+
+  local row = watchCtrl:InsertItem(watchCtrl:GetItemCount(), TR("Expr"))
+  watchCtrl:SetItem(row, 0, watch)
+  watchCtrl:SetItem(row, 1, TR("Value"))
+
+  updateWatches(row)
+end
 
 function DebuggerAttachDefault(options)
   debugger.options = options
@@ -674,226 +878,6 @@ function DebuggerStop()
     -- no debugger.server, but scratchpad may still be on. Turn it off.
     DebuggerScratchpadOff()
   end
-end
-
-function DebuggerCloseStackWindow()
-  if (debugger.stackWindow) then
-    SettingsSaveFramePosition(debugger.stackWindow, "StackWindow")
-    debugger.stackCtrl = nil
-    debugger.stackWindow = nil
-  end
-end
-
-function DebuggerCloseWatchWindow()
-  if (debugger.watchWindow) then
-    SettingsSaveFramePosition(debugger.watchWindow, "WatchWindow")
-    debugger.watchCtrl = nil
-    debugger.watchWindow = nil
-  end
-end
-
--- need imglist to be a file local variable as SetImageList takes ownership
--- of it and if done inside a function, icons do not work as expected
-local imglist = wx.wxImageList(16,16)
-do
-  local getBitmap = (ide.app.createbitmap or wx.wxArtProvider.GetBitmap)
-  local size = wx.wxSize(16,16)
-  -- 0 = stack call
-  imglist:Add(getBitmap(wx.wxART_GO_FORWARD, wx.wxART_OTHER, size))
-  -- 1 = local variables
-  imglist:Add(getBitmap(wx.wxART_LIST_VIEW, wx.wxART_OTHER, size))
-  -- 2 = upvalues
-  imglist:Add(getBitmap(wx.wxART_REPORT_VIEW, wx.wxART_OTHER, size))
-end
-
-function DebuggerCreateStackWindow()
-  if (debugger.stackWindow) then return updateStackAndWatches() end
-  local width = 360
-  local stackWindow = wx.wxFrame(ide.frame, wx.wxID_ANY,
-    TR("Stack Window"),
-    wx.wxDefaultPosition, wx.wxSize(width, 200),
-    wx.wxDEFAULT_FRAME_STYLE + wx.wxFRAME_FLOAT_ON_PARENT)
-
-  debugger.stackWindow = stackWindow
-
-  local stackCtrl = wx.wxTreeCtrl(stackWindow, wx.wxID_ANY,
-    wx.wxDefaultPosition, wx.wxDefaultSize,
-    wx.wxTR_LINES_AT_ROOT + wx.wxTR_HAS_BUTTONS + wx.wxTR_SINGLE + wx.wxTR_HIDE_ROOT)
-
-  debugger.stackCtrl = stackCtrl
-
-  stackCtrl:SetImageList(imglist)
-  stackWindow:CentreOnParent()
-  SettingsRestoreFramePosition(stackWindow, "StackWindow")
-  stackWindow:Show(true)
-
-  stackWindow:Connect(wx.wxEVT_CLOSE_WINDOW,
-    function (event)
-      DebuggerCloseStackWindow()
-      stackWindow = nil
-      stackCtrl = nil
-      event:Skip()
-    end)
-
-  stackCtrl:Connect( wx.wxEVT_COMMAND_TREE_ITEM_EXPANDING,
-    function (event)
-      local item_id = event:GetItem()
-      local count = stackCtrl:GetChildrenCount(item_id, false)
-      if count > 0 then return true end
-
-      local image = stackCtrl:GetItemImage(item_id)
-      local num = 1
-      for name,value in pairs(stackItemValue[item_id:GetValue()]) do
-        local strval = mobdebug.line(value, {comment = false, nocode = true})
-        local text = type(name) == "number"
-          and (num == name and strval or ("[%s] = %s"):format(name, strval))
-          or ("%s = %s"):format(tostring(name), strval)
-        local item = stackCtrl:AppendItem(item_id, text, image)
-        if checkIfExpandable(value, item) then
-          stackCtrl:SetItemHasChildren(item, true)
-        end
-        num = num + 1
-      end
-
-      stackCtrl:SortChildren(item_id)
-      return true
-    end)
-  stackCtrl:Connect( wx.wxEVT_COMMAND_TREE_ITEM_COLLAPSED,
-    function() return true end)
-
-  updateStackAndWatches()
-end
-
-function DebuggerCreateWatchWindow()
-  if (debugger.watchWindow) then return updateWatches() end
-  local width = 360
-  local watchWindow = wx.wxFrame(ide.frame, wx.wxID_ANY,
-    TR("Watch Window"),
-    wx.wxDefaultPosition, wx.wxSize(width, 200),
-    wx.wxDEFAULT_FRAME_STYLE + wx.wxFRAME_FLOAT_ON_PARENT)
-
-  debugger.watchWindow = watchWindow
-
-  local watchMenu = wx.wxMenu{
-    { ID_ADDWATCH, TR("&Add Watch")..KSC(ID_ADDWATCH) },
-    { ID_EDITWATCH, TR("&Edit Watch")..KSC(ID_EDITWATCH) },
-    { ID_REMOVEWATCH, TR("&Remove Watch")..KSC(ID_REMOVEWATCH) },
-    { ID_EVALUATEWATCH, TR("Evaluate &Watches")..KSC(ID_EVALUATEWATCH) }}
-
-  local watchMenuBar = wx.wxMenuBar()
-  watchMenuBar:Append(watchMenu, TR("&Watches"))
-  watchWindow:SetMenuBar(watchMenuBar)
-
-  local watchCtrl = wx.wxListCtrl(watchWindow, wx.wxID_ANY,
-    wx.wxDefaultPosition, wx.wxDefaultSize,
-    wx.wxLC_REPORT + wx.wxLC_EDIT_LABELS)
-
-  debugger.watchCtrl = watchCtrl
-
-  local info = wx.wxListItem()
-  info:SetMask(wx.wxLIST_MASK_TEXT + wx.wxLIST_MASK_WIDTH)
-  info:SetText(TR("Expression"))
-  info:SetWidth(width * 0.32)
-  watchCtrl:InsertColumn(0, info)
-
-  info:SetText(TR("Value"))
-  info:SetWidth(width * 0.56)
-  watchCtrl:InsertColumn(1, info)
-
-  watchWindow:CentreOnParent()
-  SettingsRestoreFramePosition(watchWindow, "WatchWindow")
-  watchWindow:Show(true)
-
-  local function findSelectedWatchItem()
-    local count = watchCtrl:GetSelectedItemCount()
-    if count > 0 then
-      for idx = 0, watchCtrl:GetItemCount() - 1 do
-        if watchCtrl:GetItemState(idx, wx.wxLIST_STATE_FOCUSED) ~= 0 then
-          return idx
-        end
-      end
-    end
-    return -1
-  end
-
-  local defaultExpr = ""
-
-  watchWindow:Connect(wx.wxEVT_CLOSE_WINDOW,
-    function (event)
-      DebuggerCloseWatchWindow()
-      watchWindow = nil
-      watchCtrl = nil
-      event:Skip()
-    end)
-
-  watchWindow:Connect(ID_ADDWATCH, wx.wxEVT_COMMAND_MENU_SELECTED,
-    function ()
-      local row = watchCtrl:InsertItem(watchCtrl:GetItemCount(), TR("Expr"))
-      watchCtrl:SetItem(row, 0, defaultExpr)
-      watchCtrl:SetItem(row, 1, TR("Value"))
-      watchCtrl:EditLabel(row)
-    end)
-
-  watchWindow:Connect(ID_EDITWATCH, wx.wxEVT_COMMAND_MENU_SELECTED,
-    function ()
-      local row = findSelectedWatchItem()
-      if row >= 0 then
-        watchCtrl:EditLabel(row)
-      end
-    end)
-  watchWindow:Connect(ID_EDITWATCH, wx.wxEVT_UPDATE_UI,
-    function (event)
-      event:Enable(watchCtrl:GetSelectedItemCount() > 0)
-    end)
-
-  watchWindow:Connect(ID_REMOVEWATCH, wx.wxEVT_COMMAND_MENU_SELECTED,
-    function ()
-      local row = findSelectedWatchItem()
-      if row >= 0 then
-        watchCtrl:DeleteItem(row)
-      end
-    end)
-  watchWindow:Connect(ID_REMOVEWATCH, wx.wxEVT_UPDATE_UI,
-    function (event)
-      event:Enable(watchCtrl:GetSelectedItemCount() > 0)
-    end)
-
-  watchWindow:Connect(ID_EVALUATEWATCH, wx.wxEVT_COMMAND_MENU_SELECTED,
-    function () updateWatches() end)
-  watchWindow:Connect(ID_EVALUATEWATCH, wx.wxEVT_UPDATE_UI,
-    function (event)
-      event:Enable(watchCtrl:GetItemCount() > 0)
-    end)
-
-  watchCtrl:Connect(wx.wxEVT_COMMAND_LIST_END_LABEL_EDIT,
-    function (event)
-      local row = event:GetIndex()
-      if event:IsEditCancelled() then
-        if watchCtrl:GetItemText(row) == defaultExpr then
-          watchCtrl:DeleteItem(row)
-        end
-      else
-        watchCtrl:SetItem(row, 0, event:GetText())
-        updateWatches(row)
-      end
-      event:Skip()
-    end)
-end
-
-function DebuggerAddWatch(watch)
-  if (not debugger.watchWindow) then DebuggerCreateWatchWindow() end
-
-  local watchCtrl = debugger.watchCtrl
-  -- check if this expression is already on the list
-  for idx = 0, watchCtrl:GetItemCount() - 1 do
-    if watchCtrl:GetItemText(idx) == watch then return end
-  end
-
-  local row = watchCtrl:InsertItem(watchCtrl:GetItemCount(), TR("Expr"))
-  watchCtrl:SetItem(row, 0, watch)
-  watchCtrl:SetItem(row, 1, TR("Value"))
-
-  updateWatches(row)
 end
 
 function DebuggerMakeFileName(editor, filePath)

@@ -42,7 +42,7 @@ frame:Connect(ID_VIEWFULLSCREEN, wx.wxEVT_UPDATE_UI,
   function (event) event:Enable(GetEditor() ~= nil) end)
 
 frame:Connect(ID_VIEWWATCHWINDOW, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function () DebuggerCreateWatchWindow() end)
+  function () DebuggerShowWatchWindow() end)
 
 frame:Connect(ID_VIEWCALLSTACK, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function () DebuggerCreateStackWindow() end)
+  function () DebuggerShowStackWindow() end)
