@@ -41,16 +41,11 @@ namespace OpenRA.Graphics
 		internal WorldRenderer(World world)
 		{
 			this.world = world;
-			palette = new HardwarePalette();
-			foreach (var p in CursorProvider.Palettes)
-				palette.AddPalette(p.Key, p.Value, false);
+			palette = CursorProvider.Palette;
 
 			palettes = new Cache<string, PaletteReference>(CreatePaletteReference);
 			foreach (var pal in world.traitDict.ActorsWithTraitMultiple<IPalette>(world))
 				pal.Trait.InitPalette( this );
-
-			// Generate initial palette texture
-			palette.Update(new IPaletteModifier[] {});
 
 			terrainRenderer = new TerrainRenderer(world, this);
 			shroudRenderer = new ShroudRenderer(world);

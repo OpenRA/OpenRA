@@ -127,18 +127,9 @@ namespace OpenRA.Graphics
 			using( new PerfSample("render_widgets") )
 			{
 				Ui.Draw();
+
 				var cursorName = Ui.Root.GetCursorOuter(Viewport.LastMousePos) ?? "default";
-				var cursorSequence = CursorProvider.GetCursorSequence(cursorName);
-				var cursorSprite = cursorSequence.GetSprite((int)cursorFrame);
-
-				var palette = new HardwarePalette();
-				foreach (var p in CursorProvider.Palettes)
-					palette.AddPalette(p.Key, p.Value, false);
-
-				renderer.SpriteRenderer.DrawSprite(cursorSprite,
-					Viewport.LastMousePos - cursorSequence.Hotspot,
-					palette.GetPaletteIndex(cursorSequence.Palette),
-					cursorSprite.size);
+				CursorProvider.DrawCursor(renderer, cursorName, Viewport.LastMousePos, (int)cursorFrame);
 			}
 
 			using( new PerfSample("render_flip") )

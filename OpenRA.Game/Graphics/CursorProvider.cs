@@ -14,12 +14,14 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using OpenRA.FileFormats;
+using OpenRA.Traits;
 
 namespace OpenRA.Graphics
 {
 	public static class CursorProvider
 	{
 		public static Dictionary<string, Palette> Palettes { get; private set; }
+		public static HardwarePalette Palette;
 		static Dictionary<string, CursorSequence> cursors;
 
 		public static void Initialize(string[] sequenceFiles)
@@ -38,6 +40,13 @@ namespace OpenRA.Graphics
 			foreach (var s in sequences.NodesDict["Palettes"].Nodes)
 				Palettes.Add(s.Key, new Palette(FileSystem.Open(s.Value.Value), ShadowIndex));
 
+			Palette = new HardwarePalette();
+			foreach (var p in CursorProvider.Palettes)
+				Palette.AddPalette(p.Key, p.Value, false);
+
+			// Generate initial palette texture
+			Palette.Update(new IPaletteModifier[] {});
+
 			foreach (var s in sequences.NodesDict["Cursors"].Nodes)
 				LoadSequencesForCursor(s.Key, s.Value);
 		}
@@ -53,6 +62,17 @@ namespace OpenRA.Graphics
 		public static bool HasCursorSequence(string cursor)
 		{
 			return cursors.ContainsKey(cursor);
+		}
+
+		public static void DrawCursor(Renderer renderer, string cursorName, int2 lastMousePos, int cursorFrame)
+		{
+			var cursorSequence = CursorProvider.GetCursorSequence(cursorName);
+			var cursorSprite = cursorSequence.GetSprite(cursorFrame);
+						
+			renderer.SpriteRenderer.DrawSprite(cursorSprite,
+			                                   lastMousePos - cursorSequence.Hotspot,
+			                                   Palette.GetPaletteIndex(cursorSequence.Palette),
+			                                   cursorSprite.size);
 		}
 
 		public static CursorSequence GetCursorSequence(string cursor)
