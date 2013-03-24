@@ -41,6 +41,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			validPlayers = world.Players.Where(a => a != world.LocalPlayer && !a.NonCombatant).Count();
 			diplomacy.IsVisible = () => (validPlayers > 0);
+
+			diplomacyBG.Get<ButtonWidget>("CLOSE_DIPLOMACY").OnClick = () => { diplomacyBG.Visible = false; };
 		}
 
 		// This is shit
