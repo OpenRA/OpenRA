@@ -163,7 +163,7 @@ namespace OpenRA.Network
 
 				case "SetStance":
 					{
-						if (Game.orderManager.LobbyInfo.GlobalSettings.LockTeams)
+						if (!Game.orderManager.LobbyInfo.GlobalSettings.FragileAlliances)
 							return;
 
 						var targetPlayer = order.Player.World.Players.FirstOrDefault(p => p.InternalName == order.TargetString);

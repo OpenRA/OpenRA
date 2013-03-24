@@ -56,7 +56,8 @@ namespace OpenRA.Widgets
 
 			var textSize = font.Measure(Text);
 			font.DrawText(Text,
-				new float2(rect.Left + rect.Height * 1.5f, RenderOrigin.Y - BaseLine + (Bounds.Height - textSize.Y)/2), Color.White);
+				new float2(rect.Left + rect.Height * 1.5f, RenderOrigin.Y - BaseLine + (Bounds.Height - textSize.Y)/2),
+				disabled ? Color.Gray : Color.White);
 
 			if (IsChecked() || (Depressed && HasPressedState && !disabled))
 			{

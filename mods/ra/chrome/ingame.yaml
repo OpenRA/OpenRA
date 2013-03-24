@@ -198,6 +198,14 @@ Container@INGAME_ROOT:
 					Text:Diplomacy
 					Align:Center
 					Font:Bold
+				Button@CLOSE_DIPLOMACY:
+					X:(PARENT_RIGHT - WIDTH)/2
+					Y:350
+					Width:160
+					Height:25
+					Text:Close
+					Font:Bold
+					Key:escape
 		ChatDisplay@CHAT_DISPLAY:
 			X:250
 			Y:WINDOW_BOTTOM - HEIGHT - 30
