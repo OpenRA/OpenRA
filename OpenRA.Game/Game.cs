@@ -220,6 +220,9 @@ namespace OpenRA
 			orderManager.LastTickTime = Environment.TickCount;
 			orderManager.StartGame();
 			worldRenderer.RefreshPalette();
+
+			if (!isShellmap)
+				Sound.PlayNotification(null, "Speech", "StartGame", orderManager.world.LocalPlayer.Country.Race);
 		}
 
 		public static bool IsHost
