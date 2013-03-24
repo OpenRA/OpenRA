@@ -420,9 +420,15 @@ Background@SERVER_LOBBY:
 			Width: 80
 			Height: 20
 			Text: Crates
+		Checkbox@FRAGILEALLIANCES_CHECKBOX:
+			X: PARENT_RIGHT-154
+			Y: PARENT_BOTTOM-119
+			Width: 80
+			Height: 20
+			Text: Fragile Alliances
 		Button@DISCONNECT_BUTTON:
 			X:PARENT_RIGHT-154
-			Y:PARENT_BOTTOM-99
+			Y:PARENT_BOTTOM-94
 			Width:120
 			Height:25
 			Text:Disconnect

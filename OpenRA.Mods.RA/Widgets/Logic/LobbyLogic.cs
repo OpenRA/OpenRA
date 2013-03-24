@@ -36,6 +36,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		readonly Action onExit;
 		readonly OrderManager orderManager;
 
+		public bool TeamGame;
+
 		// Listen for connection failures
 		void ConnectionStateChanged(OrderManager om)
 		{
@@ -204,6 +206,17 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					"crates {0}".F(!orderManager.LobbyInfo.GlobalSettings.Crates)));
 			}
 
+			var fragileAlliance = lobby.GetOrNull<CheckboxWidget>("FRAGILEALLIANCES_CHECKBOX");
+			if (fragileAlliance != null)
+			{
+				fragileAlliance.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.FragileAlliances;
+				fragileAlliance.IsDisabled = () => !Game.IsHost || gameStarting || orderManager.LocalClient == null
+					|| orderManager.LocalClient.IsReady || TeamGame; // only available in FFA
+				fragileAlliance.OnClick = () => orderManager.IssueOrder(Order.Command(
+					"fragilealliance {0}".F(!orderManager.LobbyInfo.GlobalSettings.FragileAlliances)));
+			};
+
+
 			var difficulty = lobby.GetOrNull<DropDownButtonWidget>("DIFFICULTY_DROPDOWNBUTTON");
 			if (difficulty != null)
 			{
@@ -326,6 +339,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		void UpdatePlayerList()
 		{
 			var idx = 0;
+			TeamGame = false;
+
 			foreach (var kv in orderManager.LobbyInfo.Slots)
 			{
 				var key = kv.Key;
@@ -413,6 +428,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					team.IsDisabled = () => slot.LockTeam || ready;
 					team.OnMouseDown = _ => LobbyUtils.ShowTeamDropDown(team, client, orderManager, Map);
 					team.GetText = () => (client.Team == 0) ? "-" : client.Team.ToString();
+
+					if (slot.LockTeam || client.Team > 0)
+						TeamGame = true;
 
 					if (client.Bot == null)
 					{
@@ -552,6 +570,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			while (Players.Children.Count > idx)
 				Players.RemoveChild(Players.Children[idx]);
+
+			if (orderManager.LobbyInfo.GlobalSettings.FragileAlliances && TeamGame)
+				orderManager.IssueOrder(Order.Command("fragilealliance false")); // No back-stabbing in Team games.
 		}
 
 		void CycleReady()
