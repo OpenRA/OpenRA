@@ -131,9 +131,13 @@ namespace OpenRA.Graphics
 				var cursorSequence = CursorProvider.GetCursorSequence(cursorName);
 				var cursorSprite = cursorSequence.GetSprite((int)cursorFrame);
 
+				var palette = new HardwarePalette();
+				foreach (var p in CursorProvider.Palettes)
+					palette.AddPalette(p.Key, p.Value, false);
+
 				renderer.SpriteRenderer.DrawSprite(cursorSprite,
 					Viewport.LastMousePos - cursorSequence.Hotspot,
-					wr.Palette(cursorSequence.Palette).Index,
+					palette.GetPaletteIndex(cursorSequence.Palette),
 					cursorSprite.size);
 			}
 
