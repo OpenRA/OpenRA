@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA.Render
 				{
 					var barrel = b;
 					var turreted = self.TraitsImplementing<Turreted>()
-						.FirstOrDefault(t => t.info.Turret ==  a.Info.Turret);
+						.FirstOrDefault(t => t.Name ==  a.Info.Turret);
 					var getFacing = turreted != null ? () => turreted.turretFacing :
 						facing != null ? (Func<int>)(() => facing.Facing) : () => 0;
 
@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA.Render
 
 					muzzleFlashes.Add("muzzle{0}".F(muzzleFlashes.Count), new AnimationWithOffset(
 						muzzleFlash,
-						() => a.MuzzlePxPosition(self, facing, barrel).ToFloat2(),
+						() => a.MuzzlePxOffset(self, facing, barrel).ToFloat2(),
 						() => !isShowing));
 				}
 		}
