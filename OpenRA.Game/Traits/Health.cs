@@ -75,7 +75,7 @@ namespace OpenRA.Traits
 
 			var oldState = this.DamageState;
 			/* apply the damage modifiers, if we have any. */
-			var modifier = (float)self.TraitsImplementing<IDamageModifier>()
+			var modifier = self.TraitsImplementing<IDamageModifier>()
 				.Concat(self.Owner.PlayerActor.TraitsImplementing<IDamageModifier>())
 				.Select(t => t.GetDamageModifier(attacker, warhead)).Product();
 
