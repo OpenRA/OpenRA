@@ -386,7 +386,7 @@ namespace OpenRA.Editor
 					var x = new int2(u / ChunkSize, v / ChunkSize);
 					if (!Chunks.ContainsKey(x)) Chunks[x] = RenderChunk(u / ChunkSize, v / ChunkSize);
 
-					Bitmap bmp = Chunks[x];
+					var bmp = Chunks[x];
 
 					float DrawX = TileSet.TileSize * (float)ChunkSize * (float)x.X * Zoom + Offset.X;
 					float DrawY = TileSet.TileSize * (float)ChunkSize * (float)x.Y * Zoom + Offset.Y;
