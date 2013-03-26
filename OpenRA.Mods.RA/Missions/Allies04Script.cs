@@ -62,7 +62,7 @@ namespace OpenRA.Mods.RA.Missions
 		Player allies1;
 		Player allies2;
 		Player soviets;
-		Player neutral;
+		Player creeps;
 		World world;
 
 		List<Patrol> patrols;
@@ -152,7 +152,7 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				foreach (var attacker in townAttackers.Where(u => u.IsIdle && !u.IsDead() && u.IsInWorld))
 				{
-					var enemies = world.Actors.Where(u => u.Owner == neutral && u.HasTrait<ITargetable>()
+					var enemies = world.Actors.Where(u => u.Owner == creeps && u.HasTrait<ITargetable>()
 						&& ((u.HasTrait<Building>() && !u.HasTrait<Wall>() && !u.HasTrait<Bridge>()) || u.HasTrait<Mobile>()) && !u.IsDead() && u.IsInWorld);
 
 					var enemy = enemies.OrderBy(u => (attacker.CenterLocation - u.CenterLocation).LengthSquared).FirstOrDefault();
@@ -196,7 +196,7 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			if (world.FrameNumber == nextCivilianMove)
 			{
-				var civilians = world.Actors.Where(a => !a.IsDead() && a.IsInWorld && a.Owner == neutral && a.HasTrait<Mobile>());
+				var civilians = world.Actors.Where(a => !a.IsDead() && a.IsInWorld && a.Owner == creeps && a.HasTrait<Mobile>());
 				if (civilians.Any())
 				{
 					var civilian = civilians.Random(world.SharedRandom);
@@ -361,7 +361,7 @@ namespace OpenRA.Mods.RA.Missions
 				allies2.PlayerActor.Trait<PlayerResources>().Cash = 0;
 
 			soviets = w.Players.Single(p => p.InternalName == "Soviets");
-			neutral = w.Players.Single(p => p.InternalName == "Neutral");
+			creeps = w.Players.Single(p => p.InternalName == "Creeps");
 			objectives[InfiltrateID].Text = Infiltrate.F(allies1 != allies2 ? "spies" : "spy");
 
 			destroyBaseTicks = difficulty == "Hard" ? 1500 * 25 : difficulty == "Normal" ? 1500 * 28 : 1500 * 31;
