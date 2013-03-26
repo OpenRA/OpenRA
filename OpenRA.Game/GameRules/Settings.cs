@@ -36,6 +36,7 @@ namespace OpenRA.GameRules
 		public int TimeOut = 0;
 		public bool Dedicated = false;
 		public bool DedicatedLoop = true;
+		public bool LockBots = false;
 
 		public ServerSettings() { }
 
@@ -53,6 +54,7 @@ namespace OpenRA.GameRules
 			TimeOut = other.TimeOut;
 			Dedicated = other.Dedicated;
 			DedicatedLoop = other.DedicatedLoop;
+			LockBots = other.LockBots;
 		}
 	}
 
