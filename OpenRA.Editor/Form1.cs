@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -46,10 +46,13 @@ namespace OpenRA.Editor
 				pmMiniMap.Image = null;
 				currentMod = toolStripComboBox1.SelectedItem as string;
 
-				Text = "OpenRA Editor (mod:{0})".F(currentMod);
 				Game.modData = new ModData(currentMod);
 				FileSystem.LoadFromManifest(Game.modData.Manifest);
 				Rules.LoadRules(Game.modData.Manifest, new Map());
+
+				var mod = Game.modData.Manifest.Mods[0];
+				Text = "{0} Mod Version: {1} - OpenRA Editor".F(Mod.AllMods[mod].Title, Mod.AllMods[mod].Version);			
+
 				loadedMapName = null;
 			};
 
@@ -290,8 +293,11 @@ namespace OpenRA.Editor
 			pmMiniMap.Image = Minimap.AddStaticResources(surface1.Map, Minimap.TerrainBitmap(surface1.Map, true));
 
 			propertiesToolStripMenuItem.Enabled = true;
+			toolStripMenuItemProperties.Enabled = true;
 			resizeToolStripMenuItem.Enabled = true;
+			toolStripMenuItemResize.Enabled = true;
 			saveToolStripMenuItem.Enabled = true;
+			toolStripMenuItemSave.Enabled = true;
 			saveAsToolStripMenuItem.Enabled = true;
 			mnuMinimapToPNG.Enabled = true;	// todo: what is this VB naming bullshit doing here?
 
@@ -494,12 +500,14 @@ namespace OpenRA.Editor
 		void ShowActorNamesClicked(object sender, EventArgs e)
 		{
 			showActorNamesToolStripMenuItem.Checked ^= true;
+			toolStripMenuItemShowActorNames.Checked ^= true;
 			surface1.ShowActorNames = showActorNamesToolStripMenuItem.Checked;
 		}
 
 		void ShowGridClicked(object sender, EventArgs e)
 		{
 			showGridToolStripMenuItem.Checked ^= true;
+			toolStripMenuItemShowGrid.Checked ^= true;
 			surface1.ShowGrid = showGridToolStripMenuItem.Checked;
 			surface1.Chunks.Clear();
 		}
@@ -560,9 +568,107 @@ namespace OpenRA.Editor
 			surface1.NewActorOwner = player.Name;
 		}
 
-		private void copySelectionToolStripMenuItem_Click(object sender, EventArgs e)
+		private void copySelectionToolStripMenuItemClick(object sender, EventArgs e)
 		{
 			surface1.CopySelection();
+		}
+
+		private void openRAWebsiteToolStripMenuItemClick(object sender, EventArgs e)
+		{
+			System.Diagnostics.Process.Start("http://www.open-ra.org");
+		}
+
+		private void openRAResourcesToolStripMenuItemClick(object sender, EventArgs e)
+		{
+			System.Diagnostics.Process.Start("http://content.open-ra.org");
+		}
+
+		private void wikiDocumentationToolStripMenuItemClick(object sender, EventArgs e)
+		{
+			System.Diagnostics.Process.Start("http://github.com/OpenRA/OpenRA/wiki");
+		}
+
+		private void discussionForumsToolStripMenuItemClick(object sender, EventArgs e)
+		{
+			System.Diagnostics.Process.Start("http://www.sleipnirstuff.com/forum/viewforum.php?f=80");
+		}
+
+		private void issueTrackerToolStripMenuItemClick(object sender, EventArgs e)
+		{
+			System.Diagnostics.Process.Start("http://github.com/OpenRA/OpenRA/issues");
+		}
+
+		private void developerBountiesToolStripMenuItemClick(object sender, EventArgs e)
+		{
+			System.Diagnostics.Process.Start("https://www.bountysource.com/#repos/OpenRA/OpenRA");
+		}
+
+		private void sourceCodeToolStripMenuItemClick(object sender, EventArgs e)
+		{
+			System.Diagnostics.Process.Start("http://github.com/OpenRA/OpenRA");
+		}
+
+		private void aboutToolStripMenuItemClick(object sender, EventArgs e)
+		{
+			MessageBox.Show("OpenRA and OpenRA Editor are Free/Libre Open Source Software released under the GNU General Public License version 3. See AUTHORS and COPYING for details.",
+							"About",
+							MessageBoxButtons.OK,
+							MessageBoxIcon.Asterisk);
+		}
+
+		private void helpToolStripButton_Click(object sender, EventArgs e)
+		{
+			System.Diagnostics.Process.Start("http://github.com/OpenRA/OpenRA/wiki/Mapping");
+		}
+
+		private void toolStripMenuItemNewClick(object sender, EventArgs e)
+		{
+			NewClicked(sender, e);
+		}
+
+		private void toolStripMenuItemOpenClick(object sender, EventArgs e)
+		{
+			OpenClicked(sender, e);
+		}
+
+		private void toolStripMenuItemSaveClick(object sender, EventArgs e)
+		{
+			SaveClicked(sender, e);
+		}
+
+		private void toolStripMenuItemPropertiesClick(object sender, EventArgs e)
+		{
+			PropertiesClicked(sender, e);
+		}
+
+		private void toolStripMenuItemResizeClick(object sender, EventArgs e)
+		{
+			ResizeClicked(sender, e);
+		}
+
+		private void toolStripMenuItemShowActorNamesClick(object sender, EventArgs e)
+		{
+			ShowActorNamesClicked(sender, e);
+		}
+
+		private void toolStripMenuItemFixOpenAreasClick(object sender, EventArgs e)
+		{
+			FixOpenAreas(sender, e);
+		}
+
+		private void toolStripMenuItemSetupDefaultPlayersClick(object sender, EventArgs e)
+		{
+			SetupDefaultPlayers(sender, e);
+		}
+
+		private void toolStripMenuItemCopySelectionClick(object sender, EventArgs e)
+		{
+			copySelectionToolStripMenuItemClick(sender, e);
+		}
+
+		private void toolStripMenuItemShowGridClick(object sender, EventArgs e)
+		{
+			ShowGridClicked(sender, e);
 		}
 	}
 }

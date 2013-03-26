@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -55,6 +55,23 @@ namespace OpenRA.Editor
 			this.surface1 = new OpenRA.Editor.Surface();
 			this.tt = new System.Windows.Forms.ToolTip(this.components);
 			this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+			this.toolStripMenuItemNew = new System.Windows.Forms.ToolStripButton();
+			this.toolStripMenuItemOpen = new System.Windows.Forms.ToolStripButton();
+			this.toolStripMenuItemSave = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
+			this.toolStripMenuItemProperties = new System.Windows.Forms.ToolStripButton();
+			this.toolStripMenuItemResize = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
+			this.toolStripMenuItemShowActorNames = new System.Windows.Forms.ToolStripButton();
+			this.toolStripMenuItemShowGrid = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
+			this.toolStripMenuItemFixOpenAreas = new System.Windows.Forms.ToolStripButton();
+			this.toolStripMenuItemSetupDefaultPlayers = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
+			this.toolStripMenuItemCopySelection = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+			this.QuickhelpToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -65,26 +82,43 @@ namespace OpenRA.Editor
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.cCRedAlertMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.bitmapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnuExport = new System.Windows.Forms.ToolStripMenuItem();
 			this.mnuMinimapToPNG = new System.Windows.Forms.ToolStripMenuItem();
+			this.fullMapRenderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.mapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.propertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.resizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
 			this.showActorNamesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.showGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
 			this.fixOpenAreasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.setupDefaultPlayersMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+			this.copySelectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
 			this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.openRAWebsiteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.openRAResourcesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.wikiDocumentationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.discussionForumsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.sourceCodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.issueTrackerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.developerBountiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.toolStripStatusLabelFiller = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripStatusLabelMousePosition = new System.Windows.Forms.ToolStripStatusLabel();
-			this.copySelectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+			this.BottomToolStripPanel = new System.Windows.Forms.ToolStripPanel();
+			this.TopToolStripPanel = new System.Windows.Forms.ToolStripPanel();
+			this.RightToolStripPanel = new System.Windows.Forms.ToolStripPanel();
+			this.LeftToolStripPanel = new System.Windows.Forms.ToolStripPanel();
+			this.ContentPanel = new System.Windows.Forms.ToolStripContentPanel();
+			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
@@ -100,8 +134,13 @@ namespace OpenRA.Editor
 			this.splitContainer3.Panel1.SuspendLayout();
 			this.splitContainer3.Panel2.SuspendLayout();
 			this.splitContainer3.SuspendLayout();
+			this.toolStrip1.SuspendLayout();
 			this.menuStrip1.SuspendLayout();
 			this.statusStrip1.SuspendLayout();
+			this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
+			this.toolStripContainer1.ContentPanel.SuspendLayout();
+			this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
+			this.toolStripContainer1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// splitContainer1
@@ -117,7 +156,7 @@ namespace OpenRA.Editor
 			// splitContainer1.Panel2
 			// 
 			this.splitContainer1.Panel2.Controls.Add(this.surface1);
-			this.splitContainer1.Size = new System.Drawing.Size(985, 744);
+			this.splitContainer1.Size = new System.Drawing.Size(985, 695);
 			this.splitContainer1.SplitterDistance = 198;
 			this.splitContainer1.TabIndex = 0;
 			// 
@@ -135,8 +174,8 @@ namespace OpenRA.Editor
 			// splitContainer2.Panel2
 			// 
 			this.splitContainer2.Panel2.Controls.Add(this.tabControl1);
-			this.splitContainer2.Size = new System.Drawing.Size(198, 744);
-			this.splitContainer2.SplitterDistance = 164;
+			this.splitContainer2.Size = new System.Drawing.Size(198, 695);
+			this.splitContainer2.SplitterDistance = 153;
 			this.splitContainer2.TabIndex = 1;
 			// 
 			// pmMiniMap
@@ -146,7 +185,7 @@ namespace OpenRA.Editor
 			this.pmMiniMap.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pmMiniMap.Location = new System.Drawing.Point(0, 0);
 			this.pmMiniMap.Name = "pmMiniMap";
-			this.pmMiniMap.Size = new System.Drawing.Size(198, 164);
+			this.pmMiniMap.Size = new System.Drawing.Size(198, 153);
 			this.pmMiniMap.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 			this.pmMiniMap.TabIndex = 1;
 			this.pmMiniMap.TabStop = false;
@@ -163,7 +202,7 @@ namespace OpenRA.Editor
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.Padding = new System.Drawing.Point(6, 0);
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(198, 576);
+			this.tabControl1.Size = new System.Drawing.Size(198, 538);
 			this.tabControl1.TabIndex = 0;
 			// 
 			// tabPage1
@@ -172,7 +211,7 @@ namespace OpenRA.Editor
 			this.tabPage1.Location = new System.Drawing.Point(4, 20);
 			this.tabPage1.Name = "tabPage1";
 			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(190, 552);
+			this.tabPage1.Size = new System.Drawing.Size(190, 514);
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "Templates";
 			this.tabPage1.UseVisualStyleBackColor = true;
@@ -184,7 +223,7 @@ namespace OpenRA.Editor
 			this.tilePalette.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tilePalette.Location = new System.Drawing.Point(3, 3);
 			this.tilePalette.Name = "tilePalette";
-			this.tilePalette.Size = new System.Drawing.Size(184, 546);
+			this.tilePalette.Size = new System.Drawing.Size(184, 508);
 			this.tilePalette.TabIndex = 1;
 			// 
 			// tabPage2
@@ -194,7 +233,7 @@ namespace OpenRA.Editor
 			this.tabPage2.Location = new System.Drawing.Point(4, 20);
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(190, 552);
+			this.tabPage2.Size = new System.Drawing.Size(190, 514);
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "Actors";
 			this.tabPage2.UseVisualStyleBackColor = true;
@@ -205,7 +244,7 @@ namespace OpenRA.Editor
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.panel1.Location = new System.Drawing.Point(3, 24);
 			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(184, 525);
+			this.panel1.Size = new System.Drawing.Size(184, 487);
 			this.panel1.TabIndex = 4;
 			// 
 			// actorPalette
@@ -215,7 +254,7 @@ namespace OpenRA.Editor
 			this.actorPalette.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.actorPalette.Location = new System.Drawing.Point(0, 0);
 			this.actorPalette.Name = "actorPalette";
-			this.actorPalette.Size = new System.Drawing.Size(184, 525);
+			this.actorPalette.Size = new System.Drawing.Size(184, 487);
 			this.actorPalette.TabIndex = 3;
 			// 
 			// actorOwnerChooser
@@ -236,7 +275,7 @@ namespace OpenRA.Editor
 			this.tabPage3.Controls.Add(this.resourcePalette);
 			this.tabPage3.Location = new System.Drawing.Point(4, 20);
 			this.tabPage3.Name = "tabPage3";
-			this.tabPage3.Size = new System.Drawing.Size(190, 552);
+			this.tabPage3.Size = new System.Drawing.Size(190, 514);
 			this.tabPage3.TabIndex = 2;
 			this.tabPage3.Text = "Resources";
 			this.tabPage3.UseVisualStyleBackColor = true;
@@ -248,7 +287,7 @@ namespace OpenRA.Editor
 			this.resourcePalette.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.resourcePalette.Location = new System.Drawing.Point(0, 0);
 			this.resourcePalette.Name = "resourcePalette";
-			this.resourcePalette.Size = new System.Drawing.Size(190, 552);
+			this.resourcePalette.Size = new System.Drawing.Size(190, 514);
 			this.resourcePalette.TabIndex = 3;
 			// 
 			// surface1
@@ -257,7 +296,7 @@ namespace OpenRA.Editor
 			this.surface1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.surface1.Location = new System.Drawing.Point(0, 0);
 			this.surface1.Name = "surface1";
-			this.surface1.Size = new System.Drawing.Size(783, 744);
+			this.surface1.Size = new System.Drawing.Size(783, 695);
 			this.surface1.TabIndex = 5;
 			this.surface1.Text = "surface1";
 			// 
@@ -276,24 +315,193 @@ namespace OpenRA.Editor
 			// 
 			// splitContainer3.Panel1
 			// 
-			this.splitContainer3.Panel1.Controls.Add(this.menuStrip1);
+			this.splitContainer3.Panel1.Controls.Add(this.toolStrip1);
 			// 
 			// splitContainer3.Panel2
 			// 
 			this.splitContainer3.Panel2.Controls.Add(this.splitContainer1);
-			this.splitContainer3.Size = new System.Drawing.Size(985, 773);
+			this.splitContainer3.Size = new System.Drawing.Size(985, 724);
 			this.splitContainer3.SplitterDistance = 25;
 			this.splitContainer3.TabIndex = 6;
 			// 
+			// toolStrip1
+			// 
+			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			this.toolStripMenuItemNew,
+			this.toolStripMenuItemOpen,
+			this.toolStripMenuItemSave,
+			this.toolStripSeparator,
+			this.toolStripMenuItemProperties,
+			this.toolStripMenuItemResize,
+			this.toolStripSeparator8,
+			this.toolStripMenuItemShowActorNames,
+			this.toolStripMenuItemShowGrid,
+			this.toolStripSeparator10,
+			this.toolStripMenuItemFixOpenAreas,
+			this.toolStripMenuItemSetupDefaultPlayers,
+			this.toolStripSeparator11,
+			this.toolStripMenuItemCopySelection,
+			this.toolStripSeparator7,
+			this.QuickhelpToolStripButton});
+			this.toolStrip1.Location = new System.Drawing.Point(0, 0);
+			this.toolStrip1.Name = "toolStrip1";
+			this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+			this.toolStrip1.Size = new System.Drawing.Size(985, 25);
+			this.toolStrip1.TabIndex = 0;
+			this.toolStrip1.Text = "toolStrip1";
+			// 
+			// toolStripMenuItemNew
+			// 
+			this.toolStripMenuItemNew.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toolStripMenuItemNew.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItemNew.Image")));
+			this.toolStripMenuItemNew.ImageTransparentColor = System.Drawing.Color.Fuchsia;
+			this.toolStripMenuItemNew.Name = "toolStripMenuItemNew";
+			this.toolStripMenuItemNew.Size = new System.Drawing.Size(23, 22);
+			this.toolStripMenuItemNew.Text = "&New...";
+			this.toolStripMenuItemNew.ToolTipText = "Create a new blank map.";
+			this.toolStripMenuItemNew.Click += new System.EventHandler(this.toolStripMenuItemNewClick);
+			// 
+			// toolStripMenuItemOpen
+			// 
+			this.toolStripMenuItemOpen.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toolStripMenuItemOpen.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItemOpen.Image")));
+			this.toolStripMenuItemOpen.Name = "toolStripMenuItemOpen";
+			this.toolStripMenuItemOpen.Size = new System.Drawing.Size(23, 22);
+			this.toolStripMenuItemOpen.Text = "&Open...";
+			this.toolStripMenuItemOpen.ToolTipText = "Open an existing map.";
+			this.toolStripMenuItemOpen.Click += new System.EventHandler(this.toolStripMenuItemOpenClick);
+			// 
+			// toolStripMenuItemSave
+			// 
+			this.toolStripMenuItemSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toolStripMenuItemSave.Enabled = false;
+			this.toolStripMenuItemSave.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItemSave.Image")));
+			this.toolStripMenuItemSave.Name = "toolStripMenuItemSave";
+			this.toolStripMenuItemSave.Size = new System.Drawing.Size(23, 22);
+			this.toolStripMenuItemSave.Text = "&Save";
+			this.toolStripMenuItemSave.ToolTipText = "Quicksave current map.";
+			this.toolStripMenuItemSave.Click += new System.EventHandler(this.toolStripMenuItemSaveClick);
+			// 
+			// toolStripSeparator
+			// 
+			this.toolStripSeparator.Name = "toolStripSeparator";
+			this.toolStripSeparator.Size = new System.Drawing.Size(6, 25);
+			// 
+			// toolStripMenuItemProperties
+			// 
+			this.toolStripMenuItemProperties.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toolStripMenuItemProperties.Enabled = false;
+			this.toolStripMenuItemProperties.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItemProperties.Image")));
+			this.toolStripMenuItemProperties.Name = "toolStripMenuItemProperties";
+			this.toolStripMenuItemProperties.Size = new System.Drawing.Size(23, 22);
+			this.toolStripMenuItemProperties.Text = "&Properties...";
+			this.toolStripMenuItemProperties.ToolTipText = "Edit Metadata";
+			this.toolStripMenuItemProperties.Click += new System.EventHandler(this.toolStripMenuItemPropertiesClick);
+			// 
+			// toolStripMenuItemResize
+			// 
+			this.toolStripMenuItemResize.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toolStripMenuItemResize.Enabled = false;
+			this.toolStripMenuItemResize.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItemResize.Image")));
+			this.toolStripMenuItemResize.Name = "toolStripMenuItemResize";
+			this.toolStripMenuItemResize.Size = new System.Drawing.Size(23, 22);
+			this.toolStripMenuItemResize.Text = "&Resize...";
+			this.toolStripMenuItemResize.ToolTipText = "Change the map borders and dimensions.";
+			this.toolStripMenuItemResize.Click += new System.EventHandler(this.toolStripMenuItemResizeClick);
+			// 
+			// toolStripSeparator8
+			// 
+			this.toolStripSeparator8.Name = "toolStripSeparator8";
+			this.toolStripSeparator8.Size = new System.Drawing.Size(6, 25);
+			// 
+			// toolStripMenuItemShowActorNames
+			// 
+			this.toolStripMenuItemShowActorNames.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toolStripMenuItemShowActorNames.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItemShowActorNames.Image")));
+			this.toolStripMenuItemShowActorNames.Name = "toolStripMenuItemShowActorNames";
+			this.toolStripMenuItemShowActorNames.Size = new System.Drawing.Size(23, 22);
+			this.toolStripMenuItemShowActorNames.Text = "Show Actor &Names";
+			this.toolStripMenuItemShowActorNames.ToolTipText = "If the actor has a custom name, display it.";
+			this.toolStripMenuItemShowActorNames.Click += new System.EventHandler(this.toolStripMenuItemShowActorNamesClick);
+			// 
+			// toolStripMenuItemShowGrid
+			// 
+			this.toolStripMenuItemShowGrid.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toolStripMenuItemShowGrid.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItemShowGrid.Image")));
+			this.toolStripMenuItemShowGrid.Name = "toolStripMenuItemShowGrid";
+			this.toolStripMenuItemShowGrid.Size = new System.Drawing.Size(23, 22);
+			this.toolStripMenuItemShowGrid.Text = "Show &Grid";
+			this.toolStripMenuItemShowGrid.ToolTipText = "Enable a grid overlay for better orientation.";
+			this.toolStripMenuItemShowGrid.Click += new System.EventHandler(this.toolStripMenuItemShowGridClick);
+			// 
+			// toolStripSeparator10
+			// 
+			this.toolStripSeparator10.Name = "toolStripSeparator10";
+			this.toolStripSeparator10.Size = new System.Drawing.Size(6, 25);
+			// 
+			// toolStripMenuItemFixOpenAreas
+			// 
+			this.toolStripMenuItemFixOpenAreas.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toolStripMenuItemFixOpenAreas.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItemFixOpenAreas.Image")));
+			this.toolStripMenuItemFixOpenAreas.Name = "toolStripMenuItemFixOpenAreas";
+			this.toolStripMenuItemFixOpenAreas.Size = new System.Drawing.Size(23, 22);
+			this.toolStripMenuItemFixOpenAreas.Text = "&Fix Open Areas";
+			this.toolStripMenuItemFixOpenAreas.ToolTipText = "Add some randomness into clear tiles.";
+			this.toolStripMenuItemFixOpenAreas.Click += new System.EventHandler(this.toolStripMenuItemFixOpenAreasClick);
+			// 
+			// toolStripMenuItemSetupDefaultPlayers
+			// 
+			this.toolStripMenuItemSetupDefaultPlayers.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toolStripMenuItemSetupDefaultPlayers.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItemSetupDefaultPlayers.Image")));
+			this.toolStripMenuItemSetupDefaultPlayers.Name = "toolStripMenuItemSetupDefaultPlayers";
+			this.toolStripMenuItemSetupDefaultPlayers.Size = new System.Drawing.Size(23, 22);
+			this.toolStripMenuItemSetupDefaultPlayers.Text = "&Setup Default Players";
+			this.toolStripMenuItemSetupDefaultPlayers.ToolTipText = "Setup the players for each spawnpoint placed.";
+			this.toolStripMenuItemSetupDefaultPlayers.Click += new System.EventHandler(this.toolStripMenuItemSetupDefaultPlayersClick);
+			// 
+			// toolStripSeparator11
+			// 
+			this.toolStripSeparator11.Name = "toolStripSeparator11";
+			this.toolStripSeparator11.Size = new System.Drawing.Size(6, 25);
+			// 
+			// toolStripMenuItemCopySelection
+			// 
+			this.toolStripMenuItemCopySelection.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toolStripMenuItemCopySelection.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItemCopySelection.Image")));
+			this.toolStripMenuItemCopySelection.Name = "toolStripMenuItemCopySelection";
+			this.toolStripMenuItemCopySelection.Size = new System.Drawing.Size(23, 22);
+			this.toolStripMenuItemCopySelection.Text = "Copy Selection";
+			this.toolStripMenuItemCopySelection.ToolTipText = "Copy the current selection and paste it again on left-click.";
+			this.toolStripMenuItemCopySelection.Click += new System.EventHandler(this.toolStripMenuItemCopySelectionClick);
+			// 
+			// toolStripSeparator7
+			// 
+			this.toolStripSeparator7.Name = "toolStripSeparator7";
+			this.toolStripSeparator7.Size = new System.Drawing.Size(6, 25);
+			// 
+			// QuickhelpToolStripButton
+			// 
+			this.QuickhelpToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.QuickhelpToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("QuickhelpToolStripButton.Image")));
+			this.QuickhelpToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.QuickhelpToolStripButton.Name = "QuickhelpToolStripButton";
+			this.QuickhelpToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.QuickhelpToolStripButton.Text = "Help";
+			this.QuickhelpToolStripButton.ToolTipText = "Display the mapping tutorial in the OpenRA wiki.";
+			this.QuickhelpToolStripButton.Click += new System.EventHandler(this.helpToolStripButton_Click);
+			// 
 			// menuStrip1
 			// 
+			this.menuStrip1.Dock = System.Windows.Forms.DockStyle.None;
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem,
-            this.mapToolStripMenuItem,
-            this.toolStripComboBox1,
-            this.toolStripLabel1});
+			this.fileToolStripMenuItem,
+			this.mapToolStripMenuItem,
+			this.toolStripComboBox1,
+			this.toolStripLabel1,
+			this.helpToolStripMenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
+			this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
 			this.menuStrip1.Size = new System.Drawing.Size(985, 27);
 			this.menuStrip1.TabIndex = 1;
 			this.menuStrip1.Text = "menuStrip1";
@@ -301,16 +509,16 @@ namespace OpenRA.Editor
 			// fileToolStripMenuItem
 			// 
 			this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.newToolStripMenuItem,
-            this.toolStripSeparator1,
-            this.openToolStripMenuItem,
-            this.saveToolStripMenuItem,
-            this.saveAsToolStripMenuItem,
-            this.toolStripSeparator2,
-            this.toolStripMenuItem1,
-            this.mnuExport,
-            this.toolStripSeparator3,
-            this.exitToolStripMenuItem});
+			this.newToolStripMenuItem,
+			this.toolStripSeparator1,
+			this.openToolStripMenuItem,
+			this.saveToolStripMenuItem,
+			this.saveAsToolStripMenuItem,
+			this.toolStripSeparator2,
+			this.toolStripMenuItem1,
+			this.mnuExport,
+			this.toolStripSeparator3,
+			this.exitToolStripMenuItem});
 			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
 			this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 23);
 			this.fileToolStripMenuItem.Text = "&File";
@@ -320,21 +528,23 @@ namespace OpenRA.Editor
 			this.newToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("newToolStripMenuItem.Image")));
 			this.newToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Fuchsia;
 			this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-			this.newToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+			this.newToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.newToolStripMenuItem.Text = "&New...";
+			this.newToolStripMenuItem.ToolTipText = "Create a new blank map.";
 			this.newToolStripMenuItem.Click += new System.EventHandler(this.NewClicked);
 			// 
 			// toolStripSeparator1
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(120, 6);
+			this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
 			// 
 			// openToolStripMenuItem
 			// 
 			this.openToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("openToolStripMenuItem.Image")));
 			this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-			this.openToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+			this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.openToolStripMenuItem.Text = "&Open...";
+			this.openToolStripMenuItem.ToolTipText = "Open an existing map.";
 			this.openToolStripMenuItem.Click += new System.EventHandler(this.OpenClicked);
 			// 
 			// saveToolStripMenuItem
@@ -342,54 +552,54 @@ namespace OpenRA.Editor
 			this.saveToolStripMenuItem.Enabled = false;
 			this.saveToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("saveToolStripMenuItem.Image")));
 			this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-			this.saveToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+			this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.saveToolStripMenuItem.Text = "&Save";
+			this.saveToolStripMenuItem.ToolTipText = "Quicksave current map.";
 			this.saveToolStripMenuItem.Click += new System.EventHandler(this.SaveClicked);
 			// 
 			// saveAsToolStripMenuItem
 			// 
 			this.saveAsToolStripMenuItem.Enabled = false;
+			this.saveAsToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("saveAsToolStripMenuItem.Image")));
 			this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-			this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+			this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.saveAsToolStripMenuItem.Text = "Save &As...";
+			this.saveAsToolStripMenuItem.ToolTipText = "Save the map while choosing a filename.";
 			this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.SaveAsClicked);
 			// 
 			// toolStripSeparator2
 			// 
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size(120, 6);
+			this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
 			// 
 			// toolStripMenuItem1
 			// 
 			this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.cCRedAlertMapToolStripMenuItem,
-            this.bitmapToolStripMenuItem});
+			this.cCRedAlertMapToolStripMenuItem});
+			this.toolStripMenuItem1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItem1.Image")));
+			this.toolStripMenuItem1.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-			this.toolStripMenuItem1.Size = new System.Drawing.Size(123, 22);
+			this.toolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
 			this.toolStripMenuItem1.Text = "&Import";
 			// 
 			// cCRedAlertMapToolStripMenuItem
 			// 
 			this.cCRedAlertMapToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("cCRedAlertMapToolStripMenuItem.Image")));
 			this.cCRedAlertMapToolStripMenuItem.Name = "cCRedAlertMapToolStripMenuItem";
-			this.cCRedAlertMapToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
-			this.cCRedAlertMapToolStripMenuItem.Text = "&C&&C / Red Alert Map...";
+			this.cCRedAlertMapToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+			this.cCRedAlertMapToolStripMenuItem.Text = "&Legacy Map Format...";
+			this.cCRedAlertMapToolStripMenuItem.ToolTipText = "Import an original C&C / Red Alert and convert it to the .oramap format.";
 			this.cCRedAlertMapToolStripMenuItem.Click += new System.EventHandler(this.ImportLegacyMapClicked);
-			// 
-			// bitmapToolStripMenuItem
-			// 
-			this.bitmapToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("bitmapToolStripMenuItem.Image")));
-			this.bitmapToolStripMenuItem.Name = "bitmapToolStripMenuItem";
-			this.bitmapToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
-			this.bitmapToolStripMenuItem.Text = "&Bitmap...";
-			this.bitmapToolStripMenuItem.Visible = false;
 			// 
 			// mnuExport
 			// 
 			this.mnuExport.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuMinimapToPNG});
+			this.mnuMinimapToPNG,
+			this.fullMapRenderToolStripMenuItem});
+			this.mnuExport.Image = ((System.Drawing.Image)(resources.GetObject("mnuExport.Image")));
+			this.mnuExport.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.mnuExport.Name = "mnuExport";
-			this.mnuExport.Size = new System.Drawing.Size(123, 22);
+			this.mnuExport.Size = new System.Drawing.Size(152, 22);
 			this.mnuExport.Text = "&Export";
 			// 
 			// mnuMinimapToPNG
@@ -399,32 +609,45 @@ namespace OpenRA.Editor
 			this.mnuMinimapToPNG.Name = "mnuMinimapToPNG";
 			this.mnuMinimapToPNG.Size = new System.Drawing.Size(163, 22);
 			this.mnuMinimapToPNG.Text = "Minimap to PNG";
+			this.mnuMinimapToPNG.ToolTipText = "Save the map radar display as an image.";
 			this.mnuMinimapToPNG.Click += new System.EventHandler(this.ExportMinimap);
+			// 
+			// fullMapRenderToolStripMenuItem
+			// 
+			this.fullMapRenderToolStripMenuItem.Enabled = false;
+			this.fullMapRenderToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("fullMapRenderToolStripMenuItem.Image")));
+			this.fullMapRenderToolStripMenuItem.Name = "fullMapRenderToolStripMenuItem";
+			this.fullMapRenderToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+			this.fullMapRenderToolStripMenuItem.Text = "Full Map Render";
 			// 
 			// toolStripSeparator3
 			// 
 			this.toolStripSeparator3.Name = "toolStripSeparator3";
-			this.toolStripSeparator3.Size = new System.Drawing.Size(120, 6);
+			this.toolStripSeparator3.Size = new System.Drawing.Size(149, 6);
 			// 
 			// exitToolStripMenuItem
 			// 
+			this.exitToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("exitToolStripMenuItem.Image")));
+			this.exitToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-			this.exitToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+			this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
 			this.exitToolStripMenuItem.Text = "E&xit";
+			this.exitToolStripMenuItem.ToolTipText = "Quit the map editor.";
 			this.exitToolStripMenuItem.Click += new System.EventHandler(this.CloseClicked);
 			// 
 			// mapToolStripMenuItem
 			// 
 			this.mapToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.propertiesToolStripMenuItem,
-            this.resizeToolStripMenuItem,
-            this.showActorNamesToolStripMenuItem,
-            this.showGridToolStripMenuItem,
-            this.toolStripSeparator5,
-            this.fixOpenAreasToolStripMenuItem,
-            this.setupDefaultPlayersMenuItem,
-            this.toolStripSeparator4,
-            this.copySelectionToolStripMenuItem});
+			this.propertiesToolStripMenuItem,
+			this.resizeToolStripMenuItem,
+			this.toolStripSeparator9,
+			this.showActorNamesToolStripMenuItem,
+			this.showGridToolStripMenuItem,
+			this.toolStripSeparator5,
+			this.fixOpenAreasToolStripMenuItem,
+			this.setupDefaultPlayersMenuItem,
+			this.toolStripSeparator4,
+			this.copySelectionToolStripMenuItem});
 			this.mapToolStripMenuItem.Name = "mapToolStripMenuItem";
 			this.mapToolStripMenuItem.Size = new System.Drawing.Size(43, 23);
 			this.mapToolStripMenuItem.Text = "&Map";
@@ -436,6 +659,7 @@ namespace OpenRA.Editor
 			this.propertiesToolStripMenuItem.Name = "propertiesToolStripMenuItem";
 			this.propertiesToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
 			this.propertiesToolStripMenuItem.Text = "&Properties...";
+			this.propertiesToolStripMenuItem.ToolTipText = "Edit Metadata";
 			this.propertiesToolStripMenuItem.Click += new System.EventHandler(this.PropertiesClicked);
 			// 
 			// resizeToolStripMenuItem
@@ -445,35 +669,68 @@ namespace OpenRA.Editor
 			this.resizeToolStripMenuItem.Name = "resizeToolStripMenuItem";
 			this.resizeToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
 			this.resizeToolStripMenuItem.Text = "&Resize...";
+			this.resizeToolStripMenuItem.ToolTipText = "Change the map borders and dimensions.";
 			this.resizeToolStripMenuItem.Click += new System.EventHandler(this.ResizeClicked);
+			// 
+			// toolStripSeparator9
+			// 
+			this.toolStripSeparator9.Name = "toolStripSeparator9";
+			this.toolStripSeparator9.Size = new System.Drawing.Size(182, 6);
 			// 
 			// showActorNamesToolStripMenuItem
 			// 
+			this.showActorNamesToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("showActorNamesToolStripMenuItem.Image")));
 			this.showActorNamesToolStripMenuItem.Name = "showActorNamesToolStripMenuItem";
 			this.showActorNamesToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
-			this.showActorNamesToolStripMenuItem.Text = "Show Actor &Names";
+			this.showActorNamesToolStripMenuItem.Text = "Show &Actor Names";
+			this.showActorNamesToolStripMenuItem.ToolTipText = "If the actor has a custom name, display it.";
 			this.showActorNamesToolStripMenuItem.Click += new System.EventHandler(this.ShowActorNamesClicked);
 			// 
 			// showGridToolStripMenuItem
 			// 
+			this.showGridToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("showGridToolStripMenuItem.Image")));
 			this.showGridToolStripMenuItem.Name = "showGridToolStripMenuItem";
 			this.showGridToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
 			this.showGridToolStripMenuItem.Text = "Show &Grid";
+			this.showGridToolStripMenuItem.ToolTipText = "Enable a grid overlay for better orientation.";
 			this.showGridToolStripMenuItem.Click += new System.EventHandler(this.ShowGridClicked);
+			// 
+			// toolStripSeparator5
+			// 
+			this.toolStripSeparator5.Name = "toolStripSeparator5";
+			this.toolStripSeparator5.Size = new System.Drawing.Size(182, 6);
 			// 
 			// fixOpenAreasToolStripMenuItem
 			// 
+			this.fixOpenAreasToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("fixOpenAreasToolStripMenuItem.Image")));
 			this.fixOpenAreasToolStripMenuItem.Name = "fixOpenAreasToolStripMenuItem";
 			this.fixOpenAreasToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
 			this.fixOpenAreasToolStripMenuItem.Text = "&Fix Open Areas";
+			this.fixOpenAreasToolStripMenuItem.ToolTipText = "Add some randomness into clear tiles.";
 			this.fixOpenAreasToolStripMenuItem.Click += new System.EventHandler(this.FixOpenAreas);
 			// 
 			// setupDefaultPlayersMenuItem
 			// 
+			this.setupDefaultPlayersMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("setupDefaultPlayersMenuItem.Image")));
 			this.setupDefaultPlayersMenuItem.Name = "setupDefaultPlayersMenuItem";
 			this.setupDefaultPlayersMenuItem.Size = new System.Drawing.Size(185, 22);
 			this.setupDefaultPlayersMenuItem.Text = "&Setup Default Players";
+			this.setupDefaultPlayersMenuItem.ToolTipText = "Setup the players for each spawnpoint placed.";
 			this.setupDefaultPlayersMenuItem.Click += new System.EventHandler(this.SetupDefaultPlayers);
+			// 
+			// toolStripSeparator4
+			// 
+			this.toolStripSeparator4.Name = "toolStripSeparator4";
+			this.toolStripSeparator4.Size = new System.Drawing.Size(182, 6);
+			// 
+			// copySelectionToolStripMenuItem
+			// 
+			this.copySelectionToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("copySelectionToolStripMenuItem.Image")));
+			this.copySelectionToolStripMenuItem.Name = "copySelectionToolStripMenuItem";
+			this.copySelectionToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+			this.copySelectionToolStripMenuItem.Text = "Copy Selection";
+			this.copySelectionToolStripMenuItem.ToolTipText = "Copy the current selection and paste it again on left-click.";
+			this.copySelectionToolStripMenuItem.Click += new System.EventHandler(this.copySelectionToolStripMenuItemClick);
 			// 
 			// toolStripComboBox1
 			// 
@@ -485,16 +742,114 @@ namespace OpenRA.Editor
 			// toolStripLabel1
 			// 
 			this.toolStripLabel1.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+			this.toolStripLabel1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripLabel1.Image")));
 			this.toolStripLabel1.Name = "toolStripLabel1";
-			this.toolStripLabel1.Size = new System.Drawing.Size(71, 20);
+			this.toolStripLabel1.Size = new System.Drawing.Size(87, 20);
 			this.toolStripLabel1.Text = "Active Mod:";
+			this.toolStripLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+			this.toolStripLabel1.TextDirection = System.Windows.Forms.ToolStripTextDirection.Horizontal;
+			this.toolStripLabel1.ToolTipText = "Choose the OpenRA mod whose tilesets and actors shall be used.";
+			// 
+			// helpToolStripMenuItem
+			// 
+			this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			this.openRAWebsiteToolStripMenuItem,
+			this.openRAResourcesToolStripMenuItem,
+			this.wikiDocumentationToolStripMenuItem,
+			this.discussionForumsToolStripMenuItem,
+			this.sourceCodeToolStripMenuItem,
+			this.issueTrackerToolStripMenuItem,
+			this.developerBountiesToolStripMenuItem,
+			this.toolStripSeparator6,
+			this.aboutToolStripMenuItem});
+			this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+			this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 23);
+			this.helpToolStripMenuItem.Text = "&Help";
+			// 
+			// openRAWebsiteToolStripMenuItem
+			// 
+			this.openRAWebsiteToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("openRAWebsiteToolStripMenuItem.Image")));
+			this.openRAWebsiteToolStripMenuItem.Name = "openRAWebsiteToolStripMenuItem";
+			this.openRAWebsiteToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+			this.openRAWebsiteToolStripMenuItem.Text = "OpenRA &Website";
+			this.openRAWebsiteToolStripMenuItem.ToolTipText = "Visit the OpenRA homepage.";
+			this.openRAWebsiteToolStripMenuItem.Click += new System.EventHandler(this.openRAWebsiteToolStripMenuItemClick);
+			// 
+			// openRAResourcesToolStripMenuItem
+			// 
+			this.openRAResourcesToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("openRAResourcesToolStripMenuItem.Image")));
+			this.openRAResourcesToolStripMenuItem.Name = "openRAResourcesToolStripMenuItem";
+			this.openRAResourcesToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+			this.openRAResourcesToolStripMenuItem.Text = "OpenRA &Resources";
+			this.openRAResourcesToolStripMenuItem.ToolTipText = "Share your maps and replays by uploading on this file exchange community.";
+			this.openRAResourcesToolStripMenuItem.Click += new System.EventHandler(this.openRAResourcesToolStripMenuItemClick);
+			// 
+			// wikiDocumentationToolStripMenuItem
+			// 
+			this.wikiDocumentationToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("wikiDocumentationToolStripMenuItem.Image")));
+			this.wikiDocumentationToolStripMenuItem.Name = "wikiDocumentationToolStripMenuItem";
+			this.wikiDocumentationToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+			this.wikiDocumentationToolStripMenuItem.Text = "Wiki &Documentation";
+			this.wikiDocumentationToolStripMenuItem.ToolTipText = "Read and contribute to the developer documentation.";
+			this.wikiDocumentationToolStripMenuItem.Click += new System.EventHandler(this.wikiDocumentationToolStripMenuItemClick);
+			// 
+			// discussionForumsToolStripMenuItem
+			// 
+			this.discussionForumsToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("discussionForumsToolStripMenuItem.Image")));
+			this.discussionForumsToolStripMenuItem.Name = "discussionForumsToolStripMenuItem";
+			this.discussionForumsToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+			this.discussionForumsToolStripMenuItem.Text = "Discussion &Forums";
+			this.discussionForumsToolStripMenuItem.ToolTipText = "Discuss OpenRA related matters in a bulletin board forum.";
+			this.discussionForumsToolStripMenuItem.Click += new System.EventHandler(this.discussionForumsToolStripMenuItemClick);
+			// 
+			// sourceCodeToolStripMenuItem
+			// 
+			this.sourceCodeToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("sourceCodeToolStripMenuItem.Image")));
+			this.sourceCodeToolStripMenuItem.Name = "sourceCodeToolStripMenuItem";
+			this.sourceCodeToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+			this.sourceCodeToolStripMenuItem.Text = "Source &Code";
+			this.sourceCodeToolStripMenuItem.ToolTipText = "Browse and download the source code. Fix what annoys you. Patches are welcome.";
+			this.sourceCodeToolStripMenuItem.Click += new System.EventHandler(this.sourceCodeToolStripMenuItemClick);
+			// 
+			// issueTrackerToolStripMenuItem
+			// 
+			this.issueTrackerToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("issueTrackerToolStripMenuItem.Image")));
+			this.issueTrackerToolStripMenuItem.Name = "issueTrackerToolStripMenuItem";
+			this.issueTrackerToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+			this.issueTrackerToolStripMenuItem.Text = "Issue &Tracker";
+			this.issueTrackerToolStripMenuItem.ToolTipText = "Report problems and request features.";
+			this.issueTrackerToolStripMenuItem.Click += new System.EventHandler(this.issueTrackerToolStripMenuItemClick);
+			// 
+			// developerBountiesToolStripMenuItem
+			// 
+			this.developerBountiesToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("developerBountiesToolStripMenuItem.Image")));
+			this.developerBountiesToolStripMenuItem.Name = "developerBountiesToolStripMenuItem";
+			this.developerBountiesToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+			this.developerBountiesToolStripMenuItem.Text = "Developer &Bounties";
+			this.developerBountiesToolStripMenuItem.ToolTipText = "Hire a developer to get OpenRA modified to your wishes.";
+			this.developerBountiesToolStripMenuItem.Click += new System.EventHandler(this.developerBountiesToolStripMenuItemClick);
+			// 
+			// toolStripSeparator6
+			// 
+			this.toolStripSeparator6.Name = "toolStripSeparator6";
+			this.toolStripSeparator6.Size = new System.Drawing.Size(180, 6);
+			// 
+			// aboutToolStripMenuItem
+			// 
+			this.aboutToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("aboutToolStripMenuItem.Image")));
+			this.aboutToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+			this.aboutToolStripMenuItem.Text = "&About";
+			this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItemClick);
 			// 
 			// statusStrip1
 			// 
+			this.statusStrip1.Dock = System.Windows.Forms.DockStyle.None;
 			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabelFiller,
-            this.toolStripStatusLabelMousePosition});
-			this.statusStrip1.Location = new System.Drawing.Point(0, 751);
+			this.toolStripStatusLabelFiller,
+			this.toolStripStatusLabelMousePosition});
+			this.statusStrip1.Location = new System.Drawing.Point(0, 0);
 			this.statusStrip1.Name = "statusStrip1";
 			this.statusStrip1.Size = new System.Drawing.Size(985, 22);
 			this.statusStrip1.TabIndex = 7;
@@ -503,40 +858,86 @@ namespace OpenRA.Editor
 			// toolStripStatusLabelFiller
 			// 
 			this.toolStripStatusLabelFiller.Name = "toolStripStatusLabelFiller";
-			this.toolStripStatusLabelFiller.Size = new System.Drawing.Size(948, 17);
+			this.toolStripStatusLabelFiller.Size = new System.Drawing.Size(932, 17);
 			this.toolStripStatusLabelFiller.Spring = true;
 			// 
 			// toolStripStatusLabelMousePosition
 			// 
+			this.toolStripStatusLabelMousePosition.Image = ((System.Drawing.Image)(resources.GetObject("toolStripStatusLabelMousePosition.Image")));
 			this.toolStripStatusLabelMousePosition.Name = "toolStripStatusLabelMousePosition";
-			this.toolStripStatusLabelMousePosition.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-			this.toolStripStatusLabelMousePosition.Size = new System.Drawing.Size(22, 17);
+			this.toolStripStatusLabelMousePosition.RightToLeft = System.Windows.Forms.RightToLeft.No;
+			this.toolStripStatusLabelMousePosition.Size = new System.Drawing.Size(38, 17);
 			this.toolStripStatusLabelMousePosition.Text = "0,0";
 			// 
-			// copySelectionToolStripMenuItem
+			// BottomToolStripPanel
 			// 
-			this.copySelectionToolStripMenuItem.Name = "copySelectionToolStripMenuItem";
-			this.copySelectionToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
-			this.copySelectionToolStripMenuItem.Text = "Copy Selection";
-			this.copySelectionToolStripMenuItem.Click += new System.EventHandler(this.copySelectionToolStripMenuItem_Click);
+			this.BottomToolStripPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.BottomToolStripPanel.Location = new System.Drawing.Point(0, 25);
+			this.BottomToolStripPanel.Name = "BottomToolStripPanel";
+			this.BottomToolStripPanel.Orientation = System.Windows.Forms.Orientation.Horizontal;
+			this.BottomToolStripPanel.RowMargin = new System.Windows.Forms.Padding(3, 0, 0, 0);
+			this.BottomToolStripPanel.Size = new System.Drawing.Size(985, 0);
 			// 
-			// toolStripSeparator4
+			// TopToolStripPanel
 			// 
-			this.toolStripSeparator4.Name = "toolStripSeparator4";
-			this.toolStripSeparator4.Size = new System.Drawing.Size(182, 6);
+			this.TopToolStripPanel.Dock = System.Windows.Forms.DockStyle.Top;
+			this.TopToolStripPanel.Location = new System.Drawing.Point(0, 0);
+			this.TopToolStripPanel.Name = "TopToolStripPanel";
+			this.TopToolStripPanel.Orientation = System.Windows.Forms.Orientation.Horizontal;
+			this.TopToolStripPanel.RowMargin = new System.Windows.Forms.Padding(3, 0, 0, 0);
+			this.TopToolStripPanel.Size = new System.Drawing.Size(985, 0);
 			// 
-			// toolStripSeparator5
+			// RightToolStripPanel
 			// 
-			this.toolStripSeparator5.Name = "toolStripSeparator5";
-			this.toolStripSeparator5.Size = new System.Drawing.Size(182, 6);
+			this.RightToolStripPanel.Dock = System.Windows.Forms.DockStyle.Right;
+			this.RightToolStripPanel.Location = new System.Drawing.Point(985, 0);
+			this.RightToolStripPanel.Name = "RightToolStripPanel";
+			this.RightToolStripPanel.Orientation = System.Windows.Forms.Orientation.Vertical;
+			this.RightToolStripPanel.RowMargin = new System.Windows.Forms.Padding(0, 3, 0, 0);
+			this.RightToolStripPanel.Size = new System.Drawing.Size(0, 25);
+			// 
+			// LeftToolStripPanel
+			// 
+			this.LeftToolStripPanel.Dock = System.Windows.Forms.DockStyle.Left;
+			this.LeftToolStripPanel.Location = new System.Drawing.Point(0, 0);
+			this.LeftToolStripPanel.Name = "LeftToolStripPanel";
+			this.LeftToolStripPanel.Orientation = System.Windows.Forms.Orientation.Vertical;
+			this.LeftToolStripPanel.RowMargin = new System.Windows.Forms.Padding(0, 3, 0, 0);
+			this.LeftToolStripPanel.Size = new System.Drawing.Size(0, 25);
+			// 
+			// ContentPanel
+			// 
+			this.ContentPanel.Size = new System.Drawing.Size(985, 25);
+			// 
+			// toolStripContainer1
+			// 
+			// 
+			// toolStripContainer1.BottomToolStripPanel
+			// 
+			this.toolStripContainer1.BottomToolStripPanel.Controls.Add(this.statusStrip1);
+			// 
+			// toolStripContainer1.ContentPanel
+			// 
+			this.toolStripContainer1.ContentPanel.AutoScroll = true;
+			this.toolStripContainer1.ContentPanel.Controls.Add(this.splitContainer3);
+			this.toolStripContainer1.ContentPanel.Size = new System.Drawing.Size(985, 724);
+			this.toolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.toolStripContainer1.Location = new System.Drawing.Point(0, 0);
+			this.toolStripContainer1.Name = "toolStripContainer1";
+			this.toolStripContainer1.Size = new System.Drawing.Size(985, 773);
+			this.toolStripContainer1.TabIndex = 8;
+			this.toolStripContainer1.Text = "toolStripContainer1";
+			// 
+			// toolStripContainer1.TopToolStripPanel
+			// 
+			this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.menuStrip1);
 			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(985, 773);
-			this.Controls.Add(this.statusStrip1);
-			this.Controls.Add(this.splitContainer3);
+			this.Controls.Add(this.toolStripContainer1);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.KeyPreview = true;
 			this.MainMenuStrip = this.menuStrip1;
@@ -562,12 +963,20 @@ namespace OpenRA.Editor
 			this.splitContainer3.Panel1.PerformLayout();
 			this.splitContainer3.Panel2.ResumeLayout(false);
 			this.splitContainer3.ResumeLayout(false);
+			this.toolStrip1.ResumeLayout(false);
+			this.toolStrip1.PerformLayout();
 			this.menuStrip1.ResumeLayout(false);
 			this.menuStrip1.PerformLayout();
 			this.statusStrip1.ResumeLayout(false);
 			this.statusStrip1.PerformLayout();
+			this.toolStripContainer1.BottomToolStripPanel.ResumeLayout(false);
+			this.toolStripContainer1.BottomToolStripPanel.PerformLayout();
+			this.toolStripContainer1.ContentPanel.ResumeLayout(false);
+			this.toolStripContainer1.TopToolStripPanel.ResumeLayout(false);
+			this.toolStripContainer1.TopToolStripPanel.PerformLayout();
+			this.toolStripContainer1.ResumeLayout(false);
+			this.toolStripContainer1.PerformLayout();
 			this.ResumeLayout(false);
-			this.PerformLayout();
 
 		}
 
@@ -598,7 +1007,6 @@ namespace OpenRA.Editor
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
 		private System.Windows.Forms.ToolStripMenuItem cCRedAlertMapToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem bitmapToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem mnuExport;
 		private System.Windows.Forms.ToolStripMenuItem mnuMinimapToPNG;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
@@ -618,7 +1026,41 @@ namespace OpenRA.Editor
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
 		private System.Windows.Forms.ToolStripMenuItem copySelectionToolStripMenuItem;
-
+		private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem openRAWebsiteToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem issueTrackerToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem developerBountiesToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem discussionForumsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem wikiDocumentationToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem openRAResourcesToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
+		private System.Windows.Forms.ToolStripMenuItem sourceCodeToolStripMenuItem;
+		private System.Windows.Forms.ToolStripContainer toolStripContainer1;
+		private System.Windows.Forms.ToolStrip toolStrip1;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
+		private System.Windows.Forms.ToolStripButton QuickhelpToolStripButton;
+		private System.Windows.Forms.ToolStripPanel BottomToolStripPanel;
+		private System.Windows.Forms.ToolStripPanel TopToolStripPanel;
+		private System.Windows.Forms.ToolStripPanel RightToolStripPanel;
+		private System.Windows.Forms.ToolStripPanel LeftToolStripPanel;
+		private System.Windows.Forms.ToolStripContentPanel ContentPanel;
+		private System.Windows.Forms.ToolStripButton toolStripMenuItemNew;
+		private System.Windows.Forms.ToolStripButton toolStripMenuItemOpen;
+		private System.Windows.Forms.ToolStripButton toolStripMenuItemSave;
+		private System.Windows.Forms.ToolStripButton toolStripMenuItemProperties;
+		private System.Windows.Forms.ToolStripButton toolStripMenuItemResize;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
+		private System.Windows.Forms.ToolStripButton toolStripMenuItemShowActorNames;
+		private System.Windows.Forms.ToolStripButton toolStripMenuItemShowGrid;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
+		private System.Windows.Forms.ToolStripButton toolStripMenuItemFixOpenAreas;
+		private System.Windows.Forms.ToolStripButton toolStripMenuItemSetupDefaultPlayers;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
+		private System.Windows.Forms.ToolStripButton toolStripMenuItemCopySelection;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
+		private System.Windows.Forms.ToolStripMenuItem fullMapRenderToolStripMenuItem;
 	}
 }
 
