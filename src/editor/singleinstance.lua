@@ -69,14 +69,15 @@ else -- something different is running on our port
     local failed = false
     for index = 2, #arg do
       local fileName = arg[index]
-      if fileName ~= "--" then
+      if fileName ~= "--"
+      -- on OSX, the command line includes -psn parameter, so ignore it
+      and (ide.osname ~= 'Macintosh' or not fileName:find("^-psn")) then
         cln:send(protocol.client.requestloading:format(fileName))
 
         local msg,err = cln:receive()
         if msg ~= protocol.server.answerok then
           failed = true
           print(err,msg)
-        else
         end
       end
     end
