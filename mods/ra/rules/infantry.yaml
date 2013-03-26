@@ -20,9 +20,9 @@ DOG:
 		Speed: 7
 	RevealsShroud:
 		Range: 5
-	AutoTarget:
+	Armament:
+		Weapon: DogJaw
 	AttackLeap:
-		PrimaryWeapon: DogJaw
 		CanAttackGround: no
 	RenderInfantry:
 		IdleAnimations: idle1,idle2
@@ -46,8 +46,9 @@ E1:
 		HP: 50
 	Mobile:
 		Speed: 4
+	Armament:
+		Weapon: M1Carbine
 	AttackFrontal:
-		PrimaryWeapon: M1Carbine
 	TakeCover:
 	-RenderInfantry:
 	RenderInfantryProne:
@@ -72,10 +73,11 @@ E2:
 		HP: 50
 	Mobile:
 		Speed: 5
-	AttackFrontal:
-		PrimaryWeapon: Grenade
-		PrimaryOffset: 0,0,0,-13
+	Armament:
+		Weapon: Grenade
+		LocalOffset: 0,0,0,-13,0
 		FireDelay: 15
+	AttackFrontal:
 	TakeCover:
 	-RenderInfantry:
 	RenderInfantryProne:
@@ -102,10 +104,13 @@ E3:
 		HP: 45
 	Mobile:
 		Speed: 3
+	Armament@PRIMARY:
+		Weapon: RedEye
+		LocalOffset: 0,0,0,-13,0
+	Armament@SECONDARY:
+		Weapon: Dragon
+		LocalOffset: 0,0,0,-13,0
 	AttackFrontal:
-		PrimaryWeapon: RedEye
-		SecondaryWeapon: Dragon
-		PrimaryOffset: 0,0,0,-13
 	TakeCover:
 	-RenderInfantry:
 	RenderInfantryProne:
@@ -130,10 +135,11 @@ E4:
 		HP: 40
 	Mobile:
 		Speed: 3
-	AttackFrontal:
-		PrimaryWeapon: Flamer
-		PrimaryOffset: 0,-10,0,-8
+	Armament:
+		Weapon: Flamer
+		LocalOffset: 0,-10,0,-8,0
 		FireDelay: 8
+	AttackFrontal:
 	TakeCover:
 	-RenderInfantry:
 	RenderInfantryProne:
@@ -204,8 +210,9 @@ SPY:
 	-RenderInfantry:
 	RenderSpy:
 		IdleAnimations: idle1,idle2
+	Armament:
+		Weapon: SilencedPPK
 	AttackFrontal:
-		PrimaryWeapon: SilencedPPK
 
 E7:
 	Inherits: ^Infantry
@@ -234,9 +241,11 @@ E7:
 		C4Delay: 45
 	Passenger:
 		PipType: Red
+	Armament@PRIMARY:
+		Weapon: Colt45
+	Armament@SECONDARY:
+		Weapon: Colt45
 	AttackFrontal:
-		PrimaryWeapon: Colt45
-		SecondaryWeapon: Colt45
 	TakeCover:
 	-RenderInfantry:
 	RenderInfantryProne:
@@ -270,9 +279,11 @@ E8:
 		Range: 4
 	Passenger:
 		PipType: Red
+	Armament@PRIMARY:
+		Weapon: VolkAT
+	Armament@SECONDARY:
+		Weapon: VolkNapalm
 	AttackFrontal:
-		PrimaryWeapon: VolkAT
-		SecondaryWeapon: VolkNapalm
 	TakeCover:
 	-RenderInfantry:
 	RenderInfantryProne:
@@ -308,8 +319,9 @@ MEDI:
 	Passenger:
 		PipType: Yellow
 	AutoHeal:
+	Armament:
+		Weapon: Heal
 	AttackMedic:
-		PrimaryWeapon: Heal
 	TakeCover:
 	-AutoTarget:
 	AttackMove:
@@ -343,8 +355,9 @@ MECH:
 	Passenger:
 		PipType: Yellow
 	AutoHeal:
+	Armament:
+		Weapon: Repair
 	AttackMedic:
-		PrimaryWeapon: Repair
 	TakeCover:
 	-AutoTarget:
 	AttackMove:
@@ -457,9 +470,10 @@ SHOK:
 		Speed: 3
 	RevealsShroud:
 		Range: 4
+	Armament:
+		Weapon: PortaTesla
+		LocalOffset: 0,-10,0,-8,0
 	AttackFrontal:
-		PrimaryWeapon: PortaTesla
-		PrimaryOffset: 0,-10,0,-8
 	TakeCover:
 	-RenderInfantry:
 	RenderInfantryProne:
@@ -492,8 +506,9 @@ SNIPER:
 		Range: 6
 	AutoTarget:
 		InitialStance: HoldFire
+	Armament:
+		Weapon: Sniper
 	AttackFrontal:
-		PrimaryWeapon: Sniper
 	TakeCover:
 	-RenderInfantry:
 	RenderInfantryProne:

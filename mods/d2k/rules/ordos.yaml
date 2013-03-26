@@ -158,10 +158,10 @@ TRIKEO:
 		Speed: 14
 	RenderUnit:
 		Image: RAIDER
+	Armament:
+		Weapon: M60mgo
+		LocalOffset: 0,-6,0,-3,0
 	AttackFrontal:
-		PrimaryWeapon: M60mgo
-		PrimaryOffset: 0,-6,0,-3
-		#PrimaryLocalOffset: 1,0,0,-3,0, -1,0,0,-3,0
 
 
 
@@ -212,9 +212,10 @@ DEVIATORTANK:
 	RevealsShroud:
 		Range: 5
 	RenderUnit:
+	Armament:
+		Weapon: FakeMissile
+		LocalOffset: 0,7,0,-2,0 #7
 	AttackLoyalty:
-		PrimaryWeapon: FakeMissile
-		PrimaryLocalOffset: 0,7,0,-2,0 #7
 	AutoTarget:
 		InitialStance: Defend
 	Explodes:

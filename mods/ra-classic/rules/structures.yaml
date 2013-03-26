@@ -315,10 +315,11 @@ TSLA:
 	RevealsShroud:
 		Range: 8
 	RenderBuildingCharge:
+	Armament:
+		Weapon: TeslaZap
+		LocalOffset: 0,0,0,-10,0
 	AttackTesla:
-		PrimaryWeapon: TeslaZap
 		ReloadTime: 120
-		PrimaryOffset: 0,0,0,-10
 	AutoTarget:
 	IronCurtainable:
 	-RenderBuilding:
@@ -354,9 +355,11 @@ AGUN:
 		ROT: 15
 		InitialFacing: 224
 	RenderBuildingTurreted:
+	Armament@PRIMARY:
+		Weapon: ZSU-23
+	Armament@SECONDARY:
+		Weapon: ZSU-23
 	AttackTurreted:
-		PrimaryWeapon: ZSU-23
-		SecondaryWeapon: ZSU-23
 	AutoTarget:
 	IronCurtainable:
 	-RenderBuilding:
@@ -419,9 +422,10 @@ PBOX:
 	IronCurtainable:
 	RenderRangeCircle:
 	AutoTarget:
+	Armament:
+		Weapon: Vulcan
+		LocalOffset: 0,-11,0,0,0
 	AttackTurreted:
-		PrimaryWeapon: Vulcan
-		PrimaryLocalOffset: 0,-11,0,0,0
 	WithMuzzleFlash:
 	Turreted:
 		ROT: 255
@@ -452,9 +456,10 @@ HBOX:
 	IronCurtainable:
 	RenderRangeCircle:
 	AutoTarget:
+	Armament:
+		Weapon: Vulcan
+		LocalOffset: 0,-11,0,0,0
 	AttackTurreted:
-		PrimaryWeapon: Vulcan
-		PrimaryLocalOffset: 0,-11,0,0,0
 	WithMuzzleFlash:
 	Turreted:
 		ROT: 255
@@ -485,8 +490,9 @@ GUN:
 		ROT: 12
 		InitialFacing: 50
 	RenderBuildingTurreted:
+	Armament:
+		Weapon: TurretGun
 	AttackTurreted:
-		PrimaryWeapon: TurretGun
 	AutoTarget:
 	IronCurtainable:
 	-RenderBuilding:
@@ -516,10 +522,11 @@ FTUR:
 		Range: 6
 	Turreted:
 		ROT: 255
+		Offset: 0,0,0,-2
+	Armament:
+		Weapon: FireballLauncher
+		LocalOffset: 0,-12,0,0,0
 	AttackTurreted:
-		PrimaryWeapon: FireballLauncher
-		PrimaryOffset: 0,0,0,-2
-		PrimaryLocalOffset: 0,-12,0,0,0
 	AutoTarget:
 	IronCurtainable:
 	RenderRangeCircle:
@@ -552,8 +559,9 @@ SAM:
 		ROT: 30
 		InitialFacing: 0
 	RenderBuildingTurreted:
+	Armament:
+		Weapon: Nike
 	AttackTurreted:
-		PrimaryWeapon: Nike
 	WithMuzzleFlash:
 	AutoTarget:
 	IronCurtainable:

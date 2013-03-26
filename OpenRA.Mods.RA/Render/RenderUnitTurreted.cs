@@ -8,6 +8,8 @@
  */
 #endregion
 
+using System;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
@@ -24,20 +26,30 @@ namespace OpenRA.Mods.RA.Render
 			: base(self)
 		{
 			var facing = self.Trait<IFacing>();
-			var turreted = self.Trait<Turreted>();
-			var attack = self.Trait<AttackBase>();
+			var turreted = self.TraitsImplementing<Turreted>();
 
-			var turretAnim = new Animation(GetImage(self), () => turreted.turretFacing );
-			turretAnim.Play( "turret" );
-
-			for( var i = 0; i < attack.Turrets.Count; i++ )
+			var i = 0;
+			foreach (var t in turreted)
 			{
-				var turret = attack.Turrets[i];
-				anims.Add( "turret_{0}".F(i),
-					new AnimationWithOffset( turretAnim,
-						() => Combat.GetTurretPosition( self, facing, turret ).ToFloat2(),
-						null));
+				var turret = t;
+
+				var anim = new Animation(GetImage(self), () => turret.turretFacing);
+				anim.Play("turret");
+
+				anims.Add("turret_{0}".F(i++), new AnimationWithOffset(anim,
+					() => turret.PxPosition(self, facing).ToFloat2() + RecoilOffset(self, turret), null));
 			}
+		}
+
+		float2 RecoilOffset(Actor self, Turreted t)
+		{
+			var a = self.TraitsImplementing<Armament>()
+					.OrderByDescending(w => w.Recoil)
+					.FirstOrDefault(w => w.Info.Turret == t.info.Turret);
+			if (a == null)
+				return float2.Zero;
+
+			return a.RecoilPxOffset(self, t.turretFacing).ToFloat2();
 		}
 	}
 }

@@ -1,0 +1,236 @@
+Selectable: True
+
+MapFormat: 5
+
+Title: Drop Zone
+
+Description: Pick up the crates with the APC to get units to kill the other players.
+
+Author: Holloweye
+
+Tileset: TEMPERAT
+
+MapSize: 64,64
+
+Bounds: 16,16,32,32
+
+UseAsShellmap: False
+
+Type: Minigame
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Race: allies
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Race: allies
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		LockRace: True
+		Race: soviet
+		Enemies: Multi1,Multi2,Multi3,Multi4,Multi5,Multi6,Multi17
+	PlayerReference@Multi1:
+		Name: Multi1
+		Playable: True
+		LockRace: True
+		Race: soviet
+		Enemies: Multi0,Multi2,Multi3,Multi4,Multi5,Multi6,Multi17
+	PlayerReference@Multi2:
+		Name: Multi2
+		Playable: True
+		LockRace: True
+		Race: soviet
+		Enemies: Multi0,Multi1,Multi3,Multi4,Multi5,Multi6,Multi17
+	PlayerReference@Multi3:
+		Name: Multi3
+		Playable: True
+		LockRace: True
+		Race: soviet
+		Enemies: Multi0,Multi1,Multi2,Multi4,Multi5,Multi6,Multi17
+	PlayerReference@Multi4:
+		Name: Multi4
+		Playable: True
+		LockRace: True
+		Race: soviet
+		Enemies: Multi0,Multi1,Multi2,Multi3,Multi5,Multi6,Multi17
+	PlayerReference@Multi5:
+		Name: Multi5
+		Playable: True
+		LockRace: True
+		Race: soviet
+		Enemies: Multi0,Multi2,Multi3,Multi4,Multi1,Multi6,Multi17
+	PlayerReference@Multi6:
+		Name: Multi6
+		Playable: True
+		LockRace: True
+		Race: soviet
+		Enemies: Multi0,Multi2,Multi3,Multi4,Multi5,Multi1,Multi17
+	PlayerReference@Multi7:
+		Name: Multi7
+		Playable: True
+		LockRace: True
+		Race: soviet
+		Enemies: Multi0,Multi2,Multi3,Multi4,Multi5,Multi6,Multi11
+
+Actors:
+	Actor0: apc
+		Location: 28,28
+		Owner: Multi0
+	Actor1: apc
+		Location: 30,28
+		Owner: Multi1
+	Actor2: apc
+		Location: 32,28
+		Owner: Multi2
+	Actor3: apc
+		Location: 32,30
+		Owner: Multi3
+	Actor4: apc
+		Location: 32,32
+		Owner: Multi4
+	Actor5: apc
+		Location: 30,32
+		Owner: Multi5
+	Actor6: apc
+		Location: 28,32
+		Owner: Multi6
+	Actor7: apc
+		Location: 28,30
+		Owner: Multi7
+	Actor9: tc04
+		Location: 18,43
+		Owner: Neutral
+	Actor10: tc02
+		Location: 44,44
+		Owner: Neutral
+	Actor11: t10
+		Location: 23,24
+		Owner: Neutral
+	Actor12: t08
+		Location: 34,23
+		Owner: Neutral
+	Actor13: t12
+		Location: 38,27
+		Owner: Neutral
+	Actor14: t12
+		Location: 35,35
+		Owner: Neutral
+	Actor15: tc04
+		Location: 43,18
+		Owner: Neutral
+	Actor16: tc05
+		Location: 18,18
+		Owner: Neutral
+	Actor17: t12
+		Location: 22,35
+		Owner: Neutral
+	Actor18: t07
+		Location: 18,28
+		Owner: Neutral
+	Actor19: t07
+		Location: 45,39
+		Owner: Neutral
+	Actor20: t07
+		Location: 40,18
+		Owner: Neutral
+	Actor8: mpspawn
+		Location: 29,29
+		Owner: Neutral
+	Actor21: mpspawn
+		Location: 29,30
+		Owner: Neutral
+	Actor22: mpspawn
+		Location: 29,31
+		Owner: Neutral
+	Actor23: mpspawn
+		Location: 30,31
+		Owner: Neutral
+	Actor24: mpspawn
+		Location: 31,31
+		Owner: Neutral
+	Actor25: mpspawn
+		Location: 31,30
+		Owner: Neutral
+	Actor26: mpspawn
+		Location: 31,29
+		Owner: Neutral
+	Actor27: mpspawn
+		Location: 30,29
+		Owner: Neutral
+
+Smudges:
+
+Rules:
+	World:
+		CrateDrop:
+			Maximum: 3
+			SpawnInterval: 5
+		-SpawnMPUnits:
+		-MPStartLocations:
+	CRATE:
+		-LevelUpCrateAction:
+		-GiveMcvCrateAction:
+		-RevealMapCrateAction:
+		-HideMapCrateAction:
+		-ExplodeCrateAction@nuke:
+		-ExplodeCrateAction@boom:
+		-ExplodeCrateAction@fire:
+		-SupportPowerCrateAction@parabombs:
+		-GiveCashCrateAction:
+		GiveUnitCrateAction@ttnk:
+			SelectionShares: 4
+			Unit: ttnk
+		GiveUnitCrateAction@ftrk:
+			SelectionShares: 6
+			Unit: ftrk
+		GiveUnitCrateAction@harv:
+			SelectionShares: 1
+			Unit: harv
+		GiveUnitCrateAction@shok:
+			SelectionShares: 1
+			Unit: shok
+		GiveUnitCrateAction@dog:
+			SelectionShares: 1
+			Unit: dog
+	APC:
+		Health:
+			HP: 1000
+		RevealsShroud:
+			Range: 40
+		MustBeDestroyed:
+		-AttackMove:
+	HARV:
+		Tooltip:
+			Name: Bomb Truck
+			Description: Explodes like a damn nuke!
+		Health:
+			HP: 100
+			Explodes:
+				Weapon: CrateNuke
+				EmptyWeapon:
+	SHOK:
+		Health:
+			HP: 800
+	DOG:
+		Health:
+			HP: 120
+		Mobile:
+			Speed: 7
+
+Sequences:
+
+Weapons:
+	PortaTesla:
+		ROF: 20
+		Range: 10
+		Warhead:
+			Spread: 1
+			InfDeath: 5
+			Damage: 80
+
+Voices:

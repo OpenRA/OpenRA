@@ -31,10 +31,11 @@ SS:
 		CloakDelay: 50
 		CloakSound: subshow1.aud
 		UncloakSound: subshow1.aud
-	AttackFrontal:
-		PrimaryWeapon: TorpTube
-		PrimaryLocalOffset: -4,0,0,0,0, 4,0,0,0,0
+	Armament:
+		Weapon: TorpTube
+		LocalOffset: -4,0,0,0,0, 4,0,0,0,0
 		FireDelay: 2
+	AttackFrontal:
 	Selectable:
 		Bounds: 38,38
 	Chronoshiftable:
@@ -78,9 +79,10 @@ MSUB:
 		CloakDelay: 100
 		CloakSound: subshow1.aud
 		UncloakSound: subshow1.aud
-	AttackFrontal:
-		PrimaryWeapon: SubMissile
+	Armament:
+		Weapon: SubMissile
 		FireDelay: 2
+	AttackFrontal:
 	Selectable:
 		Bounds: 44,44
 	Chronoshiftable:
@@ -116,11 +118,13 @@ DD:
 		Range: 6
 	Turreted:
 		ROT: 7
+		Offset: 0,-8,0,-3
+	Armament@PRIMARY:
+		Weapon: Stinger
+		LocalOffset: -4,0,0,0,-20, 4,0,0,0,20
+	Armament@SECONDARY:
+		Weapon: DepthCharge
 	AttackTurreted:
-		PrimaryWeapon: Stinger
-		SecondaryWeapon: DepthCharge
-		PrimaryOffset: 0,-8,0,-3
-		PrimaryLocalOffset: -4,0,0,0,-20, 4,0,0,0,20
 	Selectable:
 		Bounds: 38,38
 	RenderUnitTurreted:
@@ -155,19 +159,27 @@ CA:
 		Speed: 2
 	RevealsShroud:
 		Range: 7
-	Turreted:
+	Turreted@PRIMARY:
+		Turret: primary
+		Offset: 0,17,0,-2
 		ROT: 3
+	Turreted@SECONDARY:
+		Turret: secondary
+		Offset: 0,-17,0,-2
+		ROT: 3
+	Armament@PRIMARY:
+		Turret: primary
+		Weapon: 8Inch
+		LocalOffset: -4,-5,0,0,0, 4,-5,0,0,0
+		Recoil: 4
+		RecoilRecovery: 0.8
+	Armament@SECONDARY:
+		Turret: secondary
+		Weapon: 8Inch
+		LocalOffset: -4,-5,0,0,0, 4,-5,0,0,0
+		Recoil: 4
+		RecoilRecovery: 0.8
 	AttackTurreted:
-		PrimaryWeapon: 8Inch
-		SecondaryWeapon: 8Inch
-		PrimaryOffset: 0,17,0,-2
-		SecondaryOffset: 0,-17,0,-2
-		PrimaryLocalOffset: -4,-5,0,0,0, 4,-5,0,0,0
-		SecondaryLocalOffset: -4,-5,0,0,0, 4,-5,0,0,0
-		PrimaryRecoil: 4
-		SecondaryRecoil: 4
-		PrimaryRecoilRecovery: 0.8
-		SecondaryRecoilRecovery: 0.8
 	Selectable:
 		Bounds: 44,44
 	RenderUnitTurreted:
@@ -232,10 +244,12 @@ PT:
 		Range: 7
 	Turreted:
 		ROT: 7
+		Offset: 0,-6,0,-1
+	Armament@PRIMARY:
+		Weapon: 2Inch
+	Armament@SECONDARY:
+		Weapon: DepthCharge
 	AttackTurreted:
-		PrimaryWeapon: 2Inch
-		SecondaryWeapon: DepthCharge
-		PrimaryOffset: 0,-6,0,-1
 	Selectable:
 		Bounds: 32,32
 	RenderUnitTurreted:

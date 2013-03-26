@@ -19,70 +19,34 @@ namespace OpenRA.Mods.RA
 {
 	public abstract class AttackBaseInfo : ITraitInfo
 	{
-		[WeaponReference]
-		[Desc("Has to be defined here and in weapons.yaml.")]
-		public readonly string PrimaryWeapon = null;
-		[WeaponReference]
-		public readonly string SecondaryWeapon = null;
-		public readonly int PrimaryRecoil = 0;
-		public readonly int SecondaryRecoil = 0;
-		public readonly float PrimaryRecoilRecovery = 0.2f;
-		public readonly float SecondaryRecoilRecovery = 0.2f;
-		public readonly int[] PrimaryLocalOffset = { };
-		public readonly int[] SecondaryLocalOffset = { };
-		public readonly int[] PrimaryOffset = { 0, 0 };
-		public readonly int[] SecondaryOffset = null;
-		public readonly int FireDelay = 0;
-
-		public readonly bool AlignIdleTurrets = false;
 		public readonly bool CanAttackGround = true;
 
 		public readonly int MinimumScanTimeInterval = 30;
 		public readonly int MaximumScanTimeInterval = 60;
 
 		public abstract object Create(ActorInitializer init);
-
-		public float GetMaximumRange()
-		{
-			var priRange = PrimaryWeapon != null ? Rules.Weapons[PrimaryWeapon.ToLowerInvariant()].Range : 0;
-			var secRange = SecondaryWeapon != null ? Rules.Weapons[SecondaryWeapon.ToLowerInvariant()].Range : 0;
-
-			return Math.Max(priRange, secRange);
-		}
 	}
 
 	public abstract class AttackBase : IIssueOrder, IResolveOrder, ITick, IExplodeModifier, IOrderVoice, ISync
 	{
 		[Sync] public bool IsAttacking { get; internal set; }
 
-		public List<Weapon> Weapons = new List<Weapon>();
-		public List<Turret> Turrets = new List<Turret>();
-
 		readonly Actor self;
+
+		Lazy<IEnumerable<Armament>> armaments;
+		protected IEnumerable<Armament> Armaments { get { return armaments.Value; } }
 
 		public AttackBase(Actor self)
 		{
 			this.self = self;
-			var info = self.Info.Traits.Get<AttackBaseInfo>();
-
-			Turrets.Add(new Turret(info.PrimaryOffset, info.PrimaryRecoilRecovery));
-			if (info.SecondaryOffset != null)
-				Turrets.Add(new Turret(info.SecondaryOffset, info.SecondaryRecoilRecovery));
-
-			if (info.PrimaryWeapon != null)
-				Weapons.Add(new Weapon(info.PrimaryWeapon,
-					Turrets[0], info.PrimaryLocalOffset, info.PrimaryRecoil));
-
-			if (info.SecondaryWeapon != null)
-				Weapons.Add(new Weapon(info.SecondaryWeapon,
-					info.SecondaryOffset != null ? Turrets[1] : Turrets[0], info.SecondaryLocalOffset, info.SecondaryRecoil));
+			armaments = Lazy.New(() => self.TraitsImplementing<Armament>());
 		}
 
 		protected virtual bool CanAttack(Actor self, Target target)
 		{
 			if (!self.IsInWorld) return false;
 			if (!target.IsValid) return false;
-			if (Weapons.All(w => w.IsReloading)) return false;
+			if (Armaments.All(a => a.IsReloading)) return false;
 			if (self.IsDisabled()) return false;
 
 			if (target.IsActor && target.Actor.HasTrait<ITargetable>() &&
@@ -94,15 +58,12 @@ namespace OpenRA.Mods.RA
 
 		public bool ShouldExplode(Actor self) { return !IsReloading(); }
 
-		public bool IsReloading() { return Weapons.Any(w => w.IsReloading); }
+		public bool IsReloading() { return Armaments.Any(a => a.IsReloading); }
 
 		List<Pair<int, Action>> delayedActions = new List<Pair<int, Action>>();
 
 		public virtual void Tick(Actor self)
 		{
-			foreach (var w in Weapons)
-				w.Tick();
-
 			for (var i = 0; i < delayedActions.Count; i++)
 			{
 				var x = delayedActions[i];
@@ -127,20 +88,20 @@ namespace OpenRA.Mods.RA
 
 			var move = self.TraitOrDefault<IMove>();
 			var facing = self.TraitOrDefault<IFacing>();
-			foreach (var w in Weapons)
-				w.CheckFire(self, this, move, facing, target);
+			foreach (var a in Armaments)
+				a.CheckFire(self, this, move, facing, target);
 		}
-
-		public virtual int FireDelay( Actor self, Target target, AttackBaseInfo info )
-		{
-			return info.FireDelay;
-		}
-
-		bool IsHeal { get { return Weapons[ 0 ].Info.Warheads[ 0 ].Damage < 0; } }
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new AttackOrderTargeter( "Attack", 6, IsHeal ); }
+			get
+			{
+				if (Armaments.Count() == 0)
+					yield break;
+
+				bool isHeal = Armaments.First().Weapon.Warheads[0].Damage < 0;
+				yield return new AttackOrderTargeter("Attack", 6, isHeal);
+			}
 		}
 
 		public Order IssueOrder( Actor self, IOrderTargeter order, Target target, bool queued )
@@ -163,12 +124,6 @@ namespace OpenRA.Mods.RA
 				self.SetTargetLine(target, Color.Red);
 				AttackTarget(target, order.Queued, order.OrderString == "Attack");
 			}
-			else
-			{
-				/* hack */
-				if (self.HasTrait<Turreted>() && self.Info.Traits.Get<AttackBaseInfo>().AlignIdleTurrets)
-					self.Trait<Turreted>().desiredFacing = null;
-			}
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
@@ -178,10 +133,10 @@ namespace OpenRA.Mods.RA
 
 		public abstract Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove);
 
-		public bool HasAnyValidWeapons(Target t) { return Weapons.Any(w => w.IsValidAgainst(self.World, t)); }
-		public float GetMaximumRange() { return Weapons.Max(w => w.Info.Range); }
+		public bool HasAnyValidWeapons(Target t) { return Armaments.Any(a => a.IsValidAgainst(self.World, t)); }
+		public float GetMaximumRange() { return Armaments.Select(a => a.Weapon.Range).Aggregate(0f, Math.Max); }
 
-		public Weapon ChooseWeaponForTarget(Target t) { return Weapons.FirstOrDefault(w => w.IsValidAgainst(self.World, t)); }
+		public Armament ChooseArmamentForTarget(Target t) { return Armaments.FirstOrDefault(a => a.IsValidAgainst(self.World, t)); }
 
 		public void AttackTarget( Target target, bool queued, bool allowMove )
 		{

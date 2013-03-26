@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Buildings;
@@ -25,12 +26,12 @@ namespace OpenRA.Mods.RA
 	class AttackTurreted : AttackBase, INotifyBuildComplete, ISync
 	{
 		protected Target target;
-		protected Turreted turret;
+		protected IEnumerable<Turreted> turrets;
 		[Sync] protected bool buildComplete;
 
 		public AttackTurreted(Actor self) : base(self)
 		{
-			turret = self.Trait<Turreted>();
+			turrets = self.TraitsImplementing<Turreted>();
 		}
 
 		protected override bool CanAttack( Actor self, Target target )
@@ -39,7 +40,12 @@ namespace OpenRA.Mods.RA
 				return false;
 
 			if (!target.IsValid) return false;
-			if (!turret.FaceTarget(self, target)) return false;
+
+			bool canAttack = false;
+			foreach (var t in turrets)
+				if (t.FaceTarget(self, target))
+					canAttack = true;
+			if (!canAttack)	return false;
 
 			return base.CanAttack( self, target );
 		}
@@ -85,7 +91,7 @@ namespace OpenRA.Mods.RA
 
 				var attack = self.Trait<AttackTurreted>();
 				const int RangeTolerance = 1;	/* how far inside our maximum range we should try to sit */
-				var weapon = attack.ChooseWeaponForTarget(target);
+				var weapon = attack.ChooseArmamentForTarget(target);
 
 				if (weapon != null)
 				{
@@ -93,7 +99,7 @@ namespace OpenRA.Mods.RA
 
 					if (allowMove && self.HasTrait<Mobile>() && !self.Info.Traits.Get<MobileInfo>().OnRails)
 						return Util.SequenceActivities(
-							new Follow( target, Math.Max( 0, (int)weapon.Info.Range - RangeTolerance ) ),
+							new Follow( target, Math.Max( 0, (int)weapon.Weapon.Range - RangeTolerance ) ),
 							this );
 				}
 

@@ -99,9 +99,10 @@ JEEP:
 	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from C&C Gold values for now to properly emulate.
 	Turreted:
 		ROT: 10
+		Offset: 0,2,0,-4
+	Armament:
+		Weapon: MachineGun
 	AttackTurreted:
-		PrimaryWeapon: MachineGun
-		PrimaryOffset: 0,2,0,-4
 	WithMuzzleFlash:
 	RenderUnitTurreted:
 	AutoTarget:
@@ -131,9 +132,9 @@ APC:
 	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from C&C Gold values for now to properly emulate.
 	Turreted:
 		ROT: 10
+	Armament:
+		Weapon: MachineGun
 	AttackTurreted:
-		PrimaryWeapon: MachineGun
-		PrimaryOffset: 0,0,0,0
 	WithMuzzleFlash:
 	RenderUnitTurreted:
 	AutoTarget:
@@ -168,9 +169,10 @@ BGGY:
 	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from C&C Gold values for now to properly emulate.
 	Turreted:
 		ROT: 10
+		Offset: 0,1,0,-3
+	Armament:
+		Weapon: MachineGun
 	AttackTurreted:
-		PrimaryWeapon: MachineGun
-		PrimaryOffset: 0,1,0,-3
 	WithMuzzleFlash:
 	RenderUnitTurreted:
 	AutoTarget:
@@ -198,10 +200,10 @@ BIKE:
 		Range: 4
 	#	Range: 2
 	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from C&C Gold values for now to properly emulate.
+	Armament:
+		Weapon: BikeRockets
+		LocalOffset: -4,0,0,-2,25, 4,0,0,-2,-25
 	AttackFrontal:
-		PrimaryWeapon: BikeRockets
-		PrimaryOffset: 0,0,0,-2
-		PrimaryLocalOffset: -4,0,0,0,25, 4,0,0,0,-25
 	RenderUnit:
 	AutoTarget:
 
@@ -228,9 +230,10 @@ ARTY:
 		Range: 6
 	#	Range: 4
 	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from C&C Gold values for now to properly emulate.
+	Armament:
+		Weapon: ArtilleryShell
+		LocalOffset: 0,-7,0,-3,0
 	AttackFrontal:
-		PrimaryWeapon: ArtilleryShell
-		PrimaryOffset: 0,-7,0,-3
 	RenderUnit:
 	AutoTarget:
 	Explodes:
@@ -260,10 +263,10 @@ FTNK:
 		Range: 6
 	#	Range: 4
 	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from C&C Gold values for now to properly emulate.
+	Armament:
+		Weapon: BigFlamer
+		LocalOffset: 2,-5,3,2,0, -2,-5,3,2,0
 	AttackFrontal:
-		PrimaryWeapon: BigFlamer
-		PrimaryOffset: 0,-5,3,2
-		PrimaryLocalOffset: 2,0,0,0,0, -2,0,0,0,0
 	RenderUnit:
 	AutoTarget:
 	WithMuzzleFlash:
@@ -295,11 +298,12 @@ LTNK:
 	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from C&C Gold values for now to properly emulate.
 	Turreted:
 		ROT: 5
+	Armament:
+		Weapon: 70mm
+		Recoil: 2
+		RecoilRecovery: 0.4
+		LocalOffset: 0,3,0,-2,0
 	AttackTurreted:
-		PrimaryWeapon: 70mm
-		PrimaryRecoil: 2
-		PrimaryRecoilRecovery: 0.4
-		PrimaryLocalOffset: 0,3,0,-2,0
 	RenderUnitTurreted:
 	AutoTarget:
 
@@ -327,12 +331,13 @@ MTNK:
 	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from C&C Gold values for now to properly emulate.
 	Turreted:
 		ROT: 5
+	Armament:
+	#	Weapon: 120mm
+		Weapon: 105mm
+		Recoil: 3
+		RecoilRecovery: 0.6
+		LocalOffset: 0,0,0,-1,0
 	AttackTurreted:
-	#	PrimaryWeapon: 120mm
-		PrimaryWeapon: 105mm
-		PrimaryRecoil: 3
-		PrimaryRecoilRecovery: 0.6
-		PrimaryLocalOffset: 0,0,0,-1,0
 	RenderUnitTurreted:
 	AutoTarget:
 	Selectable:
@@ -363,14 +368,16 @@ HTNK:
 # In practice, it seems that OpenRA renders vision range differently. Will set at +2 from C&C Gold values for now to properly emulate.
 	Turreted:
 		ROT: 2
+	Armament@PRIMARY:
+		Weapon: 120mmDual
+		LocalOffset: -5,-5,0,-10,0, 5,-5,0,-10,0
+		Recoil: 4
+		RecoilRecovery: 1
+	Armament@SECONDARY:
+		Weapon: MammothMissiles
+		LocalOffset: -9,2,0,0,25, 9,2,0,0,-25
+		Recoil: 1
 	AttackTurreted:
-		PrimaryWeapon: 120mmDual
-		SecondaryWeapon: MammothMissiles
-		PrimaryLocalOffset: -5,-5,0,-10,0, 5,-5,0,-10,0
-		SecondaryLocalOffset: -9,2,0,0,25, 9,2,0,0,-25
-		PrimaryRecoil: 4
-		SecondaryRecoil: 1
-		PrimaryRecoilRecovery: 1
 	RenderUnitTurreted:
 	AutoTarget:
 	SelfHealing:
@@ -405,10 +412,11 @@ MSAM:
 	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from C&C Gold values for now to properly emulate.
 	Turreted:
 		ROT: 255
+		Offset: 0,6,0,-3
+	Armament:
+		Weapon: 227mm
+		LocalOffset: 3,-5,0,0,0, -3,-5,0,0,0
 	AttackFrontal:
-		PrimaryWeapon: 227mm
-		PrimaryOffset: 0,6,0,-3
-		PrimaryLocalOffset: 3,-5,0,0,0, -3,-5,0,0,0
 	RenderUnitTurretedAim:
 	AutoTarget:
 	Explodes:
@@ -438,13 +446,15 @@ MLRS:
 	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from C&C Gold values for now to properly emulate.
 	Turreted:
 		ROT: 5
+		Offset: 0,3,0,-3
+	#	AlignWhenIdle: true
+	Armament@PRIMARY:
+		Weapon: HonestJohn
+		LocalOffset: -4,0,0,0,0
+	Armament@SECONDARY:
+		Weapon: HonestJohn
+		LocalOffset: 4,0,0,0,0
 	AttackFrontal:
-		PrimaryWeapon: HonestJohn
-		SecondaryWeapon: HonestJohn
-		PrimaryOffset: 0,3,0,-3
-		PrimaryLocalOffset: -4,0,0,0,0
-		SecondaryLocalOffset: 4,0,0,0,0
-	#	AlignIdleTurrets: true
 	RenderUnitTurretedAim:
 	AutoTarget:
 	Explodes:
@@ -478,10 +488,10 @@ STNK:
 		CloakDelay: 125
 		CloakSound: trans1.aud
 		UncloakSound: appear1.aud
+	Armament:
+		Weapon: 227mm.stnk
+		LocalOffset: 1,-5,0,-3,0, -1,-5,0,-3,0
 	AttackFrontal:
-		PrimaryWeapon: 227mm.stnk
-		PrimaryOffset: 0,-5,0,-3
-		PrimaryLocalOffset: 1,0,0,0,0, -1,0,0,0,0
 	RenderUnit:
 	AutoTarget:
 		InitialStance: HoldFire

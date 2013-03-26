@@ -30,9 +30,10 @@ namespace OpenRA.Mods.RA.Render
 
 			rotorAnim = new Animation(rs.GetImage(self));
 			rotorAnim.PlayRepeating("rotor");
+			var turret = new Turret(info.Offset);
 			rs.anims.Add(info.Id, new AnimationWithOffset(
 				rotorAnim,
-				() => Combat.GetTurretPosition( self, facing, new Turret(info.Offset)).ToFloat2(),
+				() => turret.PxPosition(self, facing).ToFloat2(),
 				null ) { ZOffset = 1 } );
 		}
 

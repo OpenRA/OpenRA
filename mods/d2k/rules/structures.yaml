@@ -474,9 +474,10 @@ GUNTOWER:
 	Turreted:
 		ROT: 6
 		InitialFacing: 128
+	Armament:
+		Weapon: TurretGun
+		LocalOffset: 0,-11,0,-7,0
 	AttackTurreted:
-		PrimaryWeapon: TurretGun
-		PrimaryLocalOffset: 0,-11,0,-7,0
 	AutoTarget:
 	LeavesHusk:
 		HuskActor: Guntower.Husk
@@ -529,9 +530,10 @@ ROCKETTOWER:
 	#-AutoTargetIgnore:
 	RenderBuildingSeparateTurret:
 	#	HasMakeAnimation: false
+	Armament:
+		Weapon: TowerMissile
+		LocalOffset: 14,-2,0,-11,0, -14,-2,0,-11,0
 	AttackTurreted:
-		PrimaryWeapon: TowerMissile
-		PrimaryLocalOffset: 14,-2,0,-11,0, -14,-2,0,-11,0
 	Turreted:
 		ROT: 8
 		InitialFacing: 128

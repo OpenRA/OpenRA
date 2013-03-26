@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Linq;
 using OpenRA.GameRules;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Render;
@@ -30,11 +31,13 @@ namespace OpenRA.Mods.RA
 		AttackPopupTurretedInfo Info;
 		int IdleTicks = 0;
 		PopupState State = PopupState.Open;
+		Turreted turret;
 
 		public AttackPopupTurreted(ActorInitializer init, AttackPopupTurretedInfo info) : base(init.self)
 		{
 			Info = info;
 			buildComplete = init.Contains<SkipMakeAnimsInit>();
+			turret = turrets.FirstOrDefault();
 		}
 
 		protected override bool CanAttack( Actor self, Target target )

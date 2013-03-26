@@ -368,7 +368,6 @@
     <Compile Include="Turreted.cs" />
     <Compile Include="Valued.cs" />
     <Compile Include="WaterPaletteRotation.cs" />
-    <Compile Include="Weapon.cs" />
     <Compile Include="Widgets\BuildPaletteWidget.cs" />
     <Compile Include="Widgets\Logic\ModBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\ColorPickerLogic.cs" />
@@ -420,6 +419,7 @@
     <Compile Include="Widgets\ColorPreviewManagerWidget.cs" />
     <Compile Include="FogPalette.cs" />
     <Compile Include="Infiltrates.cs" />
+    <Compile Include="Armament.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

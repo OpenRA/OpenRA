@@ -1,0 +1,333 @@
+Selectable: True
+
+MapFormat: 5
+
+Title: Drop Zone W
+
+Description: Pick up the crates with the naval mobile HQ to get units to kill the other players. v0.2
+
+Author: riderr3
+
+Tileset: SNOW
+
+MapSize: 64,64
+
+Bounds: 16,16,32,32
+
+UseAsShellmap: False
+
+Type: Minigame
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Race: allies
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Race: allies
+		Enemies: Multi0,Multi1,Multi2,Multi3,Multi4,Multi5,Multi6,Multi7
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		LockRace: True
+		Race: allies
+		LockSpawn: True
+		Enemies: Creeps
+	PlayerReference@Multi1:
+		Name: Multi1
+		Playable: True
+		LockRace: True
+		Race: allies
+		LockSpawn: True
+		Enemies: Creeps
+	PlayerReference@Multi2:
+		Name: Multi2
+		Playable: True
+		LockRace: True
+		Race: allies
+		LockSpawn: True
+		Enemies: Creeps
+	PlayerReference@Multi3:
+		Name: Multi3
+		Playable: True
+		LockRace: True
+		Race: allies
+		LockSpawn: True
+		Enemies: Creeps
+	PlayerReference@Multi4:
+		Name: Multi4
+		Playable: True
+		LockRace: True
+		Race: allies
+		LockSpawn: True
+		Enemies: Creeps
+	PlayerReference@Multi5:
+		Name: Multi5
+		Playable: True
+		LockRace: True
+		Race: allies
+		LockSpawn: True
+		Enemies: Creeps
+	PlayerReference@Multi6:
+		Name: Multi6
+		Playable: True
+		LockRace: True
+		Race: allies
+		LockSpawn: True
+		Enemies: Creeps
+	PlayerReference@Multi7:
+		Name: Multi7
+		Playable: True
+		LockRace: True
+		Race: allies
+		LockSpawn: True
+		Enemies: Creeps
+
+Actors:
+	Actor2: mpspawn
+		Location: 34,30
+		Owner: Neutral
+	Actor4: mpspawn
+		Location: 30,32
+		Owner: Neutral
+	Actor6: mpspawn
+		Location: 32,34
+		Owner: Neutral
+	Actor0: mpspawn
+		Location: 30,30
+		Owner: Neutral
+	Actor12: lst
+		Location: 35,29
+		Owner: Multi0
+	Actor14: lst
+		Location: 29,29
+		Owner: Multi1
+	Actor8: lst
+		Location: 29,35
+		Owner: Multi2
+	Actor10: lst
+		Location: 35,35
+		Owner: Multi3
+	Actor9: lst
+		Location: 32,35
+		Owner: Multi4
+	Actor13: lst
+		Location: 32,29
+		Owner: Multi5
+	Actor11: lst
+		Location: 35,32
+		Owner: Multi6
+	Actor15: lst
+		Location: 29,32
+		Owner: Multi7
+	Actor7: mpspawn
+		Location: 34,34
+		Owner: Neutral
+	Actor3: mpspawn
+		Location: 34,32
+		Owner: Neutral
+	Actor1: mpspawn
+		Location: 32,30
+		Owner: Neutral
+	Actor5: mpspawn
+		Location: 30,34
+		Owner: Neutral
+	Actor16: v12
+		Location: 37,24
+		Owner: Neutral
+	Actor17: v11
+		Location: 38,23
+		Owner: Neutral
+	Actor18: v17
+		Location: 38,25
+		Owner: Neutral
+	Actor19: brl3
+		Location: 47,21
+		Owner: Neutral
+	Actor20: v15
+		Location: 39,22
+		Owner: Neutral
+	Actor21: t12
+		Location: 39,20
+		Owner: Neutral
+	Actor22: t08
+		Location: 29,47
+		Owner: Neutral
+	Actor23: tc02
+		Location: 15,46
+		Owner: Neutral
+	Actor24: t07
+		Location: 16,44
+		Owner: Neutral
+	Actor25: tc05
+		Location: 14,38
+		Owner: Neutral
+	Actor26: t07
+		Location: 36,25
+		Owner: Neutral
+	Actor28: v14
+		Location: 38,24
+		Owner: Neutral
+	Actor27: t08
+		Location: 37,25
+		Owner: Neutral
+	Actor30: t10
+		Location: 21,36
+		Owner: Neutral
+	Actor31: t01
+		Location: 23,34
+		Owner: Neutral
+
+Smudges:
+
+Rules:
+	World:
+		CrateDrop:
+			Maximum: 3
+			SpawnInterval: 5
+			WaterChance: 1
+		-SpawnMPUnits:
+		-MPStartLocations:
+	CRATE:
+		-LevelUpCrateAction:
+		-GiveMcvCrateAction:
+		-GiveUnitCrateAction@jeep:
+		-GiveUnitCrateAction@arty:
+		-GiveUnitCrateAction@v2rl:
+		-GiveUnitCrateAction@1tnk:
+		-GiveUnitCrateAction@2tnk:
+		-GiveUnitCrateAction@3tnk:
+		-GiveUnitCrateAction@4tnk:
+		-RevealMapCrateAction:
+		-HideMapCrateAction:
+		-ExplodeCrateAction@nuke:
+		-ExplodeCrateAction@boom:
+		-ExplodeCrateAction@fire:
+		-SupportPowerCrateAction@parabombs:
+		-GiveCashCrateAction:
+		GiveUnitCrateAction@pt:
+			SelectionShares: 7
+			Unit: pt
+		GiveUnitCrateAction@dd:
+			SelectionShares: 6
+			Unit: dd
+		GiveUnitCrateAction@ca:
+			SelectionShares: 4
+			Unit: ca
+		GiveUnitCrateAction@ss:
+			SelectionShares: 6
+			Unit: ss
+		GiveUnitCrateAction@msub:
+			SelectionShares: 4
+			Unit: msub
+	LST:
+		Buildable:
+			Queue: Ship
+			BuildPaletteOrder: 30
+			Owner: allies
+		Tooltip:
+			Name: Naval Mobile HQ
+			Description: Naval mobile HQ.\n Protect it at all costs.
+		Health:
+			HP: 1000
+		Mobile:
+			Speed: 12
+		RevealsShroud:
+			Range: 50
+		Armament@PRIMARY:
+			Weapon:M60mg
+		Armament@SECONDARY:
+			Weapon:M60mg
+		AttackFrontal:
+		WithMuzzleFlash:
+		MustBeDestroyed:
+		-GivesBounty:
+	PT:
+		Buildable:
+			Owner: allies
+		-GivesBounty:
+	DD:
+		Buildable:
+			Owner: allies
+		-GivesBounty:
+	CA:
+		Buildable:
+			Owner: allies
+		-GivesBounty:
+	SS:
+		Buildable:
+			Owner: allies
+		-GivesBounty:
+	MSUB:
+		Buildable:
+			Owner: allies
+		-GivesBounty:
+
+Sequences:
+	lst:
+		muzzle: minigun
+			Start: 0
+			Length: 6
+			Facings: 8
+		turret: mgun
+			Start: 0
+			Facings: 32
+
+Weapons:
+	8Inch:
+		ROF: 200
+		Range: 32
+		Burst: 4
+		Report: TURRET1
+		Projectile: Bullet
+			Speed: 32
+			High: true
+			Angle: .1
+			Inaccuracy: 80
+			Image: 120MM
+			ContrailLength: 30
+		Warhead:
+			Spread: 3
+			Versus:
+				None: 60%
+				Wood: 75%
+				Light: 60%
+				Heavy: 25%
+			Explosion: large_explosion
+			WaterExplosion: large_splash
+			InfDeath: 2
+			SmudgeType: Crater
+			Damage: 250
+			ImpactSound: kaboom12
+			WaterImpactSound: splash9
+	SubMissile:
+		ROF: 250
+		Range: 32
+		Burst: 4
+		Report: MISSILE6
+		Projectile: Bullet
+			Speed: 24
+			High: true
+			Angle: .1
+			Inaccuracy: 70
+			Image: MISSILE
+			Trail: smokey
+			ContrailLength: 30
+		Warhead:
+			Spread: 10
+			Versus:
+				None: 40%,
+				Light: 30%
+				Heavy: 30%
+			Explosion: large_explosion
+			WaterExplosion: large_splash
+			InfDeath: 2
+			SmudgeType: Crater
+			Damage: 400
+			ImpactSound: kaboom12
+			WaterImpactSound: splash9
+
+Voices:

@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using OpenRA.Traits;
 using OpenRA.Mods.RA.Activities;
 
@@ -26,15 +27,19 @@ namespace OpenRA.Mods.RA
 
 		public override void DoAttack(Actor self, Target target)
 		{
-			if (!CanAttack (self, target)) return;
+			if (!CanAttack(self, target)) return;
 
-			var weapon = Weapons[0].Info;
-			if (!Combat.IsInRange(self.CenterLocation, weapon.Range, target)) return;
+			var arm = Armaments.FirstOrDefault();
+			if (arm == null)
+				return;
+
+			if (!Combat.IsInRange(self.CenterLocation, arm.Weapon.Range, target))
+				return;
 
 			var move = self.TraitOrDefault<IMove>();
 			var facing = self.TraitOrDefault<IFacing>();
-			foreach (var w in Weapons)
-				w.CheckFire(self, this, move, facing, target);
+			foreach (var a in Armaments)
+				a.CheckFire(self, this, move, facing, target);
 
 			if (target.Actor != null)
 				target.Actor.ChangeOwner(self.Owner);

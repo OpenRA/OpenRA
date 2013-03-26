@@ -556,12 +556,13 @@ OBLI:
 	# (Range of Obelisk laser is 7.5)
 	RenderBuildingCharge:
 		ChargeAudio: obelpowr.aud
-	AttackTurreted:
-		PrimaryWeapon: Laser
-		PrimaryOffset: 0,0,-2,-17
-		FireDelay: 8
 	Turreted:
 		ROT:255
+		Offset: 0,0,-2,-17
+	Armament:
+		Weapon: Laser
+		FireDelay: 8
+	AttackTurreted:
 	AutoTarget:
 	-RenderBuilding:
 	RenderRangeCircle:
@@ -663,9 +664,10 @@ GUN:
 		ROT: 12
 		InitialFacing: 50
 	RenderBuildingTurreted:
+	Armament:
+		Weapon: TurretGun
+		LocalOffset: 0,4,0,-2,0
 	AttackTurreted:
-		PrimaryWeapon: TurretGun
-		PrimaryLocalOffset: 0,4,0,-2,0
 	AutoTarget:
 	-AutoTargetIgnore:
 	-RenderBuilding:
@@ -706,8 +708,9 @@ SAM:
 		ROT: 7
 		InitialFacing: 0
 	RenderBuildingTurreted:
+	Armament:
+		Weapon: SAMMissile
 	AttackPopupTurreted:
-		PrimaryWeapon: SAMMissile
 	WithMuzzleFlash:
 	AutoTarget:
 	-RenderBuilding:
@@ -736,10 +739,10 @@ GTWR:
 		Range: 6
 	#	Range: 3
 	# RevealShroud range was set to equal 1 + its weapon range (due to possible rendering issues with shroud for OpenRA)
+	Armament:
+		Weapon: HighV
+		LocalOffset: 0,-6,0,0,0
 	AttackTurreted:
-		PrimaryWeapon: HighV
-		PrimaryOffset: 0,0,0,-6
-		PrimaryLocalOffset: 0,-6,0,0,0
 	AutoTarget:
 	-AutoTargetIgnore:
 	DetectCloaked:
@@ -749,6 +752,7 @@ GTWR:
 	WithMuzzleFlash:
 	Turreted:
 		ROT:255
+		Offset: 0,0,0,-6
 
 ATWR:
 	Inherits: ^Building
@@ -777,12 +781,13 @@ ATWR:
 		Range: 7
 	#	Range: 4
 	# RevealShroud range was set to equal its weapon range +1 (due to possible rendering issues with shroud for OpenRA)
-	AttackTurreted:
-		PrimaryWeapon: TowerMissle
-		PrimaryOffset: 0,0,5,2
-		PrimaryLocalOffset: 7,-7,0,0,-25, -7,-7,0,0,25
 	Turreted:
 		ROT:255
+		Offset: 0,0,5,2
+	Armament:
+		Weapon: TowerMissle
+		LocalOffset: 7,-7,0,0,-25, -7,-7,0,0,25
+	AttackTurreted:
 	AutoTarget:
 	-AutoTargetIgnore:
 	DetectCloaked:

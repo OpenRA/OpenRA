@@ -200,9 +200,10 @@ namespace OpenRA.Mods.RA.AI
 			return RelativeValue(own, enemy, 100, SumOfValues<AttackBase>, (Actor a) =>
 			{
 				int sumOfDamage = 0;
-				foreach (var weap in a.Trait<AttackBase>().Weapons)
-					if (weap.Info.Warheads[0] != null)
-						sumOfDamage += weap.Info.Warheads[0].Damage;
+				var arms = a.TraitsImplementing<Armament>();
+				foreach (var arm in arms)
+					if (arm.Weapon.Warheads[0] != null)
+						sumOfDamage += arm.Weapon.Warheads[0].Damage;
 				return sumOfDamage;
 			});
 		}

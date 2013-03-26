@@ -143,11 +143,12 @@ COMBATA:
 		Prerequisites: heavya
 		Owner: atreides
 		BuiltAt: heavya
+	Armament:
+		Weapon: 90mma
+		Recoil: 4
+		RecoilRecovery: 0.8
+		LocalOffset: 0,-2,0,-3,0
 	AttackTurreted:
-		PrimaryWeapon: 90mma
-		PrimaryRecoil: 4
-		PrimaryRecoilRecovery: 0.8
-		PrimaryLocalOffset: 0,-2,0,-3,0
 	RenderUnitTurreted:
 		Image: COMBATA
 	LeavesHusk:
@@ -196,9 +197,10 @@ SONICTANK:
 		Range: 6
 	RenderUnit:
 		Image: SONICTANK
+	Armament:
+		Weapon: TTankZap
+		LocalOffset: 0,-15,0,-10,0
 	AttackFrontal:
-		PrimaryWeapon: TTankZap
-		PrimaryLocalOffset: 0,-15,0,-10,0
 	AutoTarget:
 		InitialStance: Defend
 	Explodes:
@@ -239,8 +241,9 @@ FREMEN:
 		Range: 7
 	AutoTarget:
 		ScanRadius: 7
+	Armament:
+		Weapon: Sniper
 	AttackFrontal:
-		PrimaryWeapon: Sniper
 	RenderInfantryProne:
 	-RenderInfantry:
 	TakeCover:

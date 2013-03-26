@@ -230,12 +230,13 @@ namespace OpenRA.Mods.RA.AI
 				if (!target.HasTrait<TargetableUnit<TargetableUnitInfo>>() &&
 					!target.HasTrait<TargetableBuilding>()) return false;
 
-				foreach (var weap in a.Trait<AttackBase>().Weapons)
+				var arms = a.TraitsImplementing<Armament>();
+				foreach (var arm in arms)
 					if (target.HasTrait<TargetableUnit<TargetableUnitInfo>>() && 
-						weap.Info.ValidTargets.Intersect(target.Trait<TargetableUnit<TargetableUnitInfo>>().TargetTypes) != null)
+						arm.Weapon.ValidTargets.Intersect(target.Trait<TargetableUnit<TargetableUnitInfo>>().TargetTypes) != null)
 						return true;
 					else if (target.HasTrait<TargetableBuilding>() && 
-						weap.Info.ValidTargets.Intersect(target.Trait<TargetableBuilding>().TargetTypes) != null)
+				    	arm.Weapon.ValidTargets.Intersect(target.Trait<TargetableBuilding>().TargetTypes) != null)
 						return true;
 				return false;
 			}
@@ -253,12 +254,15 @@ namespace OpenRA.Mods.RA.AI
 				foreach (var unit in units)
 					if (unit != null && unit.HasTrait<AttackBase>() && !unit.HasTrait<Aircraft>()
 						&& !unit.IsDisabled())
-						foreach (var weap in unit.Trait<AttackBase>().Weapons)
-							if (weap.Info.ValidTargets.Contains("Air"))
+					{
+						var arms = unit.TraitsImplementing<Armament>();
+						foreach (var a in arms)
+							if (a.Weapon.ValidTargets.Contains("Air"))
 							{
 								missileUnitsCount++;
 								break;
 							}
+					}
 				return missileUnitsCount;
 			}
 

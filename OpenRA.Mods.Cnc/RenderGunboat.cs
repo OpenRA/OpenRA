@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
@@ -26,7 +27,7 @@ namespace OpenRA.Mods.RA.Render
 		string lastDamage = "";
 
 		public RenderGunboat(Actor self)
-			: base(self, () => self.HasTrait<Turreted>() ? self.Trait<Turreted>().turretFacing : 0)
+			: base(self, () => self.HasTrait<Turreted>() ? self.TraitsImplementing<Turreted>().First().turretFacing : 0)
 		{
 			facing = self.Trait<IFacing>();
 			anim.Play("left");
