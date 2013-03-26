@@ -10,7 +10,9 @@
 
 using OpenRA.Traits;
 using OpenRA.Widgets;
+using System;
 using System.Drawing;
+using System.Linq;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
 {
@@ -56,6 +58,37 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			optionsBG.Get<ButtonWidget>("SURRENDER").IsVisible = () => false;
 
 			Ui.Root.Get<ButtonWidget>("INGAME_STATS_BUTTON").OnClick = () => gameRoot.Get("OBSERVER_STATS").Visible ^= true;
+
+			var shroudSelector = Ui.Root.GetOrNull<DropDownButtonWidget>("SHROUD_SELECTOR");
+			if (shroudSelector != null)
+			{
+				if (world.RenderedShroud == world.LocalShroud)
+					shroudSelector.GetText = () =>  world.RenderedPlayer != null ? "{0}'s View".F(world.RenderedPlayer.PlayerName) : "Worldview";
+
+				shroudSelector.OnMouseDown = _ =>
+				{
+
+					var options = world.Players.Where(p => !p.NonCombatant).Select(p => new DropDownOption
+					{
+						Title = "{0}'s View".F(p.PlayerName),
+						IsSelected = () => world.RenderedPlayer == p,
+						OnClick = () => { world.RenderedPlayer = p; world.RenderedShroud.Jank(); }
+					}).ToList();
+					options.Add(new DropDownOption
+					{
+						Title = "Worldview",
+						IsSelected = () => world.RenderedPlayer == null,
+						OnClick = () => { world.RenderedPlayer = null; world.RenderedShroud.Jank(); }
+					});
+					Func<DropDownOption, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
+					{
+						var item = ScrollItemWidget.Setup(template, option.IsSelected, option.OnClick);
+						item.Get<LabelWidget>("LABEL").GetText = () => option.Title;
+						return item;
+					};
+					shroudSelector.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count() * 30, options, setupItem);
+				};
+			}
 		}
 
 		void UnregisterEvents()
@@ -67,6 +100,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		void AddChatLine(Color c, string from, string text)
 		{
 			gameRoot.Get<ChatDisplayWidget>("CHAT_DISPLAY").AddLine(c, from, text);
+		}
+
+		class DropDownOption
+		{
+			public string Title;
+			public Func<bool> IsSelected;
+			public Action OnClick;
 		}
 	}
 }

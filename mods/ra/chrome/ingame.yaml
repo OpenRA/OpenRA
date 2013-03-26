@@ -314,6 +314,13 @@ Container@OBSERVER_ROOT:
 					Width:PARENT_RIGHT-19
 					Height:PARENT_BOTTOM-19
 					WorldInteractionController:INTERACTION_CONTROLLER
+		DropDownButton@SHROUD_SELECTOR:
+			X:WINDOW_RIGHT-250
+			Y:260
+			Width:240
+			Height:25
+			Font:Bold
+			Visible:true
 		WorldTooltip:
 		Background@INGAME_OPTIONS_BG:
 			X:(WINDOW_RIGHT - WIDTH)/2
