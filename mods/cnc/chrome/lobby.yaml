@@ -9,10 +9,13 @@ Container@SERVER_LOBBY:
 			RemapIndices: 176, 178, 180, 182, 184, 186, 189, 191, 177, 179, 181, 183, 185, 187, 188, 190
 		Label@TITLE:
 			Width:740
+			Height: 20
+			X:0
 			Y:0-25
 			Font:BigBold
 			Contrast:true
 			Align:Center
+			Text:CNC Multiplayer Lobby
 		Background@bg:
 			Width:740
 			Height:500
