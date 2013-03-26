@@ -41,6 +41,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				w.Pressed = () => world.OrderGenerator is T;
 				w.OnMouseDown = mi => world.ToggleInputMode<T>();
+				w.OnKeyPress = ki => world.ToggleInputMode<T>();
 			}
 		}
 	}

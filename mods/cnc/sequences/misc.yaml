@@ -269,3 +269,13 @@ overlay:
 		Start: 0
 	target-invalid:
 		Start: 1
+
+powerdown:
+	disabled: speed
+		Start: 3
+
+poweroff:
+	offline:
+		Start: 0
+		Length: *
+		Tick: 160
