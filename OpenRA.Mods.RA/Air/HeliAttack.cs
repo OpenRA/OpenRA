@@ -16,13 +16,13 @@ namespace OpenRA.Mods.RA.Air
 {
 	public class HeliAttack : Activity
 	{
-		Target target;
-		public HeliAttack( Target target ) { this.target = target; }
+		public Target Target;
+		public HeliAttack( Target target ) { this.Target = target; }
 
 		public override Activity Tick(Actor self)
 		{
 			if (IsCanceled) return NextActivity;
-			if (!target.IsValid) return NextActivity;
+			if (!Target.IsValid) return NextActivity;
 
 			var limitedAmmo = self.TraitOrDefault<LimitedAmmo>();
 			var reloads = self.TraitOrDefault<Reloads>();
@@ -38,15 +38,15 @@ namespace OpenRA.Mods.RA.Air
 			}
 
 			var attack = self.Trait<AttackHeli>();
-			var dist = target.CenterLocation - self.CenterLocation;
+			var dist = Target.CenterLocation - self.CenterLocation;
 
 			var desiredFacing = Util.GetFacing(dist, aircraft.Facing);
 			aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, aircraft.ROT);
 
-			if (!Combat.IsInRange(self.CenterLocation, attack.GetMaximumRange(), target))
+			if (!Combat.IsInRange(self.CenterLocation, attack.GetMaximumRange(), Target))
 				aircraft.TickMove(PSubPos.PerPx * aircraft.MovementSpeed, desiredFacing);
 
-			attack.DoAttack( self, target );
+			attack.DoAttack( self, Target );
 
 			return this;
 		}
