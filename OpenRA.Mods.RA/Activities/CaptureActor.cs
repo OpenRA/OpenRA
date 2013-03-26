@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA.Activities
 
 			var capturesInfo = self.Info.Traits.Get<CapturesInfo>();
 			var health = target.Trait<Health>();
-			int damage = (int)(0.25 * health.MaxHP);
+			int damage = health.MaxHP / 4;
 
 			// Need to be next to building, TODO: stop capture when going away
 			var mobile = self.Trait<Mobile>();
