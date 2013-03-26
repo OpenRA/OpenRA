@@ -33,10 +33,11 @@ namespace OpenRA.Mods.RA
 		readonly AutoTargetInfo Info;
 		readonly AttackBase attack;
 
-		[Sync] int nextScanTime = 0;
+		[Sync] public int nextScanTime = 0;
 		public UnitStance stance;
 		[Sync] public int stanceNumber { get { return (int)stance; } }
 		public UnitStance predictedStance;		/* NOT SYNCED: do not refer to this anywhere other than UI code */
+		[Sync] public int AggressorID;
 
 		public AutoTarget(Actor self, AutoTargetInfo info)
 		{
@@ -67,6 +68,8 @@ namespace OpenRA.Mods.RA
 			if (e.Attacker.AppearsFriendlyTo(self)) return;
 
 			if (e.Damage < 0) return;	// don't retaliate against healers
+
+			AggressorID = (int)e.Attacker.ActorID;
 
 			attack.AttackTarget(Target.FromActor(e.Attacker), false, Info.AllowMovement && stance != UnitStance.Defend);
 		}
@@ -134,4 +137,28 @@ namespace OpenRA.Mods.RA
 	[Desc("Will not get automatically targeted by enemy (like walls)")]
 	class AutoTargetIgnoreInfo : TraitInfo<AutoTargetIgnore> { }
 	class AutoTargetIgnore { }
+
+	public class DebugRetiliateAgainstAggressorInfo : ITraitInfo, Requires<AutoTargetInfo>
+	{
+		public object Create(ActorInitializer init) { return new DebugRetiliateAgainstAggressor(init.self); }
+	}
+	
+	public class DebugRetiliateAgainstAggressor : ISync
+	{
+		readonly AutoTarget a;
+		public DebugRetiliateAgainstAggressor(Actor self){ a = self.Trait<AutoTarget>(); }
+		[Sync] public int Aggressor { get { return a.AggressorID; } }
+	}
+
+	public class DebugNextAutoTargetScanTimeInfo : ITraitInfo, Requires<AutoTargetInfo>
+	{
+		public object Create(ActorInitializer init) { return new DebugNextAutoTargetScanTime(init.self); }
+	}
+	
+	public class DebugNextAutoTargetScanTime : ISync
+	{
+		readonly AutoTarget a;
+		public DebugNextAutoTargetScanTime(Actor self){ a = self.Trait<AutoTarget>(); }
+		[Sync] public int NextAutoTargetScanTime { get { return a.nextScanTime; } }
+	}
 }

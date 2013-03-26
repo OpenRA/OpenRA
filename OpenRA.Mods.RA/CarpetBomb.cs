@@ -21,10 +21,10 @@ namespace OpenRA.Mods.RA
 		public readonly int Range = 3;
 	}
 
-	class CarpetBomb : ITick			// todo: maybe integrate this better with the normal weapons system?
+	class CarpetBomb : ITick, ISync			// todo: maybe integrate this better with the normal weapons system?
 	{
-		CPos Target;
-		int dropDelay;
+		[Sync] CPos Target;
+		[Sync] int dropDelay;
 
 		public void SetTarget(CPos targetCell) { Target = targetCell; }
 
