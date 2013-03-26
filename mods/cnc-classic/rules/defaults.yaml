@@ -151,8 +151,9 @@
 	RevealsShroud:
 		Range: 3	#arbitrary. Assuming it should be 1, like infantry.
 	# In practice, it seems that OpenRA renders vision range differently. Assuming it should be 1 for this unit.
+	Armament:
+		Weapon: Pistol
 	AttackFrontal:
-		PrimaryWeapon: Pistol
 	ActorLostNotification:
 		Notification: civdead1.aud
 		NotifyAll: true

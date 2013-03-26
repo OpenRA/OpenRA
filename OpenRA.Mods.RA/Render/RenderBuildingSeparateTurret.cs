@@ -24,19 +24,17 @@ namespace OpenRA.Mods.RA.Render
 		public RenderBuildingSeparateTurret(ActorInitializer init, RenderBuildingInfo info)
 			: base(init, info)
 		{
-			var turreted = init.self.Trait<Turreted>();
-			var attack = init.self.Trait<AttackBase>();
+			var self = init.self;
+			var turreted = self.TraitsImplementing<Turreted>();
 
-			var turretAnim = new Animation(GetImage(init.self), () => turreted.turretFacing);
-			turretAnim.Play("turret");
-
-			for( var i = 0; i < attack.Turrets.Count; i++ )
+			var i = 0;
+			foreach (var t in turreted)
 			{
-				var turret = attack.Turrets[i];
-				anims.Add( "turret_{0}".F(i),
-					new AnimationWithOffset(turretAnim,
-						() => Combat.GetTurretPosition(init.self, null, turret).ToFloat2(),
-						null));
+				var anim = new Animation(GetImage(self), () => t.turretFacing);
+				anim.Play("turret");
+
+				anims.Add("turret_{0}".F(i++), new AnimationWithOffset(anim,
+					() => t.PxPosition(self, null).ToFloat2(), null));
 			}
 		}
 	}

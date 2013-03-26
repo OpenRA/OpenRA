@@ -38,9 +38,10 @@ REFH:
 #	Mobile:
 #		ROT: 9
 #		Speed: 11
+#	Armament:
+#		Weapon: M60mg
+#		LocalOffset: 0,-1,0,-3,0
 #	AttackFrontal:
-#		PrimaryWeapon: M60mg
-#		PrimaryLocalOffset: 0,-1,0,-3,0
 #	RenderUnit:
 #		Image: QUAD
 
@@ -213,9 +214,10 @@ DEVAST:
 	RevealsShroud:
 		Range: 7
 	RenderUnit:
+	Armament:
+		Weapon: 120mm
+		LocalOffset: 5,-16,0,-2,0, -4,-16,0,-2,0
 	AttackFrontal:
-		PrimaryWeapon: 120mm
-		PrimaryLocalOffset: 5,-16,0,-2,0, -4,-16,0,-2,0
 	AutoTarget:
 		InitialStance: Defend
 	Explodes:
@@ -260,6 +262,8 @@ SARDAUKAR:
 	TakeCover:
 	-RenderInfantry:
 	RenderInfantryProne:
+	Armament@PRIMARY:
+		Weapon: Vulcan
+	Armament@SECONDARY:
+		Weapon: Slung
 	AttackFrontal:
-		PrimaryWeapon: Vulcan
-		SecondaryWeapon: Slung

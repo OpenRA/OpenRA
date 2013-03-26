@@ -404,8 +404,9 @@ VICE:
 		Cost: 1000
 	Tooltip:
 		Name: Viceroid
+	Armament:
+		Weapon: Chemspray
 	AttackFrontal:
-		PrimaryWeapon: Chemspray
 	AttackWander:
 	RenderUnit:
 	WithMuzzleFlash:

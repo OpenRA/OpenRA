@@ -124,7 +124,7 @@
 	Buildable:
 		Queue: Infantry
 	TakeCover:
-		BarrelOffset: 0,-2,0,4
+		ProneOffset: 0,-2,0,4
 	RenderInfantryProne:
 	AttackMove:
 	Passenger:
@@ -164,8 +164,9 @@
 		HP: 25
 	RevealsShroud:
 		Range: 2
+	Armament:
+		Weapon: Pistol
 	AttackFrontal:
-		PrimaryWeapon: Pistol
 	ActorLostNotification:
 		Notification: civdead1.aud
 		NotifyAll: true

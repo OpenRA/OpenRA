@@ -14,23 +14,24 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	public class TakeCoverInfo : ITraitInfo
+	public class TakeCoverInfo : TurretedInfo
 	{
 		public readonly int ProneTime = 100;	/* ticks, =4s */
 		public readonly float ProneDamage = .5f;
 		public readonly decimal ProneSpeed = .5m;
-		public readonly int[] BarrelOffset = null;
+		public readonly int[] ProneOffset = {0,-2,0,4};
 
-		public object Create(ActorInitializer init) { return new TakeCover(this); }
+		public override object Create(ActorInitializer init) { return new TakeCover(init, this); }
 	}
 
 	// Infantry prone behavior
-	public class TakeCover : ITick, INotifyDamage, IDamageModifier, ISpeedModifier, ISync
+	public class TakeCover : Turreted, ITick, INotifyDamage, IDamageModifier, ISpeedModifier, ISync
 	{
 		TakeCoverInfo Info;
 		[Sync] int remainingProneTime = 0;
 
-		public TakeCover(TakeCoverInfo info)
+		public TakeCover(ActorInitializer init, TakeCoverInfo info)
+			: base(init, info)
 		{
 			Info = info;
 		}
@@ -42,36 +43,16 @@ namespace OpenRA.Mods.RA
 			if (e.Damage > 0 && (e.Warhead == null || !e.Warhead.PreventProne)) /* Don't go prone when healed */
 			{
 				if (!IsProne)
-					ApplyBarrelOffset(self, true);
+					turret = new Turret(Info.ProneOffset);
 				remainingProneTime = Info.ProneTime;
 			}
 		}
 
-		public void Tick(Actor self)
+		public override void Tick(Actor self)
 		{
-			if (IsProne)
-			{
-				if (--remainingProneTime == 0)
-					ApplyBarrelOffset(self, false);
-			}
-		}
-
-		public void ApplyBarrelOffset(Actor self, bool isProne)
-		{
-			if (Info.BarrelOffset == null)
-				return;
-
-			var ab = self.TraitOrDefault<AttackBase>();
-			if (ab == null)
-				return;
-
-			var sign = isProne ? 1 : -1;
-			foreach (var w in ab.Weapons)
-				foreach (var b in w.Barrels)
-				{
-					b.TurretSpaceOffset += sign * new PVecInt(Info.BarrelOffset[0], Info.BarrelOffset[1]);
-					b.ScreenSpaceOffset += sign * new PVecInt(Info.BarrelOffset[2], Info.BarrelOffset[3]);
-				}
+			base.Tick(self);
+			if (IsProne && --remainingProneTime == 0)
+				turret = new Turret(Info.Offset);
 		}
 
 		public float GetDamageModifier(Actor attacker, WarheadInfo warhead )

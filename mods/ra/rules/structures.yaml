@@ -282,10 +282,11 @@ TSLA:
 	RevealsShroud:
 		Range: 8
 	RenderBuildingCharge:
+	Armament:
+		Weapon: TeslaZap
+		LocalOffset: 0,0,0,-10,0
 	AttackTesla:
-		PrimaryWeapon: TeslaZap
 		ReloadTime: 120
-		PrimaryOffset: 0,0,0,-10
 	AutoTarget:
 	IronCurtainable:
 	-RenderBuilding:
@@ -323,9 +324,11 @@ AGUN:
 		ROT: 15
 		InitialFacing: 224
 	RenderBuildingTurreted:
+	Armament@PRIMARY:
+		Weapon: ZSU-23
+	Armament@SECONDARY:
+		Weapon: ZSU-23
 	AttackTurreted:
-		PrimaryWeapon: ZSU-23
-		SecondaryWeapon: ZSU-23
 	AutoTarget:
 	IronCurtainable:
 	-RenderBuilding:
@@ -442,9 +445,10 @@ PBOX.E1:
 		Image: PBOX
 	RenderRangeCircle:
 	AutoTarget:
+	Armament:
+		Weapon: Vulcan
+		LocalOffset: 0,-11,0,0,0
 	AttackTurreted:
-		PrimaryWeapon: Vulcan
-		PrimaryLocalOffset: 0,-11,0,0,0
 	WithMuzzleFlash:
 	Cargo:
 		InitialUnits: e1
@@ -464,9 +468,10 @@ PBOX.E3:
 		Image: PBOX
 	RenderRangeCircle:
 	AutoTarget:
+	Armament:
+		Weapon: Dragon
+		LocalOffset: 0,-11,0,0,0
 	AttackTurreted:
-		PrimaryWeapon: Dragon
-		PrimaryLocalOffset: 0,-11,0,0,0
 
 PBOX.E4:
 	Inherits: PBOX
@@ -476,9 +481,10 @@ PBOX.E4:
 		Image: PBOX
 	RenderRangeCircle:
 	AutoTarget:
+	Armament:
+		Weapon: Flamer
+		LocalOffset: 0,-11,0,0,0
 	AttackTurreted:
-		PrimaryWeapon: Flamer
-		PrimaryLocalOffset: 0,-11,0,0,0
 
 PBOX.E7:
 	Inherits: PBOX
@@ -488,9 +494,10 @@ PBOX.E7:
 		Image: PBOX
 	RenderRangeCircle:
 	AutoTarget:
+	Armament:
+		Weapon: Colt45
+		LocalOffset: 0,-11,0,0,0
 	AttackTurreted:
-		PrimaryWeapon: Colt45
-		PrimaryLocalOffset: 0,-11,0,0,0
 
 PBOX.SHOK:
 	Inherits: PBOX
@@ -500,9 +507,10 @@ PBOX.SHOK:
 		Image: PBOX
 	RenderRangeCircle:
 	AutoTarget:
+	Armament:
+		Weapon: PortaTesla
+		LocalOffset: 0,-11,0,0,0
 	AttackTurreted:
-		PrimaryWeapon: PortaTesla
-		PrimaryLocalOffset: 0,-11,0,0,0
 
 PBOX.SNIPER:
 	Inherits: PBOX
@@ -512,9 +520,10 @@ PBOX.SNIPER:
 		Image: PBOX
 	RenderRangeCircle:
 	AutoTarget:
+	Armament:
+		Weapon: Sniper
+		LocalOffset: 0,-11,0,0,0
 	AttackTurreted:
-		PrimaryWeapon: Sniper
-		PrimaryLocalOffset: 0,-11,0,0,0
 
 HBOX:
 	Inherits: ^Building
@@ -599,9 +608,10 @@ HBOX.E1:
 		Image: HBOX
 	RenderRangeCircle:
 	AutoTarget:
+	Armament:
+		Weapon: Vulcan
+		LocalOffset: 0,-11,0,0,0
 	AttackTurreted:
-		PrimaryWeapon: Vulcan
-		PrimaryLocalOffset: 0,-11,0,0,0
 	WithMuzzleFlash:
 	Cargo:
 		InitialUnits: e1
@@ -621,9 +631,10 @@ HBOX.E3:
 		Image: HBOX
 	RenderRangeCircle:
 	AutoTarget:
+	Armament:
+		Weapon: Dragon
+		LocalOffset: 0,-11,0,0,0
 	AttackTurreted:
-		PrimaryWeapon: Dragon
-		PrimaryLocalOffset: 0,-11,0,0,0
 
 HBOX.E4:
 	Inherits: HBOX
@@ -633,9 +644,10 @@ HBOX.E4:
 		Image: HBOX
 	RenderRangeCircle:
 	AutoTarget:
+	Armament:
+		Weapon: Flamer
+		LocalOffset: 0,-11,0,0,0
 	AttackTurreted:
-		PrimaryWeapon: Flamer
-		PrimaryLocalOffset: 0,-11,0,0,0
 
 HBOX.E7:
 	Inherits: HBOX
@@ -645,9 +657,10 @@ HBOX.E7:
 		Image: HBOX
 	RenderRangeCircle:
 	AutoTarget:
+	Armament:
+		Weapon: Colt45
+		LocalOffset: 0,-11,0,0,0
 	AttackTurreted:
-		PrimaryWeapon: Colt45
-		PrimaryLocalOffset: 0,-11,0,0,0
 
 HBOX.SHOK:
 	Inherits: HBOX
@@ -657,9 +670,10 @@ HBOX.SHOK:
 		Image: HBOX
 	RenderRangeCircle:
 	AutoTarget:
+	Armament:
+		Weapon: PortaTesla
+		LocalOffset: 0,-11,0,0,0
 	AttackTurreted:
-		PrimaryWeapon: PortaTesla
-		PrimaryLocalOffset: 0,-11,0,0,0
 
 HBOX.SNIPER:
 	Inherits: HBOX
@@ -669,9 +683,10 @@ HBOX.SNIPER:
 		Image: HBOX
 	RenderRangeCircle:
 	AutoTarget:
+	Armament:
+		Weapon: Sniper
+		LocalOffset: 0,-11,0,0,0
 	AttackTurreted:
-		PrimaryWeapon: Sniper
-		PrimaryLocalOffset: 0,-11,0,0,0
 
 GUN:
 	Inherits: ^Building
@@ -699,8 +714,9 @@ GUN:
 		ROT: 12
 		InitialFacing: 50
 	RenderBuildingTurreted:
+	Armament:
+		Weapon: TurretGun
 	AttackTurreted:
-		PrimaryWeapon: TurretGun
 	AutoTarget:
 	IronCurtainable:
 	-RenderBuilding:
@@ -732,10 +748,11 @@ FTUR:
 		Range: 6
 	Turreted:
 		ROT: 255
+		Offset: 0,0,0,-2
+	Armament:
+		Weapon: FireballLauncher
+		LocalOffset: 0,-12,0,0,0
 	AttackTurreted:
-		PrimaryWeapon: FireballLauncher
-		PrimaryOffset: 0,0,0,-2
-		PrimaryLocalOffset: 0,-12,0,0,0
 	AutoTarget:
 	IronCurtainable:
 	RenderRangeCircle:
@@ -770,8 +787,9 @@ SAM:
 		ROT: 30
 		InitialFacing: 0
 	RenderBuildingTurreted:
+	Armament:
+		Weapon: Nike
 	AttackTurreted:
-		PrimaryWeapon: Nike
 	WithMuzzleFlash:
 	AutoTarget:
 	IronCurtainable:

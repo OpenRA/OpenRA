@@ -68,13 +68,13 @@ HELI:
 		Type: Light
 	RevealsShroud:
 		Range: 8
+	Armament@PRIMARY:
+		Weapon: HeliAGGun
+		LocalOffset: -5,-3,0,2,0, 5,-3,0,2,0
+	Armament@SECONDARY:
+		Weapon: HeliAGGun
+		LocalOffset: -5,-3,0,2,0, 5,-3,0,2,0
 	AttackHeli:
-		PrimaryWeapon: HeliAGGun
-		PrimaryOffset: 0,-3,0,2
-		PrimaryLocalOffset: -5,0,0,0,0, 5,0,0,0,0
-		SecondaryWeapon: HeliAAGun
-		SecondaryOffset: 0,-3,0,2
-		SecondaryLocalOffset: -5,0,0,0,0, 5,0,0,0,0
 		FacingTolerance: 20
 	LimitedAmmo:
 		Ammo: 10
@@ -119,13 +119,13 @@ ORCA:
 		Type: Light
 	RevealsShroud:
 		Range: 8
+	Armament@PRIMARY:
+		Weapon: OrcaAGMissiles
+		LocalOffset: -4,-10,0,5,0, 4,-10,0,5,0
+	Armament@SECONDARY:
+		Weapon: OrcaAAMissiles
+		LocalOffset: -4,-10,0,5,0, 4,-10,0,5,0
 	AttackHeli:
-		PrimaryWeapon: OrcaAGMissiles
-		PrimaryOffset: 0,-10,0,5
-		PrimaryLocalOffset: -4,0,0,0,0, 4,0,0,0,0
-		SecondaryWeapon: OrcaAAMissiles
-		SecondaryOffset: 0,-10,0,5
-		SecondaryLocalOffset: -4,0,0,0,0, 4,0,0,0,0
 		FacingTolerance: 20
 	LimitedAmmo:
 		Ammo: 10

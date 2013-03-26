@@ -8,10 +8,12 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
-using System;
+using OpenRA.Mods.RA;
 
 namespace OpenRA.Mods.RA.Render
 {
@@ -27,25 +29,25 @@ namespace OpenRA.Mods.RA.Render
 
 		public WithMuzzleFlash(Actor self)
 		{
-			var attack = self.Trait<AttackBase>();
 			var render = self.Trait<RenderSimple>();
 			var facing = self.TraitOrDefault<IFacing>();
-			var turreted = self.TraitOrDefault<Turreted>();
-			var getFacing = turreted != null ? () => turreted.turretFacing :
-							facing != null ? (Func<int>)(() => facing.Facing) : () => 0;
 
-			foreach (var w in attack.Weapons)
-				foreach( var b in w.Barrels )
+			var arms = self.TraitsImplementing<Armament>();
+			foreach (var a in arms)
+				foreach(var b in a.Barrels)
 				{
 					var barrel = b;
-					var turret = w.Turret;
+					var turreted = self.TraitsImplementing<Turreted>()
+						.FirstOrDefault(t => t.info.Turret ==  a.Info.Turret);
+					var getFacing = turreted != null ? () => turreted.turretFacing :
+						facing != null ? (Func<int>)(() => facing.Facing) : () => 0;
 
 					var muzzleFlash = new Animation(render.GetImage(self), getFacing);
 					muzzleFlash.Play("muzzle");
 
 					muzzleFlashes.Add("muzzle{0}".F(muzzleFlashes.Count), new AnimationWithOffset(
 						muzzleFlash,
-						() => Combat.GetBarrelPosition(self, facing, turret, barrel).ToFloat2(),
+						() => a.MuzzlePxPosition(self, facing, barrel).ToFloat2(),
 						() => !isShowing));
 				}
 		}

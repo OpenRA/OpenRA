@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Linq;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
 
@@ -26,7 +27,8 @@ namespace OpenRA.Mods.RA.Render
 
 		static Func<int> MakeTurretFacingFunc(Actor self)
 		{
-			var turreted = self.Trait<Turreted>();
+			// Turret artwork is baked into the sprite, so only the first turret makes sense.
+			var turreted = self.TraitsImplementing<Turreted>().FirstOrDefault();
 			return () => turreted.turretFacing;
 		}
 	}
