@@ -15,6 +15,7 @@ debugger.listening = false -- true when the debugger is listening for a client
 debugger.portnumber = ide.config.debugger.port or mobdebug.port -- the port # to use for debugging
 debugger.watchCtrl = nil -- the watch ctrl that shows watch information
 debugger.stackCtrl = nil -- the stack ctrl that shows stack information
+debugger.toggleview = { stackview = false, watchview = false }
 debugger.hostname = ide.config.debugger.hostname or (function()
   local addr = wx.wxIPV4address() -- check what address is resolvable
   for _, host in ipairs({wx.wxGetHostName(), wx.wxGetFullHostName()}) do
@@ -154,6 +155,28 @@ local function updateWatches(num)
   if debugger.server and not debugger.running then
     copas.addthread(function() updateWatchesSync(num) end)
   end
+end
+
+local function debuggerToggleViews(show)
+  local mgr = ide.frame.uimgr
+  local refresh = false
+  for view, needed in pairs(debugger.toggleview) do
+    local pane = mgr:GetPane(view)
+    if show then -- starting debugging and pane is not shown
+      debugger.toggleview[view] = not pane:IsShown()
+      if debugger.toggleview[view] and needed then
+        pane:Show()
+        refresh = true
+      end
+    else -- completing debugging and pane is shown
+      debugger.toggleview[view] = pane:IsShown() and needed
+      if debugger.toggleview[view] then
+        pane:Hide()
+        refresh = true
+      end
+    end
+  end
+  if refresh then mgr:Update() end
 end
 
 local function killClient()
@@ -459,6 +482,7 @@ debugger.listen = function()
         ShellSupportRemote(debugger.shell)
       end
 
+      debuggerToggleViews(true)
       updateStackSync()
       updateWatchesSync()
 
@@ -870,6 +894,7 @@ function DebuggerStop()
     ShellSupportRemote(nil)
     ClearAllCurrentLineMarkers()
     DebuggerScratchpadOff()
+    debuggerToggleViews(false)
     local lines = TR("traced %d instruction", debugger.stats.line):format(debugger.stats.line)
     DisplayOutputLn(TR("Debugging session completed (%s)."):format(lines))
   else
