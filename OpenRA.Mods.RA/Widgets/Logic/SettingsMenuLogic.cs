@@ -176,6 +176,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			SetupKeyBinding(repairKey, "Switch to Repair-Cursor:", () => keyConfig.RepairKey, k => keyConfig.RepairKey = k);
 			specialHotkeyList.AddChild(repairKey);
 
+			var tabCycleKey = ScrollItemWidget.Setup(specialHotkeyTemplate, () => false, () => {});
+			SetupKeyBinding(tabCycleKey, "Cycle Tabs (+Shift to Reverse):", () => keyConfig.CycleTabsKey, k => keyConfig.CycleTabsKey = k);
+			specialHotkeyList.AddChild(tabCycleKey);
+
 			var unitCommandHotkeyList = keys.Get<ScrollPanelWidget>("UNITCOMMANDHOTKEY_LIST");
 			var unitCommandHotkeyTemplate = unitCommandHotkeyList.Get<ScrollItemWidget>("UNITCOMMANDHOTKEY_TEMPLATE");
 

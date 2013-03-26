@@ -53,15 +53,6 @@ namespace OpenRA.Mods.RA.Widgets
 				if (e.KeyName == Game.Settings.Keys.ToSelectionKey)
 					return ToSelection();
 
-				if (e.KeyName == Game.Settings.Keys.SellKey)
-					return PerformSwitchToSellMode();
-
-				if (e.KeyName == Game.Settings.Keys.PowerDownKey)
-					return PerformSwitchToPowerDownMode();
-
-				if (e.KeyName == Game.Settings.Keys.RepairKey)
-					return PerformSwitchToRepairMode();
-
 				if (!World.Selection.Actors.Any()) // Put all functions, that are no unit-functions, before this line!
 					return false;
 
@@ -194,24 +185,6 @@ namespace OpenRA.Mods.RA.Widgets
 		bool ToSelection()
 		{
 			Game.viewport.Center(World.Selection.Actors);
-			return true;
-		}
-
-		bool PerformSwitchToSellMode()
-		{
-			World.ToggleInputMode<SellOrderGenerator>();
-			return true;
-		}
-
-		bool PerformSwitchToPowerDownMode()
-		{
-			World.ToggleInputMode<PowerDownOrderGenerator>();
-			return true;
-		}
-
-		bool PerformSwitchToRepairMode()
-		{
-			World.ToggleInputMode<RepairOrderGenerator>();
 			return true;
 		}
 	}

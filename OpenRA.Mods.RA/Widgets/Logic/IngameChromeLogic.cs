@@ -53,6 +53,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				objectivesButton.IsVisible = () => world.LocalPlayer != null;
 			}
 
+			var moneybin = gameRoot.Get("INGAME_MONEY_BIN");
+			moneybin.Get<OrderButtonWidget>("SELL").Key = Game.Settings.Keys.SellKey;
+			moneybin.Get<OrderButtonWidget>("POWER_DOWN").Key = Game.Settings.Keys.PowerDownKey;
+			moneybin.Get<OrderButtonWidget>("REPAIR").Key = Game.Settings.Keys.RepairKey;
+
 			optionsBG.Get<ButtonWidget>("DISCONNECT").OnClick = () => LeaveGame(optionsBG, world);
 
 			optionsBG.Get<ButtonWidget>("SETTINGS").OnClick = () => Ui.OpenWindow("SETTINGS_MENU");
