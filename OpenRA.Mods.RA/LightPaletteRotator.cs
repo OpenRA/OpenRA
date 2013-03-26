@@ -15,7 +15,13 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class LightPaletteRotatorInfo : TraitInfo<LightPaletteRotator> { }
+	class LightPaletteRotatorInfo : ITraitInfo
+	{
+		public readonly string[] ExcludePalettes = {};
+
+		public object Create(ActorInitializer init) { return new LightPaletteRotator(this); }
+	}
+
 	class LightPaletteRotator : ITick, IPaletteModifier
 	{
 		float t = 0;
@@ -24,10 +30,20 @@ namespace OpenRA.Mods.RA
 			t += .5f;
 		}
 
+		readonly LightPaletteRotatorInfo info;
+
+		public LightPaletteRotator(LightPaletteRotatorInfo info)
+		{
+			this.info = info;
+		}
+
 		public void AdjustPalette(Dictionary<string,Palette> palettes)
 		{
 			foreach (var pal in palettes)
 			{
+				if (info.ExcludePalettes.Contains(pal.Key))
+					continue;
+
 				var rotate = (int)t % 18;
 				if (rotate > 9)
 					rotate = 18 - rotate;
