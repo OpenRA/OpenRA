@@ -42,8 +42,6 @@ namespace OpenRA.Graphics
 		{
 			this.world = world;
 			palette = new HardwarePalette();
-			foreach (var p in CursorProvider.Palettes)
-				palette.AddPalette(p.Key, p.Value, false);
 
 			palettes = new Cache<string, PaletteReference>(CreatePaletteReference);
 			foreach (var pal in world.traitDict.ActorsWithTraitMultiple<IPalette>(world))
