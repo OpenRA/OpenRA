@@ -18,12 +18,17 @@ rm -rf $ROOTDIR
 # Game files
 mkdir -p $ROOTDIR/usr/bin/
 cp -T openra-bin $ROOTDIR/usr/bin/openra
+cp -T openra-editor-bin $ROOTDIR/usr/bin/openra-editor
 mkdir -p $ROOTDIR/usr/share/openra/
 cp -R $BUILTDIR/* "$ROOTDIR/usr/share/openra/" || exit 3
 
+# Desura launch scripts
+cp ../../*.sh "$ROOTDIR/usr/share/openra/" || exit 3
+cp desura* "$ROOTDIR/usr/share/openra/" || exit 3
+
 # Desktop Icons
 mkdir -p $ROOTDIR/usr/share/applications/
-cp openra.desktop "$ROOTDIR/usr/share/applications/"
+cp *.desktop "$ROOTDIR/usr/share/applications/"
 
 mkdir -p $ROOTDIR/usr/share/icons/
 cp -r hicolor $ROOTDIR/usr/share/icons/
