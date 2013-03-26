@@ -28,6 +28,10 @@ Players:
 		OwnsWorld: True
 		NonCombatant: True
 		Race: allies
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Race: allies
 		Enemies: Soviets
 	PlayerReference@Allies1:
 		Name: Allies1
@@ -63,21 +67,21 @@ Players:
 		Name: Soviets
 		Race: soviet
 		ColorRamp: 3,255,127,28
-		Enemies: Allies1,Allies2,Allies,Neutral
+		Enemies: Allies1,Allies2,Allies,Creeps
 
 Actors:
 	Actor2: v07
 		Location: 58,83
-		Owner: Neutral
+		Owner: Creeps
 	Actor1: v05
 		Location: 54,89
-		Owner: Neutral
+		Owner: Creeps
 	Actor56: t01
 		Location: 68,97
 		Owner: Neutral
 	Actor5: v03
 		Location: 66,84
-		Owner: Neutral
+		Owner: Creeps
 	Actor25: t16
 		Location: 69,64
 		Owner: Neutral
@@ -104,10 +108,10 @@ Actors:
 		Owner: Neutral
 	Actor8: v07
 		Location: 66,95
-		Owner: Neutral
+		Owner: Creeps
 	Actor0: v04
 		Location: 58,90
-		Owner: Neutral
+		Owner: Creeps
 	Actor41: t12
 		Location: 73,69
 		Owner: Neutral
@@ -116,10 +120,10 @@ Actors:
 		Owner: Neutral
 	Actor47: v01
 		Location: 70,84
-		Owner: Neutral
+		Owner: Creeps
 	Actor10: v02
 		Location: 73,90
-		Owner: Neutral
+		Owner: Creeps
 	Actor236: sbag
 		Location: 66,36
 		Owner: Soviets
@@ -170,7 +174,7 @@ Actors:
 		Owner: Neutral
 	Actor9: v01
 		Location: 64,94
-		Owner: Neutral
+		Owner: Creeps
 	Actor53: powr
 		Location: 86,65
 		Owner: Soviets
@@ -482,7 +486,7 @@ Actors:
 		Owner: Soviets
 	Actor297: v08
 		Location: 68,95
-		Owner: Neutral
+		Owner: Creeps
 	Actor142: fenc
 		Location: 91,16
 		Owner: Soviets
@@ -986,13 +990,13 @@ Actors:
 		Owner: Soviets
 	Actor114: c1
 		Location: 69,84
-		Owner: Neutral
+		Owner: Creeps
 	Actor217: c3
 		Location: 63,96
-		Owner: Neutral
+		Owner: Creeps
 	Actor54: c1
 		Location: 67,99
-		Owner: Neutral
+		Owner: Creeps
 	Actor302: tsla
 		Location: 103,34
 		Owner: Soviets
@@ -1061,19 +1065,19 @@ Actors:
 		Owner: Soviets
 	Actor340: v09
 		Location: 72,86
-		Owner: Neutral
+		Owner: Creeps
 	Actor339: e1
 		Location: 21,35
 		Owner: Soviets
 	Actor342: v05
 		Location: 68,88
-		Owner: Neutral
+		Owner: Creeps
 	Actor341: e1
 		Location: 24,27
 		Owner: Soviets
 	Actor344: v08
 		Location: 65,99
-		Owner: Neutral
+		Owner: Creeps
 	Actor345: v16
 		Location: 59,97
 		Owner: Neutral
@@ -1085,7 +1089,7 @@ Actors:
 		Owner: Neutral
 	Actor348: v06
 		Location: 60,96
-		Owner: Neutral
+		Owner: Creeps
 	Actor349: v14
 		Location: 66,83
 		Owner: Neutral
@@ -1133,7 +1137,7 @@ Actors:
 		Owner: Neutral
 	Actor273: v10
 		Location: 58,86
-		Owner: Neutral
+		Owner: Creeps
 	Actor343: e1
 		Location: 28,49
 		Owner: Soviets
@@ -1486,7 +1490,7 @@ Actors:
 		Owner: Neutral
 	Actor115: c2
 		Location: 56,89
-		Owner: Neutral
+		Owner: Creeps
 	Actor459: e1
 		Location: 79,102
 		Owner: Soviets
@@ -1574,28 +1578,28 @@ Actors:
 		Owner: Soviets
 	Actor313: c3
 		Location: 65,86
-		Owner: Neutral
+		Owner: Creeps
 	Actor314: c4
 		Location: 72,91
-		Owner: Neutral
+		Owner: Creeps
 	Actor315: c4
 		Location: 58,92
-		Owner: Neutral
+		Owner: Creeps
 	Actor458: c8
 		Location: 68,94
-		Owner: Neutral
+		Owner: Creeps
 	Actor476: c9
 		Location: 59,98
-		Owner: Neutral
+		Owner: Creeps
 	Actor477: c10
 		Location: 57,82
-		Owner: Neutral
+		Owner: Creeps
 	Actor478: c7
 		Location: 69,89
-		Owner: Neutral
+		Owner: Creeps
 	Actor479: c6
 		Location: 73,89
-		Owner: Neutral
+		Owner: Creeps
 	Actor150: silo
 		Location: 109,31
 		Owner: Soviets
@@ -1715,7 +1719,7 @@ Actors:
 		Owner: Neutral
 	Actor143: v11
 		Location: 72,95
-		Owner: Neutral
+		Owner: Creeps
 	Actor517: wood
 		Location: 64,100
 		Owner: Neutral
@@ -1760,22 +1764,22 @@ Actors:
 		Owner: Soviets
 	Actor92: hosp
 		Location: 57,78
-		Owner: Neutral
+		Owner: Creeps
 	Actor523: v02
 		Location: 56,87
-		Owner: Neutral
+		Owner: Creeps
 	Actor524: v03
 		Location: 60,90
-		Owner: Neutral
+		Owner: Creeps
 	Actor525: c1
 		Location: 55,90
-		Owner: Neutral
+		Owner: Creeps
 	Actor526: c9
 		Location: 60,94
-		Owner: Neutral
+		Owner: Creeps
 	Actor527: v11
 		Location: 59,94
-		Owner: Neutral
+		Owner: Creeps
 	Actor528: brl3
 		Location: 60,95
 		Owner: Neutral
