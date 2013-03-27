@@ -420,7 +420,7 @@ if app.postinit then app.postinit() end
 -- app-specific menus (Help/About), which are not recognized by MacOS
 -- as special items unless SetMenuBar is done after menus are populated.
 ide.frame:SetMenuBar(ide.frame.menuBar)
-if ide.osname == 'Macintosh' then -- force refresh to fix the filetree
+if ide.wxver < "2.9.5" and ide.osname == 'Macintosh' then -- force refresh to fix the filetree
   pcall(function() ide.frame:ShowFullScreen(true) ide.frame:ShowFullScreen(false) end)
 end
 
