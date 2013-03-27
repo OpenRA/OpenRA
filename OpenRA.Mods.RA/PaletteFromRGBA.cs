@@ -15,13 +15,20 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Creates a single color palette without any base palette file.")]
 	class PaletteFromRGBAInfo : ITraitInfo
 	{
+		[Desc("internal palette name")]
 		public readonly string Name = null;
+		[Desc("If defined, load the palette only for this tileset.")]
 		public readonly string Tileset = null;
+		[Desc("red color component")]
 		public readonly int R = 0;
+		[Desc("green color component")]
 		public readonly int G = 0;
+		[Desc("blue color component")]
 		public readonly int B = 0;
+		[Desc("alpha channel (transparency)")]
 		public readonly int A = 255;
 		public readonly bool AllowModifiers = true;
 

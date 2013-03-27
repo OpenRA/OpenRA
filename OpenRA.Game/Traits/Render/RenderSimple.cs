@@ -20,8 +20,11 @@ namespace OpenRA.Traits
 	{
 		[Desc("Defaults to the actor name.")]
 		public readonly string Image = null;
+		[Desc("custom palette name")]
 		public readonly string Palette = null;
+		[Desc("custom PlayerColorPalette: BaseName")]
 		public readonly string PlayerPalette = "player";
+		[Desc("Change the sprite image size.")]
 		public readonly float Scale = 1f;
 
 		public virtual object Create(ActorInitializer init) { return new RenderSimple(init.self); }

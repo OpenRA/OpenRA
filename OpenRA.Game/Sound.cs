@@ -47,7 +47,7 @@ namespace OpenRA
 		{
 			engine = Game.Settings.Server.Dedicated?"Null":engine;
 			switch (engine)
-			{	/* todo: if someone cares about pluggable crap here, ship this out */
+			{	/* TODO: if someone cares about pluggable crap here, ship this out */
 			case "AL": return new OpenAlSoundEngine();
 			case "Null": return new NullSoundEngine();
 

@@ -104,7 +104,7 @@ namespace OpenRA.Editor
 				}
 			}
 
-			/* todo: optimize */
+			/* TODO: optimize */
 			foreach (var ch in s.Chunks.Values) ch.Dispose();
 			s.Chunks.Clear();
 		}

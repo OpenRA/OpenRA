@@ -68,7 +68,7 @@ namespace OpenRA
 			else
 			{
 				// Map player
-				ClientIndex = 0; // Owned by the host (todo: fix this)
+				ClientIndex = 0; // Owned by the host (TODO: fix this)
 				ColorRamp = pr.ColorRamp;
 				PlayerName = pr.Name;
 				NonCombatant = pr.NonCombatant;

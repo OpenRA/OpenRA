@@ -299,7 +299,7 @@ namespace OpenRA.Editor
 			saveToolStripMenuItem.Enabled = true;
 			toolStripMenuItemSave.Enabled = true;
 			saveAsToolStripMenuItem.Enabled = true;
-			mnuMinimapToPNG.Enabled = true;	// todo: what is this VB naming bullshit doing here?
+			mnuMinimapToPNG.Enabled = true;	// TODO: what is this VB naming bullshit doing here?
 
 			PopulateActorOwnerChooser();
 		}

@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA.Buildings
 		public readonly string[] TerrainTypes = {};
 		[Desc("The range to the next building it can be constructed. Set it higher for walls.")]
 		public readonly int Adjacent = 2;
-		[Desc("x means space it blocks, _ is a part that is passable by actors (like bridges).")]
+		[Desc("x means space it blocks, _ is a part that is passable by actors.")]
 		public readonly string Footprint = "x";
 		public readonly int2 Dimensions = new int2(1, 1);
 

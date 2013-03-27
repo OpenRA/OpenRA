@@ -39,6 +39,6 @@ namespace OpenRA
 				id, actors.Select(a => "#{0} {1}".F(a.ActorID, a.Info.Name)).JoinWith(",")));
 		}
 
-		/* todo: add lazy group path crap, groupleader, pruning, etc */
+		/* TODO: add lazy group path crap, groupleader, pruning, etc */
 	}
 }

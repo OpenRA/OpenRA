@@ -493,10 +493,10 @@ namespace OpenRA.Utility
 
 			Console.WriteLine("## Documentation");
 			Console.WriteLine(
-				"This documentation is aimed at modders and contributers of OpenRA. It displays all traits with default values and developer commentary. " +
+				"This documentation is aimed at modders and contributors of OpenRA. It displays all traits with default values and developer commentary. " +
 				"Please do not edit it directly, but add new `[Desc(\"String\")]` tags to the source code. This file has been automatically generated on {0}. " +
-				"Type `make docs` to create a new one and put it on https://github.com/OpenRA/OpenRA/wiki/Traits afterwards. " +
-				"A copy of this is compiled to HTML and shipped with every release during the automated packaging process.", DateTime.Now);
+				"Type `make docs` to create a new one. A copy of this is uploaded to https://github.com/OpenRA/OpenRA/wiki/Traits " +
+				"as well as compiled to HTML and shipped with every release during the automated packaging process.", DateTime.Now);
 			Console.WriteLine("```yaml");
 			Console.WriteLine();
 

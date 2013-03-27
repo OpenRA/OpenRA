@@ -60,7 +60,7 @@ namespace OpenRA.Mods.RA.Activities
 						return Util.SequenceActivities( mobile.MoveTo(p, 0), this );
 				}
 
-			// todo: return somewhere likely to be safe (near fix) so we're not sitting out in the minefield.
+			// TODO: return somewhere likely to be safe (near fix) so we're not sitting out in the minefield.
 
 			return new Wait(20);	// nothing to do here
 		}

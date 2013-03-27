@@ -15,8 +15,10 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Adds the hard-coded shroud palette to the game")]
 	class ShroudPaletteInfo : ITraitInfo
 	{
+		[Desc("internal palette name")]
 		public readonly string Name = "shroud";
 		public object Create(ActorInitializer init) { return new ShroudPalette(this); }
 	}

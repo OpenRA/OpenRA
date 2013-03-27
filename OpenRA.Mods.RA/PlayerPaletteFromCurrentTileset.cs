@@ -15,8 +15,11 @@ namespace OpenRA.Mods.RA
 {
 	class PlayerPaletteFromCurrentTilesetInfo : ITraitInfo
 	{
+		[Desc("internal palette name")]
 		public readonly string Name = null;
+		[Desc("Map listed indices to shadow.")]
 		public readonly int[] ShadowIndex = { };
+		[Desc("Apply palette rotatotors or not.")]
 		public readonly bool AllowModifiers = true;
 
 		public object Create(ActorInitializer init) { return new PlayerPaletteFromCurrentTileset(init.world, this); }

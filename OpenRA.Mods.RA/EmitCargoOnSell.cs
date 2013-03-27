@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	// for some reason i get yelled at for pbox.e1 not having Cargo, but that's a lie?
+	// for some reason I get yelled at for pbox.e1 not having Cargo, but that's a lie?
 	class EmitCargoOnSellInfo : TraitInfo<EmitCargoOnSell>//, Requires<Cargo>
 	{
 	}
@@ -23,8 +23,7 @@ namespace OpenRA.Mods.RA
 	{
 		void Emit(Actor self)
 		{
-			// todo.
-			// would like to spill all actors out similar to how we call Unload
+			// TODO: would like to spill all actors out similar to how we call Unload
 		}
 
 		public void Selling(Actor self) { Emit(self); }

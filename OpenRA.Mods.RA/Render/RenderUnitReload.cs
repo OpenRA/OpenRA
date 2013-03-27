@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA.Render
 		}
 	}
 
-	/* todo: native elevation support on turrets, and this dies? */
+	/* TODO: native elevation support on turrets, and this dies? */
 
 	class RenderUnitTurretedAimInfo : RenderUnitTurretedInfo
 	{

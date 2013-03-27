@@ -186,7 +186,7 @@ namespace OpenRA.Mods.RA.Widgets
 		public override void Draw()
 		{
 			if (!IsVisible()) return;
-			// todo: fix
+			// TODO: fix
 
 			int paletteHeight = DrawPalette(CurrentQueue);
 			DrawBuildTabs(world, paletteHeight);

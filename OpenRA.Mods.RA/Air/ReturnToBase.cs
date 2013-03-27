@@ -74,7 +74,7 @@ namespace OpenRA.Mods.RA.Air
 			var e = (turnRadius / d.Length) * d;
 			var f = new float2(-e.Y, e.X);		/* rotate */
 
-			/* todo: support internal tangents, too! */
+			/* TODO: support internal tangents, too! */
 
 			if (f.X > 0) f = -f;
 

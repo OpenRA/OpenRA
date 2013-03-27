@@ -21,7 +21,9 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly bool CanAttackGround = true;
 
+		[Desc("Ticks to wait until next AutoTarget: attempt.")]
 		public readonly int MinimumScanTimeInterval = 30;
+		[Desc("Ticks to wait until next AutoTarget: attempt.")]
 		public readonly int MaximumScanTimeInterval = 60;
 
 		public abstract object Create(ActorInitializer init);

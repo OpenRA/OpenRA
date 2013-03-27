@@ -62,8 +62,8 @@ namespace OpenRA.Widgets
 
 			case MouseInputEvent.Down:
 				isMoving = true;
-				/* todo: handle snapping to ticks properly again */
-				/* todo: handle nudge via clicking outside the thumb */
+				/* TODO: handle snapping to ticks properly again */
+				/* TODO: handle nudge via clicking outside the thumb */
 				UpdateValue(ValueFromPx(mi.Location.X - RenderBounds.Left));
 				break;
 

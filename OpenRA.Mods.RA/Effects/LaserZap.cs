@@ -13,10 +13,12 @@ using System.Drawing;
 using OpenRA.Effects;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
+using OpenRA.FileFormats;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Effects
 {
+	[Desc("Not a sprite, but an engine effect.")]
 	class LaserZapInfo : IProjectileInfo
 	{
 		public readonly int BeamRadius = 1;

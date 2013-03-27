@@ -121,7 +121,7 @@ namespace OpenRA.Renderer.Glsl
 
 			/* configure blend state */
 			ErrorHandler.CheckGlError();
-			// Todo: Only enable alpha blending if we need it
+			// TODO: Only enable alpha blending if we need it
 			Gl.glEnable(Gl.GL_BLEND);
 			ErrorHandler.CheckGlError();
 			Gl.glBlendFunc(Gl.GL_SRC_ALPHA, Gl.GL_ONE_MINUS_SRC_ALPHA);
