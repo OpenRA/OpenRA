@@ -467,7 +467,7 @@ namespace OpenRA.Editor
 			{
 				for (int y = 0; y < height; y++)
 				{
-					//todo: crash prevention
+					//TODO: crash prevention
 					TileSelection[x, y] = Map.MapTiles.Value[start.X + x, start.Y + y];
 					ResourceSelection[x, y] = Map.MapResources.Value[start.X + x, start.Y + y];
 				}
@@ -487,7 +487,7 @@ namespace OpenRA.Editor
 					var mapX = loc.X + x;
 					var mapY = loc.Y + y;
 
-					//todo: crash prevention for outside of bounds
+					//TODO: crash prevention for outside of bounds
 					Map.MapTiles.Value[mapX, mapY] = TileSelection[x, y];
 					Map.MapResources.Value[mapX, mapY] = ResourceSelection[x, y];
 

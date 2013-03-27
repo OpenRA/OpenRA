@@ -28,7 +28,7 @@ namespace OpenRA.Traits
 
 		public void Tick(Actor self)
 		{
-			// todo: don't tick all the time.
+			// TODO: don't tick all the time.
 			World w = self.World;
 			if(self.Owner == null) return;
 			

@@ -211,7 +211,7 @@ namespace OpenRA.Server
 			}
 		}
 
-		/* lobby rework todo:
+		/* lobby rework TODO:
 		 *	- "teams together" option for team games -- will eliminate most need
 		 *		for manual spawnpoint choosing.
 		 */

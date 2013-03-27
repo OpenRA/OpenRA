@@ -20,7 +20,7 @@ namespace OpenRA.Network
 	{
 		static Player FindPlayerByClient(this World world, Session.Client c)
 		{
-			/* todo: this is still a hack.
+			/* TODO: this is still a hack.
 			 * the cases we're trying to avoid are the extra players on the host's client -- Neutral, other MapPlayers,..*/
 			return world.Players.FirstOrDefault(
 				p => (p.ClientIndex == c.Index && p.PlayerReference.Playable));

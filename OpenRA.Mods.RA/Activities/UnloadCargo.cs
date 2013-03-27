@@ -63,7 +63,7 @@ namespace OpenRA.Mods.RA.Activities
 			if (facing != null && facing.Facing != unloadFacing)
 				return Util.SequenceActivities( new Turn(unloadFacing), this );
 
-			// todo: handle the BS of open/close sequences, which are inconsistent,
+			// TODO: handle the BS of open/close sequences, which are inconsistent,
 			//		for reasons that probably make good sense to the westwood guys.
 
 			var cargo = self.Trait<Cargo>();

@@ -91,7 +91,8 @@ namespace OpenRA.Mods.RA
 	public class MustBeDestroyedInfo : TraitInfo<MustBeDestroyed> { }
 	public class MustBeDestroyed { }
 
-	[Desc("Provides game mode information for players/observers. Goes on WorldActor - observers don't have a player it can live on.")]
+	[Desc("Provides game mode information for players/observers.",
+	      "Goes on WorldActor - observers don't have a player it can live on.")]
 	public class ConquestObjectivesPanelInfo : ITraitInfo
 	{
 		public string ObjectivesPanel = null;

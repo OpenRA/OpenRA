@@ -26,6 +26,7 @@ namespace OpenRA.Mods.RA.Effects
 		[Desc("Pixels at maximum range")]
 		public readonly float Inaccuracy = 0;
 		public readonly string Image = null;
+		[Desc("Check for whether an actor with Wall: trait blocks fire")]
 		public readonly bool High = false;
 		public readonly int RangeLimit = 0;
 		public readonly int Arm = 0;

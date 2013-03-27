@@ -24,7 +24,6 @@ namespace OpenRA.Mods.RA
 		[Desc("Audio clip to play when the crate is collected.")]
 		public string Notification = null;
 		[ActorReference]
-		[Desc("Comma-separated list of actor types the crate action should not apply to.")]
 		public string[] ExcludedActorTypes = { };
 
 		public virtual object Create(ActorInitializer init) { return new CrateAction(init.self, this); }

@@ -31,7 +31,7 @@ namespace OpenRA.Traits
 
 		public void Tick(Actor self)
 		{
-	    	// todo: don't tick all the time.
+	    	// TODO: don't tick all the time.
 			if(self.Owner == null) return;
 
 			if (previousLocation != self.Location && v != null) {

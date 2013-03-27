@@ -240,7 +240,7 @@ namespace OpenRA
 			} );
 		}
 
-		// todo: move elsewhere.
+		// TODO: move elsewhere.
 		public void ChangeOwner(Player newOwner)
 		{
 			World.AddFrameEndTask(w =>

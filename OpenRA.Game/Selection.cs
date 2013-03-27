@@ -36,7 +36,7 @@ namespace OpenRA
 
 			if (isClick)
 			{
-				var adjNewSelection = newSelection.Take(1);	/* todo: select BEST, not FIRST */
+				var adjNewSelection = newSelection.Take(1);	/* TODO: select BEST, not FIRST */
 				actors = (isCombine ? oldSelection.SymmetricDifference(adjNewSelection) : adjNewSelection).ToList();
 			}
 			else

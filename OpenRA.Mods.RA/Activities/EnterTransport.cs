@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA.Activities
 			if (!cargo.CanLoad(transport, self))
 				return NextActivity;
 
-			// Todo: Queue a move order to the transport? need to be
+			// TODO: Queue a move order to the transport? need to be
 			// careful about units that can't path to the transport
 			if ((transport.Location - self.Location).LengthSquared > 2)
 				return NextActivity;

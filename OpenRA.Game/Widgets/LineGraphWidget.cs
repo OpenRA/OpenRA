@@ -143,7 +143,7 @@ namespace OpenRA.Widgets
 				keyOffset++;
 			}
 
-			//todo: make this stuff not draw outside of the RenderBounds
+			//TODO: make this stuff not draw outside of the RenderBounds
 			for (int n = pointStart, x = 0; n <= pointEnd; n++, x += xStep)
 			{
 				Game.Renderer.LineRenderer.DrawLine(origin + new float2(x, 0), origin + new float2(x, -5), Color.White, Color.White);

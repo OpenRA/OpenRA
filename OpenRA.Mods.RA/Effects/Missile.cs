@@ -24,6 +24,7 @@ namespace OpenRA.Mods.RA.Effects
 	{
 		public readonly int Speed = 1;
 		public readonly int Arm = 0;
+		[Desc("Check for whether an actor with Wall: trait blocks fire")]
 		public readonly bool High = false;
 		public readonly bool Shadow = true;
 		public readonly bool Proximity = false;

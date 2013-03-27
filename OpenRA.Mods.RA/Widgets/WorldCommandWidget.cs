@@ -75,7 +75,7 @@ namespace OpenRA.Mods.RA.Widgets
 			return false;
 		}
 
-		// todo: take ALL this garbage and route it through the OrderTargeter stuff.
+		// TODO: take ALL this garbage and route it through the OrderTargeter stuff.
 
 		bool PerformAttackMove()
 		{
