@@ -222,7 +222,7 @@ namespace OpenRA
 			worldRenderer.RefreshPalette();
 
 			if (!isShellmap)
-				Sound.PlayNotification(null, "Speech", "StartGame", orderManager.world.LocalPlayer.Country.Race);
+				Sound.PlayNotification(null, "Speech", "StartGame", null);
 		}
 
 		public static bool IsHost
