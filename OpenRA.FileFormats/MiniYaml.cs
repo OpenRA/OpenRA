@@ -109,8 +109,18 @@ namespace OpenRA.FileFormats
 			{
 				var line = ll;
 				++lineNo;
-				if (line.Contains('#'))
-					line = line.Substring(0, line.IndexOf('#')).TrimEnd(' ', '\t');
+				var charNo = 0;
+				foreach (char character in line)
+				{
+					if (character == '#')
+						if (charNo == 0 || line[charNo-1] != '\\')
+						{
+							line = line.Substring(0, charNo).TrimEnd(' ', '\t');
+							break;
+						}
+					++charNo;
+				}
+				line = line.Replace("\\#","#");
 				var t = line.TrimStart(' ', '\t');
 				if (t.Length == 0)
 					continue;
