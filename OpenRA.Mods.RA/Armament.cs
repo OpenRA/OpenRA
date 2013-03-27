@@ -25,13 +25,16 @@ namespace OpenRA.Mods.RA
 		public int Facing;					// deviation from turret facing
 	}
 
+	[Desc("Allows you to attach weapons to the unit (use @IdentifierSuffix for > 1)")]
 	public class ArmamentInfo : ITraitInfo, Requires<AttackBaseInfo>
 	{
 		[WeaponReference]
 		[Desc("Has to be defined here and in weapons.yaml.")]
 		public readonly string Weapon = null;
 		public readonly string Turret = "primary";
+		[Desc("Move the turret backwards when firing.")] 
 		public readonly int Recoil = 0;
+		[Desc("Time (in frames) until the weapon can fire again.")] 
 		public readonly int FireDelay = 0;
 
 		public readonly float RecoilRecovery = 0.2f;

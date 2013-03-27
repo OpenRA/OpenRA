@@ -14,7 +14,7 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA
 {
-	[Desc("Give the unit a \"heal-weapon\".",
+	[Desc("Give the unit a \"heal-weapon\" that attacks friendly targets if they are damaged.",
 		"It conflicts with any other weapon or Attack*: trait because it will hurt friendlies during the",
 		"heal process then. It also won't work with buildings (use RepairsUnits: for them)")]
 	public class AttackMedicInfo : AttackFrontalInfo

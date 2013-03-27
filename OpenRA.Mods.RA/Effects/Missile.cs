@@ -32,6 +32,7 @@ namespace OpenRA.Mods.RA.Effects
 		public readonly string Image = null;
 		[Desc("Rate of Turning")]
 		public readonly int ROT = 5;
+		[Desc("Explode when following the target longer than this.")]
 		public readonly int RangeLimit = 0;
 		public readonly bool TurboBoost = false;
 		public readonly int TrailInterval = 2;

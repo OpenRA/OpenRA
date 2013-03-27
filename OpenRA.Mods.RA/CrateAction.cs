@@ -10,16 +10,21 @@
 
 using System.Linq;
 using OpenRA.Mods.RA.Effects;
+using OpenRA.FileFormats;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
 	public class CrateActionInfo : ITraitInfo
 	{
+		[Desc("Chance of getting this crate, assuming the collector is compatible.")]
 		public int SelectionShares = 10;
+		[Desc("An animation defined in sequence yaml(s) to draw.")]
 		public string Effect = null;
+		[Desc("Audio clip to play when the crate is collected.")]
 		public string Notification = null;
 		[ActorReference]
+		[Desc("Comma-separated list of actor types the crate action should not apply to.")]
 		public string[] ExcludedActorTypes = { };
 
 		public virtual object Create(ActorInitializer init) { return new CrateAction(init.self, this); }

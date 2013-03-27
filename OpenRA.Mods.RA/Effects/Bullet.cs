@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Effects;
+using OpenRA.FileFormats;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
 using OpenRA.Traits;
@@ -22,7 +23,8 @@ namespace OpenRA.Mods.RA.Effects
 	{
 		public readonly int Speed = 1;
 		public readonly string Trail = null;
-		public readonly float Inaccuracy = 0;			// pixels at maximum range
+		[Desc("Pixels at maximum range")]
+		public readonly float Inaccuracy = 0;
 		public readonly string Image = null;
 		public readonly bool High = false;
 		public readonly int RangeLimit = 0;

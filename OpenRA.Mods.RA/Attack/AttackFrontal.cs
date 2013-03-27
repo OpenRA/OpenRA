@@ -9,10 +9,12 @@
 #endregion
 
 using System;
+using OpenRA.FileFormats;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Unit got to face the target")]
 	public class AttackFrontalInfo : AttackBaseInfo
 	{
 		public readonly int FacingTolerance = 1;
