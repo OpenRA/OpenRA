@@ -752,10 +752,11 @@ local function closeWindow(event)
   end
 
   ShowFullScreen(false)
+  SettingsSaveAll()
+
   frame.uimgr:UnInit()
   frame:Hide() -- hide everything while the IDE exits
 
-  SettingsSaveAll()
   if DebuggerShutdown then DebuggerShutdown() end
   ide.settings:delete() -- delete the config to save changes
   if ide.session.timer then ide.session.timer:Stop() end
