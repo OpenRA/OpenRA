@@ -175,7 +175,11 @@ namespace OpenRA.Server
 							var p = preConns.SingleOrDefault( c => c.socket == s );
 							if (p != null) p.ReadData( this );
 						}
-						else if (conns.Count > 0) conns.Single( c => c.socket == s ).ReadData( this );
+						else if (conns.Count > 0)
+						{
+							var conn = conns.SingleOrDefault( c => c.socket == s );
+							if (conn != null) conn.ReadData( this );
+						}
 
 					foreach (var t in ServerTraits.WithInterface<ITick>())
 						t.Tick(this);
