@@ -22,9 +22,8 @@ cp -T openra-editor-bin $ROOTDIR/usr/bin/openra-editor
 mkdir -p $ROOTDIR/usr/share/openra/
 cp -R $BUILTDIR/* "$ROOTDIR/usr/share/openra/" || exit 3
 
-# Desura launch scripts
+# Launch scripts (executed by Desura)
 cp ../../*.sh "$ROOTDIR/usr/share/openra/" || exit 3
-cp desura* "$ROOTDIR/usr/share/openra/" || exit 3
 
 # Desktop Icons
 mkdir -p $ROOTDIR/usr/share/applications/
@@ -50,7 +49,7 @@ cp -r hicolor $ROOTDIR/usr/share/icons/
         echo "Arch-Linux package build failed, refer to $PWD/package.log."
     fi
 ) &
-     
+
 (
     echo "Building RPM package."
     cd rpm
@@ -59,6 +58,6 @@ cp -r hicolor $ROOTDIR/usr/share/icons/
         echo "RPM package build failed, refer to $PWD/package.log."
     fi
 ) &
- 
+
 wait
 
