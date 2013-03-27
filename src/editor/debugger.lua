@@ -727,7 +727,7 @@ function debuggerCreateStackWindow()
               Name("stackview"):Float():
               MinSize(height,height):FloatingSize(width,height):
               PinButton(true):Hide())
-  mgr:Update()
+  mgr.defaultPerspective = mgr:SavePerspective() -- resave default perspective
 end
 
 local function debuggerCreateWatchWindow()
@@ -832,7 +832,7 @@ local function debuggerCreateWatchWindow()
               Name("watchview"):Float():
               MinSize(height,height):FloatingSize(width,height):
               PinButton(true):Hide())
-  mgr:Update()
+  mgr.defaultPerspective = mgr:SavePerspective() -- resave default perspective
 end
 
 debuggerCreateStackWindow()
