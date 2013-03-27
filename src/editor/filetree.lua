@@ -231,7 +231,8 @@ function filetree:updateProjectDir(newdir, cboxsel)
   if (not newdir) or not wx.wxDirExists(newdir) then return end
   local dirname = wx.wxFileName.DirName(newdir)
 
-  if dirname:SameAs(wx.wxFileName.DirName(filetree.projdirText)) then return end
+  if filetree.projdirText and #filetree.projdirText > 0
+  and dirname:SameAs(wx.wxFileName.DirName(filetree.projdirText)) then return end
   -- strip the last path separator if any
   local newdir = dirname:GetPath(wx.wxPATH_GET_VOLUME)
 
