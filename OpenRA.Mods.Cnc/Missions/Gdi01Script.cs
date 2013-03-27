@@ -95,7 +95,7 @@ namespace OpenRA.Mods.Cnc.Missions
 						a.QueueActivity(mobile.MoveTo(Actors["nod1"].Location, 2 ));
 						a.QueueActivity(mobile.MoveTo(Actors["nod2"].Location, 2 ));
 						a.QueueActivity(mobile.MoveTo(Actors["nod3"].Location, 2 ));
-						// Todo: Queue hunt order
+						// TODO: Queue hunt order
 					}
 				});
 			}

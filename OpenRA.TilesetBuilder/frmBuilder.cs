@@ -300,7 +300,7 @@ namespace OpenRA.TilesetBuilder
 							}
 							else
 								for (var x = 0; x < TileSize * TileSize; x++)
-									bw.Write((byte)0);	/* todo: don't fill with air */
+									bw.Write((byte)0);	/* TODO: don't fill with air */
 						}
 				}
 
@@ -351,7 +351,7 @@ namespace OpenRA.TilesetBuilder
 			if (tilesetPalette.Length < 1) { tilesetPalette = "temperat"; }
 			if (tilesetExt.Length < 1) { tilesetExt = ".tem,.shp"; }
 			// Create a Tileset definition
-			// Todo: Pull this info from the GUI
+			// TODO: Pull this info from the GUI
 			var tilesetFile = "";
 			//var mixFile = "";
 			tilesetFile = tilesetName.ToLower();

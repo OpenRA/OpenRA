@@ -24,6 +24,7 @@ namespace OpenRA.Mods.RA.Effects
 	{
 		public readonly int Speed = 1;
 		public readonly int Arm = 0;
+		[Desc("Check for whether an actor with Wall: trait blocks fire")]
 		public readonly bool High = false;
 		public readonly bool Shadow = true;
 		public readonly bool Proximity = false;
@@ -32,6 +33,7 @@ namespace OpenRA.Mods.RA.Effects
 		public readonly string Image = null;
 		[Desc("Rate of Turning")]
 		public readonly int ROT = 5;
+		[Desc("Explode when following the target longer than this.")]
 		public readonly int RangeLimit = 0;
 		public readonly bool TurboBoost = false;
 		public readonly int TrailInterval = 2;

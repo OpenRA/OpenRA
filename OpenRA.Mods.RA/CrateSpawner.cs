@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA
 			if (--ticks <= 0)
 			{
 				var info = self.Info.Traits.Get<CrateSpawnerInfo>();
-				ticks = info.SpawnInterval * 25;		// todo: randomize
+				ticks = info.SpawnInterval * 25;		// TODO: randomize
 
 				crates.RemoveAll(x => !x.IsInWorld);
 

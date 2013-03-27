@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA
 			if (chronoshiftReturnTicks == 0)
 			{
 				self.CancelActivity();
-				// Todo: need a new Teleport method that will move to the closest available cell
+				// TODO: need a new Teleport method that will move to the closest available cell
 				self.QueueActivity(new Teleport(chronosphere, chronoshiftOrigin, killCargo));
 			}
 		}
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA
 		// Can't be used in synced code, except with ignoreVis.
 		public virtual bool CanChronoshiftTo(Actor self, CPos targetLocation)
 		{
-			// Todo: Allow enemy units to be chronoshifted into bad terrain to kill them
+			// TODO: Allow enemy units to be chronoshifted into bad terrain to kill them
 			return (self.HasTrait<ITeleportable>() && self.Trait<ITeleportable>().CanEnterCell(targetLocation));
 		}
 

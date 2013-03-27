@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA
 
 			if (--ticks <= 0)
 			{
-				ticks = Info.SpawnInterval * 25;		// todo: randomize
+				ticks = Info.SpawnInterval * 25;		// TODO: randomize
 
 				crates.RemoveAll(x => !x.IsInWorld);	// BUG: this removes crates that are cargo of a BADR!
 

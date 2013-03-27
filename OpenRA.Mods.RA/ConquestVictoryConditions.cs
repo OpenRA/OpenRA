@@ -9,13 +9,15 @@
 #endregion
 
 using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
 	public class ConquestVictoryConditionsInfo : ITraitInfo
 	{
-		public int NotificationDelay = 1500; // Milliseconds
+		[Desc("Milliseconds")]
+		public int NotificationDelay = 1500;
 
 		public object Create(ActorInitializer init) { return new ConquestVictoryConditions(this); }
 	}
@@ -85,13 +87,12 @@ namespace OpenRA.Mods.RA
 		}
 	}
 
-	/* tag trait for things that must be destroyed for a short game to end */
-
+	[Desc("Tag trait for things that must be destroyed for a short game to end.")]
 	public class MustBeDestroyedInfo : TraitInfo<MustBeDestroyed> { }
 	public class MustBeDestroyed { }
 
-	// Provides game mode information for players/observers
-	// Goes on WorldActor - observers don't have a player it can live on
+	[Desc("Provides game mode information for players/observers.",
+	      "Goes on WorldActor - observers don't have a player it can live on.")]
 	public class ConquestObjectivesPanelInfo : ITraitInfo
 	{
 		public string ObjectivesPanel = null;

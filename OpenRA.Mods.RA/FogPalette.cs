@@ -15,8 +15,10 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
+	[Desc("Adds the hard-coded fog palette to the game")]
 	class FogPaletteInfo : ITraitInfo
 	{
+		[Desc("internal palette name")]
 		public readonly string Name = "fog";
 		public object Create(ActorInitializer init) { return new FogPalette(this); }
 	}

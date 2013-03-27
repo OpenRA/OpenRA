@@ -82,7 +82,7 @@ namespace OpenRA.Editor
 //			{"scrate","crate"},
 		};
 
-		// todo: fix this -- will have bitrotted pretty badly.
+		// TODO: fix this -- will have bitrotted pretty badly.
 		static Dictionary<string,Pair<Color,Color>> namedColorMapping = new Dictionary<string, Pair<Color, Color>>()
 		{
 			{"gold",Pair.New(Color.FromArgb(246,214,121),Color.FromArgb(40,32,8))},

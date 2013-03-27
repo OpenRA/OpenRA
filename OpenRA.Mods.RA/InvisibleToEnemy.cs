@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA
 
 		public Color RadarColorOverride(Actor self)
 		{
-			// todo: why is making this half-opaque conflated with hiding the actor from non-allies?
+			// TODO: why is making this half-opaque conflated with hiding the actor from non-allies?
 			return Color.FromArgb(128, self.Owner.ColorRamp.GetColor(0));
 		}
 

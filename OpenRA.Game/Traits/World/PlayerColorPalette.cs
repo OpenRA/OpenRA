@@ -13,10 +13,14 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Traits
 {
+	[Desc("Add this to the Player actor definition.")]
 	public class PlayerColorPaletteInfo : ITraitInfo
 	{
+		[Desc("The Name of the palette to base off.")]
 		public readonly string BasePalette = null;
+		[Desc("The prefix for the resulting player palettes")]
 		public readonly string BaseName = "player";
+		[Desc("Remap these indices to player colors.")]
 		public readonly int[] RemapIndex = {};
 		public readonly bool AllowModifiers = true;
 

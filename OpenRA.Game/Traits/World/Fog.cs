@@ -8,15 +8,13 @@
  */
 #endregion
 
+using OpenRA.FileFormats;
+
 namespace OpenRA.Traits
 {
-	public class FogInfo : TraitInfo<Fog>
-	{
-		/*
-		 * This tag trait will enable fog of war in ShroudRenderer.
-		 * Don't forget about HiddenUnderFog and FrozenUnderFog.
-		 */
-	}
+	[Desc("This tag trait will enable fog of war in ShroudRenderer.",
+	      "Don't forget about HiddenUnderFog and FrozenUnderFog.")]
+	public class FogInfo : TraitInfo<Fog> {	}
 	
 	public class Fog { }
 }

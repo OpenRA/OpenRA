@@ -168,7 +168,7 @@ namespace OpenRA
 
 		public void Tick()
 		{
-			// Todo: Expose this as an order so it can be synced
+			// TODO: Expose this as an order so it can be synced
 			if (ShouldTick())
 			{
 				using( new PerfSample("tick_idle") )

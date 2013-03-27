@@ -98,7 +98,7 @@ namespace OpenRA.Mods.RA
 				return rp.rallyPoint;
 			}
 
-			// todo: don't talk about HeliFly here.
+			// TODO: don't talk about HeliFly here.
 			var helicopter = newUnit.TraitOrDefault<Helicopter>();
 			if (helicopter != null)
 			{

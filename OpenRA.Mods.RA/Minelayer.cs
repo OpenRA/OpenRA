@@ -76,7 +76,7 @@ namespace OpenRA.Mods.RA
 			var mins = CPos.Min(start, end);
 			var maxs = CPos.Max(start, end);
 
-			/* todo: proper endcaps, if anyone cares (which won't happen unless depth is large) */
+			/* TODO: proper endcaps, if anyone cares (which won't happen unless depth is large) */
 
 			var p = end - start;
 			var q = new float2(p.Y, -p.X);
@@ -140,7 +140,7 @@ namespace OpenRA.Mods.RA
 
 			public void RenderBeforeWorld(WorldRenderer wr, World world) { }
 
-			public string GetCursor(World world, CPos xy, MouseInput mi) { lastMousePos = xy; return "ability"; }	/* todo */
+			public string GetCursor(World world, CPos xy, MouseInput mi) { lastMousePos = xy; return "ability"; }	/* TODO */
 		}
 
 		public void RenderAfterWorld(WorldRenderer wr)

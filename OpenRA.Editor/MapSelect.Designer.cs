@@ -12,15 +12,10 @@ namespace OpenRA.Editor
 {
 	partial class MapSelect
 	{
-		/// <summary>
-		/// TODO
-		/// </summary>
+		// TODO:
 		private System.ComponentModel.IContainer components = null;
 
-		/// <summary>
-		/// TODO
-		/// </summary>
-		/// <param name="disposing">TODO</param>
+		// TODO:
 		protected override void Dispose(bool disposing)
 		{
 			if (disposing && (components != null))
@@ -32,9 +27,7 @@ namespace OpenRA.Editor
 
 		#region Код, автоматически созданный конструктором форм Windows
 
-		/// <summary>
-		/// TODO
-		/// </summary>
+		// TODO:
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();

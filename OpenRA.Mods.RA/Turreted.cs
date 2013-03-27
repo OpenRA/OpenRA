@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using OpenRA.Mods.RA.Render;
+using OpenRA.FileFormats;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -17,6 +18,7 @@ namespace OpenRA.Mods.RA
 	public class TurretedInfo : ITraitInfo, UsesInit<TurretFacingInit>
 	{
 		public readonly string Turret = "primary";
+		[Desc("Rate of Turning")]
 		public readonly int ROT = 255;
 		public readonly int InitialFacing = 128;
 		public readonly int[] Offset = {0,0};
