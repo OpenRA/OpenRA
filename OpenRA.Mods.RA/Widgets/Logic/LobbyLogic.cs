@@ -438,7 +438,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						var status = template.Get<CheckboxWidget>("STATUS_CHECKBOX");
 						status.IsChecked = () => ready;
 						status.IsVisible = () => true;
-						status.OnClick += CycleReady;
+						status.OnClick = CycleReady;
 					}
 					else // Bot
 						template.Get<ImageWidget>("STATUS_IMAGE").IsVisible = () => true;
@@ -513,7 +513,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 					var status = template.Get<CheckboxWidget>("STATUS_CHECKBOX");
 					status.IsChecked = () => ready;
-					status.OnClick += CycleReady;
+					status.OnClick = CycleReady;
 				}
 				// Non-editable spectator
 				else
