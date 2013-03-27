@@ -37,6 +37,7 @@ namespace OpenRA.GameRules
 		public bool Dedicated = false;
 		public bool DedicatedLoop = true;
 		public bool LockBots = false;
+		public bool AllowVersionMismatch = false;
 
 		public ServerSettings() { }
 
@@ -55,6 +56,7 @@ namespace OpenRA.GameRules
 			Dedicated = other.Dedicated;
 			DedicatedLoop = other.DedicatedLoop;
 			LockBots = other.LockBots;
+			AllowVersionMismatch = other.AllowVersionMismatch;
 		}
 	}
 
@@ -66,6 +68,7 @@ namespace OpenRA.GameRules
 		public float LongTickThreshold = 0.001f;
 		public bool SanityCheckUnsyncedCode = false;
 		public int Samples = 25;
+		public bool IgnoreVersionMismatch = false;
 	}
 
 	public class GraphicSettings

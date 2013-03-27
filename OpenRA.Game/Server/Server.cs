@@ -283,12 +283,11 @@ namespace OpenRA.Server
 				var mods = handshake.Mods;
 
 				// Check that the client has compatible mods
-				var valid = mods.All( m => m.Contains('@')) && //valid format
-							mods.Count() == Game.CurrentMods.Count() &&  //same number
-							mods.Select( m => Pair.New(m.Split('@')[0], m.Split('@')[1])).All(kv => Game.CurrentMods.ContainsKey(kv.First) &&
-					 		(kv.Second == "{DEV_VERSION}" || Game.CurrentMods[kv.First].Version == "{DEV_VERSION}" || kv.Second == Game.CurrentMods[kv.First].Version));
-				
-				if (!valid)
+				var validMod = mods.All(m => m.Contains('@')) && //valid format
+					mods.Count() == Game.CurrentMods.Count() && //same number
+					mods.Select(m => Pair.New(m.Split('@')[0], m.Split('@')[1])).All(kv => Game.CurrentMods.ContainsKey(kv.First));
+
+				if (!validMod)
 				{
 					Log.Write("server", "Rejected connection from {0}; mods do not match.",
 						newConn.socket.RemoteEndPoint);
@@ -297,14 +296,16 @@ namespace OpenRA.Server
 					DropClient(newConn);
 					return;
 				}
-				
-				// Drop DEV_VERSION if it's a Dedicated
-				if ( lobbyInfo.GlobalSettings.Dedicated &&  mods.Any(m => m.Contains("{DEV_VERSION}")) )
+
+				var validVersion = mods.Select(m => Pair.New(m.Split('@')[0], m.Split('@')[1])).All(
+					kv => kv.Second == Game.CurrentMods[kv.First].Version);
+
+				if (!validVersion && !lobbyInfo.GlobalSettings.AllowVersionMismatch)
 				{
-					Log.Write("server", "Rejected connection from {0}; DEV_VERSION is not allowed here.",
+					Log.Write("server", "Rejected connection from {0}; Not running the same version.",
 						newConn.socket.RemoteEndPoint);
 
-					SendOrderTo(newConn, "ServerError", "DEV_VERSION is not allowed here");
+					SendOrderTo(newConn, "ServerError", "Not running the same version.");
 					DropClient(newConn);
 					return;
 				}
@@ -366,8 +367,8 @@ namespace OpenRA.Server
 				}
 
 				if (mods.Any(m => m.Contains("{DEV_VERSION}")))
-					SendChat(newConn, "is running a development version, "+
-					"and may cause desync if they have any incompatible changes.");
+					SendChat(newConn, "is running a non-versioned development build, "+
+					"and may cause desync if it contains any incompatible changes.");
 			}
 			catch (Exception) { DropClient(newConn); }
 		}

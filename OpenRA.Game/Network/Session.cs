@@ -87,6 +87,7 @@ namespace OpenRA.Network
 			public bool Dedicated;
 			public string Difficulty;
 			public bool Crates = true;
+			public bool AllowVersionMismatch;
 		}
 
 		public Session(string[] mods)
