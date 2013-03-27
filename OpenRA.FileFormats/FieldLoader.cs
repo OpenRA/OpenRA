@@ -325,6 +325,11 @@ namespace OpenRA.FileFormats
 					((int)c.B).Clamp(0, 255));
 			}
 
+			if (t == typeof(DateTime))
+			{
+				return ((DateTime) v).ToString("yyyy-MM-dd HH:mm:ss");
+			}
+
 			// Don't save floats in settings.yaml using country-specific decimal separators which can be misunderstood as group seperators.
 			if (t == typeof(float))
 				return ((float)v).ToString(CultureInfo.InvariantCulture);

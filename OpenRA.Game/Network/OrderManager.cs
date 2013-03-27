@@ -6,6 +6,7 @@
  * as published by the Free Software Foundation. For more information,
  * see COPYING.
  */
+
 #endregion
 
 using System;
@@ -13,6 +14,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.Exceptions;
 
 namespace OpenRA.Network
 {
@@ -140,17 +142,17 @@ namespace OpenRA.Network
 			if (index >= orders.Count())
 				OutOfSync(frame);
 
-			throw new InvalidOperationException("Out of sync in frame {0}.\n {1}\n Compare syncreport.log with other players.".F(frame, orders.ElementAt(index).Order.ToString()));
+			throw new OutOfSyncException("Out of sync in frame {0}.\n {1}".F(frame, orders.ElementAt(index).Order.ToString()), syncReport.GetReport(frame));
 		}
 
 		void OutOfSync(int frame)
 		{
-			throw new InvalidOperationException("Out of sync in frame {0}.\n Compare syncreport.log with other players.".F(frame));
+			throw new OutOfSyncException("Out of sync in frame {0}.".F(frame), syncReport.GetReport(frame));
 		}
 
 		void OutOfSync(int frame, string blame)
 		{
-			throw new InvalidOperationException("Out of sync in frame {0}: Blame {1}.\n Compare syncreport.log with other players.".F(frame, blame));
+			throw new OutOfSyncException("Out of sync in frame {0}: Blame {1}.".F(frame, blame), syncReport.GetReport(frame));
 		}
 
 		public bool IsReadyForNextFrame

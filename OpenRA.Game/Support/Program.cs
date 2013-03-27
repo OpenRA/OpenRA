@@ -8,6 +8,7 @@
  */
 #endregion
 
+using OpenRA.Support;
 using System;
 using System.Diagnostics;
 using System.Globalization;
@@ -30,7 +31,6 @@ namespace OpenRA
 				Run(args);
 				return;
 			}
-
 			try
 			{
 				Run(args);
@@ -41,6 +41,20 @@ namespace OpenRA
 				var rpt = BuildExceptionReport(e).ToString();
 				Log.Write("exception", "{0}", rpt);
 				Console.Error.WriteLine(rpt);
+
+				var report = new CrashReport(e);
+				var om = Game.orderManager;
+				if (om != null)
+				{
+					report.LobbyInfo = om.LobbyInfo;
+				}
+
+				if (Game.CurrentMods != null)
+					report.Mods = Game.CurrentMods.Values.ToArray();
+
+				report.Save();
+				// disabled until OpenRACrashReport Server is up and running
+				//CrashReporter.Run(report);
 			}
 		}
 

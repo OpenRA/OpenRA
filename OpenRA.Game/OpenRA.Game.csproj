@@ -157,6 +157,9 @@
     <Compile Include="Support\Arguments.cs" />
     <Compile Include="Support\PerfHistory.cs" />
     <Compile Include="Support\Program.cs" />
+    <Compile Include="Support\CrashReporter.cs" />
+    <Compile Include="Support\CrashReport.cs" />
+    <Compile Include="Support\Exceptions.cs" />
     <Compile Include="Sync.cs" />
     <Compile Include="TraitDictionary.cs" />
     <Compile Include="Traits\Activity.cs" />

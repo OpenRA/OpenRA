@@ -29,6 +29,7 @@ namespace OpenRA.GameRules
 		public int ExternalPort = 1234;
 		public bool AdvertiseOnline = true;
 		public string MasterServer = "http://master.open-ra.org/";
+		public string CrashReportServer = "http://localhost:8080/crs/";
 		public bool AllowUPnP = false;
 		public bool AllowCheats = false;
 		public string Map = null;
