@@ -110,6 +110,8 @@ APC:
 	WithMuzzleFlash:
 	RenderUnitTurreted:
 	AutoTarget:
+	DebugRetiliateAgainstAggressor:
+	DebugNextAutoTargetScanTime:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
@@ -147,6 +149,8 @@ ARTY:
 	Explodes:
 	AutoTarget:
 		InitialStance: Defend
+	DebugRetiliateAgainstAggressor:
+	DebugNextAutoTargetScanTime:
 	LeavesHusk:
 		HuskActor: ARTY.Husk
 
@@ -177,6 +181,8 @@ FTNK:
 	AttackFrontal:
 	RenderUnit:
 	AutoTarget:
+	DebugRetiliateAgainstAggressor:
+	DebugNextAutoTargetScanTime:
 	WithMuzzleFlash:
 	Explodes:
 		Weapon: FlametankExplode
@@ -214,6 +220,8 @@ BGGY:
 	WithMuzzleFlash:
 	RenderUnitTurreted:
 	AutoTarget:
+	DebugRetiliateAgainstAggressor:
+	DebugNextAutoTargetScanTime:
 	LeavesHusk:
 		HuskActor: BGGY.Husk
 
@@ -251,6 +259,8 @@ BIKE:
 	AttackFrontal:
 	RenderUnit:
 	AutoTarget:
+	DebugRetiliateAgainstAggressor:
+	DebugNextAutoTargetScanTime:
 	LeavesHusk:
 		HuskActor: BIKE.Husk
 	
@@ -284,6 +294,8 @@ JEEP:
 	WithMuzzleFlash:
 	RenderUnitTurreted:
 	AutoTarget:
+	DebugRetiliateAgainstAggressor:
+	DebugNextAutoTargetScanTime:
 	LeavesHusk:
 		HuskActor: JEEP.Husk
 
@@ -318,6 +330,8 @@ LTNK:
 	AttackTurreted:
 	RenderUnitTurreted:
 	AutoTarget:
+	DebugRetiliateAgainstAggressor:
+	DebugNextAutoTargetScanTime:
 	LeavesHusk:
 		HuskActor: LTNK.Husk
 	Explodes:
@@ -354,6 +368,8 @@ MTNK:
 	AttackTurreted:
 	RenderUnitTurreted:
 	AutoTarget:
+	DebugRetiliateAgainstAggressor:
+	DebugNextAutoTargetScanTime:
 	LeavesHusk:
 		HuskActor: MTNK.Husk
 	Explodes:
@@ -397,6 +413,8 @@ HTNK:
 	AttackTurreted:
 	RenderUnitTurreted:
 	AutoTarget:
+	DebugRetiliateAgainstAggressor:
+	DebugNextAutoTargetScanTime:
 	SelfHealing:
 		Ticks: 10
 		HealIfBelow: 50%
@@ -438,6 +456,8 @@ MSAM:
 	AttackFrontal:
 	RenderUnitTurretedAim:
 	AutoTarget:
+	DebugRetiliateAgainstAggressor:
+	DebugNextAutoTargetScanTime:
 	LeavesHusk:
 		HuskActor: MSAM.Husk
 
@@ -474,6 +494,8 @@ MLRS:
 	AttackTurreted:
 	RenderUnitTurretedAim:
 	AutoTarget:
+	DebugRetiliateAgainstAggressor:
+	DebugNextAutoTargetScanTime:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
@@ -514,6 +536,8 @@ STNK:
 	AttackFrontal:
 	RenderUnit:
 	AutoTarget:
+	DebugRetiliateAgainstAggressor:
+	DebugNextAutoTargetScanTime:
 		InitialStance: HoldFire
 	TargetableUnit:
 	LeavesHusk:

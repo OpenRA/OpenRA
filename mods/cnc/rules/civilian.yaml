@@ -396,6 +396,8 @@ VICE:
 		TargetTypes: Ground
 	AutoTarget:
 		ScanRadius: 4
+	DebugRetiliateAgainstAggressor:
+	DebugNextAutoTargetScanTime:
 	AttackMove:
 	HiddenUnderFog:
 	GainsExperience:

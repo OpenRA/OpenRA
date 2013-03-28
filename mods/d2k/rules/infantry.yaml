@@ -49,6 +49,8 @@ ENGINEER:
 	Captures:
 	#TakeCover:
 	-AutoTarget:
+	-DebugRetiliateAgainstAggressor:
+	-DebugNextAutoTargetScanTime:
 	AttackMove:
 		JustMove: true
 
@@ -110,6 +112,8 @@ MEDIC:
 	Passenger:
 		PipType: Blue
 	-AutoTarget:
+	-DebugRetiliateAgainstAggressor:
+	-DebugNextAutoTargetScanTime:
 	AttackMove:
 		JustMove: true
 	RenderInfantry:
@@ -135,6 +139,8 @@ MEDIC:
 #		Speed: 4
 #	Passenger:
 #	-AutoTarget:
+#	-DebugRetiliateAgainstAggressor:
+#	-DebugNextAutoTargetScanTime:
 #	AttackMove:
 #		JustMove: true
 #	Transforms:

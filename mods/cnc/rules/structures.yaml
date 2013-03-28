@@ -515,6 +515,8 @@ GUN:
 		LocalOffset: 0,4,0,-2,0
 	AttackTurreted:
 	AutoTarget:
+	DebugRetiliateAgainstAggressor:
+	DebugNextAutoTargetScanTime:
 	-AutoTargetIgnore:
 	-RenderBuilding:
 	-DeadBuildingState:
@@ -557,6 +559,8 @@ SAM:
 	AttackPopupTurreted:
 	WithMuzzleFlash:
 	AutoTarget:
+	DebugRetiliateAgainstAggressor:
+	DebugNextAutoTargetScanTime:
 	-RenderBuilding:
 	RenderRangeCircle:
 
@@ -595,6 +599,8 @@ OBLI:
 	Turreted:
 		ROT:255
 	AutoTarget:
+	DebugRetiliateAgainstAggressor:
+	DebugNextAutoTargetScanTime:
 	-AutoTargetIgnore:
 	-RenderBuilding:
 	RenderRangeCircle:
@@ -628,6 +634,8 @@ GTWR:
 		LocalOffset: 0,-6,0,-6,0
 	AttackTurreted:
 	AutoTarget:
+	DebugRetiliateAgainstAggressor:
+	DebugNextAutoTargetScanTime:
 	-AutoTargetIgnore:
 	DetectCloaked:
 		Range: 3
@@ -669,6 +677,8 @@ ATWR:
 	Turreted:
 		ROT:255
 	AutoTarget:
+	DebugRetiliateAgainstAggressor:
+	DebugNextAutoTargetScanTime:
 	-AutoTargetIgnore:
 	RenderDetectionCircle:
 	DetectCloaked:
