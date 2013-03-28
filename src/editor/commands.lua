@@ -295,8 +295,6 @@ local function removePage(index)
   elseif prevIndex then
     notebook:SetSelection(prevIndex)
   end
-
-  SetEditorSelection() -- will use notebook GetSelection to update
 end
 
 function ClosePage(selection)
@@ -590,21 +588,6 @@ function ShowFullScreen(setFullScreen)
   end
 end
 
-local function restoreFiles(files)
-  -- open files, but ignore some functions that are not needed;
-  -- as we may be opening multiple files, it doesn't make sense to
-  -- select editor and do some other similar work after each file.
-  local noop, func = function() end, LoadFile
-  local genv = {SetEditorSelection = noop, SettingsAppendFileToHistory = noop}
-  setmetatable(genv, {__index = _G})
-  local env = getfenv(func)
-  setfenv(func, genv)
-  -- provide fake index so that it doesn't activate it as the index may be not
-  -- quite correct if some of the existing files are already open in the IDE.
-  SetOpenFiles(files, {index = #files + notebook:GetPageCount()})
-  setfenv(func, env)
-end
-
 function ProjectConfig(dir, config)
   if config then ide.session.projects[dir] = config
   else return unpack(ide.session.projects[dir] or {}) end
@@ -680,10 +663,23 @@ local function saveAutoRecovery(event)
     TR("Saved auto-recover at %s."):format(os.date("%H:%M:%S")), 1)
 end
 
+local function fastWrap(func, ...)
+  -- open files, but ignore some functions that are not needed;
+  -- as we may be opening multiple files, it doesn't make sense to
+  -- select editor and do some other similar work after each file.
+  local noop = function() end
+  local SES, SAFTH = SetEditorSelection, SettingsAppendFileToHistory
+  SetEditorSelection, SettingsAppendFileToHistory = noop, noop
+  func(...)
+  SetEditorSelection, SettingsAppendFileToHistory = SES, SAFTH
+end
+
 function StoreRestoreProjectTabs(curdir, newdir)
   local win = ide.osname == 'Windows'
   local interpreter = ide.interpreter.fname
   local current, closing, restore = notebook:GetSelection(), 0, false
+
+  if ide.osname ~= 'Macintosh' then notebook:Freeze() end
 
   if curdir and #curdir > 0 then
     local lowcurdir = win and string.lower(curdir) or curdir
@@ -710,15 +706,21 @@ function StoreRestoreProjectTabs(curdir, newdir)
 
     -- close pages for those files that match the project in the reverse order
     -- (as ids shift when pages are closed)
-    for i = #closdocs, 1, -1 do ClosePage(closdocs[i].id) end
+    for i = #closdocs, 1, -1 do fastWrap(ClosePage, closdocs[i].id) end
   end
 
   local files, params = ProjectConfig(newdir)
-  if files then restoreFiles(files) end
+  if files then
+    -- provide fake index so that it doesn't activate it as the index may be not
+    -- quite correct if some of the existing files are already open in the IDE.
+    fastWrap(SetOpenFiles, files, {index = #files + notebook:GetPageCount()})
+  end
 
   if params and params.interpreter and ide.interpreter.fname ~= params.interpreter then
     ProjectSetInterpreter(params.interpreter) -- set the interpreter
   end
+
+  if ide.osname ~= 'Macintosh' then notebook:Thaw() end
 
   local index = params and params.index
   if notebook:GetPageCount() == 0 then NewFile()
