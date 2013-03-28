@@ -12,6 +12,7 @@ Speech:
 		BaseAttack: baseatk1
 		HarvesterAttack:
 		Leave: batlcon1
+		StartGame:
 		UnitReady: unitredy
 		NoBuild: nobuild1
 		Training: bldging1
