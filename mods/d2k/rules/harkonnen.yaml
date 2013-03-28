@@ -220,6 +220,8 @@ DEVAST:
 	AttackFrontal:
 	AutoTarget:
 		InitialStance: Defend
+	DebugRetiliateAgainstAggressor:
+	DebugNextAutoTargetScanTime:
 	Explodes:
 		Weapon: UnitExplodeScale
 		EmptyWeapon: UnitExplodeScale

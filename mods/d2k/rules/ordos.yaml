@@ -218,6 +218,8 @@ DEVIATORTANK:
 	AttackLoyalty:
 	AutoTarget:
 		InitialStance: Defend
+	DebugRetiliateAgainstAggressor:
+	DebugNextAutoTargetScanTime:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
@@ -258,5 +260,7 @@ SABOTEUR:
 	C4Demolition:
 		C4Delay: 45
 	-AutoTarget:
+	-DebugRetiliateAgainstAggressor:
+	-DebugNextAutoTargetScanTime:
 	AttackMove:
 		JustMove: true
