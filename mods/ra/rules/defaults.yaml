@@ -335,8 +335,6 @@
 	DeadBuildingState:
 	Armor:
 		Type: Wood
-	TargetableBuilding:
-		TargetTypes: Ground
 	AutoTargetIgnore:
 
 ^Husk:
