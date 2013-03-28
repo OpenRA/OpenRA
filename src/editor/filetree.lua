@@ -211,12 +211,19 @@ projpanel:SetSizer(projSizer)
 -- proj connectors
 -- ---------------
 
+local inupdate = false
 local function projcomboboxUpdate(event)
+  if inupdate then return end
   local cur = projcombobox:GetValue()
   local fn = wx.wxFileName(cur)
   fn:Normalize()
 
+  -- on Windows, wxwidgets (2.9.5+) generates two COMMAND_COMBOBOX_SELECTED
+  -- events when the selection is done with ENTER, which causes recursive
+  -- call of updateProjectDir. To prevent this the second call is ignored.
+  inupdate = true
   filetree:updateProjectDir(fn:GetFullPath(), event:GetEventType() == wx.wxEVT_COMMAND_COMBOBOX_SELECTED)
+  inupdate = false
 end
 
 projpanel:Connect(ID "filetree.proj.drivecb", wx.wxEVT_COMMAND_COMBOBOX_SELECTED, projcomboboxUpdate)
