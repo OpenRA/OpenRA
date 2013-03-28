@@ -17,7 +17,13 @@ namespace OpenRA.Widgets
 {
 	public class ButtonWidget : Widget
 	{
-		public string Key = null;
+		public Func<ButtonWidget, string> GetKey = _ => null;
+		public string Key
+		{
+			get { return GetKey(this); }
+			set { GetKey = _ => value; }
+		}
+
 		public string Text = "";
 		public bool Depressed = false;
 		public int VisualHeight = ChromeMetrics.Get<int>("ButtonDepth");
