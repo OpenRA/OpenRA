@@ -231,26 +231,17 @@ do
 
   mgr:AddPane(frame.notebook, wxaui.wxAuiPaneInfo():
               Name("notebook"):
-              CenterPane():PaneBorder(false):Hide())
-              
+              CenterPane():PaneBorder(false))
   mgr:AddPane(frame.projpanel, wxaui.wxAuiPaneInfo():
               Name("projpanel"):Caption(TR("Project")):
               MinSize(200,200):FloatingSize(200,400):
               Left():Layer(1):Position(1):
-              CloseButton(true):MaximizeButton(false):PinButton(true):Hide())
-              
+              CloseButton(true):MaximizeButton(false):PinButton(true))
   mgr:AddPane(frame.bottomnotebook, wxaui.wxAuiPaneInfo():
               Name("bottomnotebook"):
               MinSize(200,200):FloatingSize(400,250):
               Bottom():Layer(1):Position(1):
-              CloseButton(true):MaximizeButton(false):PinButton(true):Hide())
-              
-  mgr:GetPane("bottomnotebook"):Show(true)
-  mgr:GetPane("projpanel"):Show(true)
-  mgr:GetPane("notebook"):Show(true)
-  
-  local pp = mgr:SavePerspective()
-  mgr.defaultPerspective = pp
-  
-  mgr:Update()
+              CloseButton(true):MaximizeButton(false):PinButton(true))
+
+  mgr.defaultPerspective = mgr:SavePerspective()
 end

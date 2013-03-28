@@ -562,13 +562,12 @@ function ShowFullScreen(setFullScreen)
     beforeFullScreenPerspective = uimgr:SavePerspective()
     uimgr:GetPane("bottomnotebook"):Show(false)
     uimgr:GetPane("projpanel"):Show(false)
+    uimgr:Update()
     SetEditorSelection() -- make sure the focus is on the editor
   elseif beforeFullScreenPerspective then
-    uimgr:LoadPerspective(beforeFullScreenPerspective)
+    uimgr:LoadPerspective(beforeFullScreenPerspective, true)
     beforeFullScreenPerspective = nil
   end
-
-  uimgr:Update()
 
   -- On OSX, toolbar and status bar are not hidden when switched to
   -- full screen: http://trac.wxwidgets.org/ticket/14259; do manually.
@@ -754,13 +753,21 @@ local function closeWindow(event)
   end
 
   ShowFullScreen(false)
-  SettingsSaveAll()
 
+  SettingsSaveAll()
+  ide.settings:Flush()
+
+  do -- hide all floating panes first
+    local panes = frame.uimgr:GetAllPanes()
+    for pane = 0, panes:GetCount()-1 do
+      frame.uimgr:GetPane(panes:Item(pane).name):Hide()
+    end
+  end
+  frame.uimgr:Update() -- hide floating panes
   frame.uimgr:UnInit()
-  frame:Hide() -- hide everything while the IDE exits
+  frame:Hide() -- hide the main frame while the IDE exits
 
   if DebuggerShutdown then DebuggerShutdown() end
-  ide.settings:delete() -- delete the config to save changes
   if ide.session.timer then ide.session.timer:Stop() end
 
   event:Skip()

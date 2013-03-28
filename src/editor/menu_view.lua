@@ -19,8 +19,7 @@ menuBar:Append(viewMenu, TR("&View"))
 
 frame:Connect(ID_VIEWDEFAULTLAYOUT, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
-    uimgr:LoadPerspective(uimgr.defaultPerspective)
-    uimgr:Update()
+    uimgr:LoadPerspective(uimgr.defaultPerspective, true)
   end)
   
 frame:Connect(ID_VIEWOUTPUT, wx.wxEVT_COMMAND_MENU_SELECTED,

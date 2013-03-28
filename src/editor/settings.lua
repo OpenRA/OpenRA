@@ -371,7 +371,7 @@ function SettingsRestoreView()
   local layoutcur = uimgr:SavePerspective()
   local layout = settingsReadSafe(settings,"uimgrlayout",layoutcur)
   if (layout ~= layoutcur) then
-    uimgr:LoadPerspective(layout)
+    uimgr:LoadPerspective(layout, false)
     -- unfortunately need to explicitly (re-)assign the caption,
     -- as it's going to be restored from the config regardless of how
     -- it is set now (which affects its translation)
