@@ -284,7 +284,7 @@ TSLA:
 	RenderBuildingCharge:
 	Armament:
 		Weapon: TeslaZap
-		LocalOffset: 0,0,0,-10,0
+		LegacyLocalOffset: 0,0,0,-10,0
 	AttackTesla:
 		ReloadTime: 120
 	AutoTarget:
@@ -451,7 +451,7 @@ PBOX.E1:
 	DebugNextAutoTargetScanTime:
 	Armament:
 		Weapon: Vulcan
-		LocalOffset: 0,-11,0,0,0
+		LegacyLocalOffset: 0,-11,0,0,0
 	AttackTurreted:
 	WithMuzzleFlash:
 	Cargo:
@@ -476,7 +476,7 @@ PBOX.E3:
 	DebugNextAutoTargetScanTime:
 	Armament:
 		Weapon: Dragon
-		LocalOffset: 0,-11,0,0,0
+		LegacyLocalOffset: 0,-11,0,0,0
 	AttackTurreted:
 
 PBOX.E4:
@@ -491,7 +491,7 @@ PBOX.E4:
 	DebugNextAutoTargetScanTime:
 	Armament:
 		Weapon: Flamer
-		LocalOffset: 0,-11,0,0,0
+		LegacyLocalOffset: 0,-11,0,0,0
 	AttackTurreted:
 
 PBOX.E7:
@@ -506,7 +506,7 @@ PBOX.E7:
 	DebugNextAutoTargetScanTime:
 	Armament:
 		Weapon: Colt45
-		LocalOffset: 0,-11,0,0,0
+		LegacyLocalOffset: 0,-11,0,0,0
 	AttackTurreted:
 
 PBOX.SHOK:
@@ -521,7 +521,7 @@ PBOX.SHOK:
 	DebugNextAutoTargetScanTime:
 	Armament:
 		Weapon: PortaTesla
-		LocalOffset: 0,-11,0,0,0
+		LegacyLocalOffset: 0,-11,0,0,0
 	AttackTurreted:
 
 PBOX.SNIPER:
@@ -536,7 +536,7 @@ PBOX.SNIPER:
 	DebugNextAutoTargetScanTime:
 	Armament:
 		Weapon: Sniper
-		LocalOffset: 0,-11,0,0,0
+		LegacyLocalOffset: 0,-11,0,0,0
 	AttackTurreted:
 
 HBOX:
@@ -626,7 +626,7 @@ HBOX.E1:
 	DebugNextAutoTargetScanTime:
 	Armament:
 		Weapon: Vulcan
-		LocalOffset: 0,-11,0,0,0
+		LegacyLocalOffset: 0,-11,0,0,0
 	AttackTurreted:
 	WithMuzzleFlash:
 	Cargo:
@@ -651,7 +651,7 @@ HBOX.E3:
 	DebugNextAutoTargetScanTime:
 	Armament:
 		Weapon: Dragon
-		LocalOffset: 0,-11,0,0,0
+		LegacyLocalOffset: 0,-11,0,0,0
 	AttackTurreted:
 
 HBOX.E4:
@@ -666,7 +666,7 @@ HBOX.E4:
 	DebugNextAutoTargetScanTime:
 	Armament:
 		Weapon: Flamer
-		LocalOffset: 0,-11,0,0,0
+		LegacyLocalOffset: 0,-11,0,0,0
 	AttackTurreted:
 
 HBOX.E7:
@@ -681,7 +681,7 @@ HBOX.E7:
 	DebugNextAutoTargetScanTime:
 	Armament:
 		Weapon: Colt45
-		LocalOffset: 0,-11,0,0,0
+		LegacyLocalOffset: 0,-11,0,0,0
 	AttackTurreted:
 
 HBOX.SHOK:
@@ -696,7 +696,7 @@ HBOX.SHOK:
 	DebugNextAutoTargetScanTime:
 	Armament:
 		Weapon: PortaTesla
-		LocalOffset: 0,-11,0,0,0
+		LegacyLocalOffset: 0,-11,0,0,0
 	AttackTurreted:
 
 HBOX.SNIPER:
@@ -711,7 +711,7 @@ HBOX.SNIPER:
 	DebugNextAutoTargetScanTime:
 	Armament:
 		Weapon: Sniper
-		LocalOffset: 0,-11,0,0,0
+		LegacyLocalOffset: 0,-11,0,0,0
 	AttackTurreted:
 
 GUN:
@@ -776,10 +776,10 @@ FTUR:
 		Range: 6
 	Turreted:
 		ROT: 255
-		Offset: 0,0,0,-2
+		LegacyOffset: 0,0,0,-2
 	Armament:
 		Weapon: FireballLauncher
-		LocalOffset: 0,-12,0,0,0
+		LegacyLocalOffset: 0,-12,0,0,0
 	AttackTurreted:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:

@@ -512,7 +512,7 @@ GUN:
 	RenderBuildingTurreted:
 	Armament:
 		Weapon: TurretGun
-		LocalOffset: 0,4,0,-2,0
+		LegacyLocalOffset: 0,4,0,-2,0
 	AttackTurreted:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
@@ -593,7 +593,7 @@ OBLI:
 		ChargeAudio: obelpowr.aud
 	Armament:
 		Weapon: Laser
-		LocalOffset: 0,0,-2,-17,0
+		LegacyLocalOffset: 0,0,-2,-17,0
 		FireDelay: 8
 	AttackTurreted:
 	Turreted:
@@ -631,7 +631,7 @@ GTWR:
 		Range: 7
 	Armament:
 		Weapon: HighV
-		LocalOffset: 0,-6,0,-6,0
+		LegacyLocalOffset: 0,-6,0,-6,0
 	AttackTurreted:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
@@ -672,7 +672,7 @@ ATWR:
 		Range: 9
 	Armament:
 		Weapon: TowerMissle
-		LocalOffset: 7,-7,5,2,-25, -7,-7,5,2,25
+		LegacyLocalOffset: 7,-7,5,2,-25, -7,-7,5,2,25
 	AttackTurreted:
 	Turreted:
 		ROT:255

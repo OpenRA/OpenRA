@@ -84,7 +84,7 @@ ORNI:
 		Range: 10
 	Armament:
 		Weapon: ChainGun
-		LocalOffset: -5,-2,0,2,0
+		LegacyLocalOffset: -5,-2,0,2,0
 	AttackHeli:
 		FacingTolerance: 20
 	Helicopter:

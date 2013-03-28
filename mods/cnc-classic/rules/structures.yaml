@@ -558,7 +558,7 @@ OBLI:
 		ChargeAudio: obelpowr.aud
 	Turreted:
 		ROT:255
-		Offset: 0,0,-2,-17
+		LegacyOffset: 0,0,-2,-17
 	Armament:
 		Weapon: Laser
 		FireDelay: 8
@@ -666,7 +666,7 @@ GUN:
 	RenderBuildingTurreted:
 	Armament:
 		Weapon: TurretGun
-		LocalOffset: 0,4,0,-2,0
+		LegacyLocalOffset: 0,4,0,-2,0
 	AttackTurreted:
 	AutoTarget:
 	-AutoTargetIgnore:
@@ -741,7 +741,7 @@ GTWR:
 	# RevealShroud range was set to equal 1 + its weapon range (due to possible rendering issues with shroud for OpenRA)
 	Armament:
 		Weapon: HighV
-		LocalOffset: 0,-6,0,0,0
+		LegacyLocalOffset: 0,-6,0,0,0
 	AttackTurreted:
 	AutoTarget:
 	-AutoTargetIgnore:
@@ -752,7 +752,7 @@ GTWR:
 	WithMuzzleFlash:
 	Turreted:
 		ROT:255
-		Offset: 0,0,0,-6
+		LegacyOffset: 0,0,0,-6
 
 ATWR:
 	Inherits: ^Building
@@ -783,10 +783,10 @@ ATWR:
 	# RevealShroud range was set to equal its weapon range +1 (due to possible rendering issues with shroud for OpenRA)
 	Turreted:
 		ROT:255
-		Offset: 0,0,5,2
+		LegacyOffset: 0,0,5,2
 	Armament:
 		Weapon: TowerMissle
-		LocalOffset: 7,-7,0,0,-25, -7,-7,0,0,25
+		LegacyLocalOffset: 7,-7,0,0,-25, -7,-7,0,0,25
 	AttackTurreted:
 	AutoTarget:
 	-AutoTargetIgnore:

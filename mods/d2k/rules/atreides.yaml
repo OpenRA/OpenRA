@@ -145,9 +145,9 @@ COMBATA:
 		BuiltAt: heavya
 	Armament:
 		Weapon: 90mma
-		Recoil: 4
-		RecoilRecovery: 0.8
-		LocalOffset: 0,-2,0,-3,0
+		LegacyRecoil: 4
+		LegacyRecoilRecovery: 0.8
+		LegacyLocalOffset: 0,-2,0,-3,0
 	AttackTurreted:
 	RenderUnitTurreted:
 		Image: COMBATA
@@ -199,7 +199,7 @@ SONICTANK:
 		Image: SONICTANK
 	Armament:
 		Weapon: TTankZap
-		LocalOffset: 0,-15,0,-10,0
+		LegacyLocalOffset: 0,-15,0,-10,0
 	AttackFrontal:
 	AutoTarget:
 		InitialStance: Defend

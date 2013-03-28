@@ -54,8 +54,8 @@ V2RL:
 		ROT: 5
 	Armament:
 		Weapon: 25mm
-		Recoil: 2
-		RecoilRecovery: 0.5
+		LegacyRecoil: 2
+		LegacyRecoilRecovery: 0.5
 	AttackTurreted:
 	RenderUnitTurreted:
 	AutoTarget:
@@ -93,8 +93,8 @@ V2RL:
 		ROT: 5
 	Armament:
 		Weapon: 90mm
-		Recoil: 3
-		RecoilRecovery: 0.9
+		LegacyRecoil: 3
+		LegacyRecoilRecovery: 0.9
 	AttackTurreted:
 	RenderUnitTurreted:
 	AutoTarget:
@@ -134,9 +134,9 @@ V2RL:
 		ROT: 5
 	Armament:
 		Weapon: 105mm
-		Recoil: 3
-		RecoilRecovery: 0.9
-		LocalOffset: 2,0,0,0,0, -2,0,0,0,0
+		LegacyRecoil: 3
+		LegacyRecoilRecovery: 0.9
+		LegacyLocalOffset: 2,0,0,0,0, -2,0,0,0,0
 	AttackTurreted:
 	RenderUnitTurreted:
 	AutoTarget:
@@ -176,13 +176,13 @@ V2RL:
 		ROT: 1
 	Armament@PRIMARY:
 		Weapon: 120mm
-		LocalOffset: -4,-5,0,0,0, 4,-5,0,0,0
-		Recoil: 4
-		RecoilRecovery: 0.7
+		LegacyLocalOffset: -4,-5,0,0,0, 4,-5,0,0,0
+		LegacyRecoil: 4
+		LegacyRecoilRecovery: 0.7
 	Armament@SECONDARY:
 		Weapon: MammothTusk
-		LocalOffset: -7,2,0,0,25, 7,2,0,0,-25
-		Recoil: 1
+		LegacyLocalOffset: -7,2,0,0,25, 7,2,0,0,-25
+		LegacyRecoil: 1
 	AttackTurreted:
 	RenderUnitTurreted:
 	AutoTarget:
@@ -338,7 +338,7 @@ JEEP:
 		Range: 8
 	Turreted:
 		ROT: 10
-		Offset: 0,0,0,-2
+		LegacyOffset: 0,0,0,-2
 	Armament:
 		Weapon: M60mg
 	AttackTurreted:
@@ -375,7 +375,7 @@ APC:
 		Range: 5
 	Armament:
 		Weapon: M60mg
-		LocalOffset: 0,0,0,-4,0
+		LegacyLocalOffset: 0,0,0,-4,0
 	AttackFrontal:
 	RenderUnit:
 	WithMuzzleFlash:
@@ -641,7 +641,7 @@ TTNK:
 		Range: 7
 	Armament:
 		Weapon: TTankZap
-		LocalOffset: 0,0,0,-5,0
+		LegacyLocalOffset: 0,0,0,-5,0
 	AttackFrontal:
 	RenderUnitSpinner:
 	Selectable:
@@ -673,10 +673,10 @@ FTRK:
 		Range: 4
 	Turreted:
 		ROT: 5
-		Offset: 0,5,0,-4
+		LegacyOffset: 0,5,0,-4
 	Armament:
 		Weapon: FLAK-23
-		Recoil: 2
+		LegacyRecoil: 2
 	AttackTurreted:
 	RenderUnitTurreted:
 	AutoTarget:
@@ -749,9 +749,9 @@ CTNK:
 	DebugNextAutoTargetScanTime:
 	Armament@PRIMARY:
 		Weapon: ChronoTusk
-		LocalOffset: -4,0,0,0,0, -4,0,0,0,0
+		LegacyLocalOffset: -4,0,0,0,0, -4,0,0,0,0
 	Armament@SECONDARY:
 		Weapon: ChronoTusk
-		LocalOffset: 4,0,0,0,25, 4,0,0,0,-25
+		LegacyLocalOffset: 4,0,0,0,25, 4,0,0,0,-25
 	AttackFrontal:
 	ChronoshiftDeploy:

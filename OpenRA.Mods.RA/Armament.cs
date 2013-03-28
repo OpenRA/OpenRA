@@ -33,12 +33,12 @@ namespace OpenRA.Mods.RA
 		public readonly string Weapon = null;
 		public readonly string Turret = "primary";
 		[Desc("Move the turret backwards when firing.")] 
-		public readonly int Recoil = 0;
+		public readonly int LegacyRecoil = 0;
 		[Desc("Time (in frames) until the weapon can fire again.")] 
 		public readonly int FireDelay = 0;
 
-		public readonly float RecoilRecovery = 0.2f;
-		public readonly int[] LocalOffset = { };
+		public readonly float LegacyRecoilRecovery = 0.2f;
+		public readonly int[] LegacyLocalOffset = { };
 
 		public object Create(ActorInitializer init) { return new Armament(init.self, this); }
 	}
@@ -66,12 +66,12 @@ namespace OpenRA.Mods.RA
 			Burst = Weapon.Burst;
 
 			var barrels = new List<Barrel>();
-			for (var i = 0; i < info.LocalOffset.Length / 5; i++)
+			for (var i = 0; i < info.LegacyLocalOffset.Length / 5; i++)
 				barrels.Add(new Barrel
 				{
-					TurretSpaceOffset = new PVecInt(info.LocalOffset[5 * i], info.LocalOffset[5 * i + 1]),
-					ScreenSpaceOffset = new PVecInt(info.LocalOffset[5 * i + 2], info.LocalOffset[5 * i + 3]),
-					Facing = info.LocalOffset[5 * i + 4],
+					TurretSpaceOffset = new PVecInt(info.LegacyLocalOffset[5 * i], info.LegacyLocalOffset[5 * i + 1]),
+					ScreenSpaceOffset = new PVecInt(info.LegacyLocalOffset[5 * i + 2], info.LegacyLocalOffset[5 * i + 3]),
+					Facing = info.LegacyLocalOffset[5 * i + 4],
 				});
 
 			// if no barrels specified, the default is "turret position; turret facing".
@@ -85,7 +85,7 @@ namespace OpenRA.Mods.RA
 		{
 			if (FireDelay > 0)
 				--FireDelay;
-			Recoil = Math.Max(0f, Recoil - Info.RecoilRecovery);
+			Recoil = Math.Max(0f, Recoil - Info.LegacyRecoilRecovery);
 		}
 
 		public void CheckFire(Actor self, AttackBase attack, IMove move, IFacing facing, Target target)
@@ -139,7 +139,7 @@ namespace OpenRA.Mods.RA
 			foreach (var na in self.TraitsImplementing<INotifyAttack>())
 				na.Attacking(self, target);
 
-			Recoil = Info.Recoil;
+			Recoil = Info.LegacyRecoil;
 
 			if (--Burst > 0)
 				FireDelay = Weapon.BurstDelay;

@@ -18,10 +18,10 @@ BOAT:
 		Range: 7
 	Turreted:
 		ROT: 7
-		Offset: 0,-15,0,-4
+		LocalOffset: 0,-15,0,-4
 	Armament:
 		Weapon: BoatMissile
-		LocalOffset: -3,-5,0,0,0, 3,-5,0,0,0, 0,-5,0,0,0
+		LegacyLocalOffset: -3,-5,0,0,0, 3,-5,0,0,0, 0,-5,0,0,0
 	AttackTurreted:
 	RenderGunboat:
 	AutoTarget:

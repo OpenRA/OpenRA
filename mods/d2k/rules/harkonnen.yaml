@@ -40,7 +40,7 @@ REFH:
 #		Speed: 11
 #	Armament:
 #		Weapon: M60mg
-#		LocalOffset: 0,-1,0,-3,0
+#		LegacyLocalOffset: 0,-1,0,-3,0
 #	AttackFrontal:
 #	RenderUnit:
 #		Image: QUAD
@@ -216,7 +216,7 @@ DEVAST:
 	RenderUnit:
 	Armament:
 		Weapon: 120mm
-		LocalOffset: 5,-16,0,-2,0, -4,-16,0,-2,0
+		LegacyLocalOffset: 5,-16,0,-2,0, -4,-16,0,-2,0
 	AttackFrontal:
 	AutoTarget:
 		InitialStance: Defend

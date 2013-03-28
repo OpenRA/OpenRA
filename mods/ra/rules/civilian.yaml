@@ -105,7 +105,7 @@ V01.SNIPER:
 		ROT: 255
 	Armament:
 		Weapon: Sniper
-		LocalOffset: 0,-11,0,0,0
+		LegacyLocalOffset: 0,-11,0,0,0
 	AttackTurreted:
 	Cargo:
 		InitialUnits: sniper

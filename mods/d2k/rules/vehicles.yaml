@@ -133,7 +133,7 @@ HARVESTER.starport:
 	WithMuzzleFlash:
 	Armament:
 		Weapon: M60mg
-		LocalOffset: 0,-6,0,-3, 0
+		LegacyLocalOffset: 0,-6,0,-3, 0
 	AttackFrontal:
 	AutoTarget:
 		InitialStance: Defend
@@ -176,7 +176,7 @@ QUAD:
 		Image: QUAD
 	Armament:
 		Weapon: QuadRockets
-		LocalOffset: 0,-3,0,-2,0 #-4
+		LegacyLocalOffset: 0,-3,0,-2,0 #-4
 	AttackFrontal:
 	AutoTarget:
 		InitialStance: Defend
@@ -221,9 +221,9 @@ QUAD.starport:
 		AlignWhenIdle: true
 	Armament:
 		Weapon: 90mm
-		Recoil: 4
-		RecoilRecovery: 0.8
-		LocalOffset: 0,-2,0,-3,0
+		LegacyRecoil: 4
+		LegacyRecoilRecovery: 0.8
+		LegacyLocalOffset: 0,-2,0,-3,0
 	AttackTurreted:
 	RenderUnitTurreted:
 	AutoTarget:
@@ -275,9 +275,9 @@ SIEGETANK:
 		ROT: 3
 	Armament:
 		Weapon: 155mm
-		Recoil: 7
-		RecoilRecovery: 0.45
-		LocalOffset: 0,-4,0,-7,0
+		LegacyRecoil: 7
+		LegacyRecoilRecovery: 0.45
+		LegacyLocalOffset: 0,-4,0,-7,0
 	AttackFrontal:
 	RenderUnitTurreted:
 		Image: SIEGETANK
@@ -341,7 +341,7 @@ MISSILETANK:
 		Image: MISSILETANK
 	Armament:
 		Weapon: 227mm
-		LocalOffset: 3,5,0,-4,0, -6,5,0,-4,0
+		LegacyLocalOffset: 3,5,0,-4,0, -6,5,0,-4,0
 	AttackFrontal:
 	AutoTarget:
 		InitialStance: Defend

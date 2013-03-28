@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA
 		[Desc("Rate of Turning")]
 		public readonly int ROT = 255;
 		public readonly int InitialFacing = 128;
-		public readonly int[] Offset = {0,0};
+		public readonly int[] LegacyOffset = {0,0};
 		public readonly bool AlignWhenIdle = false;
 
 		public virtual object Create(ActorInitializer init) { return new Turreted(init, this); }
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA
 			this.info = info;
 			turretFacing = GetInitialTurretFacing(init, info.InitialFacing);
 			facing = init.self.TraitOrDefault<IFacing>();
-			turret = new Turret(info.Offset);
+			turret = new Turret(info.LegacyOffset);
 		}
 
 		public virtual void Tick(Actor self)

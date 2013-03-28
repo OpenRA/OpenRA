@@ -52,7 +52,7 @@ namespace OpenRA.Mods.RA
 		{
 			base.Tick(self);
 			if (IsProne && --remainingProneTime == 0)
-				turret = new Turret(Info.Offset);
+				turret = new Turret(Info.LegacyOffset);
 		}
 
 		public float GetDamageModifier(Actor attacker, WarheadInfo warhead )

@@ -32,7 +32,7 @@ SS:
 		UncloakSound: subshow1.aud
 	Armament:
 		Weapon: TorpTube
-		LocalOffset: -4,0,0,0,0, 4,0,0,0,0
+		LegacyLocalOffset: -4,0,0,0,0, 4,0,0,0,0
 		FireDelay: 2
 	AttackFrontal:
 	Selectable:
@@ -115,13 +115,13 @@ DD:
 		Range: 6
 	Turreted:
 		ROT: 7
-		Offset: 0,-8,0,-3
+		LegacyOffset: 0,-8,0,-3
 	Armament@PRIMARY:
 		Weapon: Stinger
-		LocalOffset: -4,0,0,0,-20, 4,0,0,0,20
+		LegacyLocalOffset: -4,0,0,0,-20, 4,0,0,0,20
 	Armament@SECONDARY:
 		Weapon: DepthCharge
-		LocalOffset: -4,0,0,0,-20, 4,0,0,0,20
+		LegacyLocalOffset: -4,0,0,0,-20, 4,0,0,0,20
 	AttackTurreted:
 	Selectable:
 		Bounds: 38,38
@@ -158,24 +158,24 @@ CA:
 		Range: 7
 	Turreted@PRIMARY:
 		Turret: primary
-		Offset: 0,17,0,-2
+		LegacyOffset: 0,17,0,-2
 		ROT: 3
 	Turreted@SECONDARY:
 		Turret: secondary
-		Offset: 0,-17,0,-2
+		LegacyOffset: 0,-17,0,-2
 		ROT: 3
 	Armament@PRIMARY:
 		Turret: primary
 		Weapon: 8Inch
-		LocalOffset: -4,-5,0,0,0, 4,-5,0,0,0
-		Recoil: 4
-		RecoilRecovery: 0.8
+		LegacyLocalOffset: -4,-5,0,0,0, 4,-5,0,0,0
+		LegacyRecoil: 4
+		LegacyRecoilRecovery: 0.8
 	Armament@SECONDARY:
 		Turret: secondary
 		Weapon: 8Inch
-		LocalOffset: -4,-5,0,0,0, 4,-5,0,0,0
-		Recoil: 4
-		RecoilRecovery: 0.8
+		LegacyLocalOffset: -4,-5,0,0,0, 4,-5,0,0,0
+		LegacyRecoil: 4
+		LegacyRecoilRecovery: 0.8
 	AttackTurreted:
 	Selectable:
 		Bounds: 44,44
@@ -239,7 +239,7 @@ PT:
 		Range: 7
 	Turreted:
 		ROT: 7
-		Offset: 0,-6,0,-1
+		LegacyOffset: 0,-6,0,-1
 	Armament@PRIMARY:
 		Weapon: 2Inch
 	Armament@SECONDARY:
