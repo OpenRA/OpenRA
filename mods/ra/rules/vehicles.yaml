@@ -24,6 +24,8 @@ V2RL:
 	AttackFrontal:
 	RenderUnitReload:
 	AutoTarget:
+	DebugRetiliateAgainstAggressor:
+	DebugNextAutoTargetScanTime:
 	Explodes:
 		Weapon: SCUD
 		EmptyWeapon:
@@ -57,6 +59,8 @@ V2RL:
 	AttackTurreted:
 	RenderUnitTurreted:
 	AutoTarget:
+	DebugRetiliateAgainstAggressor:
+	DebugNextAutoTargetScanTime:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
@@ -94,6 +98,8 @@ V2RL:
 	AttackTurreted:
 	RenderUnitTurreted:
 	AutoTarget:
+	DebugRetiliateAgainstAggressor:
+	DebugNextAutoTargetScanTime:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
@@ -134,6 +140,8 @@ V2RL:
 	AttackTurreted:
 	RenderUnitTurreted:
 	AutoTarget:
+	DebugRetiliateAgainstAggressor:
+	DebugNextAutoTargetScanTime:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
@@ -178,6 +186,8 @@ V2RL:
 	AttackTurreted:
 	RenderUnitTurreted:
 	AutoTarget:
+	DebugRetiliateAgainstAggressor:
+	DebugNextAutoTargetScanTime:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
@@ -219,8 +229,10 @@ ARTY:
 	RenderUnit:
 	Explodes:
 		Weapon: UnitExplode
-		Chance: 75  
+		Chance: 75
 	AutoTarget:
+	DebugRetiliateAgainstAggressor:
+	DebugNextAutoTargetScanTime:
 
 HARV:
 	Inherits: ^Vehicle
@@ -333,6 +345,8 @@ JEEP:
 	WithMuzzleFlash:
 	RenderUnitTurreted:
 	AutoTarget:
+	DebugRetiliateAgainstAggressor:
+	DebugNextAutoTargetScanTime:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 1
@@ -366,6 +380,8 @@ APC:
 	RenderUnit:
 	WithMuzzleFlash:
 	AutoTarget:
+	DebugRetiliateAgainstAggressor:
+	DebugNextAutoTargetScanTime:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
@@ -631,6 +647,8 @@ TTNK:
 	Selectable:
 		Bounds: 28,28,0,0
 	AutoTarget:
+	DebugRetiliateAgainstAggressor:
+	DebugNextAutoTargetScanTime:
 
 FTRK:
 	Inherits: ^Vehicle
@@ -662,6 +680,8 @@ FTRK:
 	AttackTurreted:
 	RenderUnitTurreted:
 	AutoTarget:
+	DebugRetiliateAgainstAggressor:
+	DebugNextAutoTargetScanTime:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
@@ -725,6 +745,8 @@ CTNK:
 		Range: 6
 	RenderUnit:
 	AutoTarget:
+	DebugRetiliateAgainstAggressor:
+	DebugNextAutoTargetScanTime:
 	Armament@PRIMARY:
 		Weapon: ChronoTusk
 		LocalOffset: -4,0,0,0,0, -4,0,0,0,0

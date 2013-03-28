@@ -137,6 +137,8 @@ HARVESTER.starport:
 	AttackFrontal:
 	AutoTarget:
 		InitialStance: Defend
+	DebugRetiliateAgainstAggressor:
+	DebugNextAutoTargetScanTime:
 	Explodes:
 		Weapon: UnitExplodeTiny
 		EmptyWeapon: UnitExplodeTiny
@@ -178,6 +180,8 @@ QUAD:
 	AttackFrontal:
 	AutoTarget:
 		InitialStance: Defend
+	DebugRetiliateAgainstAggressor:
+	DebugNextAutoTargetScanTime:
 	Explodes:
 		Weapon: UnitExplodeTiny
 		EmptyWeapon: UnitExplodeTiny
@@ -224,6 +228,8 @@ QUAD.starport:
 	RenderUnitTurreted:
 	AutoTarget:
 		InitialStance: Defend
+	DebugRetiliateAgainstAggressor:
+	DebugNextAutoTargetScanTime:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
@@ -280,6 +286,8 @@ SIEGETANK:
 		EmptyWeapon: UnitExplodeScale
 	AutoTarget:
 		InitialStance: Defend
+	DebugRetiliateAgainstAggressor:
+	DebugNextAutoTargetScanTime:
 	Selectable:
 		Bounds: 30,30
 	LeavesHusk:
@@ -337,6 +345,8 @@ MISSILETANK:
 	AttackFrontal:
 	AutoTarget:
 		InitialStance: Defend
+	DebugRetiliateAgainstAggressor:
+	DebugNextAutoTargetScanTime:
 	Explodes:
 		Weapon: UnitExplodeScale
 		EmptyWeapon: UnitExplodeScale

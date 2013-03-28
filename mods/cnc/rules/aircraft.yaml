@@ -90,6 +90,8 @@ HELI:
 	FallsToEarth:
 		Explosion: HeliCrash
 	AutoTarget:
+	DebugRetiliateAgainstAggressor:
+	DebugNextAutoTargetScanTime:
 	Explodes:
 		Weapon: HeliExplode
 		EmptyWeapon: HeliExplode
@@ -138,6 +140,8 @@ ORCA:
 	FallsToEarth:
 		Explosion: HeliCrash
 	AutoTarget:
+	DebugRetiliateAgainstAggressor:
+	DebugNextAutoTargetScanTime:
 	Explodes:
 		Weapon: HeliExplode
 		EmptyWeapon: HeliExplode

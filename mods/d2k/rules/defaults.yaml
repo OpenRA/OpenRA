@@ -142,6 +142,8 @@
 	RenderInfantry:
 	AutoTarget:
 		InitialStance: Defend
+	DebugRetiliateAgainstAggressor:
+	DebugNextAutoTargetScanTime:
 	AttackMove:
 	Passenger:
 		CargoType: Infantry

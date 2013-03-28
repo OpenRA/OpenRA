@@ -169,6 +169,8 @@ E6:
 	Captures:
 		CaptureTypes: building, husk
 	-AutoTarget:
+	-DebugRetiliateAgainstAggressor:
+	-DebugNextAutoTargetScanTime:
 	AttackMove:
 		JustMove: true
 	RenderInfantryProne:
