@@ -12,7 +12,7 @@ using System.Collections.Generic;
 
 namespace OpenRA.Network
 {
-	class SyncReport
+	public class SyncReport
 	{
 		readonly OrderManager orderManager;
 		const int numSyncReports = 5;
@@ -74,7 +74,14 @@ namespace OpenRA.Network
 			Log.Write("sync", "No sync report available!");
 		}
 
-		class Report
+		public Report GetReport(int frame)
+		{
+			foreach (var r in syncReports)
+				if (r.Frame == frame) return r;
+			return null;
+		}
+
+		public class Report
 		{
 			public int Frame;
 			public int SyncedRandom;
@@ -82,7 +89,7 @@ namespace OpenRA.Network
 			public List<TraitReport> Traits = new List<TraitReport>();
 		}
 
-		struct TraitReport
+		public struct TraitReport
 		{
 			public uint ActorID;
 			public string Type;
@@ -90,6 +97,5 @@ namespace OpenRA.Network
 			public string Trait;
 			public int Hash;
 		}
-
 	}
 }

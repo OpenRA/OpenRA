@@ -87,11 +87,13 @@ namespace OpenRA.Network
 			public bool Dedicated;
 			public string Difficulty;
 			public bool Crates = true;
+			public string GameUid;
 		}
 
 		public Session(string[] mods)
 		{
 			this.GlobalSettings.Mods = mods.ToArray();
+			this.GlobalSettings.GameUid = System.Guid.NewGuid().ToString();
 		}
 
 		public string Serialize()
