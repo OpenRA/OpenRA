@@ -417,17 +417,17 @@ function CreateEditor()
 
   editor:Connect(wxstc.wxEVT_STC_MODIFIED,
     function (event)
-      SetAutoRecoveryMark()
-
       if (editor.assignscache and editor:GetCurrentLine() ~= editor.assignscache.line) then
         editor.assignscache = false
       end
       local evtype = event:GetModificationType()
       if (bit.band(evtype,wxstc.wxSTC_MOD_INSERTTEXT) ~= 0) then
+        SetAutoRecoveryMark()
         table.insert(editor.ev,{event:GetPosition(),event:GetLinesAdded()})
         DynamicWordsAdd("post",editor,nil,editor:LineFromPosition(event:GetPosition()),event:GetLinesAdded())
       end
       if (bit.band(evtype,wxstc.wxSTC_MOD_DELETETEXT) ~= 0) then
+        SetAutoRecoveryMark()
         table.insert(editor.ev,{event:GetPosition(),0})
         DynamicWordsAdd("post",editor,nil,editor:LineFromPosition(event:GetPosition()),0)
       end
