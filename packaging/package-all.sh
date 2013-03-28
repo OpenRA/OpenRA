@@ -21,9 +21,9 @@ make package
 # Remove the mdb files that are created during `make`
 find . -path "*.mdb" -delete
 
-Markdown.pl README.md > README.html
-Markdown.pl CONTRIBUTING.md > CONTRIBUTING.html
-Markdown.pl DOCUMENTATION.md > DOCUMENTATION.html
+markdown README.md > README.html
+markdown CONTRIBUTING.md > CONTRIBUTING.html
+markdown DOCUMENTATION.md > DOCUMENTATION.html
 
 # List of files that are packaged on all platforms
 # Note that the Tao dlls are shipped on all platforms except osx and that
