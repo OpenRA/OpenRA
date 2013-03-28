@@ -54,9 +54,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			}
 
 			var moneybin = gameRoot.Get("INGAME_MONEY_BIN");
-			moneybin.Get<OrderButtonWidget>("SELL").Key = Game.Settings.Keys.SellKey;
-			moneybin.Get<OrderButtonWidget>("POWER_DOWN").Key = Game.Settings.Keys.PowerDownKey;
-			moneybin.Get<OrderButtonWidget>("REPAIR").Key = Game.Settings.Keys.RepairKey;
+			moneybin.Get<OrderButtonWidget>("SELL").GetKey = _ => Game.Settings.Keys.SellKey;
+			moneybin.Get<OrderButtonWidget>("POWER_DOWN").GetKey = _ => Game.Settings.Keys.PowerDownKey;
+			moneybin.Get<OrderButtonWidget>("REPAIR").GetKey = _ => Game.Settings.Keys.RepairKey;
 
 			optionsBG.Get<ButtonWidget>("DISCONNECT").OnClick = () => LeaveGame(optionsBG, world);
 
