@@ -57,6 +57,7 @@ namespace OpenRA.Network
 
 		public int LocalClientId { get { return inner.LocalClientId; } }
 		public ConnectionState ConnectionState { get { return inner.ConnectionState; } }
+		public ConnectionDropState ConnectionDropState { get { return inner.ConnectionDropState; } set { inner.ConnectionDropState = value; } }
 
 		public void Send( int frame, List<byte[]> orders ) { inner.Send( frame, orders ); }
 		public void SendImmediate( List<byte[]> orders ) { inner.SendImmediate( orders ); }
@@ -109,6 +110,9 @@ namespace OpenRA.Network
 		{
 			Dispose();
 		}
+
+
+	   
 	}
 }
 

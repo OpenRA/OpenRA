@@ -25,6 +25,7 @@ namespace OpenRA.Network
 
 		public int LocalClientId { get { return 0; } }
 		public ConnectionState ConnectionState { get { return ConnectionState.Connected; } }
+		
 
 		// do nothing; ignore locally generated orders
 		public void Send( int frame, List<byte[]> orders ) { }
@@ -62,5 +63,18 @@ namespace OpenRA.Network
 		}
 
 		public void Dispose() { }
+
+
+		public ConnectionDropState ConnectionDropState
+		{
+			get
+			{
+				return Network.ConnectionDropState.NaN;
+			}
+			set
+			{
+				throw new NotImplementedException();
+			}
+		}
 	}
 }

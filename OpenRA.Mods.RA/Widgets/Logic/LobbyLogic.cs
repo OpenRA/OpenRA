@@ -55,20 +55,33 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						{ "addBots", false }
 					});
 				};
-
 				Action onRetry = () =>
 				{
 					ConnectionLogic.Connect(om.Host, om.Port, onConnect, onExit);
 				};
 
-				Ui.OpenWindow("CONNECTIONFAILED_PANEL", new WidgetArgs()
+				if (om.Connection.ConnectionDropState == ConnectionDropState.VersionMismatch)
+				{
+					// Show connection version mismatch failed dialog
+					
+					Ui.OpenWindow("CONNECTIONDROPSTATEVERSIONMISMATCH_PANEL", new WidgetArgs()
+				{
+					{ "onAbort", onExit },
+					{ "errorMessage", "Your game version is not matching with the server." }
+				});
+				}
+				else
+				{
+					Ui.OpenWindow("CONNECTIONFAILED_PANEL", new WidgetArgs()
 				{
 					{ "onAbort", onExit },
 					{ "onRetry", onRetry },
 					{ "host", om.Host },
 					{ "port", om.Port }
 				});
+				}
 			}
+
 		}
 
 		void CloseWindow()
@@ -111,7 +124,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var mapPreview = lobby.Get<MapPreviewWidget>("MAP_PREVIEW");
 			mapPreview.IsVisible = () => Map != null;
 			mapPreview.Map = () => Map;
-			mapPreview.OnMouseDown = mi => LobbyUtils.SelectSpawnPoint( orderManager, mapPreview, Map, mi );
+			mapPreview.OnMouseDown = mi => LobbyUtils.SelectSpawnPoint(orderManager, mapPreview, Map, mi);
 			mapPreview.OnTooltip = (spawnPoint, pos) => LobbyUtils.ShowSpawnPointTooltip(orderManager, spawnPoint, pos);
 			mapPreview.SpawnColors = () => LobbyUtils.GetSpawnColors(orderManager, Map);
 
@@ -193,7 +206,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			allowCheats.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.AllowCheats;
 			allowCheats.IsDisabled = () => !Game.IsHost || gameStarting || orderManager.LocalClient == null
 				|| orderManager.LocalClient.IsReady;
-			allowCheats.OnClick = () =>	orderManager.IssueOrder(Order.Command(
+			allowCheats.OnClick = () => orderManager.IssueOrder(Order.Command(
 						"allowcheats {0}".F(!orderManager.LobbyInfo.GlobalSettings.AllowCheats)));
 
 			var crates = lobby.GetOrNull<CheckboxWidget>("CRATES_CHECKBOX");
@@ -277,8 +290,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var musicButton = lobby.GetOrNull<ButtonWidget>("MUSIC_BUTTON");
 			if (musicButton != null)
-				musicButton.OnClick = () => Ui.OpenWindow("MUSIC_PANEL", new WidgetArgs
-					{ { "onExit", () => {} } });
+				musicButton.OnClick = () => Ui.OpenWindow("MUSIC_PANEL", new WidgetArgs { { "onExit", () => { } } });
 
 			// Add a bot on the first lobbyinfo update
 			if (addBots)

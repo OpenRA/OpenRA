@@ -26,10 +26,17 @@ namespace OpenRA.Network
 		Connected,
 	}
 
+	public enum ConnectionDropState
+	{
+		VersionMismatch,
+		NaN
+	}
+
 	public interface IConnection : IDisposable
 	{
 		int LocalClientId { get; }
-		ConnectionState ConnectionState { get; }
+		ConnectionState ConnectionState { get;  }
+		ConnectionDropState ConnectionDropState { get; set; }
 		void Send( int frame, List<byte[]> orders );
 		void SendImmediate( List<byte[]> orders );
 		void SendSync( int frame, byte[] syncData );
@@ -103,6 +110,20 @@ namespace OpenRA.Network
 		}
 
 		public virtual void Dispose() { }
+
+		ConnectionDropState connectionDropState = ConnectionDropState.NaN;
+
+		public ConnectionDropState ConnectionDropState
+		{
+			get
+			{
+				return connectionDropState;
+			}
+			set
+			{
+				connectionDropState = value;
+			}
+		}
 	}
 
 	class NetworkConnection : EchoConnection

@@ -27,6 +27,16 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				CloseWindow();
 				onConnect();
 			}
+			else if (om.Connection.ConnectionDropState == ConnectionDropState.VersionMismatch)
+			{
+				// Show connection version mismatch failed dialog
+				CloseWindow();
+				Ui.OpenWindow("CONNECTIONDROPSTATEVERSIONMISMATCH_PANEL", new WidgetArgs()
+				{
+					{ "onAbort", onAbort },
+					{ "errorMessage", "Your game version is not matching with the server." }
+				});
+			}
 			else if (om.Connection.ConnectionState == ConnectionState.NotConnected)
 			{
 				// Show connection failed dialog
@@ -90,6 +100,19 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			widget.Get<LabelWidget>("CONNECTING_DESC").GetText = () =>
 				"Could not connect to {0}:{1}".F(host, port);
+		}
+	}
+
+	public class ConnectionDroppedLogic
+	{
+		[ObjectCreator.UseCtor]
+		public ConnectionDroppedLogic(Widget widget, string errorMessage,  Action onAbort)
+		{
+			var panel = widget;
+			panel.Get<ButtonWidget>("ABORT_BUTTON").OnClick = () => { Ui.CloseWindow(); onAbort(); };
+
+			widget.Get<LabelWidget>("CONNECTING_DESC").GetText = () =>
+			   errorMessage;
 		}
 	}
 }
