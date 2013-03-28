@@ -210,7 +210,7 @@ namespace OpenRA
 
 			var map = modData.PrepareMap(mapUID);
 			viewport = new Viewport(new int2(Renderer.Resolution), map.Bounds, Renderer);
-			orderManager.world = new World(modData.Manifest, map, orderManager) { IsShellmap = isShellmap };
+			orderManager.world = new World(modData.Manifest, map, orderManager, isShellmap);
 			worldRenderer = new WorldRenderer(orderManager.world);
 
 			if (orderManager.GameStarted) return;

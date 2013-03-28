@@ -40,7 +40,7 @@ namespace OpenRA
 		public void AddPlayer(Player p) { Players.Add(p); }
 		public Player LocalPlayer { get; private set; }
 		public readonly Shroud LocalShroud;
-
+		public bool Observer { get { return LocalPlayer == null; } }
 		public Player RenderedPlayer;
 		public Shroud RenderedShroud { get { return RenderedPlayer != null ? RenderedPlayer.Shroud : LocalShroud; } }
 		
@@ -90,8 +90,9 @@ namespace OpenRA
 			}
 		}
 
-		internal World(Manifest manifest, Map map, OrderManager orderManager)
+		internal World(Manifest manifest, Map map, OrderManager orderManager, bool isShellmap)
 		{
+			IsShellmap = isShellmap;
 			this.orderManager = orderManager;
 			orderGenerator_ = new UnitOrderGenerator();
 			Map = map;

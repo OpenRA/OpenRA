@@ -375,6 +375,7 @@
     <Compile Include="Widgets\Logic\DiplomacyLogic.cs" />
     <Compile Include="Widgets\Logic\DirectConnectLogic.cs" />
     <Compile Include="Widgets\Logic\DownloadPackagesLogic.cs" />
+    <Compile Include="Widgets\Logic\IngameChatLogic.cs" />
     <Compile Include="Widgets\Logic\IngameChromeLogic.cs" />
     <Compile Include="Widgets\Logic\IngameObserverChromeLogic.cs" />
     <Compile Include="Widgets\Logic\LobbyLogic.cs" />

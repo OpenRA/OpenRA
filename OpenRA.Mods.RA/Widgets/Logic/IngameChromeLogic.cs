@@ -22,9 +22,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public IngameChromeLogic(World world)
 		{
-			Game.AddChatLine += AddChatLine;
-			Game.BeforeGameStart += UnregisterEvents;
-
 			var r = Ui.Root;
 			gameRoot = r.Get("INGAME_ROOT");
 			var optionsBG = gameRoot.Get("INGAME_OPTIONS_BG");
@@ -58,8 +55,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			moneybin.Get<OrderButtonWidget>("POWER_DOWN").GetKey = _ => Game.Settings.Keys.PowerDownKey;
 			moneybin.Get<OrderButtonWidget>("REPAIR").GetKey = _ => Game.Settings.Keys.RepairKey;
 
-			optionsBG.Get<ButtonWidget>("DISCONNECT").OnClick = () => LeaveGame(optionsBG, world);
+			var chatPanel = Game.LoadWidget(world, "CHAT_PANEL", Ui.Root, new WidgetArgs());
+			gameRoot.AddChild(chatPanel);
 
+			optionsBG.Get<ButtonWidget>("DISCONNECT").OnClick = () => LeaveGame(optionsBG, world);
 			optionsBG.Get<ButtonWidget>("SETTINGS").OnClick = () => Ui.OpenWindow("SETTINGS_MENU");
 			optionsBG.Get<ButtonWidget>("MUSIC").OnClick = () => Ui.OpenWindow("MUSIC_MENU");
 			optionsBG.Get<ButtonWidget>("RESUME").OnClick = () =>
@@ -109,17 +108,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			Game.LoadShellMap();
 			Ui.CloseWindow();
 			Ui.OpenWindow("MAINMENU_BG");
-		}
-
-		void UnregisterEvents()
-		{
-			Game.AddChatLine -= AddChatLine;
-			Game.BeforeGameStart -= UnregisterEvents;
-		}
-
-		void AddChatLine(Color c, string from, string text)
-		{
-			gameRoot.Get<ChatDisplayWidget>("CHAT_DISPLAY").AddLine(c, from, text);
 		}
 	}
 }

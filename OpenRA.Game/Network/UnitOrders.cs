@@ -44,6 +44,7 @@ namespace OpenRA.Network
 						{
 							var player = world != null ? world.FindPlayerByClient(client) : null;
 							var suffix = (player != null && player.WinState == WinState.Lost) ? " (Dead)" : "";
+							suffix = client.IsObeserver ? " (Spectator)" : suffix;
 							Game.AddChatLine(client.ColorRamp.GetColor(0), client.Name + suffix, order.TargetString);
 						}
 						else
