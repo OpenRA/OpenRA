@@ -68,7 +68,7 @@ Atomic:
 			None: 90%
 			Wood: 60%
 			Light: 60%
-			Heavy: 25%
+			Heavy: 50%
 		Explosion: 6
 		InfDeath: 5
 		ImpactSound: nukexplo
@@ -82,7 +82,7 @@ Atomic:
 			None: 90%
 			Wood: 60%
 			Light: 60%
-			Heavy: 25%
+			Heavy: 50%
 		Delay: 3
 		InfDeath: 5
 		ImpactSound: xplobig4
