@@ -339,6 +339,22 @@ end
 
 addConfig(ide.config.path.app.."/config.lua")
 
+ide.editorApp:SetAppName(GetIDEString("settingsapp"))
+
+-- check if the .ini file needs to be migrated on Windows
+if ide.osname == 'Windows' and ide.wxver >= "2.9.5" then
+  -- Windows used to have local ini file kept in wx.wxGetHomeDir (before 2.9),
+  -- but since 2.9 it's in GetUserConfigDir(), so migrate it.
+  local ini = ide.editorApp:GetAppName() .. ".ini"
+  local old = wx.wxFileName(wx.wxGetHomeDir(), ini)
+  local new = wx.wxFileName(wx.wxStandardPaths.Get():GetUserConfigDir(), ini)
+  if old:FileExists() and not new:FileExists() then
+    FileCopy(old:GetFullPath(), new:GetFullPath())
+    print(("Migrated configuration file from '%s' to '%s'.")
+      :format(old:GetFullPath(), new:GetFullPath()))
+  end
+end
+
 ----------------------
 -- process plugins
 
