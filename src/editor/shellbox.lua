@@ -280,8 +280,8 @@ local function executeShellCode(tx)
 
     -- set the project dir as the current dir to allow "require" calls
     -- to work from shell
-    local projectDir, cwd = FileTreeGetDir()
-    if projectDir then
+    local projectDir, cwd = FileTreeGetDir(), nil
+    if projectDir and #projectDir > 0 then
       cwd = wx.wxFileName.GetCwd()
       wx.wxFileName.SetCwd(projectDir)
     end
@@ -292,7 +292,7 @@ local function executeShellCode(tx)
       end))
 
     -- restore the current dir
-    if projectDir then wx.wxFileName.SetCwd(cwd) end
+    if cwd then wx.wxFileName.SetCwd(cwd) end
     
     if ok and (addedret or #res > 0) then
       if addedret then
