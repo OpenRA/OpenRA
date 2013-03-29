@@ -255,7 +255,8 @@ BIKE:
 		Range: 8
 	Armament:
 		Weapon: BikeRockets
-		LegacyLocalOffset: -4,0,0,-2,25, 4,0,0,-2,-25
+		LocalOffset: -128, -170, 170, -128, 170, 170
+		LocalYaw: 100, -100
 	AttackFrontal:
 	RenderUnit:
 	AutoTarget:
@@ -403,13 +404,14 @@ HTNK:
 		ROT: 2
 	Armament@PRIMARY:
 		Weapon: 120mmDual
-		LegacyLocalOffset: -5,-5,0,-10,0, 5,-5,0,-10,0
-		LegacyRecoil: 4
-		LegacyRecoilRecovery: 1
+		LocalOffset: 800, 180, 340, 800, -180, 340
+		Recoil: 170
+		RecoilRecovery: 42
 	Armament@SECONDARY:
 		Weapon: MammothMissiles
-		LegacyLocalOffset: -9,2,0,0,25, 9,2,0,0,-25
-		LegacyRecoil: 1
+		LocalOffset: -85, 384, 340, -85, -384, 340
+		LocalYaw: -100, 100
+		Recoil: 42
 	AttackTurreted:
 	RenderUnitTurreted:
 	AutoTarget:
