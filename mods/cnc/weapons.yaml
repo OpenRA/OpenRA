@@ -129,13 +129,13 @@ Sniper:
 		InfDeath: 2
 
 HighV:
-	ROF: 40
+	ROF: 30
 	Range: 6
 	Report: GUN8
 	Projectile: Bullet
 		Speed: 100
 	Warhead:
-		Damage: 45
+		Damage: 50
 		Spread: 3
 		Versus: 
 			None: 100%
