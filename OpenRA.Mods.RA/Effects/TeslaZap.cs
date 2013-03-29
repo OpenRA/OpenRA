@@ -46,11 +46,13 @@ namespace OpenRA.Mods.RA.Effects
 			var bright = SequenceProvider.GetSequence(Info.Image, "bright");
 			var dim = SequenceProvider.GetSequence(Info.Image, "dim");
 
+			var src = new PPos(Args.src.X, Args.src.Y - Args.srcAltitude);
+			var dest = new PPos(Args.dest.X, Args.dest.Y - Args.destAltitude);
 			for (var n = 0; n < Info.DimZaps; n++)
-				foreach (var z in DrawZapWandering(wr, Args.src, Args.dest, dim))
+				foreach (var z in DrawZapWandering(wr, src, dest, dim))
 					yield return z;
 			for (var n = 0; n < Info.BrightZaps; n++)
-				foreach (var z in DrawZapWandering(wr, Args.src, Args.dest, bright))
+				foreach (var z in DrawZapWandering(wr, src, dest, bright))
 					yield return z;
 		}
 
