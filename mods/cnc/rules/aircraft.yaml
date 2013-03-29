@@ -67,7 +67,7 @@ HELI:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 8
+		Range: 10
 	Armament@PRIMARY:
 		Weapon: HeliAGGun
 		LocalOffset: -5,-3,0,2,0, 5,-3,0,2,0
@@ -120,7 +120,7 @@ ORCA:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 8
+		Range: 10
 	Armament@PRIMARY:
 		Weapon: OrcaAGMissiles
 		LocalOffset: -4,-10,0,5,0, 4,-10,0,5,0
@@ -130,10 +130,10 @@ ORCA:
 	AttackHeli:
 		FacingTolerance: 20
 	LimitedAmmo:
-		Ammo: 10
-		PipCount: 5
+		Ammo: 6
+		PipCount: 6
 	Reloads:
-		Count: 2
+		Count: 1
 		Period: 100
 	RenderUnit:
 	WithShadow:
@@ -184,7 +184,7 @@ A10:
 	Armor:
 		Type: Heavy
 	RevealsShroud:
-		Range: 8
+		Range: 12
 	RenderUnit:
 	WithShadow:
 	LimitedAmmo:
