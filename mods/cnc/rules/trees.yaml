@@ -12,9 +12,7 @@ SPLIT2:
 	-Health:
 	-DeadBuildingState:
 	-Armor:
-	-TargetableBuilding:
-	-AutoTargetIgnore:
-	
+
 SPLIT3:
 	Inherits: ^Tree
 	RenderBuilding:
@@ -29,9 +27,7 @@ SPLIT3:
 	-Health:
 	-DeadBuildingState:
 	-Armor:
-	-TargetableBuilding:
-	-AutoTargetIgnore:
-	
+
 SPLITBLUE:
 	Inherits: ^Tree
 	RenderBuilding:
@@ -46,9 +42,7 @@ SPLITBLUE:
 	-Health:
 	-DeadBuildingState:
 	-Armor:
-	-TargetableBuilding:
-	-AutoTargetIgnore:
-	
+
 ROCK1:
 	Inherits: ^Rock
 ROCK2:
