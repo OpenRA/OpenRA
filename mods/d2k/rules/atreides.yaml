@@ -1,7 +1,5 @@
 CONYARDA:
 	Inherits: ^CONYARD
-	Buildable:
-		Owner: atreides
 	Transforms:
 		IntoActor: mcva
 		Offset:1,1

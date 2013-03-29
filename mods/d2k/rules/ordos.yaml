@@ -1,7 +1,5 @@
 CONYARDO:
 	Inherits: ^CONYARD
-	Buildable:
-		Owner: ordos
 	Transforms:
 		IntoActor: mcvo
 		Offset:1,1

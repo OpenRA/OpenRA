@@ -148,6 +148,14 @@ C17:
 	Inherits: ^Plane
 	Tooltip:
 		Name: Supply Aircraft
+		Description: Drops vehicle reinforcements on Airstrips
+		Icon: c17icnh
+	Buildable:
+		Queue: Aircraft
+		BuildPaletteOrder: 1000
+		Owner: None
+	Valued:
+		Cost: 2000
 	Plane:
 		ROT: 5
 		Speed: 35
@@ -172,6 +180,13 @@ A10:
 	Tooltip:
 		Name: A10 Bomber
 		Icon: a10icnh
+		Description: Used to deliver Napalm strikes.
+	Buildable:
+		Queue: Aircraft
+		BuildPaletteOrder: 1000
+		Owner: None
+	Valued:
+		Cost: 2000
 	Plane:
 		ROT: 4
 		Speed: 40

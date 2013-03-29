@@ -1273,13 +1273,16 @@ FIX:
 
 FACF:
 	Inherits: ^Building
-#	Buildable:
-#		BuildPaletteOrder: 900
-#		Owner: allies
-#		Cost: 50
-#		Description: Fake Construction Yard
-#		LongDesc: Looks like a Construction Yard.
-#		Hotkey: c
+	Valued:
+		Cost: 50
+	Buildable:
+		BuildPaletteOrder: 900
+		Owner: None
+		Hotkey: c
+		Queue: Defense
+	Tooltip:
+		Description: Fake Construction Yard
+		LongDesc: Looks like a Construction Yard.
 	Building:
 		Power: -2
 		Footprint: xxx xxx xxx
@@ -1298,14 +1301,17 @@ FACF:
 
 WEAF:
 	Inherits: ^Building
-#	Buildable:
-#		BuildPaletteOrder: 900
-#		Prerequisites: proc
-#		Owner: allies
-#		Cost: 50
-#		Description: Fake War Factory
-#		LongDesc: Looks like a War Factory.
-#		Hotkey: x
+	Valued:
+		Cost: 50
+	Buildable:
+		BuildPaletteOrder: 900
+		Prerequisites: proc
+		Owner: None
+		Hotkey: x
+		Queue: Defense
+	Tooltip:
+		Description: Fake War Factory
+		LongDesc: Looks like a War Factory.
 	Building:
 		Power: -2
 		Footprint: xxx xxx
@@ -1327,16 +1333,15 @@ SYRF:
 	Inherits: ^Building
 	Valued:
 		Cost: 50
+	Buildable:
+		BuildPaletteOrder: 900
+		Prerequisites: anypower
+		Owner: None
+		Hotkey: z
+		Queue: Defense
 	Tooltip:
-		Name: Fake Shipyard
-#	Buildable:
-#		BuildPaletteOrder: 900
-#		Prerequisites: anypower
-#		Owner: allies
-#		Cost: 50
-#		Description: Fake Shipyard
-#		LongDesc: Looks like a Shipyard
-#		Hotkey: z
+		Description: Fake Shipyard
+		LongDesc: Looks like a Shipyard
 	TargetableBuilding:
 		TargetTypes: Ground, Water
 	Building:
@@ -1357,8 +1362,19 @@ SYRF:
 
 SPEF:
 	Inherits: ^Building
+	Valued:
+		Cost: 50
 	TargetableBuilding:
 		TargetTypes: Ground, Water
+	Buildable:
+		BuildPaletteOrder: 900
+		Prerequisites: anypower
+		Owner: None
+		Hotkey: z
+		Queue: Defense
+	Tooltip:
+		Description: Fake Sub Pen
+		LongDesc: Looks like a Sub Pen
 	Building:
 		Power: -2
 		Footprint: xxx xxx xxx
@@ -1381,14 +1397,13 @@ DOMF:
 		Cost: 50
 	Tooltip:
 		Name: Fake Radar Dome
-#	Buildable:
-#		BuildPaletteOrder: 900
-#		Prerequisites: proc
-#		Owner: allies
-#		Cost: 50
-#		Description: Fake Radar Dome
-#		LongDesc: Looks like a Radar Dome
-#		Hotkey: v
+		LongDesc: Looks like a Radar Dome
+	Buildable:
+		BuildPaletteOrder: 900
+		Prerequisites: proc
+		Owner: None
+		Hotkey: v
+		Queue: Defense
 	Building:
 		Power: -2
 		Footprint: xx xx

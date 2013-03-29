@@ -449,10 +449,10 @@ MLRS:
 		Name: Surface-to-Air Missile Launcher
 		Icon: mlrsicnh
 		Description: Powerful anti-air unit.\nCannot attack ground units.
-#	Buildable:
-#		BuildPaletteOrder: 70
-#		Prerequisites: hq
-#		Owner: nod
+	Buildable:
+		BuildPaletteOrder: 70
+		Prerequisites: hq
+		Owner: None
 	Mobile:
 		Speed: 6
 	Health:
@@ -518,3 +518,27 @@ STNK:
 	TargetableUnit:
 	LeavesHusk:
 		HuskActor: STNK.Husk
+
+MHQ:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Mobile Headquarter
+		Icon: mhqicnh
+		Description: Base of operations
+	Health:
+		HP: 200
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 6
+	RevealsShroud:
+		Range: 6
+	RenderUnitSpinner:
+		Offset: 0,6
+	AttackMove:
+		JustMove: yes
+	Explodes:
+		Weapon: UnitExplodeSmall
+		EmptyWeapon: UnitExplodeSmall
