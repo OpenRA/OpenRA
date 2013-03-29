@@ -7,7 +7,6 @@ FACT:
 		Cost: 2000
 	Tooltip:
 		Name: Construction Yard
-		Icon: mcvicnh
 		Description: Builds structures
 	Building:
 		Power: 15
