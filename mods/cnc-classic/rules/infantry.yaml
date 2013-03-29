@@ -41,7 +41,7 @@ E2:
 		HP: 50
 	Armament:
 		Weapon: Grenade
-		LegacyLocalOffset: 0,0,0,-10,0
+		LocalOffset: 0,0,427
 		FireDelay: 15
 	AttackFrontal:
 	RenderInfantryProne:
@@ -81,7 +81,7 @@ E3:
 	# range value is 1 in C&C, but OpenRA renders vision slightly differently
 	Armament:
 		Weapon: Rockets
-		LegacyLocalOffset: 1,-6,0,-8,0
+		LocalOffset: 256,43,341
 		FireDelay: 5
 	AttackFrontal:
 	RenderInfantryProne:
@@ -107,7 +107,7 @@ E4:
 		HP: 70
 	Armament:
 		Weapon: Flamethrower
-		LegacyLocalOffset: 0,-2,2,-4,0
+		LocalOffset: 85,0,171
 		FireDelay: 3
 	AttackFrontal:
 	WithMuzzleFlash:
@@ -140,7 +140,7 @@ E5:
 		HP: 70
 	Armament:
 		Weapon: Chemspray
-		LegacyLocalOffset: 0,-2,2,-9
+		LocalOffset: 85,0,384
 		FireDelay: 3
 	AttackFrontal:
 	WithMuzzleFlash:

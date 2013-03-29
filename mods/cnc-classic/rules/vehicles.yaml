@@ -99,9 +99,10 @@ JEEP:
 	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from C&C Gold values for now to properly emulate.
 	Turreted:
 		ROT: 10
-		LegacyOffset: 0,2,0,-4
+		Offset: -85,0,171
 	Armament:
 		Weapon: MachineGun
+		OffsetModel: World
 	AttackTurreted:
 	WithMuzzleFlash:
 	RenderUnitTurreted:
@@ -134,6 +135,7 @@ APC:
 		ROT: 10
 	Armament:
 		Weapon: MachineGun
+		OffsetModel: World
 	AttackTurreted:
 	WithMuzzleFlash:
 	RenderUnitTurreted:
@@ -169,9 +171,10 @@ BGGY:
 	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from C&C Gold values for now to properly emulate.
 	Turreted:
 		ROT: 10
-		LegacyOffset: 0,1,0,-3
+		Offset: -43,0,128
 	Armament:
 		Weapon: MachineGun
+		OffsetModel: World
 	AttackTurreted:
 	WithMuzzleFlash:
 	RenderUnitTurreted:
@@ -202,7 +205,8 @@ BIKE:
 	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from C&C Gold values for now to properly emulate.
 	Armament:
 		Weapon: BikeRockets
-		LegacyLocalOffset: -4,0,0,-2,25, 4,0,0,-2,-25
+		LocalOffset: -128, -170, 170, -128, 170, 170
+		LocalYaw: 100, -100
 	AttackFrontal:
 	RenderUnit:
 	AutoTarget:
@@ -232,7 +236,7 @@ ARTY:
 	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from C&C Gold values for now to properly emulate.
 	Armament:
 		Weapon: ArtilleryShell
-		LegacyLocalOffset: 0,-7,0,-3,0
+		LocalOffset: 299, 0, 128
 	AttackFrontal:
 	RenderUnit:
 	AutoTarget:
@@ -265,7 +269,7 @@ FTNK:
 	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from C&C Gold values for now to properly emulate.
 	Armament:
 		Weapon: BigFlamer
-		LegacyLocalOffset: 2,-5,3,2,0, -2,-5,3,2,0
+		LocalOffset: 213,213,-85, 213,-213,-85
 	AttackFrontal:
 	RenderUnit:
 	AutoTarget:
@@ -300,9 +304,9 @@ LTNK:
 		ROT: 5
 	Armament:
 		Weapon: 70mm
-		LegacyRecoil: 2
-		LegacyRecoilRecovery: 0.4
-		LegacyLocalOffset: 0,3,0,-2,0
+		Recoil: 85
+		RecoilRecovery: 17
+		LocalOffset: -128,0,85
 	AttackTurreted:
 	RenderUnitTurreted:
 	AutoTarget:
@@ -334,9 +338,9 @@ MTNK:
 	Armament:
 	#	Weapon: 120mm
 		Weapon: 105mm
-		LegacyRecoil: 3
-		LegacyRecoilRecovery: 0.6
-		LegacyLocalOffset: 0,0,0,-1,0
+		Recoil: 128
+		RecoilRecovery: 26
+		LocalOffset: 0,0,43
 	AttackTurreted:
 	RenderUnitTurreted:
 	AutoTarget:
@@ -370,13 +374,14 @@ HTNK:
 		ROT: 2
 	Armament@PRIMARY:
 		Weapon: 120mmDual
-		LegacyLocalOffset: -5,-5,0,-10,0, 5,-5,0,-10,0
-		LegacyRecoil: 4
-		LegacyRecoilRecovery: 1
+		LocalOffset: 800, 180, 340, 800, -180, 340
+		Recoil: 170
+		RecoilRecovery: 42
 	Armament@SECONDARY:
 		Weapon: MammothMissiles
-		LegacyLocalOffset: -9,2,0,0,25, 9,2,0,0,-25
-		LegacyRecoil: 1
+		LocalOffset: -85, 384, 340, -85, -384, 340
+		LocalYaw: -100, 100
+		Recoil: 42
 	AttackTurreted:
 	RenderUnitTurreted:
 	AutoTarget:
@@ -412,10 +417,10 @@ MSAM:
 	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from C&C Gold values for now to properly emulate.
 	Turreted:
 		ROT: 255
-		LegacyOffset: 0,6,0,-3
+		Offset: -256,0,128
 	Armament:
 		Weapon: 227mm
-		LegacyLocalOffset: 3,-5,0,0,0, -3,-5,0,0,0
+		LocalOffset: 213,128,0, 213,-128,0
 	AttackFrontal:
 	RenderUnitTurretedAim:
 	AutoTarget:
@@ -446,14 +451,14 @@ MLRS:
 	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from C&C Gold values for now to properly emulate.
 	Turreted:
 		ROT: 5
-		LegacyOffset: 0,3,0,-3
+		Offset: -128,0,128
 	#	AlignWhenIdle: true
 	Armament@PRIMARY:
 		Weapon: HonestJohn
-		LegacyLocalOffset: -4,0,0,0,0
+		LocalOffset: 0,-171,0
 	Armament@SECONDARY:
 		Weapon: HonestJohn
-		LegacyLocalOffset: 4,0,0,0,0
+		LocalOffset:0,171,0
 	AttackFrontal:
 	RenderUnitTurretedAim:
 	AutoTarget:
@@ -490,7 +495,7 @@ STNK:
 		UncloakSound: appear1.aud
 	Armament:
 		Weapon: 227mm.stnk
-		LegacyLocalOffset: 1,-5,0,-3,0, -1,-5,0,-3,0
+		LocalOffset: 213,43,128, 213,-43,128
 	AttackFrontal:
 	RenderUnit:
 	AutoTarget:

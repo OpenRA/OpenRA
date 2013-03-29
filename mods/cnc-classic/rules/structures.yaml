@@ -556,11 +556,12 @@ OBLI:
 	# (Range of Obelisk laser is 7.5)
 	RenderBuildingCharge:
 		ChargeAudio: obelpowr.aud
+		QuantizedFacings: 8
 	Turreted:
 		ROT:255
-		LegacyOffset: 0,0,-2,-17
 	Armament:
 		Weapon: Laser
+		LocalOffset: 0,0,725
 		FireDelay: 8
 	AttackTurreted:
 	AutoTarget:
@@ -666,7 +667,7 @@ GUN:
 	RenderBuildingTurreted:
 	Armament:
 		Weapon: TurretGun
-		LegacyLocalOffset: 0,4,0,-2,0
+		LocalOffset: -71,0,85
 	AttackTurreted:
 	AutoTarget:
 	-AutoTargetIgnore:
@@ -741,9 +742,11 @@ GTWR:
 	# RevealShroud range was set to equal 1 + its weapon range (due to possible rendering issues with shroud for OpenRA)
 	Armament:
 		Weapon: HighV
-		LegacyLocalOffset: 0,-6,0,0,0
+		LocalOffset: 256,0,256
 	AttackTurreted:
 	AutoTarget:
+	RenderBuilding:
+		QuantizedFacings: 8
 	-AutoTargetIgnore:
 	DetectCloaked:
 		Range: 3
@@ -752,7 +755,6 @@ GTWR:
 	WithMuzzleFlash:
 	Turreted:
 		ROT:255
-		LegacyOffset: 0,0,0,-6
 
 ATWR:
 	Inherits: ^Building
@@ -783,12 +785,14 @@ ATWR:
 	# RevealShroud range was set to equal its weapon range +1 (due to possible rendering issues with shroud for OpenRA)
 	Turreted:
 		ROT:255
-		LegacyOffset: 0,0,5,2
 	Armament:
 		Weapon: TowerMissle
-		LegacyLocalOffset: 7,-7,0,0,-25, -7,-7,0,0,25
+		LocalOffset: 299,299,-85, 299,-299,-85
+		LocalYaw: -100,100
 	AttackTurreted:
 	AutoTarget:
+	RenderBuilding:
+		QuantizedFacings: 8
 	-AutoTargetIgnore:
 	DetectCloaked:
 		Range: 4
