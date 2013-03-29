@@ -70,6 +70,7 @@ namespace OpenRA.Editor
 		{
 			MakeDirty();
 			pmMiniMap.Image = Minimap.AddStaticResources(surface1.Map, Minimap.TerrainBitmap(surface1.Map, true));
+			cashToolStripStatusLabel.Text = CalculateTotalResource().ToString();
 		}
 
 		void ActorDoubleClicked(KeyValuePair<string,ActorReference> kv)
@@ -119,6 +120,8 @@ namespace OpenRA.Editor
 				map.MakeDefaultPlayers();
 
 			PrepareMapResources(Game.modData.Manifest, map);
+			//Calculate total net worth of resources in cash
+			cashToolStripStatusLabel.Text = CalculateTotalResource().ToString();
 
 			dirty = false;
 		}
@@ -669,6 +672,46 @@ namespace OpenRA.Editor
 		private void toolStripMenuItemShowGridClick(object sender, EventArgs e)
 		{
 			ShowGridClicked(sender, e);
+		}
+		
+		public int CalculateTotalResource()
+		{
+			int TotalResource = 0;
+			for(int i = 0; i < surface1.Map.MapSize.X; i++)
+				for (int j = 0; j < surface1.Map.MapSize.Y; j++)
+				{
+					if (surface1.Map.MapResources.Value[i, j].type != 0)
+						TotalResource += GetResourceValue(i, j);
+				}
+			return TotalResource;
+		}
+		
+		int GetAdjecentCellsWith(int ResourceType, int x, int y)
+		{
+			int sum = 0;
+			for (var u = -1; u < 2; u++)
+				for (var v = -1; v < 2; v++)
+				{
+					if (!surface1.Map.IsInMap(new CPos(x + u, y + v)))
+						continue;
+					if (surface1.Map.MapResources.Value[x + u, y + v].type == ResourceType)
+						++sum;
+				}
+			return sum;
+		}
+
+		int GetResourceValue(int x, int y)
+		{
+			int ImageLength = 0;
+			int type = surface1.Map.MapResources.Value[x, y].type;
+			var template = surface1.ResourceTemplates.Where(a => a.Value.Info.ResourceType == type).FirstOrDefault().Value;
+			if (type == 1)
+				ImageLength = 12;
+			else if (type == 2)
+				ImageLength = 3;
+			int density = (GetAdjecentCellsWith(type ,x , y) * ImageLength - 1) / 9;
+			int value = template.Info.ValuePerUnit;
+			return (density) * value;
 		}
 	}
 }
