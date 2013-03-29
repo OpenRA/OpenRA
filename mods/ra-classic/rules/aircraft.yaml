@@ -85,7 +85,8 @@ MIG:
 		Range: 12
 	Armament:
 		Weapon: Maverick
-		LegacyLocalOffset: -15,0,0,0,-10, 15,0,0,0,6
+		LocalOffset: 0,-640,0, 0,640,0
+		LocalYaw: -40, 24
 	AttackPlane:
 		FacingTolerance: 20
 	Plane:
@@ -130,10 +131,10 @@ YAK:
 		Range: 10
 	Armament@PRIMARY:
 		Weapon: ChainGun
-		LegacyLocalOffset: -5,-6,0,0,0
+		LocalOffset: 256,-213,0
 	Armament@SECONDARY:
 		Weapon: ChainGun
-		LegacyLocalOffset: 5,-6,0,0,0
+		LocalOffset: 256,213,0
 	AttackPlane:
 		FacingTolerance: 20
 	Plane:
@@ -220,7 +221,7 @@ HELI:
 		Range: 12
 	Armament:
 		Weapon: HellfireAG
-		LegacyLocalOffset: -5,0,0,2,0
+		LocalOffset: 0,-213,-85
 	AttackHeli:
 		FacingTolerance: 20
 	Helicopter:
@@ -262,10 +263,10 @@ HIND:
 		Range: 10
 	Armament@PRIMARY:
 		Weapon: ChainGun
-		LegacyLocalOffset: -5,-2,0,2,0
+		LocalOffset: 85,-213,-85
 	Armament@SECONDARY:
 		Weapon: ChainGun
-		LegacyLocalOffset: 5,-2,0,2,0
+		LocalOffset: 85,213,-85
 	AttackHeli:
 		FacingTolerance: 20
 	Helicopter:

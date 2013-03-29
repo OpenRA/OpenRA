@@ -317,7 +317,7 @@ TSLA:
 	RenderBuildingCharge:
 	Armament:
 		Weapon: TeslaZap
-		LegacyLocalOffset: 0,0,0,-10,0
+		LocalOffset: 0,0,427
 	AttackTesla:
 		ReloadTime: 120
 	AutoTarget:
@@ -424,12 +424,14 @@ PBOX:
 	AutoTarget:
 	Armament:
 		Weapon: Vulcan
-		LegacyLocalOffset: 0,-11,0,0,0
+		LocalOffset: 469,0,0
 	AttackTurreted:
 	WithMuzzleFlash:
 	Turreted:
 		ROT: 255
-	
+	RenderBuilding:
+		QuantizedFacings: 8
+
 HBOX:
 	Inherits: ^Building
 	Buildable:
@@ -458,11 +460,13 @@ HBOX:
 	AutoTarget:
 	Armament:
 		Weapon: Vulcan
-		LegacyLocalOffset: 0,-11,0,0,0
+		LocalOffset: 469,0,0
 	AttackTurreted:
 	WithMuzzleFlash:
 	Turreted:
 		ROT: 255
+	RenderBuilding:
+		QuantizedFacings: 8
 
 GUN:
 	Inherits: ^Building
@@ -492,6 +496,7 @@ GUN:
 	RenderBuildingTurreted:
 	Armament:
 		Weapon: TurretGun
+		OffsetModel: World
 	AttackTurreted:
 	AutoTarget:
 	IronCurtainable:
@@ -522,14 +527,16 @@ FTUR:
 		Range: 6
 	Turreted:
 		ROT: 255
-		LegacyOffset: 0,0,0,-2
+		Offset: 0,0,85
 	Armament:
 		Weapon: FireballLauncher
-		LegacyLocalOffset: 0,-12,0,0,0
+		LocalOffset: 512,0,0
 	AttackTurreted:
 	AutoTarget:
 	IronCurtainable:
 	RenderRangeCircle:
+	RenderBuilding:
+		QuantizedFacings: 8
 
 SAM:
 	Inherits: ^Building
@@ -561,6 +568,7 @@ SAM:
 	RenderBuildingTurreted:
 	Armament:
 		Weapon: Nike
+		OffsetModel: World
 	AttackTurreted:
 	WithMuzzleFlash:
 	AutoTarget:
