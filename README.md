@@ -12,9 +12,8 @@ MobileLua, GSL-shell, and others). It originated from the [Estrela Editor](http:
 * Auto-completion for functions, keywords, and custom APIs.
 * Interactive console to directly test code snippets with local and remote execution.
 * Integrated debugger (with support for local and remote debugging).
-* Live coding with Lua ([demo](http://notebook.kulchenko.com/zerobrane/live-coding-in-lua-bret-victor-style)), Löve 2D ([demo](http://notebook.kulchenko.com/zerobrane/live-coding-with-love)), Gideros ([demo](http://notebook.kulchenko.com/zerobrane/gideros-live-coding-with-zerobrane-studio-ide)), [Moai](http://notebook.kulchenko.com/zerobrane/live-coding-with-moai-and-zerobrane-studio), and [Corona SDK](http://notebook.kulchenko.com/zerobrane/debugging-and-live-coding-with-corona-sdk-applications-and-zerobrane-studio).
+* Live coding with Lua ([demo](http://notebook.kulchenko.com/zerobrane/live-coding-in-lua-bret-victor-style)), Löve 2D ([demo](http://notebook.kulchenko.com/zerobrane/live-coding-with-love)), Gideros ([demo](http://notebook.kulchenko.com/zerobrane/gideros-live-coding-with-zerobrane-studio-ide)), Moai ([demo](http://notebook.kulchenko.com/zerobrane/live-coding-with-moai-and-zerobrane-studio)), and Corona SDK ([demo](http://notebook.kulchenko.com/zerobrane/debugging-and-live-coding-with-corona-sdk-applications-and-zerobrane-studio)).
 * Support for plugin-like components:
-  - applications: overall control of applications settings;
   - specs (spec/): file syntax, lexer, keywords (e.g. glsl);
   - apis (api/): for code-completion and tool-tips;
   - interpreters (interpreters/): how a project is run;

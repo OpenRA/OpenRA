@@ -1,5 +1,58 @@
 # ZeroBrane Studio Changelog
 
+## Current master (Mar 29 2013)
+
+### Highlights
+  - Added **Linux binaries with support for 32bit and 64bit systems**.
+  - Added **multiple selection and multi-cursor editing**.
+  - Enabled **full debugging for Corona on OSX**.
+  - Made Stack and Watch windows dockable.
+
+### Special thanks
+  - To toiffel for build improvements and continuous work on wxwidgets 2.9 and Linux support.
+  - To Marcel van Herk for testing and feedback on Stack and Watch windows behavior.
+
+### Improvements
+  - Added auto-show/hide Stack and Watch windows during debugging (closes #110).
+  - Added ignoring `-psn...` parameter on OSX when reading file names from command line.
+  - Added migration of configuration file on Windows (helps #89).
+  - Added check for different spellings of the same folder in the project tree.
+  - Added scripts to install build prerequisites on Linux (helps #89).
+  - Added linux binaries with support for x86 and x64 (helps #89).
+  - Added window list button to the notepad with editor tabs.
+  - Added centering of current line during debugging.
+  - Added multiple selection and multi-cursor editing (wx2.9.5+).
+  - Added dll proxy to make LfW libraries to work with the IDE.
+  - Enabled full debugging for Corona on OSX.
+  - Improved performance of tab switching and project tree population.
+  - Improved handling of upvalues with __tostring method in the Stack window.
+  - Increased default font size for OSX; set 'Monaco' as default font (helps #89).
+  - Made stack and watch windows dockable (closes #103).
+  - Optimized project switching and added notebook freezing where possible (ref #89).
+  - Reduced flicker in the project tree when a file is opened (ref #89).
+  - Removed binary libraries not currently used.
+  - Set 'Courier New' as the default font on Linux (ref #89).
+  - Switched to 'native' menu on OSX and added 24x24 icons required (helps #89).
+  - Upgraded Mobdebug (0.5222) to add serialization with metamethods and notification on incomplete output (closes #109).
+  - Updated error messages from loading configuration files.
+  - Updated Linux binaries to use libpng 1.6 with wxwidgets (helps #89).
+  - Updated Windows/OSX build files to only build components needed (helps #89).
+  - Updated windows executable to show properly scaled icons in the Explorer.
+  - Updated status bar to use no border around fields.
+  - Updated large icons for "native" toolbar on OSX (helps #89).
+  - Updated function call indicator to use round box with wxwidgets upgrade (helps #89).
+  - Updated handling of markdown styles to make it more robust (fixes #59).
+  - Updated README with Marmalade Quick support and Corona tutorial.
+
+### Incompatibilities
+  - Configuration file (.ini) location has changed on Windows. The current file will be copied to the new location.
+
+### Fixes
+  - Fixed an issue with Enter used to select an item in project dropdown (ref #89).
+  - Fixed an issue with the Project tree when project and app directories are the same.
+  - Fixed debugger output not being suppressed on Linux and using wlua.
+  - Fixed a static analyzer issue with anonymous functions defined in expressions (fixes #3).
+
 ## v0.35 (Feb 10 2013)
 
 ### Highlights
