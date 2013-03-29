@@ -15,7 +15,7 @@ debugger.listening = false -- true when the debugger is listening for a client
 debugger.portnumber = ide.config.debugger.port or mobdebug.port -- the port # to use for debugging
 debugger.watchCtrl = nil -- the watch ctrl that shows watch information
 debugger.stackCtrl = nil -- the stack ctrl that shows stack information
-debugger.toggleview = { stackview = false, watchview = false }
+debugger.toggleview = { stackpanel = false, watchpanel = false }
 debugger.hostname = ide.config.debugger.hostname or (function()
   local addr = wx.wxIPV4address() -- check what address is resolvable
   for _, host in ipairs({wx.wxGetHostName(), wx.wxGetFullHostName()}) do
@@ -724,7 +724,7 @@ function debuggerCreateStackWindow()
 
   local mgr = ide.frame.uimgr
   mgr:AddPane(notebook, wxaui.wxAuiPaneInfo():
-              Name("stackview"):Float():
+              Name("stackpanel"):Float():
               MinSize(height,height):FloatingSize(width,height):
               PinButton(true):Hide())
   mgr.defaultPerspective = mgr:SavePerspective() -- resave default perspective
@@ -829,7 +829,7 @@ local function debuggerCreateWatchWindow()
 
   local mgr = ide.frame.uimgr
   mgr:AddPane(notebook, wxaui.wxAuiPaneInfo():
-              Name("watchview"):Float():
+              Name("watchpanel"):Float():
               MinSize(height,height):FloatingSize(width,height):
               PinButton(true):Hide())
   mgr.defaultPerspective = mgr:SavePerspective() -- resave default perspective
@@ -841,23 +841,17 @@ debuggerCreateWatchWindow()
 ----------------------------------------------
 -- public api
 
-function DebuggerShowStackWindow()
+local function debuggerShowPanel(panel)
   local mgr = ide.frame.uimgr
-  if (not mgr:GetPane("stackview"):IsShown()) then
-    mgr:GetPane("stackview"):Show()
+  if (not mgr:GetPane(panel):IsShown()) then
+    mgr:GetPane(panel):Show()
     mgr:Update()
   end
   updateStackAndWatches()
 end
 
-function DebuggerShowWatchWindow()
-  local mgr = ide.frame.uimgr
-  if (not mgr:GetPane("watchview"):IsShown()) then
-    mgr:GetPane("watchview"):Show()
-    mgr:Update()
-  end
-  updateStackAndWatches()
-end
+function DebuggerShowStackWindow() debuggerShowPanel("stackpanel") end
+function DebuggerShowWatchWindow() debuggerShowPanel("watchpanel") end
 
 function DebuggerAddWatch(watch)
   DebuggerShowWatchWindow()

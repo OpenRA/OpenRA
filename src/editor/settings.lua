@@ -372,6 +372,13 @@ function SettingsRestoreView()
   local layout = settingsReadSafe(settings,"uimgrlayout",layoutcur)
   if (layout ~= layoutcur) then
     uimgr:LoadPerspective(layout, false)
+
+    -- check if debugging panes are not mentioned and float them
+    local panes = frame.uimgr:GetAllPanes()
+    for _, name in pairs({"stackpanel", "watchpanel"}) do
+      local pane = frame.uimgr:GetPane(name)
+      if not layout:find(name) then pane:Float() end
+    end
     -- unfortunately need to explicitly (re-)assign the caption,
     -- as it's going to be restored from the config regardless of how
     -- it is set now (which affects its translation)

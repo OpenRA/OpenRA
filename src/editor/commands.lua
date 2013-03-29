@@ -760,8 +760,9 @@ local function closeWindow(event)
 
   do -- hide all floating panes first
     local panes = frame.uimgr:GetAllPanes()
-    for pane = 0, panes:GetCount()-1 do
-      frame.uimgr:GetPane(panes:Item(pane).name):Hide()
+    for index = 0, panes:GetCount()-1 do
+      local pane = frame.uimgr:GetPane(panes:Item(index).name)
+      if pane:IsFloating() then pane:Hide() end
     end
   end
   frame.uimgr:Update() -- hide floating panes
