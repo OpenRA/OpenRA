@@ -623,7 +623,7 @@ PALACEC:
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 1000
-		Owner: atreides
+		Owner: None
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 3,2
