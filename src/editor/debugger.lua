@@ -719,7 +719,7 @@ function debuggerCreateStackWindow()
   local notebook = wxaui.wxAuiNotebook(frame, wx.wxID_ANY,
     wx.wxDefaultPosition, wx.wxDefaultSize,
     wxaui.wxAUI_NB_DEFAULT_STYLE + wxaui.wxAUI_NB_TAB_EXTERNAL_MOVE
-    + wx.wxNO_BORDER)
+    - wxaui.wxAUI_NB_CLOSE_ON_ACTIVE_TAB + wx.wxNO_BORDER)
   notebook:AddPage(stackCtrl, TR("Stack"), true)
 
   local mgr = ide.frame.uimgr
@@ -824,7 +824,7 @@ local function debuggerCreateWatchWindow()
   local notebook = wxaui.wxAuiNotebook(frame, wx.wxID_ANY,
     wx.wxDefaultPosition, wx.wxDefaultSize,
     wxaui.wxAUI_NB_DEFAULT_STYLE + wxaui.wxAUI_NB_TAB_EXTERNAL_MOVE
-    + wx.wxNO_BORDER)
+    - wxaui.wxAUI_NB_CLOSE_ON_ACTIVE_TAB + wx.wxNO_BORDER)
   notebook:AddPage(watchCtrl, TR("Watch"), true)
 
   local mgr = ide.frame.uimgr

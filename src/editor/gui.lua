@@ -201,10 +201,6 @@ local function createBottomNotebook(frame)
 
   bottomnotebook:AddPage(errorlog, TR("Output"), true)
   bottomnotebook:AddPage(shellbox, TR("Local console"), false)
-  bottomnotebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CLOSE,
-    function (event)
-      event:Veto() -- don't allow closing pages in this notebook
-    end)
   
   frame.bottomnotebook = bottomnotebook
   bottomnotebook.errorlog = errorlog
