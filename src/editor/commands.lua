@@ -772,12 +772,6 @@ local function closeWindow(event)
   if ide.session.timer then ide.session.timer:Stop() end
 
   event:Skip()
-
-  -- this is to fix a crash on OSX when closing with debugging in progress.
-  if ide.osname == "Macintosh" then os.exit() end
-
-  -- this is to fix a crash on Linux 32/64bit during GC cleanup in wxlua.
-  if ide.osname == "Unix" then os.exit() end
 end
 frame:Connect(wx.wxEVT_CLOSE_WINDOW, closeWindow)
 

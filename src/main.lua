@@ -175,8 +175,8 @@ local filenames = {}
 local configs = {}
 do
   local arg = {...}
-  local fullPath = arg[1] -- first argument must be the application name
-  assert(type(fullPath) == "string", "first argument must be application name")
+  -- application name is expected as the first argument
+  local fullPath = arg[1] or "zbstudio"
 
   ide.arg = arg
 
@@ -435,3 +435,10 @@ resumePrint()
 
 ide.frame:Show(true)
 wx.wxGetApp():MainLoop()
+
+-- There are several reasons for this call:
+-- (1) to fix a crash on OSX when closing with debugging in progress.
+-- (2) to fix a crash on Linux 32/64bit during GC cleanup in wxlua
+-- after an external process has been started from the IDE.
+-- (3) to fix exit on Windows when started as "bin\lua src\main.lua".
+os.exit()

@@ -346,7 +346,8 @@ function FileTreeMarkSelected(file)
       projtree:SetItemBold(item_id, true)
     end
     curr_file = file
-    if ide.osname == 'Macintosh' then projtree:Refresh() end
+    if ide.wxver < "2.9.5" and ide.osname == 'Macintosh' then
+      projtree:Refresh() end
   end
 end
 
