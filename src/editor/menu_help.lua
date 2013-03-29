@@ -59,7 +59,7 @@ local function DisplayAbout(event)
 
   local dlg = wx.wxDialog(frame, wx.wxID_ANY, TR("About ZeroBrane Studio"))
   local html = wx.wxLuaHtmlWindow(dlg, wx.wxID_ANY,
-    wx.wxDefaultPosition, wx.wxSize(450, 500),
+    wx.wxDefaultPosition, wx.wxSize(450, 520),
     wx.wxHW_SCROLLBAR_NEVER)
   local line = wx.wxStaticLine(dlg, wx.wxID_ANY)
   local button = wx.wxButton(dlg, wx.wxID_OK, "OK")

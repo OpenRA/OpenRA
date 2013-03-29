@@ -73,8 +73,7 @@ ID_ABOUT            = wx.wxID_ABOUT
 -- Watch window menu items
 ID_ADDWATCH         = NewID()
 ID_EDITWATCH        = NewID()
-ID_REMOVEWATCH      = NewID()
-ID_EVALUATEWATCH    = NewID()
+ID_DELETEWATCH      = NewID()
 -- Editor popup menu items
 ID_QUICKADDWATCH    = NewID()
 ID_QUICKEVAL        = NewID()

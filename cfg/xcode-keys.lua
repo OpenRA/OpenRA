@@ -65,8 +65,7 @@ local xcode = {
 -- Watch window menu items
   [G.ID_ADDWATCH]         = "Ins",
   [G.ID_EDITWATCH]        = "F2",
-  [G.ID_REMOVEWATCH]      = "Del",
-  [G.ID_EVALUATEWATCH]    = "",
+  [G.ID_DELETEWATCH]      = "Del",
 -- Editor popup menu items
   [G.ID_QUICKADDWATCH]    = "",
   [G.ID_QUICKEVAL]        = "",

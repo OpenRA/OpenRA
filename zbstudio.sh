@@ -3,7 +3,6 @@
 if [[ $(uname) == 'Darwin' ]]; then
   open zbstudio/ZeroBraneStudio.app --args "$@"
 else
-  type lua 2>/dev/null >&2 && lua -e "os.exit(pcall(require, 'wx') and 0 or 1)"
-  if [[ "$?" != "0" ]]; then (cd build; bash install-deb.sh); fi
-  lua src/main.lua zbstudio "$@"
+  if [[ "$(uname -m)" == "x86_64" ]]; then ARCH="x64"; else ARCH="x86"; fi
+  bin/linux/$ARCH/lua src/main.lua zbstudio "$@" &
 fi

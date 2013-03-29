@@ -13,10 +13,9 @@ debugger.server = nil -- DebuggerServer object when debugging, else nil
 debugger.running = false -- true when the debuggee is running
 debugger.listening = false -- true when the debugger is listening for a client
 debugger.portnumber = ide.config.debugger.port or mobdebug.port -- the port # to use for debugging
-debugger.watchWindow = nil -- the watchWindow, nil when not created
-debugger.watchCtrl = nil -- the child ctrl in the watchWindow
-debugger.stackWindow = nil -- the stackWindow, nil when not created
-debugger.stackCtrl = nil -- the child ctrl in the stackWindow
+debugger.watchCtrl = nil -- the watch ctrl that shows watch information
+debugger.stackCtrl = nil -- the stack ctrl that shows stack information
+debugger.toggleview = { stackpanel = false, watchpanel = false }
 debugger.hostname = ide.config.debugger.hostname or (function()
   local addr = wx.wxIPV4address() -- check what address is resolvable
   for _, host in ipairs({wx.wxGetHostName(), wx.wxGetFullHostName()}) do
@@ -156,6 +155,28 @@ local function updateWatches(num)
   if debugger.server and not debugger.running then
     copas.addthread(function() updateWatchesSync(num) end)
   end
+end
+
+local function debuggerToggleViews(show)
+  local mgr = ide.frame.uimgr
+  local refresh = false
+  for view, needed in pairs(debugger.toggleview) do
+    local pane = mgr:GetPane(view)
+    if show then -- starting debugging and pane is not shown
+      debugger.toggleview[view] = not pane:IsShown()
+      if debugger.toggleview[view] and needed then
+        pane:Show()
+        refresh = true
+      end
+    else -- completing debugging and pane is shown
+      debugger.toggleview[view] = pane:IsShown() and needed
+      if debugger.toggleview[view] then
+        pane:Hide()
+        refresh = true
+      end
+    end
+  end
+  if refresh then mgr:Update() end
 end
 
 local function killClient()
@@ -468,6 +489,7 @@ debugger.listen = function()
         ShellSupportRemote(debugger.shell)
       end
 
+      debuggerToggleViews(true)
       updateStackSync()
       updateWatchesSync()
 
@@ -649,57 +671,6 @@ debugger.quickeval = function(var, callback)
   end
 end
 
-----------------------------------------------
--- public api
-
-function DebuggerAttachDefault(options)
-  debugger.options = options
-  if (debugger.listening) then return end
-  debugger.listen()
-end
-
-function DebuggerShutdown()
-  if debugger.server then debugger.terminate() end
-  if debugger.pid then killClient() end
-  -- wait for a little bit as in some rare cases when closing the debugger
-  -- with a running application under OSX, the process crashes (wxlua2.8.12).
-  if ide.osname == "Macintosh" then wx.wxMilliSleep(100) end
-end
-
-function DebuggerStop()
-  if (debugger.server) then
-    debugger.server = nil
-    debugger.pid = nil
-    SetAllEditorsReadOnly(false)
-    ShellSupportRemote(nil)
-    ClearAllCurrentLineMarkers()
-    DebuggerScratchpadOff()
-    local lines = TR("traced %d instruction", debugger.stats.line):format(debugger.stats.line)
-    DisplayOutputLn(TR("Debugging session completed (%s)."):format(lines))
-  else
-    -- it's possible that the application couldn't start, or that the
-    -- debugger in the application didn't start, which means there is
-    -- no debugger.server, but scratchpad may still be on. Turn it off.
-    DebuggerScratchpadOff()
-  end
-end
-
-function DebuggerCloseStackWindow()
-  if (debugger.stackWindow) then
-    SettingsSaveFramePosition(debugger.stackWindow, "StackWindow")
-    debugger.stackCtrl = nil
-    debugger.stackWindow = nil
-  end
-end
-
-function DebuggerCloseWatchWindow()
-  if (debugger.watchWindow) then
-    SettingsSaveFramePosition(debugger.watchWindow, "WatchWindow")
-    debugger.watchCtrl = nil
-    debugger.watchWindow = nil
-  end
-end
-
 -- need imglist to be a file local variable as SetImageList takes ownership
 -- of it and if done inside a function, icons do not work as expected
 local imglist = wx.wxImageList(16,16)
@@ -714,34 +685,15 @@ do
   imglist:Add(getBitmap(wx.wxART_REPORT_VIEW, wx.wxART_OTHER, size))
 end
 
-function DebuggerCreateStackWindow()
-  if (debugger.stackWindow) then return updateStackAndWatches() end
-  local width = 360
-  local stackWindow = wx.wxFrame(ide.frame, wx.wxID_ANY,
-    TR("Stack Window"),
-    wx.wxDefaultPosition, wx.wxSize(width, 200),
-    wx.wxDEFAULT_FRAME_STYLE + wx.wxFRAME_FLOAT_ON_PARENT)
-
-  debugger.stackWindow = stackWindow
-
-  local stackCtrl = wx.wxTreeCtrl(stackWindow, wx.wxID_ANY,
-    wx.wxDefaultPosition, wx.wxDefaultSize,
+local width, height = 360, 200
+function debuggerCreateStackWindow()
+  local stackCtrl = wx.wxTreeCtrl(ide.frame, wx.wxID_ANY,
+    wx.wxDefaultPosition, wx.wxSize(width, height),
     wx.wxTR_LINES_AT_ROOT + wx.wxTR_HAS_BUTTONS + wx.wxTR_SINGLE + wx.wxTR_HIDE_ROOT)
 
   debugger.stackCtrl = stackCtrl
 
   stackCtrl:SetImageList(imglist)
-  stackWindow:CentreOnParent()
-  SettingsRestoreFramePosition(stackWindow, "StackWindow")
-  stackWindow:Show(true)
-
-  stackWindow:Connect(wx.wxEVT_CLOSE_WINDOW,
-    function (event)
-      DebuggerCloseStackWindow()
-      stackWindow = nil
-      stackCtrl = nil
-      event:Skip()
-    end)
 
   stackCtrl:Connect( wx.wxEVT_COMMAND_TREE_ITEM_EXPANDING,
     function (event)
@@ -769,30 +721,22 @@ function DebuggerCreateStackWindow()
   stackCtrl:Connect( wx.wxEVT_COMMAND_TREE_ITEM_COLLAPSED,
     function() return true end)
 
-  updateStackAndWatches()
+  local notebook = wxaui.wxAuiNotebook(frame, wx.wxID_ANY,
+    wx.wxDefaultPosition, wx.wxDefaultSize,
+    wxaui.wxAUI_NB_DEFAULT_STYLE + wxaui.wxAUI_NB_TAB_EXTERNAL_MOVE
+    - wxaui.wxAUI_NB_CLOSE_ON_ACTIVE_TAB + wx.wxNO_BORDER)
+  notebook:AddPage(stackCtrl, TR("Stack"), true)
+
+  local mgr = ide.frame.uimgr
+  mgr:AddPane(notebook, wxaui.wxAuiPaneInfo():
+              Name("stackpanel"):Float():
+              MinSize(height,height):FloatingSize(width,height):
+              PinButton(true):Hide())
+  mgr.defaultPerspective = mgr:SavePerspective() -- resave default perspective
 end
 
-function DebuggerCreateWatchWindow()
-  if (debugger.watchWindow) then return updateWatches() end
-  local width = 360
-  local watchWindow = wx.wxFrame(ide.frame, wx.wxID_ANY,
-    TR("Watch Window"),
-    wx.wxDefaultPosition, wx.wxSize(width, 200),
-    wx.wxDEFAULT_FRAME_STYLE + wx.wxFRAME_FLOAT_ON_PARENT)
-
-  debugger.watchWindow = watchWindow
-
-  local watchMenu = wx.wxMenu{
-    { ID_ADDWATCH, TR("&Add Watch")..KSC(ID_ADDWATCH) },
-    { ID_EDITWATCH, TR("&Edit Watch")..KSC(ID_EDITWATCH) },
-    { ID_REMOVEWATCH, TR("&Remove Watch")..KSC(ID_REMOVEWATCH) },
-    { ID_EVALUATEWATCH, TR("Evaluate &Watches")..KSC(ID_EVALUATEWATCH) }}
-
-  local watchMenuBar = wx.wxMenuBar()
-  watchMenuBar:Append(watchMenu, TR("&Watches"))
-  watchWindow:SetMenuBar(watchMenuBar)
-
-  local watchCtrl = wx.wxListCtrl(watchWindow, wx.wxID_ANY,
+local function debuggerCreateWatchWindow()
+  local watchCtrl = wx.wxListCtrl(frame, wx.wxID_ANY,
     wx.wxDefaultPosition, wx.wxDefaultSize,
     wx.wxLC_REPORT + wx.wxLC_EDIT_LABELS)
 
@@ -808,9 +752,10 @@ function DebuggerCreateWatchWindow()
   info:SetWidth(width * 0.56)
   watchCtrl:InsertColumn(1, info)
 
-  watchWindow:CentreOnParent()
-  SettingsRestoreFramePosition(watchWindow, "WatchWindow")
-  watchWindow:Show(true)
+  local watchMenu = wx.wxMenu{
+    { ID_ADDWATCH, TR("&Add Watch")..KSC(ID_ADDWATCH) },
+    { ID_EDITWATCH, TR("&Edit Watch")..KSC(ID_EDITWATCH) },
+    { ID_DELETEWATCH, TR("&Delete Watch")..KSC(ID_DELETEWATCH) }}
 
   local function findSelectedWatchItem()
     local count = watchCtrl:GetSelectedItemCount()
@@ -825,53 +770,47 @@ function DebuggerCreateWatchWindow()
   end
 
   local defaultExpr = ""
+  local function addWatch()
+    local row = watchCtrl:InsertItem(watchCtrl:GetItemCount(), TR("Expr"))
+    watchCtrl:SetItem(row, 0, defaultExpr)
+    watchCtrl:SetItem(row, 1, TR("Value"))
+    watchCtrl:EditLabel(row)
+  end
 
-  watchWindow:Connect(wx.wxEVT_CLOSE_WINDOW,
+  local function editWatch()
+    local row = findSelectedWatchItem()
+    if row >= 0 then watchCtrl:EditLabel(row) end
+  end
+
+  local function deleteWatch()
+    local row = findSelectedWatchItem()
+    if row >= 0 then watchCtrl:DeleteItem(row) end
+  end
+
+  watchCtrl:Connect(wx.wxEVT_CONTEXT_MENU,
     function (event)
-      DebuggerCloseWatchWindow()
-      watchWindow = nil
-      watchCtrl = nil
+      watchCtrl:PopupMenu(watchMenu)
+    end)
+
+  watchCtrl:Connect(wx.wxEVT_KEY_DOWN,
+    function (event)
+      local keycode = event:GetKeyCode()
+      if (keycode == wx.WXK_DELETE) then return deleteWatch()
+      elseif (keycode == wx.WXK_INSERT) then return addWatch()
+      elseif (keycode == wx.WXK_F2) then return editWatch()
+      end
       event:Skip()
     end)
 
-  watchWindow:Connect(ID_ADDWATCH, wx.wxEVT_COMMAND_MENU_SELECTED,
-    function ()
-      local row = watchCtrl:InsertItem(watchCtrl:GetItemCount(), TR("Expr"))
-      watchCtrl:SetItem(row, 0, defaultExpr)
-      watchCtrl:SetItem(row, 1, TR("Value"))
-      watchCtrl:EditLabel(row)
-    end)
+  watchCtrl:Connect(ID_ADDWATCH, wx.wxEVT_COMMAND_MENU_SELECTED, addWatch)
 
-  watchWindow:Connect(ID_EDITWATCH, wx.wxEVT_COMMAND_MENU_SELECTED,
-    function ()
-      local row = findSelectedWatchItem()
-      if row >= 0 then
-        watchCtrl:EditLabel(row)
-      end
-    end)
-  watchWindow:Connect(ID_EDITWATCH, wx.wxEVT_UPDATE_UI,
-    function (event)
-      event:Enable(watchCtrl:GetSelectedItemCount() > 0)
-    end)
+  watchCtrl:Connect(ID_EDITWATCH, wx.wxEVT_COMMAND_MENU_SELECTED, editWatch)
+  watchCtrl:Connect(ID_EDITWATCH, wx.wxEVT_UPDATE_UI,
+    function (event) event:Enable(watchCtrl:GetSelectedItemCount() > 0) end)
 
-  watchWindow:Connect(ID_REMOVEWATCH, wx.wxEVT_COMMAND_MENU_SELECTED,
-    function ()
-      local row = findSelectedWatchItem()
-      if row >= 0 then
-        watchCtrl:DeleteItem(row)
-      end
-    end)
-  watchWindow:Connect(ID_REMOVEWATCH, wx.wxEVT_UPDATE_UI,
-    function (event)
-      event:Enable(watchCtrl:GetSelectedItemCount() > 0)
-    end)
-
-  watchWindow:Connect(ID_EVALUATEWATCH, wx.wxEVT_COMMAND_MENU_SELECTED,
-    function () updateWatches() end)
-  watchWindow:Connect(ID_EVALUATEWATCH, wx.wxEVT_UPDATE_UI,
-    function (event)
-      event:Enable(watchCtrl:GetItemCount() > 0)
-    end)
+  watchCtrl:Connect(ID_DELETEWATCH, wx.wxEVT_COMMAND_MENU_SELECTED, deleteWatch)
+  watchCtrl:Connect(ID_DELETEWATCH, wx.wxEVT_UPDATE_UI,
+    function (event) event:Enable(watchCtrl:GetSelectedItemCount() > 0) end)
 
   watchCtrl:Connect(wx.wxEVT_COMMAND_LIST_END_LABEL_EDIT,
     function (event)
@@ -886,10 +825,41 @@ function DebuggerCreateWatchWindow()
       end
       event:Skip()
     end)
+
+  local notebook = wxaui.wxAuiNotebook(frame, wx.wxID_ANY,
+    wx.wxDefaultPosition, wx.wxDefaultSize,
+    wxaui.wxAUI_NB_DEFAULT_STYLE + wxaui.wxAUI_NB_TAB_EXTERNAL_MOVE
+    - wxaui.wxAUI_NB_CLOSE_ON_ACTIVE_TAB + wx.wxNO_BORDER)
+  notebook:AddPage(watchCtrl, TR("Watch"), true)
+
+  local mgr = ide.frame.uimgr
+  mgr:AddPane(notebook, wxaui.wxAuiPaneInfo():
+              Name("watchpanel"):Float():
+              MinSize(height,height):FloatingSize(width,height):
+              PinButton(true):Hide())
+  mgr.defaultPerspective = mgr:SavePerspective() -- resave default perspective
 end
 
+debuggerCreateStackWindow()
+debuggerCreateWatchWindow()
+
+----------------------------------------------
+-- public api
+
+local function debuggerShowPanel(panel)
+  local mgr = ide.frame.uimgr
+  if (not mgr:GetPane(panel):IsShown()) then
+    mgr:GetPane(panel):Show()
+    mgr:Update()
+  end
+  updateStackAndWatches()
+end
+
+function DebuggerShowStackWindow() debuggerShowPanel("stackpanel") end
+function DebuggerShowWatchWindow() debuggerShowPanel("watchpanel") end
+
 function DebuggerAddWatch(watch)
-  if (not debugger.watchWindow) then DebuggerCreateWatchWindow() end
+  DebuggerShowWatchWindow()
 
   local watchCtrl = debugger.watchCtrl
   -- check if this expression is already on the list
@@ -902,6 +872,36 @@ function DebuggerAddWatch(watch)
   watchCtrl:SetItem(row, 1, TR("Value"))
 
   updateWatches(row)
+end
+
+function DebuggerAttachDefault(options)
+  debugger.options = options
+  if (debugger.listening) then return end
+  debugger.listen()
+end
+
+function DebuggerShutdown()
+  if debugger.server then debugger.terminate() end
+  if debugger.pid then killClient() end
+end
+
+function DebuggerStop()
+  if (debugger.server) then
+    debugger.server = nil
+    debugger.pid = nil
+    SetAllEditorsReadOnly(false)
+    ShellSupportRemote(nil)
+    ClearAllCurrentLineMarkers()
+    DebuggerScratchpadOff()
+    debuggerToggleViews(false)
+    local lines = TR("traced %d instruction", debugger.stats.line):format(debugger.stats.line)
+    DisplayOutputLn(TR("Debugging session completed (%s)."):format(lines))
+  else
+    -- it's possible that the application couldn't start, or that the
+    -- debugger in the application didn't start, which means there is
+    -- no debugger.server, but scratchpad may still be on. Turn it off.
+    DebuggerScratchpadOff()
+  end
 end
 
 function DebuggerMakeFileName(editor, filePath)

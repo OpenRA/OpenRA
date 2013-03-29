@@ -19,8 +19,7 @@ menuBar:Append(viewMenu, TR("&View"))
 
 frame:Connect(ID_VIEWDEFAULTLAYOUT, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
-    uimgr:LoadPerspective(uimgr.defaultPerspective)
-    uimgr:Update()
+    uimgr:LoadPerspective(uimgr.defaultPerspective, true)
   end)
   
 frame:Connect(ID_VIEWOUTPUT, wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -42,7 +41,7 @@ frame:Connect(ID_VIEWFULLSCREEN, wx.wxEVT_UPDATE_UI,
   function (event) event:Enable(GetEditor() ~= nil) end)
 
 frame:Connect(ID_VIEWWATCHWINDOW, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function () DebuggerCreateWatchWindow() end)
+  function () DebuggerShowWatchWindow() end)
 
 frame:Connect(ID_VIEWCALLSTACK, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function () DebuggerCreateStackWindow() end)
+  function () DebuggerShowStackWindow() end)

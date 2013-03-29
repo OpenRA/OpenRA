@@ -7,6 +7,7 @@ return {
   ["&Compile"] = "&Compila", -- src\editor\menu_project.lua
   ["&Copy"] = "&Copia", -- src\editor\editor.lua, src\editor\menu_edit.lua
   ["&Default Layout"] = "Visualizzazione di &Default", -- src\editor\menu_view.lua
+  ["&Delete Watch"] = "Elimina Espressione di Controllo", -- src\editor\debugger.lua
   ["&Edit Watch"] = "Modifica Espressione di Controllo", -- src\editor\debugger.lua
   ["&Edit"] = "Modifica", -- src\editor\menu_edit.lua
   ["&File"] = "File", -- src\editor\menu_file.lua
@@ -20,7 +21,6 @@ return {
   ["&Paste"] = "Incolla", -- src\editor\editor.lua, src\editor\menu_edit.lua
   ["&Project"] = "&Progetto", -- src\editor\menu_project.lua, src\editor\inspect.lua
   ["&Redo"] = "&Ripeti", -- src\editor\editor.lua, src\editor\menu_edit.lua
-  ["&Remove Watch"] = "Elimina Espressione di Controllo", -- src\editor\debugger.lua
   ["&Replace"] = "Sostituisci", -- src\editor\menu_search.lua
   ["&Run"] = "Lancia", -- src\editor\menu_project.lua
   ["&Save"] = "&Salva", -- src\editor\menu_file.lua

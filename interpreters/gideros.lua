@@ -4,15 +4,6 @@ local gideros
 local win = ide.osname == "Windows"
 local mac = ide.osname == "Macintosh"
 
-local function exePath()
-  local mainpath = ide.editorFilename:gsub("[^/\\]+$","")
-  local macExe = mainpath..'bin/lua.app/Contents/MacOS/lua'
-  return ide.config.path.lua or
-        (ide.osname == "Windows" and mainpath..[[bin\lua.exe]]
-     or (ide.osname == "Unix" and [[lua]]) -- using installed lua
-     or (wx.wxFileExists(macExe) and macExe or mainpath..[[bin/lua]]))
-end
-
 local function isValidPid(bid, cmd)
   if not bid or bid == -1 or bid == 0 then
     DisplayOutputLn(("Program unable to run as '%s'."):format(cmd))

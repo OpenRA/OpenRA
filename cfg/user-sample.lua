@@ -109,7 +109,7 @@ styles.fncall.st = wxstc.wxSTC_INDIC_PLAIN
     wxSTC_INDIC_DIAGONAL Diagonal hatching
     wxSTC_INDIC_STRIKE	 Strike-out
     wxSTC_INDIC_BOX      Box
-    wxSTC_INDIC_ROUNDBOX Rounded Box (not suppored in the current version?)
+    wxSTC_INDIC_ROUNDBOX Rounded Box
   --]]
 
 -- to enable additional spec files (like spec/cpp.lua)

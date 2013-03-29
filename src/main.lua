@@ -3,33 +3,34 @@
 
 -- put bin/ and lualibs/ first to avoid conflicts with included modules
 -- that may have other versions present somewhere else in path/cpath.
--- don't need to do this on Linux where we expect all the libraries
--- and binaries to be installed in *regular* places.
 local iswindows = os.getenv('WINDIR') or (os.getenv('OS') or ''):match('[Ww]indows')
+local islinux = not iswindows and not os.getenv('DYLD_LIBRARY_PATH') and io.open("/proc")
+local arch = "x86" -- use 32bit by default
 
-if iswindows or not pcall(require, "wx")
-  or wx.wxPlatformInfo.Get():GetOperatingSystemFamilyName() == 'Macintosh' then
-  package.cpath = (iswindows
-    and 'bin/?.dll;bin/clibs/?.dll;'
-     or 'bin/clibs/?.dylib;bin/lib?.dylib;')
-    .. package.cpath
+if islinux then
+  local file = io.popen("uname -m")
+  if file then
+    arch = file:read("*a"):find("x86_64") and "x64" or "x86"
+    file:close()
+  end
 end
 
+package.cpath = (
+  iswindows and 'bin/?.dll;bin/clibs/?.dll;' or
+  islinux and ('bin/linux/%s/lib?.so;bin/linux/%s/clibs/?.so;'):format(arch,arch) or
+  --[[isosx]] 'bin/lib?.dylib;bin/clibs/?.dylib;')
+    .. package.cpath
 package.path  = 'lualibs/?.lua;lualibs/?/?.lua;lualibs/?/init.lua;lualibs/?/?/?.lua;lualibs/?/?/init.lua;'
               .. package.path
 
 require("wx")
 require("bit")
 
-dofile "src/misc/util.lua"
+dofile "src/util.lua"
 
 -----------
 -- IDE
 --
--- Setup important defaults
-dofile "src/editor/ids.lua"
-dofile "src/editor/style.lua"
-
 ide = {
   config = {
     path = {
@@ -56,8 +57,8 @@ ide = {
     messages = {},
     language = "en",
 
-    styles = StylesGetDefault(),
-    stylesoutshell = StylesGetDefault(),
+    styles = nil,
+    stylesoutshell = nil,
     interpreter = "_undefined_",
 
     autocomplete = true,
@@ -121,12 +122,21 @@ ide = {
     oNormal = nil,
     oItalic = nil,
     fNormal = nil,
-  }
+  },
+
+  osname = wx.wxPlatformInfo.Get():GetOperatingSystemFamilyName(),
+  osarch = arch,
+  wxver = string.match(wx.wxVERSION_STRING, "[%d%.]+"),
 }
 
+dofile "src/editor/ids.lua"
+dofile "src/editor/style.lua"
 dofile "src/editor/keymap.lua"
 
-function setLuaPaths(mainpath, osname)
+ide.config.styles = StylesGetDefault()
+ide.config.stylesoutshell = StylesGetDefault()
+
+local function setLuaPaths(mainpath, osname)
   -- use LUA_DEV to setup paths for Lua for Windows modules if installed
   local luadev = osname == "Windows" and os.getenv('LUA_DEV')
   local luadev_path = (luadev
@@ -152,7 +162,9 @@ function setLuaPaths(mainpath, osname)
   local clibs =
     osname == "Windows" and mainpath.."bin/?.dll;"..mainpath.."bin/clibs/?.dll" or
     osname == "Macintosh" and mainpath.."bin/lib?.dylib;"..mainpath.."bin/clibs/?.dylib" or
-    osname == "Unix" and mainpath.."bin/?.so;"..mainpath.."bin/clibs/?.so" or nil
+    osname == "Unix" and mainpath..("bin/linux/%s/lib?.so;"):format(arch)
+                       ..mainpath..("bin/linux/%s/clibs/?.so"):format(arch) or
+    nil
   if clibs then wx.wxSetEnv("LUA_CPATH",
     package.cpath .. ';' .. clibs .. ';' .. luadev_cpath) end
 end
@@ -163,11 +175,10 @@ local filenames = {}
 local configs = {}
 do
   local arg = {...}
-  local fullPath = arg[1] -- first argument must be the application name
-  assert(type(fullPath) == "string", "first argument must be application name")
+  -- application name is expected as the first argument
+  local fullPath = arg[1] or "zbstudio"
 
   ide.arg = arg
-  ide.osname = wx.wxPlatformInfo.Get():GetOperatingSystemFamilyName()
 
   -- on Windows use GetExecutablePath, which is Unicode friendly,
   -- whereas wxGetCwd() is not (at least in wxlua 2.8.12.2).
@@ -185,12 +196,7 @@ do
 
   for index = 2, #arg do
     if (arg[index] == "-cfg" and index+1 <= #arg) then
-      local str = arg[index+1]
-      if #str < 4 then
-        print("Comandline: -cfg arg data not passed as string")
-      else
-        table.insert(configs,str)
-      end
+      table.insert(configs,arg[index+1])
     elseif arg[index-1] ~= "-cfg" then
       table.insert(filenames,arg[index])
     end
@@ -203,18 +209,17 @@ end
 -- process application
 
 ide.app = dofile(ide.config.path.app.."/app.lua")
-local app = ide.app
-assert(app)
+local app = assert(ide.app)
 
 local function addToTab(tab,file)
   local cfgfn,err = loadfile(file)
   if not cfgfn then
-    print(("Error while loading configuration file: %s"):format(err))
+    print(("Error while loading configuration file: '%s'."):format(err))
   else
     local name = file:match("([a-zA-Z_0-9]+)%.lua$")
     local success, result = pcall(function()return cfgfn(assert(_G or _ENV))end)
     if not success then
-      print(("Error while processing configuration file: %s"):format(result))
+      print(("Error while processing configuration file: '%s'."):format(result))
     elseif name then
       if (tab[name]) then
         local out = tab[name]
@@ -287,7 +292,7 @@ local resumePrint do
   print = function(...) errors[#errors+1] = {...} end
   resumePrint = function()
     print = origprint
-    for _, e in ipairs(errors) do DisplayOutput(unpack(e), "\n") end
+    for _, e in ipairs(errors) do DisplayOutputLn(unpack(e)) end
   end
 end
 
@@ -305,7 +310,7 @@ local function addConfig(filename,isstring)
   else msg, cfgfn, err = "file", loadfile(filename) end
 
   if not cfgfn then
-    print(("Error while loading configuration %s: %s"):format(msg, err))
+    print(("Error while loading configuration %s: '%s'."):format(msg, err))
   else
     ide.config.os = os
     ide.config.wxstc = wxstc
@@ -314,7 +319,7 @@ local function addConfig(filename,isstring)
     setfenv(cfgfn,ide.config)
     local _, err = pcall(function()cfgfn(assert(_G or _ENV))end)
     if err then
-      print(("Error while processing configuration %s: %s"):format(msg, err))
+      print(("Error while processing configuration %s: '%s'."):format(msg, err))
     end
   end
 end
@@ -327,6 +332,22 @@ end
 -- process config
 
 addConfig(ide.config.path.app.."/config.lua")
+
+ide.editorApp:SetAppName(GetIDEString("settingsapp"))
+
+-- check if the .ini file needs to be migrated on Windows
+if ide.osname == 'Windows' and ide.wxver >= "2.9.5" then
+  -- Windows used to have local ini file kept in wx.wxGetHomeDir (before 2.9),
+  -- but since 2.9 it's in GetUserConfigDir(), so migrate it.
+  local ini = ide.editorApp:GetAppName() .. ".ini"
+  local old = wx.wxFileName(wx.wxGetHomeDir(), ini)
+  local new = wx.wxFileName(wx.wxStandardPaths.Get():GetUserConfigDir(), ini)
+  if old:FileExists() and not new:FileExists() then
+    FileCopy(old:GetFullPath(), new:GetFullPath())
+    print(("Migrated configuration file from '%s' to '%s'.")
+      :format(old:GetFullPath(), new:GetFullPath()))
+  end
+end
 
 ----------------------
 -- process plugins
@@ -359,15 +380,12 @@ do
   end
 end
 
--- load this after preinit and processing configs to allow
--- each of the lists to be modified
-
 ---------------
 -- Load App
 
 for _, file in ipairs({
     "markup", "settings", "singleinstance", "iofilters",
-    "gui", "filetree", "output", "debugger", "preferences",
+    "gui", "filetree", "output", "debugger",
     "editor", "findreplace", "commands", "autocomplete", "shellbox",
     "menu_file", "menu_edit", "menu_search",
     "menu_view", "menu_project", "menu_tools", "menu_help",
@@ -375,8 +393,6 @@ for _, file in ipairs({
   dofile("src/editor/"..file..".lua")
 end
 
-dofile "src/preferences/editor.lua"
-dofile "src/preferences/project.lua"
 dofile "src/version.lua"
 
 -- load rest of settings
@@ -411,7 +427,7 @@ if app.postinit then app.postinit() end
 -- app-specific menus (Help/About), which are not recognized by MacOS
 -- as special items unless SetMenuBar is done after menus are populated.
 ide.frame:SetMenuBar(ide.frame.menuBar)
-if ide.osname == 'Macintosh' then -- force refresh to fix the filetree
+if ide.wxver < "2.9.5" and ide.osname == 'Macintosh' then -- force refresh to fix the filetree
   pcall(function() ide.frame:ShowFullScreen(true) ide.frame:ShowFullScreen(false) end)
 end
 
@@ -419,3 +435,10 @@ resumePrint()
 
 ide.frame:Show(true)
 wx.wxGetApp():MainLoop()
+
+-- There are several reasons for this call:
+-- (1) to fix a crash on OSX when closing with debugging in progress.
+-- (2) to fix a crash on Linux 32/64bit during GC cleanup in wxlua
+-- after an external process has been started from the IDE.
+-- (3) to fix exit on Windows when started as "bin\lua src\main.lua".
+os.exit()

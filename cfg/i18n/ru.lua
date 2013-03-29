@@ -7,6 +7,7 @@ return {
   ["&Compile"] = "&Компилировать", -- src\editor\menu_project.lua
   ["&Copy"] = "&Копировать", -- src\editor\editor.lua, src\editor\menu_edit.lua
   ["&Default Layout"] = "Вид по &умолчанию", -- src\editor\menu_view.lua
+  ["&Delete Watch"] = "&Удалить выражение", -- src\editor\debugger.lua
   ["&Edit Watch"] = "&Редактировать выражение", -- src\editor\debugger.lua
   ["&Edit"] = "&Правка", -- src\editor\menu_edit.lua
   ["&File"] = "&Файл", -- src\editor\menu_file.lua
@@ -20,7 +21,6 @@ return {
   ["&Paste"] = "В&ставить", -- src\editor\editor.lua, src\editor\menu_edit.lua
   ["&Project"] = "Пр&оект", -- src\editor\menu_project.lua, src\editor\inspect.lua
   ["&Redo"] = "Верну&ть", -- src\editor\editor.lua, src\editor\menu_edit.lua
-  ["&Remove Watch"] = "&Удалить выражение", -- src\editor\debugger.lua
   ["&Replace"] = "За&менить", -- src\editor\menu_search.lua
   ["&Run"] = "За&пустить", -- src\editor\menu_project.lua
   ["&Save"] = "&Сохранить", -- src\editor\menu_file.lua, src\editor\gui.lua

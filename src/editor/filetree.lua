@@ -29,6 +29,8 @@ local filetree = ide.filetree
 -- generic tree
 -- ------------
 
+local IMG_DIRECTORY, IMG_FILE_KNOWN, IMG_FILE_OTHER = 0, 1, 2
+
 do
   local getBitmap = (ide.app.createbitmap or wx.wxArtProvider.GetBitmap)
   local size = wx.wxSize(16, 16)
@@ -37,51 +39,25 @@ do
   filetree.imglist:Add(getBitmap(wx.wxART_FOLDER, wx.wxART_OTHER, size))
   -- 1 = file known spec
   filetree.imglist:Add(getBitmap(wx.wxART_HELP_PAGE, wx.wxART_OTHER, size))
-  -- 2 = file rest
+  -- 2 = file other
   filetree.imglist:Add(getBitmap(wx.wxART_NORMAL_FILE, wx.wxART_OTHER, size))
 end
 
 local function treeAddDir(tree,parent_id,rootdir)
-  local item, cookie = tree:GetFirstChild(parent_id)
   local items = {}
-  while true do
-    if not item:IsOk() then break end
+  local item, cookie = tree:GetFirstChild(parent_id)
+  while item:IsOk() do
     items[tree:GetItemText(item) .. tree:GetItemImage(item)] = item
     item, cookie = tree:GetNextChild(parent_id, cookie)
   end
 
+  local cache = {}
   local curr
-  local search = rootdir..string_Pathsep.."*"
 
-  -- append directories
-  for _,dir in ipairs(FileSysGet(search,wx.wxDIR)) do
-    local name = dir:match("("..stringset_File.."+)$")
-    local icon = 0
-    local item = items[name .. icon]
-    if item then -- existing item
-      -- keep deleting items until we find item
-      while true do
-        local next = curr and tree:GetNextSibling(curr)
-                           or tree:GetFirstChild(parent_id)
-        if not next:IsOk() or name == tree:GetItemText(next) then
-          curr = next
-          break
-        end
-        tree:Delete(next)
-      end
-    else -- new item
-      local dir_id = curr and tree:InsertItem(parent_id, curr, name, icon)
-                           or tree:PrependItem(parent_id, name, icon)
-      tree:SetItemHasChildren(dir_id,FileSysHasContent(dir))
-      curr = dir_id
-    end
-  end
-
-  -- then append files
-  for _,file in ipairs(FileSysGet(search,wx.wxFILE)) do
-    local name = file:match("("..stringset_File.."+)$")
+  for _, file in ipairs(FileSysGetRecursive(rootdir)) do
+    local name, dir = file:match("("..stringset_File.."+)("..string_Pathsep.."?)$")
     local known = GetSpec(GetFileExt(name))
-    local icon = known and 1 or 2
+    local icon = #dir>0 and IMG_DIRECTORY or known and IMG_FILE_KNOWN or IMG_FILE_OTHER
     local item = items[name .. icon]
     if item then -- existing item
       -- keep deleting items until we find item
@@ -97,7 +73,9 @@ local function treeAddDir(tree,parent_id,rootdir)
     else -- new item
       curr = curr and tree:InsertItem(parent_id, curr, name, icon)
                    or tree:PrependItem(parent_id, name, icon)
+      if #dir>0 then tree:SetItemHasChildren(curr, FileSysHasContent(file)) end
     end
+    if curr:IsOk() then cache[name] = curr end
   end
 
   -- delete any leftovers (something that exists in the tree, but not on disk)
@@ -107,6 +85,11 @@ local function treeAddDir(tree,parent_id,rootdir)
     if not next:IsOk() then break end
     tree:Delete(next)
   end
+
+  -- cache the mapping from names to tree items
+  local data = wx.wxLuaTreeItemData()
+  data:SetData(cache)
+  tree:SetItemData(parent_id, data)
 
   tree:SetItemHasChildren(parent_id,
     tree:GetChildrenCount(parent_id, false) > 0)
@@ -121,7 +104,7 @@ local function treeGetItemFullName(tree,treedata,item_id)
     cur = tree:GetItemText(item_id)
     if cur and string.len(cur) > 0 then str = cur..string_Pathsep..str end
   end
-  -- as root may already include path separate, normalize the path
+  -- as root may already include path separator, normalize the path
   local fullPath = wx.wxFileName(
     filetree.showroot and str or filetree.projdata.rootdir .. str)
   fullPath:Normalize()
@@ -135,14 +118,13 @@ local function treeSetRoot(tree,treedata,rootdir)
     return
   end
 
-  local root_id = tree:AddRoot(rootdir,0)
+  local root_id = tree:AddRoot(rootdir, IMG_DIRECTORY)
   treedata.root_id = root_id
   treedata.rootdir = rootdir
 
-  treeAddDir(tree,root_id,rootdir)
-  filetree.newfiledir = rootdir
-
-  tree:Expand(root_id)
+  -- make sure that the item can expand
+  tree:SetItemHasChildren(root_id, true)
+  tree:Expand(root_id) -- this will also populate the tree
 end
 
 local function treeSetConnectorsAndIcons(tree,treedata)
@@ -164,7 +146,7 @@ local function treeSetConnectorsAndIcons(tree,treedata)
 
       local name = treeGetItemFullName(tree,treedata,item_id)
       -- refresh the folder
-      if (tree:GetItemImage(item_id) == 0) then
+      if (tree:GetItemImage(item_id) == IMG_DIRECTORY) then
         if wx.wxFileName(name):DirExists() then
           treeAddDir(tree,item_id,name) -- refresh the content
         else -- stale filetree information; rescan
@@ -183,7 +165,7 @@ local function treeSetConnectorsAndIcons(tree,treedata)
     function( event )
       local item_id = tree:HitTest(event:GetPosition())
       -- only toggle if this is a folder and the click is on the label
-      if item_id and tree:GetItemImage(item_id) == 0 then
+      if item_id and tree:GetItemImage(item_id) == IMG_DIRECTORY then
         tree:Toggle(item_id)
         tree:SelectItem(item_id)
       else
@@ -229,12 +211,19 @@ projpanel:SetSizer(projSizer)
 -- proj connectors
 -- ---------------
 
+local inupdate = false
 local function projcomboboxUpdate(event)
+  if inupdate then return end
   local cur = projcombobox:GetValue()
   local fn = wx.wxFileName(cur)
   fn:Normalize()
 
+  -- on Windows, wxwidgets (2.9.5+) generates two COMMAND_COMBOBOX_SELECTED
+  -- events when the selection is done with ENTER, which causes recursive
+  -- call of updateProjectDir. To prevent this the second call is ignored.
+  inupdate = true
   filetree:updateProjectDir(fn:GetFullPath(), event:GetEventType() == wx.wxEVT_COMMAND_COMBOBOX_SELECTED)
+  inupdate = false
 end
 
 projpanel:Connect(ID "filetree.proj.drivecb", wx.wxEVT_COMMAND_COMBOBOX_SELECTED, projcomboboxUpdate)
@@ -246,11 +235,13 @@ treeSetConnectorsAndIcons(projtree,filetree.projdata)
 -- ---------------
 
 function filetree:updateProjectDir(newdir, cboxsel)
-  if (newdir and newdir:sub(-3,-2) == string_Pathsep) then
-    newdir = newdir:sub(0,-2)
-  end
+  if (not newdir) or not wx.wxDirExists(newdir) then return end
+  local dirname = wx.wxFileName.DirName(newdir)
 
-  if ((not newdir) or filetree.projdirText == newdir or not wx.wxDirExists(newdir)) then return end
+  if filetree.projdirText and #filetree.projdirText > 0
+  and dirname:SameAs(wx.wxFileName.DirName(filetree.projdirText)) then return end
+  -- strip the last path separator if any
+  local newdir = dirname:GetPath(wx.wxPATH_GET_VOLUME)
 
   if ide.config.projectautoopen and filetree.projdirText then
     StoreRestoreProjectTabs(filetree.projdirText, newdir)
@@ -285,8 +276,8 @@ projpanel.projcombobox = projcombobox
 projpanel.projtree = projtree
 
 function FileTreeGetDir()
-  return projpanel:IsShown() and filetree.newfiledir
-    and wx.wxFileName.DirName(filetree.newfiledir):GetFullPath()
+  return projpanel:IsShown() and filetree.projdata.rootdir
+    and wx.wxFileName.DirName(filetree.projdata.rootdir):GetFullPath()
 end
 
 function FileTreeSetProjects(tab)
@@ -308,17 +299,24 @@ local function findItem(tree, match)
   if not s or s ~= 1 then return end
 
   for token in string.gmatch(string.sub(match,e+1), "[^%"..string_Pathsep.."]+") do
-    local dir = treeGetItemFullName(tree,filetree.projdata,node)
-    treeAddDir(tree,node,dir)
+    local data = tree:GetItemData(node)
+    local subitems = data and data:GetData()
+    if subitems and subitems[token] then
+      node = subitems[token]
+    else
+      -- token is missing; may need to re-scan the folder; maybe new file
+      local dir = treeGetItemFullName(tree,filetree.projdata,node)
+      treeAddDir(tree,node,dir)
 
-    local item, cookie = tree:GetFirstChild(node)
-    while true do
-      if not item:IsOk() then return end -- not found
-      if tree:GetItemText(item) == token then
-        node = item
-        break
+      local item, cookie = tree:GetFirstChild(node)
+      while true do
+        if not item:IsOk() then return end -- not found
+        if tree:GetItemText(item) == token then
+          node = item
+          break
+        end
+        item, cookie = tree:GetNextChild(node, cookie)
       end
-      item, cookie = tree:GetNextChild(node, cookie)
     end
   end
 
@@ -348,7 +346,8 @@ function FileTreeMarkSelected(file)
       projtree:SetItemBold(item_id, true)
     end
     curr_file = file
-    if ide.osname == 'Macintosh' then projtree:Refresh() end -- to force refresh on Mac
+    if ide.wxver < "2.9.5" and ide.osname == 'Macintosh' then
+      projtree:Refresh() end
   end
 end
 

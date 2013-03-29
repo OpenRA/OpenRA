@@ -15,6 +15,7 @@ function NewFile(event)
   local editor = CreateEditor()
   SetupKeywords(editor, "lua")
   AddEditor(editor, ide.config.default.fullname)
+  SetEditorSelection()
   return editor
 end
 
@@ -66,12 +67,12 @@ function LoadFile(filePath, editor, file_must_exist, skipselection)
   SetupKeywords(editor, GetFileExt(filePath))
   editor:MarkerDeleteAll(BREAKPOINT_MARKER)
   editor:MarkerDeleteAll(CURRENT_LINE_MARKER)
-  editor:AppendText(file_text or "")
+  editor:SetText(file_text or "")
 
   -- check the editor as it can be empty if the file has malformed UTF8;
   -- skip binary files as they may have any sequences; can't show them anyway.
-  if file_text and #file_text > 0 and not isBinary(file_text)
-  and #(editor:GetText()) == 0 then
+  if file_text and #file_text > 0 and #(editor:GetText()) == 0
+  and not isBinary(file_text) then
     local replacement, invalid = "\022"
     file_text, invalid = fixUTF8(file_text, replacement)
     if #invalid > 0 then
@@ -125,8 +126,6 @@ function LoadFile(filePath, editor, file_must_exist, skipselection)
   openDocuments[id].fileName = wx.wxFileName(filePath):GetFullName()
   openDocuments[id].modTime = GetFileModTime(filePath)
   SetDocumentModified(id, false)
-
-  IndicateFunctions(editor)
 
   SettingsAppendFileToHistory(filePath)
 
@@ -229,9 +228,12 @@ function SaveFileAs(editor)
       SetEditorSelection() -- update title of the editor
       FileTreeRefresh() -- refresh the tree to reflect the new file
       FileTreeMarkSelected(filePath)
-      SetupKeywords(editor, GetFileExt(filePath))
-      IndicateFunctions(editor)
-      if MarkupStyle then MarkupStyle(editor) end
+      if ext ~= GetFileExt(filePath) then
+        -- new extension, so setup new keywords and re-apply indicators
+        SetupKeywords(editor, GetFileExt(filePath))
+        IndicateFunctions(editor)
+        MarkupStyle(editor)
+      end
       saved = true
     end
   end
@@ -294,8 +296,6 @@ local function removePage(index)
   elseif prevIndex then
     notebook:SetSelection(prevIndex)
   end
-
-  SetEditorSelection() -- will use notebook GetSelection to update
 end
 
 function ClosePage(selection)
@@ -563,31 +563,29 @@ function ShowFullScreen(setFullScreen)
     beforeFullScreenPerspective = uimgr:SavePerspective()
     uimgr:GetPane("bottomnotebook"):Show(false)
     uimgr:GetPane("projpanel"):Show(false)
+    uimgr:Update()
     SetEditorSelection() -- make sure the focus is on the editor
   elseif beforeFullScreenPerspective then
-    uimgr:LoadPerspective(beforeFullScreenPerspective)
+    uimgr:LoadPerspective(beforeFullScreenPerspective, true)
     beforeFullScreenPerspective = nil
   end
 
-  uimgr:GetPane("toolBar"):Show(not setFullScreen)
-  uimgr:Update()
+  -- On OSX, toolbar and status bar are not hidden when switched to
+  -- full screen: http://trac.wxwidgets.org/ticket/14259; do manually.
+  -- need to turn off before showing full screen and turn on after,
+  -- otherwise the window is restored incorrectly and is reduced in size.
+  if ide.osname == 'Macintosh' and setFullScreen then
+    frame:GetStatusBar():Hide()
+    frame:GetToolBar():Hide()
+  end
+
   -- protect from systems that don't have ShowFullScreen (GTK on linux?)
   pcall(function() frame:ShowFullScreen(setFullScreen) end)
-end
 
-local function restoreFiles(files)
-  -- open files, but ignore some functions that are not needed;
-  -- as we may be opening multiple files, it doesn't make sense to
-  -- select editor and do some other similar work after each file.
-  local noop, func = function() end, LoadFile
-  local genv = {SetEditorSelection = noop, SettingsAppendFileToHistory = noop}
-  setmetatable(genv, {__index = _G})
-  local env = getfenv(func)
-  setfenv(func, genv)
-  -- provide fake index so that it doesn't activate it as the index may be not
-  -- quite correct if some of the existing files are already open in the IDE.
-  SetOpenFiles(files, {index = #files + notebook:GetPageCount()})
-  setfenv(func, env)
+  if ide.osname == 'Macintosh' and not setFullScreen then
+    frame:GetStatusBar():Show()
+    frame:GetToolBar():Show()
+  end
 end
 
 function ProjectConfig(dir, config)
@@ -665,10 +663,23 @@ local function saveAutoRecovery(event)
     TR("Saved auto-recover at %s."):format(os.date("%H:%M:%S")), 1)
 end
 
+local function fastWrap(func, ...)
+  -- open files, but ignore some functions that are not needed;
+  -- as we may be opening multiple files, it doesn't make sense to
+  -- select editor and do some other similar work after each file.
+  local noop = function() end
+  local SES, SAFTH = SetEditorSelection, SettingsAppendFileToHistory
+  SetEditorSelection, SettingsAppendFileToHistory = noop, noop
+  func(...)
+  SetEditorSelection, SettingsAppendFileToHistory = SES, SAFTH
+end
+
 function StoreRestoreProjectTabs(curdir, newdir)
   local win = ide.osname == 'Windows'
   local interpreter = ide.interpreter.fname
   local current, closing, restore = notebook:GetSelection(), 0, false
+
+  if ide.osname ~= 'Macintosh' then notebook:Freeze() end
 
   if curdir and #curdir > 0 then
     local lowcurdir = win and string.lower(curdir) or curdir
@@ -695,15 +706,21 @@ function StoreRestoreProjectTabs(curdir, newdir)
 
     -- close pages for those files that match the project in the reverse order
     -- (as ids shift when pages are closed)
-    for i = #closdocs, 1, -1 do ClosePage(closdocs[i].id) end
+    for i = #closdocs, 1, -1 do fastWrap(ClosePage, closdocs[i].id) end
   end
 
   local files, params = ProjectConfig(newdir)
-  if files then restoreFiles(files) end
+  if files then
+    -- provide fake index so that it doesn't activate it as the index may be not
+    -- quite correct if some of the existing files are already open in the IDE.
+    fastWrap(SetOpenFiles, files, {index = #files + notebook:GetPageCount()})
+  end
 
   if params and params.interpreter and ide.interpreter.fname ~= params.interpreter then
     ProjectSetInterpreter(params.interpreter) -- set the interpreter
   end
+
+  if ide.osname ~= 'Macintosh' then notebook:Thaw() end
 
   local index = params and params.index
   if notebook:GetPageCount() == 0 then NewFile()
@@ -720,7 +737,7 @@ function StoreRestoreProjectTabs(curdir, newdir)
   ProjectConfig(newdir, {})
 end
 
-function CloseWindow(event)
+local function closeWindow(event)
   -- if the app is already exiting, then help it exit; wxwidgets on Windows
   -- is supposed to report Shutdown/logoff events by setting CanVeto() to
   -- false, but it doesn't happen. We simply leverage the fact that
@@ -737,23 +754,27 @@ function CloseWindow(event)
   end
 
   ShowFullScreen(false)
-  ide.frame:Hide() -- hide everything while the IDE exits
+
   SettingsSaveAll()
-  if DebuggerCloseWatchWindow then DebuggerCloseWatchWindow() end
-  if DebuggerCloseStackWindow then DebuggerCloseStackWindow() end
+  ide.settings:Flush()
+
+  do -- hide all floating panes first
+    local panes = frame.uimgr:GetAllPanes()
+    for index = 0, panes:GetCount()-1 do
+      local pane = frame.uimgr:GetPane(panes:Item(index).name)
+      if pane:IsFloating() then pane:Hide() end
+    end
+  end
+  frame.uimgr:Update() -- hide floating panes
+  frame.uimgr:UnInit()
+  frame:Hide() -- hide the main frame while the IDE exits
+
   if DebuggerShutdown then DebuggerShutdown() end
-  ide.settings:delete() -- always delete the config
   if ide.session.timer then ide.session.timer:Stop() end
+
   event:Skip()
 end
-frame:Connect(wx.wxEVT_CLOSE_WINDOW, CloseWindow)
-
-function DestroyWindow(event)
-  if event:GetEventObject():DynamicCast("wxObject") == frame:DynamicCast("wxObject") then
-    frame.uimgr:UnInit()
-  end
-end
-frame:Connect(wx.wxEVT_DESTROY, DestroyWindow)
+frame:Connect(wx.wxEVT_CLOSE_WINDOW, closeWindow)
 
 frame:Connect(wx.wxEVT_TIMER, saveAutoRecovery)
 

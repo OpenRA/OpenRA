@@ -84,8 +84,7 @@ ide.config.keymap = {
 -- Watch window menu items
   [ID_ADDWATCH]         = "Ins",
   [ID_EDITWATCH]        = "F2",
-  [ID_REMOVEWATCH]      = "Del",
-  [ID_EVALUATEWATCH]    = "",
+  [ID_DELETEWATCH]      = "Del",
 -- Editor popup menu items
   [ID_QUICKADDWATCH]    = "",
   [ID_QUICKEVAL]        = "",

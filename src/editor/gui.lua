@@ -4,16 +4,16 @@
 local ide = ide
 
 -- Pick some reasonable fixed width fonts to use for the editor
-local function setFont(style, config, name, size)
+local function setFont(style, config)
   return wx.wxFont(config.fontsize or size or 10, wx.wxFONTFAMILY_MODERN, style,
-    wx.wxFONTWEIGHT_NORMAL, false, config.fontname or name,
+    wx.wxFONTWEIGHT_NORMAL, false, config.fontname or "",
     config.fontencoding or wx.wxFONTENCODING_DEFAULT)
 end
-ide.font.eNormal = setFont(wx.wxFONTSTYLE_NORMAL, ide.config.editor, wx.__WXMSW__ and "Courier New" or "")
-ide.font.eItalic = setFont(wx.wxFONTSTYLE_ITALIC, ide.config.editor, wx.__WXMSW__ and "Courier New" or "")
+ide.font.eNormal = setFont(wx.wxFONTSTYLE_NORMAL, ide.config.editor)
+ide.font.eItalic = setFont(wx.wxFONTSTYLE_ITALIC, ide.config.editor)
 
-ide.font.oNormal = setFont(wx.wxFONTSTYLE_NORMAL, ide.config.outputshell, wx.__WXMSW__ and "Courier New" or "")
-ide.font.oItalic = setFont(wx.wxFONTSTYLE_ITALIC, ide.config.outputshell, wx.__WXMSW__ and "Courier New" or "")
+ide.font.oNormal = setFont(wx.wxFONTSTYLE_NORMAL, ide.config.outputshell)
+ide.font.oItalic = setFont(wx.wxFONTSTYLE_ITALIC, ide.config.outputshell)
 
 -- treeCtrl font requires slightly different handling
 local gui, config = wx.wxTreeCtrl():GetFont(), ide.config.filetree
@@ -42,8 +42,8 @@ local function createFrame()
   local menuBar = wx.wxMenuBar()
   local statusBar = frame:CreateStatusBar(6)
   local section_width = statusBar:GetTextExtent("OVRW")
-  statusBar:SetStatusStyles({wx.wxSB_RAISED, wx.wxSB_RAISED, wx.wxSB_RAISED,
-    wx.wxSB_RAISED, wx.wxSB_RAISED, wx.wxSB_RAISED})
+  statusBar:SetStatusStyles({wx.wxSB_FLAT, wx.wxSB_FLAT, wx.wxSB_FLAT,
+    wx.wxSB_FLAT, wx.wxSB_FLAT, wx.wxSB_FLAT})
   statusBar:SetStatusWidths(
     {-1, section_width*6, section_width, section_width, section_width*4, section_width*4})
   statusBar:SetStatusText(GetIDEString("statuswelcome"))
@@ -64,30 +64,20 @@ local function SCinB(id) -- shortcut in brackets
 end
 
 local function createToolBar(frame)
-  local toolBar = wx.wxToolBar(frame, wx.wxID_ANY,
-    wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxTB_FLAT + wx.wxTB_NODIVIDER)
+  local toolBar = frame:CreateToolBar(wx.wxTB_FLAT + wx.wxTB_NODIVIDER, wx.wxID_ANY)
+  -- wxChoice is a bit too narrow on Linux, so make it a bit larger
   local funclist = wx.wxChoice.new(toolBar, ID "toolBar.funclist",
-    -- Linux requires a bit larger size for the function list in the toolbar.
-    -- Mac also requires a bit larger size, but setting it to 20 resets
-    -- back to 16 when the toolbar is refreshed.
-    -- Windows with wxwidgets 2.9.x also requires a larger size.
-    wx.wxDefaultPosition, wx.wxSize.new(240,
-      (ide.osname == "Unix" or ide.osname == "Windows") and 24 or 16))
+    wx.wxDefaultPosition, wx.wxSize.new(240, ide.osname == 'Unix' and 28 or 24))
   
-  -- usually the bmp size isn't necessary, but the HELP icon is not the right size in MSW
+  -- there are two sets of icons: use 24 on OSX and 16 on others.
+  local toolBmpSize =
+    ide.osname == 'Macintosh' and wx.wxSize(24, 24) or wx.wxSize(16, 16)
   local getBitmap = (ide.app.createbitmap or wx.wxArtProvider.GetBitmap)
-  local toolBmpSize = wx.wxSize(16, 16)
   toolBar:AddTool(ID_NEW, "New", getBitmap(wx.wxART_NORMAL_FILE, wx.wxART_TOOLBAR, toolBmpSize), TR("Create an empty document")..SCinB(ID_NEW))
   toolBar:AddTool(ID_OPEN, "Open", getBitmap(wx.wxART_FILE_OPEN, wx.wxART_TOOLBAR, toolBmpSize), TR("Open an existing document")..SCinB(ID_OPEN))
   toolBar:AddTool(ID_SAVE, "Save", getBitmap(wx.wxART_FILE_SAVE, wx.wxART_TOOLBAR, toolBmpSize), TR("Save the current document")..SCinB(ID_SAVE))
   toolBar:AddTool(ID_SAVEALL, "Save All", getBitmap(wx.wxART_NEW_DIR, wx.wxART_TOOLBAR, toolBmpSize), TR("Save all open documents")..SCinB(ID_SAVEALL))
-  toolBar:AddSeparator()
-  toolBar:AddTool(ID_CUT, "Cut", getBitmap(wx.wxART_CUT, wx.wxART_TOOLBAR, toolBmpSize), TR("Cut selected text to clipboard")..SCinB(ID_CUT))
-  toolBar:AddTool(ID_COPY, "Copy", getBitmap(wx.wxART_COPY, wx.wxART_TOOLBAR, toolBmpSize), TR("Copy selected text to clipboard")..SCinB(ID_COPY))
-  toolBar:AddTool(ID_PASTE, "Paste", getBitmap(wx.wxART_PASTE, wx.wxART_TOOLBAR, toolBmpSize), TR("Paste text from the clipboard")..SCinB(ID_PASTE))
-  toolBar:AddSeparator()
-  toolBar:AddTool(ID_UNDO, "Undo", getBitmap(wx.wxART_UNDO, wx.wxART_TOOLBAR, toolBmpSize), TR("Undo last edit")..SCinB(ID_UNDO))
-  toolBar:AddTool(ID_REDO, "Redo", getBitmap(wx.wxART_REDO, wx.wxART_TOOLBAR, toolBmpSize), TR("Redo last edit undone")..SCinB(ID_REDO))
+  toolBar:AddTool(ID_PROJECTDIRFROMFILE, "Update", getBitmap(wx.wxART_GO_DIR_UP , wx.wxART_TOOLBAR, toolBmpSize), TR("Set project directory from current file")..SCinB(ID_PROJECTDIRFROMFILE))
   toolBar:AddSeparator()
   toolBar:AddTool(ID_FIND, "Find", getBitmap(wx.wxART_FIND, wx.wxART_TOOLBAR, toolBmpSize), TR("Find text")..SCinB(ID_FIND))
   toolBar:AddTool(ID_REPLACE, "Replace", getBitmap(wx.wxART_FIND_AND_REPLACE, wx.wxART_TOOLBAR, toolBmpSize), TR("Find and replace text")..SCinB(ID_REPLACE))
@@ -105,8 +95,6 @@ local function createToolBar(frame)
     toolBar:AddTool(ID_VIEWWATCHWINDOW, "Watch window", getBitmap("wxART_DEBUG_WATCH", wx.wxART_TOOLBAR, toolBmpSize), TR("View the watch window")..SCinB(ID_VIEWWATCHWINDOW))
   end
   toolBar:AddSeparator()
-  toolBar:AddTool(ID_PROJECTDIRFROMFILE, "Update", getBitmap(wx.wxART_GO_DIR_UP , wx.wxART_TOOLBAR, toolBmpSize), TR("Set project directory from current file")..SCinB(ID_PROJECTDIRFROMFILE))
-  toolBar:AddSeparator()
   toolBar:AddControl(funclist)
   toolBar:Realize()
   
@@ -120,28 +108,38 @@ local function createNotebook(frame)
   local notebook = wxaui.wxAuiNotebook(frame, wx.wxID_ANY,
   wx.wxDefaultPosition, wx.wxDefaultSize,
   wxaui.wxAUI_NB_DEFAULT_STYLE + wxaui.wxAUI_NB_TAB_EXTERNAL_MOVE
-  + wx.wxNO_BORDER)
+  + wxaui.wxAUI_NB_WINDOWLIST_BUTTON + wx.wxNO_BORDER)
 
-  -- the following group of event handlers allows the active editor
-  -- to get/keep focus after execution of Run and other commands
-  local current -- the currently active editor, needed by the focus selection
-  local function onPageChange(event)
-    current = event:GetSelection() -- update the active editor reference
-    SetEditorSelection(current)
-    event:Skip() -- skip to let page change
-  end
-  notebook:Connect(wx.wxEVT_SET_FOCUS, -- Notepad tabs shouldn't be selectable,
+  -- wxEVT_SET_FOCUS could be used, but it only works on Windows with wx2.9.5+
+  notebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CHANGED,
     function (event)
-      SetEditorSelection(current) -- select the currently active editor
+      -- if there is no document yet, the editor tab was just added,
+      -- so no changes needed as there will be a proper later call
+      local ed = GetEditor(notebook:GetSelection())
+      local doc = ed and ed:GetId() and ide.openDocuments[ed:GetId()]
+      if doc then SetEditorSelection(notebook:GetSelection()) end
     end)
-  notebook:Connect(wx.wxEVT_COMMAND_NOTEBOOK_PAGE_CHANGED, onPageChange)
-  notebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CHANGED, onPageChange)
 
   notebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CLOSE,
     function (event)
       ClosePage(event:GetSelection())
       event:Veto() -- don't propagate the event as the page is already closed
     end)
+
+  -- tabs can be dragged around which may change their indexes;
+  -- when this happens stored indexes need to be updated to reflect the change.
+  -- there is DRAG_DONE event that I'd prefer to use, but it
+  -- doesn't fire for some reason using wxwidgets 2.9.5 (tested on Windows).
+  if ide.wxver >= "2.9.5" then
+    notebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_END_DRAG,
+      function (event)
+        for page = 0, notebook:GetPageCount()-1 do
+          local editor = GetEditor(page)
+          if editor then ide.openDocuments[editor:GetId()].index = page end
+        end
+        event:Skip()
+      end)
+  end
 
   local selection
   notebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_TAB_RIGHT_UP,
@@ -203,10 +201,6 @@ local function createBottomNotebook(frame)
 
   bottomnotebook:AddPage(errorlog, TR("Output"), true)
   bottomnotebook:AddPage(shellbox, TR("Local console"), false)
-  bottomnotebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CLOSE,
-    function (event)
-      event:Veto() -- don't allow closing pages in this notebook
-    end)
   
   frame.bottomnotebook = bottomnotebook
   bottomnotebook.errorlog = errorlog
@@ -235,35 +229,19 @@ do
   local frame = ide.frame
   local mgr = frame.uimgr
 
-  mgr:AddPane(frame.toolBar, wxaui.wxAuiPaneInfo():
-              Name("toolBar"):Caption("Main Toolbar"):
-              MinSize(300,16):
-              ToolbarPane():Top():CloseButton(false):
-              LeftDockable(false):RightDockable(false):Hide())
-              
   mgr:AddPane(frame.notebook, wxaui.wxAuiPaneInfo():
               Name("notebook"):
-              CenterPane():PaneBorder(false):Hide())
-              
+              CenterPane():PaneBorder(false))
   mgr:AddPane(frame.projpanel, wxaui.wxAuiPaneInfo():
               Name("projpanel"):Caption(TR("Project")):
               MinSize(200,200):FloatingSize(200,400):
               Left():Layer(1):Position(1):
-              CloseButton(true):MaximizeButton(false):PinButton(true):Hide())
-              
+              CloseButton(true):MaximizeButton(false):PinButton(true))
   mgr:AddPane(frame.bottomnotebook, wxaui.wxAuiPaneInfo():
               Name("bottomnotebook"):
               MinSize(200,200):FloatingSize(400,250):
               Bottom():Layer(1):Position(1):
-              CloseButton(true):MaximizeButton(false):PinButton(true):Hide())
-              
-  mgr:GetPane("toolBar"):Show(true)
-  mgr:GetPane("bottomnotebook"):Show(true)
-  mgr:GetPane("projpanel"):Show(true)
-  mgr:GetPane("notebook"):Show(true)
-  
-  local pp = mgr:SavePerspective()
-  mgr.defaultPerspective = pp
-  
-  mgr:Update()
+              CloseButton(true):MaximizeButton(false):PinButton(true))
+
+  mgr.defaultPerspective = mgr:SavePerspective()
 end

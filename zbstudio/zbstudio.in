@@ -1,4 +1,5 @@
 #!/bin/sh
 
 cd "@IDE_DATADIR@"
-lua src/main.lua zbstudio "$@"
+if [[ "$(uname -m)" == "x86_64" ]]; then ARCH="x64"; else ARCH="x86"; fi
+bin/linux/$ARCH/lua src/main.lua zbstudio "$@" &

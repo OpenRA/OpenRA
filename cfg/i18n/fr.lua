@@ -7,6 +7,7 @@ return {
   ["&Compile"] = "&Compiler", -- src\editor\menu_project.lua
   ["&Copy"] = "Co&pier", -- src\editor\editor.lua, src\editor\menu_edit.lua
   ["&Default Layout"] = "Affichage par &défaut", -- src\editor\menu_view.lua
+  ["&Delete Watch"] = "&Supprimer une expression", -- src\editor\debugger.lua
   ["&Edit Watch"] = "&Modifier une expression", -- src\editor\debugger.lua
   ["&Edit"] = "É&dition", -- src\editor\menu_edit.lua
   ["&File"] = "&Fichier", -- src\editor\menu_file.lua
@@ -20,7 +21,6 @@ return {
   ["&Paste"] = "Co&ller", -- src\editor\editor.lua, src\editor\menu_edit.lua
   ["&Project"] = "&Projet", -- src\editor\menu_project.lua, src\editor\inspect.lua
   ["&Redo"] = "&Rétablir", -- src\editor\editor.lua, src\editor\menu_edit.lua
-  ["&Remove Watch"] = "&Supprimer une expression", -- src\editor\debugger.lua
   ["&Replace"] = "Re&mplacer...", -- src\editor\menu_search.lua
   ["&Run"] = "&Exécuter", -- src\editor\menu_project.lua
   ["&Save"] = "&Enregistrer", -- src\editor\menu_file.lua, src\editor\gui.lua
