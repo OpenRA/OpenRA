@@ -74,10 +74,10 @@ BAZOOKA:
 		Speed: 4
 	Armament@PRIMARY:
 		Weapon: RedEye
-		LegacyLocalOffset: 0,0,0,-13,0
+		LocalOffset: 0,0,555
 	Armament@SECONDARY:
 		Weapon: Dragon
-		LegacyLocalOffset: 0,0,0,-13,0
+		LocalOffset: 0,0,555
 	AttackFrontal:
 	TakeCover:
 	-RenderInfantry:

@@ -476,7 +476,7 @@ GUNTOWER:
 		InitialFacing: 128
 	Armament:
 		Weapon: TurretGun
-		LegacyLocalOffset: 0,-11,0,-7,0
+		LocalOffset: 469,0,299
 	AttackTurreted:
 	AutoTarget:
 	LeavesHusk:
@@ -532,7 +532,7 @@ ROCKETTOWER:
 	#	HasMakeAnimation: false
 	Armament:
 		Weapon: TowerMissile
-		LegacyLocalOffset: 14,-2,0,-11,0, -14,-2,0,-11,0
+		LocalOffset: 85,597,469, 85,-597,469
 	AttackTurreted:
 	Turreted:
 		ROT: 8
