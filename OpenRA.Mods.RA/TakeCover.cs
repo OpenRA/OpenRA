@@ -19,7 +19,8 @@ namespace OpenRA.Mods.RA
 		public readonly int ProneTime = 100;	/* ticks, =4s */
 		public readonly float ProneDamage = .5f;
 		public readonly decimal ProneSpeed = .5m;
-		public readonly int[] ProneOffset = {0,-2,0,4};
+		public readonly int[] LegacyProneOffset = {0,-2,0,4};
+		public readonly WVec ProneOffset = new WVec(85, 0, -171);
 
 		public override object Create(ActorInitializer init) { return new TakeCover(init, this); }
 	}
@@ -43,7 +44,10 @@ namespace OpenRA.Mods.RA
 			if (e.Damage > 0 && (e.Warhead == null || !e.Warhead.PreventProne)) /* Don't go prone when healed */
 			{
 				if (!IsProne)
-					turret = new Turret(Info.ProneOffset);
+				{
+					turret = new Turret(Info.LegacyProneOffset);
+					LocalOffset = Info.ProneOffset;
+				}
 				remainingProneTime = Info.ProneTime;
 			}
 		}
@@ -52,7 +56,10 @@ namespace OpenRA.Mods.RA
 		{
 			base.Tick(self);
 			if (IsProne && --remainingProneTime == 0)
+			{
 				turret = new Turret(Info.LegacyOffset);
+				LocalOffset = WVec.Zero;
+			}
 		}
 
 		public float GetDamageModifier(Actor attacker, WarheadInfo warhead )
