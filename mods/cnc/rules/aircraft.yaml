@@ -70,10 +70,10 @@ HELI:
 		Range: 8
 	Armament@PRIMARY:
 		Weapon: HeliAGGun
-		LegacyLocalOffset: -5,-3,0,2,0, 5,-3,0,2,0
+		LocalOffset: 128,-213,-85, 128,213,-85
 	Armament@SECONDARY:
 		Weapon: HeliAGGun
-		LegacyLocalOffset: -5,-3,0,2,0, 5,-3,0,2,0
+		LocalOffset: 128,-213,-85, 128,213,-85
 	AttackHeli:
 		FacingTolerance: 20
 	LimitedAmmo:
@@ -123,10 +123,10 @@ ORCA:
 		Range: 8
 	Armament@PRIMARY:
 		Weapon: OrcaAGMissiles
-		LegacyLocalOffset: -4,-10,0,5,0, 4,-10,0,5,0
+		LocalOffset: 427,-171,-213, 427,171,-213
 	Armament@SECONDARY:
 		Weapon: OrcaAAMissiles
-		LegacyLocalOffset: -4,-10,0,5,0, 4,-10,0,5,0
+		LocalOffset: 427,-171,-213, 427,171,-213
 	AttackHeli:
 		FacingTolerance: 20
 	LimitedAmmo:

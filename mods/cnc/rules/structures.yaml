@@ -512,7 +512,7 @@ GUN:
 	RenderBuildingTurreted:
 	Armament:
 		Weapon: TurretGun
-		LegacyLocalOffset: 0,4,0,-2,0
+		LocalOffset: -71,0,85
 	AttackTurreted:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
@@ -593,12 +593,14 @@ OBLI:
 		ChargeAudio: obelpowr.aud
 	Armament:
 		Weapon: Laser
-		LegacyLocalOffset: 0,0,-2,-17,0
+		LocalOffset: 0,0,725
 		FireDelay: 8
 	AttackTurreted:
 	Turreted:
 		ROT:255
 	AutoTarget:
+	RenderBuilding:
+		QuantizedFacings: 8
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
 	-AutoTargetIgnore:
@@ -631,8 +633,10 @@ GTWR:
 		Range: 7
 	Armament:
 		Weapon: HighV
-		LegacyLocalOffset: 0,-6,0,-6,0
+		LocalOffset: 256,0,256
 	AttackTurreted:
+	RenderBuilding:
+		QuantizedFacings: 8
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
@@ -670,13 +674,16 @@ ATWR:
 		Type: Heavy
 	RevealsShroud:
 		Range: 9
-	Armament:
-		Weapon: TowerMissle
-		LegacyLocalOffset: 7,-7,5,2,-25, -7,-7,5,2,25
-	AttackTurreted:
 	Turreted:
 		ROT:255
+	Armament:
+		Weapon: TowerMissle
+		LocalOffset: 299,299,-85, 299,-299,-85
+		LocalYaw: -100,100
+	AttackTurreted:
 	AutoTarget:
+	RenderBuilding:
+		QuantizedFacings: 8
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
 	-AutoTargetIgnore:

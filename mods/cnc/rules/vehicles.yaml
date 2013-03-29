@@ -102,10 +102,10 @@ APC:
 		ROT: 10
 	Armament@PRIMARY:
 		Weapon: APCGun
-		LegacyLocalOffset: 2,-2,0,-7,0, -2,-2,0,-7,0
+		LocalOffset: 85,85,299, 85,-85,299
 	Armament@SECONDARY:
 		Weapon: APCGun.AA
-		LegacyLocalOffset: 2,-2,0,-7,0, -2,-2,0,-7,0
+		LocalOffset: 85,85,299, 85,-85,299
 	AttackTurreted:
 	WithMuzzleFlash:
 	RenderUnitTurreted:
@@ -143,7 +143,7 @@ ARTY:
 		Range: 9
 	Armament:
 		Weapon: ArtilleryShell
-		LegacyLocalOffset: 0,-7,0,-3,0
+		LocalOffset: 299, 0, 128
 	AttackFrontal:
 	RenderUnit:
 	Explodes:
@@ -177,7 +177,7 @@ FTNK:
 		Range: 5
 	Armament:
 		Weapon: BigFlamer
-		LegacyLocalOffset: 5,-5,3,2,0, -5,-5,3,2,0
+		LocalOffset: 213,213,-85, 213,-213,-85
 	AttackFrontal:
 	RenderUnit:
 	AutoTarget:
@@ -213,9 +213,10 @@ BGGY:
 		Range: 7
 	Turreted:
 		ROT: 10
-		LegacyOffset: 0,1,0,-3
+		Offset: -43,0,128
 	Armament:
 		Weapon: MachineGun
+		OffsetModel: World
 	AttackTurreted:
 	WithMuzzleFlash:
 	RenderUnitTurreted:
@@ -288,9 +289,10 @@ JEEP:
 		Range: 8
 	Turreted:
 		ROT: 10
-		LegacyOffset: 0,2,0,-4
+		Offset: -85,0,171
 	Armament:
 		Weapon: MachineGun
+		OffsetModel: World
 	AttackTurreted:
 	WithMuzzleFlash:
 	RenderUnitTurreted:
@@ -325,9 +327,9 @@ LTNK:
 		ROT: 5
 	Armament:
 		Weapon: 70mm
-		LegacyRecoil: 2
-		LegacyRecoilRecovery: 0.4
-		LegacyLocalOffset: 0,3,0,-2,0
+		Recoil: 85
+		RecoilRecovery: 17
+		LocalOffset: -128,0,85
 	AttackTurreted:
 	RenderUnitTurreted:
 	AutoTarget:
@@ -363,9 +365,9 @@ MTNK:
 		ROT: 5
 	Armament:
 		Weapon: 120mm
-		LegacyRecoil: 3
-		LegacyRecoilRecovery: 0.6
-		LegacyLocalOffset: 0,0,0,-1,0
+		Recoil: 128
+		RecoilRecovery: 26
+		LocalOffset: 0,0,43
 	AttackTurreted:
 	RenderUnitTurreted:
 	AutoTarget:
@@ -451,10 +453,10 @@ MSAM:
 		Range: 10
 	Turreted:
 		ROT: 255
-		LegacyOffset: 0,6,0,-3
+		Offset: -256,0,128
 	Armament:
 		Weapon: 227mm
-		LegacyLocalOffset: 3,-5,0,0,0, -3,-5,0,0,0
+		LocalOffset: 213,128,0, 213,-128,0
 	AttackFrontal:
 	RenderUnitTurretedAim:
 	AutoTarget:
@@ -485,14 +487,14 @@ MLRS:
 		Range: 10
 	Turreted:
 		ROT: 5
-		LegacyOffset: 0,3,0,-3
+		Offset: -128,0,128
 		AlignWhenIdle: true
 	Armament@PRIMARY:
 		Weapon: Patriot
-		LegacyLocalOffset: -4,0,0,0,0
+		LocalOffset: 0,-171,0
 	Armament@SECONDARY:
 		Weapon: Patriot
-		LegacyLocalOffset: 4,0,0,0,0
+		LocalOffset:0,171,0
 	AttackTurreted:
 	RenderUnitTurretedAim:
 	AutoTarget:
@@ -534,7 +536,7 @@ STNK:
 		UncloakSound: trans1.aud
 	Armament:
 		Weapon: 227mm.stnk
-		LegacyLocalOffset: 1,-5,0,-3,0, -1,-5,0,-3,0
+		LocalOffset: 213,43,128, 213,-43,128
 	AttackFrontal:
 	RenderUnit:
 	AutoTarget:
