@@ -283,7 +283,7 @@ BikeRockets:
 
 OrcaAGMissiles:
 	ROF: 10
-	Burst: 2
+	Burst: 1
 	BurstDelay: 0
 	Range: 5
 	Report: BAZOOK1
@@ -310,11 +310,11 @@ OrcaAGMissiles:
 		Explosion: 4
 		ImpactSound: xplos
 		SmudgeType: Crater
-		Damage: 20
+		Damage: 40
 
 OrcaAAMissiles:
 	ROF: 10
-	Burst: 2
+	Burst: 1
 	BurstDelay: 0
 	Range: 5
 	Report: BAZOOK1
@@ -341,7 +341,7 @@ OrcaAAMissiles:
 		Explosion: 4
 		ImpactSound: xplos
 		SmudgeType: Crater
-		Damage: 20
+		Damage: 40
 
 Flamethrower:
 	ROF: 50
