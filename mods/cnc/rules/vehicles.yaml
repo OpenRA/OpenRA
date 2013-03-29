@@ -56,8 +56,9 @@ HARV:
 		Bounds: 36,36
 	Harvester:
 		Resources: Tiberium, BlueTiberium
-		PipCount: 5
-		Capacity: 15
+		PipCount: 7
+		Capacity: 20
+		UnloadTicksPerBale: 12		# hardcoded default is 4
 		# How far away from our linked proc (refinery) to find resources (in cells):
 		SearchFromProcRadius: 24
 		# How far away from last harvest order location to find more resources (in cells):
