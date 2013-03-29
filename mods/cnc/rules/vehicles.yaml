@@ -393,9 +393,10 @@ HTNK:
 		Owner: gdi
 	Mobile:
 		Crushes: wall, heavywall, crate, infantry
-		Speed: 3
+		Speed: 4
+		ROT: 3
 	Health:
-		HP: 600
+		HP: 800
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -441,9 +442,9 @@ MSAM:
 		Prerequisites: hq
 		Owner: gdi
 	Mobile:
-		Speed: 8
+		Speed: 7
 	Health:
-		HP: 120
+		HP: 115
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -495,6 +496,7 @@ MLRS:
 	AttackTurreted:
 	RenderUnitTurretedAim:
 	AutoTarget:
+		InitialStance: Defend
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
 	Explodes:
