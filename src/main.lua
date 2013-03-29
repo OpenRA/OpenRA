@@ -196,12 +196,7 @@ do
 
   for index = 2, #arg do
     if (arg[index] == "-cfg" and index+1 <= #arg) then
-      local str = arg[index+1]
-      if #str < 4 then
-        print("Comandline: -cfg arg data not passed as string")
-      else
-        table.insert(configs,str)
-      end
+      table.insert(configs,arg[index+1])
     elseif arg[index-1] ~= "-cfg" then
       table.insert(filenames,arg[index])
     end
@@ -214,18 +209,17 @@ end
 -- process application
 
 ide.app = dofile(ide.config.path.app.."/app.lua")
-local app = ide.app
-assert(app)
+local app = assert(ide.app)
 
 local function addToTab(tab,file)
   local cfgfn,err = loadfile(file)
   if not cfgfn then
-    print(("Error while loading configuration file: %s"):format(err))
+    print(("Error while loading configuration file: '%s'."):format(err))
   else
     local name = file:match("([a-zA-Z_0-9]+)%.lua$")
     local success, result = pcall(function()return cfgfn(assert(_G or _ENV))end)
     if not success then
-      print(("Error while processing configuration file: %s"):format(result))
+      print(("Error while processing configuration file: '%s'."):format(result))
     elseif name then
       if (tab[name]) then
         local out = tab[name]
@@ -298,7 +292,7 @@ local resumePrint do
   print = function(...) errors[#errors+1] = {...} end
   resumePrint = function()
     print = origprint
-    for _, e in ipairs(errors) do DisplayOutput(unpack(e), "\n") end
+    for _, e in ipairs(errors) do DisplayOutputLn(unpack(e)) end
   end
 end
 
@@ -316,7 +310,7 @@ local function addConfig(filename,isstring)
   else msg, cfgfn, err = "file", loadfile(filename) end
 
   if not cfgfn then
-    print(("Error while loading configuration %s: %s"):format(msg, err))
+    print(("Error while loading configuration %s: '%s'."):format(msg, err))
   else
     ide.config.os = os
     ide.config.wxstc = wxstc
@@ -325,7 +319,7 @@ local function addConfig(filename,isstring)
     setfenv(cfgfn,ide.config)
     local _, err = pcall(function()cfgfn(assert(_G or _ENV))end)
     if err then
-      print(("Error while processing configuration %s: %s"):format(msg, err))
+      print(("Error while processing configuration %s: '%s'."):format(msg, err))
     end
   end
 end
@@ -385,9 +379,6 @@ do
     addToTab(ide.config.messages, "cfg"..sep.."i18n"..sep..ide.config.language..".lua")
   end
 end
-
--- load this after preinit and processing configs to allow
--- each of the lists to be modified
 
 ---------------
 -- Load App
