@@ -383,8 +383,8 @@ function SettingsRestoreView()
     -- as it's going to be restored from the config regardless of how
     -- it is set now (which affects its translation)
     uimgr:GetPane("projpanel"):Caption(TR("Project"))
-    uimgr:Update()
   end
+  uimgr:Update()
   
   local layoutcur = saveNotebook(frame.notebook)
   local layout = settingsReadSafe(settings,"nblayout",layoutcur)
