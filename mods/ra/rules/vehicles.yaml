@@ -21,7 +21,6 @@ V2RL:
 		Range: 5
 	Armament:
 		Weapon: SCUD
-		OffsetModel: World
 	AttackFrontal:
 	RenderUnitReload:
 	AutoTarget:
@@ -57,7 +56,6 @@ V2RL:
 		Weapon: 25mm
 		Recoil: 85
 		RecoilRecovery: 25
-		OffsetModel: World
 	AttackTurreted:
 	RenderUnitTurreted:
 	AutoTarget:
@@ -97,7 +95,6 @@ V2RL:
 		Weapon: 90mm
 		Recoil: 128
 		RecoilRecovery: 38
-		OffsetModel: World
 	AttackTurreted:
 	RenderUnitTurreted:
 	AutoTarget:
@@ -229,7 +226,6 @@ ARTY:
 		Range: 5
 	Armament:
 		Weapon: 155mm
-		OffsetModel: World
 	AttackFrontal:
 	RenderUnit:
 	Explodes:
@@ -346,7 +342,6 @@ JEEP:
 		Offset: 0,0,85
 	Armament:
 		Weapon: M60mg
-		OffsetModel: World
 	AttackTurreted:
 	WithMuzzleFlash:
 	RenderUnitTurreted:
@@ -683,7 +678,6 @@ FTRK:
 	Armament:
 		Weapon: FLAK-23
 		Recoil: 85
-		OffsetModel: World
 	AttackTurreted:
 	RenderUnitTurreted:
 	AutoTarget:

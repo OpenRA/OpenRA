@@ -328,10 +328,8 @@ AGUN:
 	RenderBuildingTurreted:
 	Armament@PRIMARY:
 		Weapon: ZSU-23
-		OffsetModel: World
 	Armament@SECONDARY:
 		Weapon: ZSU-23
-		OffsetModel: World
 	AttackTurreted:
 	AutoTarget:
 	IronCurtainable:
@@ -748,7 +746,6 @@ GUN:
 	RenderBuildingTurreted:
 	Armament:
 		Weapon: TurretGun
-		OffsetModel: World
 	AttackTurreted:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
@@ -828,7 +825,6 @@ SAM:
 	RenderBuildingTurreted:
 	Armament:
 		Weapon: Nike
-		OffsetModel: World
 	AttackTurreted:
 	WithMuzzleFlash:
 	AutoTarget:

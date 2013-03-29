@@ -496,7 +496,6 @@ GUN:
 	RenderBuildingTurreted:
 	Armament:
 		Weapon: TurretGun
-		OffsetModel: World
 	AttackTurreted:
 	AutoTarget:
 	IronCurtainable:
@@ -568,7 +567,6 @@ SAM:
 	RenderBuildingTurreted:
 	Armament:
 		Weapon: Nike
-		OffsetModel: World
 	AttackTurreted:
 	WithMuzzleFlash:
 	AutoTarget:

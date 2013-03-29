@@ -84,7 +84,6 @@ MSUB:
 	Armament:
 		Weapon: SubMissile
 		FireDelay: 2
-		OffsetModel: World
 	AttackFrontal:
 	Selectable:
 		Bounds: 44,44
@@ -259,10 +258,8 @@ PT:
 		Offset: 256,0,43
 	Armament@PRIMARY:
 		Weapon: 2Inch
-		OffsetModel: World
 	Armament@SECONDARY:
 		Weapon: DepthCharge
-		OffsetModel: World
 	AttackTurreted:
 	Selectable:
 		Bounds: 32,32

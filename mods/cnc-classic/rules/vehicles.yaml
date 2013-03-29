@@ -102,7 +102,6 @@ JEEP:
 		Offset: -85,0,171
 	Armament:
 		Weapon: MachineGun
-		OffsetModel: World
 	AttackTurreted:
 	WithMuzzleFlash:
 	RenderUnitTurreted:
@@ -135,7 +134,6 @@ APC:
 		ROT: 10
 	Armament:
 		Weapon: MachineGun
-		OffsetModel: World
 	AttackTurreted:
 	WithMuzzleFlash:
 	RenderUnitTurreted:
@@ -174,7 +172,6 @@ BGGY:
 		Offset: -43,0,128
 	Armament:
 		Weapon: MachineGun
-		OffsetModel: World
 	AttackTurreted:
 	WithMuzzleFlash:
 	RenderUnitTurreted:

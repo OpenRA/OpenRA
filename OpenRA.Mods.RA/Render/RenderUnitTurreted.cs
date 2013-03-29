@@ -43,26 +43,16 @@ namespace OpenRA.Mods.RA.Render
 
 		float2 TurretPosition(Actor self, Turreted t, IFacing facing)
 		{
-			if (t.CoordinateModel == CoordinateModel.Legacy)
-			{
-				var recoil = self.TraitsImplementing<Armament>()
-					.Where(w => w.Info.Turret == t.Name)
-					.Sum(w => w.LegacyRecoil);
-				return t.PxPosition(self, facing).ToFloat2() + Traits.Util.RotateVectorByFacing(new float2(0, recoil), t.turretFacing, .7f);
-			}
-			else
-			{
-				var recoil = self.TraitsImplementing<Armament>()
-					.Where(w => w.Info.Turret == t.Name)
-					.Aggregate(WRange.Zero, (a,b) => a + b.Recoil);
+			var recoil = self.TraitsImplementing<Armament>()
+				.Where(w => w.Info.Turret == t.Name)
+				.Aggregate(WRange.Zero, (a,b) => a + b.Recoil);
 
-				var localOffset = new WVec(-recoil, WRange.Zero, WRange.Zero);
-				var bodyOrientation = QuantizeOrientation(self, self.Orientation);
-				var turretOrientation = QuantizeOrientation(self, t.LocalOrientation(self));
-				var worldPos = WPos.Zero + t.Position(self) + LocalToWorld(localOffset.Rotate(turretOrientation).Rotate(bodyOrientation));
+			var localOffset = new WVec(-recoil, WRange.Zero, WRange.Zero);
+			var bodyOrientation = QuantizeOrientation(self, self.Orientation);
+			var turretOrientation = QuantizeOrientation(self, t.LocalOrientation(self));
+			var worldPos = WPos.Zero + t.Position(self) + LocalToWorld(localOffset.Rotate(turretOrientation).Rotate(bodyOrientation));
 
-				return PPos.FromWPosHackZ(worldPos).ToFloat2();
-			}
+			return PPos.FromWPosHackZ(worldPos).ToFloat2();
 		}
 	}
 }

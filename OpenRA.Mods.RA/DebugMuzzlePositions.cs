@@ -31,8 +31,7 @@ namespace OpenRA.Mods.RA
 
 		public DebugFiringOffsets(Actor self)
 		{
-			armaments = Lazy.New(() => self.TraitsImplementing<Armament>()
-				.Where(a => a.Info.OffsetModel == CoordinateModel.World));
+			armaments = Lazy.New(() => self.TraitsImplementing<Armament>());
 		}
 
 		public void RenderAfterWorld(WorldRenderer wr, Actor self)

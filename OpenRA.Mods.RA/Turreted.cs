@@ -23,28 +23,12 @@ namespace OpenRA.Mods.RA
 		[Desc("Rate of Turning")]
 		public readonly int ROT = 255;
 		public readonly int InitialFacing = 128;
-		public readonly int[] LegacyOffset = {0,0};
 		public readonly bool AlignWhenIdle = false;
 
-		public CoordinateModel OffsetModel = CoordinateModel.Legacy;
 		[Desc("Muzzle position relative to turret or body. (forward, right, up) triples")]
 		public readonly WVec Offset = WVec.Zero;
 
-
-		bool HasWorldOffset(ArmamentInfo ai)
-		{
-			return ai.OffsetModel == CoordinateModel.World || ai.LocalOffset.Length > 0;
-		}
-
-		public virtual object Create(ActorInitializer init)
-		{
-			// Auto-detect coordinate type
-			var arms = init.self.Info.Traits.WithInterface<ArmamentInfo>();
-			if (Offset != WVec.Zero || arms.Any(ai => HasWorldOffset(ai)))
-				OffsetModel = CoordinateModel.World;
-
-			return new Turreted(init, this);
-		}
+		public virtual object Create(ActorInitializer init) { return new Turreted(init, this); }
 	}
 
 	public class Turreted : ITick, ISync, IResolveOrder
@@ -52,7 +36,6 @@ namespace OpenRA.Mods.RA
 		[Sync] public int turretFacing = 0;
 		public int? desiredFacing;
 		TurretedInfo info;
-		protected Turret turret;
 		IFacing facing;
 
 		// For subclasses that want to move the turret relative to the body
@@ -60,7 +43,6 @@ namespace OpenRA.Mods.RA
 
 		public WVec Offset { get { return info.Offset + LocalOffset; } }
 		public string Name { get { return info.Turret; } }
-		public CoordinateModel CoordinateModel { get { return info.OffsetModel; } }
 
 		public static int GetInitialTurretFacing(ActorInitializer init, int def)
 		{
@@ -78,7 +60,6 @@ namespace OpenRA.Mods.RA
 			this.info = info;
 			turretFacing = GetInitialTurretFacing(init, info.InitialFacing);
 			facing = init.self.TraitOrDefault<IFacing>();
-			turret = new Turret(info.LegacyOffset);
 		}
 
 		public virtual void Tick(Actor self)
@@ -99,21 +80,9 @@ namespace OpenRA.Mods.RA
 				desiredFacing = null;
 		}
 
-		public PVecFloat PxPosition(Actor self, IFacing facing)
-		{
-			// Hack for external code unaware of world coordinates
-			if (info.OffsetModel == CoordinateModel.World)
-				return (PVecFloat)PPos.FromWPosHackZ(WPos.Zero + Position(self)).ToFloat2();
-
-			return turret.PxPosition(self, facing);
-		}
-
 		// Turret offset in world-space
 		public WVec Position(Actor self)
 		{
-			if (info.OffsetModel != CoordinateModel.World)
-				throw new InvalidOperationException("Turreted.Position requires a world coordinate offset");
-
 			var coords = self.Trait<ILocalCoordinatesModel>();
 			var bodyOrientation = coords.QuantizeOrientation(self, self.Orientation);
 			return coords.LocalToWorld(Offset.Rotate(bodyOrientation));
@@ -127,6 +96,7 @@ namespace OpenRA.Mods.RA
 		}
 	}
 
+	// TODO: Remove this
 	public class Turret
 	{
 		public PVecInt UnitSpacePosition;	// where, in the unit's local space.

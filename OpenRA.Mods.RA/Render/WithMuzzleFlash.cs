@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA.Render
 
 					muzzleFlashes.Add("muzzle{0}".F(muzzleFlashes.Count), new AnimationWithOffset(
 						muzzleFlash,
-						() => a.MuzzlePxOffset(self, facing, barrel).ToFloat2(),
+						() => PPos.FromWPosHackZ(WPos.Zero + a.MuzzleOffset(self, barrel)).ToFloat2(),
 						() => !isShowing));
 				}
 		}
