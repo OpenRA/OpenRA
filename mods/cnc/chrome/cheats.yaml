@@ -46,7 +46,13 @@ Container@CHEATS_PANEL:
 					Y:45
 					Width:200
 					Height:20
-					Text:Instant Charge Time				
+					Text:Instant Charge Time
+				Checkbox@SHOW_MUZZLES:
+					X:200
+					Y:75
+					Height:20
+					Width:200
+					Text:Show Muzzle Positions
 				Checkbox@DISABLE_SHROUD:
 					X:400
 					Y:15

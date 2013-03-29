@@ -41,6 +41,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			fastChargeCheckbox.IsChecked = () => devTrait.FastCharge;
 			fastChargeCheckbox.OnClick = () => Order(world, "DevFastCharge");
 
+			var showMuzzlesCheckbox = widget.Get<CheckboxWidget>("SHOW_MUZZLES");
+			showMuzzlesCheckbox.IsChecked = () => devTrait.ShowMuzzles;
+			showMuzzlesCheckbox.OnClick = () => devTrait.ShowMuzzles ^= true;
+
 			var allTechCheckbox = widget.Get<CheckboxWidget>("ENABLE_TECH");
 			allTechCheckbox.IsChecked = () => devTrait.AllTech;
 			allTechCheckbox.OnClick = () => Order(world, "DevEnableTech");

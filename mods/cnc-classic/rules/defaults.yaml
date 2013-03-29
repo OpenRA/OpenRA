@@ -31,6 +31,7 @@
 	WithSmoke:
 	Explodes:
 		Weapon: UnitExplodeSmall
+	DebugMuzzlePositions:
 
 ^Tank:
 	AppearsOnRadar:
@@ -64,6 +65,7 @@
 	WithSmoke:
 	Explodes:
 		Weapon: UnitExplodeSmall
+	DebugMuzzlePositions:
 
 ^Helicopter:
 	AppearsOnRadar:
@@ -81,6 +83,7 @@
 		Queue: Aircraft
 	ActorLostNotification:
 		Notification: unitlost.aud
+	DebugMuzzlePositions:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -127,6 +130,7 @@
 	CrushableInfantry:
 	DetectCloaked:
 		Range: 1
+	DebugMuzzlePositions:
 
 ^CivInfantry:
 	Inherits: ^Infantry
@@ -173,6 +177,7 @@
 		TargetTypes: Air
 	ActorLostNotification:
 		Notification: unitlost.aud
+	DebugMuzzlePositions:
 
 ^Ship:
 	AppearsOnRadar:
@@ -188,6 +193,7 @@
 	ActorLostNotification:
 		Notification: unitlost.aud
 	AttackMove:
+	DebugMuzzlePositions:
 
 ^Building:
 	AppearsOnRadar:
@@ -236,6 +242,7 @@
 	Capturable:
 		CaptureCompleteTime: 0
 	CapturableBar:
+	DebugMuzzlePositions:
 
 ^CivBuilding:
 	Inherits: ^Building
