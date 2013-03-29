@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA
 		public readonly float LegacyRecoilRecovery = 0.2f;
 		public readonly int[] LegacyLocalOffset = { };
 
-		public readonly CoordinateModel OffsetModel = CoordinateModel.Legacy;
+		public CoordinateModel OffsetModel = CoordinateModel.Legacy;
 		[Desc("Muzzle position relative to turret or body. (forward, right, up) triples")]
 		public readonly WRange[] LocalOffset = {};
 		[Desc("Muzzle yaw relative to turret or body.")]
@@ -57,7 +57,14 @@ namespace OpenRA.Mods.RA
 		[Desc("Recoil recovery per-frame")]
 		public readonly WRange RecoilRecovery = new WRange(9);
 
-		public object Create(ActorInitializer init) { return new Armament(init.self, this); }
+		public object Create(ActorInitializer init)
+		{
+			// Auto-detect coordinate type
+			if (LocalOffset.Length > 0 && OffsetModel == CoordinateModel.Legacy)
+				OffsetModel = CoordinateModel.World;
+
+			return new Armament(init.self, this);
+		}
 	}
 
 	public class Armament : ITick

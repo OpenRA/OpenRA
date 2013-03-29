@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Mods.RA.Render;
 using OpenRA.FileFormats;
 using OpenRA.Traits;
@@ -25,11 +26,25 @@ namespace OpenRA.Mods.RA
 		public readonly int[] LegacyOffset = {0,0};
 		public readonly bool AlignWhenIdle = false;
 
-		public readonly CoordinateModel OffsetModel = CoordinateModel.Legacy;
+		public CoordinateModel OffsetModel = CoordinateModel.Legacy;
 		[Desc("Muzzle position relative to turret or body. (forward, right, up) triples")]
 		public readonly WVec Offset = WVec.Zero;
 
-		public virtual object Create(ActorInitializer init) { return new Turreted(init, this); }
+
+		bool HasWorldOffset(ArmamentInfo ai)
+		{
+			return ai.OffsetModel == CoordinateModel.World || ai.LocalOffset.Length > 0;
+		}
+
+		public virtual object Create(ActorInitializer init)
+		{
+			// Auto-detect coordinate type
+			var arms = init.self.Info.Traits.WithInterface<ArmamentInfo>();
+			if (Offset != WVec.Zero || arms.Any(ai => HasWorldOffset(ai)))
+				OffsetModel = CoordinateModel.World;
+
+			return new Turreted(init, this);
+		}
 	}
 
 	public class Turreted : ITick, ISync, IResolveOrder
