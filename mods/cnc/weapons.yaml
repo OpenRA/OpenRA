@@ -135,7 +135,7 @@ HighV:
 	Projectile: Bullet
 		Speed: 100
 	Warhead:
-		Damage: 40
+		Damage: 45
 		Spread: 3
 		Versus: 
 			None: 100%
@@ -234,7 +234,7 @@ Rockets:
 		ROT: 15
 		Trail: smokey
 		Speed: 35
-		RangeLimit: 40
+		RangeLimit: 30
 	Warhead:
 		Spread: 3
 		Versus: 
@@ -613,7 +613,7 @@ MammothMissiles:
 		Spread: 3
 		Versus:
 			None: 35%
-			Wood: 90%
+			Wood: 50%
 			Light: 100%
 			Heavy: 90%
 		InfDeath: 4
