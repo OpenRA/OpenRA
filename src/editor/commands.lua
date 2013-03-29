@@ -15,6 +15,7 @@ function NewFile(event)
   local editor = CreateEditor()
   SetupKeywords(editor, "lua")
   AddEditor(editor, ide.config.default.fullname)
+  SetEditorSelection()
   return editor
 end
 

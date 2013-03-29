@@ -113,7 +113,11 @@ local function createNotebook(frame)
   -- wxEVT_SET_FOCUS could be used, but it only works on Windows with wx2.9.5+
   notebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CHANGED,
     function (event)
-      SetEditorSelection(notebook:GetSelection())
+      -- if there is no document yet, the editor tab was just added,
+      -- so no changes needed as there will be a proper later call
+      local ed = GetEditor(notebook:GetSelection())
+      local doc = ed and ed:GetId() and ide.openDocuments[ed:GetId()]
+      if doc then SetEditorSelection(notebook:GetSelection()) end
     end)
 
   notebook:Connect(wxaui.wxEVT_COMMAND_AUINOTEBOOK_PAGE_CLOSE,
