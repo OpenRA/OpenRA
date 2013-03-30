@@ -446,7 +446,7 @@ MSAM:
 	Mobile:
 		Speed: 7
 	Health:
-		HP: 115
+		HP: 120
 	Armor:
 		Type: Light
 	RevealsShroud:

@@ -72,7 +72,7 @@ HELI:
 		Weapon: HeliAGGun
 		LocalOffset: 128,-213,-85, 128,213,-85
 	Armament@SECONDARY:
-		Weapon: HeliAGGun
+		Weapon: HeliAAGun
 		LocalOffset: 128,-213,-85, 128,213,-85
 	AttackHeli:
 		FacingTolerance: 20
