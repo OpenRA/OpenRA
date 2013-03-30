@@ -171,7 +171,7 @@ utility_LIBS        = $(COMMON_LIBS) $(utility_DEPS) thirdparty/ICSharpCode.Shar
 PROGRAMS 			+= utility
 utility: $(utility_TARGET)
 
-.PHONY: $(PHONY) $(PROGRAMS)
+.PHONY: $(PHONY) $(PROGRAMS) dependencies
 
 #
 # Generate build rules for each target defined above in PROGRAMS
