@@ -31,6 +31,7 @@ namespace OpenRA.Widgets
 
 		public Func<bool> OnEnterKey = () => false;
 		public Func<bool> OnTabKey = () => false;
+		public Func<bool> OnEscKey = () => false;
 		public Action OnLoseFocus = () => { };
 		public int CursorPosition { get; protected set; }
 
@@ -119,6 +120,9 @@ namespace OpenRA.Widgets
 				return true;
 
 			if (e.KeyName == "tab" && OnTabKey())
+				return true;
+
+			if (e.KeyName == "escape" && OnEscKey())
 				return true;
 
 			if (e.KeyName == "left")

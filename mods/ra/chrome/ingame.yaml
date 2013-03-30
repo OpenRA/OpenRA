@@ -206,20 +206,6 @@ Container@INGAME_ROOT:
 					Text:Close
 					Font:Bold
 					Key:escape
-		ChatDisplay@CHAT_DISPLAY:
-			X:250
-			Y:WINDOW_BOTTOM - HEIGHT - 30
-			Width: 760
-			Height: 200
-			DrawBackground: False
-			RemoveTime:250
-			UseContrast: yes
-		ChatEntry@CHAT_ENTRY:
-			X:250
-			Y:WINDOW_BOTTOM - HEIGHT
-			Width: 760
-			Height: 30
-			UseContrast: yes
 		Background@PERF_BG:
 			ClickThrough:true
 			Background:dialog4
@@ -373,20 +359,6 @@ Container@OBSERVER_ROOT:
 					Height:25
 					Text:Abort Mission
 					Font:Bold
-		ChatDisplay@CHAT_DISPLAY:
-			X:250
-			Y:WINDOW_BOTTOM - HEIGHT - 30
-			Width: 760
-			Height: 200
-			DrawBackground: False
-			RemoveTime:250
-			UseContrast: yes
-		ChatEntry@CHAT_ENTRY:
-			X:250
-			Y:WINDOW_BOTTOM - HEIGHT
-			Width: 760
-			Height: 30
-			UseContrast: yes
 		Background@PERF_BG:
 			ClickThrough:true
 			Background:dialog4
