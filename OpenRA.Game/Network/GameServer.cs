@@ -36,10 +36,10 @@ namespace OpenRA.Network
 
 		static bool AreVersionsCompatible(string a, string b)
 		{
-			/* dev versions are assumed compatible; if you're using one,
-			 * we trust that you know what you're doing. */
+			if (Game.Settings.Debug.IgnoreVersionMismatch)
+				return true;
 
-			return a == "{DEV_VERSION}" || b == "{DEV_VERSION}" || a == b;
+			return a == b;
 		}
 
 		public bool CanJoin()
