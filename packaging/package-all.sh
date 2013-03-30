@@ -28,7 +28,7 @@ markdown DOCUMENTATION.md > DOCUMENTATION.html
 # List of files that are packaged on all platforms
 # Note that the Tao dlls are shipped on all platforms except osx and that
 # they are now installed to the game directory instead of placed in the gac
-FILES="OpenRA.Game.exe OpenRA.Editor.exe OpenRA.TilesetBuilder.exe OpenRA.Utility.exe OpenRA.FileFormats.dll \
+FILES="OpenRA.Game.exe OpenRA.Editor.exe OpenRA.Utility.exe OpenRA.FileFormats.dll \
 OpenRA.Renderer.SdlCommon.dll OpenRA.Renderer.Cg.dll OpenRA.Renderer.Gl.dll OpenRA.Renderer.Null.dll \
 FreeSans.ttf FreeSansBold.ttf titles.ttf cg glsl mods/ra mods/cnc mods/d2k \
 README.html CONTRIBUTING.html DOCUMENTATION.html COPYING HACKING INSTALL CHANGELOG"
