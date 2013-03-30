@@ -257,7 +257,7 @@ AFLD:
 		Footprint: xxxx xxxx
 		Dimensions: 4,2
 	Health:
-		HP: 1500
+		HP: 1000
 	RevealsShroud:
 		Range: 7
 	Bib:
@@ -296,7 +296,7 @@ WEAP:
 		Footprint: ___ xxx ===
 		Dimensions: 3,3
 	Health:
-		HP: 1750
+		HP: 1000
 	RevealsShroud:
 		Range: 4
 	Bib:
@@ -361,6 +361,8 @@ HQ:
 		Name: Communications Center
 		Icon: hqicnh
 		Description: Provides an overview of the battlefield.\n  Requires power to operate.
+	ProvidesCustomPrerequisite:
+		Prerequisite: anyhq
 	Buildable:
 		BuildPaletteOrder: 70
 		Prerequisites: proc
@@ -423,6 +425,8 @@ EYE:
 		Name: Advanced Communications Center
 		Icon: eyeicnh
 		Description: Provides access to the Ion Cannon.\n  Requires power to operate.
+	ProvidesCustomPrerequisite:
+		Prerequisite: anyhq
 	Buildable:
 		BuildPaletteOrder: 100
 		Prerequisites: hq
@@ -432,7 +436,7 @@ EYE:
 		Footprint: x_ xx
 		Dimensions: 2,2
 	Health:
-		HP: 1000
+		HP: 1200
 	RevealsShroud:
 		Range: 10
 	Bib:
@@ -461,6 +465,8 @@ TMPL:
 		Name: Temple of Nod
 		Icon: tmplicnh
 		Description: Place of worship and secret missile silo.\n  Requires power to operate.
+	ProvidesCustomPrerequisite:
+		Prerequisite: anyhq
 	Buildable:
 		BuildPaletteOrder: 100
 		Prerequisites: hq
@@ -765,3 +771,8 @@ ANYPOWER:
 	Tooltip:
 		Name: Power Plant
 		Description: Power Plant
+
+ANYHQ:
+	Tooltip:
+		Name: a communications center
+		Description: a communications center
