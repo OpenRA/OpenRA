@@ -31,41 +31,64 @@ namespace OpenRA.Mods.RA.Buildings
 		[Desc("x means space it blocks, _ is a part that is passable by actors.")]
 		public readonly string Footprint = "x";
 		public readonly int2 Dimensions = new int2(1, 1);
+		public readonly bool RequiresBaseProvider = false;
 
 		public readonly string[] BuildSounds = {"placbldg.aud", "build5.aud"};
 		public readonly string[] SellSounds = {"cashturn.aud"};
 
 		public object Create(ActorInitializer init) { return new Building(init, this); }
 
+		public PPos CenterLocation(CPos topLeft)
+		{
+			return (PPos)((2 * topLeft.ToInt2() + Dimensions) * Game.CellSize / 2);
+		}
+
+		bool HasBaseProvider(World world, Player p, CPos topLeft)
+		{
+			var center = CenterLocation(topLeft);
+			foreach (var bp in world.ActorsWithTrait<BaseProvider>())
+			{
+				if (bp.Actor.Owner.Stances[p] != Stance.Ally || !bp.Trait.Ready())
+					continue;
+
+				if (Combat.IsInRange(center, bp.Trait.Info.Range, bp.Actor.CenterLocation))
+					return true;
+			}
+			return false;
+		}
+
 		public bool IsCloseEnoughToBase(World world, Player p, string buildingName, CPos topLeft)
 		{
 			if (p.PlayerActor.Trait<DeveloperMode>().BuildAnywhere)
 				return true;
 
+			if (RequiresBaseProvider && !HasBaseProvider(world, p, topLeft))
+				return false;
+
 			var buildingMaxBounds = (CVec)Dimensions;
-			if( Rules.Info[ buildingName ].Traits.Contains<BibInfo>() )
+			if (Rules.Info[buildingName].Traits.Contains<BibInfo>())
 				buildingMaxBounds += new CVec(0, 1);
 
-			var scanStart = world.ClampToWorld( topLeft - new CVec( Adjacent, Adjacent ) );
+			var scanStart = world.ClampToWorld(topLeft - new CVec(Adjacent, Adjacent));
 			var scanEnd = world.ClampToWorld(topLeft + buildingMaxBounds + new CVec(Adjacent, Adjacent));
 
 			var nearnessCandidates = new List<CPos>();
 
 			var bi = world.WorldActor.Trait<BuildingInfluence>();
 
-			for( int y = scanStart.Y ; y < scanEnd.Y ; y++ )
-				for( int x = scanStart.X ; x < scanEnd.X ; x++ )
+			for (var y = scanStart.Y; y < scanEnd.Y; y++)
+				for (var x = scanStart.X; x < scanEnd.X; x++)
 				{
-					var at = bi.GetBuildingAt( new CPos( x, y ) );
-					if( at != null && at.Owner.Stances[ p ] == Stance.Ally && at.HasTrait<GivesBuildableArea>() )
-						nearnessCandidates.Add( new CPos( x, y ) );
+					var at = bi.GetBuildingAt(new CPos(x, y));
+					if (at != null && at.Owner.Stances[p] == Stance.Ally && at.HasTrait<GivesBuildableArea>())
+						nearnessCandidates.Add(new CPos(x, y));
 				}
 
-			var buildingTiles = FootprintUtils.Tiles( buildingName, this, topLeft ).ToList();
+			var buildingTiles = FootprintUtils.Tiles(buildingName, this, topLeft).ToList();
 			return nearnessCandidates
-				.Any( a => buildingTiles
-					.Any( b => Math.Abs( a.X - b.X ) <= Adjacent
-							&& Math.Abs( a.Y - b.Y ) <= Adjacent ) );
+				.Any(a => buildingTiles
+					.Any(b => Math.Abs(a.X - b.X) <= Adjacent
+						&& Math.Abs(a.Y - b.Y) <= Adjacent));
 		}
 	}
 
@@ -103,7 +126,7 @@ namespace OpenRA.Mods.RA.Buildings
 
 			occupiedCells = FootprintUtils.UnpathableTiles( self.Info.Name, Info, TopLeft )
 				.Select(c => Pair.New(c, SubCell.FullCell)).ToArray();
-			pxPosition = (PPos) (( 2 * topLeft.ToInt2() + Info.Dimensions ) * Game.CellSize / 2);
+			pxPosition = Info.CenterLocation(topLeft);
 		}
 
 		public int GetPowerUsage()

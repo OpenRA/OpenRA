@@ -45,6 +45,8 @@ FACT:
 		ReadyAudio: ConstructionComplete
 	BaseBuilding:
 	ProductionBar:
+	BaseProvider:
+		Cooldown: 200
 
 NUKE:
 	Inherits: ^Building

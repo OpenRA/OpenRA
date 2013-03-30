@@ -232,6 +232,7 @@
 		RepairPercent: 40
 		RepairStep: 14
 	Building:
+		RequiresBaseProvider: true
 		Dimensions: 1,1
 		Footprint: x
 		BuildSounds: constru2.aud, hvydoor1.aud
