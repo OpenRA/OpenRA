@@ -58,6 +58,8 @@ FCOM:
 		Power: -200
 		Footprint: xx xx
 		Dimensions: 2,2
+	Valued:
+		Cost: 2000
 	Health:
 		HP: 400
 	Armor:
@@ -268,6 +270,8 @@ MISS:
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 3,2
+	Valued:
+		Cost: 2000
 	Health:
 		HP: 400
 	Armor:

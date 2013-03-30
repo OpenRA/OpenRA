@@ -533,6 +533,11 @@ MRJ:
 		Cost: 1000
 	Tooltip:
 		Name: Mobile Radar Jammer
+		Description: Unarmed
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 1000
+		Owner: None
 	Health:
 		HP: 200
 	Armor:

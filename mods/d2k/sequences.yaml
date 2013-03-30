@@ -1391,3 +1391,9 @@ fire:
 	4: fire4
 		Start: 0
 		Length: *
+
+palacec:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1

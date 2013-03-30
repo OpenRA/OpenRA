@@ -1835,6 +1835,9 @@ miss:
 		Start: 0
 	damaged-idle:
 		Start: 2
+	make: missmake
+		Start: 0
+		Length: *
 
 minp:
 	idle:

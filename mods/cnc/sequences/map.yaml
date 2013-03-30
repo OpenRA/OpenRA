@@ -725,6 +725,9 @@ miss:
 		Start: 0
 	damaged-idle:
 		Start: 1
+	make: missmake
+		Start: 0
+		Length: *
 
 miss.husk:
 	idle: miss
