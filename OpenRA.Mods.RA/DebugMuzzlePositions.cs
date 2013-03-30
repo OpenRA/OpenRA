@@ -28,15 +28,19 @@ namespace OpenRA.Mods.RA
 	public class DebugFiringOffsets : IPostRender
 	{
 		Lazy<IEnumerable<Armament>> armaments;
+		DeveloperMode devMode;
 
 		public DebugFiringOffsets(Actor self)
 		{
 			armaments = Lazy.New(() => self.TraitsImplementing<Armament>());
+
+			var localPlayer = self.World.LocalPlayer;
+			devMode = localPlayer != null ? localPlayer.PlayerActor.Trait<DeveloperMode>() : null;
 		}
 
 		public void RenderAfterWorld(WorldRenderer wr, Actor self)
 		{
-			if (self.World.LocalPlayer == null || !self.World.LocalPlayer.PlayerActor.Trait<DeveloperMode>().ShowMuzzles)
+			if (devMode == null || !devMode.ShowMuzzles)
 				return;
 
 			var wlr = Game.Renderer.WorldLineRenderer;
