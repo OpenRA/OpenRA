@@ -36,6 +36,7 @@ local function q(s) return s:gsub('([%(%)%.%%%+%-%*%?%[%^%$%]])','%%%1') end
 local function updateWatchesSync(num)
   local watchCtrl = debugger.watchCtrl
   if watchCtrl and debugger.server and not debugger.running
+  and ide.frame.uimgr:GetPane("watchpanel"):IsShown()
   and not debugger.scratchpad and not (debugger.options or {}).noeval then
     for idx = 0, watchCtrl:GetItemCount() - 1 do
       if not num or idx == num then
@@ -78,8 +79,9 @@ end
 
 local function updateStackSync()
   local stackCtrl = debugger.stackCtrl
-  if stackCtrl and debugger.server
-    and not debugger.running and not debugger.scratchpad then
+  if stackCtrl and debugger.server and not debugger.running
+  and ide.frame.uimgr:GetPane("stackpanel"):IsShown()
+  and not debugger.scratchpad then
     local stack, _, err = debugger.stack()
     if not stack or #stack == 0 then
       stackCtrl:DeleteAllItems()
