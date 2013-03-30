@@ -2,13 +2,16 @@
 
 FACT:
 	Inherits: ^Building
-	-Buildable:
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 1000
+		Owner: None
 	Valued:
 		Cost: 2000
 	Tooltip:
 		Name: Construction Yard
-		Icon: mcvicnh
 		Description: Builds structures
+		Icon: facticnh
 	Building:
 		Power: 15
 		Footprint: xxx xxx

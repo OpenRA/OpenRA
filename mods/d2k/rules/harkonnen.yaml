@@ -1,7 +1,5 @@
 CONYARDH:
 	Inherits: ^CONYARD
-	Buildable:
-		Owner: harkonnen
 	Transforms:
 		IntoActor: mcvh
 		Offset:1,1

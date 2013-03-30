@@ -5,6 +5,10 @@
 		Footprint: xxx xxx
 		Dimensions: 3,2
 		Adjacent: 4
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 1000
+		Owner: None
 	Selectable:
 		Bounds: 96,64
 	Health:
@@ -616,10 +620,15 @@ STARPORTC:
 
 PALACEC:
 	Inherits: ^PALACE
-	-Buildable:
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 1000
+		Owner: None
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 3,2
+	RenderBuilding:
+		HasMakeAnimation: false
 
 HEAVYC:
 	Inherits: ^HEAVY
