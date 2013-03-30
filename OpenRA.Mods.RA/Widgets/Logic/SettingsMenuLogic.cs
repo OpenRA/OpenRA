@@ -230,6 +230,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			longTickThreshold.Value = Game.Settings.Debug.LongTickThreshold;
 			longTickThreshold.OnChange += x => Game.Settings.Debug.LongTickThreshold = x;
 
+			var ignoreVersionMismatchCheckbox = debug.Get<CheckboxWidget>("IGNOREVERSIONMISMATCH_CHECKBOX");
+			ignoreVersionMismatchCheckbox.IsChecked = () => Game.Settings.Debug.IgnoreVersionMismatch;
+			ignoreVersionMismatchCheckbox.OnClick = () => Game.Settings.Debug.IgnoreVersionMismatch ^= true;
+
 			bg.Get<ButtonWidget>("BUTTON_CLOSE").OnClick = () =>
 			{
 				int x, y;
