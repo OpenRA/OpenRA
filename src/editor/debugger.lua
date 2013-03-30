@@ -848,20 +848,15 @@ debuggerCreateWatchWindow()
 ----------------------------------------------
 -- public api
 
-local function debuggerShowPanel(panel)
-  local mgr = ide.frame.uimgr
-  if (not mgr:GetPane(panel):IsShown()) then
-    mgr:GetPane(panel):Show()
-    mgr:Update()
-  end
-  updateStackAndWatches()
-end
-
-function DebuggerShowStackWindow() debuggerShowPanel("stackpanel") end
-function DebuggerShowWatchWindow() debuggerShowPanel("watchpanel") end
+DebuggerRefreshPanels = updateStackAndWatches
 
 function DebuggerAddWatch(watch)
-  DebuggerShowWatchWindow()
+  local mgr = ide.frame.uimgr
+  local pane = mgr:GetPane("watchpanel")
+  if (not pane:IsShown()) then
+    pane:Show()
+    mgr:Update()
+  end
 
   local watchCtrl = debugger.watchCtrl
   -- check if this expression is already on the list
