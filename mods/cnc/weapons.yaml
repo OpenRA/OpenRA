@@ -88,27 +88,23 @@ Atomic:
 		ImpactSound: xplobig4
 
 IonCannon:
+	ValidTargets: Ground, Air
 	Warhead@impact:
-		Damage: 500
-		Spread: 6
+		Damage: 900
+		Spread: 16
 		Ore: true
 		Versus: 
 			None: 100%
 			Wood: 100%
-			Light: 60%
-			Heavy: 45%
+			Light: 100%
+			Heavy: 100%
 		InfDeath: 5
 	Warhead@area:
 		DamageModel: PerCell
-		Damage: 200
+		Damage: 0
 		SmudgeType: Scorch
 		Size: 2,1
 		Ore: true
-		Versus: 
-			None: 90%
-			Wood: 60%
-			Light: 60%
-			Heavy: 25%
 		Delay: 3
 		InfDeath: 5
 
