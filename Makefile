@@ -7,12 +7,15 @@ PHONY       = core tools package all mods clean distclean
 .SUFFIXES:
 core: game renderers mods utility tsbuild
 tools: editor ralint tsbuild
-package: core editor docs
+package: dependencies core editor docs
 mods: mod_ra mod_cnc mod_d2k
-all: core tools
-clean: 
+all: dependencies core tools
+clean:
 	@-rm -f *.exe *.dll *.mdb mods/**/*.dll mods/**/*.mdb *.resources
 distclean: clean
+dependencies:
+	@ cp -r thirdparty/*.dll .
+	@ cp -r thirdparty/Tao/* .
 
 #
 # Core binaries
@@ -132,7 +135,6 @@ ralint_TARGET			= RALint.exe
 ralint_KIND			= exe
 ralint_DEPS			= $(fileformats_TARGET) $(game_TARGET)
 ralint_LIBS			= $(COMMON_LIBS) $(ralint_DEPS)
-ralint_EXTRA_CMDS		= cp thirdparty/FuzzyLogicLibrary.dll .
 PROGRAMS 			+= ralint
 ralint: $(ralint_TARGET)
 
@@ -169,7 +171,7 @@ utility_LIBS        = $(COMMON_LIBS) $(utility_DEPS) thirdparty/ICSharpCode.Shar
 PROGRAMS 			+= utility
 utility: $(utility_TARGET)
 
-.PHONY: $(PHONY) $(PROGRAMS)
+.PHONY: $(PHONY) $(PROGRAMS) dependencies
 
 #
 # Generate build rules for each target defined above in PROGRAMS
