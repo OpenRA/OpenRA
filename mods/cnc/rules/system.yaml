@@ -260,24 +260,24 @@ CRATE:
 		TerrainTypes: Clear, Rough, Road, Tiberium, BlueTiberium, Beach
 	GiveCashCrateAction:
 		Amount: 1000
-		SelectionShares: 20000
+		SelectionShares: 20
 		UseCashTick: yes
 	RevealMapCrateAction:
-		SelectionShares: 1000
+		SelectionShares: 1
 		Effect: reveal-map
 	ExplodeCrateAction@fire:
 		Weapon: Napalm.Crate
-		SelectionShares: 5000
+		SelectionShares: 5
 	CloakCrateAction:
-		SelectionShares: 5000
+		SelectionShares: 5
 		InitialDelay: 15
 		CloakDelay: 80
 		CloakSound: trans1.aud
 		UncloakSound: trans1.aud
 		Effect: cloak
 	GiveMcvCrateAction:
-		SelectionShares: 1
-		NoBaseSelectionShares: 9000001
+		SelectionShares: 2
+		NoBaseSelectionShares: 9001
 		Unit: mcv
 	RenderSimple:
 	BelowUnits:
