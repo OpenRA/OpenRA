@@ -211,5 +211,25 @@ namespace OpenRA.Graphics
 		{
 			palette.Update( world.WorldActor.TraitsImplementing<IPaletteModifier>() );
 		}
+
+		// Conversion between world and screen coordinates
+		public float2 ScreenPosition(WPos pos)
+		{
+			var c = Game.CellSize/1024f;
+			return new float2(c*pos.X, c*(pos.Y - pos.Z));
+		}
+
+		public int2 ScreenPxPosition(WPos pos)
+		{
+			var c = Game.CellSize/1024f;
+			return new int2((int)(c*pos.X), (int)(c*(pos.Y - pos.Z)));
+		}
+		public float ScreenZOffset(WPos pos) { return pos.Z*Game.CellSize/1024f; }
+
+		public float[] ScreenOffset(WVec vec)
+		{
+			var c = Game.CellSize/1024f;
+			return new float[] {c*vec.X, c*vec.Y, c*vec.Z};
+		}
 	}
 }

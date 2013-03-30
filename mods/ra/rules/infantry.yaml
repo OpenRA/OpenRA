@@ -75,7 +75,7 @@ E2:
 		Speed: 5
 	Armament:
 		Weapon: Grenade
-		LocalOffset: 0,0,0,-13,0
+		LocalOffset: 0,0,555
 		FireDelay: 15
 	AttackFrontal:
 	TakeCover:
@@ -106,10 +106,10 @@ E3:
 		Speed: 3
 	Armament@PRIMARY:
 		Weapon: RedEye
-		LocalOffset: 0,0,0,-13,0
+		LocalOffset: 0,0,555
 	Armament@SECONDARY:
 		Weapon: Dragon
-		LocalOffset: 0,0,0,-13,0
+		LocalOffset: 0,0,555
 	AttackFrontal:
 	TakeCover:
 	-RenderInfantry:
@@ -137,7 +137,7 @@ E4:
 		Speed: 3
 	Armament:
 		Weapon: Flamer
-		LocalOffset: 0,-10,0,-8,0
+		LocalOffset: 427,0,341
 		FireDelay: 8
 	AttackFrontal:
 	TakeCover:
@@ -486,7 +486,7 @@ SHOK:
 		Range: 4
 	Armament:
 		Weapon: PortaTesla
-		LocalOffset: 0,-10,0,-8,0
+		LocalOffset: 427,0,341
 	AttackFrontal:
 	TakeCover:
 	-RenderInfantry:

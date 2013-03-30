@@ -40,6 +40,7 @@
 		RepairBuildings: repair
 	DetectCloaked:
 		Range: 1
+	DebugMuzzlePositions:
 
 ^Tank:
 	AppearsOnRadar:
@@ -81,6 +82,7 @@
 	#WithSmoke:
 	Repairable:
 		RepairBuildings: repair
+	DebugMuzzlePositions:
 
 ^Husk:
 	Health:
@@ -171,6 +173,7 @@
 		CloseEnough: 1
 	DetectCloaked:
 		Range: 2
+	DebugMuzzlePositions:
 
 ^Plane:
 	AppearsOnRadar:
@@ -201,6 +204,7 @@
 	ProximityCaptor:
 		Types:Plane
 	GivesBounty:
+	DebugMuzzlePositions:
 
 ^Helicopter:
 	Inherits: ^Plane
@@ -260,3 +264,4 @@
 	Sellable:
 	GivesBounty:
 	C4Demolishable:
+	DebugMuzzlePositions:

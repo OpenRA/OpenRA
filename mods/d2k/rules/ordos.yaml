@@ -160,7 +160,7 @@ TRIKEO:
 		Image: RAIDER
 	Armament:
 		Weapon: M60mgo
-		LocalOffset: 0,-6,0,-3,0
+		LocalOffset: 256,0,128
 	AttackFrontal:
 
 
@@ -214,7 +214,7 @@ DEVIATORTANK:
 	RenderUnit:
 	Armament:
 		Weapon: FakeMissile
-		LocalOffset: 0,7,0,-2,0 #7
+		LocalOffset: -299,0,85 #7
 	AttackLoyalty:
 	AutoTarget:
 		InitialStance: Defend

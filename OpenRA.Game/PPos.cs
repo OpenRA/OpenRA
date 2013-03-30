@@ -23,6 +23,18 @@ namespace OpenRA
 		public PPos(int x, int y) { X = x; Y = y; }
 
 		public static readonly PPos Zero = new PPos(0, 0);
+		public static PPos FromWPos(WPos pos)
+		{
+			return new PPos(Game.CellSize*pos.X/1024, Game.CellSize*pos.Y/1024);
+		}
+
+		// Temporary hack for things that throw away altitude and
+		// cache screen positions directly. This can go once all
+		// the callers understand world coordinates
+		public static PPos FromWPosHackZ(WPos pos)
+		{
+			return new PPos(Game.CellSize*pos.X/1024, Game.CellSize*(pos.Y - pos.Z)/1024);
+		}
 
 		public static explicit operator PPos(int2 a) { return new PPos(a.X, a.Y); }
 
@@ -72,6 +84,13 @@ namespace OpenRA
 		{
 			return new PPos(Math.Min(r.Right, Math.Max(X, r.Left)),
 							Math.Min(r.Bottom, Math.Max(Y, r.Top)));
+		}
+
+		public WPos ToWPos(int z)
+		{
+			return new WPos(1024*X/Game.CellSize,
+			                1024*Y/Game.CellSize,
+			                1024*z/Game.CellSize);
 		}
 
 		public override int GetHashCode() { return X.GetHashCode() ^ Y.GetHashCode(); }

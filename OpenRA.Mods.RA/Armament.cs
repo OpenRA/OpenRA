@@ -20,9 +20,8 @@ namespace OpenRA.Mods.RA
 {
 	public class Barrel
 	{
-		public PVecInt TurretSpaceOffset;	// position in turret space
-		public PVecInt ScreenSpaceOffset;	// screen-space hack to make things line up good.
-		public int Facing;					// deviation from turret facing
+		public WVec Offset;
+		public WAngle Yaw;
 	}
 
 	[Desc("Allows you to attach weapons to the unit (use @IdentifierSuffix for > 1)")]
@@ -33,12 +32,18 @@ namespace OpenRA.Mods.RA
 		public readonly string Weapon = null;
 		public readonly string Turret = "primary";
 		[Desc("Move the turret backwards when firing.")] 
-		public readonly int Recoil = 0;
+		public readonly int LegacyRecoil = 0;
 		[Desc("Time (in frames) until the weapon can fire again.")] 
 		public readonly int FireDelay = 0;
 
-		public readonly float RecoilRecovery = 0.2f;
-		public readonly int[] LocalOffset = { };
+		[Desc("Muzzle position relative to turret or body. (forward, right, up) triples")]
+		public readonly WRange[] LocalOffset = {};
+		[Desc("Muzzle yaw relative to turret or body.")]
+		public readonly WAngle[] LocalYaw = {};
+		[Desc("Move the turret backwards when firing.")]
+		public readonly WRange Recoil = WRange.Zero;
+		[Desc("Recoil recovery per-frame")]
+		public readonly WRange RecoilRecovery = new WRange(9);
 
 		public object Create(ActorInitializer init) { return new Armament(init.self, this); }
 	}
@@ -49,8 +54,9 @@ namespace OpenRA.Mods.RA
 		public readonly WeaponInfo Weapon;
 		public readonly Barrel[] Barrels;
 		Lazy<Turreted> Turret;
+		Lazy<ILocalCoordinatesModel> Coords;
 
-		public float Recoil { get; private set; }
+		public WRange Recoil;
 		public int FireDelay { get; private set; }
 		public int Burst { get; private set; }
 
@@ -58,25 +64,28 @@ namespace OpenRA.Mods.RA
 		{
 			Info = info;
 
-			// We can't soft-depend on TraitInfo, so we have to wait
-			// until runtime to cache this
-			Turret = Lazy.New(() => self.TraitsImplementing<Turreted>().FirstOrDefault(t => t.info.Turret == info.Turret));
+			// We can't resolve these until runtime
+			Turret = Lazy.New(() => self.TraitsImplementing<Turreted>().FirstOrDefault(t => t.Name == info.Turret));
+			Coords = Lazy.New(() => self.Trait<ILocalCoordinatesModel>());
 
 			Weapon = Rules.Weapons[info.Weapon.ToLowerInvariant()];
 			Burst = Weapon.Burst;
 
+			if (info.LocalOffset.Length % 3 != 0)
+				throw new InvalidOperationException("Invalid LocalOffset array length");
+
 			var barrels = new List<Barrel>();
-			for (var i = 0; i < info.LocalOffset.Length / 5; i++)
+			for (var i = 0; i < info.LocalOffset.Length / 3; i++)
+			{
 				barrels.Add(new Barrel
 				{
-					TurretSpaceOffset = new PVecInt(info.LocalOffset[5 * i], info.LocalOffset[5 * i + 1]),
-					ScreenSpaceOffset = new PVecInt(info.LocalOffset[5 * i + 2], info.LocalOffset[5 * i + 3]),
-					Facing = info.LocalOffset[5 * i + 4],
+					Offset = new WVec(info.LocalOffset[3*i], info.LocalOffset[3*i + 1], info.LocalOffset[3*i + 2]),
+					Yaw = info.LocalYaw.Length > i ? info.LocalYaw[i] : WAngle.Zero
 				});
+			}
 
-			// if no barrels specified, the default is "turret position; turret facing".
 			if (barrels.Count == 0)
-				barrels.Add(new Barrel { TurretSpaceOffset = PVecInt.Zero, ScreenSpaceOffset = PVecInt.Zero, Facing = 0 });
+				barrels.Add(new Barrel { Offset = WVec.Zero, Yaw = WAngle.Zero });
 
 			Barrels = barrels.ToArray();
 		}
@@ -85,9 +94,11 @@ namespace OpenRA.Mods.RA
 		{
 			if (FireDelay > 0)
 				--FireDelay;
-			Recoil = Math.Max(0f, Recoil - Info.RecoilRecovery);
+			Recoil = new WRange(Math.Max(0, Recoil.Range - Info.RecoilRecovery.Range));
 		}
 
+		// Note: facing is only used by the legacy positioning code
+		// The world coordinate model uses Actor.Orientation
 		public void CheckFire(Actor self, AttackBase attack, IMove move, IFacing facing, Target target)
 		{
 			if (FireDelay > 0) return;
@@ -103,20 +114,23 @@ namespace OpenRA.Mods.RA
 			var barrel = Barrels[Burst % Barrels.Length];
 			var destMove = target.IsActor ? target.Actor.TraitOrDefault<IMove>() : null;
 
+			var muzzlePosition = self.CenterPosition + MuzzleOffset(self, barrel);
+			var legacyMuzzlePosition = PPos.FromWPos(muzzlePosition);
+			var legacyMuzzleAltitude = Game.CellSize*muzzlePosition.Z/1024;
+			var legacyFacing = MuzzleOrientation(self, barrel).Yaw.Angle / 4;
+
 			var args = new ProjectileArgs
 			{
 				weapon = Weapon,
 				firedBy = self,
 				target = target,
+				src = legacyMuzzlePosition,
+				srcAltitude = legacyMuzzleAltitude,
 
-				src = (self.CenterLocation + (PVecInt)MuzzlePxPosition(self, facing, barrel).ToInt2()),
-				srcAltitude = move != null ? move.Altitude : 0,
 				dest = target.CenterLocation,
 				destAltitude = destMove != null ? destMove.Altitude : 0,
 
-				facing = barrel.Facing +
-				(Turret.Value != null ? Turret.Value.turretFacing :
-					facing != null ? facing.Facing : Util.GetFacing(target.CenterLocation - self.CenterLocation, 0)),
+				facing = legacyFacing,
 
 				firepowerModifier = self.TraitsImplementing<IFirepowerModifier>()
 					.Select(a => a.GetFirepowerModifier())
@@ -160,42 +174,26 @@ namespace OpenRA.Mods.RA
 
 		public bool IsReloading { get { return FireDelay > 0; } }
 
-		PVecFloat GetUnitspaceBarrelOffset(Actor self, IFacing facing, Barrel b)
+		public WVec MuzzleOffset(Actor self, Barrel b)
 		{
-			if (Turret.Value == null && facing == null)
-				return PVecFloat.Zero;
-
-			var turretFacing = Turret.Value != null ? Turret.Value.turretFacing : facing.Facing;
-			return (PVecFloat)Util.RotateVectorByFacing(b.TurretSpaceOffset.ToFloat2(), turretFacing, .7f);
-		}
-
-		public PVecFloat MuzzlePxPosition(Actor self, IFacing facing, Barrel b)
-		{
-			PVecFloat pos = b.ScreenSpaceOffset;
-
-			// local facing offset doesn't make sense for actors that don't rotate
-			if (Turret.Value == null && facing == null)
-				return pos;
-
+			var bodyOrientation = Coords.Value.QuantizeOrientation(self, self.Orientation);
+			var localOffset = b.Offset + new WVec(-Recoil, WRange.Zero, WRange.Zero);
 			if (Turret.Value != null)
-				pos += Turret.Value.PxPosition(self, facing);
+			{
+				var turretOrientation = Coords.Value.QuantizeOrientation(self, Turret.Value.LocalOrientation(self));
+				localOffset = localOffset.Rotate(turretOrientation);
+				localOffset += Turret.Value.Offset;
+			}
 
-			// Add local unitspace/turretspace offset
-			var f = Turret.Value != null ? Turret.Value.turretFacing : facing.Facing;
-
-			// This is going away, so no point adding unnecessary usings
-			var ru = self.TraitOrDefault<RenderUnit>();
-			var numDirs = (ru != null) ? ru.anim.CurrentSequence.Facings : 8;
-			var quantizedFacing = Util.QuantizeFacing(f, numDirs) * (256 / numDirs);
-
-			pos += (PVecFloat)Util.RotateVectorByFacing(b.TurretSpaceOffset.ToFloat2(), quantizedFacing, .7f);
-			return pos;
+			return Coords.Value.LocalToWorld(localOffset.Rotate(bodyOrientation));
 		}
 
-		public PVecFloat RecoilPxOffset(Actor self, int facing)
+		public WRot MuzzleOrientation(Actor self, Barrel b)
 		{
-			var localRecoil = new float2(0, Recoil);
-			return (PVecFloat)Util.RotateVectorByFacing(localRecoil, facing, .7f);
+			var orientation = self.Orientation + WRot.FromYaw(b.Yaw);
+			if (Turret.Value != null)
+				orientation += Turret.Value.LocalOrientation(self);
+			return orientation;
 		}
 	}
 }

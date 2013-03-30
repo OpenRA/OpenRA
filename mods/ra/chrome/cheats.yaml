@@ -81,9 +81,15 @@ Background@CHEATS_PANEL:
 			Width:PARENT_RIGHT - 30
 			Height:20
 			Text:Show A* Cost
+		Checkbox@SHOW_MUZZLES:
+			X:30
+			Y:350
+			Height:20
+			Width:200
+			Text:Show Muzzle Positions
 		Button@CLOSE:
 			X:30
-			Y:360
+			Y:390
 			Width:PARENT_RIGHT - 60
 			Height:25
 			Text:Close
