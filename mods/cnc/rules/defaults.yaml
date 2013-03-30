@@ -31,6 +31,7 @@
 	AttackMove:
 	AcceptsCloakCrate:
 	WithSmoke:
+	DebugMuzzlePositions:
 
 ^Tank:
 	AppearsOnRadar:
@@ -68,6 +69,7 @@
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
+	DebugMuzzlePositions:
 
 ^Helicopter:
 	AppearsOnRadar:
@@ -93,6 +95,7 @@
 	Explodes:
 		Weapon: HeliExplode
 		EmptyWeapon: HeliExplode
+	DebugMuzzlePositions:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -126,7 +129,6 @@
 	Buildable:
 		Queue: Infantry
 	TakeCover:
-		ProneOffset: 0,-2,0,4
 	RenderInfantryProne:
 	AttackMove:
 	Passenger:
@@ -144,6 +146,7 @@
 	RepairableNear:
 		Buildings: hosp
 		CloseEnough: 1
+	DebugMuzzlePositions:
 
 ^CivInfantry:
 	Inherits: ^Infantry
@@ -194,6 +197,7 @@
 	DrawLineToTarget:
 	ActorLostNotification:
 		Notification: unitlost.aud
+	DebugMuzzlePositions:
 
 ^Ship:
 	AppearsOnRadar:
@@ -213,6 +217,7 @@
 	ActorLostNotification:
 		Notification: unitlost.aud
 	AttackMove:
+	DebugMuzzlePositions:
 
 ^Building:
 	AppearsOnRadar:
@@ -261,6 +266,7 @@
 	Capturable:
 	CapturableBar:
 	C4Demolishable:
+	DebugMuzzlePositions:
 
 ^CivBuilding:
 	Inherits: ^Building

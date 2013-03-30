@@ -161,6 +161,61 @@ namespace OpenRA.FileFormats
 				return InvalidValueAction(x, fieldType, field);
 			}
 
+			else if (fieldType == typeof(WRange))
+			{
+				WRange res;
+				if (WRange.TryParse(x, out res))
+					return res;
+
+				return InvalidValueAction(x, fieldType, field);
+			}
+
+			else if (fieldType == typeof(WVec))
+			{
+				var parts = x.Split(',');
+				if (parts.Length == 3)
+				{
+					WRange rx, ry, rz;
+					if (WRange.TryParse(parts[0], out rx) && WRange.TryParse(parts[1], out ry) && WRange.TryParse(parts[2], out rz))
+						return new WVec(rx, ry, rz);
+				}
+
+				return InvalidValueAction(x, fieldType, field);
+			}
+
+			else if (fieldType == typeof(WPos))
+			{
+				var parts = x.Split(',');
+				if (parts.Length == 3)
+				{
+					WRange rx, ry, rz;
+					if (WRange.TryParse(parts[0], out rx) && WRange.TryParse(parts[1], out ry) && WRange.TryParse(parts[2], out rz))
+						return new WPos(rx, ry, rz);
+				}
+
+				return InvalidValueAction(x, fieldType, field);
+			}
+
+			else if (fieldType == typeof(WAngle))
+			{
+				int res;
+				if (int.TryParse(x, out res))
+					return new WAngle(res);
+				return InvalidValueAction(x, fieldType, field);
+			}
+
+			else if (fieldType == typeof(WRot))
+			{
+				var parts = x.Split(',');
+				if (parts.Length == 3)
+				{
+					int rr, rp, ry;
+					if (int.TryParse(x, out rr) && int.TryParse(x, out rp) && int.TryParse(x, out ry))
+						return new WRot(new WAngle(rr), new WAngle(rp), new WAngle(ry));
+				}
+				return InvalidValueAction(x, fieldType, field);
+			}
+
 			else if (fieldType.IsEnum)
 			{
 				if (!Enum.GetNames(fieldType).Select(a => a.ToLower()).Contains(x.ToLower()))

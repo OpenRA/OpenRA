@@ -899,7 +899,7 @@ Rules:
 			DamageCooldown: 0
 		Armament:
 			Weapon: CrateNuke
-			LocalOffset: 0,0,0,-4,0
+			LocalOffset: 0,0,171
 		AttackFrontal:
 		Explodes:
 		DemoTruck:

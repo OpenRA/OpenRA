@@ -2570,13 +2570,14 @@ Rules:
 			ROT: 1
 		Armament@PRIMARY:
 			Weapon: SuperTankPrimary
-			LocalOffset: -4,-5,0,0,0, 4,-5,0,0,0
-			Recoil: 4
-			RecoilRecovery: 0.7
+			LocalOffset: 213,-171,0, 213,171,0
+			Recoil: 171
+			RecoilRecovery: 30
 		Armament@SECONDARY:
 			Weapon: MammothTusk
-			LocalOffset: -7,2,0,0,25, 7,2,0,0,-25
-			Recoil: 1
+			LocalOffset: -85,-299,0, -85,299,0
+			LocalYaw: -100,100
+			Recoil: 43
 		AttackTurreted:
 		RenderUnitTurreted:
 			Image: 4TNK

@@ -54,8 +54,8 @@ V2RL:
 		ROT: 5
 	Armament:
 		Weapon: 25mm
-		Recoil: 2
-		RecoilRecovery: 0.5
+		Recoil: 85
+		RecoilRecovery: 25
 	AttackTurreted:
 	RenderUnitTurreted:
 	AutoTarget:
@@ -93,8 +93,8 @@ V2RL:
 		ROT: 5
 	Armament:
 		Weapon: 90mm
-		Recoil: 3
-		RecoilRecovery: 0.9
+		Recoil: 128
+		RecoilRecovery: 38
 	AttackTurreted:
 	RenderUnitTurreted:
 	AutoTarget:
@@ -134,9 +134,9 @@ V2RL:
 		ROT: 5
 	Armament:
 		Weapon: 105mm
-		Recoil: 3
-		RecoilRecovery: 0.9
-		LocalOffset: 2,0,0,0,0, -2,0,0,0,0
+		Recoil: 128
+		RecoilRecovery: 38
+		LocalOffset: 0,85,0, 0,-85,0
 	AttackTurreted:
 	RenderUnitTurreted:
 	AutoTarget:
@@ -176,13 +176,14 @@ V2RL:
 		ROT: 1
 	Armament@PRIMARY:
 		Weapon: 120mm
-		LocalOffset: -4,-5,0,0,0, 4,-5,0,0,0
-		Recoil: 4
-		RecoilRecovery: 0.7
+		LocalOffset: 800,180,340, 800,-180,340
+		Recoil: 171
+		RecoilRecovery: 30
 	Armament@SECONDARY:
 		Weapon: MammothTusk
-		LocalOffset: -7,2,0,0,25, 7,2,0,0,-25
-		Recoil: 1
+		LocalOffset: -85,384,340, -85,-384,340
+		LocalYaw: -100,100
+		Recoil: 43
 	AttackTurreted:
 	RenderUnitTurreted:
 	AutoTarget:
@@ -338,7 +339,7 @@ JEEP:
 		Range: 8
 	Turreted:
 		ROT: 10
-		Offset: 0,0,0,-2
+		Offset: 0,0,85
 	Armament:
 		Weapon: M60mg
 	AttackTurreted:
@@ -375,7 +376,7 @@ APC:
 		Range: 5
 	Armament:
 		Weapon: M60mg
-		LocalOffset: 0,0,0,-4,0
+		LocalOffset: 0,0,171
 	AttackFrontal:
 	RenderUnit:
 	WithMuzzleFlash:
@@ -641,7 +642,7 @@ TTNK:
 		Range: 7
 	Armament:
 		Weapon: TTankZap
-		LocalOffset: 0,0,0,-5,0
+		LocalOffset: 0,0,213
 	AttackFrontal:
 	RenderUnitSpinner:
 	Selectable:
@@ -673,10 +674,10 @@ FTRK:
 		Range: 4
 	Turreted:
 		ROT: 5
-		Offset: 0,5,0,-4
+		Offset: -300,0,300
 	Armament:
 		Weapon: FLAK-23
-		Recoil: 2
+		Recoil: 85
 	AttackTurreted:
 	RenderUnitTurreted:
 	AutoTarget:
@@ -749,9 +750,11 @@ CTNK:
 	DebugNextAutoTargetScanTime:
 	Armament@PRIMARY:
 		Weapon: ChronoTusk
-		LocalOffset: -4,0,0,0,0, -4,0,0,0,0
+		LocalOffset: 0,-171,0
+		LocalYaw: 100
 	Armament@SECONDARY:
 		Weapon: ChronoTusk
-		LocalOffset: 4,0,0,0,25, 4,0,0,0,-25
+		LocalOffset: 0,171,0
+		LocalYaw: -100
 	AttackFrontal:
 	ChronoshiftDeploy:

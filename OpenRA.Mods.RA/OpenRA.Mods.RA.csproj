@@ -420,6 +420,7 @@
     <Compile Include="FogPalette.cs" />
     <Compile Include="Infiltrates.cs" />
     <Compile Include="Armament.cs" />
+    <Compile Include="DebugMuzzlePositions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

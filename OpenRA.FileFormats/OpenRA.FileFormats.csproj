@@ -132,6 +132,11 @@
     <Compile Include="Support\Timer.cs" />
     <Compile Include="Thirdparty\Random.cs" />
     <Compile Include="TypeDictionary.cs" />
+    <Compile Include="WPos.cs" />
+    <Compile Include="WVec.cs" />
+    <Compile Include="WAngle.cs" />
+    <Compile Include="WRot.cs" />
+    <Compile Include="WRange.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

@@ -27,6 +27,10 @@ namespace OpenRA.Traits
 		[Desc("Change the sprite image size.")]
 		public readonly float Scale = 1f;
 
+		[Desc("Number of facings for gameplay calculations. -1 indiciates auto-detection from sequence")]
+		public readonly int QuantizedFacings = -1;
+
+		public readonly WAngle CameraPitch = WAngle.FromDegrees(40);
 		public virtual object Create(ActorInitializer init) { return new RenderSimple(init.self); }
 
 		public virtual IEnumerable<Renderable> RenderPreview(ActorInfo building, PaletteReference pr)
@@ -38,7 +42,7 @@ namespace OpenRA.Traits
 		}
 	}
 
-	public class RenderSimple : IRender, IAutoSelectionSize, ITick, INotifyOwnerChanged
+	public class RenderSimple : IRender, ILocalCoordinatesModel, IAutoSelectionSize, ITick, INotifyOwnerChanged
 	{
 		public Dictionary<string, AnimationWithOffset> anims = new Dictionary<string, AnimationWithOffset>();
 
@@ -139,6 +143,23 @@ namespace OpenRA.Traits
 			if (anim.HasSequence(name))
 				anim.PlayThen(NormalizeSequence(self, name),
 					() => anim.PlayRepeating(NormalizeSequence(self, "idle")));
+		}
+
+		public WVec LocalToWorld(WVec vec)
+		{
+			// RA's 2d perspective doesn't correspond to an orthonormal 3D
+			// coordinate system, so fudge the y axis to make things look good
+			return new WVec(vec.Y, -Info.CameraPitch.Sin()*vec.X/1024, vec.Z);
+		}
+
+		public WRot QuantizeOrientation(Actor self, WRot orientation)
+		{
+			// Map yaw to the closest facing
+			var numDirs = Info.QuantizedFacings == -1 ? anim.CurrentSequence.Facings : Info.QuantizedFacings;
+			var facing = Util.QuantizeFacing(orientation.Yaw.Angle / 4, numDirs) * (256 / numDirs);
+
+			// Roll and pitch are always zero
+			return new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(facing));
 		}
 	}
 }

@@ -34,6 +34,7 @@
 		String:Vehicle
 	WithSmoke:
 	UpdatesPlayerStatistics:
+	DebugMuzzlePositions:
 
 ^Tank:
 	AppearsOnRadar:
@@ -71,6 +72,7 @@
 		String:Vehicle
 	WithSmoke:
 	UpdatesPlayerStatistics:
+	DebugMuzzlePositions:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -122,6 +124,7 @@
 		Buildings: hosp
 		CloseEnough: 1
 	UpdatesPlayerStatistics:
+	DebugMuzzlePositions:
 
 ^Ship:
 	AppearsOnRadar:
@@ -150,6 +153,7 @@
 		String:Ship
 	WithSmoke:
 	UpdatesPlayerStatistics:
+	DebugMuzzlePositions:
 
 ^Plane:
 	AppearsOnRadar:
@@ -179,6 +183,7 @@
 	GpsDot:
 		String:Plane
 	UpdatesPlayerStatistics:
+	DebugMuzzlePositions:
 
 ^Helicopter:
 	Inherits: ^Plane
@@ -223,6 +228,7 @@
 	GivesBounty:
 	UpdatesPlayerStatistics:
 	C4Demolishable:
+	DebugMuzzlePositions:
 
 ^Wall:
 	AppearsOnRadar:
