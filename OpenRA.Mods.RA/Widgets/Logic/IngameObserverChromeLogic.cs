@@ -10,6 +10,7 @@
 
 using OpenRA.Traits;
 using OpenRA.Widgets;
+using OpenRA.Network;
 using System;
 using System.Drawing;
 using System.Linq;
@@ -24,9 +25,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public IngameObserverChromeLogic(World world)
 		{
-			Game.AddChatLine += AddChatLine;
-			Game.BeforeGameStart += UnregisterEvents;
-
 			var r = Ui.Root;
 			gameRoot = r.Get("OBSERVER_ROOT");
 			var optionsBG = gameRoot.Get("INGAME_OPTIONS_BG");
@@ -59,6 +57,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			Ui.Root.Get<ButtonWidget>("INGAME_STATS_BUTTON").OnClick = () => gameRoot.Get("OBSERVER_STATS").Visible ^= true;
 
+			if (!world.IsShellmap)
+			{
+				var chatPanel = Game.LoadWidget(world, "CHAT_PANEL", Ui.Root, new WidgetArgs());
+				gameRoot.AddChild(chatPanel);
+			}
+
 			var shroudSelector = Ui.Root.GetOrNull<DropDownButtonWidget>("SHROUD_SELECTOR");
 			if (shroudSelector != null)
 			{
@@ -89,17 +93,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					shroudSelector.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count() * 30, options, setupItem);
 				};
 			}
-		}
-
-		void UnregisterEvents()
-		{
-			Game.AddChatLine -= AddChatLine;
-			Game.BeforeGameStart -= UnregisterEvents;
-		}
-
-		void AddChatLine(Color c, string from, string text)
-		{
-			gameRoot.Get<ChatDisplayWidget>("CHAT_DISPLAY").AddLine(c, from, text);
 		}
 
 		class DropDownOption
