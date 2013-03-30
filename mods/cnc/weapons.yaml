@@ -68,7 +68,7 @@ Atomic:
 			None: 90%
 			Wood: 60%
 			Light: 60%
-			Heavy: 25%
+			Heavy: 50%
 		Explosion: 6
 		InfDeath: 5
 		ImpactSound: nukexplo
@@ -82,33 +82,29 @@ Atomic:
 			None: 90%
 			Wood: 60%
 			Light: 60%
-			Heavy: 25%
+			Heavy: 50%
 		Delay: 3
 		InfDeath: 5
 		ImpactSound: xplobig4
 
 IonCannon:
+	ValidTargets: Ground, Air
 	Warhead@impact:
-		Damage: 500
-		Spread: 6
+		Damage: 900
+		Spread: 16
 		Ore: true
 		Versus: 
 			None: 100%
 			Wood: 100%
-			Light: 60%
-			Heavy: 45%
+			Light: 100%
+			Heavy: 100%
 		InfDeath: 5
 	Warhead@area:
 		DamageModel: PerCell
-		Damage: 200
+		Damage: 0
 		SmudgeType: Scorch
 		Size: 2,1
 		Ore: true
-		Versus: 
-			None: 90%
-			Wood: 60%
-			Light: 60%
-			Heavy: 25%
 		Delay: 3
 		InfDeath: 5
 
@@ -129,13 +125,13 @@ Sniper:
 		InfDeath: 2
 
 HighV:
-	ROF: 40
+	ROF: 30
 	Range: 6
 	Report: GUN8
 	Projectile: Bullet
 		Speed: 100
 	Warhead:
-		Damage: 40
+		Damage: 50
 		Spread: 3
 		Versus: 
 			None: 100%
@@ -234,7 +230,7 @@ Rockets:
 		ROT: 15
 		Trail: smokey
 		Speed: 35
-		RangeLimit: 40
+		RangeLimit: 30
 	Warhead:
 		Spread: 3
 		Versus: 
@@ -283,7 +279,7 @@ BikeRockets:
 
 OrcaAGMissiles:
 	ROF: 10
-	Burst: 2
+	Burst: 1
 	BurstDelay: 0
 	Range: 5
 	Report: BAZOOK1
@@ -310,11 +306,11 @@ OrcaAGMissiles:
 		Explosion: 4
 		ImpactSound: xplos
 		SmudgeType: Crater
-		Damage: 20
+		Damage: 40
 
 OrcaAAMissiles:
 	ROF: 10
-	Burst: 2
+	Burst: 1
 	BurstDelay: 0
 	Range: 5
 	Report: BAZOOK1
@@ -341,7 +337,7 @@ OrcaAAMissiles:
 		Explosion: 4
 		ImpactSound: xplos
 		SmudgeType: Crater
-		Damage: 20
+		Damage: 40
 
 Flamethrower:
 	ROF: 50
@@ -613,7 +609,7 @@ MammothMissiles:
 		Spread: 3
 		Versus:
 			None: 35%
-			Wood: 90%
+			Wood: 50%
 			Light: 100%
 			Heavy: 90%
 		InfDeath: 4

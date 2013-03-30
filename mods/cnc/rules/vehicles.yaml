@@ -56,8 +56,9 @@ HARV:
 		Bounds: 36,36
 	Harvester:
 		Resources: Tiberium, BlueTiberium
-		PipCount: 5
-		Capacity: 15
+		PipCount: 7
+		Capacity: 20
+		UnloadTicksPerBale: 12		# hardcoded default is 4
 		# How far away from our linked proc (refinery) to find resources (in cells):
 		SearchFromProcRadius: 24
 		# How far away from last harvest order location to find more resources (in cells):
@@ -393,9 +394,10 @@ HTNK:
 		Owner: gdi
 	Mobile:
 		Crushes: wall, heavywall, crate, infantry
-		Speed: 3
+		Speed: 4
+		ROT: 3
 	Health:
-		HP: 600
+		HP: 800
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -442,9 +444,9 @@ MSAM:
 		Prerequisites: hq
 		Owner: gdi
 	Mobile:
-		Speed: 8
+		Speed: 7
 	Health:
-		HP: 120
+		HP: 115
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -496,6 +498,7 @@ MLRS:
 	AttackTurreted:
 	RenderUnitTurretedAim:
 	AutoTarget:
+		InitialStance: Defend
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
 	Explodes:
