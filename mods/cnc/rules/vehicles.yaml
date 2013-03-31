@@ -13,7 +13,7 @@ MCV:
 	Selectable:
 		Priority: 3
 	Mobile:
-		Speed: 4
+		Speed: 5
 	Health:
 		HP: 750
 	Armor: 
@@ -397,7 +397,7 @@ HTNK:
 		Speed: 4
 		ROT: 3
 	Health:
-		HP: 800
+		HP: 900
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -444,7 +444,8 @@ MSAM:
 		Prerequisites: hq
 		Owner: gdi
 	Mobile:
-		Speed: 7
+		Speed: 6
+		ROT: 4
 	Health:
 		HP: 120
 	Armor:
@@ -476,7 +477,7 @@ MLRS:
 	Buildable:
 		BuildPaletteOrder: 70
 		Prerequisites: hq
-		Owner: None
+		Owner: nod
 	Mobile:
 		Speed: 6
 	Health:
@@ -489,12 +490,9 @@ MLRS:
 		ROT: 5
 		Offset: -128,0,128
 		AlignWhenIdle: true
-	Armament@PRIMARY:
+	Armament:
 		Weapon: Patriot
-		LocalOffset: 0,-171,0
-	Armament@SECONDARY:
-		Weapon: Patriot
-		LocalOffset:0,171,0
+		LocalOffset: 0,-171,0, 0,171,0
 	AttackTurreted:
 	RenderUnitTurretedAim:
 	AutoTarget:
