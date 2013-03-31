@@ -275,7 +275,7 @@ BikeRockets:
 		Explosion: 4
 		ImpactSound: xplos
 		SmudgeType: Crater
-		Damage: 28
+		Damage: 30
 
 OrcaAGMissiles:
 	ROF: 10
