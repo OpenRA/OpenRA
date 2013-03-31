@@ -8,7 +8,7 @@ MCV:
 		Description: Deploys into another Construction Yard.\n  Unarmed
 	Buildable:
 		BuildPaletteOrder: 100
-		Prerequisites: fix
+		Prerequisites: anyhq
 		Owner: gdi,nod
 	Selectable:
 		Priority: 3
