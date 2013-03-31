@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA.Render
 				anim.Play("turret");
 
 				anims.Add("turret_{0}".F(i++), new AnimationWithOffset(anim,
-					wr => PPos.FromWPosHackZ(WPos.Zero + t.Position(self)).ToFloat2(), null));
+					wr => wr.ScreenPxOffset(t.Position(self)), null));
 			}
 		}
 	}

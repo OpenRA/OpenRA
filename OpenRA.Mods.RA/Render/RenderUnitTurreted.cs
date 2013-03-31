@@ -37,11 +37,11 @@ namespace OpenRA.Mods.RA.Render
 				anim.Play("turret");
 
 				anims.Add("turret_{0}".F(i++), new AnimationWithOffset(anim,
-					wr => TurretPosition(self, turret, facing), null));
+					wr => TurretPosition(self, wr, turret, facing), null));
 			}
 		}
 
-		float2 TurretPosition(Actor self, Turreted t, IFacing facing)
+		float2 TurretPosition(Actor self, WorldRenderer wr, Turreted t, IFacing facing)
 		{
 			var recoil = self.TraitsImplementing<Armament>()
 				.Where(w => w.Info.Turret == t.Name)
@@ -50,9 +50,9 @@ namespace OpenRA.Mods.RA.Render
 			var localOffset = new WVec(-recoil, WRange.Zero, WRange.Zero);
 			var bodyOrientation = QuantizeOrientation(self, self.Orientation);
 			var turretOrientation = QuantizeOrientation(self, t.LocalOrientation(self));
-			var worldPos = WPos.Zero + t.Position(self) + LocalToWorld(localOffset.Rotate(turretOrientation).Rotate(bodyOrientation));
+			var worldPos = t.Position(self) + LocalToWorld(localOffset.Rotate(turretOrientation).Rotate(bodyOrientation));
 
-			return PPos.FromWPosHackZ(worldPos).ToFloat2();
+			return wr.ScreenPxOffset(worldPos);
 		}
 	}
 }
