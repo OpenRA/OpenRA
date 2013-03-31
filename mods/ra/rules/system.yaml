@@ -697,25 +697,39 @@ CRATE:
 		Unit: mcv
 	GiveUnitCrateAction@jeep:
 		SelectionShares: 7
-		Unit: jeep
+		Units: jeep
+		GivenTo: allies
 	GiveUnitCrateAction@arty:
 		SelectionShares: 6
-		Unit: arty
+		Units: arty
+		GivenTo: allies
 	GiveUnitCrateAction@v2rl:
 		SelectionShares: 6
-		Unit: v2rl
+		Units: v2rl
+		GivenTo: soviet
 	GiveUnitCrateAction@1tnk:
 		SelectionShares: 5
-		Unit: 1tnk
+		Units: 1tnk
+		GivenTo: allies
+	GiveUnitCrateAction@squad1:
+		SelectionShares: 5
+		Units: e1,e1,e3
+	GiveUnitCrateAction@squad2:
+		SelectionShares: 5
+		Units: e1,e3,e4
+		GivenTo: soviet
 	GiveUnitCrateAction@2tnk:
 		SelectionShares: 4
-		Unit: 2tnk
+		Units: 2tnk
+		GivenTo: allies
 	GiveUnitCrateAction@3tnk:
 		SelectionShares: 4
-		Unit: 3tnk
+		Units: 3tnk
+		GivenTo: soviet
 	GiveUnitCrateAction@4tnk:
 		SelectionShares: 3
-		Unit: 4tnk
+		Units: 4tnk
+		GivenTo: soviet
 	RenderSimple:
 	BelowUnits:
 	ProximityCaptor:

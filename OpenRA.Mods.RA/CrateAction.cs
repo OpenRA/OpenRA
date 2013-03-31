@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA
 		public string Notification = null;
 		[ActorReference]
 		public string[] ExcludedActorTypes = { };
-
+		public readonly string[] GivenTo = { };
 		public virtual object Create(ActorInitializer init) { return new CrateAction(init.self, this); }
 	}
 
@@ -43,6 +43,9 @@ namespace OpenRA.Mods.RA
 		public int GetSelectionSharesOuter(Actor collector)
 		{
 			if (info.ExcludedActorTypes.Contains(collector.Info.Name))
+				return 0;
+
+			if (info.GivenTo.Any() && !info.GivenTo.Contains(collector.Owner.Country.Race))
 				return 0;
 
 			return GetSelectionShares(collector);
