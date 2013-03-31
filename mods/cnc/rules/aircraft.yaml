@@ -28,10 +28,10 @@ TRAN:
 		Range: 8
 	RenderUnit:
 	WithRotor@PRIMARY:
-		Offset: 0,14,0,-4
+		Offset: -597,0,171
 	WithRotor@SECONDARY:
 		Id: rotor_2
-		Offset: 0,-14,0,-2
+		Offset: 597,0,85
 	WithShadow:
 	Cargo:
 		Types: Infantry
@@ -84,7 +84,7 @@ HELI:
 		Period: 200
 	RenderUnit:
 	WithRotor:
-		Offset: 0,0,0,-2
+		Offset: 0,0,85
 	WithMuzzleFlash:
 	WithShadow:
 	FallsToEarth:
