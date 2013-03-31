@@ -47,6 +47,7 @@ FACT:
 	ProductionBar:
 	BaseProvider:
 		Cooldown: 200
+		Range: 14
 
 NUKE:
 	Inherits: ^Building
@@ -84,7 +85,7 @@ NUK2:
 		Prerequisite: anypower
 	Buildable:
 		BuildPaletteOrder: 30
-		Prerequisites: hq
+		Prerequisites: anyhq
 		Owner: gdi,nod
 	Building:
 		Power: 200
@@ -434,7 +435,7 @@ EYE:
 		Prerequisite: anyhq
 	Buildable:
 		BuildPaletteOrder: 100
-		Prerequisites: hq
+		Prerequisites: anyhq
 		Owner: gdi
 	Building:
 		Power: -200
@@ -474,7 +475,7 @@ TMPL:
 		Prerequisite: anyhq
 	Buildable:
 		BuildPaletteOrder: 100
-		Prerequisites: hq
+		Prerequisites: anyhq
 		Owner: nod
 	Building:
 		Power: -150
@@ -534,7 +535,7 @@ GUN:
 	RenderRangeCircle:
 	RenderDetectionCircle:
 	DetectCloaked:
-		Range: 3
+		Range: 4
 
 SAM:
 	Inherits: ^Building
@@ -653,7 +654,7 @@ GTWR:
 	DebugNextAutoTargetScanTime:
 	-AutoTargetIgnore:
 	DetectCloaked:
-		Range: 3
+		Range: 4
 	RenderDetectionCircle:
 	RenderRangeCircle:
 	WithMuzzleFlash:
@@ -672,7 +673,7 @@ ATWR:
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 60
-		Prerequisites: hq
+		Prerequisites: anyhq
 		Owner: gdi
 	Building:
 		Power: -30

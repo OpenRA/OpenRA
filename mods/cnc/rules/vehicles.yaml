@@ -8,12 +8,12 @@ MCV:
 		Description: Deploys into another Construction Yard.\n  Unarmed
 	Buildable:
 		BuildPaletteOrder: 100
-		Prerequisites: fix
+		Prerequisites: anyhq
 		Owner: gdi,nod
 	Selectable:
 		Priority: 3
 	Mobile:
-		Speed: 4
+		Speed: 5
 	Health:
 		HP: 750
 	Armor: 
@@ -131,7 +131,7 @@ ARTY:
 		Description: Long-range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
 	Buildable:
 		BuildPaletteOrder: 40
-		Prerequisites: hq
+		Prerequisites: anyhq
 		Owner: nod
 	Mobile:
 		ROT: 2
@@ -165,7 +165,7 @@ FTNK:
 		Description: Heavily armored flame-throwing vehicle.\n  Strong vs Infantry, Buildings\n  Weak vs Aircraft
 	Buildable:
 		BuildPaletteOrder: 50
-		Prerequisites: hq
+		Prerequisites: anyhq
 		Owner: nod
 	Mobile:
 		ROT: 7
@@ -311,7 +311,7 @@ LTNK:
 		Description: Light Tank, good for scouting.\n  Strong vs Light Vehicles\n  Weak vs Tanks, Aircraft
 	Buildable:
 		BuildPaletteOrder: 40
-		Prerequisites: hq
+		Prerequisites: anyhq
 		Owner: nod
 	Mobile:
 		ROT: 7	
@@ -350,7 +350,7 @@ MTNK:
 		Description: General-Purpose GDI Tank.\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
 	Buildable:
 		BuildPaletteOrder: 40
-		Prerequisites: hq
+		Prerequisites: anyhq
 		Owner: gdi
 	Mobile:
 		Speed: 6
@@ -397,7 +397,7 @@ HTNK:
 		Speed: 4
 		ROT: 3
 	Health:
-		HP: 800
+		HP: 900
 	Armor:
 		Type: Heavy
 	RevealsShroud:
@@ -441,10 +441,11 @@ MSAM:
 		Description: Long range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
 	Buildable:
 		BuildPaletteOrder: 50
-		Prerequisites: hq
+		Prerequisites: anyhq
 		Owner: gdi
 	Mobile:
-		Speed: 7
+		Speed: 6
+		ROT: 4
 	Health:
 		HP: 120
 	Armor:
@@ -475,8 +476,8 @@ MLRS:
 		Description: Powerful anti-air unit.\nCannot attack ground units.
 	Buildable:
 		BuildPaletteOrder: 70
-		Prerequisites: hq
-		Owner: None
+		Prerequisites: anyhq
+		Owner: nod
 	Mobile:
 		Speed: 6
 	Health:
@@ -489,12 +490,9 @@ MLRS:
 		ROT: 5
 		Offset: -128,0,128
 		AlignWhenIdle: true
-	Armament@PRIMARY:
+	Armament:
 		Weapon: Patriot
-		LocalOffset: 0,-171,0
-	Armament@SECONDARY:
-		Weapon: Patriot
-		LocalOffset:0,171,0
+		LocalOffset: 0,-171,0, 0,171,0
 	AttackTurreted:
 	RenderUnitTurretedAim:
 	AutoTarget:
