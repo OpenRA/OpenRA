@@ -26,7 +26,6 @@ namespace OpenRA
 		public static readonly PVecInt Zero = new PVecInt(0, 0);
 		public static PVecInt OneCell { get { return new PVecInt(Game.CellSize, Game.CellSize); } }
 
-		public static implicit operator PVecFloat(PVecInt a) { return new PVecFloat((float)a.X, (float)a.Y); }
 		public static explicit operator PVecInt(int2 a) { return new PVecInt(a.X, a.Y); }
 
 		public static PVecInt FromRadius(int r) { return new PVecInt(r, r); }

@@ -95,31 +95,4 @@ namespace OpenRA.Mods.RA
 			return WRot.FromYaw(WAngle.FromFacing(turretFacing) - self.Orientation.Yaw);
 		}
 	}
-
-	// TODO: Remove this
-	public class Turret
-	{
-		public PVecInt UnitSpacePosition;	// where, in the unit's local space.
-		public PVecInt ScreenSpacePosition;	// screen-space hack to make things line up good.
-
-		public Turret(int[] offset)
-		{
-			ScreenSpacePosition = (PVecInt) offset.AbsOffset().ToInt2();
-			UnitSpacePosition = (PVecInt) offset.RelOffset().ToInt2();
-		}
-
-		public PVecFloat PxPosition(Actor self, IFacing facing)
-		{
-			// Things that don't have a rotating base don't need the turrets repositioned
-			if (facing == null) return ScreenSpacePosition;
-
-			var ru = self.TraitOrDefault<RenderUnit>();
-			var numDirs = (ru != null) ? ru.anim.CurrentSequence.Facings : 8;
-			var bodyFacing = facing.Facing;
-			var quantizedFacing = Util.QuantizeFacing(bodyFacing, numDirs) * (256 / numDirs);
-
-			return (PVecFloat)Util.RotateVectorByFacing(UnitSpacePosition.ToFloat2(), quantizedFacing, .7f)
-				+ (PVecFloat)ScreenSpacePosition.ToFloat2();
-		}
-	}
 }

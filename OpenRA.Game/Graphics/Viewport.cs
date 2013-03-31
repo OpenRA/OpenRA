@@ -165,7 +165,7 @@ namespace OpenRA.Graphics
 			var avgPos = actors
 				.Select(a => (PVecInt)a.CenterLocation)
 				.Aggregate((a, b) => a + b) / actors.Count();
-			scrollPosition = NormalizeScrollPosition(((PVecFloat)avgPos - (PVecFloat)(1f / (2 * Zoom) * screenSize.ToFloat2())).ToInt2());
+			scrollPosition = NormalizeScrollPosition((avgPos.ToFloat2() - (1f / (2 * Zoom) * screenSize.ToFloat2())).ToInt2());
 		}
 
 		// Rectangle (in viewport coords) that contains things to be drawn
