@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA.Render
 				anim.Play("turret");
 
 				anims.Add("turret_{0}".F(i++), new AnimationWithOffset(anim,
-					() => TurretPosition(self, turret, facing), null));
+					wr => TurretPosition(self, turret, facing), null));
 			}
 		}
 

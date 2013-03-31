@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA
 			var anim = new Animation("fire", () => 0);
 				anim.PlayRepeating(Info.Anim);
 				rs.anims.Add("fire",
-					new AnimationWithOffset(anim, () => new float2(0, -3), null));
+					new AnimationWithOffset(anim, wr => new float2(0, -3), null));
 		}
 
 		public void Tick(Actor self)

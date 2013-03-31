@@ -56,7 +56,7 @@ namespace OpenRA.Mods.RA
 			anim.PlayRepeating(info.Anim);
 
 			ru.anims.Add(info.AnimKey, new AnimationWithOffset(
-				anim, () => pos - new float2(0, alt), null));
+				anim, wr => pos - new float2(0, alt), null));
 		}
 
 		public void Tick(Actor self)
