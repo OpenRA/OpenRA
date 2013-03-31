@@ -589,7 +589,7 @@ MammothMissiles:
 
 227mm.stnk:
 	ROF: 70
-	Range: 8
+	Range: 7
 	Report: ROCKET1
 	Burst: 2
 	BurstDelay: 10
