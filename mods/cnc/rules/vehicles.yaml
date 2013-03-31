@@ -564,8 +564,9 @@ MHQ:
 		Speed: 6
 	RevealsShroud:
 		Range: 6
-	RenderUnitSpinner:
-		Offset: 0,6
+	RenderUnit:
+	WithSpinner:
+		Offset: -256,0,256
 	AttackMove:
 		JustMove: yes
 	Explodes:
