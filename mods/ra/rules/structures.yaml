@@ -904,8 +904,8 @@ WEAP:
 	RenderBuildingWarFactory:
 	RallyPoint:
 	Exit@1:
-		SpawnOffset: 5,0
-		ExitCell: 1,1
+		SpawnOffset: 5,-3
+		ExitCell: 1,2
 	Production:
 		Produces: Vehicle
 	PrimaryBuilding:
