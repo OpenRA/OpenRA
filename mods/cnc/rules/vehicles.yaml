@@ -131,7 +131,7 @@ ARTY:
 		Description: Long-range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
 	Buildable:
 		BuildPaletteOrder: 40
-		Prerequisites: hq
+		Prerequisites: anyhq
 		Owner: nod
 	Mobile:
 		ROT: 2
@@ -165,7 +165,7 @@ FTNK:
 		Description: Heavily armored flame-throwing vehicle.\n  Strong vs Infantry, Buildings\n  Weak vs Aircraft
 	Buildable:
 		BuildPaletteOrder: 50
-		Prerequisites: hq
+		Prerequisites: anyhq
 		Owner: nod
 	Mobile:
 		ROT: 7
@@ -311,7 +311,7 @@ LTNK:
 		Description: Light Tank, good for scouting.\n  Strong vs Light Vehicles\n  Weak vs Tanks, Aircraft
 	Buildable:
 		BuildPaletteOrder: 40
-		Prerequisites: hq
+		Prerequisites: anyhq
 		Owner: nod
 	Mobile:
 		ROT: 7	
@@ -350,7 +350,7 @@ MTNK:
 		Description: General-Purpose GDI Tank.\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
 	Buildable:
 		BuildPaletteOrder: 40
-		Prerequisites: hq
+		Prerequisites: anyhq
 		Owner: gdi
 	Mobile:
 		Speed: 6
@@ -441,7 +441,7 @@ MSAM:
 		Description: Long range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
 	Buildable:
 		BuildPaletteOrder: 50
-		Prerequisites: hq
+		Prerequisites: anyhq
 		Owner: gdi
 	Mobile:
 		Speed: 6
@@ -476,7 +476,7 @@ MLRS:
 		Description: Powerful anti-air unit.\nCannot attack ground units.
 	Buildable:
 		BuildPaletteOrder: 70
-		Prerequisites: hq
+		Prerequisites: anyhq
 		Owner: nod
 	Mobile:
 		Speed: 6
