@@ -281,7 +281,7 @@ OrcaAGMissiles:
 	ROF: 10
 	Burst: 1
 	BurstDelay: 0
-	Range: 5
+	Range: 4
 	Report: BAZOOK1
 	ValidTargets: Ground
 	Projectile: Missile
@@ -312,7 +312,7 @@ OrcaAAMissiles:
 	ROF: 10
 	Burst: 1
 	BurstDelay: 0
-	Range: 5
+	Range: 4
 	Report: BAZOOK1
 	ValidTargets: Air
 	Projectile: Missile
@@ -543,7 +543,7 @@ MammothMissiles:
 		Speed: 25
 		RangeLimit: 35
 	Warhead:
-		Spread: 3
+		Spread: 6
 		Versus: 
 			None: 30%
 			Wood: 75%
@@ -557,7 +557,7 @@ MammothMissiles:
 
 227mm: 
 	ROF: 140
-	Range: 14
+	Range: 12
 	MinRange: 3
 	Burst: 2
 	BurstDelay: 20
@@ -577,8 +577,8 @@ MammothMissiles:
 	Warhead:
 		Spread: 15
 		Versus: 
-			None: 30%
-			Wood: 50%
+			None: 25%
+			Wood: 25%
 			Light: 100%
 			Heavy: 50%
 		InfDeath: 4
@@ -589,7 +589,7 @@ MammothMissiles:
 
 227mm.stnk:
 	ROF: 70
-	Range: 8
+	Range: 7
 	Report: ROCKET1
 	Burst: 2
 	BurstDelay: 10

@@ -33,7 +33,7 @@ E2:
 		Icon: e2icnh
 	Buildable:
 		BuildPaletteOrder: 40
-		Prerequisites: hq
+		Prerequisites: anyhq
 		Owner: gdi
 	Selectable:
 		Bounds: 12,17,0,-6
@@ -93,7 +93,7 @@ E4:
 	Buildable:
 		BuildPaletteOrder: 40
 		Owner: nod
-		Prerequisites: hq
+		Prerequisites: anyhq
 	Selectable:
 		Bounds: 12,17,0,-6
 	Mobile:
