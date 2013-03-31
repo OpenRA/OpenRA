@@ -523,10 +523,7 @@ MGG.Husk:
 		Image: mgg
 	ThrowsParticle@spinner:
 		Anim: spinner-idle
-		Spread: 3,3
-		Speed: 6
-		AnimKey: spinner-idle
-		Offset: 0,6
+		Offset: -299,0,171
 
 MRJ:
 	Inherits: ^Vehicle
@@ -564,9 +561,6 @@ MRJ:
 		Image: 1tnk
 	ThrowsParticle@turret:
 		Anim: turret
-		Spread: 3,3
-		Speed: 6
-		AnimKey: turret
 
 2TNK.Husk:
 	Inherits: ^Husk
@@ -576,9 +570,6 @@ MRJ:
 		Image: 2tnk
 	ThrowsParticle@turret:
 		Anim: turret
-		Spread: 3,3
-		Speed: 6
-		AnimKey: turret
 
 3TNK.Husk:
 	Inherits: ^Husk
@@ -588,9 +579,6 @@ MRJ:
 		Image: 3tnk
 	ThrowsParticle@turret:
 		Anim: turret
-		Spread: 3,3
-		Speed: 6
-		AnimKey: turret
 
 4TNK.Husk:
 	Inherits: ^Husk
@@ -600,9 +588,6 @@ MRJ:
 		Image: 4tnk
 	ThrowsParticle@turret:
 		Anim: turret
-		Spread: 3,3
-		Speed: 6
-		AnimKey: turret
 
 HARV.FullHusk:
 	Inherits: ^Husk
