@@ -34,6 +34,28 @@ namespace OpenRA
 		public static bool operator ==(WPos me, WPos other) { return (me.X == other.X && me.Y == other.Y && me.Z == other.Z); }
 		public static bool operator !=(WPos me, WPos other) { return !(me == other); }
 
+		public static WPos Average(params WPos[] list)
+		{
+			if (list == null || list.Length == 0)
+				return WPos.Zero;
+
+			var x = 0;
+			var y = 0;
+			var z = 0;
+			foreach(var pos in list)
+			{
+				x += pos.X;
+				y += pos.Y;
+				z += pos.Z;
+			}
+
+			x /= list.Length;
+			y /= list.Length;
+			z /= list.Length;
+
+			return new WPos(x,y,z);
+		}
+
 		public override int GetHashCode() { return X.GetHashCode() ^ Y.GetHashCode() ^ Z.GetHashCode(); }
 
 		public override bool Equals(object obj)

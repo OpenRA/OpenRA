@@ -16,7 +16,7 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Traits
 {
-	public class RenderSimpleInfo : ITraitInfo
+	public class RenderSimpleInfo : ITraitInfo, LocalCoordinatesModelInfo
 	{
 		[Desc("Defaults to the actor name.")]
 		public readonly string Image = null;

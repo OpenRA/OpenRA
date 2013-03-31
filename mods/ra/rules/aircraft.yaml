@@ -20,9 +20,9 @@ BADR:
 	Tooltip:
 		Name: Badger
 	Contrail@1:
-		ContrailOffset: 11, -11
+		Offset: -469,469,0
 	Contrail@2:
-		ContrailOffset: -11, -11
+		Offset: -469,-469,0
 	FallsToEarth:
 		Spins: no
 		Moves: yes
@@ -59,9 +59,9 @@ BADR.bomber:
 	Tooltip:
 		Name: Badger
 	Contrail@1:
-		ContrailOffset: 11, -11
+		Offset: 469,469,0
 	Contrail@2:
-		ContrailOffset: -11, -11
+		Offset: 469,-469,0
 	FallsToEarth:
 		Spins: no
 		Moves: yes
@@ -107,6 +107,7 @@ MIG:
 		Speed: 20
 		RearmBuildings: afld
 	RenderUnit:
+		CameraPitch: 99
 	WithShadow:
 	LimitedAmmo:
 		Ammo: 8
@@ -115,9 +116,9 @@ MIG:
 	Selectable:
 		Bounds: 44,40,0,0
 	Contrail@1:
-		ContrailOffset: 16,-14
+		Offset: -598,-683,0
 	Contrail@2:
-		ContrailOffset: -16,-14
+		Offset: -598,683,0
 	FallsToEarth:
 		Spins: no
 		Moves: yes
@@ -160,6 +161,7 @@ YAK:
 		ROT: 5
 		Speed: 16
 	RenderUnit:
+		CameraPitch: 99
 	WithShadow:
 	LimitedAmmo:
 		Ammo: 18
@@ -169,7 +171,7 @@ YAK:
 	ReturnOnIdle:
 	WithMuzzleFlash:
 	Contrail:
-		ContrailOffset: 0, -20
+		Offset: -853,0,0
 	FallsToEarth:
 		Spins: no
 		Moves: yes
@@ -345,9 +347,9 @@ U2:
 	-Selectable:
 	-GainsExperience:
 	Contrail@1:
-		ContrailOffset: 16, -17
+		Offset: -725,683,0
 	Contrail@2:
-		ContrailOffset: -16, -17
+		Offset: -725,-683,0
 	FallsToEarth:
 		Spins: no
 		Moves: yes

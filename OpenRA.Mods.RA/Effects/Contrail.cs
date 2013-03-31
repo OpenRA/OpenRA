@@ -16,9 +16,10 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class ContrailInfo : ITraitInfo
+	class ContrailInfo : ITraitInfo, Requires<LocalCoordinatesModelInfo>
 	{
-		public readonly int[] ContrailOffset = {0, 0};
+		[Desc("Position relative to body")]
+		public readonly WVec Offset = WVec.Zero;
 
 		public readonly int TrailLength = 25;
 		public readonly Color Color = Color.White;
@@ -29,31 +30,31 @@ namespace OpenRA.Mods.RA
 
 	class Contrail : ITick, IPostRender
 	{
-		Turret contrailTurret = null;
+		ContrailInfo info;
 		ContrailHistory history;
-		IFacing facing;
-		IMove move;
+		ILocalCoordinatesModel coords;
 
 		public Contrail(Actor self, ContrailInfo info)
 		{
-			contrailTurret = new Turret(info.ContrailOffset);
+			this.info = info;
 			history = new ContrailHistory(info.TrailLength,
 				info.UsePlayerColor ? ContrailHistory.ChooseColor(self) : info.Color);
-			facing = self.Trait<IFacing>();
-			move = self.Trait<IMove>();
+
+			coords = self.Trait<ILocalCoordinatesModel>();
 		}
 
 		public void Tick(Actor self)
 		{
-			history.Tick(self.CenterLocation - new PVecInt(0, move.Altitude) - (PVecInt)contrailTurret.PxPosition(self, facing).ToInt2());
+			var local = info.Offset.Rotate(coords.QuantizeOrientation(self, self.Orientation));
+			history.Tick(self.CenterPosition + coords.LocalToWorld(local));
 		}
 
-		public void RenderAfterWorld(WorldRenderer wr, Actor self) { history.Render(self); }
+		public void RenderAfterWorld(WorldRenderer wr, Actor self) { history.Render(wr, self); }
 	}
 
 	class ContrailHistory
 	{
-		List<PPos> positions = new List<PPos>();
+		List<WPos> positions = new List<WPos>();
 		readonly int TrailLength;
 		readonly Color Color;
 		readonly int StartSkip;
@@ -74,27 +75,28 @@ namespace OpenRA.Mods.RA
 			this.StartSkip = startSkip;
 		}
 
-		public void Tick(PPos currentPos)
+		public void Tick(WPos currentPos)
 		{
 			positions.Add(currentPos);
 			if (positions.Count >= TrailLength)
 				positions.RemoveAt(0);
 		}
 
-		public void Render(Actor self)
+		public void Render(WorldRenderer wr, Actor self)
 		{
 			Color trailStart = Color;
 			Color trailEnd = Color.FromArgb(trailStart.A - 255 / TrailLength, trailStart.R, trailStart.G, trailStart.B);
 
 			for (int i = positions.Count - 1 - StartSkip; i >= 4; --i)
 			{
-				var conPos = PPos.Average(positions[i], positions[i-1], positions[i-2], positions[i-3]);
-				var nextPos = PPos.Average(positions[i-1], positions[i-2], positions[i-3], positions[i-4]);
+				// World positions
+				var conPos = WPos.Average(positions[i], positions[i-1], positions[i-2], positions[i-3]);
+				var nextPos = WPos.Average(positions[i-1], positions[i-2], positions[i-3], positions[i-4]);
 
-				if (self.World.RenderedShroud.IsVisible(conPos.ToCPos()) ||
-					self.World.RenderedShroud.IsVisible(nextPos.ToCPos()))
+				if (self.World.RenderedShroud.IsVisible(new CPos(conPos)) ||
+				    self.World.RenderedShroud.IsVisible(new CPos(nextPos)))
 				{
-					Game.Renderer.WorldLineRenderer.DrawLine(conPos.ToFloat2(), nextPos.ToFloat2(), trailStart, trailEnd);
+					Game.Renderer.WorldLineRenderer.DrawLine(wr.ScreenPosition(conPos), wr.ScreenPosition(nextPos), trailStart, trailEnd);
 
 					trailStart = trailEnd;
 					trailEnd = Color.FromArgb(trailStart.A - 255 / positions.Count, trailStart.R, trailStart.G, trailStart.B);
