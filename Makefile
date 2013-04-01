@@ -2,7 +2,7 @@ CSC         = gmcs
 CSFLAGS     = -nologo -warn:4 -debug:full -optimize- -codepage:utf8 -unsafe -warnaserror
 DEFINE      = DEBUG;TRACE
 COMMON_LIBS = System.dll System.Core.dll System.Drawing.dll System.Xml.dll thirdparty/ICSharpCode.SharpZipLib.dll thirdparty/FuzzyLogicLibrary.dll
-PHONY       = core tools package all mods clean distclean
+PHONY       = core tools package all mods clean distclean dependencies
 
 .SUFFIXES:
 core: game renderers mods utility tsbuild
@@ -16,6 +16,9 @@ distclean: clean
 dependencies:
 	@ cp -r thirdparty/*.dll .
 	@ cp -r thirdparty/Tao/* .
+default: dependencies core
+
+.DEFAULT_GOAL := default
 
 #
 # Core binaries
@@ -171,7 +174,7 @@ utility_LIBS        = $(COMMON_LIBS) $(utility_DEPS) thirdparty/ICSharpCode.Shar
 PROGRAMS 			+= utility
 utility: $(utility_TARGET)
 
-.PHONY: $(PHONY) $(PROGRAMS) dependencies
+.PHONY: $(PHONY) $(PROGRAMS)
 
 #
 # Generate build rules for each target defined above in PROGRAMS
