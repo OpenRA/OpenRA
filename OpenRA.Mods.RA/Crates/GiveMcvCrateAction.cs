@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Crates
 
 		public override int GetSelectionShares(Actor collector)
 		{
-			if (base.GetSelectionShares(collector) == 0)
+			if (!CanGiveTo(collector))
 				return 0;	// there's some other really good reason why we shouldn't give this.
 
 			var hasBase = self.World.ActorsWithTrait<BaseBuilding>()
