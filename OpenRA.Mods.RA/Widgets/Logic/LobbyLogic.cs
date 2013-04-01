@@ -328,8 +328,18 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		void UpdateCurrentMap()
 		{
-			if (MapUid == orderManager.LobbyInfo.GlobalSettings.Map) return;
+			if (MapUid == orderManager.LobbyInfo.GlobalSettings.Map)
+				return;
 			MapUid = orderManager.LobbyInfo.GlobalSettings.Map;
+
+			if (!Game.modData.AvailableMaps.ContainsKey (MapUid))
+				if (Game.Settings.Game.AllowDownloading)
+				{
+					Game.DownloadMap (MapUid);
+					Game.Debug("A new map has been downloaded...");
+				}
+				else
+					throw new InvalidOperationException("Server's new map doesn't exist on your system and Downloading turned off");
 			Map = new Map(Game.modData.AvailableMaps[MapUid].Path);
 
 			var title = Ui.Root.Get<LabelWidget>("TITLE");
