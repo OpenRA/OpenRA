@@ -570,6 +570,7 @@ debugger.exec = function(command)
               if debugger.breaking then
                 DisplayOutputLn(TR("Debugging suspended at %s:%s (couldn't activate the file).")
                   :format(file, line))
+                updateStackAndWatches()
                 return
               end
               -- redo now; if the call is from the debugger, then repeat
