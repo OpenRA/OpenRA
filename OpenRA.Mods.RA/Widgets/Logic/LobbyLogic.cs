@@ -149,11 +149,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			mapButton.IsVisible = () => mapButton.Visible && Game.IsHost;
 
 			var randomMapButton = lobby.GetOrNull<ButtonWidget>("RANDOMMAP_BUTTON");
-			if (randomMapButton != null && Game.modData.AvailableMaps.Any())
+			var maps = Game.modData.AvailableMaps.Where(m => m.Value.Selectable).ToArray();
+			if (randomMapButton != null && maps.Any())
 			{
 				randomMapButton.OnClick = () =>
 				{
-					var mapUid = Game.modData.AvailableMaps.Random(Game.CosmeticRandom).Key;
+					var mapUid = maps.Random(Game.CosmeticRandom).Key;
 					orderManager.IssueOrder(Order.Command("map " + mapUid));
 					Game.Settings.Server.Map = mapUid;
 					Game.Settings.Save();
