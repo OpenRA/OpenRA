@@ -116,7 +116,7 @@ ORCA:
 		ROT: 4
 		Speed: 20
 	Health:
-		HP: 100
+		HP: 90
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -130,8 +130,8 @@ ORCA:
 	AttackHeli:
 		FacingTolerance: 20
 	LimitedAmmo:
-		Ammo: 6
-		PipCount: 6
+		Ammo: 5
+		PipCount: 5
 	Reloads:
 		Count: 1
 		Period: 100

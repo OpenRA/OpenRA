@@ -131,6 +131,69 @@ Player:
 			jeep: 20%
 			mtnk: 50%
 		SquadSize: 15
+	HackyAI@hard:
+		Name:Hard AI
+		BuildingCommonNames:
+			ConstructionYard: fact
+			Refinery: proc
+			Power: nuke,nuk2
+			Barracks: pyle,hand
+			VehiclesFactory: weap,afld
+			Silo: silo
+		UnitsCommonNames:
+			Mcv: mcv
+		BuildingLimits:
+			proc: 5
+			pyle: 3
+			hand: 6
+			hq: 1
+			weap: 4
+			afld: 3
+			hpad: 1
+			eye: 1
+			tmpl: 1
+			fix: 1
+		BuildingFractions:
+			proc: 17%
+			nuke: 10%	
+			pyle: 7%
+			hand: 9%
+			hq: 1%
+			nuk2: 18%
+			weap: 8%
+			afld: 6%
+			hpad: 4%
+			gtwr: 5%
+			gun: 5%
+			atwr: 9%
+			obli: 7%
+			eye: 1%
+			tmpl: 1%
+			sam: 7%
+			silo: 14%
+			fix: 1%
+		UnitsToBuild:
+			e1: 30%
+			e2: 30%
+			e3: 30%
+			e4: 50%
+			e5: 50%
+			harv: 6%
+			bggy: 10%
+			bike: 10%
+			ltnk: 40%
+			arty: 20%
+			ftnk: 5%
+			stnk: 40%
+			mlrs: 10%
+			heli: 10%
+			jeep: 20%
+			apc: 10%
+			mtnk: 50%
+			msam: 50%
+			htnk: 50%
+			orca: 10%
+		SquadSize: 8
 	PlayerColorPalette:
 		BasePalette: terrain
 		RemapIndex: 176, 178, 180, 182, 184, 186, 189, 191, 177, 179, 181, 183, 185, 187, 188, 190
@@ -271,12 +334,12 @@ CRATE:
 	CloakCrateAction:
 		SelectionShares: 5
 		InitialDelay: 15
-		CloakDelay: 80
+		CloakDelay: 90
 		CloakSound: trans1.aud
 		UncloakSound: trans1.aud
 		Effect: cloak
 	GiveMcvCrateAction:
-		SelectionShares: 2
+		SelectionShares: 0
 		NoBaseSelectionShares: 9001
 		Unit: mcv
 	RenderSimple:
