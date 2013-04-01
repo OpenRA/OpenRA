@@ -212,7 +212,12 @@ function EditorAutoComplete(editor)
 
   local lt = linetx:sub(1,localpos)
   lt = lt:gsub("%s*(["..editor.spec.sep.."])%s*", "%1")
-  lt = lt:match("[^%[%(%s]*$")
+  -- strip closed brace scopes
+  lt = lt:gsub("%b()","")
+  lt = lt:gsub("%b[]","")
+  lt = lt:gsub("%b{}","")
+  -- match from starting brace
+  lt = lt:match("[^%[%(%{%s]*$")
 
   -- know now which string is to be completed
   local userList = CreateAutoCompList(editor,lt)

@@ -193,11 +193,17 @@ app = {
 api = {
   -- global space words, e.g "table"
   ["blah"] = {
-    -- "function", "class", "keyword", "value", "lib"
+    -- "function", "class", "keyword", "value", "lib", "method"
+	-- method is for class:func functions
     type = "function",
     description = "this does something",
 
-    -- value and function:
+    -- value/function/method:
+	-- for autocomplete type guessing, insert the string
+	-- that the variable name is replace with
+	-- e.g. "test = somefunc()"  somefunc has valuetype of "math"
+	-- then typing "test." will be treated as "math." in 
+	-- autcomplete logic
     valuetype = "api.ClassName",
 
     -- function:

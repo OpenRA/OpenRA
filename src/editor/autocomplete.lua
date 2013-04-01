@@ -206,23 +206,30 @@ local function resolveAssign(editor,tx)
     return tab,a
   end
 
-  local classname
-  local c = ""
+  local c
   if (assigns) then
     -- find assign
-    for w,s in tx:gmatch("([%w_]*)([%.:]?)") do
-
-      local old = classname
-      classname = classname or (assigns[c..w])
-      if (s ~= "" and old ~= classname) then
-        c = classname..s
-      else
-        c = c..w..s
+    local change = true
+    while (change) do
+      local classname = nil
+      c = ""
+      change = false
+      for w,s in tx:gmatch("([%w_]*)([%.:]?)") do
+        local old = classname
+        classname = classname or (assigns[c..w])
+        if (s ~= "" and old ~= classname) then
+          c = classname..s
+          change = true
+        else
+          c = c..w..s
+        end
       end
+      tx = c
     end
   else
     c = tx
   end
+  
   -- then work from api
   return getclass(ac,c)
 end
@@ -367,19 +374,29 @@ end
 ------------
 -- Final Autocomplete
 
-local cache = {}
+local cachemain = {}
+local cachemethod = {}
 local laststrategy
-local function getAutoCompApiList(childs,fragment)
+local lastmethod
+local function getAutoCompApiList(childs,fragment,method)
   fragment = fragment:lower()
   local strategy = ide.config.acandtip.strategy
-  if (laststrategy ~= strategy) then cache = {}; laststrategy = strategy end
+  if (laststrategy ~= strategy) then 
+    cachemain = {}
+    cachemethod = {}
+    laststrategy = strategy
+  end
+  
+  local cache = method and cachemethod or cachemain
 
   if (strategy == 2) then
     local wlist = cache[childs]
     if not wlist then
       wlist = " "
-      for i in pairs(childs) do
-        wlist = wlist..i.." "
+      for i,v in pairs(childs) do
+        if ((method and v.type == "method") or (not method and v.type ~= "method")) then
+          wlist = wlist..i.." "
+        end
       end
       cache[childs] = wlist
     end
@@ -406,29 +423,31 @@ local function getAutoCompApiList(childs,fragment)
   cache[childs] = t
 
   local sub = strategy == 1
-  for key in pairs(childs) do
-    local used = {}
-    --
-    local kl = key:lower()
-    for i=0,#key do
-      local k = kl:sub(1,i)
-      t[k] = t[k] or {}
-      used[k] = true
-      table.insert(t[k],key)
-    end
-    if (sub) then
-      -- find camel case / _ separated subwords
-      -- glfwGetGammaRamp -> g, gg, ggr
-      -- GL_POINT_SPRIT -> g, gp, gps
-      local last = ""
-      for ks in string.gmatch(key,"([A-Z%d]*[a-z%d]*_?)") do
-        local k = last..(ks:sub(1,1):lower())
-        last = k
-
+  for key,v in pairs(childs) do
+    if ((method and v.type == "method") or (not method and v.type ~= "method")) then
+      local used = {}
+      --
+      local kl = key:lower()
+      for i=0,#key do
+        local k = kl:sub(1,i)
         t[k] = t[k] or {}
-        if (not used[k]) then
-          used[k] = true
-          table.insert(t[k],key)
+        used[k] = true
+        table.insert(t[k],key)
+      end
+      if (sub) then
+        -- find camel case / _ separated subwords
+        -- glfwGetGammaRamp -> g, gg, ggr
+        -- GL_POINT_SPRIT -> g, gp, gps
+        local last = ""
+        for ks in string.gmatch(key,"([A-Z%d]*[a-z%d]*_?)") do
+          local k = last..(ks:sub(1,1):lower())
+          last = k
+
+          t[k] = t[k] or {}
+          if (not used[k]) then
+            used[k] = true
+            table.insert(t[k],key)
+          end
         end
       end
     end
@@ -446,6 +465,8 @@ function CreateAutoCompList(editor,key)
   local api = editor.api
   local tip = api.tip
   local ac = api.ac
+  
+  local method = key:match(":[^:%.]*$") ~= nil
 
   -- ignore keywords
   if tip.keys[key] then return end
@@ -499,7 +520,7 @@ function CreateAutoCompList(editor,key)
   end
 
   -- list from api
-  local apilist = getAutoCompApiList(tab.childs or tab,rest)
+  local apilist = getAutoCompApiList(tab.childs or tab,rest,method)
   local compstr = ""
   if apilist then
     if (#rest > 0) then
