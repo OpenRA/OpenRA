@@ -259,9 +259,7 @@ namespace OpenRA
 
 			var ID = (voicedUnit != null) ? voicedUnit.ActorID : 0;
 
-			var clip = (voicedUnit != null) ? rules.VoicePools.Value[definition].GetNext() : rules.NotificationsPools.Value[definition].GetNext();
-			if (clip == null) return false;
-
+			string clip;
 			var suffix = rules.DefaultVariant;
 			var prefix = rules.DefaultPrefix;
 
@@ -272,7 +270,21 @@ namespace OpenRA
 
 				if (!rules.VoicePools.Value.ContainsKey("AttackMove"))
 					rules.VoicePools.Value.Add("AttackMove", rules.VoicePools.Value["Move"]);
+
+				if (!rules.VoicePools.Value.ContainsKey(definition))
+					throw new InvalidOperationException("Can't find {0} in voice pool.".F(definition));
+
+				clip = rules.VoicePools.Value[definition].GetNext();
 			}
+			else
+			{
+				if (!rules.NotificationsPools.Value.ContainsKey(definition))
+					throw new InvalidOperationException("Can't find {0} in notification pool.".F(definition));
+
+				clip = rules.NotificationsPools.Value[definition].GetNext();
+			}
+
+			if (String.IsNullOrEmpty(clip)) return false;
 
 			if (variant != null)
 			{
