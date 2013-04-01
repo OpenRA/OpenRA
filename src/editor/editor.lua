@@ -573,9 +573,20 @@ function CreateEditor()
       SetDocumentModified(editor:GetId(), true)
     end)
 
+  -- "updateStatusText" should be called in UPDATEUI event, but it creates
+  -- several performance problems on Windows (using wx2.9.5+) when
+  -- brackets or backspace is used (very slow screen repaint with 0.5s delay).
+  -- Moving it to PAINTED event creates problems on OSX (using wx2.9.5+),
+  -- where refresh of R/W and R/O status in the status bar is delayed.
+
+  editor:Connect(wxstc.wxEVT_STC_PAINTED,
+    function ()
+      if ide.osname == 'Windows' then updateStatusText(editor) end
+    end)
+
   editor:Connect(wxstc.wxEVT_STC_UPDATEUI,
     function ()
-      updateStatusText(editor)
+      if ide.osname ~= 'Windows' then updateStatusText(editor) end
       updateBraceMatch(editor)
       local minupdated
       for _,iv in ipairs(editor.ev) do
