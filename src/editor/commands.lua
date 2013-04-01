@@ -543,15 +543,22 @@ function GetOpenFiles()
   return opendocs, {index = (id and openDocuments[id].index or 0)}
 end
 
+local function scrollToPos(editor, pos)
+  editor:GotoPos(pos)
+  -- GotoPos should work by itself, but it doesn't (wx 2.9.5).
+  -- It's off by one line on Windows and by two lines on OSX.
+  -- This code corrects for that discrepancy. The horizontal scrollbar
+  -- is still off, so the scrolling is always moved to the zero offset.
+  local nowline = editor:DocLineFromVisible(editor:GetFirstVisibleLine())
+  local wantline = editor:LineFromPosition(pos)
+  editor:LineScroll(0, wantline-nowline)
+  editor:SetXOffset(0)
+end
+
 function SetOpenFiles(nametab,params)
   for i,doc in ipairs(nametab) do
     local editor = LoadFile(doc.filename,nil,true,true) -- skip selection
-    if editor then
-      editor:SetCurrentPos(doc.cursorpos or 0)
-      editor:SetSelectionStart(doc.cursorpos or 0)
-      editor:SetSelectionEnd(doc.cursorpos or 0)
-      editor:EnsureCaretVisible()
-    end
+    if editor then scrollToPos(editor, doc.cursorpos or 0) end
   end
   notebook:SetSelection(params and params.index or 0)
   SetEditorSelection()
@@ -612,10 +619,7 @@ function SetOpenTabs(params)
           :format(doc.filename, doc.tabname))
       end
     end
-    editor:SetCurrentPos(doc.cursorpos or 0)
-    editor:SetSelectionStart(doc.cursorpos or 0)
-    editor:SetSelectionEnd(doc.cursorpos or 0)
-    editor:EnsureCaretVisible()
+    scrollToPos(editor, doc.cursorpos or 0)
   end
   notebook:SetSelection(params and params.index or 0)
   SetEditorSelection()
