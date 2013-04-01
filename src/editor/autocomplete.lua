@@ -119,7 +119,7 @@ local function fillTips(api,apibasename,apiname)
     if not tab.childs then return end
     for key,info in pairs(tab.childs) do
       traverse(info,key)
-      if info.type == "function" then
+      if info.type == "function" or info.type == "method" then
         local libstr = libname ~= "" and libname.."." or ""
 
         -- fix description
@@ -394,7 +394,9 @@ local function getAutoCompApiList(childs,fragment,method)
     if not wlist then
       wlist = " "
       for i,v in pairs(childs) do
-        if ((method and v.type == "method") or (not method and v.type ~= "method")) then
+        -- if type == "method", then only a:b is allowed,
+        -- in all other cases both a.b and a:b are allowed.
+        if (method or v.type ~= "method") then
           wlist = wlist..i.." "
         end
       end

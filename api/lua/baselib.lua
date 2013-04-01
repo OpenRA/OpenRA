@@ -739,6 +739,7 @@ return {
         description = "When called with a file name, it opens the named file (in text mode), and sets its handle as the default input file. When called with a file handle, it simply sets this file handle as the default input file. When called without parameters, it returns the current default input file.\n\nIn case of errors this function raises the error, instead of returning an error code.",
         args = "([file: string|file])",
         returns = "([file])",
+        valuetype = "f",
       },
       lines = {
         type = "function",
@@ -751,18 +752,21 @@ return {
         description = "This function opens a file, in the mode specified in the string mode.\n\nIt returns a new file handle, or, in case of errors, nil plus an error message.\n\nThe mode string can be any of the following:\n\n* \"r\": read mode (the default);\n\n* \"w\": write mode;\n\n* \"a\": append mode;\n\n* \"r+\": update mode, all previous data is preserved;\n\n* \"w+\": update mode, all previous data is erased;\n\n* \"a+\": append update mode, previous data is preserved, writing is only allowed at the end of file.\n\nThe mode string can also have a 'b' at the end, which is needed in some systems to open the file in binary mode.",
         args = "(filename: string [, mode: string])",
         returns = "(file|nil [, string])",
+        valuetype = "f",
       },
       output = {
         type = "function",
         description = "When called with a file name, it opens the named file (in text mode), and sets its handle as the default output file. When called with a file handle, it simply sets this file handle as the default output file. When called without parameters, it returns the current default output file.\n\nIn case of errors this function raises the error, instead of returning an error code.",
         args = "([file: string|file])",
         returns = "([file])",
+        valuetype = "f",
       },
       popen = {
         type = "function",
         description = "Starts program prog in a separated process and returns a file handle that you can use to read data from this program (if mode is \"r\", the default) or to write data to this program (if mode is \"w\").\n\nThis function is system dependent and is not available on all platforms.",
         args = "(prog: string [, mode: string])",
         returns = "(file|nil [, string])",
+        valuetype = "f",
       },
       read = {
         type = "function",
@@ -775,6 +779,7 @@ return {
         description = "Returns a handle for a temporary file.\n\nThis file is opened in update mode and it is automatically removed when the program ends.",
         args = "()",
         returns = "(file)",
+        valuetype = "f",
       },
       type = {
         type = "function",
@@ -796,43 +801,43 @@ return {
     description = "Pseudoclass for operations on file handles.",
     childs = {
       close = {
-        type = "function",
+        type = "method",
         description = "Closes file.\n\nNote that files are automatically closed when their handles are garbage collected, but that takes an unpredictable amount of time to happen.\n\nWhen closing a file handle created with io.popen, file:close returns the same values returned by os.execute. RETURN SPECIAL CASE ADDED IN Lua 5.2.",
         args = "(file: file)",
         returns = "(boolean|nil [, string, number])",
       },
       flush = {
-        type = "function",
+        type = "method",
         description = "Saves any written data to file.",
         args = "(file: file)",
         returns = "(boolean|nil [, string])",
       },
       lines = {
-        type = "function",
+        type = "method",
         description = "Returns an iterator function that, each time it is called, reads the file according to the given formats.\n\nWhen no format is given, uses \"*l\" as a default. ARGUMENT ADDED IN Lua 5.2.\n\nUnlike io.lines, this function does not close the file when the loop ends.\n\nIn case of errors this function raises the error, instead of returning an error code.",
         args = "(file: file, ...)",
         returns = "(function)",
       },
       read = {
-        type = "function",
+        type = "method",
         description = "Reads the file file, according to the given formats, which specify what to read.\n\nFor each format, the function returns a string (or a number) with the characters read, or nil if it cannot read data with the specified format. When called without formats, it uses a default format that reads the next line (see below).\n\nThe available formats are\n\n* \"*n\": reads a number; this is the only format that returns a number instead of a string.\n\n* \"*a\": reads the whole file, starting at the current position. On end of file, it returns the empty string.\n\n* \"*l\": reads the next line skipping the end of line, returning nil on end of file. This is the default format.\n\n* \"*L\": reads the next line keeping the end of line (if present), returning nil on end of file. VALUE ADDED IN Lua 5.2.\n\n* number: reads a string with up to this number of bytes, returning nil on end of file. If number is zero, it reads nothing and returns an empty string, or nil on end of file.",
         args = "(file: file, ...)",
         returns = "(...)",
       },
       seek = {
-        type = "function",
+        type = "method",
         description = "Sets and gets the file position, measured from the beginning of the file, to the position given by offset plus a base specified by the string whence.\n\nThe string whence is specified as follows:\n\n* \"set\": base is position 0 (beginning of the file);\n\n* \"cur\": base is current position;\n\n* \"end\": base is end of file.\n\nIn case of success, seek returns the final file position, measured in bytes from the beginning of the file. If seek fails, it returns nil, plus a string describing the error.\n\nThe default value for whence is \"cur\", and for offset is 0. Therefore, the call file:seek() returns the current file position, without changing it; the call file:seek(\"set\") sets the position to the beginning of the file (and returns 0); and the call file:seek(\"end\") sets the position to the end of the file, and returns its size.",
         args = "(file: file, [whence: string [, offset: number]])",
         returns = "(number|nil [, string])",
       },
       setvbuf = {
-        type = "function",
+        type = "method",
         description = "Sets the buffering mode for an output file.\n\nThere are three available modes:\n\n* \"no\": no buffering; the result of any output operation appears immediately.\n\n* \"full\": full buffering; output operation is performed only when the buffer is full or when you explicitly flush the file (see io.flush).\n\n* \"line\": line buffering; output is buffered until a newline is output or there is any input from some special files (such as a terminal device).\n\nFor the last two cases, size specifies the size of the buffer, in bytes. The default is an appropriate size.",
         args = "(file: file, mode: string [, size: number])",
         returns = "(boolean|nil [, string])",
       },
       write = {
-        type = "function",
+        type = "method",
         description = "Writes the value of each of its arguments to file.\n\nThe arguments must be strings or numbers.\n\nIn case of success, this function returns file (RETURN CHANGED IN Lua 5.2, BOOLEAN IN LUA 5.1). Otherwise it returns nil plus a string describing the error.",
         args = "(file: file, ...)",
         returns = "(file|nil [, string])",
