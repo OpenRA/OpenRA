@@ -54,7 +54,8 @@ namespace OpenRA.Network
 
 			// Don't have the map locally
 			if (!Game.modData.AvailableMaps.ContainsKey(Map))
-				return false;
+				if (!Game.Settings.Game.AllowDownloading)
+					return false;
 
 			return CompatibleVersion();
 		}

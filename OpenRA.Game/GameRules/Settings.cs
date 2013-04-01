@@ -123,6 +123,8 @@ namespace OpenRA.GameRules
 		public int Timestep = 40;
 
 		public string ConnectTo = "";
+		public bool AllowDownloading = true;
+		public string MapRepository = "http://content.open-ra.org/map/";
 	}
 
 	public class KeySettings
