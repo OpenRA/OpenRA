@@ -32,17 +32,23 @@ namespace OpenRA.Mods.RA.Crates
 		public GiveUnitCrateAction(Actor self, GiveUnitCrateActionInfo info)
 			: base(self, info) { Info = info; }
 
-		public override int GetSelectionShares(Actor collector)
+		public bool CanGiveTo(Actor collector)
 		{
 			var bi = Rules.Info[Info.Unit].Traits.GetOrDefault<BuildableInfo>();
 
 			// this unit is not buildable by the collector's country, so
 			// don't give them free ones either.
-			if (Info.Owner == null && bi != null && !bi.Owner.Contains(collector.Owner.Country.Race)) return 0;
+			if (Info.Owner == null && bi != null && !bi.Owner.Contains(collector.Owner.Country.Race)) return false;
 
 			// avoid dumping tanks in the sea, and ships on dry land.
-			if (!GetSuitableCells(collector.Location).Any()) return 0;
+			if (!GetSuitableCells(collector.Location).Any()) return false;
 
+			return true;
+		}
+
+		public override int GetSelectionShares(Actor collector)
+		{
+			if (!CanGiveTo(collector)) return 0;
 			return base.GetSelectionShares(collector);
 		}
 
