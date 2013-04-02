@@ -750,5 +750,11 @@ namespace OpenRA.Editor
 		{
 			showRulerToolStripMenuItemClick(sender, e);
 		}
+
+		void EraserToolStripButtonClick(object sender, System.EventArgs e)
+		{
+			eraserToolStripButton.Checked ^= true;
+			surface1.IsErasing = eraserToolStripButton.Checked;
+		}
 	}
 }
