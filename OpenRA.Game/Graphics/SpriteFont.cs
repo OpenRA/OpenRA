@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2012 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -13,7 +13,7 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using OpenRA.FileFormats;
-using Tao.FreeType;
+using SharpFont;
 
 namespace OpenRA.Graphics
 {
@@ -25,12 +25,11 @@ namespace OpenRA.Graphics
 		{
 			this.size = size;
 
-			if (0 != FT.FT_New_Face(library, name, 0, out face))
-				throw new InvalidOperationException("FT_New_Face failed");
+			face = library.NewFace(name, 0);
+			face.SetPixelSizes((uint)size, (uint)size);
 
-			FT.FT_Set_Pixel_Sizes(face, 0, (uint)size);
-			glyphs = new Cache<Pair<char, Color>, GlyphInfo>(CreateGlyph,
-				Pair<char,Color>.EqualityComparer);
+			glyphs = new Cache<Pair<char, Color>, GlyphInfo>(CreateGlyph, 
+			         Pair<char,Color>.EqualityComparer);
 
 			// setup a 1-channel SheetBuilder for our private use
 			if (builder == null) builder = new SheetBuilder(TextureChannel.Alpha);
@@ -47,7 +46,7 @@ namespace OpenRA.Graphics
 					throw new InvalidOperationException();
 		}
 
-		public void DrawText( string text, float2 location, Color c )
+		public void DrawText (string text, float2 location, Color c)
 		{
 			location.Y += size;	// baseline vs top
 
@@ -89,31 +88,28 @@ namespace OpenRA.Graphics
 		}
 
 		Cache<Pair<char,Color>, GlyphInfo> glyphs;
-		IntPtr face;
+		Face face;
 
-		GlyphInfo CreateGlyph(Pair<char,Color> c)
+		GlyphInfo CreateGlyph(Pair<char, Color> c)
 		{
-			var index = FT.FT_Get_Char_Index(face, (uint)c.First);
-			if (0 != FT.FT_Load_Glyph(face, index, FT.FT_LOAD_RENDER))
-				throw new InvalidOperationException( "FT_Load_Glyph failed." );
-
-			var _face = (FT_FaceRec)Marshal.PtrToStructure(face, typeof(FT_FaceRec));
-			var _glyph = (FT_GlyphSlotRec)Marshal.PtrToStructure(_face.glyph, typeof(FT_GlyphSlotRec));
+			uint index = face.GetCharIndex(c.First);
+			face.LoadGlyph(index, LoadFlags.Default, LoadTarget.Normal);
+			face.Glyph.RenderGlyph(RenderMode.Normal);
 
 			var s = builder.Allocate(
-				new Size(_glyph.metrics.width.ToInt32() >> 6,
-					_glyph.metrics.height.ToInt32() >> 6));
+				new Size((int)face.Glyph.Metrics.Width >> 6,
+			         (int)face.Glyph.Metrics.Height >> 6));
 
 			var g = new GlyphInfo
 			{
 				Sprite = s,
-				Advance = _glyph.metrics.horiAdvance.ToInt32() / 64f,
-				Offset = { X = _glyph.bitmap_left, Y = -_glyph.bitmap_top }
+				Advance = (int)face.Glyph.Metrics.HorizontalAdvance / 64f,
+				Offset = { X = face.Glyph.BitmapLeft, Y = -face.Glyph.BitmapTop }
 			};
 
 			unsafe
 			{
-				var p = (byte*)_glyph.bitmap.buffer;
+				var p = (byte*)face.Glyph.Bitmap.Buffer;
 				var dest = s.sheet.Data;
 				var destStride = s.sheet.Size.Width * 4;
 
@@ -129,19 +125,18 @@ namespace OpenRA.Graphics
 							dest[q + 3] = p[i];
 						}
 
-					p += _glyph.bitmap.pitch;
+					p += face.Glyph.Bitmap.Pitch;
 				}
 			}
-
 			return g;
 		}
 
 		static SpriteFont()
 		{
-			FT.FT_Init_FreeType(out library);
+			library = new Library();  
 		}
 
-		static IntPtr library;
+		static Library library;
 		static SheetBuilder builder;
 	}
 

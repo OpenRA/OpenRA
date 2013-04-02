@@ -14,7 +14,7 @@ clean:
 	@-rm -f *.exe *.dll *.mdb mods/**/*.dll mods/**/*.mdb *.resources
 distclean: clean
 dependencies:
-	@ cp -r thirdparty/*.dll .
+	@ cp -r thirdparty/*.dl* .
 	@ cp -r thirdparty/Tao/* .
 default: dependencies core
 
@@ -35,7 +35,7 @@ game_TARGET			= OpenRA.Game.exe
 game_KIND			= winexe
 game_DEPS			= $(fileformats_TARGET) 
 game_LIBS			= $(COMMON_LIBS) System.Windows.Forms.dll $(game_DEPS) \
-						thirdparty/Tao/Tao.OpenAl.dll thirdparty/Tao/Tao.FreeType.dll
+					thirdparty/Tao/Tao.OpenAl.dll thirdparty/SharpFont.dll
 game_FLAGS			= -win32icon:OpenRA.Game/OpenRA.ico
 PROGRAMS 			+= game
 game: $(game_TARGET)
@@ -256,6 +256,8 @@ install: all
 	@cp thirdparty/Tao/* $(INSTALL_DIR)
 	@$(INSTALL_PROGRAM) thirdparty/ICSharpCode.SharpZipLib.dll $(INSTALL_DIR)
 	@$(INSTALL_PROGRAM) thirdparty/FuzzyLogicLibrary.dll $(INSTALL_DIR)
+	@$(INSTALL_PROGRAM) thirdparty/SharpFont.dll $(INSTALL_DIR)
+	@cp thirdparty/SharpFont.config.dll $(INSTALL_DIR)
 
 	@echo "#!/bin/sh" 				>  openra
 	@echo 'BINDIR=$$(dirname $$(readlink -f $$0))'	>> openra

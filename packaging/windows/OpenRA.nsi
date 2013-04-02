@@ -90,6 +90,7 @@ Section "Client" Client
 	File "${SRCDIR}\*.ttf"
 	File "${SRCDIR}\OpenRA.ico"
 	File "${SRCDIR}\Tao.*.dll"
+	File "${SRCDIR}\SharpFont.*.dll"
 		
 	!insertmacro MUI_STARTMENU_WRITE_BEGIN Application
 		CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
@@ -263,6 +264,7 @@ Function ${UN}Clean
 	Delete $INSTDIR\ICSharpCode.SharpZipLib.dll
 	Delete $INSTDIR\FuzzyLogicLibrary.dll
 	Delete $INSTDIR\Tao.*.dll
+	Delete $INSTDIR\SharpFont.*.dll
 	Delete $INSTDIR\COPYING
 	Delete $INSTDIR\HACKING
 	Delete $INSTDIR\INSTALL
