@@ -46,7 +46,7 @@ FACT:
 	BaseBuilding:
 	ProductionBar:
 	BaseProvider:
-		Cooldown: 200
+		Cooldown: 125
 		Range: 14
 
 NUKE:
@@ -535,7 +535,7 @@ GUN:
 	RenderRangeCircle:
 	RenderDetectionCircle:
 	DetectCloaked:
-		Range: 4
+		Range: 5
 
 SAM:
 	Inherits: ^Building
@@ -654,7 +654,7 @@ GTWR:
 	DebugNextAutoTargetScanTime:
 	-AutoTargetIgnore:
 	DetectCloaked:
-		Range: 4
+		Range: 5
 	RenderDetectionCircle:
 	RenderRangeCircle:
 	WithMuzzleFlash:
