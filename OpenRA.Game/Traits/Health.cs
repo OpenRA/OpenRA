@@ -160,6 +160,7 @@ namespace OpenRA.Traits
 
 		public static void InflictDamage(this Actor self, Actor attacker, int damage, WarheadInfo warhead)
 		{
+			if (self.Destroyed) return;
 			var health = self.TraitOrDefault<Health>();
 			if (health == null) return;
 			health.InflictDamage(self, attacker, damage, warhead, false);
