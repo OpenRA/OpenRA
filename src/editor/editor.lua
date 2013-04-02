@@ -639,9 +639,7 @@ function CreateEditor()
         then notebook:SetSelection(first)
         else notebook:AdvanceSelection(true) end
       elseif (keycode == wx.WXK_DELETE or keycode == wx.WXK_BACK)
-        -- ide.osname == 'Macintosh' has wx.wxMOD_NONE not defined
-        -- for some reason (at least in wxlua 2.8.12.1)
-        and (event:GetModifiers() == (wx.wxMOD_NONE or 0)) then
+        and (event:GetModifiers() == wx.wxMOD_NONE) then
         -- Delete and Backspace behave the same way for selected text
         if #(editor:GetSelectedText()) > 0 then
           editor:SetTargetStart(editor:GetSelectionStart())
@@ -667,6 +665,10 @@ function CreateEditor()
           editor:SetTargetEnd(pos+1)
         end
         editor:ReplaceTarget("")
+      elseif ide.osname == "Unix" and ide.wxver >= "2.9.5"
+      and keycode == ('T'):byte() and event:GetModifiers() == wx.wxMOD_CONTROL then
+        ide.frame:AddPendingEvent(wx.wxCommandEvent(
+          wx.wxEVT_COMMAND_MENU_SELECTED, ID_SHOWTOOLTIP))
       else
         if ide.osname == 'Macintosh' and event:CmdDown() then
           return -- ignore a key press if Command key is also pressed
