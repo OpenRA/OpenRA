@@ -122,7 +122,7 @@ namespace OpenRA.Mods.RA
 			public bool Active { get; private set; }
 			public bool Disabled { get; private set; }
 
-			public SupportPowerInfo Info { get { return Instances.First().Info; } }
+			public SupportPowerInfo Info { get { return Instances.Select(i => i.Info).FirstOrDefault(); } }
 			public bool Ready { get { return Active && RemainingTime == 0; } }
 
 			public SupportPowerInstance(string key, SupportPowerManager manager)
