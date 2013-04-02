@@ -78,6 +78,7 @@ Container@INGAME_ROOT:
 			Height:25
 			Text:Diplomacy
 			Font:Bold
+			Key:f2
 		Button@CHEATS_BUTTON:
 			X:324
 			Y:0
@@ -86,6 +87,7 @@ Container@INGAME_ROOT:
 			Text:Cheats
 			Visible:false
 			Font:Bold
+			Key:f3
 		Button@OBJECTIVES_BUTTON:
 			X:486
 			Y:0
@@ -94,6 +96,7 @@ Container@INGAME_ROOT:
 			Text:Objectives
 			Visible:false
 			Font:Bold
+			Key:f4
 		RadarBin@INGAME_RADAR_BIN:
 			WorldInteractionController:INTERACTION_CONTROLLER
 		PowerBin@INGAME_POWER_BIN:
@@ -288,6 +291,7 @@ Container@OBSERVER_ROOT:
 			Height:25
 			Text:Statistics
 			Font:Bold
+			Key:f2
 		Background@RADAR_BG:
 			X:WINDOW_RIGHT-255
 			Y:5
