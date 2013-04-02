@@ -1,11 +1,11 @@
 --[[-- Copy required content from this file to `user.lua`
 
-Configuration files are loaded in the following order
+Configuration files are loaded in the following order:
+1. cfg/user.lua (system-wide configuration)
+2. HOME/.zbstudio/user.lua (per-user configuration)
+3. -cfg <lua code fragment|filename> (command line configuration)
 
-1. <application>\config.lua
-2. cfg\user.lua
-3. ~\.zbstudio\user.lua
-4. -cfg commandline strings
+See [configuration](http://studio.zerobrane.com/doc-configuration.html) page for information about location of configuration files.
 
 --]]--
 
