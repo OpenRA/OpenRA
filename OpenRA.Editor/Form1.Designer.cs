@@ -119,6 +119,7 @@ namespace OpenRA.Editor
 			this.LeftToolStripPanel = new System.Windows.Forms.ToolStripPanel();
 			this.ContentPanel = new System.Windows.Forms.ToolStripContentPanel();
 			this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
+			this.cashToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
@@ -528,7 +529,7 @@ namespace OpenRA.Editor
 			this.newToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("newToolStripMenuItem.Image")));
 			this.newToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Fuchsia;
 			this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-			this.newToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.newToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
 			this.newToolStripMenuItem.Text = "&New...";
 			this.newToolStripMenuItem.ToolTipText = "Create a new blank map.";
 			this.newToolStripMenuItem.Click += new System.EventHandler(this.NewClicked);
@@ -536,13 +537,13 @@ namespace OpenRA.Editor
 			// toolStripSeparator1
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+			this.toolStripSeparator1.Size = new System.Drawing.Size(120, 6);
 			// 
 			// openToolStripMenuItem
 			// 
 			this.openToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("openToolStripMenuItem.Image")));
 			this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-			this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.openToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
 			this.openToolStripMenuItem.Text = "&Open...";
 			this.openToolStripMenuItem.ToolTipText = "Open an existing map.";
 			this.openToolStripMenuItem.Click += new System.EventHandler(this.OpenClicked);
@@ -552,7 +553,7 @@ namespace OpenRA.Editor
 			this.saveToolStripMenuItem.Enabled = false;
 			this.saveToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("saveToolStripMenuItem.Image")));
 			this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-			this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.saveToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
 			this.saveToolStripMenuItem.Text = "&Save";
 			this.saveToolStripMenuItem.ToolTipText = "Quicksave current map.";
 			this.saveToolStripMenuItem.Click += new System.EventHandler(this.SaveClicked);
@@ -562,7 +563,7 @@ namespace OpenRA.Editor
 			this.saveAsToolStripMenuItem.Enabled = false;
 			this.saveAsToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("saveAsToolStripMenuItem.Image")));
 			this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-			this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
 			this.saveAsToolStripMenuItem.Text = "Save &As...";
 			this.saveAsToolStripMenuItem.ToolTipText = "Save the map while choosing a filename.";
 			this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.SaveAsClicked);
@@ -570,7 +571,7 @@ namespace OpenRA.Editor
 			// toolStripSeparator2
 			// 
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
+			this.toolStripSeparator2.Size = new System.Drawing.Size(120, 6);
 			// 
 			// toolStripMenuItem1
 			// 
@@ -579,7 +580,7 @@ namespace OpenRA.Editor
 			this.toolStripMenuItem1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItem1.Image")));
 			this.toolStripMenuItem1.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-			this.toolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+			this.toolStripMenuItem1.Size = new System.Drawing.Size(123, 22);
 			this.toolStripMenuItem1.Text = "&Import";
 			// 
 			// cCRedAlertMapToolStripMenuItem
@@ -599,7 +600,7 @@ namespace OpenRA.Editor
 			this.mnuExport.Image = ((System.Drawing.Image)(resources.GetObject("mnuExport.Image")));
 			this.mnuExport.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.mnuExport.Name = "mnuExport";
-			this.mnuExport.Size = new System.Drawing.Size(152, 22);
+			this.mnuExport.Size = new System.Drawing.Size(123, 22);
 			this.mnuExport.Text = "&Export";
 			// 
 			// mnuMinimapToPNG
@@ -623,14 +624,14 @@ namespace OpenRA.Editor
 			// toolStripSeparator3
 			// 
 			this.toolStripSeparator3.Name = "toolStripSeparator3";
-			this.toolStripSeparator3.Size = new System.Drawing.Size(149, 6);
+			this.toolStripSeparator3.Size = new System.Drawing.Size(120, 6);
 			// 
 			// exitToolStripMenuItem
 			// 
 			this.exitToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("exitToolStripMenuItem.Image")));
 			this.exitToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-			this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			this.exitToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
 			this.exitToolStripMenuItem.Text = "E&xit";
 			this.exitToolStripMenuItem.ToolTipText = "Quit the map editor.";
 			this.exitToolStripMenuItem.Click += new System.EventHandler(this.CloseClicked);
@@ -847,6 +848,7 @@ namespace OpenRA.Editor
 			// 
 			this.statusStrip1.Dock = System.Windows.Forms.DockStyle.None;
 			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			this.cashToolStripStatusLabel,
 			this.toolStripStatusLabelFiller,
 			this.toolStripStatusLabelMousePosition});
 			this.statusStrip1.Location = new System.Drawing.Point(0, 0);
@@ -858,7 +860,7 @@ namespace OpenRA.Editor
 			// toolStripStatusLabelFiller
 			// 
 			this.toolStripStatusLabelFiller.Name = "toolStripStatusLabelFiller";
-			this.toolStripStatusLabelFiller.Size = new System.Drawing.Size(932, 17);
+			this.toolStripStatusLabelFiller.Size = new System.Drawing.Size(872, 17);
 			this.toolStripStatusLabelFiller.Spring = true;
 			// 
 			// toolStripStatusLabelMousePosition
@@ -932,6 +934,14 @@ namespace OpenRA.Editor
 			// 
 			this.toolStripContainer1.TopToolStripPanel.Controls.Add(this.menuStrip1);
 			// 
+			// cashToolStripStatusLabel
+			// 
+			this.cashToolStripStatusLabel.Image = ((System.Drawing.Image)(resources.GetObject("cashToolStripStatusLabel.Image")));
+			this.cashToolStripStatusLabel.Name = "cashToolStripStatusLabel";
+			this.cashToolStripStatusLabel.Size = new System.Drawing.Size(29, 17);
+			this.cashToolStripStatusLabel.Text = "0";
+			this.cashToolStripStatusLabel.ToolTipText = "Net worth of the maps resources in cash";
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -977,8 +987,8 @@ namespace OpenRA.Editor
 			this.toolStripContainer1.ResumeLayout(false);
 			this.toolStripContainer1.PerformLayout();
 			this.ResumeLayout(false);
-
 		}
+		private System.Windows.Forms.ToolStripStatusLabel cashToolStripStatusLabel;
 
 		#endregion
 
