@@ -148,6 +148,8 @@ ARTY:
 	AttackFrontal:
 	RenderUnit:
 	Explodes:
+		Weapon: UnitExplode
+		Chance: 75	
 	AutoTarget:
 		InitialStance: Defend
 	DebugRetiliateAgainstAggressor:
@@ -539,9 +541,9 @@ STNK:
 	AttackFrontal:
 	RenderUnit:
 	AutoTarget:
+		InitialStance: HoldFire
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
-		InitialStance: HoldFire
 	TargetableUnit:
 	LeavesHusk:
 		HuskActor: STNK.Husk
