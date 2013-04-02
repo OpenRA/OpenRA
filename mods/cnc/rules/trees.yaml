@@ -34,7 +34,7 @@ SPLITBLUE:
 		Palette: staticterrain
 	SeedsResource:
 		ResourceType:BlueTiberium
-		Interval: 95
+		Interval: 110
 	Tooltip:
 		Name: Blossom Tree (blue)
 	RadarColorFromTerrain:
