@@ -221,10 +221,14 @@ namespace OpenRA.Graphics
 
 		public int2 ScreenPxPosition(WPos pos)
 		{
-			var c = Game.CellSize/1024f;
-			return new int2((int)(c*pos.X), (int)(c*(pos.Y - pos.Z)));
+			return new int2(Game.CellSize*pos.X/1024, Game.CellSize*(pos.Y - pos.Z)/1024);
 		}
 		public float ScreenZOffset(WPos pos) { return pos.Z*Game.CellSize/1024f; }
+
+		public int2 ScreenPxOffset(WVec vec)
+		{
+			return new int2(Game.CellSize*vec.X/1024, Game.CellSize*(vec.Y - vec.Z)/1024);
+		}
 
 		public float[] ScreenOffset(WVec vec)
 		{

@@ -501,8 +501,9 @@ MGG:
 		Speed: 6
 	RevealsShroud:
 		Range: 6
-	RenderUnitSpinner:
-		Offset: 0,6
+	RenderUnit:
+	WithSpinner:
+		Offset: -299,0,171
 	AttackMove:
 		JustMove: yes
 	CreatesShroud:
@@ -522,10 +523,7 @@ MGG.Husk:
 		Image: mgg
 	ThrowsParticle@spinner:
 		Anim: spinner-idle
-		Spread: 3,3
-		Speed: 6
-		AnimKey: spinner-idle
-		Offset: 0,6
+		Offset: -299,0,171
 
 MRJ:
 	Inherits: ^Vehicle
@@ -546,8 +544,9 @@ MRJ:
 		Speed: 6
 	RevealsShroud:
 		Range: 6
-	RenderUnitSpinner:
-		Offset: 0,6
+	RenderUnit:
+	WithSpinner:
+		Offset: -256,0,256
 	AttackMove:
 		JustMove: yes
 	Explodes:
@@ -562,9 +561,6 @@ MRJ:
 		Image: 1tnk
 	ThrowsParticle@turret:
 		Anim: turret
-		Spread: 3,3
-		Speed: 6
-		AnimKey: turret
 
 2TNK.Husk:
 	Inherits: ^Husk
@@ -574,9 +570,6 @@ MRJ:
 		Image: 2tnk
 	ThrowsParticle@turret:
 		Anim: turret
-		Spread: 3,3
-		Speed: 6
-		AnimKey: turret
 
 3TNK.Husk:
 	Inherits: ^Husk
@@ -586,9 +579,6 @@ MRJ:
 		Image: 3tnk
 	ThrowsParticle@turret:
 		Anim: turret
-		Spread: 3,3
-		Speed: 6
-		AnimKey: turret
 
 4TNK.Husk:
 	Inherits: ^Husk
@@ -598,9 +588,6 @@ MRJ:
 		Image: 4tnk
 	ThrowsParticle@turret:
 		Anim: turret
-		Spread: 3,3
-		Speed: 6
-		AnimKey: turret
 
 HARV.FullHusk:
 	Inherits: ^Husk
@@ -649,7 +636,8 @@ TTNK:
 		Weapon: TTankZap
 		LocalOffset: 0,0,213
 	AttackFrontal:
-	RenderUnitSpinner:
+	RenderUnit:
+	WithSpinner:
 	Selectable:
 		Bounds: 28,28,0,0
 	AutoTarget:

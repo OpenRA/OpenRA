@@ -26,8 +26,11 @@ namespace OpenRA
 		public static readonly WVec Zero = new WVec(0, 0, 0);
 
 		public static WVec operator +(WVec a, WVec b) { return new WVec(a.X + b.X, a.Y + b.Y, a.Z + b.Z); }
-		public static WVec operator -(WVec a, WVec b) { return new WVec(a.X - b.X, a.Y - b.Y, a.Y - b.Y); }
+		public static WVec operator -(WVec a, WVec b) { return new WVec(a.X - b.X, a.Y - b.Y, a.Z - b.Z); }
 		public static WVec operator -(WVec a) { return new WVec(-a.X, -a.Y, -a.Z); }
+		public static WVec operator /(WVec a, int b) { return new WVec(a.X / b, a.Y / b, a.Z / b); }
+		public static WVec operator *(int a, WVec b) { return new WVec(a * b.X, a * b.Y, a * b.Z); }
+		public static WVec operator *(WVec a, int b) { return b*a; }
 
 		public static bool operator ==(WVec me, WVec other) { return (me.X == other.X && me.Y == other.Y && me.Z == other.Z); }
 		public static bool operator !=(WVec me, WVec other) { return !(me == other); }
@@ -47,6 +50,8 @@ namespace OpenRA
 				(int)((lx * mtx[1] + ly*mtx[5] + lz*mtx[9]) / mtx[15]),
 				(int)((lx * mtx[2] + ly*mtx[6] + lz*mtx[10]) / mtx[15]));
 		}
+
+		public static WVec Lerp(WVec a, WVec b, int mul, int div) { return a + (b - a) * mul / div; }
 
 		public override int GetHashCode() { return X.GetHashCode() ^ Y.GetHashCode() ^ Z.GetHashCode(); }
 

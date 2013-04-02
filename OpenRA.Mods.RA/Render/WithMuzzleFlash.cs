@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA.Render
 
 					muzzleFlashes.Add("muzzle{0}".F(muzzleFlashes.Count), new AnimationWithOffset(
 						muzzleFlash,
-						() => PPos.FromWPosHackZ(WPos.Zero + a.MuzzleOffset(self, barrel)).ToFloat2(),
+						wr => wr.ScreenPxOffset(a.MuzzleOffset(self, barrel)),
 						() => !isShowing));
 				}
 		}
@@ -63,7 +63,7 @@ namespace OpenRA.Mods.RA.Render
 		{
 			foreach (var a in muzzleFlashes.Values)
 				if (a.DisableFunc == null || !a.DisableFunc())
-					yield return a.Image(self, wr.Palette("effect"));
+					yield return a.Image(self, wr, wr.Palette("effect"));
 		}
 
 		public void Tick(Actor self)

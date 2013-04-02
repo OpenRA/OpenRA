@@ -73,9 +73,6 @@ LTNK.Husk:
 		Image: ltnk
 	ThrowsParticle@turret:
 		Anim: turret
-		Spread: 3,3
-		Speed: 6
-		AnimKey: turret
 
 MTNK.Husk:
 	Inherits: ^Husk
@@ -86,9 +83,6 @@ MTNK.Husk:
 		Image: mtnk
 	ThrowsParticle@turret:
 		Anim: turret
-		Spread: 3,3
-		Speed: 6
-		AnimKey: turret
 
 HTNK.Husk:
 	Inherits: ^Husk
@@ -99,9 +93,6 @@ HTNK.Husk:
 		Image: htnk
 	ThrowsParticle@turret:
 		Anim: turret
-		Spread: 3,3
-		Speed: 6
-		AnimKey: turret
 
 MSAM.Husk:
 	Inherits: ^Husk
@@ -112,9 +103,6 @@ MSAM.Husk:
 		Image: msam
 	ThrowsParticle@turret:
 		Anim: turret
-		Spread: 3,3
-		Speed: 6
-		AnimKey: turret
 
 MLRS.Husk:
 	Inherits: ^Husk
@@ -125,9 +113,6 @@ MLRS.Husk:
 		Image: mlrs
 	ThrowsParticle@turret:
 		Anim: turret
-		Spread: 3,3
-		Speed: 6
-		AnimKey: turret
 		
 STNK.Husk:
 	Inherits: ^Husk

@@ -216,6 +216,7 @@ namespace OpenRA.Traits
 		WVec LocalToWorld(WVec vec);
 		WRot QuantizeOrientation(Actor self, WRot orientation);
 	}
+	public interface LocalCoordinatesModelInfo {}
 
 	public interface ITargetable
 	{

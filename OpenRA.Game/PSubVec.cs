@@ -94,10 +94,5 @@ namespace OpenRA
 		{
 			return new PSubVec((vec.X * PSubPos.PerPx), (vec.Y * PSubPos.PerPx));
 		}
-
-		public static PSubVec ToPSubVec(this PVecFloat vec)
-		{
-			return new PSubVec((int)(vec.X * PSubPos.PerPx), (int)(vec.Y * PSubPos.PerPx));
-		}
 	}
 }

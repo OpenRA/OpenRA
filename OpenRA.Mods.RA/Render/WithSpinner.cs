@@ -14,37 +14,26 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
-	public class WithRotorInfo : ITraitInfo, Requires<RenderSimpleInfo>
+	class WithSpinnerInfo : ITraitInfo, Requires<RenderSimpleInfo>
 	{
+		public readonly string Name = "spinner";
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;
 
-		public readonly string Id = "rotor";
-		public object Create(ActorInitializer init) { return new WithRotor(init.self, this); }
+		public object Create(ActorInitializer init) { return new WithSpinner(init.self, this); }
 	}
 
-	public class WithRotor : ITick
+	class WithSpinner
 	{
-		public Animation rotorAnim;
-		public WithRotor(Actor self, WithRotorInfo info)
+		public WithSpinner(Actor self, WithSpinnerInfo info)
 		{
 			var rs = self.Trait<RenderSimple>();
-
-			rotorAnim = new Animation(rs.GetImage(self));
-			rotorAnim.PlayRepeating("rotor");
-			rs.anims.Add(info.Id, new AnimationWithOffset(
-				rotorAnim,
+			var spinner = new Animation(rs.GetImage(self));
+			spinner.PlayRepeating("spinner");
+			rs.anims.Add(info.Name, new AnimationWithOffset(
+				spinner,
 				wr => wr.ScreenPxOffset(rs.LocalToWorld(info.Offset.Rotate(rs.QuantizeOrientation(self, self.Orientation)))),
 				null ) { ZOffset = 1 } );
-		}
-
-		public void Tick(Actor self)
-		{
-			var isFlying = self.Trait<IMove>().Altitude > 0 && !self.IsDead();
-			if (isFlying ^ (rotorAnim.CurrentSequence.Name != "rotor"))
-				return;
-
-			rotorAnim.ReplaceAnim(isFlying ? "rotor" : "slow-rotor");
 		}
 	}
 }

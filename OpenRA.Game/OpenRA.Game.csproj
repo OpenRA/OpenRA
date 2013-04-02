@@ -84,7 +84,6 @@
     <Compile Include="PSubVec.cs" />
     <Compile Include="PSubPos.cs" />
     <Compile Include="PVecInt.cs" />
-    <Compile Include="PVecFloat.cs" />
     <Compile Include="PPos.cs" />
     <Compile Include="Download.cs" />
     <Compile Include="Effects\DelayedAction.cs" />

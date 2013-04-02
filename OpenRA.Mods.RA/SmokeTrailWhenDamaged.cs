@@ -8,14 +8,16 @@
  */
 #endregion
 
+using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Effects;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class SmokeTrailWhenDamagedInfo : ITraitInfo
+	class SmokeTrailWhenDamagedInfo : ITraitInfo, Requires<LocalCoordinatesModelInfo>
 	{
-		public readonly int[] Offset = { 0, 0 };
+		[Desc("Position relative to body")]
+		public readonly WVec Offset = WVec.Zero;
 		public readonly int Interval = 3;
 
 		public object Create(ActorInitializer init) { return new SmokeTrailWhenDamaged(init.self, this); }
@@ -23,34 +25,30 @@ namespace OpenRA.Mods.RA
 
 	class SmokeTrailWhenDamaged : ITick
 	{
-		Turret smokeTurret;
-		PPos position;
-		int interval;
+		ILocalCoordinatesModel coords;
+		SmokeTrailWhenDamagedInfo info;
 		int ticks;
 
 		public SmokeTrailWhenDamaged(Actor self, SmokeTrailWhenDamagedInfo info)
 		{
-			smokeTurret = new Turret(info.Offset);
-			interval = info.Interval;
+			this.info = info;
+			coords = self.Trait<ILocalCoordinatesModel>();
 		}
 
 		public void Tick(Actor self)
 		{
 			if (--ticks <= 0)
 			{
-				var move = self.Trait<IMove>();
-				if (move.Altitude > 0 && self.GetDamageState() >= DamageState.Heavy)
+				var position = self.CenterPosition;
+				if (position.Z > 0 && self.GetDamageState() >= DamageState.Heavy &&
+				    self.World.RenderedShroud.IsVisible(new CPos(position)))
 				{
-					var facing = self.Trait<IFacing>();
-					var altitude = new PVecInt(0, move.Altitude);
-					position = (self.CenterLocation - (PVecInt)smokeTurret.PxPosition(self, facing).ToInt2());
-
-					if (self.World.RenderedShroud.IsVisible(position.ToCPos()))
-						self.World.AddFrameEndTask(
-							w => w.Add(new Smoke(w, position - altitude, "smokey")));
+					var offset = info.Offset.Rotate(coords.QuantizeOrientation(self, self.Orientation));
+					var pos = PPos.FromWPosHackZ(position + coords.LocalToWorld(offset));
+					self.World.AddFrameEndTask(w => w.Add(new Smoke(w, pos, "smokey")));
 				}
 
-				ticks = interval;
+				ticks = info.Interval;
 			}
 		}
 	}

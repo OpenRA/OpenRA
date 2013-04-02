@@ -498,9 +498,6 @@ GUNTOWER.Husk:
 		Image: GUNTOWER
 	ThrowsParticle@turret:
 		Anim: turret
-		Spread: 4,4
-		Speed: 6
-		AnimKey: turret
 
 ROCKETTOWER:
 	Inherits: ^Building
@@ -559,9 +556,6 @@ ROCKETTOWER.Husk:
 		Image: ROCKETTOWER
 	ThrowsParticle@turret:
 		Anim: turret
-		Spread: 4,4
-		Speed: 6
-		AnimKey: turret
 
 REPAIR:
 	Inherits: ^Building
