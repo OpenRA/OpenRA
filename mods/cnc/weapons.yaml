@@ -756,7 +756,7 @@ Napalm.Crate:
 
 Laser:
 	ROF: 90
-	Range: 7.5
+	Range: 8.5
 	Charges: true
 	Report: OBELRAY1
 	Projectile: LaserZap
