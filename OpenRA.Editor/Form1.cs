@@ -713,5 +713,29 @@ namespace OpenRA.Editor
 			int value = template.Info.ValuePerUnit;
 			return (density) * value;
 		}
+
+		void zoomInToolStripButtonClick(object sender, System.EventArgs e)
+		{
+			if (surface1.Map == null) return;
+
+			surface1.Zoom *= 4.0f / 3.0f;
+
+			surface1.Invalidate();
+		}
+
+		void zoomOutToolStripButtonClick(object sender, System.EventArgs e)
+		{
+			if (surface1.Map == null) return;
+
+			surface1.Zoom *= .75f;
+
+			surface1.Invalidate();
+		}
+
+		void panToolStripButtonClick(object sender, System.EventArgs e)
+		{
+			panToolStripButton.Checked ^= true;
+			surface1.IsPanning = panToolStripButton.Checked;
+		}
 	}
 }
