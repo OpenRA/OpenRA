@@ -38,6 +38,7 @@ namespace OpenRA.Editor
 		public bool IsPanning;
 		public bool ShowActorNames;
 		public bool ShowGrid;
+		public bool ShowRuler;
 
 		public bool IsPaste { get { return TileSelection != null && ResourceSelection != null; } }
 		public TileReference<ushort, byte>[,] TileSelection;
@@ -53,6 +54,9 @@ namespace OpenRA.Editor
 
 		Dictionary<string, ActorTemplate> ActorTemplates = new Dictionary<string, ActorTemplate>();
 		public Dictionary<int, ResourceTemplate> ResourceTemplates = new Dictionary<int, ResourceTemplate>();
+
+		static readonly Font MarkerFont = new Font(FontFamily.GenericSansSerif, 12.0f, FontStyle.Regular);
+		static readonly SolidBrush TextBrush = new SolidBrush(Color.Red);
 
 		public Keys GetModifiers() { return ModifierKeys; }
 
@@ -437,6 +441,27 @@ namespace OpenRA.Editor
 							(int)(ar.Value.Location().Y * TileSet.TileSize * Zoom + Offset.Y),
 							Brushes.White,
 							Brushes.Black);
+
+			if (ShowRuler && Zoom > 0.2)
+			{
+				for (int i = Map.Bounds.Left; i <= Map.Bounds.Right; i+=8)
+				{
+					if( i % 8 == 0)
+					{
+						PointF point = new PointF(i * TileSet.TileSize * Zoom + Offset.X, (Map.Bounds.Top - 8) * TileSet.TileSize * Zoom + Offset.Y);
+						e.Graphics.DrawString((i - Map.Bounds.Left).ToString(), MarkerFont, TextBrush, point);
+					}
+				}
+
+				for (int i = Map.Bounds.Top; i <= Map.Bounds.Bottom; i+=8)
+				{
+					if (i % 8 == 0)
+					{
+						PointF point = new PointF((Map.Bounds.Left - 8) * TileSet.TileSize * Zoom + Offset.X, i * TileSet.TileSize * Zoom + Offset.Y);
+						e.Graphics.DrawString((i - Map.Bounds.Left).ToString(), MarkerFont, TextBrush, point);
+					}
+				}
+			}
 
 			if (Tool != null)
 				Tool.Preview(this, e.Graphics);

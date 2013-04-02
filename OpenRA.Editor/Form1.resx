@@ -266,6 +266,17 @@
         5wrrvlLxhgAAAABJRU5ErkJggg==
 </value>
   </data>
+  <data name="showRulerToolStripItem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAEiSURBVDhPvVO7TgJBFN2fovAHNDb+gLGywsbCxoTOxF/wgaLGRPGJNUEeglBaaKExWhF8E1kh
+        Cwsyxzl3d83Gip3Ck5zMvTtzz97cOWPtnFVBbmcusXVaEaZOytg8vsDGUUmYPCxi/aCAtXReuLp/jpW9
+        HCyCxWHML6X8yEP/G2i7wEcHqH8C96/AdQOITc56AvxzAMdxMD696GfAYAgeQlMXN1rAw5uX5+9CAmyZ
+        YDE5NhWXnAffW11Zb1+GstYeve/ZvwILy7uYmEno4jnZGJUiwIGF8bsxKjjtADqNLsBrCmDbjrmADs06
+        oEmUUuj19T033egCdJg7UPjqGc6A1gycdvOkzAToNB2adcCH8WwDV3WI0yIL8FWxKEx/6z9gWT/PHGlW
+        lc2EywAAAABJRU5ErkJggg==
+</value>
+  </data>
   <data name="toolStripMenuItemFixOpenAreas.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -579,6 +590,17 @@
         /02TVv03jF/x3yB6KaZByKEN8jOUieJskGYoExMEITkbObSRA0wvBpvNcGfvBycSkJ8doKFtDtRskrQa
         7Gy96GX/daIW/9eKWAjGUO0IgBLa2QhnG8Uvh7OxaoQBZGdbpCJCG9nZeA0gHTAwAACOffGU2o3WzAAA
         AABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="showRulerToolStripMenuItem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAEiSURBVDhPvVO7TgJBFN2fovAHNDb+gLGywsbCxoTOxF/wgaLGRPGJNUEeglBaaKExWhF8E1kh
+        Cwsyxzl3d83Gip3Ck5zMvTtzz97cOWPtnFVBbmcusXVaEaZOytg8vsDGUUmYPCxi/aCAtXReuLp/jpW9
+        HCyCxWHML6X8yEP/G2i7wEcHqH8C96/AdQOITc56AvxzAMdxMD696GfAYAgeQlMXN1rAw5uX5+9CAmyZ
+        YDE5NhWXnAffW11Zb1+GstYeve/ZvwILy7uYmEno4jnZGJUiwIGF8bsxKjjtADqNLsBrCmDbjrmADs06
+        oEmUUuj19T033egCdJg7UPjqGc6A1gycdvOkzAToNB2adcCH8WwDV3WI0yIL8FWxKEx/6z9gWT/PHGlW
+        lc2EywAAAABJRU5ErkJggg==
 </value>
   </data>
   <data name="fixOpenAreasToolStripMenuItem.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

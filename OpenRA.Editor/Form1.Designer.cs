@@ -69,6 +69,7 @@ namespace OpenRA.Editor
 			this.zoomIntoolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.zoomOutToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.panToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.showRulerToolStripItem = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripMenuItemFixOpenAreas = new System.Windows.Forms.ToolStripButton();
 			this.toolStripMenuItemSetupDefaultPlayers = new System.Windows.Forms.ToolStripButton();
@@ -97,6 +98,7 @@ namespace OpenRA.Editor
 			this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
 			this.showActorNamesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.showGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.showRulerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
 			this.fixOpenAreasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.setupDefaultPlayersMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -345,6 +347,7 @@ namespace OpenRA.Editor
 			this.zoomIntoolStripButton,
 			this.zoomOutToolStripButton,
 			this.panToolStripButton,
+			this.showRulerToolStripItem,
 			this.toolStripSeparator10,
 			this.toolStripMenuItemFixOpenAreas,
 			this.toolStripMenuItemSetupDefaultPlayers,
@@ -477,6 +480,15 @@ namespace OpenRA.Editor
 			this.panToolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.panToolStripButton.Text = "Pan view";
 			this.panToolStripButton.Click += new System.EventHandler(this.panToolStripButtonClick);
+			//
+			// showRulerToolStripItem
+			// 
+			this.showRulerToolStripItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.showRulerToolStripItem.Image = ((System.Drawing.Image)(resources.GetObject("showRulerToolStripItem.Image")));
+			this.showRulerToolStripItem.Name = "showRulerToolStripItem";
+			this.showRulerToolStripItem.Size = new System.Drawing.Size(23, 22);
+			this.showRulerToolStripItem.Text = "Show Ruler";
+			this.showRulerToolStripItem.Click += new System.EventHandler(this.showRulerToolStripItemClick);
 			// 
 			// toolStripSeparator10
 			// 
@@ -687,6 +699,7 @@ namespace OpenRA.Editor
 			this.toolStripSeparator9,
 			this.showActorNamesToolStripMenuItem,
 			this.showGridToolStripMenuItem,
+			this.showRulerToolStripMenuItem,
 			this.toolStripSeparator5,
 			this.fixOpenAreasToolStripMenuItem,
 			this.setupDefaultPlayersMenuItem,
@@ -738,6 +751,14 @@ namespace OpenRA.Editor
 			this.showGridToolStripMenuItem.Text = "Show &Grid";
 			this.showGridToolStripMenuItem.ToolTipText = "Enable a grid overlay for better orientation.";
 			this.showGridToolStripMenuItem.Click += new System.EventHandler(this.ShowGridClicked);
+			// 
+			// showRulerToolStripMenuItem
+			// 
+			this.showRulerToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("showRulerToolStripMenuItem.Image")));
+			this.showRulerToolStripMenuItem.Name = "showRulerToolStripMenuItem";
+			this.showRulerToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+			this.showRulerToolStripMenuItem.Text = "Show Ruler";
+			this.showRulerToolStripMenuItem.Click += new System.EventHandler(this.showRulerToolStripMenuItemClick);
 			// 
 			// toolStripSeparator5
 			// 
@@ -1036,6 +1057,8 @@ namespace OpenRA.Editor
 		private System.Windows.Forms.ToolStripButton zoomOutToolStripButton;
 		private System.Windows.Forms.ToolStripButton zoomIntoolStripButton;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
+		private System.Windows.Forms.ToolStripButton showRulerToolStripItem;
+		private System.Windows.Forms.ToolStripMenuItem showRulerToolStripMenuItem;
 
 		#endregion
 
