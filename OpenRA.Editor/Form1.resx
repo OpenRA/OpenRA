@@ -298,6 +298,16 @@
         AGQIlEkNwMAAAP7JtzLCVbRNAAAAAElFTkSuQmCC
 </value>
   </data>
+  <data name="eraserToolStripButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAD2SURBVDhPY6ApmLlqNz+Irmqd/H/aqpP/S3s2/W+etuM/
+        SKy8YxVYDidA1gwDv37/+X/i4sP/xR1rwYbgBNg0//z15/+9px/+3370HmxI7cQN2A3Bpfn1+29wA0Ag
+        o2YmpgHEam6buvm/V1wVqgGkaMYwgCLNMECqZpe0crClYACKYxggWTMIzFx7+v/zN1/+P3z+8f+7j99J
+        0wwCzTN2/992+Ob/tXuv/j9w5j5Q8zu45saJy/FrhoGs+nn/SzsW/58FdM3s9Wf+L9l8/P+MZTuxBxg6
+        SCufCTc5Jq/tf0r5hP9xhZ0gjcRgBAhN68DtRNoABgYAAoqNFseCkuMAAAAASUVORK5CYII=
+</value>
+  </data>
   <data name="toolStripMenuItemCopySelection.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8

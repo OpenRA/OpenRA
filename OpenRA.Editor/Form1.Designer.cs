@@ -74,6 +74,7 @@ namespace OpenRA.Editor
 			this.toolStripMenuItemFixOpenAreas = new System.Windows.Forms.ToolStripButton();
 			this.toolStripMenuItemSetupDefaultPlayers = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
+			this.eraserToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripMenuItemCopySelection = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
 			this.QuickhelpToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -352,6 +353,7 @@ namespace OpenRA.Editor
 			this.toolStripMenuItemFixOpenAreas,
 			this.toolStripMenuItemSetupDefaultPlayers,
 			this.toolStripSeparator11,
+			this.eraserToolStripButton,
 			this.toolStripMenuItemCopySelection,
 			this.toolStripSeparator7,
 			this.QuickhelpToolStripButton});
@@ -519,6 +521,16 @@ namespace OpenRA.Editor
 			// 
 			this.toolStripSeparator11.Name = "toolStripSeparator11";
 			this.toolStripSeparator11.Size = new System.Drawing.Size(6, 25);
+			// 
+			// eraserToolStripButton
+			// 
+			this.eraserToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.eraserToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("eraserToolStripButton.Image")));
+			this.eraserToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.eraserToolStripButton.Name = "eraserToolStripButton";
+			this.eraserToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.eraserToolStripButton.Text = "Erase actors and resources.";
+			this.eraserToolStripButton.Click += new System.EventHandler(this.EraserToolStripButtonClick);
 			// 
 			// toolStripMenuItemCopySelection
 			// 
@@ -1059,6 +1071,7 @@ namespace OpenRA.Editor
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
 		private System.Windows.Forms.ToolStripButton showRulerToolStripItem;
 		private System.Windows.Forms.ToolStripMenuItem showRulerToolStripMenuItem;
+		private System.Windows.Forms.ToolStripButton eraserToolStripButton;
 
 		#endregion
 

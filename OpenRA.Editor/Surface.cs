@@ -36,6 +36,7 @@ namespace OpenRA.Editor
 		ITool Tool;
 
 		public bool IsPanning;
+		public bool IsErasing;
 		public bool ShowActorNames;
 		public bool ShowGrid;
 		public bool ShowRuler;
@@ -158,10 +159,10 @@ namespace OpenRA.Editor
 				Scroll(oldMousePos - MousePos);
 			else
 			{
-				if (e.Button == MouseButtons.Right)
+				if (e.Button == MouseButtons.Right || (IsErasing && e.Button == MouseButtons.Left))
 					Erase();
 
-				if (e.Button == MouseButtons.Left)
+				if (e.Button == MouseButtons.Left && !IsErasing)
 					Draw();
 
 				Invalidate();
@@ -221,7 +222,7 @@ namespace OpenRA.Editor
 			if (!IsPanning)
 			{
 				if (e.Button == MouseButtons.Right) Erase();
-				if (e.Button == MouseButtons.Left)
+				if (e.Button == MouseButtons.Left && !IsErasing)
 				{
 					Draw();
 					if (!IsPaste)
