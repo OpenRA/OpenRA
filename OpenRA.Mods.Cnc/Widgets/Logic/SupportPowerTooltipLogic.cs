@@ -39,6 +39,9 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				if (sp == null)
 					return;
 
+				if (sp.Info == null)
+					return;		// no instances actually exist (race with destroy)
+
 				time = "{0} / {1}".F(WidgetUtils.FormatTime(sp.RemainingTime),
 									 WidgetUtils.FormatTime(sp.Info.ChargeTime*25));
 
