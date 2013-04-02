@@ -73,7 +73,7 @@ namespace OpenRA.Mods.RA
 			if (remainingTime > 0)
 				return r;
 
-			if (Cloaked && IsVisible(self))
+			if (Cloaked && IsVisible(self.World.RenderedShroud, self))
 				return r.Select(a => a.WithPalette(wr.Palette(info.Palette)));
 			else
 				return Nothing;
@@ -94,25 +94,23 @@ namespace OpenRA.Mods.RA
 			}
 		}
 		
-		public bool IsVisible(Actor self)
-		{
-			return IsVisible(null, self);
-		}
-
 		public bool IsVisible(Shroud s, Actor self)
-		{			
-		    if (self.World.LocalPlayer != null) {
-			    if (s == null) {
-    				if (!Cloaked || self.Owner == self.World.LocalPlayer ||
-    					self.Owner.Stances[self.World.LocalPlayer] == Stance.Ally)
-    					return true;
-    			}
-    			else {
-    				if (!Cloaked || self.Owner == s.Owner ||
-    					self.Owner.Stances[s.Owner] == Stance.Ally)
-    					return true;
-    			}
+		{
+			if (!Cloaked)
+				return true;
+
+			if (s != null)
+			{
+				if (s == self.World.LocalShroud && s.Observing)
+					return true;
+				if (s.Owner != null)
+					if (self.Owner == s.Owner || self.Owner.Stances[s.Owner] == Stance.Ally)
+						return true;
 			}
+
+			if (self.World.LocalPlayer != null)
+				if (self.Owner == self.World.LocalPlayer || self.Owner.Stances[self.World.LocalPlayer] == Stance.Ally)
+					return true;
 			
 			return self.World.ActorsWithTrait<DetectCloaked>().Any(a =>
 				a.Actor.Owner.Stances[self.Owner] != Stance.Ally &&
