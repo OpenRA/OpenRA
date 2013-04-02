@@ -20,12 +20,18 @@ namespace OpenRA.Mods.RA
 {
 	public class CrateDropInfo : ITraitInfo
 	{
-		public readonly int Minimum = 1; // Minimum number of crates
-		public readonly int Maximum = 255; // Maximum number of crates
-		public readonly string[] ValidGround = {"Clear", "Rough", "Road", "Ore", "Beach"}; // Which terrain types can we drop on?
+		[Desc("Minimum number of crates")]
+		public readonly int Minimum = 1;
+		[Desc("Maximum number of crates")]
+		public readonly int Maximum = 255;
+		[Desc("Which terrain types can we drop on?")]
+		public readonly string[] ValidGround = {"Clear", "Rough", "Road", "Ore", "Beach"};
+		[Desc("Which terrain types count as water?")]
 		public readonly string[] ValidWater = {"Water"};
-		public readonly int SpawnInterval = 180; // Average time (seconds) between crate spawn
-		public readonly float WaterChance = .2f; // Chance of generating a water crate instead of a land crate
+		[Desc("Average time (seconds) between crate spawn")]
+		public readonly int SpawnInterval = 180;
+		[Desc("Chance of generating a water crate instead of a land crate")]
+		public readonly float WaterChance = .2f;
 
 		public object Create (ActorInitializer init) { return new CrateDrop(this); }
 	}
