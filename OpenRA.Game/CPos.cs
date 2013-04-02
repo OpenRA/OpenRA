@@ -21,6 +21,7 @@ namespace OpenRA
 		public readonly int X, Y;
 
 		public CPos(int x, int y) { X = x; Y = y; }
+		public CPos(WPos a) { X = a.X / 1024; Y = a.Y / 1024; }
 
 		public static readonly CPos Zero = new CPos(0, 0);
 

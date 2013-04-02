@@ -128,7 +128,10 @@ namespace OpenRA.Mods.RA.Effects
 				}
 
 				if (Trail != null)
-					Trail.Tick((PPos)highPos.ToInt2());
+				{
+					var alt = (Info.High || Info.Angle > 0) ? GetAltitude() : 0;
+					Trail.Tick(new PPos((int)pos.X, (int)pos.Y).ToWPos((int)alt));
+				}
 			}
 
 			if (!Info.High)		// check for hitting a wall
@@ -175,7 +178,7 @@ namespace OpenRA.Mods.RA.Effects
 			}
 
 			if (Trail != null)
-				Trail.Render(Args.firedBy);
+				Trail.Render(wr, Args.firedBy);
 		}
 
 		void Explode( World world )

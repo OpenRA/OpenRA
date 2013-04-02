@@ -8,19 +8,30 @@
  */
 #endregion
 
+using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class ThrowsParticleInfo : ITraitInfo, Requires<RenderUnitInfo>
+	class ThrowsParticleInfo : ITraitInfo, Requires<RenderSimpleInfo>
 	{
 		public readonly string Anim = null;
-		public readonly int[] Offset = new[] { 0, 0, 0, 0 };
-		public readonly int[] Spread = new[] { 0, 0 };
-		public readonly float Speed = 20;
-		public readonly string AnimKey = null;
+
+		[Desc("Initial position relative to body")]
+		public readonly WVec Offset = WVec.Zero;
+
+		[Desc("Maximum distance to throw the particle")]
+		public readonly WRange ThrowRange = new WRange(768);
+
+		[Desc("Maximum height to throw the particle")]
+		public readonly WRange ThrowHeight = new WRange(256);
+
+		[Desc("Number of ticks to animate")]
+		public readonly int Length = 15;
+
+		[Desc("Maximum rotation rate")]
 		public readonly float ROT = 15;
 
 		public object Create(ActorInitializer init) { return new ThrowsParticle(init, this); }
@@ -28,51 +39,56 @@ namespace OpenRA.Mods.RA
 
 	class ThrowsParticle : ITick
 	{
-		float2 pos;
-		float alt;
+		ThrowsParticleInfo info;
+		WVec pos;
+		WVec initialPos;
+		WVec finalPos;
+		int tick = 0;
 
-		float2 v;
-		float va;
 		float facing;
-		float dfacing;
-
-		const float gravity = 1.3f;
+		float rotation;
 
 		public ThrowsParticle(ActorInitializer init, ThrowsParticleInfo info)
 		{
+			this.info = info;
+
 			var self = init.self;
-			var ifacing = self.Trait<IFacing>();
-			var ru = self.Trait<RenderUnit>();
+			var rs = self.Trait<RenderSimple>();
 
-			alt = 0;
-			facing = Turreted.GetInitialTurretFacing( init, 0 );
-			pos = new Turret(info.Offset).PxPosition(self, ifacing).ToFloat2();
+			// TODO: Carry orientation over from the parent instead of just facing
+			var bodyFacing = init.Contains<FacingInit>() ? init.Get<FacingInit,int>() : 0;
+			facing = Turreted.GetInitialTurretFacing(init, 0);
 
-			v = Game.CosmeticRandom.Gauss2D(1) * info.Spread.RelOffset();
-			dfacing = Game.CosmeticRandom.Gauss1D(2) * info.ROT;
-			va = info.Speed;
+			// Calculate final position
+			var throwRotation = WRot.FromFacing(Game.CosmeticRandom.Next(1024));
+			var throwOffset = new WVec((int)(Game.CosmeticRandom.Gauss1D(1)*info.ThrowRange.Range), 0, 0).Rotate(throwRotation);
 
-			var anim = new Animation(ru.GetImage(self), () => (int)facing);
+			initialPos = pos = info.Offset.Rotate(rs.QuantizeOrientation(self, WRot.FromFacing(bodyFacing)));
+			finalPos = initialPos + throwOffset;
+
+			// Facing rotation
+			rotation = Game.CosmeticRandom.Gauss1D(2) * info.ROT;
+
+			var anim = new Animation(rs.GetImage(self), () => (int)facing);
 			anim.PlayRepeating(info.Anim);
-
-			ru.anims.Add(info.AnimKey, new AnimationWithOffset(
-				anim, () => pos - new float2(0, alt), null));
+			rs.anims.Add(info.Anim, new AnimationWithOffset(anim, wr => wr.ScreenPxOffset(pos), null));
 		}
 
 		public void Tick(Actor self)
 		{
-			va -= gravity;
-			alt += va;
+			if (tick == info.Length)
+				return;
+			tick++;
 
-			if (alt < 0) alt = 0;
-			else
-			{
-				pos += v;
-				v = .9f * v;
+			// Lerp position horizontally and height along a sinusoid using a cubic ease
+			var t = (tick*tick*tick / (info.Length*info.Length) - 3*tick*tick / info.Length + 3*tick);
+			var tp = WVec.Lerp(initialPos, finalPos, t, info.Length);
+			var th = new WAngle(512*(info.Length - t) / info.Length).Sin()*info.ThrowHeight.Range / 1024;
+			pos = new WVec(tp.X, tp.Y, th);
 
-				facing += dfacing;
-				dfacing *= .9f;
-			}
+			// Spin the particle
+			facing += rotation;
+			rotation *= .9f;
 		}
 	}
 }

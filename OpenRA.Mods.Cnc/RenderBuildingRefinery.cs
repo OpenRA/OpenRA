@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Cnc
 					: 0);
 
 			var offset = new float2(-32,-21);
-			anims.Add("lights", new AnimationWithOffset( lights, () => offset, () => !buildComplete )
+			anims.Add("lights", new AnimationWithOffset( lights, wr => offset, () => !buildComplete )
 				{ ZOffset = 24 });
 		}
 

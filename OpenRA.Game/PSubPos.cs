@@ -29,7 +29,6 @@ namespace OpenRA
 		public static explicit operator PSubPos(int2 a) { return new PSubPos(a.X, a.Y); }
 
 		public static explicit operator PSubVec(PSubPos a) { return new PSubVec(a.X, a.Y); }
-		public static explicit operator PVecFloat(PSubPos a) { return new PVecFloat(a.X, a.Y); }
 
 		public static PSubPos operator +(PSubPos a, PSubVec b) { return new PSubPos(a.X + b.X, a.Y + b.Y); }
 		public static PSubVec operator -(PSubPos a, PSubPos b) { return new PSubVec(a.X - b.X, a.Y - b.Y); }

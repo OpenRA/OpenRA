@@ -39,7 +39,6 @@ namespace OpenRA
 		public static explicit operator PPos(int2 a) { return new PPos(a.X, a.Y); }
 
 		public static explicit operator PVecInt(PPos a) { return new PVecInt(a.X, a.Y); }
-		public static explicit operator PVecFloat(PPos a) { return new PVecFloat(a.X, a.Y); }
 
 		public static PPos operator +(PPos a, PVecInt b) { return new PPos(a.X + b.X, a.Y + b.Y); }
 		public static PVecInt operator -(PPos a, PPos b) { return new PVecInt(a.X - b.X, a.Y - b.Y); }

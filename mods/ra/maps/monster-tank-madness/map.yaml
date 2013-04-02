@@ -2602,9 +2602,6 @@ Rules:
 			Image: 4TNK
 		ThrowsParticle@turret:
 			Anim: turret
-			Spread: 3,3
-			Speed: 6
-			AnimKey: turret
 		Health:
 			HP: 2000
 	SILO:

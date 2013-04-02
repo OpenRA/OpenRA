@@ -16,7 +16,7 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Traits
 {
-	public class RenderSimpleInfo : ITraitInfo
+	public class RenderSimpleInfo : ITraitInfo, LocalCoordinatesModelInfo
 	{
 		[Desc("Defaults to the actor name.")]
 		public readonly string Image = null;
@@ -108,7 +108,7 @@ namespace OpenRA.Traits
 			foreach (var a in anims.Values)
 				if (a.DisableFunc == null || !a.DisableFunc())
 				{
-					Renderable ret = a.Image(self, palette);
+					Renderable ret = a.Image(self, wr, palette);
 					if (Info.Scale != 1f)
 						ret = ret.WithScale(Info.Scale).WithPos(ret.Pos + 0.5f * ret.Sprite.size * (1 - Info.Scale));
 					yield return ret;

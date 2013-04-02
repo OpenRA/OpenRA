@@ -242,9 +242,6 @@ QUAD.starport:
 		HP: 100
 	ThrowsParticle@turret:
 		Anim: turret
-		Spread: 3,3
-		Speed: 6
-		AnimKey: turret
 
 SIEGETANK:
 	Inherits: ^Tank
@@ -299,9 +296,6 @@ SIEGETANK.Husk:
 		Icon: siegetankicon
 	ThrowsParticle@turret:
 		Anim: turret
-		Spread: 3,3
-		Speed: 6
-		AnimKey: turret
 	RenderUnit:
 		Image: SIEGETANK
 

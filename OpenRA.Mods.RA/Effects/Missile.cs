@@ -145,7 +145,7 @@ namespace OpenRA.Mods.RA.Effects
 			}
 
 			if (Trail != null)
-				Trail.Tick(PxPosition - new PVecInt(0, Altitude));
+				Trail.Tick(PxPosition.ToWPos(Altitude));
 		}
 
 		void Explode(World world)
@@ -163,7 +163,7 @@ namespace OpenRA.Mods.RA.Effects
 					wr.Palette(Args.weapon.Underwater ? "shadow" : "effect"), PxPosition.Y);
 
 			if (Trail != null)
-				Trail.Render(Args.firedBy);
+				Trail.Render(wr, Args.firedBy);
 		}
 	}
 }

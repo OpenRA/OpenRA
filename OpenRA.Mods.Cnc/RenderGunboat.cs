@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA.Render
 
 			var wake = new Animation(anim.Name);
 			wake.Play("left-wake");
-			Func<float2> offset = () => new float2(((anims["wake"].Animation.CurrentSequence.Name == "left-wake") ? 1 : -1),2);
+			Func<WorldRenderer, float2> offset = wr => new float2(((anims["wake"].Animation.CurrentSequence.Name == "left-wake") ? 1 : -1),2);
 			anims.Add( "wake", new AnimationWithOffset( wake, offset, () => false ) { ZOffset = -2 } );
 		}
 
