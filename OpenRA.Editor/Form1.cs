@@ -718,7 +718,7 @@ namespace OpenRA.Editor
 		{
 			if (surface1.Map == null) return;
 
-			surface1.Zoom *= 4.0f / 3.0f;
+			surface1.Zoom /= .75f;
 
 			surface1.Invalidate();
 		}
@@ -736,6 +736,19 @@ namespace OpenRA.Editor
 		{
 			panToolStripButton.Checked ^= true;
 			surface1.IsPanning = panToolStripButton.Checked;
+		}
+
+		void showRulerToolStripMenuItemClick(object sender, EventArgs e)
+		{
+			showRulerToolStripMenuItem.Checked ^= true;
+			showRulerToolStripItem.Checked ^= true;
+			surface1.ShowRuler = showRulerToolStripMenuItem.Checked;
+			surface1.Chunks.Clear();
+		}
+
+		void showRulerToolStripItemClick(object sender, System.EventArgs e)
+		{
+			showRulerToolStripMenuItemClick(sender, e);
 		}
 	}
 }
