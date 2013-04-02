@@ -65,6 +65,10 @@ namespace OpenRA.Editor
 			this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripMenuItemShowActorNames = new System.Windows.Forms.ToolStripButton();
 			this.toolStripMenuItemShowGrid = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
+			this.zoomIntoolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.zoomOutToolStripButton = new System.Windows.Forms.ToolStripButton();
+			this.panToolStripButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripMenuItemFixOpenAreas = new System.Windows.Forms.ToolStripButton();
 			this.toolStripMenuItemSetupDefaultPlayers = new System.Windows.Forms.ToolStripButton();
@@ -337,6 +341,10 @@ namespace OpenRA.Editor
 			this.toolStripSeparator8,
 			this.toolStripMenuItemShowActorNames,
 			this.toolStripMenuItemShowGrid,
+			this.toolStripSeparator12,
+			this.zoomIntoolStripButton,
+			this.zoomOutToolStripButton,
+			this.panToolStripButton,
 			this.toolStripSeparator10,
 			this.toolStripMenuItemFixOpenAreas,
 			this.toolStripMenuItemSetupDefaultPlayers,
@@ -434,6 +442,41 @@ namespace OpenRA.Editor
 			this.toolStripMenuItemShowGrid.Text = "Show &Grid";
 			this.toolStripMenuItemShowGrid.ToolTipText = "Enable a grid overlay for better orientation.";
 			this.toolStripMenuItemShowGrid.Click += new System.EventHandler(this.toolStripMenuItemShowGridClick);
+			// 
+			// toolStripSeparator12
+			// 
+			this.toolStripSeparator12.Name = "toolStripSeparator12";
+			this.toolStripSeparator12.Size = new System.Drawing.Size(6, 25);
+			// 
+			// zoomIntoolStripButton
+			// 
+			this.zoomIntoolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.zoomIntoolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("zoomIntoolStripButton.Image")));
+			this.zoomIntoolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.zoomIntoolStripButton.Name = "zoomIntoolStripButton";
+			this.zoomIntoolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.zoomIntoolStripButton.Text = "Zoom in";
+			this.zoomIntoolStripButton.Click += new System.EventHandler(this.zoomInToolStripButtonClick);
+			// 
+			// zoomOutToolStripButton
+			// 
+			this.zoomOutToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.zoomOutToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("zoomOutToolStripButton.Image")));
+			this.zoomOutToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.zoomOutToolStripButton.Name = "zoomOutToolStripButton";
+			this.zoomOutToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.zoomOutToolStripButton.Text = "Zoom out";
+			this.zoomOutToolStripButton.Click += new System.EventHandler(this.zoomOutToolStripButtonClick);
+			// 
+			// panToolStripButton
+			// 
+			this.panToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.panToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("panToolStripButton.Image")));
+			this.panToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.panToolStripButton.Name = "panToolStripButton";
+			this.panToolStripButton.Size = new System.Drawing.Size(23, 22);
+			this.panToolStripButton.Text = "Pan view";
+			this.panToolStripButton.Click += new System.EventHandler(this.panToolStripButtonClick);
 			// 
 			// toolStripSeparator10
 			// 
@@ -989,6 +1032,10 @@ namespace OpenRA.Editor
 			this.ResumeLayout(false);
 		}
 		private System.Windows.Forms.ToolStripStatusLabel cashToolStripStatusLabel;
+		private System.Windows.Forms.ToolStripButton panToolStripButton;
+		private System.Windows.Forms.ToolStripButton zoomOutToolStripButton;
+		private System.Windows.Forms.ToolStripButton zoomIntoolStripButton;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
 
 		#endregion
 
