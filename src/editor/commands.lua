@@ -296,6 +296,11 @@ local function removePage(index)
   elseif prevIndex then
     notebook:SetSelection(prevIndex)
   end
+
+  -- PAGE_CHANGED is not called on Linux when a page is closed (although
+  -- it is called on OSX and Windows, which is used in setting selection).
+  -- So, call it explicitly on Linux.
+  if ide.isname == "Unix" and ide.wxver >= "2.9.5" then SetEditorSelection() end
 end
 
 function ClosePage(selection)
