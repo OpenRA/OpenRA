@@ -52,7 +52,7 @@ namespace OpenRA.Editor
 		public event Action<KeyValuePair<string, ActorReference>> ActorDoubleClicked = _ => { };
 
 		Dictionary<string, ActorTemplate> ActorTemplates = new Dictionary<string, ActorTemplate>();
-		Dictionary<int, ResourceTemplate> ResourceTemplates = new Dictionary<int, ResourceTemplate>();
+		public Dictionary<int, ResourceTemplate> ResourceTemplates = new Dictionary<int, ResourceTemplate>();
 
 		public Keys GetModifiers() { return ModifierKeys; }
 
