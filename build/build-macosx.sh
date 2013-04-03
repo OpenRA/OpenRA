@@ -14,9 +14,9 @@ MACOSX_SDK_PATH="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.pla
 # number of parallel jobs used for building
 MAKEFLAGS="-j4"
 
-# flags for manual building with gcc
+# flags for manual building with gcc; build universal binaries for luasocket
 MACOSX_FLAGS="-arch $MACOSX_ARCH -mmacosx-version-min=$MACOSX_VERSION -isysroot $MACOSX_SDK_PATH"
-BUILD_FLAGS="-O2 -dynamiclib $MACOSX_FLAGS -I $INSTALL_DIR/include -L $INSTALL_DIR/lib"
+BUILD_FLAGS="-O2 -arch x86_64 -dynamiclib -undefined dynamic_lookup $MACOSX_FLAGS -I $INSTALL_DIR/include -L $INSTALL_DIR/lib"
 
 # paths configuration
 WXWIDGETS_BASENAME="wxWidgets"
@@ -155,10 +155,10 @@ if [ $BUILD_LUASOCKET ]; then
   tar -xzf "$LUASOCKET_FILENAME"
   cd "$LUASOCKET_BASENAME"
   mkdir -p "$INSTALL_DIR/lib/lua/5.1/"{mime,socket}
-  gcc $BUILD_FLAGS -o "$INSTALL_DIR/lib/lua/5.1/mime/core.dylib" src/mime.c -llua \
+  gcc $BUILD_FLAGS -o "$INSTALL_DIR/lib/lua/5.1/mime/core.dylib" src/mime.c \
     || { echo "Error: failed to build LuaSocket"; exit 1; }
   gcc $BUILD_FLAGS -o "$INSTALL_DIR/lib/lua/5.1/socket/core.dylib" \
-    src/{auxiliar.c,buffer.c,except.c,inet.c,io.c,luasocket.c,options.c,select.c,tcp.c,timeout.c,udp.c,usocket.c} -llua \
+    src/{auxiliar.c,buffer.c,except.c,inet.c,io.c,luasocket.c,options.c,select.c,tcp.c,timeout.c,udp.c,usocket.c} \
     || { echo "Error: failed to build LuaSocket"; exit 1; }
   strip -u -r "$INSTALL_DIR/lib/lua/5.1/mime/core.dylib" "$INSTALL_DIR/lib/lua/5.1/socket/core.dylib"
   mkdir -p "$INSTALL_DIR/share/lua/5.1/socket"
