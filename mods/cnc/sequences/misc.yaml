@@ -1,3 +1,8 @@
+fb4:
+	idle:
+		Start: 0
+		Length: 4
+
 fire:
 	1: fire1
 		Start: 0
