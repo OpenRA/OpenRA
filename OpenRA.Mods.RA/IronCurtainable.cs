@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Drawing;
 using OpenRA.GameRules;
 using OpenRA.Mods.RA.Effects;
 using OpenRA.Traits;
@@ -16,9 +17,10 @@ namespace OpenRA.Mods.RA
 {
 	class IronCurtainableInfo : TraitInfo<IronCurtainable> { }
 
-	class IronCurtainable : IDamageModifier, ITick, ISync
+	class IronCurtainable : IDamageModifier, ITick, ISync, ISelectionBar
 	{
 		[Sync] int RemainingTicks = 0;
+		int TotalTicks;
 
 		public void Tick(Actor self)
 		{
@@ -37,6 +39,15 @@ namespace OpenRA.Mods.RA
 				self.World.AddFrameEndTask(w => w.Add(new InvulnEffect(self))); // do not stack the invuln effect
 
 			RemainingTicks = duration;
+			TotalTicks = duration;
 		}
+
+		// Show the remaining time as a bar
+		public float GetValue()
+		{
+			return (float)RemainingTicks / TotalTicks;
+		}
+
+		public Color GetColor() { return Color.Red; }
 	}
 }
