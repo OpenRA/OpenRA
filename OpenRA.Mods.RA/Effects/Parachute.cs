@@ -51,6 +51,7 @@ namespace OpenRA.Mods.RA.Effects
 			if (altitude <= 0)
 				world.AddFrameEndTask(w =>
 					{
+						w.Remove(cargo);
 						w.Remove(this);
 						var loc = location.ToCPos();
 						cargo.CancelActivity();
