@@ -855,6 +855,11 @@ function SetupKeywords(editor, ext, forcespec, styles, font, fontitalic)
   editor:SetProperty("fold", "1")
   editor:SetProperty("fold.compact", ide.config.editor.foldcompact and "1" or "0")
   editor:SetProperty("fold.comment", "1")
+  
+  -- quickfix to prevent weird looks, otherwise need to update styling mechanism for cpp
+  -- cpp "greyed out" styles are  styleid + 64
+  editor:SetProperty("lexer.cpp.track.preprocessor", "0")
+  editor:SetProperty("lexer.cpp.update.preprocessor", "0")
 
   StylesApplyToEditor(styles or ide.config.styles, editor,
     font or ide.font.eNormal,fontitalic or ide.font.eItalic,lexerstyleconvert)
