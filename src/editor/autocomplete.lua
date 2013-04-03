@@ -229,7 +229,7 @@ local function resolveAssign(editor,tx)
   else
     c = tx
   end
-  
+
   -- then work from api
   return getclass(ac,c)
 end
@@ -381,12 +381,12 @@ local lastmethod
 local function getAutoCompApiList(childs,fragment,method)
   fragment = fragment:lower()
   local strategy = ide.config.acandtip.strategy
-  if (laststrategy ~= strategy) then 
+  if (laststrategy ~= strategy) then
     cachemain = {}
     cachemethod = {}
     laststrategy = strategy
   end
-  
+
   local cache = method and cachemethod or cachemain
 
   if (strategy == 2) then
@@ -426,7 +426,7 @@ local function getAutoCompApiList(childs,fragment,method)
 
   local sub = strategy == 1
   for key,v in pairs(childs) do
-    if ((method and v.type == "method") or (not method and v.type ~= "method")) then
+    if (method or v.type ~= "method") then
       local used = {}
       --
       local kl = key:lower()
@@ -467,7 +467,7 @@ function CreateAutoCompList(editor,key)
   local api = editor.api
   local tip = api.tip
   local ac = api.ac
-  
+
   local method = key:match(":[^:%.]*$") ~= nil
 
   -- ignore keywords
