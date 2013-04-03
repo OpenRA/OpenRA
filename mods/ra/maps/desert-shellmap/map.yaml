@@ -1,0 +1,385 @@
+Selectable: False
+
+MapFormat: 5
+
+RequiresMod: ra
+
+Title: Desert Shellmap
+
+Description: Desert Shellmap
+
+Author: Scott_NZ
+
+Tileset: DESERT
+
+MapSize: 128,128
+
+Bounds: 1,1,126,126
+
+UseAsShellmap: True
+
+Type: Conquest
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Race: allies
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Race: allies
+	PlayerReference@Allies:
+		Name: Allies
+		Race: allies
+		ColorRamp: 161,134,200,30
+		Enemies: Soviets
+	PlayerReference@Soviets:
+		Name: Soviets
+		Race: soviet
+		ColorRamp: 3,255,127,28
+		Enemies: Allies
+
+Actors:
+	Actor0: rock6
+		Location: 51,30
+		Owner: Neutral
+	Actor1: rock4
+		Location: 38,30
+		Owner: Neutral
+	Actor2: rock5
+		Location: 64,20
+		Owner: Neutral
+	Actor3: rock1
+		Location: 31,20
+		Owner: Neutral
+	Actor4: rock7
+		Location: 32,37
+		Owner: Neutral
+	Actor5: rock3
+		Location: 33,37
+		Owner: Neutral
+	Actor6: rock5
+		Location: 35,38
+		Owner: Neutral
+	Actor7: t08
+		Location: 46,34
+		Owner: Neutral
+	Actor8: oilb
+		Location: 27,51
+		Owner: Neutral
+	Actor9: tc01
+		Location: 97,69
+		Owner: Neutral
+	Actor10: t08
+		Location: 63,71
+		Owner: Neutral
+	Actor11: oilb
+		Location: 24,53
+		Owner: Neutral
+	Actor12: oilb
+		Location: 49,42
+		Owner: Neutral
+	Actor13: oilb
+		Location: 60,46
+		Owner: Neutral
+	Actor14: oilb
+		Location: 67,51
+		Owner: Neutral
+	Actor15: oilb
+		Location: 59,33
+		Owner: Neutral
+	Actor16: oilb
+		Location: 41,46
+		Owner: Neutral
+	Actor17: brl3
+		Location: 51,42
+		Owner: Neutral
+	Actor18: barl
+		Location: 43,48
+		Owner: Neutral
+	Actor19: barl
+		Location: 60,48
+		Owner: Neutral
+	Actor20: barl
+		Location: 59,48
+		Owner: Neutral
+	Actor21: brl3
+		Location: 59,49
+		Owner: Neutral
+	Actor22: barl
+		Location: 27,54
+		Owner: Neutral
+	Actor23: brl3
+		Location: 25,56
+		Owner: Neutral
+	Actor24: barl
+		Location: 25,55
+		Owner: Neutral
+	Actor25: barl
+		Location: 69,53
+		Owner: Neutral
+	Actor26: barl
+		Location: 63,35
+		Owner: Neutral
+	Actor27: barl
+		Location: 42,45
+		Owner: Neutral
+	Actor28: v20
+		Location: 43,66
+		Owner: Neutral
+	Actor29: v24
+		Location: 62,74
+		Owner: Neutral
+	Actor30: v27
+		Location: 53,66
+		Owner: Neutral
+	Actor31: v23
+		Location: 55,66
+		Owner: Neutral
+	Actor32: v21
+		Location: 51,66
+		Owner: Neutral
+	Actor33: v29
+		Location: 47,67
+		Owner: Neutral
+	Actor34: v28
+		Location: 44,57
+		Owner: Neutral
+	Actor35: v30
+		Location: 51,71
+		Owner: Neutral
+	Actor36: v28
+		Location: 50,71
+		Owner: Neutral
+	Actor55: tran.husk2
+		Location: 55,59
+		Owner: Allies
+	Actor38: v28
+		Location: 59,68
+		Owner: Neutral
+	Actor39: v27.gun
+		Location: 63,68
+		Owner: Allies
+	Actor40: dome
+		Location: 55,19
+		Owner: Soviets
+	Actor41: brl3
+		Location: 56,43
+		Owner: Neutral
+	Actor42: v25
+		Location: 49,68
+		Owner: Neutral
+	Actor43: v29
+		Location: 61,71
+		Owner: Neutral
+	Actor44: tc01
+		Location: 51,74
+		Owner: Neutral
+	Actor45: v28.gun
+		Location: 47,63
+		Owner: Allies
+	Actor46: v22
+		Location: 61,63
+		Owner: Neutral
+	Actor47: v27
+		Location: 55,65
+		Owner: Neutral
+	Actor48: v27
+		Location: 52,69
+		Owner: Neutral
+	Actor49: v26
+		Location: 49,64
+		Owner: Neutral
+	Actor51: rock5
+		Location: 52,56
+		Owner: Neutral
+	Actor50: apwr
+		Location: 51,14
+		Owner: Soviets
+	Actor53: truk
+		Location: 55,43
+		Owner: Neutral
+	Actor54: mine
+		Location: 74,85
+		Owner: Neutral
+	Actor37: v37
+		Location: 55,69
+		Owner: Neutral
+	Actor63: tsla
+		Location: 48,31
+		Owner: Soviets
+	Actor56: v23
+		Location: 24,36
+		Owner: Neutral
+	Actor57: v27
+		Location: 25,34
+		Owner: Neutral
+	Actor59: v29
+		Location: 21,28
+		Owner: Neutral
+	Actor58: v21
+		Location: 13,26
+		Owner: Neutral
+	Actor61: powr
+		Location: 36,19
+		Owner: Soviets
+	Actor60: hpad
+		Location: 46,28
+		Owner: Soviets
+	Actor69: kenn
+		Location: 43,29
+		Owner: Soviets
+	Actor68: ftur
+		Location: 34,23
+		Owner: Soviets
+	Actor70: afld
+		Location: 47,24
+		Owner: Soviets
+	Actor79: barr
+		Location: 41,27
+		Owner: Soviets
+	Actor80: proc
+		Location: 37,20
+		Owner: Soviets
+	Actor81: rock7
+		Location: 53,19
+		Owner: Neutral
+	Actor73: 2tnk
+		Location: 61,58
+		Owner: Allies
+		Facing: 190
+	Actor85: powr
+		Location: 49,14
+		Owner: Soviets
+	Actor83: fcom
+		Location: 42,18
+		Owner: Soviets
+	Actor84: sam
+		Location: 54,23
+		Owner: Soviets
+	Actor52: powr
+		Location: 54,14
+		Owner: Soviets
+	Actor72: 1tnk
+		Location: 48,62
+		Owner: Allies
+		Facing: 60
+	Actor88: t08
+		Location: 87,47
+		Owner: Neutral
+	Actor71: 2tnk
+		Location: 50,57
+		Owner: Allies
+		Facing: 40
+	Actor74: 1tnk
+		Location: 62,62
+		Owner: Allies
+		Facing: 180
+	Actor87: tc01
+		Location: 92,50
+		Owner: Neutral
+	Actor86: mine
+		Location: 30,42
+		Owner: Neutral
+	ViewportTarget1: waypoint
+		Location: 37,76
+		Owner: Neutral
+	ViewportTarget2: waypoint
+		Location: 70,78
+		Owner: Neutral
+	ViewportTarget3: waypoint
+		Location: 75,59
+		Owner: Neutral
+	ViewportTarget4: waypoint
+		Location: 59,33
+		Owner: Neutral
+	ViewportTarget5: waypoint
+		Location: 38,55
+		Owner: Neutral
+	Actor92: flare
+		Location: 56,59
+		Owner: Neutral
+	Actor62: apwr
+		Location: 38,17
+		Owner: Soviets
+	Actor75: 2tnk
+		Location: 52,63
+		Owner: Allies
+		Facing: 100
+	Actor76: 2tnk
+		Location: 58,64
+		Owner: Allies
+		Facing: 140
+	Actor78: jeep
+		Location: 49,60
+		Owner: Allies
+		Facing: 50
+	Actor82: jeep
+		Location: 61,60
+		Owner: Allies
+		Facing: 190
+	Actor89: arty
+		Location: 56,56
+		Owner: Allies
+	Actor90: arty
+		Location: 54,56
+		Owner: Allies
+	Actor91: ftur
+		Location: 53,14
+		Owner: Soviets
+	Actor93: ca
+		Location: 20,86
+		Owner: Allies
+		Facing: 64
+	Actor94: ca
+		Location: 40,90
+		Owner: Allies
+		Facing: 64
+	Actor95: rock6
+		Location: 10,76
+		Owner: Neutral
+	Actor97: rock2
+		Location: 12,75
+		Owner: Neutral
+
+Smudges:
+
+Rules:
+	Player:
+		-ConquestVictoryConditions:
+	World:
+		-CrateDrop:
+		-SpawnMPUnits:
+		-MPStartLocations:
+		DesertShellmapScript:
+	TRAN.Husk2:
+		Burns:
+			Damage: 0
+	V27.Gun:
+		Inherits: V27
+		RenderBuilding:
+			Image: V27
+		AutoTarget:
+		Armament:
+			Weapon: Dragon
+		Turreted:
+		AttackTurreted:
+	V28.Gun:
+		Inherits: V28
+		RenderBuilding:
+			Image: V28
+		AutoTarget:
+		Armament:
+			Weapon: Dragon
+		Turreted:
+		AttackTurreted:
+
+Sequences:
+
+Weapons:
+
+Voices:
+
+Notifications:
