@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -9,14 +9,20 @@
 #endregion
 
 using System;
+using System.Drawing;
+using System.Reflection;
+using System.Linq;
 using OpenRA;
 using OpenRA.Traits;
 using OpenRA.Widgets;
+using XRandom = OpenRA.Thirdparty.Random;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
 {
 	public class CheatsLogic
 	{
+		public static XRandom CosmeticRandom = new XRandom();
+
 		[ObjectCreator.UseCtor]
 		public CheatsLogic(Widget widget, Action onExit, World world)
 		{
@@ -67,6 +73,54 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var showAstarCostCheckbox = widget.Get<CheckboxWidget>("SHOW_ASTAR");
 			showAstarCostCheckbox.IsChecked = () => dbgOverlay != null ? dbgOverlay.Visible : false;
 			showAstarCostCheckbox.OnClick = () => { if (dbgOverlay != null) dbgOverlay.Visible ^= true; };
+
+
+			var desync = widget.Get<ButtonWidget>("DESYNC");
+			var desyncEnabled = widget.Get<CheckboxWidget>("DESYNC_ARMED");
+			desyncEnabled.IsChecked = () => !desync.Disabled;
+			desyncEnabled.OnClick = () => desync.Disabled ^= true;
+
+			desync.Disabled = true;
+			desync.OnClick = () =>
+			{
+				var trait = world.ActorsWithTrait<ISync>().Random(CosmeticRandom).Trait;
+				var t = trait.GetType();
+				string s;
+				const BindingFlags bf = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
+
+
+				var fields = t.GetFields(bf).Where(x => x.HasAttribute<SyncAttribute>()).ToArray();
+				if (fields.Length > 0)
+				{
+
+					var f = fields[CosmeticRandom.Next(fields.Length)];
+					var before = f.GetValue(trait);
+
+					if (f.FieldType == typeof(Boolean))
+						f.SetValue(trait, !(Boolean) f.GetValue(trait));
+					else if (f.FieldType == typeof(Int32))
+						f.SetValue(trait, CosmeticRandom.Next(Int32.MaxValue));
+					else
+					{
+						s = "Sorry, Field-Type not implemented. Try again!";
+						Game.AddChatLine(Color.White, "Debug", s);
+						Console.WriteLine(s);
+					}
+
+
+					var after = f.GetValue(trait);
+
+					s = "Type: {0}\nField: ({1}) {2}\nBefore: {3}\nAfter: {4}".F(t.Name, f.FieldType.Name, f.Name, before, after);
+					Game.AddChatLine(Color.White, "Debug", s);
+					Console.WriteLine(s);
+				}
+				else
+				{
+					s = "Bad random choice. This trait has no fields. Try again!";
+					Game.AddChatLine(Color.White, "Debug", s);
+					Console.WriteLine(s);
+				}
+			};
 
 			widget.Get<ButtonWidget>("CLOSE").OnClick = () => { Ui.CloseWindow(); onExit(); };
 		}
