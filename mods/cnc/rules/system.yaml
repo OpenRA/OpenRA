@@ -27,10 +27,10 @@ Player:
 			hq: 1
 			weap: 2
 			afld: 2
-			hpad: 1
+			hpad: 0
 			eye: 1
 			tmpl: 1
-			fix: 1
+			fix: 0
 		BuildingFractions:
 			proc: 20%
 			nuke: 9%
@@ -48,8 +48,8 @@ Player:
 			eye: 1%
 			tmpl: 1%
 			silo: 4%
-#			fix: 1%
-#			hpad: 2%
+			fix: 1%
+			hpad: 2%
 		UnitsToBuild:
 			e1: 14%
 			e3: 7%
@@ -91,7 +91,7 @@ Player:
 			hpad: 1
 			eye: 1
 			tmpl: 1
-			fix: 1
+			fix: 0
 		BuildingFractions:
 			proc: 17%
 			nuke: 1%
@@ -152,7 +152,7 @@ Player:
 			hpad: 1
 			eye: 1
 			tmpl: 1
-			fix: 1
+			fix: 0
 		BuildingFractions:
 			proc: 17%
 			nuke: 10%	
