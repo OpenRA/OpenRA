@@ -405,7 +405,7 @@ HTNK:
 	RevealsShroud:
 		Range: 6
 	Turreted:
-		ROT: 2
+		ROT: 3
 	Armament@PRIMARY:
 		Weapon: 120mmDual
 		LocalOffset: 800, 180, 340, 800, -180, 340
