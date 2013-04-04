@@ -19,13 +19,12 @@ namespace OpenRA.Mods.RA.Effects
 	{
 		readonly Player firedBy;
 		Animation anim;
-		PPos pos;
+		WPos pos;
 		CPos targetLocation;
-		int altitude;
 		bool goingUp = true;
 		string weapon;
 
-		public NukeLaunch(Player firedBy, Actor silo, string weapon, PVecInt spawnOffset, CPos targetLocation)
+		public NukeLaunch(Player firedBy, Actor silo, string weapon, WPos launchPos, CPos targetLocation)
 		{
 			this.firedBy = firedBy;
 			this.targetLocation = targetLocation;
@@ -33,18 +32,14 @@ namespace OpenRA.Mods.RA.Effects
 			anim = new Animation(weapon);
 			anim.PlayRepeating("up");
 
+			pos = launchPos;
 			if (silo == null)
-			{
-				altitude = firedBy.World.Map.Bounds.Height*Game.CellSize;
 				StartDescent(firedBy.World);
-			}
-			else
-				pos = silo.CenterLocation + spawnOffset;
 		}
 
 		void StartDescent(World world)
 		{
-			pos = OpenRA.Traits.Util.CenterOfCell(targetLocation);
+			pos = targetLocation.CenterPosition + new WVec(0, 0, 1024*firedBy.World.Map.Bounds.Height);
 			anim.PlayRepeating("down");
 			goingUp = false;
 		}
@@ -53,16 +48,17 @@ namespace OpenRA.Mods.RA.Effects
 		{
 			anim.Tick();
 
+			var delta = new WVec(0,0,427);
 			if (goingUp)
 			{
-				altitude += 10;
-				if (altitude >= world.Map.Bounds.Height*Game.CellSize)
+				pos += delta;
+				if (pos.Z >= world.Map.Bounds.Height*1024)
 					StartDescent(world);
 			}
 			else
 			{
-				altitude -= 10;
-				if (altitude <= 0)
+				pos -= delta;
+				if (pos.Z <= 0)
 					Explode(world);
 			}
 		}
@@ -70,8 +66,8 @@ namespace OpenRA.Mods.RA.Effects
 		void Explode(World world)
 		{
 			world.AddFrameEndTask(w => w.Remove(this));
-			Combat.DoExplosion(firedBy.PlayerActor, weapon, pos, 0);
-			world.WorldActor.Trait<ScreenShaker>().AddEffect(20, pos.ToFloat2(), 5);
+			Combat.DoExplosion(firedBy.PlayerActor, weapon, PPos.FromWPos(pos), pos.Z * Game.CellSize / 1024);
+			world.WorldActor.Trait<ScreenShaker>().AddEffect(20, PPos.FromWPos(pos).ToFloat2(), 5);
 
 			foreach (var a in world.ActorsWithTrait<NukePaletteEffect>())
 				a.Trait.Enable();
@@ -79,8 +75,7 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			yield return new SpriteRenderable(anim.Image, pos.ToFloat2() - new float2(0, altitude),
-				wr.Palette("effect"), (int)pos.Y);
+			yield return new SpriteRenderable(anim.Image, pos, 0, wr.Palette("effect"), 1f);
 		}
 	}
 }
