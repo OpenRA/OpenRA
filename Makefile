@@ -257,7 +257,7 @@ install: all
 	@$(INSTALL_PROGRAM) thirdparty/ICSharpCode.SharpZipLib.dll $(INSTALL_DIR)
 	@$(INSTALL_PROGRAM) thirdparty/FuzzyLogicLibrary.dll $(INSTALL_DIR)
 	@$(INSTALL_PROGRAM) thirdparty/SharpFont.dll $(INSTALL_DIR)
-	@cp thirdparty/SharpFont.config.dll $(INSTALL_DIR)
+	@cp thirdparty/SharpFont.dll.config $(INSTALL_DIR)
 
 	@echo "#!/bin/sh" 				>  openra
 	@echo 'BINDIR=$$(dirname $$(readlink -f $$0))'	>> openra
