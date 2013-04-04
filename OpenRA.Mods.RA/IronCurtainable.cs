@@ -45,9 +45,11 @@ namespace OpenRA.Mods.RA
 		// Show the remaining time as a bar
 		public float GetValue()
 		{
+			if (RemainingTicks == 0) // otherwise an empty bar is rendered all the time
+				return 0f;
+
 			return (float)RemainingTicks / TotalTicks;
 		}
-
 		public Color GetColor() { return Color.Red; }
 	}
 }
