@@ -153,7 +153,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 		public override void Tick()
 		{
-			var hasRadarNew = world.LocalPlayer == null || world.LocalPlayer.WinState != WinState.Undefined ||
+			var hasRadarNew = world.ObserverMode || world.LocalPlayer.WinState != WinState.Undefined ||
 				world.ActorsWithTrait<ProvidesRadar>().Any(a => a.Actor.Owner == world.LocalPlayer && a.Trait.IsActive);
 
 			if (hasRadarNew != hasRadar)

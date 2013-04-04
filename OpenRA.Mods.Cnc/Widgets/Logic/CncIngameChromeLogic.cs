@@ -76,8 +76,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			ingameRoot = widget.Get("INGAME_ROOT");
 			var playerRoot = ingameRoot.Get("PLAYER_ROOT");
 
-			// Observer
-			if (world.LocalPlayer == null)
+			if (world.ObserverMode)
 				InitObserverWidgets(world, playerRoot);
 			else
 				InitPlayerWidgets(world, playerRoot);

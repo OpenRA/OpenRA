@@ -115,7 +115,7 @@ namespace OpenRA.Mods.RA
 
 		public Color RadarColorOverride(Actor self)
 		{
-			if (!Disguised || self.World.LocalPlayer == null ||
+			if (!Disguised || self.World.ObserverMode || self.World.GlobalViewMode ||
 				self.Owner.Stances[self.World.LocalPlayer] == Stance.Ally)
 				return self.Owner.ColorRamp.GetColor(0);
 

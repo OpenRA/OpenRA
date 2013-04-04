@@ -40,10 +40,11 @@ namespace OpenRA
 		public void AddPlayer(Player p) { Players.Add(p); }
 		public Player LocalPlayer { get; private set; }
 		public readonly Shroud LocalShroud;
-		public bool Observer { get { return LocalPlayer == null; } }
 		public Player RenderedPlayer;
 		public Shroud RenderedShroud { get { return RenderedPlayer != null ? RenderedPlayer.Shroud : LocalShroud; } }
-		
+
+		public bool ObserverMode { get { return LocalPlayer == null; } }
+		public bool GlobalViewMode { get { return RenderedShroud == LocalShroud && RenderedPlayer == null; } }
 
 		public void SetLocalPlayer(string pr)
 		{

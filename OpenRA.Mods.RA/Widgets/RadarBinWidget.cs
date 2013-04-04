@@ -130,8 +130,8 @@ namespace OpenRA.Mods.RA.Widgets
 
 		public override void Draw()
 		{
-			if( world == null || world.LocalPlayer == null ) return;
-			if( world.LocalPlayer.WinState != WinState.Undefined ) return;
+			if (world == null || world.ObserverMode) return;
+			if (world.LocalPlayer.WinState != WinState.Undefined) return;
 
 			radarCollection = "radar-" + world.LocalPlayer.Country.Race;
 			var rsr = Game.Renderer.RgbaSpriteRenderer;

@@ -451,7 +451,7 @@ namespace OpenRA.Mods.RA.Missions
 			var bottomRight = actors["ParadropBoxBottomRight"];
 			paradropBox = new Rectangle(topLeft.Location.X, topLeft.Location.Y, bottomRight.Location.X - topLeft.Location.X, bottomRight.Location.Y - topLeft.Location.Y);
 
-			if (w.LocalPlayer == null || w.LocalPlayer == allies1)
+			if (w.ObserverMode || w.LocalPlayer == allies1)
 				Game.MoveViewport(allies1EntryPoint.Location.ToFloat2());
 
 			else

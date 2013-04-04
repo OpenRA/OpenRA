@@ -100,7 +100,8 @@ namespace OpenRA.Mods.RA
 
 		public IEnumerable<Renderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<Renderable> r)
 		{
-			if ((self.Owner == self.World.LocalPlayer || self.World.LocalPlayer == null) && Level > 0)
+			// TODO: does not care about the unit being covered by fog
+			if ((self.Owner == self.World.LocalPlayer || self.World.ObserverMode) && Level > 0)
 				return InnerModifyRender(self, wr, r);
 			else
 				return r;

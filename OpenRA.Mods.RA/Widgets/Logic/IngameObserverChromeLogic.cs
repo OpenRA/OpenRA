@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	{
 		Widget gameRoot;
 
-		// WTF duplication
+		// TODO: remove code duplication, merge with IngameChromeLogic
 		[ObjectCreator.UseCtor]
 		public IngameObserverChromeLogic(World world)
 		{
@@ -66,8 +66,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var shroudSelector = Ui.Root.GetOrNull<DropDownButtonWidget>("SHROUD_SELECTOR");
 			if (shroudSelector != null)
 			{
-				if (world.RenderedShroud == world.LocalShroud)
-					shroudSelector.GetText = () =>  world.RenderedPlayer != null ? "{0}'s View".F(world.RenderedPlayer.PlayerName) : "Worldview";
+				shroudSelector.GetText = () =>  world.GlobalViewMode ? "Worldview" : "{0}'s View".F(world.RenderedPlayer.PlayerName);
 
 				shroudSelector.OnMouseDown = _ =>
 				{

@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA
 			// Remove all open widgets
 			Ui.ResetAll();
 
-			if (world.LocalPlayer != null)
+			if (!world.ObserverMode)
 				Game.OpenWindow(world, Info.Widget);
 			else if (Info.ObserverWidget != null)
 				Game.OpenWindow(world, Info.ObserverWidget);

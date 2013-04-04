@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -34,7 +34,8 @@ namespace OpenRA.Mods.RA.Activities
 
 			target.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(payload);
 			self.Destroy();
-			if (self.World.LocalPlayer == null || self.Owner.Stances[self.World.LocalPlayer] == Stance.Ally)
+			// TODO: does not care about per-player-shrouds in spectator mode
+			if (self.World.ObserverMode || self.Owner.Stances[self.World.LocalPlayer] == Stance.Ally)
 				self.World.AddFrameEndTask(w => w.Add(new CashTick(payload, 30, 2, target.CenterLocation, target.Owner.ColorRamp.GetColor(0))));
 
 			return this;

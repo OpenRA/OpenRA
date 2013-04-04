@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -55,7 +55,7 @@ namespace OpenRA.Mods.RA.Effects
 			if (self.Destroyed)
 				world.AddFrameEndTask(w => w.Remove(this));
 
-			if (world.LocalPlayer == null || !self.IsInWorld || self.Destroyed)
+			if (world.ObserverMode || !self.IsInWorld || self.Destroyed)
 				return;
 
 			// Can be granted at runtime via a crate, so can't cache
@@ -69,7 +69,7 @@ namespace OpenRA.Mods.RA.Effects
 			}
 
 			var hasGps = (watcher != null && (watcher.Granted || watcher.GrantedAllies));
-			var hasDot = (huf != null && !huf.IsVisible(self.World.RenderedShroud, self)); // WRONG (why?)
+			var hasDot = (huf != null && !huf.IsVisible(self.World.RenderedShroud, self)); // TODO: wrong (why?) yeah, why?!?
 			var dotHidden = (cloak != null && cloak.Cloaked) || (spy != null && spy.Disguised);
 
 			show = hasGps && hasDot && !dotHidden;

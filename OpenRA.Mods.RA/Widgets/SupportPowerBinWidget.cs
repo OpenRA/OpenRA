@@ -75,7 +75,7 @@ namespace OpenRA.Mods.RA.Widgets
 		{
 			buttons.Clear();
 
-			if( world.LocalPlayer == null ) return;
+			if (world.ObserverMode) return;
 
 			var manager = world.LocalPlayer.PlayerActor.Trait<SupportPowerManager>();
 			var powers = manager.Powers.Where(p => !p.Value.Disabled);

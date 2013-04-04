@@ -58,7 +58,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 			offset += new int2(0, 32);
 
-			if (world.LocalPlayer == null) return;
+			if (world.ObserverMode) return;
 			var pendingWinner = FindFirstWinningPlayer(world);
 			if (pendingWinner == null) return;
 			var winnerSvc = pendingWinner.PlayerActor.Trait<StrategicVictoryConditions>();
