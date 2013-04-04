@@ -53,7 +53,7 @@ HELI:
 		Description: Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks
 	Buildable:
 		BuildPaletteOrder: 20
-		Prerequisites: hpad, hq
+		Prerequisites: hpad, anyhq
 		BuiltAt: hpad
 		Owner: nod
 	Selectable:
@@ -106,7 +106,7 @@ ORCA:
 		Description: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
 	Buildable:
 		BuildPaletteOrder: 20
-		Prerequisites: hpad, hq
+		Prerequisites: hpad, anyhq
 		BuiltAt: hpad
 		Owner: gdi
 	Selectable:
