@@ -78,9 +78,9 @@ namespace OpenRA.Graphics
 					data[j,i] = c[i];
 			}
 
-			// Doesn't work
+			// TODO: Doesn't work (why?)
 			texture.SetData(data);
-			Game.Renderer.PaletteTexture = texture;
+			Game.Renderer.SetPalette(texture);
 		}
 	}
 }

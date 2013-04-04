@@ -78,7 +78,7 @@ namespace OpenRA.Graphics
 				DrawLine(new float2(r.Left, y), new float2(r.Right, y), color, color);
 		}
 
-		public void SetShaderParams(ITexture palette, Size screen, float zoom, float2 scroll)
+		public void SetViewportParams(Size screen, float zoom, float2 scroll)
 		{
 			shader.SetVec("Scroll", (int)scroll.X, (int)scroll.Y);
 			shader.SetVec("r1", zoom*2f/screen.Width, -zoom*2f/screen.Height);

@@ -87,9 +87,13 @@ namespace OpenRA.Graphics
 			shader.Render(() => renderer.DrawBatch(buffer, start, length, type));
 		}
 
-		public void SetShaderParams(ITexture palette, Size screen, float zoom, float2 scroll)
+		public void SetPalette(ITexture palette)
 		{
 			shader.SetTexture("Palette", palette);
+		}
+
+		public void SetViewportParams(Size screen, float zoom, float2 scroll)
+		{
 			shader.SetVec("Scroll", (int)scroll.X, (int)scroll.Y);
 			shader.SetVec("r1", zoom*2f/screen.Width, -zoom*2f/screen.Height);
 			shader.SetVec("r2", -1, 1);
