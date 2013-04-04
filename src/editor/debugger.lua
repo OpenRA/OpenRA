@@ -217,6 +217,10 @@ local function activateDocument(file, line, skipauto)
       SetEditorSelection(selection)
       ClearAllCurrentLineMarkers()
       if line then
+        if line == 0 then -- special case; find the first executable line
+          local func = loadstring(editor:GetText())
+          line = func and next(debug.getinfo(func, "L").activelines) or 1
+        end
         local line = line - 1 -- editor line operations are zero-based
         editor:MarkerAdd(line, CURRENT_LINE_MARKER)
         local firstline = editor:DocLineFromVisible(editor:GetFirstVisibleLine())
@@ -483,7 +487,7 @@ debugger.listen = function()
           debugger.scratchable = ide.interpreter.scratchextloop ~= nil
         else
           debugger.scratchable = true
-          activateDocument(startfile, 1)
+          activateDocument(startfile, 0) -- find the appropriate line
         end
       end
 
