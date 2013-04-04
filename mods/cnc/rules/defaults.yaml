@@ -113,7 +113,7 @@
 		Crushes: crate
 		SharesCell: true
 		TerrainSpeeds:
-			Clear: 90
+			Clear: 100
 			Rough: 80
 			Road: 100
 			Tiberium: 70
