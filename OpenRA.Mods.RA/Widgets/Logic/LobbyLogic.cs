@@ -287,8 +287,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				{
 					var slot = orderManager.LobbyInfo.FirstEmptySlot();
 					var bot = Rules.Info["player"].Traits.WithInterface<IBotInfo>().Select(t => t.Name).FirstOrDefault();
+					var botController = orderManager.LobbyInfo.Clients.Where(c => c.IsAdmin).FirstOrDefault();
 					if (slot != null && bot != null)
-						orderManager.IssueOrder(Order.Command("slot_bot {0} {1}".F(slot, bot)));
+						orderManager.IssueOrder(Order.Command("slot_bot {0} {1} {2}".F(slot, botController.Index, bot)));
 				});
 		}
 
