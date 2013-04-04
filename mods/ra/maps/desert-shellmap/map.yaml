@@ -201,9 +201,9 @@ Actors:
 	Actor53: truk
 		Location: 55,43
 		Owner: Neutral
-	Actor54: mine
-		Location: 74,85
-		Owner: Neutral
+	Actor153: apwr
+		Location: 87,84
+		Owner: Allies
 	Actor63: tsla
 		Location: 48,31
 		Owner: Soviets
@@ -284,7 +284,7 @@ Actors:
 		Location: 70,78
 		Owner: Neutral
 	ViewportTarget3: waypoint
-		Location: 75,59
+		Location: 85,55
 		Owner: Neutral
 	ViewportTarget4: waypoint
 		Location: 59,33
@@ -358,32 +358,14 @@ Actors:
 	Actor77: e1
 		Location: 59,64
 		Owner: Allies
-	ParadropLocation: waypoint
-		Location: 65,60
-		Owner: Neutral
 	Actor37: rock5
 		Location: 35,43
 		Owner: Neutral
 	Actor67: t08
 		Location: 25,44
 		Owner: Neutral
-	Actor84: v34
-		Location: 21,73
-		Owner: Neutral
-	Actor96: v35
-		Location: 20,73
-		Owner: Neutral
-	Actor98: v32
-		Location: 20,72
-		Owner: Neutral
-	Actor99: v33
-		Location: 20,74
-		Owner: Neutral
-	Actor100: v34
-		Location: 19,74
-		Owner: Neutral
 	Actor109: stek
-		Location: 107,46
+		Location: 113,32
 		Owner: Soviets
 	Actor102: proc
 		Location: 94,28
@@ -439,17 +421,15 @@ Actors:
 	Actor119: barr
 		Location: 102,30
 		Owner: Soviets
-	Actor120: kenn
-		Location: 100,32
-		Owner: Soviets
 	Actor136: v2rl
 		Location: 91,40
 		Owner: Soviets
+		Facing: 90
 	Actor122: afld
 		Location: 116,49
 		Owner: Soviets
-	Actor123: hpad
-		Location: 104,40
+	Actor121: hpad
+		Location: 112,50
 		Owner: Soviets
 	Actor126: tsla
 		Location: 110,27
@@ -490,8 +470,9 @@ Actors:
 	Actor137: 4tnk
 		Location: 105,33
 		Owner: Soviets
-	Actor121: afld
-		Location: 106,50
+		Facing: 100
+	Actor123: afld
+		Location: 119,49
 		Owner: Soviets
 	Actor138: 4tnk
 		Location: 112,46
@@ -499,9 +480,11 @@ Actors:
 	Actor139: 3tnk
 		Location: 89,32
 		Owner: Soviets
+		Facing: 64
 	Actor140: 3tnk
 		Location: 92,29
 		Owner: Soviets
+		Facing: 20
 	Actor141: 3tnk
 		Location: 36,23
 		Owner: Soviets
@@ -523,6 +506,189 @@ Actors:
 	Actor147: rock1
 		Location: 118,54
 		Owner: Neutral
+	Actor154: pbox.e1
+		Location: 70,77
+		Owner: Allies
+	Actor148: pbox.e1
+		Location: 70,89
+		Owner: Allies
+	Actor180: pbox.e1
+		Location: 83,72
+		Owner: Allies
+	Actor152: 1tnk
+		Location: 69,85
+		Owner: Allies
+		Facing: 110
+	Actor155: apwr
+		Location: 84,84
+		Owner: Allies
+	ParadropEntry: waypoint
+		Location: 60,126
+		Owner: Neutral
+	ParadropLZ: waypoint
+		Location: 60,88
+		Owner: Neutral
+	Actor149: pbox.e1
+		Location: 67,84
+		Owner: Allies
+	Actor156: pbox.e1
+		Location: 94,91
+		Owner: Allies
+	Actor162: sbag
+		Location: 76,70
+		Owner: Allies
+	Actor186: 3tnk
+		Location: 107,50
+		Owner: Soviets
+		Facing: 80
+	Actor174: tc01
+		Location: 98,37
+		Owner: Neutral
+	Actor184: atek
+		Location: 75,87
+		Owner: Allies
+	Actor166: sbag
+		Location: 73,71
+		Owner: Allies
+	Actor168: sbag
+		Location: 72,72
+		Owner: Allies
+	Actor164: sbag
+		Location: 74,70
+		Owner: Allies
+	Actor160: agun
+		Location: 83,80
+		Owner: Allies
+	Actor165: sbag
+		Location: 73,70
+		Owner: Allies
+	Actor161: hpad
+		Location: 74,72
+		Owner: Allies
+	Actor167: sbag
+		Location: 73,72
+		Owner: Allies
+	Actor163: sbag
+		Location: 75,70
+		Owner: Allies
+	Actor169: barr
+		Location: 109,48
+		Owner: Soviets
+	Actor170: kenn
+		Location: 104,41
+		Owner: Soviets
+	Actor179: gun
+		Location: 87,76
+		Owner: Allies
+		Facing: 0
+	Actor182: rock6
+		Location: 96,45
+		Owner: Neutral
+	Actor120: gun
+		Location: 77,70
+		Owner: Allies
+		Facing: 20
+	Actor158: pdox
+		Location: 78,91
+		Owner: Allies
+	Actor159: tent
+		Location: 70,81
+		Owner: Allies
+	Actor177: dome
+		Location: 76,80
+		Owner: Allies
+	Actor178: pbox.e1
+		Location: 101,81
+		Owner: Allies
+	Actor181: sbag
+		Location: 72,74
+		Owner: Allies
+	Actor157: gap
+		Location: 81,92
+		Owner: Allies
+	Actor187: ftur
+		Location: 104,47
+		Owner: Soviets
+	Actor176: gun
+		Location: 71,74
+		Owner: Allies
+		Facing: 30
+	Actor175: sbag
+		Location: 72,73
+		Owner: Allies
+	Actor198: tent
+		Location: 82,74
+		Owner: Allies
+	Actor188: ftur
+		Location: 107,52
+		Owner: Soviets
+	Actor54: agun
+		Location: 76,92
+		Owner: Allies
+	Actor172: apwr
+		Location: 81,87
+		Owner: Allies
+	Actor171: gun
+		Location: 68,80
+		Owner: Allies
+		Facing: 55
+	Actor195: 2tnk
+		Location: 71,78
+		Owner: Allies
+		Facing: 64
+	Actor196: pt
+		Location: 55,92
+		Owner: Allies
+		Facing: 160
+	Actor183: rock2
+		Location: 93,41
+		Owner: Neutral
+	Actor185: 3tnk
+		Location: 105,47
+		Owner: Soviets
+	Actor197: dd
+		Location: 30,88
+		Owner: Allies
+		Facing: 64
+	Actor150: apwr
+		Location: 81,84
+		Owner: Allies
+	Actor199: e1
+		Location: 72,83
+		Owner: Allies
+	Actor200: e1
+		Location: 81,73
+		Owner: Allies
+	Actor151: apwr
+		Location: 87,87
+		Owner: Allies
+	Actor173: apwr
+		Location: 84,87
+		Owner: Allies
+	Actor84: apwr
+		Location: 38,9
+		Owner: Soviets
+	Actor96: apwr
+		Location: 38,12
+		Owner: Soviets
+	Actor98: apwr
+		Location: 34,12
+		Owner: Soviets
+	Actor99: apwr
+		Location: 34,9
+		Owner: Soviets
+	Actor100: apwr
+		Location: 30,12
+		Owner: Soviets
+	Actor189: apwr
+		Location: 30,9
+		Owner: Soviets
+	Actor190: apwr
+		Location: 26,12
+		Owner: Soviets
+	Actor191: apwr
+		Location: 26,9
+		Owner: Soviets
 
 Smudges:
 

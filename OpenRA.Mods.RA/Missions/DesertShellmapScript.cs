@@ -37,8 +37,11 @@ namespace OpenRA.Mods.RA.Missions
 		int coastUnitsLeft;
 		static readonly string[] CoastUnits = { "e1", "e1", "e2", "e3", "e4" };
 
-		Actor paradropLocation;
+		Actor paradropLZ;
+		Actor paradropEntry;
 		static readonly string[] ParadropUnits = { "e1", "e1", "e1", "e2", "e2" };
+
+		Dictionary<string, Actor> mapActors;
 
 		public void Tick(Actor self)
 		{
@@ -51,9 +54,9 @@ namespace OpenRA.Mods.RA.Missions
 			}
 
 			if (world.FrameNumber % 25 == 0)
-				foreach (var actor in world.Actors.Where(a => a.IsInWorld && a.Owner == soviets && a.IsIdle && !a.IsDead()
-					&& a.HasTrait<AttackBase>() && a.HasTrait<Mobile>()))
-					actor.QueueActivity(new AttackMove.AttackMoveActivity(actor, new Move.Move(attackLocation.Location)));
+				foreach (var actor in world.Actors.Where(a => a.IsInWorld && a.Owner == soviets && a.IsIdle && !a.IsDead() && a.HasTrait<AttackBase>() && a.HasTrait<Mobile>())
+					.Except(mapActors.Values))
+					actor.QueueActivity(new AttackMove.AttackMoveActivity(actor, new Move.Move(attackLocation.Location, 0)));
 
 			if (--waitTicks <= 0)
 			{
@@ -68,8 +71,8 @@ namespace OpenRA.Mods.RA.Missions
 
 					if (viewportTargetNumber == 0)
 						coastUnitsLeft = 15;
-					if (viewportTargetNumber == 2)
-						MissionUtils.Paradrop(world, soviets, ParadropUnits, world.ChooseRandomEdgeCell(), paradropLocation.Location);
+					if (viewportTargetNumber == 1)
+						MissionUtils.Paradrop(world, soviets, ParadropUnits, paradropEntry.Location, paradropLZ.Location);
 				}
 			}
 		}
@@ -81,21 +84,22 @@ namespace OpenRA.Mods.RA.Missions
 			allies = w.Players.Single(p => p.InternalName == "Allies");
 			soviets = w.Players.Single(p => p.InternalName == "Soviets");
 
-			var actors = w.WorldActor.Trait<SpawnMapActors>().Actors;
+			mapActors = w.WorldActor.Trait<SpawnMapActors>().Actors;
 
-			attackLocation = actors["AttackLocation"];
-			coastRP1 = actors["CoastRP1"];
-			coastRP2 = actors["CoastRP2"];
-			paradropLocation = actors["ParadropLocation"];
+			attackLocation = mapActors["AttackLocation"];
+			coastRP1 = mapActors["CoastRP1"];
+			coastRP2 = mapActors["CoastRP2"];
+			paradropLZ = mapActors["ParadropLZ"];
+			paradropEntry = mapActors["ParadropEntry"];
 
-			var t1 = actors["ViewportTarget1"];
-			var t2 = actors["ViewportTarget2"];
-			var t3 = actors["ViewportTarget3"];
-			var t4 = actors["ViewportTarget4"];
-			var t5 = actors["ViewportTarget5"];
+			var t1 = mapActors["ViewportTarget1"];
+			var t2 = mapActors["ViewportTarget2"];
+			var t3 = mapActors["ViewportTarget3"];
+			var t4 = mapActors["ViewportTarget4"];
+			var t5 = mapActors["ViewportTarget5"];
 			viewportTargets = new[] { t1, t2, t3, t4, t5 }.Select(t => t.Location.ToInt2()).ToList();
 
-			foreach (var actor in actors.Values.Where(a => a.Owner == allies || a.HasTrait<Bridge>()))
+			foreach (var actor in mapActors.Values.Where(a => a.Owner == allies || a.HasTrait<Bridge>()))
 			{
 				if (actor.Owner == allies && actor.HasTrait<AutoTarget>())
 					actor.Trait<AutoTarget>().stance = UnitStance.Defend;
@@ -107,9 +111,6 @@ namespace OpenRA.Mods.RA.Missions
 			viewportTarget = viewportTargets[1];
 			Game.viewport.Center(viewportOrigin);
 			Sound.SoundVolumeModifier = 0.25f;
-
-			world.RenderedPlayer = allies;
-			world.RenderedShroud.Jank();
 		}
 	}
 }
