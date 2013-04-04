@@ -54,14 +54,14 @@ Actors:
 	Actor3: rock1
 		Location: 31,20
 		Owner: Neutral
-	Actor4: rock7
-		Location: 32,37
+	Actor4: rock4
+		Location: 25,45
 		Owner: Neutral
-	Actor5: rock3
-		Location: 33,37
+	Actor6: rock2
+		Location: 34,42
 		Owner: Neutral
-	Actor6: rock5
-		Location: 35,38
+	Actor5: rock6
+		Location: 34,45
 		Owner: Neutral
 	Actor7: t08
 		Location: 46,34
@@ -144,8 +144,8 @@ Actors:
 	Actor33: v29
 		Location: 47,67
 		Owner: Neutral
-	Actor34: v28
-		Location: 44,57
+	Actor34: miss
+		Location: 54,54
 		Owner: Neutral
 	Actor35: v30
 		Location: 51,71
@@ -204,9 +204,6 @@ Actors:
 	Actor54: mine
 		Location: 74,85
 		Owner: Neutral
-	Actor37: v37
-		Location: 55,69
-		Owner: Neutral
 	Actor63: tsla
 		Location: 48,31
 		Owner: Soviets
@@ -255,9 +252,6 @@ Actors:
 		Owner: Soviets
 	Actor83: fcom
 		Location: 42,18
-		Owner: Soviets
-	Actor84: sam
-		Location: 54,23
 		Owner: Soviets
 	Actor52: powr
 		Location: 54,14
@@ -326,9 +320,9 @@ Actors:
 	Actor90: arty
 		Location: 54,56
 		Owner: Allies
-	Actor91: ftur
-		Location: 53,14
-		Owner: Soviets
+	Actor116: mine
+		Location: 82,36
+		Owner: Neutral
 	Actor93: ca
 		Location: 20,86
 		Owner: Allies
@@ -342,6 +336,192 @@ Actors:
 		Owner: Neutral
 	Actor97: rock2
 		Location: 12,75
+		Owner: Neutral
+	AttackLocation: waypoint
+		Location: 55,61
+		Owner: Neutral
+	CoastRP1: waypoint
+		Location: 1,79
+		Owner: Neutral
+	CoastRP2: waypoint
+		Location: 36,81
+		Owner: Neutral
+	Actor64: e1
+		Location: 51,63
+		Owner: Allies
+	Actor65: e1
+		Location: 53,64
+		Owner: Allies
+	Actor66: e1
+		Location: 57,65
+		Owner: Allies
+	Actor77: e1
+		Location: 59,64
+		Owner: Allies
+	ParadropLocation: waypoint
+		Location: 65,60
+		Owner: Neutral
+	Actor37: rock5
+		Location: 35,43
+		Owner: Neutral
+	Actor67: t08
+		Location: 25,44
+		Owner: Neutral
+	Actor84: v34
+		Location: 21,73
+		Owner: Neutral
+	Actor96: v35
+		Location: 20,73
+		Owner: Neutral
+	Actor98: v32
+		Location: 20,72
+		Owner: Neutral
+	Actor99: v33
+		Location: 20,74
+		Owner: Neutral
+	Actor100: v34
+		Location: 19,74
+		Owner: Neutral
+	Actor109: stek
+		Location: 107,46
+		Owner: Soviets
+	Actor102: proc
+		Location: 94,28
+		Owner: Soviets
+	Actor103: apwr
+		Location: 118,36
+		Owner: Soviets
+	Actor101: apwr
+		Location: 115,38
+		Owner: Soviets
+	Actor105: silo
+		Location: 35,21
+		Owner: Soviets
+	Actor110: fcom
+		Location: 106,44
+		Owner: Soviets
+	Actor111: silo
+		Location: 96,28
+		Owner: Soviets
+	Actor106: fact
+		Location: 114,43
+		Owner: Soviets
+	Actor104: apwr
+		Location: 115,35
+		Owner: Soviets
+	Actor91: apwr
+		Location: 118,39
+		Owner: Soviets
+	Actor108: tsla
+		Location: 95,33
+		Owner: Soviets
+	Actor112: ftur
+		Location: 93,29
+		Owner: Soviets
+	Actor113: ftur
+		Location: 90,33
+		Owner: Soviets
+	Actor114: ftur
+		Location: 37,28
+		Owner: Soviets
+	Actor115: tsla
+		Location: 40,24
+		Owner: Soviets
+	Actor107: iron
+		Location: 110,40
+		Owner: Soviets
+	Actor117: fix
+		Location: 106,34
+		Owner: Soviets
+	Actor118: weap
+		Location: 106,29
+		Owner: Soviets
+	Actor119: barr
+		Location: 102,30
+		Owner: Soviets
+	Actor120: kenn
+		Location: 100,32
+		Owner: Soviets
+	Actor136: v2rl
+		Location: 91,40
+		Owner: Soviets
+	Actor122: afld
+		Location: 116,49
+		Owner: Soviets
+	Actor123: hpad
+		Location: 104,40
+		Owner: Soviets
+	Actor126: tsla
+		Location: 110,27
+		Owner: Soviets
+	Actor124: dome
+		Location: 118,46
+		Owner: Soviets
+	Actor125: tsla
+		Location: 111,43
+		Owner: Soviets
+	Actor127: rock2
+		Location: 103,54
+		Owner: Neutral
+	Actor128: rock6
+		Location: 99,59
+		Owner: Neutral
+	Actor129: hpad
+		Location: 99,28
+		Owner: Soviets
+	Actor130: apwr
+		Location: 119,33
+		Owner: Soviets
+	Actor131: t08
+		Location: 121,43
+		Owner: Neutral
+	Actor132: apwr
+		Location: 116,32
+		Owner: Soviets
+	Actor133: oilb
+		Location: 76,37
+		Owner: Soviets
+	Actor134: e1
+		Location: 74,37
+		Owner: Soviets
+	Actor135: e1
+		Location: 77,39
+		Owner: Soviets
+	Actor137: 4tnk
+		Location: 105,33
+		Owner: Soviets
+	Actor121: afld
+		Location: 106,50
+		Owner: Soviets
+	Actor138: 4tnk
+		Location: 112,46
+		Owner: Soviets
+	Actor139: 3tnk
+		Location: 89,32
+		Owner: Soviets
+	Actor140: 3tnk
+		Location: 92,29
+		Owner: Soviets
+	Actor141: 3tnk
+		Location: 36,23
+		Owner: Soviets
+	Actor142: e1
+		Location: 40,27
+		Owner: Soviets
+	Actor143: e1
+		Location: 49,17
+		Owner: Soviets
+	Actor144: e1
+		Location: 113,40
+		Owner: Soviets
+	Actor145: e1
+		Location: 102,33
+		Owner: Soviets
+	Actor146: rock2
+		Location: 125,37
+		Owner: Neutral
+	Actor147: rock1
+		Location: 118,54
 		Owner: Neutral
 
 Smudges:
