@@ -143,12 +143,12 @@ Player:
 		UnitsCommonNames:
 			Mcv: mcv
 		BuildingLimits:
-			proc: 5
-			pyle: 3
-			hand: 6
+			proc: 4
+			pyle: 2
+			hand: 4
 			hq: 1
-			weap: 4
-			afld: 3
+			weap: 3
+			afld: 2
 			hpad: 1
 			eye: 1
 			tmpl: 1
@@ -340,7 +340,7 @@ CRATE:
 		Effect: cloak
 	GiveMcvCrateAction:
 		SelectionShares: 0
-		NoBaseSelectionShares: 9001
+		NoBaseSelectionShares: 120
 		Unit: mcv
 	RenderSimple:
 	BelowUnits:
