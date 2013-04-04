@@ -22,7 +22,7 @@ namespace OpenRA.Graphics
 		public const int MaxPalettes = 256;
 		int allocated = 0;
 
-		ITexture texture;
+		public ITexture Texture { get; private set; }
 		Dictionary<string, Palette> palettes;
 		Dictionary<string, int> indices;
 		Dictionary<string, bool> allowsMods;
@@ -32,7 +32,7 @@ namespace OpenRA.Graphics
 			palettes = new Dictionary<string, Palette>();
 			indices = new Dictionary<string, int>();
 			allowsMods = new Dictionary<string, bool>();
-			texture = Game.Renderer.Device.CreateTexture();
+			Texture = Game.Renderer.Device.CreateTexture();
 		}
 
 		public Palette GetPalette(string name)
@@ -62,7 +62,7 @@ namespace OpenRA.Graphics
 		}
 
 		uint[,] data = new uint[MaxPalettes, 256];
-		public void Update(IEnumerable<IPaletteModifier> paletteMods)
+		public void ApplyModifiers(IEnumerable<IPaletteModifier> paletteMods)
 		{
 			var copy = palettes.ToDictionary(p => p.Key, p => new Palette(p.Value));
 			var modifiable = copy.Where(p => allowsMods[p.Key]).ToDictionary(p => p.Key, p => p.Value);
@@ -78,9 +78,12 @@ namespace OpenRA.Graphics
 					data[j,i] = c[i];
 			}
 
-			// TODO: Doesn't work (why?)
-			texture.SetData(data);
-			Game.Renderer.SetPalette(texture);
+			Texture.SetData(data);
+		}
+
+		public void Initialize()
+		{
+			ApplyModifiers(new IPaletteModifier[] {});
 		}
 	}
 }

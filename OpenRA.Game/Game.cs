@@ -227,7 +227,7 @@ namespace OpenRA
 
 		public static bool IsHost
 		{
-			get 
+			get
 			{
 				var client= orderManager.LobbyInfo.ClientWithIndex (
 					orderManager.Connection.LocalClientId);

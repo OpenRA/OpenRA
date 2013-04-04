@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2012 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -20,7 +20,7 @@ namespace OpenRA.Graphics
 {
 	public static class CursorProvider
 	{
-		public static HardwarePalette Palette;
+		static HardwarePalette Palette;
 		static Dictionary<string, CursorSequence> cursors;
 
 		public static void Initialize(string[] sequenceFiles)
@@ -32,22 +32,17 @@ namespace OpenRA.Graphics
 			if (sequences.NodesDict.ContainsKey("ShadowIndex"))
 			{
 				Array.Resize(ref ShadowIndex, ShadowIndex.Length + 1);
-				ShadowIndex[ShadowIndex.Length - 1] = Convert.ToInt32(sequences.NodesDict["ShadowIndex"].Value);
+				int.TryParse(sequences.NodesDict["ShadowIndex"].Value, out ShadowIndex[ShadowIndex.Length - 1]);
 			}
 
-			var palettes = new Dictionary<string, Palette>();
-			foreach (var s in sequences.NodesDict["Palettes"].Nodes)
-				palettes.Add(s.Key, new Palette(FileSystem.Open(s.Value.Value), ShadowIndex));
-
 			Palette = new HardwarePalette();
-			foreach (var p in palettes)
-				Palette.AddPalette(p.Key, p.Value, false);
-
-			// Generate initial palette texture
-			Palette.Update(new IPaletteModifier[] {});
+			foreach (var p in sequences.NodesDict["Palettes"].Nodes)
+				Palette.AddPalette(p.Key, new Palette(FileSystem.Open(p.Value.Value), ShadowIndex), false);
 
 			foreach (var s in sequences.NodesDict["Cursors"].Nodes)
 				LoadSequencesForCursor(s.Key, s.Value);
+
+			Palette.Initialize();
 		}
 
 		static void LoadSequencesForCursor(string cursorSrc, MiniYaml cursor)
@@ -65,9 +60,10 @@ namespace OpenRA.Graphics
 
 		public static void DrawCursor(Renderer renderer, string cursorName, int2 lastMousePos, int cursorFrame)
 		{
-			var cursorSequence = CursorProvider.GetCursorSequence(cursorName);
+			var cursorSequence = GetCursorSequence(cursorName);
 			var cursorSprite = cursorSequence.GetSprite(cursorFrame);
-						
+
+			renderer.SetPalette(Palette);
 			renderer.SpriteRenderer.DrawSprite(cursorSprite,
 			                                   lastMousePos - cursorSequence.Hotspot,
 			                                   Palette.GetPaletteIndex(cursorSequence.Palette),
