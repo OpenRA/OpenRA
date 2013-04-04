@@ -278,7 +278,7 @@ BikeRockets:
 		Damage: 30
 
 OrcaAGMissiles:
-	ROF: 10
+	ROF: 15
 	Burst: 1
 	BurstDelay: 0
 	Range: 4
@@ -309,7 +309,7 @@ OrcaAGMissiles:
 		Damage: 40
 
 OrcaAAMissiles:
-	ROF: 10
+	ROF: 15
 	Burst: 1
 	BurstDelay: 0
 	Range: 4
