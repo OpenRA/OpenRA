@@ -92,7 +92,7 @@ namespace OpenRA.Mods.RA.Widgets
 		void PerformKeyboardOrderOnSelection(Func<Actor, Order> f)
 		{
 			var orders = World.Selection.Actors
-				.Where(a => a.Owner == World.LocalPlayer).Select(f).ToArray();
+				.Where(a => a.Owner == World.LocalPlayer && !a.Destroyed).Select(f).ToArray();
 			foreach (var o in orders) World.IssueOrder(o);
 			World.PlayVoiceForOrders(orders);
 		}
