@@ -155,6 +155,9 @@ namespace OpenRA.Widgets
 					Previews.Add(uid, bitmap);
 					cacheUids.Dequeue();
 				}
+
+				// Yuck... But this helps the UI Jank when opening the map selector significantly.
+				Thread.Sleep(50);
 			}
 		}
 
@@ -172,7 +175,6 @@ namespace OpenRA.Widgets
 			if (previewLoaderThread == null || !previewLoaderThread.IsAlive)
 			{
 				previewLoaderThread = new Thread(LoadAsyncInternal);
-				previewLoaderThread.Priority = ThreadPriority.Lowest;
 				previewLoaderThread.Start();
 			}
 		}
