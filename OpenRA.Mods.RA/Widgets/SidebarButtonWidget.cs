@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA
 			var state = Depressed ? "pressed" : 
 						RenderBounds.Contains(Viewport.LastMousePos) ? "hover" : "normal";
 			
-			var image = ChromeProvider.GetImage(Image + "-" + world.LocalPlayer.Country.Race, state);
+			var image = ChromeProvider.GetImage(Image, state);
 			
 			var rect = new Rectangle(RenderBounds.X, RenderBounds.Y, (int)image.size.X, (int)image.size.Y);
 			if (rect.Contains(Viewport.LastMousePos))

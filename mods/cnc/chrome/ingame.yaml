@@ -48,7 +48,7 @@ Container@INGAME_ROOT:
 					Width: 34 * 8
 					Height: 28
 					Background:panel-black
-					Visible: true
+					Visible: false
 		TooltipContainer@TOOLTIP_CONTAINER:
 Container@OBSERVER_WIDGETS:
 	Children:

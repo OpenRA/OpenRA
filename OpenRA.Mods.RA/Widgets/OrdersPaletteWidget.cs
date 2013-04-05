@@ -85,7 +85,7 @@ namespace OpenRA.Mods.RA.Widgets
 						else
 							world.OrderGenerator = new RestrictedUnitOrderGenerator(s.OrderID);
 					},
-					Image = "opal-button",
+					Image = "opal-button-"+s.OrderID,
 					DrawTooltip = (rect) => DrawOrderButtonTooltip(s, rect)
 				};
 				AddChild(child);

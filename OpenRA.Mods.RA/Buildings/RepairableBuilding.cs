@@ -109,14 +109,14 @@ namespace OpenRA.Mods.RA.Buildings
 				--remainingTicks;
 		}
 
-        public IEnumerable<IOrderTargeter> Orders
-        {
-            get { yield return new PaletteOnlyOrderTargeter("Repair"); }
-        }
+		public IEnumerable<IOrderTargeter> Orders
+		{
+			get { yield return new PaletteOnlyOrderTargeter("Repair"); }
+		}
 
-        public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
-        {
-            throw new NotImplementedException();
-        }
-    }
+		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

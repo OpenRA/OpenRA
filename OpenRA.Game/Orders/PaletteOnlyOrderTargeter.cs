@@ -13,25 +13,25 @@ using OpenRA.Traits;
 
 namespace OpenRA.Orders
 {
-    public class PaletteOnlyOrderTargeter : IOrderTargeter
-    {
-        string orderName;
-        public PaletteOnlyOrderTargeter(string orderName) { this.orderName = orderName; }
+	public class PaletteOnlyOrderTargeter : IOrderTargeter
+	{
+		string orderName;
+		public PaletteOnlyOrderTargeter(string orderName) { this.orderName = orderName; }
 
-        public string OrderID { get { return orderName; } }
-        public int OrderPriority { get { return 255; } }
+		public string OrderID { get { return orderName; } }
+		public int OrderPriority { get { return 255; } }
 
-        public bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceQueue, ref string cursor)
-        {
-            return false;
-        }
+		public bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceQueue, ref string cursor)
+		{
+			return false;
+		}
 
-        public bool CanTargetLocation(Actor self, CPos location, List<Actor> actorsAtLocation, bool forceAttack, bool forceQueue, ref string cursor)
-        {
-            return false;
-        }
+		public bool CanTargetLocation(Actor self, CPos location, List<Actor> actorsAtLocation, bool forceAttack, bool forceQueue, ref string cursor)
+		{
+			return false;
+		}
 
-        public bool IsQueued { get { return false; } }
-        public bool IsImmediate { get { return true; } }
+		public bool IsQueued { get { return false; } }
+		public bool IsImmediate { get { return true; } }
 	}
 }

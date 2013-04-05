@@ -56,7 +56,7 @@ namespace OpenRA.Mods.RA.Orders
 			return false;
 		}
 		public virtual bool IsQueued { get; protected set; }
-        public bool IsImmediate { get { return false; } }
+		public bool IsImmediate { get { return false; } }
 	}
 
 	public class TargetTypeOrderTargeter : UnitOrderTargeter

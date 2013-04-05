@@ -23,15 +23,15 @@ namespace OpenRA.Orders
 		{
 			this.acceptTargeter = acceptTargeter;
 		}
-        public virtual IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
-        {
+		public virtual IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
+		{
 			var underCursor = world.FindUnitsAtMouse(mi.Location)
 				.Where(a => a.HasTrait<ITargetable>())
 				.OrderByDescending(a => a.SelectionPriority())
 				.FirstOrDefault();
 
 			var orders = world.Selection.Actors
-                .Select(a => OrderForUnit(a, xy, mi, underCursor, acceptTargeter))
+				.Select(a => OrderForUnit(a, xy, mi, underCursor, acceptTargeter))
 				.Where(o => o != null)
 				.ToArray();
 
@@ -156,22 +156,22 @@ namespace OpenRA.Orders
 	{
 		public RestrictedUnitOrderGenerator(string orderId) : base(ot => ot.OrderID == orderId) { }
 
-        static readonly Order[] NoOrders = {};
-        public override IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
-        {
-            if (mi.Button == MouseButton.Left)
-            {
-                world.CancelInputMode();
-                return NoOrders;
-            }
+		static readonly Order[] NoOrders = {};
+		public override IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
+		{
+			if (mi.Button == MouseButton.Left)
+			{
+				world.CancelInputMode();
+				return NoOrders;
+			}
 
-            if (mi.Button == MouseButton.Right)
-            {
-                if (!mi.Modifiers.HasModifier(Modifiers.Shift))
-                    world.CancelInputMode();
-            }
+			if (mi.Button == MouseButton.Right)
+			{
+				if (!mi.Modifiers.HasModifier(Modifiers.Shift))
+					world.CancelInputMode();
+			}
 
-            return base.Order(world, xy, mi);
-        }
+			return base.Order(world, xy, mi);
+		}
 	}
 }
