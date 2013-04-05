@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Threading;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
 
@@ -25,8 +26,6 @@ namespace OpenRA.Widgets
 		public Action<int, int2> OnTooltip = (_, __) => { };
 		public bool IgnoreMouseInput = false;
 		public bool ShowSpawnPoints = true;
-
-		static readonly Cache<Map,Bitmap> PreviewCache = new Cache<Map, Bitmap>(stub => Minimap.RenderMapPreview( new Map( stub.Path )));
 
 		public MapPreviewWidget() : base() { }
 
@@ -68,19 +67,30 @@ namespace OpenRA.Widgets
 		public override void Draw()
 		{
 			var map = Map();
-			if( map == null ) return;
+			if (map == null)
+				return;
+
+			// Preview unavailable
+			if (!Loaded)
+			{
+				GeneratePreview();
+				return;
+			}
 
 			if (lastMap != map)
 			{
 				lastMap = map;
 
 				// Update image data
-				var preview = PreviewCache[map];
-				if( mapChooserSheet == null || mapChooserSheet.Size.Width != preview.Width || mapChooserSheet.Size.Height != preview.Height )
-					mapChooserSheet = new Sheet(new Size( preview.Width, preview.Height ) );
+				Bitmap preview;
+				lock (syncRoot)
+					preview = Previews[map.Uid];
 
-				mapChooserSheet.Texture.SetData( preview );
-				mapChooserSprite = new Sprite( mapChooserSheet, new Rectangle( 0, 0, map.Bounds.Width, map.Bounds.Height ), TextureChannel.Alpha );
+				if (mapChooserSheet == null || mapChooserSheet.Size.Width != preview.Width || mapChooserSheet.Size.Height != preview.Height)
+					mapChooserSheet = new Sheet(new Size(preview.Width, preview.Height));
+
+				mapChooserSheet.Texture.SetData(preview);
+				mapChooserSprite = new Sprite(mapChooserSheet, new Rectangle(0, 0, map.Bounds.Width, map.Bounds.Height), TextureChannel.Alpha);
 			}
 
 			// Update map rect
@@ -90,9 +100,9 @@ namespace OpenRA.Widgets
 			var dh = (int)(PreviewScale * (size - map.Bounds.Height)) / 2;
 			MapRect = new Rectangle(RenderBounds.X + dw, RenderBounds.Y + dh, (int)(map.Bounds.Width * PreviewScale), (int)(map.Bounds.Height * PreviewScale));
 
-			Game.Renderer.RgbaSpriteRenderer.DrawSprite( mapChooserSprite,
+			Game.Renderer.RgbaSpriteRenderer.DrawSprite(mapChooserSprite,
 				new float2(MapRect.Location),
-				new float2( MapRect.Size ) );
+				new float2(MapRect.Size));
 
 			if (ShowSpawnPoints)
 			{
@@ -119,15 +129,70 @@ namespace OpenRA.Widgets
 			}
 		}
 
-		/// <summary>
-		/// Forces loading the preview into the map cache.
-		/// </summary>
-		public Bitmap LoadMapPreview()
-		{
-			var map = Map();
-			if( map == null ) return null;
+		// Async map preview generation bits
+		enum PreviewStatus { Invalid, Uncached, Generating, Cached }
+		static Thread previewLoaderThread;
+		static object syncRoot = new object();
+		static Queue<string> cacheUids = new Queue<string>();
+		static readonly Dictionary<string, Bitmap> Previews = new Dictionary<string, Bitmap>();
 
-			return PreviewCache[map];
+		void LoadAsyncInternal()
+		{
+			for (;;)
+			{
+				string uid;
+				lock (syncRoot)
+				{
+					if (cacheUids.Count == 0)
+						break;
+					uid = cacheUids.Peek();
+				}
+
+				var bitmap = Minimap.RenderMapPreview(Game.modData.AvailableMaps[uid]);
+				lock (syncRoot)
+				{
+					// TODO: We should add previews to a sheet here (with multiple previews per sheet)
+					Previews.Add(uid, bitmap);
+					cacheUids.Dequeue();
+				}
+			}
 		}
+
+		void GeneratePreview()
+		{
+			var m = Map();
+			if (m == null)
+				return;
+
+			var status = Status(m);
+			if (status == PreviewStatus.Uncached)
+				lock (syncRoot)
+					cacheUids.Enqueue(m.Uid);
+
+			if (previewLoaderThread == null || !previewLoaderThread.IsAlive)
+			{
+				previewLoaderThread = new Thread(LoadAsyncInternal);
+				previewLoaderThread.Priority = ThreadPriority.Lowest;
+				previewLoaderThread.Start();
+			}
+		}
+
+		static PreviewStatus Status(Map m)
+		{
+			if (m == null)
+				return PreviewStatus.Invalid;
+
+			lock (syncRoot)
+			{
+				if (Previews.ContainsKey(m.Uid))
+					return PreviewStatus.Cached;
+
+				if (cacheUids.Contains(m.Uid))
+					return PreviewStatus.Generating;
+			}
+			return PreviewStatus.Uncached;
+		}
+
+		public bool Loaded { get { return Status(Map()) == PreviewStatus.Cached; } }
 	}
 }

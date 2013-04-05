@@ -27,7 +27,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		ScrollPanelWidget scrollpanel;
 		ScrollItemWidget itemTemplate;
 		string gameMode;
-		Thread mapLoaderThread;
 
 		[ObjectCreator.UseCtor]
 		internal MapChooserLogic(Widget widget, string initialMap, Action onExit, Action<Map> onSelect)
@@ -61,7 +60,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				{
 					var item = ScrollItemWidget.Setup(template,
 						() => gameMode == ii.First,
-						() => { gameMode = ii.First; EnumerateMapsAsync(); });
+						() => { gameMode = ii.First; EnumerateMaps(); });
 					item.Get<LabelWidget>("LABEL").GetText = () => showItem(ii);
 					return item;
 				};
@@ -84,16 +83,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				randomMapButton.IsDisabled = () => visibleMaps == null || visibleMaps.Count == 0;
 			}
 
-			EnumerateMapsAsync();
-		}
-
-		void EnumerateMapsAsync()
-		{
-			if (mapLoaderThread != null && mapLoaderThread.IsAlive) 
-				mapLoaderThread.Abort(); // violent, but should be fine since we are not doing anything sensitive in this thread
-
-			mapLoaderThread = new Thread(EnumerateMaps);
-			mapLoaderThread.Start();
+			EnumerateMaps();
 		}
 
 		void EnumerateMaps()
@@ -104,7 +94,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				.OrderBy(kv => kv.Value.PlayerCount)
 				.ThenBy(kv => kv.Value.Title);
 
-			var children = new List<ScrollItemWidget>();
+			scrollpanel.RemoveChildren();
 			foreach (var kv in maps)
 			{
 				var m = kv.Value;
@@ -117,17 +107,20 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				previewWidget.IgnoreMouseOver = true;
 				previewWidget.IgnoreMouseInput = true;
 				previewWidget.Map = () => m;
-				previewWidget.LoadMapPreview();
 
-				var detailsWidget = item.Get<LabelWidget>("DETAILS");
+				var previewLoadingWidget = item.GetOrNull<BackgroundWidget>("PREVIEW_PLACEHOLDER");
+				if (previewLoadingWidget != null)
+					previewLoadingWidget.IsVisible = () => !previewWidget.Loaded;
+
+				var detailsWidget = item.GetOrNull<LabelWidget>("DETAILS");
 				if (detailsWidget != null)
 					detailsWidget.GetText = () => "{0} ({1})".F(m.Type, m.PlayerCount);
 
-				var authorWidget = item.Get<LabelWidget>("AUTHOR");
+				var authorWidget = item.GetOrNull<LabelWidget>("AUTHOR");
 				if (authorWidget != null)
 					authorWidget.GetText = () => m.Author;
 
-				var sizeWidget = item.Get<LabelWidget>("SIZE");
+				var sizeWidget = item.GetOrNull<LabelWidget>("SIZE");
 				if (sizeWidget != null)
 				{
 					var size = m.Bounds.Width + "x" + m.Bounds.Height;
@@ -139,20 +132,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					sizeWidget.GetText = () => size;
 				}
 
-				children.Add(item);
+				scrollpanel.AddChild(item);
 			}
 
-			Game.RunAfterTick(() =>
-			{
-				scrollpanel.RemoveChildren();
-
-				foreach (var c in children)
-					scrollpanel.AddChild(c);
-
-				visibleMaps = maps.ToDictionary(kv => kv.Key, kv => kv.Value);
-				if (visibleMaps.ContainsValue(map))
-					scrollpanel.ScrollToItem(visibleMaps.First(m => m.Value == map).Key);
-			});
+			visibleMaps = maps.ToDictionary(kv => kv.Key, kv => kv.Value);
+			if (visibleMaps.ContainsValue(map))
+				scrollpanel.ScrollToItem(visibleMaps.First(m => m.Value == map).Key);
 		}
 	}
 }

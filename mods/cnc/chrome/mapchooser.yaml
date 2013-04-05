@@ -43,6 +43,13 @@ Container@MAPCHOOSER_PANEL:
 							Y:0
 							Visible:false
 							Children:
+								Background@PREVIEW_PLACEHOLDER:
+									X:(PARENT_RIGHT - WIDTH)/2
+									Y:4
+									Width:158
+									Height:158
+									Background:panel-black
+									ClickThrough: false
 								MapPreview@PREVIEW:
 									X:(PARENT_RIGHT - WIDTH)/2
 									Y:4
