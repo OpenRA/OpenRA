@@ -34,10 +34,24 @@ Container@SERVER_LOBBY:
 							Height:192
 				Label@MAP_TITLE:
 					X:PARENT_RIGHT-15-WIDTH
-					Y:225
+					Y:227
 					Width:194
 					Height:25
 					Font:Bold
+					Align:Center
+				Label@MAP_TYPE:
+					X:PARENT_RIGHT-15-WIDTH
+					Y:242
+					Width:194
+					Height:25
+					Font:TinyBold
+					Align:Center
+				Label@MAP_AUTHOR:
+					X:PARENT_RIGHT-15-WIDTH
+					Y:254
+					Width:194
+					Height:25
+					Font:Tiny
 					Align:Center
 				ScrollPanel@PLAYERS:
 					X:15

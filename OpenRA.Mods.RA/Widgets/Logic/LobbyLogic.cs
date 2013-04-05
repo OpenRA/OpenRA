@@ -122,6 +122,20 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				mapTitle.GetText = () => Map.Title;
 			}
 
+			var mapType = lobby.GetOrNull<LabelWidget>("MAP_TYPE");
+			if (mapType != null)
+			{
+				mapType.IsVisible = () => Map != null;
+				mapType.GetText = () => Map.Type;
+			}
+
+			var mapAuthor = lobby.GetOrNull<LabelWidget>("MAP_AUTHOR");
+			if (mapAuthor != null)
+			{
+				mapAuthor.IsVisible = () => Map != null;
+				mapAuthor.GetText = () => "Created by {0}".F(Map.Author);
+			}
+
 			CountryNames = Rules.Info["world"].Traits.WithInterface<CountryInfo>()
 				.Where(c => c.Selectable)
 				.ToDictionary(a => a.Race, a => a.Name);
