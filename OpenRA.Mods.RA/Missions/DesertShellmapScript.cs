@@ -111,6 +111,8 @@ namespace OpenRA.Mods.RA.Missions
 			viewportTarget = viewportTargets[1];
 			Game.viewport.Center(viewportOrigin);
 			Sound.SoundVolumeModifier = 0.25f;
+
+			MissionUtils.Paradrop(world, soviets, ParadropUnits, paradropEntry.Location, paradropLZ.Location);
 		}
 	}
 }

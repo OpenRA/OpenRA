@@ -142,10 +142,10 @@ Actors:
 		Location: 51,66
 		Owner: Neutral
 	Actor33: v29
-		Location: 47,67
+		Location: 63,65
 		Owner: Neutral
 	Actor34: miss
-		Location: 54,54
+		Location: 54,60
 		Owner: Neutral
 	Actor35: v30
 		Location: 51,71
@@ -153,9 +153,9 @@ Actors:
 	Actor36: v28
 		Location: 50,71
 		Owner: Neutral
-	Actor55: tran.husk2
-		Location: 55,59
-		Owner: Allies
+	Actor92: brl3
+		Location: 57,55
+		Owner: Neutral
 	Actor38: v28
 		Location: 59,68
 		Owner: Neutral
@@ -190,7 +190,7 @@ Actors:
 		Location: 52,69
 		Owner: Neutral
 	Actor49: v26
-		Location: 49,64
+		Location: 57,71
 		Owner: Neutral
 	Actor51: rock5
 		Location: 52,56
@@ -292,8 +292,8 @@ Actors:
 	ViewportTarget5: waypoint
 		Location: 38,55
 		Owner: Neutral
-	Actor92: flare
-		Location: 56,59
+	Actor55: bio
+		Location: 55,54
 		Owner: Neutral
 	Actor62: apwr
 		Location: 38,17
@@ -689,6 +689,54 @@ Actors:
 	Actor191: apwr
 		Location: 26,9
 		Owner: Soviets
+	Actor192: c1
+		Location: 58,67
+		Owner: Neutral
+	Actor193: c2
+		Location: 48,68
+		Owner: Neutral
+	Actor194: c3
+		Location: 61,73
+		Owner: Neutral
+	Actor201: chan
+		Location: 56,71
+		Owner: Neutral
+	Actor202: delphi
+		Location: 54,67
+		Owner: Neutral
+	Actor203: gnrl
+		Location: 64,65
+		Owner: Neutral
+	Actor204: c10
+		Location: 53,73
+		Owner: Neutral
+	Actor205: c9
+		Location: 51,65
+		Owner: Neutral
+	Actor206: mgg
+		Location: 52,60
+		Owner: Allies
+		Facing: 200
+	Actor207: tran.husk2
+		Location: 43,80
+		Owner: Allies
+	Actor208: e7
+		Location: 39,81
+		Owner: Allies
+		Facing: 64
+	Actor209: e1
+		Location: 41,79
+		Owner: Allies
+	Actor210: e1
+		Location: 46,80
+		Owner: Allies
+	Actor211: jeep
+		Location: 41,82
+		Owner: Allies
+		Facing: 90
+	Actor212: flare
+		Location: 43,79
+		Owner: Neutral
 
 Smudges:
 
@@ -721,11 +769,16 @@ Rules:
 			Weapon: Dragon
 		Turreted:
 		AttackTurreted:
+	E7:
+		AnnounceOnKill:
 
 Sequences:
 
 Weapons:
+	8Inch:
+		Report: tank6
 
 Voices:
-
-Notifications:
+	TanyaVoice:
+		Voices:
+			Kill: laugh1, lefty1, cmon1, gotit1
