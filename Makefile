@@ -1,7 +1,7 @@
 CSC         = gmcs
 CSFLAGS     = -nologo -warn:4 -debug:full -optimize- -codepage:utf8 -unsafe -warnaserror
 DEFINE      = DEBUG;TRACE
-COMMON_LIBS = System.dll System.Core.dll System.Drawing.dll System.Xml.dll thirdparty/ICSharpCode.SharpZipLib.dll thirdparty/FuzzyLogicLibrary.dll
+COMMON_LIBS = System.dll System.Core.dll System.Drawing.dll System.Xml.dll thirdparty/ICSharpCode.SharpZipLib.dll thirdparty/FuzzyLogicLibrary.dll thirdparty/Mono.Nat.dll
 PHONY       = core tools package all mods clean distclean dependencies
 
 .SUFFIXES:
@@ -258,6 +258,7 @@ install: all
 	@$(INSTALL_PROGRAM) thirdparty/FuzzyLogicLibrary.dll $(INSTALL_DIR)
 	@$(INSTALL_PROGRAM) thirdparty/SharpFont.dll $(INSTALL_DIR)
 	@cp thirdparty/SharpFont.dll.config $(INSTALL_DIR)
+	@$(INSTALL_PROGRAM) thirdparty/Mono.Nat.dll $(INSTALL_DIR)
 
 	@echo "#!/bin/sh" 				>  openra
 	@echo 'BINDIR=$$(dirname $$(readlink -f $$0))'	>> openra

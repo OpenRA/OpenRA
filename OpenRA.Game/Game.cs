@@ -21,6 +21,10 @@ using OpenRA.Network;
 using OpenRA.Support;
 using OpenRA.Widgets;
 
+using Mono.Nat;
+using Mono.Nat.Pmp;
+using Mono.Nat.Upnp;
+
 using XRandom = OpenRA.Thirdparty.Random;
 
 namespace OpenRA
@@ -33,6 +37,8 @@ namespace OpenRA
 
 		public static ModData modData;
 		static WorldRenderer worldRenderer;
+
+		public static INatDevice natDevice;
 
 		public static Viewport viewport;
 		public static Settings Settings;
@@ -256,6 +262,18 @@ namespace OpenRA
 			Log.AddChannel("perf", "perf.log");
 			Log.AddChannel("debug", "debug.log");
 			Log.AddChannel("sync", "syncreport.log");
+			Log.AddChannel("server", "server.log");
+
+			try {
+				NatUtility.DeviceFound += DeviceFound;
+				NatUtility.DeviceLost += DeviceLost;
+
+				NatUtility.StartDiscovery();
+				OpenRA.Log.Write("server", "NAT discovery started.");
+			} catch (Exception e) {
+				OpenRA.Log.Write("server", "Can't discover UPnP-enabled device: {0}", e);
+				Settings.Server.AllowUPnP = false;
+			}
 
 			FileSystem.Mount("."); // Needed to access shaders
 			Renderer.Initialize( Game.Settings.Graphics.Mode );
@@ -267,6 +285,31 @@ namespace OpenRA
 
 			Sound.Create(Settings.Sound.Engine);
 			InitializeWithMods(Settings.Game.Mods);
+		}
+
+		public static void DeviceFound (object sender, DeviceEventArgs args)
+		{
+			natDevice = args.Device;
+
+			Log.Write ("server", "NAT device discovered.");
+			Log.Write ("server", "Type: {0}", natDevice.GetType ().Name);
+			Log.Write ("server", "Your external IP is: {0}", natDevice.GetExternalIP ());
+
+			foreach (Mapping mp in natDevice.GetAllMappings()) {
+				Log.Write ("server", "Existing port mapping: protocol={0}, public={1}, private={2}", mp.Protocol, mp.PublicPort, mp.PrivatePort);
+			}
+
+			Settings.Server.AllowUPnP = true;
+		}
+
+		public static void DeviceLost (object sender, DeviceEventArgs args)
+		{
+			natDevice = args.Device;
+
+			Log.Write("server", "NAT device Lost");
+			Log.Write("server", "Type: {0}", natDevice.GetType().Name);
+
+			Settings.Server.AllowUPnP = false;
 		}
 
 		public static void InitializeWithMods(string[] mods)
@@ -415,7 +458,7 @@ namespace OpenRA
 		public static void CreateServer(ServerSettings settings)
 		{
 			server = new Server.Server(new IPEndPoint(IPAddress.Any, settings.ListenPort),
-				Game.Settings.Game.Mods, settings, modData);
+			                           Game.Settings.Game.Mods, settings, modData, natDevice);
 		}
 
 		public static int CreateLocalServer(string map)
@@ -432,7 +475,7 @@ namespace OpenRA
 			settings.AllowUPnP = false;
 
 			server = new Server.Server(new IPEndPoint(IPAddress.Loopback, 0),
-				Game.Settings.Game.Mods, settings, modData);
+			                           Game.Settings.Game.Mods, settings, modData, natDevice);
 
 			return server.Port;
 		}

@@ -60,8 +60,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core">
-    </Reference>
+    <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -69,6 +68,12 @@
     <Reference Include="SharpFont">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\thirdparty\SharpFont.dll</HintPath>
+    <Reference Include="Mono.Nat, Version=1.1.0.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+      <Package>mono.nat</Package>
+      <HintPath>..\thirdparty\Mono.Nat.dll</HintPath>
+    </Reference>
     </Reference>
     <Reference Include="Tao.OpenAl, Version=1.1.0.1, Culture=neutral, PublicKeyToken=a7579dda88828311">
       <SpecificVersion>False</SpecificVersion>
@@ -151,7 +156,6 @@
     <Compile Include="Server\Server.cs" />
     <Compile Include="Server\ServerOrder.cs" />
     <Compile Include="Server\TraitInterfaces.cs" />
-    <Compile Include="Server\UPnP.cs" />
     <Compile Include="Sound.cs" />
     <Compile Include="Support\Arguments.cs" />
     <Compile Include="Support\PerfHistory.cs" />
