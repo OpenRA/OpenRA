@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using OpenRA.FileFormats;
@@ -19,6 +20,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	public class MapChooserLogic
 	{
 		Map map;
+
+		// May be a subset of available maps if a mode filter is active
+		Dictionary<string, Map> visibleMaps;
+
 		ScrollPanelWidget scrollpanel;
 		ScrollItemWidget itemTemplate;
 		string gameMode;
@@ -34,6 +39,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			scrollpanel = widget.Get<ScrollPanelWidget>("MAP_LIST");
 			scrollpanel.ScrollVelocity = 40f;
+			scrollpanel.Layout = new GridLayout(scrollpanel);
 
 			itemTemplate = scrollpanel.Get<ScrollItemWidget>("MAP_TEMPLATE");
 
@@ -66,6 +72,18 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				gameModeDropdown.GetText = () => showItem(gameModes.First(m => m.First == gameMode));
 			}
 
+			var randomMapButton = widget.GetOrNull<ButtonWidget>("RANDOMMAP_BUTTON");
+			if (randomMapButton != null)
+			{
+				randomMapButton.OnClick = () =>
+				{
+					var kv = visibleMaps.Random(Game.CosmeticRandom);
+					map = kv.Value;
+					scrollpanel.ScrollToItem(kv.Key);
+				};
+				randomMapButton.IsDisabled = () => visibleMaps == null || visibleMaps.Count == 0;
+			}
+
 			EnumerateMapsAsync();
 		}
 
@@ -80,20 +98,17 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		void EnumerateMaps()
 		{
-			Game.RunAfterTick(() => scrollpanel.RemoveChildren()); // queue removal in case another thread added any items to the game queue
-			scrollpanel.Layout = new GridLayout(scrollpanel);
-			scrollpanel.ScrollToTop();
-
 			var maps = Game.modData.AvailableMaps
 				.Where(kv => kv.Value.Selectable)
 				.Where(kv => kv.Value.Type == gameMode || gameMode == null)
 				.OrderBy(kv => kv.Value.PlayerCount)
 				.ThenBy(kv => kv.Value.Title);
 
+			var children = new List<ScrollItemWidget>();
 			foreach (var kv in maps)
 			{
 				var m = kv.Value;
-				var item = ScrollItemWidget.Setup(itemTemplate, () => m == map, () => map = m);
+				var item = ScrollItemWidget.Setup(kv.Key, itemTemplate, () => m == map, () => map = m);
 
 				var titleLabel = item.Get<LabelWidget>("TITLE");
 				titleLabel.GetText = () => m.Title;
@@ -124,8 +139,20 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					sizeWidget.GetText = () => size;
 				}
 
-				Game.RunAfterTick(() => scrollpanel.AddChild(item));
+				children.Add(item);
 			}
+
+			Game.RunAfterTick(() =>
+			{
+				scrollpanel.RemoveChildren();
+
+				foreach (var c in children)
+					scrollpanel.AddChild(c);
+
+				visibleMaps = maps.ToDictionary(kv => kv.Key, kv => kv.Value);
+				if (visibleMaps.ContainsValue(map))
+					scrollpanel.ScrollToItem(visibleMaps.First(m => m.Value == map).Key);
+			});
 		}
 	}
 }
