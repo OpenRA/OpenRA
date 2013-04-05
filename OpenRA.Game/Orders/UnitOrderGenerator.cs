@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
@@ -15,17 +16,22 @@ using OpenRA.Traits;
 
 namespace OpenRA.Orders
 {
-	class UnitOrderGenerator : IOrderGenerator
+	public class BaseUnitOrderGenerator : IOrderGenerator
 	{
-		public IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
+		Func<IOrderTargeter, bool> acceptTargeter;
+		public BaseUnitOrderGenerator( Func<IOrderTargeter, bool> acceptTargeter )
 		{
+			this.acceptTargeter = acceptTargeter;
+		}
+        public virtual IEnumerable<Order> Order(World world, CPos xy, MouseInput mi)
+        {
 			var underCursor = world.FindUnitsAtMouse(mi.Location)
 				.Where(a => a.HasTrait<ITargetable>())
 				.OrderByDescending(a => a.SelectionPriority())
 				.FirstOrDefault();
 
 			var orders = world.Selection.Actors
-				.Select(a => OrderForUnit(a, xy, mi, underCursor))
+                .Select(a => OrderForUnit(a, xy, mi, underCursor, acceptTargeter))
 				.Where(o => o != null)
 				.ToArray();
 
@@ -62,7 +68,7 @@ namespace OpenRA.Orders
 			}
 
 			var orders = world.Selection.Actors
-				.Select(a => OrderForUnit(a, xy, mi, underCursor))
+				.Select(a => OrderForUnit(a, xy, mi, underCursor, acceptTargeter))
 				.Where(o => o != null)
 				.ToArray();
 
@@ -70,7 +76,7 @@ namespace OpenRA.Orders
 			return cursorName ?? (useSelect ? "select" : "default");
 		}
 
-		static UnitOrderResult OrderForUnit(Actor self, CPos xy, MouseInput mi, Actor underCursor)
+		static UnitOrderResult OrderForUnit( Actor self, CPos xy, MouseInput mi, Actor underCursor, Func<IOrderTargeter,bool> acceptTargeter )
 		{
 			if (self.Owner != self.World.LocalPlayer)
 				return null;
@@ -89,12 +95,15 @@ namespace OpenRA.Orders
 
 					var forceAttack = mi.Modifiers.HasModifier(Modifiers.Ctrl);
 					var forceQueue = mi.Modifiers.HasModifier(Modifiers.Shift);
-					string cursor = null;
-					if (underCursor != null)
-						if (o.Order.CanTargetActor(self, underCursor, forceAttack, forceQueue, ref cursor))
-							return new UnitOrderResult(self, o.Order, o.Trait, cursor, Target.FromActor(underCursor));
+					
+					if (acceptTargeter(o.Order))
+					{
+						string cursor = null;
+						if( underCursor != null && o.Order.CanTargetActor(self, underCursor, forceAttack, forceQueue, ref cursor))
+							return new UnitOrderResult( self, o.Order, o.Trait, cursor, Target.FromActor( underCursor ) );
 					if (o.Order.CanTargetLocation(self, xy, actorsAt, forceAttack, forceQueue, ref cursor))
-						return new UnitOrderResult(self, o.Order, o.Trait, cursor, Target.FromCell(xy));
+							return new UnitOrderResult( self, o.Order, o.Trait, cursor, Target.FromCell( xy ) );
+					}
 				}
 			}
 
@@ -136,5 +145,35 @@ namespace OpenRA.Orders
 			var selectableInfo = a.Info.Traits.GetOrDefault<SelectableInfo>();
 			return selectableInfo != null ? selectableInfo.Priority : int.MinValue;
 		}
+	}
+
+	public class UnitOrderGenerator : BaseUnitOrderGenerator 
+	{
+		public UnitOrderGenerator() : base(_ => true) { }
+	}
+
+	public class RestrictedUnitOrderGenerator : BaseUnitOrderGenerator
+	{
+		public RestrictedUnitOrderGenerator(string orderId) : base(ot => ot.OrderID == orderId) { }
+
+        static readonly Order[] NoOrders = {};
+        public override IEnumerable<Order> Order(World world, int2 xy, MouseInput mi)
+        {
+            if (mi.Button == MouseButton.Right)
+            {
+                world.CancelInputMode();
+                return NoOrders;
+            }
+
+            if (mi.Button == MouseButton.Left)
+            {
+                if (!mi.Modifiers.HasModifier(Modifiers.Shift))
+                    world.CancelInputMode();
+
+                mi.Button = MouseButton.Right;
+            }
+
+            return base.Order(world, xy, mi);
+        }
 	}
 }

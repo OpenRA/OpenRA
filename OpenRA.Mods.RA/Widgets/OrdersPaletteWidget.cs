@@ -14,6 +14,8 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.Traits;
 using OpenRA.Widgets;
+using OpenRA.Orders;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA.Widgets
 {
@@ -45,10 +47,8 @@ namespace OpenRA.Mods.RA.Widgets
                         if (s.IsImmediate)
                             IssueOrder(a => new Order(s.OrderID, a, false));
                         else
-                        {
-                            // do something else.
-                            Game.Debug("TODO: Non-immediate order via palette!");
-                        }
+							world.OrderGenerator = new RestrictedUnitOrderGenerator(s.OrderID);
+
                         return true; 
                     },
 					Image = "opal-button"
