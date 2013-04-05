@@ -107,6 +107,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				previewWidget.IgnoreMouseOver = true;
 				previewWidget.IgnoreMouseInput = true;
 				previewWidget.Map = () => m;
+				previewWidget.IsVisible = () => previewWidget.RenderBounds.IntersectsWith(scrollpanel.RenderBounds);
 
 				var previewLoadingWidget = item.GetOrNull<BackgroundWidget>("PREVIEW_PLACEHOLDER");
 				if (previewLoadingWidget != null)
