@@ -2,7 +2,7 @@ Container@MAPCHOOSER_PANEL:
 	Logic:MapChooserLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - 500)/2
-	Width:740
+	Width:790
 	Height:535
 	Children:
 		Label@TITLE:
