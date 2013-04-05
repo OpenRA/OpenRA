@@ -48,7 +48,7 @@ Container@SERVER_LOBBY:
 					Align:Center
 				Label@MAP_AUTHOR:
 					X:PARENT_RIGHT-15-WIDTH
-					Y:254
+					Y:255
 					Width:194
 					Height:25
 					Font:Tiny
@@ -343,13 +343,13 @@ Container@SERVER_LOBBY:
 							Font:Bold
 				Checkbox@ALLOWCHEATS_CHECKBOX:
 					X:15
-					Y:255
+					Y:257
 					Width:130
 					Height:20
 					Text: Allow Cheats
 				Checkbox@CRATES_CHECKBOX:
 					X:160
-					Y:255
+					Y:257
 					Width:80
 					Height:20
 					Text: Crates
