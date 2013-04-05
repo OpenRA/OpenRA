@@ -104,7 +104,11 @@ namespace OpenRA.Mods.RA.Server
 					s =>
 					{
 						int lag;
-						if (!int.TryParse(s, out lag)) { Log.Write("server", "Invalid order lag: {0}", s); return false; }
+						if (!int.TryParse(s, out lag))
+						{
+							Log.Write("server", "Invalid order lag: {0}", s);
+							return false;
+						}
 
 						Log.Write("server", "Order lag is now {0} frames.", lag);
 
@@ -190,23 +194,29 @@ namespace OpenRA.Mods.RA.Server
 					{
 						var parts = s.Split(' ');
 
-						if (parts.Length < 2)
+						if (parts.Length < 3)
 						{
-							server.SendChatTo( conn, "Malformed slot_bot command" );
+							server.SendChatTo(conn, "Malformed slot_bot command");
 							return true;
 						}
 
-						if (!ValidateSlotCommand( server, conn, client, parts[0], true ))
+						if (!ValidateSlotCommand(server, conn, client, parts[0], true))
 							return false;
 
 						var slot = server.lobbyInfo.Slots[parts[0]];
 						var bot = server.lobbyInfo.ClientInSlot(parts[0]);
-						var botType = parts.Skip(1).JoinWith(" ");
+						int controllerClientIndex;
+						if (!int.TryParse(parts[1], out controllerClientIndex))
+						{
+							Log.Write("server", "Invalid bot controller client index: {0}", parts[1]);
+							return false;
+						}
+						var botType = parts.Skip(2).JoinWith(" ");
 
 						// Invalid slot
 						if (bot != null && bot.Bot == null)
 						{
-							server.SendChatTo( conn, "Can't add bots to a slot with another client" );
+							server.SendChatTo(conn, "Can't add bots to a slot with another client");
 							return true;
 						}
 
@@ -223,7 +233,8 @@ namespace OpenRA.Mods.RA.Server
 								Country = "random",
 								SpawnPoint = 0,
 								Team = 0,
-								State = Session.ClientState.NotReady
+								State = Session.ClientState.NotReady,
+								BotControllerClientIndex = controllerClientIndex
 							};
 
 							// pick a random color for the bot
@@ -410,7 +421,7 @@ namespace OpenRA.Mods.RA.Server
 						}
 
 						int clientID;
-						int.TryParse( s, out clientID );
+						int.TryParse(s, out clientID);
 
 						var connToKick = server.conns.SingleOrDefault( c => server.GetClient(c) != null && server.GetClient(c).Index == clientID);
 						if (connToKick == null)
@@ -465,7 +476,11 @@ namespace OpenRA.Mods.RA.Server
 							return true;
 
 						int team;
-						if (!int.TryParse(parts[1], out team)) { Log.Write("server", "Invalid team: {0}", s ); return false; }
+						if (!int.TryParse(parts[1], out team))
+						{
+							Log.Write("server", "Invalid team: {0}", s );
+							return false;
+						}
 
 						targetClient.Team = team;
 						server.SyncLobbyInfo();
@@ -546,7 +561,7 @@ namespace OpenRA.Mods.RA.Server
 		static Session.Slot MakeSlotFromPlayerReference(PlayerReference pr)
 		{
 			if (!pr.Playable) return null;
-			if (Game.Settings.Server.LockBots || Game.Settings.Server.Dedicated)
+			if (Game.Settings.Server.LockBots)
 				pr.AllowBots = false;
 			return new Session.Slot
 			{
