@@ -17,11 +17,24 @@ Container@MAPCHOOSER_PANEL:
 			Height:500
 			Background:panel-black
 			Children:
+				Label@GAMEMODE_DESC:
+					X:PARENT_RIGHT - WIDTH - 220
+					Y:10
+					Width:200
+					Height:25
+					Font: Bold
+					Align: Right
+					Text:Filter:
+				DropDownButton@GAMEMODE_FILTER:
+					X:PARENT_RIGHT - WIDTH - 15
+					Y:10
+					Width:200
+					Height:25
 				ScrollPanel@MAP_LIST:
 					X:15
-					Y:30
+					Y:45
 					Width:PARENT_RIGHT - 30
-					Height:455
+					Height:440
 					Children:
 						ScrollItem@MAP_TEMPLATE:
 							Width:180
