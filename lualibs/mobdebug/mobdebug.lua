@@ -1,15 +1,16 @@
 --
--- MobDebug 0.5222
+-- MobDebug 0.525
 -- Copyright 2011-13 Paul Kulchenko
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
 --
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.5222,
+  _VERSION = 0.525,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = os and os.getenv and os.getenv("MOBDEBUG_PORT") or 8172,
+  checkcount = 200,
   yieldtimeout = 0.02,
 }
 
@@ -58,9 +59,11 @@ end
 -- check for OS and convert file names to lower case on windows
 -- (its file system is case insensitive, but case preserving), as setting a
 -- breakpoint on x:\Foo.lua will not work if the file was loaded as X:\foo.lua.
-local iswindows = os and os.getenv and (os.getenv('WINDIR')
-  or (os.getenv('OS') or ''):match('[Ww]indows'))
-  or pcall(require, "winapi")
+-- OSX and Windows behave the same way (case insensitive, but case preserving)
+local iscasepreserving = os and os.getenv and (os.getenv('WINDIR')
+  or (os.getenv('OS') or ''):match('[Ww]indows')
+  or os.getenv('DYLD_LIBRARY_PATH'))
+  or not io.open("/proc")
 
 -- turn jit off based on Mike Pall's comment in this discussion:
 -- http://www.freelists.org/post/luajit/Debug-hooks-and-JIT,2
@@ -81,14 +84,13 @@ local lastfile
 local watchescnt = 0
 local abort -- default value is nil; this is used in start/loop distinction
 local seen_hook = false
-local skip
-local skipcount = 0
+local checkcount = 0
 local step_into = false
 local step_over = false
 local step_level = 0
 local stack_level = 0
 local server
-local rset
+local buf
 local outputs = {}
 local iobase = {print = print}
 local basedir = ""
@@ -101,10 +103,10 @@ end
 local function q(s) return s:gsub('([%(%)%.%%%+%-%*%?%[%^%$%]])','%%%1') end
 
 local serpent = (function() ---- include Serpent module for serialization
-local n, v = "serpent", 0.225 -- (C) 2012-13 Paul Kulchenko; MIT License
+local n, v = "serpent", 0.23 -- (C) 2012-13 Paul Kulchenko; MIT License
 local c, d = "Paul Kulchenko", "Lua serializer and pretty printer"
 local snum = {[tostring(1/0)]='1/0 --[[math.huge]]',[tostring(-1/0)]='-1/0 --[[-math.huge]]',[tostring(0/0)]='0/0'}
-local badtype = {thread = true, userdata = true}
+local badtype = {thread = true, userdata = true, cdata = true}
 local keyword, globals, G = {}, {}, (_G or _ENV)
 for _,k in ipairs({'and', 'break', 'do', 'else', 'elseif', 'end', 'false',
   'for', 'function', 'goto', 'if', 'in', 'local', 'nil', 'not', 'or', 'repeat',
@@ -210,7 +212,7 @@ return { _NAME = n, _COPYRIGHT = c, _DESCRIPTION = d, _VERSION = v, serialize = 
 end)() ---- end of Serpent module
 
 local function removebasedir(path, basedir)
-  if iswindows then
+  if iscasepreserving then
     -- check if the lowercased path matches the basedir
     -- if so, return substring of the original path (to not lowercase it)
     return path:lower():find('^'..q(basedir:lower()))
@@ -247,14 +249,13 @@ local function stack(start)
     local source = debug.getinfo(i, "Snl")
     if not source then break end
 
-    -- remove basedir from source
     local src = source.source
     if src:find("@") == 1 then
       src = src:sub(2):gsub("\\", "/")
       if src:find("%./") == 1 then src = src:sub(3) end
     end
 
-    table.insert(stack, {
+    table.insert(stack, { -- remove basedir from source
       {source.name, removebasedir(src, basedir), source.linedefined,
        source.currentline, source.what, source.namewhat, source.short_src},
       vars(i+1)})
@@ -265,20 +266,20 @@ end
 
 local function set_breakpoint(file, line)
   if file == '-' and lastfile then file = lastfile
-  elseif iswindows then file = string.lower(file) end
-  if not breakpoints[file] then breakpoints[file] = {} end
-  breakpoints[file][line] = true  
+  elseif iscasepreserving then file = string.lower(file) end
+  if not breakpoints[line] then breakpoints[line] = {} end
+  breakpoints[line][file] = true
 end
 
 local function remove_breakpoint(file, line)
   if file == '-' and lastfile then file = lastfile
-  elseif iswindows then file = string.lower(file) end
-  if breakpoints[file] then breakpoints[file][line] = nil end
+  elseif iscasepreserving then file = string.lower(file) end
+  if breakpoints[line] then breakpoints[line][file] = nil end
 end
 
 -- this file name is already converted to lower case on windows.
 local function has_breakpoint(file, line)
-  return breakpoints[file] and breakpoints[file][line]
+  return breakpoints[line] and breakpoints[line][file]
 end
 
 local function restore_vars(vars)
@@ -371,6 +372,17 @@ local function in_debugger()
   return false
 end
 
+local function is_pending(peer)
+  -- if there is something already in the buffer, skip check
+  if not buf and checkcount >= mobdebug.checkcount then
+    peer:settimeout(0) -- non-blocking
+    buf = peer:receive(1)
+    peer:settimeout() -- back to blocking
+    checkcount = 0
+  end
+  return buf
+end
+
 local function debug_hook(event, line)
   -- (1) LuaJIT needs special treatment. Because debug_hook is set for
   -- *all* coroutines, and not just the one being debugged as in regular Lua
@@ -402,13 +414,16 @@ local function debug_hook(event, line)
   elseif event == "return" or event == "tail return" then
     stack_level = stack_level - 1
   elseif event == "line" then
-
-    -- check if we need to skip some callbacks (to save time)
-    if skip then
-      skipcount = skipcount + 1
-      if skipcount < skip or not is_safe(stack_level) then return end
-      skipcount = 0
-    end
+    -- may need to fall through because of the following:
+    -- (1) step_into
+    -- (2) step_over and stack_level <= step_level (need stack_level)
+    -- (3) breakpoint; check for line first as it's known; then for file
+    -- (4) socket call (only do every Xth check)
+    -- (5) at least one watch is registered
+    if not (
+      step_into or step_over or breakpoints[line] or watchescnt > 0
+      or is_pending(server)
+    ) then checkcount = checkcount + 1; return end
 
     -- this is needed to check if the stack got shorter or longer.
     -- unfortunately counting call/return calls is not reliable.
@@ -422,6 +437,7 @@ local function debug_hook(event, line)
     -- have any other instructions to execute. it triggers three returns:
     -- "return, tail return, return", which needs to be accounted for.
     stack_level = stack_depth(stack_level+1)
+
     local caller = debug.getinfo(2, "S")
 
     -- grab the filename and fix it if needed
@@ -434,10 +450,10 @@ local function debug_hook(event, line)
       -- so we handle all sources as filenames
       file = file:gsub("^@", ""):gsub("\\", "/")
       -- need this conversion to be applied to relative and absolute
-      -- file names as you may write "require 'Foo'" on Windows to
-      -- load "foo.lua" (as it's case insensitive) and breakpoints
+      -- file names as you may write "require 'Foo'" to
+      -- load "foo.lua" (on a case insensitive file system) and breakpoints
       -- set on foo.lua will not work if not converted to the same case.
-      if iswindows then file = string.lower(file) end
+      if iscasepreserving then file = string.lower(file) end
       if file:find("%./") == 1 then file = file:sub(3)
       else file = file:gsub('^'..q(basedir), '') end
 
@@ -472,7 +488,7 @@ local function debug_hook(event, line)
       (step_into
       or (step_over and stack_level <= step_level)
       or has_breakpoint(file, line)
-      or (socket.select(rset, nil, 0))[server])
+      or is_pending(server))
 
     if getin then
       vars = vars or capture_vars()
@@ -561,6 +577,8 @@ local function debugger_loop(sev, svars, sfile, sline)
       elseif not line and err == "closed" then
         error("Debugger connection unexpectedly closed", 0)
       else
+        -- if there is something in the pending buffer, prepend it to the line
+        if buf then line = buf .. line; buf = nil end
         break
       end
     end
@@ -619,7 +637,7 @@ local function debugger_loop(sev, svars, sfile, sline)
           if not loaded[k] then package.loaded[k] = nil end
         end
 
-        if size == 0 then -- RELOAD the current script being debugged
+        if size == 0 and name == '-' then -- RELOAD the current script being debugged
           server:send("200 OK 0\n")
           coroutine.yield("load")
         else
@@ -720,7 +738,9 @@ local function debugger_loop(sev, svars, sfile, sline)
     elseif command == "BASEDIR" then
       local _, _, dir = string.find(line, "^[A-Z]+%s+(.+)%s*$")
       if dir then
-        basedir = iswindows and string.lower(dir) or dir
+        basedir = iscasepreserving and string.lower(dir) or dir
+        -- reset cached source as it may change with basedir
+        lastsource = nil
         server:send("200 OK\n")
       else
         server:send("400 Bad Request\n")
@@ -796,23 +816,6 @@ local function start(controller_host, controller_port)
 
   server = (socket.connect4 or socket.connect)(controller_host, controller_port)
   if server then
-    rset = {server} -- store hash to avoid recreating it later
-    -- check if we are called from the debugger as this may happen
-    -- when another debugger function calls start(); only check one level deep
-    local this = debug.getinfo(1, "S").source
-    local level = 2
-    local info = debug.getinfo(level, "Sl")
-    -- find first appropriate call up the stack, ignoring calls from
-    -- the debugger or C functions (like pcall or assert)
-    while info and (info.source == this or info.what == "C") do
-      level = level + 1
-      info = debug.getinfo(level, "Sl")
-    end
-
-    local file = (info or debug.getinfo(level-1, "Sl")).source
-    if string.find(file, "@") == 1 then file = string.sub(file, 2) end
-    if string.find(file, "%.[/\\]") == 1 then file = string.sub(file, 3) end
-
     -- correct stack depth which already has some calls on it
     -- so it doesn't go into negative when those calls return
     -- as this breaks subsequence checks in stack_depth().
@@ -844,26 +847,23 @@ local function start(controller_host, controller_port)
     end
     coro_debugger = coroutine.create(debugger_loop)
     debug.sethook(debug_hook, "lcr")
-    local ok, res = coroutine.resume(coro_debugger, events.RESTART, capture_vars(), file, info.currentline)
-    if not ok and res then error(res, 2) end
+    step_into = true -- start with step command
     return true
   else
     print("Could not connect to " .. controller_host .. ":" .. controller_port)
   end
 end
 
-local function controller(controller_host, controller_port)
+local function controller(controller_host, controller_port, scratchpad)
   -- only one debugging session can be run (as there is only one debug hook)
   if isrunning() then return end
 
   controller_host = controller_host or "localhost"
   controller_port = controller_port or mobdebug.port
 
-  local exitonerror = not skip -- exit if not running a scratchpad
+  local exitonerror = not scratchpad
   server = (socket.connect4 or socket.connect)(controller_host, controller_port)
   if server then
-    rset = {server} -- store hash to avoid recreating it later
-
     local function report(trace, err)
       local msg = err .. "\n" .. trace
       server:send("401 Error in Execution " .. #msg .. "\n")
@@ -877,7 +877,7 @@ local function controller(controller_host, controller_port)
     while true do
       step_into = true -- start with step command
       abort = false -- reset abort flag from the previous loop
-      if skip then skipcount = skip end -- force suspend right away
+      if scratchpad then checkcount = mobdebug.checkcount end -- force suspend right away
 
       coro_debugee = coroutine.create(debugee)
       debug.sethook(coro_debugee, debug_hook, "lcr")
@@ -915,14 +915,12 @@ local function controller(controller_host, controller_port)
   return true
 end
 
-local function scratchpad(controller_host, controller_port, frequency)
-  skip = frequency or 100
-  return controller(controller_host, controller_port)
+local function scratchpad(controller_host, controller_port)
+  return controller(controller_host, controller_port, true)
 end
 
 local function loop(controller_host, controller_port)
-  skip = nil -- just in case if loop() is called after scratchpad()
-  return controller(controller_host, controller_port)
+  return controller(controller_host, controller_port, false)
 end
 
 local function on()
@@ -1012,9 +1010,8 @@ local function handle(params, client, options)
       file = string.gsub(file, "\\", "/") -- convert slash
       file = removebasedir(file, basedir)
       client:send("SETB " .. file .. " " .. line .. "\n")
-      if client:receive() == "200 OK" then 
-        if not breakpoints[file] then breakpoints[file] = {} end
-        breakpoints[file][line] = true
+      if client:receive() == "200 OK" then
+        set_breakpoint(file, line)
       else
         print("Error: breakpoint not inserted")
       end
@@ -1049,7 +1046,7 @@ local function handle(params, client, options)
       file = removebasedir(file, basedir)
       client:send("DELB " .. file .. " " .. line .. "\n")
       if client:receive() == "200 OK" then 
-        if breakpoints[file] then breakpoints[file][line] = nil end
+        remove_breakpoint(file, line)
       else
         print("Error: breakpoint not removed")
       end
@@ -1057,11 +1054,11 @@ local function handle(params, client, options)
       print("Invalid command")
     end
   elseif command == "delallb" then
-    for file, breaks in pairs(breakpoints) do
-      for line, _ in pairs(breaks) do
+    for line, breaks in pairs(breakpoints) do
+      for file, _ in pairs(breaks) do
         client:send("DELB " .. file .. " " .. line .. "\n")
-        if client:receive() == "200 OK" then 
-          breakpoints[file][line] = nil
+        if client:receive() == "200 OK" then
+          remove_breakpoint(file, line)
         else
           print("Error: breakpoint at file " .. file .. " line " .. line .. " not removed")
         end
@@ -1183,12 +1180,10 @@ local function handle(params, client, options)
       print("Invalid command")
     end
   elseif command == "listb" then
-    for k, v in pairs(breakpoints) do
-      local b = k .. ": " -- get filename
-      for k in pairs(v) do
-        b = b .. k .. " " -- get line numbers
+    for l, v in pairs(breakpoints) do
+      for f in pairs(v) do
+        print(f .. ": " .. l)
       end
-      print(b)
     end
   elseif command == "listw" then
     for i, v in pairs(watches) do
