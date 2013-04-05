@@ -14,7 +14,7 @@ Container@CHEATS_PANEL:
 			Text:Cheats
 		Background@bg:
 			Width:590
-			Height:110
+			Height:140
 			Background:panel-black
 			Children:
 				Checkbox@INSTANT_BUILD:
@@ -71,28 +71,39 @@ Container@CHEATS_PANEL:
 					Height:20
 					Width:200
 					Text:Show A* Cost
+				Checkbox@DESYNC_ARMED:
+					X:400
+					Y:105
+					Width:20
+					Height:20
+				Button@DESYNC:
+					X:430
+					Y:100
+					Width:120
+					Height:25
+					Text: Force Desync
 		Button@CLOSE:
 			Key:escape
 			X:0
-			Y:109
+			Y:139
 			Width:140
 			Height:35
 			Text:Close
 		Button@GIVE_CASH:
 			X:150
-			Y:109
+			Y:139
 			Width:140
 			Height:35
 			Text:Give Cash
 		Button@GIVE_EXPLORATION:
 			X:300
-			Y:109
+			Y:139
 			Width:140
 			Height:35
 			Text:Give Exploration
 		Button@RESET_EXPLORATION:
 			X:450
-			Y:109
+			Y:139
 			Width:140
 			Height:35
 			Text:Reset Exploration
