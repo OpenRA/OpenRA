@@ -16,10 +16,8 @@ return {
   frun = function(self,wfilename,rundebug)
     exe = exe or exePath()
     local filepath = wfilename:GetFullPath()
-    local script
     if rundebug then
       DebuggerAttachDefault({runstart = ide.config.debugger.runonstart == true})
-      script = rundebug
     else
       -- if running on Windows and can't open the file, this may mean that
       -- the file path includes unicode characters that need special handling
@@ -30,11 +28,11 @@ return {
         winapi.set_encoding(winapi.CP_UTF8)
         filepath = winapi.short_path(filepath)
       end
-
-      script = ('dofile [[%s]]'):format(filepath)
     end
-    local code = ([[xpcall(function() io.stdout:setvbuf('no'); %s end,function(err) print(debug.traceback(err)) end)]]):format(script)
-    local cmd = '"'..exe..'" -e "'..code..'"'
+    local code = rundebug
+      and ([[-e "io.stdout:setvbuf('no'); %s"]]):format(rundebug)
+       or ([[-e "io.stdout:setvbuf('no')" "%s"]]):format(filepath)
+    local cmd = '"'..exe..'" '..code
     -- CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
     return CommandLineRun(cmd,self:fworkdir(wfilename),true,false,nil,nil,
       function() ide.debugger.pid = nil end)
