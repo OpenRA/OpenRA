@@ -114,11 +114,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				var detailsWidget = item.GetOrNull<LabelWidget>("DETAILS");
 				if (detailsWidget != null)
-					detailsWidget.GetText = () => "{0} ({1})".F(m.Type, m.PlayerCount);
+					detailsWidget.GetText = () => "{0} ({1} players)".F(m.Type, m.PlayerCount);
 
 				var authorWidget = item.GetOrNull<LabelWidget>("AUTHOR");
 				if (authorWidget != null)
-					authorWidget.GetText = () => m.Author;
+					authorWidget.GetText = () => "Created by {0}".F(m.Author);
 
 				var sizeWidget = item.GetOrNull<LabelWidget>("SIZE");
 				if (sizeWidget != null)

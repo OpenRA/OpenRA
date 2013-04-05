@@ -38,7 +38,7 @@ Container@MAPCHOOSER_PANEL:
 					Children:
 						ScrollItem@MAP_TEMPLATE:
 							Width:168
-							Height:215
+							Height:217
 							X:2
 							Y:0
 							Visible:false
@@ -57,19 +57,19 @@ Container@MAPCHOOSER_PANEL:
 									Height:158
 								Label@TITLE:
 									X:2
-									Y:PARENT_BOTTOM-45
+									Y:PARENT_BOTTOM-48
 									Width:PARENT_RIGHT-4
 									Align:Center
 								Label@DETAILS:
 									Width:PARENT_RIGHT-4
 									X:2
-									Y:PARENT_BOTTOM-30
+									Y:PARENT_BOTTOM-34
 									Align:Center
 									Font:Tiny
 								Label@AUTHOR:
 									Width:PARENT_RIGHT-4
 									X:2
-									Y:PARENT_BOTTOM-20
+									Y:PARENT_BOTTOM-22
 									Align:Center
 									Font:Tiny
 								Label@SIZE:
