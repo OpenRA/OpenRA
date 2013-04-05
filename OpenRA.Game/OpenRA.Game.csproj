@@ -68,12 +68,12 @@
     <Reference Include="SharpFont">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\thirdparty\SharpFont.dll</HintPath>
+    </Reference>
     <Reference Include="Mono.Nat, Version=1.1.0.0, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
       <Package>mono.nat</Package>
       <HintPath>..\thirdparty\Mono.Nat.dll</HintPath>
-    </Reference>
     </Reference>
     <Reference Include="Tao.OpenAl, Version=1.1.0.1, Culture=neutral, PublicKeyToken=a7579dda88828311">
       <SpecificVersion>False</SpecificVersion>

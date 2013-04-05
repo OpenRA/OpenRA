@@ -128,7 +128,7 @@ namespace OpenRA.Server
 				var timeout = ServerTraits.WithInterface<ITick>().Min(t => t.TickTimeout);
 				for( ; ; )
 				{
-					var checkRead = new ArrayList();
+					var checkRead = new List<Socket>();
 					checkRead.Add( listener.Server );
 					foreach( var c in conns ) checkRead.Add( c.socket );
 					foreach( var c in preConns ) checkRead.Add( c.socket );
@@ -140,7 +140,7 @@ namespace OpenRA.Server
 						break;
 					}
 
-					foreach( Socket s in checkRead )
+					foreach( var s in checkRead )
 						if( s == listener.Server ) AcceptConnection();
 						else if (preConns.Count > 0)
 						{
@@ -181,13 +181,13 @@ namespace OpenRA.Server
 		{
 			try
 			{
-				Mapping mapping = new Mapping (Protocol.Tcp, Settings.ExternalPort, Settings.ListenPort);
+				var mapping = new Mapping(Protocol.Tcp, Settings.ExternalPort, Settings.ListenPort);
 				NatDevice.CreatePortMap(mapping);
 				Log.Write("server", "Create port mapping: protocol={0}, public={1}, private={2}", mapping.Protocol, mapping.PublicPort, mapping.PrivatePort);
 			}
 			catch (Exception e)
 			{
-				OpenRA.Log.Write("server", "Can not forward ports via UPnP: {0}", e);
+				Log.Write("server", "Can not forward ports via UPnP: {0}", e);
 				Settings.AllowUPnP = false;
 			}
 		}
@@ -196,13 +196,13 @@ namespace OpenRA.Server
 		{
 			try
 			{
-				Mapping mapping = new Mapping (Protocol.Tcp, Settings.ExternalPort, Settings.ListenPort);
-				NatDevice.DeletePortMap (mapping);
+				var mapping = new Mapping(Protocol.Tcp, Settings.ExternalPort, Settings.ListenPort);
+				NatDevice.DeletePortMap(mapping);
 				Log.Write("server", "Remove port mapping: protocol={0}, public={1}, private={2}", mapping.Protocol, mapping.PublicPort, mapping.PrivatePort);
 			}
 			catch (Exception e)
 			{
-				OpenRA.Log.Write("server", "Can not remove UPnP portforwarding rules: {0}", e);
+				Log.Write("server", "Can not remove UPnP portforwarding rules: {0}", e);
 				Settings.AllowUPnP = false;
 			}
 		}

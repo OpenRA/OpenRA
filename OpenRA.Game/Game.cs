@@ -264,14 +264,18 @@ namespace OpenRA
 			Log.AddChannel("sync", "syncreport.log");
 			Log.AddChannel("server", "server.log");
 
-			try {
+			try
+			{
+				NatUtility.Logger = Log.Channels["server"].Writer;
+				NatUtility.Verbose = true;
 				NatUtility.DeviceFound += DeviceFound;
 				NatUtility.DeviceLost += DeviceLost;
-
 				NatUtility.StartDiscovery();
-				OpenRA.Log.Write("server", "NAT discovery started.");
-			} catch (Exception e) {
-				OpenRA.Log.Write("server", "Can't discover UPnP-enabled device: {0}", e);
+				Log.Write("server", "NAT discovery started.");
+			}
+			catch (Exception e)
+			{
+				Log.Write("server", "Can't discover UPnP-enabled device: {0}", e);
 				Settings.Server.AllowUPnP = false;
 			}
 
@@ -287,27 +291,26 @@ namespace OpenRA
 			InitializeWithMods(Settings.Game.Mods);
 		}
 
-		public static void DeviceFound (object sender, DeviceEventArgs args)
+		public static void DeviceFound(object sender, DeviceEventArgs args)
 		{
 			natDevice = args.Device;
 
-			Log.Write ("server", "NAT device discovered.");
-			Log.Write ("server", "Type: {0}", natDevice.GetType ().Name);
-			Log.Write ("server", "Your external IP is: {0}", natDevice.GetExternalIP ());
+			Log.Write("server", "NAT device discovered.");
+			Log.Write("server", "Type: {0}", natDevice.GetType());
+			Log.Write("server", "Your external IP is: {0}", natDevice.GetExternalIP());
 
-			foreach (Mapping mp in natDevice.GetAllMappings()) {
-				Log.Write ("server", "Existing port mapping: protocol={0}, public={1}, private={2}", mp.Protocol, mp.PublicPort, mp.PrivatePort);
-			}
+			foreach (var mp in natDevice.GetAllMappings())
+				Log.Write("server", "Existing port mapping: protocol={0}, public={1}, private={2}", mp.Protocol, mp.PublicPort, mp.PrivatePort);
 
 			Settings.Server.AllowUPnP = true;
 		}
 
-		public static void DeviceLost (object sender, DeviceEventArgs args)
+		public static void DeviceLost(object sender, DeviceEventArgs args)
 		{
 			natDevice = args.Device;
 
 			Log.Write("server", "NAT device Lost");
-			Log.Write("server", "Type: {0}", natDevice.GetType().Name);
+			Log.Write("server", "Type: {0}", natDevice.GetType());
 
 			Settings.Server.AllowUPnP = false;
 		}
