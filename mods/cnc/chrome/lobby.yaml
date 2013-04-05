@@ -347,13 +347,6 @@ Container@SERVER_LOBBY:
 					Font:Bold
 					Visible:false
 					Text:Assign
-				Button@RANDOMMAP_BUTTON:
-					X:PARENT_RIGHT-120-15-40
-					Y:255
-					Width:120
-					Height:25
-					Text:Random Map
-					Font:Bold
 				ScrollPanel@CHAT_DISPLAY:
 					X:15
 					Y:285
