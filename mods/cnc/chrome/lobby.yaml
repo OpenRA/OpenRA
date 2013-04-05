@@ -39,18 +39,12 @@ Container@SERVER_LOBBY:
 					Height:25
 					Font:Bold
 					Align:Center
-				Checkbox@ALLOWCHEATS_CHECKBOX:
-					X:PARENT_RIGHT-209
-					Y:255
-					Width:130
-					Height:20
-					Text: Allow Cheats
 				ScrollPanel@PLAYERS:
 					X:15
 					Y:30
 					Width:503
 					ItemSpacing:5
-					Height:245
+					Height:219
 					Children:
 						Container@TEMPLATE_EDITABLE_PLAYER:
 							X:5
@@ -333,6 +327,33 @@ Container@SERVER_LOBBY:
 							Text:Ready
 							Align:Left
 							Font:Bold
+				Checkbox@ALLOWCHEATS_CHECKBOX:
+					X:15
+					Y:255
+					Width:130
+					Height:20
+					Text: Allow Cheats
+				Checkbox@CRATES_CHECKBOX:
+					X:160
+					Y:255
+					Width:80
+					Height:20
+					Text: Crates
+				DropDownButton@ASSIGNTEAMS_DROPDOWNBUTTON:
+					X:399
+					Y:255
+					Width:120
+					Height:25
+					Font:Bold
+					Visible:false
+					Text:Assign
+				Button@RANDOMMAP_BUTTON:
+					X:PARENT_RIGHT-120-15-40
+					Y:255
+					Width:120
+					Height:25
+					Text:Random Map
+					Font:Bold
 				ScrollPanel@CHAT_DISPLAY:
 					X:15
 					Y:285
