@@ -112,7 +112,8 @@ namespace OpenRA.Mods.RA.Air
 			/* repulsion only applies when we're flying */
 			if (Altitude <= 0) return;
 
-			var otherHelis = self.World.FindUnitsInCircle(self.CenterLocation, Info.IdealSeparation)
+			var radius = Info.IdealSeparation / (float)Game.CellSize;
+			var otherHelis = self.World.FindUnitsInCircle(self.CenterLocation, radius)
 				.Where(a => a.HasTrait<Helicopter>());
 
 			var f = otherHelis

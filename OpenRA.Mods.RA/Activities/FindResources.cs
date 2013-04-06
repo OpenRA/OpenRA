@@ -59,7 +59,7 @@ namespace OpenRA.Mods.RA.Activities
 						// Avoid enemy territory:
 						int safetycost = (
 							// TODO: calculate weapons ranges of units and factor those in instead of hard-coding 8.
-							from u in self.World.FindUnitsInCircle(loc.ToPPos(), Game.CellSize * 8)
+							from u in self.World.FindUnitsInCircle(loc.ToPPos(), 8)
 							where !u.Destroyed
 							where self.Owner.Stances[u.Owner] == Stance.Enemy
 							select Math.Max(0, 64 - (loc - u.Location).LengthSquared)
