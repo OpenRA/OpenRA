@@ -147,17 +147,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 			playerWidgets.Get<ButtonWidget>("OPTIONS_BUTTON").OnClick = OptionsClicked;
 
-			var cheatsButton = playerWidgets.Get<ButtonWidget>("CHEATS_BUTTON");
-			cheatsButton.OnClick = () =>
-			{
-				if (menu != MenuType.None)
-					Ui.CloseWindow();
-
-				menu = MenuType.Cheats;
-				Game.OpenWindow("CHEATS_PANEL", new WidgetArgs() {{"onExit", () => menu = MenuType.None }});
-			};
-			cheatsButton.IsVisible = () => world.LocalPlayer != null && world.LobbyInfo.GlobalSettings.AllowCheats;
-
 			var winLossWatcher = playerWidgets.Get<LogicTickerWidget>("WIN_LOSS_WATCHER");
 			winLossWatcher.OnTick = () =>
 			{

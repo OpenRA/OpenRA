@@ -1,3 +1,22 @@
+Container@INGAME_MENU_PANEL:
+	X:(WINDOW_RIGHT - WIDTH)/2
+	Y:(WINDOW_BOTTOM - HEIGHT)/2
+	Width:512
+	Height:320
+	Children:
+		Button@OBJECTIVES_BUTTON:
+			Y:PARENT_BOTTOM - 1
+			Width:140
+			Height:35
+			Text:Objectives
+			Visible: false
+		Button@DEBUG_BUTTON:
+			X:150
+			Y:PARENT_BOTTOM - 1
+			Width:140
+			Height:35
+			Text:Debug
+			Visible: false
 Container@INGAME_MENU:
 	Width:WINDOW_RIGHT
 	Height:WINDOW_BOTTOM
