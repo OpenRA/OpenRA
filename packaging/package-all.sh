@@ -50,6 +50,9 @@ cp thirdparty/FuzzyLogicLibrary.dll packaging/built
 # SharpFont for FreeType support
 cp thirdparty/SharpFont* packaging/built
 
+# Mono.NAT for UPnP support
+cp thirdparty/Mono.Nat.dll packaging/built
+
 # Copy game icon for windows package
 cp OpenRA.Game/OpenRA.ico packaging/built
 

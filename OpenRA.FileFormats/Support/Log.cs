@@ -26,7 +26,7 @@ namespace OpenRA
 	public static class Log
 	{
 		static string LogPathPrefix = Environment.GetFolderPath(Environment.SpecialFolder.Personal) + Path.DirectorySeparatorChar;
-		static Dictionary<string, ChannelInfo> channels = new Dictionary<string,ChannelInfo>();
+		public static readonly Dictionary<string, ChannelInfo> Channels = new Dictionary<string, ChannelInfo>();
 
 		public static string LogPath
 		{
@@ -47,7 +47,7 @@ namespace OpenRA
 
 		public static void AddChannel(string channelName, string baseFilename)
 		{
-			if (channels.ContainsKey(channelName)) return;
+			if (Channels.ContainsKey(channelName)) return;
 
 			foreach (var filename in FilenamesForChannel(channelName, baseFilename))
 				try
@@ -55,7 +55,7 @@ namespace OpenRA
 					var writer = File.CreateText(filename);
 					writer.AutoFlush = true;
 
-					channels.Add(channelName,
+					Channels.Add(channelName,
 						new ChannelInfo()
 						{
 							Filename = filename,
@@ -70,7 +70,7 @@ namespace OpenRA
 		public static void Write(string channel, string format, params object[] args)
 		{
 			ChannelInfo info;
-			if (!channels.TryGetValue(channel, out info))
+			if (!Channels.TryGetValue(channel, out info))
 				throw new Exception("Tried logging to non-existant channel " + channel);
 
 			info.Writer.WriteLine(format, args);
