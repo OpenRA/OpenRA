@@ -7,7 +7,7 @@ MCV:
 		Icon: mcvicnh
 		Description: Deploys into another Construction Yard.\n  Unarmed
 	Buildable:
-		BuildPaletteOrder: 70
+		BuildPaletteOrder: 100
 		Prerequisites: fix
 		Owner: gdi,nod
 	Selectable:
@@ -46,14 +46,14 @@ HARV:
 		Icon: harvicnh
 		Description: Collects Tiberium for processing.\n  Unarmed
 	Buildable:
-		BuildPaletteOrder: 10
+		BuildPaletteOrder: 5
 		Prerequisites: proc
 		Owner: gdi,nod
 	Selectable:
 		Priority: 7
-		Bounds: 44,44
+		Bounds: 36,36
 	Harvester:
-		Resources: Tiberium, Blue Tiberium
+		Resources: Tiberium, BlueTiberium
 		PipCount: 7
 		Capacity: 28
 		UnloadTicksPerBale: 16
@@ -134,7 +134,7 @@ APC:
 		ROT: 10
 	Armament:
 		Weapon: MachineGun
-	AttackTurreted:
+	AttackFrontal:
 	WithMuzzleFlash:
 	RenderUnitTurreted:
 	AutoTarget:
@@ -217,7 +217,7 @@ ARTY:
 		Icon:artyicnh
 		Description: Long-range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
 	Buildable:
-		BuildPaletteOrder: 40
+		BuildPaletteOrder: 50
 		Prerequisites: hq
 		Owner: nod
 	Mobile:
@@ -250,7 +250,7 @@ FTNK:
 		Icon: ftnkicnh
 		Description: Heavily armored flame-throwing vehicle.\n  Strong vs Infantry, Buildings\n  Weak vs Aircraft
 	Buildable:
-		BuildPaletteOrder: 50
+		BuildPaletteOrder: 60
 		Prerequisites: hq
 		Owner: nod
 	Mobile:
@@ -284,7 +284,7 @@ LTNK:
 		Icon: ltnkicnh
 		Description: Light Tank, good for scouting.\n  Strong vs Light Vehicles\n  Weak vs Tanks, Aircraft
 	Buildable:
-		BuildPaletteOrder: 30
+		BuildPaletteOrder: 40
 		Prerequisites: afld
 		Owner: nod
 	Mobile:
@@ -317,7 +317,7 @@ MTNK:
 		Icon: mtnkicnh
 		Description: General-Purpose GDI Tank.\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
 	Buildable:
-		BuildPaletteOrder: 30
+		BuildPaletteOrder: 40
 		Prerequisites: weap
 		Owner: gdi
 	Mobile:
@@ -433,7 +433,7 @@ MLRS:
 		Icon: mlrsicnh
 		Description: Long range artillery.\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks, Aircraft
 	Buildable:
-		BuildPaletteOrder: 60
+		BuildPaletteOrder: 80
 		Prerequisites: obli
 		Owner: nod
 	Mobile:
@@ -472,7 +472,7 @@ STNK:
 		Icon: stnkicnh
 		Description: Missile tank that can bend light around \nitself to become invisible\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks
 	Buildable:
-		BuildPaletteOrder: 90
+		BuildPaletteOrder: 70
 		Prerequisites: hq
 		Owner: nod
 	Mobile:
