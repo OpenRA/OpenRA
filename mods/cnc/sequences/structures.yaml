@@ -20,6 +20,7 @@ fact:
 	make: factmake
 		Start: 0
 		Length: *
+		Tick: 80
 
 nuke:
 	idle:
@@ -36,6 +37,7 @@ nuke:
 	make: nukemake
 		Start: 0
 		Length: *
+		Tick: 80
 
 proc:
 	idle:
@@ -51,6 +53,7 @@ proc:
 	make: procmake
 		Start: 0
 		Length: *
+		Tick: 80
 	lights: proctwr
 		Start: 0
 		Length: 6
@@ -70,6 +73,7 @@ silo:
 	make: silomake
 		Start: 0
 		Length: *
+		Tick: 80
 
 hand:
 	idle:
@@ -81,6 +85,7 @@ hand:
 	make: handmake
 		Start: 0
 		Length: *
+		Tick: 80
 
 pyle:
 	idle:
@@ -97,6 +102,7 @@ pyle:
 	make: pylemake
 		Start: 0
 		Length: *
+		Tick: 80
 
 weap:
 	idle:
@@ -118,6 +124,7 @@ weap:
 	make: weapmake
 		Start: 0
 		Length: *
+		Tick: 80
 
 afld:
 	idle:
@@ -139,6 +146,7 @@ afld:
 	make: afldmake
 		Start: 0
 		Length: *
+		Tick: 80
 
 hq:
 	idle:
@@ -154,6 +162,7 @@ hq:
 	make: hqmake
 		Start: 0
 		Length: *
+		Tick: 80
 
 nuk2:
 	idle:
@@ -169,6 +178,7 @@ nuk2:
 	make: nuk2make
 		Start: 0
 		Length: *
+		Tick: 80
 
 hpad:
 	idle:
@@ -188,6 +198,7 @@ hpad:
 	make: hpadmake
 		Start: 0
 		Length: *
+		Tick: 80
 
 fix:
 	idle:
@@ -205,6 +216,7 @@ fix:
 	make: fixmake
 		Start: 0
 		Length: 14
+		Tick: 60
 
 eye:
 	idle:
@@ -220,6 +232,7 @@ eye:
 	make: eyemake
 		Start: 0
 		Length: *
+		Tick: 80
 
 tmpl:
 	idle:
@@ -237,6 +250,7 @@ tmpl:
 	make: tmplmake
 		Start: 0
 		Length: *
+		Tick: 60
 
 obli:
 	idle:
@@ -254,6 +268,7 @@ obli:
 	make: oblimake
 		Start: 0
 		Length: 13
+		Tick: 80
 
 brik:
 	idle:
@@ -320,6 +335,7 @@ gun:
 	make: gunmake
 		Start: 0
 		Length: *
+		Tick: 80
 
 sam:
 	closed-idle:
@@ -349,6 +365,7 @@ sam:
 	make: sammake
 		Start: 0
 		Length: 20
+		Tick: 80
 	muzzle: samfire
 		Start: 0
 		Length: 18
@@ -363,6 +380,7 @@ gtwr:
 	make: gtwrmake
 		Start: 0
 		Length: *
+		Tick: 80
 	muzzle: minigun
 		Start: 0
 		Length: 6
@@ -378,4 +396,5 @@ atwr:
 	make: atwrmake
 		Start: 0
 		Length: *
+		Tick: 80
 
