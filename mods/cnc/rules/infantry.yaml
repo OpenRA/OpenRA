@@ -230,5 +230,6 @@ PVICE:
 	DrawLineToTarget:
 	Selectable:
 		Voice: DinoVoice
+	SelectionDecorations:
 	ActorLostNotification:
 		Notification: unitlost.aud
