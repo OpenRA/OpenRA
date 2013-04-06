@@ -46,7 +46,6 @@ Player:
 	AllyRepair:
 	PlayerResources:
 		InitialCash: 5000
-		AdviceInterval: 500
 	ActorGroupProxy:
 	DeveloperMode:
 	HackyAI@Default:
@@ -113,8 +112,8 @@ World:
 		Bridges: bridge1, bridge2, bridge3, bridge4
 	CrateSpawner:
 		Minimum: 1
-		Maximum: 3
-		SpawnInterval: 120
+		Maximum: 255
+		SpawnInterval: 180
 		WaterChance: 0
 	PaletteFromCurrentTileset@terrain:
 		Name: terrain
@@ -186,7 +185,7 @@ World:
 		TerrainType: BlueTiberium
 		SpriteNames: bti1,bti2,bti3,bti4,bti5,bti6,bti7,bti8,bti9,bti10,bti11,bti12
 		ValuePerUnit: 75
-		Name: Blue Tiberium
+		Name: BlueTiberium
 		PipColor: Blue
 		AllowedTerrainTypes: Clear,Road
 		AllowUnderActors: false
@@ -213,26 +212,109 @@ CRATE:
 	Tooltip:
 		Name: Crate
 	Crate:
-		Lifetime: 120
+		Lifetime: 600
 		TerrainTypes: Clear, Rough, Road, Tiberium, BlueTiberium, Beach
-	GiveCashCrateAction:
-		Amount: 2000
-		SelectionShares: 20
+# All shares have been multiplied by 10 from the values in C&C's rules.ini 
+# For cash, the rules.ini says shares==50, and the maximum cash=2000. I've never seen above 1000 in playing cnc, though. maybe 1000 is max in multiplayer?
+	GiveCashCrateAction@200:
+		Amount: 200
+		SelectionShares: 100
 		UseCashTick: yes
-	RevealMapCrateAction:
-		SelectionShares: 1
-		Effect: reveal-map
-	LevelUpCrateAction:
-		SelectionShares: 20
-	CloakCrateAction:
-		SelectionShares: 5
-		InitialDelay: 15
-		CloakDelay: 125
+	GiveCashCrateAction@400:
+		Amount: 400
+		SelectionShares: 100
+		UseCashTick: yes
+	GiveCashCrateAction@600:
+		Amount: 600
+		SelectionShares: 100
+		UseCashTick: yes
+	GiveCashCrateAction@800:
+		Amount: 800
+		SelectionShares: 100
+		UseCashTick: yes
+	GiveCashCrateAction@1000:
+		Amount: 1000
+		SelectionShares: 100
+		UseCashTick: yes
+	CloakCrateAction:	
+		SelectionShares: 50	
+		InitialDelay: 25
+		CloakDelay: 90
 		CloakSound: trans1.aud
-		UncloakSound: appear1.aud
+		UncloakSound: trans1.aud
 		Effect: cloak
+	ExplodeCrateAction@fire:	
+		Weapon: Napalm.Crate
+		SelectionShares: 50	
+	ExplodeCrateAction@boom:		
+		Weapon: CrateExplosion
+		SelectionShares: 50	
+	ExplodeCrateAction@atomic:
+		Weapon: Atomic
+		SelectionShares: 10	
+	RevealMapCrateAction:
+		SelectionShares: 10	
+		Effect: reveal-map
+	HideMapCrateAction:
+		SelectionShares: 10	
+		Effect: hide-map
+	SupportPowerCrateAction@napalm:
+		SelectionShares: 30	
+		Proxy: powerproxy.napalm
+	SupportPowerCrateAction@ion:
+		SelectionShares: 10	
+		Proxy: powerproxy.ion
+	SupportPowerCrateAction@nuke:
+		SelectionShares: 0	
+		Proxy: powerproxy.nuke
+# Viceroid is currently disabled as a precaution since Scott said that it might cause problems if a map doesn't have "Creeps" as a team name.
+#	GiveUnitCrateAction@vice:
+#		SelectionShares: 50	
+#		Unit: vice
+#		Owner: Creeps
+# The total shares for receiving a unit should be 200, so I made each unit (14 total) have 14 shares. 14 x 14 = 196, which is close.
+# There are 2 or 3 different kinds of infantry crates you should get, so once those get included, the value of the other unit crates should be adjusted, so that the total is close to 200. 
+	GiveUnitCrateAction@bggy:
+		SelectionShares: 14
+		Unit: bggy
+	GiveUnitCrateAction@bike:
+		SelectionShares: 14
+		Unit: bike
+	GiveUnitCrateAction@jeep:
+		SelectionShares: 14
+		Unit: jeep
+	GiveUnitCrateAction@apc:
+		SelectionShares: 14
+		Unit: apc
+	GiveUnitCrateAction@ltnk:
+		SelectionShares: 14
+		Unit: ltnk
+	GiveUnitCrateAction@arty:
+		SelectionShares: 14
+		Unit: arty
+	GiveUnitCrateAction@ftnk:
+		SelectionShares: 14
+		Unit: ftnk
+	GiveUnitCrateAction@mtnk:
+		SelectionShares: 14
+		Unit: mtnk
+	GiveUnitCrateAction@msam:
+		SelectionShares: 14
+		Unit: msam
+	GiveUnitCrateAction@stnk:
+		SelectionShares: 14
+		Unit: stnk
+	GiveUnitCrateAction@htnk:
+		SelectionShares: 14
+		Unit: htnk
+	GiveUnitCrateAction@mlrs:
+		SelectionShares: 14
+		Unit: htnk
+	GiveUnitCrateAction@harv:
+		SelectionShares: 14
+		Unit: harv
 	GiveMcvCrateAction:
-		SelectionShares: 2
+		SelectionShares: 14
 		NoBaseSelectionShares: 9001
 		Unit: mcv
 	RenderSimple:
@@ -240,6 +322,47 @@ CRATE:
 	ProximityCaptor:
 		Types:Crate
 	Passenger:
+
+powerproxy.napalm:
+	AirstrikePower:
+		Image: bombicnh
+		ChargeTime: 160		
+		Description: Air Strike
+		LongDesc: Deploy an aerial napalm strike.\nBurns buildings and infantry along a line.
+		OneShot: yes			
+		AllowMultiple: no		#should be "yes", but the feature is broken
+		EndChargeSound: airredy1.aud
+		SelectTargetSound: select1.aud
+		UnitType: a10
+
+powerproxy.ion
+	IonCannonPower:
+		Image: ionicnh
+		ChargeTime: 200		
+		Description: Ion Cannon
+		LongDesc: Initiate an Ion Cannon strike.\nApplies instant damage to a small area.
+		OneShot: yes			
+		AllowMultiple: no		#should be "yes", but the feature is broken
+		BeginChargeSound: ionchrg1.aud
+		EndChargeSound: ionredy1.aud
+		LaunchSound: ion1.aud
+		SelectTargetSound: select1.aud
+
+#nuke is broken, using it will crash the game.
+powerproxy.nuke:
+	NukePower:
+		Image: atomicnh
+		ChargeTime: 260		
+		Description: Nuclear Strike
+		LongDesc: Launch a tactical nuke.\nApplies heavy damage over a large area.
+		OneShot: yes			
+		AllowMultiple: no		#should be "yes", but the feature is broken
+		BeginChargeSound: 
+		EndChargeSound: nukavail.aud
+		SelectTargetSound: select1.aud
+		LaunchSound: nukemisl.aud
+		MissileWeapon: atomic
+#		SpawnOffset: 28,12
 
 mpspawn:
 	Waypoint:

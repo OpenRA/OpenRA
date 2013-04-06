@@ -133,8 +133,8 @@ SILO:
 		Icon: siloicnh
 		Description: Stores processed Tiberium
 	Buildable:
-		Queue: Defense
-		BuildPaletteOrder: 15
+		Queue: Building
+		BuildPaletteOrder: 200
 		Prerequisites: proc
 		Owner: gdi,nod
 	Building:
@@ -428,7 +428,7 @@ FIX:
 		Description: Repairs vehicles and allows the\nconstruction of additional bases.
 	Buildable:
 		BuildPaletteOrder: 80
-		Prerequisites: vehicleproduction
+		Prerequisites: anypower
 		Owner: gdi,nod
 	Building:
 		Power: -30
@@ -604,7 +604,7 @@ SBAG:
 		Description: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
 	Buildable:
 		Queue: Defense
-		BuildPaletteOrder: 20
+		BuildPaletteOrder: 10
 		Prerequisites: fact
 		Owner: gdi, nod
 	Health:
