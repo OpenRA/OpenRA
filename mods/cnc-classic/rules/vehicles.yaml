@@ -8,7 +8,7 @@ MCV:
 		Description: Deploys into another Construction Yard.\n  Unarmed
 	Buildable:
 		BuildPaletteOrder: 100
-		Prerequisites: fix
+		Prerequisites: techbuilding
 		Owner: gdi,nod
 	Selectable:
 		Priority: 3
@@ -218,7 +218,7 @@ ARTY:
 		Description: Long-range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
 	Buildable:
 		BuildPaletteOrder: 50
-		Prerequisites: hq
+		Prerequisites: afld
 		Owner: nod
 	Mobile:
 		ROT: 2
