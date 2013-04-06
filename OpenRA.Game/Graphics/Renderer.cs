@@ -34,8 +34,6 @@ namespace OpenRA.Graphics
 		public SpriteRenderer RgbaSpriteRenderer { get; private set; }
 		public SpriteRenderer SpriteRenderer { get; private set; }
 
-		public ITexture PaletteTexture;
-
 		Queue<IVertexBuffer<Vertex>> tempBuffers = new Queue<IVertexBuffer<Vertex>>();
 
 		public Dictionary<string, SpriteFont> Fonts;
@@ -67,12 +65,26 @@ namespace OpenRA.Graphics
 		public void BeginFrame(float2 scroll, float zoom)
 		{
 			device.Clear();
-			WorldSpriteRenderer.SetShaderParams(PaletteTexture, Resolution, zoom, scroll);
-			WorldLineRenderer.SetShaderParams(PaletteTexture, Resolution, zoom, scroll);
-			WorldQuadRenderer.SetShaderParams(PaletteTexture, Resolution, zoom, scroll);
-			SpriteRenderer.SetShaderParams(PaletteTexture, Resolution, 1f, float2.Zero);
-			LineRenderer.SetShaderParams(PaletteTexture, Resolution, 1f, float2.Zero);
-			RgbaSpriteRenderer.SetShaderParams(PaletteTexture, Resolution, 1f, float2.Zero);
+			WorldSpriteRenderer.SetViewportParams(Resolution, zoom, scroll);
+			SpriteRenderer.SetViewportParams(Resolution, 1f, float2.Zero);
+			RgbaSpriteRenderer.SetViewportParams(Resolution, 1f, float2.Zero);
+			WorldLineRenderer.SetViewportParams(Resolution, zoom, scroll);
+			WorldQuadRenderer.SetViewportParams(Resolution, zoom, scroll);
+			LineRenderer.SetViewportParams(Resolution, 1f, float2.Zero);
+		}
+
+		ITexture currentPaletteTexture;
+		public void SetPalette(HardwarePalette palette)
+		{
+			if (palette.Texture == currentPaletteTexture)
+				return;
+
+			Flush();
+			currentPaletteTexture = palette.Texture;
+
+			RgbaSpriteRenderer.SetPalette(currentPaletteTexture);
+			SpriteRenderer.SetPalette(currentPaletteTexture);
+			WorldSpriteRenderer.SetPalette(currentPaletteTexture);
 		}
 
 		public void EndFrame(IInputHandler inputHandler)
