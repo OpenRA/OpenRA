@@ -449,7 +449,8 @@ TTNK:
 		Weapon: TTankZap
 		LocalOffset: 0,0,213
 	AttackFrontal:
-	RenderUnitSpinner:
+	RenderUnit:
+	WithSpinner:
 	Selectable:
 		Bounds: 28,28,0,0
 	AutoTarget:
