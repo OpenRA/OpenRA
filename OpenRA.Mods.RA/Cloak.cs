@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
@@ -19,8 +20,10 @@ namespace OpenRA.Mods.RA
 {
 	public class CloakInfo : ITraitInfo
 	{
-		public int InitialDelay = 10; // Ticks
-		public int CloakDelay = 30; // Ticks
+		[Desc("Ticks")]
+		public int InitialDelay = 10;
+		[Desc("Ticks")]
+		public int CloakDelay = 30;
 		public string CloakSound = "subshow1.aud";
 		public string UncloakSound = "subshow1.aud";
 		public readonly string Palette = "cloak";
@@ -100,13 +103,12 @@ namespace OpenRA.Mods.RA
 				return true;
 
 			if (s != null)
-			{
-				if (s == self.World.LocalShroud && s.Observing)
+				if (self.World.GlobalViewMode)
 					return true;
-				if (s.Owner != null)
-					if (self.Owner == s.Owner || self.Owner.Stances[s.Owner] == Stance.Ally)
-						return true;
-			}
+				else
+					if (s.Owner != null)
+						if (self.Owner == s.Owner || self.Owner.Stances[s.Owner] == Stance.Ally)
+							return true;
 
 			if (self.World.LocalPlayer != null)
 				if (self.Owner == self.World.LocalPlayer || self.Owner.Stances[self.World.LocalPlayer] == Stance.Ally)

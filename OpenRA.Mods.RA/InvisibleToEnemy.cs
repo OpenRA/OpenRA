@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -21,8 +21,13 @@ namespace OpenRA.Mods.RA
 	{
 		public bool IsVisible(Shroud s, Actor self)
 		{
-			if (s != null && s.Observing)
-				return true;
+			if (s != null)
+				if (self.World.GlobalViewMode)
+					return true;
+			else
+				if (s.Owner != null)
+					if (self.Owner == s.Owner || self.Owner.Stances[s.Owner] == Stance.Ally)
+						return true;
 
 			if (self.World.LocalPlayer != null && self.Owner.Stances[self.World.LocalPlayer] == Stance.Ally)
 				return true;

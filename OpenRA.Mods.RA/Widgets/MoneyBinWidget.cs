@@ -29,8 +29,8 @@ namespace OpenRA.Mods.RA.Widgets
 
 		public override void Draw()
 		{
-			if( world.LocalPlayer == null ) return;
-			if( world.LocalPlayer.WinState != WinState.Undefined ) return;
+			if (world.ObserverMode) return;
+			if (world.LocalPlayer.WinState != WinState.Undefined) return;
 
 			var digitCollection = "digits-" + world.LocalPlayer.Country.Race;
 			var chromeCollection = "chrome-" + world.LocalPlayer.Country.Race;

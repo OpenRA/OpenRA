@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA.Widgets
 		public override bool HandleKeyPress(KeyInput e)
 		{
 			if (World == null) return false;
-			if (World.LocalPlayer == null) return false;
+			if (World.ObserverMode) return false;
 
 			return ProcessInput(e);
 		}
@@ -168,7 +168,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 		bool ToLastEvent()
 		{
-			if (World.LocalPlayer == null)
+			if (World.ObserverMode)
 				return true;
 
 			var eventNotifier = World.LocalPlayer.PlayerActor.TraitOrDefault<BaseAttackNotifier>();

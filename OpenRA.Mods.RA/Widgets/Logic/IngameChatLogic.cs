@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		private bool teamChat = false;
 		internal bool TeamChat
 		{
-			get { return World.Observer ? false : teamChat; }
+			get { return World.ObserverMode ? false : teamChat; }
 			set { teamChat = value; }
 		}
 

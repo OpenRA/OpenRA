@@ -38,11 +38,6 @@ namespace OpenRA.Traits
 			set { disabled = value; Dirty(); }
 		}
 
-		public bool Observing
-		{
-			get { return world.IsShellmap || (world.LocalPlayer == null && Owner == null);; }
-		}
-
 		public Rectangle? Bounds
 		{
 			get { return Disabled ? null : exploredBounds; }
@@ -117,8 +112,7 @@ namespace OpenRA.Traits
 
 		public void HideActor(Actor a, int range)
 		{
-			if (a.Owner.World.LocalPlayer == null
-				|| a.Owner.Stances[a.Owner.World.LocalPlayer] == Stance.Ally) return;
+			if (a.Owner.World.ObserverMode || a.Owner.Stances[a.Owner.World.LocalPlayer] == Stance.Ally) return;
 
 			var v = new ActorVisibility
 			{
@@ -133,9 +127,10 @@ namespace OpenRA.Traits
 				Dirty();
 		}
 
-		public void UnhideActor(Actor a, ActorVisibility v, int range) {
-	 		if (a.Owner.World.LocalPlayer == null
-				|| a.Owner.Stances[a.Owner.World.LocalPlayer] == Stance.Ally) return;
+		public void UnhideActor(Actor a, ActorVisibility v, int range)
+		{
+	 		if (a.Owner.World.ObserverMode || a.Owner.Stances[a.Owner.World.LocalPlayer] == Stance.Ally)
+				return;
 
 			if (v == null)
 				return;
@@ -226,8 +221,7 @@ namespace OpenRA.Traits
 
 		public void UpdateActor(Actor a)
 		{
-			if (a.Owner.World.LocalPlayer == null
-				|| a.Owner.Stances[a.Owner.World.LocalPlayer] != Stance.Ally) return;
+			if (a.Owner.World.ObserverMode || a.Owner.Stances[a.Owner.World.LocalPlayer] != Stance.Ally) return;
 
 			RemoveActor(a); AddActor(a);
 		}
@@ -280,7 +274,7 @@ namespace OpenRA.Traits
 			if (!map.IsInMap(x, y))
 				return false;
 
-			if (Disabled || Observing)
+			if (Disabled || world.GlobalViewMode)
 				return true;
 
 			return foggedCells[x,y];
@@ -289,7 +283,7 @@ namespace OpenRA.Traits
 		public bool IsVisible(CPos xy) { return IsVisible(xy.X, xy.Y); }
 		public bool IsVisible(int x, int y)
 		{
-			if (Disabled || Observing)
+			if (Disabled || world.GlobalViewMode)
 				return true;
 
 			// Visibility is allowed to extend beyond the map cordon so that
@@ -307,9 +301,9 @@ namespace OpenRA.Traits
 			if (a.TraitsImplementing<IVisibilityModifier>().Any(t => !t.IsVisible(this, a)))
 				return false;
 
-			if(Owner == null) return true;
+			if (Owner == null) return true;
 
-			return Disabled || Observing || a.Owner.Stances[Owner] == Stance.Ally || GetVisOrigins(a).Any(o => IsExplored(o));
+			return Disabled || world.GlobalViewMode || a.Owner.Stances[Owner] == Stance.Ally || GetVisOrigins(a).Any(o => IsExplored(o));
 		}
 
 		public bool IsTargetable(Actor a) {

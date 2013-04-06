@@ -470,7 +470,7 @@ namespace OpenRA.Mods.RA.Missions
 			shroud.Explore(w, sam3.Location, 2);
 			shroud.Explore(w, sam4.Location, 2);
 
-			if (w.LocalPlayer == null || w.LocalPlayer == allies1)
+			if (w.ObserverMode || w.LocalPlayer == allies1)
 				Game.MoveViewport(chinookHusk.Location.ToFloat2());
 
 			else
