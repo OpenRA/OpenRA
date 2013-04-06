@@ -24,7 +24,7 @@ TRAN:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 8
+		Range: 0
 	RenderUnit:
 	WithRotor@PRIMARY:
 		Offset: -597,0,171
@@ -34,9 +34,8 @@ TRAN:
 	WithShadow:
 	Cargo:
 		Types: Infantry
-		MaxWeight: 10
-		PipCount: 10
-	FallsToEarth:
+		MaxWeight: 5
+		PipCount: 5
 
 HELI:
 	Inherits: ^Helicopter
@@ -60,9 +59,9 @@ HELI:
 	Health:
 		HP: 125
 	Armor:
-		Type: Light
+		Type: Heavy
 	RevealsShroud:
-		Range: 8
+		Range: 0
 	Armament:
 		Weapon: HeliAGGun
 		LocalOffset: 128,-213,-85, 128,213,-85
@@ -77,7 +76,6 @@ HELI:
 		Offset: 0,0,85
 	WithMuzzleFlash:
 	WithShadow:
-	FallsToEarth:
 	AutoTarget:
 
 ORCA:
@@ -100,29 +98,30 @@ ORCA:
 		Speed: 20
 		RearmBuildings: hpad.gdi
 	Health:
-		HP: 100
+		HP: 125
 	Armor:
-		Type: Light
+		Type: Heavy
 	RevealsShroud:
-		Range: 8
+		Range: 0
 	Armament:
 		Weapon: OrcaAGMissiles
 		LocalOffset: 427,-171,-213, 427,171,-213
 	AttackHeli:
 		FacingTolerance: 20
 	LimitedAmmo:
-		Ammo: 10
-		PipCount: 5
+		Ammo: 6
+		PipCount: 6
 		ReloadTicks: 10
 	RenderUnit:
 	WithShadow:
-	FallsToEarth:
 	AutoTarget:
 
 C17:
 	ParaDrop:
 		LZRange: 1
 	Inherits: ^Plane
+	Valued:
+		Cost: 800
 	Tooltip:
 		Name: Supply Aircraft
 	Plane:
@@ -131,13 +130,13 @@ C17:
 	Health:
 		HP: 25
 	Armor:
-		Type: Heavy
+		Type: Light
 	RenderUnit:
 	WithShadow:
 	Cargo:
 #		Types: Infantry, Vehicle
-		MaxWeight: 10
-		PipCount: 10
+		MaxWeight: 5
+		PipCount: 5
 	Invulnerable:
 	-Selectable:
 	-TargetableUnit:
@@ -145,16 +144,18 @@ C17:
 
 A10:
 	Inherits: ^Plane
+	Valued:
+		Cost: 800
 	Tooltip:
 		Name: A10 Bomber
 		Icon: a10icnh
 	Plane:
 		ROT: 4
-		Speed: 40
+		Speed: 20
 	Health:
 		HP: 60
 	Armor:
-		Type: Heavy
+		Type: Light
 	RevealsShroud:
 		Range: 8
 	RenderUnit:
