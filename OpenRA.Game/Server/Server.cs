@@ -528,9 +528,11 @@ namespace OpenRA.Server
 					SendDisconnected(toDrop); /* Report disconnection */
 
 				lobbyInfo.Clients.RemoveAll(c => c.Index == toDrop.PlayerIndex);
+				// remove the bots he added
+				lobbyInfo.Clients.RemoveAll(c => c.BotControllerClientIndex == toDrop.PlayerIndex);
 
 				// reassign admin if necessary
-				if ( lobbyInfo.GlobalSettings.Dedicated && dropClient.IsAdmin && State == ServerState.WaitingPlayers)
+				if (lobbyInfo.GlobalSettings.Dedicated && dropClient.IsAdmin && State == ServerState.WaitingPlayers)
 				{
 					if (lobbyInfo.Clients.Where(c1 => c1.Bot == null).Count() > 0)
 					{
@@ -545,7 +547,7 @@ namespace OpenRA.Server
 
 				if (conns.Count != 0 || lobbyInfo.GlobalSettings.Dedicated)
 					SyncLobbyInfo();
-				if ( !lobbyInfo.GlobalSettings.Dedicated && dropClient.IsAdmin )
+				if (!lobbyInfo.GlobalSettings.Dedicated && dropClient.IsAdmin)
 					Shutdown();
 			}
 
