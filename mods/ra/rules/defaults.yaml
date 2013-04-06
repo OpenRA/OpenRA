@@ -101,6 +101,7 @@
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	AttackMove:
 	Passenger:
 		CargoType: Infantry

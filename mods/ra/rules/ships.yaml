@@ -92,9 +92,10 @@ MSUB:
 	RepairableNear:
 	-DetectCloaked:
 	AutoTarget:
+		InitialStance: HoldFire
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
-		InitialStance: HoldFire
+	DebugChosenAutoTarget:
 	AttackMove:
 
 DD:
@@ -138,6 +139,7 @@ DD:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	Chronoshiftable:
 	IronCurtainable:
 	RepairableNear:
@@ -195,6 +197,7 @@ CA:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	Chronoshiftable:
 	IronCurtainable:
 	RepairableNear:
@@ -267,6 +270,7 @@ PT:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	Chronoshiftable:
 	IronCurtainable:
 	RepairableNear:

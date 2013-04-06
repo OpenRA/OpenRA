@@ -292,6 +292,7 @@ TSLA:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	IronCurtainable:
 	-RenderBuilding:
 	RenderRangeCircle:
@@ -453,6 +454,7 @@ PBOX.E1:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	Armament:
 		Weapon: Vulcan
 		LocalOffset: 469,0,0
@@ -478,6 +480,7 @@ PBOX.E3:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	Armament:
 		Weapon: Dragon
 		LocalOffset: 469,0,0
@@ -493,6 +496,7 @@ PBOX.E4:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	Armament:
 		Weapon: Flamer
 		LocalOffset: 469,0,0
@@ -508,6 +512,7 @@ PBOX.E7:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	Armament:
 		Weapon: Colt45
 		LocalOffset: 469,0,0
@@ -523,6 +528,7 @@ PBOX.SHOK:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	Armament:
 		Weapon: PortaTesla
 		LocalOffset: 469,0,0
@@ -538,6 +544,7 @@ PBOX.SNIPER:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	Armament:
 		Weapon: Sniper
 		LocalOffset: 469,0,0
@@ -630,6 +637,7 @@ HBOX.E1:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	Armament:
 		Weapon: Vulcan
 		LocalOffset: 469,0,0
@@ -655,6 +663,7 @@ HBOX.E3:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	Armament:
 		Weapon: Dragon
 		LocalOffset: 469,0,0
@@ -670,6 +679,7 @@ HBOX.E4:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	Armament:
 		Weapon: Flamer
 		LocalOffset: 469,0,0
@@ -685,6 +695,7 @@ HBOX.E7:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	Armament:
 		Weapon: Colt45
 		LocalOffset: 469,0,0
@@ -700,6 +711,7 @@ HBOX.SHOK:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	Armament:
 		Weapon: PortaTesla
 		LocalOffset: 469,0,0
@@ -715,6 +727,7 @@ HBOX.SNIPER:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	Armament:
 		Weapon: Sniper
 		LocalOffset: 469,0,0
@@ -752,6 +765,7 @@ GUN:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	IronCurtainable:
 	-RenderBuilding:
 	RenderRangeCircle:
@@ -792,6 +806,7 @@ FTUR:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	IronCurtainable:
 	RenderRangeCircle:
 	-AcceptsSupplies:
@@ -832,6 +847,7 @@ SAM:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	IronCurtainable:
 	-RenderBuilding:
 	RenderRangeCircle:
