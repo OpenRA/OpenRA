@@ -41,15 +41,19 @@ namespace OpenRA.Mods.RA.Missions
 		Actor paradropEntry;
 		static readonly string[] ParadropUnits = { "e1", "e1", "e1", "e2", "e2" };
 
+		Actor offmapAttackerSpawn1;
+		Actor offmapAttackerSpawn2;
+		Actor offmapAttackerSpawn3;
+		Actor[] offmapAttackerSpawns;
+		static readonly string[] OffmapAttackers = { "ftrk", "apc", "ttnk", "1tnk" };
+
 		Dictionary<string, Actor> mapActors;
 
 		public void Tick(Actor self)
 		{
-			MissionUtils.CapOre(soviets);
-			if (world.FrameNumber % 20 == 0 && coastUnitsLeft-- > 0)
+			if (world.FrameNumber % 100 == 0)
 			{
-				var u = world.CreateActor(CoastUnits.Random(world.SharedRandom), soviets, coastRP1.Location, null);
-				u.QueueActivity(new Move.Move(coastRP2.Location, 0));
+				var u = world.CreateActor(OffmapAttackers.Random(world.SharedRandom), soviets, offmapAttackerSpawns.Random(world.SharedRandom).Location, 128);
 				u.QueueActivity(new AttackMove.AttackMoveActivity(u, new Move.Move(attackLocation.Location, 0)));
 			}
 
@@ -57,6 +61,13 @@ namespace OpenRA.Mods.RA.Missions
 				foreach (var actor in world.Actors.Where(a => a.IsInWorld && a.Owner == soviets && a.IsIdle && !a.IsDead() && a.HasTrait<AttackBase>() && a.HasTrait<Mobile>())
 					.Except(mapActors.Values))
 					actor.QueueActivity(new AttackMove.AttackMoveActivity(actor, new Move.Move(attackLocation.Location, 0)));
+
+			if (world.FrameNumber % 20 == 0 && coastUnitsLeft-- > 0)
+			{
+				var u = world.CreateActor(CoastUnits.Random(world.SharedRandom), soviets, coastRP1.Location, null);
+				u.QueueActivity(new Move.Move(coastRP2.Location, 0));
+				u.QueueActivity(new AttackMove.AttackMoveActivity(u, new Move.Move(attackLocation.Location, 0)));
+			}
 
 			if (--waitTicks <= 0)
 			{
@@ -75,6 +86,8 @@ namespace OpenRA.Mods.RA.Missions
 						MissionUtils.Paradrop(world, soviets, ParadropUnits, paradropEntry.Location, paradropLZ.Location);
 				}
 			}
+
+			MissionUtils.CapOre(soviets);
 		}
 
 		public void WorldLoaded(World w)
@@ -98,6 +111,11 @@ namespace OpenRA.Mods.RA.Missions
 			var t4 = mapActors["ViewportTarget4"];
 			var t5 = mapActors["ViewportTarget5"];
 			viewportTargets = new[] { t1, t2, t3, t4, t5 }.Select(t => t.Location.ToInt2()).ToList();
+
+			offmapAttackerSpawn1 = mapActors["OffmapAttackerSpawn1"];
+			offmapAttackerSpawn2 = mapActors["OffmapAttackerSpawn2"];
+			offmapAttackerSpawn3 = mapActors["OffmapAttackerSpawn3"];
+			offmapAttackerSpawns = new[] { offmapAttackerSpawn1, offmapAttackerSpawn2, offmapAttackerSpawn3 };
 
 			foreach (var actor in mapActors.Values.Where(a => a.Owner == allies || a.HasTrait<Bridge>()))
 			{
