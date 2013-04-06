@@ -696,12 +696,14 @@ hosp:
 	idle:
 		Start: 0
 		Length: 4
+		Tick: 100
 	damaged-idle:
 		Start: 4
 		Length: 4
 	make: hospmake
 		Start: 0
 		Length: *
+		Tick: 80
 
 hosp.husk:
 	idle: hosp
@@ -715,6 +717,7 @@ bio:
 	make: biomake
 		Start: 0
 		Length: *
+		Tick: 80
 
 bio.husk:
 	idle: bio
@@ -728,6 +731,7 @@ miss:
 	make: missmake
 		Start: 0
 		Length: *
+		Tick: 80
 
 miss.husk:
 	idle: miss
