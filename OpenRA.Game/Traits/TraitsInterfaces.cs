@@ -34,6 +34,7 @@ namespace OpenRA.Traits
 	}
 
 	public interface ITick { void Tick(Actor self); }
+	public interface ITickRender { void TickRender(WorldRenderer wr, Actor self); }
 	public interface IRender { IEnumerable<Renderable> Render(Actor self, WorldRenderer wr); }
 	public interface IAutoSelectionSize { int2 SelectionSize(Actor self); }
 

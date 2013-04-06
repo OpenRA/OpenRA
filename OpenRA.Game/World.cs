@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Effects;
 using OpenRA.FileFormats;
+using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Orders;
 using OpenRA.Support;
@@ -192,7 +193,12 @@ namespace OpenRA
 
 			while (frameEndActions.Count != 0)
 				frameEndActions.Dequeue()(this);
-			
+		}
+
+		// For things that want to update their render state once per tick, ignoring pause state
+		public void TickRender(WorldRenderer wr)
+		{
+			ActorsWithTrait<ITickRender>().Do(x => x.Trait.TickRender(wr, x.Actor));
 		}
 
 		public IEnumerable<Actor> Actors { get { return actors; } }
