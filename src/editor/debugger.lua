@@ -218,8 +218,14 @@ local function activateDocument(file, line, skipauto)
       ClearAllCurrentLineMarkers()
       if line then
         if line == 0 then -- special case; find the first executable line
+          line = math.huge
           local func = loadstring(editor:GetText())
-          line = func and next(debug.getinfo(func, "L").activelines) or 1
+          if func then -- .activelines == {[3] = true, [4] = true, ...}
+            for l in pairs(debug.getinfo(func, "L").activelines) do
+              if l < line then line = l end
+            end
+          end
+          if line == math.huge then line = 1 end
         end
         local line = line - 1 -- editor line operations are zero-based
         editor:MarkerAdd(line, CURRENT_LINE_MARKER)
