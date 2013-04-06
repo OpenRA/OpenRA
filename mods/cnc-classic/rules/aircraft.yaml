@@ -36,9 +36,6 @@ TRAN:
 		Types: Infantry
 		MaxWeight: 5
 		PipCount: 5
-	Explodes:
-		Weapon: small_building
-		EmptyWeapon: small_building
 
 HELI:
 	Inherits: ^Helicopter
@@ -79,9 +76,6 @@ HELI:
 		Offset: 0,0,85
 	WithMuzzleFlash:
 	WithShadow:
-	Explodes:
-		Weapon: small_building
-		EmptyWeapon: small_building
 	AutoTarget:
 
 ORCA:
@@ -120,9 +114,6 @@ ORCA:
 		ReloadTicks: 10
 	RenderUnit:
 	WithShadow:
-	Explodes:
-		Weapon: small_building
-		EmptyWeapon: small_building
 	AutoTarget:
 
 C17:
