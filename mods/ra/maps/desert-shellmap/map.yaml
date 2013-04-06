@@ -769,8 +769,6 @@ Rules:
 			Weapon: Dragon
 		Turreted:
 		AttackTurreted:
-	E7:
-		AnnounceOnKill:
 
 Sequences:
 
@@ -779,6 +777,5 @@ Weapons:
 		Report: tank6
 
 Voices:
-	TanyaVoice:
-		Voices:
-			Kill: laugh1, lefty1, cmon1, gotit1
+
+Notifications:
