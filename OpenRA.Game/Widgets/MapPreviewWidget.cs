@@ -15,27 +15,39 @@ using System.Linq;
 using System.Threading;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
+using OpenRA.Network;
 
 namespace OpenRA.Widgets
 {
 	public class MapPreviewWidget : Widget
 	{
 		public Func<Map> Map = () => null;
-		public Func<Dictionary<int2, Color>> SpawnColors = () => new Dictionary<int2, Color>();
+		public Func<Dictionary<int2, Session.Client>> SpawnClients = () => new Dictionary<int2, Session.Client>();
 		public Action<MouseInput> OnMouseDown = _ => {};
 		public Action<int, int2> OnTooltip = (_, __) => { };
 		public bool IgnoreMouseInput = false;
 		public bool ShowSpawnPoints = true;
 
-		public MapPreviewWidget() : base() { }
+		public readonly string TooltipContainer;
+		public readonly string TooltipTemplate = "SPAWN_TOOLTIP";
+		Lazy<TooltipContainerWidget> tooltipContainer;
+		public int TooltipSpawnIndex = -1;
+
+		public MapPreviewWidget() : base()
+		{
+			tooltipContainer = Lazy.New(() => Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
+		}
 
 		protected MapPreviewWidget(MapPreviewWidget other)
 			: base(other)
 		{
 			lastMap = other.lastMap;
 			Map = other.Map;
-			SpawnColors = other.SpawnColors;
+			SpawnClients = other.SpawnClients;
 			ShowSpawnPoints = other.ShowSpawnPoints;
+			TooltipTemplate = other.TooltipTemplate;
+			TooltipContainer = other.TooltipContainer;
+			tooltipContainer = Lazy.New(() => Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 		}
 
 		public override Widget Clone() { return new MapPreviewWidget(this); }
@@ -50,6 +62,18 @@ namespace OpenRA.Widgets
 
 			OnMouseDown(mi);
 			return true;
+		}
+
+		public override void MouseEntered()
+		{
+			if (TooltipContainer == null) return;
+			tooltipContainer.Value.SetTooltip(TooltipTemplate, new WidgetArgs() {{ "preview", this }});
+		}
+
+		public override void MouseExited()
+		{
+			if (TooltipContainer == null) return;
+			tooltipContainer.Value.RemoveTooltip();
 		}
 
 		public int2 ConvertToPreview(int2 point)
@@ -104,9 +128,10 @@ namespace OpenRA.Widgets
 				new float2(MapRect.Location),
 				new float2(MapRect.Size));
 
+			TooltipSpawnIndex = -1;
 			if (ShowSpawnPoints)
 			{
-				var colors = SpawnColors();
+				var colors = SpawnClients().ToDictionary(c => c.Key, c => c.Value.ColorRamp.GetColor(0));
 
 				var spawnPoints = map.GetSpawnPoints().ToList();
 				foreach (var p in spawnPoints)
@@ -123,7 +148,11 @@ namespace OpenRA.Widgets
 
 					if ((pos - Viewport.LastMousePos).LengthSquared < 64)
 					{
-						OnTooltip(spawnPoints.IndexOf(p) + 1, pos);
+						TooltipSpawnIndex = spawnPoints.IndexOf(p) + 1;
+
+						// Legacy tooltip behavior
+						if (TooltipContainer == null)
+							OnTooltip(TooltipSpawnIndex, pos);
 					}
 				}
 			}

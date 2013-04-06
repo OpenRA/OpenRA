@@ -32,6 +32,7 @@ Container@SERVER_LOBBY:
 							Y:1
 							Width:192
 							Height:192
+							TooltipContainer:TOOLTIP_CONTAINER
 				Label@MAP_TITLE:
 					X:PARENT_RIGHT-15-WIDTH
 					Y:227
@@ -403,6 +404,7 @@ Container@SERVER_LOBBY:
 							Height:25
 							Align:Right
 							Text:Chat:
+		TooltipContainer@TOOLTIP_CONTAINER:
 		Button@DISCONNECT_BUTTON:
 			X:0
 			Y:499

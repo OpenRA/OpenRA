@@ -113,7 +113,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			mapPreview.Map = () => Map;
 			mapPreview.OnMouseDown = mi => LobbyUtils.SelectSpawnPoint( orderManager, mapPreview, Map, mi );
 			mapPreview.OnTooltip = (spawnPoint, pos) => LobbyUtils.ShowSpawnPointTooltip(orderManager, spawnPoint, pos);
-			mapPreview.SpawnColors = () => LobbyUtils.GetSpawnColors(orderManager, Map);
+			mapPreview.SpawnClients = () => LobbyUtils.GetSpawnClients(orderManager, Map);
 
 			var mapTitle = lobby.GetOrNull<LabelWidget>("MAP_TITLE");
 			if (mapTitle != null)

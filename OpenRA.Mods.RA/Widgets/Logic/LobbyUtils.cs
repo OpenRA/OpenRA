@@ -149,14 +149,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			color.AttachPanel(colorChooser);
 		}
 
-		public static Dictionary<int2, Color> GetSpawnColors(OrderManager orderManager, Map map)
+		public static Dictionary<int2, Session.Client> GetSpawnClients(OrderManager orderManager, Map map)
 		{
 			var spawns = map.GetSpawnPoints();
 			return orderManager.LobbyInfo.Clients
-				.Where( c => c.SpawnPoint != 0)
-				.ToDictionary(
-					c => spawns[c.SpawnPoint - 1],
-					c => c.ColorRamp.GetColor(0));
+				.Where(c => c.SpawnPoint != 0)
+					.ToDictionary(
+						c => spawns[c.SpawnPoint - 1],
+						c => c);
 		}
 
 		public static void SelectSpawnPoint(OrderManager orderManager, MapPreviewWidget mapPreview, Map map, MouseInput mi)
