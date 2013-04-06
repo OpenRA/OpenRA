@@ -75,7 +75,7 @@ Container@CREATESERVER_PANEL:
 					Y:180
 					Width:300
 					Height:20
-					Text:Allow UPnP port forwarding
+					Text:Automatic port forwarding
 				Label@EXTERNAL_PORT_LABEL:
 					X:15
 					Y:219

@@ -80,8 +80,6 @@ namespace OpenRA.Server
 		{
 			foreach (var t in ServerTraits.WithInterface<IEndGame>())
 				t.GameEnded(this);
-			if (Settings.AllowUPnP)
-				RemovePortforward();
 		}
 
 		public Server(IPEndPoint endpoint, string[] mods, ServerSettings settings, ModData modData, INatDevice natDevice)
@@ -159,15 +157,14 @@ namespace OpenRA.Server
 					if (State == ServerState.ShuttingDown)
 					{
 						EndGame();
+						if (Settings.AllowUPnP)
+							RemovePortforward();
 						break;
 					}
 				}
 
 				foreach (var t in ServerTraits.WithInterface<INotifyServerShutdown>())
 					t.ServerShutdown(this);
-
-				if (Settings.AllowUPnP)
-					RemovePortforward();
 
 				preConns.Clear();
 				conns.Clear();
