@@ -89,6 +89,6 @@ McvExplode:
 
 HeliExplode:
 	Warhead:
-		Explosion: veh1
+		Explosion: small_building
 		InfDeath: 4
 		ImpactSound: xplos
