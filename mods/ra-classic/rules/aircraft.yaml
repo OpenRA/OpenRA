@@ -22,10 +22,10 @@ BADR:
 		Moves: yes
 		Explosion: UnitExplode
 	SmokeTrailWhenDamaged@0:
-		Offset: 11, -11
+		Offset: -469,469,0
 		Interval: 2
 	SmokeTrailWhenDamaged@1:
-		Offset: -11, -11
+		Offset: -469,-469,0
 		Interval: 2
 	-EjectOnDeath:
 	-GpsDot:
@@ -56,10 +56,10 @@ BADR.bomber:
 		Moves: yes
 		Explosion: UnitExplode
 	SmokeTrailWhenDamaged@0:
-		Offset: 11, -11
+		Offset: -469,469,0
 		Interval: 2
 	SmokeTrailWhenDamaged@1:
-		Offset: -11, -11
+		Offset: -469,-469,0
 		Interval: 2
 	-EjectOnDeath:
 	-GpsDot:
@@ -107,7 +107,7 @@ MIG:
 		Moves: yes
 		Explosion: UnitExplode
 	SmokeTrailWhenDamaged:
-		Offset: 0,-20,0,-4
+		Offset: -853,0,171
 		Interval: 2
 
 YAK:
@@ -156,9 +156,8 @@ YAK:
 		Moves: yes
 		Explosion: UnitExplode
 	SmokeTrailWhenDamaged:
-		Offset: 0, -20
+		Offset: -853,0,0
 		Interval: 2
-
 
 TRAN:
 	Inherits: ^Helicopter
@@ -240,7 +239,7 @@ HELI:
 	FallsToEarth:
 		Explosion: UnitExplode
 	SmokeTrailWhenDamaged:
-		Offset: 0,-10
+		Offset: -427,0,0
 
 HIND:
 	Inherits: ^Helicopter
@@ -289,7 +288,7 @@ HIND:
 	FallsToEarth:
 		Explosion: UnitExplode
 	SmokeTrailWhenDamaged:
-		Offset: 0,-10
+		Offset: -427,0,0
 
 U2:
 	Inherits: ^Plane
@@ -309,5 +308,5 @@ U2:
 		Moves: yes
 		Explosion: UnitExplode
 	SmokeTrailWhenDamaged:
-		Offset: 0,-25
+		Offset: -1c43,0,0
 		Interval: 2
