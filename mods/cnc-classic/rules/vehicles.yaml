@@ -477,6 +477,7 @@ STNK:
 		Owner: nod
 	Mobile:
 		Speed: 30
+		Crushes: crate, infantry
 	Health:
 		HP: 110
 	Armor:
@@ -486,10 +487,10 @@ STNK:
 	#	Range: 4
 	# In practice, it seems that OpenRA renders vision range differently. Will set at +2 from C&C Gold values for now to properly emulate.
 	Cloak:
-		InitialDelay: 125
-		CloakDelay: 125
+		InitialDelay: 90
+		CloakDelay: 90
 		CloakSound: trans1.aud
-		UncloakSound: appear1.aud
+		UncloakSound: trans1.aud
 	Armament:
 		Weapon: 227mm.stnk
 		LocalOffset: 213,43,128, 213,-43,128
