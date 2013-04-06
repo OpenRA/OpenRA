@@ -394,9 +394,9 @@ local function getAutoCompApiList(childs,fragment,method)
     if not wlist then
       wlist = " "
       for i,v in pairs(childs) do
-        -- if type == "method", then only a:b is allowed,
-        -- in all other cases both a.b and a:b are allowed.
-        if (method or v.type ~= "method") then
+        -- if a:b typed, then value (type == "value") not allowed
+        -- if a.b typed, then method (type == "method") not allowed
+        if (method and v.type ~= "value") or (not method and v.type ~= "method") then
           wlist = wlist..i.." "
         end
       end
@@ -426,7 +426,9 @@ local function getAutoCompApiList(childs,fragment,method)
 
   local sub = strategy == 1
   for key,v in pairs(childs) do
-    if (method or v.type ~= "method") then
+    -- if a:b typed, then value (type == "value") not allowed
+    -- if a.b typed, then method (type == "method") not allowed
+    if (method and v.type ~= "value") or (not method and v.type ~= "method") then
       local used = {}
       --
       local kl = key:lower()
