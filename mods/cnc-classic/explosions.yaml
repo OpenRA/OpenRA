@@ -1,16 +1,3 @@
-UnitExplodeSmall:
-	Warhead:
-#		Damage: 40
-#		Spread: 10
-#		Versus: 
-#			None: 90%
-#			Wood: 75%
-#			Light: 60%
-#			Heavy: 25%
-		Explosion: 4
-		InfDeath: 4
-		ImpactSound: xplobig4
-
 UnitExplode:
 	Warhead:
 		Damage: 500
@@ -24,21 +11,43 @@ UnitExplode:
 		InfDeath: 4
 		ImpactSound: xplobig6
 
-NapalmExplode:
+MammothExplode:		#UnitExplode (artillery's explosion), without as much damage
 	Warhead:
-		Spread: 8
+		Damage: 50
+		Spread: 18
 		Versus: 
 			None: 90%
-			Wood: 100%
+			Wood: 75%
 			Light: 60%
 			Heavy: 25%
-			Concrete: 50%
-		InfDeath: 5
-		Explosion: 3
-#		Explosion: big_napalm
+		Explosion: 8
+		InfDeath: 4
 		ImpactSound: xplobig6
-		SmudgeType: Scorch
-		Damage: 50
+
+McvExplode:		#For MCV, Harvester
+	Warhead:
+		Explosion: building
+		InfDeath: 4
+		ImpactSound: xplobig6
+
+UnitExplodeSmall:
+	Warhead:
+#		Damage: 40
+#		Spread: 10
+#		Versus: 
+#			None: 90%
+#			Wood: 75%
+#			Light: 60%
+#			Heavy: 25%
+		Explosion: 4
+		InfDeath: 4
+		ImpactSound: xplobig4
+
+HeliExplode:
+	Warhead:
+		Explosion: small_building
+		InfDeath: 4
+		ImpactSound: xplos
 
 BigNapalmExplode:	# For Flame tank, etc.
 	Warhead:
@@ -55,6 +64,21 @@ BigNapalmExplode:	# For Flame tank, etc.
 		ImpactSound: xplobig6
 		SmudgeType: Scorch
 
+NapalmExplode:		#For crate, etc.
+	Warhead:
+		Spread: 8
+		Versus: 
+			None: 90%
+			Wood: 100%
+			Light: 60%
+			Heavy: 25%
+			Concrete: 50%
+		InfDeath: 5
+		Explosion: med_napalm
+		ImpactSound: xplobig6
+		SmudgeType: Scorch
+		Damage: 50
+		
 GrenadierExplode:
 	Warhead:
 		Damage: 25
@@ -67,28 +91,3 @@ GrenadierExplode:
 		Explosion: 5
 		InfDeath: 3
 		ImpactSound: xplosml2
-
-MammothExplode:		#Big artillery explosion, without as much damage
-	Warhead:
-		Damage: 50
-		Spread: 18
-		Versus: 
-			None: 90%
-			Wood: 75%
-			Light: 60%
-			Heavy: 25%
-		Explosion: 8
-		InfDeath: 4
-		ImpactSound: xplobig6
-
-McvExplode:
-	Warhead:
-		Explosion: building
-		InfDeath: 4
-		ImpactSound: xplobig6
-
-HeliExplode:
-	Warhead:
-		Explosion: small_building
-		InfDeath: 4
-		ImpactSound: xplos
