@@ -68,7 +68,7 @@ Container@INGAME_ROOT:
 			Y:0
 			Width:160
 			Height:25
-			Text:Options
+			Text:Options (ESC)
 			Font:Bold
 			Key: escape
 		Button@INGAME_DIPLOMACY_BUTTON:
@@ -76,24 +76,27 @@ Container@INGAME_ROOT:
 			Y:0
 			Width:160
 			Height:25
-			Text:Diplomacy
+			Text:Diplomacy (F1)
 			Font:Bold
+			Key: f1
 		Button@CHEATS_BUTTON:
 			X:324
 			Y:0
 			Width:160
 			Height:25
-			Text:Cheats
+			Text:Cheats (F2)
 			Visible:false
 			Font:Bold
+			Key: f2
 		Button@OBJECTIVES_BUTTON:
 			X:486
 			Y:0
 			Width:160
 			Height:25
-			Text:Objectives
+			Text:Objectives (F3)
 			Visible:false
 			Font:Bold
+			Key: f3
 		RadarBin@INGAME_RADAR_BIN:
 			WorldInteractionController:INTERACTION_CONTROLLER
 		PowerBin@INGAME_POWER_BIN:
@@ -278,7 +281,7 @@ Container@OBSERVER_ROOT:
 			Y:0
 			Width:160
 			Height:25
-			Text:Options
+			Text:Options (ESC)
 			Font:Bold
 			Key:escape
 		Button@INGAME_STATS_BUTTON:
@@ -286,8 +289,9 @@ Container@OBSERVER_ROOT:
 			Y:0
 			Width:160
 			Height:25
-			Text:Statistics
+			Text:Statistics (F1)
 			Font:Bold
+			Key:f1
 		Background@RADAR_BG:
 			X:WINDOW_RIGHT-255
 			Y:5

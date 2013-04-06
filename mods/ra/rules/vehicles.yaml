@@ -36,7 +36,7 @@ V2RL:
 		Queue: Vehicle
 		BuildPaletteOrder: 40
 		Owner: allies
-		Hotkey: g
+		Hotkey: l
 	Valued:
 		Cost: 700
 	Tooltip:
@@ -74,7 +74,7 @@ V2RL:
 		BuildPaletteOrder: 60
 		Prerequisites: fix
 		Owner: allies
-		Hotkey: f
+		Hotkey: x
 	Valued:
 		Cost: 850
 	Tooltip:
@@ -487,7 +487,7 @@ MGG:
 		BuildPaletteOrder: 150
 		Prerequisites: atek
 		Owner: allies
-		Hotkey: s
+		Hotkey: y
 	Valued:
 		Cost: 1500
 	Tooltip:
@@ -617,7 +617,7 @@ TTNK:
 		BuildPaletteOrder: 130
 		Prerequisites: stek,tsla
 		Owner: soviet
-		Hotkey: l
+		Hotkey: t
 	Valued:
 		Cost: 1350
 	Tooltip:

@@ -12,6 +12,7 @@ MSLO:
 		Prerequisites: techcenter
 		Owner: soviet,allies
 		BuildLimit: 1
+		Hotkey: m
 	Building:
 		Power: -100
 		Footprint: xx
@@ -52,6 +53,7 @@ GAP:
 		BuildPaletteOrder: 100
 		Prerequisites: atek
 		Owner: allies
+		Hotkey: x
 	Building:
 		Power: -60
 		Footprint: _ x
@@ -305,7 +307,7 @@ AGUN:
 		BuildPaletteOrder: 50
 		Prerequisites: dome
 		Owner: allies
-		Hotkey: g
+		Hotkey: y
 	Valued:
 		Cost: 800
 	Tooltip:
@@ -1061,7 +1063,7 @@ AFLD:
 		BuildPaletteOrder: 50
 		Prerequisites: dome
 		Owner: soviet
-		Hotkey: g
+		Hotkey: i
 	Valued:
 		Cost: 500
 	Tooltip:
@@ -1286,7 +1288,7 @@ FIX:
 		BuildPaletteOrder: 30
 		Prerequisites: weap
 		Owner: allies,soviet
-		Hotkey: d
+		Hotkey: x
 	Valued:
 		Cost: 1200
 	Tooltip:

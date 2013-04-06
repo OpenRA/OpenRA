@@ -61,7 +61,7 @@ E2:
 		BuildPaletteOrder: 10
 		Owner: soviet
 		Prerequisites: barr
-		Hotkey: g
+		Hotkey: n
 	Valued:
 		Cost: 160
 	Tooltip:

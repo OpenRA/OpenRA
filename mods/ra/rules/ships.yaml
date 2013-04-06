@@ -6,7 +6,7 @@ SS:
 		Prerequisites: spen
 		BuiltAt: spen
 		Owner: soviet
-		Hotkey: b
+		Hotkey: u
 	Valued:
 		Cost: 950
 	Tooltip:
@@ -238,7 +238,7 @@ PT:
 		Prerequisites: syrd
 		BuiltAt: syrd
 		Owner: allies
-		Hotkey: g
+		Hotkey: b
 	Valued:
 		Cost: 500
 	Tooltip:

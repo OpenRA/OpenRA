@@ -129,20 +129,20 @@ namespace OpenRA.GameRules
 
 	public class KeySettings
 	{
-		public string PauseKey = "f3";
-
 		public string CycleBaseKey = "backspace";
 		public string ToLastEventKey = "space";
 		public string ToSelectionKey = "home";
-		public string SellKey = "v";
-		public string PowerDownKey = "b";
-		public string RepairKey = "n";
+
+		public string PauseKey = "f9";
+		public string SellKey = "f10";
+		public string PowerDownKey = "f11";
+		public string RepairKey = "f12";
 
 		public string AttackMoveKey = "a";
 		public string StopKey = "s";
-		public string ScatterKey = "x";
-		public string StanceCycleKey = "z";
+		public string ScatterKey = "d";
 		public string DeployKey = "f";
+		public string StanceCycleKey = "g";
 
 		public string CycleTabsKey = "tab";
 	}
