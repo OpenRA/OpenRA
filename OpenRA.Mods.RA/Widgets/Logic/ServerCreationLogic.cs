@@ -69,6 +69,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var UPnPCheckbox = panel.Get<CheckboxWidget>("UPNP_CHECKBOX");
 			UPnPCheckbox.IsChecked = () => allowUPnP;
 			UPnPCheckbox.OnClick = () => allowUPnP ^= true;
+			UPnPCheckbox.IsDisabled = () => !Game.Settings.Server.NatDeviceAvailable;
 		}
 
 		void CreateAndJoin()

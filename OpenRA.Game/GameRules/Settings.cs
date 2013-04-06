@@ -29,7 +29,10 @@ namespace OpenRA.GameRules
 		public int ExternalPort = 1234;
 		public bool AdvertiseOnline = true;
 		public string MasterServer = "http://master.open-ra.org/";
-		public bool AllowUPnP = false;
+		public bool AllowUPnP = true; // let the user disable it
+		public bool NatDeviceAvailable = false; // internal check if discovery succeeded
+		public int NatDiscoveryTimeout = 1000; // ms to search for UPnP enabled NATs
+		public bool VerboseNatDiscovery = false; // print very detailed logs for debugging
 		public bool AllowCheats = false;
 		public string Map = null;
 		public string[] Ban = null;
@@ -49,6 +52,9 @@ namespace OpenRA.GameRules
 			AdvertiseOnline = other.AdvertiseOnline;
 			MasterServer = other.MasterServer;
 			AllowUPnP = other.AllowUPnP;
+			NatDeviceAvailable = other.NatDeviceAvailable;
+			NatDiscoveryTimeout = other.NatDiscoveryTimeout;
+			VerboseNatDiscovery = other.VerboseNatDiscovery;
 			AllowCheats = other.AllowCheats;
 			Map = other.Map;
 			Ban = other.Ban;
