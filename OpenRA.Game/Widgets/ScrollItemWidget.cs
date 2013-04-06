@@ -14,6 +14,8 @@ namespace OpenRA.Widgets
 {
 	public class ScrollItemWidget : ButtonWidget
 	{
+		public string ItemKey;
+
 		public ScrollItemWidget()
 			: base()
 		{
@@ -28,6 +30,7 @@ namespace OpenRA.Widgets
 			IsVisible = () => false;
 			VisualHeight = 0;
 			IgnoreChildMouseOver = true;
+			Key = other.Key;
 		}
 
 		public Func<bool> IsSelected = () => false;
@@ -57,6 +60,13 @@ namespace OpenRA.Widgets
 		{
 			var w = Setup(template, isSelected, onClick);
 			w.OnDoubleClick = onDoubleClick;
+			return w;
+		}
+
+		public static ScrollItemWidget Setup(string key, ScrollItemWidget template, Func<bool> isSelected, Action onClick)
+		{
+			var w = Setup(template, isSelected, onClick);
+			w.ItemKey = key;
 			return w;
 		}
 	}

@@ -113,13 +113,27 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			mapPreview.Map = () => Map;
 			mapPreview.OnMouseDown = mi => LobbyUtils.SelectSpawnPoint( orderManager, mapPreview, Map, mi );
 			mapPreview.OnTooltip = (spawnPoint, pos) => LobbyUtils.ShowSpawnPointTooltip(orderManager, spawnPoint, pos);
-			mapPreview.SpawnColors = () => LobbyUtils.GetSpawnColors(orderManager, Map);
+			mapPreview.SpawnClients = () => LobbyUtils.GetSpawnClients(orderManager, Map);
 
 			var mapTitle = lobby.GetOrNull<LabelWidget>("MAP_TITLE");
 			if (mapTitle != null)
 			{
 				mapTitle.IsVisible = () => Map != null;
 				mapTitle.GetText = () => Map.Title;
+			}
+
+			var mapType = lobby.GetOrNull<LabelWidget>("MAP_TYPE");
+			if (mapType != null)
+			{
+				mapType.IsVisible = () => Map != null;
+				mapType.GetText = () => Map.Type;
+			}
+
+			var mapAuthor = lobby.GetOrNull<LabelWidget>("MAP_AUTHOR");
+			if (mapAuthor != null)
+			{
+				mapAuthor.IsVisible = () => Map != null;
+				mapAuthor.GetText = () => "Created by {0}".F(Map.Author);
 			}
 
 			CountryNames = Rules.Info["world"].Traits.WithInterface<CountryInfo>()

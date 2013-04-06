@@ -10,6 +10,7 @@
 
 using System;
 using System.Drawing;
+using System.Linq;
 using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
@@ -141,6 +142,25 @@ namespace OpenRA.Widgets
 		public void ScrollToTop()
 		{
 			ListOffset = 0;
+		}
+
+		public void ScrollToItem(string itemKey)
+		{
+			var item = Children.FirstOrDefault(c =>
+			{
+				var si = c as ScrollItemWidget;
+				return si != null && si.ItemKey == itemKey;
+			});
+
+			if (item == null)
+				return;
+
+			// Scroll the item to be visible
+			if (item.Bounds.Top + ListOffset < 0)
+				ListOffset = ItemSpacing - item.Bounds.Top;
+
+			if (item.Bounds.Bottom + ListOffset > RenderBounds.Height)
+				ListOffset = RenderBounds.Height - item.Bounds.Bottom - ItemSpacing;
 		}
 
 		public override void Tick ()

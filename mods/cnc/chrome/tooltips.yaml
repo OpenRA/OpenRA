@@ -99,3 +99,23 @@ Background@SUPPORT_POWER_TOOLTIP:
 			Y:20
 			Font:TinyBold
 			VAlign:Top
+
+Background@SPAWN_TOOLTIP:
+	Logic:SpawnSelectorTooltipLogic
+	Background:panel-black
+	Width:141
+	Children:
+		Label@LABEL:
+			X:5
+			Height:23
+			Font:Bold
+		Image@FLAG:
+			X:5
+			Y:5
+			Width:32
+			Height:16
+		Label@TEAM:
+			Y:21
+			Height:15
+			Font:TinyBold
+			Align:center

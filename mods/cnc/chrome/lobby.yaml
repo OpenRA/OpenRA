@@ -32,12 +32,27 @@ Container@SERVER_LOBBY:
 							Y:1
 							Width:192
 							Height:192
+							TooltipContainer:TOOLTIP_CONTAINER
 				Label@MAP_TITLE:
 					X:PARENT_RIGHT-15-WIDTH
-					Y:225
+					Y:227
 					Width:194
 					Height:25
 					Font:Bold
+					Align:Center
+				Label@MAP_TYPE:
+					X:PARENT_RIGHT-15-WIDTH
+					Y:242
+					Width:194
+					Height:25
+					Font:TinyBold
+					Align:Center
+				Label@MAP_AUTHOR:
+					X:PARENT_RIGHT-15-WIDTH
+					Y:255
+					Width:194
+					Height:25
+					Font:Tiny
 					Align:Center
 				ScrollPanel@PLAYERS:
 					X:15
@@ -329,13 +344,13 @@ Container@SERVER_LOBBY:
 							Font:Bold
 				Checkbox@ALLOWCHEATS_CHECKBOX:
 					X:15
-					Y:255
+					Y:257
 					Width:130
 					Height:20
 					Text: Allow Cheats
 				Checkbox@CRATES_CHECKBOX:
 					X:160
-					Y:255
+					Y:257
 					Width:80
 					Height:20
 					Text: Crates
@@ -347,13 +362,6 @@ Container@SERVER_LOBBY:
 					Font:Bold
 					Visible:false
 					Text:Assign
-				Button@RANDOMMAP_BUTTON:
-					X:PARENT_RIGHT-120-15-40
-					Y:255
-					Width:120
-					Height:25
-					Text:Random Map
-					Font:Bold
 				ScrollPanel@CHAT_DISPLAY:
 					X:15
 					Y:285
@@ -396,6 +404,7 @@ Container@SERVER_LOBBY:
 							Height:25
 							Align:Right
 							Text:Chat:
+		TooltipContainer@TOOLTIP_CONTAINER:
 		Button@DISCONNECT_BUTTON:
 			X:0
 			Y:499

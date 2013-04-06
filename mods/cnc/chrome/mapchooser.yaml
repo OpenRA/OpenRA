@@ -6,62 +6,78 @@ Container@MAPCHOOSER_PANEL:
 	Height:535
 	Children:
 		Label@TITLE:
-			Width:790
+			Width:PARENT_RIGHT
 			Y:0-25
 			Font:BigBold
 			Contrast:true
 			Align:Center
 			Text: Select Map
 		Background@bg:
-			Width:790
+			Width:PARENT_RIGHT
 			Height:500
 			Background:panel-black
 			Children:
+				Label@GAMEMODE_DESC:
+					X:PARENT_RIGHT - WIDTH - 220
+					Y:10
+					Width:200
+					Height:25
+					Font: Bold
+					Align: Right
+					Text:Filter:
+				DropDownButton@GAMEMODE_FILTER:
+					X:PARENT_RIGHT - WIDTH - 15
+					Y:10
+					Width:200
+					Height:25
 				ScrollPanel@MAP_LIST:
 					X:15
-					Y:30
+					Y:45
 					Width:PARENT_RIGHT - 30
-					Height:455
+					Height:440
 					Children:
 						ScrollItem@MAP_TEMPLATE:
-							Width:180
-							Height:208
+							Width:168
+							Height:217
 							X:2
 							Y:0
 							Visible:false
 							Children:
+								Background@PREVIEW_PLACEHOLDER:
+									X:(PARENT_RIGHT - WIDTH)/2
+									Y:4
+									Width:158
+									Height:158
+									Background:panel-black
+									ClickThrough: false
+								MapPreview@PREVIEW:
+									X:(PARENT_RIGHT - WIDTH)/2
+									Y:4
+									Width:158
+									Height:158
 								Label@TITLE:
 									X:2
-									Y:PARENT_BOTTOM-47
+									Y:PARENT_BOTTOM-48
 									Width:PARENT_RIGHT-4
-									Height:25
 									Align:Center
 								Label@DETAILS:
 									Width:PARENT_RIGHT-4
 									X:2
-									Y:PARENT_BOTTOM-35
+									Y:PARENT_BOTTOM-34
 									Align:Center
-									Height:25
 									Font:Tiny
 								Label@AUTHOR:
 									Width:PARENT_RIGHT-4
 									X:2
-									Y:PARENT_BOTTOM-26
+									Y:PARENT_BOTTOM-22
 									Align:Center
-									Height:25
 									Font:Tiny
 								Label@SIZE:
 									Width:PARENT_RIGHT-4
 									X:2
-									Y:PARENT_BOTTOM-17
+									Y:PARENT_BOTTOM-10
 									Align:Center
-									Height:25
 									Font:Tiny
-								MapPreview@PREVIEW:
-									X:(PARENT_RIGHT - WIDTH)/2
-									Y:4
-									Width:160
-									Height:160
 				Button@BUTTON_CANCEL:
 					Key:escape
 					X:0
@@ -69,9 +85,16 @@ Container@MAPCHOOSER_PANEL:
 					Width:140
 					Height:35
 					Text:Cancel
+				Button@RANDOMMAP_BUTTON:
+					Key:space
+					X:PARENT_RIGHT - 150 - WIDTH
+					Y:499
+					Width:140
+					Height:35
+					Text:Random
 				Button@BUTTON_OK:
 					Key:return
-					X:790 - WIDTH
+					X:PARENT_RIGHT - WIDTH
 					Y:499
 					Width:140
 					Height:35

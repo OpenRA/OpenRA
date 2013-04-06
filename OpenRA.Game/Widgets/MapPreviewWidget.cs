@@ -12,31 +12,42 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Threading;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
+using OpenRA.Network;
 
 namespace OpenRA.Widgets
 {
 	public class MapPreviewWidget : Widget
 	{
 		public Func<Map> Map = () => null;
-		public Func<Dictionary<int2, Color>> SpawnColors = () => new Dictionary<int2, Color>();
+		public Func<Dictionary<int2, Session.Client>> SpawnClients = () => new Dictionary<int2, Session.Client>();
 		public Action<MouseInput> OnMouseDown = _ => {};
 		public Action<int, int2> OnTooltip = (_, __) => { };
 		public bool IgnoreMouseInput = false;
 		public bool ShowSpawnPoints = true;
 
-		static readonly Cache<Map,Bitmap> PreviewCache = new Cache<Map, Bitmap>(stub => Minimap.RenderMapPreview( new Map( stub.Path )));
+		public readonly string TooltipContainer;
+		public readonly string TooltipTemplate = "SPAWN_TOOLTIP";
+		Lazy<TooltipContainerWidget> tooltipContainer;
+		public int TooltipSpawnIndex = -1;
 
-		public MapPreviewWidget() : base() { }
+		public MapPreviewWidget() : base()
+		{
+			tooltipContainer = Lazy.New(() => Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
+		}
 
 		protected MapPreviewWidget(MapPreviewWidget other)
 			: base(other)
 		{
 			lastMap = other.lastMap;
 			Map = other.Map;
-			SpawnColors = other.SpawnColors;
+			SpawnClients = other.SpawnClients;
 			ShowSpawnPoints = other.ShowSpawnPoints;
+			TooltipTemplate = other.TooltipTemplate;
+			TooltipContainer = other.TooltipContainer;
+			tooltipContainer = Lazy.New(() => Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 		}
 
 		public override Widget Clone() { return new MapPreviewWidget(this); }
@@ -51,6 +62,18 @@ namespace OpenRA.Widgets
 
 			OnMouseDown(mi);
 			return true;
+		}
+
+		public override void MouseEntered()
+		{
+			if (TooltipContainer == null) return;
+			tooltipContainer.Value.SetTooltip(TooltipTemplate, new WidgetArgs() {{ "preview", this }});
+		}
+
+		public override void MouseExited()
+		{
+			if (TooltipContainer == null) return;
+			tooltipContainer.Value.RemoveTooltip();
 		}
 
 		public int2 ConvertToPreview(int2 point)
@@ -68,19 +91,30 @@ namespace OpenRA.Widgets
 		public override void Draw()
 		{
 			var map = Map();
-			if( map == null ) return;
+			if (map == null)
+				return;
+
+			// Preview unavailable
+			if (!Loaded)
+			{
+				GeneratePreview();
+				return;
+			}
 
 			if (lastMap != map)
 			{
 				lastMap = map;
 
 				// Update image data
-				var preview = PreviewCache[map];
-				if( mapChooserSheet == null || mapChooserSheet.Size.Width != preview.Width || mapChooserSheet.Size.Height != preview.Height )
-					mapChooserSheet = new Sheet(new Size( preview.Width, preview.Height ) );
+				Bitmap preview;
+				lock (syncRoot)
+					preview = Previews[map.Uid];
 
-				mapChooserSheet.Texture.SetData( preview );
-				mapChooserSprite = new Sprite( mapChooserSheet, new Rectangle( 0, 0, map.Bounds.Width, map.Bounds.Height ), TextureChannel.Alpha );
+				if (mapChooserSheet == null || mapChooserSheet.Size.Width != preview.Width || mapChooserSheet.Size.Height != preview.Height)
+					mapChooserSheet = new Sheet(new Size(preview.Width, preview.Height));
+
+				mapChooserSheet.Texture.SetData(preview);
+				mapChooserSprite = new Sprite(mapChooserSheet, new Rectangle(0, 0, map.Bounds.Width, map.Bounds.Height), TextureChannel.Alpha);
 			}
 
 			// Update map rect
@@ -90,13 +124,14 @@ namespace OpenRA.Widgets
 			var dh = (int)(PreviewScale * (size - map.Bounds.Height)) / 2;
 			MapRect = new Rectangle(RenderBounds.X + dw, RenderBounds.Y + dh, (int)(map.Bounds.Width * PreviewScale), (int)(map.Bounds.Height * PreviewScale));
 
-			Game.Renderer.RgbaSpriteRenderer.DrawSprite( mapChooserSprite,
+			Game.Renderer.RgbaSpriteRenderer.DrawSprite(mapChooserSprite,
 				new float2(MapRect.Location),
-				new float2( MapRect.Size ) );
+				new float2(MapRect.Size));
 
+			TooltipSpawnIndex = -1;
 			if (ShowSpawnPoints)
 			{
-				var colors = SpawnColors();
+				var colors = SpawnClients().ToDictionary(c => c.Key, c => c.Value.ColorRamp.GetColor(0));
 
 				var spawnPoints = map.GetSpawnPoints().ToList();
 				foreach (var p in spawnPoints)
@@ -113,21 +148,82 @@ namespace OpenRA.Widgets
 
 					if ((pos - Viewport.LastMousePos).LengthSquared < 64)
 					{
-						OnTooltip(spawnPoints.IndexOf(p) + 1, pos);
+						TooltipSpawnIndex = spawnPoints.IndexOf(p) + 1;
+
+						// Legacy tooltip behavior
+						if (TooltipContainer == null)
+							OnTooltip(TooltipSpawnIndex, pos);
 					}
 				}
 			}
 		}
 
-		/// <summary>
-		/// Forces loading the preview into the map cache.
-		/// </summary>
-		public Bitmap LoadMapPreview()
-		{
-			var map = Map();
-			if( map == null ) return null;
+		// Async map preview generation bits
+		enum PreviewStatus { Invalid, Uncached, Generating, Cached }
+		static Thread previewLoaderThread;
+		static object syncRoot = new object();
+		static Queue<string> cacheUids = new Queue<string>();
+		static readonly Dictionary<string, Bitmap> Previews = new Dictionary<string, Bitmap>();
 
-			return PreviewCache[map];
+		void LoadAsyncInternal()
+		{
+			for (;;)
+			{
+				string uid;
+				lock (syncRoot)
+				{
+					if (cacheUids.Count == 0)
+						break;
+					uid = cacheUids.Peek();
+				}
+
+				var bitmap = Minimap.RenderMapPreview(Game.modData.AvailableMaps[uid]);
+				lock (syncRoot)
+				{
+					// TODO: We should add previews to a sheet here (with multiple previews per sheet)
+					Previews.Add(uid, bitmap);
+					cacheUids.Dequeue();
+				}
+
+				// Yuck... But this helps the UI Jank when opening the map selector significantly.
+				Thread.Sleep(50);
+			}
 		}
+
+		void GeneratePreview()
+		{
+			var m = Map();
+			if (m == null)
+				return;
+
+			var status = Status(m);
+			if (status == PreviewStatus.Uncached)
+				lock (syncRoot)
+					cacheUids.Enqueue(m.Uid);
+
+			if (previewLoaderThread == null || !previewLoaderThread.IsAlive)
+			{
+				previewLoaderThread = new Thread(LoadAsyncInternal);
+				previewLoaderThread.Start();
+			}
+		}
+
+		static PreviewStatus Status(Map m)
+		{
+			if (m == null)
+				return PreviewStatus.Invalid;
+
+			lock (syncRoot)
+			{
+				if (Previews.ContainsKey(m.Uid))
+					return PreviewStatus.Cached;
+
+				if (cacheUids.Contains(m.Uid))
+					return PreviewStatus.Generating;
+			}
+			return PreviewStatus.Uncached;
+		}
+
+		public bool Loaded { get { return Status(Map()) == PreviewStatus.Cached; } }
 	}
 }
