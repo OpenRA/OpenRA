@@ -431,7 +431,14 @@ debugger.listen = function()
             ..":\n"..err)
           return debugger.terminate()
         elseif options.runstart then
-          -- do nothing as no activation is required; the script will be run
+          -- check if this document can be activated and if the first line
+          -- has a breakpoint, then don't run immediately
+          if activateDocument(file or startfile, line or 0, true) then
+            local editor = GetEditor()
+            local current = editor:MarkerNext(0, CURRENT_LINE_MARKER_VALUE)
+            local breakpoint = editor:MarkerNext(current, BREAKPOINT_MARKER_VALUE)
+            if current > -1 and current == breakpoint then options.runstart = false end
+          end
         elseif file and line then
           local activated = activateDocument(file, line, true)
 
