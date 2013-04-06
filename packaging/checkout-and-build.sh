@@ -63,6 +63,8 @@ fi
 
 ./upload-all.sh $TAG ~/openra-package/packages
 
+./update-wiki.sh
+
 popd &> /dev/null # packaging
 popd &> /dev/null # $_gitname-build
 popd &> /dev/null # ~/openra-package/
