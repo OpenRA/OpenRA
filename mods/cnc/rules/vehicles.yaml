@@ -113,6 +113,7 @@ APC:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
@@ -154,6 +155,7 @@ ARTY:
 		InitialStance: Defend
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	LeavesHusk:
 		HuskActor: ARTY.Husk
 
@@ -186,6 +188,7 @@ FTNK:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	WithMuzzleFlash:
 	Explodes:
 		Weapon: FlametankExplode
@@ -225,6 +228,7 @@ BGGY:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	LeavesHusk:
 		HuskActor: BGGY.Husk
 
@@ -265,6 +269,7 @@ BIKE:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	LeavesHusk:
 		HuskActor: BIKE.Husk
 	
@@ -300,6 +305,7 @@ JEEP:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	LeavesHusk:
 		HuskActor: JEEP.Husk
 
@@ -336,6 +342,7 @@ LTNK:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	LeavesHusk:
 		HuskActor: LTNK.Husk
 	Explodes:
@@ -374,6 +381,7 @@ MTNK:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	LeavesHusk:
 		HuskActor: MTNK.Husk
 	Explodes:
@@ -421,6 +429,7 @@ HTNK:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	SelfHealing:
 		Ticks: 10
 		HealIfBelow: 50%
@@ -465,6 +474,7 @@ MSAM:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	LeavesHusk:
 		HuskActor: MSAM.Husk
 
@@ -501,6 +511,7 @@ MLRS:
 		InitialStance: Defend
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
@@ -544,6 +555,7 @@ STNK:
 		InitialStance: HoldFire
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	TargetableUnit:
 	LeavesHusk:
 		HuskActor: STNK.Husk

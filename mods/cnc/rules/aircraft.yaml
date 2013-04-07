@@ -92,6 +92,7 @@ HELI:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	Explodes:
 		Weapon: HeliExplode
 		EmptyWeapon: HeliExplode
@@ -142,6 +143,7 @@ ORCA:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	Explodes:
 		Weapon: HeliExplode
 		EmptyWeapon: HeliExplode

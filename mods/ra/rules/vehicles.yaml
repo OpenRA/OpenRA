@@ -26,6 +26,7 @@ V2RL:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	Explodes:
 		Weapon: SCUD
 		EmptyWeapon:
@@ -61,6 +62,7 @@ V2RL:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
@@ -100,6 +102,7 @@ V2RL:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
@@ -142,6 +145,7 @@ V2RL:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
@@ -189,6 +193,7 @@ V2RL:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
@@ -234,6 +239,7 @@ ARTY:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 
 HARV:
 	Inherits: ^Vehicle
@@ -348,6 +354,7 @@ JEEP:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 1
@@ -383,6 +390,7 @@ APC:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
@@ -649,6 +657,7 @@ TTNK:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 
 FTRK:
 	Inherits: ^Vehicle
@@ -682,6 +691,7 @@ FTRK:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
@@ -747,6 +757,7 @@ CTNK:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	Armament@PRIMARY:
 		Weapon: ChronoTusk
 		LocalOffset: 0,-171,0

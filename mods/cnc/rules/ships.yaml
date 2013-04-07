@@ -28,6 +28,7 @@ BOAT:
 		AllowMovement: false
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
+	DebugChosenAutoTarget:
 	WithSmoke:
 
 LST:

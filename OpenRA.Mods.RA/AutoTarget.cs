@@ -38,6 +38,7 @@ namespace OpenRA.Mods.RA
 		[Sync] public int stanceNumber { get { return (int)stance; } }
 		public UnitStance predictedStance;		/* NOT SYNCED: do not refer to this anywhere other than UI code */
 		[Sync] public int AggressorID;
+		[Sync] public int ChosenTargetID;
 
 		public AutoTarget(Actor self, AutoTargetInfo info)
 		{
@@ -107,7 +108,10 @@ namespace OpenRA.Mods.RA
 		{
 			var targetActor = ScanForTarget(self, null);
 			if (targetActor != null)
+			{
+				ChosenTargetID = (int)targetActor.ActorID;
 				attack.AttackTarget(Target.FromActor(targetActor), false, Info.AllowMovement && stance != UnitStance.Defend);
+			}
 		}
 
 		Actor ChooseTarget(Actor self, float range)
@@ -160,5 +164,17 @@ namespace OpenRA.Mods.RA
 		readonly AutoTarget a;
 		public DebugNextAutoTargetScanTime(Actor self){ a = self.Trait<AutoTarget>(); }
 		[Sync] public int NextAutoTargetScanTime { get { return a.nextScanTime; } }
+	}
+
+	public class DebugChosenAutoTargetInfo : ITraitInfo, Requires<AutoTargetInfo>
+	{
+		public object Create(ActorInitializer init) { return new DebugChosenAutoTarget(init.self); }
+	}
+	
+	public class DebugChosenAutoTarget : ISync
+	{
+		readonly AutoTarget a;
+		public DebugChosenAutoTarget(Actor self){ a = self.Trait<AutoTarget>(); }
+		[Sync] public int ChosenTarget { get { return a.ChosenTargetID; } }
 	}
 }
