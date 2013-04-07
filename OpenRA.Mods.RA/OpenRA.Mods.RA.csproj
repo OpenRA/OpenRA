@@ -310,7 +310,6 @@
     <Compile Include="Render\RenderBuildingCharge.cs" />
     <Compile Include="Render\RenderBuildingSilo.cs" />
     <Compile Include="Render\RenderBuildingTurreted.cs" />
-    <Compile Include="Render\RenderBuildingSeparateTurret.cs" />
     <Compile Include="Render\RenderBuildingWall.cs" />
     <Compile Include="Render\RenderBuildingWarFactory.cs" />
     <Compile Include="Render\RenderEditorOnly.cs" />
@@ -321,7 +320,6 @@
     <Compile Include="Render\RenderSpy.cs" />
     <Compile Include="Render\RenderUnit.cs" />
     <Compile Include="Render\RenderUnitReload.cs" />
-    <Compile Include="Render\RenderUnitTurreted.cs" />
     <Compile Include="Render\WithBuildingExplosion.cs" />
     <Compile Include="Render\WithMuzzleFlash.cs" />
     <Compile Include="Render\WithRotor.cs" />
@@ -437,6 +435,7 @@
     <Compile Include="Widgets\Logic\ClientTooltipLogic.cs" />
     <Compile Include="Widgets\ColorMixerWidget.cs" />
     <Compile Include="Widgets\HueSliderWidget.cs" />
+    <Compile Include="Render\WithTurret.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

@@ -55,7 +55,8 @@ V2RL:
 		Recoil: 85
 		RecoilRecovery: 25
 	AttackTurreted:
-	RenderUnitTurreted:
+	RenderUnit:
+	WithTurret:
 	AutoTarget:
 	Explodes:
 		Weapon: UnitExplodeSmall
@@ -92,7 +93,8 @@ V2RL:
 		Recoil: 128
 		RecoilRecovery: 38
 	AttackTurreted:
-	RenderUnitTurreted:
+	RenderUnit:
+	WithTurret:
 	AutoTarget:
 	Explodes:
 		Weapon: UnitExplodeSmall
@@ -132,7 +134,8 @@ V2RL:
 		RecoilRecovery: 38
 		LocalOffset: 0,85,0, 0,-85,0
 	AttackTurreted:
-	RenderUnitTurreted:
+	RenderUnit:
+	WithTurret:
 	AutoTarget:
 	Explodes:
 		Weapon: UnitExplodeSmall
@@ -177,7 +180,8 @@ V2RL:
 		LocalYaw: -100,100
 		Recoil: 43
 	AttackTurreted:
-	RenderUnitTurreted:
+	RenderUnit:
+	WithTurret:
 	AutoTarget:
 	Explodes:
 		Weapon: UnitExplodeSmall
@@ -332,7 +336,8 @@ JEEP:
 		Weapon: M60mg
 	AttackTurreted:
 	WithMuzzleFlash:
-	RenderUnitTurreted:
+	RenderUnit:
+	WithTurret:
 	AutoTarget:
 	Cargo:
 		Types: Infantry
@@ -667,7 +672,8 @@ FTRK:
 		Weapon: FLAK-23
 		Recoil: 85
 	AttackTurreted:
-	RenderUnitTurreted:
+	RenderUnit:
+	WithTurret:
 	AutoTarget:
 	Explodes:
 		Weapon: UnitExplodeSmall

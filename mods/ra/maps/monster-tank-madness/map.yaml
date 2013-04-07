@@ -2586,8 +2586,9 @@ Rules:
 			LocalYaw: -100,100
 			Recoil: 43
 		AttackTurreted:
-		RenderUnitTurreted:
+		RenderUnit:
 			Image: 4TNK
+		WithTurret:
 		AutoTarget:
 		Explodes:
 			Weapon: MiniNuke

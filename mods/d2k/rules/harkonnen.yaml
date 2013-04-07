@@ -163,8 +163,9 @@ COMBATH:
 		ROT: 5
 	Health:
 		HP: 440
-	RenderUnitTurreted:
+	RenderUnit:
 		Image: COMBATH
+	WithTurret:
 	LeavesHusk:
 		HuskActor: Combath.Husk
 

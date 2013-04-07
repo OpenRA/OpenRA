@@ -223,7 +223,8 @@ QUAD.starport:
 		RecoilRecovery: 34
 		LocalOffset: 85,0,128
 	AttackTurreted:
-	RenderUnitTurreted:
+	RenderUnit:
+	WithTurret:
 	AutoTarget:
 	Explodes:
 		Weapon: UnitExplodeSmall
@@ -272,8 +273,9 @@ SIEGETANK:
 		RecoilRecovery: 19
 		LocalOffset: 171,0,299
 	AttackTurreted:
-	RenderUnitTurreted:
+	RenderUnit:
 		Image: SIEGETANK
+	WithTurret:
 	Explodes:
 		Weapon: UnitExplodeScale
 		EmptyWeapon: UnitExplodeScale

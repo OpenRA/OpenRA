@@ -130,7 +130,8 @@ DD:
 	AttackTurreted:
 	Selectable:
 		Bounds: 38,38
-	RenderUnitTurreted:
+	RenderUnit:
+	WithTurret:
 	AutoTarget:
 	Chronoshiftable:
 	IronCurtainable:
@@ -185,7 +186,11 @@ CA:
 	AttackTurreted:
 	Selectable:
 		Bounds: 44,44
-	RenderUnitTurreted:
+	RenderUnit:
+	WithTurret@PRIMARY:
+		Turret: primary
+	WithTurret@SECONDARY:
+		Turret: secondary
 	AutoTarget:
 	Chronoshiftable:
 	IronCurtainable:
@@ -255,7 +260,8 @@ PT:
 	AttackTurreted:
 	Selectable:
 		Bounds: 32,32
-	RenderUnitTurreted:
+	RenderUnit:
+	WithTurret:
 	AutoTarget:
 	Chronoshiftable:
 	IronCurtainable:

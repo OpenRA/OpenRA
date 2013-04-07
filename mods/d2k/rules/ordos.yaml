@@ -108,8 +108,9 @@ COMBATO:
 		Speed: 9
 		ROT: 8
 		Crushes: crate, infantry
-	RenderUnitTurreted:
+	RenderUnit:
 		Image: COMBATO
+	WithTurret:
 	LeavesHusk:
 		HuskActor: Combato.Husk
 

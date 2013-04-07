@@ -111,7 +111,8 @@ APC:
 		LocalOffset: 85,85,299, 85,-85,299
 	AttackTurreted:
 	WithMuzzleFlash:
-	RenderUnitTurreted:
+	RenderUnit:
+	WithTurret:
 	AutoTarget:
 	Cargo:
 		Types: Infantry
@@ -217,7 +218,8 @@ BGGY:
 		Weapon: MachineGun
 	AttackTurreted:
 	WithMuzzleFlash:
-	RenderUnitTurreted:
+	RenderUnit:
+	WithTurret:
 	AutoTarget:
 	LeavesHusk:
 		HuskActor: BGGY.Husk
@@ -288,7 +290,8 @@ JEEP:
 		Weapon: MachineGun
 	AttackTurreted:
 	WithMuzzleFlash:
-	RenderUnitTurreted:
+	RenderUnit:
+	WithTurret:
 	AutoTarget:
 	LeavesHusk:
 		HuskActor: JEEP.Husk
@@ -322,7 +325,8 @@ LTNK:
 		RecoilRecovery: 17
 		LocalOffset: -128,0,85
 	AttackTurreted:
-	RenderUnitTurreted:
+	RenderUnit:
+	WithTurret:
 	AutoTarget:
 	LeavesHusk:
 		HuskActor: LTNK.Husk
@@ -358,7 +362,8 @@ MTNK:
 		RecoilRecovery: 26
 		LocalOffset: 0,0,43
 	AttackTurreted:
-	RenderUnitTurreted:
+	RenderUnit:
+	WithTurret:
 	AutoTarget:
 	LeavesHusk:
 		HuskActor: MTNK.Husk
@@ -403,7 +408,8 @@ HTNK:
 		LocalYaw: -100, 100
 		Recoil: 42
 	AttackTurreted:
-	RenderUnitTurreted:
+	RenderUnit:
+	WithTurret:
 	AutoTarget:
 	SelfHealing:
 		Ticks: 10
@@ -445,7 +451,9 @@ MSAM:
 		Weapon: 227mm
 		LocalOffset: 213,128,0, 213,-128,0
 	AttackFrontal:
-	RenderUnitTurretedAim:
+	RenderUnit:
+	WithTurret:
+		AimSequence: aim
 	AutoTarget:
 	LeavesHusk:
 		HuskActor: MSAM.Husk
@@ -479,7 +487,9 @@ MLRS:
 		Weapon: Patriot
 		LocalOffset: 0,-171,0, 0,171,0
 	AttackTurreted:
-	RenderUnitTurretedAim:
+	RenderUnit:
+	WithTurret:
+		AimSequence: aim
 	AutoTarget:
 		InitialStance: Defend
 	Explodes:
