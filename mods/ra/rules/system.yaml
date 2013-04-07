@@ -636,7 +636,7 @@ MINP:
 		HP: 1
 	RenderSimple:
 	BelowUnits:
-	InvisibleToEnemy:
+	Cloak:
 	Tooltip:
 		Name: Anti-Personnel Mine
 		Icon: jmin
@@ -653,7 +653,7 @@ MINV:
 		HP: 1
 	RenderSimple:
 	BelowUnits:
-	InvisibleToEnemy:
+	Cloak:
 	Tooltip:
 		Name: Anti-Tank Mine
 		Icon: jmin
