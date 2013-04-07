@@ -1,18 +1,28 @@
 # ZeroBrane Studio Changelog
 
-## Current master (Mar 29 2013)
+## Current master (Apr 06 2013)
 
 ### Highlights
-  - Added **Linux binaries with support for 32bit and 64bit systems**.
-  - Added **multiple selection and multi-cursor editing**.
+  - Added 32bit and 64bit **Linux binaries**.
   - Enabled **full debugging for Corona on OSX**.
-  - Made Stack and Watch windows dockable.
+  - Improved **debugger performance**.
+  - Improved **performance of tab and project switching**.
+  - Added **multiple selection and multi-cursor editing**.
+  - Made Stack and Watch windows dockable and toggleable.
 
 ### Special thanks
   - To toiffel for build improvements and continuous work on wxwidgets 2.9 and Linux support.
   - To Marcel van Herk for testing and feedback on Stack and Watch windows behavior.
+  - To Leo Bartoloni for Italian translation update.
+  - To Fringale for updated French translation.
+  - To neomantra for adding cdata processing in the serializer.
 
 ### Improvements
+  - Added handling of case-insensitive filenames on OSX.
+  - Added cdata processing (thanks to neomantra).
+  - Added universal binaries for luasocket on OSX to allow debugging of 64bit applications (for example, LuaJIT) on OSX.
+  - Added update of Stack and Watch windows after 'Debugging suspended' message.
+  - Added toggling for View menu items.
   - Added auto-show/hide Stack and Watch windows during debugging (closes #110).
   - Added ignoring `-psn...` parameter on OSX when reading file names from command line.
   - Added migration of configuration file on Windows (helps #89).
@@ -23,7 +33,9 @@
   - Added centering of current line during debugging.
   - Added multiple selection and multi-cursor editing (wx2.9.5+).
   - Added dll proxy to make LfW libraries to work with the IDE.
+  - Disabled showing 'value' in auto-complete after 'a:' (helps #101).
   - Enabled full debugging for Corona on OSX.
+  - Improved debugging performance.
   - Improved performance of tab switching and project tree population.
   - Improved handling of upvalues with __tostring method in the Stack window.
   - Increased default font size for OSX; set 'Monaco' as default font (helps #89).
@@ -33,6 +45,11 @@
   - Removed binary libraries not currently used.
   - Set 'Courier New' as the default font on Linux (ref #89).
   - Switched to 'native' menu on OSX and added 24x24 icons required (helps #89).
+  - Updated Italian translation (thanks to Leo Bartoloni)
+  - Updated 'method' type in auto-complete to only allow a:b syntax (closes #101).
+  - Updated language files (es, it, ru) with new messages (ref #70).
+  - Updated French translation with latest string changes, fixed a few typos (thanks to Fringale).
+  - Updated Stack and Watch window to not refresh when not visible.
   - Upgraded Mobdebug (0.5222) to add serialization with metamethods and notification on incomplete output (closes #109).
   - Updated error messages from loading configuration files.
   - Updated Linux binaries to use libpng 1.6 with wxwidgets (helps #89).
@@ -46,8 +63,16 @@
 
 ### Incompatibilities
   - Configuration file (.ini) location has changed on Windows. The current file will be copied to the new location.
+  - The debugger now stops on the next executable line after `.start()` call.
 
 ### Fixes
+  - Fixed breakpoint not firing on the first executable line in debugging (helps #121).
+  - Fixed terminating debugging of an empty script.
+  - Fixed reporting of initial line during debugging.
+  - Fixed editor tab activation after closing another tab on Linux (ref #89).
+  - Fixed 'Show tooltip' shortcut not working on Linux (fixes #118; ref #89).
+  - Fixed cursor position being incorrectly restored (fixes #116; ref #89).
+  - Fixed a warning about empty project directory in local console.
   - Fixed an issue with Enter used to select an item in project dropdown (ref #89).
   - Fixed an issue with the Project tree when project and app directories are the same.
   - Fixed debugger output not being suppressed on Linux and using wlua.
