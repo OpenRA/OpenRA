@@ -64,6 +64,8 @@ namespace OpenRA.Server
 		public Map Map;
 		XTimer gameTimeout;
 
+		int highestLatency;
+
 		protected volatile ServerState pState = new ServerState();
 		public ServerState State
 		{
@@ -341,6 +343,14 @@ namespace OpenRA.Server
 					t.ClientJoined(this, newConn);
 
 				SendChat(newConn, "has joined the game. Ping: {0} ms".F(newConn.Latency));
+
+				if (newConn.Latency > highestLatency)
+					highestLatency = newConn.Latency;
+
+				lobbyInfo.GlobalSettings.OrderLatency = highestLatency / 40; // 1 frame is 40 ms
+				if (lobbyInfo.GlobalSettings.OrderLatency < 1) // should never be 0
+					lobbyInfo.GlobalSettings.OrderLatency = 1;
+
 				SyncLobbyInfo();
 
 				if (File.Exists("{0}motd_{1}.txt".F(Platform.SupportDir, lobbyInfo.GlobalSettings.Mods[0])))
@@ -360,6 +370,8 @@ namespace OpenRA.Server
 				if (mods.Any(m => m.Contains("{DEV_VERSION}")))
 					SendChat(newConn, "is running a non-versioned development build, "+
 					"and may cause desync if it contains any incompatible changes.");
+
+				Game.Debug("Order lag has been adjusted to {0} frames.".F(lobbyInfo.GlobalSettings.OrderLatency));
 			}
 			catch (Exception) { DropClient(newConn); }
 		}
@@ -532,7 +544,9 @@ namespace OpenRA.Server
 						SendChat(toDrop, "Admin left! {0} is a new admin now!".F(lastClient.Name));
 					}
 				}
-				
+
+				//TODO: if (highestLatency == toDrop.Latency) then find the new highestLatency
+
 				DispatchOrders( toDrop, toDrop.MostRecentFrame, new byte[] { 0xbf } );
 
 				if (conns.Count != 0 || lobbyInfo.GlobalSettings.Dedicated)
