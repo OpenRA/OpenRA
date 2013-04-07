@@ -59,7 +59,6 @@ namespace OpenRA.Network
 			il.Emit(OpCodes.Castclass, t);
 			il.Emit(OpCodes.Stloc, this_);
 
-
 			var dictAdd_ = dictType.GetMethod("Add", BindingFlags.Instance | BindingFlags.Public, null, new Type[] { typeof(string), typeof(string) }, null);
 			var dictCtor_ = dictType.GetConstructor(Type.EmptyTypes);
 			var objToString_ = typeof(object).GetMethod("ToString", BindingFlags.Instance | BindingFlags.Public, null, Type.EmptyTypes, null);
