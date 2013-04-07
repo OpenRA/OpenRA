@@ -99,19 +99,12 @@ namespace OpenRA.Mods.RA
 			if (!Cloaked)
 				return true;
 
-			if (s != null)
-			{
-				if (s == self.World.LocalShroud && s.Observing)
+			if (s.Observing)
+				return true;
+			if (s.Owner != null)
+				if (self.Owner == s.Owner || self.Owner.Stances[s.Owner] == Stance.Ally)
 					return true;
-				if (s.Owner != null)
-					if (self.Owner == s.Owner || self.Owner.Stances[s.Owner] == Stance.Ally)
-						return true;
-			}
 
-			if (self.World.LocalPlayer != null)
-				if (self.Owner == self.World.LocalPlayer || self.Owner.Stances[self.World.LocalPlayer] == Stance.Ally)
-					return true;
-			
 			return self.World.ActorsWithTrait<DetectCloaked>().Any(a =>
 				a.Actor.Owner.Stances[self.Owner] != Stance.Ally &&
 				(self.Location - a.Actor.Location).Length < a.Actor.Info.Traits.Get<DetectCloakedInfo>().Range);
