@@ -11,6 +11,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.NetworkInformation;
+using System.Threading;
 
 namespace OpenRA.Network
 {
@@ -75,9 +76,21 @@ namespace OpenRA.Network
 			{
 				hasBeenPinged = true;
 				var pingSender = new Ping();
-				PingReply reply = pingSender.Send(Address.Split(':')[0]);
-				if (reply != null && reply.Status == IPStatus.Success)
-					Latency = (int)reply.RoundtripTime;
+				pingSender.PingCompleted += new PingCompletedEventHandler(pongRecieved);
+				AutoResetEvent waiter = new AutoResetEvent(false);
+				pingSender.SendAsync(Address.Split(':')[0], waiter);
+			}
+		}
+
+		void pongRecieved(object sender, PingCompletedEventArgs e)
+		{
+			if (e.Cancelled || e.Error != null)
+				Latency = -1;
+			else
+			{
+				PingReply pong = e.Reply;
+				if (pong != null && pong.Status == IPStatus.Success)
+					Latency = (int)pong.RoundtripTime;
 				else
 					Latency = -1;
 			}
