@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 
 namespace OpenRA.Network
 {
@@ -64,6 +65,22 @@ namespace OpenRA.Network
 		{
 			return UsefulMods.All(m => Game.CurrentMods.ContainsKey(m.Key)
 				&& AreVersionsCompatible(m.Value, Game.CurrentMods[m.Key].Version));
+		}
+
+		public int Latency = -1;
+		bool hasBeenPinged;
+		public void Ping()
+		{
+			if (!hasBeenPinged)
+			{
+				hasBeenPinged = true;
+				var pingSender = new Ping();
+				PingReply reply = pingSender.Send(Address.Split(':')[0]);
+				if (reply != null && reply.Status == IPStatus.Success)
+					Latency = (int)reply.RoundtripTime;
+				else
+					Latency = -1;
+			}
 		}
 	}
 }

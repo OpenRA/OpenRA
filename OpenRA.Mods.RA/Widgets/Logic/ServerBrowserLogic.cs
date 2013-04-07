@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		Action OpenLobby;
 		Action OnExit;
 
-		enum SearchStatus { Fetching, Failed, NoGames, Hidden }
+		enum SearchStatus { Fetching, Failed, NoGames, Hidden, Pinging }
 		SearchStatus searchStatus = SearchStatus.Fetching;
 
 		bool showWaiting = true;
@@ -41,6 +41,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				case SearchStatus.Fetching:	return "Fetching game list...";
 				case SearchStatus.Failed:	return "Failed to contact master server.";
 				case SearchStatus.NoGames:	return "No games found.";
+				case SearchStatus.Pinging:	return "Pinging compatible servers.";  
 				default:					return "";
 			}
 		}
@@ -57,6 +58,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var refreshButton = panel.Get<ButtonWidget>("REFRESH_BUTTON");
 			refreshButton.IsDisabled = () => searchStatus == SearchStatus.Fetching;
 			refreshButton.OnClick = () => ServerList.Query(games => RefreshServerList(panel, games));
+
+			var pingButton = panel.Get<ButtonWidget>("PING_BUTTON");
+			pingButton.IsDisabled = () => searchStatus == SearchStatus.Pinging ||
+				searchStatus == SearchStatus.Fetching || searchStatus == SearchStatus.Failed;
+			pingButton.OnClick = () => ServerList.Query(games => PingServerList(panel, games));
 
 			var join = panel.Get<ButtonWidget>("JOIN_BUTTON");
 			join.IsDisabled = () => currentServer == null || !currentServer.CanJoin();
@@ -147,6 +153,33 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			return s.UsefulMods.Select(m => GenerateModLabel(m)).JoinWith("\n");
 		}
 
+		public static string GetPing(GameServer s)
+		{
+			if (s.Latency > -1)
+				return "Ping: {0} ms".F(s.Latency);
+			else
+				return "Ping: ? ms";
+		}
+
+		public void PingServerList(Widget panel, IEnumerable<GameServer> games)
+		{
+			searchStatus = SearchStatus.Pinging;
+
+			foreach (var loop in games.Where(g => g.CanJoin()))
+			{
+				var game = loop;
+				
+				if (game == null)
+					continue;
+				
+				game.Ping();
+			}
+
+			searchStatus = SearchStatus.Hidden;
+
+			RefreshServerList(panel, games);
+		}
+
 		public void RefreshServerList(Widget panel, IEnumerable<GameServer> games)
 		{
 			var sl = panel.Get<ScrollPanelWidget>("SERVER_LIST");
@@ -228,6 +261,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var version = item.Get<LabelWidget>("VERSION");
 				version.GetText = () => GenerateModsLabel(game);
 				version.IsVisible = () => !game.CompatibleVersion();
+
+				var ping = item.Get<LabelWidget>("PING");
+				ping.GetText = () => GetPing(game);
+				ping.IsVisible = () => game.CompatibleVersion();
+
+				// TODO: Display game.Location once https://github.com/OpenRA/OpenRAMasterServer/pull/12 is merged
 
 				if (!canJoin)
 				{
