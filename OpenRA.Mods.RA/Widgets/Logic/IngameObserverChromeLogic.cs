@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				optionsBG.Visible = !optionsBG.Visible;
 				if (world.LobbyInfo.IsSinglePlayer)
-					world.IssueOrder(Order.PauseGame());
+					world.IssueOrder(Order.PauseGame(true));
 			};
 
 			optionsBG.Get<ButtonWidget>("DISCONNECT").OnClick = () =>
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				optionsBG.Visible = false;
 				if (world.LobbyInfo.IsSinglePlayer)
-					world.IssueOrder(Order.PauseGame());
+					world.IssueOrder(Order.PauseGame(false));
 			};
 			optionsBG.Get<ButtonWidget>("SURRENDER").IsVisible = () => false;
 

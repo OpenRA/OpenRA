@@ -19,7 +19,7 @@ namespace OpenRA.Widgets
 			var font = Game.Renderer.Fonts["Title"];
 			var rb = RenderBounds;
 			
-			var s = WidgetUtils.FormatTime(Game.LocalTick) + (Game.orderManager.GamePaused?" (paused)":"");
+			var s = WidgetUtils.FormatTime(Game.LocalTick) + (Game.orderManager.world.Paused?" (paused)":"");
 			var pos = new float2(rb.Left - font.Measure(s).X / 2, rb.Top);
 			font.DrawTextWithContrast(s, pos, Color.White, Color.Black, 1);
 		}

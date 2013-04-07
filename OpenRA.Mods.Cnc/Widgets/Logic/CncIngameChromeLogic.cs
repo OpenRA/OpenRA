@@ -85,6 +85,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 		public void OptionsClicked()
 		{
+			var cachedPause = world.Paused;
+
 			if (menu != MenuType.None)
 			{
 				Ui.CloseWindow();
@@ -93,14 +95,15 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 			ingameRoot.IsVisible = () => false;
 			if (world.LobbyInfo.IsSinglePlayer)
-				world.IssueOrder(Order.PauseGame());
+				world.IssueOrder(Order.PauseGame(true));
+
 			Game.LoadWidget(world, "INGAME_MENU", Ui.Root, new WidgetArgs()
 			{
 				{ "onExit", () =>
 					{
 						ingameRoot.IsVisible = () => true;
 						if (world.LobbyInfo.IsSinglePlayer)
-							world.IssueOrder(Order.PauseGame());
+							world.IssueOrder(Order.PauseGame(cachedPause));
 					}
 				}
 			});
