@@ -311,14 +311,26 @@ namespace OpenRA
 			natDevice = args.Device;
 
 			Log.Write("server", "NAT device discovered.");
-			Log.Write("server", "Type: {0}", natDevice.GetType());
-			Log.Write("server", "Your external IP is: {0}", natDevice.GetExternalIP());
-
-			foreach (var mp in natDevice.GetAllMappings())
-				Log.Write("server", "Existing port mapping: protocol={0}, public={1}, private={2}", mp.Protocol, mp.PublicPort, mp.PrivatePort);
 
 			Settings.Server.NatDeviceAvailable = true;
 			Settings.Server.AllowUPnP = true;
+
+			try
+			{
+				Log.Write("server", "Type: {0}", natDevice.GetType());
+				Log.Write("server", "Your external IP is: {0}", natDevice.GetExternalIP());
+
+				foreach (var mp in natDevice.GetAllMappings())
+					Log.Write("server", "Existing port mapping: protocol={0}, public={1}, private={2}",
+					          mp.Protocol, mp.PublicPort, mp.PrivatePort);
+			}
+			catch (Exception e)
+			{
+				Log.Write("server", "Can't fetch information from NAT device: {0}", e);
+
+				Settings.Server.NatDeviceAvailable = false;
+				Settings.Server.AllowUPnP = false;
+			}
 		}
 
 		public static void DeviceLost(object sender, DeviceEventArgs args)
