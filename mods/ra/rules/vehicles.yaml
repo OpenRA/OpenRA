@@ -420,6 +420,9 @@ MNLY.AP:
 		Ammo: 5
 	AttackMove:
 		JustMove: true
+	DetectCloaked:
+		Range: 5
+	RenderDetectionCircle:
 
 MNLY.AT:
 	Inherits: ^Tank
@@ -452,6 +455,9 @@ MNLY.AT:
 		Ammo: 3
 	AttackMove:
 		JustMove: true
+	DetectCloaked:
+		Range: 5
+	RenderDetectionCircle:
 
 TRUK:
 	Inherits: ^Vehicle
