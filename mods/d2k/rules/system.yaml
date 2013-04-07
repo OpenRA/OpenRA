@@ -392,6 +392,7 @@ World:
 	Fog:
 	PathFinder:
 	ValidateOrder:
+	DebugPauseState:
 
 CRATE:
 	Tooltip:

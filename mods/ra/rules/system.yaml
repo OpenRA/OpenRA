@@ -625,6 +625,7 @@ World:
 	Fog:
 	PathFinder:
 	ValidateOrder:
+	DebugPauseState:
 
 MINP:
 	Mine:

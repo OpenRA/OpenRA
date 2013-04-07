@@ -312,6 +312,7 @@ World:
 		WaterChance: 0
 	PathFinder:
 	ValidateOrder:
+	DebugPauseState:
 	ConquestObjectivesPanel:
 		ObjectivesPanel: CONQUEST_OBJECTIVES
 
