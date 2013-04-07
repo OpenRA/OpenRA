@@ -28,6 +28,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		enum SearchStatus { Fetching, Failed, NoGames, Hidden }
 		SearchStatus searchStatus = SearchStatus.Fetching;
 
+		bool showWaiting = true;
+		bool showEmpty = true;
+		bool showStarted = false;
+		bool showCompatibleVersionsOnly = false;
+		bool showThisModOnly = false;
+
 		public string ProgressLabelText()
 		{
 			switch (searchStatus)
@@ -50,13 +56,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			// Menu buttons
 			var refreshButton = panel.Get<ButtonWidget>("REFRESH_BUTTON");
 			refreshButton.IsDisabled = () => searchStatus == SearchStatus.Fetching;
-			refreshButton.OnClick = () =>
-			{
-				searchStatus = SearchStatus.Fetching;
-				sl.RemoveChildren();
-				currentServer = null;
-				ServerList.Query(games => RefreshServerList(panel, games));
-			};
+			refreshButton.OnClick = () => ServerList.Query(games => RefreshServerList(panel, games));
 
 			var join = panel.Get<ButtonWidget>("JOIN_BUTTON");
 			join.IsDisabled = () => currentServer == null || !currentServer.CanJoin();
@@ -72,6 +72,26 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var progressText = panel.Get<LabelWidget>("PROGRESS_LABEL");
 			progressText.IsVisible = () => searchStatus != SearchStatus.Hidden;
 			progressText.GetText = ProgressLabelText;
+
+			var showWaitingCheckbox = panel.Get<CheckboxWidget>("WAITING_FOR_PLAYERS");
+			showWaitingCheckbox.IsChecked = () => showWaiting;
+			showWaitingCheckbox.OnClick = () => { showWaiting ^= true; ServerList.Query(games => RefreshServerList(panel, games)); };
+
+			var showEmptyCheckbox = panel.Get<CheckboxWidget>("EMPTY");
+			showEmptyCheckbox.IsChecked = () => showEmpty;
+			showEmptyCheckbox.OnClick = () => { showEmpty ^= true; ServerList.Query(games => RefreshServerList(panel, games)); };
+
+			var showAlreadyStartedCheckbox = panel.Get<CheckboxWidget>("ALREADY_STARTED");
+			showAlreadyStartedCheckbox.IsChecked = () => showStarted;
+			showAlreadyStartedCheckbox.OnClick = () => { showStarted ^= true; ServerList.Query(games => RefreshServerList(panel, games)); };
+
+			var showCompatibleVersionsOnlyCheckbox = panel.Get<CheckboxWidget>("COMPATIBLE_VERSION");
+			showCompatibleVersionsOnlyCheckbox.IsChecked = () => showCompatibleVersionsOnly;
+			showCompatibleVersionsOnlyCheckbox.OnClick = () => { showCompatibleVersionsOnly ^= true; ServerList.Query(games => RefreshServerList(panel, games)); };
+
+			var showThisModOnlyCheckbox = panel.Get<CheckboxWidget>("THIS_MOD");
+			showThisModOnlyCheckbox.IsChecked = () => showThisModOnly;
+			showThisModOnlyCheckbox.OnClick = () => { showThisModOnly ^= true; ServerList.Query(games => RefreshServerList(panel, games)); };
 
 			ServerList.Query(games => RefreshServerList(panel, games));
 		}
@@ -131,6 +151,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			var sl = panel.Get<ScrollPanelWidget>("SERVER_LIST");
 
+			searchStatus = SearchStatus.Fetching;
+
 			sl.RemoveChildren();
 			currentServer = null;
 
@@ -152,6 +174,27 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			foreach (var loop in games.OrderByDescending(g => g.CanJoin()).ThenByDescending(g => g.Players))
 			{
 				var game = loop;
+
+				if (game == null)
+					continue;
+
+				if (game.State == 3) // server shutting down
+					continue;
+
+				if ((game.State == 2) && !showStarted)
+					continue;
+
+				if ((game.State == 1) && !showWaiting)
+					continue;
+
+				if ((game.Players == 0) && !showEmpty)
+					continue;
+
+				if (!game.CompatibleVersion() && showCompatibleVersionsOnly)
+					continue;
+
+				if (!game.UsefulMods.Any(m => Game.CurrentMods.ContainsKey(m.Key)) && showThisModOnly)
+					continue;
 
 				var canJoin = game.CanJoin();
 

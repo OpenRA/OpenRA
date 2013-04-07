@@ -7,17 +7,54 @@ Background@JOINSERVER_BG:
 	Children:
 		Label@JOINSERVER_LABEL_TITLE:
 			X:0
-			Y:20
+			Y:15
 			Width:PARENT_RIGHT
 			Height:25
 			Text:Join Server
 			Align:Center
 			Font:Bold
+		Label@SHOW_LABEL_TITLE:
+			X:20
+			Y:45
+			Width:20
+			Height:25
+			Text:Show:
+			Font:Bold
+		Checkbox@WAITING_FOR_PLAYERS:
+			X:80
+			Y:50
+			Width:300
+			Height:20
+			Text:waiting for players
+		Checkbox@EMPTY:
+			X:250
+			Y:50
+			Width:300
+			Height:20
+			Text:empty
+		Checkbox@ALREADY_STARTED:
+			X:350
+			Y:50
+			Width:300
+			Height:20
+			Text:already started
+		Checkbox@COMPATIBLE_VERSION:
+			X:80
+			Y:80
+			Width:300
+			Height:20
+			Text:compatible versions only
+		Checkbox@THIS_MOD:
+			X:300
+			Y:80
+			Width:300
+			Height:20
+			Text:this mod only
 		ScrollPanel@SERVER_LIST:
 			X:20
-			Y:50
+			Y:110
 			Width:500
-			Height:425
+			Height:355
 			Children:
 				ScrollItem@SERVER_TEMPLATE:
 					Width:PARENT_RIGHT-27
