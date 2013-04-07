@@ -517,13 +517,14 @@ namespace OpenRA.Server
 					SendDisconnected(toDrop); /* Report disconnection */
 
 				lobbyInfo.Clients.RemoveAll(c => c.Index == toDrop.PlayerIndex);
-				// remove the bots he added
-				lobbyInfo.Clients.RemoveAll(c => c.BotControllerClientIndex == toDrop.PlayerIndex);
 
 				// reassign admin if necessary
 				if (lobbyInfo.GlobalSettings.Dedicated && dropClient.IsAdmin && State == ServerState.WaitingPlayers)
 				{
-					if (lobbyInfo.Clients.Where(c1 => c1.Bot == null).Count() > 0)
+					// clean up the bots that were added by the last admin
+					lobbyInfo.Clients.RemoveAll(c => c.Bot != null && c.BotControllerClientIndex == toDrop.PlayerIndex);
+
+					if (lobbyInfo.Clients.Any(c1 => c1.Bot == null))
 					{
 						// client was not alone on the server but he was admin: set admin to the last connected client
 						OpenRA.Network.Session.Client lastClient = lobbyInfo.Clients.Where(c1 => c1.Bot == null).Last();
