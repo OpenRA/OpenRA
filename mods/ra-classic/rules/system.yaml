@@ -251,6 +251,8 @@ MINP:
 	RenderSimple:
 	BelowUnits:
 	Cloak:
+		CloakSound:
+		UncloakSound:
 	Tooltip:
 		Name: Anti-Personnel Mine
 		Icon: jmin
@@ -268,6 +270,8 @@ MINV:
 	RenderSimple:
 	BelowUnits:
 	Cloak:
+		CloakSound:
+		UncloakSound:
 	Tooltip:
 		Name: Anti-Tank Mine
 		Icon: jmin
