@@ -251,6 +251,9 @@ namespace OpenRA.Server
 				DispatchOrdersToClient(newConn, 0, 0, new ServerOrder("HandshakeRequest", request.Serialize()).Serialize());
 			}
 			catch (Exception) { DropClient(newConn); }
+
+			newConn.RemoteAddress = ((IPEndPoint)newConn.socket.RemoteEndPoint).Address.ToString();
+			newConn.Ping();
 		}
 
 		void ValidateClient(Connection newConn, string data)
@@ -302,8 +305,7 @@ namespace OpenRA.Server
 				// Check if IP is banned
 				if (lobbyInfo.GlobalSettings.Ban != null)
 				{
-					var remote_addr = ((IPEndPoint)newConn.socket.RemoteEndPoint).Address.ToString();
-					if (lobbyInfo.GlobalSettings.Ban.Contains(remote_addr))
+					if (lobbyInfo.GlobalSettings.Ban.Contains(newConn.RemoteAddress))
 					{
 						Console.WriteLine("Rejected connection from "+client.Name+"("+newConn.socket.RemoteEndPoint+"); Banned.");
 						Log.Write("server", "Rejected connection from {0}; Banned.",
@@ -338,16 +340,16 @@ namespace OpenRA.Server
 				foreach (var t in ServerTraits.WithInterface<IClientJoined>())
 					t.ClientJoined(this, newConn);
 
+				SendChat(newConn, "has joined the game. Ping: {0} ms".F(newConn.Latency));
 				SyncLobbyInfo();
-				SendChat(newConn, "has joined the game.");
 
-				if ( File.Exists("{0}motd_{1}.txt".F(Platform.SupportDir, lobbyInfo.GlobalSettings.Mods[0])) )
+				if (File.Exists("{0}motd_{1}.txt".F(Platform.SupportDir, lobbyInfo.GlobalSettings.Mods[0])))
 				{
 					var motd = System.IO.File.ReadAllText("{0}motd_{1}.txt".F(Platform.SupportDir, lobbyInfo.GlobalSettings.Mods[0]));
 					SendChatTo(newConn, motd);
 				}
 
-				if ( lobbyInfo.GlobalSettings.Dedicated )
+				if (lobbyInfo.GlobalSettings.Dedicated)
 				{
 					if (client.IsAdmin)
 						SendChatTo(newConn, "    You are admin now!");
@@ -578,7 +580,7 @@ namespace OpenRA.Server
 				t.GameStarted(this);
 			
 			// Check TimeOut
-			if ( Settings.TimeOut > 10000 )
+			if (Settings.TimeOut > 10000)
 			{
 				gameTimeout = new XTimer(Settings.TimeOut);
 				gameTimeout.Elapsed += (_,e) =>
