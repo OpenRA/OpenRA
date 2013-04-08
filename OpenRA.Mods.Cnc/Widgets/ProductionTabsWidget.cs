@@ -227,13 +227,13 @@ namespace OpenRA.Mods.Cnc.Widgets
 			}
 
 			if (mi.Button != MouseButton.Left)
-				return false;
+				return true;
 
 			if (mi.Event == MouseInputEvent.Down && !TakeFocus(mi))
-				return false;
+				return true;
 
 			if (!Focused)
-				return false;
+				return true;
 
 			if (Focused && mi.Event == MouseInputEvent.Up)
 				return LoseFocus(mi);
@@ -257,10 +257,9 @@ namespace OpenRA.Mods.Cnc.Widgets
 			{
 				CurrentQueue = Groups[queueGroup].Tabs[offsetloc.X/(TabWidth - 1)].Queue;
 				Sound.PlayNotification(null, "Sounds", "ClickSound", null);
-				return true;
 			}
 
-			return leftPressed || rightPressed;
+			return true;
 		}
 
 		public override bool HandleKeyPress(KeyInput e)
