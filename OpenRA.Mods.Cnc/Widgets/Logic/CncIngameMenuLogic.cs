@@ -98,7 +98,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			// Debug / Cheats panel
 			var debugButton = panelParent.Get<ButtonWidget>("DEBUG_BUTTON");
 			debugButton.OnClick = () => Panel = PanelType.Debug;
-			debugButton.IsDisabled = () => Panel == PanelType.Debug;
+			debugButton.IsHighlighted = () => Panel == PanelType.Debug;
 
 			if (world.LocalPlayer != null && world.LobbyInfo.GlobalSettings.AllowCheats)
 			{
@@ -113,7 +113,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			var iop = world.WorldActor.TraitsImplementing<IObjectivesPanel>().FirstOrDefault();
 			var objectivesButton = panelParent.Get<ButtonWidget>("OBJECTIVES_BUTTON");
 			objectivesButton.OnClick = () => Panel = PanelType.Objectives;
-			objectivesButton.IsDisabled = () => Panel == PanelType.Objectives;
+			objectivesButton.IsHighlighted = () => Panel == PanelType.Objectives;
 
 			if (iop != null && iop.ObjectivesPanel != null)
 			{
