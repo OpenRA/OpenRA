@@ -343,6 +343,7 @@ function FileTreeMarkSelected(file)
     end
     if item_id then
       projtree:EnsureVisible(item_id)
+      projtree:SetScrollPos(wx.wxHORIZONTAL, 0, true)
       projtree:SetItemBold(item_id, true)
     end
     curr_file = file
