@@ -31,6 +31,7 @@ Player:
 			eye: 1
 			tmpl: 1
 			fix: 0
+			silo: 1
 		BuildingFractions:
 			proc: 20%
 			nuke: 9%
@@ -47,7 +48,7 @@ Player:
 			sam: 7%
 			eye: 1%
 			tmpl: 1%
-			silo: 4%
+			silo: 0%
 			fix: 1%
 			hpad: 2%
 		UnitsToBuild:
@@ -92,6 +93,7 @@ Player:
 			eye: 1
 			tmpl: 1
 			fix: 0
+			silo: 1
 		BuildingFractions:
 			proc: 17%
 			nuke: 1%
@@ -109,7 +111,7 @@ Player:
 			eye: 1%
 			tmpl: 1%
 			sam: 7%
-			silo: 7%
+			silo: 0%
 			fix: 1%
 		UnitsToBuild:
 			e1: 30%
@@ -153,6 +155,7 @@ Player:
 			eye: 1
 			tmpl: 1
 			fix: 0
+			silo: 1
 		BuildingFractions:
 			proc: 17%
 			nuke: 10%	
@@ -170,7 +173,7 @@ Player:
 			eye: 1%
 			tmpl: 1%
 			sam: 7%
-			silo: 14%
+			silo: 0%
 			fix: 1%
 		UnitsToBuild:
 			e1: 30%
