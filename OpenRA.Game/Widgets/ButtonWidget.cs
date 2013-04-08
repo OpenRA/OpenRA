@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using OpenRA.FileFormats;
 using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
@@ -36,6 +37,11 @@ namespace OpenRA.Widgets
 		public Action<MouseInput> OnMouseDown = _ => {};
 		public Action<MouseInput> OnMouseUp = _ => {};
 
+		public readonly string TooltipTemplate = "BUTTON_TOOLTIP";
+		public readonly string TooltipText;
+		public readonly string TooltipContainer;
+		Lazy<TooltipContainerWidget> tooltipContainer;
+
 		// Equivalent to OnMouseUp, but without an input arg
 		public Action OnClick = () => {};
 		public Action OnDoubleClick = () => {}; 
@@ -49,24 +55,32 @@ namespace OpenRA.Widgets
 			OnKeyPress = _ => OnClick();
 			IsDisabled = () => Disabled;
 			IsHighlighted = () => Highlighted;
+			tooltipContainer = Lazy.New(() =>
+				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 		}
 
-		protected ButtonWidget(ButtonWidget widget)
-			: base(widget)
+		protected ButtonWidget(ButtonWidget other)
+			: base(other)
 		{
-			Text = widget.Text;
-			Font = widget.Font;
-			Depressed = widget.Depressed;
-			VisualHeight = widget.VisualHeight;
-			GetText = widget.GetText;
-			OnMouseDown = widget.OnMouseDown;
-			Disabled = widget.Disabled;
-			IsDisabled = widget.IsDisabled;
-			Highlighted = widget.Highlighted;
-			IsHighlighted = widget.IsHighlighted;
+			Text = other.Text;
+			Font = other.Font;
+			Depressed = other.Depressed;
+			VisualHeight = other.VisualHeight;
+			GetText = other.GetText;
+			OnMouseDown = other.OnMouseDown;
+			Disabled = other.Disabled;
+			IsDisabled = other.IsDisabled;
+			Highlighted = other.Highlighted;
+			IsHighlighted = other.IsHighlighted;
 
 			OnMouseUp = mi => OnClick();
 			OnKeyPress = _ => OnClick();
+
+			TooltipTemplate = other.TooltipTemplate;
+			TooltipText = other.TooltipText;
+			TooltipContainer = other.TooltipContainer;
+			tooltipContainer = Lazy.New(() =>
+				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 		}
 
 		public override bool LoseFocus(MouseInput mi)
@@ -137,6 +151,19 @@ namespace OpenRA.Widgets
 			return Depressed;
 		}
 
+		public override void MouseEntered()
+		{
+			if (TooltipContainer == null) return;
+			tooltipContainer.Value.SetTooltip(TooltipTemplate,
+			                                  new WidgetArgs() {{ "button", this }});
+		}
+
+		public override void MouseExited()
+		{
+			if (TooltipContainer == null) return;
+			tooltipContainer.Value.RemoveTooltip();
+		}
+
 		public override int2 ChildOrigin { get { return RenderOrigin +
 				((Depressed) ? new int2(VisualHeight, VisualHeight) : new int2(0, 0)); } }
 
@@ -166,14 +193,13 @@ namespace OpenRA.Widgets
 
 		public static void DrawBackground(string baseName, Rectangle rect, bool disabled, bool pressed, bool hover, bool highlighted)
 		{
+			var variant = highlighted ? "-highlighted" : "";
 			var state = disabled ? "-disabled" :
 						pressed ? "-pressed" :
 						hover ? "-hover" :
 						"";
-			if (highlighted)
-				state += "-highlighted";
 
-			WidgetUtils.DrawPanel(baseName + state, rect);
+			WidgetUtils.DrawPanel(baseName + variant + state, rect);
 		}
 	}
 }

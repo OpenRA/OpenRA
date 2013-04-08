@@ -54,7 +54,7 @@ button-pressed: chrome.png
 	corner-bl: 64,254,2,2
 	corner-br: 126,254,2,2
 
-button-toggled: chrome.png
+button-highlighted: chrome.png
 	background: 257,129,30,30
 	border-r: 287,129,1,30
 	border-l: 256,129,1,30
@@ -65,7 +65,7 @@ button-toggled: chrome.png
 	corner-bl: 256,159,1,1
 	corner-br: 287,159,1,1
 
-button-toggled-hover: chrome.png
+button-highlighted-hover: chrome.png
 	background: 289,129,30,30
 	border-r: 319,129,1,30
 	border-l: 288,129,1,30
@@ -76,7 +76,7 @@ button-toggled-hover: chrome.png
 	corner-bl: 288,159,1,1
 	corner-br: 319,159,1,1
 
-button-toggled-pressed: chrome.png
+button-highlighted-pressed: chrome.png
 	background: 257,161,30,30
 	border-r: 287,161,1,30
 	border-l: 256,161,1,30
@@ -87,7 +87,7 @@ button-toggled-pressed: chrome.png
 	corner-bl: 256,191,1,1
 	corner-br: 287,191,1,1
 
-button-toggled-disabled: chrome.png
+button-highlighted-disabled: chrome.png
 	background: 289,161,30,30
 	border-r: 319,161,1,30
 	border-l: 288,161,1,30

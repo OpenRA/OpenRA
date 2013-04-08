@@ -110,11 +110,12 @@
     <Compile Include="Widgets\ProductionPaletteWidget.cs" />
     <Compile Include="Widgets\ProductionTabsWidget.cs" />
     <Compile Include="Widgets\SupportPowersWidget.cs" />
-    <Compile Include="Widgets\ToggleButtonWidget.cs" />
     <Compile Include="WithFire.cs" />
     <Compile Include="WithRoof.cs" />
     <Compile Include="Widgets\ResourceBarWidget.cs" />
     <Compile Include="Widgets\Logic\SpawnSelectorTooltipLogic.cs" />
+    <Compile Include="Widgets\Logic\ProductionTabsLogic.cs" />
+    <Compile Include="Widgets\ProductionTypeButtonWidget.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

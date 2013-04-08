@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			// General pane
 			var generalButton = panel.Get<ButtonWidget>("GENERAL_BUTTON");
 			generalButton.OnClick = () => Settings = PanelType.General;
-			generalButton.IsDisabled = () => Settings == PanelType.General;
+			generalButton.IsHighlighted = () => Settings == PanelType.General;
 
 			var generalPane = panel.Get("GENERAL_CONTROLS");
 			generalPane.IsVisible = () => Settings == PanelType.General;
@@ -118,7 +118,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 			var inputButton = panel.Get<ButtonWidget>("INPUT_BUTTON");
 			inputButton.OnClick = () => Settings = PanelType.Input;
-			inputButton.IsDisabled = () => Settings == PanelType.Input;
+			inputButton.IsHighlighted = () => Settings == PanelType.Input;
 
 			var classicMouseCheckbox = inputPane.Get<CheckboxWidget>("CLASSICORDERS_CHECKBOX");
 			classicMouseCheckbox.IsChecked = () => gameSettings.UseClassicMouseStyle;
