@@ -8,10 +8,11 @@
  */
 #endregion
 
-using OpenRA.Traits;
-using System.Linq;
-using OpenRA.Widgets;
 using System.Drawing;
+using System.Linq;
+using OpenRA.Network;
+using OpenRA.Traits;
+using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
 {
@@ -26,11 +27,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			gameRoot = r.Get("INGAME_ROOT");
 			var optionsBG = gameRoot.Get("INGAME_OPTIONS_BG");
 
+			// TODO: RA's broken UI wiring makes it unreasonably difficult to
+			// cache and restore the previous pause state, so opening/closing
+			// the menu in a paused singleplayer game will un-pause the game.
 			r.Get<ButtonWidget>("INGAME_OPTIONS_BUTTON").OnClick = () =>
 			{
 				optionsBG.Visible = !optionsBG.Visible;
 				if (world.LobbyInfo.IsSinglePlayer)
-					world.IssueOrder(Order.PauseGame());
+					world.IssueOrder(Order.PauseGame(true));
 			};
 			
 			var cheatsButton = gameRoot.Get<ButtonWidget>("CHEATS_BUTTON");
@@ -65,7 +69,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				optionsBG.Visible = false;
 				if (world.LobbyInfo.IsSinglePlayer)
-					world.IssueOrder(Order.PauseGame());
+					world.IssueOrder(Order.PauseGame(false));
 			};
 
 			optionsBG.Get<ButtonWidget>("SURRENDER").OnClick = () =>

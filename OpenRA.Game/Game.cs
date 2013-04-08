@@ -174,20 +174,20 @@ namespace OpenRA
 					{
 						var isNetTick = LocalTick % NetTickScale == 0;
 
-						if ((!isNetTick || orderManager.IsReadyForNextFrame) && !orderManager.GamePaused )
+						if (!isNetTick || orderManager.IsReadyForNextFrame)
 						{
 							++orderManager.LocalFrameNumber;
 
 							Log.Write("debug", "--Tick: {0} ({1})", LocalTick, isNetTick ? "net" : "local");
 
-							if (isNetTick) orderManager.Tick();
-
+							if (isNetTick)
+								orderManager.Tick();
 
 							Sync.CheckSyncUnchanged(world, () =>
-								{
-									world.OrderGenerator.Tick(world);
-									world.Selection.Tick(world);
-								});
+							{
+								world.OrderGenerator.Tick(world);
+								world.Selection.Tick(world);
+							});
 
 							world.Tick();
 

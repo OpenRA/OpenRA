@@ -1,109 +1,101 @@
 Container@CHEATS_PANEL:
 	Logic:CheatsLogic
-	X:(WINDOW_RIGHT - WIDTH)/2
-	Y:(WINDOW_BOTTOM - 110)/2
-	Width:590
-	Height:145
+	Width:PARENT_RIGHT
+	Height:PARENT_BOTTOM
 	Children:
 		Label@TITLE:
-			Width:590
+			Width:PARENT_RIGHT
 			Y:0-25
 			Font:BigBold
 			Contrast:true
 			Align:Center
-			Text:Cheats
+			Text:Debug Options
 		Background@bg:
-			Width:590
-			Height:140
+			Width:PARENT_RIGHT
+			Height:PARENT_BOTTOM
 			Background:panel-black
 			Children:
+				Label@CHEATS_TITLE:
+					Y:25
+					Font:Bold
+					Text:Cheats
+					Align:Center
+					Width:PARENT_RIGHT
 				Checkbox@INSTANT_BUILD:
-					X:15
-					Y:15
+					X:45
+					Y:45
 					Width:200
 					Height:20
 					Text:Instant Build Speed
 				Checkbox@ENABLE_TECH:
-					X:15
-					Y:45
+					X:45
+					Y:75
 					Width:200
 					Height:20
 					Text:Build Everything
 				Checkbox@BUILD_ANYWHERE:
-					X:15
-					Y:75
+					X:45
+					Y:105
 					Width:200
 					Height:20
 					Text:Build Anywhere
 				Checkbox@UNLIMITED_POWER:
-					X:200
-					Y:15
+					X:290
+					Y:45
 					Width:200
 					Height:20
 					Text:Unlimited Power
 				Checkbox@INSTANT_CHARGE:
-					X:200
-					Y:45
+					X:290
+					Y:75
 					Width:200
 					Height:20
 					Text:Instant Charge Time
-				Checkbox@SHOW_MUZZLES:
-					X:200
-					Y:75
-					Height:20
-					Width:200
-					Text:Show Muzzle Positions
 				Checkbox@DISABLE_SHROUD:
-					X:400
-					Y:15
+					X:290
+					Y:105
 					Height:20
 					Width:200
-					Text:Disable Shroud
+					Text:Disable Shroud & Fog
+				Button@GIVE_CASH:
+					X:20
+					Y:155
+					Width:140
+					Height:35
+					Text:Give $20,000
+				Button@GIVE_EXPLORATION:
+					X:186
+					Y:155
+					Width:140
+					Height:35
+					Text:Clear Shroud
+				Button@RESET_EXPLORATION:
+					X:352
+					Y:155
+					Width:140
+					Height:35
+					Text:Reset Shroud
+				Label@VISUALIZATIONS_TITLE:
+					Y:215
+					Font:Bold
+					Text:Visualizations
+					Align:Center
+					Width:PARENT_RIGHT
 				Checkbox@SHOW_UNIT_PATHS:
-					X:400
-					Y:45
+					X:45
+					Y:235
 					Width:200
 					Height:20
 					Text:Show Unit Paths
 				Checkbox@SHOW_ASTAR:
-					X:400
-					Y:75
+					X:45
+					Y:265
 					Height:20
 					Width:200
 					Text:Show A* Cost
-				Checkbox@DESYNC_ARMED:
-					X:400
-					Y:105
-					Width:20
+				Checkbox@SHOW_MUZZLES:
+					X:290
+					Y:235
 					Height:20
-				Button@DESYNC:
-					X:430
-					Y:100
-					Width:120
-					Height:25
-					Text: Force Desync
-		Button@CLOSE:
-			Key:escape
-			X:0
-			Y:139
-			Width:140
-			Height:35
-			Text:Close
-		Button@GIVE_CASH:
-			X:150
-			Y:139
-			Width:140
-			Height:35
-			Text:Give Cash
-		Button@GIVE_EXPLORATION:
-			X:300
-			Y:139
-			Width:140
-			Height:35
-			Text:Give Exploration
-		Button@RESET_EXPLORATION:
-			X:450
-			Y:139
-			Width:140
-			Height:35
-			Text:Reset Exploration
+					Width:200
+					Text:Show Muzzle Positions

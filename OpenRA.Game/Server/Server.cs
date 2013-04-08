@@ -488,11 +488,9 @@ namespace OpenRA.Server
 						DispatchOrdersToClient(c, fromIndex, 0, so.Serialize());
 					break;
 				
-				case "PauseRequest":
-					foreach (var c in conns.ToArray())
-					{  var x = Order.PauseGame();
-						DispatchOrdersToClient(c, fromIndex, 0, x.Serialize());
-					}
+				case "PauseGame":
+					foreach (var c in conns.Except(conn).ToArray())
+						DispatchOrdersToClient(c, fromIndex, 0, so.Serialize());
 					break;
 			}
 		}

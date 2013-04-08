@@ -1,9 +1,7 @@
 Container@CONQUEST_OBJECTIVES:
 	Logic:CncConquestObjectivesLogic
-	X:(WINDOW_RIGHT - WIDTH)/2
-	Y:(WINDOW_BOTTOM - HEIGHT)/2
-	Width:512
-	Height:320
+	Width:PARENT_RIGHT
+	Height:PARENT_BOTTOM
 	Children:
 		Label@TITLE:
 			Width:PARENT_RIGHT

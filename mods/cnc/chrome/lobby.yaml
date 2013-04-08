@@ -347,7 +347,7 @@ Container@SERVER_LOBBY:
 					Y:257
 					Width:130
 					Height:20
-					Text: Allow Cheats
+					Text: Debug Menu
 				Checkbox@CRATES_CHECKBOX:
 					X:160
 					Y:257

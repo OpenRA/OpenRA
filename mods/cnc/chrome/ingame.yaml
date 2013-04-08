@@ -74,12 +74,6 @@ Container@OBSERVER_WIDGETS:
 Container@PLAYER_WIDGETS:
 	Children:
 		LogicTicker@WIN_LOSS_WATCHER:
-		Button@CHEATS_BUTTON:
-			X:WINDOW_RIGHT-400
-			Y:5
-			Width:140
-			Height:35
-			Text:Cheats
 		WorldCommand:
 			Width:WINDOW_RIGHT
 			Height:WINDOW_BOTTOM

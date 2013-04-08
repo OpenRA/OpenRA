@@ -85,6 +85,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 		public void OptionsClicked()
 		{
+			var cachedPause = world.Paused;
+
 			if (menu != MenuType.None)
 			{
 				Ui.CloseWindow();
@@ -93,14 +95,15 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 			ingameRoot.IsVisible = () => false;
 			if (world.LobbyInfo.IsSinglePlayer)
-				world.IssueOrder(Order.PauseGame());
+				world.IssueOrder(Order.PauseGame(true));
+
 			Game.LoadWidget(world, "INGAME_MENU", Ui.Root, new WidgetArgs()
 			{
 				{ "onExit", () =>
 					{
 						ingameRoot.IsVisible = () => true;
 						if (world.LobbyInfo.IsSinglePlayer)
-							world.IssueOrder(Order.PauseGame());
+							world.IssueOrder(Order.PauseGame(cachedPause));
 					}
 				}
 			});
@@ -143,17 +146,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			SetupProductionGroupButton(queueTypes.Get<ToggleButtonWidget>("AIRCRAFT"), "Aircraft");
 
 			playerWidgets.Get<ButtonWidget>("OPTIONS_BUTTON").OnClick = OptionsClicked;
-
-			var cheatsButton = playerWidgets.Get<ButtonWidget>("CHEATS_BUTTON");
-			cheatsButton.OnClick = () =>
-			{
-				if (menu != MenuType.None)
-					Ui.CloseWindow();
-
-				menu = MenuType.Cheats;
-				Game.OpenWindow("CHEATS_PANEL", new WidgetArgs() {{"onExit", () => menu = MenuType.None }});
-			};
-			cheatsButton.IsVisible = () => world.LocalPlayer != null && world.LobbyInfo.GlobalSettings.AllowCheats;
 
 			var winLossWatcher = playerWidgets.Get<LogicTickerWidget>("WIN_LOSS_WATCHER");
 			winLossWatcher.OnTick = () =>

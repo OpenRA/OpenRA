@@ -207,6 +207,7 @@ World:
 	Shroud:
 	PathFinder:
 	ValidateOrder:
+	DebugPauseState:
 
 CRATE:
 	Tooltip:
