@@ -190,67 +190,74 @@ Container@PLAYER_WIDGETS:
 					Width:170
 					Height:30
 					Children:
-						ToggleButton@BUILDING:
+						ProductionTypeButton@BUILDING:
 							Width:30
 							Height:30
 							Key: q
 							TooltipText: Buildings
 							TooltipContainer:TOOLTIP_CONTAINER
+							ProductionGroup:Building
 							Children:
 								Image@ICON:
 									X:7
 									Y:7
 									ImageCollection:production-icons
-						ToggleButton@DEFENSE:
+						ProductionTypeButton@DEFENSE:
 							X:35
 							Width:30
 							Height:30
 							Key: w
 							TooltipText: Defense
 							TooltipContainer:TOOLTIP_CONTAINER
+							ProductionGroup:Defense
 							Children:
 								Image@ICON:
 									X:7
 									Y:7
 									ImageCollection:production-icons
-						ToggleButton@INFANTRY:
+						ProductionTypeButton@INFANTRY:
 							X:70
 							Width:30
 							Height:30
 							Key: e
 							TooltipText: Infantry
 							TooltipContainer:TOOLTIP_CONTAINER
+							ProductionGroup:Infantry
 							Children:
 								Image@ICON:
 									X:7
 									Y:7
 									ImageCollection:production-icons
-						ToggleButton@VEHICLE:
+						ProductionTypeButton@VEHICLE:
 							X:105
 							Width:30
 							Height:30
 							Key: r
 							TooltipText: Vehicles
 							TooltipContainer:TOOLTIP_CONTAINER
+							ProductionGroup:Vehicle
 							Children:
 								Image@ICON:
 									X:7
 									Y:7
 									ImageCollection:production-icons
-						ToggleButton@AIRCRAFT:
+						ProductionTypeButton@AIRCRAFT:
 							X:140
 							Width:30
 							Height:30
 							Key: t
 							TooltipText: Aircraft
 							TooltipContainer:TOOLTIP_CONTAINER
+							ProductionGroup:Aircraft
 							Children:
 								Image@ICON:
 									X:7
 									Y:7
 									ImageCollection:production-icons
 		ProductionTabs@PRODUCTION_TABS:
+			Logic:ProductionTabsLogic
 			PaletteWidget:PRODUCTION_PALETTE
+			TypesContainer:PRODUCTION_TYPES
 			X:WINDOW_RIGHT - 204
 			Y:268
 			Width:194

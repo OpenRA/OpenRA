@@ -20,7 +20,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 	public class CncIngameChromeLogic
 	{
 		Widget ingameRoot;
-		ProductionTabsWidget queueTabs;
 		World world;
 
 		void AddChatLine(Color c, string from, string text)
@@ -32,32 +31,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		{
 			Game.AddChatLine -= AddChatLine;
 			Game.BeforeGameStart -= UnregisterEvents;
-
-			if (queueTabs != null)
-			{
-				world.ActorAdded += queueTabs.ActorChanged;
-				world.ActorRemoved += queueTabs.ActorChanged;
-			}
-		}
-
-		void SetupProductionGroupButton(ToggleButtonWidget button, string group)
-		{
-			Action<bool> selectTab = reverse =>
-			{
-				if (queueTabs.QueueGroup == group)
-					queueTabs.SelectNextTab(reverse);
-				else
-					queueTabs.QueueGroup = group;
-			};
-
-			button.IsDisabled = () => queueTabs.Groups[group].Tabs.Count == 0;
-			button.OnMouseUp = mi => selectTab(mi.Modifiers.HasModifier(Modifiers.Shift));
-			button.OnKeyPress = e => selectTab(e.Modifiers.HasModifier(Modifiers.Shift));
-			button.IsToggled = () => queueTabs.QueueGroup == group;
-			var chromeName = group.ToLowerInvariant();
-			var icon = button.Get<ImageWidget>("ICON");
-			icon.GetImageName = () => button.IsDisabled() ? chromeName+"-disabled" :
-				queueTabs.Groups[group].Alert ? chromeName+"-alert" : chromeName;
 		}
 
 		[ObjectCreator.UseCtor]
@@ -124,17 +97,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			var playerResources = world.LocalPlayer.PlayerActor.Trait<PlayerResources>();
 			sidebarRoot.Get<LabelWidget>("CASH").GetText = () =>
 				"${0}".F(playerResources.DisplayCash + playerResources.DisplayOre);
-
-			queueTabs = playerWidgets.Get<ProductionTabsWidget>("PRODUCTION_TABS");
-			world.ActorAdded += queueTabs.ActorChanged;
-			world.ActorRemoved += queueTabs.ActorChanged;
-
-			var queueTypes = sidebarRoot.Get("PRODUCTION_TYPES");
-			SetupProductionGroupButton(queueTypes.Get<ToggleButtonWidget>("BUILDING"), "Building");
-			SetupProductionGroupButton(queueTypes.Get<ToggleButtonWidget>("DEFENSE"), "Defense");
-			SetupProductionGroupButton(queueTypes.Get<ToggleButtonWidget>("INFANTRY"), "Infantry");
-			SetupProductionGroupButton(queueTypes.Get<ToggleButtonWidget>("VEHICLE"), "Vehicle");
-			SetupProductionGroupButton(queueTypes.Get<ToggleButtonWidget>("AIRCRAFT"), "Aircraft");
 
 			playerWidgets.Get<ButtonWidget>("OPTIONS_BUTTON").OnClick = OptionsClicked;
 

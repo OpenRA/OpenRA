@@ -61,6 +61,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 	class ProductionTabsWidget : Widget
 	{
 		public readonly string PaletteWidget = null;
+		public readonly string TypesContainer = null;
+
 		public readonly float ScrollVelocity = 4f;
 		public readonly int TabWidth = 30;
 		public readonly int ArrowWidth = 20;
