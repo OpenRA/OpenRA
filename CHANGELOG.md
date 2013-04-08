@@ -1,6 +1,6 @@
 # ZeroBrane Studio Changelog
 
-## Current master (Apr 06 2013)
+## v0.36 (Apr 08 2013)
 
 ### Highlights
   - Added 32bit and 64bit **Linux binaries**.
@@ -66,6 +66,9 @@
   - The debugger now stops on the next executable line after `.start()` call.
 
 ### Fixes
+  - Fixed activating files in the project tree on a case insensitive system.
+  - Fixed the Stack view being partially hidden when the root item is too wide (ref #110).
+  - Fixed left side of the project panel being hidden when a file is activated (fixes #122).
   - Fixed breakpoint not firing on the first executable line in debugging (helps #121).
   - Fixed terminating debugging of an empty script.
   - Fixed reporting of initial line during debugging.
