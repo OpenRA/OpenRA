@@ -137,6 +137,7 @@ local function updateStackSync()
       stackCtrl:Expand(callitem)
     end
     stackCtrl:EnsureVisible(stackCtrl:GetFirstChild(root))
+    stackCtrl:SetScrollPos(wx.wxHORIZONTAL, 0, true)
     stackCtrl:Thaw()
   end
 end
