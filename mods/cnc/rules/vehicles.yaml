@@ -83,9 +83,9 @@ APC:
 	Valued:
 		Cost: 700
 	Tooltip:
-		Name: Armored Personnel Carrier
+		Name: APC
 		Icon: apcicnh
-		Description: Armored infantry transport and mobile AA\n  Strong vs Aircraft\n  Weak vs Tanks, Infantry
+		Description: Armored infantry transport and mobile AA\n  Strong vs Aircraft, Vehicles\n  Weak vs Infantry
 	Buildable:
 		BuildPaletteOrder: 30
 		Prerequisites: pyle
@@ -128,7 +128,7 @@ ARTY:
 	Tooltip:
 		Name: Artillery
 		Icon:artyicnh
-		Description: Long-range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
+		Description: Long-range artillery.\n  Strong vs Infantry, Vehicles\n  Weak vs Tanks, Aircraft
 	Buildable:
 		BuildPaletteOrder: 40
 		Prerequisites: anyhq
@@ -164,7 +164,7 @@ FTNK:
 	Tooltip:
 		Name: Flame Tank
 		Icon: ftnkicnh
-		Description: Heavily armored flame-throwing vehicle.\n  Strong vs Infantry, Buildings\n  Weak vs Aircraft
+		Description: Heavily armored flame-throwing vehicle.\n  Strong vs Infantry, Buildings, Vehicles\n  Weak vs Aircraft
 	Buildable:
 		BuildPaletteOrder: 50
 		Prerequisites: anyhq
@@ -200,7 +200,7 @@ BGGY:
 	Tooltip:
 		Name: Nod Buggy
 		Icon: bggyicnh
-		Description: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
+		Description: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry, Vehicles\n  Weak vs Tanks, Aircraft
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: afld
@@ -275,7 +275,7 @@ JEEP:
 	Tooltip:
 		Name: Hum-Vee
 		Icon: jeepicnh
-		Description: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
+		Description: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry, Vehicles\n  Weak vs Tanks, Aircraft
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: weap
@@ -310,7 +310,7 @@ LTNK:
 	Tooltip:
 		Name: Light Tank
 		Icon: ltnkicnh
-		Description: Light Tank, good for scouting.\n  Strong vs Light Vehicles\n  Weak vs Tanks, Aircraft
+		Description: Fast, light tank.\n  Strong vs Vehicles, Tanks\n  Weak vs Infantry, Aircraft
 	Buildable:
 		BuildPaletteOrder: 40
 		Prerequisites: anyhq
@@ -347,9 +347,9 @@ MTNK:
 	Valued:
 		Cost: 800
 	Tooltip:
-		Name: Medium Tank
+		Name: Med. Tank
 		Icon: mtnkicnh
-		Description: General-Purpose GDI Tank.\n  Strong vs Tanks, Light Vehicles\n  Weak vs Infantry, Aircraft
+		Description: General-Purpose GDI Tank.\n  Strong vs Tanks, Vehicles\n  Weak vs Infantry, Aircraft
 	Buildable:
 		BuildPaletteOrder: 40
 		Prerequisites: anyhq
@@ -438,9 +438,9 @@ MSAM:
 	Valued:
 		Cost: 1200
 	Tooltip:
-		Name: Rocket Launcher
+		Name: MLRS
 		Icon: msamicnh
-		Description: Long range artillery.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
+		Description: Long range rocket artillery.\n  Strong vs all ground units.
 	Buildable:
 		BuildPaletteOrder: 50
 		Prerequisites: anyhq
@@ -473,7 +473,7 @@ MLRS:
 	Valued:
 		Cost: 750
 	Tooltip:
-		Name: Surface-to-Air Missile Launcher
+		Name: Mobile S.A.M.
 		Icon: mlrsicnh
 		Description: Powerful anti-air unit.\nCannot attack ground units.
 	Buildable:
@@ -515,7 +515,7 @@ STNK:
 	Tooltip:
 		Name: Stealth Tank
 		Icon: stnkicnh
-		Description: Missile tank that can bend light around \nitself to become invisible\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks
+		Description: Long-range missile tank that can cloak.\nHas weak armor. Can be spotted by infantry.\n  Strong vs Vehicles, Tanks, Aircraft\n  Weak vs Infantry.
 	Buildable:
 		BuildPaletteOrder: 90
 		Prerequisites: tmpl
@@ -531,8 +531,8 @@ STNK:
 	RevealsShroud:
 		Range: 7
 	Cloak:
-		InitialDelay: 80
-		CloakDelay: 80
+		InitialDelay: 90
+		CloakDelay: 90
 		CloakSound: trans1.aud
 		UncloakSound: trans1.aud
 	Armament:
@@ -553,7 +553,7 @@ MHQ:
 	Valued:
 		Cost: 1000
 	Tooltip:
-		Name: Mobile Headquarter
+		Name: Mobile HQ
 		Icon: mhqicnh
 		Description: Base of operations
 	Health:
