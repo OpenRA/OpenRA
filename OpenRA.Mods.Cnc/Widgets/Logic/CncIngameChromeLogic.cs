@@ -19,9 +19,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 {
 	public class CncIngameChromeLogic
 	{
-		enum MenuType { None, Cheats }
-		MenuType menu = MenuType.None;
-
 		Widget ingameRoot;
 		ProductionTabsWidget queueTabs;
 		World world;
@@ -86,12 +83,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		public void OptionsClicked()
 		{
 			var cachedPause = world.Paused;
-
-			if (menu != MenuType.None)
-			{
-				Ui.CloseWindow();
-				menu = MenuType.None;
-			}
 
 			ingameRoot.IsVisible = () => false;
 			if (world.LobbyInfo.IsSinglePlayer)
