@@ -146,9 +146,9 @@ namespace OpenRA.GameRules
 
 		public string AttackMoveKey = "a";
 		public string StopKey = "s";
-		public string ScatterKey = "d";
+		public string ScatterKey = "x";
 		public string DeployKey = "f";
-		public string StanceCycleKey = "g";
+		public string StanceCycleKey = "z";
 
 		public string CycleTabsKey = "tab";
 	}
