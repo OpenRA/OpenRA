@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var views = world.Players.Where(p => !p.NonCombatant).ToDictionary(p => p.PlayerName,
 				p => new CameraOption("{0}'s view".F(p.PlayerName),
 				      () => world.RenderedPlayer == p,
-					  () => { world.RenderedPlayer = p; world.RenderedShroud.Dirty(); }
+				      () => { world.RenderedPlayer = p; world.RenderedShroud.Dirty(); }
 			));
 			views.Add("", new CameraOption("World view",
 				() => world.RenderedPlayer == null,
