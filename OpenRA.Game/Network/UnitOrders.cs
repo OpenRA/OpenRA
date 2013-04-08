@@ -95,16 +95,20 @@ namespace OpenRA.Network
 						Game.StartGame(orderManager.LobbyInfo.GlobalSettings.Map, false);
 						break;
 					}
-				
+
 				case "PauseGame":
-					{	
+					{
 						var client = orderManager.LobbyInfo.ClientWithIndex(clientId);
-				
-						if(client != null)
+						if (client != null)
 						{
-							orderManager.GamePaused = !orderManager.GamePaused;
-							var pausetext = "The game is {0} by {1}".F( orderManager.GamePaused ? "paused" : "un-paused", client.Name );
-							Game.AddChatLine(Color.White, "", pausetext);
+							var pause = order.TargetString == "Pause";
+							if (orderManager.world.Paused != pause && !world.LobbyInfo.IsSinglePlayer)
+							{
+								var pausetext = "The game is {0} by {1}".F(pause ? "paused" : "un-paused", client.Name);
+								Game.AddChatLine(Color.White, "", pausetext);
+							}
+
+							orderManager.world.Paused = pause;
 						}
 						break;
 					}

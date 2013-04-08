@@ -239,6 +239,7 @@ World:
 	Shroud:
 	PathFinder:
 	ValidateOrder:
+	DebugPauseState:
 
 MINP:
 	Mine:

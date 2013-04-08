@@ -222,6 +222,7 @@
     <Compile Include="WorldUtils.cs" />
     <Compile Include="Network\ReplayRecorderConnection.cs" />
     <Compile Include="Widgets\TooltipContainerWidget.cs" />
+    <Compile Include="Traits\DebugPauseState.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

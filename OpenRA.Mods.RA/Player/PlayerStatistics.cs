@@ -86,7 +86,6 @@ namespace OpenRA.Mods.RA
 				case "Chat":
 				case "TeamChat":
 				case "HandshakeResponse":
-				case "PauseRequest":
 				case "PauseGame":
 				case "StartGame":
 				case "Disconnected":
@@ -94,7 +93,8 @@ namespace OpenRA.Mods.RA
 				case "SyncInfo":
 					return;
 			}
-			if (order.OrderString.StartsWith("Dev")) return;
+			if (order.OrderString.StartsWith("Dev"))
+				return;
 			OrderCount++;
 		}
 	}

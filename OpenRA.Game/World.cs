@@ -158,37 +158,29 @@ namespace OpenRA
 		public event Action<Actor> ActorAdded = _ => { };
 		public event Action<Actor> ActorRemoved = _ => { };
 
-		// Will do bad things in multiplayer games
-		public bool EnableTick = true;
+		public bool Paused = false;
 		public bool IsShellmap = false;
-
-		bool ShouldTick()
-		{
-			if (!EnableTick) return false;
-			return !IsShellmap || Game.Settings.Game.ShowShellmap;
-		}
 
 		public void Tick()
 		{
-			// TODO: Expose this as an order so it can be synced
-			if (ShouldTick())
+			if (!Paused && (!IsShellmap || Game.Settings.Game.ShowShellmap))
 			{
-				using( new PerfSample("tick_idle") )
-					foreach( var ni in ActorsWithTrait<INotifyIdle>() )
+				using (new PerfSample("tick_idle"))
+					foreach (var ni in ActorsWithTrait<INotifyIdle>())
 						if (ni.Actor.IsIdle)
 							ni.Trait.TickIdle(ni.Actor);
 
-				using( new PerfSample("tick_activities") )
-					foreach( var a in actors )
+				using (new PerfSample("tick_activities"))
+					foreach(var a in actors)
 						a.Tick();
 
-				ActorsWithTrait<ITick>().DoTimed( x =>
-				{
-					x.Trait.Tick( x.Actor );
-				}, "[{2}] Trait: {0} ({1:0.000} ms)", Game.Settings.Debug.LongTickThreshold );
+				ActorsWithTrait<ITick>().DoTimed(x => x.Trait.Tick(x.Actor),
+					"[{2}] Trait: {0} ({1:0.000} ms)",
+				    Game.Settings.Debug.LongTickThreshold);
 
-				effects.DoTimed( e => e.Tick( this ), "[{2}] Effect: {0} ({1:0.000} ms)",
-					Game.Settings.Debug.LongTickThreshold );
+				effects.DoTimed(e => e.Tick(this),
+					"[{2}] Effect: {0} ({1:0.000} ms)",
+					Game.Settings.Debug.LongTickThreshold);
 			}
 
 			while (frameEndActions.Count != 0)
