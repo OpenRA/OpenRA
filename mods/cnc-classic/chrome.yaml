@@ -272,7 +272,7 @@ button-hover: dialog.png
 	corner-bl: 512,82,1,1
 	corner-br: 594,82,1,1
 
-button-hover-highlighted: dialog.png
+button-highlighted-hover: dialog.png
 	background: 513,145,126,126
 	border-r: 639,145,1,126
 	border-l: 512,145,1,126
@@ -295,7 +295,7 @@ button-disabled: dialog.png
 	corner-bl: 512,82,1,1
 	corner-br: 594,82,1,1
 
-button-disabled-highlighted: dialog.png
+button-highlighted-disabled: dialog.png
 	background: 513,145,126,126
 	border-r: 639,145,1,126
 	border-l: 512,145,1,126
@@ -318,7 +318,7 @@ button-pressed: dialog.png
 	corner-bl: 640,82,1,1
 	corner-br: 722,82,1,1
 
-button-pressed-highlighted: dialog.png
+button-highlighted-pressed: dialog.png
 	background: 641,145,126,126
 	border-r: 767,145,1,126
 	border-l: 640,145,1,126

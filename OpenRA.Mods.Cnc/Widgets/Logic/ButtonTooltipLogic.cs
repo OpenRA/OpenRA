@@ -15,7 +15,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 	public class ButtonTooltipLogic
 	{
 		[ObjectCreator.UseCtor]
-		public ButtonTooltipLogic(Widget widget, ToggleButtonWidget button)
+		public ButtonTooltipLogic(Widget widget, ButtonWidget button)
 		{
 			var label = widget.Get<LabelWidget>("LABEL");
 			var hotkey = widget.Get<LabelWidget>("HOTKEY");

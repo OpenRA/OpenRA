@@ -61,6 +61,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 	class ProductionTabsWidget : Widget
 	{
 		public readonly string PaletteWidget = null;
+		public readonly string TypesContainer = null;
+
 		public readonly float ScrollVelocity = 4f;
 		public readonly int TabWidth = 30;
 		public readonly int ArrowWidth = 20;
@@ -156,7 +158,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			{
 				var rect = new Rectangle(origin.X + ContentWidth, origin.Y, TabWidth, rb.Height);
 				var hover = !leftHover && !rightHover && Ui.MouseOverWidget == this && rect.Contains(Viewport.LastMousePos);
-				var baseName = tab.Queue == CurrentQueue ? "button-toggled" : "button";
+				var baseName = tab.Queue == CurrentQueue ? "button-highlighted" : "button";
 				ButtonWidget.DrawBackground(baseName, rect, false, false, hover, false);
 				ContentWidth += TabWidth - 1;
 
