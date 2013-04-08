@@ -41,11 +41,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var views = world.Players.Where(p => !p.NonCombatant).ToDictionary(p => p.PlayerName,
 				p => new CameraOption("{0}'s view".F(p.PlayerName),
 				      () => world.RenderedPlayer == p,
-				      () => { world.RenderedPlayer = p; world.RenderedShroud.Jank(); }
+				      () => { world.RenderedPlayer = p; world.RenderedShroud.Dirty(); }
 			));
 			views.Add("", new CameraOption("World view",
 				() => world.RenderedPlayer == null,
-				() => { world.RenderedPlayer = null; world.RenderedShroud.Jank(); }
+				() => { world.RenderedPlayer = null; world.RenderedShroud.Dirty(); }
 			));
 
 			var shroudSelector = widget.Get<DropDownButtonWidget>("SHROUD_SELECTOR");

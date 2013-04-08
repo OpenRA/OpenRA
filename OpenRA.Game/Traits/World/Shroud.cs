@@ -48,13 +48,7 @@ namespace OpenRA.Traits
 			get { return Disabled ? null : exploredBounds; }
 		}
 
-		public event Action Dirty = () => { };
-
-		public void Jank()
-		{
-			Dirty();
-		}
-
+		public Action Dirty = () => { };
 
 		public Shroud(World world)
 		{

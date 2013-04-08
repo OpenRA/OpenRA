@@ -281,13 +281,23 @@ namespace OpenRA.Mods.RA.Missions
 		void OnSuperTankDomeInfiltrated(Actor spy)
 		{
 			if (superTankDomeInfiltratedTick != -1) return;
+
 			superTankDome.QueueActivity(new Transform(superTankDome, "dome") { SkipMakeAnims = true });
-			turkey.Stances[greece] = turkey.Stances[neutral] = Stance.Ally;
-			greece.Stances[turkey] = neutral.Stances[turkey] = Stance.Ally;
-			greece.Shroud.ExploreAll(world);
+
+			world.AddFrameEndTask(_ =>
+			{
+				superTanks.Do(world.Remove);
+				turkey.Stances[greece] = turkey.Stances[neutral] = Stance.Ally;
+				greece.Stances[turkey] = neutral.Stances[turkey] = Stance.Ally;
+				greece.Shroud.ExploreAll(world);
+				superTanks.Do(world.Add);
+			});
+
 			foreach (var tank in superTanks.Where(t => !t.IsDead() && t.IsInWorld))
 				MissionUtils.AttackNearestLandActor(false, tank, ussr);
+
 			superTankDomeInfiltratedTick = world.FrameNumber;
+
 			objectives[InfiltrateRadarDomeID].Status = ObjectiveStatus.Completed;
 			OnObjectivesUpdated(true);
 		}
