@@ -640,6 +640,7 @@ MINP:
 	Cloak:
 		CloakSound:
 		UncloakSound:
+		Palette:
 	Tooltip:
 		Name: Anti-Personnel Mine
 		Icon: jmin
@@ -659,6 +660,7 @@ MINV:
 	Cloak:
 		CloakSound:
 		UncloakSound:
+		Palette:
 	Tooltip:
 		Name: Anti-Tank Mine
 		Icon: jmin
@@ -732,7 +734,7 @@ CAMERA:
 	Health:
 		HP:1000
 	RevealsShroud:
-		Range: 10	
+		Range: 10
 	ProximityCaptor:
 		Types:Camera
 
