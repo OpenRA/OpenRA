@@ -74,7 +74,10 @@ namespace OpenRA.Mods.RA
 				return r;
 
 			if (Cloaked && IsVisible(self.World.RenderedShroud, self))
-				return r.Select(a => a.WithPalette(wr.Palette(info.Palette)));
+				if (string.IsNullOrEmpty(info.Palette))
+					return r;
+				else
+					return r.Select(a => a.WithPalette(wr.Palette(info.Palette)));
 			else
 				return Nothing;
 		}
