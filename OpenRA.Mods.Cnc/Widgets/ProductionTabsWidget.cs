@@ -158,7 +158,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			{
 				var rect = new Rectangle(origin.X + ContentWidth, origin.Y, TabWidth, rb.Height);
 				var hover = !leftHover && !rightHover && Ui.MouseOverWidget == this && rect.Contains(Viewport.LastMousePos);
-				var baseName = tab.Queue == CurrentQueue ? "button-toggled" : "button";
+				var baseName = tab.Queue == CurrentQueue ? "button-highlighted" : "button";
 				ButtonWidget.DrawBackground(baseName, rect, false, false, hover, false);
 				ContentWidth += TabWidth - 1;
 

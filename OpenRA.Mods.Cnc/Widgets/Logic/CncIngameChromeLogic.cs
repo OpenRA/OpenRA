@@ -141,7 +141,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		{
 			var w = parent.Get<ToggleButtonWidget>(button);
 			w.OnClick = () => world.ToggleInputMode<T>();
-			w.IsToggled = () => world.OrderGenerator is T;
+			w.IsHighlighted = () => world.OrderGenerator is T;
 
 			w.Get<ImageWidget>("ICON").GetImageName =
 				() => world.OrderGenerator is T ? icon+"-active" : icon;

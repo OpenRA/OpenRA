@@ -166,14 +166,13 @@ namespace OpenRA.Widgets
 
 		public static void DrawBackground(string baseName, Rectangle rect, bool disabled, bool pressed, bool hover, bool highlighted)
 		{
+			var variant = highlighted ? "-highlighted" : "";
 			var state = disabled ? "-disabled" :
 						pressed ? "-pressed" :
 						hover ? "-hover" :
 						"";
-			if (highlighted)
-				state += "-highlighted";
 
-			WidgetUtils.DrawPanel(baseName + state, rect);
+			WidgetUtils.DrawPanel(baseName + variant + state, rect);
 		}
 	}
 }

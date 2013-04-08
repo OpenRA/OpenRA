@@ -38,7 +38,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			button.IsDisabled = () => tabs.Groups[button.ProductionGroup].Tabs.Count == 0;
 			button.OnMouseUp = mi => selectTab(mi.Modifiers.HasModifier(Modifiers.Shift));
 			button.OnKeyPress = e => selectTab(e.Modifiers.HasModifier(Modifiers.Shift));
-			button.IsToggled = () => tabs.QueueGroup == button.ProductionGroup;
+			button.IsHighlighted = () => tabs.QueueGroup == button.ProductionGroup;
 
 			var chromeName = button.ProductionGroup.ToLowerInvariant();
 			var icon = button.Get<ImageWidget>("ICON");
