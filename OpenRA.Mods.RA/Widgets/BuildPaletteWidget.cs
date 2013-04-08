@@ -150,8 +150,9 @@ namespace OpenRA.Mods.RA.Widgets
 				TabChange(e.Modifiers.HasModifier(Modifiers.Shift));
 				return true;
 			}
-
-			return DoBuildingHotkey(e.KeyName, world);
+			if (e.Modifiers == Modifiers.Alt)
+				return DoBuildingHotkey(e.KeyName, world);
+			return false;
 		}
 
 		public override bool HandleMouseInput(MouseInput mi)
@@ -454,7 +455,7 @@ namespace OpenRA.Mods.RA.Widgets
 			WidgetUtils.DrawPanel("dialog4", new Rectangle(Game.viewport.Width - 300, pos.Y, 300, longDescSize + 65));
 
 			Game.Renderer.Fonts["Bold"].DrawText(
-				tooltip.Name + ((buildable.Hotkey != null) ? " ({0})".F(buildable.Hotkey.ToUpper()) : ""),
+				tooltip.Name + ((buildable.Hotkey != null) ? " (ALT + {0})".F(buildable.Hotkey.ToUpper()) : ""),
 												   p.ToInt2() + new int2(5, 5), Color.White);
 
 			var resources = pl.PlayerActor.Trait<PlayerResources>();
