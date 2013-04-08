@@ -15,7 +15,7 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc.Widgets
 {
-	public class ProductionTypeButtonWidget : ToggleButtonWidget
+	public class ProductionTypeButtonWidget : ButtonWidget
 	{
 		public readonly string ProductionGroup;
 

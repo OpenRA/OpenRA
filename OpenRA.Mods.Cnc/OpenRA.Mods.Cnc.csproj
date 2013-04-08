@@ -110,7 +110,6 @@
     <Compile Include="Widgets\ProductionPaletteWidget.cs" />
     <Compile Include="Widgets\ProductionTabsWidget.cs" />
     <Compile Include="Widgets\SupportPowersWidget.cs" />
-    <Compile Include="Widgets\ToggleButtonWidget.cs" />
     <Compile Include="WithFire.cs" />
     <Compile Include="WithRoof.cs" />
     <Compile Include="Widgets\ResourceBarWidget.cs" />

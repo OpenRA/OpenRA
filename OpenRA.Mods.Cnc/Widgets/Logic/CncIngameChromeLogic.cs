@@ -90,8 +90,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			BindOrderButton<SellOrderGenerator>(world, sidebarRoot, "SELL_BUTTON", "sell");
 			BindOrderButton<RepairOrderGenerator>(world, sidebarRoot, "REPAIR_BUTTON", "repair");
 
-			sidebarRoot.Get<ToggleButtonWidget>("SELL_BUTTON").Key = Game.Settings.Keys.SellKey;
-			sidebarRoot.Get<ToggleButtonWidget>("REPAIR_BUTTON").Key = Game.Settings.Keys.RepairKey;
+			sidebarRoot.Get<ButtonWidget>("SELL_BUTTON").Key = Game.Settings.Keys.SellKey;
+			sidebarRoot.Get<ButtonWidget>("REPAIR_BUTTON").Key = Game.Settings.Keys.RepairKey;
 
 			var powerManager = world.LocalPlayer.PlayerActor.Trait<PowerManager>();
 			var playerResources = world.LocalPlayer.PlayerActor.Trait<PlayerResources>();
@@ -139,7 +139,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		static void BindOrderButton<T>(World world, Widget parent, string button, string icon)
 			where T : IOrderGenerator, new()
 		{
-			var w = parent.Get<ToggleButtonWidget>(button);
+			var w = parent.Get<ButtonWidget>(button);
 			w.OnClick = () => world.ToggleInputMode<T>();
 			w.IsHighlighted = () => world.OrderGenerator is T;
 

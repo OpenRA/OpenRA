@@ -44,7 +44,7 @@ Container@INGAME_ROOT:
 		TooltipContainer@TOOLTIP_CONTAINER:
 Container@OBSERVER_WIDGETS:
 	Children:
-		ToggleButton@OPTIONS_BUTTON:
+		Button@OPTIONS_BUTTON:
 			Key:escape
 			X:WINDOW_RIGHT-202
 			Y:5
@@ -98,7 +98,7 @@ Container@PLAYER_WIDGETS:
 			Height:240
 			Background:panel-black
 			Children:
-				ToggleButton@OPTIONS_BUTTON:
+				Button@OPTIONS_BUTTON:
 					Key:escape
 					X:42
 					Y:0-24
@@ -113,7 +113,7 @@ Container@PLAYER_WIDGETS:
 							Y:5
 							ImageCollection:order-icons
 							ImageName:options
-				ToggleButton@SELL_BUTTON:
+				Button@SELL_BUTTON:
 					X:82
 					Y:0-24
 					Width:30
@@ -126,7 +126,7 @@ Container@PLAYER_WIDGETS:
 							X:7
 							Y:5
 							ImageCollection:order-icons
-				ToggleButton@REPAIR_BUTTON:
+				Button@REPAIR_BUTTON:
 					X:122
 					Y:0-24
 					Width:30
