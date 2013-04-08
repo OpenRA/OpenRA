@@ -23,7 +23,7 @@ namespace OpenRA.Widgets
 		static readonly Action Nothing = () => {};
 		public int2 CursorOffset = new int2(0, 20);
 		public Action BeforeRender = Nothing;
-		public int TooltipDelay = 2;
+		public int TooltipDelay = 5;
 		Widget tooltip;
 
 		public TooltipContainerWidget()
