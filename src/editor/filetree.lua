@@ -26,6 +26,8 @@ ide.filetree = {
 }
 local filetree = ide.filetree
 
+local iscaseinsensitive = wx.wxFileName("A"):SameAs(wx.wxFileName("a"))
+
 -- generic tree
 -- ------------
 
@@ -75,7 +77,7 @@ local function treeAddDir(tree,parent_id,rootdir)
                    or tree:PrependItem(parent_id, name, icon)
       if #dir>0 then tree:SetItemHasChildren(curr, FileSysHasContent(file)) end
     end
-    if curr:IsOk() then cache[name] = curr end
+    if curr:IsOk() then cache[iscaseinsensitive and name:lower() or name] = curr end
   end
 
   -- delete any leftovers (something that exists in the tree, but not on disk)
@@ -295,14 +297,19 @@ local function findItem(tree, match)
   local node = projtree:GetRootItem()
   local label = tree:GetItemText(node)
 
-  local s, e = string.find(match, label, 1, true)
+  local s, e
+  if iscaseinsensitive then
+    s, e = string.find(match:lower(), label:lower(), 1, true)
+  else
+    s, e = string.find(match, label, 1, true)
+  end
   if not s or s ~= 1 then return end
 
   for token in string.gmatch(string.sub(match,e+1), "[^%"..string_Pathsep.."]+") do
     local data = tree:GetItemData(node)
-    local subitems = data and data:GetData()
-    if subitems and subitems[token] then
-      node = subitems[token]
+    local cache = data and data:GetData()
+    if cache and cache[iscaseinsensitive and token:lower() or token] then
+      node = cache[iscaseinsensitive and token:lower() or token]
     else
       -- token is missing; may need to re-scan the folder; maybe new file
       local dir = treeGetItemFullName(tree,filetree.projdata,node)
