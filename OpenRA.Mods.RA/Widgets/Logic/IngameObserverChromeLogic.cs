@@ -62,44 +62,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var chatPanel = Game.LoadWidget(world, "CHAT_PANEL", Ui.Root, new WidgetArgs());
 				gameRoot.AddChild(chatPanel);
 			}
-
-			var shroudSelector = Ui.Root.GetOrNull<DropDownButtonWidget>("SHROUD_SELECTOR");
-			if (shroudSelector != null)
-			{
-				if (world.RenderedShroud == world.LocalShroud)
-					shroudSelector.GetText = () =>  world.RenderedPlayer != null ? "{0}'s View".F(world.RenderedPlayer.PlayerName) : "Worldview";
-
-				shroudSelector.OnMouseDown = _ =>
-				{
-
-					var options = world.Players.Where(p => !p.NonCombatant).Select(p => new DropDownOption
-					{
-						Title = "{0}'s View".F(p.PlayerName),
-						IsSelected = () => world.RenderedPlayer == p,
-						OnClick = () => { world.RenderedPlayer = p; world.RenderedShroud.Jank(); }
-					}).ToList();
-					options.Add(new DropDownOption
-					{
-						Title = "Worldview",
-						IsSelected = () => world.RenderedPlayer == null,
-						OnClick = () => { world.RenderedPlayer = null; world.RenderedShroud.Jank(); }
-					});
-					Func<DropDownOption, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
-					{
-						var item = ScrollItemWidget.Setup(template, option.IsSelected, option.OnClick);
-						item.Get<LabelWidget>("LABEL").GetText = () => option.Title;
-						return item;
-					};
-					shroudSelector.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count() * 30, options, setupItem);
-				};
-			}
-		}
-
-		class DropDownOption
-		{
-			public string Title;
-			public Func<bool> IsSelected;
-			public Action OnClick;
 		}
 	}
 }
