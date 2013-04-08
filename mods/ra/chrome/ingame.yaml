@@ -305,6 +305,7 @@ Container@OBSERVER_ROOT:
 					Height:PARENT_BOTTOM-19
 					WorldInteractionController:INTERACTION_CONTROLLER
 		DropDownButton@SHROUD_SELECTOR:
+			Logic:ObserverShroudSelectorLogic
 			X:WINDOW_RIGHT-250
 			Y:260
 			Width:240

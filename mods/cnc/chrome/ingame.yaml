@@ -71,6 +71,14 @@ Container@OBSERVER_WIDGETS:
 					Y:1
 					Width:PARENT_RIGHT-2
 					Height:PARENT_BOTTOM-2
+		DropDownButton@SHROUD_SELECTOR:
+			Logic:ObserverShroudSelectorLogic
+			X:WINDOW_RIGHT-173
+			Y:172
+			Width:168
+			Height:25
+			Font:Bold
+			Visible:true
 Container@PLAYER_WIDGETS:
 	Children:
 		LogicTicker@WIN_LOSS_WATCHER:
