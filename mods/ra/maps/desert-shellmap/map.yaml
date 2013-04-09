@@ -427,8 +427,8 @@ Actors:
 	Actor122: afld
 		Location: 116,49
 		Owner: Soviets
-	Actor121: hpad
-		Location: 112,50
+	Actor107: hpad
+		Location: 112,49
 		Owner: Soviets
 	Actor126: tsla
 		Location: 110,27
@@ -558,6 +558,7 @@ Actors:
 	Actor160: agun
 		Location: 83,80
 		Owner: Allies
+		Facing: 30
 	Actor165: sbag
 		Location: 73,70
 		Owner: Allies
@@ -624,6 +625,7 @@ Actors:
 	Actor54: agun
 		Location: 76,92
 		Owner: Allies
+		Facing: 150
 	Actor172: apwr
 		Location: 81,87
 		Owner: Allies
@@ -702,9 +704,6 @@ Actors:
 		Owner: Neutral
 	Actor202: delphi
 		Location: 54,67
-		Owner: Neutral
-	Actor203: gnrl
-		Location: 64,65
 		Owner: Neutral
 	Actor204: c10
 		Location: 53,73
