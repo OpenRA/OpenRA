@@ -265,19 +265,27 @@ namespace OpenRA
 			Log.AddChannel("sync", "syncreport.log");
 			Log.AddChannel("server", "server.log");
 
-			try
+			if (Settings.Server.DiscoverNatDevices)
 			{
-				NatUtility.Logger = Log.Channels["server"].Writer;
-				NatUtility.Verbose = Settings.Server.VerboseNatDiscovery;
-				NatUtility.DeviceFound += DeviceFound;
-				NatUtility.DeviceLost += DeviceLost;
-				Settings.Server.NatDeviceAvailable = false;
-				NatUtility.StartDiscovery();
-				Log.Write("server", "NAT discovery started.");
+				try
+				{
+					NatUtility.Logger = Log.Channels["server"].Writer;
+					NatUtility.Verbose = Settings.Server.VerboseNatDiscovery;
+					NatUtility.DeviceFound += DeviceFound;
+					NatUtility.DeviceLost += DeviceLost;
+					Settings.Server.NatDeviceAvailable = false;
+					NatUtility.StartDiscovery();
+					Log.Write("server", "NAT discovery started.");
+				}
+				catch (Exception e)
+				{
+					Log.Write("server", "Can't discover UPnP-enabled device: {0}", e);
+					Settings.Server.NatDeviceAvailable = false;
+					Settings.Server.AllowUPnP = false;
+				}
 			}
-			catch (Exception e)
+			else
 			{
-				Log.Write("server", "Can't discover UPnP-enabled device: {0}", e);
 				Settings.Server.NatDeviceAvailable = false;
 				Settings.Server.AllowUPnP = false;
 			}
@@ -293,32 +301,38 @@ namespace OpenRA
 			Sound.Create(Settings.Sound.Engine);
 			InitializeWithMods(Settings.Game.Mods);
 
-			RunAfterDelay(Settings.Server.NatDiscoveryTimeout, () =>
+			if (Settings.Server.DiscoverNatDevices)
 			{
-				Log.Write("server", "Stopping NAT discovery.");
+				RunAfterDelay(Settings.Server.NatDiscoveryTimeout, () =>
+				{
+					Log.Write("server", "Stopping NAT discovery.");
 
-				try
-				{
-					NatUtility.StopDiscovery();
-				}
-				catch (Exception e)
-				{
-					Log.Write("server", "Failed to stop NAT device discovery: {0}", e);
-					Settings.Server.NatDeviceAvailable = false;
-					Settings.Server.AllowUPnP = false;
-				}
+					try
+					{
+						NatUtility.StopDiscovery();
+					}
+					catch (Exception e)
+					{
+						Log.Write("server", "Failed to stop NAT device discovery: {0}", e);
+						Settings.Server.NatDeviceAvailable = false;
+						Settings.Server.AllowUPnP = false;
+					}
 
-				if (natDevice == null)
-				{
-					Log.Write("server", "No NAT devices with UPnP enabled found within {0} ms deadline. Disabling automatic port forwarding.".F(Settings.Server.NatDiscoveryTimeout));
-					Settings.Server.NatDeviceAvailable = false;
-					Settings.Server.AllowUPnP = false;
-				}
-			});
+					if (natDevice == null)
+					{
+						Log.Write("server", "No NAT devices with UPnP enabled found within {0} ms deadline. Disabling automatic port forwarding.".F(Settings.Server.NatDiscoveryTimeout));
+						Settings.Server.NatDeviceAvailable = false;
+						Settings.Server.AllowUPnP = false;
+					}
+				});
+			}
 		}
 
 		public static void DeviceFound(object sender, DeviceEventArgs args)
 		{
+			if (args.Device == null)
+				return;
+
 			Log.Write("server", "NAT device discovered.");
 
 			Settings.Server.NatDeviceAvailable = true;
@@ -346,6 +360,9 @@ namespace OpenRA
 		public static void DeviceLost(object sender, DeviceEventArgs args)
 		{
 			Log.Write("server", "NAT device lost.");
+
+			if (args.Device == null)
+				return;
 
 			try
 			{
