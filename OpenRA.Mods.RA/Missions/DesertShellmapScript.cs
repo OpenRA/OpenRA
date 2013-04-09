@@ -22,6 +22,7 @@ namespace OpenRA.Mods.RA.Missions
 		World world;
 		Player allies;
 		Player soviets;
+		Player neutral;
 
 		List<int2> viewportTargets = new List<int2>();
 		int2 viewportTarget;
@@ -30,6 +31,8 @@ namespace OpenRA.Mods.RA.Missions
 		float mul;
 		float div = 400;
 		int waitTicks = 0;
+
+		int nextCivilianMove = 1;
 
 		Actor attackLocation;
 		Actor coastRP1;
@@ -69,6 +72,17 @@ namespace OpenRA.Mods.RA.Missions
 				u.QueueActivity(new AttackMove.AttackMoveActivity(u, new Move.Move(attackLocation.Location, 0)));
 			}
 
+			if (world.FrameNumber == nextCivilianMove)
+			{
+				var civilians = world.Actors.Where(a => !a.IsDead() && a.IsInWorld && a.Owner == neutral && a.HasTrait<Mobile>());
+				if (civilians.Any())
+				{
+					var civilian = civilians.Random(world.SharedRandom);
+					civilian.Trait<Mobile>().Nudge(civilian, civilian, true);
+					nextCivilianMove += world.SharedRandom.Next(1, 75);
+				}
+			}
+
 			if (--waitTicks <= 0)
 			{
 				if (++mul <= div)
@@ -96,6 +110,7 @@ namespace OpenRA.Mods.RA.Missions
 
 			allies = w.Players.Single(p => p.InternalName == "Allies");
 			soviets = w.Players.Single(p => p.InternalName == "Soviets");
+			neutral = w.Players.Single(p => p.InternalName == "Neutral");
 
 			mapActors = w.WorldActor.Trait<SpawnMapActors>().Actors;
 
