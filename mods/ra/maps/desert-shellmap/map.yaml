@@ -771,7 +771,7 @@ Actors:
 		Owner: Allies
 		Facing: 0
 	MediumTankChronoSpawn: waypoint
-		Location: 80,60
+		Location: 80,65
 		Owner: Neutral
 	Actor220: powr
 		Location: 76,84
