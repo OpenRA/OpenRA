@@ -10,7 +10,11 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.FileFormats;
+using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Air;
 using OpenRA.Mods.RA.Move;
+using OpenRA.Scripting;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Missions
@@ -35,8 +39,8 @@ namespace OpenRA.Mods.RA.Missions
 		int nextCivilianMove = 1;
 
 		Actor attackLocation;
-		Actor coastRP1;
-		Actor coastRP2;
+		Actor coastWP1;
+		Actor coastWP2;
 		int coastUnitsLeft;
 		static readonly string[] CoastUnits = { "e1", "e1", "e2", "e3", "e4" };
 
@@ -49,26 +53,47 @@ namespace OpenRA.Mods.RA.Missions
 		Actor offmapAttackerSpawn3;
 		Actor[] offmapAttackerSpawns;
 		static readonly string[] OffmapAttackers = { "ftrk", "apc", "ttnk", "1tnk" };
+		static readonly string[] AttackerCargo = { "e1", "e2", "e3", "e4" };
+
+		static readonly string[] HeavyTanks = { "3tnk", "3tnk", "3tnk", "3tnk", "3tnk", "3tnk" };
+		Actor heavyTankSpawn;
+		Actor heavyTankWP;
+		static readonly string[] MediumTanks = { "2tnk", "2tnk", "2tnk", "2tnk", "2tnk", "2tnk" };
+		Actor mediumTankChronoSpawn;
 
 		Dictionary<string, Actor> mapActors;
+
+		Actor chronosphere;
+		Actor ironCurtain;
+
+		CPos[] mig1Waypoints;
+		CPos[] mig2Waypoints;
 
 		public void Tick(Actor self)
 		{
 			if (world.FrameNumber % 100 == 0)
 			{
-				var u = world.CreateActor(OffmapAttackers.Random(world.SharedRandom), soviets, offmapAttackerSpawns.Random(world.SharedRandom).Location, 128);
+				var actor = OffmapAttackers.Random(world.SharedRandom);
+				var spawn = offmapAttackerSpawns.Random(world.SharedRandom);
+				var u = world.CreateActor(actor, soviets, spawn.Location, Util.GetFacing(attackLocation.Location - spawn.Location, 0));
+				var cargo = u.TraitOrDefault<Cargo>();
+				if (cargo != null)
+				{
+					while (cargo.HasSpace(1))
+						cargo.Load(u, world.CreateActor(false, AttackerCargo.Random(world.SharedRandom), soviets, null, null));
+				}
 				u.QueueActivity(new AttackMove.AttackMoveActivity(u, new Move.Move(attackLocation.Location, 0)));
 			}
 
 			if (world.FrameNumber % 25 == 0)
-				foreach (var actor in world.Actors.Where(a => a.IsInWorld && a.Owner == soviets && a.IsIdle && !a.IsDead() && a.HasTrait<AttackBase>() && a.HasTrait<Mobile>())
-					.Except(mapActors.Values))
-					actor.QueueActivity(new AttackMove.AttackMoveActivity(actor, new Move.Move(attackLocation.Location, 0)));
+				foreach (var actor in world.Actors.Where(a => a.IsInWorld && a.IsIdle && !a.IsDead()
+					&& a.HasTrait<AttackBase>() && a.HasTrait<Mobile>()).Except(mapActors.Values))
+						MissionUtils.AttackNearestLandActor(true, actor, actor.Owner == soviets ? allies : soviets);
 
 			if (world.FrameNumber % 20 == 0 && coastUnitsLeft-- > 0)
 			{
-				var u = world.CreateActor(CoastUnits.Random(world.SharedRandom), soviets, coastRP1.Location, null);
-				u.QueueActivity(new Move.Move(coastRP2.Location, 0));
+				var u = world.CreateActor(CoastUnits.Random(world.SharedRandom), soviets, coastWP1.Location, null);
+				u.QueueActivity(new Move.Move(coastWP2.Location, 0));
 				u.QueueActivity(new AttackMove.AttackMoveActivity(u, new Move.Move(attackLocation.Location, 0)));
 			}
 
@@ -82,6 +107,9 @@ namespace OpenRA.Mods.RA.Missions
 					nextCivilianMove += world.SharedRandom.Next(1, 75);
 				}
 			}
+
+			if (world.FrameNumber == 1)
+				MissionUtils.Paradrop(world, soviets, ParadropUnits, paradropEntry.Location, paradropLZ.Location);
 
 			if (--waitTicks <= 0)
 			{
@@ -98,10 +126,56 @@ namespace OpenRA.Mods.RA.Missions
 						coastUnitsLeft = 15;
 					if (viewportTargetNumber == 1)
 						MissionUtils.Paradrop(world, soviets, ParadropUnits, paradropEntry.Location, paradropLZ.Location);
+					if (viewportTargetNumber == 2)
+					{
+						AttackWithHeavyTanks();
+						ChronoSpawnMediumTanks();
+					}
+					if (viewportTargetNumber == 4)
+					{
+						FlyMigs(mig1Waypoints);
+						FlyMigs(mig2Waypoints);
+					}
 				}
 			}
 
 			MissionUtils.CapOre(soviets);
+		}
+
+		void AttackWithHeavyTanks()
+		{
+			foreach (var tank in HeavyTanks)
+			{
+				var u = world.CreateActor(tank, soviets, heavyTankSpawn.Location, Util.GetFacing(heavyTankWP.Location - heavyTankSpawn.Location, 0));
+				u.QueueActivity(new AttackMove.AttackMoveActivity(u, new Move.Move(heavyTankWP.Location, 0)));
+			}
+			ironCurtain.Trait<IronCurtainPower>().Activate(ironCurtain, new Order { TargetLocation = heavyTankSpawn.Location });
+		}
+
+		void ChronoSpawnMediumTanks()
+		{
+			var chronoInfo = new List<Pair<Actor, CPos>>();
+			foreach (var tank in MediumTanks.Select((x, i) => new { x, i }))
+			{
+				var u = world.CreateActor(tank.x, allies, mediumTankChronoSpawn.Location, Util.GetFacing(heavyTankWP.Location - mediumTankChronoSpawn.Location, 0));
+				chronoInfo.Add(Pair.New(u, new CPos(mediumTankChronoSpawn.Location.X + tank.i, mediumTankChronoSpawn.Location.Y)));
+			}
+			RASpecialPowers.Chronoshift(world, chronoInfo, chronosphere, -1, false);
+			foreach (var tank in chronoInfo)
+				tank.First.QueueActivity(new AttackMove.AttackMoveActivity(tank.First, new Move.Move(heavyTankSpawn.Location, 0)));
+		}
+
+		void FlyMigs(CPos[] waypoints)
+		{
+			var m = world.CreateActor("mig", new TypeDictionary
+			{
+				new OwnerInit(soviets),
+				new LocationInit(waypoints[0]),
+				new FacingInit(Util.GetFacing(waypoints[1] - waypoints[0], 0))
+			});
+			foreach (var waypoint in waypoints)
+				m.QueueActivity(Fly.ToCell(waypoint));
+			m.QueueActivity(new RemoveSelf());
 		}
 
 		public void WorldLoaded(World w)
@@ -115,8 +189,8 @@ namespace OpenRA.Mods.RA.Missions
 			mapActors = w.WorldActor.Trait<SpawnMapActors>().Actors;
 
 			attackLocation = mapActors["AttackLocation"];
-			coastRP1 = mapActors["CoastRP1"];
-			coastRP2 = mapActors["CoastRP2"];
+			coastWP1 = mapActors["CoastWP1"];
+			coastWP2 = mapActors["CoastWP2"];
 			paradropLZ = mapActors["ParadropLZ"];
 			paradropEntry = mapActors["ParadropEntry"];
 
@@ -132,6 +206,16 @@ namespace OpenRA.Mods.RA.Missions
 			offmapAttackerSpawn3 = mapActors["OffmapAttackerSpawn3"];
 			offmapAttackerSpawns = new[] { offmapAttackerSpawn1, offmapAttackerSpawn2, offmapAttackerSpawn3 };
 
+			heavyTankSpawn = mapActors["HeavyTankSpawn"];
+			heavyTankWP = mapActors["HeavyTankWP"];
+			mediumTankChronoSpawn = mapActors["MediumTankChronoSpawn"];
+
+			chronosphere = mapActors["Chronosphere"];
+			ironCurtain = mapActors["IronCurtain"];
+
+			mig1Waypoints = new[] { mapActors["Mig11"], mapActors["Mig12"], mapActors["Mig13"], mapActors["Mig14"] }.Select(a => a.Location).ToArray();
+			mig2Waypoints = new[] { mapActors["Mig21"], mapActors["Mig22"], mapActors["Mig23"], mapActors["Mig24"] }.Select(a => a.Location).ToArray();
+
 			foreach (var actor in mapActors.Values.Where(a => a.Owner == allies || a.HasTrait<Bridge>()))
 			{
 				if (actor.Owner == allies && actor.HasTrait<AutoTarget>())
@@ -144,8 +228,18 @@ namespace OpenRA.Mods.RA.Missions
 			viewportTarget = viewportTargets[1];
 			Game.viewport.Center(viewportOrigin);
 			Sound.SoundVolumeModifier = 0.25f;
+		}
+	}
 
-			MissionUtils.Paradrop(world, soviets, ParadropUnits, paradropEntry.Location, paradropLZ.Location);
+	class DesertShellmapAutoUnloadInfo : TraitInfo<DesertShellmapAutoUnload>, Requires<CargoInfo> { }
+
+	class DesertShellmapAutoUnload : INotifyDamage
+	{
+		public void Damaged(Actor self, AttackInfo e)
+		{
+			var cargo = self.Trait<Cargo>();
+			if (!cargo.IsEmpty(self) && !(self.GetCurrentActivity() is UnloadCargo))
+				self.QueueActivity(false, new UnloadCargo(true));
 		}
 	}
 }

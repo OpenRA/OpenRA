@@ -200,9 +200,6 @@ Actors:
 	Actor50: apwr
 		Location: 51,14
 		Owner: Soviets
-	Actor53: truk
-		Location: 55,43
-		Owner: Neutral
 	Actor153: apwr
 		Location: 87,84
 		Owner: Allies
@@ -342,10 +339,10 @@ Actors:
 	AttackLocation: waypoint
 		Location: 55,61
 		Owner: Neutral
-	CoastRP1: waypoint
+	CoastWP1: waypoint
 		Location: 1,79
 		Owner: Neutral
-	CoastRP2: waypoint
+	CoastWP2: waypoint
 		Location: 36,81
 		Owner: Neutral
 	Actor64: e1
@@ -411,7 +408,7 @@ Actors:
 	Actor115: tsla
 		Location: 40,24
 		Owner: Soviets
-	Actor107: iron
+	IronCurtain: iron
 		Location: 110,40
 		Owner: Soviets
 	Actor117: fix
@@ -525,10 +522,10 @@ Actors:
 		Location: 84,84
 		Owner: Allies
 	ParadropEntry: waypoint
-		Location: 60,126
+		Location: 62,126
 		Owner: Neutral
 	ParadropLZ: waypoint
-		Location: 60,88
+		Location: 62,86
 		Owner: Neutral
 	Actor149: pbox.e1
 		Location: 67,84
@@ -590,7 +587,7 @@ Actors:
 		Location: 77,70
 		Owner: Allies
 		Facing: 20
-	Actor158: pdox
+	Chronosphere: pdox
 		Location: 78,91
 		Owner: Allies
 	Actor159: tent
@@ -748,6 +745,81 @@ Actors:
 	OffmapAttackerSpawn3: waypoint
 		Location: 1,50
 		Owner: Neutral
+	Actor213: 2tnk
+		Location: 79,70
+		Owner: Allies
+		Facing: 0
+	Actor214: 2tnk
+		Location: 80,70
+		Owner: Allies
+		Facing: 0
+	HeavyTankWP: waypoint
+		Location: 79,69
+		Owner: Neutral
+	Actor221: powr
+		Location: 74,84
+		Owner: Allies
+	Actor215: 2tnk
+		Location: 82,71
+		Owner: Allies
+		Facing: 0
+	HeavyTankSpawn: waypoint
+		Location: 80,50
+		Owner: Neutral
+	Actor216: arty
+		Location: 74,71
+		Owner: Allies
+		Facing: 0
+	MediumTankChronoSpawn: waypoint
+		Location: 80,60
+		Owner: Neutral
+	Actor220: powr
+		Location: 76,84
+		Owner: Allies
+	Actor219: gun
+		Location: 85,70
+		Owner: Allies
+	Actor53: gap
+		Location: 76,71
+		Owner: Allies
+	Mig11: waypoint
+		Location: 94,1
+		Owner: Neutral
+	Mig12: waypoint
+		Location: 68,33
+		Owner: Neutral
+	Mig22: waypoint
+		Location: 70,35
+		Owner: Neutral
+	Mig13: waypoint
+		Location: 41,38
+		Owner: Neutral
+	Mig14: waypoint
+		Location: 1,26
+		Owner: Neutral
+	Mig23: waypoint
+		Location: 41,40
+		Owner: Neutral
+	Mig24: waypoint
+		Location: 1,28
+		Owner: Neutral
+	Actor227: 2tnk
+		Location: 45,62
+		Owner: Allies
+		Facing: 0
+	Actor230: e1
+		Location: 64,63
+		Owner: Allies
+	Actor229: e1
+		Location: 47,62
+		Owner: Allies
+	Actor228: 2tnk
+		Location: 65,63
+		Owner: Allies
+		Facing: 0
+	Mig21: waypoint
+		Location: 96,3
+		Owner: Neutral
 
 Smudges:
 
@@ -780,12 +852,19 @@ Rules:
 			Weapon: Dragon
 		Turreted:
 		AttackTurreted:
+	APC:
+		DesertShellmapAutoUnload:
+	MIG:
+		Plane:
+			Speed: 30
 
 Sequences:
 
 Weapons:
 	8Inch:
 		Report: tank6
+	2Inch:
+		Range: 10
 
 Voices:
 
