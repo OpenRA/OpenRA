@@ -295,8 +295,19 @@ namespace OpenRA
 
 			RunAfterDelay(Settings.Server.NatDiscoveryTimeout, () =>
 			{
-				NatUtility.StopDiscovery();
-				Log.Write("server", "NAT discovery stopped.");
+				Log.Write("server", "Stopping NAT discovery.");
+
+				try
+				{
+					NatUtility.StopDiscovery();
+				}
+				catch (Exception e)
+				{
+					Log.Write("server", "Failed to stop NAT device discovery: {0}", e);
+					Settings.Server.NatDeviceAvailable = false;
+					Settings.Server.AllowUPnP = false;
+				}
+
 				if (natDevice == null)
 				{
 					Log.Write("server", "No NAT devices with UPnP enabled found within {0} ms deadline. Disabling automatic port forwarding.".F(Settings.Server.NatDiscoveryTimeout));
@@ -308,8 +319,6 @@ namespace OpenRA
 
 		public static void DeviceFound(object sender, DeviceEventArgs args)
 		{
-			natDevice = args.Device;
-
 			Log.Write("server", "NAT device discovered.");
 
 			Settings.Server.NatDeviceAvailable = true;
@@ -317,6 +326,7 @@ namespace OpenRA
 
 			try
 			{
+				natDevice = args.Device;
 				Log.Write("server", "Type: {0}", natDevice.GetType());
 				Log.Write("server", "Your external IP is: {0}", natDevice.GetExternalIP());
 
@@ -335,10 +345,17 @@ namespace OpenRA
 
 		public static void DeviceLost(object sender, DeviceEventArgs args)
 		{
-			natDevice = args.Device;
-
 			Log.Write("server", "NAT device lost.");
-			Log.Write("server", "Type: {0}", natDevice.GetType());
+
+			try
+			{
+				natDevice = args.Device;
+				Log.Write("server", "Type: {0}", natDevice.GetType());
+			}
+			catch (Exception e)
+			{
+				Log.Write("server", "Can't fetch type from lost NAT device: {0}", e);
+			}
 
 			Settings.Server.NatDeviceAvailable = false;
 			Settings.Server.AllowUPnP = false;
