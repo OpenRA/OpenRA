@@ -127,7 +127,7 @@ namespace OpenRA.Graphics
 			if (world.OrderGenerator != null)
 				world.OrderGenerator.RenderAfterWorld(this, world);
 
-			shroudRenderer.Draw( this );
+			shroudRenderer.Draw(this, world.RenderPlayer);
 			Game.Renderer.DisableScissor();
 
 			foreach (var g in world.Selection.Actors.Where(a => !a.Destroyed)

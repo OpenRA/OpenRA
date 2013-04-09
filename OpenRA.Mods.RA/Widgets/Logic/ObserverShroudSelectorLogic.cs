@@ -40,16 +40,16 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			var views = world.Players.Where(p => !p.NonCombatant).ToDictionary(p => p.PlayerName,
 				p => new CameraOption("{0}'s view".F(p.PlayerName),
-				      () => world.RenderedPlayer == p,
-				      () => { world.RenderedPlayer = p; world.RenderedShroud.Dirty(); }
+				      () => world.RenderPlayer == p,
+				      () => world.RenderPlayer = p
 			));
 			views.Add("", new CameraOption("World view",
-				() => world.RenderedPlayer == null,
-				() => { world.RenderedPlayer = null; world.RenderedShroud.Dirty(); }
+				() => world.RenderPlayer == null,
+				() => world.RenderPlayer = null
 			));
 
 			var shroudSelector = widget.Get<DropDownButtonWidget>("SHROUD_SELECTOR");
-			shroudSelector.GetText = () => views[world.RenderedPlayer == null ? "" : world.RenderedPlayer.PlayerName].Label;
+			shroudSelector.GetText = () => views[world.RenderPlayer == null ? "" : world.RenderPlayer.PlayerName].Label;
 			shroudSelector.OnMouseDown = _ =>
 			{
 				Func<CameraOption, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>

@@ -306,7 +306,6 @@ World:
 	MPStartLocations:
 	SpatialBins:
 		BinSize: 4
-	Shroud:
 	Fog:
 	CrateSpawner:
 		Minimum: 1

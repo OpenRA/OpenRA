@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA
 			{
 				var position = self.CenterPosition;
 				if (position.Z > 0 && self.GetDamageState() >= DamageState.Heavy &&
-				    self.World.RenderedShroud.IsVisible(new CPos(position)))
+				    !self.World.FogObscures(new CPos(position)))
 				{
 					var offset = info.Offset.Rotate(coords.QuantizeOrientation(self, self.Orientation));
 					var pos = PPos.FromWPosHackZ(position + coords.LocalToWorld(offset));

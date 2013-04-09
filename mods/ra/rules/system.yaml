@@ -621,7 +621,6 @@ World:
 	SpawnMPUnits:
 	SpatialBins:
 		BinSize: 4
-	Shroud:
 	Fog:
 	PathFinder:
 	ValidateOrder:

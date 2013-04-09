@@ -23,7 +23,6 @@ namespace OpenRA.Traits
 	public class Shroud : ISync
 	{
 		Map map;
-		World world;
 
 		[Sync] public Player Owner;
 		public int[,] visibleCells;
@@ -38,11 +37,6 @@ namespace OpenRA.Traits
 			set { disabled = value; Dirty(); }
 		}
 
-		public bool Observing
-		{
-			get { return world.IsShellmap || (world.LocalPlayer == null && Owner == null);; }
-		}
-
 		public Rectangle? Bounds
 		{
 			get { return Disabled ? null : exploredBounds; }
@@ -52,7 +46,6 @@ namespace OpenRA.Traits
 
 		public Shroud(World world)
 		{
-			this.world = world;
 			map = world.Map;
 			visibleCells = new int[map.MapSize.X, map.MapSize.Y];
 			exploredCells = new bool[map.MapSize.X, map.MapSize.Y];
@@ -274,16 +267,24 @@ namespace OpenRA.Traits
 			if (!map.IsInMap(x, y))
 				return false;
 
-			if (Disabled || Observing)
+			if (Disabled)
 				return true;
 
 			return foggedCells[x,y];
 		}
 
+		public bool IsExplored(Actor a)
+		{
+			if (Owner == null)
+				return true;
+
+			return GetVisOrigins(a).Any(o => IsExplored(o));
+		}
+
 		public bool IsVisible(CPos xy) { return IsVisible(xy.X, xy.Y); }
 		public bool IsVisible(int x, int y)
 		{
-			if (Disabled || Observing)
+			if (Disabled)
 				return true;
 
 			// Visibility is allowed to extend beyond the map cordon so that
@@ -298,16 +299,14 @@ namespace OpenRA.Traits
 		public bool IsVisible(Actor a)
 		{
 			// I need to pass in the current shroud, otherwise we're just checking that true==true
-			if (a.TraitsImplementing<IVisibilityModifier>().Any(t => !t.IsVisible(this, a)))
+			if (a.TraitsImplementing<IVisibilityModifier>().Any(t => !t.IsVisible(a, Owner)))
 				return false;
 
-			if(Owner == null) return true;
-
-			return Disabled || Observing || a.Owner.Stances[Owner] == Stance.Ally || GetVisOrigins(a).Any(o => IsExplored(o));
+			return Disabled || a.Owner.Stances[Owner] == Stance.Ally || IsExplored(a);
 		}
 
 		public bool IsTargetable(Actor a) {
-			if (a.TraitsImplementing<IVisibilityModifier>().Any(t => !t.IsVisible(this, a)))
+			if (a.TraitsImplementing<IVisibilityModifier>().Any(t => !t.IsVisible(a, Owner)))
 				return false;
 
 			return GetVisOrigins(a).Any(o => IsVisible(o));

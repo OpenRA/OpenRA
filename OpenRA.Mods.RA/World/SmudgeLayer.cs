@@ -78,12 +78,12 @@ namespace OpenRA.Mods.RA
 		public void Render( WorldRenderer wr )
 		{
 			var cliprect = Game.viewport.WorldBounds(world);
-			var localPlayer = world.LocalPlayer;
 			foreach (var kv in tiles)
 			{
 				if (!cliprect.Contains(kv.Key.X,kv.Key.Y))
 					continue;
-				if (localPlayer != null && !world.RenderedShroud.IsExplored(kv.Key))
+
+				if (world.ShroudObscures(kv.Key))
 					continue;
 
 				smudgeSprites[kv.Value.type- 1][kv.Value.index].DrawAt(wr, kv.Key.ToPPos().ToFloat2(), "terrain");

@@ -204,7 +204,6 @@ World:
 	SpawnMPUnits:
 	SpatialBins:
 		BinSize: 4
-	Shroud:
 	PathFinder:
 	ValidateOrder:
 	DebugPauseState:
