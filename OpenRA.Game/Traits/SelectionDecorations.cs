@@ -54,7 +54,7 @@ namespace OpenRA.Traits
 
 		void DrawPips(WorldRenderer wr, Actor self, float2 basePosition)
 		{
-			if (self.Owner != self.World.RenderPlayer)
+			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				return;
 
 			var pipSources = self.TraitsImplementing<IPips>();
@@ -96,7 +96,7 @@ namespace OpenRA.Traits
 
 		void DrawTags(WorldRenderer wr, Actor self, float2 basePosition)
 		{
-			if (self.Owner != self.World.RenderPlayer)
+			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
 			    return;
 
 			// If a mod wants to implement a unit with multiple tags, then they are placed on multiple rows
