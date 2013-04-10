@@ -1262,9 +1262,6 @@ Actors:
 	mig2: mig
 		Location: 128,47
 		Owner: GoodGuy
-	mig3: mig
-		Location: 120,42
-		Owner: GoodGuy
 	spawn0: mpspawn
 		Location: 36,36
 		Owner: Neutral
@@ -1304,5 +1301,7 @@ Rules:
 Sequences:
 
 Weapons:
+	8Inch:
+		Report: tank6
 
 Voices:
