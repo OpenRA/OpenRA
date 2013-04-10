@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Missions
 	{
 		public static IEnumerable<Actor> FindAliveCombatantActorsInCircle(this World world, PPos location, int range)
 		{
-			return world.FindUnitsInCircle(location, Game.CellSize * range)
+			return world.FindUnitsInCircle(location, range)
 				.Where(u => u.IsInWorld && u != world.WorldActor && !u.IsDead() && !u.Owner.NonCombatant);
 		}
 
@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA.Missions
 
 		public static IEnumerable<Actor> FindAliveNonCombatantActorsInCircle(this World world, PPos location, int range)
 		{
-			return world.FindUnitsInCircle(location, Game.CellSize * range)
+			return world.FindUnitsInCircle(location, range)
 				.Where(u => u.IsInWorld && u != world.WorldActor && !u.IsDead() && u.Owner.NonCombatant);
 		}
 

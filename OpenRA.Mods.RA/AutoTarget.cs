@@ -115,7 +115,7 @@ namespace OpenRA.Mods.RA
 			var info = self.Info.Traits.Get<AttackBaseInfo>();
 			nextScanTime = self.World.SharedRandom.Next(info.MinimumScanTimeInterval, info.MaximumScanTimeInterval);
 
-			var inRange = self.World.FindUnitsInCircle(self.CenterLocation, (int)(Game.CellSize * range));
+			var inRange = self.World.FindUnitsInCircle(self.CenterLocation, range);
 
 			if (self.Owner.HasFogVisibility()) {
 				return inRange

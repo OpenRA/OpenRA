@@ -39,7 +39,7 @@ namespace OpenRA
 			return actors.OrderBy( a => (a.CenterLocation - px).LengthSquared ).FirstOrDefault();
 		}
 
-		public static IEnumerable<Actor> FindUnitsInCircle(this World world, PPos a, int r)
+		public static IEnumerable<Actor> FindUnitsInCircle(this World world, PPos a, float r)
 		{
 			using (new PerfSample("FindUnitsInCircle"))
 			{
@@ -52,7 +52,7 @@ namespace OpenRA
 
 				var inBox = actors.Where(x => x.ExtendedBounds.Value.IntersectsWith(rect));
 
-				return inBox.Where(x => (x.CenterLocation - a).LengthSquared < r * r);
+				return inBox.Where(x => (x.CenterLocation - a).LengthSquared < r * r * Game.CellSize * Game.CellSize);
 			}
 		}
 

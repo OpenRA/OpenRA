@@ -28,7 +28,7 @@ namespace OpenRA
 
 		public static explicit operator PVecInt(int2 a) { return new PVecInt(a.X, a.Y); }
 
-		public static PVecInt FromRadius(int r) { return new PVecInt(r, r); }
+		public static PVecInt FromRadius(float r) { return new PVecInt((int)(r*Game.CellSize), (int)(r*Game.CellSize)); }
 
 		public static PVecInt operator +(PVecInt a, PVecInt b) { return new PVecInt(a.X + b.X, a.Y + b.Y); }
 		public static PVecInt operator -(PVecInt a, PVecInt b) { return new PVecInt(a.X - b.X, a.Y - b.Y); }

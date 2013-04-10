@@ -29,8 +29,6 @@ namespace OpenRA
 		public static explicit operator PSubVec(int2 a) { return new PSubVec(a.X, a.Y); }
 		public static explicit operator PSubVec(float2 a) { return new PSubVec((int)a.X, (int)a.Y); }
 
-		public static PSubVec FromRadius(int r) { return new PSubVec(r, r); }
-
 		public static PSubVec operator +(PSubVec a, PSubVec b) { return new PSubVec(a.X + b.X, a.Y + b.Y); }
 		public static PSubVec operator -(PSubVec a, PSubVec b) { return new PSubVec(a.X - b.X, a.Y - b.Y); }
 		public static PSubVec operator *(int a, PSubVec b) { return new PSubVec(a * b.X, a * b.Y); }
