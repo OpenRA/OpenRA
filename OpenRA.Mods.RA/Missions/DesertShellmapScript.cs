@@ -61,13 +61,20 @@ namespace OpenRA.Mods.RA.Missions
 		static readonly string[] MediumTanks = { "2tnk", "2tnk", "2tnk", "2tnk", "2tnk", "2tnk" };
 		Actor mediumTankChronoSpawn;
 
-		Dictionary<string, Actor> mapActors;
+		static readonly string[] ChinookCargo = { "e1", "e1", "e1", "e3", "e3", "medi" };
+
+		Dictionary<string, Actor> actors;
 
 		Actor chronosphere;
 		Actor ironCurtain;
 
 		CPos[] mig1Waypoints;
 		CPos[] mig2Waypoints;
+
+		Actor chinook1Entry;
+		Actor chinook1LZ;
+		Actor chinook2Entry;
+		Actor chinook2LZ;
 
 		public void Tick(Actor self)
 		{
@@ -87,7 +94,7 @@ namespace OpenRA.Mods.RA.Missions
 
 			if (world.FrameNumber % 25 == 0)
 				foreach (var actor in world.Actors.Where(a => a.IsInWorld && a.IsIdle && !a.IsDead()
-					&& a.HasTrait<AttackBase>() && a.HasTrait<Mobile>()).Except(mapActors.Values))
+					&& a.HasTrait<AttackBase>() && a.HasTrait<Mobile>()).Except(actors.Values))
 						MissionUtils.AttackNearestLandActor(true, actor, actor.Owner == soviets ? allies : soviets);
 
 			if (world.FrameNumber % 20 == 0 && coastUnitsLeft-- > 0)
@@ -123,7 +130,11 @@ namespace OpenRA.Mods.RA.Missions
 					waitTicks = 100;
 
 					if (viewportTargetNumber == 0)
+					{
 						coastUnitsLeft = 15;
+						SendChinookReinforcements(chinook1Entry.Location, chinook1LZ.Location);
+						SendChinookReinforcements(chinook2Entry.Location, chinook2LZ.Location);
+					}
 					if (viewportTargetNumber == 1)
 						MissionUtils.Paradrop(world, soviets, ParadropUnits, paradropEntry.Location, paradropLZ.Location);
 					if (viewportTargetNumber == 2)
@@ -178,6 +189,29 @@ namespace OpenRA.Mods.RA.Missions
 			m.QueueActivity(new RemoveSelf());
 		}
 
+		void SendChinookReinforcements(CPos entry, CPos lz)
+		{
+			var chinook = world.CreateActor("tran", allies, entry, Util.GetFacing(lz - entry, 0));
+			var cargo = chinook.Trait<Cargo>();
+
+			while (cargo.HasSpace(1))
+				cargo.Load(chinook, world.CreateActor(false, ChinookCargo.Random(world.SharedRandom), allies, null, null));
+
+			chinook.QueueActivity(new HeliFly(Util.CenterOfCell(lz)));
+			chinook.QueueActivity(new Turn(0));
+			chinook.QueueActivity(new HeliLand(false, 0));
+
+			foreach (var _ in cargo.Passengers)
+			{
+				chinook.QueueActivity(new UnloadCargo(false));
+				chinook.QueueActivity(new Wait(15));
+			}
+
+			chinook.QueueActivity(new Wait(150));
+			chinook.QueueActivity(new HeliFly(Util.CenterOfCell(entry)));
+			chinook.QueueActivity(new RemoveSelf());
+		}
+
 		public void WorldLoaded(World w)
 		{
 			world = w;
@@ -186,37 +220,42 @@ namespace OpenRA.Mods.RA.Missions
 			soviets = w.Players.Single(p => p.InternalName == "Soviets");
 			neutral = w.Players.Single(p => p.InternalName == "Neutral");
 
-			mapActors = w.WorldActor.Trait<SpawnMapActors>().Actors;
+			actors = w.WorldActor.Trait<SpawnMapActors>().Actors;
 
-			attackLocation = mapActors["AttackLocation"];
-			coastWP1 = mapActors["CoastWP1"];
-			coastWP2 = mapActors["CoastWP2"];
-			paradropLZ = mapActors["ParadropLZ"];
-			paradropEntry = mapActors["ParadropEntry"];
+			attackLocation = actors["AttackLocation"];
+			coastWP1 = actors["CoastWP1"];
+			coastWP2 = actors["CoastWP2"];
+			paradropLZ = actors["ParadropLZ"];
+			paradropEntry = actors["ParadropEntry"];
 
-			var t1 = mapActors["ViewportTarget1"];
-			var t2 = mapActors["ViewportTarget2"];
-			var t3 = mapActors["ViewportTarget3"];
-			var t4 = mapActors["ViewportTarget4"];
-			var t5 = mapActors["ViewportTarget5"];
+			var t1 = actors["ViewportTarget1"];
+			var t2 = actors["ViewportTarget2"];
+			var t3 = actors["ViewportTarget3"];
+			var t4 = actors["ViewportTarget4"];
+			var t5 = actors["ViewportTarget5"];
 			viewportTargets = new[] { t1, t2, t3, t4, t5 }.Select(t => t.Location.ToInt2()).ToList();
 
-			offmapAttackerSpawn1 = mapActors["OffmapAttackerSpawn1"];
-			offmapAttackerSpawn2 = mapActors["OffmapAttackerSpawn2"];
-			offmapAttackerSpawn3 = mapActors["OffmapAttackerSpawn3"];
+			offmapAttackerSpawn1 = actors["OffmapAttackerSpawn1"];
+			offmapAttackerSpawn2 = actors["OffmapAttackerSpawn2"];
+			offmapAttackerSpawn3 = actors["OffmapAttackerSpawn3"];
 			offmapAttackerSpawns = new[] { offmapAttackerSpawn1, offmapAttackerSpawn2, offmapAttackerSpawn3 };
 
-			heavyTankSpawn = mapActors["HeavyTankSpawn"];
-			heavyTankWP = mapActors["HeavyTankWP"];
-			mediumTankChronoSpawn = mapActors["MediumTankChronoSpawn"];
+			heavyTankSpawn = actors["HeavyTankSpawn"];
+			heavyTankWP = actors["HeavyTankWP"];
+			mediumTankChronoSpawn = actors["MediumTankChronoSpawn"];
 
-			chronosphere = mapActors["Chronosphere"];
-			ironCurtain = mapActors["IronCurtain"];
+			chronosphere = actors["Chronosphere"];
+			ironCurtain = actors["IronCurtain"];
 
-			mig1Waypoints = new[] { mapActors["Mig11"], mapActors["Mig12"], mapActors["Mig13"], mapActors["Mig14"] }.Select(a => a.Location).ToArray();
-			mig2Waypoints = new[] { mapActors["Mig21"], mapActors["Mig22"], mapActors["Mig23"], mapActors["Mig24"] }.Select(a => a.Location).ToArray();
+			mig1Waypoints = new[] { actors["Mig11"], actors["Mig12"], actors["Mig13"], actors["Mig14"] }.Select(a => a.Location).ToArray();
+			mig2Waypoints = new[] { actors["Mig21"], actors["Mig22"], actors["Mig23"], actors["Mig24"] }.Select(a => a.Location).ToArray();
 
-			foreach (var actor in mapActors.Values.Where(a => a.Owner == allies || a.HasTrait<Bridge>()))
+			chinook1Entry = actors["Chinook1Entry"];
+			chinook2Entry = actors["Chinook2Entry"];
+			chinook1LZ = actors["Chinook1LZ"];
+			chinook2LZ = actors["Chinook2LZ"];
+			
+			foreach (var actor in actors.Values.Where(a => a.Owner == allies || a.HasTrait<Bridge>()))
 			{
 				if (actor.Owner == allies && actor.HasTrait<AutoTarget>())
 					actor.Trait<AutoTarget>().stance = UnitStance.Defend;
@@ -227,7 +266,7 @@ namespace OpenRA.Mods.RA.Missions
 			viewportTargetNumber = 1;
 			viewportTarget = viewportTargets[1];
 			Game.viewport.Center(viewportOrigin);
-			Sound.SoundVolumeModifier = 0.25f;
+			Sound.SoundVolumeModifier = 0.1f;
 		}
 	}
 

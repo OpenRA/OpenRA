@@ -825,6 +825,18 @@ Actors:
 	Actor158: oilb
 		Location: 109,76
 		Owner: Allies
+	Chinook1LZ: waypoint
+		Location: 44,71
+		Owner: Neutral
+	Chinook2LZ: waypoint
+		Location: 47,71
+		Owner: Neutral
+	Chinook1Entry: waypoint
+		Location: 44,126
+		Owner: Neutral
+	Chinook2Entry: waypoint
+		Location: 47,126
+		Owner: Neutral
 
 Smudges:
 
