@@ -14,6 +14,7 @@ using System.Linq;
 using System.Drawing;
 using OpenRA.FileFormats;
 using OpenRA.Network;
+using OpenRA.Server;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
@@ -31,8 +32,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		bool showWaiting = true;
 		bool showEmpty = true;
 		bool showStarted = true;
-		bool showCompatibleVersionsOnly = false;
-		bool showThisModOnly = false;
 
 		public string ProgressLabelText()
 		{
@@ -103,20 +102,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				showAlreadyStartedCheckbox.OnClick = () => { showStarted ^= true; ServerList.Query(games => RefreshServerList(panel, games)); };
 			}
 
-			var showCompatibleVersionsOnlyCheckbox = panel.GetOrNull<CheckboxWidget>("COMPATIBLE_VERSION");
-			if (showCompatibleVersionsOnlyCheckbox != null)
-			{
-				showCompatibleVersionsOnlyCheckbox.IsChecked = () => showCompatibleVersionsOnly;
-				showCompatibleVersionsOnlyCheckbox.OnClick = () => { showCompatibleVersionsOnly ^= true; ServerList.Query(games => RefreshServerList(panel, games)); };
-			}
-
-			var showThisModOnlyCheckbox = panel.GetOrNull<CheckboxWidget>("THIS_MOD");
-			if (showThisModOnlyCheckbox != null)
-			{
-				showThisModOnlyCheckbox.IsChecked = () => showThisModOnly;
-				showThisModOnlyCheckbox.OnClick = () => { showThisModOnly ^= true; ServerList.Query(games => RefreshServerList(panel, games)); };
-			}
-
 			ServerList.Query(games => RefreshServerList(panel, games));
 		}
 
@@ -148,9 +133,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (game == null)
 				return "";
 
-			if (game.State == 1) return "Waiting for players";
-			if (game.State == 2) return "Playing";
-			else return "Unknown";
+			if (game.State == (int)ServerState.WaitingPlayers)
+				return "Waiting for players";
+			if (game.State == (int)ServerState.GameStarted)
+				return "Playing";
+			if (game.State == (int)ServerState.ShuttingDown)
+				return "Server shutting down";
+
+			return "Unknown server state";
 		}
 
 		Map GetMapPreview(GameServer game)
@@ -171,7 +161,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			return s.UsefulMods.Select(m => GenerateModLabel(m)).JoinWith("\n");
 		}
 
-		public static string GetPing(GameServer s)
+		static string GetPing(GameServer s)
 		{
 			if (s.Latency > -1)
 				return "Ping: {0} ms".F(s.Latency);
@@ -179,7 +169,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				return "Ping: ? ms";
 		}
 
-		public void PingServerList(Widget panel, IEnumerable<GameServer> games)
+		void PingServerList(Widget panel, IEnumerable<GameServer> games)
 		{
 			searchStatus = SearchStatus.Pinging;
 
@@ -196,6 +186,20 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			searchStatus = SearchStatus.Hidden;
 
 			RefreshServerList(panel, games);
+		}
+
+		bool Filtered(GameServer game)
+		{
+			if ((game.State == (int)ServerState.GameStarted) && !showStarted)
+				return true;
+			
+			if ((game.State == (int)ServerState.WaitingPlayers) && !showWaiting)
+				return true;
+			
+			if ((game.Players == 0) && !showEmpty)
+				return true;
+
+			return false;
 		}
 
 		public void RefreshServerList(Widget panel, IEnumerable<GameServer> games)
@@ -225,27 +229,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			foreach (var loop in games.OrderByDescending(g => g.CanJoin()).ThenByDescending(g => g.Players))
 			{
 				var game = loop;
-
-				if (game == null)
-					continue;
-
-				if (game.State == 3) // server shutting down
-					continue;
-
-				if ((game.State == 2) && !showStarted)
-					continue;
-
-				if ((game.State == 1) && !showWaiting)
-					continue;
-
-				if ((game.Players == 0) && !showEmpty)
-					continue;
-
-				if (!game.CompatibleVersion() && showCompatibleVersionsOnly)
-					continue;
-
-				if (!game.UsefulMods.Any(m => Game.CurrentMods.ContainsKey(m.Key)) && showThisModOnly)
-					continue;
 
 				var canJoin = game.CanJoin();
 
@@ -297,9 +280,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					state.GetColor = () => Color.Gray;
 					ip.GetColor = () => Color.Gray;
 					version.GetColor = () => Color.Gray;
+					if (ping != null)
+						ping.GetColor = () => Color.Gray;
 				}
 
-				sl.AddChild(item);
+				if (!Filtered(game))
+					sl.AddChild(item);
 			}
 		}
 	}

@@ -23,33 +23,45 @@ Background@JOINSERVER_BG:
 		Checkbox@WAITING_FOR_PLAYERS:
 			X:80
 			Y:50
-			Width:300
+			Width:170
 			Height:20
-			Text:waiting for players
+			Text:Waiting For Players
 		Checkbox@EMPTY:
 			X:250
 			Y:50
-			Width:300
+			Width:100
 			Height:20
-			Text:empty
+			Text:Empty
 		Checkbox@ALREADY_STARTED:
 			X:350
 			Y:50
-			Width:300
+			Width:100
 			Height:20
-			Text:already started
-		Checkbox@COMPATIBLE_VERSION:
-			X:80
+			Text:Already Started
+		DropDownButton@VERSIONS:
+			X:20
 			Y:80
-			Width:300
-			Height:20
-			Text:compatible versions only
-		Checkbox@THIS_MOD:
-			X:300
+			Width:150
+			Height:25
+			Font:Bold
+			Text:All Versions
+			Disabled: yes
+		DropDownButton@MODS:
+			X:190
 			Y:80
-			Width:300
-			Height:20
-			Text:this mod only
+			Width:150
+			Height:25
+			Font:Bold
+			Text:All Mods
+			Disabled: yes
+		DropDownButton@MAPS:
+			X:360
+			Y:80
+			Width:150
+			Height:25
+			Font:Bold
+			Text:All Maps
+			Disabled: yes
 		ScrollPanel@SERVER_LIST:
 			X:20
 			Y:110
