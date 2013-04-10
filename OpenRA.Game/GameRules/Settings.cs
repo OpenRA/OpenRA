@@ -30,7 +30,7 @@ namespace OpenRA.GameRules
 		public bool AdvertiseOnline = true;
 		public string MasterServer = "http://master.open-ra.org/";
 		public bool DiscoverNatDevices = true; // Allow users to disable NAT discovery if problems occur
-		public bool AllowUPnP = true; // let the user disable it even if compatible devices are found
+		public bool AllowPortForward = true; // let the user disable it even if compatible devices are found
 		public bool NatDeviceAvailable = false; // internal check if discovery succeeded
 		public int NatDiscoveryTimeout = 1000; // ms to search for UPnP enabled NATs
 		public bool VerboseNatDiscovery = false; // print very detailed logs for debugging
@@ -53,7 +53,7 @@ namespace OpenRA.GameRules
 			AdvertiseOnline = other.AdvertiseOnline;
 			MasterServer = other.MasterServer;
 			DiscoverNatDevices = other.DiscoverNatDevices;
-			AllowUPnP = other.AllowUPnP;
+			AllowPortForward = other.AllowPortForward;
 			NatDeviceAvailable = other.NatDeviceAvailable;
 			NatDiscoveryTimeout = other.NatDiscoveryTimeout;
 			VerboseNatDiscovery = other.VerboseNatDiscovery;

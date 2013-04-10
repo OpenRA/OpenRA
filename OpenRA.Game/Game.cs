@@ -281,13 +281,13 @@ namespace OpenRA
 				{
 					Log.Write("server", "Can't discover UPnP-enabled device: {0}", e);
 					Settings.Server.NatDeviceAvailable = false;
-					Settings.Server.AllowUPnP = false;
+					Settings.Server.AllowPortForward = false;
 				}
 			}
 			else
 			{
 				Settings.Server.NatDeviceAvailable = false;
-				Settings.Server.AllowUPnP = false;
+				Settings.Server.AllowPortForward = false;
 			}
 
 			FileSystem.Mount("."); // Needed to access shaders
@@ -315,14 +315,14 @@ namespace OpenRA
 					{
 						Log.Write("server", "Failed to stop NAT device discovery: {0}", e);
 						Settings.Server.NatDeviceAvailable = false;
-						Settings.Server.AllowUPnP = false;
+						Settings.Server.AllowPortForward = false;
 					}
 
 					if (natDevice == null)
 					{
 						Log.Write("server", "No NAT devices with UPnP enabled found within {0} ms deadline. Disabling automatic port forwarding.".F(Settings.Server.NatDiscoveryTimeout));
 						Settings.Server.NatDeviceAvailable = false;
-						Settings.Server.AllowUPnP = false;
+						Settings.Server.AllowPortForward = false;
 					}
 				});
 			}
@@ -336,7 +336,7 @@ namespace OpenRA
 			Log.Write("server", "NAT device discovered.");
 
 			Settings.Server.NatDeviceAvailable = true;
-			Settings.Server.AllowUPnP = true;
+			Settings.Server.AllowPortForward = true;
 
 			try
 			{
@@ -353,7 +353,7 @@ namespace OpenRA
 				Log.Write("server", "Can't fetch information from NAT device: {0}", e);
 
 				Settings.Server.NatDeviceAvailable = false;
-				Settings.Server.AllowUPnP = false;
+				Settings.Server.AllowPortForward = false;
 			}
 		}
 
@@ -375,7 +375,7 @@ namespace OpenRA
 			}
 
 			Settings.Server.NatDeviceAvailable = false;
-			Settings.Server.AllowUPnP = false;
+			Settings.Server.AllowPortForward = false;
 		}
 
 		public static void InitializeWithMods(string[] mods)
@@ -538,7 +538,7 @@ namespace OpenRA
 			// Work around a miscompile in mono 2.6.7:
 			// booleans that default to true cannot be set false by an initializer
 			settings.AdvertiseOnline = false;
-			settings.AllowUPnP = false;
+			settings.AllowPortForward = false;
 
 			server = new Server.Server(new IPEndPoint(IPAddress.Loopback, 0),
 			                           Game.Settings.Game.Mods, settings, modData, natDevice);

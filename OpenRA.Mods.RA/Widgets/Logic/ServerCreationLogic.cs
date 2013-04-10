@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		Action onExit;
 		Map map;
 		bool advertiseOnline;
-		bool allowUPnP;
+		bool allowPortForward;
 
 		[ObjectCreator.UseCtor]
 		public ServerCreationLogic(Widget widget, Action onExit, Action openLobby)
@@ -66,9 +66,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			advertiseCheckbox.IsChecked = () => advertiseOnline;
 			advertiseCheckbox.OnClick = () => advertiseOnline ^= true;
 
+			allowPortForward = Game.Settings.Server.AllowPortForward;
 			var UPnPCheckbox = panel.Get<CheckboxWidget>("UPNP_CHECKBOX");
-			UPnPCheckbox.IsChecked = () => allowUPnP;
-			UPnPCheckbox.OnClick = () => allowUPnP ^= true;
+			UPnPCheckbox.IsChecked = () => allowPortForward;
+			UPnPCheckbox.OnClick = () => allowPortForward ^= true;
 			UPnPCheckbox.IsDisabled = () => !Game.Settings.Server.NatDeviceAvailable;
 		}
 
@@ -87,7 +88,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			Game.Settings.Server.ListenPort = listenPort;
 			Game.Settings.Server.ExternalPort = externalPort;
 			Game.Settings.Server.AdvertiseOnline = advertiseOnline;
-			Game.Settings.Server.AllowUPnP = allowUPnP;
+			Game.Settings.Server.AllowPortForward = allowPortForward;
 			Game.Settings.Server.Map = map.Uid;
 			Game.Settings.Save();
 

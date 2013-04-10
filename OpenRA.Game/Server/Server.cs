@@ -99,7 +99,7 @@ namespace OpenRA.Server
 
 			randomSeed = (int)DateTime.Now.ToBinary();
 
-			if (Settings.AllowUPnP)
+			if (Settings.AllowPortForward)
 				ForwardPort();
 
 			foreach (var trait in modData.Manifest.ServerTraits)
@@ -157,7 +157,7 @@ namespace OpenRA.Server
 					if (State == ServerState.ShuttingDown)
 					{
 						EndGame();
-						if (Settings.AllowUPnP)
+						if (Settings.AllowPortForward)
 							RemovePortforward();
 						break;
 					}
@@ -185,7 +185,7 @@ namespace OpenRA.Server
 			catch (Exception e)
 			{
 				Log.Write("server", "Can not forward ports via UPnP: {0}", e);
-				Settings.AllowUPnP = false;
+				Settings.AllowPortForward = false;
 			}
 		}
 
@@ -200,7 +200,7 @@ namespace OpenRA.Server
 			catch (Exception e)
 			{
 				Log.Write("server", "Can not remove UPnP portforwarding rules: {0}", e);
-				Settings.AllowUPnP = false;
+				Settings.AllowPortForward = false;
 			}
 		}
 
