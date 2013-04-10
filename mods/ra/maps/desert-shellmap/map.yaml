@@ -522,10 +522,10 @@ Actors:
 		Location: 84,84
 		Owner: Allies
 	ParadropEntry: waypoint
-		Location: 62,126
+		Location: 63,126
 		Owner: Neutral
 	ParadropLZ: waypoint
-		Location: 62,86
+		Location: 63,88
 		Owner: Neutral
 	Actor149: pbox.e1
 		Location: 67,84
@@ -819,6 +819,12 @@ Actors:
 	Mig21: waypoint
 		Location: 96,3
 		Owner: Neutral
+	Actor121: oilb
+		Location: 103,74
+		Owner: Allies
+	Actor158: oilb
+		Location: 109,76
+		Owner: Allies
 
 Smudges:
 
