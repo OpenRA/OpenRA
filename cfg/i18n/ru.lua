@@ -114,8 +114,8 @@ return {
   ["Ln: %d"] = "Стр: %d", -- src\editor\editor.lua
   ["Local console"] = "Локальная консоль", -- src\editor\shellbox.lua, src\editor\gui.lua
   ["Lua &Interpreter"] = "&Интерпретатор Lua", -- src\editor\menu_project.lua
-  ["Mapped remote request for '%s' to '%s'."] = nil, -- src\editor\debugger.lua
-  ["Mixed end-of-line encodings detected."] = nil, -- src\editor\commands.lua
+  ["Mapped remote request for '%s' to '%s'."] = "Удаленный запрос для '%s' отображен на '%s'.", -- src\editor\debugger.lua
+  ["Mixed end-of-line encodings detected."] = "Обнаружены смешанные символы конца строки.", -- src\editor\commands.lua
   ["OVR"] = "ЗАМ", -- src\editor\editor.lua
   ["Open an existing document"] = "Открыть существующий документ", -- src\editor\menu_file.lua, src\editor\gui.lua
   ["Open file"] = "Открыть файл", -- src\editor\commands.lua
@@ -140,7 +140,7 @@ return {
   ["Redo last edit undone"] = "Вернуть последнее отмененное изменение", -- src\editor\menu_edit.lua
   ["Refused a request to start a new debugging session as there is one in progress already."] = "Отказано в запросе на запуск новой отладочной сессии, поскольку одна сессия уже выполняется.", -- src\editor\debugger.lua
   ["Remote console"] = "Удаленная консоль", -- src\editor\shellbox.lua
-  ["Replaced an invalid UTF8 character with %s."] = nil, -- src\editor\commands.lua
+  ["Replaced an invalid UTF8 character with %s."] = "Некорректный символ UTF8 заменен на %s.", -- src\editor\commands.lua
   ["Reset to default layout"] = "Установить расположение окон по умолчанию", -- src\editor\menu_view.lua
   ["Resets the dynamic word list for autocompletion"] = "Очистить список динамических слов для автодополнения", -- src\editor\menu_edit.lua
   ["Run as Scratchpad"] = "Запустить как черновик", -- src\editor\menu_project.lua
@@ -186,7 +186,7 @@ return {
   ["Unable to stop program (pid: %d), code %d."] = "Невозможно завершить программу (pid: %d), код %d.", -- src\editor\debugger.lua
   ["Undo last edit"] = "Отменить последнее действие", -- src\editor\menu_edit.lua
   ["Use '%s' to see full description."] = "Используйте '%s' для полного описания.", -- src\editor\editor.lua
-  ["Use '%s' to show line endings and '%s' to convert them."] = nil, -- src\editor\commands.lua
+  ["Use '%s' to show line endings and '%s' to convert them."] = "Используйте '%s' для отображения символов конца строки и '%s' для их преобразования.", -- src\editor\commands.lua
   ["Use 'clear' to clear the shell output and the history."] = "Используйте команду 'clear' для очистки содержимого окна и истории.", -- src\editor\shellbox.lua
   ["Use Shift-Enter for multiline code."] = "Используйте Shift-Enter для многострочного кода.", -- src\editor\shellbox.lua
   ["Value"] = "Значение", -- src\editor\debugger.lua
@@ -194,7 +194,7 @@ return {
   ["View the project/filetree window"] = "Показать окно проекта/списка файлов", -- src\editor\menu_view.lua
   ["View the stack window"] = "Показать окно стека", -- src\editor\menu_view.lua, src\editor\gui.lua
   ["View the watch window"] = "Показать окно наблюдения", -- src\editor\menu_view.lua, src\editor\gui.lua
-  ["Watch"] = nil, -- src\editor\debugger.lua
+  ["Watch"] = "Наблюдение", -- src\editor\debugger.lua
   ["Welcome to the interactive Lua interpreter."] = "Добро пожаловать в интерактивный интерпретатор Lua.", -- src\editor\shellbox.lua
   ["You must save the program first."] = "Вы должны сначала сохранить программу.", -- src\editor\commands.lua
   ["on line %d"] = "в строке %d", -- src\editor\debugger.lua, src\editor\commands.lua
