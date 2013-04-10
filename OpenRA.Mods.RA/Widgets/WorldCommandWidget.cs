@@ -106,13 +106,13 @@ namespace OpenRA.Mods.RA.Widgets
 		bool PerformScatter()
 		{
 			PerformKeyboardOrderOnSelection(a => new Order("Scatter", a, false));
+			PerformKeyboardOrderOnSelection(a => new Order("ReturnToBase", a, false));
 			return true;
 		}
 
 		bool PerformDeploy()
 		{
 			/* hack: multiple orders here */
-			PerformKeyboardOrderOnSelection(a => new Order("ReturnToBase", a, false));
 			PerformKeyboardOrderOnSelection(a => new Order("DeployTransform", a, false));
 			PerformKeyboardOrderOnSelection(a => new Order("Unload", a, false));
 			PerformKeyboardOrderOnSelection(a => new Order("DemoDeploy", a, false));
