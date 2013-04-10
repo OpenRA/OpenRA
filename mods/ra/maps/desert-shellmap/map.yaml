@@ -521,10 +521,10 @@ Actors:
 	Actor155: apwr
 		Location: 84,84
 		Owner: Allies
-	ParadropEntry: waypoint
-		Location: 63,126
+	Paradrop1Entry: waypoint
+		Location: 63,30
 		Owner: Neutral
-	ParadropLZ: waypoint
+	Paradrop1LZ: waypoint
 		Location: 63,88
 		Owner: Neutral
 	Actor149: pbox.e1
@@ -763,7 +763,7 @@ Actors:
 		Owner: Allies
 		Facing: 0
 	HeavyTankSpawn: waypoint
-		Location: 80,50
+		Location: 80,45
 		Owner: Neutral
 	Actor216: arty
 		Location: 74,71
@@ -836,6 +836,12 @@ Actors:
 		Owner: Neutral
 	Chinook2Entry: waypoint
 		Location: 47,126
+		Owner: Neutral
+	Paradrop2LZ: waypoint
+		Location: 55,74
+		Owner: Neutral
+	Paradrop2Entry: waypoint
+		Location: 55,22
 		Owner: Neutral
 
 Smudges:

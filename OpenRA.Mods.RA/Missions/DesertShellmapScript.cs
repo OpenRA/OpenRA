@@ -44,8 +44,10 @@ namespace OpenRA.Mods.RA.Missions
 		int coastUnitsLeft;
 		static readonly string[] CoastUnits = { "e1", "e1", "e2", "e3", "e4" };
 
-		Actor paradropLZ;
-		Actor paradropEntry;
+		Actor paradrop1LZ;
+		Actor paradrop1Entry;
+		Actor paradrop2LZ;
+		Actor paradrop2Entry;
 		static readonly string[] ParadropUnits = { "e1", "e1", "e1", "e2", "e2" };
 
 		Actor offmapAttackerSpawn1;
@@ -116,7 +118,10 @@ namespace OpenRA.Mods.RA.Missions
 			}
 
 			if (world.FrameNumber == 1)
-				MissionUtils.Paradrop(world, soviets, ParadropUnits, paradropEntry.Location, paradropLZ.Location);
+			{
+				MissionUtils.Paradrop(world, soviets, ParadropUnits, paradrop1Entry.Location, paradrop1LZ.Location);
+				MissionUtils.Paradrop(world, soviets, ParadropUnits, paradrop2Entry.Location, paradrop2LZ.Location);
+			}
 
 			if (--waitTicks <= 0)
 			{
@@ -136,7 +141,10 @@ namespace OpenRA.Mods.RA.Missions
 						SendChinookReinforcements(chinook2Entry.Location, chinook2LZ.Location);
 					}
 					if (viewportTargetNumber == 1)
-						MissionUtils.Paradrop(world, soviets, ParadropUnits, paradropEntry.Location, paradropLZ.Location);
+					{
+						MissionUtils.Paradrop(world, soviets, ParadropUnits, paradrop1Entry.Location, paradrop1LZ.Location);
+						MissionUtils.Paradrop(world, soviets, ParadropUnits, paradrop2Entry.Location, paradrop2LZ.Location);
+					}
 					if (viewportTargetNumber == 2)
 					{
 						AttackWithHeavyTanks();
@@ -200,13 +208,7 @@ namespace OpenRA.Mods.RA.Missions
 			chinook.QueueActivity(new HeliFly(Util.CenterOfCell(lz)));
 			chinook.QueueActivity(new Turn(0));
 			chinook.QueueActivity(new HeliLand(false, 0));
-
-			foreach (var _ in cargo.Passengers)
-			{
-				chinook.QueueActivity(new UnloadCargo(false));
-				chinook.QueueActivity(new Wait(15));
-			}
-
+			chinook.QueueActivity(new UnloadCargo(true));
 			chinook.QueueActivity(new Wait(150));
 			chinook.QueueActivity(new HeliFly(Util.CenterOfCell(entry)));
 			chinook.QueueActivity(new RemoveSelf());
@@ -225,8 +227,11 @@ namespace OpenRA.Mods.RA.Missions
 			attackLocation = actors["AttackLocation"];
 			coastWP1 = actors["CoastWP1"];
 			coastWP2 = actors["CoastWP2"];
-			paradropLZ = actors["ParadropLZ"];
-			paradropEntry = actors["ParadropEntry"];
+
+			paradrop1LZ = actors["Paradrop1LZ"];
+			paradrop1Entry = actors["Paradrop1Entry"];
+			paradrop2LZ = actors["Paradrop2LZ"];
+			paradrop2Entry = actors["Paradrop2Entry"];
 
 			var t1 = actors["ViewportTarget1"];
 			var t2 = actors["ViewportTarget2"];
