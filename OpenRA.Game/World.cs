@@ -42,7 +42,14 @@ namespace OpenRA
 		public void AddPlayer(Player p) { Players.Add(p); }
 		public Player LocalPlayer { get; private set; }
 
-		public Player RenderPlayer;
+		Player renderPlayer;
+		public bool ObserveAfterWinOrLose;
+		public Player RenderPlayer
+		{
+			get { return renderPlayer == null || (ObserveAfterWinOrLose && renderPlayer.WinState != WinState.Undefined)? null : renderPlayer; }
+			set { renderPlayer = value; }
+		}
+
 		public bool FogObscures(Actor a) { return RenderPlayer != null && !RenderPlayer.Shroud.IsVisible(a); }
 		public bool FogObscures(CPos p) { return RenderPlayer != null && !RenderPlayer.Shroud.IsVisible(p); }
 		public bool ShroudObscures(Actor a) { return RenderPlayer != null && !RenderPlayer.Shroud.IsExplored(a); }
