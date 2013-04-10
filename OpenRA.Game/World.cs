@@ -41,25 +41,23 @@ namespace OpenRA
 
 		public void AddPlayer(Player p) { Players.Add(p); }
 		public Player LocalPlayer { get; private set; }
-		public bool Observer { get { return LocalPlayer == null; } }
 
-		Player renderPlayer;
-		public Player RenderPlayer
+		public Player RenderPlayer;
+		public bool FogObscures(Actor a) { return RenderPlayer != null && !RenderPlayer.Shroud.IsVisible(a); }
+		public bool FogObscures(CPos p) { return RenderPlayer != null && !RenderPlayer.Shroud.IsVisible(p); }
+		public bool ShroudObscures(Actor a) { return RenderPlayer != null && !RenderPlayer.Shroud.IsExplored(a); }
+		public bool ShroudObscures(CPos p) { return RenderPlayer != null && !RenderPlayer.Shroud.IsExplored(p); }
+
+		public Rectangle? VisibleBounds
 		{
-			get { return renderPlayer; }
-			set
+			get
 			{
-				renderPlayer = value;
-				if (renderPlayer != null)
-					renderPlayer.Shroud.Dirty();
+				if (RenderPlayer == null)
+					return null;
+
+				return RenderPlayer.Shroud.ExploredBounds;
 			}
 		}
-
-		public Rectangle? VisibleBounds { get { return renderPlayer != null ? renderPlayer.Shroud.Bounds : null; } }
-		public bool FogObscures(Actor a) { return renderPlayer != null && !renderPlayer.Shroud.IsVisible(a); }
-		public bool FogObscures(CPos p) { return renderPlayer != null && !renderPlayer.Shroud.IsVisible(p); }
-		public bool ShroudObscures(Actor a) { return renderPlayer != null && !renderPlayer.Shroud.IsExplored(a); }
-		public bool ShroudObscures(CPos p) { return renderPlayer != null && !renderPlayer.Shroud.IsExplored(p); }
 
 		public void SetLocalPlayer(string pr)
 		{

@@ -18,14 +18,10 @@ namespace OpenRA.Graphics
 		Map map;
 		Sprite[] shadowBits = Game.modData.SpriteLoader.LoadAllSprites("shadow");
 		Sprite[,] sprites, fogSprites;
+		int shroudHash;
 
-		public ShroudRenderer(World world)
-		{
-			this.map = world.Map;
-
-			sprites = new Sprite[map.MapSize.X, map.MapSize.Y];
-			fogSprites = new Sprite[map.MapSize.X, map.MapSize.Y];
-		}
+		bool initializePalettes = true;
+		PaletteReference fogPalette, shroudPalette;
 
 		static readonly byte[][] SpecialShroudTiles =
 		{
@@ -46,6 +42,17 @@ namespace OpenRA.Graphics
 			new byte[] { 41 },
 			new byte[] { 46 },
 		};
+
+		public ShroudRenderer(World world)
+		{
+			this.map = world.Map;
+
+			sprites = new Sprite[map.MapSize.X, map.MapSize.Y];
+			fogSprites = new Sprite[map.MapSize.X, map.MapSize.Y];
+
+			// Force update on first render
+			shroudHash = -1;
+		}
 
 		Sprite ChooseShroud(Shroud s, int i, int j)
 		{
@@ -96,9 +103,50 @@ namespace OpenRA.Graphics
 			return shadowBits[SpecialShroudTiles[u ^ uSides][v]];
 		}
 
-		bool initializePalettes = true;
-		PaletteReference fogPalette, shroudPalette;
-		internal void Draw(WorldRenderer wr, Player renderPlayer)
+		void GenerateSprites(Shroud shroud)
+		{
+			var hash = shroud != null ? shroud.Hash : 0;
+			if (shroudHash == hash)
+				return;
+
+			shroudHash = hash;
+			if (shroud == null)
+			{
+				// Players with no shroud see the whole map so we only need to set the edges
+				var b = map.Bounds;
+				for (int i = b.Left; i < b.Right; i++)
+					for (int j = b.Top; j < b.Bottom; j++)
+				{
+					var v = 0;
+					var u = 0;
+
+					if (j == b.Top) { v |= 1; u |= 3; }
+					if (i == b.Right - 1) { v |= 2; u |= 6; }
+					if (j == b.Bottom - 1) { v |= 4; u |= 12; }
+					if (i == b.Left) { v |= 8; u |= 9; }
+
+					var uSides = u;
+					if (i == b.Left && j == b.Top) u |= 1;
+					if (i == b.Right - 1 && j == b.Top) u |= 2;
+					if (i == b.Right - 1 && j == b.Bottom - 1) u |= 4;
+					if (i == b.Left && j == b.Bottom - 1) u |= 8;
+
+					sprites[i, j] = fogSprites[i, j] = shadowBits[SpecialShroudTiles[u ^ uSides][v]];
+				}
+			}
+			else
+			{
+				for (int i = map.Bounds.Left; i < map.Bounds.Right; i++)
+					for (int j = map.Bounds.Top; j < map.Bounds.Bottom; j++)
+						sprites[i, j] = ChooseShroud(shroud, i, j);
+
+				for (int i = map.Bounds.Left; i < map.Bounds.Right; i++)
+					for (int j = map.Bounds.Top; j < map.Bounds.Bottom; j++)
+						fogSprites[i, j] = ChooseFog(shroud, i, j);
+			}
+		}
+
+		internal void Draw(WorldRenderer wr, Shroud shroud)
 		{
 			if (initializePalettes)
 			{
@@ -107,42 +155,8 @@ namespace OpenRA.Graphics
 				initializePalettes = false;
 			}
 
-			if (renderPlayer == null)
-			{
-				// Players with no shroud see the whole map so we only need to set the edges
-				var b = map.Bounds;
-				for (int i = b.Left; i < b.Right; i++)
-					for (int j = b.Top; j < b.Bottom; j++)
-					{
-						var v = 0;
-						var u = 0;
+			GenerateSprites(shroud);
 
-						if (j == b.Top) { v |= 1; u |= 3; }
-						if (i == b.Right - 1) { v |= 2; u |= 6; }
-						if (j == b.Bottom - 1) { v |= 4; u |= 12; }
-						if (i == b.Left) { v |= 8; u |= 9; }
-
-						var uSides = u;
-						if (i == b.Left && j == b.Top) u |= 1;
-						if (i == b.Right - 1 && j == b.Top) u |= 2;
-						if (i == b.Right - 1 && j == b.Bottom - 1) u |= 4;
-						if (i == b.Left && j == b.Bottom - 1) u |= 8;
-
-						sprites[i, j] = fogSprites[i, j] = shadowBits[SpecialShroudTiles[u ^ uSides][v]];
-					}
-			}
-			else
-			{
-				renderPlayer.Shroud.dirty = false;
-
-				for (int i = map.Bounds.Left; i < map.Bounds.Right; i++)
-					for (int j = map.Bounds.Top; j < map.Bounds.Bottom; j++)
-						sprites[i, j] = ChooseShroud(renderPlayer.Shroud, i, j);
-
-				for (int i = map.Bounds.Left; i < map.Bounds.Right; i++)
-					for (int j = map.Bounds.Top; j < map.Bounds.Bottom; j++)
-						fogSprites[i, j] = ChooseFog(renderPlayer.Shroud, i, j);
-			}
 			var clipRect = Game.viewport.WorldBounds(wr.world);
 			DrawShroud(wr, clipRect, sprites, shroudPalette);
 			if (wr.world.WorldActor.HasTrait<Fog>())
