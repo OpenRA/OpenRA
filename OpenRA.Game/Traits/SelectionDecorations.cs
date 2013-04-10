@@ -31,8 +31,10 @@ namespace OpenRA.Traits
 
 		public void RenderAfterWorld(WorldRenderer wr)
 		{
-			var bounds = self.Bounds.Value;
+			if (self.World.FogObscures(self))
+				return;
 
+			var bounds = self.Bounds.Value;
 			var xy = new float2(bounds.Left, bounds.Top);
 			var xY = new float2(bounds.Left, bounds.Bottom);
 

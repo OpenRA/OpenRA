@@ -100,6 +100,7 @@ namespace OpenRA.Mods.RA
 
 		public IEnumerable<Renderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<Renderable> r)
 		{
+			// TODO: Make this consistent with everything else that adds animations to RenderSimple.
 			if ((self.Owner == self.World.LocalPlayer || self.World.LocalPlayer == null) && Level > 0)
 				return InnerModifyRender(self, wr, r);
 			else
@@ -112,6 +113,10 @@ namespace OpenRA.Mods.RA
 				yield return rs;
 
 			RankAnim.Tick();	// HACK
+
+			if (self.World.FogObscures(self))
+				yield break;
+
 			var bounds = self.Bounds.Value;
 			yield return new Renderable(RankAnim.Image, new float2(bounds.Right - 6, bounds.Bottom - 8),
 				wr.Palette("effect"), self.CenterLocation.Y);
