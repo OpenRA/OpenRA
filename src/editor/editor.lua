@@ -750,7 +750,7 @@ function AddEditor(editor, name)
     local id = editor:GetId()
     local document = {}
     document.editor = editor
-    document.index = notebook:GetSelection()
+    document.index = notebook:GetPageIndex(editor)
     document.fileName = nil
     document.filePath = nil
     document.modTime = nil

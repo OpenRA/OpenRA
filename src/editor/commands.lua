@@ -14,8 +14,8 @@ local BREAKPOINT_MARKER = StylesGetMarker("breakpoint")
 function NewFile(event)
   local editor = CreateEditor()
   SetupKeywords(editor, "lua")
-  AddEditor(editor, ide.config.default.fullname)
-  SetEditorSelection()
+  local doc = AddEditor(editor, ide.config.default.fullname)
+  if doc then SetEditorSelection(doc.index) end
   return editor
 end
 
