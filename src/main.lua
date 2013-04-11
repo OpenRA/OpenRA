@@ -129,6 +129,11 @@ ide = {
   wxver = string.match(wx.wxVERSION_STRING, "[%d%.]+"),
 }
 
+-- add wx.wxMOD_RAW_CONTROL as it's missing in wxlua 2.8.12.3
+if not wx.wxMOD_RAW_CONTROL then
+  wx.wxMOD_RAW_CONTROL = ide.osname == 'Macintosh' and 0x10 or wx.wxMOD_CONTROL
+end
+
 dofile "src/editor/ids.lua"
 dofile "src/editor/style.lua"
 dofile "src/editor/keymap.lua"

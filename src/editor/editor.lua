@@ -648,21 +648,22 @@ function CreateEditor()
   editor:Connect(wx.wxEVT_KEY_DOWN,
     function (event)
       local keycode = event:GetKeyCode()
+      local mod = event:GetModifiers()
       local first, last = 0, notebook:GetPageCount()-1
       if keycode == wx.WXK_ESCAPE and frame:IsFullScreen() then
         ShowFullScreen(false)
-      elseif event:ControlDown() and
-        (keycode == wx.WXK_PAGEUP or keycode == wx.WXK_TAB and event:ShiftDown()) then
+      elseif mod == wx.wxMOD_RAW_CONTROL and keycode == wx.WXK_PAGEUP
+        or mod == (wx.wxMOD_RAW_CONTROL + wx.wxMOD_SHIFT) and keycode == wx.WXK_TAB then
         if notebook:GetSelection() == first
         then notebook:SetSelection(last)
         else notebook:AdvanceSelection(false) end
-      elseif event:ControlDown() and
-        (keycode == wx.WXK_PAGEDOWN or keycode == wx.WXK_TAB) then
+      elseif mod == wx.wxMOD_RAW_CONTROL
+        and (keycode == wx.WXK_PAGEDOWN or keycode == wx.WXK_TAB) then
         if notebook:GetSelection() == last
         then notebook:SetSelection(first)
         else notebook:AdvanceSelection(true) end
       elseif (keycode == wx.WXK_DELETE or keycode == wx.WXK_BACK)
-        and (event:GetModifiers() == wx.wxMOD_NONE) then
+        and (mod == wx.wxMOD_NONE) then
         -- Delete and Backspace behave the same way for selected text
         if #(editor:GetSelectedText()) > 0 then
           editor:SetTargetStart(editor:GetSelectionStart())
@@ -689,11 +690,11 @@ function CreateEditor()
         end
         editor:ReplaceTarget("")
       elseif ide.osname == "Unix" and ide.wxver >= "2.9.5"
-      and keycode == ('T'):byte() and event:GetModifiers() == wx.wxMOD_CONTROL then
+      and keycode == ('T'):byte() and mod == wx.wxMOD_CONTROL then
         ide.frame:AddPendingEvent(wx.wxCommandEvent(
           wx.wxEVT_COMMAND_MENU_SELECTED, ID_SHOWTOOLTIP))
       else
-        if ide.osname == 'Macintosh' and event:CmdDown() then
+        if ide.osname == 'Macintosh' and mod == wx.wxMOD_META then
           return -- ignore a key press if Command key is also pressed
         end
         event:Skip()
