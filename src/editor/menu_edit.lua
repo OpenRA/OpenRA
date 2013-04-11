@@ -47,12 +47,11 @@ function OnUpdateUIEditMenu(event)
   if editor == nil then event:Enable(false); return end
 
   local alwaysOn = { [ID_SELECTALL] = true, [ID_FOLD] = true,
+    -- allow Cut and Copy commands as these work on a line if no selection
+    [ID_COPY] = true, [ID_CUT] = true,
     [ID_COMMENT] = true, [ID_AUTOCOMPLETE] = true}
   local menu_id = event:GetId()
   local enable =
-    ((menu_id == ID_COPY or menu_id == ID_CUT) and
-     (editor:GetClassInfo():GetClassName() ~= 'wxStyledTextCtrl'
-      or editor:GetSelectionStart() ~= editor:GetSelectionEnd())) or
     menu_id == ID_PASTE and editor:CanPaste() or
     menu_id == ID_UNDO and editor:CanUndo() or
     menu_id == ID_REDO and editor:CanRedo() or
@@ -74,8 +73,10 @@ function OnEditMenu(event)
     then event:Skip(); return end
 
   local menu_id = event:GetId()
-  if menu_id == ID_CUT then editor:Cut()
-  elseif menu_id == ID_COPY then editor:Copy()
+  if menu_id == ID_CUT then
+    if editor:GetSelectionStart() == editor:GetSelectionEnd()
+      then editor:LineCut() else editor:Cut() end
+  elseif menu_id == ID_COPY then editor:CopyAllowLine()
   elseif menu_id == ID_PASTE then editor:Paste()
   elseif menu_id == ID_SELECTALL then editor:SelectAll()
   elseif menu_id == ID_UNDO then editor:Undo()
