@@ -652,6 +652,14 @@ function CreateEditor()
       local first, last = 0, notebook:GetPageCount()-1
       if keycode == wx.WXK_ESCAPE and frame:IsFullScreen() then
         ShowFullScreen(false)
+      -- Ctrl-Home and Ctrl-End don't work on OSX with 2.9.5+; fix it
+      elseif ide.osname == 'Macintosh' and ide.wxver >= "2.9.5"
+        and (mod == wx.wxMOD_RAW_CONTROL or mod == (wx.wxMOD_RAW_CONTROL + wx.wxMOD_SHIFT))
+        and (keycode == wx.WXK_HOME or keycode == wx.WXK_END) then
+        local pos = keycode == wx.WXK_HOME and 0 or editor:GetLength()
+        if event:ShiftDown() -- mark selection and scroll to caret
+        then editor:SetCurrentPos(pos) editor:EnsureCaretVisible()
+        else editor:GotoPos(pos) end
       elseif mod == wx.wxMOD_RAW_CONTROL and keycode == wx.WXK_PAGEUP
         or mod == (wx.wxMOD_RAW_CONTROL + wx.wxMOD_SHIFT) and keycode == wx.WXK_TAB then
         if notebook:GetSelection() == first
