@@ -16,6 +16,7 @@ namespace OpenRA.Graphics
 	public class ShroudRenderer
 	{
 		Map map;
+		ShroudInfo shroudInfo;
 		Sprite[] shadowBits = Game.modData.SpriteLoader.LoadAllSprites("shadow");
 		Sprite[,] sprites, fogSprites;
 		int shroudHash;
@@ -46,6 +47,7 @@ namespace OpenRA.Graphics
 		public ShroudRenderer(World world)
 		{
 			this.map = world.Map;
+			shroudInfo = Rules.Info["player"].Traits.Get<ShroudInfo>();
 
 			sprites = new Sprite[map.MapSize.X, map.MapSize.Y];
 			fogSprites = new Sprite[map.MapSize.X, map.MapSize.Y];
@@ -150,7 +152,8 @@ namespace OpenRA.Graphics
 		{
 			if (initializePalettes)
 			{
-				fogPalette = wr.Palette("fog");
+				if (shroudInfo.Fog)
+					fogPalette = wr.Palette("fog");
 				shroudPalette = wr.Palette("shroud");
 				initializePalettes = false;
 			}
@@ -158,8 +161,11 @@ namespace OpenRA.Graphics
 			GenerateSprites(shroud);
 
 			var clipRect = Game.viewport.WorldBounds(wr.world);
+
+			// We draw the shroud when disabled to hide the sharp map edges
 			DrawShroud(wr, clipRect, sprites, shroudPalette);
-			if (wr.world.WorldActor.HasTrait<Fog>())
+
+			if (shroudInfo.Fog)
 				DrawShroud(wr, clipRect, fogSprites, fogPalette);
 		}
 

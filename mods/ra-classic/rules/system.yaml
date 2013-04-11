@@ -122,6 +122,7 @@ Player:
 	DebugResourceOreCapacity:
 	GpsWatcher:
 	Shroud:
+		Fog: false
 	BaseAttackNotifier:
 	PlayerStatistics:
 
@@ -193,7 +194,6 @@ World:
 		B: 0
 		A: 180
 	ShroudPalette:
-	FogPalette:
 	Country@0:
 		Name: Allies
 		Race: allies

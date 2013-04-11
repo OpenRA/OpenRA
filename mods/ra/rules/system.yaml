@@ -574,8 +574,11 @@ World:
 		G: 0
 		B: 0
 		A: 180
-	ShroudPalette:
-	FogPalette:
+	ShroudPalette@shroud:
+		Type: Shroud
+	ShroudPalette@fog:
+		Name: fog
+		Type: Fog
 	Country@0:
 		Name: Allies
 		Race: allies
@@ -621,7 +624,6 @@ World:
 	SpawnMPUnits:
 	SpatialBins:
 		BinSize: 4
-	Fog:
 	PathFinder:
 	ValidateOrder:
 	DebugPauseState:

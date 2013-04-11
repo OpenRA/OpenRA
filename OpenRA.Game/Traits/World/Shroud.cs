@@ -18,13 +18,16 @@ namespace OpenRA.Traits
 {
 	public class ShroudInfo : ITraitInfo
 	{
-		public object Create(ActorInitializer init) { return new Shroud(init.self); }
+		public readonly bool Shroud = true;
+		public readonly bool Fog = true;
+		public object Create(ActorInitializer init) { return new Shroud(init.self, this); }
 	}
 
 	public class Shroud
 	{
-		Map map;
+		public ShroudInfo Info;
 		Actor self;
+		Map map;
 
 		int[,] visibleCells;
 		bool[,] exploredCells;
@@ -34,8 +37,9 @@ namespace OpenRA.Traits
 
 		public int Hash { get; private set; }
 
-		public Shroud(Actor self)
+		public Shroud(Actor self, ShroudInfo info)
 		{
+			Info = info;
 			this.self = self;
 			map = self.World.Map;
 
@@ -44,6 +48,9 @@ namespace OpenRA.Traits
 			foggedCells = new bool[map.MapSize.X, map.MapSize.Y];
 			self.World.ActorAdded += AddActor;
 			self.World.ActorRemoved += RemoveActor;
+
+			if (!info.Shroud)
+				ExploredBounds = map.Bounds;
 		}
 
 		void Invalidate()
@@ -270,6 +277,9 @@ namespace OpenRA.Traits
 			if (!map.IsInMap(x, y))
 				return false;
 
+			if (!Info.Shroud)
+				return true;
+
 			return foggedCells[x,y];
 		}
 
@@ -285,6 +295,9 @@ namespace OpenRA.Traits
 			// the fog tiles are not visible at the edge of the world
 			if (x < 0 || x >= map.MapSize.X || y < 0 || y >= map.MapSize.Y)
 				return false;
+
+			if (!Info.Fog)
+				return true;
 
 			return visibleCells[x,y] != 0;
 		}

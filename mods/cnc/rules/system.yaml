@@ -257,8 +257,11 @@ World:
 		G: 0
 		B: 0
 		A: 180
-	ShroudPalette:
-	FogPalette:
+	ShroudPalette@shroud:
+		Type: Shroud
+	ShroudPalette@fog:
+		Name: fog
+		Type: Fog
 	Country@gdi:
 		Name: GDI
 		Race: gdi
@@ -306,7 +309,6 @@ World:
 	MPStartLocations:
 	SpatialBins:
 		BinSize: 4
-	Fog:
 	CrateSpawner:
 		Minimum: 1
 		Maximum: 6

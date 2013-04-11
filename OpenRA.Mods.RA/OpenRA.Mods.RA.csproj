@@ -416,7 +416,6 @@
     <Compile Include="Widgets\Logic\CheatsLogic.cs" />
     <Compile Include="CloakPaletteEffect.cs" />
     <Compile Include="Widgets\ColorPreviewManagerWidget.cs" />
-    <Compile Include="FogPalette.cs" />
     <Compile Include="Infiltrates.cs" />
     <Compile Include="Armament.cs" />
     <Compile Include="DebugMuzzlePositions.cs" />
