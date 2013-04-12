@@ -63,6 +63,13 @@ Background@MAPCHOOSER_PANEL:
 			Y:17
 			Width:200
 			Height:25
+		Button@RANDOMMAP_BUTTON:
+			X:34
+			Y:PARENT_BOTTOM - 49
+			Width:120
+			Height:25
+			Text:Random Map
+			Font:Bold
 		Button@BUTTON_OK:
 			X:PARENT_RIGHT - 295
 			Y:PARENT_BOTTOM - 49
