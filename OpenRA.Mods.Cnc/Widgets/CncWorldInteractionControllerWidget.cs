@@ -66,7 +66,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			if (!world.Map.IsInMap(cell))
 				return;
 
-			if (world.LocalPlayer != null && !world.LocalPlayer.Shroud.IsExplored(cell))
+			if (world.ShroudObscures(cell))
 			{
 				TooltipType = WorldTooltipType.Unexplored;
 				return;

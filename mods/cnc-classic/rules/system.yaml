@@ -95,6 +95,7 @@ Player:
 	DebugResourceOre:
 	DebugResourceOreCapacity:
 	Shroud:
+		Fog: false
 	BaseAttackNotifier:
 	PlayerStatistics:
 
@@ -159,7 +160,6 @@ World:
 		B: 0
 		A: 180
 	ShroudPalette:
-	FogPalette:
 	Country@gdi:
 		Name: GDI
 		Race: gdi
@@ -204,7 +204,6 @@ World:
 	SpawnMPUnits:
 	SpatialBins:
 		BinSize: 4
-	Shroud:
 	PathFinder:
 	ValidateOrder:
 	DebugPauseState:

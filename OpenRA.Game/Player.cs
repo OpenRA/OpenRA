@@ -77,7 +77,7 @@ namespace OpenRA
 			}
 			PlayerActor = world.CreateActor("Player", new TypeDictionary { new OwnerInit(this) });
 			Shroud = PlayerActor.Trait<Shroud>();
-			Shroud.Owner = this;
+
 			// Enable the bot logic on the host
 			IsBot = botType != null;
 			if (IsBot && Game.IsHost)
@@ -92,5 +92,10 @@ namespace OpenRA
 		}
 
 		public Dictionary<Player, Stance> Stances = new Dictionary<Player, Stance>();
+		public bool IsAlliedWith(Player p)
+		{
+			// Observers are considered as allies
+			return p == null || Stances[p] == Stance.Ally;
+		}
 	}
 }
