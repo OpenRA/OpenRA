@@ -35,21 +35,22 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			}
 		}
 
+		static string LabelForPlayer(Player p)
+		{
+			return p != null ? "{0}'s view".F(p.PlayerName) : "World view";
+		}
+
 		[ObjectCreator.UseCtor]
 		public ObserverShroudSelectorLogic(Widget widget, World world)
 		{
-			var views = world.Players.Where(p => !p.NonCombatant).ToDictionary(p => p.PlayerName,
-				p => new CameraOption("{0}'s view".F(p.PlayerName),
+			var views = world.Players.Where(p => !p.NonCombatant).Concat(new[] { (Player)null }).Select(
+				p => new CameraOption(LabelForPlayer(p),
 				      () => world.RenderPlayer == p,
 				      () => world.RenderPlayer = p
-			));
-			views.Add("", new CameraOption("World view",
-				() => world.RenderPlayer == null,
-				() => world.RenderPlayer = null
-			));
+			)).ToArray();
 
 			var shroudSelector = widget.Get<DropDownButtonWidget>("SHROUD_SELECTOR");
-			shroudSelector.GetText = () => views[world.RenderPlayer == null ? "" : world.RenderPlayer.PlayerName].Label;
+			shroudSelector.GetText = () => LabelForPlayer(world.RenderPlayer);
 			shroudSelector.OnMouseDown = _ =>
 			{
 				Func<CameraOption, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
@@ -58,7 +59,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					item.Get<LabelWidget>("LABEL").GetText = () => option.Label;
 					return item;
 				};
-				shroudSelector.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", views.Count() * 30, views.Values, setupItem);
+				shroudSelector.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", views.Length * 30, views, setupItem);
 			};
 		}
 	}
