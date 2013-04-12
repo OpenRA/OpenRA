@@ -13,6 +13,7 @@ using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Air;
+using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Scripting;
 using OpenRA.Traits;
@@ -284,11 +285,13 @@ namespace OpenRA.Mods.RA.Missions
 
 			InitializeAlliedFactories();
 			
-			foreach (var actor in actors.Values.Where(a => a.Owner == allies || a.HasTrait<Bridge>()))
+			foreach (var actor in actors.Values)
 			{
 				if (actor.Owner == allies && actor.HasTrait<AutoTarget>())
 					actor.Trait<AutoTarget>().stance = UnitStance.Defend;
-				actor.AddTrait(new Invulnerable());
+				
+				if (actor.IsInWorld && (actor.HasTrait<Bridge>() || actor.Owner == allies || (actor.Owner == soviets && actor.HasTrait<Building>())))
+					actor.AddTrait(new Invulnerable());
 			}
 
 			viewportOrigin = viewportTargets[0];
