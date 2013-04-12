@@ -46,7 +46,7 @@ FACT:
 	BaseBuilding:
 	ProductionBar:
 	BaseProvider:
-		Cooldown: 125
+		Cooldown: 100
 		Range: 14
 
 NUKE:
