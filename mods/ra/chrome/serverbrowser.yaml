@@ -3,7 +3,7 @@ Background@JOINSERVER_BG:
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Width:540
-	Height:535
+	Height:505
 	Children:
 		Label@JOINSERVER_LABEL_TITLE:
 			X:0
@@ -23,48 +23,30 @@ Background@JOINSERVER_BG:
 		Checkbox@WAITING_FOR_PLAYERS:
 			X:80
 			Y:50
-			Width:170
+			Width:100
 			Height:20
-			Text:Waiting For Players
+			Text:Waiting
 		Checkbox@EMPTY:
-			X:250
+			X:180
 			Y:50
 			Width:100
 			Height:20
 			Text:Empty
 		Checkbox@ALREADY_STARTED:
-			X:350
+			X:280
 			Y:50
 			Width:100
 			Height:20
-			Text:Already Started
-		DropDownButton@VERSIONS:
-			X:20
-			Y:80
-			Width:150
-			Height:25
-			Font:Bold
-			Text:All Versions
-			Disabled: yes
-		DropDownButton@MODS:
-			X:190
-			Y:80
-			Width:150
-			Height:25
-			Font:Bold
-			Text:All Mods
-			Disabled: yes
-		DropDownButton@MAPS:
-			X:360
-			Y:80
-			Width:150
-			Height:25
-			Font:Bold
-			Text:All Maps
-			Disabled: yes
+			Text:Started
+		Checkbox@INCOMPATIBLE_VERSION:
+			X:380
+			Y:50
+			Width:100
+			Height:20
+			Text:Incompatible
 		ScrollPanel@SERVER_LIST:
 			X:20
-			Y:110
+			Y:80
 			Width:500
 			Height:355
 			Children:

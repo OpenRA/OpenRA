@@ -32,6 +32,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		bool showWaiting = true;
 		bool showEmpty = true;
 		bool showStarted = true;
+		bool showIncompatible = false;
 
 		public string ProgressLabelText()
 		{
@@ -100,6 +101,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				showAlreadyStartedCheckbox.IsChecked = () => showStarted;
 				showAlreadyStartedCheckbox.OnClick = () => { showStarted ^= true; ServerList.Query(games => RefreshServerList(panel, games)); };
+			}
+
+			var showIncompatibleCheckbox = panel.GetOrNull<CheckboxWidget>("INCOMPATIBLE_VERSION");
+			if (showIncompatibleCheckbox != null)
+			{
+				showIncompatibleCheckbox.IsChecked = () => showIncompatible;
+				showIncompatibleCheckbox.OnClick = () => { showIncompatible ^= true; ServerList.Query(games => RefreshServerList(panel, games)); };
 			}
 
 			ServerList.Query(games => RefreshServerList(panel, games));
@@ -199,6 +207,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if ((game.Players == 0) && !showEmpty)
 				return true;
 
+			if (!game.CompatibleVersion() && !showIncompatible)
+				return true;
+
 			return false;
 		}
 
@@ -269,8 +280,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					ping.GetText = () => GetPing(game);
 					ping.IsVisible = () => game.CompatibleVersion();
 				}
-
-				// TODO: Display game.Location once https://github.com/OpenRA/OpenRAMasterServer/pull/12 is merged
 
 				if (!canJoin)
 				{
