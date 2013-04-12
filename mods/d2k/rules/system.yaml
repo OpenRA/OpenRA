@@ -340,8 +340,11 @@ World:
 		G: 0
 		B: 0
 		A: 180
-	ShroudPalette:
-	FogPalette:
+	ShroudPalette@shroud:
+		Type: Shroud
+	ShroudPalette@fog:
+		Name: fog
+		Type: Fog
 	Country@Atreides:
 		Name: Atreides
 		Race: atreides
@@ -388,8 +391,6 @@ World:
 		Faction: ordos
 	SpatialBins:
 		BinSize: 4
-	Shroud:
-	Fog:
 	PathFinder:
 	ValidateOrder:
 	DebugPauseState:

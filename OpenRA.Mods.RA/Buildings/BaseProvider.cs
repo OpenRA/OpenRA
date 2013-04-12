@@ -60,7 +60,7 @@ namespace OpenRA.Mods.RA.Buildings
 		public void RenderBeforeWorld(WorldRenderer wr, Actor self)
 		{
 			// Visible to player and allies
-			if (self.World.RenderedPlayer != null && self.Owner.Stances[self.World.RenderedPlayer] != Stance.Ally)
+			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				return;
 
 			wr.DrawRangeCircleWithContrast(
@@ -73,7 +73,7 @@ namespace OpenRA.Mods.RA.Buildings
 		public float GetValue()
 		{
 			// Visible to player and allies
-			if (self.World.RenderedPlayer != null && self.Owner.Stances[self.World.RenderedPlayer] != Stance.Ally)
+			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				return 0f;
 
 			// Ready or delay disabled

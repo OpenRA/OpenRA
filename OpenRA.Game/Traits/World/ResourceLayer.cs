@@ -40,7 +40,7 @@ namespace OpenRA.Traits
 			for (int x = clip.Left; x < clip.Right; x++)
 				for (int y = clip.Top; y < clip.Bottom; y++)
 				{
-					if (!world.RenderedShroud.IsExplored(new CPos(x, y)))
+					if (world.ShroudObscures(new CPos(x, y)))
 						continue;
 
 					var c = content[x, y];

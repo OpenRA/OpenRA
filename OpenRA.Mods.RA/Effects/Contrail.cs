@@ -93,8 +93,8 @@ namespace OpenRA.Mods.RA
 				var conPos = WPos.Average(positions[i], positions[i-1], positions[i-2], positions[i-3]);
 				var nextPos = WPos.Average(positions[i-1], positions[i-2], positions[i-3], positions[i-4]);
 
-				if (self.World.RenderedShroud.IsVisible(new CPos(conPos)) ||
-				    self.World.RenderedShroud.IsVisible(new CPos(nextPos)))
+				if (!self.World.FogObscures(new CPos(conPos)) &&
+				    !self.World.FogObscures(new CPos(nextPos)))
 				{
 					Game.Renderer.WorldLineRenderer.DrawLine(wr.ScreenPosition(conPos), wr.ScreenPosition(nextPos), trailStart, trailEnd);
 

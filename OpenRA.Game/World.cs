@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using OpenRA.Effects;
 using OpenRA.FileFormats;
@@ -40,11 +41,30 @@ namespace OpenRA
 
 		public void AddPlayer(Player p) { Players.Add(p); }
 		public Player LocalPlayer { get; private set; }
-		public readonly Shroud LocalShroud;
-		public bool Observer { get { return LocalPlayer == null; } }
-		public Player RenderedPlayer;
-		public Shroud RenderedShroud { get { return RenderedPlayer != null ? RenderedPlayer.Shroud : LocalShroud; } }
-		
+
+		Player renderPlayer;
+		public bool ObserveAfterWinOrLose;
+		public Player RenderPlayer
+		{
+			get { return renderPlayer == null || (ObserveAfterWinOrLose && renderPlayer.WinState != WinState.Undefined)? null : renderPlayer; }
+			set { renderPlayer = value; }
+		}
+
+		public bool FogObscures(Actor a) { return RenderPlayer != null && !RenderPlayer.Shroud.IsVisible(a); }
+		public bool FogObscures(CPos p) { return RenderPlayer != null && !RenderPlayer.Shroud.IsVisible(p); }
+		public bool ShroudObscures(Actor a) { return RenderPlayer != null && !RenderPlayer.Shroud.IsExplored(a); }
+		public bool ShroudObscures(CPos p) { return RenderPlayer != null && !RenderPlayer.Shroud.IsExplored(p); }
+
+		public Rectangle? VisibleBounds
+		{
+			get
+			{
+				if (RenderPlayer == null)
+					return null;
+
+				return RenderPlayer.Shroud.ExploredBounds;
+			}
+		}
 
 		public void SetLocalPlayer(string pr)
 		{
@@ -52,7 +72,7 @@ namespace OpenRA
 				return;
 
 	 		LocalPlayer = Players.FirstOrDefault(p => p.InternalName == pr);
-			RenderedPlayer = LocalPlayer;
+			RenderPlayer = LocalPlayer;
 		}
 
 		public readonly Actor WorldActor;
@@ -104,7 +124,6 @@ namespace OpenRA
 			SharedRandom = new XRandom(orderManager.LobbyInfo.GlobalSettings.RandomSeed);
 
 			WorldActor = CreateActor( "World", new TypeDictionary() );
-			LocalShroud = WorldActor.Trait<Shroud>();
 			ActorMap = new ActorMap(this);
 
 			// Add players

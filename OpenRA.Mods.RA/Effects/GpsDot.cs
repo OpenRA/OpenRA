@@ -69,7 +69,7 @@ namespace OpenRA.Mods.RA.Effects
 			}
 
 			var hasGps = (watcher != null && (watcher.Granted || watcher.GrantedAllies));
-			var hasDot = (huf != null && !huf.IsVisible(self.World.RenderedShroud, self)); // WRONG (why?)
+			var hasDot = (huf != null && !huf.IsVisible(self, self.World.RenderPlayer));
 			var dotHidden = (cloak != null && cloak.Cloaked) || (spy != null && spy.Disguised);
 
 			show = hasGps && hasDot && !dotHidden;

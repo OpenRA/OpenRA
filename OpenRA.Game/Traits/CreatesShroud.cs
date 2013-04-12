@@ -32,29 +32,24 @@ namespace OpenRA.Traits
 		public void Tick(Actor self)
 		{
 	    	// TODO: don't tick all the time.
-			if(self.Owner == null) return;
+			if (self.Owner == null)
+				return;
 
-			if (previousLocation != self.Location && v != null) {
+			var shrouds = self.World.ActorsWithTrait<Shroud>().Select(s => s.Actor.Owner.Shroud);
+			if (previousLocation != self.Location && v != null)
+			{
 				previousLocation = self.Location;
 
-				var shrouds = self.World.ActorsWithTrait<Shroud>().Select(s => s.Actor.Owner.Shroud);
-				foreach (var shroud in shrouds) {
+				foreach (var shroud in shrouds)
 					shroud.UnhideActor(self, v, Info.Range);
-				}
 			}
 
-			if (!self.TraitsImplementing<IDisable>().Any(d => d.Disabled)) {
-				var shrouds = self.World.ActorsWithTrait<Shroud>().Select(s => s.Actor.Owner.Shroud);
-				foreach (var shroud in shrouds) {
+			if (!self.TraitsImplementing<IDisable>().Any(d => d.Disabled))
+				foreach (var shroud in shrouds)
 					shroud.HideActor(self, Info.Range);
-				}
-			}
-			else {
-				var shrouds = self.World.ActorsWithTrait<Shroud>().Select(s => s.Actor.Owner.Shroud);
-				foreach (var shroud in shrouds) {
+			else
+				foreach (var shroud in shrouds)
 					shroud.UnhideActor(self, v, Info.Range);
-				}
-			}
 
 			v = new Shroud.ActorVisibility {
 				vis = Shroud.GetVisOrigins(self).ToArray()
