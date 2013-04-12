@@ -399,7 +399,7 @@ HQ:
 FIX:
 	Inherits: ^Building
 	Valued:
-		Cost: 1200
+		Cost: 600
 	Tooltip:
 		Name: Repair Facility
 		Icon: fixicnh
@@ -413,7 +413,7 @@ FIX:
 		Footprint: _x_ xxx _x_
 		Dimensions: 3,3
 	Health:
-		HP: 800
+		HP: 400
 	RevealsShroud:
 		Range: 5
 	BelowUnits:
