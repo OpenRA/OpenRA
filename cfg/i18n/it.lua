@@ -31,7 +31,7 @@ return {
   ["&Undo"] = "Annulla", -- src\editor\editor.lua, src\editor\menu_edit.lua
   ["&View"] = "Visualizza", -- src\editor\menu_view.lua
   ["&Watch Window"] = "Finestra Espressioni di Controllo", -- src\editor\menu_view.lua
-  ["About ZeroBrane Studio"] = "Informazioni su ZeroBrane Studio", -- src\editor\menu_help.lua
+  ["About %s"] = "Informazioni su %s", -- src\editor\menu_help.lua
   ["Add Watch Expression"] = "Aggiungi Espressione di Controllo", -- src\editor\editor.lua
   ["Add to Scratchpad"] = "Aggiungi a Scratchpad ", -- src\editor\editor.lua
   ["All files"] = "Tutti i files", -- src\editor\commands.lua

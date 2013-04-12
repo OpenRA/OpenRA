@@ -31,7 +31,7 @@ return {
   ["&Undo"] = "&Отменить", -- src\editor\editor.lua, src\editor\menu_edit.lua
   ["&View"] = "&Вид", -- src\editor\menu_view.lua
   ["&Watch Window"] = "Окно &наблюдения", -- src\editor\menu_view.lua
-  ["About ZeroBrane Studio"] = "О ZeroBrane Studio", -- src\editor\menu_help.lua
+  ["About %s"] = "О %s", -- src\editor\menu_help.lua
   ["Add Watch Expression"] = "Добавить в окно наблюдения", -- src\editor\editor.lua
   ["Add to Scratchpad"] = "Добавить в черновик", -- src\editor\editor.lua
   ["All files"] = "Все файлы", -- src\editor\commands.lua

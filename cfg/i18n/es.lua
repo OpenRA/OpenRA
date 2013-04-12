@@ -34,7 +34,7 @@ return {
   ["&Undo"] = "Deshacer", -- src\editor\editor.lua, src\editor\menu_edit.lua
   ["&View"] = "Ver", -- src\editor\menu_view.lua
   ["&Watch Window"] = "Ventana de observaciones", -- src\editor\menu_view.lua
-  ["About ZeroBrane Studio"] = "Acerca de ZeroBrane Studio", -- src\editor\menu_help.lua
+  ["About %s"] = "Acerca de %s", -- src\editor\menu_help.lua
   ["Add Watch Expression"] = "Añadir expresión de observación", -- src\editor\editor.lua
   ["Add to Scratchpad"] = "Añadir al borrador", -- src\editor\editor.lua
   ["All files"] = "Todos los archivos", -- src\editor\commands.lua

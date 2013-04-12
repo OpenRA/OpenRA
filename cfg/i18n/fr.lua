@@ -31,7 +31,7 @@ return {
   ["&Undo"] = "&Annuler", -- src\editor\editor.lua, src\editor\menu_edit.lua
   ["&View"] = "&Affichage", -- src\editor\menu_view.lua
   ["&Watch Window"] = "&Expressions espionnes", -- src\editor\menu_view.lua
-  ["About ZeroBrane Studio"] = "À propos de ZeroBrane Studio", -- src\editor\menu_help.lua
+  ["About %s"] = "À propos de %s", -- src\editor\menu_help.lua
   ["Add Watch Expression"] = "Ajouter une expression", -- src\editor\editor.lua
   ["Add to Scratchpad"] = "Ajouter au brouillon", -- src\editor\editor.lua
   ["All files"] = "Tous les fichiers", -- src\editor\commands.lua

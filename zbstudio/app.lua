@@ -58,6 +58,7 @@ local app = {
     statuswelcome = "Welcome to ZeroBrane Studio",
     settingsapp = "ZeroBraneStudio",
     settingsvendor = "ZeroBraneLLC",
+    logo = "res/zerobrane.png",
   },
 }
 
