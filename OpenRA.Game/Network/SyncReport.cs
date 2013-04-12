@@ -9,11 +9,18 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Reflection.Emit;
+using System;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Network
 {
 	class SyncReport
 	{
+		static Cache<Type, Func<object, Dictionary<string, string>>> dumpFuncCache = new Cache<Type, Func<object, Dictionary<string, string>>>( t => GenerateDumpFunc( t ) );
+
 		readonly OrderManager orderManager;
 		const int numSyncReports = 5;
 		Report[] syncReports = new Report[numSyncReports];
@@ -32,6 +39,91 @@ namespace OpenRA.Network
 			curIndex = ++curIndex % numSyncReports;
 		}
 
+		public static Dictionary<string, string> DumpSyncTrait( object obj )
+		{
+			return dumpFuncCache[ obj.GetType() ]( obj );
+		}
+
+		public static Func<object, Dictionary<string, string>> GenerateDumpFunc(Type t)
+		{
+			var dictType = typeof(Dictionary<string, string>);
+
+			var d = new DynamicMethod("dump_{0}".F(t.Name), dictType, new Type[] { typeof(object) }, t);
+			var il = d.GetILGenerator();
+
+			var this_ = il.DeclareLocal(t).LocalIndex;
+			var dict_ = il.DeclareLocal(dictType).LocalIndex;
+			var obj_ = il.DeclareLocal(typeof(object)).LocalIndex;
+
+			il.Emit(OpCodes.Ldarg_0);
+			il.Emit(OpCodes.Castclass, t);
+			il.Emit(OpCodes.Stloc, this_);
+
+			var dictAdd_ = dictType.GetMethod("Add", BindingFlags.Instance | BindingFlags.Public, null, new Type[] { typeof(string), typeof(string) }, null);
+			var dictCtor_ = dictType.GetConstructor(Type.EmptyTypes);
+			var objToString_ = typeof(object).GetMethod("ToString", BindingFlags.Instance | BindingFlags.Public, null, Type.EmptyTypes, null);
+
+			il.Emit(OpCodes.Newobj, dictCtor_);
+			il.Emit(OpCodes.Stloc, dict_);
+
+			const BindingFlags bf = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
+			foreach (var field in t.GetFields(bf).Where(x => x.HasAttribute<SyncAttribute>()))
+			{
+				if (field.IsLiteral || field.IsStatic) continue;
+
+				var lblNull = il.DefineLabel();
+
+				il.Emit(OpCodes.Ldloc, this_);
+				il.Emit(OpCodes.Ldfld, field);
+
+				if (field.FieldType.IsValueType)
+					il.Emit(OpCodes.Box, field.FieldType);
+
+				il.Emit(OpCodes.Dup);
+				il.Emit(OpCodes.Stloc, obj_);
+
+				il.Emit(OpCodes.Brfalse, lblNull);
+
+				il.Emit(OpCodes.Ldloc, dict_);
+				il.Emit(OpCodes.Ldstr, field.Name);
+
+				il.Emit(OpCodes.Ldloc, obj_);
+				il.Emit(OpCodes.Callvirt, objToString_);
+				il.Emit(OpCodes.Callvirt, dictAdd_);
+
+				il.MarkLabel(lblNull);
+			}
+
+			foreach (var prop in t.GetProperties(bf).Where(x => x.HasAttribute<SyncAttribute>()))
+			{
+				var lblNull = il.DefineLabel();
+
+				il.Emit(OpCodes.Ldloc, this_);
+				il.EmitCall(OpCodes.Call, prop.GetGetMethod(), null);
+
+				if (prop.PropertyType.IsValueType)
+					il.Emit(OpCodes.Box, prop.PropertyType);
+
+				il.Emit(OpCodes.Dup);
+				il.Emit(OpCodes.Stloc, obj_);
+
+				il.Emit(OpCodes.Brfalse, lblNull);
+
+				il.Emit(OpCodes.Ldloc, dict_);
+				il.Emit(OpCodes.Ldstr, prop.Name);
+
+				il.Emit(OpCodes.Ldloc, obj_);
+				il.Emit(OpCodes.Callvirt, objToString_);
+				il.Emit(OpCodes.Callvirt, dictAdd_);
+
+				il.MarkLabel(lblNull);
+			}
+
+			il.Emit(OpCodes.Ldloc, dict_);
+			il.Emit(OpCodes.Ret);
+			return (Func<object, Dictionary<string, string>>) d.CreateDelegate(typeof(Func<object, Dictionary<string, string>>));
+		}
+
 		void GenerateSyncReport(Report report)
 		{
 			report.Frame = orderManager.NetFrameNumber;
@@ -42,14 +134,19 @@ namespace OpenRA.Network
 			{
 				var sync = Sync.CalculateSyncHash(a.Trait);
 				if (sync != 0)
-					report.Traits.Add(new TraitReport()
-					{
-						ActorID = a.Actor.ActorID,
-						Type = a.Actor.Info.Name,
-						Owner = (a.Actor.Owner == null) ? "null" : a.Actor.Owner.PlayerName,
-						Trait = a.Trait.GetType().Name,
-						Hash = sync
-					});
+				{
+					var tr = new TraitReport()
+						{
+							ActorID = a.Actor.ActorID,
+							Type = a.Actor.Info.Name,
+							Owner = (a.Actor.Owner == null) ? "null" : a.Actor.Owner.PlayerName,
+							Trait = a.Trait.GetType().Name,
+							Hash = sync
+						};
+
+					tr.Fields = DumpSyncTrait(a.Trait);
+					report.Traits.Add(tr);
+				}
 			}
 		}
 
@@ -62,6 +159,7 @@ namespace OpenRA.Network
 					Log.Write("sync", "SharedRandom: {0} (#{1})", r.SyncedRandom, r.TotalCount);
 					Log.Write("sync", "Synced Traits:");
 					foreach (var a in r.Traits)
+					{
 						Log.Write("sync", "\t {0} {1} {2} {3} ({4})".F(
 							a.ActorID,
 							a.Type,
@@ -69,6 +167,11 @@ namespace OpenRA.Network
 							a.Trait,
 							a.Hash
 						));
+
+						foreach (var f in a.Fields)
+							Log.Write("sync", "\t\t {0}: {1}".F(f.Key, f.Value));
+
+					}
 					return;
 				}
 			Log.Write("sync", "No sync report available!");
@@ -89,6 +192,7 @@ namespace OpenRA.Network
 			public string Owner;
 			public string Trait;
 			public int Hash;
+			public Dictionary<string, string> Fields;
 		}
 
 	}
