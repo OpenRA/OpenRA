@@ -91,6 +91,11 @@ namespace OpenRA
 			}
 		}
 
+		public override string ToString()
+		{
+			return "{0} ({1})".F(PlayerName, ClientIndex);
+		}
+
 		public Dictionary<Player, Stance> Stances = new Dictionary<Player, Stance>();
 		public bool IsAlliedWith(Player p)
 		{
