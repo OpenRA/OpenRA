@@ -347,10 +347,7 @@ namespace OpenRA.Mods.RA.Missions
 
 		void BuildSovietUnit(string category, string unit)
 		{
-			var queue = MissionUtils.FindQueues(world, soviets, category).FirstOrDefault(q => q.CurrentItem() == null);
-			if (queue == null) return;
-
-			queue.ResolveOrder(queue.self, Order.StartProduction(queue.self, unit, 1));
+			MissionUtils.StartProduction(world, soviets, category, unit);
 		}
 
 		void StartReinforcementsTimer()

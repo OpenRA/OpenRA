@@ -116,6 +116,13 @@ namespace OpenRA.Mods.RA.Missions
 				.Select(a => a.Trait);
 		}
 
+		public static void StartProduction(World world, Player player, string category, string item)
+		{
+			var queue = FindQueues(world, player, category).FirstOrDefault(q => q.CurrentItem() == null);
+			if (queue != null)
+				queue.ResolveOrder(queue.self, Order.StartProduction(queue.self, item, 1));
+		}
+
 		public static Actor UnitContaining(this World world, Actor actor)
 		{
 			return world.Actors.FirstOrDefault(a => a.HasTrait<Cargo>() && a.Trait<Cargo>().Passengers.Contains(actor));

@@ -65,6 +65,11 @@ namespace OpenRA.Mods.RA.Missions
 
 		static readonly string[] ChinookCargo = { "e1", "e1", "e1", "e1", "e3", "e3" };
 
+		static readonly string[] InfantryProductionUnits = { "e1", "e3" };
+		static readonly string[] VehicleProductionUnits = { "jeep", "1tnk", "2tnk", "arty" };
+		Actor alliedBarracks;
+		Actor alliedWarFactory;
+
 		Dictionary<string, Actor> actors;
 
 		Actor chronosphere;
@@ -95,9 +100,14 @@ namespace OpenRA.Mods.RA.Missions
 			}
 
 			if (world.FrameNumber % 25 == 0)
+			{
 				foreach (var actor in world.Actors.Where(a => a.IsInWorld && a.IsIdle && !a.IsDead()
 					&& a.HasTrait<AttackBase>() && a.HasTrait<Mobile>()).Except(actors.Values))
-						MissionUtils.AttackNearestLandActor(true, actor, actor.Owner == soviets ? allies : soviets);
+					MissionUtils.AttackNearestLandActor(true, actor, actor.Owner == soviets ? allies : soviets);
+
+				MissionUtils.StartProduction(world, allies, "Infantry", InfantryProductionUnits.Random(world.SharedRandom));
+				MissionUtils.StartProduction(world, allies, "Vehicle", VehicleProductionUnits.Random(world.SharedRandom));
+			}
 
 			if (world.FrameNumber % 20 == 0 && coastUnitsLeft-- > 0)
 			{
@@ -217,6 +227,12 @@ namespace OpenRA.Mods.RA.Missions
 			chinook.QueueActivity(new RemoveSelf());
 		}
 
+		void InitializeAlliedFactories()
+		{
+			alliedBarracks.Trait<PrimaryBuilding>().SetPrimaryProducer(alliedBarracks, true);
+			alliedWarFactory.Trait<PrimaryBuilding>().SetPrimaryProducer(alliedWarFactory, true);
+		}
+
 		public void WorldLoaded(World w)
 		{
 			world = w;
@@ -262,6 +278,11 @@ namespace OpenRA.Mods.RA.Missions
 			chinook2Entry = actors["Chinook2Entry"];
 			chinook1LZ = actors["Chinook1LZ"];
 			chinook2LZ = actors["Chinook2LZ"];
+
+			alliedBarracks = actors["AlliedBarracks"];
+			alliedWarFactory = actors["AlliedWarFactory"];
+
+			InitializeAlliedFactories();
 			
 			foreach (var actor in actors.Values.Where(a => a.Owner == allies || a.HasTrait<Bridge>()))
 			{
