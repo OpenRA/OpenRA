@@ -65,7 +65,6 @@ namespace OpenRA.Mods.RA
 			{
 				Actors["mig1"].Trait<AttackPlane>().AttackTarget(Target.FromActor(Actors["greeceweap"]), false, true);
 				Actors["mig2"].Trait<AttackPlane>().AttackTarget(Target.FromActor(Actors["greeceweap"]), false, true);
-				Actors["mig3"].Trait<AttackPlane>().AttackTarget(Target.FromActor(Actors["greeceweap"]), false, true);
 			}
 
 			ticks++;
