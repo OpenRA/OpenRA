@@ -63,7 +63,7 @@ namespace OpenRA.Mods.RA.Missions
 		static readonly string[] MediumTanks = { "2tnk", "2tnk", "2tnk", "2tnk", "2tnk", "2tnk" };
 		Actor mediumTankChronoSpawn;
 
-		static readonly string[] ChinookCargo = { "e1", "e1", "e1", "e3", "e3", "medi" };
+		static readonly string[] ChinookCargo = { "e1", "e1", "e1", "e1", "e3", "e3" };
 
 		Dictionary<string, Actor> actors;
 
@@ -137,8 +137,8 @@ namespace OpenRA.Mods.RA.Missions
 					if (viewportTargetNumber == 0)
 					{
 						coastUnitsLeft = 15;
-						SendChinookReinforcements(chinook1Entry.Location, chinook1LZ.Location);
-						SendChinookReinforcements(chinook2Entry.Location, chinook2LZ.Location);
+						SendChinookReinforcements(chinook1Entry.Location, chinook1LZ);
+						SendChinookReinforcements(chinook2Entry.Location, chinook2LZ);
 					}
 					if (viewportTargetNumber == 1)
 					{
@@ -197,15 +197,18 @@ namespace OpenRA.Mods.RA.Missions
 			m.QueueActivity(new RemoveSelf());
 		}
 
-		void SendChinookReinforcements(CPos entry, CPos lz)
+		void SendChinookReinforcements(CPos entry, Actor lz)
 		{
-			var chinook = world.CreateActor("tran", allies, entry, Util.GetFacing(lz - entry, 0));
+			var chinook = world.CreateActor("tran", allies, entry, Util.GetFacing(lz.Location - entry, 0));
 			var cargo = chinook.Trait<Cargo>();
 
 			while (cargo.HasSpace(1))
 				cargo.Load(chinook, world.CreateActor(false, ChinookCargo.Random(world.SharedRandom), allies, null, null));
 
-			chinook.QueueActivity(new HeliFly(Util.CenterOfCell(lz)));
+			var exit = lz.Info.Traits.WithInterface<ExitInfo>().FirstOrDefault();
+			var offset = exit != null ? exit.SpawnOffsetVector : PVecInt.Zero;
+
+			chinook.QueueActivity(new HeliFly(lz.CenterLocation + offset)); // no reservation of hpad but it's not needed
 			chinook.QueueActivity(new Turn(0));
 			chinook.QueueActivity(new HeliLand(false, 0));
 			chinook.QueueActivity(new UnloadCargo(true));

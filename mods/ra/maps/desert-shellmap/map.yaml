@@ -68,17 +68,18 @@ Actors:
 	Actor7: t08
 		Location: 46,34
 		Owner: Neutral
-	Actor8: oilb
-		Location: 27,51
+	Actor24: v22
+		Location: 31,52
 		Owner: Neutral
 	Actor9: tc01
 		Location: 97,69
 		Owner: Neutral
-	Actor10: t08
-		Location: 63,71
-		Owner: Neutral
-	Actor11: oilb
-		Location: 24,53
+	Actor78: 2tnk
+		Location: 77,72
+		Owner: Allies
+		Facing: 0
+	Actor23: v23
+		Location: 22,51
 		Owner: Neutral
 	Actor12: oilb
 		Location: 49,42
@@ -110,14 +111,14 @@ Actors:
 	Actor21: brl3
 		Location: 59,49
 		Owner: Neutral
-	Actor22: barl
-		Location: 27,54
+	Actor8: v25
+		Location: 26,55
 		Owner: Neutral
-	Actor23: brl3
-		Location: 25,56
+	Actor11: v30
+		Location: 29,49
 		Owner: Neutral
-	Actor24: barl
-		Location: 25,55
+	Actor22: v29
+		Location: 26,49
 		Owner: Neutral
 	Actor25: barl
 		Location: 69,53
@@ -128,75 +129,67 @@ Actors:
 	Actor27: barl
 		Location: 42,45
 		Owner: Neutral
-	Actor28: v20
-		Location: 43,66
+	Actor47: brik
+		Location: 74,74
+		Owner: Allies
+	Actor198: sbag
+		Location: 68,63
+		Owner: Allies
+	Actor165: sbag
+		Location: 50,61
+		Owner: Allies
+	Actor177: sbag
+		Location: 53,59
+		Owner: Allies
+	Actor167: sbag
+		Location: 51,61
+		Owner: Allies
+	Actor30: sbag
+		Location: 41,61
+		Owner: Allies
+	Actor194: sbag
+		Location: 60,60
+		Owner: Allies
+	Actor160: hpad
+		Location: 86,77
+		Owner: Allies
+	Actor202: sbag
+		Location: 69,65
+		Owner: Allies
+	Actor164: cycl
+		Location: 58,66
 		Owner: Neutral
-	Actor29: v24
-		Location: 62,74
-		Owner: Neutral
-	Actor30: v27
-		Location: 53,66
-		Owner: Neutral
-	Actor31: v23
-		Location: 55,66
-		Owner: Neutral
-	Actor32: v21
-		Location: 51,66
-		Owner: Neutral
-	Actor33: v29
-		Location: 63,65
-		Owner: Neutral
-	Actor34: miss
-		Location: 54,60
-		Owner: Neutral
-	Actor35: v30
-		Location: 51,71
-		Owner: Neutral
-	Actor36: v28
-		Location: 50,71
-		Owner: Neutral
-	Actor92: brl3
-		Location: 57,55
-		Owner: Neutral
-	Actor38: v28
-		Location: 59,68
-		Owner: Neutral
-	Actor39: v27
-		Location: 63,68
-		Owner: Neutral
+	Actor29: sbag
+		Location: 41,62
+		Owner: Allies
 	Actor40: dome
 		Location: 55,19
 		Owner: Soviets
 	Actor41: brl3
 		Location: 56,43
 		Owner: Neutral
-	Actor42: v25
-		Location: 49,68
-		Owner: Neutral
-	Actor43: v29
-		Location: 61,71
-		Owner: Neutral
-	Actor44: tc01
-		Location: 51,74
-		Owner: Neutral
-	Actor45: v28.gun
-		Location: 47,63
+	Actor180: sbag
+		Location: 57,59
 		Owner: Allies
-	Actor46: v22.gun
-		Location: 61,63
+	Actor263: brik
+		Location: 69,76
 		Owner: Allies
-	Actor47: v27
-		Location: 55,65
+	Actor230: cycl
+		Location: 55,66
 		Owner: Neutral
-	Actor48: v27
-		Location: 52,69
-		Owner: Neutral
-	Actor49: v26
-		Location: 57,71
-		Owner: Neutral
-	Actor51: rock5
-		Location: 52,56
-		Owner: Neutral
+	Actor55: sbag
+		Location: 39,63
+		Owner: Allies
+	Actor33: brik
+		Location: 86,73
+		Owner: Allies
+	Actor32: sbag
+		Location: 36,68
+		Owner: Allies
+	Actor39: gun
+		Location: 75,72
+		Owner: Allies
+		Facing: 0
 	Actor50: apwr
 		Location: 51,14
 		Owner: Soviets
@@ -242,10 +235,9 @@ Actors:
 	Actor81: rock7
 		Location: 53,19
 		Owner: Neutral
-	Actor73: 2tnk
-		Location: 61,58
+	Actor201: sbag
+		Location: 69,64
 		Owner: Allies
-		Facing: 190
 	Actor85: powr
 		Location: 49,14
 		Owner: Soviets
@@ -255,21 +247,18 @@ Actors:
 	Actor52: powr
 		Location: 54,14
 		Owner: Soviets
-	Actor72: 1tnk
-		Location: 48,62
+	Actor205: sbag
+		Location: 35,70
 		Owner: Allies
-		Facing: 60
 	Actor88: t08
 		Location: 87,47
 		Owner: Neutral
-	Actor71: 2tnk
-		Location: 50,57
+	Actor181: sbag
+		Location: 58,59
 		Owner: Allies
-		Facing: 40
-	Actor74: 1tnk
-		Location: 62,62
+	Actor219: sbag
+		Location: 40,64
 		Owner: Allies
-		Facing: 180
 	Actor87: tc01
 		Location: 92,50
 		Owner: Neutral
@@ -291,33 +280,30 @@ Actors:
 	ViewportTarget5: waypoint
 		Location: 38,55
 		Owner: Neutral
-	Actor55: bio
-		Location: 55,54
-		Owner: Neutral
+	Actor203: sbag
+		Location: 35,68
+		Owner: Allies
 	Actor62: apwr
 		Location: 38,17
 		Owner: Soviets
-	Actor75: 2tnk
-		Location: 52,63
+	Actor213: sbag
+		Location: 35,72
 		Owner: Allies
-		Facing: 100
-	Actor76: 2tnk
-		Location: 58,64
+	Actor253: arty
+		Location: 44,68
 		Owner: Allies
-		Facing: 140
-	Actor78: jeep
-		Location: 49,60
+		Facing: 0
+	Actor192: sbag
+		Location: 59,59
 		Owner: Allies
-		Facing: 50
-	Actor82: jeep
-		Location: 61,60
+	Actor200: sbag
+		Location: 69,63
 		Owner: Allies
-		Facing: 190
-	Actor89: arty
-		Location: 56,56
+	Actor204: sbag
+		Location: 35,69
 		Owner: Allies
-	Actor90: arty
-		Location: 54,56
+	Actor175: sbag
+		Location: 52,60
 		Owner: Allies
 	Actor116: mine
 		Location: 82,36
@@ -345,17 +331,17 @@ Actors:
 	CoastWP2: waypoint
 		Location: 36,81
 		Owner: Neutral
-	Actor64: e1
-		Location: 51,63
+	Actor206: sbag
+		Location: 35,71
 		Owner: Allies
-	Actor65: e1
-		Location: 53,64
+	Actor214: sbag
+		Location: 36,72
 		Owner: Allies
-	Actor66: e1
-		Location: 57,65
+	Actor216: sbag
+		Location: 37,73
 		Owner: Allies
-	Actor77: e1
-		Location: 59,64
+	Actor215: sbag
+		Location: 37,72
 		Owner: Allies
 	Actor37: rock5
 		Location: 35,43
@@ -505,15 +491,15 @@ Actors:
 	Actor147: rock1
 		Location: 118,54
 		Owner: Neutral
-	Actor154: pbox.e1
-		Location: 70,77
+	Actor66: brik
+		Location: 70,73
 		Owner: Allies
 	Actor148: pbox.e1
 		Location: 70,89
 		Owner: Allies
-	Actor180: pbox.e1
-		Location: 83,72
-		Owner: Allies
+	Actor51: miss
+		Location: 56,68
+		Owner: Neutral
 	Actor152: 1tnk
 		Location: 69,85
 		Owner: Allies
@@ -533,8 +519,8 @@ Actors:
 	Actor156: pbox.e1
 		Location: 94,91
 		Owner: Allies
-	Actor162: sbag
-		Location: 76,70
+	Actor43: brik
+		Location: 85,74
 		Owner: Allies
 	Actor186: 3tnk
 		Location: 107,50
@@ -546,30 +532,30 @@ Actors:
 	Actor184: atek
 		Location: 75,87
 		Owner: Allies
-	Actor166: sbag
-		Location: 73,71
+	Actor74: cycl
+		Location: 60,66
+		Owner: Neutral
+	Actor71: cycl
+		Location: 54,69
+		Owner: Neutral
+	Actor92: sbag
+		Location: 55,59
 		Owner: Allies
-	Actor168: sbag
-		Location: 72,72
+	Actor76: dome
+		Location: 82,81
 		Owner: Allies
-	Actor164: sbag
-		Location: 74,70
+	Actor120: cycl
+		Location: 59,66
+		Owner: Neutral
+	Actor42: gun
+		Location: 84,72
 		Owner: Allies
-	Actor160: agun
-		Location: 83,80
-		Owner: Allies
-		Facing: 30
-	Actor165: sbag
-		Location: 73,70
-		Owner: Allies
-	Actor161: hpad
-		Location: 74,72
-		Owner: Allies
-	Actor167: sbag
-		Location: 73,72
-		Owner: Allies
-	Actor163: sbag
-		Location: 75,70
+		Facing: 0
+	Actor65: cycl
+		Location: 54,68
+		Owner: Neutral
+	Actor36: brik
+		Location: 86,74
 		Owner: Allies
 	Actor169: barr
 		Location: 109,48
@@ -577,31 +563,29 @@ Actors:
 	Actor170: kenn
 		Location: 104,41
 		Owner: Soviets
-	Actor179: gun
-		Location: 87,76
+	Actor162: e1
+		Location: 82,74
 		Owner: Allies
-		Facing: 0
 	Actor182: rock6
 		Location: 96,45
 		Owner: Neutral
-	Actor120: gun
-		Location: 77,70
+	Actor34: brik
+		Location: 85,73
 		Owner: Allies
-		Facing: 20
 	Chronosphere: pdox
 		Location: 78,91
 		Owner: Allies
-	Actor159: tent
-		Location: 70,81
+	Actor53: brik
+		Location: 71,73
 		Owner: Allies
-	Actor177: dome
+	Actor75: tent
 		Location: 76,80
 		Owner: Allies
 	Actor178: pbox.e1
 		Location: 101,81
 		Owner: Allies
-	Actor181: sbag
-		Location: 72,74
+	Actor31: sbag
+		Location: 39,64
 		Owner: Allies
 	Actor157: gap
 		Location: 81,92
@@ -609,15 +593,14 @@ Actors:
 	Actor187: ftur
 		Location: 104,47
 		Owner: Soviets
-	Actor176: gun
-		Location: 71,74
+	Actor45: brik
+		Location: 74,73
 		Owner: Allies
-		Facing: 30
-	Actor175: sbag
-		Location: 72,73
+	Actor90: sbag
+		Location: 54,59
 		Owner: Allies
-	Actor198: tent
-		Location: 82,74
+	Actor38: brik
+		Location: 73,74
 		Owner: Allies
 	Actor188: ftur
 		Location: 107,52
@@ -629,14 +612,12 @@ Actors:
 	Actor172: apwr
 		Location: 81,87
 		Owner: Allies
-	Actor171: gun
-		Location: 68,80
+	Actor89: brik
+		Location: 69,73
 		Owner: Allies
-		Facing: 55
-	Actor195: 2tnk
-		Location: 71,78
+	Actor49: brik
+		Location: 72,73
 		Owner: Allies
-		Facing: 64
 	Actor196: pt
 		Location: 55,92
 		Owner: Allies
@@ -657,9 +638,9 @@ Actors:
 	Actor199: e1
 		Location: 72,83
 		Owner: Allies
-	Actor200: e1
-		Location: 81,73
-		Owner: Allies
+	Actor171: cycl
+		Location: 56,66
+		Owner: Neutral
 	Actor151: apwr
 		Location: 87,87
 		Owner: Allies
@@ -690,31 +671,30 @@ Actors:
 	Actor191: apwr
 		Location: 26,9
 		Owner: Soviets
-	Actor192: c1
-		Location: 58,67
-		Owner: Neutral
-	Actor193: c2
-		Location: 48,68
-		Owner: Neutral
-	Actor194: c3
-		Location: 61,73
-		Owner: Neutral
-	Actor201: chan
+	Actor179: sbag
+		Location: 56,59
+		Owner: Allies
+	Actor161: sbag
+		Location: 37,68
+		Owner: Allies
+	Actor168: sbag
+		Location: 51,60
+		Owner: Allies
+	Actor195: sbag
+		Location: 67,63
+		Owner: Allies
+	Actor163: cycl
 		Location: 56,71
 		Owner: Neutral
-	Actor202: delphi
-		Location: 54,67
-		Owner: Neutral
-	Actor204: c10
-		Location: 53,73
-		Owner: Neutral
-	Actor205: c9
-		Location: 51,65
-		Owner: Neutral
-	Actor206: mgg
-		Location: 52,60
+	Actor176: sbag
+		Location: 53,60
 		Owner: Allies
-		Facing: 200
+	Actor48: brik
+		Location: 73,73
+		Owner: Allies
+	Actor193: sbag
+		Location: 59,60
+		Owner: Allies
 	Actor207: tran.husk2
 		Location: 43,80
 		Owner: Allies
@@ -744,42 +724,39 @@ Actors:
 	OffmapAttackerSpawn3: waypoint
 		Location: 1,50
 		Owner: Neutral
-	Actor213: 2tnk
-		Location: 79,70
+	Actor255: e1
+		Location: 67,76
 		Owner: Allies
-		Facing: 0
-	Actor214: 2tnk
-		Location: 80,70
+	Actor77: e1
+		Location: 78,74
 		Owner: Allies
-		Facing: 0
 	HeavyTankWP: waypoint
 		Location: 79,69
 		Owner: Neutral
 	Actor221: powr
 		Location: 74,84
 		Owner: Allies
-	Actor215: 2tnk
-		Location: 82,71
+	Actor82: 2tnk
+		Location: 82,72
 		Owner: Allies
 		Facing: 0
 	HeavyTankSpawn: waypoint
 		Location: 80,45
 		Owner: Neutral
-	Actor216: arty
-		Location: 74,71
-		Owner: Allies
-		Facing: 0
+	Actor166: cycl
+		Location: 57,66
+		Owner: Neutral
 	MediumTankChronoSpawn: waypoint
 		Location: 80,65
 		Owner: Neutral
 	Actor220: powr
 		Location: 76,84
 		Owner: Allies
-	Actor219: gun
-		Location: 85,70
-		Owner: Allies
-	Actor53: gap
-		Location: 76,71
+	Actor64: cycl
+		Location: 54,67
+		Owner: Neutral
+	Actor35: pbox.e1
+		Location: 80,73
 		Owner: Allies
 	Mig11: waypoint
 		Location: 94,1
@@ -802,20 +779,15 @@ Actors:
 	Mig24: waypoint
 		Location: 1,28
 		Owner: Neutral
-	Actor227: 2tnk
-		Location: 45,62
+	Actor28: sbag
+		Location: 40,62
 		Owner: Allies
-		Facing: 0
-	Actor230: e1
-		Location: 64,63
+	Actor10: sbag
+		Location: 39,62
 		Owner: Allies
-	Actor229: e1
-		Location: 47,62
+	Actor217: sbag
+		Location: 43,67
 		Owner: Allies
-	Actor228: 2tnk
-		Location: 65,63
-		Owner: Allies
-		Facing: 0
 	Mig21: waypoint
 		Location: 96,3
 		Owner: Neutral
@@ -825,12 +797,6 @@ Actors:
 	Actor158: oilb
 		Location: 109,76
 		Owner: Allies
-	Chinook1LZ: waypoint
-		Location: 44,71
-		Owner: Neutral
-	Chinook2LZ: waypoint
-		Location: 47,71
-		Owner: Neutral
 	Chinook1Entry: waypoint
 		Location: 44,126
 		Owner: Neutral
@@ -838,10 +804,341 @@ Actors:
 		Location: 47,126
 		Owner: Neutral
 	Paradrop2LZ: waypoint
-		Location: 55,74
+		Location: 56,75
 		Owner: Neutral
 	Paradrop2Entry: waypoint
-		Location: 55,22
+		Location: 56,22
+		Owner: Neutral
+	Actor299: sbag
+		Location: 54,77
+		Owner: Allies
+	Actor300: sbag
+		Location: 55,77
+		Owner: Allies
+	Actor234: sbag
+		Location: 53,63
+		Owner: Allies
+	Actor223: sbag
+		Location: 53,62
+		Owner: Allies
+	Actor227: sbag
+		Location: 60,61
+		Owner: Allies
+	Actor228: sbag
+		Location: 60,62
+		Owner: Allies
+	Actor229: sbag
+		Location: 67,64
+		Owner: Allies
+	Actor154: cycl
+		Location: 55,71
+		Owner: Neutral
+	Actor72: cycl
+		Location: 54,70
+		Owner: Neutral
+	Actor73: cycl
+		Location: 54,71
+		Owner: Neutral
+	Actor302: rock2
+		Location: 70,61
+		Owner: Neutral
+	Actor306: rock3
+		Location: 25,66
+		Owner: Neutral
+	Actor295: jeep
+		Location: 37,67
+		Owner: Allies
+		Facing: 64
+	Actor296: 1tnk
+		Location: 58,65
+		Owner: Allies
+		Facing: 192
+	Actor298: sbag
+		Location: 53,77
+		Owner: Allies
+	Actor233: 2tnk
+		Location: 66,62
+		Owner: Allies
+		Facing: 0
+	Actor240: sbag
+		Location: 54,62
+		Owner: Allies
+	Actor241: sbag
+		Location: 55,62
+		Owner: Allies
+	Actor242: sbag
+		Location: 56,62
+		Owner: Allies
+	Actor243: sbag
+		Location: 57,62
+		Owner: Allies
+	Actor244: sbag
+		Location: 58,62
+		Owner: Allies
+	Actor245: sbag
+		Location: 58,63
+		Owner: Allies
+	Actor235: cycl
+		Location: 54,66
+		Owner: Neutral
+	Actor249: arty
+		Location: 57,63
+		Owner: Allies
+		Facing: 240
+	Actor248: arty
+		Location: 54,63
+		Owner: Allies
+		Facing: 16
+	Actor247: cycl
+		Location: 57,71
+		Owner: Neutral
+	Actor250: sbag
+		Location: 44,67
+		Owner: Allies
+	Actor254: tent
+		Location: 50,66
+		Owner: Allies
+	Actor222: brik
+		Location: 68,74
+		Owner: Allies
+	Actor218: sbag
+		Location: 43,68
+		Owner: Allies
+	Actor251: sbag
+		Location: 45,67
+		Owner: Allies
+	Actor252: sbag
+		Location: 45,68
+		Owner: Allies
+	Actor246: cycl
+		Location: 60,69
+		Owner: Neutral
+	Actor231: cycl
+		Location: 60,67
+		Owner: Neutral
+	Actor232: cycl
+		Location: 60,68
+		Owner: Neutral
+	Actor262: pbox.e1
+		Location: 68,78
+		Owner: Allies
+	Actor264: v27
+		Location: 20,49
+		Owner: Neutral
+	Actor265: v20
+		Location: 26,52
+		Owner: Neutral
+	Actor266: v21
+		Location: 32,54
+		Owner: Neutral
+	Actor267: v27
+		Location: 21,48
+		Owner: Neutral
+	Actor268: v24
+		Location: 26,58
+		Owner: Neutral
+	Actor269: v26
+		Location: 21,54
+		Owner: Neutral
+	Actor159: brik
+		Location: 68,73
+		Owner: Allies
+	Actor270: v28
+		Location: 18,49
+		Owner: Neutral
+	Actor271: oilb
+		Location: 18,59
+		Owner: Neutral
+	Actor272: brl3
+		Location: 19,61
+		Owner: Neutral
+	Actor273: barl
+		Location: 19,58
+		Owner: Neutral
+	Actor274: delphi
+		Location: 19,51
+		Owner: Neutral
+	Actor275: chan
+		Location: 28,50
+		Owner: Neutral
+	Actor276: c1
+		Location: 30,57
+		Owner: Neutral
+	Actor277: c2
+		Location: 20,50
+		Owner: Neutral
+	Actor278: c3
+		Location: 24,53
+		Owner: Neutral
+	Actor279: c7
+		Location: 29,51
+		Owner: Neutral
+	Actor280: c10
+		Location: 23,55
+		Owner: Neutral
+	Actor281: powr
+		Location: 51,70
+		Owner: Allies
+	Actor282: e1
+		Location: 42,62
+		Owner: Allies
+	Actor283: e1
+		Location: 47,63
+		Owner: Allies
+	Actor284: e1
+		Location: 61,63
+		Owner: Allies
+	Actor285: e1
+		Location: 67,65
+		Owner: Allies
+	Actor286: e1
+		Location: 39,67
+		Owner: Allies
+	Actor287: e3
+		Location: 50,62
+		Owner: Allies
+	Actor288: e3
+		Location: 40,63
+		Owner: Allies
+	Actor289: e3
+		Location: 59,61
+		Owner: Allies
+	Actor290: e3
+		Location: 52,61
+		Owner: Allies
+	Actor291: e3
+		Location: 57,60
+		Owner: Allies
+	Actor292: e3
+		Location: 68,64
+		Owner: Allies
+	Actor293: e3
+		Location: 36,69
+		Owner: Allies
+	Actor297: sbag
+		Location: 52,77
+		Owner: Allies
+	Chinook2LZ: hpad
+		Location: 47,71
+		Owner: Allies
+	Actor226: 2tnk
+		Location: 62,60
+		Owner: Allies
+		Facing: 240
+	Actor225: 2tnk
+		Location: 47,61
+		Owner: Allies
+		Facing: 0
+	Actor239: 1tnk
+		Location: 44,65
+		Owner: Allies
+		Facing: 120
+	Actor236: jeep
+		Location: 46,62
+		Owner: Allies
+		Facing: 16
+	Actor238: 2tnk
+		Location: 36,65
+		Owner: Allies
+		Facing: 40
+	Actor224: 2tnk
+		Location: 43,61
+		Owner: Allies
+		Facing: 0
+	Actor237: jeep
+		Location: 63,63
+		Owner: Allies
+		Facing: 0
+	Actor303: hbox.e1
+		Location: 60,72
+		Owner: Allies
+	Actor304: e1
+		Location: 57,72
+		Owner: Allies
+	Actor305: e1
+		Location: 61,70
+		Owner: Allies
+	Actor301: rock5
+		Location: 72,66
+		Owner: Neutral
+	Actor307: e1
+		Location: 54,75
+		Owner: Allies
+	Chinook1LZ: hpad
+		Location: 44,71
+		Owner: Allies
+	Actor309: sbag
+		Location: 51,77
+		Owner: Allies
+	Actor310: sbag
+		Location: 50,77
+		Owner: Allies
+	Actor311: sbag
+		Location: 49,77
+		Owner: Allies
+	Actor312: sbag
+		Location: 48,77
+		Owner: Allies
+	Actor313: sbag
+		Location: 47,77
+		Owner: Allies
+	Actor314: sbag
+		Location: 47,76
+		Owner: Allies
+	Actor315: sbag
+		Location: 38,73
+		Owner: Allies
+	Actor316: sbag
+		Location: 39,73
+		Owner: Allies
+	Actor317: sbag
+		Location: 40,73
+		Owner: Allies
+	Actor318: sbag
+		Location: 40,74
+		Owner: Allies
+	Actor319: sbag
+		Location: 40,75
+		Owner: Allies
+	Actor320: sbag
+		Location: 41,75
+		Owner: Allies
+	Actor321: e1
+		Location: 45,76
+		Owner: Allies
+	Actor294: powr
+		Location: 62,68
+		Owner: Allies
+	Actor257: arty
+		Location: 72,74
+		Owner: Allies
+		Facing: 0
+	Actor324: brik
+		Location: 68,76
+		Owner: Allies
+	Actor325: brik
+		Location: 69,75
+		Owner: Allies
+	Actor326: brik
+		Location: 68,75
+		Owner: Allies
+	Actor256: gap
+		Location: 74,75
+		Owner: Allies
+	Actor44: t08
+		Location: 37,71
+		Owner: Neutral
+	Actor46: tc01
+		Location: 49,79
+		Owner: Neutral
+	Actor258: t08
+		Location: 54,60
+		Owner: Neutral
+	Actor259: rock6
+		Location: 53,81
+		Owner: Neutral
+	Actor260: rock2
+		Location: 46,85
 		Owner: Neutral
 
 Smudges:
@@ -857,29 +1154,15 @@ Rules:
 	TRAN.Husk2:
 		Burns:
 			Damage: 0
-	V22.Gun:
-		Inherits: V22
-		RenderBuilding:
-			Image: V22
-		AutoTarget:
-		Armament:
-			Weapon: Dragon
-		Turreted:
-		AttackTurreted:
-	V28.Gun:
-		Inherits: V28
-		RenderBuilding:
-			Image: V28
-		AutoTarget:
-		Armament:
-			Weapon: Dragon
-		Turreted:
-		AttackTurreted:
 	APC:
 		DesertShellmapAutoUnload:
 	MIG:
 		Plane:
 			Speed: 30
+	BADR:
+		Invulnerable:
+	MISS:
+		Invulnerable:
 
 Sequences:
 
@@ -888,6 +1171,10 @@ Weapons:
 		Report: tank6
 	2Inch:
 		Range: 10
+	TTankZap:
+		Range: 4.75
+	FLAK-23:
+		Range: 4
 
 Voices:
 
