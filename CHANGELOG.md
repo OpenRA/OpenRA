@@ -1,5 +1,19 @@
 # ZeroBrane Studio Changelog
 
+## Current master (Apr 12 2013)
+
+### Improvements
+  - Added handling of Ctrl-Home and Ctrl-End on OSX (ref #89).
+  - Added line copy/cut for Ctrl-C/Ctrl-X with no selection.
+  - Updated About screen to be more configurable and flexible.
+  - Updated Russian translation (thanks to toiffel).
+
+### Fixes
+  - Fixed launch command for Corona debugging on Windows.
+  - Fixed 'control' check on OSX that changed with wx2.9.2+ (ref #89).
+  - Fixed wrong tab activated on OSX after using New file in some cases.
+  - Fixed cursor not being visible in some cases after file is loaded (ref #116).
+
 ## v0.36 (Apr 08 2013)
 
 ### Highlights
