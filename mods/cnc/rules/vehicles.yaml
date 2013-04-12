@@ -134,7 +134,7 @@ ARTY:
 		Icon:artyicnh
 		Description: Long-range artillery.\n  Strong vs Infantry, Vehicles\n  Weak vs Tanks, Aircraft
 	Buildable:
-		BuildPaletteOrder: 40
+		BuildPaletteOrder: 60
 		Prerequisites: anyhq
 		Owner: nod
 	Mobile:
