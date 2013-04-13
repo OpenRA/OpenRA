@@ -2,7 +2,7 @@ Player:
 	TechTree:
 	ClassicProductionQueue@Building:
 		Type: Building
-		BuildSpeed: .4
+		BuildSpeed: .5
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		ReadyAudio: BuildingReady
@@ -20,7 +20,7 @@ Player:
 		BlockedAudio: NoRoom
 	ClassicProductionQueue@Armor:
 		Type: Armor
-		BuildSpeed: .4
+		BuildSpeed: .5
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		BlockedAudio: NoRoom
