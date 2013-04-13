@@ -489,6 +489,7 @@ GUNTOWER:
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 3
+	-Bib:
 
 GUNTOWER.Husk:
 	Inherits: ^TowerHusk
@@ -547,6 +548,7 @@ ROCKETTOWER:
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 3
+	-Bib:
 
 ROCKETTOWER.Husk:
 	Inherits: ^TowerHusk
