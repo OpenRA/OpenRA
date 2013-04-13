@@ -303,7 +303,7 @@ TowerMissile:
 
 90mma:
 	ROF: 50
-	Range: 6.5
+	Range: 7
 	Report: MEDTANK1
 	Projectile: Bullet
 		Speed: 55

@@ -215,7 +215,7 @@ QUAD.starport:
 		Speed: 7
 		Crushes: crate, infantry
 	RevealsShroud:
-		Range: 6
+		Range: 7
 	Turreted:
 		ROT: 6
 		AlignWhenIdle: true

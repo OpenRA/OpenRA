@@ -164,6 +164,11 @@ COMBATH:
 		Prerequisites: heavyh
 		Owner: harkonnen
 		BuiltAt: heavyh
+	Mobile:
+		Speed: 6
+		ROT: 4
+	Turreted:
+		ROT: 5
 	Health:
 		HP: 400
 	RenderUnitTurreted:
