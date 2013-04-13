@@ -2,7 +2,7 @@ Player:
 	TechTree:
 	ClassicProductionQueue@Building:
 		Type: Building
-		BuildSpeed: .4
+		BuildSpeed: .5
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		ReadyAudio: BuildingReady
@@ -20,7 +20,7 @@ Player:
 		BlockedAudio: NoRoom
 	ClassicProductionQueue@Armor:
 		Type: Armor
-		BuildSpeed: .4
+		BuildSpeed: .5
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		BlockedAudio: NoRoom
@@ -286,8 +286,8 @@ World:
 	ChooseBuildTabOnSelect:
 	CrateSpawner:
 		Minimum: 1
-		Maximum: 3
-		SpawnInterval: 120
+		Maximum: 2
+		SpawnInterval: 60
 		WaterChance: 0
 		ValidGround: Sand, Dune, Rock
 	PaletteFromCurrentTileset:
@@ -364,7 +364,7 @@ World:
 		Palette: d2k
 		TerrainType: Spice
 		SpriteNames: spice1
-		ValuePerUnit: 50
+		ValuePerUnit: 25
 		Name: Spice
 		PipColor: green
 		AllowedTerrainTypes: Sand
@@ -402,87 +402,74 @@ CRATE:
 		Lifetime: 120
 		TerrainTypes: Sand, Dune, Rock
 	GiveCashCrateAction@1:
-		Amount: 1000
-		SelectionShares: 40
+		Amount: 500
+		SelectionShares: 20
 		UseCashTick: yes
 	GiveCashCrateAction@2:
-		Amount: 2000
-		SelectionShares: 15
+		Amount: 750
+		SelectionShares: 50
 		UseCashTick: yes
 	GiveCashCrateAction@3:
-		Amount: 5000
-		SelectionShares: 5
+		Amount: 1000
+		SelectionShares: 30
 		UseCashTick: yes
-	LevelUpCrateAction:
-		SelectionShares: 40
-	ExplodeCrateAction@boom:
-		Weapon: CrateExplosion
+	GiveCashCrateAction@4:
+		Amount: 1500
 		SelectionShares: 10
-	ExplodeCrateAction@nuke:
-		Weapon: CrateNuke
-		SelectionShares: 5
-	HideMapCrateAction:
-		SelectionShares: 3
-		Effect: hide-map
-	RevealMapCrateAction:
-		SelectionShares: 2
-		Effect: reveal-map
+		UseCashTick: yes
 	GiveMcvCrateAction@Atreides:
-		SelectionShares: 3
+		SelectionShares: 0
 		NoBaseSelectionShares: 9001
 		Unit: mcva
 	GiveMcvCrateAction@Harkonnen:
-		SelectionShares: 3
+		SelectionShares: 0
 		NoBaseSelectionShares: 9001
 		Unit: mcvh
 	GiveMcvCrateAction@Ordos:
-		SelectionShares: 3
+		SelectionShares: 0
 		NoBaseSelectionShares: 9001
 		Unit: mcvo
 	GiveUnitCrateAction@TrikeA:
-		SelectionShares: 13#8
+		SelectionShares: 20
 		Unit: trikea
-	#GiveUnitCrateAction@TrikeH:
-	#	SelectionShares: 6
-	#	Unit: trikeh
-	GiveUnitCrateAction@Quad:
-		SelectionShares: 18
-		Unit: quad
 	GiveUnitCrateAction@TrikeO:
-		SelectionShares: 5
+		SelectionShares: 20
 		Unit: trikeo
-	GiveUnitCrateAction@SiegeTank:
-		SelectionShares: 18
-		Unit: siegetank
-	GiveUnitCrateAction@MissileTank:
-		SelectionShares: 12
-		Unit: missiletank
+	GiveUnitCrateAction@Quad:
+		SelectionShares: 40
+		Unit: quad
 	GiveUnitCrateAction@CombatA:
-		SelectionShares: 6
+		SelectionShares: 10
 		Unit: combata
 	GiveUnitCrateAction@CombatH:
-		SelectionShares: 6
+		SelectionShares: 10
 		Unit: combath
 	GiveUnitCrateAction@CombatO:
-		SelectionShares: 6
+		SelectionShares: 10
 		Unit: combato
+	GiveUnitCrateAction@SiegeTank:
+		SelectionShares: 10
+		Unit: siegetank
+	GiveUnitCrateAction@MissileTank:
+		SelectionShares: 10
+		Unit: missiletank
 	GiveUnitCrateAction@Fremen:
-		SelectionShares: 4
+		SelectionShares: 5
 		Unit: fremen
 	GiveUnitCrateAction@Sardaukar:
-		SelectionShares: 6
+		SelectionShares: 8
 		Unit: sardaukar
 	GiveUnitCrateAction@Saboteur:
-		SelectionShares: 2
+		SelectionShares: 3
 		Unit: saboteur
 	GiveUnitCrateAction@SonicTank:
-		SelectionShares: 3
+		SelectionShares: 5
 		Unit: sonictank
 	GiveUnitCrateAction@Devast:
-		SelectionShares: 4
-		Unit: devast
-	GiveUnitCrateAction@deviatortank:
 		SelectionShares: 2
+		Unit: devast
+	GiveUnitCrateAction@DeviatorTank:
+		SelectionShares: 7
 		Unit: deviatortank
 	RenderSimple:
 	BelowUnits:
