@@ -109,7 +109,7 @@ local colors = {
   },
   Monokai = {
     Background  = H'272822',
-    CurrentLine = H'49483E',
+    CurrentLine = H'2D2F29',
     Selection   = H'49483E',
     Foreground  = H'F8F8F2',
     Comment     = H'75715E',
