@@ -81,7 +81,8 @@ namespace OpenRA.Traits
 				case "DevShroudDisable":
 					{
 						DisableShroud ^= true;
-						self.World.RenderPlayer = DisableShroud ? null : self.Owner;
+						if (self.World.LocalPlayer == self.Owner)
+							self.World.RenderPlayer = DisableShroud ? null : self.Owner;
 						break;
 					}
 				case "DevPathDebug":
