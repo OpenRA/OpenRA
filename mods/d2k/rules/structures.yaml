@@ -16,7 +16,7 @@
 	Armor:
 		Type: Concrete
 	RevealsShroud:
-		Range: 6
+		Range: 10
 	Production:
 		Produces: Building
 	Valued:
