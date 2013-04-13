@@ -50,6 +50,152 @@ Dragon:
 		Damage: 50
 		ImpactSound: kaboom12
 
+RedEye:
+	ROF: 50
+	Range: 8
+	Report: BAZOOK1
+	ValidTargets: Air
+	Projectile: Missile
+		Arm: 3
+		High: true
+		Shadow: true
+		Proximity: true
+#		Trail: smokey
+		ContrailLength: 10
+		Image: MISSILE
+		ROT: 20
+		RangeLimit: 30
+		Speed: 40
+	Warhead:
+		Spread: 3
+		Versus: 
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
+		Explosion: med_explosion
+		InfDeath: 3
+		SmudgeType: SandCrater, RockCrater
+		Damage: 60
+		ImpactSound: kaboom12
+
+Sniper:
+	ROF: 100
+	Range: 8.5
+	Report: RIFLE
+	Projectile: Bullet
+		Speed: 150
+		ContrailLength: 6
+		TrailInterval: 1
+		ContrailDelay: 0
+		ContrailUsePlayerColor: true
+	Warhead: 
+		Damage: 60
+		Spread: 1
+		Versus: 
+			None: 100%
+			Wood: 0%
+			Light: 1%
+			Heavy: 0%
+			Concrete: 0%
+		InfDeath: 2
+
+Vulcan:
+	ROF: 30
+	Range: 5.75
+	Report: VULCAN
+	ValidTargets: Ground, Air
+	Projectile: Bullet
+		Speed: 100
+		ContrailLength: 3
+		TrailInterval: 1
+		ContrailDelay: 0
+		ContrailUsePlayerColor: true
+	Warhead:
+		Spread: 3
+		Versus: 
+			Wood: 0%
+			Light: 60%
+			Heavy: 10%
+			Concrete: 0%
+		Explosion: piffs
+		InfDeath: 2
+		Damage: 30
+
+Slung:
+	ROF: 60
+	Delay: 5
+	Range: 5.5
+	Report: BAZOOK2
+	ValidTargets: Ground
+	Projectile: Bullet
+		Speed: 25
+		High: true
+		Shadow: yes
+		Angle: .15
+		Proximity: true
+		Inaccuracy: 12
+		Image: DRAGON
+	Warhead:
+		Spread: 6
+		Versus: 
+			None: 0%
+			Wood: 75%
+			Light: 40%
+			Heavy: 90%
+			Concrete: 50%
+		Explosion: small_explosion
+		WaterExplosion: med_splash
+		InfDeath: 4
+		Damage: 30
+		ImpactSound: kaboom25
+
+M60mg:
+	ROF: 30
+	Range: 5
+	Burst: 2
+	BurstDelay: 5
+	Report: 20MMGUN1
+	Projectile: Bullet
+		Speed: 100
+		ContrailLength: 3
+		TrailInterval: 1
+		ContrailDelay: 0
+		ContrailUsePlayerColor: true
+	Warhead:
+		Spread: 3
+		Versus: 
+			Wood: 30%
+			Light: 45%
+			Heavy: 10%
+			Concrete: 20%
+		Explosion: piffs
+		InfDeath: 2
+		Damage: 30
+
+M60mgo:
+	ROF: 30
+	Range: 5
+	Burst: 2
+	BurstDelay: 5
+	Report: 20MMGUN1
+	Projectile: Bullet
+		Speed: 100
+		ContrailLength: 3
+		TrailInterval: 1
+		ContrailDelay: 0
+		ContrailUsePlayerColor: true
+	Warhead:
+		Spread: 3
+		Versus: 
+			Wood: 30%
+			Light: 45%
+			Heavy: 10%
+			Concrete: 20%
+		Explosion: piffs
+		InfDeath: 2
+		Damage: 40
+
 QuadRockets:
 	ROF: 60
 	Range: 6.5
@@ -135,25 +281,6 @@ TowerMissile:
 		SmudgeType: SandCrater, RockCrater
 		Damage: 50
 
-25mm:
-	ROF: 13
-	Range: 4
-	Report: MEDTANK1
-	Projectile: Bullet
-		Speed: 45
-		Image: 90MM
-	Warhead:
-		Spread: 3
-		Versus: 
-			None: 30%
-			Wood: 40%
-			Heavy: 40%
-			Concrete: 30%
-		Explosion: small_explosion
-		InfDeath: 4
-		SmudgeType: SandCrater, RockCrater
-		Damage: 16
-
 90mm:
 	ROF: 50
 	Range: 5.75
@@ -176,7 +303,7 @@ TowerMissile:
 
 90mma:
 	ROF: 50
-	Range: 6.5
+	Range: 7
 	Report: MEDTANK1
 	Projectile: Bullet
 		Speed: 55
@@ -190,27 +317,6 @@ TowerMissile:
 			Concrete: 80%
 		Explosion: med_explosion
 		ImpactSound: kaboom30
-		InfDeath: 4
-		SmudgeType: SandCrater, RockCrater
-		Damage: 40
-
-105mm:
-	ROF: 70
-	Range: 4.75
-	Report: MEDTANK1
-	Burst: 2
-	BurstDelay: 4
-	Projectile: Bullet
-		Speed: 45
-		Image: 90MM
-	Warhead:
-		Spread: 4
-		Versus: 
-			None: 20%
-			Wood: 75%
-			Light: 75%
-			Concrete: 50%
-		Explosion: small_explosion
 		InfDeath: 4
 		SmudgeType: SandCrater, RockCrater
 		Damage: 40
@@ -358,52 +464,6 @@ ChainGun:
 		InfDeath: 2
 		Damage: 20
 
-M60mg:
-	ROF: 30
-	Range: 5
-	Burst: 2
-	BurstDelay: 5
-	Report: 20MMGUN1
-	Projectile: Bullet
-		Speed: 100
-		ContrailLength: 3
-		TrailInterval: 1
-		ContrailDelay: 0
-		ContrailUsePlayerColor: true
-	Warhead:
-		Spread: 3
-		Versus: 
-			Wood: 30%
-			Light: 45%
-			Heavy: 10%
-			Concrete: 20%
-		Explosion: piffs
-		InfDeath: 2
-		Damage: 30
-
-M60mgo:
-	ROF: 30
-	Range: 5
-	Burst: 2
-	BurstDelay: 5
-	Report: 20MMGUN1
-	Projectile: Bullet
-		Speed: 100
-		ContrailLength: 3
-		TrailInterval: 1
-		ContrailDelay: 0
-		ContrailUsePlayerColor: true
-	Warhead:
-		Spread: 3
-		Versus: 
-			Wood: 30%
-			Light: 45%
-			Heavy: 10%
-			Concrete: 20%
-		Explosion: piffs
-		InfDeath: 2
-		Damage: 40
-
 Heal:
 	ROF: 160
 	Range: 4
@@ -535,107 +595,6 @@ WormJaw:
 			Wood: 0%
 			Concrete: 0%
 		Damage: 100
-
-RedEye:
-	ROF: 50
-	Range: 8
-	Report: BAZOOK1
-	ValidTargets: Air
-	Projectile: Missile
-		Arm: 3
-		High: true
-		Shadow: true
-		Proximity: true
-#		Trail: smokey
-		ContrailLength: 10
-		Image: MISSILE
-		ROT: 20
-		RangeLimit: 30
-		Speed: 40
-	Warhead:
-		Spread: 3
-		Versus: 
-			None: 90%
-			Wood: 75%
-			Light: 60%
-			Heavy: 25%
-		Explosion: med_explosion
-		InfDeath: 3
-		SmudgeType: SandCrater, RockCrater
-		Damage: 60
-		ImpactSound: kaboom12
-
-Sniper:
-	ROF: 100
-	Range: 8.5
-	Report: RIFLE
-	Projectile: Bullet
-		Speed: 150
-		ContrailLength: 6
-		TrailInterval: 1
-		ContrailDelay: 0
-		ContrailUsePlayerColor: true
-	Warhead: 
-		Damage: 60
-		Spread: 1
-		Versus: 
-			None: 100%
-			Wood: 0%
-			Light: 1%
-			Heavy: 0%
-			Concrete: 0%
-		InfDeath: 2
-
-Vulcan:
-	ROF: 30
-	Range: 5.75
-	Report: VULCAN
-	ValidTargets: Ground, Air
-	Projectile: Bullet
-		Speed: 100
-		ContrailLength: 3
-		TrailInterval: 1
-		ContrailDelay: 0
-		ContrailUsePlayerColor: true
-	Warhead:
-		Spread: 3
-		Versus: 
-			Wood: 0%
-			Light: 60%
-			Heavy: 10%
-			Concrete: 0%
-		Explosion: piffs
-		InfDeath: 2
-		Damage: 30
-
-Slung:
-	ROF: 60
-	Delay: 5
-	Range: 5.5
-	Report: BAZOOK2
-	ValidTargets: Ground
-	Projectile: Bullet
-		Speed: 25
-		High: true
-		Shadow: yes
-		Angle: .15
-		Proximity: true
-		Inaccuracy: 12
-		Image: DRAGON
-	Warhead:
-		Spread: 6
-		Versus: 
-			None: 0%
-			Wood: 75%
-			Light: 40%
-			Heavy: 90%
-			Concrete: 50%
-		Explosion: small_explosion
-		WaterExplosion: med_splash
-		InfDeath: 4
-		Damage: 30
-		ImpactSound: kaboom25
-
 
 ParaBomb:
 	ROF: 10
