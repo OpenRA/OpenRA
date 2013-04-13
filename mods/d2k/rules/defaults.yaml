@@ -123,19 +123,19 @@
 	Armor:
 		Type: None
 	RevealsShroud:
-		Range: 4
+		Range: 6
 	Mobile:
 		Crushes: crate
 		SharesCell: true
 		TerrainSpeeds:
-			Sand: 80
-			Rock: 90
-			Transition: 85
+			Sand: 90
+			Rock: 100
+			Transition: 95
 			Concrete: 100
-			Spice: 80
-			SpiceBlobs: 70
-			Dune: 60
-			Rough: 65
+			Spice: 85
+			SpiceBlobs: 80
+			Dune: 75
+			Rough: 75
 	SelectionDecorations:
 	Selectable:
 		Voice: InfantryVoice
@@ -265,3 +265,4 @@
 	GivesBounty:
 	C4Demolishable:
 	DebugMuzzlePositions:
+	Bib:

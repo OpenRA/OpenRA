@@ -16,7 +16,7 @@
 	Armor:
 		Type: Concrete
 	RevealsShroud:
-		Range: 6
+		Range: 10
 	Production:
 		Produces: Building
 	Valued:
@@ -199,7 +199,7 @@ RESEARCH:
 		Description: Harvesters unload Spice here for processing
 	Building:
 		Power: -30
-		Footprint: =xx xx=
+		Footprint: xxx x==
 		Dimensions: 3,2
 	Health:
 		HP: 900
@@ -211,6 +211,7 @@ RESEARCH:
 	OreRefinery:
 		DockOffset: 2,1
 		DockAngle: 160
+		TickRate: 25
 	StoresOre:
 		PipColor: green
 		PipCount: 10

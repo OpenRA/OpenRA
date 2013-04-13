@@ -141,6 +141,10 @@ COMBATA:
 		Prerequisites: heavya
 		Owner: atreides
 		BuiltAt: heavya
+	RevealsShroud:
+		Range: 8
+	Turreted:
+		ROT: 6
 	Armament:
 		Weapon: 90mma
 		Recoil: 171

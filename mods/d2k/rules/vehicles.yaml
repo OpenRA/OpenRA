@@ -21,7 +21,7 @@
 		Speed: 6
 		Crushes: crate, infantry
 	RevealsShroud:
-		Range: 4
+		Range: 8
 	MustBeDestroyed:
 	BaseBuilding:
 	-AttackMove:
@@ -62,10 +62,10 @@ HARVESTER:
 		Priority: 7
 		Bounds: 42,42
 	Harvester:
-		PipCount: 7
-		Capacity: 14
+		PipCount: 10
+		Capacity: 40
 		Resources: Spice
-		UnloadTicksPerBale: 15
+		UnloadTicksPerBale: 6
 		# How far away from our linked refinery to find resources (in cells):
 		SearchFromProcRadius: 24
 		# How far away from last harvest order location to find more resources (in cells):
@@ -215,7 +215,7 @@ QUAD.starport:
 		Speed: 7
 		Crushes: crate, infantry
 	RevealsShroud:
-		Range: 6
+		Range: 7
 	Turreted:
 		ROT: 6
 		AlignWhenIdle: true
@@ -267,7 +267,7 @@ SIEGETANK:
 		ROT: 3
 		Crushes: crate, infantry
 	RevealsShroud:
-		Range: 5
+		Range: 8
 	Turreted:
 		ROT: 3
 	Armament:
@@ -330,7 +330,7 @@ MISSILETANK:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 6
+		Range: 8
 	RenderUnit:
 		Image: MISSILETANK
 	Armament:
