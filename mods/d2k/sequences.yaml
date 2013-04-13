@@ -21,7 +21,7 @@ harvester:
 		Start: 32
 		Length: 8
 		Facings: 8
-		Tick: 150
+		Tick: 50
 	dock: unload
 		Start: 0
 		Length: 10
