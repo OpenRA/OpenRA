@@ -357,6 +357,7 @@
 	Burns:
 	ProximityCaptor:
 		Types:Husk
+	BelowUnits:
 
 ^Bridge:
 	Tooltip:

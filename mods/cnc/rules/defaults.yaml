@@ -405,6 +405,7 @@
 	TargetableUnit:
 	TransformOnCapture:
 		ForceHealthPercentage: 25
+	BelowUnits:
 #	Capturable:
 #		Type: husk
 #		AllowAllies: true
