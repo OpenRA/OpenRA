@@ -199,7 +199,7 @@ RESEARCH:
 		Description: Harvesters unload Spice here for processing
 	Building:
 		Power: -30
-		Footprint: =xx x==
+		Footprint: xxx x==
 		Dimensions: 3,2
 	Health:
 		HP: 900
