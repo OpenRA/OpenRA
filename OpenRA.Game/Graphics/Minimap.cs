@@ -139,7 +139,7 @@ namespace OpenRA.Graphics
 
 				foreach (var t in world.ActorsWithTrait<IRadarSignature>())
 				{
-					if (world.ShroudObscures(t.Actor))
+					if (world.FogObscures(t.Actor))
 						continue;
 
 					var color = t.Trait.RadarSignatureColor(t.Actor);
