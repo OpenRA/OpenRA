@@ -21,7 +21,7 @@
 		Speed: 6
 		Crushes: crate, infantry
 	RevealsShroud:
-		Range: 4
+		Range: 8
 	MustBeDestroyed:
 	BaseBuilding:
 	-AttackMove:
@@ -267,7 +267,7 @@ SIEGETANK:
 		ROT: 3
 		Crushes: crate, infantry
 	RevealsShroud:
-		Range: 5
+		Range: 8
 	Turreted:
 		ROT: 3
 	Armament:
@@ -330,7 +330,7 @@ MISSILETANK:
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 6
+		Range: 8
 	RenderUnit:
 		Image: MISSILETANK
 	Armament:
