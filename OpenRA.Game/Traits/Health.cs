@@ -69,6 +69,35 @@ namespace OpenRA.Traits
 			}
 		}
 
+		public void Resurrect(Actor self, Actor repairer)
+		{
+			if (!IsDead)
+				return;
+
+			hp = MaxHP;
+
+			var ai = new AttackInfo
+			{
+				Attacker = repairer,
+				Damage = -MaxHP,
+				DamageState = this.DamageState,
+				PreviousDamageState = DamageState.Dead,
+				Warhead = null,
+			};
+
+			foreach (var nd in self.TraitsImplementing<INotifyDamage>()
+			         .Concat(self.Owner.PlayerActor.TraitsImplementing<INotifyDamage>()))
+				nd.Damaged(self, ai);
+
+			foreach (var nd in self.TraitsImplementing<INotifyDamageStateChanged>())
+				nd.DamageStateChanged(self, ai);
+
+			if (repairer != null && repairer.IsInWorld && !repairer.IsDead())
+				foreach (var nd in repairer.TraitsImplementing<INotifyAppliedDamage>()
+				         .Concat(repairer.Owner.PlayerActor.TraitsImplementing<INotifyAppliedDamage>()))
+					nd.AppliedDamage(repairer, self, ai);
+		}
+
 		public void InflictDamage(Actor self, Actor attacker, int damage, WarheadInfo warhead, bool ignoreModifiers)
 		{
 			if (IsDead) return;		/* overkill! don't count extra hits as more kills! */
