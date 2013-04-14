@@ -47,7 +47,7 @@ HARVESTER:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Armor
-		Prerequisites: Heavy Factory,Spice Refinery
+		Prerequisites: Heavy Factory,Refinery
 		Owner: atreides, harkonnen, ordos
 		BuiltAt: heavya, heavyh, heavyo
 		BuildPaletteOrder: 10
