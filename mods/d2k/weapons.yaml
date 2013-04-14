@@ -19,7 +19,7 @@ LMG:
 		InfDeath: 2
 		Damage: 15
 
-Dragon:
+Bazooka:
 	ROF: 50
 	Range: 5
 	Report: BAZOOK1
@@ -48,35 +48,6 @@ Dragon:
 		InfDeath: 4
 		SmudgeType: SandCrater, RockCrater
 		Damage: 50
-		ImpactSound: kaboom12
-
-RedEye:
-	ROF: 50
-	Range: 8
-	Report: BAZOOK1
-	ValidTargets: Air
-	Projectile: Missile
-		Arm: 3
-		High: true
-		Shadow: true
-		Proximity: true
-#		Trail: smokey
-		ContrailLength: 10
-		Image: MISSILE
-		ROT: 20
-		RangeLimit: 30
-		Speed: 40
-	Warhead:
-		Spread: 3
-		Versus: 
-			None: 90%
-			Wood: 75%
-			Light: 60%
-			Heavy: 25%
-		Explosion: med_explosion
-		InfDeath: 3
-		SmudgeType: SandCrater, RockCrater
-		Damage: 60
 		ImpactSound: kaboom12
 
 Sniper:
