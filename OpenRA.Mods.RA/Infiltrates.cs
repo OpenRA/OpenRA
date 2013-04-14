@@ -67,8 +67,7 @@ namespace OpenRA.Mods.RA
 				self.SetTargetLine(Target.FromOrder(order), Color.Red);
 				
 				self.CancelActivity();
-				self.QueueActivity(new Enter(order.TargetActor));
-				self.QueueActivity(new Infiltrate(order.TargetActor));
+				self.QueueActivity(new Enter(order.TargetActor, new Infiltrate(order.TargetActor)));
 			}
 		}
 		

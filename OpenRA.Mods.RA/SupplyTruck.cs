@@ -59,8 +59,7 @@ namespace OpenRA.Mods.RA
 			{
 				self.SetTargetLine(Target.FromOrder(order), Color.Yellow);
 				self.CancelActivity();
-				self.QueueActivity(new Enter(order.TargetActor));
-				self.QueueActivity(new DonateSupplies(order.TargetActor, Info.Payload));
+				self.QueueActivity(new Enter(order.TargetActor, new DonateSupplies(order.TargetActor, Info.Payload)));
 			}
 		}
 

@@ -26,9 +26,9 @@ namespace OpenRA.Mods.RA
 			get { yield return new EngineerRepairOrderTargeter(); }
 		}
 
-		public Order IssueOrder( Actor self, IOrderTargeter order, Target target, bool queued )
+		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if( order.OrderID == "EngineerRepair" )
+			if (order.OrderID == "EngineerRepair")
 				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
 
 			return null;
@@ -36,41 +36,43 @@ namespace OpenRA.Mods.RA
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return (order.OrderString == "EngineerRepair"
-					&& order.TargetActor.GetDamageState() > DamageState.Undamaged) ? "Attack" : null;
+			return (order.OrderString == "EngineerRepair" &&
+					order.TargetActor.GetDamageState() > DamageState.Undamaged) ? "Attack" : null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "EngineerRepair"
-				&& order.TargetActor.GetDamageState() > DamageState.Undamaged)
+			if (order.OrderString == "EngineerRepair" &&
+			    order.TargetActor.GetDamageState() > DamageState.Undamaged)
 			{
 				self.SetTargetLine(Target.FromOrder(order), Color.Yellow);
 
 				self.CancelActivity();
-				self.QueueActivity(new Enter(order.TargetActor));
-				self.QueueActivity(new RepairBuilding(order.TargetActor));
+				self.QueueActivity(new Enter(order.TargetActor, new RepairBuilding(order.TargetActor)));
 			}
 		}
 
 		class EngineerRepairOrderTargeter : UnitTraitOrderTargeter<Building>
 		{
 			public EngineerRepairOrderTargeter()
-				: base( "EngineerRepair", 6, "goldwrench", false, true ) { }
+				: base("EngineerRepair", 6, "goldwrench", false, true) { }
 
 			public override bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceQueued, ref string cursor)
 			{
-				if( !base.CanTargetActor( self, target, forceAttack, forceQueued, ref cursor ) ) return false;
+				if (!base.CanTargetActor(self, target, forceAttack, forceQueued, ref cursor))
+					return false;
+
 				if (!target.HasTrait<EngineerRepairable>())
 					return false;
 
-				if (self.Owner.Stances[ target.Owner ] != Stance.Ally)
+				if (self.Owner.Stances[target.Owner] != Stance.Ally)
 					return false;
 
 				IsQueued = forceQueued;
 
-				if( target.GetDamageState() == DamageState.Undamaged )
+				if (target.GetDamageState() == DamageState.Undamaged)
 					cursor = "goldwrench-blocked";
+
 				return true;
 			}
 		}
