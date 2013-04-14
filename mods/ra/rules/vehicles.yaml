@@ -537,7 +537,7 @@ MRJ:
 		Cost: 1000
 	Tooltip:
 		Name: Mobile Radar Jammer
-		Description: Unarmed
+		Description: Jams nearby enemy radar domes.
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 1000
@@ -558,6 +558,8 @@ MRJ:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
+	JamsRadar:
+		Range: 15
 
 1TNK.Husk:
 	Inherits: ^Husk
