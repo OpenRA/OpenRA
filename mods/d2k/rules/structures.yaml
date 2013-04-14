@@ -211,7 +211,7 @@ RESEARCH:
 	OreRefinery:
 		DockOffset: 2,1
 		DockAngle: 160
-		TickRate: 25
+		TickRate: 20
 	StoresOre:
 		PipColor: green
 		PipCount: 10

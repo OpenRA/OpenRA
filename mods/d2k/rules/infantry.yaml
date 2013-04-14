@@ -17,7 +17,7 @@ RIFLE:
 	Mobile:
 		Speed: 5
 	Armament:
-		Weapon: M1Carbine
+		Weapon: LMG
 	AttackFrontal:
 	TakeCover:
 	-RenderInfantry:

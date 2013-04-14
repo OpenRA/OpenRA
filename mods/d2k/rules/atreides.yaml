@@ -200,7 +200,7 @@ SONICTANK:
 	RenderUnit:
 		Image: SONICTANK
 	Armament:
-		Weapon: TTankZap
+		Weapon: Sound
 		LocalOffset: 640,0,427
 	AttackFrontal:
 	AutoTarget:
