@@ -399,6 +399,3 @@
 	SoundOnDamageTransition:
 		DamagedSound: xplos.aud
 		DestroyedSound: xplobig4.aud
-	Building:
-		Footprint: ______ ______ ______ ______
-		Dimensions: 6,4
