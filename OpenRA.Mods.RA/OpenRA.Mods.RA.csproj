@@ -423,6 +423,9 @@
     <Compile Include="Buildings\BaseProvider.cs" />
     <Compile Include="Render\WithSpinner.cs" />
     <Compile Include="Widgets\Logic\ObserverShroudSelectorLogic.cs" />
+    <Compile Include="RepairsBridges.cs" />
+    <Compile Include="Activities\RepairBridge.cs" />
+    <Compile Include="BridgeHut.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
