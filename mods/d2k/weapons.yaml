@@ -1,4 +1,4 @@
-M1Carbine:
+LMG:
 	ROF: 20
 	Range: 5
 	Report: MGUN2
@@ -150,7 +150,7 @@ Slung:
 		Damage: 30
 		ImpactSound: kaboom25
 
-M60mg:
+HMG:
 	ROF: 30
 	Range: 5
 	Burst: 2
@@ -173,7 +173,7 @@ M60mg:
 		InfDeath: 2
 		Damage: 30
 
-M60mgo:
+HMGo:
 	ROF: 30
 	Range: 5
 	Burst: 2
@@ -321,7 +321,7 @@ TowerMissile:
 		SmudgeType: SandCrater, RockCrater
 		Damage: 40
 
-120mm:
+DevBullet:
 	ROF: 70
 	Range: 6
 	Report: TANKHVY1
@@ -429,7 +429,7 @@ FakeMissile:
 		SmudgeType: SandCrater, RockCrater
 		Damage: 100
 
-TTankZap:
+Sound:
 	ROF: 85
 	Range: 8.5
 	Report: SONIC1

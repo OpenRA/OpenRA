@@ -132,7 +132,7 @@ HARVESTER.starport:
 	RenderUnit:
 	WithMuzzleFlash:
 	Armament:
-		Weapon: M60mg
+		Weapon: HMG
 		LocalOffset: 256,0,128
 	AttackFrontal:
 	AutoTarget:

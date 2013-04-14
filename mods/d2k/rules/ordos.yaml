@@ -160,7 +160,7 @@ TRIKEO:
 	RenderUnit:
 		Image: RAIDER
 	Armament:
-		Weapon: M60mgo
+		Weapon: HMGo
 		LocalOffset: 256,0,128
 	AttackFrontal:
 

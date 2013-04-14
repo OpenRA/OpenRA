@@ -218,7 +218,7 @@ DEVAST:
 		Range: 7
 	RenderUnit:
 	Armament:
-		Weapon: 120mm
+		Weapon: DevBullet
 		LocalOffset: 683,213,85, 683,-171,85
 	AttackFrontal:
 	AutoTarget:
