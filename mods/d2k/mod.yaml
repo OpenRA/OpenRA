@@ -68,7 +68,6 @@ ChromeLayout:
 
 Weapons:
 	mods/d2k/weapons/defaults.yaml
-	mods/d2k/weapons/misc.yaml
 	mods/d2k/weapons/explosions.yaml
 	mods/d2k/weapons.yaml
 
