@@ -51,6 +51,8 @@
 		Type: Wood
 	RevealsShroud:
 		Range: 4
+	ProvidesCustomPrerequisite:
+		Prerequisite: Power		
 
 ^BARRACKS:
 	Inherits: ^Building
@@ -219,7 +221,7 @@ RESEARCH:
 	CustomSellValue:
 		Value: 500
 	ProvidesCustomPrerequisite:
-		Prerequisite: Spice Refinery
+		Prerequisite: Refinery
 	FreeActor:
 		Actor: HARVESTER
 		InitialActivity: FindResources
