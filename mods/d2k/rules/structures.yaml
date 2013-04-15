@@ -494,7 +494,7 @@ REPAIR:
 		Name: Repair Pad
 		Description: Repairs vehicles\n Allows construction of MCVs
 	Building:
-		Power: -25
+		Power: -10
 		Footprint: =x= =x= ===
 		Dimensions: 3,3
 	Health:
