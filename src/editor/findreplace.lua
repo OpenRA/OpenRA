@@ -262,17 +262,26 @@ function findReplace:RunInFiles(replace)
   findReplace.oveditor = nil
 end
 
-local function createFindReplaceDialog(replace,infiles)
+function findReplace:createDialog(replace,infiles)
   local ID_FIND_NEXT = 1
   local ID_REPLACE = 2
   local ID_REPLACE_ALL = 3
   local ID_SETDIR = 4
 
-  findReplace.replace = replace
-  findReplace.infiles = infiles
+  local findReplace = self
+
+  local position = wx.wxDefaultPosition
+  if findReplace.dialog then
+    -- grab current position before destroying the dialog
+    position = findReplace.dialog:GetPosition()
+    findReplace.dialog:Destroy()
+  end
 
   local findDialog = wx.wxDialog(ide.frame, wx.wxID_ANY, infiles and "Find In Files" or "Find",
-    wx.wxDefaultPosition, wx.wxDefaultSize, wx.wxDEFAULT_DIALOG_STYLE)
+    position, wx.wxDefaultSize, wx.wxDEFAULT_DIALOG_STYLE)
+
+  findReplace.replace = replace
+  findReplace.infiles = infiles
 
   -- Create right hand buttons and sizer
   local findButton = wx.wxButton(findDialog, ID_FIND_NEXT, infiles and "&Find All" or "&Find Next")
@@ -443,6 +452,7 @@ local function createFindReplaceDialog(replace,infiles)
       if (findReplace.infiles) then
         findReplace:RunInFiles()
         findReplace.dialog:Destroy()
+        findReplace.dialog = nil
       else
         findReplace:FindString()
       end
@@ -456,13 +466,12 @@ local function createFindReplaceDialog(replace,infiles)
         if (findReplace.infiles) then
           findReplace:RunInFiles(true)
           findReplace.dialog:Destroy()
+          findReplace.dialog = nil
         else
           findReplace:ReplaceString()
         end
       else
-        findReplace.dialog:Destroy()
-        findReplace.dialog = createFindReplaceDialog(true,infiles)
-        findReplace.dialog:Show(true)
+        findReplace:createDialog(true,infiles)
       end
     end)
 
@@ -486,22 +495,14 @@ local function createFindReplaceDialog(replace,infiles)
           infilesDirCombo:SetValue(filePicker:GetPath())
         end
       end)
-
   end
 
-  findDialog:Connect(wx.wxID_ANY, wx.wxEVT_CLOSE_WINDOW,
-    function (event)
-      TransferDataFromWindow()
-      event:Skip()
-      findDialog:Show(false)
-      findDialog:Destroy()
-    end)
-
+  findReplace.dialog = findDialog
+  findDialog:Show(true)
   return findDialog
 end
 
 function findReplace:Show(replace,infiles)
-  self.dialog = nil
-  self.dialog = createFindReplaceDialog(replace,infiles)
-  self.dialog:Show(true)
+  self:GetSelectedString()
+  self:createDialog(replace,infiles)
 end

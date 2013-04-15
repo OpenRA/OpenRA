@@ -27,26 +27,22 @@ function OnUpdateUISearchMenu(event) event:Enable(GetEditor() ~= nil) end
 
 frame:Connect(ID_FIND, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
-    findReplace:GetSelectedString()
     findReplace:Show(false)
   end)
 frame:Connect(ID_FIND, wx.wxEVT_UPDATE_UI, OnUpdateUISearchMenu)
 
 frame:Connect(ID_REPLACE, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
-    findReplace:GetSelectedString()
     findReplace:Show(true)
   end)
 frame:Connect(ID_REPLACE, wx.wxEVT_UPDATE_UI, OnUpdateUISearchMenu)
 
 frame:Connect(ID_FINDINFILES, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
-    findReplace:GetSelectedString()
     findReplace:Show(false,true)
   end)
 frame:Connect(ID_REPLACEINFILES, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
-    findReplace:GetSelectedString()
     findReplace:Show(true,true)
   end)
 
