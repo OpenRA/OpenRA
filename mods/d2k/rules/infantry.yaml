@@ -27,6 +27,7 @@ RIFLE:
 ENGINEER:
 	Inherits: ^Infantry
 	Buildable:
+		Prerequisites: Outpost
 		Queue: Infantry
 		BuildPaletteOrder: 50
 		Owner: atreides,harkonnen,ordos

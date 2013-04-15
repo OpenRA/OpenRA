@@ -109,6 +109,7 @@ HARVESTER.starport:
 ^TRIKE:
 	Inherits: ^Vehicle
 	Buildable:
+		Prerequisites: Light
 		Queue: Vehicle
 		BuildPaletteOrder: 15
 		Hotkey: w
@@ -259,9 +260,9 @@ SIEGETANK:
 		Description: Siege Artillery\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
 		Icon: siegetankicon
 	Health:
-		HP: 85
+		HP: 120
 	Armor:
-		Type: Light
+		Type: Heavy
 	Mobile:
 		Speed: 5
 		ROT: 3
@@ -318,7 +319,7 @@ MISSILETANK:
 	Buildable:
 		Queue: Armor
 		Prerequisites: Heavy,Hitech
-		Owner: atreides, harkonnen
+		Owner: atreides, harkonnen, ordos
 		BuiltAt: heavya, heavyh
 		BuildPaletteOrder: 40
 		Hotkey: r
@@ -326,7 +327,7 @@ MISSILETANK:
 		Speed: 6
 		ROT: 3
 	Health:
-		HP: 110
+		HP: 130
 	Armor:
 		Type: Light
 	RevealsShroud:
