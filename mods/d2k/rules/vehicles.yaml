@@ -359,6 +359,7 @@ MISSILETANK.Husk:
 MISSILETANK.starport:
 	Inherits: MISSILETANK
 	Buildable:
+		Prerequisites: Heavy
 		Queue: Starport
 		Owner: atreides, harkonnen, ordos
 		BuiltAt: starporta, starporth, starporto

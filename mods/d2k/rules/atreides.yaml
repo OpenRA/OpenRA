@@ -127,7 +127,6 @@ COMBATA:
 	Tooltip:
 		Icon: combataicon
 	Buildable:
-		Prerequisites: heavya
 		Owner: atreides
 		BuiltAt: heavya
 	RevealsShroud:
