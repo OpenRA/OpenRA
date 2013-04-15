@@ -212,14 +212,6 @@ rifle:
 		Start: 48
 		Length: 12
 		Tick: 160
-	idle1: rifledeath
-		Start: 60
-		Length: 8
-		Tick: 160
-	idle2: rifledeath
-		Start: 68
-		Length: 8
-		Tick: 160
 
 bazooka:
 	stand:
