@@ -438,7 +438,7 @@ Grenade:
 		WaterExplosion: small_splash
 		InfDeath: 4
 		SmudgeType: Crater
-		Damage: 30
+		Damage: 40
 
 105mm:
 	ROF: 70
