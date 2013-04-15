@@ -1,7 +1,7 @@
 ^CONYARD:
 	Inherits: ^Building
 	Building:
-		Power: 0
+		Power: 20
 		Footprint: xxx xxx
 		Dimensions: 3,2
 		Adjacent: 4
@@ -20,24 +20,27 @@
 	Production:
 		Produces: Building
 	Valued:
-		Cost: 2500
+		Cost: 2000
 	Tooltip:
 		Name: Construction Yard
 	CustomSellValue:
-		Value: 2500
+		Value: 2000
 	BaseBuilding:
 	ProductionBar:
+	ProvidesCustomPrerequisite:
+		Prerequisite: Conyard
 
 ^POWER:
 	Inherits: ^Building
 	Buildable:
+		Prerequisites: Conyard
 		Queue: Building
 		BuildPaletteOrder: 0
 		Hotkey: w
 	Selectable:
 		Bounds: 64,64
 	Valued:
-		Cost: 400
+		Cost: 300
 	Tooltip:
 		Name: Windtrap
 		Description: Provides power for other structures
@@ -51,17 +54,20 @@
 		Type: Wood
 	RevealsShroud:
 		Range: 4
+	ProvidesCustomPrerequisite:
+		Prerequisite: Power
 
 ^BARRACKS:
 	Inherits: ^Building
 	Buildable:
+		Prerequisites: Power
 		Queue: Building
 		BuildPaletteOrder: 15
 		Hotkey: b
 	Selectable:
 		Bounds: 64,64
 	Valued:
-		Cost: 500
+		Cost: 300
 	Tooltip:
 		Name: Barracks
 		Description: Trains infantry
@@ -87,106 +93,15 @@
 		Produces: Infantry
 	PrimaryBuilding:
 	ProductionBar:
-	ProvidesCustomPrerequisite:
-		Prerequisite: Barracks
 	RepairsUnits:
 		ValuePercentage: 0
-
-^HIGHTECH:
-	Inherits: ^Building
-	Buildable:
-		Queue: Building
-		BuildPaletteOrder: 50
-		Hotkey: t
-	Selectable:
-		Bounds: 96,96
-	Valued:
-		Cost: 2000
-	Tooltip:
-		Name: High Tech Facility
-		Description: Unlocks advanced technology
-	Building:
-		Power: -40
-		Footprint: _x_ xxx xxx
-		Dimensions: 3,3
-	Health:
-		HP: 1500
-	Armor:
-		Type: Wood
-	RevealsShroud:
-		Range: 4
 	ProvidesCustomPrerequisite:
-		Prerequisite: High Tech Facility
-
-RESEARCH:
-	Inherits: ^Building
-	Buildable:
-		Queue: Building
-		Prerequisites: Outpost,High Tech Facility
-		Owner: atreides, harkonnen, ordos
-		BuildPaletteOrder: 65
-		Hotkey: v
-	Selectable:
-		Bounds: 96,64
-	Valued:
-		Cost: 2500
-	Tooltip:
-		Name: IX Research Center
-		Description: Unlocks experimental tanks\n  Special Ability: Carryall Combat Drop
-	ParatroopersPower:
-		Image: carryallicon
-		UnitType: carryall.infantry
-		FlareTime: 0
-		ChargeTime: 360
-		Description: Paratroopers
-		LongDesc: A Carryall drops a squad of Infantry \nanywhere on the map
-		Prerequisites: HIGHTECHO
-		DropItems: RIFLE, RIFLE, BAZOOKA, BAZOOKA, ENGINEER, BAZOOKA, RIFLE, RIFLE
-		SelectTargetSound:
-		FlareType:
-	Building:
-		Power: -40
-		Footprint: xxx xxx
-		Dimensions: 3,2
-	Health:
-		HP: 1000
-	Armor:
-		Type: Wood
-	RevealsShroud:
-		Range: 4
-
-^PALACE:
-	Inherits: ^Building
-	Buildable:
-		Queue: Building
-		BuildPaletteOrder: 70
-		Hotkey: p
-	Selectable:
-		Bounds: 96,96
-	Valued:
-		Cost: 4000
-	Tooltip:
-		Name: Palace
-		Description: Unlocks elite infantry\n  Special Ability: Ornithopter Strike
-	Building:
-		Power: -50
-		Footprint: _x_ xxx =xx
-		Dimensions: 3,3
-	Health:
-		HP: 2000
-	Armor:
-		Type: Concrete
-	RevealsShroud:
-		Range: 8
-	ProvidesCustomPrerequisite:
-		Prerequisite: TPal
-	RenderDetectionCircle:
-	DetectCloaked:
-		Range: 2
+		Prerequisite: Barracks
 
 ^REFINERY:
 	Inherits: ^Building
 	Buildable:
+		Prerequisites: Power
 		Queue: Building
 		BuildPaletteOrder: 5
 		Hotkey: r
@@ -218,17 +133,18 @@ RESEARCH:
 		Capacity: 3000
 	CustomSellValue:
 		Value: 500
-	ProvidesCustomPrerequisite:
-		Prerequisite: Spice Refinery
 	FreeActor:
 		Actor: HARVESTER
 		InitialActivity: FindResources
 		SpawnOffset: 2,1
 		Facing: 160
+	ProvidesCustomPrerequisite:
+		Prerequisite: Refinery
 
 ^SILO:
 	Inherits: ^Building
 	Buildable:
+		Prerequisites: Refinery
 		Queue: Building
 		BuildPaletteOrder: 10
 		Hotkey: i
@@ -259,13 +175,14 @@ RESEARCH:
 ^LIGHT:
 	Inherits: ^Building
 	Buildable:
+		Prerequisites: Refinery
 		Queue: Building
 		BuildPaletteOrder: 30
 		Hotkey: l
 	Selectable:
 		Bounds: 96,64
 	Valued:
-		Cost: 1000
+		Cost: 500
 	Tooltip:
 		Name: Light Factory
 		Description: Produces light vehicles
@@ -290,11 +207,12 @@ RESEARCH:
 	PrimaryBuilding:
 	ProductionBar:
 	ProvidesCustomPrerequisite:
-		Prerequisite: Light Factory
+		Prerequisite: Light
 
 ^HEAVY:
 	Inherits: ^Building
 	Buildable:
+		Prerequisites: Refinery
 		Queue: Building
 		BuildPaletteOrder: 35
 		Hotkey: h
@@ -326,13 +244,14 @@ RESEARCH:
 	PrimaryBuilding:
 	ProductionBar:
 	ProvidesCustomPrerequisite:
-		Prerequisite: Heavy Factory
+		Prerequisite: Heavy
 
 ^RADAR:
 	RequiresPower:
 	CanPowerDown:
 	Inherits: ^Building
 	Buildable:
+		Prerequisites: Barracks
 		Queue: Building
 		BuildPaletteOrder: 20
 		Hotkey: o
@@ -362,11 +281,12 @@ RESEARCH:
 ^STARPORT:
 	Inherits: ^Building
 	Valued:
-		Cost: 3000
+		Cost: 2000
 	Tooltip:
 		Name: Starport
-		Description: Dropzone for cheap reinforcements\n  Requires power to operate
+		Description: Dropzone for quick reinforcements, at a price.\n  Requires power to operate
 	Buildable:
+		Prerequisites: Outpost
 		Queue: Building
 		BuildPaletteOrder: 60
 		Hotkey: c
@@ -448,12 +368,12 @@ GUNTOWER:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: Outpost
+		Prerequisites: Barracks
 		Owner: atreides, harkonnen, ordos
 		BuildPaletteOrder: 40
 		Hotkey: g
 	Valued:
-		Cost: 600
+		Cost: 550
 	Tooltip:
 		Name: Gun Tower
 		Description: Defensive structure\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
@@ -473,7 +393,7 @@ GUNTOWER:
 		Range: 6
 	RenderRangeCircle:
 	-RenderBuilding:
-	#-AutoTargetIgnore:
+	-AutoTargetIgnore:
 	RenderBuildingSeparateTurret:
 	#	HasMakeAnimation: false
 	Turreted:
@@ -505,12 +425,12 @@ ROCKETTOWER:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: Outpost, High Tech Facility
+		Prerequisites: Outpost
 		Owner: atreides, harkonnen, ordos
 		BuildPaletteOrder: 55
 		Hotkey: m
 	Valued:
-		Cost: 800
+		Cost: 750
 	Tooltip:
 		Name: Missile Tower
 		Icon: rturreticon
@@ -530,7 +450,7 @@ ROCKETTOWER:
 		Range: 6
 	RenderRangeCircle:
 	-RenderBuilding:
-	#-AutoTargetIgnore:
+	-AutoTargetIgnore:
 	RenderBuildingSeparateTurret:
 	#	HasMakeAnimation: false
 	Armament:
@@ -564,12 +484,12 @@ REPAIR:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: Outpost
+		Prerequisites: Heavy
 		Owner: atreides, harkonnen, ordos
 		BuildPaletteOrder: 45
 		Hotkey: e
 	Valued:
-		Cost: 1000
+		Cost: 800
 	Tooltip:
 		Name: Repair Pad
 		Description: Repairs vehicles\n Allows construction of MCVs
@@ -590,6 +510,102 @@ REPAIR:
 		ValuePercentage: 50
 	RallyPoint:
 		RallyPoint: 1,3
+
+^HIGHTECH:
+	Inherits: ^Building
+	Buildable:
+		Prerequisites: Outpost
+		Queue: Building
+		BuildPaletteOrder: 50
+		Hotkey: t
+	Selectable:
+		Bounds: 96,96
+	Valued:
+		Cost: 1150
+	Tooltip:
+		Name: High Tech Facility
+		Description: Unlocks advanced technology
+	Building:
+		Power: -40
+		Footprint: _x_ xxx xxx
+		Dimensions: 3,3
+	Health:
+		HP: 1500
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4
+	ProvidesCustomPrerequisite:
+		Prerequisite: Hitech
+
+RESEARCH:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		Prerequisites: Outpost
+		Owner: atreides, harkonnen, ordos
+		BuildPaletteOrder: 65
+		Hotkey: v
+	Selectable:
+		Bounds: 96,64
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: IX Research Center
+		Description: Unlocks experimental tanks\n  Special Ability: Carryall Combat Drop
+	ParatroopersPower:
+		Image: carryallicon
+		UnitType: carryall.infantry
+		FlareTime: 0
+		ChargeTime: 280
+		Description: Paratroopers
+		LongDesc: A Carryall drops a squad of Infantry \nanywhere on the map
+		Prerequisites: HIGHTECHO
+		DropItems: RIFLE, RIFLE, BAZOOKA, BAZOOKA, ENGINEER, BAZOOKA, RIFLE, RIFLE
+		SelectTargetSound:
+		FlareType:
+	Building:
+		Power: -40
+		Footprint: xxx xxx
+		Dimensions: 3,2
+	Health:
+		HP: 1000
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4
+	ProvidesCustomPrerequisite:
+		Prerequisite: Ix
+
+^PALACE:
+	Inherits: ^Building
+	Buildable:
+		Prerequisites: Ix
+		Queue: Building
+		BuildPaletteOrder: 70
+		Hotkey: p
+	Selectable:
+		Bounds: 96,96
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: Palace
+		Description: Unlocks elite infantry\n  Special Ability: Ornithopter Strike
+	Building:
+		Power: -50
+		Footprint: _x_ xxx =xx
+		Dimensions: 3,3
+	Health:
+		HP: 2000
+	Armor:
+		Type: Concrete
+	RevealsShroud:
+		Range: 8
+	RenderDetectionCircle:
+	DetectCloaked:
+		Range: 2
+	ProvidesCustomPrerequisite:
+		Prerequisite: TPal
 
 SIETCH:
 	Inherits: ^Building
@@ -680,3 +696,26 @@ HEAVYC:
 #		CrushClasses: plates
 #	-SelectionDecorations:
 #	-Selectable:
+
+
+
+# custom prerequisites:
+CONYARD:
+	Tooltip:
+		Name: Construction Yard
+
+LIGHT:
+	Tooltip:
+		Name: Light Factory
+
+HEAVY:
+	Tooltip:
+		Name: Heavy Factory
+
+HITECH:
+	Tooltip:
+		Name: High-Tech Facility
+
+IX:
+	Tooltip:
+		Name: IX Research Center

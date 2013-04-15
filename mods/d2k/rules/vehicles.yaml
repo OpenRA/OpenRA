@@ -47,7 +47,7 @@ HARVESTER:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Armor
-		Prerequisites: Heavy Factory,Spice Refinery
+		Prerequisites: Heavy,Refinery
 		Owner: atreides, harkonnen, ordos
 		BuiltAt: heavya, heavyh, heavyo
 		BuildPaletteOrder: 10
@@ -104,7 +104,7 @@ HARVESTER.starport:
 		Queue: Starport
 		BuiltAt: starporta, starporth, starporto
 	Valued:
-		Cost: 895
+		Cost: 1500
 
 ^TRIKE:
 	Inherits: ^Vehicle
@@ -152,7 +152,7 @@ QUAD:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Vehicle
-		Prerequisites: Light Factory
+		Prerequisites: Light,Outpost
 		Owner: atreides, harkonnen, ordos
 		BuiltAt: lighta, lighth, lighto
 		BuildPaletteOrder: 20
@@ -194,7 +194,7 @@ QUAD.starport:
 		Queue: Starport
 		BuiltAt: starporta, starporth, starporto
 	Valued:
-		Cost: 295
+		Cost: 500
 
 ^COMBAT:
 	Inherits: ^Tank
@@ -247,7 +247,7 @@ SIEGETANK:
 	Inherits: ^Tank
 	Buildable:
 		Queue: Armor
-		Prerequisites: Heavy Factory,Outpost
+		Prerequisites: Outpost
 		Owner: atreides, harkonnen, ordos
 		BuiltAt: heavya, heavyh, heavyo
 		BuildPaletteOrder: 30
@@ -259,9 +259,9 @@ SIEGETANK:
 		Description: Siege Artillery\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
 		Icon: siegetankicon
 	Health:
-		HP: 85
+		HP: 120
 	Armor:
-		Type: Light
+		Type: Heavy
 	Mobile:
 		Speed: 5
 		ROT: 3
@@ -305,7 +305,7 @@ SIEGETANK.starport:
 		Queue: Starport
 		BuiltAt: starporta, starporth, starporto
 	Valued:
-		Cost: 594
+		Cost: 1075
 
 MISSILETANK:
 	Inherits: ^Tank
@@ -317,8 +317,8 @@ MISSILETANK:
 		Icon: missiletankicon
 	Buildable:
 		Queue: Armor
-		Prerequisites: Heavy Factory,High Tech Facility
-		Owner: atreides, harkonnen
+		Prerequisites: Heavy,Hitech
+		Owner: atreides, harkonnen, ordos
 		BuiltAt: heavya, heavyh
 		BuildPaletteOrder: 40
 		Hotkey: r
@@ -326,7 +326,7 @@ MISSILETANK:
 		Speed: 6
 		ROT: 3
 	Health:
-		HP: 110
+		HP: 130
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -363,4 +363,4 @@ MISSILETANK.starport:
 		Owner: atreides, harkonnen, ordos
 		BuiltAt: starporta, starporth, starporto
 	Valued:
-		Cost: 699
+		Cost: 1250

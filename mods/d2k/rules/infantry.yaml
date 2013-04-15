@@ -27,6 +27,7 @@ RIFLE:
 ENGINEER:
 	Inherits: ^Infantry
 	Buildable:
+		Prerequisites: Outpost
 		Queue: Infantry
 		BuildPaletteOrder: 50
 		Owner: atreides,harkonnen,ordos
@@ -57,6 +58,7 @@ ENGINEER:
 BAZOOKA:
 	Inherits: ^Infantry
 	Buildable:
+		Prerequisites: Outpost
 		Queue: Infantry
 		BuildPaletteOrder: 20
 		Owner: atreides,harkonnen,ordos
@@ -72,11 +74,8 @@ BAZOOKA:
 		HP: 45
 	Mobile:
 		Speed: 4
-	Armament@PRIMARY:
-		Weapon: RedEye
-		LocalOffset: 0,0,555
-	Armament@SECONDARY:
-		Weapon: Dragon
+	Armament:
+		Weapon: Bazooka
 		LocalOffset: 0,0,555
 	AttackFrontal:
 	TakeCover:
