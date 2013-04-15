@@ -153,7 +153,7 @@ ARTY:
 	RenderUnit:
 	Explodes:
 		Weapon: UnitExplode
-		Chance: 75	
+		EmptyWeapon: UnitExplode
 	AutoTarget:
 		InitialStance: Defend
 	DebugRetiliateAgainstAggressor:
