@@ -47,9 +47,12 @@ ChromeLayout:
 	mods/d2k/chrome/gameinit.yaml
 	mods/d2k/chrome/ingame.yaml
 	mods/ra/chrome/ingame-chat.yaml
+	mods/ra/chrome/ingame-observer.yaml
+	mods/ra/chrome/ingame-fmvplayer.yaml
 	mods/d2k/chrome/mainmenu.yaml
 	mods/ra/chrome/settings.yaml
 	mods/d2k/chrome/lobby.yaml
+	mods/d2k/chrome/color-picker.yaml
 	mods/ra/chrome/map-chooser.yaml
 	mods/ra/chrome/create-server.yaml
 	mods/ra/chrome/serverbrowser.yaml

@@ -70,7 +70,7 @@ Container@INGAME_ROOT:
 			Y:0
 			Width:160
 			Height:25
-			Text:Options
+			Text:Options (ESC)
 			Font:Bold
 			Key: escape
 		Button@INGAME_DIPLOMACY_BUTTON:
@@ -78,24 +78,27 @@ Container@INGAME_ROOT:
 			Y:0
 			Width:160
 			Height:25
-			Text:Diplomacy
+			Text:Diplomacy (F1)
 			Font:Bold
+			Key: f1
 		Button@CHEATS_BUTTON:
 			X:324
 			Y:0
 			Width:160
 			Height:25
-			Text:Cheats
+			Text:Cheats (F2)
 			Visible:false
 			Font:Bold
+			Key: f2
 		Button@OBJECTIVES_BUTTON:
 			X:486
 			Y:0
 			Width:160
 			Height:25
-			Text:Objectives
+			Text:Objectives (F3)
 			Visible:false
 			Font:Bold
+			Key: f3
 		RadarBin@INGAME_RADAR_BIN:
 			WorldInteractionController:INTERACTION_CONTROLLER
 		PowerBin@INGAME_POWER_BIN:
@@ -200,161 +203,14 @@ Container@INGAME_ROOT:
 					Text:Diplomacy
 					Align:Center
 					Font:Bold
-		ChatDisplay@CHAT_DISPLAY:
-			X:250
-			Y:WINDOW_BOTTOM - HEIGHT - 30
-			Width: 760
-			Height: 200
-			DrawBackground: False
-			RemoveTime:250
-			UseContrast: yes
-		ChatEntry@CHAT_ENTRY:
-			X:250
-			Y:WINDOW_BOTTOM - HEIGHT
-			Width: 760
-			Height: 30
-			UseContrast: yes
-		Background@PERF_BG:
-			ClickThrough:true
-			Background:dialog4
-			Logic:PerfDebugLogic
-			X:10
-			Y:WINDOW_BOTTOM - 250
-			Width: 210
-			Height: 250
-			Children:
-				PerfGraph@GRAPH:
-					X:5
-					Y:5
-					Width:200
-					Height:200
-				Label@TEXT:
-					X:20
-					Y:205
-					Width:170
-					Height:40
-Container@OBSERVER_ROOT:
-	Visible:true
-	Logic:IngameObserverChromeLogic
-	Children:
-		WorldInteractionController@INTERACTION_CONTROLLER:
-			X:0
-			Y:0
-			Width:WINDOW_RIGHT
-			Height:WINDOW_BOTTOM
-		ViewportScrollController:
-			X:0
-			Y:0
-			Width:WINDOW_RIGHT
-			Height:WINDOW_BOTTOM
-		Timer@GAME_TIMER:
-			X: WINDOW_RIGHT/2
-			Y: 0-10
-		Background@POSTGAME_BG:
-			X:(WINDOW_RIGHT - WIDTH)/2
-			Y:(WINDOW_BOTTOM - HEIGHT)/2
-			Width:400
-			Height:100
-			Background:dialog4
-			Visible:false
-			Children:
-				Label@TEXT:
+				Button@CLOSE_DIPLOMACY:
 					X:(PARENT_RIGHT - WIDTH)/2
-					Y:0
-					Width:200
-					Height:80
-					Align:Center
-				Button@POSTGAME_OBSERVE:
-					X:10
-					Y:(PARENT_BOTTOM - HEIGHT - 10)
-					Width:150
-					Height:25
-					Font:Bold
-					Text:Observe
-				Button@POSTGAME_QUIT:
-					X:(PARENT_RIGHT - WIDTH - 10)
-					Y:(PARENT_BOTTOM - HEIGHT - 10)
-					Width:150
-					Height:25
-					Font:Bold
-					Text:Leave
-		SupportPowerBin@INGAME_POWERS_BIN:
-			X:0
-			Y:25
-		Button@INGAME_OPTIONS_BUTTON:
-			X:0
-			Y:0
-			Width:160
-			Height:25
-			Text:Options
-			Font:Bold
-			Key:escape
-		WorldTooltip:
-		Background@INGAME_OPTIONS_BG:
-			X:(WINDOW_RIGHT - WIDTH)/2
-			Y:(WINDOW_BOTTOM - HEIGHT)/2
-			Width:300
-			Height:295
-			Visible:false
-			Children:
-				Label@LABEL_TITLE:
-					X:(PARENT_RIGHT - WIDTH)/2
-					Y:20
-					Width:250
-					Height:25
-					Text:Options
-					Align:Center
-					Font:Bold
-				Button@RESUME:
-					X:(PARENT_RIGHT - WIDTH)/2
-					Y:60
+					Y:350
 					Width:160
 					Height:25
-					Text:Resume
+					Text:Close
 					Font:Bold
 					Key:escape
-				Button@SETTINGS:
-					X:(PARENT_RIGHT - WIDTH)/2
-					Y:100
-					Width:160
-					Height:25
-					Text:Settings
-					Font:Bold
-				Button@MUSIC:
-					X:(PARENT_RIGHT - WIDTH)/2
-					Y:140
-					Width:160
-					Height:25
-					Text:Music
-					Font:Bold
-				Button@SURRENDER:
-					X:(PARENT_RIGHT - WIDTH)/2
-					Y:180
-					Width:160
-					Height:25
-					Text:Surrender
-					Font:Bold
-				Button@DISCONNECT:
-					X:(PARENT_RIGHT - WIDTH)/2
-					Y:220
-					Width:160
-					Height:25
-					Text:Abort Mission
-					Font:Bold
-		ChatDisplay@CHAT_DISPLAY:
-			X:250
-			Y:WINDOW_BOTTOM - HEIGHT - 30
-			Width: 760
-			Height: 200
-			DrawBackground: False
-			RemoveTime:250
-			UseContrast: yes
-		ChatEntry@CHAT_ENTRY:
-			X:250
-			Y:WINDOW_BOTTOM - HEIGHT
-			Width: 760
-			Height: 30
-			UseContrast: yes
 		Background@PERF_BG:
 			ClickThrough:true
 			Background:dialog4
@@ -374,13 +230,3 @@ Container@OBSERVER_ROOT:
 					Y:205
 					Width:170
 					Height:40
-Background@FMVPLAYER:
-	Width:WINDOW_RIGHT
-	Height:WINDOW_BOTTOM
-	Background:dialog4
-	Children:
-		VqaPlayer@PLAYER:
-			X:0
-			Y:0
-			Width:WINDOW_RIGHT
-			Height:WINDOW_BOTTOM
