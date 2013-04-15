@@ -96,10 +96,8 @@ namespace OpenRA.Widgets
             if (Game.Settings.Game.ViewportEdgeScroll && Game.HasInputFocus)
             {
                 Edge = CheckForDirections();
-                Scroll();
             }
-
-
+	    Scroll();
         }
 
         ScrollDirection CheckForDirections()
