@@ -729,7 +729,7 @@ CTNK:
 		Owner: allies
 		Hotkey: j
 	Valued:
-		Cost: 1200
+		Cost: 1350
 	Tooltip:
 		Name: Chrono Tank
 		Description: Chrono Tank, teleports to areas within range.\n  Strong vs Vehicles, Buildings\n  Weak vs Tanks
