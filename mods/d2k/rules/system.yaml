@@ -2,38 +2,33 @@ Player:
 	TechTree:
 	ClassicProductionQueue@Building:
 		Type: Building
-		BuildSpeed: .5
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		ReadyAudio: BuildingReady
 		BlockedAudio: NoRoom
 	ClassicProductionQueue@Infantry:
 		Type: Infantry
-		BuildSpeed: .5
 		LowPowerSlowdown: 3
 		BlockedAudio: NoRoom
 	ClassicProductionQueue@Vehicle:
 		Type: Vehicle
-		BuildSpeed: .5
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		BlockedAudio: NoRoom
 	ClassicProductionQueue@Armor:
 		Type: Armor
-		BuildSpeed: .5
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		BlockedAudio: NoRoom
 	ClassicProductionQueue@Starport:
 		Type: Starport
-		BuildSpeed: .8
+		BuildSpeedModified: .2
 		LowPowerSlowdown: 2
 		BlockedAudio: NoRoom
 		QueuedAudio: OrderPlaced
 		ReadyAudio:
 	ClassicProductionQueue@Aircraft:
 		Type: Aircraft
-		BuildSpeed: .4
 		LowPowerSlowdown: 3
 		QueuedAudio: Building
 		BlockedAudio: NoRoom
