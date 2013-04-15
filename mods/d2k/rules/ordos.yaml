@@ -8,13 +8,11 @@ CONYARDO:
 PWRO:
 	Inherits: ^POWER
 	Buildable:
-		Prerequisites: conyardo
 		Owner: ordos
 
 REFO:
 	Inherits: ^REFINERY
 	Buildable:
-		Prerequisites: pwro
 		Owner: ordos
 	RenderBuildingWarFactory:
 		Image: REFO
@@ -22,19 +20,45 @@ REFO:
 BARRO:
 	Inherits: ^BARRACKS
 	Buildable:
-		Prerequisites: pwro
+		Owner: ordos
+
+SILOO:
+	Inherits: ^SILO
+	Buildable:
+		Owner: ordos
+
+LIGHTO:
+	Inherits: ^LIGHT
+	Buildable:
+		Owner: ordos
+	RenderBuildingWarFactory:
+		Image: LIGHTO
+
+HEAVYO:
+	Inherits: ^HEAVY
+	Buildable:
+		Owner: ordos
+	RenderBuildingWarFactory:
+		Image: HEAVYO
+
+RADARO:
+	Inherits: ^RADAR
+	Buildable:
+		Owner: ordos
+
+STARPORTO:
+	Inherits: ^STARPORT
+	Buildable:
 		Owner: ordos
 
 HIGHTECHO:
 	Inherits: ^HIGHTECH
 	Buildable:
-		Prerequisites: radaro
 		Owner: ordos
 
 PALACEO:
 	Inherits: ^PALACE
 	Buildable:
-		Prerequisites: hightecho
 		Owner: ordos
 	AirstrikePower:
 		Image: orniicon
@@ -47,40 +71,6 @@ PALACEO:
 	CanPowerDown:
 	RequiresPower:
 	SupportPowerChargeBar:
-
-SILOO:
-	Inherits: ^SILO
-	Buildable:
-		Prerequisites: refo
-		Owner: ordos
-
-LIGHTO:
-	Inherits: ^LIGHT
-	Buildable:
-		Prerequisites: refo
-		Owner: ordos
-	RenderBuildingWarFactory:
-		Image: LIGHTO
-
-HEAVYO:
-	Inherits: ^HEAVY
-	Buildable:
-		Prerequisites: lighto
-		Owner: ordos
-	RenderBuildingWarFactory:
-		Image: HEAVYO
-
-RADARO:
-	Inherits: ^RADAR
-	Buildable:
-		Prerequisites: barro
-		Owner: ordos
-
-STARPORTO:
-	Inherits: ^STARPORT
-	Buildable:
-		Prerequisites: radaro,hightecho
-		Owner: ordos
 
 MCVO:
 	Inherits: ^MCV

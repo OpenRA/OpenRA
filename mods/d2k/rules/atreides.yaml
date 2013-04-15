@@ -8,16 +8,92 @@ CONYARDA:
 PWRA:
 	Inherits: ^POWER
 	Buildable:
-		Prerequisites: conyarda
 		Owner: atreides
 
 REFA:
 	Inherits: ^REFINERY
 	Buildable:
-		Prerequisites: pwra
 		Owner: atreides
 	RenderBuildingWarFactory:
 		Image: REFA
+
+BARRA:
+	Inherits: ^BARRACKS
+	Buildable:
+		Owner: atreides
+
+
+HIGHTECHA:
+	Inherits: ^HIGHTECH
+	Buildable:
+		Owner: atreides
+
+PALACEA:
+	Inherits: ^PALACE
+	Buildable:
+		Owner: atreides
+	AirstrikePower:
+		Image: orniicon
+		Description: Air Strike
+		ChargeTime: 180
+		LongDesc: Ornithopter drops a load of parachuted\nbombs on your target
+		UnitType: orni.bomber
+		SelectTargetSound: 
+		FlareType:
+	CanPowerDown:
+	RequiresPower:
+	SupportPowerChargeBar:
+
+SILOA:
+	Inherits: ^SILO
+	Buildable:
+		Owner: atreides
+
+LIGHTA:
+	Inherits: ^LIGHT
+	Buildable:
+		Owner: atreides
+	RenderBuildingWarFactory:
+		Image: LIGHTA
+
+HEAVYA:
+	Inherits: ^HEAVY
+	Buildable:
+		Owner: atreides
+	RenderBuildingWarFactory:
+		Image: HEAVYA
+
+RADARA:
+	Inherits: ^RADAR
+	Buildable:
+		Owner: atreides
+
+STARPORTA:
+	Inherits: ^STARPORT
+	Buildable:
+		Owner: atreides
+
+MCVA:
+	Inherits: ^MCV
+	Buildable:
+		Prerequisites: heavya,repair
+		Owner: atreides
+		BuiltAt: heavya
+	Transforms:
+		Facing: 16
+		IntoActor: conyarda
+		Offset:-1,-1
+		NoTransformSounds: AI_DPLOY.AUD
+	RenderUnit:
+		Image: DMCV
+
+MCVA.starport:
+	Inherits: MCVA
+	Buildable:
+		Queue: Starport
+		BuiltAt: starporta
+	Valued:
+		Cost: 1499
 
 TRIKEA:
 	Inherits: ^TRIKE
@@ -46,92 +122,6 @@ CARRYALLA.starport:
 	Inherits: CARRYALLA
 	Valued:
 		Cost: 999
-
-BARRA:
-	Inherits: ^BARRACKS
-	Buildable:
-		Prerequisites: pwra
-		Owner: atreides
-
-
-HIGHTECHA:
-	Inherits: ^HIGHTECH
-	Buildable:
-		Prerequisites: radara
-		Owner: atreides
-
-PALACEA:
-	Inherits: ^PALACE
-	Buildable:
-		Prerequisites: hightecha
-		Owner: atreides
-	AirstrikePower:
-		Image: orniicon
-		Description: Air Strike
-		ChargeTime: 180
-		LongDesc: Ornithopter drops a load of parachuted\nbombs on your target
-		UnitType: orni.bomber
-		SelectTargetSound: 
-		FlareType:
-	CanPowerDown:
-	RequiresPower:
-	SupportPowerChargeBar:
-
-SILOA:
-	Inherits: ^SILO
-	Buildable:
-		Prerequisites: refa
-		Owner: atreides
-
-LIGHTA:
-	Inherits: ^LIGHT
-	Buildable:
-		Prerequisites: refa
-		Owner: atreides
-	RenderBuildingWarFactory:
-		Image: LIGHTA
-
-HEAVYA:
-	Inherits: ^HEAVY
-	Buildable:
-		Prerequisites: lighta
-		Owner: atreides
-	RenderBuildingWarFactory:
-		Image: HEAVYA
-
-RADARA:
-	Inherits: ^RADAR
-	Buildable:
-		Prerequisites: barra
-		Owner: atreides
-
-STARPORTA:
-	Inherits: ^STARPORT
-	Buildable:
-		Prerequisites: heavya,hightecha
-		Owner: atreides
-
-MCVA:
-	Inherits: ^MCV
-	Buildable:
-		Prerequisites: heavya,repair
-		Owner: atreides
-		BuiltAt: heavya
-	Transforms:
-		Facing: 16
-		IntoActor: conyarda
-		Offset:-1,-1
-		NoTransformSounds: AI_DPLOY.AUD
-	RenderUnit:
-		Image: DMCV
-
-MCVA.starport:
-	Inherits: MCVA
-	Buildable:
-		Queue: Starport
-		BuiltAt: starporta
-	Valued:
-		Cost: 1499
 
 COMBATA:
 	Inherits: ^COMBAT

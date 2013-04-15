@@ -1,7 +1,7 @@
 ^CONYARD:
 	Inherits: ^Building
 	Building:
-		Power: 0
+		Power: 20
 		Footprint: xxx xxx
 		Dimensions: 3,2
 		Adjacent: 4
@@ -27,10 +27,13 @@
 		Value: 2000
 	BaseBuilding:
 	ProductionBar:
+	ProvidesCustomPrerequisite:
+		Prerequisite: Conyard
 
 ^POWER:
 	Inherits: ^Building
 	Buildable:
+		Prerequisites: Conyard
 		Queue: Building
 		BuildPaletteOrder: 0
 		Hotkey: w
@@ -52,11 +55,12 @@
 	RevealsShroud:
 		Range: 4
 	ProvidesCustomPrerequisite:
-		Prerequisite: Power   
+		Prerequisite: Power
 
 ^BARRACKS:
 	Inherits: ^Building
 	Buildable:
+		Prerequisites: Power
 		Queue: Building
 		BuildPaletteOrder: 15
 		Hotkey: b
@@ -89,14 +93,15 @@
 		Produces: Infantry
 	PrimaryBuilding:
 	ProductionBar:
-	ProvidesCustomPrerequisite:
-		Prerequisite: Barracks
 	RepairsUnits:
 		ValuePercentage: 0
+	ProvidesCustomPrerequisite:
+		Prerequisite: Barracks
 
 ^REFINERY:
 	Inherits: ^Building
 	Buildable:
+		Prerequisites: Power
 		Queue: Building
 		BuildPaletteOrder: 5
 		Hotkey: r
@@ -128,17 +133,18 @@
 		Capacity: 3000
 	CustomSellValue:
 		Value: 500
-	ProvidesCustomPrerequisite:
-		Prerequisite: Refinery
 	FreeActor:
 		Actor: HARVESTER
 		InitialActivity: FindResources
 		SpawnOffset: 2,1
 		Facing: 160
+	ProvidesCustomPrerequisite:
+		Prerequisite: Refinery
 
 ^SILO:
 	Inherits: ^Building
 	Buildable:
+		Prerequisites: Refinery
 		Queue: Building
 		BuildPaletteOrder: 10
 		Hotkey: i
@@ -169,6 +175,7 @@
 ^LIGHT:
 	Inherits: ^Building
 	Buildable:
+		Prerequisites: Refinery
 		Queue: Building
 		BuildPaletteOrder: 30
 		Hotkey: l
@@ -200,11 +207,12 @@
 	PrimaryBuilding:
 	ProductionBar:
 	ProvidesCustomPrerequisite:
-		Prerequisite: Light Factory
+		Prerequisite: Light
 
 ^HEAVY:
 	Inherits: ^Building
 	Buildable:
+		Prerequisites: Refinery
 		Queue: Building
 		BuildPaletteOrder: 35
 		Hotkey: h
@@ -236,13 +244,14 @@
 	PrimaryBuilding:
 	ProductionBar:
 	ProvidesCustomPrerequisite:
-		Prerequisite: Heavy Factory
+		Prerequisite: Heavy
 
 ^RADAR:
 	RequiresPower:
 	CanPowerDown:
 	Inherits: ^Building
 	Buildable:
+		Prerequisites: Barracks
 		Queue: Building
 		BuildPaletteOrder: 20
 		Hotkey: o
@@ -281,6 +290,7 @@
 		BuildPaletteOrder: 60
 		Hotkey: c
 	Building:
+		Prerequisites: Outpost
 		Power: -40
 		Footprint: xxx x=x =x=
 		Dimensions: 3,3
@@ -358,7 +368,7 @@ GUNTOWER:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: Outpost
+		Prerequisites: Barracks
 		Owner: atreides, harkonnen, ordos
 		BuildPaletteOrder: 40
 		Hotkey: g
@@ -415,7 +425,7 @@ ROCKETTOWER:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: Outpost, High Tech Facility
+		Prerequisites: Outpost
 		Owner: atreides, harkonnen, ordos
 		BuildPaletteOrder: 55
 		Hotkey: m
@@ -474,7 +484,7 @@ REPAIR:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: Outpost
+		Prerequisites: Heavy
 		Owner: atreides, harkonnen, ordos
 		BuildPaletteOrder: 45
 		Hotkey: e
@@ -504,6 +514,7 @@ REPAIR:
 ^HIGHTECH:
 	Inherits: ^Building
 	Buildable:
+		Prerequisites: Outpost
 		Queue: Building
 		BuildPaletteOrder: 50
 		Hotkey: t
@@ -525,13 +536,13 @@ REPAIR:
 	RevealsShroud:
 		Range: 4
 	ProvidesCustomPrerequisite:
-		Prerequisite: High Tech Facility
+		Prerequisite: Hitech
 
 RESEARCH:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: Outpost,High Tech Facility
+		Prerequisites: Outpost
 		Owner: atreides, harkonnen, ordos
 		BuildPaletteOrder: 65
 		Hotkey: v
@@ -563,10 +574,13 @@ RESEARCH:
 		Type: Wood
 	RevealsShroud:
 		Range: 4
+	ProvidesCustomPrerequisite:
+		Prerequisite: Ix
 
 ^PALACE:
 	Inherits: ^Building
 	Buildable:
+		Prerequisites: Ix
 		Queue: Building
 		BuildPaletteOrder: 70
 		Hotkey: p
@@ -587,11 +601,11 @@ RESEARCH:
 		Type: Concrete
 	RevealsShroud:
 		Range: 8
-	ProvidesCustomPrerequisite:
-		Prerequisite: TPal
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 2
+	ProvidesCustomPrerequisite:
+		Prerequisite: TPal
 
 SIETCH:
 	Inherits: ^Building
@@ -682,3 +696,26 @@ HEAVYC:
 #		CrushClasses: plates
 #	-SelectionDecorations:
 #	-Selectable:
+
+
+
+# custom prerequisites:
+CONYARD:
+	Tooltip:
+		Name: Construction Yard
+
+LIGHT:
+	Tooltip:
+		Name: Light Factory
+
+HEAVY:
+	Tooltip:
+		Name: Heavy Factory
+
+HITECH:
+	Tooltip:
+		Name: High-Tech Facility
+
+IX:
+	Tooltip:
+		Name: IX Research Center

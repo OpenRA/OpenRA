@@ -57,6 +57,7 @@ ENGINEER:
 BAZOOKA:
 	Inherits: ^Infantry
 	Buildable:
+		Prerequisites: Outpost
 		Queue: Infantry
 		BuildPaletteOrder: 20
 		Owner: atreides,harkonnen,ordos

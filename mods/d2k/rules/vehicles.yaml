@@ -47,7 +47,7 @@ HARVESTER:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Armor
-		Prerequisites: Heavy Factory,Refinery
+		Prerequisites: Heavy,Refinery
 		Owner: atreides, harkonnen, ordos
 		BuiltAt: heavya, heavyh, heavyo
 		BuildPaletteOrder: 10
@@ -152,7 +152,7 @@ QUAD:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Vehicle
-		Prerequisites: Light Factory
+		Prerequisites: Light,Outpost
 		Owner: atreides, harkonnen, ordos
 		BuiltAt: lighta, lighth, lighto
 		BuildPaletteOrder: 20
@@ -247,7 +247,7 @@ SIEGETANK:
 	Inherits: ^Tank
 	Buildable:
 		Queue: Armor
-		Prerequisites: Heavy Factory,Outpost
+		Prerequisites: Heavy,Outpost
 		Owner: atreides, harkonnen, ordos
 		BuiltAt: heavya, heavyh, heavyo
 		BuildPaletteOrder: 30
@@ -317,7 +317,7 @@ MISSILETANK:
 		Icon: missiletankicon
 	Buildable:
 		Queue: Armor
-		Prerequisites: Heavy Factory,High Tech Facility
+		Prerequisites: Heavy,Hitech
 		Owner: atreides, harkonnen
 		BuiltAt: heavya, heavyh
 		BuildPaletteOrder: 40
