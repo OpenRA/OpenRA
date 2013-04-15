@@ -333,8 +333,8 @@ WALL:
 		Value: 0
 	Tooltip:
 		Name: Concrete Wall
-		Description: Stops units and blocks enemy fire
-		Icon: wallicon
+		Description: Stop units and blocks enemy fire.
+		Icon: wallaicon
 	AppearsOnRadar:
 	Building:
 		BuildSounds: CHUNG.aud
@@ -377,7 +377,7 @@ GUNTOWER:
 	Tooltip:
 		Name: Gun Tower
 		Description: Defensive structure\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
-		Icon: turreticon
+		Icon: guntoweraicon
 	Building:
 		Power: -20
 		Adjacent: 4
@@ -432,9 +432,9 @@ ROCKETTOWER:
 	Valued:
 		Cost: 750
 	Tooltip:
-		Name: Missile Tower
-		Icon: rturreticon
+		Name: Rocket Tower
 		Description: Defensive structure\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks\n\n  Requires power to operate
+		Icon: rockettoweraicon
 	Building:
 		Power: -30
 		Adjacent: 4
@@ -493,6 +493,7 @@ REPAIR:
 	Tooltip:
 		Name: Repair Pad
 		Description: Repairs vehicles\n Allows construction of MCVs
+		Image: repairaicon
 	Building:
 		Power: -25
 		Footprint: =x= =x= ===

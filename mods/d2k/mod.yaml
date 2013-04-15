@@ -9,22 +9,14 @@ Folders:
 	./mods/d2k
 	./mods/d2k/bits
 	./mods/d2k/uibits
+	./mods/ra/uibits
 	~^/Content/d2k
 	~^/Content/d2k/GAMESFX
 	~^/Content/d2k/Music
 	~^/Content/d2k/Tilesets
 	~^/Content/d2k/SHPs
-	./mods/ra/bits
-	./mods/ra/uibits
-	~^/Content/ra
 
 Packages:
-	~main.mix
-	redalert.mix
-	conquer.mix
-	hires.mix
-	local.mix
-	sounds.mix
 
 Rules:
 	mods/d2k/rules/system.yaml
@@ -89,8 +81,8 @@ Movies:
 
 LoadScreen: D2kLoadScreen
 	InstallerMenuWidget: INSTALL_PANEL
-	TestFile: plates.shp
-	PackageURL: http://open-ra.org/get-dependency.php?file=d2k-packages
+	TestFile: deathhandlaunch.shp
+	PackageURL: http://open-ra.org/get-dependency.php?file=d2k-complete-packages
 
 ServerTraits:
 	LobbyCommands
