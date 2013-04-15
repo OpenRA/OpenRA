@@ -376,12 +376,12 @@ FakeMissile:
 		ImpactSound: firebl3
 
 155mm:
-	ROF: 120
-	Range: 10
-	MinRange: 2
+	ROF: 75
+	Range: 8
+	MinRange: 3
 	Report: MORTAR1
 	Projectile: Bullet
-		Speed: 15
+		Speed: 18
 		High: true
 		Shadow: yes
 		Angle: .1
@@ -391,10 +391,10 @@ FakeMissile:
 	Warhead:
 		Spread: 12
 		Versus: 
-			None: 75%
-			Wood: 85%
+			None: 100%
+			Wood: 75%
 			Light: 50%
-			Heavy: 15%
+			Heavy: 25%
 			Concrete: 50%
 		Explosion: self_destruct
 		WaterExplosion: large_splash
