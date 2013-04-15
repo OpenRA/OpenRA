@@ -630,7 +630,7 @@ TTNK:
 		Name: Tesla Tank
 		Description: Tank with mounted tesla coil.\n  Strong vs Infantry, Light Vehicles\n  and Buildings  \n  Weak vs Tanks, Aircraft
 	Health:
-		HP: 150
+		HP: 400
 	Armor:
 		Type: Light
 	Mobile:
@@ -736,7 +736,7 @@ CTNK:
 	Selectable:
 		Bounds: 28,28
 	Health:
-		HP: 260
+		HP: 400
 	Armor:
 		Type: Light
 	Mobile:
