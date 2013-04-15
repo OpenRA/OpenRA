@@ -56,11 +56,6 @@ cp thirdparty/Mono.Nat.dll packaging/built
 # Copy game icon for windows package
 cp OpenRA.Game/OpenRA.ico packaging/built
 
-# Update mod versions
-sed "s/{DEV_VERSION}/$TAG/" ./mods/ra/mod.yaml > ./packaging/built/mods/ra/mod.yaml
-sed "s/{DEV_VERSION}/$TAG/" ./mods/cnc/mod.yaml > ./packaging/built/mods/cnc/mod.yaml
-sed "s/{DEV_VERSION}/$TAG/" ./mods/d2k/mod.yaml > ./packaging/built/mods/d2k/mod.yaml
-
 # Remove demo.mix from cnc
 rm ./packaging/built/mods/cnc/bits/demo.mix
 
