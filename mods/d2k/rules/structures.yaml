@@ -390,7 +390,7 @@ GUNTOWER:
 	Armor:
 		Type: Concrete
 	RevealsShroud:
-		Range: 6
+		Range: 7
 	RenderRangeCircle:
 	-RenderBuilding:
 	-AutoTargetIgnore:
@@ -408,7 +408,7 @@ GUNTOWER:
 		HuskActor: Guntower.Husk
 	RenderDetectionCircle:
 	DetectCloaked:
-		Range: 3
+		Range: 5
 	-Bib:
 
 GUNTOWER.Husk:
@@ -447,7 +447,7 @@ ROCKETTOWER:
 	Armor: 
 		Type: Concrete
 	RevealsShroud:
-		Range: 6
+		Range: 9
 	RenderRangeCircle:
 	-RenderBuilding:
 	-AutoTargetIgnore:
@@ -467,7 +467,7 @@ ROCKETTOWER:
 		HuskActor: Rockettower.Husk
 	RenderDetectionCircle:
 	DetectCloaked:
-		Range: 3
+		Range: 6
 	-Bib:
 
 ROCKETTOWER.Husk:
