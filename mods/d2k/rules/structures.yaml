@@ -447,7 +447,7 @@ ROCKETTOWER:
 	Armor: 
 		Type: Concrete
 	RevealsShroud:
-		Range: 9
+		Range: 10
 	RenderRangeCircle:
 	-RenderBuilding:
 	-AutoTargetIgnore:
