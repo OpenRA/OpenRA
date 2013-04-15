@@ -89,6 +89,7 @@ MCVA:
 MCVA.starport:
 	Inherits: MCVA
 	Buildable:
+		Prerequisites: Heavy
 		Queue: Starport
 		BuiltAt: starporta
 	Valued:

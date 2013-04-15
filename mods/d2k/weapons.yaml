@@ -12,7 +12,7 @@ LMG:
 		Spread: 3
 		Versus: 
 			Wood: 40%
-			Light: 30%
+			Light: 40%
 			Heavy: 20%
 			Concrete: 20%
 		Explosion: piffs
@@ -318,15 +318,15 @@ DevBullet:
 		Damage: 40
 
 227mm: 
-	ROF: 110
-	Range: 11
+	ROF: 90
+	Range: 10
 	MinRange: 4
-	Burst: 2
-	BurstDelay: 2
+	Burst: 4
+	BurstDelay: 15
 	Report: MISSLE1
 	ValidTargets: Ground
 	Projectile: Bullet
-		Speed: 20
+		Speed: 24
 		Arm: 5
 		High: yes
 		Shadow: yes
@@ -338,16 +338,16 @@ DevBullet:
 	Warhead:
 		Spread: 8
 		Versus: 
-			None: 20%
-			Wood: 100%
-			Light: 65%
-			Heavy: 75%
+			None: 25%
+			Wood: 50%
+			Light: 100%
+			Heavy: 80%
 		InfDeath: 4
 		Explosion: large_explosion
 		WaterExplosion: med_splash
 		ImpactSound: explsml1
 		SmudgeType: SandCrater, RockCrater
-		Damage: 75
+		Damage: 50
 
 FakeMissile:
 	ROF: 120
@@ -376,12 +376,12 @@ FakeMissile:
 		ImpactSound: firebl3
 
 155mm:
-	ROF: 120
-	Range: 10
-	MinRange: 2
+	ROF: 75
+	Range: 8
+	MinRange: 3
 	Report: MORTAR1
 	Projectile: Bullet
-		Speed: 15
+		Speed: 18
 		High: true
 		Shadow: yes
 		Angle: .1
@@ -391,10 +391,10 @@ FakeMissile:
 	Warhead:
 		Spread: 12
 		Versus: 
-			None: 75%
-			Wood: 85%
+			None: 100%
+			Wood: 75%
 			Light: 50%
-			Heavy: 15%
+			Heavy: 25%
 			Concrete: 50%
 		Explosion: self_destruct
 		WaterExplosion: large_splash
