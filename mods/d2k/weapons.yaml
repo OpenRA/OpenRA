@@ -208,9 +208,9 @@ TurretGun:
 		Image: 90MM
 		Inaccuracy: 9
 	Warhead:
-		Spread: 5
+		Spread: 8
 		Versus: 
-			None: 25%
+			None: 50%
 			Wood: 75%
 			Light: 75%
 			Concrete: 65%
@@ -239,7 +239,7 @@ TowerMissile:
 		Speed: 45
 		RangeLimit: 50
 	Warhead:
-		Spread: 7
+		Spread: 12
 		Versus: 
 			None: 80%
 			Wood: 45%
