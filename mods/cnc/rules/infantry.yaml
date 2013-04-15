@@ -223,7 +223,6 @@ PVICE:
 		Queue: Biolab
 		BuildPaletteOrder: 40
 		Owner: gdi, nod
-#		Prerequisites: bio
 	Tooltip:
 		Description: Mutated abomination that spits liquid tiberium.\n  Strong vs Infantry, Buildings\n  Weak vs Aircraft
 		Icon: viceicnh
@@ -232,4 +231,3 @@ PVICE:
 		Voice: DinoVoice
 	SelectionDecorations:
 	ActorLostNotification:
-		Notification: unitlost.aud

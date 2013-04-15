@@ -29,6 +29,9 @@ Speech:
 		BuildingReady: BDRDY
 		OrderPlaced: ORDER
 		Reinforce: REINF
+		UnitLost: ULOST
+		BuildingLost: BLOST
+		BuildingCaptured: CAPT
 
 Sounds:
 	Notifications:

@@ -26,7 +26,6 @@
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
-		Notification: unitlst1.aud
 	ProximityCaptor:
 		Types:Vehicle
 	GivesBounty:
@@ -64,7 +63,6 @@
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
-		Notification: unitlst1.aud
 	ProximityCaptor:
 		Types:Tank
 	GivesBounty:
@@ -110,7 +108,6 @@
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
-		Notification: unitlst1.aud
 	ProximityCaptor:
 		Types:Infantry
 	GivesBounty:
@@ -145,7 +142,7 @@
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
-		Notification: navylst1.aud
+		Notification: NavalUnitLost
 	ProximityCaptor:
 		Types:Ship
 	GivesBounty:
@@ -169,7 +166,7 @@
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
-		Notification: aunitl1.aud
+		Notification: AirUnitLost
 	DebugAircraftFacing:
 	DebugAircraftSubPxX:
 	DebugAircraftSubPxY:
@@ -217,7 +214,6 @@
 	GivesExperience:
 #	FrozenUnderFog:
 	CaptureNotification:
-		Notification: strucap1.aud
 	EditorAppearance:
 		RelativeToTopLeft: yes
 	ShakeOnDeath:
