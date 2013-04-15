@@ -187,10 +187,10 @@ QuadRockets:
 		Spread: 3
 		Versus: 
 			None: 25%
-			Wood: 50%
+			Wood: 25%
 			Light: 85%
 			Heavy: 40%
-			Concrete: 60%
+			Concrete: 30%
 		InfDeath: 4
 		Explosion: med_explosion
 		WaterExplosion: med_splash
@@ -264,8 +264,9 @@ TowerMissile:
 		Spread: 4
 		Versus: 
 			None: 30%
+			Wood: 50%
 			Light: 65%
-			Concrete: 80%
+			Concrete: 40%
 		Explosion: med_explosion
 		ImpactSound: kaboom30
 		InfDeath: 4
@@ -284,8 +285,9 @@ TowerMissile:
 		Spread: 4
 		Versus: 
 			None: 30%
+			Wood: 50%
 			Light: 65%
-			Concrete: 80%
+			Concrete: 40%
 		Explosion: med_explosion
 		ImpactSound: kaboom30
 		InfDeath: 4
@@ -306,6 +308,7 @@ DevBullet:
 		Spread: 6
 		Versus: 
 			None: 35%
+			Wood: 50%
 			Light: 65%
 			Concrete: 75%
 		Explosion: large_explosion
@@ -392,7 +395,7 @@ FakeMissile:
 			Wood: 85%
 			Light: 50%
 			Heavy: 15%
-			Concrete: 80%
+			Concrete: 50%
 		Explosion: self_destruct
 		WaterExplosion: large_splash
 		ImpactSound: explsml2
