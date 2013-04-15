@@ -12,7 +12,7 @@ LMG:
 		Spread: 3
 		Versus: 
 			Wood: 40%
-			Light: 30%
+			Light: 40%
 			Heavy: 20%
 			Concrete: 20%
 		Explosion: piffs
