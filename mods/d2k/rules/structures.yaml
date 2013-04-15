@@ -390,7 +390,7 @@ GUNTOWER:
 	Armor:
 		Type: Concrete
 	RevealsShroud:
-		Range: 7
+		Range: 8
 	RenderRangeCircle:
 	-RenderBuilding:
 	-AutoTargetIgnore:
