@@ -76,7 +76,6 @@ STARPORTA:
 MCVA:
 	Inherits: ^MCV
 	Buildable:
-		Prerequisites: heavya,repair
 		Owner: atreides
 		BuiltAt: heavya
 	Transforms:

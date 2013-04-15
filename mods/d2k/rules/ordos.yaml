@@ -75,7 +75,6 @@ PALACEO:
 MCVO:
 	Inherits: ^MCV
 	Buildable:
-		Prerequisites: heavyo,repair
 		Owner: ordos
 		BuiltAt: heavyo
 	Transforms:
@@ -99,7 +98,6 @@ COMBATO:
 	Tooltip:
 		Icon: combatoicon
 	Buildable:
-		Prerequisites: heavyo
 		Owner: ordos
 		BuiltAt: heavyo
 	RevealsShroud:
@@ -133,7 +131,6 @@ COMBATO.starport:
 TRIKEO:
 	Inherits: ^TRIKE
 	Buildable:
-		Prerequisites: lighto
 		Owner: ordos
 		BuiltAt: lighto
 	Valued:
@@ -160,7 +157,6 @@ TRIKEO:
 #	Inherits: ^TRIKE
 #	Buildable:
 #		Queue: Starport
-#		Prerequisites: lighto
 #		Owner: ordos
 #		BuiltAt: starporto
 #	RenderUnit:

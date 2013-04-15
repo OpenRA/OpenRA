@@ -81,7 +81,6 @@ PALACEH:
 MCVH:
 	Inherits: ^MCV
 	Buildable:
-		Prerequisites: heavyh,repair
 		Owner: harkonnen
 		BuiltAt: heavyh
 	Transforms:
@@ -149,7 +148,6 @@ COMBATH:
 	Tooltip:
 		Icon: combathicon
 	Buildable:
-		Prerequisites: heavyh
 		Owner: harkonnen
 		BuiltAt: heavyh
 	Mobile:

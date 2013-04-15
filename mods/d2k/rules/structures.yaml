@@ -390,7 +390,7 @@ GUNTOWER:
 	Armor:
 		Type: Concrete
 	RevealsShroud:
-		Range: 7
+		Range: 8
 	RenderRangeCircle:
 	-RenderBuilding:
 	-AutoTargetIgnore:
@@ -447,7 +447,7 @@ ROCKETTOWER:
 	Armor: 
 		Type: Concrete
 	RevealsShroud:
-		Range: 9
+		Range: 10
 	RenderRangeCircle:
 	-RenderBuilding:
 	-AutoTargetIgnore:
@@ -494,7 +494,7 @@ REPAIR:
 		Name: Repair Pad
 		Description: Repairs vehicles\n Allows construction of MCVs
 	Building:
-		Power: -25
+		Power: -10
 		Footprint: =x= =x= ===
 		Dimensions: 3,3
 	Health:

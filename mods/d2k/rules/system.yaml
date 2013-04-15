@@ -22,7 +22,7 @@ Player:
 		BlockedAudio: NoRoom
 	ClassicProductionQueue@Starport:
 		Type: Starport
-		BuildSpeedModified: .2
+		BuildSpeedModifier: .2
 		LowPowerSlowdown: 2
 		BlockedAudio: NoRoom
 		QueuedAudio: OrderPlaced
