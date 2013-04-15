@@ -17,18 +17,18 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class EngineerRepairInfo : TraitInfo<EngineerRepair> {}
+	class RepairsBridgesInfo : TraitInfo<RepairsBridges> {}
 
-	class EngineerRepair : IIssueOrder, IResolveOrder, IOrderVoice
+	class RepairsBridges : IIssueOrder, IResolveOrder, IOrderVoice
 	{
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new EngineerRepairOrderTargeter(); }
+			get { yield return new RepairBridgeOrderTargeter(); }
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID == "EngineerRepair")
+			if (order.OrderID == "RepairBridge")
 				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
 
 			return null;
@@ -36,49 +36,61 @@ namespace OpenRA.Mods.RA
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return (order.OrderString == "EngineerRepair" &&
-					order.TargetActor.GetDamageState() > DamageState.Undamaged) ? "Attack" : null;
+			if (order.OrderString != "RepairBridge")
+				return null;
+
+			var bridge = order.TargetActor.TraitOrDefault<BridgeHut>();
+			if (bridge == null)
+				return null;
+
+			return bridge.BridgeDamageState > DamageState.Undamaged ? "Attack" : null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "EngineerRepair" &&
-			    order.TargetActor.GetDamageState() > DamageState.Undamaged)
+			if (order.OrderString == "RepairBridge")
 			{
+				var bridge = order.TargetActor.TraitOrDefault<BridgeHut>();
+				if (bridge == null)
+					return;
+
+				if (bridge.BridgeDamageState == DamageState.Undamaged)
+					return;
+
 				self.SetTargetLine(Target.FromOrder(order), Color.Yellow);
 
 				self.CancelActivity();
-				self.QueueActivity(new Enter(order.TargetActor, new RepairBuilding(order.TargetActor)));
+				self.QueueActivity(new Enter(order.TargetActor, new RepairBridge(order.TargetActor)));
 			}
 		}
 
-		class EngineerRepairOrderTargeter : UnitOrderTargeter
+		class RepairBridgeOrderTargeter : UnitOrderTargeter
 		{
-			public EngineerRepairOrderTargeter()
-				: base("EngineerRepair", 6, "goldwrench", false, true) { }
+			public RepairBridgeOrderTargeter()
+				: base("RepairBridge", 6, "goldwrench", true, true) { }
 
 			public override bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceQueued, ref string cursor)
 			{
 				if (!base.CanTargetActor(self, target, forceAttack, forceQueued, ref cursor))
 					return false;
 
-				if (!target.HasTrait<EngineerRepairable>())
+				var bridge = target.TraitOrDefault<BridgeHut>();
+				if (bridge == null)
 					return false;
 
-				if (self.Owner.Stances[target.Owner] != Stance.Ally)
+				// Require force attack to heal partially damaged bridges to avoid unnecessary cursor noise
+				var damage = bridge.BridgeDamageState;
+				if (!forceAttack && damage != DamageState.Dead)
 					return false;
 
 				IsQueued = forceQueued;
 
-				if (target.GetDamageState() == DamageState.Undamaged)
+				// Can't repair an undamaged bridge
+				if (damage == DamageState.Undamaged)
 					cursor = "goldwrench-blocked";
 
 				return true;
 			}
 		}
 	}
-
-	class EngineerRepairableInfo : TraitInfo<EngineerRepairable> { }
-
-	class EngineerRepairable { }
 }

@@ -12,14 +12,14 @@ using System;
 
 namespace OpenRA.Mods.RA.Orders
 {
-	public class EnterOrderTargeter<T> : UnitTraitOrderTargeter<T>
+	public class EnterOrderTargeter<T> : UnitOrderTargeter
 	{
 		readonly Func<Actor, bool> canTarget;
 		readonly Func<Actor, bool> useEnterCursor;
 
-		public EnterOrderTargeter( string order, int priority, bool targetEnemy, bool targetAlly,
-			Func<Actor, bool> canTarget, Func<Actor, bool> useEnterCursor )
-			: base( order, priority, "enter", targetEnemy, targetAlly )
+		public EnterOrderTargeter(string order, int priority, bool targetEnemy, bool targetAlly,
+			Func<Actor, bool> canTarget, Func<Actor, bool> useEnterCursor)
+			: base (order, priority, "enter", targetEnemy, targetAlly)
 		{
 			this.canTarget = canTarget;
 			this.useEnterCursor = useEnterCursor;
@@ -27,8 +27,15 @@ namespace OpenRA.Mods.RA.Orders
 
 		public override bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceQueued, ref string cursor)
 		{
-			if( !base.CanTargetActor( self, target, forceAttack, forceQueued, ref cursor ) ) return false;
-			if( !canTarget( target ) ) return false;
+			if (!base.CanTargetActor(self, target, forceAttack, forceQueued, ref cursor))
+				return false;
+
+			if (!target.HasTrait<T>())
+				return false;
+
+			if (!canTarget(target))
+				return false;
+
 			cursor = useEnterCursor(target) ? "enter" : "enter-blocked";
 			IsQueued = forceQueued;
 			return true;

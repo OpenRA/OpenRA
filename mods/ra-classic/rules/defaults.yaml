@@ -83,7 +83,7 @@
 	Selectable:
 		Voice: GenericVoice
 	TargetableUnit:
-		TargetTypes: Ground
+		TargetTypes: Ground, Disguise
 	RenderInfantry:
 	AutoTarget:
 	AttackMove:
@@ -164,7 +164,7 @@
 	Selectable:
 		Priority: 3
 	TargetableBuilding:
-		TargetTypes: Ground
+		TargetTypes: Ground, C4, DemoTruck
 	Building:
 		Dimensions: 1,1
 		Footprint: x
@@ -210,7 +210,7 @@
 	Selectable:
 		Priority: 1
 	TargetableBuilding:
-		TargetTypes: Ground
+		TargetTypes: Ground, C4, DemoTruck
 	RenderBuildingWall:
 		HasMakeAnimation: false
 		Palette: terrain

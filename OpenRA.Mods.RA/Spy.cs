@@ -84,7 +84,7 @@ namespace OpenRA.Mods.RA
 		{
 			get
 			{
-				yield return new UnitTraitOrderTargeter<RenderInfantry>("Disguise", 7, "ability", true, true) { ForceAttack=false };
+				yield return new TargetTypeOrderTargeter("Disguise", "Disguise", 7, "ability", true, true) { ForceAttack=false };
 			}
 		}
 

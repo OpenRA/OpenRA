@@ -16,21 +16,30 @@ namespace OpenRA.Traits
 {
 	public class SelectableInfo : ITraitInfo
 	{
+		public readonly bool Selectable = true;
 		public readonly int Priority = 10;
 		public readonly int[] Bounds = null;
 		[VoiceReference] public readonly string Voice = null;
 
-		public object Create(ActorInitializer init) { return new Selectable(init.self); }
+		public object Create(ActorInitializer init) { return new Selectable(init.self, this); }
 	}
 
 	public class Selectable : IPostRenderSelection
 	{
+		public SelectableInfo Info;
 		Actor self;
 
-		public Selectable(Actor self) { this.self = self; }
+		public Selectable(Actor self, SelectableInfo info)
+		{
+			this.self = self;
+			Info = info;
+		}
 
 		public void RenderAfterWorld(WorldRenderer wr)
 		{
+			if (!Info.Selectable)
+				return;
+
 			var bounds = self.Bounds.Value;
 
 			var xy = new float2(bounds.Left, bounds.Top);
@@ -44,6 +53,9 @@ namespace OpenRA.Traits
 
 		public void DrawRollover(WorldRenderer wr, Actor self)
 		{
+			if (!Info.Selectable)
+				return;
+
 			var bounds = self.Bounds.Value;
 
 			var xy = new float2(bounds.Left, bounds.Top);

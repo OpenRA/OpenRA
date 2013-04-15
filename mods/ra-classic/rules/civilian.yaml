@@ -232,6 +232,9 @@ BR1:
 		DamagedTemplate: 236
 		DestroyedTemplate: 237
 		SouthOffset: 0,2
+	FreeActor:
+		Actor: bridgehut
+		SpawnOffset: 2,0
 
 BR2:
 	Inherits: ^Bridge
@@ -240,6 +243,9 @@ BR2:
 		DamagedTemplate: 239
 		DestroyedTemplate: 240
 		NorthOffset: 3,0
+	FreeActor:
+		Actor: bridgehut
+		SpawnOffset: 1,1
 
 BR3:
 	Inherits: ^Bridge
@@ -264,6 +270,12 @@ BRIDGE1:
 	Building:
 		Footprint: _____ _____ _____
 		Dimensions: 5,3
+	FreeActor@north:
+		Actor: bridgehut
+		SpawnOffset: 2,-1
+	FreeActor@south:
+		Actor: bridgehut
+		SpawnOffset: 0,1
 
 BRIDGE2:
 	Inherits: ^Bridge
@@ -274,3 +286,20 @@ BRIDGE2:
 	Building:
 		Footprint: _____ _____
 		Dimensions: 5,2
+	FreeActor@north:
+		Actor: bridgehut
+		SpawnOffset: 0,-1
+	FreeActor@south:
+		Actor: bridgehut
+		SpawnOffset: 2,1
+
+BRIDGEHUT:
+	Building:
+		Footprint: __ __
+		Dimensions: 2,2
+	Selectable:
+		Selectable: false
+		Bounds: 48,48
+	BridgeHut:
+	TargetableBuilding:
+		TargetTypes: BridgeHut

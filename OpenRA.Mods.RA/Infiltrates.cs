@@ -67,8 +67,7 @@ namespace OpenRA.Mods.RA
 				self.SetTargetLine(Target.FromOrder(order), Color.Red);
 				
 				self.CancelActivity();
-				self.QueueActivity(new Enter(order.TargetActor));
-				self.QueueActivity(new Infiltrate(order.TargetActor));
+				self.QueueActivity(new Enter(order.TargetActor, new Infiltrate(order.TargetActor)));
 			}
 		}
 		
@@ -89,13 +88,14 @@ namespace OpenRA.Mods.RA
 			return false;
 		}
 
-		class InfiltratorOrderTargeter : UnitTraitOrderTargeter<IAcceptInfiltrator>
+		class InfiltratorOrderTargeter : UnitOrderTargeter
 		{
 			readonly Func<Actor, bool> useEnterCursor;
 			
-			public InfiltratorOrderTargeter(Func<Actor, bool> useEnterCursor) : base("Infiltrate", 7, "enter", true, false)
+			public InfiltratorOrderTargeter(Func<Actor, bool> useEnterCursor)
+				: base("Infiltrate", 7, "enter", true, false)
 			{
-				ForceAttack=false;
+				ForceAttack = false;
 				this.useEnterCursor = useEnterCursor;
 			}
 			
@@ -103,7 +103,10 @@ namespace OpenRA.Mods.RA
 			{
 				if (!base.CanTargetActor(self, target, forceAttack, forceQueued, ref cursor))
 					return false;
-				
+
+				if (!target.HasTrait<IAcceptInfiltrator>())
+					return false;
+
 				if (!useEnterCursor(target))
 					cursor = "enter-blocked";
 

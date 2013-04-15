@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Orders
@@ -57,17 +58,23 @@ namespace OpenRA.Mods.RA.Orders
 		public virtual bool IsQueued { get; protected set; }
 	}
 
-	public class UnitTraitOrderTargeter<T> : UnitOrderTargeter
+	public class TargetTypeOrderTargeter : UnitOrderTargeter
 	{
-		public UnitTraitOrderTargeter( string order, int priority, string cursor, bool targetEnemyUnits, bool targetAllyUnits )
-			: base( order, priority, cursor, targetEnemyUnits, targetAllyUnits )
+		string targetType;
+
+		public TargetTypeOrderTargeter(string targetType, string order, int priority, string cursor, bool targetEnemyUnits, bool targetAllyUnits)
+			: base(order, priority, cursor, targetEnemyUnits, targetAllyUnits)
 		{
+			this.targetType = targetType;
 		}
 
 		public override bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceQueued, ref string cursor)
 		{
-			if( !base.CanTargetActor( self, target, forceAttack, forceQueued, ref cursor ) ) return false;
-			if( !target.HasTrait<T>() ) return false;
+			if (!base.CanTargetActor(self, target, forceAttack, forceQueued, ref cursor))
+				return false;
+
+			if (!target.TraitsImplementing<ITargetable>().Any(t => t.TargetTypes.Contains(targetType)))
+			    return false;
 
 			IsQueued = forceQueued;
 

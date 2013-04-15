@@ -109,7 +109,8 @@ namespace OpenRA.Mods.RA.Move
 				return true;
 
 			var blockingActors = world.ActorMap.GetUnitsAt(cell)
-				.Where(x => x != ignoreActor)
+				// Don't fail if the unit is already in this cell
+				.Where(x => x != ignoreActor && x != self)
 				// Neutral/enemy units are blockers. Allied units that are moving are not blockers.
 				.Where(x => blockedByMovers || ((self.Owner.Stances[x.Owner] != Stance.Ally) || !IsMovingInMyDirection(self, x)))
 				.ToList();

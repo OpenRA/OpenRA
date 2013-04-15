@@ -13,22 +13,22 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
-	class RepairBuilding : Activity
+	class RepairBridge : Activity
 	{
 		Target target;
 
-		public RepairBuilding(Actor target) { this.target = Target.FromActor(target); }
+		public RepairBridge(Actor target) { this.target = Target.FromActor(target); }
 
 		public override Activity Tick(Actor self)
 		{
 			if (IsCanceled || !target.IsValid)
 				return NextActivity;
 
-			var health = target.Actor.Trait<Health>();
-			if (health.DamageState == DamageState.Undamaged)
+			var hut = target.Actor.Trait<BridgeHut>();
+			if (hut.BridgeDamageState == DamageState.Undamaged)
 				return NextActivity;
 
-			target.Actor.InflictDamage(self, -health.MaxHP, null);
+			hut.Repair(self);
 			self.Destroy();
 
 			return this;

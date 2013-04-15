@@ -34,21 +34,22 @@ namespace OpenRA.Mods.RA
 	{
 		public FreeActor(ActorInitializer init, FreeActorInfo info)
 		{
-			if (init.Contains<FreeActorInit>() && !init.Get<FreeActorInit>().value) return;
+			if (init.Contains<FreeActorInit>() && !init.Get<FreeActorInit>().value)
+				return;
 
-			init.self.World.AddFrameEndTask(
-				w =>
+			init.self.World.AddFrameEndTask(w =>
+			{
+				var a = w.CreateActor(info.Actor, new TypeDictionary
 				{
-					var a = w.CreateActor(info.Actor, new TypeDictionary
-					{
-						new LocationInit( init.self.Location + (CVec)info.SpawnOffset ),
-						new OwnerInit( init.self.Owner ),
-						new FacingInit( info.Facing ),
-					});
-
-					if (info.InitialActivity != null)
-						a.QueueActivity(Game.CreateObject<Activity>(info.InitialActivity));
+					new ParentActorInit(init.self),
+					new LocationInit(init.self.Location + (CVec)info.SpawnOffset),
+					new OwnerInit(init.self.Owner),
+					new FacingInit(info.Facing),
 				});
+
+				if (info.InitialActivity != null)
+					a.QueueActivity(Game.CreateObject<Activity>(info.InitialActivity));
+			});
 		}
 	}
 
@@ -59,5 +60,12 @@ namespace OpenRA.Mods.RA
 		public FreeActorInit() { }
 		public FreeActorInit(bool init) { value = init; }
 		public bool Value(World world) { return value; }
+	}
+
+	public class ParentActorInit : IActorInit<Actor>
+	{
+		public readonly Actor value;
+		public ParentActorInit(Actor parent) { value = parent; }
+		public Actor Value(World world) { return value; }
 	}
 }

@@ -182,6 +182,7 @@ E6:
 	Passenger:
 		PipType: Yellow
 	EngineerRepair:
+	RepairsBridges:
 	Captures:
 		CaptureTypes: building, husk
 	-AutoTarget:
