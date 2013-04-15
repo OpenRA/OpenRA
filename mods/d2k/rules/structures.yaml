@@ -94,98 +94,6 @@
 	RepairsUnits:
 		ValuePercentage: 0
 
-^HIGHTECH:
-	Inherits: ^Building
-	Buildable:
-		Queue: Building
-		BuildPaletteOrder: 50
-		Hotkey: t
-	Selectable:
-		Bounds: 96,96
-	Valued:
-		Cost: 2000
-	Tooltip:
-		Name: High Tech Facility
-		Description: Unlocks advanced technology
-	Building:
-		Power: -40
-		Footprint: _x_ xxx xxx
-		Dimensions: 3,3
-	Health:
-		HP: 1500
-	Armor:
-		Type: Wood
-	RevealsShroud:
-		Range: 4
-	ProvidesCustomPrerequisite:
-		Prerequisite: High Tech Facility
-
-RESEARCH:
-	Inherits: ^Building
-	Buildable:
-		Queue: Building
-		Prerequisites: Outpost,High Tech Facility
-		Owner: atreides, harkonnen, ordos
-		BuildPaletteOrder: 65
-		Hotkey: v
-	Selectable:
-		Bounds: 96,64
-	Valued:
-		Cost: 2500
-	Tooltip:
-		Name: IX Research Center
-		Description: Unlocks experimental tanks\n  Special Ability: Carryall Combat Drop
-	ParatroopersPower:
-		Image: carryallicon
-		UnitType: carryall.infantry
-		FlareTime: 0
-		ChargeTime: 360
-		Description: Paratroopers
-		LongDesc: A Carryall drops a squad of Infantry \nanywhere on the map
-		Prerequisites: HIGHTECHO
-		DropItems: RIFLE, RIFLE, BAZOOKA, BAZOOKA, ENGINEER, BAZOOKA, RIFLE, RIFLE
-		SelectTargetSound:
-		FlareType:
-	Building:
-		Power: -40
-		Footprint: xxx xxx
-		Dimensions: 3,2
-	Health:
-		HP: 1000
-	Armor:
-		Type: Wood
-	RevealsShroud:
-		Range: 4
-
-^PALACE:
-	Inherits: ^Building
-	Buildable:
-		Queue: Building
-		BuildPaletteOrder: 70
-		Hotkey: p
-	Selectable:
-		Bounds: 96,96
-	Valued:
-		Cost: 4000
-	Tooltip:
-		Name: Palace
-		Description: Unlocks elite infantry\n  Special Ability: Ornithopter Strike
-	Building:
-		Power: -50
-		Footprint: _x_ xxx =xx
-		Dimensions: 3,3
-	Health:
-		HP: 2000
-	Armor:
-		Type: Concrete
-	RevealsShroud:
-		Range: 8
-	ProvidesCustomPrerequisite:
-		Prerequisite: TPal
-	RenderDetectionCircle:
-	DetectCloaked:
-		Range: 2
-
 ^REFINERY:
 	Inherits: ^Building
 	Buildable:
@@ -592,6 +500,98 @@ REPAIR:
 		ValuePercentage: 50
 	RallyPoint:
 		RallyPoint: 1,3
+
+^HIGHTECH:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 50
+		Hotkey: t
+	Selectable:
+		Bounds: 96,96
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: High Tech Facility
+		Description: Unlocks advanced technology
+	Building:
+		Power: -40
+		Footprint: _x_ xxx xxx
+		Dimensions: 3,3
+	Health:
+		HP: 1500
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4
+	ProvidesCustomPrerequisite:
+		Prerequisite: High Tech Facility
+
+RESEARCH:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		Prerequisites: Outpost,High Tech Facility
+		Owner: atreides, harkonnen, ordos
+		BuildPaletteOrder: 65
+		Hotkey: v
+	Selectable:
+		Bounds: 96,64
+	Valued:
+		Cost: 2500
+	Tooltip:
+		Name: IX Research Center
+		Description: Unlocks experimental tanks\n  Special Ability: Carryall Combat Drop
+	ParatroopersPower:
+		Image: carryallicon
+		UnitType: carryall.infantry
+		FlareTime: 0
+		ChargeTime: 360
+		Description: Paratroopers
+		LongDesc: A Carryall drops a squad of Infantry \nanywhere on the map
+		Prerequisites: HIGHTECHO
+		DropItems: RIFLE, RIFLE, BAZOOKA, BAZOOKA, ENGINEER, BAZOOKA, RIFLE, RIFLE
+		SelectTargetSound:
+		FlareType:
+	Building:
+		Power: -40
+		Footprint: xxx xxx
+		Dimensions: 3,2
+	Health:
+		HP: 1000
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4
+
+^PALACE:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 70
+		Hotkey: p
+	Selectable:
+		Bounds: 96,96
+	Valued:
+		Cost: 4000
+	Tooltip:
+		Name: Palace
+		Description: Unlocks elite infantry\n  Special Ability: Ornithopter Strike
+	Building:
+		Power: -50
+		Footprint: _x_ xxx =xx
+		Dimensions: 3,3
+	Health:
+		HP: 2000
+	Armor:
+		Type: Concrete
+	RevealsShroud:
+		Range: 8
+	ProvidesCustomPrerequisite:
+		Prerequisite: TPal
+	RenderDetectionCircle:
+	DetectCloaked:
+		Range: 2
 
 SIETCH:
 	Inherits: ^Building
