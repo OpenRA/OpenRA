@@ -48,7 +48,7 @@ namespace OpenRA.Mods.RA
 
 		public Order IssueOrder( Actor self, IOrderTargeter order, Target target, bool queued )
 		{
-			if( order.OrderID == "CaptureActor" )
+			if (order.OrderID == "CaptureActor")
 				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
 
 			return null;
@@ -64,7 +64,8 @@ namespace OpenRA.Mods.RA
 		{
 			if (order.OrderString == "CaptureActor")
 			{
-				if (!CanCapture(order.TargetActor)) return;
+				if (!CanCapture(order.TargetActor))
+					return;
 
 				self.SetTargetLine(Target.FromOrder(order), Color.Red);
 
@@ -76,17 +77,17 @@ namespace OpenRA.Mods.RA
 		bool CanCapture(Actor target)
 		{
 			var c = target.TraitOrDefault<Capturable>();
-			return c != null && ( !c.CaptureInProgress || c.Captor.Owner.Stances[self.Owner] != Stance.Ally );
+			return c != null && (!c.CaptureInProgress || c.Captor.Owner.Stances[self.Owner] != Stance.Ally);
 		}
 	}
 
-	class CaptureOrderTargeter : UnitTraitOrderTargeter<Capturable>
+	class CaptureOrderTargeter : UnitOrderTargeter
 	{
 		readonly string[] captureTypes;
 		readonly Func<Actor, bool> useEnterCursor;
 
 		public CaptureOrderTargeter(string[] captureTypes, Func<Actor, bool> useEnterCursor)
-			: base( "CaptureActor", 6, "enter", true, true)
+			: base("CaptureActor", 6, "enter", true, true)
 		{
 			this.captureTypes = captureTypes;
 			this.useEnterCursor = useEnterCursor;
@@ -94,19 +95,26 @@ namespace OpenRA.Mods.RA
 
 		public override bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceQueued, ref string cursor)
 		{
-			if( !base.CanTargetActor( self, target, forceAttack, forceQueued, ref cursor ) ) return false;
+			if (!base.CanTargetActor(self, target, forceAttack, forceQueued, ref cursor))
+				return false;
 
-			var ci = target.Info.Traits.Get<CapturableInfo>();
-			var playerRelationship = self.Owner.Stances[ target.Owner ];
+			var ci = target.Info.Traits.GetOrDefault<CapturableInfo>();
+			if (ci == null)
+				return false;
 
-			if( playerRelationship == Stance.Ally && !ci.AllowAllies ) return false;
-			if( playerRelationship == Stance.Enemy && !ci.AllowEnemies ) return false;
-			if( playerRelationship == Stance.Neutral && !ci.AllowNeutral ) return false;
+			var playerRelationship = self.Owner.Stances[target.Owner];
+			if (playerRelationship == Stance.Ally && !ci.AllowAllies)
+				return false;
+
+			if (playerRelationship == Stance.Enemy && !ci.AllowEnemies)
+				return false;
+
+			if (playerRelationship == Stance.Neutral && !ci.AllowNeutral)
+				return false;
 
 			IsQueued = forceQueued;
 
 			var Info = self.Info.Traits.Get<CapturesInfo>();
-
 			if (captureTypes.Contains(ci.Type))
 			{
 				cursor = (Info.WastedAfterwards) ? (useEnterCursor(target) ? "enter" : "enter-blocked") : "attack";

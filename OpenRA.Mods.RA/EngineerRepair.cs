@@ -52,7 +52,7 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		class EngineerRepairOrderTargeter : UnitTraitOrderTargeter<Building>
+		class EngineerRepairOrderTargeter : UnitOrderTargeter
 		{
 			public EngineerRepairOrderTargeter()
 				: base("EngineerRepair", 6, "goldwrench", false, true) { }

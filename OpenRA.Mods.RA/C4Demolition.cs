@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new UnitTraitOrderTargeter<C4Demolishable>("C4", 6, "c4", true, false); }
+			get { yield return new TargetTypeOrderTargeter("C4", "C4", 6, "c4", true, false); }
 		}
 
 		public Order IssueOrder( Actor self, IOrderTargeter order, Target target, bool queued )
@@ -62,7 +62,4 @@ namespace OpenRA.Mods.RA
 			return (order.OrderString == "C4") ? "Attack" : null;
 		}
 	}
-
-	class C4DemolishableInfo : TraitInfo<C4Demolishable> { }
-	class C4Demolishable { }
 }

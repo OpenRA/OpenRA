@@ -208,7 +208,7 @@
 	Selectable:
 		Priority: 3
 	TargetableBuilding:
-		TargetTypes: Ground
+		TargetTypes: Ground, C4
 	Armor:
 		Type: Wood
 	RepairableBuilding:

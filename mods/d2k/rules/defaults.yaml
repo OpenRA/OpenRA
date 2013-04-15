@@ -215,7 +215,7 @@
 	Selectable:
 		Priority: 2
 	TargetableBuilding:
-		TargetTypes: Ground
+		TargetTypes: Ground, C4
 	Building:
 		Dimensions: 1,1
 		Footprint: x
@@ -263,6 +263,5 @@
 		Types:Building
 	Sellable:
 	GivesBounty:
-	C4Demolishable:
 	DebugMuzzlePositions:
 	Bib:

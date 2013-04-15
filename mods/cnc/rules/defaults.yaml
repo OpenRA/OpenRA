@@ -225,7 +225,7 @@
 	Selectable:
 		Priority: 3
 	TargetableBuilding:
-		TargetTypes: Ground
+		TargetTypes: Ground, C4
 	Armor:
 		Type: Wood
 	RepairableBuilding:
@@ -267,7 +267,6 @@
 	Sellable:
 	Capturable:
 	CapturableBar:
-	C4Demolishable:
 	DebugMuzzlePositions:
 
 ^CivBuilding:
@@ -339,7 +338,7 @@
 		Adjacent: 7
 		TerrainTypes: Clear,Road
 	TargetableBuilding:
-		TargetTypes: Ground
+		TargetTypes: Ground, C4
 	Wall:
 		CrushClasses: wall
 		CrushSound: sandbag2.aud
@@ -356,7 +355,6 @@
 		RelativeToTopLeft: yes
 	AutoTargetIgnore:
 	Sellable:
-	C4Demolishable:
 
 ^Tree:
 	Tooltip:

@@ -63,7 +63,7 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		class SupplyTruckOrderTargeter : UnitTraitOrderTargeter<Building>
+		class SupplyTruckOrderTargeter : UnitOrderTargeter
 		{
 			public SupplyTruckOrderTargeter()
 				: base("DeliverSupplies", 5, "enter", false, true)
@@ -72,9 +72,14 @@ namespace OpenRA.Mods.RA
 
 			public override bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceQueued, ref string cursor)
 			{
-				if (!base.CanTargetActor(self, target, forceAttack, forceQueued, ref cursor)) return false;
-				if (target.AppearsHostileTo(self)) return false;
-				if (!target.HasTrait<AcceptsSupplies>()) return false;
+				if (!base.CanTargetActor(self, target, forceAttack, forceQueued, ref cursor))
+					return false;
+
+				if (target.AppearsHostileTo(self))
+					return false;
+
+				if (!target.HasTrait<AcceptsSupplies>())
+					return false;
 
 				IsQueued = forceQueued;
 				return true;

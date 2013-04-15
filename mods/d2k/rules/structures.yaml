@@ -433,7 +433,7 @@ WALL:
 	#Selectable:
 	#	Priority: 1
 	TargetableBuilding:
-		TargetTypes: Ground
+		TargetTypes: Ground, C4
 	RenderBuildingWall:
 		HasMakeAnimation: false
 	#GivesExperience:

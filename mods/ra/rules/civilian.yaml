@@ -246,7 +246,8 @@ BARL:
 	AutoTargetIgnore:
 	Armor:
 		Type: Light
-	-C4Demolishable:
+	TargetableBuilding:
+		TargetTypes: Ground, DemoTruck
 
 BRL3:
 	Inherits: ^TechBuilding
@@ -261,7 +262,8 @@ BRL3:
 	AutoTargetIgnore:
 	Armor:
 		Type: Light
-	-C4Demolishable:
+	TargetableBuilding:
+		TargetTypes: Ground, DemoTruck
 
 MISS:
 	Inherits: ^TechBuilding
