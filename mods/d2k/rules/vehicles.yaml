@@ -19,7 +19,7 @@
 	Armor:
 		Type: Light
 	Mobile:
-		Speed: 6
+		Speed: 7
 		Crushes: crate, infantry
 	RevealsShroud:
 		Range: 8
@@ -76,7 +76,7 @@ HARVESTER:
 	Armor:
 		Type: Heavy
 	Mobile:
-		Speed: 6
+		Speed: 7
 		Crushes: crate, infantry
 	RenderUnit:
 		Image: HARVESTER
