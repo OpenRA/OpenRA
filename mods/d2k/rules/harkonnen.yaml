@@ -94,6 +94,7 @@ MCVH:
 MCVH.starport:
 	Inherits: MCVH
 	Buildable:
+		Prerequisites: Heavy
 		Queue: Starport
 		BuiltAt: starporth
 	Valued:
