@@ -20,11 +20,11 @@
 	Production:
 		Produces: Building
 	Valued:
-		Cost: 2500
+		Cost: 2000
 	Tooltip:
 		Name: Construction Yard
 	CustomSellValue:
-		Value: 2500
+		Value: 2000
 	BaseBuilding:
 	ProductionBar:
 
@@ -37,7 +37,7 @@
 	Selectable:
 		Bounds: 64,64
 	Valued:
-		Cost: 400
+		Cost: 300
 	Tooltip:
 		Name: Windtrap
 		Description: Provides power for other structures
@@ -63,7 +63,7 @@
 	Selectable:
 		Bounds: 64,64
 	Valued:
-		Cost: 500
+		Cost: 300
 	Tooltip:
 		Name: Barracks
 		Description: Trains infantry
@@ -175,7 +175,7 @@
 	Selectable:
 		Bounds: 96,64
 	Valued:
-		Cost: 1000
+		Cost: 500
 	Tooltip:
 		Name: Light Factory
 		Description: Produces light vehicles
@@ -272,7 +272,7 @@
 ^STARPORT:
 	Inherits: ^Building
 	Valued:
-		Cost: 3000
+		Cost: 2000
 	Tooltip:
 		Name: Starport
 		Description: Dropzone for cheap reinforcements\n  Requires power to operate
@@ -363,7 +363,7 @@ GUNTOWER:
 		BuildPaletteOrder: 40
 		Hotkey: g
 	Valued:
-		Cost: 600
+		Cost: 550
 	Tooltip:
 		Name: Gun Tower
 		Description: Defensive structure\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
@@ -420,7 +420,7 @@ ROCKETTOWER:
 		BuildPaletteOrder: 55
 		Hotkey: m
 	Valued:
-		Cost: 800
+		Cost: 750
 	Tooltip:
 		Name: Missile Tower
 		Icon: rturreticon
@@ -479,7 +479,7 @@ REPAIR:
 		BuildPaletteOrder: 45
 		Hotkey: e
 	Valued:
-		Cost: 1000
+		Cost: 800
 	Tooltip:
 		Name: Repair Pad
 		Description: Repairs vehicles\n Allows construction of MCVs
@@ -510,7 +510,7 @@ REPAIR:
 	Selectable:
 		Bounds: 96,96
 	Valued:
-		Cost: 2000
+		Cost: 1150
 	Tooltip:
 		Name: High Tech Facility
 		Description: Unlocks advanced technology
@@ -538,7 +538,7 @@ RESEARCH:
 	Selectable:
 		Bounds: 96,64
 	Valued:
-		Cost: 2500
+		Cost: 1000
 	Tooltip:
 		Name: IX Research Center
 		Description: Unlocks experimental tanks\n  Special Ability: Carryall Combat Drop
@@ -546,7 +546,7 @@ RESEARCH:
 		Image: carryallicon
 		UnitType: carryall.infantry
 		FlareTime: 0
-		ChargeTime: 360
+		ChargeTime: 280
 		Description: Paratroopers
 		LongDesc: A Carryall drops a squad of Infantry \nanywhere on the map
 		Prerequisites: HIGHTECHO
@@ -573,7 +573,7 @@ RESEARCH:
 	Selectable:
 		Bounds: 96,96
 	Valued:
-		Cost: 4000
+		Cost: 2000
 	Tooltip:
 		Name: Palace
 		Description: Unlocks elite infantry\n  Special Ability: Ornithopter Strike
