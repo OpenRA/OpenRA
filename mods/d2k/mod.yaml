@@ -45,7 +45,7 @@ Assemblies:
 
 ChromeLayout:
 	mods/d2k/chrome/gameinit.yaml
-	mods/ra/chrome/ingame.yaml
+	mods/d2k/chrome/ingame.yaml
 	mods/ra/chrome/ingame-chat.yaml
 	mods/d2k/chrome/mainmenu.yaml
 	mods/ra/chrome/settings.yaml
