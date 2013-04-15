@@ -8,11 +8,14 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OpenRA.Effects;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
+using OpenRA.Mods.RA.Move;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -21,6 +24,8 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly bool Long = false;
 
+		[Desc("Delay (in ticks) between repairing adjacent spans in long bridges")]
+		public readonly int RepairPropagationDelay = 20;
 
 		public readonly ushort Template = 0;
 		public readonly ushort DamagedTemplate = 0;
@@ -149,11 +154,6 @@ namespace OpenRA.Mods.RA
 				yield return new Renderable(t.Value, t.Key.ToPPos().ToFloat2(), terrainPalette, Game.CellSize * t.Key.Y);
 		}
 
-		bool IsIntact(Bridge b)
-		{
-			return b != null && !b.self.IsDead();
-		}
-
 		void KillUnitsOnBridge()
 		{
 			foreach (var c in TileSprites[currentTemplate].Keys)
@@ -162,35 +162,55 @@ namespace OpenRA.Mods.RA
 						a.Kill(self);
 		}
 
-		bool dead = false;
-		void UpdateState()
+		bool NeighbourIsDeadShore(Bridge neighbour)
 		{
-			// If this is a long bridge next to a destroyed shore piece, we need die to give clean edges to the break
-			if (Info.Long && Health.DamageState != DamageState.Dead &&
-				((southNeighbour != null && Info.ShorePieces.Contains(southNeighbour.Type) && !IsIntact(southNeighbour)) ||
-				(northNeighbour != null && Info.ShorePieces.Contains(northNeighbour.Type) && !IsIntact(northNeighbour))))
-			{
-				self.Kill(self); // this changes the damagestate
-			}
-			var oldTemplate = currentTemplate;
-			var ds = Health.DamageState;
-			currentTemplate = (ds == DamageState.Dead && Info.DestroyedTemplate > 0) ? Info.DestroyedTemplate :
-							  (ds >= DamageState.Heavy && Info.DamagedTemplate > 0) ? Info.DamagedTemplate : Info.Template;
+			return neighbour != null && Info.ShorePieces.Contains(neighbour.Type) && neighbour.Health.IsDead;
+		}
 
-			if (Info.Long && ds == DamageState.Dead)
+		bool LongBridgeSegmentIsDead()
+		{
+			// The long bridge artwork requires a hack to display correctly
+			// if the adjacent shore piece is dead
+			if (!Info.Long)
+				return Health.IsDead;
+
+			if (NeighbourIsDeadShore(northNeighbour))
+				return true;
+
+			if (NeighbourIsDeadShore(southNeighbour))
+				return true;
+
+			return Health.IsDead;
+		}
+
+		ushort ChooseTemplate()
+		{
+			if (Info.Long && LongBridgeSegmentIsDead())
 			{
 				// Long bridges have custom art for multiple segments being destroyed
-				bool waterToSouth = !IsIntact(southNeighbour);
-				bool waterToNorth = !IsIntact(northNeighbour);
+				var northIsDead = northNeighbour != null && northNeighbour.LongBridgeSegmentIsDead();
+				var southIsDead = southNeighbour != null && southNeighbour.LongBridgeSegmentIsDead();
+				if (northIsDead && southIsDead)
+					return Info.DestroyedPlusBothTemplate;
+				if (northIsDead)
+					return Info.DestroyedPlusNorthTemplate;
+				if (southIsDead)
+					return Info.DestroyedPlusSouthTemplate;
 
-				if (waterToSouth && waterToNorth)
-					currentTemplate = Info.DestroyedPlusBothTemplate;
-				else if (waterToNorth)
-					currentTemplate = Info.DestroyedPlusNorthTemplate;
-				else if (waterToSouth)
-					currentTemplate = Info.DestroyedPlusSouthTemplate;
+				return Info.DestroyedTemplate;
 			}
 
+			var ds = Health.DamageState;
+			return (ds == DamageState.Dead && Info.DestroyedTemplate > 0) ? Info.DestroyedTemplate :
+				   (ds >= DamageState.Heavy && Info.DamagedTemplate > 0) ? Info.DamagedTemplate : Info.Template;
+		}
+
+		bool killedUnits = false;
+		void UpdateState()
+		{
+			var oldTemplate = currentTemplate;
+
+			currentTemplate = ChooseTemplate();
 			if (currentTemplate == oldTemplate)
 				return;
 
@@ -198,18 +218,81 @@ namespace OpenRA.Mods.RA
 			foreach (var c in TileSprites[currentTemplate].Keys)
 				self.World.Map.CustomTerrain[c.X, c.Y] = GetTerrainType(c);
 
-			if (ds == DamageState.Dead && !dead)
+			if (LongBridgeSegmentIsDead() && !killedUnits)
 			{
-				dead = true;
+				killedUnits = true;
 				KillUnitsOnBridge();
+			}
+		}
+
+		public void Repair(Actor repairer, bool continueNorth, bool continueSouth)
+		{
+			// Repair self
+			var initialDamage = Health.DamageState;
+			self.World.AddFrameEndTask(w =>
+			{
+				if (Health.IsDead)
+				{
+					Health.Resurrect(self, repairer);
+					killedUnits = false;
+					KillUnitsOnBridge();
+				}
+				else
+					Health.InflictDamage(self, repairer, -Health.MaxHP, null, true);
+			});
+
+			// Repair adjacent spans (long bridges)
+			if (continueNorth && northNeighbour != null)
+			{
+				var delay = initialDamage == DamageState.Undamaged || NeighbourIsDeadShore(northNeighbour) ?
+					0 : Info.RepairPropagationDelay;
+
+				self.World.AddFrameEndTask(w => w.Add(new DelayedAction(delay, () =>
+					northNeighbour.Repair(repairer, true, false))));
+			}
+
+			if (continueSouth && southNeighbour != null)
+			{
+				var delay = initialDamage == DamageState.Undamaged || NeighbourIsDeadShore(southNeighbour) ?
+					0 : Info.RepairPropagationDelay;
+
+				self.World.AddFrameEndTask(w => w.Add(new DelayedAction(delay, () =>
+					southNeighbour.Repair(repairer, false, true))));
 			}
 		}
 
 		public void DamageStateChanged(Actor self, AttackInfo e)
 		{
 			UpdateState();
-			if (northNeighbour != null) northNeighbour.UpdateState();
-			if (southNeighbour != null) southNeighbour.UpdateState();
+			if (northNeighbour != null)
+				northNeighbour.UpdateState();
+			if (southNeighbour != null)
+				southNeighbour.UpdateState();
+
+			// Need to update the neighbours neighbour to correctly
+			// display the broken shore hack
+			if (Info.ShorePieces.Contains(Type))
+			{
+				if (northNeighbour != null && northNeighbour.northNeighbour != null)
+					northNeighbour.northNeighbour.UpdateState();
+				if (southNeighbour != null && southNeighbour.southNeighbour != null)
+					southNeighbour.southNeighbour.UpdateState();
+			}
+		}
+
+		public DamageState AggregateDamageState()
+		{
+			// Find the worst span damage in the entire bridge
+			var br = this;
+			while (br.northNeighbour != null)
+				br = br.northNeighbour;
+
+			var damage = Health.DamageState;
+			for (var b = br; b != null; b = b.southNeighbour)
+				if (b.Health.DamageState > damage)
+					damage = b.Health.DamageState;
+
+			return damage;
 		}
 	}
 }

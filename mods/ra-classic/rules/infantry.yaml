@@ -162,6 +162,7 @@ E6:
 	Passenger:
 		PipType: Yellow
 	EngineerRepair:
+	RepairsBridges:
 	Captures:
 		Sabotage: yes
 	TakeCover:

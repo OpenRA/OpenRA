@@ -85,16 +85,13 @@ namespace OpenRA.Mods.RA
 			// For each subtile in the template
 			for (byte ind = 0; ind < template.Size.X*template.Size.Y; ind++)
 			{
-				// Is this tile actually included in the bridge template?
-				if (!template.Tiles.Keys.Contains(ind))
-					continue;
-
 				// Where do we expect to find the subtile
 				var x = ni + ind % template.Size.X;
 				var y = nj + ind / template.Size.X;
 
 				// This isn't the bridge you're looking for
-				if (!w.Map.IsInMap(x, y) || w.Map.MapTiles.Value[x, y].index != ind)
+				if (!w.Map.IsInMap(x, y) || w.Map.MapTiles.Value[x, y].type != tile ||
+				    w.Map.MapTiles.Value[x, y].index != ind)
 					continue;
 
 				subTiles.Add(new CPos(x, y), ind);

@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new UnitTraitOrderTargeter<C4Demolishable>("C4", 6, "c4", true, false); }
+			get { yield return new TargetTypeOrderTargeter("C4", "C4", 6, "c4", true, false); }
 		}
 
 		public Order IssueOrder( Actor self, IOrderTargeter order, Target target, bool queued )
@@ -52,11 +52,8 @@ namespace OpenRA.Mods.RA
 			{
 				self.SetTargetLine(Target.FromOrder(order), Color.Red);
 
-				var mobile = self.Trait<Mobile>();
 				self.CancelActivity();
-				self.QueueActivity(new Enter(order.TargetActor));
-				self.QueueActivity(new Demolish(order.TargetActor, Info.C4Delay));
-				self.QueueActivity(mobile.MoveTo(self.Location, 0));
+				self.QueueActivity(new Enter(order.TargetActor, new Demolish(order.TargetActor, Info.C4Delay)));
 			}
 		}
 
@@ -65,7 +62,4 @@ namespace OpenRA.Mods.RA
 			return (order.OrderString == "C4") ? "Attack" : null;
 		}
 	}
-
-	class C4DemolishableInfo : TraitInfo<C4Demolishable> { }
-	class C4Demolishable { }
 }

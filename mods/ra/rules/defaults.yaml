@@ -96,7 +96,7 @@
 	Selectable:
 		Voice: GenericVoice
 	TargetableUnit:
-		TargetTypes: Ground
+		TargetTypes: Ground, Disguise
 	RenderInfantry:
 	AutoTarget:
 	DebugRetiliateAgainstAggressor:
@@ -196,7 +196,7 @@
 	Selectable:
 		Priority: 3
 	TargetableBuilding:
-		TargetTypes: Ground
+		TargetTypes: Ground, C4, DemoTruck
 	Building:
 		Dimensions: 1,1
 		Footprint: x
@@ -227,7 +227,6 @@
 	AcceptsSupplies:
 	GivesBounty:
 	UpdatesPlayerStatistics:
-	C4Demolishable:
 	DebugMuzzlePositions:
 
 ^Wall:
@@ -249,7 +248,7 @@
 	Selectable:
 		Priority: 1
 	TargetableBuilding:
-		TargetTypes: Ground
+		TargetTypes: Ground, C4, DemoTruck
 	RenderBuildingWall:
 		HasMakeAnimation: false
 		Palette: terrain
@@ -262,7 +261,6 @@
 		Types:Wall
 	Sellable:
 	UpdatesPlayerStatistics:
-	C4Demolishable:
 
 ^TechBuilding:
 	Inherits: ^Building

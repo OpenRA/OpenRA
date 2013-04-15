@@ -54,9 +54,12 @@ namespace OpenRA.Orders
 				.OrderByDescending(a => a.SelectionPriority())
 				.FirstOrDefault();
 
-			if (mi.Modifiers.HasModifier(Modifiers.Shift) || !world.Selection.Actors.Any())
-				if (underCursor != null && underCursor.HasTrait<Selectable>())
+			if (underCursor != null && (mi.Modifiers.HasModifier(Modifiers.Shift) || !world.Selection.Actors.Any()))
+			{
+				var selectable = underCursor.TraitOrDefault<Selectable>();
+				if (selectable != null && selectable.Info.Selectable)
 					useSelect = true;
+			}
 
 			var orders = world.Selection.Actors
 				.Select(a => OrderForUnit(a, xy, mi, underCursor))
