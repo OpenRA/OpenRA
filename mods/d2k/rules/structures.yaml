@@ -284,13 +284,13 @@
 		Cost: 2000
 	Tooltip:
 		Name: Starport
-		Description: Dropzone for cheap reinforcements\n  Requires power to operate
+		Description: Dropzone for quick reinforcements, at a price.\n  Requires power to operate
 	Buildable:
+		Prerequisites: Outpost
 		Queue: Building
 		BuildPaletteOrder: 60
 		Hotkey: c
 	Building:
-		Prerequisites: Outpost
 		Power: -40
 		Footprint: xxx x=x =x=
 		Dimensions: 3,3

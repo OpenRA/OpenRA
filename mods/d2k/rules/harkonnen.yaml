@@ -98,7 +98,7 @@ MCVH.starport:
 		Queue: Starport
 		BuiltAt: starporth
 	Valued:
-		Cost: 1499
+		Cost: 2500
 
 #TRIKEH:
 #	Inherits: ^TRIKE
@@ -144,7 +144,7 @@ CARRYALLH:
 CARRYALLH.starport:
 	Inherits: CARRYALLH
 	Valued:
-		Cost: 999
+		Cost: 1500
 
 COMBATH:
 	Inherits: ^COMBAT
@@ -179,7 +179,7 @@ COMBATH.starport:
 		Queue: Starport
 		BuiltAt: starporth
 	Valued:
-		Cost: 489
+		Cost: 875
 
 DEVAST:
 	Inherits: ^Tank

@@ -104,7 +104,7 @@ HARVESTER.starport:
 		Queue: Starport
 		BuiltAt: starporta, starporth, starporto
 	Valued:
-		Cost: 895
+		Cost: 1500
 
 ^TRIKE:
 	Inherits: ^Vehicle
@@ -194,7 +194,7 @@ QUAD.starport:
 		Queue: Starport
 		BuiltAt: starporta, starporth, starporto
 	Valued:
-		Cost: 295
+		Cost: 500
 
 ^COMBAT:
 	Inherits: ^Tank
@@ -305,7 +305,7 @@ SIEGETANK.starport:
 		Queue: Starport
 		BuiltAt: starporta, starporth, starporto
 	Valued:
-		Cost: 594
+		Cost: 1075
 
 MISSILETANK:
 	Inherits: ^Tank
@@ -363,4 +363,4 @@ MISSILETANK.starport:
 		Owner: atreides, harkonnen, ordos
 		BuiltAt: starporta, starporth, starporto
 	Valued:
-		Cost: 699
+		Cost: 1250

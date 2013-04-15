@@ -92,7 +92,7 @@ MCVO.starport:
 		Queue: Starport
 		BuiltAt: starporto
 	Valued:
-		Cost: 1499
+		Cost: 2500
 
 COMBATO:
 	Inherits: ^COMBAT
@@ -128,7 +128,7 @@ COMBATO.starport:
 		Queue: Starport
 		BuiltAt: starporto
 	Valued:
-		Cost: 489
+		Cost: 875
 
 TRIKEO:
 	Inherits: ^TRIKE
@@ -176,7 +176,7 @@ CARRYALLO:
 CARRYALLO.starport:
 	Inherits: CARRYALLO
 	Valued:
-		Cost: 999
+		Cost: 1500
 
 DEVIATORTANK:
 	Inherits: ^Tank

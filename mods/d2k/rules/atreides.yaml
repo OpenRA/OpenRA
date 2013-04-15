@@ -93,7 +93,7 @@ MCVA.starport:
 		Queue: Starport
 		BuiltAt: starporta
 	Valued:
-		Cost: 1499
+		Cost: 2500
 
 TRIKEA:
 	Inherits: ^TRIKE
@@ -111,7 +111,7 @@ TRIKEA.starport:
 		Queue: Starport
 		BuiltAt: starporta, starporth, starporto
 	Valued:
-		Cost: 149
+		Cost: 315
 
 CARRYALLA:
 	Inherits: ^CARRYALL
@@ -121,7 +121,7 @@ CARRYALLA:
 CARRYALLA.starport:
 	Inherits: CARRYALLA
 	Valued:
-		Cost: 999
+		Cost: 1500
 
 COMBATA:
 	Inherits: ^COMBAT
@@ -159,7 +159,7 @@ COMBATA.starport:
 		Queue: Starport
 		BuiltAt: starporta
 	Valued:
-		Cost: 489
+		Cost: 875
 
 SONICTANK:
 	Inherits: ^Vehicle
@@ -171,7 +171,7 @@ SONICTANK:
 		BuiltAt: heavya
 		Hotkey: o
 	Valued:
-		Cost: 1100
+		Cost: 1250
 	Tooltip:
 		Name: Sonic Tank
 		Description: Fires sonic shocks\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery, Aircraft
