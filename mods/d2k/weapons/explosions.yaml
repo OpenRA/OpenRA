@@ -1,0 +1,105 @@
+Crush:
+	Warhead:
+		ImpactSound: CRUSH1
+		Damage: 100
+
+Demolish:
+	Warhead:
+		ImpactSound: EXPLLG2
+		Explosion: building
+
+Atomic:
+	Warhead:
+		Damage: 1000
+		Spread: 60
+		Versus: 
+			None: 20%
+			Wood: 100%
+			Light: 25%
+			Heavy: 25%
+			Concrete: 75%
+		Explosion: nuke
+		InfDeath: 5
+		ImpactSound: EXPLLG2
+
+CrateNuke:
+	Warhead:
+		Damage: 800
+		Spread: 50
+		Versus: 
+			None: 20%
+			Wood: 75%
+			Light: 25%
+			Heavy: 25%
+			Concrete: 50%
+		Explosion: nuke
+		InfDeath: 5
+		ImpactSound: EXPLLG2
+
+CrateExplosion:
+	Warhead:
+		Damage: 400
+		Spread: 10
+		Versus: 
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
+		Explosion: building
+		WaterExplosion: building
+		InfDeath: 4
+		ImpactSound: EXPLSML4
+
+UnitExplode:
+	Warhead:
+		Damage: 500
+		Spread: 10
+		Versus: 
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
+		Explosion: building
+		WaterExplosion: large_splash
+		InfDeath: 4
+		ImpactSound: EXPLMD1
+
+UnitExplodeSmall:
+	Warhead:
+		Damage: 60
+		Spread: 10
+		Versus: 
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
+		Explosion: self_destruct
+		InfDeath: 4
+		ImpactSound: EXPLHG1, EXPLLG1, EXPLMD1, EXPLSML4
+
+UnitExplodeTiny:
+	Warhead:
+		Damage: 30
+		Spread: 7
+		Versus: 
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
+		Explosion: large_explosion
+		InfDeath: 4
+		ImpactSound: EXPLMD2, EXPLSML1, EXPLSML2, EXPLSML3
+
+UnitExplodeScale:
+	Warhead:
+		Damage: 90
+		Spread: 13
+		Versus: 
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
+		Explosion: building
+		InfDeath: 4
+		ImpactSound: EXPLLG2, EXPLLG3, EXPLLG5
+

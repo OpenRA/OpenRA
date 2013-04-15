@@ -8,62 +8,29 @@ CONYARDA:
 PWRA:
 	Inherits: ^POWER
 	Buildable:
-		Prerequisites: conyarda
 		Owner: atreides
 
 REFA:
 	Inherits: ^REFINERY
 	Buildable:
-		Prerequisites: pwra
 		Owner: atreides
 	RenderBuildingWarFactory:
 		Image: REFA
 
-TRIKEA:
-	Inherits: ^TRIKE
-	Buildable:
-		Prerequisites: Light Factory#lighta
-		Owner: atreides, harkonnen
-		BuiltAt: lighta, lighth
-	RenderUnit:
-		Image: TRIKE
-
-TRIKEA.starport:
-	Inherits: TRIKEA
-	Buildable:
-		Owner: atreides, harkonnen, ordos
-		Queue: Starport
-		BuiltAt: starporta, starporth, starporto
-	Valued:
-		Cost: 149
-
-CARRYALLA:
-	Inherits: ^CARRYALL
-	RenderUnit:
-		Image: CARRYALL
-
-CARRYALLA.starport:
-	Inherits: CARRYALLA
-	Valued:
-		Cost: 999
-
 BARRA:
 	Inherits: ^BARRACKS
 	Buildable:
-		Prerequisites: pwra
 		Owner: atreides
 
 
 HIGHTECHA:
 	Inherits: ^HIGHTECH
 	Buildable:
-		Prerequisites: radara
 		Owner: atreides
 
 PALACEA:
 	Inherits: ^PALACE
 	Buildable:
-		Prerequisites: hightecha
 		Owner: atreides
 	AirstrikePower:
 		Image: orniicon
@@ -80,13 +47,11 @@ PALACEA:
 SILOA:
 	Inherits: ^SILO
 	Buildable:
-		Prerequisites: refa
 		Owner: atreides
 
 LIGHTA:
 	Inherits: ^LIGHT
 	Buildable:
-		Prerequisites: refa
 		Owner: atreides
 	RenderBuildingWarFactory:
 		Image: LIGHTA
@@ -94,7 +59,6 @@ LIGHTA:
 HEAVYA:
 	Inherits: ^HEAVY
 	Buildable:
-		Prerequisites: lighta
 		Owner: atreides
 	RenderBuildingWarFactory:
 		Image: HEAVYA
@@ -102,13 +66,11 @@ HEAVYA:
 RADARA:
 	Inherits: ^RADAR
 	Buildable:
-		Prerequisites: barra
 		Owner: atreides
 
 STARPORTA:
 	Inherits: ^STARPORT
 	Buildable:
-		Prerequisites: heavya,hightecha
 		Owner: atreides
 
 MCVA:
@@ -131,7 +93,34 @@ MCVA.starport:
 		Queue: Starport
 		BuiltAt: starporta
 	Valued:
-		Cost: 1499
+		Cost: 2500
+
+TRIKEA:
+	Inherits: ^TRIKE
+	Buildable:
+		Owner: atreides, harkonnen
+		BuiltAt: lighta, lighth
+	RenderUnit:
+		Image: TRIKE
+
+TRIKEA.starport:
+	Inherits: TRIKEA
+	Buildable:
+		Owner: atreides, harkonnen, ordos
+		Queue: Starport
+		BuiltAt: starporta, starporth, starporto
+	Valued:
+		Cost: 315
+
+CARRYALLA:
+	Inherits: ^CARRYALL
+	RenderUnit:
+		Image: CARRYALL
+
+CARRYALLA.starport:
+	Inherits: CARRYALLA
+	Valued:
+		Cost: 1500
 
 COMBATA:
 	Inherits: ^COMBAT
@@ -169,7 +158,7 @@ COMBATA.starport:
 		Queue: Starport
 		BuiltAt: starporta
 	Valued:
-		Cost: 489
+		Cost: 875
 
 SONICTANK:
 	Inherits: ^Vehicle
@@ -181,7 +170,7 @@ SONICTANK:
 		BuiltAt: heavya
 		Hotkey: o
 	Valued:
-		Cost: 1100
+		Cost: 1250
 	Tooltip:
 		Name: Sonic Tank
 		Description: Fires sonic shocks\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery, Aircraft

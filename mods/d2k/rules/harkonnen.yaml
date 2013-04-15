@@ -8,21 +8,101 @@ CONYARDH:
 PWRH:
 	Inherits: ^POWER
 	Buildable:
-		Prerequisites: conyardh
 		Owner: harkonnen
 
 REFH:
 	Inherits: ^REFINERY
 	Buildable:
-		Prerequisites: pwrh
 		Owner: harkonnen
 	RenderBuildingWarFactory:
 		Image: REFH
 
+BARRH:
+	Inherits: ^BARRACKS
+	Buildable:
+		Owner: harkonnen
+	-RepairsUnits:
+
+SILOH:
+	Inherits: ^SILO
+	Buildable:
+		Owner: harkonnen
+
+LIGHTH:
+	Inherits: ^LIGHT
+	Buildable:
+		Owner: harkonnen
+	RenderBuildingWarFactory:
+		Image: LIGHTH
+
+HEAVYH:
+	Inherits: ^HEAVY
+	Buildable:
+		Owner: harkonnen
+	RenderBuildingWarFactory:
+		Image: HEAVYH
+
+RADARH:
+	Inherits: ^RADAR
+	Buildable:
+		Owner: harkonnen
+
+STARPORTH:
+	Inherits: ^STARPORT
+	Buildable:
+		Owner: harkonnen
+
+HIGHTECHH:
+	Inherits: ^HIGHTECH
+	Buildable:
+		Owner: harkonnen
+
+PALACEH:
+	Inherits: ^PALACE
+	Buildable:
+		Owner: harkonnen
+	Tooltip:
+		Description: Provides elite infantry\n  Special Ability: Death Hand Missile
+	NukePower:
+		Image: deathhandicon
+		ChargeTime: 540
+		Description: Death Hand
+		LongDesc: Launches a nuclear missile at a target location
+		BeginChargeSound: HI_PREP.AUD
+		EndChargeSound: HI_DHRDY.AUD
+		SelectTargetSound: 
+		LaunchSound:
+		MissileWeapon: atomic
+		SpawnOffset: 28,12
+	CanPowerDown:
+	RequiresPower:
+	SupportPowerChargeBar:
+
+MCVH:
+	Inherits: ^MCV
+	Buildable:
+		Prerequisites: heavyh,repair
+		Owner: harkonnen
+		BuiltAt: heavyh
+	Transforms:
+		Facing: 16
+		IntoActor: conyardh
+		Offset:-1,-1
+		NoTransformSounds: HI_DPLOY.AUD
+	RenderUnit:
+		Image: DMCV
+
+MCVH.starport:
+	Inherits: MCVH
+	Buildable:
+		Queue: Starport
+		BuiltAt: starporth
+	Valued:
+		Cost: 2500
+
 #TRIKEH:
 #	Inherits: ^TRIKE
 #	Buildable:
-#		Prerequisites: lighth
 #		Owner: harkonnen
 #		BuiltAt: lighth
 #	Valued:
@@ -46,7 +126,6 @@ REFH:
 #TRIKEH.starport:
 #	Inherits: ^TRIKE
 #	Buildable:
-#		Prerequisites: lighth
 #		Owner: harkonnen
 #		Queue: Starport
 #		BuiltAt: starporth
@@ -63,98 +142,7 @@ CARRYALLH:
 CARRYALLH.starport:
 	Inherits: CARRYALLH
 	Valued:
-		Cost: 999
-
-BARRH:
-	Inherits: ^BARRACKS
-	Buildable:
-		Prerequisites: pwrh
-		Owner: harkonnen
-	-RepairsUnits:
-
-HIGHTECHH:
-	Inherits: ^HIGHTECH
-	Buildable:
-		Prerequisites: radarh
-		Owner: harkonnen
-
-PALACEH:
-	Inherits: ^PALACE
-	Buildable:
-		Prerequisites: hightechh
-		Owner: harkonnen
-	Tooltip:
-		Description: Provides elite infantry\n  Special Ability: Death Hand Missile
-	NukePower:
-		Image: deathhandicon
-		ChargeTime: 540
-		Description: Death Hand
-		LongDesc: Launches a nuclear missile at a target location
-		BeginChargeSound: HI_PREP.AUD
-		EndChargeSound: HI_DHRDY.AUD
-		SelectTargetSound: 
-		LaunchSound:
-		MissileWeapon: atomic
-		SpawnOffset: 28,12
-	CanPowerDown:
-	RequiresPower:
-	SupportPowerChargeBar:
-
-SILOH:
-	Inherits: ^SILO
-	Buildable:
-		Prerequisites: refh
-		Owner: harkonnen
-
-LIGHTH:
-	Inherits: ^LIGHT
-	Buildable:
-		Prerequisites: refh
-		Owner: harkonnen
-	RenderBuildingWarFactory:
-		Image: LIGHTH
-
-HEAVYH:
-	Inherits: ^HEAVY
-	Buildable:
-		Prerequisites: lighth
-		Owner: harkonnen
-	RenderBuildingWarFactory:
-		Image: HEAVYH
-
-RADARH:
-	Inherits: ^RADAR
-	Buildable:
-		Prerequisites: barrh
-		Owner: harkonnen
-
-STARPORTH:
-	Inherits: ^STARPORT
-	Buildable:
-		Prerequisites: radarh,hightechh
-		Owner: harkonnen
-
-MCVH:
-	Inherits: ^MCV
-	Buildable:
-		Prerequisites: heavyh,repair
-		Owner: harkonnen
-		BuiltAt: heavyh
-	Transforms:
-		Facing: 16
-		IntoActor: conyardh
-		Offset:-1,-1
-		NoTransformSounds: HI_DPLOY.AUD
-	RenderUnit:
-		Image: DMCV
-
-MCVH.starport:
-	Inherits: MCVH
-	Buildable:
-		Queue: Starport
-		BuiltAt: starporth
-	Valued:
-		Cost: 1499
+		Cost: 1500
 
 COMBATH:
 	Inherits: ^COMBAT
@@ -189,7 +177,7 @@ COMBATH.starport:
 		Queue: Starport
 		BuiltAt: starporth
 	Valued:
-		Cost: 489
+		Cost: 875
 
 DEVAST:
 	Inherits: ^Tank
