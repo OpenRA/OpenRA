@@ -475,7 +475,7 @@ GUNTOWER:
 		Range: 6
 	RenderRangeCircle:
 	-RenderBuilding:
-	#-AutoTargetIgnore:
+	-AutoTargetIgnore:
 	RenderBuildingSeparateTurret:
 	#	HasMakeAnimation: false
 	Turreted:
@@ -532,7 +532,7 @@ ROCKETTOWER:
 		Range: 6
 	RenderRangeCircle:
 	-RenderBuilding:
-	#-AutoTargetIgnore:
+	-AutoTargetIgnore:
 	RenderBuildingSeparateTurret:
 	#	HasMakeAnimation: false
 	Armament:
