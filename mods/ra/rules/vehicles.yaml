@@ -621,14 +621,14 @@ TTNK:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 130
-		Prerequisites: stek,tsla
+		Prerequisites: tsla,stek
 		Owner: soviet
 		Hotkey: t
 	Valued:
 		Cost: 1350
 	Tooltip:
 		Name: Tesla Tank
-		Description: Tank with mounted tesla coil.\n  Strong vs Infantry, Light Vehicles\n  and Buildings  \n  Weak vs Tanks, Aircraft
+		Description: Tank with mounted tesla coil.\n  Strong vs Infantry, Vehicles\n  and Buildings  \n  Weak vs Aircraft
 	Health:
 		HP: 400
 	Armor:
@@ -725,14 +725,14 @@ CTNK:
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 140
-		Prerequisites: atek
+		Prerequisites: atek,pdox
 		Owner: allies
 		Hotkey: j
 	Valued:
 		Cost: 1350
 	Tooltip:
 		Name: Chrono Tank
-		Description: Chrono Tank, teleports to areas within range.\n  Strong vs Vehicles, Buildings\n  Weak vs Tanks
+		Description: Chrono Tank, teleports to areas within range.\n  Strong vs Vehicles, Buildings\n  Weak vs Aircraft
 	Selectable:
 		Bounds: 28,28
 	Health:
@@ -741,6 +741,7 @@ CTNK:
 		Type: Light
 	Mobile:
 		Speed: 8
+		Crushes: wall, atmine, crate, infantry
 	RevealsShroud:
 		Range: 6
 	RenderUnit:
