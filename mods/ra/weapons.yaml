@@ -970,7 +970,7 @@ Repair:
 			Concrete: 0%
 			Cybernetic: 40%
 		InfDeath: 1
-		Damage: -10
+		Damage: -13
 
 SilencedPPK:
 	ROF: 80
