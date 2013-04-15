@@ -109,7 +109,6 @@ HARVESTER.starport:
 ^TRIKE:
 	Inherits: ^Vehicle
 	Buildable:
-		Prerequisites: Light
 		Queue: Vehicle
 		BuildPaletteOrder: 15
 		Hotkey: w
@@ -248,7 +247,7 @@ SIEGETANK:
 	Inherits: ^Tank
 	Buildable:
 		Queue: Armor
-		Prerequisites: Heavy,Outpost
+		Prerequisites: Outpost
 		Owner: atreides, harkonnen, ordos
 		BuiltAt: heavya, heavyh, heavyo
 		BuildPaletteOrder: 30

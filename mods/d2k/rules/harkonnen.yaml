@@ -103,7 +103,6 @@ MCVH.starport:
 #TRIKEH:
 #	Inherits: ^TRIKE
 #	Buildable:
-#		Prerequisites: lighth
 #		Owner: harkonnen
 #		BuiltAt: lighth
 #	Valued:
@@ -127,7 +126,6 @@ MCVH.starport:
 #TRIKEH.starport:
 #	Inherits: ^TRIKE
 #	Buildable:
-#		Prerequisites: lighth
 #		Owner: harkonnen
 #		Queue: Starport
 #		BuiltAt: starporth

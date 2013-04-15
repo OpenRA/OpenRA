@@ -98,7 +98,6 @@ MCVA.starport:
 TRIKEA:
 	Inherits: ^TRIKE
 	Buildable:
-		Prerequisites: Light Factory#lighta
 		Owner: atreides, harkonnen
 		BuiltAt: lighta, lighth
 	RenderUnit:
