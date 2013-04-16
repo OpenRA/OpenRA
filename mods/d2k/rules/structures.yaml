@@ -276,6 +276,7 @@
 	ProvidesRadar:
 	DetectCloaked:
 		Range: 8
+	RenderDetectionCircle:
 	ProvidesCustomPrerequisite:
 		Prerequisite: Outpost
 
@@ -606,7 +607,7 @@ RESEARCH:
 		Range: 8
 	RenderDetectionCircle:
 	DetectCloaked:
-		Range: 2
+		Range: 4
 	ProvidesCustomPrerequisite:
 		Prerequisite: TPal
 
