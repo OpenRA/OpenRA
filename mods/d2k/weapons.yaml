@@ -138,7 +138,7 @@ HMG:
 		Versus: 
 			Wood: 30%
 			Light: 45%
-			Heavy: 10%
+			Heavy: 20%
 			Concrete: 20%
 		Explosion: piffs
 		InfDeath: 2
@@ -161,7 +161,7 @@ HMGo:
 		Versus: 
 			Wood: 30%
 			Light: 45%
-			Heavy: 10%
+			Heavy: 20%
 			Concrete: 20%
 		Explosion: piffs
 		InfDeath: 2
