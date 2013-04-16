@@ -422,8 +422,6 @@ GUNTOWER.Husk:
 		Icon: turreticon
 	RenderUnit:
 		Image: GUNTOWER
-	ThrowsParticle@turret:
-		Anim: turret
 
 ROCKETTOWER:
 	Inherits: ^Building
@@ -481,8 +479,6 @@ ROCKETTOWER.Husk:
 		Icon: rturreticon
 	RenderUnit:
 		Image: ROCKETTOWER
-	ThrowsParticle@turret:
-		Anim: turret
 
 REPAIR:
 	Inherits: ^Building
