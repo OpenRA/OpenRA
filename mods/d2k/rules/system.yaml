@@ -8,7 +8,7 @@ Player:
 		BlockedAudio: NoRoom
 	ClassicProductionQueue@Infantry:
 		Type: Infantry
-		LowPowerSlowdown: 3
+		LowPowerSlowdown: 2
 		BlockedAudio: NoRoom
 	ClassicProductionQueue@Vehicle:
 		Type: Vehicle
@@ -23,7 +23,7 @@ Player:
 	ClassicProductionQueue@Starport:
 		Type: Starport
 		BuildSpeedModifier: .2
-		LowPowerSlowdown: 2
+		LowPowerSlowdown: 1
 		BlockedAudio: NoRoom
 		QueuedAudio: OrderPlaced
 		ReadyAudio:
