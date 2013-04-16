@@ -602,7 +602,7 @@ RESEARCH:
 	Health:
 		HP: 2000
 	Armor:
-		Type: Concrete
+		Type: Wood
 	RevealsShroud:
 		Range: 8
 	RenderDetectionCircle:
