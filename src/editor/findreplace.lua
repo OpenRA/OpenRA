@@ -286,7 +286,6 @@ function findReplace:createDialog(replace,infiles)
 
   -- Create right hand buttons and sizer
   local findButton = wx.wxButton(findDialog, ID_FIND_NEXT, infiles and "&Find All" or "&Find Next")
-  findButton:SetDefault()
   local replaceButton = wx.wxButton(findDialog, ID_REPLACE, infiles and replace and "&Replace All" or "&Replace")
   local replaceAllButton = nil
   if (replace and not infiles) then
@@ -496,6 +495,15 @@ function findReplace:createDialog(replace,infiles)
           infilesDirCombo:SetValue(filePicker:GetPath())
         end
       end)
+  end
+
+  -- if on OSX then select the current value of the default dropdown
+  -- and don't set the default as it doesn't make Enter to work, but
+  -- prevents associated hotkey (Cmd-F) from working (wx2.9.5).
+  if ide.osname == 'Macintosh' then
+    findTextCombo:SetSelection(0, #findTextCombo:GetValue())
+  else
+    findButton:SetDefault()
   end
 
   -- reset search when re-creating dialog to avoid modifying selected
