@@ -298,10 +298,10 @@ TowerMissile:
 
 DevBullet:
 	ROF: 70
-	Range: 6
+	Range: 5
 	Report: TANKHVY1
 	Burst: 2
-	BurstDelay: 3
+	BurstDelay: 10
 	Projectile: LaserZap
 		BeamRadius: 1
 		BeamDuration: 8
@@ -309,15 +309,16 @@ DevBullet:
 	Warhead:
 		Spread: 6
 		Versus: 
-			None: 35%
+			None: 100%
 			Wood: 50%
-			Light: 65%
-			Concrete: 75%
+			Light: 100%
+			Heavy: 100%
+			Concrete: 50%
 		Explosion: large_explosion
 		#ImpactSound: kaboom12
 		InfDeath: 4
 		SmudgeType: SandCrater, RockCrater
-		Damage: 40
+		Damage: 65
 
 227mm: 
 	ROF: 100
