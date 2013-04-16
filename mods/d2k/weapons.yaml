@@ -206,6 +206,7 @@ TurretGun:
 	Report: TURRET1
 	Projectile: Bullet
 		Speed: 55
+		High: yes
 		Shadow: yes
 		Image: 90MM
 		Inaccuracy: 9
