@@ -344,6 +344,7 @@ DevBullet:
 			Wood: 50%
 			Light: 100%
 			Heavy: 80%
+			Concrete: 80%
 		InfDeath: 4
 		Explosion: large_explosion
 		WaterExplosion: med_splash
@@ -397,7 +398,7 @@ FakeMissile:
 			Wood: 50%
 			Light: 50%
 			Heavy: 25%
-			Concrete: 50%
+			Concrete: 25%
 		Explosion: self_destruct
 		WaterExplosion: large_splash
 		ImpactSound: explsml2
