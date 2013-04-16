@@ -88,7 +88,6 @@ MCVO:
 MCVO.starport:
 	Inherits: MCVO
 	Buildable:
-		Prerequisites: Heavy
 		Queue: Starport
 		BuiltAt: starporto
 	Valued:
