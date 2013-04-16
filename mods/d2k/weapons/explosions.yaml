@@ -10,8 +10,8 @@ Demolish:
 
 Atomic:
 	Warhead:
-		Damage: 1500
-		Spread: 60
+		Damage: 1800
+		Spread: 64
 		Versus: 
 			None: 100%
 			Wood: 100%
