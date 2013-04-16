@@ -112,7 +112,7 @@ HARVESTER.starport:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 15
+		BuildPaletteOrder: 10
 		Hotkey: w
 	Valued:
 		Cost: 250
@@ -203,7 +203,7 @@ QUAD.starport:
 	Inherits: ^Tank
 	Buildable:
 		Queue: Armor
-		BuildPaletteOrder: 25
+		BuildPaletteOrder: 40
 		Hotkey: c
 	Valued:
 		Cost: 700
@@ -253,7 +253,7 @@ SIEGETANK:
 		Prerequisites: Outpost
 		Owner: atreides, harkonnen, ordos
 		BuiltAt: heavya, heavyh, heavyo
-		BuildPaletteOrder: 30
+		BuildPaletteOrder: 50
 		Hotkey: t
 	Valued:
 		Cost: 850
@@ -324,7 +324,7 @@ MISSILETANK:
 		Prerequisites: Heavy,Hitech
 		Owner: atreides, harkonnen, ordos
 		BuiltAt: heavya, heavyh
-		BuildPaletteOrder: 40
+		BuildPaletteOrder: 60
 		Hotkey: r
 	Mobile:
 		Speed: 6
