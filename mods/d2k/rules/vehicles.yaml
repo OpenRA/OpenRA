@@ -328,7 +328,7 @@ MISSILETANK:
 		Speed: 6
 		ROT: 3
 	Health:
-		HP: 130
+		HP: 90
 	Armor:
 		Type: Light
 	RevealsShroud:
