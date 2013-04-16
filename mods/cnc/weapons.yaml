@@ -847,7 +847,7 @@ APCGun:
 			None: 50%
 			Wood: 50%
 			Light: 100%
-			Heavy: 50%
+			Heavy: 30%
 		Explosion: small_poof
 		Damage: 30
 		
