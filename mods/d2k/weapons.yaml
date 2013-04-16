@@ -30,9 +30,9 @@ Bazooka:
 		High: true
 		Shadow: yes
 		Proximity: true
-		Trail: smokey
+		ContrailLength: 10
 		Inaccuracy: 3
-		Image: DRAGON
+		Image: RPG
 		ROT: 5
 		RangeLimit: 35
 	Warhead:
@@ -44,11 +44,10 @@ Bazooka:
 			Heavy: 90%
 			Concrete: 40%
 		Explosion: med_explosion
-		WaterExplosion: med_splash
 		InfDeath: 4
 		SmudgeType: SandCrater, RockCrater
 		Damage: 50
-		ImpactSound: kaboom12
+		ImpactSound: EXPLSML2
 
 Sniper:
 	ROF: 100
@@ -180,9 +179,8 @@ QuadRockets:
 		Shadow: yes
 		Proximity: yes
 		Inaccuracy: 3
-		Image: DRAGON
+		Image: MISSILE
 		ROT: 10
-		Trail: smokey
 		Speed: 40
 		RangeLimit: 40
 	Warhead:
@@ -195,8 +193,7 @@ QuadRockets:
 			Concrete: 35%
 		InfDeath: 4
 		Explosion: med_explosion
-		WaterExplosion: med_splash
-		ImpactSound: kaboom12
+		ImpactSound: EXPLSML2
 		SmudgeType: SandCrater, RockCrater
 		Damage: 25
 
@@ -236,7 +233,7 @@ TowerMissile:
 		Shadow: yes
 		Proximity: yes
 		Inaccuracy: 12
-		Image: DRAGON
+		Image: MISSILE2
 		ROT: 10
 		Trail: smokey
 		Speed: 45
@@ -250,8 +247,8 @@ TowerMissile:
 			Heavy: 40%
 			Concrete: 35%
 		InfDeath: 3
-		Explosion: large_explosion
-		ImpactSound: kaboom12
+		Explosion: small_explosion
+		ImpactSound: EXPLSML2
 		SmudgeType: SandCrater, RockCrater
 		Damage: 50
 
@@ -316,7 +313,6 @@ DevBullet:
 			Heavy: 100%
 			Concrete: 50%
 		Explosion: large_explosion
-		#ImpactSound: kaboom12
 		InfDeath: 4
 		SmudgeType: SandCrater, RockCrater
 		Damage: 65
@@ -336,7 +332,7 @@ DevBullet:
 		Shadow: yes
 		Inaccuracy: 55
 		Angle: 0.2
-		Image: MISSILE
+		Image: MISSILE2
 		ROT: 5
 		ContrailLength: 5
 	Warhead:
@@ -348,9 +344,8 @@ DevBullet:
 			Heavy: 80%
 			Concrete: 80%
 		InfDeath: 4
-		Explosion: large_explosion
-		WaterExplosion: med_splash
-		ImpactSound: explsml1
+		Explosion: med_explosion
+		ImpactSound: EXPLSML2
 		SmudgeType: SandCrater, RockCrater
 		Damage: 50
 
@@ -375,10 +370,10 @@ FakeMissile:
 			Light: 0%
 			Heavy: 0%
 			Concrete: 0%
-		Explosion: napalm2
-		SmudgeType:
+		Explosion: med_explosion
+		SmudgeType: SandCrater, RockCrater
 		Damage: 0
-		ImpactSound: firebl3
+		ImpactSound: EXPLSML2
 
 155mm:
 	ROF: 75
@@ -391,7 +386,6 @@ FakeMissile:
 		Shadow: yes
 		Angle: .1
 		Inaccuracy: 45
-		Image: 120MM
 		ContrailLength: 20
 	Warhead:
 		Spread: 12
@@ -475,7 +469,7 @@ ParaBomb:
 	Range: 4.5
 	Report: 
 	Projectile: GravityBomb
-		Image: PARABOMB
+		Image: BOMBS
 	Warhead:
 		Spread: 6
 		Versus: 
@@ -492,7 +486,7 @@ ParaBomb:
 Napalm:
 	ROF: 2
 	Projectile: GravityBomb
-		Image: PARABOMB
+		Image: BOMBS
 	Warhead:
 		Spread: 20
 		Versus: 

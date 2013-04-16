@@ -20,6 +20,11 @@ Speech:
 		Cancelled: cancld1
 		Building: abldgin1
 		ConstructionComplete: conscmp1
+		UnitLost: unitlst1
+		NavalUnitLost: navylst1
+		AirUnitLost: aunitl1
+		BuildingCaptured: strucap1
+
 
 Sounds:
 	Notifications:

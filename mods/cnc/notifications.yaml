@@ -1,4 +1,7 @@
 Speech:
+	Prefixes:
+		gdi: gdi
+		nod: nod
 	Notifications:
 		Repairing: repair1
 		LowPower: lopower1
@@ -21,6 +24,11 @@ Speech:
 		Building: bldging1
 		ConstructionComplete: constru1
 		Reinforce: reinfor1
+		UnitLost: unitlost
+		BuildingLost: strclost
+		CivilianKilled: civdead1
+		BuildingCaptured: capt1
+	DisablePrefixes: Repairing, LowPower, SilosNeeded, PrimaryBuildingSelected, BuildingCannotPlaceAudio, NewOptions, AbilityInsufficientPower, Win, Lose, BaseAttack, HarvesterAttack, Leave, UnitReady, NoBuild, Training, OnHold, Cancelled, Building, ConstructionComplete, Reinforce, UnitLost, BuildingLost, CivilianKilled
 
 Sounds:
 	Notifications:

@@ -299,7 +299,7 @@ World:
 		ShadowIndex: 3
 	PaletteFromFile@effect:
 		Name: effect
-		Filename: temperat.pal
+		Filename: d2k.pal
 		ShadowIndex: 4
 	PaletteFromFile@colorpicker:
 		Name: colorpicker
@@ -355,7 +355,7 @@ World:
 		BibWidths: 3, 2
 	ResourceLayer:
 	ResourceClaimLayer:
-	ResourceType@spice:
+	ResourceType@Spice:
 		ResourceType: 1
 		Palette: d2k
 		TerrainType: Spice
@@ -365,14 +365,16 @@ World:
 		PipColor: green
 		AllowedTerrainTypes: Sand
 		AllowUnderActors: false
-	SmudgeLayer@rock:
-		Type:RockCrater
-		Types:rockcrater1,rockcrater2
-		Depths:15,15
-	SmudgeLayer@sand:
-		Type:SandCrater
-		Types:sandcrater1,sandcrater2
-		Depths:15,15
+	SmudgeLayer@Rock:
+		Type: RockCrater
+		Types: rockcrater1, rockcrater2
+		Depths: 15, 15
+		SmokePercentage: 0
+	SmudgeLayer@Sand:
+		Type: SandCrater
+		Types: sandcrater1, sandcrater2
+		Depths: 15, 15
+		SmokePercentage: 0
 	SpawnMapActors:
 	CreateMPPlayers:
 	MPStartLocations:
@@ -511,7 +513,7 @@ SPICEBLOOM:
 #	Tooltip:
 #		Name: Sandworm
 #		Description: Attracted by vibrations in the sand. Will eat units whole and has a large appetite.
-#		Icon: wormjaw
+#		Icon: black
 #	Health:
 #		HP: 10000
 #		Radius: 3
