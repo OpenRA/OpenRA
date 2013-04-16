@@ -169,7 +169,7 @@
 	StoresOre:
 		PipColor: green
 		PipCount: 5
-		Capacity: 1500
+		Capacity: 2000
 	-EmitInfantryOnSell:
 	-Bib:
 
@@ -259,7 +259,7 @@
 	Selectable:
 		Bounds: 96,64
 	Valued:
-		Cost: 1000
+		Cost: 700
 	Tooltip:
 		Name: Outpost
 		Description: Provides a radar map of the battlefield\n  Requires power to operate

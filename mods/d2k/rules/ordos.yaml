@@ -135,13 +135,13 @@ TRIKEO:
 		Owner: ordos
 		BuiltAt: lighto
 	Valued:
-		Cost: 250
+		Cost: 300
 	Tooltip:
 		Name: Raider Trike
-		Description: Improved Scout\n Strong vs Infantry
+		Description: Improved Scout\n Strong vs Infantry, Light Vehicles
 		Icon: raidericon
 	Health:
-		HP: 100
+		HP: 110
 	Mobile:
 		ROT: 10
 		Speed: 14
@@ -152,7 +152,36 @@ TRIKEO:
 		LocalOffset: 256,0,128
 	AttackFrontal:
 
-
+STEALTHTRIKE:
+	Inherits: ^TRIKE
+	Buildable:
+		Prerequisites: Hitech
+		Owner: ordos
+		BuiltAt: lighto
+	Valued:
+		Cost: 400
+	Tooltip:
+		Name: Stealth Raider Trike
+		Description: Invisible Raider Trike\n Strong vs Infantry, Light Vehicles
+		Icon: raidericon
+	Health:
+		HP: 110
+	Mobile:
+		ROT: 10
+		Speed: 14
+	RenderUnit:
+		Image: RAIDER
+	Armament:
+		Weapon: HMGo
+		LocalOffset: 256,0,128
+	AttackFrontal:
+	Cloak:
+		InitialDelay: 90
+		CloakDelay: 90
+		CloakSound: appear1.aud
+		UncloakSound: appear1.aud
+	AutoTarget:
+		InitialStance: HoldFire
 
 #TRIKEO.starport:
 #	Inherits: ^TRIKE
