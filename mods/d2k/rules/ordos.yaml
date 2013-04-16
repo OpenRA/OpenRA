@@ -158,6 +158,7 @@ STEALTHTRIKE:
 		Prerequisites: Hitech
 		Owner: ordos
 		BuiltAt: lighto
+		BuildPaletteOrder: 30
 	Valued:
 		Cost: 400
 	Tooltip:
