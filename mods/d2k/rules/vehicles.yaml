@@ -19,7 +19,7 @@
 	Armor:
 		Type: Light
 	Mobile:
-		Speed: 7
+		Speed: 6
 		Crushes: crate, infantry
 	RevealsShroud:
 		Range: 8
