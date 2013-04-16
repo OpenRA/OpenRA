@@ -412,14 +412,17 @@ CRATE:
 		SelectionShares: 25
 		UseCashTick: yes
 	GiveUnitCrateAction@TrikeA:
-		SelectionShares: 20
+		SelectionShares: 15
 		Unit: trikea
 	GiveUnitCrateAction@TrikeO:
-		SelectionShares: 20
+		SelectionShares: 15
 		Unit: trikeo
 	GiveUnitCrateAction@Quad:
-		SelectionShares: 40
+		SelectionShares: 45
 		Unit: quad
+	GiveUnitCrateAction@QuadH:
+		SelectionShares: 45
+		Unit: quadh
 	GiveUnitCrateAction@CombatA:
 		SelectionShares: 10
 		Unit: combata

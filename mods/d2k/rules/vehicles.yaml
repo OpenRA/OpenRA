@@ -153,8 +153,8 @@ QUAD:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Vehicle
-		Prerequisites: Light,Outpost
-		Owner: atreides, harkonnen, ordos
+		Prerequisites: Outpost
+		Owner: atreides, ordos
 		BuiltAt: lighta, lighth, lighto
 		BuildPaletteOrder: 20
 		Hotkey: q
