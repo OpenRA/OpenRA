@@ -130,7 +130,7 @@
 	StoresOre:
 		PipColor: green
 		PipCount: 10
-		Capacity: 3000
+		Capacity: 2000
 	CustomSellValue:
 		Value: 500
 	FreeActor:
@@ -171,6 +171,7 @@
 		PipCount: 5
 		Capacity: 1500
 	-EmitInfantryOnSell:
+	-Bib:
 
 ^LIGHT:
 	Inherits: ^Building

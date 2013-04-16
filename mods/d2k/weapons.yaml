@@ -318,7 +318,7 @@ DevBullet:
 		Damage: 40
 
 227mm: 
-	ROF: 90
+	ROF: 100
 	Range: 10
 	MinRange: 4
 	Burst: 4
@@ -378,7 +378,7 @@ FakeMissile:
 155mm:
 	ROF: 75
 	Range: 8
-	MinRange: 3
+	MinRange: 2
 	Report: MORTAR1
 	Projectile: Bullet
 		Speed: 18
@@ -392,7 +392,7 @@ FakeMissile:
 		Spread: 12
 		Versus: 
 			None: 100%
-			Wood: 75%
+			Wood: 50%
 			Light: 50%
 			Heavy: 25%
 			Concrete: 50%

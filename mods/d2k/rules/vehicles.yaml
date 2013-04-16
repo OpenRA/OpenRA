@@ -276,6 +276,7 @@ SIEGETANK:
 		Recoil: 299
 		RecoilRecovery: 19
 		LocalOffset: 171,0,299
+		FireDelay: 10		
 	AttackFrontal:
 	RenderUnitTurreted:
 		Image: SIEGETANK
@@ -327,7 +328,7 @@ MISSILETANK:
 		Speed: 6
 		ROT: 3
 	Health:
-		HP: 130
+		HP: 90
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -337,6 +338,7 @@ MISSILETANK:
 	Armament:
 		Weapon: 227mm
 		LocalOffset: -213,128,171, -213,-256,171
+		FireDelay: 15		
 	AttackFrontal:
 	AutoTarget:
 		InitialStance: Defend
