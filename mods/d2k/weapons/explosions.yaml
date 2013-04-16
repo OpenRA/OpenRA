@@ -10,14 +10,14 @@ Demolish:
 
 Atomic:
 	Warhead:
-		Damage: 1000
+		Damage: 1500
 		Spread: 60
 		Versus: 
-			None: 20%
+			None: 100%
 			Wood: 100%
-			Light: 25%
-			Heavy: 25%
-			Concrete: 75%
+			Light: 100%
+			Heavy: 80%
+			Concrete: 80%
 		Explosion: nuke
 		InfDeath: 5
 		ImpactSound: EXPLLG2
