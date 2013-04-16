@@ -92,10 +92,10 @@ function findReplace:GetSelectedString()
     local endSel = editor:GetSelectionEnd()
     if (startSel ~= endSel) and (editor:LineFromPosition(startSel) == editor:LineFromPosition(endSel)) then
       findReplace.findText = editor:GetSelectedText()
-      findReplace.foundString = true
+      return true
     end
   end
-  return editor and findReplace.foundString
+  return false
 end
 
 function findReplace:FindString(reverse)
@@ -120,6 +120,7 @@ function findReplace:FindString(reverse)
       local finish = editor:GetTargetEnd()
       EnsureRangeVisible(start, finish)
       editor:SetSelection(start, finish)
+      ide.frame:SetStatusText("")
     end
   end
 end
@@ -497,6 +498,9 @@ function findReplace:createDialog(replace,infiles)
       end)
   end
 
+  -- reset search when re-creating dialog to avoid modifying selected
+  -- fragment after successful search and updated replacement
+  findReplace.foundString = false
   findReplace.dialog = findDialog
   findDialog:Show(true)
   return findDialog
