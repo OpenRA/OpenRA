@@ -15,7 +15,7 @@
 		Priority: 3
 		Bounds: 42,42
 	Health:
-		HP: 600
+		HP: 700
 	Armor:
 		Type: Light
 	Mobile:
@@ -72,7 +72,7 @@ HARVESTER:
 		# How far away from last harvest order location to find more resources (in cells):
 		SearchFromOrderRadius: 12
 	Health:
-		HP: 600
+		HP: 700
 	Armor:
 		Type: Heavy
 	Mobile:
