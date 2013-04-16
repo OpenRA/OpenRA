@@ -105,7 +105,7 @@ COMBATO:
 	Turreted:
 		ROT: 8
 	Mobile:
-		Speed: 10
+		Speed: 9
 		ROT: 8
 		Crushes: crate, infantry
 	RenderUnitTurreted:
@@ -176,7 +176,7 @@ STEALTHTRIKE:
 		LocalOffset: 256,0,128
 	AttackFrontal:
 	Cloak:
-		InitialDelay: 90
+		InitialDelay: 45
 		CloakDelay: 90
 		CloakSound: appear1.aud
 		UncloakSound: appear1.aud
