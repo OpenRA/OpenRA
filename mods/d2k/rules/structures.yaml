@@ -492,7 +492,7 @@ REPAIR:
 		BuildPaletteOrder: 45
 		Hotkey: e
 	Valued:
-		Cost: 800
+		Cost: 500
 	Tooltip:
 		Name: Repair Pad
 		Description: Repairs vehicles\n Allows construction of MCVs
