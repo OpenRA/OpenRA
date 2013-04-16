@@ -214,9 +214,11 @@ local function resolveAssign(editor,tx)
       local classname = nil
       c = ""
       change = false
-      for w,s in tx:gmatch("([%w_]*)([%.:]?)") do
+      for w,s in tx:gmatch("([%w_]+)([%.:]?)") do
         local old = classname
-        classname = classname or (assigns[c..w])
+        -- check if what we have so far can be matched with a class name
+        -- this can happen if it's a reference to a value with a known type
+        classname = classname or assigns[c..w]
         if (s ~= "" and old ~= classname) then
           c = classname..s
           change = true
@@ -224,6 +226,9 @@ local function resolveAssign(editor,tx)
           c = c..w..s
         end
       end
+      -- abort if the same value is returned; no need to continue.
+      -- this can happen after typing "smth = smth:new(); smth:"
+      if tx == c then break end
       tx = c
     end
   else
