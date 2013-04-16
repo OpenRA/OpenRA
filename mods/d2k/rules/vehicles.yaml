@@ -130,7 +130,7 @@ HARVESTER.starport:
 		ROT: 9
 		Speed: 12
 	RevealsShroud:
-		Range: 8
+		Range: 7
 	RenderUnit:
 	WithMuzzleFlash:
 	Armament:
@@ -172,7 +172,7 @@ QUAD:
 		ROT: 8
 		Speed: 10
 	RevealsShroud:
-		Range: 7
+		Range: 8
 	RenderUnit:
 		Image: QUAD
 	Armament:
