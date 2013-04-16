@@ -318,7 +318,7 @@ DevBullet:
 		Damage: 40
 
 227mm: 
-	ROF: 90
+	ROF: 100
 	Range: 10
 	MinRange: 4
 	Burst: 4
