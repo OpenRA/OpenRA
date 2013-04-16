@@ -169,7 +169,7 @@
 	StoresOre:
 		PipColor: green
 		PipCount: 5
-		Capacity: 1500
+		Capacity: 2000
 	-EmitInfantryOnSell:
 	-Bib:
 
