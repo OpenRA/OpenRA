@@ -102,6 +102,7 @@ HARVESTER.Husk:
 HARVESTER.starport:
 	Inherits: HARVESTER
 	Buildable:
+		Prerequisites: Starport
 		Queue: Starport
 		BuiltAt: starporta, starporth, starporto
 	Valued:
@@ -192,6 +193,7 @@ QUAD:
 QUAD.starport:
 	Inherits: QUAD
 	Buildable:
+		Prerequisites: Starport
 		Queue: Starport
 		BuiltAt: starporta, starporth, starporto
 	Valued:
