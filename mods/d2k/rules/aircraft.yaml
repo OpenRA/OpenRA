@@ -140,6 +140,7 @@ ORNI.bomber:
 CARRYALL.infantry:
 	ParaDrop:
 		LZRange: 5
+		ChuteSound:
 	Inherits: ^Plane
 	Health:
 		HP: 200

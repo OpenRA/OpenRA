@@ -30,6 +30,9 @@ namespace OpenRA.Mods.RA.Widgets
 		public string HoldText = "";
 		public string RequiresText = "";
 
+		public int IconWidth = 64;
+		public int IconHeight = 48;
+
 		ProductionQueue CurrentQueue;
 		List<ProductionQueue> VisibleQueues;
 
@@ -75,7 +78,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 		public override Rectangle EventBounds
 		{
-			get { return new Rectangle((int)(paletteOrigin.X) - 24, (int)(paletteOrigin.Y), 215, Math.Max(48 * numActualRows, 40 * tabs.Count + 9)); }
+			get { return new Rectangle((int)(paletteOrigin.X) - 24, (int)(paletteOrigin.Y), 215, Math.Max(IconHeight * numActualRows, 40 * tabs.Count + 9)); }
 		}
 
 		public override void Tick()
@@ -217,16 +220,16 @@ namespace OpenRA.Mods.RA.Widgets
 				for (var w = 0; w < numActualRows; w++)
 					WidgetUtils.DrawRGBA(
 						ChromeProvider.GetImage(paletteCollection, "bg-" + (w % 4)),
-						new float2(origin.X - 9, origin.Y + 48 * w));
+						new float2(origin.X - 9, origin.Y + IconHeight * w));
 				WidgetUtils.DrawRGBA(ChromeProvider.GetImage(paletteCollection, "bottom"),
-					new float2(origin.X - 9, origin.Y - 1 + 48 * numActualRows));
+					new float2(origin.X - 9, origin.Y - 1 + IconHeight * numActualRows));
 
 
 				// Icons
 				string tooltipItem = null;
 				foreach (var item in allBuildables)
 				{
-					var rect = new RectangleF(origin.X + x * 64, origin.Y + 48 * y, 64, 48);
+					var rect = new RectangleF(origin.X + x * IconWidth, origin.Y + IconHeight * y, IconWidth, IconHeight);
 					var drawPos = new float2(rect.Location);
 					WidgetUtils.DrawSHP(iconSprites[item.Name], drawPos, worldRenderer);
 
@@ -277,7 +280,7 @@ namespace OpenRA.Mods.RA.Widgets
 				// Tooltip
 				if (tooltipItem != null && !paletteAnimating && paletteOpen)
 					DrawProductionTooltip(world, tooltipItem,
-						new float2(Game.viewport.Width, origin.Y + numActualRows * 48 + 9).ToInt2());
+						new float2(Game.viewport.Width, origin.Y + numActualRows * IconHeight + 9).ToInt2());
 			}
 
 			// Palette Dock
@@ -286,12 +289,12 @@ namespace OpenRA.Mods.RA.Widgets
 
 			for (int i = 0; i < numActualRows; i++)
 				WidgetUtils.DrawRGBA(ChromeProvider.GetImage(paletteCollection, "dock-" + (i % 4).ToString()),
-					new float2(Game.viewport.Width - 14, origin.Y + 48 * i));
+					new float2(Game.viewport.Width - 14, origin.Y + IconHeight * i));
 
 			WidgetUtils.DrawRGBA(ChromeProvider.GetImage(paletteCollection, "dock-bottom"),
-				new float2(Game.viewport.Width - 14, origin.Y - 1 + 48 * numActualRows));
+				new float2(Game.viewport.Width - 14, origin.Y - 1 + IconHeight * numActualRows));
 
-			return 48 * y + 9;
+			return IconHeight * y + 9;
 		}
 
 		string GetOverlayForItem(ProductionItem item)

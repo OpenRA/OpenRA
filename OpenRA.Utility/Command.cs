@@ -175,7 +175,8 @@ namespace OpenRA.Utility
 					Console.WriteLine("FrameCount: {0}", FrameCount);
 				}
 			}
-			else if (args.Contains("--vehicle")) //resorting to RA/CnC compatible counter-clockwise frame order
+			//resorting to RA/CnC compatible counter-clockwise frame order
+			else if (args.Contains("--vehicle") || args.Contains("--projectile"))
 			{
 				frame = srcImage[startFrame];
 
@@ -295,11 +296,6 @@ namespace OpenRA.Utility
 					{
 						OffsetX = frame.FrameWidth/2 - frame.Width/2;
 						OffsetY = frame.FrameHeight/2 - frame.Height/2;
-					}
-					else if (args.Contains("--projectile"))
-					{
-						OffsetX = frame.FrameWidth/2 - frame.OffsetX;
-						OffsetY = frame.FrameHeight/2 - frame.OffsetY;
 					}
 					else if (args.Contains("--building"))
 					{

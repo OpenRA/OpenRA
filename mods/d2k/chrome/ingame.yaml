@@ -63,6 +63,8 @@ Container@INGAME_ROOT:
 			ReadyText: READY
 			HoldText: ON HOLD
 			RequiresText: Requires
+			IconWidth: 60
+			IconHeight: 47
 		Button@INGAME_OPTIONS_BUTTON:
 			X:0
 			Y:0

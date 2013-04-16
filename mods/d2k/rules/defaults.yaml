@@ -23,15 +23,7 @@
 	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:
-	ActorLostNotification@Atreides:
-		Race: atreides
-		Notification: AI_ULOST.AUD
-	ActorLostNotification@Harkonnen:
-		Race: harkonnen
-		Notification: HI_ULOST.AUD
-	ActorLostNotification@Ordos:
-		Race: ordos
-		Notification: OI_ULOST.AUD
+	ActorLostNotification:
 	ProximityCaptor:
 		Types:Vehicle
 	GivesBounty:
@@ -65,15 +57,7 @@
 	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:
-	ActorLostNotification@Atreides:
-		Race: atreides
-		Notification: AI_ULOST.AUD
-	ActorLostNotification@Harkonnen:
-		Race: harkonnen
-		Notification: HI_ULOST.AUD
-	ActorLostNotification@Ordos:
-		Race: ordos
-		Notification: OI_ULOST.AUD
+	ActorLostNotification:
 	ProximityCaptor:
 		Types:Tank
 	GivesBounty:
@@ -151,15 +135,7 @@
 	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:
-	ActorLostNotification@Atreides:
-		Race: atreides
-		Notification: AI_ULOST.AUD
-	ActorLostNotification@Harkonnen:
-		Race: harkonnen
-		Notification: HI_ULOST.AUD
-	ActorLostNotification@Ordos:
-		Race: ordos
-		Notification: OI_ULOST.AUD
+	ActorLostNotification:
 	ProximityCaptor:
 		Types:Infantry
 	GivesBounty:
@@ -183,15 +159,7 @@
 	GainsExperience:
 	GivesExperience:
 	DrawLineToTarget:
-	ActorLostNotification@Atreides:
-		Race: atreides
-		Notification: AI_ULOST.AUD
-	ActorLostNotification@Harkonnen:
-		Race: harkonnen
-		Notification: HI_ULOST.AUD
-	ActorLostNotification@Ordos:
-		Race: ordos
-		Notification: OI_ULOST.AUD
+	ActorLostNotification:
 	DebugAircraftFacing:
 	DebugAircraftSubPxX:
 	DebugAircraftSubPxY:
@@ -231,25 +199,11 @@
 		ActorTypes: rifle,rifle,rifle,rifle,rifle,bazooka,bazooka,bazooka,engineer
 	MustBeDestroyed:
 	GivesExperience:
+
 	FrozenUnderFog:
-	CaptureNotification@Atreides:
-		Race: atreides
-		Notification: AI_CAPT.AUD
-	CaptureNotification@Harkonnen:
-		Race: harkonnen
-		Notification: HI_CAPT.AUD
-	CaptureNotification@Ordos:
-		Race: ordos
-		Notification: OI_CAPT.AUD
-	ActorLostNotification@Atreides:
-		Race: atreides
-		Notification: AI_BLOST.AUD
-	ActorLostNotification@Harkonnen:
-		Race: harkonnen
-		Notification: HI_BLOST.AUD
-	ActorLostNotification@Ordos:
-		Race: ordos
-		Notification: OI_BLOST.AUD
+	CaptureNotification:
+	ActorLostNotification:
+		Notification: BuildingLost
 	EditorAppearance:
 		RelativeToTopLeft: yes
 	AutoTargetIgnore:
