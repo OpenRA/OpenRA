@@ -114,6 +114,8 @@ ORNI.bomber:
 		HP: 100
 	Armor:
 		Type: Light
+	RevealsShroud:
+		Range: 10
 	Plane:
 		ROT: 5
 		Speed: 50
@@ -143,6 +145,8 @@ CARRYALL.infantry:
 		HP: 200
 	Armor:
 		Type: Light
+	RevealsShroud:
+		Range: 12
 	Plane:
 		ROT: 4
 		Speed: 40

@@ -275,7 +275,7 @@
 		Range: 10
 	ProvidesRadar:
 	DetectCloaked:
-		Range: 8
+		Range: 6
 	RenderDetectionCircle:
 	ProvidesCustomPrerequisite:
 		Prerequisite: Outpost

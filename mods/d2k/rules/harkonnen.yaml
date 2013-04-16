@@ -65,7 +65,7 @@ PALACEH:
 		Description: Provides elite infantry\n  Special Ability: Death Hand Missile
 	NukePower:
 		Image: deathhandicon
-		ChargeTime: 540
+		ChargeTime: 300
 		Description: Death Hand
 		LongDesc: Launches a nuclear missile at a target location
 		BeginChargeSound: HI_PREP.AUD

@@ -489,7 +489,7 @@ ParaBomb:
 		ImpactSound: EXPLLG3
 
 Napalm:
-	ROF: 6
+	ROF: 2
 	Projectile: GravityBomb
 		Image: PARABOMB
 	Warhead:
