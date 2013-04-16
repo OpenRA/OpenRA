@@ -105,7 +105,7 @@ COMBATO:
 	Turreted:
 		ROT: 8
 	Mobile:
-		Speed: 9
+		Speed: 10
 		ROT: 8
 		Crushes: crate, infantry
 	RenderUnitTurreted:
