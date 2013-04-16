@@ -1,6 +1,7 @@
 ^MCV:
 	Inherits: ^Vehicle
 	Buildable:
+		Prerequisites: repair
 		Queue: Armor
 		BuildPaletteOrder: 110
 		Hotkey: m
@@ -14,11 +15,11 @@
 		Priority: 3
 		Bounds: 42,42
 	Health:
-		HP: 600
+		HP: 800
 	Armor:
 		Type: Light
 	Mobile:
-		Speed: 6
+		Speed: 7
 		Crushes: crate, infantry
 	RevealsShroud:
 		Range: 8
@@ -71,11 +72,11 @@ HARVESTER:
 		# How far away from last harvest order location to find more resources (in cells):
 		SearchFromOrderRadius: 12
 	Health:
-		HP: 600
+		HP: 1000
 	Armor:
 		Type: Heavy
 	Mobile:
-		Speed: 6
+		Speed: 7
 		Crushes: crate, infantry
 	RenderUnit:
 		Image: HARVESTER
@@ -101,6 +102,7 @@ HARVESTER.Husk:
 HARVESTER.starport:
 	Inherits: HARVESTER
 	Buildable:
+		Prerequisites: Starport
 		Queue: Starport
 		BuiltAt: starporta, starporth, starporto
 	Valued:
@@ -110,7 +112,7 @@ HARVESTER.starport:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 15
+		BuildPaletteOrder: 10
 		Hotkey: w
 	Valued:
 		Cost: 250
@@ -128,7 +130,7 @@ HARVESTER.starport:
 		ROT: 9
 		Speed: 12
 	RevealsShroud:
-		Range: 8
+		Range: 7
 	RenderUnit:
 	WithMuzzleFlash:
 	Armament:
@@ -136,7 +138,6 @@ HARVESTER.starport:
 		LocalOffset: 256,0,128
 	AttackFrontal:
 	AutoTarget:
-		InitialStance: Defend
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
 	Explodes:
@@ -171,7 +172,7 @@ QUAD:
 		ROT: 8
 		Speed: 10
 	RevealsShroud:
-		Range: 7
+		Range: 8
 	RenderUnit:
 		Image: QUAD
 	Armament:
@@ -179,7 +180,6 @@ QUAD:
 		LocalOffset: 128,0,85#-4
 	AttackFrontal:
 	AutoTarget:
-		InitialStance: Defend
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
 	Explodes:
@@ -191,6 +191,7 @@ QUAD:
 QUAD.starport:
 	Inherits: QUAD
 	Buildable:
+		Prerequisites: Starport
 		Queue: Starport
 		BuiltAt: starporta, starporth, starporto
 	Valued:
@@ -200,7 +201,7 @@ QUAD.starport:
 	Inherits: ^Tank
 	Buildable:
 		Queue: Armor
-		BuildPaletteOrder: 25
+		BuildPaletteOrder: 40
 		Hotkey: c
 	Valued:
 		Cost: 700
@@ -227,7 +228,6 @@ QUAD.starport:
 	AttackTurreted:
 	RenderUnitTurreted:
 	AutoTarget:
-		InitialStance: Defend
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
 	Explodes:
@@ -250,7 +250,7 @@ SIEGETANK:
 		Prerequisites: Outpost
 		Owner: atreides, harkonnen, ordos
 		BuiltAt: heavya, heavyh, heavyo
-		BuildPaletteOrder: 30
+		BuildPaletteOrder: 50
 		Hotkey: t
 	Valued:
 		Cost: 850
@@ -275,6 +275,7 @@ SIEGETANK:
 		Recoil: 299
 		RecoilRecovery: 19
 		LocalOffset: 171,0,299
+		FireDelay: 10		
 	AttackFrontal:
 	RenderUnitTurreted:
 		Image: SIEGETANK
@@ -317,16 +318,16 @@ MISSILETANK:
 		Icon: missiletankicon
 	Buildable:
 		Queue: Armor
-		Prerequisites: Heavy,Hitech
+		Prerequisites: Hitech
 		Owner: atreides, harkonnen, ordos
 		BuiltAt: heavya, heavyh
-		BuildPaletteOrder: 40
+		BuildPaletteOrder: 60
 		Hotkey: r
 	Mobile:
 		Speed: 6
 		ROT: 3
 	Health:
-		HP: 130
+		HP: 90
 	Armor:
 		Type: Light
 	RevealsShroud:
@@ -336,6 +337,7 @@ MISSILETANK:
 	Armament:
 		Weapon: 227mm
 		LocalOffset: -213,128,171, -213,-256,171
+		FireDelay: 15		
 	AttackFrontal:
 	AutoTarget:
 		InitialStance: Defend
@@ -359,7 +361,7 @@ MISSILETANK.Husk:
 MISSILETANK.starport:
 	Inherits: MISSILETANK
 	Buildable:
-		Prerequisites: Heavy
+		Prerequisites: Hitech
 		Queue: Starport
 		Owner: atreides, harkonnen, ordos
 		BuiltAt: starporta, starporth, starporto

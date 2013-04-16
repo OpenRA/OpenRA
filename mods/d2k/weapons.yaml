@@ -11,9 +11,9 @@ LMG:
 	Warhead:
 		Spread: 3
 		Versus: 
-			Wood: 40%
-			Light: 30%
-			Heavy: 15%
+			Wood: 25%
+			Light: 40%
+			Heavy: 20%
 			Concrete: 20%
 		Explosion: piffs
 		InfDeath: 2
@@ -136,9 +136,9 @@ HMG:
 	Warhead:
 		Spread: 3
 		Versus: 
-			Wood: 30%
+			Wood: 15%
 			Light: 45%
-			Heavy: 10%
+			Heavy: 20%
 			Concrete: 20%
 		Explosion: piffs
 		InfDeath: 2
@@ -159,17 +159,19 @@ HMGo:
 	Warhead:
 		Spread: 3
 		Versus: 
-			Wood: 30%
+			Wood: 15%
 			Light: 45%
-			Heavy: 10%
+			Heavy: 25%
 			Concrete: 20%
 		Explosion: piffs
 		InfDeath: 2
 		Damage: 40
 
 QuadRockets:
-	ROF: 60
-	Range: 6.5
+	ROF: 40
+	Burst: 2
+	BurstDelay: 25
+	Range: 7
 	Report: ROCKET1
 	ValidTargets: Ground, Air
 	Projectile: Missile
@@ -186,24 +188,25 @@ QuadRockets:
 	Warhead:
 		Spread: 3
 		Versus: 
-			None: 25%
-			Wood: 25%
-			Light: 85%
-			Heavy: 40%
-			Concrete: 30%
+			None: 35%
+			Wood: 35%
+			Light: 100%
+			Heavy: 100%
+			Concrete: 35%
 		InfDeath: 4
 		Explosion: med_explosion
 		WaterExplosion: med_splash
 		ImpactSound: kaboom12
 		SmudgeType: SandCrater, RockCrater
-		Damage: 70
+		Damage: 25
 
 TurretGun:
-	ROF: 50
-	Range: 6.75
+	ROF: 35
+	Range: 7
 	Report: TURRET1
 	Projectile: Bullet
 		Speed: 55
+		High: yes
 		Shadow: yes
 		Image: 90MM
 		Inaccuracy: 9
@@ -221,7 +224,7 @@ TurretGun:
 		Damage: 55
 
 TowerMissile:
-	ROF: 60
+	ROF: 40
 	Range: 8.25
 	Report: ROCKET1
 	ValidTargets: Ground, Air
@@ -296,10 +299,10 @@ TowerMissile:
 
 DevBullet:
 	ROF: 70
-	Range: 6
+	Range: 5
 	Report: TANKHVY1
 	Burst: 2
-	BurstDelay: 3
+	BurstDelay: 10
 	Projectile: LaserZap
 		BeamRadius: 1
 		BeamDuration: 8
@@ -307,26 +310,27 @@ DevBullet:
 	Warhead:
 		Spread: 6
 		Versus: 
-			None: 35%
+			None: 100%
 			Wood: 50%
-			Light: 65%
-			Concrete: 75%
+			Light: 100%
+			Heavy: 100%
+			Concrete: 50%
 		Explosion: large_explosion
 		#ImpactSound: kaboom12
 		InfDeath: 4
 		SmudgeType: SandCrater, RockCrater
-		Damage: 40
+		Damage: 65
 
 227mm: 
-	ROF: 110
-	Range: 11
+	ROF: 100
+	Range: 10
 	MinRange: 4
-	Burst: 2
-	BurstDelay: 2
+	Burst: 4
+	BurstDelay: 15
 	Report: MISSLE1
 	ValidTargets: Ground
 	Projectile: Bullet
-		Speed: 20
+		Speed: 24
 		Arm: 5
 		High: yes
 		Shadow: yes
@@ -338,16 +342,17 @@ DevBullet:
 	Warhead:
 		Spread: 8
 		Versus: 
-			None: 20%
-			Wood: 100%
-			Light: 65%
-			Heavy: 75%
+			None: 25%
+			Wood: 25%
+			Light: 100%
+			Heavy: 80%
+			Concrete: 80%
 		InfDeath: 4
 		Explosion: large_explosion
 		WaterExplosion: med_splash
 		ImpactSound: explsml1
 		SmudgeType: SandCrater, RockCrater
-		Damage: 75
+		Damage: 50
 
 FakeMissile:
 	ROF: 120
@@ -376,12 +381,12 @@ FakeMissile:
 		ImpactSound: firebl3
 
 155mm:
-	ROF: 120
-	Range: 10
+	ROF: 75
+	Range: 8
 	MinRange: 2
 	Report: MORTAR1
 	Projectile: Bullet
-		Speed: 15
+		Speed: 18
 		High: true
 		Shadow: yes
 		Angle: .1
@@ -391,11 +396,11 @@ FakeMissile:
 	Warhead:
 		Spread: 12
 		Versus: 
-			None: 75%
-			Wood: 85%
+			None: 100%
+			Wood: 50%
 			Light: 50%
-			Heavy: 15%
-			Concrete: 50%
+			Heavy: 25%
+			Concrete: 25%
 		Explosion: self_destruct
 		WaterExplosion: large_splash
 		ImpactSound: explsml2
@@ -485,7 +490,7 @@ ParaBomb:
 		ImpactSound: EXPLLG3
 
 Napalm:
-	ROF: 6
+	ROF: 2
 	Projectile: GravityBomb
 		Image: PARABOMB
 	Warhead:

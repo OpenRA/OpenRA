@@ -3,9 +3,9 @@
 	Mobile:
 		Crushes: crate
 		TerrainSpeeds:
-			Sand: 80
-			Rock: 80
-			Transition: 85
+			Sand: 90
+			Rock: 100
+			Transition: 90
 			Concrete: 100
 			Spice: 70
 			SpiceBlobs: 70
@@ -38,8 +38,6 @@
 	#WithSmoke:
 	Repairable:
 		RepairBuildings: repair
-	DetectCloaked:
-		Range: 1
 	DebugMuzzlePositions:
 
 ^Tank:
@@ -48,12 +46,12 @@
 		Crushes: crate
 		TerrainSpeeds:
 			Sand: 80
-			Rock: 90
+			Rock: 100
 			Transition: 85
 			Concrete: 100
-			Spice: 70
-			SpiceBlobs: 70
-			Dune: 40
+			Spice: 80
+			SpiceBlobs: 80
+			Dune: 70
 		ROT: 5
 	SelectionDecorations:
 	Selectable: 
@@ -93,7 +91,7 @@
 	HiddenUnderFog:
 	AppearsOnRadar:
 	Burns:
-		Interval: 7
+		Interval: 4
 	ProximityCaptor:
 		Types:Husk
 	Tooltip:
@@ -108,7 +106,7 @@
 	AppearsOnRadar:
 	HiddenUnderFog:
 	Burns:
-		Interval: 7
+		Interval: 2
 	EditorAppearance:
 		RelativeToTopLeft: yes
 	Tooltip:
@@ -143,7 +141,6 @@
 		TargetTypes: Ground
 	RenderInfantry:
 	AutoTarget:
-		InitialStance: Defend
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
 	AttackMove:
@@ -171,8 +168,6 @@
 	RepairableNear:
 		Buildings: barra, barro
 		CloseEnough: 1
-	DetectCloaked:
-		Range: 2
 	DebugMuzzlePositions:
 
 ^Plane:
