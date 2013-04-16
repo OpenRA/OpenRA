@@ -635,6 +635,16 @@ function CreateEditor()
       event:Skip()
     end)
 
+  if ide.config.editor.nomousezoom then
+    -- disable zoom using mouse wheel as it triggers zooming when scrolling
+    -- on OSX with kinetic scroll and then pressing CMD.
+    editor:Connect(wx.wxEVT_MOUSEWHEEL,
+      function (event)
+        if wx.wxGetKeyState(wx.WXK_CONTROL) then return end
+        event:Skip()
+      end)
+  end
+
   local inhandler = false
   editor:Connect(wx.wxEVT_SET_FOCUS,
     function (event)
