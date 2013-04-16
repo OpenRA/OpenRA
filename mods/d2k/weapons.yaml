@@ -11,7 +11,7 @@ LMG:
 	Warhead:
 		Spread: 3
 		Versus: 
-			Wood: 40%
+			Wood: 25%
 			Light: 40%
 			Heavy: 20%
 			Concrete: 20%
@@ -136,7 +136,7 @@ HMG:
 	Warhead:
 		Spread: 3
 		Versus: 
-			Wood: 30%
+			Wood: 15%
 			Light: 45%
 			Heavy: 20%
 			Concrete: 20%
@@ -159,7 +159,7 @@ HMGo:
 	Warhead:
 		Spread: 3
 		Versus: 
-			Wood: 30%
+			Wood: 15%
 			Light: 45%
 			Heavy: 25%
 			Concrete: 20%
@@ -341,7 +341,7 @@ DevBullet:
 		Spread: 8
 		Versus: 
 			None: 25%
-			Wood: 50%
+			Wood: 25%
 			Light: 100%
 			Heavy: 80%
 			Concrete: 80%
