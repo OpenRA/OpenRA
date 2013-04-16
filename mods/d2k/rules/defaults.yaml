@@ -91,7 +91,7 @@
 	HiddenUnderFog:
 	AppearsOnRadar:
 	Burns:
-		Interval: 7
+		Interval: 4
 	ProximityCaptor:
 		Types:Husk
 	Tooltip:
@@ -106,7 +106,7 @@
 	AppearsOnRadar:
 	HiddenUnderFog:
 	Burns:
-		Interval: 7
+		Interval: 2
 	EditorAppearance:
 		RelativeToTopLeft: yes
 	Tooltip:
