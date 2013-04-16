@@ -35,7 +35,7 @@
 	Buildable:
 		Prerequisites: Conyard
 		Queue: Building
-		BuildPaletteOrder: 0
+		BuildPaletteOrder: 10
 		Hotkey: w
 	Selectable:
 		Bounds: 64,64
@@ -62,7 +62,7 @@
 	Buildable:
 		Prerequisites: Power
 		Queue: Building
-		BuildPaletteOrder: 15
+		BuildPaletteOrder: 40
 		Hotkey: b
 	Selectable:
 		Bounds: 64,64
@@ -103,7 +103,7 @@
 	Buildable:
 		Prerequisites: Power
 		Queue: Building
-		BuildPaletteOrder: 5
+		BuildPaletteOrder: 20
 		Hotkey: r
 	Selectable:
 		Bounds: 96,64
@@ -146,7 +146,7 @@
 	Buildable:
 		Prerequisites: Refinery
 		Queue: Building
-		BuildPaletteOrder: 10
+		BuildPaletteOrder: 30
 		Hotkey: i
 	Valued:
 		Cost: 150
@@ -178,7 +178,7 @@
 	Buildable:
 		Prerequisites: Refinery
 		Queue: Building
-		BuildPaletteOrder: 30
+		BuildPaletteOrder: 70
 		Hotkey: l
 	Selectable:
 		Bounds: 96,64
@@ -215,7 +215,7 @@
 	Buildable:
 		Prerequisites: Refinery
 		Queue: Building
-		BuildPaletteOrder: 35
+		BuildPaletteOrder: 100
 		Hotkey: h
 	Selectable:
 		Bounds: 96,96
@@ -254,7 +254,7 @@
 	Buildable:
 		Prerequisites: Barracks
 		Queue: Building
-		BuildPaletteOrder: 20
+		BuildPaletteOrder: 50
 		Hotkey: o
 	Selectable:
 		Bounds: 96,64
@@ -289,7 +289,7 @@
 	Buildable:
 		Prerequisites: Outpost
 		Queue: Building
-		BuildPaletteOrder: 60
+		BuildPaletteOrder: 80
 		Hotkey: c
 	Building:
 		Power: -40
@@ -325,7 +325,7 @@ WALL:
 		Queue: Building
 		Prerequisites: Barracks
 		Owner: atreides, harkonnen, ordos
-		BuildPaletteOrder: 25
+		BuildPaletteOrder: 60
 		#Hotkey: g
 	SoundOnDamageTransition:
 		DamagedSound:
@@ -373,7 +373,7 @@ GUNTOWER:
 		Queue: Building
 		Prerequisites: Barracks
 		Owner: atreides, harkonnen, ordos
-		BuildPaletteOrder: 40
+		BuildPaletteOrder: 90
 		Hotkey: g
 	Valued:
 		Cost: 550
@@ -430,7 +430,7 @@ ROCKETTOWER:
 		Queue: Building
 		Prerequisites: Outpost
 		Owner: atreides, harkonnen, ordos
-		BuildPaletteOrder: 55
+		BuildPaletteOrder: 120
 		Hotkey: m
 	Valued:
 		Cost: 750
@@ -489,7 +489,7 @@ REPAIR:
 		Queue: Building
 		Prerequisites: Heavy
 		Owner: atreides, harkonnen, ordos
-		BuildPaletteOrder: 45
+		BuildPaletteOrder: 130
 		Hotkey: e
 	Valued:
 		Cost: 500
@@ -519,7 +519,7 @@ REPAIR:
 	Buildable:
 		Prerequisites: Outpost
 		Queue: Building
-		BuildPaletteOrder: 50
+		BuildPaletteOrder: 110
 		Hotkey: t
 	Selectable:
 		Bounds: 96,96
@@ -547,7 +547,7 @@ RESEARCH:
 		Queue: Building
 		Prerequisites: Outpost
 		Owner: atreides, harkonnen, ordos
-		BuildPaletteOrder: 65
+		BuildPaletteOrder: 140
 		Hotkey: v
 	Selectable:
 		Bounds: 96,64
@@ -585,7 +585,7 @@ RESEARCH:
 	Buildable:
 		Prerequisites: Ix
 		Queue: Building
-		BuildPaletteOrder: 70
+		BuildPaletteOrder: 150
 		Hotkey: p
 	Selectable:
 		Bounds: 96,96
