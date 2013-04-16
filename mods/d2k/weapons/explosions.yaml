@@ -16,8 +16,8 @@ Atomic:
 			None: 100%
 			Wood: 100%
 			Light: 100%
-			Heavy: 80%
-			Concrete: 80%
+			Heavy: 50%
+			Concrete: 50%
 		Explosion: nuke
 		InfDeath: 5
 		ImpactSound: EXPLLG2
