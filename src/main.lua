@@ -129,7 +129,10 @@ ide = {
   wxver = string.match(wx.wxVERSION_STRING, "[%d%.]+"),
 }
 
--- add wx.wxMOD_RAW_CONTROL as it's missing in wxlua 2.8.12.3
+-- add wx.wxMOD_RAW_CONTROL as it's missing in wxlua 2.8.12.3;
+-- provide default for wx.wxMOD_CONTROL as it's missing in wxlua 2.8 that
+-- is available through Linux package managers
+if not wx.wxMOD_CONTROL then wx.wxMOD_CONTROL = 0x02 end
 if not wx.wxMOD_RAW_CONTROL then
   wx.wxMOD_RAW_CONTROL = ide.osname == 'Macintosh' and 0x10 or wx.wxMOD_CONTROL
 end

@@ -76,7 +76,9 @@ function OnEditMenu(event)
   if menu_id == ID_CUT then
     if editor:GetSelectionStart() == editor:GetSelectionEnd()
       then editor:LineCut() else editor:Cut() end
-  elseif menu_id == ID_COPY then editor:CopyAllowLine()
+  elseif menu_id == ID_COPY then
+    if editor:GetSelectionStart() == editor:GetSelectionEnd()
+      then editor:LineCopy() else editor:Copy() end
   elseif menu_id == ID_PASTE then editor:Paste()
   elseif menu_id == ID_SELECTALL then editor:SelectAll()
   elseif menu_id == ID_UNDO then editor:Undo()
