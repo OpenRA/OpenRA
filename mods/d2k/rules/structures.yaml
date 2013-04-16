@@ -171,6 +171,7 @@
 		PipCount: 5
 		Capacity: 1500
 	-EmitInfantryOnSell:
+	-Bib:
 
 ^LIGHT:
 	Inherits: ^Building
