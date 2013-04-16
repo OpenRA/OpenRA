@@ -274,10 +274,10 @@
 	RevealsShroud:
 		Range: 10
 	ProvidesRadar:
+	DetectCloaked:
+		Range: 8
 	ProvidesCustomPrerequisite:
 		Prerequisite: Outpost
-	DetectCloaked:
-		Range: 2
 
 ^STARPORT:
 	Inherits: ^Building
@@ -317,6 +317,8 @@
 	PrimaryBuilding:
 	RequiresPower:
 	CanPowerDown:
+	ProvidesCustomPrerequisite:
+		Prerequisite: Starport
 
 WALL:
 	Buildable:
