@@ -168,8 +168,10 @@ HMGo:
 		Damage: 40
 
 QuadRockets:
-	ROF: 60
-	Range: 6.5
+	ROF: 40
+	Burst: 2
+	BurstDelay: 25
+	Range: 7
 	Report: ROCKET1
 	ValidTargets: Ground, Air
 	Projectile: Missile
@@ -186,21 +188,21 @@ QuadRockets:
 	Warhead:
 		Spread: 3
 		Versus: 
-			None: 25%
-			Wood: 25%
-			Light: 85%
-			Heavy: 40%
-			Concrete: 30%
+			None: 35%
+			Wood: 35%
+			Light: 100%
+			Heavy: 100%
+			Concrete: 35%
 		InfDeath: 4
 		Explosion: med_explosion
 		WaterExplosion: med_splash
 		ImpactSound: kaboom12
 		SmudgeType: SandCrater, RockCrater
-		Damage: 70
+		Damage: 25
 
 TurretGun:
 	ROF: 35
-	Range: 6.75
+	Range: 7
 	Report: TURRET1
 	Projectile: Bullet
 		Speed: 55
