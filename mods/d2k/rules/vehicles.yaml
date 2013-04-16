@@ -275,7 +275,6 @@ SIEGETANK:
 		Recoil: 299
 		RecoilRecovery: 19
 		LocalOffset: 171,0,299
-		FireDelay: 10		
 	AttackFrontal:
 	RenderUnitTurreted:
 		Image: SIEGETANK
