@@ -5,11 +5,11 @@
 		TerrainSpeeds:
 			Sand: 90
 			Rock: 100
-			Transition: 90
+			Transition: 95
 			Concrete: 100
-			Spice: 70
-			SpiceBlobs: 70
-			Dune: 50
+			Spice: 80
+			SpiceBlobs: 80
+			Dune: 60
 		ROT: 5
 	SelectionDecorations:
 	Selectable: 
@@ -45,9 +45,9 @@
 	Mobile:
 		Crushes: crate
 		TerrainSpeeds:
-			Sand: 80
+			Sand: 85
 			Rock: 100
-			Transition: 85
+			Transition: 92
 			Concrete: 100
 			Spice: 80
 			SpiceBlobs: 80

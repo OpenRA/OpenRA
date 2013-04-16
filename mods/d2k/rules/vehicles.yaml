@@ -214,11 +214,12 @@ QUAD.starport:
 		Type: Heavy
 	Mobile:
 		Speed: 7
+		ROT: 6
 		Crushes: crate, infantry
 	RevealsShroud:
 		Range: 7
 	Turreted:
-		ROT: 6
+		ROT: 5
 		AlignWhenIdle: true
 	Armament:
 		Weapon: 90mm
