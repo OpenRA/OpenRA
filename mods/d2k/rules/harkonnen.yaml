@@ -133,6 +133,12 @@ MCVH.starport:
 #	RenderUnit:
 #		Image: TRIKE
 
+QUADH:
+	Inherits: QUAD
+	Buildable:
+		-Prerequisites:
+		Owner: harkonnen
+
 CARRYALLH:
 	Inherits: ^CARRYALL
 	RenderUnit:
