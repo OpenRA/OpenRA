@@ -182,7 +182,7 @@ DEVAST:
 	Buildable:
 		Queue: Armor
 		BuildPaletteOrder: 100
-		Prerequisites: heavyh,research
+		Prerequisites: Ix
 		Owner: harkonnen
 		BuiltAt: heavyh
 		Hotkey: d
