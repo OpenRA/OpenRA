@@ -321,7 +321,7 @@ MISSILETANK:
 		Icon: missiletankicon
 	Buildable:
 		Queue: Armor
-		Prerequisites: Heavy,Hitech
+		Prerequisites: Hitech
 		Owner: atreides, harkonnen, ordos
 		BuiltAt: heavya, heavyh
 		BuildPaletteOrder: 60
@@ -364,7 +364,7 @@ MISSILETANK.Husk:
 MISSILETANK.starport:
 	Inherits: MISSILETANK
 	Buildable:
-		Prerequisites: Heavy
+		Prerequisites: Hitech
 		Queue: Starport
 		Owner: atreides, harkonnen, ordos
 		BuiltAt: starporta, starporth, starporto
