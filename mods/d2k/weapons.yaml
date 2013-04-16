@@ -199,7 +199,7 @@ QuadRockets:
 		Damage: 70
 
 TurretGun:
-	ROF: 50
+	ROF: 35
 	Range: 6.75
 	Report: TURRET1
 	Projectile: Bullet
@@ -221,7 +221,7 @@ TurretGun:
 		Damage: 55
 
 TowerMissile:
-	ROF: 60
+	ROF: 40
 	Range: 8.25
 	Report: ROCKET1
 	ValidTargets: Ground, Air
