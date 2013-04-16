@@ -499,7 +499,7 @@ SPICEBLOOM:
 		Name: Spice Bloom
 	SeedsResource:
 		ResourceType: Spice
-		Interval: 175
+		Interval: 75
 	RadarColorFromTerrain:
 		Terrain: Spice
 

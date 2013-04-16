@@ -13,7 +13,7 @@ LMG:
 		Versus: 
 			Wood: 25%
 			Light: 40%
-			Heavy: 20%
+			Heavy: 15%
 			Concrete: 20%
 		Explosion: piffs
 		InfDeath: 2
@@ -189,7 +189,7 @@ QuadRockets:
 		Spread: 3
 		Versus: 
 			None: 35%
-			Wood: 35%
+			Wood: 45%
 			Light: 100%
 			Heavy: 100%
 			Concrete: 35%
@@ -397,7 +397,7 @@ FakeMissile:
 		Spread: 12
 		Versus: 
 			None: 100%
-			Wood: 50%
+			Wood: 60%
 			Light: 50%
 			Heavy: 25%
 			Concrete: 25%
