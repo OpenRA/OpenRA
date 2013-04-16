@@ -135,13 +135,13 @@ TRIKEO:
 		Owner: ordos
 		BuiltAt: lighto
 	Valued:
-		Cost: 250
+		Cost: 300
 	Tooltip:
 		Name: Raider Trike
 		Description: Improved Scout\n Strong vs Infantry
 		Icon: raidericon
 	Health:
-		HP: 100
+		HP: 110
 	Mobile:
 		ROT: 10
 		Speed: 14
