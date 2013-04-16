@@ -76,7 +76,6 @@ STARPORTA:
 MCVA:
 	Inherits: ^MCV
 	Buildable:
-		Prerequisites: heavya,repair
 		Owner: atreides
 		BuiltAt: heavya
 	Transforms:
@@ -192,7 +191,6 @@ SONICTANK:
 		LocalOffset: 640,0,427
 	AttackFrontal:
 	AutoTarget:
-		InitialStance: Defend
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
 	Explodes:

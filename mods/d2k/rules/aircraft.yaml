@@ -15,7 +15,7 @@
 	Helicopter:
 		InitialFacing: 0
 		ROT: 4
-		Speed: 20
+		Speed: 30
 		LandableTerrainTypes: Sand, Rock, Transition, Spice, Dune
 		RepairBuildings: repair
 		RearmBuildings: starporta,starporto,starporth
@@ -49,7 +49,7 @@ FRIGATE:
 		Description: Supply spacecraft
 	Plane:
 		ROT: 5
-		Speed: 30
+		Speed: 50
 		RepairBuildings: repair
 		RearmBuildings: starporta,starporto,starporth
 	Health:
@@ -91,7 +91,7 @@ ORNI:
 		LandWhenIdle: false
 		InitialFacing: 20
 		ROT: 6
-		Speed: 30
+		Speed: 40
 		RepairBuildings: repair
 		RearmBuildings: starporta,starporto,starporth
 	RenderUnit:
@@ -114,9 +114,11 @@ ORNI.bomber:
 		HP: 100
 	Armor:
 		Type: Light
+	RevealsShroud:
+		Range: 10
 	Plane:
 		ROT: 5
-		Speed: 35
+		Speed: 50
 		RepairBuildings: repair
 		RearmBuildings: starporta,starporto,starporth
 	LimitedAmmo:
@@ -143,9 +145,11 @@ CARRYALL.infantry:
 		HP: 200
 	Armor:
 		Type: Light
+	RevealsShroud:
+		Range: 12
 	Plane:
 		ROT: 4
-		Speed: 25
+		Speed: 40
 		RepairBuildings: repair
 		RearmBuildings: starporta,starporto,starporth
 	SmokeTrailWhenDamaged@0:

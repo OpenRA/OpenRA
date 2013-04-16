@@ -56,7 +56,7 @@ orni:
 		Start: 0
 		Facings: 32
 		Length: 3
-		Tick: 90
+		Tick: 120
 
 trike:
 	idle:

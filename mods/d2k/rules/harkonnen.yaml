@@ -65,7 +65,7 @@ PALACEH:
 		Description: Provides elite infantry\n  Special Ability: Death Hand Missile
 	NukePower:
 		Image: deathhandicon
-		ChargeTime: 540
+		ChargeTime: 300
 		Description: Death Hand
 		LongDesc: Launches a nuclear missile at a target location
 		BeginChargeSound: HI_PREP.AUD
@@ -81,7 +81,6 @@ PALACEH:
 MCVH:
 	Inherits: ^MCV
 	Buildable:
-		Prerequisites: heavyh,repair
 		Owner: harkonnen
 		BuiltAt: heavyh
 	Transforms:
@@ -149,7 +148,6 @@ COMBATH:
 	Tooltip:
 		Icon: combathicon
 	Buildable:
-		Prerequisites: heavyh
 		Owner: harkonnen
 		BuiltAt: heavyh
 	Mobile:
@@ -184,7 +182,7 @@ DEVAST:
 	Buildable:
 		Queue: Armor
 		BuildPaletteOrder: 100
-		Prerequisites: heavyh,research
+		Prerequisites: Ix
 		Owner: harkonnen
 		BuiltAt: heavyh
 		Hotkey: d
@@ -210,7 +208,6 @@ DEVAST:
 		LocalOffset: 683,213,85, 683,-171,85
 	AttackFrontal:
 	AutoTarget:
-		InitialStance: Defend
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
 	Explodes:

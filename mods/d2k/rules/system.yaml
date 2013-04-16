@@ -8,7 +8,7 @@ Player:
 		BlockedAudio: NoRoom
 	ClassicProductionQueue@Infantry:
 		Type: Infantry
-		LowPowerSlowdown: 3
+		LowPowerSlowdown: 2
 		BlockedAudio: NoRoom
 	ClassicProductionQueue@Vehicle:
 		Type: Vehicle
@@ -22,8 +22,8 @@ Player:
 		BlockedAudio: NoRoom
 	ClassicProductionQueue@Starport:
 		Type: Starport
-		BuildSpeedModified: .2
-		LowPowerSlowdown: 2
+		BuildSpeedModifier: .2
+		LowPowerSlowdown: 1
 		BlockedAudio: NoRoom
 		QueuedAudio: OrderPlaced
 		ReadyAudio:
@@ -269,6 +269,7 @@ Player:
 		RemapIndex: 255, 254, 253, 252, 251, 250, 249, 248, 247, 246, 245, 244, 243, 242, 241, 240
 	BaseAttackNotifier:
 	Shroud:
+		Shroud: false
 	HarvesterAttackNotifier:
 
 World:
@@ -397,33 +398,17 @@ CRATE:
 		Lifetime: 120
 		TerrainTypes: Sand, Dune, Rock
 	GiveCashCrateAction@1:
-		Amount: 500
-		SelectionShares: 20
+		Amount: 750
+		SelectionShares: 25
 		UseCashTick: yes
 	GiveCashCrateAction@2:
-		Amount: 750
+		Amount: 1000
 		SelectionShares: 50
 		UseCashTick: yes
 	GiveCashCrateAction@3:
-		Amount: 1000
-		SelectionShares: 30
-		UseCashTick: yes
-	GiveCashCrateAction@4:
 		Amount: 1500
-		SelectionShares: 10
+		SelectionShares: 25
 		UseCashTick: yes
-	GiveMcvCrateAction@Atreides:
-		SelectionShares: 0
-		NoBaseSelectionShares: 9001
-		Unit: mcva
-	GiveMcvCrateAction@Harkonnen:
-		SelectionShares: 0
-		NoBaseSelectionShares: 9001
-		Unit: mcvh
-	GiveMcvCrateAction@Ordos:
-		SelectionShares: 0
-		NoBaseSelectionShares: 9001
-		Unit: mcvo
 	GiveUnitCrateAction@TrikeA:
 		SelectionShares: 20
 		Unit: trikea
@@ -466,6 +451,25 @@ CRATE:
 	GiveUnitCrateAction@DeviatorTank:
 		SelectionShares: 7
 		Unit: deviatortank
+	GiveMcvCrateAction@Atreides:
+		SelectionShares: 0
+		NoBaseSelectionShares: 9001
+		Unit: mcva
+	GiveMcvCrateAction@Harkonnen:
+		SelectionShares: 0
+		NoBaseSelectionShares: 9001
+		Unit: mcvh
+	GiveMcvCrateAction@Ordos:
+		SelectionShares: 0
+		NoBaseSelectionShares: 9001
+		Unit: mcvo
+	CloakCrateAction:
+		SelectionShares: 15
+		InitialDelay: 15
+		CloakDelay: 90
+		CloakSound: appear1.aud
+		UncloakSound: appear1.aud
+		Effect: cloak
 	RenderSimple:
 	BelowUnits:
 	ProximityCaptor:
