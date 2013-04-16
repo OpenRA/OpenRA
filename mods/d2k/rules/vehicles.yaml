@@ -138,7 +138,6 @@ HARVESTER.starport:
 		LocalOffset: 256,0,128
 	AttackFrontal:
 	AutoTarget:
-		InitialStance: Defend
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
 	Explodes:
@@ -181,7 +180,6 @@ QUAD:
 		LocalOffset: 128,0,85#-4
 	AttackFrontal:
 	AutoTarget:
-		InitialStance: Defend
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
 	Explodes:
@@ -230,7 +228,6 @@ QUAD.starport:
 	AttackTurreted:
 	RenderUnitTurreted:
 	AutoTarget:
-		InitialStance: Defend
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
 	Explodes:

@@ -208,7 +208,6 @@ DEVAST:
 		LocalOffset: 683,213,85, 683,-171,85
 	AttackFrontal:
 	AutoTarget:
-		InitialStance: Defend
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
 	Explodes:
