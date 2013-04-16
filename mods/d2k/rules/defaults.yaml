@@ -143,7 +143,6 @@
 		TargetTypes: Ground
 	RenderInfantry:
 	AutoTarget:
-		InitialStance: Defend
 	DebugRetiliateAgainstAggressor:
 	DebugNextAutoTargetScanTime:
 	AttackMove:
