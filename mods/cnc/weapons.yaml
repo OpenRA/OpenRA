@@ -111,7 +111,7 @@ IonCannon:
 Sniper:
 	Report: RAMGUN2
 	ROF: 40
-	Range: 5.5
+	Range: 6
 	Projectile: Bullet
 		Speed: 100
 	Warhead: 
@@ -137,7 +137,7 @@ HighV:
 			None: 100%
 			Wood: 50%
 			Light: 100%
-			Heavy: 50%
+			Heavy: 25%
 		InfDeath: 2
 		Explosion: piffs
 
@@ -515,7 +515,7 @@ TurretGun:
 	Warhead:
 		Spread: 3
 		Versus: 
-			None: 30%
+			None: 25%
 			Wood: 25%
 			Light: 75%
 			Heavy: 100%
@@ -545,7 +545,7 @@ MammothMissiles:
 	Warhead:
 		Spread: 6
 		Versus: 
-			None: 30%
+			None: 40%
 			Wood: 75%
 			Light: 75%
 			Heavy: 50%
@@ -578,7 +578,7 @@ MammothMissiles:
 		Spread: 15
 		Versus: 
 			None: 25%
-			Wood: 25%
+			Wood: 30%
 			Light: 100%
 			Heavy: 50%
 		InfDeath: 4
@@ -620,7 +620,7 @@ MammothMissiles:
 
 ArtilleryShell:
 	ROF: 65
-	Range: 12
+	Range: 11
 	MinRange: 2
 	Report: TNKFIRE2
 	Projectile: Bullet
@@ -704,7 +704,7 @@ TowerMissle:
 		High: yes
 		Shadow: no
 		Proximity: yes
-		Inaccuracy: 3
+		Inaccuracy: 5
 		Image: DRAGON
 		ROT: 10
 		Trail: smokey
@@ -713,7 +713,7 @@ TowerMissle:
 	Warhead:
 		Spread: 6
 		Versus: 
-			None: 50%
+			None: 25%
 			Wood: 25%
 			Light: 100%
 			Heavy: 75%

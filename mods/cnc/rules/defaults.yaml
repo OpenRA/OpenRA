@@ -126,6 +126,7 @@
 	Buildable:
 		Queue: Infantry
 	TakeCover:
+		ProneSpeed: 0.6
 	RenderInfantryProne:
 	AttackMove:
 	Passenger:
@@ -139,6 +140,7 @@
 	SpawnViceroid:
 		Probability: 2
 	CrushableInfantry:
+		WarnProbability: 60
 	RepairableNear:
 		Buildings: hosp
 		CloseEnough: 1
@@ -226,7 +228,7 @@
 		RepairPercent: 40
 		RepairStep: 14
 	Building:
-		Adjacent: 5
+		Adjacent: 4
 		RequiresBaseProvider: true
 		Dimensions: 1,1
 		Footprint: x
