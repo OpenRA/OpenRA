@@ -139,6 +139,7 @@
 	SpawnViceroid:
 		Probability: 2
 	CrushableInfantry:
+		WarnProbability: 60
 	RepairableNear:
 		Buildings: hosp
 		CloseEnough: 1
