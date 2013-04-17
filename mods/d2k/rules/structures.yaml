@@ -522,7 +522,7 @@ REPAIR:
 	Selectable:
 		Bounds: 96,96
 	Valued:
-		Cost: 850
+		Cost: 750
 	Tooltip:
 		Name: High Tech Facility
 		Description: Unlocks advanced technology
@@ -543,14 +543,14 @@ RESEARCH:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		Prerequisites: Outpost
+		Prerequisites: Hitech
 		Owner: atreides, harkonnen, ordos
 		BuildPaletteOrder: 140
 		Hotkey: v
 	Selectable:
 		Bounds: 96,64
 	Valued:
-		Cost: 1800
+		Cost: 1500
 	Tooltip:
 		Name: IX Research Center
 		Description: Unlocks experimental tanks\n  Special Ability: Carryall Combat Drop
