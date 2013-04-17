@@ -17,7 +17,7 @@ FACT:
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Health:
-		HP: 1500
+		HP: 1400
 	Armor: 
 		Type: Wood
 	RevealsShroud:
