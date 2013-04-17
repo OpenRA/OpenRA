@@ -493,6 +493,7 @@ namespace OpenRA.Utility
 				"Please do not edit it directly, but add new `[Desc(\"String\")]` tags to the source code. This file has been automatically generated on {0}. " +
 				"Type `make docs` to create a new one. A copy of this is uploaded to https://github.com/OpenRA/OpenRA/wiki/Traits " +
 				"as well as compiled to HTML and shipped with every release during the automated packaging process.", DateTime.Now);
+			Console.WriteLine();
 			Console.WriteLine("```yaml");
 			Console.WriteLine();
 
@@ -503,10 +504,10 @@ namespace OpenRA.Utility
 
 				var traitName = t.Name.EndsWith("Info") ? t.Name.Substring(0, t.Name.Length - 4) : t.Name;
 				var traitDescLines = t.GetCustomAttributes<DescAttribute>(false).SelectMany(d => d.Lines);
-				Console.WriteLine("{0}:{1}", traitName, traitDescLines.Count() == 1 ? " # " + traitDescLines.First() : "");
+				Console.WriteLine("\t{0}:{1}", traitName, traitDescLines.Count() == 1 ? " # " + traitDescLines.First() : "");
 				if (traitDescLines.Count() >= 2)
 					foreach (var line in traitDescLines)
-						Console.WriteLine("\t# {0}", line);
+						Console.WriteLine("\t\t# {0}", line);
 
 				var liveTraitInfo = Game.modData.ObjectCreator.CreateBasic(t);
 
@@ -515,10 +516,10 @@ namespace OpenRA.Utility
 					var fieldDescLines = f.GetCustomAttributes<DescAttribute>(true).SelectMany(d => d.Lines);
 					var fieldType = FriendlyTypeName(f.FieldType);
 					var defaultValue = FieldSaver.SaveField(liveTraitInfo, f.Name).Value.Value;
-					Console.WriteLine("\t{0}: {1} # Type: {2}{3}", f.Name, defaultValue, fieldType, fieldDescLines.Count() == 1 ? ". " + fieldDescLines.First() : "");
+					Console.WriteLine("\t\t{0}: {1} # Type: {2}{3}", f.Name, defaultValue, fieldType, fieldDescLines.Count() == 1 ? ". " + fieldDescLines.First() : "");
 					if (fieldDescLines.Count() >= 2)
 						foreach (var line in fieldDescLines)
-							Console.WriteLine("\t# {0}", line);
+							Console.WriteLine("\t\t# {0}", line);
 				}
 			}
 
