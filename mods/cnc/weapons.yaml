@@ -545,7 +545,7 @@ MammothMissiles:
 	Warhead:
 		Spread: 6
 		Versus: 
-			None: 30%
+			None: 40%
 			Wood: 75%
 			Light: 75%
 			Heavy: 50%
