@@ -59,11 +59,11 @@ local function setTarget(editor, fDown, fInclude)
   local len = editor:GetLength()
   local s, e
   if fDown then
-    e= len
-    s = iff(fInclude, selStart, selEnd +1)
+    s = iff(fInclude, selStart, selEnd)
+    e = len
   else
     s = 0
-    e = iff(fInclude, selEnd, selStart-1)
+    e = iff(fInclude, selEnd, selStart)
   end
   if not fDown and not fInclude then s, e = e, s end
   editor:SetTargetStart(s)
