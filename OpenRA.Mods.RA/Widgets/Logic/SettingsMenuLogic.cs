@@ -74,6 +74,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			useClassicMouseStyleCheckbox.IsChecked = () => Game.Settings.Game.UseClassicMouseStyle;
 			useClassicMouseStyleCheckbox.OnClick = () => Game.Settings.Game.UseClassicMouseStyle ^= true;
 
+			var allowNatDiscoveryCheckbox = general.Get<CheckboxWidget>("ALLOW_NAT_DISCOVERY_CHECKBOX");
+			allowNatDiscoveryCheckbox.IsChecked = () => Game.Settings.Server.DiscoverNatDevices;
+			allowNatDiscoveryCheckbox.OnClick = () => Game.Settings.Server.DiscoverNatDevices ^= true;
+
 			// Audio
 			var audio = bg.Get("AUDIO_PANE");
 			var soundSettings = Game.Settings.Sound;
@@ -226,13 +230,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			botdebugCheckbox.IsChecked = () => Game.Settings.Debug.BotDebug;
 			botdebugCheckbox.OnClick = () => Game.Settings.Debug.BotDebug ^= true;
 
-			var longTickThreshold = debug.Get<SliderWidget>("LONG_TICK_THRESHOLD");
-			longTickThreshold.Value = Game.Settings.Debug.LongTickThreshold;
-			longTickThreshold.OnChange += x => Game.Settings.Debug.LongTickThreshold = x;
-
 			var ignoreVersionMismatchCheckbox = debug.Get<CheckboxWidget>("IGNOREVERSIONMISMATCH_CHECKBOX");
 			ignoreVersionMismatchCheckbox.IsChecked = () => Game.Settings.Debug.IgnoreVersionMismatch;
 			ignoreVersionMismatchCheckbox.OnClick = () => Game.Settings.Debug.IgnoreVersionMismatch ^= true;
+
+			var verboseNatDiscoveryCheckbox = debug.Get<CheckboxWidget>("VERBOSE_NAT_DISCOVERY_CHECKBOX");
+			verboseNatDiscoveryCheckbox.IsChecked = () => Game.Settings.Server.VerboseNatDiscovery;
+			verboseNatDiscoveryCheckbox.OnClick = () => Game.Settings.Server.VerboseNatDiscovery ^= true;
 
 			bg.Get<ButtonWidget>("BUTTON_CLOSE").OnClick = () =>
 			{
