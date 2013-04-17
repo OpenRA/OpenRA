@@ -226,7 +226,7 @@
 		RepairPercent: 40
 		RepairStep: 14
 	Building:
-		Adjacent: 5
+		Adjacent: 4
 		RequiresBaseProvider: true
 		Dimensions: 1,1
 		Footprint: x
