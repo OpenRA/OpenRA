@@ -17,7 +17,7 @@ FACT:
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Health:
-		HP: 1500
+		HP: 1400
 	Armor: 
 		Type: Wood
 	RevealsShroud:
@@ -399,11 +399,11 @@ HQ:
 FIX:
 	Inherits: ^Building
 	Valued:
-		Cost: 600
+		Cost: 500
 	Tooltip:
 		Name: Repair Facility
 		Icon: fixicnh
-		Description: Repairs vehicles and allows the\nconstruction of additional bases.
+		Description: Repairs vehicles
 	Buildable:
 		BuildPaletteOrder: 80
 		Prerequisites: vehicleproduction
@@ -640,7 +640,7 @@ GTWR:
 		Power: -10
 	-GivesBuildableArea:
 	Health:
-		HP: 600
+		HP: 400
 	RevealsShroud:
 		Range: 7
 	Armament:
@@ -676,7 +676,7 @@ ATWR:
 		Prerequisites: anyhq
 		Owner: gdi
 	Building:
-		Power: -30
+		Power: -40
 		Footprint: _ x
 		Dimensions: 1,2
 	-GivesBuildableArea:

@@ -343,6 +343,7 @@ sam:
 	opening:
 		Start: 1
 		Length: 16
+		Tick: 30
 	idle:
 		Start: 17
 		Facings: 32
@@ -354,6 +355,7 @@ sam:
 	damaged-opening:
 		Start: 65
 		Length: 16
+		Tick: 30
 	damaged-idle:
 		Start: 81
 		Facings: 32
