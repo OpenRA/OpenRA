@@ -49,12 +49,12 @@ frame:Connect(ID_REPLACEINFILES, wx.wxEVT_COMMAND_MENU_SELECTED,
 frame:Connect(ID_FINDNEXT, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event) findReplace:GetSelectedString() findReplace:FindString() end)
 frame:Connect(ID_FINDNEXT, wx.wxEVT_UPDATE_UI,
-  function (event) event:Enable(findReplace:GetSelectedString() and findReplace:HasText()) end)
+  function (event) event:Enable(findReplace:GetSelectedString() or findReplace:HasText()) end)
 
 frame:Connect(ID_FINDPREV, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event) findReplace:GetSelectedString() findReplace:FindString(true) end)
 frame:Connect(ID_FINDPREV, wx.wxEVT_UPDATE_UI,
-  function (event) event:Enable(findReplace:GetSelectedString() and findReplace:HasText()) end)
+  function (event) event:Enable(findReplace:GetSelectedString() or findReplace:HasText()) end)
 
 -------------------- Find replace end
 
