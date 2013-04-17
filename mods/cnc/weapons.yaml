@@ -578,7 +578,7 @@ MammothMissiles:
 		Spread: 15
 		Versus: 
 			None: 25%
-			Wood: 25%
+			Wood: 30%
 			Light: 100%
 			Heavy: 50%
 		InfDeath: 4
@@ -620,7 +620,7 @@ MammothMissiles:
 
 ArtilleryShell:
 	ROF: 65
-	Range: 12
+	Range: 11
 	MinRange: 2
 	Report: TNKFIRE2
 	Projectile: Bullet
