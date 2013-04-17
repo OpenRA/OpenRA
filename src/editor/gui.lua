@@ -239,7 +239,7 @@ do
               CloseButton(true):MaximizeButton(false):PinButton(true))
   mgr:AddPane(frame.bottomnotebook, wxaui.wxAuiPaneInfo():
               Name("bottomnotebook"):
-              MinSize(200,200):FloatingSize(400,250):
+              MinSize(100,100):BestSize(200,200):FloatingSize(400,200):
               Bottom():Layer(1):Position(1):
               CloseButton(true):MaximizeButton(false):PinButton(true))
 
