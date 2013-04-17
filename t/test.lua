@@ -26,12 +26,12 @@ ide.app.postinit = function()
   for _,file in ipairs(files) do
     local testfn, err = loadfile(file)
     if not testfn then
-      DisplayOutputLn(("Error loading test file '%s': '%s'."):format(file, err))
+      print(("Error loading test file '%s': '%s'."):format(file, err))
     else
       setfenv(testfn, env)
       local ok, err = pcall(testfn)
       if not ok then
-        DisplayOutputLn(("Error executing test file '%s': '%s'."):format(file, err))
+        print(("Error executing test file '%s': '%s'."):format(file, err))
       end
     end
   end

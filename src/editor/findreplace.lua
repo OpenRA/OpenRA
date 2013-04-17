@@ -53,19 +53,23 @@ local function setSearchFlags(editor)
   editor:SetSearchFlags(flags)
 end
 
-local function setTarget(editor, fDown, fInclude)
+local function setTarget(editor, fDown, fAll, fWrap)
   local selStart = editor:GetSelectionStart()
   local selEnd = editor:GetSelectionEnd()
   local len = editor:GetLength()
   local s, e
   if fDown then
-    s = iff(fInclude, selStart, selEnd)
+    s = iff(fAll, selStart, selEnd)
     e = len
   else
     s = 0
-    e = iff(fInclude, selEnd, selStart)
+    e = iff(fAll, selEnd, selStart)
   end
-  if not fDown and not fInclude then s, e = e, s end
+  -- if going up and not search/replace All, then switch the range to
+  -- allow the next match to be properly marked
+  if not fDown and not fAll then s, e = e, s end
+  -- if wrap around and search all requested, then search the entire document
+  if fAll and fWrap then s, e = 0, len end
   editor:SetTargetStart(s)
   editor:SetTargetEnd(e)
   return e
@@ -102,7 +106,6 @@ function findReplace:FindString(reverse)
   if findReplace:HasText() then
     local editor = findReplace:GetEditor()
     local fDown = iff(reverse, not findReplace.fDown, findReplace.fDown)
-    local lenFind = string.len(findReplace.findText)
     setSearchFlags(editor)
     setTarget(editor, fDown)
     local posFind = editor:SearchInTarget(findReplace.findText)
@@ -158,31 +161,33 @@ end
 -- registers every position item was found
 -- supposed for "Search/Replace in Files"
 
-function findReplace:ReplaceString(fReplaceAll,inFileRegister)
+function findReplace:ReplaceString(fReplaceAll, inFileRegister)
   local replaced = false
 
   if findReplace:HasText() then
     local replaceLen = string.len(findReplace.replaceText)
-    local findLen = string.len(findReplace.findText)
     local editor = findReplace:GetEditor()
     local endTarget = inFileRegister and setTargetAll(editor) or
-    setTarget(editor, findReplace.fDown, fReplaceAll)
+      setTarget(editor, findReplace.fDown, fReplaceAll, findReplace.fWrap)
 
     if fReplaceAll then
       setSearchFlags(editor)
       local posFind = editor:SearchInTarget(findReplace.findText)
       if (posFind ~= -1) then
-        if(not inFileRegister) then editor:BeginUndoAction() end
+        if (not inFileRegister) then editor:BeginUndoAction() end
         while posFind ~= -1 do
-          if(inFileRegister) then inFileRegister(posFind) end
+          if (inFileRegister) then inFileRegister(posFind) end
 
+          local length = editor:GetLength()
           editor:ReplaceTarget(findReplace.replaceText)
           editor:SetTargetStart(posFind + replaceLen)
-          endTarget = endTarget + replaceLen - findLen
+          -- adjust the endTarget as the position could have changed;
+          -- can't simply subtract findText length as it could be a regexp
+          endTarget = endTarget + (editor:GetLength() - length)
           editor:SetTargetEnd(endTarget)
           posFind = editor:SearchInTarget(findReplace.findText)
         end
-        if(not inFileRegister) then editor:EndUndoAction() end
+        if (not inFileRegister) then editor:EndUndoAction() end
 
         replaced = true
       end
@@ -252,7 +257,6 @@ function findReplace:RunInFiles(replace)
     wx.wxDefaultPosition, wx.wxSize(1,1), wx.wxBORDER_STATIC)
   findReplace.occurrences = 0
 
-  local fname = wx.wxFileName(findReplace.filedirText)
   local startdir = findReplace.filedirText
   DisplayOutput("FindInFiles: "..(replace and "Replacing" or "Searching for").." '"..findReplace.findText.."'.\n")
 
