@@ -640,7 +640,7 @@ GTWR:
 		Power: -10
 	-GivesBuildableArea:
 	Health:
-		HP: 600
+		HP: 400
 	RevealsShroud:
 		Range: 7
 	Armament:
@@ -676,7 +676,7 @@ ATWR:
 		Prerequisites: anyhq
 		Owner: gdi
 	Building:
-		Power: -30
+		Power: -40
 		Footprint: _ x
 		Dimensions: 1,2
 	-GivesBuildableArea:
