@@ -399,11 +399,11 @@ HQ:
 FIX:
 	Inherits: ^Building
 	Valued:
-		Cost: 600
+		Cost: 500
 	Tooltip:
 		Name: Repair Facility
 		Icon: fixicnh
-		Description: Repairs vehicles and allows the\nconstruction of additional bases.
+		Description: Repairs vehicles
 	Buildable:
 		BuildPaletteOrder: 80
 		Prerequisites: vehicleproduction
