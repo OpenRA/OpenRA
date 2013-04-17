@@ -126,6 +126,7 @@
 	Buildable:
 		Queue: Infantry
 	TakeCover:
+		ProneSpeed: 0.6
 	RenderInfantryProne:
 	AttackMove:
 	Passenger:
