@@ -42,6 +42,7 @@ Players:
 		InitialCash: 20
 		Allies: GoodGuy
 		Enemies: BadGuy,Creeps
+		Required: True
 	PlayerReference@Neutral:
 		Name: Neutral
 		OwnsWorld: True

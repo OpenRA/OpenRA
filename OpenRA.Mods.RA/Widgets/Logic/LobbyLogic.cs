@@ -258,7 +258,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var startGameButton = lobby.Get<ButtonWidget>("START_GAME_BUTTON");
 			startGameButton.IsVisible = () => Game.IsHost;
-			startGameButton.IsDisabled = () => gameStarting;
+			startGameButton.IsDisabled = () => gameStarting
+				|| orderManager.LobbyInfo.Slots.Any(sl => sl.Value.Required && orderManager.LobbyInfo.ClientInSlot(sl.Key) == null);
 			startGameButton.OnClick = () =>
 			{
 				gameStarting = true;
