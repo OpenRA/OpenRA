@@ -265,7 +265,7 @@ TowerMissile:
 		Versus: 
 			None: 30%
 			Wood: 50%
-			Light: 65%
+			Light: 80%
 			Concrete: 40%
 		Explosion: med_explosion
 		ImpactSound: kaboom30
@@ -286,7 +286,7 @@ TowerMissile:
 		Versus: 
 			None: 30%
 			Wood: 50%
-			Light: 65%
+			Light: 80%
 			Concrete: 40%
 		Explosion: med_explosion
 		ImpactSound: kaboom30
