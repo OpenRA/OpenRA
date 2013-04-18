@@ -426,6 +426,7 @@
     <Compile Include="RepairsBridges.cs" />
     <Compile Include="Activities\RepairBridge.cs" />
     <Compile Include="BridgeHut.cs" />
+    <Compile Include="Lint\CheckSequences.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

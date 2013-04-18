@@ -25,14 +25,14 @@ Background@INSTALL_PANEL:
 			Y:90
 			Width:PARENT_RIGHT
 			Height:25
-			Text:It requires the original Dune 2000 (and still some Red Alert) game content.
+			Text:It requires the original Dune 2000 assets whose fileformats differ from other C&C games.
 			Align:Center
 		Label@DESC3:
 			X:0
 			Y:130
 			Width:PARENT_RIGHT
 			Height:25
-			Text:The easiest way is to simply click download to get already prepared files and restart.
+			Text:The easiest way is to simply click download to fetch already prepared files and restart.
 			Align:Center
 		Label@DESC4:
 			X:0
