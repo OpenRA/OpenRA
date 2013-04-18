@@ -336,21 +336,15 @@ namespace OpenRA.Server
 
 				OpenRA.Network.Session.Client clientAdmin = lobbyInfo.Clients.Where(c1 => c1.IsAdmin).Single();
 				
-				Log.Write("server", "Client {0}: Accepted connection from {1}",
-					newConn.PlayerIndex, newConn.socket.RemoteEndPoint);
+				Log.Write("server", "Client {0}: Accepted connection from {1} with {2} ms ping latency.",
+				          newConn.PlayerIndex, newConn.socket.RemoteEndPoint, newConn.Latency);
 
 				foreach (var t in ServerTraits.WithInterface<IClientJoined>())
 					t.ClientJoined(this, newConn);
 
-				SendChat(newConn, "has joined the game. Ping: {0} ms".F(newConn.Latency));
+				SendChat(newConn, "has joined the game.");
 
-				if (newConn.Latency > highestLatency)
-					highestLatency = newConn.Latency;
-
-				lobbyInfo.GlobalSettings.OrderLatency = highestLatency / 40; // 1 frame is 40 ms
-				if (lobbyInfo.GlobalSettings.OrderLatency < 1) // should never be 0
-					lobbyInfo.GlobalSettings.OrderLatency = 1;
-
+				SetDynamicOrderLag();
 				SyncLobbyInfo();
 
 				if (File.Exists("{0}motd_{1}.txt".F(Platform.SupportDir, lobbyInfo.GlobalSettings.Mods[0])))
@@ -370,8 +364,6 @@ namespace OpenRA.Server
 				if (mods.Any(m => m.Contains("{DEV_VERSION}")))
 					SendChat(newConn, "is running a non-versioned development build, "+
 					"and may cause desync if it contains any incompatible changes.");
-
-				Game.Debug("Order lag has been adjusted to {0} frames.".F(lobbyInfo.GlobalSettings.OrderLatency));
 			}
 			catch (Exception) { DropClient(newConn); }
 		}
@@ -545,7 +537,8 @@ namespace OpenRA.Server
 					}
 				}
 
-				//TODO: if (highestLatency == toDrop.Latency) then find the new highestLatency
+				if (highestLatency == toDrop.Latency)
+					SetDynamicOrderLag();
 
 				DispatchOrders( toDrop, toDrop.MostRecentFrame, new byte[] { 0xbf } );
 
@@ -560,6 +553,23 @@ namespace OpenRA.Server
 				toDrop.socket.Disconnect(false);
 			}
 			catch { }
+		}
+
+		public void SetDynamicOrderLag()
+		{
+			foreach (var conn in conns)
+			{
+				if (conn.Latency > highestLatency)
+					highestLatency = conn.Latency;
+			}
+
+			Log.Write("server", "Measured {0} ms as the highest connection round trip time.".F(highestLatency));
+
+			lobbyInfo.GlobalSettings.OrderLatency = highestLatency / 40; // 1 frame is 40 ms
+			if (lobbyInfo.GlobalSettings.OrderLatency < 1) // should never be 0
+				lobbyInfo.GlobalSettings.OrderLatency = 1;
+
+			Log.Write("server", "Order lag has been adjusted to {0} frames.".F(lobbyInfo.GlobalSettings.OrderLatency));
 		}
 
 		public void SyncLobbyInfo()
