@@ -38,6 +38,7 @@ Players:
 		LockTeam: True
 		Allies: Allies2,Allies
 		Enemies: Soviets
+		Required: True
 	PlayerReference@Allies2:
 		Name: Allies2
 		Playable: True

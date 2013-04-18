@@ -45,6 +45,7 @@ Players:
 		LockSpawn: True
 		LockTeam: True
 		Enemies: GDI,Neutral
+		Required: True
 
 Actors:
 	Actor0: rock2

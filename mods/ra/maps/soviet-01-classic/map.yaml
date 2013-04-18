@@ -50,6 +50,7 @@ Players:
 		LockSpawn: True
 		LockTeam: True
 		Enemies: GoodGuy,France,Germany,Turkey
+		Required: True
 	PlayerReference@Turkey:
 		Name: Turkey
 		Race: allies

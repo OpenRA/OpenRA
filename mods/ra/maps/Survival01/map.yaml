@@ -41,6 +41,7 @@ Players:
 		LockSpawn: True
 		LockTeam: True
 		Enemies: Soviets
+		Required: True
 	PlayerReference@Soviets:
 		Name: Soviets
 		Race: soviet
