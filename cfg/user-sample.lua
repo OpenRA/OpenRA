@@ -132,3 +132,6 @@ debugger.runonstart = true
 
 -- to set compact fold that doesn't include empty lines after a block
 editor.foldcompact = true
+
+-- to disable zoom with mouse wheel as it may be too sensitive on OSX
+editor.nomousezoom = true
