@@ -105,7 +105,7 @@ Slung:
 		Angle: .15
 		Proximity: true
 		Inaccuracy: 12
-		Image: DRAGON
+		Image: MISSILE
 	Warhead:
 		Spread: 6
 		Versus: 
@@ -235,7 +235,6 @@ TowerMissile:
 		Inaccuracy: 12
 		Image: MISSILE2
 		ROT: 10
-		Trail: smokey
 		Speed: 45
 		RangeLimit: 50
 	Warhead:
@@ -406,8 +405,10 @@ Sound:
 	ROF: 85
 	Range: 8.5
 	Report: SONIC1
-	#Charges: yes
-	Projectile: TeslaZap
+	Projectile: LaserZap
+		BeamRadius: 1
+		BeamDuration: 8
+		UsePlayerColor: true
 	Warhead:
 		Spread: 1
 		Versus: 
