@@ -44,6 +44,7 @@ Players:
 		LockTeam: True
 		Allies: Creeps
 		Enemies: Soviets
+		Required: True
 	PlayerReference@Soviets:
 		Name: Soviets
 		Race: soviet

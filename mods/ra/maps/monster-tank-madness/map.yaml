@@ -32,6 +32,7 @@ Players:
 		LockSpawn: True
 		LockTeam: True
 		Enemies: BadGuy,USSR,Ukraine,Turkey
+		Required: True
 	PlayerReference@BadGuy:
 		Name: BadGuy
 		Race: soviet
