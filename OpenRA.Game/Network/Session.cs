@@ -61,6 +61,7 @@ namespace OpenRA.Network
 			public bool IsAdmin;
 			public bool IsReady { get { return State == ClientState.Ready; } }
 			public bool IsObserver { get { return Slot == null; } }
+			public int Ping = -1;
 		}
 
 		public class Slot
@@ -82,7 +83,7 @@ namespace OpenRA.Network
 			public string Map;
 			public string[] Ban;
 			public string[] Mods = { "ra" };	// mod names
-			public int OrderLatency = 3;		// x 40 = ms
+			public int OrderLatency = 3;		// net tick frames (x 120 = ms)
 			public int RandomSeed = 0;
 			public bool FragileAlliances = false;	// Allow diplomatic stance changes after game start.
 			public bool AllowCheats = false;

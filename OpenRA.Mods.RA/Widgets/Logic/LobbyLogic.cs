@@ -477,6 +477,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					template.Get<LabelWidget>("NAME").GetText = () => client.Name;
 					if (client.IsAdmin)
 						template.Get<LabelWidget>("NAME").Font = "Bold";
+					if (client.Ping > -1)
+						template.Get<LabelWidget>("NAME").GetColor = () => LobbyUtils.GetPingColor(client.Ping);
+
 					var color = template.Get<ColorBlockWidget>("COLOR");
 					color.GetColor = () => client.ColorRamp.GetColor(0);
 

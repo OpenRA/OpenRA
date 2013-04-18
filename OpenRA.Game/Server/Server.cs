@@ -322,6 +322,8 @@ namespace OpenRA.Server
 				preConns.Remove(newConn);
 				conns.Add(newConn);
 
+				client.Ping = newConn.Latency;
+
 				// Enforce correct PlayerIndex and Slot
 				client.Index = newConn.PlayerIndex;
 				client.Slot = lobbyInfo.FirstEmptySlot();
@@ -565,7 +567,7 @@ namespace OpenRA.Server
 
 			Log.Write("server", "Measured {0} ms as the highest connection round trip time.".F(highestLatency));
 
-			lobbyInfo.GlobalSettings.OrderLatency = highestLatency / 40; // 1 frame is 40 ms
+			lobbyInfo.GlobalSettings.OrderLatency = highestLatency / 120;
 			if (lobbyInfo.GlobalSettings.OrderLatency < 1) // should never be 0
 				lobbyInfo.GlobalSettings.OrderLatency = 1;
 
