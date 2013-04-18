@@ -116,7 +116,7 @@ function findReplace:FindString(reverse)
     end
     if posFind == -1 then
       findReplace.foundString = false
-      ide.frame:SetStatusText("Text not found.")
+      ide.frame:SetStatusText(TR("Text not found."))
     else
       findReplace.foundString = true
       local start = editor:GetTargetStart()
@@ -172,6 +172,7 @@ function findReplace:ReplaceString(fReplaceAll, inFileRegister)
 
     if fReplaceAll then
       setSearchFlags(editor)
+      local occurrences = 0
       local posFind = editor:SearchInTarget(findReplace.findText)
       if (posFind ~= -1) then
         if (not inFileRegister) then editor:BeginUndoAction() end
@@ -186,11 +187,14 @@ function findReplace:ReplaceString(fReplaceAll, inFileRegister)
           endTarget = endTarget + (editor:GetLength() - length)
           editor:SetTargetEnd(endTarget)
           posFind = editor:SearchInTarget(findReplace.findText)
+          occurrences = occurrences + 1
         end
         if (not inFileRegister) then editor:EndUndoAction() end
 
         replaced = true
       end
+      ide.frame:SetStatusText(("%s %s."):format(
+        TR("Replaced"), TR("%d instance", occurrences):format(occurrences)))
     else
       if findReplace.foundString then
         local start = editor:GetSelectionStart()
@@ -258,12 +262,16 @@ function findReplace:RunInFiles(replace)
   findReplace.occurrences = 0
 
   local startdir = findReplace.filedirText
-  DisplayOutput("FindInFiles: "..(replace and "Replacing" or "Searching for").." '"..findReplace.findText.."'.\n")
+  DisplayOutputLn(("%s '%s'."):format(
+    (replace and TR("Replacing") or TR("Searching for")),
+    findReplace.findText))
 
   ProcInFiles(startdir, findReplace.filemaskText, findReplace.fSubDirs, replace)
 
-  DisplayOutput("FindInFiles: "..findReplace.occurrences.." instance(s) have been "..
-    (replace and "replaced" or "found")..".\n")
+  DisplayOutputLn(("%s %s."):format(
+    (replace and TR("Replaced") or TR("Found")),
+    TR("%d instance", findReplace.occurrences):format(findReplace.occurrences)))
+
   findReplace.oveditor = nil
 end
 
@@ -282,20 +290,20 @@ function findReplace:createDialog(replace,infiles)
     findReplace.dialog:Destroy()
   end
 
-  local findDialog = wx.wxDialog(ide.frame, wx.wxID_ANY, infiles and "Find In Files" or "Find",
+  local findDialog = wx.wxDialog(ide.frame, wx.wxID_ANY, infiles and TR("Find In Files") or TR("Find"),
     position, wx.wxDefaultSize, wx.wxDEFAULT_DIALOG_STYLE)
 
   findReplace.replace = replace
   findReplace.infiles = infiles
 
   -- Create right hand buttons and sizer
-  local findButton = wx.wxButton(findDialog, ID_FIND_NEXT, infiles and "&Find All" or "&Find Next")
-  local replaceButton = wx.wxButton(findDialog, ID_REPLACE, infiles and replace and "&Replace All" or "&Replace")
+  local findButton = wx.wxButton(findDialog, ID_FIND_NEXT, infiles and TR("&Find All") or TR("&Find Next"))
+  local replaceButton = wx.wxButton(findDialog, ID_REPLACE, infiles and replace and TR("&Replace All") or TR("&Replace"))
   local replaceAllButton = nil
   if (replace and not infiles) then
-    replaceAllButton = wx.wxButton(findDialog, ID_REPLACE_ALL, "Replace &All")
+    replaceAllButton = wx.wxButton(findDialog, ID_REPLACE_ALL, TR("Replace &All"))
   end
-  local cancelButton = wx.wxButton(findDialog, wx.wxID_CANCEL, "Cancel")
+  local cancelButton = wx.wxButton(findDialog, wx.wxID_CANCEL, TR("Cancel"))
 
   local buttonsSizer = wx.wxBoxSizer(wx.wxVERTICAL)
   buttonsSizer:Add(findButton, 0, wx.wxALL + wx.wxGROW + wx.wxCENTER, 3)
@@ -306,7 +314,7 @@ function findReplace:createDialog(replace,infiles)
   buttonsSizer:Add(cancelButton, 0, wx.wxALL + wx.wxGROW + wx.wxCENTER, 3)
 
   -- Create find/replace text entry sizer
-  local findStatText = wx.wxStaticText( findDialog, wx.wxID_ANY, "Find: ")
+  local findStatText = wx.wxStaticText( findDialog, wx.wxID_ANY, TR("Find")..": ")
   local findTextCombo = wx.wxComboBox(findDialog, wx.wxID_ANY, findReplace.findText,
     wx.wxDefaultPosition, wx.wxDefaultSize, findReplace.findTextArray, wx.wxCB_DROPDOWN)
   findTextCombo:SetFocus()
@@ -314,7 +322,7 @@ function findReplace:createDialog(replace,infiles)
   local infilesMaskStat,infilesMaskCombo
   local infilesDirStat,infilesDirCombo,infilesDirButton
   if (infiles) then
-    infilesMaskStat = wx.wxStaticText( findDialog, wx.wxID_ANY, "File Type: ")
+    infilesMaskStat = wx.wxStaticText( findDialog, wx.wxID_ANY, TR("File Type")..": ")
     infilesMaskCombo = wx.wxComboBox(findDialog, wx.wxID_ANY, findReplace.filemaskText,
       wx.wxDefaultPosition, wx.wxDefaultSize, findReplace.filemaskTextArray)
 
@@ -323,14 +331,14 @@ function findReplace:createDialog(replace,infiles)
       findReplace.filedirText = fname:GetPath(wx.wxPATH_GET_VOLUME)
     end
 
-    infilesDirStat = wx.wxStaticText( findDialog, wx.wxID_ANY, "Directory: ")
+    infilesDirStat = wx.wxStaticText( findDialog, wx.wxID_ANY, TR("Directory")..": ")
     infilesDirCombo = wx.wxComboBox(findDialog, wx.wxID_ANY, findReplace.filedirText, wx.wxDefaultPosition, wx.wxDefaultSize, findReplace.filedirTextArray)
     infilesDirButton = wx.wxButton(findDialog, ID_SETDIR, "...",wx.wxDefaultPosition, wx.wxSize(26,20))
   end
 
   local replaceStatText, replaceTextCombo
   if (replace) then
-    replaceStatText = wx.wxStaticText( findDialog, wx.wxID_ANY, "Replace: ")
+    replaceStatText = wx.wxStaticText( findDialog, wx.wxID_ANY, TR("Replace")..": ")
     replaceTextCombo = wx.wxComboBox(findDialog, wx.wxID_ANY, findReplace.replaceText, wx.wxDefaultPosition, wx.wxDefaultSize, findReplace.replaceTextArray)
   end
 
@@ -358,13 +366,13 @@ function findReplace:createDialog(replace,infiles)
   -- the StaticBox(Sizer) needs to be created before checkboxes, otherwise
   -- checkboxes don't get any clicks on OSX (ide.osname == 'Macintosh')
   -- as the z-order for event traversal appears to be incorrect.
-  local optionsSizer = wx.wxStaticBoxSizer(wx.wxVERTICAL, findDialog, "Options" )
+  local optionsSizer = wx.wxStaticBoxSizer(wx.wxVERTICAL, findDialog, TR("Options"))
 
   -- Create find/replace option checkboxes
-  local wholeWordCheckBox = wx.wxCheckBox(findDialog, wx.wxID_ANY, "Match &whole word")
-  local matchCaseCheckBox = wx.wxCheckBox(findDialog, wx.wxID_ANY, "Match &case")
-  local wrapAroundCheckBox = wx.wxCheckBox(findDialog, wx.wxID_ANY, "Wrap ar&ound")
-  local regexCheckBox = wx.wxCheckBox(findDialog, wx.wxID_ANY, "Regular &expression")
+  local wholeWordCheckBox = wx.wxCheckBox(findDialog, wx.wxID_ANY, TR("Match &whole word"))
+  local matchCaseCheckBox = wx.wxCheckBox(findDialog, wx.wxID_ANY, TR("Match &case"))
+  local wrapAroundCheckBox = wx.wxCheckBox(findDialog, wx.wxID_ANY, TR("Wrap ar&ound"))
+  local regexCheckBox = wx.wxCheckBox(findDialog, wx.wxID_ANY, TR("Regular &expression"))
   wholeWordCheckBox:SetValue(findReplace.fWholeWord)
   matchCaseCheckBox:SetValue(findReplace.fMatchCase)
   wrapAroundCheckBox:SetValue(findReplace.fWrap)
@@ -386,10 +394,10 @@ function findReplace:createDialog(replace,infiles)
   local scopeSizer
   if (infiles) then
     -- the StaticBox(Sizer) needs to be created before checkboxes
-    scopeSizer = wx.wxStaticBoxSizer(wx.wxVERTICAL, findDialog, "In Files")
+    scopeSizer = wx.wxStaticBoxSizer(wx.wxVERTICAL, findDialog, TR("In Files"))
 
-    subDirCheckBox = wx.wxCheckBox(findDialog, wx.wxID_ANY, "&Subdirectories")
-    makeBakCheckBox = wx.wxCheckBox(findDialog, wx.wxID_ANY, ".&bak on Replace")
+    subDirCheckBox = wx.wxCheckBox(findDialog, wx.wxID_ANY, TR("&Subdirectories"))
+    makeBakCheckBox = wx.wxCheckBox(findDialog, wx.wxID_ANY, TR(".&bak on Replace"))
     subDirCheckBox:SetValue(findReplace.fSubDirs)
     makeBakCheckBox:SetValue(findReplace.fMakeBak)
 
@@ -399,7 +407,8 @@ function findReplace:createDialog(replace,infiles)
 
     scopeSizer:Add(optionSizer, 0, 0, 5)
   else
-    scopeRadioBox = wx.wxRadioBox(findDialog, wx.wxID_ANY, "Scope", wx.wxDefaultPosition, wx.wxDefaultSize, {"&Up", "&Down"}, 1, wx.wxRA_SPECIFY_COLS)
+    scopeRadioBox = wx.wxRadioBox(findDialog, wx.wxID_ANY, TR("Scope"), wx.wxDefaultPosition,
+      wx.wxDefaultSize, {TR("&Up"), TR("&Down")}, 1, wx.wxRA_SPECIFY_COLS)
     scopeRadioBox:SetSelection(iff(findReplace.fDown, 1, 0))
 
     scopeSizer = wx.wxBoxSizer(wx.wxVERTICAL, findDialog)
@@ -419,7 +428,7 @@ function findReplace:createDialog(replace,infiles)
   mainSizer:Add(leftSizer, 0, wx.wxALL + wx.wxGROW + wx.wxCENTER, 10)
   mainSizer:Add(buttonsSizer, 0, wx.wxALL + wx.wxGROW + wx.wxCENTER, 10)
 
-  mainSizer:SetSizeHints( findDialog )
+  mainSizer:SetSizeHints(findDialog)
   findDialog:SetSizer(mainSizer)
 
   local function TransferDataFromWindow()
@@ -491,7 +500,7 @@ function findReplace:createDialog(replace,infiles)
   if infilesDirButton then
     findDialog:Connect(ID_SETDIR, wx.wxEVT_COMMAND_BUTTON_CLICKED,
       function()
-        local filePicker = wx.wxDirDialog(findDialog, "Choose a project directory",
+        local filePicker = wx.wxDirDialog(findDialog, TR("Choose a project directory"),
           findReplace.filedirText~="" and findReplace.filedirText or wx.wxGetCwd(),wx.wxFLP_USE_TEXTCTRL)
 
         local res = filePicker:ShowModal(true)
