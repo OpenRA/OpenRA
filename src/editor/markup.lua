@@ -143,6 +143,7 @@ function MarkupStyle(editor, lines, linee)
   end
 
   local es = editor:GetEndStyled()
+  local needfix = false
 
   for line=lines,linee do
     local tx = editor:GetLine(line)
@@ -150,6 +151,8 @@ function MarkupStyle(editor, lines, linee)
 
     local from = 1
     local off = -1
+
+    local wrapped = editor:WrapCount(line)
 
     while from do
       tx = string.sub(tx,from)
@@ -181,6 +184,17 @@ function MarkupStyle(editor, lines, linee)
       end
       from = t and (t+1)
     end
+
+    -- has this line changed its wrapping because of invisible styling?
+    if wrapped > 1 and editor:WrapCount(line) < wrapped then needfix = true end
   end
   editor:StartStyling(es, 31)
+
+  -- if any wrapped lines have changed, then reset WrapMode to fix the drawing
+  if needfix then
+    -- this fixes an issue with duplicate lines in Scintilla when
+    -- invisible styles hide some of the content that would be wrapped.
+    local wrapmode = editor:GetWrapMode()
+    if wrapmode ~= wxstc.wxSTC_WRAP_NONE then editor:SetWrapMode(wrapmode) end
+  end
 end
