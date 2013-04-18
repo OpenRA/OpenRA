@@ -212,7 +212,7 @@ TurretGun:
 		Versus: 
 			None: 50%
 			Wood: 75%
-			Light: 75%
+			Light: 100%
 			Concrete: 65%
 		Explosion: med_explosion
 		ImpactSound: kaboom30
@@ -244,7 +244,7 @@ TowerMissile:
 			None: 80%
 			Wood: 45%
 			Light: 75%
-			Heavy: 40%
+			Heavy: 50%
 			Concrete: 35%
 		InfDeath: 3
 		Explosion: small_explosion
