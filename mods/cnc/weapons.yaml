@@ -795,7 +795,7 @@ SAMMissile:
 		Explosion: small_frag
 		ImpactSound: xplos
 		SmudgeType: Crater
-		Damage: 55
+		Damage: 60
 
 HonestJohn:
 	ROF: 200
@@ -866,11 +866,11 @@ APCGun.AA:
 		Damage: 30
 
 Patriot:
-	ROF: 100
+	ROF: 75
 	Range: 10
 	MinRange: 1
 	Burst: 2
-	BurstDelay: 35
+	BurstDelay: 25
 	Report:	ROCKET2
 	ValidTargets: Air
 	Projectile: Missile
@@ -883,7 +883,7 @@ Patriot:
 		RangeLimit: 35
 		Angle: .15
 	Warhead: AP
-		Spread: 14		
+		Spread: 16
 		Versus: 
 			None: 100%	
 			Wood: 100%
@@ -893,4 +893,4 @@ Patriot:
 		Explosion: poof
 		ImpactSound: xplos
 		SmudgeType: Crater
-		Damage: 55
+		Damage: 60
