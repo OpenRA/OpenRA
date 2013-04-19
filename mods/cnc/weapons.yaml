@@ -299,14 +299,14 @@ OrcaAGMissiles:
 		Spread: 3
 		Versus: 
 			None: 50%
-			Wood: 75%
-			Light: 75%
+			Wood: 100%
+			Light: 100%
 			Heavy: 50%
 		InfDeath: 4
 		Explosion: small_frag
 		ImpactSound: xplos
 		SmudgeType: Crater
-		Damage: 40
+		Damage: 30
 
 OrcaAAMissiles:
 	ROF: 15
@@ -330,14 +330,14 @@ OrcaAAMissiles:
 		Spread: 3
 		Versus: 
 			None: 50%
-			Wood: 75%
-			Light: 75%
+			Wood: 100%
+			Light: 100%
 			Heavy: 50%
 		InfDeath: 4
 		Explosion: small_frag
 		ImpactSound: xplos
 		SmudgeType: Crater
-		Damage: 40
+		Damage: 30
 
 Flamethrower:
 	ROF: 50
