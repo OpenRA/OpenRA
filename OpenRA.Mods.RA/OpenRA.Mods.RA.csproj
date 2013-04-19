@@ -302,6 +302,7 @@
     <Compile Include="RallyPoint.cs" />
     <Compile Include="Reloads.cs" />
     <Compile Include="RenderDetectionCircle.cs" />
+    <Compile Include="RenderJammerCircle.cs" />
     <Compile Include="RenderRangeCircle.cs" />
     <Compile Include="Render\RenderBuilding.cs" />
     <Compile Include="Render\RenderBuildingCharge.cs" />

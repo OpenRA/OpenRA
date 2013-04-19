@@ -564,6 +564,7 @@ MRJ:
 		Range: 15
 	JamsMissiles:
 		Range: 3
+	RenderJammerCircle:
 
 1TNK.Husk:
 	Inherits: ^Husk

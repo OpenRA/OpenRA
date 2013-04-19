@@ -11,22 +11,25 @@
 using OpenRA;
 using OpenRA.Traits;
 
-class JamsMissilesInfo : ITraitInfo
+namespace OpenRA.Mods.RA
 {
-	public readonly int Range = 0;
-	public readonly bool AlliedMissiles = true;
-	public readonly int Chance = 100;
+	class JamsMissilesInfo : ITraitInfo
+	{
+		public readonly int Range = 0;
+		public readonly bool AlliedMissiles = true;
+		public readonly int Chance = 100;
 
-	public object Create(ActorInitializer init) { return new JamsMissiles(this); }
-}
+		public object Create(ActorInitializer init) { return new JamsMissiles(this); }
+	}
 
-class JamsMissiles
-{
-	readonly JamsMissilesInfo info;
+	class JamsMissiles
+	{
+		readonly JamsMissilesInfo info;
 
-	public int Range { get { return info.Range; } }
-	public bool AlliedMissiles { get { return info.AlliedMissiles; } }
-	public int Chance { get { return info.Chance; } }
+		public int Range { get { return info.Range; } }
+		public bool AlliedMissiles { get { return info.AlliedMissiles; } }
+		public int Chance { get { return info.Chance; } }
 
-	public JamsMissiles(JamsMissilesInfo info) { this.info = info; }
+		public JamsMissiles(JamsMissilesInfo info) { this.info = info; }
+	}
 }
