@@ -148,9 +148,7 @@ local function getExtsString()
   knownexts = knownexts:len() > 0 and knownexts:sub(1,-2) or nil
 
   local exts = knownexts and TR("Known Files").." ("..knownexts..")|"..knownexts.."|" or ""
-  exts = exts..TR("All files").." (*)|*"
-
-  return exts
+  return exts..TR("All files").." (*)|*"
 end
 
 function OpenFile(event)
@@ -215,10 +213,17 @@ function SaveFileAs(editor)
   fn:Normalize() -- want absolute path for dialog
 
   local ext = fn:GetExt()
+  if (not ext or #ext == 0) and editor.spec and editor.spec.exts then
+    ext = editor.spec.exts[1]
+    -- set the extension on the file if assigned as this is used by OSX/Linux
+    -- to present the correct default "save as type" choice.
+    if ext then fn:SetExt(ext) end
+  end
   local fileDialog = wx.wxFileDialog(ide.frame, TR("Save file as"),
     fn:GetPath(wx.wxPATH_GET_VOLUME),
     fn:GetFullName(),
-    "*."..(ext and #ext > 0 and ext or "*"),
+    -- specify the current extension plus all other extensions based on specs
+    (ext and #ext > 0 and "*."..ext.."|*."..ext.."|" or "")..getExtsString(),
     wx.wxFD_SAVE)
 
   if fileDialog:ShowModal() == wx.wxID_OK then
