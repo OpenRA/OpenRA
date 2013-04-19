@@ -867,7 +867,7 @@ APCGun.AA:
 		Damage: 30
 
 Patriot:
-	ROF: 100
+	ROF: 75
 	Range: 10
 	MinRange: 1
 	Burst: 2
