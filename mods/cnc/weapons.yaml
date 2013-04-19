@@ -844,10 +844,10 @@ APCGun:
 	Warhead:
 		Spread: 3
 		Versus:
-			None: 50%
+			None: 30%
 			Wood: 50%
 			Light: 100%
-			Heavy: 30%
+			Heavy: 20%
 		Explosion: small_poof
 		Damage: 30
 		
