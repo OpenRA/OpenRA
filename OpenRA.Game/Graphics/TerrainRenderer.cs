@@ -69,9 +69,6 @@ namespace OpenRA.Graphics
 			if (lastRow < 0 || firstRow > map.Bounds.Height)
 				return;
 
-			if (firstRow < 0) firstRow = 0;
-			if (lastRow > map.Bounds.Height) lastRow = map.Bounds.Height;
-
 			if (world.VisibleBounds.HasValue)
 			{
 				var r = world.VisibleBounds.Value;
@@ -81,6 +78,9 @@ namespace OpenRA.Graphics
 				if (firstRow > r.Bottom - map.Bounds.Top)
 					firstRow = r.Bottom - map.Bounds.Top;
 			}
+
+			if (firstRow < 0) firstRow = 0;
+			if (lastRow > map.Bounds.Height) lastRow = map.Bounds.Height;
 
 			if( lastRow < firstRow ) lastRow = firstRow;
 
