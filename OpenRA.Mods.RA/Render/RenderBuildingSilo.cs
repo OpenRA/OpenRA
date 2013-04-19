@@ -30,9 +30,10 @@ namespace OpenRA.Mods.RA.Render
 			Info = info;
 		}
 
-		public void BuildingComplete( Actor self )
+		public void BuildingComplete(Actor self)
 		{
-			anim.PlayFetchIndex("idle",
+			var animation = (self.GetDamageState() >= DamageState.Heavy) ? "damaged-idle" : "idle";
+			anim.PlayFetchIndex(animation,
 				() => playerResources.OreCapacity != 0
 					? (Info.FillSteps * playerResources.Ore) / (10 * playerResources.OreCapacity)
 					: 0);
