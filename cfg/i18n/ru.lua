@@ -30,9 +30,9 @@ return {
   ["&Start Debugger Server"] = "Запустить сервер отла&дки", -- src\editor\menu_project.lua
   ["&Undo"] = "&Отменить", -- src\editor\editor.lua, src\editor\menu_edit.lua
   ["&View"] = "&Вид", -- src\editor\menu_view.lua
-  ["&Watch Window"] = "Окно &наблюдения", -- src\editor\menu_view.lua
+  ["&Watch Window"] = "Окно &выражений", -- src\editor\menu_view.lua
   ["About %s"] = "О %s", -- src\editor\menu_help.lua
-  ["Add Watch Expression"] = "Добавить в окно наблюдения", -- src\editor\editor.lua
+  ["Add Watch Expression"] = "Добавить выражение", -- src\editor\editor.lua
   ["Add to Scratchpad"] = "Добавить в черновик", -- src\editor\editor.lua
   ["All files"] = "Все файлы", -- src\editor\commands.lua
   ["Allow external process to start debugging"] = "Разрешить внешнему процессу начать отладку", -- src\editor\menu_project.lua
@@ -193,8 +193,8 @@ return {
   ["View the output/console window"] = "Показать окно вывода/консоли", -- src\editor\menu_view.lua
   ["View the project/filetree window"] = "Показать окно проекта/списка файлов", -- src\editor\menu_view.lua
   ["View the stack window"] = "Показать окно стека", -- src\editor\menu_view.lua, src\editor\gui.lua
-  ["View the watch window"] = "Показать окно наблюдения", -- src\editor\menu_view.lua, src\editor\gui.lua
-  ["Watch"] = "Наблюдение", -- src\editor\debugger.lua
+  ["View the watch window"] = "Показать окно выражений", -- src\editor\menu_view.lua, src\editor\gui.lua
+  ["Watch"] = "Выражение", -- src\editor\debugger.lua
   ["Welcome to the interactive Lua interpreter."] = "Добро пожаловать в интерактивный интерпретатор Lua.", -- src\editor\shellbox.lua
   ["You must save the program first."] = "Вы должны сначала сохранить программу.", -- src\editor\commands.lua
   ["on line %d"] = "в строке %d", -- src\editor\debugger.lua, src\editor\commands.lua
