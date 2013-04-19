@@ -50,6 +50,8 @@ fact:
 	damaged-build:
 		Start: 27
 		Length: 25
+	dead: factdead
+		Start: 0
 
 proc:
 	idle:
@@ -59,6 +61,8 @@ proc:
 	make: procmake
 		Start: 0
 		Length: *
+	dead: procdead
+		Start: 0
 
 silo:
 	idle: silo2
@@ -79,6 +83,8 @@ powr:
 	make: powrmake
 		Start: 0
 		Length: *
+	dead: powrdead
+		Start: 0
 
 apwr:
 	idle:
@@ -88,6 +94,8 @@ apwr:
 	make: apwrmake
 		Start: 0
 		Length: *
+	dead: apwrdead
+		Start: 0
 
 barr:
 	idle:

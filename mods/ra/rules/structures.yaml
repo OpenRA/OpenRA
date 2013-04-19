@@ -948,7 +948,8 @@ FACT:
 		Facing: 96
 	ProductionBar:
 	-Sellable:
-		
+	DeadBuildingState:
+
 PROC:
 	Inherits: ^Building
 	Buildable:
@@ -990,6 +991,7 @@ PROC:
 		Percentage: 50
 		Minimum: 500
 		SoundToVictim: credit1.aud
+	DeadBuildingState:
 
 SILO:
 	Inherits: ^Building
@@ -1134,6 +1136,7 @@ POWR:
 		Range: 4
 	Bib:
 	IronCurtainable:
+	DeadBuildingState:
 
 APWR:
 	Inherits: ^Building
@@ -1162,6 +1165,7 @@ APWR:
 		Range: 4
 	Bib:
 	IronCurtainable:
+	DeadBuildingState:
 
 STEK:
 	Inherits: ^Building
