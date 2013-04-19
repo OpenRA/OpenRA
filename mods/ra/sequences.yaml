@@ -61,12 +61,12 @@ proc:
 		Length: *
 
 silo:
-	idle:
+	idle: silo2
 		Start: 0
-		Length: 5
-	damaged-idle:
-		Start: 5
-		Length: 5
+		Length: 9
+	damaged-idle: silo2
+		Start: 9
+		Length: 9
 	make: silomake
 		Start: 0
 		Length: *

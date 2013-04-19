@@ -1014,6 +1014,7 @@ SILO:
 	RevealsShroud:
 		Range: 4
 	RenderBuildingSilo:
+		FillSteps: 89
 	StoresOre:
 		PipCount: 5
 		Capacity: 1500
