@@ -158,9 +158,9 @@ weap:
 	make: weapmake
 		Start: 0
 		Length: *
-	build-top: weap2
+	build-top: weap3
 		Start: 0
-		Length: 4
+		Length: 10
 	damaged-build-top: weap2
 		Start: 4
 		Length: 4
