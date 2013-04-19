@@ -203,11 +203,17 @@ local function updateInputMarker()
   inputBound = #getInputText()
 end
 
+local readonce = 4096
+local maxread = readonce * 10 -- maximum number of bytes to read before pausing
 local function getStreams()
   local function readStream(tab)
     for _,v in pairs(tab) do
-      while(v.stream:CanRead()) do
-        local str = v.stream:Read(4096)
+      -- periodically stop reading to get a chance to process other events
+      local processed = 0
+      while (v.stream:CanRead() and processed <= maxread) do
+        local str = v.stream:Read(readonce)
+        processed = processed + #str
+
         local pfn
         if (v.callback) then
           str,pfn = v.callback(str)
