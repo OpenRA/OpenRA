@@ -27,7 +27,6 @@ Bazooka:
 	Projectile: Missile
 		Speed: 25
 		Arm: 2
-		High: true
 		Shadow: yes
 		Proximity: true
 		ContrailLength: 10
@@ -175,7 +174,6 @@ QuadRockets:
 	ValidTargets: Ground, Air
 	Projectile: Missile
 		Arm: 0
-		High: yes
 		Shadow: yes
 		Proximity: yes
 		Inaccuracy: 3
