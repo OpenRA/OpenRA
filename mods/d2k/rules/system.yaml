@@ -415,7 +415,7 @@ CRATE:
 		SelectionShares: 20
 		Unit: trikea
 	GiveUnitCrateAction@TrikeO:
-		SelectionShares: 20
+		SelectionShares: 15
 		Unit: trikeo
 	GiveUnitCrateAction@Quad:
 		SelectionShares: 40
@@ -435,6 +435,9 @@ CRATE:
 	GiveUnitCrateAction@MissileTank:
 		SelectionShares: 10
 		Unit: missiletank
+	GiveUnitCrateAction@StealthTrike:
+		SelectionShares: 7
+		Unit: stealthtrike
 	GiveUnitCrateAction@Fremen:
 		SelectionShares: 5
 		Unit: fremen
@@ -451,7 +454,7 @@ CRATE:
 		SelectionShares: 2
 		Unit: devast
 	GiveUnitCrateAction@DeviatorTank:
-		SelectionShares: 7
+		SelectionShares: 5
 		Unit: deviatortank
 	GiveMcvCrateAction@Atreides:
 		SelectionShares: 0
