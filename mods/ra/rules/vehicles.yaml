@@ -537,7 +537,7 @@ MRJ:
 		Cost: 1000
 	Tooltip:
 		Name: Mobile Radar Jammer
-		Description: Jams enemy radar and deflects missiles.\n  Unarmed
+		Description: Jams nearby enemy radar domes\nand deflects incoming missiles.\n  Unarmed
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 150
