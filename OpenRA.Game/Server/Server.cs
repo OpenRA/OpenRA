@@ -24,10 +24,6 @@ using OpenRA.Network;
 
 using XTimer = System.Timers.Timer;
 
-using Mono.Nat;
-using Mono.Nat.Pmp;
-using Mono.Nat.Upnp;
-
 namespace OpenRA.Server
 {
 	public enum ServerState : int
@@ -54,7 +50,6 @@ namespace OpenRA.Server
 
 		public readonly IPAddress Ip;
 		public readonly int Port;
-		public INatDevice NatDevice;
 
 		int randomSeed;
 		public readonly Thirdparty.Random Random = new Thirdparty.Random();
@@ -82,7 +77,7 @@ namespace OpenRA.Server
 				t.GameEnded(this);
 		}
 
-		public Server(IPEndPoint endpoint, string[] mods, ServerSettings settings, ModData modData, INatDevice natDevice)
+		public Server(IPEndPoint endpoint, string[] mods, ServerSettings settings, ModData modData)
 		{
 			Log.AddChannel("server", "server.log");
 
@@ -95,12 +90,11 @@ namespace OpenRA.Server
 
 			Settings = settings;
 			ModData = modData;
-			NatDevice = natDevice;
 
 			randomSeed = (int)DateTime.Now.ToBinary();
 
 			if (Settings.AllowPortForward)
-				ForwardPort();
+				UPnP.ForwardPort();
 
 			foreach (var trait in modData.Manifest.ServerTraits)
 				ServerTraits.Add( modData.ObjectCreator.CreateObject<ServerTrait>(trait) );
@@ -158,7 +152,7 @@ namespace OpenRA.Server
 					{
 						EndGame();
 						if (Settings.AllowPortForward)
-							RemovePortforward();
+							UPnP.RemovePortforward();
 						break;
 					}
 				}
@@ -172,36 +166,6 @@ namespace OpenRA.Server
 				catch { }
 			} ) { IsBackground = true }.Start();
 
-		}
-
-		void ForwardPort()
-		{
-			try
-			{
-				var mapping = new Mapping(Protocol.Tcp, Settings.ExternalPort, Settings.ListenPort);
-				NatDevice.CreatePortMap(mapping);
-				Log.Write("server", "Create port mapping: protocol={0}, public={1}, private={2}", mapping.Protocol, mapping.PublicPort, mapping.PrivatePort);
-			}
-			catch (Exception e)
-			{
-				Log.Write("server", "Can not forward ports via UPnP: {0}", e);
-				Settings.AllowPortForward = false;
-			}
-		}
-
-		void RemovePortforward()
-		{
-			try
-			{
-				var mapping = new Mapping(Protocol.Tcp, Settings.ExternalPort, Settings.ListenPort);
-				NatDevice.DeletePortMap(mapping);
-				Log.Write("server", "Remove port mapping: protocol={0}, public={1}, private={2}", mapping.Protocol, mapping.PublicPort, mapping.PrivatePort);
-			}
-			catch (Exception e)
-			{
-				Log.Write("server", "Can not remove UPnP portforwarding rules: {0}", e);
-				Settings.AllowPortForward = false;
-			}
 		}
 
 		/* lobby rework TODO:
