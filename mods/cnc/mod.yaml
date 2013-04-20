@@ -110,6 +110,8 @@ LoadScreen: CncLoadScreen
 	TestFile: conquer.mix
 	PackageURL: http://open-ra.org/get-dependency.php?file=cnc-packages
 
+Addons:
+
 ServerTraits:
 	LobbyCommands
 	MasterServerPinger

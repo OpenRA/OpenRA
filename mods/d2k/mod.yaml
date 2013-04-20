@@ -87,6 +87,8 @@ LoadScreen: D2kLoadScreen
 	TestFile: deathhandlaunch.shp
 	PackageURL: http://open-ra.org/get-dependency.php?file=d2k-complete-packages
 
+Addons:
+
 ServerTraits:
 	LobbyCommands
 	MasterServerPinger

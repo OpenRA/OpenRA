@@ -10,6 +10,11 @@ Folders:
 	./mods/ra/bits
 	./mods/ra/uibits
 	~^/Content/ra
+	~^/Content/ra/aftermath
+	~^/Content/ra/censorship
+	~^/Content/ra/counterstrike
+	~^/Content/ra/desert
+	~^/Content/ra/temperat-expansion
 
 Packages:
 	~main.mix
@@ -24,10 +29,6 @@ Packages:
 	temperat.mix
 	snow.mix
 	interior.mix
-	aftermath.mix
-	counterstrike.mix
-	desert.mix
-	temperat-expansion.mix
 	~scores.mix
 	~movies1.mix
 	~movies2.mix
@@ -103,6 +104,23 @@ LoadScreen: RALoadScreen
 	InstallerMenuWidget: INSTALL_PANEL
 	TestFile: redalert.mix
 	PackageURL: http://open-ra.org/get-dependency.php?file=ra-packages
+
+Addons:
+	Aftermath:
+		TestFile: ttnkicon.shp
+		PackageURL: http://open-ra.org/get-dependency.php?file=ra-aftermath
+	Censorship:
+		TestFile: dedbot10.aud
+		PackageURL: http://open-ra.org/get-dependency.php?file=ra-censorship
+	CounterStrike:
+		TestFile: stavyes.aud
+		PackageURL: http://open-ra.org/get-dependency.php?file=ra-counterstrike
+	Desert:
+		TestFile: wood.des
+		PackageURL: http://open-ra.org/get-dependency.php?file=ra-desert
+	TemperatExpansion:
+		TestFile: sh64.tem
+		PackageURL: http://open-ra.org/get-dependency.php?file=ra-temperat-expansion
 
 ServerTraits:
 	LobbyCommands

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -74,11 +74,15 @@ namespace OpenRA.Mods.RA
 			Game.JoinExternalGame();
 		}
 
+		bool fileNotFound;
 		void TestAndContinue()
 		{
 			Ui.ResetAll();
+			fileNotFound = false;
+
 			if (!FileSystem.Exists(Info["TestFile"]))
 			{
+				fileNotFound = true;
 				var args = new WidgetArgs()
 				{
 					{ "continueLoading", () => TestAndContinue() },
@@ -86,7 +90,30 @@ namespace OpenRA.Mods.RA
 				};
 				Ui.OpenWindow(Info["InstallerMenuWidget"], args);
 			}
-			else
+
+			foreach (var addon in Game.modData.Manifest.Addons.Keys)
+			{
+				if (!FileSystem.Exists(Game.modData.Manifest.Addons[addon].First))
+				{
+					fileNotFound = true;
+
+					var downloadData = new Dictionary<string, string>()
+					{
+						{"PackageURL", Game.modData.Manifest.Addons[addon].Second}
+					};
+
+					var args = new WidgetArgs()
+					{
+						{ "afterInstall", () => { Ui.CloseWindow(); TestAndContinue(); } },
+						{ "installData", downloadData },
+						{ "continueLoading", () => { TestAndContinue(); } }
+					};
+
+					Ui.OpenWindow("INSTALL_DOWNLOAD_PANEL", args);
+				}
+			}
+
+			if (!fileNotFound)
 			{
 				Game.LoadShellMap();
 				Ui.ResetAll();
