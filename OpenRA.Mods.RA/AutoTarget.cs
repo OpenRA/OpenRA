@@ -23,6 +23,11 @@ namespace OpenRA.Mods.RA
 		public readonly int ScanRadius = -1;
 		public readonly UnitStance InitialStance = UnitStance.AttackAnything;
 
+		[Desc("Ticks to wait until next AutoTarget: attempt.")]
+		public readonly int MinimumScanTimeInterval = 30;
+		[Desc("Ticks to wait until next AutoTarget: attempt.")]
+		public readonly int MaximumScanTimeInterval = 60;
+
 		public object Create(ActorInitializer init) { return new AutoTarget(init.self, this); }
 	}
 
@@ -112,8 +117,7 @@ namespace OpenRA.Mods.RA
 
 		Actor ChooseTarget(Actor self, float range)
 		{
-			var info = self.Info.Traits.Get<AttackBaseInfo>();
-			nextScanTime = self.World.SharedRandom.Next(info.MinimumScanTimeInterval, info.MaximumScanTimeInterval);
+			nextScanTime = self.World.SharedRandom.Next(Info.MinimumScanTimeInterval, Info.MaximumScanTimeInterval);
 
 			var inRange = self.World.FindUnitsInCircle(self.CenterLocation, (int)(Game.CellSize * range));
 
@@ -134,6 +138,7 @@ namespace OpenRA.Mods.RA
 			}
 		}
 	}
+
 	[Desc("Will not get automatically targeted by enemy (like walls)")]
 	class AutoTargetIgnoreInfo : TraitInfo<AutoTargetIgnore> { }
 	class AutoTargetIgnore { }
