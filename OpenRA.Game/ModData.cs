@@ -73,7 +73,8 @@ namespace OpenRA
 			FileSystem.Mount(FileSystem.OpenPackage(map.Path, int.MaxValue));
 
 			Rules.LoadRules(Manifest, map);
-			SpriteLoader = new SpriteLoader( Rules.TileSets[map.Tileset].Extensions, SheetBuilder );
+			SpriteLoader = new SpriteLoader(Rules.TileSets[map.Tileset].Extensions, SheetBuilder);
+			// TODO: Don't load the sequences for assets that are not used in this tileset. Maybe use the existing EditorTilesetFilters.
 			SequenceProvider.Initialize(Manifest.Sequences, map.Sequences);
 
 			return map;

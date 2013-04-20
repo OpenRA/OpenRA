@@ -40,7 +40,11 @@ namespace OpenRA.Graphics
 				var seq = sequences.NodesDict.ToDictionary(x => x.Key, x => new Sequence(unit,x.Key,x.Value));
 				units.Add(unit, seq);
 			}
-			catch (FileNotFoundException) {} // Do nothing; we can crash later if we actually wanted art
+			catch (FileNotFoundException)
+			{
+				// Do nothing; we can crash later if we actually wanted art
+				Console.WriteLine("Can't find all files for unit {0}.".F(unit));
+			} 
 		}
 
 		public static Sequence GetSequence(string unitName, string sequenceName)
@@ -53,7 +57,7 @@ namespace OpenRA.Graphics
 						"Unit `{0}` does not have a sequence `{1}`".F(unitName, sequenceName));
 				else
 					throw new InvalidOperationException(
-						"Unit `{0}` does not have any sequences defined.".F(unitName));
+						"Unit `{0}` does not have all sequences defined.".F(unitName));
 			}
 		}
 
@@ -61,7 +65,7 @@ namespace OpenRA.Graphics
 		{
 			if (!units.ContainsKey(unit))
 				throw new InvalidOperationException(
-					"Unit `{0}` does not have any sequences defined.".F(unit));
+					"Unit `{0}` does not have sequence `{1}` defined.".F(unit, seq));
 
 			return units[unit].ContainsKey(seq);
 		}
