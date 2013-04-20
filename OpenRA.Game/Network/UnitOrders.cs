@@ -164,8 +164,7 @@ namespace OpenRA.Network
 							&& !orderManager.GameStarted)
 						{
 							orderManager.FramesAhead = orderManager.LobbyInfo.GlobalSettings.OrderLatency;
-							Game.Debug(
-								"Order lag is now {0} frames.".F(orderManager.LobbyInfo.GlobalSettings.OrderLatency));
+							Game.Debug("Order lag is now {0} frames.".F(orderManager.LobbyInfo.GlobalSettings.OrderLatency));
 						}
 						Game.SyncLobbyInfo();
 						break;

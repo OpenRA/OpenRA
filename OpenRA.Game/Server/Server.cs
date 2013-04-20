@@ -59,6 +59,8 @@ namespace OpenRA.Server
 		public Map Map;
 		XTimer gameTimeout;
 
+		int highestLatency;
+
 		protected volatile ServerState pState = new ServerState();
 		public ServerState State
 		{
@@ -215,6 +217,9 @@ namespace OpenRA.Server
 				DispatchOrdersToClient(newConn, 0, 0, new ServerOrder("HandshakeRequest", request.Serialize()).Serialize());
 			}
 			catch (Exception) { DropClient(newConn); }
+
+			newConn.RemoteAddress = ((IPEndPoint)newConn.socket.RemoteEndPoint).Address.ToString();
+			newConn.Ping();
 		}
 
 		void ValidateClient(Connection newConn, string data)
@@ -266,8 +271,7 @@ namespace OpenRA.Server
 				// Check if IP is banned
 				if (lobbyInfo.GlobalSettings.Ban != null)
 				{
-					var remote_addr = ((IPEndPoint)newConn.socket.RemoteEndPoint).Address.ToString();
-					if (lobbyInfo.GlobalSettings.Ban.Contains(remote_addr))
+					if (lobbyInfo.GlobalSettings.Ban.Contains(newConn.RemoteAddress))
 					{
 						Console.WriteLine("Rejected connection from "+client.Name+"("+newConn.socket.RemoteEndPoint+"); Banned.");
 						Log.Write("server", "Rejected connection from {0}; Banned.",
@@ -281,6 +285,8 @@ namespace OpenRA.Server
 				// Promote connection to a valid client
 				preConns.Remove(newConn);
 				conns.Add(newConn);
+
+				client.Ping = newConn.Latency;
 
 				// Enforce correct PlayerIndex and Slot
 				client.Index = newConn.PlayerIndex;
@@ -296,22 +302,24 @@ namespace OpenRA.Server
 
 				OpenRA.Network.Session.Client clientAdmin = lobbyInfo.Clients.Where(c1 => c1.IsAdmin).Single();
 				
-				Log.Write("server", "Client {0}: Accepted connection from {1}",
-					newConn.PlayerIndex, newConn.socket.RemoteEndPoint);
+				Log.Write("server", "Client {0}: Accepted connection from {1} with {2} ms ping latency.",
+				          newConn.PlayerIndex, newConn.socket.RemoteEndPoint, newConn.Latency);
 
 				foreach (var t in ServerTraits.WithInterface<IClientJoined>())
 					t.ClientJoined(this, newConn);
 
-				SyncLobbyInfo();
 				SendChat(newConn, "has joined the game.");
 
-				if ( File.Exists("{0}motd_{1}.txt".F(Platform.SupportDir, lobbyInfo.GlobalSettings.Mods[0])) )
+				SetDynamicOrderLag();
+				SyncLobbyInfo();
+
+				if (File.Exists("{0}motd_{1}.txt".F(Platform.SupportDir, lobbyInfo.GlobalSettings.Mods[0])))
 				{
 					var motd = System.IO.File.ReadAllText("{0}motd_{1}.txt".F(Platform.SupportDir, lobbyInfo.GlobalSettings.Mods[0]));
 					SendChatTo(newConn, motd);
 				}
 
-				if ( lobbyInfo.GlobalSettings.Dedicated )
+				if (lobbyInfo.GlobalSettings.Dedicated)
 				{
 					if (client.IsAdmin)
 						SendChatTo(newConn, "    You are admin now!");
@@ -494,7 +502,10 @@ namespace OpenRA.Server
 						SendChat(toDrop, "Admin left! {0} is a new admin now!".F(lastClient.Name));
 					}
 				}
-				
+
+				if (highestLatency == toDrop.Latency)
+					SetDynamicOrderLag();
+
 				DispatchOrders( toDrop, toDrop.MostRecentFrame, new byte[] { 0xbf } );
 
 				if (conns.Count != 0 || lobbyInfo.GlobalSettings.Dedicated)
@@ -508,6 +519,23 @@ namespace OpenRA.Server
 				toDrop.socket.Disconnect(false);
 			}
 			catch { }
+		}
+
+		public void SetDynamicOrderLag()
+		{
+			foreach (var conn in conns)
+			{
+				if (conn.Latency > highestLatency)
+					highestLatency = conn.Latency;
+			}
+
+			Log.Write("server", "Measured {0} ms as the highest connection round trip time.".F(highestLatency));
+
+			lobbyInfo.GlobalSettings.OrderLatency = highestLatency / 120;
+			if (lobbyInfo.GlobalSettings.OrderLatency < 1) // should never be 0
+				lobbyInfo.GlobalSettings.OrderLatency = 1;
+
+			Log.Write("server", "Order lag has been adjusted to {0} frames.".F(lobbyInfo.GlobalSettings.OrderLatency));
 		}
 
 		public void SyncLobbyInfo()
@@ -542,7 +570,7 @@ namespace OpenRA.Server
 				t.GameStarted(this);
 			
 			// Check TimeOut
-			if ( Settings.TimeOut > 10000 )
+			if (Settings.TimeOut > 10000)
 			{
 				gameTimeout = new XTimer(Settings.TimeOut);
 				gameTimeout.Elapsed += (_,e) =>

@@ -12,6 +12,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
+using System.Net.NetworkInformation;
+using System.Threading;
 
 namespace OpenRA.Server
 {
@@ -22,8 +24,9 @@ namespace OpenRA.Server
 		public ReceiveState State = ReceiveState.Header;
 		public int ExpectLength = 8;
 		public int Frame = 0;
-
 		public int MostRecentFrame = 0;
+		public string RemoteAddress;
+		public int Latency = -1;
 
 		/* client data */
 		public int PlayerIndex;
@@ -97,7 +100,36 @@ namespace OpenRA.Server
 							} break;
 					}
 				}
-		}}
+		}
+
+		bool hasBeenPinged;
+		public void Ping()
+		{
+			if (!hasBeenPinged)
+			{
+				hasBeenPinged = true;
+				var pingSender = new Ping();
+				pingSender.PingCompleted += new PingCompletedEventHandler(pongRecieved);
+				AutoResetEvent waiter = new AutoResetEvent(false);
+				pingSender.SendAsync(RemoteAddress, waiter);
+			}
+		}
+		
+		void pongRecieved(object sender, PingCompletedEventArgs e)
+		{
+			if (e.Cancelled || e.Error != null)
+				Latency = -1;
+			else
+			{
+				PingReply pong = e.Reply;
+				if (pong != null && pong.Status == IPStatus.Success)
+					Latency = (int)pong.RoundtripTime;
+				else
+					Latency = -1;
+			}
+		}
+
+	}
 
 	public enum ReceiveState { Header, Data };
 }

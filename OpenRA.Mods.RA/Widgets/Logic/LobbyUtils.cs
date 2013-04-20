@@ -26,6 +26,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (c.IsAdmin)
 				name.Font = "Bold";
 			name.Text = c.Name;
+			if (c.Ping > -1)
+				name.TextColor = GetPingColor(c.Ping);
 			name.OnEnterKey = () =>
 			{
 				name.Text = name.Text.Trim();
@@ -188,6 +190,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				Game.Renderer.Fonts["Bold"].DrawTextWithContrast(client.Name, position + new int2(5, 5), Color.White, Color.Black, 1);
 			}
+		}
+
+		public static Color GetPingColor(int ping)
+		{
+			if (ping > 720) // OrderLag > 6
+				return Color.Red;
+			if (ping > 360) // OrderLag > 3
+				return Color.Orange;
+			return Color.LimeGreen;
 		}
 	}
 }
