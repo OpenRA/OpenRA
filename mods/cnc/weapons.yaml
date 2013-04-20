@@ -834,7 +834,7 @@ Tiberium:
 		PreventProne: yes
 
 APCGun:
-	ROF: 25
+	ROF: 12
 	Range: 5
 	Report: gun20
 	ValidTargets: Ground
@@ -843,15 +843,15 @@ APCGun:
 	Warhead:
 		Spread: 3
 		Versus:
-			None: 30%
+			None: 35%
 			Wood: 50%
 			Light: 100%
 			Heavy: 20%
 		Explosion: small_poof
-		Damage: 30
+		Damage: 15
 		
 APCGun.AA:
-	ROF: 25
+	ROF: 12
 	Range: 7
 	Report: gun20
 	ValidTargets: Air
@@ -863,7 +863,7 @@ APCGun.AA:
 		Versus:
 			Heavy: 50%
 		Explosion: small_poof
-		Damage: 30
+		Damage: 25
 
 Patriot:
 	ROF: 30
