@@ -490,7 +490,7 @@ MGG:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 150
+		BuildPaletteOrder: 160
 		Prerequisites: atek
 		Owner: allies
 		Hotkey: y
@@ -537,11 +537,13 @@ MRJ:
 		Cost: 1000
 	Tooltip:
 		Name: Mobile Radar Jammer
-		Description: Unarmed
+		Description: Jams nearby enemy radar domes\nand deflects incoming missiles.\n  Unarmed
 	Buildable:
 		Queue: Vehicle
-		BuildPaletteOrder: 1000
-		Owner: None
+		BuildPaletteOrder: 150
+		Prerequisites: atek
+		Owner: allies
+		Hotkey: m
 	Health:
 		HP: 200
 	Armor:
@@ -558,6 +560,11 @@ MRJ:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
+	JamsRadar:
+		Range: 15
+	JamsMissiles:
+		Range: 3
+	RenderJammerCircle:
 
 1TNK.Husk:
 	Inherits: ^Husk

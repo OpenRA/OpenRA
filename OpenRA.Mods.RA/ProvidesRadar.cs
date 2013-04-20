@@ -26,14 +26,14 @@ namespace OpenRA.Mods.RA
 			// Check if powered
 			if (self.IsDisabled()) return false;
 
-			var isJammed = self.World.ActorsWithTrait<JamsRadar>().Any(a => self.Owner != a.Actor.Owner
-				&& (self.Location - a.Actor.Location).Length < a.Actor.Info.Traits.Get<JamsRadarInfo>().Range);
+			var isJammed = self.World.ActorsWithTrait<JamsRadar>().Any(a => a.Actor.Owner.Stances[self.Owner] != Stance.Ally
+				&& (self.Location - a.Actor.Location).Length <= a.Actor.Info.Traits.Get<JamsRadarInfo>().Range);
 
 			return !isJammed;
 		}
 	}
 
-	class JamsRadarInfo : TraitInfo<JamsRadar> { public readonly int Range = 0;	}
+	class JamsRadarInfo : TraitInfo<JamsRadar> { public readonly int Range = 0; }
 
 	class JamsRadar { }
 }
