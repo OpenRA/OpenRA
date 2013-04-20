@@ -2572,50 +2572,50 @@ overlay:
 
 #Volkov
 e8:
-	stand:
+	stand: gnrl
 		Start: 0
 		Facings: 8
-	run:
+	run: gnrl
 		Start: 8
 		Length: 5
 		Facings: 8
-	shoot:
+	shoot: gnrl
 		Start: 56
 		Length: 4
 		Facings: 8
-	prone-stand:
+	prone-stand: gnrl
 		Start: 88
 		Length: 2
 		Facings: 8
-	prone-run:
+	prone-run: gnrl
 		Start: 104
 		Length: 4
 		Facings: 8
-	standup-0:
+	standup-0: gnrl
 		Start: 136
 		Length: 2
 		Facings: 8
-	prone-shoot:
+	prone-shoot: gnrl
 		Start: 152
 		Length: 4
 		Facings: 8
-	idle1:
+	idle1: gnrl
 		Start: 184
 		Length: 26
 		Tick: 120
-	die1:
+	die1: gnrl
 		Start: 210
 		Length: 8
-	die2:
+	die2: gnrl
 		Start: 218
 		Length: 8
-	die3:
+	die3: gnrl
 		Start: 226
 		Length: 8
-	die4:
+	die4: gnrl
 		Start: 234
 		Length: 12
-	die5:
+	die5: gnrl
 		Start: 246
 		Length: 18
 	die6: electro
