@@ -123,8 +123,8 @@ PROC:
 		TickRate: 15
 	StoresOre:
 		PipColor: Green
-		PipCount: 18
-		Capacity: 1800
+		PipCount: 15
+		Capacity: 1500
 	Selectable:
 		Bounds: 73,72
 	CustomSellValue:
@@ -140,7 +140,7 @@ PROC:
 SILO:
 	Inherits: ^Building
 	Valued:
-		Cost: 150
+		Cost: 300
 	Tooltip:
 		Name: Tiberium Silo
 		Icon: siloicnh
@@ -156,16 +156,16 @@ SILO:
 		Dimensions: 2,1
 	-GivesBuildableArea:
 	Health:
-		HP: 300
+		HP: 400
 	RevealsShroud:
 		Range: 4
 	RenderBuildingSilo:
 	StoresOre:
-		PipCount: 12
+		PipCount: 24
 		PipColor: Green
-		Capacity: 1200
+		Capacity: 2400
 	Selectable:
-		Bounds: 49,24
+		Bounds: 49,30
 	-RenderBuilding:
 	-EmitInfantryOnSell:
 
