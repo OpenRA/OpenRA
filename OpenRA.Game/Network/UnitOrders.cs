@@ -213,6 +213,7 @@ namespace OpenRA.Network
 			var oldStance = p.Stances[target];
 			p.Stances[target] = s;
 			target.Shroud.UpdatePlayerStance(w, p, oldStance, s);
+			p.Shroud.UpdatePlayerStance(w, target, oldStance, s);
 
 			foreach (var nsc in w.ActorsWithTrait<INotifyStanceChanged>())
 				nsc.Trait.StanceChanged(nsc.Actor, p, target, oldStance, s);
