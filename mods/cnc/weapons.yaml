@@ -866,11 +866,11 @@ APCGun.AA:
 		Damage: 30
 
 Patriot:
-	ROF: 75
+	ROF: 30
 	Range: 10
 	MinRange: 1
 	Burst: 2
-	BurstDelay: 25
+	BurstDelay: 15
 	Report:	ROCKET2
 	ValidTargets: Air
 	Projectile: Missile
@@ -879,8 +879,8 @@ Patriot:
 		Image: patriot
 		Trail: smokey
 		ROT: 20
-		Speed: 40
-		RangeLimit: 35
+		Speed: 50
+		RangeLimit: 30
 		Angle: .15
 	Warhead: AP
 		Spread: 16
@@ -893,4 +893,4 @@ Patriot:
 		Explosion: poof
 		ImpactSound: xplos
 		SmudgeType: Crater
-		Damage: 60
+		Damage: 30
