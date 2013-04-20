@@ -563,7 +563,7 @@ SAM:
 	RevealsShroud:
 		Range: 5
 	Turreted:
-		ROT: 7
+		ROT: 10
 		InitialFacing: 0
 	RenderBuildingTurreted:
 	Armament:
