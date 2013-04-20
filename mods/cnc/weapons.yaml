@@ -654,9 +654,9 @@ MachineGun:
 		Spread: 3
 		Versus: 
 			None: 100%
-			Wood: 30%
+			Wood: 25%
 			Light: 75%
-			Heavy: 30%
+			Heavy: 25%
 			Concrete: 10%
 		InfDeath: 2
 		Explosion: piffs
