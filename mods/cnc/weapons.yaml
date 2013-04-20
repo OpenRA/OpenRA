@@ -693,35 +693,35 @@ BoatMissile:
 		Damage: 60
 
 TowerMissle:
-	ROF: 30
+	ROF: 24
 	Range: 8
 	Report: ROCKET2
 	ValidTargets: Ground, Air
 	Burst: 2
-	BurstDelay: 20
+	BurstDelay: 16
 	Projectile: Missile
 		Arm: 0
 		High: yes
 		Shadow: no
 		Proximity: yes
-		Inaccuracy: 5
+		Inaccuracy: 3
 		Image: DRAGON
-		ROT: 10
+		ROT: 20
 		Trail: smokey
 		Speed: 35
-		RangeLimit: 30
+		RangeLimit: 40
 	Warhead:
-		Spread: 6
+		Spread: 12
 		Versus: 
 			None: 25%
 			Wood: 25%
 			Light: 100%
-			Heavy: 75%
+			Heavy: 80%
 		InfDeath: 3
 		Explosion: med_frag
 		ImpactSound: xplos
 		SmudgeType: Crater
-		Damage: 60
+		Damage: 45
 
 Napalm:
 	ROF: 2
