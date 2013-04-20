@@ -50,6 +50,8 @@ fact:
 	damaged-build:
 		Start: 27
 		Length: 25
+	dead: factdead
+		Start: 0
 
 proc:
 	idle:
@@ -59,14 +61,16 @@ proc:
 	make: procmake
 		Start: 0
 		Length: *
+	dead: procdead
+		Start: 0
 
 silo:
-	idle:
+	idle: silo2
 		Start: 0
-		Length: 5
-	damaged-idle:
-		Start: 5
-		Length: 5
+		Length: 9
+	damaged-idle: silo2
+		Start: 9
+		Length: 9
 	make: silomake
 		Start: 0
 		Length: *
@@ -79,6 +83,8 @@ powr:
 	make: powrmake
 		Start: 0
 		Length: *
+	dead: powrdead
+		Start: 0
 
 apwr:
 	idle:
@@ -88,6 +94,8 @@ apwr:
 	make: apwrmake
 		Start: 0
 		Length: *
+	dead: apwrdead
+		Start: 0
 
 barr:
 	idle:
@@ -158,9 +166,9 @@ weap:
 	make: weapmake
 		Start: 0
 		Length: *
-	build-top: weap2
+	build-top: weap3
 		Start: 0
-		Length: 4
+		Length: 10
 	damaged-build-top: weap2
 		Start: 4
 		Length: 4
