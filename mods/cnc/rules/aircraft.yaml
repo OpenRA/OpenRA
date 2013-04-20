@@ -129,11 +129,11 @@ ORCA:
 	AttackHeli:
 		FacingTolerance: 20
 	LimitedAmmo:
-		Ammo: 5
-		PipCount: 5
+		Ammo: 6
+		PipCount: 6
 	Reloads:
 		Count: 1
-		Period: 100
+		Period: 150
 	RenderUnit:
 	WithShadow:
 	FallsToEarth:
