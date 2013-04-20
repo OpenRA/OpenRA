@@ -264,13 +264,25 @@ pips:
 		Length: *
 
 overlay:
-	build-valid:
+	build-valid-desert:
+		Start: 0
+	build-valid-snow:
+		Start: 2
+	build-valid-temperat:
+		Start: 0
+	build-valid-winter:
 		Start: 0
 	build-invalid:
 		Start: 1
 	target-select:
+		Start: 3
+	target-valid-desert:
+		Start: 0
+	target-valid-snow:
 		Start: 2
-	target-valid:
+	target-valid-temperat:
+		Start: 0
+	target-valid-winter:
 		Start: 0
 	target-invalid:
 		Start: 1
