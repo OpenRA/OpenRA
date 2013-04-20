@@ -360,6 +360,7 @@ WALL:
 		TargetTypes: Ground, C4
 	RenderBuildingWall:
 		HasMakeAnimation: false
+		Image: walla
 	#GivesExperience:
 	EditorAppearance:
 		RelativeToTopLeft: yes
@@ -385,6 +386,8 @@ GUNTOWER:
 	Building:
 		Power: -20
 		Adjacent: 4
+		BuildSounds: CHUNG.aud
+		SellSounds: CHUNG.aud
 	Selectable:
 		Bounds: 32,32
 		Priority: 3
@@ -399,7 +402,8 @@ GUNTOWER:
 	-RenderBuilding:
 	-AutoTargetIgnore:
 	RenderBuildingSeparateTurret:
-	#	HasMakeAnimation: false
+		HasMakeAnimation: false
+		Image: guntowera
 	Turreted:
 		ROT: 6
 		InitialFacing: 128
@@ -419,9 +423,9 @@ GUNTOWER.Husk:
 	Inherits: ^TowerHusk
 	Tooltip:
 		Name: Destroyed Tower
-		Icon: turreticon
+		Icon: guntoweraicon
 	RenderUnit:
-		Image: GUNTOWER
+		Image: guntowera
 
 ROCKETTOWER:
 	Inherits: ^Building
@@ -440,6 +444,8 @@ ROCKETTOWER:
 	Building:
 		Power: -30
 		Adjacent: 4
+		BuildSounds: CHUNG.aud
+		SellSounds: CHUNG.aud
 	Selectable:
 		Bounds: 32,32
 		Priority: 3
@@ -454,7 +460,8 @@ ROCKETTOWER:
 	-RenderBuilding:
 	-AutoTargetIgnore:
 	RenderBuildingSeparateTurret:
-	#	HasMakeAnimation: false
+		HasMakeAnimation: false
+		Image: rockettowera
 	Armament:
 		Weapon: TowerMissile
 		LocalOffset: 85,597,469, 85,-597,469
@@ -476,9 +483,9 @@ ROCKETTOWER.Husk:
 	Inherits: ^TowerHusk
 	Tooltip:
 		Name: Destroyed Tower
-		Icon: rturreticon
+		Icon: rockettoweraicon
 	RenderUnit:
-		Image: ROCKETTOWER
+		Image: rockettowera
 
 REPAIR:
 	Inherits: ^Building
