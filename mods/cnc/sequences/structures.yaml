@@ -350,6 +350,7 @@ sam:
 	closing:
 		Start: 50
 		Length: 14
+		Tick: 30
 	damaged-closed-idle:
 		Start:64
 	damaged-opening:
@@ -362,12 +363,13 @@ sam:
 	damaged-closing:
 		Start: 114
 		Length: 14
+		Tick: 30
 	dead:
 		Start: 128
 	make: sammake
 		Start: 0
 		Length: 20
-		Tick: 80
+		Tick: 30
 	muzzle: samfire
 		Start: 0
 		Length: 18
