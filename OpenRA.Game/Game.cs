@@ -313,7 +313,7 @@ namespace OpenRA
 
 			modData = new ModData( mm );
 			Renderer.InitializeFonts(modData.Manifest);
-			modData.LoadInitialAssets();
+			modData.LoadInitialAssets(true);
 
 
 			PerfHistory.items["render"].hasNormalTick = false;
