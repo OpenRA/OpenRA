@@ -17,7 +17,7 @@ harvester:
 	idle:
 		Start: 0
 		Facings: 32
-	harvest:
+	harvest: #TODO use the real overlay instead of this hacky paintjob
 		Start: 32
 		Length: 8
 		Facings: 8
@@ -29,7 +29,7 @@ harvester:
 		Start: 10
 		Length: 1
 
-wall:
+walla:
 	idle:
 		Start: 0
 		Length: 16
@@ -100,43 +100,37 @@ sonictank:
 		Start: 0
 		Facings: 32
 
-guntower:
+guntowera:
 	idle:
 		Start: 0
 		Facings: 1
 	recoil:
 		Start: 0
 		Facings: 1
-	make: silomake
-		Start: 0
-		Length: *
 	damaged-idle:
 		Start: 0
 		Facings: 1
 	damaged-recoil:
 		Start: 0
 		Facings: 1
-	turret: gunturret
+	turret: gunturreta
 		Start: 0
 		Facings: 32
 
-rockettower:
+rockettowera:
 	idle:
 		Start: 0
 		Facings: 1
 	recoil:
 		Start: 0
 		Facings: 1
-	make: silomake
-		Start: 0
-		Length: *
 	damaged-idle:
 		Start: 0
 		Facings: 1
 	damaged-recoil:
 		Start: 0
 		Facings: 1
-	turret: rocketturret
+	turret: rocketturreta
 		Start: 0
 		Facings: 32
 
