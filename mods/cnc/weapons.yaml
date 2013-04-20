@@ -770,7 +770,7 @@ Laser:
 		Damage: 200
 
 SAMMissile:
-	ROF: 50
+	ROF: 15
 	Range: 10
 	Report: ROCKET2
 	ValidTargets: Air
@@ -781,8 +781,8 @@ SAMMissile:
 		Proximity: yes
 		Image: MISSILE
 		ROT: 20
-		Speed: 40
-		RangeLimit: 50
+		Speed: 50
+		RangeLimit: 35
 		Trail: smokey
 	Warhead: AP
 		Spread: 3
@@ -795,7 +795,7 @@ SAMMissile:
 		Explosion: small_frag
 		ImpactSound: xplos
 		SmudgeType: Crater
-		Damage: 60
+		Damage: 30
 
 HonestJohn:
 	ROF: 200
