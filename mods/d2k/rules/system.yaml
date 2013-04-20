@@ -297,6 +297,7 @@ World:
 		Name: chrome
 		Filename: d2k.pal
 		ShadowIndex: 3
+		AllowModifiers: false
 	PaletteFromFile@effect:
 		Name: effect
 		Filename: d2k.pal
