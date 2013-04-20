@@ -25,26 +25,31 @@ local filehistorymenu = wx.wxMenu({})
 local filehistory = wx.wxMenuItem(fileMenu, ID_RECENTFILES,
   TR("Recent Files")..KSC(ID_RECENTFILES), TR("File history"), wx.wxITEM_NORMAL, filehistorymenu)
 fileMenu:Insert(8,filehistory)
-function UpdateFileHistoryUI(list)
-  -- remove all at first
-  for i=1,filehistorymenu:GetMenuItemCount() do
-    filehistorymenu:Delete( ID("file.recentfiles."..i))
-  end
-  for i=1,#list do
-    local file = list[i].filename
-    local item = wx.wxMenuItem(filehistorymenu, ID("file.recentfiles."..i),file,"")
-    filehistorymenu:Append(item)
+
+local function loadRecent(event)
+  local item = filehistorymenu:FindItem(event:GetId())
+  local filename = item:GetLabel()
+  if not LoadFile(filename, nil, true) then
+    wx.wxMessageBox(
+      TR("File '%s' no longer exists."):format(filename),
+      GetIDEString("editormessage"),
+      wx.wxOK + wx.wxCENTRE, ide.frame)
+    filehistorymenu:Delete(item)
   end
 end
 
-for i=1,ide.config.filehistorylength do
-  frame:Connect(ID("file.recentfiles."..i), wx.wxEVT_COMMAND_MENU_SELECTED,
-    function (event)
-      local item = filehistorymenu:FindItemByPosition(i-1)
-      local filename = item:GetLabel()
-      LoadFile(filename)
-    end
-  )
+function UpdateFileHistoryUI(list)
+  -- remove all at first
+  for i=filehistorymenu:GetMenuItemCount(),1,-1 do
+    filehistorymenu:Delete(filehistorymenu:FindItemByPosition(i-1))
+  end
+  for i=1, #list do
+    local file = list[i].filename
+    local id = ID("file.recentfiles."..i)
+    local item = wx.wxMenuItem(filehistorymenu, id, file, "")
+    filehistorymenu:Append(item)
+    frame:Connect(id, wx.wxEVT_COMMAND_MENU_SELECTED, loadRecent)
+  end
 end
 
 frame:Connect(ID_NEW, wx.wxEVT_COMMAND_MENU_SELECTED, NewFile)
