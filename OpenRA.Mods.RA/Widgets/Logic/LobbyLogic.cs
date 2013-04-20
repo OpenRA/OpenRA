@@ -225,8 +225,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (fragileAlliance != null)
 			{
 				fragileAlliance.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.FragileAlliances;
-				fragileAlliance.IsDisabled = () => !Game.IsHost || gameStarting || orderManager.LocalClient == null
-					|| orderManager.LocalClient.IsReady || TeamGame; // only available in FFA
+				fragileAlliance.IsDisabled = () => !Game.IsHost || gameStarting
+					|| orderManager.LocalClient == null	|| orderManager.LocalClient.IsReady;
 				fragileAlliance.OnClick = () => orderManager.IssueOrder(Order.Command(
 					"fragilealliance {0}".F(!orderManager.LobbyInfo.GlobalSettings.FragileAlliances)));
 			};
@@ -597,9 +597,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			while (Players.Children.Count > idx)
 				Players.RemoveChild(Players.Children[idx]);
-
-			if (orderManager.LobbyInfo.GlobalSettings.FragileAlliances && TeamGame)
-				orderManager.IssueOrder(Order.Command("fragilealliance false")); // No back-stabbing in Team games.
 		}
 
 		void CycleReady()
