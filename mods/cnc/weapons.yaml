@@ -306,7 +306,7 @@ OrcaAGMissiles:
 		Explosion: small_frag
 		ImpactSound: xplos
 		SmudgeType: Crater
-		Damage: 30
+		Damage: 25
 
 OrcaAAMissiles:
 	ROF: 15
@@ -337,7 +337,7 @@ OrcaAAMissiles:
 		Explosion: small_frag
 		ImpactSound: xplos
 		SmudgeType: Crater
-		Damage: 30
+		Damage: 25
 
 Flamethrower:
 	ROF: 50
