@@ -21,10 +21,6 @@ using OpenRA.Network;
 using OpenRA.Support;
 using OpenRA.Widgets;
 
-using Mono.Nat;
-using Mono.Nat.Pmp;
-using Mono.Nat.Upnp;
-
 using XRandom = OpenRA.Thirdparty.Random;
 
 namespace OpenRA
@@ -37,8 +33,6 @@ namespace OpenRA
 
 		public static ModData modData;
 		static WorldRenderer worldRenderer;
-
-		public static INatDevice natDevice;
 
 		public static Viewport viewport;
 		public static Settings Settings;
@@ -266,24 +260,7 @@ namespace OpenRA
 			Log.AddChannel("server", "server.log");
 
 			if (Settings.Server.DiscoverNatDevices)
-			{
-				try
-				{
-					NatUtility.Logger = Log.Channels["server"].Writer;
-					NatUtility.Verbose = Settings.Server.VerboseNatDiscovery;
-					NatUtility.DeviceFound += DeviceFound;
-					NatUtility.DeviceLost += DeviceLost;
-					Settings.Server.NatDeviceAvailable = false;
-					NatUtility.StartDiscovery();
-					Log.Write("server", "NAT discovery started.");
-				}
-				catch (Exception e)
-				{
-					Log.Write("server", "Can't discover UPnP-enabled device: {0}", e);
-					Settings.Server.NatDeviceAvailable = false;
-					Settings.Server.AllowPortForward = false;
-				}
-			}
+				UPnP.TryNatDiscovery();
 			else
 			{
 				Settings.Server.NatDeviceAvailable = false;
@@ -304,78 +281,9 @@ namespace OpenRA
 			if (Settings.Server.DiscoverNatDevices)
 			{
 				RunAfterDelay(Settings.Server.NatDiscoveryTimeout, () =>
-				{
-					Log.Write("server", "Stopping NAT discovery.");
-
-					try
-					{
-						NatUtility.StopDiscovery();
-					}
-					catch (Exception e)
-					{
-						Log.Write("server", "Failed to stop NAT device discovery: {0}", e);
-						Settings.Server.NatDeviceAvailable = false;
-						Settings.Server.AllowPortForward = false;
-					}
-
-					if (natDevice == null)
-					{
-						Log.Write("server", "No NAT devices with UPnP enabled found within {0} ms deadline. Disabling automatic port forwarding.".F(Settings.Server.NatDiscoveryTimeout));
-						Settings.Server.NatDeviceAvailable = false;
-						Settings.Server.AllowPortForward = false;
-					}
-				});
+				              UPnP.TryStoppingNatDiscovery()
+				              );
 			}
-		}
-
-		public static void DeviceFound(object sender, DeviceEventArgs args)
-		{
-			if (args.Device == null)
-				return;
-
-			Log.Write("server", "NAT device discovered.");
-
-			Settings.Server.NatDeviceAvailable = true;
-			Settings.Server.AllowPortForward = true;
-
-			try
-			{
-				natDevice = args.Device;
-				Log.Write("server", "Type: {0}", natDevice.GetType());
-				Log.Write("server", "Your external IP is: {0}", natDevice.GetExternalIP());
-
-				foreach (var mp in natDevice.GetAllMappings())
-					Log.Write("server", "Existing port mapping: protocol={0}, public={1}, private={2}",
-					          mp.Protocol, mp.PublicPort, mp.PrivatePort);
-			}
-			catch (Exception e)
-			{
-				Log.Write("server", "Can't fetch information from NAT device: {0}", e);
-
-				Settings.Server.NatDeviceAvailable = false;
-				Settings.Server.AllowPortForward = false;
-			}
-		}
-
-		public static void DeviceLost(object sender, DeviceEventArgs args)
-		{
-			Log.Write("server", "NAT device lost.");
-
-			if (args.Device == null)
-				return;
-
-			try
-			{
-				natDevice = args.Device;
-				Log.Write("server", "Type: {0}", natDevice.GetType());
-			}
-			catch (Exception e)
-			{
-				Log.Write("server", "Can't fetch type from lost NAT device: {0}", e);
-			}
-
-			Settings.Server.NatDeviceAvailable = false;
-			Settings.Server.AllowPortForward = false;
 		}
 
 		public static void InitializeWithMods(string[] mods)
@@ -524,7 +432,7 @@ namespace OpenRA
 		public static void CreateServer(ServerSettings settings)
 		{
 			server = new Server.Server(new IPEndPoint(IPAddress.Any, settings.ListenPort),
-			                           Game.Settings.Game.Mods, settings, modData, natDevice);
+			                           Game.Settings.Game.Mods, settings, modData);
 		}
 
 		public static int CreateLocalServer(string map)
@@ -541,7 +449,7 @@ namespace OpenRA
 			settings.AllowPortForward = false;
 
 			server = new Server.Server(new IPEndPoint(IPAddress.Loopback, 0),
-			                           Game.Settings.Game.Mods, settings, modData, natDevice);
+			                           Game.Settings.Game.Mods, settings, modData);
 
 			return server.Port;
 		}
