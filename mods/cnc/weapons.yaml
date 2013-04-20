@@ -506,24 +506,24 @@ Grenade:
 		Damage: 40
 
 TurretGun:
-	ROF: 30
+	ROF: 25
 	Range: 6
 	Report: TNKFIRE6
 	Projectile: Bullet
 		Image: 120MM
-		Speed: 40
+		Speed: 50
 	Warhead:
 		Spread: 3
 		Versus: 
 			None: 25%
 			Wood: 25%
-			Light: 75%
+			Light: 80%
 			Heavy: 100%
 		InfDeath: 4
 		Explosion: small_frag
 		ImpactSound: xplos
 		SmudgeType: Crater
-		Damage: 60
+		Damage: 50
 
 MammothMissiles:
 	ROF: 100
