@@ -8,7 +8,6 @@ Folders:
 	.
 	./mods/ra
 	./mods/ra/bits
-	./mods/ra/bits/desert
 	./mods/ra/uibits
 	~^/Content/ra
 
@@ -27,6 +26,7 @@ Packages:
 	interior.mix
 	aftermath.mix
 	counterstrike.mix
+	desert.mix
 	~scores.mix
 	~movies1.mix
 	~movies2.mix
