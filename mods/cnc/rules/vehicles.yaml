@@ -81,7 +81,7 @@ HARV:
 APC:
 	Inherits: ^Tank
 	Valued:
-		Cost: 700
+		Cost: 600
 	Tooltip:
 		Name: APC
 		Icon: apcicnh
@@ -475,7 +475,7 @@ MSAM:
 MLRS:
 	Inherits: ^Tank
 	Valued:
-		Cost: 750
+		Cost: 600
 	Tooltip:
 		Name: Mobile S.A.M.
 		Icon: mlrsicnh
@@ -485,7 +485,8 @@ MLRS:
 		Prerequisites: anyhq
 		Owner: nod
 	Mobile:
-		Speed: 6
+		Speed: 7
+		ROT: 7
 	Health:
 		HP: 120
 	Armor:
@@ -493,7 +494,7 @@ MLRS:
 	RevealsShroud:
 		Range: 10
 	Turreted:
-		ROT: 5
+		ROT: 8
 		Offset: -128,0,128
 		AlignWhenIdle: true
 	Armament:
