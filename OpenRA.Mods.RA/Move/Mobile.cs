@@ -26,8 +26,8 @@ namespace OpenRA.Mods.RA.Move
 		public readonly Dictionary<string, TerrainInfo> TerrainSpeeds;
 		[Desc("e.g. crate, wall, infantry")]
 		public readonly string[] Crushes;
-		public readonly int WaitAverage = 60;
-		public readonly int WaitSpread = 20;
+		public readonly int WaitAverage = 5;
+		public readonly int WaitSpread = 2;
 		public readonly int InitialFacing = 128;
 		[Desc("Rate of Turning")]
 		public readonly int ROT = 255;
