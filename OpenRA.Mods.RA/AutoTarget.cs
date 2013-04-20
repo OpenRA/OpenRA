@@ -24,9 +24,9 @@ namespace OpenRA.Mods.RA
 		public readonly UnitStance InitialStance = UnitStance.AttackAnything;
 
 		[Desc("Ticks to wait until next AutoTarget: attempt.")]
-		public readonly int MinimumScanTimeInterval = 30;
+		public readonly int MinimumScanTimeInterval = 3;
 		[Desc("Ticks to wait until next AutoTarget: attempt.")]
-		public readonly int MaximumScanTimeInterval = 60;
+		public readonly int MaximumScanTimeInterval = 8;
 
 		public object Create(ActorInitializer init) { return new AutoTarget(init.self, this); }
 	}
