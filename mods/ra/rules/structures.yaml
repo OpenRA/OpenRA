@@ -53,7 +53,7 @@ GAP:
 		BuildPaletteOrder: 100
 		Prerequisites: atek
 		Owner: allies
-		Hotkey: x
+		Hotkey: g
 	Building:
 		Power: -60
 		Footprint: _ x
@@ -619,7 +619,7 @@ HBOX.E1:
 		BuildPaletteOrder: 20
 		Prerequisites: tent
 		Owner: allies
-		Hotkey: p
+		Hotkey: l
 	Tooltip:
 		Name: Camo Pillbox (Guns)
 		Description: Hidden defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
@@ -1293,7 +1293,7 @@ FIX:
 		BuildPaletteOrder: 30
 		Prerequisites: weap
 		Owner: allies,soviet
-		Hotkey: x
+		Hotkey: m
 	Valued:
 		Cost: 1200
 	Tooltip:
