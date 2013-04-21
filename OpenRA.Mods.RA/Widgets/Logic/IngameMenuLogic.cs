@@ -1,0 +1,46 @@
+﻿#region Copyright & License Information
+/*
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * This file is part of OpenRA, which is free software. It is made
+ * available to you under the terms of the GNU General Public License
+ * as published by the Free Software Foundation. For more information,
+ * see COPYING.
+ */
+#endregion
+
+using System;
+using OpenRA.Widgets;
+
+namespace OpenRA.Mods.RA.Widgets.Logic
+{
+	class IngameMenuLogic
+	{
+		[ObjectCreator.UseCtor]
+		public IngameMenuLogic(Widget widget, World world, Action onExit)
+		{
+			widget.Get<ButtonWidget>("DISCONNECT").OnClick = () =>
+			{
+				onExit();
+				LeaveGame(widget, world, onExit);
+			};
+			widget.Get<ButtonWidget>("SETTINGS").OnClick = () => Ui.OpenWindow("SETTINGS_MENU");
+			widget.Get<ButtonWidget>("MUSIC").OnClick = () => Ui.OpenWindow("MUSIC_MENU");
+			widget.Get<ButtonWidget>("RESUME").OnClick = () => onExit();
+
+			widget.Get<ButtonWidget>("SURRENDER").OnClick = () =>
+			{
+				world.IssueOrder(new Order("Surrender", world.LocalPlayer.PlayerActor, false));
+				onExit();
+			};
+			widget.Get("SURRENDER").IsVisible = () => world.LocalPlayer != null && world.LocalPlayer.WinState == WinState.Undefined;
+		}
+
+		void LeaveGame(Widget widget, World world, Action onExit)
+		{
+			Sound.PlayNotification(null, "Speech", "Leave", world.LocalPlayer.Country.Race);
+			Game.Disconnect();
+			Ui.CloseWindow();
+			Game.LoadShellMap();
+		}
+	}
+}

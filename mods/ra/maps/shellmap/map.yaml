@@ -1294,6 +1294,8 @@ Rules:
 		DefaultShellmapScript:
 		-SpawnMPUnits:
 		-MPStartLocations:
+		LoadWidgetAtGameStart:
+			Widget: MAINMENU
 	MSLO:
 		Building:
 			Power: 0

@@ -84,9 +84,8 @@ namespace OpenRA.Mods.D2k
 			}
 			else
 			{
-				Game.LoadShellMap();
 				Ui.ResetAll();
-				Ui.OpenWindow("MAINMENU_BG");
+				Game.LoadShellMap();
 			}
 		}
 	}

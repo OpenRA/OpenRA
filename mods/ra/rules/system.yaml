@@ -506,9 +506,8 @@ Player:
 	PlayerStatistics:
 
 World:
-	OpenWidgetAtGameStart:
+	LoadWidgetAtGameStart:
 		Widget: INGAME_ROOT
-		ObserverWidget: OBSERVER_ROOT
 	ScreenShaker:
 	WaterPaletteRotation:
 		ExcludePalettes: player

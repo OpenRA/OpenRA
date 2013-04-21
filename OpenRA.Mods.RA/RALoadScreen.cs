@@ -87,11 +87,7 @@ namespace OpenRA.Mods.RA
 				Ui.OpenWindow(Info["InstallerMenuWidget"], args);
 			}
 			else
-			{
 				Game.LoadShellMap();
-				Ui.ResetAll();
-				Ui.OpenWindow("MAINMENU_BG");
-			}
 		}
 	}
 }
