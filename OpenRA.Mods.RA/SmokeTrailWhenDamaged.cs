@@ -19,6 +19,7 @@ namespace OpenRA.Mods.RA
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;
 		public readonly int Interval = 3;
+		public readonly string Sprite = "smokey";
 
 		public object Create(ActorInitializer init) { return new SmokeTrailWhenDamaged(init.self, this); }
 	}
@@ -45,7 +46,7 @@ namespace OpenRA.Mods.RA
 				{
 					var offset = info.Offset.Rotate(coords.QuantizeOrientation(self, self.Orientation));
 					var pos = PPos.FromWPosHackZ(position + coords.LocalToWorld(offset));
-					self.World.AddFrameEndTask(w => w.Add(new Smoke(w, pos, "smokey")));
+					self.World.AddFrameEndTask(w => w.Add(new Smoke(w, pos, info.Sprite)));
 				}
 
 				ticks = info.Interval;
