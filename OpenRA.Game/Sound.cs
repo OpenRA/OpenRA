@@ -45,14 +45,31 @@ namespace OpenRA
 
 		static ISoundEngine CreateEngine(string engine)
 		{
-			engine = Game.Settings.Server.Dedicated?"Null":engine;
-			switch (engine)
-			{	/* TODO: if someone cares about pluggable crap here, ship this out */
-			case "AL": return new OpenAlSoundEngine();
-			case "Null": return new NullSoundEngine();
+			Log.AddChannel("sound", "sound.log");
+			engine = Game.Settings.Server.Dedicated ? "Null" : engine;
+			switch (engine) // TODO: if someone cares about pluggable crap here, ship this out
+			{	
+				case "AL":
+				{
+					try
+					{
+						Console.WriteLine("Using OpenAL sound engine.");
+						return new OpenAlSoundEngine();
+					}
+					catch (Exception e)
+					{
+						Log.Write("sound", "Failed to start OpenAL sound engine:\n{0}.".F(e));
+						return new NullSoundEngine();
+					}
+				}
+				case "Null":
+				{
+					Console.WriteLine("Using Null sound engine. This disables SFX completely.");
+					return new NullSoundEngine();
+				}
 
-			default:
-				throw new InvalidOperationException("Unsupported sound engine: {0}".F (engine));
+				default:
+					throw new InvalidOperationException("Unsupported sound engine: {0}".F(engine));
 			}
 		}
 
