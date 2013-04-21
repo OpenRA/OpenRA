@@ -2,6 +2,8 @@ Selectable: True
 
 MapFormat: 5
 
+RequiresMod: cnc
+
 Title: Nikoomba's Demise
 
 Description: Conversion of first Nod mission from Cnc
