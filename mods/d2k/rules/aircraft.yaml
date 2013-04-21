@@ -20,12 +20,6 @@
 		RepairBuildings: repair
 		RearmBuildings: starporta,starporto,starporth
 		MinimalLandAltitude: 25
-	SmokeTrailWhenDamaged@0:
-		Offset: -512,640,0
-		Interval: 3
-	SmokeTrailWhenDamaged@1:
-		Offset: -512,-640,0
-		Interval: 3
 	RenderUnit:
 	RenderCargo:
 		RelativeAltitude: 20
@@ -102,8 +96,6 @@ ORNI:
 		Spins: no
 		Moves: yes
 		Explosion: UnitExplodeScale
-	SmokeTrailWhenDamaged:
-		Offset: -427,0,0
 
 ORNI.bomber:
 	CarpetBomb:
@@ -134,8 +126,6 @@ ORNI.bomber:
 		Spins: no
 		Moves: yes
 		Explosion: UnitExplodeScale
-	SmokeTrailWhenDamaged:
-		Offset: -427,0,0
 
 CARRYALL.infantry:
 	ParaDrop:
@@ -153,12 +143,6 @@ CARRYALL.infantry:
 		Speed: 40
 		RepairBuildings: repair
 		RearmBuildings: starporta,starporto,starporth
-	SmokeTrailWhenDamaged@0:
-		Offset: -512,540,0
-		Interval: 3
-	SmokeTrailWhenDamaged@1:
-		Offset: -512,-640,0
-		Interval: 3
 	RenderUnit:
 		Image: carryall
 	WithShadow:
