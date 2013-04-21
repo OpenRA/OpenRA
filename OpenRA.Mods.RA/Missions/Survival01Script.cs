@@ -337,9 +337,11 @@ namespace OpenRA.Mods.RA.Missions
 			barrack1 = actors["Barrack1"];
 			sam1 = actors["Sam1"];
 			sam2 = actors["Sam2"];
-			var shroud = w.WorldActor.Trait<Shroud>();
+
+			var shroud = allies.PlayerActor.Trait<Shroud>();
 			shroud.Explore(w, sam1.Location, 4);
 			shroud.Explore(w, sam2.Location, 4);
+
 			Game.MoveViewport(alliesbase.Location.ToFloat2());
 			StartCountDownTimer();
 			SendSquad1();
