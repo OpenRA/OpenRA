@@ -421,7 +421,7 @@ Grenade:
 		Damage: 50
 
 70mm:
-	ROF: 45
+	ROF: 38
 	Range: 4
 	Report: TNKFIRE3
 	Projectile: Bullet
@@ -462,7 +462,7 @@ Grenade:
 		Damage: 30
 
 120mm:
-	ROF: 60
+	ROF: 50
 	Range: 4.75
 	Report: TNKFIRE6
 	Projectile: Bullet
