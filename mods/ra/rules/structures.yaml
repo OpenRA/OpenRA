@@ -80,7 +80,7 @@ SPEN:
 		Description: Produces and repairs submarines and \ntransports
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 30
+		BuildPaletteOrder: 50
 		Prerequisites: anypower
 		Owner: soviet
 		Hotkey: y
@@ -130,7 +130,7 @@ SYRD:
 		Proxy: powerproxy.sonarpulse
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 40
+		BuildPaletteOrder: 50
 		Prerequisites: anypower
 		Owner: allies
 		Hotkey: y
@@ -347,7 +347,7 @@ DOME:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 60
+		BuildPaletteOrder: 80
 		Prerequisites: proc
 		Owner: allies,soviet
 		Hotkey: r
@@ -882,7 +882,7 @@ WEAP:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 50
+		BuildPaletteOrder: 70
 		Prerequisites: proc
 		Owner: soviet,allies
 		Hotkey: w
@@ -997,7 +997,7 @@ SILO:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 40
+		BuildPaletteOrder: 60
 		Prerequisites: proc
 		Owner: allies,soviet
 		Hotkey: o
@@ -1063,7 +1063,7 @@ AFLD:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 50
+		BuildPaletteOrder: 90
 		Prerequisites: dome
 		Owner: soviet
 		Hotkey: i
@@ -1171,7 +1171,7 @@ STEK:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 60
+		BuildPaletteOrder: 100
 		Prerequisites: weap,dome
 		Owner: soviet
 		Hotkey: t
@@ -1290,7 +1290,7 @@ FIX:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
-		BuildPaletteOrder: 30
+		BuildPaletteOrder: 40
 		Prerequisites: weap
 		Owner: allies,soviet
 		Hotkey: m
