@@ -100,29 +100,15 @@ function SettingsRestoreFileHistory(fntab)
   return outtab
 end
 
-function SettingsAppendFileToHistory (filename)
+function SettingsSaveFileHistory (filehistory)
   local listname = "/filehistory"
-  local oldlist = SettingsRestoreFileHistory(nil,listname)
-
-  -- if the file has been in the history before, remove it
-  for i=#oldlist,1,-1 do
-    if oldlist[i] == filename then table.remove(oldlist,i) end
-  end
-
-  table.insert(oldlist,1,{filename=filename})
-
-  -- remove all entries that are no longer needed
-  while #oldlist>ide.config.filehistorylength do table.remove(oldlist) end
-
   local path = settings:GetPath()
   settings:DeleteGroup(listname)
   settings:SetPath(listname)
 
-  for i,doc in ipairs(oldlist) do
+  for i,doc in ipairs(filehistory) do
     settings:Write(tostring(i), doc.filename)
   end
-
-  UpdateFileHistoryUI(oldlist)
 
   settings:SetPath(path)
 end
@@ -450,6 +436,7 @@ function SettingsSaveAll()
   SettingsSaveProjectSession(FileTreeGetProjects())
   SettingsSaveFileSession(GetOpenFiles())
   SettingsSaveView()
+  SettingsSaveFileHistory(GetFileHistory())
   SettingsSaveFramePosition(ide.frame, "MainFrame")
   SettingsSaveEditorSettings()
 end

@@ -406,12 +406,12 @@ dofile "src/version.lua"
 -- load rest of settings
 SettingsRestoreEditorSettings()
 SettingsRestoreFramePosition(ide.frame, "MainFrame")
+SettingsRestoreFileHistory(SetFileHistory)
 SettingsRestoreFileSession(function(tabs, params)
   if params and params.recovery
   then return SetOpenTabs(params)
   else return SetOpenFiles(tabs, params) end
 end)
-SettingsRestoreFileHistory(UpdateFileHistoryUI)
 SettingsRestoreProjectSession(FileTreeSetProjects)
 SettingsRestoreView()
 

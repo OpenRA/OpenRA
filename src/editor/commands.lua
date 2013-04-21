@@ -20,8 +20,8 @@ function NewFile(event)
 end
 
 -- Find an editor page that hasn't been used at all, eg. an untouched NewFile()
-local function findDocumentToReuse()
-  local editor = nil
+local function findUnusedEditor()
+  local editor
   for id, document in pairs(openDocuments) do
     if (document.editor:GetLength() == 0) and
     (not document.isModified) and (not document.filePath) and
@@ -59,14 +59,11 @@ function LoadFile(filePath, editor, file_must_exist, skipselection)
   end
 
   local current = editor and editor:GetCurrentPos()
-  editor = editor or findDocumentToReuse() or CreateEditor()
+  editor = editor or findUnusedEditor() or CreateEditor()
 
   editor:Freeze()
-  editor:Clear()
-  editor:ClearAll()
   SetupKeywords(editor, GetFileExt(filePath))
-  editor:MarkerDeleteAll(BREAKPOINT_MARKER)
-  editor:MarkerDeleteAll(CURRENT_LINE_MARKER)
+  editor:MarkerDeleteAll(-1)
   editor:SetText(file_text or "")
 
   -- check the editor as it can be empty if the file has malformed UTF8;
@@ -126,8 +123,6 @@ function LoadFile(filePath, editor, file_must_exist, skipselection)
   openDocuments[id].fileName = wx.wxFileName(filePath):GetFullName()
   openDocuments[id].modTime = GetFileModTime(filePath)
   SetDocumentModified(id, false)
-
-  SettingsAppendFileToHistory(filePath)
 
   -- activate the editor; this is needed for those cases when the editor is
   -- created from some other element, for example, from a project tree.
@@ -503,6 +498,36 @@ function CompileProgram(editor, quiet)
   return line_num == -1, editorText -- return true if it compiled ok
 end
 
+-----------------
+-- File History
+
+do
+  local filehistory = {}
+  local iscaseinsensitive = wx.wxFileName("A"):SameAs(wx.wxFileName("a"))
+
+  function SetFileHistory(fh) filehistory = fh end
+  function GetFileHistory() return filehistory end
+  -- add file to the file history removing duplicates
+  function AddToFileHistory(filename)
+    if not filename
+    or #filehistory > 0 and filehistory[1].filename == filename then return end
+
+    local fn = wx.wxFileName(filename)
+    if fn:Normalize() then filename = fn:GetFullPath() end
+
+    -- if the file is in the history, remove it
+    for i=#filehistory,1,-1 do
+      if filename == filehistory[i].filename
+      or iscaseinsensitive and filename:lower() == filehistory[i].filename:lower() then
+        table.remove(filehistory, i) end
+    end
+    table.insert(filehistory,1,{filename=filename})
+
+    -- remove all entries that are no longer needed
+    while #filehistory>ide.config.filehistorylength do table.remove(filehistory) end
+  end
+end
+
 ------------------
 -- Save & Close
 
@@ -664,14 +689,12 @@ local function saveAutoRecovery(event)
 end
 
 local function fastWrap(func, ...)
-  -- open files, but ignore some functions that are not needed;
-  -- as we may be opening multiple files, it doesn't make sense to
-  -- select editor and do some other similar work after each file.
-  local noop = function() end
-  local SES, SAFTH = SetEditorSelection, SettingsAppendFileToHistory
-  SetEditorSelection, SettingsAppendFileToHistory = noop, noop
+  -- ignore SetEditorSelection that is not needed as `func` may work on
+  -- multipe files, but editor needs to be selected once.
+  local SES = SetEditorSelection
+  SetEditorSelection = function() end
   func(...)
-  SetEditorSelection, SettingsAppendFileToHistory = SES, SAFTH
+  SetEditorSelection = SES
 end
 
 function StoreRestoreProjectTabs(curdir, newdir)

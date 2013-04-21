@@ -38,19 +38,26 @@ local function loadRecent(event)
   end
 end
 
-function UpdateFileHistoryUI(list)
-  -- remove all at first
-  for i=filehistorymenu:GetMenuItemCount(),1,-1 do
-    filehistorymenu:Delete(filehistorymenu:FindItemByPosition(i-1))
-  end
+local function updateRecentFiles(list)
+  local items = filehistorymenu:GetMenuItemCount()
   for i=1, #list do
     local file = list[i].filename
     local id = ID("file.recentfiles."..i)
-    local item = wx.wxMenuItem(filehistorymenu, id, file, "")
-    filehistorymenu:Append(item)
-    frame:Connect(id, wx.wxEVT_COMMAND_MENU_SELECTED, loadRecent)
+    if i <= items then -- this is an existing item; update the label
+      filehistorymenu:FindItem(id):SetItemLabel(file)
+    else -- need to add an item
+      local item = wx.wxMenuItem(filehistorymenu, id, file, "")
+      filehistorymenu:Append(item)
+      frame:Connect(id, wx.wxEVT_COMMAND_MENU_SELECTED, loadRecent)
+    end
+  end
+  for i=items, #list+1, -1 do -- delete the rest if the list got shorter
+    filehistorymenu:Delete(filehistorymenu:FindItemByPosition(i-1))
   end
 end
+
+frame:Connect(ID_RECENTFILES, wx.wxEVT_UPDATE_UI,
+  function (event) updateRecentFiles(GetFileHistory()) end)
 
 frame:Connect(ID_NEW, wx.wxEVT_COMMAND_MENU_SELECTED, NewFile)
 frame:Connect(ID_OPEN, wx.wxEVT_COMMAND_MENU_SELECTED, OpenFile)
