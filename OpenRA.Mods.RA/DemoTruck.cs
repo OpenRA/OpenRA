@@ -56,6 +56,7 @@ namespace OpenRA.Mods.RA
 		{
 			if (order.OrderString == "DemoAttack")
 			{
+				self.SetTargetLine(Target.FromOrder(order), Color.Red);
 				self.World.AddFrameEndTask(w =>
 				{
 					self.QueueActivity(new MoveAdjacentTo(Target.FromOrder(order)));
