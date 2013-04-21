@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			widget.Get<ButtonWidget>("DISCONNECT").OnClick = () =>
 			{
 				onExit();
-				LeaveGame(widget, world, onExit);
+				LeaveGame(world);
 			};
 			widget.Get<ButtonWidget>("SETTINGS").OnClick = () => Ui.OpenWindow("SETTINGS_MENU");
 			widget.Get<ButtonWidget>("MUSIC").OnClick = () => Ui.OpenWindow("MUSIC_MENU");
@@ -35,9 +35,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			widget.Get("SURRENDER").IsVisible = () => world.LocalPlayer != null && world.LocalPlayer.WinState == WinState.Undefined;
 		}
 
-		void LeaveGame(Widget widget, World world, Action onExit)
+		void LeaveGame(World world)
 		{
-			Sound.PlayNotification(null, "Speech", "Leave", world.LocalPlayer.Country.Race);
+			Sound.PlayNotification(null, "Speech", "Leave", world.LocalPlayer == null ? null : world.LocalPlayer.Country.Race);
 			Game.Disconnect();
 			Ui.CloseWindow();
 			Game.LoadShellMap();
