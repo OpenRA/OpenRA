@@ -91,11 +91,13 @@ namespace OpenRA.Network
 			public string Difficulty;
 			public bool Crates = true;
 			public bool AllowVersionMismatch;
+			public string Version;
 		}
 
 		public Session(string[] mods)
 		{
 			this.GlobalSettings.Mods = mods.ToArray();
+			this.GlobalSettings.Version = Mod.AllMods[mods[0]].Version;
 		}
 
 		public string Serialize()
