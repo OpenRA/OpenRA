@@ -74,7 +74,7 @@ V2RL:
 		BuildPaletteOrder: 60
 		Prerequisites: fix
 		Owner: allies
-		Hotkey: x
+		Hotkey: m
 	Valued:
 		Cost: 850
 	Tooltip:
@@ -543,7 +543,7 @@ MRJ:
 		BuildPaletteOrder: 150
 		Prerequisites: atek
 		Owner: allies
-		Hotkey: m
+		Hotkey: k
 	Health:
 		HP: 200
 	Armor:
