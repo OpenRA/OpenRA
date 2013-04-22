@@ -38,6 +38,9 @@ local function updateWatchesSync(num)
   if watchCtrl and debugger.server and not debugger.running
   and ide.frame.uimgr:GetPane("watchpanel"):IsShown()
   and not debugger.scratchpad and not (debugger.options or {}).noeval then
+    local bgcl = watchCtrl:GetBackgroundColour()
+    local hicl = wx.wxColour(math.floor(bgcl:Red()*.9),
+      math.floor(bgcl:Green()*.9), math.floor(bgcl:Blue()*.9))
     for idx = 0, watchCtrl:GetItemCount() - 1 do
       if not num or idx == num then
         local expression = watchCtrl:GetItemText(idx)
@@ -54,9 +57,7 @@ local function updateWatchesSync(num)
           watchCtrl:GetItem(litem)
           watchCtrl:SetItemBackgroundColour(idx,
             watchCtrl:GetItem(litem) and newval ~= litem:GetText()
-            and ide.config.styles.caretlinebg
-            and wx.wxColour(unpack(ide.config.styles.caretlinebg.bg))
-            or watchCtrl:GetBackgroundColour())
+            and hicl or bgcl)
         end
 
         watchCtrl:SetItem(idx, 1, newval)
@@ -739,8 +740,6 @@ function debuggerCreateStackWindow()
       stackCtrl:SortChildren(item_id)
       return true
     end)
-  stackCtrl:Connect( wx.wxEVT_COMMAND_TREE_ITEM_COLLAPSED,
-    function() return true end)
 
   local notebook = wxaui.wxAuiNotebook(frame, wx.wxID_ANY,
     wx.wxDefaultPosition, wx.wxDefaultSize,
