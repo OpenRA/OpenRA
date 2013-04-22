@@ -115,7 +115,9 @@ function LoadFile(filePath, editor, file_must_exist, skipselection)
 
   editor:EmptyUndoBuffer()
   local id = editor:GetId()
-  if not openDocuments[id] then -- the editor has not been added to notebook
+  if openDocuments[id] then -- existing editor; switch to the tab
+    notebook:SetSelection(openDocuments[id].index)
+  else -- the editor has not been added to notebook
     AddEditor(editor, wx.wxFileName(filePath):GetFullName()
       or ide.config.default.fullname)
   end
