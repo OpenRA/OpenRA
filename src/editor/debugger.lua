@@ -356,6 +356,10 @@ debugger.listen = function()
       end)
 
       local options = debugger.options or {}
+      -- this may be a remote call without using an interpreter and as such
+      -- debugger.options may not be set, but runonstart is still configured.
+      if not options.runstart then options.runstart = ide.config.debugger.runonstart end
+
       if not debugger.scratchpad then SetAllEditorsReadOnly(true) end
 
       debugger.server = copas.wrap(skt)
