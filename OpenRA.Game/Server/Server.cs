@@ -290,8 +290,9 @@ namespace OpenRA.Server
 					SyncClientToPlayerReference(client, Map.Players[client.Slot]);
 
 				lobbyInfo.Clients.Add(client);
-				//Assume that first validated client is server admin
-				if(lobbyInfo.Clients.Where(c1 => c1.Bot == null).Count()==1)
+
+				// Assume that first validated client is server admin
+				if (lobbyInfo.Clients.Where(c1 => c1.Bot == null).Count() == 1)
 					client.IsAdmin=true;
 
 				OpenRA.Network.Session.Client clientAdmin = lobbyInfo.Clients.Where(c1 => c1.IsAdmin).Single();
@@ -304,6 +305,9 @@ namespace OpenRA.Server
 
 				SyncLobbyInfo();
 				SendChat(newConn, "has joined the game.");
+
+				// Send initial ping
+				SendOrderTo(newConn, "Ping", Environment.TickCount.ToString());
 
 				if (File.Exists("{0}motd_{1}.txt".F(Platform.SupportDir, lobbyInfo.GlobalSettings.Mods[0])))
 				{
@@ -456,6 +460,31 @@ namespace OpenRA.Server
 					foreach (var c in conns.Except(conn).ToArray())
 						DispatchOrdersToClient(c, fromIndex, 0, so.Serialize());
 					break;
+				case "Pong":
+				{
+					int pingSent;
+					if (!int.TryParse(so.Data, out pingSent))
+					{
+						Log.Write("server", "Invalid order pong payload: {0}", so.Data);
+						break;
+					}
+
+					var history = fromClient.PingHistory.ToList();
+					history.Add(Environment.TickCount - pingSent);
+
+					// Cap ping history at 5 values (25 seconds)
+					if (history.Count > 5)
+						history.RemoveRange(0, history.Count - 5);
+
+					fromClient.Ping = history.Sum() / history.Count;
+					fromClient.PingJitter = (history.Max() - history.Min())/2;
+					fromClient.PingHistory = history.ToArray();
+
+					if (State == ServerState.WaitingPlayers)
+						SyncLobbyInfo();
+
+					break;
+				}
 			}
 		}
 

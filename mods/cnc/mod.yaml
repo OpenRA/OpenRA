@@ -112,6 +112,7 @@ LoadScreen: CncLoadScreen
 
 ServerTraits:
 	LobbyCommands
+	PlayerPinger
 	MasterServerPinger
 
 ChromeMetrics:

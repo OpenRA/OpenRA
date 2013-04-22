@@ -89,6 +89,7 @@ LoadScreen: D2kLoadScreen
 
 ServerTraits:
 	LobbyCommands
+	PlayerPinger
 	MasterServerPinger
 
 ChromeMetrics:
