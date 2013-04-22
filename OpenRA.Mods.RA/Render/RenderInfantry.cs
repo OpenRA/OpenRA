@@ -49,7 +49,7 @@ namespace OpenRA.Mods.RA.Render
 
 		protected virtual bool AllowIdleAnimation(Actor self)
 		{
-			return Info.IdleAnimations.Length > 0;
+			return (Info.IdleAnimations.Length > 0 && !self.HasTrait<Parachute>());
 		}
 
 		public AnimationState State { get; private set; }
