@@ -31,6 +31,8 @@ local CURRENT_LINE_MARKER_VALUE = 2^CURRENT_LINE_MARKER
 local BREAKPOINT_MARKER = StylesGetMarker("breakpoint")
 local BREAKPOINT_MARKER_VALUE = 2^BREAKPOINT_MARKER
 
+local activate = {SKIPDELAYED = 1, NOREPORT = 2}
+
 local function q(s) return s:gsub('([%(%)%.%%%+%-%*%?%[%^%$%]])','%%%1') end
 
 local function updateWatchesSync(num)
@@ -199,7 +201,7 @@ local function killClient()
   end
 end
 
-local function activateDocument(file, line, skipauto)
+local function activateDocument(file, line, activatehow)
   if not file then return end
 
   if not wx.wxIsAbsolutePath(file) and debugger.basedir then
@@ -244,16 +246,17 @@ local function activateDocument(file, line, skipauto)
     end
   end
 
-  if not (activated or indebugger or debugger.loop or skipauto)
+  if not (activated or indebugger or debugger.loop or activatehow == activate.SKIPDELAYED)
   and ide.config.editor.autoactivate then
     -- found file, but can't activate yet (because this part may be executed
-    -- in a different co-routine), so schedule pending activation.
+    -- in a different coroutine), so schedule pending activation.
     if wx.wxFileName(file):FileExists() then
       debugger.activate = {file, line}
       return true -- report successful activation, even though it's pending
     end
 
-    if not debugger.missing[file] then -- only report files once per session
+    -- only report files once per session and if not asked to skip
+    if not debugger.missing[file] and activatehow ~= activate.NOREPORT then
       debugger.missing[file] = true
       DisplayOutputLn(TR("Couldn't activate file '%s' for debugging; continuing without it.")
         :format(file))
@@ -439,18 +442,18 @@ debugger.listen = function()
         elseif options.runstart then
           -- check if this document can be activated and if the first line
           -- has a breakpoint, then don't run immediately
-          if activateDocument(file or startfile, line or 0, true) then
+          if activateDocument(file or startfile, line or 0, activate.SKIPDELAYED) then
             local editor = GetEditor()
             local current = editor:MarkerNext(0, CURRENT_LINE_MARKER_VALUE)
             local breakpoint = editor:MarkerNext(current, BREAKPOINT_MARKER_VALUE)
             if current > -1 and current == breakpoint then options.runstart = false end
           end
         elseif file and line then
-          local activated = activateDocument(file, line, true)
+          local activated = activateDocument(file, line, activate.NOREPORT)
 
           -- if not found, check using full file path and reset basedir
           if not activated and not wx.wxIsAbsolutePath(file) then
-            activated = activateDocument(startpath..file, line, true)
+            activated = activateDocument(startpath..file, line, activate.NOREPORT)
             if activated then
               debugger.basedir = startpath
               debugger.handle("basedir " .. debugger.basedir)
@@ -484,7 +487,7 @@ debugger.listen = function()
             end
 
             -- if found a local mapping under basedir
-            activated = longestpath and activateDocument(longestpath, line, true)
+            activated = longestpath and activateDocument(longestpath, line, activate.NOREPORT)
             if activated then
               -- find remote basedir by removing the tail from remote file
               debugger.handle("basedir " .. debugger.basedir .. "\t" .. remotedir)
