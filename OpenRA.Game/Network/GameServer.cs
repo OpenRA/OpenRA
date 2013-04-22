@@ -101,6 +101,7 @@ namespace OpenRA.Network
 				else
 					Latency = -1;
 			}
+			((AutoResetEvent)e.UserState).Set();
 		}
 	}
 }
