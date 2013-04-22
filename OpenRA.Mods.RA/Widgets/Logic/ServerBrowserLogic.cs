@@ -59,14 +59,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			refreshButton.IsDisabled = () => searchStatus == SearchStatus.Fetching;
 			refreshButton.OnClick = () => ServerList.Query(games => RefreshServerList(panel, games));
 
-			var pingButton = panel.GetOrNull<ButtonWidget>("PING_BUTTON");
-			if (pingButton != null)
-			{
-				pingButton.IsDisabled = () => searchStatus == SearchStatus.Pinging ||
-					searchStatus == SearchStatus.Fetching || searchStatus == SearchStatus.Failed;
-				pingButton.OnClick = () => ServerList.Query(games => PingServerList(panel, games));
-			}
-
 			var join = panel.Get<ButtonWidget>("JOIN_BUTTON");
 			join.IsDisabled = () => currentServer == null || !currentServer.CanJoin();
 			join.OnClick = () => Join(currentServer);
@@ -192,8 +184,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			}
 
 			searchStatus = SearchStatus.Hidden;
-
-			RefreshServerList(panel, games);
 		}
 
 		bool Filtered(GameServer game)
@@ -233,6 +223,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				searchStatus = SearchStatus.NoGames;
 				return;
 			}
+
+			PingServerList(panel, games);
 
 			searchStatus = SearchStatus.Hidden;
 			currentServer = games.FirstOrDefault();
