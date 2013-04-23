@@ -135,7 +135,8 @@ function MarkupStyle(editor, lines, linee)
   -- always style to the end as there may be comments that need re-styling
   -- technically, this should be GetLineCount()-1, but we want to style
   -- beyond the last line to make sure it is styled correctly
-  local linee = linee or editor:GetLineCount()
+  local linec = editor:GetLineCount()
+  local linee = linee or linec
 
   local iscomment = {}
   for i,v in pairs(editor.spec.iscomment) do
@@ -152,7 +153,9 @@ function MarkupStyle(editor, lines, linee)
     local from = 1
     local off = -1
 
-    local wrapped = editor:WrapCount(line)
+    -- doing WrapCount(line) when line == linec (which may be beyond
+    -- the last line) occasionally crashes the application on OSX.
+    local wrapped = line < linec and editor:WrapCount(line) or 0
 
     while from do
       tx = string.sub(tx,from)
