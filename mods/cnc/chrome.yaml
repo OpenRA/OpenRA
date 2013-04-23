@@ -386,9 +386,10 @@ music: chrome.png
 	next: 256,16,16,16
 	prev: 272,16,16,16
 
-spawnpoints: chrome.png
-	owned: 256,32,16,16
-	unowned: 256,48,16,16
+lobby-bits: chrome.png
+	spawn-claimed: 256,32,16,16
+	spawn-unclaimed: 256,48,16,16
+	admin: 340,39,7,5
 
 checkbox-bits: chrome.png
 	checked: 272,32,16,16

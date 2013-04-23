@@ -138,7 +138,7 @@ namespace OpenRA.Widgets
 				{
 					var owned = colors.ContainsKey(p);
 					var pos = ConvertToPreview(p);
-					var sprite = ChromeProvider.GetImage("spawnpoints", owned ? "owned" : "unowned");
+					var sprite = ChromeProvider.GetImage("lobby-bits", owned ? "spawn-claimed" : "spawn-unclaimed");
 					var offset = new int2(-sprite.bounds.Width/2, -sprite.bounds.Height/2);
 
 					if (owned)

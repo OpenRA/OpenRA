@@ -48,16 +48,33 @@ Background@SERVER_LOBBY:
 					Height:25
 					Visible:false
 					Children:
+						Image@ADMIN_INDICATOR:
+							ImageCollection:lobby-bits
+							ImageName:admin
+							X:2
+							Visible:false
+						Container@PING_BLOCK:
+							X:0
+							Y:6
+							Width:11
+							Height:14
+							Visible:false
+							Children:
+								ColorBlock@PING_COLOR:
+									X:2
+									Y:2
+									Width:PARENT_RIGHT-4
+									Height:PARENT_BOTTOM-4
 						TextField@NAME:
 							Text:Name
-							Width:150
+							X:15
+							Width:135
 							Height:25
-							X:0
-							Y:0
 							MaxLength:16
-						DropDownButton@BOT_DROPDOWN:
+						DropDownButton@SLOT_OPTIONS:
 							Text:Name
-							Width:150
+							X:15
+							Width:135
 							Height:25
 							Font:Regular
 							Visible:false
@@ -117,11 +134,28 @@ Background@SERVER_LOBBY:
 					Height:25
 					Visible:false
 					Children:
+						Image@ADMIN_INDICATOR:
+							ImageCollection:lobby-bits
+							ImageName:admin
+							X:2
+							Visible:false
+						Container@PING_BLOCK:
+							X:0
+							Y:6
+							Width:11
+							Height:14
+							Visible:false
+							Children:
+								ColorBlock@PING_COLOR:
+									X:2
+									Y:2
+									Width:PARENT_RIGHT-4
+									Height:PARENT_BOTTOM-4
 						Label@NAME:
 							Text:Name
-							Width:145
+							Width:130
 							Height:25
-							X:5
+							X:20
 							Y:0-1
 						Button@KICK:
 							Text:X
@@ -130,12 +164,12 @@ Background@SERVER_LOBBY:
 							X:125
 							Y:2
 							Font:Bold
-						ColorBlock@COLOR:
+						ColorBlock@COLORBLOCK:
 							X:165
 							Y:6
 							Width:45
 							Height:13
-						Label@FACTION:
+						Container@FACTION:
 							Width:130
 							Height:25
 							X:250
@@ -167,7 +201,6 @@ Background@SERVER_LOBBY:
 							Height:20
 							ImageCollection:checkbox-bits
 							ImageName:checked
-
 				Container@TEMPLATE_EMPTY:
 					X:5
 					Y:0
@@ -177,15 +210,15 @@ Background@SERVER_LOBBY:
 					Children:
 						Label@NAME:
 							Text:Name
-							Width:145
+							Width:130
 							Height:25
-							X:5
+							X:20
 							Y:0-1
-						DropDownButton@NAME_HOST:
+						DropDownButton@SLOT_OPTIONS:
 							Text:Name
-							Width:150
+							Width:135
 							Height:25
-							X:0
+							X:15
 							Y:0
 							Visible:false
 						Button@JOIN:
@@ -201,9 +234,27 @@ Background@SERVER_LOBBY:
 					Height:25
 					Visible:false
 					Children:
+						Image@ADMIN_INDICATOR:
+							ImageCollection:lobby-bits
+							ImageName:admin
+							X:2
+							Visible:false
+						Container@PING_BLOCK:
+							X:0
+							Y:6
+							Width:11
+							Height:14
+							Visible:false
+							Children:
+								ColorBlock@PING_COLOR:
+									X:2
+									Y:2
+									Width:PARENT_RIGHT-4
+									Height:PARENT_BOTTOM-4
 						TextField@NAME:
 							Text:Name
-							Width:150
+							X:15
+							Width:135
 							Height:25
 							MaxLength:16
 						DropDownButton@COLOR:
@@ -238,7 +289,6 @@ Background@SERVER_LOBBY:
 							Height:20
 							ImageCollection:checkbox-bits
 							ImageName:checked
-
 				Container@TEMPLATE_NONEDITABLE_SPECTATOR:
 					X:5
 					Y:0
@@ -246,11 +296,28 @@ Background@SERVER_LOBBY:
 					Height:25
 					Visible:false
 					Children:
+						Image@ADMIN_INDICATOR:
+							ImageCollection:lobby-bits
+							ImageName:admin
+							X:2
+							Visible:false
+						Container@PING_BLOCK:
+							X:0
+							Y:6
+							Width:11
+							Height:14
+							Visible:false
+							Children:
+								ColorBlock@PING_COLOR:
+									X:2
+									Y:2
+									Width:PARENT_RIGHT-4
+									Height:PARENT_BOTTOM-4
 						Label@NAME:
 							Text:Name
-							Width:145
+							Width:130
 							Height:25
-							X:5
+							X:20
 							Y:0-1
 						Button@KICK:
 							Text:X
@@ -259,7 +326,7 @@ Background@SERVER_LOBBY:
 							X:125
 							Y:2
 							Font:Bold
-						ColorBlock@COLOR:
+						ColorBlock@COLORBLOCK:
 							X:165
 							Y:6
 							Width:45
