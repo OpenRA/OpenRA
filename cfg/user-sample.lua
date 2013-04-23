@@ -117,8 +117,8 @@ load.specs(function(file) return file:find('spec[/\\]cpp%.lua$') end)
 
 -- to specify a default EOL encoding to be used for new files:
 -- `wxstc.wxSTC_EOL_CRLF` or `wxstc.wxSTC_EOL_LF`;
--- `nil` means OS default: CRLF on Windows and OSX and LF on Linux/Unix.
--- CRLF as a default on OSX is a bug and is likely to change in future versions.
+-- `nil` means OS default: CRLF on Windows and LF on Linux/Unix and OSX.
+-- (OSX had CRLF as a default until v0.36, which fixed it).
 editor.defaulteol = wxstc.wxSTC_EOL_LF
 
 -- to turn off checking for mixed end-of-line encodings in loaded files
