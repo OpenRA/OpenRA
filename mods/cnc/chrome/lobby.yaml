@@ -355,7 +355,7 @@ Container@SERVER_LOBBY:
 					Height:20
 					Text: Crates
 				DropDownButton@ASSIGNTEAMS_DROPDOWNBUTTON:
-					X:399
+					X:398
 					Y:255
 					Width:120
 					Height:25
