@@ -162,20 +162,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			};
 			mapButton.IsVisible = () => mapButton.Visible && Game.IsHost;
 
-			var randomMapButton = lobby.GetOrNull<ButtonWidget>("RANDOMMAP_BUTTON");
-			var maps = Game.modData.AvailableMaps.Where(m => m.Value.Selectable).ToArray();
-			if (randomMapButton != null && maps.Any())
-			{
-				randomMapButton.OnClick = () =>
-				{
-					var mapUid = maps.Random(Game.CosmeticRandom).Key;
-					orderManager.IssueOrder(Order.Command("map " + mapUid));
-					Game.Settings.Server.Map = mapUid;
-					Game.Settings.Save();
-				};
-				randomMapButton.IsVisible = () => mapButton.Visible && Game.IsHost;
-			}
-
 			var assignTeams = lobby.GetOrNull<DropDownButtonWidget>("ASSIGNTEAMS_DROPDOWNBUTTON");
 			if (assignTeams != null)
 			{
