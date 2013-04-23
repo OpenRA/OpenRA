@@ -236,9 +236,10 @@ dialog: dialog.png
 	corner-bl: 191,489,9,9
 	corner-br: 200,489,9,9
 
-spawnpoints: spawnpoints.png
-	unowned: 528,128,16,16
-	owned: 512,128,16,16
+lobby-bits: spawnpoints.png
+	spawn-unclaimed: 528,128,16,16
+	spawn-claimed: 512,128,16,16
+	admin: 37,5,7,5
 
 strategic: strategic.png
 	unowned: 0,0,32,32

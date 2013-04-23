@@ -21,31 +21,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 {
 	public static class LobbyUtils
 	{
-		public static void SetupNameWidget(OrderManager orderManager, Session.Client c, TextFieldWidget name)
-		{
-			if (c.IsAdmin)
-				name.Font = "Bold";
-			name.Text = c.Name;
-			if (c.Ping > -1)
-				name.TextColor = GetPingColor(c.Ping);
-			name.OnEnterKey = () =>
-			{
-				name.Text = name.Text.Trim();
-				if (name.Text.Length == 0)
-					name.Text = c.Name;
-
-				name.LoseFocus();
-				if (name.Text == c.Name)
-					return true;
-
-				orderManager.IssueOrder(Order.Command("name " + name.Text));
-				Game.Settings.Player.Name = name.Text;
-				Game.Settings.Save();
-				return true;
-			};
-			name.OnLoseFocus = () => name.OnEnterKey();
-		}
-
 		class SlotDropDownOption
 		{
 			public string Title;
@@ -92,7 +67,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		}
 
 		public static void ShowTeamDropDown(DropDownButtonWidget dropdown, Session.Client client,
-			OrderManager orderManager, Map map)
+			OrderManager orderManager, int teamCount)
 		{
 			Func<int, ScrollItemWidget, ScrollItemWidget> setupItem = (ii, itemTemplate) =>
 			{
@@ -103,7 +78,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				return item;
 			};
 
-			var options = Exts.MakeArray(map.GetSpawnPoints().Length + 1, i => i).ToList();
+			var options = Exts.MakeArray(teamCount + 1, i => i).ToList();
 			dropdown.ShowDropDown("TEAM_DROPDOWN_TEMPLATE", 150, options, setupItem);
 		}
 
@@ -192,13 +167,151 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			}
 		}
 
-		public static Color GetPingColor(int ping)
+		static Color GetPingColor(Session.Client c)
 		{
-			if (ping > 720) // OrderLag > 6
+			if (c.Ping < 0) // Ping unknown
+				return Color.Gray;
+			if (c.Ping > 720) // OrderLag > 6
 				return Color.Red;
-			if (ping > 360) // OrderLag > 3
+			if (c.Ping > 360) // OrderLag > 3
 				return Color.Orange;
+
 			return Color.LimeGreen;
+		}
+
+		public static void SetupAdminPingWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, bool visible)
+		{
+			parent.Get("ADMIN_INDICATOR").IsVisible = () => c.IsAdmin;
+			var block = parent.Get("PING_BLOCK");
+			block.IsVisible = () => visible;
+
+			if (visible)
+				block.Get<ColorBlockWidget>("PING_COLOR").GetColor = () => GetPingColor(c);
+		}
+
+		public static void SetupEditableNameWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager)
+		{
+			var name = parent.Get<TextFieldWidget>("NAME");
+			name.IsVisible = () => true;
+			name.IsDisabled = () => orderManager.LocalClient.IsReady;
+
+			name.Text = c.Name;
+			name.OnEnterKey = () =>
+			{
+				name.Text = name.Text.Trim();
+				if (name.Text.Length == 0)
+					name.Text = c.Name;
+
+				name.LoseFocus();
+				if (name.Text == c.Name)
+					return true;
+
+				orderManager.IssueOrder(Order.Command("name " + name.Text));
+				Game.Settings.Player.Name = name.Text;
+				Game.Settings.Save();
+				return true;
+			};
+
+			name.OnLoseFocus = () => name.OnEnterKey();
+		}
+
+		public static void SetupNameWidget(Widget parent, Session.Slot s, Session.Client c)
+		{
+			var name = parent.Get<LabelWidget>("NAME");
+			name.GetText = () => c.Name;
+		}
+
+		public static void SetupEditableSlotWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager)
+		{
+			var slot = parent.Get<DropDownButtonWidget>("SLOT_OPTIONS");
+			slot.IsVisible = () => true;
+			slot.IsDisabled = () => orderManager.LocalClient.IsReady;
+			slot.GetText = () => c != null ? c.Name : s.Closed ? "Closed" : "Open";
+			slot.OnMouseDown = _ => LobbyUtils.ShowSlotDropDown(slot, s, c, orderManager);
+
+			// Ensure Name selector (if present) is hidden
+			var name = parent.GetOrNull("NAME");
+			if (name != null)
+				name.IsVisible = () => false;
+		}
+
+		public static void SetupSlotWidget(Widget parent, Session.Slot s, Session.Client c)
+		{
+			var name = parent.Get<LabelWidget>("NAME");
+			name.IsVisible = () => true;
+			name.GetText = () => c != null ? c.Name : s.Closed ? "Closed" : "Open";
+
+			// Ensure Slot selector (if present) is hidden
+			var slot = parent.GetOrNull("SLOT_OPTIONS");
+			if (slot != null)
+				slot.IsVisible = () => false;
+		}
+
+		public static void SetupKickWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager)
+		{
+			var button = parent.Get<ButtonWidget>("KICK");
+			button.IsVisible = () => Game.IsHost && c.Index != orderManager.LocalClient.Index;
+			button.IsDisabled = () => orderManager.LocalClient.IsReady;
+			button.OnClick = () => orderManager.IssueOrder(Order.Command("kick " + c.Index));
+		}
+
+		public static void SetupEditableColorWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, ColorPreviewManagerWidget colorPreview)
+		{
+			var color = parent.Get<DropDownButtonWidget>("COLOR");
+			color.IsDisabled = () => (s != null && s.LockColor) || orderManager.LocalClient.IsReady;
+			color.OnMouseDown = _ => LobbyUtils.ShowColorDropDown(color, c, orderManager, colorPreview);
+
+			SetupColorWidget(color, s, c);
+		}
+
+		public static void SetupColorWidget(Widget parent, Session.Slot s, Session.Client c)
+		{
+			var color = parent.Get<ColorBlockWidget>("COLORBLOCK");
+			color.GetColor = () => c.ColorRamp.GetColor(0);
+		}
+
+		public static void SetupEditableFactionWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, Dictionary<string,string> countryNames)
+		{
+			var dropdown = parent.Get<DropDownButtonWidget>("FACTION");
+			dropdown.IsDisabled = () => s.LockRace || orderManager.LocalClient.IsReady;
+			dropdown.OnMouseDown = _ => LobbyUtils.ShowRaceDropDown(dropdown, c, orderManager, countryNames);
+			SetupFactionWidget(dropdown, s, c, countryNames);
+		}
+
+		public static void SetupFactionWidget(Widget parent, Session.Slot s, Session.Client c, Dictionary<string,string> countryNames)
+		{
+			var factionname = parent.Get<LabelWidget>("FACTIONNAME");
+			factionname.GetText = () => countryNames[c.Country];
+			var factionflag = parent.Get<ImageWidget>("FACTIONFLAG");
+			factionflag.GetImageName = () => c.Country;
+			factionflag.GetImageCollection = () => "flags";
+		}
+
+		public static void SetupEditableTeamWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, int teamCount)
+		{
+			var dropdown = parent.Get<DropDownButtonWidget>("TEAM");
+			dropdown.IsDisabled = () => s.LockTeam || orderManager.LocalClient.IsReady;
+			dropdown.OnMouseDown = _ => LobbyUtils.ShowTeamDropDown(dropdown, c, orderManager, teamCount);
+			dropdown.GetText = () => (c.Team == 0) ? "-" : c.Team.ToString();
+		}
+
+		public static void SetupTeamWidget(Widget parent, Session.Slot s, Session.Client c)
+		{
+			parent.Get<LabelWidget>("TEAM").GetText = () => (c.Team == 0) ? "-" : c.Team.ToString();
+		}
+
+		public static void SetupEditableReadyWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager)
+		{
+			var status = parent.Get<CheckboxWidget>("STATUS_CHECKBOX");
+			status.IsChecked = () => orderManager.LocalClient.IsReady || c.Bot != null;
+			status.IsVisible = () => true;
+			status.IsDisabled = () => c.Bot != null;
+			status.OnClick = () => orderManager.IssueOrder(Order.Command("ready"));
+		}
+
+		public static void SetupReadyWidget(Widget parent, Session.Slot s, Session.Client c)
+		{
+			parent.Get<ImageWidget>("STATUS_IMAGE").IsVisible = () => c.IsReady || c.Bot != null;
 		}
 	}
 }

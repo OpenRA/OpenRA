@@ -68,15 +68,35 @@ Container@SERVER_LOBBY:
 							Height:25
 							Visible:false
 							Children:
+								Image@ADMIN_INDICATOR:
+									ImageCollection:lobby-bits
+									ImageName:admin
+									X:2
+									Visible:false
+								Background@PING_BLOCK:
+									Background:button
+									X:0
+									Y:6
+									Width:11
+									Height:14
+									Visible:false
+									Children:
+										ColorBlock@PING_COLOR:
+											X:2
+											Y:2
+											Width:PARENT_RIGHT-4
+											Height:PARENT_BOTTOM-4
 								TextField@NAME:
 									Text:Name
-									Width:205
+									X:15
+									Width:190
 									Height:25
 									MaxLength:16
 									Visible:false
-								DropDownButton@BOT_DROPDOWN:
+								DropDownButton@SLOT_OPTIONS:
 									Text:Name
-									Width:205
+									X:15
+									Width:190
 									Height:25
 									Font:Regular
 									Visible:false
@@ -136,11 +156,29 @@ Container@SERVER_LOBBY:
 							Height:25
 							Visible:false
 							Children:
+								Image@ADMIN_INDICATOR:
+									ImageCollection:lobby-bits
+									ImageName:admin
+									X:2
+									Visible:false
+								Background@PING_BLOCK:
+									Background:button
+									X:0
+									Y:6
+									Width:11
+									Height:14
+									Visible:false
+									Children:
+										ColorBlock@PING_COLOR:
+											X:2
+											Y:2
+											Width:PARENT_RIGHT-4
+											Height:PARENT_BOTTOM-4
 								Label@NAME:
 									Text:Name
-									Width:200
+									Width:185
 									Height:25
-									X:5
+									X:15
 									Y:0-1
 								Button@KICK:
 									Text:X
@@ -149,12 +187,12 @@ Container@SERVER_LOBBY:
 									X:180
 									Y:2
 									Font:Bold
-								ColorBlock@COLOR:
+								ColorBlock@COLORBLOCK:
 									X:215
 									Y:6
 									Width:35
 									Height:13
-								Label@FACTION:
+								Container@FACTION:
 									Width:100
 									Height:25
 									X:285
@@ -192,9 +230,10 @@ Container@SERVER_LOBBY:
 							Height:25
 							Visible:false
 							Children:
-								DropDownButton@NAME_HOST:
+								DropDownButton@SLOT_OPTIONS:
 									Text:Name
-									Width:205
+									X:15
+									Width:190
 									Height:25
 									Font:Regular
 									Visible:false
@@ -202,7 +241,7 @@ Container@SERVER_LOBBY:
 									Text:Name
 									Width:200
 									Height:25
-									X:5
+									X:15
 									Y:0-1
 									Visible:false
 								Button@JOIN:
@@ -219,9 +258,28 @@ Container@SERVER_LOBBY:
 							Height:25
 							Visible:false
 							Children:
+								Image@ADMIN_INDICATOR:
+									ImageCollection:lobby-bits
+									ImageName:admin
+									X:2
+									Visible:false
+								Background@PING_BLOCK:
+									Background:button
+									X:0
+									Y:6
+									Width:11
+									Height:14
+									Visible:false
+									Children:
+										ColorBlock@PING_COLOR:
+											X:2
+											Y:2
+											Width:PARENT_RIGHT-4
+											Height:PARENT_BOTTOM-4
 								TextField@NAME:
 									Text:Name
-									Width:205
+									X:15
+									Width:190
 									Height:25
 									MaxLength:16
 								DropDownButton@COLOR:
@@ -256,11 +314,29 @@ Container@SERVER_LOBBY:
 							Height:25
 							Visible:false
 							Children:
+								Image@ADMIN_INDICATOR:
+									ImageCollection:lobby-bits
+									ImageName:admin
+									X:2
+									Visible:false
+								Background@PING_BLOCK:
+									Background:button
+									X:0
+									Y:6
+									Width:11
+									Height:14
+									Visible:false
+									Children:
+										ColorBlock@PING_COLOR:
+											X:2
+											Y:2
+											Width:PARENT_RIGHT-4
+											Height:PARENT_BOTTOM-4
 								Label@NAME:
 									Text:Name
-									Width:200
+									Width:185
 									Height:25
-									X:5
+									X:15
 									Y:0-1
 								Button@KICK:
 									Text:X
@@ -269,7 +345,7 @@ Container@SERVER_LOBBY:
 									X:180
 									Y:2
 									Font:Bold
-								ColorBlock@COLOR:
+								ColorBlock@COLORBLOCK:
 									X:215
 									Y:6
 									Width:35
@@ -300,9 +376,9 @@ Container@SERVER_LOBBY:
 								Button@SPECTATE:
 									Text:Spectate
 									Font:Regular
-									Width:470
+									Width:455
 									Height:25
-									X:0
+									X:15
 									Y:0
 				Container@LABEL_CONTAINER:
 					X:20
@@ -355,7 +431,7 @@ Container@SERVER_LOBBY:
 					Height:20
 					Text: Crates
 				DropDownButton@ASSIGNTEAMS_DROPDOWNBUTTON:
-					X:399
+					X:398
 					Y:255
 					Width:120
 					Height:25

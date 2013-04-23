@@ -192,6 +192,11 @@ namespace OpenRA.Network
 
 						break;
 					}
+				case "Ping":
+					{
+						orderManager.IssueOrder(Order.Pong(order.TargetString));
+						break;
+					}
 				default:
 					{
 						if( !order.IsImmediate )

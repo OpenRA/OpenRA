@@ -100,22 +100,6 @@ namespace OpenRA.Mods.RA.Server
 						server.StartGame();
 						return true;
 					}},
-				{ "lag",
-					s =>
-					{
-						int lag;
-						if (!int.TryParse(s, out lag))
-						{
-							Log.Write("server", "Invalid order lag: {0}", s);
-							return false;
-						}
-
-						Log.Write("server", "Order lag is now {0} frames.", lag);
-
-						server.lobbyInfo.GlobalSettings.OrderLatency = lag;
-						server.SyncLobbyInfo();
-						return true;
-					}},
 				{ "slot",
 					s =>
 					{
