@@ -9,7 +9,7 @@ local s3e = os.getenv("S3E_DIR")
 return {
   name = "Marmalade Quick",
   description = "Marmalade Quick mobile framework",
-  api = {"baselib"},
+  api = {"baselib", "marmalade"},
   frun = function(self,wfilename,rundebug)
     quick = quick or ide.config.path.quick or (s3e and GetFullPathIfExists(s3e, exe))
     if not quick then
