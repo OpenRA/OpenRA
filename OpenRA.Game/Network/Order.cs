@@ -199,7 +199,12 @@ namespace OpenRA
 		{
 			return new Order("HandshakeResponse", null, false) { IsImmediate = true, TargetString = text };
 		}
-		
+
+		public static Order Pong(string pingTime)
+		{
+			return new Order("Pong", null, false) { IsImmediate = true, TargetString = pingTime };
+		}
+
 		public static Order PauseGame(bool paused)
 		{
 			return new Order("PauseGame", null, false) { TargetString = paused ? "Pause" : "UnPause" };

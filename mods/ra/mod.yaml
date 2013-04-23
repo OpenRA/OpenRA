@@ -103,6 +103,7 @@ LoadScreen: RALoadScreen
 
 ServerTraits:
 	LobbyCommands
+	PlayerPinger
 	MasterServerPinger
 
 ChromeMetrics:

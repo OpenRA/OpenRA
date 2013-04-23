@@ -62,6 +62,8 @@ namespace OpenRA.Network
 			public bool IsReady { get { return State == ClientState.Ready; } }
 			public bool IsObserver { get { return Slot == null; } }
 			public int Ping = -1;
+			public int PingJitter = -1;
+			public int[] PingHistory = {};
 		}
 
 		public class Slot
