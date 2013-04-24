@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		Action OpenLobby;
 		Action OnExit;
 
-		enum SearchStatus { Fetching, Failed, NoGames, Hidden, Pinging }
+		enum SearchStatus { Fetching, Failed, NoGames, Hidden }
 		SearchStatus searchStatus = SearchStatus.Fetching;
 
 		bool showWaiting = true;
@@ -41,7 +41,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				case SearchStatus.Fetching:	return "Fetching game list...";
 				case SearchStatus.Failed:	return "Failed to contact master server.";
 				case SearchStatus.NoGames:	return "No games found.";
-				case SearchStatus.Pinging:	return "Pinging compatible servers.";  
 				default:					return "";
 			}
 		}
@@ -169,23 +168,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				return "Ping: ? ms";
 		}
 
-		void PingServerList(Widget panel, IEnumerable<GameServer> games)
-		{
-			searchStatus = SearchStatus.Pinging;
-
-			foreach (var loop in games.Where(g => g.CanJoin()))
-			{
-				var game = loop;
-				
-				if (game == null)
-					continue;
-				
-				game.Ping();
-			}
-
-			searchStatus = SearchStatus.Hidden;
-		}
-
 		bool Filtered(GameServer game)
 		{
 			if ((game.State == (int)ServerState.GameStarted) && !showStarted)
@@ -224,8 +206,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				return;
 			}
 
-			PingServerList(panel, games);
-
 			searchStatus = SearchStatus.Hidden;
 			currentServer = games.FirstOrDefault();
 
@@ -236,6 +216,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var canJoin = game.CanJoin();
 
 				var item = ScrollItemWidget.Setup(serverTemplate, () => currentServer == game, () => currentServer = game, () => Join(game));
+
+				if (!Filtered(game))
+					game.Ping();
 
 				var preview = item.Get<MapPreviewWidget>("MAP_PREVIEW");
 				preview.Map = () => GetMapPreview(game);
