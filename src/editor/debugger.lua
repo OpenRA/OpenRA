@@ -31,7 +31,7 @@ local CURRENT_LINE_MARKER_VALUE = 2^CURRENT_LINE_MARKER
 local BREAKPOINT_MARKER = StylesGetMarker("breakpoint")
 local BREAKPOINT_MARKER_VALUE = 2^BREAKPOINT_MARKER
 
-local activate = {SKIPDELAYED = 1, NOREPORT = 2}
+local activate = {CHECKONLY = 1, NOREPORT = 2}
 
 local function q(s) return s:gsub('([%(%)%.%%%+%-%*%?%[%^%$%]])','%%%1') end
 
@@ -215,10 +215,7 @@ local function activateDocument(file, line, activatehow)
     -- skip those tabs that may have file without names (untitled.lua)
     if document.filePath and fileName:SameAs(wx.wxFileName(document.filePath)) then
       local editor = document.editor
-      local selection = document.index
-      RequestAttention()
-      notebook:SetSelection(selection)
-      SetEditorSelection(selection)
+
       ClearAllCurrentLineMarkers()
       if line then
         if line == 0 then -- special case; find the first executable line
@@ -233,6 +230,11 @@ local function activateDocument(file, line, activatehow)
         end
         local line = line - 1 -- editor line operations are zero-based
         editor:MarkerAdd(line, CURRENT_LINE_MARKER)
+
+        -- found and marked what we are looking for;
+        -- don't need to activate with CHECKONLY (this assumes line is given)
+        if activatehow == activate.CHECKONLY then return editor end
+
         local firstline = editor:DocLineFromVisible(editor:GetFirstVisibleLine())
         local lastline = math.min(editor:GetLineCount(),
           editor:DocLineFromVisible(editor:GetFirstVisibleLine() + editor:LinesOnScreen()))
@@ -241,12 +243,18 @@ local function activateDocument(file, line, activatehow)
           editor:EnsureVisibleEnforcePolicy(line)
         end
       end
+
+      local selection = document.index
+      RequestAttention()
+      notebook:SetSelection(selection)
+      SetEditorSelection(selection)
+
       activated = editor
       break
     end
   end
 
-  if not (activated or indebugger or debugger.loop or activatehow == activate.SKIPDELAYED)
+  if not (activated or indebugger or debugger.loop or activatehow == activate.CHECKONLY)
   and ide.config.editor.autoactivate then
     -- found file, but can't activate yet (because this part may be executed
     -- in a different coroutine), so schedule pending activation.
@@ -342,6 +350,16 @@ debugger.shell = function(expression, isstatement)
   end
 end
 
+local function stoppedAtBreakpoint(file, line)
+  -- if this document can be activated and the current line has a breakpoint
+  local editor = activateDocument(file, line, activate.CHECKONLY)
+  if not editor then return false end
+
+  local current = editor:MarkerNext(0, CURRENT_LINE_MARKER_VALUE)
+  local breakpoint = editor:MarkerNext(current, BREAKPOINT_MARKER_VALUE)
+  return breakpoint > -1 and breakpoint == current
+end
+
 debugger.listen = function()
   local server = socket.bind("*", debugger.portnumber)
   DisplayOutputLn(TR("Debugger server started at %s:%d.")
@@ -427,6 +445,9 @@ debugger.listen = function()
             .." "..TR("Compilation error")
             ..":\n"..err)
           return debugger.terminate()
+        elseif options.runstart and stoppedAtBreakpoint(file, line) then
+          activateDocument(file, line)
+          options.runstart = false
         end
       elseif not (options.run or debugger.scratchpad) then
         local file, line, err = debugger.loadfile(startfile)
@@ -440,13 +461,9 @@ debugger.listen = function()
             ..":\n"..err)
           return debugger.terminate()
         elseif options.runstart then
-          -- check if this document can be activated and if the first line
-          -- has a breakpoint, then don't run immediately
-          if activateDocument(file or startfile, line or 0, activate.SKIPDELAYED) then
-            local editor = GetEditor()
-            local current = editor:MarkerNext(0, CURRENT_LINE_MARKER_VALUE)
-            local breakpoint = editor:MarkerNext(current, BREAKPOINT_MARKER_VALUE)
-            if current > -1 and current == breakpoint then options.runstart = false end
+          if stoppedAtBreakpoint(file or startfile, line or 0) then
+            activateDocument(file or startfile, line or 0)
+            options.runstart = false
           end
         elseif file and line then
           local activated = activateDocument(file, line, activate.NOREPORT)
