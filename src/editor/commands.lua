@@ -503,36 +503,6 @@ function CompileProgram(editor, quiet)
   return line_num == -1, editorText -- return true if it compiled ok
 end
 
------------------
--- File History
-
-do
-  local filehistory = {}
-  local iscaseinsensitive = wx.wxFileName("A"):SameAs(wx.wxFileName("a"))
-
-  function SetFileHistory(fh) filehistory = fh end
-  function GetFileHistory() return filehistory end
-  -- add file to the file history removing duplicates
-  function AddToFileHistory(filename)
-    if not filename
-    or #filehistory > 0 and filehistory[1].filename == filename then return end
-
-    local fn = wx.wxFileName(filename)
-    if fn:Normalize() then filename = fn:GetFullPath() end
-
-    -- if the file is in the history, remove it
-    for i=#filehistory,1,-1 do
-      if filename == filehistory[i].filename
-      or iscaseinsensitive and filename:lower() == filehistory[i].filename:lower() then
-        table.remove(filehistory, i) end
-    end
-    table.insert(filehistory,1,{filename=filename})
-
-    -- remove all entries that are no longer needed
-    while #filehistory>ide.config.filehistorylength do table.remove(filehistory) end
-  end
-end
-
 ------------------
 -- Save & Close
 

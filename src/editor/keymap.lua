@@ -32,6 +32,8 @@ ide.config.keymap = {
   [ID_SAVEAS]           = "Alt-Shift-S",
   [ID_SAVEALL]          = "",
   [ID_RECENTFILES]      = "",
+  [ID_RECENTFILESPREV]  = "Ctrl-<",
+  [ID_RECENTFILESNEXT]  = "Ctrl->",
   [ID_EXIT]             = "Ctrl-Q",
 -- Edit menu
   [ID_CUT]              = "Ctrl-X",

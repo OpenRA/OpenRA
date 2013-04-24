@@ -26,38 +26,118 @@ local filehistory = wx.wxMenuItem(fileMenu, ID_RECENTFILES,
   TR("Recent Files")..KSC(ID_RECENTFILES), TR("File history"), wx.wxITEM_NORMAL, filehistorymenu)
 fileMenu:Insert(8,filehistory)
 
-local function loadRecent(event)
-  local item = filehistorymenu:FindItem(event:GetId())
-  local filename = item:GetLabel()
-  if not LoadFile(filename, nil, true) then
-    wx.wxMessageBox(
-      TR("File '%s' no longer exists."):format(filename),
-      GetIDEString("editormessage"),
-      wx.wxOK + wx.wxCENTRE, ide.frame)
-    filehistorymenu:Delete(item)
+do -- recent file history
+  local iscaseinsensitive = wx.wxFileName("A"):SameAs(wx.wxFileName("a"))
+  local function isSameAs(f1, f2)
+    return f1 == f2 or iscaseinsensitive and f1:lower() == f2:lower()
   end
-end
 
-local function updateRecentFiles(list)
-  local items = filehistorymenu:GetMenuItemCount()
-  for i=1, #list do
-    local file = list[i].filename
-    local id = ID("file.recentfiles."..i)
-    if i <= items then -- this is an existing item; update the label
-      filehistorymenu:FindItem(id):SetItemLabel(file)
-    else -- need to add an item
-      local item = wx.wxMenuItem(filehistorymenu, id, file, "")
-      filehistorymenu:Append(item)
-      frame:Connect(id, wx.wxEVT_COMMAND_MENU_SELECTED, loadRecent)
+  local filehistory = {[0] = 1}
+
+  -- add file to the file history removing duplicates
+  local function addFileHistory(filename)
+    -- a new (empty) tab is opened; don't change the history
+    if not filename then return end
+
+    local fn = wx.wxFileName(filename)
+    if fn:Normalize() then filename = fn:GetFullPath() end
+
+    local index = filehistory[0]
+
+    -- special case: selecting the current file (or moving through the history)
+    if isSameAs(filename, filehistory[index].filename) then return end
+
+    -- something else is selected
+    -- (1) flip the history from 1 to the current index
+    for i = 1, math.floor(index/2) do
+      filehistory[i], filehistory[index-i+1] = filehistory[index-i+1], filehistory[i]
+    end
+
+    -- (2) if the file is in the history, remove it
+    for i = #filehistory, 1, -1 do
+      if isSameAs(filename, filehistory[i].filename) then
+        table.remove(filehistory, i)
+      end
+    end
+
+    -- (3) add the file to the top and update the index
+    table.insert(filehistory, 1, {filename=filename})
+    filehistory[0] = 1
+
+    -- (4) remove all entries that are no longer needed
+    while #filehistory>ide.config.filehistorylength do table.remove(filehistory) end
+  end
+
+  local function remFileHistory(filename)
+    if not filename then return end
+
+    local fn = wx.wxFileName(filename)
+    if fn:Normalize() then filename = fn:GetFullPath() end
+
+    -- if the file is in the history, remove it
+    for i = #filehistory, 1, -1 do
+      if isSameAs(filename, filehistory[i].filename) then
+        table.remove(filehistory, i)
+      end
+    end
+    filehistory[0] = 1
+  end
+
+  local updateRecentFiles -- need forward declaration because of recursive refs
+
+  local function loadRecent(event)
+    local id = event:GetId()
+    local item = filehistorymenu:FindItem(id)
+    local filename = item:GetLabel()
+    local index = filehistory[0]
+    filehistory[0] = (
+      (index > 1 and id == ID("file.recentfiles."..(index-1)) and index-1) or
+      (index < #filehistory) and id == ID("file.recentfiles."..(index+1)) and index+1 or
+      1)
+    if not LoadFile(filename, nil, true) then
+      wx.wxMessageBox(
+        TR("File '%s' no longer exists."):format(filename),
+        GetIDEString("editormessage"),
+        wx.wxOK + wx.wxCENTRE, ide.frame)
+      remFileHistory(filename)
+      updateRecentFiles(filehistory)
     end
   end
-  for i=items, #list+1, -1 do -- delete the rest if the list got shorter
-    filehistorymenu:Delete(filehistorymenu:FindItemByPosition(i-1))
+
+  updateRecentFiles = function (list)
+    local items = filehistorymenu:GetMenuItemCount()
+    for i=1, #list do
+      local file = list[i].filename
+      local id = ID("file.recentfiles."..i)
+      local label = file..(
+        i == list[0]-1 and KSC(ID_RECENTFILESNEXT) or
+        i == list[0]+1 and KSC(ID_RECENTFILESPREV) or
+        "")
+      if i <= items then -- this is an existing item; update the label
+        filehistorymenu:FindItem(id):SetItemLabel(label)
+      else -- need to add an item
+        local item = wx.wxMenuItem(filehistorymenu, id, label, "")
+        filehistorymenu:Append(item)
+        frame:Connect(id, wx.wxEVT_COMMAND_MENU_SELECTED, loadRecent)
+      end
+    end
+    for i=items, #list+1, -1 do -- delete the rest if the list got shorter
+      filehistorymenu:Delete(filehistorymenu:FindItemByPosition(i-1))
+    end
+  end
+
+  -- public methods
+  function GetFileHistory() return filehistory end
+  function SetFileHistory(fh)
+    filehistory = fh
+    filehistory[0] = 1
+    updateRecentFiles(filehistory)
+  end
+  function AddToFileHistory(filename)
+    addFileHistory(filename)
+    updateRecentFiles(filehistory)
   end
 end
-
-frame:Connect(ID_RECENTFILES, wx.wxEVT_UPDATE_UI,
-  function (event) updateRecentFiles(GetFileHistory()) end)
 
 frame:Connect(ID_NEW, wx.wxEVT_COMMAND_MENU_SELECTED, NewFile)
 frame:Connect(ID_OPEN, wx.wxEVT_COMMAND_MENU_SELECTED, OpenFile)

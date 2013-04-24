@@ -5,8 +5,8 @@
 -- Generate a unique new wxWindowID
 local ID_IDCOUNTER = wx.wxID_HIGHEST + 1
 function NewID()
-	ID_IDCOUNTER = ID_IDCOUNTER + 1
-	return ID_IDCOUNTER
+  ID_IDCOUNTER = ID_IDCOUNTER + 1
+  return ID_IDCOUNTER
 end
 
 -- File menu
@@ -19,6 +19,8 @@ ID_SAVE             = wx.wxID_SAVE
 ID_SAVEAS           = wx.wxID_SAVEAS
 ID_SAVEALL          = NewID()
 ID_RECENTFILES      = NewID()
+ID_RECENTFILESPREV  = NewID()
+ID_RECENTFILESNEXT  = NewID()
 ID_EXIT             = wx.wxID_EXIT
 -- Edit menu
 ID_CUT              = wx.wxID_CUT
