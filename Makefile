@@ -2,12 +2,13 @@ CSC         = gmcs
 CSFLAGS     = -nologo -warn:4 -debug:full -optimize- -codepage:utf8 -unsafe -warnaserror
 DEFINE      = DEBUG;TRACE
 COMMON_LIBS = System.dll System.Core.dll System.Drawing.dll System.Xml.dll thirdparty/ICSharpCode.SharpZipLib.dll thirdparty/FuzzyLogicLibrary.dll thirdparty/Mono.Nat.dll
-PHONY       = core tools package all mods clean distclean dependencies
+PHONY       = core tools package all mods clean distclean dependencies version
+VERSION     = $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev/null || echo git-`git rev-parse --short HEAD`)
 
 .SUFFIXES:
 core: game renderers mods utility tsbuild
 tools: editor ralint tsbuild
-package: dependencies core editor docs
+package: dependencies core editor docs version
 mods: mod_ra mod_cnc mod_d2k
 all: dependencies core tools
 clean:
@@ -16,6 +17,11 @@ distclean: clean
 dependencies:
 	@ cp -r thirdparty/*.dl* .
 	@ cp -r thirdparty/Tao/* .
+version: mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml
+	@for i in $? ; do \
+		awk '{sub("Version:.*$$","Version: $(VERSION)"); print $0}' $${i} > $${i}.tmp && \
+		mv -f $${i}.tmp $${i} ; \
+	done
 default: dependencies core
 
 .DEFAULT_GOAL := default
