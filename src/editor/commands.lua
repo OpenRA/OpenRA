@@ -41,7 +41,10 @@ function LoadFile(filePath, editor, file_must_exist, skipselection)
   if (not editor) then
     for id, doc in pairs(openDocuments) do
       if doc.filePath and filePath:SameAs(wx.wxFileName(doc.filePath)) then
-        if not skipselection then notebook:SetSelection(doc.index) end
+        if not skipselection and doc.index ~= notebook:GetSelection() then
+          -- selecting the same tab doesn't trigger PAGE_CHANGE event,
+          -- but moves the focus to the tab bar, which needs to be avoided.
+          notebook:SetSelection(doc.index) end
         return doc.editor
       end
     end
