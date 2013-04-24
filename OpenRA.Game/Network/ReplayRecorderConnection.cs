@@ -39,18 +39,21 @@ namespace OpenRA.Network
 			if (!Directory.Exists(replaysDirectory))
 				Directory.CreateDirectory(replaysDirectory);
 
-			string fullFilename;
+			FileStream file = null;
 			var id = -1;
-			do
+			while (file == null)
 			{
-				fullFilename = Path.Combine(replaysDirectory, id < 0
+				var fullFilename = Path.Combine(replaysDirectory, id < 0
 					? "{0}.rep".F(filename)
 					: "{0}-{1}.rep".F(filename, id));
 				id++;
+				try
+				{
+					file = File.Create(fullFilename);
+				}
+				catch (IOException) { }
 			}
-			while (File.Exists(fullFilename));
 
-			var file = File.Create(fullFilename);
 			file.Write(initialContent);
 			this.writer = new BinaryWriter(file);
 		}
