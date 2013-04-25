@@ -86,6 +86,11 @@ Container@SERVER_LOBBY:
 											Y:2
 											Width:PARENT_RIGHT-4
 											Height:PARENT_BOTTOM-4
+								ClientTooltipRegion@CLIENT_REGION:
+									TooltipContainer:TOOLTIP_CONTAINER
+									Template:CLIENT_TOOLTIP
+									Width:11
+									Height:25
 								TextField@NAME:
 									Text:Name
 									X:15
@@ -174,6 +179,11 @@ Container@SERVER_LOBBY:
 											Y:2
 											Width:PARENT_RIGHT-4
 											Height:PARENT_BOTTOM-4
+								ClientTooltipRegion@CLIENT_REGION:
+									TooltipContainer:TOOLTIP_CONTAINER
+									Template:CLIENT_TOOLTIP
+									Width:11
+									Height:25
 								Label@NAME:
 									Text:Name
 									Width:185
@@ -276,6 +286,11 @@ Container@SERVER_LOBBY:
 											Y:2
 											Width:PARENT_RIGHT-4
 											Height:PARENT_BOTTOM-4
+								ClientTooltipRegion@CLIENT_REGION:
+									TooltipContainer:TOOLTIP_CONTAINER
+									Template:CLIENT_TOOLTIP
+									Width:11
+									Height:25
 								TextField@NAME:
 									Text:Name
 									X:15
@@ -332,6 +347,11 @@ Container@SERVER_LOBBY:
 											Y:2
 											Width:PARENT_RIGHT-4
 											Height:PARENT_BOTTOM-4
+								ClientTooltipRegion@CLIENT_REGION:
+									TooltipContainer:TOOLTIP_CONTAINER
+									Template:CLIENT_TOOLTIP
+									Width:11
+									Height:25
 								Label@NAME:
 									Text:Name
 									Width:185

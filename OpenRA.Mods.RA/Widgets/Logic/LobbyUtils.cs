@@ -158,7 +158,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			}
 		}
 
-		static Color LatencyColor(int latency)
+		public static Color LatencyColor(int latency)
 		{
 			// Levels set relative to the default order lag of 3 net ticks (360ms)
 			// TODO: Adjust this once dynamic lag is implemented
@@ -171,7 +171,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			return Color.Red;
 		}
 
-		static string LatencyDescription(int latency)
+		public static string LatencyDescription(int latency)
 		{
 			if (latency < 0)
 				return "Unknown";
@@ -190,6 +190,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			if (visible)
 				block.Get<ColorBlockWidget>("LATENCY_COLOR").GetColor = () => LatencyColor(c.Latency);
+
+			var tooltip = parent.Get<ClientTooltipRegionWidget>("CLIENT_REGION");
+			tooltip.IsVisible = () => visible;
+			tooltip.Bind(orderManager, c.Index);
 		}
 
 		public static void SetupEditableNameWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager)
