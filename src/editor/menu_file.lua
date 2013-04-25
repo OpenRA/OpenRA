@@ -45,7 +45,7 @@ do -- recent file history
     local index = filehistory[0]
 
     -- special case: selecting the current file (or moving through the history)
-    if isSameAs(filename, filehistory[index].filename) then return end
+    if filehistory[index] and isSameAs(filename, filehistory[index].filename) then return end
 
     -- something else is selected
     -- (1) flip the history from 1 to the current index
