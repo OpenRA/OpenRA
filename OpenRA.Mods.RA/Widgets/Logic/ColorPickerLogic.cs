@@ -44,9 +44,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			Action updateSliders = () =>
 			{
-				hueSlider.Value = ramp.H / 255f;
-				satSlider.Value = ramp.S / 255f;
-				lumSlider.Value = ramp.L / 255f;
+				hueSlider.Value = ramp.Color.H / 255f;
+				satSlider.Value = ramp.Color.S / 255f;
+				lumSlider.Value = ramp.Color.L / 255f;
 			};
 
 			panel.Get<ButtonWidget>("SAVE_BUTTON").OnClick = () => onSelect(ramp);
