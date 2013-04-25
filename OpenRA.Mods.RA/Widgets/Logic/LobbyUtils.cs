@@ -158,26 +158,26 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			}
 		}
 
-		static Color GetPingColor(Session.Client c)
+		static Color GetLatencyColor(Session.Client c)
 		{
-			if (c.Ping < 0) // Ping unknown
+			if (c.Latency < 0) // Ping unknown
 				return Color.Gray;
-			if (c.Ping > 720) // OrderLag > 6
+			if (c.Latency > 720) // OrderLag > 6
 				return Color.Red;
-			if (c.Ping > 360) // OrderLag > 3
+			if (c.Latency > 360) // OrderLag > 3
 				return Color.Orange;
 
 			return Color.LimeGreen;
 		}
 
-		public static void SetupAdminPingWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, bool visible)
+		public static void SetupClientWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, bool visible)
 		{
 			parent.Get("ADMIN_INDICATOR").IsVisible = () => c.IsAdmin;
-			var block = parent.Get("PING_BLOCK");
+			var block = parent.Get("LATENCY");
 			block.IsVisible = () => visible;
 
 			if (visible)
-				block.Get<ColorBlockWidget>("PING_COLOR").GetColor = () => GetPingColor(c);
+				block.Get<ColorBlockWidget>("LATENCY_COLOR").GetColor = () => GetLatencyColor(c);
 		}
 
 		public static void SetupEditableNameWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager)

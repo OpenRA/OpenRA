@@ -73,7 +73,7 @@ Container@SERVER_LOBBY:
 									ImageName:admin
 									X:2
 									Visible:false
-								Background@PING_BLOCK:
+								Background@LATENCY:
 									Background:button
 									X:0
 									Y:6
@@ -81,7 +81,7 @@ Container@SERVER_LOBBY:
 									Height:14
 									Visible:false
 									Children:
-										ColorBlock@PING_COLOR:
+										ColorBlock@LATENCY_COLOR:
 											X:2
 											Y:2
 											Width:PARENT_RIGHT-4
@@ -161,7 +161,7 @@ Container@SERVER_LOBBY:
 									ImageName:admin
 									X:2
 									Visible:false
-								Background@PING_BLOCK:
+								Background@LATENCY:
 									Background:button
 									X:0
 									Y:6
@@ -169,7 +169,7 @@ Container@SERVER_LOBBY:
 									Height:14
 									Visible:false
 									Children:
-										ColorBlock@PING_COLOR:
+										ColorBlock@LATENCY_COLOR:
 											X:2
 											Y:2
 											Width:PARENT_RIGHT-4
@@ -263,7 +263,7 @@ Container@SERVER_LOBBY:
 									ImageName:admin
 									X:2
 									Visible:false
-								Background@PING_BLOCK:
+								Background@LATENCY:
 									Background:button
 									X:0
 									Y:6
@@ -271,7 +271,7 @@ Container@SERVER_LOBBY:
 									Height:14
 									Visible:false
 									Children:
-										ColorBlock@PING_COLOR:
+										ColorBlock@LATENCY_COLOR:
 											X:2
 											Y:2
 											Width:PARENT_RIGHT-4
@@ -319,7 +319,7 @@ Container@SERVER_LOBBY:
 									ImageName:admin
 									X:2
 									Visible:false
-								Background@PING_BLOCK:
+								Background@LATENCY:
 									Background:button
 									X:0
 									Y:6
@@ -327,7 +327,7 @@ Container@SERVER_LOBBY:
 									Height:14
 									Visible:false
 									Children:
-										ColorBlock@PING_COLOR:
+										ColorBlock@LATENCY_COLOR:
 											X:2
 											Y:2
 											Width:PARENT_RIGHT-4
