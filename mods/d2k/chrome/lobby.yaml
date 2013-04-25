@@ -34,6 +34,7 @@ Background@SERVER_LOBBY:
 					Y:4
 					Width:244
 					Height:244
+					TooltipContainer:TOOLTIP_CONTAINER
 		ScrollPanel@PLAYERS:
 			X:20
 			Y:67
@@ -494,3 +495,4 @@ Background@SERVER_LOBBY:
 			Height:25
 			Text:Start Game
 			Font:Bold
+		TooltipContainer@TOOLTIP_CONTAINER:

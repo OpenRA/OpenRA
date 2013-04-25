@@ -1,0 +1,23 @@
+Background@SPAWN_TOOLTIP:
+	Logic:SpawnSelectorTooltipLogic
+	Background:dialog4
+	Width:7
+	Children:
+		Container@SINGLE_HEIGHT:
+			Height:29
+		Container@DOUBLE_HEIGHT:
+			Height:44
+		Label@LABEL:
+			Y:2
+			Height:23
+			Font:Bold
+		Image@FLAG:
+			X:7
+			Y:7
+			Width:32
+			Height:16
+		Label@TEAM:
+			Y:23
+			Height:15
+			Font:TinyBold
+			Align:center

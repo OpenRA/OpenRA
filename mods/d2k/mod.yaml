@@ -60,6 +60,7 @@ ChromeLayout:
 	mods/ra/chrome/dropdowns.yaml
 	mods/ra/chrome/modchooser.yaml
 	mods/ra/chrome/cheats.yaml
+	mods/d2k/chrome/tooltips.yaml
 
 Weapons:
 	mods/d2k/weapons/defaults.yaml

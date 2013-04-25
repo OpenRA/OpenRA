@@ -103,8 +103,12 @@ Background@SUPPORT_POWER_TOOLTIP:
 Background@SPAWN_TOOLTIP:
 	Logic:SpawnSelectorTooltipLogic
 	Background:panel-black
-	Width:141
+	Width:5
 	Children:
+		Container@SINGLE_HEIGHT:
+			Height:26
+		Container@DOUBLE_HEIGHT:
+			Height:40
 		Label@LABEL:
 			X:5
 			Height:23
