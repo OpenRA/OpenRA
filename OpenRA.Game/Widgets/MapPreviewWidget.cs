@@ -24,7 +24,6 @@ namespace OpenRA.Widgets
 		public Func<Map> Map = () => null;
 		public Func<Dictionary<int2, Session.Client>> SpawnClients = () => new Dictionary<int2, Session.Client>();
 		public Action<MouseInput> OnMouseDown = _ => {};
-		public Action<int, int2> OnTooltip = (_, __) => { };
 		public bool IgnoreMouseInput = false;
 		public bool ShowSpawnPoints = true;
 
@@ -147,13 +146,7 @@ namespace OpenRA.Widgets
 					Game.Renderer.RgbaSpriteRenderer.DrawSprite(sprite, pos + offset);
 
 					if ((pos - Viewport.LastMousePos).LengthSquared < 64)
-					{
 						TooltipSpawnIndex = spawnPoints.IndexOf(p) + 1;
-
-						// Legacy tooltip behavior
-						if (TooltipContainer == null)
-							OnTooltip(TooltipSpawnIndex, pos);
-					}
 				}
 			}
 		}

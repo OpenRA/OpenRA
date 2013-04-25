@@ -223,6 +223,7 @@
     <Compile Include="Widgets\TooltipContainerWidget.cs" />
     <Compile Include="Traits\DebugPauseState.cs" />
     <Compile Include="Network\UPnP.cs" />
+    <Compile Include="Widgets\ClientTooltipRegionWidget.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

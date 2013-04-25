@@ -34,6 +34,7 @@ Background@SERVER_LOBBY:
 					Y:4
 					Width:244
 					Height:244
+					TooltipContainer:TOOLTIP_CONTAINER
 		ScrollPanel@PLAYERS:
 			X:20
 			Y:67
@@ -53,18 +54,23 @@ Background@SERVER_LOBBY:
 							ImageName:admin
 							X:2
 							Visible:false
-						Container@PING_BLOCK:
+						Container@LATENCY:
 							X:0
 							Y:6
 							Width:11
 							Height:14
 							Visible:false
 							Children:
-								ColorBlock@PING_COLOR:
+								ColorBlock@LATENCY_COLOR:
 									X:2
 									Y:2
 									Width:PARENT_RIGHT-4
 									Height:PARENT_BOTTOM-4
+						ClientTooltipRegion@CLIENT_REGION:
+							TooltipContainer:TOOLTIP_CONTAINER
+							Template:CLIENT_TOOLTIP
+							Width:11
+							Height:25
 						TextField@NAME:
 							Text:Name
 							X:15
@@ -139,18 +145,23 @@ Background@SERVER_LOBBY:
 							ImageName:admin
 							X:2
 							Visible:false
-						Container@PING_BLOCK:
+						Container@LATENCY:
 							X:0
 							Y:6
 							Width:11
 							Height:14
 							Visible:false
 							Children:
-								ColorBlock@PING_COLOR:
+								ColorBlock@LATENCY_COLOR:
 									X:2
 									Y:2
 									Width:PARENT_RIGHT-4
 									Height:PARENT_BOTTOM-4
+						ClientTooltipRegion@CLIENT_REGION:
+							TooltipContainer:TOOLTIP_CONTAINER
+							Template:CLIENT_TOOLTIP
+							Width:11
+							Height:25
 						Label@NAME:
 							Text:Name
 							Width:130
@@ -239,18 +250,23 @@ Background@SERVER_LOBBY:
 							ImageName:admin
 							X:2
 							Visible:false
-						Container@PING_BLOCK:
+						Container@LATENCY:
 							X:0
 							Y:6
 							Width:11
 							Height:14
 							Visible:false
 							Children:
-								ColorBlock@PING_COLOR:
+								ColorBlock@LATENCY_COLOR:
 									X:2
 									Y:2
 									Width:PARENT_RIGHT-4
 									Height:PARENT_BOTTOM-4
+						ClientTooltipRegion@CLIENT_REGION:
+							TooltipContainer:TOOLTIP_CONTAINER
+							Template:CLIENT_TOOLTIP
+							Width:11
+							Height:25
 						TextField@NAME:
 							Text:Name
 							X:15
@@ -301,18 +317,23 @@ Background@SERVER_LOBBY:
 							ImageName:admin
 							X:2
 							Visible:false
-						Container@PING_BLOCK:
+						Container@LATENCY:
 							X:0
 							Y:6
 							Width:11
 							Height:14
 							Visible:false
 							Children:
-								ColorBlock@PING_COLOR:
+								ColorBlock@LATENCY_COLOR:
 									X:2
 									Y:2
 									Width:PARENT_RIGHT-4
 									Height:PARENT_BOTTOM-4
+						ClientTooltipRegion@CLIENT_REGION:
+							TooltipContainer:TOOLTIP_CONTAINER
+							Template:CLIENT_TOOLTIP
+							Width:11
+							Height:25
 						Label@NAME:
 							Text:Name
 							Width:130
@@ -500,3 +521,4 @@ Background@SERVER_LOBBY:
 			Height:25
 			Text:Start Game
 			Font:Bold
+		TooltipContainer@TOOLTIP_CONTAINER:
