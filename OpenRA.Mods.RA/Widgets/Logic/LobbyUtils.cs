@@ -158,15 +158,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			}
 		}
 
-		public static void ShowSpawnPointTooltip(OrderManager orderManager, int spawnPoint, int2 position)
-		{
-			var client = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.SpawnPoint == spawnPoint);
-			if (client != null)
-			{
-				Game.Renderer.Fonts["Bold"].DrawTextWithContrast(client.Name, position + new int2(5, 5), Color.White, Color.Black, 1);
-			}
-		}
-
 		static Color GetPingColor(Session.Client c)
 		{
 			if (c.Ping < 0) // Ping unknown
