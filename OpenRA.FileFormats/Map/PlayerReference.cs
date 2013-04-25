@@ -29,7 +29,7 @@ namespace OpenRA.FileFormats
 		public string Race;
 
 		public bool LockColor = false;
-		public ColorRamp ColorRamp = new ColorRamp(0,0,238,34);
+		public ColorRamp ColorRamp = new ColorRamp(0,0,238,10);
 
 		public bool LockSpawn = false;
 		public int Spawn = 0;
