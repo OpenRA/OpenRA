@@ -188,7 +188,7 @@ Player:
 			arty: 20%
 			ftnk: 5%
 			stnk: 40%
-			mlrs: 10%
+			mlrs: 5%
 			heli: 10%
 			jeep: 20%
 			apc: 10%
