@@ -158,35 +158,42 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			}
 		}
 
-		public static void ShowSpawnPointTooltip(OrderManager orderManager, int spawnPoint, int2 position)
+		public static Color LatencyColor(int latency)
 		{
-			var client = orderManager.LobbyInfo.Clients.FirstOrDefault(c => c.SpawnPoint == spawnPoint);
-			if (client != null)
-			{
-				Game.Renderer.Fonts["Bold"].DrawTextWithContrast(client.Name, position + new int2(5, 5), Color.White, Color.Black, 1);
-			}
-		}
-
-		static Color GetPingColor(Session.Client c)
-		{
-			if (c.Ping < 0) // Ping unknown
+			// Levels set relative to the default order lag of 3 net ticks (360ms)
+			// TODO: Adjust this once dynamic lag is implemented
+			if (latency < 0)
 				return Color.Gray;
-			if (c.Ping > 720) // OrderLag > 6
-				return Color.Red;
-			if (c.Ping > 360) // OrderLag > 3
+			if (latency < 300)
+				return Color.LimeGreen;
+			if (latency < 600)
 				return Color.Orange;
-
-			return Color.LimeGreen;
+			return Color.Red;
 		}
 
-		public static void SetupAdminPingWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, bool visible)
+		public static string LatencyDescription(int latency)
+		{
+			if (latency < 0)
+				return "Unknown";
+			if (latency < 300)
+				return "Good";
+			if (latency < 600)
+				return "Moderate";
+			return "Poor";
+		}
+
+		public static void SetupClientWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, bool visible)
 		{
 			parent.Get("ADMIN_INDICATOR").IsVisible = () => c.IsAdmin;
-			var block = parent.Get("PING_BLOCK");
+			var block = parent.Get("LATENCY");
 			block.IsVisible = () => visible;
 
 			if (visible)
-				block.Get<ColorBlockWidget>("PING_COLOR").GetColor = () => GetPingColor(c);
+				block.Get<ColorBlockWidget>("LATENCY_COLOR").GetColor = () => LatencyColor(c.Latency);
+
+			var tooltip = parent.Get<ClientTooltipRegionWidget>("CLIENT_REGION");
+			tooltip.IsVisible = () => visible;
+			tooltip.Bind(orderManager, c.Index);
 		}
 
 		public static void SetupEditableNameWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager)

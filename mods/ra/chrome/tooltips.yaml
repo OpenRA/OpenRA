@@ -1,0 +1,47 @@
+Background@SPAWN_TOOLTIP:
+	Logic:SpawnSelectorTooltipLogic
+	Background:dialog4
+	Width:7
+	Children:
+		Container@SINGLE_HEIGHT:
+			Height:29
+		Container@DOUBLE_HEIGHT:
+			Height:44
+		Label@LABEL:
+			Y:2
+			Height:23
+			Font:Bold
+		Image@FLAG:
+			X:7
+			Y:7
+			Width:32
+			Height:16
+		Label@TEAM:
+			Y:23
+			Height:15
+			Font:TinyBold
+			Align:center
+
+Background@CLIENT_TOOLTIP:
+	Logic:ClientTooltipLogic
+	Background:dialog4
+	Height:39
+	Width:7
+	Children:
+		Label@ADMIN:
+			Y:4
+			Height:18
+			Font:Bold
+			Text:Game Admin
+			Align:Center
+		Label@IP:
+			Y:7
+			Width:5
+			Height:10
+			Font:TinyBold
+			Align:Center
+		Label@LATENCY:
+			Y:19
+			Height:10
+			Font:TinyBold
+			Align:Center
