@@ -139,7 +139,8 @@ local function selectInterpreter(id)
 
   ide.interpreter = interpreters[id]
 
-  if DebuggerShutdown then DebuggerShutdown() end
+  DebuggerShutdown()
+
   ide.frame.statusBar:SetStatusText(ide.interpreter.name or "", 5)
   ReloadLuaAPI()
 end

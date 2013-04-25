@@ -60,9 +60,15 @@ local streamouts = {}
 local customprocs = {}
 local textout = '' -- this is a buffer for any text sent to external scripts
 
+function DetachChildProcess()
+  for _, custom in pairs(customprocs) do
+    if (custom and custom.proc) then custom.proc:Detach() end
+  end
+end
+
 function CommandLineRunning(uid)
   for pid,custom in pairs(customprocs) do
-    if (custom.uid == uid and custom.proc and custom.proc.Exists(tonumber(tostring(pid))) )then
+    if (custom.uid == uid and custom.proc and custom.proc.Exists(tonumber(tostring(pid)))) then
       return true
     end
   end
