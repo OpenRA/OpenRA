@@ -430,6 +430,7 @@
     <Compile Include="BridgeHut.cs" />
     <Compile Include="Lint\CheckSequences.cs" />
     <Compile Include="ServerTraits\PlayerPinger.cs" />
+    <Compile Include="Widgets\Logic\SpawnSelectorTooltipLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

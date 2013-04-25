@@ -480,7 +480,6 @@ Container@SERVER_LOBBY:
 							Height:25
 							Align:Right
 							Text:Chat:
-		TooltipContainer@TOOLTIP_CONTAINER:
 		Button@DISCONNECT_BUTTON:
 			X:0
 			Y:499
@@ -505,3 +504,4 @@ Container@SERVER_LOBBY:
 			Width:140
 			Height:35
 			Text:Start Game
+		TooltipContainer@TOOLTIP_CONTAINER:
