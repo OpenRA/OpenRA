@@ -103,6 +103,7 @@ local function treeGetItemFullName(tree,treedata,item_id)
 
   while (#cur > 0) do
     item_id = tree:GetItemParent(item_id)
+    if not item_id:IsOk() then break end
     cur = tree:GetItemText(item_id)
     if cur and string.len(cur) > 0 then str = cur..string_Pathsep..str end
   end
