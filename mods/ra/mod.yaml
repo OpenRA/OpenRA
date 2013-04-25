@@ -71,6 +71,7 @@ ChromeLayout:
 	mods/ra/chrome/dropdowns.yaml
 	mods/ra/chrome/modchooser.yaml
 	mods/ra/chrome/cheats.yaml
+	mods/ra/chrome/musicplayer.yaml
 	mods/ra/chrome/tooltips.yaml
 
 Weapons:
