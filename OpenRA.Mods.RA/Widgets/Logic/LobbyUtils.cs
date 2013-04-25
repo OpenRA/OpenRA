@@ -158,16 +158,28 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			}
 		}
 
-		static Color GetLatencyColor(Session.Client c)
+		static Color LatencyColor(int latency)
 		{
-			if (c.Latency < 0) // Ping unknown
+			// Levels set relative to the default order lag of 3 net ticks (360ms)
+			// TODO: Adjust this once dynamic lag is implemented
+			if (latency < 0)
 				return Color.Gray;
-			if (c.Latency > 720) // OrderLag > 6
-				return Color.Red;
-			if (c.Latency > 360) // OrderLag > 3
+			if (latency < 300)
+				return Color.LimeGreen;
+			if (latency < 600)
 				return Color.Orange;
+			return Color.Red;
+		}
 
-			return Color.LimeGreen;
+		static string LatencyDescription(int latency)
+		{
+			if (latency < 0)
+				return "Unknown";
+			if (latency < 300)
+				return "Good";
+			if (latency < 600)
+				return "Moderate";
+			return "Poor";
 		}
 
 		public static void SetupClientWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, bool visible)
@@ -177,7 +189,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			block.IsVisible = () => visible;
 
 			if (visible)
-				block.Get<ColorBlockWidget>("LATENCY_COLOR").GetColor = () => GetLatencyColor(c);
+				block.Get<ColorBlockWidget>("LATENCY_COLOR").GetColor = () => LatencyColor(c.Latency);
 		}
 
 		public static void SetupEditableNameWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager)
