@@ -388,7 +388,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					if (template == null || template.Id != EditablePlayerTemplate.Id)
 						template = EditablePlayerTemplate.Clone();
 
-					LobbyUtils.SetupAdminPingWidget(template, slot, client, orderManager, client.Bot == null);
+					LobbyUtils.SetupClientWidget(template, slot, client, orderManager, client.Bot == null);
 
 					if (client.Bot != null)
 						LobbyUtils.SetupEditableSlotWidget(template, slot, client, orderManager);
@@ -408,7 +408,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					if (template == null || template.Id != NonEditablePlayerTemplate.Id)
 						template = NonEditablePlayerTemplate.Clone();
 
-					LobbyUtils.SetupAdminPingWidget(template, slot, client, orderManager, client.Bot == null);
+					LobbyUtils.SetupClientWidget(template, slot, client, orderManager, client.Bot == null);
 					LobbyUtils.SetupNameWidget(template, slot, client);
 					LobbyUtils.SetupKickWidget(template, slot, client, orderManager);
 					LobbyUtils.SetupColorWidget(template, slot, client);
@@ -459,7 +459,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					LobbyUtils.SetupReadyWidget(template, null, client);
 				}
 
-				LobbyUtils.SetupAdminPingWidget(template, null, c, orderManager, true);
+				LobbyUtils.SetupClientWidget(template, null, c, orderManager, true);
 				template.IsVisible = () => true;
 
 				if (idx >= Players.Children.Count)

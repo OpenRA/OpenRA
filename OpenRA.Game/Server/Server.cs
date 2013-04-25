@@ -469,16 +469,16 @@ namespace OpenRA.Server
 						break;
 					}
 
-					var history = fromClient.PingHistory.ToList();
+					var history = fromClient.LatencyHistory.ToList();
 					history.Add(Environment.TickCount - pingSent);
 
 					// Cap ping history at 5 values (25 seconds)
 					if (history.Count > 5)
 						history.RemoveRange(0, history.Count - 5);
 
-					fromClient.Ping = history.Sum() / history.Count;
-					fromClient.PingJitter = (history.Max() - history.Min())/2;
-					fromClient.PingHistory = history.ToArray();
+					fromClient.Latency = history.Sum() / history.Count;
+					fromClient.LatencyJitter = (history.Max() - history.Min())/2;
+					fromClient.LatencyHistory = history.ToArray();
 
 					if (State == ServerState.WaitingPlayers)
 						SyncLobbyInfo();
