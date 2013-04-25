@@ -1,12 +1,12 @@
 --
--- MobDebug 0.525
+-- MobDebug 0.526
 -- Copyright 2011-13 Paul Kulchenko
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
 --
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.525,
+  _VERSION = 0.526,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = os and os.getenv and os.getenv("MOBDEBUG_PORT") or 8172,
@@ -424,6 +424,8 @@ local function debug_hook(event, line)
       step_into or step_over or breakpoints[line] or watchescnt > 0
       or is_pending(server)
     ) then checkcount = checkcount + 1; return end
+
+    checkcount = mobdebug.checkcount -- force check on the next command
 
     -- this is needed to check if the stack got shorter or longer.
     -- unfortunately counting call/return calls is not reliable.
