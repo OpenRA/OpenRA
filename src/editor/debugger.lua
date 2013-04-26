@@ -774,7 +774,8 @@ function debuggerCreateStackWindow()
   local mgr = ide.frame.uimgr
   mgr:AddPane(notebook, wxaui.wxAuiPaneInfo():
               Name("stackpanel"):Float():
-              MinSize(height,height):FloatingSize(width,height):
+              MinSize(width/2,height/2):
+              BestSize(width,height):FloatingSize(width,height):
               PinButton(true):Hide())
   mgr.defaultPerspective = mgr:SavePerspective() -- resave default perspective
 end
@@ -879,7 +880,8 @@ local function debuggerCreateWatchWindow()
   local mgr = ide.frame.uimgr
   mgr:AddPane(notebook, wxaui.wxAuiPaneInfo():
               Name("watchpanel"):Float():
-              MinSize(height,height):FloatingSize(width,height):
+              MinSize(width/2,height/2):
+              BestSize(width,height):FloatingSize(width,height):
               PinButton(true):Hide())
   mgr.defaultPerspective = mgr:SavePerspective() -- resave default perspective
 end
