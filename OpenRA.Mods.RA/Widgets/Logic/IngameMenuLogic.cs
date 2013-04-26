@@ -23,8 +23,16 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				onExit();
 				LeaveGame(world);
 			};
-			widget.Get<ButtonWidget>("SETTINGS").OnClick = () => Ui.OpenWindow("SETTINGS_MENU");
-			widget.Get<ButtonWidget>("MUSIC").OnClick = () => Ui.OpenWindow("MUSIC_MENU");
+			widget.Get<ButtonWidget>("SETTINGS").OnClick = () =>
+			{
+				widget.Visible = false;
+				Ui.OpenWindow("SETTINGS_MENU", new WidgetArgs { { "onExit", () => { widget.Visible = true; } } });
+			};
+			widget.Get<ButtonWidget>("MUSIC").OnClick = () =>
+			{
+				widget.Visible = false;
+				Ui.OpenWindow("MUSIC_MENU", new WidgetArgs { { "onExit", () => { widget.Visible = true; } } });
+			};
 			widget.Get<ButtonWidget>("RESUME").OnClick = () => onExit();
 
 			widget.Get<ButtonWidget>("SURRENDER").OnClick = () =>
