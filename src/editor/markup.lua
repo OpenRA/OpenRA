@@ -61,11 +61,14 @@ function MarkupHotspotClick(pos, editor)
   if text then
     text = text:gsub("^"..q(MD_MARK_LINA), ""):gsub(q(MD_MARK_LINT).."$", "")
     local filepath = ide.openDocuments[editor:GetId()].filePath
-    local _,_,shell = string.find(text, [[^macro:shell%((.*%S)%)$]])
     local _,_,http = string.find(text, [[^(https?:%S+)$]])
-    local _,_,command = string.find(text, [[^macro:(%w+)$]])
-    if shell then
-      ShellExecuteCode(shell)
+    local _,_,command,code = string.find(text, [[^macro:(%w+)%((.*%S)%)$]])
+    if not command then _,_,command = string.find(text, [[^macro:(%w+)$]]) end
+
+    if command == 'shell' then
+      ShellExecuteCode(code)
+    elseif command == 'inline' then
+      ShellExecuteInline(code)
     elseif command == 'run' then -- run the current file
       ProjectRun()
     elseif command == 'debug' then -- debug the current file

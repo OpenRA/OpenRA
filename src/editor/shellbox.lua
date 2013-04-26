@@ -332,6 +332,7 @@ function ShellExecuteFile(wfilename)
   ShellExecuteCode(cmd)
 end
 
+ShellExecuteInline = executeShellCode
 function ShellExecuteCode(code)
   local index = bottomnotebook:GetPageIndex(bottomnotebook.shellbox)
   if ide.config.activateoutput and bottomnotebook:GetSelection() ~= index then
