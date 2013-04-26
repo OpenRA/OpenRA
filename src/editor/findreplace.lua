@@ -281,6 +281,8 @@ function findReplace:createDialog(replace,infiles)
   local ID_REPLACE_ALL = 3
   local ID_SETDIR = 4
 
+  local mac = ide.osname == 'Macintosh'
+
   local findReplace = self
 
   local position = wx.wxDefaultPosition
@@ -314,15 +316,16 @@ function findReplace:createDialog(replace,infiles)
   buttonsSizer:Add(cancelButton, 0, wx.wxALL + wx.wxGROW + wx.wxCENTER, 3)
 
   -- Create find/replace text entry sizer
-  local findStatText = wx.wxStaticText( findDialog, wx.wxID_ANY, TR("Find")..": ")
+  local findStatText = wx.wxStaticText(findDialog, wx.wxID_ANY, TR("Find")..": ")
   local findTextCombo = wx.wxComboBox(findDialog, wx.wxID_ANY, findReplace.findText,
-    wx.wxDefaultPosition, wx.wxDefaultSize, findReplace.findTextArray, wx.wxCB_DROPDOWN)
+    wx.wxDefaultPosition, wx.wxDefaultSize, findReplace.findTextArray,
+    wx.wxCB_DROPDOWN + (mac and wx.wxTE_PROCESS_ENTER or 0))
   findTextCombo:SetFocus()
 
   local infilesMaskStat,infilesMaskCombo
   local infilesDirStat,infilesDirCombo,infilesDirButton
   if (infiles) then
-    infilesMaskStat = wx.wxStaticText( findDialog, wx.wxID_ANY, TR("File Type")..": ")
+    infilesMaskStat = wx.wxStaticText(findDialog, wx.wxID_ANY, TR("File Type")..": ")
     infilesMaskCombo = wx.wxComboBox(findDialog, wx.wxID_ANY, findReplace.filemaskText,
       wx.wxDefaultPosition, wx.wxDefaultSize, findReplace.filemaskTextArray)
 
@@ -331,15 +334,18 @@ function findReplace:createDialog(replace,infiles)
       findReplace.filedirText = fname:GetPath(wx.wxPATH_GET_VOLUME)
     end
 
-    infilesDirStat = wx.wxStaticText( findDialog, wx.wxID_ANY, TR("Directory")..": ")
-    infilesDirCombo = wx.wxComboBox(findDialog, wx.wxID_ANY, findReplace.filedirText, wx.wxDefaultPosition, wx.wxDefaultSize, findReplace.filedirTextArray)
+    infilesDirStat = wx.wxStaticText(findDialog, wx.wxID_ANY, TR("Directory")..": ")
+    infilesDirCombo = wx.wxComboBox(findDialog, wx.wxID_ANY, findReplace.filedirText,
+      wx.wxDefaultPosition, wx.wxDefaultSize, findReplace.filedirTextArray)
     infilesDirButton = wx.wxButton(findDialog, ID_SETDIR, "...",wx.wxDefaultPosition, wx.wxSize(26,20))
   end
 
   local replaceStatText, replaceTextCombo
   if (replace) then
-    replaceStatText = wx.wxStaticText( findDialog, wx.wxID_ANY, TR("Replace")..": ")
-    replaceTextCombo = wx.wxComboBox(findDialog, wx.wxID_ANY, findReplace.replaceText, wx.wxDefaultPosition, wx.wxDefaultSize, findReplace.replaceTextArray)
+    replaceStatText = wx.wxStaticText(findDialog, wx.wxID_ANY, TR("Replace")..": ")
+    replaceTextCombo = wx.wxComboBox(findDialog, wx.wxID_ANY, findReplace.replaceText,
+      wx.wxDefaultPosition, wx.wxDefaultSize, findReplace.replaceTextArray,
+      wx.wxCB_DROPDOWN + (mac and wx.wxTE_PROCESS_ENTER or 0))
   end
 
   local findReplaceSizer = wx.wxFlexGridSizer(2, 3, 0, 0)
@@ -457,6 +463,19 @@ function findReplace:createDialog(replace,infiles)
       PrependStringToArray(findReplace.filedirTextArray, findReplace.filedirText)
     end
     return true
+  end
+
+  -- this is a workaround for Enter issue in wxComboBox on OSX:
+  -- https://groups.google.com/d/msg/wx-users/EVJr8GqyNUA/CUALp585E78J
+  if (mac and ide.wxver >= "2.9.5") then
+    local function simulateEnter()
+      findDialog:AddPendingEvent(wx.wxCommandEvent(
+        wx.wxEVT_COMMAND_BUTTON_CLICKED, ID_FIND_NEXT))
+    end
+    findTextCombo:Connect(wx.wxEVT_COMMAND_TEXT_ENTER, simulateEnter)
+    if replace then
+      replaceTextCombo:Connect(wx.wxEVT_COMMAND_TEXT_ENTER, simulateEnter)
+    end
   end
 
   findDialog:Connect(ID_FIND_NEXT, wx.wxEVT_COMMAND_BUTTON_CLICKED,
