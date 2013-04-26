@@ -22,6 +22,7 @@ namespace OpenRA.FileFormats
 			Sequences, Cursors, Chrome, Assemblies, ChromeLayout,
 			Weapons, Voices, Notifications, Music, Movies, TileSets, ChromeMetrics;
 		public readonly MiniYaml LoadScreen;
+		public readonly Dictionary<string, Pair<string,string>> Addons;
 		public readonly Dictionary<string, Pair<string,int>> Fonts;
 		public readonly int TileSize = 24;
 
@@ -54,6 +55,10 @@ namespace OpenRA.FileFormats
 			Fonts = yaml["Fonts"].NodesDict.ToDictionary(x => x.Key,
 				x => Pair.New(x.Value.NodesDict["Font"].Value,
 					int.Parse(x.Value.NodesDict["Size"].Value)));
+
+			Addons = yaml["Addons"].NodesDict.ToDictionary(x => x.Key,
+			    x => Pair.New(x.Value.NodesDict["TestFile"].Value,
+			    	x.Value.NodesDict["PackageURL"].Value));
 
 			if (yaml.ContainsKey("TileSize"))
 				TileSize = int.Parse(yaml["TileSize"].Value);
