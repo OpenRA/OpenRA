@@ -1,6 +1,52 @@
 # ZeroBrane Studio Changelog
 
-## Current master (Apr 12 2013)
+## Current master (Apr 26 2013)
+
+### Special thanks
+  - To Samuel Dionne-Riel for wxwidgets 2.8 compatibility updates.
+  - To Mat Hopwood for assistance with Marmalade Quick integration.
+
+### Highlights
+  - Added Marmalade Quick auto-complete support and API documentation.
+  - Added full Marmalade Quick debugging support (requires Quick 1.1+).
+  - Improved Find/Replace behavior and functionality.
+  - Added Recent File history navigation.
+
+### Improvements
+  - Added detaching a child process to avoid crash when exiting during debugging.
+  - Added Recent File history navigation (closes #66).
+  - Added Marmalade auto-complete support and API documentation.
+  - Added processing of `runonstart` when using remote debugging (closes #138).
+  - Added suggesting proper extension after 'Save/Save As' based on current spec.
+  - Added translation setup for Find/Replace dialog (closes #133).
+  - Added `nomousezoom` option to disable zoom with mouse wheel in the editor.
+  - Added selecting text and Cmd-F shortcut in Find dialog on OSX (ref #127).
+  - Improved file activation when debugging is started (closes #137).
+  - Reduced the minimum size of the Output/Console panel.
+  - Refactored Recent Files history to make it faster and simpler.
+  - Updated documentation about default EOL on OSX (ref #102).
+  - Updated highlighting in Watch windows to not use editor styles.
+  - Updated documentation for user settings (ref #113, #55).
+  - Updated Monokai color scheme to fix current line color.
+
+### Fixes
+  - Fixed 'breaking' after executing OUT command that never reaches the target level.
+  - Fixed stopping at a breakpoint at the initial line when `startwith` option is specified.
+  - Fixed activation of a file loaded into active tab.
+  - Fixed incorrect tab activation on OSX after using 'Open File'.
+  - Fixed editor activation when file is loaded into an existing tab.
+  - Fixed an error after opening non-existing file from 'Recent Files'.
+  - Fixed blocking on reading app output without processing other events.
+  - Fixed an issue with duplicate lines shown in the editor.
+  - Fixed 'Replace All' to take 'Wrap Around' into account (fixes #132).
+  - Fixed off-by-one error in searching consecutive matches.
+  - Fixed 'Quick Find' not working without current selection (fixes #131).
+  - Fixed looping in auto-complete on mistyped class (fixes #130).
+  - Fixed compatibility with wx2.8 (thanks to Samuel Dionne-Riel; closes #128).
+  - Fixed replacement logic in Find/Replace that could replace selected fragment (ref #127).
+  - Fixed an error caused by allowing multiple Search/Replace windows (fixes #127).
+
+## v0.361 (Apr 12 2013)
 
 ### Improvements
   - Added handling of Ctrl-Home and Ctrl-End on OSX (ref #89).
