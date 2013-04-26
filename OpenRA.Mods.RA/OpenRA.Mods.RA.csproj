@@ -432,6 +432,7 @@
     <Compile Include="ServerTraits\PlayerPinger.cs" />
     <Compile Include="Widgets\Logic\SpawnSelectorTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\ClientTooltipLogic.cs" />
+    <Compile Include="Widgets\ColorMixerWidget.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
