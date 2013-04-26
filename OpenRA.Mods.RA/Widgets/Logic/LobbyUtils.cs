@@ -103,28 +103,27 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		public static void ShowColorDropDown(DropDownButtonWidget color, Session.Client client,
 			OrderManager orderManager, ColorPreviewManagerWidget preview)
 		{
-			Action<ColorRamp> onSelect = c =>
+			Action onExit = () =>
 			{
 				if (client.Bot == null)
 				{
-					Game.Settings.Player.ColorRamp = c;
+					Game.Settings.Player.ColorRamp = preview.Ramp;
 					Game.Settings.Save();
 				}
 
 				color.RemovePanel();
-				orderManager.IssueOrder(Order.Command("color {0} {1}".F(client.Index, c)));
+				orderManager.IssueOrder(Order.Command("color {0} {1}".F(client.Index, preview.Ramp)));
 			};
 
-			Action<ColorRamp> onChange = c => preview.Ramp = c;
+			Action<HSLColor> onChange = c => preview.Ramp = new ColorRamp(c, 10);
 
 			var colorChooser = Game.LoadWidget(orderManager.world, "COLOR_CHOOSER", null, new WidgetArgs()
 			{
-				{ "onSelect", onSelect },
 				{ "onChange", onChange },
-				{ "initialRamp", client.ColorRamp }
+				{ "initialColor", client.ColorRamp.Color }
 			});
 
-			color.AttachPanel(colorChooser);
+			color.AttachPanel(colorChooser, onExit);
 		}
 
 		public static Dictionary<int2, Session.Client> GetSpawnClients(OrderManager orderManager, Map map)
