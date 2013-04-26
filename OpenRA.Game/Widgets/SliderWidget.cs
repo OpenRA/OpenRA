@@ -77,7 +77,7 @@ namespace OpenRA.Widgets
 		}
 
 		float ValueFromPx(int x) { return MinimumValue + (MaximumValue - MinimumValue) * (1f * x / RenderBounds.Width); }
-		int PxFromValue(float x) { return (int)(RenderBounds.Width * (x - MinimumValue) / (MaximumValue - MinimumValue)); }
+		protected int PxFromValue(float x) { return (int)(RenderBounds.Width * (x - MinimumValue) / (MaximumValue - MinimumValue)); }
 
 		public override Widget Clone() { return new SliderWidget(this); }
 
