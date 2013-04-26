@@ -90,7 +90,8 @@ return {
       end
     end
 
-    local dll = MergeFullPath(s3e, "../quick/target/quick_prebuilt_d.s86")
+    local dll = GetFullPathIfExists(s3e, "../quick/target/quick_prebuilt_d.s86")
+      or MergeFullPath(s3e, ("../quick/target/%s/quick_prebuilt_d.s86"):format(mac and 'osx' or 'win'))
     local options = table.concat({
       ([[--dll="%s"]]):format(dll),
       (datadir and ([[--data="%s"]]):format(datadir) or ''),
