@@ -38,14 +38,16 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 		void InitRootWidgets()
 		{
+			var cachedPause = false;
 			Widget optionsBG = null;
 			optionsBG = Game.LoadWidget(world, "INGAME_OPTIONS_BG", Ui.Root, new WidgetArgs
 			{
 				{ "onExit", () =>
 					{
-						if (world.LobbyInfo.IsSinglePlayer)
-							world.IssueOrder(Order.PauseGame(false));
 						optionsBG.Visible = false;
+
+						if (world.LobbyInfo.IsSinglePlayer)
+							world.IssueOrder(Order.PauseGame(cachedPause));
 					}
 				}
 			});
@@ -53,8 +55,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			gameRoot.Get<ButtonWidget>("INGAME_OPTIONS_BUTTON").OnClick = () =>
 			{
 				optionsBG.Visible ^= true;
-				if (world.LobbyInfo.IsSinglePlayer)
-					world.IssueOrder(Order.PauseGame(optionsBG.Visible));
+				if (optionsBG.Visible)
+				{
+					cachedPause = world.Paused;
+
+					if (world.LobbyInfo.IsSinglePlayer)
+						world.IssueOrder(Order.PauseGame(true));
+				}
+				else
+					world.IssueOrder(Order.PauseGame(cachedPause));
 			};
 
 			Game.LoadWidget(world, "CHAT_PANEL", gameRoot, new WidgetArgs());
