@@ -6,23 +6,8 @@ local ide = ide
 --
 
 ide.filetree = {
-  dirdriveText = "",
-  dirdriveTextArray = {},
-
-  projdirText = "",
-  projdirTextArray = {},
-
-  showroot = true,
-
-  dirdata = {
-    root_id = nil,
-    rootdir = "",
-  },
-
-  projdata = {
-    root_id = nil,
-    rootdir = "",
-  },
+  projdir = "",
+  projdirlist = {},
 }
 local filetree = ide.filetree
 
@@ -97,45 +82,38 @@ local function treeAddDir(tree,parent_id,rootdir)
     tree:GetChildrenCount(parent_id, false) > 0)
 end
 
-local function treeGetItemFullName(tree,treedata,item_id)
-  local str = tree:GetItemText(item_id)
-  local cur = str
-
-  while (#cur > 0) do
-    item_id = tree:GetItemParent(item_id)
-    if not item_id:IsOk() then break end
-    cur = tree:GetItemText(item_id)
-    if cur and string.len(cur) > 0 then str = cur..string_Pathsep..str end
-  end
-  -- as root may already include path separator, normalize the path
-  local fullPath = wx.wxFileName(
-    filetree.showroot and str or filetree.projdata.rootdir .. str)
-  fullPath:Normalize()
-  return fullPath:GetFullPath()
-end
-
-local function treeSetRoot(tree,treedata,rootdir)
+local function treeSetRoot(tree,rootdir)
   tree:DeleteAllItems()
-  if (not wx.wxDirExists(rootdir)) then
-    treedata.root_id = nil
-    return
-  end
+  if (not wx.wxDirExists(rootdir)) then return end
 
   local root_id = tree:AddRoot(rootdir, IMG_DIRECTORY)
-  treedata.root_id = root_id
-  treedata.rootdir = rootdir
-
-  -- make sure that the item can expand
-  tree:SetItemHasChildren(root_id, true)
+  tree:SetItemHasChildren(root_id, true) -- make sure that the item can expand
   tree:Expand(root_id) -- this will also populate the tree
 end
 
-local function treeSetConnectorsAndIcons(tree,treedata)
+local function treeSetConnectorsAndIcons(tree)
   tree:SetImageList(filetree.imglist)
+
+  function tree:GetItemFullName(item_id)
+    local tree = self
+    local str = tree:GetItemText(item_id)
+    local cur = str
+
+    while (#cur > 0) do
+      item_id = tree:GetItemParent(item_id)
+      if not item_id:IsOk() then break end
+      cur = tree:GetItemText(item_id)
+      if cur and string.len(cur) > 0 then str = cur..string_Pathsep..str end
+    end
+    -- as root may already include path separator, normalize the path
+    local fullPath = wx.wxFileName(str)
+    fullPath:Normalize()
+    return fullPath:GetFullPath()
+  end
 
   local function refreshAncestors(node)
     while node:IsOk() do
-      local dir = treeGetItemFullName(tree,treedata,node)
+      local dir = tree:GetItemFullName(node)
       treeAddDir(tree,node,dir)
       node = tree:GetItemParent(node)
     end
@@ -145,18 +123,16 @@ local function treeSetConnectorsAndIcons(tree,treedata)
   tree:Connect( wx.wxEVT_COMMAND_TREE_ITEM_EXPANDING,
     function( event )
       local item_id = event:GetItem()
-      local dir = treeGetItemFullName(tree,treedata,item_id)
+      local dir = tree:GetItemFullName(item_id)
 
       if wx.wxDirExists(dir) then treeAddDir(tree,item_id,dir) -- refresh folder
       else refreshAncestors(tree:GetItemParent(item_id)) end -- stale content
       return true
     end)
-  tree:Connect( wx.wxEVT_COMMAND_TREE_ITEM_COLLAPSED,
-    function() return true end)
   tree:Connect( wx.wxEVT_COMMAND_TREE_ITEM_ACTIVATED,
     function( event )
       local item_id = event:GetItem()
-      local name = treeGetItemFullName(tree,treedata,item_id)
+      local name = tree:GetItemFullName(item_id)
       -- refresh the folder
       if (tree:GetItemImage(item_id) == IMG_DIRECTORY) then
         if wx.wxDirExists(name) then treeAddDir(tree,item_id,name)
@@ -166,7 +142,7 @@ local function treeSetConnectorsAndIcons(tree,treedata)
         else refreshAncestors(tree:GetItemParent(item_id)) end -- stale content
       end
     end)
-  -- toggle a folder on
+  -- toggle a folder on a single click
   tree:Connect( wx.wxEVT_LEFT_DOWN,
     function( event )
       local item_id = tree:HitTest(event:GetPosition())
@@ -187,18 +163,16 @@ end
 -- (treectrl)
 local projpanel = ide.frame.projpanel
 local projcombobox = wx.wxComboBox(projpanel, ID "filetree.proj.drivecb",
-  filetree.projdirText,
+  filetree.projdir,
   wx.wxDefaultPosition, wx.wxDefaultSize,
-  filetree.projdirTextArray, wx.wxTE_PROCESS_ENTER)
+  filetree.projdirlist, wx.wxTE_PROCESS_ENTER)
 
 local projbutton = wx.wxButton(projpanel, ID_PROJECTDIRCHOOSE,
-  "...",wx.wxDefaultPosition, wx.wxSize(26,20))
+  "...", wx.wxDefaultPosition, wx.wxSize(26,20))
 
 local projtree = wx.wxTreeCtrl(projpanel, wx.wxID_ANY,
   wx.wxDefaultPosition, wx.wxDefaultSize,
-  filetree.showroot
-  and (wx.wxTR_LINES_AT_ROOT + wx.wxTR_HAS_BUTTONS + wx.wxTR_SINGLE)
-  or (wx.wxTR_HAS_BUTTONS + wx.wxTR_SINGLE + wx.wxTR_HIDE_ROOT))
+  wx.wxTR_HAS_BUTTONS + wx.wxTR_SINGLE + wx.wxTR_LINES_AT_ROOT)
 
 -- use the same font in the combobox as is used in the filetree
 projtree:SetFont(ide.font.fNormal)
@@ -235,7 +209,7 @@ end
 projpanel:Connect(ID "filetree.proj.drivecb", wx.wxEVT_COMMAND_COMBOBOX_SELECTED, projcomboboxUpdate)
 projpanel:Connect(ID "filetree.proj.drivecb", wx.wxEVT_COMMAND_TEXT_ENTER, projcomboboxUpdate)
 
-treeSetConnectorsAndIcons(projtree,filetree.projdata)
+treeSetConnectorsAndIcons(projtree)
 
 -- proj functions
 -- ---------------
@@ -244,20 +218,21 @@ function filetree:updateProjectDir(newdir, cboxsel)
   if (not newdir) or not wx.wxDirExists(newdir) then return end
   local dirname = wx.wxFileName.DirName(newdir)
 
-  if filetree.projdirText and #filetree.projdirText > 0
-  and dirname:SameAs(wx.wxFileName.DirName(filetree.projdirText)) then return end
+  if filetree.projdir and #filetree.projdir > 0
+  and dirname:SameAs(wx.wxFileName.DirName(filetree.projdir)) then return end
+
   -- strip the last path separator if any
   local newdir = dirname:GetPath(wx.wxPATH_GET_VOLUME)
 
-  if ide.config.projectautoopen and filetree.projdirText then
-    StoreRestoreProjectTabs(filetree.projdirText, newdir)
+  if ide.config.projectautoopen and filetree.projdir then
+    StoreRestoreProjectTabs(filetree.projdir, newdir)
   end
 
-  filetree.projdirText = newdir
+  filetree.projdir = newdir
 
-  PrependStringToArray(filetree.projdirTextArray,newdir,ide.config.projecthistorylength)
+  PrependStringToArray(filetree.projdirlist,newdir,ide.config.projecthistorylength)
   projcombobox:Clear()
-  projcombobox:Append(filetree.projdirTextArray)
+  projcombobox:Append(filetree.projdirlist)
   if (not cboxsel) then
     projcombobox:SetValue(newdir)
   else
@@ -265,7 +240,7 @@ function filetree:updateProjectDir(newdir, cboxsel)
   end
 
   ProjectUpdateProjectDir(newdir,true)
-  treeSetRoot(projtree,filetree.projdata,newdir)
+  treeSetRoot(projtree,newdir)
 
   -- sync with the current editor window and activate selected file
   local editor = GetEditor()
@@ -282,19 +257,19 @@ projpanel.projcombobox = projcombobox
 projpanel.projtree = projtree
 
 function FileTreeGetDir()
-  return projpanel:IsShown() and filetree.projdata.rootdir
-    and wx.wxFileName.DirName(filetree.projdata.rootdir):GetFullPath()
+  return filetree.projdir and #filetree.projdir > 0
+    and wx.wxFileName.DirName(filetree.projdir):GetFullPath()
 end
 
 function FileTreeSetProjects(tab)
-  filetree.projdirTextArray = tab
+  filetree.projdirlist = tab
   if (tab and tab[1]) then
     filetree:updateProjectDir(tab[1])
   end
 end
 
 function FileTreeGetProjects()
-  return filetree.projdirTextArray
+  return filetree.projdirlist
 end
 
 local function findItem(tree, match)
@@ -316,7 +291,7 @@ local function findItem(tree, match)
       node = cache[iscaseinsensitive and token:lower() or token]
     else
       -- token is missing; may need to re-scan the folder; maybe new file
-      local dir = treeGetItemFullName(tree,filetree.projdata,node)
+      local dir = tree:GetItemFullName(node)
       treeAddDir(tree,node,dir)
 
       local item, cookie = tree:GetFirstChild(node)
@@ -337,7 +312,7 @@ end
 
 local curr_file
 function FileTreeMarkSelected(file)
-  if not file or not filetree.projdirText or #filetree.projdirText == 0 then return end
+  if not file or not filetree.projdir or #filetree.projdir == 0 then return end
 
   local item_id = findItem(projtree, file)
 
@@ -361,8 +336,4 @@ function FileTreeMarkSelected(file)
     if ide.wxver < "2.9.5" and ide.osname == 'Macintosh' then
       projtree:Refresh() end
   end
-end
-
-function FileTreeRefresh()
-  treeSetRoot(projtree,filetree.projdata,filetree.projdirText)
 end
