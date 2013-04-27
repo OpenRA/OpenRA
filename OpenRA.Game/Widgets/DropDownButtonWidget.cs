@@ -62,7 +62,8 @@ namespace OpenRA.Widgets
 			panel = fullscreenMask = null;
 		}
 
-		public void AttachPanel(Widget p)
+		public void AttachPanel(Widget p) { AttachPanel(p, null); }
+		public void AttachPanel(Widget p, Action onCancel)
 		{
 			if (panel != null)
 				throw new InvalidOperationException("Attempted to attach a panel to an open dropdown");
@@ -71,7 +72,10 @@ namespace OpenRA.Widgets
 			// Mask to prevent any clicks from being sent to other widgets
 			fullscreenMask = new MaskWidget();
 			fullscreenMask.Bounds = new Rectangle(0, 0, Game.viewport.Width, Game.viewport.Height);
-			fullscreenMask.OnMouseDown = mi => RemovePanel();
+			fullscreenMask.OnMouseDown += mi => RemovePanel();
+			if (onCancel != null)
+				fullscreenMask.OnMouseDown += _ => onCancel();
+
 			Ui.Root.AddChild(fullscreenMask);
 
 			var oldBounds = panel.Bounds;
@@ -105,7 +109,7 @@ namespace OpenRA.Widgets
 
 	public class MaskWidget : Widget
 	{
-	   	public Action<MouseInput> OnMouseDown = _ => {};
+		public event Action<MouseInput> OnMouseDown = _ => {};
 		public MaskWidget() : base() { }
 		public MaskWidget(MaskWidget other)
 			: base(other)

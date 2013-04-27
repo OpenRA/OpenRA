@@ -1,71 +1,46 @@
 Background@COLOR_CHOOSER:
 	Logic:ColorPickerLogic
 	Background:panel-black
-	Width:315
-	Height:130
+	Width:234
+	Height:105
 	Children:
-		Button@SAVE_BUTTON:
-			Key:return
-			X:210
-			Y:90
-			Width:90
-			Height:25
-			Text:Save
-		Button@RANDOM_BUTTON:
-			X:15
-			Y:90
-			Width:90
-			Height:25
-			Text:Random
-		ShpImage@FACT:
-			X:220
-			Y:15
-			Image:fact
-			Palette:colorpicker
-		Label@HUE_LABEL:
+		Background@HUEBG:
+			Background:panel-black
 			X:5
 			Y:5
-			Width:40
-			Height:20
-			Align:Right
-			Text:Hue:
-			Font:Bold
-		Slider@HUE:
-			X:43
-			Y:10
-			Width:160
-			Height:20
-			Ticks:5
-		Label@SAT_LABEL:
+			Width:148
+			Height:13
+			Children:
+				HueSlider@HUE:
+					X:2
+					Y:2
+					Width:144
+					Height:9
+					Ticks:5
+		Background@MIXERBG:
+			Background:panel-black
 			X:5
-			Y:30
-			Width:40
-			Height:20
-			Align:Right
-			Text:Sat:
-			Font:Bold
-		Slider@SAT:
-			X:43
-			Y:35
-			Width:160
-			Height:20
-			Ticks:5
-		Label@LUM_LABEL:
-			X:5
-			Y:55
-			Width:40
-			Height:20
-			Align:Right
-			Text:Lum:
-			Font:Bold
-		Slider@LUM:
-			X:43
-			Y:60
-			Width:160
-			Height:20
-			Ticks:5
-			MinimumValue: 0.2
-			MaximumValue: 1
+			Y:23
+			Width:148
+			Height:76
+			Children:
+				ColorMixer@MIXER:
+					X:2
+					Y:2
+					Width:144
+					Height:72
+		ShpImage@FACT:
+			X:160
+			Y:13
+			Image:fact
+			Palette:colorpicker
+		Button@RANDOM_BUTTON:
+			Key:tab
+			X:158
+			Y:74
+			Width:70
+			Height:25
+			Text:Random
 
 ScrollPanel@LABEL_DROPDOWN_TEMPLATE:
 	Width:DROPDOWN_WIDTH

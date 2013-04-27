@@ -155,12 +155,12 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 		bool ShowColorPicker(DropDownButtonWidget color, PlayerSettings s)
 		{
-			Action<ColorRamp> onSelect = c => {s.ColorRamp = c; color.RemovePanel();};
+			Action<ColorRamp> onExit = c => {s.ColorRamp = c; color.RemovePanel();};
 			Action<ColorRamp> onChange = c => {colorPreview.Ramp = c;};
 
 			var colorChooser = Game.LoadWidget(world, "COLOR_CHOOSER", null, new WidgetArgs()
 			{
-				{ "onSelect", onSelect },
+				{ "onExit", onExit },
 				{ "onChange", onChange },
 				{ "initialRamp", s.ColorRamp }
 			});

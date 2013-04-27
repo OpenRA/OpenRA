@@ -137,6 +137,7 @@
     <Compile Include="WAngle.cs" />
     <Compile Include="WRot.cs" />
     <Compile Include="WRange.cs" />
+    <Compile Include="HSLColor.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
