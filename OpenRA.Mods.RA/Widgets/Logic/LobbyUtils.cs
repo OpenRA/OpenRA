@@ -182,6 +182,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			return "Poor";
 		}
 
+		public static string DescriptiveIpAddress(string ip)
+		{
+			if (ip == null)
+				return "Unknown Host";
+			if (ip == "127.0.0.1")
+				return "Local Host";
+			return ip;
+		}
+
 		public static void SetupClientWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, bool visible)
 		{
 			parent.Get("ADMIN_INDICATOR").IsVisible = () => c.IsAdmin;

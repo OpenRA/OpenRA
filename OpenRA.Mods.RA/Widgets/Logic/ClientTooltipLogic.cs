@@ -35,6 +35,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var tooltipHeight = widget.Bounds.Height;
 
 			var margin = widget.Bounds.Width;
+
+			tooltipContainer.IsVisible = () => (orderManager.LobbyInfo.ClientWithIndex(clientIndex) != null);
 			tooltipContainer.BeforeRender = () =>
 			{
 				var width = Math.Max(adminFont.Measure(admin.GetText()).X, Math.Max(ipFont.Measure(ip.GetText()).X, latencyFont.Measure(latency.GetText()).X));
@@ -57,7 +59,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			admin.IsVisible = () => orderManager.LobbyInfo.ClientWithIndex(clientIndex).IsAdmin;
 			latency.GetText = () => "Latency: {0}".F(LobbyUtils.LatencyDescription(orderManager.LobbyInfo.ClientWithIndex(clientIndex).Latency));
-			ip.GetText = () => orderManager.LobbyInfo.ClientWithIndex(clientIndex).IpAddress;
+			ip.GetText = () => LobbyUtils.DescriptiveIpAddress(orderManager.LobbyInfo.ClientWithIndex(clientIndex).IpAddress);
 		}
 	}
 }
