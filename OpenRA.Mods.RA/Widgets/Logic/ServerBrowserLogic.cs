@@ -217,9 +217,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				var item = ScrollItemWidget.Setup(serverTemplate, () => currentServer == game, () => currentServer = game, () => Join(game));
 
-				if (!Filtered(game))
-					game.Ping();
-
 				var preview = item.Get<MapPreviewWidget>("MAP_PREVIEW");
 				preview.Map = () => GetMapPreview(game);
 				preview.IsVisible = () => GetMapPreview(game) != null;
