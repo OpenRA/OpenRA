@@ -212,9 +212,6 @@ namespace OpenRA.Mods.RA
 		// Returns true when unloading is complete
 		public bool TickUnload(Actor self, Actor proc)
 		{
-			if (!proc.IsInWorld)
-				return false;	// fail to deliver if there is no proc.
-
 			// Wait until the next bale is ready
 			if (--currentUnloadTicks > 0)
 				return false;
