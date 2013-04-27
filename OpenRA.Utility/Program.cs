@@ -59,6 +59,7 @@ namespace OpenRA.Utility
 			Console.WriteLine("  --settings-value KEY     Get value of KEY from settings.yaml");
 			Console.WriteLine("  --shp PNGFILE FRAMEWIDTH     Convert a single PNG with multiple frames appended after another to a SHP");
 			Console.WriteLine("  --png SHPFILE PALETTE [--noshadow]     Convert a SHP to a PNG containing all of its frames, optionally removing the shadow");
+			Console.WriteLine("  --fromd2 DUNE2SHP C&CSHP     Convert a Dune II SHP (C&C mouse cursor) to C&C SHP format.");
 			Console.WriteLine("  --extract MOD[,MOD]* FILES     Extract files from mod packages");
 			Console.WriteLine("  --tmp-png MOD[,MOD]* THEATER FILES      Extract terrain tiles to PNG");
 			Console.WriteLine("  --remap SRCMOD:PAL DESTMOD:PAL SRCSHP DESTSHP     Remap SHPs to another palette");
