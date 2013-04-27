@@ -8,10 +8,10 @@
  */
 #endregion
 
-using System;
 using System.Drawing;
-using OpenRA.Mods.RA.Orders;
 using OpenRA.Mods.RA.Buildings;
+using OpenRA.Mods.RA.Orders;
+using OpenRA.Mods.RA.Widgets;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 

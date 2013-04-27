@@ -267,7 +267,7 @@
     <Compile Include="Move\PathSearch.cs" />
     <Compile Include="NukePaletteEffect.cs" />
     <Compile Include="NullLoadScreen.cs" />
-    <Compile Include="OpenWidgetAtGameStart.cs" />
+    <Compile Include="LoadWidgetAtGameStart.cs" />
     <Compile Include="Orders\DeployOrderTargeter.cs" />
     <Compile Include="Orders\EnterBuildingOrderTargeter.cs" />
     <Compile Include="Orders\PlaceBuildingOrderGenerator.cs" />
@@ -370,6 +370,8 @@
     <Compile Include="Valued.cs" />
     <Compile Include="WaterPaletteRotation.cs" />
     <Compile Include="Widgets\BuildPaletteWidget.cs" />
+    <Compile Include="Widgets\LogicTickerWidget.cs" />
+    <Compile Include="Widgets\Logic\IngameMenuLogic.cs" />
     <Compile Include="Widgets\Logic\ModBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\ColorPickerLogic.cs" />
     <Compile Include="Widgets\Logic\ConnectionLogic.cs" />
@@ -378,7 +380,6 @@
     <Compile Include="Widgets\Logic\DownloadPackagesLogic.cs" />
     <Compile Include="Widgets\Logic\IngameChatLogic.cs" />
     <Compile Include="Widgets\Logic\IngameChromeLogic.cs" />
-    <Compile Include="Widgets\Logic\IngameObserverChromeLogic.cs" />
     <Compile Include="Widgets\Logic\LobbyLogic.cs" />
     <Compile Include="Widgets\Logic\LobbyUtils.cs" />
     <Compile Include="Widgets\Logic\MainMenuButtonsLogic.cs" />
