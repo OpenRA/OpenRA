@@ -20,6 +20,7 @@ namespace OpenRA.Mods.RA
 	public abstract class AttackBaseInfo : ITraitInfo
 	{
 		public readonly bool CanAttackGround = true;
+		public readonly string Cursor = "attack";
 
 		public abstract object Create(ActorInitializer init);
 	}
@@ -41,10 +42,17 @@ namespace OpenRA.Mods.RA
 
 		protected virtual bool CanAttack(Actor self, Target target)
 		{
-			if (!self.IsInWorld) return false;
-			if (!target.IsValid) return false;
-			if (Armaments.All(a => a.IsReloading)) return false;
-			if (self.IsDisabled()) return false;
+			if (!self.IsInWorld)
+				return false;
+
+			if (!target.IsValid)
+				return false;
+
+			if (Armaments.All(a => a.IsReloading))
+				return false;
+
+			if (self.IsDisabled())
+				return false;
 
 			if (target.IsActor && target.Actor.HasTrait<ITargetable>() &&
 				!target.Actor.Trait<ITargetable>().TargetableBy(target.Actor,self))
@@ -96,19 +104,20 @@ namespace OpenRA.Mods.RA
 				if (Armaments.Count() == 0)
 					yield break;
 
-				bool isHeal = Armaments.First().Weapon.Warheads[0].Damage < 0;
-				yield return new AttackOrderTargeter("Attack", 6, isHeal);
+				var negativeDamage = (Armaments.First().Weapon.Warheads[0].Damage < 0);
+
+				yield return new AttackOrderTargeter("Attack", 6, negativeDamage);
 			}
 		}
 
-		public Order IssueOrder( Actor self, IOrderTargeter order, Target target, bool queued )
+		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if( order is AttackOrderTargeter )
+			if (order is AttackOrderTargeter)
 			{
-				if( target.IsActor )
+				if (target.IsActor)
 					return new Order("Attack", self, queued) { TargetActor = target.Actor };
 				else
-					return new Order( "Attack", self, queued ) { TargetLocation = target.CenterLocation.ToCPos() };
+					return new Order("Attack", self, queued) { TargetLocation = target.CenterLocation.ToCPos() };
 			}
 			return null;
 		}
@@ -135,22 +144,26 @@ namespace OpenRA.Mods.RA
 
 		public Armament ChooseArmamentForTarget(Target t) { return Armaments.FirstOrDefault(a => a.IsValidAgainst(self.World, t)); }
 
-		public void AttackTarget( Target target, bool queued, bool allowMove )
+		public void AttackTarget(Target target, bool queued, bool allowMove)
 		{
-			if( !target.IsValid ) return;
-			if (!queued) self.CancelActivity();
+			if (!target.IsValid)
+				return;
+
+			if (!queued)
+				self.CancelActivity();
+
 			self.QueueActivity(GetAttackActivity(self, target, allowMove));
 		}
 
 		class AttackOrderTargeter : IOrderTargeter
 		{
-			readonly bool isHeal;
+			readonly bool negativeDamage;
 
-			public AttackOrderTargeter( string order, int priority, bool isHeal )
+			public AttackOrderTargeter(string order, int priority, bool negativeDamage)
 			{
 				this.OrderID = order;
 				this.OrderPriority = priority;
-				this.isHeal = isHeal;
+				this.negativeDamage = negativeDamage;
 			}
 
 			public string OrderID { get; private set; }
@@ -160,14 +173,20 @@ namespace OpenRA.Mods.RA
 			{
 				IsQueued = forceQueued;
 
-				cursor = isHeal ? "heal" : "attack";
-				if( self == target ) return false;
-				if( !self.Trait<AttackBase>().HasAnyValidWeapons( Target.FromActor( target ) ) ) return false;
-				if (forceAttack) return true;
+				cursor = self.Info.Traits.Get<AttackBaseInfo>().Cursor;
 
-				var targetableRelationship = isHeal ? Stance.Ally : Stance.Enemy;
+				if (self == target)
+					return false;
 
-				return self.Owner.Stances[ target.Owner ] == targetableRelationship;
+				if (!self.Trait<AttackBase>().HasAnyValidWeapons(Target.FromActor(target)))
+					return false;
+
+				if (forceAttack)
+					return true;
+
+				var targetableRelationship = negativeDamage ? Stance.Ally : Stance.Enemy;
+
+				return self.Owner.Stances[target.Owner] == targetableRelationship;
 			}
 
 			public bool CanTargetLocation(Actor self, CPos location, List<Actor> actorsAtLocation, bool forceAttack, bool forceQueued, ref string cursor)
@@ -177,12 +196,16 @@ namespace OpenRA.Mods.RA
 
 				IsQueued = forceQueued;
 
-				cursor = isHeal ? "heal" : "attack";
-				if( isHeal ) return false;
-				if( !self.Trait<AttackBase>().HasAnyValidWeapons( Target.FromCell( location ) ) ) return false;
+				cursor = self.Info.Traits.Get<AttackBaseInfo>().Cursor;
 
-				if( forceAttack )
-					if( self.Info.Traits.Get<AttackBaseInfo>().CanAttackGround )
+				if (negativeDamage)
+					return false;
+
+				if (!self.Trait<AttackBase>().HasAnyValidWeapons(Target.FromCell(location)))
+					return false;
+
+				if (forceAttack)
+					if (self.Info.Traits.Get<AttackBaseInfo>().CanAttackGround)
 						return true;
 
 				return false;

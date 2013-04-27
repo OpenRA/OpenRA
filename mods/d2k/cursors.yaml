@@ -189,16 +189,6 @@ Cursors:
 			length: 8
 			x: 12
 			y: 12
-		heal:
-			start:72
-			length: 8
-			x: 12
-			y: 12
-		heal-minimap:
-			start:72
-			length: 8
-			x: 12
-			y: 12
 
 # Cursors that need minimap variants
 		deploy:
