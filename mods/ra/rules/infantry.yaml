@@ -327,6 +327,7 @@ MEDI:
 	Armament:
 		Weapon: Heal
 	AttackMedic:
+		Cursor: heal
 	TakeCover:
 	-AutoTarget:
 	-DebugRetiliateAgainstAggressor:
@@ -365,6 +366,7 @@ MECH:
 	Armament:
 		Weapon: Repair
 	AttackMedic:
+		Cursor: repair
 	TakeCover:
 	-AutoTarget:
 	-DebugRetiliateAgainstAggressor:

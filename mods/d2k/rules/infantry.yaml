@@ -106,6 +106,7 @@ MEDIC:
 	Armament:
 		Weapon: Heal
 	AttackMedic:
+		Cursor: ability
 	Passenger:
 		PipType: Blue
 	-AutoTarget:
