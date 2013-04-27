@@ -21,7 +21,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	{
 		Widget bg;
 
-		public SettingsMenuLogic()
+		[ObjectCreator.UseCtor]
+		public SettingsMenuLogic(Action onExit)
 		{
 			bg = Ui.Root.Get<BackgroundWidget>("SETTINGS_MENU");
 			var tabs = bg.Get<ContainerWidget>("TAB_CONTAINER");
@@ -247,6 +248,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				int.TryParse(maxFrameRate.Text, out gs.MaxFramerate);
 				Game.Settings.Save();
 				Ui.CloseWindow();
+				onExit();
 			};
 		}
 

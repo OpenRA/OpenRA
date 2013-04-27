@@ -32,7 +32,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				() => Play( Game.Settings.Sound.Repeat ? CurrentSong : GetNextSong() ));
 		}
 
-		public MusicPlayerLogic()
+		[ObjectCreator.UseCtor]
+		public MusicPlayerLogic(Action onExit)
 		{
 			bg = Ui.Root.Get("MUSIC_MENU");
 			CurrentSong = GetNextSong();
@@ -41,7 +42,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			bg.Get( "BUTTON_PLAY" ).IsVisible = () => !Sound.MusicPlaying;
 
 			bg.Get<ButtonWidget>("BUTTON_CLOSE").OnClick =
-				() => { Game.Settings.Save(); Ui.CloseWindow(); };
+				() => { Game.Settings.Save(); Ui.CloseWindow(); onExit(); };
 
 			bg.Get("BUTTON_INSTALL").IsVisible = () => false;
 

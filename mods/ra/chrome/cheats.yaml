@@ -4,7 +4,7 @@ Background@CHEATS_PANEL:
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Width:350
 	Height:475
-	Visible:true
+	Visible:false
 	Children:
 		Label@LABEL_TITLE:
 			X:(PARENT_RIGHT - WIDTH)/2

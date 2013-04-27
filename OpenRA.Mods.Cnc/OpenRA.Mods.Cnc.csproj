@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -92,7 +92,6 @@
     <Compile Include="TiberiumRefinery.cs" />
     <Compile Include="Widgets\CncWidgetUtils.cs" />
     <Compile Include="Widgets\CncWorldInteractionControllerWidget.cs" />
-    <Compile Include="Widgets\LogicTickerWidget.cs" />
     <Compile Include="Widgets\Logic\ButtonTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\CncConquestObjectivesLogic.cs" />
     <Compile Include="Widgets\Logic\CncIngameChromeLogic.cs" />
