@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Cnc
 					state = State.Wait;
 					return this;
 				case State.Loop:
-					if (harv.TickUnload(self, proc))
+					if (!proc.IsInWorld || proc.IsDead() || harv.TickUnload(self, proc))
 						state = State.Undock;
 					return this;
 				case State.Undock:
