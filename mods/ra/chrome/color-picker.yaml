@@ -1,66 +1,43 @@
 Background@COLOR_CHOOSER:
 	Logic:ColorPickerLogic
 	Background:dialog2
-	Width:310
-	Height:120
+	Width:234
+	Height:105
 	Children:
-		Button@SAVE_BUTTON:
-			X:210
-			Y:85
-			Width:90
-			Height:25
-			Text:Save
-			Font:Bold
-		Button@RANDOM_BUTTON:
-			X:115
-			Y:85
-			Width:90
-			Height:25
-			Text:Random
-			Font:Bold
+		Background@HUEBG:
+			Background:dialog3
+			X:5
+			Y:5
+			Width:148
+			Height:13
+			Children:
+				HueSlider@HUE:
+					X:2
+					Y:2
+					Width:144
+					Height:9
+					Ticks:5
+		Background@MIXERBG:
+			Background:dialog3
+			X:5
+			Y:23
+			Width:148
+			Height:76
+			Children:
+				ColorMixer@MIXER:
+					X:2
+					Y:2
+					Width:144
+					Height:72
 		ShpImage@FACT:
-			X:220
-			Y:10
+			X:156
+			Y:1
 			Image:fact
 			Palette:colorpicker
-		Label@HUE_LABEL:
-			X:0
-			Y:5
-			Width:40
-			Height:20
-			Align: Right
-			Text: Hue:
-		Slider@HUE:
-			X:43
-			Y:10
-			Width:160
-			Height:20
-			Ticks:5
-		Label@SAT_LABEL:
-			X:0
-			Y:30
-			Width:40
-			Height:20
-			Align: Right
-			Text: Sat:	
-		Slider@SAT:
-			X:43
-			Y:35
-			Width:160
-			Height:20
-			Ticks:5
-		Label@LUM_LABEL:
-			X:0
-			Y:55
-			Width:40
-			Height:20
-			Align: Right
-			Text: Lum:	
-		Slider@LUM:
-			X:43
-			Y:60
-			Width:160
-			Height:20
-			Ticks:5
-			MinimumValue: 0.2
-			MaximumValue: 1
+		Button@RANDOM_BUTTON:
+			Key:tab
+			X:158
+			Y:74
+			Width:70
+			Height:25
+			Text:Random

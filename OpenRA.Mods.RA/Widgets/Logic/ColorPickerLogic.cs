@@ -17,56 +17,32 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 {
 	public class ColorPickerLogic
 	{
-		ColorRamp ramp;
-
 		[ObjectCreator.UseCtor]
-		public ColorPickerLogic(Widget widget, ColorRamp initialRamp, Action<ColorRamp> onChange,
-			Action<ColorRamp> onSelect, WorldRenderer worldRenderer)
+		public ColorPickerLogic(Widget widget, HSLColor initialColor, Action<HSLColor> onChange, WorldRenderer worldRenderer)
 		{
-			var panel = widget;
-			ramp = initialRamp;
-			var hueSlider = panel.Get<SliderWidget>("HUE");
-			var satSlider = panel.Get<SliderWidget>("SAT");
-			var lumSlider = panel.Get<SliderWidget>("LUM");
+			var hueSlider = widget.Get<SliderWidget>("HUE");
+			var mixer = widget.Get<ColorMixerWidget>("MIXER");
+			var randomButton = widget.GetOrNull<ButtonWidget>("RANDOM_BUTTON");
 
-			Action sliderChanged = () =>
-			{
-				ramp = new ColorRamp((byte)(255*hueSlider.Value),
-									 (byte)(255*satSlider.Value),
-									 (byte)(255*lumSlider.Value),
-									 10);
-				onChange(ramp);
-			};
+			hueSlider.OnChange += _ => mixer.Set(hueSlider.Value);
+			mixer.OnChange += () =>	onChange(mixer.Color);
 
-			hueSlider.OnChange += _ => sliderChanged();
-			satSlider.OnChange += _ => sliderChanged();
-			lumSlider.OnChange += _ => sliderChanged();
-
-			Action updateSliders = () =>
-			{
-				hueSlider.Value = ramp.H / 255f;
-				satSlider.Value = ramp.S / 255f;
-				lumSlider.Value = ramp.L / 255f;
-			};
-
-			panel.Get<ButtonWidget>("SAVE_BUTTON").OnClick = () => onSelect(ramp);
-
-			var randomButton = panel.Get<ButtonWidget>("RANDOM_BUTTON");
 			if (randomButton != null)
 				randomButton.OnClick = () =>
 				{
+					// Avoid colors with low sat or lum
 					var hue = (byte)Game.CosmeticRandom.Next(255);
-					var sat = (byte)Game.CosmeticRandom.Next(255);
-					var lum = (byte)Game.CosmeticRandom.Next(51,255);
+					var sat = (byte)Game.CosmeticRandom.Next(70, 255);
+					var lum = (byte)Game.CosmeticRandom.Next(70, 255);
 
-					ramp = new ColorRamp(hue, sat, lum, 10);
-					updateSliders();
-					sliderChanged();
+					mixer.Set(new HSLColor(hue, sat, lum));
+					hueSlider.Value = hue / 255f;
 				};
 
 			// Set the initial state
-			updateSliders();
-			onChange(ramp);
+			mixer.Set(initialColor);
+			hueSlider.Value = initialColor.H / 255f;
+			onChange(mixer.Color);
 		}
 	}
 }
