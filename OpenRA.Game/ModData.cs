@@ -29,14 +29,14 @@ namespace OpenRA
 		public SheetBuilder SheetBuilder;
 		public SpriteLoader SpriteLoader;
 
-		public ModData( params string[] mods )
+		public ModData(params string[] mods)
 		{
-			Manifest = new Manifest( mods );
-			ObjectCreator = new ObjectCreator( Manifest );
+			Manifest = new Manifest(mods);
+			ObjectCreator = new ObjectCreator(Manifest);
 			LoadScreen = ObjectCreator.CreateObject<ILoadScreen>(Manifest.LoadScreen.Value);
 			LoadScreen.Init(Manifest.LoadScreen.NodesDict.ToDictionary(x => x.Key, x => x.Value.Value));
 			LoadScreen.Display();
-			WidgetLoader = new WidgetLoader( this );
+			WidgetLoader = new WidgetLoader(this);
 		}
 
 		public void LoadInitialAssets(bool enumMaps)

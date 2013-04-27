@@ -21,6 +21,8 @@ Packages:
 	~main.mix
 	conquer.mix
 
+PackageContents:
+
 Rules:
 	mods/d2k/rules/system.yaml
 	mods/d2k/rules/defaults.yaml

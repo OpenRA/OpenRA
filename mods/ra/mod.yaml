@@ -29,6 +29,10 @@ Packages:
 	~movies1.mix
 	~movies2.mix
 
+PackageContents:
+	mods/ra/mix/conquer.yaml
+	mods/ra/mix/hires.yaml
+
 Rules:
 	mods/ra/rules/defaults.yaml
 	mods/ra/rules/system.yaml

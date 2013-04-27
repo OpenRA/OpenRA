@@ -83,6 +83,7 @@ Background@ASSETBROWSER_BG:
 			Height:25
 			Text:Change Palette
 			Font:Bold
+			Disabled: yes
 		Button@IMPORT_BUTTON:
 			X:PARENT_RIGHT - 200
 			Y:PARENT_BOTTOM - 270
@@ -90,6 +91,7 @@ Background@ASSETBROWSER_BG:
 			Height:25
 			Text:Import from PNG
 			Font:Bold
+			Disabled: yes
 		Button@EXTRACT_BUTTON:
 			X:PARENT_RIGHT - 200
 			Y:PARENT_BOTTOM - 235
@@ -97,6 +99,7 @@ Background@ASSETBROWSER_BG:
 			Height:25
 			Text:Extract to Folder
 			Font:Bold
+			Disabled: yes
 		Button@EXPORT_BUTTON:
 			X:PARENT_RIGHT - 200
 			Y:PARENT_BOTTOM - 200
@@ -104,6 +107,7 @@ Background@ASSETBROWSER_BG:
 			Height:25
 			Text:Export as PNG
 			Font:Bold
+			Disabled: yes
 		Button@CLOSE_BUTTON:
 			X:PARENT_RIGHT - 200
 			Y:PARENT_BOTTOM - 115

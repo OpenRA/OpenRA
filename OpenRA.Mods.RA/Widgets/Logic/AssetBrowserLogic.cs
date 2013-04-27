@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using OpenRA.FileFormats;
@@ -22,30 +23,27 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	{
 		Widget panel;
 
-		ShpImageWidget spriteImage;
-		TextFieldWidget filenameInput;
-		SliderWidget frameSlider;
-		ButtonWidget playButton;
-		ButtonWidget pauseButton;
+		static ShpImageWidget spriteImage;
+		static TextFieldWidget filenameInput;
+		static SliderWidget frameSlider;
+		static ButtonWidget playButton;
+		static ButtonWidget pauseButton;
+		static ScrollPanelWidget assetList;
+		static ScrollItemWidget template;
+
+		public enum SourceType { Folders, Packages }
+		public static SourceType AssetSource = SourceType.Folders;
 
 		[ObjectCreator.UseCtor]
 		public AssetBrowserLogic(Widget widget, Action onExit, World world)
 		{
 			panel = widget;
 
-			var assetList = panel.Get<ScrollPanelWidget>("ASSET_LIST");
-			var template = panel.Get<ScrollItemWidget>("ASSET_TEMPLATE");
-
-			assetList.RemoveChildren();
-			foreach (var folder in FileSystem.FolderPaths)
-			{
-				if (Directory.Exists(folder))
-				{
-					var shps = Directory.GetFiles(folder, "*.shp");
-					foreach (var shp in shps)
-						AddAsset(assetList, shp, template);
-				}
-			}
+			var sourceDropdown = panel.Get<DropDownButtonWidget>("SOURCE_SELECTOR");
+			sourceDropdown.OnMouseDown = _ => ShowSourceDropdown(sourceDropdown);
+			sourceDropdown.GetText = () => AssetSource == SourceType.Folders ? "Folders"
+				: AssetSource == SourceType.Packages ? "Packages" : "None";
+			sourceDropdown.Disabled = !Rules.PackageContents.Keys.Any();
 
 			spriteImage = panel.Get<ShpImageWidget>("SPRITE");
 
@@ -93,10 +91,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				LoadAsset(filenameInput.Text);
 			};
 
+			assetList = panel.Get<ScrollPanelWidget>("ASSET_LIST");
+			template = panel.Get<ScrollItemWidget>("ASSET_TEMPLATE");
+			PopulateAssetList();
+
 			panel.Get<ButtonWidget>("CLOSE_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
 		}
 
-		void AddAsset(ScrollPanelWidget list, string filepath, ScrollItemWidget template)
+		static void AddAsset(ScrollPanelWidget list, string filepath, ScrollItemWidget template)
 		{
 			var sprite = Path.GetFileNameWithoutExtension(filepath);
 
@@ -108,7 +110,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			list.AddChild(item);
 		}
 
-		bool LoadAsset(string filename)
+		static bool LoadAsset(string filename)
 		{
 			if (filename == null)
 				return false;
@@ -119,6 +121,49 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			frameSlider.MaximumValue = (float)spriteImage.FrameCount;
 			frameSlider.Ticks = spriteImage.FrameCount+1;
 			return true;
+		}
+
+		public static bool ShowSourceDropdown(DropDownButtonWidget dropdown)
+		{
+			var options = new Dictionary<string, SourceType>()
+			{
+				{ "Folders", SourceType.Folders },
+				{ "Packages", SourceType.Packages },
+			};
+			
+			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
+			{
+				var item = ScrollItemWidget.Setup(itemTemplate,
+				                                  () => AssetSource == options[o],
+				                                  () => { AssetSource = options[o];	PopulateAssetList(); });
+				item.Get<LabelWidget>("LABEL").GetText = () => o;
+				return item;
+			};
+			
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, setupItem);
+			return true;
+		}
+
+		public static void PopulateAssetList()
+		{
+			assetList.RemoveChildren();
+
+			if (AssetSource == SourceType.Folders)
+			{
+				foreach (var folder in FileSystem.FolderPaths)
+				{
+					if (Directory.Exists(folder))
+					{
+						var shps = Directory.GetFiles(folder, "*.shp");
+						foreach (var shp in shps)
+							AddAsset(assetList, shp, template);
+					}
+				}
+			}
+
+			if (AssetSource == SourceType.Packages)
+				foreach (var hiddenFile in Rules.PackageContents.Keys)
+					AddAsset(assetList, hiddenFile, template);
 		}
 	}
 }
