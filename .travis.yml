@@ -8,15 +8,16 @@ language: c
 install:
  - sudo apt-get install mono-gmcs cli-common-dev libgl1-mesa-dev libsdl1.2-dev libopenal-dev
 
-# Run the build script which will automatically call RALint.
+# Run the build script which will automatically call RALint and ensure that the IDE project files are still valid.
 script:
  - make all
+ - xbuild
 
 # Only watch the development branch.
 branches:
  only:
    - bleed
 
-# Notify developers when needed.
+# Notify developers when build passed/failed.
 notifications:
   irc: "irc.freenode.net#openra"
