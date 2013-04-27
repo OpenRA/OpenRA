@@ -66,6 +66,8 @@ ChromeLayout:
 	mods/ra/chrome/cheats.yaml
 	mods/ra/chrome/musicplayer.yaml
 	mods/d2k/chrome/tooltips.yaml
+	mods/ra/chrome/assetbrowser.yaml
+
 Weapons:
 	mods/d2k/weapons/defaults.yaml
 	mods/d2k/weapons/explosions.yaml

@@ -33,12 +33,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			panel = widget;
 
-			spriteImage = panel.Get<ShpImageWidget>("SPRITE");
-
-			filenameInput = panel.Get<TextFieldWidget>("FILENAME_INPUT");
-			filenameInput.Text = spriteImage.Image;
-			filenameInput.OnEnterKey = () => LoadAsset(filenameInput.Text);
-
 			var assetList = panel.Get<ScrollPanelWidget>("ASSET_LIST");
 			var template = panel.Get<ScrollItemWidget>("ASSET_TEMPLATE");
 
@@ -52,6 +46,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						AddAsset(assetList, shp, template);
 				}
 			}
+
+			spriteImage = panel.Get<ShpImageWidget>("SPRITE");
+
+			filenameInput = panel.Get<TextFieldWidget>("FILENAME_INPUT");
+			filenameInput.Text = spriteImage.Image;
+			filenameInput.OnEnterKey = () => LoadAsset(filenameInput.Text);
 
 			frameSlider = panel.Get<SliderWidget>("FRAME_SLIDER");
 			frameSlider.MaximumValue = (float)spriteImage.FrameCount;

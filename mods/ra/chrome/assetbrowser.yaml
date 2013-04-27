@@ -68,8 +68,8 @@ Background@ASSETBROWSER_BG:
 					Y:80
 					Width:246
 					Height:246
-					Image:fact
-					Palette:player
+					Image:mouse
+					Palette:colorpicker
 		Label@ACTIONS_TITLE:
 			X:PARENT_RIGHT - 150
 			Y:45
