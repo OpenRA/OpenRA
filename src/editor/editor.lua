@@ -404,21 +404,28 @@ function CreateEditor()
 
   -- GotoPos should work by itself, but it doesn't (wx 2.9.5).
   -- This is likely because the editor window hasn't been refreshed yet,
-  -- so its LinesOnScreen method returns 0, which skews the calculations.
+  -- so its LinesOnScreen method returns 0/-1, which skews the calculations.
   -- To avoid this, the caret line is made visible at the first opportunity.
   do
-    local redolater = false
+    local redolater
     function editor:GotoPosDelayed(pos)
       local badtime = self:LinesOnScreen() <= 0 -- -1 on OSX, 0 on Windows
       if pos then
-        self:GotoPos(pos)
-        redolater = badtime
+        if badtime then
+          redolater = pos
+          -- without this GotoPos the content is not scrolled correctly on
+          -- Windows, but with this it's not scrolled correctly on OSX.
+          if ide.osname ~= 'Macintosh' then self:GotoPos(pos) end
+        else
+          redolater = nil
+          self:GotoPos(pos)
+        end
       elseif not badtime and redolater then
-        redolater = nil
         -- reset the left margin first to make sure that the position
         -- is set "from the left" to get the best content displayed.
         self:SetXOffset(0)
-        self:GotoPos(self:GetCurrentPos())
+        self:GotoPos(redolater)
+        redolater = nil
       end
     end
   end
