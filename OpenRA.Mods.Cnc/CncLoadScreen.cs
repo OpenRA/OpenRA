@@ -86,7 +86,7 @@ namespace OpenRA.Mods.Cnc
 			WidgetUtils.DrawPanelPartial(ss, Bounds, PanelSides.Edges);
 			var barY = Bounds.Height - 78;
 
-			if (!setup)
+			if (!setup && r.Fonts != null)
 			{
 				loadingFont = r.Fonts["BigBold"];
 				loadingText = "Loading";
@@ -100,8 +100,10 @@ namespace OpenRA.Mods.Cnc
 				setup = true;
 			}
 
-			loadingFont.DrawText(loadingText, loadingPos, Color.Gray);
-			versionFont.DrawTextWithContrast(versionText, versionPos, Color.White, Color.Black, 2);
+			if (loadingFont != null)
+				loadingFont.DrawText(loadingText, loadingPos, Color.Gray);
+			if (versionFont != null)
+				versionFont.DrawTextWithContrast(versionText, versionPos, Color.White, Color.Black, 2);
 
 			for (var i = 0; i <= 8; i++)
 			{
