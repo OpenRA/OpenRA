@@ -197,6 +197,17 @@ power-button: buttons.png
 	pressed: 34,56,34,28
 	disabled: 68,56,34,28
 
+# Order palette buttons (temporary!)
+opal-button-allies: buttons.png
+	normal: 0,0,34,28
+	pressed: 34,0,34,28
+	hover: 68,0,34,28
+
+opal-button-soviet: buttons.png
+	normal: 0,0,34,28
+	pressed: 34,0,34,28
+	hover: 68,0,34,28
+
 flags: buttons.png
 	allies: 30,84,30,15
 	soviet: 0,84,30,15

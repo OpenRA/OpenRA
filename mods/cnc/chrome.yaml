@@ -431,6 +431,7 @@ dialog4: dialog4.png
 	corner-br: 58,58,6,6
 	background: 5,5,52,52
 
+# Order palette buttons (temporary!)
 opal-button-gdi: buttons.png
 	normal: 0,0,34,28
 	pressed: 34,0,34,28
