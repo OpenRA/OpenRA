@@ -437,7 +437,6 @@
     <Compile Include="Widgets\Logic\ClientTooltipLogic.cs" />
     <Compile Include="Widgets\ColorMixerWidget.cs" />
     <Compile Include="Widgets\HueSliderWidget.cs" />
-    <Compile Include="Widgets\Logic\AssetBrowserLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
