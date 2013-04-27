@@ -1422,6 +1422,9 @@ Actors:
 	ParadropBoxTopLeft: waypoint
 		Location: 78,27
 		Owner: Neutral
+	Actor1000: camera.large
+		Location: 1,1
+		Owner: Soviets
 
 Smudges:
 
@@ -1540,6 +1543,9 @@ Rules:
 	CTNK:
 		Buildable:
 			Owner: None
+	MRJ:
+		Buildable:
+			Owner: None
 	MGG:
 		Buildable:
 			Owner: None
@@ -1548,6 +1554,10 @@ Rules:
 	GAP:
 		Buildable:
 			Owner: None
+	CAMERA.Large:
+		Inherits: CAMERA
+		RevealsShroud:
+			Range: 1000
 
 Sequences:
 

@@ -341,6 +341,9 @@ Actors:
 	Actor29: kenn
 		Location: 23,28
 		Owner: Soviets
+	Actor1000: camera.large
+		Location: 1,1
+		Owner: Soviets
 
 Smudges:
 
@@ -391,6 +394,10 @@ Rules:
 	^Building:
 		GivesBounty:
 			Percentage: 0
+	CAMERA.Large:
+		Inherits: CAMERA
+		RevealsShroud:
+			Range: 1000
 
 Sequences:
 

@@ -1793,6 +1793,9 @@ Actors:
 	Actor533: brl3
 		Location: 54,88
 		Owner: Neutral
+	Actor1000: camera.large
+		Location: 1,1
+		Owner: Soviets
 
 Smudges:
 
@@ -1970,9 +1973,16 @@ Rules:
 	MGG:
 		Buildable:
 			Owner: None
+	MRJ:
+		Buildable:
+			Owner: None
 	GAP:
 		Buildable:
 			Owner: None
+	CAMERA.Large:
+		Inherits: CAMERA
+		RevealsShroud:
+			Range: 1000
 
 Sequences:
 	truk:

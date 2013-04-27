@@ -96,6 +96,9 @@ namespace OpenRA.Mods.RA.Missions
 		CountdownTimer reinforcementsTimer;
 		CountdownTimerWidget reinforcementsTimerWidget;
 
+		CPos alliedBaseTopLeft;
+		CPos alliedBaseBottomRight;
+
 		const string InfantryQueueName = "Infantry";
 		const string VehicleQueueName = "Vehicle";
 		static readonly string[] SovietInfantry = { "e1", "e2", "e3" };
@@ -104,7 +107,7 @@ namespace OpenRA.Mods.RA.Missions
 		const int SovietVehiclesUpgradeTicks = 1500 * 4;
 		const int SovietGroupSize = 5;
 
-		const int ReinforcementsTicks = 1500 * 12;
+		const int ReinforcementsTicks = 1500 * 16;
 		static readonly string[] Reinforcements =
 		{
 			"2tnk", "2tnk", "2tnk", "2tnk", "2tnk", "2tnk",
@@ -242,13 +245,16 @@ namespace OpenRA.Mods.RA.Missions
 			else if (einstein.IsDead())
 				MissionFailed("Einstein was killed.");
 
-			else if (!world.Actors.Any(a => (a.Owner == allies || a.Owner == allies2) && !a.IsDead()
-				&& (a.HasTrait<Building>() && !a.HasTrait<Wall>()) || a.HasTrait<BaseBuilding>()))
+			world.AddFrameEndTask(w =>
 			{
-				objectives[MaintainPresenceID].Status = ObjectiveStatus.Failed;
-				OnObjectivesUpdated(true);
-				MissionFailed("The Allied reinforcements have been defeated.");
-			}
+				if (!w.FindAliveCombatantActorsInBox(alliedBaseTopLeft.ToPPos(), alliedBaseBottomRight.ToPPos())
+					.Any(a => (a.Owner == allies || a.Owner == allies2) && (a.HasTrait<Building>() && !a.HasTrait<Wall>()) || a.HasTrait<BaseBuilding>()))
+				{
+					objectives[MaintainPresenceID].Status = ObjectiveStatus.Failed;
+					OnObjectivesUpdated(true);
+					MissionFailed("The Allied reinforcements have been defeated.");
+				}
+			});
 		}
 
 		void UpdateDeaths()
@@ -323,13 +329,9 @@ namespace OpenRA.Mods.RA.Missions
 			foreach (var actor in world.Actors.Where(a => a.Owner == allies && a != allies.PlayerActor))
 			{
 				actor.ChangeOwner(allies2);
-				if (actor.Info.Name == "pbox")
-				{
-					actor.AddTrait(new TransformedAction(s => s.Trait<Cargo>().Load(s, world.CreateActor(false, "e1", allies2, null, null))));
-					actor.QueueActivity(new Transform(actor, "hbox.e1") { SkipMakeAnims = true });
-				}
+				Capturable.ChangeCargoOwner(actor, allies2);
 				if (actor.Info.Name == "proc")
-					actor.QueueActivity(new Transform(actor, "proc") { SkipMakeAnims = true });
+					actor.QueueActivity(new Transform(actor, "proc") { SkipMakeAnims = true }); // for harv spawn
 				foreach (var c in actor.TraitsImplementing<INotifyCapture>())
 					c.OnCapture(actor, actor, allies, allies2);
 			}
@@ -443,11 +445,13 @@ namespace OpenRA.Mods.RA.Missions
 			reinforcementsEntryPoint = actors["ReinforcementsEntryPoint"];
 			extractionLZ = actors["ExtractionLZ"];
 			extractionLZEntryPoint = actors["ExtractionLZEntryPoint"];
+
 			badgerEntryPoint1 = actors["BadgerEntryPoint1"];
 			badgerEntryPoint2 = actors["BadgerEntryPoint2"];
 			badgerDropPoint1 = actors["BadgerDropPoint1"];
 			badgerDropPoint2 = actors["BadgerDropPoint2"];
 			badgerDropPoint3 = actors["BadgerDropPoint3"];
+
 			parabombPoint1 = actors["ParabombPoint1"];
 			parabombPoint2 = actors["ParabombPoint2"];
 			sovietBarracks = actors["SovietBarracks"];
@@ -458,6 +462,9 @@ namespace OpenRA.Mods.RA.Missions
 			sovietTownAttackPoint2 = actors["SovietTownAttackPoint2"];
 			yakEntryPoint = actors["YakEntryPoint"];
 			yakAttackPoint = actors["YakAttackPoint"];
+
+			alliedBaseTopLeft = actors["AlliedBaseTopLeft"].Location;
+			alliedBaseBottomRight = actors["AlliedBaseBottomRight"].Location;
 
 			SetupAlliedBase();
 

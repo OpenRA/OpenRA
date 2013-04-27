@@ -832,6 +832,9 @@ Actors:
 	waypoint98: waypoint
 		Location: 44,79
 		Owner: Neutral
+	Actor1000: camera.large
+		Location: 1,1
+		Owner: France
 
 Smudges:
 
@@ -925,6 +928,10 @@ Rules:
 			Image: V07
 		Soviet01ClassicContainsActors:
 			Actors: c1, c6
+	CAMERA.Large:
+		Inherits: CAMERA
+		RevealsShroud:
+			Range: 1000
 
 Sequences:
 

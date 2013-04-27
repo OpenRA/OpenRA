@@ -82,7 +82,7 @@ namespace OpenRA.Mods.RA
 			if (Info.InfiltrateTypes.Contains("Exploration") && target.HasTrait<InfiltrateForExploration>())
 				return true;
 
-			if (Info.InfiltrateTypes.Contains("MissionObjective") && target.HasTrait<InfiltrateForMissionObjective>())
+			if (Info.InfiltrateTypes.Contains("MissionObjective") && target.HasTrait<InfiltrateAction>())
 				return true;
 
 			return false;

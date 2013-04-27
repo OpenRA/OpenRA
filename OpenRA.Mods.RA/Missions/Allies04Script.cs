@@ -410,7 +410,7 @@ namespace OpenRA.Mods.RA.Missions
 			};
 
 			lab = actors["Lab"];
-			lab.AddTrait(new InfiltrateForMissionObjective(OnLabInfiltrated));
+			lab.AddTrait(new InfiltrateAction(OnLabInfiltrated));
 			lab.AddTrait(new TransformedAction(self => lab = self));
 
 			reinforcementsEntryPoint = actors["ReinforcementsEntryPoint"];
@@ -466,7 +466,7 @@ namespace OpenRA.Mods.RA.Missions
 		{
 			OldOwner = self.Owner;
 
-			self.AddTrait(new InfiltrateForMissionObjective(OnTruckHijacked));
+			self.AddTrait(new InfiltrateAction(OnTruckHijacked));
 		}
 
 		public void OnInfiltrate(Actor self, Actor spy)

@@ -1174,6 +1174,9 @@ Actors:
 	Actor346: t15
 		Location: 57,24
 		Owner: Neutral
+	Actor1000: camera.large
+		Location: 1,1
+		Owner: Soviets
 
 Smudges:
 
@@ -1295,6 +1298,13 @@ Rules:
 	BRIK:
 		Buildable:
 			Owner: None
+	MRJ:
+		Buildable:
+			Owner: None
+	CAMERA.Large:
+		Inherits: CAMERA
+		RevealsShroud:
+			Range: 1000
 
 Sequences:
 

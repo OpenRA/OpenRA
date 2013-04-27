@@ -84,7 +84,7 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		void ChangeCargoOwner(Actor self, Player captor)
+		public static void ChangeCargoOwner(Actor self, Player captor)
 		{
 			var cargo = self.TraitOrDefault<Cargo>();
 			if (cargo == null)
