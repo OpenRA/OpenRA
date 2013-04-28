@@ -154,8 +154,8 @@ QUAD:
 	Buildable:
 		Queue: Vehicle
 		Prerequisites: Light,Outpost
-		Owner: atreides, harkonnen, ordos
-		BuiltAt: lighta, lighth, lighto
+		Owner: atreides, ordos
+		BuiltAt: lighta, lighto
 		BuildPaletteOrder: 20
 		Hotkey: q
 	Valued:

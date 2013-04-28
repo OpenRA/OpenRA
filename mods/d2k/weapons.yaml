@@ -13,7 +13,7 @@ LMG:
 		Versus: 
 			Wood: 25%
 			Light: 40%
-			Heavy: 15%
+			Heavy: 10%
 			Concrete: 20%
 		Explosion: piffs
 		InfDeath: 2
@@ -263,7 +263,7 @@ TowerMissile:
 			None: 30%
 			Wood: 50%
 			Light: 80%
-			Concrete: 40%
+			Concrete: 50%
 		Explosion: med_explosion
 		ImpactSound: kaboom30
 		InfDeath: 4
@@ -333,7 +333,7 @@ DevBullet:
 		ROT: 5
 		ContrailLength: 5
 	Warhead:
-		Spread: 8
+		Spread: 12
 		Versus: 
 			None: 25%
 			Wood: 25%
@@ -344,7 +344,7 @@ DevBullet:
 		Explosion: med_explosion
 		ImpactSound: EXPLSML2
 		SmudgeType: SandCrater, RockCrater
-		Damage: 50
+		Damage: 60
 
 FakeMissile:
 	ROF: 120
