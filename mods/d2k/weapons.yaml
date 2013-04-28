@@ -13,7 +13,7 @@ LMG:
 		Versus: 
 			Wood: 25%
 			Light: 40%
-			Heavy: 15%
+			Heavy: 10%
 			Concrete: 20%
 		Explosion: piffs
 		InfDeath: 2
