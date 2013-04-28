@@ -26,13 +26,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		static ShpImageWidget spriteImage;
 		static TextFieldWidget filenameInput;
 		static SliderWidget frameSlider;
-		static ButtonWidget playButton;
-		static ButtonWidget pauseButton;
+		static ButtonWidget playButton, pauseButton;
 		static ScrollPanelWidget assetList;
 		static ScrollItemWidget template;
 
 		public enum SourceType { Folders, Packages }
 		public static SourceType AssetSource = SourceType.Folders;
+
+		public static List<string> AvailableShps = new List<string>();
 
 		[ObjectCreator.UseCtor]
 		public AssetBrowserLogic(Widget widget, Action onExit, World world)
@@ -95,10 +96,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			template = panel.Get<ScrollItemWidget>("ASSET_TEMPLATE");
 			PopulateAssetList();
 
+			var palette = (WidgetUtils.ActiveModId() == "d2k") ? "d2k.pal" : "egopal.pal";
+
 			panel.Get<ButtonWidget>("EXPORT_BUTTON").OnClick = () =>
 			{
-				var palette = (WidgetUtils.ActiveModId() == "d2k") ? "d2k.pal" : "egopal.pal";
-
 				var ExtractGameFiles = new string[][]
 				{
 					new string[] {"--extract", WidgetUtils.ActiveModId(), palette},
@@ -115,7 +116,32 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					{ "ExtractGameFiles", ExtractGameFiles },
 					{ "ExportToPng", ExportToPng }
 				};
+				
+				Ui.OpenWindow("EXTRACT_ASSETS_PANEL", args);
+			};
 
+			panel.Get<ButtonWidget>("EXTRACT_BUTTON").OnClick = () =>
+			{
+				var ExtractGameFilesList = new List<string[]>();
+				var ExportToPngList = new List<string[]>();
+
+				ExtractGameFilesList.Add(new string[] { "--extract", WidgetUtils.ActiveModId(), palette} );
+
+				foreach (var shp in AvailableShps)
+				{
+					ExtractGameFilesList.Add(new string[] { "--extract", WidgetUtils.ActiveModId(), shp } );
+					ExportToPngList.Add(new string[] { "--png", shp, palette } );
+				}
+
+				var ExtractGameFiles = ExtractGameFilesList.ToArray();
+				var ExportToPng = ExportToPngList.ToArray();
+
+				var args = new WidgetArgs()
+				{
+					{ "ExtractGameFiles", ExtractGameFiles },
+					{ "ExportToPng", ExportToPng }
+				};
+				
 				Ui.OpenWindow("EXTRACT_ASSETS_PANEL", args);
 			};
 
@@ -171,6 +197,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		public static void PopulateAssetList()
 		{
 			assetList.RemoveChildren();
+			AvailableShps.Clear();
 
 			if (AssetSource == SourceType.Folders)
 			{
@@ -180,14 +207,20 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					{
 						var shps = Directory.GetFiles(folder, "*.shp");
 						foreach (var shp in shps)
+						{
 							AddAsset(assetList, shp, template);
+							AvailableShps.Add(shp);
+						}
 					}
 				}
 			}
 
 			if (AssetSource == SourceType.Packages)
 				foreach (var hiddenFile in Rules.PackageContents.Keys)
+				{
 					AddAsset(assetList, hiddenFile, template);
+					AvailableShps.Add(hiddenFile);
+				}
 		}
 	}
 }

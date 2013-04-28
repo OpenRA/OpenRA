@@ -46,9 +46,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			extractingContainer = panel.Get("EXTRACTING");
 
 			this.ExtractGameFiles = ExtractGameFiles;
-			foreach (var s in ExtractGameFiles)
-				foreach (var ss in s)
-					Console.WriteLine(ss);
 			this.ExportToPng = ExportToPng;
 
 			Extract();

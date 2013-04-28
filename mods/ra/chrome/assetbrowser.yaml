@@ -99,7 +99,6 @@ Background@ASSETBROWSER_BG:
 			Height:25
 			Text:Extract all to PNG
 			Font:Bold
-			Disabled: yes
 		Button@EXPORT_BUTTON:
 			X:PARENT_RIGHT - 200
 			Y:PARENT_BOTTOM - 200
