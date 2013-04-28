@@ -95,6 +95,30 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			template = panel.Get<ScrollItemWidget>("ASSET_TEMPLATE");
 			PopulateAssetList();
 
+			panel.Get<ButtonWidget>("EXPORT_BUTTON").OnClick = () =>
+			{
+				var palette = (WidgetUtils.ActiveModId() == "d2k") ? "d2k.pal" : "egopal.pal";
+
+				var ExtractGameFiles = new string[][]
+				{
+					new string[] {"--extract", WidgetUtils.ActiveModId(), palette},
+					new string[] {"--extract", WidgetUtils.ActiveModId(), "{0}.shp".F(spriteImage.Image)},
+				};
+				
+				var ExportToPng = new string[][]
+				{
+					new string[] {"--png", "{0}.shp".F(spriteImage.Image), palette},
+				};
+
+				var args = new WidgetArgs()
+				{
+					{ "ExtractGameFiles", ExtractGameFiles },
+					{ "ExportToPng", ExportToPng }
+				};
+
+				Ui.OpenWindow("EXTRACT_ASSETS_PANEL", args);
+			};
+
 			panel.Get<ButtonWidget>("CLOSE_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
 		}
 

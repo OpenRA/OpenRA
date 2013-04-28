@@ -78,6 +78,7 @@ ChromeLayout:
 	mods/ra/chrome/musicplayer.yaml
 	mods/ra/chrome/tooltips.yaml
 	mods/ra/chrome/assetbrowser.yaml
+	mods/ra/chrome/extractassets.yaml
 
 Weapons:
 	mods/ra/weapons.yaml

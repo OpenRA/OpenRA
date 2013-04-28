@@ -97,7 +97,7 @@ Background@ASSETBROWSER_BG:
 			Y:PARENT_BOTTOM - 235
 			Width:160
 			Height:25
-			Text:Extract to Folder
+			Text:Extract all to PNG
 			Font:Bold
 			Disabled: yes
 		Button@EXPORT_BUTTON:
@@ -105,9 +105,8 @@ Background@ASSETBROWSER_BG:
 			Y:PARENT_BOTTOM - 200
 			Width:160
 			Height:25
-			Text:Export as PNG
+			Text:Selected to PNG
 			Font:Bold
-			Disabled: yes
 		Button@CLOSE_BUTTON:
 			X:PARENT_RIGHT - 200
 			Y:PARENT_BOTTOM - 115

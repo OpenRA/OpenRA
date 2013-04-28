@@ -437,6 +437,7 @@
     <Compile Include="Widgets\HueSliderWidget.cs" />
     <Compile Include="Render\WithTurret.cs" />
     <Compile Include="Widgets\Logic\AssetBrowserLogic.cs" />
+    <Compile Include="Widgets\Logic\ExtractGameFilesLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
@@ -448,6 +449,10 @@
       <Project>{0DFB103F-2962-400F-8C6D-E2C28CCBA633}</Project>
       <Name>OpenRA.Game</Name>
       <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\OpenRA.Utility\OpenRA.Utility.csproj">
+      <Project>{F33337BE-CB69-4B24-850F-07D23E408DDF}</Project>
+      <Name>OpenRA.Utility</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
