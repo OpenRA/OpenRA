@@ -333,7 +333,7 @@ DevBullet:
 		ROT: 5
 		ContrailLength: 5
 	Warhead:
-		Spread: 8
+		Spread: 12
 		Versus: 
 			None: 25%
 			Wood: 25%
