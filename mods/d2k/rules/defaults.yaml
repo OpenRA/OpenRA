@@ -110,14 +110,14 @@
 		Crushes: crate
 		SharesCell: true
 		TerrainSpeeds:
-			Sand: 90
+			Sand: 80
 			Rock: 100
-			Transition: 95
+			Transition: 90
 			Concrete: 100
-			Spice: 85
+			Spice: 80
 			SpiceBlobs: 80
-			Dune: 75
-			Rough: 75
+			Dune: 60
+			Rough: 70
 	SelectionDecorations:
 	Selectable:
 		Voice: InfantryVoice
