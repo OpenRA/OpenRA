@@ -263,7 +263,7 @@ TowerMissile:
 			None: 30%
 			Wood: 50%
 			Light: 80%
-			Concrete: 40%
+			Concrete: 50%
 		Explosion: med_explosion
 		ImpactSound: kaboom30
 		InfDeath: 4
