@@ -344,7 +344,7 @@ DevBullet:
 		Explosion: med_explosion
 		ImpactSound: EXPLSML2
 		SmudgeType: SandCrater, RockCrater
-		Damage: 50
+		Damage: 60
 
 FakeMissile:
 	ROF: 120
