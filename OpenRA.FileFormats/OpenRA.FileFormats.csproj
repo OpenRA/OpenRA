@@ -138,6 +138,7 @@
     <Compile Include="WRot.cs" />
     <Compile Include="WRange.cs" />
     <Compile Include="HSLColor.cs" />
+    <Compile Include="Graphics\ShpTSReader.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
