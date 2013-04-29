@@ -55,7 +55,7 @@ namespace OpenRA.Utility
 				ShpWriter.Write(destStream, width, srcImage.Height,
 					srcImage.ToFrames(width));
 
-			Console.WriteLine(dest+" saved");
+			Console.WriteLine(dest+" saved.");
 		}
 
 		static IEnumerable<byte[]> ToFrames(this Bitmap bitmap, int width)
@@ -108,10 +108,11 @@ namespace OpenRA.Utility
 
 					x += srcImage.Width;
 
-					bitmap.UnlockBits( data );
+					bitmap.UnlockBits(data);
 				}
 
 				bitmap.Save(dest);
+				Console.WriteLine(dest+" saved");
 			}
 		}
 
@@ -348,8 +349,8 @@ namespace OpenRA.Utility
 				if (template.Value == null)
 					throw new InvalidOperationException("No such template '{0}'".F(templateName));
 
-				using( var image = tileset.RenderTemplate(template.Value.Id, palette) )
-					image.Save( Path.ChangeExtension( templateName, ".png" ) );
+				using (var image = tileset.RenderTemplate(template.Value.Id, palette))
+					image.Save(Path.ChangeExtension(templateName, ".png"));
 			}
 		}
 
@@ -359,17 +360,17 @@ namespace OpenRA.Utility
 			var dest = args[2];
 
 			Dune2ShpReader srcImage = null;
-			using( var s = File.OpenRead( src ) )
+			using(var s = File.OpenRead(src))
 				srcImage = new Dune2ShpReader(s);
 
 			var size = srcImage.First().Size;
 
-			if (!srcImage.All( im => im.Size == size ))
+			if (!srcImage.All(im => im.Size == size))
 				throw new InvalidOperationException("All the frames must be the same size to convert from Dune2 to RA");
 
-			using( var destStream = File.Create(dest) )
+			using (var destStream = File.Create(dest))
 				ShpWriter.Write(destStream, size.Width, size.Height,
-					srcImage.Select( im => im.Image ));
+					srcImage.Select(im => im.Image));
 		}
 
 		public static void ExtractFiles(string[] args)
@@ -380,14 +381,18 @@ namespace OpenRA.Utility
 			var manifest = new Manifest(mods);
 			FileSystem.LoadFromManifest(manifest);
 
-			foreach( var f in files )
+			foreach (var f in files)
 			{
+				if (f == "--userdir")
+					break;
+
 				var src = FileSystem.Open(f);
 				if (src == null)
 					throw new InvalidOperationException("File not found: {0}".F(f));
 				var data = src.ReadAllBytes();
-
-				File.WriteAllBytes( f, data );
+				var output = args.Contains("--userdir") ? Platform.SupportDir+f : f;
+				File.WriteAllBytes(output, data);
+				Console.WriteLine(output+" saved.");
 			}
 		}
 

@@ -437,7 +437,7 @@
     <Compile Include="Widgets\HueSliderWidget.cs" />
     <Compile Include="Render\WithTurret.cs" />
     <Compile Include="Widgets\Logic\AssetBrowserLogic.cs" />
-    <Compile Include="Widgets\Logic\ExtractGameFilesLogic.cs" />
+    <Compile Include="Widgets\Logic\ConvertGameFilesLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

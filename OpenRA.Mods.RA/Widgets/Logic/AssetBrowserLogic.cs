@@ -102,22 +102,25 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				var ExtractGameFiles = new string[][]
 				{
-					new string[] {"--extract", WidgetUtils.ActiveModId(), palette},
-					new string[] {"--extract", WidgetUtils.ActiveModId(), "{0}.shp".F(spriteImage.Image)},
+					new string[] {"--extract", WidgetUtils.ActiveModId(), palette, "--userdir"},
+					new string[] {"--extract", WidgetUtils.ActiveModId(), "{0}.shp".F(spriteImage.Image), "--userdir"},
 				};
 				
 				var ExportToPng = new string[][]
 				{
-					new string[] {"--png", "{0}.shp".F(spriteImage.Image), palette},
+					new string[] {"--png", Platform.SupportDir+"{0}.shp".F(spriteImage.Image), Platform.SupportDir+palette},
 				};
+
+				var ImportFromPng = new string[][] { };
 
 				var args = new WidgetArgs()
 				{
 					{ "ExtractGameFiles", ExtractGameFiles },
-					{ "ExportToPng", ExportToPng }
+					{ "ExportToPng", ExportToPng },
+					{ "ImportFromPng", ImportFromPng}
 				};
 				
-				Ui.OpenWindow("EXTRACT_ASSETS_PANEL", args);
+				Ui.OpenWindow("CONVERT_ASSETS_PANEL", args);
 			};
 
 			panel.Get<ButtonWidget>("EXTRACT_BUTTON").OnClick = () =>
@@ -125,24 +128,50 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var ExtractGameFilesList = new List<string[]>();
 				var ExportToPngList = new List<string[]>();
 
-				ExtractGameFilesList.Add(new string[] { "--extract", WidgetUtils.ActiveModId(), palette} );
+				ExtractGameFilesList.Add(new string[] { "--extract", WidgetUtils.ActiveModId(), palette, "--userdir"} );
 
 				foreach (var shp in AvailableShps)
 				{
-					ExtractGameFilesList.Add(new string[] { "--extract", WidgetUtils.ActiveModId(), shp } );
-					ExportToPngList.Add(new string[] { "--png", shp, palette } );
+					ExtractGameFilesList.Add(new string[] { "--extract", WidgetUtils.ActiveModId(), shp, "--userdir" } );
+					ExportToPngList.Add(new string[] { "--png", Platform.SupportDir+shp, Platform.SupportDir+palette } );
+					Console.WriteLine(Platform.SupportDir+shp);
 				}
 
 				var ExtractGameFiles = ExtractGameFilesList.ToArray();
 				var ExportToPng = ExportToPngList.ToArray();
+				var ImportFromPng = new string[][] { };
 
 				var args = new WidgetArgs()
 				{
 					{ "ExtractGameFiles", ExtractGameFiles },
-					{ "ExportToPng", ExportToPng }
+					{ "ExportToPng", ExportToPng },
+					{ "ImportFromPng", ImportFromPng}
 				};
 				
-				Ui.OpenWindow("EXTRACT_ASSETS_PANEL", args);
+				Ui.OpenWindow("CONVERT_ASSETS_PANEL", args);
+			};
+
+
+			panel.Get<ButtonWidget>("IMPORT_BUTTON").OnClick = () =>
+			{
+				var imageSizeInput = panel.Get<TextFieldWidget>("IMAGE_SIZE_INPUT");
+				var imageFilename = panel.Get<TextFieldWidget>("IMAGE_FILENAME_INPUT");
+				
+				var ExtractGameFiles = new string[][] { };
+				var ExportToPng = new string[][] { };
+				var ImportFromPng = new string[][]
+				{
+					new string[] {"--shp", Platform.SupportDir+imageFilename.Text, imageSizeInput.Text},
+				};
+
+				var args = new WidgetArgs()
+				{
+					{ "ExtractGameFiles", ExtractGameFiles },
+					{ "ExportToPng", ExportToPng },
+					{ "ImportFromPng", ImportFromPng}
+				};
+				
+				Ui.OpenWindow("CONVERT_ASSETS_PANEL", args);
 			};
 
 			panel.Get<ButtonWidget>("CLOSE_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
@@ -210,7 +239,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						foreach (var shp in shps)
 						{
 							AddAsset(assetList, shp, template);
-							AvailableShps.Add(shp);
+							AvailableShps.Add(Path.GetFileName(shp));
 						}
 					}
 				}

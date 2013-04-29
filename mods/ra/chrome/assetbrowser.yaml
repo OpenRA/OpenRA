@@ -78,35 +78,38 @@ Background@ASSETBROWSER_BG:
 			Height:25
 			Text:Actions
 			Font:Bold
-		Button@REMAP_BUTTON:
+		Button@EXPORT_BUTTON:
 			X:PARENT_RIGHT - 200
-			Y:PARENT_BOTTOM - 305
+			Y:80
 			Width:160
 			Height:25
-			Text:Change Palette
+			Text:Selected to PNG
 			Font:Bold
-			Disabled: yes
-		Button@IMPORT_BUTTON:
-			X:PARENT_RIGHT - 200
-			Y:PARENT_BOTTOM - 270
-			Width:160
-			Height:25
-			Text:Import from PNG
-			Font:Bold
-			Disabled: yes
 		Button@EXTRACT_BUTTON:
 			X:PARENT_RIGHT - 200
-			Y:PARENT_BOTTOM - 235
+			Y:115
 			Width:160
 			Height:25
 			Text:Extract all to PNG
 			Font:Bold
-		Button@EXPORT_BUTTON:
+		TextField@IMAGE_FILENAME_INPUT:
+			X:PARENT_RIGHT - 200
+			Y:PARENT_BOTTOM - 235
+			Width:100
+			Height:25
+			Text:pixelart.png
+		TextField@IMAGE_SIZE_INPUT:
+			X:PARENT_RIGHT - 90
+			Y:PARENT_BOTTOM - 235
+			Width:50
+			Height:25
+			Text:width
+		Button@IMPORT_BUTTON:
 			X:PARENT_RIGHT - 200
 			Y:PARENT_BOTTOM - 200
 			Width:160
 			Height:25
-			Text:Selected to PNG
+			Text:Import from PNG
 			Font:Bold
 		Button@CLOSE_BUTTON:
 			X:PARENT_RIGHT - 200

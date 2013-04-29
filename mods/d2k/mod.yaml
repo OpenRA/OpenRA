@@ -69,7 +69,7 @@ ChromeLayout:
 	mods/ra/chrome/musicplayer.yaml
 	mods/d2k/chrome/tooltips.yaml
 	mods/ra/chrome/assetbrowser.yaml
-	mods/ra/chrome/extractassets.yaml
+	mods/ra/chrome/convertassets.yaml
 
 Weapons:
 	mods/d2k/weapons/defaults.yaml

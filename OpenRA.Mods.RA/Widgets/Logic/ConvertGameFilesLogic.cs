@@ -20,7 +20,7 @@ using OpenRA.Utility;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
 {
-	public class ExtractGameFilesLogic
+	public class ConvertGameFilesLogic
 	{
 		Widget panel;
 		ProgressBarWidget progressBar;
@@ -28,12 +28,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		ButtonWidget retryButton, backButton;
 		Widget extractingContainer;
 
-		string[][] ExtractGameFiles, ExportToPng;
+		string[][] ExtractGameFiles, ExportToPng, ImportFromPng;
 
 		[ObjectCreator.UseCtor]
-		public ExtractGameFilesLogic(Widget widget, string[][] ExtractGameFiles, string[][] ExportToPng)
+		public ConvertGameFilesLogic(Widget widget, string[][] ExtractGameFiles, string[][] ExportToPng, string[][] ImportFromPng)
 		{
-			panel = widget.Get("EXTRACT_ASSETS_PANEL");
+			panel = widget.Get("CONVERT_ASSETS_PANEL");
 			progressBar = panel.Get<ProgressBarWidget>("PROGRESS_BAR");
 			statusLabel = panel.Get<LabelWidget>("STATUS_LABEL");
 
@@ -47,6 +47,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			this.ExtractGameFiles = ExtractGameFiles;
 			this.ExportToPng = ExportToPng;
+			this.ImportFromPng = ImportFromPng;
 
 			Extract();
 		}
@@ -78,21 +79,33 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					for (int i = 0; i < ExportToPng.Length; i++)
 					{
 						progressBar.Percentage = i*100/ExportToPng.Count();
-						statusLabel.GetText = () => "Converting...";
+						statusLabel.GetText = () => "Exporting SHP to PNG...";
 						Utility.Command.ConvertShpToPng(ExportToPng[i]);
+					}
+
+					for (int i = 0; i < ImportFromPng.Length; i++)
+					{
+						progressBar.Percentage = i*100/ImportFromPng.Count();
+						statusLabel.GetText = () => "Converting PNG to SHP...";
+						Utility.Command.ConvertPngToShp(ImportFromPng[i]);
 					}
 
 					Game.RunAfterTick(() =>
 					{
 						progressBar.Percentage = 100;
-						statusLabel.GetText = () => "Extraction and conversion complete.";
+						statusLabel.GetText = () => "Done. Check {0}".F(Platform.SupportDir);
 						backButton.IsDisabled = () => false;
 					});
 				}
-				catch
+				catch (FileNotFoundException f)
 				{
-					onError("Extraction or conversion failed");
+					onError(f.FileName+" not found.");
 				}
+				catch (Exception e)
+				{
+					onError(e.Message);
+				}
+
 			}) { IsBackground = true };
 			t.Start();
 		}

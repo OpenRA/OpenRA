@@ -1,5 +1,5 @@
-Background@EXTRACT_ASSETS_PANEL:
-	Logic:ExtractGameFilesLogic
+Background@CONVERT_ASSETS_PANEL:
+	Logic:ConvertGameFilesLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Width:500
