@@ -56,16 +56,17 @@ Background@ASSETBROWSER_BG:
 			Width:PARENT_RIGHT
 			Height:25
 			Text:Preview
+			Font:Bold
 		Background@SPRITE_BG:
 			X:220
 			Y:80
 			Width:250
 			Height:250
-			Background:dialog3
+			Background:dialog4
 			Children:
 				ShpImage@SPRITE:
-					X:80
-					Y:80
+					X:4
+					Y:4
 					Width:246
 					Height:246
 					Image:mouse
@@ -76,6 +77,7 @@ Background@ASSETBROWSER_BG:
 			Width:PARENT_RIGHT
 			Height:25
 			Text:Actions
+			Font:Bold
 		Button@REMAP_BUTTON:
 			X:PARENT_RIGHT - 200
 			Y:PARENT_BOTTOM - 305
@@ -185,13 +187,13 @@ Background@ASSETBROWSER_BG:
 							ImageCollection:music
 							ImageName:next
 				Slider@FRAME_SLIDER:
-					X:175
+					X:160
 					Y:0
 					Width:410
 					Height:20
 					MinimumValue: 0
 				Label@FRAME_COUNT:
-					X:610
+					X:585
 					Y:0
 					Width:25
 					Height:25

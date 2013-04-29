@@ -49,8 +49,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			spriteImage = panel.Get<ShpImageWidget>("SPRITE");
 
 			filenameInput = panel.Get<TextFieldWidget>("FILENAME_INPUT");
-			filenameInput.Text = spriteImage.Image;
-			filenameInput.OnEnterKey = () => LoadAsset(filenameInput.Text);
+			filenameInput.Text = spriteImage.Image+".shp";
+			filenameInput.OnEnterKey = () => LoadAsset(Path.GetFileNameWithoutExtension(filenameInput.Text));
 
 			frameSlider = panel.Get<SliderWidget>("FRAME_SLIDER");
 			frameSlider.MaximumValue = (float)spriteImage.FrameCount;
@@ -58,7 +58,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			frameSlider.OnChange += x => { spriteImage.Frame = (int)Math.Round(x); };
 			frameSlider.GetValue = () => spriteImage.Frame;
 
-			panel.Get<LabelWidget>("FRAME_COUNT").GetText = () => spriteImage.Frame.ToString();
+			panel.Get<LabelWidget>("FRAME_COUNT").GetText = () => "{0}/{1}".F(spriteImage.Frame, spriteImage.FrameCount);
 
 			playButton = panel.Get<ButtonWidget>("BUTTON_PLAY");
 			playButton.OnClick = () =>
@@ -89,7 +89,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			panel.Get<ButtonWidget>("LOAD_BUTTON").OnClick = () =>
 			{
-				LoadAsset(filenameInput.Text);
+				LoadAsset(Path.GetFileNameWithoutExtension(filenameInput.Text));
 			};
 
 			assetList = panel.Get<ScrollPanelWidget>("ASSET_LIST");
@@ -151,23 +151,24 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		static void AddAsset(ScrollPanelWidget list, string filepath, ScrollItemWidget template)
 		{
 			var sprite = Path.GetFileNameWithoutExtension(filepath);
+			var filename = Path.GetFileName(filepath);
 
 			var item = ScrollItemWidget.Setup(template,
 			                                  () => spriteImage != null && spriteImage.Image == sprite,
 			                                  () => LoadAsset(sprite));
-			item.Get<LabelWidget>("TITLE").GetText = () => sprite;
+			item.Get<LabelWidget>("TITLE").GetText = () => filename;
 
 			list.AddChild(item);
 		}
 
-		static bool LoadAsset(string filename)
+		static bool LoadAsset(string sprite)
 		{
-			if (filename == null)
+			if (sprite == null)
 				return false;
 
-			filenameInput.Text = filename;
+			filenameInput.Text = sprite+".shp";
 			spriteImage.Frame = 0;
-			spriteImage.Image = filename;
+			spriteImage.Image = sprite;
 			frameSlider.MaximumValue = (float)spriteImage.FrameCount;
 			frameSlider.Ticks = spriteImage.FrameCount+1;
 			return true;
