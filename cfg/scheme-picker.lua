@@ -1,6 +1,7 @@
 --[[
 1. Pick a color scheme by clicking on a link:
   - [Tomorrow](macro:shell(ApplyStyleConfig('cfg/tomorrow.lua','Tomorrow')))
+  - [TomorrowContrast](macro:shell(ApplyStyleConfig('cfg/tomorrow.lua','TomorrowContrast')))
   - [TomorrowNight](macro:shell(ApplyStyleConfig('cfg/tomorrow.lua','TomorrowNight')))
   - [TomorrowNightBlue](macro:shell(ApplyStyleConfig('cfg/tomorrow.lua','TomorrowNightBlue')))
   - [TomorrowNightBright](macro:shell(ApplyStyleConfig('cfg/tomorrow.lua','TomorrowNightBright')))
