@@ -18,14 +18,6 @@ VehicleVoice:
 		Select: vehic1,yessir1,report1,await1
 		Move: ackno,affirm1
 
-ShipVoice:
-	Variants:
-		soviet: .r00,.r02
-		allies: .v00,.v02
-	Voices:
-		Select: vehic1,yessir1,report1,await1
-		Move: ackno,affirm1
-
 EngineerVoice:
 	Voices:
 		Select: eengin1,eyessir1
