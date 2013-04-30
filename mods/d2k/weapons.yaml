@@ -260,7 +260,7 @@ TowerMissile:
 	Warhead:
 		Spread: 6
 		Versus: 
-			None: 30%
+			None: 50%
 			Wood: 50%
 			Light: 80%
 			Concrete: 50%
@@ -281,7 +281,7 @@ TowerMissile:
 	Warhead:
 		Spread: 6
 		Versus: 
-			None: 30%
+			None: 50%
 			Wood: 50%
 			Light: 80%
 			Concrete: 40%
