@@ -124,6 +124,9 @@ do -- recent file history
     for i=items, #list+1, -1 do -- delete the rest if the list got shorter
       filehistorymenu:Delete(filehistorymenu:FindItemByPosition(i-1))
     end
+
+    -- enable if there are any recent files
+    fileMenu:Enable(ID_RECENTFILES, #list > 0)
   end
 
   -- public methods
