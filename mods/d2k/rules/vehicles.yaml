@@ -209,7 +209,7 @@ QUAD.starport:
 		Name: Combat Tank
 		Description: Main Battle Tank\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft\n \n  Atreides:     +Range\n  Harkonnen: +Health\n  Ordos:        +Speed
 	Health:
-		HP: 325
+		HP: 350
 	Armor:
 		Type: Heavy
 	Mobile:
