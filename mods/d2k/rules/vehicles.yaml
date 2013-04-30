@@ -170,7 +170,7 @@ QUAD:
 		Type: Light
 	Mobile:
 		ROT: 8
-		Speed: 10
+		Speed: 9
 	RevealsShroud:
 		Range: 8
 	RenderUnit:
