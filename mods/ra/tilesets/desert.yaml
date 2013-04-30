@@ -1,7 +1,7 @@
 General:
 	Name: Desert
 	Id: DESERT
-	Extensions: .des, .tem, .shp
+	Extensions: .des, .tem, .shp, .int, .sno
 	Palette: desert.pal
 	PlayerPalette: temperat.pal
 	WaterPaletteRotationBase: 32

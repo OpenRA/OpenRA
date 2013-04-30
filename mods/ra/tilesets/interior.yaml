@@ -1,7 +1,7 @@
 General:
 	Name: Interior
 	Id: INTERIOR
-	Extensions: .int, .shp, .tem
+	Extensions: .int, .shp, .tem, sno, .des
 	Palette: interior.pal
 
 Terrain:
