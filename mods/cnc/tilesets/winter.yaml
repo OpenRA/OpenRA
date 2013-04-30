@@ -1,7 +1,7 @@
 General:
 	Name: Winter
 	Id: WINTER
-	Extensions: .win, .shp, .tem
+	Extensions: .win, .shp, .tem, .sno, .des
 	Palette: winter.pal
 	WaterPaletteRotationBase: 32
 

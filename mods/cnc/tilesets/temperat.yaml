@@ -1,7 +1,7 @@
 General:
 	Name: Temperate
 	Id: TEMPERAT
-	Extensions: .tem, .shp
+	Extensions: .tem, .shp, .win, .des, .sno
 	Palette: temperat.pal
 	WaterPaletteRotationBase: 32
 

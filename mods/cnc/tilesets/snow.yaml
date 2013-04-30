@@ -1,7 +1,7 @@
 General:
 	Name: Snow
 	Id: SNOW
-	Extensions: .sno, .shp, .tem
+	Extensions: .sno, .shp, .tem, .win, .des
 	Palette: snow.pal
 	WaterPaletteRotationBase: 32
 
