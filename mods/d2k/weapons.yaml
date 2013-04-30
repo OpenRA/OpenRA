@@ -391,7 +391,7 @@ FakeMissile:
 			Wood: 60%
 			Light: 50%
 			Heavy: 25%
-			Concrete: 25%
+			Concrete: 80%
 		Explosion: self_destruct
 		WaterExplosion: large_splash
 		ImpactSound: explsml2
