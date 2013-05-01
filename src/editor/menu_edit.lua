@@ -129,9 +129,9 @@ frame:Connect(ID_COMMENT, wx.wxEVT_COMMAND_MENU_SELECTED,
     end
     local lc = editor.spec.linecomment
     for line in string.gmatch(editor:GetSelectedText()..'\n', "(.-)\r?\n") do
-      if string.sub(line,1,2) == lc then
-        line = string.sub(line,3)
-      else
+      if string.sub(line,1,#lc) == lc then
+        line = string.sub(line,#lc+1)
+      elseif #line > 0 then
         line = lc..line
       end
       table.insert(buf, line)
