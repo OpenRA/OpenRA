@@ -102,6 +102,23 @@ function findReplace:GetSelectedString()
   return false
 end
 
+local function shake(window, shakes, duration, vigour)
+  shakes = shakes or 4
+  duration = duration or 0.5
+  vigour = vigour or 0.05
+
+  local delay = math.floor(duration/shakes/2)
+  local position = window:GetPosition() -- get current position
+  local deltax = window:GetSize():GetWidth()*vigour
+  for s = 1, shakes do
+    window:Move(position:GetX()-deltax, position:GetY())
+    wx.wxMilliSleep(delay)
+    window:Move(position:GetX()+deltax, position:GetY())
+    wx.wxMilliSleep(delay)
+  end
+  window:Move(position) -- restore position
+end
+
 function findReplace:FindString(reverse)
   if findReplace:HasText() then
     local editor = findReplace:GetEditor()
@@ -117,6 +134,7 @@ function findReplace:FindString(reverse)
     if posFind == -1 then
       findReplace.foundString = false
       ide.frame:SetStatusText(TR("Text not found."))
+      shake(findReplace.dialog)
     else
       findReplace.foundString = true
       local start = editor:GetTargetStart()
