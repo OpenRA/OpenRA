@@ -566,7 +566,7 @@ RESEARCH:
 		Image: carryallicon
 		UnitType: carryall.infantry
 		FlareTime: 0
-		ChargeTime: 280
+		ChargeTime: 180
 		Description: Paratroopers
 		LongDesc: A Carryall drops a squad of Infantry \nanywhere on the map
 		Prerequisites: HIGHTECHO
