@@ -239,17 +239,12 @@ local function onFileRegister(pos)
 end
 
 local function ProcInFiles(startdir,mask,subdirs,replace)
-  if (subdirs) then
-    local dirs = FileSysGet(startdir..string_Pathsep.."*",wx.wxDIR)
-    for _,dir in ipairs(dirs) do
-      ProcInFiles(dir,mask,true,replace)
-    end
-  end
-
-  local files = FileSysGet(startdir..string_Pathsep..mask,wx.wxFILE)
+  local files = FileSysGetRecursive(startdir..string_Pathsep,subdirs,mask)
   for _,file in ipairs(files) do
     -- ignore .bak files when replacing and asked to store .bak files
-    if not (replace and findReplace.fMakeBak and file:find('.bak$')) then
+    -- and skip folders as these are included in the list as well
+    if not (replace and findReplace.fMakeBak and file:find('.bak$'))
+    and not file:match(string_Pathsep.."$") then
       findReplace.curfilename = file
 
       local filetext = FileRead(file)
