@@ -50,7 +50,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			filenameInput = panel.Get<TextFieldWidget>("FILENAME_INPUT");
 			filenameInput.Text = spriteImage.Image+".shp";
-			filenameInput.OnEnterKey = () => LoadAsset(Path.GetFileNameWithoutExtension(filenameInput.Text));
+			filenameInput.OnEnterKey = () => LoadAsset(filenameInput.Text);
 
 			frameSlider = panel.Get<SliderWidget>("FRAME_SLIDER");
 			frameSlider.MaximumValue = (float)spriteImage.FrameCount;
@@ -89,7 +89,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			panel.Get<ButtonWidget>("LOAD_BUTTON").OnClick = () =>
 			{
-				LoadAsset(Path.GetFileNameWithoutExtension(filenameInput.Text));
+				LoadAsset(filenameInput.Text);
 			};
 
 			assetList = panel.Get<ScrollPanelWidget>("ASSET_LIST");
@@ -195,7 +195,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (sprite == null)
 				return false;
 
-			filenameInput.Text = sprite+".shp";
+			if (!sprite.ToLower().Contains("r8"))
+			{
+				filenameInput.Text = sprite+".shp";
+				sprite = Path.GetFileNameWithoutExtension(sprite);
+			}
+
 			spriteImage.Frame = 0;
 			spriteImage.Image = sprite;
 			frameSlider.MaximumValue = (float)spriteImage.FrameCount;
