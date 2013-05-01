@@ -1247,7 +1247,7 @@ plates:
 		Length: 6
 
 fire:
-	1: fire
+	1: fire1
 		Start: 0
 		Length: *
 	2: fire2
