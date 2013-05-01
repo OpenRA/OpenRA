@@ -1,3 +1,53 @@
+explosion:
+	piff: minipiff
+		Start: 0
+		Length: *
+	piffs: minipiff
+		Start: 0
+		Length: *
+	small_explosion: veh-hit3
+		Start: 0
+		Length: *
+	med_explosion: frag1
+		Start: 0
+		Length: *
+	large_explosion: bigboom
+		Start: 0
+		Length: *
+	small_artillery: veh-hit2
+		Start: 0
+		Length: *
+	artillery: art-exp1
+		Start: 0
+		Length: *
+	self_destruct: art-exp1
+		Start: 0
+		Length: *
+	small_building: veh-hit1
+		Start: 0
+		Length: *
+	building: fball1
+		Start: 0
+		Length: *
+	small_napalm: napalm1
+		Start: 0
+		Length: *
+	napalm: napalm2
+		Start: 0
+		Length: *
+	napalm2: napalm2
+		Start: 0
+		Length: *
+		Tick: 60
+	shockwave: shockwave
+		Start: 0
+		Length: *
+		Tick: 20
+	nuke: atomsfx
+		Start: 0
+		Length: *
+		Tick: 60
+
 90mm:
 	idle: 
 		Start: 0
@@ -1101,56 +1151,6 @@ rpg:
 	idle:
 		Start: 0
 		Facings: 32
-
-explosion:
-	piff: minipiff
-		Start: 0
-		Length: *
-	piffs: minipiff
-		Start: 0
-		Length: *
-	small_explosion: veh-hit3
-		Start: 0
-		Length: *
-	med_explosion: frag1
-		Start: 0
-		Length: *
-	napalm: napalm2
-		Start: 0
-		Length: *
-	nuke: atomsfx
-		Start: 0
-		Length: *
-		Tick: 60
-	napalm2: napalm2
-		Start: 0
-		Length: *
-		Tick: 60
-	small_artillery: veh-hit2
-		Start: 0
-		Length: *
-	artillery: art-exp1
-		Start: 0
-		Length: *
-	self_destruct: art-exp1
-		Start: 0
-		Length: *
-	small_building: veh-hit1
-		Start: 0
-		Length: *
-	building: fball1
-		Start: 0
-		Length: *
-	large_explosion: bigboom
-		Start: 0
-		Length: *
-	small_napalm: napalm1
-		Start: 0
-		Length: *
-	shockwave: shockwave
-		Start: 0
-		Length: *
-		Tick: 20
 
 crate:
 	idle: crates
