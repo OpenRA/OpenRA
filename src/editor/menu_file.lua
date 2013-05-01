@@ -74,12 +74,24 @@ do -- recent file history
     local fn = wx.wxFileName(filename)
     if fn:Normalize() then filename = fn:GetFullPath() end
 
-    -- if the file is in the history, remove it
+    local index = filehistory[0]
+
+    -- special case: removing the current file
+    if filehistory[index] and isSameAs(filename, filehistory[index].filename) then
+      -- (1) flip the history from 1 to the current index
+      for i = 1, math.floor(index/2) do
+        filehistory[i], filehistory[index-i+1] = filehistory[index-i+1], filehistory[i]
+      end
+    end
+
+    -- (2) if the file is in the history, remove it
     for i = #filehistory, 1, -1 do
       if isSameAs(filename, filehistory[i].filename) then
         table.remove(filehistory, i)
       end
     end
+
+    -- (3) update index
     filehistory[0] = 1
   end
 
