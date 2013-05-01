@@ -219,12 +219,12 @@ TurretGun:
 		Damage: 55
 
 TowerMissile:
-	ROF: 40
+	ROF: 35
 	Range: 8.25
 	Report: ROCKET1
 	ValidTargets: Ground, Air
 	Burst: 2
-	BurstDelay: 6
+	BurstDelay: 15
 	Projectile: Missile
 		Arm: 0
 		High: yes
@@ -238,9 +238,9 @@ TowerMissile:
 	Warhead:
 		Spread: 12
 		Versus: 
-			None: 80%
+			None: 50%
 			Wood: 45%
-			Light: 75%
+			Light: 100%
 			Heavy: 50%
 			Concrete: 35%
 		InfDeath: 3
