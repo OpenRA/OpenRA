@@ -364,7 +364,7 @@ FakeMissile:
 			Light: 0%
 			Heavy: 0%
 			Concrete: 0%
-		Explosion: med_explosion
+		Explosion: large_explosion
 		SmudgeType: SandCrater, RockCrater
 		Damage: 0
 		ImpactSound: EXPLSML2

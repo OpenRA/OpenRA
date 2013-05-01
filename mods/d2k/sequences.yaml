@@ -42,7 +42,7 @@ explosion:
 	shockwave: shockwave
 		Start: 0
 		Length: *
-		Tick: 20
+		Tick: 30
 	nuke: atomsfx
 		Start: 0
 		Length: *
@@ -1256,7 +1256,7 @@ plates:
 		Length: 6
 
 fire:
-	1: fire1
+	1: fire2
 		Start: 0
 		Length: *
 	2: fire2
