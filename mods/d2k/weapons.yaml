@@ -42,7 +42,7 @@ Bazooka:
 			Light: 60%
 			Heavy: 90%
 			Concrete: 40%
-		Explosion: med_explosion
+		Explosion: small_artillery
 		InfDeath: 4
 		SmudgeType: SandCrater, RockCrater
 		Damage: 50
@@ -190,7 +190,7 @@ QuadRockets:
 			Heavy: 100%
 			Concrete: 35%
 		InfDeath: 4
-		Explosion: med_explosion
+		Explosion: small_artillery
 		ImpactSound: EXPLSML2
 		SmudgeType: SandCrater, RockCrater
 		Damage: 25
@@ -244,7 +244,7 @@ TowerMissile:
 			Heavy: 50%
 			Concrete: 35%
 		InfDeath: 3
-		Explosion: small_explosion
+		Explosion: artillery
 		ImpactSound: EXPLSML2
 		SmudgeType: SandCrater, RockCrater
 		Damage: 50
@@ -264,7 +264,7 @@ TowerMissile:
 			Wood: 50%
 			Light: 80%
 			Concrete: 50%
-		Explosion: med_explosion
+		Explosion: small_artillery
 		ImpactSound: kaboom30
 		InfDeath: 4
 		SmudgeType: SandCrater, RockCrater
@@ -285,7 +285,7 @@ TowerMissile:
 			Wood: 50%
 			Light: 80%
 			Concrete: 50%
-		Explosion: med_explosion
+		Explosion: small_artillery
 		ImpactSound: kaboom30
 		InfDeath: 4
 		SmudgeType: SandCrater, RockCrater
@@ -338,7 +338,7 @@ DevBullet:
 			Heavy: 80%
 			Concrete: 80%
 		InfDeath: 4
-		Explosion: med_explosion
+		Explosion: artillery
 		ImpactSound: EXPLSML2
 		SmudgeType: SandCrater, RockCrater
 		Damage: 60
@@ -389,7 +389,7 @@ FakeMissile:
 			Light: 50%
 			Heavy: 25%
 			Concrete: 80%
-		Explosion: self_destruct
+		Explosion: large_explosion
 		WaterExplosion: large_splash
 		ImpactSound: explsml2
 		InfDeath: 3
