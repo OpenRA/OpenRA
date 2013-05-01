@@ -874,6 +874,10 @@ devast:
 	idle:
 		Start: 0
 		Facings: 32
+	muzzle: doubleblastmuzzle
+		Start: 0
+		Length: 1
+		Facings: 32
 
 conyardo:
 	idle:
@@ -1105,35 +1109,39 @@ explosion:
 	piffs: minipiff
 		Start: 0
 		Length: *
-	small_explosion: miniboom
+	small_explosion: veh-hit3
 		Start: 0
 		Length: *
-	med_explosion: mediboom
+	med_explosion: veh-hit2
 		Start: 0
 		Length: *
-	napalm: mediboom2
+	napalm: napalm2
 		Start: 0
 		Length: *
-	nuke: mushroomcloud
-		Start: 0
-		Length: *
-		Tick: 60
-	napalm2: mediboom2
+	nuke: atomsfx
 		Start: 0
 		Length: *
 		Tick: 60
-	self_destruct: bigboom
+	napalm2: napalm2
 		Start: 0
 		Length: *
-	building: bigboom2
+		Tick: 60
+	self_destruct: art-exp1
 		Start: 0
 		Length: *
-	large_explosion: largeboom
+	building: fball1
 		Start: 0
 		Length: *
-	small_napalm: miniboom2
+	large_explosion: frag1
 		Start: 0
 		Length: *
+	small_napalm: napalm1
+		Start: 0
+		Length: *
+	shockwave: shockwave
+		Start: 0
+		Length: *
+		Tick: 20
 
 crate:
 	idle: crates
@@ -1332,3 +1340,8 @@ waypoint:
 sietch:
 	idle:
 		Start: 0
+
+doubleblast:
+	idle: 
+		Start: 0
+		Facings: 16
