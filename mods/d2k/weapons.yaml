@@ -258,7 +258,7 @@ TowerMissile:
 		Inaccuracy: 12
 		Image: 90MM
 	Warhead:
-		Spread: 6
+		Spread: 8
 		Versus: 
 			None: 50%
 			Wood: 50%
@@ -279,7 +279,7 @@ TowerMissile:
 		Inaccuracy: 11
 		Image: 90MM
 	Warhead:
-		Spread: 6
+		Spread: 8
 		Versus: 
 			None: 50%
 			Wood: 50%
