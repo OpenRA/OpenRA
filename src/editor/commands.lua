@@ -392,50 +392,47 @@ function SaveOnExit(allow_cancel)
   return true
 end
 
+-- circle through "fold all" => "hide base lines" => "unfold all"
 function FoldSome()
   local editor = GetEditor()
   editor:Colourise(0, -1) -- update doc's folding info
-  local visible, baseFound, expanded, folded
-  for ln = 2, editor.LineCount - 1 do
+  local foldall = false -- at least on header unfolded => fold all
+  local hidebase = false -- at least one base is visible => hide all
+
+  for ln = 0, editor.LineCount - 1 do
     local foldRaw = editor:GetFoldLevel(ln)
     local foldLvl = math.mod(foldRaw, 4096)
     local foldHdr = math.mod(math.floor(foldRaw / 8192), 2) == 1
-    if not baseFound and (foldLvl == wxstc.wxSTC_FOLDLEVELBASE) then
-      baseFound = true
-      visible = editor:GetLineVisible(ln)
-    end
-    if foldHdr then
-      if editor:GetFoldExpanded(ln) then
-        expanded = true
-      else
-        folded = true
-      end
-    end
-    if expanded and folded and baseFound then break end
-  end
-  local show = not visible or (not baseFound and expanded) or (expanded and folded)
-  local hide = visible and folded
 
-  if show then
-    editor:ShowLines(1, editor.LineCount-1)
+    -- at least one header is expanded
+    foldall = foldall or (foldHdr and editor:GetFoldExpanded(ln))
+
+    -- at least one base can be hidden
+    hidebase = hidebase or (
+      not foldHdr
+      and ln > 1 -- first line can't be hidden, so ignore it
+      and foldLvl == wxstc.wxSTC_FOLDLEVELBASE
+      and bit.band(foldRaw, wxstc.wxSTC_FOLDLEVELWHITEFLAG) == 0
+      and editor:GetLineVisible(ln))
   end
 
-  for ln = 1, editor.LineCount - 1 do
+  -- shows lines; this doesn't change fold status for folded lines
+  if not foldall and not hidebase then editor:ShowLines(0, editor.LineCount-1) end
+
+  for ln = 0, editor.LineCount-1 do
     local foldRaw = editor:GetFoldLevel(ln)
     local foldLvl = math.mod(foldRaw, 4096)
     local foldHdr = math.mod(math.floor(foldRaw / 8192), 2) == 1
-    if show then
-      if foldHdr then
-        if not editor:GetFoldExpanded(ln) then editor:ToggleFold(ln) end
-      end
-    elseif hide and (foldLvl == wxstc.wxSTC_FOLDLEVELBASE) then
-      if not foldHdr then
-        editor:HideLines(ln, ln)
-      end
-    elseif foldHdr then
-      if editor:GetFoldExpanded(ln) then
-        editor:ToggleFold(ln)
-      end
+
+    if foldall then
+      if foldHdr and editor:GetFoldExpanded(ln) then
+        editor:ToggleFold(ln) end
+    elseif hidebase then
+      if not foldHdr and (foldLvl == wxstc.wxSTC_FOLDLEVELBASE) then
+        editor:HideLines(ln, ln) end
+    else -- unfold all
+      if foldHdr and not editor:GetFoldExpanded(ln) then
+        editor:ToggleFold(ln) end
     end
   end
   editor:EnsureCaretVisible()
