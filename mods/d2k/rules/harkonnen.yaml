@@ -162,7 +162,7 @@ COMBATH:
 	Turreted:
 		ROT: 5
 	Health:
-		HP: 450
+		HP: 440
 	RenderUnitTurreted:
 		Image: COMBATH
 	LeavesHusk:
