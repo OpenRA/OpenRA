@@ -526,3 +526,17 @@ scrollitem-hover: dialog.png
 	corner-tr: 594,0,1,1
 	corner-bl: 512,82,1,1
 	corner-br: 594,82,1,1
+	
+logos: loadscreen.png
+	logo: 0,0,256,256
+
+mainmenu-border: dialog.png
+	background: 552,313,40,40
+	border-r: 592,313,40,40
+	border-l: 512,313,40,40
+	border-b: 552,353,40,40
+	border-t: 552,273,40,40
+	corner-tl: 512,273,40,40
+	corner-tr: 592,273,40,40
+	corner-bl: 512,353,40,40
+	corner-br: 592,353,40,40

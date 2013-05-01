@@ -1,75 +1,95 @@
-Background@MAINMENU:
-	X:(WINDOW_RIGHT - WIDTH)/2
-	Y:(WINDOW_BOTTOM - HEIGHT)/2
-	Width:250
-	Height:420
-	Visible:true
-	Logic:MainMenuButtonsLogic
+Container@MAINMENU:
 	Children:
-		Label@MAINMENU_LABEL_TITLE:
-			X:0
-			Y:20
-			Width:250
+		Background@BORDER:
+			Background:mainmenu-border
+			X:0 - 15
+			Y:0 - 15
+			Width:WINDOW_RIGHT + 30
+			Height:WINDOW_BOTTOM + 30
+		Image@LOGO:
+			X:WINDOW_RIGHT - 296
+			Y:30
+			ImageCollection:logos
+			ImageName:logo
+		Label@VERSION_LABEL:
+			X:WINDOW_RIGHT - 296
+			Y:296 - 20 # border
+			Width:296 - 20
 			Height:25
-			Text:OpenRA Main Menu
 			Align:Center
-			Font:Bold
-		Button@MAINMENU_BUTTON_JOIN:
-			X:45
-			Y:70
-			Width:160
-			Height:25
-			Text:Join Game
-			Font:Bold
-		Button@MAINMENU_BUTTON_CREATE:
-			X:45
-			Y:110
-			Width:160
-			Height:25
-			Text:Create Game
-			Font:Bold
-		Button@MAINMENU_BUTTON_DIRECTCONNECT:
-			X:45
-			Y:150
-			Width:160
-			Height:25
-			Text:Direct Connect
-			Font:Bold
-		Button@MAINMENU_BUTTON_SETTINGS:
-			X:45
-			Y:190
-			Width:160
-			Height:25
-			Text:Settings
-			Font:Bold
-		Button@MAINMENU_BUTTON_MODS:
-			X:45
-			Y:230
-			Width:160
-			Height:25
-			Text:Mods
-			Font:Bold
-		Button@MAINMENU_BUTTON_MUSIC:
-			X:45
-			Y:270
-			Width:160
-			Height:25
-			Text:Music
-			Font:Bold
-		Button@MAINMENU_BUTTON_REPLAY_VIEWER:
-			X:45
-			Y:310
-			Width:160
-			Height:25
-			Text:Replay Viewer
-			Font:Bold
-		Button@MAINMENU_BUTTON_QUIT:
-			X:45
-			Y:350
-			Width:160
-			Height:25
-			Text:Quit
-			Font:Bold
+			Font:Regular
+			Contrast:True
+		Background@MAINMENU_BG:
+			X:(WINDOW_RIGHT - WIDTH)/8
+			Y:(WINDOW_BOTTOM - HEIGHT)/2
+			Width:250
+			Height:505
+			Logic:MainMenuButtonsLogic
+			Children:
+				Label@MAINMENU_LABEL_TITLE:
+					X:0
+					Y:20
+					Width:250
+					Height:35
+					Text:OpenRA
+					Align:Center
+					Font:Title
+				Button@MAINMENU_BUTTON_JOIN:
+					X:45
+					Y:80
+					Width:160
+					Height:35
+					Text:Join Game
+					Font:Bold
+				Button@MAINMENU_BUTTON_CREATE:
+					X:45
+					Y:130
+					Width:160
+					Height:35
+					Text:Create Game
+					Font:Bold
+				Button@MAINMENU_BUTTON_DIRECTCONNECT:
+					X:45
+					Y:180
+					Width:160
+					Height:35
+					Text:Direct Connect
+					Font:Bold
+				Button@MAINMENU_BUTTON_SETTINGS:
+					X:45
+					Y:230
+					Width:160
+					Height:35
+					Text:Settings
+					Font:Bold
+				Button@MAINMENU_BUTTON_MODS:
+					X:45
+					Y:280
+					Width:160
+					Height:35
+					Text:Mods
+					Font:Bold
+				Button@MAINMENU_BUTTON_MUSIC:
+					X:45
+					Y:330
+					Width:160
+					Height:35
+					Text:Music
+					Font:Bold
+				Button@MAINMENU_BUTTON_REPLAY_VIEWER:
+					X:45
+					Y:380
+					Width:160
+					Height:35
+					Text:Replay Viewer
+					Font:Bold
+				Button@MAINMENU_BUTTON_QUIT:
+					X:45
+					Y:430
+					Width:160
+					Height:35
+					Text:Quit
+					Font:Bold
 Background@PERF_BG:
 	ClickThrough:true
 	Background:dialog4
