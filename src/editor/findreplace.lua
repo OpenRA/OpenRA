@@ -234,7 +234,7 @@ local function onFileRegister(pos)
   local line = editor:LineFromPosition(pos)
   local linepos = pos - editor:PositionFromLine(line)
   local result = "("..(line+1)..","..(linepos+1).."): "..editor:GetLine(line)
-  DisplayOutput(findReplace.curfilename..result)
+  DisplayOutputLn(findReplace.curfilename..result:gsub("\r?\n$",""))
   findReplace.occurrences = findReplace.occurrences + 1
 end
 
