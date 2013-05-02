@@ -42,7 +42,7 @@ Bazooka:
 			Light: 60%
 			Heavy: 90%
 			Concrete: 40%
-		Explosion: med_explosion
+		Explosion: small_artillery
 		InfDeath: 4
 		SmudgeType: SandCrater, RockCrater
 		Damage: 50
@@ -190,7 +190,7 @@ QuadRockets:
 			Heavy: 100%
 			Concrete: 35%
 		InfDeath: 4
-		Explosion: med_explosion
+		Explosion: small_artillery
 		ImpactSound: EXPLSML2
 		SmudgeType: SandCrater, RockCrater
 		Damage: 25
@@ -244,7 +244,7 @@ TowerMissile:
 			Heavy: 50%
 			Concrete: 35%
 		InfDeath: 3
-		Explosion: small_explosion
+		Explosion: artillery
 		ImpactSound: EXPLSML2
 		SmudgeType: SandCrater, RockCrater
 		Damage: 50
@@ -264,7 +264,7 @@ TowerMissile:
 			Wood: 50%
 			Light: 80%
 			Concrete: 40%
-		Explosion: med_explosion
+		Explosion: small_artillery
 		ImpactSound: kaboom30
 		InfDeath: 4
 		SmudgeType: SandCrater, RockCrater
@@ -285,34 +285,31 @@ TowerMissile:
 			Wood: 50%
 			Light: 80%
 			Concrete: 40%
-		Explosion: med_explosion
+		Explosion: small_artillery
 		ImpactSound: kaboom30
 		InfDeath: 4
 		SmudgeType: SandCrater, RockCrater
 		Damage: 40
 
 DevBullet:
-	ROF: 70
+	ROF: 50
 	Range: 5
 	Report: TANKHVY1
-	Burst: 2
-	BurstDelay: 10
-	Projectile: LaserZap
-		BeamRadius: 1
-		BeamDuration: 8
-		UsePlayerColor: true
+	Projectile: Bullet
+		Speed: 50
+		Image: doubleblast
 	Warhead:
-		Spread: 6
+		Spread: 8
 		Versus: 
 			None: 100%
 			Wood: 50%
 			Light: 100%
 			Heavy: 100%
-			Concrete: 50%
-		Explosion: large_explosion
+			Concrete: 80%
+		Explosion: shockwave
 		InfDeath: 4
 		SmudgeType: SandCrater, RockCrater
-		Damage: 65
+		Damage: 100
 
 227mm: 
 	ROF: 100
@@ -341,7 +338,7 @@ DevBullet:
 			Heavy: 80%
 			Concrete: 80%
 		InfDeath: 4
-		Explosion: med_explosion
+		Explosion: artillery
 		ImpactSound: EXPLSML2
 		SmudgeType: SandCrater, RockCrater
 		Damage: 50
@@ -367,7 +364,7 @@ FakeMissile:
 			Light: 0%
 			Heavy: 0%
 			Concrete: 0%
-		Explosion: med_explosion
+		Explosion: large_explosion
 		SmudgeType: SandCrater, RockCrater
 		Damage: 0
 		ImpactSound: EXPLSML2
@@ -392,7 +389,7 @@ FakeMissile:
 			Light: 50%
 			Heavy: 25%
 			Concrete: 25%
-		Explosion: self_destruct
+		Explosion: large_explosion
 		WaterExplosion: large_splash
 		ImpactSound: explsml2
 		InfDeath: 3
@@ -400,7 +397,7 @@ FakeMissile:
 		Damage: 100
 
 Sound:
-	ROF: 85
+	ROF: 100
 	Range: 8.5
 	Report: SONIC1
 	Projectile: LaserZap
@@ -412,10 +409,10 @@ Sound:
 		Versus: 
 			None: 60%
 			Wood: 85%
-			Light: 90%
+			Light: 80%
 			Concrete: 75%
 		InfDeath: 6
-		Damage: 90
+		Damage: 150
 
 ChainGun:
 	ROF: 10
