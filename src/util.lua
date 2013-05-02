@@ -161,35 +161,15 @@ function FileSysHasContent(dir)
   return #f>0
 end
 
-function FileSysGet(dir, spec)
-  local content = {}
-  local browse = wx.wxFileSystem()
-  if not wx.wxFileName(dir):DirExists() then return content end
-
-  local f = browse:FindFirst(dir,spec)
-  while #f>0 do
-    if f:match("^file:") then -- remove file: protocol (wx2.9+)
-      f = f:gsub(ide.osname == "Windows" and "^file:/?" or "^file:","")
-        :gsub('%%(%x%x)', function(n) return string.char(tonumber(n, 16)) end)
-    end
-    local file = wx.wxFileName(f)
-    -- normalize path if possible to correct separators for the local FS
-    table.insert(content,
-      file:Normalize(wx.wxPATH_NORM_ALL) and file:GetFullPath() or f)
-    f = browse:FindNext()
-  end
-  if ide.osname == 'Unix' then table.sort(content) end
-  return content
-end
-
 function FileSysGetRecursive(path, recursive, spec, skip)
   local content = {}
-  if not wx.wxFileName(path):DirExists() then return content end
-
   local sep = string.char(wx.wxFileName.GetPathSeparator())
+
   local function getDir(path, spec)
     local dir = wx.wxDir(path)
-    local found, file = dir:GetFirst(spec, wx.wxDIR_DIRS)
+    if not dir:IsOpened() then return end
+
+    local found, file = dir:GetFirst("*", wx.wxDIR_DIRS)
     while found do
       if not skip or not file:find(skip) then
         local fname = wx.wxFileName(path, file):GetFullPath()
@@ -208,6 +188,7 @@ function FileSysGetRecursive(path, recursive, spec, skip)
     end
   end
   getDir(path, spec or "")
+
   return content
 end
 
@@ -218,7 +199,8 @@ function GetFullPathIfExists(p, f)
   -- f = 'xyz/main.lua' work correctly. Normalize() returns true if done.
   return (file:Normalize(wx.wxPATH_NORM_ALL, p)
     and file:FileExists()
-    and file:GetFullPath())
+    and file:GetFullPath()
+    or nil)
 end
 
 function MergeFullPath(p, f)
@@ -227,7 +209,8 @@ function MergeFullPath(p, f)
   -- Normalize call is needed to make the case of p = '/abc/def' and
   -- f = 'xyz/main.lua' work correctly. Normalize() returns true if done.
   return (file:Normalize(wx.wxPATH_NORM_ALL, p)
-    and file:GetFullPath())
+    and file:GetFullPath()
+    or nil)
 end
 
 function FileWrite(file,content)

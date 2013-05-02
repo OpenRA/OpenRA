@@ -44,8 +44,8 @@ end
 -- API loading
 
 local function addAPI(apifile,only,subapis,known) -- relative to API directory
-  local ftype,fname = apifile:match("api[/\\]([^/\\]+)[/\\](.*)%.")
-  if not ftype then
+  local ftype, fname = apifile:match("api[/\\]([^/\\]+)[/\\](.*)%.")
+  if not ftype or not fname then
     DisplayOutputLn(TR("The API file must be located in a subdirectory of the API directory."))
     return
   end
@@ -82,12 +82,8 @@ local function addAPI(apifile,only,subapis,known) -- relative to API directory
 end
 
 local function loadallAPIs (only,subapis,known)
-  for _, dir in ipairs(FileSysGet("api/*", wx.wxDIR)) do
-    for _, file in ipairs(FileSysGet(dir.."/*.*", wx.wxFILE)) do
-      if file:match "%.lua$" then
-        addAPI(file,only,subapis,known)
-      end
-    end
+  for _, file in ipairs(FileSysGetRecursive("api", true, "*.lua")) do
+    if not file:match(string_Pathsep.."$") then addAPI(file,only,subapis,known) end
   end
 end
 

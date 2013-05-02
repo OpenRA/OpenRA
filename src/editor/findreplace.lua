@@ -239,7 +239,7 @@ local function onFileRegister(pos)
 end
 
 local function ProcInFiles(startdir,mask,subdirs,replace)
-  local files = FileSysGetRecursive(startdir..string_Pathsep,subdirs,mask)
+  local files = FileSysGetRecursive(startdir,subdirs,mask)
   for _,file in ipairs(files) do
     -- ignore .bak files when replacing and asked to store .bak files
     -- and skip folders as these are included in the list as well

@@ -243,8 +243,8 @@ end
 
 -- load interpreters
 local function loadInterpreters(filter)
-  for _, file in ipairs(FileSysGet("interpreters/*.*", wx.wxFILE)) do
-    if file:match "%.lua$" and (filter or app.loadfilters.interpreters)(file) then
+  for _, file in ipairs(FileSysGetRecursive("interpreters", true, "*.lua")) do
+    if (filter or app.loadfilters.interpreters)(file) then
       addToTab(ide.interpreters,file)
     end
   end
@@ -252,8 +252,8 @@ end
 
 -- load specs
 local function loadSpecs(filter)
-  for _, file in ipairs(FileSysGet("spec/*.*", wx.wxFILE)) do
-    if file:match("%.lua$") and (filter or app.loadfilters.specs)(file) then
+  for _, file in ipairs(FileSysGetRecursive("spec", true, "*.lua")) do
+    if (filter or app.loadfilters.specs)(file) then
       addToTab(ide.specs,file)
     end
   end
@@ -285,8 +285,8 @@ end
 
 -- load tools
 local function loadTools(filter)
-  for _, file in ipairs(FileSysGet("tools/*.*", wx.wxFILE)) do
-    if file:match "%.lua$" and (filter or app.loadfilters.tools)(file) then
+  for _, file in ipairs(FileSysGetRecursive("tools", false, "*.lua")) do
+    if (filter or app.loadfilters.tools)(file) then
       addToTab(ide.tools,file)
     end
   end
@@ -307,6 +307,7 @@ end
 -----------------------
 -- load config
 local function addConfig(filename,isstring)
+  if not filename then return end
   -- skip those files that don't exist
   if not isstring and not wx.wxFileName(filename):FileExists() then return end
   -- if it's marked as command, but exists as a file, load it as a file
@@ -368,19 +369,14 @@ loadTools()
 
 do
   -- process user config
-  for _, file in ipairs(FileSysGet("cfg/user.lua", wx.wxFILE)) do
-    addConfig(file)
-  end
+  addConfig(GetFullPathIfExists("cfg", "user.lua"))
+
   local home = os.getenv("HOME")
-  if home then
-    for _, file in ipairs(FileSysGet(home .. "/.zbstudio/user.lua", wx.wxFILE)) do
-      addConfig(file)
-    end
-  end
+  addConfig(home and GetFullPathIfExists(home, ".zbstudio/user.lua"))
+
   -- process all other configs (if any)
-  for _, v in ipairs(configs) do
-    addConfig(v, true)
-  end
+  for _, v in ipairs(configs) do addConfig(v, true) end
+
   configs = nil
   local sep = string_Pathsep
   if ide.config.language then
