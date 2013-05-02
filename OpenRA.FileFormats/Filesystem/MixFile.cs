@@ -81,7 +81,7 @@ namespace OpenRA.FileFormats
 			byte[] keyblock = reader.ReadBytes(80);
 			byte[] blowfishKey = new BlowfishKeyProvider().DecryptKey(keyblock);
 
-			uint[] h = ReadUints(reader, 2);
+			uint[] h = ReadBlocks(reader, 1);
 
 			Blowfish fish = new Blowfish(blowfishKey);
 			MemoryStream ms = Decrypt( h, fish );
@@ -93,12 +93,12 @@ namespace OpenRA.FileFormats
 			s.Position = headerStart;
 			reader = new BinaryReader(s);
 
-			int byteCount = 6 + numFiles * PackageEntry.Size;
-			h = ReadUints( reader, ( byteCount + 3 ) / 4 );
-
+			// Round up to the next full block
+			int blockCount = (13 + numFiles*PackageEntry.Size)/8;
+			h = ReadBlocks(reader, blockCount);
 			ms = Decrypt( h, fish );
 
-			dataStart = headerStart + byteCount + ( ( ~byteCount + 1 ) & 7 );
+			dataStart = headerStart + 8*blockCount;
 
 			long ds;
 			return ParseTdHeader( ms, out ds );
@@ -118,9 +118,10 @@ namespace OpenRA.FileFormats
 			return ms;
 		}
 
-		uint[] ReadUints(BinaryReader r, int count)
+		uint[] ReadBlocks(BinaryReader r, int count)
 		{
-			uint[] ret = new uint[count];
+			// A block is a single encryption unit (represented as two 32-bit integers)
+			uint[] ret = new uint[2*count];
 			for (int i = 0; i < ret.Length; i++)
 				ret[i] = r.ReadUInt32();
 
