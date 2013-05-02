@@ -27,7 +27,7 @@ local function isfndef(str)
 end
 
 return {
-  exts = {"lua", "rockspec"},
+  exts = {"lua", "rockspec", "wlua"},
   lexer = wxstc.wxSTC_LEX_LUA,
   apitype = "lua",
   linecomment = "--",
