@@ -209,6 +209,7 @@ World:
 	CncMenuPaletteEffect:
 	CloakPaletteEffect:
 	ScreenShaker:
+	UpdateOrderPalette:
 	NukePaletteEffect:
 	WaterPaletteRotation:
 	BuildingInfluence:

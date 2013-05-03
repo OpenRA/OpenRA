@@ -509,6 +509,7 @@ World:
 	LoadWidgetAtGameStart:
 		Widget: INGAME_ROOT
 	ScreenShaker:
+	UpdateOrderPalette:
 	WaterPaletteRotation:
 		ExcludePalettes: player
 	ChronoshiftPaletteEffect:

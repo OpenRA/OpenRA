@@ -197,6 +197,143 @@ power-button: buttons.png
 	pressed: 34,56,34,28
 	disabled: 68,56,34,28
 
+opal-button-Attack: buttons.png
+	normal: 102,56,34,28
+	pressed: 136,56,34,28
+	hover: 170,56,34,28
+
+opal-button-AttackMove: buttons.png
+	normal: 102,112,34,28
+	pressed: 136,112,34,28
+	hover: 170,112,34,28
+
+opal-button-BeginMinefield: buttons.png
+	normal: 102,112,34,28
+	pressed: 136,112,34,28
+	hover: 170,112,34,28
+
+#TODO: empty placeholder
+opal-button-Enter: buttons.png
+	normal: 102,0,34,28
+	pressed: 136,0,34,28
+	hover: 170,0,34,28
+
+opal-button-Move: buttons.png
+	normal: 102,140,34,28
+	pressed: 136,140,34,28
+	hover: 170,140,34,28
+
+opal-button-Stop: buttons.png
+	normal: 102,28,34,28
+	pressed: 136,28,34,28
+	hover: 170,28,34,28
+
+#TODO: empty placeholder
+opal-button-C4: buttons.png
+	normal: 102,0,34,28
+	pressed: 136,0,34,28
+	hover: 170,0,34,28
+
+#TODO: empty placeholder
+opal-button-CaptureActor: buttons.png
+	normal: 102,0,34,28
+	pressed: 136,0,34,28
+	hover: 170,0,34,28
+
+#TODO: empty placeholder
+opal-button-Unload: buttons.png
+	normal: 102,0,34,28
+	pressed: 136,0,34,28
+	hover: 170,0,34,28
+
+#TODO: empty placeholder
+opal-button-ChronoshiftJump: buttons.png
+	normal: 102,0,34,28
+	pressed: 136,0,34,28
+	hover: 170,0,34,28
+
+opal-button-DemoAttack: buttons.png
+	normal: 102,56,34,28
+	pressed: 136,56,34,28
+	hover: 170,56,34,28
+
+#TODO: empty placeholder
+opal-button-DemoDeploy: buttons.png
+	normal: 102,0,34,28
+	pressed: 136,0,34,28
+	hover: 170,0,34,28
+
+opal-button-EngineerRepair: buttons.png
+	normal: 0,28,34,28
+	pressed: 34,28,34,28
+	hover: 68,28,34,28
+
+#TODO: empty placeholder
+opal-button-Deliver: buttons.png
+	normal: 102,0,34,28
+	pressed: 136,0,34,28
+	hover: 170,0,34,28
+
+opal-button-Harvest: buttons.png
+	normal: 102,56,34,28
+	pressed: 136,56,34,28
+	hover: 170,56,34,28
+
+#TODO: empty placeholder
+opal-button-EnterTransport: buttons.png
+	normal: 102,0,34,28
+	pressed: 136,0,34,28
+	hover: 170,0,34,28
+
+#TODO: empty placeholder
+opal-button-PrimaryProducer: buttons.png
+	normal: 102,0,34,28
+	pressed: 136,0,34,28
+	hover: 170,0,34,28
+
+opal-button-SetRallyPoint: buttons.png
+	normal: 102,112,34,28
+	pressed: 136,112,34,28
+	hover: 170,112,34,28
+
+opal-button-Repair: buttons.png
+	normal: 0,28,34,28
+	pressed: 34,28,34,28
+	hover: 68,28,34,28
+
+opal-button-RepairNear: buttons.png
+	normal: 0,28,34,28
+	pressed: 34,28,34,28
+	hover: 68,28,34,28
+
+opal-button-RepairBridge: buttons.png
+	normal: 0,28,34,28
+	pressed: 34,28,34,28
+	hover: 68,28,34,28
+
+#TODO: empty placeholder
+opal-button-Disguise: buttons.png
+	normal: 102,0,34,28
+	pressed: 136,0,34,28
+	hover: 170,0,34,28
+
+#TODO: empty placeholder
+opal-button-DeliverSupplies: buttons.png
+	normal: 102,0,34,28
+	pressed: 136,0,34,28
+	hover: 170,0,34,28
+
+opal-button-DeployTransform: buttons.png
+	normal: 102,196,34,28
+	pressed: 136,196,34,28
+	hover: 170,196,34,28
+
+#TODO: empty placeholder
+opal-button-Infiltrate: buttons.png
+	normal: 102,0,34,28
+	pressed: 136,0,34,28
+	hover: 170,0,34,28
+
 flags: buttons.png
 	allies: 30,84,30,15
 	soviet: 0,84,30,15

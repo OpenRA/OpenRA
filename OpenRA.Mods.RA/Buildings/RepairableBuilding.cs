@@ -9,9 +9,11 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Effects;
 using OpenRA.Traits;
-using OpenRA.FileFormats;
+using OpenRA.Orders;
 
 namespace OpenRA.Mods.RA.Buildings
 {
@@ -26,7 +28,7 @@ namespace OpenRA.Mods.RA.Buildings
 		public object Create(ActorInitializer init) { return new RepairableBuilding(init.self, this); }
 	}
 
-	public class RepairableBuilding : ITick, ISync
+	public class RepairableBuilding : ITick, IResolveOrder, ISync, IIssueOrder
 	{
 		[Sync] public Player Repairer = null;
 
@@ -37,6 +39,15 @@ namespace OpenRA.Mods.RA.Buildings
 		{
 			Health = self.Trait<Health>();
 			Info = info;
+		}
+		
+		public void ResolveOrder(Actor self, Order order)
+		{
+			if (order.OrderString == "Repair")
+			{
+				// TODO(jsd): Fix this in the order system!
+				RepairBuilding(self, order.Player);
+			}
 		}
 
 		public void RepairBuilding(Actor self, Player p)
@@ -96,6 +107,16 @@ namespace OpenRA.Mods.RA.Buildings
 			}
 			else
 				--remainingTicks;
+		}
+
+		public IEnumerable<IOrderTargeter> Orders
+		{
+			get { yield return new PaletteOnlyOrderTargeter("Repair"); }
+		}
+
+		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

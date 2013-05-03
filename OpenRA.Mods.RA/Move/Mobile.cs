@@ -15,6 +15,7 @@ using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
+using OpenRA.Orders;
 
 namespace OpenRA.Mods.RA.Move
 {
@@ -214,7 +215,14 @@ namespace OpenRA.Mods.RA.Move
 			PxPosition = px;
 		}
 
-		public IEnumerable<IOrderTargeter> Orders { get { yield return new MoveOrderTargeter(Info); } }
+		public IEnumerable<IOrderTargeter> Orders
+		{
+			get
+			{
+				yield return new MoveOrderTargeter(Info);
+				yield return new PaletteOnlyOrderTargeter("Stop");
+			}
+		}
 
 		// Note: Returns a valid order even if the unit can't move to the target
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
@@ -494,6 +502,8 @@ namespace OpenRA.Mods.RA.Move
 
 				return true;
 			}
+
+			public bool IsImmediate { get { return false; } }
 		}
 
 		public Activity ScriptedMove(CPos cell) { return new Move(cell); }

@@ -147,6 +147,7 @@
     <Compile Include="Orders\GenericSelectTarget.cs" />
     <Compile Include="Orders\IOrderGenerator.cs" />
     <Compile Include="Orders\UnitOrderGenerator.cs" />
+    <Compile Include="Orders\PaletteOnlyOrderTargeter.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Selection.cs" />

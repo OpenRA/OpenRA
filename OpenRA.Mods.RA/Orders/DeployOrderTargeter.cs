@@ -48,5 +48,6 @@ namespace OpenRA.Mods.RA.Orders
 		}
 
 		public bool IsQueued { get; protected set; }
+		public bool IsImmediate { get { return true; } }
 	}
 }
