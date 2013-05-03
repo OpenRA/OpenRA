@@ -13,7 +13,7 @@ LMG:
 		Versus: 
 			Wood: 25%
 			Light: 40%
-			Heavy: 15%
+			Heavy: 10%
 			Concrete: 20%
 		Explosion: piffs
 		InfDeath: 2
@@ -219,12 +219,12 @@ TurretGun:
 		Damage: 55
 
 TowerMissile:
-	ROF: 40
+	ROF: 35
 	Range: 8.25
 	Report: ROCKET1
 	ValidTargets: Ground, Air
 	Burst: 2
-	BurstDelay: 6
+	BurstDelay: 15
 	Projectile: Missile
 		Arm: 0
 		High: yes
@@ -238,9 +238,9 @@ TowerMissile:
 	Warhead:
 		Spread: 12
 		Versus: 
-			None: 80%
+			None: 50%
 			Wood: 45%
-			Light: 75%
+			Light: 100%
 			Heavy: 50%
 			Concrete: 35%
 		InfDeath: 3
@@ -258,12 +258,12 @@ TowerMissile:
 		Inaccuracy: 12
 		Image: 90MM
 	Warhead:
-		Spread: 6
+		Spread: 8
 		Versus: 
-			None: 30%
+			None: 50%
 			Wood: 50%
 			Light: 80%
-			Concrete: 40%
+			Concrete: 50%
 		Explosion: med_explosion
 		ImpactSound: kaboom30
 		InfDeath: 4
@@ -279,12 +279,12 @@ TowerMissile:
 		Inaccuracy: 11
 		Image: 90MM
 	Warhead:
-		Spread: 6
+		Spread: 8
 		Versus: 
-			None: 30%
+			None: 50%
 			Wood: 50%
 			Light: 80%
-			Concrete: 40%
+			Concrete: 50%
 		Explosion: med_explosion
 		ImpactSound: kaboom30
 		InfDeath: 4
@@ -333,7 +333,7 @@ DevBullet:
 		ROT: 5
 		ContrailLength: 5
 	Warhead:
-		Spread: 8
+		Spread: 12
 		Versus: 
 			None: 25%
 			Wood: 25%
@@ -344,7 +344,7 @@ DevBullet:
 		Explosion: med_explosion
 		ImpactSound: EXPLSML2
 		SmudgeType: SandCrater, RockCrater
-		Damage: 50
+		Damage: 60
 
 FakeMissile:
 	ROF: 120
@@ -391,7 +391,7 @@ FakeMissile:
 			Wood: 60%
 			Light: 50%
 			Heavy: 25%
-			Concrete: 25%
+			Concrete: 80%
 		Explosion: self_destruct
 		WaterExplosion: large_splash
 		ImpactSound: explsml2

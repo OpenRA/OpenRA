@@ -378,7 +378,7 @@ GUNTOWER:
 		BuildPaletteOrder: 90
 		Hotkey: g
 	Valued:
-		Cost: 550
+		Cost: 650
 	Tooltip:
 		Name: Gun Tower
 		Description: Defensive structure\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
@@ -393,7 +393,7 @@ GUNTOWER:
 		Priority: 3
 	-GivesBuildableArea:
 	Health:
-		HP: 500
+		HP: 400
 	Armor:
 		Type: Concrete
 	RevealsShroud:
@@ -436,7 +436,7 @@ ROCKETTOWER:
 		BuildPaletteOrder: 120
 		Hotkey: m
 	Valued:
-		Cost: 750
+		Cost: 850
 	Tooltip:
 		Name: Rocket Tower
 		Description: Defensive structure\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks\n\n  Requires power to operate
@@ -451,7 +451,7 @@ ROCKETTOWER:
 		Priority: 3
 	-GivesBuildableArea:
 	Health:
-		HP: 500
+		HP: 400
 	Armor: 
 		Type: Concrete
 	RevealsShroud:
@@ -566,7 +566,7 @@ RESEARCH:
 		Image: carryallicon
 		UnitType: carryall.infantry
 		FlareTime: 0
-		ChargeTime: 280
+		ChargeTime: 180
 		Description: Paratroopers
 		LongDesc: A Carryall drops a squad of Infantry \nanywhere on the map
 		Prerequisites: HIGHTECHO
