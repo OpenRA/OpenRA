@@ -154,8 +154,8 @@ QUAD:
 	Buildable:
 		Queue: Vehicle
 		Prerequisites: Light,Outpost
-		Owner: atreides, harkonnen, ordos
-		BuiltAt: lighta, lighth, lighto
+		Owner: atreides, ordos
+		BuiltAt: lighta, lighto
 		BuildPaletteOrder: 20
 		Hotkey: q
 	Valued:
@@ -170,7 +170,7 @@ QUAD:
 		Type: Light
 	Mobile:
 		ROT: 8
-		Speed: 10
+		Speed: 9
 	RevealsShroud:
 		Range: 8
 	RenderUnit:
@@ -209,17 +209,17 @@ QUAD.starport:
 		Name: Combat Tank
 		Description: Main Battle Tank\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft\n \n  Atreides:     +Range\n  Harkonnen: +Health\n  Ordos:        +Speed
 	Health:
-		HP: 325
+		HP: 350
 	Armor:
 		Type: Heavy
 	Mobile:
-		Speed: 7
+		Speed: 6
 		ROT: 6
 		Crushes: crate, infantry
 	RevealsShroud:
 		Range: 7
 	Turreted:
-		ROT: 5
+		ROT: 6
 		AlignWhenIdle: true
 	Armament:
 		Weapon: 90mm

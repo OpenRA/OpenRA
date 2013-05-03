@@ -143,6 +143,12 @@ CARRYALLH.starport:
 	Valued:
 		Cost: 1500
 
+QUADH:
+	Inherits: QUAD
+	Buildable:
+		-Prerequisites:
+		Owner: harkonnen
+
 COMBATH:
 	Inherits: ^COMBAT
 	Tooltip:
@@ -151,12 +157,12 @@ COMBATH:
 		Owner: harkonnen
 		BuiltAt: heavyh
 	Mobile:
-		Speed: 6
+		Speed: 5
 		ROT: 4
 	Turreted:
 		ROT: 5
 	Health:
-		HP: 400
+		HP: 440
 	RenderUnitTurreted:
 		Image: COMBATH
 	LeavesHusk:
