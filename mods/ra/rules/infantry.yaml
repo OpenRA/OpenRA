@@ -256,49 +256,6 @@ E7:
 	RenderInfantryProne:
 		IdleAnimations: idle1,idle2
 
-E8:
-	Inherits: ^Infantry
-	Buildable:
-		Queue: Infantry
-		BuildPaletteOrder: 110
-		Prerequisites: stek
-		Owner: soviet
-		Hotkey: v
-		BuildLimit: 1
-	Valued:
-		Cost: 1800
-	Tooltip:
-		Name: Volkov
-		Description: Elite commando cyborg, armed with \nmodular cannons and grenade launcher.\n  Strong vs Vehicles, Infantry\n  Weak vs Aircraft\n\nMaximum 1 can be trained
-	Selectable:
-		Voice: VolkovVoice
-		Bounds: 12,17,0,-9
-	Health:
-		HP: 200
-	Armor:
-		Type: Cybernetic
-	Mobile:
-		Speed: 5
-		Crushes: atmine, crate
-	RevealsShroud:
-		Range: 4
-	Passenger:
-		PipType: Red
-	Armament@PRIMARY:
-		Weapon: VolkAT
-	Armament@SECONDARY:
-		Weapon: VolkNapalm
-	AttackFrontal:
-	TakeCover:
-	-RenderInfantry:
-	RenderInfantryProne:
-		IdleAnimations: idle1
-	CrushableInfantry:
-		CrushSound: crunchy2.aud
-	RepairableNear:
-		Buildings: fix
-		CloseEnough: 1
-
 MEDI:
 	Inherits: ^Infantry
 	Buildable:

@@ -88,13 +88,3 @@ ShokVoice:
 		Move: jdance1,jyes1
 		Attack: jburn1,jcrisp1,jshock1,jlight1
 		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman6,dedman7,dedman8,dedman10
-
-VolkovVoice:
-	Variants:
-		soviet: .r01,.r03
-		allies: .v01,.v03
-	Voices:
-		Select: await1,ready,report1,yessir1
-		Move: ackno,affirm1,noprob,overout,ritaway,roger,ugotit
-		Die: dedbot1,dedbot2,dedbot3,dedbot4,dedbot5,dedbot6,dedbot7,dedbot8,dedbot10
-	DisableVariants: Die
