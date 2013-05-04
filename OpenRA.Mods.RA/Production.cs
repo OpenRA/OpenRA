@@ -49,25 +49,27 @@ namespace OpenRA.Mods.RA
 
 		public void DoProduction(Actor self, ActorInfo producee, ExitInfo exitinfo)
 		{
-			var newUnit = self.World.CreateActor(false, producee.Name, new TypeDictionary
-			{
-				new OwnerInit( self.Owner ),
-			});
-
 			var exit = self.Location + exitinfo.ExitCellVector;
 			var spawn = self.Trait<IHasLocation>().PxPosition + exitinfo.SpawnOffsetVector;
-
-			var teleportable = newUnit.Trait<ITeleportable>();
-			var facing = newUnit.TraitOrDefault<IFacing>();
-
-			// Set the physical position of the unit as the exit cell
-			teleportable.SetPosition(newUnit,exit);
 			var to = Util.CenterOfCell(exit);
-			teleportable.AdjustPxPosition(newUnit, spawn);
-			if (facing != null)
-				facing.Facing = exitinfo.Facing < 0 ? Util.GetFacing(to - spawn, facing.Facing) : exitinfo.Facing;
-			self.World.Add(newUnit);
 
+			var fi = producee.Traits.Get<IFacingInfo>();
+			var initialFacing = exitinfo.Facing < 0 ? Util.GetFacing(to - spawn, fi.GetInitialFacing()) : exitinfo.Facing;
+
+			var newUnit = self.World.CreateActor(producee.Name, new TypeDictionary
+			{
+				new OwnerInit(self.Owner),
+				new LocationInit(exit),
+				new FacingInit(initialFacing)
+			});
+
+			// TODO: Move this into an *Init
+			// TODO: We should be adjusting the actual position for aircraft, not just visuals.
+			var teleportable = newUnit.Trait<ITeleportable>();
+			teleportable.AdjustPxPosition(newUnit, spawn);
+
+			// TODO: Generalize this for non-mobile (e.g. aircraft) too
+			// Remember to update the Enter activity too
 			var mobile = newUnit.TraitOrDefault<Mobile>();
 			if (mobile != null)
 			{

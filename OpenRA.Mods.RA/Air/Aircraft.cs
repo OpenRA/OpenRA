@@ -80,6 +80,7 @@ namespace OpenRA.Mods.RA.Air
 		public readonly string[] LandableTerrainTypes = { };
 
 		public virtual object Create( ActorInitializer init ) { return new Aircraft( init , this ); }
+		public int GetInitialFacing() { return InitialFacing; }
 	}
 
 	public class Aircraft : IMove, IFacing, IOccupySpace, ISync, INotifyKilled, IIssueOrder, IOrderVoice
@@ -145,8 +146,6 @@ namespace OpenRA.Mods.RA.Air
 		}
 
 		public int ROT { get { return Info.ROT; } }
-
-		public int InitialFacing { get { return Info.InitialFacing; } }
 
 		public void SetPosition(Actor self, CPos cell)
 		{

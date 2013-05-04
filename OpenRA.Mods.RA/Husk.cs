@@ -18,6 +18,8 @@ namespace OpenRA.Mods.RA
 	class HuskInfo : ITraitInfo, IFacingInfo
 	{
 		public object Create( ActorInitializer init ) { return new Husk( init ); }
+
+		public int GetInitialFacing() { return 128; }
 	}
 
 	class Husk : IOccupySpace, IFacing, ISync
@@ -28,7 +30,6 @@ namespace OpenRA.Mods.RA
 
 		[Sync] public int Facing { get; set; }
 		public int ROT { get { return 0; } }
-		public int InitialFacing { get { return 128; } }
 
 		public Husk(ActorInitializer init)
 		{
