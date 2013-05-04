@@ -141,10 +141,9 @@ namespace OpenRA.Traits
 	{
 		int ROT { get; }
 		int Facing { get; set; }
-		int InitialFacing { get; }
 	}
 
-	public interface IFacingInfo {}		/* tag interface for infoclasses whose corresponding trait has IFacing */
+	public interface IFacingInfo { int GetInitialFacing(); }
 
 	public interface ICrushable
 	{
