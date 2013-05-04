@@ -43,7 +43,6 @@ namespace OpenRA.Graphics
 			catch (FileNotFoundException)
 			{
 				// Do nothing; we can crash later if we actually wanted art
-				Console.WriteLine("Can't find all files for unit {0}.".F(unit));
 			} 
 		}
 
