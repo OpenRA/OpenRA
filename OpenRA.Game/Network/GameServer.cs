@@ -74,11 +74,18 @@ namespace OpenRA.Network
 		{
 			if (!hasBeenPinged)
 			{
-				hasBeenPinged = true;
-				var pingSender = new Ping();
-				pingSender.PingCompleted += new PingCompletedEventHandler(pongRecieved);
-				AutoResetEvent waiter = new AutoResetEvent(false);
-				pingSender.SendAsync(Address.Split(':')[0], waiter);
+				try
+				{
+					hasBeenPinged = true;
+					var pingSender = new Ping();
+					pingSender.PingCompleted += new PingCompletedEventHandler(pongRecieved);
+					AutoResetEvent waiter = new AutoResetEvent(false);
+					pingSender.SendAsync(Address.Split(':')[0], waiter);
+				}
+				catch
+				{
+					Latency = -1;
+				}
 			}
 		}
 
@@ -94,6 +101,7 @@ namespace OpenRA.Network
 				else
 					Latency = -1;
 			}
+			((AutoResetEvent)e.UserState).Set();
 		}
 	}
 }
