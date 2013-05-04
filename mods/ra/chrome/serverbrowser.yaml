@@ -115,6 +115,12 @@ Background@JOINSERVER_BG:
 			Height:25
 			Text:Refresh
 			Font:Bold
+		Checkbox@PING_SERVERS:
+			X:150
+			Y:PARENT_BOTTOM - 45
+			Width:100
+			Height:20
+			Text:Ping
 		Button@JOIN_BUTTON:
 			X:PARENT_RIGHT - 140 - 130
 			Y:PARENT_BOTTOM - 45

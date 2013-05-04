@@ -19,7 +19,7 @@ namespace OpenRA.Network
 {
 	public static class ServerList
 	{
-		public static void Query(Action<GameServer[]> onComplete)
+		public static void Query(Action<GameServer[]> onComplete, bool sendPing)
 		{
 			var masterServerUrl = Game.Settings.Server.MasterServer;
 
@@ -35,9 +35,12 @@ namespace OpenRA.Network
 					games = yaml.Select(a => FieldLoader.Load<GameServer>(a.Value))
 						.Where(gs => gs.Address != null).ToArray();
 
-					foreach (var game in games)
-						if (game.Latency < 0)
-							game.Ping();
+					if (sendPing)
+					{
+						foreach (var game in games)
+							if (game.Latency < 0)
+								game.Ping();
+					}
 				}
 				catch { }
 
