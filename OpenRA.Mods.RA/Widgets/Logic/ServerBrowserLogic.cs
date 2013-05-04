@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		Action OpenLobby;
 		Action OnExit;
 
-		enum SearchStatus { Fetching, Failed, NoGames, Hidden, Pinging }
+		enum SearchStatus { Fetching, Failed, NoGames, Hidden }
 		SearchStatus searchStatus = SearchStatus.Fetching;
 
 		bool showWaiting = true;
@@ -41,7 +41,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				case SearchStatus.Fetching:	return "Fetching game list...";
 				case SearchStatus.Failed:	return "Failed to contact master server.";
 				case SearchStatus.NoGames:	return "No games found.";
-				case SearchStatus.Pinging:	return "Pinging compatible servers.";  
 				default:					return "";
 			}
 		}
@@ -58,14 +57,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var refreshButton = panel.Get<ButtonWidget>("REFRESH_BUTTON");
 			refreshButton.IsDisabled = () => searchStatus == SearchStatus.Fetching;
 			refreshButton.OnClick = () => ServerList.Query(games => RefreshServerList(panel, games));
-
-			var pingButton = panel.GetOrNull<ButtonWidget>("PING_BUTTON");
-			if (pingButton != null)
-			{
-				pingButton.IsDisabled = () => searchStatus == SearchStatus.Pinging ||
-					searchStatus == SearchStatus.Fetching || searchStatus == SearchStatus.Failed;
-				pingButton.OnClick = () => ServerList.Query(games => PingServerList(panel, games));
-			}
 
 			var join = panel.Get<ButtonWidget>("JOIN_BUTTON");
 			join.IsDisabled = () => currentServer == null || !currentServer.CanJoin();
@@ -169,33 +160,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			return s.UsefulMods.Select(m => GenerateModLabel(m)).JoinWith("\n");
 		}
 
-		static string GetPing(GameServer s)
-		{
-			if (s.Latency > -1)
-				return "Ping: {0} ms".F(s.Latency);
-			else
-				return "Ping: ? ms";
-		}
-
-		void PingServerList(Widget panel, IEnumerable<GameServer> games)
-		{
-			searchStatus = SearchStatus.Pinging;
-
-			foreach (var loop in games.Where(g => g.CanJoin()))
-			{
-				var game = loop;
-				
-				if (game == null)
-					continue;
-				
-				game.Ping();
-			}
-
-			searchStatus = SearchStatus.Hidden;
-
-			RefreshServerList(panel, games);
-		}
-
 		bool Filtered(GameServer game)
 		{
 			if ((game.State == (int)ServerState.GameStarted) && !showStarted)
@@ -274,13 +238,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				version.GetText = () => GenerateModsLabel(game);
 				version.IsVisible = () => !game.CompatibleVersion();
 
-				var ping = item.GetOrNull<LabelWidget>("PING");
-				if (ping != null)
-				{
-					ping.GetText = () => GetPing(game);
-					ping.IsVisible = () => game.CompatibleVersion();
-				}
-
 				if (!canJoin)
 				{
 					title.GetColor = () => Color.Gray;
@@ -289,8 +246,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					state.GetColor = () => Color.Gray;
 					ip.GetColor = () => Color.Gray;
 					version.GetColor = () => Color.Gray;
-					if (ping != null)
-						ping.GetColor = () => Color.Gray;
 				}
 
 				if (!Filtered(game))

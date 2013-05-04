@@ -95,12 +95,6 @@ Background@JOINSERVER_BG:
 							Y:40
 							Align:Right
 							Height:25
-						Label@PING:
-							Width:140
-							X:PARENT_RIGHT-150
-							Y:40
-							Align:Right
-							Height:25
 		Label@PROGRESS_LABEL:
 			X:(PARENT_RIGHT - WIDTH) / 2
 			Y:PARENT_BOTTOM / 2 - HEIGHT
@@ -114,13 +108,6 @@ Background@JOINSERVER_BG:
 			Width:100
 			Height:25
 			Text:Refresh
-			Font:Bold
-		Button@PING_BUTTON:
-			X:140
-			Y:PARENT_BOTTOM - 45
-			Width:100
-			Height:25
-			Text:Ping
 			Font:Bold
 		Button@JOIN_BUTTON:
 			X:PARENT_RIGHT - 140 - 130
