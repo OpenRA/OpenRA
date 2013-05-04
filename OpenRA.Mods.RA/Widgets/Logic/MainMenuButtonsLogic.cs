@@ -27,6 +27,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			rootMenu.IsVisible = () => Menu == MenuType.Main;
 
 			Game.modData.WidgetLoader.LoadWidget( new WidgetArgs(), Ui.Root, "PERF_BG" );
+			var versionLabel = Ui.Root.GetOrNull<LabelWidget>("VERSION_LABEL");
+			if (versionLabel != null)
+				versionLabel.GetText = WidgetUtils.ActiveModVersion;
 
 			widget.Get<ButtonWidget>("MAINMENU_BUTTON_JOIN").OnClick = () => OpenGamePanel("JOINSERVER_BG");
 			widget.Get<ButtonWidget>("MAINMENU_BUTTON_CREATE").OnClick = () => OpenGamePanel("CREATESERVER_BG");
