@@ -133,12 +133,22 @@ end
 local function treeSetConnectorsAndIcons(tree,treedata)
   tree:SetImageList(filetree.imglist)
 
+  local function refreshAncestors(node)
+    while node:IsOk() do
+      local dir = treeGetItemFullName(tree,treedata,node)
+      treeAddDir(tree,node,dir)
+      node = tree:GetItemParent(node)
+    end
+  end
+
   -- connect to some events from the wxTreeCtrl
   tree:Connect( wx.wxEVT_COMMAND_TREE_ITEM_EXPANDING,
     function( event )
       local item_id = event:GetItem()
       local dir = treeGetItemFullName(tree,treedata,item_id)
-      treeAddDir(tree,item_id,dir)
+
+      if wx.wxDirExists(dir) then treeAddDir(tree,item_id,dir) -- refresh folder
+      else refreshAncestors(tree:GetItemParent(item_id)) end -- stale content
       return true
     end)
   tree:Connect( wx.wxEVT_COMMAND_TREE_ITEM_COLLAPSED,
@@ -146,21 +156,14 @@ local function treeSetConnectorsAndIcons(tree,treedata)
   tree:Connect( wx.wxEVT_COMMAND_TREE_ITEM_ACTIVATED,
     function( event )
       local item_id = event:GetItem()
-
       local name = treeGetItemFullName(tree,treedata,item_id)
       -- refresh the folder
       if (tree:GetItemImage(item_id) == IMG_DIRECTORY) then
-        if wx.wxFileName(name):DirExists() then
-          treeAddDir(tree,item_id,name) -- refresh the content
-        else -- stale filetree information; rescan
-          treeAddDir(tree,tree:GetItemParent(item_id),name)
-        end
+        if wx.wxDirExists(name) then treeAddDir(tree,item_id,name)
+        else refreshAncestors(tree:GetItemParent(item_id)) end -- stale content
       else -- open file
-        if wx.wxFileName(name):FileExists() then
-          LoadFile(name,nil,true)
-        else -- stale filetree information; rescan
-          treeAddDir(tree,tree:GetItemParent(item_id),name)
-        end 
+        if wx.wxFileExists(name) then LoadFile(name,nil,true)
+        else refreshAncestors(tree:GetItemParent(item_id)) end -- stale content
       end
     end)
   -- toggle a folder on
