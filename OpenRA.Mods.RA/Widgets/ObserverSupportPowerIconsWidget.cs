@@ -68,10 +68,8 @@ namespace OpenRA.Mods.RA.Widgets
 			foreach (var power in powers)
 			{
 				var item = power.a.Value;
-				if (item == null)
-				{
+				if (item == null || item.Info == null || item.Info.Image == null)
 					continue;
-				}
 				var sprite = iconSprites[item.Info.Image];
 				var size = sprite.size / new float2(2, 2);
 				var location = new float2(RenderBounds.Location) + new float2(power.i * (int)size.Length, 0);
