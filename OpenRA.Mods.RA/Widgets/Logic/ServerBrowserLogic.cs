@@ -53,12 +53,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var panel = widget;
 			OpenLobby = openLobby;
 			OnExit = onExit;
+
+			Action refresh = () => ServerList.Query(games => RefreshServerList(panel, games), sendPing);
+
 			var sl = panel.Get<ScrollPanelWidget>("SERVER_LIST");
 
 			// Menu buttons
 			var refreshButton = panel.Get<ButtonWidget>("REFRESH_BUTTON");
 			refreshButton.IsDisabled = () => searchStatus == SearchStatus.Fetching;
-			refreshButton.OnClick = () => ServerList.Query(games => RefreshServerList(panel, games), sendPing);
+			refreshButton.OnClick = () => refresh();
 
 			var join = panel.Get<ButtonWidget>("JOIN_BUTTON");
 			join.IsDisabled = () => currentServer == null || !currentServer.CanJoin();
@@ -79,38 +82,38 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (showPingCheckbox != null)
 			{
 				showPingCheckbox.IsChecked = () => sendPing;
-				showPingCheckbox.OnClick = () => { sendPing ^= true; ServerList.Query(games => RefreshServerList(panel, games), sendPing); };
+				showPingCheckbox.OnClick = () => { sendPing ^= true; refresh(); };
 			}
 
 			var showWaitingCheckbox = panel.GetOrNull<CheckboxWidget>("WAITING_FOR_PLAYERS");
 			if (showWaitingCheckbox != null)
 			{
 				showWaitingCheckbox.IsChecked = () => showWaiting;
-				showWaitingCheckbox.OnClick = () => { showWaiting ^= true; ServerList.Query(games => RefreshServerList(panel, games), sendPing); };
+				showWaitingCheckbox.OnClick = () => { showWaiting ^= true; refresh(); };
 			}
 
 			var showEmptyCheckbox = panel.GetOrNull<CheckboxWidget>("EMPTY");
 			if (showEmptyCheckbox != null)
 			{
 				showEmptyCheckbox.IsChecked = () => showEmpty;
-				showEmptyCheckbox.OnClick = () => { showEmpty ^= true; ServerList.Query(games => RefreshServerList(panel, games), sendPing); };
+				showEmptyCheckbox.OnClick = () => { showEmpty ^= true; refresh(); };
 			}
 
 			var showAlreadyStartedCheckbox = panel.GetOrNull<CheckboxWidget>("ALREADY_STARTED");
 			if (showAlreadyStartedCheckbox != null)
 			{
 				showAlreadyStartedCheckbox.IsChecked = () => showStarted;
-				showAlreadyStartedCheckbox.OnClick = () => { showStarted ^= true; ServerList.Query(games => RefreshServerList(panel, games), sendPing); };
+				showAlreadyStartedCheckbox.OnClick = () => { showStarted ^= true; refresh(); };
 			}
 
 			var showIncompatibleCheckbox = panel.GetOrNull<CheckboxWidget>("INCOMPATIBLE_VERSION");
 			if (showIncompatibleCheckbox != null)
 			{
 				showIncompatibleCheckbox.IsChecked = () => showIncompatible;
-				showIncompatibleCheckbox.OnClick = () => { showIncompatible ^= true; ServerList.Query(games => RefreshServerList(panel, games), sendPing); };
+				showIncompatibleCheckbox.OnClick = () => { showIncompatible ^= true; refresh(); };
 			}
 
-			ServerList.Query(games => RefreshServerList(panel, games), sendPing);
+			refresh();
 		}
 
 		void Join(GameServer server)
