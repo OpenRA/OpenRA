@@ -2590,58 +2590,57 @@ overlay:
 	target-invalid:
 		Start: 1
 
-#Volkov
-e8:
-	stand: gnrl
+gnrl:
+	stand:
 		Start: 0
 		Facings: 8
-	run: gnrl
+	run:
 		Start: 8
 		Length: 5
 		Facings: 8
-	shoot: gnrl
+	shoot:
 		Start: 56
 		Length: 4
 		Facings: 8
-	prone-stand: gnrl
+	prone-stand:
 		Start: 88
 		Length: 2
 		Facings: 8
-	prone-run: gnrl
+	prone-run:
 		Start: 104
 		Length: 4
 		Facings: 8
-	standup-0: gnrl
+	standup-0:
 		Start: 136
 		Length: 2
 		Facings: 8
-	prone-shoot: gnrl
+	prone-shoot:
 		Start: 152
 		Length: 4
 		Facings: 8
-	idle1: gnrl
+	idle1:
 		Start: 184
 		Length: 26
 		Tick: 120
-	die1: gnrl
+	die1:
 		Start: 210
 		Length: 8
-	die2: gnrl
+	die2:
 		Start: 218
 		Length: 8
-	die3: gnrl
+	die3:
 		Start: 226
 		Length: 8
-	die4: gnrl
+	die4:
 		Start: 234
 		Length: 12
-	die5: gnrl
+	die5:
 		Start: 246
 		Length: 18
 	die6: electro
 		Start: 0
 		Length: *
-	die-crushed: botwreck1
+	die-crushed: crushed
 		Start: 0
 		Length: 6
 		Tick: 1600

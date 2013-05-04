@@ -18,14 +18,6 @@ VehicleVoice:
 		Select: vehic1,yessir1,report1,await1
 		Move: ackno,affirm1
 
-ShipVoice:
-	Variants:
-		soviet: .r00,.r02
-		allies: .v00,.v02
-	Voices:
-		Select: vehic1,yessir1,report1,await1
-		Move: ackno,affirm1
-
 EngineerVoice:
 	Voices:
 		Select: eengin1,eyessir1
@@ -96,10 +88,3 @@ ShokVoice:
 		Move: jdance1,jyes1
 		Attack: jburn1,jcrisp1,jshock1,jlight1
 		Die: dedman1,dedman2,dedman3,dedman4,dedman5,dedman6,dedman7,dedman8,dedman10
-
-VolkovVoice:
-	Voices:
-		Select: iromsec,iromsee
-		Move: irommoc,irommoe,irommod
-		Attack: iromata,iromatb,iromatc,iromatd,iromate
-		Die: dedbot1,dedbot2,dedbot3,dedbot4,dedbot5,dedbot6,dedbot7,dedbot8,dedbot10

@@ -131,7 +131,7 @@
 			Water: 100
 	SelectionDecorations:
 	Selectable:
-		Voice: ShipVoice
+		Voice: VehicleVoice
 	TargetableUnit:
 		TargetTypes: Ground, Water
 	DetectCloaked:
