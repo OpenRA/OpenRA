@@ -12,8 +12,8 @@ using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using System.Windows.Forms;
 using System.Text;
+using System.Windows.Forms;
 
 namespace OpenRA
 {
@@ -31,17 +31,24 @@ namespace OpenRA
 				return;
 			}
 
+			AppDomain.CurrentDomain.UnhandledException += (_, e) => LogException((Exception)e.ExceptionObject);
+
 			try
 			{
 				Run(args);
 			}
 			catch (Exception e)
 			{
-				Log.AddChannel("exception", "exception.log");
-				var rpt = BuildExceptionReport(e).ToString();
-				Log.Write("exception", "{0}", rpt);
-				Console.Error.WriteLine(rpt);
+				LogException(e);
 			}
+		}
+
+		static void LogException(Exception e)
+		{
+			Log.AddChannel("exception", "exception.log");
+			var rpt = BuildExceptionReport(e).ToString();
+			Log.Write("exception", "{0}", rpt);
+			Console.Error.WriteLine(rpt);
 		}
 
 		static StringBuilder BuildExceptionReport(Exception e)
