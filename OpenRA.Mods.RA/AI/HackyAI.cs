@@ -907,7 +907,7 @@ namespace OpenRA.Mods.RA.AI
 		CPos defenseCenter;
 		public CPos? ChooseBuildLocation(string actorType, BuildingType type)
 		{
-			return ChooseBuildLocation(actorType, true, MaxBaseDistance, type);
+			return ChooseBuildLocation(actorType, false, MaxBaseDistance, type);
 		}
 
 		public CPos? ChooseBuildLocation(string actorType, bool distanceToBaseIsImportant, int maxBaseDistance, BuildingType type)
@@ -956,7 +956,7 @@ namespace OpenRA.Mods.RA.AI
 					break;
 			}
 
-			return null;		// i don't know where to put it.
+			return null;		// Don't know where to put it.
 		}
 
 		public void Tick(Actor self)
