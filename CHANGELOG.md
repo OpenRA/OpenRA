@@ -1,6 +1,6 @@
 # ZeroBrane Studio Changelog
 
-## Current master (Apr 26 2013)
+## Current master (May 04 2013)
 
 ### Special thanks
   - To Samuel Dionne-Riel for wxwidgets 2.8 compatibility updates.
@@ -13,6 +13,11 @@
   - Added Recent File history navigation.
 
 ### Improvements
+  - Added 'shaking' Find/Replace window when text is not found (closes #146).
+  - Added 'wlua' to the list of recognized Lua extensions.
+  - Added disabling Recent Files menu if the list is empty.
+  - Added TomorrowContrast color scheme (thanks to Sergey Lerg).
+  - Refactored and optimized directory scanning when loading IDE files.
   - Added detaching a child process to avoid crash when exiting during debugging.
   - Added Recent File history navigation (closes #66).
   - Added Marmalade auto-complete support and API documentation.
@@ -30,6 +35,14 @@
   - Updated Monokai color scheme to fix current line color.
 
 ### Fixes
+  - Fixed activation of non-existing files/folders in the Project tree.
+  - Fixed search results for lines without newline.
+  - Fixed Find/Replace in folders with Unicode names (fixes #147); improved performance.
+  - Fixed Un/Comment commands executed for empty lines.
+  - Fixed fold/unfold for files starting with block/comment.
+  - Fixed history after activating non-existing file in Recent Files.
+  - Fixed scrolling to restored cursor position on OSX (when `usewrap` = false).
+  - Fixed Find/Replace dialog to take Enter on OSX (fixes #140).
   - Fixed 'breaking' after executing OUT command that never reaches the target level.
   - Fixed stopping at a breakpoint at the initial line when `startwith` option is specified.
   - Fixed activation of a file loaded into active tab.
