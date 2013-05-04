@@ -1,3 +1,53 @@
+explosion:
+	piff: minipiff
+		Start: 0
+		Length: *
+	piffs: minipiff
+		Start: 0
+		Length: *
+	small_explosion: veh-hit3
+		Start: 0
+		Length: *
+	med_explosion: frag1
+		Start: 0
+		Length: *
+	large_explosion: bigboom
+		Start: 0
+		Length: *
+	small_artillery: veh-hit2
+		Start: 0
+		Length: *
+	artillery: art-exp1
+		Start: 0
+		Length: *
+	self_destruct: art-exp1
+		Start: 0
+		Length: *
+	small_building: veh-hit1
+		Start: 0
+		Length: *
+	building: fball1
+		Start: 0
+		Length: *
+	small_napalm: napalm1
+		Start: 0
+		Length: *
+	napalm: napalm2
+		Start: 0
+		Length: *
+	napalm2: napalm2
+		Start: 0
+		Length: *
+		Tick: 60
+	shockwave: shockwave
+		Start: 0
+		Length: *
+		Tick: 30
+	nuke: atomsfx
+		Start: 0
+		Length: *
+		Tick: 60
+
 90mm:
 	idle: 
 		Start: 0
@@ -874,6 +924,10 @@ devast:
 	idle:
 		Start: 0
 		Facings: 32
+	muzzle: doubleblastmuzzle
+		Start: 0
+		Length: 1
+		Facings: 32
 
 conyardo:
 	idle:
@@ -1098,43 +1152,6 @@ rpg:
 		Start: 0
 		Facings: 32
 
-explosion:
-	piff: minipiff
-		Start: 0
-		Length: *
-	piffs: minipiff
-		Start: 0
-		Length: *
-	small_explosion: miniboom
-		Start: 0
-		Length: *
-	med_explosion: mediboom
-		Start: 0
-		Length: *
-	napalm: mediboom2
-		Start: 0
-		Length: *
-	nuke: mushroomcloud
-		Start: 0
-		Length: *
-		Tick: 60
-	napalm2: mediboom2
-		Start: 0
-		Length: *
-		Tick: 60
-	self_destruct: bigboom
-		Start: 0
-		Length: *
-	building: bigboom2
-		Start: 0
-		Length: *
-	large_explosion: largeboom
-		Start: 0
-		Length: *
-	small_napalm: miniboom2
-		Start: 0
-		Length: *
-
 crate:
 	idle: crates
 		Start: 0
@@ -1239,7 +1256,7 @@ plates:
 		Length: 6
 
 fire:
-	1: fire
+	1: fire2
 		Start: 0
 		Length: *
 	2: fire2
@@ -1332,3 +1349,8 @@ waypoint:
 sietch:
 	idle:
 		Start: 0
+
+doubleblast:
+	idle: 
+		Start: 0
+		Facings: 16
