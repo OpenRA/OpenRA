@@ -1,7 +1,7 @@
 General:
 	Name: Snow
 	Id: SNOW
-	Extensions: .sno, .shp, .tem
+	Extensions: .sno, .shp, .tem, .int, .des
 	Palette: snow.pal
 	EditorTemplateOrder: Terrain, Debris, Road, Cliffs, Water Cliffs, Beach, River, Bridge
 

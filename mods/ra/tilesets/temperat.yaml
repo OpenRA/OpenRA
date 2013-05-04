@@ -1,7 +1,7 @@
 General:
 	Name: Temperate
 	Id: TEMPERAT
-	Extensions: .tem, .shp
+	Extensions: .tem, .shp, .sno, .int, .des
 	Palette: temperat.pal
 	EditorTemplateOrder: Terrain, Debris, Road, Cliffs, Water Cliffs, Beach, River, Bridge
 
