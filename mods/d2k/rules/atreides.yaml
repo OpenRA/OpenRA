@@ -231,8 +231,10 @@ FREMEN:
 		Range: 7
 	AutoTarget:
 		ScanRadius: 7
-	Armament:
+	Armament@PRIMARY:
 		Weapon: Sniper
+	Armament@SECONDARY:
+		Weapon: Slung
 	AttackFrontal:
 	RenderInfantryProne:
 	-RenderInfantry:
