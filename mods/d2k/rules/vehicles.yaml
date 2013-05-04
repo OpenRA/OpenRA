@@ -76,7 +76,7 @@ HARVESTER:
 	Armor:
 		Type: Heavy
 	Mobile:
-		Speed: 7
+		Speed: 6
 		Crushes: crate, infantry
 	RenderUnit:
 		Image: HARVESTER
