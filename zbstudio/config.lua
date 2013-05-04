@@ -11,6 +11,7 @@ local G = ... -- this now points to the global environment
 if G.ide.osname == 'Macintosh' then
   local defaultsize = 11
   filetree.fontsize = defaultsize
+  funclist.fontsize = defaultsize
   if G.ide.wxver >= "2.9.5" then
     editor.fontsize = defaultsize
     editor.fontname = "Monaco"

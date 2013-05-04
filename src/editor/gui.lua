@@ -16,10 +16,18 @@ ide.font.oNormal = setFont(wx.wxFONTSTYLE_NORMAL, ide.config.outputshell)
 ide.font.oItalic = setFont(wx.wxFONTSTYLE_ITALIC, ide.config.outputshell)
 
 -- treeCtrl font requires slightly different handling
-local gui, config = wx.wxTreeCtrl():GetFont(), ide.config.filetree
-if config.fontsize then gui:SetPointSize(config.fontsize) end
-if config.fontname then gui:SetFaceName(config.fontname) end
-ide.font.fNormal = gui
+do local gui, config = wx.wxTreeCtrl():GetFont(), ide.config.filetree
+  if config.fontsize then gui:SetPointSize(config.fontsize) end
+  if config.fontname then gui:SetFaceName(config.fontname) end
+  ide.font.fNormal = gui
+end
+
+-- funcList font requires similar handling
+do local gui, config = wx.wxTreeCtrl():GetFont(), ide.config.funclist
+  if config.fontsize then gui:SetPointSize(config.fontsize) end
+  if config.fontname then gui:SetFaceName(config.fontname) end
+  ide.font.dNormal = gui
+end
 
 -- ----------------------------------------------------------------------------
 -- Create the wxFrame

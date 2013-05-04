@@ -17,8 +17,7 @@ local projcombobox = ide.frame.projpanel.projcombobox
 -- Only update if the text has changed.
 local statusTextTable = { "OVR?", "R/O?", "Cursor Pos" }
 
--- set funclist font to be the same as the combobox in the project dropdown
-funclist:SetFont(ide.font.fNormal)
+funclist:SetFont(ide.font.dNormal)
 
 local function updateStatusText(editor)
   local texts = { "", "", "" }

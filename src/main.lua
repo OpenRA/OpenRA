@@ -52,6 +52,7 @@ ide = {
     },
     outputshell = {},
     filetree = {},
+    funclist = {},
 
     keymap = {},
     messages = {},
@@ -122,6 +123,7 @@ ide = {
     oNormal = nil,
     oItalic = nil,
     fNormal = nil,
+    dNormal = nil,
   },
 
   osname = wx.wxPlatformInfo.Get():GetOperatingSystemFamilyName(),
