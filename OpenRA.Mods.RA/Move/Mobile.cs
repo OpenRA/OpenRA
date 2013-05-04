@@ -127,6 +127,8 @@ namespace OpenRA.Mods.RA.Move
 
 			return true;
 		}
+
+		public int GetInitialFacing() { return InitialFacing; }
 	}
 
 	public class Mobile : IIssueOrder, IResolveOrder, IOrderVoice, IOccupySpace, IMove, IFacing, ISync
@@ -150,7 +152,6 @@ namespace OpenRA.Mods.RA.Move
 		[Sync] public int Altitude { get; set; }
 
 		public int ROT { get { return Info.ROT; } }
-		public int InitialFacing { get { return Info.InitialFacing; } }
 
 		[Sync] public PPos PxPosition { get; set; }
 		[Sync] public CPos fromCell { get { return __fromCell; } }
