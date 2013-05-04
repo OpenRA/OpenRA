@@ -163,7 +163,7 @@ STEALTHTRIKE:
 	Tooltip:
 		Name: Stealth Raider Trike
 		Description: Invisible Raider Trike\n Strong vs Infantry, Light Vehicles
-		Icon: raidericon
+		Icon: raidersicon
 	Health:
 		HP: 110
 	Mobile:

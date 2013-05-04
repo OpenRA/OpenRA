@@ -86,7 +86,7 @@ UnitExplodeTiny:
 			Wood: 75%
 			Light: 60%
 			Heavy: 25%
-		Explosion: large_explosion
+		Explosion: med_explosion
 		InfDeath: 4
 		ImpactSound: EXPLMD2, EXPLSML1, EXPLSML2, EXPLSML3
 
