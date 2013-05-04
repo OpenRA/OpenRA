@@ -561,8 +561,12 @@ local beforeFullScreenPerspective
 function ShowFullScreen(setFullScreen)
   if setFullScreen then
     beforeFullScreenPerspective = uimgr:SavePerspective()
-    uimgr:GetPane("bottomnotebook"):Show(false)
-    uimgr:GetPane("projpanel"):Show(false)
+
+    local panes = frame.uimgr:GetAllPanes()
+    for index = 0, panes:GetCount()-1 do
+      local name = panes:Item(index).name
+      if name ~= "notebook" then frame.uimgr:GetPane(name):Hide() end
+    end
     uimgr:Update()
     SetEditorSelection() -- make sure the focus is on the editor
   elseif beforeFullScreenPerspective then
