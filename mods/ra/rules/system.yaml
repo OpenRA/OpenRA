@@ -50,10 +50,10 @@ Player:
 			Mcv: mcv
 		BuildingLimits:
 			proc: 4
-			barr: 2
-			tent: 2
+			barr: 1
+			tent: 1
 			dome: 1
-			weap: 2
+			weap: 1
 			spen: 1
 			syrd: 1
 			hpad: 4
@@ -102,10 +102,10 @@ Player:
 			Mcv: mcv
 		BuildingLimits:
 			proc: 4
-			barr: 2
-			tent: 2
+			barr: 1
+			tent: 1
 			dome: 1
-			weap: 2
+			weap: 1
 			spen: 1
 			syrd: 1
 			hpad: 4
@@ -168,10 +168,10 @@ Player:
 			Mcv: mcv
 		BuildingLimits:
 			proc: 4
-			barr: 2
-			tent: 2
+			barr: 1
+			tent: 1
 			dome: 1
-			weap: 2
+			weap: 1
 			spen: 1
 			syrd: 1
 			hpad: 4
@@ -233,10 +233,10 @@ Player:
 			Mcv: mcv
 		BuildingLimits:
 			proc: 4
-			barr: 2
-			tent: 2
+			barr: 1
+			tent: 1
 			dome: 1
-			weap: 2
+			weap: 1
 			spen: 1
 			syrd: 1
 			hpad: 4
@@ -343,58 +343,8 @@ Player:
 			ca: 20%
 			pt: 10%
 		SquadSize: 1
-	HackyAI@OptiAI:
-		Name:Eisenhower AI
-		BuildingCommonNames:
-			ConstructionYard: fact
-			Refinery: proc
-			Power: powr,apwr
-			Barracks: barr,tent
-			VehiclesFactory: weap	
-			Silo: silo
-		UnitsCommonNames:
-			Mcv: mcv
-		BuildingLimits:
-			proc: 4
-			barr: 2
-			tent: 2
-			dome: 1
-			weap: 2
-			spen: 1
-			syrd: 1
-			hpad: 4
-			afld: 4
-			atek: 1
-			stek: 1
-			fix: 1
-		BuildingFractions:
-			proc: 25.1%
-			powr: 35%
-			tent: 0.1%
-			barr: 0.1%
-			weap: 0.1%
-			fix: 0.1%
-			dome: 0.1%
-			atek: 0.1%
-			stek: 0.1%
-		UnitsToBuild:
-			e1: 50%
-			e2: 1%
-			e3: 10%
-			medi: 0.01%
-			e7: 0.01%
-			apc: 10%
-			jeep: 10%
-			ftrk: 25%
-			1tnk: 25%
-			2tnk: 50%
-			3tnk: 75%
-			4tnk: 100%
-			arty: 30%
-			v2rl: 30%
-		SquadSize: 10
-	HackyAI@ZhukovAI:
-		Name:Zhukov AI
+	HackyAI@HightechAI:
+		Name:High-Tech AI
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
@@ -406,10 +356,81 @@ Player:
 			Mcv: mcv
 		BuildingLimits:
 			proc: 4
-			barr: 2
-			tent: 2
+			barr: 1
+			tent: 1
 			dome: 1
-			weap: 2
+			weap: 1
+			fix: 1
+			spen: 1
+			syrd: 1
+			hpad: 4
+			afld: 4
+			atek: 1
+			stek: 1
+			pdox: 1
+			mslo: 1
+			e7: 1
+			e8: 1
+		BuildingFractions:
+			proc: 25.1%
+			powr: 35%
+			tent: 1%
+			barr: 1%
+			weap: 1%
+			fix: 1%
+			dome: 1%
+			atek: 1%
+			stek: 1%
+			pdox: 1%
+			mslo: 1%
+			pbox.e1: 15%
+			gun: 15%
+			ftur: 15%
+			tsla: 15%
+			agun: 5%
+			sam: 5%
+		UnitsToBuild:
+			e1: 50%
+			e2: 1%
+			e3: 10%
+			medi: 1%
+			e7: 100%
+			e8: 100%
+			apc: 1%
+			jeep: 1%
+			ftrk: 1%
+			1tnk: 5%
+			2tnk: 5%
+			3tnk: 5%
+			4tnk: 100%
+			arty: 5%
+			v2rl: 5%
+			yak: 5%
+			mig: 100%
+			ctnk: 100%
+			ttnk: 100%
+			dd: 5%
+			ca: 100%
+			ss: 5%
+			msub: 100%
+		SquadSize: 10
+	HackyAI@LongrangeAI:
+		Name:Long-Range AI
+		BuildingCommonNames:
+			ConstructionYard: fact
+			Refinery: proc
+			Power: powr,apwr
+			Barracks: barr,tent
+			VehiclesFactory: weap
+			Silo: silo
+		UnitsCommonNames:
+			Mcv: mcv
+		BuildingLimits:
+			proc: 4
+			barr: 1
+			tent: 1
+			dome: 1
+			weap: 1
 			spen: 1
 			syrd: 1
 			hpad: 4
@@ -445,8 +466,8 @@ Player:
 			2tnk: 15%
 			3tnk: 15%
 		SquadSize: 25
-	HackyAI@RommelAI:
-		Name:Rommel AI
+	HackyAI@TankAI:
+		Name:Tank AI
 		BuildingCommonNames:
 			ConstructionYard: fact
 			Refinery: proc
@@ -458,10 +479,10 @@ Player:
 			Mcv: mcv
 		BuildingLimits:
 			proc: 4
-			barr: 2
-			tent: 2
+			barr: 1
+			tent: 1
 			dome: 1
-			weap: 2
+			weap: 1
 			spen: 1
 			syrd: 1
 			hpad: 4
