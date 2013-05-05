@@ -29,23 +29,19 @@ namespace OpenRA.Graphics
 			this.world = world;
 			this.map = world.Map;
 
-			var tileSize = new Size( Game.CellSize, Game.CellSize );
-			var tileMapping = new Cache<TileReference<ushort,byte>, Sprite>(
-				x => Game.modData.SheetBuilder.Add(world.TileSet.GetBytes(x), tileSize));
-
-			var vertices = new Vertex[4 * map.Bounds.Height * map.Bounds.Width];
+			var tileSize = new Size(Game.CellSize, Game.CellSize);
+			var tileMapping = new Cache<TileReference<ushort,byte>, Sprite>(x =>
+				Game.modData.SheetBuilder.Add(world.TileSet.GetBytes(x), tileSize));
 
 			terrainSheet = tileMapping[map.MapTiles.Value[map.Bounds.Left, map.Bounds.Top]].sheet;
-
+			var terrainPalette = wr.Palette("terrain").Index;
+			var vertices = new Vertex[4 * map.Bounds.Height * map.Bounds.Width];
 			int nv = 0;
 
-			var terrainPalette = wr.Palette("terrain").Index;
-
-			for( int j = map.Bounds.Top; j < map.Bounds.Bottom; j++ )
-				for( int i = map.Bounds.Left; i < map.Bounds.Right; i++ )
+			for (var j = map.Bounds.Top; j < map.Bounds.Bottom; j++)
+				for (var i = map.Bounds.Left; i < map.Bounds.Right; i++)
 				{
 					var tile = tileMapping[map.MapTiles.Value[i, j]];
-					// TODO: move GetPaletteIndex out of the inner loop.
 					Util.FastCreateQuad(vertices, Game.CellSize * new float2(i, j), tile, terrainPalette, nv, tile.size);
 					nv += 4;
 
@@ -53,13 +49,13 @@ namespace OpenRA.Graphics
 						throw new InvalidOperationException("Terrain sprites span multiple sheets. Try increasing Game.Settings.Graphics.SheetSize.");
 				}
 
-			vertexBuffer = Game.Renderer.Device.CreateVertexBuffer( vertices.Length );
-			vertexBuffer.SetData( vertices, nv );
+			vertexBuffer = Game.Renderer.Device.CreateVertexBuffer(vertices.Length);
+			vertexBuffer.SetData(vertices, nv);
 		}
 
-		public void Draw( WorldRenderer wr, Viewport viewport )
+		public void Draw(WorldRenderer wr, Viewport viewport)
 		{
-			int verticesPerRow = map.Bounds.Width * 4;
+			int verticesPerRow = 4*map.Bounds.Width;
 
 			int visibleRows = (int)(viewport.Height * 1f / Game.CellSize / viewport.Zoom + 2);
 
@@ -79,17 +75,22 @@ namespace OpenRA.Graphics
 					firstRow = r.Bottom - map.Bounds.Top;
 			}
 
-			if (firstRow < 0) firstRow = 0;
-			if (lastRow > map.Bounds.Height) lastRow = map.Bounds.Height;
+			// Sanity checking
+			if (firstRow < 0)
+				firstRow = 0;
 
-			if( lastRow < firstRow ) lastRow = firstRow;
+			if (lastRow > map.Bounds.Height)
+				lastRow = map.Bounds.Height;
+
+			if (lastRow < firstRow)
+				lastRow = firstRow;
 
 			Game.Renderer.WorldSpriteRenderer.DrawVertexBuffer(
 				vertexBuffer, verticesPerRow * firstRow, verticesPerRow * (lastRow - firstRow),
 				PrimitiveType.QuadList, terrainSheet);
 
 			foreach (var r in world.WorldActor.TraitsImplementing<IRenderOverlay>())
-				r.Render( wr );
+				r.Render(wr);
 		}
 	}
 }
