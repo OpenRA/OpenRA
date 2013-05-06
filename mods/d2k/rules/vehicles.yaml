@@ -127,7 +127,7 @@ HARVESTER.starport:
 	Armor:
 		Type: Light
 	Mobile:
-		ROT: 9
+		ROT: 10
 		Speed: 12
 	RevealsShroud:
 		Range: 7
