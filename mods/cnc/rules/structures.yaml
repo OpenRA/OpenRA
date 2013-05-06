@@ -494,7 +494,7 @@ TMPL:
 		BeginChargeSound: 
 		EndChargeSound: nukavail.aud
 		SelectTargetSound: select1.aud
-		LaunchSound: nukemisl.aud
+		LaunchSound: nukel.aud
 		MissileWeapon: atomic
 	SupportPowerChargeBar:
 
