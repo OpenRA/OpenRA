@@ -30,8 +30,8 @@ namespace OpenRA.Graphics
 			this.map = world.Map;
 
 			var tileSize = new Size(Game.CellSize, Game.CellSize);
-			var tileMapping = new Cache<TileReference<ushort,byte>, Sprite>(x =>
-				Game.modData.SheetBuilder.Add(world.TileSet.GetBytes(x), tileSize));
+			var tileMapping = new Cache<TileReference<ushort,byte>, Sprite>(
+				x => Game.modData.SheetBuilder.Add(world.TileSet.GetBytes(x), tileSize, false));
 
 			terrainSheet = tileMapping[map.MapTiles.Value[map.Bounds.Left, map.Bounds.Top]].sheet;
 			var terrainPalette = wr.Palette("terrain").Index;
@@ -44,9 +44,6 @@ namespace OpenRA.Graphics
 					var tile = tileMapping[map.MapTiles.Value[i, j]];
 					Util.FastCreateQuad(vertices, Game.CellSize * new float2(i, j), tile, terrainPalette, nv, tile.size);
 					nv += 4;
-
-					if (tileMapping[map.MapTiles.Value[i, j]].sheet != terrainSheet)
-						throw new InvalidOperationException("Terrain sprites span multiple sheets. Try increasing Game.Settings.Graphics.SheetSize.");
 				}
 
 			vertexBuffer = Game.Renderer.Device.CreateVertexBuffer(vertices.Length);

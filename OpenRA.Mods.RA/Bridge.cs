@@ -99,9 +99,9 @@ namespace OpenRA.Mods.RA
 			if (cachedTileset != self.World.Map.Tileset)
 			{
 				cachedTileset = self.World.Map.Tileset;
+				var tileSize = new Size(Game.CellSize, Game.CellSize);
 				sprites = new Cache<TileReference<ushort,byte>, Sprite>(
-				x => Game.modData.SheetBuilder.Add(self.World.TileSet.GetBytes(x),
-					new Size(Game.CellSize, Game.CellSize)));
+					x => Game.modData.SheetBuilder.Add(self.World.TileSet.GetBytes(x), tileSize, true));
 			}
 
 			// Cache templates and tiles for the different states

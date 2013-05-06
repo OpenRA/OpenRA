@@ -96,9 +96,8 @@ namespace OpenRA.Graphics
 			face.LoadGlyph(index, LoadFlags.Default, LoadTarget.Normal);
 			face.Glyph.RenderGlyph(RenderMode.Normal);
 
-			var s = builder.Allocate(
-				new Size((int)face.Glyph.Metrics.Width >> 6,
-			         (int)face.Glyph.Metrics.Height >> 6));
+			var size = new Size((int)face.Glyph.Metrics.Width >> 6, (int)face.Glyph.Metrics.Height >> 6);
+			var s = builder.Allocate(size, true);
 
 			var g = new GlyphInfo
 			{
