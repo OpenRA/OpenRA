@@ -321,7 +321,7 @@ DevBullet:
 	Report: MISSLE1
 	ValidTargets: Ground
 	Projectile: Bullet
-		Speed: 24
+		Speed: 28
 		Arm: 5
 		High: yes
 		Shadow: yes
@@ -333,10 +333,10 @@ DevBullet:
 	Warhead:
 		Spread: 12
 		Versus: 
-			None: 25%
-			Wood: 25%
+			None: 20%
+			Wood: 50%
 			Light: 100%
-			Heavy: 80%
+			Heavy: 50%
 			Concrete: 80%
 		InfDeath: 4
 		Explosion: artillery
