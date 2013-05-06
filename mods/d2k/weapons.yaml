@@ -220,7 +220,8 @@ TurretGun:
 
 TowerMissile:
 	ROF: 35
-	Range: 8.25
+	Range: 7.75
+	MinRange: 1
 	Report: ROCKET1
 	ValidTargets: Ground, Air
 	Burst: 2
