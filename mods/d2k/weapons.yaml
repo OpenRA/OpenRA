@@ -325,7 +325,7 @@ DevBullet:
 		Arm: 5
 		High: yes
 		Shadow: yes
-		Inaccuracy: 55
+		Inaccuracy: 45
 		Angle: 0.2
 		Image: MISSILE2
 		ROT: 5
