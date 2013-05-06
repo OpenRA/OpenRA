@@ -273,10 +273,10 @@ SIEGETANK:
 		ROT: 3
 	Armament:
 		Weapon: 155mm
-		Recoil: 299
+		Recoil: 150
 		RecoilRecovery: 19
 		LocalOffset: 171,0,299
-	AttackFrontal:
+	AttackTurreted:
 	RenderUnitTurreted:
 		Image: SIEGETANK
 	Explodes:
