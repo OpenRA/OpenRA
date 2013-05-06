@@ -376,19 +376,19 @@ FakeMissile:
 	MinRange: 2
 	Report: MORTAR1
 	Projectile: Bullet
-		Speed: 18
+		Speed: 20
 		High: true
 		Shadow: yes
 		Angle: .1
-		Inaccuracy: 45
+		Inaccuracy: 40
 		ContrailLength: 20
 	Warhead:
 		Spread: 12
 		Versus: 
 			None: 100%
-			Wood: 60%
+			Wood: 80%
 			Light: 50%
-			Heavy: 25%
+			Heavy: 50%
 			Concrete: 80%
 		Explosion: large_explosion
 		WaterExplosion: large_splash
