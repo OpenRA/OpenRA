@@ -162,8 +162,13 @@ function FileSysHasContent(dir)
 end
 
 function FileSysGetRecursive(path, recursive, spec, skip)
+  spec = spec or "*"
   local content = {}
   local sep = string.char(wx.wxFileName.GetPathSeparator())
+
+  -- recursion is done in all folders but only those folders that match
+  -- the spec are returned. This is the pattern that matches the spec.
+  local specmask = spec:gsub("%.", "%%."):gsub("%*", ".*").."$"
 
   local function getDir(path, spec)
     local dir = wx.wxDir(path)
@@ -173,7 +178,7 @@ function FileSysGetRecursive(path, recursive, spec, skip)
     while found do
       if not skip or not file:find(skip) then
         local fname = wx.wxFileName(path, file):GetFullPath()
-        table.insert(content, fname..sep)
+        if fname:find(specmask) then table.insert(content, fname..sep) end
         if recursive then getDir(fname, spec) end
       end
       found, file = dir:GetNext()
@@ -187,7 +192,7 @@ function FileSysGetRecursive(path, recursive, spec, skip)
       found, file = dir:GetNext()
     end
   end
-  getDir(path, spec or "")
+  getDir(path, spec)
 
   return content
 end
