@@ -521,6 +521,7 @@ REPAIR:
 		ValuePercentage: 50
 	RallyPoint:
 		RallyPoint: 1,3
+	-Bib:
 
 ^HIGHTECH:
 	Inherits: ^Building
