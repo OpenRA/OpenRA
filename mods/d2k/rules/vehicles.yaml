@@ -271,6 +271,7 @@ SIEGETANK:
 		Range: 8
 	Turreted:
 		ROT: 3
+		Offset: -220,0,-40
 	Armament:
 		Weapon: 155mm
 		Recoil: 150
