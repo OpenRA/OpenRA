@@ -53,7 +53,7 @@ namespace OpenRA
 
 			ChromeMetrics.Initialize(Manifest.ChromeMetrics);
 			ChromeProvider.Initialize(Manifest.Chrome);
-			SheetBuilder = new SheetBuilder(TextureChannel.Red);
+			SheetBuilder = new SheetBuilder(SheetType.Indexed);
 			SpriteLoader = new SpriteLoader(new string[] { ".shp" }, SheetBuilder);
 			CursorProvider.Initialize(Manifest.Cursors);
 		}

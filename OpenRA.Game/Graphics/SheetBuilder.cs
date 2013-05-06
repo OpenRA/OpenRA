@@ -22,31 +22,39 @@ namespace OpenRA.Graphics
 				"to temporarily avoid the problem.") {}
 	}
 
+	public enum SheetType
+	{
+		Indexed = 1,
+		DualIndexed = 2,
+		BGRA = 4,
+	}
+
 	public class SheetBuilder
 	{
 		Sheet current;
+		TextureChannel channel;
+		SheetType type;
 		int rowHeight = 0;
 		Point p;
-		TextureChannel channel;
-		Sheet NewSheet() { return new Sheet(new Size(Renderer.SheetSize, Renderer.SheetSize)); }
 
-		internal SheetBuilder(TextureChannel ch)
+		internal SheetBuilder(SheetType t)
 		{
-			current = NewSheet();
-			channel = ch;
+			current = new Sheet(new Size(Renderer.SheetSize, Renderer.SheetSize));;
+			channel = TextureChannel.Red;
+			type = t;
 		}
 
 		public Sprite Add(byte[] src, Size size, bool allowSheetOverflow)
 		{
-			Sprite rect = Allocate(size, allowSheetOverflow);
+			var rect = Allocate(size, allowSheetOverflow);
 			Util.FastCopyIntoChannel(rect, src);
 			return rect;
 		}
 
 		public Sprite Add(Size size, byte paletteIndex, bool allowSheetOverflow)
 		{
-			byte[] data = new byte[size.Width * size.Height];
-			for (int i = 0; i < data.Length; i++)
+			var data = new byte[size.Width * size.Height];
+			for (var i = 0; i < data.Length; i++)
 				data[i] = paletteIndex;
 
 			return Add(data, size, allowSheetOverflow);
@@ -54,14 +62,11 @@ namespace OpenRA.Graphics
 
 		TextureChannel? NextChannel(TextureChannel t)
 		{
-			switch (t)
-			{
-				case TextureChannel.Red: return TextureChannel.Green;
-				case TextureChannel.Green: return TextureChannel.Blue;
-				case TextureChannel.Blue: return TextureChannel.Alpha;
-				case TextureChannel.Alpha:
-				default: return null;
-			}
+			var nextChannel = (int)t + (int)type;
+			if (nextChannel > (int)TextureChannel.Alpha)
+				return null;
+
+			return (TextureChannel)nextChannel;
 		}
 
 		public Sprite Allocate(Size imageSize, bool allowSheetOverflow)
@@ -93,11 +98,13 @@ namespace OpenRA.Graphics
 				p = new Point(0,0);
 			}
 
-			Sprite rect = new Sprite(current, new Rectangle(p, imageSize), channel);
+			var rect = new Sprite(current, new Rectangle(p, imageSize), channel);
 			current.MakeDirty();
 			p.X += imageSize.Width;
 
 			return rect;
 		}
+
+		public Sheet Current { get { return current; } }
 	}
 }
