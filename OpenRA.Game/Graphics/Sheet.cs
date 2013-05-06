@@ -9,6 +9,7 @@
 #endregion
 
 using System.Drawing;
+using System.Drawing.Imaging;
 using OpenRA.FileFormats;
 using OpenRA.FileFormats.Graphics;
 
@@ -16,21 +17,44 @@ namespace OpenRA.Graphics
 {
 	public class Sheet
 	{
-		Bitmap bitmap;
 		ITexture texture;
 		bool dirty;
-		byte[] data;
+		public byte[] Data { get; private set; }
 		public readonly Size Size;
 
 		public Sheet(Size size)
 		{
 			Size = size;
+			Data = new byte[4*Size.Width*Size.Height];
 		}
 
 		public Sheet(string filename)
 		{
-			bitmap = (Bitmap)Image.FromStream(FileSystem.Open(filename));
+			var bitmap = (Bitmap)Image.FromStream(FileSystem.Open(filename));
 			Size = bitmap.Size;
+
+			Data = new byte[4*Size.Width*Size.Height];
+			var b = bitmap.LockBits(bitmap.Bounds(),
+				ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+
+			unsafe
+			{
+				int* c = (int*)b.Scan0;
+
+				for (var x = 0; x < Size.Width; x++)
+					for (var y = 0; y < Size.Height; y++)
+				{
+					var i = 4*Size.Width*y + 4*x;
+
+					// Convert argb to bgra
+					var argb = *(c + (y * b.Stride >> 2) + x);
+					Data[i++] = (byte)(argb >> 0);
+					Data[i++] = (byte)(argb >> 8);
+					Data[i++] = (byte)(argb >> 16);
+					Data[i++] = (byte)(argb >> 24);
+				}
+			}
+			bitmap.UnlockBits(b);
 		}
 
 		public ITexture Texture
@@ -45,23 +69,14 @@ namespace OpenRA.Graphics
 
 				if (dirty)
 				{
-					if (data != null)
-					{
-						texture.SetData(data, Size.Width, Size.Height);
-						dirty = false;
-					}
-					else if (bitmap != null)
-					{
-						texture.SetData(bitmap);
-						dirty = false;
-					}
+					texture.SetData(Data, Size.Width, Size.Height);
+					dirty = false;
 				}
 
 				return texture;
 			}
 		}
 
-		public byte[] Data { get { if (data == null) data = new byte[4 * Size.Width * Size.Height]; return data; } }
 		public void MakeDirty() { dirty = true; }
 	}
 }
