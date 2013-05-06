@@ -77,6 +77,53 @@ namespace OpenRA.Graphics
 			}
 		}
 
+		public Bitmap AsBitmap()
+		{
+			var b = new Bitmap(Size.Width, Size.Height);
+			var output = b.LockBits(new Rectangle(0, 0, Size.Width, Size.Height),
+				ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+
+			unsafe
+			{
+				int* c = (int*)output.Scan0;
+
+				for (var x = 0; x < Size.Width; x++)
+					for (var y = 0; y < Size.Height; y++)
+					{
+						var i = 4*Size.Width*y + 4*x;
+
+						// Convert bgra to argb
+						var argb = (Data[i+3] << 24) | (Data[i+2] << 16) | (Data[i+1] << 8) | Data[i];
+						*(c + (y * output.Stride >> 2) + x) = argb;
+					}
+			}
+			b.UnlockBits(output);
+
+			return b;
+		}
+
+		public Bitmap AsBitmap(TextureChannel channel, Palette pal)
+		{
+			var b = new Bitmap(Size.Width, Size.Height);
+			var output = b.LockBits(new Rectangle(0, 0, Size.Width, Size.Height),
+				ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+
+			unsafe
+			{
+				int* c = (int*)output.Scan0;
+
+				for (var x = 0; x < Size.Width; x++)
+					for (var y = 0; y < Size.Height; y++)
+				{
+					var index = Data[4*Size.Width*y + 4*x + (int)channel];
+					*(c + (y * output.Stride >> 2) + x) = pal.GetColor(index).ToArgb();
+				}
+			}
+			b.UnlockBits(output);
+
+			return b;
+		}
+
 		public void MakeDirty() { dirty = true; }
 	}
 }
