@@ -280,7 +280,7 @@ World:
 	BuildingInfluence:
 	ChooseBuildTabOnSelect:
 	CrateSpawner:
-		Minimum: 1
+		Minimum: 0
 		Maximum: 2
 		SpawnInterval: 60
 		WaterChance: 0
