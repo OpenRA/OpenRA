@@ -370,11 +370,15 @@ loadSpecs()
 loadTools()
 
 do
-  -- process user config
-  addConfig(GetFullPathIfExists("cfg", "user.lua"))
-
   local home = os.getenv("HOME")
-  addConfig(home and GetFullPathIfExists(home, ".zbstudio/user.lua"))
+  ide.configs = {
+    system = MergeFullPath("cfg", "user.lua"),
+    user = home and MergeFullPath(home, ".zbstudio/user.lua"),
+  }
+
+  -- process configs
+  addConfig(ide.configs.system)
+  addConfig(ide.configs.user)
 
   -- process all other configs (if any)
   for _, v in ipairs(configs) do addConfig(v, true) end

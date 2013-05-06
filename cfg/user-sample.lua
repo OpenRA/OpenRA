@@ -1,6 +1,6 @@
---[[-- Copy required content from this file to `user.lua`
+--[[-- This file shows examples of settings you can adjust.
 
-Configuration files are loaded in the following order:
+Configuration files with preferences are loaded in the following order:
 1. cfg/user.lua (system-wide configuration)
 2. HOME/.zbstudio/user.lua (per-user configuration)
 3. -cfg <lua code fragment|filename> (command line configuration)
@@ -47,7 +47,7 @@ path.lua = 'd:/lua/lua'
 path.gslshell = [[D:\Lua\gsl-shell\gsl-shell.exe]]
 
 -- to provide output filter for those engines that support redirecting
--- of "print" output to the IDE (like Corona SDK and Gideros)
+-- of "print" output to the IDE (like Corona SDK or Gideros)
 debugger.outputfilter = function(m) return #m < 124 and m or m:sub(1,120).."...\n" end
 
 -- to fix an issue with 0d0d0a line endings in MOAI examples,

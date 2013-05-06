@@ -25,7 +25,14 @@ local editMenu = wx.wxMenu{
   { },
   { ID_FOLD, TR("&Fold/Unfold All")..KSC(ID_FOLD), TR("Fold or unfold all code folds") },
   { ID_CLEARDYNAMICWORDS, TR("Clear &Dynamic Words")..KSC(ID_CLEARDYNAMICWORDS), TR("Resets the dynamic word list for autocompletion") },
+  { },
 }
+
+local preferencesMenu = wx.wxMenu{
+  {ID_PREFERENCESSYSTEM, TR("Settings: System")..KSC(ID_PREFERENCESSYSTEM)},
+  {ID_PREFERENCESUSER, TR("Settings: User")..KSC(ID_PREFERENCESUSER)},
+}
+editMenu:Append(ID_PREFERENCES, TR("Preferences"), preferencesMenu)
 menuBar:Append(editMenu, TR("&Edit"))
 
 editMenu:Check(ID_AUTOCOMPLETEENABLE, ide.config.autocomplete)
@@ -90,6 +97,32 @@ for _, event in pairs({ID_CUT, ID_COPY, ID_PASTE, ID_SELECTALL, ID_UNDO, ID_REDO
   frame:Connect(event, wx.wxEVT_COMMAND_MENU_SELECTED, OnEditMenu)
   frame:Connect(event, wx.wxEVT_UPDATE_UI, OnUpdateUIEditMenu)
 end
+
+local function generateConfigMessage(type)
+  return ([==[--[[--
+  Use this file to specify %s preferences.
+  Review [examples](+%s) or check [online documentation](%s) for details.
+--]]--
+]==])
+    :format(type, MergeFullPath(ide.editorFilename, "../cfg/user-sample.lua"),
+      "http://studio.zerobrane.com/documentation.html")
+end
+
+frame:Connect(ID_PREFERENCESSYSTEM, wx.wxEVT_COMMAND_MENU_SELECTED,
+  function ()
+    local editor = LoadFile(ide.configs.system)
+    if editor and #editor:GetText() == 0 then
+      editor:AddText(generateConfigMessage("System")) end
+  end)
+
+frame:Connect(ID_PREFERENCESUSER, wx.wxEVT_COMMAND_MENU_SELECTED,
+  function ()
+    local editor = LoadFile(ide.configs.user)
+    if editor and #editor:GetText() == 0 then
+      editor:AddText(generateConfigMessage("User")) end
+  end)
+frame:Connect(ID_PREFERENCESUSER, wx.wxEVT_UPDATE_UI,
+  function (event) event:Enable(ide.configs.user ~= nil) end)
 
 frame:Connect(ID_CLEARDYNAMICWORDS, wx.wxEVT_COMMAND_MENU_SELECTED,
   function () DynamicWordsReset() end)

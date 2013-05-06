@@ -35,6 +35,11 @@ ID_AUTOCOMPLETEENABLE = NewID()
 ID_COMMENT          = NewID()
 ID_FOLD             = NewID()
 ID_CLEARDYNAMICWORDS = NewID()
+-- don't use wx.wxID_PREFERENCES to avoid merging with OSX app menu, because
+-- Apple guidelines describe Preferences as a "normal" item without submenus.
+ID_PREFERENCES      = NewID()
+ID_PREFERENCESSYSTEM = NewID()
+ID_PREFERENCESUSER  = NewID()
 -- Search menu
 ID_FIND             = wx.wxID_FIND
 ID_FINDNEXT         = NewID()
