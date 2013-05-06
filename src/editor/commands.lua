@@ -93,12 +93,12 @@ function LoadFile(filePath, editor, file_must_exist, skipselection)
   editor:Thaw()
 
   if current then editor:GotoPos(current) end
-  if (ide.config.editor.autotabs) then
+  if (file_text and ide.config.editor.autotabs) then
     local found = string.find(file_text,"\t") ~= nil
     editor:SetUseTabs(found)
   end
   
-  if (ide.config.editor.checkeol) then
+  if (file_text and ide.config.editor.checkeol) then
     -- Auto-detect CRLF/LF line-endings
     local foundcrlf = string.find(file_text,"\r\n") ~= nil
     local foundlf = (string.find(file_text,"[^\r]\n") ~= nil)
