@@ -47,13 +47,16 @@ namespace OpenRA.FileFormats
 
 		public IEnumerable<uint> AllFileHashes()
 		{
-			foreach( var filename in Directory.GetFiles( path, "*", SearchOption.TopDirectoryOnly ) )
-				yield return PackageEntry.HashFilename( Path.GetFileName(filename) );
+			foreach (var filename in Directory.GetFiles(path, "*", SearchOption.TopDirectoryOnly))
+			{
+				yield return PackageEntry.HashFilename(Path.GetFileName(filename)); // RA1 and TD
+				yield return PackageEntry.CrcHashFilename(Path.GetFileName(filename)); // TS
+			}
 		}
 
 		public bool Exists(string filename)
 		{
-			return File.Exists(Path.Combine(path,filename));
+			return File.Exists(Path.Combine(path, filename));
 		}
 
 
