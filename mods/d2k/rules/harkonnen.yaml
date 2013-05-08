@@ -250,7 +250,7 @@ SARDAUKAR:
 		Bounds: 12,17,0,0
 		Voice: GenericVoice
 	Health:
-		HP: 80
+		HP: 100
 	Mobile:
 		Speed: 4
 	RevealsShroud:

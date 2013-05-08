@@ -127,7 +127,7 @@ HARVESTER.starport:
 	Armor:
 		Type: Light
 	Mobile:
-		ROT: 9
+		ROT: 10
 		Speed: 12
 	RevealsShroud:
 		Range: 7
@@ -271,12 +271,13 @@ SIEGETANK:
 		Range: 8
 	Turreted:
 		ROT: 3
+		Offset: -220,0,-40
 	Armament:
 		Weapon: 155mm
-		Recoil: 299
+		Recoil: 150
 		RecoilRecovery: 19
 		LocalOffset: 171,0,299
-	AttackFrontal:
+	AttackTurreted:
 	RenderUnitTurreted:
 		Image: SIEGETANK
 	Explodes:
@@ -325,13 +326,13 @@ MISSILETANK:
 		Hotkey: r
 	Mobile:
 		Speed: 6
-		ROT: 3
+		ROT: 5
 	Health:
 		HP: 90
 	Armor:
 		Type: Light
 	RevealsShroud:
-		Range: 8
+		Range: 9
 	RenderUnit:
 		Image: MISSILETANK
 	Armament:
