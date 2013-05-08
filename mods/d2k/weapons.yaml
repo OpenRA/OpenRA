@@ -359,15 +359,14 @@ FakeMissile:
 		ContrailLength: 15
 		ContrailUsePlayerColor : True
 	Warhead:
-		Spread: 10
+		Spread: 3
 		Versus: 
+			None: 0%
 			Wood: 0%
-			Light: 0%
-			Heavy: 0%
 			Concrete: 0%
 		Explosion: large_explosion
 		SmudgeType: SandCrater, RockCrater
-		Damage: 0
+		Damage: 10
 		ImpactSound: EXPLSML2
 
 155mm:
