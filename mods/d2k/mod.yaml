@@ -18,6 +18,7 @@ Folders:
 	~^/Content/d2k/SHPs
 
 Packages:
+	~main.mix
 	conquer.mix
 
 Rules:
