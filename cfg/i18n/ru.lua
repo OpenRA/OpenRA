@@ -122,6 +122,7 @@ return {
   ["Output (running)"] = "Вывод (запущен)", -- src\editor\output.lua
   ["Output"] = "Вывод", -- src\editor\output.lua, src\editor\settings.lua, src\editor\gui.lua
   ["Paste text from the clipboard"] = "Вставить текст из буфера обмена", -- src\editor\menu_edit.lua
+  ["Preferences"] = "Настройки", -- src\editor\menu_edit.lua
   ["Prepend '=' to show complex values on multiple lines."] = "Укажите '=' в начале выражения для отображения сложных значений на нескольких строках.", -- src\editor\shellbox.lua
   ["Press cancel to abort."] = "Нажмите Отмена для завершения.", -- src\editor\commands.lua
   ["Program '%s' started in '%s' (pid: %d)."] = "Программа '%s' запущена в '%s' (pid: %d).", -- src\editor\output.lua
@@ -162,6 +163,8 @@ return {
   ["Set project directory from current file"] = "Установить каталог проекта по текущему файлу", -- src\editor\menu_project.lua, src\editor\gui.lua
   ["Set the interpreter to be used"] = "Установить используемый интерпретатор", -- src\editor\menu_project.lua
   ["Set the project directory to be used"] = "Установить используемый каталог проекта", -- src\editor\menu_project.lua
+  ["Settings: System"] = "Установки: Системы", -- src\editor\menu_edit.lua
+  ["Settings: User"] = "Установки: Пользователя", -- src\editor\menu_edit.lua
   ["Show &Tooltip"] = "Показать &подсказку", -- src\editor\menu_edit.lua
   ["Show tooltip for current position; place cursor after opening bracket of function"] = "Показать подсказку в текущей позиции; переместите курсор в позицию после открывающей скобки функции", -- src\editor\menu_edit.lua
   ["Sort selected lines"] = "Отсортировать выделенные строки", -- src\editor\menu_search.lua
