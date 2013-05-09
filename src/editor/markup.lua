@@ -41,7 +41,7 @@ end
 local function q(s) return s:gsub('(.)','%%%1') end
 
 local MD_MARK_PTRN = ''  -- combination of all markup marks that can start styling
-for key,value in pairs(markup) do
+for key in pairs(markup) do
   if key ~= MD_MARK_MARK then MD_MARK_PTRN = MD_MARK_PTRN .. q(key) end
 end
 MarkupAddStyles(ide.config.styles)
@@ -76,12 +76,9 @@ function MarkupHotspotClick(pos, editor)
       -- check if requested to open in a new window
       local newwindow = string.find(text, MD_LINK_NEWWINDOW, 1, true) -- plain search
       if newwindow then text = string.gsub(text, "^%" .. MD_LINK_NEWWINDOW, "") end
-      local name = wx.wxFileName(filepath):GetPath(wx.wxPATH_GET_VOLUME
-        + wx.wxPATH_GET_SEPARATOR) .. text
-      -- load/activate file
-      local filename = wx.wxFileName(name)
-      filename:Normalize() -- remove .., ., and other similar elements
-      if filename:FileExists() and
+      local filename = GetFullPathIfExists(
+        wx.wxFileName(filepath):GetPath(wx.wxPATH_GET_VOLUME), text)
+      if filename and
         (newwindow or SaveModifiedDialog(editor, true) ~= wx.wxID_CANCEL) then
         if not newwindow and ide.osname == 'Macintosh' then editor:GotoPos(0) end
         LoadFile(filename,not newwindow and editor or nil,true)
