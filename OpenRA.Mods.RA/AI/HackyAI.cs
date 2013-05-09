@@ -690,6 +690,7 @@ namespace OpenRA.Mods.RA.AI
 		public Player p;
 		public XRandom random;
 		public CPos baseCenter;
+		int controllerId;
 		PowerManager playerPower;
 		SupportPowerManager supportPowerMngr;
 		PlayerResources playerResource;
@@ -727,6 +728,7 @@ namespace OpenRA.Mods.RA.AI
 		{
 			this.p = p;
 			enabled = true;
+			controllerId = p.ClientIndex;
 			playerPower = p.PlayerActor.Trait<PowerManager>();
 			supportPowerMngr = p.PlayerActor.Trait<SupportPowerManager>();
 			playerResource = p.PlayerActor.Trait<PlayerResources>();
@@ -963,6 +965,12 @@ namespace OpenRA.Mods.RA.AI
 		{
 			if (!enabled)
 				return;
+
+			if (world.LobbyInfo.ClientWithIndex(controllerId) == null)
+			{
+				enabled = false;
+				return;
+			}
 
 			ticks++;
 
