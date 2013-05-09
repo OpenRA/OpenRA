@@ -32,6 +32,10 @@ namespace OpenRA.Mods.RA
 		public readonly int SpawnInterval = 180;
 		[Desc("Chance of generating a water crate instead of a land crate")]
 		public readonly float WaterChance = .2f;
+		[ActorReference]
+		public readonly string CrateActor = "crate";
+		[ActorReference]
+		public readonly string DeliveryAircraft = "badr";
 
 		public object Create (ActorInitializer init) { return new CrateDrop(this); }
 	}
@@ -91,16 +95,16 @@ namespace OpenRA.Mods.RA
 			var p = pp.Value;	//
 			self.World.AddFrameEndTask(w =>
 				{
-					var crate = w.CreateActor(false, "crate", new TypeDictionary { new OwnerInit(w.WorldActor.Owner) });
+					var crate = w.CreateActor(false, Info.CrateActor, new TypeDictionary { new OwnerInit(w.WorldActor.Owner) });
 					crates.Add(crate);
 
 					var startPos = w.ChooseRandomEdgeCell();
-					var plane = w.CreateActor("badr", new TypeDictionary
+					var plane = w.CreateActor(Info.DeliveryAircraft, new TypeDictionary
 					{
 						new LocationInit( startPos ),
 						new OwnerInit( w.WorldActor.Owner),
 						new FacingInit( Util.GetFacing(p - startPos, 0) ),
-						new AltitudeInit( Rules.Info["badr"].Traits.Get<AircraftInfo>().CruiseAltitude ),
+						new AltitudeInit( Rules.Info[Info.DeliveryAircraft].Traits.Get<AircraftInfo>().CruiseAltitude ),
 					});
 
 					plane.CancelActivity();
