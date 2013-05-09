@@ -44,10 +44,23 @@ namespace OpenRA.FileFormats
 			Write(contents);
 		}
 
+		byte checksum(Stream s, long start, long end)
+		{
+			s.Seek(start, SeekOrigin.Begin);
+			var r = new BinaryReader(s);
+
+			var c = r.ReadByte();
+			while (r.BaseStream.Position < end)
+				c ^= r.ReadByte();
+
+			return c;
+		}
+
 		public MixFile(string filename, int priority)
 		{
 			this.priority = priority;
 			s = FileSystem.Open(filename);
+			var initialPosition = s.Position;
 
 			// Detect format type
 			var reader = new BinaryReader(s);
@@ -62,7 +75,8 @@ namespace OpenRA.FileFormats
 
 			var header = isEncrypted ? DecryptHeader(s) : s;
 			index = ParseHeader(header).ToDictionaryWithConflictLog(x => x.Hash,
-				"{0} ({1} format, Encrypted: {2})".F(filename, (isCncMix ? "C&C" : "RA/TS/RA2"), isEncrypted),
+				"{0} ({1} format, Encrypted: {2}, Header start: {3}, Header end: {4}, Header checksum: {5})".F(
+					filename, (isCncMix ? "C&C" : "RA/TS/RA2"), isEncrypted, initialPosition, s.Position, checksum(s, initialPosition, s.Position)),
 			    null, x => "(offs={0}, len={1})".F(x.Offset, x.Length)
 			);
 
