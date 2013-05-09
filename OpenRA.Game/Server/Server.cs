@@ -493,18 +493,20 @@ namespace OpenRA.Server
 
 				lobbyInfo.Clients.RemoveAll(c => c.Index == toDrop.PlayerIndex);
 
-				// reassign admin if necessary
+				// Client was the server admin
+				// TODO: Reassign admin for game in progress via an order
 				if (lobbyInfo.GlobalSettings.Dedicated && dropClient.IsAdmin && State == ServerState.WaitingPlayers)
 				{
-					// clean up the bots that were added by the last admin
+					// Remove any bots controlled by the admin
 					lobbyInfo.Clients.RemoveAll(c => c.Bot != null && c.BotControllerClientIndex == toDrop.PlayerIndex);
 
-					if (lobbyInfo.Clients.Any(c1 => c1.Bot == null))
+					OpenRA.Network.Session.Client nextAdmin = lobbyInfo.Clients.Where(c1 => c1.Bot == null)
+						.OrderBy(c => c.Index).FirstOrDefault();
+
+					if (nextAdmin != null)
 					{
-						// client was not alone on the server but he was admin: set admin to the last connected client
-						OpenRA.Network.Session.Client lastClient = lobbyInfo.Clients.Where(c1 => c1.Bot == null).Last();
-						lastClient.IsAdmin = true;
-						SendMessage("{0} is now the admin.".F(lastClient.Name));
+						nextAdmin.IsAdmin = true;
+						SendMessage("{0} is now the admin.".F(nextAdmin.Name));
 					}
 				}
 
@@ -512,6 +514,7 @@ namespace OpenRA.Server
 
 				if (conns.Count != 0 || lobbyInfo.GlobalSettings.Dedicated)
 					SyncLobbyInfo();
+
 				if (!lobbyInfo.GlobalSettings.Dedicated && dropClient.IsAdmin)
 					Shutdown();
 			}
