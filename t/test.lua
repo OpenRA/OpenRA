@@ -17,7 +17,7 @@ ide.app.postinit = function()
   testwell()
 
   -- find all test files and load them
-  local files = FileSysGet("t/*.lua", wx.wxFILE)
+  local files = FileSysGetRecursive("t", true, "*.lua")
   for k, v in ipairs(files) do
     if v:find("[/\\]test%.lua$") then files[k] = nil end
   end

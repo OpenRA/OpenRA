@@ -65,7 +65,7 @@ return {
 
     -- find *.gproj file in the project directory
     local file
-    for _, proj in ipairs(FileSysGet(self:fworkdir(wfilename).."/*.gproj", wx.wxFILE)) do
+    for _, proj in ipairs(FileSysGetRecursive(self:fworkdir(wfilename), false, "*.gproj")) do
       if file then
         DisplayOutputLn("Found multiple .gproj files in the project directory; ignored '"..proj.."'.")
       end

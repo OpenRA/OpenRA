@@ -25,7 +25,7 @@ return {
       local candidates, paths = {}, {}
       for p in path:gmatch("[^"..sep.."]+") do
         table.insert(paths, p)
-        for _, candidate in ipairs(FileSysGet(p.."/*.*", wx.wxDIR)) do
+        for _, candidate in ipairs(FileSysGetRecursive(p, false, "*")) do
           if GetFullPathIfExists(candidate, exe) then table.insert(candidates, candidate) end
           if GetFullPathIfExists(candidate.."/s3e", exe) then table.insert(candidates, candidate.."/s3e") end
         end
@@ -52,10 +52,10 @@ return {
 
     -- check for *.mkb file; it can be in the same or in the parent folder
     local mproj, mfile = MergeFullPath(projdir, "./")
-    for _, file in ipairs(FileSysGet(mproj.."*.mkb", wx.wxFILE)) do mfile = file end
+    for _, file in ipairs(FileSysGetRecursive(mproj, false, "*.mkb")) do mfile = file end
     if not mfile then
       mproj, mfile = MergeFullPath(projdir, "../")
-      for _, file in ipairs(FileSysGet(mproj.."*.mkb", wx.wxFILE)) do mfile = file end
+      for _, file in ipairs(FileSysGetRecursive(mproj, false, "*.mkb")) do mfile = file end
     end
     if not mfile then
       DisplayOutputLn(("Can't find '%s' project file."):format(mproj))
