@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA.Server
 
 			if (requiresHost && !client.IsAdmin)
 			{
-				server.SendChatTo(conn, "Only the host can do that");
+				server.SendOrderTo(conn, "Message", "Only the host can do that");
 				return false;
 			}
 
@@ -41,12 +41,12 @@ namespace OpenRA.Mods.RA.Server
 		{
 			if (server.State == ServerState.GameStarted)
 			{
-				server.SendChatTo(conn, "Cannot change state when game started. ({0})".F(cmd));
+				server.SendOrderTo(conn, "Message", "Cannot change state when game started. ({0})".F(cmd));
 				return false;
 			}
 			else if (client.State == Session.ClientState.Ready && !(cmd == "ready" || cmd == "startgame"))
 			{
-				server.SendChatTo(conn, "Cannot change state when marked as ready.");
+				server.SendOrderTo(conn, "Message", "Cannot change state when marked as ready.");
 				return false;
 			}
 
@@ -94,7 +94,7 @@ namespace OpenRA.Mods.RA.Server
 						if (server.lobbyInfo.Slots.Any(sl => sl.Value.Required && 
 							server.lobbyInfo.ClientInSlot(sl.Key) == null))
 						{
-							server.SendChatTo(conn, "Unable to start the game until required slots are full.");
+							server.SendOrderTo(conn, "Message", "Unable to start the game until required slots are full.");
 							return true;
 						}
 						server.StartGame();
@@ -180,7 +180,7 @@ namespace OpenRA.Mods.RA.Server
 
 						if (parts.Length < 3)
 						{
-							server.SendChatTo(conn, "Malformed slot_bot command");
+							server.SendOrderTo(conn, "Message", "Malformed slot_bot command");
 							return true;
 						}
 
@@ -200,7 +200,7 @@ namespace OpenRA.Mods.RA.Server
 						// Invalid slot
 						if (bot != null && bot.Bot == null)
 						{
-							server.SendChatTo(conn, "Can't add bots to a slot with another client");
+							server.SendOrderTo(conn, "Message", "Can't add bots to a slot with another client");
 							return true;
 						}
 
@@ -245,12 +245,13 @@ namespace OpenRA.Mods.RA.Server
 					{
 						if (!client.IsAdmin)
 						{
-							server.SendChatTo( conn, "Only the host can change the map" );
+							server.SendOrderTo(conn, "Message", "Only the host can change the map");
 							return true;
 						}
-						if(!server.ModData.AvailableMaps.ContainsKey(s))
+
+						if (!server.ModData.AvailableMaps.ContainsKey(s))
 						{
-							server.SendChatTo( conn, "Map not found");
+							server.SendOrderTo(conn, "Message", "Map not found");
 							return true;
 						}
 						server.lobbyInfo.GlobalSettings.Map = s;
@@ -292,7 +293,7 @@ namespace OpenRA.Mods.RA.Server
 					{
 						if (!client.IsAdmin)
 						{
-							server.SendChatTo( conn, "Only the host can set that option" );
+							server.SendOrderTo(conn, "Message", "Only the host can set that option");
 							return true;
 						}
 
@@ -305,7 +306,7 @@ namespace OpenRA.Mods.RA.Server
 					{
 						if (!client.IsAdmin)
 						{
-							server.SendChatTo( conn, "Only the host can set that option" );
+							server.SendOrderTo(conn, "Message", "Only the host can set that option");
 							return true;
 						}
 
@@ -318,14 +319,14 @@ namespace OpenRA.Mods.RA.Server
 					{
 						if (!client.IsAdmin)
 						{
-							server.SendChatTo(conn, "Only the host can set that option");
+							server.SendOrderTo(conn, "Message", "Only the host can set that option");
 							return true;
 						}
 
 						int teams;
 						if (!int.TryParse(s, out teams))
 						{
-							server.SendChatTo(conn, "Number of teams could not be parsed: {0}".F(s));
+							server.SendOrderTo(conn, "Message", "Number of teams could not be parsed: {0}".F(s));
 							return true;
 						}
 						teams = teams.Clamp(2, 8);
@@ -335,12 +336,12 @@ namespace OpenRA.Mods.RA.Server
 							.Where(c => c != null && !server.lobbyInfo.Slots[c.Slot].LockTeam).ToArray();
 						if (players.Length < 2)
 						{
-							server.SendChatTo(conn, "Not enough players to assign teams");
+							server.SendOrderTo(conn, "Message", "Not enough players to assign teams");
 							return true;
 						}
 						if (teams > players.Length)
 						{
-							server.SendChatTo(conn, "Too many teams for the number of players");
+							server.SendOrderTo(conn, "Message", "Too many teams for the number of players");
 							return true;
 						}
 
@@ -367,7 +368,7 @@ namespace OpenRA.Mods.RA.Server
 					{
 						if (!client.IsAdmin)
 						{
-							server.SendChatTo(conn, "Only the host can set that option");
+							server.SendOrderTo(conn, "Message", "Only the host can set that option");
 							return true;
 						}
 
@@ -380,13 +381,13 @@ namespace OpenRA.Mods.RA.Server
 					{
 						if (!client.IsAdmin)
 						{
-							server.SendChatTo(conn, "Only the host can set that option");
+							server.SendOrderTo(conn, "Message", "Only the host can set that option");
 							return true;
 						}
 						if ((server.Map.Difficulties == null && s != null) || (server.Map.Difficulties != null && !server.Map.Difficulties.Contains(s)))
 						{
-							server.SendChatTo(conn, "Unsupported difficulty selected: {0}".F(s));
-							server.SendChatTo(conn, "Supported difficulties: {0}".F(server.Map.Difficulties.JoinWith(",")));
+							server.SendOrderTo(conn, "Message", "Unsupported difficulty selected: {0}".F(s));
+							server.SendOrderTo(conn, "Message", "Supported difficulties: {0}".F(server.Map.Difficulties.JoinWith(",")));
 							return true;
 						}
 
@@ -400,7 +401,7 @@ namespace OpenRA.Mods.RA.Server
 
 						if (!client.IsAdmin)
 						{
-							server.SendChatTo( conn, "Only the host can kick players" );
+							server.SendOrderTo(conn, "Message", "Only the host can kick players");
 							return true;
 						}
 
@@ -410,7 +411,7 @@ namespace OpenRA.Mods.RA.Server
 						var connToKick = server.conns.SingleOrDefault( c => server.GetClient(c) != null && server.GetClient(c).Index == clientID);
 						if (connToKick == null)
 						{
-							server.SendChatTo( conn, "Noone in that slot." );
+							server.SendOrderTo(conn, "Message", "Noone in that slot.");
 							return true;
 						}
 
@@ -497,7 +498,7 @@ namespace OpenRA.Mods.RA.Server
 
 						if (server.lobbyInfo.Clients.Where( cc => cc != client ).Any( cc => (cc.SpawnPoint == spawnPoint) && (cc.SpawnPoint != 0) ))
 						{
-							server.SendChatTo( conn, "You can't be at the same spawn point as another player" );
+							server.SendOrderTo(conn, "Message", "You can't be at the same spawn point as another player");
 							return true;
 						}
 
