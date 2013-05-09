@@ -462,7 +462,7 @@ Grenade:
 		WaterExplosion: small_splash
 		InfDeath: 4
 		SmudgeType: Crater
-		Damage: 50
+		Damage: 60
 
 TurretGun:
 	ROF: 30
@@ -491,7 +491,7 @@ MammothTusk:
 	Burst: 2
 	ValidTargets: Ground, Air
 	Projectile: Missile
-		Speed: 30
+		Speed: 40
 		Arm: 2
 		High: true
 		Shadow: false
@@ -500,7 +500,7 @@ MammothTusk:
 		ContrailLength: 10
 		Inaccuracy: 3
 		Image: DRAGON
-		ROT: 10
+		ROT: 15
 		RangeLimit: 40
 	Warhead:
 		Spread: 6
@@ -756,7 +756,7 @@ SubMissile:
 	Warhead:
 		Spread: 10
 		Versus: 
-			None: 40%,
+			None: 40%
 			Light: 30%
 			Heavy: 30%
 		Explosion: large_explosion
