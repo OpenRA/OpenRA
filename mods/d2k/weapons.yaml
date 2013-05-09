@@ -220,7 +220,8 @@ TurretGun:
 
 TowerMissile:
 	ROF: 35
-	Range: 8.25
+	Range: 7.75
+	MinRange: 1
 	Report: ROCKET1
 	ValidTargets: Ground, Air
 	Burst: 2
@@ -262,7 +263,7 @@ TowerMissile:
 		Versus: 
 			None: 50%
 			Wood: 50%
-			Light: 80%
+			Light: 100%
 			Concrete: 50%
 		Explosion: small_artillery
 		ImpactSound: kaboom30
@@ -283,7 +284,7 @@ TowerMissile:
 		Versus: 
 			None: 50%
 			Wood: 50%
-			Light: 80%
+			Light: 100%
 			Concrete: 50%
 		Explosion: small_artillery
 		ImpactSound: kaboom30
@@ -320,11 +321,11 @@ DevBullet:
 	Report: MISSLE1
 	ValidTargets: Ground
 	Projectile: Bullet
-		Speed: 24
+		Speed: 28
 		Arm: 5
 		High: yes
 		Shadow: yes
-		Inaccuracy: 55
+		Inaccuracy: 45
 		Angle: 0.2
 		Image: MISSILE2
 		ROT: 5
@@ -332,10 +333,10 @@ DevBullet:
 	Warhead:
 		Spread: 12
 		Versus: 
-			None: 25%
-			Wood: 25%
+			None: 20%
+			Wood: 50%
 			Light: 100%
-			Heavy: 80%
+			Heavy: 50%
 			Concrete: 80%
 		InfDeath: 4
 		Explosion: artillery
@@ -358,15 +359,14 @@ FakeMissile:
 		ContrailLength: 15
 		ContrailUsePlayerColor : True
 	Warhead:
-		Spread: 10
+		Spread: 3
 		Versus: 
+			None: 0%
 			Wood: 0%
-			Light: 0%
-			Heavy: 0%
 			Concrete: 0%
 		Explosion: large_explosion
 		SmudgeType: SandCrater, RockCrater
-		Damage: 0
+		Damage: 10
 		ImpactSound: EXPLSML2
 
 155mm:
@@ -375,20 +375,20 @@ FakeMissile:
 	MinRange: 2
 	Report: MORTAR1
 	Projectile: Bullet
-		Speed: 18
+		Speed: 20
 		High: true
 		Shadow: yes
 		Angle: .1
-		Inaccuracy: 45
+		Inaccuracy: 40
 		ContrailLength: 20
 	Warhead:
 		Spread: 12
 		Versus: 
 			None: 100%
-			Wood: 60%
-			Light: 50%
-			Heavy: 25%
-			Concrete: 80%
+			Wood: 80%
+			Light: 75%
+			Heavy: 50%
+			Concrete: 100%
 		Explosion: large_explosion
 		WaterExplosion: large_splash
 		ImpactSound: explsml2
