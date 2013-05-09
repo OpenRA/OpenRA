@@ -1,6 +1,6 @@
 # ZeroBrane Studio Changelog
 
-## Current master (May 04 2013)
+## v0.37 (May 09 2013)
 
 ### Special thanks
   - To Samuel Dionne-Riel for wxwidgets 2.8 compatibility updates.
@@ -11,13 +11,16 @@
   - Added full Marmalade Quick debugging support (requires Quick 1.1+).
   - Improved Find/Replace behavior and functionality.
   - Added Recent File history navigation.
+  - Added Preferences menu to simplify access to system/user settings.
 
 ### Improvements
+  - Added Preferences menu to simplify access to system/user settings.
+  - Added Russian translation for Find/Replace dialog and (ref #70).
+  - Added Russian translation for the Preferences menu (ref #70).
   - Added 'shaking' Find/Replace window when text is not found (closes #146).
   - Added 'wlua' to the list of recognized Lua extensions.
   - Added disabling Recent Files menu if the list is empty.
   - Added TomorrowContrast color scheme (thanks to Sergey Lerg).
-  - Refactored and optimized directory scanning when loading IDE files.
   - Added detaching a child process to avoid crash when exiting during debugging.
   - Added Recent File history navigation (closes #66).
   - Added Marmalade auto-complete support and API documentation.
@@ -29,12 +32,19 @@
   - Improved file activation when debugging is started (closes #137).
   - Reduced the minimum size of the Output/Console panel.
   - Refactored Recent Files history to make it faster and simpler.
+  - Refactored and optimized directory scanning when loading IDE files.
+  - Separated settings for function dropdown and project tree fonts (fixes #148).
   - Updated documentation about default EOL on OSX (ref #102).
   - Updated highlighting in Watch windows to not use editor styles.
   - Updated documentation for user settings (ref #113, #55).
   - Updated Monokai color scheme to fix current line color.
 
+### Incompatibilities
+  - (dev) `FileSysGet` has been replaced with `FileSysGetRecursive` with a different signature.
+
 ### Fixes
+  - Fixed hiding all panels when switching to Full Screen mode.
+  - Fixed loading a non-existing file.
   - Fixed activation of non-existing files/folders in the Project tree.
   - Fixed search results for lines without newline.
   - Fixed Find/Replace in folders with Unicode names (fixes #147); improved performance.
