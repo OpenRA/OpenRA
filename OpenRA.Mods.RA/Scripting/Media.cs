@@ -32,7 +32,7 @@ namespace OpenRA.Scripting
 				return;
 			}
 
-			w.Paused = true;
+			w.SetPauseState(true);
 
 			// Mute world sounds
 			var oldModifier = Sound.SoundVolumeModifier;
@@ -51,7 +51,7 @@ namespace OpenRA.Scripting
 
 				Ui.CloseWindow();
 				Sound.SoundVolumeModifier = oldModifier;
-				w.Paused = false;
+				w.SetPauseState(false);
 				onComplete();
 			});
 		}

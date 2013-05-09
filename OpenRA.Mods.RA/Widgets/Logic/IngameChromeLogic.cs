@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						optionsBG.Visible = false;
 
 						if (world.LobbyInfo.IsSinglePlayer)
-							world.IssueOrder(Order.PauseGame(cachedPause));
+							world.SetPauseState(cachedPause);
 					}
 				}
 			});
@@ -57,13 +57,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				optionsBG.Visible ^= true;
 				if (optionsBG.Visible)
 				{
-					cachedPause = world.Paused;
+					cachedPause = world.PredictedPaused;
 
 					if (world.LobbyInfo.IsSinglePlayer)
-						world.IssueOrder(Order.PauseGame(true));
+						world.SetPauseState(true);
 				}
 				else
-					world.IssueOrder(Order.PauseGame(cachedPause));
+					world.SetPauseState(cachedPause);
 			};
 
 			Game.LoadWidget(world, "CHAT_PANEL", gameRoot, new WidgetArgs());
