@@ -130,7 +130,7 @@ Container@MENU_BACKGROUND:
 					Width:PARENT_RIGHT
 					Visible:False
 					Children:
-						Label@OPTIONS_LABLE_TITLE:
+						Label@OPTIONS_MENU_TITLE:
 							X:0
 							Y:0-30
 							Width:PARENT_RIGHT

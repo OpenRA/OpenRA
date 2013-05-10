@@ -97,6 +97,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			Game.AddChatLine += AddChatLine;
 			Game.ConnectionStateChanged += ConnectionStateChanged;
 
+			var name = lobby.GetOrNull<LabelWidget>("SERVER_NAME");
+			if (name != null)
+				name.GetText = () => orderManager.LobbyInfo.GlobalSettings.ServerName;
+
 			UpdateCurrentMap();
 			Players = lobby.Get<ScrollPanelWidget>("PLAYERS");
 			EditablePlayerTemplate = Players.Get("TEMPLATE_EDITABLE_PLAYER");
@@ -343,9 +347,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				else
 					throw new InvalidOperationException("Server's new map doesn't exist on your system and Downloading turned off");
 			Map = new Map(Game.modData.AvailableMaps[MapUid].Path);
-
-			var title = Ui.Root.Get<LabelWidget>("TITLE");
-			title.Text = orderManager.LobbyInfo.GlobalSettings.ServerName;
 		}
 
 		void UpdatePlayerList()
