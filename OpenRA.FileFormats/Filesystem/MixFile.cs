@@ -50,40 +50,48 @@ namespace OpenRA.FileFormats
 			s = FileSystem.Open(filename);
 
 			// Detect format type
+			s.Seek(0, SeekOrigin.Begin);
 			var reader = new BinaryReader(s);
 			var isCncMix = reader.ReadUInt16() != 0;
-			var isEncrypted = false;
 
 			// The C&C mix format doesn't contain any flags or encryption
-			if (isCncMix)
-				s.Seek(0, SeekOrigin.Begin);
-			else
+			var isEncrypted = false;
+			if (!isCncMix)
 				isEncrypted = (reader.ReadUInt16() & 0x2) != 0;
 
-			var header = isEncrypted ? DecryptHeader(s) : s;
-			index = ParseHeader(header).ToDictionaryWithConflictLog(x => x.Hash,
-				"{0} ({1} format, Encrypted: {2})".F(filename, (isCncMix ? "C&C" : "RA/TS/RA2"), isEncrypted),
+			List<PackageEntry> entries;
+			if (isEncrypted)
+			{
+				long unused;
+				entries = ParseHeader(DecryptHeader(s, 4, out dataStart), 0, out unused);
+			}
+			else
+				entries = ParseHeader(s, isCncMix ? 0 : 4, out dataStart);
+
+			index = entries.ToDictionaryWithConflictLog(x => x.Hash,
+				"{0} ({1} format, Encrypted: {2}, DataStart: {3})".F(filename, (isCncMix ? "C&C" : "RA/TS/RA2"), isEncrypted, dataStart),
 			    null, x => "(offs={0}, len={1})".F(x.Offset, x.Length)
 			);
-
-			dataStart = s.Position;
 		}
 
-		List<PackageEntry> ParseHeader(Stream s)
+		List<PackageEntry> ParseHeader(Stream s, long offset, out long headerEnd)
 		{
-			var items = new List<PackageEntry>();
+			s.Seek(offset, SeekOrigin.Begin);
 			var reader = new BinaryReader(s);
 			var numFiles = reader.ReadUInt16();
 			/*uint dataSize = */reader.ReadUInt32();
 
+			var items = new List<PackageEntry>();
 			for (var i = 0; i < numFiles; i++)
 				items.Add(new PackageEntry(reader));
 
+			headerEnd = offset + 6 + numFiles*PackageEntry.Size;
 			return items;
 		}
 
-		MemoryStream DecryptHeader(Stream s)
+		MemoryStream DecryptHeader(Stream s, long offset, out long headerEnd)
 		{
+			s.Seek(offset, SeekOrigin.Begin);
 			var reader = new BinaryReader(s);
 
 			// Decrypt blowfish key
@@ -92,13 +100,14 @@ namespace OpenRA.FileFormats
 			var fish = new Blowfish(blowfishKey);
 
 			// Decrypt first block to work out the header length
-			var headerStart = s.Position;
-			var ms = Decrypt(ReadBlocks(s, headerStart, 1), fish);
+			var ms = Decrypt(ReadBlocks(s, offset + 80, 1), fish);
 			var numFiles = new BinaryReader(ms).ReadUInt16();
 
 			// Decrypt the full header - round bytes up to a full block
 			var blockCount = (13 + numFiles*PackageEntry.Size)/8;
-			return Decrypt(ReadBlocks(s, headerStart, blockCount), fish);
+			headerEnd = offset + 80 + blockCount*8;
+
+			return Decrypt(ReadBlocks(s, offset + 80, blockCount), fish);
 		}
 
 		static MemoryStream Decrypt(uint[] h, Blowfish fish)
