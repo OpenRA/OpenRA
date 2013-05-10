@@ -177,8 +177,15 @@ namespace OpenRA
 		public event Action<Actor> ActorAdded = _ => { };
 		public event Action<Actor> ActorRemoved = _ => { };
 
-		public bool Paused = false;
+		public bool Paused { get; internal set; }
+		public bool PredictedPaused { get; internal set; }
 		public bool IsShellmap = false;
+
+		public void SetPauseState(bool paused)
+		{
+			IssueOrder(Order.PauseGame(paused));
+			PredictedPaused = paused;
+		}
 
 		public void Tick()
 		{

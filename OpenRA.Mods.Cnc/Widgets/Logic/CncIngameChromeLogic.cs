@@ -55,11 +55,11 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 		public void OptionsClicked()
 		{
-			var cachedPause = world.Paused;
+			var cachedPause = world.PredictedPaused;
 
 			ingameRoot.IsVisible = () => false;
 			if (world.LobbyInfo.IsSinglePlayer)
-				world.IssueOrder(Order.PauseGame(true));
+				world.SetPauseState(true);
 
 			Game.LoadWidget(world, "INGAME_MENU", Ui.Root, new WidgetArgs()
 			{
@@ -67,7 +67,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					{
 						ingameRoot.IsVisible = () => true;
 						if (world.LobbyInfo.IsSinglePlayer)
-							world.IssueOrder(Order.PauseGame(cachedPause));
+							world.SetPauseState(cachedPause);
 					}
 				}
 			});
