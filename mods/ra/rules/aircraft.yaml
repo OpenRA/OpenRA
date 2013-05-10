@@ -3,7 +3,7 @@ BADR:
 		LZRange: 4
 	Inherits: ^Plane
 	Health:
-		HP: 60
+		HP: 300
 	Armor:
 		Type: Light
 	Plane:
@@ -42,7 +42,7 @@ BADR.bomber:
 		Weapon: ParaBomb
 	Inherits: ^Plane
 	Health:
-		HP: 60
+		HP: 300
 	Armor:
 		Type: Light
 	Plane:
