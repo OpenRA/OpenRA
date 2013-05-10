@@ -527,8 +527,6 @@ GUN:
 		LocalOffset: -71,0,85
 	AttackTurreted:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	-AutoTargetIgnore:
 	-RenderBuilding:
 	-DeadBuildingState:
@@ -571,8 +569,6 @@ SAM:
 	AttackPopupTurreted:
 	WithMuzzleFlash:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	-RenderBuilding:
 	RenderRangeCircle:
 
@@ -613,8 +609,6 @@ OBLI:
 	AutoTarget:
 	RenderBuilding:
 		QuantizedFacings: 8
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	-AutoTargetIgnore:
 	-RenderBuilding:
 	RenderRangeCircle:
@@ -650,8 +644,6 @@ GTWR:
 	RenderBuilding:
 		QuantizedFacings: 8
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	-AutoTargetIgnore:
 	DetectCloaked:
 		Range: 5
@@ -696,8 +688,6 @@ ATWR:
 	AutoTarget:
 	RenderBuilding:
 		QuantizedFacings: 8
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	-AutoTargetIgnore:
 	RenderDetectionCircle:
 	DetectCloaked:

@@ -125,8 +125,6 @@
 		TargetTypes: Ground
 	RenderInfantry:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	AttackMove:
 	Passenger:
 		CargoType: Infantry

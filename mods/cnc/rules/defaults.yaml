@@ -104,8 +104,6 @@
 		Range: 5
 	AutoTarget:
 		ScanRadius: 4
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	Mobile:
 		Crushes: crate
 		SharesCell: true
@@ -150,8 +148,6 @@
 	Inherits: ^Infantry
 	-Buildable:
 	-AutoTarget:
-	-DebugRetiliateAgainstAggressor:
-	-DebugNextAutoTargetScanTime:
 	-TakeCover:
 	-RenderInfantryProne:
 	AppearsOnRadar:
