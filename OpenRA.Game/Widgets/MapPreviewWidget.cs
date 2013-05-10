@@ -130,7 +130,7 @@ namespace OpenRA.Widgets
 			TooltipSpawnIndex = -1;
 			if (ShowSpawnPoints)
 			{
-				var colors = SpawnClients().ToDictionary(c => c.Key, c => c.Value.ColorRamp.GetColor(0));
+				var colors = SpawnClients().ToDictionary(c => c.Key, c => c.Value.Color.RGB);
 
 				var spawnPoints = map.GetSpawnPoints().ToList();
 				foreach (var p in spawnPoints)

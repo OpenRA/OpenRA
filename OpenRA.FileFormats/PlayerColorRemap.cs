@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -24,18 +25,19 @@ namespace OpenRA.FileFormats
 			return Ramp[i];
 		}
 
-		public PlayerColorRemap(int[] Ramp, ColorRamp c)
+		public PlayerColorRemap(int[] Ramp, HSLColor c, float rampFraction)
 		{
-			var c1 = c.GetColor(0);
-			var c2 = c.GetColor(1); // temptemp: this can be expressed better
-
+			// Increase luminosity if required to represent the full ramp
+			var rampRange = (byte)((1 - rampFraction)*c.L);
+			var c1 = new HSLColor(c.H, c.S, (byte)Math.Max(rampRange, c.L)).RGB;
+			var c2 = new HSLColor(c.H, c.S, (byte)Math.Max(0, c.L - rampRange)).RGB;
 			var baseIndex = Ramp[0];
 			var RemapRamp = Ramp.Select(r => r - Ramp[0]).ToArray();
 
 			if (Ramp[0] > Ramp[15]) // reversed remapping
-                        {
+            {
 				baseIndex = Ramp[15];
-				for (int i=15; i>0; i--)
+				for (var i = 15; i > 0; i--)
 					RemapRamp = Ramp.Select(r => r - Ramp[15]).ToArray();
 			}
 			

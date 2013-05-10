@@ -32,10 +32,7 @@ namespace OpenRA.Mods.RA.Activities
 				ns.Sold(self);
 
 			if (refund > 0 && self.World.LocalPlayer != null && self.Owner.Stances[self.World.LocalPlayer] == Stance.Ally)
-				self.World.AddFrameEndTask(
-					w => w.Add(new CashTick(refund, 30, 2,
-						self.CenterLocation,
-						self.Owner.ColorRamp.GetColor(0))));
+				self.World.AddFrameEndTask(w => w.Add(new CashTick(refund, 30, 2, self.CenterLocation, self.Owner.Color.RGB)));
 
 			self.Destroy();
 			return this;

@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA
 				self.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(Info.Amount);
 				ticks = Info.Period;
 				if (Info.ShowTicks)
-					self.World.AddFrameEndTask(w => w.Add(new CashTick(Info.Amount, Info.TickLifetime, Info.TickVelocity, self.CenterLocation, self.Owner.ColorRamp.GetColor(0))));
+					self.World.AddFrameEndTask(w => w.Add(new CashTick(Info.Amount, Info.TickLifetime, Info.TickVelocity, self.CenterLocation, self.Owner.Color.RGB)));
 			}
 		}
 	}

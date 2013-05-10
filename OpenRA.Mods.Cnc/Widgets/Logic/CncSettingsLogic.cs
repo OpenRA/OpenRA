@@ -55,11 +55,11 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			nameTextfield.Text = playerSettings.Name;
 
 			colorPreview = panel.Get<ColorPreviewManagerWidget>("COLOR_MANAGER");
-			colorPreview.Ramp = playerSettings.ColorRamp;
+			colorPreview.Color = playerSettings.Color;
 
 			var colorDropdown = generalPane.Get<DropDownButtonWidget>("COLOR");
 			colorDropdown.OnMouseDown = _ => ShowColorPicker(colorDropdown, playerSettings);
-			colorDropdown.Get<ColorBlockWidget>("COLORBLOCK").GetColor = () => playerSettings.ColorRamp.GetColor(0);
+			colorDropdown.Get<ColorBlockWidget>("COLORBLOCK").GetColor = () => playerSettings.Color.RGB;
 
 			// Debug
 			var perftextCheckbox = generalPane.Get<CheckboxWidget>("PERFTEXT_CHECKBOX");
@@ -155,17 +155,21 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 		bool ShowColorPicker(DropDownButtonWidget color, PlayerSettings s)
 		{
-			Action<ColorRamp> onExit = c => {s.ColorRamp = c; color.RemovePanel();};
-			Action<ColorRamp> onChange = c => {colorPreview.Ramp = c;};
+			Action<HSLColor> onChange = c => colorPreview.Color = c;
+			Action onExit = () =>
+			{
+				s.Color = colorPreview.Color;
+				color.RemovePanel();
+			};
 
 			var colorChooser = Game.LoadWidget(world, "COLOR_CHOOSER", null, new WidgetArgs()
 			{
 				{ "onExit", onExit },
 				{ "onChange", onChange },
-				{ "initialRamp", s.ColorRamp }
+				{ "initialColor", s.Color }
 			});
 
-			color.AttachPanel(colorChooser);
+			color.AttachPanel(colorChooser, onExit);
 			return true;
 		}
 

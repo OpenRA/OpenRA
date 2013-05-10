@@ -47,9 +47,9 @@ namespace OpenRA.Network
 		public class Client
 		{
 			public int Index;
-			public ColorRamp PreferredColorRamp; // Color that the client normally uses from settings.yaml.
-			public ColorRamp ColorRamp; // Actual color that the client is using.
-										// Usually the same as PreferredColorRamp but can be different on maps with locked colors.
+			public HSLColor PreferredColor; // Color that the client normally uses from settings.yaml.
+			public HSLColor Color; // Actual color that the client is using.
+								   // Usually the same as PreferredColor but can be different on maps with locked colors.
 			public string Country;
 			public int SpawnPoint;
 			public string Name;

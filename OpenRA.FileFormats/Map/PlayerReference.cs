@@ -28,8 +28,10 @@ namespace OpenRA.FileFormats
 		public bool LockRace = false;
 		public string Race;
 
+		// ColorRamp naming retained for backward compatibility
 		public bool LockColor = false;
-		public ColorRamp ColorRamp = new ColorRamp(0,0,238,34);
+		public HSLColor ColorRamp = new HSLColor(0,0,238);
+		public HSLColor Color { get { return ColorRamp; } set { ColorRamp = value; }}
 
 		public bool LockSpawn = false;
 		public int Spawn = 0;

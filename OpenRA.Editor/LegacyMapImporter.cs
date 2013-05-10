@@ -83,18 +83,18 @@ namespace OpenRA.Editor
 		};
 
 		// TODO: fix this -- will have bitrotted pretty badly.
-		static Dictionary<string,Pair<Color,Color>> namedColorMapping = new Dictionary<string, Pair<Color, Color>>()
+		static Dictionary<string, HSLColor> namedColorMapping = new Dictionary<string, HSLColor>()
 		{
-			{"gold",Pair.New(Color.FromArgb(246,214,121),Color.FromArgb(40,32,8))},
-			{"blue",Pair.New(Color.FromArgb(226,230,246),Color.FromArgb(8,20,52))},
-			{"red",Pair.New(Color.FromArgb(255,20,0),Color.FromArgb(56,0,0))},
-			{"neutral",Pair.New(Color.FromArgb(238,238,238),Color.FromArgb(44,28,24))},
-			{"orange",Pair.New(Color.FromArgb(255,230,149),Color.FromArgb(56,0,0))},
-			{"teal",Pair.New(Color.FromArgb(93,194,165),Color.FromArgb(0,32,32))},
-			{"salmon",Pair.New(Color.FromArgb(210,153,125),Color.FromArgb(56,0,0))},
-			{"green",Pair.New(Color.FromArgb(160,240,140),Color.FromArgb(20,20,20))},
-			{"white",Pair.New(Color.FromArgb(255,255,255),Color.FromArgb(75,75,75))},
-			{"black",Pair.New(Color.FromArgb(80,80,80),Color.FromArgb(5,5,5))},
+			{ "gold", HSLColor.FromRGB(246,214,121) },
+			{ "blue", HSLColor.FromRGB(226,230,246) },
+			{ "red", HSLColor.FromRGB(255,20,0) },
+			{ "neutral", HSLColor.FromRGB(238,238,238) },
+			{ "orange", HSLColor.FromRGB(255,230,149) },
+			{ "teal", HSLColor.FromRGB(93,194,165) },
+			{ "salmon", HSLColor.FromRGB(210,153,125) },
+			{ "green", HSLColor.FromRGB(160,240,140) },
+			{ "white", HSLColor.FromRGB(255,255,255) },
+			{ "black", HSLColor.FromRGB(80,80,80) },
 		};
 
 		int MapSize;
@@ -460,19 +460,13 @@ namespace OpenRA.Editor
 					break;
 			}
 
-			var color = namedColorMapping[c];
-
 			var pr = new PlayerReference
 			{
 				Name = section,
 				OwnsWorld = section == "Neutral",
 				NonCombatant = section == "Neutral",
 				Race = race,
-				ColorRamp = new ColorRamp(
-						(byte)((color.First.GetHue() / 360.0f) * 255),
-						(byte)(color.First.GetSaturation() * 255),
-						(byte)(color.First.GetBrightness() * 255),
-						(byte)(color.Second.GetBrightness() * 255))
+				Color = namedColorMapping[c]
 			};
 
 			var neutral = new [] {"Neutral"};

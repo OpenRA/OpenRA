@@ -54,7 +54,7 @@ namespace OpenRA.Mods.RA
 			var bounty = cost * GetMultiplier(self) * info.Percentage / 10000;
 
 			if (bounty > 0 && e.Attacker.World.LocalPlayer != null && e.Attacker.Owner.Stances[e.Attacker.World.LocalPlayer] == Stance.Ally)
-				e.Attacker.World.AddFrameEndTask(w => w.Add(new CashTick(bounty, 20, 1, self.CenterLocation, e.Attacker.Owner.ColorRamp.GetColor(0))));
+				e.Attacker.World.AddFrameEndTask(w => w.Add(new CashTick(bounty, 20, 1, self.CenterLocation, e.Attacker.Owner.Color.RGB)));
 
 			e.Attacker.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(bounty);
 		}

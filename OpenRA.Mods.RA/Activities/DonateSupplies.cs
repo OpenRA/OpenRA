@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA.Activities
 			self.Destroy();
 
 			if (self.Owner.IsAlliedWith(self.World.RenderPlayer))
-				self.World.AddFrameEndTask(w => w.Add(new CashTick(payload, 30, 2, target.CenterLocation, targetPlayer.ColorRamp.GetColor(0))));
+				self.World.AddFrameEndTask(w => w.Add(new CashTick(payload, 30, 2, target.CenterLocation, targetPlayer.Color.RGB)));
 
 			return this;
 		}
