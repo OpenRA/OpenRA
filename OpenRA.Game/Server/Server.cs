@@ -306,7 +306,7 @@ namespace OpenRA.Server
 					t.ClientJoined(this, newConn);
 
 				SyncLobbyInfo();
-				SendChat(newConn, "has joined the game.");
+				SendMessage("{0} has joined the server.".F(client.Name));
 
 				// Send initial ping
 				SendOrderTo(newConn, "Ping", Environment.TickCount.ToString());
@@ -314,20 +314,18 @@ namespace OpenRA.Server
 				if (File.Exists("{0}motd_{1}.txt".F(Platform.SupportDir, lobbyInfo.GlobalSettings.Mods[0])))
 				{
 					var motd = System.IO.File.ReadAllText("{0}motd_{1}.txt".F(Platform.SupportDir, lobbyInfo.GlobalSettings.Mods[0]));
-					SendChatTo(newConn, motd);
+					SendOrderTo(newConn, "Message", motd);
 				}
 
 				if (lobbyInfo.GlobalSettings.Dedicated)
 				{
-					if (client.IsAdmin)
-						SendChatTo(newConn, "    You are admin now!");
-					else
-						SendChatTo(newConn, "    Current admin is {0}".F(clientAdmin.Name));
+					var message = client.IsAdmin ? "You are the server admin." : "{0} is the server admin.".F(clientAdmin.Name);
+					SendOrderTo(newConn, "Message", message);
 				}
 
 				if (mods.Any(m => m.Contains("{DEV_VERSION}")))
-					SendChat(newConn, "is running a non-versioned development build, "+
-					"and may cause desync if it contains any incompatible changes.");
+					SendMessage("{0} is running an unversioned development build, ".F(client.Name) +
+					"and may desynchronize the game state if they have incompatible rules.");
 			}
 			catch (Exception) { DropClient(newConn); }
 		}
@@ -376,16 +374,19 @@ namespace OpenRA.Server
 			catch (Exception) { DropClient(c); }
 		}
 
+		public void DispatchOrdersToClients(Connection conn, int frame, byte[] data)
+		{
+			var from = conn != null ? conn.PlayerIndex : 0;
+			foreach (var c in conns.Except(conn).ToArray())
+				DispatchOrdersToClient(c, from, frame, data);
+		}
+
 		public void DispatchOrders(Connection conn, int frame, byte[] data)
 		{
 			if (frame == 0 && conn != null)
 				InterpretServerOrders(conn, data);
 			else
-			{
-				var from = conn != null ? conn.PlayerIndex : 0;
-				foreach (var c in conns.Except(conn).ToArray())
-					DispatchOrdersToClient(c, from, frame, data);
-			}
+				DispatchOrdersToClients(conn, frame, data);
 		}
 
 		void InterpretServerOrders(Connection conn, byte[] data)
@@ -406,32 +407,18 @@ namespace OpenRA.Server
 			catch (NotImplementedException) { }
 		}
 
-		public void SendChatTo(Connection conn, string text)
-		{
-			SendOrderTo(conn, "Chat", text);
-		}
-
 		public void SendOrderTo(Connection conn, string order, string data)
 		{
-			DispatchOrdersToClient(conn, 0, 0,
-				new ServerOrder(order, data).Serialize());
+			DispatchOrdersToClient(conn, 0, 0, new ServerOrder(order, data).Serialize());
 		}
 
-		public void SendChat(Connection asConn, string text)
+		public void SendMessage(string text)
 		{
-			DispatchOrders(asConn, 0, new ServerOrder("Chat", text).Serialize());
-		}
-
-		public void SendDisconnected(Connection asConn)
-		{
-			DispatchOrders(asConn, 0, new ServerOrder("Disconnected", "").Serialize());
+			DispatchOrdersToClients(null, 0, new ServerOrder("Message", text).Serialize());
 		}
 
 		void InterpretServerOrder(Connection conn, ServerOrder so)
 		{
-			var fromClient = GetClient(conn);
-			var fromIndex = fromClient != null ? fromClient.Index : 0;
-			
 			switch (so.Name)
 			{
 				case "Command":
@@ -443,7 +430,7 @@ namespace OpenRA.Server
 					if (!handled)
 					{
 						Log.Write("server", "Unknown server command: {0}", so.Data);
-						SendChatTo(conn, "Unknown server command: {0}".F(so.Data));
+						SendOrderTo(conn, "Message", "Unknown server command: {0}".F(so.Data));
 					}
 
 					break;
@@ -451,16 +438,10 @@ namespace OpenRA.Server
 				case "HandshakeResponse":
 					ValidateClient(conn, so.Data);
 					break;
-				
 				case "Chat":
 				case "TeamChat":
-					foreach (var c in conns.Except(conn).ToArray())
-						DispatchOrdersToClient(c, fromIndex, 0, so.Serialize());
-					break;
-				
 				case "PauseGame":
-					foreach (var c in conns.Except(conn).ToArray())
-						DispatchOrdersToClient(c, fromIndex, 0, so.Serialize());
+					DispatchOrdersToClients(conn, 0, so.Serialize());
 					break;
 				case "Pong":
 				{
@@ -471,6 +452,7 @@ namespace OpenRA.Server
 						break;
 					}
 
+					var fromClient = GetClient(conn);
 					var history = fromClient.LatencyHistory.ToList();
 					history.Add(Environment.TickCount - pingSent);
 
@@ -502,34 +484,37 @@ namespace OpenRA.Server
 			else
 			{
 				conns.Remove(toDrop);
-				SendChat(toDrop, "Connection Dropped");
-				
+
 				OpenRA.Network.Session.Client dropClient = lobbyInfo.Clients.Where(c1 => c1.Index == toDrop.PlayerIndex).Single();
-				
-				if (State == ServerState.GameStarted)
-					SendDisconnected(toDrop); /* Report disconnection */
+
+				// Send disconnected order, even if still in the lobby
+				SendMessage("{0} has disconnected.".F(dropClient.Name));
+				DispatchOrdersToClients(toDrop, 0, new ServerOrder("Disconnected", "").Serialize());
 
 				lobbyInfo.Clients.RemoveAll(c => c.Index == toDrop.PlayerIndex);
 
-				// reassign admin if necessary
+				// Client was the server admin
+				// TODO: Reassign admin for game in progress via an order
 				if (lobbyInfo.GlobalSettings.Dedicated && dropClient.IsAdmin && State == ServerState.WaitingPlayers)
 				{
-					// clean up the bots that were added by the last admin
+					// Remove any bots controlled by the admin
 					lobbyInfo.Clients.RemoveAll(c => c.Bot != null && c.BotControllerClientIndex == toDrop.PlayerIndex);
 
-					if (lobbyInfo.Clients.Any(c1 => c1.Bot == null))
+					OpenRA.Network.Session.Client nextAdmin = lobbyInfo.Clients.Where(c1 => c1.Bot == null)
+						.OrderBy(c => c.Index).FirstOrDefault();
+
+					if (nextAdmin != null)
 					{
-						// client was not alone on the server but he was admin: set admin to the last connected client
-						OpenRA.Network.Session.Client lastClient = lobbyInfo.Clients.Where(c1 => c1.Bot == null).Last();
-						lastClient.IsAdmin = true;
-						SendChat(toDrop, "Admin left! {0} is a new admin now!".F(lastClient.Name));
+						nextAdmin.IsAdmin = true;
+						SendMessage("{0} is now the admin.".F(nextAdmin.Name));
 					}
 				}
 
-				DispatchOrders( toDrop, toDrop.MostRecentFrame, new byte[] { 0xbf } );
+				DispatchOrders(toDrop, toDrop.MostRecentFrame, new byte[] {0xbf});
 
 				if (conns.Count != 0 || lobbyInfo.GlobalSettings.Dedicated)
 					SyncLobbyInfo();
+
 				if (!lobbyInfo.GlobalSettings.Dedicated && dropClient.IsAdmin)
 					Shutdown();
 			}

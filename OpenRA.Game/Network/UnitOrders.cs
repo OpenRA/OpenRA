@@ -51,14 +51,14 @@ namespace OpenRA.Network
 							Game.AddChatLine(Color.White, "(player {0})".F(clientId), order.TargetString);
 						break;
 					}
-
+				case "Message": // Server message
+						Game.AddChatLine(Color.White, "Server", order.TargetString);
+					break;
 				case "Disconnected": /* reports that the target player disconnected */
 					{
 						var client = orderManager.LobbyInfo.ClientWithIndex(clientId);
 						if (client != null)
-						{
 							client.State = Session.ClientState.Disconnected;
-						}
 						break;
 					}
 
