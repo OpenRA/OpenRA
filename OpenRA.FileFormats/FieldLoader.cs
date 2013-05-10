@@ -148,15 +148,15 @@ namespace OpenRA.FileFormats
 				return InvalidValueAction(x,fieldType, field);
 			}
 
-			else if (fieldType == typeof(ColorRamp))
+			else if (fieldType == typeof(HSLColor))
 			{
 				var parts = x.Split(',');
-				if (parts.Length == 4)
-					return new ColorRamp(
+				// Allow old ColorRamp format to be parsed as HSLColor
+				if (parts.Length == 3 || parts.Length == 4)
+					return new HSLColor(
 						(byte)int.Parse(parts[0]).Clamp(0, 255),
 						(byte)int.Parse(parts[1]).Clamp(0, 255),
-						(byte)int.Parse(parts[2]).Clamp(0, 255),
-						(byte)int.Parse(parts[3]).Clamp(0, 255));
+						(byte)int.Parse(parts[2]).Clamp(0, 255));
 
 				return InvalidValueAction(x, fieldType, field);
 			}

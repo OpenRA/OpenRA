@@ -17,17 +17,14 @@ namespace OpenRA.FileFormats
 		public readonly byte H;
 		public readonly byte S;
 		public readonly byte L;
+		public readonly Color RGB;
 
 		public HSLColor(byte h, byte s, byte l)
 		{
 			H = h;
 			S = s;
 			L = l;
-		}
-
-		public Color ToColor()
-		{
-			return RGBFromHSL(H / 255f, S / 255f, L / 255f);
+			RGB = RGBFromHSL(H / 255f, S / 255f, L / 255f);
 		}
 
 		public void ToHSV(out float h, out float s, out float v)
@@ -45,6 +42,15 @@ namespace OpenRA.FileFormats
 			var ll = 0.5f*(2 - s)*v;
 			var ss = (ll >= 1 || v <= 0) ? 0 : 0.5f*s*v / (ll <= 0.5f ? ll : 1 - ll);
 			return new HSLColor((byte)(255*h), (byte)(255*ss), (byte)(255*ll));
+		}
+
+		public static HSLColor FromRGB(int r, int g, int b)
+		{
+			var c = Color.FromArgb(r, g, b);
+			var h = (byte)((c.GetHue() / 360.0f) * 255);
+			var s = (byte)(c.GetSaturation() * 255);
+			var l = (byte)(c.GetBrightness() * 255);
+			return new HSLColor(h, s, l);
 		}
 
 		public static Color RGBFromHSL(float h, float s, float l)

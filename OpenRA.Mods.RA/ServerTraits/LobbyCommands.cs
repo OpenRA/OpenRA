@@ -225,7 +225,7 @@ namespace OpenRA.Mods.RA.Server
 							var hue = (byte)server.Random.Next(255);
 							var sat = (byte)server.Random.Next(255);
 							var lum = (byte)server.Random.Next(51,255);
-							bot.ColorRamp = bot.PreferredColorRamp = new ColorRamp(hue, sat, lum, 10);
+							bot.Color = bot.PreferredColor = new HSLColor(hue, sat, lum);
 
 							server.lobbyInfo.Clients.Add(bot);
 						}
@@ -520,7 +520,7 @@ namespace OpenRA.Mods.RA.Server
 							return true;
 
 						var ci = parts[1].Split(',').Select(cc => int.Parse(cc)).ToArray();
-						targetClient.ColorRamp = targetClient.PreferredColorRamp = new ColorRamp((byte)ci[0], (byte)ci[1], (byte)ci[2], (byte)ci[3]);
+						targetClient.Color = targetClient.PreferredColor = new HSLColor((byte)ci[0], (byte)ci[1], (byte)ci[2]);
 						server.SyncLobbyInfo();
 						return true;
 					}}

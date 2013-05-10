@@ -107,20 +107,20 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				if (client.Bot == null)
 				{
-					Game.Settings.Player.ColorRamp = preview.Ramp;
+					Game.Settings.Player.Color = preview.Color;
 					Game.Settings.Save();
 				}
 
 				color.RemovePanel();
-				orderManager.IssueOrder(Order.Command("color {0} {1}".F(client.Index, preview.Ramp)));
+				orderManager.IssueOrder(Order.Command("color {0} {1}".F(client.Index, preview.Color)));
 			};
 
-			Action<HSLColor> onChange = c => preview.Ramp = new ColorRamp(c, 10);
+			Action<HSLColor> onChange = c => preview.Color = c;
 
 			var colorChooser = Game.LoadWidget(orderManager.world, "COLOR_CHOOSER", null, new WidgetArgs()
 			{
 				{ "onChange", onChange },
-				{ "initialColor", client.ColorRamp.Color }
+				{ "initialColor", client.Color }
 			});
 
 			color.AttachPanel(colorChooser, onExit);
@@ -282,7 +282,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		public static void SetupColorWidget(Widget parent, Session.Slot s, Session.Client c)
 		{
 			var color = parent.Get<ColorBlockWidget>("COLORBLOCK");
-			color.GetColor = () => c.ColorRamp.GetColor(0);
+			color.GetColor = () => c.Color.RGB;
 		}
 
 		public static void SetupEditableFactionWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, Dictionary<string,string> countryNames)

@@ -55,7 +55,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				{
 					flagRace = o.Country.Race;
 					ownerName = o.PlayerName;
-					ownerColor = o.ColorRamp.GetColor(0);
+					ownerColor = o.Color.RGB;
 					widget.Bounds.Height = doubleHeight;
 					widget.Bounds.Width = Math.Max(widget.Bounds.Width,
 						owner.Bounds.X + ownerFont.Measure(ownerName).X + 5);
