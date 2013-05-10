@@ -158,10 +158,6 @@
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
-	DebugAircraftFacing:
-	DebugAircraftSubPxX:
-	DebugAircraftSubPxY:
-	DebugAircraftAltitude:
 	ProximityCaptor:
 		Types:Plane
 	GivesBounty:
