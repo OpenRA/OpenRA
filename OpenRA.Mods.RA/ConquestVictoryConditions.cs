@@ -10,6 +10,7 @@
 
 using System.Linq;
 using OpenRA.FileFormats;
+using OpenRA.Network;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -31,12 +32,29 @@ namespace OpenRA.Mods.RA
 			Info = info;
 		}
 
+		Session.Client HumanClient(Player p)
+		{
+			var client = p.World.LobbyInfo.ClientWithIndex(p.ClientIndex);
+			if (client != null && client.Bot != null)
+				return p.World.LobbyInfo.ClientWithIndex(client.BotControllerClientIndex);
+			return client;
+		}
+
 		public void Tick(Actor self)
 		{
-			if (self.Owner.WinState != WinState.Undefined || self.Owner.NonCombatant) return;
+			if (self.Owner.NonCombatant)
+				return;
+
+			// Surrender when the controlling player disconnects
+			var client = HumanClient(self.Owner);
+			if (client != null && client.State == Session.ClientState.Disconnected)
+				Lose(self);
+
+			if (self.Owner.WinState != WinState.Undefined)
+				return;
 
 			var hasAnything = self.World.ActorsWithTrait<MustBeDestroyed>()
-				.Any( a => a.Actor.Owner == self.Owner );
+				.Any(a => a.Actor.Owner == self.Owner);
 
 			if (!hasAnything && !self.Owner.NonCombatant)
 				Lose(self);
@@ -44,9 +62,10 @@ namespace OpenRA.Mods.RA
 			var others = self.World.Players.Where( p => !p.NonCombatant
 				&& p != self.Owner && p.Stances[self.Owner] != Stance.Ally );
 
-			if (others.Count() == 0) return;
+			if (others.Count() == 0)
+				return;
 
-			if(others.All(p => p.WinState == WinState.Lost))
+			if (others.All(p => p.WinState == WinState.Lost))
 				Win(self);
 		}
 

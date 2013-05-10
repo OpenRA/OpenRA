@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA.Server
 			else
 				lock (masterServerMessages)
 					while (masterServerMessages.Count > 0)
-						server.SendChat(null, masterServerMessages.Dequeue());
+						server.SendMessage(masterServerMessages.Dequeue());
 		}
 
 
