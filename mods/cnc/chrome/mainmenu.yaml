@@ -45,10 +45,10 @@ Container@MENU_BACKGROUND:
 			Y:WINDOW_BOTTOM-33-HEIGHT-10
 			Width:740
 			Height:35
-			Children:		
+			Children:
 				Container@MAIN_MENU:
 					Width:PARENT_RIGHT
-					Children:	
+					Children:
 						Label@MAINMENU_LABEL_TITLE:
 							X:0
 							Y:0-30
@@ -129,8 +129,8 @@ Container@MENU_BACKGROUND:
 				Container@SETTINGS_MENU:
 					Width:PARENT_RIGHT
 					Visible:False
-					Children:	
-						Label@TITLE:
+					Children:
+						Label@OPTIONS_LABLE_TITLE:
 							X:0
 							Y:0-30
 							Width:PARENT_RIGHT
