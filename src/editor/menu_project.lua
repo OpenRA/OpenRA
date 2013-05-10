@@ -313,9 +313,9 @@ frame:Connect(ID_STARTDEBUG, wx.wxEVT_UPDATE_UI,
   function (event)
     local editor = GetEditor()
     event:Enable((ide.interpreter) and (ide.interpreter.hasdebugger) and
-      ((debugger.server == nil and debugger.pid == nil) or
+      ((debugger.server == nil and debugger.pid == nil and editor ~= nil) or
        (debugger.server ~= nil and not debugger.running)) and
-      (editor ~= nil) and (not debugger.scratchpad or debugger.scratchpad.paused))
+      (not debugger.scratchpad or debugger.scratchpad.paused))
     local label = (debugger.server ~= nil)
       and debugMenuRun.continue or debugMenuRun.start
     if debugMenu:GetLabel(ID_STARTDEBUG) ~= label then
@@ -327,8 +327,7 @@ frame:Connect(ID_STOPDEBUG, wx.wxEVT_COMMAND_MENU_SELECTED,
   function () DebuggerShutdown() end)
 frame:Connect(ID_STOPDEBUG, wx.wxEVT_UPDATE_UI,
   function (event)
-    local editor = GetEditor()
-    event:Enable((debugger.server ~= nil or debugger.pid ~= nil) and (editor ~= nil))
+    event:Enable(debugger.server ~= nil or debugger.pid ~= nil)
     local label = (debugger.server == nil and debugger.pid ~= nil)
       and debugMenuStop.process or debugMenuStop.debugging
     if debugMenu:GetLabel(ID_STOPDEBUG) ~= label then
@@ -392,8 +391,7 @@ frame:Connect(ID_BREAK, wx.wxEVT_COMMAND_MENU_SELECTED,
   end)
 frame:Connect(ID_BREAK, wx.wxEVT_UPDATE_UI,
   function (event)
-    local editor = GetEditor()
-    event:Enable((debugger.server ~= nil) and (editor ~= nil)
+    event:Enable(debugger.server ~= nil
       and (debugger.running
            or (debugger.scratchpad and not debugger.scratchpad.paused)))
   end)
