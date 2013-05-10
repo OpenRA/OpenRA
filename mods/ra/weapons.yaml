@@ -1161,11 +1161,11 @@ ATMine:
 
 APMine:
 	Warhead:
-		Damage: 700
+		Damage: 500
 		Versus: 
 			Wood: 0%
-			Light: 0%
-			Heavy: 0%
+			Light: 10%
+			Heavy: 10%
 			Concrete: 0%
 		ImpactSound: mine1
 		InfDeath: 3
