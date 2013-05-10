@@ -651,12 +651,15 @@ World:
 
 MINP:
 	Mine:
-		Weapon: APMine
 		CrushClasses: apmine,atmine
-		DetonateClasses: apmine
-		AvoidFriendly: yes
+		DetonateClasses: apmine,atmine
+		AvoidFriendly: no
+	Explodes:
+		Weapon: APMine
 	Health:
-		HP: 1
+		HP: 50
+	Armor:
+		Type: Light
 	RenderSimple:
 	BelowUnits:
 	Cloak:
@@ -667,16 +670,21 @@ MINP:
 		Name: Anti-Personnel Mine
 		Icon: jmin
 	ProximityCaptor:
-		Types:Mine
+		Types: Mine
+	TargetableUnit:
+		TargetTypes: Ground
 
 MINV:
 	Mine:
-		Weapon: ATMine
 		CrushClasses: atmine,apmine
 		DetonateClasses: atmine
-		AvoidFriendly: yes
+		AvoidFriendly: no
+	Explodes:
+		Weapon: ATMine
 	Health:
-		HP: 1
+		HP: 50
+	Armor:
+		Type: Light
 	RenderSimple:
 	BelowUnits:
 	Cloak:
@@ -687,7 +695,9 @@ MINV:
 		Name: Anti-Tank Mine
 		Icon: jmin
 	ProximityCaptor:
-		Types:Mine
+		Types: Mine
+	TargetableUnit:
+		TargetTypes: Ground
 
 CRATE:
 	Tooltip:

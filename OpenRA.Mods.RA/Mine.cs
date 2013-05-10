@@ -20,7 +20,6 @@ namespace OpenRA.Mods.RA
 	class MineInfo : ITraitInfo
 	{
 		public readonly string[] CrushClasses = { };
-		[WeaponReference] public readonly string Weapon = "ATMine";
 		public readonly bool AvoidFriendly = true;
 		public readonly string[] DetonateClasses = { };
 
@@ -44,15 +43,14 @@ namespace OpenRA.Mods.RA
 
 		public void OnCrush(Actor crusher)
 		{
-			if (crusher.HasTrait<MineImmune>() || self.Owner.Stances[crusher.Owner] == Stance.Ally)
+			if (crusher.HasTrait<MineImmune>() || (self.Owner.Stances[crusher.Owner] == Stance.Ally && info.AvoidFriendly))
 				return;
 
 			var mobile = crusher.TraitOrDefault<Mobile>();
 			if (mobile != null && !info.DetonateClasses.Intersect(mobile.Info.Crushes).Any())
 				return;
 
-			Combat.DoExplosion(self, info.Weapon, crusher.CenterLocation, 0);
-			self.QueueActivity(new RemoveSelf());
+			self.Kill(crusher);
 		}
 
 		public bool CrushableBy(string[] crushClasses, Player owner)

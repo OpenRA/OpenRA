@@ -164,8 +164,8 @@ CA:
 	Armor:
 		Type: Heavy
 	Mobile:
-		ROT: 2
-		Speed: 2
+		ROT: 3
+		Speed: 3
 	RevealsShroud:
 		Range: 7
 	Turreted@PRIMARY:
