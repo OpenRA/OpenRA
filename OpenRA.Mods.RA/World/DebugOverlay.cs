@@ -57,7 +57,7 @@ namespace OpenRA.Mods.RA
 
 			foreach (var pair in layers)
 			{
-				Color c = (pair.Key != null) ? pair.Key.ColorRamp.GetColor(0f) : Color.PaleTurquoise;
+				Color c = (pair.Key != null) ? pair.Key.Color.RGB : Color.PaleTurquoise;
 				var layer = pair.Value;
 
 				for (int j = mapBounds.Top; j <= mapBounds.Bottom; ++j)

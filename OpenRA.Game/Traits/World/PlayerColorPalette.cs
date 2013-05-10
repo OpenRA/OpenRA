@@ -16,15 +16,18 @@ namespace OpenRA.Traits
 	[Desc("Add this to the Player actor definition.")]
 	public class PlayerColorPaletteInfo : ITraitInfo
 	{
-		[Desc("The Name of the palette to base off.")]
+		[Desc("The name of the palette to base off.")]
 		public readonly string BasePalette = null;
 		[Desc("The prefix for the resulting player palettes")]
 		public readonly string BaseName = "player";
 		[Desc("Remap these indices to player colors.")]
 		public readonly int[] RemapIndex = {};
+		[Desc("Luminosity range to span.")]
+		public readonly float Ramp = 0.05f;
+		[Desc("Allow palette modifiers to change the palette.")]
 		public readonly bool AllowModifiers = true;
 
-		public object Create( ActorInitializer init ) { return new PlayerColorPalette( init.self.Owner, this ); }
+		public object Create(ActorInitializer init) { return new PlayerColorPalette(init.self.Owner, this); }
 	}
 
 	public class PlayerColorPalette : IPalette
@@ -32,18 +35,16 @@ namespace OpenRA.Traits
 		readonly Player owner;
 		readonly PlayerColorPaletteInfo info;
 
-		public PlayerColorPalette( Player owner, PlayerColorPaletteInfo info )
+		public PlayerColorPalette(Player owner, PlayerColorPaletteInfo info)
 		{
 			this.owner = owner;
 			this.info = info;
 		}
 
-		public void InitPalette( WorldRenderer wr )
+		public void InitPalette(WorldRenderer wr)
 		{
-			var paletteName = "{0}{1}".F( info.BaseName, owner.InternalName );
-			var newpal = new Palette(wr.Palette(info.BasePalette).Palette,
-							 new PlayerColorRemap(info.RemapIndex, owner.ColorRamp));
-			wr.AddPalette(paletteName, newpal, info.AllowModifiers);
+			var remap = new PlayerColorRemap(info.RemapIndex, owner.Color, info.Ramp);
+			wr.AddPalette(info.BaseName+owner.InternalName, new Palette(wr.Palette(info.BasePalette).Palette, remap), info.AllowModifiers);
 		}
 	}
 }

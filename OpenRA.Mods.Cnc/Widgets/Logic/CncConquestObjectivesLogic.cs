@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				var item = itemTemplate.Clone();
 				var nameLabel = item.Get<LabelWidget>("NAME");
 				nameLabel.GetText = () => pp.WinState == WinState.Lost ? pp.PlayerName + " (Dead)" : pp.PlayerName;
-				nameLabel.GetColor = () => pp.ColorRamp.GetColor(0);
+				nameLabel.GetColor = () => pp.Color.RGB;
 
 				var flag = item.Get<ImageWidget>("FACTIONFLAG");
 				flag.GetImageName = () => pp.Country.Race;

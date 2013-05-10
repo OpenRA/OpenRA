@@ -26,7 +26,7 @@ namespace OpenRA
 		public int Deaths;
 		public WinState WinState = WinState.Undefined;
 
-		public readonly ColorRamp ColorRamp;
+		public readonly HSLColor Color;
 
 		public readonly string PlayerName;
 		public readonly string InternalName;
@@ -60,7 +60,7 @@ namespace OpenRA
 			if (client != null)
 			{
 				ClientIndex = client.Index;
-				ColorRamp = client.ColorRamp;
+				Color = client.Color;
 				PlayerName = client.Name;
 				botType = client.Bot;
 				Country = ChooseCountry(world, client.Country);
@@ -69,7 +69,7 @@ namespace OpenRA
 			{
 				// Map player
 				ClientIndex = 0; // Owned by the host (TODO: fix this)
-				ColorRamp = pr.ColorRamp;
+				Color = pr.Color;
 				PlayerName = pr.Name;
 				NonCombatant = pr.NonCombatant;
 				botType = pr.Bot;

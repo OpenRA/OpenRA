@@ -110,7 +110,7 @@ namespace OpenRA.GameRules
 	public class PlayerSettings
 	{
 		public string Name = "Newbie";
-		public ColorRamp ColorRamp = new ColorRamp(75, 255, 180, 25);
+		public HSLColor Color = new HSLColor(75, 255, 180);
 		public string LastServer = "localhost:1234";
 	}
 

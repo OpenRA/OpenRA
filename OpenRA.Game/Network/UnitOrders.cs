@@ -45,7 +45,7 @@ namespace OpenRA.Network
 							var player = world != null ? world.FindPlayerByClient(client) : null;
 							var suffix = (player != null && player.WinState == WinState.Lost) ? " (Dead)" : "";
 							suffix = client.IsObserver ? " (Spectator)" : suffix;
-							Game.AddChatLine(client.ColorRamp.GetColor(0), client.Name + suffix, order.TargetString);
+							Game.AddChatLine(client.Color.RGB, client.Name + suffix, order.TargetString);
 						}
 						else
 							Game.AddChatLine(Color.White, "(player {0})".F(clientId), order.TargetString);
@@ -71,7 +71,7 @@ namespace OpenRA.Network
 							if (world == null)
 							{
 								if (orderManager.LocalClient != null && client.Team == orderManager.LocalClient.Team)
-									Game.AddChatLine(client.ColorRamp.GetColor(0), client.Name + " (Team)",
+									Game.AddChatLine(client.Color.RGB, client.Name + " (Team)",
 										order.TargetString);
 							}
 							else
@@ -82,7 +82,7 @@ namespace OpenRA.Network
 								if (world.LocalPlayer != null && player.Stances[world.LocalPlayer] == Stance.Ally || player.WinState == WinState.Lost)
 								{
 									var suffix = player.WinState == WinState.Lost ? " (Dead)" : " (Team)";
-									Game.AddChatLine(client.ColorRamp.GetColor(0), client.Name + suffix, order.TargetString);
+									Game.AddChatLine(client.Color.RGB, client.Name + suffix, order.TargetString);
 								}
 							}
 						}
@@ -133,8 +133,8 @@ namespace OpenRA.Network
 						var info = new Session.Client()
 						{
 							Name = Game.Settings.Player.Name,
-							PreferredColorRamp = Game.Settings.Player.ColorRamp,
-							ColorRamp = Game.Settings.Player.ColorRamp,
+							PreferredColor = Game.Settings.Player.Color,
+							Color = Game.Settings.Player.Color,
 							Country = "random",
 							SpawnPoint = 0,
 							Team = 0,

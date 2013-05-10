@@ -155,7 +155,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			graph.GetSeries = () =>
 				players.Select(p => new LineGraphSeries(
 					p.PlayerName,
-					p.ColorRamp.GetColor(0),
+					p.Color.RGB,
 					(p.PlayerActor.TraitOrDefault<PlayerStatistics>() ?? new PlayerStatistics(p.PlayerActor)).EarnedSamples.Select(s => (float)s)
 					));
 
@@ -302,7 +302,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var playerName = template.Get<LabelWidget>("PLAYER");
 			playerName.GetText = () => player.PlayerName + (player.WinState == WinState.Undefined ? "" : " (" + player.WinState + ")");
-			playerName.GetColor = () => player.ColorRamp.GetColor(0);
+			playerName.GetColor = () => player.Color.RGB;
 		}
 
 		static Color GetPowerColor(PowerState state)

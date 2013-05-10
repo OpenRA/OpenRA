@@ -106,7 +106,7 @@ namespace OpenRA.Mods.RA.Widgets
 					// Generate palette in HSV
 					for (var v = 0; v < 256; v++)
 						for (var s = 0; s < 256; s++)
-							*(c + (v * bitmapData.Stride >> 2) + s) = HSLColor.FromHSV(hue, s / 255f, (255 - v) / 255f).ToColor().ToArgb();
+							*(c + (v * bitmapData.Stride >> 2) + s) = HSLColor.FromHSV(hue, s / 255f, (255 - v) / 255f).RGB.ToArgb();
 				}
 
 				backBitmap.UnlockBits(bitmapData);
@@ -139,7 +139,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 			var sprite = ChromeProvider.GetImage("lobby-bits", "colorpicker");
 			var pos = RenderOrigin + PxFromValue() - new int2(sprite.bounds.Width/2, sprite.bounds.Height/2);
-			WidgetUtils.FillRectWithColor(new Rectangle(pos.X + 3, pos.Y + 3, 10, 10), Color.ToColor());
+			WidgetUtils.FillRectWithColor(new Rectangle(pos.X + 3, pos.Y + 3, 10, 10), Color.RGB);
 			Game.Renderer.RgbaSpriteRenderer.DrawSprite(sprite, pos);
 		}
 

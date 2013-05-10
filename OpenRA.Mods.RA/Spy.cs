@@ -117,9 +117,9 @@ namespace OpenRA.Mods.RA
 		{
 			if (!Disguised || self.World.LocalPlayer == null ||
 				self.Owner.Stances[self.World.LocalPlayer] == Stance.Ally)
-				return self.Owner.ColorRamp.GetColor(0);
+				return self.Owner.Color.RGB;
 
-			return disguisedAsPlayer.ColorRamp.GetColor(0);
+			return disguisedAsPlayer.Color.RGB;
 		}
 
 		void DisguiseAs(Actor target)

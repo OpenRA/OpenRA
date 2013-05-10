@@ -106,7 +106,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			NonEditableSpectatorTemplate = Players.Get("TEMPLATE_NONEDITABLE_SPECTATOR");
 			NewSpectatorTemplate = Players.Get("TEMPLATE_NEW_SPECTATOR");
 			colorPreview = lobby.Get<ColorPreviewManagerWidget>("COLOR_MANAGER");
-			colorPreview.Ramp = Game.Settings.Player.ColorRamp;
+			colorPreview.Color = Game.Settings.Player.Color;
 
 			var mapPreview = lobby.Get<MapPreviewWidget>("MAP_PREVIEW");
 			mapPreview.IsVisible = () => Map != null;

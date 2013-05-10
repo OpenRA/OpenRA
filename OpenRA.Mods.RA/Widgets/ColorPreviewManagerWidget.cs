@@ -22,9 +22,10 @@ namespace OpenRA.Mods.RA.Widgets
 	{
 		public readonly string Palette = "colorpicker";
 		public readonly int[] RemapIndices = {};
-		public ColorRamp Ramp;
+		public readonly float Ramp = 0.05f;
+		public HSLColor Color;
 
-		ColorRamp cachedRamp;
+		HSLColor cachedColor;
 		WorldRenderer worldRenderer;
 		Palette preview;
 
@@ -43,11 +44,11 @@ namespace OpenRA.Mods.RA.Widgets
 
 		public override void Tick()
 		{
-			if (cachedRamp == Ramp)
+			if (cachedColor == Color)
 				return;
 
-			preview.ApplyRemap(new PlayerColorRemap(RemapIndices, Ramp));
-			cachedRamp = Ramp;
+			preview.ApplyRemap(new PlayerColorRemap(RemapIndices, Color, Ramp));
+			cachedColor = Color;
 		}
 	}
 }

@@ -558,7 +558,7 @@ namespace OpenRA.Editor
 			if (player == null)
 				return;
 
-			var color = player.ColorRamp.GetColor(0);
+			var color = player.Color.RGB;
 			using( var brush = new SolidBrush(color) )
 				e.Graphics.FillRectangle( brush, e.Bounds.Left + 2, e.Bounds.Top + 2, e.Bounds.Height + 6, e.Bounds.Height - 4 );
 			using( var foreBrush = new SolidBrush(e.ForeColor) )
