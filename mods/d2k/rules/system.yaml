@@ -271,6 +271,7 @@ Player:
 	Shroud:
 		Shroud: false
 	HarvesterAttackNotifier:
+	PlayerStatistics:
 
 World:
 	LoadWidgetAtGameStart:
