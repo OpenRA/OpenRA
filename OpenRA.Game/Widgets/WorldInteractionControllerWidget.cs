@@ -175,7 +175,7 @@ namespace OpenRA.Widgets
 					return true;
 				}
 				else if (e.KeyName == Game.Settings.Keys.PauseKey)
-					world.IssueOrder(Order.PauseGame(!world.Paused));
+					world.SetPauseState(!world.Paused);
 			}
 			return false;
 		}

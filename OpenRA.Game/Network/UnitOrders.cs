@@ -109,6 +109,7 @@ namespace OpenRA.Network
 							}
 
 							orderManager.world.Paused = pause;
+							orderManager.world.PredictedPaused = pause;
 						}
 						break;
 					}
