@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA
 	{
 		public IEnumerable<Renderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<Renderable> r)
 		{
-			return r.Select(a => a.WithZOffset((int) -a.Sprite.size.Y));
+			return r.Select(a => a.WithZOffset(-a.Size.Height));
 		}
 	}
 }

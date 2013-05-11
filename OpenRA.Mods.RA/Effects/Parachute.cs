@@ -65,17 +65,17 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<Renderable> Render(WorldRenderer wr)
 		{
-			var rc = cargo.Render(wr).Select(a => a.WithPos(a.Pos - new float2(0, altitude))
-			                                    .WithZOffset(a.ZOffset + (int)altitude));
+			var rc = cargo.Render(wr);
 
 			// Don't render anything if the cargo is invisible (e.g. under fog)
 			if (!rc.Any())
 				yield break;
 
+			var shadow = wr.Palette("shadow");
 			foreach (var c in rc)
 			{
-				yield return c.WithPos(location.ToFloat2() - .5f * c.Sprite.size).WithPalette(wr.Palette("shadow")).WithZOffset(0);
-				yield return c.WithZOffset(2);
+				yield return c.WithPalette(shadow);
+				yield return c.WithPxOffset(new float2(0, -altitude)).WithZOffset(c.ZOffset + (int)altitude + 2);
 			}
 
 			var pos = location.ToFloat2() - new float2(0, altitude);

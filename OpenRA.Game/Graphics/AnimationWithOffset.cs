@@ -34,12 +34,16 @@ namespace OpenRA.Graphics
 
 		public Renderable Image(Actor self, WorldRenderer wr, PaletteReference pal)
 		{
-			var p = self.CenterLocation;
-			var loc = p.ToFloat2() - 0.5f * Animation.Image.size
-				+ (OffsetFunc != null ? OffsetFunc(wr) : float2.Zero);
-			var r = new Renderable(Animation.Image, loc, pal, p.Y);
+			return Image(self, wr, pal, 1f);
+		}
 
-			return ZOffset != 0 ? r.WithZOffset(ZOffset) : r;
+		public Renderable Image(Actor self, WorldRenderer wr, PaletteReference pal, float scale)
+		{
+			var p = self.CenterLocation;
+			var loc = p.ToFloat2() - 0.5f * scale * Animation.Image.size
+				+ (OffsetFunc != null ? OffsetFunc(wr) : float2.Zero);
+
+			return new Renderable(Animation.Image, loc, pal, p.Y, ZOffset, scale);
 		}
 
 		public static implicit operator AnimationWithOffset(Animation a)

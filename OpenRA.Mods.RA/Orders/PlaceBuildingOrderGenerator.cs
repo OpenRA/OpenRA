@@ -99,9 +99,7 @@ namespace OpenRA.Mods.RA.Orders
 				}
 
 				foreach (var r in preview)
-					r.Sprite.DrawAt(topLeft.ToPPos().ToFloat2() + r.Pos,
-									r.Palette.Index,
-									r.Scale*r.Sprite.size);
+					r.WithPxOffset(topLeft.ToPPos().ToFloat2()).Render(wr);
 
 				var res = world.WorldActor.Trait<ResourceLayer>();
 				var isCloseEnough = BuildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, Building, topLeft);

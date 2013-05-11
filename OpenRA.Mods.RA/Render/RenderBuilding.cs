@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA.Render
 		public override IEnumerable<Renderable> RenderPreview(ActorInfo building, PaletteReference pr)
 		{
 			return base.RenderPreview(building, pr)
-				.Select(a => a.WithPos(a.Pos + building.Traits.Get<RenderBuildingInfo>().Origin));
+				.Select(a => a.WithPxOffset(building.Traits.Get<RenderBuildingInfo>().Origin));
 		}
 
 		public void Render(WorldRenderer wr, World w, ActorInfo ai, PPos centerLocation)
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.RA.Render
 			var disabled = self.IsDisabled();
 			foreach (var a in r)
 			{
-				var ret = a.WithPos(a.Pos - Info.Origin);
+				var ret = a.WithPxOffset(-Info.Origin);
 				yield return ret;
 				if (disabled)
 					yield return ret.WithPalette(wr.Palette("disabled")).WithZOffset(1);

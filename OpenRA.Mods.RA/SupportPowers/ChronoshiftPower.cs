@@ -242,13 +242,9 @@ namespace OpenRA.Mods.RA
 				// Unit previews
 				foreach (var unit in power.UnitsInRange(sourceLocation))
 				{
-					if (manager.self.Owner.Shroud.IsTargetable(unit)) {
-						var targetCell = unit.Location + (xy - sourceLocation);
+					if (manager.self.Owner.Shroud.IsTargetable(unit))
 						foreach (var r in unit.Render(wr))
-                            r.Sprite.DrawAt(r.Pos - Traits.Util.CenterOfCell(unit.Location).ToFloat2() + Traits.Util.CenterOfCell(targetCell).ToFloat2(),
-								r.Palette.Index,
-								r.Scale*r.Sprite.size);
-					}
+							r.WithPxOffset((xy.ToPPos() - sourceLocation.ToPPos()).ToFloat2()).Render(wr);
 				}
 
 				// Unit tiles

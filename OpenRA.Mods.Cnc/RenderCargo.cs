@@ -57,7 +57,7 @@ namespace OpenRA.Mods.Cnc
 				: cargo.Passengers;
 
 			return r.Concat(visiblePassengers.SelectMany(a => a.Render(wr))
-				.Select(a => a.WithPos(a.Pos - new float2(0, Info.RelativeAltitude))
+				.Select(a => a.WithPxOffset(new float2(0, -Info.RelativeAltitude))
 			        .WithZOffset(a.ZOffset + Info.RelativeAltitude)));
 		}
 	}

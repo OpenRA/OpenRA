@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA.Render
 
 			var shadowSprites = r.Select(a => a.WithPalette(wr.Palette("shadow")));
 			var flyingSprites = (move.Altitude <= 0) ? r
-				: r.Select(a => a.WithPos(a.Pos - new float2(0, move.Altitude + visualOffset)).WithZOffset(move.Altitude + a.ZOffset));
+				: r.Select(a => a.WithPxOffset(new float2(0, -(move.Altitude + visualOffset))).WithZOffset(move.Altitude + a.ZOffset));
 
 			return shadowSprites.Concat(flyingSprites);
 		}

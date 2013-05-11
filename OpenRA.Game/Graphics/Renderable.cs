@@ -9,6 +9,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace OpenRA.Graphics
 {
@@ -16,18 +17,20 @@ namespace OpenRA.Graphics
 	{
 		public int Compare(Renderable x, Renderable y)
 		{
-			return (x.Z + x.ZOffset).CompareTo(y.Z + y.ZOffset);
+			return x.SortOrder.CompareTo(y.SortOrder);
 		}
 	}
 
 	public struct Renderable
 	{
-		public readonly Sprite Sprite;
-		public readonly float2 Pos;
+		readonly Sprite Sprite;
+		readonly float2 Pos;
+		readonly int Z;
+		float Scale;
+
+		// TODO: Fix Parachute and WithShadow so these can be made private
 		public readonly PaletteReference Palette;
-		public readonly int Z;
 		public readonly int ZOffset;
-		public float Scale;
 
 		public Renderable(Sprite sprite, float2 pos, PaletteReference palette, int z, int zOffset, float scale)
 		{
@@ -47,7 +50,24 @@ namespace OpenRA.Graphics
 
 		public Renderable WithScale(float newScale) { return new Renderable(Sprite, Pos, Palette, Z, ZOffset, newScale); }
 		public Renderable WithPalette(PaletteReference newPalette) { return new Renderable(Sprite, Pos, newPalette, Z, ZOffset, Scale); }
+
+		public Renderable WithPxOffset(float2 offset) { return new Renderable(Sprite, Pos + offset, Palette, Z, ZOffset, Scale); }
 		public Renderable WithZOffset(int newOffset) { return new Renderable(Sprite, Pos, Palette, Z, newOffset, Scale); }
-		public Renderable WithPos(float2 newPos) { return new Renderable(Sprite, newPos, Palette, Z, ZOffset, Scale); }
+
+		public void Render(WorldRenderer wr)
+		{
+			Sprite.DrawAt(Pos, Palette.Index, Scale);
+		}
+
+		public Size Size
+		{
+			get
+			{
+				var size = (Scale*Sprite.size).ToInt2();
+				return new Size(size.X, size.Y);
+			}
+		}
+
+		public int SortOrder { get { return Z + ZOffset; } }
 	}
 }
