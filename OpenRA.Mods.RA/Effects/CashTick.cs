@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Effects
 		static string FormatCashAmount(int x) { return "{0}${1}".F(x < 0 ? "-" : "+", x); }
 
 		public CashTick(int value, int lifetime, int velocity, PPos pos, Color color)
-			: this( FormatCashAmount(value), lifetime, velocity, pos, color ) { }
+			: this(FormatCashAmount(value), lifetime, velocity, pos, color) { }
 
 		public CashTick(string value, int lifetime, int velocity, PPos pos, Color color)
 		{
