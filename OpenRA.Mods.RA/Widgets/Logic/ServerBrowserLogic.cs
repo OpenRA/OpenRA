@@ -34,6 +34,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		bool showStarted = true;
 		bool showIncompatible = false;
 
+		bool sendPing = false;
+
 		public string ProgressLabelText()
 		{
 			switch (searchStatus)
@@ -51,12 +53,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var panel = widget;
 			OpenLobby = openLobby;
 			OnExit = onExit;
+
+			Action refresh = () => ServerList.Query(games => RefreshServerList(panel, games), sendPing);
+
 			var sl = panel.Get<ScrollPanelWidget>("SERVER_LIST");
 
 			// Menu buttons
 			var refreshButton = panel.Get<ButtonWidget>("REFRESH_BUTTON");
 			refreshButton.IsDisabled = () => searchStatus == SearchStatus.Fetching;
-			refreshButton.OnClick = () => ServerList.Query(games => RefreshServerList(panel, games));
+			refreshButton.OnClick = () => refresh();
 
 			var join = panel.Get<ButtonWidget>("JOIN_BUTTON");
 			join.IsDisabled = () => currentServer == null || !currentServer.CanJoin();
@@ -73,35 +78,42 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			progressText.IsVisible = () => searchStatus != SearchStatus.Hidden;
 			progressText.GetText = ProgressLabelText;
 
+			var showPingCheckbox = panel.GetOrNull<CheckboxWidget>("PING_SERVERS");
+			if (showPingCheckbox != null)
+			{
+				showPingCheckbox.IsChecked = () => sendPing;
+				showPingCheckbox.OnClick = () => { sendPing ^= true; refresh(); };
+			}
+
 			var showWaitingCheckbox = panel.GetOrNull<CheckboxWidget>("WAITING_FOR_PLAYERS");
 			if (showWaitingCheckbox != null)
 			{
 				showWaitingCheckbox.IsChecked = () => showWaiting;
-				showWaitingCheckbox.OnClick = () => { showWaiting ^= true; ServerList.Query(games => RefreshServerList(panel, games)); };
+				showWaitingCheckbox.OnClick = () => { showWaiting ^= true; refresh(); };
 			}
 
 			var showEmptyCheckbox = panel.GetOrNull<CheckboxWidget>("EMPTY");
 			if (showEmptyCheckbox != null)
 			{
 				showEmptyCheckbox.IsChecked = () => showEmpty;
-				showEmptyCheckbox.OnClick = () => { showEmpty ^= true; ServerList.Query(games => RefreshServerList(panel, games)); };
+				showEmptyCheckbox.OnClick = () => { showEmpty ^= true; refresh(); };
 			}
 
 			var showAlreadyStartedCheckbox = panel.GetOrNull<CheckboxWidget>("ALREADY_STARTED");
 			if (showAlreadyStartedCheckbox != null)
 			{
 				showAlreadyStartedCheckbox.IsChecked = () => showStarted;
-				showAlreadyStartedCheckbox.OnClick = () => { showStarted ^= true; ServerList.Query(games => RefreshServerList(panel, games)); };
+				showAlreadyStartedCheckbox.OnClick = () => { showStarted ^= true; refresh(); };
 			}
 
 			var showIncompatibleCheckbox = panel.GetOrNull<CheckboxWidget>("INCOMPATIBLE_VERSION");
 			if (showIncompatibleCheckbox != null)
 			{
 				showIncompatibleCheckbox.IsChecked = () => showIncompatible;
-				showIncompatibleCheckbox.OnClick = () => { showIncompatible ^= true; ServerList.Query(games => RefreshServerList(panel, games)); };
+				showIncompatibleCheckbox.OnClick = () => { showIncompatible ^= true; refresh(); };
 			}
 
-			ServerList.Query(games => RefreshServerList(panel, games));
+			refresh();
 		}
 
 		void Join(GameServer server)
@@ -158,6 +170,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		public static string GenerateModsLabel(GameServer s)
 		{
 			return s.UsefulMods.Select(m => GenerateModLabel(m)).JoinWith("\n");
+		}
+
+		static string GetPing(GameServer s)
+		{
+			if (s.Latency > -1)
+				return "Ping: {0} ms".F(s.Latency);
+			else
+				return "Ping: ? ms";
 		}
 
 		bool Filtered(GameServer game)
@@ -238,6 +258,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				version.GetText = () => GenerateModsLabel(game);
 				version.IsVisible = () => !game.CompatibleVersion();
 
+				var ping = item.GetOrNull<LabelWidget>("PING");
+				if (ping != null)
+				{
+					ping.GetText = () => GetPing(game);
+					ping.IsVisible = () => (game.CompatibleVersion() && sendPing);
+				}
+
 				if (!canJoin)
 				{
 					title.GetColor = () => Color.Gray;
@@ -246,6 +273,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					state.GetColor = () => Color.Gray;
 					ip.GetColor = () => Color.Gray;
 					version.GetColor = () => Color.Gray;
+					if (ping != null)
+						ping.GetColor = () => Color.Gray;
 				}
 
 				if (!Filtered(game))
