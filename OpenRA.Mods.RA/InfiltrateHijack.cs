@@ -21,6 +21,8 @@ namespace OpenRA.Mods.RA
 
 		public void OnInfiltrate(Actor self, Actor infiltrator)
 		{
+			self.CancelActivity();
+
 			if (currentHijacker != null && !currentHijacker.IsDead())
 				currentHijacker.Kill(infiltrator);
 
