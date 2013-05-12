@@ -27,8 +27,8 @@ namespace OpenRA.Mods.RA.Render
 
 		public override IEnumerable<Renderable> RenderPreview(ActorInfo building, PaletteReference pr)
 		{
-			return base.RenderPreview(building, pr)
-				.Select(a => a.WithPxOffset(building.Traits.Get<RenderBuildingInfo>().Origin));
+			var origin = building.Traits.Get<RenderBuildingInfo>().Origin;
+			return base.RenderPreview(building, pr).Select(a => a.WithPxOffset(origin));
 		}
 
 		public void Render(WorldRenderer wr, World w, ActorInfo ai, PPos centerLocation)

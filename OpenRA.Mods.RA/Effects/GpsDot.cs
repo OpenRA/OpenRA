@@ -84,7 +84,7 @@ namespace OpenRA.Mods.RA.Effects
 
 			var p = self.CenterLocation;
 			var palette = wr.Palette(info.IndicatorPalettePrefix+self.Owner.InternalName);
-			yield return new Renderable(anim.Image, p.ToFloat2() - 0.5f * anim.Image.size, palette, p.Y)
+			yield return new Renderable(anim.Image, p.ToFloat2(), palette, p.Y)
 				.WithScale(1.5f);
 		}
 	}

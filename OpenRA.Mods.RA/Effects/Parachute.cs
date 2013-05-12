@@ -79,7 +79,7 @@ namespace OpenRA.Mods.RA.Effects
 			}
 
 			var pos = location.ToFloat2() - new float2(0, altitude);
-			yield return new Renderable(paraAnim.Image, pos - .5f * paraAnim.Image.size + offset, rc.First().Palette, 3);
+			yield return new Renderable(paraAnim.Image, pos + offset, rc.First().Palette, 3);
 		}
 	}
 }

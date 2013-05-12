@@ -118,8 +118,8 @@ namespace OpenRA.Mods.RA
 				yield break;
 
 			var bounds = self.Bounds.Value;
-			yield return new Renderable(RankAnim.Image, new float2(bounds.Right - 6, bounds.Bottom - 8),
-				wr.Palette("effect"), self.CenterLocation.Y);
+			var pos = new float2(bounds.Right, bounds.Bottom - 2);
+			yield return new Renderable(RankAnim.Image, pos, wr.Palette("effect"), self.CenterLocation.Y);
 		}
 	}
 

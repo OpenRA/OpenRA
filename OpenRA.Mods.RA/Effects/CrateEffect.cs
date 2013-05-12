@@ -43,7 +43,7 @@ namespace OpenRA.Mods.RA.Effects
 		{
 			if (a.IsInWorld)
 				yield return new Renderable(anim.Image,
-					a.CenterLocation.ToFloat2() - .5f * anim.Image.size + offset,
+					a.CenterLocation.ToFloat2() + offset,
 				    wr.Palette("effect"), (int)a.CenterLocation.Y);
 		}
 	}

@@ -177,7 +177,7 @@ namespace OpenRA.Mods.RA.Effects
 		public IEnumerable<Renderable> Render(WorldRenderer wr)
 		{
 			if (!Args.firedBy.World.FogObscures(PxPosition.ToCPos()))
-				yield return new Renderable(anim.Image, PxPosition.ToFloat2() - 0.5f * anim.Image.size - new float2(0, Altitude),
+				yield return new Renderable(anim.Image, PxPosition.ToFloat2() - new float2(0, Altitude),
 					wr.Palette(Args.weapon.Underwater ? "shadow" : "effect"), PxPosition.Y);
 
 			if (Trail != null)

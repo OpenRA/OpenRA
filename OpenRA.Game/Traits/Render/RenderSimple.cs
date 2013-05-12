@@ -30,15 +30,16 @@ namespace OpenRA.Traits
 		[Desc("Number of facings for gameplay calculations. -1 indiciates auto-detection from sequence")]
 		public readonly int QuantizedFacings = -1;
 
+		[Desc("Camera pitch the sprite was rendered with. Used to determine rotation ellipses")]
 		public readonly WAngle CameraPitch = WAngle.FromDegrees(40);
 		public virtual object Create(ActorInitializer init) { return new RenderSimple(init.self); }
 
-		public virtual IEnumerable<Renderable> RenderPreview(ActorInfo building, PaletteReference pr)
+		public virtual IEnumerable<Renderable> RenderPreview(ActorInfo ai, PaletteReference pr)
 		{
-			var anim = new Animation(RenderSimple.GetImage(building), () => 0);
+			var anim = new Animation(RenderSimple.GetImage(ai), () => 0);
 			anim.PlayRepeating("idle");
 
-			yield return new Renderable(anim.Image, 0.5f * anim.Image.size * (1 - Scale), pr, 0, Scale);
+			yield return new Renderable(anim.Image, 0.5f*anim.Image.size, pr, 0, Scale);
 		}
 	}
 

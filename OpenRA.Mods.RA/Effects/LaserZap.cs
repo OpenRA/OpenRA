@@ -79,7 +79,7 @@ namespace OpenRA.Mods.RA.Effects
 		public IEnumerable<Renderable> Render(WorldRenderer wr)
 		{
 			if (explosion != null)
-				yield return new Renderable(explosion.Image, args.dest.ToFloat2() - .5f * explosion.Image.size,
+				yield return new Renderable(explosion.Image, args.dest.ToFloat2(),
 				                            wr.Palette("effect"), (int)args.dest.Y);
 
 			if (ticks >= info.BeamDuration)

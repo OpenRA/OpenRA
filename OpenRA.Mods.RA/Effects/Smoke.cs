@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<Renderable> Render(WorldRenderer wr)
 		{
-			yield return new Renderable(anim.Image, pos.ToFloat2() - .5f * anim.Image.size,
+			yield return new Renderable(anim.Image, pos.ToFloat2(),
 				wr.Palette("effect"), (int)pos.Y);
 		}
 	}

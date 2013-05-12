@@ -79,7 +79,7 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<Renderable> Render(WorldRenderer wr)
 		{
-			yield return new Renderable(anim.Image, pos.ToFloat2() - 0.5f * anim.Image.size - new float2(0, altitude),
+			yield return new Renderable(anim.Image, pos.ToFloat2() - new float2(0, altitude),
 				wr.Palette("effect"), (int)pos.Y);
 		}
 	}

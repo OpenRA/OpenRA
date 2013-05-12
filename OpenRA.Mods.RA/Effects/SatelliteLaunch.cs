@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA.Effects
 			doors.PlayThen("active",
 				() => a.World.AddFrameEndTask(w => w.Remove(this)));
 
-			pos = a.CenterLocation.ToFloat2() - .5f * doors.Image.size + doorOffset;
+			pos = a.CenterLocation.ToFloat2() + doorOffset;
 		}
 
 		public void Tick( World world )

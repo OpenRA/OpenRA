@@ -137,14 +137,14 @@ namespace OpenRA.Mods.RA.Effects
 
 		static int[][] steps = new []
 		{
-			new int[] { 8, 8, -8, -8, 0 },
-			new int[] { -8, -8, -16, -16, 0 },
-			new int[] { 8, 0, -8, -8, 1 },
-			new int[] { -8, 0, -16, -8, 1 },
-			new int[] { 0, 8, -8, -8, 2 },
-			new int[] { 0, -8, -8, -16, 2 },
-			new int[] { -8, 8, -16, -8, 3 },
-			new int[] { 8, -8, -8, -16, 3 }
+			new int[] { 8, 8, 4, 4, 0 },
+			new int[] { -8, -8, -4, -4, 0 },
+			new int[] { 8, 0, 4, 4, 1 },
+			new int[] { -8, 0, -4, 4, 1 },
+			new int[] { 0, 8, 4, 4, 2 },
+			new int[] { 0, -8, 4, -4, 2 },
+			new int[] { -8, 8, -4, 4, 3 },
+			new int[] { 8, -8, 4, -4, 3 }
 		};
 	}
 }

@@ -56,7 +56,7 @@ namespace OpenRA.Graphics
 
 		public void Render(WorldRenderer wr)
 		{
-			Sprite.DrawAt(Pos, Palette.Index, Scale);
+			Sprite.DrawAt(Pos - 0.5f*Scale*Sprite.size, Palette.Index, Scale);
 		}
 
 		public Size Size

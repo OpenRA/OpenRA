@@ -151,7 +151,7 @@ namespace OpenRA.Mods.RA
 			}
 
 			foreach (var t in TileSprites[currentTemplate])
-				yield return new Renderable(t.Value, t.Key.ToPPos().ToFloat2(), terrainPalette, Game.CellSize * t.Key.Y);
+				yield return new Renderable(t.Value, Traits.Util.CenterOfCell(t.Key).ToFloat2(), terrainPalette, Game.CellSize * t.Key.Y);
 		}
 
 		void KillUnitsOnBridge()
