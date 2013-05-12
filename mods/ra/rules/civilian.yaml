@@ -290,7 +290,6 @@ BIO:
 	Tooltip:
 		Name: Biological Lab
 
-
 OILB:
 	Inherits: ^TechBuilding
 	Selectable:
@@ -299,7 +298,7 @@ OILB:
 		Footprint: xx xx
 		Dimensions: 2,2
 	Health:
-		HP: 400
+		HP: 1000
 	Armor:
 		Type: Wood
 	Bib:
@@ -311,7 +310,7 @@ OILB:
 	-MustBeDestroyed:
 	CashTrickler:
 		Period: 250
-		Amount: 50
+		Amount: 100
 	Tooltip:
 		Name: Oil Derrick
 
