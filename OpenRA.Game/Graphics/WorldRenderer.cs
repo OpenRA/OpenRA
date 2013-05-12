@@ -65,18 +65,10 @@ namespace OpenRA.Graphics
 		public PaletteReference Palette(string name) { return palettes[name]; }
 		public void AddPalette(string name, Palette pal, bool allowModifiers) { palette.AddPalette(name, pal, allowModifiers); }
 
-		class SpriteComparer : IComparer<Renderable>
-		{
-			public int Compare(Renderable x, Renderable y)
-			{
-				return (x.Z + x.ZOffset).CompareTo(y.Z + y.ZOffset);
-			}
-		}
-
 		IEnumerable<Renderable> SpritesToRender()
 		{
 			var bounds = Game.viewport.WorldBounds(world);
-			var comparer = new SpriteComparer();
+			var comparer = new RenderableComparer();
 
 			var actors = world.FindUnits(
 				bounds.TopLeftAsCPos().ToPPos(),
