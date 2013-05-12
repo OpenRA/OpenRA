@@ -20,12 +20,12 @@ namespace OpenRA.Mods.RA.Render
 		public override object Create(ActorInitializer init) { return new RenderBuildingWarFactory( init, this ); }
 
 		/* get around unverifiability */
-		IEnumerable<Renderable> BaseBuildingPreview(ActorInfo building, PaletteReference pr)
+		IEnumerable<IRenderable> BaseBuildingPreview(ActorInfo building, PaletteReference pr)
 		{
 			return base.RenderPreview(building, pr);
 		}
 
-		public override IEnumerable<Renderable> RenderPreview(ActorInfo building, PaletteReference pr)
+		public override IEnumerable<IRenderable> RenderPreview(ActorInfo building, PaletteReference pr)
 		{
 			var p = BaseBuildingPreview(building, pr);
 			foreach (var r in p)
@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA.Render
 
 			var anim = new Animation(RenderSimple.GetImage(building), () => 0);
 			anim.PlayRepeating("idle-top");
-			yield return new Renderable(anim.Image, WPos.Zero + Origin, 0, pr, 1f);
+			yield return new SpriteRenderable(anim.Image, WPos.Zero + Origin, 0, pr, 1f);
 		}
 	}
 

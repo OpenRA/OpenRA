@@ -36,9 +36,9 @@ namespace OpenRA.Mods.RA.Effects
 				world.AddFrameEndTask(w => w.Remove(this));
 		}
 
-		public IEnumerable<Renderable> Render(WorldRenderer wr)
+		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			yield return new Renderable(anim.Image, offset, wr.Palette("effect"), (int)offset.Y);
+			yield return new SpriteRenderable(anim.Image, offset, wr.Palette("effect"), (int)offset.Y);
 		}
 	}
 }

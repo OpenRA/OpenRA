@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA.Render
 		public readonly WVec Origin = WVec.Zero;
 		public override object Create(ActorInitializer init) { return new RenderBuilding(init, this);}
 
-		public override IEnumerable<Renderable> RenderPreview(ActorInfo building, PaletteReference pr)
+		public override IEnumerable<IRenderable> RenderPreview(ActorInfo building, PaletteReference pr)
 		{
 			return base.RenderPreview(building, pr).Select(a => a.WithPos(a.Pos + Origin));
 		}
@@ -65,7 +65,7 @@ namespace OpenRA.Mods.RA.Render
 				self.QueueActivity(new CallFunc(() => Complete(self)));
 		}
 
-		public IEnumerable<Renderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<Renderable> r)
+		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
 		{
 			var disabled = self.IsDisabled();
 			foreach (var a in r)

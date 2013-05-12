@@ -151,7 +151,7 @@ namespace OpenRA.Mods.RA.Effects
 
 		const float height = .1f;
 
-		public IEnumerable<Renderable> Render(WorldRenderer wr)
+		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
 			if (anim != null)
 			{
@@ -166,14 +166,14 @@ namespace OpenRA.Mods.RA.Effects
 					if (Info.High || Info.Angle > 0)
 					{
 						if (Info.Shadow)
-							yield return new Renderable(anim.Image, pos, wr.Palette("shadow"), (int)pos.Y);
+							yield return new SpriteRenderable(anim.Image, pos, wr.Palette("shadow"), (int)pos.Y);
 
 						var highPos = pos - new float2(0, GetAltitude());
 
-						yield return new Renderable(anim.Image, highPos, wr.Palette("effect"), (int)pos.Y);
+						yield return new SpriteRenderable(anim.Image, highPos, wr.Palette("effect"), (int)pos.Y);
 					}
 					else
-						yield return new Renderable(anim.Image, pos,
+						yield return new SpriteRenderable(anim.Image, pos,
 							wr.Palette(Args.weapon.Underwater ? "shadow" : "effect"), (int)pos.Y);
 				}
 			}

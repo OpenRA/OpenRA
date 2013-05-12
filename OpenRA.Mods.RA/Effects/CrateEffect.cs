@@ -39,10 +39,10 @@ namespace OpenRA.Mods.RA.Effects
 			anim.Tick();
 		}
 
-		public IEnumerable<Renderable> Render(WorldRenderer wr)
+		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
 			if (a.IsInWorld)
-				yield return new Renderable(anim.Image,
+				yield return new SpriteRenderable(anim.Image,
 					a.CenterLocation.ToFloat2() + offset,
 				    wr.Palette("effect"), (int)a.CenterLocation.Y);
 		}

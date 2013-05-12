@@ -59,7 +59,7 @@ namespace OpenRA.Mods.RA.Render
 				mf.Animation.PlayThen("muzzle", () => isShowing = false);
 		}
 
-		public IEnumerable<Renderable> Render(Actor self, WorldRenderer wr)
+		public IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
 		{
 			foreach (var a in muzzleFlashes.Values)
 				if (a.DisableFunc == null || !a.DisableFunc())

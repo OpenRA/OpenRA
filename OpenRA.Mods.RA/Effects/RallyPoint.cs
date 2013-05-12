@@ -48,7 +48,7 @@ namespace OpenRA.Mods.RA.Effects
 				world.AddFrameEndTask(w => w.Remove(this));
 		}
 
-		public IEnumerable<Renderable> Render(WorldRenderer wr)
+		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
 			if (building.IsInWorld && building.Owner == building.World.LocalPlayer
 				&& building.World.Selection.Actors.Contains(building))
@@ -56,11 +56,11 @@ namespace OpenRA.Mods.RA.Effects
 				var pos = Traits.Util.CenterOfCell(rp.rallyPoint);
 				var palette = wr.Palette(palettePrefix+building.Owner.InternalName);
 
-				yield return new Renderable(circles.Image,
+				yield return new SpriteRenderable(circles.Image,
 					pos.ToFloat2() - .5f * circles.Image.size,
 					palette, (int)pos.Y);
 
-				yield return new Renderable(flag.Image,
+				yield return new SpriteRenderable(flag.Image,
 					pos.ToFloat2() + new float2(-1,-17),
 					palette, (int)pos.Y);
 			}

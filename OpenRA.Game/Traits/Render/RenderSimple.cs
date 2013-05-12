@@ -34,12 +34,12 @@ namespace OpenRA.Traits
 		public readonly WAngle CameraPitch = WAngle.FromDegrees(40);
 		public virtual object Create(ActorInitializer init) { return new RenderSimple(init.self); }
 
-		public virtual IEnumerable<Renderable> RenderPreview(ActorInfo ai, PaletteReference pr)
+		public virtual IEnumerable<IRenderable> RenderPreview(ActorInfo ai, PaletteReference pr)
 		{
 			var anim = new Animation(RenderSimple.GetImage(ai), () => 0);
 			anim.PlayRepeating("idle");
 
-			yield return new Renderable(anim.Image, WPos.Zero, 0, pr, 1f);
+			yield return new SpriteRenderable(anim.Image, WPos.Zero, 0, pr, 1f);
 		}
 	}
 
@@ -99,7 +99,7 @@ namespace OpenRA.Traits
 		protected void UpdatePalette() { initializePalette = true; }
 		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner) { UpdatePalette(); }
 
-		public virtual IEnumerable<Renderable> Render(Actor self, WorldRenderer wr)
+		public virtual IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
 		{
 			if (initializePalette)
 			{

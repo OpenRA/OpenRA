@@ -76,11 +76,11 @@ namespace OpenRA.Mods.RA.Effects
 					world.AddFrameEndTask(w => w.Remove(this));
 		}
 
-		public IEnumerable<Renderable> Render(WorldRenderer wr)
+		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
 			if (explosion != null)
-				yield return new Renderable(explosion.Image, args.dest.ToFloat2(),
-				                            wr.Palette("effect"), (int)args.dest.Y);
+				yield return new SpriteRenderable(explosion.Image, args.dest.ToFloat2(),
+				                                  wr.Palette("effect"), (int)args.dest.Y);
 
 			if (ticks >= info.BeamDuration)
 				yield break;

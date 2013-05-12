@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA.Render
 
 	class WithShadow : IRenderModifier
 	{
-		public IEnumerable<Renderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<Renderable> r)
+		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
 		{
 			var move = self.Trait<IMove>();
 

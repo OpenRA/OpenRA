@@ -31,18 +31,18 @@ namespace OpenRA.Graphics
 			this.ZOffset = zOffset;
 		}
 
-		public Renderable Image(Actor self, WorldRenderer wr, PaletteReference pal)
+		public IRenderable Image(Actor self, WorldRenderer wr, PaletteReference pal)
 		{
 			return Image(self, wr, pal, 1f);
 		}
 
-		public Renderable Image(Actor self, WorldRenderer wr, PaletteReference pal, float scale)
+		public IRenderable Image(Actor self, WorldRenderer wr, PaletteReference pal, float scale)
 		{
 			var p = self.CenterPosition;
 			if (OffsetFunc != null)
 				p += OffsetFunc();
 
-			return new Renderable(Animation.Image, p, ZOffset, pal, scale);
+			return new SpriteRenderable(Animation.Image, p, ZOffset, pal, scale);
 		}
 
 		public static implicit operator AnimationWithOffset(Animation a)

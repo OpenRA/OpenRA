@@ -98,7 +98,7 @@ namespace OpenRA.Mods.RA
 			return Level > 0 ? Info.SpeedModifier[Level - 1] : 1m;
 		}
 
-		public IEnumerable<Renderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<Renderable> r)
+		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
 		{
 			// TODO: Make this consistent with everything else that adds animations to RenderSimple.
 			if (self.Owner.IsAlliedWith(self.World.RenderPlayer) && Level > 0)
@@ -107,7 +107,7 @@ namespace OpenRA.Mods.RA
 				return r;
 		}
 
-		IEnumerable<Renderable> InnerModifyRender(Actor self, WorldRenderer wr, IEnumerable<Renderable> r)
+		IEnumerable<IRenderable> InnerModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
 		{
 			foreach (var rs in r)
 				yield return rs;
@@ -119,7 +119,7 @@ namespace OpenRA.Mods.RA
 
 			var bounds = self.Bounds.Value;
 			var pos = new float2(bounds.Right, bounds.Bottom - 2);
-			yield return new Renderable(RankAnim.Image, pos, wr.Palette("effect"), self.CenterLocation.Y);
+			yield return new SpriteRenderable(RankAnim.Image, pos, wr.Palette("effect"), self.CenterLocation.Y);
 		}
 	}
 

@@ -51,10 +51,10 @@ namespace OpenRA.Mods.RA.Effects
 			anim.Tick();
 		}
 
-		public IEnumerable<Renderable> Render(WorldRenderer wr)
+		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
 			var pos = Args.dest.ToInt2() - new int2(0, altitude) - .5f * anim.Image.size;
-			yield return new Renderable(anim.Image, pos, wr.Palette("effect"), Args.dest.Y);
+			yield return new SpriteRenderable(anim.Image, pos, wr.Palette("effect"), Args.dest.Y);
 		}
 	}
 }

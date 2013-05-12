@@ -32,9 +32,9 @@ namespace OpenRA.Mods.Cnc.Effects
 
 		public void Tick(World world) { anim.Tick(); }
 
-		public IEnumerable<Renderable> Render(WorldRenderer wr)
+		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			yield return new Renderable(anim.Image,
+			yield return new SpriteRenderable(anim.Image,
 				target.CenterLocation.ToFloat2() - new float2(0, 0.5f*anim.Image.size.Y - Game.CellSize),
 				wr.Palette("effect"), (int)target.CenterLocation.Y);
 		}

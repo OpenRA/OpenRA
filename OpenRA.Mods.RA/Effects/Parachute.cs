@@ -61,7 +61,7 @@ namespace OpenRA.Mods.RA.Effects
 			}
 		}
 
-		public IEnumerable<Renderable> Render(WorldRenderer wr)
+		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
 			var rc = cargo.Render(wr);
 
@@ -76,7 +76,7 @@ namespace OpenRA.Mods.RA.Effects
 				yield return c.WithPos(pos);
 			}
 
-			yield return new Renderable(paraAnim.Image, pos + parachuteOffset, 1, rc.First().Palette, 1f);
+			yield return new SpriteRenderable(paraAnim.Image, pos + parachuteOffset, 1, rc.First().Palette, 1f);
 		}
 	}
 }

@@ -13,7 +13,7 @@ using System.Drawing;
 
 namespace OpenRA.Graphics
 {
-	public class RenderableComparer : IComparer<Renderable>
+	public class RenderableComparer : IComparer<IRenderable>
 	{
 		WorldRenderer wr;
 		public RenderableComparer(WorldRenderer wr)
@@ -21,54 +21,74 @@ namespace OpenRA.Graphics
 			this.wr = wr;
 		}
 
-		public int Compare(Renderable x, Renderable y)
+		public int Compare(IRenderable x, IRenderable y)
 		{
-			return x.SortOrder(wr).CompareTo(y.SortOrder(wr));
+			var xOrder = wr.ScreenZPosition(x.Pos) + x.ZOffset;
+			var yOrder = wr.ScreenZPosition(y.Pos) + y.ZOffset;
+			return xOrder.CompareTo(yOrder);
 		}
 	}
 
-	public struct Renderable
+	public interface IRenderable
 	{
-		public readonly WPos Pos;
-		public readonly float Scale;
-		public readonly PaletteReference Palette;
-		public readonly int ZOffset;
-		readonly Sprite Sprite;
+		WPos Pos { get; }
+		float Scale { get; }
+		PaletteReference Palette { get; }
+		int ZOffset { get; }
 
-		public Renderable(Sprite sprite, WPos pos, int zOffset, PaletteReference palette, float scale)
+		IRenderable WithScale(float newScale);
+		IRenderable WithPalette(PaletteReference newPalette);
+		IRenderable WithZOffset(int newOffset);
+		IRenderable WithPos(WPos pos);
+		void Render(WorldRenderer wr);
+		WVec Size(WorldRenderer wr);
+	}
+
+	public struct SpriteRenderable : IRenderable
+	{
+		readonly Sprite sprite;
+		readonly WPos pos;
+		readonly int zOffset;
+		readonly PaletteReference palette;
+		readonly float scale;
+		readonly float2 pxCenter;
+
+		public SpriteRenderable(Sprite sprite, WPos pos, int zOffset, PaletteReference palette, float scale)
+			: this(sprite, pos, zOffset, palette, scale, 0.5f*scale*sprite.size) {}
+
+		public SpriteRenderable(Sprite sprite, WPos pos, int zOffset, PaletteReference palette, float scale, float2 pxCenter)
 		{
-			Sprite = sprite;
-			Pos = pos;
-			Palette = palette;
-			ZOffset = zOffset;
-			Scale = scale;
+			this.sprite = sprite;
+			this.pos = pos;
+			this.zOffset = zOffset;
+			this.palette = palette;
+			this.scale = scale;
+			this.pxCenter = pxCenter;
 		}
 
-		public Renderable(Sprite sprite, float2 pos, PaletteReference palette, int z)
+		// Provided for legacy support only - Don't use for new things!
+		public SpriteRenderable(Sprite sprite, float2 pos, PaletteReference palette, int z)
 			: this(sprite, new PPos((int)pos.X, (int)pos.Y).ToWPos(0), z, palette, 1f) { }
 
-		public Renderable WithScale(float newScale) { return new Renderable(Sprite, Pos, ZOffset, Palette, newScale); }
-		public Renderable WithPalette(PaletteReference newPalette) { return new Renderable(Sprite, Pos, ZOffset, newPalette, Scale); }
-		public Renderable WithZOffset(int newOffset) { return new Renderable(Sprite, Pos, newOffset, Palette, Scale); }
-		public Renderable WithPos(WPos pos) { return new Renderable(Sprite, pos, ZOffset, Palette, Scale); }
+		public WPos Pos { get { return pos; } }
+		public float Scale { get { return scale; } }
+		public PaletteReference Palette { get { return palette; } }
+		public int ZOffset { get { return zOffset; } }
+
+		public IRenderable WithScale(float newScale) { return new SpriteRenderable(sprite, pos, zOffset, palette, newScale); }
+		public IRenderable WithPalette(PaletteReference newPalette) { return new SpriteRenderable(sprite, pos, zOffset, newPalette, scale); }
+		public IRenderable WithZOffset(int newOffset) { return new SpriteRenderable(sprite, pos, newOffset, palette, scale); }
+		public IRenderable WithPos(WPos pos) { return new SpriteRenderable(sprite, pos, zOffset, palette, scale); }
 
 		public void Render(WorldRenderer wr)
 		{
-			Sprite.DrawAt(wr.ScreenPxPosition(Pos) - 0.5f*Scale*Sprite.size, Palette.Index, Scale);
+			sprite.DrawAt(wr.ScreenPxPosition(pos) - pxCenter, palette.Index, scale);
 		}
 
-		public Size Size
+		public WVec Size(WorldRenderer wr)
 		{
-			get
-			{
-				var size = (Scale*Sprite.size).ToInt2();
-				return new Size(size.X, size.Y);
-			}
-		}
-
-		public int SortOrder(WorldRenderer wr)
-		{ 
-			return (int)wr.ScreenZPosition(Pos) + ZOffset;
+			var size = (scale*sprite.size).ToInt2();
+			return new WVec(size.X, size.Y, size.Y);
 		}
 	}
 }

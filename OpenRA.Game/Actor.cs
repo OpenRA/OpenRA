@@ -143,9 +143,9 @@ namespace OpenRA
 		OpenRA.FileFormats.Lazy<int2> Size;
 
 		// note: these delegates are cached to avoid massive allocation.
-		Func<IRender, WorldRenderer, IEnumerable<Renderable>> ApplyIRender;
-		Func<IEnumerable<Renderable>, IRenderModifier, WorldRenderer, IEnumerable<Renderable>> ApplyRenderModifier;
-		public IEnumerable<Renderable> Render(WorldRenderer wr)
+		Func<IRender, WorldRenderer, IEnumerable<IRenderable>> ApplyIRender;
+		Func<IEnumerable<IRenderable>, IRenderModifier, WorldRenderer, IEnumerable<IRenderable>> ApplyRenderModifier;
+		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
 			var mods = TraitsImplementing<IRenderModifier>();
 			var sprites = TraitsImplementing<IRender>().SelectMany(x => ApplyIRender(x, wr));

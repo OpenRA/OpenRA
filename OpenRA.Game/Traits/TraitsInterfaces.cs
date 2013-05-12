@@ -35,7 +35,7 @@ namespace OpenRA.Traits
 
 	public interface ITick { void Tick(Actor self); }
 	public interface ITickRender { void TickRender(WorldRenderer wr, Actor self); }
-	public interface IRender { IEnumerable<Renderable> Render(Actor self, WorldRenderer wr); }
+	public interface IRender { IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr); }
 	public interface IAutoSelectionSize { int2 SelectionSize(Actor self); }
 
 	public interface IIssueOrder
@@ -116,7 +116,7 @@ namespace OpenRA.Traits
 	}
 
 	public interface INotifyAttack { void Attacking(Actor self, Target target); }
-	public interface IRenderModifier { IEnumerable<Renderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<Renderable> r); }
+	public interface IRenderModifier { IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r); }
 	public interface IDamageModifier { float GetDamageModifier(Actor attacker, WarheadInfo warhead); }
 	public interface ISpeedModifier { decimal GetSpeedModifier(); }
 	public interface IFirepowerModifier { float GetFirepowerModifier(); }
@@ -179,7 +179,7 @@ namespace OpenRA.Traits
 
 	public interface IPostRenderSelection { void RenderAfterWorld(WorldRenderer wr); }
 	public interface IPreRenderSelection { void RenderBeforeWorld(WorldRenderer wr, Actor self); }
-	public interface IRenderAsTerrain { IEnumerable<Renderable> RenderAsTerrain(WorldRenderer wr, Actor self); }
+	public interface IRenderAsTerrain { IEnumerable<IRenderable> RenderAsTerrain(WorldRenderer wr, Actor self); }
 	public interface ILocalCoordinatesModel
 	{
 		WVec LocalToWorld(WVec vec);
