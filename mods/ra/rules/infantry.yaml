@@ -194,7 +194,7 @@ SPY:
 		Voice: SpyVoice
 		Bounds: 12,17,0,-9
 	Health:
-		HP: 25
+		HP: 80
 	Mobile:
 		Speed: 4
 	RevealsShroud:
@@ -403,7 +403,7 @@ THF:
 		Voice: ThiefVoice
 		Bounds: 12,17,0,-9
 	Health:
-		HP: 25
+		HP: 80
 	Mobile:
 		Speed: 4
 	RevealsShroud:
