@@ -282,7 +282,13 @@ end
 
 function RequestAttention()
   local frame = ide.frame
-  if not frame:IsActive() then frame:RequestUserAttention() end
+  if not frame:IsActive() then
+    frame:RequestUserAttention()
+    if ide.osname == "Macintosh" then
+      local cmd = [[osascript -e 'tell application "%s" to activate']]
+      wx.wxExecute(cmd:format(ide.editorApp:GetAppName()), wx.wxEXEC_ASYNC)
+    end
+  end
 end
 
 local messages, lang, counter
