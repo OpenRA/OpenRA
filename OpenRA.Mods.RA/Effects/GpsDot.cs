@@ -45,8 +45,6 @@ namespace OpenRA.Mods.RA.Effects
 			anim.PlayRepeating(info.String);
 
 			self.World.AddFrameEndTask(w => w.Add(this));
-			if (self.World.LocalPlayer != null)
-				watcher = self.World.LocalPlayer.PlayerActor.Trait<GpsWatcher>();
 		}
 
 		bool firstTick = true;
@@ -55,7 +53,7 @@ namespace OpenRA.Mods.RA.Effects
 			if (self.Destroyed)
 				world.AddFrameEndTask(w => w.Remove(this));
 
-			if (world.LocalPlayer == null || !self.IsInWorld || self.Destroyed)
+			if (!self.IsInWorld || self.Destroyed)
 				return;
 
 			// Can be granted at runtime via a crate, so can't cache
@@ -67,6 +65,10 @@ namespace OpenRA.Mods.RA.Effects
 				spy = self.TraitOrDefault<Spy>();
 				firstTick = false;
 			}
+
+			// Can change with the Shroud selector for observers so don't cache.
+			if (self.World.RenderPlayer != null)
+				watcher = self.World.RenderPlayer.PlayerActor.Trait<GpsWatcher>();
 
 			var hasGps = (watcher != null && (watcher.Granted || watcher.GrantedAllies));
 			var hasDot = (huf != null && !huf.IsVisible(self, self.World.RenderPlayer));
@@ -84,7 +86,6 @@ namespace OpenRA.Mods.RA.Effects
 			var palette = wr.Palette(info.IndicatorPalettePrefix+self.Owner.InternalName);
 			yield return new Renderable(anim.Image, p.ToFloat2() - 0.5f * anim.Image.size, palette, p.Y)
 				.WithScale(1.5f);
-
 		}
 	}
 }

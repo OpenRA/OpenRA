@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<Renderable> Render(WorldRenderer wr)
 		{
-			if (!a.Destroyed && (a.World.LocalPlayer == null || a.Owner.Stances[a.Owner.World.LocalPlayer] == Stance.Ally))
+			if (!a.Destroyed && a.Owner.IsAlliedWith(a.World.RenderPlayer))
 				yield return new Renderable(anim.Image,	a.CenterLocation.ToFloat2() - .5f * anim.Image.size,
 					wr.Palette("chrome"), (int)a.CenterLocation.Y);
 		}

@@ -101,7 +101,7 @@ namespace OpenRA.Mods.RA
 		public IEnumerable<Renderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<Renderable> r)
 		{
 			// TODO: Make this consistent with everything else that adds animations to RenderSimple.
-			if ((self.Owner == self.World.LocalPlayer || self.World.LocalPlayer == null) && Level > 0)
+			if (self.Owner.IsAlliedWith(self.World.RenderPlayer) && Level > 0)
 				return InnerModifyRender(self, wr, r);
 			else
 				return r;
