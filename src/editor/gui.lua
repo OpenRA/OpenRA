@@ -5,7 +5,7 @@ local ide = ide
 
 -- Pick some reasonable fixed width fonts to use for the editor
 local function setFont(style, config)
-  return wx.wxFont(config.fontsize or size or 10, wx.wxFONTFAMILY_MODERN, style,
+  return wx.wxFont(config.fontsize or 10, wx.wxFONTFAMILY_MODERN, style,
     wx.wxFONTWEIGHT_NORMAL, false, config.fontname or "",
     config.fontencoding or wx.wxFONTENCODING_DEFAULT)
 end
@@ -33,7 +33,7 @@ end
 -- Create the wxFrame
 -- ----------------------------------------------------------------------------
 local function createFrame()
-  frame = wx.wxFrame(wx.NULL, wx.wxID_ANY, GetIDEString("editor"),
+  local frame = wx.wxFrame(wx.NULL, wx.wxID_ANY, GetIDEString("editor"),
     wx.wxDefaultPosition, wx.wxSize(1000, 700))
   -- wrap into protected call as DragAcceptFiles fails on MacOS with
   -- wxwidgets 2.8.12 even though it should work according to change notes
@@ -180,7 +180,7 @@ local function createNotebook(frame)
 
   notebook:Connect(ID_SAVE, wx.wxEVT_COMMAND_MENU_SELECTED, function ()
       local editor = GetEditor(selection)
-      SaveFile(editor, openDocuments[editor:GetId()].filePath)
+      SaveFile(editor, ide.openDocuments[editor:GetId()].filePath)
     end)
   notebook:Connect(ID_SAVE, wx.wxEVT_UPDATE_UI, IfModified)
   notebook:Connect(ID_SAVEAS, wx.wxEVT_COMMAND_MENU_SELECTED, function()

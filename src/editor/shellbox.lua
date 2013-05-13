@@ -264,6 +264,7 @@ local function executeShellCode(tx)
 
   local addedret, forceexpression = true, tx:match("^%s*=%s*")
   tx = tx:gsub("^%s*=%s*","")
+  local fn
   fn, err = loadstring("return "..tx)
   if not forceexpression and err and
      (err:find("'?<eof>'? expected near '") or

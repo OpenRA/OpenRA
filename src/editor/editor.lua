@@ -667,7 +667,7 @@ function CreateEditor()
       local keycode = event:GetKeyCode()
       local mod = event:GetModifiers()
       local first, last = 0, notebook:GetPageCount()-1
-      if keycode == wx.WXK_ESCAPE and frame:IsFullScreen() then
+      if keycode == wx.WXK_ESCAPE and ide.frame:IsFullScreen() then
         ShowFullScreen(false)
       -- Ctrl-Home and Ctrl-End don't work on OSX with 2.9.5+; fix it
       elseif ide.osname == 'Macintosh' and ide.wxver >= "2.9.5"

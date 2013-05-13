@@ -253,8 +253,8 @@ local function saveNotebook(nb)
     return t
   end
   
-  sortedX = sortedPages(pagesX)
-  sortedY = sortedPages(pagesY)
+  local sortedX = sortedPages(pagesX)
+  local sortedY = sortedPages(pagesY)
   
   -- for now only support "1D" splits and prefer
   -- dimension which has more, anything else
