@@ -47,13 +47,16 @@ namespace OpenRA.Mods.RA
 
 		public void Killed(Actor self, AttackInfo e)
 		{
-			if (currentHijacker != null && !currentHijacker.IsDead())
+			self.World.AddFrameEndTask(w =>
 			{
-				self.World.Add(currentHijacker);
-				var mobile = currentHijacker.Trait<Mobile>();
-				mobile.SetPosition(currentHijacker, self.Location);
-				mobile.Nudge(currentHijacker, currentHijacker, true);
-			}
+				if (currentHijacker != null && !currentHijacker.IsDead())
+				{
+					w.Add(currentHijacker);
+					var mobile = currentHijacker.Trait<Mobile>();
+					mobile.SetPosition(currentHijacker, self.Location);
+					mobile.Nudge(currentHijacker, currentHijacker, true);
+				}
+			});
 		}
 	}
 }
