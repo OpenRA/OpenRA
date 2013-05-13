@@ -15,6 +15,7 @@ ID_OPEN             = wx.wxID_OPEN
 ID_CLOSE            = NewID()
 ID_CLOSEALL         = NewID()
 ID_CLOSEOTHER       = NewID()
+ID_SHOWLOCATION     = NewID()
 ID_SAVE             = wx.wxID_SAVE
 ID_SAVEAS           = wx.wxID_SAVEAS
 ID_SAVEALL          = NewID()
