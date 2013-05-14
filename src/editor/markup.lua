@@ -202,5 +202,7 @@ function MarkupStyle(editor, lines, linee)
     -- invisible styles hide some of the content that would be wrapped.
     local wrapmode = editor:GetWrapMode()
     if wrapmode ~= wxstc.wxSTC_WRAP_NONE then editor:SetWrapMode(wrapmode) end
+    -- if some of the lines have folded, this can make not styled lines visible
+    MarkupStyle(editor, linee+1) -- style to the end in this case
   end
 end
