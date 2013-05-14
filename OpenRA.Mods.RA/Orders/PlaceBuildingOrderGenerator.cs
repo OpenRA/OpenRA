@@ -98,8 +98,9 @@ namespace OpenRA.Mods.RA.Orders
 					initialized = true;
 				}
 
+				var offset = (topLeft - CPos.Zero).ToWVec() + FootprintUtils.CenterOffset(BuildingInfo);
 				foreach (var r in preview)
-					r.WithPxOffset(topLeft.ToPPos().ToFloat2()).Render(wr);
+					r.WithPos(r.Pos + offset).Render(wr);
 
 				var res = world.WorldActor.Trait<ResourceLayer>();
 				var isCloseEnough = BuildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, Building, topLeft);

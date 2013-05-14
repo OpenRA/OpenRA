@@ -44,14 +44,8 @@ namespace OpenRA.Graphics
 			Scale = scale;
 		}
 
-		public Renderable(Sprite sprite, float2 pos, PaletteReference palette, int z, int zOffset, float scale)
-			: this(sprite, new PPos((int)pos.X, (int)pos.Y).ToWPos(0), z + zOffset, palette, scale) { }
-
 		public Renderable(Sprite sprite, float2 pos, PaletteReference palette, int z)
-			: this(sprite, pos, palette, z, 0, 1f) { }
-
-		public Renderable(Sprite sprite, float2 pos, PaletteReference palette, int z, float scale)
-			: this(sprite, pos, palette, z, 0, scale) { }
+			: this(sprite, new PPos((int)pos.X, (int)pos.Y).ToWPos(0), z, palette, 1f) { }
 
 		public Renderable WithScale(float newScale) { return new Renderable(Sprite, Pos, ZOffset, Palette, newScale); }
 		public Renderable WithPalette(PaletteReference newPalette) { return new Renderable(Sprite, Pos, ZOffset, newPalette, Scale); }

@@ -39,7 +39,7 @@ namespace OpenRA.Traits
 			var anim = new Animation(RenderSimple.GetImage(ai), () => 0);
 			anim.PlayRepeating("idle");
 
-			yield return new Renderable(anim.Image, 0.5f*anim.Image.size, pr, 0, Scale);
+			yield return new Renderable(anim.Image, WPos.Zero, 0, pr, 1f);
 		}
 	}
 
