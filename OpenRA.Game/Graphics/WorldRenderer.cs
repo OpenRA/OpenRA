@@ -68,7 +68,7 @@ namespace OpenRA.Graphics
 		void DrawRenderables()
 		{
 			var bounds = Game.viewport.WorldBounds(world);
-			var comparer = new RenderableComparer();
+			var comparer = new RenderableComparer(this);
 
 			var actors = world.FindUnits(
 				bounds.TopLeftAsCPos().ToPPos(),
@@ -216,7 +216,7 @@ namespace OpenRA.Graphics
 		{
 			return new int2(Game.CellSize*pos.X/1024, Game.CellSize*(pos.Y - pos.Z)/1024);
 		}
-		public float ScreenZOffset(WPos pos) { return pos.Z*Game.CellSize/1024f; }
+		public float ScreenZPosition(WPos pos) { return (pos.Y + pos.Z)*Game.CellSize/1024f; }
 
 		public int2 ScreenPxOffset(WVec vec)
 		{
