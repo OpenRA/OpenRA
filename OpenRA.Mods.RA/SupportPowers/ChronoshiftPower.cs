@@ -242,19 +242,22 @@ namespace OpenRA.Mods.RA
 				// Unit previews
 				foreach (var unit in power.UnitsInRange(sourceLocation))
 				{
+					var offset = (xy - sourceLocation).ToWVec();
 					if (manager.self.Owner.Shroud.IsTargetable(unit))
 						foreach (var r in unit.Render(wr))
-							r.WithPxOffset((xy.ToPPos() - sourceLocation.ToPPos()).ToFloat2()).Render(wr);
+							r.WithPos(r.Pos + offset).Render(wr);
 				}
 
 				// Unit tiles
 				foreach (var unit in power.UnitsInRange(sourceLocation))
 				{
-					if (manager.self.Owner.Shroud.IsTargetable(unit)) {
+					if (manager.self.Owner.Shroud.IsTargetable(unit))
+					{
 						var targetCell = unit.Location + (xy - sourceLocation);
-						var canEnter = ((manager.self.Owner.Shroud.IsExplored(targetCell) || manager.self.Owner.HasFogVisibility())&& unit.Trait<Chronoshiftable>().CanChronoshiftTo(unit,targetCell));
+						var canEnter = ((manager.self.Owner.Shroud.IsExplored(targetCell) || manager.self.Owner.HasFogVisibility()) &&
+						                unit.Trait<Chronoshiftable>().CanChronoshiftTo(unit,targetCell));
 						var tile = canEnter ? validTile : invalidTile;
-						tile.DrawAt( wr, targetCell.ToPPos().ToFloat2(), "terrain" );
+						tile.DrawAt(wr, targetCell.ToPPos().ToFloat2(), "terrain");
 					}
 				}
 			}
