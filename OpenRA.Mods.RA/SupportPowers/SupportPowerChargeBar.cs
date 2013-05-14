@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA
 		public float GetValue()
 		{
 			// only people we like should see our charge status.
-			if (self.World.LocalPlayer != null && self.Owner.Stances[self.World.LocalPlayer] != Stance.Ally)
+			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				return 0;
 
 			var spm = self.Owner.PlayerActor.Trait<SupportPowerManager>();

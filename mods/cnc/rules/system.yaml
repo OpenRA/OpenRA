@@ -229,6 +229,7 @@ World:
 		Name: effect
 		Filename: temperat.pal
 		ShadowIndex: 4
+		AllowModifiers: false
 	PaletteFromFile@colorpicker:
 		Name: colorpicker
 		Filename: temperat.pal

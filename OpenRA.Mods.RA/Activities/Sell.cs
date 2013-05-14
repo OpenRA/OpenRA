@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA.Activities
 			foreach (var ns in self.TraitsImplementing<INotifySold>())
 				ns.Sold(self);
 
-			if (refund > 0 && self.World.LocalPlayer != null && self.Owner.Stances[self.World.LocalPlayer] == Stance.Ally)
+			if (refund > 0 && self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				self.World.AddFrameEndTask(w => w.Add(new CashTick(refund, 30, 2, self.CenterLocation, self.Owner.Color.RGB)));
 
 			self.Destroy();
@@ -39,6 +39,6 @@ namespace OpenRA.Mods.RA.Activities
 		}
 
 		// Cannot be cancelled
-		public override void Cancel( Actor self ) { }
+		public override void Cancel(Actor self) { }
 	}
 }
