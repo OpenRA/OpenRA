@@ -29,13 +29,11 @@ namespace OpenRA.Graphics
 
 	public struct Renderable
 	{
-		readonly Sprite Sprite;
-		readonly WPos Pos;
-		readonly float Scale;
-
-		// TODO: Fix Parachute and WithShadow so these can be made private
+		public readonly WPos Pos;
+		public readonly float Scale;
 		public readonly PaletteReference Palette;
 		public readonly int ZOffset;
+		readonly Sprite Sprite;
 
 		public Renderable(Sprite sprite, WPos pos, int zOffset, PaletteReference palette, float scale)
 		{

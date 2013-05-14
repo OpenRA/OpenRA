@@ -57,7 +57,8 @@ namespace OpenRA.Traits
 		public Animation anim
 		{
 			get { return anims[""].Animation; }
-			protected set { anims[""].Animation = value; }
+			protected set { anims[""] = new AnimationWithOffset(value,
+				anims[""].OffsetFunc, anims[""].DisableFunc, anims[""].ZOffset); }
 		}
 
 		public static string GetImage(ActorInfo actor)

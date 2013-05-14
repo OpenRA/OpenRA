@@ -15,21 +15,20 @@ namespace OpenRA.Graphics
 {
 	public class AnimationWithOffset
 	{
-		public Animation Animation;
-		public Func<WorldRenderer, float2> OffsetFunc;
-		public Func<bool> DisableFunc;
-		public int ZOffset;
+		public readonly Animation Animation;
+		public readonly Func<WVec> OffsetFunc;
+		public readonly Func<bool> DisableFunc;
+		public readonly int ZOffset;
 
-		public AnimationWithOffset(Animation a)
-			: this(a, null, null)
-		{
-		}
+		public AnimationWithOffset(Animation a, Func<WVec> offset, Func<bool> disable)
+			: this(a, offset, disable, 0) { }
 
-		public AnimationWithOffset(Animation a, Func<WorldRenderer, float2> o, Func<bool> d)
+		public AnimationWithOffset(Animation a, Func<WVec> offset, Func<bool> disable, int zOffset)
 		{
 			this.Animation = a;
-			this.OffsetFunc = o;
-			this.DisableFunc = d;
+			this.OffsetFunc = offset;
+			this.DisableFunc = disable;
+			this.ZOffset = zOffset;
 		}
 
 		public Renderable Image(Actor self, WorldRenderer wr, PaletteReference pal)
@@ -39,17 +38,16 @@ namespace OpenRA.Graphics
 
 		public Renderable Image(Actor self, WorldRenderer wr, PaletteReference pal, float scale)
 		{
-			var p = self.CenterLocation;
-			var offset = p.ToFloat2();
+			var p = self.CenterPosition;
 			if (OffsetFunc != null)
-				offset += OffsetFunc(wr);
+				p += OffsetFunc();
 
-			return new Renderable(Animation.Image, offset, pal, p.Y, ZOffset, scale);
+			return new Renderable(Animation.Image, p, ZOffset, pal, scale);
 		}
 
 		public static implicit operator AnimationWithOffset(Animation a)
 		{
-			return new AnimationWithOffset(a);
+			return new AnimationWithOffset(a, null, null, 0);
 		}
 	}
 }

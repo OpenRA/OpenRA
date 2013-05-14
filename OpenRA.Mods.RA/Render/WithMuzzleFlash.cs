@@ -45,10 +45,10 @@ namespace OpenRA.Mods.RA.Render
 					var muzzleFlash = new Animation(render.GetImage(self), getFacing);
 					muzzleFlash.Play("muzzle");
 
-					muzzleFlashes.Add("muzzle{0}".F(muzzleFlashes.Count), new AnimationWithOffset(
-						muzzleFlash,
-						wr => wr.ScreenPxOffset(a.MuzzleOffset(self, barrel)),
-						() => !isShowing));
+					muzzleFlashes.Add("muzzle{0}".F(muzzleFlashes.Count),
+				    	new AnimationWithOffset(muzzleFlash,
+							() => a.MuzzleOffset(self, barrel),
+							() => !isShowing));
 				}
 		}
 

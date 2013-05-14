@@ -49,9 +49,7 @@ namespace OpenRA.Mods.RA.Render
 			: base(init, info)
 		{
 			roof = new Animation(GetImage(init.self));
-			var offset = new AnimationWithOffset( roof ) { ZOffset = 24 };
-			offset.DisableFunc = () => !buildComplete;
-			anims.Add("roof", offset);
+			anims.Add("roof", new AnimationWithOffset(roof, null, () => !buildComplete, 24));
 		}
 
 		public void BuildingComplete( Actor self )

@@ -18,7 +18,9 @@ namespace OpenRA.Mods.Cnc
 {
 	class RenderBuildingRefineryInfo : RenderBuildingInfo
 	{
-		public override object Create(ActorInitializer init) { return new RenderBuildingRefinery( init, this ); }
+		public readonly WVec Offset = new WVec(1365, 896, 0);
+
+		public override object Create(ActorInitializer init) { return new RenderBuildingRefinery(init, this); }
 	}
 
 	class RenderBuildingRefinery : RenderBuilding, INotifyBuildComplete, INotifySold, INotifyCapture
@@ -27,7 +29,7 @@ namespace OpenRA.Mods.Cnc
 		PlayerResources playerResources;
 		bool buildComplete;
 
-		public RenderBuildingRefinery(ActorInitializer init, RenderBuildingInfo info)
+		public RenderBuildingRefinery(ActorInitializer init, RenderBuildingRefineryInfo info)
 			: base(init, info)
 		{
 			playerResources = init.self.Owner.PlayerActor.Trait<PlayerResources>();
@@ -38,9 +40,7 @@ namespace OpenRA.Mods.Cnc
 					? (59 * playerResources.Ore) / (10 * playerResources.OreCapacity)
 					: 0);
 
-			var offset = new float2(-32,-21);
-			anims.Add("lights", new AnimationWithOffset( lights, wr => offset, () => !buildComplete )
-				{ ZOffset = 24 });
+			anims.Add("lights", new AnimationWithOffset(lights, () => info.Offset, () => !buildComplete, 24));
 		}
 
 		public void BuildingComplete( Actor self )

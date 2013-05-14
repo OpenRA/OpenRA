@@ -53,20 +53,16 @@ namespace OpenRA.Mods.RA.Render
 			anim = new Animation(rs.GetImage(self), () => t.turretFacing);
 			anim.Play(info.Sequence);
 			rs.anims.Add("turret_{0}".F(info.Turret), new AnimationWithOffset(
-				anim,
-				wr => TurretPosition(self, wr),
-				null) { ZOffset = 1 });
+				anim, () => TurretOffset(self), null, 24));
 		}
 
-		int2 TurretPosition(Actor self, WorldRenderer wr)
+		WVec TurretOffset(Actor self)
 		{
 			var recoil = arms.Aggregate(WRange.Zero, (a,b) => a + b.Recoil);
 			var localOffset = new WVec(-recoil, WRange.Zero, WRange.Zero);
 			var bodyOrientation = rs.QuantizeOrientation(self, self.Orientation);
 			var turretOrientation = rs.QuantizeOrientation(self, t.LocalOrientation(self));
-			var worldPos = t.Position(self) + rs.LocalToWorld(localOffset.Rotate(turretOrientation).Rotate(bodyOrientation));
-
-			return wr.ScreenPxOffset(worldPos);
+			return t.Position(self) + rs.LocalToWorld(localOffset.Rotate(turretOrientation).Rotate(bodyOrientation));
 		}
 
 		public void Tick(Actor self)
