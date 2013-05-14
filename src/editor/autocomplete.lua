@@ -218,6 +218,7 @@ local function resolveAssign(editor,tx)
         if (s ~= "" and old ~= classname) then
           c = classname..s
           change = true
+          break
         else
           c = c..w..s
         end
