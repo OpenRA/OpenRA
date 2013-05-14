@@ -52,15 +52,6 @@ namespace OpenRA.Graphics
 		public Renderable WithZOffset(int newOffset) { return new Renderable(Sprite, Pos, newOffset, Palette, Scale); }
 		public Renderable WithPos(WPos pos) { return new Renderable(Sprite, pos, ZOffset, Palette, Scale); }
 
-		// Transitional hack
-		public Renderable WithPxOffset(float2 offset)
-		{
-			var x = (int)(Pos.X * Game.CellSize / 1024 + offset.X);
-			var y = (int)(Pos.Y * Game.CellSize / 1024 + offset.Y);
-			var z = (int)(Pos.Z * Game.CellSize / 1024);
-			return new Renderable(Sprite, new PPos(x,y).ToWPos(z), ZOffset, Palette, Scale);
-		}
-
 		public void Render(WorldRenderer wr)
 		{
 			Sprite.DrawAt(wr.ScreenPxPosition(Pos) - 0.5f*Scale*Sprite.size, Palette.Index, Scale);

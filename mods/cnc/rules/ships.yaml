@@ -56,7 +56,9 @@ LST:
 		Range: 7
 	RenderUnit:
 	WithRoof:
-	RenderCargo:
+	WithCargo:
+		DisplayTypes: Infantry, Vehicle
+		LocalOffset: 0,0,0, -390,-256,0, 390,-256,0, -390,256,0, 390,256,0
 	-Selectable:
 	Cargo:
 		Types: Infantry, Vehicle
