@@ -79,7 +79,7 @@ namespace OpenRA.Mods.RA
 			{
 				Level++;
 				Sound.PlayNotification(self.Owner, "Sounds", "LevelUp", self.Owner.Country.Race);
-				self.World.AddFrameEndTask(w => w.Add(new CrateEffect(self, "levelup", new int2(0,-24))));
+				self.World.AddFrameEndTask(w => w.Add(new CrateEffect(self, "levelup")));
 			}
 		}
 
