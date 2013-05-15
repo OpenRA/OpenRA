@@ -84,6 +84,7 @@
     <Compile Include="FileFormats\Blast.cs" />
     <Compile Include="FileFormats\Blowfish.cs" />
     <Compile Include="FileFormats\BlowfishKeyProvider.cs" />
+    <Compile Include="FileFormats\CRC32.cs" />
     <Compile Include="FileFormats\Format2.cs" />
     <Compile Include="FileFormats\Format40.cs" />
     <Compile Include="FileFormats\Format80.cs" />
