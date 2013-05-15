@@ -436,6 +436,7 @@
     <Compile Include="Widgets\ColorMixerWidget.cs" />
     <Compile Include="Widgets\HueSliderWidget.cs" />
     <Compile Include="Render\WithTurret.cs" />
+    <Compile Include="Widgets\Logic\AssetBrowserLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
