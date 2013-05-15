@@ -220,16 +220,5 @@ namespace OpenRA.Graphics
 		}
 
 		public float ScreenZPosition(WPos pos) { return (pos.Y + pos.Z)*Game.CellSize/1024f; }
-
-		public int2 ScreenPxOffset(WVec vec)
-		{
-			return new int2(Game.CellSize*vec.X/1024, Game.CellSize*(vec.Y - vec.Z)/1024);
-		}
-
-		public float[] ScreenOffset(WVec vec)
-		{
-			var c = Game.CellSize/1024f;
-			return new float[] {c*vec.X, c*vec.Y, c*vec.Z};
-		}
 	}
 }
