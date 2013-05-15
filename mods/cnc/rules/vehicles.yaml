@@ -58,10 +58,8 @@ HARV:
 		Resources: Tiberium, BlueTiberium
 		PipCount: 7
 		Capacity: 20
-		UnloadTicksPerBale: 12		# hardcoded default is 4
-		# How far away from our linked proc (refinery) to find resources (in cells):
+		UnloadTicksPerBale: 12
 		SearchFromProcRadius: 24
-		# How far away from last harvest order location to find more resources (in cells):
 		SearchFromOrderRadius: 12
 	Mobile:
 		Speed: 6
@@ -115,8 +113,6 @@ APC:
 	WithMuzzleFlash:
 	RenderUnitTurreted:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
@@ -156,8 +152,6 @@ ARTY:
 		EmptyWeapon: UnitExplode
 	AutoTarget:
 		InitialStance: Defend
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	LeavesHusk:
 		HuskActor: ARTY.Husk
 
@@ -188,8 +182,6 @@ FTNK:
 	AttackFrontal:
 	RenderUnit:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	WithMuzzleFlash:
 	Explodes:
 		Weapon: FlametankExplode
@@ -227,8 +219,6 @@ BGGY:
 	WithMuzzleFlash:
 	RenderUnitTurreted:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	LeavesHusk:
 		HuskActor: BGGY.Husk
 
@@ -267,8 +257,6 @@ BIKE:
 	AttackFrontal:
 	RenderUnit:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	LeavesHusk:
 		HuskActor: BIKE.Husk
 	
@@ -302,8 +290,6 @@ JEEP:
 	WithMuzzleFlash:
 	RenderUnitTurreted:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	LeavesHusk:
 		HuskActor: JEEP.Husk
 
@@ -338,8 +324,6 @@ LTNK:
 	AttackTurreted:
 	RenderUnitTurreted:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	LeavesHusk:
 		HuskActor: LTNK.Husk
 	Explodes:
@@ -376,8 +360,6 @@ MTNK:
 	AttackTurreted:
 	RenderUnitTurreted:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	LeavesHusk:
 		HuskActor: MTNK.Husk
 	Explodes:
@@ -423,8 +405,6 @@ HTNK:
 	AttackTurreted:
 	RenderUnitTurreted:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	SelfHealing:
 		Ticks: 10
 		HealIfBelow: 50%
@@ -467,8 +447,6 @@ MSAM:
 	AttackFrontal:
 	RenderUnitTurretedAim:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	LeavesHusk:
 		HuskActor: MSAM.Husk
 
@@ -504,8 +482,6 @@ MLRS:
 	RenderUnitTurretedAim:
 	AutoTarget:
 		InitialStance: Defend
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
@@ -547,8 +523,6 @@ STNK:
 	RenderUnit:
 	AutoTarget:
 		InitialStance: HoldFire
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	TargetableUnit:
 	LeavesHusk:
 		HuskActor: STNK.Husk

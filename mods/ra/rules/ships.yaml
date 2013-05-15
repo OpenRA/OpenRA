@@ -43,8 +43,6 @@ SS:
 	RepairableNear:
 	-DetectCloaked:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 		InitialStance: HoldFire
 	AttackMove:
 
@@ -92,8 +90,6 @@ MSUB:
 	RepairableNear:
 	-DetectCloaked:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 		InitialStance: HoldFire
 	AttackMove:
 
@@ -136,8 +132,6 @@ DD:
 		Bounds: 38,38
 	RenderUnitTurreted:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	Chronoshiftable:
 	IronCurtainable:
 	RepairableNear:
@@ -193,8 +187,6 @@ CA:
 		Bounds: 44,44
 	RenderUnitTurreted:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	Chronoshiftable:
 	IronCurtainable:
 	RepairableNear:
@@ -265,8 +257,6 @@ PT:
 		Bounds: 32,32
 	RenderUnitTurreted:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	Chronoshiftable:
 	IronCurtainable:
 	RepairableNear:

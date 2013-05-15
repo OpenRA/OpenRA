@@ -171,8 +171,6 @@ E6:
 	Captures:
 	TakeCover:
 	-AutoTarget:
-	-DebugRetiliateAgainstAggressor:
-	-DebugNextAutoTargetScanTime:
 	AttackMove:
 		JustMove: true
 	-RenderInfantry:
@@ -208,8 +206,6 @@ SPY:
 	Infiltrates:
 		InfiltrateTypes: Cash, SupportPower, Exploration
 	-AutoTarget:
-	-DebugRetiliateAgainstAggressor:
-	-DebugNextAutoTargetScanTime:
 	AttackMove:
 		JustMove: true
 	-RenderInfantry:
@@ -287,8 +283,6 @@ MEDI:
 		Cursor: heal
 	TakeCover:
 	-AutoTarget:
-	-DebugRetiliateAgainstAggressor:
-	-DebugNextAutoTargetScanTime:
 	AttackMove:
 		JustMove: true
 	-RenderInfantry:
@@ -326,8 +320,6 @@ MECH:
 		Cursor: repair
 	TakeCover:
 	-AutoTarget:
-	-DebugRetiliateAgainstAggressor:
-	-DebugNextAutoTargetScanTime:
 	AttackMove:
 		JustMove: true
 	-RenderInfantry:
@@ -350,8 +342,6 @@ EINSTEIN:
 	RevealsShroud:
 		Range: 2
 	-AutoTarget:
-	-DebugRetiliateAgainstAggressor:
-	-DebugNextAutoTargetScanTime:
 	AttackMove:
 		JustMove: true
 	ProximityCaptor:
@@ -376,8 +366,6 @@ DELPHI:
 	RevealsShroud:
 		Range: 2
 	-AutoTarget:
-	-DebugRetiliateAgainstAggressor:
-	-DebugNextAutoTargetScanTime:
 	AttackMove:
 		JustMove: true
 	ProximityCaptor:
@@ -418,8 +406,6 @@ THF:
 		InfiltrateTypes: Cash
 	TakeCover:
 	-AutoTarget:
-	-DebugRetiliateAgainstAggressor:
-	-DebugNextAutoTargetScanTime:
 	AttackMove:
 		JustMove: true
 

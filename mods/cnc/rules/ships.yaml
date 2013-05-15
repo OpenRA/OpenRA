@@ -26,8 +26,6 @@ BOAT:
 	RenderGunboat:
 	AutoTarget:
 		AllowMovement: false
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	WithSmoke:
 
 LST:
