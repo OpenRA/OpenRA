@@ -32,25 +32,4 @@ namespace OpenRA.Mods.RA.Render
 			base.Tick(self);
 		}
 	}
-
-	/* TODO: native elevation support on turrets, and this dies? */
-
-	class RenderUnitTurretedAimInfo : RenderUnitTurretedInfo
-	{
-		public override object Create(ActorInitializer init) { return new RenderUnitTurretedAim(init.self); }
-	}
-
-	class RenderUnitTurretedAim : RenderUnitTurreted
-	{
-		public RenderUnitTurretedAim(Actor self)
-			: base(self) { }
-
-		public override void Tick(Actor self)
-		{
-			var attack = self.TraitOrDefault<AttackBase>();
-			var isAttacking = attack.IsAttacking;
-			anims["turret_0"].Animation.ReplaceAnim(isAttacking ? "aim" : "turret");
-			base.Tick(self);
-		}
-	}
 }
