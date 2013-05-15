@@ -97,8 +97,6 @@
 		TargetTypes: Ground, Disguise
 	RenderInfantry:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	AttackMove:
 	Passenger:
 		CargoType: Infantry
@@ -167,10 +165,6 @@
 	DrawLineToTarget:
 	ActorLostNotification:
 		Notification: AirUnitLost
-	DebugAircraftFacing:
-	DebugAircraftSubPxX:
-	DebugAircraftSubPxY:
-	DebugAircraftAltitude:
 	ProximityCaptor:
 		Types:Plane
 	EjectOnDeath:

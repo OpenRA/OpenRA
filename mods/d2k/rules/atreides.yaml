@@ -191,8 +191,6 @@ SONICTANK:
 		LocalOffset: 640,0,427
 	AttackFrontal:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
