@@ -214,8 +214,11 @@ namespace OpenRA.Graphics
 
 		public int2 ScreenPxPosition(WPos pos)
 		{
-			return new int2(Game.CellSize*pos.X/1024, Game.CellSize*(pos.Y - pos.Z)/1024);
+			// Round to nearest pixel
+			var px = ScreenPosition(pos);
+			return new int2((int)Math.Round(px.X), (int)Math.Round(px.Y));
 		}
+
 		public float ScreenZPosition(WPos pos) { return (pos.Y + pos.Z)*Game.CellSize/1024f; }
 
 		public int2 ScreenPxOffset(WVec vec)
