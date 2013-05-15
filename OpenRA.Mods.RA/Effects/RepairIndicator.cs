@@ -46,9 +46,8 @@ namespace OpenRA.Mods.RA.Effects
 		{
 			if (!building.Destroyed)
 			{
-				yield return new SpriteRenderable(anim.Image,
-					building.CenterLocation.ToFloat2(),
-					wr.Palette(palettePrefix+player.InternalName), (int)building.CenterLocation.Y);
+				yield return new SpriteRenderable(anim.Image, building.CenterPosition, 0,
+					wr.Palette(palettePrefix+player.InternalName), 1f);
 			}
 		}
 	}

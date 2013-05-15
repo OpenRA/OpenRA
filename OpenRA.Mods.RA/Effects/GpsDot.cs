@@ -82,9 +82,8 @@ namespace OpenRA.Mods.RA.Effects
 			if (!show || self.Destroyed)
 				yield break;
 
-			var p = self.CenterLocation;
 			var palette = wr.Palette(info.IndicatorPalettePrefix+self.Owner.InternalName);
-			yield return new SpriteRenderable(anim.Image, p.ToFloat2(), palette, p.Y)
+			yield return new SpriteRenderable(anim.Image, self.CenterPosition, 0, palette, 1f)
 				.WithScale(1.5f);
 		}
 	}

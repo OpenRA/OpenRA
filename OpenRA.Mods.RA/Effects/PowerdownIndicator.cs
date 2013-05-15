@@ -37,8 +37,8 @@ namespace OpenRA.Mods.RA.Effects
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
 			if (!a.Destroyed && a.Owner.IsAlliedWith(a.World.RenderPlayer))
-				yield return new SpriteRenderable(anim.Image, a.CenterLocation.ToFloat2(),
-					wr.Palette("chrome"), (int)a.CenterLocation.Y);
+				yield return new SpriteRenderable(anim.Image, a.CenterPosition, 0,
+					wr.Palette("chrome"), 1f);
 		}
 	}
 }
