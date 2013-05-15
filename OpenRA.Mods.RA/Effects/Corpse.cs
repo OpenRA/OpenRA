@@ -17,23 +17,23 @@ namespace OpenRA.Mods.RA.Effects
 {
 	public class Corpse : IEffect
 	{
-		readonly Animation anim;
-		readonly float2 pos;
-		readonly string paletteName;
+		readonly Animation Anim;
+		readonly WPos Pos;
+		readonly string PaletteName;
 
-		public Corpse(World world, float2 pos, string image, string sequence, string paletteName)
+		public Corpse(World world, WPos pos, string image, string sequence, string paletteName)
 		{
-			this.pos = pos;
-			this.paletteName = paletteName;
-			anim = new Animation(image);
-			anim.PlayThen(sequence, () => world.AddFrameEndTask(w => w.Remove(this)));
+			Pos = pos;
+			PaletteName = paletteName;
+			Anim = new Animation(image);
+			Anim.PlayThen(sequence, () => world.AddFrameEndTask(w => w.Remove(this)));
 		}
 
-		public void Tick(World world) { anim.Tick(); }
+		public void Tick(World world) { Anim.Tick(); }
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			yield return new SpriteRenderable(anim.Image, pos, wr.Palette(paletteName), (int)pos.Y);
+			yield return new SpriteRenderable(Anim.Image, Pos, 0, wr.Palette(PaletteName), 1f);
 		}
 	}
 }
