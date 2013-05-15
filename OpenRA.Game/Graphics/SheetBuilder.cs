@@ -8,68 +8,69 @@
  */
 #endregion
 
+using System;
 using System.Drawing;
 
 namespace OpenRA.Graphics
 {
+	public class SheetOverflowException : Exception
+	{
+		public SheetOverflowException()
+			: base("Sprite sequence spans multiple sheets.\n"+
+				"This should be considered as a bug, but you "+
+				"can increase the Graphics.SheetSize setting "+
+				"to temporarily avoid the problem.") {}
+	}
+
+	public enum SheetType
+	{
+		Indexed = 1,
+		DualIndexed = 2,
+		BGRA = 4,
+	}
+
 	public class SheetBuilder
 	{
-		internal SheetBuilder(TextureChannel ch)
+		Sheet current;
+		TextureChannel channel;
+		SheetType type;
+		int rowHeight = 0;
+		Point p;
+
+		internal SheetBuilder(SheetType t)
 		{
-			current = null;
-			rowHeight = 0;
-			channel = null;
-			initialChannel = ch;
+			current = new Sheet(new Size(Renderer.SheetSize, Renderer.SheetSize));;
+			channel = TextureChannel.Red;
+			type = t;
 		}
 
-		public Sprite Add(byte[] src, Size size)
+		public Sprite Add(byte[] src, Size size, bool allowSheetOverflow)
 		{
-			Sprite rect = Allocate(size);
+			var rect = Allocate(size, allowSheetOverflow);
 			Util.FastCopyIntoChannel(rect, src);
 			return rect;
 		}
 
-		public Sprite Add(Size size, byte paletteIndex)
+		public Sprite Add(Size size, byte paletteIndex, bool allowSheetOverflow)
 		{
-			byte[] data = new byte[size.Width * size.Height];
-			for (int i = 0; i < data.Length; i++)
+			var data = new byte[size.Width * size.Height];
+			for (var i = 0; i < data.Length; i++)
 				data[i] = paletteIndex;
 
-			return Add(data, size);
+			return Add(data, size, allowSheetOverflow);
 		}
 
-		Sheet NewSheet() { return new Sheet(new Size( Renderer.SheetSize, Renderer.SheetSize ) ); }
-
-		Sheet current = null;
-		int rowHeight = 0;
-		Point p;
-		TextureChannel? channel = null;
-		TextureChannel initialChannel;
-
-		TextureChannel? NextChannel(TextureChannel? t)
+		TextureChannel? NextChannel(TextureChannel t)
 		{
-			if (t == null)
-				return initialChannel;
+			var nextChannel = (int)t + (int)type;
+			if (nextChannel > (int)TextureChannel.Alpha)
+				return null;
 
-			switch (t.Value)
-			{
-				case TextureChannel.Red: return TextureChannel.Green;
-				case TextureChannel.Green: return TextureChannel.Blue;
-				case TextureChannel.Blue: return TextureChannel.Alpha;
-				case TextureChannel.Alpha: return null;
-
-				default: return null;
-			}
+			return (TextureChannel)nextChannel;
 		}
 
-		public Sprite Allocate(Size imageSize)
+		public Sprite Allocate(Size imageSize, bool allowSheetOverflow)
 		{
-			if (current == null)
-			{
-				current = NewSheet();
-				channel = NextChannel(null);
-			}
-
 			if (imageSize.Width + p.X > current.Size.Width)
 			{
 				p = new Point(0, p.Y + rowHeight);
@@ -81,22 +82,29 @@ namespace OpenRA.Graphics
 
 			if (p.Y + imageSize.Height > current.Size.Height)
 			{
-
-				if (null == (channel = NextChannel(channel)))
+				var next = NextChannel(channel);
+				if (next == null)
 				{
-					current = NewSheet();
-					channel = NextChannel(channel);
+					if (!allowSheetOverflow)
+						throw new SheetOverflowException();
+
+					current = new Sheet(new Size(Renderer.SheetSize, Renderer.SheetSize));
+					channel = TextureChannel.Red;
 				}
+				else
+					channel = next.Value;
 
 				rowHeight = imageSize.Height;
 				p = new Point(0,0);
 			}
 
-			Sprite rect = new Sprite(current, new Rectangle(p, imageSize), channel.Value);
+			var rect = new Sprite(current, new Rectangle(p, imageSize), channel);
 			current.MakeDirty();
 			p.X += imageSize.Width;
 
 			return rect;
 		}
+
+		public Sheet Current { get { return current; } }
 	}
 }
