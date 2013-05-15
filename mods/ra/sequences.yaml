@@ -595,6 +595,7 @@ e1:
 		Start: 16
 		Length: 6
 		Facings: 8
+		Tick: 100
 	shoot:
 		Start: 64
 		Length: 8
@@ -607,6 +608,7 @@ e1:
 		Start: 144
 		Length: 4
 		Facings: 8
+		Tick: 100
 	standup-0:
 		Start: 176
 		Length: 2
@@ -657,6 +659,7 @@ sniper:
 		Start: 16
 		Length: 6
 		Facings: 8
+		Tick: 100
 	shoot:
 		Start: 64
 		Length: 16
@@ -672,6 +675,7 @@ sniper:
 		Start: 208
 		Length: 4
 		Facings: 8
+		Tick: 100
 	standup:
 		Start: 240
 		Length: 2
@@ -734,6 +738,7 @@ e3:
 		Start: 16
 		Length: 6
 		Facings: 8
+		Tick: 120
 	shoot:
 		Start: 64
 		Length: 8
@@ -776,6 +781,7 @@ e3:
 		Start: 144
 		Length: 4
 		Facings: 8
+		Tick: 120
 	prone-shoot:
 		Start: 192
 		Length: 10
@@ -792,6 +798,7 @@ e6:
 		Start: 16
 		Length: 6
 		Facings: 8
+		Tick: 100
 	idle1:
 		Start: 121
 		Length: 8
@@ -830,6 +837,7 @@ e6:
 		Start: 82
 		Length: 4
 		Facings: 8
+		Tick: 100
 
 ca:
 	idle:
@@ -863,6 +871,7 @@ medi:
 		Start: 8
 		Length: 6
 		Facings: 8
+		Tick: 100
 	heal:
 		Start: 56
 		Length: 58
@@ -908,6 +917,7 @@ medi:
 		Start: 130
 		Length: 4
 		Facings: 8
+		Tick: 100
 		
 mech:
 	stand:
@@ -917,6 +927,7 @@ mech:
 		Start: 8
 		Length: 6
 		Facings: 8
+		Tick: 100
 	heal:
 		Start: 56
 		Length: 58
@@ -962,6 +973,7 @@ mech:
 		Start: 130
 		Length: 4
 		Facings: 8
+		Tick: 100
 
 explosion:
 	piff: piff
@@ -1388,6 +1400,7 @@ e2:
 		Start: 16
 		Length: 6
 		Facings: 8
+		Tick: 80
 	shoot:
 		Start: 64
 		Length: 20
@@ -1430,6 +1443,7 @@ e2:
 		Start: 240
 		Length: 4
 		Facings: 8
+		Tick: 80
 	prone-shoot:
 		Start: 288
 		Length: 12
@@ -1448,6 +1462,7 @@ dog:
 		Start: 8
 		Length: 6
 		Facings: 8
+		Tick: 80
 	idle1:
 		Start: 216
 		Length: 7
@@ -1499,6 +1514,7 @@ spy:
 		Start: 16
 		Length: 6
 		Facings: 8
+		Tick: 100
 	shoot:
 		Start: 64
 		Length: 8
@@ -1541,6 +1557,7 @@ spy:
 		Start: 144
 		Length: 4
 		Facings: 8
+		Tick: 100
 	prone-shoot:
 		Start: 192
 		Length: 8
@@ -1554,6 +1571,7 @@ thf:
 		Start: 8
 		Length: 6
 		Facings: 8
+		Tick: 100
 	die1:
 		Start: 139
 		Length: 8
@@ -1593,6 +1611,7 @@ e7:
 		Start: 8
 		Length: 6
 		Facings: 8
+		Tick: 80
 	shoot:
 		Start: 56
 		Length: 7
@@ -1635,6 +1654,7 @@ e7:
 		Start: 128
 		Length: 4
 		Facings: 8
+		Tick: 80
 	prone-shoot:
 		Start: 176
 		Length: 7
@@ -1651,6 +1671,7 @@ e4:
 		Start: 16
 		Length: 6
 		Facings: 8
+		Tick: 120
 	shoot:
 		Start: 64
 		Length: 16
@@ -1693,6 +1714,7 @@ e4:
 		Start: 208
 		Length: 4
 		Facings: 8
+		Tick: 120
 	prone-shoot:
 		Start: 256
 		Length: 16
@@ -2113,6 +2135,7 @@ c1:
 		Start: 56
 		Length: 6
 		Facings: 8
+		Tick: 80
 
 c2:
 	stand:
@@ -2156,6 +2179,7 @@ c2:
 		Start: 56
 		Length: 6
 		Facings: 8
+		Tick: 80
 		
 c3:
 	stand:
@@ -2199,6 +2223,7 @@ c3:
 		Start: 56
 		Length: 6
 		Facings: 8
+		Tick: 80
 
 einstein:
 	stand:
@@ -2216,6 +2241,7 @@ einstein:
 		Start: 56
 		Length: 6
 		Facings: 8
+		Tick: 80
 	die1:
 		Start: 115
 		Length: 8
@@ -2255,6 +2281,7 @@ delphi:
 		Start: 56
 		Length: 6
 		Facings: 8
+		Tick: 80
 	die1:
 		Start: 115
 		Length: 8
@@ -2294,6 +2321,7 @@ chan:
 		Start: 56
 		Length: 6
 		Facings: 8
+		Tick: 80
 	die1:
 		Start: 115
 		Length: 8
@@ -2325,6 +2353,7 @@ gnrl:
 		Start: 8
 		Length: 5
 		Facings: 8
+		Tick: 80
 	shoot:
 		Start: 56
 		Length: 4
@@ -2441,6 +2470,7 @@ shok:
 		Start: 16
 		Length: 6
 		Facings: 8
+		Tick: 120
 	shoot:
 		Start: 64
 		Length: 16
@@ -2456,6 +2486,7 @@ shok:
 		Start: 208
 		Length: 4
 		Facings: 8
+		Tick: 120
 	standup:
 		Start: 240
 		Length: 2
