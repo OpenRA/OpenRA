@@ -1,5 +1,5 @@
 -- Integration with MobDebug
--- Copyright 2011-12 Paul Kulchenko, ZeroBrane LLC
+-- Copyright 2011-13 Paul Kulchenko, ZeroBrane LLC
 -- Original authors: Lomtik Software (J. Winwood & John Labenski)
 -- Luxinia Dev (Eike Decker & Christoph Kubisch)
 
@@ -70,6 +70,7 @@ end
 
 local simpleType = {['nil'] = true, ['string'] = true, ['number'] = true, ['boolean'] = true}
 local stackItemValue = {}
+local callData = {}
 local function checkIfExpandable(value, item)
   local expandable = type(value) == 'table' and next(value) ~= nil
     and not stackItemValue[value] -- only expand first time
@@ -98,23 +99,38 @@ local function updateStackSync()
     local params = {comment = false, nocode = true}
     local root = stackCtrl:AddRoot("Stack")
     stackItemValue = {} -- reset cache of items in the stack
+    callData = {} -- reset call cache
     for _,frame in ipairs(stack) do
       -- "main chunk at line 24"
       -- "foo() at line 13 (defined at foobar.lua:11)"
       -- call = { source.name, source.source, source.linedefined,
       --   source.currentline, source.what, source.namewhat, source.short_src }
       local call = frame[1]
+
+      -- format the function name to a readable user string
       local func = call[5] == "main" and "main chunk"
         or call[5] == "C" and (call[1] or "C function")
         or call[5] == "tail" and "tail call"
         or (call[1] or "anonymous function")
+
+      -- format the function treeitem text string, including the function name
       local text = func ..
         (call[4] == -1 and '' or " at line "..call[4]) ..
         (call[5] ~= "main" and call[5] ~= "Lua" and ''
          or (call[3] > 0 and " (defined at "..call[2]..":"..call[3]..")"
                           or " (defined in "..call[2]..")"))
+
+      -- create the new tree item for this level of the call stack
       local callitem = stackCtrl:AppendItem(root, text, 0)
+
+      -- registed call data to added item
+      callData[callitem:GetValue()] = { call[2], call[4] }
+
+      -- add the local variables to the call stack item
       for name,val in pairs(frame[2]) do
+        -- format the variable name, value as a single line and,
+        -- if not a simple type, the string value.
+
         -- comment can be not necessarily a string for tables with metatables
         -- that provide its own __tostring method
         local value, comment = val[1], tostring(val[2])
@@ -126,6 +142,8 @@ local function updateStackSync()
           stackCtrl:SetItemHasChildren(item, true)
         end
       end
+
+      -- add the upvalues for this call stack level to the tree item
       for name,val in pairs(frame[3]) do
         local value, comment = val[1], tostring(val[2])
         local text = ("%s = %s%s"):
@@ -136,6 +154,7 @@ local function updateStackSync()
           stackCtrl:SetItemHasChildren(item, true)
         end
       end
+
       stackCtrl:SortChildren(callitem)
       stackCtrl:Expand(callitem)
     end
@@ -764,6 +783,24 @@ function debuggerCreateStackWindow()
       stackCtrl:SortChildren(item_id)
       return true
     end)
+
+  -- register navigation callback
+  stackCtrl:Connect(wx.wxEVT_LEFT_DCLICK, function (event)
+    local selectedID = stackCtrl:GetSelection()
+    if not selectedID then return end
+
+    local coords = callData[selectedID:GetValue()]
+    if not coords then return end
+
+    local file, line = coords[1], coords[2]
+    if file:match("@") then file = string.sub(file, 2) end
+    file = GetFullPathIfExists(debugger.basedir, file)
+    if file then
+      local editor = LoadFile(file,nil,true)
+      editor:SetFocus()
+      if line then editor:GotoPos(editor:PositionFromLine(line-1)) end
+    end
+  end)
 
   local notebook = wxaui.wxAuiNotebook(ide.frame, wx.wxID_ANY,
     wx.wxDefaultPosition, wx.wxDefaultSize,
