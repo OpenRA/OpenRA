@@ -17,28 +17,29 @@ namespace OpenRA.Mods.RA.Effects
 {
 	class GpsSatellite : IEffect
 	{
-		readonly float heightPerTick = 10;
-		float2 offset;
-		Animation anim = new Animation("sputnik");
+		float2 Origin;
+		WPos Pos;
+		Animation Anim = new Animation("sputnik");
 
-		public GpsSatellite(float2 offset)
+		public GpsSatellite(WPos pos, float2 spriteOrigin)
 		{
-			this.offset = offset;
-			anim.PlayRepeating("idle");
+			Pos = pos;
+			Origin = spriteOrigin;
+			Anim.PlayRepeating("idle");
 		}
 
 		public void Tick( World world )
 		{
-			anim.Tick();
-			offset.Y -= heightPerTick;
+			Anim.Tick();
+			Pos += new WVec(0, 0, 427);
 
-			if (offset.Y < 0)
+			if (Pos.Z > Pos.Y)
 				world.AddFrameEndTask(w => w.Remove(this));
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			yield return new SpriteRenderable(anim.Image, offset, wr.Palette("effect"), (int)offset.Y);
+			yield return new SpriteRenderable(Anim.Image, Pos, 0, wr.Palette("effect"), 1f, Origin);
 		}
 	}
 }
