@@ -363,6 +363,8 @@ namespace OpenRA.Mods.RA.Widgets
 						return;
 					}
 				}
+				else
+					Sound.PlayNotification(world.LocalPlayer, "Speech", CurrentQueue.Info.QueuedAudio, world.LocalPlayer.Country.Race);
 
 				StartProduction(world, item);
 			}
@@ -389,7 +391,6 @@ namespace OpenRA.Mods.RA.Widgets
 
 		void StartProduction(World world, string item)
 		{
-			Sound.PlayNotification(world.LocalPlayer, "Speech", CurrentQueue.Info.QueuedAudio, world.LocalPlayer.Country.Race);
 			world.IssueOrder(Order.StartProduction(CurrentQueue.self, item,
 				Game.GetModifierKeys().HasModifier(Modifiers.Shift) ? 5 : 1));
 		}
