@@ -123,7 +123,7 @@ namespace OpenRA.Mods.RA.Effects
 				if (Info.Trail != null && --ticksToNextSmoke < 0)
 				{
 					world.AddFrameEndTask(w => w.Add(
-						new Smoke(w, (PPos) highPos.ToInt2(), Info.Trail)));
+						new Smoke(w, ((PPos)highPos.ToInt2()).ToWPos(0), Info.Trail)));
 					ticksToNextSmoke = Info.TrailInterval;
 				}
 

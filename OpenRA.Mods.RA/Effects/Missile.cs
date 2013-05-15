@@ -147,7 +147,7 @@ namespace OpenRA.Mods.RA.Effects
 
 				if (--ticksToNextSmoke < 0)
 				{
-					world.AddFrameEndTask(w => w.Add(new Smoke(w, sp, Info.Trail)));
+					world.AddFrameEndTask(w => w.Add(new Smoke(w, sp.ToWPos(0), Info.Trail)));
 					ticksToNextSmoke = Info.TrailInterval;
 				}
 			}
