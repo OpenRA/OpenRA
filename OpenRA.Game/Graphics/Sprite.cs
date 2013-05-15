@@ -17,57 +17,52 @@ namespace OpenRA.Graphics
 		public readonly Rectangle bounds;
 		public readonly Sheet sheet;
 		public readonly TextureChannel channel;
-		public readonly RectangleF uv;
 		public readonly float2 size;
-
-		readonly float2[] uvhax;
+		readonly float2[] textureCoords;
 
 		public Sprite(Sheet sheet, Rectangle bounds, TextureChannel channel)
 		{
 			this.bounds = bounds;
 			this.sheet = sheet;
 			this.channel = channel;
-
-			uv = new RectangleF(
-					(float)(bounds.Left) / sheet.Size.Width,
-					(float)(bounds.Top) / sheet.Size.Height,
-					(float)(bounds.Width) / sheet.Size.Width,
-					(float)(bounds.Height) / sheet.Size.Height);
-
-			uvhax = new float2[]
-			{
-				new float2( uv.Left, uv.Top ),
-				new float2( uv.Right, uv.Top ),
-				new float2( uv.Left, uv.Bottom ),
-				new float2( uv.Right, uv.Bottom ),
-			};
-
 			this.size = new float2(bounds.Size);
+
+			var left = (float)(bounds.Left) / sheet.Size.Width;
+			var top = (float)(bounds.Top) / sheet.Size.Height;
+			var right = (float)(bounds.Right) / sheet.Size.Width;
+			var bottom = (float)(bounds.Bottom) / sheet.Size.Height;
+			textureCoords = new float2[]
+			{
+				new float2(left, top),
+				new float2(right, top),
+				new float2(left, bottom),
+				new float2(right, bottom),
+			};
 		}
 
-		public float2 FastMapTextureCoords( int k )
+		public float2 FastMapTextureCoords(int k)
 		{
-			return uvhax[ k ];
+			return textureCoords[k];
 		}
 
-		public void DrawAt( WorldRenderer wr, float2 location, string palette )
+		public void DrawAt(WorldRenderer wr, float2 location, string palette)
 		{
-			Game.Renderer.WorldSpriteRenderer.DrawSprite( this, location, wr, palette, this.size );
+			Game.Renderer.WorldSpriteRenderer.DrawSprite(this, location, wr, palette, size);
 		}
 
-		public void DrawAt( float2 location, int paletteIndex )
+		public void DrawAt(float2 location, int paletteIndex)
 		{
-			Game.Renderer.WorldSpriteRenderer.DrawSprite( this, location, paletteIndex, this.size );
+			Game.Renderer.WorldSpriteRenderer.DrawSprite(this, location, paletteIndex, size);
 		}
 
 		public void DrawAt(float2 location, int paletteIndex, float scale)
 		{
-			Game.Renderer.WorldSpriteRenderer.DrawSprite(this, location, paletteIndex, this.size * scale);
+			Game.Renderer.WorldSpriteRenderer.DrawSprite(this, location, paletteIndex, size*scale);
 		}
 
-		public void DrawAt( float2 location, int paletteIndex, float2 size )
+		public void DrawAt(float2 location, int paletteIndex, float2 size)
 		{
-			Game.Renderer.WorldSpriteRenderer.DrawSprite( this, location, paletteIndex, size );
+			Game.Renderer.WorldSpriteRenderer.DrawSprite(this, location, paletteIndex, size);
 		}
 	}
 
