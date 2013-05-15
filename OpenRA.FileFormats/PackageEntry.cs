@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -51,7 +51,7 @@ namespace OpenRA.FileFormats
 				return "0x{0:x8} - offset 0x{1:x8} - length 0x{2:x8}".F(Hash, Offset, Length);
 		}
 
-		public static uint HashFilename(string name)
+		public static uint HashFilename(string name) // Red Alert 1 and Tiberian Dawn
 		{
 			if (name.Length > 12)
 				name = name.Substring(0, 12);
@@ -72,12 +72,29 @@ namespace OpenRA.FileFormats
 			return result;
 		}
 
+		public static uint CrcHashFilename(string name) // Tiberian Sun
+		{
+			name = name.ToUpperInvariant();
+			var l = name.Length;
+			int a = l >> 2;
+			if ((l & 3) != 0)
+			{
+				name += (char)(l - (a << 2));
+				int i = 3 - (l & 3);
+				while (i-- != 0)
+					name += name[a << 2];
+			}
+			return CRC32.Calculate(Encoding.ASCII.GetBytes(name));
+		}
+
 		static Dictionary<uint, string> Names = new Dictionary<uint,string>();
 
 		public static void AddStandardName(string s)
 		{
-			uint hash = HashFilename(s);
+			uint hash = HashFilename(s); // RA1 and TD
 			Names.Add(hash, s);
+			uint crcHash = CrcHashFilename(s); // TS
+			Names.Add(crcHash, s);
 		}
 
 		public const int Size = 12;

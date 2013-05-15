@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -151,7 +151,11 @@ namespace OpenRA.FileFormats
 
 		public Stream GetContent(string filename)
 		{
-			return GetContent(PackageEntry.HashFilename(filename));
+			var content = GetContent(PackageEntry.HashFilename(filename)); // RA1 and TD
+			if (content != null)
+				return content;
+			else
+				return GetContent(PackageEntry.CrcHashFilename(filename)); // TS
 		}
 
 		public IEnumerable<uint> AllFileHashes()
@@ -161,7 +165,7 @@ namespace OpenRA.FileFormats
 
 		public bool Exists(string filename)
 		{
-			return index.ContainsKey(PackageEntry.HashFilename(filename));
+			return (index.ContainsKey(PackageEntry.HashFilename(filename)) || index.ContainsKey(PackageEntry.CrcHashFilename(filename)));
 		}
 
 
@@ -187,7 +191,7 @@ namespace OpenRA.FileFormats
 			{
 				var length = (uint)kv.Value.Length;
 				var hash = PackageEntry.HashFilename(Path.GetFileName(kv.Key));
-				items.Add(new PackageEntry(hash, dataSize, length));
+				items.Add(new PackageEntry(hash, dataSize, length)); // TODO: Tiberian Sun uses CRC hashes
 				dataSize += length;
 			}
 
