@@ -18,8 +18,8 @@ namespace OpenRA.Graphics
 {
 	class TerrainRenderer
 	{
+		SheetBuilder sheetBuilder;
 		IVertexBuffer<Vertex> vertexBuffer;
-		Sheet terrainSheet;
 
 		World world;
 		Map map;
@@ -29,11 +29,12 @@ namespace OpenRA.Graphics
 			this.world = world;
 			this.map = world.Map;
 
+			// TODO: Use a fixed sheet size specified in the tileset yaml
+			sheetBuilder = new SheetBuilder(SheetType.Indexed);
 			var tileSize = new Size(Game.CellSize, Game.CellSize);
 			var tileMapping = new Cache<TileReference<ushort,byte>, Sprite>(
-				x => Game.modData.SheetBuilder.Add(world.TileSet.GetBytes(x), tileSize, false));
+				x => sheetBuilder.Add(world.TileSet.GetBytes(x), tileSize, false));
 
-			terrainSheet = tileMapping[map.MapTiles.Value[map.Bounds.Left, map.Bounds.Top]].sheet;
 			var terrainPalette = wr.Palette("terrain").Index;
 			var vertices = new Vertex[4 * map.Bounds.Height * map.Bounds.Width];
 			int nv = 0;
@@ -84,7 +85,7 @@ namespace OpenRA.Graphics
 
 			Game.Renderer.WorldSpriteRenderer.DrawVertexBuffer(
 				vertexBuffer, verticesPerRow * firstRow, verticesPerRow * (lastRow - firstRow),
-				PrimitiveType.QuadList, terrainSheet);
+				PrimitiveType.QuadList, sheetBuilder.Current);
 
 			foreach (var r in world.WorldActor.TraitsImplementing<IRenderOverlay>())
 				r.Render(wr);
