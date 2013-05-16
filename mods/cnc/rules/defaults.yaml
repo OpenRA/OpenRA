@@ -31,6 +31,8 @@
 	AcceptsCloakCrate:
 	WithSmoke:
 	DebugMuzzlePositions:
+	Guard:
+	Guardable:
 
 ^Tank:
 	AppearsOnRadar:
@@ -68,6 +70,8 @@
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
 	DebugMuzzlePositions:
+	Guard:
+	Guardable:
 
 ^Helicopter:
 	AppearsOnRadar:
@@ -145,6 +149,8 @@
 		Buildings: hosp
 		CloseEnough: 1
 	DebugMuzzlePositions:
+	Guard:
+	Guardable:
 
 ^CivInfantry:
 	Inherits: ^Infantry
@@ -176,7 +182,7 @@
 		Notification: CivilianKilled
 		NotifyAll: true
 	ScaredyCat:
-	RenderInfantryPanic:	
+	RenderInfantryPanic:
 	AttackMove:
 		JustMove: yes
 	CrushableInfantry:
@@ -214,6 +220,8 @@
 	ActorLostNotification:
 	AttackMove:
 	DebugMuzzlePositions:
+	Guard:
+	Guardable:
 
 ^Building:
 	AppearsOnRadar:
@@ -260,6 +268,8 @@
 	Capturable:
 	CapturableBar:
 	DebugMuzzlePositions:
+	Guardable:
+		Range: 3
 
 ^CivBuilding:
 	Inherits: ^Building
@@ -347,6 +357,7 @@
 		RelativeToTopLeft: yes
 	AutoTargetIgnore:
 	Sellable:
+	Guardable:
 
 ^Tree:
 	Tooltip:

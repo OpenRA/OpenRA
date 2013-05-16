@@ -34,6 +34,8 @@
 	WithSmoke:
 	UpdatesPlayerStatistics:
 	DebugMuzzlePositions:
+	Guard:
+	Guardable:
 
 ^Tank:
 	AppearsOnRadar:
@@ -71,6 +73,8 @@
 	WithSmoke:
 	UpdatesPlayerStatistics:
 	DebugMuzzlePositions:
+	Guard:
+	Guardable:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -122,6 +126,8 @@
 		CloseEnough: 1
 	UpdatesPlayerStatistics:
 	DebugMuzzlePositions:
+	Guard:
+	Guardable:
 
 ^Ship:
 	AppearsOnRadar:
@@ -151,6 +157,8 @@
 	WithSmoke:
 	UpdatesPlayerStatistics:
 	DebugMuzzlePositions:
+	Guard:
+	Guardable:
 
 ^Plane:
 	AppearsOnRadar:
@@ -224,6 +232,8 @@
 	GivesBounty:
 	UpdatesPlayerStatistics:
 	DebugMuzzlePositions:
+	Guardable:
+		Range: 3
 
 ^Wall:
 	AppearsOnRadar:
@@ -257,6 +267,7 @@
 		Types:Wall
 	Sellable:
 	UpdatesPlayerStatistics:
+	Guardable:
 
 ^TechBuilding:
 	Inherits: ^Building

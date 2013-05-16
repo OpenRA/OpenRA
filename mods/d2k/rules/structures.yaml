@@ -371,6 +371,7 @@ WALL:
 	ProximityCaptor:
 		Types:Wall
 	Sellable:
+	Guardable:
 
 GUNTOWER:
 	Inherits: ^Building

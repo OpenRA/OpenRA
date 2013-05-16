@@ -208,6 +208,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			SetupKeyBinding(deployKey, "Deploy:", () => keyConfig.DeployKey, k => keyConfig.DeployKey = k);
 			unitCommandHotkeyList.AddChild(deployKey);
 
+			var guardKey = ScrollItemWidget.Setup(unitCommandHotkeyTemplate, () => false, () => { });
+			SetupKeyBinding(guardKey, "Guard: ", () => keyConfig.GuardKey, k => keyConfig.GuardKey = k);
+			unitCommandHotkeyList.AddChild(guardKey);
+
 			// Debug
 			var debug = bg.Get("DEBUG_PANE");
 
