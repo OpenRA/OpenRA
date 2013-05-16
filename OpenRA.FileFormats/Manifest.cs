@@ -9,6 +9,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace OpenRA.FileFormats
@@ -20,7 +21,8 @@ namespace OpenRA.FileFormats
 		public readonly string[]
 			Mods, Folders, Packages, Rules, ServerTraits,
 			Sequences, Cursors, Chrome, Assemblies, ChromeLayout,
-			Weapons, Voices, Notifications, Music, Movies, TileSets, ChromeMetrics;
+			Weapons, Voices, Notifications, Music, Movies, TileSets,
+			ChromeMetrics, PackageContents;
 		public readonly MiniYaml LoadScreen;
 		public readonly Dictionary<string, Pair<string,int>> Fonts;
 		public readonly int TileSize = 24;
@@ -29,7 +31,7 @@ namespace OpenRA.FileFormats
 		{
 			Mods = mods;
 			var yaml = new MiniYaml(null, mods
-				.Select(m => MiniYaml.FromFile("mods/" + m + "/mod.yaml"))
+				.Select(m => MiniYaml.FromFile("mods{0}{1}{0}mod.yaml".F(Path.DirectorySeparatorChar, m)))
 				.Aggregate(MiniYaml.MergeLiberal)).NodesDict;
 
 			// TODO: Use fieldloader
@@ -49,6 +51,7 @@ namespace OpenRA.FileFormats
 			Movies = YamlList(yaml, "Movies");
 			TileSets = YamlList(yaml, "TileSets");
 			ChromeMetrics = YamlList(yaml, "ChromeMetrics");
+			PackageContents = YamlList(yaml, "PackageContents");
 
 			LoadScreen = yaml["LoadScreen"];
 			Fonts = yaml["Fonts"].NodesDict.ToDictionary(x => x.Key,

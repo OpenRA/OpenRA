@@ -25,6 +25,7 @@ namespace OpenRA
 		public static Dictionary<string, MusicInfo> Music;
 		public static Dictionary<string, string> Movies;
 		public static Dictionary<string, TileSet> TileSets;
+		public static Dictionary<string, string> PackageContents;
 
 		public static void LoadRules(Manifest m, Map map)
 		{
@@ -35,6 +36,7 @@ namespace OpenRA
 			Notifications = LoadYamlRules(m.Notifications, map.Notifications, (k, _) => new SoundInfo(k.Value));
 			Music = LoadYamlRules(m.Music, new List<MiniYamlNode>(), (k, _) => new MusicInfo(k.Key, k.Value));
 			Movies = LoadYamlRules(m.Movies, new List<MiniYamlNode>(), (k, v) => k.Value.Value);
+			PackageContents = LoadYamlRules(m.PackageContents, new List<MiniYamlNode>(), (k, v) => k.Value.Value);
 
 			TileSets = new Dictionary<string, TileSet>();
 			foreach (var file in m.TileSets)
@@ -46,7 +48,7 @@ namespace OpenRA
 
 		static Dictionary<string, T> LoadYamlRules<T>(string[] files, List<MiniYamlNode> dict, Func<MiniYamlNode, Dictionary<string, MiniYaml>, T> f)
 		{
-			var y = files.Select(a => MiniYaml.FromFile(a)).Aggregate(dict,MiniYaml.MergeLiberal);
+			var y = files.Select(a => MiniYaml.FromFile(a)).Aggregate(dict, MiniYaml.MergeLiberal);
 			var yy = y.ToDictionary( x => x.Key, x => x.Value );
 			return y.ToDictionary(kv => kv.Key.ToLowerInvariant(), kv => f(kv, yy));
 		}

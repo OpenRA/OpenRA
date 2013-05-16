@@ -29,6 +29,10 @@ Packages:
 	~movies1.mix
 	~movies2.mix
 
+PackageContents:
+	mods/ra/mix/conquer.yaml
+	mods/ra/mix/hires.yaml
+
 Rules:
 	mods/ra/rules/defaults.yaml
 	mods/ra/rules/system.yaml
@@ -73,6 +77,8 @@ ChromeLayout:
 	mods/ra/chrome/cheats.yaml
 	mods/ra/chrome/musicplayer.yaml
 	mods/ra/chrome/tooltips.yaml
+	mods/ra/chrome/assetbrowser.yaml
+	mods/ra/chrome/convertassets.yaml
 
 Weapons:
 	mods/ra/weapons.yaml

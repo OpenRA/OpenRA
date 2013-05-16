@@ -18,6 +18,7 @@ namespace OpenRA.Widgets
 		public string Image = "";
 		public int Frame = 0;
 		public string Palette = "chrome";
+		public bool LoopAnimation = false;
 
 		public Func<string> GetImage;
 		public Func<int> GetFrame;
@@ -26,12 +27,13 @@ namespace OpenRA.Widgets
 		readonly WorldRenderer worldRenderer;
 
 		[ObjectCreator.UseCtor]
-		public ShpImageWidget(  WorldRenderer worldRenderer)
+		public ShpImageWidget(WorldRenderer worldRenderer)
 			: base()
 		{
 			GetImage = () => { return Image; };
 			GetFrame = () => { return Frame; };
 			GetPalette = () => { return Palette; };
+
 			this.worldRenderer = worldRenderer;
 		}
 
@@ -41,9 +43,12 @@ namespace OpenRA.Widgets
 			Image = other.Image;
 			Frame = other.Frame;
 			Palette = other.Palette;
+			LoopAnimation = other.LoopAnimation;
+
 			GetImage = other.GetImage;
 			GetFrame = other.GetFrame;
 			GetPalette = other.GetPalette;
+
 			worldRenderer = other.worldRenderer;
 		}
 
@@ -67,6 +72,33 @@ namespace OpenRA.Widgets
 			}
 
 			Game.Renderer.SpriteRenderer.DrawSprite(sprite, RenderOrigin, worldRenderer, palette);
+		}
+
+		public int FrameCount
+		{
+			get { return Game.modData.SpriteLoader.LoadAllSprites(Image).Length-1; }
+		}
+
+		public void RenderNextFrame()
+		{
+			if (Frame < FrameCount)
+				Frame++;
+			else
+				Frame = 0;
+		}
+
+		public void RenderPreviousFrame()
+		{
+			if (Frame > 0)
+				Frame--;
+			else
+				Frame = FrameCount;
+		}
+
+		public override void Tick()
+		{
+			if (LoopAnimation)
+				RenderNextFrame();
 		}
 	}
 }
