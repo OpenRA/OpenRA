@@ -326,8 +326,20 @@ namespace OpenRA.Server
 				if (mods.Any(m => m.Contains("{DEV_VERSION}")))
 					SendMessage("{0} is running an unversioned development build, ".F(client.Name) +
 					"and may desynchronize the game state if they have incompatible rules.");
+
+				SetOrderLag();
 			}
 			catch (Exception) { DropClient(newConn); }
+		}
+
+		void SetOrderLag()
+		{
+			if (lobbyInfo.IsSinglePlayer)
+				lobbyInfo.GlobalSettings.OrderLatency = 1;
+			else
+				lobbyInfo.GlobalSettings.OrderLatency = 3;
+
+			SyncLobbyInfo();
 		}
 
 		public static void SyncClientToPlayerReference(Session.Client c, PlayerReference pr)
@@ -524,6 +536,8 @@ namespace OpenRA.Server
 				toDrop.socket.Disconnect(false);
 			}
 			catch { }
+
+			SetOrderLag();
 		}
 
 		public void SyncLobbyInfo()
