@@ -31,6 +31,8 @@
 	Repairable:
 		RepairBuildings: repair
 	DebugMuzzlePositions:
+	Guard:
+	Guardable:
 
 ^Tank:
 	AppearsOnRadar:
@@ -65,6 +67,8 @@
 	Repairable:
 		RepairBuildings: repair
 	DebugMuzzlePositions:
+	Guard:
+	Guardable:
 
 ^Husk:
 	Health:
@@ -143,6 +147,8 @@
 		Buildings: barra, barro
 		CloseEnough: 1
 	DebugMuzzlePositions:
+	Guard:
+	Guardable:
 
 ^Plane:
 	AppearsOnRadar:
@@ -194,7 +200,6 @@
 		ActorTypes: rifle,rifle,rifle,rifle,rifle,bazooka,bazooka,bazooka,engineer
 	MustBeDestroyed:
 	GivesExperience:
-
 	FrozenUnderFog:
 	CaptureNotification:
 	ActorLostNotification:
@@ -209,3 +214,5 @@
 	GivesBounty:
 	DebugMuzzlePositions:
 	Bib:
+	Guardable:
+		Range: 3

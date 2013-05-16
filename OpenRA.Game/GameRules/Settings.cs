@@ -151,6 +151,7 @@ namespace OpenRA.GameRules
 		public string ScatterKey = "x";
 		public string DeployKey = "f";
 		public string StanceCycleKey = "z";
+		public string GuardKey = "d";
 
 		public string CycleTabsKey = "tab";
 	}
