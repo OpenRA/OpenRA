@@ -27,9 +27,13 @@ HOSP:
 		Dimensions: 2,2
 	Tooltip:
 		Name: Hospital
+		Description: Heals nearby infantry.
 	LeavesHusk: 
 		HuskActor: HOSP.Husk
 	RepairsUnits:
+	ProximityCapturable:
+		MustBeClear: yes
+		CaptorTypes: Infantry
 
 HOSP.Husk:
 	Inherits: ^CivBuildingHusk
