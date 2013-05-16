@@ -1003,6 +1003,9 @@ explosion:
 	self_destruct: art-exp1
 		Start: 0
 		Length: *
+	artillery_explosion: art-exp1
+		Start: 0
+		Length: *
 	building: fball1
 		Start: 0
 		Length: *
