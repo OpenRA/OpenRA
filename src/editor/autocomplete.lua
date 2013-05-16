@@ -125,7 +125,7 @@ local function fillTips(api,apibasename,apiname)
           :gsub("\t","")
           :gsub("("..widthmask..")[ \t]([^%)])","%1\n %2")
 
-        info.description = info.description
+        info.description = (info.description or "")
           :gsub("\n\n","<br>"):gsub("\n"," "):gsub("<br>","\n")
           :gsub("[ \t]+"," ")
           :gsub("("..widthmask..") ","%1\n")
@@ -193,6 +193,7 @@ local function resolveAssign(editor,tx)
   local assigns = editor.assignscache and editor.assignscache.assigns
   local function getclass(tab,a)
     local key,rest = a:match("([%w_]+)[%.:](.*)")
+    key = tonumber(key) or key -- make this work for childs[0]
     if (key and rest and tab.childs and tab.childs[key]) then
       return getclass(tab.childs[key],rest)
     end
@@ -218,14 +219,15 @@ local function resolveAssign(editor,tx)
         if (s ~= "" and old ~= classname) then
           c = classname..s
           change = true
-          break
         else
           c = c..w..s
         end
       end
-      -- abort if the same value is returned; no need to continue.
-      -- this can happen after typing "smth = smth:new(); smth:"
-      if tx == c then break end
+      -- abort if the same or recursive value is returned; no need to continue.
+      -- this can happen after typing "smth = smth:new(); smth:" or
+      -- "line = line:gsub(...); line:" as the current algorithm attempts to
+      -- replace "line" with the value that also includes "line"
+      if c:find("^"..(tx:gsub("[.:]","[.:]"))) then break end
       tx = c
     end
   else
@@ -398,7 +400,8 @@ local function getAutoCompApiList(childs,fragment,method)
       for i,v in pairs(childs) do
         -- if a:b typed, then value (type == "value") not allowed
         -- if a.b typed, then method (type == "method") not allowed
-        if (method and v.type ~= "value") or (not method and v.type ~= "method") then
+        if ((method and v.type ~= "value") or (not method and v.type ~= "method"))
+        and v.type then
           wlist = wlist..i.." "
         end
       end
@@ -430,7 +433,8 @@ local function getAutoCompApiList(childs,fragment,method)
   for key,v in pairs(childs) do
     -- if a:b typed, then value (type == "value") not allowed
     -- if a.b typed, then method (type == "method") not allowed
-    if (method and v.type ~= "value") or (not method and v.type ~= "method") then
+    if ((method and v.type ~= "value") or (not method and v.type ~= "method"))
+    and v.type then
       local used = {}
       --
       local kl = key:lower()

@@ -214,8 +214,8 @@ function EditorAutoComplete(editor)
   lt = lt:gsub("%s*(["..editor.spec.sep.."])%s*", "%1")
   -- strip closed brace scopes
   lt = lt:gsub("%b()","")
-  lt = lt:gsub("%b[]","")
   lt = lt:gsub("%b{}","")
+  lt = lt:gsub("%b[]",".0")
   -- match from starting brace
   lt = lt:match("[^%[%(%{%s]*$")
 

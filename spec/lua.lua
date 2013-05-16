@@ -115,9 +115,9 @@ return {
 
           var = var and var:gsub("local","")
           var = var and var:gsub("%s","")
-          typ = typ and typ:gsub("%b[]","")
           typ = typ and typ:gsub("%b()","")
           typ = typ and typ:gsub("%b{}","")
+          typ = typ and typ:gsub("%b[]",".0")
           if (typ and (typ:match(",") or typ:match("%sor%s") or typ:match("%sand%s"))) then
             typ = nil
           end
