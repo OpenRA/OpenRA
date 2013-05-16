@@ -70,6 +70,9 @@ namespace OpenRA.Mods.RA.Widgets
 
 				if (e.KeyName == Game.Settings.Keys.StanceCycleKey)
 					return PerformStanceCycle();
+
+				if (e.KeyName == Game.Settings.Keys.GuardKey)
+					return PerformGuard();
 			}
 
 			return false;
@@ -79,12 +82,11 @@ namespace OpenRA.Mods.RA.Widgets
 
 		bool PerformAttackMove()
 		{
-			var actors = World.Selection.Actors
-				.Where(a => a.Owner == World.LocalPlayer).ToArray();
+			var actors = World.Selection.Actors.Where(a => a.Owner == World.LocalPlayer).ToArray();
 
-			if (actors.Length > 0)
-				World.OrderGenerator = new GenericSelectTarget(actors, "AttackMove",
-				                                               "attackmove", Game.mouseButtonPreference.Action);
+			if (actors.Any())
+				World.OrderGenerator = new GenericSelectTarget(actors,
+					"AttackMove", "attackmove", Game.mouseButtonPreference.Action);
 
 			return true;
 		}
@@ -142,6 +144,16 @@ namespace OpenRA.Mods.RA.Widgets
 			});
 
 			Game.Debug( "Unit stance set to: {0}".F(nextStance) );
+
+			return true;
+		}
+
+		bool PerformGuard()
+		{
+			var actors = World.Selection.Actors.Where(a => a.Owner == World.LocalPlayer && a.HasTrait<Guard>());
+
+			if (actors.Any())
+				World.OrderGenerator = new GuardOrderGenerator(actors);
 
 			return true;
 		}
