@@ -16,11 +16,11 @@ namespace OpenRA.Graphics
 {
 	public class SpriteLoader
 	{
-		public SpriteLoader( string[] exts, SheetBuilder sheetBuilder )
+		public SpriteLoader(string[] exts, SheetBuilder sheetBuilder)
 		{
 			SheetBuilder = sheetBuilder;
 			this.exts = exts;
-			sprites = new Cache<string, Sprite[]>( LoadSprites );
+			sprites = new Cache<string, Sprite[]>(LoadSprites);
 		}
 
 		readonly SheetBuilder SheetBuilder;

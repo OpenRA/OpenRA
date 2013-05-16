@@ -62,9 +62,9 @@ namespace OpenRA.FileFormats
 
 		int recurseDepth = 0;
 
-		public ShpReader( Stream stream )
+		public ShpReader(Stream stream)
 		{
-			using( var reader = new BinaryReader( stream ) )
+			using (var reader = new BinaryReader(stream))
 			{
 				ImageCount = reader.ReadUInt16();
 				reader.ReadUInt16();
@@ -73,60 +73,60 @@ namespace OpenRA.FileFormats
 				Height = reader.ReadUInt16();
 				reader.ReadUInt32();
 
-				for( int i = 0 ; i < ImageCount ; i++ )
-					headers.Add( new ImageHeader( reader ) );
+				for (int i = 0 ; i < ImageCount ; i++)
+					headers.Add(new ImageHeader(reader));
 
-				new ImageHeader( reader ); // end-of-file header
-				new ImageHeader( reader ); // all-zeroes header
+				new ImageHeader(reader); // end-of-file header
+				new ImageHeader(reader); // all-zeroes header
 
 				var offsets = headers.ToDictionary(h => h.Offset, h =>h);
 
-				for( int i = 0 ; i < ImageCount ; i++ )
+				for (int i = 0 ; i < ImageCount ; i++)
 				{
 					var h = headers[ i ];
-					if( h.Format == Format.Format20 )
-						h.RefImage = headers[ i - 1 ];
+					if (h.Format == Format.Format20)
+						h.RefImage = headers[i - 1];
 
-					else if( h.Format == Format.Format40 )
-						if( !offsets.TryGetValue( h.RefOffset, out h.RefImage ) )
-							throw new InvalidDataException( "Reference doesnt point to image data {0}->{1}".F(h.Offset, h.RefOffset) );
+					else if (h.Format == Format.Format40)
+						if (!offsets.TryGetValue(h.RefOffset, out h.RefImage))
+							throw new InvalidDataException("Reference doesnt point to image data {0}->{1}".F(h.Offset, h.RefOffset));
 				}
 
-				foreach( ImageHeader h in headers )
-					Decompress( stream, h );
+				foreach (ImageHeader h in headers)
+					Decompress(stream, h);
 			}
 		}
 
-		public ImageHeader this[ int index ]
+		public ImageHeader this[int index]
 		{
-			get { return headers[ index ]; }
+			get { return headers[index]; }
 		}
 
-		void Decompress( Stream stream, ImageHeader h )
+		void Decompress(Stream stream, ImageHeader h)
 		{
-			if( recurseDepth > ImageCount )
-				throw new InvalidDataException( "Format20/40 headers contain infinite loop" );
+			if (recurseDepth > ImageCount)
+				throw new InvalidDataException("Format20/40 headers contain infinite loop");
 
-			switch( h.Format )
+			switch(h.Format)
 			{
 				case Format.Format20:
 				case Format.Format40:
 					{
-						if( h.RefImage.Image == null )
+						if (h.RefImage.Image == null)
 						{
 							++recurseDepth;
-							Decompress( stream, h.RefImage );
+							Decompress(stream, h.RefImage);
 							--recurseDepth;
 						}
 
-						h.Image = CopyImageData( h.RefImage.Image );
+						h.Image = CopyImageData(h.RefImage.Image);
 						Format40.DecodeInto(ReadCompressedData(stream, h), h.Image);
 						break;
 					}
 				case Format.Format80:
 					{
-						var imageBytes = new byte[ Width * Height ];
-						Format80.DecodeInto( ReadCompressedData( stream, h ), imageBytes );
+						var imageBytes = new byte[Width * Height];
+						Format80.DecodeInto(ReadCompressedData(stream, h), imageBytes);
 						h.Image = imageBytes;
 						break;
 					}
@@ -135,11 +135,11 @@ namespace OpenRA.FileFormats
 			}
 		}
 
-		static byte[] ReadCompressedData( Stream stream, ImageHeader h )
+		static byte[] ReadCompressedData(Stream stream, ImageHeader h)
 		{
 			stream.Position = h.Offset;
-			// Actually, far too big. There's no length field with the correct length though :(
-			var compressedLength = (int)( stream.Length - stream.Position );
+			// TODO: Actually, far too big. There's no length field with the correct length though :(
+			var compressedLength = (int)(stream.Length - stream.Position);
 
 			var compressedBytes = new byte[ compressedLength ];
 			stream.Read( compressedBytes, 0, compressedLength );
@@ -147,11 +147,11 @@ namespace OpenRA.FileFormats
 			return compressedBytes;
 		}
 
-		byte[] CopyImageData( byte[] baseImage )
+		byte[] CopyImageData(byte[] baseImage)
 		{
-			var imageData = new byte[ Width * Height ];
-			for( int i = 0 ; i < Width * Height ; i++ )
-				imageData[ i ] = baseImage[ i ];
+			var imageData = new byte[Width * Height];
+			for (int i = 0 ; i < Width * Height ; i++)
+				imageData[i] = baseImage[i];
 
 			return imageData;
 		}

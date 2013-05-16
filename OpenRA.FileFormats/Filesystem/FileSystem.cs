@@ -18,19 +18,21 @@ namespace OpenRA.FileFormats
 {
 	public static class FileSystem
 	{
-		static List<IFolder> mountedFolders = new List<IFolder>();
+		static List<IFolder> MountedFolders = new List<IFolder>();
 
 		static Cache<uint, List<IFolder>> allFiles = new Cache<uint, List<IFolder>>( _ => new List<IFolder>() );
 
+		public static List<string> FolderPaths = new List<string>();
+
 		static void MountInner(IFolder folder)
 		{
-			mountedFolders.Add(folder);
+			MountedFolders.Add(folder);
 
-			foreach( var hash in folder.AllFileHashes() )
+			foreach (var hash in folder.AllFileHashes())
 			{
 				var l = allFiles[hash];
-				if( !l.Contains( folder ) )
-					l.Add( folder );
+				if (!l.Contains(folder))
+					l.Add(folder);
 			}
 		}
 
@@ -78,6 +80,9 @@ namespace OpenRA.FileFormats
 			if (name.StartsWith("^"))
 				name = Platform.SupportDir+name.Substring(1);
 
+			if (Directory.Exists(name))
+				FolderPaths.Add(name);
+
 			var a = (Action)(() => FileSystem.MountInner(OpenPackage(name)));
 
 			if (optional)
@@ -89,28 +94,29 @@ namespace OpenRA.FileFormats
 
 		public static void UnmountAll()
 		{
-			mountedFolders.Clear();
+			MountedFolders.Clear();
+			FolderPaths.Clear();
 			allFiles = new Cache<uint, List<IFolder>>( _ => new List<IFolder>() );
 		}
 
 		public static bool Unmount(IFolder mount)
 		{
-			return (mountedFolders.RemoveAll(f => f == mount) > 0);
+			return (MountedFolders.RemoveAll(f => f == mount) > 0);
 		}
 
 		public static void Mount(IFolder mount)
 		{
-			if (!mountedFolders.Contains(mount)) mountedFolders.Add(mount);
+			if (!MountedFolders.Contains(mount)) MountedFolders.Add(mount);
 		}
 
-		public static void LoadFromManifest( Manifest manifest )
+		public static void LoadFromManifest(Manifest manifest)
 		{
 			UnmountAll();
 			foreach (var dir in manifest.Folders) Mount(dir);
 			foreach (var pkg in manifest.Packages) Mount(pkg);
 		}
 
-		static Stream GetFromCache( Cache<uint, List<IFolder>> index, string filename )
+		static Stream GetFromCache(Cache<uint, List<IFolder>> index, string filename)
 		{
 			var folder = index[PackageEntry.HashFilename(filename)]
 				.Where(x => x.Exists(filename))
@@ -125,21 +131,21 @@ namespace OpenRA.FileFormats
 
 		public static Stream Open(string filename) { return OpenWithExts(filename, ""); }
 
-		public static Stream OpenWithExts( string filename, params string[] exts )
+		public static Stream OpenWithExts(string filename, params string[] exts)
 		{
 			if( filename.IndexOfAny( new char[] { '/', '\\' } ) == -1 )
 			{
 				foreach( var ext in exts )
 				{
-					var s = GetFromCache( allFiles, filename + ext );
-					if( s != null )
+					var s = GetFromCache(allFiles, filename + ext);
+					if (s != null)
 						return s;
 				}
 			}
 
-			foreach( var ext in exts )
+			foreach (var ext in exts)
 			{
-				var folder = mountedFolders
+				var folder = MountedFolders
 					.Where(x => x.Exists(filename + ext))
 					.OrderByDescending(x => x.Priority)
 					.FirstOrDefault();
@@ -151,7 +157,7 @@ namespace OpenRA.FileFormats
 			throw new FileNotFoundException("File not found: {0}".F(filename), filename);
 		}
 
-		public static bool Exists(string filename) { return mountedFolders.Any(f => f.Exists(filename)); }
+		public static bool Exists(string filename) { return MountedFolders.Any(f => f.Exists(filename)); }
 
 		static Dictionary<string, Assembly> assemblyCache = new Dictionary<string, Assembly>();
 
