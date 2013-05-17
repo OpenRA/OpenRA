@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 
@@ -138,6 +139,29 @@ namespace OpenRA.FileFormats
 			return ret;
 		}
 
+		uint? FindMatchingHash(string filename)
+		{
+			// Try first as a TD/RA hash
+			var hash = PackageEntry.HashFilename(filename);
+			if (index.ContainsKey(hash))
+				return hash;
+
+			// Fall back to TS/RA2 hash style
+			var crc = PackageEntry.CrcHashFilename(filename);
+			if (index.ContainsKey(crc))
+				return hash;
+
+			// Test for a raw hash before giving up
+			uint raw;
+			if (!uint.TryParse(filename, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out raw))
+			    return null;
+
+			if ("{0:X}".F(raw) == filename && index.ContainsKey(raw))
+				return raw;
+
+			return null;
+		}
+
 		public Stream GetContent(uint hash)
 		{
 			PackageEntry e;
@@ -152,11 +176,8 @@ namespace OpenRA.FileFormats
 
 		public Stream GetContent(string filename)
 		{
-			var content = GetContent(PackageEntry.HashFilename(filename)); // RA1 and TD
-			if (content != null)
-				return content;
-			else
-				return GetContent(PackageEntry.CrcHashFilename(filename)); // TS
+			var hash = FindMatchingHash(filename);
+			return hash.HasValue ? GetContent(hash.Value) : null;
 		}
 
 		public IEnumerable<uint> AllFileHashes()
@@ -197,14 +218,13 @@ namespace OpenRA.FileFormats
 				}
 			}
 
-			return index.Keys.Select(k => lookup.ContainsKey(k) ? lookup[k] : "Unknown File [{0}]".F(k));
+			return index.Keys.Select(k => lookup.ContainsKey(k) ? lookup[k] : "{0:X}".F(k));
 		}
 
 		public bool Exists(string filename)
 		{
-			return (index.ContainsKey(PackageEntry.HashFilename(filename)) || index.ContainsKey(PackageEntry.CrcHashFilename(filename)));
+			return FindMatchingHash(filename).HasValue;
 		}
-
 
 		public int Priority
 		{
