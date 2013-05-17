@@ -39,8 +39,8 @@ namespace OpenRA.FileFormats
 				File.Delete(filename);
 
 			s = File.Create(filename);
-
-			// TODO: Add a local mix database.dat for compatibility with XCC Mixer
+			index = new Dictionary<uint, PackageEntry>();
+			contents.Add("local mix database.dat", new XccLocalDatabase(contents.Keys.Append("local mix database.dat")).Data());
 			Write(contents);
 		}
 
