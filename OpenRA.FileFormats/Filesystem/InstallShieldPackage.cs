@@ -18,6 +18,7 @@ namespace OpenRA.FileFormats
 	public class InstallShieldPackage : IFolder
 	{
 		readonly Dictionary<uint, PackageEntry> index = new Dictionary<uint, PackageEntry>();
+		readonly List<string> filenames;
 		readonly Stream s;
 		readonly long dataStart = 255;
 		int priority;
@@ -25,6 +26,7 @@ namespace OpenRA.FileFormats
 		public InstallShieldPackage(string filename, int priority)
 		{
 			this.priority = priority;
+			filenames = new List<string>();
 			s = FileSystem.Open(filename);
 
 			// Parse package header
@@ -77,7 +79,8 @@ namespace OpenRA.FileFormats
 			var FileName = new String(reader.ReadChars(NameLength));
 
 			var hash = PackageEntry.HashFilename(FileName);
-			index.Add(hash, new PackageEntry(hash,AccumulatedData, CompressedSize));
+			index.Add(hash, new PackageEntry(hash, AccumulatedData, CompressedSize));
+			filenames.Add(FileName);
 			AccumulatedData += CompressedSize;
 
 			// Skip to the end of the chunk
@@ -105,6 +108,11 @@ namespace OpenRA.FileFormats
 		public IEnumerable<uint> AllFileHashes()
 		{
 			return index.Keys;
+		}
+
+		public IEnumerable<string> AllFileNames()
+		{
+			return filenames;
 		}
 
 		public bool Exists(string filename)

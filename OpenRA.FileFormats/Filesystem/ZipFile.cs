@@ -51,7 +51,6 @@ namespace OpenRA.FileFormats
 
 		public Stream GetContent(string filename)
 		{
-
 			using (var z = pkg.GetInputStream(pkg.GetEntry(filename)))
 			{
 				var ms = new MemoryStream();
@@ -69,6 +68,12 @@ namespace OpenRA.FileFormats
 		{
 			foreach(ZipEntry entry in pkg)
 				yield return PackageEntry.HashFilename(entry.Name);
+		}
+
+		public IEnumerable<string> AllFileNames()
+		{
+			foreach(ZipEntry entry in pkg)
+				yield return entry.Name;
 		}
 
 		public bool Exists(string filename)

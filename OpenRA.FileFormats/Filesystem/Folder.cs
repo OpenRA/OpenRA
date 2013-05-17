@@ -54,6 +54,12 @@ namespace OpenRA.FileFormats
 			}
 		}
 
+		public IEnumerable<string> AllFileNames()
+		{
+			foreach (var filename in Directory.GetFiles(path, "*", SearchOption.TopDirectoryOnly))
+				yield return Path.GetFileName(filename);
+		}
+
 		public bool Exists(string filename)
 		{
 			return File.Exists(Path.Combine(path, filename));

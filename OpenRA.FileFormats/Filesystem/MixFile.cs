@@ -20,6 +20,7 @@ namespace OpenRA.FileFormats
 		Stream GetContent(string filename);
 		bool Exists(string filename);
 		IEnumerable<uint> AllFileHashes();
+		IEnumerable<string> AllFileNames();
 		void Write(Dictionary<string, byte[]> contents);
 		int Priority { get; }
 	}
@@ -161,6 +162,42 @@ namespace OpenRA.FileFormats
 		public IEnumerable<uint> AllFileHashes()
 		{
 			return index.Keys;
+		}
+
+		public IEnumerable<string> AllFileNames()
+		{
+			var lookup = new Dictionary<uint, string>();
+			if (Exists("local mix database.dat"))
+			{
+				var db = new XccLocalDatabase(GetContent("local mix database.dat"));
+				foreach (var e in db.Entries)
+				{
+					var hash = PackageEntry.HashFilename(e);
+					if (!lookup.ContainsKey(hash))
+						lookup.Add(hash, e);
+
+					var crc = PackageEntry.CrcHashFilename(e);
+					if (!lookup.ContainsKey(crc))
+						lookup.Add(crc, e);
+				}
+			}
+
+			if (FileSystem.Exists("global mix database.dat"))
+			{
+				var db = new XccGlobalDatabase(FileSystem.Open("global mix database.dat"));
+				foreach (var e in db.Entries)
+				{
+					var hash = PackageEntry.HashFilename(e);
+					if (!lookup.ContainsKey(hash))
+						lookup.Add(hash, e);
+
+					var crc = PackageEntry.CrcHashFilename(e);
+					if (!lookup.ContainsKey(crc))
+						lookup.Add(crc, e);
+				}
+			}
+
+			return index.Keys.Select(k => lookup.ContainsKey(k) ? lookup[k] : "Unknown File [{0}]".F(k));
 		}
 
 		public bool Exists(string filename)
