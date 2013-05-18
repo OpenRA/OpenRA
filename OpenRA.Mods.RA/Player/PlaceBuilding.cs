@@ -62,7 +62,8 @@ namespace OpenRA.Mods.RA
 					}
 					else
 					{
-						if (!self.World.CanPlaceBuilding(order.TargetString, buildingInfo, order.TargetLocation, null))
+						if (!self.World.CanPlaceBuilding(order.TargetString, buildingInfo, order.TargetLocation, null)
+							|| !buildingInfo.IsCloseEnoughToBase(self.World, order.Player, order.TargetString, order.TargetLocation))
 						{
 							return;
 						}
