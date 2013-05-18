@@ -29,9 +29,9 @@ LUA_URL="http://www.lua.org/ftp/$LUA_FILENAME"
 WXLUA_BASENAME="wxlua"
 WXLUA_URL="https://wxlua.svn.sourceforge.net/svnroot/wxlua/trunk"
 
-LUASOCKET_BASENAME="luasocket-2.0.2"
-LUASOCKET_FILENAME="$LUASOCKET_BASENAME.tar.gz"
-LUASOCKET_URL="http://files.luaforge.net/releases/luasocket/luasocket/luasocket-2.0.2/$LUASOCKET_FILENAME"
+LUASOCKET_BASENAME="luasocket-2.0.3"
+LUASOCKET_FILENAME="$LUASOCKET_BASENAME-rc2.zip"
+LUASOCKET_URL="https://github.com/downloads/diegonehab/luasocket/$LUASOCKET_FILENAME"
 
 # exit if the command line is empty
 if [ $# -eq 0 ]; then
@@ -151,8 +151,8 @@ fi
 
 # build LuaSocket
 if [ $BUILD_LUASOCKET ]; then
-  wget -c "$LUASOCKET_URL" -O "$LUASOCKET_FILENAME" || { echo "Error: failed to download LuaSocket"; exit 1; }
-  tar -xzf "$LUASOCKET_FILENAME"
+  wget --no-check-certificate -c "$LUASOCKET_URL" -O "$LUASOCKET_FILENAME" || { echo "Error: failed to download LuaSocket"; exit 1; }
+  unzip "$LUASOCKET_FILENAME"
   cd "$LUASOCKET_BASENAME"
   mkdir -p "$INSTALL_DIR/lib/lua/5.1/"{mime,socket}
   gcc $BUILD_FLAGS -o "$INSTALL_DIR/lib/lua/5.1/mime/core.dylib" src/mime.c \
