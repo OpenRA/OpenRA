@@ -91,6 +91,12 @@ namespace OpenRA.Mods.RA.Server
 				{ "startgame",
 					s =>
 					{
+						if (!client.IsAdmin)
+						{
+							server.SendOrderTo(conn, "Message", "Only the host can start the game");
+							return true;
+						}
+
 						if (server.lobbyInfo.Slots.Any(sl => sl.Value.Required && 
 							server.lobbyInfo.ClientInSlot(sl.Key) == null))
 						{
