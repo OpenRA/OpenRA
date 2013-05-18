@@ -33,6 +33,8 @@
 	DebugMuzzlePositions:
 	Guard:
 	Guardable:
+	ProximityCaptor:
+		Types:Vehicle
 
 ^Tank:
 	AppearsOnRadar:
@@ -72,6 +74,8 @@
 	DebugMuzzlePositions:
 	Guard:
 	Guardable:
+	ProximityCaptor:
+		Types:Tank
 
 ^Helicopter:
 	AppearsOnRadar:
@@ -97,6 +101,8 @@
 		Weapon: HeliExplode
 		EmptyWeapon: HeliExplode
 	DebugMuzzlePositions:
+	ProximityCaptor:
+		Types:Helicopter
 
 ^Infantry:
 	AppearsOnRadar:
@@ -149,6 +155,8 @@
 	DebugMuzzlePositions:
 	Guard:
 	Guardable:
+	ProximityCaptor:
+		Types:Infantry
 
 ^CivInfantry:
 	Inherits: ^Infantry
@@ -285,6 +293,8 @@
 	-Sellable:
 	Tooltip:
 		Name: Civilian Building
+	ProximityCaptor:
+		Types:CivilianBuilding
 
 ^CivBuildingHusk:
 	AppearsOnRadar:
