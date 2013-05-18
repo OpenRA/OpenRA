@@ -193,24 +193,24 @@ hpad:
 		Length: 6
 
 afld:
-	idle:
-		Start: 4
-		Length: 4
+	idle: afldidle
+		Start: 0
+		Length: 8
 		Tick: 160
-	damaged-idle:
-		Start: 12
-		Length: 4
+	damaged-idle: afldidle
+		Start: 8
+		Length: 8
 		Tick: 160
 	make: afldmake
 		Start: 0
 		Length: *
 	active:
 		Start: 0
-		Length: 4
+		Length: 8
 		Tick: 160
 	damaged-active:
 		Start: 8
-		Length: 4
+		Length: 8
 		Tick: 160
 
 spen:
@@ -476,16 +476,16 @@ hhusk2:
 	idle:
 		Start: 0
 		Facings: 32
-	turret:
-		Start: 32
+	turret: 1tnktur
+		Start: 0
 		Facings: 32
 
 2tnk:
 	idle:
 		Start: 0
 		Facings: 32
-	turret:
-		Start: 32
+	turret: 2tnktur
+		Start: 0
 		Facings: 32
 
 3tnk:
@@ -724,6 +724,10 @@ powerdown:
 		Start: 3
 
 120mm:
+	idle:
+		Start: 0
+
+50cal:
 	idle:
 		Start: 0
 
