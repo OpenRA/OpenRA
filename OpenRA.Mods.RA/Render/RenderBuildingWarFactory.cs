@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Buildings;
 
 namespace OpenRA.Mods.RA.Render
 {
@@ -48,7 +49,10 @@ namespace OpenRA.Mods.RA.Render
 			: base(init, info)
 		{
 			roof = new Animation(GetImage(init.self));
-			anims.Add("roof", new AnimationWithOffset(roof, null, () => !buildComplete, 24));
+
+			var bi = init.self.Info.Traits.Get<BuildingInfo>();
+			anims.Add("roof", new AnimationWithOffset(roof, null,
+				() => !buildComplete, FootprintUtils.CenterOffset(bi).Y));
 		}
 
 		public void BuildingComplete( Actor self )

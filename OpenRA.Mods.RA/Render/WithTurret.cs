@@ -53,7 +53,7 @@ namespace OpenRA.Mods.RA.Render
 			anim = new Animation(rs.GetImage(self), () => t.turretFacing);
 			anim.Play(info.Sequence);
 			rs.anims.Add("turret_{0}".F(info.Turret), new AnimationWithOffset(
-				anim, () => TurretOffset(self), null, 24));
+				anim, () => TurretOffset(self), null, t.Offset.Length));
 		}
 
 		WVec TurretOffset(Actor self)
