@@ -44,12 +44,19 @@ namespace OpenRA.Traits
 		Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued);
 	}
 
+	[Flags] public enum TargetModifiers { None = 0, ForceAttack = 1, ForceQueue = 2, ForceMove = 4 };
+
+	public static class TargetModifiersExts
+	{
+		public static bool HasModifier(this TargetModifiers self, TargetModifiers m) { return (self & m) == m; }
+	}
+
 	public interface IOrderTargeter
 	{
 		string OrderID { get; }
 		int OrderPriority { get; }
-		bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceQueue, ref string cursor);
-		bool CanTargetLocation(Actor self, CPos location, List<Actor> actorsAtLocation, bool forceAttack, bool forceQueue, ref string cursor);
+		bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor);
+		bool CanTargetLocation(Actor self, CPos location, List<Actor> actorsAtLocation, TargetModifiers modifiers, ref string cursor);
 		bool IsQueued { get; }
 	}
 

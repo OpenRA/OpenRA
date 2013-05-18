@@ -69,9 +69,9 @@ namespace OpenRA.Mods.RA
 			public RepairBridgeOrderTargeter()
 				: base("RepairBridge", 6, "goldwrench", true, true) { }
 
-			public override bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceQueued, ref string cursor)
+			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{
-				if (!base.CanTargetActor(self, target, forceAttack, forceQueued, ref cursor))
+				if (!base.CanTargetActor(self, target, modifiers, ref cursor))
 					return false;
 
 				var bridge = target.TraitOrDefault<BridgeHut>();
@@ -80,10 +80,10 @@ namespace OpenRA.Mods.RA
 
 				// Require force attack to heal partially damaged bridges to avoid unnecessary cursor noise
 				var damage = bridge.BridgeDamageState;
-				if (!forceAttack && damage != DamageState.Dead)
+				if (!modifiers.HasModifier(TargetModifiers.ForceAttack) && damage != DamageState.Dead)
 					return false;
 
-				IsQueued = forceQueued;
+				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
 				// Can't repair an undamaged bridge
 				if (damage == DamageState.Undamaged)
