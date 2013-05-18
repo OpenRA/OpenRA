@@ -44,7 +44,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			sourceDropdown.OnMouseDown = _ => ShowSourceDropdown(sourceDropdown);
 			sourceDropdown.GetText = () => AssetSource == SourceType.Folders ? "Folders"
 				: AssetSource == SourceType.Packages ? "Packages" : "None";
-			sourceDropdown.Disabled = !Rules.PackageContents.Keys.Any();
 
 			spriteImage = panel.Get<ShpImageWidget>("SPRITE");
 
@@ -234,9 +233,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			assetList.RemoveChildren();
 			AvailableShps.Clear();
 
-			if (AssetSource == SourceType.Folders)
+			foreach (var folder in FileSystem.FolderPaths)
 			{
-				foreach (var folder in FileSystem.FolderPaths)
+				if (AssetSource == SourceType.Folders)
 				{
 					if (Directory.Exists(folder))
 					{
@@ -248,14 +247,27 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						}
 					}
 				}
-			}
-
-			if (AssetSource == SourceType.Packages)
-				foreach (var hiddenFile in Rules.PackageContents.Keys)
+				else if (AssetSource == SourceType.Packages)
 				{
-					AddAsset(assetList, hiddenFile, template);
-					AvailableShps.Add(hiddenFile);
+					if (Directory.Exists(folder))
+					{
+						var mixs = Directory.GetFiles(folder, "*.mix");
+						foreach (var mix in mixs)
+						{
+							var package = new MixFile(mix, 0);
+							foreach (string hiddenFile in package.AllFileNames())
+							{
+								if (hiddenFile.Contains("shp"))
+								{
+									AddAsset(assetList, hiddenFile, template);
+									AvailableShps.Add(hiddenFile);
+								}
+							}
+						}
+					}
 				}
+			}
 		}
+
 	}
 }
