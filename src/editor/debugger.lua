@@ -464,7 +464,8 @@ debugger.listen = function()
             .." "..TR("Compilation error")
             ..":\n"..err)
           return debugger.terminate()
-        elseif options.runstart and stoppedAtBreakpoint(file, line) then
+        elseif options.runstart and not debugger.scratchpad
+        and stoppedAtBreakpoint(file, line) then
           activateDocument(file, line)
           options.runstart = false
         end
