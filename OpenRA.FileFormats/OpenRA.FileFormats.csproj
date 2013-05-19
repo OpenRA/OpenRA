@@ -139,6 +139,8 @@
     <Compile Include="WRange.cs" />
     <Compile Include="HSLColor.cs" />
     <Compile Include="Graphics\ShpTSReader.cs" />
+    <Compile Include="FileFormats\XccLocalDatabase.cs" />
+    <Compile Include="FileFormats\XccGlobalDatabase.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

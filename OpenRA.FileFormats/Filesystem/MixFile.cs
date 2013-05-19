@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 
@@ -20,8 +21,10 @@ namespace OpenRA.FileFormats
 		Stream GetContent(string filename);
 		bool Exists(string filename);
 		IEnumerable<uint> AllFileHashes();
+		IEnumerable<string> AllFileNames();
 		void Write(Dictionary<string, byte[]> contents);
 		int Priority { get; }
+		string Name { get; }
 	}
 
 	public class MixFile : IFolder
@@ -29,23 +32,26 @@ namespace OpenRA.FileFormats
 		readonly Dictionary<uint, PackageEntry> index;
 		readonly long dataStart;
 		readonly Stream s;
-		int priority;
+		readonly int priority;
+		readonly string filename;
 
 		// Save a mix to disk with the given contents
 		public MixFile(string filename, int priority, Dictionary<string, byte[]> contents)
 		{
+			this.filename = filename;
 			this.priority = priority;
 			if (File.Exists(filename))
 				File.Delete(filename);
 
 			s = File.Create(filename);
-
-			// TODO: Add a local mix database.dat for compatibility with XCC Mixer
+			index = new Dictionary<uint, PackageEntry>();
+			contents.Add("local mix database.dat", new XccLocalDatabase(contents.Keys.Append("local mix database.dat")).Data());
 			Write(contents);
 		}
 
 		public MixFile(string filename, int priority)
 		{
+			this.filename = filename;
 			this.priority = priority;
 			s = FileSystem.Open(filename);
 
@@ -137,6 +143,29 @@ namespace OpenRA.FileFormats
 			return ret;
 		}
 
+		uint? FindMatchingHash(string filename)
+		{
+			// Try first as a TD/RA hash
+			var hash = PackageEntry.HashFilename(filename);
+			if (index.ContainsKey(hash))
+				return hash;
+
+			// Fall back to TS/RA2 hash style
+			var crc = PackageEntry.CrcHashFilename(filename);
+			if (index.ContainsKey(crc))
+				return hash;
+
+			// Test for a raw hash before giving up
+			uint raw;
+			if (!uint.TryParse(filename, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out raw))
+			    return null;
+
+			if ("{0:X}".F(raw) == filename && index.ContainsKey(raw))
+				return raw;
+
+			return null;
+		}
+
 		public Stream GetContent(uint hash)
 		{
 			PackageEntry e;
@@ -151,11 +180,8 @@ namespace OpenRA.FileFormats
 
 		public Stream GetContent(string filename)
 		{
-			var content = GetContent(PackageEntry.HashFilename(filename)); // RA1 and TD
-			if (content != null)
-				return content;
-			else
-				return GetContent(PackageEntry.CrcHashFilename(filename)); // TS
+			var hash = FindMatchingHash(filename);
+			return hash.HasValue ? GetContent(hash.Value) : null;
 		}
 
 		public IEnumerable<uint> AllFileHashes()
@@ -163,17 +189,50 @@ namespace OpenRA.FileFormats
 			return index.Keys;
 		}
 
+		public IEnumerable<string> AllFileNames()
+		{
+			var lookup = new Dictionary<uint, string>();
+			if (Exists("local mix database.dat"))
+			{
+				var db = new XccLocalDatabase(GetContent("local mix database.dat"));
+				foreach (var e in db.Entries)
+				{
+					var hash = PackageEntry.HashFilename(e);
+					if (!lookup.ContainsKey(hash))
+						lookup.Add(hash, e);
+
+					var crc = PackageEntry.CrcHashFilename(e);
+					if (!lookup.ContainsKey(crc))
+						lookup.Add(crc, e);
+				}
+			}
+
+			if (FileSystem.Exists("global mix database.dat"))
+			{
+				var db = new XccGlobalDatabase(FileSystem.Open("global mix database.dat"));
+				foreach (var e in db.Entries)
+				{
+					var hash = PackageEntry.HashFilename(e);
+					if (!lookup.ContainsKey(hash))
+						lookup.Add(hash, e);
+
+					var crc = PackageEntry.CrcHashFilename(e);
+					if (!lookup.ContainsKey(crc))
+						lookup.Add(crc, e);
+				}
+			}
+
+			return index.Keys.Select(k => lookup.ContainsKey(k) ? lookup[k] : "{0:X}".F(k));
+		}
+
 		public bool Exists(string filename)
 		{
-			return (index.ContainsKey(PackageEntry.HashFilename(filename)) || index.ContainsKey(PackageEntry.CrcHashFilename(filename)));
+			return FindMatchingHash(filename).HasValue;
 		}
 
-
-		public int Priority
-		{
-			get { return 1000 + priority; }
-		}
-
+		public int Priority { get { return 1000 + priority; } }
+		public string Name { get { return filename; } }
+		
 		public void Write(Dictionary<string, byte[]> contents)
 		{
 			// Cannot modify existing mixfile - rename existing file and

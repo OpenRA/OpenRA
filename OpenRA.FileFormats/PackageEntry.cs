@@ -53,9 +53,6 @@ namespace OpenRA.FileFormats
 
 		public static uint HashFilename(string name) // Red Alert 1 and Tiberian Dawn
 		{
-			if (name.Length > 12)
-				name = name.Substring(0, 12);
-
 			name = name.ToUpperInvariant();
 			if (name.Length % 4 != 0)
 				name = name.PadRight(name.Length + (4 - name.Length % 4), '\0');
