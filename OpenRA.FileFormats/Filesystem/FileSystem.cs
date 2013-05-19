@@ -18,7 +18,7 @@ namespace OpenRA.FileFormats
 {
 	public static class FileSystem
 	{
-		static List<IFolder> MountedFolders = new List<IFolder>();
+		public static List<IFolder> MountedFolders = new List<IFolder>();
 
 		static Cache<uint, List<IFolder>> allFiles = new Cache<uint, List<IFolder>>( _ => new List<IFolder>() );
 
@@ -80,10 +80,8 @@ namespace OpenRA.FileFormats
 			if (name.StartsWith("^"))
 				name = Platform.SupportDir+name.Substring(1);
 
-			if (Directory.Exists(name))
-				FolderPaths.Add(name);
-
-			var a = (Action)(() => FileSystem.MountInner(OpenPackage(name)));
+			FolderPaths.Add(name);
+			Action a = () => FileSystem.MountInner(OpenPackage(name));
 
 			if (optional)
 				try { a(); }

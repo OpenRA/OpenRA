@@ -24,6 +24,7 @@ namespace OpenRA.FileFormats
 		IEnumerable<string> AllFileNames();
 		void Write(Dictionary<string, byte[]> contents);
 		int Priority { get; }
+		string Name { get; }
 	}
 
 	public class MixFile : IFolder
@@ -31,11 +32,13 @@ namespace OpenRA.FileFormats
 		readonly Dictionary<uint, PackageEntry> index;
 		readonly long dataStart;
 		readonly Stream s;
-		int priority;
+		readonly int priority;
+		readonly string filename;
 
 		// Save a mix to disk with the given contents
 		public MixFile(string filename, int priority, Dictionary<string, byte[]> contents)
 		{
+			this.filename = filename;
 			this.priority = priority;
 			if (File.Exists(filename))
 				File.Delete(filename);
@@ -48,6 +51,7 @@ namespace OpenRA.FileFormats
 
 		public MixFile(string filename, int priority)
 		{
+			this.filename = filename;
 			this.priority = priority;
 			s = FileSystem.Open(filename);
 
@@ -226,11 +230,9 @@ namespace OpenRA.FileFormats
 			return FindMatchingHash(filename).HasValue;
 		}
 
-		public int Priority
-		{
-			get { return 1000 + priority; }
-		}
-
+		public int Priority { get { return 1000 + priority; } }
+		public string Name { get { return filename; } }
+		
 		public void Write(Dictionary<string, byte[]> contents)
 		{
 			// Cannot modify existing mixfile - rename existing file and

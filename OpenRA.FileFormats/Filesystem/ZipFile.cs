@@ -81,10 +81,8 @@ namespace OpenRA.FileFormats
 			return pkg.GetEntry(filename) != null;
 		}
 
-		public int Priority
-		{
-			get { return 500 + priority; }
-		}
+		public int Priority { get { return 500 + priority; } }
+		public string Name { get { return filename; } }
 
 		public void Write(Dictionary<string, byte[]> contents)
 		{

@@ -21,10 +21,12 @@ namespace OpenRA.FileFormats
 		readonly List<string> filenames;
 		readonly Stream s;
 		readonly long dataStart = 255;
-		int priority;
+		readonly int priority;
+		readonly string filename;
 
 		public InstallShieldPackage(string filename, int priority)
 		{
+			this.filename = filename;
 			this.priority = priority;
 			filenames = new List<string>();
 			s = FileSystem.Open(filename);
@@ -120,11 +122,8 @@ namespace OpenRA.FileFormats
 			return index.ContainsKey(PackageEntry.HashFilename(filename));
 		}
 
-
-		public int Priority
-		{
-			get { return 2000 + priority; }
-		}
+		public int Priority { get { return 2000 + priority; }}
+		public string Name { get { return filename; } }
 
 		public void Write(Dictionary<string, byte[]> contents)
 		{
