@@ -476,16 +476,16 @@ hhusk2:
 	idle:
 		Start: 0
 		Facings: 32
-	turret:
-		Start: 32
+	turret: 1tnktur
+		Start: 0
 		Facings: 32
 
 2tnk:
 	idle:
 		Start: 0
 		Facings: 32
-	turret:
-		Start: 32
+	turret: 2tnktur
+		Start: 0
 		Facings: 32
 
 3tnk:
@@ -724,6 +724,10 @@ powerdown:
 		Start: 3
 
 120mm:
+	idle:
+		Start: 0
+
+50cal:
 	idle:
 		Start: 0
 
