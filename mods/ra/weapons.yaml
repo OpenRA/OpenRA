@@ -389,7 +389,7 @@ Grenade:
 	Report: CANNON2
 	Projectile: Bullet
 		Speed: 50
-		Image: 120MM
+		Image: 50CAL
 	Warhead:
 		Spread: 3
 		Versus: 

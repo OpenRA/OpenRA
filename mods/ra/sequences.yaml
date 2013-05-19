@@ -727,6 +727,10 @@ powerdown:
 	idle:
 		Start: 0
 
+50cal:
+	idle:
+		Start: 0
+
 e3:
 	stand:
 		Start: 0
