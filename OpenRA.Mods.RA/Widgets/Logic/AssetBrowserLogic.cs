@@ -23,17 +23,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	{
 		Widget panel;
 
-		static ShpImageWidget spriteImage;
-		static TextFieldWidget filenameInput;
-		static SliderWidget frameSlider;
-		static ButtonWidget playButton, pauseButton;
-		static ScrollPanelWidget assetList;
-		static ScrollItemWidget template;
+		ShpImageWidget spriteImage;
+		TextFieldWidget filenameInput;
+		SliderWidget frameSlider;
+		ButtonWidget playButton, pauseButton;
+		ScrollPanelWidget assetList;
+		ScrollItemWidget template;
 
-		public enum SourceType { Folders, Packages }
-		public static SourceType AssetSource = SourceType.Folders;
-
-		public static List<string> AvailableShps = new List<string>();
+		IFolder AssetSource = null;
+		List<string> AvailableShps = new List<string>();
 
 		[ObjectCreator.UseCtor]
 		public AssetBrowserLogic(Widget widget, Action onExit, World world)
@@ -42,8 +40,16 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var sourceDropdown = panel.Get<DropDownButtonWidget>("SOURCE_SELECTOR");
 			sourceDropdown.OnMouseDown = _ => ShowSourceDropdown(sourceDropdown);
-			sourceDropdown.GetText = () => AssetSource == SourceType.Folders ? "Folders"
-				: AssetSource == SourceType.Packages ? "Packages" : "None";
+			sourceDropdown.GetText = () =>
+			{
+				var name = AssetSource != null ? AssetSource.Name : "All Packages";
+				if (name.Length > 15)
+					name = "..."+name.Substring(name.Length - 15);
+
+				return name;
+			};
+
+			AssetSource = FileSystem.MountedFolders.First();
 
 			spriteImage = panel.Get<ShpImageWidget>("SPRITE");
 
@@ -176,29 +182,21 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			panel.Get<ButtonWidget>("CLOSE_BUTTON").OnClick = () => { Ui.CloseWindow(); onExit(); };
 		}
 
-		static void AddAsset(ScrollPanelWidget list, string filepath, ScrollItemWidget template)
+		void AddAsset(ScrollPanelWidget list, string filepath, ScrollItemWidget template)
 		{
 			var sprite = Path.GetFileNameWithoutExtension(filepath);
-			var filename = Path.GetFileName(filepath);
-
 			var item = ScrollItemWidget.Setup(template,
-			                                  () => spriteImage != null && spriteImage.Image == sprite,
+			                                  () => spriteImage.Image == sprite,
 			                                  () => LoadAsset(sprite));
-			item.Get<LabelWidget>("TITLE").GetText = () => filename;
+			item.Get<LabelWidget>("TITLE").GetText = () => filepath;
 
 			list.AddChild(item);
 		}
 
-		static bool LoadAsset(string sprite)
+		bool LoadAsset(string sprite)
 		{
 			if (sprite == null)
 				return false;
-
-			if (!sprite.ToLower().Contains("r8"))
-			{
-				filenameInput.Text = sprite+".shp";
-				sprite = Path.GetFileNameWithoutExtension(sprite);
-			}
 
 			spriteImage.Frame = 0;
 			spriteImage.Image = sprite;
@@ -207,67 +205,46 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			return true;
 		}
 
-		public static bool ShowSourceDropdown(DropDownButtonWidget dropdown)
+		bool ShowSourceDropdown(DropDownButtonWidget dropdown)
 		{
-			var options = new Dictionary<string, SourceType>()
-			{
-				{ "Folders", SourceType.Folders },
-				{ "Packages", SourceType.Packages },
-			};
-			
-			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
+			Func<IFolder, ScrollItemWidget, ScrollItemWidget> setupItem = (source, itemTemplate) =>
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
-				                                  () => AssetSource == options[o],
-				                                  () => { AssetSource = options[o];	PopulateAssetList(); });
-				item.Get<LabelWidget>("LABEL").GetText = () => o;
+				                                  () => AssetSource == source,
+				                                  () => { AssetSource = source;	PopulateAssetList(); });
+				item.Get<LabelWidget>("LABEL").GetText = () => source != null ? source.Name : "All Packages";
 				return item;
 			};
-			
-			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, setupItem);
+
+			// TODO: Re-enable "All Packages" once list generation is done in a background thread
+			//var sources = new[] { (IFolder)null }.Concat(FileSystem.MountedFolders);
+
+			var sources = FileSystem.MountedFolders;
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 250, sources, setupItem);
 			return true;
 		}
 
-		public static void PopulateAssetList()
+		void PopulateAssetList()
 		{
 			assetList.RemoveChildren();
 			AvailableShps.Clear();
 
-			foreach (var folder in FileSystem.FolderPaths)
+			// TODO: This is too slow to run in the main thread
+			//var files = AssetSource != null ? AssetSource.AllFileNames() :
+			//	FileSystem.MountedFolders.SelectMany(f => f.AllFileNames());
+
+			if (AssetSource == null)
+				return;
+
+			var files = AssetSource.AllFileNames();
+			foreach (var file in files)
 			{
-				if (AssetSource == SourceType.Folders)
+				if (file.EndsWith(".shp"))
 				{
-					if (Directory.Exists(folder))
-					{
-						var shps = Directory.GetFiles(folder, "*.shp");
-						foreach (var shp in shps)
-						{
-							AddAsset(assetList, shp, template);
-							AvailableShps.Add(Path.GetFileName(shp));
-						}
-					}
-				}
-				else if (AssetSource == SourceType.Packages)
-				{
-					if (Directory.Exists(folder))
-					{
-						var mixs = Directory.GetFiles(folder, "*.mix");
-						foreach (var mix in mixs)
-						{
-							var package = new MixFile(mix, 0);
-							foreach (string hiddenFile in package.AllFileNames())
-							{
-								if (hiddenFile.Contains("shp"))
-								{
-									AddAsset(assetList, hiddenFile, template);
-									AvailableShps.Add(hiddenFile);
-								}
-							}
-						}
-					}
+					AddAsset(assetList, file, template);
+					AvailableShps.Add(file);
 				}
 			}
 		}
-
 	}
 }
