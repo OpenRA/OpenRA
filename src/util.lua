@@ -35,7 +35,6 @@ char_Tab = string.byte("\t")
 char_Sp = string.byte(" ")
 
 string_Pathsep = string.char(wx.wxFileName.GetPathSeparator())
-stringset_File = '[^"%?%*:\\/<>|]'
 
 function StripCommentsC(tx)
   local out = ""

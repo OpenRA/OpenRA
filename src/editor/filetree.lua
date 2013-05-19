@@ -57,7 +57,7 @@ local function treeAddDir(tree,parent_id,rootdir)
   local curr
 
   for _, file in ipairs(FileSysGetRecursive(rootdir)) do
-    local name, dir = file:match("("..stringset_File.."+)("..string_Pathsep.."?)$")
+    local name, dir = file:match("([^"..string_Pathsep.."]+)("..string_Pathsep.."?)$")
     local known = GetSpec(GetFileExt(name))
     local icon = #dir>0 and IMG_DIRECTORY or known and IMG_FILE_KNOWN or IMG_FILE_OTHER
     local item = items[name .. icon]
