@@ -780,8 +780,6 @@ function debuggerCreateStackWindow()
         end
         num = num + 1
       end
-
-      stackCtrl:SortChildren(item_id)
       return true
     end)
 
