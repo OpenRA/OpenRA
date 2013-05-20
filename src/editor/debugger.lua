@@ -787,11 +787,11 @@ function debuggerCreateStackWindow()
 
   -- register navigation callback
   stackCtrl:Connect(wx.wxEVT_LEFT_DCLICK, function (event)
-    local selectedID = stackCtrl:GetSelection()
-    if not selectedID then return end
+    local item_id = stackCtrl:HitTest(event:GetPosition())
+    if not item_id or not item_id:IsOk() then event:Skip() return end
 
-    local coords = callData[selectedID:GetValue()]
-    if not coords then return end
+    local coords = callData[item_id:GetValue()]
+    if not coords then event:Skip() return end
 
     local file, line = coords[1], coords[2]
     if file:match("@") then file = string.sub(file, 2) end
