@@ -138,6 +138,8 @@ if not wx.wxMOD_CONTROL then wx.wxMOD_CONTROL = 0x02 end
 if not wx.wxMOD_RAW_CONTROL then
   wx.wxMOD_RAW_CONTROL = ide.osname == 'Macintosh' and 0x10 or wx.wxMOD_CONTROL
 end
+-- ArchLinux running 2.8.12.2 doesn't have wx.wxMOD_SHIFT defined
+if not wx.wxMOD_SHIFT then wx.wxMOD_SHIFT = 0x04 end
 
 dofile "src/editor/ids.lua"
 dofile "src/editor/style.lua"
