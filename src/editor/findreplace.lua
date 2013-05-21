@@ -537,7 +537,7 @@ function findReplace:createDialog(replace,infiles)
 
         local res = filePicker:ShowModal(true)
         if res == wx.wxID_OK then
-          infilesDirCombo:SetValue(filePicker:GetPath())
+          infilesDirCombo:SetValue(FixDir(filePicker:GetPath()))
         end
       end)
   end

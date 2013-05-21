@@ -72,16 +72,8 @@ menuBar:Append(debugMenu, TR("&Project"))
 -- Project directory handling
 
 function ProjectUpdateProjectDir(projdir,skiptree)
-  local dir = wx.wxFileName.DirName(projdir)
-
-  -- wxwidgets 2.9.x may report the last folder twice (depending on how the
-  -- user selects the folder), which makes the selected folder incorrect.
-  -- check if the last segment is repeated and drop it.
-  if not wx.wxDirExists(projdir) then
-    local dirs = dir:GetDirs()
-    if #dirs > 1 and dirs[-1] == dirs[-2] then dir:RemoveLastDir() end
-    if not wx.wxDirExists(dir:GetFullPath()) then return end
-  end
+  local dir = wx.wxFileName.DirName(FixDir(projdir))
+  if not wx.wxDirExists(dir:GetFullPath()) then return end
 
   projdir = dir:GetPath(wx.wxPATH_GET_VOLUME) -- no trailing slash
 

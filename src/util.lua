@@ -299,3 +299,15 @@ function TR(msg, count)
   return count and counter and message and type(message) == 'table'
     and message[counter(count)] or message or msg
 end
+
+-- wxwidgets 2.9.x may report the last folder twice (depending on how the
+-- user selects the folder), which makes the selected folder incorrect.
+-- check if the last segment is repeated and drop it.
+function FixDir(path)
+  if wx.wxDirExists(path) then return path end
+
+  local dir = wx.wxFileName.DirName(path)
+  local dirs = dir:GetDirs()
+  if #dirs > 1 and dirs[#dirs] == dirs[#dirs-1] then dir:RemoveLastDir() end
+  return dir:GetFullPath()
+end
