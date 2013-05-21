@@ -786,7 +786,7 @@ SAMMissile:
 		RangeLimit: 35
 		Trail: smokey
 	Warhead: AP
-		Spread: 3
+		Spread: 16
 		Versus: 
 			None: 100%
 			Wood: 100%
