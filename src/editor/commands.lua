@@ -236,7 +236,7 @@ function SaveFileAs(editor)
       if ext ~= GetFileExt(filePath) then
         -- new extension, so setup new keywords and re-apply indicators
         SetupKeywords(editor, GetFileExt(filePath))
-        IndicateFunctions(editor)
+        IndicateAll(editor)
         MarkupStyle(editor)
       end
       saved = true

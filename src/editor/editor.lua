@@ -634,7 +634,8 @@ function CreateEditor()
       for _,iv in ipairs(editor.ev) do
         local line = editor:LineFromPosition(iv[1])
         if not minupdated or line < minupdated then minupdated = line end
-        IndicateFunctions(editor,line,line+iv[2])
+        local ok, res = pcall(IndicateAll, editor,line,line+iv[2])
+        if not ok then DisplayOutputLn("IndicateAll failed",res,line,line+iv[2]) end
       end
       local firstline = editor:DocLineFromVisible(editor:GetFirstVisibleLine())
       local lastline = math.min(editor:GetLineCount(),
@@ -828,7 +829,7 @@ function GetSpec(ext,forcespec)
   return spec
 end
 
-function IndicateFunctions(editor, lines, linee)
+local function IndicateFunctions28(editor, lines, linee)
   if (not (edcfg.showfncall and editor.spec and editor.spec.isfncall)) then return end
 
   local es = editor:GetEndStyled()
@@ -872,6 +873,136 @@ function IndicateFunctions(editor, lines, linee)
   end
   editor:StartStyling(es,31)
 end
+
+local delayed = {}
+local tokenlists = {}
+function IndicateIfNeeded()
+  local editor = GetEditor()
+  -- do the current one first
+  if delayed[editor] then return IndicateAll(editor) end
+  for editor in pairs(delayed) do IndicateAll(editor) end
+end
+function IndicateAll(editor, lines, linee)
+  local PARSE = require 'lua_parser_loose'
+  local LEX = require 'lua_lexer_loose'
+
+  local function mark_variables(code, pos, vars)
+    local lx = LEX.lexc(code, nil, pos)
+    return coroutine.wrap(function()
+      PARSE.parse_scope_resolve(lx, function(op, name, lineinfo, vars)
+        if op == 'Id'
+        or op == 'Var' or op == 'VarNext' or op == 'VarInside'
+        or op == 'FunctionCall' or op == 'Scope' or op == 'EndScope' then
+        else return end -- "normal" return; not interested in these events
+        coroutine.yield(op, name, lineinfo, vars)
+      end, vars)
+    end)
+  end
+
+  editor:IndicatorSetStyle(1, wxstc.wxSTC_INDIC_DOTS)
+  editor:IndicatorSetForeground(1, wx.wxColour(127, 0, 0))
+
+  editor:IndicatorSetStyle(2, wxstc.wxSTC_INDIC_PLAIN)
+  editor:IndicatorSetForeground(2, wx.wxColour(0, 127, 0))
+
+  editor:IndicatorSetStyle(3, wxstc.wxSTC_INDIC_STRIKE)
+  editor:IndicatorSetForeground(2, wx.wxColour(0, 127, 0))
+
+  local d = delayed[editor]
+  local pos, vars = d and d[1] or 1, d and d[2] or nil
+  local start = lines and editor:PositionFromLine(lines)+1 or nil
+  if d and start and pos >= start then
+    -- ignore delayed processing as the change is earlier in the text
+    pos, vars = 1, nil
+  end
+  delayed[editor] = nil -- assume this can be finished for now
+
+  tokenlists[editor] = tokenlists[editor] or {}
+  local tokens = tokenlists[editor]
+
+  if start then -- if the range is specified
+    editor:SetIndicatorCurrent(3)
+    for n = #tokens, 1, -1 do
+      local token = tokens[n]
+      -- find the last token before the range
+      if token[1] == 'EndScope' and token.name and token.fpos+#token.name < start then
+        pos, vars = token.fpos+#token.name, token.context
+        break
+      end
+      -- unmask all variables from the rest of the list
+      if token[1] == 'Masked' then
+        editor:IndicatorClearRange(token.fpos-1, #token.name)
+      end
+      -- trim the list as it will be re-generated
+      table.remove(tokens, n)
+    end
+
+    if vars then
+      for name, var in pairs(vars) do
+        -- remove all variables that are created later than the current pos
+        while type(var) == 'table' and var.fpos and (var.fpos > pos) do
+          var = var.masked
+          vars[name] = var
+        end
+      end
+    end
+  else
+    if pos == 1 then -- if not continuing, then trim the list
+      tokens = {}
+      tokenlists[editor] = tokens
+    end
+  end
+
+  local cleared = {}
+  for indic = 0, 3 do cleared[indic] = pos end
+
+  local function IndicateOne(indic, pos, length)
+    editor:SetIndicatorCurrent(indic)
+    editor:IndicatorClearRange(cleared[indic]-1, pos-cleared[indic])
+    editor:IndicatorFillRange(pos-1, length)
+    cleared[indic] = pos+length
+  end
+
+  local s = TimeGet()
+  local f = mark_variables(editor:GetText(), pos, vars)
+
+  while true do
+    local op, name, lineinfo, vars = f()
+    if not op then break end
+    local var = vars and vars[name]
+    if op == 'FunctionCall' then
+      IndicateOne(0, lineinfo, #name)
+    else
+      table.insert(tokens, {op, name=name, fpos=lineinfo, at=vars[0], context=vars})
+    end
+
+    -- indicate local/global variables
+    if op == 'Id' then
+      IndicateOne(var and 1 or 2, lineinfo, #name)
+    end
+
+    -- indicate masked values at the same level
+    if (op == 'VarNext' or op == 'Var') and var and vars[0] == var.at
+    -- skip those that have the same position as this can be reported
+    -- when `vars` already include the variable because of partial processing
+    and var.fpos < lineinfo then
+      IndicateOne(3, var.fpos, #name)
+      table.insert(tokens, {"Masked", name=name, fpos=var.fpos})
+    end
+    if op == 'EndScope' and name and TimeGet()-s > 0.010 then
+      delayed[editor] = {lineinfo+#name, vars}
+      break
+    end
+  end
+
+  -- clear indicators till the end of processed fragment
+  local pos = delayed[editor] and delayed[editor][1] or editor:GetLength()
+  for indic = 0, 3 do IndicateOne(indic, pos, 0) end
+
+  return delayed[editor] ~= nil -- request more events if still need to work
+end
+
+if ide.wxver < "2.9.5" then IndicateAll = IndicateFunctions28 end
 
 function SetupKeywords(editor, ext, forcespec, styles, font, fontitalic)
   local lexerstyleconvert = nil
