@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA.Effects
 		public readonly int BeamDuration = 10;
 		public readonly bool UsePlayerColor = false;
 		public readonly Color Color = Color.Red;
-		public readonly string Explosion = "laserfire";
+		public readonly string LaserHitAnim = null;
 
 		public IEffect Create(ProjectileArgs args)
 		{
@@ -49,8 +49,8 @@ namespace OpenRA.Mods.RA.Effects
 			this.info = info;
 			this.color = color;
 
-			if (info.Explosion != null)
-				this.explosion = new Animation(info.Explosion);
+			if (info.LaserHitAnim != null)
+				this.explosion = new Animation(info.LaserHitAnim);
 		}
 
 		public void Tick(World world)
