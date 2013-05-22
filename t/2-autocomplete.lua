@@ -21,6 +21,9 @@ editor:AddText([[
 ok(limit(10000, function() CreateAutoCompList(editor, "smth:") end),
   "Auto-complete doesn't loop for 'smth:'.")
 
+ok(pcall(CreateAutoCompList, editor, "%1000"),
+  "Auto-complete doesn't trigger 'invalid capture index' on '%...'.")
+
 -- cleanup
 ide.openDocuments[editor:GetId()].isModified = false
 ClosePage()

@@ -227,7 +227,7 @@ local function resolveAssign(editor,tx)
       -- this can happen after typing "smth = smth:new(); smth:" or
       -- "line = line:gsub(...); line:" as the current algorithm attempts to
       -- replace "line" with the value that also includes "line"
-      if c:find("^"..(tx:gsub("[.:]","[.:]"))) then break end
+      if change and c:find("^"..(tx:gsub("[.:]","[.:]"))) then break end
       tx = c
     end
   else
