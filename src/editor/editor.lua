@@ -752,9 +752,14 @@ function CreateEditor()
       menu:Enable(ID_ADDTOSCRATCHPAD, debugger.scratchpad
         and debugger.scratchpad.editors and not debugger.scratchpad.editors[editor])
 
-      -- cancel calltip as it interferes with popup menu
+      -- disable calltips that could open over the menu
+      local dwelltime = editor:GetMouseDwellTime()
+      editor:SetMouseDwellTime(0) -- disable dwelling
+
+      -- cancel calltip if it's already shown as it interferes with popup menu
       if editor:CallTipActive() then editor:CallTipCancel() end
       editor:PopupMenu(menu)
+      editor:SetMouseDwellTime(dwelltime) -- restore dwelling
     end)
 
   editor:Connect(ID_QUICKADDWATCH, wx.wxEVT_COMMAND_MENU_SELECTED,
