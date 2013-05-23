@@ -635,7 +635,7 @@ function CreateEditor()
         local line = editor:LineFromPosition(iv[1])
         if not minupdated or line < minupdated then minupdated = line end
         local ok, res = pcall(IndicateAll, editor,line,line+iv[2])
-        if not ok then DisplayOutputLn("IndicateAll failed",res,line,line+iv[2]) end
+        if not ok then DisplayOutputLn("Internal error: ",res,line,line+iv[2]) end
       end
       local firstline = editor:DocLineFromVisible(editor:GetFirstVisibleLine())
       local lastline = math.min(editor:GetLineCount(),
@@ -880,7 +880,7 @@ function IndicateIfNeeded()
   local editor = GetEditor()
   -- do the current one first
   if delayed[editor] then return IndicateAll(editor) end
-  for editor in pairs(delayed) do IndicateAll(editor) end
+  for editor in pairs(delayed) do return IndicateAll(editor) end
 end
 function IndicateAll(editor, lines, linee)
   local PARSE = require 'lua_parser_loose'
@@ -941,7 +941,7 @@ function IndicateAll(editor, lines, linee)
       for name, var in pairs(vars) do
         -- remove all variables that are created later than the current pos
         while type(var) == 'table' and var.fpos and (var.fpos > pos) do
-          var = var.masked
+          var = var.masked -- restored a masked var
           vars[name] = var
         end
       end
@@ -964,6 +964,7 @@ function IndicateAll(editor, lines, linee)
   end
 
   local s = TimeGet()
+  local canwork = start and 0.010 or 0.100 -- use shorter interval when typing
   local f = mark_variables(editor:GetText(), pos, vars)
 
   while true do
@@ -982,14 +983,16 @@ function IndicateAll(editor, lines, linee)
     end
 
     -- indicate masked values at the same level
-    if (op == 'VarNext' or op == 'Var') and var and vars[0] == var.at
+    if (op == 'VarNext' or op == 'Var') and var
     -- skip those that have the same position as this can be reported
     -- when `vars` already include the variable because of partial processing
-    and var.fpos < lineinfo then
-      IndicateOne(3, var.fpos, #name)
-      table.insert(tokens, {"Masked", name=name, fpos=var.fpos})
+    and (var.fpos < lineinfo and vars[0] == var.at
+      or var.masked and vars[0] == var.masked.at) then
+      local fpos = var.fpos < lineinfo and var.fpos or var.masked.fpos
+      IndicateOne(3, fpos, #name)
+      table.insert(tokens, {"Masked", name=name, fpos=fpos})
     end
-    if op == 'EndScope' and name and TimeGet()-s > 0.010 then
+    if op == 'EndScope' and name and TimeGet()-s > canwork then
       delayed[editor] = {lineinfo+#name, vars}
       break
     end

@@ -61,7 +61,8 @@ function PARSE.parse_scope(lx, f, level)
       f('VarSelf', 'self', lineinfo)
     end
     while lx:peek().tag == 'Id' do
-      f('Var', lx:next()[1], c.lineinfo)
+      local c = lx:next()
+      f('Var', c[1], c.lineinfo)
       if lx:peek()[1] == ',' then lx:next() end
     end
     if lx:peek()[1] == ')' then lx:next() end
