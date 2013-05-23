@@ -740,6 +740,7 @@ function CreateEditor()
     end)
 
   local value
+  local instances
   editor:Connect(wx.wxEVT_CONTEXT_MENU,
     function (event)
       local menu = wx.wxMenu()
@@ -751,6 +752,9 @@ function CreateEditor()
       menu:Append(ID_PASTE, TR("&Paste"))
       menu:Append(ID_SELECTALL, TR("Select &All"))
       menu:AppendSeparator()
+      menu:Append(ID_GOTODEFINITION, TR("Go To Definition"))
+      menu:Append(ID_RENAMEALLINSTANCES, TR("Rename All Instances"))
+      menu:AppendSeparator()
       menu:Append(ID_QUICKADDWATCH, TR("Add Watch Expression"))
       menu:Append(ID_QUICKEVAL, TR("Evaluate in Console"))
       menu:Append(ID_ADDTOSCRATCHPAD, TR("Add to Scratchpad"))
@@ -758,6 +762,10 @@ function CreateEditor()
       local point = editor:ScreenToClient(event:GetPosition())
       local pos = editor:PositionFromPointClose(point.x, point.y)
       value = pos ~= wxstc.wxSTC_INVALID_POSITION and getValAtPosition(editor, pos) or nil
+      instances = value and IndicateFindInstances(editor, value, pos+1)
+      if instances then instances[-1] = value end
+      menu:Enable(ID_GOTODEFINITION, instances and instances[0])
+      menu:Enable(ID_RENAMEALLINSTANCES, instances and (instances[0] or #instances > 0))
       menu:Enable(ID_QUICKADDWATCH, value ~= nil)
       menu:Enable(ID_QUICKEVAL, value ~= nil)
 
@@ -773,6 +781,30 @@ function CreateEditor()
       if editor:CallTipActive() then editor:CallTipCancel() end
       editor:PopupMenu(menu)
       editor:SetMouseDwellTime(dwelltime) -- restore dwelling
+    end)
+
+  editor:Connect(ID_GOTODEFINITION, wx.wxEVT_COMMAND_MENU_SELECTED,
+    function(event)
+      editor:GotoPos(instances[0]-1)
+      editor:SetAnchor(instances[0]-1+#instances[-1])
+    end)
+
+  editor:Connect(ID_RENAMEALLINSTANCES, wx.wxEVT_COMMAND_MENU_SELECTED,
+    function(event)
+      local name = instances[-1]
+      local first = true
+      for i, pos in pairs(instances) do
+        if i >= 0 then
+          if first then
+            first = false
+            -- SetSelection leaves the cursor at the end; don't use it
+            editor:SetAnchor(pos-1+#name)
+            editor:SetCurrentPos(pos-1)
+          else
+            editor:AddSelection(pos-1, pos-1+#name)
+          end
+        end
+      end
     end)
 
   editor:Connect(ID_QUICKADDWATCH, wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -876,12 +908,41 @@ end
 
 local delayed = {}
 local tokenlists = {}
+
 function IndicateIfNeeded()
   local editor = GetEditor()
   -- do the current one first
   if delayed[editor] then return IndicateAll(editor) end
   for editor in pairs(delayed) do return IndicateAll(editor) end
 end
+
+-- find all instances of a symbol at pos
+-- return table with [0] as the definition position (if local)
+function IndicateFindInstances(editor, name, pos)
+  local tokens = tokenlists[editor]
+  local instances = {{[-1] = 1}}
+  for _, token in ipairs(tokens) do
+    local op = token[1]
+
+    if op == 'EndScope' then
+      if token.fpos > pos and instances[#instances][-1] == token.at+1 then break end
+      if #instances > 1 then table.remove(instances) end
+    elseif token.name == name then
+      if op == 'Id' then
+        table.insert(instances[#instances], token.fpos)
+      elseif op:find("^Var") then
+        if token.fpos > pos and instances[#instances][-1] == token.at then break end
+        -- if new Var is defined at the same level, then replace the current frame;
+        -- if not, add a new one
+        instances[#instances + (token.at > instances[#instances][-1] and 1 or 0)]
+          = {[0] = token.fpos, [-1] = token.at}
+      end
+    end
+  end
+  instances[#instances][-1] = nil -- remove the current level
+  return instances[#instances]
+end
+
 function IndicateAll(editor, lines, linee)
   local PARSE = require 'lua_parser_loose'
   local LEX = require 'lua_lexer_loose'
@@ -900,13 +961,13 @@ function IndicateAll(editor, lines, linee)
   end
 
   editor:IndicatorSetStyle(1, wxstc.wxSTC_INDIC_DOTS)
-  editor:IndicatorSetForeground(1, wx.wxColour(127, 0, 0))
+  editor:IndicatorSetForeground(1, wx.wxColour(0, 0, 127))
 
   editor:IndicatorSetStyle(2, wxstc.wxSTC_INDIC_PLAIN)
   editor:IndicatorSetForeground(2, wx.wxColour(0, 127, 0))
 
   editor:IndicatorSetStyle(3, wxstc.wxSTC_INDIC_STRIKE)
-  editor:IndicatorSetForeground(2, wx.wxColour(0, 127, 0))
+  editor:IndicatorSetForeground(2, wx.wxColour(0, 0, 127))
 
   local d = delayed[editor]
   local pos, vars = d and d[1] or 1, d and d[2] or nil
@@ -999,7 +1060,7 @@ function IndicateAll(editor, lines, linee)
   end
 
   -- clear indicators till the end of processed fragment
-  local pos = delayed[editor] and delayed[editor][1] or editor:GetLength()
+  local pos = delayed[editor] and delayed[editor][1] or editor:GetLength()+1
   for indic = 0, 3 do IndicateOne(indic, pos, 0) end
 
   return delayed[editor] ~= nil -- request more events if still need to work

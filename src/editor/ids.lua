@@ -83,6 +83,8 @@ ID_ADDWATCH         = NewID()
 ID_EDITWATCH        = NewID()
 ID_DELETEWATCH      = NewID()
 -- Editor popup menu items
+ID_GOTODEFINITION   = NewID()
+ID_RENAMEALLINSTANCES = NewID()
 ID_QUICKADDWATCH    = NewID()
 ID_QUICKEVAL        = NewID()
 ID_ADDTOSCRATCHPAD  = NewID()
