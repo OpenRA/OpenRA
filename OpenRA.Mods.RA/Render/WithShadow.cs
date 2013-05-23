@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA.Render
 				? (int)Math.Abs((self.ActorID + Game.LocalTick) / 5 % 4 - 1) - 1 : 0;
 
 			var shadowSprites = r.Select(a => a.WithPalette(wr.Palette("shadow"))
-				.WithPos(a.Pos - new WVec(0, 0, a.Pos.Z)).WithZOffset(-24));
+				.WithPos(a.Pos - new WVec(0, 0, a.Pos.Z)).WithZOffset(a.ZOffset + a.Pos.Z));
 
 			var flyingSprites = (move.Altitude <= 0) ? r :
 				r.Select(a => a.WithPos(a.Pos - new WVec(0,0,43*visualOffset)));

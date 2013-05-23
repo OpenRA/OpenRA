@@ -219,6 +219,6 @@ namespace OpenRA.Graphics
 			return new int2((int)Math.Round(px.X), (int)Math.Round(px.Y));
 		}
 
-		public float ScreenZPosition(WPos pos) { return (pos.Y + pos.Z)*Game.CellSize/1024f; }
+		public float ScreenZPosition(WPos pos, int zOffset) { return (pos.Y + pos.Z + zOffset)*Game.CellSize/1024f; }
 	}
 }

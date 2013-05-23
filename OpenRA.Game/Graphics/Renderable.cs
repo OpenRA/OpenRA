@@ -23,8 +23,8 @@ namespace OpenRA.Graphics
 
 		public int Compare(IRenderable x, IRenderable y)
 		{
-			var xOrder = wr.ScreenZPosition(x.Pos) + x.ZOffset;
-			var yOrder = wr.ScreenZPosition(y.Pos) + y.ZOffset;
+			var xOrder = wr.ScreenZPosition(x.Pos, x.ZOffset);
+			var yOrder = wr.ScreenZPosition(y.Pos, y.ZOffset);
 			return xOrder.CompareTo(yOrder);
 		}
 	}
