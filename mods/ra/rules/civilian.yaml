@@ -311,6 +311,7 @@ OILB:
 	CashTrickler:
 		Period: 250
 		Amount: 100
+		CaptureAmount: 500
 	Tooltip:
 		Name: Oil Derrick
 
