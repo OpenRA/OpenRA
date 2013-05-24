@@ -20,7 +20,8 @@ namespace OpenRA.FileFormats
 	{
 		Stream GetContent(string filename);
 		bool Exists(string filename);
-		IEnumerable<uint> AllFileHashes();
+		IEnumerable<uint> ClassicHashes();
+		IEnumerable<uint> CrcHashes();
 		IEnumerable<string> AllFileNames();
 		void Write(Dictionary<string, byte[]> contents);
 		int Priority { get; }
@@ -34,12 +35,15 @@ namespace OpenRA.FileFormats
 		readonly Stream s;
 		readonly int priority;
 		readonly string filename;
+		readonly PackageHashType type;
 
 		// Save a mix to disk with the given contents
 		public MixFile(string filename, int priority, Dictionary<string, byte[]> contents)
 		{
 			this.filename = filename;
 			this.priority = priority;
+			this.type = PackageHashType.Classic;
+
 			if (File.Exists(filename))
 				File.Delete(filename);
 
@@ -49,10 +53,11 @@ namespace OpenRA.FileFormats
 			Write(contents);
 		}
 
-		public MixFile(string filename, int priority)
+		public MixFile(string filename, PackageHashType type, int priority)
 		{
 			this.filename = filename;
 			this.priority = priority;
+			this.type = type;
 			s = FileSystem.Open(filename);
 
 			// Detect format type
@@ -145,17 +150,11 @@ namespace OpenRA.FileFormats
 
 		uint? FindMatchingHash(string filename)
 		{
-			// Try first as a TD/RA hash
-			var hash = PackageEntry.HashFilename(filename);
+			var hash = PackageEntry.HashFilename(filename, type);
 			if (index.ContainsKey(hash))
 				return hash;
 
-			// Fall back to TS/RA2 hash style
-			var crc = PackageEntry.CrcHashFilename(filename);
-			if (index.ContainsKey(crc))
-				return hash;
-
-			// Test for a raw hash before giving up
+			// Maybe we were given a raw hash?
 			uint raw;
 			if (!uint.TryParse(filename, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out raw))
 			    return null;
@@ -184,9 +183,21 @@ namespace OpenRA.FileFormats
 			return hash.HasValue ? GetContent(hash.Value) : null;
 		}
 
-		public IEnumerable<uint> AllFileHashes()
+		static readonly uint[] Nothing = {};
+		public IEnumerable<uint> ClassicHashes()
 		{
-			return index.Keys;
+			if (type == PackageHashType.Classic)
+				return index.Keys;
+
+			return Nothing;
+		}
+
+		public IEnumerable<uint> CrcHashes()
+		{
+			if (type == PackageHashType.CRC32)
+				return index.Keys;
+
+			return Nothing;
 		}
 
 		public IEnumerable<string> AllFileNames()
@@ -197,13 +208,9 @@ namespace OpenRA.FileFormats
 				var db = new XccLocalDatabase(GetContent("local mix database.dat"));
 				foreach (var e in db.Entries)
 				{
-					var hash = PackageEntry.HashFilename(e);
+					var hash = PackageEntry.HashFilename(e, type);
 					if (!lookup.ContainsKey(hash))
 						lookup.Add(hash, e);
-
-					var crc = PackageEntry.CrcHashFilename(e);
-					if (!lookup.ContainsKey(crc))
-						lookup.Add(crc, e);
 				}
 			}
 
@@ -212,13 +219,9 @@ namespace OpenRA.FileFormats
 				var db = new XccGlobalDatabase(FileSystem.Open("global mix database.dat"));
 				foreach (var e in db.Entries)
 				{
-					var hash = PackageEntry.HashFilename(e);
+					var hash = PackageEntry.HashFilename(e, type);
 					if (!lookup.ContainsKey(hash))
 						lookup.Add(hash, e);
-
-					var crc = PackageEntry.CrcHashFilename(e);
-					if (!lookup.ContainsKey(crc))
-						lookup.Add(crc, e);
 				}
 			}
 
@@ -249,8 +252,8 @@ namespace OpenRA.FileFormats
 			foreach (var kv in contents)
 			{
 				var length = (uint)kv.Value.Length;
-				var hash = PackageEntry.HashFilename(Path.GetFileName(kv.Key));
-				items.Add(new PackageEntry(hash, dataSize, length)); // TODO: Tiberian Sun uses CRC hashes
+				var hash = PackageEntry.HashFilename(Path.GetFileName(kv.Key), type);
+				items.Add(new PackageEntry(hash, dataSize, length));
 				dataSize += length;
 			}
 

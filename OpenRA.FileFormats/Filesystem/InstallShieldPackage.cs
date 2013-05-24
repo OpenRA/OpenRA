@@ -80,7 +80,7 @@ namespace OpenRA.FileFormats
 			var NameLength = reader.ReadByte();
 			var FileName = new String(reader.ReadChars(NameLength));
 
-			var hash = PackageEntry.HashFilename(FileName);
+			var hash = PackageEntry.HashFilename(FileName, PackageHashType.Classic);
 			index.Add(hash, new PackageEntry(hash, AccumulatedData, CompressedSize));
 			filenames.Add(FileName);
 			AccumulatedData += CompressedSize;
@@ -104,12 +104,17 @@ namespace OpenRA.FileFormats
 
 		public Stream GetContent(string filename)
 		{
-			return GetContent(PackageEntry.HashFilename(filename));
+			return GetContent(PackageEntry.HashFilename(filename, PackageHashType.Classic));
 		}
 
-		public IEnumerable<uint> AllFileHashes()
+		public IEnumerable<uint> ClassicHashes()
 		{
 			return index.Keys;
+		}
+
+		public IEnumerable<uint> CrcHashes()
+		{
+			yield break;
 		}
 
 		public IEnumerable<string> AllFileNames()
@@ -119,7 +124,7 @@ namespace OpenRA.FileFormats
 
 		public bool Exists(string filename)
 		{
-			return index.ContainsKey(PackageEntry.HashFilename(filename));
+			return index.ContainsKey(PackageEntry.HashFilename(filename, PackageHashType.Classic));
 		}
 
 		public int Priority { get { return 2000 + priority; }}

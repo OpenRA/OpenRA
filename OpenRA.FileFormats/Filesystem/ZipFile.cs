@@ -64,10 +64,15 @@ namespace OpenRA.FileFormats
 			}
 		}
 
-		public IEnumerable<uint> AllFileHashes()
+		public IEnumerable<uint> ClassicHashes()
 		{
 			foreach(ZipEntry entry in pkg)
-				yield return PackageEntry.HashFilename(entry.Name);
+				yield return PackageEntry.HashFilename(entry.Name, PackageHashType.Classic);
+		}
+
+		public IEnumerable<uint> CrcHashes()
+		{
+			yield break;
 		}
 
 		public IEnumerable<string> AllFileNames()
