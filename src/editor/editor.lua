@@ -921,22 +921,27 @@ end
 function IndicateFindInstances(editor, name, pos)
   local tokens = tokenlists[editor]
   local instances = {{[-1] = 1}}
+  local this
   for _, token in ipairs(tokens) do
     local op = token[1]
 
-    if op == 'EndScope' then
-      if token.fpos > pos and instances[#instances][-1] == token.at+1 then break end
-      if #instances > 1 then table.remove(instances) end
+    if op == 'EndScope' then -- EndScope has "new" level, so need +1
+      if this and token.fpos > pos and this == token.at+1 then break end
+
+      if #instances > 1 and instances[#instances][-1] == token.at+1 then
+        table.remove(instances) end
     elseif token.name == name then
       if op == 'Id' then
         table.insert(instances[#instances], token.fpos)
       elseif op:find("^Var") then
-        if token.fpos > pos and instances[#instances][-1] == token.at then break end
-        -- if new Var is defined at the same level, then replace the current frame;
+        if this and token.fpos > pos and this == token.at then break end
+
+        -- if new Var is defined at the same level, replace the current frame;
         -- if not, add a new one
         instances[#instances + (token.at > instances[#instances][-1] and 1 or 0)]
           = {[0] = token.fpos, [-1] = token.at}
       end
+      if token.fpos <= pos and pos < token.fpos+#name then this = instances[#instances][-1] end
     end
   end
   instances[#instances][-1] = nil -- remove the current level
@@ -959,7 +964,7 @@ function IndicateAll(editor, lines, linee)
 
         -- level needs to be adjusted for VarInside as it comes into scope
         -- only after next block statement
-        local at = vars[0] + (op == 'VarInside' and 1 or 0)
+        local at = vars[0] and (vars[0] + (op == 'VarInside' and 1 or 0))
         if op == 'Statement' then
           for _, token in pairs(varnext) do coroutine.yield(unpack(token)) end
           varnext = {}
