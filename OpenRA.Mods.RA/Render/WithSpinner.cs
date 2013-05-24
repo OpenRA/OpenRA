@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA.Render
 			spinner.PlayRepeating(info.Sequence);
 			rs.anims.Add("spinner_{0}".F(info.Sequence), new AnimationWithOffset(spinner,
 				() => rs.LocalToWorld(info.Offset.Rotate(rs.QuantizeOrientation(self, self.Orientation))),
-				null, 1));
+				null, p => WithTurret.ZOffsetFromCenter(self, p, 1)));
 		}
 	}
 }

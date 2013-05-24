@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA.Render
 			rotorAnim.PlayRepeating("rotor");
 			rs.anims.Add(info.Id, new AnimationWithOffset(rotorAnim,
 				() => rs.LocalToWorld(info.Offset.Rotate(rs.QuantizeOrientation(self, self.Orientation))),
-				null, 1));
+				null, p => WithTurret.ZOffsetFromCenter(self, p, 1)));
 		}
 
 		public void Tick(Actor self)

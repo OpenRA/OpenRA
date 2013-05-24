@@ -53,7 +53,7 @@ namespace OpenRA.Mods.RA.Render
 			anim = new Animation(rs.GetImage(self), () => t.turretFacing);
 			anim.Play(info.Sequence);
 			rs.anims.Add("turret_{0}".F(info.Turret), new AnimationWithOffset(
-				anim, () => TurretOffset(self), null, t.Offset.Length));
+				anim, () => TurretOffset(self), null, p => ZOffsetFromCenter(self, p, 1)));
 		}
 
 		WVec TurretOffset(Actor self)
@@ -72,6 +72,12 @@ namespace OpenRA.Mods.RA.Render
 
 			var sequence = ab.IsAttacking ? info.AimSequence : info.Sequence;
 			rs.anims["turret_{0}".F(info.Turret)].Animation.ReplaceAnim(sequence);
+		}
+
+		static public int ZOffsetFromCenter(Actor self, WPos pos, int offset)
+		{
+			var delta = self.CenterPosition - pos;
+			return delta.Y + delta.Z + offset;
 		}
 	}
 }
