@@ -115,7 +115,7 @@ local function fillTips(api,apibasename,apiname)
     if not tab.childs then return end
     for key,info in pairs(tab.childs) do
       traverse(info,key)
-      if info.type == "function" or info.type == "method" then
+      if info.type == "function" or info.type == "method" or info.type == "value" then
         local libstr = libname ~= "" and libname.."." or ""
 
         -- fix description
@@ -131,9 +131,11 @@ local function fillTips(api,apibasename,apiname)
           :gsub("("..widthmask..") ","%1\n")
 
         -- build info
-        local inf = frontname.."\n"..info.description
+        local inf = (info.type == "value" and "" or frontname.."\n")
+          ..info.description
         local sentence = info.description:match("^(.-)%. ?\n")
-        local infshort = frontname.."\n"..(sentence and sentence.."..." or info.description)
+        local infshort = (info.type == "value" and "" or frontname.."\n")
+          ..(sentence and sentence.."..." or info.description)
         local infshortbatch = (info.returns and info.args) and frontname or infshort
 
         -- add to infoclass
@@ -239,8 +241,8 @@ local function resolveAssign(editor,tx)
 end
 
 function GetTipInfo(editor, content, short)
-  local caller = content:match("([%w_]+)%(%s*$")
-  local class = caller and content:match("([%w_]+)[%.:]"..caller.."%(%s*$") or ""
+  local caller = content:match("([%w_]+)%(?%s*$")
+  local class = caller and content:match("([%w_]+)[%.:]"..caller.."%(?%s*$") or ""
   local tip = editor.api.tip
 
   local classtab = short and tip.shortfinfoclass or tip.finfoclass

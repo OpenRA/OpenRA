@@ -229,16 +229,12 @@ function EditorAutoComplete(editor)
   end
 end
 
+local ident = "([a-zA-Z_][a-zA-Z_0-9%.%:]*)"
 local function getValAtPosition(editor, pos)
   local line = editor:LineFromPosition(pos)
   local linetx = editor:GetLine(line)
   local linestart = editor:PositionFromLine(line)
   local localpos = pos-linestart
-
-  local ident = "([a-zA-Z_][a-zA-Z_0-9%.%:]*)"
-  local linetxtopos = linetx:sub(1,localpos)
-  linetxtopos = linetxtopos..")"
-  linetxtopos = linetxtopos:match(ident .. "%b()$")
 
   local selected = editor:GetSelectionStart() ~= editor:GetSelectionEnd()
     and pos >= editor:GetSelectionStart() and pos <= editor:GetSelectionEnd()
@@ -250,6 +246,17 @@ local function getValAtPosition(editor, pos)
   local start = linetx:sub(1,localpos)
     :gsub("%b[]", function(s) return ("."):rep(#s) end)
     :find(ident.."$")
+
+  local right = linetx:sub(localpos+1,#linetx):match("^[a-zA-Z_0-9]*")
+  local var = selected and editor:GetSelectedText()
+    or (start and linetx:sub(start,localpos):gsub(":",".")..right or nil)
+
+  local linetxtopos = linetx:sub(1,localpos)
+  linetxtopos = (linetxtopos..")"):match(ident .. "%s*%b()$")
+    or (linetxtopos.."}"):match(ident .. "%s*%b{}$")
+    or (linetxtopos.."'"):match(ident .. "%s*'[^']*'$")
+    or (linetxtopos..'"'):match(ident .. '%s*"[^"]*"$')
+    or var
 
   -- check if the style is the right one; this is to ignore
   -- comments, strings, numbers (to avoid '1 = 1'), keywords, and such
@@ -265,10 +272,6 @@ local function getValAtPosition(editor, pos)
     end
   end
 
-  local right = linetx:sub(localpos+1,#linetx):match("^[a-zA-Z_0-9]*")
-  local var = selected and editor:GetSelectedText()
-    or (start and linetx:sub(start,localpos):gsub(":",".")..right or nil)
-
   return var, linetxtopos
 end
 
@@ -278,7 +281,7 @@ function EditorCallTip(editor, pos, x, y)
   if editor:CallTipActive() then return end
 
   local var, linetxtopos = getValAtPosition(editor, pos)
-  local tip = linetxtopos and GetTipInfo(editor,linetxtopos.."(",false)
+  local tip = linetxtopos and GetTipInfo(editor,linetxtopos,false)
   if ide.debugger and ide.debugger.server then
     if var then
       local limit = 128
