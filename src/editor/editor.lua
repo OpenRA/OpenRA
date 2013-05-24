@@ -950,12 +950,24 @@ function IndicateAll(editor, lines, linee)
   local function mark_variables(code, pos, vars)
     local lx = LEX.lexc(code, nil, pos)
     return coroutine.wrap(function()
+      local varnext = {}
       PARSE.parse_scope_resolve(lx, function(op, name, lineinfo, vars)
-        if op == 'Id'
-        or op == 'Var' or op == 'VarNext' or op == 'VarInside'
-        or op == 'FunctionCall' or op == 'Scope' or op == 'EndScope' then
-        else return end -- "normal" return; not interested in these events
-        coroutine.yield(op, name, lineinfo, vars)
+        if not(op == 'Id' or op == 'Statement' or op == 'Var'
+            or op == 'VarNext' or op == 'VarInside' or op == 'VarSelf'
+            or op == 'FunctionCall' or op == 'Scope' or op == 'EndScope') then
+          return end -- "normal" return; not interested in other events
+
+        -- level needs to be adjusted for VarInside as it comes into scope
+        -- only after next block statement
+        local at = vars[0] + (op == 'VarInside' and 1 or 0)
+        if op == 'Statement' then
+          for _, token in pairs(varnext) do coroutine.yield(unpack(token)) end
+          varnext = {}
+        elseif op == 'VarNext' or op == 'VarInside' then
+          table.insert(varnext, {'Var', name, lineinfo, vars, at})
+        end
+
+        coroutine.yield(op, name, lineinfo, vars, at)
       end, vars)
     end)
   end
@@ -1029,13 +1041,14 @@ function IndicateAll(editor, lines, linee)
   local f = mark_variables(editor:GetText(), pos, vars)
 
   while true do
-    local op, name, lineinfo, vars = f()
+    local op, name, lineinfo, vars, at = f()
     if not op then break end
     local var = vars and vars[name]
+    local token = {op, name=name, fpos=lineinfo, at=at, context=vars}
     if op == 'FunctionCall' then
       IndicateOne(0, lineinfo, #name)
-    else
-      table.insert(tokens, {op, name=name, fpos=lineinfo, at=vars[0], context=vars})
+    elseif op ~= 'VarNext' and op ~= 'VarInside' and op ~= 'Statement' then
+      table.insert(tokens, token)
     end
 
     -- indicate local/global variables
@@ -1044,11 +1057,11 @@ function IndicateAll(editor, lines, linee)
     end
 
     -- indicate masked values at the same level
-    if (op == 'VarNext' or op == 'Var') and var
+    if op == 'Var' and var -- also check 'VarSelf'?
     -- skip those that have the same position as this can be reported
     -- when `vars` already include the variable because of partial processing
-    and (var.fpos < lineinfo and vars[0] == var.at
-      or var.masked and vars[0] == var.masked.at) then
+    and (var.fpos < lineinfo and at == var.at
+      or var.masked and at == var.masked.at) then
       local fpos = var.fpos < lineinfo and var.fpos or var.masked.fpos
       IndicateOne(3, fpos, #name)
       table.insert(tokens, {"Masked", name=name, fpos=fpos})
