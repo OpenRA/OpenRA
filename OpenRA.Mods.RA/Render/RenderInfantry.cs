@@ -55,7 +55,7 @@ namespace OpenRA.Mods.RA.Render
 		public AnimationState State { get; private set; }
 
 		public RenderInfantry(Actor self, RenderInfantryInfo info)
-			: base(self, RenderSimple.MakeFacingFunc(self))
+			: base(self, MakeFacingFunc(self))
 		{
 			Info = info;
 			anim.PlayFetchIndex(NormalizeInfantrySequence(self, "stand"), () => 0);

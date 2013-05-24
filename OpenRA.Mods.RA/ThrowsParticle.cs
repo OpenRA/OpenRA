@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class ThrowsParticleInfo : ITraitInfo, Requires<RenderSimpleInfo>
+	class ThrowsParticleInfo : ITraitInfo, Requires<RenderSimpleInfo>, Requires<LocalCoordinatesModelInfo>
 	{
 		public readonly string Anim = null;
 
@@ -54,6 +54,7 @@ namespace OpenRA.Mods.RA
 
 			var self = init.self;
 			var rs = self.Trait<RenderSimple>();
+			var coords = self.Trait<ILocalCoordinatesModel>();
 
 			// TODO: Carry orientation over from the parent instead of just facing
 			var bodyFacing = init.Contains<FacingInit>() ? init.Get<FacingInit,int>() : 0;
@@ -63,7 +64,7 @@ namespace OpenRA.Mods.RA
 			var throwRotation = WRot.FromFacing(Game.CosmeticRandom.Next(1024));
 			var throwOffset = new WVec((int)(Game.CosmeticRandom.Gauss1D(1)*info.ThrowRange.Range), 0, 0).Rotate(throwRotation);
 
-			initialPos = pos = info.Offset.Rotate(rs.QuantizeOrientation(self, WRot.FromFacing(bodyFacing)));
+			initialPos = pos = info.Offset.Rotate(coords.QuantizeOrientation(self, WRot.FromFacing(bodyFacing)));
 			finalPos = initialPos + throwOffset;
 
 			// Facing rotation

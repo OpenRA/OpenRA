@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class NukePowerInfo : SupportPowerInfo
+	class NukePowerInfo : SupportPowerInfo, Requires<LocalCoordinatesModelInfo>
 	{
 		[WeaponReference]
 		public readonly string MissileWeapon = "";
@@ -25,7 +25,14 @@ namespace OpenRA.Mods.RA
 
 	class NukePower : SupportPower
 	{
-		public NukePower(Actor self, NukePowerInfo info) : base(self, info) { }
+		ILocalCoordinatesModel coords;
+
+		public NukePower(Actor self, NukePowerInfo info)
+			: base(self, info)
+		{
+			coords = self.Trait<ILocalCoordinatesModel>();
+		}
+
 		public override IOrderGenerator OrderGenerator(string order, SupportPowerManager manager)
 		{
 			Sound.PlayToPlayer(manager.self.Owner, Info.SelectTargetSound);
@@ -42,7 +49,7 @@ namespace OpenRA.Mods.RA
 			var rb = self.Trait<RenderSimple>();
 			rb.PlayCustomAnim(self, "active");
 			self.World.AddFrameEndTask(w => w.Add(
-				new NukeLaunch(self.Owner, self, npi.MissileWeapon, self.CenterPosition + rb.LocalToWorld(npi.SpawnOffset), order.TargetLocation)));
+				new NukeLaunch(self.Owner, self, npi.MissileWeapon, self.CenterPosition + coords.LocalToWorld(npi.SpawnOffset), order.TargetLocation)));
 		}
 	}
 }

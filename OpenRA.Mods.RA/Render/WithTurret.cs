@@ -17,7 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
-	class WithTurretInfo : ITraitInfo, Requires<RenderSimpleInfo>, Requires<TurretedInfo>
+	class WithTurretInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<TurretedInfo>, Requires<LocalCoordinatesModelInfo>
 	{
 		[Desc("Sequence name to use")]
 		public readonly string Sequence = "turret";
@@ -37,7 +37,8 @@ namespace OpenRA.Mods.RA.Render
 	class WithTurret : ITick
 	{
 		WithTurretInfo info;
-		RenderSimple rs;
+		RenderSprites rs;
+		ILocalCoordinatesModel coords;
 		AttackBase ab;
 		Turreted t;
 		IEnumerable<Armament> arms;
@@ -46,7 +47,9 @@ namespace OpenRA.Mods.RA.Render
 		public WithTurret(Actor self, WithTurretInfo info)
 		{
 			this.info = info;
-			rs = self.Trait<RenderSimple>();
+			rs = self.Trait<RenderSprites>();
+			coords = self.Trait<ILocalCoordinatesModel>();
+
 			ab = self.TraitOrDefault<AttackBase>();
 			t = self.TraitsImplementing<Turreted>()
 				.First(tt => tt.Name == info.Turret);
@@ -69,9 +72,9 @@ namespace OpenRA.Mods.RA.Render
 
 			var recoil = arms.Aggregate(WRange.Zero, (a,b) => a + b.Recoil);
 			var localOffset = new WVec(-recoil, WRange.Zero, WRange.Zero);
-			var bodyOrientation = rs.QuantizeOrientation(self, self.Orientation);
-			var turretOrientation = rs.QuantizeOrientation(self, t.LocalOrientation(self));
-			return t.Position(self) + rs.LocalToWorld(localOffset.Rotate(turretOrientation).Rotate(bodyOrientation));
+			var bodyOrientation = coords.QuantizeOrientation(self, self.Orientation);
+			var turretOrientation = coords.QuantizeOrientation(self, t.LocalOrientation(self));
+			return t.Position(self) + coords.LocalToWorld(localOffset.Rotate(turretOrientation).Rotate(bodyOrientation));
 		}
 
 		public void Tick(Actor self)

@@ -17,7 +17,7 @@ using OpenRA.Mods.RA;
 
 namespace OpenRA.Mods.RA.Render
 {
-	class WithMuzzleFlashInfo : ITraitInfo, Requires<RenderSimpleInfo>, Requires<AttackBaseInfo>
+	class WithMuzzleFlashInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<AttackBaseInfo>
 	{
 		public object Create(ActorInitializer init) { return new WithMuzzleFlash(init.self); }
 	}
@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Render
 
 		public WithMuzzleFlash(Actor self)
 		{
-			var render = self.Trait<RenderSimple>();
+			var render = self.Trait<RenderSprites>();
 			var facing = self.TraitOrDefault<IFacing>();
 
 			var arms = self.TraitsImplementing<Armament>();
