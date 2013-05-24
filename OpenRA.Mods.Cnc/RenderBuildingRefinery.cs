@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Cnc
 					? (59 * playerResources.Ore) / (10 * playerResources.OreCapacity)
 					: 0);
 
-			anims.Add("lights", new AnimationWithOffset(lights, () => info.Offset, () => !buildComplete, 24));
+			anims.Add("lights", new AnimationWithOffset(lights, () => info.Offset, () => !buildComplete, 1024));
 		}
 
 		public void BuildingComplete( Actor self )

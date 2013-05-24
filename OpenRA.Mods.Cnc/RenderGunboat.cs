@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA.Render
 			var rightOffset = new WVec(-43, 86, 0);
 			anims.Add("wake", new AnimationWithOffset(wake,
 				() => anims["wake"].Animation.CurrentSequence.Name == "left-wake" ? leftOffset : rightOffset,
-			    () => false, -2));
+			    () => false, -87));
 		}
 
 		public override void Tick(Actor self)
