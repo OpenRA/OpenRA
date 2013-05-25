@@ -29,8 +29,6 @@ Packages:
 	~scores2.mix
 	~transit.mix
 
-PackageContents:
-
 Rules:
 	mods/cnc/rules/defaults.yaml
 	mods/cnc/rules/system.yaml

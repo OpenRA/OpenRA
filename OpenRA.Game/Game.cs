@@ -311,9 +311,9 @@ namespace OpenRA
 			Sound.StopVideo();
 			Sound.Initialize();
 
-			modData = new ModData( mm );
+			modData = new ModData(mm);
 			Renderer.InitializeFonts(modData.Manifest);
-			modData.LoadInitialAssets(true);
+			modData.InitializeLoaders();
 
 
 			PerfHistory.items["render"].hasNormalTick = false;

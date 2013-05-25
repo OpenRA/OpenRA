@@ -104,7 +104,7 @@ namespace OpenRA
 		public Map(string path)
 		{
 			Path = path;
-			Container = FileSystem.OpenPackage(path, int.MaxValue);
+			Container = FileSystem.OpenPackage(path, null, int.MaxValue);
 
 			AssertExists("map.yaml");
 			AssertExists("map.bin");

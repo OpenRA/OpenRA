@@ -19,10 +19,12 @@ namespace OpenRA.FileFormats
 	public class Manifest
 	{
 		public readonly string[]
-			Mods, Folders, Packages, Rules, ServerTraits,
+			Mods, Folders, Rules, ServerTraits,
 			Sequences, Cursors, Chrome, Assemblies, ChromeLayout,
 			Weapons, Voices, Notifications, Music, Movies, TileSets,
 			ChromeMetrics, PackageContents;
+
+		public readonly Dictionary<string, string> Packages;
 		public readonly MiniYaml LoadScreen;
 		public readonly Dictionary<string, Pair<string,int>> Fonts;
 		public readonly int TileSize = 24;
@@ -36,7 +38,7 @@ namespace OpenRA.FileFormats
 
 			// TODO: Use fieldloader
 			Folders = YamlList(yaml, "Folders");
-			Packages = YamlList(yaml, "Packages");
+			Packages = yaml["Packages"].NodesDict.ToDictionary(x => x.Key, x => x.Value.Value);
 			Rules = YamlList(yaml, "Rules");
 			ServerTraits = YamlList(yaml, "ServerTraits");
 			Sequences = YamlList(yaml, "Sequences");
