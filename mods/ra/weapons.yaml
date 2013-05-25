@@ -242,7 +242,7 @@ Pistol:
 			Light: 60%
 			Heavy: 25%
 			Concrete: 25%
-		Explosion: piffs
+		Explosion: piff
 		InfDeath: 2
 		Damage: 1
 
@@ -389,7 +389,7 @@ Grenade:
 	Report: CANNON2
 	Projectile: Bullet
 		Speed: 50
-		Image: 120MM
+		Image: 50CAL
 	Warhead:
 		Spread: 3
 		Versus: 
