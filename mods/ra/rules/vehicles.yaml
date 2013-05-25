@@ -667,7 +667,7 @@ FTRK:
 		Range: 4
 	Turreted:
 		ROT: 5
-		Offset: -300,0,300
+		Offset: -298,0,298
 	Armament:
 		Weapon: FLAK-23
 		Recoil: 85

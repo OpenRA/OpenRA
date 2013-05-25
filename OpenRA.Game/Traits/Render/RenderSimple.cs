@@ -30,15 +30,16 @@ namespace OpenRA.Traits
 		[Desc("Number of facings for gameplay calculations. -1 indiciates auto-detection from sequence")]
 		public readonly int QuantizedFacings = -1;
 
+		[Desc("Camera pitch the sprite was rendered with. Used to determine rotation ellipses")]
 		public readonly WAngle CameraPitch = WAngle.FromDegrees(40);
 		public virtual object Create(ActorInitializer init) { return new RenderSimple(init.self); }
 
-		public virtual IEnumerable<Renderable> RenderPreview(ActorInfo building, PaletteReference pr)
+		public virtual IEnumerable<IRenderable> RenderPreview(ActorInfo ai, PaletteReference pr)
 		{
-			var anim = new Animation(RenderSimple.GetImage(building), () => 0);
+			var anim = new Animation(RenderSimple.GetImage(ai), () => 0);
 			anim.PlayRepeating("idle");
 
-			yield return new Renderable(anim.Image, 0.5f * anim.Image.size * (1 - Scale), pr, 0, Scale);
+			yield return new SpriteRenderable(anim.Image, WPos.Zero, 0, pr, 1f);
 		}
 	}
 
@@ -56,7 +57,8 @@ namespace OpenRA.Traits
 		public Animation anim
 		{
 			get { return anims[""].Animation; }
-			protected set { anims[""].Animation = value; }
+			protected set { anims[""] = new AnimationWithOffset(value,
+				anims[""].OffsetFunc, anims[""].DisableFunc, anims[""].ZOffset); }
 		}
 
 		public static string GetImage(ActorInfo actor)
@@ -97,7 +99,7 @@ namespace OpenRA.Traits
 		protected void UpdatePalette() { initializePalette = true; }
 		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner) { UpdatePalette(); }
 
-		public virtual IEnumerable<Renderable> Render(Actor self, WorldRenderer wr)
+		public virtual IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
 		{
 			if (initializePalette)
 			{
@@ -107,12 +109,7 @@ namespace OpenRA.Traits
 
 			foreach (var a in anims.Values)
 				if (a.DisableFunc == null || !a.DisableFunc())
-				{
-					Renderable ret = a.Image(self, wr, palette);
-					if (Info.Scale != 1f)
-						ret = ret.WithScale(Info.Scale).WithPos(ret.Pos + 0.5f * ret.Sprite.size * (1 - Info.Scale));
-					yield return ret;
-				}
+					yield return a.Image(self, wr, palette, Info.Scale);
 		}
 
 		public int2 SelectionSize(Actor self)

@@ -24,8 +24,8 @@ namespace OpenRA.Mods.RA
 			return byPlayer == null || Shroud.GetVisOrigins(self).Any(o => byPlayer.Shroud.IsVisible(o));
 		}
 
-		static Renderable[] Nothing = { };
-		public IEnumerable<Renderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<Renderable> r)
+		static IRenderable[] Nothing = { };
+		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
 		{
 			return IsVisible(self, self.World.RenderPlayer) ? r : Nothing;
 		}

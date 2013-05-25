@@ -55,7 +55,7 @@ namespace OpenRA.Mods.RA
 		public void AddSmudge(CPos loc)
 		{
 			if (Game.CosmeticRandom.Next(0,100) <= Info.SmokePercentage)
-				world.AddFrameEndTask(w => w.Add(new Smoke(w, Traits.Util.CenterOfCell(loc), Info.SmokeType)));
+				world.AddFrameEndTask(w => w.Add(new Smoke(w, loc.CenterPosition, Info.SmokeType)));
 
 			// No smudge; create a new one
 			if (!tiles.ContainsKey(loc))
