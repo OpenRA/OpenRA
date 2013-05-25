@@ -61,6 +61,8 @@ namespace OpenRA.Mods.RA.Render
 			anim.PlayFetchIndex(NormalizeInfantrySequence(self, "stand"), () => 0);
 			State = AnimationState.Waiting;
 			mobile = self.Trait<Mobile>();
+
+			self.Trait<IBodyOrientation>().QuantizedFacings = anim.CurrentSequence.Facings;
 		}
 
 		public void Attacking(Actor self, Target target)

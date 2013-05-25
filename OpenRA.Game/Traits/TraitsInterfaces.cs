@@ -189,6 +189,8 @@ namespace OpenRA.Traits
 	public interface IRenderAsTerrain { IEnumerable<IRenderable> RenderAsTerrain(WorldRenderer wr, Actor self); }
 	public interface IBodyOrientation
 	{
+		WAngle CameraPitch { get; }
+		int QuantizedFacings { get; set; }
 		WVec LocalToWorld(WVec vec);
 		WRot QuantizeOrientation(Actor self, WRot orientation);
 	}

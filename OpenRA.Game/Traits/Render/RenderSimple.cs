@@ -16,13 +16,8 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Traits
 {
-	public class RenderSimpleInfo : RenderSpritesInfo, IBodyOrientationInfo
+	public class RenderSimpleInfo : RenderSpritesInfo, Requires<IBodyOrientationInfo>
 	{
-		[Desc("Number of facings for gameplay calculations. -1 indiciates auto-detection from sequence")]
-		public readonly int QuantizedFacings = -1;
-
-		[Desc("Camera pitch the sprite was rendered with. Used to determine rotation ellipses")]
-		public readonly WAngle CameraPitch = WAngle.FromDegrees(40);
 		public override object Create(ActorInitializer init) { return new RenderSimple(init.self); }
 
 		public virtual IEnumerable<IRenderable> RenderPreview(ActorInfo ai, PaletteReference pr)
@@ -34,7 +29,7 @@ namespace OpenRA.Traits
 		}
 	}
 
-	public class RenderSimple : RenderSprites, IBodyOrientation, IAutoSelectionSize
+	public class RenderSimple : RenderSprites, IAutoSelectionSize
 	{
 		RenderSimpleInfo Info;
 
@@ -49,6 +44,7 @@ namespace OpenRA.Traits
 			: this(self, MakeFacingFunc(self))
 		{
 			anim.PlayRepeating("idle");
+			self.Trait<IBodyOrientation>().QuantizedFacings = anim.CurrentSequence.Facings;
 		}
 
 		public int2 SelectionSize(Actor self)
@@ -73,23 +69,6 @@ namespace OpenRA.Traits
 			if (anim.HasSequence(name))
 				anim.PlayThen(NormalizeSequence(self, name),
 					() => anim.PlayRepeating(NormalizeSequence(self, "idle")));
-		}
-
-		public WVec LocalToWorld(WVec vec)
-		{
-			// RA's 2d perspective doesn't correspond to an orthonormal 3D
-			// coordinate system, so fudge the y axis to make things look good
-			return new WVec(vec.Y, -Info.CameraPitch.Sin()*vec.X/1024, vec.Z);
-		}
-
-		public WRot QuantizeOrientation(Actor self, WRot orientation)
-		{
-			// Map yaw to the closest facing
-			var numDirs = Info.QuantizedFacings == -1 ? anim.CurrentSequence.Facings : Info.QuantizedFacings;
-			var facing = Util.QuantizeFacing(orientation.Yaw.Angle / 4, numDirs) * (256 / numDirs);
-
-			// Roll and pitch are always zero
-			return new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(facing));
 		}
 	}
 }

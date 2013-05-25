@@ -45,6 +45,8 @@ namespace OpenRA.Mods.RA.Render
 			anims.Add("wake", new AnimationWithOffset(wake,
 				() => anims["wake"].Animation.CurrentSequence.Name == "left-wake" ? leftOffset : rightOffset,
 			    () => false, -87));
+
+			self.Trait<IBodyOrientation>().QuantizedFacings = anim.CurrentSequence.Facings;
 		}
 
 		public override void Tick(Actor self)

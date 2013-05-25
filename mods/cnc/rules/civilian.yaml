@@ -445,3 +445,4 @@ VICE:
 	AttackWander:
 	RenderUnit:
 	WithMuzzleFlash:
+	BodyOrientation:

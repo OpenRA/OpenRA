@@ -33,6 +33,7 @@
 	DebugMuzzlePositions:
 	Guard:
 	Guardable:
+	BodyOrientation:
 
 ^Tank:
 	AppearsOnRadar:
@@ -69,6 +70,7 @@
 	DebugMuzzlePositions:
 	Guard:
 	Guardable:
+	BodyOrientation:
 
 ^Husk:
 	Health:
@@ -84,6 +86,7 @@
 		Types:Husk
 	Tooltip:
 		Name: Destroyed Tank
+	BodyOrientation:
 
 ^TowerHusk:
 	Health:
@@ -101,6 +104,7 @@
 		Name: Destroyed Tower
 	ProximityCaptor:
 		Types:Husk
+	BodyOrientation:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -149,6 +153,7 @@
 	DebugMuzzlePositions:
 	Guard:
 	Guardable:
+	BodyOrientation:
 
 ^Plane:
 	AppearsOnRadar:
@@ -168,6 +173,7 @@
 		Types:Plane
 	GivesBounty:
 	DebugMuzzlePositions:
+	BodyOrientation:
 
 ^Helicopter:
 	Inherits: ^Plane
@@ -216,3 +222,4 @@
 	Bib:
 	Guardable:
 		Range: 3
+	BodyOrientation:

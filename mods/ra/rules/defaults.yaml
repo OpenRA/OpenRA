@@ -36,6 +36,7 @@
 	DebugMuzzlePositions:
 	Guard:
 	Guardable:
+	BodyOrientation:
 
 ^Tank:
 	AppearsOnRadar:
@@ -75,6 +76,7 @@
 	DebugMuzzlePositions:
 	Guard:
 	Guardable:
+	BodyOrientation:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -126,6 +128,7 @@
 	DebugMuzzlePositions:
 	Guard:
 	Guardable:
+	BodyOrientation:
 
 ^Ship:
 	AppearsOnRadar:
@@ -157,6 +160,7 @@
 	DebugMuzzlePositions:
 	Guard:
 	Guardable:
+	BodyOrientation:
 
 ^Plane:
 	AppearsOnRadar:
@@ -183,6 +187,7 @@
 		String:Plane
 	UpdatesPlayerStatistics:
 	DebugMuzzlePositions:
+	BodyOrientation:
 
 ^Helicopter:
 	Inherits: ^Plane
@@ -229,6 +234,7 @@
 	Guardable:
 		Range: 3
 	AutoTargetIgnore:
+	BodyOrientation:
 
 ^Wall:
 	AppearsOnRadar:
@@ -263,6 +269,7 @@
 	Sellable:
 	UpdatesPlayerStatistics:
 	Guardable:
+	BodyOrientation:
 
 ^TechBuilding:
 	Inherits: ^Building
@@ -344,6 +351,7 @@
 	Armor:
 		Type: Wood
 	AutoTargetIgnore:
+	BodyOrientation:
 
 ^Husk:
 	Husk:
@@ -358,6 +366,7 @@
 	ProximityCaptor:
 		Types:Husk
 	BelowUnits:
+	BodyOrientation:
 
 ^Bridge:
 	Tooltip:
@@ -373,6 +382,7 @@
 	ProximityCaptor:
 		Types:Bridge
 	AutoTargetIgnore:
+	BodyOrientation:
 
 #Temperate Terrain Expansion
 ^SVBridge:
@@ -389,6 +399,7 @@
 	ProximityCaptor:
 		Types:Bridge
 	AutoTargetIgnore:
+	BodyOrientation:
 
 ^SHBridge:
 	Tooltip:
@@ -404,6 +415,7 @@
 	ProximityCaptor:
 		Types:Bridge
 	AutoTargetIgnore:
+	BodyOrientation:
 
 ^STDBridge:
 	Tooltip:
@@ -419,6 +431,7 @@
 	ProximityCaptor:
 		Types:Bridge
 	AutoTargetIgnore:
+	BodyOrientation:
 
 #Desert Terrain Expansion:
 ^Rock:
@@ -437,6 +450,7 @@
 		UseTerrainPalette: true
 	ProximityCaptor:
 		Types:Tree
+	BodyOrientation:
 
 ^DesertCivBuilding:
 	Inherits: ^CivBuilding

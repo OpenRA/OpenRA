@@ -33,6 +33,7 @@
 	DebugMuzzlePositions:
 	Guard:
 	Guardable:
+	BodyOrientation:
 
 ^Tank:
 	AppearsOnRadar:
@@ -72,6 +73,7 @@
 	DebugMuzzlePositions:
 	Guard:
 	Guardable:
+	BodyOrientation:
 
 ^Helicopter:
 	AppearsOnRadar:
@@ -97,6 +99,7 @@
 		Weapon: HeliExplode
 		EmptyWeapon: HeliExplode
 	DebugMuzzlePositions:
+	BodyOrientation:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -149,6 +152,7 @@
 	DebugMuzzlePositions:
 	Guard:
 	Guardable:
+	BodyOrientation:
 
 ^CivInfantry:
 	Inherits: ^Infantry
@@ -197,6 +201,7 @@
 	DrawLineToTarget:
 	ActorLostNotification:
 	DebugMuzzlePositions:
+	BodyOrientation:
 
 ^Ship:
 	AppearsOnRadar:
@@ -218,6 +223,7 @@
 	DebugMuzzlePositions:
 	Guard:
 	Guardable:
+	BodyOrientation:
 
 ^Building:
 	AppearsOnRadar:
@@ -266,6 +272,7 @@
 	DebugMuzzlePositions:
 	Guardable:
 		Range: 3
+	BodyOrientation:
 
 ^CivBuilding:
 	Inherits: ^Building
@@ -296,6 +303,7 @@
 		RelativeToTopLeft: yes
 	Tooltip:
 		Name: Civilian Building (Destroyed)
+	BodyOrientation:
 
 ^TechBuilding:
 	Inherits: ^CivBuilding
@@ -326,6 +334,7 @@
 	Tooltip:
 		Name: Field (Destroyed)
 	BelowUnits:
+	BodyOrientation:
 
 ^Wall:
 	AppearsOnRadar:
@@ -354,6 +363,7 @@
 	AutoTargetIgnore:
 	Sellable:
 	Guardable:
+	BodyOrientation:
 
 ^Tree:
 	Tooltip:
@@ -374,6 +384,7 @@
 	Armor:
 		Type: Wood
 	AutoTargetIgnore:
+	BodyOrientation:
 
 ^Rock:
 	Tooltip:
@@ -388,6 +399,7 @@
 		Terrain: Tree
 	EditorAppearance:
 		RelativeToTopLeft: yes
+	BodyOrientation:
 
 ^Husk:
 	Health:
@@ -403,6 +415,7 @@
 	TransformOnCapture:
 		ForceHealthPercentage: 25
 	BelowUnits:
+	BodyOrientation:
 #	Capturable:
 #		Type: husk
 #		AllowAllies: true
@@ -420,3 +433,4 @@
 	SoundOnDamageTransition:
 		DamagedSound: xplos.aud
 		DestroyedSound: xplobig4.aud
+	BodyOrientation:
