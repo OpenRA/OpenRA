@@ -70,10 +70,10 @@ function PARSE.parse_scope(lx, f, level)
   
   while 1 do
     local c = lx:next()
-    if c.tag == 'Eof' then break end
 
     -- Detect end of previous statement
-    if c.tag == 'Keyword' and (
+    if c.tag == 'Eof' -- trigger 'Statement' at the end of file
+    or c.tag == 'Keyword' and (
        c[1] == 'break' or c[1] == 'goto' or c[1] == 'do' or c[1] == 'while' or
        c[1] == 'repeat' or c[1] == 'if' or c[1] == 'for' or c[1] == 'function' and lx:peek().tag == 'Id' or
        c[1] == 'local' or c[1] == ';' or c[1] == 'until' or c[1] == 'return' or c[1] == 'end') or
@@ -89,8 +89,10 @@ function PARSE.parse_scope(lx, f, level)
       if scopes[#scopes].inside_until then scope_end(nil, c.lineinfo) end
       f('Statement', c[1], c.lineinfo)
     end
+
+    if c.tag == 'Eof' then break end
     
-    -- Process token(s).
+    -- Process token(s)
     if c.tag == 'Keyword' then
     
       if c[1] == 'local' and lx:peek().tag == 'Keyword' and lx:peek()[1] == 'function' then

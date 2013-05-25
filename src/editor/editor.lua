@@ -1032,7 +1032,7 @@ function IndicateAll(editor, lines, linee)
   end
 
   local cleared = {}
-  for indic = 0, 3 do cleared[indic] = pos end
+  for indic = 0, 2 do cleared[indic] = pos end
 
   local function IndicateOne(indic, pos, length)
     editor:SetIndicatorCurrent(indic)
@@ -1068,7 +1068,8 @@ function IndicateAll(editor, lines, linee)
     and (var.fpos < lineinfo and at == var.at
       or var.masked and at == var.masked.at) then
       local fpos = var.fpos < lineinfo and var.fpos or var.masked.fpos
-      IndicateOne(3, fpos, #name)
+      editor:SetIndicatorCurrent(3)
+      editor:IndicatorFillRange(fpos-1, #name)
       table.insert(tokens, {"Masked", name=name, fpos=fpos})
     end
     if op == 'EndScope' and name and TimeGet()-s > canwork then
@@ -1079,7 +1080,11 @@ function IndicateAll(editor, lines, linee)
 
   -- clear indicators till the end of processed fragment
   local pos = delayed[editor] and delayed[editor][1] or editor:GetLength()+1
-  for indic = 0, 3 do IndicateOne(indic, pos, 0) end
+
+  -- don't clear "masked" indicators as those can be set out of order (so
+  -- last updated fragment is not always the last in terms of its position);
+  -- these indicators should be up-to-date to the end of the code fragment.
+  for indic = 0, 2 do IndicateOne(indic, pos, 0) end
 
   return delayed[editor] ~= nil -- request more events if still need to work
 end
