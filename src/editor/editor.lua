@@ -798,8 +798,8 @@ function CreateEditor()
           if first then
             first = false
             -- SetSelection leaves the cursor at the end; don't use it
+            editor:GotoPos(pos-1)
             editor:SetAnchor(pos-1+#name)
-            editor:SetCurrentPos(pos-1)
           else
             editor:AddSelection(pos-1, pos-1+#name)
           end
