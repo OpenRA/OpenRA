@@ -49,7 +49,7 @@ namespace OpenRA.Mods.RA.Effects
 			pos -= new PVecInt(0, velocity);
 		}
 
-		public IEnumerable<Renderable> Render(WorldRenderer wr)
+		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
 			font.DrawTextWithContrast(s, Game.viewport.Zoom*(pos.ToFloat2() - Game.viewport.Location) - offset, color, Color.Black,1);
 			yield break;

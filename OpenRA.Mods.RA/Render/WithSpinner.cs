@@ -32,10 +32,9 @@ namespace OpenRA.Mods.RA.Render
 			var rs = self.Trait<RenderSimple>();
 			var spinner = new Animation(rs.GetImage(self));
 			spinner.PlayRepeating(info.Sequence);
-			rs.anims.Add("spinner_{0}".F(info.Sequence), new AnimationWithOffset(
-				spinner,
-				wr => wr.ScreenPxOffset(rs.LocalToWorld(info.Offset.Rotate(rs.QuantizeOrientation(self, self.Orientation)))),
-				null ) { ZOffset = 1 } );
+			rs.anims.Add("spinner_{0}".F(info.Sequence), new AnimationWithOffset(spinner,
+				() => rs.LocalToWorld(info.Offset.Rotate(rs.QuantizeOrientation(self, self.Orientation))),
+				null, p => WithTurret.ZOffsetFromCenter(self, p, 1)));
 		}
 	}
 }

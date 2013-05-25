@@ -78,8 +78,13 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
+<<<<<<< HEAD
 			if (hitanim != null)
 				yield return new SpriteRenderable(hitanim.Image, args.dest.ToFloat2(),
+=======
+			if (explosion != null)
+				yield return new SpriteRenderable(explosion.Image, args.dest.ToFloat2(),
+>>>>>>> 93c89a6ef54d6d4155a890ed5be1392519be46d8
 				                                  wr.Palette("effect"), (int)args.dest.Y);
 
 			if (ticks >= info.BeamDuration)

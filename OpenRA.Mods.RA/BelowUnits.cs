@@ -19,9 +19,9 @@ namespace OpenRA.Mods.RA
 
 	class BelowUnits : IRenderModifier
 	{
-		public IEnumerable<Renderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<Renderable> r)
+		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
 		{
-			return r.Select(a => a.WithZOffset((int) -a.Sprite.size.Y));
+			return r.Select(a => a.WithZOffset(-a.Size(wr).Z));
 		}
 	}
 }
