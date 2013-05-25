@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 
@@ -19,9 +20,12 @@ namespace OpenRA.FileFormats
 	{
 		Stream GetContent(string filename);
 		bool Exists(string filename);
-		IEnumerable<uint> AllFileHashes();
+		IEnumerable<uint> ClassicHashes();
+		IEnumerable<uint> CrcHashes();
+		IEnumerable<string> AllFileNames();
 		void Write(Dictionary<string, byte[]> contents);
 		int Priority { get; }
+		string Name { get; }
 	}
 
 	public class MixFile : IFolder
@@ -29,24 +33,31 @@ namespace OpenRA.FileFormats
 		readonly Dictionary<uint, PackageEntry> index;
 		readonly long dataStart;
 		readonly Stream s;
-		int priority;
+		readonly int priority;
+		readonly string filename;
+		readonly PackageHashType type;
 
 		// Save a mix to disk with the given contents
 		public MixFile(string filename, int priority, Dictionary<string, byte[]> contents)
 		{
+			this.filename = filename;
 			this.priority = priority;
+			this.type = PackageHashType.Classic;
+
 			if (File.Exists(filename))
 				File.Delete(filename);
 
 			s = File.Create(filename);
-
-			// TODO: Add a local mix database.dat for compatibility with XCC Mixer
+			index = new Dictionary<uint, PackageEntry>();
+			contents.Add("local mix database.dat", new XccLocalDatabase(contents.Keys.Append("local mix database.dat")).Data());
 			Write(contents);
 		}
 
-		public MixFile(string filename, int priority)
+		public MixFile(string filename, PackageHashType type, int priority)
 		{
+			this.filename = filename;
 			this.priority = priority;
+			this.type = type;
 			s = FileSystem.Open(filename);
 
 			// Detect format type
@@ -137,6 +148,23 @@ namespace OpenRA.FileFormats
 			return ret;
 		}
 
+		uint? FindMatchingHash(string filename)
+		{
+			var hash = PackageEntry.HashFilename(filename, type);
+			if (index.ContainsKey(hash))
+				return hash;
+
+			// Maybe we were given a raw hash?
+			uint raw;
+			if (!uint.TryParse(filename, NumberStyles.AllowHexSpecifier, CultureInfo.InvariantCulture, out raw))
+			    return null;
+
+			if ("{0:X}".F(raw) == filename && index.ContainsKey(raw))
+				return raw;
+
+			return null;
+		}
+
 		public Stream GetContent(uint hash)
 		{
 			PackageEntry e;
@@ -151,29 +179,63 @@ namespace OpenRA.FileFormats
 
 		public Stream GetContent(string filename)
 		{
-			var content = GetContent(PackageEntry.HashFilename(filename)); // RA1 and TD
-			if (content != null)
-				return content;
-			else
-				return GetContent(PackageEntry.CrcHashFilename(filename)); // TS
+			var hash = FindMatchingHash(filename);
+			return hash.HasValue ? GetContent(hash.Value) : null;
 		}
 
-		public IEnumerable<uint> AllFileHashes()
+		static readonly uint[] Nothing = {};
+		public IEnumerable<uint> ClassicHashes()
 		{
-			return index.Keys;
+			if (type == PackageHashType.Classic)
+				return index.Keys;
+
+			return Nothing;
+		}
+
+		public IEnumerable<uint> CrcHashes()
+		{
+			if (type == PackageHashType.CRC32)
+				return index.Keys;
+
+			return Nothing;
+		}
+
+		public IEnumerable<string> AllFileNames()
+		{
+			var lookup = new Dictionary<uint, string>();
+			if (Exists("local mix database.dat"))
+			{
+				var db = new XccLocalDatabase(GetContent("local mix database.dat"));
+				foreach (var e in db.Entries)
+				{
+					var hash = PackageEntry.HashFilename(e, type);
+					if (!lookup.ContainsKey(hash))
+						lookup.Add(hash, e);
+				}
+			}
+
+			if (FileSystem.Exists("global mix database.dat"))
+			{
+				var db = new XccGlobalDatabase(FileSystem.Open("global mix database.dat"));
+				foreach (var e in db.Entries)
+				{
+					var hash = PackageEntry.HashFilename(e, type);
+					if (!lookup.ContainsKey(hash))
+						lookup.Add(hash, e);
+				}
+			}
+
+			return index.Keys.Select(k => lookup.ContainsKey(k) ? lookup[k] : "{0:X}".F(k));
 		}
 
 		public bool Exists(string filename)
 		{
-			return (index.ContainsKey(PackageEntry.HashFilename(filename)) || index.ContainsKey(PackageEntry.CrcHashFilename(filename)));
+			return FindMatchingHash(filename).HasValue;
 		}
 
-
-		public int Priority
-		{
-			get { return 1000 + priority; }
-		}
-
+		public int Priority { get { return 1000 + priority; } }
+		public string Name { get { return filename; } }
+		
 		public void Write(Dictionary<string, byte[]> contents)
 		{
 			// Cannot modify existing mixfile - rename existing file and
@@ -190,8 +252,8 @@ namespace OpenRA.FileFormats
 			foreach (var kv in contents)
 			{
 				var length = (uint)kv.Value.Length;
-				var hash = PackageEntry.HashFilename(Path.GetFileName(kv.Key));
-				items.Add(new PackageEntry(hash, dataSize, length)); // TODO: Tiberian Sun uses CRC hashes
+				var hash = PackageEntry.HashFilename(Path.GetFileName(kv.Key), type);
+				items.Add(new PackageEntry(hash, dataSize, length));
 				dataSize += length;
 			}
 
