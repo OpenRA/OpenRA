@@ -18,6 +18,7 @@ namespace OpenRA.Mods.RA
 		public readonly string Anim = "1";
 		public readonly int Damage = 1;
 		public readonly int Interval = 8;
+		public readonly WVec Offset = new WVec(0,0,128);
 
 		public object Create(ActorInitializer init) { return new Burns(init.self, this); }
 	}
@@ -30,11 +31,11 @@ namespace OpenRA.Mods.RA
 		public Burns(Actor self, BurnsInfo info)
 		{
 			Info = info;
-			var rs = self.Trait<RenderSimple>();
+
 			var anim = new Animation("fire", () => 0);
-				anim.PlayRepeating(Info.Anim);
-				rs.anims.Add("fire",
-					new AnimationWithOffset(anim, wr => new float2(0, -3), null));
+			anim.PlayRepeating(Info.Anim);
+			self.Trait<RenderSimple>().anims.Add("fire",
+				new AnimationWithOffset(anim, () => info.Offset, null));
 		}
 
 		public void Tick(Actor self)

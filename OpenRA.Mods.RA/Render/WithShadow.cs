@@ -22,17 +22,19 @@ namespace OpenRA.Mods.RA.Render
 
 	class WithShadow : IRenderModifier
 	{
-		public IEnumerable<Renderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<Renderable> r)
+		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
 		{
 			var move = self.Trait<IMove>();
 
 			/* rude hack */
 			var visualOffset = ((move is Helicopter || move is Mobile) && move.Altitude > 0)
-				? Math.Abs((self.ActorID + Game.LocalTick) / 5 % 4 - 1) - 1 : 0;
+				? (int)Math.Abs((self.ActorID + Game.LocalTick) / 5 % 4 - 1) - 1 : 0;
 
-			var shadowSprites = r.Select(a => a.WithPalette(wr.Palette("shadow")));
-			var flyingSprites = (move.Altitude <= 0) ? r
-				: r.Select(a => a.WithPos(a.Pos - new float2(0, move.Altitude + visualOffset)).WithZOffset(move.Altitude + a.ZOffset));
+			var shadowSprites = r.Select(a => a.WithPalette(wr.Palette("shadow"))
+				.WithPos(a.Pos - new WVec(0, 0, a.Pos.Z)).WithZOffset(a.ZOffset + a.Pos.Z));
+
+			var flyingSprites = (move.Altitude <= 0) ? r :
+				r.Select(a => a.WithPos(a.Pos - new WVec(0,0,43*visualOffset)));
 
 			return shadowSprites.Concat(flyingSprites);
 		}

@@ -33,7 +33,7 @@ namespace OpenRA.Effects
 				world.AddFrameEndTask(w => w.Remove(this));
 		}
 
-		public IEnumerable<Renderable> Render(WorldRenderer wr)
+		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
 			if (!target.IsInWorld)
 				yield break;

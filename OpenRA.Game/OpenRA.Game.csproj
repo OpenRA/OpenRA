@@ -224,6 +224,7 @@
     <Compile Include="Traits\DebugPauseState.cs" />
     <Compile Include="Network\UPnP.cs" />
     <Compile Include="Widgets\ClientTooltipRegionWidget.cs" />
+    <Compile Include="Graphics\Renderable.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

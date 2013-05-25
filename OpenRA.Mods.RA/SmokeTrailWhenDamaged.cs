@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA
 				    !self.World.FogObscures(new CPos(position)))
 				{
 					var offset = info.Offset.Rotate(coords.QuantizeOrientation(self, self.Orientation));
-					var pos = PPos.FromWPosHackZ(position + coords.LocalToWorld(offset));
+					var pos = position + coords.LocalToWorld(offset);
 					self.World.AddFrameEndTask(w => w.Add(new Smoke(w, pos, info.Sprite)));
 				}
 

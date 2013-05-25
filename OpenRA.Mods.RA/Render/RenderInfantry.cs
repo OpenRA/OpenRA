@@ -132,7 +132,7 @@ namespace OpenRA.Mods.RA.Render
 			self.World.AddFrameEndTask(w =>
 			{
 				if (!self.Destroyed)
-					w.Add(new Corpse(w, self.CenterLocation.ToFloat2(), GetImage(self),
+					w.Add(new Corpse(w, self.CenterPosition, GetImage(self),
 					                 sequence, Info.PlayerPalette+self.Owner.InternalName));
 			});
 		}

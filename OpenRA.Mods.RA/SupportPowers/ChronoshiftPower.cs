@@ -242,23 +242,22 @@ namespace OpenRA.Mods.RA
 				// Unit previews
 				foreach (var unit in power.UnitsInRange(sourceLocation))
 				{
-					if (manager.self.Owner.Shroud.IsTargetable(unit)) {
-						var targetCell = unit.Location + (xy - sourceLocation);
+					var offset = (xy - sourceLocation).ToWVec();
+					if (manager.self.Owner.Shroud.IsTargetable(unit))
 						foreach (var r in unit.Render(wr))
-                            r.Sprite.DrawAt(r.Pos - Traits.Util.CenterOfCell(unit.Location).ToFloat2() + Traits.Util.CenterOfCell(targetCell).ToFloat2(),
-								r.Palette.Index,
-								r.Scale*r.Sprite.size);
-					}
+							r.WithPos(r.Pos + offset).Render(wr);
 				}
 
 				// Unit tiles
 				foreach (var unit in power.UnitsInRange(sourceLocation))
 				{
-					if (manager.self.Owner.Shroud.IsTargetable(unit)) {
+					if (manager.self.Owner.Shroud.IsTargetable(unit))
+					{
 						var targetCell = unit.Location + (xy - sourceLocation);
-						var canEnter = ((manager.self.Owner.Shroud.IsExplored(targetCell) || manager.self.Owner.HasFogVisibility())&& unit.Trait<Chronoshiftable>().CanChronoshiftTo(unit,targetCell));
+						var canEnter = ((manager.self.Owner.Shroud.IsExplored(targetCell) || manager.self.Owner.HasFogVisibility()) &&
+						                unit.Trait<Chronoshiftable>().CanChronoshiftTo(unit,targetCell));
 						var tile = canEnter ? validTile : invalidTile;
-						tile.DrawAt( wr, targetCell.ToPPos().ToFloat2(), "terrain" );
+						tile.DrawAt(wr, targetCell.ToPPos().ToFloat2(), "terrain");
 					}
 				}
 			}

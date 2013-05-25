@@ -8,18 +8,20 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
 namespace OpenRA.FileFormats
 {
+	public enum PackageHashType { Classic, CRC32 }
+
 	public class PackageEntry
 	{
 		public readonly uint Hash;
 		public readonly uint Offset;
 		public readonly uint Length;
-
 
 		public PackageEntry(uint hash, uint offset, uint length)
 		{
@@ -51,49 +53,54 @@ namespace OpenRA.FileFormats
 				return "0x{0:x8} - offset 0x{1:x8} - length 0x{2:x8}".F(Hash, Offset, Length);
 		}
 
-		public static uint HashFilename(string name) // Red Alert 1 and Tiberian Dawn
+		public static uint HashFilename(string name, PackageHashType type)
 		{
-			if (name.Length > 12)
-				name = name.Substring(0, 12);
-
-			name = name.ToUpperInvariant();
-			if (name.Length % 4 != 0)
-				name = name.PadRight(name.Length + (4 - name.Length % 4), '\0');
-
-			MemoryStream ms = new MemoryStream(Encoding.ASCII.GetBytes(name));
-			BinaryReader reader = new BinaryReader(ms);
-
-			int len = name.Length >> 2;
-			uint result = 0;
-
-			while (len-- != 0)
-				result = ((result << 1) | (result >> 31)) + reader.ReadUInt32();
-
-			return result;
-		}
-
-		public static uint CrcHashFilename(string name) // Tiberian Sun
-		{
-			name = name.ToUpperInvariant();
-			var l = name.Length;
-			int a = l >> 2;
-			if ((l & 3) != 0)
+			switch(type)
 			{
-				name += (char)(l - (a << 2));
-				int i = 3 - (l & 3);
-				while (i-- != 0)
-					name += name[a << 2];
+			case PackageHashType.Classic:
+				{
+					name = name.ToUpperInvariant();
+					if (name.Length % 4 != 0)
+						name = name.PadRight(name.Length + (4 - name.Length % 4), '\0');
+
+					MemoryStream ms = new MemoryStream(Encoding.ASCII.GetBytes(name));
+					BinaryReader reader = new BinaryReader(ms);
+
+					int len = name.Length >> 2;
+					uint result = 0;
+
+					while (len-- != 0)
+						result = ((result << 1) | (result >> 31)) + reader.ReadUInt32();
+
+					return result;
+				}
+
+			case PackageHashType.CRC32:
+				{
+					name = name.ToUpperInvariant();
+					var l = name.Length;
+					int a = l >> 2;
+					if ((l & 3) != 0)
+					{
+						name += (char)(l - (a << 2));
+						int i = 3 - (l & 3);
+						while (i-- != 0)
+							name += name[a << 2];
+					}
+					return CRC32.Calculate(Encoding.ASCII.GetBytes(name));
+				}
+
+			default: throw new NotImplementedException("Unknown hash type `{0}`".F(type));
 			}
-			return CRC32.Calculate(Encoding.ASCII.GetBytes(name));
 		}
 
 		static Dictionary<uint, string> Names = new Dictionary<uint,string>();
 
 		public static void AddStandardName(string s)
 		{
-			uint hash = HashFilename(s); // RA1 and TD
+			uint hash = HashFilename(s, PackageHashType.Classic); // RA1 and TD
 			Names.Add(hash, s);
-			uint crcHash = CrcHashFilename(s); // TS
+			uint crcHash = HashFilename(s, PackageHashType.CRC32); // TS
 			Names.Add(crcHash, s);
 		}
 

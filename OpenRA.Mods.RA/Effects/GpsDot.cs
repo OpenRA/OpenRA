@@ -77,14 +77,13 @@ namespace OpenRA.Mods.RA.Effects
 			show = hasGps && hasDot && !dotHidden;
 		}
 
-		public IEnumerable<Renderable> Render(WorldRenderer wr)
+		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
 			if (!show || self.Destroyed)
 				yield break;
 
-			var p = self.CenterLocation;
 			var palette = wr.Palette(info.IndicatorPalettePrefix+self.Owner.InternalName);
-			yield return new Renderable(anim.Image, p.ToFloat2() - 0.5f * anim.Image.size, palette, p.Y)
+			yield return new SpriteRenderable(anim.Image, self.CenterPosition, 0, palette, 1f)
 				.WithScale(1.5f);
 		}
 	}

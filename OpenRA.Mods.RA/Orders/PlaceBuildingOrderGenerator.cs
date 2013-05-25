@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA.Orders
 		readonly Actor Producer;
 		readonly string Building;
 		readonly BuildingInfo BuildingInfo;
-		IEnumerable<Renderable> preview;
+		IEnumerable<IRenderable> preview;
 		Sprite buildOk, buildBlocked;
 		bool initialized = false;
 
@@ -98,10 +98,9 @@ namespace OpenRA.Mods.RA.Orders
 					initialized = true;
 				}
 
+				var offset = (topLeft - CPos.Zero).ToWVec() + FootprintUtils.CenterOffset(BuildingInfo);
 				foreach (var r in preview)
-					r.Sprite.DrawAt(topLeft.ToPPos().ToFloat2() + r.Pos,
-									r.Palette.Index,
-									r.Scale*r.Sprite.size);
+					r.WithPos(r.Pos + offset).Render(wr);
 
 				var res = world.WorldActor.Trait<ResourceLayer>();
 				var isCloseEnough = BuildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, Building, topLeft);

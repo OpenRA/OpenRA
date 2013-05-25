@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA.Effects
 	{
 		readonly ProjectileArgs Args;
 		readonly TeslaZapInfo Info;
-		IEnumerable<Renderable> renderables;
+		IEnumerable<IRenderable> renderables;
 		int timeUntilRemove = 2; // # of frames
 		bool doneDamage = false;
 		bool initialized = false;
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA.Effects
 			Info = info;
 		}
 
-		public IEnumerable<Renderable> GenerateRenderables(WorldRenderer wr)
+		public IEnumerable<IRenderable> GenerateRenderables(WorldRenderer wr)
 		{
 			var bright = SequenceProvider.GetSequence(Info.Image, "bright");
 			var dim = SequenceProvider.GetSequence(Info.Image, "dim");
@@ -72,7 +72,7 @@ namespace OpenRA.Mods.RA.Effects
 			}
 		}
 
-		public IEnumerable<Renderable> Render(WorldRenderer wr)
+		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
 			if (!initialized)
 			{
@@ -83,13 +83,13 @@ namespace OpenRA.Mods.RA.Effects
 			return renderables;
 		}
 
-		static IEnumerable<Renderable> DrawZapWandering(WorldRenderer wr, PPos from, PPos to, Sequence s)
+		static IEnumerable<IRenderable> DrawZapWandering(WorldRenderer wr, PPos from, PPos to, Sequence s)
 		{
 			var z = float2.Zero;	/* hack */
 			var dist = to - from;
 			var norm = (1f / dist.Length) * new float2(-dist.Y, dist.X);
 
-			var renderables = new List<Renderable>();
+			var renderables = new List<IRenderable>();
 			if (Game.CosmeticRandom.Next(2) != 0)
 			{
 				var p1 = from.ToFloat2() + (1 / 3f) * dist.ToFloat2() + Game.CosmeticRandom.Gauss1D(1) * .2f * dist.Length * norm;
@@ -110,12 +110,12 @@ namespace OpenRA.Mods.RA.Effects
 			return renderables;
 		}
 
-		static IEnumerable<Renderable> DrawZap(WorldRenderer wr, float2 from, float2 to, Sequence s, out float2 p)
+		static IEnumerable<IRenderable> DrawZap(WorldRenderer wr, float2 from, float2 to, Sequence s, out float2 p)
 		{
 			var dist = to - from;
 			var q = new float2(-dist.Y, dist.X);
 			var c = -float2.Dot(from, q);
-			var rs = new List<Renderable>();
+			var rs = new List<IRenderable>();
 			var z = from;
 
 			while ((to - z).X > 5 || (to - z).X < -5 || (to - z).Y > 5 || (to - z).Y < -5)
@@ -123,7 +123,7 @@ namespace OpenRA.Mods.RA.Effects
 				var step = steps.Where(t => (to - (z + new float2(t[0],t[1]))).LengthSquared < (to - z).LengthSquared )
 					.OrderBy(t => Math.Abs(float2.Dot(z + new float2(t[0], t[1]), q) + c)).First();
 
-				rs.Add(new Renderable(s.GetSprite(step[4]), z + new float2(step[2], step[3]),
+				rs.Add(new SpriteRenderable(s.GetSprite(step[4]), z + new float2(step[2], step[3]),
 					wr.Palette("effect"), (int)from.Y));
 				z += new float2(step[0], step[1]);
 				if( rs.Count >= 1000 )
@@ -137,14 +137,14 @@ namespace OpenRA.Mods.RA.Effects
 
 		static int[][] steps = new []
 		{
-			new int[] { 8, 8, -8, -8, 0 },
-			new int[] { -8, -8, -16, -16, 0 },
-			new int[] { 8, 0, -8, -8, 1 },
-			new int[] { -8, 0, -16, -8, 1 },
-			new int[] { 0, 8, -8, -8, 2 },
-			new int[] { 0, -8, -8, -16, 2 },
-			new int[] { -8, 8, -16, -8, 3 },
-			new int[] { 8, -8, -8, -16, 3 }
+			new int[] { 8, 8, 4, 4, 0 },
+			new int[] { -8, -8, -4, -4, 0 },
+			new int[] { 8, 0, 4, 4, 1 },
+			new int[] { -8, 0, -4, 4, 1 },
+			new int[] { 0, 8, 4, 4, 2 },
+			new int[] { 0, -8, 4, -4, 2 },
+			new int[] { -8, 8, -4, 4, 3 },
+			new int[] { 8, -8, 4, -4, 3 }
 		};
 	}
 }
