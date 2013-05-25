@@ -76,11 +76,11 @@ namespace OpenRA.Mods.RA.Effects
 					world.AddFrameEndTask(w => w.Remove(this));
 		}
 
-		public IEnumerable<Renderable> Render(WorldRenderer wr)
+		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
 			if (hitanim != null)
-				yield return new Renderable(hitanim.Image, args.dest.ToFloat2() - .5f * hitanim.Image.size,
-				                            wr.Palette("effect"), (int)args.dest.Y);
+				yield return new SpriteRenderable(hitanim.Image, args.dest.ToFloat2(),
+				                                  wr.Palette("effect"), (int)args.dest.Y);
 
 			if (ticks >= info.BeamDuration)
 				yield break;
