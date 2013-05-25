@@ -38,7 +38,7 @@ MSLO:
 	CanPowerDown:
 	RequiresPower:
 	SupportPowerChargeBar:
-	
+
 GAP:
 	Inherits: ^Building
 	RequiresPower:
@@ -295,6 +295,7 @@ TSLA:
 	RenderRangeCircle:
 	-AcceptsSupplies:
 	DrawLineToTarget:
+	-AutoTargetIgnore:
 
 AGUN:
 	Inherits: ^Building
@@ -338,6 +339,7 @@ AGUN:
 		RangeCircleType: aa
 	-AcceptsSupplies:
 	DrawLineToTarget:
+	-AutoTargetIgnore:
 
 DOME:
 	RequiresPower:
@@ -456,6 +458,7 @@ PBOX.E1:
 	WithMuzzleFlash:
 	Cargo:
 		InitialUnits: e1
+	-AutoTargetIgnore:
 
 #PBOX.E2:
 #	Inherits: PBOX
@@ -476,6 +479,7 @@ PBOX.E3:
 		Weapon: Dragon
 		LocalOffset: 469,0,0
 	AttackTurreted:
+	-AutoTargetIgnore:
 
 PBOX.E4:
 	Inherits: PBOX
@@ -489,6 +493,7 @@ PBOX.E4:
 		Weapon: Flamer
 		LocalOffset: 469,0,0
 	AttackTurreted:
+	-AutoTargetIgnore:
 
 PBOX.E7:
 	Inherits: PBOX
@@ -502,6 +507,7 @@ PBOX.E7:
 		Weapon: Colt45
 		LocalOffset: 469,0,0
 	AttackTurreted:
+	-AutoTargetIgnore:
 
 PBOX.SHOK:
 	Inherits: PBOX
@@ -515,6 +521,7 @@ PBOX.SHOK:
 		Weapon: PortaTesla
 		LocalOffset: 469,0,0
 	AttackTurreted:
+	-AutoTargetIgnore:
 
 PBOX.SNIPER:
 	Inherits: PBOX
@@ -528,6 +535,7 @@ PBOX.SNIPER:
 		Weapon: Sniper
 		LocalOffset: 469,0,0
 	AttackTurreted:
+	-AutoTargetIgnore:
 
 HBOX:
 	Inherits: ^Building
@@ -621,6 +629,7 @@ HBOX.E1:
 	WithMuzzleFlash:
 	Cargo:
 		InitialUnits: e1
+	-AutoTargetIgnore:
 
 #HBOX.E2:
 #	Inherits: HBOX
@@ -641,6 +650,7 @@ HBOX.E3:
 		Weapon: Dragon
 		LocalOffset: 469,0,0
 	AttackTurreted:
+	-AutoTargetIgnore:
 
 HBOX.E4:
 	Inherits: HBOX
@@ -654,6 +664,7 @@ HBOX.E4:
 		Weapon: Flamer
 		LocalOffset: 469,0,0
 	AttackTurreted:
+	-AutoTargetIgnore:
 
 HBOX.E7:
 	Inherits: HBOX
@@ -667,6 +678,7 @@ HBOX.E7:
 		Weapon: Colt45
 		LocalOffset: 469,0,0
 	AttackTurreted:
+	-AutoTargetIgnore:
 
 HBOX.SHOK:
 	Inherits: HBOX
@@ -680,6 +692,7 @@ HBOX.SHOK:
 		Weapon: PortaTesla
 		LocalOffset: 469,0,0
 	AttackTurreted:
+	-AutoTargetIgnore:
 
 HBOX.SNIPER:
 	Inherits: HBOX
@@ -693,6 +706,7 @@ HBOX.SNIPER:
 		Weapon: Sniper
 		LocalOffset: 469,0,0
 	AttackTurreted:
+	-AutoTargetIgnore:
 
 GUN:
 	Inherits: ^Building
@@ -729,6 +743,7 @@ GUN:
 	RenderRangeCircle:
 	-AcceptsSupplies:
 	DrawLineToTarget:
+	-AutoTargetIgnore:
 
 FTUR:
 	Inherits: ^Building
@@ -766,6 +781,7 @@ FTUR:
 	RenderRangeCircle:
 	-AcceptsSupplies:
 	DrawLineToTarget:
+	-AutoTargetIgnore:
 
 SAM:
 	Inherits: ^Building
@@ -808,6 +824,7 @@ SAM:
 	CanPowerDown:
 	-AcceptsSupplies:
 	DrawLineToTarget:
+	-AutoTargetIgnore:
 
 ATEK:
 	Inherits: ^Building
@@ -1077,7 +1094,7 @@ AFLD:
 	ProductionBar:
 	SupportPowerChargeBar:
 	PrimaryBuilding:
-	
+
 POWR:
 	Inherits: ^Building
 	Buildable:
