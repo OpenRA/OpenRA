@@ -234,7 +234,7 @@ local function getValAtPosition(editor, pos)
   local line = editor:LineFromPosition(pos)
   local linetx = editor:GetLine(line)
   local linestart = editor:PositionFromLine(line)
-  local localpos = pos-linestart
+  local localpos = pos-linestart+1
 
   local selected = editor:GetSelectionStart() ~= editor:GetSelectionEnd()
     and pos >= editor:GetSelectionStart() and pos <= editor:GetSelectionEnd()
