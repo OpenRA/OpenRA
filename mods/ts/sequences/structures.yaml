@@ -1,0 +1,212 @@
+gacnst: # TODO: write a render trait for the overlays
+	idle: gtcnst
+		Start: 0
+		ShadowStart: 3
+	medium-damaged-idle: gtcnst
+		Start: 1
+		ShadowStart: 4
+	damaged-idle: gtcnst
+		Start: 2
+		ShadowStart: 5
+	make: gtcnstmk
+		Start: 0
+		Length: 24
+		ShadowStart: 24
+	build-front: gtcnst_d
+		Start: 0
+		Length: 20
+	damaged-build-front: gtcnst_d
+		Start: 0
+		Length: 20
+	idle-top: gtcnst_c
+		Start: 0
+		Length: 15
+		Tick: 200
+	damaged-idle-top: gtcnst_c
+		Start: 15
+		Length: 15
+		Tick: 200
+	heavy-damaged-idle-top: gtcnst_c
+		Start: 30
+	idle-side: gtcnst_a
+		Start: 0
+		Length: 10
+	damaged-idle-side: gtcnst_a
+		Start: 10
+		Length: 10
+	heavy-damaged-idle-side: gtcnst_a
+		Start: 20
+		Length: 10
+	idle-front: gtcnst_b
+		Start: 0
+		Length: 10
+	damaged-idle-front: gtcnst_b
+		Start: 0
+		Length: 10
+
+gapowr: # TODO: shadow, plugs
+	idle: gtpowr
+		Start: 0
+		ShadowStart: 3
+	make: gtpowrmk
+		Start: 0
+		Length: 20
+		ShadowStart: 20
+	damaged-idle: gtpowr
+		Start: 1
+		ShadowStart: 4
+	dead: gtpowr
+		Start: 2
+		ShadowStart: 5
+
+gapile:
+	idle: gtpile
+		Start: 0
+		ShadowStart: 3
+# TODO: lights: gtpile_a
+#		Start: 0
+# TODO: light: gtpile_b
+#		Start: 0
+# TODO: flag: gtpile_c
+#		Start:0
+	make: gtpilemk
+		Start: 0
+		Length: 20
+		ShadowStart: 20
+	damaged-idle: gtpile
+		Start: 1
+		ShadowStart: 4
+	dead: gtpile
+		Start: 2
+		ShadowStart: 5
+
+gaweap:
+	idle: gtweap
+		Start: 0
+		ShadowStart: 3
+	damaged-idle: gtweap
+		Start: 1
+		ShadowStart: 4
+	dead: gtweap
+		Start: 2
+		ShadowStart: 5
+	build-top: gtweap_d
+		Start: 0
+		Length: 9
+		ShadowStart: 9
+	damaged-build-top: gtweap_d
+		Start: 0
+		Length: 9
+		ShadowStart: 9
+	idle-top: gtweap_2
+		Start: 0
+	damaged-idle-top: gtweap_2
+		Start: 1
+	make: gtweapmk
+		Start: 0
+		Length: 20
+		Tick: 80
+		ShadowStart: 20
+# TODO: gtweap_1 & gtweapbb & gtweap_a & gtweap_b & gtweap_c are unused
+
+gasand: # TODO frame order (horizontal seems busted)
+	idle: gtsand
+		Start: 0
+		Length: 16
+		ShadowStart: 32
+	damaged-idle: gtsand
+		Start: 16
+		Length: 16
+		ShadowStart: 48
+
+gatick:
+	idle:
+		Start: 0
+		Facings: 1
+		ShadowStart: 3
+	damaged-idle:
+		Start: 1
+		Facings: 1
+		ShadowStart: 4
+	make: gatickmk
+		Start: 0
+		Length: 24
+		ShadowStart: 24
+
+gaicbm:
+	idle:
+		Start: 0
+		Facings: 1
+		ShadowStart: 3
+	damaged-idle:
+		Start: 1
+		Facings: 1
+		ShadowStart: 4
+	make: gaicbmmk
+		Start: 0
+		Length: 30
+		ShadowStart: 30
+
+gadpsa:
+	idle:
+		Start: 0
+		Facings: 1
+		ShadowStart: 3
+	damaged-idle:
+		Start: 1
+		Facings: 1
+		ShadowStart: 4
+	make: gadpsamk
+		Start: 0
+		Length: 36
+		ShadowStart: 36
+
+gaarty:
+	idle:
+		Start: 0
+		Facings: 1
+		ShadowStart: 3
+	damaged-idle:
+		Start: 1
+		Facings: 1
+		ShadowStart: 4
+	make: gaartymk
+		Start: 0
+		Length: 16
+		ShadowStart: 16
+
+gaspot: # TODO: 1 more damage state, GASPOT_A active animation
+	idle:
+		Start: 0
+		ShadowStart: 3
+	damaged-idle:
+		Start: 1
+		ShadowStart: 4
+	make: gaspotmk
+		Start: 0
+		Length: 14
+		ShadowStart: 14
+
+gahpad: # TODO: 1 more damage state
+	idle:
+		Start: 0
+		ShadowStart: 3
+	damaged-idle:
+		Start: 1
+		ShadowStart: 4
+	make: gahpadmk
+		Start: 0
+		Length: 18
+		ShadowStart: 18
+	build-top: gahpad_a
+		Start: 8
+		Length: 8
+	damaged-build-top: gahpad_a
+		Start: 0
+		Length: 8
+	idle-top: gahpadbb
+		Start: 0
+		ShadowStart: 3
+	damaged-idle-top: gahpadbb
+		Start: 1
+		ShadowStart: 4

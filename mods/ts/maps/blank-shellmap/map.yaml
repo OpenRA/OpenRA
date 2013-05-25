@@ -1,0 +1,47 @@
+Selectable: False
+
+MapFormat: 5
+
+Title: Blank
+
+Description: Placeholder
+
+Author: Matthias Mailänder
+
+Tileset: INTERIOR
+
+MapSize: 128,128
+
+Bounds: 16,16,96,96
+
+UseAsShellmap: True
+
+Type: Conquest
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+
+Actors:
+
+Smudges:
+
+Rules:
+	World:
+		-SpawnMPUnits:
+		-MPStartLocations:
+		LoadWidgetAtGameStart:
+			Widget: MAINMENU
+
+Sequences:
+
+Weapons:
+
+Voices:
+
+Notifications:

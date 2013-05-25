@@ -1,0 +1,138 @@
+Player:
+	TechTree:
+	ClassicProductionQueue@Building:
+		Type: Building
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+		QueuedAudio: Building
+		ReadyAudio: ConstructionComplete
+	ClassicProductionQueue@Defense:
+		Type: Defense
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+		QueuedAudio: Building
+		ReadyAudio: ConstructionComplete
+	ClassicProductionQueue@Vehicle:
+		Type: Vehicle
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+	ClassicProductionQueue@Infantry:
+		Type: Infantry
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+	ClassicProductionQueue@Air:
+		Type: Air
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
+	PlaceBuilding:
+	SupportPowerManager:
+	ConquestVictoryConditions:
+	PowerManager:
+	AllyRepair:
+	PlayerResources:
+		InitialCash: 5000
+	ActorGroupProxy:
+	DeveloperMode:
+	PlayerColorPalette:
+		BasePalette: player
+		RemapIndex: 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
+	GpsWatcher:
+	Shroud:
+	BaseAttackNotifier:
+	PlayerStatistics:
+
+World:
+	LoadWidgetAtGameStart:
+		Widget: INGAME_ROOT
+	BuildingInfluence:
+	ChooseBuildTabOnSelect:
+	PaletteFromFile@player:
+		Name: player
+		Filename: unittem.pal
+		ShadowIndex: 1
+	PaletteFromFile@terrain:
+		Name: terrain
+		Filename: isotem.pal
+	PaletteFromFile@chrome:
+		Name: chrome
+		Filename: cameo.pal
+		AllowModifiers: false
+		ShadowIndex: 242
+	PaletteFromFile@effect:
+		Name: effect
+		Filename: anim.pal
+	PaletteFromFile@colorpicker:
+		Name: colorpicker
+		Filename: unittem.pal
+		AllowModifiers: false
+	PaletteFromRGBA@shadow:
+		Name: shadow
+		R: 0
+		G: 0
+		B: 0
+		A: 140
+	PaletteFromRGBA@cloak:
+		Name: cloak
+		R: 0
+		G: 0
+		B: 0
+		A: 140
+	PaletteFromRGBA@highlight:
+		Name: highlight
+		R: 255
+		G: 255
+		B: 255
+		A: 128
+	PaletteFromRGBA@invuln:
+		Name: invuln
+		R: 128
+		G: 0
+		B: 0
+		A: 128
+	PaletteFromRGBA@disabled:
+		Name: disabled
+		R: 0
+		G: 0
+		B: 0
+		A: 180
+	ShroudPalette@shroud:
+		Type: Shroud
+	ShroudPalette@fog:
+		Name: fog
+		Type: Fog
+	VoxelNormalsPalette@normals:
+		Name: normals
+		Type: TiberianSun
+	Country@0:
+		Name: GDI
+		Race: gdi
+	Country@1:
+		Name: Nod
+		Race: nod
+	ResourceLayer:
+	ResourceClaimLayer:
+#	BibLayer: # TODO: file not found: bib3
+	DebugOverlay:
+	SpawnMapActors:
+	CreateMPPlayers:
+	MPStartUnits:
+		Races: gdi, nod
+		BaseActor: mcv
+	MPStartLocations:
+	SpawnMPUnits:
+	SpatialBins:
+		BinSize: 4
+	PathFinder:
+	ValidateOrder:
+	DebugPauseState:
+	ScreenShaker:
+
+mpspawn:
+	Waypoint:
+	RenderEditorOnly:
+	BodyOrientation:
+
+waypoint:
+	Waypoint:
+	RenderEditorOnly:
+	BodyOrientation:

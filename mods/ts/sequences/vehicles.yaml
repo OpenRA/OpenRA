@@ -1,0 +1,37 @@
+mmch:
+	stand:
+		Start: 0
+		Facings: -8
+		Stride: 15
+		ShadowStart: 152
+	run:
+		Start: 0
+		Length: 15
+		Facings: -8
+		ShadowStart: 152
+	turret:
+		Start: 120
+		Facings: -32
+
+gghunt:
+	idle:
+		Start: 0
+		Facings: 1
+		Length: 8
+		ShadowStart: 8
+
+smech:
+	stand: # TODO: slightly glitchy
+		Start: 0
+		Facings: 8
+		ShadowStart: 136
+	run:
+		Start: 0
+		Facings: -8
+		Length: 12
+		ShadowStart: 136
+	shoot: # TODO: played somehow too fast
+		Start: 104
+		Length: 4
+		Facings: -8
+		ShadowStart: 240
