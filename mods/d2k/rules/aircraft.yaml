@@ -21,8 +21,8 @@
 		RearmBuildings: starporta,starporto,starporth
 		MinimalLandAltitude: 25
 	RenderUnit:
-	RenderCargo:
-		RelativeAltitude: 20
+	WithCargo:
+		LocalOffset: 0,0,-854
 	WithShadow:
 	Cargo:
 		Types: Vehicle

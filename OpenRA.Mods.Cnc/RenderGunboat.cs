@@ -34,8 +34,12 @@ namespace OpenRA.Mods.RA.Render
 
 			var wake = new Animation(anim.Name);
 			wake.Play("left-wake");
-			Func<WorldRenderer, float2> offset = wr => new float2(((anims["wake"].Animation.CurrentSequence.Name == "left-wake") ? 1 : -1),2);
-			anims.Add( "wake", new AnimationWithOffset( wake, offset, () => false ) { ZOffset = -2 } );
+
+			var leftOffset = new WVec(43, 86, 0);
+			var rightOffset = new WVec(-43, 86, 0);
+			anims.Add("wake", new AnimationWithOffset(wake,
+				() => anims["wake"].Animation.CurrentSequence.Name == "left-wake" ? leftOffset : rightOffset,
+			    () => false, -87));
 		}
 
 		public override void Tick(Actor self)

@@ -34,11 +34,11 @@ namespace OpenRA.Mods.RA.Effects
 			anim.Tick();
 		}
 
-		public IEnumerable<Renderable> Render(WorldRenderer wr)
+		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
 			if (!a.Destroyed && a.Owner.IsAlliedWith(a.World.RenderPlayer))
-				yield return new Renderable(anim.Image,	a.CenterLocation.ToFloat2() - .5f * anim.Image.size,
-					wr.Palette("chrome"), (int)a.CenterLocation.Y);
+				yield return new SpriteRenderable(anim.Image, a.CenterPosition, 0,
+					wr.Palette("chrome"), 1f);
 		}
 	}
 }

@@ -19,13 +19,6 @@ namespace OpenRA.Mods.RA.Effects
 	{
 		Actor a;
 		Animation anim = new Animation("crate-effects");
-		float2 offset = new float2(-4,0);
-
-		public CrateEffect(Actor a, string seq, int2 offset)
-			: this(a, seq)
-		{
-			this.offset = offset;
-		}
 
 		public CrateEffect(Actor a, string seq)
 		{
@@ -39,12 +32,11 @@ namespace OpenRA.Mods.RA.Effects
 			anim.Tick();
 		}
 
-		public IEnumerable<Renderable> Render(WorldRenderer wr)
+		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
 			if (a.IsInWorld)
-				yield return new Renderable(anim.Image,
-					a.CenterLocation.ToFloat2() - .5f * anim.Image.size + offset,
-				    wr.Palette("effect"), (int)a.CenterLocation.Y);
+				yield return new SpriteRenderable(anim.Image,
+					a.CenterPosition, 0, wr.Palette("effect"), 1f);
 		}
 	}
 }

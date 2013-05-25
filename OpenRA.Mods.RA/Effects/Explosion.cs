@@ -32,11 +32,10 @@ namespace OpenRA.Mods.RA.Effects
 
 		public void Tick( World world ) { anim.Tick(); }
 
-		public IEnumerable<Renderable> Render(WorldRenderer wr)
+		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			yield return new Renderable(anim.Image,
-				pos.ToFloat2() - .5f * anim.Image.size - new int2(0,altitude),
-				wr.Palette("effect"), (int)pos.Y - altitude);
+			var p = pos.ToInt2() - new int2(0, altitude);
+			yield return new SpriteRenderable(anim.Image, p, wr.Palette("effect"), p.Y);
 		}
 
 		public Player Owner { get { return null; } }

@@ -73,7 +73,7 @@ PALACEH:
 		SelectTargetSound: 
 		LaunchSound:
 		MissileWeapon: atomic
-		SpawnOffset: 28,12
+		SpawnOffset:-512,1c171,0
 	CanPowerDown:
 	RequiresPower:
 	SupportPowerChargeBar:

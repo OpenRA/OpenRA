@@ -65,30 +65,23 @@ namespace OpenRA.Graphics
 		public PaletteReference Palette(string name) { return palettes[name]; }
 		public void AddPalette(string name, Palette pal, bool allowModifiers) { palette.AddPalette(name, pal, allowModifiers); }
 
-		class SpriteComparer : IComparer<Renderable>
-		{
-			public int Compare(Renderable x, Renderable y)
-			{
-				return (x.Z + x.ZOffset).CompareTo(y.Z + y.ZOffset);
-			}
-		}
-
-		IEnumerable<Renderable> SpritesToRender()
+		void DrawRenderables()
 		{
 			var bounds = Game.viewport.WorldBounds(world);
-			var comparer = new SpriteComparer();
+			var comparer = new RenderableComparer(this);
 
 			var actors = world.FindUnits(
 				bounds.TopLeftAsCPos().ToPPos(),
-				bounds.BottomRightAsCPos().ToPPos()
-			);
+				bounds.BottomRightAsCPos().ToPPos());
 
-			var renderables = actors.SelectMany(a => a.Render(this))
-				.OrderBy(r => r, comparer);
+			actors.SelectMany(a => a.Render(this))
+				.OrderBy(r => r, comparer)
+				.Do(rr => rr.Render(this));
 
-			var effects = world.Effects.SelectMany(e => e.Render(this));
-
-			return renderables.Concat(effects);
+			// Effects are drawn on top of all actors
+			// TODO: Allow effects to be interleaved with actors
+			world.Effects.SelectMany(e => e.Render(this))
+				.Do(rr => rr.Render(this));
 		}
 
 		public void Draw()
@@ -104,7 +97,7 @@ namespace OpenRA.Graphics
 			terrainRenderer.Draw(this, Game.viewport);
 			foreach (var a in world.traitDict.ActorsWithTraitMultiple<IRenderAsTerrain>(world))
 				foreach (var r in a.Trait.RenderAsTerrain(this, a.Actor))
-					r.Sprite.DrawAt(r.Pos, r.Palette.Index, r.Scale);
+					r.Render(this);
 
 			foreach (var a in world.Selection.Actors)
 				if (!a.Destroyed)
@@ -116,8 +109,7 @@ namespace OpenRA.Graphics
 			if (world.OrderGenerator != null)
 				world.OrderGenerator.RenderBeforeWorld(this, world);
 
-			foreach (var image in SpritesToRender())
-				image.Sprite.DrawAt(image.Pos, image.Palette.Index, image.Scale);
+			DrawRenderables();
 
 			// added for contrails
 			foreach (var a in world.ActorsWithTrait<IPostRender>())
@@ -222,19 +214,11 @@ namespace OpenRA.Graphics
 
 		public int2 ScreenPxPosition(WPos pos)
 		{
-			return new int2(Game.CellSize*pos.X/1024, Game.CellSize*(pos.Y - pos.Z)/1024);
-		}
-		public float ScreenZOffset(WPos pos) { return pos.Z*Game.CellSize/1024f; }
-
-		public int2 ScreenPxOffset(WVec vec)
-		{
-			return new int2(Game.CellSize*vec.X/1024, Game.CellSize*(vec.Y - vec.Z)/1024);
+			// Round to nearest pixel
+			var px = ScreenPosition(pos);
+			return new int2((int)Math.Round(px.X), (int)Math.Round(px.Y));
 		}
 
-		public float[] ScreenOffset(WVec vec)
-		{
-			var c = Game.CellSize/1024f;
-			return new float[] {c*vec.X, c*vec.Y, c*vec.Z};
-		}
+		public float ScreenZPosition(WPos pos, int zOffset) { return (pos.Y + pos.Z + zOffset)*Game.CellSize/1024f; }
 	}
 }
