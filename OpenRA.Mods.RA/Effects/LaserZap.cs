@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA.Effects
 		public readonly int BeamDuration = 10;
 		public readonly bool UsePlayerColor = false;
 		public readonly Color Color = Color.Red;
-		public readonly string LaserHitAnim = null;
+		public readonly string HitAnim = null;
 
 		public IEffect Create(ProjectileArgs args)
 		{
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA.Effects
 		int ticks = 0;
 		Color color;
 		bool doneDamage;
-		Animation explosion;
+		Animation hitanim;
 
 		public LaserZap(ProjectileArgs args, LaserZapInfo info, Color color)
 		{
@@ -49,8 +49,8 @@ namespace OpenRA.Mods.RA.Effects
 			this.info = info;
 			this.color = color;
 
-			if (info.LaserHitAnim != null)
-				this.explosion = new Animation(info.LaserHitAnim);
+			if (info.HitAnim != null)
+				this.hitanim = new Animation(info.HitAnim);
 		}
 
 		public void Tick(World world)
@@ -61,16 +61,16 @@ namespace OpenRA.Mods.RA.Effects
 
 			if (!doneDamage)
 			{
-				if (explosion != null)
-					explosion.PlayThen("idle",
+				if (hitanim != null)
+					hitanim.PlayThen("idle",
 						() => world.AddFrameEndTask(w => w.Remove(this)));
 				Combat.DoImpacts(args);
 				doneDamage = true;
 			}
 			++ticks;
 
-			if (explosion != null)
-				explosion.Tick();
+			if (hitanim != null)
+				hitanim.Tick();
 			else
 				if (ticks >= info.BeamDuration)
 					world.AddFrameEndTask(w => w.Remove(this));
@@ -78,8 +78,8 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<Renderable> Render(WorldRenderer wr)
 		{
-			if (explosion != null)
-				yield return new Renderable(explosion.Image, args.dest.ToFloat2() - .5f * explosion.Image.size,
+			if (hitanim != null)
+				yield return new Renderable(hitanim.Image, args.dest.ToFloat2() - .5f * hitanim.Image.size,
 				                            wr.Palette("effect"), (int)args.dest.Y);
 
 			if (ticks >= info.BeamDuration)
