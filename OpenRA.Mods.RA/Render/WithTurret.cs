@@ -54,6 +54,9 @@ namespace OpenRA.Mods.RA.Render
 			anim.Play(info.Sequence);
 			rs.anims.Add("turret_{0}".F(info.Turret), new AnimationWithOffset(
 				anim, () => TurretOffset(self), null, p => ZOffsetFromCenter(self, p, 1)));
+
+			// Restrict turret facings to match the sprite
+			t.QuantizedFacings = anim.CurrentSequence.Facings;
 		}
 
 		WVec TurretOffset(Actor self)

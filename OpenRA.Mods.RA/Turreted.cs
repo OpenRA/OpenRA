@@ -33,6 +33,7 @@ namespace OpenRA.Mods.RA
 
 	public class Turreted : ITick, ISync, IResolveOrder
 	{
+		[Sync] public int QuantizedFacings = -1;
 		[Sync] public int turretFacing = 0;
 		public int? desiredFacing;
 		TurretedInfo info;
@@ -91,8 +92,17 @@ namespace OpenRA.Mods.RA
 		// Orientation in unit-space
 		public WRot LocalOrientation(Actor self)
 		{
+
 			// Hack: turretFacing is relative to the world, so subtract the body yaw
-			return WRot.FromYaw(WAngle.FromFacing(turretFacing) - self.Orientation.Yaw);
+			var local = WRot.FromYaw(WAngle.FromFacing(turretFacing) - self.Orientation.Yaw);
+
+			if (QuantizedFacings == -1)
+				return local;
+
+			// Quantize orientation to match a rendered sprite
+			// Implies no pitch or yaw
+			var facing = Traits.Util.QuantizeFacing(local.Yaw.Angle / 4, QuantizedFacings) * (256 / QuantizedFacings);
+			return new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(facing));
 		}
 	}
 }
