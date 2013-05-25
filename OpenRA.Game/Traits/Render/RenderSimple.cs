@@ -16,7 +16,7 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Traits
 {
-	public class RenderSimpleInfo : RenderSpritesInfo, LocalCoordinatesModelInfo
+	public class RenderSimpleInfo : RenderSpritesInfo, IBodyOrientationInfo
 	{
 		[Desc("Number of facings for gameplay calculations. -1 indiciates auto-detection from sequence")]
 		public readonly int QuantizedFacings = -1;
@@ -34,7 +34,7 @@ namespace OpenRA.Traits
 		}
 	}
 
-	public class RenderSimple : RenderSprites, ILocalCoordinatesModel, IAutoSelectionSize
+	public class RenderSimple : RenderSprites, IBodyOrientation, IAutoSelectionSize
 	{
 		RenderSimpleInfo Info;
 

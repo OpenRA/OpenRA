@@ -54,7 +54,7 @@ namespace OpenRA.Mods.RA
 		public readonly WeaponInfo Weapon;
 		public readonly Barrel[] Barrels;
 		Lazy<Turreted> Turret;
-		Lazy<ILocalCoordinatesModel> Coords;
+		Lazy<IBodyOrientation> Coords;
 
 		public WRange Recoil;
 		public int FireDelay { get; private set; }
@@ -66,7 +66,7 @@ namespace OpenRA.Mods.RA
 
 			// We can't resolve these until runtime
 			Turret = Lazy.New(() => self.TraitsImplementing<Turreted>().FirstOrDefault(t => t.Name == info.Turret));
-			Coords = Lazy.New(() => self.Trait<ILocalCoordinatesModel>());
+			Coords = Lazy.New(() => self.Trait<IBodyOrientation>());
 
 			Weapon = Rules.Weapons[info.Weapon.ToLowerInvariant()];
 			Burst = Weapon.Burst;

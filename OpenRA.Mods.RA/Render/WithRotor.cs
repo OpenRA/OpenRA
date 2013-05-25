@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
-	public class WithRotorInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<LocalCoordinatesModelInfo>
+	public class WithRotorInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>
 	{
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;
@@ -29,12 +29,12 @@ namespace OpenRA.Mods.RA.Render
 		public WithRotor(Actor self, WithRotorInfo info)
 		{
 			var rs = self.Trait<RenderSprites>();
-			var coords = self.Trait<ILocalCoordinatesModel>();
+			var body = self.Trait<IBodyOrientation>();
 
 			rotorAnim = new Animation(rs.GetImage(self));
 			rotorAnim.PlayRepeating("rotor");
 			rs.anims.Add(info.Id, new AnimationWithOffset(rotorAnim,
-				() => coords.LocalToWorld(info.Offset.Rotate(coords.QuantizeOrientation(self, self.Orientation))),
+				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
 				null, p => WithTurret.ZOffsetFromCenter(self, p, 1)));
 		}
 

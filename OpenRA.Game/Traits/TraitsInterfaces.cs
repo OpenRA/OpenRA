@@ -187,12 +187,12 @@ namespace OpenRA.Traits
 	public interface IPostRenderSelection { void RenderAfterWorld(WorldRenderer wr); }
 	public interface IPreRenderSelection { void RenderBeforeWorld(WorldRenderer wr, Actor self); }
 	public interface IRenderAsTerrain { IEnumerable<IRenderable> RenderAsTerrain(WorldRenderer wr, Actor self); }
-	public interface ILocalCoordinatesModel
+	public interface IBodyOrientation
 	{
 		WVec LocalToWorld(WVec vec);
 		WRot QuantizeOrientation(Actor self, WRot orientation);
 	}
-	public interface LocalCoordinatesModelInfo {}
+	public interface IBodyOrientationInfo {}
 
 	public interface ITargetable
 	{

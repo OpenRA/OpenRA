@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -17,7 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
-	class WithTurretInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<TurretedInfo>, Requires<LocalCoordinatesModelInfo>
+	class WithTurretInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<TurretedInfo>, Requires<IBodyOrientationInfo>
 	{
 		[Desc("Sequence name to use")]
 		public readonly string Sequence = "turret";
@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA.Render
 	{
 		WithTurretInfo info;
 		RenderSprites rs;
-		ILocalCoordinatesModel coords;
+		IBodyOrientation body;
 		AttackBase ab;
 		Turreted t;
 		IEnumerable<Armament> arms;
@@ -48,7 +48,7 @@ namespace OpenRA.Mods.RA.Render
 		{
 			this.info = info;
 			rs = self.Trait<RenderSprites>();
-			coords = self.Trait<ILocalCoordinatesModel>();
+			body = self.Trait<IBodyOrientation>();
 
 			ab = self.TraitOrDefault<AttackBase>();
 			t = self.TraitsImplementing<Turreted>()
@@ -72,9 +72,9 @@ namespace OpenRA.Mods.RA.Render
 
 			var recoil = arms.Aggregate(WRange.Zero, (a,b) => a + b.Recoil);
 			var localOffset = new WVec(-recoil, WRange.Zero, WRange.Zero);
-			var bodyOrientation = coords.QuantizeOrientation(self, self.Orientation);
-			var turretOrientation = coords.QuantizeOrientation(self, t.LocalOrientation(self));
-			return t.Position(self) + coords.LocalToWorld(localOffset.Rotate(turretOrientation).Rotate(bodyOrientation));
+			var bodyOrientation = body.QuantizeOrientation(self, self.Orientation);
+			var turretOrientation = body.QuantizeOrientation(self, t.LocalOrientation(self));
+			return t.Position(self) + body.LocalToWorld(localOffset.Rotate(turretOrientation).Rotate(bodyOrientation));
 		}
 
 		public void Tick(Actor self)

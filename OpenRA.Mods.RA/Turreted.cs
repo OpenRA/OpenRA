@@ -84,9 +84,9 @@ namespace OpenRA.Mods.RA
 		// Turret offset in world-space
 		public WVec Position(Actor self)
 		{
-			var coords = self.Trait<ILocalCoordinatesModel>();
-			var bodyOrientation = coords.QuantizeOrientation(self, self.Orientation);
-			return coords.LocalToWorld(Offset.Rotate(bodyOrientation));
+			var body = self.Trait<IBodyOrientation>();
+			var bodyOrientation = body.QuantizeOrientation(self, self.Orientation);
+			return body.LocalToWorld(Offset.Rotate(bodyOrientation));
 		}
 
 		// Orientation in unit-space
