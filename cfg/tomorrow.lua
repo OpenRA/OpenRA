@@ -234,6 +234,10 @@ return {
     wxSTC_INDIC_BOX      Box
     wxSTC_INDIC_ROUNDBOX Rounded Box
   --]]
+  -- these indicators have all different default styles
+  varlocal = {fg = C.Foreground},
+  varglobal = {fg = C.Foreground},
+  varmasked = {fg = C.Foreground},
 
   -- markup
   ['['] = {hs = mixer(C.Comment, 3, 64)},

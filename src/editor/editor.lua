@@ -909,6 +909,9 @@ end
 local delayed = {}
 local tokenlists = {}
 
+-- indicator.MASKED is handled separately, so don't include in MAX
+local indicator = {FUNCCALL = 0, LOCAL = 1, GLOBAL = 2, MASKED = 3, MAX = 2}
+
 function IndicateIfNeeded()
   local editor = GetEditor()
   -- do the current one first
@@ -977,15 +980,6 @@ function IndicateAll(editor, lines, linee)
     end)
   end
 
-  editor:IndicatorSetStyle(1, wxstc.wxSTC_INDIC_DOTS)
-  editor:IndicatorSetForeground(1, wx.wxColour(0, 0, 127))
-
-  editor:IndicatorSetStyle(2, wxstc.wxSTC_INDIC_PLAIN)
-  editor:IndicatorSetForeground(2, wx.wxColour(0, 127, 0))
-
-  editor:IndicatorSetStyle(3, wxstc.wxSTC_INDIC_STRIKE)
-  editor:IndicatorSetForeground(2, wx.wxColour(0, 0, 127))
-
   local d = delayed[editor]
   local pos, vars = d and d[1] or 1, d and d[2] or nil
   local start = lines and editor:PositionFromLine(lines)+1 or nil
@@ -999,7 +993,7 @@ function IndicateAll(editor, lines, linee)
   local tokens = tokenlists[editor]
 
   if start then -- if the range is specified
-    editor:SetIndicatorCurrent(3)
+    editor:SetIndicatorCurrent(indicator.MASKED)
     for n = #tokens, 1, -1 do
       local token = tokens[n]
       -- find the last token before the range
@@ -1032,7 +1026,7 @@ function IndicateAll(editor, lines, linee)
   end
 
   local cleared = {}
-  for indic = 0, 2 do cleared[indic] = pos end
+  for indic = 0, indicator.MAX do cleared[indic] = pos end
 
   local function IndicateOne(indic, pos, length)
     editor:SetIndicatorCurrent(indic)
@@ -1058,7 +1052,7 @@ function IndicateAll(editor, lines, linee)
 
     -- indicate local/global variables
     if op == 'Id' then
-      IndicateOne(var and 1 or 2, lineinfo, #name)
+      IndicateOne(var and indicator.LOCAL or indicator.GLOBAL, lineinfo, #name)
     end
 
     -- indicate masked values at the same level
@@ -1068,7 +1062,7 @@ function IndicateAll(editor, lines, linee)
     and (var.fpos < lineinfo and at == var.at
       or var.masked and at == var.masked.at) then
       local fpos = var.fpos < lineinfo and var.fpos or var.masked.fpos
-      editor:SetIndicatorCurrent(3)
+      editor:SetIndicatorCurrent(indicator.MASKED)
       editor:IndicatorFillRange(fpos-1, #name)
       table.insert(tokens, {"Masked", name=name, fpos=fpos})
     end
@@ -1084,7 +1078,7 @@ function IndicateAll(editor, lines, linee)
   -- don't clear "masked" indicators as those can be set out of order (so
   -- last updated fragment is not always the last in terms of its position);
   -- these indicators should be up-to-date to the end of the code fragment.
-  for indic = 0, 2 do IndicateOne(indic, pos, 0) end
+  for indic = 0, indicator.MAX do IndicateOne(indic, pos, 0) end
 
   return delayed[editor] ~= nil -- request more events if still need to work
 end
