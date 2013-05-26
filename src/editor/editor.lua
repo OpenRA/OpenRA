@@ -327,6 +327,232 @@ function EditorIsModified(editor)
   return modified
 end
 
+-- Indicator handling for functions and local/global variables
+local function indicateFunctions28(editor, lines, linee)
+  if (not (edcfg.showfncall and editor.spec and editor.spec.isfncall)) then return end
+
+  local es = editor:GetEndStyled()
+  local lines = lines or 0
+  local linee = linee or editor:GetLineCount()-1
+
+  if (lines < 0) then return end
+
+  local isfncall = editor.spec.isfncall
+  local isinvalid = {}
+  for i,v in pairs(editor.spec.iscomment) do isinvalid[i] = v end
+  for i,v in pairs(editor.spec.iskeyword0) do isinvalid[i] = v end
+  for i,v in pairs(editor.spec.isstring) do isinvalid[i] = v end
+
+  local INDICS_MASK = wxstc.wxSTC_INDICS_MASK
+  local INDIC0_MASK = wxstc.wxSTC_INDIC0_MASK
+
+  for line=lines,linee do
+    local tx = editor:GetLine(line)
+    local ls = editor:PositionFromLine(line)
+
+    local from = 1
+    local off = -1
+
+    editor:StartStyling(ls,INDICS_MASK)
+    editor:SetStyling(#tx,0)
+    while from do
+      tx = from==1 and tx or string.sub(tx,from)
+
+      local f,t,w = isfncall(tx)
+
+      if (f) then
+        local p = ls+f+off
+        local s = bit.band(editor:GetStyleAt(p),31)
+        editor:StartStyling(p,INDICS_MASK)
+        editor:SetStyling(#w,isinvalid[s] and 0 or (INDIC0_MASK + 1))
+        off = off + t
+      end
+      from = t and (t+1)
+    end
+  end
+  editor:StartStyling(es,31)
+end
+
+local delayed = {}
+local tokenlists = {}
+
+-- indicator.MASKED is handled separately, so don't include in MAX
+local indicator = {FUNCCALL = 0, LOCAL = 1, GLOBAL = 2, MASKED = 3, MAX = 2}
+
+function IndicateIfNeeded()
+  local editor = GetEditor()
+  -- do the current one first
+  if delayed[editor] then return IndicateAll(editor) end
+  for editor in pairs(delayed) do return IndicateAll(editor) end
+end
+
+-- find all instances of a symbol at pos
+-- return table with [0] as the definition position (if local)
+local function indicateFindInstances(editor, name, pos)
+  local tokens = tokenlists[editor] or {}
+  local instances = {{[-1] = 1}}
+  local this
+  for _, token in ipairs(tokens) do
+    local op = token[1]
+
+    if op == 'EndScope' then -- EndScope has "new" level, so need +1
+      if this and token.fpos > pos and this == token.at+1 then break end
+
+      if #instances > 1 and instances[#instances][-1] == token.at+1 then
+        table.remove(instances) end
+    elseif token.name == name then
+      if op == 'Id' then
+        table.insert(instances[#instances], token.fpos)
+      elseif op:find("^Var") then
+        if this and token.fpos > pos and this == token.at then break end
+
+        -- if new Var is defined at the same level, replace the current frame;
+        -- if not, add a new one
+        instances[#instances + (token.at > instances[#instances][-1] and 1 or 0)]
+          = {[0] = token.fpos, [-1] = token.at}
+      end
+      if token.fpos <= pos and pos <= token.fpos+#name then this = instances[#instances][-1] end
+    end
+  end
+  instances[#instances][-1] = nil -- remove the current level
+  return instances[#instances]
+end
+
+function IndicateAll(editor, lines, linee)
+  local PARSE = require 'lua_parser_loose'
+  local LEX = require 'lua_lexer_loose'
+
+  local function mark_variables(code, pos, vars)
+    local lx = LEX.lexc(code, nil, pos)
+    return coroutine.wrap(function()
+      local varnext = {}
+      PARSE.parse_scope_resolve(lx, function(op, name, lineinfo, vars)
+        if not(op == 'Id' or op == 'Statement' or op == 'Var'
+            or op == 'VarNext' or op == 'VarInside' or op == 'VarSelf'
+            or op == 'FunctionCall' or op == 'Scope' or op == 'EndScope') then
+          return end -- "normal" return; not interested in other events
+
+        -- level needs to be adjusted for VarInside as it comes into scope
+        -- only after next block statement
+        local at = vars[0] and (vars[0] + (op == 'VarInside' and 1 or 0))
+        if op == 'Statement' then
+          for _, token in pairs(varnext) do coroutine.yield(unpack(token)) end
+          varnext = {}
+        elseif op == 'VarNext' or op == 'VarInside' then
+          table.insert(varnext, {'Var', name, lineinfo, vars, at})
+        end
+
+        coroutine.yield(op, name, lineinfo, vars, at)
+      end, vars)
+    end)
+  end
+
+  local d = delayed[editor]
+  local pos, vars = d and d[1] or 1, d and d[2] or nil
+  local start = lines and editor:PositionFromLine(lines)+1 or nil
+  if d and start and pos >= start then
+    -- ignore delayed processing as the change is earlier in the text
+    pos, vars = 1, nil
+  end
+  delayed[editor] = nil -- assume this can be finished for now
+
+  tokenlists[editor] = tokenlists[editor] or {}
+  local tokens = tokenlists[editor]
+
+  if start then -- if the range is specified
+    editor:SetIndicatorCurrent(indicator.MASKED)
+    for n = #tokens, 1, -1 do
+      local token = tokens[n]
+      -- find the last token before the range
+      if token[1] == 'EndScope' and token.name and token.fpos+#token.name < start then
+        pos, vars = token.fpos+#token.name, token.context
+        break
+      end
+      -- unmask all variables from the rest of the list
+      if token[1] == 'Masked' then
+        editor:IndicatorClearRange(token.fpos-1, #token.name)
+      end
+      -- trim the list as it will be re-generated
+      table.remove(tokens, n)
+    end
+
+    if vars then
+      for name, var in pairs(vars) do
+        -- remove all variables that are created later than the current pos
+        while type(var) == 'table' and var.fpos and (var.fpos > pos) do
+          var = var.masked -- restored a masked var
+          vars[name] = var
+        end
+      end
+    end
+  else
+    if pos == 1 then -- if not continuing, then trim the list
+      tokens = {}
+      tokenlists[editor] = tokens
+    end
+  end
+
+  local cleared = {}
+  for indic = 0, indicator.MAX do cleared[indic] = pos end
+
+  local function IndicateOne(indic, pos, length)
+    editor:SetIndicatorCurrent(indic)
+    editor:IndicatorClearRange(cleared[indic]-1, pos-cleared[indic])
+    editor:IndicatorFillRange(pos-1, length)
+    cleared[indic] = pos+length
+  end
+
+  local s = TimeGet()
+  local canwork = start and 0.010 or 0.100 -- use shorter interval when typing
+  local f = mark_variables(editor:GetText(), pos, vars)
+
+  while true do
+    local op, name, lineinfo, vars, at = f()
+    if not op then break end
+    local var = vars and vars[name]
+    local token = {op, name=name, fpos=lineinfo, at=at, context=vars}
+    if op == 'FunctionCall' then
+      IndicateOne(0, lineinfo, #name)
+    elseif op ~= 'VarNext' and op ~= 'VarInside' and op ~= 'Statement' then
+      table.insert(tokens, token)
+    end
+
+    -- indicate local/global variables
+    if op == 'Id' then
+      IndicateOne(var and indicator.LOCAL or indicator.GLOBAL, lineinfo, #name)
+    end
+
+    -- indicate masked values at the same level
+    if op == 'Var' and var -- also check 'VarSelf'?
+    -- skip those that have the same position as this can be reported
+    -- when `vars` already include the variable because of partial processing
+    and (var.fpos < lineinfo and at == var.at
+      or var.masked and at == var.masked.at) then
+      local fpos = var.fpos < lineinfo and var.fpos or var.masked.fpos
+      editor:SetIndicatorCurrent(indicator.MASKED)
+      editor:IndicatorFillRange(fpos-1, #name)
+      table.insert(tokens, {"Masked", name=name, fpos=fpos})
+    end
+    if op == 'EndScope' and name and TimeGet()-s > canwork then
+      delayed[editor] = {lineinfo+#name, vars}
+      break
+    end
+  end
+
+  -- clear indicators till the end of processed fragment
+  local pos = delayed[editor] and delayed[editor][1] or editor:GetLength()+1
+
+  -- don't clear "masked" indicators as those can be set out of order (so
+  -- last updated fragment is not always the last in terms of its position);
+  -- these indicators should be up-to-date to the end of the code fragment.
+  for indic = 0, indicator.MAX do IndicateOne(indic, pos, 0) end
+
+  return delayed[editor] ~= nil -- request more events if still need to work
+end
+
+if ide.wxver < "2.9.5" or not ide.config.autoanalizer then
+  IndicateAll = indicateFunctions28 end
+
 -- ----------------------------------------------------------------------------
 -- Create an editor
 function CreateEditor()
@@ -739,6 +965,35 @@ function CreateEditor()
       end
     end)
 
+  local function selectAllInstances(instances, name)
+    local first = true
+    for i, pos in pairs(instances) do
+      if i >= 0 then
+        if first then
+          first = false
+          -- SetSelection leaves the cursor at the end; don't use it
+          editor:GotoPos(pos-1)
+          editor:SetAnchor(pos-1+#name)
+        else
+          editor:AddSelection(pos-1, pos-1+#name)
+        end
+      end
+    end
+  end
+
+  editor:Connect(wxstc.wxEVT_STC_DOUBLECLICK,
+    function(event)
+      local pos = event:GetPosition()
+      value = pos ~= wxstc.wxSTC_INVALID_POSITION and getValAtPosition(editor, pos) or nil
+      local instances = value and indicateFindInstances(editor, value, pos+1)
+      if not (instances and (instances[0] or #instances > 0)) then
+        event:Skip()
+        return
+      end
+
+      selectAllInstances(instances, value)
+    end)
+
   local value
   local instances
   editor:Connect(wx.wxEVT_CONTEXT_MENU,
@@ -762,7 +1017,7 @@ function CreateEditor()
       local point = editor:ScreenToClient(event:GetPosition())
       local pos = editor:PositionFromPointClose(point.x, point.y)
       value = pos ~= wxstc.wxSTC_INVALID_POSITION and getValAtPosition(editor, pos) or nil
-      instances = value and IndicateFindInstances(editor, value, pos+1)
+      instances = value and indicateFindInstances(editor, value, pos+1)
       if instances then instances[-1] = value end
       menu:Enable(ID_GOTODEFINITION, instances and instances[0])
       menu:Enable(ID_RENAMEALLINSTANCES, instances and (instances[0] or #instances > 0))
@@ -791,20 +1046,7 @@ function CreateEditor()
 
   editor:Connect(ID_RENAMEALLINSTANCES, wx.wxEVT_COMMAND_MENU_SELECTED,
     function(event)
-      local name = instances[-1]
-      local first = true
-      for i, pos in pairs(instances) do
-        if i >= 0 then
-          if first then
-            first = false
-            -- SetSelection leaves the cursor at the end; don't use it
-            editor:GotoPos(pos-1)
-            editor:SetAnchor(pos-1+#name)
-          else
-            editor:AddSelection(pos-1, pos-1+#name)
-          end
-        end
-      end
+      selectAllInstances(instances, instances[-1])
     end)
 
   editor:Connect(ID_QUICKADDWATCH, wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -860,231 +1102,6 @@ function GetSpec(ext,forcespec)
   end
   return spec
 end
-
-local function IndicateFunctions28(editor, lines, linee)
-  if (not (edcfg.showfncall and editor.spec and editor.spec.isfncall)) then return end
-
-  local es = editor:GetEndStyled()
-  local lines = lines or 0
-  local linee = linee or editor:GetLineCount()-1
-
-  if (lines < 0) then return end
-
-  local isfncall = editor.spec.isfncall
-  local isinvalid = {}
-  for i,v in pairs(editor.spec.iscomment) do isinvalid[i] = v end
-  for i,v in pairs(editor.spec.iskeyword0) do isinvalid[i] = v end
-  for i,v in pairs(editor.spec.isstring) do isinvalid[i] = v end
-
-  local INDICS_MASK = wxstc.wxSTC_INDICS_MASK
-  local INDIC0_MASK = wxstc.wxSTC_INDIC0_MASK
-
-  for line=lines,linee do
-    local tx = editor:GetLine(line)
-    local ls = editor:PositionFromLine(line)
-
-    local from = 1
-    local off = -1
-
-    editor:StartStyling(ls,INDICS_MASK)
-    editor:SetStyling(#tx,0)
-    while from do
-      tx = from==1 and tx or string.sub(tx,from)
-
-      local f,t,w = isfncall(tx)
-
-      if (f) then
-        local p = ls+f+off
-        local s = bit.band(editor:GetStyleAt(p),31)
-        editor:StartStyling(p,INDICS_MASK)
-        editor:SetStyling(#w,isinvalid[s] and 0 or (INDIC0_MASK + 1))
-        off = off + t
-      end
-      from = t and (t+1)
-    end
-  end
-  editor:StartStyling(es,31)
-end
-
-local delayed = {}
-local tokenlists = {}
-
--- indicator.MASKED is handled separately, so don't include in MAX
-local indicator = {FUNCCALL = 0, LOCAL = 1, GLOBAL = 2, MASKED = 3, MAX = 2}
-
-function IndicateIfNeeded()
-  local editor = GetEditor()
-  -- do the current one first
-  if delayed[editor] then return IndicateAll(editor) end
-  for editor in pairs(delayed) do return IndicateAll(editor) end
-end
-
--- find all instances of a symbol at pos
--- return table with [0] as the definition position (if local)
-function IndicateFindInstances(editor, name, pos)
-  local tokens = tokenlists[editor] or {}
-  local instances = {{[-1] = 1}}
-  local this
-  for _, token in ipairs(tokens) do
-    local op = token[1]
-
-    if op == 'EndScope' then -- EndScope has "new" level, so need +1
-      if this and token.fpos > pos and this == token.at+1 then break end
-
-      if #instances > 1 and instances[#instances][-1] == token.at+1 then
-        table.remove(instances) end
-    elseif token.name == name then
-      if op == 'Id' then
-        table.insert(instances[#instances], token.fpos)
-      elseif op:find("^Var") then
-        if this and token.fpos > pos and this == token.at then break end
-
-        -- if new Var is defined at the same level, replace the current frame;
-        -- if not, add a new one
-        instances[#instances + (token.at > instances[#instances][-1] and 1 or 0)]
-          = {[0] = token.fpos, [-1] = token.at}
-      end
-      if token.fpos <= pos and pos < token.fpos+#name then this = instances[#instances][-1] end
-    end
-  end
-  instances[#instances][-1] = nil -- remove the current level
-  return instances[#instances]
-end
-
-function IndicateAll(editor, lines, linee)
-  local PARSE = require 'lua_parser_loose'
-  local LEX = require 'lua_lexer_loose'
-
-  local function mark_variables(code, pos, vars)
-    local lx = LEX.lexc(code, nil, pos)
-    return coroutine.wrap(function()
-      local varnext = {}
-      PARSE.parse_scope_resolve(lx, function(op, name, lineinfo, vars)
-        if not(op == 'Id' or op == 'Statement' or op == 'Var'
-            or op == 'VarNext' or op == 'VarInside' or op == 'VarSelf'
-            or op == 'FunctionCall' or op == 'Scope' or op == 'EndScope') then
-          return end -- "normal" return; not interested in other events
-
-        -- level needs to be adjusted for VarInside as it comes into scope
-        -- only after next block statement
-        local at = vars[0] and (vars[0] + (op == 'VarInside' and 1 or 0))
-        if op == 'Statement' then
-          for _, token in pairs(varnext) do coroutine.yield(unpack(token)) end
-          varnext = {}
-        elseif op == 'VarNext' or op == 'VarInside' then
-          table.insert(varnext, {'Var', name, lineinfo, vars, at})
-        end
-
-        coroutine.yield(op, name, lineinfo, vars, at)
-      end, vars)
-    end)
-  end
-
-  local d = delayed[editor]
-  local pos, vars = d and d[1] or 1, d and d[2] or nil
-  local start = lines and editor:PositionFromLine(lines)+1 or nil
-  if d and start and pos >= start then
-    -- ignore delayed processing as the change is earlier in the text
-    pos, vars = 1, nil
-  end
-  delayed[editor] = nil -- assume this can be finished for now
-
-  tokenlists[editor] = tokenlists[editor] or {}
-  local tokens = tokenlists[editor]
-
-  if start then -- if the range is specified
-    editor:SetIndicatorCurrent(indicator.MASKED)
-    for n = #tokens, 1, -1 do
-      local token = tokens[n]
-      -- find the last token before the range
-      if token[1] == 'EndScope' and token.name and token.fpos+#token.name < start then
-        pos, vars = token.fpos+#token.name, token.context
-        break
-      end
-      -- unmask all variables from the rest of the list
-      if token[1] == 'Masked' then
-        editor:IndicatorClearRange(token.fpos-1, #token.name)
-      end
-      -- trim the list as it will be re-generated
-      table.remove(tokens, n)
-    end
-
-    if vars then
-      for name, var in pairs(vars) do
-        -- remove all variables that are created later than the current pos
-        while type(var) == 'table' and var.fpos and (var.fpos > pos) do
-          var = var.masked -- restored a masked var
-          vars[name] = var
-        end
-      end
-    end
-  else
-    if pos == 1 then -- if not continuing, then trim the list
-      tokens = {}
-      tokenlists[editor] = tokens
-    end
-  end
-
-  local cleared = {}
-  for indic = 0, indicator.MAX do cleared[indic] = pos end
-
-  local function IndicateOne(indic, pos, length)
-    editor:SetIndicatorCurrent(indic)
-    editor:IndicatorClearRange(cleared[indic]-1, pos-cleared[indic])
-    editor:IndicatorFillRange(pos-1, length)
-    cleared[indic] = pos+length
-  end
-
-  local s = TimeGet()
-  local canwork = start and 0.010 or 0.100 -- use shorter interval when typing
-  local f = mark_variables(editor:GetText(), pos, vars)
-
-  while true do
-    local op, name, lineinfo, vars, at = f()
-    if not op then break end
-    local var = vars and vars[name]
-    local token = {op, name=name, fpos=lineinfo, at=at, context=vars}
-    if op == 'FunctionCall' then
-      IndicateOne(0, lineinfo, #name)
-    elseif op ~= 'VarNext' and op ~= 'VarInside' and op ~= 'Statement' then
-      table.insert(tokens, token)
-    end
-
-    -- indicate local/global variables
-    if op == 'Id' then
-      IndicateOne(var and indicator.LOCAL or indicator.GLOBAL, lineinfo, #name)
-    end
-
-    -- indicate masked values at the same level
-    if op == 'Var' and var -- also check 'VarSelf'?
-    -- skip those that have the same position as this can be reported
-    -- when `vars` already include the variable because of partial processing
-    and (var.fpos < lineinfo and at == var.at
-      or var.masked and at == var.masked.at) then
-      local fpos = var.fpos < lineinfo and var.fpos or var.masked.fpos
-      editor:SetIndicatorCurrent(indicator.MASKED)
-      editor:IndicatorFillRange(fpos-1, #name)
-      table.insert(tokens, {"Masked", name=name, fpos=fpos})
-    end
-    if op == 'EndScope' and name and TimeGet()-s > canwork then
-      delayed[editor] = {lineinfo+#name, vars}
-      break
-    end
-  end
-
-  -- clear indicators till the end of processed fragment
-  local pos = delayed[editor] and delayed[editor][1] or editor:GetLength()+1
-
-  -- don't clear "masked" indicators as those can be set out of order (so
-  -- last updated fragment is not always the last in terms of its position);
-  -- these indicators should be up-to-date to the end of the code fragment.
-  for indic = 0, indicator.MAX do IndicateOne(indic, pos, 0) end
-
-  return delayed[editor] ~= nil -- request more events if still need to work
-end
-
-if ide.wxver < "2.9.5" or not ide.config.autoanalizer then
-  IndicateAll = IndicateFunctions28 end
 
 function SetupKeywords(editor, ext, forcespec, styles, font, fontitalic)
   local lexerstyleconvert = nil
