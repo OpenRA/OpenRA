@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA.Effects
 	[Desc("Not a sprite, but an engine effect.")]
 	class LaserZapInfo : IProjectileInfo
 	{
-		public readonly int BeamRadius = 1;
+		public readonly int BeamWidth = 2;
 		public readonly int BeamDuration = 10;
 		public readonly bool UsePlayerColor = false;
 		public readonly Color Color = Color.Red;
@@ -90,7 +90,7 @@ namespace OpenRA.Mods.RA.Effects
 			var src = new PPos(args.src.X, args.src.Y - args.srcAltitude);
 			var dest = new PPos(args.dest.X, args.dest.Y - args.destAltitude);
 			var wlr = Game.Renderer.WorldLineRenderer;
-			wlr.LineWidth = info.BeamRadius * 2;
+			wlr.LineWidth = info.BeamWidth;
 			wlr.DrawLine(src.ToFloat2(), dest.ToFloat2(), rc, rc);
 			wlr.Flush();
 			wlr.LineWidth = 1f;
