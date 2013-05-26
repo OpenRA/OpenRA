@@ -204,8 +204,10 @@ function PARSE.parse_scope_resolve(lx, f, vars)
   vars[NEXT] = false -- vars that come into scope upon next statement
   vars[INSIDE] = false -- vars that come into scope upon entering block
   PARSE.parse_scope(lx, function(op, name, lineinfo)
+    -- in some (rare) cases VarNext can follow Statement event (which copies
+    -- vars[NEXT]). This may case vars[0] to be `nil`, so default to 1.
     local var = op:find("^Var") and
-      {fpos = lineinfo, at = vars[0] + (op == 'VarInside' and 1 or 0),
+      {fpos = lineinfo, at = (vars[0] or 1) + (op == 'VarInside' and 1 or 0),
        masked = vars[name]} or nil
     if op == 'Var' or op == 'VarSelf' then
       vars[name] = var
