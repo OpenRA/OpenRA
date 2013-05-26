@@ -61,16 +61,16 @@ namespace OpenRA.Mods.RA.Effects
 
 			if (!doneDamage)
 			{
-				if (explosion != null)
-					explosion.PlayThen("idle",
+				if (hitanim != null)
+					hitanim.PlayThen("idle",
 						() => world.AddFrameEndTask(w => w.Remove(this)));
 				Combat.DoImpacts(args);
 				doneDamage = true;
 			}
 			++ticks;
 
-			if (explosion != null)
-				explosion.Tick();
+			if (hitanim != null)
+				hitanim.Tick();
 			else
 				if (ticks >= info.BeamDuration)
 					world.AddFrameEndTask(w => w.Remove(this));
@@ -78,8 +78,8 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (explosion != null)
-				yield return new SpriteRenderable(explosion.Image, args.dest.ToFloat2(),
+			if (hitanim != null)
+				yield return new SpriteRenderable(hitanim.Image, args.dest.ToFloat2(),
 				                                  wr.Palette("effect"), (int)args.dest.Y);
 
 			if (ticks >= info.BeamDuration)
