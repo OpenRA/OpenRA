@@ -83,8 +83,7 @@ namespace OpenRA.Mods.RA.Effects
 				yield break;
 
 			var palette = wr.Palette(info.IndicatorPalettePrefix+self.Owner.InternalName);
-			yield return new SpriteRenderable(anim.Image, self.CenterPosition, 0, palette, 1f)
-				.WithScale(1.5f);
+			yield return new SpriteRenderable(anim.Image, self.CenterPosition, 0, palette, 1f);
 		}
 	}
 }
