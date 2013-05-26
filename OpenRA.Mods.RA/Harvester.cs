@@ -417,12 +417,12 @@ namespace OpenRA.Mods.RA
 			public int OrderPriority { get { return 10; } }
 			public bool IsQueued { get; protected set; }
 
-			public bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceQueued, ref string cursor)
+			public bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{
 				return false;
 			}
 
-			public bool CanTargetLocation(Actor self, CPos location, List<Actor> actorsAtLocation, bool forceAttack, bool forceQueued, ref string cursor)
+			public bool CanTargetLocation(Actor self, CPos location, List<Actor> actorsAtLocation, TargetModifiers modifiers, ref string cursor)
 			{
 				// Don't leak info about resources under the shroud
 				if (!self.Owner.Shroud.IsExplored(location)) return false;
@@ -433,7 +433,7 @@ namespace OpenRA.Mods.RA
 				if (res == null) return false;
 				if (!info.Resources.Contains(res.info.Name)) return false;
 				cursor = "harvest";
-				IsQueued = forceQueued;
+				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
 				return true;
 			}

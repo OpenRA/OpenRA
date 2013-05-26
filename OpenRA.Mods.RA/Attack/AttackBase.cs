@@ -169,9 +169,9 @@ namespace OpenRA.Mods.RA
 			public string OrderID { get; private set; }
 			public int OrderPriority { get; private set; }
 
-			public bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceQueued, ref string cursor)
+			public bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{
-				IsQueued = forceQueued;
+				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
 				cursor = self.Info.Traits.Get<AttackBaseInfo>().Cursor;
 
@@ -181,20 +181,23 @@ namespace OpenRA.Mods.RA
 				if (!self.Trait<AttackBase>().HasAnyValidWeapons(Target.FromActor(target)))
 					return false;
 
-				if (forceAttack)
+				if (modifiers.HasModifier(TargetModifiers.ForceAttack))
 					return true;
+
+				if (modifiers.HasModifier(TargetModifiers.ForceMove))
+					return false;
 
 				var targetableRelationship = negativeDamage ? Stance.Ally : Stance.Enemy;
 
 				return self.Owner.Stances[target.Owner] == targetableRelationship;
 			}
 
-			public bool CanTargetLocation(Actor self, CPos location, List<Actor> actorsAtLocation, bool forceAttack, bool forceQueued, ref string cursor)
+			public bool CanTargetLocation(Actor self, CPos location, List<Actor> actorsAtLocation, TargetModifiers modifiers, ref string cursor)
 			{
 				if (!self.World.Map.IsInMap(location))
 					return false;
 
-				IsQueued = forceQueued;
+				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
 				cursor = self.Info.Traits.Get<AttackBaseInfo>().Cursor;
 
@@ -204,7 +207,7 @@ namespace OpenRA.Mods.RA
 				if (!self.Trait<AttackBase>().HasAnyValidWeapons(Target.FromCell(location)))
 					return false;
 
-				if (forceAttack)
+				if (modifiers.HasModifier(TargetModifiers.ForceAttack))
 					if (self.Info.Traits.Get<AttackBaseInfo>().CanAttackGround)
 						return true;
 
