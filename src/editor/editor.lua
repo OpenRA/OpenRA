@@ -247,16 +247,23 @@ local function getValAtPosition(editor, pos)
     :gsub("%b[]", function(s) return ("."):rep(#s) end)
     :find(ident.."$")
 
-  local right = linetx:sub(localpos+1,#linetx):match("^[a-zA-Z_0-9]*")
+  local right, funccall = linetx:sub(localpos+1,#linetx):match("^([a-zA-Z_0-9]*)%s*(['\"{%(]?)")
   local var = selected and editor:GetSelectedText()
     or (start and linetx:sub(start,localpos):gsub(":",".")..right or nil)
 
+  -- since this function can be called in different contexts, we need
+  -- to detect function call of different types:
+  -- 1. foo.b^ar(... -- the cursor (pos) is on the function name
+  -- 2. foo.bar(..^. -- the cursor (pos) is on the parameter list
+  -- "var" has value for #1 and the following fragment checks for #2
+
   local linetxtopos = linetx:sub(1,localpos)
-  linetxtopos = (linetxtopos..")"):match(ident .. "%s*%b()$")
+  funccall = (#funccall > 0) and var
+    or (linetxtopos..")"):match(ident .. "%s*%b()$")
     or (linetxtopos.."}"):match(ident .. "%s*%b{}$")
     or (linetxtopos.."'"):match(ident .. "%s*'[^']*'$")
     or (linetxtopos..'"'):match(ident .. '%s*"[^"]*"$')
-    or var
+    or nil
 
   -- check if the style is the right one; this is to ignore
   -- comments, strings, numbers (to avoid '1 = 1'), keywords, and such
@@ -268,11 +275,11 @@ local function getValAtPosition(editor, pos)
     or style == wxstc.wxSTC_LUA_NUMBER
     or style == wxstc.wxSTC_LUA_WORD then
       -- don't do anything for strings or comments or numbers
-      return nil, linetxtopos
+      return nil, funccall
     end
   end
 
-  return var, linetxtopos
+  return var, funccall
 end
 
 function EditorCallTip(editor, pos, x, y)
@@ -280,8 +287,10 @@ function EditorCallTip(editor, pos, x, y)
   -- typing function name, while the mouse is over a different function.
   if editor:CallTipActive() then return end
 
-  local var, linetxtopos = getValAtPosition(editor, pos)
-  local tip = linetxtopos and GetTipInfo(editor,linetxtopos,false)
+  local var, funccall = getValAtPosition(editor, pos)
+  -- if this is a value type rather than a function/method call, then use
+  -- full match to avoid calltip about coroutine.status for "status" vars
+  local tip = GetTipInfo(editor, funccall or var, false, not funccall)
   if ide.debugger and ide.debugger.server then
     if var then
       local limit = 128

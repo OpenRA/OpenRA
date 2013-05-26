@@ -240,7 +240,8 @@ local function resolveAssign(editor,tx)
   return getclass(ac,c)
 end
 
-function GetTipInfo(editor, content, short)
+function GetTipInfo(editor, content, short, fullmatch)
+  if not content then return end
   local caller = content:match("([%w_]+)%(?%s*$")
   local class = caller and content:match("([%w_]+)[%.:]"..caller.."%(?%s*$") or ""
   local tip = editor.api.tip
@@ -255,7 +256,8 @@ function GetTipInfo(editor, content, short)
     class = assigns and assigns[class] or class
   end
 
-  return caller and (class and classtab[class]) and classtab[class][caller] or funcstab[caller]
+  return (caller and (class and classtab[class]) and classtab[class][caller]
+    or (not fullmatch and funcstab[caller] or nil))
 end
 
 local function reloadAPI(only,subapis)
