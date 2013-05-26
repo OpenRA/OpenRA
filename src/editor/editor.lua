@@ -919,7 +919,7 @@ end
 -- find all instances of a symbol at pos
 -- return table with [0] as the definition position (if local)
 function IndicateFindInstances(editor, name, pos)
-  local tokens = tokenlists[editor]
+  local tokens = tokenlists[editor] or {}
   local instances = {{[-1] = 1}}
   local this
   for _, token in ipairs(tokens) do
@@ -1089,7 +1089,8 @@ function IndicateAll(editor, lines, linee)
   return delayed[editor] ~= nil -- request more events if still need to work
 end
 
-if ide.wxver < "2.9.5" then IndicateAll = IndicateFunctions28 end
+if ide.wxver < "2.9.5" or not ide.config.autoanalizer then
+  IndicateAll = IndicateFunctions28 end
 
 function SetupKeywords(editor, ext, forcespec, styles, font, fontitalic)
   local lexerstyleconvert = nil

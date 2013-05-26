@@ -141,6 +141,7 @@ config = {
   interpreter = "luadeb", -- the default "project" lua interpreter
 
   autocomplete = true, -- whether autocomplete is on by default
+  autoanalizer = true, -- whether auto syntax analizer is on by default
 
   acandtip = {
     shorttip = false,   -- tooltips are compact during typing

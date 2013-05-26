@@ -63,6 +63,7 @@ ide = {
     interpreter = "_undefined_",
 
     autocomplete = true,
+    autoanalizer = true,
     acandtip = {
       shorttip = false,
       ignorecase = false,
