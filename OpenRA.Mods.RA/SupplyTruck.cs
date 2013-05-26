@@ -70,9 +70,9 @@ namespace OpenRA.Mods.RA
 			{
 			}
 
-			public override bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceQueued, ref string cursor)
+			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{
-				if (!base.CanTargetActor(self, target, forceAttack, forceQueued, ref cursor))
+				if (!base.CanTargetActor(self, target, modifiers, ref cursor))
 					return false;
 
 				if (target.AppearsHostileTo(self))
@@ -81,7 +81,7 @@ namespace OpenRA.Mods.RA
 				if (!target.HasTrait<AcceptsSupplies>())
 					return false;
 
-				IsQueued = forceQueued;
+				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 				return true;
 			}
 		}
