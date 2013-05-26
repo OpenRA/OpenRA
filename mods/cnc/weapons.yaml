@@ -760,7 +760,8 @@ Laser:
 	Charges: true
 	Report: OBELRAY1
 	Projectile: LaserZap
-		BeamRadius: 1
+		BeamWidth: 2
+		HitAnim: laserfire
 	Warhead:
 		Spread: 1
 		Versus:
