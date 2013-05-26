@@ -761,6 +761,7 @@ Laser:
 	Report: OBELRAY1
 	Projectile: LaserZap
 		BeamWidth: 2
+		HitAnim: laserfire
 	Warhead:
 		Spread: 1
 		Versus:
