@@ -228,6 +228,7 @@
 	DebugMuzzlePositions:
 	Guardable:
 		Range: 3
+	AutoTargetIgnore:
 
 ^Wall:
 	AppearsOnRadar:
