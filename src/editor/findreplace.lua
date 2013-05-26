@@ -107,6 +107,8 @@ local function shake(window, shakes, duration, vigour)
   duration = duration or 0.5
   vigour = vigour or 0.05
 
+  if not window then return end
+
   local delay = math.floor(duration/shakes/2)
   local position = window:GetPosition() -- get current position
   local deltax = window:GetSize():GetWidth()*vigour
