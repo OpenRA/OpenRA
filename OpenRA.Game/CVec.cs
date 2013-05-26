@@ -51,6 +51,7 @@ namespace OpenRA
 
 		public float2 ToFloat2() { return new float2(X, Y); }
 		public int2 ToInt2() { return new int2(X, Y); }
+		public WVec ToWVec() { return new WVec(X*1024, Y*1024, 0); }
 
 		public CVec Clamp(Rectangle r)
 		{

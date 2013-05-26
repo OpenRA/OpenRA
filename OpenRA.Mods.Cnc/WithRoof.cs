@@ -25,7 +25,7 @@ namespace OpenRA.Mods.Cnc
 			var rs = self.Trait<RenderSimple>();
 			var roof = new Animation(rs.GetImage(self), () => self.Trait<IFacing>().Facing);
 			roof.Play("roof");
-			rs.anims.Add( "roof", new AnimationWithOffset( roof ) { ZOffset = 24 } );
+			rs.anims.Add("roof", new AnimationWithOffset(roof, null, null, 1024));
 		}
 	}
 }

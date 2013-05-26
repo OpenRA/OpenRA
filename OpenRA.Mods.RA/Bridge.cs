@@ -142,7 +142,7 @@ namespace OpenRA.Mods.RA
 
 		bool initializePalettes = true;
 		PaletteReference terrainPalette;
-		public IEnumerable<Renderable> RenderAsTerrain(WorldRenderer wr, Actor self)
+		public IEnumerable<IRenderable> RenderAsTerrain(WorldRenderer wr, Actor self)
 		{
 			if (initializePalettes)
 			{
@@ -151,7 +151,7 @@ namespace OpenRA.Mods.RA
 			}
 
 			foreach (var t in TileSprites[currentTemplate])
-				yield return new Renderable(t.Value, t.Key.ToPPos().ToFloat2(), terrainPalette, Game.CellSize * t.Key.Y);
+				yield return new SpriteRenderable(t.Value, t.Key.CenterPosition, 0, terrainPalette, 1f);
 		}
 
 		void KillUnitsOnBridge()

@@ -116,7 +116,7 @@
 	GpsDot:
 		String:Infantry
 	ParachuteAttachment:
-		Offset: 0,-10
+		Offset: 0,0,427
 	CrushableInfantry:
 		CrushSound: squishy2.aud
 	RepairableNear:

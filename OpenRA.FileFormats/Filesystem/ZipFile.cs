@@ -51,7 +51,6 @@ namespace OpenRA.FileFormats
 
 		public Stream GetContent(string filename)
 		{
-
 			using (var z = pkg.GetInputStream(pkg.GetEntry(filename)))
 			{
 				var ms = new MemoryStream();
@@ -65,10 +64,21 @@ namespace OpenRA.FileFormats
 			}
 		}
 
-		public IEnumerable<uint> AllFileHashes()
+		public IEnumerable<uint> ClassicHashes()
 		{
 			foreach(ZipEntry entry in pkg)
-				yield return PackageEntry.HashFilename(entry.Name);
+				yield return PackageEntry.HashFilename(entry.Name, PackageHashType.Classic);
+		}
+
+		public IEnumerable<uint> CrcHashes()
+		{
+			yield break;
+		}
+
+		public IEnumerable<string> AllFileNames()
+		{
+			foreach(ZipEntry entry in pkg)
+				yield return entry.Name;
 		}
 
 		public bool Exists(string filename)
@@ -76,10 +86,8 @@ namespace OpenRA.FileFormats
 			return pkg.GetEntry(filename) != null;
 		}
 
-		public int Priority
-		{
-			get { return 500 + priority; }
-		}
+		public int Priority { get { return 500 + priority; } }
+		public string Name { get { return filename; } }
 
 		public void Write(Dictionary<string, byte[]> contents)
 		{

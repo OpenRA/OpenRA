@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA.Buildings
 {
@@ -55,10 +56,16 @@ namespace OpenRA.Mods.RA.Buildings
 						yield return new CVec(x, y);
 		}
 
-		public static CVec AdjustForBuildingSize( BuildingInfo buildingInfo )
+		public static CVec AdjustForBuildingSize(BuildingInfo buildingInfo)
 		{
 			var dim = buildingInfo.Dimensions;
 			return new CVec(dim.X / 2, dim.Y > 1 ? (dim.Y + 1) / 2 : 0);
+		}
+
+		public static WVec CenterOffset(BuildingInfo buildingInfo)
+		{
+			var dim = buildingInfo.Dimensions;
+			return new CVec(dim.X, dim.Y).ToWVec() / 2;
 		}
 	}
 }

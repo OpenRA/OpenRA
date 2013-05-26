@@ -86,7 +86,7 @@
     <Compile Include="ProductionQueueFromSelection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RenderBuildingRefinery.cs" />
-    <Compile Include="RenderCargo.cs" />
+    <Compile Include="WithCargo.cs" />
     <Compile Include="RenderGunboat.cs" />
     <Compile Include="SpawnViceroid.cs" />
     <Compile Include="TiberiumRefinery.cs" />

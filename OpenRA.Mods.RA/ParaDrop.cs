@@ -52,14 +52,7 @@ namespace OpenRA.Mods.RA
 					droppedAt.Add(self.Location);
 
 					var a = cargo.Unload(self);
-
-					var aircraft = self.Trait<IMove>();
-					self.World.AddFrameEndTask(w => w.Add(
-						new Parachute(a,
-							Util.CenterOfCell(self.CenterLocation.ToCPos()),
-							aircraft.Altitude)
-					));
-
+					self.World.AddFrameEndTask(w => w.Add(new Parachute(a, self.CenterPosition)));
 					Sound.Play(info.ChuteSound, self.CenterLocation);
 				}
 			}

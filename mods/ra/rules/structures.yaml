@@ -34,7 +34,7 @@ MSLO:
 		SelectTargetSound: slcttgt1.aud
 		LaunchSound: alaunch1.aud
 		MissileWeapon: atomic
-		SpawnOffset: 10,0
+		SpawnOffset: 0,427,0
 	CanPowerDown:
 	RequiresPower:
 	SupportPowerChargeBar:
