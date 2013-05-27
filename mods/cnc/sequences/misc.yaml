@@ -198,12 +198,6 @@ crate-effects:
 		Length: *
 		Tick: 200
 
-miss:
-	idle:
-		Start: 0
-	damaged-idle:
-		Start: 2
-
 atomicup:
 	idle:
 		Start: 0
