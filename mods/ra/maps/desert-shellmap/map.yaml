@@ -34,7 +34,7 @@ Players:
 	PlayerReference@Allies:
 		Name: Allies
 		Race: allies
-		ColorRamp: 161,134,200,30
+		ColorRamp: 161,164,200,30
 		Allies: Neutral
 		Enemies: Soviets
 	PlayerReference@Soviets:
