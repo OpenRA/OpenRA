@@ -1,0 +1,199 @@
+mcv:
+	idle:
+		Start: 0
+		Facings: 32
+
+mcvhusk:
+	idle:
+		Start: 0
+		Facings: 32
+
+truk:
+	idle:
+		Start: 0
+		Facings: 32
+
+harv:
+	idle:
+		Start: 0
+		Facings: 32
+	harvest:
+		Start: 32
+		Length: 8
+		Facings: 8
+	dock:
+		Start: 96
+		Length: 8
+	dock-loop:
+		Start: 104
+		Length: 7
+
+harvhalf:
+	idle:
+		Start: 0
+		Facings: 32
+	harvest:
+		Start: 32
+		Length: 8
+		Facings: 8
+	dock: harv
+		Start: 96
+		Length: 8
+	dock-loop: harv
+		Start: 104
+		Length: 7
+
+harvempty:
+	idle:
+		Start: 0
+		Facings: 32
+	harvest:
+		Start: 32
+		Length: 8
+		Facings: 8
+	dock: harv
+		Start: 96
+		Length: 8
+	dock-loop: harv
+		Start: 104
+		Length: 7
+
+hhusk:
+	idle:
+		Start: 0
+		Facings: 32
+
+hhusk2:
+	idle:
+		Start: 0
+		Facings: 32
+
+1tnk:
+	idle:
+		Start: 0
+		Facings: 32
+	turret:
+		Start: 32
+		Facings: 32
+
+2tnk:
+	idle:
+		Start: 0
+		Facings: 32
+	turret:
+		Start: 32
+		Facings: 32
+
+3tnk:
+	idle:
+		Start: 0
+		Facings: 32
+	turret:
+		Start: 32
+		Facings: 32
+
+4tnk:
+	idle:
+		Start: 0
+		Facings: 32
+	turret:
+		Start: 32
+		Facings: 32
+
+v2rl:
+	idle:
+		Start: 0
+		Facings: 32
+	empty-idle:
+		Start: 32
+		Facings: 32
+	aim:
+		Start: 64
+		Facings: 8
+	empty-aim:
+		Start: 72
+		Facings: 8
+
+arty:
+	idle:
+		Start: 0
+		Facings: 32
+
+jeep:
+	idle:
+		Start: 0
+		Facings: 32
+	turret:
+		Start: 32
+		Facings: 32
+	muzzle: minigun
+		Start: 0
+		Length: 6
+		Facings: 8
+	unload:
+		Start: 0
+		Facings: 32
+
+apc:
+	idle:
+		Start: 0
+		Facings: 32
+	muzzle: minigun
+		Start: 0
+		Length: 6
+		Facings: 8
+	close:
+		Start: 32
+		Length: 3
+	unload:
+		Start: 32
+
+mnly:
+	idle:
+		Start: 0
+		Facings: 32
+
+mrj:
+	idle:
+		Start: 0
+		Facings: 32
+	spinner:
+		Start: 32
+		Length: 32
+
+mgg:
+	idle:
+		Start: 0
+		Facings: 32
+	spinner:
+		Start: 32
+		Length: 8
+	spinner-idle:
+		Start: 32
+		Length: 1
+
+ttnk:
+	idle:
+		Start: 0
+		Facings: 32
+	spinner:
+		Start: 32
+		Length: 32
+
+ftrk:
+	idle:
+		Start: 0
+		Facings: 32
+	turret:
+		Start: 32
+		Facings: 32
+
+dtrk:
+	idle:
+		Start: 0
+		Facings: 32
+
+ctnk:
+	idle:
+		Start: 0
+		Facings: 32
