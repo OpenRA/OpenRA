@@ -407,9 +407,9 @@ local function indicateFindInstances(editor, name, pos)
         if this and token.fpos > pos and this == token.at then break end
 
         -- if new Var is defined at the same level, replace the current frame;
-        -- if not, add a new one
+        -- if not, add a new one; skip implicit definition of "self" variable.
         instances[#instances + (token.at > instances[#instances][-1] and 1 or 0)]
-          = {[0] = token.fpos, [-1] = token.at}
+          = {[0] = (not token.self and token.fpos or nil), [-1] = token.at}
       end
       if token.fpos <= pos and pos <= token.fpos+#name then this = instances[#instances][-1] end
     end
@@ -515,7 +515,8 @@ function IndicateAll(editor, lines, linee)
     local op, name, lineinfo, vars, at = f()
     if not op then break end
     local var = vars and vars[name]
-    local token = {op, name=name, fpos=lineinfo, at=at, context=vars}
+    local token = {op, name=name, fpos=lineinfo, at=at, context=vars,
+      self = (op == 'VarSelf') or nil }
     if op == 'FunctionCall' then
       IndicateOne(indicator.FUNCCALL, lineinfo, #name)
     elseif op ~= 'VarNext' and op ~= 'VarInside' and op ~= 'Statement' then
@@ -528,17 +529,16 @@ function IndicateAll(editor, lines, linee)
     end
 
     -- indicate masked values at the same level
-    if op == 'Var' and var -- also check 'VarSelf'?
-    -- skip those that have the same position as this can be reported
-    -- when `vars` already include the variable because of partial processing
-    and (var.masked and at == var.masked.at) then
+    if op == 'Var' and var and (var.masked and at == var.masked.at) then
       local fpos = var.masked.fpos
-      editor:SetIndicatorCurrent(indicator.MASKED)
-      editor:IndicatorFillRange(fpos-1, #name)
+      -- indicate masked if it's not implicit self
+      if not var.masked.self then
+        editor:SetIndicatorCurrent(indicator.MASKED)
+        editor:IndicatorFillRange(fpos-1, #name)
+        table.insert(tokens, {"Masked", name=name, fpos=fpos})
+      end
 
       IndicateOne(indicator.MASKING, lineinfo, #name)
-
-      table.insert(tokens, {"Masked", name=name, fpos=fpos})
     end
     if op == 'EndScope' and name and TimeGet()-s > canwork then
       delayed[editor] = {lineinfo+#name, vars}

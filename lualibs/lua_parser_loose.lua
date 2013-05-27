@@ -208,7 +208,7 @@ function PARSE.parse_scope_resolve(lx, f, vars)
     -- vars[NEXT]). This may case vars[0] to be `nil`, so default to 1.
     local var = op:find("^Var") and
       {fpos = lineinfo, at = (vars[0] or 1) + (op == 'VarInside' and 1 or 0),
-       masked = vars[name]} or nil
+       masked = vars[name], self = (op == 'VarSelf') or nil } or nil
     if op == 'Var' or op == 'VarSelf' then
       vars[name] = var
     elseif op == 'VarNext' then
