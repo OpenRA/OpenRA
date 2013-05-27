@@ -255,8 +255,10 @@ function StylesApplyToEditor(styles,editor,font,fontitalic,lexerconvert)
     editor:IndicatorSetForeground(1,styles.varlocal and wx.wxColour(unpack(styles.varlocal.fg)) or defaultfg)
     editor:IndicatorSetStyle(2,styles.varglobal and styles.varglobal.st or wxstc.wxSTC_INDIC_PLAIN)
     editor:IndicatorSetForeground(2,styles.varglobal and wx.wxColour(unpack(styles.varglobal.fg)) or defaultfg)
-    editor:IndicatorSetStyle(3,styles.varmasked and styles.varmasked.st or wxstc.wxSTC_INDIC_STRIKE)
-    editor:IndicatorSetForeground(3,styles.varmasked and wx.wxColour(unpack(styles.varmasked.fg)) or defaultfg)
+    editor:IndicatorSetStyle(3,styles.varmasking and styles.varmasking.st or wxstc.wxSTC_INDIC_DASH)
+    editor:IndicatorSetForeground(3,styles.varmasking and wx.wxColour(unpack(styles.varmasking.fg)) or defaultfg)
+    editor:IndicatorSetStyle(4,styles.varmasked and styles.varmasked.st or wxstc.wxSTC_INDIC_STRIKE)
+    editor:IndicatorSetForeground(4,styles.varmasked and wx.wxColour(unpack(styles.varmasked.fg)) or defaultfg)
   end
 end
 

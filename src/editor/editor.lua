@@ -377,7 +377,7 @@ local delayed = {}
 local tokenlists = {}
 
 -- indicator.MASKED is handled separately, so don't include in MAX
-local indicator = {FUNCCALL = 0, LOCAL = 1, GLOBAL = 2, MASKED = 3, MAX = 2}
+local indicator = {FUNCCALL = 0, LOCAL = 1, GLOBAL = 2, MASKING = 3, MASKED = 4, MAX = 3}
 
 function IndicateIfNeeded()
   local editor = GetEditor()
@@ -517,7 +517,7 @@ function IndicateAll(editor, lines, linee)
     local var = vars and vars[name]
     local token = {op, name=name, fpos=lineinfo, at=at, context=vars}
     if op == 'FunctionCall' then
-      IndicateOne(0, lineinfo, #name)
+      IndicateOne(indicator.FUNCCALL, lineinfo, #name)
     elseif op ~= 'VarNext' and op ~= 'VarInside' and op ~= 'Statement' then
       table.insert(tokens, token)
     end
@@ -535,6 +535,9 @@ function IndicateAll(editor, lines, linee)
       local fpos = var.masked.fpos
       editor:SetIndicatorCurrent(indicator.MASKED)
       editor:IndicatorFillRange(fpos-1, #name)
+
+      IndicateOne(indicator.MASKING, lineinfo, #name)
+
       table.insert(tokens, {"Masked", name=name, fpos=fpos})
     end
     if op == 'EndScope' and name and TimeGet()-s > canwork then
