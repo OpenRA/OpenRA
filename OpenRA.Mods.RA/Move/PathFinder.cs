@@ -44,6 +44,9 @@ namespace OpenRA.Mods.RA.Move
 		{
 			using (new PerfSample("Pathfinder"))
 			{
+				// If a water-land transition is required, bail early
+				if (world.WorldDomains.IsCrossDomain(from, target)) return new List<CPos>(0);
+
 				var cached = CachedPaths.FirstOrDefault(p => p.from == from && p.to == target && p.actor == self);
 				if (cached != null)
 				{
@@ -72,6 +75,13 @@ namespace OpenRA.Mods.RA.Move
 		{
 			using (new PerfSample("Pathfinder"))
 			{
+				// As with FindUnitPath, avoid trying to traverse domain transitions.
+				// In this case it's pretty sketchy; path false-negatives are possible.
+				if(world.WorldDomains.IsCrossDomain(src, target.ToCPos()))
+				{
+					return new List<CPos>(0);
+				}
+
 				var mi = self.Info.Traits.Get<MobileInfo>();
 				var targetCell = target.ToCPos();
 				var rangeSquared = range.Range*range.Range;
