@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA.Move
 			queue = new PriorityQueue<PathDistance>();
 			considered = new HashSet<CPos>();
 			maxCost = 0;
-			nextDirections = directions.Select(d => new Pair<CVec, int>(d, 0)).ToArray();
+			nextDirections = CVec.directions.Select(d => new Pair<CVec, int>(d, 0)).ToArray();
 		}
 
 		public PathSearch InReverse()
@@ -189,18 +189,6 @@ namespace OpenRA.Mods.RA.Move
 
 			return p.Location;
 		}
-
-		static readonly CVec[] directions =
-		{
-			new CVec( -1, -1 ),
-			new CVec( -1,  0 ),
-			new CVec( -1,  1 ),
-			new CVec(  0, -1 ),
-			new CVec(  0,  1 ),
-			new CVec(  1, -1 ),
-			new CVec(  1,  0 ),
-			new CVec(  1,  1 ),
-		};
 
 		public void AddInitialCell(CPos location)
 		{
