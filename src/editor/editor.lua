@@ -476,7 +476,11 @@ function IndicateAll(editor, lines, linee)
       table.remove(tokens, n)
     end
 
-    if vars then
+    -- need to cleanup vars as they may include variables from later
+    -- fragments (because the cut-point was arbitrary). Also need
+    -- to clean variables in other scopes, hence getmetatable use.
+    local vars = vars
+    while vars do
       for name, var in pairs(vars) do
         -- remove all variables that are created later than the current pos
         while type(var) == 'table' and var.fpos and (var.fpos > pos) do
@@ -484,6 +488,7 @@ function IndicateAll(editor, lines, linee)
           vars[name] = var
         end
       end
+      vars = getmetatable(vars) and getmetatable(vars).__index
     end
   else
     if pos == 1 then -- if not continuing, then trim the list
@@ -526,9 +531,8 @@ function IndicateAll(editor, lines, linee)
     if op == 'Var' and var -- also check 'VarSelf'?
     -- skip those that have the same position as this can be reported
     -- when `vars` already include the variable because of partial processing
-    and (var.fpos < lineinfo and at == var.at
-      or var.masked and at == var.masked.at) then
-      local fpos = var.fpos < lineinfo and var.fpos or var.masked.fpos
+    and (var.masked and at == var.masked.at) then
+      local fpos = var.masked.fpos
       editor:SetIndicatorCurrent(indicator.MASKED)
       editor:IndicatorFillRange(fpos-1, #name)
       table.insert(tokens, {"Masked", name=name, fpos=fpos})
