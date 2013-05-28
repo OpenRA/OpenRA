@@ -418,7 +418,10 @@ local function indicateFindInstances(editor, name, pos)
     end
   end
   instances[#instances][-1] = nil -- remove the current level
-  return instances[#instances]
+  -- only return the list if "this" instance has been found;
+  -- this is to avoid reporting (improper) instances when checking for
+  -- comments, strings, table fields, etc.
+  return this and instances[#instances] or {}
 end
 
 function IndicateAll(editor, lines, linee)
