@@ -11,6 +11,8 @@ cfg/i18n/*.lua
 interpreters/*.lua
 lualibs/copas/copas.lua
 lualibs/coxpcall/coxpcall.lua
+lualibs/lua_lexer_loose.lua
+lualibs/lua_parser_loose.lua
 lualibs/luainspect/ast.lua
 lualibs/luainspect/compat_env.lua
 lualibs/luainspect/dump.lua

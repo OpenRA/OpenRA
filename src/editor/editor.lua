@@ -1,3 +1,4 @@
+-- Copyright 2011-13 Paul Kulchenko, ZeroBrane LLC
 -- authors: Lomtik Software (J. Winwood & John Labenski)
 -- Luxinia Dev (Eike Decker & Christoph Kubisch)
 ---------------------------------------------------------
@@ -329,7 +330,7 @@ end
 
 -- Indicator handling for functions and local/global variables
 local function indicateFunctions28(editor, lines, linee)
-  if (not (edcfg.showfncall and editor.spec and editor.spec.isfncall)) then return end
+  if not (edcfg.showfncall and editor.spec and editor.spec.isfncall) then return end
 
   local es = editor:GetEndStyled()
   local lines = lines or 0
@@ -377,7 +378,7 @@ local delayed = {}
 local tokenlists = {}
 
 -- indicator.MASKED is handled separately, so don't include in MAX
-local indicator = {FUNCCALL = 0, LOCAL = 1, GLOBAL = 2, MASKING = 3, MASKED = 4, MAX = 3}
+local indicator = {FNCALL = 0, LOCAL = 1, GLOBAL = 2, MASKING = 3, MASKED = 4, MAX = 3}
 
 function IndicateIfNeeded()
   local editor = GetEditor()
@@ -419,33 +420,7 @@ local function indicateFindInstances(editor, name, pos)
 end
 
 function IndicateAll(editor, lines, linee)
-  local PARSE = require 'lua_parser_loose'
-  local LEX = require 'lua_lexer_loose'
-
-  local function mark_variables(code, pos, vars)
-    local lx = LEX.lexc(code, nil, pos)
-    return coroutine.wrap(function()
-      local varnext = {}
-      PARSE.parse_scope_resolve(lx, function(op, name, lineinfo, vars)
-        if not(op == 'Id' or op == 'Statement' or op == 'Var'
-            or op == 'VarNext' or op == 'VarInside' or op == 'VarSelf'
-            or op == 'FunctionCall' or op == 'Scope' or op == 'EndScope') then
-          return end -- "normal" return; not interested in other events
-
-        -- level needs to be adjusted for VarInside as it comes into scope
-        -- only after next block statement
-        local at = vars[0] and (vars[0] + (op == 'VarInside' and 1 or 0))
-        if op == 'Statement' then
-          for _, token in pairs(varnext) do coroutine.yield(unpack(token)) end
-          varnext = {}
-        elseif op == 'VarNext' or op == 'VarInside' then
-          table.insert(varnext, {'Var', name, lineinfo, vars, at})
-        end
-
-        coroutine.yield(op, name, lineinfo, vars, at)
-      end, vars)
-    end)
-  end
+  if not (editor.spec and editor.spec.markvars) then return end
 
   local d = delayed[editor]
   local pos, vars = d and d[1] or 1, d and d[2] or nil
@@ -509,7 +484,7 @@ function IndicateAll(editor, lines, linee)
 
   local s = TimeGet()
   local canwork = start and 0.010 or 0.100 -- use shorter interval when typing
-  local f = mark_variables(editor:GetText(), pos, vars)
+  local f = editor.spec.markvars(editor:GetText(), pos, vars)
 
   while true do
     local op, name, lineinfo, vars, at = f()
@@ -518,7 +493,7 @@ function IndicateAll(editor, lines, linee)
     local token = {op, name=name, fpos=lineinfo, at=at, context=vars,
       self = (op == 'VarSelf') or nil }
     if op == 'FunctionCall' then
-      IndicateOne(indicator.FUNCCALL, lineinfo, #name)
+      IndicateOne(indicator.FNCALL, lineinfo, #name)
     elseif op ~= 'VarNext' and op ~= 'VarInside' and op ~= 'Statement' then
       table.insert(tokens, token)
     end
