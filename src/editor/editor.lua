@@ -11,6 +11,7 @@ local statusBar = ide.frame.statusBar
 local notebook = ide.frame.notebook
 local funclist = ide.frame.toolBar.funclist
 local edcfg = ide.config.editor
+local styles = ide.config.styles
 local projcombobox = ide.frame.projpanel.projcombobox
 
 -- ----------------------------------------------------------------------------
@@ -330,7 +331,8 @@ end
 
 -- Indicator handling for functions and local/global variables
 local function indicateFunctions28(editor, lines, linee)
-  if not (edcfg.showfncall and editor.spec and editor.spec.isfncall) then return end
+  if not (edcfg.showfncall and editor.spec and editor.spec.isfncall)
+  or not (styles.indicator and styles.indicator.fncall) then return end
 
   local es = editor:GetEndStyled()
   local lines = lines or 0
@@ -421,6 +423,7 @@ end
 
 function IndicateAll(editor, lines, linee)
   if not (editor.spec and editor.spec.markvars) then return end
+  local indic = styles.indicator or {}
 
   local d = delayed[editor]
   local pos, vars = d and d[1] or 1, d and d[2] or nil
@@ -435,6 +438,7 @@ function IndicateAll(editor, lines, linee)
   local tokens = tokenlists[editor]
 
   if start then -- if the range is specified
+    local curindic = editor:GetIndicatorCurrent()
     editor:SetIndicatorCurrent(indicator.MASKED)
     for n = #tokens, 1, -1 do
       local token = tokens[n]
@@ -450,6 +454,7 @@ function IndicateAll(editor, lines, linee)
       -- trim the list as it will be re-generated
       table.remove(tokens, n)
     end
+    editor:SetIndicatorCurrent(curindic)
 
     -- need to cleanup vars as they may include variables from later
     -- fragments (because the cut-point was arbitrary). Also need
@@ -493,13 +498,16 @@ function IndicateAll(editor, lines, linee)
     local token = {op, name=name, fpos=lineinfo, at=at, context=vars,
       self = (op == 'VarSelf') or nil }
     if op == 'FunctionCall' then
-      IndicateOne(indicator.FNCALL, lineinfo, #name)
+      if indic.fncall and edcfg.showfncall then
+        IndicateOne(indicator.FNCALL, lineinfo, #name)
+      end
     elseif op ~= 'VarNext' and op ~= 'VarInside' and op ~= 'Statement' then
       table.insert(tokens, token)
     end
 
     -- indicate local/global variables
-    if op == 'Id' then
+    if op == 'Id'
+    and (var and indic.varlocal or not var and indic.varglobal) then
       IndicateOne(var and indicator.LOCAL or indicator.GLOBAL, lineinfo, #name)
     end
 
@@ -507,13 +515,13 @@ function IndicateAll(editor, lines, linee)
     if op == 'Var' and var and (var.masked and at == var.masked.at) then
       local fpos = var.masked.fpos
       -- indicate masked if it's not implicit self
-      if not var.masked.self then
+      if indic.varmasked and not var.masked.self then
         editor:SetIndicatorCurrent(indicator.MASKED)
         editor:IndicatorFillRange(fpos-1, #name)
         table.insert(tokens, {"Masked", name=name, fpos=fpos})
       end
 
-      IndicateOne(indicator.MASKING, lineinfo, #name)
+      if indic.varmasking then IndicateOne(indicator.MASKING, lineinfo, #name) end
     end
     if op == 'EndScope' and name and TimeGet()-s > canwork then
       delayed[editor] = {lineinfo+#name, vars}

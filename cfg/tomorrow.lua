@@ -224,20 +224,23 @@ return {
   fold = {fg = C.Comment, bg = C.Background},
   whitespace = {fg = C.Comment, bg = C.Background},
 
-  fncall = {fg = C.Purple, st = wxstc.wxSTC_INDIC_PLAIN},
-  --[[ other possible values are:
-    wxSTC_INDIC_PLAIN	 Single-line underline
-    wxSTC_INDIC_SQUIGGLE Squiggly underline
-    wxSTC_INDIC_TT	 Line of small T-shapes
-    wxSTC_INDIC_DIAGONAL Diagonal hatching
-    wxSTC_INDIC_STRIKE	 Strike-out
-    wxSTC_INDIC_BOX      Box
-    wxSTC_INDIC_ROUNDBOX Rounded Box
-  --]]
-  -- these indicators have all different default styles
-  varlocal = {fg = C.Foreground},
-  varglobal = {fg = C.Foreground},
-  varmasked = {fg = C.Foreground},
+  indicator = {
+    fncall = {fg = C.Purple, st = wxstc.wxSTC_INDIC_ROUNDBOX},
+    --[[ other possible values are:
+      wxSTC_INDIC_PLAIN	 Single-line underline
+      wxSTC_INDIC_SQUIGGLE Squiggly underline
+      wxSTC_INDIC_TT	 Line of small T-shapes
+      wxSTC_INDIC_DIAGONAL Diagonal hatching
+      wxSTC_INDIC_STRIKE	 Strike-out
+      wxSTC_INDIC_BOX      Box
+      wxSTC_INDIC_ROUNDBOX Rounded Box
+    --]]
+    -- these indicators have all different default styles
+    varlocal = {fg = C.Foreground},
+    varglobal = {fg = C.Foreground},
+    varmasked = {fg = C.Foreground},
+    varmasking = {fg = C.Foreground},
+  },
 
   -- markup
   ['['] = {hs = mixer(C.Comment, 3, 64)},
