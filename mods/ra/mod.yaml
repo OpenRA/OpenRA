@@ -41,7 +41,13 @@ Rules:
 	mods/ra/rules/ships.yaml
 
 Sequences:
-	mods/ra/sequences.yaml
+	mods/ra/sequences/ships.yaml
+	mods/ra/sequences/vehicles.yaml
+	mods/ra/sequences/structures.yaml
+	mods/ra/sequences/infantry.yaml
+	mods/ra/sequences/aircraft.yaml
+	mods/ra/sequences/animations.yaml
+	mods/ra/sequences/map.yaml
 
 Cursors:
 	mods/ra/cursors.yaml

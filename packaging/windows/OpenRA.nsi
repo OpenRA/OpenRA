@@ -126,6 +126,7 @@ SectionGroup /e "Mods"
 		File /r "${SRCDIR}\mods\ra\chrome"
 		File /r "${SRCDIR}\mods\ra\bits"
 		File /r "${SRCDIR}\mods\ra\rules"
+		File /r "${SRCDIR}\mods\ra\sequences"
 		File /r "${SRCDIR}\mods\ra\tilesets"
 		File /r "${SRCDIR}\mods\ra\uibits"
 	SectionEnd
