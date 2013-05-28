@@ -28,6 +28,9 @@ namespace OpenRA.Mods.RA.Render
 		[Desc("Turreted 'Turret' key to display")]
 		public readonly string Turret = "primary";
 
+		[Desc("Render recoil")]
+		public readonly bool Recoils = true;
+
 		public object Create(ActorInitializer init) { return new WithTurret(init.self, this); }
 	}
 
@@ -61,6 +64,9 @@ namespace OpenRA.Mods.RA.Render
 
 		WVec TurretOffset(Actor self)
 		{
+			if (!info.Recoils)
+				return t.Position(self);
+
 			var recoil = arms.Aggregate(WRange.Zero, (a,b) => a + b.Recoil);
 			var localOffset = new WVec(-recoil, WRange.Zero, WRange.Zero);
 			var bodyOrientation = rs.QuantizeOrientation(self, self.Orientation);
