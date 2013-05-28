@@ -256,8 +256,11 @@ function GetTipInfo(editor, content, short, fullmatch)
     class = assigns and assigns[class] or class
   end
 
-  return (caller and (class and classtab[class]) and classtab[class][caller]
+  local res = (caller and (class and classtab[class]) and classtab[class][caller]
     or (not fullmatch and funcstab[caller] or nil))
+  -- some values may not have descriptions (for example, true/false);
+  -- don't return empty strings as they are displayed as empty tooltips.
+  return res and #res > 0 and res or nil
 end
 
 local function reloadAPI(only,subapis)
