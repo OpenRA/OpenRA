@@ -281,7 +281,7 @@ OrcaAGMissiles:
 	ROF: 15
 	Burst: 1
 	BurstDelay: 0
-	Range: 4
+	Range: 5
 	Report: BAZOOK1
 	ValidTargets: Ground
 	Projectile: Missile
@@ -312,7 +312,7 @@ OrcaAAMissiles:
 	ROF: 15
 	Burst: 1
 	BurstDelay: 0
-	Range: 4
+	Range: 5
 	Report: BAZOOK1
 	ValidTargets: Air
 	Projectile: Missile
@@ -786,7 +786,7 @@ SAMMissile:
 		RangeLimit: 35
 		Trail: smokey
 	Warhead: AP
-		Spread: 3
+		Spread: 16
 		Versus: 
 			None: 100%
 			Wood: 100%
