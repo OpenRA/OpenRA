@@ -404,7 +404,7 @@ local function indicateFindInstances(editor, name, pos)
       if op == 'Id' then
         table.insert(instances[#instances], token.fpos)
       elseif op:find("^Var") then
-        if this and token.fpos > pos and this == token.at then break end
+        if this and this == token.at then break end
 
         -- if new Var is defined at the same level, replace the current frame;
         -- if not, add a new one; skip implicit definition of "self" variable.
