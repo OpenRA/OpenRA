@@ -289,6 +289,9 @@ function EditorCallTip(editor, pos, x, y)
   -- typing function name, while the mouse is over a different function.
   if editor:CallTipActive() then return end
 
+  -- don't activate if the window itself is not active (in the background)
+  if not ide.frame:IsActive() then return end
+
   local var, funccall = getValAtPosition(editor, pos)
   -- if this is a value type rather than a function/method call, then use
   -- full match to avoid calltip about coroutine.status for "status" vars
