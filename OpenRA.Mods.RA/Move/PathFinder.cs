@@ -75,13 +75,6 @@ namespace OpenRA.Mods.RA.Move
 		{
 			using (new PerfSample("Pathfinder"))
 			{
-				// As with FindUnitPath, avoid trying to traverse domain transitions.
-				// In this case it's pretty sketchy; path false-negatives are possible.
-				if(world.WorldDomains.IsCrossDomain(src, target.ToCPos()))
-				{
-					return new List<CPos>(0);
-				}
-
 				var mi = self.Info.Traits.Get<MobileInfo>();
 				var targetCell = target.ToCPos();
 				var rangeSquared = range.Range*range.Range;
@@ -94,7 +87,13 @@ namespace OpenRA.Mods.RA.Move
 				// This assumes that the SubCell does not change during the path traversal
 				var tilesInRange = world.FindTilesInCircle(targetCell, range.Range / 1024 + 1)
 					.Where(t => (t.CenterPosition - target).LengthSquared <= rangeSquared
-					       && mi.CanEnterCell(self.World, self, t, null, true, true));
+					       && mi.CanEnterCell(self.World, self, t, null, true, true)
+					       && !world.WorldDomains.IsCrossDomain(src, t));
+
+				if(tilesInRange.Count() == 0)
+				{
+					return new List<CPos>(0);
+				}
 
 				var path = FindBidiPath(
 					PathSearch.FromPoints(world, mi, self, tilesInRange, src, true),
