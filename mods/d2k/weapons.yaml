@@ -401,7 +401,8 @@ Sound:
 	Range: 8.5
 	Report: SONIC1
 	Projectile: LaserZap
-		BeamRadius: 1
+		BeamWidth: 2
+		HitAnim: laserfire
 		BeamDuration: 8
 		UsePlayerColor: true
 	Warhead:
