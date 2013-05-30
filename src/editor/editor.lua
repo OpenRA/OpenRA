@@ -984,15 +984,18 @@ function CreateEditor()
 
   editor:Connect(wxstc.wxEVT_STC_DOUBLECLICK,
     function(event)
-      local pos = event:GetPosition()
-      value = pos ~= wxstc.wxSTC_INVALID_POSITION and getValAtPosition(editor, pos) or nil
-      local instances = value and indicateFindInstances(editor, value, pos+1)
-      if not (instances and (instances[0] or #instances > 0)) then
-        event:Skip()
-        return
+      -- only activate selection of instances on Ctrl/Cmd-DoubleClick
+      if event:GetModifiers() == wx.wxMOD_CONTROL then
+        local pos = event:GetPosition()
+        local value = pos ~= wxstc.wxSTC_INVALID_POSITION and getValAtPosition(editor, pos) or nil
+        local instances = value and indicateFindInstances(editor, value, pos+1)
+        if instances and (instances[0] or #instances > 0) then
+          selectAllInstances(instances, value, pos)
+          return
+        end
       end
 
-      selectAllInstances(instances, value, pos)
+      event:Skip()
     end)
 
   local pos, value, instances
