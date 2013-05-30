@@ -54,6 +54,10 @@ function StylesGetDefault()
     fold = {fg = {90, 90, 80}, bg = {250, 250, 250}},
     whitespace = nil,
 
+    -- deprecated; allowed for backward compatibility in case someone does
+    -- fncall.fg = {...}
+    fncall = {},
+
     -- markup
     ['|'] = {fg = {127, 0, 127}},
     ['`'] = {fg = {127, 127, 127}},
@@ -259,6 +263,12 @@ function StylesApplyToEditor(styles,editor,font,fontitalic,lexerconvert)
   do
     local defaultfg = styles.text and styles.text.fg or {127,127,127}
     local indic = styles.indicator or {}
+
+    -- use styles.fncall if not empty and if indic.fncall is empty
+    -- for backward compatibility
+    if type(styles.fncall) == 'table' and next(styles.fncall)
+    and not (type(indic.fncall) == 'table' and next(indic.fncall)) then indic.fncall = styles.fncall end
+
     editor:IndicatorSetStyle(0, indic.fncall and indic.fncall.st or ide.wxver >= "2.9.5" and wxstc.wxSTC_INDIC_ROUNDBOX or wxstc.wxSTC_INDIC_TT)
     editor:IndicatorSetForeground(0, wx.wxColour(unpack(indic.fncall and indic.fncall.fg or {128, 128, 255})))
     editor:IndicatorSetStyle(1, indic.varlocal and indic.varlocal.st or wxstc.wxSTC_INDIC_DOTS)
