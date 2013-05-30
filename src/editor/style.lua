@@ -110,6 +110,8 @@ local specialmapping = {
     else
       editor:SetSelBackground(0,wx.wxWHITE)
     end
+    -- set alpha for additional selecton: 0 - transparent, 255 - opaque
+    editor:SetAdditionalSelAlpha(127)
   end,
 
   caret = function(editor,style)
