@@ -961,20 +961,25 @@ function CreateEditor()
       end
     end)
 
-  local function selectAllInstances(instances, name)
-    local first = true
+  local function selectAllInstances(instances, name, curpos)
+    local this
+    local idx = 0
     for i, pos in pairs(instances) do
-      if i >= 0 then
-        if first then
-          first = false
-          -- SetSelection leaves the cursor at the end; don't use it
-          editor:GotoPos(pos-1)
-          editor:SetAnchor(pos-1+#name)
-        else
-          editor:AddSelection(pos-1, pos-1+#name)
-        end
+      pos = pos - 1 -- positions are 0-based in Scintilla
+      if idx == 0 then
+        -- clear selections first as there seems to be a bug (Scintilla 3.2.3)
+        -- that doesn't reset selection after right mouse click.
+        editor:ClearSelections()
+        editor:SetSelection(pos, pos+#name)
+      else
+        editor:AddSelection(pos+#name, pos)
       end
+
+      -- check if this is the current selection
+      if curpos >= pos and curpos <= pos+#name then this = idx end
+      idx = idx + 1
     end
+    if this then editor:SetMainSelection(this) end
   end
 
   editor:Connect(wxstc.wxEVT_STC_DOUBLECLICK,
@@ -987,11 +992,10 @@ function CreateEditor()
         return
       end
 
-      selectAllInstances(instances, value)
+      selectAllInstances(instances, value, pos)
     end)
 
-  local value
-  local instances
+  local pos, value, instances
   editor:Connect(wx.wxEVT_CONTEXT_MENU,
     function (event)
       local menu = wx.wxMenu()
@@ -1011,10 +1015,9 @@ function CreateEditor()
       menu:Append(ID_ADDTOSCRATCHPAD, TR("Add to Scratchpad"))
 
       local point = editor:ScreenToClient(event:GetPosition())
-      local pos = editor:PositionFromPointClose(point.x, point.y)
+      pos = editor:PositionFromPointClose(point.x, point.y)
       value = pos ~= wxstc.wxSTC_INVALID_POSITION and getValAtPosition(editor, pos) or nil
       instances = value and indicateFindInstances(editor, value, pos+1)
-      if instances then instances[-1] = value end
       menu:Enable(ID_GOTODEFINITION, instances and instances[0])
       menu:Enable(ID_RENAMEALLINSTANCES, instances and (instances[0] or #instances > 0))
       menu:Enable(ID_QUICKADDWATCH, value ~= nil)
@@ -1036,13 +1039,17 @@ function CreateEditor()
 
   editor:Connect(ID_GOTODEFINITION, wx.wxEVT_COMMAND_MENU_SELECTED,
     function(event)
-      editor:GotoPos(instances[0]-1)
-      editor:SetAnchor(instances[0]-1+#instances[-1])
+      if value and instances[0] then
+        editor:GotoPos(instances[0]-1)
+        editor:SetAnchor(instances[0]-1+#value)
+      end
     end)
 
   editor:Connect(ID_RENAMEALLINSTANCES, wx.wxEVT_COMMAND_MENU_SELECTED,
     function(event)
-      selectAllInstances(instances, instances[-1])
+      if value and pos then
+        selectAllInstances(instances, value, pos)
+      end
     end)
 
   editor:Connect(ID_QUICKADDWATCH, wx.wxEVT_COMMAND_MENU_SELECTED,
