@@ -1001,6 +1001,16 @@ function CreateEditor()
   local pos, value, instances
   editor:Connect(wx.wxEVT_CONTEXT_MENU,
     function (event)
+      local point = editor:ScreenToClient(event:GetPosition())
+      pos = editor:PositionFromPointClose(point.x, point.y)
+      value = pos ~= wxstc.wxSTC_INVALID_POSITION and getValAtPosition(editor, pos) or nil
+      instances = value and indicateFindInstances(editor, value, pos+1)
+
+      local occurrences = (not instances or #instances == 0) and ""
+        or ("  (%d)"):format(#instances+(instances[0] and 1 or 0))
+      local line = instances and instances[0] and editor:LineFromPosition(instances[0]-1)+1
+      local def =  line and " ("..TR("on line %d"):format(line)..")" or ""
+
       local menu = wx.wxMenu()
       menu:Append(ID_UNDO, TR("&Undo"))
       menu:Append(ID_REDO, TR("&Redo"))
@@ -1010,17 +1020,13 @@ function CreateEditor()
       menu:Append(ID_PASTE, TR("&Paste"))
       menu:Append(ID_SELECTALL, TR("Select &All"))
       menu:AppendSeparator()
-      menu:Append(ID_GOTODEFINITION, TR("Go To Definition"))
-      menu:Append(ID_RENAMEALLINSTANCES, TR("Rename All Instances"))
+      menu:Append(ID_GOTODEFINITION, TR("Go To Definition")..def)
+      menu:Append(ID_RENAMEALLINSTANCES, TR("Rename All Instances")..occurrences)
       menu:AppendSeparator()
       menu:Append(ID_QUICKADDWATCH, TR("Add Watch Expression"))
       menu:Append(ID_QUICKEVAL, TR("Evaluate in Console"))
       menu:Append(ID_ADDTOSCRATCHPAD, TR("Add to Scratchpad"))
 
-      local point = editor:ScreenToClient(event:GetPosition())
-      pos = editor:PositionFromPointClose(point.x, point.y)
-      value = pos ~= wxstc.wxSTC_INVALID_POSITION and getValAtPosition(editor, pos) or nil
-      instances = value and indicateFindInstances(editor, value, pos+1)
       menu:Enable(ID_GOTODEFINITION, instances and instances[0])
       menu:Enable(ID_RENAMEALLINSTANCES, instances and (instances[0] or #instances > 0))
       menu:Enable(ID_QUICKADDWATCH, value ~= nil)
