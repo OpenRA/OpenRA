@@ -609,7 +609,7 @@ function SetOpenTabs(params)
     if doc.content then
       notebook:SetPageText(opendoc.index, doc.tabname)
       editor:SetText(doc.content)
-      if doc.filename and doc.modified < opendoc.modTime:GetTicks() then
+      if doc.filename and opendoc.modTime and doc.modified < opendoc.modTime:GetTicks() then
         DisplayOutputLn(TR("File '%s' has more recent timestamp than restored '%s'; please review before saving.")
           :format(doc.filename, doc.tabname))
       end
