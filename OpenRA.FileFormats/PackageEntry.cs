@@ -30,11 +30,11 @@ namespace OpenRA.FileFormats
 			Length = length;
 		}
 
-		public PackageEntry(BinaryReader r)
+		public PackageEntry(Stream s)
 		{
-			Hash = r.ReadUInt32();
-			Offset = r.ReadUInt32();
-			Length = r.ReadUInt32();
+			Hash = s.ReadUInt32();
+			Offset = s.ReadUInt32();
+			Length = s.ReadUInt32();
 		}
 
 		public void Write(BinaryWriter w)
