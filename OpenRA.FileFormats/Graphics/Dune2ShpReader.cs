@@ -36,23 +36,23 @@ namespace OpenRA.FileFormats
 		public readonly byte[] LookupTable;
 		public byte[] Image;
 
-		public Dune2ImageHeader(BinaryReader reader)
+		public Dune2ImageHeader(Stream s)
 		{
-			Flags = (Dune2ImageFlags)reader.ReadUInt16();
-			Slices = reader.ReadByte();
-			Width = reader.ReadUInt16();
-			Height = reader.ReadByte();
-			FileSize = reader.ReadUInt16();
-			DataSize = reader.ReadUInt16();
+			Flags = (Dune2ImageFlags)s.ReadUInt16();
+			Slices = s.ReadUInt8();
+			Width = s.ReadUInt16();
+			Height = s.ReadUInt8();
+			FileSize = s.ReadUInt16();
+			DataSize = s.ReadUInt16();
 
 			if (Flags == Dune2ImageFlags.L16_F80_F2_1 ||
 				Flags == Dune2ImageFlags.L16_F80_F2_2 ||
 				Flags == Dune2ImageFlags.Ln_F80_F2)
 			{
-				int n = Flags == Dune2ImageFlags.Ln_F80_F2 ? reader.ReadByte() : (byte)16;
+				int n = Flags == Dune2ImageFlags.Ln_F80_F2 ? s.ReadUInt8() : (byte)16;
 				LookupTable = new byte[n];
 				for (int i = 0; i < n; i++)
-					LookupTable[i] = reader.ReadByte();
+					LookupTable[i] = s.ReadUInt8();
 			}
 			else
 			{
@@ -78,16 +78,14 @@ namespace OpenRA.FileFormats
 
 		List<Dune2ImageHeader> headers = new List<Dune2ImageHeader>();
 
-		public Dune2ShpReader(Stream stream)
+		public Dune2ShpReader(Stream s)
 		{
-			BinaryReader reader = new BinaryReader(stream);
-
-			ImageCount = reader.ReadUInt16();
+			ImageCount = s.ReadUInt16();
 
 			//Last offset is pointer to end of file.
 			uint[] offsets = new uint[ImageCount + 1];
 
-			uint temp = reader.ReadUInt32();
+			uint temp = s.ReadUInt32();
 
 			//If fourth byte in file is non-zero, the offsets are two bytes each.
 			bool twoByteOffsets = (temp & 0xFF0000) > 0;
@@ -100,13 +98,13 @@ namespace OpenRA.FileFormats
 				offsets[0] = temp + 2;
 
 			for (int i = twoByteOffsets ? 2 : 1; i < ImageCount + 1; i++)
-				offsets[i] = (twoByteOffsets ? reader.ReadUInt16() : reader.ReadUInt32()) + 2;
+				offsets[i] = (twoByteOffsets ? s.ReadUInt16() : s.ReadUInt32()) + 2;
 
 			for (int i = 0; i < ImageCount; i++)
 			{
-				reader.BaseStream.Seek(offsets[i], SeekOrigin.Begin);
-				Dune2ImageHeader header = new Dune2ImageHeader(reader);
-				byte[] imgData = reader.ReadBytes(header.FileSize);
+				s.Seek(offsets[i], SeekOrigin.Begin);
+				Dune2ImageHeader header = new Dune2ImageHeader(s);
+				byte[] imgData = s.ReadBytes(header.FileSize);
 				header.Image = new byte[header.Height * header.Width];
 
 				//Decode image data
