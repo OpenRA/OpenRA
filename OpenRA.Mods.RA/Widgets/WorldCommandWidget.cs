@@ -150,7 +150,7 @@ namespace OpenRA.Mods.RA.Widgets
 
 		bool PerformGuard()
 		{
-			var actors = World.Selection.Actors.Where(a => a.Owner == World.LocalPlayer && a.HasTrait<Guard>());
+			var actors = World.Selection.Actors.Where(a => !a.Destroyed && a.Owner == World.LocalPlayer && a.HasTrait<Guard>());
 
 			if (actors.Any())
 				World.OrderGenerator = new GuardOrderGenerator(actors);

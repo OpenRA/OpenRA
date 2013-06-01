@@ -61,8 +61,9 @@ namespace OpenRA.Mods.RA
 			if (target == null || subjects.All(s => s.IsDead()))
 				yield break;
 
-			foreach (var actor in subjects)
-				yield return new Order("Guard", actor, false) { TargetActor = target };
+			foreach (var subject in subjects)
+				if (subject != target)
+					yield return new Order("Guard", subject, false) { TargetActor = target };
 		}
 
 		public void Tick(World world)
@@ -76,10 +77,13 @@ namespace OpenRA.Mods.RA
 
 		public string GetCursor(World world, CPos xy, MouseInput mi)
 		{
-			return world.Map.IsInMap(xy)
-				&& FriendlyGuardableUnitsAtMouse(world, mi).Any()
-				? "guard"
-				: "move-blocked";
+			if (world.Map.IsInMap(xy))
+			{
+				var targets = FriendlyGuardableUnitsAtMouse(world, mi);
+				if (targets.Any() && (subjects.Count() > 1 || (subjects.Count() == 1 && subjects.First() != targets.First())))
+					return "guard";
+			}
+			return "move-blocked";
 		}
 
 		static IEnumerable<Actor> FriendlyGuardableUnitsAtMouse(World world, MouseInput mi)
