@@ -62,13 +62,12 @@ namespace OpenRA.FileFormats
 
 			// Detect format type
 			s.Seek(0, SeekOrigin.Begin);
-			var reader = new BinaryReader(s);
-			var isCncMix = reader.ReadUInt16() != 0;
+			var isCncMix = s.ReadUInt16() != 0;
 
 			// The C&C mix format doesn't contain any flags or encryption
 			var isEncrypted = false;
 			if (!isCncMix)
-				isEncrypted = (reader.ReadUInt16() & 0x2) != 0;
+				isEncrypted = (s.ReadUInt16() & 0x2) != 0;
 
 			List<PackageEntry> entries;
 			if (isEncrypted)
@@ -88,13 +87,12 @@ namespace OpenRA.FileFormats
 		List<PackageEntry> ParseHeader(Stream s, long offset, out long headerEnd)
 		{
 			s.Seek(offset, SeekOrigin.Begin);
-			var reader = new BinaryReader(s);
-			var numFiles = reader.ReadUInt16();
-			/*uint dataSize = */reader.ReadUInt32();
+			var numFiles = s.ReadUInt16();
+			/*uint dataSize = */s.ReadUInt32();
 
 			var items = new List<PackageEntry>();
 			for (var i = 0; i < numFiles; i++)
-				items.Add(new PackageEntry(reader));
+				items.Add(new PackageEntry(s));
 
 			headerEnd = offset + 6 + numFiles*PackageEntry.Size;
 			return items;
@@ -103,16 +101,15 @@ namespace OpenRA.FileFormats
 		MemoryStream DecryptHeader(Stream s, long offset, out long headerEnd)
 		{
 			s.Seek(offset, SeekOrigin.Begin);
-			var reader = new BinaryReader(s);
 
 			// Decrypt blowfish key
-			var keyblock = reader.ReadBytes(80);
+			var keyblock = s.ReadBytes(80);
 			var blowfishKey = new BlowfishKeyProvider().DecryptKey(keyblock);
 			var fish = new Blowfish(blowfishKey);
 
 			// Decrypt first block to work out the header length
 			var ms = Decrypt(ReadBlocks(s, offset + 80, 1), fish);
-			var numFiles = new BinaryReader(ms).ReadUInt16();
+			var numFiles = ms.ReadUInt16();
 
 			// Decrypt the full header - round bytes up to a full block
 			var blockCount = (13 + numFiles*PackageEntry.Size)/8;
@@ -138,12 +135,11 @@ namespace OpenRA.FileFormats
 		uint[] ReadBlocks(Stream s, long offset, int count)
 		{
 			s.Seek(offset, SeekOrigin.Begin);
-			var r = new BinaryReader(s);
 
 			// A block is a single encryption unit (represented as two 32-bit integers)
 			var ret = new uint[2*count];
 			for (var i = 0; i < ret.Length; i++)
-				ret[i] = r.ReadUInt32();
+				ret[i] = s.ReadUInt32();
 
 			return ret;
 		}

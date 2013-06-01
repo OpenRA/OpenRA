@@ -41,41 +41,6 @@ namespace OpenRA
 			return a.GetTypes().Select(t => t.Namespace).Distinct().Where(n => n != null);
 		}
 
-		public static string ReadAllText(this Stream s)
-		{
-			using (s)
-			using (var sr = new StreamReader(s))
-				return sr.ReadToEnd();
-		}
-
-		public static byte[] ReadAllBytes(this Stream s)
-		{
-			using (s)
-			{
-				var data = new byte[s.Length - s.Position];
-				s.Read(data, 0, data.Length);
-				return data;
-			}
-		}
-
-		public static void Write(this Stream s, byte[] data)
-		{
-			s.Write(data, 0, data.Length);
-		}
-
-		public static IEnumerable<string> ReadAllLines(this Stream s)
-		{
-			using (var sr = new StreamReader(s))
-				for (; ; )
-				{
-					var line = sr.ReadLine();
-					if (line == null)
-						yield break;
-					else
-						yield return line;
-				}
-		}
-
 		public static bool HasAttribute<T>(this MemberInfo mi)
 		{
 			return mi.GetCustomAttributes(typeof(T), true).Length != 0;
