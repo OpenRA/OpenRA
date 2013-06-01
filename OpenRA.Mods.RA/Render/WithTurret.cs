@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -17,7 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
-	class WithTurretInfo : ITraitInfo, Requires<RenderSimpleInfo>, Requires<TurretedInfo>
+	class WithTurretInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<TurretedInfo>, Requires<IBodyOrientationInfo>
 	{
 		[Desc("Sequence name to use")]
 		public readonly string Sequence = "turret";
@@ -28,13 +28,17 @@ namespace OpenRA.Mods.RA.Render
 		[Desc("Turreted 'Turret' key to display")]
 		public readonly string Turret = "primary";
 
+		[Desc("Render recoil")]
+		public readonly bool Recoils = true;
+
 		public object Create(ActorInitializer init) { return new WithTurret(init.self, this); }
 	}
 
 	class WithTurret : ITick
 	{
 		WithTurretInfo info;
-		RenderSimple rs;
+		RenderSprites rs;
+		IBodyOrientation body;
 		AttackBase ab;
 		Turreted t;
 		IEnumerable<Armament> arms;
@@ -43,7 +47,9 @@ namespace OpenRA.Mods.RA.Render
 		public WithTurret(Actor self, WithTurretInfo info)
 		{
 			this.info = info;
-			rs = self.Trait<RenderSimple>();
+			rs = self.Trait<RenderSprites>();
+			body = self.Trait<IBodyOrientation>();
+
 			ab = self.TraitOrDefault<AttackBase>();
 			t = self.TraitsImplementing<Turreted>()
 				.First(tt => tt.Name == info.Turret);
@@ -54,15 +60,21 @@ namespace OpenRA.Mods.RA.Render
 			anim.Play(info.Sequence);
 			rs.anims.Add("turret_{0}".F(info.Turret), new AnimationWithOffset(
 				anim, () => TurretOffset(self), null, p => ZOffsetFromCenter(self, p, 1)));
+
+			// Restrict turret facings to match the sprite
+			t.QuantizedFacings = anim.CurrentSequence.Facings;
 		}
 
 		WVec TurretOffset(Actor self)
 		{
+			if (!info.Recoils)
+				return t.Position(self);
+
 			var recoil = arms.Aggregate(WRange.Zero, (a,b) => a + b.Recoil);
 			var localOffset = new WVec(-recoil, WRange.Zero, WRange.Zero);
-			var bodyOrientation = rs.QuantizeOrientation(self, self.Orientation);
-			var turretOrientation = rs.QuantizeOrientation(self, t.LocalOrientation(self));
-			return t.Position(self) + rs.LocalToWorld(localOffset.Rotate(turretOrientation).Rotate(bodyOrientation));
+			var bodyOrientation = body.QuantizeOrientation(self, self.Orientation);
+			var turretOrientation = body.QuantizeOrientation(self, t.LocalOrientation(self));
+			return t.Position(self) + body.LocalToWorld(localOffset.Rotate(turretOrientation).Rotate(bodyOrientation));
 		}
 
 		public void Tick(Actor self)

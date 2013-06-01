@@ -481,14 +481,17 @@ CRATE:
 	ProximityCaptor:
 		Types:Crate
 	Passenger:
+	BodyOrientation:
 
 mpspawn:
 	Waypoint:
 	RenderEditorOnly:
+	BodyOrientation:
 
 waypoint:
 	Waypoint:
 	RenderEditorOnly:
+	BodyOrientation:
 
 SPICEBLOOM:
 	RenderBuilding:
@@ -508,6 +511,7 @@ SPICEBLOOM:
 		Interval: 75
 	RadarColorFromTerrain:
 		Terrain: Spice
+	BodyOrientation:
 
 #SANDWORM:
 #	Buildable:

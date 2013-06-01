@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
-	class RenderGunboatInfo : RenderUnitInfo
+	class RenderGunboatInfo : RenderSimpleInfo
 	{
 		public override object Create(ActorInitializer init) { return new RenderGunboat(init.self); }
 	}
@@ -26,8 +26,13 @@ namespace OpenRA.Mods.RA.Render
 		string lastDir = "left";
 		string lastDamage = "";
 
+		static Func<int> TurretFacingFunc(Actor self)
+		{
+			return () => self.HasTrait<Turreted>() ? self.TraitsImplementing<Turreted>().First().turretFacing : 0;
+		}
+
 		public RenderGunboat(Actor self)
-			: base(self, () => self.HasTrait<Turreted>() ? self.TraitsImplementing<Turreted>().First().turretFacing : 0)
+			: base(self, TurretFacingFunc(self))
 		{
 			facing = self.Trait<IFacing>();
 			anim.Play("left");
@@ -40,6 +45,8 @@ namespace OpenRA.Mods.RA.Render
 			anims.Add("wake", new AnimationWithOffset(wake,
 				() => anims["wake"].Animation.CurrentSequence.Name == "left-wake" ? leftOffset : rightOffset,
 			    () => false, -87));
+
+			self.Trait<IBodyOrientation>().QuantizedFacings = anim.CurrentSequence.Facings;
 		}
 
 		public override void Tick(Actor self)

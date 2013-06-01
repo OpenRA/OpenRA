@@ -670,6 +670,7 @@ MINP:
 		Types: Mine
 	TargetableUnit:
 		TargetTypes: Ground
+	BodyOrientation:
 
 MINV:
 	Mine:
@@ -695,6 +696,7 @@ MINV:
 		Types: Mine
 	TargetableUnit:
 		TargetTypes: Ground
+	BodyOrientation:
 
 CRATE:
 	Tooltip:
@@ -757,6 +759,7 @@ CRATE:
 	ProximityCaptor:
 		Types:Crate
 	Passenger:
+	BodyOrientation:
 
 CAMERA:
 	Aircraft:
@@ -766,6 +769,7 @@ CAMERA:
 		Range: 10
 	ProximityCaptor:
 		Types:Camera
+	BodyOrientation:
 
 FLARE:
 	Aircraft:
@@ -780,6 +784,7 @@ FLARE:
 		Name: Flare
 	ProximityCaptor:
 		Types: Flare
+	BodyOrientation:
 
 powerproxy.parabombs:
 	AirstrikePower:
@@ -805,7 +810,9 @@ powerproxy.sonarpulse:
 mpspawn:
 	Waypoint:
 	RenderEditorOnly:
+	BodyOrientation:
 
 waypoint:
 	Waypoint:
 	RenderEditorOnly:
+	BodyOrientation:

@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
-	class WithSpinnerInfo : ITraitInfo, Requires<RenderSimpleInfo>
+	class WithSpinnerInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>
 	{
 		[Desc("Sequence name to use")]
 		public readonly string Sequence = "spinner";
@@ -29,11 +29,13 @@ namespace OpenRA.Mods.RA.Render
 	{
 		public WithSpinner(Actor self, WithSpinnerInfo info)
 		{
-			var rs = self.Trait<RenderSimple>();
+			var rs = self.Trait<RenderSprites>();
+			var body = self.Trait<IBodyOrientation>();
+
 			var spinner = new Animation(rs.GetImage(self));
 			spinner.PlayRepeating(info.Sequence);
 			rs.anims.Add("spinner_{0}".F(info.Sequence), new AnimationWithOffset(spinner,
-				() => rs.LocalToWorld(info.Offset.Rotate(rs.QuantizeOrientation(self, self.Orientation))),
+				() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
 				null, p => WithTurret.ZOffsetFromCenter(self, p, 1)));
 		}
 	}

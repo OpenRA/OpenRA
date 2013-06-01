@@ -14,7 +14,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class SmokeTrailWhenDamagedInfo : ITraitInfo, Requires<LocalCoordinatesModelInfo>
+	class SmokeTrailWhenDamagedInfo : ITraitInfo, Requires<IBodyOrientationInfo>
 	{
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;
@@ -26,14 +26,14 @@ namespace OpenRA.Mods.RA
 
 	class SmokeTrailWhenDamaged : ITick
 	{
-		ILocalCoordinatesModel coords;
+		IBodyOrientation body;
 		SmokeTrailWhenDamagedInfo info;
 		int ticks;
 
 		public SmokeTrailWhenDamaged(Actor self, SmokeTrailWhenDamagedInfo info)
 		{
 			this.info = info;
-			coords = self.Trait<ILocalCoordinatesModel>();
+			body = self.Trait<IBodyOrientation>();
 		}
 
 		public void Tick(Actor self)
@@ -44,8 +44,8 @@ namespace OpenRA.Mods.RA
 				if (position.Z > 0 && self.GetDamageState() >= DamageState.Heavy &&
 				    !self.World.FogObscures(new CPos(position)))
 				{
-					var offset = info.Offset.Rotate(coords.QuantizeOrientation(self, self.Orientation));
-					var pos = position + coords.LocalToWorld(offset);
+					var offset = info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation));
+					var pos = position + body.LocalToWorld(offset);
 					self.World.AddFrameEndTask(w => w.Add(new Smoke(w, pos, info.Sprite)));
 				}
 

@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA.Render
 			foreach (var r in p)
 				yield return r;
 
-			var anim = new Animation(RenderSimple.GetImage(building), () => 0);
+			var anim = new Animation(RenderSprites.GetImage(building), () => 0);
 			anim.PlayRepeating("idle-top");
 			yield return new SpriteRenderable(anim.Image, WPos.Zero + Origin, 0, pr, 1f);
 		}

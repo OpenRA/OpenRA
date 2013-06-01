@@ -22,14 +22,26 @@ namespace OpenRA.Mods.RA.Render
 
 	class RenderBuildingTurreted : RenderBuilding
 	{
-		public RenderBuildingTurreted( ActorInitializer init, RenderBuildingInfo info )
-			: base(init, info, MakeTurretFacingFunc(init.self)) { }
+		Turreted t;
 
 		static Func<int> MakeTurretFacingFunc(Actor self)
 		{
 			// Turret artwork is baked into the sprite, so only the first turret makes sense.
 			var turreted = self.TraitsImplementing<Turreted>().FirstOrDefault();
 			return () => turreted.turretFacing;
+		}
+
+		public RenderBuildingTurreted(ActorInitializer init, RenderBuildingInfo info)
+			: base(init, info, MakeTurretFacingFunc(init.self))
+		{
+			t = init.self.TraitsImplementing<Turreted>().FirstOrDefault();
+			t.QuantizedFacings = anim.CurrentSequence.Facings;
+		}
+
+		public override void DamageStateChanged(Actor self, AttackInfo e)
+		{
+			base.DamageStateChanged(self, e);
+			t.QuantizedFacings = anim.CurrentSequence.Facings;
 		}
 	}
 }

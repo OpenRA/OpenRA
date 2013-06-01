@@ -18,7 +18,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc
 {
-	public class WithCargoInfo : ITraitInfo, Requires<CargoInfo>, Requires<LocalCoordinatesModelInfo>
+	public class WithCargoInfo : ITraitInfo, Requires<CargoInfo>, Requires<IBodyOrientationInfo>
 	{
 		[Desc("Cargo position relative to turret or body. (forward, right, up) triples")]
 		public readonly WRange[] LocalOffset = {};
@@ -33,7 +33,7 @@ namespace OpenRA.Mods.Cnc
 		IFacing facing;
 		WithCargoInfo Info;
 		WVec[] positions;
-		ILocalCoordinatesModel coords;
+		IBodyOrientation body;
 
 		public WithCargo(Actor self, WithCargoInfo info)
 		{
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.Cnc
 			facing = self.TraitOrDefault<IFacing>();
 			Info = info;
 
-			coords = self.Trait<ILocalCoordinatesModel>();
+			body = self.Trait<IBodyOrientation>();
 
 			if (info.LocalOffset.Length % 3 != 0)
 				throw new InvalidOperationException("Invalid LocalOffset array length");
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.Cnc
 			foreach (var rr in r)
 				yield return rr;
 
-			var bodyOrientation = coords.QuantizeOrientation(self, self.Orientation);
+			var bodyOrientation = body.QuantizeOrientation(self, self.Orientation);
 			var pos = self.CenterPosition;
 			int i = 0;
 			foreach (var c in cargo.Passengers)
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.Cnc
 				var cargoPassenger = c.Trait<Passenger>();
 				if (Info.DisplayTypes.Contains(cargoPassenger.info.CargoType))
 				{
-					var offset = pos - c.CenterPosition + coords.LocalToWorld(positions[i++ % positions.Length].Rotate(bodyOrientation));
+					var offset = pos - c.CenterPosition + body.LocalToWorld(positions[i++ % positions.Length].Rotate(bodyOrientation));
 					foreach (var cr in c.Render(wr))
 						yield return cr.WithPos(cr.Pos + offset).WithZOffset(1);
 				}
