@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class ContrailInfo : ITraitInfo, Requires<LocalCoordinatesModelInfo>
+	class ContrailInfo : ITraitInfo, Requires<IBodyOrientationInfo>
 	{
 		[Desc("Position relative to body")]
 		public readonly WVec Offset = WVec.Zero;
@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA
 	{
 		ContrailInfo info;
 		ContrailHistory history;
-		ILocalCoordinatesModel coords;
+		IBodyOrientation body;
 
 		public Contrail(Actor self, ContrailInfo info)
 		{
@@ -40,13 +40,13 @@ namespace OpenRA.Mods.RA
 			history = new ContrailHistory(info.TrailLength,
 				info.UsePlayerColor ? ContrailHistory.ChooseColor(self) : info.Color);
 
-			coords = self.Trait<ILocalCoordinatesModel>();
+			body = self.Trait<IBodyOrientation>();
 		}
 
 		public void Tick(Actor self)
 		{
-			var local = info.Offset.Rotate(coords.QuantizeOrientation(self, self.Orientation));
-			history.Tick(self.CenterPosition + coords.LocalToWorld(local));
+			var local = info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation));
+			history.Tick(self.CenterPosition + body.LocalToWorld(local));
 		}
 
 		public void RenderAfterWorld(WorldRenderer wr, Actor self) { history.Render(wr, self); }

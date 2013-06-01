@@ -225,6 +225,8 @@
     <Compile Include="Network\UPnP.cs" />
     <Compile Include="Widgets\ClientTooltipRegionWidget.cs" />
     <Compile Include="Graphics\Renderable.cs" />
+    <Compile Include="Traits\Render\RenderSprites.cs" />
+    <Compile Include="Traits\BodyOrientation.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

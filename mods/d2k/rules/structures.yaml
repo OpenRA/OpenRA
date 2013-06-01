@@ -372,6 +372,7 @@ WALL:
 		Types:Wall
 	Sellable:
 	Guardable:
+	BodyOrientation:
 
 GUNTOWER:
 	Inherits: ^Building

@@ -16,7 +16,7 @@ using OpenRA.Mods.RA.Buildings;
 
 namespace OpenRA.Mods.RA
 {
-	class CrateInfo : ITraitInfo, Requires<RenderSimpleInfo>
+	class CrateInfo : ITraitInfo, Requires<RenderSpritesInfo>
 	{
 		public readonly int Lifetime = 5; // Seconds
 		public readonly string[] TerrainTypes = { };
@@ -116,7 +116,7 @@ namespace OpenRA.Mods.RA
 			PxPosition = Util.CenterOfCell(cell);
 
 			var seq = self.World.GetTerrainInfo(cell).IsWater ? "water" : "land";
-			var rs = self.Trait<RenderSimple>();
+			var rs = self.Trait<RenderSprites>();
 			if (seq != rs.anim.CurrentSequence.Name)
 				rs.anim.PlayRepeating(seq);
 

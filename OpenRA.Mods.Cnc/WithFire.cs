@@ -13,7 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc
 {
-	class WithFireInfo : ITraitInfo, Requires<RenderSimpleInfo>
+	class WithFireInfo : ITraitInfo, Requires<RenderSpritesInfo>
 	{
 		public readonly WVec Offset = new WVec(299,-640,0);
 
@@ -24,7 +24,7 @@ namespace OpenRA.Mods.Cnc
 	{
 		public WithFire(Actor self, WithFireInfo info)
 		{
-			var rs = self.Trait<RenderSimple>();
+			var rs = self.Trait<RenderSprites>();
 			var roof = new Animation(rs.GetImage(self));
 			roof.PlayThen("fire-start", () => roof.PlayRepeating("fire-loop"));
 
