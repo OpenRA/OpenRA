@@ -440,6 +440,10 @@
     <Compile Include="Widgets\Logic\AssetBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\ConvertGameFilesLogic.cs" />
     <Compile Include="VoxelNormalsPalette.cs" />
+    <Compile Include="Render\RenderVoxels.cs" />
+    <Compile Include="Render\WithVoxelTurret.cs" />
+    <Compile Include="Render\WithVoxelBody.cs" />
+    <Compile Include="Render\WithVoxelBarrel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
