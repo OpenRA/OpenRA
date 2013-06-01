@@ -41,7 +41,6 @@ namespace OpenRA.Graphics
 		IRenderable WithZOffset(int newOffset);
 		IRenderable WithPos(WPos pos);
 		void Render(WorldRenderer wr);
-		WVec Size(WorldRenderer wr);
 	}
 
 	public struct SpriteRenderable : IRenderable
@@ -83,12 +82,6 @@ namespace OpenRA.Graphics
 		public void Render(WorldRenderer wr)
 		{
 			sprite.DrawAt(wr.ScreenPxPosition(pos) - pxCenter, palette.Index, scale);
-		}
-
-		public WVec Size(WorldRenderer wr)
-		{
-			var size = (scale*sprite.size).ToInt2();
-			return new WVec(size.X, size.Y, size.Y);
 		}
 	}
 }
