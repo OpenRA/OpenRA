@@ -34,22 +34,22 @@ namespace OpenRA.Utility
 		public int OffsetX;
 		public int OffsetY;
 
-		public R8Image(BinaryReader reader, int Frame)
+		public R8Image(Stream s, int Frame)
 		{
-			var offset = reader.BaseStream.Position;
-			var ID = reader.ReadByte(); // 0 = no data, 1 = picture with palette, 2 = picture with current palette
+			var offset = s.Position;
+			var ID = s.ReadUInt8(); // 0 = no data, 1 = picture with palette, 2 = picture with current palette
 			while (ID == 0)
-				ID = reader.ReadByte();
-			Width = reader.ReadInt32(); //Width of picture
-			Height = reader.ReadInt32(); //Height of picture
-			OffsetX = reader.ReadInt32(); //Offset on X axis from left border edge of virtual frame
-			OffsetY = reader.ReadInt32(); //Offset on Y axis from top border edge of virtual frame
-			ImageHandle = reader.ReadInt32(); // 0 = no picture
-			PaletteHandle = reader.ReadInt32(); // 0 = no palette
-			var Bpp = reader.ReadByte(); // Bits per Pixel
-			FrameHeight = reader.ReadByte(); // Height of virtual frame
-			FrameWidth = reader.ReadByte(); // Width of virtual frame
-			var Align = reader.ReadByte(); //Alignment on even border
+				ID = s.ReadUInt8();
+			Width = s.ReadInt32(); //Width of picture
+			Height = s.ReadInt32(); //Height of picture
+			OffsetX = s.ReadInt32(); //Offset on X axis from left border edge of virtual frame
+			OffsetY = s.ReadInt32(); //Offset on Y axis from top border edge of virtual frame
+			ImageHandle = s.ReadInt32(); // 0 = no picture
+			PaletteHandle = s.ReadInt32(); // 0 = no palette
+			var Bpp = s.ReadUInt8(); // Bits per Pixel
+			FrameHeight = s.ReadUInt8(); // Height of virtual frame
+			FrameWidth = s.ReadUInt8(); // Width of virtual frame
+			var Align = s.ReadUInt8(); //Alignment on even border
 
 			Console.WriteLine("Offset: {0}",offset);
 			Console.WriteLine("ID: {0}",ID);
@@ -74,23 +74,23 @@ namespace OpenRA.Utility
 			if (ID == 1 && PaletteHandle != 0)
 			{
 				// read and ignore custom palette
-				reader.ReadInt32(); //Memory
-				reader.ReadInt32(); //Handle
+				s.ReadInt32(); //Memory
+				s.ReadInt32(); //Handle
 
 				for (int i = 0; i < Width*Height; i++)
-					Image[i] = reader.ReadByte();
+					Image[i] = s.ReadUInt8();
 				for (int i = 0; i < 256; i++)
-					reader.ReadUInt16();
+					s.ReadUInt16();
 			}
 			else if (ID == 2 && PaletteHandle != 0) // image with custom palette
 			{
 				for (int i = 0; i < Width*Height; i++)
-					Image[i] = reader.ReadByte();
+					Image[i] = s.ReadUInt8();
 			}
 			else //standard palette or 16 Bpp
 			{
 				for (int i = 0; i < Width*Height; i++)
-					Image[i] = reader.ReadByte();
+					Image[i] = s.ReadUInt8();
 			}
 		}
 	}
@@ -100,17 +100,15 @@ namespace OpenRA.Utility
 		private readonly List<R8Image> headers = new List<R8Image>();
 
 		public readonly int Frames;
-		public R8Reader( Stream stream )
+		public R8Reader(Stream stream)
 		{
-			BinaryReader reader = new BinaryReader( stream );
-
 			Frames = 0;
-			while (reader.BaseStream.Position < stream.Length)
+			while (stream.Position < stream.Length)
 			{
 				try
 				{
-					Console.WriteLine("Frame {0}: {1}",Frames, reader.BaseStream.Position);
-					headers.Add( new R8Image( reader, Frames ) );
+					Console.WriteLine("Frame {0}: {1}",Frames, stream.Position);
+					headers.Add(new R8Image(stream, Frames));
 					Frames++;
 				}
 				catch (Exception e)
@@ -121,9 +119,9 @@ namespace OpenRA.Utility
 			}
 		}
 
-		public R8Image this[ int index ]
+		public R8Image this[int index]
 		{
-			get { return headers[ index ]; }
+			get { return headers[index]; }
 		}
 
 		public IEnumerator<R8Image> GetEnumerator()

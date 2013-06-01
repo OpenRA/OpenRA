@@ -84,7 +84,7 @@ namespace OpenRA.FileFormats
 
 		private readonly List<HeaderImage> headers = new List<HeaderImage>();
 
-		public ShpTSReader(Stream stream)
+		public ShpTSReader(Stream s)
 		{
 
 			SHP SHP = new SHP();
@@ -100,13 +100,12 @@ namespace OpenRA.FileFormats
 				byte cp;
 				byte[] Databuffer;
 
-				BinaryReader sReader = new BinaryReader(stream);
-				FileSize = (int)sReader.BaseStream.Length;
+				FileSize = (int)s.Length;
 				// Get Header
-				SHP.Header.A = sReader.ReadUInt16();
-				SHP.Header.Width = sReader.ReadUInt16();
-				SHP.Header.Height = sReader.ReadUInt16();
-				SHP.Header.NumImages = sReader.ReadUInt16();
+				SHP.Header.A = s.ReadUInt16();
+				SHP.Header.Width = s.ReadUInt16();
+				SHP.Header.Height = s.ReadUInt16();
+				SHP.Header.NumImages = s.ReadUInt16();
 
 				SHP.Data = new SHPData[SHP.Header.NumImages + 1];
 
@@ -116,18 +115,18 @@ namespace OpenRA.FileFormats
 				{
 					SHP.Data[x].HeaderImage = new HeaderImage();
  
-					SHP.Data[x].HeaderImage.x = sReader.ReadUInt16();
-					SHP.Data[x].HeaderImage.y = sReader.ReadUInt16();
-					SHP.Data[x].HeaderImage.cx = sReader.ReadUInt16();
-					SHP.Data[x].HeaderImage.cy = sReader.ReadUInt16();
+					SHP.Data[x].HeaderImage.x = s.ReadUInt16();
+					SHP.Data[x].HeaderImage.y = s.ReadUInt16();
+					SHP.Data[x].HeaderImage.cx = s.ReadUInt16();
+					SHP.Data[x].HeaderImage.cy = s.ReadUInt16();
 
-					SHP.Data[x].HeaderImage.compression = sReader.ReadByte();
-					SHP.Data[x].HeaderImage.align = sReader.ReadBytes(3);
-					sReader.ReadInt32();
-					SHP.Data[x].HeaderImage.zero = sReader.ReadByte();
-					SHP.Data[x].HeaderImage.transparent = sReader.ReadBytes(3);
+					SHP.Data[x].HeaderImage.compression = s.ReadUInt8();
+					SHP.Data[x].HeaderImage.align = s.ReadBytes(3);
+					s.ReadInt32();
+					SHP.Data[x].HeaderImage.zero = s.ReadUInt8();
+					SHP.Data[x].HeaderImage.transparent = s.ReadBytes(3);
 
-					SHP.Data[x].HeaderImage.offset = sReader.ReadInt32();
+					SHP.Data[x].HeaderImage.offset = s.ReadInt32();
 
 				}
 
@@ -166,8 +165,8 @@ namespace OpenRA.FileFormats
 								Databuffer = new byte[ImageSize];
 								for (int i = 0; i < ImageSize; i++)
 								{
-									sReader.BaseStream.Position = SHP.Data[x].HeaderImage.offset + i;
-									Databuffer[i] = sReader.ReadByte();
+									s.Seek(SHP.Data[x].HeaderImage.offset + i, SeekOrigin.Begin);
+									Databuffer[i] = s.ReadUInt8();
 								}
 								SHP.Data[x].Databuffer = new byte[(SHP.Data[x].HeaderImage.cx * SHP.Data[x].HeaderImage.cy)];
 								Decode3(Databuffer, ref SHP.Data[x].Databuffer, SHP.Data[x].HeaderImage.cx, SHP.Data[x].HeaderImage.cy, ref FileSize);
@@ -221,8 +220,8 @@ namespace OpenRA.FileFormats
 								Databuffer = new byte[ImageSize];
 								for (int i = 0; i < ImageSize; i++)
 								{
-									sReader.BaseStream.Position = SHP.Data[x].HeaderImage.offset + i;
-									Databuffer[i] = sReader.ReadByte();
+									s.Seek(SHP.Data[x].HeaderImage.offset + i, SeekOrigin.Begin);
+									Databuffer[i] = s.ReadUInt8();
 								}
 								SHP.Data[x].Databuffer = new byte[((SHP.Data[x].HeaderImage.cx * SHP.Data[x].HeaderImage.cy))];
 								
@@ -279,8 +278,8 @@ namespace OpenRA.FileFormats
 								Databuffer = new byte[ImageSize];
 								for (int i = 0; i < ImageSize; i++)
 								{
-									sReader.BaseStream.Position = SHP.Data[x].HeaderImage.offset + i;
-									Databuffer[i] = sReader.ReadByte();
+									s.Seek(SHP.Data[x].HeaderImage.offset + i, SeekOrigin.Begin);
+									Databuffer[i] = s.ReadUInt8();
 								}
 
 								Decode2(Databuffer, ref SHP.Data[x].Databuffer, SHP.Data[x].HeaderImage.cx, SHP.Data[x].HeaderImage.cy, ref ImageSize);
@@ -334,8 +333,8 @@ namespace OpenRA.FileFormats
 								Databuffer = new byte[ImageSize];
 								for (int i = 0; i < ImageSize; i++)
 								{
-									sReader.BaseStream.Position = SHP.Data[x].HeaderImage.offset + i;
-									Databuffer[i] = sReader.ReadByte();
+									s.Seek(SHP.Data[x].HeaderImage.offset + i, SeekOrigin.Begin);
+									Databuffer[i] = s.ReadUInt8();
 								}
 								SHP.Data[x].Databuffer = new byte[((SHP.Data[x].HeaderImage.cx * SHP.Data[x].HeaderImage.cy))];
 								Decode2(Databuffer, ref SHP.Data[x].Databuffer, SHP.Data[x].HeaderImage.cx, SHP.Data[x].HeaderImage.cy, ref ImageSize);
@@ -389,8 +388,8 @@ namespace OpenRA.FileFormats
 							Databuffer = new byte[ImageSize];
 							for (int i = 0; i < ImageSize; i++)
 							{
-								sReader.BaseStream.Position = SHP.Data[x].HeaderImage.offset + i;
-								Databuffer[i] = sReader.ReadByte();
+								s.Seek(SHP.Data[x].HeaderImage.offset + i, SeekOrigin.Begin);
+								Databuffer[i] = s.ReadUInt8();
 							}
 							SHP.Data[x].Databuffer = new byte[(SHP.Data[x].HeaderImage.cx * SHP.Data[x].HeaderImage.cy)];
 							SHP.Data[x].Databuffer = Databuffer;
