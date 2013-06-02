@@ -156,7 +156,7 @@ namespace OpenRA.FileFormats
 
 			byte[] missingTile = new byte[TileSize*TileSize];
 			for (var i = 0; i < missingTile.Length; i++)
-				missingTile[i] = 0x36;
+				missingTile[i] = 0x00;
 
 			return missingTile;
 		}
