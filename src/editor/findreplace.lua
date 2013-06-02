@@ -241,26 +241,37 @@ local function onFileRegister(pos)
 end
 
 local function ProcInFiles(startdir,mask,subdirs,replace)
-  local files = FileSysGetRecursive(startdir,subdirs,mask)
+  local files = FileSysGetRecursive(startdir,subdirs,"*")
+
+  -- mask could be a list, so generate a table with matching patterns
+  -- accept "*.lua; .txt;.wlua" combinations
+  local masks = {}
+  for m in mask:gmatch("[^%s;]+") do
+    table.insert(masks, m:gsub("%.", "%%."):gsub("%*", ".*").."$")
+  end
   for _,file in ipairs(files) do
     -- ignore .bak files when replacing and asked to store .bak files
     -- and skip folders as these are included in the list as well
     if not (replace and findReplace.fMakeBak and file:find('.bak$'))
     and not file:match(string_Pathsep.."$") then
-      findReplace.curfilename = file
+      local match = false
+      for _, mask in ipairs(masks) do match = match or file:find(mask) end
+      if match then
+        findReplace.curfilename = file
 
-      local filetext = FileRead(file)
-      if filetext then
-        findReplace.oveditor:SetText(filetext)
+        local filetext = FileRead(file)
+        if filetext then
+          findReplace.oveditor:SetText(filetext)
 
-        if replace then
-          -- check if anything replaced, store changed content, make .bak
-          if findReplace:ReplaceString(true,onFileRegister)
-          and findReplace.fMakeBak and FileWrite(file..".bak",filetext) then
-            FileWrite(file,findReplace.oveditor:GetText())
+          if replace then
+            -- check if anything replaced, store changed content, make .bak
+            if findReplace:ReplaceString(true,onFileRegister)
+            and findReplace.fMakeBak and FileWrite(file..".bak",filetext) then
+              FileWrite(file,findReplace.oveditor:GetText())
+            end
+          else
+            findReplace:FindStringAll(onFileRegister)
           end
-        else
-          findReplace:FindStringAll(onFileRegister)
         end
       end
     end
