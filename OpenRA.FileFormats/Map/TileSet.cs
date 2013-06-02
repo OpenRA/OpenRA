@@ -148,7 +148,11 @@ namespace OpenRA.FileFormats
 		{
 			TileTemplate tile;
 			if (Templates.TryGetValue(r.type, out tile))
-				return tile.Data.TileBitmapBytes[r.index];
+			{
+				var data = tile.Data.TileBitmapBytes[r.index];
+				if (data != null)
+					return data;
+			}
 
 			byte[] missingTile = new byte[TileSize*TileSize];
 			for (var i = 0; i < missingTile.Length; i++)
