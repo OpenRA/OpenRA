@@ -55,7 +55,7 @@ Players:
 	PlayerReference@Soviets:
 		Name: Soviets
 		Race: soviet
-		ColorRamp: 0,255,128,10
+		ColorRamp: 0,255,128
 		Enemies: Multi0,Multi1,Multi2,Multi3
 
 Actors:
@@ -392,32 +392,20 @@ Actors:
 	Paradrop4: waypoint
 		Location: 36,32
 		Owner: Neutral
-	Rally1: waypoint
-		Location: 25,17
+	Patrol3: waypoint
+		Location: 32,46
 		Owner: Neutral
-	Rally2: waypoint
-		Location: 38,17
-		Owner: Neutral
-	Rally3: waypoint
-		Location: 16,31
-		Owner: Neutral
-	Rally4: waypoint
-		Location: 24,47
-		Owner: Neutral
-	Rally5: waypoint
-		Location: 37,47
-		Owner: Neutral
-	Rally6: waypoint
-		Location: 47,32
+	Patrol4: waypoint
+		Location: 46,32
 		Owner: Neutral
 	Actor20: apwr
 		Location: 37,4
 		Owner: Soviets
-	BaseA: waypoint
-		Location: 24,24
+	Patrol2: waypoint
+		Location: 17,32
 		Owner: Neutral
-	BaseB: waypoint
-		Location: 40,40
+	Patrol1: waypoint
+		Location: 32,18
 		Owner: Neutral
 	Actor34: sniper
 		Location: 9,26
@@ -741,41 +729,45 @@ Rules:
 			Prerequisites: barr,oilb
 		Valued:
 			Cost: 750
-	E8:
-		Inherits: ^Infantry
+	3TNK:
+		Inherits: ^Tank
 		Buildable:
-			Queue: Infantry
-			BuildPaletteOrder: 110
-			Prerequisites: stek
-			Owner: None
+			Queue: Vehicle
+			BuildPaletteOrder: 40
+			Prerequisites: fix
+			Owner: soviet
+			Hotkey: h
 		Valued:
-			Cost: 1800
-		Tooltip:
-			Name: Volkov
-			Description: Elite commando infantry, armed with 	\nmodular cannons and grenade launcher.\n  Strong vs 	Vehicles, Infantry\n  Weak vs Aircraft
-		Selectable:
-			Voice: VolkovVoice
-			Bounds: 12,17,0,-9
+			Cost: 1150
+		
 		Health:
-			HP: 200
+			HP: 700
 		Armor:
 			Type: Heavy
 		Mobile:
 			Speed: 5
+			Crushes: wall, atmine, crate, infantry
 		RevealsShroud:
 			Range: 7
-		Passenger:
-			PipType: Red
-		AttackFrontal:
-			PrimaryWeapon: VolkNapalm
+		Turreted:
+			ROT: 5
+		Armament:
+			Weapon: VolkNapalm
+			Recoil: 200
+			RecoilRecovery: 38
+			LocalOffset: 0,85,0, 0,-85,0
+		AttackTurreted:
+		RenderUnit:
+		WithTurret:
+		AutoTarget:
 		Explodes:
 			Weapon: UnitExplodeSmall
+			EmptyWeapon: UnitExplodeSmall
 			Chance: 100
-		TakeCover:
-		-RenderInfantry:
-		RenderInfantryProne:
-			IdleAnimations: idle1
-		-CrushableInfantry:
+		LeavesHusk:
+			HuskActor: 3TNK.Husk
+		Selectable:
+			Bounds: 30,30 
 	MECH:
 		Buildable:
 			Owner: None
@@ -790,13 +782,31 @@ Rules:
 			Owner: soviet,allies
 			Prerequisites: barr,oilb
 		Valued:
-			Cost: 120
-	SNIPER:
-		Buildable:
-			Owner: allies,soviet
-			Prerequisites: barr,oilb
-		Valued:
 			Cost: 150
+	SNIPER:
+		Inherits: ^Infantry
+		Valued:
+			Cost: 300	
+		Buildable:
+			Queue: Infantry
+			BuildPaletteOrder: 80
+			Owner: soviet
+			Prerequisites: barr,oilb
+			Hotkey: n
+		Selectable:
+			Bounds: 12,17,0,-6
+		Mobile:
+			Speed: 4
+		Health:
+			HP: 200
+		Passenger:
+			PipType: Red
+		RevealsShroud:
+			Range: 6
+		AutoTarget:
+			InitialStance: HoldFire
+		Armament:
+			Weapon: Sniper
 	SPY:
 		Inherits: ^Infantry
 		Buildable:
@@ -806,9 +816,6 @@ Rules:
 			Owner: allies, soviets
 		Valued:
 			Cost: 300
-		SpyToolTip:
-			Name: Spy
-			Description: Infiltrates enemy structures to 	gather \nintelligence. Exact effect depends on the 	\nbuilding infiltrated.\n  Strong vs Nothing\n  Weak vs 	Everything\n  Special Ability: Disguised
 		Selectable:
 			Voice: SpyVoice
 			Bounds: 12,17,0,-9
@@ -830,6 +837,56 @@ Rules:
 			IdleAnimations: idle1,idle2
 		AttackFrontal:
 			PrimaryWeapon: SilencedPPK
+	FTRK:
+		Inherits: ^Vehicle
+		Valued:
+			Cost: 600
+		Health:
+			HP: 150
+		Armor: 
+			Type: Light
+		Mobile:
+			ROT: 10
+			Speed: 9
+		RevealsShroud:
+			Range: 4
+		Turreted:
+			ROT: 5
+			Offset: -298,0,298
+		Armament:
+			Weapon: FLAK-23
+			Recoil: 85
+		AttackTurreted:
+		RenderUnit:
+		WithTurret:
+		AutoTarget:
+		Explodes:
+			Weapon: UnitExplodeSmall
+			EmptyWeapon: UnitExplodeSmall
+		Selectable:
+			Bounds: 28,28,0,0
+	APC:
+		Inherits: ^Tank
+		Health:
+			HP: 400
+		Armor:
+			Type: Heavy
+		Mobile:
+			Speed: 10
+		RevealsShroud:
+			Range: 5
+		Armament:
+			Weapon: M60mg
+			LocalOffset: 0,0,171
+		AttackFrontal:
+		RenderUnit:
+		WithMuzzleFlash:
+		AutoTarget:
+		Cargo:
+			Types: Infantry
+			MaxWeight: 5
+			PipCount: 5
+			UnloadFacing: 220
 	ARTY:
 		Inherits: ^Tank
 		Buildable:
@@ -859,25 +916,35 @@ Rules:
 			Weapon: UnitExplode
 			Chance: 50
 		AutoTarget:
+	V2RL:
+		Inherits: ^Vehicle
+		Valued:
+			Cost: 700
+		Health:
+			HP: 150
+		Armor:
+			Type: Light
+		Mobile:
+			Speed: 7
+		RevealsShroud:
+			Range: 5
+		Armament:
+			Weapon: SCUD
+		AttackFrontal:
+		RenderUnitReload:
+		AutoTarget:
+		Explodes:
+			Weapon: SCUD
+			EmptyWeapon:
 	4TNK:
 		Inherits: ^Tank
 		Buildable:
-			Queue: Vehicle
-			BuildPaletteOrder: 100
-			Prerequisites: fix,stek
-			Owner: soviet
-		Valued:
-			Cost: 1800
-		Tooltip:
-			Name: Mammoth Tank
-			Description: Big and slow tank, with anti-air 	capability.\n  Strong vs Tanks, Aircraft\n  Weak vs 	Infantry
 		Health:
-			HP: 5000
+			HP: 2500
 		Armor:
 			Type: Heavy
 		Mobile:
 			Speed: 4
-			Crushes: wall, atmine, crate, infantry
 		RevealsShroud:
 			Range: 14
 		Turreted:
@@ -890,7 +957,8 @@ Rules:
 			PrimaryRecoil: 8
 			PrimaryRecoilRecovery: 0.7
 			SecondaryRecoil: 2
-		RenderUnitTurreted:
+		RenderUnit:
+		WithTurret:
 		AutoTarget:
 		Explodes:
 			Weapon: napalm
@@ -900,7 +968,7 @@ Rules:
 		SelfHealing:
 			Step: 2
 			Ticks: 1
-			HealIfBelow: 80%
+			HealIfBelow: 40%
 			DamageCooldown: 150
 		Selectable:
 			Bounds: 44,38,0,-4
@@ -940,20 +1008,10 @@ Rules:
 		-GainsExperience:
 		Tooltip:
 			Name: Badger
-		Contrail@1:
-			ContrailOffset: 11, -11
-		Contrail@2:
-			ContrailOffset: -11, -11
 		FallsToEarth:
 			Spins: no
 			Moves: yes
 			Explosion: UnitExplode
-		SmokeTrailWhenDamaged@0:
-			Offset: 11, -11
-			Interval: 2
-		SmokeTrailWhenDamaged@1:
-			Offset: -11, -11
-			Interval: 2
 		-EjectOnDeath:
 		-GpsDot:
 
@@ -996,18 +1054,18 @@ Weapons:
 			Shadow: false
 			Proximity: true
 			Trail: smokey
-			ContrailLength: 10
+			ContrailLength: 150
 			Inaccuracy: 20
 			Image: DRAGON
 			ROT: 10
 			RangeLimit: 80
 		Warhead:
-			Spread: 12
+			Spread: 15
 			Versus:
-				None: 90%
-				Wood: 150%
-				Light: 150%
-				Heavy: 150%
+				None: 125%
+				Wood: 110%
+				Light: 110%
+				Heavy: 100%
 				Concrete: 200%
 			Explosion: nuke
 			WaterExplosion: nuke
@@ -1016,7 +1074,7 @@ Weapons:
 			Damage: 250
 	VolkNapalm:
 		ROF: 40
-		Range: 7
+		Range: 8
 		Report: volknapalm
 		ValidTargets: Ground
 		Burst: 6
@@ -1077,17 +1135,64 @@ Weapons:
 		Warhead:
 			Spread: 10
 			Versus:
-				None: 100%
+				None: 80%
 				Wood: 100%
 				Light: 60%
-				Heavy: 25%
+				Heavy: 75%
 				Concrete: 35%
 			Explosion: small_napalm
 			WaterExplosion: small_napalm
 			InfDeath: 5
 			SmudgeType: Scorch
 			ImpactSound: firebl3
-			Damage: 6
+			Damage: 10
+	FLAK-23:
+		ROF: 10
+		Range: 8
+		Report: AACANON3
+		ValidTargets: Air,Ground
+		Projectile: Bullet
+			Speed: 100
+			High: true
+		Warhead:
+			Spread: 5
+			Versus: 
+				None: 35%
+				Wood: 30%
+				Light: 30%
+				Heavy: 40%
+				Concrete: 30%
+			Explosion: med_explosion
+			Damage: 25
+	SCUD:
+		ROF: 280
+		Range: 10
+		MinRange: 3
+		Report: MISSILE1
+		Projectile: Bullet
+			Speed: 10
+			Arm: 10
+			High: true
+			Shadow: false
+			Proximity: true
+			Trail: smokey
+			Inaccuracy: 10
+			Image: V2
+			Angle: .1
+		Warhead:
+			Spread: 20
+			Versus: 
+				None: 100%
+				Wood: 90%
+				Light: 80%
+				Heavy: 70%
+			Explosion: nuke
+			WaterExplosion: large_splash
+			InfDeath: 3
+			SmudgeType: Crater
+			Damage: 500
+			ImpactSound: kaboom1
+			WaterImpactSound: kaboom1
 	SilencedPPK:
 		ROF: 80
 		Range: 2.5

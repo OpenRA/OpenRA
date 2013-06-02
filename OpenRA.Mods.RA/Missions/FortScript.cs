@@ -35,23 +35,23 @@ namespace OpenRA.Mods.RA.Missions
         Actor paradrop2;
         Actor paradrop3;
         Actor paradrop4;
-
-        Actor baseA;
-        Actor baseB;
-
+        Actor patrol1;
+        Actor patrol2;
+        Actor patrol3;
+        Actor patrol4;
         World world;
         
         int WaveNumber = 0;
         InfoWidget evacuateWidget;
         const string ShortEvacuateTemplate = "Wave {0}";
-        static readonly string[] PatrolA = { "e1", "e2", "e1" };
+        static readonly string[] Patrol = { "e1", "e2", "e1" };
         static readonly string[] Infantry = { "e4", "e1", "e1", "e2", "e1", "e2" };
-        static readonly string[] InfantryAdvanced = { "e4", "e1", "e1", "shok", "e1", "e2", "e4" };
-        static readonly string[] Vehicles = { "arty", "ftrk", "ftrk", "jeep", "jeep", "jeep", "apc", "apc", };
-        static readonly string[] Volkov = { "e8" };
+        static readonly string[] Vehicles = { "arty", "ftrk", "ftrk", "apc", "apc", };
+        const string tank = "3tnk";
+        const string v2 = "v2rl";
         const string boss = "4tnk";
+
         const int TimerTicks = 1;
-        const int PatrolTicks = 1500;
 
         int AttackSquad = 6;
         int AttackSquadCount = 1;
@@ -87,14 +87,16 @@ namespace OpenRA.Mods.RA.Missions
             {
                 for (int i = 1; i <= VehicleSquadCount; i++)
                 {
-                    var enemies = world.Actors.Where(u => u.IsInWorld && !u.IsDead() && (u.Owner == soviets)
-                        && !u.HasTrait<Mobile>());
                     var route = world.SharedRandom.Next(sovietEntryPoints.Length);
                     var spawnPoint = sovietEntryPoints[route];
                     for (int r = 1; r <= VehicleSquad; r++)
                     {
                         var squad = world.CreateActor(Vehicles.Random(world.SharedRandom),
-                            new TypeDictionary { new LocationInit(spawnPoint), new OwnerInit(soviets) });
+                            new TypeDictionary 
+                            { 
+                                new LocationInit(spawnPoint), 
+                                new OwnerInit(soviets) 
+                            });
                         squad.QueueActivity(new AttackMove.AttackMoveActivity(squad, new Move.Move(paradrop1.Location, 3)));
                     }
                 }
@@ -107,23 +109,18 @@ namespace OpenRA.Mods.RA.Missions
             {
                 for (int i = 1; i <= AttackSquadCount; i++)
                 {
-                    var enemies = world.Actors.Where(u => u.IsInWorld && !u.IsDead() && (u.Owner == soviets)
+                    world.Actors.Where(u => u.IsInWorld && !u.IsDead() && (u.Owner == soviets)
                         && !u.HasTrait<Mobile>());
                     var route = world.SharedRandom.Next(sovietEntryPoints.Length);
                     var spawnPoint = sovietEntryPoints[route];
-                    IEnumerable<string> units;
-                    if (world.FrameNumber >= 1500 * 10)
-                    {
-                        units = InfantryAdvanced;
-                    }
-                    else
-                    {
-                        units = Infantry;
-                    }
                     for (int r = 1; r < AttackSquad; r++)
                     {
                         var squad = world.CreateActor(Infantry.Random(world.SharedRandom),
-                            new TypeDictionary { new LocationInit(spawnPoint), new OwnerInit(soviets) });
+                            new TypeDictionary 
+                            { 
+                                new LocationInit(spawnPoint), 
+                                new OwnerInit(soviets) 
+                            });
                         squad.QueueActivity(new AttackMove.AttackMoveActivity(squad, new Move.Move(paradrop1.Location, 3)));
                         var scatteredUnits = world.FindAliveCombatantActorsInCircle(Util.CenterOfCell(paradrop1.Location), 15)
                         .Where(unit => unit.IsIdle && unit.HasTrait<Mobile>() && unit.Owner == soviets);
@@ -136,75 +133,35 @@ namespace OpenRA.Mods.RA.Missions
             }
         }
 
-        void SendPatrol()
+        void SendPatrol(string[] squad, Player owner, CPos location, CPos move)
         {
-            if (SpawnPatrol == true)
+            if (SpawnPatrol)
             {
-                for (int i = 0; i < PatrolA.Length; i++)
+                for (int i = 0; i < squad.Length; i++)
                 {
-                    var inf = world.CreateActor(PatrolA.Random(world.SharedRandom),
-                    new TypeDictionary { new LocationInit(paradrop1.Location + new CVec(0, -10)), new OwnerInit(soviets) });
-                    inf.QueueActivity(new AttackMove.AttackMoveActivity(inf, new Move.Move(paradrop1.Location + new CVec(0, 0))));
-                    var units = world.FindAliveCombatantActorsInCircle(Util.CenterOfCell(paradrop1.Location), 20)
-                        .Where(u => u.Owner == soviets);
-                    foreach (var unit in units)
-                    {
-                        AttackNearestAlliedActor(unit);
-                    }
-                }
-                for (int i = 0; i < PatrolA.Length; i++)
-                {
-                    var inf = world.CreateActor(PatrolA.Random(world.SharedRandom),
-                    new TypeDictionary { new LocationInit(paradrop4.Location + new CVec(10, 0)), new OwnerInit(soviets) });
-                    inf.QueueActivity(new AttackMove.AttackMoveActivity(inf, new Move.Move(paradrop4.Location + new CVec(0, 0))));
-                    var units = world.FindAliveCombatantActorsInCircle(Util.CenterOfCell(paradrop1.Location), 20)
-                        .Where(u => u.Owner == soviets);
-                    foreach (var unit in units)
-                    {
-                        AttackNearestAlliedActor(unit);
-                    }
-                }
-                for (int i = 0; i < PatrolA.Length; i++)
-                {
-                    var inf = world.CreateActor(PatrolA.Random(world.SharedRandom),
-                    new TypeDictionary { new LocationInit(paradrop3.Location + new CVec(0, 10)), new OwnerInit(soviets) });
-                    inf.QueueActivity(new AttackMove.AttackMoveActivity(inf, new Move.Move(paradrop3.Location + new CVec(0, 0))));
-                    var units = world.FindAliveCombatantActorsInCircle(Util.CenterOfCell(paradrop1.Location), 20)
-                        .Where(u => u.Owner == soviets);
-                    foreach (var unit in units)
-                    {
-                        AttackNearestAlliedActor(unit);
-                    }
-                }
-                for (int i = 0; i < PatrolA.Length; i++)
-                {
-                    var inf = world.CreateActor(PatrolA.Random(world.SharedRandom),
-                    new TypeDictionary { new LocationInit(paradrop2.Location + new CVec(-10, 0)), new OwnerInit(soviets) });
-                    inf.QueueActivity(new AttackMove.AttackMoveActivity(inf, new Move.Move(paradrop2.Location + new CVec(0, 0))));
-                    var units = world.FindAliveCombatantActorsInCircle(Util.CenterOfCell(paradrop1.Location), 20)
-                        .Where(u => u.Owner == soviets);
-                    foreach (var unit in units)
-                    {
-                        AttackNearestAlliedActor(unit);
-                    }
+                    var actor = world.CreateActor(squad[i], new TypeDictionary 
+                { 
+                    new OwnerInit(owner), 
+                    new LocationInit(location) 
+                });
+                    actor.QueueActivity(new AttackMove.AttackMoveActivity(actor, new Move.Move(move, 3)));
+                    AttackNearestAlliedActor(actor);
                 }
             }
         }
 
-        void SendVolkov()
+        void SendBoss(string unit)
         {
-            for (int i = 0; i < Volkov.Length; i++)
+            var route = world.SharedRandom.Next(sovietEntryPoints.Length);
+            var spawnPoint = sovietEntryPoints[route];
+            var actor = world.CreateActor(unit, new TypeDictionary 
+                { 
+                    new OwnerInit(soviets), 
+                    new LocationInit(spawnPoint) 
+                });
+            if (multi0 != null)
             {
-                var route = world.SharedRandom.Next(sovietEntryPoints.Length);
-                var spawnPoint = sovietEntryPoints[route];
-                var actor = world.CreateActor(Volkov[i], new TypeDictionary { new OwnerInit(soviets), new LocationInit(spawnPoint) });
-                actor.QueueActivity(new Move.Move(paradrop1.Location + new CVec(4, -11)));
-                var scatteredUnits = world.FindAliveCombatantActorsInCircle(Util.CenterOfCell(paradrop1.Location + new CVec(4, -11)), 4)
-                        .Where(unit => unit.IsIdle && unit.HasTrait<Mobile>() && unit.Owner == soviets);
-                foreach (var unit in scatteredUnits)
-                {
-                    AttackNearestAlliedActor(unit);
-                }
+                AttackNearestAlliedActor(actor);
             }
         }
 
@@ -213,23 +170,16 @@ namespace OpenRA.Mods.RA.Missions
             Game.AddChatLine(Color.Cyan, "Wave Sequence", text);
         }
 
-        void FinalWave(string text)
-        {
-            Game.AddChatLine(Color.DarkRed, "Boss Wave Sequence Initializing", text);
-        }
-
         public void Tick(Actor self)
         {
-            var unitsAndBuildings = world.Actors.Where(a => !a.IsDead() && a.IsInWorld && (a.HasTrait<Mobile>() && a.HasTrait<IMove>()));
-            if (!unitsAndBuildings.Any(a => a.Owner == soviets))
-            {
-                MissionAccomplished("You and your mates have survived the onslaught!");
-            }
             if (world.FrameNumber == patrolAttackFrame)
             {
                 patrolAttackFrame += patrolattackAtFrameIncrement;
                 patrolattackAtFrameIncrement = Math.Max(patrolattackAtFrameIncrement - 5, 100);
-                SendPatrol();
+                SendPatrol(Patrol, soviets, patrol1.Location, paradrop1.Location);
+                SendPatrol(Patrol, soviets, patrol2.Location, paradrop2.Location);
+                SendPatrol(Patrol, soviets, patrol3.Location, paradrop3.Location);
+                SendPatrol(Patrol, soviets, patrol4.Location, paradrop4.Location);
             }
             if (world.FrameNumber == WaveAttackFrame)
             {
@@ -286,11 +236,11 @@ namespace OpenRA.Mods.RA.Missions
                 Wave("Five Initializing");
                 UpdateWaveSequence();
                 AttackSquad = 10;
-                SendVolkov();
                 VehicleSquad = 4;
                 VehicleSquadCount = 2;
+                SendBoss(tank);
             }
-            if (world.FrameNumber == 1500 * 10)
+            if (world.FrameNumber == 1500 * 11)
             {
                 WaveNumber++;
                 Wave("Six Initializing");
@@ -301,8 +251,10 @@ namespace OpenRA.Mods.RA.Missions
                 MissionUtils.Parabomb(world, soviets, entry4.Location, paradrop1.Location);
                 MissionUtils.Parabomb(world, soviets, entry6.Location, paradrop3.Location);
                 MissionUtils.Parabomb(world, soviets, entry5.Location, paradrop3.Location);
+                SendBoss(tank);
+                SendBoss(tank);
             }
-            if (world.FrameNumber == 1500 * 12)
+            if (world.FrameNumber == 1500 * 14)
             {
                 WaveNumber++;
                 Wave("Seven Initializing");
@@ -310,9 +262,9 @@ namespace OpenRA.Mods.RA.Missions
                 AttackSquad = 12;
                 VehicleSquad = 5;
                 VehicleSquadCount = 3;
-                SendVolkov();
+                SendBoss(v2);
             }
-            if (world.FrameNumber == 1500 * 14)
+            if (world.FrameNumber == 1500 * 17)
             {
                 SpawnVehicles = true;
                 WaveNumber++;
@@ -326,8 +278,11 @@ namespace OpenRA.Mods.RA.Missions
                 MissionUtils.Parabomb(world, soviets, entry5.Location, paradrop3.Location);
                 MissionUtils.Parabomb(world, soviets, entry2.Location, paradrop2.Location);
                 MissionUtils.Parabomb(world, soviets, entry3.Location, paradrop2.Location);
+                SendBoss(v2);
+                SendBoss(tank);
+                SendBoss(v2);
             }
-            if (world.FrameNumber == 1500 * 16)
+            if (world.FrameNumber == 1500 * 21)
             {
                 WaveNumber++;
                 Wave("Nine Initializing");
@@ -335,30 +290,36 @@ namespace OpenRA.Mods.RA.Missions
                 AttackSquad = 14;
                 VehicleSquad = 6;
                 VehicleSquadCount = 4;
-                SendVolkov();
+                SendBoss(v2);
+                SendBoss(tank);
+                SendBoss(tank);
             }
-            if (world.FrameNumber == 1500 * 18)
+            if (world.FrameNumber == 1500 * 25)
             {
                 WaveNumber++;
                 Wave("Ten Initializing");
                 UpdateWaveSequence();
                 AttackSquad = 15;
                 AttackSquadCount = 6;
-                MissionUtils.Parabomb(world, soviets, entry1.Location, paradrop1.Location + new CVec(0, -2));
-                MissionUtils.Parabomb(world, soviets, entry2.Location, paradrop3.Location + new CVec(0, -2));
-                MissionUtils.Parabomb(world, soviets, entry4.Location, paradrop2.Location + new CVec(0, -2));
-                MissionUtils.Parabomb(world, soviets, entry5.Location, paradrop4.Location + new CVec(0, -2));
-                MissionUtils.Parabomb(world, soviets, entry2.Location, paradrop1.Location + new CVec(0, 2));
-                MissionUtils.Parabomb(world, soviets, entry4.Location, paradrop3.Location + new CVec(0, 2));
-                MissionUtils.Parabomb(world, soviets, entry3.Location, paradrop2.Location + new CVec(0, 2));
-                MissionUtils.Parabomb(world, soviets, entry5.Location, paradrop4.Location + new CVec(0, 2));
+                for (int i = 0; i < 2; i++)
+                {
+                    MissionUtils.Parabomb(world, soviets, entry1.Location, paradrop1.Location + new CVec(0, -2));
+                    MissionUtils.Parabomb(world, soviets, entry2.Location, paradrop3.Location + new CVec(0, -2));
+                    MissionUtils.Parabomb(world, soviets, entry4.Location, paradrop2.Location + new CVec(0, -2));
+                    MissionUtils.Parabomb(world, soviets, entry5.Location, paradrop4.Location + new CVec(0, -2));
+                    MissionUtils.Parabomb(world, soviets, entry2.Location, paradrop1.Location + new CVec(0, 2));
+                    MissionUtils.Parabomb(world, soviets, entry4.Location, paradrop3.Location + new CVec(0, 2));
+                    MissionUtils.Parabomb(world, soviets, entry3.Location, paradrop2.Location + new CVec(0, 2));
+                    MissionUtils.Parabomb(world, soviets, entry5.Location, paradrop4.Location + new CVec(0, 2));
+                }
+                SendBoss(boss);
             }
-            if (world.FrameNumber == 1500 * 19)
+            if (world.FrameNumber == 1500 * 30)
             {
                 SpawnWave = false;
                 SpawnVehicles = false;
             } 
-            if (world.FrameNumber == 1500 * 20)
+            if (world.FrameNumber == 1500 * 31)
             {
                 MissionAccomplished("You and your mates have Survived the Onslaught!");
             }
@@ -400,8 +361,10 @@ namespace OpenRA.Mods.RA.Missions
             paradrop2 = actors["Paradrop2"];
             paradrop3 = actors["Paradrop3"];
             paradrop4 = actors["Paradrop4"];
-            baseA = actors["BaseA"];
-            baseB = actors["BaseB"];
+            patrol1 = actors["Patrol1"];
+            patrol2 = actors["Patrol2"];
+            patrol3 = actors["Patrol3"];
+            patrol4 = actors["Patrol4"];
             MissionUtils.PlayMissionMusic();
             Game.AddChatLine(Color.Cyan, "Mission", "Defend Fort LoneStar At All costs!");
         }
