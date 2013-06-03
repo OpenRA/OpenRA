@@ -20,7 +20,7 @@ ide.findReplace = {
   findText = "", -- string to find
   replaceTextArray = {}, -- array of last entered replace text
   replaceText = "", -- string to replace find string with
-  filemaskText = "*.*",
+  filemaskText = nil,
   filemaskTextArray= {},
   filedirText = "",
   filedirTextArray = {},
@@ -279,9 +279,7 @@ local function ProcInFiles(startdir,mask,subdirs,replace)
 end
 
 function findReplace:RunInFiles(replace)
-  if (not findReplace:HasText()) then
-    return
-  end
+  if not findReplace:HasText() then return end
 
   findReplace.oveditor = wxstc.wxStyledTextCtrl(findReplace.dialog, wx.wxID_ANY,
     wx.wxDefaultPosition, wx.wxSize(1,1), wx.wxBORDER_STATIC)
@@ -299,6 +297,18 @@ function findReplace:RunInFiles(replace)
     TR("%d instance", findReplace.occurrences):format(findReplace.occurrences)))
 
   findReplace.oveditor = nil
+end
+
+local function getExts()
+  local knownexts = {}
+  for i,spec in pairs(ide.specs) do
+    if (spec.exts) then
+      for n,ext in ipairs(spec.exts) do
+        table.insert(knownexts, "*."..ext)
+      end
+    end
+  end
+  return #knownexts > 0 and table.concat(knownexts, "; ") or nil
 end
 
 function findReplace:createDialog(replace,infiles)
@@ -352,7 +362,8 @@ function findReplace:createDialog(replace,infiles)
   local infilesDirStat,infilesDirCombo,infilesDirButton
   if (infiles) then
     infilesMaskStat = wx.wxStaticText(findDialog, wx.wxID_ANY, TR("File Type")..": ")
-    infilesMaskCombo = wx.wxComboBox(findDialog, wx.wxID_ANY, findReplace.filemaskText,
+    infilesMaskCombo = wx.wxComboBox(findDialog, wx.wxID_ANY,
+      findReplace.filemaskText or getExts() or "*.*",
       wx.wxDefaultPosition, wx.wxDefaultSize, findReplace.filemaskTextArray)
 
     local fname = GetEditorFileAndCurInfo(true)
@@ -363,7 +374,7 @@ function findReplace:createDialog(replace,infiles)
     infilesDirStat = wx.wxStaticText(findDialog, wx.wxID_ANY, TR("Directory")..": ")
     infilesDirCombo = wx.wxComboBox(findDialog, wx.wxID_ANY, findReplace.filedirText,
       wx.wxDefaultPosition, wx.wxDefaultSize, findReplace.filedirTextArray)
-    infilesDirButton = wx.wxButton(findDialog, ID_SETDIR, "...",wx.wxDefaultPosition, wx.wxSize(26,20))
+    infilesDirButton = wx.wxButton(findDialog, ID_SETDIR, "...", wx.wxDefaultPosition, wx.wxSize(26,20))
   end
 
   local replaceStatText, replaceTextCombo
