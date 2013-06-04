@@ -135,6 +135,7 @@ function MarkupStyle(editor, lines, linee)
   local linec = editor:GetLineCount()
   local linee = linee or linec
 
+  local linecomment = editor.spec.linecomment
   local iscomment = {}
   for i,v in pairs(editor.spec.iscomment) do
     iscomment[i] = v
@@ -163,7 +164,8 @@ function MarkupStyle(editor, lines, linee)
         local s = bit.band(editor:GetStyleAt(p), 31)
         -- only style comments and only those that are not at the beginning
         -- of the file to avoid styling shebang (#!) lines
-        if iscomment[s] and p > 0 then
+        -- also ignore matches for line comments (as defined in the spec)
+        if iscomment[s] and p > 0 and mark ~= linecomment then
           local smark = #mark
           local emark = #mark -- assumes end mark is the same length as start mark
           if mark == MD_MARK_HEAD then
