@@ -242,6 +242,7 @@ end
 
 local function ProcInFiles(startdir,mask,subdirs,replace)
   local files = FileSysGetRecursive(startdir,subdirs,"*")
+  local start = TimeGet()
 
   -- mask could be a list, so generate a table with matching patterns
   -- accept "*.lua; .txt;.wlua" combinations
@@ -272,6 +273,9 @@ local function ProcInFiles(startdir,mask,subdirs,replace)
           else
             findReplace:FindStringAll(onFileRegister)
           end
+
+          -- give time to the UI to refresh
+          if TimeGet() - start > 0.25 then wx.wxYield() end
         end
       end
     end
