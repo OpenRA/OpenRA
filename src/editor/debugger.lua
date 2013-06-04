@@ -400,7 +400,11 @@ debugger.listen = function()
       -- debugger.options may not be set, but runonstart is still configured.
       if not options.runstart then options.runstart = ide.config.debugger.runonstart end
 
-      if not debugger.scratchpad then SetAllEditorsReadOnly(true) end
+      -- support allowediting as set in the interpreter or config
+      if not options.allowediting then options.allowediting = ide.config.debugger.allowediting end
+
+      if not debugger.scratchpad and not options.allowediting then
+        SetAllEditorsReadOnly(true) end
 
       debugger.server = copas.wrap(skt)
       debugger.socket = skt
