@@ -115,7 +115,7 @@ local specialmapping = {
       editor:SetSelBackground(0,wx.wxWHITE)
     end
     -- set alpha for additional selecton: 0 - transparent, 255 - opaque
-    editor:SetAdditionalSelAlpha(127)
+    if ide.wxver >= "2.9.5" then editor:SetAdditionalSelAlpha(127) end
   end,
 
   caret = function(editor,style)
@@ -271,11 +271,11 @@ function StylesApplyToEditor(styles,editor,font,fontitalic,lexerconvert)
 
     editor:IndicatorSetStyle(0, indic.fncall and indic.fncall.st or ide.wxver >= "2.9.5" and wxstc.wxSTC_INDIC_ROUNDBOX or wxstc.wxSTC_INDIC_TT)
     editor:IndicatorSetForeground(0, wx.wxColour(unpack(indic.fncall and indic.fncall.fg or {128, 128, 255})))
-    editor:IndicatorSetStyle(1, indic.varlocal and indic.varlocal.st or wxstc.wxSTC_INDIC_DOTS)
+    editor:IndicatorSetStyle(1, indic.varlocal and indic.varlocal.st or wxstc.wxSTC_INDIC_DOTS or wxstc.wxSTC_INDIC_TT)
     editor:IndicatorSetForeground(1, wx.wxColour(unpack(indic.varlocal and indic.varlocal.fg or defaultfg)))
     editor:IndicatorSetStyle(2, indic.varglobal and indic.varglobal.st or wxstc.wxSTC_INDIC_PLAIN)
     editor:IndicatorSetForeground(2, wx.wxColour(unpack(indic.varglobal and indic.varglobal.fg or defaultfg)))
-    editor:IndicatorSetStyle(3, indic.varmasking and indic.varmasking.st or wxstc.wxSTC_INDIC_DASH)
+    editor:IndicatorSetStyle(3, indic.varmasking and indic.varmasking.st or wxstc.wxSTC_INDIC_DASH or wxstc.wxSTC_INDIC_DIAGONAL)
     editor:IndicatorSetForeground(3, wx.wxColour(unpack(indic.varmasking and indic.varmasking.fg or defaultfg)))
     editor:IndicatorSetStyle(4, indic.varmasked and indic.varmasked.st or wxstc.wxSTC_INDIC_STRIKE)
     editor:IndicatorSetForeground(4, wx.wxColour(unpack(indic.varmasked and indic.varmasked.fg or defaultfg)))
