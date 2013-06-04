@@ -217,7 +217,7 @@ function MergeFullPath(p, f)
     or nil)
 end
 
-function FileWrite(file,content)
+function FileWrite(file, content)
   local log = wx.wxLogNull() -- disable error reporting; will report as needed
   local file = wx.wxFile(file, wx.wxFile.write)
   if not file:IsOpened() then return nil, wx.wxSysErrorMsg() end
@@ -230,7 +230,7 @@ end
 function FileRead(file)
   local log = wx.wxLogNull() -- disable error reporting; will report as needed
   local file = wx.wxFile(file, wx.wxFile.read)
-  if not file:IsOpened() then return end
+  if not file:IsOpened() then return nil, wx.wxSysErrorMsg() end
 
   local _, content = file:Read(file:Length())
   file:Close()
