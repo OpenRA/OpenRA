@@ -1,3 +1,5 @@
+-- Copyright 2011-13 Paul Kulchenko, ZeroBrane LLC
+
 local moai
 local win = ide.osname == "Windows"
 

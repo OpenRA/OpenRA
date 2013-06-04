@@ -1,4 +1,4 @@
--- Copyright 2011-12 Paul Kulchenko, ZeroBrane LLC
+-- Copyright 2011-13 Paul Kulchenko, ZeroBrane LLC
 
 local quick
 local win = ide.osname == "Windows"
@@ -85,8 +85,13 @@ return {
       local mdbl = MergeFullPath(GetPathWithSep(ide.editorFilename), "lualibs/mobdebug/mobdebug.lua")
       if not wx.wxFileExists(mdbc)
       or GetFileModTime(mdbc):GetTicks() < GetFileModTime(mdbl):GetTicks() then
-        FileCopy(mdbl, mdbc)
-        DisplayOutputLn("Copied ZeroBrane Studio debugger ('mobdebug.lua') to the project folder.")
+        local copied = FileCopy(mdbl, mdbc)
+        local message = copied
+          and ("Copied debugger ('mobdebug.lua') to '%s'."):format(mdbc)
+          or ("Failed to copy debugger ('mobdebug.lua') to '%s': %s")
+            :format(mdbc, wx.wxSysErrorMsg())
+        DisplayOutputLn(message)
+        if not copied then return end
       end
     end
 
