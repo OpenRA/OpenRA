@@ -250,7 +250,10 @@ local function getValAtPosition(editor, pos)
     :find(ident.."$")
 
   local right, funccall = linetx:sub(localpos+1,#linetx):match("^([a-zA-Z_0-9]*)%s*(['\"{%(]?)")
-  local var = selected and editor:GetSelectedText()
+  local var = selected
+    -- GetSelectedText() returns concatenated text when multiple instances
+    -- are selected, so get the selected text based on start/end
+    and editor:GetTextRange(editor:GetSelectionStart(), editor:GetSelectionEnd())
     or (start and linetx:sub(start,localpos):gsub(":",".")..right or nil)
 
   -- since this function can be called in different contexts, we need
