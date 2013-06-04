@@ -261,7 +261,7 @@ local function ProcInFiles(startdir,mask,subdirs,replace)
         findReplace.curfilename = file
 
         local filetext = FileRead(file)
-        if filetext then
+        if filetext and not isBinary(filetext:sub(1, 2048)) then
           findReplace.oveditor:SetText(filetext)
 
           if replace then
