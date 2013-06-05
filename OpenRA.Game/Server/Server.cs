@@ -293,12 +293,11 @@ namespace OpenRA.Server
 
 				lobbyInfo.Clients.Add(client);
 
-				// Assume that first validated client is server admin
-				if (lobbyInfo.Clients.Where(c1 => c1.Bot == null).Count() == 1)
-					client.IsAdmin=true;
+				// Promote to admin if this is the first client
+				var clientAdmin = lobbyInfo.Clients.Where(c1 => c1.IsAdmin).FirstOrDefault() ?? client;
+				if (clientAdmin == client)
+					client.IsAdmin = true;
 
-				OpenRA.Network.Session.Client clientAdmin = lobbyInfo.Clients.Where(c1 => c1.IsAdmin).Single();
-				
 				Log.Write("server", "Client {0}: Accepted connection from {1}.",
 				          newConn.PlayerIndex, newConn.socket.RemoteEndPoint);
 
