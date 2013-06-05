@@ -93,7 +93,7 @@ namespace OpenRA.Mods.RA.Missions
 				if (AlliesControlLab())
 					LabSecured();
 
-				if (lab.Destroyed)
+				if (lab.IsDead())
 				{
 					findEinstein.Status = ObjectiveStatus.Failed;
 					OnObjectivesUpdated(true);
@@ -120,7 +120,7 @@ namespace OpenRA.Mods.RA.Missions
 				}
 				if (einsteinChinook != null)
 				{
-					if (einsteinChinook.Destroyed)
+					if (einsteinChinook.IsDead())
 					{
 						extractEinstein.Status = ObjectiveStatus.Failed;
 						OnObjectivesUpdated(true);
@@ -135,10 +135,10 @@ namespace OpenRA.Mods.RA.Missions
 				}
 			}
 
-			if (tanya != null && tanya.Destroyed)
+			if (tanya != null && tanya.IsDead())
 				MissionFailed("Tanya was killed.");
 
-			else if (einstein != null && einstein.Destroyed)
+			else if (einstein != null && einstein.IsDead())
 				MissionFailed("Einstein was killed.");
 
 			MissionUtils.CapOre(soviets);
