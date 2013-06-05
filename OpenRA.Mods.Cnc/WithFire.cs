@@ -13,19 +13,22 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc
 {
-	class WithFireInfo : ITraitInfo, Requires<RenderSimpleInfo>
+	class WithFireInfo : ITraitInfo, Requires<RenderSpritesInfo>
 	{
-		public object Create(ActorInitializer init) { return new WithFire(init.self); }
+		public readonly WVec Offset = new WVec(299,-640,0);
+
+		public object Create(ActorInitializer init) { return new WithFire(init.self, this); }
 	}
 
 	class WithFire
 	{
-		public WithFire(Actor self)
+		public WithFire(Actor self, WithFireInfo info)
 		{
-			var rs = self.Trait<RenderSimple>();
+			var rs = self.Trait<RenderSprites>();
 			var roof = new Animation(rs.GetImage(self));
 			roof.PlayThen("fire-start", () => roof.PlayRepeating("fire-loop"));
-			rs.anims.Add( "fire", new AnimationWithOffset( roof, wr => new float2(7,-15), null ) { ZOffset = 24 } );
+
+			rs.anims.Add("fire", new AnimationWithOffset(roof, () => info.Offset, null, 1024));
 		}
 	}
 }

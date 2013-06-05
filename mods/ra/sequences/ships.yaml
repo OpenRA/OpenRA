@@ -1,0 +1,42 @@
+ss:
+	idle:
+		Start: 0
+		Facings: 16
+
+ca:
+	idle:
+		Start: 0
+		Facings: 16
+	turret: turr
+		Start: 0
+		Facings: 32
+
+dd:
+	idle:
+		Start: 0
+		Facings: 16
+	turret: ssam
+		Start: 0
+		Facings: 32
+
+pt:
+	idle:
+		Start: 0
+		Facings: 16
+	turret: mgun
+		Start: 0
+		Facings: 32
+
+lst:
+	idle:
+		Start: 0
+	open:
+		Start: 1
+		Length: 4
+	unload:
+		Start: 4
+
+msub:
+	idle:
+		Start: 0
+		Facings: 16

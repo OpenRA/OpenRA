@@ -31,6 +31,9 @@
 	AcceptsCloakCrate:
 	WithSmoke:
 	DebugMuzzlePositions:
+	Guard:
+	Guardable:
+	BodyOrientation:
 
 ^Tank:
 	AppearsOnRadar:
@@ -68,6 +71,9 @@
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
 	DebugMuzzlePositions:
+	Guard:
+	Guardable:
+	BodyOrientation:
 
 ^Helicopter:
 	AppearsOnRadar:
@@ -93,6 +99,7 @@
 		Weapon: HeliExplode
 		EmptyWeapon: HeliExplode
 	DebugMuzzlePositions:
+	BodyOrientation:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -104,8 +111,6 @@
 		Range: 5
 	AutoTarget:
 		ScanRadius: 4
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	Mobile:
 		Crushes: crate
 		SharesCell: true
@@ -145,13 +150,14 @@
 		Buildings: hosp
 		CloseEnough: 1
 	DebugMuzzlePositions:
+	Guard:
+	Guardable:
+	BodyOrientation:
 
 ^CivInfantry:
 	Inherits: ^Infantry
 	-Buildable:
 	-AutoTarget:
-	-DebugRetiliateAgainstAggressor:
-	-DebugNextAutoTargetScanTime:
 	-TakeCover:
 	-RenderInfantryProne:
 	AppearsOnRadar:
@@ -176,7 +182,7 @@
 		Notification: CivilianKilled
 		NotifyAll: true
 	ScaredyCat:
-	RenderInfantryPanic:	
+	RenderInfantryPanic:
 	AttackMove:
 		JustMove: yes
 	CrushableInfantry:
@@ -195,6 +201,7 @@
 	DrawLineToTarget:
 	ActorLostNotification:
 	DebugMuzzlePositions:
+	BodyOrientation:
 
 ^Ship:
 	AppearsOnRadar:
@@ -214,6 +221,9 @@
 	ActorLostNotification:
 	AttackMove:
 	DebugMuzzlePositions:
+	Guard:
+	Guardable:
+	BodyOrientation:
 
 ^Building:
 	AppearsOnRadar:
@@ -260,6 +270,9 @@
 	Capturable:
 	CapturableBar:
 	DebugMuzzlePositions:
+	Guardable:
+		Range: 3
+	BodyOrientation:
 
 ^CivBuilding:
 	Inherits: ^Building
@@ -290,6 +303,7 @@
 		RelativeToTopLeft: yes
 	Tooltip:
 		Name: Civilian Building (Destroyed)
+	BodyOrientation:
 
 ^TechBuilding:
 	Inherits: ^CivBuilding
@@ -320,6 +334,7 @@
 	Tooltip:
 		Name: Field (Destroyed)
 	BelowUnits:
+	BodyOrientation:
 
 ^Wall:
 	AppearsOnRadar:
@@ -347,6 +362,8 @@
 		RelativeToTopLeft: yes
 	AutoTargetIgnore:
 	Sellable:
+	Guardable:
+	BodyOrientation:
 
 ^Tree:
 	Tooltip:
@@ -367,6 +384,7 @@
 	Armor:
 		Type: Wood
 	AutoTargetIgnore:
+	BodyOrientation:
 
 ^Rock:
 	Tooltip:
@@ -381,6 +399,7 @@
 		Terrain: Tree
 	EditorAppearance:
 		RelativeToTopLeft: yes
+	BodyOrientation:
 
 ^Husk:
 	Health:
@@ -396,6 +415,7 @@
 	TransformOnCapture:
 		ForceHealthPercentage: 25
 	BelowUnits:
+	BodyOrientation:
 #	Capturable:
 #		Type: husk
 #		AllowAllies: true
@@ -413,3 +433,4 @@
 	SoundOnDamageTransition:
 		DamagedSound: xplos.aud
 		DestroyedSound: xplobig4.aud
+	BodyOrientation:

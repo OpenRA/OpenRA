@@ -147,7 +147,7 @@ namespace OpenRA.Mods.RA.Effects
 
 				if (--ticksToNextSmoke < 0)
 				{
-					world.AddFrameEndTask(w => w.Add(new Smoke(w, sp, Info.Trail)));
+					world.AddFrameEndTask(w => w.Add(new Smoke(w, sp.ToWPos(0), Info.Trail)));
 					ticksToNextSmoke = Info.TrailInterval;
 				}
 			}
@@ -174,11 +174,11 @@ namespace OpenRA.Mods.RA.Effects
 				Combat.DoImpacts(Args);
 		}
 
-		public IEnumerable<Renderable> Render(WorldRenderer wr)
+		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
 			if (!Args.firedBy.World.FogObscures(PxPosition.ToCPos()))
-				yield return new Renderable(anim.Image, PxPosition.ToFloat2() - 0.5f * anim.Image.size - new float2(0, Altitude),
-					wr.Palette(Args.weapon.Underwater ? "shadow" : "effect"), PxPosition.Y);
+				yield return new SpriteRenderable(anim.Image, PxPosition.ToFloat2() - new float2(0, Altitude),
+				                                  wr.Palette(Args.weapon.Underwater ? "shadow" : "effect"), PxPosition.Y);
 
 			if (Trail != null)
 				Trail.Render(wr, Args.firedBy);

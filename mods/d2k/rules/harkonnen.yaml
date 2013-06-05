@@ -73,7 +73,7 @@ PALACEH:
 		SelectTargetSound: 
 		LaunchSound:
 		MissileWeapon: atomic
-		SpawnOffset: 28,12
+		SpawnOffset:-512,1c171,0
 	CanPowerDown:
 	RequiresPower:
 	SupportPowerChargeBar:
@@ -163,8 +163,9 @@ COMBATH:
 		ROT: 5
 	Health:
 		HP: 440
-	RenderUnitTurreted:
+	RenderUnit:
 		Image: COMBATH
+	WithTurret:
 	LeavesHusk:
 		HuskActor: Combath.Husk
 
@@ -214,8 +215,6 @@ DEVAST:
 		LocalOffset: 683,213,85, 683,-171,85
 	AttackFrontal:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	Explodes:
 		Weapon: UnitExplodeScale
 		EmptyWeapon: UnitExplodeScale

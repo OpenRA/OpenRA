@@ -46,67 +46,66 @@ namespace OpenRA.FileFormats
 		public byte[] AudioData { get { return audioData; } }
 		public int CurrentFrame { get { return currentFrame; } }
 
-		public VqaReader( Stream stream )
+		public VqaReader(Stream stream)
 		{
 			this.stream = stream;
-			BinaryReader reader = new BinaryReader( stream );
 
 			// Decode FORM chunk
-			if (new String(reader.ReadChars(4)) != "FORM")
+			if (stream.ReadASCII(4) != "FORM")
 				throw new InvalidDataException("Invalid vqa (invalid FORM section)");
-			/*var length = */ reader.ReadUInt32();
+			/*var length = */ stream.ReadUInt32();
 
-			if (new String(reader.ReadChars(8)) != "WVQAVQHD")
+			if (stream.ReadASCII(8) != "WVQAVQHD")
 				throw new InvalidDataException("Invalid vqa (not WVQAVQHD)");
-			/* var length = */reader.ReadUInt32();
+			/* var length = */stream.ReadUInt32();
 
-			/*var version = */reader.ReadUInt16();
-			/*var flags = */reader.ReadUInt16();
-			Frames = reader.ReadUInt16();
-			Width = reader.ReadUInt16();
-			Height = reader.ReadUInt16();
+			/*var version = */stream.ReadUInt16();
+			/*var flags = */stream.ReadUInt16();
+			Frames = stream.ReadUInt16();
+			Width = stream.ReadUInt16();
+			Height = stream.ReadUInt16();
 
-			blockWidth = reader.ReadByte();
-			blockHeight = reader.ReadByte();
-			Framerate = reader.ReadByte();
-			cbParts = reader.ReadByte();
+			blockWidth = stream.ReadUInt8();
+			blockHeight = stream.ReadUInt8();
+			Framerate = stream.ReadUInt8();
+			cbParts = stream.ReadUInt8();
 			blocks = new int2(Width / blockWidth, Height / blockHeight);
 
-			numColors = reader.ReadUInt16();
-			/*var maxBlocks = */reader.ReadUInt16();
-			/*var unknown1 = */reader.ReadUInt16();
-			/*var unknown2 = */reader.ReadUInt32();
+			numColors = stream.ReadUInt16();
+			/*var maxBlocks = */stream.ReadUInt16();
+			/*var unknown1 = */stream.ReadUInt16();
+			/*var unknown2 = */stream.ReadUInt32();
 
 			// Audio
-			/*var freq = */reader.ReadUInt16();
-			/*var channels = */reader.ReadByte();
-			/*var bits = */reader.ReadByte();
-			/*var unknown3 = */reader.ReadChars(14);
+			/*var freq = */stream.ReadUInt16();
+			/*var channels = */stream.ReadByte();
+			/*var bits = */stream.ReadByte();
+			/*var unknown3 = */stream.ReadBytes(14);
 
-
-			var frameSize = Exts.NextPowerOf2(Math.Max(Width,Height));
+			var frameSize = Exts.NextPowerOf2(Math.Max(Width, Height));
 			cbf = new byte[Width*Height];
 			cbp = new byte[Width*Height];
 			palette = new uint[numColors];
 			origData = new byte[2*blocks.X*blocks.Y];
-			frameData = new uint[frameSize,frameSize];
+			frameData = new uint[frameSize, frameSize];
 
-			var type = new String(reader.ReadChars(4));
+			var type = stream.ReadASCII(4);
 			if (type != "FINF")
 			{
-				reader.ReadBytes(27);
-				type = new String(reader.ReadChars(4));
+				stream.Seek(27, SeekOrigin.Current);
+				type = stream.ReadASCII(4);
 			}
 
-			/*var length = */reader.ReadUInt16();
-			/*var unknown4 = */reader.ReadUInt16();
+			/*var length = */stream.ReadUInt16();
+			/*var unknown4 = */stream.ReadUInt16();
 
 			// Frame offsets
 			offsets = new UInt32[Frames];
 			for (int i = 0; i < Frames; i++)
 			{
-				offsets[i] = reader.ReadUInt32();
-				if (offsets[i] > 0x40000000) offsets[i] -= 0x40000000;
+				offsets[i] = stream.ReadUInt32();
+				if (offsets[i] > 0x40000000)
+					offsets[i] -= 0x40000000;
 				offsets[i] <<= 1;
 			}
 
@@ -130,28 +129,28 @@ namespace OpenRA.FileFormats
 			for (var i = 0; i < Frames; i++)
 			{
 				stream.Seek(offsets[i], SeekOrigin.Begin);
-				BinaryReader reader = new BinaryReader(stream);
 				var end = (i < Frames - 1) ? offsets[i + 1] : stream.Length;
 
-				while (reader.BaseStream.Position < end)
+				while (stream.Position < end)
 				{
-					var type = new String(reader.ReadChars(4));
-					var length = int2.Swap(reader.ReadUInt32());
+					var type = stream.ReadASCII(4);
+					var length = int2.Swap(stream.ReadUInt32());
 
 					switch (type)
 					{
 						case "SND0":
 						case "SND2":
-							var rawAudio = reader.ReadBytes((int)length);
+							var rawAudio = stream.ReadBytes((int)length);
 							ms.Write(rawAudio);
 							compressed = (type == "SND2");
 							break;
 						default:
-							reader.ReadBytes((int)length);
+							stream.ReadBytes((int)length);
 							break;
 					}
 
-					if (reader.PeekChar() == 0) reader.ReadByte();
+					// Chunks are aligned on even bytes; advance by a byte if the next one is null
+					if (stream.Peek() == 0) stream.ReadByte();
 				}
 			}
 
@@ -171,48 +170,47 @@ namespace OpenRA.FileFormats
 
 			// Seek to the start of the frame
 			stream.Seek(offsets[currentFrame], SeekOrigin.Begin);
-			BinaryReader reader = new BinaryReader(stream);
 			var end = (currentFrame < Frames - 1) ? offsets[currentFrame+1] : stream.Length;
 
-			while(reader.BaseStream.Position < end)
+			while (stream.Position < end)
 			{
-				var type = new String(reader.ReadChars(4));
-				var length = int2.Swap(reader.ReadUInt32());
+				var type = stream.ReadASCII(4);
+				var length = int2.Swap(stream.ReadUInt32());
 
 				switch(type)
 				{
 					case "VQFR":
-						DecodeVQFR(reader);
+						DecodeVQFR(stream);
 					break;
 					default:
 						// Don't parse sound here.
-						reader.ReadBytes((int)length);
+						stream.ReadBytes((int)length);
 						break;
 				}
 
 				// Chunks are aligned on even bytes; advance by a byte if the next one is null
-				if (reader.PeekChar() == 0) reader.ReadByte();
+				if (stream.Peek() == 0) stream.ReadByte();
 			}
 		}
 
 		// VQA Frame
-		public void DecodeVQFR(BinaryReader reader)
+		public void DecodeVQFR(Stream s)
 		{
-			while(true)
+			while (true)
 			{
 				// Chunks are aligned on even bytes; may be padded with a single null
-				if (reader.PeekChar() == 0) reader.ReadByte();
-				var type = new String(reader.ReadChars(4));
-				int subchunkLength = (int)int2.Swap(reader.ReadUInt32());
+				if (s.Peek() == 0) s.ReadByte();
+				var type = s.ReadASCII(4);
+				int subchunkLength = (int)int2.Swap(s.ReadUInt32());
 
 				switch(type)
 				{
 					// Full frame-modifier
 					case "CBFZ":
-						Format80.DecodeInto( reader.ReadBytes(subchunkLength), cbf );
+						Format80.DecodeInto(s.ReadBytes(subchunkLength), cbf);
 					break;
 					case "CBF0":
-						cbf = reader.ReadBytes(subchunkLength);
+						cbf = s.ReadBytes(subchunkLength);
 					break;
 
 					// frame-modifier chunk
@@ -224,12 +222,12 @@ namespace OpenRA.FileFormats
 							if (type == "CBP0")
 								cbf = (byte[])cbp.Clone();
 							else
-								Format80.DecodeInto( cbp, cbf );
+								Format80.DecodeInto(cbp, cbf);
 
 							cbOffset = cbChunk = 0;
 						}
 
-						var bytes = reader.ReadBytes(subchunkLength);
+						var bytes = s.ReadBytes(subchunkLength);
 						bytes.CopyTo(cbp,cbOffset);
 						cbOffset += subchunkLength;
 						cbChunk++;
@@ -239,16 +237,16 @@ namespace OpenRA.FileFormats
 					case "CPL0":
 						for (int i = 0; i < numColors; i++)
 						{
-							byte r = (byte)(reader.ReadByte() << 2);
-							byte g = (byte)(reader.ReadByte() << 2);
-							byte b = (byte)(reader.ReadByte() << 2);
+							byte r = (byte)(s.ReadUInt8() << 2);
+							byte g = (byte)(s.ReadUInt8() << 2);
+							byte b = (byte)(s.ReadUInt8() << 2);
 							palette[i] = (uint)((255 << 24) | (r << 16) | (g << 8) | b);
 						}
 					break;
 
 					// Frame data
 					case "VPTZ":
-						Format80.DecodeInto( reader.ReadBytes(subchunkLength), origData );
+						Format80.DecodeInto(s.ReadBytes(subchunkLength), origData);
 						// This is the last subchunk
 						return;
 					default:

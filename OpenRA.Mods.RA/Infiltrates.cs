@@ -98,10 +98,10 @@ namespace OpenRA.Mods.RA
 				ForceAttack = false;
 				this.useEnterCursor = useEnterCursor;
 			}
-			
-			public override bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceQueued, ref string cursor)
+
+			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{
-				if (!base.CanTargetActor(self, target, forceAttack, forceQueued, ref cursor))
+				if (!base.CanTargetActor(self, target, modifiers, ref cursor))
 					return false;
 
 				if (!target.HasTrait<IAcceptInfiltrator>())

@@ -518,9 +518,6 @@ Player:
 	PlayerColorPalette:
 		BasePalette: player
 		RemapIndex: 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95
-	DebugResourceCash:
-	DebugResourceOre:
-	DebugResourceOreCapacity:
 	GpsWatcher:
 	Shroud:
 	BaseAttackNotifier:
@@ -547,7 +544,7 @@ World:
 		WaterChance: .2
 	PlayerPaletteFromCurrentTileset:
 		Name: player
-		ShadowIndex: 4
+		ShadowIndex: 3,4
 	PaletteFromCurrentTileset:
 		Name: terrain
 		ShadowIndex: 3,4
@@ -673,6 +670,7 @@ MINP:
 		Types: Mine
 	TargetableUnit:
 		TargetTypes: Ground
+	BodyOrientation:
 
 MINV:
 	Mine:
@@ -698,6 +696,7 @@ MINV:
 		Types: Mine
 	TargetableUnit:
 		TargetTypes: Ground
+	BodyOrientation:
 
 CRATE:
 	Tooltip:
@@ -760,6 +759,7 @@ CRATE:
 	ProximityCaptor:
 		Types:Crate
 	Passenger:
+	BodyOrientation:
 
 CAMERA:
 	Aircraft:
@@ -769,6 +769,7 @@ CAMERA:
 		Range: 10
 	ProximityCaptor:
 		Types:Camera
+	BodyOrientation:
 
 FLARE:
 	Aircraft:
@@ -783,6 +784,7 @@ FLARE:
 		Name: Flare
 	ProximityCaptor:
 		Types: Flare
+	BodyOrientation:
 
 powerproxy.parabombs:
 	AirstrikePower:
@@ -808,7 +810,9 @@ powerproxy.sonarpulse:
 mpspawn:
 	Waypoint:
 	RenderEditorOnly:
+	BodyOrientation:
 
 waypoint:
 	Waypoint:
 	RenderEditorOnly:
+	BodyOrientation:

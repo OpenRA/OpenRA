@@ -34,6 +34,9 @@
 	WithSmoke:
 	UpdatesPlayerStatistics:
 	DebugMuzzlePositions:
+	Guard:
+	Guardable:
+	BodyOrientation:
 
 ^Tank:
 	AppearsOnRadar:
@@ -71,6 +74,9 @@
 	WithSmoke:
 	UpdatesPlayerStatistics:
 	DebugMuzzlePositions:
+	Guard:
+	Guardable:
+	BodyOrientation:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -97,8 +103,6 @@
 		TargetTypes: Ground, Disguise
 	RenderInfantry:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	AttackMove:
 	Passenger:
 		CargoType: Infantry
@@ -114,7 +118,7 @@
 	GpsDot:
 		String:Infantry
 	ParachuteAttachment:
-		Offset: 0,-10
+		Offset: 0,0,427
 	CrushableInfantry:
 		CrushSound: squishy2.aud
 	RepairableNear:
@@ -122,6 +126,9 @@
 		CloseEnough: 1
 	UpdatesPlayerStatistics:
 	DebugMuzzlePositions:
+	Guard:
+	Guardable:
+	BodyOrientation:
 
 ^Ship:
 	AppearsOnRadar:
@@ -151,6 +158,9 @@
 	WithSmoke:
 	UpdatesPlayerStatistics:
 	DebugMuzzlePositions:
+	Guard:
+	Guardable:
+	BodyOrientation:
 
 ^Plane:
 	AppearsOnRadar:
@@ -167,10 +177,6 @@
 	DrawLineToTarget:
 	ActorLostNotification:
 		Notification: AirUnitLost
-	DebugAircraftFacing:
-	DebugAircraftSubPxX:
-	DebugAircraftSubPxY:
-	DebugAircraftAltitude:
 	ProximityCaptor:
 		Types:Plane
 	EjectOnDeath:
@@ -181,6 +187,7 @@
 		String:Plane
 	UpdatesPlayerStatistics:
 	DebugMuzzlePositions:
+	BodyOrientation:
 
 ^Helicopter:
 	Inherits: ^Plane
@@ -224,6 +231,10 @@
 	GivesBounty:
 	UpdatesPlayerStatistics:
 	DebugMuzzlePositions:
+	Guardable:
+		Range: 3
+	AutoTargetIgnore:
+	BodyOrientation:
 
 ^Wall:
 	AppearsOnRadar:
@@ -257,6 +268,8 @@
 		Types:Wall
 	Sellable:
 	UpdatesPlayerStatistics:
+	Guardable:
+	BodyOrientation:
 
 ^TechBuilding:
 	Inherits: ^Building
@@ -338,6 +351,7 @@
 	Armor:
 		Type: Wood
 	AutoTargetIgnore:
+	BodyOrientation:
 
 ^Husk:
 	Husk:
@@ -352,6 +366,7 @@
 	ProximityCaptor:
 		Types:Husk
 	BelowUnits:
+	BodyOrientation:
 
 ^Bridge:
 	Tooltip:
@@ -367,6 +382,7 @@
 	ProximityCaptor:
 		Types:Bridge
 	AutoTargetIgnore:
+	BodyOrientation:
 
 #Temperate Terrain Expansion
 ^SVBridge:
@@ -383,6 +399,7 @@
 	ProximityCaptor:
 		Types:Bridge
 	AutoTargetIgnore:
+	BodyOrientation:
 
 ^SHBridge:
 	Tooltip:
@@ -398,6 +415,7 @@
 	ProximityCaptor:
 		Types:Bridge
 	AutoTargetIgnore:
+	BodyOrientation:
 
 ^STDBridge:
 	Tooltip:
@@ -413,6 +431,7 @@
 	ProximityCaptor:
 		Types:Bridge
 	AutoTargetIgnore:
+	BodyOrientation:
 
 #Desert Terrain Expansion:
 ^Rock:
@@ -431,6 +450,7 @@
 		UseTerrainPalette: true
 	ProximityCaptor:
 		Types:Tree
+	BodyOrientation:
 
 ^DesertCivBuilding:
 	Inherits: ^CivBuilding

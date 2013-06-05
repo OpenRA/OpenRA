@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Effects;
@@ -22,13 +23,14 @@ namespace OpenRA.Mods.RA.Render
 	public class RenderBuildingInfo : RenderSimpleInfo, Requires<BuildingInfo>, IPlaceBuildingDecoration
 	{
 		public readonly bool HasMakeAnimation = true;
-		public readonly float2 Origin = float2.Zero;
+
+		[Desc("Artwork offset in world (not local) coordinates")]
+		public readonly WVec Origin = WVec.Zero;
 		public override object Create(ActorInitializer init) { return new RenderBuilding(init, this);}
 
-		public override IEnumerable<Renderable> RenderPreview(ActorInfo building, PaletteReference pr)
+		public override IEnumerable<IRenderable> RenderPreview(ActorInfo building, PaletteReference pr)
 		{
-			return base.RenderPreview(building, pr)
-				.Select(a => a.WithPos(a.Pos + building.Traits.Get<RenderBuildingInfo>().Origin));
+			return base.RenderPreview(building, pr).Select(a => a.WithPos(a.Pos + Origin));
 		}
 
 		public void Render(WorldRenderer wr, World w, ActorInfo ai, PPos centerLocation)
@@ -55,6 +57,7 @@ namespace OpenRA.Mods.RA.Render
 			var self = init.self;
 			// Work around a bogus crash
 			anim.PlayRepeating( NormalizeSequence(self, "idle") );
+			self.Trait<IBodyOrientation>().QuantizedFacings = anim.CurrentSequence.Facings;
 
 			// Can't call Complete() directly from ctor because other traits haven't been inited yet
 			if (self.Info.Traits.Get<RenderBuildingInfo>().HasMakeAnimation && !init.Contains<SkipMakeAnimsInit>())
@@ -63,12 +66,12 @@ namespace OpenRA.Mods.RA.Render
 				self.QueueActivity(new CallFunc(() => Complete(self)));
 		}
 
-		public IEnumerable<Renderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<Renderable> r)
+		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
 		{
 			var disabled = self.IsDisabled();
 			foreach (var a in r)
 			{
-				var ret = a.WithPos(a.Pos - Info.Origin);
+				var ret = a.WithPos(a.Pos + Info.Origin);
 				yield return ret;
 				if (disabled)
 					yield return ret.WithPalette(wr.Palette("disabled")).WithZOffset(1);

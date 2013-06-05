@@ -66,6 +66,9 @@ ChromeLayout:
 	mods/ra/chrome/cheats.yaml
 	mods/ra/chrome/musicplayer.yaml
 	mods/d2k/chrome/tooltips.yaml
+	mods/ra/chrome/assetbrowser.yaml
+	mods/ra/chrome/convertassets.yaml
+
 Weapons:
 	mods/d2k/weapons/defaults.yaml
 	mods/d2k/weapons/explosions.yaml
@@ -108,8 +111,8 @@ Fonts:
 		Font:FreeSansBold.ttf
 		Size:14
 	Title:
-		Font:titles.ttf
-		Size:48
+		Font:Dune2k.ttf
+		Size:32
 	BigBold:
 		Font:FreeSansBold.ttf
 		Size:24

@@ -1,0 +1,82 @@
+mig:
+	idle:
+		Start: 0
+		Facings: 16
+
+yak:
+	idle:
+		Start: 0
+		Facings: 16
+	muzzle: minigun
+		Start: 0
+		Length: 6
+		Facings: 8
+
+heli:
+	idle:
+		Start: 0
+		Facings: 32
+	rotor: lrotor
+		Start: 0
+		Length: 4
+	slow-rotor: lrotor
+		Start: 4
+		Length: 8
+
+hind:
+	idle:
+		Start: 0
+		Facings: 32
+	rotor: lrotor
+		Start: 0
+		Length: 4
+	slow-rotor: lrotor
+		Start: 4
+		Length: 8
+	muzzle: minigun
+		Start: 0
+		Length: 6
+		Facings: 8
+
+tran:
+	idle: tran2
+		Start: 0
+		Facings: 32
+	rotor: lrotor
+		Start: 0
+		Length: 4
+	rotor2: rrotor
+		Start: 0
+		Length: 4
+	slow-rotor: lrotor
+		Start: 4
+		Length: 8
+	slow-rotor2: rrotor
+		Start: 4
+		Length: 8
+	open: tran2
+		Start: 32
+		Length: 4
+	unload: tran2
+		Start: 32
+		Length: 4
+		
+tran1husk:
+	idle:
+		Start: 0
+		Length: *
+
+tran2husk:
+	idle:
+		Start: 0
+		Length: *
+
+u2:
+	idle:
+		Start: 0
+		Facings: 16
+
+badr:
+	idle:
+		Start: 0
+		Facings: 16

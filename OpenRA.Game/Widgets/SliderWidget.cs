@@ -24,10 +24,15 @@ namespace OpenRA.Widgets
 		public float MinimumValue = 0;
 		public float MaximumValue = 1;
 		public float Value = 0;
+		public Func<float> GetValue;
 
 		protected bool isMoving = false;
 
-		public SliderWidget() : base() {}
+		public SliderWidget()
+			: base()
+		{
+			GetValue = () => Value;
+		}
 
 		public SliderWidget(SliderWidget other)
 			: base(other)
@@ -38,6 +43,7 @@ namespace OpenRA.Widgets
 			MaximumValue = other.MaximumValue;
 			Value = other.Value;
 			TrackHeight = other.TrackHeight;
+			GetValue = other.GetValue;
 		}
 
 		void UpdateValue(float newValue)
@@ -53,7 +59,7 @@ namespace OpenRA.Widgets
 			if (mi.Event == MouseInputEvent.Down && !TakeFocus(mi))	return false;
 			if (!Focused) return false;
 
-			switch( mi.Event )
+			switch(mi.Event)
 			{
 			case MouseInputEvent.Up:
 				isMoving = false;
@@ -98,6 +104,8 @@ namespace OpenRA.Widgets
 		{
 			if (!IsVisible())
 				return;
+
+			Value = GetValue();
 
 			var tr = ThumbRect;
 			var rb = RenderBounds;

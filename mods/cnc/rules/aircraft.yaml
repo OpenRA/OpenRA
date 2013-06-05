@@ -89,8 +89,6 @@ HELI:
 	FallsToEarth:
 		Explosion: HeliCrash
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	Explodes:
 		Weapon: HeliExplode
 		EmptyWeapon: HeliExplode
@@ -132,15 +130,13 @@ ORCA:
 		Ammo: 6
 		PipCount: 6
 	Reloads:
-		Count: 1
-		Period: 150
+		Count: 2
+		Period: 200
 	RenderUnit:
 	WithShadow:
 	FallsToEarth:
 		Explosion: HeliCrash
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	Explodes:
 		Weapon: HeliExplode
 		EmptyWeapon: HeliExplode

@@ -58,10 +58,8 @@ HARV:
 		Resources: Tiberium, BlueTiberium
 		PipCount: 7
 		Capacity: 20
-		UnloadTicksPerBale: 12		# hardcoded default is 4
-		# How far away from our linked proc (refinery) to find resources (in cells):
+		UnloadTicksPerBale: 12
 		SearchFromProcRadius: 24
-		# How far away from last harvest order location to find more resources (in cells):
 		SearchFromOrderRadius: 12
 	Mobile:
 		Speed: 6
@@ -113,10 +111,9 @@ APC:
 		LocalOffset: 85,85,299, 85,-85,299
 	AttackTurreted:
 	WithMuzzleFlash:
-	RenderUnitTurreted:
+	RenderUnit:
+	WithTurret:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
@@ -156,8 +153,6 @@ ARTY:
 		EmptyWeapon: UnitExplode
 	AutoTarget:
 		InitialStance: Defend
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	LeavesHusk:
 		HuskActor: ARTY.Husk
 
@@ -188,8 +183,6 @@ FTNK:
 	AttackFrontal:
 	RenderUnit:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	WithMuzzleFlash:
 	Explodes:
 		Weapon: FlametankExplode
@@ -225,10 +218,9 @@ BGGY:
 		Weapon: MachineGun
 	AttackTurreted:
 	WithMuzzleFlash:
-	RenderUnitTurreted:
+	RenderUnit:
+	WithTurret:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	LeavesHusk:
 		HuskActor: BGGY.Husk
 
@@ -267,8 +259,6 @@ BIKE:
 	AttackFrontal:
 	RenderUnit:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	LeavesHusk:
 		HuskActor: BIKE.Husk
 	
@@ -300,10 +290,9 @@ JEEP:
 		Weapon: MachineGun
 	AttackTurreted:
 	WithMuzzleFlash:
-	RenderUnitTurreted:
+	RenderUnit:
+	WithTurret:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	LeavesHusk:
 		HuskActor: JEEP.Husk
 
@@ -336,10 +325,9 @@ LTNK:
 		RecoilRecovery: 17
 		LocalOffset: -128,0,85
 	AttackTurreted:
-	RenderUnitTurreted:
+	RenderUnit:
+	WithTurret:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	LeavesHusk:
 		HuskActor: LTNK.Husk
 	Explodes:
@@ -374,10 +362,9 @@ MTNK:
 		RecoilRecovery: 26
 		LocalOffset: 0,0,43
 	AttackTurreted:
-	RenderUnitTurreted:
+	RenderUnit:
+	WithTurret:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	LeavesHusk:
 		HuskActor: MTNK.Husk
 	Explodes:
@@ -421,10 +408,9 @@ HTNK:
 		LocalYaw: -100, 100
 		Recoil: 42
 	AttackTurreted:
-	RenderUnitTurreted:
+	RenderUnit:
+	WithTurret:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	SelfHealing:
 		Ticks: 10
 		HealIfBelow: 50%
@@ -465,10 +451,10 @@ MSAM:
 		Weapon: 227mm
 		LocalOffset: 213,128,0, 213,-128,0
 	AttackFrontal:
-	RenderUnitTurretedAim:
+	RenderUnit:
+	WithTurret:
+		AimSequence: aim
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	LeavesHusk:
 		HuskActor: MSAM.Husk
 
@@ -501,11 +487,11 @@ MLRS:
 		Weapon: Patriot
 		LocalOffset: 0,-171,0, 0,171,0
 	AttackTurreted:
-	RenderUnitTurretedAim:
+	RenderUnit:
+	WithTurret:
+		AimSequence: aim
 	AutoTarget:
 		InitialStance: Defend
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
@@ -547,8 +533,6 @@ STNK:
 	RenderUnit:
 	AutoTarget:
 		InitialStance: HoldFire
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	TargetableUnit:
 	LeavesHusk:
 		HuskActor: STNK.Husk

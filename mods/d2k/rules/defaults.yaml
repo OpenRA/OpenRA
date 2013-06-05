@@ -31,6 +31,9 @@
 	Repairable:
 		RepairBuildings: repair
 	DebugMuzzlePositions:
+	Guard:
+	Guardable:
+	BodyOrientation:
 
 ^Tank:
 	AppearsOnRadar:
@@ -65,6 +68,9 @@
 	Repairable:
 		RepairBuildings: repair
 	DebugMuzzlePositions:
+	Guard:
+	Guardable:
+	BodyOrientation:
 
 ^Husk:
 	Health:
@@ -80,6 +86,7 @@
 		Types:Husk
 	Tooltip:
 		Name: Destroyed Tank
+	BodyOrientation:
 
 ^TowerHusk:
 	Health:
@@ -97,6 +104,7 @@
 		Name: Destroyed Tower
 	ProximityCaptor:
 		Types:Husk
+	BodyOrientation:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -125,8 +133,6 @@
 		TargetTypes: Ground
 	RenderInfantry:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	AttackMove:
 	Passenger:
 		CargoType: Infantry
@@ -145,6 +151,9 @@
 		Buildings: barra, barro
 		CloseEnough: 1
 	DebugMuzzlePositions:
+	Guard:
+	Guardable:
+	BodyOrientation:
 
 ^Plane:
 	AppearsOnRadar:
@@ -160,14 +169,11 @@
 	GivesExperience:
 	DrawLineToTarget:
 	ActorLostNotification:
-	DebugAircraftFacing:
-	DebugAircraftSubPxX:
-	DebugAircraftSubPxY:
-	DebugAircraftAltitude:
 	ProximityCaptor:
 		Types:Plane
 	GivesBounty:
 	DebugMuzzlePositions:
+	BodyOrientation:
 
 ^Helicopter:
 	Inherits: ^Plane
@@ -200,7 +206,6 @@
 		ActorTypes: rifle,rifle,rifle,rifle,rifle,bazooka,bazooka,bazooka,engineer
 	MustBeDestroyed:
 	GivesExperience:
-
 	FrozenUnderFog:
 	CaptureNotification:
 	ActorLostNotification:
@@ -215,3 +220,6 @@
 	GivesBounty:
 	DebugMuzzlePositions:
 	Bib:
+	Guardable:
+		Range: 3
+	BodyOrientation:

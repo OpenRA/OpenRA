@@ -11,17 +11,30 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
+using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class BelowUnitsInfo : TraitInfo<BelowUnits> { }
+	class BelowUnitsInfo : ITraitInfo
+	{
+		public object Create(ActorInitializer init) { return new BelowUnits(init.self); }
+	}
 
 	class BelowUnits : IRenderModifier
 	{
-		public IEnumerable<Renderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<Renderable> r)
+		int offset;
+
+		public BelowUnits(Actor self)
 		{
-			return r.Select(a => a.WithZOffset((int) -a.Sprite.size.Y));
+			// Offset effective position to the top of the northernmost occupied cell
+			var bi = self.Info.Traits.GetOrDefault<BuildingInfo>();
+			offset = (bi != null) ? -FootprintUtils.CenterOffset(bi).Y : -512;
+		}
+
+		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
+		{
+			return r.Select(a => a.WithZOffset(offset));
 		}
 	}
 }

@@ -1,0 +1,107 @@
+﻿#region Copyright & License Information
+/*
+ * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * This file is part of OpenRA, which is free software. It is made
+ * available to you under the terms of the GNU General Public License
+ * as published by the Free Software Foundation. For more information,
+ * see COPYING.
+ */
+#endregion
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using OpenRA.Graphics;
+using OpenRA.FileFormats;
+
+namespace OpenRA.Traits
+{
+	public class RenderSpritesInfo : ITraitInfo
+	{
+		[Desc("Defaults to the actor name.")]
+		public readonly string Image = null;
+
+		[Desc("Custom palette name")]
+		public readonly string Palette = null;
+		[Desc("Custom PlayerColorPalette: BaseName")]
+		public readonly string PlayerPalette = "player";
+		[Desc("Change the sprite image size.")]
+		public readonly float Scale = 1f;
+
+		public virtual object Create(ActorInitializer init) { return new RenderSprites(init.self); }
+	}
+
+	public class RenderSprites : IRender, ITick, INotifyOwnerChanged
+	{
+		public Dictionary<string, AnimationWithOffset> anims = new Dictionary<string, AnimationWithOffset>();
+
+		public static Func<int> MakeFacingFunc(Actor self)
+		{
+			var facing = self.TraitOrDefault<IFacing>();
+			if (facing == null) return () => 0;
+			return () => facing.Facing;
+		}
+
+		public Animation anim
+		{
+			get { return anims[""].Animation; }
+			protected set { anims[""] = new AnimationWithOffset(value,
+				anims[""].OffsetFunc, anims[""].DisableFunc, anims[""].ZOffset); }
+		}
+
+		RenderSpritesInfo Info;
+		string cachedImage = null;
+		bool initializePalette = true;
+		protected PaletteReference palette;
+
+		public RenderSprites(Actor self, Func<int> baseFacing)
+		{
+			Info = self.Info.Traits.Get<RenderSpritesInfo>();
+		}
+
+		public RenderSprites(Actor self)
+			: this(self, MakeFacingFunc(self)) {}
+
+		public static string GetImage(ActorInfo actor)
+		{
+			var Info = actor.Traits.Get<RenderSpritesInfo>();
+			return Info.Image ?? actor.Name;
+		}
+
+		public string GetImage(Actor self)
+		{
+			if (cachedImage != null)
+				return cachedImage;
+
+			return cachedImage = GetImage(self.Info);
+		}
+
+		protected virtual string PaletteName(Actor self)
+		{
+			return Info.Palette ?? Info.PlayerPalette + self.Owner.InternalName;
+		}
+
+		protected void UpdatePalette() { initializePalette = true; }
+		public void OnOwnerChanged(Actor self, Player oldOwner, Player newOwner) { UpdatePalette(); }
+
+		public virtual IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
+		{
+			if (initializePalette)
+			{
+				palette = wr.Palette(PaletteName(self));
+				initializePalette = false;
+			}
+
+			foreach (var a in anims.Values)
+				if (a.DisableFunc == null || !a.DisableFunc())
+					yield return a.Image(self, wr, palette, Info.Scale);
+		}
+
+		public virtual void Tick(Actor self)
+		{
+			foreach (var a in anims.Values)
+				a.Animation.Tick();
+		}
+
+	}
+}

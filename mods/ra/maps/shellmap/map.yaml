@@ -27,7 +27,7 @@ Players:
 	PlayerReference@GoodGuy:
 		Name: GoodGuy
 		Race: allies
-		ColorRamp: 153,137,144,44
+		ColorRamp: 161,134,200,30
 		Enemies: Greece,Creeps
 	PlayerReference@Greece:
 		Name: Greece

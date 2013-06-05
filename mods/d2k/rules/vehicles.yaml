@@ -138,8 +138,6 @@ HARVESTER.starport:
 		LocalOffset: 256,0,128
 	AttackFrontal:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	Explodes:
 		Weapon: UnitExplodeTiny
 		EmptyWeapon: UnitExplodeTiny
@@ -180,8 +178,6 @@ QUAD:
 		LocalOffset: 128,0,85#-4
 	AttackFrontal:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	Explodes:
 		Weapon: UnitExplodeTiny
 		EmptyWeapon: UnitExplodeTiny
@@ -227,10 +223,9 @@ QUAD.starport:
 		RecoilRecovery: 34
 		LocalOffset: 85,0,128
 	AttackTurreted:
-	RenderUnitTurreted:
+	RenderUnit:
+	WithTurret:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
@@ -278,15 +273,14 @@ SIEGETANK:
 		RecoilRecovery: 19
 		LocalOffset: 171,0,299
 	AttackTurreted:
-	RenderUnitTurreted:
+	RenderUnit:
 		Image: SIEGETANK
+	WithTurret:
 	Explodes:
 		Weapon: UnitExplodeScale
 		EmptyWeapon: UnitExplodeScale
 	AutoTarget:
 		InitialStance: Defend
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	Selectable:
 		Bounds: 30,30
 	LeavesHusk:
@@ -342,8 +336,6 @@ MISSILETANK:
 	AttackFrontal:
 	AutoTarget:
 		InitialStance: Defend
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	Explodes:
 		Weapon: UnitExplodeScale
 		EmptyWeapon: UnitExplodeScale

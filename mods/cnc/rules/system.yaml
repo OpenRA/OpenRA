@@ -229,6 +229,7 @@ World:
 		Name: effect
 		Filename: temperat.pal
 		ShadowIndex: 4
+		AllowModifiers: false
 	PaletteFromFile@colorpicker:
 		Name: colorpicker
 		Filename: temperat.pal
@@ -350,11 +351,14 @@ CRATE:
 		Unit: mcv
 	RenderSimple:
 	BelowUnits:
+	BodyOrientation:
 
 mpspawn:
 	Waypoint:
 	RenderEditorOnly:
+	BodyOrientation:
 
 waypoint:
 	Waypoint:
 	RenderEditorOnly:
+	BodyOrientation:

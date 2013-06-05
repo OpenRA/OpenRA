@@ -20,6 +20,7 @@ namespace OpenRA.Mods.RA
 	{
 		[Desc("It will try to hunt down the enemy if it is not set to defend.")]
 		public readonly bool AllowMovement = true;
+		[Desc("Set to a value >1 to override weapons maximum range for this.")]
 		public readonly int ScanRadius = -1;
 		public readonly UnitStance InitialStance = UnitStance.AttackAnything;
 
@@ -121,20 +122,22 @@ namespace OpenRA.Mods.RA
 
 			var inRange = self.World.FindUnitsInCircle(self.CenterLocation, (int)(Game.CellSize * range));
 
-			if (self.Owner.HasFogVisibility()) {
+			if (self.Owner.HasFogVisibility())
+			{
 				return inRange
 					.Where(a => a.AppearsHostileTo(self))
 					.Where(a => !a.HasTrait<AutoTargetIgnore>())
 					.Where(a => attack.HasAnyValidWeapons(Target.FromActor(a)))
-					.ClosestTo( self.CenterLocation );
+					.ClosestTo(self.CenterLocation);
 			}
-			else {
+			else
+			{
 				return inRange
 					.Where(a => a.AppearsHostileTo(self))
 					.Where(a => !a.HasTrait<AutoTargetIgnore>())
 					.Where(a => attack.HasAnyValidWeapons(Target.FromActor(a)))
 					.Where(a => self.Owner.Shroud.IsTargetable(a))
-					.ClosestTo( self.CenterLocation );
+					.ClosestTo(self.CenterLocation);
 			}
 		}
 	}
@@ -142,28 +145,5 @@ namespace OpenRA.Mods.RA
 	[Desc("Will not get automatically targeted by enemy (like walls)")]
 	class AutoTargetIgnoreInfo : TraitInfo<AutoTargetIgnore> { }
 	class AutoTargetIgnore { }
-
-	public class DebugRetiliateAgainstAggressorInfo : ITraitInfo, Requires<AutoTargetInfo>
-	{
-		public object Create(ActorInitializer init) { return new DebugRetiliateAgainstAggressor(init.self); }
-	}
 	
-	public class DebugRetiliateAgainstAggressor : ISync
-	{
-		readonly AutoTarget a;
-		public DebugRetiliateAgainstAggressor(Actor self){ a = self.Trait<AutoTarget>(); }
-		[Sync] public int Aggressor { get { return a.AggressorID; } }
-	}
-
-	public class DebugNextAutoTargetScanTimeInfo : ITraitInfo, Requires<AutoTargetInfo>
-	{
-		public object Create(ActorInitializer init) { return new DebugNextAutoTargetScanTime(init.self); }
-	}
-	
-	public class DebugNextAutoTargetScanTime : ISync
-	{
-		readonly AutoTarget a;
-		public DebugNextAutoTargetScanTime(Actor self){ a = self.Trait<AutoTarget>(); }
-		[Sync] public int NextAutoTargetScanTime { get { return a.nextScanTime; } }
-	}
 }

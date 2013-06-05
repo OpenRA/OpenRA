@@ -371,6 +371,8 @@ WALL:
 	ProximityCaptor:
 		Types:Wall
 	Sellable:
+	Guardable:
+	BodyOrientation:
 
 GUNTOWER:
 	Inherits: ^Building
@@ -402,11 +404,11 @@ GUNTOWER:
 	RevealsShroud:
 		Range: 8
 	RenderRangeCircle:
-	-RenderBuilding:
 	-AutoTargetIgnore:
-	RenderBuildingSeparateTurret:
+	RenderBuilding:
 		HasMakeAnimation: false
 		Image: guntowera
+	WithTurret:
 	Turreted:
 		ROT: 6
 		InitialFacing: 128
@@ -460,11 +462,11 @@ ROCKETTOWER:
 	RevealsShroud:
 		Range: 10
 	RenderRangeCircle:
-	-RenderBuilding:
 	-AutoTargetIgnore:
-	RenderBuildingSeparateTurret:
+	RenderBuilding:
 		HasMakeAnimation: false
 		Image: rockettowera
+	WithTurret:
 	Armament:
 		Weapon: TowerMissile
 		LocalOffset: 85,597,469, 85,-597,469

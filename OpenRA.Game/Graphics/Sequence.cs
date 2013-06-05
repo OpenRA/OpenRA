@@ -19,6 +19,7 @@ namespace OpenRA.Graphics
 	{
 		readonly Sprite[] sprites;
 		readonly int start, length, stride, facings, tick;
+		readonly bool reverseFacings, transpose;
 
 		public readonly string Name;
 		public int Start { get { return start; } }
@@ -49,15 +50,22 @@ namespace OpenRA.Graphics
 			else
 				stride = length;
 
-			if(d.ContainsKey("Facings"))
-				facings = int.Parse(d["Facings"].Value);
+			if (d.ContainsKey("Facings"))
+			{
+				var f = int.Parse(d["Facings"].Value);
+				facings = Math.Abs(f);
+				reverseFacings = f < 0;
+			}
 			else
 				facings = 1;
 
-			if(d.ContainsKey("Tick"))
+			if (d.ContainsKey("Tick"))
 				tick = int.Parse(d["Tick"].Value);
 			else
 				tick = 40;
+
+			if (d.ContainsKey("Transpose"))
+			    transpose = bool.Parse(d["Transpose"].Value);
 
 			if (length > stride)
 				throw new InvalidOperationException(
@@ -71,15 +79,22 @@ namespace OpenRA.Graphics
 					info.Nodes[0].Location));
 		}
 
-		public Sprite GetSprite( int frame )
+		public Sprite GetSprite(int frame)
 		{
-			return GetSprite( frame, 0 );
+			return GetSprite(frame, 0);
 		}
 
 		public Sprite GetSprite(int frame, int facing)
 		{
-			var f = Traits.Util.QuantizeFacing( facing, facings );
-			return sprites[ (f * stride) + ( frame % length ) + start ];
+			var f = Traits.Util.QuantizeFacing(facing, facings);
+
+			if (reverseFacings)
+				f = (facings - f) % facings;
+
+			int i = transpose ? (frame % length) * facings + f :
+				(f * stride) + (frame % length);
+
+			return sprites[start + i];
 		}
 	}
 }

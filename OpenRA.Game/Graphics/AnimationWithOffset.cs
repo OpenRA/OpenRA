@@ -15,36 +15,43 @@ namespace OpenRA.Graphics
 {
 	public class AnimationWithOffset
 	{
-		public Animation Animation;
-		public Func<WorldRenderer, float2> OffsetFunc;
-		public Func<bool> DisableFunc;
-		public int ZOffset;
+		public readonly Animation Animation;
+		public readonly Func<WVec> OffsetFunc;
+		public readonly Func<bool> DisableFunc;
+		public readonly Func<WPos, int> ZOffset;
 
-		public AnimationWithOffset(Animation a)
-			: this(a, null, null)
-		{
-		}
+		public AnimationWithOffset(Animation a, Func<WVec> offset, Func<bool> disable)
+			: this(a, offset, disable, null) { }
 
-		public AnimationWithOffset(Animation a, Func<WorldRenderer, float2> o, Func<bool> d)
+		public AnimationWithOffset(Animation a, Func<WVec> offset, Func<bool> disable, int zOffset)
+			: this(a, offset, disable, _ => zOffset) { }
+
+		public AnimationWithOffset(Animation a, Func<WVec> offset, Func<bool> disable, Func<WPos, int> zOffset)
 		{
 			this.Animation = a;
-			this.OffsetFunc = o;
-			this.DisableFunc = d;
+			this.OffsetFunc = offset;
+			this.DisableFunc = disable;
+			this.ZOffset = zOffset;
 		}
 
-		public Renderable Image(Actor self, WorldRenderer wr, PaletteReference pal)
+		public IRenderable Image(Actor self, WorldRenderer wr, PaletteReference pal)
 		{
-			var p = self.CenterLocation;
-			var loc = p.ToFloat2() - 0.5f * Animation.Image.size
-				+ (OffsetFunc != null ? OffsetFunc(wr) : float2.Zero);
-			var r = new Renderable(Animation.Image, loc, pal, p.Y);
+			return Image(self, wr, pal, 1f);
+		}
 
-			return ZOffset != 0 ? r.WithZOffset(ZOffset) : r;
+		public IRenderable Image(Actor self, WorldRenderer wr, PaletteReference pal, float scale)
+		{
+			var p = self.CenterPosition;
+			if (OffsetFunc != null)
+				p += OffsetFunc();
+
+			var z = (ZOffset != null) ? ZOffset(p) : 0;
+			return new SpriteRenderable(Animation.Image, p, z, pal, scale);
 		}
 
 		public static implicit operator AnimationWithOffset(Animation a)
 		{
-			return new AnimationWithOffset(a);
+			return new AnimationWithOffset(a, null, null, null);
 		}
 	}
 }

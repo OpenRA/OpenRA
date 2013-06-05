@@ -115,8 +115,7 @@ namespace OpenRA.Mods.RA
 
 		public Color RadarColorOverride(Actor self)
 		{
-			if (!Disguised || self.World.LocalPlayer == null ||
-				self.Owner.Stances[self.World.LocalPlayer] == Stance.Ally)
+			if (!Disguised || self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				return self.Owner.Color.RGB;
 
 			return disguisedAsPlayer.Color.RGB;
@@ -127,7 +126,7 @@ namespace OpenRA.Mods.RA
 			var tooltip = target.TraitsImplementing<IToolTip>().FirstOrDefault();
 			disguisedAsName = tooltip.Name();
 			disguisedAsPlayer = tooltip.Owner();
-			disguisedAsSprite = target.Trait<RenderSimple>().GetImage(target);
+			disguisedAsSprite = target.Trait<RenderSprites>().GetImage(target);
 		}
 
 		void DropDisguise()

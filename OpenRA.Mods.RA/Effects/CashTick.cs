@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Effects
 		static string FormatCashAmount(int x) { return "{0}${1}".F(x < 0 ? "-" : "+", x); }
 
 		public CashTick(int value, int lifetime, int velocity, PPos pos, Color color)
-			: this( FormatCashAmount(value), lifetime, velocity, pos, color ) { }
+			: this(FormatCashAmount(value), lifetime, velocity, pos, color) { }
 
 		public CashTick(string value, int lifetime, int velocity, PPos pos, Color color)
 		{
@@ -49,7 +49,7 @@ namespace OpenRA.Mods.RA.Effects
 			pos -= new PVecInt(0, velocity);
 		}
 
-		public IEnumerable<Renderable> Render(WorldRenderer wr)
+		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
 			font.DrawTextWithContrast(s, Game.viewport.Zoom*(pos.ToFloat2() - Game.viewport.Location) - offset, color, Color.Black,1);
 			yield break;

@@ -108,8 +108,9 @@ COMBATO:
 		Speed: 9
 		ROT: 8
 		Crushes: crate, infantry
-	RenderUnitTurreted:
+	RenderUnit:
 		Image: COMBATO
+	WithTurret:
 	LeavesHusk:
 		HuskActor: Combato.Husk
 
@@ -235,8 +236,6 @@ DEVIATORTANK:
 	AttackLoyalty:
 	AutoTarget:
 		InitialStance: Defend
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
@@ -277,7 +276,5 @@ SABOTEUR:
 	C4Demolition:
 		C4Delay: 45
 	-AutoTarget:
-	-DebugRetiliateAgainstAggressor:
-	-DebugNextAutoTargetScanTime:
 	AttackMove:
 		JustMove: true

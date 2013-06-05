@@ -415,7 +415,7 @@ VICE:
 	Armor:
 		Type: Wood
 	RevealsShroud:
-		Range: 4
+		Range: 6
 	Mobile:
 		Speed: 5
 		TerrainSpeeds:
@@ -430,9 +430,7 @@ VICE:
 	TargetableUnit:
 		TargetTypes: Ground
 	AutoTarget:
-		ScanRadius: 4
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
+		ScanRadius: 5
 	AttackMove:
 	HiddenUnderFog:
 	GainsExperience:
@@ -447,3 +445,4 @@ VICE:
 	AttackWander:
 	RenderUnit:
 	WithMuzzleFlash:
+	BodyOrientation:

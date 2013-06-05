@@ -45,8 +45,6 @@ namespace OpenRA.Mods.RA.Effects
 			anim.PlayRepeating(info.String);
 
 			self.World.AddFrameEndTask(w => w.Add(this));
-			if (self.World.LocalPlayer != null)
-				watcher = self.World.LocalPlayer.PlayerActor.Trait<GpsWatcher>();
 		}
 
 		bool firstTick = true;
@@ -55,7 +53,7 @@ namespace OpenRA.Mods.RA.Effects
 			if (self.Destroyed)
 				world.AddFrameEndTask(w => w.Remove(this));
 
-			if (world.LocalPlayer == null || !self.IsInWorld || self.Destroyed)
+			if (!self.IsInWorld || self.Destroyed)
 				return;
 
 			// Can be granted at runtime via a crate, so can't cache
@@ -68,6 +66,10 @@ namespace OpenRA.Mods.RA.Effects
 				firstTick = false;
 			}
 
+			// Can change with the Shroud selector for observers so don't cache.
+			if (self.World.RenderPlayer != null)
+				watcher = self.World.RenderPlayer.PlayerActor.Trait<GpsWatcher>();
+
 			var hasGps = (watcher != null && (watcher.Granted || watcher.GrantedAllies));
 			var hasDot = (huf != null && !huf.IsVisible(self, self.World.RenderPlayer));
 			var dotHidden = (cloak != null && cloak.Cloaked) || (spy != null && spy.Disguised);
@@ -75,16 +77,13 @@ namespace OpenRA.Mods.RA.Effects
 			show = hasGps && hasDot && !dotHidden;
 		}
 
-		public IEnumerable<Renderable> Render(WorldRenderer wr)
+		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
 			if (!show || self.Destroyed)
 				yield break;
 
-			var p = self.CenterLocation;
 			var palette = wr.Palette(info.IndicatorPalettePrefix+self.Owner.InternalName);
-			yield return new Renderable(anim.Image, p.ToFloat2() - 0.5f * anim.Image.size, palette, p.Y)
-				.WithScale(1.5f);
-
+			yield return new SpriteRenderable(anim.Image, self.CenterPosition, 0, palette, 1f);
 		}
 	}
 }

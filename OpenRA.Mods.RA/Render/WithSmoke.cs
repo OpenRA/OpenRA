@@ -13,7 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
-	public class WithSmokeInfo : ITraitInfo, Requires<RenderSimpleInfo>
+	public class WithSmokeInfo : ITraitInfo, Requires<RenderSpritesInfo>
 	{
 		public object Create(ActorInitializer init) { return new WithSmoke(init.self); }
 	}
@@ -25,11 +25,10 @@ namespace OpenRA.Mods.RA.Render
 
 		public WithSmoke(Actor self)
 		{
-			var rs = self.Trait<RenderSimple>();
+			var rs = self.Trait<RenderSprites>();
 
 			anim = new Animation("smoke_m");
-			rs.anims.Add("smoke", new AnimationWithOffset(
-				anim, null, () => !isSmoking));
+			rs.anims.Add("smoke", new AnimationWithOffset(anim, null, () => !isSmoking));
 		}
 
 		public void Damaged(Actor self, AttackInfo e)

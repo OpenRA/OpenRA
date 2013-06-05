@@ -151,7 +151,7 @@ namespace OpenRA.Mods.RA.Missions
 			if (allies1.WinState != WinState.Undefined) return;
 
 			if (world.FrameNumber % 50 == 1 && chinookHusk.IsInWorld)
-				world.Add(new Smoke(world, chinookHusk.CenterLocation, "smoke_m"));
+				world.Add(new Smoke(world, chinookHusk.CenterPosition, "smoke_m"));
 
 			if (world.FrameNumber == 1)
 			{

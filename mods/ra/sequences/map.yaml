@@ -1,0 +1,608 @@
+tc04:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+tc05:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+tc03:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+tc02:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+tc01:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t17:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t16:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t15:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t14:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t13:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t12:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t11:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t10:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t08:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t07:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t06:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t05:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t03:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+ice01:
+	idle:
+		Start: 0
+		Length: *
+
+ice02:
+	idle:
+		Start: 0
+		Length: *
+
+ice03:
+	idle:
+		Start: 0
+		Length: *
+
+ice04:
+	idle:
+		Start: 0
+		Length: *
+
+ice05:
+	idle:
+		Start: 0
+		Length: *
+
+t02:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+t01:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+mine:
+	idle:
+		Start: 0
+	active:
+		Start: 0
+
+v01:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v02:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v03:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v04:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 2
+	active:
+		Start: 1
+	damaged-active:
+		Start: 3
+
+v05:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 2
+
+v06:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v07:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 2
+
+v08:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v09:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v10:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v11:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v12:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v13:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v14:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v15:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v16:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v17:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v18:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v19:
+	idle:
+		Start: 0
+		Length: 14
+	damaged-idle:
+		Start: 14
+		Length: 15
+
+barl:
+	idle:
+		Start: 0
+		Length: *
+
+brl3:
+	idle:
+		Start: 0
+		Length: *
+
+minp:
+	idle:
+		Start: 0
+
+minv:
+	idle:
+		Start: 0
+
+barb:
+	idle:
+		Start: 0
+		Length: 16
+	damaged-idle:
+		Start: 16
+		Length: 16
+
+wood:
+	idle:
+		Start: 0
+		Length: 16
+	damaged-idle:
+		Start: 16
+		Length: 16
+
+boxes01:
+	idle:
+		Start: 0
+		Length: *
+boxes02:
+	idle:
+		Start: 0
+		Length: *
+boxes03:
+	idle:
+		Start: 0
+		Length: *
+boxes04:
+	idle:
+		Start: 0
+		Length: *
+boxes05:
+	idle:
+		Start: 0
+		Length: *
+boxes06:
+	idle:
+		Start: 0
+		Length: *
+boxes07:
+	idle:
+		Start: 0
+		Length: *
+boxes08:
+	idle:
+		Start: 0
+		Length: *
+boxes09:
+	idle:
+		Start: 0
+		Length: *
+
+overlay:
+	build-valid-desert:
+		Start: 0
+	build-valid-interior:
+		Start: 0
+	build-valid-snow:
+		Start: 2
+	build-valid-temperat:
+		Start: 0
+	build-invalid:
+		Start: 1
+	target-select:
+		Start: 2
+	target-valid-desert:
+		Start: 0
+	target-valid-interior:
+		Start: 0
+	target-valid-snow:
+		Start: 2
+	target-valid-temperat:
+		Start: 0
+	target-invalid:
+		Start: 1
+
+#Desert Terrain Expansion 
+rock1:
+	idle:
+		Start: 0
+
+rock2:
+	idle:
+		Start: 0
+
+rock3:
+	idle:
+		Start: 0
+
+rock4:
+	idle:
+		Start: 0
+
+rock5:
+	idle:
+		Start: 0
+
+rock6:
+	idle:
+		Start: 0
+
+rock7:
+	idle:
+		Start: 0
+
+t04:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 2
+		Length: 8
+		Tick: 80
+
+v20:
+	idle:
+		Start: 0
+		Length: 3
+		Tick: 120
+	damaged-idle:
+		Start: 3
+		Length: 3
+		Tick: 120
+
+v21:
+	idle:
+		Start: 0
+		Length: 3
+		Tick: 120
+	damaged-idle:
+		Start: 3
+		Length: 3
+		Tick: 120
+
+v22:
+	idle:
+		Start: 0
+		Length: 3
+		Tick: 120
+	damaged-idle:
+		Start: 3
+		Length: 3
+		Tick: 120
+
+v23:
+	idle:
+		Start: 0
+		Length: 3
+		Tick: 120
+	damaged-idle:
+		Start: 3
+		Length: 3
+		Tick: 120
+
+v24:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v25:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v26:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v27:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v28:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v29:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v30:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 2
+
+v31:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v32:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v33:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v34:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v35:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v36:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+v37:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1

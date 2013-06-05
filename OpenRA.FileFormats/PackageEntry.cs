@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -8,18 +8,20 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
 namespace OpenRA.FileFormats
 {
+	public enum PackageHashType { Classic, CRC32 }
+
 	public class PackageEntry
 	{
 		public readonly uint Hash;
 		public readonly uint Offset;
 		public readonly uint Length;
-
 
 		public PackageEntry(uint hash, uint offset, uint length)
 		{
@@ -28,11 +30,11 @@ namespace OpenRA.FileFormats
 			Length = length;
 		}
 
-		public PackageEntry(BinaryReader r)
+		public PackageEntry(Stream s)
 		{
-			Hash = r.ReadUInt32();
-			Offset = r.ReadUInt32();
-			Length = r.ReadUInt32();
+			Hash = s.ReadUInt32();
+			Offset = s.ReadUInt32();
+			Length = s.ReadUInt32();
 		}
 
 		public void Write(BinaryWriter w)
@@ -51,33 +53,55 @@ namespace OpenRA.FileFormats
 				return "0x{0:x8} - offset 0x{1:x8} - length 0x{2:x8}".F(Hash, Offset, Length);
 		}
 
-		public static uint HashFilename(string name)
+		public static uint HashFilename(string name, PackageHashType type)
 		{
-			if (name.Length > 12)
-				name = name.Substring(0, 12);
+			switch(type)
+			{
+			case PackageHashType.Classic:
+				{
+					name = name.ToUpperInvariant();
+					if (name.Length % 4 != 0)
+						name = name.PadRight(name.Length + (4 - name.Length % 4), '\0');
 
-			name = name.ToUpperInvariant();
-			if (name.Length % 4 != 0)
-				name = name.PadRight(name.Length + (4 - name.Length % 4), '\0');
+					MemoryStream ms = new MemoryStream(Encoding.ASCII.GetBytes(name));
+					BinaryReader reader = new BinaryReader(ms);
 
-			MemoryStream ms = new MemoryStream(Encoding.ASCII.GetBytes(name));
-			BinaryReader reader = new BinaryReader(ms);
+					int len = name.Length >> 2;
+					uint result = 0;
 
-			int len = name.Length >> 2;
-			uint result = 0;
+					while (len-- != 0)
+						result = ((result << 1) | (result >> 31)) + reader.ReadUInt32();
 
-			while (len-- != 0)
-				result = ((result << 1) | (result >> 31)) + reader.ReadUInt32();
+					return result;
+				}
 
-			return result;
+			case PackageHashType.CRC32:
+				{
+					name = name.ToUpperInvariant();
+					var l = name.Length;
+					int a = l >> 2;
+					if ((l & 3) != 0)
+					{
+						name += (char)(l - (a << 2));
+						int i = 3 - (l & 3);
+						while (i-- != 0)
+							name += name[a << 2];
+					}
+					return CRC32.Calculate(Encoding.ASCII.GetBytes(name));
+				}
+
+			default: throw new NotImplementedException("Unknown hash type `{0}`".F(type));
+			}
 		}
 
 		static Dictionary<uint, string> Names = new Dictionary<uint,string>();
 
 		public static void AddStandardName(string s)
 		{
-			uint hash = HashFilename(s);
+			uint hash = HashFilename(s, PackageHashType.Classic); // RA1 and TD
 			Names.Add(hash, s);
+			uint crcHash = HashFilename(s, PackageHashType.CRC32); // TS
+			Names.Add(crcHash, s);
 		}
 
 		public const int Size = 12;

@@ -29,31 +29,31 @@ namespace OpenRA
 		public SheetBuilder SheetBuilder;
 		public SpriteLoader SpriteLoader;
 
-		public ModData( params string[] mods )
+		public ModData(params string[] mods)
 		{
-			Manifest = new Manifest( mods );
-			ObjectCreator = new ObjectCreator( Manifest );
+			Manifest = new Manifest(mods);
+			ObjectCreator = new ObjectCreator(Manifest);
 			LoadScreen = ObjectCreator.CreateObject<ILoadScreen>(Manifest.LoadScreen.Value);
 			LoadScreen.Init(Manifest.LoadScreen.NodesDict.ToDictionary(x => x.Key, x => x.Value.Value));
 			LoadScreen.Display();
-			WidgetLoader = new WidgetLoader( this );
-		}
+			WidgetLoader = new WidgetLoader(this);
 
-		public void LoadInitialAssets(bool enumMaps)
-		{
-			// all this manipulation of static crap here is nasty and breaks
-			// horribly when you use ModData in unexpected ways.
+			AvailableMaps = FindMaps(Manifest.Mods);
 
+			// HACK: Mount only local folders so we have a half-working environment for the asset installer
 			FileSystem.UnmountAll();
 			foreach (var dir in Manifest.Folders)
 				FileSystem.Mount(dir);
 
-			if (enumMaps)
-				AvailableMaps = FindMaps(Manifest.Mods);
+		}
 
+		public void InitializeLoaders()
+		{
+			// all this manipulation of static crap here is nasty and breaks
+			// horribly when you use ModData in unexpected ways.
 			ChromeMetrics.Initialize(Manifest.ChromeMetrics);
 			ChromeProvider.Initialize(Manifest.Chrome);
-			SheetBuilder = new SheetBuilder(TextureChannel.Red);
+			SheetBuilder = new SheetBuilder(SheetType.Indexed);
 			SpriteLoader = new SpriteLoader(new string[] { ".shp" }, SheetBuilder);
 			CursorProvider.Initialize(Manifest.Cursors);
 		}
@@ -66,12 +66,11 @@ namespace OpenRA
 			var map = new Map(AvailableMaps[uid].Path);
 
 			// Reinit all our assets
-			LoadInitialAssets(false);
-			foreach (var pkg in Manifest.Packages)
-				FileSystem.Mount(pkg);
+			InitializeLoaders();
+			FileSystem.LoadFromManifest(Manifest);
 
 			// Mount map package so custom assets can be used. TODO: check priority.
-			FileSystem.Mount(FileSystem.OpenPackage(map.Path, int.MaxValue));
+			FileSystem.Mount(FileSystem.OpenPackage(map.Path, null, int.MaxValue));
 
 			Rules.LoadRules(Manifest, map);
 			SpriteLoader = new SpriteLoader(Rules.TileSets[map.Tileset].Extensions, SheetBuilder);

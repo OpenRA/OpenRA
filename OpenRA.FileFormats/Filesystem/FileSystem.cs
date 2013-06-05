@@ -18,28 +18,32 @@ namespace OpenRA.FileFormats
 {
 	public static class FileSystem
 	{
-		static List<IFolder> mountedFolders = new List<IFolder>();
+		public static List<IFolder> MountedFolders = new List<IFolder>();
+		static Cache<uint, List<IFolder>> classicHashIndex = new Cache<uint, List<IFolder>>( _ => new List<IFolder>() );
+		static Cache<uint, List<IFolder>> crcHashIndex = new Cache<uint, List<IFolder>>( _ => new List<IFolder>() );
 
-		static Cache<uint, List<IFolder>> allFiles = new Cache<uint, List<IFolder>>( _ => new List<IFolder>() );
+		public static List<string> FolderPaths = new List<string>();
 
 		static void MountInner(IFolder folder)
 		{
-			mountedFolders.Add(folder);
+			MountedFolders.Add(folder);
 
-			foreach( var hash in folder.AllFileHashes() )
+			foreach (var hash in folder.ClassicHashes())
 			{
-				var l = allFiles[hash];
-				if( !l.Contains( folder ) )
-					l.Add( folder );
+				var l = classicHashIndex[hash];
+				if (!l.Contains(folder))
+					l.Add(folder);
+			}
+
+			foreach (var hash in folder.CrcHashes())
+			{
+				var l = crcHashIndex[hash];
+				if (!l.Contains(folder))
+					l.Add(folder);
 			}
 		}
 
 		static int order = 0;
-
-		static IFolder OpenPackage(string filename)
-		{
-			return OpenPackage(filename, order++);
-		}
 
 		public static IFolder CreatePackage(string filename, int order, Dictionary<string, byte[]> content)
 		{
@@ -55,10 +59,14 @@ namespace OpenRA.FileFormats
 				return new Folder(filename, order, content);
 		}
 
-		public static IFolder OpenPackage(string filename, int order)
+		public static IFolder OpenPackage(string filename, string annotation, int order)
 		{
 			if (filename.EndsWith(".mix", StringComparison.InvariantCultureIgnoreCase))
-				return new MixFile(filename, order);
+			{
+				var type = string.IsNullOrEmpty(annotation) ? PackageHashType.Classic :
+					FieldLoader.GetValue<PackageHashType>("(value)", annotation);
+				return new MixFile(filename, type, order);
+			}
 			else if (filename.EndsWith(".zip", StringComparison.InvariantCultureIgnoreCase))
 				return new ZipFile(filename, order);
 			else if (filename.EndsWith(".oramap", StringComparison.InvariantCultureIgnoreCase))
@@ -71,6 +79,11 @@ namespace OpenRA.FileFormats
 
 		public static void Mount(string name)
 		{
+			Mount(name, null);
+		}
+
+		public static void Mount(string name, string annotation)
+		{
 			var optional = name.StartsWith("~");
 			if (optional) name = name.Substring(1);
 
@@ -78,7 +91,8 @@ namespace OpenRA.FileFormats
 			if (name.StartsWith("^"))
 				name = Platform.SupportDir+name.Substring(1);
 
-			var a = (Action)(() => FileSystem.MountInner(OpenPackage(name)));
+			FolderPaths.Add(name);
+			Action a = () => FileSystem.MountInner(OpenPackage(name, annotation, order++));
 
 			if (optional)
 				try { a(); }
@@ -89,30 +103,36 @@ namespace OpenRA.FileFormats
 
 		public static void UnmountAll()
 		{
-			mountedFolders.Clear();
-			allFiles = new Cache<uint, List<IFolder>>( _ => new List<IFolder>() );
+			MountedFolders.Clear();
+			FolderPaths.Clear();
+			classicHashIndex = new Cache<uint, List<IFolder>>(_ => new List<IFolder>());
+			crcHashIndex = new Cache<uint, List<IFolder>>(_ => new List<IFolder>());
 		}
 
 		public static bool Unmount(IFolder mount)
 		{
-			return (mountedFolders.RemoveAll(f => f == mount) > 0);
+			return (MountedFolders.RemoveAll(f => f == mount) > 0);
 		}
 
 		public static void Mount(IFolder mount)
 		{
-			if (!mountedFolders.Contains(mount)) mountedFolders.Add(mount);
+			if (!MountedFolders.Contains(mount)) MountedFolders.Add(mount);
 		}
 
-		public static void LoadFromManifest( Manifest manifest )
+		public static void LoadFromManifest(Manifest manifest)
 		{
 			UnmountAll();
-			foreach (var dir in manifest.Folders) Mount(dir);
-			foreach (var pkg in manifest.Packages) Mount(pkg);
+			foreach (var dir in manifest.Folders)
+				Mount(dir);
+
+			foreach (var pkg in manifest.Packages)
+				Mount(pkg.Key, pkg.Value);
 		}
 
-		static Stream GetFromCache( Cache<uint, List<IFolder>> index, string filename )
+		static Stream GetFromCache(PackageHashType type, string filename)
 		{
-			var folder = index[PackageEntry.HashFilename(filename)]
+			var index = type == PackageHashType.CRC32 ? crcHashIndex : classicHashIndex;
+			var folder = index[PackageEntry.HashFilename(filename, type)]
 				.Where(x => x.Exists(filename))
 				.OrderBy(x => x.Priority)
 				.FirstOrDefault();
@@ -125,21 +145,25 @@ namespace OpenRA.FileFormats
 
 		public static Stream Open(string filename) { return OpenWithExts(filename, ""); }
 
-		public static Stream OpenWithExts( string filename, params string[] exts )
+		public static Stream OpenWithExts(string filename, params string[] exts)
 		{
-			if( filename.IndexOfAny( new char[] { '/', '\\' } ) == -1 )
+			if (filename.IndexOfAny(new char[] { '/', '\\' } ) == -1)
 			{
-				foreach( var ext in exts )
+				foreach (var ext in exts)
 				{
-					var s = GetFromCache( allFiles, filename + ext );
-					if( s != null )
+					var s = GetFromCache(PackageHashType.Classic, filename + ext);
+					if (s != null)
+						return s;
+
+					s = GetFromCache(PackageHashType.CRC32, filename + ext);
+					if (s != null)
 						return s;
 				}
 			}
 
-			foreach( var ext in exts )
+			foreach (var ext in exts)
 			{
-				var folder = mountedFolders
+				var folder = MountedFolders
 					.Where(x => x.Exists(filename + ext))
 					.OrderByDescending(x => x.Priority)
 					.FirstOrDefault();
@@ -151,7 +175,7 @@ namespace OpenRA.FileFormats
 			throw new FileNotFoundException("File not found: {0}".F(filename), filename);
 		}
 
-		public static bool Exists(string filename) { return mountedFolders.Any(f => f.Exists(filename)); }
+		public static bool Exists(string filename) { return MountedFolders.Any(f => f.Exists(filename)); }
 
 		static Dictionary<string, Assembly> assemblyCache = new Dictionary<string, Assembly>();
 

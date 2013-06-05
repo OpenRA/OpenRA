@@ -24,8 +24,6 @@ V2RL:
 	AttackFrontal:
 	RenderUnitReload:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	Explodes:
 		Weapon: SCUD
 		EmptyWeapon:
@@ -57,10 +55,9 @@ V2RL:
 		Recoil: 85
 		RecoilRecovery: 25
 	AttackTurreted:
-	RenderUnitTurreted:
+	RenderUnit:
+	WithTurret:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
@@ -96,10 +93,9 @@ V2RL:
 		Recoil: 128
 		RecoilRecovery: 38
 	AttackTurreted:
-	RenderUnitTurreted:
+	RenderUnit:
+	WithTurret:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
@@ -138,10 +134,9 @@ V2RL:
 		RecoilRecovery: 38
 		LocalOffset: 0,85,0, 0,-85,0
 	AttackTurreted:
-	RenderUnitTurreted:
+	RenderUnit:
+	WithTurret:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
@@ -185,10 +180,9 @@ V2RL:
 		LocalYaw: -100,100
 		Recoil: 43
 	AttackTurreted:
-	RenderUnitTurreted:
+	RenderUnit:
+	WithTurret:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
@@ -232,8 +226,6 @@ ARTY:
 		Weapon: UnitExplode
 		Chance: 75
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 
 HARV:
 	Inherits: ^Vehicle
@@ -344,10 +336,9 @@ JEEP:
 		Weapon: M60mg
 	AttackTurreted:
 	WithMuzzleFlash:
-	RenderUnitTurreted:
+	RenderUnit:
+	WithTurret:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 1
@@ -381,8 +372,6 @@ APC:
 	RenderUnit:
 	WithMuzzleFlash:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	Cargo:
 		Types: Infantry
 		MaxWeight: 5
@@ -654,8 +643,6 @@ TTNK:
 	Selectable:
 		Bounds: 28,28,0,0
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 
 FTRK:
 	Inherits: ^Vehicle
@@ -680,15 +667,14 @@ FTRK:
 		Range: 4
 	Turreted:
 		ROT: 5
-		Offset: -300,0,300
+		Offset: -298,0,298
 	Armament:
 		Weapon: FLAK-23
 		Recoil: 85
 	AttackTurreted:
-	RenderUnitTurreted:
+	RenderUnit:
+	WithTurret:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
@@ -753,8 +739,6 @@ CTNK:
 		Range: 6
 	RenderUnit:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	Armament@PRIMARY:
 		Weapon: ChronoTusk
 		LocalOffset: 0,-171,0

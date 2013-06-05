@@ -126,6 +126,7 @@ SectionGroup /e "Mods"
 		File /r "${SRCDIR}\mods\ra\chrome"
 		File /r "${SRCDIR}\mods\ra\bits"
 		File /r "${SRCDIR}\mods\ra\rules"
+		File /r "${SRCDIR}\mods\ra\sequences"
 		File /r "${SRCDIR}\mods\ra\tilesets"
 		File /r "${SRCDIR}\mods\ra\uibits"
 	SectionEnd
@@ -160,17 +161,14 @@ SectionGroupEnd
 ;***************************
 Section "-OpenAl" OpenAl
 	AddSize 768
+	SetOutPath "$TEMP"
 	ClearErrors
 	${GetFileVersion} $SYSDIR\OpenAL32.dll $0
 	IfErrors installal 0
 	${VersionCompare} $0 "6.14.357.24" $1
 	IntCmp $1 1 done done installal
 	installal:
-		SetOutPath "$TEMP"
-		NSISdl::download http://connect.creativelabs.com/openal/Downloads/oalinst.zip oalinst.zip
-		Pop $R0
-		StrCmp $R0 "success" +2
-			Abort
+		!insertmacro DownloadDependency "openal" "oalinst.zip"
 		!insertmacro ZIPDLL_EXTRACT oalinst.zip OpenAL oalinst.exe
 		ExecWait "$TEMP\OpenAL\oalinst.exe"
 	done:
@@ -178,10 +176,10 @@ SectionEnd
 
 Section "-Sdl" SDL
 	AddSize 317
+	SetOutPath "$TEMP"
 	IfFileExists $INSTDIR\SDL.dll done installsdl
 	installsdl:
-		SetOutPath "$TEMP"
-		NSISdl::download http://www.libsdl.org/release/SDL-1.2.14-win32.zip sdl.zip
+		!insertmacro DownloadDependency "sdl" "sdl.zip"
 		!insertmacro ZIPDLL_EXTRACT sdl.zip $INSTDIR SDL.dll
 	done:
 SectionEnd

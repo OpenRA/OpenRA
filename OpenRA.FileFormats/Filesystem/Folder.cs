@@ -17,8 +17,7 @@ namespace OpenRA.FileFormats
 	public class Folder : IFolder
 	{
 		readonly string path;
-
-		int priority;
+		readonly int priority;
 
 		// Create a new folder package
 		public Folder(string path, int priority, Dictionary<string, byte[]> contents)
@@ -45,22 +44,30 @@ namespace OpenRA.FileFormats
 			catch { return null; }
 		}
 
-		public IEnumerable<uint> AllFileHashes()
+		public IEnumerable<uint> ClassicHashes()
 		{
-			foreach( var filename in Directory.GetFiles( path, "*", SearchOption.TopDirectoryOnly ) )
-				yield return PackageEntry.HashFilename( Path.GetFileName(filename) );
+			foreach (var filename in Directory.GetFiles(path, "*", SearchOption.TopDirectoryOnly))
+				yield return PackageEntry.HashFilename(Path.GetFileName(filename), PackageHashType.Classic);
+		}
+
+		public IEnumerable<uint> CrcHashes()
+		{
+			yield break;
+		}
+
+		public IEnumerable<string> AllFileNames()
+		{
+			foreach (var filename in Directory.GetFiles(path, "*", SearchOption.TopDirectoryOnly))
+				yield return Path.GetFileName(filename);
 		}
 
 		public bool Exists(string filename)
 		{
-			return File.Exists(Path.Combine(path,filename));
+			return File.Exists(Path.Combine(path, filename));
 		}
 
-
-		public int Priority
-		{
-			get { return priority; }
-		}
+		public int Priority { get { return priority; } }
+		public string Name { get { return path; } }
 
 		public void Write(Dictionary<string, byte[]> contents)
 		{

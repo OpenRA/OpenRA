@@ -55,12 +55,14 @@ namespace OpenRA.Mods.RA.Render
 		public AnimationState State { get; private set; }
 
 		public RenderInfantry(Actor self, RenderInfantryInfo info)
-			: base(self, RenderSimple.MakeFacingFunc(self))
+			: base(self, MakeFacingFunc(self))
 		{
 			Info = info;
 			anim.PlayFetchIndex(NormalizeInfantrySequence(self, "stand"), () => 0);
 			State = AnimationState.Waiting;
 			mobile = self.Trait<Mobile>();
+
+			self.Trait<IBodyOrientation>().QuantizedFacings = anim.CurrentSequence.Facings;
 		}
 
 		public void Attacking(Actor self, Target target)
@@ -132,7 +134,7 @@ namespace OpenRA.Mods.RA.Render
 			self.World.AddFrameEndTask(w =>
 			{
 				if (!self.Destroyed)
-					w.Add(new Corpse(w, self.CenterLocation.ToFloat2(), GetImage(self),
+					w.Add(new Corpse(w, self.CenterPosition, GetImage(self),
 					                 sequence, Info.PlayerPalette+self.Owner.InternalName));
 			});
 		}

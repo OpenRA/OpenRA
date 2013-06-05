@@ -17,7 +17,7 @@ using OpenRA.Mods.RA;
 
 namespace OpenRA.Mods.RA.Render
 {
-	class WithMuzzleFlashInfo : ITraitInfo, Requires<RenderSimpleInfo>, Requires<AttackBaseInfo>
+	class WithMuzzleFlashInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<AttackBaseInfo>
 	{
 		public object Create(ActorInitializer init) { return new WithMuzzleFlash(init.self); }
 	}
@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Render
 
 		public WithMuzzleFlash(Actor self)
 		{
-			var render = self.Trait<RenderSimple>();
+			var render = self.Trait<RenderSprites>();
 			var facing = self.TraitOrDefault<IFacing>();
 
 			var arms = self.TraitsImplementing<Armament>();
@@ -45,10 +45,10 @@ namespace OpenRA.Mods.RA.Render
 					var muzzleFlash = new Animation(render.GetImage(self), getFacing);
 					muzzleFlash.Play("muzzle");
 
-					muzzleFlashes.Add("muzzle{0}".F(muzzleFlashes.Count), new AnimationWithOffset(
-						muzzleFlash,
-						wr => wr.ScreenPxOffset(a.MuzzleOffset(self, barrel)),
-						() => !isShowing));
+					muzzleFlashes.Add("muzzle{0}".F(muzzleFlashes.Count),
+				    	new AnimationWithOffset(muzzleFlash,
+							() => a.MuzzleOffset(self, barrel),
+							() => !isShowing));
 				}
 		}
 
@@ -59,7 +59,7 @@ namespace OpenRA.Mods.RA.Render
 				mf.Animation.PlayThen("muzzle", () => isShowing = false);
 		}
 
-		public IEnumerable<Renderable> Render(Actor self, WorldRenderer wr)
+		public IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
 		{
 			foreach (var a in muzzleFlashes.Values)
 				if (a.DisableFunc == null || !a.DisableFunc())

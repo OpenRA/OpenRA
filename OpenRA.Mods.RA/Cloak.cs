@@ -66,9 +66,9 @@ namespace OpenRA.Mods.RA
 			if (!canCloak) Uncloak();
 		}
 
-		static readonly Renderable[] Nothing = { };
+		static readonly IRenderable[] Nothing = { };
 
-		public IEnumerable<Renderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<Renderable> r)
+		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
 		{
 			if (remainingTime > 0)
 				return r;

@@ -19,53 +19,6 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Air
 {
-	public class DebugAircraftFacingInfo : ITraitInfo, Requires<AircraftInfo>
-	{
-		public object Create(ActorInitializer init) { return new DebugAircraftFacing(init.self); }
-	}
-
-	public class DebugAircraftFacing : ISync
-	{
-		readonly Aircraft a;
-		public DebugAircraftFacing(Actor self){ a = self.Trait<Aircraft>(); }
-		[Sync] public int foo { get { return a.Facing; } }
-	}
-
-	public class DebugAircraftSubPxXInfo : ITraitInfo, Requires<AircraftInfo>
-	{
-		public object Create(ActorInitializer init) { return new DebugAircraftSubPxX(init.self); }
-	}
-
-	public class DebugAircraftSubPxX : ISync
-	{
-		readonly Aircraft a;
-		public DebugAircraftSubPxX(Actor self){ a = self.Trait<Aircraft>(); }
-		[Sync] public int foo { get { return a.SubPxPosition.Y; } }
-	}
-
-	public class DebugAircraftSubPxYInfo : ITraitInfo, Requires<AircraftInfo>
-	{
-		public object Create(ActorInitializer init) { return new DebugAircraftSubPxY(init.self); }
-	}
-
-	public class DebugAircraftSubPxY : ISync
-	{
-		readonly Aircraft a;
-		public DebugAircraftSubPxY(Actor self){ a = self.Trait<Aircraft>(); }
-		[Sync] public int foo { get { return a.SubPxPosition.Y; } }
-	}
-
-	public class DebugAircraftAltitudeInfo : ITraitInfo, Requires<AircraftInfo>
-	{
-		public object Create(ActorInitializer init) { return new DebugAircraftAltitude(init.self); }
-	}
-
-	public class DebugAircraftAltitude : ISync
-	{
-		readonly Aircraft a;
-		public DebugAircraftAltitude(Actor self){ a = self.Trait<Aircraft>(); }
-		[Sync] public int foo { get { return a.Altitude; } }
-	}
 
 	public class AircraftInfo : ITraitInfo, IFacingInfo, UsesInit<AltitudeInit>, UsesInit<LocationInit>, UsesInit<FacingInit>
 	{
@@ -111,7 +64,7 @@ namespace OpenRA.Mods.RA.Air
 
 		readonly AircraftInfo Info;
 
-		public Aircraft( ActorInitializer init , AircraftInfo info)
+		public Aircraft(ActorInitializer init , AircraftInfo info)
 		{
 			this.self = init.self;
 			if( init.Contains<LocationInit>() )
@@ -264,14 +217,14 @@ namespace OpenRA.Mods.RA.Air
 		public string OrderID { get { return "Move"; } }
 		public int OrderPriority { get { return 4; } }
 
-		public bool CanTargetActor(Actor self, Actor target, bool forceAttack, bool forceQueued, ref string cursor)
+		public bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 		{
 			return false;
 		}
 
-		public bool CanTargetLocation(Actor self, CPos location, List<Actor> actorsAtLocation, bool forceAttack, bool forceQueued, ref string cursor)
+		public bool CanTargetLocation(Actor self, CPos location, List<Actor> actorsAtLocation, TargetModifiers modifiers, ref string cursor)
 		{
-			IsQueued = forceQueued;
+			IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 			cursor = self.World.Map.IsInMap(location) ? "move" : "move-blocked";
 			return true;
 		}

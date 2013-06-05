@@ -46,7 +46,7 @@ namespace OpenRA
 
 		static Dictionary<string, T> LoadYamlRules<T>(string[] files, List<MiniYamlNode> dict, Func<MiniYamlNode, Dictionary<string, MiniYaml>, T> f)
 		{
-			var y = files.Select(a => MiniYaml.FromFile(a)).Aggregate(dict,MiniYaml.MergeLiberal);
+			var y = files.Select(a => MiniYaml.FromFile(a)).Aggregate(dict, MiniYaml.MergeLiberal);
 			var yy = y.ToDictionary( x => x.Key, x => x.Value );
 			return y.ToDictionary(kv => kv.Key.ToLowerInvariant(), kv => f(kv, yy));
 		}

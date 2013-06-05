@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -229,6 +229,7 @@
     <Compile Include="GainsExperience.cs" />
     <Compile Include="GivesBounty.cs" />
     <Compile Include="GivesExperience.cs" />
+    <Compile Include="Guard.cs" />
     <Compile Include="Harvester.cs" />
     <Compile Include="HarvesterHuskModifier.cs" />
     <Compile Include="Husk.cs" />
@@ -310,7 +311,6 @@
     <Compile Include="Render\RenderBuildingCharge.cs" />
     <Compile Include="Render\RenderBuildingSilo.cs" />
     <Compile Include="Render\RenderBuildingTurreted.cs" />
-    <Compile Include="Render\RenderBuildingSeparateTurret.cs" />
     <Compile Include="Render\RenderBuildingWall.cs" />
     <Compile Include="Render\RenderBuildingWarFactory.cs" />
     <Compile Include="Render\RenderEditorOnly.cs" />
@@ -321,7 +321,6 @@
     <Compile Include="Render\RenderSpy.cs" />
     <Compile Include="Render\RenderUnit.cs" />
     <Compile Include="Render\RenderUnitReload.cs" />
-    <Compile Include="Render\RenderUnitTurreted.cs" />
     <Compile Include="Render\WithBuildingExplosion.cs" />
     <Compile Include="Render\WithMuzzleFlash.cs" />
     <Compile Include="Render\WithRotor.cs" />
@@ -437,6 +436,9 @@
     <Compile Include="Widgets\Logic\ClientTooltipLogic.cs" />
     <Compile Include="Widgets\ColorMixerWidget.cs" />
     <Compile Include="Widgets\HueSliderWidget.cs" />
+    <Compile Include="Render\WithTurret.cs" />
+    <Compile Include="Widgets\Logic\AssetBrowserLogic.cs" />
+    <Compile Include="Widgets\Logic\ConvertGameFilesLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
@@ -448,6 +450,10 @@
       <Project>{0DFB103F-2962-400F-8C6D-E2C28CCBA633}</Project>
       <Name>OpenRA.Game</Name>
       <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\OpenRA.Utility\OpenRA.Utility.csproj">
+      <Project>{F33337BE-CB69-4B24-850F-07D23E408DDF}</Project>
+      <Name>OpenRA.Utility</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

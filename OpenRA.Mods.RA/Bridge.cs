@@ -99,9 +99,9 @@ namespace OpenRA.Mods.RA
 			if (cachedTileset != self.World.Map.Tileset)
 			{
 				cachedTileset = self.World.Map.Tileset;
+				var tileSize = new Size(Game.CellSize, Game.CellSize);
 				sprites = new Cache<TileReference<ushort,byte>, Sprite>(
-				x => Game.modData.SheetBuilder.Add(self.World.TileSet.GetBytes(x),
-					new Size(Game.CellSize, Game.CellSize)));
+					x => Game.modData.SheetBuilder.Add(self.World.TileSet.GetBytes(x), tileSize, true));
 			}
 
 			// Cache templates and tiles for the different states
@@ -142,7 +142,7 @@ namespace OpenRA.Mods.RA
 
 		bool initializePalettes = true;
 		PaletteReference terrainPalette;
-		public IEnumerable<Renderable> RenderAsTerrain(WorldRenderer wr, Actor self)
+		public IEnumerable<IRenderable> RenderAsTerrain(WorldRenderer wr, Actor self)
 		{
 			if (initializePalettes)
 			{
@@ -151,7 +151,7 @@ namespace OpenRA.Mods.RA
 			}
 
 			foreach (var t in TileSprites[currentTemplate])
-				yield return new Renderable(t.Value, t.Key.ToPPos().ToFloat2(), terrainPalette, Game.CellSize * t.Key.Y);
+				yield return new SpriteRenderable(t.Value, t.Key.CenterPosition, 0, terrainPalette, 1f);
 		}
 
 		void KillUnitsOnBridge()

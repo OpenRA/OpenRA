@@ -13,7 +13,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.Cnc
 {
-	public class WithRoofInfo : ITraitInfo, Requires<RenderSimpleInfo>
+	public class WithRoofInfo : ITraitInfo, Requires<RenderSpritesInfo>
 	{
 		public object Create(ActorInitializer init) { return new WithRoof(init.self); }
 	}
@@ -22,10 +22,10 @@ namespace OpenRA.Mods.Cnc
 	{
 		public WithRoof(Actor self)
 		{
-			var rs = self.Trait<RenderSimple>();
+			var rs = self.Trait<RenderSprites>();
 			var roof = new Animation(rs.GetImage(self), () => self.Trait<IFacing>().Facing);
 			roof.Play("roof");
-			rs.anims.Add( "roof", new AnimationWithOffset( roof ) { ZOffset = 24 } );
+			rs.anims.Add("roof", new AnimationWithOffset(roof, null, null, 1024));
 		}
 	}
 }

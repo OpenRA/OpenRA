@@ -34,11 +34,11 @@ MSLO:
 		SelectTargetSound: slcttgt1.aud
 		LaunchSound: alaunch1.aud
 		MissileWeapon: atomic
-		SpawnOffset: 10,0
+		SpawnOffset: 0,427,0
 	CanPowerDown:
 	RequiresPower:
 	SupportPowerChargeBar:
-	
+
 GAP:
 	Inherits: ^Building
 	RequiresPower:
@@ -290,13 +290,12 @@ TSLA:
 	AttackTesla:
 		ReloadTime: 120
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	IronCurtainable:
 	-RenderBuilding:
 	RenderRangeCircle:
 	-AcceptsSupplies:
 	DrawLineToTarget:
+	-AutoTargetIgnore:
 
 AGUN:
 	Inherits: ^Building
@@ -340,6 +339,7 @@ AGUN:
 		RangeCircleType: aa
 	-AcceptsSupplies:
 	DrawLineToTarget:
+	-AutoTargetIgnore:
 
 DOME:
 	RequiresPower:
@@ -451,8 +451,6 @@ PBOX.E1:
 		Image: PBOX
 	RenderRangeCircle:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	Armament:
 		Weapon: Vulcan
 		LocalOffset: 469,0,0
@@ -460,6 +458,7 @@ PBOX.E1:
 	WithMuzzleFlash:
 	Cargo:
 		InitialUnits: e1
+	-AutoTargetIgnore:
 
 #PBOX.E2:
 #	Inherits: PBOX
@@ -476,12 +475,11 @@ PBOX.E3:
 		Image: PBOX
 	RenderRangeCircle:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	Armament:
 		Weapon: Dragon
 		LocalOffset: 469,0,0
 	AttackTurreted:
+	-AutoTargetIgnore:
 
 PBOX.E4:
 	Inherits: PBOX
@@ -491,12 +489,11 @@ PBOX.E4:
 		Image: PBOX
 	RenderRangeCircle:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	Armament:
 		Weapon: Flamer
 		LocalOffset: 469,0,0
 	AttackTurreted:
+	-AutoTargetIgnore:
 
 PBOX.E7:
 	Inherits: PBOX
@@ -506,12 +503,11 @@ PBOX.E7:
 		Image: PBOX
 	RenderRangeCircle:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	Armament:
 		Weapon: Colt45
 		LocalOffset: 469,0,0
 	AttackTurreted:
+	-AutoTargetIgnore:
 
 PBOX.SHOK:
 	Inherits: PBOX
@@ -521,12 +517,11 @@ PBOX.SHOK:
 		Image: PBOX
 	RenderRangeCircle:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	Armament:
 		Weapon: PortaTesla
 		LocalOffset: 469,0,0
 	AttackTurreted:
+	-AutoTargetIgnore:
 
 PBOX.SNIPER:
 	Inherits: PBOX
@@ -536,12 +531,11 @@ PBOX.SNIPER:
 		Image: PBOX
 	RenderRangeCircle:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	Armament:
 		Weapon: Sniper
 		LocalOffset: 469,0,0
 	AttackTurreted:
+	-AutoTargetIgnore:
 
 HBOX:
 	Inherits: ^Building
@@ -628,8 +622,6 @@ HBOX.E1:
 		Image: HBOX
 	RenderRangeCircle:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	Armament:
 		Weapon: Vulcan
 		LocalOffset: 469,0,0
@@ -637,6 +629,7 @@ HBOX.E1:
 	WithMuzzleFlash:
 	Cargo:
 		InitialUnits: e1
+	-AutoTargetIgnore:
 
 #HBOX.E2:
 #	Inherits: HBOX
@@ -653,12 +646,11 @@ HBOX.E3:
 		Image: HBOX
 	RenderRangeCircle:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	Armament:
 		Weapon: Dragon
 		LocalOffset: 469,0,0
 	AttackTurreted:
+	-AutoTargetIgnore:
 
 HBOX.E4:
 	Inherits: HBOX
@@ -668,12 +660,11 @@ HBOX.E4:
 		Image: HBOX
 	RenderRangeCircle:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	Armament:
 		Weapon: Flamer
 		LocalOffset: 469,0,0
 	AttackTurreted:
+	-AutoTargetIgnore:
 
 HBOX.E7:
 	Inherits: HBOX
@@ -683,12 +674,11 @@ HBOX.E7:
 		Image: HBOX
 	RenderRangeCircle:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	Armament:
 		Weapon: Colt45
 		LocalOffset: 469,0,0
 	AttackTurreted:
+	-AutoTargetIgnore:
 
 HBOX.SHOK:
 	Inherits: HBOX
@@ -698,12 +688,11 @@ HBOX.SHOK:
 		Image: HBOX
 	RenderRangeCircle:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	Armament:
 		Weapon: PortaTesla
 		LocalOffset: 469,0,0
 	AttackTurreted:
+	-AutoTargetIgnore:
 
 HBOX.SNIPER:
 	Inherits: HBOX
@@ -713,12 +702,11 @@ HBOX.SNIPER:
 		Image: HBOX
 	RenderRangeCircle:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	Armament:
 		Weapon: Sniper
 		LocalOffset: 469,0,0
 	AttackTurreted:
+	-AutoTargetIgnore:
 
 GUN:
 	Inherits: ^Building
@@ -750,13 +738,12 @@ GUN:
 		Weapon: TurretGun
 	AttackTurreted:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	IronCurtainable:
 	-RenderBuilding:
 	RenderRangeCircle:
 	-AcceptsSupplies:
 	DrawLineToTarget:
+	-AutoTargetIgnore:
 
 FTUR:
 	Inherits: ^Building
@@ -790,12 +777,11 @@ FTUR:
 	RenderBuilding:
 		QuantizedFacings: 8
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	IronCurtainable:
 	RenderRangeCircle:
 	-AcceptsSupplies:
 	DrawLineToTarget:
+	-AutoTargetIgnore:
 
 SAM:
 	Inherits: ^Building
@@ -830,8 +816,6 @@ SAM:
 	AttackTurreted:
 	WithMuzzleFlash:
 	AutoTarget:
-	DebugRetiliateAgainstAggressor:
-	DebugNextAutoTargetScanTime:
 	IronCurtainable:
 	-RenderBuilding:
 	RenderRangeCircle:
@@ -840,6 +824,7 @@ SAM:
 	CanPowerDown:
 	-AcceptsSupplies:
 	DrawLineToTarget:
+	-AutoTargetIgnore:
 
 ATEK:
 	Inherits: ^Building
@@ -1109,7 +1094,7 @@ AFLD:
 	ProductionBar:
 	SupportPowerChargeBar:
 	PrimaryBuilding:
-	
+
 POWR:
 	Inherits: ^Building
 	Buildable:

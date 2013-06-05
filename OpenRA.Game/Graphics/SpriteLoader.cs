@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.IO;
 using System.Linq;
 using OpenRA.FileFormats;
 
@@ -15,11 +16,11 @@ namespace OpenRA.Graphics
 {
 	public class SpriteLoader
 	{
-		public SpriteLoader( string[] exts, SheetBuilder sheetBuilder )
+		public SpriteLoader(string[] exts, SheetBuilder sheetBuilder)
 		{
 			SheetBuilder = sheetBuilder;
 			this.exts = exts;
-			sprites = new Cache<string, Sprite[]>( LoadSprites );
+			sprites = new Cache<string, Sprite[]>(LoadSprites);
 		}
 
 		readonly SheetBuilder SheetBuilder;
@@ -28,8 +29,19 @@ namespace OpenRA.Graphics
 
 		Sprite[] LoadSprites(string filename)
 		{
-			var shp = new ShpReader(FileSystem.OpenWithExts(filename, exts));
-			return shp.Frames.Select(a => SheetBuilder.Add(a.Image, shp.Size)).ToArray();
+			BinaryReader reader = new BinaryReader(FileSystem.OpenWithExts(filename, exts));
+
+			var ImageCount = reader.ReadUInt16();
+			if (ImageCount == 0)
+			{
+				var shp = new ShpTSReader(FileSystem.OpenWithExts(filename, exts));
+				return shp.Select(a => SheetBuilder.Add(a.Image, shp.Size, true)).ToArray();
+			}
+			else
+			{
+				var shp = new ShpReader(FileSystem.OpenWithExts(filename, exts));
+				return shp.Frames.Select(a => SheetBuilder.Add(a.Image, shp.Size, true)).ToArray();
+			}
 		}
 
 		public Sprite[] LoadAllSprites(string filename) { return sprites[filename]; }
