@@ -474,6 +474,13 @@ Background@SERVER_LOBBY:
 			Height:25
 			Text:Change Map
 			Font:Bold
+		Button@ADD_BOTS:
+			X:PARENT_RIGHT-154
+			Y:PARENT_BOTTOM-(289-25-5)
+			Width:120
+			Height:25
+			Text:Add Bots
+			Font:Bold
 		DropDownButton@ASSIGNTEAMS_DROPDOWNBUTTON:
 			X:PARENT_RIGHT-154
 			Y:PARENT_BOTTOM-229

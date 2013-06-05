@@ -174,9 +174,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				assignTeams.OnMouseDown = _ =>
 				{
-					var options = Enumerable.Range(2, orderManager.LobbyInfo.Clients.Count(c => c.Slot != null).Clamp(2, 8) - 1).Select(d => new DropDownOption
+					var options = Enumerable.Range(1, orderManager.LobbyInfo.Clients.Count(c => c.Slot != null).Clamp(1, 8) - 1).Select(d => new DropDownOption
 					{
-						Title = "{0} Teams".F(d),
+						Title = (d == 1 ? "All vs Host" : "{0} Teams".F(d)),
 						IsSelected = () => false,
 						OnClick = () => orderManager.IssueOrder(Order.Command("assignteams {0}".F(d.ToString())))
 					});
@@ -192,6 +192,21 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 			var disconnectButton = lobby.Get<ButtonWidget>("DISCONNECT_BUTTON");
 			disconnectButton.OnClick = () => { CloseWindow(); onExit(); };
+
+			var addBotsButton = lobby.Get<ButtonWidget>("ADD_BOTS");
+			addBotsButton.IsVisible = () => Game.IsHost;
+			addBotsButton.IsDisabled = () => !Game.IsHost || gameStarting || orderManager.LocalClient == null
+				|| orderManager.LocalClient.IsReady || !orderManager.LobbyInfo.Slots.Values.Any(s => s.AllowBots);
+			addBotsButton.OnClick = () => {
+				var aiModes = Rules.Info["player"].Traits.WithInterface<IBotInfo>().Select(t => t.Name);
+				foreach (var slot in orderManager.LobbyInfo.Slots)
+				{
+					var bot = aiModes.Random(Game.CosmeticRandom);
+					var c = orderManager.LobbyInfo.ClientInSlot(slot.Key);
+					if (slot.Value.AllowBots == true && (c == null || c.Bot != null))
+						orderManager.IssueOrder(Order.Command("slot_bot {0} {1} {2}".F(slot.Key,0,bot)));
+				}
+			};
 
 			var allowCheats = lobby.Get<CheckboxWidget>("ALLOWCHEATS_CHECKBOX");
 			allowCheats.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.AllowCheats;
