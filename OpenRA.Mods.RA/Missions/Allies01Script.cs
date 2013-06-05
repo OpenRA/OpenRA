@@ -26,19 +26,13 @@ namespace OpenRA.Mods.RA.Missions
 	{
 		public event Action<bool> OnObjectivesUpdated = notify => { };
 
-		public IEnumerable<Objective> Objectives { get { return objectives.Values; } }
+		public IEnumerable<Objective> Objectives { get { return new[] { findEinstein, extractEinstein }; } }
 
-		Dictionary<int, Objective> objectives = new Dictionary<int, Objective>
-		{
-			{ FindEinsteinID, new Objective(ObjectiveType.Primary, FindEinstein, ObjectiveStatus.InProgress) },
-			{ ExtractEinsteinID, new Objective(ObjectiveType.Primary, ExtractEinstein, ObjectiveStatus.Inactive) }
-		};
+		Objective findEinstein = new Objective(ObjectiveType.Primary, FindEinsteinText, ObjectiveStatus.InProgress);
+		Objective extractEinstein = new Objective(ObjectiveType.Primary, ExtractEinsteinText, ObjectiveStatus.Inactive);
 
-		const int FindEinsteinID = 0;
-		const int ExtractEinsteinID = 1;
-
-		const string FindEinstein = "Find Einstein. Tanya and Einstein must survive.";
-		const string ExtractEinstein = "Wait for the helicopter and extract Einstein. Tanya and Einstein must survive.";
+		const string FindEinsteinText = "Find Einstein. Tanya and Einstein must survive.";
+		const string ExtractEinsteinText = "Wait for the helicopter and extract Einstein. Tanya and Einstein must survive.";
 
 		Player allies;
 		Player soviets;
@@ -94,19 +88,19 @@ namespace OpenRA.Mods.RA.Missions
 			if (world.FrameNumber % 1000 == 0)
 				Sound.Play(Taunts[world.SharedRandom.Next(Taunts.Length)]);
 
-			if (objectives[FindEinsteinID].Status == ObjectiveStatus.InProgress)
+			if (findEinstein.Status == ObjectiveStatus.InProgress)
 			{
 				if (AlliesControlLab())
 					LabSecured();
 
 				if (lab.Destroyed)
 				{
-					objectives[FindEinsteinID].Status = ObjectiveStatus.Failed;
+					findEinstein.Status = ObjectiveStatus.Failed;
 					OnObjectivesUpdated(true);
 					MissionFailed("Einstein was killed.");
 				}
 			}
-			if (objectives[ExtractEinsteinID].Status == ObjectiveStatus.InProgress)
+			if (extractEinstein.Status == ObjectiveStatus.InProgress)
 			{
 				if (difficulty != "Easy")
 				{
@@ -128,13 +122,13 @@ namespace OpenRA.Mods.RA.Missions
 				{
 					if (einsteinChinook.Destroyed)
 					{
-						objectives[ExtractEinsteinID].Status = ObjectiveStatus.Failed;
+						extractEinstein.Status = ObjectiveStatus.Failed;
 						OnObjectivesUpdated(true);
 						MissionFailed("The extraction helicopter was destroyed.");
 					}
 					else if (!world.Map.IsInMap(einsteinChinook.Location) && einsteinChinook.Trait<Cargo>().Passengers.Contains(einstein))
 					{
-						objectives[ExtractEinsteinID].Status = ObjectiveStatus.Completed;
+						extractEinstein.Status = ObjectiveStatus.Completed;
 						OnObjectivesUpdated(true);
 						MissionAccomplished("Einstein was rescued");
 					}
@@ -158,9 +152,10 @@ namespace OpenRA.Mods.RA.Missions
 			SendShips();
 			lab.QueueActivity(new Transform(lab, "stek") { SkipMakeAnims = true });
 
-			objectives[FindEinsteinID].Status = ObjectiveStatus.Completed;
-			objectives[ExtractEinsteinID].Status = ObjectiveStatus.InProgress;
+			findEinstein.Status = ObjectiveStatus.Completed;
+			extractEinstein.Status = ObjectiveStatus.InProgress;
 			OnObjectivesUpdated(true);
+
 			currentAttackWaveFrameNumber = world.FrameNumber;
 
 			if (difficulty == "Easy")
