@@ -34,13 +34,12 @@ Background@MISSION_OBJECTIVES:
 			Y:70
 			Width:PARENT_RIGHT-50
 			Height:200
-			ItemSpacing:5
+			ItemSpacing:20
 			Children:
 				Container@PRIMARY_OBJECTIVE_TEMPLATE:
 					X:15
-					Y:0-15
+					Y:0
 					Width:PARENT_RIGHT
-					Height:60
 					Children:
 						Label@PRIMARY_OBJECTIVE:
 							X:0
@@ -75,13 +74,12 @@ Background@MISSION_OBJECTIVES:
 			Y:305
 			Width:PARENT_RIGHT-50
 			Height:200
-			ItemSpacing:5
+			ItemSpacing:20
 			Children:
 				Container@SECONDARY_OBJECTIVE_TEMPLATE:
 					X:15
-					Y:0-15
+					Y:0
 					Width:PARENT_RIGHT
-					Height:60
 					Children:
 						Label@SECONDARY_OBJECTIVE:
 							X:0

@@ -8,15 +8,15 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System;
 using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Activities;
+using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Traits;
 using OpenRA.Widgets;
-using OpenRA.Mods.RA.Buildings;
 
 namespace OpenRA.Mods.RA.Missions
 {
@@ -26,19 +26,13 @@ namespace OpenRA.Mods.RA.Missions
 	{
 		public event Action<bool> OnObjectivesUpdated = notify => { };
 
-		public IEnumerable<Objective> Objectives { get { return objectives.Values; } }
+		public IEnumerable<Objective> Objectives { get { return new[] { maintainPresence, destroySoviets }; } }
 
-		Dictionary<int, Objective> objectives = new Dictionary<int, Objective>
-		{
-			{ maintainPresenceID, new Objective(ObjectiveType.Primary, maintainPresence, ObjectiveStatus.InProgress) },
-			{ destroySovietsID, new Objective(ObjectiveType.Primary, destroySoviets, ObjectiveStatus.Inactive) }
-		};
+		Objective maintainPresence = new Objective(ObjectiveType.Primary, MaintainPresenceText, ObjectiveStatus.InProgress);
+		Objective destroySoviets = new Objective(ObjectiveType.Primary, DestroySovietsText, ObjectiveStatus.Inactive);
 
-		const int maintainPresenceID = 0;
-		const int destroySovietsID = 1;
-
-		const string maintainPresence = "Enforce your position and hold-out the onslaught until reinforcements arrive. We must not lose the base!";
-		const string destroySoviets = "Take control of french reinforcements and dismantle the nearby Soviet base.";
+		const string MaintainPresenceText = "Enforce your position and hold-out the onslaught until reinforcements arrive. We must not lose the base!";
+		const string DestroySovietsText = "Take control of French reinforcements and dismantle the nearby Soviet base.";
 
 		Player allies;
 		Player soviets;
@@ -155,11 +149,11 @@ namespace OpenRA.Mods.RA.Missions
 				spawningInfantry = false;
 			}
 
-			if (objectives[destroySovietsID].Status == ObjectiveStatus.InProgress)
+			if (destroySoviets.Status == ObjectiveStatus.InProgress)
 			{
 				if (barrack1.Destroyed)
 				{
-					objectives[destroySovietsID].Status = ObjectiveStatus.Completed;
+					destroySoviets.Status = ObjectiveStatus.Completed;
 					OnObjectivesUpdated(true);
 					MissionAccomplished("The French forces have survived and dismantled the soviet presence in the area!");
 				}
@@ -273,8 +267,8 @@ namespace OpenRA.Mods.RA.Missions
 		{
 			survivalTimerWidget.Visible = false;
 			SendReinforcements();
-			objectives[maintainPresenceID].Status = ObjectiveStatus.Completed;
-			objectives[destroySovietsID].Status = ObjectiveStatus.InProgress;
+			maintainPresence.Status = ObjectiveStatus.Completed;
+			destroySoviets.Status = ObjectiveStatus.InProgress;
 			OnObjectivesUpdated(true);
 		}
 
