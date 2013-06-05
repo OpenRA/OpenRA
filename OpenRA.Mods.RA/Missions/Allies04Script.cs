@@ -29,19 +29,15 @@ namespace OpenRA.Mods.RA.Missions
 	{
 		public event Action<bool> OnObjectivesUpdated = notify => { };
 
-		public IEnumerable<Objective> Objectives { get { return objectives.Values; } }
+		public IEnumerable<Objective> Objectives { get { return new[] { infiltrateLab, destroyBase }; } }
 
-		Dictionary<int, Objective> objectives = new Dictionary<int, Objective>
-		{
-			{ InfiltrateID, new Objective(ObjectiveType.Primary, "", ObjectiveStatus.InProgress) },
-			{ DestroyID, new Objective(ObjectiveType.Primary, Destroy, ObjectiveStatus.Inactive) }
-		};
+		Objective infiltrateLab = new Objective(ObjectiveType.Primary, "", ObjectiveStatus.InProgress);
+		Objective destroyBase = new Objective(ObjectiveType.Primary, DestroyBaseText, ObjectiveStatus.Inactive);
 
-		const int InfiltrateID = 0;
-		const int DestroyID = 1;
-		const string Destroy = "Secure the laboratory and destroy the rest of the Soviet base. Ensure that the laboratory is not destroyed.";
-		const string Infiltrate = "The Soviets are currently developing a new defensive system named the \"Iron Curtain\" at their main research laboratory."
-								+ " Get our {0} into the laboratory undetected.";
+		const string InfiltrateLabTemplate = "The Soviets are currently developing a new defensive system named the \"Iron Curtain\" at their main research laboratory."
+						+ " Get our {0} into the laboratory undetected.";
+
+		const string DestroyBaseText = "Secure the laboratory and destroy the rest of the Soviet base. Ensure that the laboratory is not destroyed.";
 
 		Actor hijackTruck;
 		Actor baseGuard;
@@ -175,7 +171,7 @@ namespace OpenRA.Mods.RA.Missions
 
 			if (allies1Spy.IsDead() || (allies2Spy != null && allies2Spy.IsDead()))
 			{
-				objectives[InfiltrateID].Status = ObjectiveStatus.Failed;
+				infiltrateLab.Status = ObjectiveStatus.Failed;
 				OnObjectivesUpdated(true);
 				MissionFailed("{0} spy was killed.".F(allies1 != allies2 ? "A" : "The"));
 			}
@@ -184,13 +180,13 @@ namespace OpenRA.Mods.RA.Missions
 			else if (!world.Actors.Any(a => (a.Owner == allies1 || a.Owner == allies2) && !a.IsDead()
 				&& (a.HasTrait<Building>() && !a.HasTrait<Wall>()) || a.HasTrait<BaseBuilding>()))
 			{
-				objectives[DestroyID].Status = ObjectiveStatus.Failed;
+				destroyBase.Status = ObjectiveStatus.Failed;
 				OnObjectivesUpdated(true);
 				MissionFailed("The remaining Allied forces in the area have been wiped out.");
 			}
-			else if (SovietBaseDestroyed() && objectives[InfiltrateID].Status == ObjectiveStatus.Completed)
+			else if (SovietBaseDestroyed() && infiltrateLab.Status == ObjectiveStatus.Completed)
 			{
-				objectives[DestroyID].Status = ObjectiveStatus.Completed;
+				destroyBase.Status = ObjectiveStatus.Completed;
 				OnObjectivesUpdated(true);
 				MissionAccomplished("The Soviet research laboratory has been secured successfully.");
 			}
@@ -214,8 +210,8 @@ namespace OpenRA.Mods.RA.Missions
 
 		void OnDestroyBaseTimerExpired(CountdownTimer t)
 		{
-			if (SovietBaseDestroyed() && objectives[InfiltrateID].Status == ObjectiveStatus.Completed) return;
-			objectives[DestroyID].Status = ObjectiveStatus.Failed;
+			if (SovietBaseDestroyed() && infiltrateLab.Status == ObjectiveStatus.Completed) return;
+			destroyBase.Status = ObjectiveStatus.Failed;
 			OnObjectivesUpdated(true);
 			MissionFailed("The Soviet research laboratory was not secured in time.");
 		}
@@ -240,8 +236,8 @@ namespace OpenRA.Mods.RA.Missions
 
 			if (allies1SpyInfiltratedLab && (allies2SpyInfiltratedLab || allies2Spy == null))
 			{
-				objectives[InfiltrateID].Status = ObjectiveStatus.Completed;
-				objectives[DestroyID].Status = ObjectiveStatus.InProgress;
+				infiltrateLab.Status = ObjectiveStatus.Completed;
+				destroyBase.Status = ObjectiveStatus.InProgress;
 				OnObjectivesUpdated(true);
 				frameInfiltrated = world.FrameNumber;
 
@@ -362,7 +358,7 @@ namespace OpenRA.Mods.RA.Missions
 
 			soviets = w.Players.Single(p => p.InternalName == "Soviets");
 			creeps = w.Players.Single(p => p.InternalName == "Creeps");
-			objectives[InfiltrateID].Text = Infiltrate.F(allies1 != allies2 ? "spies" : "spy");
+			infiltrateLab.Text = InfiltrateLabTemplate.F(allies1 != allies2 ? "spies" : "spy");
 
 			destroyBaseTicks = difficulty == "Hard" ? 1500 * 25 : difficulty == "Normal" ? 1500 * 28 : 1500 * 31;
 
