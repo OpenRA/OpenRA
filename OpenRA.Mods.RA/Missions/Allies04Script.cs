@@ -17,7 +17,6 @@ using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Mods.RA.Render;
-using OpenRA.Graphics;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
