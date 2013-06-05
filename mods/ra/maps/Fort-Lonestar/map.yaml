@@ -314,9 +314,6 @@ Actors:
 	Actor42: t16
 		Location: 53,19
 		Owner: Neutral
-	Actor70: t16
-		Location: 20,45
-		Owner: Neutral
 	Actor68: tc05
 		Location: 35,7
 		Owner: Neutral
@@ -521,6 +518,18 @@ Rules:
 	OILB:
 		Health:
 			HP: 3000
+		Armor:
+			Type: Wood
+		Bib:
+		RevealsShroud:
+			Range: 3
+		Capturable:
+		CapturableBar:
+		EngineerRepairable:
+		-MustBeDestroyed:
+		CashTrickler:
+			Period: 250
+			Amount: 50
 	BARR:
 		Buildable:
 			Owner: allies,soviet
@@ -530,6 +539,7 @@ Rules:
 			HP: 1000
 		Production:
 			Produces: Defense,Infantry
+		-Sellable:
 	FTUR:
 		Building:
 			Power: 0
@@ -739,7 +749,6 @@ Rules:
 			Hotkey: h
 		Valued:
 			Cost: 1150
-		
 		Health:
 			HP: 700
 		Armor:
@@ -767,7 +776,7 @@ Rules:
 		LeavesHusk:
 			HuskActor: 3TNK.Husk
 		Selectable:
-			Bounds: 30,30 
+			Bounds: 30,30
 	MECH:
 		Buildable:
 			Owner: None
@@ -786,11 +795,11 @@ Rules:
 	SNIPER:
 		Inherits: ^Infantry
 		Valued:
-			Cost: 300	
+			Cost: 200
 		Buildable:
 			Queue: Infantry
 			BuildPaletteOrder: 80
-			Owner: soviet
+			Owner: soviet, allies
 			Prerequisites: barr,oilb
 			Hotkey: n
 		Selectable:
@@ -813,7 +822,7 @@ Rules:
 			Queue: Infantry
 			BuildPaletteOrder: 60
 			Prerequisites: barr,oilb
-			Owner: allies, soviets
+			Owner: allies, soviet
 		Valued:
 			Cost: 300
 		Selectable:
@@ -843,7 +852,7 @@ Rules:
 			Cost: 600
 		Health:
 			HP: 150
-		Armor: 
+		Armor:
 			Type: Light
 		Mobile:
 			ROT: 10
@@ -918,10 +927,8 @@ Rules:
 		AutoTarget:
 	V2RL:
 		Inherits: ^Vehicle
-		Valued:
-			Cost: 700
 		Health:
-			HP: 150
+			HP: 100
 		Armor:
 			Type: Light
 		Mobile:
@@ -1156,7 +1163,7 @@ Weapons:
 			High: true
 		Warhead:
 			Spread: 5
-			Versus: 
+			Versus:
 				None: 35%
 				Wood: 30%
 				Light: 30%
@@ -1166,7 +1173,7 @@ Weapons:
 			Damage: 25
 	SCUD:
 		ROF: 280
-		Range: 10
+		Range: 7
 		MinRange: 3
 		Report: MISSILE1
 		Projectile: Bullet
@@ -1181,7 +1188,7 @@ Weapons:
 			Angle: .1
 		Warhead:
 			Spread: 20
-			Versus: 
+			Versus:
 				None: 100%
 				Wood: 90%
 				Light: 80%

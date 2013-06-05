@@ -20,6 +20,9 @@ namespace OpenRA.Mods.RA.Missions
     class FortScript : IWorldLoaded, ITick
     {
         Player multi0;
+        Player multi1;
+        Player multi2;
+        Player multi3;
         Player soviets;
 
         Actor entry1;
@@ -46,7 +49,7 @@ namespace OpenRA.Mods.RA.Missions
         const string ShortEvacuateTemplate = "Wave {0}";
         static readonly string[] Patrol = { "e1", "e2", "e1" };
         static readonly string[] Infantry = { "e4", "e1", "e1", "e2", "e1", "e2" };
-        static readonly string[] Vehicles = { "arty", "ftrk", "ftrk", "apc", "apc", };
+        static readonly string[] Vehicles = { "arty", "ftrk", "ftrk", "apc", "apc" };
         const string tank = "3tnk";
         const string v2 = "v2rl";
         const string boss = "4tnk";
@@ -172,6 +175,8 @@ namespace OpenRA.Mods.RA.Missions
 
         public void Tick(Actor self)
         {
+            if (multi0.WinState != WinState.Undefined) return;
+
             if (world.FrameNumber == patrolAttackFrame)
             {
                 patrolAttackFrame += patrolattackAtFrameIncrement;
@@ -341,6 +346,9 @@ namespace OpenRA.Mods.RA.Missions
             world = w;
             soviets = w.Players.Single(p => p.InternalName == "Soviets");
             multi0 = w.Players.Single(p => p.InternalName == "Multi0");
+            multi1 = w.Players.SingleOrDefault(p => p.InternalName == "Multi1");
+            multi2 = w.Players.SingleOrDefault(p => p.InternalName == "Multi2");
+            multi3 = w.Players.SingleOrDefault(p => p.InternalName == "Multi3");
             patrolAttackFrame = 750;
             patrolattackAtFrameIncrement = 750;
             WaveAttackFrame = 500;
