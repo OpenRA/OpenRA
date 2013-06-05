@@ -56,29 +56,45 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		public void UpdateObjectives(bool notify)
 		{
 			if (notify)
-			{
 				objectivesButton.Highlighted = true;
-			}
+
 			primaryPanel.RemoveChildren();
 			secondaryPanel.RemoveChildren();
+
 			foreach (var o in objectives.Objectives.Where(o => o.Status != ObjectiveStatus.Inactive))
 			{
 				var objective = o;
-				if (objective.Type == ObjectiveType.Secondary)
+
+				Widget widget;
+				LabelWidget objectiveText;
+				LabelWidget objectiveStatus;
+
+				if (objective.Type == ObjectiveType.Primary)
 				{
-					var template = secondaryTemplate.Clone();
-					template.Get<LabelWidget>("SECONDARY_OBJECTIVE").GetText = () => objective.Text;
-					template.Get<LabelWidget>("SECONDARY_STATUS").GetText = () => GetObjectiveStatusText(objective.Status);
-					secondaryPanel.AddChild(template);
+					widget = primaryTemplate.Clone();
+					objectiveText = widget.Get<LabelWidget>("PRIMARY_OBJECTIVE");
+					objectiveStatus = widget.Get<LabelWidget>("PRIMARY_STATUS");
+					SetupWidget(widget, objectiveText, objectiveStatus, objective);
+					primaryPanel.AddChild(widget);
 				}
 				else
 				{
-					var template = primaryTemplate.Clone();
-					template.Get<LabelWidget>("PRIMARY_OBJECTIVE").GetText = () => objective.Text;
-					template.Get<LabelWidget>("PRIMARY_STATUS").GetText = () => GetObjectiveStatusText(objective.Status);
-					primaryPanel.AddChild(template);
+					widget = secondaryTemplate.Clone();
+					objectiveText = widget.Get<LabelWidget>("SECONDARY_OBJECTIVE");
+					objectiveStatus = widget.Get<LabelWidget>("SECONDARY_STATUS");
+					SetupWidget(widget, objectiveText, objectiveStatus, objective);
+					secondaryPanel.AddChild(widget);
 				}
 			}
+		}
+
+		void SetupWidget(Widget widget, LabelWidget objectiveText, LabelWidget objectiveStatus, Objective objective)
+		{
+			var font = Game.Renderer.Fonts[objectiveText.Font];
+			var text = WidgetUtils.WrapText(objective.Text, objectiveText.Bounds.Width, font);
+			widget.Bounds.Height = objectiveText.Bounds.Height = objectiveStatus.Bounds.Height = font.Measure(text).Y;
+			objectiveText.GetText = () => text;
+			objectiveStatus.GetText = () => GetObjectiveStatusText(objective.Status);
 		}
 
 		static string GetObjectiveStatusText(ObjectiveStatus status)

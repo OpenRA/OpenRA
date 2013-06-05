@@ -40,23 +40,15 @@ namespace OpenRA.Mods.RA.Missions
 
 		public event Action<bool> OnObjectivesUpdated = notify => { };
 
-		public IEnumerable<Objective> Objectives { get { return objectives.Values; } }
+		public IEnumerable<Objective> Objectives { get { return new[] { findOutpost, evacuateDemitri, infiltrateRadarDome }; } }
 
-		Dictionary<int, Objective> objectives = new Dictionary<int, Objective>
-		{
-			{ FindOutpostID, new Objective(ObjectiveType.Primary, FindOutpost, ObjectiveStatus.InProgress) },
-			{ EvacuateDemitriID, new Objective(ObjectiveType.Primary, EvacuateDemitri, ObjectiveStatus.InProgress) },
-			{ InfiltrateRadarDomeID, new Objective(ObjectiveType.Primary, InfiltrateRadarDome, ObjectiveStatus.InProgress) },
-		};
+		Objective findOutpost = new Objective(ObjectiveType.Primary, FindOutpostText, ObjectiveStatus.InProgress);
+		Objective evacuateDemitri = new Objective(ObjectiveType.Primary, EvacuateDemitriText, ObjectiveStatus.InProgress);
+		Objective infiltrateRadarDome = new Objective(ObjectiveType.Primary, InfiltrateRadarDomeText, ObjectiveStatus.InProgress);
 
-		const int FindOutpostID = 0;
-		const string FindOutpost = "Find our outpost and start repairs on it.";
-
-		const int EvacuateDemitriID = 1;
-		const string EvacuateDemitri = "Find and evacuate Dr. Demitri. He is missing -- likely hiding in the village to the far south.";
-
-		const int InfiltrateRadarDomeID = 2;
-		const string InfiltrateRadarDome = "Reprogram the Super Tanks by sending a spy into the Soviet radar dome.";
+		const string FindOutpostText = "Find our outpost and start repairs on it.";
+		const string EvacuateDemitriText = "Find and evacuate Dr. Demitri. He is missing -- likely hiding in the village to the far south.";
+		const string InfiltrateRadarDomeText = "Reprogram the Super Tanks by sending a spy into the Soviet radar dome.";
 
 		//const string Briefing = "Dr. Demitri, creator of a Soviet Super Tank, wants to defect."
 		//					+ " We planned to extract him while the Soviets were testing their new weapon, but something has gone wrong."
@@ -142,7 +134,7 @@ namespace OpenRA.Mods.RA.Missions
 				{
 					SetupAlliedBase(actorsInBase);
 					baseTransferredTick = world.FrameNumber;
-					objectives[FindOutpostID].Status = ObjectiveStatus.Completed;
+					findOutpost.Status = ObjectiveStatus.Completed;
 					OnObjectivesUpdated(true);
 				}
 			}
@@ -181,13 +173,13 @@ namespace OpenRA.Mods.RA.Missions
 					superTanksDestroyed = true;
 				}
 			}
-			if (objectives[EvacuateDemitriID].Status != ObjectiveStatus.Completed)
+			if (evacuateDemitri.Status != ObjectiveStatus.Completed)
 			{
 				if (demitri == null)
 				{
 					if (demitriChurch.IsDead())
 					{
-						objectives[EvacuateDemitriID].Status = ObjectiveStatus.Failed;
+						evacuateDemitri.Status = ObjectiveStatus.Failed;
 						OnObjectivesUpdated(true);
 						MissionFailed("Dr. Demitri was killed.");
 					}
@@ -204,7 +196,7 @@ namespace OpenRA.Mods.RA.Missions
 				}
 				else if (demitri.IsDead())
 				{
-					objectives[EvacuateDemitriID].Status = ObjectiveStatus.Failed;
+					evacuateDemitri.Status = ObjectiveStatus.Failed;
 					OnObjectivesUpdated(true);
 					MissionFailed("Dr. Demitri was killed.");
 				}
@@ -212,7 +204,7 @@ namespace OpenRA.Mods.RA.Missions
 				{
 					demitriLZFlare.Destroy();
 					SpawnAndMoveAlliedBaseUnits(info.FirstBaseUnits);
-					objectives[EvacuateDemitriID].Status = ObjectiveStatus.Completed;
+					evacuateDemitri.Status = ObjectiveStatus.Completed;
 					OnObjectivesUpdated(true);
 				}
 			}
@@ -223,11 +215,11 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			if (superTankDomeInfiltratedTick == -1 && superTankDome.IsDead())
 			{
-				objectives[InfiltrateRadarDomeID].Status = ObjectiveStatus.Failed;
+				infiltrateRadarDome.Status = ObjectiveStatus.Failed;
 				OnObjectivesUpdated(true);
 				MissionFailed("The Soviet radar dome was destroyed.");
 			}
-			if (superTanksDestroyed && objectives[EvacuateDemitriID].Status == ObjectiveStatus.Completed)
+			if (superTanksDestroyed && evacuateDemitri.Status == ObjectiveStatus.Completed)
 			{
 				MissionAccomplished("Dr. Demitri has been extracted and the super tanks have been dealt with.");
 			}
@@ -298,7 +290,7 @@ namespace OpenRA.Mods.RA.Missions
 
 			superTankDomeInfiltratedTick = world.FrameNumber;
 
-			objectives[InfiltrateRadarDomeID].Status = ObjectiveStatus.Completed;
+			infiltrateRadarDome.Status = ObjectiveStatus.Completed;
 			OnObjectivesUpdated(true);
 		}
 

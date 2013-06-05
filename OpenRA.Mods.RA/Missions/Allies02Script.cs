@@ -28,27 +28,19 @@ namespace OpenRA.Mods.RA.Missions
 	{
 		public event Action<bool> OnObjectivesUpdated = notify => { };
 
-		public IEnumerable<Objective> Objectives { get { return objectives.Values; } }
+		public IEnumerable<Objective> Objectives { get { return new[] { findEinstein, destroySamSites, extractEinstein, maintainPresence, fewDeaths }; } }
 
-		Dictionary<int, Objective> objectives = new Dictionary<int, Objective>()
-		{
-			{ FindEinsteinID, new Objective(ObjectiveType.Primary, FindEinstein, ObjectiveStatus.InProgress) },
-			{ DestroySamSitesID, new Objective(ObjectiveType.Primary, DestroySamSites, ObjectiveStatus.InProgress) },
-			{ ExtractEinsteinID, new Objective(ObjectiveType.Primary, ExtractEinstein, ObjectiveStatus.Inactive) },
-			{ MaintainPresenceID, new Objective(ObjectiveType.Primary, MaintainPresence, ObjectiveStatus.InProgress) },
-			{ FewDeathsID, new Objective(ObjectiveType.Secondary, "", ObjectiveStatus.InProgress) }
-		};
+		Objective findEinstein = new Objective(ObjectiveType.Primary, FindEinsteinText, ObjectiveStatus.InProgress);
+		Objective destroySamSites = new Objective(ObjectiveType.Primary, DestroySamSitesText, ObjectiveStatus.InProgress);
+		Objective extractEinstein = new Objective(ObjectiveType.Primary, ExtractEinsteinText, ObjectiveStatus.Inactive);
+		Objective maintainPresence = new Objective(ObjectiveType.Primary, MaintainPresenceText, ObjectiveStatus.InProgress);
+		Objective fewDeaths = new Objective(ObjectiveType.Secondary, "", ObjectiveStatus.InProgress);
 
-		const int FindEinsteinID = 0;
-		const int DestroySamSitesID = 1;
-		const int ExtractEinsteinID = 2;
-		const int MaintainPresenceID = 3;
-		const int FewDeathsID = 4;
+		const string FindEinsteinText = "Find Einstein's crashed helicopter. Tanya must survive.";
+		const string DestroySamSitesText = "Destroy the SAM sites. Tanya must survive.";
+		const string ExtractEinsteinText = "Wait for the helicopter and extract Einstein. Tanya and Einstein must survive.";
+		const string MaintainPresenceText = "Maintain an Allied presence in the area. Reinforcements will arrive soon.";
 
-		const string FindEinstein = "Find Einstein's crashed helicopter. Tanya must survive.";
-		const string DestroySamSites = "Destroy the SAM sites. Tanya must survive.";
-		const string ExtractEinstein = "Wait for the helicopter and extract Einstein. Tanya and Einstein must survive.";
-		const string MaintainPresence = "Maintain an Allied presence in the area. Reinforcements will arrive soon.";
 		const string FewDeathsTemplate = "Lose fewer than {0}/{1} units.";
 
 		const int DeathsThreshold = 200;
@@ -195,44 +187,45 @@ namespace OpenRA.Mods.RA.Missions
 
 			UpdateDeaths();
 
-			if (objectives[FindEinsteinID].Status == ObjectiveStatus.InProgress)
+			if (findEinstein.Status == ObjectiveStatus.InProgress)
 			{
 				if (AlliesNearTown())
 				{
-					objectives[FindEinsteinID].Status = ObjectiveStatus.Completed;
+					findEinstein.Status = ObjectiveStatus.Completed;
 					OnObjectivesUpdated(true);
 					TransferTownUnitsToAllies();
 					SovietsAttackTown();
 				}
 			}
-			if (objectives[DestroySamSitesID].Status == ObjectiveStatus.InProgress)
+			if (destroySamSites.Status == ObjectiveStatus.InProgress)
 			{
 				if (sams.All(s => s.IsDead() || s.Owner != soviets))
 				{
-					objectives[DestroySamSitesID].Status = ObjectiveStatus.Completed;
-					objectives[ExtractEinsteinID].Status = ObjectiveStatus.InProgress;
+					destroySamSites.Status = ObjectiveStatus.Completed;
+					extractEinstein.Status = ObjectiveStatus.InProgress;
+
 					OnObjectivesUpdated(true);
+
 					world.CreateActor(SignalFlareName, new TypeDictionary { new OwnerInit(allies1), new LocationInit(extractionLZ.Location) });
 					Sound.Play("flaren1.aud");
 					ExtractEinsteinAtLZ();
 				}
 			}
-			if (objectives[ExtractEinsteinID].Status == ObjectiveStatus.InProgress && einsteinChinook != null)
+			if (extractEinstein.Status == ObjectiveStatus.InProgress && einsteinChinook != null)
 			{
 				if (einsteinChinook.IsDead())
 				{
-					objectives[ExtractEinsteinID].Status = ObjectiveStatus.Failed;
-					objectives[MaintainPresenceID].Status = ObjectiveStatus.Failed;
+					extractEinstein.Status = ObjectiveStatus.Failed;
 					OnObjectivesUpdated(true);
 					MissionFailed("The extraction helicopter was destroyed.");
 				}
 				else if (!world.Map.IsInMap(einsteinChinook.Location) && einsteinChinook.Trait<Cargo>().Passengers.Contains(einstein))
 				{
-					objectives[ExtractEinsteinID].Status = ObjectiveStatus.Completed;
-					objectives[MaintainPresenceID].Status = ObjectiveStatus.Completed;
+					extractEinstein.Status = ObjectiveStatus.Completed;
+					maintainPresence.Status = ObjectiveStatus.Completed;
 
-					if (objectives[FewDeathsID].Status == ObjectiveStatus.InProgress)
-						objectives[FewDeathsID].Status = ObjectiveStatus.Completed;
+					if (fewDeaths.Status == ObjectiveStatus.InProgress)
+						fewDeaths.Status = ObjectiveStatus.Completed;
 
 					OnObjectivesUpdated(true);
 					MissionAccomplished("Einstein was rescued.");
@@ -250,7 +243,7 @@ namespace OpenRA.Mods.RA.Missions
 				if (!w.FindAliveCombatantActorsInBox(alliedBaseTopLeft.ToPPos(), alliedBaseBottomRight.ToPPos())
 					.Any(a => (a.Owner == allies || a.Owner == allies2) && (a.HasTrait<Building>() && !a.HasTrait<Wall>()) || a.HasTrait<BaseBuilding>()))
 				{
-					objectives[MaintainPresenceID].Status = ObjectiveStatus.Failed;
+					maintainPresence.Status = ObjectiveStatus.Failed;
 					OnObjectivesUpdated(true);
 					MissionFailed("The Allied reinforcements have been defeated.");
 				}
@@ -260,11 +253,11 @@ namespace OpenRA.Mods.RA.Missions
 		void UpdateDeaths()
 		{
 			var unitDeaths = allies1.Deaths + allies2.Deaths;
-			objectives[FewDeathsID].Text = FewDeathsTemplate.F(unitDeaths, DeathsThreshold);
+			fewDeaths.Text = FewDeathsTemplate.F(unitDeaths, DeathsThreshold);
 			OnObjectivesUpdated(false);
-			if (unitDeaths >= DeathsThreshold && objectives[FewDeathsID].Status == ObjectiveStatus.InProgress)
+			if (unitDeaths >= DeathsThreshold && fewDeaths.Status == ObjectiveStatus.InProgress)
 			{
-				objectives[FewDeathsID].Status = ObjectiveStatus.Failed;
+				fewDeaths.Status = ObjectiveStatus.Failed;
 				OnObjectivesUpdated(true);
 			}
 		}
