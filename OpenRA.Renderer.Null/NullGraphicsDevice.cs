@@ -38,6 +38,12 @@ namespace OpenRA.Renderer.Null
 		public void EnableScissor(int left, int top, int width, int height) { }
 		public void DisableScissor() { }
 
+		public void EnableDepthBuffer() { }
+		public void DisableDepthBuffer() { }
+
+		public void EnableStencilBuffer() { }
+		public void DisableStencilBuffer() { }
+
 		public void Clear() { }
 		public void Present() { }
 
@@ -58,8 +64,11 @@ namespace OpenRA.Renderer.Null
 
 	public class NullShader : IShader
 	{
+		public void SetVec(string name, float x) { }
 		public void SetVec(string name, float x, float y) { }
+		public void SetVec(string name, float[] vec, int length) { }
 		public void SetTexture(string param, ITexture texture) { }
+		public void SetMatrix(string param, float[] mtx) { }
 		public void Commit() { }
 		public void Render(Action a) { }
 	}

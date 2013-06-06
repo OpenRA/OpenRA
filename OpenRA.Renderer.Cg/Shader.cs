@@ -75,11 +75,44 @@ namespace OpenRA.Renderer.Cg
 				Tao.Cg.CgGl.cgGLSetupSampler(param, texture.texture);
 		}
 
+		public void SetVec(string name, float x)
+		{
+			var param = Tao.Cg.Cg.cgGetNamedEffectParameter(effect, name);
+			if (param != IntPtr.Zero)
+				Tao.Cg.CgGl.cgGLSetParameter1f(param, x);
+		}
+
 		public void SetVec(string name, float x, float y)
 		{
 			var param = Tao.Cg.Cg.cgGetNamedEffectParameter(effect, name);
 			if (param != IntPtr.Zero)
 				Tao.Cg.CgGl.cgGLSetParameter2f(param, x, y);
+		}
+
+		public void SetVec(string name, float[] vec, int length)
+		{
+			var param = Tao.Cg.Cg.cgGetNamedEffectParameter(effect, name);
+			if (param == IntPtr.Zero)
+				return;
+
+			switch(length)
+			{
+				case 1: Tao.Cg.CgGl.cgGLSetParameter1fv(param, vec); break;
+				case 2: Tao.Cg.CgGl.cgGLSetParameter2fv(param, vec); break;
+				case 3: Tao.Cg.CgGl.cgGLSetParameter3fv(param, vec); break;
+				case 4: Tao.Cg.CgGl.cgGLSetParameter4fv(param, vec); break;
+				default: throw new InvalidDataException("Invalid vector length");
+			}
+		}
+
+		public void SetMatrix(string name, float[] mtx)
+		{
+			if (mtx.Length != 16)
+				throw new InvalidDataException("Invalid 4x4 matrix");
+
+			var param = Tao.Cg.Cg.cgGetNamedEffectParameter(effect, name);
+			if (param != IntPtr.Zero)
+				Tao.Cg.CgGl.cgGLSetMatrixParameterfr(param, mtx);
 		}
 	}
 }

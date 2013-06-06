@@ -28,6 +28,7 @@ namespace OpenRA
 		public ILoadScreen LoadScreen = null;
 		public SheetBuilder SheetBuilder;
 		public SpriteLoader SpriteLoader;
+		public VoxelLoader VoxelLoader;
 
 		public ModData(params string[] mods)
 		{
@@ -55,6 +56,7 @@ namespace OpenRA
 			ChromeProvider.Initialize(Manifest.Chrome);
 			SheetBuilder = new SheetBuilder(SheetType.Indexed);
 			SpriteLoader = new SpriteLoader(new string[] { ".shp" }, SheetBuilder);
+			VoxelLoader = new VoxelLoader();
 			CursorProvider.Initialize(Manifest.Cursors);
 		}
 
@@ -76,7 +78,7 @@ namespace OpenRA
 			SpriteLoader = new SpriteLoader(Rules.TileSets[map.Tileset].Extensions, SheetBuilder);
 			// TODO: Don't load the sequences for assets that are not used in this tileset. Maybe use the existing EditorTilesetFilters.
 			SequenceProvider.Initialize(Manifest.Sequences, map.Sequences);
-
+			VoxelProvider.Initialize(Manifest.VoxelSequences, map.VoxelSequences);
 			return map;
 		}
 

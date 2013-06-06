@@ -59,6 +59,7 @@ namespace OpenRA
 
 		[FieldLoader.Ignore] public List<MiniYamlNode> Rules = new List<MiniYamlNode>();
 		[FieldLoader.Ignore] public List<MiniYamlNode> Sequences = new List<MiniYamlNode>();
+		[FieldLoader.Ignore] public List<MiniYamlNode> VoxelSequences = new List<MiniYamlNode>();
 		[FieldLoader.Ignore] public List<MiniYamlNode> Weapons = new List<MiniYamlNode>();
 		[FieldLoader.Ignore] public List<MiniYamlNode> Voices = new List<MiniYamlNode>();
 		[FieldLoader.Ignore] public List<MiniYamlNode> Notifications = new List<MiniYamlNode>();
@@ -150,6 +151,7 @@ namespace OpenRA
 
 			Rules = NodesOrEmpty(yaml, "Rules");
 			Sequences = NodesOrEmpty(yaml, "Sequences");
+			VoxelSequences = NodesOrEmpty(yaml, "VoxelSequences");
 			Weapons = NodesOrEmpty(yaml, "Weapons");
 			Voices = NodesOrEmpty(yaml, "Voices");
 			Notifications = NodesOrEmpty(yaml, "Notifications");
@@ -206,6 +208,7 @@ namespace OpenRA
 			root.Add(new MiniYamlNode("Smudges", MiniYaml.FromList<SmudgeReference>( Smudges.Value )));
 			root.Add(new MiniYamlNode("Rules", null, Rules));
 			root.Add(new MiniYamlNode("Sequences", null, Sequences));
+			root.Add(new MiniYamlNode("VoxelSequences", null, VoxelSequences));
 			root.Add(new MiniYamlNode("Weapons", null, Weapons));
 			root.Add(new MiniYamlNode("Voices", null, Voices));
 			root.Add(new MiniYamlNode("Notifications", null, Notifications));

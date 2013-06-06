@@ -50,6 +50,12 @@ namespace OpenRA.FileFormats.Graphics
 		void SetLineWidth( float width );
 		void EnableScissor( int left, int top, int width, int height );
 		void DisableScissor();
+
+		void EnableDepthBuffer();
+		void DisableDepthBuffer();
+
+		void EnableStencilBuffer();
+		void DisableStencilBuffer();
 	}
 
 	public interface IVertexBuffer<T>
@@ -60,8 +66,11 @@ namespace OpenRA.FileFormats.Graphics
 
 	public interface IShader
 	{
+		void SetVec(string name, float x);
 		void SetVec(string name, float x, float y);
+		void SetVec(string name, float[] vec, int length);
 		void SetTexture(string param, ITexture texture);
+		void SetMatrix(string param, float[] mtx);
 		void Render(Action a);
 	}
 

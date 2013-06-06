@@ -20,7 +20,7 @@ namespace OpenRA.FileFormats
 	{
 		public readonly string[]
 			Mods, Folders, Rules, ServerTraits,
-			Sequences, Cursors, Chrome, Assemblies, ChromeLayout,
+			Sequences, VoxelSequences, Cursors, Chrome, Assemblies, ChromeLayout,
 			Weapons, Voices, Notifications, Music, Movies, TileSets,
 			ChromeMetrics, PackageContents;
 
@@ -42,6 +42,7 @@ namespace OpenRA.FileFormats
 			Rules = YamlList(yaml, "Rules");
 			ServerTraits = YamlList(yaml, "ServerTraits");
 			Sequences = YamlList(yaml, "Sequences");
+			VoxelSequences = YamlList(yaml, "VoxelSequences");
 			Cursors = YamlList(yaml, "Cursors");
 			Chrome = YamlList(yaml, "Chrome");
 			Assemblies = YamlList(yaml, "Assemblies");

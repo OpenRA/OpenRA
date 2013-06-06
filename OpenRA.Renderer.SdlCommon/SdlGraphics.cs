@@ -49,6 +49,7 @@ namespace OpenRA.Renderer.SdlCommon
 			Sdl.SDL_GL_SetAttribute( Sdl.SDL_GL_GREEN_SIZE, 8 );
 			Sdl.SDL_GL_SetAttribute( Sdl.SDL_GL_BLUE_SIZE, 8 );
 			Sdl.SDL_GL_SetAttribute( Sdl.SDL_GL_ALPHA_SIZE, 0 );
+			Sdl.SDL_GL_SetAttribute( Sdl.SDL_GL_STENCIL_SIZE, 1 );
 
 			int windowFlags = 0;
 			switch (window)
@@ -130,6 +131,38 @@ namespace OpenRA.Renderer.SdlCommon
 			Gl.glClearColor(0, 0, 0, 0);
 			ErrorHandler.CheckGlError();
 			Gl.glClear(Gl.GL_COLOR_BUFFER_BIT);
+			ErrorHandler.CheckGlError();
+		}
+
+		public void EnableStencilBuffer()
+		{
+			Gl.glClear(Gl.GL_STENCIL_BUFFER_BIT);
+			ErrorHandler.CheckGlError();
+			Gl.glEnable(Gl.GL_STENCIL_TEST);
+			ErrorHandler.CheckGlError();
+			Gl.glStencilFunc(Gl.GL_NOTEQUAL, 1, 1);
+			ErrorHandler.CheckGlError();
+			Gl.glStencilOp(Gl.GL_KEEP, Gl.GL_KEEP, Gl.GL_INCR);
+			ErrorHandler.CheckGlError();
+		}
+
+		public void DisableStencilBuffer()
+		{
+			Gl.glDisable(Gl.GL_STENCIL_TEST);
+			ErrorHandler.CheckGlError();
+		}
+
+		public void EnableDepthBuffer()
+		{
+			Gl.glClear(Gl.GL_DEPTH_BUFFER_BIT);
+			ErrorHandler.CheckGlError();
+			Gl.glEnable(Gl.GL_DEPTH_TEST);
+			ErrorHandler.CheckGlError();
+		}
+
+		public void DisableDepthBuffer()
+		{
+			Gl.glDisable(Gl.GL_DEPTH_TEST);
 			ErrorHandler.CheckGlError();
 		}
 
