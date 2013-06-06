@@ -368,6 +368,24 @@
 	BelowUnits:
 	BodyOrientation:
 
+^HelicopterHusk:
+	Inherits: ^Husk
+	-Husk:
+	-Burns:
+	FallsToEarth:
+		Spins: True
+		Moves: False
+	-BelowUnits:
+
+^PlaneHusk:
+	Inherits: ^Husk
+	-Husk:
+	-Burns:
+	FallsToEarth:
+		Spins: False
+		Moves: True
+	-BelowUnits:
+
 ^Bridge:
 	Tooltip:
 		Name: Bridge

@@ -106,6 +106,15 @@
 		Types:Husk
 	BodyOrientation:
 
+^AircraftHusk:
+	Inherits: ^Husk
+	-Husk:
+	-Burns:
+	FallsToEarth:
+		Spins: False
+		Moves: True
+		Explosion: UnitExplodeScale
+
 ^Infantry:
 	AppearsOnRadar:
 	Health:
