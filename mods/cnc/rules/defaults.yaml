@@ -422,6 +422,18 @@
 #		AllowNeutral: true
 #		AllowEnemies: true
 
+^HelicopterHusk:
+	Inherits: ^Husk
+	-Husk:
+	-Burns:
+	FallsToEarth:
+		Spins: True
+		Moves: False
+		Explosion: HeliCrash
+	-BelowUnits:
+	-TransformOnCapture:
+	-TargetableUnit:
+
 ^Bridge:
 	Tooltip:
 		Name: Bridge

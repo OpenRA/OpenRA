@@ -10,8 +10,9 @@
 
 using System.Linq;
 using OpenRA.FileFormats;
-using OpenRA.Traits;
+using OpenRA.Mods.RA.Air;
 using OpenRA.Mods.RA.Move;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
@@ -35,11 +36,11 @@ namespace OpenRA.Mods.RA
 		{
 			self.World.AddFrameEndTask(w =>
 			{
-				var td = new TypeDictionary()
+				var td = new TypeDictionary
 				{
-					new LocationInit( self.Location ),
+					new LocationInit(self.Location),
 					new CenterLocationInit(self.CenterLocation),
-					new OwnerInit( self.Owner ),
+					new OwnerInit(self.Owner),
 					new SkipMakeAnimsInit()
 				};
 
@@ -50,6 +51,10 @@ namespace OpenRA.Mods.RA
 					if (!mobile.CanEnterCell(self.Location, self, false)) return;
 					td.Add(new HuskSpeedInit(mobile.MovementSpeedForCell(self, self.Location)));
 				}
+
+				var aircraft = self.TraitOrDefault<Aircraft>();
+				if (aircraft != null)
+					td.Add(new AltitudeInit(aircraft.Altitude));
 
 				var facing = self.TraitOrDefault<IFacing>();
 				if (facing != null)

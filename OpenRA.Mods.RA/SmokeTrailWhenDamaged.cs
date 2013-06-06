@@ -20,6 +20,7 @@ namespace OpenRA.Mods.RA
 		public readonly WVec Offset = WVec.Zero;
 		public readonly int Interval = 3;
 		public readonly string Sprite = "smokey";
+		public readonly DamageState MinDamage = DamageState.Heavy;
 
 		public object Create(ActorInitializer init) { return new SmokeTrailWhenDamaged(init.self, this); }
 	}
@@ -41,7 +42,7 @@ namespace OpenRA.Mods.RA
 			if (--ticks <= 0)
 			{
 				var position = self.CenterPosition;
-				if (position.Z > 0 && self.GetDamageState() >= DamageState.Heavy &&
+				if (position.Z > 0 && self.GetDamageState() >= info.MinDamage &&
 				    !self.World.FogObscures(new CPos(position)))
 				{
 					var offset = info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation));
