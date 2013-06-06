@@ -36,8 +36,8 @@ TRAN:
 		Types: Infantry
 		MaxWeight: 10
 		PipCount: 10
-	FallsToEarth:
-		Explosion: HeliCrash
+	LeavesHusk:
+		HuskActor: TRAN.Husk
 	Explodes:
 		Weapon: HeliExplode
 		EmptyWeapon: HeliExplode
@@ -86,8 +86,8 @@ HELI:
 		Offset: 0,0,85
 	WithMuzzleFlash:
 	WithShadow:
-	FallsToEarth:
-		Explosion: HeliCrash
+	LeavesHusk:
+		HuskActor: HELI.Husk
 	AutoTarget:
 	Explodes:
 		Weapon: HeliExplode
@@ -134,8 +134,8 @@ ORCA:
 		Period: 200
 	RenderUnit:
 	WithShadow:
-	FallsToEarth:
-		Explosion: HeliCrash
+	LeavesHusk:
+		HuskActor: ORCA.Husk
 	AutoTarget:
 	Explodes:
 		Weapon: HeliExplode
@@ -206,3 +206,42 @@ A10:
 	-GainsExperience:
 	FlyAwayOnIdle:
 
+TRAN.Husk:
+	Inherits: ^HelicopterHusk
+	Tooltip:
+		Name: Chinook Transport
+	Helicopter:
+		ROT: 5
+		Speed: 15
+	WithRotor@PRIMARY:
+		Offset: -597,0,171
+	WithRotor@SECONDARY:
+		Id: rotor_2
+		Offset: 597,0,85
+	RenderUnit:
+		Image: tran
+	WithShadow:
+
+HELI.Husk:
+	Inherits: ^HelicopterHusk
+	Tooltip:
+		Name: Apache Longbow
+	Helicopter:
+		ROT: 4
+		Speed: 20
+	WithRotor:
+		Offset: 0,0,85
+	RenderUnit:
+		Image: heli
+	WithShadow:
+
+ORCA.Husk:
+	Inherits: ^HelicopterHusk
+	Tooltip:
+		Name: Orca
+	Helicopter:
+		ROT: 4
+		Speed: 20
+	RenderUnit:
+		Image: orca
+	WithShadow:

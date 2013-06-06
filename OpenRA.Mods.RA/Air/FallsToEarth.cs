@@ -8,28 +8,26 @@
  */
 #endregion
 
-using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Air
 {
-	class FallsToEarthInfo : TraitInfo<FallsToEarth>
+	class FallsToEarthInfo : ITraitInfo
 	{
 		[WeaponReference]
-		public readonly string Explosion = null;
+		public readonly string Explosion = "UnitExplode";
 
 		public readonly bool Spins = true;
 		public readonly bool Moves = false;
+
+		public object Create(ActorInitializer init) { return new FallsToEarth(init.self, this); }
 	}
 
-	class FallsToEarth : INotifyKilled
+	class FallsToEarth
 	{
-		public void Killed(Actor self, AttackInfo e)
+		public FallsToEarth(Actor self, FallsToEarthInfo info)
 		{
-			self.Trait<Health>().RemoveOnDeath = false;
-
-			self.CancelActivity();
-			self.QueueActivity(new FallToEarth(self, self.Info.Traits.Get<FallsToEarthInfo>()));
+			self.QueueActivity(false, new FallToEarth(self, info));
 		}
 	}
 
