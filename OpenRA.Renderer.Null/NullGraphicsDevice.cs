@@ -79,6 +79,8 @@ namespace OpenRA.Renderer.Null
 		public void SetData(Bitmap bitmap) { }
 		public void SetData(uint[,] colors) { }
 		public void SetData(byte[] colors, int width, int height) { }
+		public byte[] GetData() { return new byte[0]; }
+		public Size Size { get { return new Size(0, 0); } }
 	}
 
 	public class NullFrameBuffer : IFrameBuffer

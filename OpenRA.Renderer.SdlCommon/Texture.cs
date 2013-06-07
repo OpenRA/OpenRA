@@ -20,7 +20,11 @@ namespace OpenRA.Renderer.SdlCommon
 {
 	public class Texture : ITexture
 	{
-		public int texture;		/* temp: can be internal again once shaders are in shared code */
+		int texture;
+		public int ID { get { return texture; } }
+
+		Size size;
+		public Size Size { get { return size; } }
 
 		public Texture()
 		{
@@ -59,6 +63,7 @@ namespace OpenRA.Renderer.SdlCommon
 			if (!Exts.IsPowerOf2(width) || !Exts.IsPowerOf2(height))
 				throw new InvalidDataException("Non-power-of-two array {0}x{1}".F(width, height));
 
+			size = new Size(width, height);
 			unsafe
 			{
 				fixed (byte* ptr = &colors[0])
@@ -81,6 +86,7 @@ namespace OpenRA.Renderer.SdlCommon
 			if (!Exts.IsPowerOf2(width) || !Exts.IsPowerOf2(height))
 				throw new InvalidDataException("Non-power-of-two array {0}x{1}".F(width,height));
 
+			size = new Size(width, height);
 			unsafe
 			{
 				fixed (uint* ptr = &colors[0,0])
@@ -99,6 +105,7 @@ namespace OpenRA.Renderer.SdlCommon
 			if (!Exts.IsPowerOf2(bitmap.Width) || !Exts.IsPowerOf2(bitmap.Height))
 				bitmap = new Bitmap(bitmap, bitmap.Size.NextPowerOf2());
 
+			size = new Size(bitmap.Width, bitmap.Height);
 			var bits = bitmap.LockBits(bitmap.Bounds(),
 				ImageLockMode.ReadOnly,
 				PixelFormat.Format32bppArgb);
@@ -108,6 +115,35 @@ namespace OpenRA.Renderer.SdlCommon
 				0, Gl.GL_BGRA, Gl.GL_UNSIGNED_BYTE, bits.Scan0);        // todo: weird strides
 			ErrorHandler.CheckGlError();
 			bitmap.UnlockBits(bits);
+		}
+
+		public byte[] GetData()
+		{
+			var data = new byte[4*size.Width * size.Height];
+
+			ErrorHandler.CheckGlError();
+			Gl.glBindTexture(Gl.GL_TEXTURE_2D, texture);
+			unsafe
+			{
+				fixed (byte *ptr = &data[0])
+				{
+					IntPtr intPtr = new IntPtr((void*)ptr);
+					Gl.glGetTexImage(Gl.GL_TEXTURE_2D, 0, Gl.GL_BGRA, Gl.GL_UNSIGNED_BYTE, intPtr);
+				}
+			}
+			return data;
+		}
+
+		public void SetEmpty(int width, int height)
+		{
+			if (!Exts.IsPowerOf2(width) || !Exts.IsPowerOf2(height))
+				throw new InvalidDataException("Non-power-of-two array {0}x{1}".F(width, height));
+
+			size = new Size(width, height);
+			PrepareTexture();
+			Gl.glTexImage2D(Gl.GL_TEXTURE_2D, 0, Gl.GL_RGBA8, width, height,
+			                0, Gl.GL_BGRA, Gl.GL_UNSIGNED_BYTE, null);
+			ErrorHandler.CheckGlError();
 		}
 	}
 }

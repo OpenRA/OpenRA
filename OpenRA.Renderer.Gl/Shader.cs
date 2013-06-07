@@ -115,8 +115,8 @@ namespace OpenRA.Renderer.Glsl
 
 			foreach (var kv in textures)
 			{
-				Gl.glActiveTextureARB( Gl.GL_TEXTURE0_ARB + kv.Key );
-				Gl.glBindTexture( Gl.GL_TEXTURE_2D, ((Texture)kv.Value).texture );
+				Gl.glActiveTextureARB(Gl.GL_TEXTURE0_ARB + kv.Key);
+				Gl.glBindTexture(Gl.GL_TEXTURE_2D, ((Texture)kv.Value).ID);
 			}
 
 			/* configure blend state */
