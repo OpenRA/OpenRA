@@ -133,6 +133,8 @@ function LoadFile(filePath, editor, file_must_exist, skipselection)
   -- created from some other element, for example, from a project tree.
   if not skipselection then SetEditorSelection() end
 
+  PackageEventHandle("onFileLoad", editor)
+
   return editor
 end
 

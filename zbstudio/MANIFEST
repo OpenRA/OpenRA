@@ -51,10 +51,12 @@ lualibs/socket/url.lua
 lualibs/ssl.lua
 lualibs/ssl/https.lua
 lualibs/testwell.lua
+packages/sample.lua
 spec/*.lua
 src/defs.lua
 src/editor/autocomplete.lua
 src/editor/commands.lua
+src/editor/proto.lua
 src/editor/debugger.lua
 src/editor/editor.lua
 src/editor/filetree.lua
@@ -73,6 +75,7 @@ src/editor/menu_search.lua
 src/editor/menu_tools.lua
 src/editor/menu_view.lua
 src/editor/output.lua
+src/editor/package.lua
 src/editor/settings.lua
 src/editor/shellbox.lua
 src/editor/singleinstance.lua

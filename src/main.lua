@@ -86,12 +86,12 @@ ide = {
       sep = "\1",
     }
   },
-  tools = {
-  },
-  iofilters = {
-  },
-  interpreters = {
-  },
+  tools = {},
+  iofilters = {},
+  interpreters = {},
+  packages = {},
+
+  proto = {}, -- prototypes for various classes
 
   app = nil, -- application engine
   interpreter = nil, -- current Lua interpreter
@@ -142,9 +142,9 @@ end
 -- ArchLinux running 2.8.12.2 doesn't have wx.wxMOD_SHIFT defined
 if not wx.wxMOD_SHIFT then wx.wxMOD_SHIFT = 0x04 end
 
-dofile "src/editor/ids.lua"
-dofile "src/editor/style.lua"
-dofile "src/editor/keymap.lua"
+for _, file in ipairs({"ids", "style", "keymap", "proto"}) do
+  dofile("src/editor/"..file..".lua")
+end
 
 ide.config.styles = StylesGetDefault()
 ide.config.stylesoutshell = StylesGetDefault()
@@ -224,15 +224,15 @@ end
 ide.app = dofile(ide.config.path.app.."/app.lua")
 local app = assert(ide.app)
 
-local function addToTab(tab,file)
+local function addToTab(tab, file, proto)
   local cfgfn,err = loadfile(file)
   if not cfgfn then
-    print(("Error while loading configuration file: '%s'."):format(err))
+    print(("Error while loading file: '%s'."):format(err))
   else
     local name = file:match("([a-zA-Z_0-9]+)%.lua$")
     local success, result = pcall(function()return cfgfn(assert(_G or _ENV))end)
     if not success then
-      print(("Error while processing configuration file: '%s'."):format(result))
+      print(("Error while processing file: '%s'."):format(result))
     elseif name then
       if (tab[name]) then
         local out = tab[name]
@@ -240,28 +240,40 @@ local function addToTab(tab,file)
           out[i] = v
         end
       else
-        tab[name] = result
+        tab[name] = proto and result and setmetatable(result, proto) or result
       end
     end
   end
 end
 
--- load interpreters
-local function loadInterpreters(filter)
-  for _, file in ipairs(FileSysGetRecursive("interpreters", true, "*.lua")) do
-    if (filter or app.loadfilters.interpreters)(file) then
-      addToTab(ide.interpreters,file)
+local function loadToTab(filter, folder, tab, recursive, proto)
+  filter = filter and type(filter) ~= 'function' and app.loadfilters[filter] or nil
+  for _, file in ipairs(FileSysGetRecursive(folder, recursive, "*.lua")) do
+    if not filter or filter(file) then
+      addToTab(tab, file, proto)
     end
   end
 end
 
+local function loadInterpreters(filter)
+  loadToTab(filter or "interpreters", "interpreters", ide.interpreters, false)
+end
+
+-- load tools
+local function loadTools(filter)
+  loadToTab(filter or "tools", "tools", ide.tools, false)
+end
+
+-- load packages
+local function loadPackages(filter)
+  loadToTab(filter, "packages", ide.packages, false, ide.proto.Plugin)
+  -- assign file names to each package
+  for fname, package in pairs(ide.packages) do package.fname = fname end
+end
+
 -- load specs
 local function loadSpecs(filter)
-  for _, file in ipairs(FileSysGetRecursive("spec", true, "*.lua")) do
-    if (filter or app.loadfilters.specs)(file) then
-      addToTab(ide.specs,file)
-    end
-  end
+  loadToTab(filter or "specs", "spec", ide.specs, true)
 
   for _, spec in pairs(ide.specs) do
     spec.sep = spec.sep or "\1" -- default separator doesn't match anything
@@ -284,15 +296,6 @@ local function loadSpecs(filter)
           spec.isstring[s] = true
         end
       end
-    end
-  end
-end
-
--- load tools
-local function loadTools(filter)
-  for _, file in ipairs(FileSysGetRecursive("tools", false, "*.lua")) do
-    if (filter or app.loadfilters.tools)(file) then
-      addToTab(ide.tools,file)
     end
   end
 end
@@ -393,12 +396,14 @@ do
   end
 end
 
+loadPackages()
+
 ---------------
 -- Load App
 
 for _, file in ipairs({
     "markup", "settings", "singleinstance", "iofilters",
-    "gui", "filetree", "output", "debugger",
+    "gui", "filetree", "output", "debugger", "package",
     "editor", "findreplace", "commands", "autocomplete", "shellbox",
     "menu_file", "menu_edit", "menu_search",
     "menu_view", "menu_project", "menu_tools", "menu_help",
@@ -407,6 +412,9 @@ for _, file in ipairs({
 end
 
 dofile "src/version.lua"
+
+-- register all the plugins
+PackageEventHandle("onRegister")
 
 -- load rest of settings
 SettingsRestoreEditorSettings()

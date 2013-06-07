@@ -1082,7 +1082,7 @@ end
 function AddEditor(editor, name)
   if notebook:AddPage(editor, name, true) then
     local id = editor:GetId()
-    local document = {}
+    local document = setmetatable({}, ide.proto.Document)
     document.editor = editor
     document.index = notebook:GetPageIndex(editor)
     document.fileName = nil
