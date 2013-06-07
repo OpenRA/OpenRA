@@ -194,6 +194,7 @@ namespace OpenRA.Renderer.SdlCommon
 		public IVertexBuffer<Vertex> CreateVertexBuffer(int size) { return new VertexBuffer<Vertex>(size); }
 		public ITexture CreateTexture() { return new Texture(); }
 		public ITexture CreateTexture(Bitmap bitmap) { return new Texture(bitmap); }
+		public IFrameBuffer CreateFrameBuffer(Size s) { return new FrameBuffer(s); }
 		public abstract IShader CreateShader(string name);
 	}
 }
