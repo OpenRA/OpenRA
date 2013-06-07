@@ -137,6 +137,11 @@ namespace OpenRA
 			return v;
 		}
 
+		public static bool IsPowerOf2(int v)
+		{
+			return (v & (v - 1)) == 0;
+		}
+
 		public static Size NextPowerOf2(this Size s) { return new Size(NextPowerOf2(s.Width), NextPowerOf2(s.Height)); }
 
 		public static string JoinWith<T>(this IEnumerable<T> ts, string j)

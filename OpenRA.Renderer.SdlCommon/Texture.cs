@@ -56,7 +56,7 @@ namespace OpenRA.Renderer.SdlCommon
 
 		public void SetData(byte[] colors, int width, int height)
 		{
-			if (!IsPowerOf2(width) || !IsPowerOf2(height))
+			if (!Exts.IsPowerOf2(width) || !Exts.IsPowerOf2(height))
 				throw new InvalidDataException("Non-power-of-two array {0}x{1}".F(width, height));
 
 			unsafe
@@ -78,7 +78,7 @@ namespace OpenRA.Renderer.SdlCommon
 			int width = colors.GetUpperBound(1) + 1;
 			int height = colors.GetUpperBound(0) + 1;
 
-			if (!IsPowerOf2(width) || !IsPowerOf2(height))
+			if (!Exts.IsPowerOf2(width) || !Exts.IsPowerOf2(height))
 				throw new InvalidDataException("Non-power-of-two array {0}x{1}".F(width,height));
 
 			unsafe
@@ -96,11 +96,8 @@ namespace OpenRA.Renderer.SdlCommon
 
 		public void SetData(Bitmap bitmap)
 		{
-			if (!IsPowerOf2(bitmap.Width) || !IsPowerOf2(bitmap.Height))
-			{
-				//throw new InvalidOperationException( "non-power-of-2-texture" );
+			if (!Exts.IsPowerOf2(bitmap.Width) || !Exts.IsPowerOf2(bitmap.Height))
 				bitmap = new Bitmap(bitmap, bitmap.Size.NextPowerOf2());
-			}
 
 			var bits = bitmap.LockBits(bitmap.Bounds(),
 				ImageLockMode.ReadOnly,
@@ -111,11 +108,6 @@ namespace OpenRA.Renderer.SdlCommon
 				0, Gl.GL_BGRA, Gl.GL_UNSIGNED_BYTE, bits.Scan0);        // todo: weird strides
 			ErrorHandler.CheckGlError();
 			bitmap.UnlockBits(bits);
-		}
-
-		bool IsPowerOf2(int v)
-		{
-			return (v & (v - 1)) == 0;
 		}
 	}
 }
