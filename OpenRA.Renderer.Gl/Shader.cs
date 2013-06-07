@@ -141,6 +141,16 @@ namespace OpenRA.Renderer.Glsl
 				textures[texUnit] = t;
 		}
 
+		public void SetVec(string name, float x)
+		{
+			Gl.glUseProgramObjectARB(program);
+			ErrorHandler.CheckGlError();
+			int param = Gl.glGetUniformLocationARB(program, name);
+			ErrorHandler.CheckGlError();
+			Gl.glUniform1fARB(param,x);
+			ErrorHandler.CheckGlError();
+		}
+
 		public void SetVec(string name, float x, float y)
 		{
 			Gl.glUseProgramObjectARB(program);
@@ -148,6 +158,34 @@ namespace OpenRA.Renderer.Glsl
 			int param = Gl.glGetUniformLocationARB(program, name);
 			ErrorHandler.CheckGlError();
 			Gl.glUniform2fARB(param,x,y);
+			ErrorHandler.CheckGlError();
+		}
+
+		public void SetVec(string name, float[] vec, int length)
+		{
+			int param = Gl.glGetUniformLocationARB(program, name);
+			ErrorHandler.CheckGlError();
+			switch(length)
+			{
+				case 1: Gl.glUniform1fv(param, 1, vec); break;
+				case 2: Gl.glUniform2fv(param, 1, vec); break;
+				case 3: Gl.glUniform3fv(param, 1, vec); break;
+				case 4: Gl.glUniform4fv(param, 1, vec); break;
+				default: throw new InvalidDataException("Invalid vector length");
+			}
+			ErrorHandler.CheckGlError();
+		}
+
+		public void SetMatrix(string name, float[] mtx)
+		{
+			if (mtx.Length != 16)
+				throw new InvalidDataException("Invalid 4x4 matrix");
+
+			Gl.glUseProgramObjectARB(program);
+			ErrorHandler.CheckGlError();
+			int param = Gl.glGetUniformLocationARB(program, name);
+			ErrorHandler.CheckGlError();
+			Gl.glUniformMatrix4fv(param, 1, Gl.GL_FALSE, mtx);
 			ErrorHandler.CheckGlError();
 		}
 	}

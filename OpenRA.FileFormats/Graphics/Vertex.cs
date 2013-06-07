@@ -24,5 +24,12 @@ namespace OpenRA.FileFormats.Graphics
 			this.u = uv.X; this.v = uv.Y;
 			this.p = pc.X; this.c = pc.Y;
 		}
+
+		public Vertex(float[] xyz, float2 uv, float2 pc)
+		{
+			this.x = xyz[0]; this.y = xyz[1]; this.z = xyz[2];
+			this.u = uv.X; this.v = uv.Y;
+			this.p = pc.X; this.c = pc.Y;
+		}
 	}
 }
