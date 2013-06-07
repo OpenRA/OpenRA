@@ -1,6 +1,7 @@
--- Copyright 2011-12 Paul Kulchenko, ZeroBrane LLC
+-- Copyright 2011-13 Paul Kulchenko, ZeroBrane LLC
 
--- converted from Resources/gideros_annot.api.
+-- converted from http://docs.giderosmobile.com/reference/autocomplete.php;
+-- also available in <Gideros>/Resources/gideros_annot.api.
 -- the conversion script is at the bottom of this file.
 
 return {
@@ -20,7 +21,7 @@ return {
    },
    new = {
     args = "()",
-    description = "Creates a new Accelerometer object",
+    description = "Creates new Accelerometer instance",
     returns = "()",
     type = "function"
    },
@@ -36,7 +37,8 @@ return {
     returns = "()",
     type = "function"
    }
-  }
+  },
+  type = "class"
  },
  AlertDialog = {
   childs = {
@@ -47,7 +49,7 @@ return {
     type = "function"
    },
    new = {
-    args = "()",
+    args = "(title, message, cancelButton, button1, button2)",
     description = "",
     returns = "()",
     type = "function"
@@ -58,47 +60,29 @@ return {
     returns = "()",
     type = "function"
    }
-  }
+  },
+  type = "class"
  },
  Application = {
   childs = {
-   CENTER = {
-    type = "value"
-   },
-   CROP = {
-    type = "value"
-   },
-   FIT_HEIGHT = {
-    type = "value"
-   },
-   FIT_WIDTH = {
-    type = "value"
-   },
    LANDSCAPE_LEFT = {
+    description = "value \"landscapeLeft\"",
     type = "value"
    },
    LANDSCAPE_RIGHT = {
-    type = "value"
-   },
-   LETTERBOX = {
-    type = "value"
-   },
-   NO_SCALE = {
-    type = "value"
-   },
-   PIXEL_PERFECT = {
+    description = "value \"landscapeRight\"",
     type = "value"
    },
    PORTRAIT = {
+    description = "value \"portrait\"",
     type = "value"
    },
    PORTRAIT_UPSIDE_DOWN = {
-    type = "value"
-   },
-   STRETCH = {
+    description = "value \"portraitUpsideDown\"",
     type = "value"
    }
-  }
+  },
+  type = "class"
  },
  Bitmap = {
   childs = {
@@ -110,7 +94,7 @@ return {
    },
    new = {
     args = "(texture)",
-    description = "creates a new Bitmap object",
+    description = "Creates a new Bitmap object",
     returns = "()",
     type = "function"
    },
@@ -132,102 +116,216 @@ return {
     returns = "()",
     type = "function"
    }
-  }
+  },
+  type = "class"
  },
  Core = {
   childs = {
    class = {
     args = "([base])",
-    description = "",
+    description = "Creates and returns new Gideros class",
     returns = "()",
     type = "function"
    }
-  }
+  },
+  type = "class"
  },
  Event = {
   childs = {
    ADDED_TO_STAGE = {
+    description = "value \"addedToStage\"",
+    type = "value"
+   },
+   APPLICATION_BACKGROUND = {
+    description = "value \"applicationBackground\"",
     type = "value"
    },
    APPLICATION_EXIT = {
+    description = "value \"applicationExit\"",
+    type = "value"
+   },
+   APPLICATION_FOREGROUND = {
+    description = "value \"applicationForeground\"",
     type = "value"
    },
    APPLICATION_RESUME = {
+    description = "value \"applicationResume\"",
     type = "value"
    },
    APPLICATION_START = {
+    description = "value \"applicationStart\"",
     type = "value"
    },
    APPLICATION_SUSPEND = {
+    description = "value \"applicationSuspend\"",
+    type = "value"
+   },
+   BANNER_ACTION_BEGIN = {
+    description = "value \"bannerActionBegin\"",
+    type = "value"
+   },
+   BANNER_ACTION_FINISHED = {
+    description = "value \"bannerActionFinished\"",
+    type = "value"
+   },
+   BANNER_AD_FAILED = {
+    description = "value \"bannerAdFailed\"",
+    type = "value"
+   },
+   BANNER_AD_LOADED = {
+    description = "value \"bannerAdLoaded\"",
     type = "value"
    },
    BEGIN_CONTACT = {
+    description = "value \"beginContact\"",
+    type = "value"
+   },
+   CHECK_BILLING_SUPPORTED_COMPLETE = {
+    description = "value \"checkBillingSupportedComplete\"",
     type = "value"
    },
    COMPLETE = {
+    description = "value \"complete\"",
+    type = "value"
+   },
+   CONFIRM_NOTIFICATION_COMPLETE = {
+    description = "value \"confirmNotificationComplete\"",
+    type = "value"
+   },
+   DIALOG_CANCEL = {
+    description = "value \"dialogCancel\"",
+    type = "value"
+   },
+   DIALOG_COMPLETE = {
+    description = "value \"dialogComplete\"",
+    type = "value"
+   },
+   DIALOG_ERROR = {
+    description = "value \"dialogError\"",
     type = "value"
    },
    END_CONTACT = {
+    description = "value \"endContact\"",
     type = "value"
    },
    ENTER_FRAME = {
+    description = "value \"enterFrame\"",
     type = "value"
    },
    ERROR = {
+    description = "value \"error\"",
+    type = "value"
+   },
+   HEADING_UPDATE = {
+    description = "value \"headingUpdate\"",
     type = "value"
    },
    KEY_DOWN = {
+    description = "value \"keyDown\"",
     type = "value"
    },
    KEY_UP = {
+    description = "value \"keyUp\"",
+    type = "value"
+   },
+   LOCATION_UPDATE = {
+    description = "value \"locationUpdate\"",
+    type = "value"
+   },
+   LOGIN_CANCEL = {
+    description = "value \"loginCancel\"",
+    type = "value"
+   },
+   LOGIN_COMPLETE = {
+    description = "value \"loginComplete\"",
+    type = "value"
+   },
+   LOGIN_ERROR = {
+    description = "value \"loginError\"",
+    type = "value"
+   },
+   LOGOUT_COMPLETE = {
+    description = "value \"logoutComplete\"",
     type = "value"
    },
    MOUSE_DOWN = {
+    description = "value \"mouseDown\"",
     type = "value"
    },
    MOUSE_MOVE = {
+    description = "value \"mouseMove\"",
     type = "value"
    },
    MOUSE_UP = {
+    description = "value \"mouseUp\"",
     type = "value"
    },
    POST_SOLVE = {
+    description = "value \"postSolve\"",
     type = "value"
    },
    PRE_SOLVE = {
+    description = "value \"preSolve\"",
     type = "value"
    },
    PROGRESS = {
+    description = "value \"progress\"",
+    type = "value"
+   },
+   PURCHASE_STATE_CHANGE = {
+    description = "value \"purchaseStateChange\"",
     type = "value"
    },
    REMOVED_FROM_STAGE = {
+    description = "value \"removedFromStage\"",
+    type = "value"
+   },
+   REQUEST_COMPLETE = {
+    description = "value \"requestComplete\"",
+    type = "value"
+   },
+   REQUEST_ERROR = {
+    description = "value \"requestError\"",
     type = "value"
    },
    REQUEST_PRODUCTS_COMPLETE = {
+    description = "value \"requestProductsComplete\"",
+    type = "value"
+   },
+   REQUEST_PURCHASE_COMPLETE = {
+    description = "value \"requestPurchaseComplete\"",
     type = "value"
    },
    RESTORE_TRANSACTIONS_COMPLETE = {
+    description = "value \"restoreTransactionsComplete\"",
     type = "value"
    },
    TIMER = {
+    description = "value \"timer\"",
     type = "value"
    },
    TIMER_COMPLETE = {
+    description = "value \"timerComplete\"",
     type = "value"
    },
    TOUCHES_BEGIN = {
+    description = "value \"touchesBegin\"",
     type = "value"
    },
    TOUCHES_CANCEL = {
+    description = "value \"touchesCancel\"",
     type = "value"
    },
    TOUCHES_END = {
+    description = "value \"touchesEnd\"",
     type = "value"
    },
    TOUCHES_MOVE = {
+    description = "value \"touchesMove\"",
     type = "value"
    },
    TRANSACTION = {
+    description = "value \"transaction\"",
     type = "value"
    },
    getTarget = {
@@ -244,7 +342,7 @@ return {
    },
    new = {
     args = "(type)",
-    description = "creates a new Event object",
+    description = "Creates a new Event object",
     returns = "()",
     type = "function"
    },
@@ -254,7 +352,8 @@ return {
     returns = "()",
     type = "function"
    }
-  }
+  },
+  type = "class"
  },
  EventDispatcher = {
   childs = {
@@ -278,30 +377,141 @@ return {
    },
    new = {
     args = "()",
-    description = "creates a new EventDispatcher object",
+    description = "Creates a new EventDispatcher object",
     returns = "()",
     type = "function"
    },
    removeEventListener = {
-    args = "(type, listener [, data])",
+    args = "(type, listener, data)",
     description = "Removes a listener function",
     returns = "()",
     type = "function"
    }
-  }
+  },
+  type = "class"
+ },
+ Facebook = {
+  childs = {
+   authorize = {
+    args = "(permissions)",
+    description = "",
+    returns = "()",
+    type = "function"
+   },
+   dialog = {
+    args = "(action, paramaters)",
+    description = "",
+    returns = "()",
+    type = "function"
+   },
+   extendAccessToken = {
+    args = "()",
+    description = "",
+    returns = "()",
+    type = "function"
+   },
+   extendAccessTokenIfNeeded = {
+    args = "()",
+    description = "",
+    returns = "()",
+    type = "function"
+   },
+   getAccessToken = {
+    args = "()",
+    description = "",
+    returns = "()",
+    type = "function"
+   },
+   getExpirationDate = {
+    args = "()",
+    description = "",
+    returns = "()",
+    type = "function"
+   },
+   graphRequest = {
+    args = "(graphPath, paramaters, method)",
+    description = "",
+    returns = "()",
+    type = "function"
+   },
+   isSessionValid = {
+    args = "()",
+    description = "",
+    returns = "()",
+    type = "function"
+   },
+   logout = {
+    args = "()",
+    description = "",
+    returns = "()",
+    type = "function"
+   },
+   setAccessToken = {
+    args = "(accessToken)",
+    description = "",
+    returns = "()",
+    type = "function"
+   },
+   setAppId = {
+    args = "(appId)",
+    description = "",
+    returns = "()",
+    type = "function"
+   },
+   setExpirationDate = {
+    args = "(expirationDate)",
+    description = "",
+    returns = "()",
+    type = "function"
+   },
+   shouldExtendAccessToken = {
+    args = "()",
+    description = "",
+    returns = "()",
+    type = "function"
+   }
+  },
+  type = "class"
  },
  Font = {
   childs = {
    new = {
-    args = "(txtfile, imagefile [, filtering])",
-    description = "creates a new Font object",
+    args = "(txtfile, imagefile, filtering)",
+    description = "Creates a new Font object",
     returns = "()",
     type = "function"
    }
-  }
+  },
+  type = "class"
  },
  FontBase = {
-  childs = {}
+  childs = {
+   getAdvanceX = {
+    args = "(text, letterSpacing, size)",
+    description = "",
+    returns = "()",
+    type = "function"
+   },
+   getAscender = {
+    args = "()",
+    description = "Returns the ascender of the font",
+    returns = "()",
+    type = "function"
+   },
+   getBounds = {
+    args = "(text)",
+    description = "Returns the tight bounding rectangle of the characters in the string specified by text",
+    returns = "()",
+    type = "function"
+   },
+   getLineHeight = {
+    args = "()",
+    description = "Returns the distance from one base line to the next",
+    returns = "()",
+    type = "function"
+   }
+  },
+  type = "class"
  },
  Geolocation = {
   childs = {
@@ -331,19 +541,19 @@ return {
    },
    new = {
     args = "()",
-    description = "Creates a new Geolocation object",
+    description = "Creates new Geolocation instance",
     returns = "()",
     type = "function"
    },
    setAccuracy = {
     args = "(accuracy)",
-    description = "Sets the desired accuracy (in meters) of the location data",
+    description = "Of the location data",
     returns = "()",
     type = "function"
    },
    setThreshold = {
     args = "(threshold)",
-    description = "Sets the minimum distance (in meters) threshold",
+    description = "Threshold",
     returns = "()",
     type = "function"
    },
@@ -383,7 +593,101 @@ return {
     returns = "()",
     type = "function"
    }
-  }
+  },
+  type = "class"
+ },
+ GoogleBilling = {
+  childs = {
+   BILLING_UNAVAILABLE = {
+    description = "value \"billingUnavailable\"",
+    type = "value"
+   },
+   CANCELED = {
+    description = "value \"canceled\"",
+    type = "value"
+   },
+   DEVELOPER_ERROR = {
+    description = "value \"developerError\"",
+    type = "value"
+   },
+   ERROR = {
+    description = "value \"error\"",
+    type = "value"
+   },
+   EXPIRED = {
+    description = "value \"expired\"",
+    type = "value"
+   },
+   INAPP = {
+    description = "value \"inapp\"",
+    type = "value"
+   },
+   ITEM_UNAVAILABLE = {
+    description = "value \"itemUnavailable\"",
+    type = "value"
+   },
+   OK = {
+    description = "value \"ok\"",
+    type = "value"
+   },
+   PURCHASED = {
+    description = "value \"purchased\"",
+    type = "value"
+   },
+   REFUNDED = {
+    description = "value \"refunded\"",
+    type = "value"
+   },
+   SERVICE_UNAVAILABLE = {
+    description = "value \"serviceUnavailable\"",
+    type = "value"
+   },
+   SUBS = {
+    description = "value \"subs\"",
+    type = "value"
+   },
+   USER_CANCELED = {
+    description = "value \"userCanceled\"",
+    type = "value"
+   },
+   checkBillingSupported = {
+    args = "(productType)",
+    description = "",
+    returns = "()",
+    type = "function"
+   },
+   confirmNotification = {
+    args = "(notificationId)",
+    description = "",
+    returns = "()",
+    type = "function"
+   },
+   requestPurchase = {
+    args = "(productId, productType, developerPayload)",
+    description = "",
+    returns = "()",
+    type = "function"
+   },
+   restoreTransactions = {
+    args = "()",
+    description = "",
+    returns = "()",
+    type = "function"
+   },
+   setApiVersion = {
+    args = "(apiVersion)",
+    description = "",
+    returns = "()",
+    type = "function"
+   },
+   setPublicKey = {
+    args = "(publicKey)",
+    description = "",
+    returns = "()",
+    type = "function"
+   }
+  },
+  type = "class"
  },
  Gyroscope = {
   childs = {
@@ -401,7 +705,7 @@ return {
    },
    new = {
     args = "()",
-    description = "Creates a new Gyroscope object",
+    description = "Creates new Gyroscope instance",
     returns = "()",
     type = "function"
    },
@@ -417,50 +721,69 @@ return {
     returns = "()",
     type = "function"
    }
-  }
+  },
+  type = "class"
  },
  KeyCode = {
   childs = {
    BACK = {
+    description = "value \"301\"",
     type = "value"
    },
    CENTER = {
+    description = "value \"304\"",
     type = "value"
    },
    DOWN = {
+    description = "value \"40\"",
     type = "value"
    },
    L1 = {
+    description = "value \"307\"",
     type = "value"
    },
    LEFT = {
+    description = "value \"37\"",
     type = "value"
    },
    MENU = {
+    description = "value \"303\"",
     type = "value"
    },
    R1 = {
+    description = "value \"308\"",
     type = "value"
    },
    RIGHT = {
+    description = "value \"39\"",
     type = "value"
    },
    SEARCH = {
+    description = "value \"302\"",
     type = "value"
    },
    SELECT = {
+    description = "value \"305\"",
     type = "value"
    },
    START = {
+    description = "value \"306\"",
     type = "value"
    },
    UP = {
+    description = "value \"38\"",
     type = "value"
    },
    X = {
+    description = "value \"88\"",
+    type = "value"
+   },
+   Y = {
+    description = "value \"89\"",
     type = "value"
    }
-  }
+  },
+  type = "class"
  },
  Matrix = {
   childs = {
@@ -507,13 +830,13 @@ return {
     type = "function"
    },
    new = {
-    args = "([m11 [, m12 [, m21 [, m22 [, tx [, ty]]]]]])",
-    description = "creates a new Matrix object",
+    args = "(m11, m12, m21, m22, tx, ty)",
+    description = "Creates a new Matrix object",
     returns = "()",
     type = "function"
    },
    setElements = {
-    args = "([m11 [, m12 [, m21 [, m22 [, tx [, ty]]]]]])",
+    args = "(m11, m12, m21, m22, tx, ty)",
     description = "Sets all 6 elements of this matrix instance",
     returns = "()",
     type = "function"
@@ -525,8 +848,20 @@ return {
     type = "function"
    },
    setM12 = {
-    args = "(m22)",
+    args = "(m12)",
     description = "Sets the value of the m22 component",
+    returns = "()",
+    type = "function"
+   },
+   setM21 = {
+    args = "(m21)",
+    description = "",
+    returns = "()",
+    type = "function"
+   },
+   setM22 = {
+    args = "(m22)",
+    description = "",
     returns = "()",
     type = "function"
    },
@@ -542,7 +877,151 @@ return {
     returns = "()",
     type = "function"
    }
-  }
+  },
+  type = "class"
+ },
+ Mesh = {
+  childs = {
+   clearColorArray = {
+    args = "()",
+    description = "",
+    returns = "()",
+    type = "function"
+   },
+   clearIndexArray = {
+    args = "()",
+    description = "",
+    returns = "()",
+    type = "function"
+   },
+   clearTexture = {
+    args = "()",
+    description = "",
+    returns = "()",
+    type = "function"
+   },
+   clearTextureCoordinateArray = {
+    args = "()",
+    description = "",
+    returns = "()",
+    type = "function"
+   },
+   clearVertexArray = {
+    args = "()",
+    description = "",
+    returns = "()",
+    type = "function"
+   },
+   new = {
+    args = "()",
+    description = "",
+    returns = "()",
+    type = "function"
+   },
+   resizeColorArray = {
+    args = "(size)",
+    description = "",
+    returns = "()",
+    type = "function"
+   },
+   resizeIndexArray = {
+    args = "(size)",
+    description = "",
+    returns = "()",
+    type = "function"
+   },
+   resizeTextureCoordinateArray = {
+    args = "(size)",
+    description = "",
+    returns = "()",
+    type = "function"
+   },
+   resizeVertexArray = {
+    args = "(size)",
+    description = "",
+    returns = "()",
+    type = "function"
+   },
+   setColor = {
+    args = "(i, color, alpha)",
+    description = "",
+    returns = "()",
+    type = "function"
+   },
+   setColorArray = {
+    args = "(colors)",
+    description = "",
+    returns = "()",
+    type = "function"
+   },
+   setColors = {
+    args = "(colors)",
+    description = "",
+    returns = "()",
+    type = "function"
+   },
+   setIndex = {
+    args = "(i, index)",
+    description = "",
+    returns = "()",
+    type = "function"
+   },
+   setIndexArray = {
+    args = "(indices)",
+    description = "",
+    returns = "()",
+    type = "function"
+   },
+   setIndices = {
+    args = "(indices)",
+    description = "",
+    returns = "()",
+    type = "function"
+   },
+   setTexture = {
+    args = "(texture)",
+    description = "",
+    returns = "()",
+    type = "function"
+   },
+   setTextureCoordinate = {
+    args = "(i, u, v)",
+    description = "",
+    returns = "()",
+    type = "function"
+   },
+   setTextureCoordinateArray = {
+    args = "(textureCoordinates)",
+    description = "",
+    returns = "()",
+    type = "function"
+   },
+   setTextureCoordinates = {
+    args = "(textureCoordinates)",
+    description = "",
+    returns = "()",
+    type = "function"
+   },
+   setVertex = {
+    args = "(i, x, y)",
+    description = "",
+    returns = "()",
+    type = "function"
+   },
+   setVertexArray = {
+    args = "(vertices)",
+    description = "",
+    returns = "()",
+    type = "function"
+   },
+   setVertices = {
+    args = "(vertices)",
+    description = "",
+    returns = "()",
+    type = "function"
+   }
+  },
+  type = "class"
  },
  MovieClip = {
   childs = {
@@ -566,7 +1045,7 @@ return {
    },
    new = {
     args = "(timeline)",
-    description = "creates a new MovieClip object",
+    description = "Creates a new MovieClip object",
     returns = "()",
     type = "function"
    },
@@ -594,18 +1073,33 @@ return {
     returns = "()",
     type = "function"
    }
-  }
+  },
+  type = "class"
  },
  Shape = {
   childs = {
    EVEN_ODD = {
+    description = "value \"evenOdd\"",
+    type = "value"
+   },
+   NONE = {
+    description = "value \"none\"",
     type = "value"
    },
    NON_ZERO = {
+    description = "value \"nonZero\"",
+    type = "value"
+   },
+   SOLID = {
+    description = "value \"solid\"",
+    type = "value"
+   },
+   TEXTURE = {
+    description = "value \"texture\"",
     type = "value"
    },
    beginPath = {
-    args = "()",
+    args = "(winding)",
     description = "Resets the current path",
     returns = "()",
     type = "function"
@@ -635,14 +1129,14 @@ return {
     type = "function"
    },
    moveTo = {
-    args = "()",
+    args = "(x, y)",
     description = "Creates a new subpath with the given point",
     returns = "()",
     type = "function"
    },
    new = {
     args = "()",
-    description = "creates a new Shape object",
+    description = "Creates a new Shape object",
     returns = "()",
     type = "function"
    },
@@ -658,26 +1152,40 @@ return {
     returns = "()",
     type = "function"
    }
-  }
+  },
+  type = "class"
  },
  Sound = {
   childs = {
+   getLength = {
+    args = "()",
+    description = "",
+    returns = "()",
+    type = "function"
+   },
    new = {
     args = "(filename)",
-    description = "creates a new Sound object",
+    description = "Creates a new Sound object",
     returns = "()",
     type = "function"
    },
    play = {
-    args = "(startTime, loops)",
+    args = "(startTime, looping, paused)",
     description = "Creates a new SoundChannel object to play the sound",
     returns = "()",
     type = "function"
    }
-  }
+  },
+  type = "class"
  },
  SoundChannel = {
   childs = {
+   getPitch = {
+    args = "()",
+    description = "Returns the current pitch of the sound channel",
+    returns = "()",
+    type = "function"
+   },
    getPosition = {
     args = "()",
     description = "Returns the position of the current playback",
@@ -687,6 +1195,48 @@ return {
    getVolume = {
     args = "()",
     description = "Returns the current volume of the sound channel",
+    returns = "()",
+    type = "function"
+   },
+   isLooping = {
+    args = "()",
+    description = "Returns the looping state of the channel",
+    returns = "()",
+    type = "function"
+   },
+   isPaused = {
+    args = "()",
+    description = "Returns the paused state of the channel",
+    returns = "()",
+    type = "function"
+   },
+   isPlaying = {
+    args = "()",
+    description = "Returns the playing state for the sound channel",
+    returns = "()",
+    type = "function"
+   },
+   setLooping = {
+    args = "(looping)",
+    description = "Sets the looping state of the channel",
+    returns = "()",
+    type = "function"
+   },
+   setPaused = {
+    args = "(paused)",
+    description = "Sets the paused state of the channel",
+    returns = "()",
+    type = "function"
+   },
+   setPitch = {
+    args = "(pitch)",
+    description = "Sets the pitch of the sound channel",
+    returns = "()",
+    type = "function"
+   },
+   setPosition = {
+    args = "(position)",
+    description = "Sets the position of the current playback",
     returns = "()",
     type = "function"
    },
@@ -702,20 +1252,29 @@ return {
     returns = "()",
     type = "function"
    }
-  }
+  },
+  type = "class"
  },
  Sprite = {
   childs = {
    ADD = {
+    description = "value \"add\"",
     type = "value"
    },
    ALPHA = {
+    description = "value \"alpha\"",
     type = "value"
    },
    MULTIPLY = {
+    description = "value \"multiply\"",
     type = "value"
    },
    NO_ALPHA = {
+    description = "value \"noAlpha\"",
+    type = "value"
+   },
+   SCREEN = {
+    description = "value \"screen\"",
     type = "value"
    },
    addChild = {
@@ -756,7 +1315,7 @@ return {
    },
    getBounds = {
     args = "(targetSprite)",
-    description = "Returns the bounds as it appears in another sprite’s coordinate system",
+    description = "Returns the bounds as it appears in another sprite's coordinate system",
     returns = "()",
     type = "function"
    },
@@ -767,7 +1326,7 @@ return {
     type = "function"
    },
    getChildIndex = {
-    args = "(sprite)",
+    args = "(child)",
     description = "Returns the index of the specified child sprite",
     returns = "()",
     type = "function"
@@ -852,7 +1411,7 @@ return {
    },
    globalToLocal = {
     args = "(x, y)",
-    description = "Converts the x,y coordinates from the global to the sprite’s (local) coordinates",
+    description = "Converts the x,y coordinates from the global to the sprite's (local) coordinates",
     returns = "()",
     type = "function"
    },
@@ -870,13 +1429,13 @@ return {
    },
    localToGlobal = {
     args = "(x, y)",
-    description = "Converts the x,y coordinates from the sprites’s (local) coordinates to the global coordinates",
+    description = "Converts the x,y coordinates from the sprite's (local) coordinates to the global coordinates",
     returns = "()",
     type = "function"
    },
    new = {
     args = "()",
-    description = "creates a new Sprite object",
+    description = "Creates a new Sprite object",
     returns = "()",
     type = "function"
    },
@@ -941,7 +1500,7 @@ return {
     type = "function"
    },
    setScale = {
-    args = "(scaleX [, scaleY])",
+    args = "(scaleX, scaleY)",
     description = "Sets the horizontal and vertical scales of the sprite",
     returns = "()",
     type = "function"
@@ -976,20 +1535,25 @@ return {
     returns = "()",
     type = "function"
    }
-  }
+  },
+  type = "class"
  },
  Stage = {
-  childs = {}
+  childs = {},
+  type = "class"
  },
  StoreKit = {
   childs = {
    FAILED = {
+    description = "value \"failed\"",
     type = "value"
    },
    PURCHASED = {
+    description = "value \"purchased\"",
     type = "value"
    },
    RESTORED = {
+    description = "value \"restored\"",
     type = "value"
    },
    canMakePayments = {
@@ -1011,7 +1575,7 @@ return {
     type = "function"
    },
    purchase = {
-    args = "(productIdentifier [, quantity])",
+    args = "(productIdentifier, quantity)",
     description = "Process a payment request",
     returns = "()",
     type = "function"
@@ -1028,17 +1592,19 @@ return {
     returns = "()",
     type = "function"
    }
-  }
+  },
+  type = "class"
  },
  TTFont = {
   childs = {
    new = {
-    args = "(filename, size)",
-    description = "creates a new TTFont object",
+    args = "(filename, size, text, filtering)",
+    description = "Creates a new TTFont object",
     returns = "()",
     type = "function"
    }
-  }
+  },
+  type = "class"
  },
  TextField = {
   childs = {
@@ -1062,7 +1628,7 @@ return {
    },
    new = {
     args = "(font, text)",
-    description = "creates a new TextField object with the specified font and text",
+    description = "Creates a new TextField object with the specified font and text",
     returns = "()",
     type = "function"
    },
@@ -1084,17 +1650,38 @@ return {
     returns = "()",
     type = "function"
    }
-  }
+  },
+  type = "class"
  },
  TextInputDialog = {
   childs = {
+   EMAIL = {
+    description = "value \"email\"",
+    type = "value"
+   },
+   NUMBER = {
+    description = "value \"number\"",
+    type = "value"
+   },
+   PHONE = {
+    description = "value \"phone\"",
+    type = "value"
+   },
+   TEXT = {
+    description = "value \"text\"",
+    type = "value"
+   },
+   URL = {
+    description = "value \"url\"",
+    type = "value"
+   },
    getInputType = {
     args = "()",
     description = "",
     returns = "()",
     type = "function"
    },
-   hide = {
+   getText = {
     args = "()",
     description = "",
     returns = "()",
@@ -1107,43 +1694,53 @@ return {
     type = "function"
    },
    new = {
-    args = "()",
+    args = "(title, message, text, cancelButton, button1, button2)",
     description = "",
     returns = "()",
     type = "function"
    },
    setInputType = {
-    args = "()",
+    args = "(type)",
     description = "",
     returns = "()",
     type = "function"
    },
    setSecureInput = {
-    args = "()",
+    args = "(secureInput)",
     description = "",
     returns = "()",
     type = "function"
    },
-   show = {
-    args = "()",
+   setText = {
+    args = "(text)",
     description = "",
     returns = "()",
     type = "function"
    }
-  }
+  },
+  type = "class"
  },
  Texture = {
   childs = {
    new = {
-    args = "(filename [, filtering [, options]])",
-    description = "creates a new Texture object",
+    args = "(filename, filtering, options)",
+    description = "Creates a new Texture object",
     returns = "()",
     type = "function"
    }
-  }
+  },
+  type = "class"
  },
  TextureBase = {
   childs = {
+   CLAMP = {
+    description = "value \"clamp\"",
+    type = "value"
+   },
+   REPEAT = {
+    description = "value \"repeat\"",
+    type = "value"
+   },
    getHeight = {
     args = "()",
     description = "Returns the height of the texture in pixels",
@@ -1156,7 +1753,8 @@ return {
     returns = "()",
     type = "function"
    }
-  }
+  },
+  type = "class"
  },
  TexturePack = {
   childs = {
@@ -1167,12 +1765,13 @@ return {
     type = "function"
    },
    new = {
-    args = "(txtfile, imagefile)",
-    description = "creates a new TexturePack object",
+    args = "(txtfile, imagefile, filtering, options)",
+    description = "",
     returns = "()",
     type = "function"
    }
-  }
+  },
+  type = "class"
  },
  TextureRegion = {
   childs = {
@@ -1183,8 +1782,8 @@ return {
     type = "function"
    },
    new = {
-    args = "(texture [, x, y, width, height])",
-    description = "creates a new TextureRegion object",
+    args = "(texture, x, y, width, height)",
+    description = "",
     returns = "()",
     type = "function"
    },
@@ -1194,10 +1793,23 @@ return {
     returns = "()",
     type = "function"
    }
-  }
+  },
+  type = "class"
  },
  TileMap = {
   childs = {
+   FLIP_DIAGONAL = {
+    description = "value \"1\"",
+    type = "value"
+   },
+   FLIP_HORIZONTAL = {
+    description = "value \"4\"",
+    type = "value"
+   },
+   FLIP_VERTICAL = {
+    description = "value \"2\"",
+    type = "value"
+   },
    clearTile = {
     args = "(x, y)",
     description = "Set an empty tile at given indices",
@@ -1211,13 +1823,13 @@ return {
     type = "function"
    },
    new = {
-    args = "(width, height, texture, tilewidth, tileheight [, spacingx, spacingy, marginx, marginy])",
-    description = "creates a new TileMap instance",
+    args = "(width, height, texture, tilewidth, tileheight, spacingx, spacingy, marginx, marginy, displaywidth, displayheight)",
+    description = "Creates a new TileMap instance",
     returns = "()",
     type = "function"
    },
    setTile = {
-    args = "(x, y, tx, ty)",
+    args = "(x, y, tx, ty, flip)",
     description = "Sets the index of the tile",
     returns = "()",
     type = "function"
@@ -1228,13 +1840,14 @@ return {
     returns = "()",
     type = "function"
    }
-  }
+  },
+  type = "class"
  },
  Timer = {
   childs = {
    delayedCall = {
     args = "(delay, func [, data])",
-    description = "delayed call a function after a set amount of time",
+    description = "Delayed call a function after a set amount of time",
     returns = "()",
     type = "function"
    },
@@ -1264,13 +1877,13 @@ return {
    },
    new = {
     args = "(delay, repeatCount)",
-    description = "creates a new Timer object",
+    description = "Creates a new Timer object",
     returns = "()",
     type = "function"
    },
    pauseAll = {
     args = "()",
-    description = "pause all timers",
+    description = "Pause all timers",
     returns = "()",
     type = "function"
    },
@@ -1282,7 +1895,7 @@ return {
    },
    resumeAll = {
     args = "()",
-    description = "resume all timers",
+    description = "Resume all timers",
     returns = "()",
     type = "function"
    },
@@ -1312,24 +1925,29 @@ return {
    },
    stopAll = {
     args = "()",
-    description = "stop all timers",
+    description = "Stop all timers",
     returns = "()",
     type = "function"
    }
-  }
+  },
+  type = "class"
  },
  UrlLoader = {
   childs = {
    DELETE = {
+    description = "value \"delete\"",
     type = "value"
    },
    GET = {
+    description = "value \"get\"",
     type = "value"
    },
    POST = {
+    description = "value \"post\"",
     type = "value"
    },
    PUT = {
+    description = "value \"put\"",
     type = "value"
    },
    close = {
@@ -1339,24 +1957,31 @@ return {
     type = "function"
    },
    load = {
-    args = "(url [, method [, body]])",
+    args = "(url, method, headers, body)",
     description = "Loads data from the specified URL",
     returns = "()",
     type = "function"
    },
    new = {
-    args = "(url [, method [, body]])",
-    description = "creates a new UrlLoader object",
+    args = "(url, method, headers, body)",
+    description = "Creates a new UrlLoader object",
     returns = "()",
     type = "function"
    }
-  }
+  },
+  type = "class"
  },
  application = {
   childs = {
    exit = {
     args = "()",
     description = "Terminates the application",
+    returns = "()",
+    type = "function"
+   },
+   getApiVersion = {
+    args = "()",
+    description = "Returns the API version",
     returns = "()",
     type = "function"
    },
@@ -1434,7 +2059,7 @@ return {
    },
    getLogicalTranslateX = {
     args = "()",
-    description = "Returns the translation of automatic screen scaling on the x-axis ",
+    description = "Returns the translation of automatic screen scaling on the x-axis",
     returns = "()",
     type = "function"
    },
@@ -1459,6 +2084,18 @@ return {
    getScaleMode = {
     args = "()",
     description = "Returns the automatic scale mode of the application",
+    returns = "()",
+    type = "function"
+   },
+   getScreenDensity = {
+    args = "()",
+    description = "Returns the screen density in pixels per inch",
+    returns = "()",
+    type = "function"
+   },
+   getTextureMemoryUsage = {
+    args = "()",
+    description = "Returns the texture memory usage in Kbytes",
     returns = "()",
     type = "function"
    },
@@ -1510,7 +2147,8 @@ return {
     returns = "()",
     type = "function"
    }
-  }
+  },
+  type = "class"
  },
  b2 = {
   childs = {
@@ -1600,6 +2238,18 @@ return {
       returns = "()",
       type = "function"
      },
+     getLocalPoint = {
+      args = "(x, y)",
+      description = "",
+      returns = "()",
+      type = "function"
+     },
+     getLocalVector = {
+      args = "(x, y)",
+      description = "",
+      returns = "()",
+      type = "function"
+     },
      getMass = {
       args = "()",
       description = "Returns the total mass of the body in kilograms (kg)",
@@ -1618,6 +2268,18 @@ return {
       returns = "()",
       type = "function"
      },
+     getWorldPoint = {
+      args = "(x, y)",
+      description = "",
+      returns = "()",
+      type = "function"
+     },
+     getWorldVector = {
+      args = "(x, y)",
+      description = "",
+      returns = "()",
+      type = "function"
+     },
      isActive = {
       args = "()",
       description = "Returns the active state of the body",
@@ -1630,9 +2292,33 @@ return {
       returns = "()",
       type = "function"
      },
+     isBullet = {
+      args = "()",
+      description = "",
+      returns = "()",
+      type = "function"
+     },
+     isFixedRotation = {
+      args = "()",
+      description = "",
+      returns = "()",
+      type = "function"
+     },
+     isSleepingAllowed = {
+      args = "()",
+      description = "",
+      returns = "()",
+      type = "function"
+     },
      setActive = {
       args = "(flag)",
       description = "Sets the active state of the body",
+      returns = "()",
+      type = "function"
+     },
+     setAngle = {
+      args = "(angle)",
+      description = "",
       returns = "()",
       type = "function"
      },
@@ -1654,6 +2340,18 @@ return {
       returns = "()",
       type = "function"
      },
+     setBullet = {
+      args = "(flag)",
+      description = "",
+      returns = "()",
+      type = "function"
+     },
+     setFixedRotation = {
+      args = "(flag)",
+      description = "",
+      returns = "()",
+      type = "function"
+     },
      setGravityScale = {
       args = "(scale)",
       description = "Sets the gravity scale of the body",
@@ -1662,7 +2360,7 @@ return {
      },
      setLinearDamping = {
       args = "(linearDamping)",
-      description = "Sets the linear damping of the body ",
+      description = "Sets the linear damping of the body",
       returns = "()",
       type = "function"
      },
@@ -1677,8 +2375,15 @@ return {
       description = "Sets the world body origin position",
       returns = "()",
       type = "function"
+     },
+     setSleepingAllowed = {
+      args = "(flag)",
+      description = "",
+      returns = "()",
+      type = "function"
      }
-    }
+    },
+    type = "class"
    },
    ChainShape = {
     childs = {
@@ -1694,19 +2399,20 @@ return {
       returns = "()",
       type = "function"
      },
-     instance = {
+     new = {
       args = "()",
       description = "",
       returns = "()",
       type = "function"
      }
-    }
+    },
+    type = "class"
    },
    CircleShape = {
     childs = {
      new = {
-      args = "([centerx, centery, radius])",
-      description = "creates a new b2.CircleShape instance",
+      args = "(centerx, centery, radius)",
+      description = "",
       returns = "()",
       type = "function"
      },
@@ -1716,10 +2422,128 @@ return {
       returns = "()",
       type = "function"
      }
-    }
+    },
+    type = "class"
+   },
+   Contact = {
+    childs = {
+     getChildIndexA = {
+      args = "()",
+      description = "",
+      returns = "()",
+      type = "function"
+     },
+     getChildIndexB = {
+      args = "()",
+      description = "",
+      returns = "()",
+      type = "function"
+     },
+     getFixtureA = {
+      args = "()",
+      description = "",
+      returns = "()",
+      type = "function"
+     },
+     getFixtureB = {
+      args = "()",
+      description = "",
+      returns = "()",
+      type = "function"
+     },
+     getFriction = {
+      args = "()",
+      description = "",
+      returns = "()",
+      type = "function"
+     },
+     getManifold = {
+      args = "()",
+      description = "",
+      returns = "()",
+      type = "function"
+     },
+     getRestitution = {
+      args = "()",
+      description = "",
+      returns = "()",
+      type = "function"
+     },
+     getWorldManifold = {
+      args = "()",
+      description = "",
+      returns = "()",
+      type = "function"
+     },
+     isTouching = {
+      args = "()",
+      description = "",
+      returns = "()",
+      type = "function"
+     },
+     resetFriction = {
+      args = "()",
+      description = "",
+      returns = "()",
+      type = "function"
+     },
+     resetRestitution = {
+      args = "()",
+      description = "",
+      returns = "()",
+      type = "function"
+     },
+     setEnabled = {
+      args = "(flag)",
+      description = "",
+      returns = "()",
+      type = "function"
+     },
+     setFriction = {
+      args = "(friction)",
+      description = "",
+      returns = "()",
+      type = "function"
+     },
+     setRestitution = {
+      args = "(restitution)",
+      description = "",
+      returns = "()",
+      type = "function"
+     }
+    },
+    type = "class"
+   },
+   DISTANCE_JOINT = {
+    description = "value \"3\"",
+    type = "value"
+   },
+   DYNAMIC_BODY = {
+    description = "value \"2\"",
+    type = "value"
    },
    DebugDraw = {
     childs = {
+     AABB_BIT = {
+      description = "value \"4\"",
+      type = "value"
+     },
+     CENTER_OF_MASS_BIT = {
+      description = "value \"16\"",
+      type = "value"
+     },
+     JOINT_BIT = {
+      description = "value \"2\"",
+      type = "value"
+     },
+     PAIR_BIT = {
+      description = "value \"8\"",
+      type = "value"
+     },
+     SHAPE_BIT = {
+      description = "value \"1\"",
+      type = "value"
+     },
      appendFlags = {
       args = "(flags)",
       description = "Append flags to the current flags",
@@ -1740,7 +2564,7 @@ return {
      },
      new = {
       args = "()",
-      description = "creates a new b2.DebugDraw instance",
+      description = "",
       returns = "()",
       type = "function"
      },
@@ -1750,7 +2574,8 @@ return {
       returns = "()",
       type = "function"
      }
-    }
+    },
+    type = "class"
    },
    DistanceJoint = {
     childs = {
@@ -1790,13 +2615,14 @@ return {
       returns = "()",
       type = "function"
      }
-    }
+    },
+    type = "class"
    },
    EdgeShape = {
     childs = {
      new = {
-      args = "([v1x, v1y, v2x, v2y])",
-      description = "creates a new b2.EdgeShape instance",
+      args = "(v1x, v1y, v2x, v2y)",
+      description = "",
       returns = "()",
       type = "function"
      },
@@ -1806,7 +2632,12 @@ return {
       returns = "()",
       type = "function"
      }
-    }
+    },
+    type = "class"
+   },
+   FRICTION_JOINT = {
+    description = "value \"9\"",
+    type = "value"
    },
    Fixture = {
     childs = {
@@ -1840,7 +2671,8 @@ return {
       returns = "()",
       type = "function"
      }
-    }
+    },
+    type = "class"
    },
    FrictionJoint = {
     childs = {
@@ -1868,7 +2700,12 @@ return {
       returns = "()",
       type = "function"
      }
-    }
+    },
+    type = "class"
+   },
+   GEAR_JOINT = {
+    description = "value \"6\"",
+    type = "value"
    },
    GearJoint = {
     childs = {
@@ -1884,7 +2721,8 @@ return {
       returns = "()",
       type = "function"
      }
-    }
+    },
+    type = "class"
    },
    Joint = {
     childs = {
@@ -1936,7 +2774,16 @@ return {
       returns = "()",
       type = "function"
      }
-    }
+    },
+    type = "class"
+   },
+   KINEMATIC_BODY = {
+    description = "value \"1\"",
+    type = "value"
+   },
+   MOUSE_JOINT = {
+    description = "value \"5\"",
+    type = "value"
    },
    MouseJoint = {
     childs = {
@@ -1988,13 +2835,22 @@ return {
       returns = "()",
       type = "function"
      }
-    }
+    },
+    type = "class"
+   },
+   PRISMATIC_JOINT = {
+    description = "value \"2\"",
+    type = "value"
+   },
+   PULLEY_JOINT = {
+    description = "value \"4\"",
+    type = "value"
    },
    PolygonShape = {
     childs = {
      new = {
       args = "()",
-      description = "creates a new b2.PolygonShape instance",
+      description = "",
       returns = "()",
       type = "function"
      },
@@ -2005,12 +2861,13 @@ return {
       type = "function"
      },
      setAsBox = {
-      args = "(hx, hy [, centerx, centery, angle])",
+      args = "(hx, hy, centerx, centery, angle)",
       description = "Set vertices to represent an oriented box",
       returns = "()",
       type = "function"
      }
-    }
+    },
+    type = "class"
    },
    PrismaticJoint = {
     childs = {
@@ -2086,7 +2943,8 @@ return {
       returns = "()",
       type = "function"
      }
-    }
+    },
+    type = "class"
    },
    PulleyJoint = {
     childs = {
@@ -2120,7 +2978,16 @@ return {
       returns = "()",
       type = "function"
      }
-    }
+    },
+    type = "class"
+   },
+   REVOLUTE_JOINT = {
+    description = "value \"1\"",
+    type = "value"
+   },
+   ROPE_JOINT = {
+    description = "value \"10\"",
+    type = "value"
    },
    RevoluteJoint = {
     childs = {
@@ -2186,7 +3053,7 @@ return {
      },
      setMaxMotorTorque = {
       args = "(torque)",
-      description = "Sets the maximum motor torque in N-m",
+      description = "Sets the maximum motor torque in N*m",
       returns = "()",
       type = "function"
      },
@@ -2196,7 +3063,37 @@ return {
       returns = "()",
       type = "function"
      }
-    }
+    },
+    type = "class"
+   },
+   RopeJoint = {
+    childs = {
+     getMaxLength = {
+      args = "()",
+      description = "",
+      returns = "()",
+      type = "function"
+     },
+     setMaxLength = {
+      args = "(maxLength)",
+      description = "",
+      returns = "()",
+      type = "function"
+     }
+    },
+    type = "class"
+   },
+   STATIC_BODY = {
+    description = "value \"0\"",
+    type = "value"
+   },
+   WELD_JOINT = {
+    description = "value \"8\"",
+    type = "value"
+   },
+   WHEEL_JOINT = {
+    description = "value \"7\"",
+    type = "value"
    },
    WeldJoint = {
     childs = {
@@ -2224,7 +3121,8 @@ return {
       returns = "()",
       type = "function"
      }
-    }
+    },
+    type = "class"
    },
    WheelJoint = {
     childs = {
@@ -2236,19 +3134,19 @@ return {
      },
      getJointSpeed = {
       args = "()",
-      description = "Returns the current joint translation speed in meters per second. ",
+      description = "Returns the current joint translation speed in meters per second.",
       returns = "()",
       type = "function"
      },
      getJointTranslation = {
       args = "()",
-      description = "Returns the current joint translation in meters. ",
+      description = "Returns the current joint translation in meters.",
       returns = "()",
       type = "function"
      },
      getMaxMotorTorque = {
       args = "()",
-      description = "Returns the maximum motor force in N-m",
+      description = "Returns the maximum motor torque in N*m",
       returns = "()",
       type = "function"
      },
@@ -2278,7 +3176,7 @@ return {
      },
      setMaxMotorTorque = {
       args = "(torque)",
-      description = "Sets the maximum motor force in N-m",
+      description = "Sets the maximum motor torque in N*m",
       returns = "()",
       type = "function"
      },
@@ -2289,7 +3187,7 @@ return {
       type = "function"
      },
      setSpringDampingRatio = {
-      args = "(ratio)",
+      args = "(damping)",
       description = "Sets the spring damping ratio",
       returns = "()",
       type = "function"
@@ -2300,7 +3198,8 @@ return {
       returns = "()",
       type = "function"
      }
-    }
+    },
+    type = "class"
    },
    World = {
     childs = {
@@ -2341,8 +3240,8 @@ return {
       type = "function"
      },
      new = {
-      args = "(gravityx, gravityy [, doSleep])",
-      description = "creates a new b2.World object",
+      args = "(gravityx, gravityy, doSleep)",
+      description = "",
       returns = "()",
       type = "function"
      },
@@ -2359,7 +3258,7 @@ return {
       type = "function"
      },
      setDebugDraw = {
-      args = "(debugDraw)",
+      args = "()",
       description = "Registers a b2.DebugDraw instance for debug drawing",
       returns = "()",
       type = "function"
@@ -2376,108 +3275,179 @@ return {
       returns = "()",
       type = "function"
      }
-    }
+    },
+    type = "class"
    },
    createDistanceJointDef = {
     args = "(bodyA, bodyB, anchorAx, anchorAy, anchorBx, anchorBy)",
-    description = "creates and returns a distance joint definition table",
+    description = "Creates and returns a distance joint definition table",
     returns = "()",
     type = "function"
    },
    createFrictionJointDef = {
     args = "(bodyA, bodyB, anchorx, anchory)",
-    description = "creates and returns a friction joint definition table",
+    description = "Creates and returns a friction joint definition table",
     returns = "()",
     type = "function"
    },
    createGearJointDef = {
     args = "(bodyA, bodyB, joint1, joint2, ratio)",
-    description = "creates and returns a gear joint definition table",
+    description = "Creates and returns a gear joint definition table",
     returns = "()",
     type = "function"
    },
    createMouseJointDef = {
     args = "(bodyA, bodyB, targetx, targety, maxForce, frequencyHz, dampingRatio)",
-    description = "creates and returns a mouse joint definition table",
+    description = "Creates and returns a mouse joint definition table",
     returns = "()",
     type = "function"
    },
    createPrismaticJointDef = {
     args = "(bodyA, bodyB, anchorx, anchory, axisx, axisy)",
-    description = "creates and returns a prismatic joint definition table",
+    description = "Creates and returns a prismatic joint definition table",
     returns = "()",
     type = "function"
    },
    createPulleyJointDef = {
     args = "(bodyA, bodyB, groundAnchorAx, groundAnchorAy, groundAnchorBx, groundAnchorBy, anchorAx, anchorAy, anchorBx, anchorBy, ratio)",
-    description = "creates and returns a pulley joint definition table",
+    description = "Creates and returns a pulley joint definition table",
     returns = "()",
     type = "function"
    },
    createRevoluteJointDef = {
     args = "(bodyA, bodyB, anchorx, anchory)",
-    description = "creates and returns a revolute joint definition table",
+    description = "Creates and returns a revolute joint definition table",
+    returns = "()",
+    type = "function"
+   },
+   createRopeJointDef = {
+    args = "(bodyA, bodyB, anchorAx, anchorAy, anchorBx, anchorBy, maxLength)",
+    description = "",
     returns = "()",
     type = "function"
    },
    createWeldJointDef = {
     args = "(bodyA, bodyB, anchorAx, anchorAy, anchorBx, anchorBy)",
-    description = "creates and returns a weld joint definition table",
+    description = "Creates and returns a weld joint definition table",
     returns = "()",
     type = "function"
    },
    createWheelJointDef = {
     args = "(bodyA, bodyB, anchorx, anchory, axisx, axisy)",
-    description = "creates and returns a wheel joint definition table",
+    description = "Creates and returns a wheel joint definition table",
     returns = "()",
     type = "function"
    },
    getScale = {
     args = "()",
-    description = "returns the global pixels to meters scale",
+    description = "Returns the global pixels to meters scale",
     returns = "()",
     type = "function"
    },
    setScale = {
     args = "(scale)",
-    description = "sets the global pixels to meters scale",
+    description = "Sets the global pixels to meters scale",
     returns = "()",
     type = "function"
    }
-  }
+  },
+  type = "class"
  },
  flurry = {
   childs = {
    endTimedEvent = {
-    args = "(eventName [, parameters])",
-    description = "ends Flurry timed event",
+    args = "(eventName, parameters)",
+    description = "Ends Flurry timed event",
     returns = "()",
     type = "function"
    },
    isAvailable = {
     args = "()",
-    description = "returns true if Flurry is available",
+    description = "Returns true if Flurry is available",
     returns = "()",
     type = "function"
    },
    logEvent = {
-    args = "(eventName [, parameters [, timed]])",
-    description = "logs Flurry event",
+    args = "(eventName, parameters, timed)",
+    description = "Logs Flurry event",
     returns = "()",
     type = "function"
    },
    startSession = {
     args = "(apiKey)",
-    description = "starts the Flurry session with your API key",
+    description = "Starts the Flurry session with your API key",
     returns = "()",
     type = "function"
    }
-  }
+  },
+  type = "class"
+ },
+ iad = {
+  childs = {
+   Banner = {
+    childs = {
+     BOTTOM = {
+      description = "value \"bottom\"",
+      type = "value"
+     },
+     LANDSCAPE = {
+      description = "value \"landscape\"",
+      type = "value"
+     },
+     PORTRAIT = {
+      description = "value \"portrait\"",
+      type = "value"
+     },
+     TOP = {
+      description = "value \"top\"",
+      type = "value"
+     },
+     hide = {
+      args = "()",
+      description = "",
+      returns = "()",
+      type = "function"
+     },
+     isBannerLoaded = {
+      args = "()",
+      description = "",
+      returns = "()",
+      type = "function"
+     },
+     new = {
+      args = "(alignment, orientation)",
+      description = "",
+      returns = "()",
+      type = "function"
+     },
+     setAlignment = {
+      args = "(alignment)",
+      description = "",
+      returns = "()",
+      type = "function"
+     },
+     show = {
+      args = "()",
+      description = "",
+      returns = "()",
+      type = "function"
+     }
+    },
+    type = "class"
+   },
+   isAvailable = {
+    args = "()",
+    description = "",
+    returns = "()",
+    type = "function"
+   }
+  },
+  type = "class"
  }
 }
 
 --[[
-  Conversion script for Resources/gideros_annot.api
+  Conversion script for Gideros API (http://docs.giderosmobile.com/reference/autocomplete.php)
   Run the script as: lua gideros-conv.lua <gideros_annot.api >gideros.lua
 
   Event
@@ -2486,15 +3456,15 @@ return {
   getType() Event - returns the type of Event
   getTarget() Event - returns the element on which the event listener was registered
 
-  Manual fixes
-  - removed standard Lua functions
-  - added Core at the beginning
-  - moved Event.* constants together
-
   Limitations
   - only handles two levels of class hierarchy (as in b2.Body.*)
 
+  Manual fixes
+  - removed UTF8 characters
+
   Notes
+  + replace &quot; with "
+  + remove standard Lua functions and classes
   + b2.* and flurry.* don't have any headers (assume those)
   + there some duplicates, like Stage and stage (ignore lowecase ones)
   + remove "CLASS - " from the description
@@ -2510,38 +3480,50 @@ local t = {}
 while true do
   local s = io.read()
   if not s then break end
-  local newclass = s:match('^([A-Z]%w+)$') or s:match('^(b2%.%w+)$')
+  local newclass = s:match('^([A-Z]%w+)$') or s:match('^(%w+%.%w+)$')
     or s:match('^([%.%w]+)%.')
   if newclass and class:lower() ~= newclass:lower() then
     class = newclass
-    if not class:match('%.') then t[class] = t[class] or {childs = {}} end
+    if not class:match('%.') then t[class] = t[class] or {childs = {}, type = "class"} end
   end
   s = s:gsub('^'..class..'%.', ""):gsub('^'..class:lower()..'%:', "")
-  local const = s:match('^([A-Z_0-9]+)$')
+  local const, value = s:match('^([A-Z_0-9]+)[ -]+(.+)$')
   local fun, args, desc = s:match('(%w+)(%b())%s*(.*)%s*$')
-  if not fun then fun = s:match('([a-z]%w+)%s*$') end
-  if s:lower() == class:lower() then
+  if #class == 0 then
+    -- do nothing; haven't found a single class yet; skipping Lua methods
+  elseif _G[class] then
+    -- do nothing; skipping Lua tables (io, table, math, etc.)
+  elseif s:lower() == class:lower() then
     -- do nothing; it's either class or its duplicate
-  elseif const then
-    t[class].childs[const] = {type = "value"}
-  elseif fun then
-    desc = (desc or ""):gsub(class..' %- (%w)', string.upper)
+  elseif const or fun then
     local t, class = t, class
     local c1, c2 = class:match('^(%w+)%.(%w+)$')
     if c1 and c2 then
-      t[c1] = t[c1] or {childs = {}}
+      t[c1] = t[c1] or {childs = {}, type = "class"}
       t = t[c1].childs
       class = c2
-      t[class] = t[class] or {childs = {}}
+      t[class] = t[class] or {childs = {}, type = "class"}
     end
-    t[class].childs[fun] = {
-      type = "function",
-      args = args or "()",
-      description = desc,
-      returns = "()",
-    }
+    if fun then
+      local removeclass = "^"..(c2 and c1..'.'..c2 or class)..'[- ]*'
+      desc = (desc or "")
+        :gsub("&quot;?", '"')
+        :gsub(removeclass, "") -- remove class
+        :gsub(removeclass, "") -- some descriptions have it twice
+        :gsub("^(%w)", string.upper) -- convert first letter to uppercase
+
+      t[class].childs[fun] = {
+        type = "function",
+        args = args or "()",
+        description = desc,
+        returns = "()",
+      }
+    elseif const then
+      t[class].childs[const] = {type = "value", description = value}
+    end
   else
-    print("Unrecognized string: "..s)
+    io.stderr:write("Unrecognized string: "..s, "\n")
+    class = ""
   end
 end
 
@@ -2550,7 +3532,7 @@ end
 -- move functions from "Application" to "application" as there is a global
 -- variable with that name.
 
-t.application = t.application or {childs = {}}
+t.application = t.application or {childs = {}, type = "class"}
 for key, value in pairs(t.Application.childs) do
   if value.type == "function" then
     t.application.childs[key] = value
@@ -2561,7 +3543,7 @@ end
 -- "stage" and "world" are also global variables, but what are their methods?
 
 -- add missing new() methods
-for _, class in ipairs{'Geolocation', 'Gyroscope', 'Accelerometer', 'StoreKit'} do
+for _, class in ipairs{'StoreKit'} do
   if t[class] and t[class].childs then
     t[class].childs.new = {
       type = "function",
