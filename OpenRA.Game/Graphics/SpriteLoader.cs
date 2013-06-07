@@ -35,12 +35,12 @@ namespace OpenRA.Graphics
 			if (ImageCount == 0)
 			{
 				var shp = new ShpTSReader(FileSystem.OpenWithExts(filename, exts));
-				return shp.Select(a => SheetBuilder.Add(a.Image, shp.Size, true)).ToArray();
+				return shp.Select(a => SheetBuilder.Add(a.Image, shp.Size)).ToArray();
 			}
 			else
 			{
 				var shp = new ShpReader(FileSystem.OpenWithExts(filename, exts));
-				return shp.Frames.Select(a => SheetBuilder.Add(a.Image, shp.Size, true)).ToArray();
+				return shp.Frames.Select(a => SheetBuilder.Add(a.Image, shp.Size)).ToArray();
 			}
 		}
 

@@ -99,7 +99,7 @@ namespace OpenRA.Graphics
 			face.Glyph.RenderGlyph(RenderMode.Normal);
 
 			var size = new Size((int)face.Glyph.Metrics.Width >> 6, (int)face.Glyph.Metrics.Height >> 6);
-			var s = builder.Allocate(size, true);
+			var s = builder.Allocate(size);
 
 			var g = new GlyphInfo
 			{

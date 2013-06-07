@@ -15,11 +15,8 @@ namespace OpenRA.Graphics
 {
 	public class SheetOverflowException : Exception
 	{
-		public SheetOverflowException()
-			: base("Sprite sequence spans multiple sheets.\n"+
-				"This should be considered as a bug, but you "+
-				"can increase the Graphics.SheetSize setting "+
-				"to temporarily avoid the problem.") {}
+		public SheetOverflowException(string message)
+			: base(message) {}
 	}
 
 	public enum SheetType
@@ -36,28 +33,38 @@ namespace OpenRA.Graphics
 		SheetType type;
 		int rowHeight = 0;
 		Point p;
+		Func<Sheet> allocateSheet;
 
-		internal SheetBuilder(SheetType t)
+		public static Sheet AllocateSheet()
 		{
-			current = new Sheet(new Size(Renderer.SheetSize, Renderer.SheetSize));;
-			channel = TextureChannel.Red;
-			type = t;
+			return new Sheet(new Size(Renderer.SheetSize, Renderer.SheetSize));;
 		}
 
-		public Sprite Add(byte[] src, Size size, bool allowSheetOverflow)
+		internal SheetBuilder(SheetType t)
+			: this(t, AllocateSheet) {}
+
+		internal SheetBuilder(SheetType t, Func<Sheet> allocateSheet)
 		{
-			var rect = Allocate(size, allowSheetOverflow);
+			channel = TextureChannel.Red;
+			type = t;
+			current = allocateSheet();
+			this.allocateSheet = allocateSheet;
+		}
+
+		public Sprite Add(byte[] src, Size size)
+		{
+			var rect = Allocate(size);
 			Util.FastCopyIntoChannel(rect, src);
 			return rect;
 		}
 
-		public Sprite Add(Size size, byte paletteIndex, bool allowSheetOverflow)
+		public Sprite Add(Size size, byte paletteIndex)
 		{
 			var data = new byte[size.Width * size.Height];
 			for (var i = 0; i < data.Length; i++)
 				data[i] = paletteIndex;
 
-			return Add(data, size, allowSheetOverflow);
+			return Add(data, size);
 		}
 
 		TextureChannel? NextChannel(TextureChannel t)
@@ -69,7 +76,7 @@ namespace OpenRA.Graphics
 			return (TextureChannel)nextChannel;
 		}
 
-		public Sprite Allocate(Size imageSize, bool allowSheetOverflow)
+		public Sprite Allocate(Size imageSize)
 		{
 			if (imageSize.Width + p.X > current.Size.Width)
 			{
@@ -85,10 +92,7 @@ namespace OpenRA.Graphics
 				var next = NextChannel(channel);
 				if (next == null)
 				{
-					if (!allowSheetOverflow)
-						throw new SheetOverflowException();
-
-					current = new Sheet(new Size(Renderer.SheetSize, Renderer.SheetSize));
+					current = allocateSheet();
 					channel = TextureChannel.Red;
 				}
 				else
