@@ -570,8 +570,8 @@ function CreateEditor()
   editor:SetFont(ide.font.eNormal)
   editor:StyleSetFont(wxstc.wxSTC_STYLE_DEFAULT, ide.font.eNormal)
 
-  editor:SetTabWidth(ide.config.editor.tabwidth or 4)
-  editor:SetIndent(ide.config.editor.tabwidth or 4)
+  editor:SetTabWidth(ide.config.editor.tabwidth or 2)
+  editor:SetIndent(ide.config.editor.tabwidth or 2)
   editor:SetUseTabs(ide.config.editor.usetabs and true or false)
   editor:SetIndentationGuides(true)
   editor:SetViewWhiteSpace(ide.config.editor.whitespace and true or false)
@@ -739,8 +739,8 @@ function CreateEditor()
             indent = editor:GetLineIndentation(line)
           end
 
-          local tw = editor:GetTabWidth()
           local ut = editor:GetUseTabs()
+          local tw = ut and editor:GetTabWidth() or editor:GetIndent()
 
           if ide.config.editor.smartindent
           and editor.spec.isdecindent and editor.spec.isincindent then
