@@ -55,6 +55,7 @@ namespace OpenRA.Graphics
 		{
 			var rect = Allocate(size);
 			Util.FastCopyIntoChannel(rect, src);
+			current.CommitData();
 			return rect;
 		}
 
@@ -103,7 +104,6 @@ namespace OpenRA.Graphics
 			}
 
 			var rect = new Sprite(current, new Rectangle(p, imageSize), channel);
-			current.MakeDirty();
 			p.X += imageSize.Width;
 
 			return rect;

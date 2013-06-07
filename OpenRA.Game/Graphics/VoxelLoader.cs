@@ -84,7 +84,7 @@ namespace OpenRA.Graphics
 			Sprite s = sheetBuilder.Allocate(new Size(su, sv));
 			Util.FastCopyIntoChannel(s, 0, colors);
 			Util.FastCopyIntoChannel(s, 1, normals);
-			s.sheet.MakeDirty();
+			s.sheet.CommitData();
 
 			var channels = new float2(channelSelect[(int)s.channel], channelSelect[(int)s.channel + 1]);
 			return new Vertex[4]

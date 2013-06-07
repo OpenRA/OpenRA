@@ -129,6 +129,8 @@ namespace OpenRA.Graphics
 					p += face.Glyph.Bitmap.Pitch;
 				}
 			}
+			s.sheet.CommitData();
+
 			return g;
 		}
 
