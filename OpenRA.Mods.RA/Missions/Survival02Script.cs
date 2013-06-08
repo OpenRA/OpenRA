@@ -57,7 +57,6 @@ namespace OpenRA.Mods.RA.Missions
         Actor sovietrally4;
         Actor sovietrally5;
         Actor sovietrally6;
-        Actor sovietrally7;
         Actor sovietrally8;
         CPos[] sovietrallypoints;
         CPos[] newsovietrallypoints;
@@ -71,9 +70,6 @@ namespace OpenRA.Mods.RA.Missions
         Actor factory;
         Actor barrack1;
 
-        Actor boom1;
-        Actor boom2;
-        Actor boom3;
         Actor drum1;
         Actor drum2;
         Actor drum3;
@@ -379,7 +375,6 @@ namespace OpenRA.Mods.RA.Missions
             sovietrally4 = actors["SovietRally4"];
             sovietrally5 = actors["SovietRally5"];
             sovietrally6 = actors["SovietRally6"];
-            sovietrally7 = actors["SovietRally7"];
             sovietrally8 = actors["SovietRally8"];
             sovietrallypoints = new[] { sovietrally2, sovietrally4, sovietrally5, sovietrally6 }.Select(p => p.Location).ToArray();
             alliesbase = actors["AlliesBase"];
@@ -389,9 +384,6 @@ namespace OpenRA.Mods.RA.Missions
             sovietparadrop3 = actors["SovietParaDrop3"];
             barrack1 = actors["barrack1"];
             factory = actors["Factory"];
-            boom1 = actors["boom1"];
-            boom2 = actors["boom2"];
-            boom3 = actors["boom3"];
             drum1 = actors["drum1"];
             drum2 = actors["drum2"];
             drum3 = actors["drum3"];
@@ -405,12 +397,12 @@ namespace OpenRA.Mods.RA.Missions
             Game.MoveViewport(alliesbase.Location.ToFloat2());
             StartCountDownTimer();
             SetSovietUnitsToDefensiveStance();
-            var Camera1 = world.CreateActor(Camera, new TypeDictionary
+            world.CreateActor(Camera, new TypeDictionary
 			{
 				new OwnerInit(allies),
 				new LocationInit(sovietrally1.Location),
 			});
-            //MissionUtils.PlayMissionMusic();
+            MissionUtils.PlayMissionMusic();
         }
     }
 
