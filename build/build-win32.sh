@@ -27,6 +27,14 @@ LUASOCKET_BASENAME="luasocket-2.0.3"
 LUASOCKET_FILENAME="$LUASOCKET_BASENAME-rc2.zip"
 LUASOCKET_URL="https://github.com/downloads/diegonehab/luasocket/$LUASOCKET_FILENAME"
 
+OPENSSL_BASENAME="openssl-1.0.1e"
+OPENSSL_FILENAME="$OPENSSL_BASENAME.tar.gz"
+OPENSSL_URL="http://www.openssl.org/source/$OPENSSL_FILENAME"
+
+LUASEC_BASENAME="luasec-0.4.1"
+LUASEC_FILENAME="$LUASEC_BASENAME.zip"
+LUASEC_URL="https://github.com/brunoos/luasec/archive/$LUASEC_FILENAME"
+
 WINAPI_BASENAME="winapi"
 WINAPI_URL="https://github.com/stevedonovan/winapi.git"
 
@@ -50,6 +58,9 @@ for ARG in "$@"; do
     ;;
   luasocket)
     BUILD_LUASOCKET=true
+    ;;
+  luasec)
+    BUILD_LUASEC=true
     ;;
   winapi)
     BUILD_WINAPI=true
@@ -177,6 +188,33 @@ if [ $BUILD_LUASOCKET ]; then
   rm -rf "$LUASOCKET_FILENAME" "$LUASOCKET_BASENAME"
 fi
 
+# build LuaSec
+if [ $BUILD_LUASEC ]; then
+  # build openSSL
+  wget --no-check-certificate -c "$OPENSSL_URL" -O "$OPENSSL_FILENAME" || { echo "Error: failed to download OpenSSL"; exit 1; }
+  tar -xzf "$OPENSSL_FILENAME"
+  cd "$OPENSSL_BASENAME"
+  bash Configure mingw
+  make
+  make install_sw INSTALLTOP="$INSTALL_DIR"
+  cd ..
+  rm -rf "$OPENSSL_FILENAME" "$OPENSSL_BASENAME"
+
+  # build LuaSec
+  wget --no-check-certificate -c "$LUASEC_URL" -O "$LUASEC_FILENAME" || { echo "Error: failed to download LuaSec"; exit 1; }
+  unzip "$LUASEC_FILENAME"
+  # the folder in the archive is "luasec-luasec-....", so need to fix
+  mv "luasec-$LUASEC_BASENAME" $LUASEC_BASENAME
+  cd "$LUASEC_BASENAME"
+  gcc $BUILD_FLAGS -o "$INSTALL_DIR/lib/lua/5.1/ssl.dll" \
+    src/{timeout.c,buffer.c,io.c,context.c,ssl.c,wsocket.c} -lssl -lcrypto -lws2_32 -lgdi32 -llua51 \
+    || { echo "Error: failed to build LuaSec"; exit 1; }
+  cp src/{ssl.lua,https.lua} "$INSTALL_DIR/share/lua/5.1"
+  [ -f "$INSTALL_DIR/lib/lua/5.1/ssl.dll" ] || { echo "Error: luasec.dll isn't found"; exit 1; }
+  cd ..
+  rm -rf "$LUASEC_FILENAME" "$LUASEC_BASENAME"
+fi
+
 # build winapi
 if [ $BUILD_WINAPI ]; then
   git clone "$WINAPI_URL" "$WINAPI_BASENAME"
@@ -201,6 +239,7 @@ mkdir -p "$BIN_DIR" || { echo "Error: cannot create directory $BIN_DIR"; exit 1;
 [ $BUILD_LUA ] && cp "$INSTALL_DIR/bin/lua.exe" "$INSTALL_DIR/lib/lua51.dll" "$BIN_DIR"
 [ $BUILD_WXLUA ] && cp "$INSTALL_DIR/bin/libwx.dll" "$BIN_DIR/wx.dll"
 [ $BUILD_WINAPI ] && cp "$INSTALL_DIR/lib/lua/5.1/winapi.dll" "$BIN_DIR"
+[ $BUILD_LUASEC ] && cp "$INSTALL_DIR/lib/lua/5.1/ssl.dll" "$BIN_DIR"
 if [ $BUILD_LUASOCKET ]; then
   mkdir -p "$BIN_DIR/clibs/"{mime,socket}
   cp "$INSTALL_DIR/lib/lua/5.1/mime/core.dll" "$BIN_DIR/clibs/mime"
