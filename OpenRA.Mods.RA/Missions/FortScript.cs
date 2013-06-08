@@ -20,9 +20,6 @@ namespace OpenRA.Mods.RA.Missions
     class FortScript : IWorldLoaded, ITick
     {
         Player multi0;
-        Player multi1;
-        Player multi2;
-        Player multi3;
         Player soviets;
 
         Actor entry1;
@@ -346,9 +343,6 @@ namespace OpenRA.Mods.RA.Missions
             world = w;
             soviets = w.Players.Single(p => p.InternalName == "Soviets");
             multi0 = w.Players.Single(p => p.InternalName == "Multi0");
-            multi1 = w.Players.SingleOrDefault(p => p.InternalName == "Multi1");
-            multi2 = w.Players.SingleOrDefault(p => p.InternalName == "Multi2");
-            multi3 = w.Players.SingleOrDefault(p => p.InternalName == "Multi3");
             patrolAttackFrame = 750;
             patrolattackAtFrameIncrement = 750;
             WaveAttackFrame = 500;
