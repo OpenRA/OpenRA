@@ -99,6 +99,23 @@ namespace OpenRA.Graphics
 				               groundNormal[i], groundZ[i], shadowPalette);
 		}
 
+		float[] TransformationMatrix(uint limb, uint frame)
+		{
+			var l = limbs[limb];
+			var t = hva.TransformationMatrix(limb, frame);
+
+			// Fix limb position
+			t[12] *= l.Scale*(l.Bounds[3] - l.Bounds[0]) / l.Size[0];
+			t[13] *= l.Scale*(l.Bounds[4] - l.Bounds[1]) / l.Size[1];
+			t[14] *= l.Scale*(l.Bounds[5] - l.Bounds[2]) / l.Size[2];
+
+			// Center, flip and scale
+			t = Util.MatrixMultiply(t, Util.TranslationMatrix(l.Bounds[0], l.Bounds[1], l.Bounds[2]));
+			t = Util.MatrixMultiply(Util.ScaleMatrix(l.Scale, -l.Scale, l.Scale), t);
+
+			return t;
+		}
+
 		static readonly WVec forward = new WVec(1024,0,0);
 		static readonly WVec up = new WVec(0,0,1024);
 		public void PrepareForDraw(WorldRenderer wr, WPos pos, IEnumerable<WRot> rotations,
@@ -106,28 +123,18 @@ namespace OpenRA.Graphics
 		{
 			// Calculate the shared view matrix components
 			var pxPos = wr.ScreenPosition(pos);
-
-			// Rotations
-			var rot = rotations.Reverse().Aggregate(MakeFloatMatrix(camera.AsMatrix()),
+			var posMtx = Util.TranslationMatrix(pxPos.X, pxPos.Y, pxPos.Y);
+			var scaleMtx = Util.ScaleMatrix(scale, scale, scale);
+			var rotMtx = rotations.Reverse().Aggregate(MakeFloatMatrix(camera.AsMatrix()),
 				(a,b) => Util.MatrixMultiply(a, MakeFloatMatrix(b.AsMatrix())));
 
 			// Each limb has its own transformation matrix
 			for (uint i = 0; i < limbs.Length; i++)
 			{
-				Limb l = limbs[i];
-				var t = Util.MatrixMultiply(Util.ScaleMatrix(1,-1,1),
-				                            hva.TransformationMatrix(i, frame));
-				// Fix limb position
-				t[12] *= l.Scale*(l.Bounds[3] - l.Bounds[0]) / l.Size[0];
-				t[13] *= l.Scale*(l.Bounds[4] - l.Bounds[1]) / l.Size[1];
-				t[14] *= l.Scale*(l.Bounds[5] - l.Bounds[2]) / l.Size[2];
-				t = Util.MatrixMultiply(t, Util.TranslationMatrix(l.Bounds[0], l.Bounds[1], l.Bounds[2]));
-
-				// Apply view matrix
-				transform[i] = Util.MatrixMultiply(Util.TranslationMatrix(pxPos.X, pxPos.Y, pxPos.Y),
-					Util.ScaleMatrix(scale*l.Scale, scale*l.Scale, scale*l.Scale));
-				transform[i] = Util.MatrixMultiply(transform[i], rot);
-				transform[i] = Util.MatrixMultiply(transform[i], t);
+				var t = TransformationMatrix(i, frame);
+				transform[i] = Util.MatrixMultiply(rotMtx, t);
+				transform[i] = Util.MatrixMultiply(scaleMtx, transform[i]);
+				transform[i] = Util.MatrixMultiply(posMtx, transform[i]);
 
 				// Transform light direction into limb-space
 				var undoPitch = MakeFloatMatrix(new WRot(camera.Pitch, WAngle.Zero, WAngle.Zero).AsMatrix());
