@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using OpenRA.FileFormats.Graphics;
 
 namespace OpenRA.Graphics
@@ -228,6 +229,34 @@ namespace OpenRA.Graphics
 				mtx[i] *= 1/det;
 
 			return mtx;
+		}
+
+		public static float[] MatrixAABBMultiply(float[] mtx, float[] bounds)
+		{
+			// Corner offsets
+			var ix = new uint[] {0,0,0,0,3,3,3,3};
+			var iy = new uint[] {1,1,4,4,1,1,4,4};
+			var iz = new uint[] {2,5,2,5,2,5,2,5};
+
+			// Vectors to opposing corner
+			var ret = new float[] {float.MaxValue, float.MaxValue, float.MaxValue,
+				float.MinValue, float.MinValue, float.MinValue};
+
+			// Transform vectors and find new bounding box
+			for (var i = 0; i < 8; i++)
+			{
+				var vec = new float[] {bounds[ix[i]], bounds[iy[i]], bounds[iz[i]], 1};
+				var tvec = Util.MatrixVectorMultiply(mtx, vec);
+
+				ret[0] = Math.Min(ret[0], tvec[0]/tvec[3]);
+				ret[1] = Math.Min(ret[1], tvec[1]/tvec[3]);
+				ret[2] = Math.Min(ret[2], tvec[2]/tvec[3]);
+				ret[3] = Math.Max(ret[3], tvec[0]/tvec[3]);
+				ret[4] = Math.Max(ret[4], tvec[1]/tvec[3]);
+				ret[5] = Math.Max(ret[5], tvec[2]/tvec[3]);
+			}
+
+			return ret;
 		}
 	}
 }

@@ -164,5 +164,32 @@ namespace OpenRA.Graphics
 					});
 			}
 		}
+
+		public float[] Bounds(uint frame)
+		{
+			var ret = new float[] {float.MaxValue,float.MaxValue,float.MaxValue,
+				float.MinValue,float.MinValue,float.MinValue};
+
+			for (uint j = 0; j < limbs.Length; j++)
+			{
+				var b = new float[]
+				{
+					0, 0, 0,
+					(limbs[j].Bounds[3] - limbs[j].Bounds[0]),
+					(limbs[j].Bounds[4] - limbs[j].Bounds[1]),
+					(limbs[j].Bounds[5] - limbs[j].Bounds[2])
+				};
+
+				// Calculate limb bounding box
+				var bb = Util.MatrixAABBMultiply(TransformationMatrix(j, frame), b);
+				for (var i = 0; i < 3; i++)
+				{
+					ret[i] = Math.Min(ret[i], bb[i]);
+					ret[i+3] = Math.Max(ret[i+3], bb[i+3]);
+				}
+			}
+
+			return ret;
+		}
 	}
 }
