@@ -220,21 +220,49 @@ local function killClient()
   end
 end
 
+local function loadsafe(data)
+  local f, res = loadstring(data)
+  if not f then return f, res end
+
+  local count = 0
+  debug.sethook(function ()
+    count = count + 1
+    if count >= 3 then error("cannot call functions") end
+  end, "c")
+  local ok, res = pcall(f)
+  count = 0
+  debug.sethook()
+  return ok, res
+end
+
 local function activateDocument(file, line, activatehow)
   if not file then return end
 
-  if not wx.wxIsAbsolutePath(file) and debugger.basedir then
+  -- file can be a filename or serialized file content; deserialize first.
+  -- check if the filename starts with '"' and is deserializable
+  -- to avoid showing filenames that may look like valid lua code
+  -- (for example: 'mobdebug.lua').
+  local content
+  if not wx.wxFileName(file):FileExists() and file:find('^"') then
+    local ok, res = loadsafe("return "..file)
+    if ok then content = res end
+  end
+
+  if not content and not wx.wxIsAbsolutePath(file) and debugger.basedir then
     file = debugger.basedir .. file
   end
 
   local activated
   local indebugger = file:find('mobdebug%.lua$')
   local fileName = wx.wxFileName(file)
-  for _, document in pairs(ide.openDocuments) do
-    -- skip those tabs that may have file without names (untitled.lua)
-    if document.filePath and fileName:SameAs(wx.wxFileName(document.filePath)) then
-      local editor = document.editor
 
+  for _, document in pairs(ide.openDocuments) do
+    local editor = document.editor
+    -- either the file name matches, or the content;
+    -- when checking for the content remove all newlines as they may be
+    -- reported differently from the original by the Lua engine.
+    if document.filePath and fileName:SameAs(wx.wxFileName(document.filePath))
+    or content and content:gsub("[\n\r]","") == editor:GetText():gsub("[\n\r]","") then
       ClearAllCurrentLineMarkers()
       if line then
         if line == 0 then -- special case; find the first executable line
@@ -274,11 +302,11 @@ local function activateDocument(file, line, activatehow)
   end
 
   if not (activated or indebugger or debugger.loop or activatehow == activate.CHECKONLY)
-  and ide.config.editor.autoactivate then
+  and (ide.config.editor.autoactivate or content) then
     -- found file, but can't activate yet (because this part may be executed
     -- in a different coroutine), so schedule pending activation.
-    if wx.wxFileName(file):FileExists() then
-      debugger.activate = {file, line}
+    if content or wx.wxFileName(file):FileExists() then
+      debugger.activate = {file, line, content}
       return true -- report successful activation, even though it's pending
     end
 
@@ -305,7 +333,7 @@ local function reSetBreakpoints()
       local editor = document.editor
       local filePath = document.filePath
       local line = editor:MarkerNext(0, BREAKPOINT_MARKER_VALUE)
-      while line ~= -1 do
+      while filePath and line ~= -1 do
         debugger.handle("setb " .. filePath .. " " .. (line+1))
         line = editor:MarkerNext(line + 1, BREAKPOINT_MARKER_VALUE)
       end
@@ -677,8 +705,18 @@ debugger.update = function()
   copas.step(0)
   -- if there are any pending activations
   if debugger.activate then
-    local file, line = (table.unpack or unpack)(debugger.activate)
-    if LoadFile(file) then activateDocument(file, line) end
+    local file, line, content = (table.unpack or unpack)(debugger.activate)
+    if content then
+      local editor = NewFile()
+      editor:SetText(content)
+      if not ide.config.debugger.allowediting
+      and not (debugger.options or {}).allowediting then
+        editor:SetReadOnly(true)
+      end
+      activateDocument(file, line)
+    elseif LoadFile(file) then
+      activateDocument(file, line)
+    end
     debugger.activate = nil
   end
 end
