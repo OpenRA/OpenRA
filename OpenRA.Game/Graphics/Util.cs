@@ -231,6 +231,14 @@ namespace OpenRA.Graphics
 			return mtx;
 		}
 
+		public static float[] MakeFloatMatrix(int[] imtx)
+		{
+			var fmtx = new float[16];
+			for (var i = 0; i < 16; i++)
+				fmtx[i] = imtx[i]*1f / imtx[15];
+			return fmtx;
+		}
+
 		public static float[] MatrixAABBMultiply(float[] mtx, float[] bounds)
 		{
 			// Corner offsets

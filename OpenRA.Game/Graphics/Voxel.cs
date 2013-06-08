@@ -76,14 +76,6 @@ namespace OpenRA.Graphics
 			return tVec;
 		}
 
-		static float[] MakeFloatMatrix(int[] imtx)
-		{
-			var fmtx = new float[16];
-			for (var i = 0; i < 16; i++)
-				fmtx[i] = imtx[i]*1f / imtx[15];
-			return fmtx;
-		}
-
 		public void Draw(VoxelRenderer r, float[] lightAmbientColor, float[] lightDiffuseColor,
 		                 int colorPalette, int normalsPalette)
 		{
@@ -125,8 +117,8 @@ namespace OpenRA.Graphics
 			var pxPos = wr.ScreenPosition(pos);
 			var posMtx = Util.TranslationMatrix(pxPos.X, pxPos.Y, pxPos.Y);
 			var scaleMtx = Util.ScaleMatrix(scale, scale, scale);
-			var rotMtx = rotations.Reverse().Aggregate(MakeFloatMatrix(camera.AsMatrix()),
-				(a,b) => Util.MatrixMultiply(a, MakeFloatMatrix(b.AsMatrix())));
+			var rotMtx = rotations.Reverse().Aggregate(Util.MakeFloatMatrix(camera.AsMatrix()),
+				(a,b) => Util.MatrixMultiply(a, Util.MakeFloatMatrix(b.AsMatrix())));
 
 			// Each limb has its own transformation matrix
 			for (uint i = 0; i < limbs.Length; i++)
@@ -137,7 +129,7 @@ namespace OpenRA.Graphics
 				transform[i] = Util.MatrixMultiply(posMtx, transform[i]);
 
 				// Transform light direction into limb-space
-				var undoPitch = MakeFloatMatrix(new WRot(camera.Pitch, WAngle.Zero, WAngle.Zero).AsMatrix());
+				var undoPitch = Util.MakeFloatMatrix(new WRot(camera.Pitch, WAngle.Zero, WAngle.Zero).AsMatrix());
 				var lightTransform = Util.MatrixMultiply(Util.MatrixInverse(transform[i]), undoPitch);
 
 				lightDirection[i] = ExtractRotationVector(lightTransform, forward.Rotate(lightSource));
