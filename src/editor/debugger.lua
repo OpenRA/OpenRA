@@ -296,6 +296,13 @@ local function activateDocument(file, line, activatehow)
       notebook:SetSelection(selection)
       SetEditorSelection(selection)
 
+      if content then
+        -- keep track of those editors that have been activated based on
+        -- content rather than file names as their breakpoints have to be
+        -- specified in a different way
+        debugger.editormap[editor] = file
+      end
+
       activated = editor
       break
     end
@@ -440,6 +447,7 @@ debugger.listen = function()
       debugger.scratchable = false
       debugger.stats = {line = 0}
       debugger.missing = {}
+      debugger.editormap = {}
 
       local wxfilepath = GetEditorFileAndCurInfo()
       local startfile = options.startfile or options.startwith
@@ -1035,7 +1043,8 @@ function DebuggerToggleBreakpoint(editor, line)
     markers = markers - CURRENT_LINE_MARKER_VALUE
   end
   local id = editor:GetId()
-  local filePath = DebuggerMakeFileName(editor, ide.openDocuments[id].filePath)
+  local filePath = debugger.editormap[editor]
+    or DebuggerMakeFileName(editor, ide.openDocuments[id].filePath)
   if markers >= BREAKPOINT_MARKER_VALUE then
     editor:MarkerDelete(line, BREAKPOINT_MARKER)
     if debugger.server then
