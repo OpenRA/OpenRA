@@ -132,8 +132,7 @@ Maverick:
 			Wood: 75%
 			Light: 75%
 			Concrete: 50%
-		Explosion: large_explosion
-		ImpactSound: kaboom15
+		Explosion: med_explosion
 		WaterExplosion: med_splash
 		InfDeath: 4
 		SmudgeType: Crater
@@ -274,7 +273,7 @@ Dragon:
 		High: true
 		Shadow: false
 		Proximity: true
-#		Trail: smokey
+		Trail: smokey
 		ContrailLength: 10
 		Inaccuracy: 3
 		Image: DRAGON
@@ -325,7 +324,6 @@ HellfireAG:
 		InfDeath: 4
 		SmudgeType: Crater
 		Damage: 40
-		ImpactSound: kaboom12
 
 HellfireAA:
 	ROF: 60
@@ -422,7 +420,6 @@ Grenade:
 		InfDeath: 4
 		SmudgeType: Crater
 		Damage: 40
-		ImpactSound: kaboom12
 
 105mm:
 	ROF: 70
@@ -445,7 +442,6 @@ Grenade:
 		InfDeath: 4
 		SmudgeType: Crater
 		Damage: 40
-		ImpactSound: kaboom12
 
 120mm:
 	ROF: 90
@@ -467,7 +463,6 @@ Grenade:
 		InfDeath: 4
 		SmudgeType: Crater
 		Damage: 60
-		ImpactSound: kaboom12
 
 TurretGun:
 	ROF: 30
@@ -488,7 +483,6 @@ TurretGun:
 		InfDeath: 4
 		SmudgeType: Crater
 		Damage: 60
-		ImpactSound: kaboom12
 
 MammothTusk:
 	ROF: 60
@@ -520,7 +514,6 @@ MammothTusk:
 		InfDeath: 3
 		SmudgeType: Crater
 		Damage: 45
-		ImpactSound: kaboom15
 
 155mm:
 	ROF: 85
@@ -542,12 +535,11 @@ MammothTusk:
 			Light: 60%
 			Heavy: 25%
 			Concrete: 50%
-		Explosion: artillery_explosion
+		Explosion: large_explosion
 		WaterExplosion: med_splash
 		InfDeath: 3
 		SmudgeType: Crater
 		Damage: 220
-		ImpactSound: kaboom22
 
 M60mg:
 	ROF: 30
@@ -739,12 +731,12 @@ RedEye:
 			Wood: 75%
 			Light: 60%
 			Heavy: 25%
-		Explosion: artillery_explosion
+		Explosion: large_explosion
 		WaterExplosion: large_splash
 		InfDeath: 3
 		SmudgeType: Crater
 		Damage: 250
-		ImpactSound: kaboom22
+		ImpactSound: kaboom12
 		WaterImpactSound: splash9
 
 SubMissile:
@@ -767,12 +759,12 @@ SubMissile:
 			None: 40%
 			Light: 30%
 			Heavy: 30%
-		Explosion: artillery_explosion
+		Explosion: large_explosion
 		WaterExplosion: large_splash
 		InfDeath: 3
 		SmudgeType: Crater
 		Damage: 300
-		ImpactSound: kaboom22
+		ImpactSound: kaboom12
 		WaterImpactSound: splash9
 
 Stinger:
@@ -806,7 +798,6 @@ Stinger:
 		InfDeath: 4
 		SmudgeType: Crater
 		Damage: 30
-		ImpactSound: kaboom12
 
 TorpTube:
 	ROF: 100
@@ -1254,7 +1245,7 @@ ChronoTusk:
 		High: true
 		Shadow: false
 		Proximity: true
-#		Trail: smokey
+		Trail: smokey
 		ContrailLength: 10
 		Inaccuracy: 3
 		Image: DRAGON
@@ -1272,4 +1263,3 @@ ChronoTusk:
 		InfDeath: 4
 		SmudgeType: Crater
 		Damage: 30
-		ImpactSound: kaboom12
