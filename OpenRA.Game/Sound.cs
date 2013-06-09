@@ -35,7 +35,15 @@ namespace OpenRA
 				return null;
 			}
 
-			return LoadSoundRaw(AudLoader.LoadSound(FileSystem.Open(filename)));
+			if (filename.ToLowerInvariant().EndsWith("wav"))
+				return LoadWave(new WavLoader(FileSystem.Open(filename)));
+			else
+				return LoadSoundRaw(AudLoader.LoadSound(FileSystem.Open(filename)));
+		}
+
+		static ISoundSource LoadWave(WavLoader wave)
+		{
+			return soundEngine.AddSoundSourceFromMemory(wave.RawOutput, wave.Channels, wave.BitsPerSample, wave.SampleRate);
 		}
 
 		static ISoundSource LoadSoundRaw(byte[] rawData)
