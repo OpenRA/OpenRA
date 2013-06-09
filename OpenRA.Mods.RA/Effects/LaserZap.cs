@@ -90,10 +90,22 @@ namespace OpenRA.Mods.RA.Effects
 			var src = new PPos(args.src.X, args.src.Y - args.srcAltitude);
 			var dest = new PPos(args.dest.X, args.dest.Y - args.destAltitude);
 			var wlr = Game.Renderer.WorldLineRenderer;
-			wlr.LineWidth = info.BeamWidth;
+
+			// TODO: Push this into a BeamRenderable, with support for refraction/ripples on sonic weapons
+			var lineWidth = wlr.LineWidth;
+			if (lineWidth != info.BeamWidth)
+			{
+				wlr.Flush();
+				wlr.LineWidth = info.BeamWidth;
+			}
+
 			wlr.DrawLine(src.ToFloat2(), dest.ToFloat2(), rc, rc);
-			wlr.Flush();
-			wlr.LineWidth = 1f;
+
+			if (lineWidth != info.BeamWidth)
+			{
+				wlr.Flush();
+				wlr.LineWidth = lineWidth;
+			}
 		}
 	}
 }
