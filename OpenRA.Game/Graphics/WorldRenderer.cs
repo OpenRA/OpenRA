@@ -37,6 +37,7 @@ namespace OpenRA.Graphics
 		internal readonly ShroudRenderer shroudRenderer;
 		internal readonly HardwarePalette palette;
 		internal Cache<string, PaletteReference> palettes;
+		Lazy<DeveloperMode> devTrait;
 
 		internal WorldRenderer(World world)
 		{
@@ -51,6 +52,8 @@ namespace OpenRA.Graphics
 
 			terrainRenderer = new TerrainRenderer(world, this);
 			shroudRenderer = new ShroudRenderer(world);
+
+			devTrait = Lazy.New(() => world.LocalPlayer != null ? world.LocalPlayer.PlayerActor.Trait<DeveloperMode>() : null);
 		}
 
 		PaletteReference CreatePaletteReference(string name)
@@ -74,14 +77,21 @@ namespace OpenRA.Graphics
 				bounds.TopLeftAsCPos().ToPPos(),
 				bounds.BottomRightAsCPos().ToPPos());
 
-			actors.SelectMany(a => a.Render(this))
-				.OrderBy(r => r, comparer)
-				.Do(rr => rr.Render(this));
+			var worldRenderables = actors.SelectMany(a => a.Render(this))
+				.OrderBy(r => r, comparer);
 
 			// Effects are drawn on top of all actors
+			var effectRenderables = world.Effects.SelectMany(e => e.Render(this));
+
 			// TODO: Allow effects to be interleaved with actors
-			world.Effects.SelectMany(e => e.Render(this))
-				.Do(rr => rr.Render(this));
+			worldRenderables.Do(rr => rr.Render(this));
+			effectRenderables.Do(rr => rr.Render(this));
+
+			if (devTrait.Value != null && devTrait.Value.ShowDebugGeometry)
+			{
+				worldRenderables.Do(rr => rr.RenderDebugGeometry(this));
+				effectRenderables.Do(rr => rr.RenderDebugGeometry(this));
+			}
 		}
 
 		public void Draw()
@@ -217,6 +227,13 @@ namespace OpenRA.Graphics
 			// Round to nearest pixel
 			var px = ScreenPosition(pos);
 			return new int2((int)Math.Round(px.X), (int)Math.Round(px.Y));
+		}
+
+		// For scaling vectors to pixel sizes in the voxel renderer
+		public float[] ScreenVector(WVec vec)
+		{
+			var c = Game.CellSize/1024f;
+			return new float[] {c*vec.X, c*vec.Y, c*vec.Z, 1};
 		}
 
 		public float ScreenZPosition(WPos pos, int zOffset) { return (pos.Y + pos.Z + zOffset)*Game.CellSize/1024f; }

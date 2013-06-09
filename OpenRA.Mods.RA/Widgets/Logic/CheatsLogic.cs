@@ -13,6 +13,7 @@ using System.Drawing;
 using System.Reflection;
 using System.Linq;
 using OpenRA;
+using OpenRA.Graphics;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 using XRandom = OpenRA.Thirdparty.Random;
@@ -66,6 +67,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			{
 				showMuzzlesCheckbox.IsChecked = () => devTrait.ShowMuzzles;
 				showMuzzlesCheckbox.OnClick = () => devTrait.ShowMuzzles ^= true;
+			}
+
+			var showGeometryCheckbox = widget.GetOrNull<CheckboxWidget>("SHOW_GEOMETRY");
+			if (showGeometryCheckbox != null)
+			{
+				showGeometryCheckbox.IsChecked = () => devTrait.ShowDebugGeometry;
+				showGeometryCheckbox.OnClick = () => devTrait.ShowDebugGeometry ^= true;
 			}
 
 			var allTechCheckbox = widget.GetOrNull<CheckboxWidget>("ENABLE_TECH");

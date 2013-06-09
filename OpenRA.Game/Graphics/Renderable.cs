@@ -41,6 +41,7 @@ namespace OpenRA.Graphics
 		IRenderable WithZOffset(int newOffset);
 		IRenderable WithPos(WPos pos);
 		void Render(WorldRenderer wr);
+		void RenderDebugGeometry(WorldRenderer wr);
 	}
 
 	public struct SpriteRenderable : IRenderable
@@ -82,6 +83,12 @@ namespace OpenRA.Graphics
 		public void Render(WorldRenderer wr)
 		{
 			sprite.DrawAt(wr.ScreenPxPosition(pos) - pxCenter, palette.Index, scale);
+		}
+
+		public void RenderDebugGeometry(WorldRenderer wr)
+		{
+			var offset = wr.ScreenPxPosition(pos) - pxCenter;
+			Game.Renderer.WorldLineRenderer.DrawRect(offset, offset + sprite.size, Color.Red);
 		}
 	}
 }
