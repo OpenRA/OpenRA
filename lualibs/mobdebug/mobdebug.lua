@@ -1,12 +1,12 @@
 --
--- MobDebug 0.526
+-- MobDebug 0.534
 -- Copyright 2011-13 Paul Kulchenko
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
 --
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.526,
+  _VERSION = 0.534,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = os and os.getenv and os.getenv("MOBDEBUG_PORT") or 8172,
@@ -103,7 +103,7 @@ end
 local function q(s) return s:gsub('([%(%)%.%%%+%-%*%?%[%^%$%]])','%%%1') end
 
 local serpent = (function() ---- include Serpent module for serialization
-local n, v = "serpent", 0.23 -- (C) 2012-13 Paul Kulchenko; MIT License
+local n, v = "serpent", 0.231 -- (C) 2012-13 Paul Kulchenko; MIT License
 local c, d = "Paul Kulchenko", "Lua serializer and pretty printer"
 local snum = {[tostring(1/0)]='1/0 --[[math.huge]]',[tostring(-1/0)]='-1/0 --[[-math.huge]]',[tostring(0/0)]='0/0'}
 local badtype = {thread = true, userdata = true, cdata = true}
@@ -151,7 +151,7 @@ local function s(t, opts)
     if seen[t] then -- already seen this element
       table.insert(sref, spath..space..'='..space..seen[t])
       return tag..'nil'..comment('ref', level) end
-    if mt and (mt.__serialize or mt.__tostring) then -- knows how to serialize itself
+    if type(mt) == 'table' and (mt.__serialize or mt.__tostring) then -- knows how to serialize itself
       seen[t] = insref or spath
       if mt.__serialize then t = mt.__serialize(t) else t = tostring(t) end
       ttype = type(t) end -- new value falls through to be serialized
@@ -277,9 +277,9 @@ local function remove_breakpoint(file, line)
   if breakpoints[line] then breakpoints[line][file] = nil end
 end
 
--- this file name is already converted to lower case on windows.
 local function has_breakpoint(file, line)
-  return breakpoints[line] and breakpoints[line][file]
+  return breakpoints[line]
+     and breakpoints[line][iscasepreserving and string.lower(file) or file]
 end
 
 local function restore_vars(vars)
@@ -446,23 +446,26 @@ local function debug_hook(event, line)
     local file = lastfile
     if (lastsource ~= caller.source) then
       file, lastsource = caller.source, caller.source
-      -- the easiest/fastest way would be to check for file names starting
-      -- with '@', but users can supply names that may not use '@',
+      -- technically, users can supply names that may not use '@',
       -- for example when they call loadstring('...', 'filename.lua').
-      -- so we handle all sources as filenames
-      file = file:gsub("^@", ""):gsub("\\", "/")
-      -- need this conversion to be applied to relative and absolute
-      -- file names as you may write "require 'Foo'" to
-      -- load "foo.lua" (on a case insensitive file system) and breakpoints
-      -- set on foo.lua will not work if not converted to the same case.
-      if iscasepreserving then file = string.lower(file) end
-      if file:find("%./") == 1 then file = file:sub(3)
-      else file = file:gsub('^'..q(basedir), '') end
-
-      -- fix filenames for loaded strings that may contain scripts with newlines;
-      -- some filesystems may allow "\n" in filenames, which is not supported here.
-      if file:find("\n") then
-        file = file:gsub("\n", ' '):sub(1, 32) -- limit to 32 chars
+      -- Unfortunately, there is no reliable/quick way to figure out
+      -- what is the filename and what is the source code.
+      -- The following will work if the supplied filename uses Unix path.
+      if file:find("^@") then
+        file = file:gsub("^@", ""):gsub("\\", "/")
+        -- need this conversion to be applied to relative and absolute
+        -- file names as you may write "require 'Foo'" to
+        -- load "foo.lua" (on a case insensitive file system) and breakpoints
+        -- set on foo.lua will not work if not converted to the same case.
+        if iscasepreserving then file = string.lower(file) end
+        if file:find("%./") == 1 then file = file:sub(3)
+        else file = file:gsub('^'..q(basedir), '') end
+        -- some file systems allow newlines in file names; remove these.
+        file = file:gsub("\n", ' ')
+      else
+        -- serialize and return the source code; need serialization as scripts
+        -- may include newlines, but the names are expected to one one line.
+        file = serpent.line(file) -- serialize file content as a string
       end
 
       -- set to true if we got here; this only needs to be done once per
@@ -513,7 +516,7 @@ local function debug_hook(event, line)
     -- need to recheck once more as resume after 'stack' command may
     -- return something else (for example, 'exit'), which needs to be handled
     if status and res and res ~= 'stack' then
-      if abort == nil and res == "exit" then os.exit(1) end
+      if abort == nil and res == "exit" then os.exit(1); return end
       abort = res
       -- only abort if safe; if not, there is another (earlier) check inside
       -- debug_hook, which will abort execution at the first safe opportunity
@@ -643,7 +646,8 @@ local function debugger_loop(sev, svars, sfile, sline)
           server:send("200 OK 0\n")
           coroutine.yield("load")
         else
-          local chunk = server:receive(size)
+          -- receiving 0 bytes blocks (at least in luasocket 2.0.2), so skip reading
+          local chunk = size == 0 and "" or server:receive(size)
           if chunk then -- LOAD a new script for debugging
             local func, res = loadstring(chunk, "@"..name)
             if func then
@@ -1009,8 +1013,11 @@ local function handle(params, client, options)
   elseif command == "setb" then
     _, _, _, file, line = string.find(params, "^([a-z]+)%s+(.-)%s+(%d+)%s*$")
     if file and line then
-      file = string.gsub(file, "\\", "/") -- convert slash
-      file = removebasedir(file, basedir)
+      -- if this is a file name, and not a file source
+      if not file:find('^".*"$') then
+        file = string.gsub(file, "\\", "/") -- convert slash
+        file = removebasedir(file, basedir)
+      end
       client:send("SETB " .. file .. " " .. line .. "\n")
       if client:receive() == "200 OK" then
         set_breakpoint(file, line)
@@ -1044,8 +1051,11 @@ local function handle(params, client, options)
   elseif command == "delb" then
     _, _, _, file, line = string.find(params, "^([a-z]+)%s+(.-)%s+(%d+)%s*$")
     if file and line then
-      file = string.gsub(file, "\\", "/") -- convert slash
-      file = removebasedir(file, basedir)
+      -- if this is a file name, and not a file source
+      if not file:find('^".*"$') then
+        file = string.gsub(file, "\\", "/") -- convert slash
+        file = removebasedir(file, basedir)
+      end
       client:send("DELB " .. file .. " " .. line .. "\n")
       if client:receive() == "200 OK" then 
         remove_breakpoint(file, line)
@@ -1123,7 +1133,7 @@ local function handle(params, client, options)
         local file = string.gsub(exp, "\\", "/") -- convert slash
         file = removebasedir(file, basedir)
         client:send("LOAD " .. #lines .. " " .. file .. "\n")
-        client:send(lines)
+        if #lines > 0 then client:send(lines) end
       end
       while true do
         local params, err = client:receive()
@@ -1372,6 +1382,9 @@ local function done()
 
   debug.sethook()
   server:close()
+
+  coro_debugger = nil -- this is to make sure isrunning() returns `false`
+  seen_hook = nil -- this is to make sure that the next start() call works
 end
 
 -- make public functions available
