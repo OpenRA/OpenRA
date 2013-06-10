@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA
 		[ActorReference]
 		public readonly string HuskActor = null;
 
-		public object Create( ActorInitializer init ) { return new LeavesHusk(this); }
+		public object Create(ActorInitializer init) { return new LeavesHusk(this); }
 	}
 
 	public class LeavesHusk : INotifyKilled
