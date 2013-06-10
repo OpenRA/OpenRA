@@ -227,7 +227,7 @@ namespace OpenRA.Mods.RA
 		{
 			if( !target.IsValid ) return false;
 			if( target.IsActor )
-				return IsInRange( attackOrigin, range, target.Actor );
+				return IsInRange( attackOrigin, range, target.CenterLocation );
 			else
 				return IsInRange( attackOrigin, range, target.CenterLocation );
 		}
