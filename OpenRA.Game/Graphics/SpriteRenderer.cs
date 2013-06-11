@@ -66,7 +66,7 @@ namespace OpenRA.Graphics
 				Flush();
 
 			currentSheet = s.sheet;
-			Util.FastCreateQuad(vertices, location.ToInt2(), s, paletteIndex, nv, size);
+			Util.FastCreateQuad(vertices, (location + s.offset).ToInt2(), s, paletteIndex, nv, size);
 			nv += 4;
 		}
 

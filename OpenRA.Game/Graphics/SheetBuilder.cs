@@ -77,7 +77,8 @@ namespace OpenRA.Graphics
 			return (TextureChannel)nextChannel;
 		}
 
-		public Sprite Allocate(Size imageSize)
+		public Sprite Allocate(Size imageSize) { return Allocate(imageSize, float2.Zero); }
+		public Sprite Allocate(Size imageSize, float2 spriteOffset)
 		{
 			if (imageSize.Width + p.X > current.Size.Width)
 			{
@@ -103,7 +104,7 @@ namespace OpenRA.Graphics
 				p = new Point(0,0);
 			}
 
-			var rect = new Sprite(current, new Rectangle(p, imageSize), channel);
+			var rect = new Sprite(current, new Rectangle(p, imageSize), spriteOffset, channel);
 			p.X += imageSize.Width;
 
 			return rect;

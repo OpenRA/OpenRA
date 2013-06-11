@@ -18,12 +18,17 @@ namespace OpenRA.Graphics
 		public readonly Sheet sheet;
 		public readonly TextureChannel channel;
 		public readonly float2 size;
+		public readonly float2 offset;
 		readonly float2[] textureCoords;
 
 		public Sprite(Sheet sheet, Rectangle bounds, TextureChannel channel)
+			: this(sheet, bounds, float2.Zero, channel) {}
+
+		public Sprite(Sheet sheet, Rectangle bounds, float2 offset, TextureChannel channel)
 		{
-			this.bounds = bounds;
 			this.sheet = sheet;
+			this.bounds = bounds;
+			this.offset = offset;
 			this.channel = channel;
 			this.size = new float2(bounds.Size);
 
