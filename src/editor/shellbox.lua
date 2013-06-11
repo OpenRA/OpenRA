@@ -17,8 +17,8 @@ local MESSAGE_MARKER = StylesGetMarker("message")
 
 out:SetFont(ide.font.oNormal)
 out:StyleSetFont(wxstc.wxSTC_STYLE_DEFAULT, ide.font.oNormal)
+out:SetBufferedDraw(not ide.config.hidpi and true or false)
 out:StyleClearAll()
-out:SetBufferedDraw(true)
 
 out:SetTabWidth(ide.config.editor.tabwidth or 2)
 out:SetIndent(ide.config.editor.tabwidth or 2)

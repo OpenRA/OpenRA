@@ -169,6 +169,7 @@ config = {
   allowinteractivescript = false, -- allow interaction in the output window
   projectautoopen = false, -- allow auto open/close files on a project switch
   autorecoverinactivity = nil, -- period of inactivity (s) for autorecover
+  hidpi = false, -- HiDPI/Retina display support
 }
 
 -- application engine

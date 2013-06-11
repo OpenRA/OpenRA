@@ -16,6 +16,7 @@ local PROMPT_MARKER_VALUE = 2^PROMPT_MARKER
 errorlog:Show(true)
 errorlog:SetFont(ide.font.oNormal)
 errorlog:StyleSetFont(wxstc.wxSTC_STYLE_DEFAULT, ide.font.oNormal)
+errorlog:SetBufferedDraw(not ide.config.hidpi and true or false)
 errorlog:StyleClearAll()
 errorlog:SetMarginWidth(1, 16) -- marker margin
 errorlog:SetMarginType(1, wxstc.wxSTC_MARGIN_SYMBOL);

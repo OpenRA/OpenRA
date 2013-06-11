@@ -564,7 +564,7 @@ function CreateEditor()
   editor.matchon = false
   editor.assignscache = false
 
-  editor:SetBufferedDraw(true)
+  editor:SetBufferedDraw(not ide.config.hidpi and true or false)
   editor:StyleClearAll()
 
   editor:SetFont(ide.font.eNormal)
