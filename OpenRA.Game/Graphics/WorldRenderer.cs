@@ -68,7 +68,7 @@ namespace OpenRA.Graphics
 		public PaletteReference Palette(string name) { return palettes[name]; }
 		public void AddPalette(string name, Palette pal, bool allowModifiers) { palette.AddPalette(name, pal, allowModifiers); }
 
-		void DrawRenderables()
+		List<IRenderable> GenerateRenderables()
 		{
 			var bounds = Game.viewport.WorldBounds(world);
 			var comparer = new RenderableComparer(this);
@@ -81,17 +81,16 @@ namespace OpenRA.Graphics
 				.OrderBy(r => r, comparer);
 
 			// Effects are drawn on top of all actors
-			var effectRenderables = world.Effects.SelectMany(e => e.Render(this));
-
 			// TODO: Allow effects to be interleaved with actors
-			worldRenderables.Do(rr => rr.Render(this));
-			effectRenderables.Do(rr => rr.Render(this));
+			var effectRenderables = world.Effects
+				.SelectMany(e => e.Render(this));
 
-			if (devTrait.Value != null && devTrait.Value.ShowDebugGeometry)
-			{
-				worldRenderables.Do(rr => rr.RenderDebugGeometry(this));
-				effectRenderables.Do(rr => rr.RenderDebugGeometry(this));
-			}
+			// Iterating via foreach() copies the structs, so enumerate by index
+			var renderables = worldRenderables.Concat(effectRenderables).ToList();
+			for (var i = 0; i < renderables.Count; i++)
+				renderables[i].BeforeRender(this);
+
+			return renderables;
 		}
 
 		public void Draw()
@@ -101,6 +100,7 @@ namespace OpenRA.Graphics
 			if (world.IsShellmap && !Game.Settings.Game.ShowShellmap)
 				return;
 
+			var renderables = GenerateRenderables();
 			var bounds = Game.viewport.ViewBounds(world);
 			Game.Renderer.EnableScissor(bounds.Left, bounds.Top, bounds.Width, bounds.Height);
 
@@ -119,7 +119,8 @@ namespace OpenRA.Graphics
 			if (world.OrderGenerator != null)
 				world.OrderGenerator.RenderBeforeWorld(this, world);
 
-			DrawRenderables();
+			for (var i = 0; i < renderables.Count; i++)
+				renderables[i].Render(this);
 
 			// added for contrails
 			foreach (var a in world.ActorsWithTrait<IPostRender>())
@@ -131,6 +132,11 @@ namespace OpenRA.Graphics
 
 			var renderShroud = world.RenderPlayer != null ? world.RenderPlayer.Shroud : null;
 			shroudRenderer.Draw(this, renderShroud);
+
+			if (devTrait.Value != null && devTrait.Value.ShowDebugGeometry)
+				for (var i = 0; i < renderables.Count; i++)
+					renderables[i].RenderDebugGeometry(this);
+
 			Game.Renderer.DisableScissor();
 
 			foreach (var g in world.Selection.Actors.Where(a => !a.Destroyed)

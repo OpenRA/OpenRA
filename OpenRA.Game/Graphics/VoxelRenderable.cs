@@ -79,6 +79,7 @@ namespace OpenRA.Graphics
 			                           palette, normalsPalette, shadowPalette);
 		}
 
+		public void BeforeRender(WorldRenderer wr) {}
 		public void Render(WorldRenderer wr)
 		{
 			// Depth and shadow buffers are cleared between actors so that

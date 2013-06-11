@@ -40,6 +40,7 @@ namespace OpenRA.Graphics
 		IRenderable WithPalette(PaletteReference newPalette);
 		IRenderable WithZOffset(int newOffset);
 		IRenderable WithPos(WPos pos);
+		void BeforeRender(WorldRenderer wr);
 		void Render(WorldRenderer wr);
 		void RenderDebugGeometry(WorldRenderer wr);
 	}
@@ -80,6 +81,7 @@ namespace OpenRA.Graphics
 		public IRenderable WithZOffset(int newOffset) { return new SpriteRenderable(sprite, pos, newOffset, palette, scale); }
 		public IRenderable WithPos(WPos pos) { return new SpriteRenderable(sprite, pos, zOffset, palette, scale); }
 
+		public void BeforeRender(WorldRenderer wr) {}
 		public void Render(WorldRenderer wr)
 		{
 			sprite.DrawAt(wr.ScreenPxPosition(pos) - pxCenter, palette, scale);
