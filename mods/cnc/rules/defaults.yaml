@@ -267,8 +267,7 @@
 	AutoTargetIgnore:
 	ShakeOnDeath:
 	Sellable:
-	Capturable:
-	CapturableBar:
+	LegacyCapturable:
 	DebugMuzzlePositions:
 	Guardable:
 		Range: 3
@@ -287,8 +286,7 @@
 	RenderBuilding:
 	WithBuildingExplosion:
 	-RepairableBuilding:
-	-Capturable:
-	-CapturableBar:
+	-LegacyCapturable:
 	-Sellable:
 	Tooltip:
 		Name: Civilian Building
@@ -307,8 +305,7 @@
 
 ^TechBuilding:
 	Inherits: ^CivBuilding
-	Capturable:
-	CapturableBar:
+	LegacyCapturable:
 	RepairableBuilding:
 	RevealsShroud:
 		Range: 3

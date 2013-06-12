@@ -91,9 +91,8 @@ V01:
 	TransformOnCapture:
 		IntoActor: v01.sniper
 		SkipMakeAnims: true
-	Capturable:
+	LegacyCapturable:
 		Type: civilianbuilding
-		CaptureCompleteTime: 0
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
 
@@ -119,7 +118,7 @@ V01.SNIPER:
 		OnExit: v01
 		SkipMakeAnims: true
 		BecomeNeutral: true
-	-Capturable:
+	-LegacyCapturable:
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
 

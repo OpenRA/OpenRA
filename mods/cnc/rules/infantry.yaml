@@ -167,7 +167,7 @@ E6:
 		PipType: Yellow
 	EngineerRepair:
 	RepairsBridges:
-	Captures:
+	LegacyCaptures:
 		CaptureTypes: building, husk
 	-AutoTarget:
 	AttackMove:
