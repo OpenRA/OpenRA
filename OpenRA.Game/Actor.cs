@@ -273,6 +273,7 @@ namespace OpenRA
 				// momentarily remove from world so the ownership queries don't get confused
 				w.Remove(this);
 				Owner = newOwner;
+				Generation++;
 				w.Add(this);
 
 				foreach (var t in this.TraitsImplementing<INotifyOwnerChanged>())

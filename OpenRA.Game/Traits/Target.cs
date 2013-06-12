@@ -15,7 +15,6 @@ namespace OpenRA.Traits
 		public static Target[] NoTargets = {};
 
 		Actor actor;
-		Player owner;
 		PPos pos;
 		bool valid;
 		int generation;
@@ -26,7 +25,6 @@ namespace OpenRA.Traits
 			{
 				actor = a,
 				valid = (a != null),
-				owner = (a != null) ? a.Owner : null,
 				generation = a.Generation,
 			};
 		}
@@ -41,7 +39,7 @@ namespace OpenRA.Traits
 
 		public static readonly Target None = new Target();
 
-		public bool IsValid { get { return valid && (actor == null || (actor.IsInWorld && !actor.IsDead() && actor.Owner == owner && actor.Generation == generation)); } }
+		public bool IsValid { get { return valid && (actor == null || (actor.IsInWorld && !actor.IsDead() && actor.Generation == generation)); } }
 		public PPos PxPosition { get { return IsActor ? actor.Trait<IHasLocation>().PxPosition : pos; } }
 		public PPos CenterLocation { get { return PxPosition; } }
 
