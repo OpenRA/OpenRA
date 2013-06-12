@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Linq;
 using OpenRA.Effects;
 using OpenRA.FileFormats;
@@ -19,79 +20,83 @@ namespace OpenRA.Mods.RA
 	[Desc("This actor can be captured by a unit with Captures: trait.")]
 	public class CapturableInfo : ITraitInfo
 	{
+		[Desc("Type of actor (the Captures: trait defines what Types it can capture).")]
 		public readonly string Type = "building";
 		public readonly bool AllowAllies = false;
 		public readonly bool AllowNeutral = true;
 		public readonly bool AllowEnemies = true;
-		[Desc("Seconds it takes to change the owner.", "It stays neutral during this period. You might want to add a CapturableBar: trait, too.")]
-		public readonly int CaptureCompleteTime = 10;
+		[Desc("Seconds it takes to change the owner.", "You might want to add a CapturableBar: trait, too.")]
+		public readonly int CaptureCompleteTime = 15;
 
-		public object Create(ActorInitializer init) { return new Capturable(this); }
+		public object Create(ActorInitializer init) { return new Capturable(init.self, this); }
 	}
 
 	public class Capturable : ITick
 	{
-		[Sync] public Actor Captor = null;
 		[Sync] public int CaptureProgressTime = 0;
-		public bool CaptureInProgress { get { return Captor != null; } }
+		[Sync] public Actor Captor;
+		private Actor self;
 		public CapturableInfo Info;
+		public bool CaptureInProgress { get { return Captor != null; } }
 
-		public Capturable(CapturableInfo info)
+		public Capturable(Actor self, CapturableInfo info)
 		{
-			this.Info = info;
+			this.self = self;
+			Info = info;
 		}
 
-		public bool BeginCapture(Actor self, Actor captor)
+		public bool CanBeTargetedBy(Actor captor)
 		{
-			if (!CaptureInProgress && !self.Trait<Building>().Lock())
+			var c = captor.TraitOrDefault<Captures>();
+			if (c == null)
 				return false;
 
-			if (CaptureInProgress && Captor.Owner.Stances[captor.Owner] == Stance.Ally)
+			var playerRelationship = self.Owner.Stances[captor.Owner];
+			if (playerRelationship == Stance.Ally && !Info.AllowAllies)
 				return false;
 
-			CaptureProgressTime = 0;
+			if (playerRelationship == Stance.Enemy && !Info.AllowEnemies)
+				return false;
 
-			this.Captor = captor;
+			if (playerRelationship == Stance.Neutral && !Info.AllowNeutral)
+				return false;
 
-			if (self.Owner != self.World.WorldActor.Owner)
-				self.ChangeOwner(self.World.WorldActor.Owner);
+			if (!c.Info.CaptureTypes.Contains(Info.Type))
+				return false;
+
+			if (CaptureInProgress)
+				return false;
 
 			return true;
 		}
 
-		public void Tick(Actor self)
+		public void BeginCapture(Actor captor)
 		{
-			if (!CaptureInProgress) return;
+			var building = self.TraitOrDefault<Building>();
+			if (building != null)
+				building.Lock();
 
-			if (CaptureProgressTime < Info.CaptureCompleteTime * 25)
-				CaptureProgressTime++;
-			else
-			{
-				self.World.AddFrameEndTask(w =>
-				{
-					self.ChangeOwner(Captor.Owner);
-					ChangeCargoOwner(self, Captor.Owner);
-
-					foreach (var t in self.TraitsImplementing<INotifyCapture>())
-						t.OnCapture(self, Captor, self.Owner, Captor.Owner);
-
-					foreach (var t in Captor.World.ActorsWithTrait<INotifyOtherCaptured>())
-						t.Trait.OnActorCaptured(t.Actor, self, Captor, self.Owner, Captor.Owner);
-
-					Captor = null;
-					self.Trait<Building>().Unlock();
-				});
-			}
+			Captor = captor;
 		}
 
-		public static void ChangeCargoOwner(Actor self, Player captor)
+		public void EndCapture()
 		{
-			var cargo = self.TraitOrDefault<Cargo>();
-			if (cargo == null)
-				return;
+			var building = self.TraitOrDefault<Building>();
+			if (building != null)
+				building.Unlock();
 
-			foreach (var c in cargo.Passengers)
-				c.Owner = captor;
+			Captor = null;
+		}
+
+		public void Tick(Actor self)
+		{
+			if (Captor != null && (!Captor.IsInWorld || Captor.IsDead()))
+				EndCapture();
+
+			if (!CaptureInProgress)
+				CaptureProgressTime = 0;
+			else
+				CaptureProgressTime++;
 		}
 	}
 }

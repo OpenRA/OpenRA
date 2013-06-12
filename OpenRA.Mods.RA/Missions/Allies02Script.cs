@@ -322,7 +322,6 @@ namespace OpenRA.Mods.RA.Missions
 			foreach (var actor in world.Actors.Where(a => a.Owner == allies && a != allies.PlayerActor))
 			{
 				actor.ChangeOwner(allies2);
-				Capturable.ChangeCargoOwner(actor, allies2);
 				if (actor.Info.Name == "proc")
 					actor.QueueActivity(new Transform(actor, "proc") { SkipMakeAnims = true }); // for harv spawn
 				foreach (var c in actor.TraitsImplementing<INotifyCapture>())
