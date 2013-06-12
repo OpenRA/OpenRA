@@ -87,8 +87,11 @@ namespace OpenRA.Graphics
 
 			// Iterating via foreach() copies the structs, so enumerate by index
 			var renderables = worldRenderables.Concat(effectRenderables).ToList();
+
+			Game.Renderer.WorldVoxelRenderer.BeginFrame();
 			for (var i = 0; i < renderables.Count; i++)
 				renderables[i].BeforeRender(this);
+			Game.Renderer.WorldVoxelRenderer.EndFrame();
 
 			return renderables;
 		}

@@ -27,19 +27,22 @@ namespace OpenRA.Graphics
 
 	public class Voxel
 	{
-		Limb[] limbs;
-		HvaReader hva;
-		VoxelLoader loader;
+		Limb[] limbData;
+		float[] transforms;
 
-		float[][] transform, lightDirection, groundNormal;
-		float[] groundZ;
+		public readonly uint Frames;
+		public readonly uint Limbs;
 
 		public Voxel(VoxelLoader loader, VxlReader vxl, HvaReader hva)
 		{
-			this.hva = hva;
-			this.loader = loader;
+			if (vxl.LimbCount != hva.LimbCount)
+				throw new InvalidOperationException("Voxel and hva limb counts don't match");
 
-			limbs = new Limb[vxl.LimbCount];
+			transforms = hva.Transforms;
+			Frames = hva.FrameCount;
+			Limbs = hva.LimbCount;
+
+			limbData = new Limb[vxl.LimbCount];
 			for (var i = 0; i < vxl.LimbCount; i++)
 			{
 				var vl = vxl.Limbs[i];
@@ -48,53 +51,20 @@ namespace OpenRA.Graphics
 				l.Bounds = (float[])vl.Bounds.Clone();
 				l.Size = (byte[])vl.Size.Clone();
 				l.RenderData = loader.GenerateRenderData(vxl.Limbs[i]);
-				limbs[i] = l;
+				limbData[i] = l;
 			}
-
-			transform = new float[vxl.LimbCount][];
-			lightDirection = new float[vxl.LimbCount][];
-			groundNormal = new float[vxl.LimbCount][];
-			groundZ = new float[vxl.LimbCount];
 		}
 
-		// Extract the rotation components from a matrix and apply them to a vector
-		static float[] ExtractRotationVector(float[] mtx, WVec vec)
+		public float[] TransformationMatrix(uint limb, uint frame)
 		{
-			var tVec = Util.MatrixVectorMultiply(mtx, new float[] {vec.X, vec.Y, vec.Z, 1});
-			var tOrigin = Util.MatrixVectorMultiply(mtx, new float[] {0,0,0,1});
-			tVec[0] -= tOrigin[0]*tVec[3]/tOrigin[3];
-			tVec[1] -= tOrigin[1]*tVec[3]/tOrigin[3];
-			tVec[2] -= tOrigin[2]*tVec[3]/tOrigin[3];
+			if (frame >= Frames)
+				throw new ArgumentOutOfRangeException("frame", "Only {0} frames exist.".F(Frames));
+			if (limb >= Limbs)
+				throw new ArgumentOutOfRangeException("limb", "Only {1} limbs exist.".F(Limbs));
 
-			// Renormalize
-			var w = (float)Math.Sqrt(tVec[0]*tVec[0] + tVec[1]*tVec[1] + tVec[2]*tVec[2]);
-			tVec[0] /= w;
-			tVec[1] /= w;
-			tVec[2] /= w;
-			tVec[3] = 1f;
-
-			return tVec;
-		}
-
-		public void Draw(VoxelRenderer r, float[] lightAmbientColor, float[] lightDiffuseColor,
-		                 int colorPalette, int normalsPalette)
-		{
-			for (var i = 0; i < limbs.Length; i++)
-				r.Render(loader, limbs[i].RenderData, transform[i], lightDirection[i],
-				         lightAmbientColor, lightDiffuseColor, colorPalette, normalsPalette);
-		}
-
-		public void DrawShadow(VoxelRenderer r, int shadowPalette)
-		{
-			for (var i = 0; i < limbs.Length; i++)
-				r.RenderShadow(loader, limbs[i].RenderData, transform[i], lightDirection[i],
-				               groundNormal[i], groundZ[i], shadowPalette);
-		}
-
-		float[] TransformationMatrix(uint limb, uint frame)
-		{
-			var l = limbs[limb];
-			var t = hva.TransformationMatrix(limb, frame);
+			var l = limbData[limb];
+			var t = new float[16];
+			Array.Copy(transforms, 16*(Limbs*frame + limb), t, 0, 16);
 
 			// Fix limb position
 			t[12] *= l.Scale*(l.Bounds[3] - l.Bounds[0]) / l.Size[0];
@@ -108,46 +78,16 @@ namespace OpenRA.Graphics
 			return t;
 		}
 
-		static readonly WVec forward = new WVec(1024,0,0);
-		static readonly WVec up = new WVec(0,0,1024);
-		public void PrepareForDraw(WorldRenderer wr, WPos pos, IEnumerable<WRot> rotations,
-		                           WRot camera, uint frame, float scale, WRot lightSource)
+		public VoxelRenderData RenderData(uint limb)
 		{
-			// Calculate the shared view matrix components
-			var pxPos = wr.ScreenPosition(pos);
-			var posMtx = Util.TranslationMatrix(pxPos.X, pxPos.Y, pxPos.Y);
-			var scaleMtx = Util.ScaleMatrix(scale, scale, scale);
-			var rotMtx = rotations.Reverse().Aggregate(Util.MakeFloatMatrix(camera.AsMatrix()),
-				(a,b) => Util.MatrixMultiply(a, Util.MakeFloatMatrix(b.AsMatrix())));
-
-			// Each limb has its own transformation matrix
-			for (uint i = 0; i < limbs.Length; i++)
-			{
-				var t = TransformationMatrix(i, frame);
-				transform[i] = Util.MatrixMultiply(rotMtx, t);
-				transform[i] = Util.MatrixMultiply(scaleMtx, transform[i]);
-				transform[i] = Util.MatrixMultiply(posMtx, transform[i]);
-
-				// Transform light direction into limb-space
-				var undoPitch = Util.MakeFloatMatrix(new WRot(camera.Pitch, WAngle.Zero, WAngle.Zero).AsMatrix());
-				var lightTransform = Util.MatrixMultiply(Util.MatrixInverse(transform[i]), undoPitch);
-
-				lightDirection[i] = ExtractRotationVector(lightTransform, forward.Rotate(lightSource));
-				groundNormal[i] = ExtractRotationVector(Util.MatrixInverse(t), up);
-
-				// Hack: Extract the ground z position independently of y.
-				groundZ[i] = (wr.ScreenPosition(pos).Y - wr.ScreenZPosition(pos, 0)) / 2;
-			}
+			return limbData[limb].RenderData;
 		}
-
-		public uint Frames { get { return hva.FrameCount; }}
-		public uint LimbCount { get { return (uint)limbs.Length; }}
 
 		public float[] Size
 		{
 			get
 			{
-				return limbs.Select(a => a.Size.Select(b => a.Scale*b).ToArray())
+				return limbData.Select(a => a.Size.Select(b => a.Scale*b).ToArray())
 					.Aggregate((a,b) => new float[]
 					{
 						Math.Max(a[0], b[0]),
@@ -162,14 +102,15 @@ namespace OpenRA.Graphics
 			var ret = new float[] {float.MaxValue,float.MaxValue,float.MaxValue,
 				float.MinValue,float.MinValue,float.MinValue};
 
-			for (uint j = 0; j < limbs.Length; j++)
+			for (uint j = 0; j < Limbs; j++)
 			{
+				var l = limbData[j];
 				var b = new float[]
 				{
 					0, 0, 0,
-					(limbs[j].Bounds[3] - limbs[j].Bounds[0]),
-					(limbs[j].Bounds[4] - limbs[j].Bounds[1]),
-					(limbs[j].Bounds[5] - limbs[j].Bounds[2])
+					(l.Bounds[3] - l.Bounds[0]),
+					(l.Bounds[4] - l.Bounds[1]),
+					(l.Bounds[5] - l.Bounds[2])
 				};
 
 				// Calculate limb bounding box

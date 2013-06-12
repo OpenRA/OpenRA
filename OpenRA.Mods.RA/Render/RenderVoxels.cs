@@ -32,11 +32,10 @@ namespace OpenRA.Mods.RA.Render
 		[Desc("Change the image size.")]
 		public readonly float Scale = 10;
 
-		public readonly WAngle LightPitch = new WAngle(170); // 60 degrees
-		public readonly WAngle LightYaw = new WAngle(739); // 260 degrees
+		public readonly WAngle LightPitch = WAngle.FromDegrees(50);
+		public readonly WAngle LightYaw = WAngle.FromDegrees(240);
 		public readonly float[] LightAmbientColor = new float[] {0.6f, 0.6f, 0.6f};
 		public readonly float[] LightDiffuseColor = new float[] {0.4f, 0.4f, 0.4f};
-
 		public virtual object Create(ActorInitializer init) { return new RenderVoxels(init.self, this); }
 	}
 
@@ -55,7 +54,7 @@ namespace OpenRA.Mods.RA.Render
 			this.info = info;
 			body = self.Trait<IBodyOrientation>();
 			camera = new WRot(WAngle.Zero, body.CameraPitch - new WAngle(256), new WAngle(256));
-			lightSource = new WRot(WAngle.Zero, info.LightPitch, info.LightYaw - new WAngle(256));
+			lightSource = new WRot(WAngle.Zero,new WAngle(256) - info.LightPitch, info.LightYaw);
 		}
 
 		bool initializePalettes = true;

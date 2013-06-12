@@ -49,7 +49,7 @@ namespace OpenRA.Graphics
 			WorldSpriteRenderer = new SpriteRenderer(this, device.CreateShader("shp"));
 			WorldRgbaSpriteRenderer = new SpriteRenderer(this, device.CreateShader("rgba"));
 			WorldLineRenderer = new LineRenderer(this, device.CreateShader("line"));
-			WorldVoxelRenderer = new VoxelRenderer(this, device.CreateShader("vxl"), device.CreateShader("vxlshadow"));
+			WorldVoxelRenderer = new VoxelRenderer(this, device.CreateShader("vxl"));
 			LineRenderer = new LineRenderer(this, device.CreateShader("line"));
 			WorldQuadRenderer = new QuadRenderer(this, device.CreateShader("line"));
 			RgbaSpriteRenderer = new SpriteRenderer(this, device.CreateShader("rgba"));
