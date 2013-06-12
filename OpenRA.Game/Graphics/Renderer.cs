@@ -206,17 +206,5 @@ namespace OpenRA.Graphics
 			Flush();
 			Device.DisableDepthBuffer();
 		}
-
-		public void EnableStencilBuffer()
-		{
-			Flush();
-			Device.EnableStencilBuffer();
-		}
-
-		public void DisableStencilBuffer()
-		{
-			Flush();
-			Device.DisableStencilBuffer();
-		}
 	}
 }

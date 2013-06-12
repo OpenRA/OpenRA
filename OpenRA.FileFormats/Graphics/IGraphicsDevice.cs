@@ -54,9 +54,6 @@ namespace OpenRA.FileFormats.Graphics
 
 		void EnableDepthBuffer();
 		void DisableDepthBuffer();
-
-		void EnableStencilBuffer();
-		void DisableStencilBuffer();
 	}
 
 	public interface IVertexBuffer<T>

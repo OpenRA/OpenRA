@@ -134,24 +134,6 @@ namespace OpenRA.Renderer.SdlCommon
 			ErrorHandler.CheckGlError();
 		}
 
-		public void EnableStencilBuffer()
-		{
-			Gl.glClear(Gl.GL_STENCIL_BUFFER_BIT);
-			ErrorHandler.CheckGlError();
-			Gl.glEnable(Gl.GL_STENCIL_TEST);
-			ErrorHandler.CheckGlError();
-			Gl.glStencilFunc(Gl.GL_NOTEQUAL, 1, 1);
-			ErrorHandler.CheckGlError();
-			Gl.glStencilOp(Gl.GL_KEEP, Gl.GL_KEEP, Gl.GL_INCR);
-			ErrorHandler.CheckGlError();
-		}
-
-		public void DisableStencilBuffer()
-		{
-			Gl.glDisable(Gl.GL_STENCIL_TEST);
-			ErrorHandler.CheckGlError();
-		}
-
 		public void EnableDepthBuffer()
 		{
 			Gl.glClear(Gl.GL_DEPTH_BUFFER_BIT);
