@@ -62,11 +62,11 @@ namespace OpenRA.Graphics
 			if (s.sheet != currentSheet)
 				Flush();
 
-			if( nv + 4 > Renderer.TempBufferSize )
+			if (nv + 4 > Renderer.TempBufferSize)
 				Flush();
 
 			currentSheet = s.sheet;
-			Util.FastCreateQuad(vertices, (location + s.offset).ToInt2(), s, paletteIndex, nv, size);
+			Util.FastCreateQuad(vertices, location + s.offset, s, paletteIndex, nv, size);
 			nv += 4;
 		}
 
