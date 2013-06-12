@@ -4,7 +4,7 @@ MapFormat: 5
 
 Title: Ares: National Park Edition
 
-Description: Extended version of the 4 player map "Ares". Oil derricks are hard to destroy and repairable. Mine layers carry less mines.
+Description: This is an extended 8 player version of the 4 player naval warfare map Ares. The map features combined arms warfare. While oil derricks that are located on several tiny islands can be used to bolster the player economy, the main landmass is large enough to be out of range of ship weaponry. Players are encouraged to leave their starting spots and build their bases closer to the coastline.
 
 Author: wuschel
 
@@ -2195,26 +2195,6 @@ Actors:
 Smudges:
 
 Rules:
-	OILB:
-		Health:
-			HP: 1500
-		Armor:
-			Heavy:
-		Tooltip:
-			Name: Reinforced Oil Derrick
-		RepairableBuilding:
-
-	MNLY.AT:
-		LimitedAmmo:
-			Ammo: 1
-		Tooltip:
-			Name: Island Minelayer (Anti-Personnel)
-
-	MNLY.AP:
-		LimitedAmmo:
-			Ammo: 2
-		Tooltip:
-			Name: Island Minelayer (Anti-Tank)
 
 Sequences:
 

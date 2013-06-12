@@ -4,7 +4,7 @@ MapFormat: 5
 
 Title: Poseidon
 
-Description: Map with focus on naval warfare. The oil derricks on this map are repairable and very hard to destroy.
+Description: Poseidon is a map with a strong focus on naval warfare. The players start on small islands that hold the recources for a small naval campaign. Several tiny islands hold oil derricks, and a main central landmass gives additional ore. The players are encouraged to set sails as early as possible to secure their place in the sun.
 
 Author: wuschel
 
@@ -808,14 +808,6 @@ Actors:
 Smudges:
 
 Rules:
-	OILB:
-		Health:
-			HP: 1500
-		Armor:
-			Heavy:
-		Tooltip:
-			Name: Reinforced Oil Derrick
-		RepairableBuilding:
 
 Sequences:
 

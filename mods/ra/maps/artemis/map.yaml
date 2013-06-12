@@ -2,9 +2,9 @@ Selectable: True
 
 MapFormat: 5
 
-Title: Apollo
+Title: Artemis
 
-Description: This very large naval map is made from the eastern part of the giant map Zeus. The map features a naval contest between north and south and is recommended for 4-6 players. Players are encouraged to leave their initial islands as soon as possible.
+Description: This huge map - twin counterpart of the map Apollo - was made from the western half of the the giant map Zeus. Unlike Apollo, this map gives the possibility to forsake naval warfare and concentrate on land based warcraft.  The map is recommended for 4-6 players and features a fight between north and south. The players need to leave their starting island as fast as possible in order to be able to develop a normal base of operations.
 
 Author: wuschel
 
@@ -12,7 +12,7 @@ Tileset: TEMPERAT
 
 MapSize: 256,320
 
-Bounds: 130,16,110,288
+Bounds: 16,16,104,288
 
 UseAsShellmap: False
 
@@ -60,36 +60,24 @@ Players:
 		DefaultStartingUnits: True
 		Race: Random
 		Enemies: Creeps
-	PlayerReference@Multi6:
-		Name: Multi6
-		Playable: True
-		DefaultStartingUnits: True
-		Race: Random
-		Enemies: Creeps
 	PlayerReference@Creeps:
 		Name: Creeps
 		NonCombatant: True
 		Race: allies
-		Enemies: Multi0,Multi1,Multi2,Multi3,Multi4,Multi5,Multi6
+		Enemies: Multi0,Multi1,Multi2,Multi3,Multi4,Multi5
 
 Actors:
-	Actor1: mpspawn
-		Location: 148,29
+	Actor1: oilb
+		Location: 114,183
 		Owner: Neutral
-	Actor2: mpspawn
-		Location: 220,33
+	Actor0: oilb
+		Location: 116,184
 		Owner: Neutral
-	Actor3: mpspawn
-		Location: 230,26
+	Actor110: mine
+		Location: 79,202
 		Owner: Neutral
-	Actor4: mpspawn
-		Location: 222,283
-		Owner: Neutral
-	Actor5: mpspawn
-		Location: 227,293
-		Owner: Neutral
-	Actor7: mpspawn
-		Location: 143,292
+	Actor2: oilb
+		Location: 106,133
 		Owner: Neutral
 	Actor8: v10
 		Location: 167,150
@@ -214,8 +202,8 @@ Actors:
 	Actor48: oilb
 		Location: 160,117
 		Owner: Neutral
-	Actor0: oilb
-		Location: 134,119
+	Actor49: oilb
+		Location: 122,117
 		Owner: Neutral
 	Actor50: oilb
 		Location: 134,206
@@ -388,6 +376,9 @@ Actors:
 	Actor107: mine
 		Location: 130,26
 		Owner: Neutral
+	Actor4: mpspawn
+		Location: 23,24
+		Owner: Neutral
 	Actor127: t11
 		Location: 79,91
 		Owner: Neutral
@@ -397,17 +388,20 @@ Actors:
 	Actor109: mine
 		Location: 33,28
 		Owner: Neutral
-	Actor113: t10
-		Location: 22,27
+	Actor5: brl3
+		Location: 72,109
 		Owner: Neutral
-	Actor114: t10
-		Location: 23,29
+	Actor113: t01
+		Location: 30,25
 		Owner: Neutral
-	Actor115: t14
-		Location: 21,23
+	Actor114: t01
+		Location: 32,25
 		Owner: Neutral
-	Actor116: t14
-		Location: 23,22
+	Actor115: t01
+		Location: 31,25
+		Owner: Neutral
+	Actor116: v10
+		Location: 108,105
 		Owner: Neutral
 	Actor119: v14
 		Location: 74,94
@@ -418,23 +412,11 @@ Actors:
 	Actor120: v09
 		Location: 75,93
 		Owner: Neutral
+	Actor6: mine
+		Location: 66,105
+		Owner: Neutral
 	Actor111: mine
 		Location: 27,289
-		Owner: Neutral
-	Actor122: t15
-		Location: 35,295
-		Owner: Neutral
-	Actor123: t15
-		Location: 36,294
-		Owner: Neutral
-	Actor124: t15
-		Location: 37,293
-		Owner: Neutral
-	Actor125: t15
-		Location: 38,291
-		Owner: Neutral
-	Actor126: t15
-		Location: 37,292
 		Owner: Neutral
 	Actor118: t11
 		Location: 77,91
@@ -460,14 +442,14 @@ Actors:
 	Actor134: v03
 		Location: 126,242
 		Owner: Neutral
-	Actor102: oilb
-		Location: 174,159
+	Actor102: mine
+		Location: 130,294
 		Owner: Neutral
 	Actor135: t07
 		Location: 230,283
 		Owner: Neutral
-	Actor800: tc03
-		Location: 198,248
+	Actor140: mine
+		Location: 198,238
 		Owner: Neutral
 	Actor156: tc02
 		Location: 158,121
@@ -493,8 +475,8 @@ Actors:
 	Actor145: mine
 		Location: 123,70
 		Owner: Neutral
-	Actor146: v03
-		Location: 183,95
+	Actor146: mine
+		Location: 133,255
 		Owner: Neutral
 	Actor141: v17
 		Location: 173,82
@@ -522,6 +504,9 @@ Actors:
 		Owner: Neutral
 	Actor152: mine
 		Location: 156,80
+		Owner: Neutral
+	Actor108: mpspawn
+		Location: 35,27
 		Owner: Neutral
 	Actor149: mine
 		Location: 108,125
@@ -1459,17 +1444,17 @@ Actors:
 	Actor468: tc03
 		Location: 181,224
 		Owner: Neutral
-	Actor472: tc01
-		Location: 194,248
+	Actor469: tc03
+		Location: 192,224
 		Owner: Neutral
-	Actor703: tc03
-		Location: 194,249
+	Actor470: tc03
+		Location: 193,224
 		Owner: Neutral
-	Actor140: mine
-		Location: 194,228
+	Actor471: tc03
+		Location: 193,223
 		Owner: Neutral
-	Actor471: tc01
-		Location: 197,246
+	Actor472: tc03
+		Location: 194,223
 		Owner: Neutral
 	Actor473: tc03
 		Location: 130,219
@@ -1699,8 +1684,8 @@ Actors:
 	Actor548: tc03
 		Location: 186,67
 		Owner: Neutral
-	Actor549: oilb
-		Location: 186,47
+	Actor549: tc03
+		Location: 190,91
 		Owner: Neutral
 	Actor550: tc03
 		Location: 189,92
@@ -1894,8 +1879,8 @@ Actors:
 	Actor613: tc02
 		Location: 174,94
 		Owner: Neutral
-	Actor614: oilb
-		Location: 185,52
+	Actor614: tc02
+		Location: 187,91
 		Owner: Neutral
 	Actor615: t11
 		Location: 184,93
@@ -1994,7 +1979,7 @@ Actors:
 		Location: 190,80
 		Owner: Neutral
 	Actor647: v10
-		Location: 131,242
+		Location: 169,76
 		Owner: Neutral
 	Actor648: v10
 		Location: 146,83
@@ -2119,8 +2104,8 @@ Actors:
 	Actor688: v11
 		Location: 94,237
 		Owner: Neutral
-	Actor129: mpspawn
-		Location: 185,162
+	Actor129: mine
+		Location: 117,193
 		Owner: Neutral
 	Actor689: mine
 		Location: 114,193
@@ -2398,14 +2383,14 @@ Actors:
 	Actor786: v06
 		Location: 134,245
 		Owner: Neutral
-	Actor714: t11
-		Location: 166,240
-		Owner: Neutral
-	Actor469: tc01
-		Location: 200,248
+	Actor3: oilb
+		Location: 106,135
 		Owner: Neutral
 	Actor69: oilb
 		Location: 37,167
+		Owner: Neutral
+	Actor122: mpspawn
+		Location: 37,296
 		Owner: Neutral
 	Actor716: tc04
 		Location: 84,84
@@ -2449,11 +2434,11 @@ Actors:
 	Actor798: tc04
 		Location: 198,69
 		Owner: Neutral
-	Actor799: tc03
-		Location: 196,248
+	Actor799: tc04
+		Location: 195,225
 		Owner: Neutral
-	Actor470: tc01
-		Location: 197,249
+	Actor800: tc04
+		Location: 197,228
 		Owner: Neutral
 	Actor801: tc04
 		Location: 101,236
@@ -2482,110 +2467,206 @@ Actors:
 	Actor809: tc03
 		Location: 104,251
 		Owner: Neutral
-	Actor810: t11
-		Location: 168,239
+	Actor7: mpspawn
+		Location: 27,31
 		Owner: Neutral
-	Actor811: t11
-		Location: 167,238
+	Actor68: mpspawn
+		Location: 33,288
 		Owner: Neutral
-	Actor812: t11
-		Location: 169,238
+	Actor123: mpspawn
+		Location: 24,288
 		Owner: Neutral
-	Actor813: t11
-		Location: 170,239
+	Actor124: tc04
+		Location: 29,293
+		Owner: Neutral
+	Actor125: tc03
+		Location: 31,294
+		Owner: Neutral
+	Actor126: tc03
+		Location: 28,292
+		Owner: Neutral
+	Actor150: tc03
+		Location: 32,294
+		Owner: Neutral
+	Actor703: mine
+		Location: 109,122
+		Owner: Neutral
+	Actor714: mine
+		Location: 62,76
+		Owner: Neutral
+	Actor810: mine
+		Location: 73,245
+		Owner: Neutral
+	Actor811: mine
+		Location: 97,79
+		Owner: Neutral
+	Actor812: mine
+		Location: 98,77
+		Owner: Neutral
+	Actor813: mine
+		Location: 103,244
 		Owner: Neutral
 	Actor814: mine
-		Location: 140,100
+		Location: 102,246
 		Owner: Neutral
-	Actor815: v03
-		Location: 175,81
+	Actor815: barl
+		Location: 30,95
 		Owner: Neutral
-	Actor816: v09
-		Location: 178,81
+	Actor816: barl
+		Location: 31,95
 		Owner: Neutral
-	Actor817: v10
-		Location: 179,78
+	Actor817: barl
+		Location: 31,94
 		Owner: Neutral
-	Actor818: v11
-		Location: 182,82
+	Actor818: barl
+		Location: 31,93
 		Owner: Neutral
-	Actor819: v01
-		Location: 172,79
+	Actor819: oilb
+		Location: 40,168
 		Owner: Neutral
-	Actor820: v08
-		Location: 133,238
+	Actor820: oilb
+		Location: 37,143
 		Owner: Neutral
-	Actor821: v03
-		Location: 139,237
+	Actor821: mine
+		Location: 102,32
 		Owner: Neutral
-	Actor822: v01
-		Location: 137,234
+	Actor822: mine
+		Location: 100,34
 		Owner: Neutral
-	Actor823: v11
-		Location: 131,245
+	Actor823: mine
+		Location: 98,285
 		Owner: Neutral
-	Actor824: v11
-		Location: 131,238
+	Actor824: mine
+		Location: 100,283
 		Owner: Neutral
-	Actor825: v02
-		Location: 146,234
+	Actor825: tc03
+		Location: 101,272
 		Owner: Neutral
 	Actor826: tc03
-		Location: 200,249
+		Location: 96,275
 		Owner: Neutral
 	Actor827: tc03
-		Location: 200,246
+		Location: 95,275
 		Owner: Neutral
 	Actor828: tc03
-		Location: 202,245
+		Location: 93,293
 		Owner: Neutral
 	Actor829: tc03
-		Location: 202,247
+		Location: 96,294
 		Owner: Neutral
 	Actor830: tc03
-		Location: 192,250
+		Location: 101,295
 		Owner: Neutral
 	Actor831: tc03
-		Location: 191,249
+		Location: 109,291
 		Owner: Neutral
 	Actor832: tc03
-		Location: 197,67
+		Location: 109,289
 		Owner: Neutral
 	Actor833: tc03
-		Location: 195,67
+		Location: 109,288
 		Owner: Neutral
 	Actor834: tc03
-		Location: 192,67
+		Location: 86,279
 		Owner: Neutral
 	Actor835: tc03
-		Location: 191,66
+		Location: 87,281
 		Owner: Neutral
-	Actor836: tc03
-		Location: 195,68
+	Actor836: tc04
+		Location: 89,278
 		Owner: Neutral
-	Actor837: tc03
-		Location: 195,69
+	Actor837: tc04
+		Location: 103,273
 		Owner: Neutral
-	Actor838: tc03
-		Location: 194,69
+	Actor838: tc04
+		Location: 98,293
 		Owner: Neutral
-	Actor839: tc03
-		Location: 193,69
+	Actor839: tc04
+		Location: 106,290
 		Owner: Neutral
-	Actor840: tc03
-		Location: 192,69
+	Actor840: tc04
+		Location: 109,276
 		Owner: Neutral
-	Actor841: tc04
-		Location: 189,65
+	Actor841: tc02
+		Location: 92,26
 		Owner: Neutral
-	Actor842: tc04
-		Location: 189,67
+	Actor842: tc02
+		Location: 90,32
 		Owner: Neutral
-	Actor843: oilb
-		Location: 184,266
+	Actor843: tc02
+		Location: 90,34
 		Owner: Neutral
-	Actor844: oilb
-		Location: 187,264
+	Actor844: tc02
+		Location: 93,44
+		Owner: Neutral
+	Actor845: tc02
+		Location: 95,45
+		Owner: Neutral
+	Actor846: tc04
+		Location: 97,45
+		Owner: Neutral
+	Actor847: tc04
+		Location: 110,35
+		Owner: Neutral
+	Actor848: tc04
+		Location: 112,25
+		Owner: Neutral
+	Actor849: tc04
+		Location: 104,20
+		Owner: Neutral
+	Actor850: tc03
+		Location: 103,22
+		Owner: Neutral
+	Actor851: tc03
+		Location: 105,23
+		Owner: Neutral
+	Actor852: tc03
+		Location: 110,25
+		Owner: Neutral
+	Actor853: tc03
+		Location: 111,28
+		Owner: Neutral
+	Actor854: tc03
+		Location: 92,28
+		Owner: Neutral
+	Actor855: tc03
+		Location: 94,25
+		Owner: Neutral
+	Actor856: tc03
+		Location: 90,36
+		Owner: Neutral
+	Actor857: tc03
+		Location: 99,44
+		Owner: Neutral
+	Actor858: tc03
+		Location: 98,44
+		Owner: Neutral
+	Actor859: tc03
+		Location: 98,43
+		Owner: Neutral
+	Actor860: tc03
+		Location: 104,46
+		Owner: Neutral
+	Actor861: brl3
+		Location: 94,202
+		Owner: Neutral
+	Actor862: brl3
+		Location: 104,230
+		Owner: Neutral
+	Actor863: brl3
+		Location: 103,230
+		Owner: Neutral
+	Actor864: brl3
+		Location: 101,230
+		Owner: Neutral
+	Actor865: brl3
+		Location: 77,216
+		Owner: Neutral
+	Actor866: v11
+		Location: 74,214
+		Owner: Neutral
+	Actor867: v11
+		Location: 76,214
 		Owner: Neutral
 
 Smudges:
@@ -2594,21 +2675,25 @@ Rules:
 	MISS:
 		Tooltip:
 			Name: Wall Street Speculators
+		Building:
+			BaseNormal: false
+		RenderBuilding:
+			Scale: 0.75
 		RevealsShroud:
-			Range: 30
+			Range: 20
 		Health:
-			HP: 2000
+			HP: 1500
 		Armor:
 			Heavy:
 		Capturable:
-		CapturableBar:
 		CashTrickler:
 			Period: 250
 			Amount: 50
-		RepairableBuilding:
 
 Sequences:
 
 Weapons:
 
 Voices:
+
+Notifications:
