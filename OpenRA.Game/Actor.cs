@@ -72,6 +72,7 @@ namespace OpenRA
 
 		Activity currentActivity;
 		public Group Group;
+		public int Generation;
 
 		internal Actor(World world, string name, TypeDictionary initDict )
 		{
