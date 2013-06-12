@@ -81,6 +81,21 @@ namespace OpenRA.Graphics
 			DrawSprite(s, location, 0, size);
 		}
 
+		public void DrawSprite(Sprite s, float2 a, float2 b, float2 c, float2 d)
+		{
+			Renderer.CurrentBatchRenderer = this;
+
+			if (s.sheet != currentSheet)
+				Flush();
+
+			if (nv + 4 > Renderer.TempBufferSize)
+				Flush();
+
+			currentSheet = s.sheet;
+			Util.FastCreateQuad(vertices, a, b, c, d, s, 0, nv);
+			nv += 4;
+		}
+
 		public void DrawVertexBuffer(IVertexBuffer<Vertex> buffer, int start, int length, PrimitiveType type, Sheet sheet)
 		{
 			shader.SetTexture("DiffuseTexture", sheet.Texture);

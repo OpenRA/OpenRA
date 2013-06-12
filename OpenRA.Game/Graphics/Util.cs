@@ -19,16 +19,20 @@ namespace OpenRA.Graphics
 
 		public static void FastCreateQuad(Vertex[] vertices, float2 o, Sprite r, int palette, int nv, float2 size)
 		{
+			var b = new float2(o.X + size.X, o.Y);
+			var c = new float2(o.X + size.X, o.Y + size.Y);
+			var d = new float2(o.X, o.Y + size.Y);
+			FastCreateQuad(vertices, o, b, c, d, r, palette, nv);
+		}
+
+		public static void FastCreateQuad(Vertex[] vertices, float2 a, float2 b, float2 c, float2 d, Sprite r, int palette, int nv)
+		{
 			var attrib = new float2(palette / (float)HardwarePalette.MaxPalettes, channelSelect[(int)r.channel]);
 
-			vertices[nv] = new Vertex(o,
-				r.FastMapTextureCoords(0), attrib);
-			vertices[nv + 1] = new Vertex(new float2(o.X + size.X, o.Y),
-				r.FastMapTextureCoords(1), attrib);
-			vertices[nv + 2] = new Vertex(new float2(o.X + size.X, o.Y + size.Y),
-				r.FastMapTextureCoords(3), attrib);
-			vertices[nv + 3] = new Vertex(new float2(o.X, o.Y + size.Y),
-				r.FastMapTextureCoords(2), attrib);
+			vertices[nv] = new Vertex(a, r.FastMapTextureCoords(0), attrib);
+			vertices[nv + 1] = new Vertex(b, r.FastMapTextureCoords(1), attrib);
+			vertices[nv + 2] = new Vertex(c, r.FastMapTextureCoords(3), attrib);
+			vertices[nv + 3] = new Vertex(d, r.FastMapTextureCoords(2), attrib);
 		}
 
 		static readonly int[] channelMasks = { 2, 1, 0, 3 };	// yes, our channel order is nuts.
