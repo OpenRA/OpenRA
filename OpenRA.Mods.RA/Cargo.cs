@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA
 		public object Create( ActorInitializer init ) { return new Cargo( init, this ); }
 	}
 
-	public class Cargo : IPips, IIssueOrder, IResolveOrder, IOrderVoice, INotifyKilled
+	public class Cargo : IPips, IIssueOrder, IResolveOrder, IOrderVoice, INotifyKilled, INotifyCapture
 	{
 		readonly Actor self;
 		readonly CargoInfo info;
@@ -179,6 +179,18 @@ namespace OpenRA.Mods.RA
 			foreach( var c in cargo )
 				c.Destroy();
 			cargo.Clear();
+		}
+
+		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
+		{
+			if (cargo == null)
+				return;
+
+			self.World.AddFrameEndTask(w =>
+			{
+				foreach (var p in Passengers)
+					p.Owner = newOwner;
+			});
 		}
 	}
 

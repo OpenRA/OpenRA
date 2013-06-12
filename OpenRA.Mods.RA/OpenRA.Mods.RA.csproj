@@ -75,6 +75,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activities\LegacyCaptureActor.cs" />
     <Compile Include="AI\AttackOrFleeFuzzy.cs" />
     <Compile Include="AI\BaseBuilder.cs" />
     <Compile Include="AI\HackyAI.cs" />
@@ -171,6 +172,7 @@
     <Compile Include="C4Demolition.cs" />
     <Compile Include="Capturable.cs" />
     <Compile Include="CapturableBar.cs" />
+    <Compile Include="LegacyCapturable.cs" />
     <Compile Include="Captures.cs" />
     <Compile Include="Cargo.cs" />
     <Compile Include="CarpetBomb.cs" />
@@ -238,6 +240,7 @@
     <Compile Include="IronCurtainable.cs" />
     <Compile Include="JamsMissiles.cs" />
     <Compile Include="LeavesHusk.cs" />
+    <Compile Include="LegacyCaptures.cs" />
     <Compile Include="LightPaletteRotator.cs" />
     <Compile Include="LimitedAmmo.cs" />
     <Compile Include="Lint\CheckActorReferences.cs" />
