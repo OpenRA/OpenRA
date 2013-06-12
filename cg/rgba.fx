@@ -2,6 +2,7 @@
 // Author: C. Forbes
 //--------------------------------------------------------
 
+float2 Scroll;
 float2 r1, r2;		// matrix elements
 
 sampler2D DiffuseTexture = sampler_state {
@@ -25,7 +26,7 @@ struct FragmentIn {
 
 VertexOut Simple_vp(VertexIn v) {
 	VertexOut o;	
-	float2 p = v.Position.xy * r1 + r2;
+	float2 p = (v.Position.xy - Scroll.xy) * r1 + r2;
 	o.Position = float4(p.x,p.y,0,1);
 	o.Tex0 = v.Tex0.xy;
 	return o;
