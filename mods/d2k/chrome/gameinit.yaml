@@ -60,7 +60,7 @@ Background@INSTALL_PANEL:
 			Y:250
 			Width:PARENT_RIGHT
 			Height:25
-			Text: Put in your Dune 2000 CD and click "Copy Music" to (optionally) download the tracks.
+			Text: Put in your Dune 2000 CD and click "From CD" to extract game assets including music.
 			Align:Center
 		Button@EXTRACT_BUTTON:
 			X:PARENT_RIGHT - 280
@@ -74,7 +74,7 @@ Background@INSTALL_PANEL:
 			Y:PARENT_BOTTOM - 45
 			Width:90
 			Height:25
-			Text:Copy Music
+			Text:From CD
 			Font:Bold
 		Button@DOWNLOAD_BUTTON:
 			X:PARENT_RIGHT - 560
@@ -147,7 +147,7 @@ Background@INSTALL_FROMCD_PANEL:
 			Y:20
 			Width:PARENT_RIGHT
 			Height:25
-			Text:Installing (Music) from CD
+			Text:Installing Game Assets from CD
 			Align:Center
 			Font:Bold
 		Container@INSTALLING:
