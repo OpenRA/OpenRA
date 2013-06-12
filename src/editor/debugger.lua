@@ -1043,7 +1043,7 @@ function DebuggerToggleBreakpoint(editor, line)
     markers = markers - CURRENT_LINE_MARKER_VALUE
   end
   local id = editor:GetId()
-  local filePath = debugger.editormap[editor]
+  local filePath = debugger.editormap and debugger.editormap[editor]
     or DebuggerMakeFileName(editor, ide.openDocuments[id].filePath)
   if markers >= BREAKPOINT_MARKER_VALUE then
     editor:MarkerDelete(line, BREAKPOINT_MARKER)
