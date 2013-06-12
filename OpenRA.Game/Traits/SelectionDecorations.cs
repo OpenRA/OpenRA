@@ -51,7 +51,7 @@ namespace OpenRA.Traits
 			var pipImages = new Animation("pips");
 			pipImages.PlayFetchIndex("groups", () => (int)group);
 			pipImages.Tick();
-			pipImages.Image.DrawAt(wr, basePosition + new float2(-8, 1), "chrome");
+			pipImages.Image.DrawAt(basePosition + new float2(-8, 1), wr.Palette("chrome"));
 		}
 
 		void DrawPips(WorldRenderer wr, Actor self, float2 basePosition)
@@ -69,6 +69,7 @@ namespace OpenRA.Traits
 			var pipSize = pipImages.Image.size;
 			var pipxyBase = basePosition + new float2(1, -pipSize.Y);
 			var pipxyOffset = new float2(0, 0); // Correct for offset due to multiple columns/rows
+			var pal = wr.Palette("chrome");
 
 			foreach (var pips in pipSources)
 			{
@@ -86,7 +87,7 @@ namespace OpenRA.Traits
 						pipxyOffset.Y -= pipSize.Y;
 					}
 					pipImages.PlayRepeating(pipStrings[(int)pip]);
-					pipImages.Image.DrawAt(wr, pipxyBase + pipxyOffset, "chrome");
+					pipImages.Image.DrawAt(pipxyBase + pipxyOffset, pal);
 					pipxyOffset += new float2(pipSize.X, 0);
 				}
 
@@ -104,7 +105,7 @@ namespace OpenRA.Traits
 			// If a mod wants to implement a unit with multiple tags, then they are placed on multiple rows
 			var tagxyBase = basePosition + new float2(-16, 2); // Correct for the offset in the shp file
 			var tagxyOffset = new float2(0, 0); // Correct for offset due to multiple rows
-
+			var pal = wr.Palette("chrome");
 			foreach (var tags in self.TraitsImplementing<ITags>())
 			{
 				foreach (var tag in tags.GetTags())
@@ -114,7 +115,7 @@ namespace OpenRA.Traits
 
 					var tagImages = new Animation("pips");
 					tagImages.PlayRepeating(tagStrings[(int)tag]);
-					tagImages.Image.DrawAt(wr, tagxyBase + tagxyOffset, "chrome");
+					tagImages.Image.DrawAt(tagxyBase + tagxyOffset, pal);
 
 					// Increment row
 					tagxyOffset.Y += 8;

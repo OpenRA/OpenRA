@@ -50,24 +50,19 @@ namespace OpenRA.Graphics
 			return textureCoords[k];
 		}
 
-		public void DrawAt(WorldRenderer wr, float2 location, string palette)
+		public void DrawAt(float2 location, PaletteReference pal)
 		{
-			Game.Renderer.WorldSpriteRenderer.DrawSprite(this, location, wr, palette, size);
+			Game.Renderer.WorldSpriteRenderer.DrawSprite(this, location, pal, size);
 		}
 
-		public void DrawAt(float2 location, int paletteIndex)
+		public void DrawAt(float2 location, PaletteReference pal, float scale)
 		{
-			Game.Renderer.WorldSpriteRenderer.DrawSprite(this, location, paletteIndex, size);
+			Game.Renderer.WorldSpriteRenderer.DrawSprite(this, location, pal, size*scale);
 		}
 
-		public void DrawAt(float2 location, int paletteIndex, float scale)
+		public void DrawAt(float2 location, PaletteReference pal, float2 size)
 		{
-			Game.Renderer.WorldSpriteRenderer.DrawSprite(this, location, paletteIndex, size*scale);
-		}
-
-		public void DrawAt(float2 location, int paletteIndex, float2 size)
-		{
-			Game.Renderer.WorldSpriteRenderer.DrawSprite(this, location, paletteIndex, size);
+			Game.Renderer.WorldSpriteRenderer.DrawSprite(this, location, pal, size);
 		}
 	}
 

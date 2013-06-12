@@ -108,8 +108,9 @@ namespace OpenRA.Mods.RA.Orders
 					cells.Add(t, isCloseEnough && world.IsCellBuildable(t, BuildingInfo) && res.GetResource(t) == null);
 			}
 
+			var pal = wr.Palette("terrain");
 			foreach (var c in cells)
-				(c.Value ? buildOk : buildBlocked).DrawAt(wr, c.Key.ToPPos().ToFloat2(), "terrain");
+				(c.Value ? buildOk : buildBlocked).DrawAt(c.Key.ToPPos().ToFloat2(), pal);
 		}
 
 		public string GetCursor(World world, CPos xy, MouseInput mi) { return "default"; }
