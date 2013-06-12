@@ -119,7 +119,6 @@ local function treeSetConnectorsAndIcons(tree)
     end
   end
 
-  -- connect to some events from the wxTreeCtrl
   tree:Connect( wx.wxEVT_COMMAND_TREE_ITEM_EXPANDING,
     function( event )
       local item_id = event:GetItem()
@@ -141,6 +140,17 @@ local function treeSetConnectorsAndIcons(tree)
         if wx.wxFileExists(name) then LoadFile(name,nil,true)
         else refreshAncestors(tree:GetItemParent(item_id)) end -- stale content
       end
+    end)
+  -- handle context menu
+  tree:Connect( wx.wxEVT_COMMAND_TREE_ITEM_MENU,
+    function( event )
+      local item_id = event:GetItem()
+      tree:SelectItem(item_id)
+      local menu = wx.wxMenu()
+      menu:Append(ID_SHOWLOCATION, TR("Show Location"))
+      tree:Connect(ID_SHOWLOCATION, wx.wxEVT_COMMAND_MENU_SELECTED,
+        function() ShowLocation(tree:GetItemFullName(item_id)) end)
+      tree:PopupMenu(menu)
     end)
   -- toggle a folder on a single click
   tree:Connect( wx.wxEVT_LEFT_DOWN,

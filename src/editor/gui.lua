@@ -111,18 +111,6 @@ local function createToolBar(frame)
   return toolBar
 end
 
-local function showLocation(fname)
-  local osxcmd = [[osascript -e 'tell application "Finder" to reveal POSIX file "%s"']]
-    .. [[ -e 'tell application "Finder" to activate']]
-  local wincmd = [[explorer /select,"%s"]]
-  local lnxcmd = [[xdg-open "%s"]] -- takes path, not a filename
-  local cmd =
-    ide.osname == "Windows" and wincmd:format(fname) or
-    ide.osname == "Macintosh" and osxcmd:format(fname) or
-    ide.osname == "Unix" and lnxcmd:format(wx.wxFileName(fname):GetPath())
-  if cmd then wx.wxExecute(cmd, wx.wxEXEC_ASYNC) end
-end
-
 local function createNotebook(frame)
   -- notebook for editors
   local notebook = wxaui.wxAuiNotebook(frame, wx.wxID_ANY,
@@ -216,7 +204,7 @@ local function createNotebook(frame)
       event:Enable(notebook:GetPageCount() > 1)
     end)
   notebook:Connect(ID_SHOWLOCATION, wx.wxEVT_COMMAND_MENU_SELECTED, function()
-      showLocation(ide.openDocuments[GetEditor(selection):GetId()].filePath)
+      ShowLocation(ide:GetDocument(GetEditor(selection)):GetFilePath())
     end)
   notebook:Connect(ID_SHOWLOCATION, wx.wxEVT_UPDATE_UI, IfAtLeastOneTab)
 
