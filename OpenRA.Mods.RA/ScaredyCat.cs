@@ -63,7 +63,8 @@ namespace OpenRA.Mods.RA
 
 		public void Damaged(Actor self, AttackInfo e)
 		{
-			Panic();
+			if (e.Damage > 0)
+				Panic();
 		}
 
 		public void Attacking(Actor self, Target target)
