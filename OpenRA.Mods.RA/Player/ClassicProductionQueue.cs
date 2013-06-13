@@ -26,10 +26,8 @@ namespace OpenRA.Mods.RA
 		public readonly bool SpeedUp = false;
 		[Desc("Every time another production building of the same queue is", 
 			"contructed, the build times of all actors in the queue", 
-			"are divided by this value.")]
-		public readonly int BuildTimeSpeedUpDivisor = 2;
-		[Desc("You can still build more production buildings", "than this value, but the build time won't increase further.")]
-		public readonly int MaxBuildTimeReductionSteps = 6;
+			"decreased by a percentage of the original time.")]
+		public readonly int[] BuildTimeSpeedReduction = {100,85,75,65,60,55,50};
 
 		public override object Create(ActorInitializer init) { return new ClassicProductionQueue(init.self, this); }
 	}
@@ -108,10 +106,8 @@ namespace OpenRA.Mods.RA
 					.Where(p => p.Trait.Info.Produces.Contains(unit.Traits.Get<BuildableInfo>().Queue))
 						.Where(p => p.Actor.Owner == self.Owner).ToArray();
 
-				var BuildTimeReductionSteps = Math.Min(selfsameBuildings.Count(), Info.MaxBuildTimeReductionSteps);
-
-				for (int i = 1; i < BuildTimeReductionSteps; i++)
-					time /= Info.BuildTimeSpeedUpDivisor;
+				var speedModifier = Math.Min(selfsameBuildings.Count(), Info.BuildTimeSpeedReduction.Length - 1);
+				time = (time * Info.BuildTimeSpeedReduction[speedModifier]) / 100;
 			}
 
 			return time;
