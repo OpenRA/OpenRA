@@ -288,6 +288,9 @@ namespace OpenRA.Server
 				client.Index = newConn.PlayerIndex;
 				client.Slot = lobbyInfo.FirstEmptySlot();
 
+				// Don't let the client be admin just because they claimed to be
+				client.IsAdmin = false;
+
 				if (client.Slot != null)
 					SyncClientToPlayerReference(client, Map.Players[client.Slot]);
 
