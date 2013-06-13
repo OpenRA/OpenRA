@@ -150,6 +150,9 @@ local function treeSetConnectorsAndIcons(tree)
       menu:Append(ID_SHOWLOCATION, TR("Show Location"))
       tree:Connect(ID_SHOWLOCATION, wx.wxEVT_COMMAND_MENU_SELECTED,
         function() ShowLocation(tree:GetItemFullName(item_id)) end)
+
+      PackageEventHandle("onMenuFiletree", menu, tree, event)
+
       tree:PopupMenu(menu)
     end)
   -- toggle a folder on a single click

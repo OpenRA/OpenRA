@@ -1046,6 +1046,9 @@ function CreateEditor()
 
       -- cancel calltip if it's already shown as it interferes with popup menu
       if editor:CallTipActive() then editor:CallTipCancel() end
+
+      PackageEventHandle("onMenuEditor", menu, editor, event)
+
       editor:PopupMenu(menu)
       editor:SetMouseDwellTime(dwelltime) -- restore dwelling
     end)

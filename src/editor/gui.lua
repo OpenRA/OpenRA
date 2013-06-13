@@ -174,6 +174,9 @@ local function createNotebook(frame)
       menu:Append(ID_SAVEAS, TR("Save &As..."))
       menu:AppendSeparator()
       menu:Append(ID_SHOWLOCATION, TR("Show Location"))
+
+      PackageEventHandle("onMenuEditorTab", menu, notebook, event)
+
       notebook:PopupMenu(menu)
     end)
 
