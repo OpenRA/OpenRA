@@ -33,6 +33,7 @@ namespace OpenRA.Mods.RA.Activities
 			Sound.Play("chrono2.aud", destination.ToPPos());
 
 			self.Trait<ITeleportable>().SetPosition(self, destination);
+			self.Generation++;
 
 			if (killCargo && self.HasTrait<Cargo>())
 			{
@@ -66,6 +67,7 @@ namespace OpenRA.Mods.RA.Activities
 		public override Activity Tick(Actor self)
 		{
 			self.Trait<ITeleportable>().SetPosition(self, destination);
+			self.Generation++;
 			return NextActivity;
 		}
 	}

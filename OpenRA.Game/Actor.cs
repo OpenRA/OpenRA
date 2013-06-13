@@ -72,6 +72,7 @@ namespace OpenRA
 
 		Activity currentActivity;
 		public Group Group;
+		public int Generation;
 
 		internal Actor(World world, string name, TypeDictionary initDict )
 		{
@@ -272,6 +273,7 @@ namespace OpenRA
 				// momentarily remove from world so the ownership queries don't get confused
 				w.Remove(this);
 				Owner = newOwner;
+				Generation++;
 				w.Add(this);
 
 				foreach (var t in this.TraitsImplementing<INotifyOwnerChanged>())
