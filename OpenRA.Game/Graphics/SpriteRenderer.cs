@@ -33,12 +33,14 @@ namespace OpenRA.Graphics
 			if (nv > 0)
 			{
 				shader.SetTexture("DiffuseTexture", currentSheet.Texture);
+				renderer.Device.EnableAlphaBlending();
 				shader.Render(() =>
 				{
 					var vb = renderer.GetTempVertexBuffer();
 					vb.SetData(vertices, nv);
 					renderer.DrawBatch(vb, 0, nv, PrimitiveType.QuadList);
 				});
+				renderer.Device.DisableAlphaBlending();
 
 				nv = 0;
 				currentSheet = null;
@@ -99,7 +101,9 @@ namespace OpenRA.Graphics
 		public void DrawVertexBuffer(IVertexBuffer<Vertex> buffer, int start, int length, PrimitiveType type, Sheet sheet)
 		{
 			shader.SetTexture("DiffuseTexture", sheet.Texture);
+			renderer.Device.EnableAlphaBlending();
 			shader.Render(() => renderer.DrawBatch(buffer, start, length, type));
+			renderer.Device.DisableAlphaBlending();
 		}
 
 		public void SetPalette(ITexture palette)

@@ -34,6 +34,7 @@ namespace OpenRA.Graphics
 		{
 			if (nv > 0)
 			{
+				renderer.Device.EnableAlphaBlending();
 				shader.Render(() =>
 				{
 					var vb = renderer.GetTempVertexBuffer();
@@ -41,7 +42,7 @@ namespace OpenRA.Graphics
 					renderer.SetLineWidth(LineWidth * Game.viewport.Zoom);
 					renderer.DrawBatch(vb, 0, nv, PrimitiveType.LineList);
 				});
-
+				renderer.Device.DisableAlphaBlending();
 				nv = 0;
 			}
 		}

@@ -54,6 +54,9 @@ namespace OpenRA.FileFormats.Graphics
 
 		void EnableDepthBuffer();
 		void DisableDepthBuffer();
+
+		void EnableAlphaBlending();
+		void DisableAlphaBlending();
 	}
 
 	public interface IVertexBuffer<T>

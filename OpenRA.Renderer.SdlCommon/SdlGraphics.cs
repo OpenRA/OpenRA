@@ -148,6 +148,20 @@ namespace OpenRA.Renderer.SdlCommon
 			ErrorHandler.CheckGlError();
 		}
 
+		public void EnableAlphaBlending()
+		{
+			Gl.glEnable(Gl.GL_BLEND);
+			ErrorHandler.CheckGlError();
+			Gl.glBlendFunc(Gl.GL_SRC_ALPHA, Gl.GL_ONE_MINUS_SRC_ALPHA);
+			ErrorHandler.CheckGlError();
+		}
+
+		public void DisableAlphaBlending()
+		{
+			Gl.glDisable(Gl.GL_BLEND);
+			ErrorHandler.CheckGlError();
+		}
+
 		public void EnableScissor(int left, int top, int width, int height)
 		{
 			if (width < 0) width = 0;
