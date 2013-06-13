@@ -323,3 +323,25 @@ function ShowLocation(fname)
     ide.osname == "Unix" and lnxcmd:format(wx.wxFileName(fname):GetPath())
   if cmd then wx.wxExecute(cmd, wx.wxEXEC_ASYNC) end
 end
+
+function LoadLuaFileExt(tab, file, proto)
+  local cfgfn,err = loadfile(file)
+  if not cfgfn then
+    print(("Error while loading file: '%s'."):format(err))
+  else
+    local name = file:match("([a-zA-Z_0-9]+)%.lua$")
+    local success, result = pcall(function()return cfgfn(assert(_G or _ENV))end)
+    if not success then
+      print(("Error while processing file: '%s'."):format(result))
+    elseif name then
+      if (tab[name]) then
+        local out = tab[name]
+        for i,v in pairs(result) do
+          out[i] = v
+        end
+      else
+        tab[name] = proto and result and setmetatable(result, proto) or result
+      end
+    end
+  end
+end

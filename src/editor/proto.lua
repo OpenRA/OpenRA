@@ -9,4 +9,5 @@ ide.proto.Document = {__index = {
 
 ide.proto.Plugin = {__index = {
   GetName = function(self) return self.name end,
+  GetFileName = function(self) return self.fname end,
 }}

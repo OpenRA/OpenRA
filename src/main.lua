@@ -227,33 +227,11 @@ end
 ide.app = dofile(ide.config.path.app.."/app.lua")
 local app = assert(ide.app)
 
-local function addToTab(tab, file, proto)
-  local cfgfn,err = loadfile(file)
-  if not cfgfn then
-    print(("Error while loading file: '%s'."):format(err))
-  else
-    local name = file:match("([a-zA-Z_0-9]+)%.lua$")
-    local success, result = pcall(function()return cfgfn(assert(_G or _ENV))end)
-    if not success then
-      print(("Error while processing file: '%s'."):format(result))
-    elseif name then
-      if (tab[name]) then
-        local out = tab[name]
-        for i,v in pairs(result) do
-          out[i] = v
-        end
-      else
-        tab[name] = proto and result and setmetatable(result, proto) or result
-      end
-    end
-  end
-end
-
 local function loadToTab(filter, folder, tab, recursive, proto)
   filter = filter and type(filter) ~= 'function' and app.loadfilters[filter] or nil
   for _, file in ipairs(FileSysGetRecursive(folder, recursive, "*.lua")) do
     if not filter or filter(file) then
-      addToTab(tab, file, proto)
+      LoadLuaFileExt(tab, file, proto)
     end
   end
 end
@@ -395,7 +373,7 @@ do
   configs = nil
   local sep = string_Pathsep
   if ide.config.language then
-    addToTab(ide.config.messages, "cfg"..sep.."i18n"..sep..ide.config.language..".lua")
+    LoadLuaFileExt(ide.config.messages, "cfg"..sep.."i18n"..sep..ide.config.language..".lua")
   end
 end
 
