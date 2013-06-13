@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA
 			if (reservedFor == null)
 				return;		/* nothing to do */
 
-			if (!Target.FromActor( reservedFor ).IsValid)
+			if (!Target.FromActor(reservedFor).IsValid)
 				reservedFor = null;		/* not likely to arrive now. */
 		}
 
@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA
 			return new DisposableAction(
 				() => { reservedFor = null; reservedForAircraft = null; },
 				() => Game.RunAfterTick(
-					() => { if (Game.IsCurrentWorld( self.World )) throw new InvalidOperationException(
+					() => { if (Game.IsCurrentWorld(self.World) && forActor.IsInWorld) throw new InvalidOperationException(
 						"Attempted to finalize an undisposed DisposableAction. {0} ({1}) reserved {2} ({3})"
 						.F(forActor.Info.Name, forActor.ActorID, self.Info.Name, self.ActorID)); }));
 		}
@@ -58,15 +58,15 @@ namespace OpenRA.Mods.RA
 				reservedForAircraft.UnReserve();
 		}
 
-		public void OnCapture (Actor self, Actor captor, Player oldOwner, Player newOwner)
+		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{
 			if (reservedForAircraft != null)
 				reservedForAircraft.UnReserve();
 		}
 
-		public void Selling (Actor self) { Sold(self); }
+		public void Selling(Actor self) { Sold(self); }
 
-		public void Sold (Actor self)
+		public void Sold(Actor self)
 		{
 			if (reservedForAircraft != null)
 				reservedForAircraft.UnReserve();
