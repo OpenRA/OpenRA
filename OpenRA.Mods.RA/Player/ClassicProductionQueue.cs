@@ -106,7 +106,7 @@ namespace OpenRA.Mods.RA
 					.Where(p => p.Trait.Info.Produces.Contains(unit.Traits.Get<BuildableInfo>().Queue))
 						.Where(p => p.Actor.Owner == self.Owner).ToArray();
 
-				var speedModifier = Math.Min(selfsameBuildings.Count(), Info.BuildTimeSpeedReduction.Length - 1);
+				var speedModifier = Math.Min(selfsameBuildings.Count(), Info.BuildTimeSpeedReduction.Length) - 1;
 				time = (time * Info.BuildTimeSpeedReduction[speedModifier]) / 100;
 			}
 
