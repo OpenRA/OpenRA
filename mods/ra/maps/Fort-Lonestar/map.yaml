@@ -813,7 +813,7 @@ Rules:
 		RevealsShroud:
 			Range: 6
 		AutoTarget:
-			InitialStance: HoldFire
+			InitialStance: Defend
 		Armament:
 			Weapon: Sniper
 	SPY:
