@@ -11,6 +11,8 @@ local P = {
   onMenuEditor = function(self, menu, editor, event) end,
   onMenuEditorTab = function(self, menu, notebook, event) end,
   onMenuFiletree = function(self, menu, tree, event) end,
+  onProjectLoad = function(self, project) end,
+  onProjectClose = function(self, project) end,
 }
 
 --[[ Uncomment this to see event names printed in the Output window
@@ -18,9 +20,10 @@ local P = {
     if k:find("^on") then
       P[k] = k:find("^onFile")
         and function(self, ed) DisplayOutputLn(self:GetFileName(), k, ide:GetDocument(ed):GetFilePath()) end
-        or function(self) DisplayOutputLn(self:GetFileName(), k) end
+        or function(self, ...) DisplayOutputLn(self:GetFileName(), k, ...) end
     end
   end
+
   P.onMenuEditor = function(self, menu, editor, event)
     local point = editor:ScreenToClient(event:GetPosition())
     pos = editor:PositionFromPointClose(point.x, point.y)
@@ -32,6 +35,7 @@ local P = {
 
     DisplayOutputLn(self:GetFileName(), "onMenuEditor")
   end
+
   P.onMenuEditorTab = function(self, menu, notebook, event)
     local index = event:GetSelection()
     menu:Append(id, "==> Sample item; tab "..index)
@@ -42,6 +46,7 @@ local P = {
 
     DisplayOutputLn(self:GetFileName(), "onMenuEditorTab")
   end
+
   P.onMenuFiletree = function(self, menu, tree, event)
     local item_id = event:GetItem()
     local name = tree:GetItemFullName(item_id)

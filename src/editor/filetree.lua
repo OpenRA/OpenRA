@@ -237,11 +237,16 @@ function filetree:updateProjectDir(newdir, cboxsel)
   -- strip the last path separator if any
   local newdir = dirname:GetPath(wx.wxPATH_GET_VOLUME)
 
+  if filetree.projdir and #filetree.projdir > 0 then
+    PackageEventHandle("onProjectClose", filetree.projdir) end
+
   if ide.config.projectautoopen and filetree.projdir then
     StoreRestoreProjectTabs(filetree.projdir, newdir)
   end
 
   filetree.projdir = newdir
+
+  PackageEventHandle("onProjectLoad", filetree.projdir)
 
   PrependStringToArray(filetree.projdirlist,newdir,ide.config.projecthistorylength)
   projcombobox:Clear()
