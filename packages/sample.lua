@@ -5,9 +5,15 @@ local P = {
   name = "Sample plugin",
   description = "Sample plugin to demonstrate various event types.",
   author = "Paul Kulchenko",
-  onFileLoad = function(self, editor) end,
+
   onRegister = function(self) end,
   onUnRegister = function(self) end,
+  onEditorLoad = function(self, editor) end,
+  onEditorClose = function(self, editor) end,
+  onEditorNew = function(self, editor) end,
+  onEditorPreSave = function(self, editor, filepath) end,
+  onEditorPostSave = function(self, editor) end,
+  onEditorActivated = function(self, editor) end,
   onMenuEditor = function(self, menu, editor, event) end,
   onMenuEditorTab = function(self, menu, notebook, event) end,
   onMenuFiletree = function(self, menu, tree, event) end,
@@ -20,7 +26,7 @@ local P = {
 --[[ Uncomment this to see event names printed in the Output window
   for k in pairs(P) do
     if k:find("^on") then
-      P[k] = k:find("^onFile")
+      P[k] = k:find("^onEditor")
         and function(self, ed) DisplayOutputLn(self:GetFileName(), k, ide:GetDocument(ed):GetFilePath()) end
         or function(self, ...) DisplayOutputLn(self:GetFileName(), k, ...) end
     end
@@ -67,6 +73,15 @@ local P = {
 
   P.onInterpreterClose = function(self, interpreter)
     DisplayOutputLn(self:GetFileName(), "onInterpreterClose", interpreter:GetFileName())
+  end
+
+  P.onEditorPreSave = function(self, editor, filepath)
+    if filepath:find("%.txt$") then
+      DisplayOutputLn(self:GetFileName(), "onEditorPreSave", "Aborted saving a .txt file")
+      return false
+    else
+      DisplayOutputLn(self:GetFileName(), "onEditorPreSave", filepath)
+    end
   end
 
 --]]

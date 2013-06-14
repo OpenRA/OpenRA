@@ -15,6 +15,7 @@ function NewFile(event)
   local editor = CreateEditor()
   SetupKeywords(editor, "lua")
   local doc = AddEditor(editor, ide.config.default.fullname)
+  if doc then PackageEventHandle("onEditorNew", editor) end
   if doc then SetEditorSelection(doc.index) end
   return editor
 end
@@ -127,13 +128,14 @@ function LoadFile(filePath, editor, file_must_exist, skipselection)
   openDocuments[id].filePath = filePath
   openDocuments[id].fileName = wx.wxFileName(filePath):GetFullName()
   openDocuments[id].modTime = GetFileModTime(filePath)
+
+  PackageEventHandle("onEditorLoad", editor)
+
   SetDocumentModified(id, false)
 
   -- activate the editor; this is needed for those cases when the editor is
   -- created from some other element, for example, from a project tree.
   if not skipselection then SetEditorSelection() end
-
-  PackageEventHandle("onFileLoad", editor)
 
   return editor
 end
@@ -175,6 +177,11 @@ function SaveFile(editor, filePath)
   if not filePath then
     return SaveFileAs(editor)
   else
+    -- this event can be aborted
+    if PackageEventHandle("onEditorPreSave", editor, filePath) == false then
+      return false
+    end
+
     if (ide.config.savebak) then FileRename(filePath, filePath..".bak") end
 
     local st = editor:GetText()
@@ -191,6 +198,9 @@ function SaveFile(editor, filePath)
       openDocuments[id].modTime = GetFileModTime(filePath)
       SetDocumentModified(id, false)
       SetAutoRecoveryMark()
+
+      PackageEventHandle("onEditorPostSave", editor)
+
       return true
     else
       wx.wxMessageBox(TR("Unable to save file '%s': %s"):format(filePath, err),
@@ -324,6 +334,7 @@ function ClosePage(selection)
       (editor:MarkerNext(0, CURRENT_LINE_MARKER_VALUE) >= 0) then
       debugger.terminate()
     end
+    PackageEventHandle("onEditorClose", editor)
     removePage(ide.openDocuments[id].index)
 
     -- disable full screen if the last tab is closed

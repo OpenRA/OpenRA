@@ -3,21 +3,27 @@
 local ide = ide
 
 function PackageEventHandle(event, ...)
+  local success
   for _, package in pairs(ide.packages) do
     if type(package[event]) == 'function' then
       local ok, res = pcall(package[event], package, ...)
-      if not ok then
+      if ok then
+        if res == false then success = false end
+      else
         DisplayOutputLn(TR("%s event failed: %s"):format(event, res))
       end
     end
   end
+  return success
 end
 
 local function PackageEventHandleOne(file, event, ...)
   local package = ide.packages[file]
   if package and type(package[event]) == 'function' then
     local ok, res = pcall(package[event], package, ...)
-    if not ok then
+    if ok then
+      if res == false then return false end
+    else
       DisplayOutputLn(TR("%s event failed: %s"):format(event, res))
     end
   end

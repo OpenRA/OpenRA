@@ -150,6 +150,9 @@ function SetEditorSelection(selection)
 
     editor:SetFocus()
     editor:SetSTCFocus(true)
+
+    PackageEventHandle("onEditorActivated", editor)
+
     local id = editor:GetId()
     FileTreeMarkSelected(openDocuments[id] and openDocuments[id].filePath or '')
     AddToFileHistory(openDocuments[id] and openDocuments[id].filePath)
