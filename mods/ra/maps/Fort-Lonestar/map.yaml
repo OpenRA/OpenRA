@@ -477,7 +477,7 @@ Rules:
 			SpawnInterval: 100
 		-SpawnMPUnits:
 		-MPStartLocations:
-		FortScript:
+		FortLonestarScript:
 	CRATE:
 		-LevelUpCrateAction:
 		-GiveMcvCrateAction:

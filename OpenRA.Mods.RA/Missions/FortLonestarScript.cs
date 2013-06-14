@@ -20,9 +20,9 @@ using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Missions
 {
-    class FortScriptInfo : TraitInfo<FortScript>, Requires<SpawnMapActorsInfo> { }
+    class FortLonestarScriptInfo : TraitInfo<FortLonestarScript>, Requires<SpawnMapActorsInfo> { }
 
-    class FortScript : IWorldLoaded, ITick
+    class FortLonestarScript : IWorldLoaded, ITick
     {
         Player multi0;
         Player soviets;
