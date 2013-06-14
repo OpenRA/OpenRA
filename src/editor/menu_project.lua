@@ -129,7 +129,12 @@ local function selectInterpreter(id)
   menuBar:Check(id, true)
   menuBar:Enable(id, false)
 
+  if ide.interpreter and ide.interpreter ~= interpreters[id] then
+    PackageEventHandle("onInterpreterClose", ide.interpreter) end
+
   ide.interpreter = interpreters[id]
+
+  PackageEventHandle("onInterpreterLoad", ide.interpreter)
 
   DebuggerShutdown()
 

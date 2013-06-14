@@ -237,7 +237,8 @@ local function loadToTab(filter, folder, tab, recursive, proto)
 end
 
 local function loadInterpreters(filter)
-  loadToTab(filter or "interpreters", "interpreters", ide.interpreters, false)
+  loadToTab(filter or "interpreters", "interpreters", ide.interpreters, false,
+    ide.proto.Interpreter)
 end
 
 -- load tools

@@ -13,6 +13,8 @@ local P = {
   onMenuFiletree = function(self, menu, tree, event) end,
   onProjectLoad = function(self, project) end,
   onProjectClose = function(self, project) end,
+  onInterpreterLoad = function(self, interpreter) end,
+  onInterpreterClose = function(self, interpreter) end,
 }
 
 --[[ Uncomment this to see event names printed in the Output window
@@ -27,7 +29,7 @@ local P = {
   P.onMenuEditor = function(self, menu, editor, event)
     local point = editor:ScreenToClient(event:GetPosition())
     pos = editor:PositionFromPointClose(point.x, point.y)
-    menu:Append(id, "==> Sample item; pos "..pos)
+    menu:Append(id, ">> Sample item; pos "..pos)
     menu:Enable(id, true)
 
     editor:Connect(id, wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -38,7 +40,7 @@ local P = {
 
   P.onMenuEditorTab = function(self, menu, notebook, event)
     local index = event:GetSelection()
-    menu:Append(id, "==> Sample item; tab "..index)
+    menu:Append(id, ">> Sample item; tab "..index)
     menu:Enable(id, true)
 
     notebook:Connect(id, wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -50,7 +52,7 @@ local P = {
   P.onMenuFiletree = function(self, menu, tree, event)
     local item_id = event:GetItem()
     local name = tree:GetItemFullName(item_id)
-    menu:Append(id, "==> Sample item; name "..name)
+    menu:Append(id, ">> Sample item; name "..name)
     menu:Enable(id, true)
 
     tree:Connect(id, wx.wxEVT_COMMAND_MENU_SELECTED,
@@ -58,6 +60,15 @@ local P = {
 
     DisplayOutputLn(self:GetFileName(), "onMenuFiletree")
   end
+
+  P.onInterpreterLoad = function(self, interpreter)
+    DisplayOutputLn(self:GetFileName(), "onInterpreterLoad", interpreter:GetFileName())
+  end
+
+  P.onInterpreterClose = function(self, interpreter)
+    DisplayOutputLn(self:GetFileName(), "onInterpreterClose", interpreter:GetFileName())
+  end
+
 --]]
 
 return P
