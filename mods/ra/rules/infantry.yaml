@@ -204,7 +204,7 @@ SPY:
 	TakeCover:
 	Spy:
 	Infiltrates:
-		InfiltrateTypes: Cash, SupportPower, Exploration
+		Types: Cash, SupportPower, Exploration
 	-AutoTarget:
 	AttackMove:
 		JustMove: true

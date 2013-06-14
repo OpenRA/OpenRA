@@ -13,16 +13,22 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Mods.RA.Activities;
-using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Orders;
 using OpenRA.Traits;
-using OpenRA.Mods.RA.Missions;
 
 namespace OpenRA.Mods.RA
 {
+	class InfiltratableInfo : TraitInfo<Infiltratable>
+	{
+		public string Type = null;
+	}
+
+	class Infiltratable { }
+
 	class InfiltratesInfo : ITraitInfo
 	{
-		public string[] InfiltrateTypes = {"Cash", "SupportPower", "Exploration"};
+		public string[] Types = { "Cash", "SupportPower", "Exploration" };
+
 		public object Create(ActorInitializer init) { return new Infiltrates(this); }
 	}
 	
@@ -33,14 +39,13 @@ namespace OpenRA.Mods.RA
 		public Infiltrates(InfiltratesInfo info)
 		{
 			Info = info;
-
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
 			get
 			{
-				yield return new InfiltratorOrderTargeter(target => CanInfiltrate(target));
+				yield return new InfiltratorOrderTargeter(CanInfiltrate);
 			}
 		}
 		
@@ -73,19 +78,8 @@ namespace OpenRA.Mods.RA
 		
 		bool CanInfiltrate(Actor target)
 		{
-			if (Info.InfiltrateTypes.Contains("Cash") && target.HasTrait<InfiltrateForCash>())
-				return true;
-
-			if (Info.InfiltrateTypes.Contains("SupportPower") && target.HasTrait<InfiltrateForSupportPower>())
-				return true;
-
-			if (Info.InfiltrateTypes.Contains("Exploration") && target.HasTrait<InfiltrateForExploration>())
-				return true;
-
-			if (Info.InfiltrateTypes.Contains("MissionObjective") && target.HasTrait<InfiltrateAction>())
-				return true;
-
-			return false;
+			var infiltratable = target.Info.Traits.GetOrDefault<InfiltratableInfo>();
+			return infiltratable != null && Info.Types.Contains(infiltratable.Type);
 		}
 
 		class InfiltratorOrderTargeter : UnitOrderTargeter

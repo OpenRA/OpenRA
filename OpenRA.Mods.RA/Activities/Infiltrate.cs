@@ -27,10 +27,7 @@ namespace OpenRA.Mods.RA.Activities
 			foreach (var t in target.Actor.TraitsImplementing<IAcceptInfiltrator>())
 				t.OnInfiltrate(target.Actor, self);
 
-			if (self.HasTrait<DontDestroyWhenInfiltrating>())
-				self.World.AddFrameEndTask(w => { if (!self.Destroyed) w.Remove(self); });
-			else
-				self.Destroy();
+			self.World.AddFrameEndTask(w => { if (!self.Destroyed) w.Remove(self); });
 
 			if (target.Actor.HasTrait<Building>())
 				Sound.PlayToPlayer(self.Owner, "bldginf1.aud");

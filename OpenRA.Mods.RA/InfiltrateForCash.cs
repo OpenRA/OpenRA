@@ -16,7 +16,7 @@ using OpenRA.Mods.RA.Effects;
 
 namespace OpenRA.Mods.RA
 {
-	class InfiltrateForCashInfo : ITraitInfo
+	class InfiltrateForCashInfo : ITraitInfo, Requires<InfiltratableInfo>
 	{
 		public readonly int Percentage = 50;
 		public readonly int Minimum = 500;

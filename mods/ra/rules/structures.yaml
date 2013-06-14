@@ -71,6 +71,8 @@ GAP:
 
 SPEN:
 	Inherits: ^Building
+	Infiltratable:
+		Type: SupportPower
 	InfiltrateForSupportPower:
 		Proxy: powerproxy.sonarpulse
 	Valued:
@@ -126,6 +128,8 @@ SPEN:
 
 SYRD:
 	Inherits: ^Building
+	Infiltratable:
+		Type: SupportPower
 	InfiltrateForSupportPower:
 		Proxy: powerproxy.sonarpulse
 	Buildable:
@@ -369,6 +373,8 @@ DOME:
 	Bib:
 	ProvidesRadar:
 	IronCurtainable:
+	Infiltratable:
+		Type: Exploration
 	InfiltrateForExploration:
 
 PBOX:
@@ -972,6 +978,8 @@ PROC:
 		InitialActivity: FindResources
 		SpawnOffset: 1,2
 		Facing: 64
+	Infiltratable:
+		Type: Cash
 	InfiltrateForCash:
 		Percentage: 50
 		Minimum: 500
