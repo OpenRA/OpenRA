@@ -482,8 +482,9 @@ function CreateAutoCompList(editor,key)
   local api = editor.api
   local tip = api.tip
   local ac = api.ac
+  local sep = editor.spec.sep
 
-  local method = key:match(":[^:%.]*$") ~= nil
+  local method = key:match(":[^"..sep.."]*$") ~= nil
 
   -- ignore keywords
   if tip.keys[key] then return end
@@ -496,7 +497,7 @@ function CreateAutoCompList(editor,key)
   if not (progress) then return end
 
   if (tab == ac) then
-    local _, krest = rest:match("([%w_]+)[:%.]([%w_]+)%s*$")
+    local _, krest = rest:match("([%w_]+)["..sep.."]([%w_]+)%s*$")
     if (krest) then
       if (#krest < 3) then return end
       tab = tip.finfo
@@ -538,6 +539,22 @@ function CreateAutoCompList(editor,key)
 
   -- list from api
   local apilist = getAutoCompApiList(tab.childs or tab,rest,method)
+
+  -- handle inheritance; add matches from the parent class/lib
+  local seen = {tab = true}
+  while tab.inherits do
+    local base = tab.inherits
+    tab = ac
+    -- map "a.b.c" to class hierarchy (a.b.c)
+    for class in base:gmatch("[%w_]+") do tab = tab.childs[class] end
+    if not tab or seen[tab] then break end
+    seen[tab] = true
+
+    for _,v in pairs(getAutoCompApiList(tab.childs,rest,method)) do
+      table.insert(apilist, v)
+    end
+  end
+
   local compstr = ""
   if apilist then
     if (#rest > 0) then
