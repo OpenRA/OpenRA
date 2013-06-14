@@ -168,27 +168,6 @@ namespace OpenRA.Mods.RA.Missions
 
 			BaseGuardTick();
 
-			if (allies1Spy.IsDead() || (allies2Spy != null && allies2Spy.IsDead()))
-			{
-				infiltrateLab.Status = ObjectiveStatus.Failed;
-				OnObjectivesUpdated(true);
-				MissionFailed("{0} spy was killed.".F(allies1 != allies2 ? "A" : "The"));
-			}
-			else if (lab.IsDead())
-				MissionFailed("The Soviet research laboratory was destroyed.");
-			else if (!world.Actors.Any(a => (a.Owner == allies1 || a.Owner == allies2) && !a.IsDead()
-				&& (a.HasTrait<Building>() && !a.HasTrait<Wall>()) || a.HasTrait<BaseBuilding>()))
-			{
-				destroyBase.Status = ObjectiveStatus.Failed;
-				OnObjectivesUpdated(true);
-				MissionFailed("The remaining Allied forces in the area have been wiped out.");
-			}
-			else if (SovietBaseDestroyed() && infiltrateLab.Status == ObjectiveStatus.Completed)
-			{
-				destroyBase.Status = ObjectiveStatus.Completed;
-				OnObjectivesUpdated(true);
-				MissionAccomplished("The Soviet research laboratory has been secured successfully.");
-			}
 			if (world.FrameNumber == nextCivilianMove)
 			{
 				var civilians = world.Actors.Where(a => !a.IsDead() && a.IsInWorld && a.Owner == creeps && a.HasTrait<Mobile>());
@@ -199,6 +178,38 @@ namespace OpenRA.Mods.RA.Missions
 					nextCivilianMove += world.SharedRandom.Next(1, 75);
 				}
 			}
+
+			world.AddFrameEndTask(w =>
+			{
+				if ((allies1Spy.IsDead() && !allies1SpyInfiltratedLab) || (allies2Spy != null && allies2Spy.IsDead() && !allies2SpyInfiltratedLab))
+				{
+					infiltrateLab.Status = ObjectiveStatus.Failed;
+					OnObjectivesUpdated(true);
+					MissionFailed("{0} spy was killed.".F(allies1 != allies2 ? "A" : "The"));
+				}
+				else if (lab.IsDead())
+				{
+					if (infiltrateLab.Status == ObjectiveStatus.InProgress)
+						infiltrateLab.Status = ObjectiveStatus.Failed;
+					else if (destroyBase.Status == ObjectiveStatus.InProgress)
+						destroyBase.Status = ObjectiveStatus.Failed;
+					OnObjectivesUpdated(true);
+					MissionFailed("The Soviet research laboratory was destroyed.");
+				}
+				else if (!world.Actors.Any(a => (a.Owner == allies1 || a.Owner == allies2) && !a.IsDead()
+					&& (a.HasTrait<Building>() && !a.HasTrait<Wall>()) || a.HasTrait<BaseBuilding>()))
+				{
+					destroyBase.Status = ObjectiveStatus.Failed;
+					OnObjectivesUpdated(true);
+					MissionFailed("The remaining Allied forces in the area have been wiped out.");
+				}
+				else if (SovietBaseDestroyed() && infiltrateLab.Status == ObjectiveStatus.Completed)
+				{
+					destroyBase.Status = ObjectiveStatus.Completed;
+					OnObjectivesUpdated(true);
+					MissionAccomplished("The Soviet research laboratory has been secured successfully.");
+				}
+			});
 		}
 
 		bool SovietBaseDestroyed()

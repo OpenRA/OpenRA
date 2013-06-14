@@ -14,7 +14,7 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA
 {
-	class InfiltrateForExplorationInfo : TraitInfo<InfiltrateForExploration> {}
+	class InfiltrateForExplorationInfo : TraitInfo<InfiltrateForExploration>, Requires<InfiltratableInfo> { }
 
 	class InfiltrateForExploration : IAcceptInfiltrator
 	{

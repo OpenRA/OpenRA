@@ -14,7 +14,7 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA
 {
-	class InfiltrateForSupportPowerInfo : ITraitInfo
+	class InfiltrateForSupportPowerInfo : ITraitInfo, Requires<InfiltratableInfo>
 	{
 		[ActorReference] public readonly string Proxy = null;
 		public object Create(ActorInitializer init) { return new InfiltrateForSupportPower(this); }
