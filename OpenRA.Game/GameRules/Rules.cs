@@ -46,9 +46,9 @@ namespace OpenRA
 
 		static Dictionary<string, T> LoadYamlRules<T>(string[] files, List<MiniYamlNode> dict, Func<MiniYamlNode, Dictionary<string, MiniYaml>, T> f)
 		{
-			var y = files.Select(a => MiniYaml.FromFile(a)).Aggregate(dict, MiniYaml.MergeLiberal);
-			var yy = y.ToDictionary( x => x.Key, x => x.Value );
-			return y.ToDictionary(kv => kv.Key.ToLowerInvariant(), kv => f(kv, yy));
+			var y = files.Select(MiniYaml.FromFile).Aggregate(dict, MiniYaml.MergeLiberal);
+			var yy = y.ToDictionary(x => x.Key, x => x.Value);
+			return y.ToDictionaryWithConflictLog(kv => kv.Key.ToLowerInvariant(), kv => f(kv, yy), "LoadYamlRules", null, null);
 		}
 
 		public static IEnumerable<KeyValuePair<string,MusicInfo>> InstalledMusic { get { return Music.Where( m => m.Value.Exists ); } }
