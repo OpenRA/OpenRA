@@ -993,7 +993,7 @@ Rules:
 			HP: 250
 		Armor:
 			Type: Concrete
-	BADR.bomber:
+	BADR.Bomber:
 		CarpetBomb:
 			Range: 3
 			Weapon: ParaBomb
