@@ -226,8 +226,6 @@ namespace OpenRA.Mods.RA
 		public static bool IsInRange(PPos attackOrigin, float range, Target target)
 		{
 			if( !target.IsValid ) return false;
-			if( target.IsActor )
-				return IsInRange( attackOrigin, range, target.Actor );
 			else
 				return IsInRange( attackOrigin, range, target.CenterLocation );
 		}
