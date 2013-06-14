@@ -142,7 +142,4 @@ namespace OpenRA.Mods.RA
 
 	class IgnoresDisguiseInfo : TraitInfo<IgnoresDisguise> {}
 	class IgnoresDisguise {}
-
-	class DontDestroyWhenInfiltratingInfo : TraitInfo<DontDestroyWhenInfiltrating> { }
-	class DontDestroyWhenInfiltrating { }
 }

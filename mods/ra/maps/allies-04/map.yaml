@@ -1817,6 +1817,8 @@ Rules:
 		AutoTargetIgnore:
 		Allies04TransformOnLabInfiltrate:
 			ToActor: MISS
+		Infiltratable:
+			Type: Lab
 	LST.Unselectable:
 		Inherits: LST
 		Buildable:
@@ -1836,23 +1838,22 @@ Rules:
 		Buildable:
 			Owner: None
 		SpyToolTip:
-			Icon: SPY
+			Icon: spyicon
 		RenderSpy:
 			Image: SPY
 		Health:
 			HP: 100
-		DontDestroyWhenInfiltrating:
 		RevealsShroud:
 			Range: 6
 		Spy:
 		Infiltrates:
-			InfiltrateTypes: MissionObjective
+			Types: Lab, Truck
 	DOG.Patrol:
 		Inherits: DOG
 		Buildable:
 			Owner: None
 		Tooltip:
-			Icon: DOG
+			Icon: dogicon
 		Mobile:
 			Speed: 4
 		RenderInfantry:
@@ -1866,6 +1867,8 @@ Rules:
 			MaxWeight: 5
 			PipCount: 5
 		AutoTargetIgnore:
+		Infiltratable:
+			Type: Truck
 		Allies04Hijackable:
 		Allies04RenderHijacked:
 			Image: TRUK
@@ -1875,7 +1878,7 @@ Rules:
 		-RenderUnit:
 		Selectable:
 			Voice: SpyVoice
-		RevealsShroud:	
+		RevealsShroud:
 			Range: 6
 	BARL:
 		Allies04TrivialBuilding:
