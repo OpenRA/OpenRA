@@ -87,7 +87,7 @@ namespace OpenRA.FileFormats
 			var FileName = new String(reader.ReadChars(NameLength));
 
 			var hash = PackageEntry.HashFilename(FileName, PackageHashType.Classic);
-			if(!index.ContainsKey(hash))
+			if (!index.ContainsKey(hash))
 				index.Add(hash, new PackageEntry(hash,AccumulatedData, CompressedSize));
 			filenames.Add(FileName);
 			AccumulatedData += CompressedSize;
@@ -102,9 +102,9 @@ namespace OpenRA.FileFormats
 			if (!index.TryGetValue(hash, out e))
 				return null;
 
-			s.Seek( dataStart + e.Offset, SeekOrigin.Begin );
-			byte[] data = new byte[ e.Length ];
-			s.Read( data, 0, (int)e.Length );
+			s.Seek(dataStart + e.Offset, SeekOrigin.Begin);
+			var data = new byte[e.Length];
+			s.Read(data, 0, (int)e.Length);
 
 			return new MemoryStream(Blast.Decompress(data));
 		}
