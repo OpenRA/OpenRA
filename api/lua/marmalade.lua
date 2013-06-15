@@ -1,4 +1,4 @@
--- Copyright 2011-12 Paul Kulchenko, ZeroBrane LLC
+-- Copyright 2013 Paul Kulchenko, ZeroBrane LLC
 
 return {
   ads = {
@@ -324,6 +324,7 @@ return {
         description = "The radius of the circle.",
       },
     },
+    inherits = "vector",
   },
   color = {
     type = "class",
@@ -786,6 +787,7 @@ return {
         description = "The y coordinate (bottom) of the minimal bounding box around the rendered text.",
       },
     },
+    inherits = "node",
   },
   lines = {
     type = "class",
@@ -797,6 +799,7 @@ return {
         returns = "()",
       },
     },
+    inherits = "vector",
   },
   location = {
     type = "class",
@@ -1227,6 +1230,7 @@ return {
         returns = "()",
       },
     },
+    inherits = "node",
   },
   contact = {
     type = "class",
@@ -1648,6 +1652,7 @@ return {
         description = "The natural length of the joint, in display coordinates.",
       },
     },
+    inherits = "joint",
   },
   jointfriction = {
     type = "class",
@@ -1661,6 +1666,7 @@ return {
         description = "The maximum friction torque, in Newton-metres.\nJointWeld Properties\n========================\n* :c:member:`jointweld.frequency`\n* :c:member:`jointweld.dampingRatio`",
       },
     },
+    inherits = "joint",
   },
   jointgear = {
     type = "class",
@@ -1678,6 +1684,7 @@ return {
         description = "The gear ratio.",
       },
     },
+    inherits = "joint",
   },
   jointprismatic = {
     type = "class",
@@ -1719,6 +1726,7 @@ return {
         description = "The upper distance limit for the joint (should be positive). Only effective if limitEnabled is true.",
       },
     },
+    inherits = "joint",
   },
   jointpulley = {
     type = "class",
@@ -1736,6 +1744,7 @@ return {
         description = "The pulley ratio, used to simulate a block-and-tackle.",
       },
     },
+    inherits = "joint",
   },
   jointrevolute = {
     type = "class",
@@ -1777,6 +1786,7 @@ return {
         description = "The upper angle for the joint limit (degrees). Only effective if limitEnabled is true.",
       },
     },
+    inherits = "joint",
   },
   jointrope = {
     type = "class",
@@ -1786,6 +1796,7 @@ return {
         description = "The maximum length of the rope.\nJointWheel Properties\n========================\n* :c:member:`jointwheel.motorEnabled`\n* :c:member:`jointwheel.motorSpeed`\n* :c:member:`jointwheel.maxMotorTorque`\n* :c:member:`jointwheel.springFrequency`\n* :c:member:`jointwheel.springDampingRatio`\n* :c:member:`jointwheel.motorTorque`\n* :c:member:`jointwheel.jointSpeed`\n* :c:member:`jointwheel.jointTranslation`",
       },
     },
+    inherits = "joint",
   },
   jointtouch = {
     type = "class",
@@ -1809,6 +1820,7 @@ return {
         returns = "()",
       },
     },
+    inherits = "joint",
   },
   jointweld = {
     type = "class",
@@ -1822,6 +1834,7 @@ return {
         description = "The mass-spring-damper frequency in Hertz. Rotation only. Disable softness with a value of 0.",
       },
     },
+    inherits = "joint",
   },
   jointwheel = {
     type = "class",
@@ -1859,6 +1872,7 @@ return {
         description = "Suspension frequency, zero indicates no suspension. Default value is 2.",
       },
     },
+    inherits = "joint",
   },
   sprite = {
     type = "class",
@@ -1918,6 +1932,7 @@ return {
         description = "True only if the sprite should be flipped along its local y axis.",
       },
     },
+    inherits = "node",
   },
   system = {
     type = "class",
@@ -2061,6 +2076,7 @@ return {
         description = "The size of each tile, in pixels.\nThe value is a Vec2 object: the x property represents the tile\nwidth, and the y property represents the tile height.",
       },
     },
+    inherits = "node",
   },
   tiledmaplayer = {
     type = "class",
@@ -2120,6 +2136,7 @@ return {
         returns = "()",
       },
     },
+    inherits = "node",
   },
   tiledmapobject = {
     type = "class",
@@ -2360,6 +2377,7 @@ return {
         description = "The width, in display coordinates, of the shape outline.\nIf 0, no outline is drawn. The default value is 1.",
       },
     },
+    inherits = "node",
   },
   video = {
     type = "class",
