@@ -40,14 +40,7 @@ namespace OpenRA.FileFormats
 			var headerLength = s.ReadUInt32();
 			while (s.Position < headerLength + 4)
 			{
-				var name = "";
-				var letter = s.ReadASCII(1);
-				while (letter != "\0")
-				{
-					name += letter;
-					letter = s.ReadASCII(1);
-				}
-
+				var name = s.ReadASCIIZ();
 				var offset = s.ReadUInt32();
 				var length = s.ReadUInt32();
 
