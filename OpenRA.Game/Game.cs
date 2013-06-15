@@ -459,23 +459,6 @@ namespace OpenRA
 			return orderManager != null && orderManager.world == world;
 		}
 
-		public static void JoinExternalGame()
-		{
-			var addressParts = Game.Settings.Game.ConnectTo.Split(
-				new [] { ':' }, StringSplitOptions.RemoveEmptyEntries);
-
-			if (addressParts.Length < 1 || addressParts.Length > 2)
-				return;
-
-			var host = addressParts[0];
-			var port = Exts.WithDefault(1234, () => int.Parse(addressParts[1]));
-
-			Game.Settings.Game.ConnectTo = "";
-			Game.Settings.Save();
-
-			Game.JoinServer(host, port);
-		}
-
 		public static bool DownloadMap(string mapHash)
 		{
 			try

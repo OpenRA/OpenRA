@@ -70,7 +70,6 @@ namespace OpenRA.Mods.D2k
 		public void StartGame()
 		{
 			TestAndContinue();
-			Game.JoinExternalGame();
 		}
 
 		void TestAndContinue()
