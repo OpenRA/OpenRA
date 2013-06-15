@@ -27,7 +27,6 @@
 	ProximityCaptor:
 		Types:Vehicle
 	GivesBounty:
-	#WithSmoke:
 	Repairable:
 		RepairBuildings: repair
 	DebugMuzzlePositions:
@@ -64,7 +63,6 @@
 	ProximityCaptor:
 		Types:Tank
 	GivesBounty:
-	#WithSmoke:
 	Repairable:
 		RepairBuildings: repair
 	DebugMuzzlePositions:
@@ -155,7 +153,7 @@
 		Types:Infantry
 	GivesBounty:
 	CrushableInfantry:
-		CrushSound: squishy2.aud
+		CrushSound: CRUSH1.WAV
 	RepairableNear:
 		Buildings: barra, barro
 		CloseEnough: 1
@@ -199,15 +197,15 @@
 		Dimensions: 1,1
 		Footprint: x
 		TerrainTypes: Rock, Concrete
-		BuildSounds: BUILD1.aud
-		SellSounds: BUILD1.aud
+		BuildSounds: BUILD1.WAV
+		SellSounds: BUILD1.WAV
 		Adjacent: 3
 	GivesBuildableArea:
 	Capturable:
 	CapturableBar:
 	SoundOnDamageTransition:
-		DamagedSound: EXPLSML1.aud
-		DestroyedSound: EXPLHG1.aud
+		DamagedSound: EXPLSML1.WAV
+		DestroyedSound: EXPLHG1.WAV
 	RenderBuilding:
 	WithBuildingExplosion:
 	RepairableBuilding:

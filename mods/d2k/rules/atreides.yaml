@@ -241,5 +241,5 @@ FREMEN:
 	Cloak:
 		InitialDelay: 250
 		CloakDelay: 250
-		CloakSound: 
-		UncloakSound: 
+		CloakSound: STEALTH1.WAV
+		UncloakSound: STEALTH2.WAV

@@ -2,10 +2,15 @@
 
 GenericVoice:
 	DefaultVariant: .AUD
+	Variants:
+		atreides: .WAV
+		ordos: .WAV
+		harkonnen: .WAV
 	Voices:
 		Select: G_SSEL1,G_SSEL2,G_SSEL3
 		Move: G_SCONF1,G_SCONF2,G_SCONF3
 		Die: KILLGUY1,KILLGUY2,KILLGUY3,KILLGUY4,KILLGUY5,KILLGUY6,KILLGUY7,KILLGUY8,KILLGUY9
+	DisableVariants: Select, Move
 
 VehicleVoice:
 	DefaultVariant: .AUD
@@ -19,6 +24,10 @@ VehicleVoice:
 
 InfantryVoice:
 	DefaultVariant: .AUD
+	Variants:
+		atreides: .WAV
+		ordos: .WAV
+		harkonnen: .WAV
 	Prefixes:
 		atreides: A
 		ordos: O
@@ -28,9 +37,14 @@ InfantryVoice:
 		Move: _ICONF1,_ICONF2,_ICONF3
 		Die: KILLGUY1,KILLGUY2,KILLGUY3,KILLGUY4,KILLGUY5,KILLGUY6,KILLGUY7,KILLGUY8,KILLGUY9
 	DisablePrefixes: Die
+	DisableVariants: Select, Move
 
 EngineerVoice:
 	DefaultVariant: .AUD
+	Variants:
+		atreides: .WAV
+		ordos: .WAV
+		harkonnen: .WAV
 	Prefixes:
 		atreides: A
 		ordos: O
@@ -40,17 +54,28 @@ EngineerVoice:
 		Move: _ECONF1,_ECONF2,_ECONF3
 		Die: KILLGUY1,KILLGUY2,KILLGUY3,KILLGUY4,KILLGUY5,KILLGUY6,KILLGUY7,KILLGUY8,KILLGUY9
 	DisablePrefixes: Die
+	DisableVariants: Select, Move
 
 FremenVoice:
 	DefaultVariant: .AUD
+	Variants:
+		atreides: .WAV
+		ordos: .WAV
+		harkonnen: .WAV
 	Voices:
 		Select: A_FSEL1,A_FSEL2,A_FSEL3
 		Move: A_FCONF1,A_FCONF2,A_FCONF3
 		Die: KILLGUY1,KILLGUY2,KILLGUY3,KILLGUY4,KILLGUY5,KILLGUY6,KILLGUY7,KILLGUY8,KILLGUY9
+	DisableVariants: Select, Move
 
 SaboteurVoice:
 	DefaultVariant: .AUD
+	Variants:
+		atreides: .WAV
+		ordos: .WAV
+		harkonnen: .WAV
 	Voices:
 		Select: O_SSEL1,O_SSEL2,O_SSEL3
 		Move: O_SCONF1,O_SCONF2,O_SCONF3
 		Die: KILLGUY1,KILLGUY2,KILLGUY3,KILLGUY4,KILLGUY5,KILLGUY6,KILLGUY7,KILLGUY8,KILLGUY9
+	DisableVariants: Select, Move

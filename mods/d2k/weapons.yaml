@@ -22,7 +22,7 @@ LMG:
 Bazooka:
 	ROF: 50
 	Range: 5
-	Report: BAZOOK1
+	Report: BAZOOK1.WAV
 	ValidTargets: Ground
 	Projectile: Missile
 		Speed: 25
@@ -46,12 +46,12 @@ Bazooka:
 		InfDeath: 4
 		SmudgeType: SandCrater, RockCrater
 		Damage: 50
-		ImpactSound: EXPLSML2
+		ImpactSound: EXPLSML2.WAV
 
 Sniper:
 	ROF: 100
 	Range: 8.5
-	Report: RIFLE
+	Report: FREMODD1.WAV
 	Projectile: Bullet
 		Speed: 150
 		ContrailLength: 6
@@ -72,7 +72,7 @@ Sniper:
 Vulcan:
 	ROF: 30
 	Range: 5.75
-	Report: VULCAN
+	Report: VULCAN.WAV
 	ValidTargets: Ground, Air
 	Projectile: Bullet
 		Speed: 100
@@ -95,7 +95,7 @@ Slung:
 	ROF: 60
 	Delay: 5
 	Range: 5.5
-	Report: BAZOOK2
+	Report: BAZOOK2.WAV
 	ValidTargets: Ground
 	Projectile: Bullet
 		Speed: 25
@@ -117,14 +117,14 @@ Slung:
 		WaterExplosion: med_splash
 		InfDeath: 4
 		Damage: 30
-		ImpactSound: kaboom25
+		ImpactSound: EXPLLG5.WAV
 
 HMG:
 	ROF: 30
 	Range: 5
 	Burst: 2
 	BurstDelay: 5
-	Report: 20MMGUN1
+	Report: 20MMGUN1.WAV
 	Projectile: Bullet
 		Speed: 100
 		ContrailLength: 3
@@ -147,7 +147,7 @@ HMGo:
 	Range: 5
 	Burst: 2
 	BurstDelay: 5
-	Report: 20MMGUN1
+	Report: 20MMGUN1.WAV
 	Projectile: Bullet
 		Speed: 100
 		ContrailLength: 3
@@ -170,7 +170,7 @@ QuadRockets:
 	Burst: 2
 	BurstDelay: 25
 	Range: 7
-	Report: ROCKET1
+	Report: ROCKET1.WAV
 	ValidTargets: Ground, Air
 	Projectile: Missile
 		Arm: 0
@@ -191,14 +191,14 @@ QuadRockets:
 			Concrete: 35%
 		InfDeath: 4
 		Explosion: small_artillery
-		ImpactSound: EXPLSML2
+		ImpactSound: EXPLSML2.WAV
 		SmudgeType: SandCrater, RockCrater
 		Damage: 25
 
 TurretGun:
 	ROF: 35
 	Range: 7
-	Report: TURRET1
+	Report: TURRET1.WAV
 	Projectile: Bullet
 		Speed: 55
 		High: yes
@@ -213,7 +213,7 @@ TurretGun:
 			Light: 100%
 			Concrete: 65%
 		Explosion: med_explosion
-		ImpactSound: kaboom30
+		ImpactSound: EXPLLG3.WAV
 		InfDeath: 4
 		SmudgeType: SandCrater, RockCrater
 		Damage: 55
@@ -222,7 +222,7 @@ TowerMissile:
 	ROF: 35
 	Range: 7.75
 	MinRange: 1
-	Report: ROCKET1
+	Report: ROCKET1.WAV
 	ValidTargets: Ground, Air
 	Burst: 2
 	BurstDelay: 15
@@ -253,7 +253,7 @@ TowerMissile:
 90mm:
 	ROF: 50
 	Range: 5.75
-	Report: MEDTANK1
+	Report: MEDTANK1.WAV
 	Projectile: Bullet
 		Speed: 50
 		Inaccuracy: 12
@@ -266,7 +266,7 @@ TowerMissile:
 			Light: 100%
 			Concrete: 50%
 		Explosion: small_artillery
-		ImpactSound: kaboom30
+		ImpactSound: EXPLLG3.WAV
 		InfDeath: 4
 		SmudgeType: SandCrater, RockCrater
 		Damage: 40
@@ -274,7 +274,7 @@ TowerMissile:
 90mma:
 	ROF: 50
 	Range: 7
-	Report: MEDTANK1
+	Report: MEDTANK1.WAV
 	Projectile: Bullet
 		Speed: 55
 		Inaccuracy: 11
@@ -287,7 +287,7 @@ TowerMissile:
 			Light: 100%
 			Concrete: 50%
 		Explosion: small_artillery
-		ImpactSound: kaboom30
+		ImpactSound: EXPLLG3.WAV
 		InfDeath: 4
 		SmudgeType: SandCrater, RockCrater
 		Damage: 40
@@ -295,7 +295,7 @@ TowerMissile:
 DevBullet:
 	ROF: 50
 	Range: 5
-	Report: TANKHVY1
+	Report: TANKHVY1.WAV
 	Projectile: Bullet
 		Speed: 50
 		Image: doubleblast
@@ -318,7 +318,7 @@ DevBullet:
 	MinRange: 4
 	Burst: 4
 	BurstDelay: 15
-	Report: MISSLE1
+	Report: MISSLE1.WAV
 	ValidTargets: Ground
 	Projectile: Bullet
 		Speed: 28
@@ -340,7 +340,7 @@ DevBullet:
 			Concrete: 80%
 		InfDeath: 4
 		Explosion: artillery
-		ImpactSound: EXPLSML2
+		ImpactSound: EXPLSML2.WAV
 		SmudgeType: SandCrater, RockCrater
 		Damage: 60
 
@@ -348,7 +348,7 @@ FakeMissile:
 	ROF: 120
 	Range: 8
 	Burst: 1
-	Report: MISSLE1
+	Report: MISSLE1.WAV
 	Projectile: Bullet
 		Speed: 35
 		High: true
@@ -367,13 +367,13 @@ FakeMissile:
 		Explosion: large_explosion
 		SmudgeType: SandCrater, RockCrater
 		Damage: 10
-		ImpactSound: EXPLSML2
+		ImpactSound: EXPLSML2.WAV
 
 155mm:
 	ROF: 75
 	Range: 8
 	MinRange: 2
-	Report: MORTAR1
+	Report: MORTAR1.WAV
 	Projectile: Bullet
 		Speed: 20
 		High: true
@@ -391,7 +391,7 @@ FakeMissile:
 			Concrete: 100%
 		Explosion: large_explosion
 		WaterExplosion: large_splash
-		ImpactSound: explsml2
+		ImpactSound: EXPLSML2.WAV
 		InfDeath: 3
 		SmudgeType: SandCrater, RockCrater
 		Damage: 100
@@ -399,7 +399,7 @@ FakeMissile:
 Sound:
 	ROF: 100
 	Range: 8.5
-	Report: SONIC1
+	Report: SONIC1.WAV
 	Projectile: LaserZap
 		BeamWidth: 2
 		HitAnim: laserfire
@@ -419,7 +419,7 @@ ChainGun:
 	ROF: 10
 	Range: 5
 	MinRange: 1
-	Report: 20MMGUN1
+	Report: 20MMGUN1.WAV
 	Projectile: Bullet
 		Speed: 100
 		High: true
@@ -437,7 +437,7 @@ ChainGun:
 Heal:
 	ROF: 160
 	Range: 4
-	Report: HEAL2
+	Report:
 	Projectile: Bullet
 		Speed: 100
 	Warhead:
@@ -453,7 +453,7 @@ Heal:
 WormJaw:
 	ROF: 10
 	Range: 3
-	Report: WORM
+	Report: WORM.WAV
 	Warhead:
 		Spread: 5
 		Versus: 
@@ -478,7 +478,7 @@ ParaBomb:
 		InfDeath: 4
 		SmudgeType: Crater
 		Damage: 500
-		ImpactSound: EXPLLG3
+		ImpactSound: EXPLLG3.WAV
 
 Napalm:
 	ROF: 2
@@ -494,6 +494,6 @@ Napalm:
 			Concrete: 70%
 		InfDeath: 4
 		Explosion: napalm
-		ImpactSound: NAPALM1
+		ImpactSound: NAPALM1.WAV
 		SmudgeType: Crater
 		Damage: 300

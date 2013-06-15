@@ -20,6 +20,7 @@ Folders:
 Packages:
 	~main.mix
 	conquer.mix
+	SOUND.RS
 
 Rules:
 	mods/d2k/rules/system.yaml
@@ -92,7 +93,7 @@ Movies:
 
 LoadScreen: D2kLoadScreen
 	InstallerMenuWidget: INSTALL_PANEL
-	TestFile: deathhandlaunch.shp
+	TestFile: SOUND.RS
 	PackageURL: http://open-ra.org/get-dependency.php?file=d2k-complete-packages
 
 ServerTraits:

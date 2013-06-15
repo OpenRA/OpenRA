@@ -47,7 +47,6 @@ ENGINEER:
 		PipType: Yellow
 	EngineerRepair:
 	Captures:
-	#TakeCover:
 	-AutoTarget:
 	AttackMove:
 		JustMove: true
