@@ -34,6 +34,16 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				Ui.OpenWindow("INSTALL_FROMCD_PANEL", args);
 
 			panel.Get<ButtonWidget>("QUIT_BUTTON").OnClick = Game.Exit;
+
+			panel.Get<ButtonWidget>("MODS_BUTTON").OnClick = () =>
+			{
+				Ui.OpenWindow("MODS_PANEL", new WidgetArgs()
+				              {
+					{ "onExit", () => {} },
+					// Close this panel
+					{ "onSwitch", Ui.CloseWindow },
+				});
+			};
 		}
 	}
 }

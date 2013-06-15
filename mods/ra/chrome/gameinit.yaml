@@ -2,7 +2,7 @@ Background@INSTALL_PANEL:
 	Logic:RAInstallLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
-	Width:500
+	Width:510
 	Height:160
 	Children:
 		Label@TITLE:
@@ -28,23 +28,30 @@ Background@INSTALL_PANEL:
 			Text:Content can be downloaded, or copied from the install CD.
 			Align:Center
 		Button@DOWNLOAD_BUTTON:
-			X:PARENT_RIGHT - 280
+			X:20
 			Y:PARENT_BOTTOM - 45
-			Width:120
+			Width:110
 			Height:25
 			Text:Download
 			Font:Bold
 		Button@INSTALL_BUTTON:
-			X:PARENT_RIGHT - 420
+			X:140
 			Y:PARENT_BOTTOM - 45
-			Width:120
+			Width:110
 			Height:25
 			Text:Use CD
 			Font:Bold
-		Button@QUIT_BUTTON:
-			X:PARENT_RIGHT - 140
+		Button@MODS_BUTTON:
+			X:PARENT_RIGHT - 250
 			Y:PARENT_BOTTOM - 45
-			Width:120
+			Width:110
+			Height:25
+			Text:Change Mod
+			Font:Bold
+		Button@QUIT_BUTTON:
+			X:PARENT_RIGHT - 130
+			Y:PARENT_BOTTOM - 45
+			Width:110
 			Height:25
 			Text:Quit
 			Font:Bold
