@@ -30,11 +30,6 @@ namespace OpenRA.FileFormats
 		public readonly int DataSize;
 		public readonly byte[] RawOutput;
 
-		public readonly int ListChunkSize;
-
-		public readonly int FactChunkSize;
-		public readonly int Samples;
-
 		public WavLoader(Stream s)
 		{
 			while (s.Position < s.Length)
@@ -68,16 +63,11 @@ namespace OpenRA.FileFormats
 						DataSize = s.ReadInt32();
 						RawOutput = s.ReadBytes(DataSize);
 						break;
-					case "LIST":
-						ListChunkSize = s.ReadInt32();
-						s.ReadBytes(ListChunkSize); // Ignore annotation meta data.
-						break;
-					case "fact":
-						FactChunkSize = s.ReadInt32();
-						Samples = s.ReadInt32();
-						break;
 					default:
-						throw new NotSupportedException("{0} chunks are not supported.".F(type));
+						// Ignore unknown chunks
+						var chunkSize = s.ReadInt32();
+						s.ReadBytes(chunkSize);
+						break;
 				}
 			}
 		}
