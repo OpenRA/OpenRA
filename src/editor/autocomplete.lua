@@ -595,6 +595,14 @@ function CreateAutoCompList(editor,key)
     else
       table.sort(apilist)
     end
+
+    local prev = apilist[#apilist]
+    for i = #apilist-1,1,-1 do
+      if prev == apilist[i] then
+        table.remove(apilist, i+1)
+      else prev = apilist[i] end
+    end
+
     compstr = table.concat(apilist," ")
   end
 

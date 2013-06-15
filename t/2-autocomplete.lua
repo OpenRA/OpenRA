@@ -24,6 +24,17 @@ ok(limit(10000, function() CreateAutoCompList(editor, "smth:") end),
 ok(pcall(CreateAutoCompList, editor, "%1000"),
   "Auto-complete doesn't trigger 'invalid capture index' on '%...'.")
 
+local interpreter = ide:GetInterpreter():GetFileName()
+ProjectSetInterpreter("gideros")
+
+local ac = CreateAutoCompList(editor, "Bitmap.n")
+local _, c = ac:gsub("new", "new")
+ok(c == 1,
+  ("Auto-complete doesn't offer duplicates with the same name ('%s').")
+    :format(ac))
+
+ProjectSetInterpreter(interpreter)
+
 -- cleanup
 ide.openDocuments[editor:GetId()].isModified = false
 ClosePage()
