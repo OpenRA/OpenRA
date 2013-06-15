@@ -120,7 +120,6 @@ namespace OpenRA.Mods.Cnc
 		public void StartGame()
 		{
 			TestAndContinue();
-			Game.JoinExternalGame();
 		}
 
 		void TestAndContinue()
