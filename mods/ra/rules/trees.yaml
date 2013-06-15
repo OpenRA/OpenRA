@@ -155,12 +155,22 @@ TC05:
 		ExcludeTilesets: DESERT
 
 MINE:
-	Inherits: ^Tree
 	Tooltip:
 		Name: Ore Mine
-	SeedsResource:
+	RenderBuilding:
+		Palette: terrain
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	AppearsOnRadar:
 	RadarColorFromTerrain:
 		Terrain: Ore
+	EditorAppearance:
+		RelativeToTopLeft: yes
+		UseTerrainPalette: true
+	AutoTargetIgnore:
+	BodyOrientation:
+	SeedsResource:
 	BelowUnits:
 
 BOXES01:
