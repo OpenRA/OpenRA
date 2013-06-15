@@ -42,6 +42,20 @@ Background@REPLAYBROWSER_BG:
 					Y:30
 					Width:192
 					Height:192
+				Label@SERVER_LABEL:
+					X:PARENT_RIGHT - 200 - WIDTH
+					Y:230
+					Align:Right
+					Width:70
+					Height:20
+					Text:Server:
+					Font:Bold
+				Label@SERVER:
+					X:PARENT_RIGHT - 195
+					Y:230
+					Align:Left
+					Width:70
+					Height:20
 				Label@MAP_TITLE_LABEL:
 					X:PARENT_RIGHT - 200 - WIDTH
 					Y:250
@@ -81,6 +95,34 @@ Background@REPLAYBROWSER_BG:
 				Label@PLAYERS:
 					X:PARENT_RIGHT - 195
 					Y:290
+					Align:Left
+					Width:70
+					Height:20
+				Label@MOD_LABEL:
+					X:PARENT_RIGHT - 200 - WIDTH
+					Y:310
+					Align:Right
+					Width:70
+					Height:20
+					Text:Mod:
+					Font:Bold
+				Label@MOD:
+					X:PARENT_RIGHT - 195
+					Y:310
+					Align:Left
+					Width:70
+					Height:20
+				Label@VERSION_LABEL:
+					X:PARENT_RIGHT - 200 - WIDTH
+					Y:330
+					Align:Right
+					Width:70
+					Height:20
+					Text:Version:
+					Font:Bold
+				Label@VERSION:
+					X:PARENT_RIGHT - 195
+					Y:330
 					Align:Left
 					Width:70
 					Height:20

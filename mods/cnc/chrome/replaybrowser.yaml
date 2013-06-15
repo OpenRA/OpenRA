@@ -63,6 +63,18 @@ Container@REPLAYBROWSER_PANEL:
 							X:75
 							Width:70
 							Height:20
+						Label@SERVER_LABEL:
+							Align:Right
+							Width:70
+							Height:20
+							Text:Server:
+							Font:Bold
+							Visible: no
+						Label@SERVER:
+							Align:Left
+							Width:70
+							Height:20
+							Visible: no
 						Label@DURATION_LABEL:
 							Y:20
 							Align:Right
@@ -87,6 +99,30 @@ Container@REPLAYBROWSER_PANEL:
 							Y:40
 							Width:70
 							Height:20
+						Label@MOD_LABEL:
+							Align:Right
+							Width:70
+							Height:20
+							Text:Mod:
+							Font:Bold
+							Visible: no
+						Label@MOD:
+							Align:Left
+							Width:70
+							Height:20
+							Visible: no
+						Label@VERSION_LABEL:
+							Align:Right
+							Width:70
+							Height:20
+							Text:Version:
+							Font:Bold
+							Visible: no
+						Label@VERSION:
+							Align:Left
+							Width:70
+							Height:20
+							Visible: no
 				Button@CANCEL_BUTTON:
 					Key:escape
 					X:0

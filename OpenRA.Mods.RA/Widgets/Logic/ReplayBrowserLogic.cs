@@ -11,6 +11,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.Network;
 using OpenRA.Widgets;
 
@@ -43,7 +44,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			}
 
 			var watch = panel.Get<ButtonWidget>("WATCH_BUTTON");
-			watch.IsDisabled = () => currentReplay == null || currentMap == null || currentReplay.Duration == 0;
+			watch.IsDisabled = () => currentReplay == null || currentMap == null || currentReplay.Duration == 0
+				|| currentReplay.LobbyInfo.GlobalSettings.Version != WidgetUtils.ActiveModVersion();
 			watch.OnClick = () =>
 			{
 				if (currentReplay != null)
@@ -70,8 +72,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				currentReplay = new Replay(filename);
 				currentMap = currentReplay.Map();
 
+				panel.Get<LabelWidget>("SERVER").GetText =
+					() => currentReplay.LobbyInfo.GlobalSettings.ServerName;
+
 				panel.Get<LabelWidget>("DURATION").GetText =
 					() => WidgetUtils.FormatTime(currentReplay.Duration * 3	/* TODO: 3:1 ratio isnt always true. */);
+
 				panel.Get<MapPreviewWidget>("MAP_PREVIEW").Map = () => currentMap;
 				panel.Get<LabelWidget>("MAP_TITLE").GetText =
 					() => currentMap != null ? currentMap.Title : "(Unknown Map)";
@@ -79,6 +85,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var players = currentReplay.LobbyInfo.Slots
 					.Count(s => currentReplay.LobbyInfo.ClientInSlot(s.Key) != null);
 				panel.Get<LabelWidget>("PLAYERS").GetText = () => players.ToString();
+
+				panel.Get<LabelWidget>("MOD").GetText =
+					() => currentReplay.LobbyInfo.GlobalSettings.Mods[0];
+
+				panel.Get<LabelWidget>("VERSION").GetText =
+					() => currentReplay.LobbyInfo.GlobalSettings.Version;
 			}
 			catch (Exception e)
 			{
