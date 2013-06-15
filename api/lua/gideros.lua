@@ -117,6 +117,7 @@ return {
     type = "function"
    }
   },
+  inherits = "Sprite",
   type = "class"
  },
  Core = {
@@ -471,6 +472,7 @@ return {
     type = "function"
    }
   },
+  inherits = "EventDispatcher",
   type = "class"
  },
  Font = {
@@ -482,6 +484,7 @@ return {
     type = "function"
    }
   },
+  inherits = "FontBase",
   type = "class"
  },
  FontBase = {
@@ -594,6 +597,7 @@ return {
     type = "function"
    }
   },
+  inherits = "EventDispatcher",
   type = "class"
  },
  GoogleBilling = {
@@ -1021,6 +1025,7 @@ return {
     type = "function"
    }
   },
+  inherits = "Sprite",
   type = "class"
  },
  MovieClip = {
@@ -1074,6 +1079,7 @@ return {
     type = "function"
    }
   },
+  inherits = "Sprite",
   type = "class"
  },
  Shape = {
@@ -1153,6 +1159,7 @@ return {
     type = "function"
    }
   },
+  inherits = "Sprite",
   type = "class"
  },
  Sound = {
@@ -1536,10 +1543,12 @@ return {
     type = "function"
    }
   },
+  inherits = "EventDispatcher",
   type = "class"
  },
  Stage = {
   childs = {},
+  inherits = "Sprite",
   type = "class"
  },
  StoreKit = {
@@ -1604,6 +1613,7 @@ return {
     type = "function"
    }
   },
+  inherits = "FontBase",
   type = "class"
  },
  TextField = {
@@ -1651,6 +1661,7 @@ return {
     type = "function"
    }
   },
+  inherits = "Sprite",
   type = "class"
  },
  TextInputDialog = {
@@ -1729,6 +1740,7 @@ return {
     type = "function"
    }
   },
+  inherits = "TextureBase",
   type = "class"
  },
  TextureBase = {
@@ -1771,6 +1783,7 @@ return {
     type = "function"
    }
   },
+  inherits = "TextureBase",
   type = "class"
  },
  TextureRegion = {
@@ -1841,6 +1854,7 @@ return {
     type = "function"
    }
   },
+  inherits = "Sprite",
   type = "class"
  },
  Timer = {
@@ -2406,6 +2420,7 @@ return {
       type = "function"
      }
     },
+    inherits = "b2.Shape",
     type = "class"
    },
    CircleShape = {
@@ -2423,6 +2438,7 @@ return {
       type = "function"
      }
     },
+    inherits = "b2.Shape",
     type = "class"
    },
    Contact = {
@@ -2575,6 +2591,7 @@ return {
       type = "function"
      }
     },
+    inherits = "Sprite",
     type = "class"
    },
    DistanceJoint = {
@@ -2616,6 +2633,7 @@ return {
       type = "function"
      }
     },
+    inherits = "b2.Joint",
     type = "class"
    },
    EdgeShape = {
@@ -2633,6 +2651,7 @@ return {
       type = "function"
      }
     },
+    inherits = "b2.Shape",
     type = "class"
    },
    FRICTION_JOINT = {
@@ -2701,6 +2720,7 @@ return {
       type = "function"
      }
     },
+    inherits = "b2.Joint",
     type = "class"
    },
    GEAR_JOINT = {
@@ -2722,6 +2742,7 @@ return {
       type = "function"
      }
     },
+    inherits = "b2.Joint",
     type = "class"
    },
    Joint = {
@@ -2836,6 +2857,7 @@ return {
       type = "function"
      }
     },
+    inherits = "b2.Joint",
     type = "class"
    },
    PRISMATIC_JOINT = {
@@ -2867,6 +2889,7 @@ return {
       type = "function"
      }
     },
+    inherits = "b2.Shape",
     type = "class"
    },
    PrismaticJoint = {
@@ -2944,6 +2967,7 @@ return {
       type = "function"
      }
     },
+    inherits = "b2.Joint",
     type = "class"
    },
    PulleyJoint = {
@@ -2979,6 +3003,7 @@ return {
       type = "function"
      }
     },
+    inherits = "b2.Joint",
     type = "class"
    },
    REVOLUTE_JOINT = {
@@ -3064,6 +3089,7 @@ return {
       type = "function"
      }
     },
+    inherits = "b2.Joint",
     type = "class"
    },
    RopeJoint = {
@@ -3081,6 +3107,7 @@ return {
       type = "function"
      }
     },
+    inherits = "b2.Joint",
     type = "class"
    },
    STATIC_BODY = {
@@ -3122,6 +3149,7 @@ return {
       type = "function"
      }
     },
+    inherits = "b2.Joint",
     type = "class"
    },
    WheelJoint = {
@@ -3199,6 +3227,7 @@ return {
       type = "function"
      }
     },
+    inherits = "b2.Joint",
     type = "class"
    },
    World = {
@@ -3276,6 +3305,7 @@ return {
       type = "function"
      }
     },
+    inherits = "EventDispatcher",
     type = "class"
    },
    createDistanceJointDef = {
@@ -3433,6 +3463,7 @@ return {
       type = "function"
      }
     },
+    inherits = "EventDispatcher",
     type = "class"
    },
    isAvailable = {
@@ -3459,9 +3490,6 @@ return {
   Limitations
   - only handles two levels of class hierarchy (as in b2.Body.*)
 
-  Manual fixes
-  - removed UTF8 characters
-
   Notes
   + replace &quot; with "
   + remove standard Lua functions and classes
@@ -3477,14 +3505,23 @@ return {
 
 local class = ""
 local t = {}
+local inherits = {}
 while true do
   local s = io.read()
   if not s then break end
-  local newclass = s:match('^([A-Z]%w+)$') or s:match('^(%w+%.%w+)$')
-    or s:match('^([%.%w]+)%.')
+
+  local newclass, base = s:match('^([%w%.]+)%s+>%s+([%w%.]+)%s*$')
+  if base then
+    inherits[newclass] = base
+  else
+    newclass = s:match('^([A-Z]%w+)$') or s:match('^(%w+%.%w+)$')
+      or s:match('^([%.%w]+)%.')
+  end
+
   if newclass and class:lower() ~= newclass:lower() then
     class = newclass
-    if not class:match('%.') then t[class] = t[class] or {childs = {}, type = "class"} end
+    if not class:match('%.') then
+      t[class] = t[class] or {childs = {}, type = "class", inherits = inherits[class]} end
   end
   s = s:gsub('^'..class..'%.', ""):gsub('^'..class:lower()..'%:', "")
   local const, value = s:match('^([A-Z_0-9]+)[ -]+(.+)$')
@@ -3493,7 +3530,7 @@ while true do
     -- do nothing; haven't found a single class yet; skipping Lua methods
   elseif _G[class] then
     -- do nothing; skipping Lua tables (io, table, math, etc.)
-  elseif s:lower() == class:lower() then
+  elseif s:lower() == class:lower() or base then
     -- do nothing; it's either class or its duplicate
   elseif const or fun then
     local t, class = t, class
@@ -3501,8 +3538,9 @@ while true do
     if c1 and c2 then
       t[c1] = t[c1] or {childs = {}, type = "class"}
       t = t[c1].childs
+      local base = inherits[class]
       class = c2
-      t[class] = t[class] or {childs = {}, type = "class"}
+      t[class] = t[class] or {childs = {}, type = "class", inherits = base}
     end
     if fun then
       local removeclass = "^"..(c2 and c1..'.'..c2 or class)..'[- ]*'
