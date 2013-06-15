@@ -383,7 +383,7 @@ Grenade:
 
 25mm:
 	ROF: 13
-	Range: 4
+	Range: 5
 	Report: CANNON2
 	Projectile: Bullet
 		Speed: 50
@@ -403,7 +403,7 @@ Grenade:
 
 90mm:
 	ROF: 50
-	Range: 4.75
+	Range: 5.75
 	Report: CANNON1
 	Projectile: Bullet
 		Speed: 40
@@ -423,7 +423,7 @@ Grenade:
 
 105mm:
 	ROF: 70
-	Range: 4.75
+	Range: 5.75
 	Report: CANNON1
 	Burst: 2
 	BurstDelay: 4
@@ -445,7 +445,7 @@ Grenade:
 
 120mm:
 	ROF: 90
-	Range: 4.75
+	Range: 5.75
 	Report: CANNON1
 	Burst: 2
 	Projectile: Bullet
@@ -543,7 +543,7 @@ MammothTusk:
 
 M60mg:
 	ROF: 30
-	Range: 4
+	Range: 5
 	Report: PILLBOX1
 	Burst: 5
 	Projectile: Bullet

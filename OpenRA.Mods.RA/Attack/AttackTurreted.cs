@@ -90,7 +90,7 @@ namespace OpenRA.Mods.RA
 				if (self.IsDisabled()) return this;
 
 				var attack = self.Trait<AttackTurreted>();
-				const int RangeTolerance = 1;	/* how far inside our maximum range we should try to sit */
+				const int RangeTolerance = 0;	/* how far inside our maximum range we should try to sit */
 				var weapon = attack.ChooseArmamentForTarget(target);
 
 				if (weapon != null)
