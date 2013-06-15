@@ -2,7 +2,7 @@ Background@INSTALL_PANEL:
 	Logic:D2kInstallLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
-	Width:600
+	Width:630
 	Height:350
 	Children:
 		Label@TITLE:
@@ -62,31 +62,38 @@ Background@INSTALL_PANEL:
 			Height:25
 			Text: Put in your Dune 2000 CD and click "From CD" to extract game assets including music.
 			Align:Center
-		Button@EXTRACT_BUTTON:
-			X:PARENT_RIGHT - 280
-			Y:PARENT_BOTTOM - 45
-			Width:100
-			Height:25
-			Text:Extract Data
-			Font:Bold
-		Button@COPY_BUTTON:
-			X:PARENT_RIGHT - 420
-			Y:PARENT_BOTTOM - 45
-			Width:90
-			Height:25
-			Text:From CD
-			Font:Bold
 		Button@DOWNLOAD_BUTTON:
-			X:PARENT_RIGHT - 560
+			X:20
 			Y:PARENT_BOTTOM - 45
-			Width:120
+			Width:110
 			Height:25
 			Text:Download
 			Font:Bold
-		Button@QUIT_BUTTON:
-			X:PARENT_RIGHT - 140
+		Button@COPY_BUTTON:
+			X:140
 			Y:PARENT_BOTTOM - 45
-			Width:120
+			Width:110
+			Height:25
+			Text:From CD
+			Font:Bold
+		Button@EXTRACT_BUTTON:
+			X:260
+			Y:PARENT_BOTTOM - 45
+			Width:110
+			Height:25
+			Text:Extract Data
+			Font:Bold
+		Button@MODS_BUTTON:
+			X:PARENT_RIGHT - 250
+			Y:PARENT_BOTTOM - 45
+			Width:110
+			Height:25
+			Text:Change Mod
+			Font:Bold
+		Button@QUIT_BUTTON:
+			X:PARENT_RIGHT - 130
+			Y:PARENT_BOTTOM - 45
+			Width:110
 			Height:25
 			Text:Quit
 			Font:Bold
