@@ -182,37 +182,37 @@ BOXES01:
 BOXES02:
 	Inherits: ^Tree
 	Tooltip:
-		Name: Boxes	
+		Name: Boxes
 
 BOXES03:
 	Inherits: ^Tree
 	Tooltip:
-		Name: Boxes	
+		Name: Boxes
 
 BOXES04:
 	Inherits: ^Tree
 	Tooltip:
-		Name: Boxes	
+		Name: Boxes
 
 BOXES05:
 	Inherits: ^Tree
 	Tooltip:
-		Name: Boxes	
+		Name: Boxes
 
 BOXES06:
 	Inherits: ^Tree
 	Tooltip:
-		Name: Boxes	
+		Name: Boxes
 
 BOXES07:
 	Inherits: ^Tree
 	Tooltip:
-		Name: Boxes	
+		Name: Boxes
 
 BOXES08:
 	Inherits: ^Tree
 	Tooltip:
-		Name: Boxes	
+		Name: Boxes
 
 BOXES09:
 	Inherits: ^Tree
