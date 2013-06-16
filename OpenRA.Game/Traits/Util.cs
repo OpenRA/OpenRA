@@ -110,19 +110,19 @@ namespace OpenRA.Traits
 				(next, a) => { a.Queue( next ); return a; });
 		}
 
-		public static Activity RunActivity( Actor self, Activity act )
+		public static Activity RunActivity(Actor self, Activity act)
 		{
-			while( act != null )
+			while (act != null)
 			{
 				var prev = act;
 
 				var sw = new Stopwatch();
-				act = act.Tick( self );
+				act = act.Tick(self);
 				var dt = sw.ElapsedTime();
-				if(dt > Game.Settings.Debug.LongTickThreshold)
+				if (dt > Game.Settings.Debug.LongTickThreshold)
 					Log.Write("perf", "[{2}] Activity: {0} ({1:0.000} ms)", prev, dt * 1000, Game.LocalTick);
 
-				if( prev == act )
+				if (prev == act)
 					break;
 			}
 			return act;

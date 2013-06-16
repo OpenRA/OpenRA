@@ -122,17 +122,17 @@ namespace OpenRA
 		public static void RunAfterTick(Action a) { delayedActions.Add(a); }
 		public static void RunAfterDelay(int delay, Action a) { delayedActions.Add(a, delay); }
 
-		static void Tick( OrderManager orderManager, Viewport viewPort )
+		static void Tick(OrderManager orderManager, Viewport viewPort)
 		{
 			if (orderManager.Connection.ConnectionState != lastConnectionState)
 			{
 				lastConnectionState = orderManager.Connection.ConnectionState;
-				ConnectionStateChanged( orderManager );
+				ConnectionStateChanged(orderManager);
 			}
 
-			Tick( orderManager );
-			if( worldRenderer != null && orderManager.world != worldRenderer.world )
-				Tick( worldRenderer.world.orderManager );
+			Tick(orderManager);
+			if (worldRenderer != null && orderManager.world != worldRenderer.world)
+				Tick(worldRenderer.world.orderManager);
 
 			using (new PerfSample("render"))
 			{
