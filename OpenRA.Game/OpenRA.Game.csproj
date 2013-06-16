@@ -233,6 +233,7 @@
     <Compile Include="Traits\BodyOrientation.cs" />
     <Compile Include="Graphics\VoxelAnimation.cs" />
     <Compile Include="Graphics\VoxelRenderable.cs" />
+    <Compile Include="Graphics\TextRenderable.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

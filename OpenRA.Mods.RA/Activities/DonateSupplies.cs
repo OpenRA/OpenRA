@@ -27,15 +27,15 @@ namespace OpenRA.Mods.RA.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (IsCanceled || !target.IsValid)
+			if (IsCanceled || !target.IsValid || !target.IsActor)
 				return NextActivity;
 
-			var targetPlayer = target.Actor.Owner;
-			targetPlayer.PlayerActor.Trait<PlayerResources>().GiveCash(payload);
+			var targetActor = target.Actor;
+			targetActor.Owner.PlayerActor.Trait<PlayerResources>().GiveCash(payload);
 			self.Destroy();
 
 			if (self.Owner.IsAlliedWith(self.World.RenderPlayer))
-				self.World.AddFrameEndTask(w => w.Add(new CashTick(payload, 30, 2, target.CenterLocation, targetPlayer.Color.RGB)));
+				self.World.AddFrameEndTask(w =>	w.Add(new CashTick(targetActor.CenterPosition, targetActor.Owner.Color.RGB, payload)));
 
 			return this;
 		}

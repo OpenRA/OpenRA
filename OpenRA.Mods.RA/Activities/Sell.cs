@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA.Activities
 				ns.Sold(self);
 
 			if (refund > 0 && self.Owner.IsAlliedWith(self.World.RenderPlayer))
-				self.World.AddFrameEndTask(w => w.Add(new CashTick(refund, 30, 2, self.CenterLocation, self.Owner.Color.RGB)));
+				self.World.AddFrameEndTask(w => w.Add(new CashTick(self.CenterPosition, self.Owner.Color.RGB, refund)));
 
 			self.Destroy();
 			return this;
