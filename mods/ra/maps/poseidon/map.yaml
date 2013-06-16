@@ -63,20 +63,20 @@ Actors:
 	Actor2: t05
 		Location: 81,100
 		Owner: Neutral
-	Actor3: t05
-		Location: 86,96
+	Actor76: v04
+		Location: 92,120
 		Owner: Neutral
-	Actor4: t05
-		Location: 90,94
+	Actor264: v15
+		Location: 93,116
 		Owner: Neutral
-	Actor5: t05
-		Location: 96,96
+	Actor125: v18
+		Location: 92,124
 		Owner: Neutral
-	Actor6: t05
-		Location: 91,100
+	Actor18: t02
+		Location: 101,102
 		Owner: Neutral
-	Actor7: t05
-		Location: 97,105
+	Actor145: v18
+		Location: 91,126
 		Owner: Neutral
 	Actor8: t03
 		Location: 79,101
@@ -93,8 +93,8 @@ Actors:
 	Actor12: t03
 		Location: 87,93
 		Owner: Neutral
-	Actor13: t05
-		Location: 86,90
+	Actor63: v07
+		Location: 93,121
 		Owner: Neutral
 	Actor14: t05
 		Location: 87,90
@@ -102,44 +102,41 @@ Actors:
 	Actor15: t05
 		Location: 88,89
 		Owner: Neutral
-	Actor16: t05
-		Location: 92,92
+	Actor276: v17
+		Location: 93,117
 		Owner: Neutral
-	Actor17: t05
-		Location: 93,93
+	Actor265: v17
+		Location: 91,117
 		Owner: Neutral
-	Actor18: t05
-		Location: 92,94
+	Actor275: v17
+		Location: 92,117
 		Owner: Neutral
-	Actor19: t05
-		Location: 93,96
+	Actor261: v15
+		Location: 92,116
 		Owner: Neutral
-	Actor20: t05
-		Location: 94,97
+	Actor260: v15
+		Location: 91,116
 		Owner: Neutral
-	Actor21: t05
-		Location: 97,97
+	Actor79: v18
+		Location: 90,125
 		Owner: Neutral
 	Actor22: t05
 		Location: 98,94
 		Owner: Neutral
-	Actor23: t12
-		Location: 85,99
+	Actor23: t02
+		Location: 103,85
 		Owner: Neutral
 	Actor24: t12
 		Location: 88,101
 		Owner: Neutral
-	Actor25: t12
-		Location: 94,99
+	Actor78: v18
+		Location: 91,125
 		Owner: Neutral
-	Actor26: t12
-		Location: 99,100
+	Actor47: v04
+		Location: 92,126
 		Owner: Neutral
-	Actor27: t12
-		Location: 99,101
-		Owner: Neutral
-	Actor28: t12
-		Location: 79,114
+	Actor144: v18
+		Location: 91,124
 		Owner: Neutral
 	Actor29: t12
 		Location: 90,113
@@ -147,14 +144,11 @@ Actors:
 	Actor30: t12
 		Location: 87,109
 		Owner: Neutral
-	Actor31: t12
-		Location: 83,111
-		Owner: Neutral
 	Actor32: t12
 		Location: 93,79
 		Owner: Neutral
-	Actor33: t12
-		Location: 99,75
+	Actor59: v06
+		Location: 107,82
 		Owner: Neutral
 	Actor34: t12
 		Location: 91,76
@@ -183,20 +177,17 @@ Actors:
 	Actor42: t02
 		Location: 77,80
 		Owner: Neutral
-	Actor43: t02
-		Location: 103,98
+	Actor132: t02
+		Location: 84,79
 		Owner: Neutral
-	Actor44: t02
-		Location: 103,95
+	Actor60: v05
+		Location: 92,123
 		Owner: Neutral
-	Actor45: t02
-		Location: 100,95
+	Actor61: v10
+		Location: 95,123
 		Owner: Neutral
-	Actor46: t02
-		Location: 100,96
-		Owner: Neutral
-	Actor47: t02
-		Location: 101,97
+	Actor62: v11
+		Location: 95,121
 		Owner: Neutral
 	Actor48: t02
 		Location: 107,92
@@ -228,23 +219,20 @@ Actors:
 	Actor57: t02
 		Location: 97,78
 		Owner: Neutral
-	Actor58: t02
-		Location: 98,78
+	Actor58: v18
+		Location: 107,84
 		Owner: Neutral
-	Actor59: t02
-		Location: 101,77
+	Actor26: v04
+		Location: 89,72
 		Owner: Neutral
-	Actor60: t02
-		Location: 85,83
+	Actor45: v10
+		Location: 89,71
 		Owner: Neutral
-	Actor61: t02
-		Location: 86,83
+	Actor27: v06
+		Location: 91,74
 		Owner: Neutral
-	Actor62: t02
-		Location: 87,83
-		Owner: Neutral
-	Actor63: t02
-		Location: 86,84
+	Actor46: v03
+		Location: 93,118
 		Owner: Neutral
 	Actor64: t02
 		Location: 89,82
@@ -279,20 +267,20 @@ Actors:
 	Actor74: t11
 		Location: 83,99
 		Owner: Neutral
-	Actor75: t11
-		Location: 83,96
+	Actor44: t02
+		Location: 84,85
 		Owner: Neutral
-	Actor76: t11
-		Location: 92,84
+	Actor13: v07
+		Location: 91,68
 		Owner: Neutral
-	Actor77: t11
-		Location: 94,83
+	Actor25: v04
+		Location: 93,67
 		Owner: Neutral
-	Actor78: t11
-		Location: 95,85
+	Actor21: v03
+		Location: 89,68
 		Owner: Neutral
-	Actor79: t11
-		Location: 98,85
+	Actor5: v02
+		Location: 91,65
 		Owner: Neutral
 	Actor80: t11
 		Location: 93,109
@@ -309,14 +297,14 @@ Actors:
 	Actor84: t11
 		Location: 98,115
 		Owner: Neutral
-	Actor85: t11
-		Location: 73,100
+	Actor314: v15
+		Location: 74,105
 		Owner: Neutral
-	Actor86: t11
-		Location: 73,103
+	Actor86: v18
+		Location: 77,103
 		Owner: Neutral
-	Actor87: t11
-		Location: 78,93
+	Actor4: mine
+		Location: 83,97
 		Owner: Neutral
 	Actor88: t11
 		Location: 73,112
@@ -426,11 +414,11 @@ Actors:
 	Actor124: t11
 		Location: 94,89
 		Owner: Neutral
-	Actor125: t11
-		Location: 86,79
+	Actor3: v10
+		Location: 93,65
 		Owner: Neutral
-	Actor126: t11
-		Location: 83,78
+	Actor126: v13
+		Location: 92,75
 		Owner: Neutral
 	Actor127: t11
 		Location: 80,80
@@ -447,8 +435,8 @@ Actors:
 	Actor131: t11
 		Location: 77,86
 		Owner: Neutral
-	Actor132: mine
-		Location: 89,98
+	Actor19: t02
+		Location: 101,99
 		Owner: Neutral
 	Actor65: oilb
 		Location: 107,73
@@ -471,8 +459,8 @@ Actors:
 	Actor140: tc05
 		Location: 95,76
 		Owner: Neutral
-	Actor141: tc05
-		Location: 82,94
+	Actor6: mine
+		Location: 98,97
 		Owner: Neutral
 	Actor142: tc05
 		Location: 81,108
@@ -480,17 +468,17 @@ Actors:
 	Actor143: tc03
 		Location: 84,107
 		Owner: Neutral
-	Actor144: tc01
-		Location: 86,104
+	Actor77: v18
+		Location: 92,125
 		Owner: Neutral
-	Actor145: tc05
-		Location: 96,109
+	Actor147: v14
+		Location: 93,124
 		Owner: Neutral
-	Actor146: tc05
-		Location: 102,96
+	Actor87: t02
+		Location: 84,83
 		Owner: Neutral
-	Actor147: tc05
-		Location: 92,85
+	Actor7: v01.sniper
+		Location: 89,65
 		Owner: Neutral
 	Actor148: tc05
 		Location: 91,111
@@ -750,17 +738,17 @@ Actors:
 	Actor231: v10
 		Location: 43,149
 		Owner: Neutral
-	Actor232: v11
-		Location: 94,95
+	Actor296: v13
+		Location: 88,119
 		Owner: Neutral
-	Actor233: v16
-		Location: 96,94
+	Actor259: v15
+		Location: 90,116
 		Owner: Neutral
-	Actor234: v16
-		Location: 97,94
+	Actor141: tc03
+		Location: 110,72
 		Owner: Neutral
-	Actor235: v16
-		Location: 97,95
+	Actor43: v10
+		Location: 87,87
 		Owner: Neutral
 	Actor236: v05
 		Location: 74,120
@@ -783,8 +771,8 @@ Actors:
 	Actor242: v09
 		Location: 106,75
 		Owner: Neutral
-	Actor243: tc04
-		Location: 104,72
+	Actor28: v18
+		Location: 107,83
 		Owner: Neutral
 	Actor244: barl
 		Location: 107,76
@@ -804,6 +792,303 @@ Actors:
 	Actor249: brl3
 		Location: 75,121
 		Owner: Neutral
+	Actor250: v14
+		Location: 93,125
+		Owner: Neutral
+	Actor251: v01
+		Location: 95,119
+		Owner: Neutral
+	Actor252: v06
+		Location: 101,94
+		Owner: Neutral
+	Actor253: v18
+		Location: 90,105
+		Owner: Neutral
+	Actor254: v18
+		Location: 103,94
+		Owner: Neutral
+	Actor255: v18
+		Location: 104,94
+		Owner: Neutral
+	Actor256: v18
+		Location: 104,95
+		Owner: Neutral
+	Actor233: tc03
+		Location: 70,120
+		Owner: Neutral
+	Actor234: tc03
+		Location: 73,123
+		Owner: Neutral
+	Actor146: tc03
+		Location: 108,71
+		Owner: Neutral
+	Actor232: tc03
+		Location: 110,74
+		Owner: Neutral
+	Actor243: v09
+		Location: 89,121
+		Owner: Neutral
+	Actor262: v17
+		Location: 87,122
+		Owner: Neutral
+	Actor263: v17
+		Location: 88,122
+		Owner: Neutral
+	Actor257: v10
+		Location: 90,117
+		Owner: Neutral
+	Actor258: v12
+		Location: 90,115
+		Owner: Neutral
+	Actor266: v11
+		Location: 97,66
+		Owner: Neutral
+	Actor267: v07
+		Location: 98,66
+		Owner: Neutral
+	Actor268: v07
+		Location: 86,73
+		Owner: Neutral
+	Actor269: v05
+		Location: 99,67
+		Owner: Neutral
+	Actor270: v15
+		Location: 93,64
+		Owner: Neutral
+	Actor271: v15
+		Location: 94,64
+		Owner: Neutral
+	Actor272: v18
+		Location: 92,64
+		Owner: Neutral
+	Actor273: v18
+		Location: 100,68
+		Owner: Neutral
+	Actor274: v18
+		Location: 101,68
+		Owner: Neutral
+	Actor33: v18
+		Location: 108,84
+		Owner: Neutral
+	Actor31: v18
+		Location: 108,83
+		Owner: Neutral
+	Actor277: v18
+		Location: 90,70
+		Owner: Neutral
+	Actor278: v18
+		Location: 89,70
+		Owner: Neutral
+	Actor279: v18
+		Location: 84,76
+		Owner: Neutral
+	Actor280: v18
+		Location: 85,76
+		Owner: Neutral
+	Actor281: v18
+		Location: 85,75
+		Owner: Neutral
+	Actor282: v18
+		Location: 84,75
+		Owner: Neutral
+	Actor283: v18
+		Location: 83,75
+		Owner: Neutral
+	Actor284: v18
+		Location: 83,76
+		Owner: Neutral
+	Actor285: v14
+		Location: 93,75
+		Owner: Neutral
+	Actor286: v12
+		Location: 91,75
+		Owner: Neutral
+	Actor287: v14
+		Location: 93,76
+		Owner: Neutral
+	Actor288: v14
+		Location: 94,75
+		Owner: Neutral
+	Actor289: v15
+		Location: 94,76
+		Owner: Neutral
+	Actor290: v18
+		Location: 96,124
+		Owner: Neutral
+	Actor291: v18
+		Location: 97,124
+		Owner: Neutral
+	Actor292: v18
+		Location: 98,124
+		Owner: Neutral
+	Actor293: v14
+		Location: 96,125
+		Owner: Neutral
+	Actor294: v14
+		Location: 97,125
+		Owner: Neutral
+	Actor295: v14
+		Location: 98,125
+		Owner: Neutral
+	Actor235: v11
+		Location: 89,119
+		Owner: Neutral
+	Actor20: t08
+		Location: 102,102
+		Owner: Neutral
+	Actor298: v18
+		Location: 75,102
+		Owner: Neutral
+	Actor299: v18
+		Location: 76,102
+		Owner: Neutral
+	Actor300: v18
+		Location: 76,103
+		Owner: Neutral
+	Actor301: v18
+		Location: 75,103
+		Owner: Neutral
+	Actor302: v17
+		Location: 77,95
+		Owner: Neutral
+	Actor303: v15
+		Location: 78,95
+		Owner: Neutral
+	Actor304: v15
+		Location: 78,96
+		Owner: Neutral
+	Actor305: v15
+		Location: 77,96
+		Owner: Neutral
+	Actor306: v16
+		Location: 78,99
+		Owner: Neutral
+	Actor307: v16
+		Location: 79,98
+		Owner: Neutral
+	Actor308: v16
+		Location: 79,99
+		Owner: Neutral
+	Actor309: v15
+		Location: 78,98
+		Owner: Neutral
+	Actor310: v13
+		Location: 76,99
+		Owner: Neutral
+	Actor311: v10
+		Location: 76,98
+		Owner: Neutral
+	Actor312: v18
+		Location: 76,104
+		Owner: Neutral
+	Actor313: v18
+		Location: 75,104
+		Owner: Neutral
+	Actor85: v18
+		Location: 74,103
+		Owner: Neutral
+	Actor315: v15
+		Location: 75,105
+		Owner: Neutral
+	Actor316: v18
+		Location: 77,104
+		Owner: Neutral
+	Actor317: v18
+		Location: 74,104
+		Owner: Neutral
+	Actor319: v15
+		Location: 77,105
+		Owner: Neutral
+	Actor321: v15
+		Location: 77,102
+		Owner: Neutral
+	Actor320: v15
+		Location: 74,102
+		Owner: Neutral
+	Actor318: v15
+		Location: 76,105
+		Owner: Neutral
+	Actor322: v13
+		Location: 78,102
+		Owner: Neutral
+	Actor323: v13
+		Location: 78,103
+		Owner: Neutral
+	Actor324: v06
+		Location: 101,101
+		Owner: Neutral
+	Actor325: v14
+		Location: 104,101
+		Owner: Neutral
+	Actor16: t02
+		Location: 104,92
+		Owner: Neutral
+	Actor327: v14
+		Location: 103,102
+		Owner: Neutral
+	Actor328: v14
+		Location: 103,101
+		Owner: Neutral
+	Actor330: t03
+		Location: 94,85
+		Owner: Neutral
+	Actor331: t03
+		Location: 96,83
+		Owner: Neutral
+	Actor332: t03
+		Location: 98,85
+		Owner: Neutral
+	Actor75: t02
+		Location: 83,84
+		Owner: Neutral
+	Actor334: t03
+		Location: 101,104
+		Owner: Neutral
+	Actor335: t03
+		Location: 98,107
+		Owner: Neutral
+	Actor336: t03
+		Location: 90,107
+		Owner: Neutral
+	Actor337: t03
+		Location: 95,116
+		Owner: Neutral
+	Actor338: t03
+		Location: 98,119
+		Owner: Neutral
+	Actor339: t03
+		Location: 90,118
+		Owner: Neutral
+	Actor340: t03
+		Location: 86,79
+		Owner: Neutral
+	Actor341: t03
+		Location: 85,84
+		Owner: Neutral
+	Actor297: v13
+		Location: 87,120
+		Owner: Neutral
+	Actor326: v08
+		Location: 96,123
+		Owner: Neutral
+	Actor329: v03
+		Location: 98,121
+		Owner: Neutral
+	Actor333: t15
+		Location: 90,93
+		Owner: Neutral
+	Actor342: t10
+		Location: 92,93
+		Owner: Neutral
+	Actor343: t12
+		Location: 90,97
+		Owner: Neutral
+	Actor344: t14
+		Location: 92,97
+		Owner: Neutral
+	Actor345: v01
+		Location: 91,95
+		Owner: Neutral
 
 Smudges:
 
@@ -814,3 +1099,5 @@ Sequences:
 Weapons:
 
 Voices:
+
+Notifications:
