@@ -32,7 +32,8 @@ namespace OpenRA.Mods.RA.Air
 			if (firstTick)
 			{
 				firstTick = false;
-				ReserveSpawnBuilding();
+				if (!self.HasTrait<FallsToEarth>()) // TODO: Aircraft husks don't properly unreserve.
+					ReserveSpawnBuilding();
 			}
 		}
 

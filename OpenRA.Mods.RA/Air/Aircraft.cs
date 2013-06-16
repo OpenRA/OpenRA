@@ -86,10 +86,8 @@ namespace OpenRA.Mods.RA.Air
 
 		protected void ReserveSpawnBuilding()
 		{
-			/* not spawning in the air, so try to assoc. with our afld. this is a hack. */
-
+			/* HACK: not spawning in the air, so try to assoc. with our afld. */
 			var afld = GetActorBelow();
-
 			if (afld == null)
 				return;
 
@@ -102,10 +100,10 @@ namespace OpenRA.Mods.RA.Air
 
 		public void SetPosition(Actor self, CPos cell)
 		{
-			SetPxPosition( self, Util.CenterOfCell( cell ) );
+			SetPxPosition(self, Util.CenterOfCell(cell));
 		}
 
-		public void SetPxPosition( Actor self, PPos px )
+		public void SetPxPosition(Actor self, PPos px)
 		{
 			SubPxPosition = px.ToPSubPos();
 		}
@@ -114,9 +112,9 @@ namespace OpenRA.Mods.RA.Air
 
 		public bool AircraftCanEnter(Actor a)
 		{
-			if( self.AppearsHostileTo(a) ) return false;
-			return Info.RearmBuildings.Contains( a.Info.Name )
-				|| Info.RepairBuildings.Contains( a.Info.Name );
+			if (self.AppearsHostileTo(a)) return false;
+			return Info.RearmBuildings.Contains(a.Info.Name)
+				|| Info.RepairBuildings.Contains(a.Info.Name);
 		}
 
 		public bool CanEnterCell(CPos location) { return true; }
@@ -126,7 +124,7 @@ namespace OpenRA.Mods.RA.Air
 			get
 			{
 				decimal ret = Info.Speed;
-				foreach( var t in self.TraitsImplementing<ISpeedModifier>() )
+				foreach (var t in self.TraitsImplementing<ISpeedModifier>())
 					ret *= t.GetSpeedModifier();
 				return (int)ret;
 			}
@@ -135,7 +133,7 @@ namespace OpenRA.Mods.RA.Air
 		Pair<CPos, SubCell>[] noCells = new Pair<CPos, SubCell>[] { };
 		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { return noCells; }
 
-		public void TickMove( int speed, int facing )
+		public void TickMove(int speed, int facing)
 		{
 			var rawspeed = speed * 7 / (32 * PSubPos.PerPx);
 			SubPxPosition += rawspeed * -Util.SubPxVector[facing];
@@ -186,7 +184,7 @@ namespace OpenRA.Mods.RA.Air
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			switch( order.OrderString )
+			switch (order.OrderString)
 			{
 			case "Move":
 			case "Enter":
