@@ -2,9 +2,9 @@ Selectable: True
 
 MapFormat: 5
 
-Title: Apollo
+Title: Zeus
 
-Description: This very large naval map is made from the eastern part of the giant map Zeus. The map features a naval contest between north and south and is recommended for 4-6 players. Players are encouraged to leave their initial islands as soon as possible.
+Description: Zeus - a gigantic map recommended for 8-16 players. The map features land based operations and naval engagements for ore and oil recources. Mine layers carry less mines. Recommended starting positions for two teams are the 5 northern/southern spots.
 
 Author: wuschel
 
@@ -12,7 +12,7 @@ Tileset: TEMPERAT
 
 MapSize: 256,320
 
-Bounds: 130,16,110,288
+Bounds: 16,16,224,288
 
 UseAsShellmap: False
 
@@ -66,13 +66,70 @@ Players:
 		DefaultStartingUnits: True
 		Race: Random
 		Enemies: Creeps
+	PlayerReference@Multi7:
+		Name: Multi7
+		Playable: True
+		DefaultStartingUnits: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi8:
+		Name: Multi8
+		Playable: True
+		DefaultStartingUnits: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi9:
+		Name: Multi9
+		Playable: True
+		DefaultStartingUnits: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi10:
+		Name: Multi10
+		Playable: True
+		DefaultStartingUnits: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi11:
+		Name: Multi11
+		Playable: True
+		DefaultStartingUnits: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi12:
+		Name: Multi12
+		Playable: True
+		DefaultStartingUnits: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi13:
+		Name: Multi13
+		Playable: True
+		DefaultStartingUnits: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi14:
+		Name: Multi14
+		Playable: True
+		DefaultStartingUnits: True
+		Race: Random
+		Enemies: Creeps
+	PlayerReference@Multi15:
+		Name: Multi15
+		Playable: True
+		DefaultStartingUnits: True
+		Race: Random
+		Enemies: Creeps
 	PlayerReference@Creeps:
 		Name: Creeps
 		NonCombatant: True
 		Race: allies
-		Enemies: Multi0,Multi1,Multi2,Multi3,Multi4,Multi5,Multi6
+		Enemies: Multi0,Multi1,Multi2,Multi3,Multi4,Multi5,Multi6,Multi7,Multi8,Multi9,Multi10,Multi11,Multi12,Multi13,Multi14,Multi15
 
 Actors:
+	Actor0: mpspawn
+		Location: 119,26
+		Owner: Neutral
 	Actor1: mpspawn
 		Location: 148,29
 		Owner: Neutral
@@ -87,6 +144,9 @@ Actors:
 		Owner: Neutral
 	Actor5: mpspawn
 		Location: 227,293
+		Owner: Neutral
+	Actor6: mpspawn
+		Location: 121,290
 		Owner: Neutral
 	Actor7: mpspawn
 		Location: 143,292
@@ -214,8 +274,8 @@ Actors:
 	Actor48: oilb
 		Location: 160,117
 		Owner: Neutral
-	Actor0: oilb
-		Location: 134,119
+	Actor49: oilb
+		Location: 122,117
 		Owner: Neutral
 	Actor50: oilb
 		Location: 134,206
@@ -388,6 +448,9 @@ Actors:
 	Actor107: mine
 		Location: 130,26
 		Owner: Neutral
+	Actor108: mpspawn
+		Location: 26,27
+		Owner: Neutral
 	Actor127: t11
 		Location: 79,91
 		Owner: Neutral
@@ -396,6 +459,9 @@ Actors:
 		Owner: Neutral
 	Actor109: mine
 		Location: 33,28
+		Owner: Neutral
+	Actor690: mpspawn
+		Location: 79,242
 		Owner: Neutral
 	Actor113: t10
 		Location: 22,27
@@ -417,6 +483,9 @@ Actors:
 		Owner: Neutral
 	Actor120: v09
 		Location: 75,93
+		Owner: Neutral
+	Actor110: mpspawn
+		Location: 33,292
 		Owner: Neutral
 	Actor111: mine
 		Location: 27,289
@@ -460,14 +529,14 @@ Actors:
 	Actor134: v03
 		Location: 126,242
 		Owner: Neutral
-	Actor102: oilb
-		Location: 174,159
+	Actor102: mine
+		Location: 130,294
 		Owner: Neutral
 	Actor135: t07
 		Location: 230,283
 		Owner: Neutral
-	Actor800: tc03
-		Location: 198,248
+	Actor140: mine
+		Location: 198,238
 		Owner: Neutral
 	Actor156: tc02
 		Location: 158,121
@@ -493,8 +562,8 @@ Actors:
 	Actor145: mine
 		Location: 123,70
 		Owner: Neutral
-	Actor146: v03
-		Location: 183,95
+	Actor146: mine
+		Location: 133,255
 		Owner: Neutral
 	Actor141: v17
 		Location: 173,82
@@ -522,6 +591,9 @@ Actors:
 		Owner: Neutral
 	Actor152: mine
 		Location: 156,80
+		Owner: Neutral
+	Actor150: mpspawn
+		Location: 68,81
 		Owner: Neutral
 	Actor149: mine
 		Location: 108,125
@@ -1459,17 +1531,17 @@ Actors:
 	Actor468: tc03
 		Location: 181,224
 		Owner: Neutral
-	Actor472: tc01
-		Location: 194,248
+	Actor469: tc03
+		Location: 192,224
 		Owner: Neutral
-	Actor703: tc03
-		Location: 194,249
+	Actor470: tc03
+		Location: 193,224
 		Owner: Neutral
-	Actor140: mine
-		Location: 194,228
+	Actor471: tc03
+		Location: 193,223
 		Owner: Neutral
-	Actor471: tc01
-		Location: 197,246
+	Actor472: tc03
+		Location: 194,223
 		Owner: Neutral
 	Actor473: tc03
 		Location: 130,219
@@ -1699,8 +1771,8 @@ Actors:
 	Actor548: tc03
 		Location: 186,67
 		Owner: Neutral
-	Actor549: oilb
-		Location: 186,47
+	Actor549: tc03
+		Location: 190,91
 		Owner: Neutral
 	Actor550: tc03
 		Location: 189,92
@@ -1894,8 +1966,8 @@ Actors:
 	Actor613: tc02
 		Location: 174,94
 		Owner: Neutral
-	Actor614: oilb
-		Location: 185,52
+	Actor614: tc02
+		Location: 187,91
 		Owner: Neutral
 	Actor615: t11
 		Location: 184,93
@@ -1994,7 +2066,7 @@ Actors:
 		Location: 190,80
 		Owner: Neutral
 	Actor647: v10
-		Location: 131,242
+		Location: 169,76
 		Owner: Neutral
 	Actor648: v10
 		Location: 146,83
@@ -2398,14 +2470,17 @@ Actors:
 	Actor786: v06
 		Location: 134,245
 		Owner: Neutral
-	Actor714: t11
-		Location: 166,240
+	Actor703: mpspawn
+		Location: 177,83
 		Owner: Neutral
-	Actor469: tc01
-		Location: 200,248
+	Actor714: mpspawn
+		Location: 184,236
 		Owner: Neutral
 	Actor69: oilb
 		Location: 37,167
+		Owner: Neutral
+	Actor68: mpspawn
+		Location: 37,153
 		Owner: Neutral
 	Actor716: tc04
 		Location: 84,84
@@ -2449,11 +2524,11 @@ Actors:
 	Actor798: tc04
 		Location: 198,69
 		Owner: Neutral
-	Actor799: tc03
-		Location: 196,248
+	Actor799: tc04
+		Location: 195,225
 		Owner: Neutral
-	Actor470: tc01
-		Location: 197,249
+	Actor800: tc04
+		Location: 197,228
 		Owner: Neutral
 	Actor801: tc04
 		Location: 101,236
@@ -2482,133 +2557,33 @@ Actors:
 	Actor809: tc03
 		Location: 104,251
 		Owner: Neutral
-	Actor810: t11
-		Location: 168,239
-		Owner: Neutral
-	Actor811: t11
-		Location: 167,238
-		Owner: Neutral
-	Actor812: t11
-		Location: 169,238
-		Owner: Neutral
-	Actor813: t11
-		Location: 170,239
-		Owner: Neutral
-	Actor814: mine
-		Location: 140,100
-		Owner: Neutral
-	Actor815: v03
-		Location: 175,81
-		Owner: Neutral
-	Actor816: v09
-		Location: 178,81
-		Owner: Neutral
-	Actor817: v10
-		Location: 179,78
-		Owner: Neutral
-	Actor818: v11
-		Location: 182,82
-		Owner: Neutral
-	Actor819: v01
-		Location: 172,79
-		Owner: Neutral
-	Actor820: v08
-		Location: 133,238
-		Owner: Neutral
-	Actor821: v03
-		Location: 139,237
-		Owner: Neutral
-	Actor822: v01
-		Location: 137,234
-		Owner: Neutral
-	Actor823: v11
-		Location: 131,245
-		Owner: Neutral
-	Actor824: v11
-		Location: 131,238
-		Owner: Neutral
-	Actor825: v02
-		Location: 146,234
-		Owner: Neutral
-	Actor826: tc03
-		Location: 200,249
-		Owner: Neutral
-	Actor827: tc03
-		Location: 200,246
-		Owner: Neutral
-	Actor828: tc03
-		Location: 202,245
-		Owner: Neutral
-	Actor829: tc03
-		Location: 202,247
-		Owner: Neutral
-	Actor830: tc03
-		Location: 192,250
-		Owner: Neutral
-	Actor831: tc03
-		Location: 191,249
-		Owner: Neutral
-	Actor832: tc03
-		Location: 197,67
-		Owner: Neutral
-	Actor833: tc03
-		Location: 195,67
-		Owner: Neutral
-	Actor834: tc03
-		Location: 192,67
-		Owner: Neutral
-	Actor835: tc03
-		Location: 191,66
-		Owner: Neutral
-	Actor836: tc03
-		Location: 195,68
-		Owner: Neutral
-	Actor837: tc03
-		Location: 195,69
-		Owner: Neutral
-	Actor838: tc03
-		Location: 194,69
-		Owner: Neutral
-	Actor839: tc03
-		Location: 193,69
-		Owner: Neutral
-	Actor840: tc03
-		Location: 192,69
-		Owner: Neutral
-	Actor841: tc04
-		Location: 189,65
-		Owner: Neutral
-	Actor842: tc04
-		Location: 189,67
-		Owner: Neutral
-	Actor843: oilb
-		Location: 184,266
-		Owner: Neutral
-	Actor844: oilb
-		Location: 187,264
-		Owner: Neutral
 
 Smudges:
 
 Rules:
 	MISS:
-		Tooltip:
-			Name: Wuschel's Wall Street Speculator HQ
+		Building:
+			BaseNormal: false
+		RenderBuilding:
+			Scale: 0.75
 		RevealsShroud:
-			Range: 30
+			Range: 25
 		Health:
 			HP: 2000
 		Armor:
 			Heavy:
 		Capturable:
-		CapturableBar:
 		CashTrickler:
 			Period: 750
 			Amount: 333
-		RepairableBuilding:
+			CaptureAmount: 500
+		Tooltip:
+			Name: Wuschel's Wall Street Speculator HQ
 
 Sequences:
 
 Weapons:
 
 Voices:
+
+Notifications:

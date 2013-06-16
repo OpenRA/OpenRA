@@ -268,18 +268,6 @@ Actors:
 	Actor62: v17
 		Location: 133,75
 		Owner: Neutral
-	Actor63: v17
-		Location: 122,71
-		Owner: Neutral
-	Actor64: v17
-		Location: 123,71
-		Owner: Neutral
-	Actor65: v17
-		Location: 123,70
-		Owner: Neutral
-	Actor66: v17
-		Location: 122,70
-		Owner: Neutral
 	Actor67: v16
 		Location: 125,69
 		Owner: Neutral
@@ -292,38 +280,11 @@ Actors:
 	Actor70: v18
 		Location: 122,73
 		Owner: Neutral
-	Actor71: v18
-		Location: 126,76
-		Owner: Neutral
-	Actor72: v18
-		Location: 127,76
-		Owner: Neutral
-	Actor73: v18
-		Location: 126,77
-		Owner: Neutral
-	Actor74: v18
-		Location: 127,77
-		Owner: Neutral
 	Actor75: v01
 		Location: 123,74
 		Owner: Neutral
-	Actor76: v09
-		Location: 123,77
-		Owner: Neutral
-	Actor77: v09
-		Location: 124,77
-		Owner: Neutral
-	Actor78: v08
-		Location: 122,77
-		Owner: Neutral
 	Actor79: v11
 		Location: 120,75
-		Owner: Neutral
-	Actor80: v14
-		Location: 120,72
-		Owner: Neutral
-	Actor81: v14
-		Location: 121,72
 		Owner: Neutral
 	Actor82: v14
 		Location: 121,73
@@ -387,12 +348,6 @@ Actors:
 		Owner: Neutral
 	Actor100: t10
 		Location: 136,72
-		Owner: Neutral
-	Actor103: tc01
-		Location: 114,74
-		Owner: Neutral
-	Actor104: tc01
-		Location: 116,74
 		Owner: Neutral
 	Actor105: t10
 		Location: 112,74
@@ -769,8 +724,8 @@ Actors:
 	Actor236: tc02
 		Location: 161,78
 		Owner: Neutral
-	Actor237: tc02
-		Location: 130,78
+	Actor65: t08
+		Location: 125,87
 		Owner: Neutral
 	Actor238: tc02
 		Location: 132,78
@@ -1072,11 +1027,11 @@ Actors:
 	Actor201: tc03
 		Location: 112,79
 		Owner: Neutral
-	Actor206: tc03
-		Location: 113,81
+	Actor71: t08
+		Location: 119,85
 		Owner: Neutral
-	Actor207: tc03
-		Location: 116,83
+	Actor64: t08
+		Location: 125,83
 		Owner: Neutral
 	Actor212: tc03
 		Location: 92,76
@@ -1120,14 +1075,11 @@ Actors:
 	Actor346: tc03
 		Location: 108,83
 		Owner: Neutral
-	Actor347: tc03
-		Location: 123,82
+	Actor73: t08
+		Location: 122,83
 		Owner: Neutral
-	Actor348: tc03
-		Location: 123,84
-		Owner: Neutral
-	Actor349: tc03
-		Location: 122,84
+	Actor74: t08
+		Location: 122,87
 		Owner: Neutral
 	Actor350: tc03
 		Location: 131,83
@@ -1273,8 +1225,8 @@ Actors:
 	Actor397: t02
 		Location: 63,80
 		Owner: Neutral
-	Actor398: t02
-		Location: 64,80
+	Actor398: t08
+		Location: 69,84
 		Owner: Neutral
 	Actor399: t02
 		Location: 68,81
@@ -1357,23 +1309,14 @@ Actors:
 	Actor425: t02
 		Location: 106,81
 		Owner: Neutral
-	Actor426: t02
-		Location: 114,84
+	Actor66: t08
+		Location: 119,87
 		Owner: Neutral
-	Actor427: t02
-		Location: 114,85
+	Actor63: t08
+		Location: 119,83
 		Owner: Neutral
-	Actor428: t02
+	Actor206: miss
 		Location: 121,84
-		Owner: Neutral
-	Actor429: t02
-		Location: 121,83
-		Owner: Neutral
-	Actor430: t02
-		Location: 120,80
-		Owner: Neutral
-	Actor431: tc04
-		Location: 111,84
 		Owner: Neutral
 	Actor432: tc04
 		Location: 110,84
@@ -2191,13 +2134,57 @@ Actors:
 	Actor707: t14
 		Location: 153,92
 		Owner: Neutral
+	Actor644: t08
+		Location: 70,87
+		Owner: Neutral
+	Actor645: t08
+		Location: 71,88
+		Owner: Neutral
+	Actor650: t08
+		Location: 72,88
+		Owner: Neutral
+	Actor651: t08
+		Location: 72,87
+		Owner: Neutral
+	Actor708: t08
+		Location: 71,87
+		Owner: Neutral
+	Actor709: t08
+		Location: 73,85
+		Owner: Neutral
+	Actor710: t08
+		Location: 73,86
+		Owner: Neutral
+	Actor711: t08
+		Location: 73,87
+		Owner: Neutral
+	Actor72: t08
+		Location: 125,85
+		Owner: Neutral
 
 Smudges:
 
 Rules:
+	MISS:
+		Tooltip:
+			Name: Wuschel's Wall Street Speculator HQ
+		RevealsShroud:
+			Range: 30
+		Health:
+			HP: 2000
+		Armor:
+			Heavy:
+		Capturable:
+		CapturableBar:
+		CashTrickler:
+			Period: 750
+			Amount: 333
+		RepairableBuilding:
 
 Sequences:
 
 Weapons:
 
 Voices:
+
+Notifications:
