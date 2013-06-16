@@ -30,7 +30,7 @@
 		Weapon: UnitExplodeScale
 		EmptyWeapon: UnitExplodeScale
 	Transforms:
-		TransformSounds: BUILD1.aud
+		TransformSounds: BUILD1.WAV
 	LeavesHusk:
 		HuskActor: MCV.Husk
 

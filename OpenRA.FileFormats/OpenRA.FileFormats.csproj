@@ -145,6 +145,7 @@
     <Compile Include="Graphics\HvaReader.cs" />
     <Compile Include="StreamExts.cs" />
     <Compile Include="FileFormats\WavLoader.cs" />
+    <Compile Include="Filesystem\D2kSoundResources.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

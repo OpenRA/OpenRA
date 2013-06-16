@@ -333,7 +333,7 @@ WALL:
 		#Hotkey: g
 	SoundOnDamageTransition:
 		DamagedSound:
-		DestroyedSound: CRMBLE2.aud
+		DestroyedSound: EXPLSML4.WAV
 	Valued:
 		Cost: 100
 	CustomSellValue:
@@ -344,8 +344,8 @@ WALL:
 		Icon: wallaicon
 	AppearsOnRadar:
 	Building:
-		BuildSounds: CHUNG.aud
-		SellSounds: CHUNG.aud
+		BuildSounds: CHUNG.WAV
+		SellSounds: CHUNG.WAV
 		Adjacent: 7
 		TerrainTypes: Rock
 	Health:
@@ -391,8 +391,8 @@ GUNTOWER:
 	Building:
 		Power: -20
 		Adjacent: 4
-		BuildSounds: CHUNG.aud
-		SellSounds: CHUNG.aud
+		BuildSounds: CHUNG.WAV
+		SellSounds: CHUNG.WAV
 	Selectable:
 		Bounds: 32,32
 		Priority: 3
@@ -449,8 +449,8 @@ ROCKETTOWER:
 	Building:
 		Power: -30
 		Adjacent: 4
-		BuildSounds: CHUNG.aud
-		SellSounds: CHUNG.aud
+		BuildSounds: CHUNG.WAV
+		SellSounds: CHUNG.WAV
 	Selectable:
 		Bounds: 32,32
 		Priority: 3
