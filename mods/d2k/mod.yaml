@@ -56,6 +56,7 @@ ChromeLayout:
 	mods/ra/chrome/ingame-observerstats.yaml
 	mods/d2k/chrome/mainmenu.yaml
 	mods/ra/chrome/settings.yaml
+	mods/ra/chrome/credits.yaml
 	mods/d2k/chrome/lobby.yaml
 	mods/d2k/chrome/color-picker.yaml
 	mods/ra/chrome/map-chooser.yaml

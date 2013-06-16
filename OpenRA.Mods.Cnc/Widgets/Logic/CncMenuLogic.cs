@@ -82,6 +82,15 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				});
 			};
 
+			settingsMenu.Get<ButtonWidget>("CREDITS_BUTTON").OnClick = () =>
+			{
+				Menu = MenuType.None;
+				Ui.OpenWindow("CREDITS_PANEL", new WidgetArgs()
+				{
+					{ "onExit", () => Menu = MenuType.Settings },
+				});
+			};
+
 			settingsMenu.Get<ButtonWidget>("SETTINGS_BUTTON").OnClick = () =>
 			{
 				Menu = MenuType.None;

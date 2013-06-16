@@ -157,6 +157,12 @@ Container@MENU_BACKGROUND:
 							Width:140
 							Height:35
 							Text:Settings
+						Button@CREDITS_BUTTON:
+							X:450
+							Y:0
+							Width:140
+							Height:35
+							Text:Credits
 						Button@BACK_BUTTON:
 							Key:escape
 							X:600
