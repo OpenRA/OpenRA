@@ -53,6 +53,8 @@ namespace OpenRA.FileFormats
 				return new ZipFile(filename, order, content);
 			else if (filename.EndsWith(".oramap", StringComparison.InvariantCultureIgnoreCase))
 				return new ZipFile(filename, order, content);
+			else if (filename.EndsWith(".RS", StringComparison.InvariantCultureIgnoreCase))
+				throw new NotImplementedException("Creating .RS archives is unsupported");
 			else if (filename.EndsWith(".Z", StringComparison.InvariantCultureIgnoreCase))
 				throw new NotImplementedException("Creating .Z archives is unsupported");
 			else
@@ -71,6 +73,8 @@ namespace OpenRA.FileFormats
 				return new ZipFile(filename, order);
 			else if (filename.EndsWith(".oramap", StringComparison.InvariantCultureIgnoreCase))
 				return new ZipFile(filename, order);
+			else if (filename.EndsWith(".RS", StringComparison.InvariantCultureIgnoreCase))
+				return new D2kSoundResources(filename, order);
 			else if (filename.EndsWith(".Z", StringComparison.InvariantCultureIgnoreCase))
 				return new InstallShieldPackage(filename, order);
 			else

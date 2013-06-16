@@ -179,8 +179,8 @@ STEALTHTRIKE:
 	Cloak:
 		InitialDelay: 45
 		CloakDelay: 90
-		CloakSound: appear1.aud
-		UncloakSound: appear1.aud
+		CloakSound: STEALTH1.WAV
+		UncloakSound: STEALTH2.WAV
 	AutoTarget:
 		InitialStance: HoldFire
 

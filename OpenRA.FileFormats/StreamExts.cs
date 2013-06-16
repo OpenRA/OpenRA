@@ -79,6 +79,25 @@ namespace OpenRA
 			return new string(Encoding.ASCII.GetChars(s.ReadBytes(length)));
 		}
 
+		public static string ReadASCIIZ(this Stream s)
+		{
+			var bytes = new List<byte>();
+			var buf = new byte[1];
+
+			for (;;)
+			{
+				if (s.Read(buf, 0, 1) < 1)
+					throw new EndOfStreamException();
+
+				if (buf[0] == 0)
+					break;
+
+				bytes.Add(buf[0]);
+			}
+
+			return new string(Encoding.ASCII.GetChars(bytes.ToArray()));
+		}
+
 		public static string ReadAllText(this Stream s)
 		{
 			using (s)

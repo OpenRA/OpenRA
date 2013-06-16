@@ -24,10 +24,10 @@ namespace OpenRA.Mods.RA
 		static string GetImpactSound(WarheadInfo warhead, bool isWater)
 		{
 			if (isWater && warhead.WaterImpactSound != null)
-				return warhead.WaterImpactSound + ".aud";
+				return warhead.WaterImpactSound;
 
 			if (warhead.ImpactSound != null)
-				return warhead.ImpactSound + ".aud";
+				return warhead.ImpactSound;
 
 			return null;
 		}
@@ -154,7 +154,7 @@ namespace OpenRA.Mods.RA
 			};
 
 			if (args.weapon.Report != null && args.weapon.Report.Any())
-				Sound.Play(args.weapon.Report.Random(attacker.World.SharedRandom) + ".aud", pos);
+				Sound.Play(args.weapon.Report.Random(attacker.World.SharedRandom), pos);
 
 			DoImpacts(args);
 		}
