@@ -128,9 +128,9 @@ namespace OpenRA
 			Bounds.Invalidate();
 			ExtendedBounds.Invalidate();
 
-			currentActivity = Traits.Util.RunActivity( this, currentActivity );
+			currentActivity = Traits.Util.RunActivity(this, currentActivity);
 		}
-		
+
 		public void UpdateSight()
 		{
 			Sight.vis = Shroud.GetVisOrigins(this).ToArray();
