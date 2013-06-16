@@ -22,7 +22,7 @@ namespace OpenRA
 		[STAThread]
 		static void Main(string[] args)
 		{
-			// brutal hack
+			// HACK: brutal hack
 			Application.CurrentCulture = CultureInfo.InvariantCulture;
 
 			if (Debugger.IsAttached || args.Contains("--just-die"))
@@ -49,6 +49,11 @@ namespace OpenRA
 			var rpt = BuildExceptionReport(e).ToString();
 			Log.Write("exception", "{0}", rpt);
 			Console.Error.WriteLine(rpt);
+
+			var userChoice = MessageBox.Show("OpenRA has encountered a fatal error and must close. For more information, refer to the crash logs.", "Fatal Error.",
+			                                 MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+			if (userChoice == DialogResult.Yes)
+				Process.Start(Log.LogPath);
 		}
 
 		static StringBuilder BuildExceptionReport(Exception e)
@@ -87,6 +92,10 @@ namespace OpenRA
 
 			sb.AppendLine();
 			Indent(sb, d); sb.Append(e.StackTrace);
+
+			sb.AppendLine();
+			sb.AppendLine();
+			sb.AppendLine("The game just crashed. Have a look at https://github.com/OpenRA/OpenRA/wiki/FAQ#my-game-just-crashed for understanding what this means and how to report problems. Sorry for the inconvenience.");
 
 			return sb;
 		}
