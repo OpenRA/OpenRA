@@ -26,7 +26,7 @@ namespace OpenRA.Scripting
 				var targetCell = kv.Second;
 				var cs = target.Trait<Chronoshiftable>();
 				if (chronosphere.Owner.Shroud.IsExplored(targetCell) && cs.CanChronoshiftTo(target, targetCell))
-					cs.Teleport(target, targetCell, duration, killCargo,chronosphere);
+					cs.Teleport(target, targetCell, duration, killCargo, chronosphere);
 			}
 		}
 	}
