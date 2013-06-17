@@ -1223,6 +1223,7 @@ Sniper:
 			Wood: 5%
 			Light: 5%
 			Heavy: 5%
+			Concrete: 5%
 		InfDeath: 2
 
 ChronoTusk:
