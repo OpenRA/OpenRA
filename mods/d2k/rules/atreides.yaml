@@ -77,7 +77,6 @@ MCVA:
 	Inherits: ^MCV
 	Buildable:
 		Owner: atreides
-		BuiltAt: heavya
 	Transforms:
 		Facing: 16
 		IntoActor: conyarda
@@ -90,7 +89,6 @@ MCVA.starport:
 	Inherits: MCVA
 	Buildable:
 		Queue: Starport
-		BuiltAt: starporta
 	Valued:
 		Cost: 2500
 
@@ -98,7 +96,6 @@ TRIKEA:
 	Inherits: ^TRIKE
 	Buildable:
 		Owner: atreides, harkonnen
-		BuiltAt: lighta, lighth
 	RenderUnit:
 		Image: TRIKE
 
@@ -107,7 +104,6 @@ TRIKEA.starport:
 	Buildable:
 		Owner: atreides, harkonnen, ordos
 		Queue: Starport
-		BuiltAt: starporta, starporth, starporto
 	Valued:
 		Cost: 315
 
@@ -127,7 +123,6 @@ COMBATA:
 		Icon: combataicon
 	Buildable:
 		Owner: atreides
-		BuiltAt: heavya
 	RevealsShroud:
 		Range: 8
 	Turreted:
@@ -155,7 +150,6 @@ COMBATA.starport:
 	Inherits: COMBATA
 	Buildable:
 		Queue: Starport
-		BuiltAt: starporta
 	Valued:
 		Cost: 875
 
@@ -166,7 +160,6 @@ SONICTANK:
 		BuildPaletteOrder: 100
 		Prerequisites: heavya,research
 		Owner: atreides
-		BuiltAt: heavya
 		Hotkey: o
 	Valued:
 		Cost: 1250

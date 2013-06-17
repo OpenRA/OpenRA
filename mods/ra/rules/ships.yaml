@@ -4,7 +4,6 @@ SS:
 		Queue: Ship
 		BuildPaletteOrder: 50
 		Prerequisites: spen
-		BuiltAt: spen
 		Owner: soviet
 		Hotkey: u
 	Valued:
@@ -52,7 +51,6 @@ MSUB:
 		Queue: Ship
 		BuildPaletteOrder: 60
 		Prerequisites: spen,stek
-		BuiltAt: spen
 		Owner: soviet
 		Hotkey: m
 	Valued:
@@ -99,7 +97,6 @@ DD:
 		Queue: Ship
 		BuildPaletteOrder: 70
 		Prerequisites: syrd,dome
-		BuiltAt: syrd
 		Owner: allies
 		Hotkey: r
 	Valued:
@@ -146,7 +143,6 @@ CA:
 		Queue: Ship
 		BuildPaletteOrder: 100
 		Prerequisites: syrd,atek
-		BuiltAt: syrd
 		Owner: allies
 		Hotkey: c
 	Valued:
@@ -233,7 +229,6 @@ PT:
 		Queue: Ship
 		BuildPaletteOrder: 50
 		Prerequisites: syrd
-		BuiltAt: syrd
 		Owner: allies
 		Hotkey: b
 	Valued:
