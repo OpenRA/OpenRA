@@ -31,9 +31,11 @@ namespace OpenRA.Mods.RA.Crates
 		// We want neither of these properties for crate power proxies.
 		public override void Activate(Actor collector)
 		{
+			base.Activate(collector);
+
 			collector.World.AddFrameEndTask(w => w.CreateActor(Info.Proxy, new TypeDictionary
 			{
-				new OwnerInit( collector.Owner )
+				new OwnerInit(collector.Owner)
 			}));
 		}
 	}

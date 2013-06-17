@@ -729,6 +729,7 @@ CRATE:
 	SupportPowerCrateAction@parabombs:
 		SelectionShares: 5
 		Proxy: powerproxy.parabombs
+		Effect: parabombs
 	GiveMcvCrateAction:
 		SelectionShares: 2
 		NoBaseSelectionShares: 9001

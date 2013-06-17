@@ -477,7 +477,7 @@ Rules:
 			SpawnInterval: 100
 		-SpawnMPUnits:
 		-MPStartLocations:
-		FortScript:
+		FortLonestarScript:
 	CRATE:
 		-LevelUpCrateAction:
 		-GiveMcvCrateAction:
@@ -813,7 +813,7 @@ Rules:
 		RevealsShroud:
 			Range: 6
 		AutoTarget:
-			InitialStance: HoldFire
+			InitialStance: Defend
 		Armament:
 			Weapon: Sniper
 	SPY:
@@ -993,7 +993,7 @@ Rules:
 			HP: 250
 		Armor:
 			Type: Concrete
-	BADR.bomber:
+	BADR.Bomber:
 		CarpetBomb:
 			Range: 3
 			Weapon: ParaBomb
@@ -1014,13 +1014,25 @@ Rules:
 		-Selectable:
 		-GainsExperience:
 		Tooltip:
-			Name: Badger
-		FallsToEarth:
-			Spins: no
-			Moves: yes
-			Explosion: UnitExplode
+			Name: Mig Bomber
+		LeavesHusk:
+			HuskActor: BADR.Husk
 		-EjectOnDeath:
 		-GpsDot:
+	BADR.Husk:
+		Inherits: ^PlaneHusk
+		Tooltip:
+			Name: Badger
+		RenderUnit:
+			Image: mig
+		WithShadow:
+		Plane:
+			ROT: 5
+			Speed: 16
+		SmokeTrailWhenDamaged:
+			Offset: -853,0,171
+			Interval: 2
+			MinDamage: Undamaged
 
 Sequences:
 
