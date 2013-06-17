@@ -76,7 +76,6 @@ MCVO:
 	Inherits: ^MCV
 	Buildable:
 		Owner: ordos
-		BuiltAt: heavyo
 	Transforms:
 		Facing: 16
 		IntoActor: conyardo
@@ -89,7 +88,6 @@ MCVO.starport:
 	Inherits: MCVO
 	Buildable:
 		Queue: Starport
-		BuiltAt: starporto
 	Valued:
 		Cost: 2500
 
@@ -99,7 +97,6 @@ COMBATO:
 		Icon: combatoicon
 	Buildable:
 		Owner: ordos
-		BuiltAt: heavyo
 	RevealsShroud:
 		Range: 8
 	Turreted:
@@ -125,7 +122,6 @@ COMBATO.starport:
 	Inherits: COMBATO
 	Buildable:
 		Queue: Starport
-		BuiltAt: starporto
 	Valued:
 		Cost: 875
 
@@ -133,7 +129,6 @@ TRIKEO:
 	Inherits: ^TRIKE
 	Buildable:
 		Owner: ordos
-		BuiltAt: lighto
 	Valued:
 		Cost: 300
 	Tooltip:
@@ -157,7 +152,6 @@ STEALTHTRIKE:
 	Buildable:
 		Prerequisites: Hitech
 		Owner: ordos
-		BuiltAt: lighto
 		BuildPaletteOrder: 30
 	Valued:
 		Cost: 400
@@ -189,7 +183,6 @@ STEALTHTRIKE:
 #	Buildable:
 #		Queue: Starport
 #		Owner: ordos
-#		BuiltAt: starporto
 #	RenderUnit:
 #		Image: TRIKE
 #	Valued:
@@ -218,7 +211,6 @@ DEVIATORTANK:
 		BuildPaletteOrder: 50
 		Prerequisites: heavyo,research
 #		Owner: ordos
-		BuiltAt: heavyo
 		Hotkey: d
 	Mobile:
 		ROT: 3

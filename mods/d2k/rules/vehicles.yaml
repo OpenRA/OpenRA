@@ -50,7 +50,6 @@ HARVESTER:
 		Queue: Armor
 		Prerequisites: Heavy,Refinery
 		Owner: atreides, harkonnen, ordos
-		BuiltAt: heavya, heavyh, heavyo
 		BuildPaletteOrder: 10
 		Hotkey: h
 	Valued:
@@ -104,7 +103,6 @@ HARVESTER.starport:
 	Buildable:
 		Prerequisites: Starport
 		Queue: Starport
-		BuiltAt: starporta, starporth, starporto
 	Valued:
 		Cost: 1500
 
@@ -153,7 +151,6 @@ QUAD:
 		Queue: Vehicle
 		Prerequisites: Light,Outpost
 		Owner: atreides, ordos
-		BuiltAt: lighta, lighto
 		BuildPaletteOrder: 20
 		Hotkey: q
 	Valued:
@@ -189,7 +186,6 @@ QUAD.starport:
 	Buildable:
 		Prerequisites: Starport
 		Queue: Starport
-		BuiltAt: starporta, starporth, starporto
 	Valued:
 		Cost: 500
 
@@ -245,7 +241,6 @@ SIEGETANK:
 		Queue: Armor
 		Prerequisites: Outpost
 		Owner: atreides, harkonnen, ordos
-		BuiltAt: heavya, heavyh, heavyo
 		BuildPaletteOrder: 50
 		Hotkey: t
 	Valued:
@@ -299,7 +294,6 @@ SIEGETANK.starport:
 	Inherits: SIEGETANK
 	Buildable:
 		Queue: Starport
-		BuiltAt: starporta, starporth, starporto
 	Valued:
 		Cost: 1075
 
@@ -315,7 +309,6 @@ MISSILETANK:
 		Queue: Armor
 		Prerequisites: Hitech
 		Owner: atreides, harkonnen, ordos
-		BuiltAt: heavya, heavyh
 		BuildPaletteOrder: 60
 		Hotkey: r
 	Mobile:
@@ -357,6 +350,5 @@ MISSILETANK.starport:
 		Prerequisites: Hitech
 		Queue: Starport
 		Owner: atreides, harkonnen, ordos
-		BuiltAt: starporta, starporth, starporto
 	Valued:
 		Cost: 1250
