@@ -496,7 +496,9 @@ namespace OpenRA.Server
 			{
 				conns.Remove(toDrop);
 
-				OpenRA.Network.Session.Client dropClient = lobbyInfo.Clients.Where(c1 => c1.Index == toDrop.PlayerIndex).Single();
+				var dropClient = lobbyInfo.Clients.Where(c1 => c1.Index == toDrop.PlayerIndex).FirstOrDefault();
+				if (dropClient == null)
+					return;
 
 				// Send disconnected order, even if still in the lobby
 				SendMessage("{0} has disconnected.".F(dropClient.Name));
@@ -511,7 +513,7 @@ namespace OpenRA.Server
 					// Remove any bots controlled by the admin
 					lobbyInfo.Clients.RemoveAll(c => c.Bot != null && c.BotControllerClientIndex == toDrop.PlayerIndex);
 
-					OpenRA.Network.Session.Client nextAdmin = lobbyInfo.Clients.Where(c1 => c1.Bot == null)
+					var nextAdmin = lobbyInfo.Clients.Where(c1 => c1.Bot == null)
 						.OrderBy(c => c.Index).FirstOrDefault();
 
 					if (nextAdmin != null)
