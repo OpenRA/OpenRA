@@ -213,7 +213,11 @@ namespace OpenRA.Server
 				};
 				DispatchOrdersToClient(newConn, 0, 0, new ServerOrder("HandshakeRequest", request.Serialize()).Serialize());
 			}
-			catch (Exception) { DropClient(newConn); }
+			catch (Exception e)
+			{
+				DropClient(newConn);
+				Log.Write("server", "Dropping client {0} because handshake failed: {1}", newConn.PlayerIndex.ToString(), e);
+			}
 		}
 
 		void ValidateClient(Connection newConn, string data)
