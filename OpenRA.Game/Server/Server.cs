@@ -381,8 +381,11 @@ namespace OpenRA.Server
 				ms.Write( BitConverter.GetBytes( frame ) );
 				ms.Write( data );
 				c.socket.Send( ms.ToArray() );
+			catch (Exception e)
+			{
+				DropClient(c);
+				Log.Write("server", "Dropping client {0} because dispatching orders failed: {1}", client.ToString(), e);
 			}
-			catch (Exception) { DropClient(c); }
 		}
 
 		public void DispatchOrdersToClients(Connection conn, int frame, byte[] data)
