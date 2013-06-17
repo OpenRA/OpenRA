@@ -44,12 +44,12 @@ namespace OpenRA.Mods.RA
 
 			Game.MoveViewport(loc);
 
-			if (ticks == 250)
+			if (ticks == 50)
 			{
 				Scripting.RASpecialPowers.Chronoshift(self.World, new List<Pair<Actor, CPos>>()
 				{
-					Pair.New(Actors["ca1"], new CPos(90, 70)),
-					Pair.New(Actors["ca2"], new CPos(92, 71))
+					Pair.New(Actors["ca1"], new CPos(96, 70)),
+					Pair.New(Actors["ca2"], new CPos(98, 72))
 				}, Actors["pdox"], -1, false);
 			}
 
