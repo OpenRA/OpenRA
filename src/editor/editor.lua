@@ -434,17 +434,22 @@ local function indicateFindInstances(editor, name, pos)
 end
 
 function IndicateAll(editor, lines, linee)
+  local d = delayed[editor]
+  delayed[editor] = nil -- assume this can be finished for now
+
+  -- this function can be called for an editor tab that is already closed
+  -- when there are still some pending events for it, so handle it.
+  if not pcall(function() return editor:GetId() end) then return end
+
   if not (editor.spec and editor.spec.markvars) then return end
   local indic = styles.indicator or {}
 
-  local d = delayed[editor]
   local pos, vars = d and d[1] or 1, d and d[2] or nil
   local start = lines and editor:PositionFromLine(lines)+1 or nil
   if d and start and pos >= start then
     -- ignore delayed processing as the change is earlier in the text
     pos, vars = 1, nil
   end
-  delayed[editor] = nil -- assume this can be finished for now
 
   tokenlists[editor] = tokenlists[editor] or {}
   local tokens = tokenlists[editor]
