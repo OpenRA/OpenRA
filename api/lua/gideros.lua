@@ -11,7 +11,7 @@ return {
     args = "()",
     description = "Returns the 3-axis acceleration measured by the accelerometer",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    isAvailable = {
     args = "()",
@@ -29,13 +29,13 @@ return {
     args = "()",
     description = "Starts accelerometer updates",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    stop = {
     args = "()",
     description = "Starts accelerometer updates",
     returns = "()",
-    type = "function"
+    type = "method"
    }
   },
   type = "class"
@@ -46,7 +46,7 @@ return {
     args = "()",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    new = {
     args = "(title, message, cancelButton, button1, button2)",
@@ -58,7 +58,7 @@ return {
     args = "()",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    }
   },
   type = "class"
@@ -90,7 +90,7 @@ return {
     args = "()",
     description = "Returns the x and y coordinates of the anchor point",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    new = {
     args = "(texture)",
@@ -102,19 +102,19 @@ return {
     args = "(x, y)",
     description = "Sets the anchor point",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setTexture = {
     args = "(texture)",
     description = "Sets the texture",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setTextureRegion = {
     args = "(textureRegion)",
     description = "Sets the texture region",
     returns = "()",
-    type = "function"
+    type = "method"
    }
   },
   inherits = "Sprite",
@@ -333,13 +333,13 @@ return {
     args = "()",
     description = "Returns the element on which the event listener was registered",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getType = {
     args = "()",
     description = "Returns the type of Event",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    new = {
     args = "(type)",
@@ -351,7 +351,7 @@ return {
     args = "()",
     description = "Stops the propagation of the current event in the scene tree hierarchy",
     returns = "()",
-    type = "function"
+    type = "method"
    }
   },
   type = "class"
@@ -362,19 +362,19 @@ return {
     args = "(type, listener [, data])",
     description = "Registers a listener function",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    dispatchEvent = {
     args = "(event)",
     description = "Dispatches an event",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    hasEventListener = {
     args = "(type)",
     description = "Checks if the EventDispatcher object has a event listener",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    new = {
     args = "()",
@@ -386,7 +386,7 @@ return {
     args = "(type, listener, data)",
     description = "Removes a listener function",
     returns = "()",
-    type = "function"
+    type = "method"
    }
   },
   type = "class"
@@ -397,79 +397,79 @@ return {
     args = "(permissions)",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    dialog = {
     args = "(action, paramaters)",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    extendAccessToken = {
     args = "()",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    extendAccessTokenIfNeeded = {
     args = "()",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getAccessToken = {
     args = "()",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getExpirationDate = {
     args = "()",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    graphRequest = {
     args = "(graphPath, paramaters, method)",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    isSessionValid = {
     args = "()",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    logout = {
     args = "()",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setAccessToken = {
     args = "(accessToken)",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setAppId = {
     args = "(appId)",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setExpirationDate = {
     args = "(expirationDate)",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    shouldExtendAccessToken = {
     args = "()",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    }
   },
   inherits = "EventDispatcher",
@@ -493,25 +493,25 @@ return {
     args = "(text, letterSpacing, size)",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getAscender = {
     args = "()",
     description = "Returns the ascender of the font",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getBounds = {
     args = "(text)",
     description = "Returns the tight bounding rectangle of the characters in the string specified by text",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getLineHeight = {
     args = "()",
     description = "Returns the distance from one base line to the next",
     returns = "()",
-    type = "function"
+    type = "method"
    }
   },
   type = "class"
@@ -564,37 +564,37 @@ return {
     args = "()",
     description = "Starts the generation of updates that report the current location and heading",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    startUpdatingHeading = {
     args = "()",
     description = "Starts the generation of updates that report the heading",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    startUpdatingLocation = {
     args = "()",
     description = "Starts the generation of updates that report the current location",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    stop = {
     args = "()",
     description = "Stops the generation of updates that report the current location and heading",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    stopUpdatingHeading = {
     args = "()",
     description = "Stops the generation of updates that report the heading",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    stopUpdatingLocation = {
     args = "()",
     description = "Stops the generation of updates that report the current location",
     returns = "()",
-    type = "function"
+    type = "method"
    }
   },
   inherits = "EventDispatcher",
@@ -658,37 +658,37 @@ return {
     args = "(productType)",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    confirmNotification = {
     args = "(notificationId)",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    requestPurchase = {
     args = "(productId, productType, developerPayload)",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    restoreTransactions = {
     args = "()",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setApiVersion = {
     args = "(apiVersion)",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setPublicKey = {
     args = "(publicKey)",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    }
   },
   type = "class"
@@ -699,7 +699,7 @@ return {
     args = "()",
     description = "Returns the rotation rate in radians per second",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    isAvailable = {
     args = "()",
@@ -717,13 +717,13 @@ return {
     args = "()",
     description = "Starts gyroscope updates",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    stop = {
     args = "()",
     description = "Stops gyroscope updates",
     returns = "()",
-    type = "function"
+    type = "method"
    }
   },
   type = "class"
@@ -795,43 +795,43 @@ return {
     args = "()",
     description = "Returns the elements of this matrix instance",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getM11 = {
     args = "()",
     description = "Returns the value of the m11 component",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getM12 = {
     args = "()",
     description = "Returns the value of the m12 component",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getM21 = {
     args = "()",
     description = "Returns the value of the m21 component",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getM22 = {
     args = "()",
     description = "Returns the value of the m22 component",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getTx = {
     args = "()",
     description = "Returns the value of the tx component",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getTy = {
     args = "()",
     description = "Returns the value of the ty component",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    new = {
     args = "(m11, m12, m21, m22, tx, ty)",
@@ -843,43 +843,43 @@ return {
     args = "(m11, m12, m21, m22, tx, ty)",
     description = "Sets all 6 elements of this matrix instance",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setM11 = {
     args = "(m11)",
     description = "Sets the value of the m11 component",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setM12 = {
     args = "(m12)",
     description = "Sets the value of the m22 component",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setM21 = {
     args = "(m21)",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setM22 = {
     args = "(m22)",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setTx = {
     args = "(tx)",
     description = "Sets the value of the tx component",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setTy = {
     args = "(ty)",
     description = "Sets the value of the ty component",
     returns = "()",
-    type = "function"
+    type = "method"
    }
   },
   type = "class"
@@ -890,31 +890,31 @@ return {
     args = "()",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    clearIndexArray = {
     args = "()",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    clearTexture = {
     args = "()",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    clearTextureCoordinateArray = {
     args = "()",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    clearVertexArray = {
     args = "()",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    new = {
     args = "()",
@@ -926,103 +926,103 @@ return {
     args = "(size)",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    resizeIndexArray = {
     args = "(size)",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    resizeTextureCoordinateArray = {
     args = "(size)",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    resizeVertexArray = {
     args = "(size)",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setColor = {
     args = "(i, color, alpha)",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setColorArray = {
     args = "(colors)",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setColors = {
     args = "(colors)",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setIndex = {
     args = "(i, index)",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setIndexArray = {
     args = "(indices)",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setIndices = {
     args = "(indices)",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setTexture = {
     args = "(texture)",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setTextureCoordinate = {
     args = "(i, u, v)",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setTextureCoordinateArray = {
     args = "(textureCoordinates)",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setTextureCoordinates = {
     args = "(textureCoordinates)",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setVertex = {
     args = "(i, x, y)",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setVertexArray = {
     args = "(vertices)",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setVertices = {
     args = "(vertices)",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    }
   },
   inherits = "Sprite",
@@ -1034,19 +1034,19 @@ return {
     args = "(frame)",
     description = "Clears the action at the specified frame",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    gotoAndPlay = {
     args = "(frame)",
     description = "Goes to the specified frame and starts playing",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    gotoAndStop = {
     args = "(frame)",
     description = "Goes to the specified frame and stops",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    new = {
     args = "(timeline)",
@@ -1058,25 +1058,25 @@ return {
     args = "()",
     description = "Starts playing the movie clip",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setGotoAction = {
     args = "(frame, destframe)",
     description = "Sets a \"go to\" action to the specified frame",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setStopAction = {
     args = "(frame)",
     description = "Sets a \"stop\" action to the specified frame",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    stop = {
     args = "()",
     description = "Stops playing the movie clip",
     returns = "()",
-    type = "function"
+    type = "method"
    }
   },
   inherits = "Sprite",
@@ -1108,37 +1108,37 @@ return {
     args = "(winding)",
     description = "Resets the current path",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    clear = {
     args = "()",
     description = "Clears the graphics that were drawn to this Shape object, and resets fill and line style settings",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    closePath = {
     args = "()",
     description = "Marks the current subpath as closed, and starts a new subpath with a point the same as the start and end of the newly closed subpath",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    endPath = {
     args = "()",
     description = "Ends the current path and draws the geometry by using the specified line and fill styles",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    lineTo = {
     args = "(x, y)",
     description = "Adds the given point to the current subpath, connected to the previous one by a straight line.",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    moveTo = {
     args = "(x, y)",
     description = "Creates a new subpath with the given point",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    new = {
     args = "()",
@@ -1150,13 +1150,13 @@ return {
     args = "(type, ...)",
     description = "Sets the fill style that Shape object uses for subsequent drawings",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setLineStyle = {
     args = "(width, color, alpha)",
     description = "Sets the line style that Shape object uses for subsequent drawings",
     returns = "()",
-    type = "function"
+    type = "method"
    }
   },
   inherits = "Sprite",
@@ -1168,7 +1168,7 @@ return {
     args = "()",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    new = {
     args = "(filename)",
@@ -1180,7 +1180,7 @@ return {
     args = "(startTime, looping, paused)",
     description = "Creates a new SoundChannel object to play the sound",
     returns = "()",
-    type = "function"
+    type = "method"
    }
   },
   type = "class"
@@ -1191,73 +1191,73 @@ return {
     args = "()",
     description = "Returns the current pitch of the sound channel",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getPosition = {
     args = "()",
     description = "Returns the position of the current playback",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getVolume = {
     args = "()",
     description = "Returns the current volume of the sound channel",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    isLooping = {
     args = "()",
     description = "Returns the looping state of the channel",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    isPaused = {
     args = "()",
     description = "Returns the paused state of the channel",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    isPlaying = {
     args = "()",
     description = "Returns the playing state for the sound channel",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setLooping = {
     args = "(looping)",
     description = "Sets the looping state of the channel",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setPaused = {
     args = "(paused)",
     description = "Sets the paused state of the channel",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setPitch = {
     args = "(pitch)",
     description = "Sets the pitch of the sound channel",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setPosition = {
     args = "(position)",
     description = "Sets the position of the current playback",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setVolume = {
     args = "(volume)",
     description = "Sets the volume of the sound channel",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    stop = {
     args = "()",
     description = "Stops the sound playing in the channel",
     returns = "()",
-    type = "function"
+    type = "method"
    }
   },
   type = "class"
@@ -1288,157 +1288,157 @@ return {
     args = "(child)",
     description = "Adds a sprite as a child",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    addChildAt = {
     args = "(child, index)",
     description = "Add a sprite as a child at the index position specified",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    clearBlendMode = {
     args = "()",
     description = "Clears the blending mode",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    contains = {
     args = "(child)",
     description = "Determines whether the specified sprite is contained in the subtree of this sprite",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    get = {
     args = "(param)",
     description = "Gets the specified property by its name",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getAlpha = {
     args = "()",
     description = "Returns the alpha transparency of this sprite",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getBounds = {
     args = "(targetSprite)",
     description = "Returns the bounds as it appears in another sprite's coordinate system",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getChildAt = {
     args = "(index)",
     description = "Returns the child sprite that exists at the specified index",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getChildIndex = {
     args = "(child)",
     description = "Returns the index of the specified child sprite",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getColorTransform = {
     args = "()",
     description = "Returns the red, green, blue and alpha channel multipliers",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getHeight = {
     args = "()",
     description = "Returns the height",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getMatrix = {
     args = "()",
     description = "Returns the transformation matrix of the sprite",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getNumChildren = {
     args = "()",
     description = "Returns the number of children of this sprite",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getParent = {
     args = "()",
     description = "Returns the parent sprite",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getPosition = {
     args = "()",
     description = "Gets the x,y coordinates of the sprite",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getRotation = {
     args = "()",
     description = "Returns the rotation of the sprite in degrees",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getScale = {
     args = "()",
     description = "Returns the horizontal and vertical scales of the sprite",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getScaleX = {
     args = "()",
     description = "Returns the horizontal scale of the sprite",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getScaleY = {
     args = "()",
     description = "Returns the vertical scale of the sprite",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getWidth = {
     args = "()",
     description = "Returns the width",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getX = {
     args = "()",
     description = "Returns the x coordinate of the sprite",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getY = {
     args = "()",
     description = "Returns the y coordinate of the sprite",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    globalToLocal = {
     args = "(x, y)",
     description = "Converts the x,y coordinates from the global to the sprite's (local) coordinates",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    hitTestPoint = {
     args = "(x, y)",
     description = "Checks the given coordinates is in bounds of the sprite",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    isVisible = {
     args = "()",
     description = "Returns the visibility of sprite",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    localToGlobal = {
     args = "(x, y)",
     description = "Converts the x,y coordinates from the sprite's (local) coordinates to the global coordinates",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    new = {
     args = "()",
@@ -1450,97 +1450,97 @@ return {
     args = "(child)",
     description = "Removes the child sprite",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    removeChildAt = {
     args = "(index)",
     description = "Removes the child sprite at the specifed index",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    removeFromParent = {
     args = "()",
     description = "If the sprite has a parent, removes the sprite from the child list of its parent sprite.",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    set = {
     args = "(param, value)",
     description = "Sets the specified property by its name",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setAlpha = {
     args = "(alpha)",
     description = "Sets the alpha transparency of this sprite",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setBlendMode = {
     args = "(blendMode)",
     description = "Sets the blend mode of the sprite",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setColorTransform = {
     args = "(redMultiplier, greenMultiplier, blueMultiplier, alphaMultiplier)",
     description = "Sets the red, green, blue and alpha channel multipliers",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setMatrix = {
     args = "(matrix)",
     description = "Sets the transformation matrix of the sprite",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setPosition = {
     args = "(x, y)",
     description = "Sets the x,y coordinates of the sprite",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setRotation = {
     args = "(rotation)",
     description = "Sets the rotation of the sprite in degrees",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setScale = {
     args = "(scaleX, scaleY)",
     description = "Sets the horizontal and vertical scales of the sprite",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setScaleX = {
     args = "(scaleX)",
     description = "Sets the horizontal scale of the sprite",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setScaleY = {
     args = "(scaleY)",
     description = "Sets the vertical scale of the sprite",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setVisible = {
     args = "(visible)",
     description = "Sets the visibility of sprite",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setX = {
     args = "(x)",
     description = "Sets the x coordinate of the sprite",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setY = {
     args = "(y)",
     description = "Sets the y coordinate of the sprite",
     returns = "()",
-    type = "function"
+    type = "method"
    }
   },
   inherits = "EventDispatcher",
@@ -1569,13 +1569,13 @@ return {
     args = "()",
     description = "Returns whether the user is allowed to make payments",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    finishTransaction = {
     args = "(transaction)",
     description = "Completes a pending transaction",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    new = {
     args = "()",
@@ -1587,19 +1587,19 @@ return {
     args = "(productIdentifier, quantity)",
     description = "Process a payment request",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    requestProducts = {
     args = "(productIdentifiers)",
     description = "Retrieve localized information about a list of products",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    restoreCompletedTransactions = {
     args = "()",
     description = "Restore previously completed purchases",
     returns = "()",
-    type = "function"
+    type = "method"
    }
   },
   type = "class"
@@ -1622,19 +1622,19 @@ return {
     args = "()",
     description = "Returns the letter-spacing property which is used to increase or decrease the space between characters in a text",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getText = {
     args = "()",
     description = "Returns the text displayed",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getTextColor = {
     args = "()",
     description = "Returns the color of the text in a text field in hexadecimal format",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    new = {
     args = "(font, text)",
@@ -1646,19 +1646,19 @@ return {
     args = "(spacing)",
     description = "Sets the letter-spacing property which is used to increase or decrease the space between characters in a text",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setText = {
     args = "(text)",
     description = "Sets the text to be displayed",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setTextColor = {
     args = "(color)",
     description = "Sets the color of the text in a text field in hexadecimal format",
     returns = "()",
-    type = "function"
+    type = "method"
    }
   },
   inherits = "Sprite",
@@ -1690,19 +1690,19 @@ return {
     args = "()",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getText = {
     args = "()",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    isSecureInput = {
     args = "()",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    new = {
     args = "(title, message, text, cancelButton, button1, button2)",
@@ -1714,19 +1714,19 @@ return {
     args = "(type)",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setSecureInput = {
     args = "(secureInput)",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setText = {
     args = "(text)",
     description = "",
     returns = "()",
-    type = "function"
+    type = "method"
    }
   },
   type = "class"
@@ -1757,13 +1757,13 @@ return {
     args = "()",
     description = "Returns the height of the texture in pixels",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getWidth = {
     args = "()",
     description = "Returns the width of the texture in pixels",
     returns = "()",
-    type = "function"
+    type = "method"
    }
   },
   type = "class"
@@ -1774,7 +1774,7 @@ return {
     args = "(texturename)",
     description = "Returns the texture region of texture pack",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    new = {
     args = "(txtfile, imagefile, filtering, options)",
@@ -1792,7 +1792,7 @@ return {
     args = "()",
     description = "Returns the coordinates of the region",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    new = {
     args = "(texture, x, y, width, height)",
@@ -1804,7 +1804,7 @@ return {
     args = "(x, y, width, height)",
     description = "Sets the coordinates of the region",
     returns = "()",
-    type = "function"
+    type = "method"
    }
   },
   type = "class"
@@ -1827,13 +1827,13 @@ return {
     args = "(x, y)",
     description = "Set an empty tile at given indices",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getTile = {
     args = "(x, y)",
     description = "Returns the index of the tile",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    new = {
     args = "(width, height, texture, tilewidth, tileheight, spacingx, spacingy, marginx, marginy, displaywidth, displayheight)",
@@ -1845,13 +1845,13 @@ return {
     args = "(x, y, tx, ty, flip)",
     description = "Sets the index of the tile",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    shift = {
     args = "(dx, dy)",
     description = "Shifts the tile map",
     returns = "()",
-    type = "function"
+    type = "method"
    }
   },
   inherits = "Sprite",
@@ -1869,25 +1869,25 @@ return {
     args = "()",
     description = "Returns the current trigger count of the timer",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getDelay = {
     args = "()",
     description = "Returns the time interval between timer events in milliseconds",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getRepeatCount = {
     args = "()",
     description = "Returns the number of repetitions the timer will make",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    isRunning = {
     args = "()",
     description = "Returns the current running status of timer",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    new = {
     args = "(delay, repeatCount)",
@@ -1905,7 +1905,7 @@ return {
     args = "()",
     description = "Stops the timer and sets the currentCount property to 0",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    resumeAll = {
     args = "()",
@@ -1917,25 +1917,25 @@ return {
     args = "(delay)",
     description = "Sets the time interval between timer events in milliseconds",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setRepeatCount = {
     args = "(repeatCount)",
     description = "Sets the number of repetitions the timer will make",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    start = {
     args = "()",
     description = "Starts the timer",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    stop = {
     args = "()",
     description = "Stops the timer",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    stopAll = {
     args = "()",
@@ -1968,13 +1968,13 @@ return {
     args = "()",
     description = "Terminates the current loading operation",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    load = {
     args = "(url, method, headers, body)",
     description = "Loads data from the specified URL",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    new = {
     args = "(url, method, headers, body)",
@@ -1991,175 +1991,175 @@ return {
     args = "()",
     description = "Terminates the application",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getApiVersion = {
     args = "()",
     description = "Returns the API version",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getBackgroundColor = {
     args = "()",
     description = "Returns the background color in hexadecimal format",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getContentHeight = {
     args = "()",
     description = "Returns content height",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getContentWidth = {
     args = "()",
     description = "Returns content width",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getDeviceHeight = {
     args = "()",
     description = "Returns the physical height of the device in pixels",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getDeviceInfo = {
     args = "()",
     description = "Returns information about device",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getDeviceWidth = {
     args = "()",
     description = "Returns the physical width of the device in pixels",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getFps = {
     args = "()",
     description = "Returns the frame rate of the application",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getLanguage = {
     args = "()",
     description = "Returns the user language",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getLocale = {
     args = "()",
     description = "Returns the device locale",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getLogicalHeight = {
     args = "()",
     description = "Returns the logical height of the application",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getLogicalScaleX = {
     args = "()",
     description = "Returns the scaling of automatic screen scaling on the x-axis",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getLogicalScaleY = {
     args = "()",
     description = "Returns the scaling of automatic screen scaling on the y-axis",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getLogicalTranslateX = {
     args = "()",
     description = "Returns the translation of automatic screen scaling on the x-axis",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getLogicalTranslateY = {
     args = "()",
     description = "Returns the translation of automatic screen scaling on the y-axis",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getLogicalWidth = {
     args = "()",
     description = "Returns the logical width of the application",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getOrientation = {
     args = "()",
     description = "Returns the orientation of the application",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getScaleMode = {
     args = "()",
     description = "Returns the automatic scale mode of the application",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getScreenDensity = {
     args = "()",
     description = "Returns the screen density in pixels per inch",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    getTextureMemoryUsage = {
     args = "()",
     description = "Returns the texture memory usage in Kbytes",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    openUrl = {
     args = "()",
     description = "Opens the given URL in the appropriate application",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setBackgroundColor = {
     args = "(color)",
     description = "Sets the background color in hexadecimal format",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setFps = {
     args = "(fps)",
     description = "Sets the frame rate of the application",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setKeepAwake = {
     args = "(keepAwake)",
     description = "Enables/disables screen dimming and device sleeping",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setLogicalDimensions = {
     args = "(width, height)",
     description = "Sets the logical dimensions of the application",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setOrientation = {
     args = "(orientation)",
     description = "Sets the orientation of the application",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    setScaleMode = {
     args = "(scaleMode)",
     description = "Sets the automatic scale mode of the application",
     returns = "()",
-    type = "function"
+    type = "method"
    },
    vibrate = {
     args = "()",
     description = "Vibrates the device",
     returns = "()",
-    type = "function"
+    type = "method"
    }
   },
   type = "class"
@@ -2172,229 +2172,229 @@ return {
       args = "(impulse)",
       description = "Applies an angular impulse",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      applyForce = {
       args = "(forcex, forcey, pointx, pointy)",
       description = "Applies a force at a world point",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      applyLinearImpulse = {
       args = "(impulsex, impulsey, pointx, pointy)",
       description = "Applies an impulse at a point",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      applyTorque = {
       args = "(torque)",
       description = "Applies a torque",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      createFixture = {
       args = "(fixtureDef)",
       description = "Creates a fixture and attach it to this body",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      destroyFixture = {
       args = "(fixture)",
       description = "Destroys a fixture",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getAngle = {
       args = "()",
       description = "Returns the current world rotation angle in radians",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getAngularDamping = {
       args = "()",
       description = "Returns the angular damping of the body",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getAngularVelocity = {
       args = "()",
       description = "Returns the angular velocity",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getGravityScale = {
       args = "()",
       description = "Returns the gravity scale of the body",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getInertia = {
       args = "()",
       description = "Returns the rotational inertia of the body about the local origin in kg-m^2",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getLinearDamping = {
       args = "()",
       description = "Returns the linear damping of the body",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getLinearVelocity = {
       args = "()",
       description = "Returns the linear velocity of the center of mass",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getLocalCenter = {
       args = "()",
       description = "Returns the local position of the center of mass",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getLocalPoint = {
       args = "(x, y)",
       description = "",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getLocalVector = {
       args = "(x, y)",
       description = "",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getMass = {
       args = "()",
       description = "Returns the total mass of the body in kilograms (kg)",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getPosition = {
       args = "()",
       description = "Returns the world body origin position",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getWorldCenter = {
       args = "()",
       description = "Returns the world position of the center of mass",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getWorldPoint = {
       args = "(x, y)",
       description = "",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getWorldVector = {
       args = "(x, y)",
       description = "",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      isActive = {
       args = "()",
       description = "Returns the active state of the body",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      isAwake = {
       args = "()",
       description = "Returns the sleeping state of the body",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      isBullet = {
       args = "()",
       description = "",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      isFixedRotation = {
       args = "()",
       description = "",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      isSleepingAllowed = {
       args = "()",
       description = "",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setActive = {
       args = "(flag)",
       description = "Sets the active state of the body",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setAngle = {
       args = "(angle)",
       description = "",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setAngularDamping = {
       args = "(angularDamping)",
       description = "Sets the angular damping of the body",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setAngularVelocity = {
       args = "(omega)",
       description = "Sets the angular velocity",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setAwake = {
       args = "(awake)",
       description = "Sets the sleep state of the body",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setBullet = {
       args = "(flag)",
       description = "",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setFixedRotation = {
       args = "(flag)",
       description = "",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setGravityScale = {
       args = "(scale)",
       description = "Sets the gravity scale of the body",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setLinearDamping = {
       args = "(linearDamping)",
       description = "Sets the linear damping of the body",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setLinearVelocity = {
       args = "(x, y)",
       description = "Sets the linear velocity of the center of mass",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setPosition = {
       args = "(x, y)",
       description = "Sets the world body origin position",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setSleepingAllowed = {
       args = "(flag)",
       description = "",
       returns = "()",
-      type = "function"
+      type = "method"
      }
     },
     type = "class"
@@ -2405,13 +2405,13 @@ return {
       args = "(vertices)",
       description = "Creates a chain with isolated end vertices",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      createLoop = {
       args = "(vertices)",
       description = "Creates a loop",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      new = {
       args = "()",
@@ -2435,7 +2435,7 @@ return {
       args = "(centerx, centery, radius)",
       description = "Sets the center point and radius",
       returns = "()",
-      type = "function"
+      type = "method"
      }
     },
     inherits = "b2.Shape",
@@ -2447,85 +2447,85 @@ return {
       args = "()",
       description = "",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getChildIndexB = {
       args = "()",
       description = "",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getFixtureA = {
       args = "()",
       description = "",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getFixtureB = {
       args = "()",
       description = "",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getFriction = {
       args = "()",
       description = "",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getManifold = {
       args = "()",
       description = "",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getRestitution = {
       args = "()",
       description = "",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getWorldManifold = {
       args = "()",
       description = "",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      isTouching = {
       args = "()",
       description = "",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      resetFriction = {
       args = "()",
       description = "",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      resetRestitution = {
       args = "()",
       description = "",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setEnabled = {
       args = "(flag)",
       description = "",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setFriction = {
       args = "(friction)",
       description = "",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setRestitution = {
       args = "(restitution)",
       description = "",
       returns = "()",
-      type = "function"
+      type = "method"
      }
     },
     type = "class"
@@ -2564,19 +2564,19 @@ return {
       args = "(flags)",
       description = "Append flags to the current flags",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      clearFlags = {
       args = "(flags)",
       description = "Clear flags from the current flags",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getFlags = {
       args = "()",
       description = "Returns the debug drawing flags",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      new = {
       args = "()",
@@ -2588,7 +2588,7 @@ return {
       args = "(flags)",
       description = "Sets the debug drawing flags",
       returns = "()",
-      type = "function"
+      type = "method"
      }
     },
     inherits = "Sprite",
@@ -2600,37 +2600,37 @@ return {
       args = "()",
       description = "Returns the damping ratio",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getFrequency = {
       args = "()",
       description = "Returns the mass-spring-damper frequency in Hertz",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getLength = {
       args = "()",
       description = "Returns the length of this distance joint in meters",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setDampingRatio = {
       args = "(ratio)",
       description = "Sets the damping ratio (0 = no damping, 1 = critical damping)",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setFrequency = {
       args = "(frequency)",
       description = "Sets the mass-spring-damper frequency in Hertz",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setLength = {
       args = "(length)",
       description = "Sets the natural joint length in meters",
       returns = "()",
-      type = "function"
+      type = "method"
      }
     },
     inherits = "b2.Joint",
@@ -2648,7 +2648,7 @@ return {
       args = "(v1x, v1y, v2x, v2y)",
       description = "Sets the two vertices",
       returns = "()",
-      type = "function"
+      type = "method"
      }
     },
     inherits = "b2.Shape",
@@ -2664,31 +2664,31 @@ return {
       args = "()",
       description = "Returns the parent body of this fixture",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getFilterData = {
       args = "()",
       description = "Returns the contact filtering data",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      isSensor = {
       args = "()",
       description = "Is this fixture a sensor (non-solid)?",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setFilterData = {
       args = "(filterData)",
       description = "Sets the contact filtering data",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setSensor = {
       args = "(sensor)",
       description = "Sets if this fixture is a sensor",
       returns = "()",
-      type = "function"
+      type = "method"
      }
     },
     type = "class"
@@ -2699,25 +2699,25 @@ return {
       args = "()",
       description = "Returns the maximum friction force in N",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getMaxTorque = {
       args = "()",
       description = "Returns the maximum friction torque in N*m",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setMaxForce = {
       args = "(force)",
       description = "Sets the maximum friction force in N",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setMaxTorque = {
       args = "(torque)",
       description = "Sets the maximum friction torque in N*m",
       returns = "()",
-      type = "function"
+      type = "method"
      }
     },
     inherits = "b2.Joint",
@@ -2733,13 +2733,13 @@ return {
       args = "()",
       description = "Returns the gear ratio",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setRatio = {
       args = "(ratio)",
       description = "Sets the gear ratio",
       returns = "()",
-      type = "function"
+      type = "method"
      }
     },
     inherits = "b2.Joint",
@@ -2751,49 +2751,49 @@ return {
       args = "()",
       description = "Returns the anchor point on bodyA in world coordinates",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getAnchorB = {
       args = "()",
       description = "Returns the anchor point on bodyB in world coordinates",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getBodyA = {
       args = "()",
       description = "Returns the first body attached to this joint",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getBodyB = {
       args = "()",
       description = "Returns the second body attached to this joint",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getReactionForce = {
       args = "(inv_dt)",
       description = "Returns the reaction force on bodyB at the joint anchor",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getReactionTorque = {
       args = "(inv_dt)",
       description = "Returns the reaction torque on bodyB",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getType = {
       args = "()",
       description = "Returns a value that represents the type",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      isActive = {
       args = "()",
       description = "Is active?",
       returns = "()",
-      type = "function"
+      type = "method"
      }
     },
     type = "class"
@@ -2812,49 +2812,49 @@ return {
       args = "()",
       description = "Returns the damping ratio",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getFrequency = {
       args = "()",
       description = "Returns the response frequency in Hertz",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getMaxForce = {
       args = "()",
       description = "Returns the maximum force in N",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getTarget = {
       args = "()",
       description = "Returns the x and y coordinates of the target point",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setDampingRatio = {
       args = "(ratio)",
       description = "Sets the damping ratio (0 = no damping, 1 = critical damping)",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setFrequency = {
       args = "(frequency)",
       description = "Sets the response frequency in Hertz",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setMaxForce = {
       args = "(force)",
       description = "Sets the maximum force in N",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setTarget = {
       args = "(x, y)",
       description = "Updates the target point",
       returns = "()",
-      type = "function"
+      type = "method"
      }
     },
     inherits = "b2.Joint",
@@ -2880,13 +2880,13 @@ return {
       args = "(vertices)",
       description = "Sets vertices",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setAsBox = {
       args = "(hx, hy, centerx, centery, angle)",
       description = "Set vertices to represent an oriented box",
       returns = "()",
-      type = "function"
+      type = "method"
      }
     },
     inherits = "b2.Shape",
@@ -2898,73 +2898,73 @@ return {
       args = "(flag)",
       description = "Enables or disables the joint limit",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      enableMotor = {
       args = "(flag)",
       description = "Enables or disables the joint motor",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getJointSpeed = {
       args = "()",
       description = "Returns the current joint translation speed in meters per second",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getJointTranslation = {
       args = "()",
       description = "Returns the current joint translation in meters",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getLimits = {
       args = "()",
       description = "Returns the lower and upper joint limits in meters",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getMotorForce = {
       args = "(inv_dt)",
       description = "Returns the current motor force given the inverse time step",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getMotorSpeed = {
       args = "()",
       description = "Returns the motor speed in meters per second",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      isLimitEnabled = {
       args = "()",
       description = "Is the joint limit enabled?",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      isMotorEnabled = {
       args = "()",
       description = "Is the joint motor enabled?",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setLimits = {
       args = "(lower, upper)",
       description = "Sets the joint limits in meters",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setMaxMotorForce = {
       args = "(force)",
       description = "Sets the maximum motor force in N",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setMotorSpeed = {
       args = "(speed)",
       description = "Sets the motor speed in meters per second",
       returns = "()",
-      type = "function"
+      type = "method"
      }
     },
     inherits = "b2.Joint",
@@ -2976,31 +2976,31 @@ return {
       args = "()",
       description = "Returns the x and y coordinates of the first ground anchor",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getGroundAnchorB = {
       args = "()",
       description = "Returns the x and y coordinates of the second ground anchor",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getLengthA = {
       args = "()",
       description = "Returns the current length of the segment attached to bodyA",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getLengthB = {
       args = "()",
       description = "Returns the current length of the segment attached to bodyB",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getRatio = {
       args = "()",
       description = "Returns the joint ratio",
       returns = "()",
-      type = "function"
+      type = "method"
      }
     },
     inherits = "b2.Joint",
@@ -3020,73 +3020,73 @@ return {
       args = "(flag)",
       description = "Enables or disables the joint limit",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      enableMotor = {
       args = "(flag)",
       description = "Enables or disables the joint motor",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getJointAngle = {
       args = "()",
       description = "Returns the current joint angle in radians",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getJointSpeed = {
       args = "()",
       description = "Returns the current joint angle speed in radians per second",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getLimits = {
       args = "()",
       description = "Returns the lower and upper joint limit in radians",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getMotorSpeed = {
       args = "()",
       description = "Returns the motor speed in radians per second",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getMotorTorque = {
       args = "(inv_dt)",
       description = "Returns the current motor torque given the inverse time step",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      isLimitEnabled = {
       args = "()",
       description = "Is the joint limit enabled?",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      isMotorEnabled = {
       args = "()",
       description = "Is the joint motor enabled?",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setLimits = {
       args = "(lower, upper)",
       description = "Sets the joint limits in radians",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setMaxMotorTorque = {
       args = "(torque)",
       description = "Sets the maximum motor torque in N*m",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setMotorSpeed = {
       args = "(speed)",
       description = "Sets the motor speed in radians per second",
       returns = "()",
-      type = "function"
+      type = "method"
      }
     },
     inherits = "b2.Joint",
@@ -3098,13 +3098,13 @@ return {
       args = "()",
       description = "",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setMaxLength = {
       args = "(maxLength)",
       description = "",
       returns = "()",
-      type = "function"
+      type = "method"
      }
     },
     inherits = "b2.Joint",
@@ -3128,25 +3128,25 @@ return {
       args = "()",
       description = "Returns damping ratio",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getFrequency = {
       args = "()",
       description = "Returns frequency in Hz",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setDampingRatio = {
       args = "(damping)",
       description = "Sets damping ratio",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setFrequency = {
       args = "(frequency)",
       description = "Sets frequency in Hz",
       returns = "()",
-      type = "function"
+      type = "method"
      }
     },
     inherits = "b2.Joint",
@@ -3158,73 +3158,73 @@ return {
       args = "(flag)",
       description = "Enables or disables the joint motor",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getJointSpeed = {
       args = "()",
       description = "Returns the current joint translation speed in meters per second.",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getJointTranslation = {
       args = "()",
       description = "Returns the current joint translation in meters.",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getMaxMotorTorque = {
       args = "()",
       description = "Returns the maximum motor torque in N*m",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getMotorSpeed = {
       args = "()",
       description = "Returns the motor speed in radians per second",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getSpringDampingRatio = {
       args = "()",
       description = "Returns the spring damping ratio",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getSpringFrequencyHz = {
       args = "()",
       description = "Returns the spring frequency in Hertz",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      isMotorEnabled = {
       args = "()",
       description = "Is the joint motor enabled?",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setMaxMotorTorque = {
       args = "(torque)",
       description = "Sets the maximum motor torque in N*m",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setMotorSpeed = {
       args = "(speed)",
       description = "Sets the motor speed in radians per second",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setSpringDampingRatio = {
       args = "(damping)",
       description = "Sets the spring damping ratio",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setSpringFrequencyHz = {
       args = "(frequency)",
       description = "Sets the spring frequency in Hertz (0 = disable the spring)",
       returns = "()",
-      type = "function"
+      type = "method"
      }
     },
     inherits = "b2.Joint",
@@ -3236,37 +3236,37 @@ return {
       args = "()",
       description = "Call this after you are done with time steps to clear the forces",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      createBody = {
       args = "(bodyDef)",
       description = "Creates a rigid body given a definition",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      createJoint = {
       args = "(jointDef)",
       description = "Creates a joint given a definition",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      destroyBody = {
       args = "(body)",
       description = "Destroys a rigid body",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      destroyJoint = {
       args = "(joint)",
       description = "Destroys a joint",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      getGravity = {
       args = "()",
       description = "Returns the gravity vector",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      new = {
       args = "(gravityx, gravityy, doSleep)",
@@ -3278,31 +3278,31 @@ return {
       args = "(lowerx, lowery, upperx, uppery)",
       description = "Query the world for all fixtures that potentially overlap the provided AABB",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      rayCast = {
       args = "(x1, y1, x2, y2, listener [, data])",
       description = "Raycast the world for all fixtures in the path of the ray",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setDebugDraw = {
       args = "()",
       description = "Registers a b2.DebugDraw instance for debug drawing",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      setGravity = {
       args = "(gravityx, gravityy)",
       description = "Sets the gravity vector",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      step = {
       args = "(timeStep, velocityIterations, positionIterations)",
       description = "Takes a time step",
       returns = "()",
-      type = "function"
+      type = "method"
      }
     },
     inherits = "EventDispatcher",
@@ -3436,13 +3436,13 @@ return {
       args = "()",
       description = "",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      isBannerLoaded = {
       args = "()",
       description = "",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      new = {
       args = "(alignment, orientation)",
@@ -3454,13 +3454,13 @@ return {
       args = "(alignment)",
       description = "",
       returns = "()",
-      type = "function"
+      type = "method"
      },
      show = {
       args = "()",
       description = "",
       returns = "()",
-      type = "function"
+      type = "method"
      }
     },
     inherits = "EventDispatcher",
@@ -3550,8 +3550,10 @@ while true do
         :gsub(removeclass, "") -- some descriptions have it twice
         :gsub("^(%w)", string.upper) -- convert first letter to uppercase
 
+      -- function have "Class.function" format and
+      -- methods have "function() Class"; "newclass" means it a function
       t[class].childs[fun] = {
-        type = "function",
+        type = (newclass and "function" or "method"),
         args = args or "()",
         description = desc,
         returns = "()",
@@ -3572,7 +3574,7 @@ end
 
 t.application = t.application or {childs = {}, type = "class"}
 for key, value in pairs(t.Application.childs) do
-  if value.type == "function" then
+  if value.type == "function" or value.type == "method" then
     t.application.childs[key] = value
     t.Application.childs[key] = nil
   end
