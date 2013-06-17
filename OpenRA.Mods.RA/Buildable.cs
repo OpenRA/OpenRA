@@ -15,9 +15,6 @@ namespace OpenRA.Mods.RA
 	public class BuildableInfo : TraitInfo<Buildable>
 	{
 		public readonly string[] Prerequisites = { };
-		[ActorReference]
-		public readonly string[] BuiltAt = { };
-
 		public readonly string[] Owner = { };
 
 		public readonly string Queue;

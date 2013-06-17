@@ -77,7 +77,6 @@ MIG:
 		Queue: Plane
 		BuildPaletteOrder: 100
 		Prerequisites: afld, stek
-		BuiltAt: afld
 		Owner: soviet
 		Hotkey: m
 	Valued:
@@ -127,7 +126,6 @@ YAK:
 		Queue: Plane
 		BuildPaletteOrder: 50
 		Prerequisites: afld
-		BuiltAt: afld
 		Owner: soviet
 		Hotkey: y
 	Valued:
@@ -178,7 +176,6 @@ TRAN:
 		Queue: Plane
 		BuildPaletteOrder: 110
 		Prerequisites: hpad
-		BuiltAt: hpad
 		Owner: allies
 		Hotkey: t
 	Valued:
@@ -233,7 +230,6 @@ HELI:
 		Queue: Plane
 		BuildPaletteOrder: 90
 		Prerequisites: hpad, atek
-		BuiltAt: hpad
 		Owner: allies
 		Hotkey: l
 	Valued:
@@ -279,7 +275,6 @@ HIND:
 		Queue: Plane
 		BuildPaletteOrder: 90
 		Prerequisites: hpad
-		BuiltAt: hpad
 		Owner: allies
 		Hotkey: h
 	Valued:

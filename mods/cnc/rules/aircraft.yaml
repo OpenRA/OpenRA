@@ -9,7 +9,6 @@ TRAN:
 	Buildable:
 		BuildPaletteOrder: 10
 		Prerequisites: hpad
-		BuiltAt: hpad
 		Owner: gdi,nod
 	Selectable:
 		Bounds: 41,41
@@ -53,7 +52,6 @@ HELI:
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: hpad, anyhq
-		BuiltAt: hpad
 		Owner: nod
 	Selectable:
 		Bounds: 30,24
@@ -104,7 +102,6 @@ ORCA:
 	Buildable:
 		BuildPaletteOrder: 20
 		Prerequisites: hpad, anyhq
-		BuiltAt: hpad
 		Owner: gdi
 	Selectable:
 		Bounds: 30,24

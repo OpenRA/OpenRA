@@ -82,7 +82,6 @@ MCVH:
 	Inherits: ^MCV
 	Buildable:
 		Owner: harkonnen
-		BuiltAt: heavyh
 	Transforms:
 		Facing: 16
 		IntoActor: conyardh
@@ -95,7 +94,6 @@ MCVH.starport:
 	Inherits: MCVH
 	Buildable:
 		Queue: Starport
-		BuiltAt: starporth
 	Valued:
 		Cost: 2500
 
@@ -103,7 +101,6 @@ MCVH.starport:
 #	Inherits: ^TRIKE
 #	Buildable:
 #		Owner: harkonnen
-#		BuiltAt: lighth
 #	Valued:
 #		Cost: 250
 #	Tooltip:
@@ -127,7 +124,6 @@ MCVH.starport:
 #	Buildable:
 #		Owner: harkonnen
 #		Queue: Starport
-#		BuiltAt: starporth
 #	Valued:
 #		Cost: 149
 #	RenderUnit:
@@ -155,7 +151,6 @@ COMBATH:
 		Icon: combathicon
 	Buildable:
 		Owner: harkonnen
-		BuiltAt: heavyh
 	Mobile:
 		Speed: 5
 		ROT: 4
@@ -180,7 +175,6 @@ COMBATH.starport:
 	Inherits: COMBATH
 	Buildable:
 		Queue: Starport
-		BuiltAt: starporth
 	Valued:
 		Cost: 875
 
@@ -191,7 +185,6 @@ DEVAST:
 		BuildPaletteOrder: 100
 		Prerequisites: Ix
 		Owner: harkonnen
-		BuiltAt: heavyh
 		Hotkey: d
 	Valued:
 		Cost: 1200
