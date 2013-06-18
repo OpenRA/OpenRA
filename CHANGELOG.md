@@ -1,10 +1,87 @@
 # ZeroBrane Studio Changelog
 
-## v0.37 (May 09 2013)
+## Current master (June 17 2013)
+
+### Highlights
+  - Added source code debugging (to support LuaJava and other engines).
+  - Added scope-aware global/local/masked/masking variable highlighting.
+  - Added 'Go To Definition' and 'Rename All Instances'.
+  - Added package/plugin API.
+  - Added Retina display support (can be enabled with `hidpi` option).
+  - Improved auto-complete API with inheritance and table index support.
 
 ### Special thanks
-  - To Samuel Dionne-Riel for wxwidgets 2.8 compatibility updates.
-  - To Mat Hopwood for assistance with Marmalade Quick integration.
+  - To George Pimm for line of code navigation in the Stack Window.
+  - To Fringale for updated French translation.
+
+### Improvements
+  - Added inheritance support for auto-complete API.
+  - Added package onEditor* events (closes #166).
+  - Added package onInterpreterLoad/onInterpreterClose events (ref #166).
+  - Added package onProjectLoad/onProjectClose events (ref #166).
+  - Added package onMenu* events (ref #166).
+  - Added package onRegister/onUnRegister events (ref #166).
+  - Added 'Show Location' to the Project/Filetree menu.
+  - Added `hidpi` option to enable HiDPI/Retina display support (closes #160).
+  - Added breakpoint support for unnamed code fragments.
+  - Added support for debugging (stepping through) unnamed code fragments.
+  - Added LuaSec to win32 build script.
+  - Added package/plugin processing.
+  - Added support for 'silent' execution of shell commands in markup.
+  - Added `Find Next/Previous` over selected variable instances (ref #163).
+  - Added `debugger.allowediting` option to allow editing while debugging.
+  - Added skiping binary files during file search (ref #162).
+  - Added yield to update search results during file search (ref #162).
+  - Added showing default extensions in the file search (ref #162).
+  - Added support for multiple file extensions in the file search (ref #162).
+  - Added saving folder to search files in (ref #162).
+  - Added selecting all instances with a double-click on a variable.
+  - Added `autoanalizer` option for dynamic static analysis.
+  - Added 'Go To Definition' and 'Rename All Instances'.
+  - Added initial support for indicating local/global variables.
+  - Added showing tooltip in any position over a term and showing 'values' (ref #101).
+  - Added disabling tooltip when context menu is shown.
+  - Added 'fixing' path returned by wxDirDialog; may be incorrect in 2.9.x.
+  - Added constant initialization missing on ArchLinux with wxlua 2.8.12.2 (fixes #155; ref #128).
+  - Added support for table valuetypes in auto-complete for `foo[index]:` (ref #101).
+  - Added navigation to the line of code in the Stack Window (thanks to George Pimm; closes #134).
+  - Added `Show Location` to the editor tab menu.
+  - Added support for absolute filenames in Markdown links.
+  - Allowed tab width and indentation to be set independently.
+  - Allowed closing editor tabs while debugger is running.
+  - Disabled showing tooltip when the app is in the background (fixes #158).
+  - Disabled 'value' tooltip over variables that match known function names (ref #101).
+  - Improved error reporting in interpreters on failures to copy the debugger.
+  - Improved focus on the debugger when a breakpoint hits on OSX (fixes #141).
+  - Removed sorting in the Stack view to keep the order of table elements.
+  - Updated Stack view navigation to use clicked on instead of active item.
+  - Updated Gideros API/auto-complete reference.
+  - Updated markup to allow opening files from new buffers ('untitled').
+  - Updated build scripts to use luasocket 2.0.3.
+  - Updated linux build files to use latest zlib/libpng to fix png load on Gentoo.
+  - Updated 'Find in Files' to start in the project folder by default.
+  - Updated French translation with latest string changes (mostly for find/replace dialogs).
+  - Updated Marmalade Quick auto-complete API to use class inheritance.
+  - Updated Gideros auto-complete API to use class inheritance.
+  - Upgraded Mobdebug to 0.534 for debugging of source code fragments.
+
+### Fixes
+    Fixed missing numerical keys in serialized tables (upgraded Mobdebug to 0.535).
+    Fixed styling of markup that can be affected by folded lines.
+    Fixed value selection with multiple active selections.
+    Fixed style compatibility with wxwidgets 2.8 (ref #128).
+    Fixed error reporting by (internal) file operations.
+    Fixed styling comments that start with markup symbols.
+    Fixed restoring a session with one of the files deleted on disk (fixes #161).
+    Fixed reporting variable instances for comment/string fragments.
+    Fixed 'Rename Instances' to always reset previous selection.
+    Fixed auto-complete error for '%dddd' strings (fixes #156).
+    Fixed an issue with showing filenames that include '"?*:<>' on OSX/Linux.
+    Fixed current line marker being shown using 'Run as Scratchpad' with 'runonstart' option.
+    Fixed looping in auto-complete (fixes #151).
+    Fixed incorrect localization that led to an error in 'Save' from tab menu.
+
+## v0.37 (May 09 2013)
 
 ### Highlights
   - Added Marmalade Quick auto-complete support and API documentation.
@@ -12,6 +89,10 @@
   - Improved Find/Replace behavior and functionality.
   - Added Recent File history navigation.
   - Added Preferences menu to simplify access to system/user settings.
+
+### Special thanks
+  - To Samuel Dionne-Riel for wxwidgets 2.8 compatibility updates.
+  - To Mat Hopwood for assistance with Marmalade Quick integration.
 
 ### Improvements
   - Added Preferences menu to simplify access to system/user settings.
