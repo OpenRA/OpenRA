@@ -63,10 +63,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				Ui.OpenWindow("CONNECTIONFAILED_PANEL", new WidgetArgs()
 				{
+					{ "orderManager", om },
 					{ "onAbort", onExit },
-					{ "onRetry", onRetry },
-					{ "host", om.Host },
-					{ "port", om.Port }
+					{ "onRetry", onRetry }
 				});
 			}
 		}
