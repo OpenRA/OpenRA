@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA
 		List<Actor> cargo = new List<Actor>();
 		public IEnumerable<Actor> Passengers { get { return cargo; } }
 
-		public Cargo( ActorInitializer init, CargoInfo info )
+		public Cargo(ActorInitializer init, CargoInfo info)
 		{
 			this.self = init.self;
 			this.info = info;
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA
 			if (init.Contains<CargoInit>())
 			{
 				cargo = init.Get<CargoInit,Actor[]>().ToList();
-				totalWeight = cargo.Sum( c => GetWeight(c) );
+				totalWeight = cargo.Sum(c => GetWeight(c));
 			}
 			else
 			{
@@ -56,20 +56,20 @@ namespace OpenRA.Mods.RA
 						new TypeDictionary { new OwnerInit(self.Owner) });
 
 					if (CanLoad(self, unit))
-						Load(self,unit);
+						Load(self, unit);
 				}
 			}
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new DeployOrderTargeter( "Unload", 10, () => CanUnload( self ) ); }
+			get { yield return new DeployOrderTargeter("Unload", 10, () => CanUnload(self)); }
 		}
 
-		public Order IssueOrder( Actor self, IOrderTargeter order, Target target, bool queued )
+		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if( order.OrderID == "Unload" )
-				return new Order( order.OrderID, self, queued );
+			if (order.OrderID == "Unload")
+				return new Order(order.OrderID, self, queued);
 
 			return null;
 		}
@@ -135,8 +135,8 @@ namespace OpenRA.Mods.RA
 			cargo.RemoveAt(0);
 			totalWeight -= GetWeight(a);
 
-			foreach( var npe in self.TraitsImplementing<INotifyPassengerExited>() )
-				npe.PassengerExited( self, a );
+			foreach (var npe in self.TraitsImplementing<INotifyPassengerExited>())
+				npe.PassengerExited(self, a);
 
 			return a;
 		}
@@ -170,8 +170,8 @@ namespace OpenRA.Mods.RA
 			cargo.Add(a);
 			totalWeight += GetWeight(a);
 
-			foreach( var npe in self.TraitsImplementing<INotifyPassengerEntered>() )
-				npe.PassengerEntered( self, a );
+			foreach (var npe in self.TraitsImplementing<INotifyPassengerEntered>())
+				npe.PassengerEntered(self, a);
 		}
 
 		public void Killed(Actor self, AttackInfo e)
@@ -201,7 +201,7 @@ namespace OpenRA.Mods.RA
 	{
 		[FieldFromYamlKey] public readonly Actor[] value = {};
 		public CargoInit() { }
-		public CargoInit( Actor[] init ) { value = init; }
-		public Actor[] Value( World world ) { return value; }
+		public CargoInit(Actor[] init) { value = init; }
+		public Actor[] Value(World world) { return value; }
 	}
 }
