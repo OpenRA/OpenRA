@@ -176,8 +176,8 @@ namespace OpenRA.Mods.RA
 
 		public void Killed(Actor self, AttackInfo e)
 		{
-			foreach( var c in cargo )
-				c.Destroy();
+			foreach (var c in cargo)
+				c.Kill(e.Attacker);
 			cargo.Clear();
 		}
 
