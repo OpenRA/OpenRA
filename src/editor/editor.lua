@@ -734,7 +734,9 @@ function CreateEditor()
       local localpos = pos-linestart
       local linetxtopos = linetx:sub(1,localpos)
 
-      if (ch == char_LF) then
+      if PackageEventHandle("onEditorCharAdded", editor, event) == false then
+        -- this event has already been handled
+      elseif (ch == char_LF) then
         if (line > 0) then
           local indent = editor:GetLineIndentation(line - 1)
           local linedone = editor:GetLine(line - 1)
@@ -914,7 +916,9 @@ function CreateEditor()
       local keycode = event:GetKeyCode()
       local mod = event:GetModifiers()
       local first, last = 0, notebook:GetPageCount()-1
-      if keycode == wx.WXK_ESCAPE and ide.frame:IsFullScreen() then
+      if PackageEventHandle("onEditorKeyDown", editor, event) == false then
+        -- this event has already been handled
+      elseif keycode == wx.WXK_ESCAPE and ide.frame:IsFullScreen() then
         ShowFullScreen(false)
       -- Ctrl-Home and Ctrl-End don't work on OSX with 2.9.5+; fix it
       elseif ide.osname == 'Macintosh' and ide.wxver >= "2.9.5"
