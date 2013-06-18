@@ -36,7 +36,7 @@ return {
   ["&Watch Window"] = "Ventana de observaciones", -- src\editor\menu_view.lua
   ["About %s"] = "Acerca de %s", -- src\editor\menu_help.lua
   ["Add Watch Expression"] = "Añadir expresión de observación", -- src\editor\editor.lua
-  ["Add to Scratchpad"] = "Añadir al borrador", -- src\editor\editor.lua
+  ["Add To Scratchpad"] = "Añadir al borrador", -- src\editor\editor.lua
   ["All files"] = "Todos los archivos", -- src\editor\commands.lua
   ["Allow external process to start debugging"] = "Permitir proceso externo para iniciar depuración", -- src\editor\menu_project.lua
   ["Analyze the source code"] = "Analizar el código fuente", -- src\editor\inspect.lua
@@ -86,7 +86,7 @@ return {
   ["Error while processing API file: %s"] = "Error mientras se procesaba el archivo de API: %s", -- src\editor\autocomplete.lua
   ["Error while processing configuration file: %s"] = nil, -- src\editor\style.lua
   ["Error"] = "Error", -- src\editor\commands.lua
-  ["Evaluate in Console"] = "Evaluar en consola", -- src\editor\editor.lua
+  ["Evaluate In Console"] = "Evaluar en consola", -- src\editor\editor.lua
   ["Execute the current project/file and keep updating the code to see immediate results"] = "Ejecutar el proyecto/archivo actual y manteniendo actualizado el código para ver resultados en tiempo real", -- src\editor\menu_project.lua
   ["Execute the current project/file"] = "Ejecutar el proyecto/archivo actual", -- src\editor\menu_project.lua
   ["Execution error"] = "Error de ejecución", -- src\editor\debugger.lua

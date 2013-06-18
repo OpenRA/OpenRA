@@ -42,7 +42,7 @@ return {
   [".&bak on Replace"] = ".&bak avant remplacement", -- src\editor\findreplace.lua
   ["About %s"] = "À propos de %s", -- src\editor\menu_help.lua
   ["Add Watch Expression"] = "Ajouter une expression", -- src\editor\editor.lua
-  ["Add to Scratchpad"] = "Ajouter au brouillon", -- src\editor\editor.lua
+  ["Add To Scratchpad"] = "Ajouter au brouillon", -- src\editor\editor.lua
   ["All files"] = "Tous les fichiers", -- src\editor\commands.lua
   ["Allow external process to start debugging"] = "Autoriser les processus externes à lancer le débogage", -- src\editor\menu_project.lua
   ["Analyze the source code"] = "Analyser le code source", -- src\editor\inspect.lua
@@ -94,7 +94,7 @@ return {
   ["Error while processing API file: %s"] = "Erreur lors de la lecture du fichier d'API : %s", -- src\editor\autocomplete.lua
   ["Error while processing configuration file: %s"] = "Erreur lors de la lecture du fichier de configuration : %s", -- src\editor\style.lua
   ["Error"] = "Erreur", -- src\editor\commands.lua
-  ["Evaluate in Console"] = "Évaluer dans la console", -- src\editor\editor.lua
+  ["Evaluate In Console"] = "Évaluer dans la console", -- src\editor\editor.lua
   ["Execute the current project/file and keep updating the code to see immediate results"] = "Exécuter le projet/fichier courant en mettant le code à jour afin de voir les résultats en temps réel", -- src\editor\menu_project.lua
   ["Execute the current project/file"] = "Exécuter le projet/fichier courant", -- src\editor\menu_project.lua
   ["Execution error"] = "Erreur d'exécution", -- src\editor\debugger.lua

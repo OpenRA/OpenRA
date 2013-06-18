@@ -41,7 +41,7 @@ return {
   [".&bak on Replace"] = ".&bak после замены", -- src\editor\findreplace.lua
   ["About %s"] = "О %s", -- src\editor\menu_help.lua
   ["Add Watch Expression"] = "Добавить выражение", -- src\editor\editor.lua
-  ["Add to Scratchpad"] = "Добавить в черновик", -- src\editor\editor.lua
+  ["Add To Scratchpad"] = "Добавить в черновик", -- src\editor\editor.lua
   ["All files"] = "Все файлы", -- src\editor\commands.lua
   ["Allow external process to start debugging"] = "Разрешить внешнему процессу начать отладку", -- src\editor\menu_project.lua
   ["Analyze the source code"] = "Проанализировать исходный код", -- src\editor\inspect.lua
@@ -93,7 +93,7 @@ return {
   ["Error while processing API file: %s"] = "Ошибка обработки файла определений API: %s", -- src\editor\autocomplete.lua
   ["Error while processing configuration file: %s"] = "Ошибка обработки файла конфигурации: %s", -- src\editor\style.lua
   ["Error"] = "Ошибка", -- src\editor\commands.lua
-  ["Evaluate in Console"] = "Выполнить в консоли", -- src\editor\editor.lua
+  ["Evaluate In Console"] = "Выполнить в консоли", -- src\editor\editor.lua
   ["Execute the current project/file and keep updating the code to see immediate results"] = "Запустить текущий проект/файл и продолжать вносить изменения в код с немедленным выводом результатов", -- src\editor\menu_project.lua
   ["Execute the current project/file"] = "Запустить текущий проект/файл", -- src\editor\menu_project.lua
   ["Execution error"] = "Ошибка выполнения", -- src\editor\debugger.lua
