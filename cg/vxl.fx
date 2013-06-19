@@ -61,7 +61,6 @@ float4 Simple_fp(VertexOut f) : COLOR0 {
 
 technique high_quality {
 	pass p0 {
-		BlendEnable = true;
 		DepthTestEnable = true;
 		CullFaceEnable = false;
 		VertexProgram = compile latest Simple_vp();
@@ -74,7 +73,6 @@ technique high_quality {
 
 technique high_quality_cg21 {
 	pass p0 {
-		BlendEnable = true;
 		DepthTestEnable = true;
 		CullFaceEnable = false;
 		VertexProgram = compile arbvp1 Simple_vp();

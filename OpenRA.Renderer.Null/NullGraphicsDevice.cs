@@ -41,8 +41,8 @@ namespace OpenRA.Renderer.Null
 		public void EnableDepthBuffer() { }
 		public void DisableDepthBuffer() { }
 
-		public void EnableStencilBuffer() { }
-		public void DisableStencilBuffer() { }
+		public void EnableAlphaBlending() { }
+		public void DisableAlphaBlending() { }
 
 		public void Clear() { }
 		public void Present() { }
@@ -59,6 +59,7 @@ namespace OpenRA.Renderer.Null
 		public IVertexBuffer<Vertex> CreateVertexBuffer(int size) { return new NullVertexBuffer<Vertex>(); }
 		public ITexture CreateTexture() { return new NullTexture(); }
 		public ITexture CreateTexture(Bitmap bitmap) { return new NullTexture(); }
+		public IFrameBuffer CreateFrameBuffer(Size s) { return new NullFrameBuffer(); }
 		public IShader CreateShader(string name) { return new NullShader(); }
 	}
 
@@ -78,6 +79,15 @@ namespace OpenRA.Renderer.Null
 		public void SetData(Bitmap bitmap) { }
 		public void SetData(uint[,] colors) { }
 		public void SetData(byte[] colors, int width, int height) { }
+		public byte[] GetData() { return new byte[0]; }
+		public Size Size { get { return new Size(0, 0); } }
+	}
+
+	public class NullFrameBuffer : IFrameBuffer
+	{
+		public void Bind() { }
+		public void Unbind() { }
+		public ITexture Texture { get { return new NullTexture(); } }
 	}
 
 	class NullVertexBuffer<T> : IVertexBuffer<T>

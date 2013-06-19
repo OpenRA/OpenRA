@@ -78,22 +78,21 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
+			if (ticks < info.BeamDuration)
+			{
+				var src = new PPos(args.src.X, args.src.Y).ToWPos(args.srcAltitude);
+				var dest = new PPos(args.dest.X, args.dest.Y).ToWPos(args.destAltitude);
+				var rc = Color.FromArgb((info.BeamDuration - ticks)*255/info.BeamDuration, color);
+
+				yield return new BeamRenderable(src, 0, dest - src, info.BeamWidth, rc);
+			}
+
 			if (hitanim != null)
 				yield return new SpriteRenderable(hitanim.Image, args.dest.ToFloat2(),
 				                                  wr.Palette("effect"), (int)args.dest.Y);
 
 			if (ticks >= info.BeamDuration)
 				yield break;
-
-			var rc = Color.FromArgb((info.BeamDuration - ticks)*255/info.BeamDuration, color);
-
-			var src = new PPos(args.src.X, args.src.Y - args.srcAltitude);
-			var dest = new PPos(args.dest.X, args.dest.Y - args.destAltitude);
-			var wlr = Game.Renderer.WorldLineRenderer;
-			wlr.LineWidth = info.BeamWidth;
-			wlr.DrawLine(src.ToFloat2(), dest.ToFloat2(), rc, rc);
-			wlr.Flush();
-			wlr.LineWidth = 1f;
 		}
 	}
 }

@@ -151,8 +151,9 @@ namespace OpenRA.Mods.RA
 			{
 				var xy = Game.viewport.ViewToWorld(Viewport.LastMousePos);
 				var tiles = world.FindTilesInCircle(xy, range);
+				var pal = wr.Palette("terrain");
 				foreach (var t in tiles)
-					tile.DrawAt( wr, t.ToPPos().ToFloat2(), "terrain" );
+					tile.DrawAt(t.ToPPos().ToFloat2(), pal);
 			}
 
 			public string GetCursor(World world, CPos xy, MouseInput mi)
@@ -230,14 +231,15 @@ namespace OpenRA.Mods.RA
 			public void RenderBeforeWorld(WorldRenderer wr, World world)
 			{
 				var xy = Game.viewport.ViewToWorld(Viewport.LastMousePos);
+				var pal = wr.Palette("terrain");
 
 				// Source tiles
 				foreach (var t in world.FindTilesInCircle(sourceLocation, range))
-					sourceTile.DrawAt( wr, t.ToPPos().ToFloat2(), "terrain" );
+					sourceTile.DrawAt(t.ToPPos().ToFloat2(), pal);
 
 				// Destination tiles
 				foreach (var t in world.FindTilesInCircle(xy, range))
-					sourceTile.DrawAt( wr, t.ToPPos().ToFloat2(), "terrain" );
+					sourceTile.DrawAt(t.ToPPos().ToFloat2(), pal);
 
 				// Unit previews
 				foreach (var unit in power.UnitsInRange(sourceLocation))
@@ -257,7 +259,7 @@ namespace OpenRA.Mods.RA
 						var canEnter = ((manager.self.Owner.Shroud.IsExplored(targetCell) || manager.self.Owner.HasFogVisibility()) &&
 						                unit.Trait<Chronoshiftable>().CanChronoshiftTo(unit,targetCell));
 						var tile = canEnter ? validTile : invalidTile;
-						tile.DrawAt(wr, targetCell.ToPPos().ToFloat2(), "terrain");
+						tile.DrawAt(targetCell.ToPPos().ToFloat2(), pal);
 					}
 				}
 			}

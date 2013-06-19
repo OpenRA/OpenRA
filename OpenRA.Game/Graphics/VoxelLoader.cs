@@ -41,6 +41,20 @@ namespace OpenRA.Graphics
 		int totalVertexCount;
 		int cachedVertexCount;
 
+		SheetBuilder CreateSheetBuilder()
+		{
+			var allocated = false;
+			Func<Sheet> allocate = () =>
+			{
+				if (allocated)
+					throw new SheetOverflowException("");
+				allocated = true;
+				return SheetBuilder.AllocateSheet();
+			};
+
+			return new SheetBuilder(SheetType.DualIndexed, allocate);
+		}
+
 		public VoxelLoader()
 		{
 			voxels = new Cache<Pair<string,string>, Voxel>(LoadFile);
@@ -48,7 +62,7 @@ namespace OpenRA.Graphics
 			totalVertexCount = 0;
 			cachedVertexCount = 0;
 
-			sheetBuilder = new SheetBuilder(SheetType.DualIndexed);
+			sheetBuilder = CreateSheetBuilder();
 		}
 
 		static float[] channelSelect = { 0.75f, 0.25f, -0.25f, -0.75f };
@@ -67,10 +81,10 @@ namespace OpenRA.Graphics
 				c++;
 			}
 
-			Sprite s = sheetBuilder.Allocate(new Size(su, sv), false);
+			Sprite s = sheetBuilder.Allocate(new Size(su, sv));
 			Util.FastCopyIntoChannel(s, 0, colors);
 			Util.FastCopyIntoChannel(s, 1, normals);
-			s.sheet.MakeDirty();
+			s.sheet.CommitData();
 
 			var channels = new float2(channelSelect[(int)s.channel], channelSelect[(int)s.channel + 1]);
 			return new Vertex[4]
@@ -164,7 +178,7 @@ namespace OpenRA.Graphics
 			{
 				// Sheet overflow - allocate a new sheet and try once more
 				Log.Write("debug", "Voxel sheet overflow! Generating new sheet");
-				sheetBuilder = new SheetBuilder(SheetType.DualIndexed);
+				sheetBuilder = CreateSheetBuilder();
 				v = GenerateSlicePlanes(l).SelectMany(x => x).ToArray();
 			}
 

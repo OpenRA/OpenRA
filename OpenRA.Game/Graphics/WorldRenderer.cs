@@ -37,6 +37,7 @@ namespace OpenRA.Graphics
 		internal readonly ShroudRenderer shroudRenderer;
 		internal readonly HardwarePalette palette;
 		internal Cache<string, PaletteReference> palettes;
+		Lazy<DeveloperMode> devTrait;
 
 		internal WorldRenderer(World world)
 		{
@@ -51,6 +52,8 @@ namespace OpenRA.Graphics
 
 			terrainRenderer = new TerrainRenderer(world, this);
 			shroudRenderer = new ShroudRenderer(world);
+
+			devTrait = Lazy.New(() => world.LocalPlayer != null ? world.LocalPlayer.PlayerActor.Trait<DeveloperMode>() : null);
 		}
 
 		PaletteReference CreatePaletteReference(string name)
@@ -65,7 +68,7 @@ namespace OpenRA.Graphics
 		public PaletteReference Palette(string name) { return palettes[name]; }
 		public void AddPalette(string name, Palette pal, bool allowModifiers) { palette.AddPalette(name, pal, allowModifiers); }
 
-		void DrawRenderables()
+		List<IRenderable> GenerateRenderables()
 		{
 			var bounds = Game.viewport.WorldBounds(world);
 			var comparer = new RenderableComparer(this);
@@ -74,14 +77,23 @@ namespace OpenRA.Graphics
 				bounds.TopLeftAsCPos().ToPPos(),
 				bounds.BottomRightAsCPos().ToPPos());
 
-			actors.SelectMany(a => a.Render(this))
-				.OrderBy(r => r, comparer)
-				.Do(rr => rr.Render(this));
+			var worldRenderables = actors.SelectMany(a => a.Render(this))
+				.OrderBy(r => r, comparer);
 
 			// Effects are drawn on top of all actors
 			// TODO: Allow effects to be interleaved with actors
-			world.Effects.SelectMany(e => e.Render(this))
-				.Do(rr => rr.Render(this));
+			var effectRenderables = world.Effects
+				.SelectMany(e => e.Render(this));
+
+			// Iterating via foreach() copies the structs, so enumerate by index
+			var renderables = worldRenderables.Concat(effectRenderables).ToList();
+
+			Game.Renderer.WorldVoxelRenderer.BeginFrame();
+			for (var i = 0; i < renderables.Count; i++)
+				renderables[i].BeforeRender(this);
+			Game.Renderer.WorldVoxelRenderer.EndFrame();
+
+			return renderables;
 		}
 
 		public void Draw()
@@ -91,6 +103,7 @@ namespace OpenRA.Graphics
 			if (world.IsShellmap && !Game.Settings.Game.ShowShellmap)
 				return;
 
+			var renderables = GenerateRenderables();
 			var bounds = Game.viewport.ViewBounds(world);
 			Game.Renderer.EnableScissor(bounds.Left, bounds.Top, bounds.Width, bounds.Height);
 
@@ -109,7 +122,8 @@ namespace OpenRA.Graphics
 			if (world.OrderGenerator != null)
 				world.OrderGenerator.RenderBeforeWorld(this, world);
 
-			DrawRenderables();
+			for (var i = 0; i < renderables.Count; i++)
+				renderables[i].Render(this);
 
 			// added for contrails
 			foreach (var a in world.ActorsWithTrait<IPostRender>())
@@ -121,6 +135,11 @@ namespace OpenRA.Graphics
 
 			var renderShroud = world.RenderPlayer != null ? world.RenderPlayer.Shroud : null;
 			shroudRenderer.Draw(this, renderShroud);
+
+			if (devTrait.Value != null && devTrait.Value.ShowDebugGeometry)
+				for (var i = 0; i < renderables.Count; i++)
+					renderables[i].RenderDebugGeometry(this);
+
 			Game.Renderer.DisableScissor();
 
 			foreach (var g in world.Selection.Actors.Where(a => !a.Destroyed)
@@ -217,6 +236,13 @@ namespace OpenRA.Graphics
 			// Round to nearest pixel
 			var px = ScreenPosition(pos);
 			return new int2((int)Math.Round(px.X), (int)Math.Round(px.Y));
+		}
+
+		// For scaling vectors to pixel sizes in the voxel renderer
+		public float[] ScreenVector(WVec vec)
+		{
+			var c = Game.CellSize/1024f;
+			return new float[] {c*vec.X, c*vec.Y, c*vec.Z, 1};
 		}
 
 		public float ScreenZPosition(WPos pos, int zOffset) { return (pos.Y + pos.Z + zOffset)*Game.CellSize/1024f; }

@@ -78,6 +78,8 @@ namespace OpenRA.Mods.RA
 		public void Render( WorldRenderer wr )
 		{
 			var cliprect = Game.viewport.WorldBounds(world);
+			var pal = wr.Palette("terrain");
+
 			foreach (var kv in tiles)
 			{
 				if (!cliprect.Contains(kv.Key.X,kv.Key.Y))
@@ -86,7 +88,7 @@ namespace OpenRA.Mods.RA
 				if (world.ShroudObscures(kv.Key))
 					continue;
 
-				smudgeSprites[kv.Value.type- 1][kv.Value.index].DrawAt(wr, kv.Key.ToPPos().ToFloat2(), "terrain");
+				smudgeSprites[kv.Value.type- 1][kv.Value.index].DrawAt(kv.Key.ToPPos().ToFloat2(), pal);
 			}
 		}
 	}

@@ -34,7 +34,8 @@ namespace OpenRA.Renderer.Glsl
 		{
 			"GL_ARB_vertex_shader",
 			"GL_ARB_fragment_shader",
-			"GL_ARB_vertex_buffer_object"
+			"GL_ARB_vertex_buffer_object",
+			"GL_EXT_framebuffer_object"
 		};
 
 		public GraphicsDevice(Size size, WindowMode window)

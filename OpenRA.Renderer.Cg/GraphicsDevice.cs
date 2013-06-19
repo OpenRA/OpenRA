@@ -35,7 +35,8 @@ namespace OpenRA.Renderer.Cg
 		{
 			"GL_ARB_vertex_program",
 			"GL_ARB_fragment_program",
-			"GL_ARB_vertex_buffer_object"
+			"GL_ARB_vertex_buffer_object",
+			"GL_EXT_framebuffer_object"
 		};
 
 		internal IntPtr cgContext;

@@ -23,10 +23,6 @@ namespace OpenRA.Mods.RA
 		public readonly int Amount = 15;
 		[Desc("Whether to show the cash tick indicators (+$15 rising from actor).")]
 		public readonly bool ShowTicks = true;
-		[Desc("How long the cash tick indicator should be shown for.")]
-		public readonly int TickLifetime = 30;
-		[Desc("Pixels/tick upward movement of the cash tick indicator.")]
-		public readonly int TickVelocity = 1;
 		[Desc("Amount of money awarded for capturing the actor.")]
 		public readonly int CaptureAmount = 0;
 
@@ -64,7 +60,7 @@ namespace OpenRA.Mods.RA
 		void MaybeAddCashTick(Actor self, int amount)
 		{
 			if (Info.ShowTicks)
-				self.World.AddFrameEndTask(w => w.Add(new CashTick(amount, Info.TickLifetime, Info.TickVelocity, self.CenterLocation, self.Owner.Color.RGB)));
+				self.World.AddFrameEndTask(w => w.Add(new CashTick(self.CenterPosition, self.Owner.Color.RGB, amount)));
 		}
 	}
 }

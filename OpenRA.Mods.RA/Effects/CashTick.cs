@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Effects;
@@ -18,41 +19,32 @@ namespace OpenRA.Mods.RA.Effects
 {
 	class CashTick : IEffect
 	{
-		readonly string s;
-		int remaining;
-		readonly int velocity;
-		PPos pos;
-		readonly float2 offset;
-		readonly Color color;
 		readonly SpriteFont font;
+		readonly string text;
+		Color color;
+		int remaining = 30;
+		WPos pos;
 
-		static string FormatCashAmount(int x) { return "{0}${1}".F(x < 0 ? "-" : "+", x); }
-
-		public CashTick(int value, int lifetime, int velocity, PPos pos, Color color)
-			: this(FormatCashAmount(value), lifetime, velocity, pos, color) { }
-
-		public CashTick(string value, int lifetime, int velocity, PPos pos, Color color)
+		public CashTick(WPos pos, Color color, int value)
 		{
-			this.color = color;
-			this.velocity = velocity;
+			this.font = Game.Renderer.Fonts["TinyBold"];
 			this.pos = pos;
-			s = value;
-			font = Game.Renderer.Fonts["TinyBold"];
-			offset = 0.5f*font.Measure(s).ToFloat2();
-			remaining = lifetime;
+			this.color = color;
+			this.text = "{0}${1}".F(value < 0 ? "-" : "+", Math.Abs(value));
 		}
 
+		static readonly WVec velocity = new WVec(0,0,86);
 		public void Tick(World world)
 		{
 			if (--remaining <= 0)
 				world.AddFrameEndTask(w => w.Remove(this));
-			pos -= new PVecInt(0, velocity);
+
+			pos += velocity;
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			font.DrawTextWithContrast(s, Game.viewport.Zoom*(pos.ToFloat2() - Game.viewport.Location) - offset, color, Color.Black,1);
-			yield break;
+			yield return new TextRenderable(font, pos, 0, color, text);
 		}
 	}
 }

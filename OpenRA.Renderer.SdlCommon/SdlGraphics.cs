@@ -134,24 +134,6 @@ namespace OpenRA.Renderer.SdlCommon
 			ErrorHandler.CheckGlError();
 		}
 
-		public void EnableStencilBuffer()
-		{
-			Gl.glClear(Gl.GL_STENCIL_BUFFER_BIT);
-			ErrorHandler.CheckGlError();
-			Gl.glEnable(Gl.GL_STENCIL_TEST);
-			ErrorHandler.CheckGlError();
-			Gl.glStencilFunc(Gl.GL_NOTEQUAL, 1, 1);
-			ErrorHandler.CheckGlError();
-			Gl.glStencilOp(Gl.GL_KEEP, Gl.GL_KEEP, Gl.GL_INCR);
-			ErrorHandler.CheckGlError();
-		}
-
-		public void DisableStencilBuffer()
-		{
-			Gl.glDisable(Gl.GL_STENCIL_TEST);
-			ErrorHandler.CheckGlError();
-		}
-
 		public void EnableDepthBuffer()
 		{
 			Gl.glClear(Gl.GL_DEPTH_BUFFER_BIT);
@@ -163,6 +145,20 @@ namespace OpenRA.Renderer.SdlCommon
 		public void DisableDepthBuffer()
 		{
 			Gl.glDisable(Gl.GL_DEPTH_TEST);
+			ErrorHandler.CheckGlError();
+		}
+
+		public void EnableAlphaBlending()
+		{
+			Gl.glEnable(Gl.GL_BLEND);
+			ErrorHandler.CheckGlError();
+			Gl.glBlendFunc(Gl.GL_SRC_ALPHA, Gl.GL_ONE_MINUS_SRC_ALPHA);
+			ErrorHandler.CheckGlError();
+		}
+
+		public void DisableAlphaBlending()
+		{
+			Gl.glDisable(Gl.GL_BLEND);
 			ErrorHandler.CheckGlError();
 		}
 
@@ -194,6 +190,7 @@ namespace OpenRA.Renderer.SdlCommon
 		public IVertexBuffer<Vertex> CreateVertexBuffer(int size) { return new VertexBuffer<Vertex>(size); }
 		public ITexture CreateTexture() { return new Texture(); }
 		public ITexture CreateTexture(Bitmap bitmap) { return new Texture(bitmap); }
+		public IFrameBuffer CreateFrameBuffer(Size s) { return new FrameBuffer(s); }
 		public abstract IShader CreateShader(string name);
 	}
 }
