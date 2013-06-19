@@ -3474,6 +3474,11 @@ return {
    }
   },
   type = "class"
+ },
+ stage = {
+  childs = {},
+  inherits = "Sprite",
+  type = "class"
  }
 }
 
@@ -3569,18 +3574,19 @@ end
 
 -- several manual tweaks --
 
--- move functions from "Application" to "application" as there is a global
--- variable with that name.
-
-t.application = t.application or {childs = {}, type = "class"}
-for key, value in pairs(t.Application.childs) do
-  if value.type == "function" or value.type == "method" then
-    t.application.childs[key] = value
-    t.Application.childs[key] = nil
+-- move functions/methods to "application" (and to "stage")
+-- as there are global variables with these name.
+-- "world" is also a global variable, but what are its methods?
+for _, class in ipairs({"Application", "Stage"}) do
+  local global = class:lower()
+  t[global] = t[global] or {childs = {}, type = t[class].type, inherits = t[class].inherits}
+  for key, value in pairs(t[class].childs) do
+    if value.type == "function" or value.type == "method" then
+      t[global].childs[key] = value
+      t[class].childs[key] = nil
+    end
   end
 end
-
--- "stage" and "world" are also global variables, but what are their methods?
 
 -- add missing new() methods
 for _, class in ipairs{'StoreKit'} do
