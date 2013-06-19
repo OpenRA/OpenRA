@@ -1,61 +1,72 @@
-AUTHORS
+OpenRA wouldn't be where it is today without the
+hard work of many contributors.
 
 The OpenRA developers are:
-	* Alli Witheford	(alzeih)
-	* Caleb Anderson	(RobotCaleb)
-	* Chris Forbes		(chrisf)
-	* Curtis Shmyr		(hamb)
-	* Daniel Hernandez	(Mancano)
-	* Matthew Bowra-Dean	(beedee)
-	* Mike Bundy		(kehaar)
+    * Chris Forbes (chrisf)
+    * Curtis Shmyr (hamb)
+    * Paul Chote (pchote)
+    * Matthias Mailänder (Mailaender)
+    * ScottNZ
+
+Previous developers included:
+    * Alli Witheford (alzeih)
+    * Caleb Anderson (RobotCaleb)
+    * Daniel Hernandez (Mancano)
+    * Megan Bowra-Dean (beedee)
+    * Mike Bundy (kehaar)
+    * Robert Pepperell (ytinasni)
 
 Also thanks to:
-	* Akseli Virtanen       (RAGEQUIT)
-	* Andrew Riedi
-	* Andreas Beck		(baxtor)
-	* Barnaby Smith		(mvi)
-	* Bellator
-	* Bugra Cuhadaroglu (BugraC)
-	* Christer Ulfsparre	(Holloweye)
-	* Cody Brittain		(Generalcamo)
-	* D2k Sardaukar
-	* Daniel Derejvanik     (Harisson)
-	* Danny			(Dan9550)
-	* Erasmus Schroder	(rasco)
-	* Frank Razenberg	(zzattack)
-	* Igor Popov		(ihptru)
-	* Iran
-	* James Dunne		(jsd)
-	* Jeff Harris		(jeff_1amstudios)
-	* Jes			(-Jes-)
-	* Joakim Lindberg	(booom3)
-	* JOo
-	* Kenny Hoxworth	(hoxworth)
-	* Krishnakanth Mallik
-	* Kyrre Soerensen	(zypres)
-	* Lawrence Wang
-	* Lesueur Benjamin	(Valkirie)
-	* Mark Olson		(markolson)
-	* Matthew Gatland	(mgatland)
-	* Matthias Mailänder	(Mailaender)
-	* Maarten Meuris	(Nyerguds)
-	* Max Ugrumov		(katzsmile)
-	* Max621
-	* Nukem
-	* Olaf van der Spek
-	* Paolo Chiodi		(paolochiodi)
-	* Paul Dovydaitis	(pdovy)
-	* Psydev
-	* Raymond Martineau	(mart0258)
-	* Reaperrr
-	* Riderr3
-	* Sascha Biedermann	(bidifx)
-	* Tim Mylemans		(gecko)
-	* Tirili
-	* Tristan Keating       (Kilkakon)
-	* Vladimir Komarov	(VrKomarov)
-	* Wuschel
+    * Akseli Virtanen (RAGEQUIT)
+    * Andrew Riedi
+    * Andreas Beck (baxtor)
+    * Barnaby Smith (mvi)
+    * Bellator
+    * Bugra Cuhadaroglu (BugraC)
+    * Christer Ulfsparre (Holloweye)
+    * Cody Brittain (Generalcamo)
+    * D2k Sardaukar
+    * Daniel Derejvanik (Harisson)
+    * Danny (Dan9550)
+    * Erasmus Schroder (rasco)
+    * Frank Razenberg (zzattack)
+    * Igor Popov (ihptru)
+    * Iran
+    * James Dunne (jsd)
+    * Jeff Harris (jeff_1amstudios)
+    * Jes
+    * Joakim Lindberg (booom3)
+    * JOo
+    * Kenny Hoxworth (hoxworth)
+    * Krishnakanth Mallik
+    * Kyrre Soerensen (zypres)
+    * Lawrence Wang
+    * Lesueur Benjamin (Valkirie)
+    * Mark Olson (markolson)
+    * Matthew Gatland (mgatland)
+    * Maarten Meuris (Nyerguds)
+    * Max Ugrumov (katzsmile)
+    * Max621
+    * Nukem
+    * Olaf van der Spek
+    * Paolo Chiodi (paolochiodi)
+    * Paul Dovydaitis (pdovy)
+    * Psydev
+    * Raymond Martineau (mart0258)
+    * Reaperrr
+    * Riderr3
+    * Sascha Biedermann (bidifx)
+    * Tim Mylemans (gecko)
+    * Tirili
+    * Tristan Keating (Kilkakon)
+    * Vladimir Komarov (VrKomarov)
+    * Wuschel
 
-Past developers included:
-	* Paul Chote		(pchote)
-	* Robert Pepperell	(ytinasni)
+Finally, special thanks goes to the original teams
+at Westwood Studios and EA for creating the classic
+games that inspired the creation of OpenRA.
+
+Red Alert, Command and Conquer, and related
+trademarks belong to Electronic Arts Inc. and are
+used without permission.
+
