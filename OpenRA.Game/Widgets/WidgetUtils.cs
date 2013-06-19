@@ -31,12 +31,12 @@ namespace OpenRA.Widgets
 
 		public static void DrawSHP(Sprite s, float2 pos, WorldRenderer wr)
 		{
-			Game.Renderer.SpriteRenderer.DrawSprite(s,pos, wr, "chrome");
+			Game.Renderer.SpriteRenderer.DrawSprite(s, pos, wr.Palette("chrome"));
 		}
 
 		public static void DrawSHP(Sprite s, float2 pos, WorldRenderer wr, float2 size)
 		{
-			Game.Renderer.SpriteRenderer.DrawSprite(s, pos, wr, "chrome", size);
+			Game.Renderer.SpriteRenderer.DrawSprite(s, pos, wr.Palette("chrome"), size);
 		}
 
 		public static void DrawPanel(string collection, Rectangle Bounds)

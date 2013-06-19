@@ -29,6 +29,9 @@ namespace OpenRA.Graphics
 		readonly PaletteReference shadowPalette;
 		readonly float scale;
 
+		// Generated at render-time
+		VoxelRenderProxy renderProxy;
+
 		public VoxelRenderable(IEnumerable<VoxelAnimation> voxels, WPos pos, int zOffset, WRot camera, float scale,
 		                       WRot lightSource, float[] lightAmbientColor, float[] lightDiffuseColor,
 		                       PaletteReference color, PaletteReference normals, PaletteReference shadow)
@@ -44,6 +47,7 @@ namespace OpenRA.Graphics
 			this.palette = color;
 			this.normalsPalette = normals;
 			this.shadowPalette = shadow;
+			this.renderProxy = null;
 		}
 
 		public WPos Pos { get { return pos; } }
@@ -79,28 +83,94 @@ namespace OpenRA.Graphics
 			                           palette, normalsPalette, shadowPalette);
 		}
 
+		// This will need generalizing once we support TS/RA2 terrain
+		static readonly float[] groundNormal = new float[] {0,0,1,1};
+		public void BeforeRender(WorldRenderer wr)
+		{
+			renderProxy = Game.Renderer.WorldVoxelRenderer.RenderAsync(
+				wr, voxels, camera, scale, groundNormal, lightSource,
+				lightAmbientColor, lightDiffuseColor,
+			    palette, normalsPalette, shadowPalette);
+		}
+
 		public void Render(WorldRenderer wr)
 		{
-			// Depth and shadow buffers are cleared between actors so that
-			// overlapping units and shadows behave like overlapping sprites.
-			var vr = Game.Renderer.WorldVoxelRenderer;
+			var pxOrigin = wr.ScreenPosition(pos);
+			var groundZ = 0.5f*(pxOrigin.Y - wr.ScreenZPosition(pos, 0));
+			var shadowOrigin = pxOrigin - groundZ*(new float2(renderProxy.ShadowDirection, 1));
+
+			var psb = renderProxy.ProjectedShadowBounds;
+			var sa = shadowOrigin + psb[0];
+			var sb = shadowOrigin + psb[2];
+			var sc = shadowOrigin + psb[1];
+			var sd = shadowOrigin + psb[3];
+			Game.Renderer.WorldRgbaSpriteRenderer.DrawSprite(renderProxy.ShadowSprite, sa, sb, sc, sd);
+			Game.Renderer.WorldRgbaSpriteRenderer.DrawSprite(renderProxy.Sprite, pxOrigin - 0.5f*renderProxy.Sprite.size);
+		}
+
+		public void RenderDebugGeometry(WorldRenderer wr)
+		{
+			var pxOrigin = wr.ScreenPosition(pos);
+			var groundZ = 0.5f*(pxOrigin.Y - wr.ScreenZPosition(pos, 0));
+			var shadowOrigin = pxOrigin - groundZ*(new float2(renderProxy.ShadowDirection, 1));
+
+			// Draw sprite rect
+			var offset = pxOrigin + renderProxy.Sprite.offset - 0.5f*renderProxy.Sprite.size;
+			Game.Renderer.WorldLineRenderer.DrawRect(offset, offset + renderProxy.Sprite.size, Color.Red);
+
+			// Draw transformed shadow sprite rect
+			var c = Color.Purple;
+			var psb = renderProxy.ProjectedShadowBounds;
+			Game.Renderer.WorldLineRenderer.DrawLine(shadowOrigin + psb[1], shadowOrigin + psb[3], c, c);
+			Game.Renderer.WorldLineRenderer.DrawLine(shadowOrigin + psb[3], shadowOrigin + psb[0], c, c);
+			Game.Renderer.WorldLineRenderer.DrawLine(shadowOrigin + psb[0], shadowOrigin + psb[2], c, c);
+			Game.Renderer.WorldLineRenderer.DrawLine(shadowOrigin + psb[2], shadowOrigin + psb[1], c, c);
+
+			// Draw voxel bounding box
 			var draw = voxels.Where(v => v.DisableFunc == null || !v.DisableFunc());
+			var scaleTransform = Util.ScaleMatrix(scale, scale, scale);
+			var cameraTransform = Util.MakeFloatMatrix(camera.AsMatrix());
 
 			foreach (var v in draw)
-				v.Voxel.PrepareForDraw(wr, pos + v.OffsetFunc(), v.RotationFunc(), camera,
-				                       v.FrameFunc(), scale, lightSource);
+			{
+				var bounds = v.Voxel.Bounds(v.FrameFunc());
+				var worldTransform = v.RotationFunc().Reverse().Aggregate(scaleTransform,
+					(x,y) => Util.MatrixMultiply(x, Util.MakeFloatMatrix(y.AsMatrix())));
 
-			Game.Renderer.EnableDepthBuffer();
-			Game.Renderer.EnableStencilBuffer();
-			foreach (var v in draw)
-				v.Voxel.DrawShadow(vr, shadowPalette.Index);
-			Game.Renderer.DisableStencilBuffer();
-			Game.Renderer.DisableDepthBuffer();
+				var pxOffset = wr.ScreenVector(v.OffsetFunc());
+				var pxPos = pxOrigin + new float2(pxOffset[0], pxOffset[1]);
+				var screenTransform = Util.MatrixMultiply(cameraTransform, worldTransform);
+				DrawBoundsBox(pxPos, screenTransform, bounds, Color.Yellow);
+			}
+		}
 
-			Game.Renderer.EnableDepthBuffer();
-			foreach (var v in draw)
-				v.Voxel.Draw(vr, lightAmbientColor, lightDiffuseColor, palette.Index, normalsPalette.Index);
-			Game.Renderer.DisableDepthBuffer();
+		static readonly uint[] ix = new uint[] {0,0,0,0,3,3,3,3};
+		static readonly uint[] iy = new uint[] {1,1,4,4,1,1,4,4};
+		static readonly uint[] iz = new uint[] {2,5,2,5,2,5,2,5};
+		static void DrawBoundsBox(float2 pxPos, float[] transform, float[] bounds, Color c)
+		{
+			var corners = new float2[8];
+			for (var i = 0; i < 8; i++)
+			{
+				var vec = new float[] {bounds[ix[i]], bounds[iy[i]], bounds[iz[i]], 1};
+				var screen = Util.MatrixVectorMultiply(transform, vec);
+				corners[i] = pxPos + new float2(screen[0], screen[1]);
+			}
+
+			Game.Renderer.WorldLineRenderer.DrawLine(corners[0], corners[1], c, c);
+			Game.Renderer.WorldLineRenderer.DrawLine(corners[1], corners[3], c, c);
+			Game.Renderer.WorldLineRenderer.DrawLine(corners[3], corners[2], c, c);
+			Game.Renderer.WorldLineRenderer.DrawLine(corners[2], corners[0], c, c);
+
+			Game.Renderer.WorldLineRenderer.DrawLine(corners[4], corners[5], c, c);
+			Game.Renderer.WorldLineRenderer.DrawLine(corners[5], corners[7], c, c);
+			Game.Renderer.WorldLineRenderer.DrawLine(corners[7], corners[6], c, c);
+			Game.Renderer.WorldLineRenderer.DrawLine(corners[6], corners[4], c, c);
+
+			Game.Renderer.WorldLineRenderer.DrawLine(corners[0], corners[4], c, c);
+			Game.Renderer.WorldLineRenderer.DrawLine(corners[1], corners[5], c, c);
+			Game.Renderer.WorldLineRenderer.DrawLine(corners[2], corners[6], c, c);
+			Game.Renderer.WorldLineRenderer.DrawLine(corners[3], corners[7], c, c);
 		}
 	}
 }

@@ -47,7 +47,7 @@ namespace OpenRA.Traits
 					if (c.image != null)
 						c.image[c.density].DrawAt(
 							new CPos(x, y).ToPPos().ToFloat2(),
-							c.type.info.PaletteRef.Index);
+							c.type.info.PaletteRef);
 				}
 		}
 

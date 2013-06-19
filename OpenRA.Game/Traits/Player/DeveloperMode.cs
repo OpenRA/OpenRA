@@ -22,6 +22,7 @@ namespace OpenRA.Traits
 		public bool UnlimitedPower;
 		public bool BuildAnywhere;
 		public bool ShowMuzzles;
+		public bool ShowDebugGeometry;
 
 		public object Create (ActorInitializer init) { return new DeveloperMode(this); }
 	}
@@ -39,6 +40,7 @@ namespace OpenRA.Traits
 
 		// Client size only
 		public bool ShowMuzzles;
+		public bool ShowDebugGeometry;
 
 		public DeveloperMode(DeveloperModeInfo info)
 		{
@@ -50,6 +52,7 @@ namespace OpenRA.Traits
 			UnlimitedPower = info.UnlimitedPower;
 			BuildAnywhere = info.BuildAnywhere;
 			ShowMuzzles = info.ShowMuzzles;
+			ShowDebugGeometry = info.ShowDebugGeometry;
 		}
 
 		public void ResolveOrder (Actor self, Order order)

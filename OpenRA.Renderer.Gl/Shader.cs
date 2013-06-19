@@ -104,7 +104,6 @@ namespace OpenRA.Renderer.Glsl
 					++nextTexUnit;
 				}
 			}
-
 		}
 
 		public void Render(Action a)
@@ -115,20 +114,12 @@ namespace OpenRA.Renderer.Glsl
 
 			foreach (var kv in textures)
 			{
-				Gl.glActiveTextureARB( Gl.GL_TEXTURE0_ARB + kv.Key );
-				Gl.glBindTexture( Gl.GL_TEXTURE_2D, ((Texture)kv.Value).texture );
+				Gl.glActiveTextureARB(Gl.GL_TEXTURE0_ARB + kv.Key);
+				Gl.glBindTexture(Gl.GL_TEXTURE_2D, ((Texture)kv.Value).ID);
 			}
 
-			/* configure blend state */
-			ErrorHandler.CheckGlError();
-			// TODO: Only enable alpha blending if we need it
-			Gl.glEnable(Gl.GL_BLEND);
-			ErrorHandler.CheckGlError();
-			Gl.glBlendFunc(Gl.GL_SRC_ALPHA, Gl.GL_ONE_MINUS_SRC_ALPHA);
 			ErrorHandler.CheckGlError();
 			a();
-			ErrorHandler.CheckGlError();
-			Gl.glDisable(Gl.GL_BLEND);
 			ErrorHandler.CheckGlError();
 		}
 

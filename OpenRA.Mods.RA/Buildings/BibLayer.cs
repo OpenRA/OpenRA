@@ -73,6 +73,7 @@ namespace OpenRA.Mods.RA.Buildings
 
 		public void Render( WorldRenderer wr )
 		{
+			var pal = wr.Palette("terrain");
 			var cliprect = Game.viewport.WorldBounds(world);
 			foreach (var kv in tiles)
 			{
@@ -81,7 +82,7 @@ namespace OpenRA.Mods.RA.Buildings
 				if (world.ShroudObscures(kv.Key))
 					continue;
 
-				bibSprites[kv.Value.type - 1][kv.Value.index].DrawAt(wr, kv.Key.ToPPos().ToFloat2(), "terrain");
+				bibSprites[kv.Value.type - 1][kv.Value.index].DrawAt(kv.Key.ToPPos().ToFloat2(), pal);
 			}
 		}
 	}

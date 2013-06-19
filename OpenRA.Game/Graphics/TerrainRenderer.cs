@@ -29,11 +29,22 @@ namespace OpenRA.Graphics
 			this.world = world;
 			this.map = world.Map;
 
-			// TODO: Use a fixed sheet size specified in the tileset yaml
-			sheetBuilder = new SheetBuilder(SheetType.Indexed);
+			var allocated = false;
+			Func<Sheet> allocate = () =>
+			{
+				if (allocated)
+					throw new SheetOverflowException("Terrain sheet overflow");
+				allocated = true;
+
+				// TODO: Use a fixed sheet size specified in the tileset yaml
+				return SheetBuilder.AllocateSheet();
+			};
+
+			sheetBuilder = new SheetBuilder(SheetType.Indexed, allocate);
+
 			var tileSize = new Size(Game.CellSize, Game.CellSize);
 			var tileMapping = new Cache<TileReference<ushort,byte>, Sprite>(
-				x => sheetBuilder.Add(world.TileSet.GetBytes(x), tileSize, false));
+				x => sheetBuilder.Add(world.TileSet.GetBytes(x), tileSize));
 
 			var terrainPalette = wr.Palette("terrain").Index;
 			var vertices = new Vertex[4 * map.Bounds.Height * map.Bounds.Width];

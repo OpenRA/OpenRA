@@ -93,7 +93,7 @@ namespace OpenRA.Mods.RA
 			{
 				var temp = currentDisplayValue;
 				if (self.Owner.IsAlliedWith(self.World.RenderPlayer))
-					self.World.AddFrameEndTask(w => w.Add(new CashTick(temp, Info.TickLifetime, Info.TickVelocity, self.CenterLocation, self.Owner.Color.RGB)));
+					self.World.AddFrameEndTask(w => w.Add(new CashTick(self.CenterPosition, self.Owner.Color.RGB, temp)));
 				currentDisplayTick = Info.TickRate;
 				currentDisplayValue = 0;
 			}

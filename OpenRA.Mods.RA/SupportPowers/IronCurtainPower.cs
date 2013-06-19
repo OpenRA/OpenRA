@@ -98,8 +98,9 @@ namespace OpenRA.Mods.RA
 			public void RenderBeforeWorld(WorldRenderer wr, World world)
 			{
 				var xy = Game.viewport.ViewToWorld(Viewport.LastMousePos);
+				var pal = wr.Palette("terrain");
 				foreach (var t in world.FindTilesInCircle(xy, range))
-					tile.DrawAt( wr, t.ToPPos().ToFloat2(), "terrain" );
+					tile.DrawAt(t.ToPPos().ToFloat2(), pal);
 			}
 
 			public string GetCursor(World world, CPos xy, MouseInput mi)

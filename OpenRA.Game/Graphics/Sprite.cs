@@ -18,12 +18,17 @@ namespace OpenRA.Graphics
 		public readonly Sheet sheet;
 		public readonly TextureChannel channel;
 		public readonly float2 size;
+		public readonly float2 offset;
 		readonly float2[] textureCoords;
 
 		public Sprite(Sheet sheet, Rectangle bounds, TextureChannel channel)
+			: this(sheet, bounds, float2.Zero, channel) {}
+
+		public Sprite(Sheet sheet, Rectangle bounds, float2 offset, TextureChannel channel)
 		{
-			this.bounds = bounds;
 			this.sheet = sheet;
+			this.bounds = bounds;
+			this.offset = offset;
 			this.channel = channel;
 			this.size = new float2(bounds.Size);
 
@@ -45,24 +50,19 @@ namespace OpenRA.Graphics
 			return textureCoords[k];
 		}
 
-		public void DrawAt(WorldRenderer wr, float2 location, string palette)
+		public void DrawAt(float2 location, PaletteReference pal)
 		{
-			Game.Renderer.WorldSpriteRenderer.DrawSprite(this, location, wr, palette, size);
+			Game.Renderer.WorldSpriteRenderer.DrawSprite(this, location, pal, size);
 		}
 
-		public void DrawAt(float2 location, int paletteIndex)
+		public void DrawAt(float2 location, PaletteReference pal, float scale)
 		{
-			Game.Renderer.WorldSpriteRenderer.DrawSprite(this, location, paletteIndex, size);
+			Game.Renderer.WorldSpriteRenderer.DrawSprite(this, location, pal, size*scale);
 		}
 
-		public void DrawAt(float2 location, int paletteIndex, float scale)
+		public void DrawAt(float2 location, PaletteReference pal, float2 size)
 		{
-			Game.Renderer.WorldSpriteRenderer.DrawSprite(this, location, paletteIndex, size*scale);
-		}
-
-		public void DrawAt(float2 location, int paletteIndex, float2 size)
-		{
-			Game.Renderer.WorldSpriteRenderer.DrawSprite(this, location, paletteIndex, size);
+			Game.Renderer.WorldSpriteRenderer.DrawSprite(this, location, pal, size);
 		}
 	}
 

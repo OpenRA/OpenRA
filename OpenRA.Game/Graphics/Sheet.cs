@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using OpenRA.FileFormats;
@@ -19,13 +20,21 @@ namespace OpenRA.Graphics
 	{
 		ITexture texture;
 		bool dirty;
-		public byte[] Data { get; private set; }
+		byte[] data;
+
 		public readonly Size Size;
+		public byte[] Data { get { return data ?? texture.GetData(); } }
 
 		public Sheet(Size size)
 		{
 			Size = size;
-			Data = new byte[4*Size.Width*Size.Height];
+			data = new byte[4*Size.Width*Size.Height];
+		}
+
+		public Sheet(ITexture texture)
+		{
+			this.texture = texture;
+			Size = texture.Size;
 		}
 
 		public Sheet(string filename)
@@ -33,7 +42,7 @@ namespace OpenRA.Graphics
 			var bitmap = (Bitmap)Image.FromStream(FileSystem.Open(filename));
 			Size = bitmap.Size;
 
-			Data = new byte[4*Size.Width*Size.Height];
+			data = new byte[4*Size.Width*Size.Height];
 			var b = bitmap.LockBits(bitmap.Bounds(),
 				ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
 
@@ -48,10 +57,10 @@ namespace OpenRA.Graphics
 
 					// Convert argb to bgra
 					var argb = *(c + (y * b.Stride >> 2) + x);
-					Data[i++] = (byte)(argb >> 0);
-					Data[i++] = (byte)(argb >> 8);
-					Data[i++] = (byte)(argb >> 16);
-					Data[i++] = (byte)(argb >> 24);
+					data[i++] = (byte)(argb >> 0);
+					data[i++] = (byte)(argb >> 8);
+					data[i++] = (byte)(argb >> 16);
+					data[i++] = (byte)(argb >> 24);
 				}
 			}
 			bitmap.UnlockBits(b);
@@ -69,7 +78,7 @@ namespace OpenRA.Graphics
 
 				if (dirty)
 				{
-					texture.SetData(Data, Size.Width, Size.Height);
+					texture.SetData(data, Size.Width, Size.Height);
 					dirty = false;
 				}
 
@@ -79,6 +88,7 @@ namespace OpenRA.Graphics
 
 		public Bitmap AsBitmap()
 		{
+			var d = Data;
 			var b = new Bitmap(Size.Width, Size.Height);
 			var output = b.LockBits(new Rectangle(0, 0, Size.Width, Size.Height),
 				ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
@@ -93,7 +103,7 @@ namespace OpenRA.Graphics
 						var i = 4*Size.Width*y + 4*x;
 
 						// Convert bgra to argb
-						var argb = (Data[i+3] << 24) | (Data[i+2] << 16) | (Data[i+1] << 8) | Data[i];
+						var argb = (d[i+3] << 24) | (d[i+2] << 16) | (d[i+1] << 8) | d[i];
 						*(c + (y * output.Stride >> 2) + x) = argb;
 					}
 			}
@@ -104,6 +114,7 @@ namespace OpenRA.Graphics
 
 		public Bitmap AsBitmap(TextureChannel channel, Palette pal)
 		{
+			var d = Data;
 			var b = new Bitmap(Size.Width, Size.Height);
 			var output = b.LockBits(new Rectangle(0, 0, Size.Width, Size.Height),
 				ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
@@ -115,7 +126,7 @@ namespace OpenRA.Graphics
 				for (var x = 0; x < Size.Width; x++)
 					for (var y = 0; y < Size.Height; y++)
 				{
-					var index = Data[4*Size.Width*y + 4*x + (int)channel];
+					var index = d[4*Size.Width*y + 4*x + (int)channel];
 					*(c + (y * output.Stride >> 2) + x) = pal.GetColor(index).ToArgb();
 				}
 			}
@@ -124,6 +135,12 @@ namespace OpenRA.Graphics
 			return b;
 		}
 
-		public void MakeDirty() { dirty = true; }
+		public void CommitData()
+		{
+			if (data == null)
+				throw new InvalidOperationException("Texture-wrappers are read-only");
+
+			dirty = true;
+		}
 	}
 }

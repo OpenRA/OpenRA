@@ -19,7 +19,7 @@ namespace OpenRA.FileFormats
 	{
 		public readonly uint FrameCount;
 		public readonly uint LimbCount;
-		float[] Transforms;
+		public readonly float[] Transforms;
 
 		public HvaReader(Stream s)
 		{
@@ -46,19 +46,6 @@ namespace OpenRA.FileFormats
 				for (var k = 0; k < 12; k++)
 					Transforms[c + ids[k]] = s.ReadFloat();
 			}
-		}
-
-		public float[] TransformationMatrix(uint limb, uint frame)
-		{
-			if (frame >= FrameCount)
-				throw new ArgumentOutOfRangeException("frame", "Only {0} frames exist.".F(FrameCount));
-			if (limb >= LimbCount)
-				throw new ArgumentOutOfRangeException("limb", "Only {1} limbs exist.".F(LimbCount));
-
-			var t = new float[16];
-			Array.Copy(Transforms, 16*(LimbCount*frame + limb), t, 0, 16);
-
-			return t;
 		}
 
 		public static HvaReader Load(string filename)

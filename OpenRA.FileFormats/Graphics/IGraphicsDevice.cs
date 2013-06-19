@@ -37,6 +37,7 @@ namespace OpenRA.FileFormats.Graphics
 		IVertexBuffer<Vertex> CreateVertexBuffer( int length );
 		ITexture CreateTexture( Bitmap bitmap );
 		ITexture CreateTexture();
+		IFrameBuffer CreateFrameBuffer(Size s);
 		IShader CreateShader( string name );
 
 		Size WindowSize { get; }
@@ -54,8 +55,8 @@ namespace OpenRA.FileFormats.Graphics
 		void EnableDepthBuffer();
 		void DisableDepthBuffer();
 
-		void EnableStencilBuffer();
-		void DisableStencilBuffer();
+		void EnableAlphaBlending();
+		void DisableAlphaBlending();
 	}
 
 	public interface IVertexBuffer<T>
@@ -79,6 +80,15 @@ namespace OpenRA.FileFormats.Graphics
 		void SetData(Bitmap bitmap);
 		void SetData(uint[,] colors);
 		void SetData(byte[] colors, int width, int height);
+		byte[] GetData();
+		Size Size { get; }
+	}
+
+	public interface IFrameBuffer
+	{
+		void Bind();
+		void Unbind();
+		ITexture Texture { get; }
 	}
 
 	public enum PrimitiveType

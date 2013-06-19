@@ -20,12 +20,23 @@ namespace OpenRA.Graphics
 {
 	public static class CursorProvider
 	{
-		static HardwarePalette Palette;
+		static HardwarePalette palette;
 		static Dictionary<string, CursorSequence> cursors;
+		static Cache<string, PaletteReference> palettes;
+
+		static PaletteReference CreatePaletteReference(string name)
+		{
+			var pal = palette.GetPalette(name);
+			if (pal == null)
+				throw new InvalidOperationException("Palette `{0}` does not exist".F(name));
+
+			return new PaletteReference(name, palette.GetPaletteIndex(name), pal);
+		}
 
 		public static void Initialize(string[] sequenceFiles)
 		{
 			cursors = new Dictionary<string, CursorSequence>();
+			palettes = new Cache<string, PaletteReference>(CreatePaletteReference);
 			var sequences = new MiniYaml(null, sequenceFiles.Select(s => MiniYaml.FromFile(s)).Aggregate(MiniYaml.MergeLiberal));
 			int[] ShadowIndex = { };
 
@@ -35,14 +46,14 @@ namespace OpenRA.Graphics
 				int.TryParse(sequences.NodesDict["ShadowIndex"].Value, out ShadowIndex[ShadowIndex.Length - 1]);
 			}
 
-			Palette = new HardwarePalette();
+			palette = new HardwarePalette();
 			foreach (var p in sequences.NodesDict["Palettes"].Nodes)
-				Palette.AddPalette(p.Key, new Palette(FileSystem.Open(p.Value.Value), ShadowIndex), false);
+				palette.AddPalette(p.Key, new Palette(FileSystem.Open(p.Value.Value), ShadowIndex), false);
 
 			foreach (var s in sequences.NodesDict["Cursors"].Nodes)
 				LoadSequencesForCursor(s.Key, s.Value);
 
-			Palette.Initialize();
+			palette.Initialize();
 		}
 
 		static void LoadSequencesForCursor(string cursorSrc, MiniYaml cursor)
@@ -63,10 +74,10 @@ namespace OpenRA.Graphics
 			var cursorSequence = GetCursorSequence(cursorName);
 			var cursorSprite = cursorSequence.GetSprite(cursorFrame);
 
-			renderer.SetPalette(Palette);
+			renderer.SetPalette(palette);
 			renderer.SpriteRenderer.DrawSprite(cursorSprite,
 			                                   lastMousePos - cursorSequence.Hotspot,
-			                                   Palette.GetPaletteIndex(cursorSequence.Palette),
+			                                   palettes[cursorSequence.Palette],
 			                                   cursorSprite.size);
 		}
 

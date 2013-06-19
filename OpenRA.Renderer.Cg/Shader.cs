@@ -72,7 +72,7 @@ namespace OpenRA.Renderer.Cg
 			var texture = (Texture)t;
 			var param = Tao.Cg.Cg.cgGetNamedEffectParameter(effect, name);
 			if (param != IntPtr.Zero && texture != null)
-				Tao.Cg.CgGl.cgGLSetupSampler(param, texture.texture);
+				Tao.Cg.CgGl.cgGLSetupSampler(param, texture.ID);
 		}
 
 		public void SetVec(string name, float x)

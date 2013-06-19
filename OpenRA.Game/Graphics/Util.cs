@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using OpenRA.FileFormats.Graphics;
 
 namespace OpenRA.Graphics
@@ -18,16 +19,20 @@ namespace OpenRA.Graphics
 
 		public static void FastCreateQuad(Vertex[] vertices, float2 o, Sprite r, int palette, int nv, float2 size)
 		{
+			var b = new float2(o.X + size.X, o.Y);
+			var c = new float2(o.X + size.X, o.Y + size.Y);
+			var d = new float2(o.X, o.Y + size.Y);
+			FastCreateQuad(vertices, o, b, c, d, r, palette, nv);
+		}
+
+		public static void FastCreateQuad(Vertex[] vertices, float2 a, float2 b, float2 c, float2 d, Sprite r, int palette, int nv)
+		{
 			var attrib = new float2(palette / (float)HardwarePalette.MaxPalettes, channelSelect[(int)r.channel]);
 
-			vertices[nv] = new Vertex(o,
-				r.FastMapTextureCoords(0), attrib);
-			vertices[nv + 1] = new Vertex(new float2(o.X + size.X, o.Y),
-				r.FastMapTextureCoords(1), attrib);
-			vertices[nv + 2] = new Vertex(new float2(o.X + size.X, o.Y + size.Y),
-				r.FastMapTextureCoords(3), attrib);
-			vertices[nv + 3] = new Vertex(new float2(o.X, o.Y + size.Y),
-				r.FastMapTextureCoords(2), attrib);
+			vertices[nv] = new Vertex(a, r.FastMapTextureCoords(0), attrib);
+			vertices[nv + 1] = new Vertex(b, r.FastMapTextureCoords(1), attrib);
+			vertices[nv + 2] = new Vertex(c, r.FastMapTextureCoords(3), attrib);
+			vertices[nv + 3] = new Vertex(d, r.FastMapTextureCoords(2), attrib);
 		}
 
 		static readonly int[] channelMasks = { 2, 1, 0, 3 };	// yes, our channel order is nuts.
@@ -228,6 +233,42 @@ namespace OpenRA.Graphics
 				mtx[i] *= 1/det;
 
 			return mtx;
+		}
+
+		public static float[] MakeFloatMatrix(int[] imtx)
+		{
+			var fmtx = new float[16];
+			for (var i = 0; i < 16; i++)
+				fmtx[i] = imtx[i]*1f / imtx[15];
+			return fmtx;
+		}
+
+		public static float[] MatrixAABBMultiply(float[] mtx, float[] bounds)
+		{
+			// Corner offsets
+			var ix = new uint[] {0,0,0,0,3,3,3,3};
+			var iy = new uint[] {1,1,4,4,1,1,4,4};
+			var iz = new uint[] {2,5,2,5,2,5,2,5};
+
+			// Vectors to opposing corner
+			var ret = new float[] {float.MaxValue, float.MaxValue, float.MaxValue,
+				float.MinValue, float.MinValue, float.MinValue};
+
+			// Transform vectors and find new bounding box
+			for (var i = 0; i < 8; i++)
+			{
+				var vec = new float[] {bounds[ix[i]], bounds[iy[i]], bounds[iz[i]], 1};
+				var tvec = Util.MatrixVectorMultiply(mtx, vec);
+
+				ret[0] = Math.Min(ret[0], tvec[0]/tvec[3]);
+				ret[1] = Math.Min(ret[1], tvec[1]/tvec[3]);
+				ret[2] = Math.Min(ret[2], tvec[2]/tvec[3]);
+				ret[3] = Math.Max(ret[3], tvec[0]/tvec[3]);
+				ret[4] = Math.Max(ret[4], tvec[1]/tvec[3]);
+				ret[5] = Math.Max(ret[5], tvec[2]/tvec[3]);
+			}
+
+			return ret;
 		}
 	}
 }

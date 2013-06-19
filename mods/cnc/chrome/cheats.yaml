@@ -99,3 +99,9 @@ Container@CHEATS_PANEL:
 					Height:20
 					Width:200
 					Text:Show Muzzle Positions
+				Checkbox@SHOW_GEOMETRY:
+					X:290
+					Y:265
+					Height:20
+					Width:200
+					Text:Show Render Geometry

@@ -44,8 +44,7 @@ namespace OpenRA.Mods.RA
 
 			Sound.PlayToPlayer(self.Owner, info.SoundToVictim);
 
-			self.World.AddFrameEndTask(w => w.Add(new CashTick(toGive, 30, 2, self.CenterLocation,
-			                                                   infiltrator.Owner.Color.RGB)));
+			self.World.AddFrameEndTask(w => w.Add(new CashTick(self.CenterPosition, infiltrator.Owner.Color.RGB, toGive)));
 		}
 	}
 }
