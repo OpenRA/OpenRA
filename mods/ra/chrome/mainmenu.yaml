@@ -23,7 +23,7 @@ Container@MAINMENU:
 			X:(WINDOW_RIGHT - WIDTH)/8
 			Y:(WINDOW_BOTTOM - HEIGHT)/2
 			Width:250
-			Height:555
+			Height:605
 			Logic:MainMenuButtonsLogic
 			Children:
 				Label@MAINMENU_LABEL_TITLE:
@@ -83,16 +83,23 @@ Container@MAINMENU:
 					Height:35
 					Text:Replay Viewer
 					Font:Bold
-				Button@MAINMENU_BUTTON_ASSET_BROWSER:
+				Button@MAINMENU_BUTTON_CREDITS:
 					X:45
 					Y:430
+					Width:160
+					Height:35
+					Text:Credits
+					Font:Bold
+				Button@MAINMENU_BUTTON_ASSET_BROWSER:
+					X:45
+					Y:480
 					Width:160
 					Height:35
 					Text:Asset Browser
 					Font:Bold
 				Button@MAINMENU_BUTTON_QUIT:
 					X:45
-					Y:480
+					Y:530
 					Width:160
 					Height:35
 					Text:Quit
