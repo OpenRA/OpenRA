@@ -108,12 +108,13 @@ function FileLines(f)
   end
 end
 
-function PrependStringToArray(t, s, maxstrings)
+function PrependStringToArray(t, s, maxstrings, issame)
   if string.len(s) == 0 then return end
-  for i, v in ipairs(t) do
-    if v == s then
+  for i = #t, 1, -1 do
+    local v = t[i]
+    if v == s or issame and issame(s, v) then
       table.remove(t, i) -- remove old copy
-      break
+      -- don't break here in case there are multiple copies to remove
     end
   end
   table.insert(t, 1, s)

@@ -248,7 +248,11 @@ function filetree:updateProjectDir(newdir, cboxsel)
 
   PackageEventHandle("onProjectLoad", filetree.projdir)
 
-  PrependStringToArray(filetree.projdirlist,newdir,ide.config.projecthistorylength)
+  PrependStringToArray(
+    filetree.projdirlist,
+    newdir,
+    ide.config.projecthistorylength,
+    function(s1, s2) return dirname:SameAs(wx.wxFileName.DirName(s2)) end)
   projcombobox:Clear()
   projcombobox:Append(filetree.projdirlist)
   if (not cboxsel) then
