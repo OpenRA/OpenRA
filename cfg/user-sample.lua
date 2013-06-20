@@ -135,3 +135,8 @@ editor.foldcompact = true
 
 -- to disable zoom with mouse wheel as it may be too sensitive on OSX
 editor.nomousezoom = true
+
+-- to specify a skin for Corona simulator (OSX only);
+-- you can also change it between runs from Local Console by executing
+-- `ide.config.corona = {skin = 'iPad'}`
+corona = { skin = "iPad" }
