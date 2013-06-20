@@ -17,14 +17,12 @@ namespace OpenRA.Mods.RA.Effects
 {
 	class GpsSatellite : IEffect
 	{
-		float2 Origin;
 		WPos Pos;
 		Animation Anim = new Animation("sputnik");
 
-		public GpsSatellite(WPos pos, float2 spriteOrigin)
+		public GpsSatellite(WPos pos)
 		{
 			Pos = pos;
-			Origin = spriteOrigin;
 			Anim.PlayRepeating("idle");
 		}
 
@@ -39,7 +37,7 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			yield return new SpriteRenderable(Anim.Image, Pos, 0, wr.Palette("effect"), 1f, Origin);
+			yield return new SpriteRenderable(Anim.Image, Pos, 0, wr.Palette("effect"), 1f);
 		}
 	}
 }

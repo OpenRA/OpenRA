@@ -148,6 +148,7 @@ atek:
 	active: sputdoor
 		Start: 0
 		Length: *
+		Offset: -4,0
 
 stek:
 	idle:
