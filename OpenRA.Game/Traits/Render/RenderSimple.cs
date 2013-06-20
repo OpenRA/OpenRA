@@ -34,7 +34,7 @@ namespace OpenRA.Traits
 		RenderSimpleInfo Info;
 
 		public RenderSimple(Actor self, Func<int> baseFacing)
-			: base(self, baseFacing)
+			: base(self)
 		{
 			anims.Add("", new Animation(GetImage(self), baseFacing));
 			Info = self.Info.Traits.Get<RenderSimpleInfo>();

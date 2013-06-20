@@ -54,13 +54,10 @@ namespace OpenRA.Traits
 		bool initializePalette = true;
 		protected PaletteReference palette;
 
-		public RenderSprites(Actor self, Func<int> baseFacing)
+		public RenderSprites(Actor self)
 		{
 			Info = self.Info.Traits.Get<RenderSpritesInfo>();
 		}
-
-		public RenderSprites(Actor self)
-			: this(self, MakeFacingFunc(self)) {}
 
 		public static string GetImage(ActorInfo actor)
 		{
