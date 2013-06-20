@@ -55,7 +55,7 @@ namespace OpenRA.Traits
 				.FirstOrDefault();
 		}
 
-		protected virtual string NormalizeSequence(Actor self, string baseSequence)
+		public virtual string NormalizeSequence(Actor self, string baseSequence)
 		{
 			string damageState = self.GetDamageState() >= DamageState.Heavy ? "damaged-" : "";
 			if (anim.HasSequence(damageState + baseSequence))

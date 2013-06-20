@@ -54,11 +54,11 @@ proc:
 		Start: 0
 		Length: *
 		Tick: 80
-	lights: proctwr
+	resources: proctwr
 		Start: 0
 		Length: 6
 		Offset: -32,-21
-	damaged-lights: proctwr
+	damaged-resources: proctwr
 		Start: 6
 		Length: 6
 		Offset: -32,-21
