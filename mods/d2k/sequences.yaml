@@ -1143,6 +1143,7 @@ rallypoint:
 	flag:flagfly
 		Start: 0
 		Length: *
+		Offset: 11,-5
 	circles:fpls
 		Start: 0
 		Length: *

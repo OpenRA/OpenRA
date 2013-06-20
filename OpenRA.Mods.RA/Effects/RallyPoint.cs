@@ -56,7 +56,7 @@ namespace OpenRA.Mods.RA.Effects
 				var pos = cachedLocation.CenterPosition;
 				var palette = wr.Palette(palettePrefix+building.Owner.InternalName);
 				yield return new SpriteRenderable(circles.Image, pos, 0, palette, 1f);
-				yield return new SpriteRenderable(flag.Image, pos, 0, palette, 1f, new int2(1, 17));
+				yield return new SpriteRenderable(flag.Image, pos, 0, palette, 1f);
 			}
 		}
 	}
