@@ -134,8 +134,7 @@ PROC:
 		InitialActivity: FindResources
 		SpawnOffset: 1,2
 		Facing: 64
-	-RenderBuilding:
-	RenderBuildingRefinery:
+	WithResources:
 
 SILO:
 	Inherits: ^Building
@@ -161,7 +160,7 @@ SILO:
 		Range: 4
 	RenderBuildingSilo:
 	StoresOre:
-		PipCount: 24
+		PipCount: 10
 		PipColor: Green
 		Capacity: 2400
 	Selectable:

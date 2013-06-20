@@ -54,12 +54,14 @@ proc:
 		Start: 0
 		Length: *
 		Tick: 80
-	lights: proctwr
+	resources: proctwr
 		Start: 0
 		Length: 6
-	damaged-lights: proctwr
+		Offset: -32,-21
+	damaged-resources: proctwr
 		Start: 6
 		Length: 6
+		Offset: -32,-21
 
 silo:
 	idle:
