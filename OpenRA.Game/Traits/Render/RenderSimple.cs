@@ -55,13 +55,9 @@ namespace OpenRA.Traits
 				.FirstOrDefault();
 		}
 
-		public virtual string NormalizeSequence(Actor self, string baseSequence)
+		public string NormalizeSequence(Actor self, string baseSequence)
 		{
-			string damageState = self.GetDamageState() >= DamageState.Heavy ? "damaged-" : "";
-			if (anim.HasSequence(damageState + baseSequence))
-				return damageState + baseSequence;
-			else
-				return baseSequence;
+			return NormalizeSequence(anim, self.GetDamageState(), baseSequence);
 		}
 
 		public void PlayCustomAnim(Actor self, string name)
