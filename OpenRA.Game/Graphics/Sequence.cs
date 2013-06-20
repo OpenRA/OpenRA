@@ -11,6 +11,7 @@
 using System;
 using System.Xml;
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.FileFormats;
 
 namespace OpenRA.Graphics
@@ -34,9 +35,17 @@ namespace OpenRA.Graphics
 			var srcOverride = info.Value;
 			Name = name;
 			var d = info.NodesDict;
+			var offset = float2.Zero;
 
-			sprites = Game.modData.SpriteLoader.LoadAllSprites(srcOverride ?? unit);
 			start = int.Parse(d["Start"].Value);
+
+			if (d.ContainsKey("Offset"))
+				offset = FieldLoader.GetValue<float2>("Offset", d["Offset"].Value);
+
+			// Apply offset to each sprite in the sequence
+			// Different sequences may apply different offsets to the same frame
+			sprites = Game.modData.SpriteLoader.LoadAllSprites(srcOverride ?? unit).Select(
+				s => new Sprite(s.sheet, s.bounds, s.offset + offset, s.channel)).ToArray();
 
 			if (!d.ContainsKey("Length"))
 				length = 1;
