@@ -59,14 +59,15 @@ namespace OpenRA.Mods.RA
 			if (--animationTicks <= 0)
 			{
 				var info = self.Info.Traits.Get<SeedsResourceInfo>();
-				self.Trait<RenderBuilding>().PlayCustomAnim(self, "active");
+				if (self.HasTrait<RenderBuilding>())
+					self.Trait<RenderBuilding>().PlayCustomAnim(self, "active");
 				animationTicks = info.AnimationInterval;
 			}
 		}
 
 		static IEnumerable<CPos> RandomWalk(CPos p, Thirdparty.Random r)
 		{
-			for (; ; )
+			for (;;)
 			{
 				var dx = r.Next(-1, 2);
 				var dy = r.Next(-1, 2);
