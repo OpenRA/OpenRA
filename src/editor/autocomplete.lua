@@ -220,7 +220,8 @@ local function resolveAssign(editor,tx)
         classname = classname or assigns[c..w]
         if (s ~= "" and old ~= classname) then
           c = classname..s
-          change = true
+          -- continue checking unless this can lead to recursive substitution
+          change = not classname:find("^"..w)
         else
           c = c..w..s
         end
