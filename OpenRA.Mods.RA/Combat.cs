@@ -149,7 +149,7 @@ namespace OpenRA.Mods.RA
 				destAltitude = altitude,
 				firedBy = attacker,
 				target = Target.FromPos(pos),
-				weapon = Rules.Weapons[ weapontype.ToLowerInvariant() ],
+				weapon = Rules.Weapons[weapontype.ToLowerInvariant()],
 				facing = 0
 			};
 
@@ -201,18 +201,18 @@ namespace OpenRA.Mods.RA
 			return true;
 		}
 
-		public static bool WeaponValidForTarget( WeaponInfo weapon, World world, CPos location )
+		public static bool WeaponValidForTarget(WeaponInfo weapon, World world, CPos location)
 		{
-			if( weapon.ValidTargets.Contains( "Ground" ) && world.GetTerrainType( location ) != "Water" ) return true;
-			if( weapon.ValidTargets.Contains( "Water" ) && world.GetTerrainType( location ) == "Water" ) return true;
+			if (weapon.ValidTargets.Contains("Ground") && world.GetTerrainType(location) != "Water") return true;
+			if (weapon.ValidTargets.Contains("Water") && world.GetTerrainType(location) == "Water") return true;
 			return false;
 		}
 
-		public static bool IsInRange( PPos attackOrigin, float range, Actor target )
+		public static bool IsInRange(PPos attackOrigin, float range, Actor target)
 		{
 			var rsq = range * range * Game.CellSize * Game.CellSize;
-			foreach ( var cell in target.Trait<ITargetable>().TargetableCells( target ) )
-				if ( (attackOrigin - cell.ToPPos()).LengthSquared <= rsq )
+			foreach (var cell in target.Trait<ITargetable>().TargetableCells(target))
+				if ((attackOrigin - cell.ToPPos()).LengthSquared <= rsq)
 					return true;
 			return false;
 		}
@@ -220,16 +220,16 @@ namespace OpenRA.Mods.RA
 		public static bool IsInRange(PPos attackOrigin, float range, PPos targetLocation)
 		{
 			var rsq = range * range * Game.CellSize * Game.CellSize;
-			return ( attackOrigin - targetLocation ).LengthSquared <= rsq;
+			return (attackOrigin - targetLocation).LengthSquared <= rsq;
 		}
 
 		public static bool IsInRange(PPos attackOrigin, float range, Target target)
 		{
-			if( !target.IsValid ) return false;
-			if( target.IsActor )
-				return IsInRange( attackOrigin, range, target.Actor );
+			if (!target.IsValid) return false;
+			if (target.IsActor)
+				return IsInRange(attackOrigin, range, target.Actor);
 			else
-				return IsInRange( attackOrigin, range, target.CenterLocation );
+				return IsInRange(attackOrigin, range, target.CenterLocation);
 		}
 	}
 }
