@@ -98,7 +98,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			var powerManager = world.LocalPlayer.PlayerActor.Trait<PowerManager>();
 			var playerResources = world.LocalPlayer.PlayerActor.Trait<PlayerResources>();
 			sidebarRoot.Get<LabelWidget>("CASH").GetText = () =>
-				"${0}".F(playerResources.DisplayCash + playerResources.DisplayOre);
+				"${0}".F(playerResources.DisplayCash + playerResources.DisplayResources);
 
 			playerWidgets.Get<ButtonWidget>("OPTIONS_BUTTON").OnClick = OptionsClicked;
 
@@ -127,14 +127,14 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			};
 
 			var siloBar = playerWidgets.Get<ResourceBarWidget>("SILOBAR");
-			siloBar.GetProvided = () => playerResources.OreCapacity;
-			siloBar.GetUsed = () => playerResources.Ore;
+			siloBar.GetProvided = () => playerResources.Capacity;
+			siloBar.GetUsed = () => playerResources.Resources;
 			siloBar.TooltipFormat = "Silo Usage: {0}/{1}";
 			siloBar.GetBarColor = () => 
 			{
-				if (playerResources.Ore == playerResources.OreCapacity)
+				if (playerResources.Resources == playerResources.Capacity)
 					return Color.Red;
-				if (playerResources.Ore >= 0.8 * playerResources.OreCapacity)
+				if (playerResources.Resources >= 0.8 * playerResources.Capacity)
 					return Color.Orange;
 				return Color.LimeGreen;
 			};

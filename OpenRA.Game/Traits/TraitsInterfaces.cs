@@ -76,7 +76,7 @@ namespace OpenRA.Traits
 	public interface INotifyHarvest { void Harvested(Actor self, ResourceType resource); }
 
 	public interface IAcceptInfiltrator { void OnInfiltrate(Actor self, Actor infiltrator); }
-	public interface IStoreOre { int Capacity { get; } }
+	public interface IStoreResources { int Capacity { get; } }
 	public interface IToolTip
 	{
 		string Name();

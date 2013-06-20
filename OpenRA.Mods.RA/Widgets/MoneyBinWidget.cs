@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA.Widgets
 				new float2(Bounds.Left, 0));
 
 			// Cash
-			var cashDigits = (playerResources.DisplayCash + playerResources.DisplayOre).ToString();
+			var cashDigits = (playerResources.DisplayCash + playerResources.DisplayResources).ToString();
 			var x = Bounds.Right - 65;
 
 			foreach (var d in cashDigits.Reverse())
