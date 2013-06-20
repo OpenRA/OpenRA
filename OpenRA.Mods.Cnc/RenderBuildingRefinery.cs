@@ -18,8 +18,6 @@ namespace OpenRA.Mods.Cnc
 {
 	class RenderBuildingRefineryInfo : RenderBuildingInfo
 	{
-		public readonly WVec Offset = new WVec(1365, 896, 0);
-
 		public override object Create(ActorInitializer init) { return new RenderBuildingRefinery(init, this); }
 	}
 
@@ -40,7 +38,7 @@ namespace OpenRA.Mods.Cnc
 					? (59 * playerResources.Ore) / (10 * playerResources.OreCapacity)
 					: 0);
 
-			anims.Add("lights", new AnimationWithOffset(lights, () => info.Offset, () => !buildComplete, 1024));
+			anims.Add("lights", new AnimationWithOffset(lights, null, () => !buildComplete, 1024));
 		}
 
 		public void BuildingComplete( Actor self )

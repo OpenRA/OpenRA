@@ -57,9 +57,11 @@ proc:
 	lights: proctwr
 		Start: 0
 		Length: 6
+		Offset: -32,-21
 	damaged-lights: proctwr
 		Start: 6
 		Length: 6
+		Offset: -32,-21
 
 silo:
 	idle:
