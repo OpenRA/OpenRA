@@ -610,7 +610,7 @@ CrateNuke:
 	Warhead@impact:
 		Damage: 1000
 		Spread: 6
-		Ore: true
+		DestroyResources: true
 		Versus:
 			None: 90%
 			Light: 60%
@@ -625,7 +625,7 @@ CrateNuke:
 		Damage: 250
 		SmudgeType: Scorch
 		Size: 5,4
-		Ore: true
+		DestroyResources: true
 		Versus:
 			None: 90%
 			Light: 60%
@@ -976,7 +976,7 @@ Atomic:
 	Warhead@impact:
 		Damage: 1000
 		Spread: 6
-		Ore: true
+		DestroyResources: true
 		Versus:
 			None: 90%
 			Light: 60%
@@ -990,7 +990,7 @@ Atomic:
 		DamageModel: PerCell
 		Damage: 180
 		Size: 2,1
-		Ore: true
+		DestroyResources: true
 		Versus:
 			None: 90%
 			Light: 60%
@@ -1003,7 +1003,7 @@ Atomic:
 		DamageModel: PerCell
 		Damage: 180
 		Size: 3,2
-		Ore: true
+		DestroyResources: true
 		Versus:
 			None: 90%
 			Light: 60%
@@ -1015,7 +1015,7 @@ Atomic:
 		DamageModel: PerCell
 		Damage: 180
 		Size: 4,3
-		Ore: true
+		DestroyResources: true
 		Versus:
 			None: 90%
 			Light: 60%
@@ -1028,7 +1028,7 @@ Atomic:
 		Damage: 180
 		SmudgeType: Scorch
 		Size: 5,4
-		Ore: true
+		DestroyResources: true
 		Versus:
 			None: 90%
 			Light: 60%
@@ -1041,7 +1041,7 @@ MiniNuke:
 	Warhead@impact:
 		Damage: 800
 		Spread: 6
-		Ore: true
+		DestroyResources: true
 		Versus:
 			None: 90%
 			Light: 60%
@@ -1055,7 +1055,7 @@ MiniNuke:
 		DamageModel: PerCell
 		Damage: 180
 		Size: 2,1
-		Ore: true
+		DestroyResources: true
 		Versus:
 			None: 90%
 			Light: 60%
@@ -1068,7 +1068,7 @@ MiniNuke:
 		DamageModel: PerCell
 		Damage: 180
 		Size: 3,2
-		Ore: true
+		DestroyResources: true
 		Versus:
 			None: 90%
 			Light: 60%
@@ -1081,7 +1081,7 @@ MiniNuke:
 		Damage: 180
 		Size: 4,3
 		SmudgeType: Scorch
-		Ore: true
+		DestroyResources: true
 		Versus:
 			None: 90%
 			Light: 60%

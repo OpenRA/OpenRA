@@ -145,6 +145,10 @@ E5:
 		IdleAnimations: idle1,idle2
 	DetectCloaked:
 		Range: 2
+	Explodes:
+		Weapon: ChemsprayExplode
+		EmptyWeapon: ChemsprayExplode
+		Chance: 50
 
 E6:
 	Inherits: ^Infantry
