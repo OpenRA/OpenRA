@@ -7,9 +7,11 @@ fire:
 	1: fire1
 		Start: 0
 		Length: *
+		Offset: 0,-3
 	2: fire2
 		Start: 0
 		Length: *
+		Offset: 0,-3
 
 120mm:
 	idle:
@@ -145,6 +147,7 @@ rallypoint:
 	flag:flagfly
 		Start: 0
 		Length: *
+		Offset: 10,-5
 	circles:fpls
 		Start: 0
 		Length: *

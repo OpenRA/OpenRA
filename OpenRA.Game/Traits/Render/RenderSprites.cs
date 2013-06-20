@@ -54,13 +54,10 @@ namespace OpenRA.Traits
 		bool initializePalette = true;
 		protected PaletteReference palette;
 
-		public RenderSprites(Actor self, Func<int> baseFacing)
+		public RenderSprites(Actor self)
 		{
 			Info = self.Info.Traits.Get<RenderSpritesInfo>();
 		}
-
-		public RenderSprites(Actor self)
-			: this(self, MakeFacingFunc(self)) {}
 
 		public static string GetImage(ActorInfo actor)
 		{
@@ -103,5 +100,21 @@ namespace OpenRA.Traits
 				a.Animation.Tick();
 		}
 
+		public static string NormalizeSequence(Animation anim, DamageState state, string baseSequence)
+		{
+			var states = new Pair<DamageState, string>[]
+			{
+				Pair.New(DamageState.Critical, "critical-"),
+				Pair.New(DamageState.Heavy, "damaged-"),
+				Pair.New(DamageState.Medium, "scratched-"),
+				Pair.New(DamageState.Light, "scuffed-")
+			};
+
+			foreach (var s in states)
+				if (state >= s.First && anim.HasSequence(s.Second+baseSequence))
+				    return s.Second+baseSequence;
+
+			return baseSequence;
+		}
 	}
 }

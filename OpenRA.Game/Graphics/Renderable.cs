@@ -52,19 +52,14 @@ namespace OpenRA.Graphics
 		readonly int zOffset;
 		readonly PaletteReference palette;
 		readonly float scale;
-		readonly float2 pxCenter;
 
 		public SpriteRenderable(Sprite sprite, WPos pos, int zOffset, PaletteReference palette, float scale)
-			: this(sprite, pos, zOffset, palette, scale, 0.5f*scale*sprite.size) {}
-
-		public SpriteRenderable(Sprite sprite, WPos pos, int zOffset, PaletteReference palette, float scale, float2 pxCenter)
 		{
 			this.sprite = sprite;
 			this.pos = pos;
 			this.zOffset = zOffset;
 			this.palette = palette;
 			this.scale = scale;
-			this.pxCenter = pxCenter;
 		}
 
 		// Provided for legacy support only - Don't use for new things!
@@ -84,12 +79,12 @@ namespace OpenRA.Graphics
 		public void BeforeRender(WorldRenderer wr) {}
 		public void Render(WorldRenderer wr)
 		{
-			sprite.DrawAt(wr.ScreenPxPosition(pos) - pxCenter, palette, scale);
+			sprite.DrawAt(wr.ScreenPxPosition(pos) - 0.5f*scale*sprite.size, palette, scale);
 		}
 
 		public void RenderDebugGeometry(WorldRenderer wr)
 		{
-			var offset = wr.ScreenPxPosition(pos) - pxCenter;
+			var offset = wr.ScreenPxPosition(pos) - 0.5f*scale*sprite.size + sprite.offset;
 			Game.Renderer.WorldLineRenderer.DrawRect(offset, offset + sprite.size, Color.Red);
 		}
 	}

@@ -10,66 +10,55 @@
 
 using System;
 using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Render
 {
-	class RenderGunboatInfo : RenderSimpleInfo
+	class RenderGunboatInfo : RenderSpritesInfo, Requires<IBodyOrientationInfo>
 	{
-		public override object Create(ActorInitializer init) { return new RenderGunboat(init.self); }
+		[Desc("Turreted 'Turret' key to display")]
+		public readonly string Turret = "primary";
+
+		public override object Create(ActorInitializer init) { return new RenderGunboat(init.self, this); }
 	}
 
-	class RenderGunboat : RenderSimple, INotifyDamageStateChanged
+	class RenderGunboat : RenderSprites, INotifyDamageStateChanged
 	{
-		IFacing facing;
-		string lastDir = "left";
-		string lastDamage = "";
+		Animation left, right;
 
-		static Func<int> TurretFacingFunc(Actor self)
+		public RenderGunboat(Actor self, RenderGunboatInfo info)
+			: base(self)
 		{
-			return () => self.HasTrait<Turreted>() ? self.TraitsImplementing<Turreted>().First().turretFacing : 0;
-		}
+			var name = GetImage(self);
+			var facing = self.Trait<IFacing>();
+			var turret = self.TraitsImplementing<Turreted>()
+				.First(t => t.Name == info.Turret);
 
-		public RenderGunboat(Actor self)
-			: base(self, TurretFacingFunc(self))
-		{
-			facing = self.Trait<IFacing>();
-			anim.Play("left");
+			left = new Animation(name, () => turret.turretFacing);
+			left.Play("left");
+			anims.Add("left", new AnimationWithOffset(left, null, () => facing.Facing > 128, 0));
 
-			var wake = new Animation(anim.Name);
-			wake.Play("left-wake");
+			right = new Animation(name, () => turret.turretFacing);
+			right.Play("right");
+			anims.Add("right", new AnimationWithOffset(right, null, () => facing.Facing <= 128, 0));
 
-			var leftOffset = new WVec(43, 86, 0);
-			var rightOffset = new WVec(-43, 86, 0);
-			anims.Add("wake", new AnimationWithOffset(wake,
-				() => anims["wake"].Animation.CurrentSequence.Name == "left-wake" ? leftOffset : rightOffset,
-			    () => false, -87));
+			var leftWake = new Animation(name);
+			leftWake.Play("wake-left");
+			anims.Add("wake-left", new AnimationWithOffset(leftWake, null, () => facing.Facing > 128, -87));
 
-			self.Trait<IBodyOrientation>().QuantizedFacings = anim.CurrentSequence.Facings;
-		}
+			var rightWake = new Animation(name);
+			rightWake.Play("wake-right");
+			anims.Add("wake-right", new AnimationWithOffset(rightWake, null, () => facing.Facing <= 128, -87));
 
-		public override void Tick(Actor self)
-		{
-			var dir = (facing.Facing > 128) ? "right" : "left";
-			if (dir != lastDir)
-			{
-				anim.ReplaceAnim(dir+lastDamage);
-				anims["wake"].Animation.ReplaceAnim(dir+"-wake");
-				lastDir = dir;
-			}
-			base.Tick(self);
+			self.Trait<IBodyOrientation>().QuantizedFacings = 2;
 		}
 
 		public void DamageStateChanged(Actor self, AttackInfo e)
 		{
-			if (e.DamageState >= DamageState.Critical)
-				lastDamage = "-critical";
-			else if (e.DamageState >= DamageState.Heavy)
-				lastDamage = "-damaged";
-			else if (e.DamageState < DamageState.Heavy)
-				lastDamage = "";
-			anim.ReplaceAnim(lastDir+lastDamage);
+			left.ReplaceAnim(NormalizeSequence(left, e.DamageState, "left"));
+			right.ReplaceAnim(NormalizeSequence(right, e.DamageState, "right"));
 		}
 	}
 }

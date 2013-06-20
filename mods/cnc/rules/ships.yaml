@@ -24,6 +24,8 @@ BOAT:
 		LocalOffset: 213,-180,0, 213,128,0, 213,0,0
 	AttackTurreted:
 	RenderGunboat:
+	Selectable:
+		Bounds: 42,24
 	AutoTarget:
 		AllowMovement: false
 	WithSmoke:

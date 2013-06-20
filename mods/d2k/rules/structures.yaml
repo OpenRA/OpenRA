@@ -168,7 +168,6 @@
 		Range: 4
 	-RenderBuilding:
 	RenderBuildingSilo:
-		FillSteps: 39
 	StoresOre:
 		PipColor: green
 		PipCount: 5

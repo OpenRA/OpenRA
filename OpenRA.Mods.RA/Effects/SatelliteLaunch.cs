@@ -19,7 +19,6 @@ namespace OpenRA.Mods.RA.Effects
 	{
 		int frame = 0;
 		Animation doors = new Animation("atek");
-		float2 doorOrigin = new float2(16,24);
 		WPos pos;
 
 		public SatelliteLaunch(Actor a)
@@ -35,12 +34,12 @@ namespace OpenRA.Mods.RA.Effects
 			doors.Tick();
 
 			if (++frame == 19)
-				world.AddFrameEndTask(w => w.Add(new GpsSatellite(pos, doorOrigin)));
+				world.AddFrameEndTask(w => w.Add(new GpsSatellite(pos)));
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			yield return new SpriteRenderable(doors.Image, pos, 0, wr.Palette("effect"), 1f, doorOrigin);
+			yield return new SpriteRenderable(doors.Image, pos, 0, wr.Palette("effect"), 1f);
 		}
 	}
 }

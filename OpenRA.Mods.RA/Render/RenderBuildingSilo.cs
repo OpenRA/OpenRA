@@ -14,20 +14,17 @@ namespace OpenRA.Mods.RA.Render
 {
 	class RenderBuildingSiloInfo : RenderBuildingInfo
 	{
-		public readonly int FillSteps = 49;
 		public override object Create(ActorInitializer init) { return new RenderBuildingSilo(init, this); }
 	}
 
 	class RenderBuildingSilo : RenderBuilding, INotifyBuildComplete, INotifyCapture
 	{
 		PlayerResources playerResources;
-		readonly RenderBuildingSiloInfo Info;
 
 		public RenderBuildingSilo( ActorInitializer init, RenderBuildingSiloInfo info )
 			: base(init, info)
 		{
 			playerResources = init.self.Owner.PlayerActor.Trait<PlayerResources>();
-			Info = info;
 		}
 
 		public void BuildingComplete(Actor self)
@@ -35,7 +32,7 @@ namespace OpenRA.Mods.RA.Render
 			var animation = (self.GetDamageState() >= DamageState.Heavy) ? "damaged-idle" : "idle";
 			anim.PlayFetchIndex(animation,
 				() => playerResources.OreCapacity != 0
-					? (Info.FillSteps * playerResources.Ore) / (10 * playerResources.OreCapacity)
+					? ((10 * anim.CurrentSequence.Length - 1) * playerResources.Ore) / (10 * playerResources.OreCapacity)
 					: 0);
 		}
 

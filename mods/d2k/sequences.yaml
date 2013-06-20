@@ -1143,6 +1143,7 @@ rallypoint:
 	flag:flagfly
 		Start: 0
 		Length: *
+		Offset: 11,-5
 	circles:fpls
 		Start: 0
 		Length: *
@@ -1259,15 +1260,19 @@ fire:
 	1: fire2
 		Start: 0
 		Length: *
+		Offset: 0,-3
 	2: fire2
 		Start: 0
 		Length: *
+		Offset: 0,-3
 	3: fire3
 		Start: 0
 		Length: *
+		Offset: 0,-3
 	4: fire
 		Start: 0
 		Length: *
+		Offset: 0,-3
 
 smoke_m:
 	idle: minifire

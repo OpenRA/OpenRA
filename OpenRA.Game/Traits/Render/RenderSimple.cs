@@ -34,7 +34,7 @@ namespace OpenRA.Traits
 		RenderSimpleInfo Info;
 
 		public RenderSimple(Actor self, Func<int> baseFacing)
-			: base(self, baseFacing)
+			: base(self)
 		{
 			anims.Add("", new Animation(GetImage(self), baseFacing));
 			Info = self.Info.Traits.Get<RenderSimpleInfo>();
@@ -55,13 +55,9 @@ namespace OpenRA.Traits
 				.FirstOrDefault();
 		}
 
-		protected virtual string NormalizeSequence(Actor self, string baseSequence)
+		public string NormalizeSequence(Actor self, string baseSequence)
 		{
-			string damageState = self.GetDamageState() >= DamageState.Heavy ? "damaged-" : "";
-			if (anim.HasSequence(damageState + baseSequence))
-				return damageState + baseSequence;
-			else
-				return baseSequence;
+			return NormalizeSequence(anim, self.GetDamageState(), baseSequence);
 		}
 
 		public void PlayCustomAnim(Actor self, string name)
