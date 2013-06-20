@@ -16,7 +16,8 @@ return {
     local filepath = wfilename:GetFullPath()
     local script
     if rundebug then
-      DebuggerAttachDefault({runstart = ide.config.debugger.runonstart == true})
+      DebuggerAttachDefault({basedir = self:fworkdir(wfilename),
+        runstart = ide.config.debugger.runonstart == true})
       script = rundebug
     else
       -- if running on Windows and can't open the file, this may mean that
