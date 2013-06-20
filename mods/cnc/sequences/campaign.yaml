@@ -12,22 +12,26 @@ boat:
 	left:
 		Start: 0
 		Facings: 32
-	left-damaged:
+	damaged-left:
 		Start: 32
-	left-critical:
+		Facings: 32
+	critical-left:
 		Start: 64
-	left-wake: wake
+		Facings: 32
+	wake-left: wake
 		Start: 6
 		Length: 6
+		Offset: 1,2
 	right:
 		Start: 96
 		Facings: 32
-	right-damaged:
+	damaged-right:
 		Start: 128
 		Facings: 32
-	right-critical:
+	critical-right:
 		Start: 160
 		Facings: 32
-	right-wake: wake
+	wake-right: wake
 		Start: 0
 		Length: 6
+		Offset: -1,2
