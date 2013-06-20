@@ -24,14 +24,7 @@ namespace OpenRA.Mods.RA.Render
 	{
 		public readonly bool HasMakeAnimation = true;
 
-		[Desc("Artwork offset in world (not local) coordinates")]
-		public readonly WVec Origin = WVec.Zero;
 		public override object Create(ActorInitializer init) { return new RenderBuilding(init, this);}
-
-		public override IEnumerable<IRenderable> RenderPreview(ActorInfo building, PaletteReference pr)
-		{
-			return base.RenderPreview(building, pr).Select(a => a.WithPos(a.Pos + Origin));
-		}
 
 		public void Render(WorldRenderer wr, World w, ActorInfo ai, PPos centerLocation)
 		{
@@ -45,16 +38,14 @@ namespace OpenRA.Mods.RA.Render
 
 	public class RenderBuilding : RenderSimple, INotifyDamageStateChanged, IRenderModifier
 	{
-		readonly RenderBuildingInfo Info;
-
-		public RenderBuilding( ActorInitializer init, RenderBuildingInfo info )
+		public RenderBuilding(ActorInitializer init, RenderBuildingInfo info)
 			: this(init, info, () => 0) { }
 
-		public RenderBuilding( ActorInitializer init, RenderBuildingInfo info, Func<int> baseFacing )
+		public RenderBuilding(ActorInitializer init, RenderBuildingInfo info, Func<int> baseFacing)
 			: base(init.self, baseFacing)
 		{
-			Info = info;
 			var self = init.self;
+
 			// Work around a bogus crash
 			anim.PlayRepeating( NormalizeSequence(self, "idle") );
 			self.Trait<IBodyOrientation>().QuantizedFacings = anim.CurrentSequence.Facings;
@@ -71,18 +62,17 @@ namespace OpenRA.Mods.RA.Render
 			var disabled = self.IsDisabled();
 			foreach (var a in r)
 			{
-				var ret = a.WithPos(a.Pos + Info.Origin);
-				yield return ret;
+				yield return a;
 				if (disabled)
-					yield return ret.WithPalette(wr.Palette("disabled")).WithZOffset(1);
+					yield return a.WithPalette(wr.Palette("disabled")).WithZOffset(1);
 			}
 		}
 
-		void Complete( Actor self )
+		void Complete(Actor self)
 		{
-			anim.PlayRepeating( NormalizeSequence(self, "idle") );
-			foreach( var x in self.TraitsImplementing<INotifyBuildComplete>() )
-				x.BuildingComplete( self );
+			anim.PlayRepeating(NormalizeSequence(self, "idle"));
+			foreach (var x in self.TraitsImplementing<INotifyBuildComplete>())
+				x.BuildingComplete(self);
 		}
 
 		public void PlayCustomAnimThen(Actor self, string name, Action a)
@@ -94,7 +84,7 @@ namespace OpenRA.Mods.RA.Render
 		public void PlayCustomAnimRepeating(Actor self, string name)
 		{
 			anim.PlayThen(NormalizeSequence(self, name),
-				() => { PlayCustomAnimRepeating(self, name); });
+				() => PlayCustomAnimRepeating(self, name));
 		}
 
 		public void PlayCustomAnimBackwards(Actor self, string name, Action a)
@@ -105,15 +95,13 @@ namespace OpenRA.Mods.RA.Render
 
 		public void CancelCustomAnim(Actor self)
 		{
-			anim.PlayRepeating( NormalizeSequence(self, "idle") );
+			anim.PlayRepeating(NormalizeSequence(self, "idle"));
 		}
 
 		public virtual void DamageStateChanged(Actor self, AttackInfo e)
 		{
-			if (e.DamageState >= DamageState.Heavy && e.PreviousDamageState < DamageState.Heavy)
-				anim.ReplaceAnim("damaged-idle");
-			else if (e.DamageState < DamageState.Heavy)
-				anim.ReplaceAnim("idle");
+			if (anim.CurrentSequence != null)
+				anim.ReplaceAnim(NormalizeSequence(self, "idle"));
 		}
 	}
 }

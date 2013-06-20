@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA.Render
 
 			var anim = new Animation(RenderSprites.GetImage(building), () => 0);
 			anim.PlayRepeating("idle-top");
-			yield return new SpriteRenderable(anim.Image, WPos.Zero + Origin, 0, pr, 1f);
+			yield return new SpriteRenderable(anim.Image, WPos.Zero, 0, pr, 1f);
 		}
 	}
 
