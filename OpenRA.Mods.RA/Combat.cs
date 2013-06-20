@@ -212,7 +212,7 @@ namespace OpenRA.Mods.RA
 		{
 			var rsq = range * range * Game.CellSize * Game.CellSize;
 			foreach (var cell in target.Trait<ITargetable>().TargetableCells(target))
-				if ((attackOrigin - cell.ToPPos()).LengthSquared <= rsq)
+				if ((attackOrigin - Util.CenterOfCell(cell)).LengthSquared <= rsq)
 					return true;
 			return false;
 		}
