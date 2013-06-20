@@ -89,7 +89,7 @@ namespace OpenRA.Graphics
 
 		public void RenderDebugGeometry(WorldRenderer wr)
 		{
-			var offset = wr.ScreenPxPosition(pos) - pxCenter;
+			var offset = wr.ScreenPxPosition(pos) - pxCenter + sprite.offset;
 			Game.Renderer.WorldLineRenderer.DrawRect(offset, offset + sprite.size, Color.Red);
 		}
 	}
