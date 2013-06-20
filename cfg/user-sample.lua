@@ -95,13 +95,13 @@ styles.marker.prompt = {ch = wxstc.wxSTC_MARK_CHARACTER+('>'):byte(), {0, 0, 0},
 stylesoutshell = styles
 
 -- to disable indicators (underlining) on function calls
-editor.showfncall = false
+styles.indicator.fncall = nil
 
 -- to change the color of the indicator used for function calls
-styles.fncall.fg = {240,0,0}
+styles.indicator.fncall.fg = {240,0,0}
 
 -- to change the type of the indicator used for function calls
-styles.fncall.st = wxstc.wxSTC_INDIC_PLAIN
+styles.indicator.fncall.st = wxstc.wxSTC_INDIC_PLAIN
   --[[ other possible values are:
     wxSTC_INDIC_PLAIN	 Single-line underline
     wxSTC_INDIC_SQUIGGLE Squiggly underline
