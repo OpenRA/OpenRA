@@ -37,16 +37,7 @@ namespace OpenRA.Mods.RA.Render
 
 		public override void DamageStateChanged(Actor self, AttackInfo e)
 		{
-			if (e.DamageState == DamageState.Medium && anim.HasSequence("scratched-idle"))
-				seqName = "scratched-idle";
-			else if (e.DamageState <= DamageState.Medium)
-				seqName = "idle";
-			else if (e.DamageState == DamageState.Critical && anim.HasSequence("critical-idle"))
-				seqName = "critical-idle";
-			else if (e.DamageState <= DamageState.Critical)
-				seqName = "damaged-idle";
-
-			anim.PlayFetchIndex(seqName, () => adjacentWalls);
+			anim.PlayFetchIndex(NormalizeSequence(anim, e.DamageState, "idle"), () => adjacentWalls);
 		}
 
 		bool hasTicked = false;
