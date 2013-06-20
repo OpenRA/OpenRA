@@ -13,6 +13,9 @@ HARV.Husk:
 		Icon: harvicnh
 	RenderUnit:
 		Image: harv
+	SeedsResource:
+		ResourceType: Tiberium
+		Interval: 25
 
 APC.Husk:
 	Inherits: ^Husk
