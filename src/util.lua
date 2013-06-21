@@ -174,7 +174,7 @@ function FileSysGetRecursive(path, recursive, spec, skip)
     local dir = wx.wxDir(path)
     if not dir:IsOpened() then return end
 
-    local found, file = dir:GetFirst("*", wx.wxDIR_DIRS)
+    local found, file = dir:GetFirst("*", wx.wxDIR_DIRS + wx.wxDIR_NO_FOLLOW)
     while found do
       if not skip or not file:find(skip) then
         local fname = wx.wxFileName(path, file):GetFullPath()

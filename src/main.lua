@@ -144,6 +144,8 @@ if not wx.wxMOD_RAW_CONTROL then
 end
 -- ArchLinux running 2.8.12.2 doesn't have wx.wxMOD_SHIFT defined
 if not wx.wxMOD_SHIFT then wx.wxMOD_SHIFT = 0x04 end
+-- wxDIR_NO_FOLLOW is missing in wxlua 2.8.12 as well
+if not wx.wxDIR_NO_FOLLOW then wx.wxDIR_NO_FOLLOW = 0x10 end
 
 for _, file in ipairs({"ids", "style", "keymap", "proto"}) do
   dofile("src/editor/"..file..".lua")
