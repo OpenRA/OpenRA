@@ -1,6 +1,6 @@
 # ZeroBrane Studio Changelog
 
-## Current master (June 17 2013)
+## v0.38 (Jun 21 2013)
 
 ### Highlights
   - Added source code debugging (to support LuaJava and other engines).
@@ -13,8 +13,13 @@
 ### Special thanks
   - To George Pimm for line of code navigation in the Stack Window.
   - To Fringale for updated French translation.
+  - To Tom Burgel for LuaForWindows interpreter.
 
 ### Improvements
+  - Added sorting of file lists on Linux (used in the filetree and file search).
+  - Added LuaForWindows interpreter (thanks to Tom Burgel).
+  - Added package onEditorCharAdded/onEditorKeyDown events (ref #166).
+  - Added support for changing the Corona simulator skin (closes #151).
   - Added inheritance support for auto-complete API.
   - Added package onEditor* events (closes #166).
   - Added package onInterpreterLoad/onInterpreterClose events (ref #166).
@@ -49,11 +54,14 @@
   - Added support for absolute filenames in Markdown links.
   - Allowed tab width and indentation to be set independently.
   - Allowed closing editor tabs while debugger is running.
+  - Disabled following symlinks during directory scanning to avoid infinite loops.
   - Disabled showing tooltip when the app is in the background (fixes #158).
   - Disabled 'value' tooltip over variables that match known function names (ref #101).
   - Improved error reporting in interpreters on failures to copy the debugger.
   - Improved focus on the debugger when a breakpoint hits on OSX (fixes #141).
   - Removed sorting in the Stack view to keep the order of table elements.
+  - Set default directory for Find in Files opened from a new file (#ref 162).
+  - Updated configuration example for variable indicators.
   - Updated Stack view navigation to use clicked on instead of active item.
   - Updated Gideros API/auto-complete reference.
   - Updated markup to allow opening files from new buffers ('untitled').
@@ -66,20 +74,22 @@
   - Upgraded Mobdebug to 0.534 for debugging of source code fragments.
 
 ### Fixes
-    Fixed missing numerical keys in serialized tables (upgraded Mobdebug to 0.535).
-    Fixed styling of markup that can be affected by folded lines.
-    Fixed value selection with multiple active selections.
-    Fixed style compatibility with wxwidgets 2.8 (ref #128).
-    Fixed error reporting by (internal) file operations.
-    Fixed styling comments that start with markup symbols.
-    Fixed restoring a session with one of the files deleted on disk (fixes #161).
-    Fixed reporting variable instances for comment/string fragments.
-    Fixed 'Rename Instances' to always reset previous selection.
-    Fixed auto-complete error for '%dddd' strings (fixes #156).
-    Fixed an issue with showing filenames that include '"?*:<>' on OSX/Linux.
-    Fixed current line marker being shown using 'Run as Scratchpad' with 'runonstart' option.
-    Fixed looping in auto-complete (fixes #151).
-    Fixed incorrect localization that led to an error in 'Save' from tab menu.
+  - Fixed looping in auto-complete when indexes are used (fixes #143).
+  - Fixed possible duplicate paths in the filetree.
+  - Fixed missing numerical keys in serialized tables (upgraded Mobdebug to 0.535).
+  - Fixed styling of markup that can be affected by folded lines.
+  - Fixed value selection with multiple active selections.
+  - Fixed style compatibility with wxwidgets 2.8 (ref #128).
+  - Fixed error reporting by (internal) file operations.
+  - Fixed styling comments that start with markup symbols.
+  - Fixed restoring a session with one of the files deleted on disk (fixes #161).
+  - Fixed reporting variable instances for comment/string fragments.
+  - Fixed 'Rename Instances' to always reset previous selection.
+  - Fixed auto-complete error for '%dddd' strings (fixes #156).
+  - Fixed an issue with showing filenames that include '"?*:<>' on OSX/Linux.
+  - Fixed current line marker being shown using 'Run as Scratchpad' with 'runonstart' option.
+  - Fixed looping in auto-complete (fixes #151).
+  - Fixed incorrect localization that led to an error in 'Save' from tab menu.
 
 ## v0.37 (May 09 2013)
 

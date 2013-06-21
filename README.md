@@ -20,6 +20,12 @@ MobileLua, GSL-shell, and others). It originated from the [Estrela Editor](http:
   - config (cfg/): contains style and basic editor settings;
   - tools (tools/): additional tools (e.g. DirectX/Cg shader compiler...).
 
+## Documentation
+
+* A [short and simple overview](http://studio.zerobrane.com/doc-getting-started.html) for those who are new to this development environment.
+* A list of [frequently asked questions](http://studio.zerobrane.com/doc-faq.html) about the IDE.
+* [Tutorials and demos](http://studio.zerobrane.com/tutorials.html) that cover debugging and live coding for different environments.
+
 ## Screenshot
 
 ![ZeroBrane Studio debugger screenshot](http://studio.zerobrane.com/images/debugging.png)
