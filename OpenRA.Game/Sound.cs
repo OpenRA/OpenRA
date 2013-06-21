@@ -53,7 +53,7 @@ namespace OpenRA
 
 		static ISoundEngine CreateEngine(string engine)
 		{
-			engine = Game.Settings.Server.Dedicated?"Null":engine;
+			engine = Game.Settings.Server.Dedicated ? "Null" : engine;
 			switch (engine)
 			{	/* TODO: if someone cares about pluggable crap here, ship this out */
 			case "AL": return new OpenAlSoundEngine();
@@ -374,6 +374,7 @@ namespace OpenRA
 
 		public OpenAlSoundEngine()
 		{
+			Console.WriteLine("Using OpenAL sound engine");
 			//var str = Alc.alcGetString(IntPtr.Zero, Alc.ALC_DEFAULT_DEVICE_SPECIFIER);
 			var dev = Alc.alcOpenDevice(null);
 			if (dev == IntPtr.Zero)
@@ -645,6 +646,11 @@ namespace OpenRA
 
 	class NullSoundEngine : ISoundEngine
 	{
+		public NullSoundEngine()
+		{
+			Console.WriteLine("Using Null sound engine which disables SFX completely");
+		}
+
 		public ISoundSource AddSoundSourceFromMemory(byte[] data, int channels, int sampleBits, int sampleRate)
 		{
 			return new NullSoundSource();
