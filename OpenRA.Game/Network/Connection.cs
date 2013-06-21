@@ -30,10 +30,10 @@ namespace OpenRA.Network
 	{
 		int LocalClientId { get; }
 		ConnectionState ConnectionState { get; }
-		void Send( int frame, List<byte[]> orders );
-		void SendImmediate( List<byte[]> orders );
-		void SendSync( int frame, byte[] syncData );
-		void Receive( Action<int, byte[]> packetFn );
+		void Send(int frame, List<byte[]> orders);
+		void SendImmediate(List<byte[]> orders);
+		void SendSync(int frame, byte[] syncData);
+		void Receive(Action<int, byte[]> packetFn);
 	}
 
 	class EchoConnection : IConnection
@@ -55,51 +55,51 @@ namespace OpenRA.Network
 			get { return ConnectionState.PreConnecting; }
 		}
 
-		public virtual void Send( int frame, List<byte[]> orders )
+		public virtual void Send(int frame, List<byte[]> orders)
 		{
 			var ms = new MemoryStream();
-			ms.Write( BitConverter.GetBytes( frame ) );
-			foreach( var o in orders )
-				ms.Write( o );
-			Send( ms.ToArray() );
+			ms.Write(BitConverter.GetBytes(frame));
+			foreach (var o in orders)
+				ms.Write(o);
+			Send(ms.ToArray());
 		}
 
-		public virtual void SendImmediate( List<byte[]> orders )
+		public virtual void SendImmediate(List<byte[]> orders)
 		{
 			var ms = new MemoryStream();
-			ms.Write( BitConverter.GetBytes( (int)0 ) );
-			foreach( var o in orders )
-				ms.Write( o );
-			Send( ms.ToArray() );
+			ms.Write(BitConverter.GetBytes((int)0));
+			foreach (var o in orders)
+				ms.Write(o);
+			Send(ms.ToArray());
 		}
 
-		public virtual void SendSync( int frame, byte[] syncData )
+		public virtual void SendSync(int frame, byte[] syncData)
 		{
 			var ms = new MemoryStream();
-			ms.Write( BitConverter.GetBytes( frame ) );
-			ms.Write( syncData );
-			Send( ms.ToArray() );
+			ms.Write(BitConverter.GetBytes(frame));
+			ms.Write(syncData);
+			Send(ms.ToArray());
 		}
 
-		protected virtual void Send( byte[] packet )
+		protected virtual void Send(byte[] packet)
 		{
-			if( packet.Length == 0 )
+			if (packet.Length == 0)
 				throw new NotImplementedException();
-			lock( this )
-				receivedPackets.Add( new ReceivedPacket { FromClient = LocalClientId, Data = packet } );
+			lock (this)
+				receivedPackets.Add(new ReceivedPacket { FromClient = LocalClientId, Data = packet } );
 		}
 
-		public virtual void Receive( Action<int, byte[]> packetFn )
+		public virtual void Receive(Action<int, byte[]> packetFn)
 		{
 			List<ReceivedPacket> packets;
-			lock( this )
+			lock (this)
 			{
 				packets = receivedPackets;
 				receivedPackets = new List<ReceivedPacket>();
 			}
 
-			foreach( var p in packets )
-				packetFn( p.FromClient, p.Data );
+			foreach (var p in packets)
+				packetFn(p.FromClient, p.Data);
 		}
 
 		public virtual void Dispose() { }
@@ -112,15 +112,15 @@ namespace OpenRA.Network
 		ConnectionState connectionState = ConnectionState.Connecting;
 		Thread t;
 
-		public NetworkConnection( string host, int port )
+		public NetworkConnection(string host, int port)
 		{
 			t = new Thread( _ =>
 			{
 				try
 				{
-					socket = new TcpClient( host, port );
+					socket = new TcpClient(host, port);
 					socket.NoDelay = true;
-					var reader = new BinaryReader( socket.GetStream() );
+					var reader = new BinaryReader(socket.GetStream());
 					var serverProtocol = reader.ReadInt32();
 
 					if (ProtocolVersion.Version != serverProtocol)
@@ -131,22 +131,22 @@ namespace OpenRA.Network
 					clientId = reader.ReadInt32();
 					connectionState = ConnectionState.Connected;
 
-					for( ; ; )
+					for (;;)
 					{
 						var len = reader.ReadInt32();
 						var client = reader.ReadInt32();
 						var buf = reader.ReadBytes( len );
-						if( len == 0 )
+						if (len == 0)
 							throw new NotImplementedException();
-						lock( this )
-							receivedPackets.Add( new ReceivedPacket { FromClient = client, Data = buf } );
+						lock (this)
+							receivedPackets.Add(new ReceivedPacket { FromClient = client, Data = buf } );
 					}
 				}
 				catch { }
 				finally
 				{
 					connectionState = ConnectionState.NotConnected;
-					if( socket != null )
+					if (socket != null)
 						socket.Close();
 				}
 			}
@@ -159,28 +159,28 @@ namespace OpenRA.Network
 
 		List<byte[]> queuedSyncPackets = new List<byte[]>();
 
-		public override void SendSync( int frame, byte[] syncData )
+		public override void SendSync(int frame, byte[] syncData)
 		{
 			var ms = new MemoryStream();
-			ms.Write( BitConverter.GetBytes( frame ) );
-			ms.Write( syncData );
-			queuedSyncPackets.Add( ms.ToArray() );
+			ms.Write(BitConverter.GetBytes(frame));
+			ms.Write(syncData);
+			queuedSyncPackets.Add(ms.ToArray());
 		}
 
-		protected override void Send( byte[] packet )
+		protected override void Send(byte[] packet)
 		{
-			base.Send( packet );
+			base.Send(packet);
 
 			try
 			{
 				var ms = new MemoryStream();
 				ms.Write(BitConverter.GetBytes((int)packet.Length));
 				ms.Write(packet);
-				foreach( var q in queuedSyncPackets )
+				foreach (var q in queuedSyncPackets)
 				{
-					ms.Write( BitConverter.GetBytes( (int)q.Length ) );
-					ms.Write( q );
-					base.Send( q );
+					ms.Write(BitConverter.GetBytes((int)q.Length));
+					ms.Write(q);
+					base.Send(q);
 				}
 				queuedSyncPackets.Clear();
 				ms.WriteTo(socket.GetStream());
@@ -192,16 +192,16 @@ namespace OpenRA.Network
 
 		bool disposed = false;
 
-		public override void Dispose ()
+		public override void Dispose()
 		{
 			if (disposed) return;
 			disposed = true;
-			GC.SuppressFinalize( this );
+			GC.SuppressFinalize(this);
 
 			t.Abort();
 			if (socket != null)
 				socket.Client.Close();
-			using( new PerfSample( "Thread.Join" ))
+			using (new PerfSample("Thread.Join"))
 			{
 				if (!t.Join(1000))
 					return;
