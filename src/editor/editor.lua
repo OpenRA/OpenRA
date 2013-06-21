@@ -471,6 +471,12 @@ function IndicateAll(editor, lines, linee)
       -- trim the list as it will be re-generated
       table.remove(tokens, n)
     end
+
+    -- Clear masked indicators from the current position to the end as these
+    -- will be re-calculated and re-applied based on masking variables.
+    -- This step is needed as some positions could have shifted after updates.
+    editor:IndicatorClearRange(pos-1, editor:GetLength()-pos+1)
+
     editor:SetIndicatorCurrent(curindic)
 
     -- need to cleanup vars as they may include variables from later
