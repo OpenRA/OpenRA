@@ -168,16 +168,16 @@ namespace OpenRA
 			return a.ActorID;
 		}
 
-		static bool TryGetActorFromUInt(World world, uint aID, out Actor ret )
+		static bool TryGetActorFromUInt(World world, uint aID, out Actor ret)
 		{
-			if( aID == 0xFFFFFFFF )
+			if (aID == 0xFFFFFFFF)
 			{
 				ret = null;
 				return true;
 			}
 			else
 			{
-				foreach( var a in world.Actors.Where( x => x.ActorID == aID ) )
+				foreach (var a in world.Actors.Where(x => x.ActorID == aID))
 				{
 					ret = a;
 					return true;

@@ -110,7 +110,7 @@ namespace OpenRA.Server
 				t.ServerStarted(this);
 
 			Log.Write("server", "Initial mods: ");
-			foreach( var m in lobbyInfo.GlobalSettings.Mods )
+			foreach (var m in lobbyInfo.GlobalSettings.Mods)
 				Log.Write("server","- {0}", m);
 
 			Log.Write("server", "Initial map: {0}",lobbyInfo.GlobalSettings.Map);
@@ -118,31 +118,31 @@ namespace OpenRA.Server
 			new Thread( _ =>
 			{
 				var timeout = ServerTraits.WithInterface<ITick>().Min(t => t.TickTimeout);
-				for( ; ; )
+				for (;;)
 				{
 					var checkRead = new List<Socket>();
-					checkRead.Add( listener.Server );
-					foreach( var c in conns ) checkRead.Add( c.socket );
-					foreach( var c in preConns ) checkRead.Add( c.socket );
+					checkRead.Add(listener.Server);
+					foreach (var c in conns) checkRead.Add(c.socket);
+					foreach (var c in preConns) checkRead.Add(c.socket);
 
-					Socket.Select( checkRead, null, null, timeout );
+					Socket.Select(checkRead, null, null, timeout);
 					if (State == ServerState.ShuttingDown)
 					{
 						EndGame();
 						break;
 					}
 
-					foreach( var s in checkRead )
-						if( s == listener.Server ) AcceptConnection();
+					foreach (var s in checkRead)
+						if (s == listener.Server) AcceptConnection();
 						else if (preConns.Count > 0)
 						{
-							var p = preConns.SingleOrDefault( c => c.socket == s );
-							if (p != null) p.ReadData( this );
+							var p = preConns.SingleOrDefault(c => c.socket == s);
+							if (p != null) p.ReadData(this);
 						}
 						else if (conns.Count > 0)
 						{
-							var conn = conns.SingleOrDefault( c => c.socket == s );
-							if (conn != null) conn.ReadData( this );
+							var conn = conns.SingleOrDefault(c => c.socket == s);
+							if (conn != null) conn.ReadData(this);
 						}
 
 					foreach (var t in ServerTraits.WithInterface<ITick>())
@@ -151,8 +151,7 @@ namespace OpenRA.Server
 					if (State == ServerState.ShuttingDown)
 					{
 						EndGame();
-						if (Settings.AllowPortForward)
-							UPnP.RemovePortforward();
+						if (Settings.AllowPortForward) UPnP.RemovePortforward();
 						break;
 					}
 				}
@@ -210,11 +209,15 @@ namespace OpenRA.Server
 				var request = new HandshakeRequest()
 				{
 					Map = lobbyInfo.GlobalSettings.Map,
-					Mods = lobbyInfo.GlobalSettings.Mods.Select(m => "{0}@{1}".F(m,Mod.AllMods[m].Version)).ToArray()
+					Mods = lobbyInfo.GlobalSettings.Mods.Select(m => "{0}@{1}".F(m, Mod.AllMods[m].Version)).ToArray()
 				};
 				DispatchOrdersToClient(newConn, 0, 0, new ServerOrder("HandshakeRequest", request.Serialize()).Serialize());
 			}
-			catch (Exception) { DropClient(newConn); }
+			catch (Exception e)
+			{
+				DropClient(newConn);
+				Log.Write("server", "Dropping client {0} because handshake failed: {1}", newConn.PlayerIndex.ToString(), e);
+			}
 		}
 
 		void ValidateClient(Connection newConn, string data)
@@ -376,13 +379,17 @@ namespace OpenRA.Server
 			try
 			{
 				var ms = new MemoryStream();
-				ms.Write( BitConverter.GetBytes( data.Length + 4 ) );
-				ms.Write( BitConverter.GetBytes( client ) );
-				ms.Write( BitConverter.GetBytes( frame ) );
-				ms.Write( data );
-				c.socket.Send( ms.ToArray() );
+				ms.Write(BitConverter.GetBytes(data.Length + 4));
+				ms.Write(BitConverter.GetBytes(client));
+				ms.Write(BitConverter.GetBytes(frame));
+				ms.Write(data);
+				c.socket.Send(ms.ToArray());
 			}
-			catch (Exception) { DropClient(c); }
+			catch (Exception e)
+			{
+				DropClient(c);
+				Log.Write("server", "Dropping client {0} because dispatching orders failed: {1}", client.ToString(), e);
+			}
 		}
 
 		public void DispatchOrdersToClients(Connection conn, int frame, byte[] data)
@@ -496,7 +503,9 @@ namespace OpenRA.Server
 			{
 				conns.Remove(toDrop);
 
-				OpenRA.Network.Session.Client dropClient = lobbyInfo.Clients.Where(c1 => c1.Index == toDrop.PlayerIndex).Single();
+				var dropClient = lobbyInfo.Clients.Where(c1 => c1.Index == toDrop.PlayerIndex).FirstOrDefault();
+				if (dropClient == null)
+					return;
 
 				// Send disconnected order, even if still in the lobby
 				SendMessage("{0} has disconnected.".F(dropClient.Name));
@@ -511,7 +520,7 @@ namespace OpenRA.Server
 					// Remove any bots controlled by the admin
 					lobbyInfo.Clients.RemoveAll(c => c.Bot != null && c.BotControllerClientIndex == toDrop.PlayerIndex);
 
-					OpenRA.Network.Session.Client nextAdmin = lobbyInfo.Clients.Where(c1 => c1.Bot == null)
+					var nextAdmin = lobbyInfo.Clients.Where(c1 => c1.Bot == null)
 						.OrderBy(c => c.Index).FirstOrDefault();
 
 					if (nextAdmin != null)
@@ -556,9 +565,9 @@ namespace OpenRA.Server
 
 			Console.WriteLine("Game started");
 
-			foreach( var c in conns )
-				foreach( var d in conns )
-					DispatchOrdersToClient( c, d.PlayerIndex, 0x7FFFFFFF, new byte[] { 0xBF } );
+			foreach (var c in conns)
+				foreach (var d in conns)
+					DispatchOrdersToClient(c, d.PlayerIndex, 0x7FFFFFFF, new byte[] { 0xBF });
 
 			// Drop any unvalidated clients
 			foreach (var c in preConns.ToArray())
