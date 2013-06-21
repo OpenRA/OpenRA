@@ -29,9 +29,14 @@ namespace OpenRA.Traits
 		Actor self;
 		Map map;
 
-		int[,] visibleCells;
-		bool[,] exploredCells;
-		bool[,] foggedCells;
+		int[,] visibleCount;
+		int[,] generatedShroudCount;
+		bool[,] explored;
+
+		// Cache of visibility that was added, so no matter what crazy trait code does, it
+		// can't make us invalid.
+		Dictionary<Actor, CPos[]> visibility = new Dictionary<Actor, CPos[]>();
+		Dictionary<Actor, CPos[]> generation = new Dictionary<Actor, CPos[]>();
 
 		public Rectangle ExploredBounds { get; private set; }
 
@@ -43,11 +48,15 @@ namespace OpenRA.Traits
 			this.self = self;
 			map = self.World.Map;
 
-			visibleCells = new int[map.MapSize.X, map.MapSize.Y];
-			exploredCells = new bool[map.MapSize.X, map.MapSize.Y];
-			foggedCells = new bool[map.MapSize.X, map.MapSize.Y];
-			self.World.ActorAdded += AddActor;
-			self.World.ActorRemoved += RemoveActor;
+			visibleCount = new int[map.MapSize.X, map.MapSize.Y];
+			generatedShroudCount = new int[map.MapSize.X, map.MapSize.Y];
+			explored = new bool[map.MapSize.X, map.MapSize.Y];
+
+			self.World.ActorAdded += AddVisibility;
+			self.World.ActorRemoved += RemoveVisibility;
+
+			self.World.ActorAdded += AddShroudGeneration;
+			self.World.ActorRemoved += RemoveShroudGeneration;
 
 			if (!info.Shroud)
 				ExploredBounds = map.Bounds;
@@ -57,16 +66,6 @@ namespace OpenRA.Traits
 		{
 			Hash = Sync.hash_player(self.Owner) + self.World.FrameNumber * 3;
 		}
-
-		// cache of positions that were added, so no matter what crazy trait code does, it
-		// can't make us invalid.
-		public class ActorVisibility
-		{
-			[Sync] public int range;
-			[Sync] public CPos[] vis;
-		}
-
-		public Dictionary<Actor, ActorVisibility> vis = new Dictionary<Actor, ActorVisibility>();
 
 		static IEnumerable<CPos> FindVisibleTiles(World world, CPos a, int r)
 		{
@@ -86,77 +85,89 @@ namespace OpenRA.Traits
 
 			for (var j = min.Y; j <= max.Y; j++)
 				for (var i = min.X; i <= max.X; i++)
-					if (r * r >= (new CPos(i, j) - a).LengthSquared)
+					if (r*r >= (new CPos(i, j) - a).LengthSquared)
 						yield return new CPos(i, j);
 		}
 
-		public void AddActor(Actor a)
+		void AddVisibility(Actor a)
 		{
-			if (!a.HasTrait<RevealsShroud>() || !a.Owner.IsAlliedWith(self.Owner))
+			var rs = a.TraitOrDefault<RevealsShroud>();
+			if (rs == null || !a.Owner.IsAlliedWith(self.Owner) || rs.Range == 0)
 				return;
 
-			ActorVisibility v = a.Sight;
-			if (v.range == 0)
-				return;
+			var origins = GetVisOrigins(a);
+			var visible = origins.SelectMany(o => FindVisibleTiles(a.World, o, rs.Range))
+				.Distinct().ToArray();
 
-			foreach (var p in v.vis)
+			// Update bounding rect
+			foreach (var o in origins)
 			{
-				foreach (var q in FindVisibleTiles(a.World, p, v.range))
-				{
-					++visibleCells[q.X, q.Y];
-					exploredCells[q.X, q.Y] = true;
-					foggedCells[q.X, q.Y] = true;
-				}
-
-				var box = new Rectangle(p.X - v.range, p.Y - v.range, 2 * v.range + 1, 2 * v.range + 1);
+				var box = new Rectangle(o.X - rs.Range, o.Y - rs.Range, 2*rs.Range + 1, 2*rs.Range + 1);
 				ExploredBounds = Rectangle.Union(ExploredBounds, box);
 			}
 
-			Invalidate();
-		}
-
-		public void HideActor(Actor a, int range)
-		{
-			if (a.Owner.IsAlliedWith(self.Owner))
-				return;
-
-			var v = new ActorVisibility
+			// Update visibility
+			foreach (var c in visible)
 			{
-				vis = GetVisOrigins(a).ToArray()
-			};
-
-			foreach (var p in v.vis)
-				foreach (var q in FindVisibleTiles(a.World, p, range))
-					foggedCells[q.X, q.Y] = visibleCells[q.X, q.Y] > 0;
-
-			Invalidate();
-		}
-
-		public void UnhideActor(Actor a, ActorVisibility v, int range)
-		{
-			if (a.Owner.IsAlliedWith(self.Owner) || v == null)
-				return;
-
-	 		foreach (var p in v.vis)
-				foreach (var q in FindVisibleTiles(a.World, p, range))
-					foggedCells[q.X, q.Y] = exploredCells[q.X, q.Y];
-
-			Invalidate();
-		}
-
-		public void MergeShroud(Shroud s)
-		{
-			for (int i = map.Bounds.Left; i < map.Bounds.Right; i++)
-			{
-				for (int j = map.Bounds.Top; j < map.Bounds.Bottom; j++)
-				{
-					if (s.exploredCells[i,j] == true)
-						exploredCells[i, j] = true;
-					if (s.foggedCells[i,j] == true)
-						foggedCells[i, j] = true;
-				}
-				ExploredBounds = Rectangle.Union(ExploredBounds, s.ExploredBounds);
+				visibleCount[c.X, c.Y]++;
+				explored[c.X, c.Y] = true;
 			}
+
+			visibility[a] = visible;
+			Invalidate();
+		}
+
+		void RemoveVisibility(Actor a)
+		{
+			CPos[] visible;
+			if (!visibility.TryGetValue(a, out visible))
+				return;
+
+			foreach (var c in visible)
+				visibleCount[c.X, c.Y]--;
+
+			visibility.Remove(a);
+			Invalidate();
+		}
+
+		public void UpdateVisibility(Actor a)
+		{
+			RemoveVisibility(a);
+			AddVisibility(a);
+		}
+
+		void AddShroudGeneration(Actor a)
+		{
+			var cs = a.TraitOrDefault<CreatesShroud>();
+			if (cs == null || a.Owner.IsAlliedWith(self.Owner) || cs.Range == 0)
+				return;
+
+			var shrouded = GetVisOrigins(a).SelectMany(o => FindVisibleTiles(a.World, o, cs.Range))
+				.Distinct().ToArray();
+			foreach (var c in shrouded)
+				generatedShroudCount[c.X, c.Y]++;
+
+			generation[a] = shrouded;
+			Invalidate();
+		}
+
+		void RemoveShroudGeneration(Actor a)
+		{
+			CPos[] shrouded;
+			if (!generation.TryGetValue(a, out shrouded))
+				return;
+
+			foreach (var c in shrouded)
+				generatedShroudCount[c.X, c.Y]--;
+
+			generation.Remove(a);
+			Invalidate();
+		}
+
+		public void UpdateShroudGeneration(Actor a)
+		{
+			RemoveShroudGeneration(a);
+			AddShroudGeneration(a);
 		}
 
 		public void UpdatePlayerStance(World w, Player player, Stance oldStance, Stance newStance)
@@ -164,29 +175,11 @@ namespace OpenRA.Traits
 			if (oldStance == newStance)
 				return;
 
-			// No longer our ally; remove unit vis
-			if (oldStance == Stance.Ally)
+			foreach (var a in w.Actors.Where(a => a.Owner == player))
 			{
-				var toRemove =  w.Actors.Where(a => a.Owner == player).ToList();
-				foreach (var a in toRemove)
-					RemoveActor(a);
+				UpdateVisibility(a);
+				UpdateShroudGeneration(a);
 			}
-
-			// Is now our ally; add unit vis
-			if (newStance == Stance.Ally)
-				foreach (var a in w.Actors.Where( a => a.Owner == player ))
-					AddActor(a);
-		}
-
-		public int Explored()
-		{
-			int seen = 0;
-			for (int i = map.Bounds.Left; i < map.Bounds.Right; i++)
-				for (int j = map.Bounds.Top; j < map.Bounds.Bottom; j++)
-					if (foggedCells[i, j])
-						seen++;
-
-			return seen;
 		}
 
 		public static IEnumerable<CPos> GetVisOrigins(Actor a)
@@ -195,64 +188,40 @@ namespace OpenRA.Traits
 			if (ios != null)
 			{
 				var cells = ios.OccupiedCells();
-				if (cells.Any()) return cells.Select(c => c.First);
+				if (cells.Any())
+					return cells.Select(c => c.First);
 			}
 
 			return new[] { a.CenterLocation.ToCPos() };
 		}
 
-		public void RemoveActor(Actor a)
-		{
-			ActorVisibility v = a.Sight;
-			if (!a.Owner.IsAlliedWith(self.Owner))
-			{
-				if (a.HasTrait<CreatesShroud>())
-					foreach (var p in v.vis)
-						foreach (var q in FindVisibleTiles(a.World, p, v.range))
-							foggedCells[q.X, q.Y] = exploredCells[q.X, q.Y];
-				return;
-			}
-
-			if (!a.HasTrait<RevealsShroud>())
-				return;
-
-			foreach (var p in v.vis)
-				foreach (var q in FindVisibleTiles(a.World, p, v.range))
-					--visibleCells[q.X, q.Y];
-
-			Invalidate();
-		}
-
-		public void UpdateActor(Actor a)
-		{
-			if (!a.Owner.IsAlliedWith(self.Owner))
-				return;
-
-			RemoveActor(a);
-			AddActor(a);
-		}
-
 		public void Explore(World world, CPos center, int range)
 		{
-			foreach (var q in FindVisibleTiles(world, center, range)) {
-				exploredCells[q.X, q.Y] = true;
-				foggedCells[q.X, q.Y] = true;
-			}
+			foreach (var q in FindVisibleTiles(world, center, range))
+				explored[q.X, q.Y] = true;
 
-			var box = new Rectangle(center.X - range, center.Y - range, 2 * range + 1, 2 * range + 1);
+			var box = new Rectangle(center.X - range, center.Y - range, 2*range + 1, 2*range + 1);
 			ExploredBounds = Rectangle.Union(ExploredBounds, box);
 
 			Invalidate();
 		}
 
+		public void Explore(Shroud s)
+		{
+			for (var i = map.Bounds.Left; i < map.Bounds.Right; i++)
+				for (var j = map.Bounds.Top; j < map.Bounds.Bottom; j++)
+					if (s.explored[i,j] == true)
+						explored[i, j] = true;
+
+			ExploredBounds = Rectangle.Union(ExploredBounds, s.ExploredBounds);
+		}
+
 		public void ExploreAll(World world)
 		{
-			for (int i = map.Bounds.Left; i < map.Bounds.Right; i++) {
-				for (int j = map.Bounds.Top; j < map.Bounds.Bottom; j++) {
-					exploredCells[i, j] = true;
-					foggedCells[i, j] = true;
-				}
-			}
+			for (var i = map.Bounds.Left; i < map.Bounds.Right; i++)
+				for (var j = map.Bounds.Top; j < map.Bounds.Bottom; j++)
+					explored[i, j] = true;
+
 			ExploredBounds = world.Map.Bounds;
 
 			Invalidate();
@@ -260,13 +229,9 @@ namespace OpenRA.Traits
 
 		public void ResetExploration()
 		{
-			for (var j = 0; j <= exploredCells.GetUpperBound(1); j++)
-				for (var i = 0; i <= exploredCells.GetUpperBound(0); i++)
-					exploredCells[i, j] = visibleCells[i, j] > 0;
-
-			for (var j = 0; j <= foggedCells.GetUpperBound(1); j++)
-				for (var i = 0; i <= foggedCells.GetUpperBound(0); i++)
-					foggedCells[i, j] = visibleCells[i, j] > 0;
+			for (var i = map.Bounds.Left; i < map.Bounds.Right; i++)
+				for (var j = map.Bounds.Top; j < map.Bounds.Bottom; j++)
+					explored[i, j] = visibleCount[i, j] > 0;
 
 			Invalidate();
 		}
@@ -280,7 +245,7 @@ namespace OpenRA.Traits
 			if (!Info.Shroud)
 				return true;
 
-			return foggedCells[x,y];
+			return explored[x, y] && (generatedShroudCount[x, y] == 0 || visibleCount[x, y] > 0);
 		}
 
 		public bool IsExplored(Actor a)
@@ -299,7 +264,7 @@ namespace OpenRA.Traits
 			if (!Info.Fog)
 				return true;
 
-			return visibleCells[x,y] != 0;
+			return visibleCount[x, y] > 0;
 		}
 
 		// Actors are hidden under shroud, but not under fog by default
@@ -311,7 +276,8 @@ namespace OpenRA.Traits
 			return a.Owner.IsAlliedWith(self.Owner) || IsExplored(a);
 		}
 
-		public bool IsTargetable(Actor a) {
+		public bool IsTargetable(Actor a)
+		{
 			if (a.TraitsImplementing<IVisibilityModifier>().Any(t => !t.IsVisible(a, self.Owner)))
 				return false;
 
