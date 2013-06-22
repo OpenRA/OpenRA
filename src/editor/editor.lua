@@ -615,10 +615,12 @@ function CreateEditor()
   editor:MarkerDefine(StylesGetMarker("currentline"))
   editor:MarkerDefine(StylesGetMarker("breakpoint"))
 
-  editor:SetMarginWidth(2, 16) -- fold margin
-  editor:SetMarginType(2, wxstc.wxSTC_MARGIN_SYMBOL)
-  editor:SetMarginMask(2, wxstc.wxSTC_MASK_FOLDERS)
-  editor:SetMarginSensitive(2, true)
+  if ide.config.editor.fold then
+    editor:SetMarginWidth(2, 16) -- fold margin
+    editor:SetMarginType(2, wxstc.wxSTC_MARGIN_SYMBOL)
+    editor:SetMarginMask(2, wxstc.wxSTC_MASK_FOLDERS)
+    editor:SetMarginSensitive(2, true)
+  end
 
   editor:SetFoldFlags(wxstc.wxSTC_FOLDFLAG_LINEBEFORE_CONTRACTED +
     wxstc.wxSTC_FOLDFLAG_LINEAFTER_CONTRACTED)
@@ -1187,9 +1189,11 @@ function SetupKeywords(editor, ext, forcespec, styles, font, fontitalic)
 
   -- need to set folding property after lexer is set, otherwise
   -- the folds are not shown (wxwidgets 2.9.5)
-  editor:SetProperty("fold", "1")
-  editor:SetProperty("fold.compact", ide.config.editor.foldcompact and "1" or "0")
-  editor:SetProperty("fold.comment", "1")
+  if ide.config.editor.fold then
+    editor:SetProperty("fold", "1")
+    editor:SetProperty("fold.compact", ide.config.editor.foldcompact and "1" or "0")
+    editor:SetProperty("fold.comment", "1")
+  end
   
   -- quickfix to prevent weird looks, otherwise need to update styling mechanism for cpp
   -- cpp "greyed out" styles are  styleid + 64

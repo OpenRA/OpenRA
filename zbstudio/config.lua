@@ -6,6 +6,7 @@ editor.tabwidth = 2
 editor.usewrap = true
 editor.calltipdelay = 500
 editor.smartindent = true
+editor.fold = true
 
 local G = ... -- this now points to the global environment
 if G.ide.osname == 'Macintosh' then

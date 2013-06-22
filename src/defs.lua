@@ -100,6 +100,7 @@ config = {
     calltipdelay = nil, -- delay to show calltip (in ms)
     autoactivate = false, -- auto-activate/open files during debugging
     smartindent = false, -- use smart indentation if spec allows
+    fold = true, -- enable code folding
     foldcompact = true, -- use compact fold that includes empty lines
     checkeol = true, -- check for eol encoding on loaded files and use it
                      -- also report mixed eol encodings
