@@ -21,8 +21,8 @@ namespace OpenRA.Traits
 	public class CreatesShroud : ITick, ISync
 	{
 		CreatesShroudInfo Info;
-		[Sync] CPos previousLocation;
-		Shroud.ActorVisibility v;
+		[Sync] CPos cachedLocation;
+		[Sync] bool cachedDisabled;
 
 		public CreatesShroud(CreatesShroudInfo info)
 		{
@@ -31,29 +31,18 @@ namespace OpenRA.Traits
 
 		public void Tick(Actor self)
 		{
-	    	// TODO: don't tick all the time.
-			if (self.Owner == null)
-				return;
-
-			var shrouds = self.World.ActorsWithTrait<Shroud>().Select(s => s.Actor.Owner.Shroud);
-			if (previousLocation != self.Location && v != null)
+			var disabled = self.TraitsImplementing<IDisable>().Any(d => d.Disabled);
+			if (cachedLocation != self.Location || cachedDisabled != disabled)
 			{
-				previousLocation = self.Location;
+				cachedLocation = self.Location;
+				cachedDisabled = disabled;
 
-				foreach (var shroud in shrouds)
-					shroud.UnhideActor(self, v, Info.Range);
+				var shroud = self.World.Players.Select(p => p.Shroud);
+				foreach (var s in shroud)
+					s.UpdateShroudGeneration(self);
 			}
-
-			if (!self.TraitsImplementing<IDisable>().Any(d => d.Disabled))
-				foreach (var shroud in shrouds)
-					shroud.HideActor(self, Info.Range);
-			else
-				foreach (var shroud in shrouds)
-					shroud.UnhideActor(self, v, Info.Range);
-
-			v = new Shroud.ActorVisibility {
-				vis = Shroud.GetVisOrigins(self).ToArray()
-			};
 		}
+
+		public int Range { get { return cachedDisabled ? 0 : Info.Range; } }
 	}
 }

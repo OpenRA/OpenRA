@@ -8,6 +8,8 @@
  */
 #endregion
 
+using System.Linq;
+
 namespace OpenRA.Traits
 {
 	public class RevealsShroudInfo : ITraitInfo
@@ -19,7 +21,7 @@ namespace OpenRA.Traits
 	public class RevealsShroud : ITick, ISync
 	{
 		RevealsShroudInfo Info;
-		[Sync] CPos previousLocation;
+		[Sync] CPos cachedLocation;
 
 		public RevealsShroud(RevealsShroudInfo info)
 		{
@@ -28,26 +30,15 @@ namespace OpenRA.Traits
 
 		public void Tick(Actor self)
 		{
-			// TODO: don't tick all the time.
-			World w = self.World;
-			if(self.Owner == null) return;
-			
-			if (previousLocation != self.Location)
+			if (cachedLocation != self.Location)
 			{
-				previousLocation = self.Location;
-				var actors = w.ActorsWithTrait<Shroud>();
+				cachedLocation = self.Location;
 
-				foreach( var s in actors )
-					s.Actor.Owner.Shroud.RemoveActor(self);
-					
-				self.UpdateSight();
-					
-				foreach( var s in actors )
-					s.Actor.Owner.Shroud.AddActor(self);
-				
+				foreach (var s in self.World.Players.Select(p => p.Shroud))
+					s.UpdateVisibility(self);
 			}
 		}
 
-		public int RevealRange { get { return Info.Range; } }
+		public int Range { get { return Info.Range; } }
 	}
 }

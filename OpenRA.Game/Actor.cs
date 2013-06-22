@@ -66,8 +66,6 @@ namespace OpenRA
 			}
 		}
 
-		public Shroud.ActorVisibility Sight;
-
 		[Sync] public Player Owner;
 
 		Activity currentActivity;
@@ -107,15 +105,6 @@ namespace OpenRA
 				return TraitsImplementing<IAutoSelectionSize>().Select(x => x.SelectionSize(this)).FirstOrDefault();
 			});
 
-			if (this.HasTrait<RevealsShroud>())
-			{
-				Sight = new Shroud.ActorVisibility
-				{
-					range = this.Trait<RevealsShroud>().RevealRange,
-					vis = Shroud.GetVisOrigins(this).ToArray()
-				};
-			}
-
 			ApplyIRender = (x, wr) => x.Render(this, wr);
 			ApplyRenderModifier = (m, p, wr) => p.ModifyRender(this, wr, m);
 
@@ -129,11 +118,6 @@ namespace OpenRA
 			ExtendedBounds.Invalidate();
 
 			currentActivity = Traits.Util.RunActivity(this, currentActivity);
-		}
-
-		public void UpdateSight()
-		{
-			Sight.vis = Shroud.GetVisOrigins(this).ToArray();
 		}
 
 		public bool IsIdle
