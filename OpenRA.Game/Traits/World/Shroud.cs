@@ -135,6 +135,10 @@ namespace OpenRA.Traits
 
 		public void UpdateVisibility(Actor a)
 		{
+			// Actors outside the world don't have any vis
+			if (!a.IsInWorld)
+				return;
+
 			RemoveVisibility(a);
 			AddVisibility(a);
 		}
