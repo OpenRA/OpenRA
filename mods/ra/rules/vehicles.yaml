@@ -261,6 +261,7 @@ HARV:
 	RevealsShroud:
 		Range: 4
 	RenderHarvester:
+		ImagesByFullness: harvempty, harvhalf, harv
 	-AttackMove:
 	GpsDot:
 		String:Harvester

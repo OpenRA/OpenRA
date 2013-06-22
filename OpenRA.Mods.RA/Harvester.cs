@@ -21,8 +21,10 @@ namespace OpenRA.Mods.RA
 	public class HarvesterInfo : ITraitInfo
 	{
 		public readonly int Capacity = 28;
+		public readonly int LoadTicksPerBale = 4;
 		public readonly int UnloadTicksPerBale = 4;
 		public readonly int PipCount = 7;
+		public readonly int HarvestFacings = 0;
 		public readonly string[] Resources = { };
 		public readonly decimal FullyLoadedSpeed = .85m;
 		/// <summary>

@@ -18,22 +18,24 @@ namespace OpenRA.Mods.RA.Render
 {
 	class RenderHarvesterInfo : RenderUnitInfo, Requires<HarvesterInfo>
 	{
-		public readonly string[] ImagesByFullness = { "harvempty", "harvhalf", "harv" };
+		public readonly string[] ImagesByFullness = {"harv"};
 		public override object Create(ActorInitializer init) { return new RenderHarvester(init.self, this); }
 	}
 
-	class RenderHarvester : RenderUnit
+	class RenderHarvester : RenderUnit, INotifyHarvest
 	{
 		Harvester harv;
 		RenderHarvesterInfo info;
 
-		public RenderHarvester(Actor self, RenderHarvesterInfo info) : base(self)
+		public RenderHarvester(Actor self, RenderHarvesterInfo info)
+			: base(self)
 		{
 			this.info = info;
-
 			harv = self.Trait<Harvester>();
-			foreach( var image in info.ImagesByFullness )
-				new Animation( image );	/* just force these to get loaded upfront */
+
+			// HACK: Force images to be loaded up-front
+			foreach (var image in info.ImagesByFullness)
+				new Animation(image);
 		}
 
 		public override void Tick(Actor self)
@@ -42,9 +44,15 @@ namespace OpenRA.Mods.RA.Render
 			var desiredImage = info.ImagesByFullness[desiredState];
 
 			if (anim.Name != desiredImage)
-				anim.ChangeImage( desiredImage, "idle" );
+				anim.ChangeImage(desiredImage, "idle");
 
 			base.Tick(self);
+		}
+
+		public void Harvested(Actor self, ResourceType resource)
+		{
+			if (anim.CurrentSequence.Name != "harvest")
+				PlayCustomAnim(self, "harvest");
 		}
 	}
 }

@@ -135,45 +135,51 @@ namespace OpenRA.Mods.RA.Activities
 
 	public class HarvestResource : Activity
 	{
-		bool isHarvesting = false;
-
 		public override Activity Tick(Actor self)
 		{
-			if (isHarvesting) return this;
-
 			var territory = self.World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
 			if (IsCanceled)
 			{
-				if (territory != null) territory.UnclaimByActor(self);
+				if (territory != null)
+					territory.UnclaimByActor(self);
 				return NextActivity;
 			}
 
 			var harv = self.Trait<Harvester>();
+			var harvInfo = self.Info.Traits.Get<HarvesterInfo>();
 			harv.LastHarvestedCell = self.Location;
 
 			if (harv.IsFull)
 			{
-				if (territory != null) territory.UnclaimByActor(self);
+				if (territory != null)
+					territory.UnclaimByActor(self);
 				return NextActivity;
+			}
+
+			// Turn to one of the harvestable facings
+			if (harvInfo.HarvestFacings != 0)
+			{
+				var facing = self.Trait<IFacing>().Facing;
+				var desired = Util.QuantizeFacing(facing, harvInfo.HarvestFacings) * (256 / harvInfo.HarvestFacings);
+				if (desired != facing)
+					return Util.SequenceActivities(new Turn(desired), this);
 			}
 
 			var resLayer = self.World.WorldActor.Trait<ResourceLayer>();
 			var resource = resLayer.Harvest(self.Location);
 			if (resource == null)
 			{
-				if (territory != null) territory.UnclaimByActor(self);
+				if (territory != null)
+					territory.UnclaimByActor(self);
 				return NextActivity;
 			}
 
-			var renderUnit = self.Trait<RenderUnit>();	/* better have one of these! */
-			if (renderUnit.anim.CurrentSequence.Name != "harvest")
-			{
-				isHarvesting = true;
-				renderUnit.PlayCustomAnimation(self, "harvest", () => isHarvesting = false);
-			}
-
 			harv.AcceptResource(resource);
-			return this;
+
+			foreach (var t in self.TraitsImplementing<INotifyHarvest>())
+				t.Harvested(self, resource);
+
+			return Util.SequenceActivities(new Wait(harvInfo.LoadTicksPerBale), this);
 		}
 	}
 }

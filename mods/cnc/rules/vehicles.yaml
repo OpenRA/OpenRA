@@ -58,6 +58,7 @@ HARV:
 		Resources: Tiberium, BlueTiberium
 		PipCount: 7
 		Capacity: 20
+		LoadTicksPerBale: 6
 		UnloadTicksPerBale: 12
 		SearchFromProcRadius: 24
 		SearchFromOrderRadius: 12
@@ -75,6 +76,8 @@ HARV:
 	LeavesHusk:
 		HuskActor: HARV.Husk
 	-GainsExperience:
+	-RenderUnit:
+	RenderHarvester:
 
 APC:
 	Inherits: ^Tank

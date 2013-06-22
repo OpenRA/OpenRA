@@ -67,15 +67,15 @@ harvester:
 	idle:
 		Start: 0
 		Facings: 32
-	harvest: #TODO use the real overlay instead of this hacky paintjob
-		Start: 32
-		Length: 8
+	harvest: harvest2
+		Start: 0
+		Length: 6
 		Facings: 8
-		Tick: 40
-	dock: unload
+		Tick: 80
+	dock: unload2
 		Start: 0
 		Length: 10
-	dock-loop: unload
+	dock-loop: unload2
 		Start: 10
 		Length: 1
 
