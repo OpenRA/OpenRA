@@ -200,6 +200,9 @@ namespace OpenRA.Server
 				newConn.socket.Blocking = false;
 				newConn.socket.NoDelay = true;
 
+				Log.Write("server", "Socket.ReceiveBufferSize: {0}.".F(newConn.socket.ReceiveBufferSize));
+				Log.Write("server", "Socket.SendBufferSize: {0}.".F(newConn.socket.SendBufferSize));
+
 				// assign the player number.
 				newConn.PlayerIndex = ChooseFreePlayerIndex();
 				newConn.socket.Send(BitConverter.GetBytes(ProtocolVersion.Version));
