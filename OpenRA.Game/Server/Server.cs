@@ -186,10 +186,11 @@ namespace OpenRA.Server
 				if (!listener.Server.IsBound) return;
 				newSocket = listener.AcceptSocket();
 			}
-			catch
+			catch (Exception e)
 			{
-				/* could have an exception here when listener 'goes away' when calling AcceptConnection! */
-				/* alternative would be to use locking but the listener doesnt go away without a reason */
+				/* TODO: Could have an exception here when listener 'goes away' when calling AcceptConnection! */
+				/* Alternative would be to use locking but the listener doesnt go away without a reason. */
+				Log.Write("server", "Accepting the connection failed.", e);
 				return;
 			}
 
