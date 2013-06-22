@@ -198,6 +198,8 @@ namespace OpenRA.Server
 			{
 				newConn.socket.Blocking = false;
 				newConn.socket.NoDelay = true;
+				newConn.socket.SendBufferSize = 65536;
+				newConn.socket.ReceiveBufferSize = 65536;
 
 				// assign the player number.
 				newConn.PlayerIndex = ChooseFreePlayerIndex();
