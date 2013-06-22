@@ -72,10 +72,10 @@ harvester:
 		Length: 6
 		Facings: 8
 		Tick: 80
-	dock: unload
+	dock: unload2
 		Start: 0
 		Length: 10
-	dock-loop: unload
+	dock-loop: unload2
 		Start: 10
 		Length: 1
 
