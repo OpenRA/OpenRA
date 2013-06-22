@@ -64,6 +64,7 @@ HARVESTER:
 	Harvester:
 		PipCount: 10
 		Capacity: 40
+		HarvestFacings: 8
 		Resources: Spice
 		UnloadTicksPerBale: 5
 		# How far away from our linked refinery to find resources (in cells):
@@ -87,6 +88,8 @@ HARVESTER:
 	-AttackMove:
 	LeavesHusk:
 		HuskActor: Harvester.Husk
+	WithHarvestAnimation:
+		ZOffset: 1
 
 HARVESTER.Husk:
 	Inherits: ^Husk
