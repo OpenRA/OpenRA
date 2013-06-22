@@ -113,6 +113,9 @@ namespace OpenRA.Traits
 				explored[c.X, c.Y] = true;
 			}
 
+			if (visibility.ContainsKey(a))
+				throw new InvalidOperationException("Attempting to add duplicate actor visibility");
+
 			visibility[a] = visible;
 			Invalidate();
 		}
@@ -146,6 +149,9 @@ namespace OpenRA.Traits
 				.Distinct().ToArray();
 			foreach (var c in shrouded)
 				generatedShroudCount[c.X, c.Y]++;
+
+			if (generation.ContainsKey(a))
+				throw new InvalidOperationException("Attempting to add duplicate shroud generation");
 
 			generation[a] = shrouded;
 			Invalidate();
