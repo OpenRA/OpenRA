@@ -67,9 +67,7 @@ HARVESTER:
 		HarvestFacings: 8
 		Resources: Spice
 		UnloadTicksPerBale: 5
-		# How far away from our linked refinery to find resources (in cells):
 		SearchFromProcRadius: 24
-		# How far away from last harvest order location to find more resources (in cells):
 		SearchFromOrderRadius: 12
 	Health:
 		HP: 1000
