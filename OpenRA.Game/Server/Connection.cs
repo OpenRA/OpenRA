@@ -36,7 +36,7 @@ namespace OpenRA.Server
 			return result.ToArray();
 		}
 
-		bool ReadDataInner( Server server )
+		bool ReadDataInner(Server server)
 		{
 			var rx = new byte[1024];
 			var len = 0;
@@ -73,7 +73,7 @@ namespace OpenRA.Server
 			return true;
 		}
 
-		public void ReadData( Server server )
+		public void ReadData(Server server)
 		{
 			if (ReadDataInner(server))
 				while (data.Count >= ExpectLength)
