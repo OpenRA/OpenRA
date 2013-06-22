@@ -97,9 +97,9 @@ namespace OpenRA.Server
 				UPnP.ForwardPort();
 
 			foreach (var trait in modData.Manifest.ServerTraits)
-				ServerTraits.Add( modData.ObjectCreator.CreateObject<ServerTrait>(trait) );
+				ServerTraits.Add(modData.ObjectCreator.CreateObject<ServerTrait>(trait));
 
-			lobbyInfo = new Session( mods );
+			lobbyInfo = new Session(mods);
 			lobbyInfo.GlobalSettings.RandomSeed = randomSeed;
 			lobbyInfo.GlobalSettings.Map = settings.Map;
 			lobbyInfo.GlobalSettings.ServerName = settings.Name;
