@@ -65,6 +65,7 @@ namespace OpenRA.Server
 					if (e.SocketErrorCode == SocketError.WouldBlock) break;
 
 					server.DropClient(this);
+					Log.Write("server", "Dropping client {0} because reading the data failed: {1}", this.PlayerIndex.ToString(), e);
 					return false;
 				}
 			}
