@@ -454,6 +454,7 @@
     <Compile Include="Render\WithVoxelWalkerBody.cs" />
     <Compile Include="Widgets\Logic\CreditsLogic.cs" />
     <Compile Include="Render\WithResources.cs" />
+    <Compile Include="Render\WithHarvestAnimation.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
