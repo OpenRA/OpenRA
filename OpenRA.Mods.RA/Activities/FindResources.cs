@@ -135,16 +135,13 @@ namespace OpenRA.Mods.RA.Activities
 
 	public class HarvestResource : Activity
 	{
-		bool isHarvesting = false;
-
 		public override Activity Tick(Actor self)
 		{
-			if (isHarvesting) return this;
-
 			var territory = self.World.WorldActor.TraitOrDefault<ResourceClaimLayer>();
 			if (IsCanceled)
 			{
-				if (territory != null) territory.UnclaimByActor(self);
+				if (territory != null)
+					territory.UnclaimByActor(self);
 				return NextActivity;
 			}
 
@@ -153,7 +150,8 @@ namespace OpenRA.Mods.RA.Activities
 
 			if (harv.IsFull)
 			{
-				if (territory != null) territory.UnclaimByActor(self);
+				if (territory != null)
+					territory.UnclaimByActor(self);
 				return NextActivity;
 			}
 
@@ -161,19 +159,18 @@ namespace OpenRA.Mods.RA.Activities
 			var resource = resLayer.Harvest(self.Location);
 			if (resource == null)
 			{
-				if (territory != null) territory.UnclaimByActor(self);
+				if (territory != null)
+					territory.UnclaimByActor(self);
 				return NextActivity;
 			}
 
-			var renderUnit = self.Trait<RenderUnit>();	/* better have one of these! */
-			if (renderUnit.anim.CurrentSequence.Name != "harvest")
-			{
-				isHarvesting = true;
-				renderUnit.PlayCustomAnimation(self, "harvest", () => isHarvesting = false);
-			}
-
 			harv.AcceptResource(resource);
-			return this;
+
+			foreach (var t in self.TraitsImplementing<INotifyHarvest>())
+				t.Harvested(self, resource);
+
+			var harvInfo = self.Info.Traits.Get<HarvesterInfo>();
+			return Util.SequenceActivities(new Wait(harvInfo.LoadTicksPerBale), this);
 		}
 	}
 }
