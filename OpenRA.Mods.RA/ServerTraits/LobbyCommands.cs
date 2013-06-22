@@ -335,7 +335,7 @@ namespace OpenRA.Mods.RA.Server
 							server.SendOrderTo(conn, "Message", "Number of teams could not be parsed: {0}".F(s));
 							return true;
 						}
-						teams = teams.Clamp(2, 8);
+						teams = teams.Clamp(1, 8);
 
 						var players = server.lobbyInfo.Slots
 							.Select(slot => server.lobbyInfo.Clients.SingleOrDefault(c => c.Slot == slot.Key))
@@ -366,6 +366,9 @@ namespace OpenRA.Mods.RA.Server
 								cl.Team = team;
 							}
 						}
+						// All vs Host
+						if (teams == 1)
+							client.Team = 2;
 						server.SyncLobbyInfo();
 						return true;
 					}},
