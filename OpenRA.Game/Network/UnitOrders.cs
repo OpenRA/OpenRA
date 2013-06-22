@@ -154,8 +154,10 @@ namespace OpenRA.Network
 					}
 
 				case "ServerError":
-					orderManager.ServerError = order.TargetString;
-					break;
+					{
+						orderManager.ServerError = order.TargetString;
+						break;
+					}
 
 				case "SyncInfo":
 					{
@@ -200,13 +202,13 @@ namespace OpenRA.Network
 					}
 				default:
 					{
-						if( !order.IsImmediate )
+						if (!order.IsImmediate)
 						{
 							var self = order.Subject;
 							var health = self.TraitOrDefault<Health>();
-							if( health == null || !health.IsDead )
-								foreach( var t in self.TraitsImplementing<IResolveOrder>() )
-									t.ResolveOrder( self, order );
+							if (health == null || !health.IsDead)
+								foreach (var t in self.TraitsImplementing<IResolveOrder>())
+									t.ResolveOrder(self, order);
 						}
 						break;
 					}

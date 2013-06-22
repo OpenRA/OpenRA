@@ -149,12 +149,12 @@ namespace OpenRA
 			delayedActions.PerformActions();
 		}
 
-		static void Tick( OrderManager orderManager )
+		static void Tick(OrderManager orderManager)
 		{
 			int t = Environment.TickCount;
 			int dt = t - orderManager.LastTickTime;
 			if (dt >= Settings.Game.Timestep)
-				using( new PerfSample( "tick_time" ) )
+				using (new PerfSample("tick_time"))
 				{
 					orderManager.LastTickTime += Settings.Game.Timestep;
 					Ui.Tick();
@@ -162,7 +162,7 @@ namespace OpenRA
 					if (orderManager.GameStarted)
 						++Viewport.TicksSinceLastMove;
 					Sound.Tick();
-					Sync.CheckSyncUnchanged( world, () => { orderManager.TickImmediate(); } );
+					Sync.CheckSyncUnchanged(world, orderManager.TickImmediate);
 
 					if (world != null)
 					{
@@ -230,7 +230,7 @@ namespace OpenRA
 		{
 			get
 			{
-				var client= orderManager.LobbyInfo.ClientWithIndex (
+				var client= orderManager.LobbyInfo.ClientWithIndex(
 					orderManager.Connection.LocalClientId);
 				return ((client!=null) && client.IsAdmin);
 			}
@@ -315,7 +315,6 @@ namespace OpenRA
 			Renderer.InitializeFonts(modData.Manifest);
 			modData.InitializeLoaders();
 
-
 			PerfHistory.items["render"].hasNormalTick = false;
 			PerfHistory.items["batches"].hasNormalTick = false;
 			PerfHistory.items["render_widgets"].hasNormalTick = false;
@@ -331,11 +330,11 @@ namespace OpenRA
 					Game.Settings.Server.Map = WidgetUtils.ChooseInitialMap(Game.Settings.Server.Map);
 					Game.Settings.Save();
 					Game.CreateServer(new ServerSettings(Game.Settings.Server));
-					while(true)
+					while (true)
 					{
 						System.Threading.Thread.Sleep(100);
 
-						if((server.State == Server.ServerState.GameStarted)
+						if ((server.State == Server.ServerState.GameStarted)
 						    && (server.conns.Count<=1))
 						{
 							Console.WriteLine("No one is playing, shutting down...");
@@ -426,7 +425,7 @@ namespace OpenRA
 
 		public static T CreateObject<T>( string name )
 		{
-			return modData.ObjectCreator.CreateObject<T>( name );
+			return modData.ObjectCreator.CreateObject<T>(name);
 		}
 
 		public static void CreateServer(ServerSettings settings)

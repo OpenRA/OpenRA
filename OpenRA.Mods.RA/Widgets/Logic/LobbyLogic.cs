@@ -63,10 +63,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				Ui.OpenWindow("CONNECTIONFAILED_PANEL", new WidgetArgs()
 				{
+					{ "orderManager", om },
 					{ "onAbort", onExit },
-					{ "onRetry", onRetry },
-					{ "host", om.Host },
-					{ "port", om.Port }
+					{ "onRetry", onRetry }
 				});
 			}
 		}
@@ -115,7 +114,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var mapPreview = lobby.Get<MapPreviewWidget>("MAP_PREVIEW");
 			mapPreview.IsVisible = () => Map != null;
 			mapPreview.Map = () => Map;
-			mapPreview.OnMouseDown = mi => LobbyUtils.SelectSpawnPoint( orderManager, mapPreview, Map, mi );
+			mapPreview.OnMouseDown = mi => LobbyUtils.SelectSpawnPoint(orderManager, mapPreview, Map, mi);
 			mapPreview.SpawnClients = () => LobbyUtils.GetSpawnClients(orderManager, Map);
 
 			var mapTitle = lobby.GetOrNull<LabelWidget>("MAP_TITLE");

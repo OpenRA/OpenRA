@@ -17,8 +17,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	public class ConnectionLogic
 	{
 		Action onConnect, onRetry, onAbort;
-		string host;
-		int port;
 
 		void ConnectionStateChanged(OrderManager om)
 		{
@@ -29,14 +27,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			}
 			else if (om.Connection.ConnectionState == ConnectionState.NotConnected)
 			{
-				// Show connection failed dialog
 				CloseWindow();
 				Ui.OpenWindow("CONNECTIONFAILED_PANEL", new WidgetArgs()
 				{
+					{ "orderManager", om },
 					{ "onAbort", onAbort },
-					{ "onRetry", onRetry },
-					{ "host", host },
-					{ "port", port }
+					{ "onRetry", onRetry }
 				});
 			}
 		}
@@ -50,8 +46,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public ConnectionLogic(Widget widget, string host, int port, Action onConnect, Action onRetry, Action onAbort)
 		{
-			this.host = host;
-			this.port = port;
 			this.onConnect = onConnect;
 			this.onRetry = onRetry;
 			this.onAbort = onAbort;
@@ -82,14 +76,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	public class ConnectionFailedLogic
 	{
 		[ObjectCreator.UseCtor]
-		public ConnectionFailedLogic(Widget widget, string host, int port, Action onRetry, Action onAbort)
+		public ConnectionFailedLogic(Widget widget, OrderManager orderManager, Action onRetry, Action onAbort)
 		{
 			var panel = widget;
 			panel.Get<ButtonWidget>("ABORT_BUTTON").OnClick = () => { Ui.CloseWindow(); onAbort(); };
 			panel.Get<ButtonWidget>("RETRY_BUTTON").OnClick = () => { Ui.CloseWindow(); onRetry(); };
 
 			widget.Get<LabelWidget>("CONNECTING_DESC").GetText = () =>
-				"Could not connect to {0}:{1}".F(host, port);
+				"Could not connect to {0}:{1}\n{2}".F(orderManager.Host, orderManager.Port, orderManager.ServerError);
 		}
 	}
 }
