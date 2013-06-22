@@ -146,6 +146,7 @@ namespace OpenRA.Mods.RA.Activities
 			}
 
 			var harv = self.Trait<Harvester>();
+			var harvInfo = self.Info.Traits.Get<HarvesterInfo>();
 			harv.LastHarvestedCell = self.Location;
 
 			if (harv.IsFull)
@@ -153,6 +154,15 @@ namespace OpenRA.Mods.RA.Activities
 				if (territory != null)
 					territory.UnclaimByActor(self);
 				return NextActivity;
+			}
+
+			// Turn to one of the harvestable facings
+			if (harvInfo.HarvestFacings != 0)
+			{
+				var facing = self.Trait<IFacing>().Facing;
+				var desired = Util.QuantizeFacing(facing, harvInfo.HarvestFacings) * (256 / harvInfo.HarvestFacings);
+				if (desired != facing)
+					return Util.SequenceActivities(new Turn(desired), this);
 			}
 
 			var resLayer = self.World.WorldActor.Trait<ResourceLayer>();
@@ -169,7 +179,6 @@ namespace OpenRA.Mods.RA.Activities
 			foreach (var t in self.TraitsImplementing<INotifyHarvest>())
 				t.Harvested(self, resource);
 
-			var harvInfo = self.Info.Traits.Get<HarvesterInfo>();
 			return Util.SequenceActivities(new Wait(harvInfo.LoadTicksPerBale), this);
 		}
 	}
