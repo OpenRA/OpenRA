@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA
 		public readonly bool AllowNeutral = true;
 		public readonly bool AllowEnemies = true;
 		[Desc("Health percentage the target must be at (or below) before it can be captured.")]
-		public readonly double CaptureThreshold = 0.5;
+		public readonly float CaptureThreshold = 0.5f;
 
 		public object Create(ActorInitializer init) { return new LegacyCapturable(init.self, this); }
 	}
