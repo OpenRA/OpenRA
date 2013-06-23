@@ -23,13 +23,10 @@ local editMenu = wx.wxMenu{
   { },
   { ID_COMMENT, TR("C&omment/Uncomment")..KSC(ID_COMMENT), TR("Comment or uncomment current or selected lines") },
   { },
+  { ID_FOLD, TR("&Fold/Unfold All")..KSC(ID_FOLD), TR("Fold or unfold all code folds") },
   { ID_CLEARDYNAMICWORDS, TR("Clear &Dynamic Words")..KSC(ID_CLEARDYNAMICWORDS), TR("Resets the dynamic word list for autocompletion") },
   { },
 }
-
-if ide.config.editor.fold then
-  editMenu:Insert(14, ID_FOLD, TR("&Fold/Unfold All")..KSC(ID_FOLD), TR("Fold or unfold all code folds"))
-end
 
 local preferencesMenu = wx.wxMenu{
   {ID_PREFERENCESSYSTEM, TR("Settings: System")..KSC(ID_PREFERENCESSYSTEM)},
@@ -56,7 +53,7 @@ function OnUpdateUIEditMenu(event)
   local editor = getControlWithFocus()
   if editor == nil then event:Enable(false); return end
 
-  local alwaysOn = { [ID_SELECTALL] = true, [ID_FOLD] = true,
+  local alwaysOn = { [ID_SELECTALL] = true, [ID_FOLD] = ide.config.editor.fold,
     -- allow Cut and Copy commands as these work on a line if no selection
     [ID_COPY] = true, [ID_CUT] = true,
     [ID_COMMENT] = true, [ID_AUTOCOMPLETE] = true}
