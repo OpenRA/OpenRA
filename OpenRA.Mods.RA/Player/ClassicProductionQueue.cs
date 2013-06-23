@@ -11,23 +11,23 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
-using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA
 {
 	[Desc("Attach this to the world actor (not a building!) to define a new shared build queue.",
-		"Will only work together with the Production: trait on the actor that actually does the production.", 
+		"Will only work together with the Production: trait on the actor that actually does the production.",
 		"You will also want to add PrimaryBuildings: to let the user choose where new units should exit.")]
 	public class ClassicProductionQueueInfo : ProductionQueueInfo, Requires<TechTreeInfo>, Requires<PowerManagerInfo>, Requires<PlayerResourcesInfo>
 	{
 		[Desc("If you build more actors of the same type,", "the same queue will get its build time lowered for every actor produced there.")]
 		public readonly bool SpeedUp = false;
-		[Desc("Every time another production building of the same queue is", 
-			"contructed, the build times of all actors in the queue", 
+		[Desc("Every time another production building of the same queue is",
+			"contructed, the build times of all actors in the queue",
 			"decreased by a percentage of the original time.")]
-		public readonly int[] BuildTimeSpeedReduction = {100,85,75,65,60,55,50};
+		public readonly int[] BuildTimeSpeedReduction = { 100, 85, 75, 65, 60, 55, 50 };
 
 		public override object Create(ActorInitializer init) { return new ClassicProductionQueue(init.self, this); }
 	}
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA
 
 		[Sync] bool isActive = false;
 
-		public override void Tick( Actor self )
+		public override void Tick(Actor self)
 		{
 			isActive = self.World.ActorsWithTrait<Production>()
 				.Any(x => x.Actor.Owner == self.Owner
@@ -64,23 +64,24 @@ namespace OpenRA.Mods.RA
 			return isActive ? base.BuildableItems() : None;
 		}
 
-		protected override bool BuildUnit( string name )
+		protected override bool BuildUnit(string name)
 		{
 			// Find a production structure to build this actor
 			var producers = self.World.ActorsWithTrait<Production>()
 				.Where(x => x.Actor.Owner == self.Owner
-					   && x.Trait.Info.Produces.Contains(Info.Type))
-				.OrderByDescending(x => x.Actor.IsPrimaryBuilding() ? 1 : 0 ); // prioritize the primary.
+					&& x.Trait.Info.Produces.Contains(Info.Type))
+					.OrderByDescending(x => x.Actor.IsPrimaryBuilding())
+					.ThenByDescending(x => x.Actor.ActorID);
 
 			if (!producers.Any())
 			{
-				CancelProduction(name,1);
+				CancelProduction(name, 1);
 				return true;
 			}
 
 			foreach (var p in producers.Where(p => !p.Actor.IsDisabled()))
 			{
-				if (p.Trait.Produce(p.Actor, Rules.Info[ name ]))
+				if (p.Trait.Produce(p.Actor, Rules.Info[name]))
 				{
 					FinishProduction();
 					return true;
@@ -92,13 +93,13 @@ namespace OpenRA.Mods.RA
 		public override int GetBuildTime(String unitString)
 		{
 			var unit = Rules.Info[unitString];
-			if (unit == null || ! unit.Traits.Contains<BuildableInfo>())
+			if (unit == null || !unit.Traits.Contains<BuildableInfo>())
 				return 0;
 
 			if (self.World.LobbyInfo.GlobalSettings.AllowCheats && self.Owner.PlayerActor.Trait<DeveloperMode>().FastBuild)
 				return 0;
 
-			var time = (int) (unit.GetBuildTime() * Info.BuildSpeedModifier);
+			var time = (int)(unit.GetBuildTime() * Info.BuildSpeedModifier);
 
 			if (Info.SpeedUp)
 			{
