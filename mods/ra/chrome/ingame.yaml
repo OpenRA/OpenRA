@@ -157,9 +157,6 @@ Container@PLAYER_WIDGETS:
 
 Container@OBSERVER_WIDGETS:
 	Children:
-		SupportPowerBin@INGAME_POWERS_BIN:
-			X:0
-			Y:25
 		Button@INGAME_STATS_BUTTON:
 			X:162
 			Y:0
