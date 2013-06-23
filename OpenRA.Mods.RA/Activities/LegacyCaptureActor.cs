@@ -46,10 +46,10 @@ namespace OpenRA.Mods.RA.Activities
 
 					target.Actor.ChangeOwner(self.Owner);
 
-					foreach (var t in self.TraitsImplementing<INotifyCapture>())
+					foreach (var t in target.Actor.TraitsImplementing<INotifyCapture>())
 						t.OnCapture(target.Actor, self, oldOwner, self.Owner);
 
-					foreach (var t in self.World.ActorsWithTrait<INotifyOtherCaptured>())
+					foreach (var t in target.Actor.World.ActorsWithTrait<INotifyOtherCaptured>())
 						t.Trait.OnActorCaptured(t.Actor, target.Actor, self, oldOwner, self.Owner);
 
 					if (b != null && b.Locked)
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.RA.Activities
 				}
 				else
 				{
-					int damage = (int)(health.MaxHP * capturesInfo.SabotageHPRemoval);
+					var damage = (int)(health.MaxHP * capturesInfo.SabotageHPRemoval);
 					target.Actor.InflictDamage(self, damage, null);
 				}
 
