@@ -526,7 +526,6 @@ GUN:
 		LocalOffset: -71,0,85
 	AttackTurreted:
 	AutoTarget:
-	-AutoTargetIgnore:
 	-RenderBuilding:
 	-DeadBuildingState:
 	RenderRangeCircle:
@@ -608,7 +607,6 @@ OBLI:
 	AutoTarget:
 	RenderBuilding:
 		QuantizedFacings: 8
-	-AutoTargetIgnore:
 	-RenderBuilding:
 	RenderRangeCircle:
 	-EmitInfantryOnSell:
@@ -643,7 +641,6 @@ GTWR:
 	RenderBuilding:
 		QuantizedFacings: 8
 	AutoTarget:
-	-AutoTargetIgnore:
 	DetectCloaked:
 		Range: 5
 	RenderDetectionCircle:
@@ -687,7 +684,6 @@ ATWR:
 	AutoTarget:
 	RenderBuilding:
 		QuantizedFacings: 8
-	-AutoTargetIgnore:
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 6
