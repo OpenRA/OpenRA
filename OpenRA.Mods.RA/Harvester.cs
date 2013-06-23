@@ -426,14 +426,19 @@ namespace OpenRA.Mods.RA
 
 			public bool CanTargetLocation(Actor self, CPos location, List<Actor> actorsAtLocation, TargetModifiers modifiers, ref string cursor)
 			{
+				if (modifiers.HasModifier(TargetModifiers.ForceMove))
+					return false;
+
 				// Don't leak info about resources under the shroud
-				if (!self.Owner.Shroud.IsExplored(location)) return false;
+				if (!self.Owner.Shroud.IsExplored(location))
+					return false;
 
 				var res = self.World.WorldActor.Trait<ResourceLayer>().GetResource(location);
 				var info = self.Info.Traits.Get<HarvesterInfo>();
 
-				if (res == null) return false;
-				if (!info.Resources.Contains(res.info.Name)) return false;
+				if (res == null || !info.Resources.Contains(res.info.Name))
+					return false;
+
 				cursor = "harvest";
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
