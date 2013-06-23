@@ -36,7 +36,7 @@ namespace OpenRA.Server
 			return result.ToArray();
 		}
 
-		bool ReadDataInner( Server server )
+		bool ReadDataInner(Server server)
 		{
 			var rx = new byte[1024];
 			var len = 0;
@@ -65,6 +65,7 @@ namespace OpenRA.Server
 					if (e.SocketErrorCode == SocketError.WouldBlock) break;
 
 					server.DropClient(this);
+					Log.Write("server", "Dropping client {0} because reading the data failed: {1}", this.PlayerIndex.ToString(), e);
 					return false;
 				}
 			}
@@ -72,7 +73,7 @@ namespace OpenRA.Server
 			return true;
 		}
 
-		public void ReadData( Server server )
+		public void ReadData(Server server)
 		{
 			if (ReadDataInner(server))
 				while (data.Count >= ExpectLength)
