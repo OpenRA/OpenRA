@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA
 		[Desc("Unit will do damage to the actor instead of capturing it. Unit is destroyed when sabotaging.")]
 		public readonly bool Sabotage = true;
 		[Desc("Only used if Sabotage=true. Sabotage damage expressed as a percentage of enemy health removed.")]
-		public readonly double SabotageHPRemoval = 0.5;
+		public readonly float SabotageHPRemoval = 0.5f;
 
 		public object Create(ActorInitializer init) { return new LegacyCaptures(init.self, this); }
 	}

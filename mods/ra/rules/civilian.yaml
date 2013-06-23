@@ -92,7 +92,8 @@ V01:
 		IntoActor: v01.sniper
 		SkipMakeAnims: true
 	LegacyCapturable:
-		Type: civilianbuilding
+		Type: CivilianBuilding
+		CaptureThreshold: 1
 	EditorTilesetFilter:
 		ExcludeTilesets: DESERT
 
