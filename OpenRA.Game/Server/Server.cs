@@ -97,9 +97,9 @@ namespace OpenRA.Server
 				UPnP.ForwardPort();
 
 			foreach (var trait in modData.Manifest.ServerTraits)
-				ServerTraits.Add( modData.ObjectCreator.CreateObject<ServerTrait>(trait) );
+				ServerTraits.Add(modData.ObjectCreator.CreateObject<ServerTrait>(trait));
 
-			lobbyInfo = new Session( mods );
+			lobbyInfo = new Session(mods);
 			lobbyInfo.GlobalSettings.RandomSeed = randomSeed;
 			lobbyInfo.GlobalSettings.Map = settings.Map;
 			lobbyInfo.GlobalSettings.ServerName = settings.Name;
@@ -186,10 +186,11 @@ namespace OpenRA.Server
 				if (!listener.Server.IsBound) return;
 				newSocket = listener.AcceptSocket();
 			}
-			catch
+			catch (Exception e)
 			{
-				/* could have an exception here when listener 'goes away' when calling AcceptConnection! */
-				/* alternative would be to use locking but the listener doesnt go away without a reason */
+				/* TODO: Could have an exception here when listener 'goes away' when calling AcceptConnection! */
+				/* Alternative would be to use locking but the listener doesnt go away without a reason. */
+				Log.Write("server", "Accepting the connection failed.", e);
 				return;
 			}
 
@@ -198,6 +199,9 @@ namespace OpenRA.Server
 			{
 				newConn.socket.Blocking = false;
 				newConn.socket.NoDelay = true;
+
+				Log.Write("server", "Socket.ReceiveBufferSize: {0}.".F(newConn.socket.ReceiveBufferSize));
+				Log.Write("server", "Socket.SendBufferSize: {0}.".F(newConn.socket.SendBufferSize));
 
 				// assign the player number.
 				newConn.PlayerIndex = ChooseFreePlayerIndex();
