@@ -68,18 +68,18 @@ function DetachChildProcess()
 end
 
 function CommandLineRunning(uid)
-  for pid,custom in pairs(customprocs) do
-    if (custom.uid == uid and custom.proc and custom.proc.Exists(tonumber(tostring(pid)))) then
-      return true
+  for pid, custom in pairs(customprocs) do
+    if (custom.uid == uid and custom.proc and custom.proc.Exists(tonumber(pid))) then
+      return pid, custom.proc
     end
   end
 
-  return false
+  return
 end
 
 function CommandLineToShell(uid,state)
   for pid,custom in pairs(customprocs) do
-    if ((pid == uid or custom.uid == uid) and custom.proc and custom.proc.Exists(tonumber(tostring(pid))) )then
+    if (pid == uid or custom.uid == uid) and custom.proc and custom.proc.Exists(tonumber(pid)) then
       if (streamins[pid]) then streamins[pid].toshell = state end
       if (streamerrs[pid]) then streamerrs[pid].toshell = state end
       return true
