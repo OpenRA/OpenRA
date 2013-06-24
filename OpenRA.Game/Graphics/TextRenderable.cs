@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 
@@ -43,8 +44,9 @@ namespace OpenRA.Graphics
 		public void BeforeRender(WorldRenderer wr) {}
 		public void Render(WorldRenderer wr)
 		{
-			var screenPos = Game.viewport.Zoom*(wr.ScreenPxPosition(pos) - Game.viewport.Location) - 0.5f*font.Measure(text).ToFloat2();
-			font.DrawTextWithContrast(text, screenPos, color, Color.Black, 1);
+			var screenPos = Game.viewport.Zoom*(wr.ScreenPosition(pos) - Game.viewport.Location) - 0.5f*font.Measure(text).ToFloat2();
+			var screenPxPos = new float2((float)Math.Round(screenPos.X), (float)Math.Round(screenPos.Y));
+			font.DrawTextWithContrast(text, screenPxPos, color, Color.Black, 1);
 		}
 
 		public void RenderDebugGeometry(WorldRenderer wr)
