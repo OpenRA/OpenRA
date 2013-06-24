@@ -3586,3 +3586,15 @@ Templates:
 			0: Rough
 			1: Rough
 		Category: Bridge
+	Template@592:
+		Id: 592
+		Image: hill01
+		Size: 4,3
+		Tiles:
+			0: Rough
+			1: Rough
+			2: Rough
+			3: Rough
+			4: Rough
+			5: Clear
+		Category: Debris
