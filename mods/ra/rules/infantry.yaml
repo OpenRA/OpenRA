@@ -484,3 +484,30 @@ SNIPER:
 		CaptureTypes: CivilianBuilding
 		Sabotage: no
 		SabotageHPRemoval: 0
+
+Zombie:
+	Inherits: ^Infantry
+	Valued:
+		Cost: 100
+	Tooltip:
+		Icon: zombicon
+		Name: Zombie
+		Description: Slow undead. Attacks in close combat.
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 28
+		Owner: None
+		Prerequisites: bio
+	Selectable:
+		Voice: # TODO
+		Bounds: 12,17,0,-9
+	Health:
+		HP: 250
+	Mobile:
+		Speed: 3
+	AttackWander:
+	AutoTarget:
+		ScanRadius: 5
+	AttackFrontal:
+	Armament:
+		Weapon: claw
