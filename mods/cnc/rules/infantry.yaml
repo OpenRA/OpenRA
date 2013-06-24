@@ -215,7 +215,7 @@ RMBO:
 
 PVICE:
 	Inherits:VICE
-	-AttackWander
+	-AttackWander:
 	Mobile:
 		Crushes: crate
 	Buildable:
