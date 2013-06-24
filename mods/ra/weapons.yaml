@@ -1271,7 +1271,7 @@ Claw:
 		InfDeath: 1
 		Damage: 33
 
-Bite:
+Mandible:
 	ROF: 10
 	Range: 1
 	Projectile: Bullet

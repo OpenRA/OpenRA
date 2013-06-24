@@ -532,11 +532,11 @@ Ant:
 	Health:
 		HP: 750
 	Mobile:
-		Speed: 3
+		Speed: 7
 		SharesCell: no
 	AttackWander:
 	AutoTarget:
 		ScanRadius: 5
 	AttackFrontal:
 	Armament:
-		Weapon: bite
+		Weapon: mandible
