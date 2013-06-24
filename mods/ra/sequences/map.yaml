@@ -671,3 +671,11 @@ asianhut:
 		Start: 0
 	damaged-idle:
 		Start: 1
+
+quee:
+	idle:
+		Start: 0
+		Length: 10
+	damaged-idle:
+		Start: 10
+		Length: 10
