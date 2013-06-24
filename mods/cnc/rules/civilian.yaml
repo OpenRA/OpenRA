@@ -426,7 +426,7 @@ VICE:
 			BlueTiberium: 70
 			Beach: 80
 	Selectable:
-		Voice: GenericVoice
+		Voice: DinoVoice
 	TargetableUnit:
 		TargetTypes: Ground
 	AutoTarget:
