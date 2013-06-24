@@ -383,6 +383,8 @@ GNRL:
 	Inherits: ^CivInfantry
 	Tooltip:
 		Name: General
+	Selectable:
+		Voice: StavrosVoice
 
 THF:
 	Inherits: ^Infantry
