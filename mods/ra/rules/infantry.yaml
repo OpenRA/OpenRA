@@ -496,10 +496,10 @@ Zombie:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 28
-		Owner: None
+		Owner: Umbrella
 		Prerequisites: bio
 	Selectable:
-		Voice: # TODO
+		Voice: AntVoice
 		Bounds: 12,17,0,-9
 	Health:
 		HP: 250
@@ -511,3 +511,30 @@ Zombie:
 	AttackFrontal:
 	Armament:
 		Weapon: claw
+
+Ant:
+	Inherits: ^Infantry
+	Valued:
+		Cost: 300
+	Tooltip:
+		Icon: anticon
+		Name: Giant Ant
+		Description: Irradiated insect that grew oversize.
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 1954
+		Owner: Them
+		Prerequisites: bio
+	Selectable:
+		Voice: AntVoice
+	Health:
+		HP: 750
+	Mobile:
+		Speed: 3
+		SharesCell: no
+	AttackWander:
+	AutoTarget:
+		ScanRadius: 5
+	AttackFrontal:
+	Armament:
+		Weapon: bite

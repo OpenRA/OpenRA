@@ -1270,3 +1270,18 @@ Claw:
 			Concrete: 10%
 		InfDeath: 1
 		Damage: 33
+
+Bite:
+	ROF: 10
+	Range: 1
+	Projectile: Bullet
+	Warhead:
+		Spread: 5
+		Versus:
+			None: 90%
+			Wood: 10%
+			Light: 30%
+			Heavy: 10%
+			Concrete: 10%
+		InfDeath: 1
+		Damage: 60
