@@ -182,7 +182,11 @@ frame:Connect(ID_SORT, wx.wxEVT_COMMAND_MENU_SELECTED,
       table.insert(buf, line)
     end
     if #buf > 0 then
+      local newline
+      if #(buf[#buf]) == 0 then newline = table.remove(buf) end
       table.sort(buf)
+      -- add new line at the end if it was there
+      if newline then table.insert(buf, newline) end
       editor:ReplaceSelection(table.concat(buf,"\n"))
     end
   end)
