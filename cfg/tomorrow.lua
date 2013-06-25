@@ -221,7 +221,7 @@ return {
   sel = {bg = C.Selection},
   caret = {fg = C.Foreground},
   caretlinebg = {bg = C.CurrentLine},
-  fold = {fg = C.Comment, bg = C.Background},
+  fold = {fg = C.Comment, bg = C.Background, sel = mixer(C.Comment, 1, 96)},
   whitespace = {fg = C.Comment, bg = C.Background},
 
   indicator = {

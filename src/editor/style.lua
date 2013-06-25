@@ -8,6 +8,7 @@
 -- ---------------------------
 -- fg foreground - {r,g,b} 0-255
 -- bg background - {r,g,b} 0-255
+-- sel color of the selected block - {r,g,b} 0-255 (only applies to folds)
 -- u underline - boolean
 -- b bold - boolean
 -- i italic - boolean
@@ -51,7 +52,7 @@ function StylesGetDefault()
     sel = {bg = {192, 192, 192}},
     caret = {fg = {0, 0, 0}},
     caretlinebg = {bg = {240, 240, 230}},
-    fold = {fg = {90, 90, 80}, bg = {250, 250, 250}},
+    fold = {fg = {90, 90, 80}, bg = {250, 250, 250}, sel = {90+96, 90, 80}},
     whitespace = nil,
 
     -- deprecated; allowed for backward compatibility in case someone does
@@ -94,13 +95,10 @@ local markers = {
 }
 function StylesGetMarker(marker) return unpack(markers[marker] or {}) end
 
-local function applymarker(editor,marker,clrfg,clrbg)
-  if (clrfg) then
-    editor:MarkerSetForeground(marker,clrfg)
-  end
-  if (clrbg) then
-    editor:MarkerSetBackground(marker,clrbg)
-  end
+local function applymarker(editor,marker,clrfg,clrbg,clrsel)
+  if (clrfg) then editor:MarkerSetForeground(marker,clrfg) end
+  if (clrbg) then editor:MarkerSetBackground(marker,clrbg) end
+  if (ide.wxver >= "2.9.5" and clrsel) then editor:MarkerSetBackgroundSelected(marker,clrsel) end
 end
 local specialmapping = {
   sel = function(editor,style)
@@ -152,21 +150,25 @@ local specialmapping = {
   fold = function(editor,style)
     local clrfg = style.fg and wx.wxColour(unpack(style.fg))
     local clrbg = style.bg and wx.wxColour(unpack(style.bg))
+    local clrsel = style.sel and wx.wxColour(unpack(style.sel))
 
-    if (clrfg or clrbg) then
+    -- if selected background is set then enable support for it
+    if ide.wxver >= "2.9.5" and clrsel then editor:MarkerEnableHighlight(true) end
+
+    if (clrfg or clrbg or clrsel) then
       -- foreground and background are defined as opposite to what I'd expect
       -- for fold markers in Scintilla's terminilogy:
       -- background is the color of fold lines/boxes and foreground is the color
       -- of everything around fold lines or inside fold boxes.
       -- in the following code fg and bg are simply reversed
       local clrfg, clrbg = clrbg, clrfg
-      applymarker(editor,wxstc.wxSTC_MARKNUM_FOLDEROPEN, clrfg, clrbg)
-      applymarker(editor,wxstc.wxSTC_MARKNUM_FOLDER, clrfg, clrbg)
-      applymarker(editor,wxstc.wxSTC_MARKNUM_FOLDERSUB, clrfg, clrbg)
-      applymarker(editor,wxstc.wxSTC_MARKNUM_FOLDERTAIL, clrfg, clrbg)
-      applymarker(editor,wxstc.wxSTC_MARKNUM_FOLDEREND, clrfg, clrbg)
-      applymarker(editor,wxstc.wxSTC_MARKNUM_FOLDEROPENMID, clrfg, clrbg)
-      applymarker(editor,wxstc.wxSTC_MARKNUM_FOLDERMIDTAIL, clrfg, clrbg)
+      applymarker(editor,wxstc.wxSTC_MARKNUM_FOLDEROPEN, clrfg, clrbg, clrsel)
+      applymarker(editor,wxstc.wxSTC_MARKNUM_FOLDER, clrfg, clrbg, clrsel)
+      applymarker(editor,wxstc.wxSTC_MARKNUM_FOLDERSUB, clrfg, clrbg, clrsel)
+      applymarker(editor,wxstc.wxSTC_MARKNUM_FOLDERTAIL, clrfg, clrbg, clrsel)
+      applymarker(editor,wxstc.wxSTC_MARKNUM_FOLDEREND, clrfg, clrbg, clrsel)
+      applymarker(editor,wxstc.wxSTC_MARKNUM_FOLDEROPENMID, clrfg, clrbg, clrsel)
+      applymarker(editor,wxstc.wxSTC_MARKNUM_FOLDERMIDTAIL, clrfg, clrbg, clrsel)
     end
     if clrbg then
       -- the earlier calls only color the actual markers, but not the
