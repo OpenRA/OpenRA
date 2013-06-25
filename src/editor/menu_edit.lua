@@ -25,6 +25,7 @@ local editMenu = wx.wxMenu{
   { },
   { ID_FOLD, TR("&Fold/Unfold All")..KSC(ID_FOLD), TR("Fold or unfold all code folds") },
   { ID_CLEARDYNAMICWORDS, TR("Clear &Dynamic Words")..KSC(ID_CLEARDYNAMICWORDS), TR("Resets the dynamic word list for autocompletion") },
+  { ID_SORT, TR("&Sort")..KSC(ID_SORT), TR("Sort selected lines") },
   { },
 }
 
@@ -56,7 +57,7 @@ function OnUpdateUIEditMenu(event)
   local alwaysOn = { [ID_SELECTALL] = true, [ID_FOLD] = ide.config.editor.fold,
     -- allow Cut and Copy commands as these work on a line if no selection
     [ID_COPY] = true, [ID_CUT] = true,
-    [ID_COMMENT] = true, [ID_AUTOCOMPLETE] = true}
+    [ID_COMMENT] = true, [ID_AUTOCOMPLETE] = true, [ID_SORT] = true}
   local menu_id = event:GetId()
   local enable =
     menu_id == ID_PASTE and editor:CanPaste() or
@@ -172,6 +173,20 @@ frame:Connect(ID_COMMENT, wx.wxEVT_COMMAND_MENU_SELECTED,
     editor:ReplaceSelection(table.concat(buf,"\n"))
   end)
 frame:Connect(ID_COMMENT, wx.wxEVT_UPDATE_UI, OnUpdateUIEditMenu)
+
+frame:Connect(ID_SORT, wx.wxEVT_COMMAND_MENU_SELECTED,
+  function (event)
+    local editor = GetEditor()
+    local buf = {}
+    for line in string.gmatch(editor:GetSelectedText()..'\n', "(.-)\r?\n") do
+      table.insert(buf, line)
+    end
+    if #buf > 0 then
+      table.sort(buf)
+      editor:ReplaceSelection(table.concat(buf,"\n"))
+    end
+  end)
+frame:Connect(ID_SORT, wx.wxEVT_UPDATE_UI, OnUpdateUIEditMenu)
 
 frame:Connect(ID_FOLD, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)

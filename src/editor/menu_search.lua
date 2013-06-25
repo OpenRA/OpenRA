@@ -19,8 +19,7 @@ local findMenu = wx.wxMenu{
   { ID_REPLACEINFILES, TR("Re&place In Files")..KSC(ID_REPLACEINFILES), TR("Find and replace text in files") },
   { },
   { ID_GOTOLINE, TR("&Goto Line")..KSC(ID_GOTOLINE), TR("Go to a selected line") },
-  { },
-  { ID_SORT, TR("&Sort")..KSC(ID_SORT), TR("Sort selected lines") }}
+}
 menuBar:Append(findMenu, TR("&Search"))
 
 function OnUpdateUISearchMenu(event) event:Enable(GetEditor() ~= nil) end
@@ -95,17 +94,3 @@ frame:Connect(ID_GOTOLINE, wx.wxEVT_COMMAND_MENU_SELECTED,
     end
   end)
 frame:Connect(ID_GOTOLINE, wx.wxEVT_UPDATE_UI, OnUpdateUISearchMenu)
-
-frame:Connect(ID_SORT, wx.wxEVT_COMMAND_MENU_SELECTED,
-  function (event)
-    local editor = GetEditor()
-    local buf = {}
-    for line in string.gmatch(editor:GetSelectedText()..'\n', "(.-)\r?\n") do
-      table.insert(buf, line)
-    end
-    if #buf > 0 then
-      table.sort(buf)
-      editor:ReplaceSelection(table.concat(buf,"\n"))
-    end
-  end)
-frame:Connect(ID_SORT, wx.wxEVT_UPDATE_UI, OnUpdateUISearchMenu)
