@@ -16,6 +16,21 @@ steg:
 	die1:
 		Start: 176
 		Length: 22
+	die2:
+		Start: 176
+		Length: 22
+	die3:
+		Start: 176
+		Length: 22
+	die4:
+		Start: 176
+		Length: 22
+	die5:
+		Start: 176
+		Length: 22
+	die6:
+		Start: 176
+		Length: 22
 
 trex:
 	stand:
@@ -33,6 +48,21 @@ trex:
 		Length: 8
 		Facings: 8
 	die1:
+		Start: 144
+		Length: 40
+	die2:
+		Start: 144
+		Length: 40
+	die3:
+		Start: 144
+		Length: 40
+	die4:
+		Start: 144
+		Length: 40
+	die5:
+		Start: 144
+		Length: 40
+	die6:
 		Start: 144
 		Length: 40
 
@@ -54,6 +84,21 @@ tric:
 	die1:
 		Start: 176
 		Length: 20
+	die2:
+		Start: 176
+		Length: 20
+	die3:
+		Start: 176
+		Length: 20
+	die4:
+		Start: 176
+		Length: 20
+	die5:
+		Start: 176
+		Length: 20
+	die6:
+		Start: 176
+		Length: 20
 
 rapt:
 	stand:
@@ -73,4 +118,18 @@ rapt:
 	die1:
 		Start: 144
 		Length: 40
-
+	die2:
+		Start: 144
+		Length: 40
+	die3:
+		Start: 144
+		Length: 40
+	die4:
+		Start: 144
+		Length: 40
+	die5:
+		Start: 144
+		Length: 40
+	die6:
+		Start: 144
+		Length: 40

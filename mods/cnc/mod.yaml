@@ -49,7 +49,7 @@ Sequences:
 	mods/cnc/sequences/infantry.yaml
 	mods/cnc/sequences/map.yaml
 	mods/cnc/sequences/misc.yaml
-	# Low priority sequences that break the batch when used
+	mods/cnc/sequences/funpark.yaml
 	mods/cnc/sequences/civilian.yaml
 	mods/cnc/sequences/campaign.yaml
 Cursors:
