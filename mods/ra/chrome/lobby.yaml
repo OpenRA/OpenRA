@@ -273,38 +273,14 @@ Background@SERVER_LOBBY:
 							Width:135
 							Height:25
 							MaxLength:16
-						DropDownButton@COLOR:
-							Width:80
-							Height:25
-							X:160
-							Font:Regular
-							Children:
-								ColorBlock@COLORBLOCK:
-									X:5
-									Y:6
-									Width:PARENT_RIGHT-35
-									Height:PARENT_BOTTOM-12
 						Label@SPECTATOR:
 							Text:Spectator
-							Width:198
+							Width:278
 							Height:25
-							X:240
+							X:160
 							Y:0
 							Align:Center
 							Font:Bold
-						Checkbox@STATUS_CHECKBOX:
-							X:448
-							Y:2
-							Width:20
-							Height:20
-						Image@STATUS_IMAGE:
-							Visible:false
-							X:450
-							Y:4
-							Width:20
-							Height:20
-							ImageCollection:checkbox-bits
-							ImageName:checked
 				Container@TEMPLATE_NONEDITABLE_SPECTATOR:
 					X:5
 					Y:0
@@ -347,27 +323,14 @@ Background@SERVER_LOBBY:
 							X:125
 							Y:2
 							Font:Bold
-						ColorBlock@COLORBLOCK:
-							X:165
-							Y:6
-							Width:45
-							Height:13
 						Label@SPECTATOR:
 							Text:Spectator
-							Width:198
+							Width:278
 							Height:25
-							X:240
+							X:160
 							Y:0
 							Align:Center
 							Font:Bold
-						Image@STATUS_IMAGE:
-							Visible:false
-							X:450
-							Y:4
-							Width:20
-							Height:20
-							ImageCollection:checkbox-bits
-							ImageName:checked
 				Container@TEMPLATE_NEW_SPECTATOR:
 					X:5
 					Y:0
