@@ -460,7 +460,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 					LobbyUtils.SetupEditableNameWidget(template, null, c, orderManager);
 					LobbyUtils.SetupEditableColorWidget(template, null, c, orderManager, colorPreview);
-					LobbyUtils.SetupEditableReadyWidget(template, null, client, orderManager);
 				}
 				// Non-editable spectator
 				else
@@ -471,7 +470,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					LobbyUtils.SetupNameWidget(template, null, client);
 					LobbyUtils.SetupKickWidget(template, null, client, orderManager);
 					LobbyUtils.SetupColorWidget(template, null, client);
-					LobbyUtils.SetupReadyWidget(template, null, client);
 				}
 
 				LobbyUtils.SetupClientWidget(template, null, c, orderManager, true);

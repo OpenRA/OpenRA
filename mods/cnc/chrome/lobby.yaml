@@ -309,17 +309,12 @@ Container@SERVER_LOBBY:
 											Height:PARENT_BOTTOM-12
 								Label@SPECTATOR:
 									Text:Spectator
-									Width:220-55
+									Width:250
 									Height:25
-									X:280
+									X:255
 									Y:0
 									Align:Center
 									Font:Bold
-								Checkbox@STATUS_CHECKBOX:
-									X:448
-									Y:2
-									Width:20
-									Height:20
 						Container@TEMPLATE_NONEDITABLE_SPECTATOR:
 							X:5
 							Y:0
@@ -370,20 +365,12 @@ Container@SERVER_LOBBY:
 									Height:13
 								Label@SPECTATOR:
 									Text:Spectator
-									Width:220-55
+									Width:250
 									Height:25
-									X:280
+									X:255
 									Y:0
 									Align:Center
 									Font:Bold
-								Image@STATUS_IMAGE:
-									Visible:false
-									X:450
-									Y:4
-									Width:20
-									Height:20
-									ImageCollection:checkbox-bits
-									ImageName:checked
 						Container@TEMPLATE_NEW_SPECTATOR:
 							X:5
 							Y:0
