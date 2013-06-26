@@ -72,6 +72,15 @@ namespace OpenRA.Mods.RA.Move
 			return TerrainSpeeds[type].Cost;
 		}
 
+		public int GetMovementClass(TileSet tileset)
+		{
+			/* collect our ability to cross *all* terraintypes, in a bitvector */
+			var passability = tileset.Terrain.OrderBy(t => t.Key)
+				.Select(t => TerrainSpeeds.ContainsKey(t.Key) && TerrainSpeeds[t.Key].Cost < int.MaxValue);
+
+			return passability.ToBits();
+		}
+
 		public readonly Dictionary<SubCell, PVecInt> SubCellOffsets = new Dictionary<SubCell, PVecInt>()
 		{
 			{SubCell.TopLeft, new PVecInt(-7,-6)},
