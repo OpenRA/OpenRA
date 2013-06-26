@@ -189,6 +189,11 @@ function SaveFile(editor, filePath)
       st = GetConfigIOFilter("output")(filePath,st)
     end
 
+    local file = wx.wxFileName(filePath)
+    if not file:FileExists() then
+      file:Mkdir(tonumber(755,8), wx.wxPATH_MKDIR_FULL)
+    end
+
     local ok, err = FileWrite(filePath, st)
     if ok then
       editor:SetSavePoint()
