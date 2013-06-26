@@ -55,12 +55,17 @@ namespace OpenRA.Mods.RA.Server
 
 		void CheckAutoStart(S server, Connection conn, Session.Client client)
 		{
-			var actualPlayers = server.conns
-				.Select(c => server.GetClient(c))
-				.Where(c => c.Slot != null);
+			var playerClients = server.lobbyInfo.Clients.Where(c => c.Bot == null && c.Slot != null);
 
-			if (actualPlayers.Count() > 0 && actualPlayers.All(c => c.State == Session.ClientState.Ready))
-				InterpretCommand(server, conn, client, "startgame");
+			// Are all players ready?
+			if (playerClients.Count() == 0 || playerClients.Any(c => c.State != Session.ClientState.Ready))
+				return;
+
+			// Are the map conditions satisfied?
+			if (server.lobbyInfo.Slots.Any(sl => sl.Value.Required && server.lobbyInfo.ClientInSlot(sl.Key) == null))
+				return;
+
+			server.StartGame();
 		}
 
 		public bool InterpretCommand(S server, Connection conn, Session.Client client, string cmd)
