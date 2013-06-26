@@ -273,22 +273,11 @@ Background@SERVER_LOBBY:
 							Width:135
 							Height:25
 							MaxLength:16
-						DropDownButton@COLOR:
-							Width:80
-							Height:25
-							X:160
-							Font:Regular
-							Children:
-								ColorBlock@COLORBLOCK:
-									X:5
-									Y:6
-									Width:PARENT_RIGHT-35
-									Height:PARENT_BOTTOM-12
 						Label@SPECTATOR:
 							Text:Spectator
-							Width:225
+							Width:278
 							Height:25
-							X:245
+							X:160
 							Y:0
 							Align:Center
 							Font:Bold
@@ -334,16 +323,11 @@ Background@SERVER_LOBBY:
 							X:125
 							Y:2
 							Font:Bold
-						ColorBlock@COLORBLOCK:
-							X:165
-							Y:6
-							Width:45
-							Height:13
 						Label@SPECTATOR:
 							Text:Spectator
-							Width:225
+							Width:278
 							Height:25
-							X:245
+							X:160
 							Y:0
 							Align:Center
 							Font:Bold

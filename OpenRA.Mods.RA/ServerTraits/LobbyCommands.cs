@@ -137,6 +137,7 @@ namespace OpenRA.Mods.RA.Server
 					{
 						client.Slot = null;
 						client.SpawnPoint = 0;
+						client.Color = HSLColor.FromRGB(255, 255, 255);
 						server.SyncLobbyInfo();
 						return true;
 					}},
@@ -530,8 +531,8 @@ namespace OpenRA.Mods.RA.Server
 						if (targetClient.Index != client.Index && !client.IsAdmin)
 							return true;
 
-						// Map has disabled color changes
-						if (targetClient.Slot != null && server.lobbyInfo.Slots[targetClient.Slot].LockColor)
+						// Spectator or map has disabled color changes
+						if (targetClient.Slot == null || server.lobbyInfo.Slots[targetClient.Slot].LockColor)
 							return true;
 
 						var ci = parts[1].Split(',').Select(cc => int.Parse(cc)).ToArray();

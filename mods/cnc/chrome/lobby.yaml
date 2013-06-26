@@ -295,23 +295,11 @@ Container@SERVER_LOBBY:
 									Width:190
 									Height:25
 									MaxLength:16
-								DropDownButton@COLOR:
-									Width:70
-									Height:25
-									X:210
-									Font:Regular
-									IgnoreChildMouseOver: true
-									Children:
-										ColorBlock@COLORBLOCK:
-											X:5
-											Y:6
-											Width:PARENT_RIGHT-35
-											Height:PARENT_BOTTOM-12
 								Label@SPECTATOR:
 									Text:Spectator
-									Width:250
+									Width:315-55
 									Height:25
-									X:255
+									X:210
 									Y:0
 									Align:Center
 									Font:Bold
@@ -358,16 +346,11 @@ Container@SERVER_LOBBY:
 									X:180
 									Y:2
 									Font:Bold
-								ColorBlock@COLORBLOCK:
-									X:215
-									Y:6
-									Width:35
-									Height:13
 								Label@SPECTATOR:
 									Text:Spectator
-									Width:250
+									Width:315-55
 									Height:25
-									X:255
+									X:210
 									Y:0
 									Align:Center
 									Font:Bold
