@@ -28,17 +28,18 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new Contrail(init.self, this); }
 	}
 
-	class Contrail : ITick, IPostRender
+	class Contrail : ITick, IRender
 	{
 		ContrailInfo info;
-		ContrailHistory history;
+		ContrailRenderable trail;
 		IBodyOrientation body;
 
 		public Contrail(Actor self, ContrailInfo info)
 		{
 			this.info = info;
-			history = new ContrailHistory(info.TrailLength,
-				info.UsePlayerColor ? ContrailHistory.ChooseColor(self) : info.Color);
+
+			var color = info.UsePlayerColor ? ContrailRenderable.ChooseColor(self) : info.Color;
+			trail = new ContrailRenderable(self.World, color, info.TrailLength, 0, 0);
 
 			body = self.Trait<IBodyOrientation>();
 		}
@@ -46,62 +47,12 @@ namespace OpenRA.Mods.RA
 		public void Tick(Actor self)
 		{
 			var local = info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation));
-			history.Tick(self.CenterPosition + body.LocalToWorld(local));
+			trail.Update(self.CenterPosition + body.LocalToWorld(local));
 		}
 
-		public void RenderAfterWorld(WorldRenderer wr, Actor self) { history.Render(wr, self); }
-	}
-
-	class ContrailHistory
-	{
-		List<WPos> positions = new List<WPos>();
-		readonly int TrailLength;
-		readonly Color Color;
-		readonly int StartSkip;
-
-		public static Color ChooseColor(Actor self)
+		public IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
 		{
-			var ownerColor = Color.FromArgb(255, self.Owner.Color.RGB);
-			return Exts.ColorLerp(0.5f, ownerColor, Color.White);
-		}
-
-		public ContrailHistory(int trailLength, Color color)
-			: this(trailLength, color, 0) { }
-
-		public ContrailHistory(int trailLength, Color color, int startSkip)
-		{
-			this.TrailLength = trailLength;
-			this.Color = color;
-			this.StartSkip = startSkip;
-		}
-
-		public void Tick(WPos currentPos)
-		{
-			positions.Add(currentPos);
-			if (positions.Count >= TrailLength)
-				positions.RemoveAt(0);
-		}
-
-		public void Render(WorldRenderer wr, Actor self)
-		{
-			Color trailStart = Color;
-			Color trailEnd = Color.FromArgb(trailStart.A - 255 / TrailLength, trailStart.R, trailStart.G, trailStart.B);
-
-			for (int i = positions.Count - 1 - StartSkip; i >= 4; --i)
-			{
-				// World positions
-				var conPos = WPos.Average(positions[i], positions[i-1], positions[i-2], positions[i-3]);
-				var nextPos = WPos.Average(positions[i-1], positions[i-2], positions[i-3], positions[i-4]);
-
-				if (!self.World.FogObscures(new CPos(conPos)) &&
-				    !self.World.FogObscures(new CPos(nextPos)))
-				{
-					Game.Renderer.WorldLineRenderer.DrawLine(wr.ScreenPosition(conPos), wr.ScreenPosition(nextPos), trailStart, trailEnd);
-
-					trailStart = trailEnd;
-					trailEnd = Color.FromArgb(trailStart.A - 255 / positions.Count, trailStart.R, trailStart.G, trailStart.B);
-				}
-			}
+			yield return trail;
 		}
 	}
 }

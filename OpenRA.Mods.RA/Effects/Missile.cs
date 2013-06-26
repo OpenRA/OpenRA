@@ -59,7 +59,7 @@ namespace OpenRA.Mods.RA.Effects
 		int Facing;
 		int t;
 		int Altitude;
-		ContrailHistory Trail;
+		ContrailRenderable Trail;
 
 		public Missile(MissileInfo info, ProjectileArgs args)
 		{
@@ -81,9 +81,8 @@ namespace OpenRA.Mods.RA.Effects
 
 			if (Info.ContrailLength > 0)
 			{
-				Trail = new ContrailHistory(Info.ContrailLength,
-					Info.ContrailUsePlayerColor ? ContrailHistory.ChooseColor(args.firedBy) : Info.ContrailColor,
-					Info.ContrailDelay);
+				var color = Info.ContrailUsePlayerColor ? ContrailRenderable.ChooseColor(args.firedBy) : Info.ContrailColor;
+				Trail = new ContrailRenderable(args.firedBy.World, color, Info.ContrailLength, Info.ContrailDelay, 0);
 			}
 		}
 
@@ -162,8 +161,8 @@ namespace OpenRA.Mods.RA.Effects
 					Explode(world);
 			}
 
-			if (Trail != null)
-				Trail.Tick(PxPosition.ToWPos(Altitude));
+			if (Info.ContrailLength > 0)
+				Trail.Update(PxPosition.ToWPos(Altitude));
 		}
 
 		void Explode(World world)
@@ -176,12 +175,12 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
+			if (Info.ContrailLength > 0)
+				yield return Trail;
+
 			if (!Args.firedBy.World.FogObscures(PxPosition.ToCPos()))
 				yield return new SpriteRenderable(anim.Image, PxPosition.ToFloat2() - new float2(0, Altitude),
 				                                  wr.Palette(Args.weapon.Underwater ? "shadow" : "effect"), PxPosition.Y);
-
-			if (Trail != null)
-				Trail.Render(wr, Args.firedBy);
 		}
 	}
 }
