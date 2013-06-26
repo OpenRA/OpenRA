@@ -225,6 +225,20 @@ namespace OpenRA
 		}
 
 		public static Rectangle Bounds(this Bitmap b) { return new Rectangle(0, 0, b.Width, b.Height); }
+
+		public static int ToBits(this IEnumerable<bool> bits)
+		{
+			var i = 0;
+			var result = 0;
+			foreach (var b in bits)
+				if (b)
+					result |= (1 << i++);
+				else
+					i++;
+			if (i > 33)
+				throw new InvalidOperationException("ToBits only accepts up to 32 values.");
+			return result;
+		}
 	}
 
 	public static class Enum<T>
