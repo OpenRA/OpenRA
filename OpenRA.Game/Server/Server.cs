@@ -200,13 +200,10 @@ namespace OpenRA.Server
 				newConn.socket.Blocking = false;
 				newConn.socket.NoDelay = true;
 
-				Log.Write("server", "Socket.ReceiveBufferSize: {0}.".F(newConn.socket.ReceiveBufferSize));
-				Log.Write("server", "Socket.SendBufferSize: {0}.".F(newConn.socket.SendBufferSize));
-
 				// assign the player number.
 				newConn.PlayerIndex = ChooseFreePlayerIndex();
-				newConn.socket.Send(BitConverter.GetBytes(ProtocolVersion.Version));
-				newConn.socket.Send(BitConverter.GetBytes(newConn.PlayerIndex));
+				SendData(newConn.socket, BitConverter.GetBytes(ProtocolVersion.Version));
+				SendData(newConn.socket, BitConverter.GetBytes(newConn.PlayerIndex));
 				preConns.Add(newConn);
 
 				// Dispatch a handshake order
@@ -382,12 +379,10 @@ namespace OpenRA.Server
 		{
 			try
 			{
-				var ms = new MemoryStream();
-				ms.Write(BitConverter.GetBytes(data.Length + 4));
-				ms.Write(BitConverter.GetBytes(client));
-				ms.Write(BitConverter.GetBytes(frame));
-				ms.Write(data);
-				c.socket.Send(ms.ToArray());
+				SendData(c.socket, BitConverter.GetBytes(data.Length + 4));
+				SendData(c.socket, BitConverter.GetBytes(client));
+				SendData(c.socket, BitConverter.GetBytes(frame));
+				SendData(c.socket, data);
 			}
 			catch (Exception e)
 			{
@@ -593,6 +588,30 @@ namespace OpenRA.Server
                                     Environment.Exit(0);
                                 };
 				gameTimeout.Enabled = true;
+			}
+		}
+
+		void SendData(Socket s, byte[] data)
+		{
+			var start = 0;
+			var length = data.Length;
+			SocketError error;
+
+			// Non-blocking sends are free to send only part of the data
+			while (start < length)
+			{
+				var sent = s.Send(data, start, length - start, SocketFlags.None, out error);
+				if (error == SocketError.WouldBlock)
+				{
+					Log.Write("server", "Non-blocking send of {0} bytes failed. Falling back to blocking send.", length - start);
+					s.Blocking = true;
+					sent = s.Send(data, start, length - start, SocketFlags.None);
+					s.Blocking = false;
+				}
+				else if (error != SocketError.Success)
+					throw new SocketException((int)error);
+
+				start += sent;
 			}
 		}
 	}
