@@ -44,9 +44,6 @@ namespace OpenRA.Mods.RA.Move
 		{
 			using (new PerfSample("Pathfinder"))
 			{
-				// If a water-land transition is required, bail early
-				if (world.WorldDomains.IsCrossDomain(from, target)) return new List<CPos>(0);
-
 				var cached = CachedPaths.FirstOrDefault(p => p.from == from && p.to == target && p.actor == self);
 				if (cached != null)
 				{
@@ -57,6 +54,15 @@ namespace OpenRA.Mods.RA.Move
 				}
 
 				var mi = self.Info.Traits.Get<MobileInfo>();
+
+				// If a water-land transition is required, bail early
+				var domainIndex = self.World.WorldActor.TraitOrDefault<DomainIndex>();
+				if (domainIndex != null)
+				{
+					var passable = mi.GetMovementClass(world.TileSet);
+					if (!domainIndex.IsPassable(from, target, (uint)passable))
+						return new List<CPos>(0);
+				}
 
 				var pb = FindBidiPath(
 					PathSearch.FromPoint(world, mi, self, target, from, true),
@@ -87,12 +93,17 @@ namespace OpenRA.Mods.RA.Move
 				// This assumes that the SubCell does not change during the path traversal
 				var tilesInRange = world.FindTilesInCircle(targetCell, range.Range / 1024 + 1)
 					.Where(t => (t.CenterPosition - target).LengthSquared <= rangeSquared
-					       && mi.CanEnterCell(self.World, self, t, null, true, true)
-					       && !world.WorldDomains.IsCrossDomain(src, t));
+					       && mi.CanEnterCell(self.World, self, t, null, true, true));
 
-				if(tilesInRange.Count() == 0)
+				// See if there is any cell within range that does not involve a cross-domain request
+				// Really, we only need to check the circle perimeter, but it's not clear that would be a performance win
+				var domainIndex = self.World.WorldActor.TraitOrDefault<DomainIndex>();
+				if (domainIndex != null)
 				{
-					return new List<CPos>(0);
+					var passable = mi.GetMovementClass(world.TileSet);
+					tilesInRange = new List<CPos>(tilesInRange.Where(t => domainIndex.IsPassable(src, t, (uint)passable)));
+					if (tilesInRange.Count() == 0)
+						return new List<CPos>(0);
 				}
 
 				var path = FindBidiPath(

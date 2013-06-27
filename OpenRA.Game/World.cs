@@ -111,7 +111,6 @@ namespace OpenRA
 			}
 		}
 
-		public DomainIndex WorldDomains;
 		internal World(Manifest manifest, Map map, OrderManager orderManager, bool isShellmap)
 		{
 			IsShellmap = isShellmap;
@@ -121,9 +120,6 @@ namespace OpenRA
 
 			TileSet = Rules.TileSets[Map.Tileset];
 			TileSet.LoadTiles();
-
-			// Identify untraversable regions of the map for faster pathfinding, especially with AI
-			WorldDomains = new DomainIndex(this);
 
 			SharedRandom = new XRandom(orderManager.LobbyInfo.GlobalSettings.RandomSeed);
 
