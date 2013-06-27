@@ -33,6 +33,9 @@ namespace OpenRA.Mods.RA.Activities
 
 		public override Activity Tick( Actor self )
 		{
+			if (self.IsDead())
+				return NextActivity;
+
 			if (started)
 			{
 				// Don't break the actor if someone has overriden the animation prematurely
