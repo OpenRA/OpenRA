@@ -107,6 +107,7 @@ config = {
     defaulteol = nil, -- default line-endings for new files; valid values are
                       -- wxstc.wxSTC_EOL_CRLF, wxstc.wxSTC_EOL_LF and nil (OS default)
     nomousezoom = nil, -- disable zooming using mouse wheel
+    autoreload = nil, -- trigger auto-reload when file is updated
   },
 
   default = {
