@@ -189,12 +189,15 @@ Container@SERVER_LOBBY:
 									X:15
 									Y:0-1
 								Button@KICK:
-									Text:X
 									Width:25
-									Height:23
+									Height:25
 									X:180
-									Y:2
-									Font:Bold
+									Children:
+										Image:
+											ImageCollection:lobby-bits
+											ImageName:kick
+											X:7
+											Y:7
 								ColorBlock@COLORBLOCK:
 									X:215
 									Y:6
