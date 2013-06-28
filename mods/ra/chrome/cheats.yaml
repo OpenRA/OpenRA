@@ -3,7 +3,7 @@ Background@CHEATS_PANEL:
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - HEIGHT)/2
 	Width:350
-	Height:505
+	Height:475
 	Visible:false
 	Children:
 		Label@LABEL_TITLE:
@@ -93,21 +93,9 @@ Background@CHEATS_PANEL:
 			Height:20
 			Width:200
 			Text:Show Render Geometry
-		Checkbox@DESYNC_ARMED:
-			X:30
-			Y:412
-			Width:20
-			Height:20
-		Button@DESYNC:
-			X:60
-			Y:410
-			Width:150
-			Height:20
-			Text: Force Desync
-			Height:25
 		Button@CLOSE:
 			X:30
-			Y:450
+			Y:420
 			Width:PARENT_RIGHT - 60
 			Height:25
 			Text:Close

@@ -115,47 +115,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				showAstarCostCheckbox.OnClick = () => { if (dbgOverlay != null) dbgOverlay.Visible ^= true; };
 			}
 
-			var desync = widget.GetOrNull<ButtonWidget>("DESYNC");
-			var desyncEnabled = widget.GetOrNull<CheckboxWidget>("DESYNC_ARMED");
-			if (desync != null && desyncEnabled != null)
-			{
-				desyncEnabled.IsChecked = () => !desync.Disabled;
-				desyncEnabled.OnClick = () => desync.Disabled ^= true;
-
-				desync.Disabled = true;
-				desync.OnClick = () => TriggerDesync(world);
-			}
-
 			var close = widget.GetOrNull<ButtonWidget>("CLOSE");
 			if (close != null)
 				close.OnClick = () => { Ui.CloseWindow(); onExit(); };
-		}
-
-		void TriggerDesync(World world)
-		{
-			var trait = world.ActorsWithTrait<ISync>().Random(CosmeticRandom).Trait;
-			var t = trait.GetType();
-			const BindingFlags bf = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
-
-			var fields = t.GetFields(bf).Where(x => x.HasAttribute<SyncAttribute>()).ToArray();
-			if (fields.Length > 0)
-			{
-				var f = fields[CosmeticRandom.Next(fields.Length)];
-				var before = f.GetValue(trait);
-
-				if (f.FieldType == typeof(Boolean))
-					f.SetValue(trait, !(Boolean) f.GetValue(trait));
-				else if (f.FieldType == typeof(Int32))
-					f.SetValue(trait, CosmeticRandom.Next(Int32.MaxValue));
-				else
-					Game.AddChatLine(Color.White, "Debug", "Sorry, Field-Type not implemented. Try again!");
-
-				var after = f.GetValue(trait);
-				Game.AddChatLine(Color.White, "Debug", "Type: {0}\nField: ({1}) {2}\nBefore: {3}\nAfter: {4}"
-					.F(t.Name, f.FieldType.Name, f.Name, before, after));
-			}
-			else
-				Game.AddChatLine(Color.White, "Debug", "Bad random choice. This trait has no fields. Try again!");
 		}
 
 		public void Order(World world, string order)
