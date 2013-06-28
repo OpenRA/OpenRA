@@ -26,11 +26,11 @@ namespace OpenRA.Mods.RA.Widgets
 		public event Action OnChange = () => {};
 
 		float H, S, V;
-		Bitmap frontBitmap, swapBitmap, backBitmap;
+		Bitmap frontBitmap, backBitmap;
 		Sprite mixerSprite;
 		bool isMoving;
 
-		bool updateFront, updateBack;
+		bool update;
 		object syncWorker = new object();
 		Thread workerThread;
 		bool workerAlive;
@@ -51,7 +51,6 @@ namespace OpenRA.Mods.RA.Widgets
 
 			// Bitmap data is generated in a background thread and then flipped
 			frontBitmap = new Bitmap(256, 256);
-			swapBitmap = new Bitmap(256, 256);
 			backBitmap = new Bitmap(256, 256);
 
 			var rect = new Rectangle((int)(255*SRange[0]), (int)(255*(1 - VRange[1])), (int)(255*(SRange[1] - SRange[0]))+1, (int)(255*(VRange[1] - VRange[0])) + 1);
@@ -65,7 +64,7 @@ namespace OpenRA.Mods.RA.Widgets
 			// so we do it in a background thread
 			lock (syncWorker)
 			{
-				updateBack = true;
+				update = true;
 
 				if (workerThread == null || !workerAlive)
 				{
@@ -85,53 +84,55 @@ namespace OpenRA.Mods.RA.Widgets
 				float hue;
 				lock (syncWorker)
 				{
-					if (!updateBack)
+					if (!update)
 					{
 						workerAlive = false;
 						break;
 					}
-					updateBack = false;
+					update = false;
 
 					// Take a local copy of the hue to generate to avoid tearing
 					hue = H;
 				}
 
-				var bitmapData = backBitmap.LockBits(backBitmap.Bounds(),
-					ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
-
-				unsafe
+				lock (backBitmap)
 				{
-					int* c = (int*)bitmapData.Scan0;
+					var bitmapData = backBitmap.LockBits(backBitmap.Bounds(),
+						ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
 
-					// Generate palette in HSV
-					for (var v = 0; v < 256; v++)
-						for (var s = 0; s < 256; s++)
-							*(c + (v * bitmapData.Stride >> 2) + s) = HSLColor.FromHSV(hue, s / 255f, (255 - v) / 255f).RGB.ToArgb();
-				}
+					unsafe
+					{
+						int* c = (int*)bitmapData.Scan0;
 
-				backBitmap.UnlockBits(bitmapData);
-				lock (syncWorker)
-				{
-					var swap = swapBitmap;
-					swapBitmap = backBitmap;
-					backBitmap = swap;
-					updateFront = true;
+						// Generate palette in HSV
+						for (var v = 0; v < 256; v++)
+							for (var s = 0; s < 256; s++)
+								*(c + (v * bitmapData.Stride >> 2) + s) = HSLColor.FromHSV(hue, s / 255f, (255 - v) / 255f).RGB.ToArgb();
+					}
+
+					backBitmap.UnlockBits(bitmapData);
+
+					lock (frontBitmap)
+					{
+						var swap = frontBitmap;
+						frontBitmap = backBitmap;
+						backBitmap = swap;
+					}
 				}
 			}
 		}
 
 		public override void Draw()
 		{
-			lock (syncWorker)
+			if (Monitor.TryEnter(frontBitmap))
 			{
-				if (updateFront)
+				try
 				{
-					var swap = swapBitmap;
-					swapBitmap = frontBitmap;
-					frontBitmap = swap;
-
 					mixerSprite.sheet.Texture.SetData(frontBitmap);
-					updateFront = false;
+				}
+				finally
+				{
+					Monitor.Exit(frontBitmap);
 				}
 			}
 
