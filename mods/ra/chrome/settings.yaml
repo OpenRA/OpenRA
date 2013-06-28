@@ -386,15 +386,9 @@ Background@SETTINGS_MENU:
 					Width:300
 					Height:20
 					Text:Show Bot Debug Messages
-				Checkbox@IGNOREVERSIONMISMATCH_CHECKBOX:
-					X:0
-					Y:150
-					Width:300
-					Height:20
-					Text:Don't check for compatible version in game server browser.
 				Checkbox@VERBOSE_NAT_DISCOVERY_CHECKBOX:
 					X:0
-					Y:180
+					Y:150
 					Width:300
 					Height:20
 					Text:Print very detailed information to server.log about NAT devices.

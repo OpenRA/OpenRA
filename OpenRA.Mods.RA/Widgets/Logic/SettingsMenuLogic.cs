@@ -235,10 +235,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			botdebugCheckbox.IsChecked = () => Game.Settings.Debug.BotDebug;
 			botdebugCheckbox.OnClick = () => Game.Settings.Debug.BotDebug ^= true;
 
-			var ignoreVersionMismatchCheckbox = debug.Get<CheckboxWidget>("IGNOREVERSIONMISMATCH_CHECKBOX");
-			ignoreVersionMismatchCheckbox.IsChecked = () => Game.Settings.Debug.IgnoreVersionMismatch;
-			ignoreVersionMismatchCheckbox.OnClick = () => Game.Settings.Debug.IgnoreVersionMismatch ^= true;
-
 			var verboseNatDiscoveryCheckbox = debug.Get<CheckboxWidget>("VERBOSE_NAT_DISCOVERY_CHECKBOX");
 			verboseNatDiscoveryCheckbox.IsChecked = () => Game.Settings.Server.VerboseNatDiscovery;
 			verboseNatDiscoveryCheckbox.OnClick = () => Game.Settings.Server.VerboseNatDiscovery ^= true;
