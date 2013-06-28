@@ -66,6 +66,8 @@ namespace OpenRA.Server
 			protected set { pState = value; }
 		}
 
+		public List<string> TempBans = new List<string>();
+
 		public void Shutdown()
 		{
 			State = ServerState.ShuttingDown;
@@ -103,7 +105,6 @@ namespace OpenRA.Server
 			lobbyInfo.GlobalSettings.RandomSeed = randomSeed;
 			lobbyInfo.GlobalSettings.Map = settings.Map;
 			lobbyInfo.GlobalSettings.ServerName = settings.Name;
-			lobbyInfo.GlobalSettings.Ban = settings.Ban;
 			lobbyInfo.GlobalSettings.Dedicated = settings.Dedicated;
 
 			foreach (var t in ServerTraits.WithInterface<INotifyServerStart>())
@@ -270,18 +271,13 @@ namespace OpenRA.Server
 				client.IpAddress = ((IPEndPoint)newConn.socket.RemoteEndPoint).Address.ToString();
 
 				// Check if IP is banned
-				if (lobbyInfo.GlobalSettings.Ban != null)
+				var bans = Settings.Ban.Union(TempBans);
+				if (bans.Contains(client.IpAddress))
 				{
-
-					if (lobbyInfo.GlobalSettings.Ban.Contains(client.IpAddress))
-					{
-						Console.WriteLine("Rejected connection from "+client.Name+"("+newConn.socket.RemoteEndPoint+"); Banned.");
-						Log.Write("server", "Rejected connection from {0}; Banned.",
-							newConn.socket.RemoteEndPoint);
-						SendOrderTo(newConn, "ServerError", "You are banned from the server!");
-						DropClient(newConn);
-						return;
-					}
+					Log.Write("server", "Rejected connection from {0}; Banned.", newConn.socket.RemoteEndPoint);
+					SendOrderTo(newConn, "ServerError", "You are {0} from the server.".F(Settings.Ban.Contains(client.IpAddress) ? "banned" : "temporarily banned"));
+					DropClient(newConn);
+					return;
 				}
 
 				// Promote connection to a valid client
@@ -502,7 +498,7 @@ namespace OpenRA.Server
 			{
 				conns.Remove(toDrop);
 
-				var dropClient = lobbyInfo.Clients.Where(c1 => c1.Index == toDrop.PlayerIndex).FirstOrDefault();
+				var dropClient = lobbyInfo.Clients.FirstOrDefault(c1 => c1.Index == toDrop.PlayerIndex);
 				if (dropClient == null)
 					return;
 
@@ -531,7 +527,10 @@ namespace OpenRA.Server
 
 				DispatchOrders(toDrop, toDrop.MostRecentFrame, new byte[] {0xbf});
 
-				if (conns.Count != 0 || lobbyInfo.GlobalSettings.Dedicated)
+				if (!conns.Any())
+					TempBans.Clear();
+
+				if (conns.Any() || lobbyInfo.GlobalSettings.Dedicated)
 					SyncLobbyInfo();
 
 				if (!lobbyInfo.GlobalSettings.Dedicated && dropClient.IsAdmin)
