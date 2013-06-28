@@ -379,3 +379,9 @@ Background@SETTINGS_MENU:
 					Width:300
 					Height:20
 					Text:Detailed NAT logging
+				Checkbox@DEVELOPER_MENU_CHECKBOX:
+					X:0
+					Y:180
+					Width:300
+					Height:20
+					Text:Enable Asset Browser (requires restart)

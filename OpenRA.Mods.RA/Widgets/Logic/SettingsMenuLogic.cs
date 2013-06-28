@@ -234,6 +234,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			verboseNatDiscoveryCheckbox.IsChecked = () => Game.Settings.Server.VerboseNatDiscovery;
 			verboseNatDiscoveryCheckbox.OnClick = () => Game.Settings.Server.VerboseNatDiscovery ^= true;
 
+			var developerMenuCheckbox = debug.Get<CheckboxWidget>("DEVELOPER_MENU_CHECKBOX");
+			developerMenuCheckbox.IsChecked = () => Game.Settings.Debug.DeveloperMenu;
+			developerMenuCheckbox.OnClick = () => Game.Settings.Debug.DeveloperMenu ^= true;
+
 			bg.Get<ButtonWidget>("BUTTON_CLOSE").OnClick = () =>
 			{
 				int x, y;
