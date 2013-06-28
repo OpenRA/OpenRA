@@ -36,7 +36,7 @@ namespace OpenRA.GameRules
 		public bool VerboseNatDiscovery = false; // print very detailed logs for debugging
 		public bool AllowCheats = false;
 		public string Map = null;
-		public string[] Ban = null;
+		public string[] Ban = { };
 		public int TimeOut = 0;
 		public bool Dedicated = false;
 		public bool DedicatedLoop = true;

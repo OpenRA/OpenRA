@@ -413,25 +413,44 @@ namespace OpenRA.Mods.RA.Server
 				{ "kick",
 					s =>
 					{
-
 						if (!client.IsAdmin)
 						{
 							server.SendOrderTo(conn, "Message", "Only the host can kick players");
 							return true;
 						}
 
-						int clientID;
-						int.TryParse(s, out clientID);
+						var split = s.Split(' ');
+						if (split.Length < 2)
+						{
+							server.SendOrderTo(conn, "Message", "Malformed kick command");
+							return true;
+						}
 
-						var connToKick = server.conns.SingleOrDefault( c => server.GetClient(c) != null && server.GetClient(c).Index == clientID);
-						if (connToKick == null)
+						int kickClientID;
+						int.TryParse(split[0], out kickClientID);
+
+						var kickConn = server.conns.SingleOrDefault(c => server.GetClient(c) != null && server.GetClient(c).Index == kickClientID);
+						if (kickConn == null)
 						{
 							server.SendOrderTo(conn, "Message", "Noone in that slot.");
 							return true;
 						}
 
-						server.SendOrderTo(connToKick, "ServerError", "You have been kicked from the server");
-						server.DropClient(connToKick);
+						var kickConnIP = server.GetClient(kickConn).IpAddress;
+
+						Log.Write("server", "Kicking client {0} as requested", kickClientID);
+						server.SendOrderTo(kickConn, "ServerError", "You have been kicked from the server");
+						server.DropClient(kickConn);
+
+						bool tempBan;
+						bool.TryParse(split[1], out tempBan);
+
+						if (tempBan)
+						{
+							Log.Write("server", "Temporarily banning client {0} ({1}) as requested", kickClientID, kickConnIP);
+							server.TempBans.Add(kickConnIP);
+						}
+
 						server.SyncLobbyInfo();
 						return true;
 					}},
