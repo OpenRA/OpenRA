@@ -20,8 +20,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 {
 	public class LobbyLogic
 	{
+		Widget lobby;
 		Widget EditablePlayerTemplate, NonEditablePlayerTemplate, EmptySlotTemplate,
-			   EditableSpectatorTemplate, NonEditableSpectatorTemplate, NewSpectatorTemplate;
+			EditableSpectatorTemplate, NonEditableSpectatorTemplate, NewSpectatorTemplate;
 		ScrollPanelWidget chatPanel;
 		Widget chatTemplate;
 
@@ -85,7 +86,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		internal LobbyLogic(Widget widget, World world, OrderManager orderManager,
 			Action onExit, Action onStart, bool addBots)
 		{
-			var lobby = widget;
+			lobby = widget;
 			this.orderManager = orderManager;
 			this.OnGameStart = () => { CloseWindow(); onStart(); };
 			this.onExit = onExit;
@@ -425,7 +426,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 					LobbyUtils.SetupClientWidget(template, slot, client, orderManager, client.Bot == null);
 					LobbyUtils.SetupNameWidget(template, slot, client);
-					LobbyUtils.SetupKickWidget(template, slot, client, orderManager);
+					LobbyUtils.SetupKickWidget(template, slot, client, orderManager, lobby);
 					LobbyUtils.SetupColorWidget(template, slot, client);
 					LobbyUtils.SetupFactionWidget(template, slot, client, CountryNames);
 					LobbyUtils.SetupTeamWidget(template, slot, client);
@@ -467,7 +468,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						template = NonEditableSpectatorTemplate.Clone();
 
 					LobbyUtils.SetupNameWidget(template, null, client);
-					LobbyUtils.SetupKickWidget(template, null, client, orderManager);
+					LobbyUtils.SetupKickWidget(template, null, client, orderManager, lobby);
 				}
 
 				LobbyUtils.SetupClientWidget(template, null, c, orderManager, true);

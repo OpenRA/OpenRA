@@ -380,6 +380,7 @@
     <Compile Include="Widgets\BuildPaletteWidget.cs" />
     <Compile Include="Widgets\LogicTickerWidget.cs" />
     <Compile Include="Widgets\Logic\IngameMenuLogic.cs" />
+    <Compile Include="Widgets\Logic\KickClientLogic.cs" />
     <Compile Include="Widgets\Logic\ModBrowserLogic.cs" />
     <Compile Include="Widgets\Logic\ColorPickerLogic.cs" />
     <Compile Include="Widgets\Logic\ConnectionLogic.cs" />
