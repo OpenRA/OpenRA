@@ -114,11 +114,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var display = bg.Get("DISPLAY_PANE");
 			var gs = Game.Settings.Graphics;
 
-			var GraphicsRendererDropdown = display.Get<DropDownButtonWidget>("GRAPHICS_RENDERER");
-			GraphicsRendererDropdown.OnMouseDown = _ => ShowRendererDropdown(GraphicsRendererDropdown, gs);
-			GraphicsRendererDropdown.GetText = () => gs.Renderer == "Gl" ?
-				"OpenGL" : gs.Renderer == "Cg" ? "Cg Toolkit" : "OpenGL";
-
 			var windowModeDropdown = display.Get<DropDownButtonWidget>("MODE_DROPDOWN");
 			windowModeDropdown.OnMouseDown = _ => ShowWindowModeDropdown(windowModeDropdown, gs);
 			windowModeDropdown.GetText = () => gs.Mode == WindowMode.Windowed ?
