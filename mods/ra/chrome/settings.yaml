@@ -127,7 +127,7 @@ Background@SETTINGS_MENU:
 					Y:210
 					Width:200
 					Height:20
-					Text: Try to discover routers suitable for automatic port-forwarding on startup.
+					Text: Enable Network Discovery (UPnP)
 		Container@AUDIO_PANE:
 			X:37
 			Y:100
@@ -391,4 +391,4 @@ Background@SETTINGS_MENU:
 					Y:150
 					Width:300
 					Height:20
-					Text:Print very detailed information to server.log about NAT devices.
+					Text:Detailed NAT logging
