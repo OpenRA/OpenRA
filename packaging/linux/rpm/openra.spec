@@ -12,7 +12,7 @@ Packager: Matthew Bowra-Dean <matthew@ijw.co.nz>
 Requires: mono-core mono-devel SDL openal
 Prefix: /usr
 Source: %{name}-%{version}.tar.gz
-Buildroot: /tmp/openra
+BuildRoot: /tmp/openra
 
 %description
 A multiplayer reimplementation of the Command & Conquer: Red Alert game
