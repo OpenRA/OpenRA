@@ -49,12 +49,14 @@ explosion:
 	building: fball1
 		Start: 0
 		Length: *
+		Offset: 0,-9
 	small_splash: h2o_exp3
 		Start: 0
 		Length: *
 	large_explosion: frag1
 		Start: 0
 		Length: *
+		Offset: -2,0
 	small_napalm: napalm1
 		Start: 0
 		Length: *
