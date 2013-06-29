@@ -81,7 +81,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				});
 			};
 
-			widget.Get<ButtonWidget>("MAINMENU_BUTTON_ASSET_BROWSER").OnClick = () =>
+			var assetBrowserButton = widget.Get<ButtonWidget>("MAINMENU_BUTTON_ASSET_BROWSER");
+			assetBrowserButton.OnClick = () =>
 			{
 				Menu = MenuType.None;
 				Game.OpenWindow("ASSETBROWSER_BG", new WidgetArgs()
@@ -90,7 +91,18 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				});
 			};
 
-			widget.Get<ButtonWidget>("MAINMENU_BUTTON_QUIT").OnClick = () => Game.Exit();
+			var quitButton = widget.Get<ButtonWidget>("MAINMENU_BUTTON_QUIT");
+			quitButton.OnClick = () => Game.Exit();
+
+			// Hide developer-specific buttons
+			if (Game.Settings.Debug.DeveloperMenu == false)
+			{
+				assetBrowserButton.IsVisible = () => false;
+				var offset = assetBrowserButton.Bounds.Y - quitButton.Bounds.Y;
+				quitButton.Bounds.Y += offset;
+				rootMenu.Bounds.Height += offset;
+				rootMenu.Bounds.Y -= offset/2;
+			}
 		}
 
 		void RemoveShellmapUI()

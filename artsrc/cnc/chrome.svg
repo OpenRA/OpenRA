@@ -17,7 +17,8 @@
    sodipodi:docname="chrome.svg"
    inkscape:export-filename="/Users/paul/src/OpenRA/mods/cnc/uibits/chrome.png"
    inkscape:export-xdpi="90"
-   inkscape:export-ydpi="90">
+   inkscape:export-ydpi="90"
+   enable-background="new">
   <defs
      id="defs4">
     <inkscape:perspective
@@ -53,6 +54,43 @@
          d="M 5.77,0.0 L -2.88,5.0 L -2.88,-5.0 L 5.77,0.0 z "
          id="path4479" />
     </marker>
+    <filter
+       id="filter3186"
+       inkscape:label="Desaturate"
+       x="0"
+       y="0"
+       width="1"
+       height="1"
+       inkscape:menu="Color"
+       inkscape:menu-tooltip="Render in shades of gray by reducing saturation to zero"
+       color-interpolation-filters="sRGB">
+      <feTurbulence
+         id="feTurbulence3188"
+         type="fractalNoise"
+         baseFrequency="0.40000000000000002"
+         numOctaves="10"
+         seed="406"
+         result="fbSourceGraphic" />
+      <feColorMatrix
+         result="fbSourceGraphicAlpha"
+         in="fbSourceGraphic"
+         values="0 0 0 -1 0 0 0 0 -1 0 0 0 0 -1 0 0 0 0 1 0"
+         id="feColorMatrix3980" />
+      <feColorMatrix
+         id="feColorMatrix3982"
+         type="saturate"
+         values="0"
+         in="fbSourceGraphic" />
+    </filter>
+    <filter
+       inkscape:collect="always"
+       id="filter4024">
+      <feBlend
+         inkscape:collect="always"
+         mode="multiply"
+         in2="BackgroundImage"
+         id="feBlend4026" />
+    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -61,11 +99,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="5.656854"
-     inkscape:cx="366.7043"
-     inkscape:cy="471.90817"
+     inkscape:zoom="15.999999"
+     inkscape:cx="385.97751"
+     inkscape:cy="397.09537"
      inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="svg2"
      showgrid="false"
      inkscape:window-width="1386"
      inkscape:window-height="856"
@@ -150,6 +188,10 @@
        orientation="0,1"
        position="227.75,416"
        id="guide3167" />
+    <sodipodi:guide
+       orientation="0,1"
+       position="389.62502,401.06252"
+       id="guide3995" />
   </sodipodi:namedview>
   <metadata
      id="metadata7">
@@ -159,10 +201,17 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
+  <rect
+     style="fill:#768bd7;fill-opacity:1;stroke:none"
+     id="rect3200"
+     width="767.91803"
+     height="742.46216"
+     x="-195.16148"
+     y="-169.65097" />
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
@@ -1294,5 +1343,155 @@
        id="path4070"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccc" />
+    <path
+       sodipodi:nodetypes="ccccc"
+       inkscape:connector-curvature="0"
+       id="path3990"
+       d="m 386,657.09952 1.73732,-1.73732 9.26268,9.26246 -1.73734,1.73754 z"
+       style="fill:#ffffff;fill-opacity:1;stroke:none" />
+    <path
+       style="fill:#ffffff;fill-opacity:1;stroke:none"
+       d="m 397,657.09952 -1.73731,-1.73732 -9.26269,9.26246 1.73734,1.73754 z"
+       id="path3993"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccc" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="Noise"
+     style="opacity:0.2;display:inline;filter:url(#filter4024)">
+    <rect
+       transform="matrix(0.98412698,0,0,-0.98412698,14.31746,15.761905)"
+       style="fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter3186)"
+       id="rect3182"
+       width="63"
+       height="63"
+       x="51.5"
+       y="-48"
+       inkscape:export-filename="/Users/paul/src/OpenRA/mods/cnc/uibits/rect3776.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/paul/src/OpenRA/mods/cnc/uibits/rect3776.png"
+       y="-48"
+       x="51.5"
+       height="63"
+       width="63"
+       id="rect3988"
+       style="fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter3186)"
+       transform="matrix(0.98412698,0,0,-0.98412698,-49.682539,79.761905)" />
+    <rect
+       transform="matrix(0.98412698,0,0,-0.98412698,14.317461,79.761905)"
+       style="fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter3186)"
+       id="rect3990"
+       width="63"
+       height="63"
+       x="51.5"
+       y="-48"
+       inkscape:export-filename="/Users/paul/src/OpenRA/mods/cnc/uibits/rect3776.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/paul/src/OpenRA/mods/cnc/uibits/rect3776.png"
+       y="-48"
+       x="51.5"
+       height="63"
+       width="63"
+       id="rect3992"
+       style="fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter3186)"
+       transform="matrix(0.98412698,0,0,-0.98412698,14.317461,143.76191)" />
+    <rect
+       transform="matrix(0.98412698,0,0,-0.98412698,-49.682539,143.76191)"
+       style="fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter3186)"
+       id="rect3994"
+       width="63"
+       height="63"
+       x="51.5"
+       y="-48"
+       inkscape:export-filename="/Users/paul/src/OpenRA/mods/cnc/uibits/rect3776.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/paul/src/OpenRA/mods/cnc/uibits/rect3776.png"
+       y="-48"
+       x="51.5"
+       height="63"
+       width="63"
+       id="rect3996"
+       style="fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter3186)"
+       transform="matrix(0.98412698,0,0,-0.98412698,-49.682539,207.76191)" />
+    <rect
+       transform="matrix(0.98412698,0,0,-0.98412698,14.317461,207.76191)"
+       style="fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter3186)"
+       id="rect3998"
+       width="63"
+       height="63"
+       x="51.5"
+       y="-48"
+       inkscape:export-filename="/Users/paul/src/OpenRA/mods/cnc/uibits/rect3776.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/paul/src/OpenRA/mods/cnc/uibits/rect3776.png"
+       y="-48"
+       x="51.5"
+       height="63"
+       width="63"
+       id="rect4000"
+       style="fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter3186)"
+       transform="matrix(0.47619048,0,0,-0.47619048,232.47619,168.14286)" />
+    <rect
+       transform="matrix(0.47619048,0,0,-0.47619048,264.47619,168.14286)"
+       style="fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter3186)"
+       id="rect4002"
+       width="63"
+       height="63"
+       x="51.5"
+       y="-48"
+       inkscape:export-filename="/Users/paul/src/OpenRA/mods/cnc/uibits/rect3776.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       transform="matrix(0.47619048,0,0,-0.47619048,232.47619,136.14286)"
+       style="fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter3186)"
+       id="rect4004"
+       width="63"
+       height="63"
+       x="51.5"
+       y="-48"
+       inkscape:export-filename="/Users/paul/src/OpenRA/mods/cnc/uibits/rect3776.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/paul/src/OpenRA/mods/cnc/uibits/rect3776.png"
+       y="-48"
+       x="51.5"
+       height="63"
+       width="63"
+       id="rect4006"
+       style="fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter3186)"
+       transform="matrix(0.47619048,0,0,-0.47619048,264.47619,136.14286)" />
+    <rect
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="/Users/paul/src/OpenRA/mods/cnc/uibits/rect3776.png"
+       y="-48"
+       x="51.5"
+       height="63"
+       width="63"
+       id="rect4046"
+       style="fill:#000000;fill-opacity:1;stroke:none;filter:url(#filter3186)"
+       transform="matrix(0.98412698,0,0,-0.98412698,14.31746,15.761905)" />
   </g>
 </svg>

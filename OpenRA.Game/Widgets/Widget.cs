@@ -48,6 +48,15 @@ namespace OpenRA.Widgets
 			return window;
 		}
 
+		public static T LoadWidget<T>(string id, Widget parent, WidgetArgs args) where T : Widget
+		{
+			var widget = LoadWidget(id, parent, args) as T;
+			if (widget == null)
+				throw new InvalidOperationException(
+					"Widget {0} is not of type {1}".F(id, typeof(T).Name));
+			return widget;
+		}
+
 		public static Widget LoadWidget(string id, Widget parent, WidgetArgs args)
 		{
 			return Game.modData.WidgetLoader.LoadWidget(args, parent, id);

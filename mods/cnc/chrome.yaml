@@ -392,6 +392,7 @@ lobby-bits: chrome.png
 	admin: 340,39,7,5
 	colorpicker: 256,32,16,16
 	huepicker: 388,96,7,15
+	kick: 386,115,11,11
 
 checkbox-bits: chrome.png
 	checked: 272,32,16,16

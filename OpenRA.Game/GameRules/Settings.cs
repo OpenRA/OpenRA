@@ -77,6 +77,7 @@ namespace OpenRA.GameRules
 		public bool SanityCheckUnsyncedCode = false;
 		public int Samples = 25;
 		public bool IgnoreVersionMismatch = false;
+		public bool DeveloperMenu = false;
 	}
 
 	public class GraphicSettings
