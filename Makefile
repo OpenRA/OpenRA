@@ -37,10 +37,10 @@ COMMON_LIBS = System.dll System.Core.dll System.Drawing.dll System.Xml.dll third
 # install locations
 prefix ?= /usr/local
 datarootdir ?= $(prefix)/share
-datadir ?= $(datarootdir)/openra
+datadir ?= $(datarootdir)
 bindir ?= $(prefix)/bin
 BIN_INSTALL_DIR = $(DESTDIR)$(bindir)
-DATA_INSTALL_DIR = $(DESTDIR)$(datadir)
+DATA_INSTALL_DIR = $(DESTDIR)$(datadir)/openra
 
 # install tools
 RM = rm
