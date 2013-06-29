@@ -460,7 +460,7 @@ SNIPER:
 	Mobile:
 		Speed: 4
 	Health:
-		HP: 200
+		HP: 80
 	Passenger:
 		PipType: Red
 	RevealsShroud:
