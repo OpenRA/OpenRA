@@ -175,7 +175,7 @@ YAK:
 TRAN:
 	Inherits: ^Helicopter
 	Buildable:
-		Queue: Plane
+		Queue: Helicopter
 		BuildPaletteOrder: 110
 		Prerequisites: hpad
 		Owner: allies
@@ -229,7 +229,7 @@ TRAN.Husk2:
 HELI:
 	Inherits: ^Helicopter
 	Buildable:
-		Queue: Plane
+		Queue: Helicopter
 		BuildPaletteOrder: 90
 		Prerequisites: hpad, atek
 		Owner: allies
@@ -274,7 +274,7 @@ HELI:
 HIND:
 	Inherits: ^Helicopter
 	Buildable:
-		Queue: Plane
+		Queue: Helicopter
 		BuildPaletteOrder: 90
 		Prerequisites: hpad
 		Owner: allies

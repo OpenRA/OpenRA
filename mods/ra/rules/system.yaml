@@ -28,6 +28,10 @@ Player:
 		Type: Plane
 		BuildSpeed: .4
 		LowPowerSlowdown: 3
+	ClassicProductionQueue@Helicopter:
+		Type: Helicopter
+		BuildSpeed: .4
+		LowPowerSlowdown: 3
 	PlaceBuilding:
 	SupportPowerManager:
 	ConquestVictoryConditions:
