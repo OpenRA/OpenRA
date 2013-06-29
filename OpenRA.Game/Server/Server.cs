@@ -237,7 +237,25 @@ namespace OpenRA.Server
 				}
 
 				var handshake = HandshakeResponse.Deserialize(data);
-				var client = handshake.Client;
+
+				var client = new Session.Client()
+				{
+					Name = handshake.Client.Name,
+					IpAddress = ((IPEndPoint)newConn.socket.RemoteEndPoint).Address.ToString(),
+					Index = newConn.PlayerIndex,
+					Slot = lobbyInfo.FirstEmptySlot(),
+					PreferredColor = handshake.Client.Color,
+					Color = handshake.Client.Color,
+					Country = "random",
+					SpawnPoint = 0,
+					Team = 0,
+					State = Session.ClientState.NotReady,
+					IsAdmin = !lobbyInfo.Clients.Any(c1 => c1.IsAdmin)
+				};
+
+				if (client.Slot != null)
+					SyncClientToPlayerReference(client, Map.Players[client.Slot]);
+
 				var mods = handshake.Mods;
 
 				// Check that the client has compatible mods
@@ -268,8 +286,6 @@ namespace OpenRA.Server
 					return;
 				}
 
-				client.IpAddress = ((IPEndPoint)newConn.socket.RemoteEndPoint).Address.ToString();
-
 				// Check if IP is banned
 				var bans = Settings.Ban.Union(TempBans);
 				if (bans.Contains(client.IpAddress))
@@ -283,20 +299,7 @@ namespace OpenRA.Server
 				// Promote connection to a valid client
 				preConns.Remove(newConn);
 				conns.Add(newConn);
-
-				// Enforce correct PlayerIndex and Slot
-				client.Index = newConn.PlayerIndex;
-				client.Slot = lobbyInfo.FirstEmptySlot();
-
-				if (client.Slot != null)
-					SyncClientToPlayerReference(client, Map.Players[client.Slot]);
-
 				lobbyInfo.Clients.Add(client);
-
-				// Promote to admin if this is the first client
-				var clientAdmin = lobbyInfo.Clients.Where(c1 => c1.IsAdmin).FirstOrDefault() ?? client;
-				if (clientAdmin == client)
-					client.IsAdmin = true;
 
 				Log.Write("server", "Client {0}: Accepted connection from {1}.",
 				          newConn.PlayerIndex, newConn.socket.RemoteEndPoint);
@@ -314,12 +317,6 @@ namespace OpenRA.Server
 				{
 					var motd = System.IO.File.ReadAllText("{0}motd_{1}.txt".F(Platform.SupportDir, lobbyInfo.GlobalSettings.Mods[0]));
 					SendOrderTo(newConn, "Message", motd);
-				}
-
-				if (lobbyInfo.GlobalSettings.Dedicated)
-				{
-					var message = client.IsAdmin ? "You are the server admin." : "{0} is the server admin.".F(clientAdmin.Name);
-					SendOrderTo(newConn, "Message", message);
 				}
 
 				if (mods.Any(m => m.Contains("{DEV_VERSION}")))
