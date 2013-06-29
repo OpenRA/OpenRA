@@ -114,11 +114,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var display = bg.Get("DISPLAY_PANE");
 			var gs = Game.Settings.Graphics;
 
-			var GraphicsRendererDropdown = display.Get<DropDownButtonWidget>("GRAPHICS_RENDERER");
-			GraphicsRendererDropdown.OnMouseDown = _ => ShowRendererDropdown(GraphicsRendererDropdown, gs);
-			GraphicsRendererDropdown.GetText = () => gs.Renderer == "Gl" ?
-				"OpenGL" : gs.Renderer == "Cg" ? "Cg Toolkit" : "OpenGL";
-
 			var windowModeDropdown = display.Get<DropDownButtonWidget>("MODE_DROPDOWN");
 			windowModeDropdown.OnMouseDown = _ => ShowWindowModeDropdown(windowModeDropdown, gs);
 			windowModeDropdown.GetText = () => gs.Mode == WindowMode.Windowed ?
@@ -235,13 +230,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			botdebugCheckbox.IsChecked = () => Game.Settings.Debug.BotDebug;
 			botdebugCheckbox.OnClick = () => Game.Settings.Debug.BotDebug ^= true;
 
-			var ignoreVersionMismatchCheckbox = debug.Get<CheckboxWidget>("IGNOREVERSIONMISMATCH_CHECKBOX");
-			ignoreVersionMismatchCheckbox.IsChecked = () => Game.Settings.Debug.IgnoreVersionMismatch;
-			ignoreVersionMismatchCheckbox.OnClick = () => Game.Settings.Debug.IgnoreVersionMismatch ^= true;
-
 			var verboseNatDiscoveryCheckbox = debug.Get<CheckboxWidget>("VERBOSE_NAT_DISCOVERY_CHECKBOX");
 			verboseNatDiscoveryCheckbox.IsChecked = () => Game.Settings.Server.VerboseNatDiscovery;
 			verboseNatDiscoveryCheckbox.OnClick = () => Game.Settings.Server.VerboseNatDiscovery ^= true;
+
+			var developerMenuCheckbox = debug.Get<CheckboxWidget>("DEVELOPER_MENU_CHECKBOX");
+			developerMenuCheckbox.IsChecked = () => Game.Settings.Debug.DeveloperMenu;
+			developerMenuCheckbox.OnClick = () => Game.Settings.Debug.DeveloperMenu ^= true;
 
 			bg.Get<ButtonWidget>("BUTTON_CLOSE").OnClick = () =>
 			{

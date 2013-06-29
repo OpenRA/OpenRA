@@ -15,7 +15,7 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Widgets
 {
-	static class ChromeMetrics
+	public static class ChromeMetrics
 	{
 		static Dictionary<string, string> data = new Dictionary<string, string>();
 
@@ -32,7 +32,7 @@ namespace OpenRA.Widgets
 
 		public static T Get<T>(string key)
 		{
-			return FieldLoader.GetValue<T>( key, data[key] );
+			return FieldLoader.GetValue<T>(key, data[key]);
 		}
 	}
 }

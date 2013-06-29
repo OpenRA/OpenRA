@@ -21,43 +21,46 @@ Background@MAPCHOOSER_PANEL:
 			Children:
 				ScrollItem@MAP_TEMPLATE:
 					Width:180
-					Height:208
-					X:2
+					Height:229
+					X:4
 					Y:0
 					Visible:false
 					Children:
+						Background@PREVIEW_PLACEHOLDER:
+							X:(PARENT_RIGHT - WIDTH)/2
+							Y:4
+							Width:170
+							Height:170
+							Background:dialog3
+							ClickThrough:true
+						MapPreview@PREVIEW:
+							X:(PARENT_RIGHT - WIDTH)/2
+							Y:4
+							Width:170
+							Height:170
 						Label@TITLE:
 							X:2
-							Y:PARENT_BOTTOM-47
+							Y:PARENT_BOTTOM-48
 							Width:PARENT_RIGHT-4
-							Height:25
 							Align:Center
 						Label@DETAILS:
 							Width:PARENT_RIGHT-4
 							X:2
-							Y:PARENT_BOTTOM-35
+							Y:PARENT_BOTTOM-34
 							Align:Center
-							Height:25
 							Font:Tiny
 						Label@AUTHOR:
 							Width:PARENT_RIGHT-4
 							X:2
-							Y:PARENT_BOTTOM-26
+							Y:PARENT_BOTTOM-22
 							Align:Center
-							Height:25
 							Font:Tiny
 						Label@SIZE:
 							Width:PARENT_RIGHT-4
 							X:2
-							Y:PARENT_BOTTOM-17
+							Y:PARENT_BOTTOM-10
 							Align:Center
-							Height:25
 							Font:Tiny
-						MapPreview@PREVIEW:
-							X:(PARENT_RIGHT - WIDTH)/2
-							Y:4
-							Width:160
-							Height:160
 		DropDownButton@GAMEMODE_FILTER:
 			X:PARENT_RIGHT - 220
 			Y:17
