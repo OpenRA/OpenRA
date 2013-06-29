@@ -1,3 +1,87 @@
+NEW:
+	All mods:
+		Added an ingame credits menu.
+		Added descriptive error messages when connecting to a server fails.
+		Added guard ability to combat units ('d').
+		Added force-move ability (hold alt to prioritize move/crush over attack/harvest).
+		Added change-mod button to the asset download screen.
+		Added kick-ban to the server lobby.
+		Added a button to fill empty lobby slots with bots.
+		Added a renderer geometry visualization to the debug/cheats menu.
+		Fixed exploit allowing arbitrary building placement.
+		Fixed exploit allowing a malicious client to steal admin rights.
+		Fixed glitches relating to passenger-carrying units being killed.
+		Fixed a crash related to bridges on certain maps.
+		Fixed a crash related to the color picker.
+		Fixed a glitch where aircraft circle in the air after being killed.
+		Fixed a glitch where an uncontrollable MCV is left after a construction yard is killed.
+		Fixed civilians panicking when healed.
+		Fixed visibility of additional spectator information (progress bars, spy ownership, etc).
+		Fixed excessive "Building" notifications when rapidly pressing icons in the sidebar.
+		Fixed units continuing to attack a building after it was captured.
+		Fixed units chasing a chronoshifted unit across the map.
+		Fixed units not being able to attack buildings from some angles.
+		Removed some developer-specific options from the settings menu.
+	Red Alert:
+		Added external capturing for engineers (like C&C Generals).
+		Added collection animation for parabomb crate.
+		Fixed artwork glitches in several units and buildings.
+		Fixed incorrect player color on captured oil derricks on some maps.
+		Fixed support powers being available after winning a game.
+		Fixed sniper damage vs walls.
+		Fixed destroyable ore mines.
+		Tweaked some weapon explosions.
+		Sniper health reduced.
+		Iron curtain duration increased to 20 seconds.
+		Chronoshift duration decreased to 20 seconds.
+		Mobile Radar Jammer range increased.
+		Mechanic repair amount increased.
+		Decrease the infantry run animation speed.
+		Increased oil derrick health and cash rate. Added initial capture bonus.
+		Added maps: Artemis, Fort Lonestar, Pluto, Sahara,  Survival02, Tournament Island, Zeus.
+		Updated maps: Ares, Apollo, Dionysus, Doughnut, Poseidon.
+		Renamed maps: Ares: National Park -> Dionysus.
+		Removed maps: Hotzone, Mjolnir-2, Seaside.
+	C&C:
+		Restored "classic" multi-engineer behavior. Buildings above 50% health will be damaged by 50%; buildings below this will be captured.
+		Added some texture to the UI background.
+		Fixed veterancy chevrons on cloaked units.
+		Increased aggressiveness of Viceroids.
+		Reduced the pip-count on silos.
+		Orca range increased, reload time decreased.
+		Sam Site missile spread increased.
+		Added maps: Deterring Democracy, Deterring Democracy +
+		Removed maps: East vs West Redux.
+		Updated maps: Skull Valley, Slippery Slopes, The Hourglass.
+		Renamed maps: Rock Canyon -> Manufacturing Consent, Bialystok -> Lessons from Kosovo.
+	Dune 2000:
+		Added new title font.
+		Added maps: Imperial Basin.
+		Fixed harvester docking animation.
+		Added harvesting animation.
+		Uses original (better quality) audio.
+		Updated maps: Black Mesa, Brimstone, Death Depths, Dune Boogie.
+	Engine:
+		Fixed a crash with server hosting under Windows.
+		Reduced order lag for singleplayer games
+		Added support for TS/RA2 mix files.
+		Added support for TS/RA2 SHP images.
+		Added support for TS/RA2 voxel models.
+		Added support for D2K RS archives.
+		Added support for WAV audio files.
+		Added support for XCC mix databases.
+		Added support for the D2K InstallShield archive.
+		Added support for classic production-acceleration behavior.
+		Added support for additional damage states on buildings.
+		Added additional debug information when yaml merging fails.
+		Added additional customization options for laser weapons.
+		Added additional logging for server errors.
+		Additional refactoring working towards TS/RA2 terrain support.
+	Build system and packages:
+		Host windows OpenAL and SDL dependencies on our own servers to avoid excessive downtime.
+	Map Editor and Tools:
+		Added an ingame asset viewer / converter to D2K and RA (enable via the Debug tab in the settings menu).
+
 20130514:
 	All mods:
 		Destroyed bridges can now be repaired with an engineer.
