@@ -59,6 +59,9 @@ cp OpenRA.Game/OpenRA.ico packaging/built
 # Remove demo.mix from cnc
 rm ./packaging/built/mods/cnc/bits/demo.mix
 
+# Workaround for problems with spaces in filenames.
+cp "global mix database.dat" packaging/built
+
 #
 # Change into packaging directory and run the 
 # platform-dependant packaging in parallel
