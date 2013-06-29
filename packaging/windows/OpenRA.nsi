@@ -85,6 +85,7 @@ Section "Client" Client
 	File "${SRCDIR}\ICSharpCode.SharpZipLib.dll"
 	File "${SRCDIR}\FuzzyLogicLibrary.dll"
 	File "${SRCDIR}\Mono.Nat.dll"
+	File "${SRCDIR}\AUTHORS"
 	File "${SRCDIR}\COPYING"
 	File "${SRCDIR}\HACKING"
 	File "${SRCDIR}\INSTALL"
@@ -92,6 +93,7 @@ Section "Client" Client
 	File "${SRCDIR}\OpenRA.ico"
 	File "${SRCDIR}\Tao.*.dll"
 	File "${SRCDIR}\SharpFont.dll"
+	File "${SRCDIR}\global mix database.dat"
 
 	!insertmacro MUI_STARTMENU_WRITE_BEGIN Application
 		CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
@@ -266,6 +268,7 @@ Function ${UN}Clean
 	Delete $INSTDIR\Mono.Nat.dll
 	Delete $INSTDIR\Tao.*.dll
 	Delete $INSTDIR\SharpFont.dll
+	Delete $INSTDIR\AUTHORS
 	Delete $INSTDIR\COPYING
 	Delete $INSTDIR\HACKING
 	Delete $INSTDIR\INSTALL
@@ -276,6 +279,7 @@ Function ${UN}Clean
 	Delete $INSTDIR\cg.dll
 	Delete $INSTDIR\cgGL.dll
 	Delete $INSTDIR\zlib1.dll
+	Delete "$INSTDIR\global mix database.dat"
 	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA"
 	Delete $INSTDIR\uninstaller.exe
 	RMDir $INSTDIR
