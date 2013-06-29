@@ -1,34 +1,69 @@
+############################# INSTRUCTIONS #############################
+#
+# to compile, run:
+#   make
+#
+# to compile with development tools, run:
+#   make all
+#
+# to install, run:
+#   make [prefix=/foo] [bindir=/bar/bin] install
+#
+# to install with development tools, run:
+#   make [prefix=/foo] [bindir=/bar/bin] install-all
+#
+# to uninstall, run:
+#   make uninstall
+#
+# for help, run:
+#   make help
+#
+# to start the game, run:
+#   openra
+
+
+
+############################## TOOLCHAIN ###############################
+#
 CSC         = gmcs
 CSFLAGS     = -nologo -warn:4 -debug:full -optimize- -codepage:utf8 -unsafe -warnaserror
 DEFINE      = DEBUG;TRACE
 COMMON_LIBS = System.dll System.Core.dll System.Drawing.dll System.Xml.dll thirdparty/ICSharpCode.SharpZipLib.dll thirdparty/FuzzyLogicLibrary.dll thirdparty/Mono.Nat.dll
-PHONY       = core tools package all mods clean distclean dependencies version
+
+
+
+######################### UTILITIES/SETTINGS ###########################
+#
+# install locations
+prefix ?= /usr/local
+datarootdir ?= $(prefix)/share
+datadir ?= $(datarootdir)/openra
+bindir ?= $(prefix)/bin
+BIN_INSTALL_DIR = $(DESTDIR)$(bindir)
+DATA_INSTALL_DIR = $(DESTDIR)$(datadir)
+
+# install tools
+RM = rm
+RM_R = $(RM) -r
+RM_F = $(RM) -f
+CP = cp
+CP_R = $(CP) -r
+INSTALL = install
+INSTALL_DIR = $(INSTALL) -d
+INSTALL_PROGRAM = $(INSTALL) -m755
+INSTALL_DATA = $(INSTALL) -m644
+
+# program targets
+CORE = fileformats rcg rgl rsdl rnull game utility
+TOOLS = editor tsbuild ralint
+
 VERSION     = $(shell git name-rev --name-only --tags --no-undefined HEAD 2>/dev/null || echo git-`git rev-parse --short HEAD`)
 
-.SUFFIXES:
-core: game renderers mods utility tsbuild
-tools: editor ralint tsbuild
-package: dependencies core editor docs version
-mods: mod_ra mod_cnc mod_d2k
-all: dependencies core tools
-clean:
-	@-rm -f *.exe *.dll *.mdb mods/**/*.dll mods/**/*.mdb *.resources
-distclean: clean
-dependencies:
-	@ cp -r thirdparty/*.dl* .
-	@ cp -r thirdparty/Tao/* .
-version: mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml
-	@for i in $? ; do \
-		awk '{sub("Version:.*$$","Version: $(VERSION)"); print $0}' $${i} > $${i}.tmp && \
-		mv -f $${i}.tmp $${i} ; \
-	done
-default: dependencies core
 
-.DEFAULT_GOAL := default
 
+######################## PROGRAM TARGET RULES ##########################
 #
 # Core binaries
-#
 fileformats_SRCS	:= $(shell find OpenRA.FileFormats/ -iname '*.cs')
 fileformats_TARGET	= OpenRA.FileFormats.dll
 fileformats_KIND	= library
@@ -39,16 +74,14 @@ fileformats: $(fileformats_TARGET)
 game_SRCS			:= $(shell find OpenRA.Game/ -iname '*.cs')
 game_TARGET			= OpenRA.Game.exe
 game_KIND			= winexe
-game_DEPS			= $(fileformats_TARGET) 
+game_DEPS			= $(fileformats_TARGET)
 game_LIBS			= $(COMMON_LIBS) System.Windows.Forms.dll $(game_DEPS) \
 					thirdparty/Tao/Tao.OpenAl.dll thirdparty/SharpFont.dll
 game_FLAGS			= -win32icon:OpenRA.Game/OpenRA.ico
 PROGRAMS 			+= game
 game: $(game_TARGET)
 
-#
 # Renderer dlls
-#
 rsdl_SRCS			:= $(shell find OpenRA.Renderer.SdlCommon/ -iname '*.cs')
 rsdl_TARGET			= OpenRA.Renderer.SdlCommon.dll
 rsdl_KIND			= library
@@ -82,14 +115,13 @@ rnull_LIBS			= $(COMMON_LIBS) System.Windows.Forms.dll \
 PROGRAMS 			+= rcg rgl rnull rsdl
 renderers: $(rcg_TARGET) $(rgl_TARGET) $(rnull_TARGET) $(rsdl_TARGET)
 
-#
-# Official Mods
-#
-# Red Alert
+
+##### Official Mods #####
 
 STD_MOD_LIBS	= $(fileformats_TARGET) $(game_TARGET)
 STD_MOD_DEPS	= $(STD_MOD_LIBS) $(ralint_TARGET)
 
+# Red Alert
 mod_ra_SRCS			:= $(shell find OpenRA.Mods.RA/ -iname '*.cs')
 mod_ra_TARGET			= mods/ra/OpenRA.Mods.RA.dll
 mod_ra_KIND			= library
@@ -119,9 +151,9 @@ mod_d2k_EXTRA_CMDS	= mono --debug RALint.exe d2k
 PROGRAMS 		+= mod_d2k
 mod_d2k: $(mod_d2k_TARGET)
 
-#
-# Tools
-#
+
+##### Tools #####
+
 # Map Editor
 editor_SRCS			:= $(shell find OpenRA.Editor/ -iname '*.cs')
 editor_TARGET			= OpenRA.Editor.exe
@@ -163,13 +195,8 @@ OpenRA.TilesetBuilder.Surface.resources:
 	resgen2 OpenRA.TilesetBuilder/Surface.resx OpenRA.TilesetBuilder.Surface.resources 1> /dev/null
 tsbuild: OpenRA.TilesetBuilder.frmBuilder.resources OpenRA.TilesetBuilder.frmNew.resources OpenRA.TilesetBuilder.Surface.resources $(tsbuild_TARGET)
 
-#
-# Launchers / Utilities
-#
-# Patches binary headers to work around a mono bug
-fixheader.exe: packaging/fixheader.cs
-	@echo CSC fixheader.exe
-	@$(CSC) packaging/fixheader.cs $(CSFLAGS) -out:fixheader.exe -t:exe $(COMMON_LIBS:%=-r:%)
+
+##### Launchers / Utilities #####
 
 # Backend for the launcher apps - queries game/mod info and applies actions to an install
 utility_SRCS		:= $(shell find OpenRA.Utility/ -iname '*.cs')
@@ -180,11 +207,13 @@ utility_LIBS        = $(COMMON_LIBS) $(utility_DEPS) thirdparty/ICSharpCode.Shar
 PROGRAMS 			+= utility
 utility: $(utility_TARGET)
 
-.PHONY: $(PHONY) $(PROGRAMS)
 
-#
+# Patches binary headers to work around a mono bug
+fixheader.exe: packaging/fixheader.cs
+	@echo CSC fixheader.exe
+	@$(CSC) packaging/fixheader.cs $(CSFLAGS) -out:fixheader.exe -t:exe $(COMMON_LIBS:%=-r:%)
+
 # Generate build rules for each target defined above in PROGRAMS
-#
 define BUILD_ASSEMBLY
 
 $$($(1)_TARGET): $$($(1)_SRCS) Makefile $$($(1)_DEPS) fixheader.exe
@@ -203,68 +232,89 @@ endef
 $(foreach prog,$(PROGRAMS),$(eval $(call BUILD_ASSEMBLY,$(prog))))
 
 
+
+########################## MAKE/INSTALL RULES ##########################
 #
-# Install / Uninstall for *nix
-#
-prefix ?= /usr/local
-datarootdir ?= $(prefix)/share
-datadir ?= $(datarootdir)
-bindir ?= $(prefix)/bin
-BIN_INSTALL_DIR = $(DESTDIR)$(bindir)
-INSTALL_DIR = $(DESTDIR)$(datadir)/openra
-INSTALL = install
-INSTALL_PROGRAM = $(INSTALL)
-CORE = fileformats rcg rgl rsdl rnull game editor utility tsbuild
+default: dependencies core
+
+core: game renderers mods utility tsbuild
+
+tools: editor tsbuild ralint
+
+package: dependencies core editor docs version
+
+mods: mod_ra mod_cnc mod_d2k
+
+all: dependencies core tools
+
+clean:
+	@-$(RM_F) *.exe *.dll *.mdb mods/**/*.dll mods/**/*.mdb *.resources
+
+distclean: clean
+
+dependencies:
+	@ $(CP_R) thirdparty/*.dl* .
+	@ $(CP_R) thirdparty/Tao/* .
+
+version: mods/ra/mod.yaml mods/cnc/mod.yaml mods/d2k/mod.yaml
+	@for i in $? ; do \
+		awk '{sub("Version:.*$$","Version: $(VERSION)"); print $0}' $${i} > $${i}.tmp && \
+		mv -f $${i}.tmp $${i} ; \
+	done
 
 # Documentation (d2k depends on all mod libraries)
-docs:
+docs: utility
 	@mono --debug OpenRA.Utility.exe --docs d2k > DOCUMENTATION.md
 
-install: all
-	@-echo "Installing OpenRA to $(INSTALL_DIR)"
-	@$(INSTALL_PROGRAM) -d $(INSTALL_DIR)
-	@$(INSTALL_PROGRAM) $(foreach prog,$(CORE),$($(prog)_TARGET)) $(INSTALL_DIR)
-	@$(INSTALL_PROGRAM) -d $(INSTALL_DIR)/mods/cnc
-	@$(INSTALL_PROGRAM) $(mod_cnc_TARGET) $(INSTALL_DIR)/mods/cnc
-	@$(INSTALL_PROGRAM) -d $(INSTALL_DIR)/mods/ra
-	@$(INSTALL_PROGRAM) $(mod_ra_TARGET) $(INSTALL_DIR)/mods/ra
-	@$(INSTALL_PROGRAM) -d $(INSTALL_DIR)/mods/d2k
-	@$(INSTALL_PROGRAM) $(mod_d2k_TARGET) $(INSTALL_DIR)/mods/d2k
+install: install-core
 
-	@-cp $(foreach f,$(shell ls mods/cnc --hide=*.dll),mods/cnc/$(f)) $(INSTALL_DIR)/mods/cnc
-	@cp -r mods/cnc/maps $(INSTALL_DIR)/mods/cnc
-	@cp -r mods/cnc/chrome $(INSTALL_DIR)/mods/cnc
-	@cp -r mods/cnc/bits $(INSTALL_DIR)/mods/cnc
-	@cp -r mods/cnc/rules $(INSTALL_DIR)/mods/cnc
-	@cp -r mods/cnc/sequences $(INSTALL_DIR)/mods/cnc
-	@cp -r mods/cnc/tilesets $(INSTALL_DIR)/mods/cnc
-	@cp -r mods/cnc/uibits $(INSTALL_DIR)/mods/cnc
+install-all: install-core install-tools
 
-	@-cp $(foreach f,$(shell ls mods/ra --hide=*.dll),mods/ra/$(f)) $(INSTALL_DIR)/mods/ra
-	@cp -r mods/ra/maps $(INSTALL_DIR)/mods/ra
-	@cp -r mods/ra/bits $(INSTALL_DIR)/mods/ra
-	@cp -r mods/ra/chrome $(INSTALL_DIR)/mods/ra
-	@cp -r mods/ra/rules $(INSTALL_DIR)/mods/ra
-	@cp -r mods/ra/tilesets $(INSTALL_DIR)/mods/ra
-	@cp -r mods/ra/uibits $(INSTALL_DIR)/mods/ra
-	
-	@-cp $(foreach f,$(shell ls mods/d2k --hide=*.dll),mods/d2k/$(f)) $(INSTALL_DIR)/mods/d2k
-	@cp -r mods/d2k/maps $(INSTALL_DIR)/mods/d2k
-	@cp -r mods/d2k/bits $(INSTALL_DIR)/mods/d2k
-	@cp -r mods/d2k/chrome $(INSTALL_DIR)/mods/d2k
-	@cp -r mods/d2k/rules $(INSTALL_DIR)/mods/d2k
-	@cp -r mods/d2k/tilesets $(INSTALL_DIR)/mods/d2k
-	@cp -r mods/d2k/uibits $(INSTALL_DIR)/mods/d2k
+install-core: default
+	@-echo "Installing OpenRA to $(DATA_INSTALL_DIR)"
+	@$(INSTALL_DIR) $(DATA_INSTALL_DIR)
+	@$(INSTALL_PROGRAM) $(foreach prog,$(CORE),$($(prog)_TARGET)) $(DATA_INSTALL_DIR)
+	@$(INSTALL_DIR) $(DATA_INSTALL_DIR)/mods/cnc
+	@$(INSTALL_PROGRAM) $(mod_cnc_TARGET) $(DATA_INSTALL_DIR)/mods/cnc
+	@$(INSTALL_DIR) $(DATA_INSTALL_DIR)/mods/ra
+	@$(INSTALL_PROGRAM) $(mod_ra_TARGET) $(DATA_INSTALL_DIR)/mods/ra
+	@$(INSTALL_DIR) $(DATA_INSTALL_DIR)/mods/d2k
+	@$(INSTALL_PROGRAM) $(mod_d2k_TARGET) $(DATA_INSTALL_DIR)/mods/d2k
 
-	@cp -r glsl $(INSTALL_DIR)
-	@cp -r cg $(INSTALL_DIR)
-	@cp *.ttf $(INSTALL_DIR)
-	@cp thirdparty/Tao/* $(INSTALL_DIR)
-	@$(INSTALL_PROGRAM) thirdparty/ICSharpCode.SharpZipLib.dll $(INSTALL_DIR)
-	@$(INSTALL_PROGRAM) thirdparty/FuzzyLogicLibrary.dll $(INSTALL_DIR)
-	@$(INSTALL_PROGRAM) thirdparty/SharpFont.dll $(INSTALL_DIR)
-	@cp thirdparty/SharpFont.dll.config $(INSTALL_DIR)
-	@$(INSTALL_PROGRAM) thirdparty/Mono.Nat.dll $(INSTALL_DIR)
+	@-$(CP) $(foreach f,$(shell ls mods/cnc --hide=*.dll),mods/cnc/$(f)) $(DATA_INSTALL_DIR)/mods/cnc
+	@$(CP_R) mods/cnc/maps $(DATA_INSTALL_DIR)/mods/cnc
+	@$(CP_R) mods/cnc/chrome $(DATA_INSTALL_DIR)/mods/cnc
+	@$(CP_R) mods/cnc/bits $(DATA_INSTALL_DIR)/mods/cnc
+	@$(CP_R) mods/cnc/rules $(DATA_INSTALL_DIR)/mods/cnc
+	@$(CP_R) mods/cnc/sequences $(DATA_INSTALL_DIR)/mods/cnc
+	@$(CP_R) mods/cnc/tilesets $(DATA_INSTALL_DIR)/mods/cnc
+	@$(CP_R) mods/cnc/uibits $(DATA_INSTALL_DIR)/mods/cnc
+
+	@-$(CP) $(foreach f,$(shell ls mods/ra --hide=*.dll),mods/ra/$(f)) $(DATA_INSTALL_DIR)/mods/ra
+	@$(CP_R) mods/ra/maps $(DATA_INSTALL_DIR)/mods/ra
+	@$(CP_R) mods/ra/bits $(DATA_INSTALL_DIR)/mods/ra
+	@$(CP_R) mods/ra/chrome $(DATA_INSTALL_DIR)/mods/ra
+	@$(CP_R) mods/ra/rules $(DATA_INSTALL_DIR)/mods/ra
+	@$(CP_R) mods/ra/tilesets $(DATA_INSTALL_DIR)/mods/ra
+	@$(CP_R) mods/ra/uibits $(DATA_INSTALL_DIR)/mods/ra
+
+	@-$(CP) $(foreach f,$(shell ls mods/d2k --hide=*.dll),mods/d2k/$(f)) $(DATA_INSTALL_DIR)/mods/d2k
+	@$(CP_R) mods/d2k/maps $(DATA_INSTALL_DIR)/mods/d2k
+	@$(CP_R) mods/d2k/bits $(DATA_INSTALL_DIR)/mods/d2k
+	@$(CP_R) mods/d2k/chrome $(DATA_INSTALL_DIR)/mods/d2k
+	@$(CP_R) mods/d2k/rules $(DATA_INSTALL_DIR)/mods/d2k
+	@$(CP_R) mods/d2k/tilesets $(DATA_INSTALL_DIR)/mods/d2k
+	@$(CP_R) mods/d2k/uibits $(DATA_INSTALL_DIR)/mods/d2k
+
+	@$(CP_R) glsl $(DATA_INSTALL_DIR)
+	@$(CP_R) cg $(DATA_INSTALL_DIR)
+	@$(CP) *.ttf $(DATA_INSTALL_DIR)
+	@$(CP) thirdparty/Tao/* $(DATA_INSTALL_DIR)
+	@$(INSTALL_PROGRAM) thirdparty/ICSharpCode.SharpZipLib.dll $(DATA_INSTALL_DIR)
+	@$(INSTALL_PROGRAM) thirdparty/FuzzyLogicLibrary.dll $(DATA_INSTALL_DIR)
+	@$(INSTALL_PROGRAM) thirdparty/SharpFont.dll $(DATA_INSTALL_DIR)
+	@$(CP) thirdparty/SharpFont.dll.config $(DATA_INSTALL_DIR)
+	@$(INSTALL_PROGRAM) thirdparty/Mono.Nat.dll $(DATA_INSTALL_DIR)
 
 	@echo "#!/bin/sh" 				>  openra
 	@echo 'BINDIR=$$(dirname $$(readlink -f $$0))'	>> openra
@@ -273,6 +323,16 @@ install: all
 	@echo 'cd "$${DATADIR}/openra"' 		>> openra
 	@echo 'exec mono OpenRA.Game.exe "$$@"' 	>> openra
 
+	@$(INSTALL_DIR) $(BIN_INSTALL_DIR)
+	@$(INSTALL_PROGRAM) -m +rx openra $(BIN_INSTALL_DIR)
+
+	@-$(RM) openra
+
+install-tools: tools
+	@-echo "Installing OpenRA tools to $(DATA_INSTALL_DIR)"
+	@$(INSTALL_DIR) $(DATA_INSTALL_DIR)
+	@$(INSTALL_PROGRAM) $(foreach prog,$(TOOLS),$($(prog)_TARGET)) $(DATA_INSTALL_DIR)
+
 	@echo "#!/bin/sh" 				>  openra-editor
 	@echo 'BINDIR=$$(dirname $$(readlink -f $$0))'	>> openra-editor
 	@echo 'ROOTDIR="$${BINDIR%'"$(bindir)"'}"' 	>> openra-editor
@@ -280,14 +340,42 @@ install: all
 	@echo 'cd "$${DATADIR}/openra"'			>> openra-editor
 	@echo 'exec mono OpenRA.Editor.exe "$$@"'	>> openra-editor
 
-	@$(INSTALL_PROGRAM) -d $(BIN_INSTALL_DIR)
-	@$(INSTALL_PROGRAM) -m +rx openra $(BIN_INSTALL_DIR)
+	@$(INSTALL_DIR) $(BIN_INSTALL_DIR)
 	@$(INSTALL_PROGRAM) -m +rx openra-editor $(BIN_INSTALL_DIR)
 
-	@-rm openra
-	@-rm openra-editor
+	@-$(RM) openra-editor
 
 uninstall:
-	@-rm -r $(INSTALL_DIR)
-	@-rm $(DESTDIR)$(bindir)/openra
-	@-rm $(DESTDIR)$(bindir)/openra-editor
+	@-$(RM_R) $(DATA_INSTALL_DIR)
+	@-$(RM_F) $(BIN_INSTALL_DIR)/openra
+	@-$(RM_F) $(BIN_INSTALL_DIR)/openra-editor
+
+help:
+	@echo to compile, run:
+	@echo \ \ make
+	@echo
+	@echo to compile with development tools, run:
+	@echo \ \ make all
+	@echo
+	@echo to install, run:
+	@echo \ \ make \[prefix=/foo\] \[bindir=/bar/bin\] install
+	@echo
+	@echo to install with development tools, run:
+	@echo \ \ make \[prefix=/foo\] \[bindir=/bar/bin\] install-all
+	@echo
+	@echo to uninstall, run:
+	@echo \ \ make uninstall
+	@echo
+	@echo to start the game, run:
+	@echo \ \ openra
+
+
+
+
+########################### MAKEFILE SETTINGS ##########################
+#
+.DEFAULT_GOAL := default
+
+.SUFFIXES:
+
+.PHONY: core tools package all mods clean distclean dependencies version $(PROGRAMS)
