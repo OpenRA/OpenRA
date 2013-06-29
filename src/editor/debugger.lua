@@ -248,7 +248,13 @@ local function activateDocument(file, line, activatehow)
     if ok then content = res end
   end
 
-  if not content and not wx.wxIsAbsolutePath(file) and debugger.basedir then
+  -- in some cases filename can be returned quoted if the chunk is loaded with
+  -- loadstring(chunk, "filename") instead of loadstring(chunk, "@filename")
+  if content then
+    -- if the returned content can be matched with a file, it's a file name
+    local fname = GetFullPathIfExists(debugger.basedir, content) or content
+    if wx.wxFileName(fname):FileExists() then file, content = fname, nil end
+  elseif not wx.wxIsAbsolutePath(file) and debugger.basedir then
     file = debugger.basedir .. file
   end
 
