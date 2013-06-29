@@ -6,7 +6,6 @@ Container@SERVER_LOBBY:
 	Height:535
 	Children:
 		ColorPreviewManager@COLOR_MANAGER:
-			RemapIndices: 176, 178, 180, 182, 184, 186, 189, 191, 177, 179, 181, 183, 185, 187, 188, 190
 		Label@SERVER_NAME:
 			Width:740
 			Y:0-25
