@@ -264,7 +264,6 @@
 		Notification: BuildingLost
 	EditorAppearance:
 		RelativeToTopLeft: yes
-	AutoTargetIgnore:
 	ShakeOnDeath:
 	Sellable:
 	LegacyCapturable:

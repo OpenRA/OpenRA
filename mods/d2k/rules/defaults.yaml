@@ -219,7 +219,6 @@
 		Notification: BuildingLost
 	EditorAppearance:
 		RelativeToTopLeft: yes
-	AutoTargetIgnore:
 	ShakeOnDeath:
 	ProximityCaptor:
 		Types:Building

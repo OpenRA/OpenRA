@@ -403,7 +403,6 @@ GUNTOWER:
 	RevealsShroud:
 		Range: 8
 	RenderRangeCircle:
-	-AutoTargetIgnore:
 	RenderBuilding:
 		HasMakeAnimation: false
 		Image: guntowera
@@ -461,7 +460,6 @@ ROCKETTOWER:
 	RevealsShroud:
 		Range: 10
 	RenderRangeCircle:
-	-AutoTargetIgnore:
 	RenderBuilding:
 		HasMakeAnimation: false
 		Image: rockettowera
