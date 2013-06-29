@@ -214,8 +214,8 @@ IRON:
 		Image: infxicon
 		ChargeTime: 120
 		Description: Invulnerability
-		LongDesc: Makes a group of units invulnerable\nfor 15 seconds.
-		Duration: 15
+		LongDesc: Makes a group of units invulnerable\nfor 20 seconds.
+		Duration: 20
 		SelectTargetSound: slcttgt1.aud
 		BeginChargeSound: ironchg1.aud
 		EndChargeSound: ironrdy1.aud
@@ -252,11 +252,11 @@ PDOX:
 		Image: warpicon
 		ChargeTime: 120
 		Description: Chronoshift
-		LongDesc: Teleport a group of vehicles across\nthe map for 30 seconds.
+		LongDesc: Teleport a group of vehicles across\nthe map for 20 seconds.
 		SelectTargetSound: slcttgt1.aud
 		BeginChargeSound: chrochr1.aud
 		EndChargeSound: chrordy1.aud
-		Duration: 30
+		Duration: 20
 		KillCargo: yes
 	SupportPowerChargeBar:
 	-AcceptsSupplies:
