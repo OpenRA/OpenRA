@@ -920,11 +920,11 @@ Repair:
 		Versus: 
 			None: 0%
 			Wood: 0%
-			Light: 40%
+			Light: 100%
 			Heavy: 100%
 			Concrete: 0%
 		InfDeath: 1
-		Damage: -13
+		Damage: -20
 
 SilencedPPK:
 	ROF: 80
