@@ -553,7 +553,7 @@ MRJ:
 	JamsRadar:
 		Range: 15
 	JamsMissiles:
-		Range: 3
+		Range: 4
 	RenderJammerCircle:
 
 1TNK.Husk:
