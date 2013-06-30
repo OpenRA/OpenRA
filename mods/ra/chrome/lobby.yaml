@@ -86,6 +86,7 @@ Background@SERVER_LOBBY:
 					Text:Ready
 					Align:Left
 					Font:Bold
+		Container@PLAYER_BIN_ROOT:
 		DropDownButton@SLOTS_DROPDOWNBUTTON:
 			X:20
 			Y:PARENT_BOTTOM - 291

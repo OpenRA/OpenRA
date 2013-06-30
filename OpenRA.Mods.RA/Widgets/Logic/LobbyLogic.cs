@@ -103,7 +103,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				name.GetText = () => orderManager.LobbyInfo.GlobalSettings.ServerName;
 
 			UpdateCurrentMap();
-			Players = Ui.LoadWidget<ScrollPanelWidget>("LOBBY_PLAYER_BIN", lobby, new WidgetArgs());
+			Players = Ui.LoadWidget<ScrollPanelWidget>("LOBBY_PLAYER_BIN", lobby.Get("PLAYER_BIN_ROOT"), new WidgetArgs());
 			Players.IsVisible = () => panel == PanelType.Players;
 
 			EditablePlayerTemplate = Players.Get("TEMPLATE_EDITABLE_PLAYER");

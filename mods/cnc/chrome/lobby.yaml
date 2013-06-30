@@ -89,6 +89,7 @@ Container@SERVER_LOBBY:
 							Text:Ready
 							Align:Left
 							Font:Bold
+				Container@PLAYER_BIN_ROOT:
 				Button@OPTIONS_BUTTON:
 					X:15
 					Y:254
