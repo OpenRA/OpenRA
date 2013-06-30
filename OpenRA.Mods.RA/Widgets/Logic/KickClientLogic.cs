@@ -16,7 +16,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	class KickClientLogic
 	{
 		[ObjectCreator.UseCtor]
-		public KickClientLogic(Widget widget, string clientName, Action<bool> okPressed)
+		public KickClientLogic(Widget widget, string clientName, Action<bool> okPressed, Action cancelPressed)
 		{
 			widget.Get<LabelWidget>("TITLE").GetText = () => "Kick {0}?".F(clientName);
 
@@ -31,7 +31,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				okPressed(tempBan);
 			};
 
-			widget.Get<ButtonWidget>("CANCEL_BUTTON").OnClick = () => widget.Parent.RemoveChild(widget);
+			widget.Get<ButtonWidget>("CANCEL_BUTTON").OnClick = () =>
+			{
+				widget.Parent.RemoveChild(widget);
+				cancelPressed();
+			};
 		}
 	}
 }

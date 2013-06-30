@@ -83,39 +83,36 @@ Container@SERVER_LOBBY:
 							Align:Center
 							Font:Bold
 						Label@STATUS:
-							X:448
+							X:446
 							Width:20
 							Height:25
 							Text:Ready
 							Align:Left
 							Font:Bold
-				Checkbox@ALLOWCHEATS_CHECKBOX:
+				Container@PLAYER_BIN_ROOT:
+				Button@OPTIONS_BUTTON:
 					X:15
-					Y:257
-					Width:130
-					Height:20
-					Text: Debug Menu
-				Checkbox@CRATES_CHECKBOX:
-					X:160
-					Y:257
-					Width:80
-					Height:20
-					Text: Crates
-				Button@ADD_BOTS:
-					X:398-120-10
-					Y:255
-					Width:120
+					Y:254
+					Width:112
 					Height:25
-					Text:Add Bots
-					Font:Bold
-				DropDownButton@ASSIGNTEAMS_DROPDOWNBUTTON:
-					X:398
-					Y:255
-					Width:120
+				DropDownButton@SLOTS_DROPDOWNBUTTON:
+					X:132
+					Y:254
+					Width:150
 					Height:25
-					Font:Bold
-					Visible:false
-					Text:Assign
+					Text:Slot Admin
+				Button@CHANGEMAP_BUTTON:
+					X:287
+					Y:254
+					Width:112
+					Height:25
+					Text:Change Map
+				Button@START_GAME_BUTTON:
+					X:404
+					Y:254
+					Width:112
+					Height:25
+					Text:Start Game
 				ScrollPanel@CHAT_DISPLAY:
 					X:15
 					Y:285
@@ -159,27 +156,15 @@ Container@SERVER_LOBBY:
 							Align:Right
 							Text:Chat:
 		Button@DISCONNECT_BUTTON:
-			X:0
+			X:600
 			Y:499
 			Width:140
 			Height:35
 			Text:Leave Game
 		Button@MUSIC_BUTTON:
-			X:150
-			Y:499
-			Width:140
-			Height:35
-			Text:Music
-		Button@CHANGEMAP_BUTTON:
 			X:450
 			Y:499
 			Width:140
 			Height:35
-			Text:Change Map
-		Button@START_GAME_BUTTON:
-			X:600
-			Y:499
-			Width:140
-			Height:35
-			Text:Start Game
+			Text:Music
 		TooltipContainer@TOOLTIP_CONTAINER:

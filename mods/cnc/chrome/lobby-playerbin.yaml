@@ -1,9 +1,9 @@
 ScrollPanel@LOBBY_PLAYER_BIN:
 	X:15
 	Y:30
-	Width:503
-	ItemSpacing:5
+	Width:501
 	Height:219
+	ItemSpacing:5
 	Children:
 		Container@TEMPLATE_EDITABLE_PLAYER:
 			X:5
@@ -94,7 +94,7 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 					ImageName:checked
 				Checkbox@STATUS_CHECKBOX:
 					Visible:false
-					X:448
+					X:446
 					Y:2
 					Width:20
 					Height:20
@@ -129,11 +129,10 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 					Width:11
 					Height:25
 				Label@NAME:
-					Text:Name
-					Width:185
-					Height:25
-					X:15
+					X:20
 					Y:0-1
+					Width:180
+					Height:25
 				Button@KICK:
 					Width:25
 					Height:25
@@ -174,7 +173,7 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 					Y:0
 				Image@STATUS_IMAGE:
 					Visible:false
-					X:450
+					X:448
 					Y:4
 					Width:20
 					Height:20
@@ -195,16 +194,15 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 					Font:Regular
 					Visible:false
 				Label@NAME:
-					Text:Name
-					Width:200
-					Height:25
-					X:15
+					X:20
 					Y:0-1
+					Width:195
+					Height:25
 					Visible:false
 				Button@JOIN:
 					Text:Play in this slot
 					Font:Regular
-					Width:315-55
+					Width:257
 					Height:25
 					X:210
 					Y:0
@@ -283,11 +281,10 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 					Width:11
 					Height:25
 				Label@NAME:
-					Text:Name
-					Width:185
-					Height:25
-					X:15
+					X:20
 					Y:0-1
+					Width:180
+					Height:25
 				Button@KICK:
 					Text:X
 					Width:25
@@ -306,14 +303,14 @@ ScrollPanel@LOBBY_PLAYER_BIN:
 		Container@TEMPLATE_NEW_SPECTATOR:
 			X:5
 			Y:0
-			Width:475
+			Width:474
 			Height:25
 			Visible:false
 			Children:
 				Button@SPECTATE:
 					Text:Spectate
 					Font:Regular
-					Width:455
+					Width:453
 					Height:25
 					X:15
 					Y:0
