@@ -797,6 +797,15 @@ frame:Connect(wx.wxEVT_CLOSE_WINDOW, closeWindow)
 
 frame:Connect(wx.wxEVT_TIMER, saveAutoRecovery)
 
+ide.editorApp:Connect(wx.wxEVT_ACTIVATE_APP,
+  function(event)
+    if not ide.exitingProgram then
+      local event = event:GetActive() and "onAppFocusSet" or "onAppFocusLost"
+      PackageEventHandle(event, ide.editorApp)
+    end
+    event:Skip()
+  end)
+
 if ide.config.autorecoverinactivity then
   ide.session.timer = wx.wxTimer(frame)
   -- check at least 5s to be never more than 5s off
