@@ -335,46 +335,35 @@ namespace OpenRA.Mods.RA.Server
 							return true;
 						}
 
-						int teams;
-						if (!int.TryParse(s, out teams))
+						int teamCount;
+						if (!int.TryParse(s, out teamCount))
 						{
 							server.SendOrderTo(conn, "Message", "Number of teams could not be parsed: {0}".F(s));
 							return true;
 						}
-						teams = teams.Clamp(1, 8);
 
+						var maxTeams = (server.lobbyInfo.Clients.Count(c => c.Slot != null) + 1) / 2;
+						teamCount = teamCount.Clamp(0, maxTeams);
 						var players = server.lobbyInfo.Slots
-							.Select(slot => server.lobbyInfo.Clients.SingleOrDefault(c => c.Slot == slot.Key))
-							.Where(c => c != null && !server.lobbyInfo.Slots[c.Slot].LockTeam).ToArray();
-						if (players.Length < 2)
+							.Select(slot => server.lobbyInfo.ClientInSlot(slot.Key))
+							.Where(c => c != null && !server.lobbyInfo.Slots[c.Slot].LockTeam);
+
+						var assigned = 0;
+						var playerCount = players.Count();
+						foreach (var player in players)
 						{
-							server.SendOrderTo(conn, "Message", "Not enough players to assign teams");
-							return true;
-						}
-						if (teams > players.Length)
-						{
-							server.SendOrderTo(conn, "Message", "Too many teams for the number of players");
-							return true;
+							// Free for all
+							if (teamCount == 0)
+								player.Team = 0;
+
+							// Humans vs Bots
+							else if (teamCount == 1)
+								player.Team = player.Bot == null ? 1 : 2;
+
+							else
+								player.Team = assigned++ * teamCount / playerCount + 1;
 						}
 
-						var teamSizes = new int[players.Length];
-						for (var i = 0; i < players.Length; i++)
-							teamSizes[i % teams]++;
-
-						var playerIndex = 0;
-						for (var team = 1; team <= teams; team++)
-						{
-							for (var teamPlayerIndex = 0; teamPlayerIndex < teamSizes[team - 1]; playerIndex++, teamPlayerIndex++)
-							{
-								var cl = players[playerIndex];
-								if (cl.Bot == null)
-									cl.State = Session.ClientState.NotReady;
-								cl.Team = team;
-							}
-						}
-						// All vs Host
-						if (teams == 1)
-							client.Team = 2;
 						server.SyncLobbyInfo();
 						return true;
 					}},

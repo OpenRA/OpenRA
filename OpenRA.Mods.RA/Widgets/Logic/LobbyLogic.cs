@@ -165,48 +165,82 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			};
 			mapButton.IsVisible = () => mapButton.Visible && Game.IsHost;
 
-			var assignTeams = lobby.GetOrNull<DropDownButtonWidget>("ASSIGNTEAMS_DROPDOWNBUTTON");
-			if (assignTeams != null)
+			var slotsButton = lobby.GetOrNull<DropDownButtonWidget>("SLOTS_DROPDOWNBUTTON");
+			if (slotsButton != null)
 			{
-				assignTeams.IsVisible = () => Game.IsHost;
-				assignTeams.IsDisabled = () => gameStarting || orderManager.LobbyInfo.Clients.Count(c => c.Slot != null) < 2
-					|| orderManager.LocalClient == null || orderManager.LocalClient.IsReady;
+				slotsButton.IsDisabled = () => !Game.IsHost || gameStarting || orderManager.LocalClient == null ||
+					orderManager.LocalClient.IsReady || !orderManager.LobbyInfo.Slots.Values.Any(s => s.AllowBots || !s.LockTeam);
 
-				assignTeams.OnMouseDown = _ =>
+				var aiModes = Rules.Info["player"].Traits.WithInterface<IBotInfo>().Select(t => t.Name);
+				slotsButton.OnMouseDown = _ =>
 				{
-					var options = Enumerable.Range(1, orderManager.LobbyInfo.Clients.Count(c => c.Slot != null).Clamp(1, 8) - 1).Select(d => new DropDownOption
+					var options = new Dictionary<string, IEnumerable<DropDownOption>>();
+
+					var botController = orderManager.LobbyInfo.Clients.Where(c => c.IsAdmin).FirstOrDefault();
+					if (orderManager.LobbyInfo.Slots.Values.Any(s => s.AllowBots))
 					{
-						Title = (d == 1 ? "All vs Host" : "{0} Teams".F(d)),
-						IsSelected = () => false,
-						OnClick = () => orderManager.IssueOrder(Order.Command("assignteams {0}".F(d.ToString())))
-					});
+						var botOptions = new List<DropDownOption>(){ new DropDownOption()
+						{
+							Title = "Add",
+							IsSelected = () => false,
+							OnClick = () =>
+							{
+								foreach (var slot in orderManager.LobbyInfo.Slots)
+								{
+									var bot = aiModes.Random(Game.CosmeticRandom);
+									var c = orderManager.LobbyInfo.ClientInSlot(slot.Key);
+									if (slot.Value.AllowBots == true && (c == null || c.Bot != null))
+										orderManager.IssueOrder(Order.Command("slot_bot {0} {1} {2}".F(slot.Key, botController.Index, bot)));
+								}
+							}
+						}};
+
+						if (orderManager.LobbyInfo.Clients.Any(c => c.Bot != null))
+						{
+							botOptions.Add(new DropDownOption()
+							{
+								Title = "Remove",
+								IsSelected = () => false,
+								OnClick = () =>
+								{
+									foreach (var slot in orderManager.LobbyInfo.Slots)
+									{
+										var c = orderManager.LobbyInfo.ClientInSlot(slot.Key);
+										if (c != null && c.Bot != null)
+											orderManager.IssueOrder(Order.Command("slot_open "+slot.Value.PlayerReference));
+									}
+								}
+							});
+						}
+
+						options.Add("Bots", botOptions);
+					}
+
+					var teamCount = (orderManager.LobbyInfo.Slots.Count(s => !s.Value.LockTeam && orderManager.LobbyInfo.ClientInSlot(s.Key) != null) + 1) / 2;
+					if (teamCount >= 1)
+					{
+						var teamOptions = Enumerable.Range(0, teamCount + 1).Reverse().Select(d => new DropDownOption
+						{
+							Title = (d > 1 ? "{0} Teams".F(d) : d == 1 ? "Humans vs Bots" : "Free for all"),
+							IsSelected = () => false,
+							OnClick = () => orderManager.IssueOrder(Order.Command("assignteams {0}".F(d.ToString())))
+						});
+
+						options.Add("Teams", teamOptions);
+					}
+
 					Func<DropDownOption, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
 					{
 						var item = ScrollItemWidget.Setup(template, option.IsSelected, option.OnClick);
 						item.Get<LabelWidget>("LABEL").GetText = () => option.Title;
 						return item;
 					};
-					assignTeams.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count() * 30, options, setupItem);
+					slotsButton.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 175, options, setupItem);
 				};
 			}
 
 			var disconnectButton = lobby.Get<ButtonWidget>("DISCONNECT_BUTTON");
 			disconnectButton.OnClick = () => { CloseWindow(); onExit(); };
-
-			var addBotsButton = lobby.Get<ButtonWidget>("ADD_BOTS");
-			addBotsButton.IsVisible = () => Game.IsHost;
-			addBotsButton.IsDisabled = () => !Game.IsHost || gameStarting || orderManager.LocalClient == null
-				|| orderManager.LocalClient.IsReady || !orderManager.LobbyInfo.Slots.Values.Any(s => s.AllowBots);
-			addBotsButton.OnClick = () => {
-				var aiModes = Rules.Info["player"].Traits.WithInterface<IBotInfo>().Select(t => t.Name);
-				foreach (var slot in orderManager.LobbyInfo.Slots)
-				{
-					var bot = aiModes.Random(Game.CosmeticRandom);
-					var c = orderManager.LobbyInfo.ClientInSlot(slot.Key);
-					if (slot.Value.AllowBots == true && (c == null || c.Bot != null))
-						orderManager.IssueOrder(Order.Command("slot_bot {0} {1} {2}".F(slot.Key,0,bot)));
-				}
-			};
 
 			var allowCheats = lobby.Get<CheckboxWidget>("ALLOWCHEATS_CHECKBOX");
 			allowCheats.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.AllowCheats;

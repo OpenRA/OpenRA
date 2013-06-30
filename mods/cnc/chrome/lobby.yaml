@@ -94,28 +94,25 @@ Container@SERVER_LOBBY:
 					Y:257
 					Width:130
 					Height:20
-					Text: Debug Menu
+					Text:Cheats
 				Checkbox@CRATES_CHECKBOX:
-					X:160
+					X:120
 					Y:257
 					Width:80
 					Height:20
-					Text: Crates
-				Button@ADD_BOTS:
-					X:398-120-10
+					Text:Crates
+				DropDownButton@SLOTS_DROPDOWNBUTTON:
+					X:213
 					Y:255
-					Width:120
+					Width:150
 					Height:25
-					Text:Add Bots
-					Font:Bold
-				DropDownButton@ASSIGNTEAMS_DROPDOWNBUTTON:
-					X:398
+					Text:Slot Options
+				Button@CHANGEMAP_BUTTON:
+					X:368
 					Y:255
-					Width:120
+					Width:150
 					Height:25
-					Font:Bold
-					Visible:false
-					Text:Assign
+					Text:Change Map
 				ScrollPanel@CHAT_DISPLAY:
 					X:15
 					Y:285
@@ -170,12 +167,6 @@ Container@SERVER_LOBBY:
 			Width:140
 			Height:35
 			Text:Music
-		Button@CHANGEMAP_BUTTON:
-			X:450
-			Y:499
-			Width:140
-			Height:35
-			Text:Change Map
 		Button@START_GAME_BUTTON:
 			X:600
 			Y:499
