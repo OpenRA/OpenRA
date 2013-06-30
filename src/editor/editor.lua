@@ -152,8 +152,6 @@ function SetEditorSelection(selection)
     editor:SetFocus()
     editor:SetSTCFocus(true)
 
-    PackageEventHandle("onEditorActivated", editor)
-
     local id = editor:GetId()
     FileTreeMarkSelected(openDocuments[id] and openDocuments[id].filePath or '')
     AddToFileHistory(openDocuments[id] and openDocuments[id].filePath)
@@ -833,9 +831,16 @@ function CreateEditor()
       event:Skip()
     end)
 
+  editor:Connect(wx.wxEVT_SET_FOCUS,
+    function (event)
+      PackageEventHandle("onEditorFocusSet", editor)
+      event:Skip()
+    end)
+
   editor:Connect(wx.wxEVT_KILL_FOCUS,
     function (event)
       if editor:AutoCompActive() then editor:AutoCompCancel() end
+      PackageEventHandle("onEditorFocusLost", editor)
       event:Skip()
     end)
 
