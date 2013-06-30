@@ -610,3 +610,19 @@ v37:
 czh1:
 	idle:
 		Start: 0
+
+stsga:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 1
+
+stsgb:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 1

@@ -319,3 +319,13 @@ CZH1:
 		Dimensions: 1,1
 	Tooltip:
 		Name: Czech hedgehog
+
+STSGA:
+	Inherits: ^Tree
+	Tooltip:
+		Name: Utility Pole
+
+STSGB:
+	Inherits: ^Tree
+	Tooltip:
+		Name: Utility Pole
