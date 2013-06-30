@@ -35,30 +35,35 @@ Players:
 		DefaultStartingUnits: True
 		Race: Random
 		Enemies: Creeps
+		AllowBots: False
 	PlayerReference@Multi1:
 		Name: Multi1
 		Playable: True
 		DefaultStartingUnits: True
 		Race: Random
 		Enemies: Creeps
+		AllowBots: False
 	PlayerReference@Multi2:
 		Name: Multi2
 		Playable: True
 		DefaultStartingUnits: True
 		Race: Random
 		Enemies: Creeps
+		AllowBots: False
 	PlayerReference@Multi3:
 		Name: Multi3
 		Playable: True
 		DefaultStartingUnits: True
 		Race: Random
 		Enemies: Creeps
+		AllowBots: False
 	PlayerReference@Multi4:
 		Name: Multi4
 		Playable: True
 		DefaultStartingUnits: True
 		Race: Random
 		Enemies: Creeps
+		AllowBots: False
 
 Actors:
 	Actor0: tc04
