@@ -311,3 +311,11 @@ T04:
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
+
+CZH1:
+	Inherits: ^Rock
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	Tooltip:
+		Name: Czech hedgehog
