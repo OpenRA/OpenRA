@@ -580,3 +580,8 @@ V37:
 	Building:
 		Footprint: __xx_ ___xx
 		Dimensions: 5,2
+
+RICE:
+	Inherits: ^CivField
+	EditorTilesetFilter:
+		RequireTilesets: TEMPERAT
