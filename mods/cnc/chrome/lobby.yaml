@@ -83,36 +83,35 @@ Container@SERVER_LOBBY:
 							Align:Center
 							Font:Bold
 						Label@STATUS:
-							X:448
+							X:446
 							Width:20
 							Height:25
 							Text:Ready
 							Align:Left
 							Font:Bold
-				Checkbox@ALLOWCHEATS_CHECKBOX:
+				Button@OPTIONS_BUTTON:
 					X:15
-					Y:257
-					Width:130
-					Height:20
-					Text:Cheats
-				Checkbox@CRATES_CHECKBOX:
-					X:120
-					Y:257
-					Width:80
-					Height:20
-					Text:Crates
+					Y:254
+					Width:112
+					Height:25
 				DropDownButton@SLOTS_DROPDOWNBUTTON:
-					X:213
-					Y:255
+					X:132
+					Y:254
 					Width:150
 					Height:25
-					Text:Slot Options
+					Text:Slot Admin
 				Button@CHANGEMAP_BUTTON:
-					X:368
-					Y:255
-					Width:150
+					X:287
+					Y:254
+					Width:112
 					Height:25
 					Text:Change Map
+				Button@START_GAME_BUTTON:
+					X:404
+					Y:254
+					Width:112
+					Height:25
+					Text:Start Game
 				ScrollPanel@CHAT_DISPLAY:
 					X:15
 					Y:285
@@ -156,21 +155,15 @@ Container@SERVER_LOBBY:
 							Align:Right
 							Text:Chat:
 		Button@DISCONNECT_BUTTON:
-			X:0
+			X:600
 			Y:499
 			Width:140
 			Height:35
 			Text:Leave Game
 		Button@MUSIC_BUTTON:
-			X:150
+			X:450
 			Y:499
 			Width:140
 			Height:35
 			Text:Music
-		Button@START_GAME_BUTTON:
-			X:600
-			Y:499
-			Width:140
-			Height:35
-			Text:Start Game
 		TooltipContainer@TOOLTIP_CONTAINER:

@@ -10,78 +10,115 @@ Background@SERVER_LOBBY:
 			X:0
 			Y:17
 			Align:Center
-			Width:530
+			Width:PARENT_RIGHT
 			Height:20
 			Font:Bold
-		Label@MAP_TITLE:
-			X:532
-			Y:17
-			Align:Center
-			Width:250
-			Height:20
-			Font:Bold
-		Background@LOBBY_MAP_BG:
-			X:PARENT_RIGHT-268
-			Y:50
-			Width:252
-			Height:252
+		Background@MAP_BG:
+			X:PARENT_RIGHT-20-WIDTH
+			Y:67
+			Width:214
+			Height:214
 			Background:dialog3
 			Children:
 				MapPreview@MAP_PREVIEW:
-					X:4
-					Y:4
-					Width:244
-					Height:244
+					X:2
+					Y:2
+					Width:210
+					Height:210
 					TooltipContainer:TOOLTIP_CONTAINER
+		Label@MAP_TITLE:
+			X:PARENT_RIGHT-20-WIDTH
+			Y:282
+			Width:214
+			Height:25
+			Font:Bold
+			Align:Center
+		Label@MAP_TYPE:
+			X:PARENT_RIGHT-20-WIDTH
+			Y:297
+			Width:214
+			Height:25
+			Font:TinyBold
+			Align:Center
+		Label@MAP_AUTHOR:
+			X:PARENT_RIGHT-20-WIDTH
+			Y:310
+			Width:214
+			Height:25
+			Font:Tiny
+			Align:Center
 		Container@LABEL_CONTAINER:
 			X:25
 			Y:40
 			Children:
 				Label@LABEL_LOBBY_NAME:
-					Width:150
-					Height:25
 					X:0
-					Y:0
+					Width:180
+					Height:25
 					Text:Name
 					Align:Center
 					Font:Bold
 				Label@LABEL_LOBBY_COLOR:
+					X:190
 					Width:80
 					Height:25
-					X:160
-					Y:0
 					Text:Color
 					Align:Center
 					Font:Bold
 				Label@LABEL_LOBBY_FACTION:
+					X:280
 					Width:130
 					Height:25
-					X:250
-					Y:0
 					Text:Faction
 					Align:Center
 					Font:Bold
 				Label@LABEL_LOBBY_TEAM:
+					X:420
 					Width:48
 					Height:25
-					X:390
-					Y:0
 					Text:Team
 					Align:Center
 					Font:Bold
 				Label@LABEL_LOBBY_STATUS:
-					X:448
-					Y:0
+					X:477
 					Width:20
 					Height:25
 					Text:Ready
 					Align:Left
 					Font:Bold
+		DropDownButton@SLOTS_DROPDOWNBUTTON:
+			X:20
+			Y:PARENT_BOTTOM - 291
+			Width:151
+			Height:25
+			Font:Bold
+			Text:Slot Admin
+		Button@OPTIONS_BUTTON:
+			X:178
+			Y:PARENT_BOTTOM - 291
+			Width:121
+			Height:25
+			Font:Bold
+			Text:Game Options
+		Button@CHANGEMAP_BUTTON:
+			X:306
+			Y:PARENT_BOTTOM - 291
+			Width:121
+			Height:25
+			Text:Change Map
+			Font:Bold
+		Button@START_GAME_BUTTON:
+			X:434
+			Y:PARENT_BOTTOM - 291
+			Width:121
+			Height:25
+			Text:Start Game
+			Font:Bold
 		ScrollPanel@CHAT_DISPLAY:
 			X:20
-			Y:PARENT_BOTTOM - 289
-			Width:PARENT_RIGHT - 200
-			Height:230
+			Y:PARENT_BOTTOM - HEIGHT - 52
+			Width:760
+			Height:210
 			ItemSpacing:1
 			Children:
 				Container@CHAT_TEMPLATE:
@@ -106,69 +143,24 @@ Background@SERVER_LOBBY:
 							Height:15
 							WordWrap:true
 							VAlign:Top
-		Label@LABEL_CHATTYPE:
-			Width:65
-			Height:25
-			X:0
-			Y:PARENT_BOTTOM - 50
-			Text:Chat:
-			Align:Right
 		TextField@CHAT_TEXTFIELD:
-			X:70
-			Y:PARENT_BOTTOM - 49
-			Width:550
+			X:20
+			Y:PARENT_BOTTOM - HEIGHT - 20
+			Width:PARENT_RIGHT - 167
 			Height:25
-		Button@CHANGEMAP_BUTTON:
-			X:PARENT_RIGHT-154
-			Y:PARENT_BOTTOM-289
-			Width:120
-			Height:25
-			Text:Change Map
-			Font:Bold
-		DropDownButton@SLOTS_DROPDOWNBUTTON:
-			X:PARENT_RIGHT-154
-			Y:PARENT_BOTTOM-229
-			Width:120
-			Height:25
-			Font:Bold
-			Text:Admin
-		DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
-			X:PARENT_RIGHT-154
-			Y:PARENT_BOTTOM-199
-			Width:120
-			Height:25
-			Font:Bold
-			Visible:false
-		Checkbox@ALLOWCHEATS_CHECKBOX:
-			X: PARENT_RIGHT-154
-			Y: PARENT_BOTTOM-169
-			Width: 80
-			Height: 20
-			Text: Allow Cheats
-		Checkbox@CRATES_CHECKBOX:
-			X: PARENT_RIGHT-154
-			Y: PARENT_BOTTOM-144
-			Width: 80
-			Height: 20
-			Text: Crates
-		Checkbox@FRAGILEALLIANCES_CHECKBOX:
-			X: PARENT_RIGHT-154
-			Y: PARENT_BOTTOM-119
-			Width: 80
-			Height: 20
-			Text: Fragile Alliances
+			LeftMargin:50
+			Children:
+				Label@LABEL_CHATTYPE:
+					Y:0-1
+					Width:45
+					Height:25
+					Align:Right
+					Text:Chat:
 		Button@DISCONNECT_BUTTON:
-			X:PARENT_RIGHT-154
-			Y:PARENT_BOTTOM-94
+			X:PARENT_RIGHT - WIDTH - 20
+			Y:PARENT_BOTTOM - HEIGHT - 20
 			Width:120
 			Height:25
 			Text:Disconnect
-			Font:Bold
-		Button@START_GAME_BUTTON:
-			X:PARENT_RIGHT-154
-			Y:PARENT_BOTTOM-49
-			Width:120
-			Height:25
-			Text:Start Game
 			Font:Bold
 		TooltipContainer@TOOLTIP_CONTAINER:

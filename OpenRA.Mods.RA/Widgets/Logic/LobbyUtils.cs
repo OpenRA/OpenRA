@@ -266,17 +266,23 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				slot.IsVisible = () => false;
 		}
 
-		public static void SetupKickWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, Widget lobby)
+		public static void SetupKickWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, Widget lobby, Action before, Action after)
 		{
 			var button = parent.Get<ButtonWidget>("KICK");
 			button.IsVisible = () => Game.IsHost && c.Index != orderManager.LocalClient.Index;
 			button.IsDisabled = () => orderManager.LocalClient.IsReady;
-			Action<bool> okPressed = tempBan => orderManager.IssueOrder(Order.Command("kick {0} {1}".F(c.Index, tempBan)));
-			button.OnClick = () => Game.LoadWidget(null, "KICK_CLIENT_DIALOG", lobby, new WidgetArgs
+			Action<bool> okPressed = tempBan => { orderManager.IssueOrder(Order.Command("kick {0} {1}".F(c.Index, tempBan))); after(); };
+			button.OnClick = () =>
 			{
-				{ "clientName", c.Name },
-				{ "okPressed", okPressed }
-			});
+				before();
+
+				Game.LoadWidget(null, "KICK_CLIENT_DIALOG", lobby, new WidgetArgs
+				{
+					{ "clientName", c.Name },
+					{ "okPressed", okPressed },
+					{ "cancelPressed", after }
+				});
+			};
 		}
 
 		public static void SetupEditableColorWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, ColorPreviewManagerWidget colorPreview)
