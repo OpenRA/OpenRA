@@ -1,6 +1,18 @@
 ScrollPanel@LABEL_DROPDOWN_TEMPLATE:
 	Width:DROPDOWN_WIDTH
 	Children:
+		ScrollItem@HEADER:
+			Width:PARENT_RIGHT-27
+			Height:13
+			X:2
+			Y:0
+			Visible:false
+			Children:
+				Label@LABEL:
+					Font:TinyBold
+					Width:PARENT_RIGHT
+					Height:10
+					Align:Center
 		ScrollItem@TEMPLATE:
 			Width:PARENT_RIGHT-27
 			Height:25

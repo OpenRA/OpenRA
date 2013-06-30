@@ -38,21 +38,25 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		public static void ShowSlotDropDown(DropDownButtonWidget dropdown, Session.Slot slot,
 			Session.Client client, OrderManager orderManager)
 		{
-			var options = new List<SlotDropDownOption>()
+			var options = new Dictionary<string, IEnumerable<SlotDropDownOption>>() {{"Slot", new List<SlotDropDownOption>()
 			{
 				new SlotDropDownOption("Open", "slot_open "+slot.PlayerReference, () => (!slot.Closed && client == null)),
 				new SlotDropDownOption("Closed", "slot_close "+slot.PlayerReference, () => slot.Closed)
-			};
+			}}};
 
+			var bots = new List<SlotDropDownOption>();
 			if (slot.AllowBots)
+			{
 				foreach (var b in Rules.Info["player"].Traits.WithInterface<IBotInfo>().Select(t => t.Name))
 				{
 					var bot = b;
 					var botController = orderManager.LobbyInfo.Clients.Where(c => c.IsAdmin).FirstOrDefault();
-					options.Add(new SlotDropDownOption("Bot: {0}".F(bot),
+					bots.Add(new SlotDropDownOption(bot,
 						"slot_bot {0} {1} {2}".F(slot.PlayerReference, botController.Index, bot),
 						() => client != null && client.Bot == bot));
 				}
+			}
+			options.Add(bots.Any() ? "Bots" : "Bots Disabled", bots);
 
 			Func<SlotDropDownOption, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
 			{
@@ -63,7 +67,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				return item;
 			};
 
-			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 150, options, setupItem);
+			dropdown.ShowDropDown<SlotDropDownOption>("LABEL_DROPDOWN_TEMPLATE", 167, options, setupItem);
 		}
 
 		public static void ShowTeamDropDown(DropDownButtonWidget dropdown, Session.Client client,

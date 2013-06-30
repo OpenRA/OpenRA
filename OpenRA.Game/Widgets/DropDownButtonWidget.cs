@@ -105,6 +105,41 @@ namespace OpenRA.Widgets
 			panel.Bounds.Height = Math.Min(height, panel.ContentHeight);
 			AttachPanel(panel);
 		}
+
+		public void ShowDropDown<T>(string panelTemplate, int height, Dictionary<string, IEnumerable<T>> groups, Func<T, ScrollItemWidget, ScrollItemWidget> setupItem)
+		{
+			var substitutions = new Dictionary<string,int>() {{ "DROPDOWN_WIDTH", Bounds.Width }};
+			var panel = (ScrollPanelWidget)Ui.LoadWidget(panelTemplate, null, new WidgetArgs()
+			                                             {{ "substitutions", substitutions }});
+
+			var headerTemplate = panel.Get<ScrollItemWidget>("HEADER");
+			var itemTemplate = panel.Get<ScrollItemWidget>("TEMPLATE");
+			panel.RemoveChildren();
+
+			foreach (var kv in groups)
+			{
+				var group = kv.Key;
+				if (group.Length > 0)
+				{
+					var header = ScrollItemWidget.Setup(headerTemplate, () => true, () => {});
+					header.Get<LabelWidget>("LABEL").GetText = () => group;
+					panel.AddChild(header);
+				}
+
+				foreach (var option in kv.Value)
+				{
+					var o = option;
+
+					var item = setupItem(o, itemTemplate);
+					var onClick = item.OnClick;
+					item.OnClick = () => { onClick(); RemovePanel(); };
+
+					panel.AddChild(item);
+				}
+			}
+			panel.Bounds.Height = Math.Min(height, panel.ContentHeight);
+			AttachPanel(panel);
+		}
 	}
 
 	public class MaskWidget : Widget
