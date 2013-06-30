@@ -626,3 +626,8 @@ stsgb:
 		Start: 1
 	dead:
 		Start: 1
+
+ammobox: # TODO: there are 2 more variants, but the editor does not like the split up
+	idle:
+		Start: 0
+		Length: 1
