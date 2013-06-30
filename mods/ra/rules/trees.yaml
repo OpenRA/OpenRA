@@ -167,10 +167,30 @@ MINE:
 		Terrain: Ore
 	EditorAppearance:
 		RelativeToTopLeft: yes
-		UseTerrainPalette: true
+		UseTerrainPalette: yes
 	AutoTargetIgnore:
 	BodyOrientation:
 	SeedsResource:
+	BelowUnits:
+
+RAILMINE:
+	Tooltip:
+		Name: Gem Mine
+	RenderBuilding:
+		Palette: terrain
+	Building:
+		Footprint: _x
+		Dimensions: 1,2
+	AppearsOnRadar:
+	RadarColorFromTerrain:
+		Terrain: Gems
+	EditorAppearance:
+		RelativeToTopLeft: yes
+		UseTerrainPalette: yes
+	AutoTargetIgnore:
+	BodyOrientation:
+	SeedsResource:
+		ResourceType: Gems
 	BelowUnits:
 
 BOXES01:
