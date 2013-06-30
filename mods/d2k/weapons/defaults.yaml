@@ -5,10 +5,10 @@
 ### Warheads
 
 W_Bullets:	# Machine Guns
-	Report: MGUN2	#machine gun burst sound
+	Report: MGUN2.WAV	#machine gun burst sound
 	Warhead:
 		Spread: 3
-		Versus: 
+		Versus:
 			None: 100%
 			Wood: 75%
 			Light: 40%
@@ -20,7 +20,7 @@ W_Bullets:	# Machine Guns
 W_Bazooka:
 	Warhead:
 		Spread: 3
-		Versus: 
+		Versus:
 			None: 8%
 			Wood: 45%
 			Light: 70%
@@ -29,12 +29,12 @@ W_Bazooka:
 		InfDeath: 4
 		Explosion: med_explosion
 		WaterExplosion: med_splash
-		ImpactSound: kaboom12
+		ImpactSound: kaboom12.aud # TODO: fallback to RA
 
 W_HE:			# Grenadier, siege tank
 	Warhead:
 		Spread: 12
-		Versus: 
+		Versus:
 			None: 125%
 			Wood: 70%
 			Light: 30%
@@ -50,7 +50,7 @@ W_HE:			# Grenadier, siege tank
 W_GT_AT:	# Sardaukar & Fremen's longer range weapons
 	Warhead:
 		Spread: 3
-		Versus: 
+		Versus:
 			None: 25%
 			Wood: 65%
 			Light: 100%
@@ -59,27 +59,27 @@ W_GT_AT:	# Sardaukar & Fremen's longer range weapons
 		InfDeath: 4
 		Explosion: med_explosion
 		WaterExplosion: med_splash
-		ImpactSound: kaboom12
+		ImpactSound: kaboom12.aud # TODO: fallback to RA
 		SmudgeType: SandCrater, RockCrater
 
 W_AT:		# Tank shells, gun turret
 	Warhead:
 		Spread: 3
-		Versus: 
+		Versus:
 			None: 20%
 			Wood: 60%
 			Light: 100%
 			Heavy: 75%
 			Concrete: 50%
 		Explosion: med_explosion
-		ImpactSound: kaboom30
+		ImpactSound: kaboom30.aud # TODO: fallback to RA
 		InfDeath: 4
 		SmudgeType: SandCrater, RockCrater
 
 W_AT_Mis:	# Rocket Launcher, tower missile
 	Warhead:
 		Spread: 8
-		Versus: 
+		Versus:
 			None: 15%
 			Wood: 65%
 			Light: 90%
@@ -88,13 +88,13 @@ W_AT_Mis:	# Rocket Launcher, tower missile
 		InfDeath: 4
 		Explosion: large_explosion
 		WaterExplosion: med_splash
-		ImpactSound: explsml1
+		ImpactSound: explsml1.wav
 		SmudgeType: SandCrater, RockCrater
 
-W_Deviate
+W_Deviate:
 	Warhead:
 		Spread: 8
-		Versus: 
+		Versus:
 			None: 20%
 			Wood: 20%
 			Light: 20%
@@ -103,10 +103,10 @@ W_Deviate
 		Explosion: med_explosion
 		WaterExplosion: med_splash
 
-W_Sonic
+W_Sonic:
 	Warhead:
 		Spread: 6
-		Versus: 
+		Versus:
 			None: 100%
 			Wood: 100%
 			Light: 100%
@@ -118,7 +118,7 @@ W_Sonic
 W_Plasma:
 	Warhead:
 		Spread: 3
-		Versus: 
+		Versus:
 			None: 100%
 			Wood: 100%
 			Light: 60%
@@ -141,7 +141,7 @@ P_Bullets:	#from M60mg
 		ContrailUsePlayerColor: true
 
 P_OneShot:	#from Sniper
-	Report: RIFLE
+	Report: RIFLE.AUD # TODO: fallback to RA
 	Projectile: Bullet
 		Speed: 150
 		ContrailLength: 6

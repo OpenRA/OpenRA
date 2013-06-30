@@ -1,7 +1,7 @@
 LMG:
 	ROF: 20
 	Range: 5
-	Report: MGUN2
+	Report: MGUN2.WAV
 	Projectile: Bullet
 		Speed: 100
 		ContrailLength: 3
@@ -72,7 +72,7 @@ Sniper:
 Vulcan:
 	ROF: 30
 	Range: 5.75
-	Report: VULCAN.WAV
+	Report: VULCAN.AUD # TODO: fallback to RA
 	ValidTargets: Ground, Air
 	Projectile: Bullet
 		Speed: 100

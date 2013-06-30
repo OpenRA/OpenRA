@@ -1,11 +1,11 @@
 Crush:
 	Warhead:
-		ImpactSound: CRUSH1
+		ImpactSound: CRUSH1.WAV
 		Damage: 100
 
 Demolish:
 	Warhead:
-		ImpactSound: EXPLLG2
+		ImpactSound: EXPLLG2.WAV
 		Explosion: building
 
 Atomic:
@@ -20,7 +20,7 @@ Atomic:
 			Concrete: 50%
 		Explosion: nuke
 		InfDeath: 5
-		ImpactSound: EXPLLG2
+		ImpactSound: EXPLLG2.WAV
 
 CrateNuke:
 	Warhead:
@@ -34,7 +34,7 @@ CrateNuke:
 			Concrete: 50%
 		Explosion: nuke
 		InfDeath: 5
-		ImpactSound: EXPLLG2
+		ImpactSound: EXPLLG2.WAV
 
 CrateExplosion:
 	Warhead:
@@ -48,7 +48,7 @@ CrateExplosion:
 		Explosion: building
 		WaterExplosion: building
 		InfDeath: 4
-		ImpactSound: EXPLSML4
+		ImpactSound: EXPLSML4.WAV
 
 UnitExplode:
 	Warhead:
@@ -62,7 +62,7 @@ UnitExplode:
 		Explosion: building
 		WaterExplosion: large_splash
 		InfDeath: 4
-		ImpactSound: EXPLMD1
+		ImpactSound: EXPLMD1.WAV
 
 UnitExplodeSmall:
 	Warhead:
@@ -75,7 +75,7 @@ UnitExplodeSmall:
 			Heavy: 25%
 		Explosion: self_destruct
 		InfDeath: 4
-		ImpactSound: EXPLHG1, EXPLLG1, EXPLMD1, EXPLSML4
+		ImpactSound: EXPLHG1.WAV, EXPLLG1.WAV, EXPLMD1.WAV, EXPLSML4.WAV
 
 UnitExplodeTiny:
 	Warhead:
@@ -88,7 +88,7 @@ UnitExplodeTiny:
 			Heavy: 25%
 		Explosion: med_explosion
 		InfDeath: 4
-		ImpactSound: EXPLMD2, EXPLSML1, EXPLSML2, EXPLSML3
+		ImpactSound: EXPLMD2.WAV, EXPLSML1.WAV, EXPLSML2.WAV, EXPLSML3.WAV
 
 UnitExplodeScale:
 	Warhead:
@@ -101,5 +101,5 @@ UnitExplodeScale:
 			Heavy: 25%
 		Explosion: building
 		InfDeath: 4
-		ImpactSound: EXPLLG2, EXPLLG3, EXPLLG5
+		ImpactSound: EXPLLG2.WAV, EXPLLG3.WAV, EXPLLG5.WAV
 
