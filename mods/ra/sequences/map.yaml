@@ -637,3 +637,7 @@ ammobox: # TODO: there are 2 more variants, but the editor does not like the spl
 	idle:
 		Start: 0
 		Length: 1
+
+tanktrap:
+	idle:
+		Start: 0

@@ -338,7 +338,7 @@ CZH1:
 		Footprint: x
 		Dimensions: 1,1
 	Tooltip:
-		Name: Czech hedgehog
+		Name: Czech Hedgehog
 
 STSGA:
 	Inherits: ^Tree
@@ -349,3 +349,11 @@ STSGB:
 	Inherits: ^Tree
 	Tooltip:
 		Name: Utility Pole
+
+TANKTRAP:
+	Inherits: ^Rock
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	Tooltip:
+		Name: Tank Trap
