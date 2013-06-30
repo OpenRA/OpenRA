@@ -263,12 +263,13 @@ function SaveFileAs(editor)
   return saved
 end
 
-function SaveAll()
+function SaveAll(quiet)
   for id, document in pairs(openDocuments) do
     local editor = document.editor
     local filePath = document.filePath
 
-    if document.isModified or not document.filePath then
+    if (document.isModified or not document.filePath) -- need to save
+    and (document.filePath or not quiet) then -- have path or can ask user
       SaveFile(editor, filePath) -- will call SaveFileAs if necessary
     end
   end
