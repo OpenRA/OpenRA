@@ -178,6 +178,27 @@ weap:
 	damaged-idle-top: weap2
 		Start: 4
 
+tankfact:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	make: tankfactmake
+		Start: 0
+		Length: *
+	build-top: tankfactdoor
+		Start: 0
+		Length: 4
+		Tick: 150
+	damaged-build-top: tankfactdoor
+		Start: 0
+		Length: 4
+		Tick: 150
+	idle-top: tankfactdoor
+		Start: 0
+	damaged-idle-top: tankfactdoor
+		Start: 0
+
 hpad:
 	idle:
 		Start: 0

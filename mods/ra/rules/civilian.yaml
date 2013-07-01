@@ -70,6 +70,34 @@ FCOM:
 		Range: 10
 	Bib:
 
+TANKFACT:
+	Inherits: ^TechBuilding
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: Tank Factory
+	Building:
+		Power: -30
+		Footprint: xxx xxx
+		Dimensions: 3,2
+	Health:
+		HP: 1500
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4
+	Bib:
+	-RenderBuilding:
+	RenderBuildingWarFactory:
+	RallyPoint:
+	Exit@1:
+		SpawnOffset: 5,-3
+		ExitCell: 1,2
+	Production:
+		Produces: Vehicle
+	PrimaryBuilding:
+	ProductionBar:
+
 HOSP:
 	Inherits: ^TechBuilding
 	Building:
