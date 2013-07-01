@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA.Widgets
 		int updateTicks = 0;
 
 		float previewScale = 0;
-		RectangleF mapRect = Rectangle.Empty;
+		Rectangle mapRect = Rectangle.Empty;
 		int2 previewOrigin;
 
 		Sprite terrainSprite;
@@ -47,15 +47,19 @@ namespace OpenRA.Mods.RA.Widgets
 		{
 			base.Initialize(args);
 
-			var size = Math.Max(world.Map.Bounds.Width, world.Map.Bounds.Height);
-			previewScale = Math.Min(RenderBounds.Width * 1f / world.Map.Bounds.Width, RenderBounds.Height * 1f / world.Map.Bounds.Height);
-			previewOrigin = new int2(RenderOrigin.X, RenderOrigin.Y + (int)(previewScale * (size - world.Map.Bounds.Height)/2));
-			mapRect = new RectangleF(previewOrigin.X, previewOrigin.Y, (int)(world.Map.Bounds.Width * previewScale), (int)(world.Map.Bounds.Height * previewScale));
+			var width = world.Map.Bounds.Width;
+			var height = world.Map.Bounds.Height;
+			var size = Math.Max(width, height);
+			var rb = RenderBounds;
+
+			previewScale = Math.Min(rb.Width * 1f / width, rb.Height * 1f / height);
+			previewOrigin = RenderOrigin + new int2((int)(previewScale*(size - width)/2), (int)(previewScale*(size - height)/2));
+			mapRect = new Rectangle(previewOrigin.X, previewOrigin.Y, (int)(previewScale*width), (int)(previewScale*height));
 
 			// Only needs to be done once
 			var terrainBitmap = Minimap.TerrainBitmap(world.Map);
-			var r = new Rectangle( 0, 0, world.Map.Bounds.Width, world.Map.Bounds.Height );
-			var s = new Size( terrainBitmap.Width, terrainBitmap.Height );
+			var r = new Rectangle(0, 0, width, height);
+			var s = new Size(terrainBitmap.Width, terrainBitmap.Height);
 			terrainSprite = new Sprite(new Sheet(s), r, TextureChannel.Alpha);
 			terrainSprite.sheet.Texture.SetData(terrainBitmap);
 
@@ -88,10 +92,11 @@ namespace OpenRA.Mods.RA.Widgets
 
 		public override bool HandleMouseInput(MouseInput mi)
 		{
-			if (!hasRadar || animating) return false;
+			if (!hasRadar || animating)
+				return true;
 
 			if (!mapRect.Contains(mi.Location))
-				return false;
+				return true;
 
 			var loc = MinimapPixelToCell(mi.Location);
 			if ((mi.Event == MouseInputEvent.Down || mi.Event == MouseInputEvent.Move) && mi.Button == MouseButton.Left)
@@ -120,14 +125,12 @@ namespace OpenRA.Mods.RA.Widgets
 			return true;
 		}
 
-		public override Rectangle EventBounds
-		{
-			get { return new Rectangle((int)mapRect.X, (int)mapRect.Y, (int)mapRect.Width, (int)mapRect.Height);}
-		}
+		public override Rectangle EventBounds {	get { return mapRect; } }
 
 		public override void Draw()
 		{
-			if (world == null) return;
+			if (world == null)
+				return;
 
 			var o = new float2(mapRect.Location.X, mapRect.Location.Y + world.Map.Bounds.Height * previewScale * (1 - radarMinimapHeight)/2);
 			var s = new float2(mapRect.Size.Width, mapRect.Size.Height*radarMinimapHeight);
@@ -145,7 +148,7 @@ namespace OpenRA.Mods.RA.Widgets
 				var tl = CellToMinimapPixel(wro);
 				var br = CellToMinimapPixel(wro + new CVec(wr.Width, wr.Height));
 
-				Game.Renderer.EnableScissor((int)mapRect.Left, (int)mapRect.Top, (int)mapRect.Width, (int)mapRect.Height);
+				Game.Renderer.EnableScissor(mapRect.Left, mapRect.Top, mapRect.Width, mapRect.Height);
 				Game.Renderer.LineRenderer.DrawRect(tl, br, Color.White);
 				Game.Renderer.DisableScissor();
 			}
