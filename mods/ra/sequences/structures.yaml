@@ -226,6 +226,15 @@ aerotech:
 		Start: 0
 		Length: *
 
+orefact:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	make: orefactmake
+		Start: 0
+		Length: *
+
 hpad:
 	idle:
 		Start: 0
