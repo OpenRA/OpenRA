@@ -170,6 +170,24 @@ OREFACT:
 		Range: 10
 	Bib:
 
+CHSSFACT:
+	Inherits: ^TechBuilding
+	Building:
+		Power: -30
+		Footprint: xxx xxx xxx
+		Dimensions: 3,3
+	Valued:
+		Cost: 2000
+	Health:
+		HP: 600
+	Armor:
+		Type: Wood
+	Tooltip:
+		Name: Chassis Factory
+	RevealsShroud:
+		Range: 10
+	Bib:
+
 HOSP:
 	Inherits: ^TechBuilding
 	Building:

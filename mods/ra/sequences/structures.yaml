@@ -235,6 +235,15 @@ orefact:
 		Start: 0
 		Length: *
 
+chssfact:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	make: chssfactmake
+		Start: 0
+		Length: *
+
 hpad:
 	idle:
 		Start: 0
