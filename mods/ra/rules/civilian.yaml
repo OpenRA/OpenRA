@@ -116,6 +116,34 @@ TANKFACT:
 	PrimaryBuilding:
 	ProductionBar:
 
+MASSFACT:
+	Inherits: ^TechBuilding
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: Industrial Factory
+	Building:
+		Power: -30
+		Footprint: ___ xxx xxx xxx
+		Dimensions: 4,3
+	Health:
+		HP: 1500
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4
+	Bib:
+	-RenderBuilding:
+	RenderBuildingWarFactory:
+	RallyPoint:
+	Exit@1:
+		SpawnOffset: 5,-3
+		ExitCell: 1,2
+	Production:
+		Produces: Vehicle
+	PrimaryBuilding:
+	ProductionBar:
+
 FIXDEPOT:
 	Inherits: ^TechBuilding
 	Building:

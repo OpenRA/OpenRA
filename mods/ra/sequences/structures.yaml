@@ -208,6 +208,27 @@ tankfact:
 	damaged-idle-top: tankfactdoor
 		Start: 0
 
+massfact:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	make: massfactmake
+		Start: 0
+		Length: *
+	build-top: massfactdoor
+		Start: 0
+		Length: 4
+		Tick: 150
+	damaged-build-top: massfactdoor
+		Start: 4
+		Length: 4
+		Tick: 150
+	idle-top: massfactdoor
+		Start: 0
+	damaged-idle-top: massfactdoor
+		Start: 4
+
 fixdepot:
 	idle:
 		Start: 0
