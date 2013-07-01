@@ -81,7 +81,7 @@ Container@OBSERVER_WIDGETS:
 			Visible:true
 Container@PLAYER_WIDGETS:
 	Children:
-		LogicTicker@WIN_LOSS_WATCHER:
+		LogicTicker@SIDEBAR_TICKER:
 		WorldCommand:
 			Width:WINDOW_RIGHT
 			Height:WINDOW_BOTTOM
@@ -146,7 +146,7 @@ Container@PLAYER_WIDGETS:
 					Height:168
 					Background:panel-gray
 					Children:
-						Radar:
+						Radar@RADAR_MINIMAP:
 							X:1
 							Y:1
 							Width:PARENT_RIGHT-2

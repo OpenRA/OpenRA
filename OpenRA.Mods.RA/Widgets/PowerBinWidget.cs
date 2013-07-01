@@ -53,7 +53,7 @@ namespace OpenRA.Mods.RA.Widgets
 			if( world.LocalPlayer == null ) return;
 			if( world.LocalPlayer.WinState != WinState.Undefined ) return;
 
-			var radarBin = Ui.Root.Get<RadarBinWidget>(RadarBin);
+			var radarBin = Ui.Root.Get<SlidingContainerWidget>(RadarBin);
 
 			powerCollection = "power-" + world.LocalPlayer.Country.Race;
 
@@ -62,7 +62,7 @@ namespace OpenRA.Mods.RA.Widgets
 				return;
 
 			// Draw bar horizontally
-			var barStart = powerOrigin + radarBin.RadarOrigin;
+			var barStart = powerOrigin + radarBin.ChildOrigin;
 			var barEnd = barStart + new float2(powerSize.Width, 0);
 
 			float powerScaleBy = 100;

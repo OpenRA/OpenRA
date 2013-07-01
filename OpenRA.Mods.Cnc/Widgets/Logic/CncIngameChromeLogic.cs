@@ -9,6 +9,8 @@
 #endregion
 
 using System.Drawing;
+using System.Linq;
+using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Orders;
 using OpenRA.Mods.RA.Widgets;
@@ -100,9 +102,17 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 			playerWidgets.Get<ButtonWidget>("OPTIONS_BUTTON").OnClick = OptionsClicked;
 
-			var winLossWatcher = playerWidgets.Get<LogicTickerWidget>("WIN_LOSS_WATCHER");
-			winLossWatcher.OnTick = () =>
+			bool radarEnabled = false;
+			sidebarRoot.Get<RadarWidget>("RADAR_MINIMAP").IsEnabled = () => radarEnabled;
+
+			var sidebarTicker = playerWidgets.Get<LogicTickerWidget>("SIDEBAR_TICKER");
+			sidebarTicker.OnTick = () =>
 			{
+				// Update radar bin
+				radarEnabled = world.ActorsWithTrait<ProvidesRadar>()
+					.Any(a => a.Actor.Owner == world.LocalPlayer && a.Trait.IsActive);
+
+				// Switch to observer mode after win/loss
 				if (world.LocalPlayer.WinState != WinState.Undefined)
 					Game.RunAfterTick(() =>
 					{

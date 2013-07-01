@@ -54,7 +54,7 @@ Container@INGAME_ROOT:
 
 Container@PLAYER_WIDGETS:
 	Children:
-		LogicTicker@WIN_LOSS_WATCHER:
+		LogicTicker@SIDEBAR_TICKER:
 		Button@INGAME_DIPLOMACY_BUTTON:
 			X:162
 			Y:0
@@ -81,8 +81,20 @@ Container@PLAYER_WIDGETS:
 			Visible:false
 			Font:Bold
 			Key: f3
-		RadarBin@INGAME_RADAR_BIN:
-			WorldInteractionController:INTERACTION_CONTROLLER
+		SlidingContainer@INGAME_RADAR_BIN:
+			X:WINDOW_RIGHT-215
+			Y:0
+			OpenOffset:0,29
+			ClosedOffset:0,-166
+			AnimationLength:15
+			Children:
+				Image@RADAR_BIN_BG:
+					ImageName:radar
+				Radar@RADAR_MINIMAP:
+					WorldInteractionController:INTERACTION_CONTROLLER
+					X:9
+					Width:192
+					Height:192
 		PowerBin@INGAME_POWER_BIN:
 		MoneyBin@INGAME_MONEY_BIN:
 			X:WINDOW_RIGHT - WIDTH
