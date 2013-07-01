@@ -33,6 +33,7 @@
 	Guard:
 	Guardable:
 	BodyOrientation:
+	UpdatesPlayerStatistics:
 
 ^Tank:
 	AppearsOnRadar:
@@ -69,6 +70,7 @@
 	Guard:
 	Guardable:
 	BodyOrientation:
+	UpdatesPlayerStatistics:
 
 ^Husk:
 	Health:
@@ -161,6 +163,7 @@
 	Guard:
 	Guardable:
 	BodyOrientation:
+	UpdatesPlayerStatistics:
 
 ^Plane:
 	AppearsOnRadar:
@@ -181,6 +184,7 @@
 	GivesBounty:
 	DebugMuzzlePositions:
 	BodyOrientation:
+	UpdatesPlayerStatistics:
 
 ^Helicopter:
 	Inherits: ^Plane
@@ -229,3 +233,4 @@
 	Guardable:
 		Range: 3
 	BodyOrientation:
+	UpdatesPlayerStatistics:
