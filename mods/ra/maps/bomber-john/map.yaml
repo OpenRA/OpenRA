@@ -35,48 +35,56 @@ Players:
 		LockRace: True
 		Race: soviet
 		Enemies: Multi1,Multi2,Multi3,Multi4,Multi5,Multi6,Multi17
+		AllowBots: False
 	PlayerReference@Multi1:
 		Name: Multi1
 		Playable: True
 		LockRace: True
 		Race: soviet
 		Enemies: Multi0,Multi2,Multi3,Multi4,Multi5,Multi6,Multi17
+		AllowBots: False
 	PlayerReference@Multi2:
 		Name: Multi2
 		Playable: True
 		LockRace: True
 		Race: soviet
 		Enemies: Multi0,Multi1,Multi3,Multi4,Multi5,Multi6,Multi17
+		AllowBots: False
 	PlayerReference@Multi3:
 		Name: Multi3
 		Playable: True
 		LockRace: True
 		Race: soviet
 		Enemies: Multi0,Multi1,Multi2,Multi4,Multi5,Multi6,Multi17
+		AllowBots: False
 	PlayerReference@Multi4:
 		Name: Multi4
 		Playable: True
 		LockRace: True
 		Race: soviet
 		Enemies: Multi0,Multi1,Multi2,Multi3,Multi5,Multi6,Multi17
+		AllowBots: False
 	PlayerReference@Multi5:
 		Name: Multi5
 		Playable: True
 		LockRace: True
 		Race: soviet
 		Enemies: Multi0,Multi2,Multi3,Multi4,Multi1,Multi6,Multi17
+		AllowBots: False
 	PlayerReference@Multi6:
 		Name: Multi6
 		Playable: True
 		LockRace: True
 		Race: soviet
 		Enemies: Multi0,Multi2,Multi3,Multi4,Multi5,Multi1,Multi17
+		AllowBots: False
 	PlayerReference@Multi7:
 		Name: Multi7
 		Playable: True
 		LockRace: True
 		Race: soviet
 		Enemies: Multi0,Multi2,Multi3,Multi4,Multi5,Multi6,Multi11
+		AllowBots: False
 
 Actors:
 	Actor69: ftur
