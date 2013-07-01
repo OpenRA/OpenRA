@@ -134,6 +134,24 @@ FIXDEPOT:
 		Range: 10
 	Bib:
 
+AEROTECH:
+	Inherits: ^TechBuilding
+	Building:
+		Power: -30
+		Footprint: xxx xxx xxx
+		Dimensions: 3,3
+	Valued:
+		Cost: 2000
+	Health:
+		HP: 400
+	Armor:
+		Type: Wood
+	Tooltip:
+		Name: Center of Aerospace
+	RevealsShroud:
+		Range: 10
+	Bib:
+
 HOSP:
 	Inherits: ^TechBuilding
 	Building:

@@ -217,6 +217,15 @@ fixdepot:
 		Start: 0
 		Length: *
 
+aerotech:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	make: aerotechmake
+		Start: 0
+		Length: *
+
 hpad:
 	idle:
 		Start: 0
