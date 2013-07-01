@@ -116,6 +116,24 @@ TANKFACT:
 	PrimaryBuilding:
 	ProductionBar:
 
+FIXDEPOT:
+	Inherits: ^TechBuilding
+	Building:
+		Power: -30
+		Footprint: xxx xxx xxx
+		Dimensions: 3,3
+	Valued:
+		Cost: 1200
+	Health:
+		HP: 800
+	Armor:
+		Type: Wood
+	Tooltip:
+		Name: Repair Depot
+	RevealsShroud:
+		Range: 10
+	Bib:
+
 HOSP:
 	Inherits: ^TechBuilding
 	Building:

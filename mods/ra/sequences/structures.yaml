@@ -208,6 +208,15 @@ tankfact:
 	damaged-idle-top: tankfactdoor
 		Start: 0
 
+fixdepot:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	make: fixdepotmake
+		Start: 0
+		Length: *
+
 hpad:
 	idle:
 		Start: 0
