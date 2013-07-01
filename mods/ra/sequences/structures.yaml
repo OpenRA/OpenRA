@@ -7,6 +7,15 @@ fcom:
 		Start: 0
 		Length: *
 
+acom:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	make: # TODO: missing
+		Start: 0
+		Length: *
+
 hosp:
 	idle:
 		Start: 0

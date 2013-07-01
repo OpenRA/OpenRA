@@ -65,7 +65,25 @@ FCOM:
 	Armor:
 		Type: Wood
 	Tooltip:
-		Name: Forward Command
+		Name: Soviet Forward Command
+	RevealsShroud:
+		Range: 10
+	Bib:
+
+ACOM:
+	Inherits: ^TechBuilding
+	Building:
+		Power: -200
+		Footprint: xx xx
+		Dimensions: 2,2
+	Valued:
+		Cost: 2000
+	Health:
+		HP: 400
+	Armor:
+		Type: Wood
+	Tooltip:
+		Name: Allied Command Center
 	RevealsShroud:
 		Range: 10
 	Bib:
