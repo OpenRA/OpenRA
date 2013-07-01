@@ -75,10 +75,11 @@ end
 
 local function getInput(line)
   local nextMarker = line
+  local count = out:GetLineCount()
 
-  repeat
+  repeat -- check until we find at least some marker
     nextMarker = nextMarker+1
-  until out:MarkerGet(nextMarker) > 0 -- check until we find at least some marker
+  until out:MarkerGet(nextMarker) > 0 or nextMarker > count-1
   return chomp(out:GetTextRange(out:PositionFromLine(line),
                                 out:PositionFromLine(nextMarker)))
 end
@@ -97,7 +98,6 @@ local function getNextHistoryLine(forward, promptText)
   else
     currentHistory = out:MarkerPrevious(currentHistory-1, PROMPT_MARKER_VALUE)
     if currentHistory == -1 then
-      currentHistory = -1
       return ""
     end
   end
@@ -108,6 +108,26 @@ local function getNextHistoryLine(forward, promptText)
     return getNextHistoryLine(forward, promptText)
   end
   return getInput(currentHistory)
+end
+
+local function getNextHistoryMatch(promptText)
+  local count = out:GetLineCount()
+  if currentHistory == nil then currentHistory = count end
+
+  local current = currentHistory
+  while true do
+    currentHistory = out:MarkerPrevious(currentHistory-1, PROMPT_MARKER_VALUE)
+    if currentHistory == -1 then -- restart search from the last item
+      currentHistory = count
+    elseif currentHistory ~= getPromptLine() then -- skip current prompt
+      local input = getInput(currentHistory)
+      if input:find(promptText, 1, true) == 1 then return input end
+    end
+    -- couldn't find anything and made a loop; get out
+    if currentHistory == current then return end
+  end
+
+  assert(false, "getNextHistoryMatch coudn't find a proper match")
 end
 
 local function shellPrint(marker, ...)
@@ -379,6 +399,25 @@ out:Connect(wx.wxEVT_KEY_DOWN,
         if not caretOnPromptLine() then break end
         local promptText = getPromptText()
         setPromptText(getNextHistoryLine(true, promptText))
+        return
+      elseif key == wx.WXK_TAB then
+        -- if we are above the prompt line, then don't move
+        local promptline = getPromptLine()
+        if out:GetCurrentLine() < promptline then return end
+
+        local promptText = getPromptText()
+        -- save the position in the prompt text to restore
+        local pos = out:GetCurrentPos()
+        local text = promptText:sub(1, positionInLine(promptline))
+        if #text == 0 then return end
+
+        -- find the next match and set the prompt text
+        local match = getNextHistoryMatch(text)
+        if match then
+          setPromptText(match)
+          -- restore the position to make it easier to find the next match
+          out:GotoPos(pos)
+        end
         return
       elseif key == wx.WXK_LEFT or key == wx.WXK_NUMPAD_LEFT then
         if not caretOnPromptLine(true) then return end
