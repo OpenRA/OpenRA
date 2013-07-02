@@ -272,7 +272,7 @@ TSLA:
 		Owner: soviet
 		Hotkey: u
 	Valued:
-		Cost: 1500
+		Cost: 1200
 	Tooltip:
 		Name: Tesla Coil
 		Description: Advanced base defense. Requires power\nto operate.\n  Strong vs Tanks, Infantry\n  Weak vs Aircraft
