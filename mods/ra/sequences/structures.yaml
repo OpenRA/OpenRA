@@ -316,9 +316,11 @@ tsla:
 	active:
 		Start: 1
 		Length: 9
+		Tick: 100
 	damaged-active:
 		Start: 11
 		Length: 9
+		Tick: 100
 
 pbox:
 	idle:

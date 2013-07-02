@@ -74,7 +74,7 @@ namespace OpenRA.Mods.RA
 					return this;
 
 				self.Trait<RenderBuildingCharge>().PlayCharge(self);
-				return Util.SequenceActivities( new Wait( 8 ), new TeslaZap( target ), this );
+				return Util.SequenceActivities( new Wait( 22 ), new TeslaZap( target ), this );
 			}
 		}
 
