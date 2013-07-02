@@ -419,6 +419,9 @@ out:Connect(wx.wxEVT_KEY_DOWN,
           out:GotoPos(pos)
         end
         return
+      elseif key == wx.WXK_ESCAPE then
+        setPromptText("")
+        return
       elseif key == wx.WXK_LEFT or key == wx.WXK_NUMPAD_LEFT then
         if not caretOnPromptLine(true) then return end
       elseif key == wx.WXK_BACK then
