@@ -360,7 +360,7 @@ loadSpecs()
 loadTools()
 
 do
-  local home = os.getenv("HOME")
+  local home = os.getenv("HOME") or (iswindows and (os.getenv('HOMEDRIVE')..os.getenv('HOMEPATH')))
   ide.configs = {
     system = MergeFullPath("cfg", "user.lua"),
     user = home and MergeFullPath(home, ".zbstudio/user.lua"),
