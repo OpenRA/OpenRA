@@ -274,37 +274,13 @@ install-core: default
 	@-echo "Installing OpenRA to $(DATA_INSTALL_DIR)"
 	@$(INSTALL_DIR) $(DATA_INSTALL_DIR)
 	@$(INSTALL_PROGRAM) $(foreach prog,$(CORE),$($(prog)_TARGET)) $(DATA_INSTALL_DIR)
-	@$(INSTALL_DIR) $(DATA_INSTALL_DIR)/mods/cnc
+	@$(INSTALL_DIR) $(DATA_INSTALL_DIR)/mods
+	@$(CP_R) mods/cnc $(DATA_INSTALL_DIR)/mods/
 	@$(INSTALL_PROGRAM) $(mod_cnc_TARGET) $(DATA_INSTALL_DIR)/mods/cnc
-	@$(INSTALL_DIR) $(DATA_INSTALL_DIR)/mods/ra
+	@$(CP_R) mods/ra $(DATA_INSTALL_DIR)/mods/
 	@$(INSTALL_PROGRAM) $(mod_ra_TARGET) $(DATA_INSTALL_DIR)/mods/ra
-	@$(INSTALL_DIR) $(DATA_INSTALL_DIR)/mods/d2k
+	@$(CP_R) mods/d2k $(DATA_INSTALL_DIR)/mods/
 	@$(INSTALL_PROGRAM) $(mod_d2k_TARGET) $(DATA_INSTALL_DIR)/mods/d2k
-
-	@-$(CP) $(foreach f,$(shell ls mods/cnc --hide=*.dll),mods/cnc/$(f)) $(DATA_INSTALL_DIR)/mods/cnc
-	@$(CP_R) mods/cnc/maps $(DATA_INSTALL_DIR)/mods/cnc
-	@$(CP_R) mods/cnc/chrome $(DATA_INSTALL_DIR)/mods/cnc
-	@$(CP_R) mods/cnc/bits $(DATA_INSTALL_DIR)/mods/cnc
-	@$(CP_R) mods/cnc/rules $(DATA_INSTALL_DIR)/mods/cnc
-	@$(CP_R) mods/cnc/sequences $(DATA_INSTALL_DIR)/mods/cnc
-	@$(CP_R) mods/cnc/tilesets $(DATA_INSTALL_DIR)/mods/cnc
-	@$(CP_R) mods/cnc/uibits $(DATA_INSTALL_DIR)/mods/cnc
-
-	@-$(CP) $(foreach f,$(shell ls mods/ra --hide=*.dll),mods/ra/$(f)) $(DATA_INSTALL_DIR)/mods/ra
-	@$(CP_R) mods/ra/maps $(DATA_INSTALL_DIR)/mods/ra
-	@$(CP_R) mods/ra/bits $(DATA_INSTALL_DIR)/mods/ra
-	@$(CP_R) mods/ra/chrome $(DATA_INSTALL_DIR)/mods/ra
-	@$(CP_R) mods/ra/rules $(DATA_INSTALL_DIR)/mods/ra
-	@$(CP_R) mods/ra/tilesets $(DATA_INSTALL_DIR)/mods/ra
-	@$(CP_R) mods/ra/uibits $(DATA_INSTALL_DIR)/mods/ra
-
-	@-$(CP) $(foreach f,$(shell ls mods/d2k --hide=*.dll),mods/d2k/$(f)) $(DATA_INSTALL_DIR)/mods/d2k
-	@$(CP_R) mods/d2k/maps $(DATA_INSTALL_DIR)/mods/d2k
-	@$(CP_R) mods/d2k/bits $(DATA_INSTALL_DIR)/mods/d2k
-	@$(CP_R) mods/d2k/chrome $(DATA_INSTALL_DIR)/mods/d2k
-	@$(CP_R) mods/d2k/rules $(DATA_INSTALL_DIR)/mods/d2k
-	@$(CP_R) mods/d2k/tilesets $(DATA_INSTALL_DIR)/mods/d2k
-	@$(CP_R) mods/d2k/uibits $(DATA_INSTALL_DIR)/mods/d2k
 
 	@$(CP_R) glsl $(DATA_INSTALL_DIR)
 	@$(CP_R) cg $(DATA_INSTALL_DIR)
