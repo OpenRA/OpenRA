@@ -51,6 +51,7 @@ Container@INGAME_ROOT:
 					Y:205
 					Width:170
 					Height:40
+		TooltipContainer@TOOLTIP_CONTAINER:
 
 Container@PLAYER_WIDGETS:
 	Children:
@@ -95,7 +96,15 @@ Container@PLAYER_WIDGETS:
 					X:9
 					Width:192
 					Height:192
-		PowerBin@INGAME_POWER_BIN:
+				ResourceBar@POWERBAR:
+					X:42
+					Y:205
+					Width:138
+					Height:5
+					TooltipContainer:TOOLTIP_CONTAINER
+					IndicatorImage:power-indicator
+					Orientation:Horizontal
+					Style:Bevelled
 		MoneyBin@INGAME_MONEY_BIN:
 			X:WINDOW_RIGHT - WIDTH
 			Y:0

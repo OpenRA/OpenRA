@@ -11,6 +11,7 @@
 using System.Drawing;
 using System.Linq;
 using OpenRA.Network;
+using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
@@ -118,6 +119,21 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			radarMap.AfterClose = () => binState = RadarBinState.BinAnimating;
 
 			radarBin.Get<ImageWidget>("RADAR_BIN_BG").GetImageCollection = () => "chrome-"+world.LocalPlayer.Country.Race;
+
+			var powerManager = world.LocalPlayer.PlayerActor.Trait<PowerManager>();
+			var powerBar = radarBin.Get<ResourceBarWidget>("POWERBAR");
+			powerBar.IndicatorCollection = "power-"+world.LocalPlayer.Country.Race;
+			powerBar.GetProvided = () => powerManager.PowerProvided;
+			powerBar.GetUsed = () => powerManager.PowerDrained;
+			powerBar.TooltipFormat = "Power Usage: {0}/{1}";
+			powerBar.GetBarColor = () =>
+			{
+				if (powerManager.PowerState == PowerState.Critical)
+					return Color.Red;
+				if (powerManager.PowerState == PowerState.Low)
+					return Color.Orange;
+				return Color.LimeGreen;
+			};
 
 			var sidebarTicker = playerWidgets.Get<LogicTickerWidget>("SIDEBAR_TICKER");
 			sidebarTicker.OnTick = () =>

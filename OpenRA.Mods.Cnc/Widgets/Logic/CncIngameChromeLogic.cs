@@ -125,11 +125,12 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			siloBar.GetProvided = () => playerResources.OreCapacity;
 			siloBar.GetUsed = () => playerResources.Ore;
 			siloBar.TooltipFormat = "Silo Usage: {0}/{1}";
-			siloBar.RightIndicator = true;
 			siloBar.GetBarColor = () => 
 			{
-				if (playerResources.Ore == playerResources.OreCapacity) return Color.Red;
-				if (playerResources.Ore >= 0.8 * playerResources.OreCapacity) return Color.Orange;
+				if (playerResources.Ore == playerResources.OreCapacity)
+					return Color.Red;
+				if (playerResources.Ore >= 0.8 * playerResources.OreCapacity)
+					return Color.Orange;
 				return Color.LimeGreen;
 			};
 
@@ -137,11 +138,12 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			powerBar.GetProvided = () => powerManager.PowerProvided;
 			powerBar.GetUsed = () => powerManager.PowerDrained;
 			powerBar.TooltipFormat = "Power Usage: {0}/{1}";
-			powerBar.RightIndicator = false;
 			powerBar.GetBarColor = () => 
 			{
-				if (powerManager.PowerState == PowerState.Critical) return Color.Red;
-				if (powerManager.PowerState == PowerState.Low) return Color.Orange;
+				if (powerManager.PowerState == PowerState.Critical)
+					return Color.Red;
+				if (powerManager.PowerState == PowerState.Low)
+					return Color.Orange;
 				return Color.LimeGreen;
 			};
 		}

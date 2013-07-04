@@ -408,7 +408,6 @@
     <Compile Include="Widgets\ObserverProductionIconsWidget.cs" />
     <Compile Include="Widgets\ObserverSupportPowerIconsWidget.cs" />
     <Compile Include="Widgets\OrderButtonWidget.cs" />
-    <Compile Include="Widgets\PowerBinWidget.cs" />
     <Compile Include="Widgets\RadarWidget.cs" />
     <Compile Include="Widgets\StrategicProgressWidget.cs" />
     <Compile Include="Widgets\SupportPowerBinWidget.cs" />
@@ -456,6 +455,8 @@
     <Compile Include="Render\WithResources.cs" />
     <Compile Include="Render\WithHarvestAnimation.cs" />
     <Compile Include="Widgets\SlidingContainerWidget.cs" />
+    <Compile Include="Widgets\ResourceBarWidget.cs" />
+    <Compile Include="Widgets\Logic\SimpleTooltipLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
