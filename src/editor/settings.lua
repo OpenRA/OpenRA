@@ -212,7 +212,7 @@ function SettingsSaveProjectSession(projdirs)
     settings:Write(tostring(i), dir)
 
     local opendocs, params = ProjectConfig(dir)
-    if opendocs and #opendocs > 0 then
+    if opendocs then
       SettingsSaveFileSession(opendocs, params, listname .. "/" .. tostring(i))
     end
   end
