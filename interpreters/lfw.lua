@@ -34,9 +34,21 @@ return {
     end
     local code = ([[xpcall(function() io.stdout:setvbuf('no'); %s end,function(err) print(debug.traceback(err)) end)]]):format(script)
     local cmd = '"'..exe..'" -e "'..code..'"'
+
+    -- add "LUA_DEV\clibs" to PATH to allow required DLLs to load
+    local _, path = wx.wxGetEnv("PATH")
+    local clibs = MergeFullPath(GetPathWithSep(exe), 'clibs')
+    if path and not path:find(clibs, 1, true) then
+      wx.wxSetEnv("PATH", path..';'..clibs)
+    end
+
     -- CommandLineRun(cmd,wdir,tooutput,nohide,stringcallback,uid,endcallback)
-    return CommandLineRun(cmd,self:fworkdir(wfilename),true,false,nil,nil,
+    local pid = CommandLineRun(cmd,self:fworkdir(wfilename),true,false,nil,nil,
       function() ide.debugger.pid = nil end)
+
+    -- restore PATH
+    wx.wxSetEnv("PATH", path)
+    return pid
   end,
   fprojdir = function(self,wfilename)
     return wfilename:GetPath(wx.wxPATH_GET_VOLUME)

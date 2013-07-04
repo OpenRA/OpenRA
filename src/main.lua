@@ -162,7 +162,7 @@ local function setLuaPaths(mainpath, osname)
       :gsub('LUA_DEV', (luadev:gsub('[\\/]$','')))
     or "")
   local luadev_cpath = (luadev
-    and ('LUA_DEV/?.dll;LUA_DEV/clibs/?.dll')
+    and ('LUA_DEV/?.dll;LUA_DEV/?51.dll;LUA_DEV/clibs/?.dll;LUA_DEV/clibs/?51.dll')
       :gsub('LUA_DEV', (luadev:gsub('[\\/]$','')))
     or "")
 
