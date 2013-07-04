@@ -218,6 +218,12 @@ namespace OpenRA.Mods.RA
 			foreach (var c in TileSprites[currentTemplate].Keys)
 				self.World.Map.CustomTerrain[c.X, c.Y] = GetTerrainType(c);
 
+			// If this bridge repair operation connects two pathfinding domains,
+			// update the domain index.
+			var domainIndex = self.World.WorldActor.TraitOrDefault<DomainIndex>();
+			if (domainIndex != null)
+				domainIndex.UpdateCells(self.World, TileSprites[currentTemplate].Keys);
+
 			if (LongBridgeSegmentIsDead() && !killedUnits)
 			{
 				killedUnits = true;
