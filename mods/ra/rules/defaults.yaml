@@ -121,14 +121,17 @@
 		Offset: 0,0,427
 	CrushableInfantry:
 		CrushSound: squishy2.aud
-	RepairableNear:
-		Buildings: hosp
-		CloseEnough: 1
 	UpdatesPlayerStatistics:
 	DebugMuzzlePositions:
 	Guard:
 	Guardable:
 	BodyOrientation:
+	SelfHealing:
+		Step: 5
+		Ticks: 100
+		HealIfBelow: 1
+		DamageCooldown: 125
+		RequiresTech: InfantryHealing
 
 ^Ship:
 	AppearsOnRadar:
