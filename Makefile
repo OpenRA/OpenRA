@@ -282,6 +282,9 @@ install-core: default
 	@$(CP_R) mods/d2k $(DATA_INSTALL_DIR)/mods/
 	@$(INSTALL_PROGRAM) $(mod_d2k_TARGET) $(DATA_INSTALL_DIR)/mods/d2k
 
+	@$(INSTALL_DATA) "global mix database.dat" $(DATA_INSTALL_DIR)/"global mix database.dat"
+	@$(INSTALL_DATA) AUTHORS $(DATA_INSTALL_DIR)/AUTHORS
+
 	@$(CP_R) glsl $(DATA_INSTALL_DIR)
 	@$(CP_R) cg $(DATA_INSTALL_DIR)
 	@$(CP) *.ttf $(DATA_INSTALL_DIR)
