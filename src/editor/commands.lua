@@ -702,11 +702,14 @@ function StoreRestoreProjectTabs(curdir, newdir)
     local projdocs, closdocs = {}, {}
     for _, document in ipairs(GetOpenFiles()) do
       local dpath = win and string.lower(document.filename) or document.filename
-      if dpath:find(lowcurdir, 1, true) then
+      -- check if the filename is in the same folder
+      if dpath:find(lowcurdir, 1, true) == 1
+      and dpath:find("^[\\/]", #lowcurdir+1) then
         table.insert(projdocs, document)
         closing = closing + (document.id < current and 1 or 0)
         -- only close if the file is not in new project as it would be reopened
-        if not dpath:find(lownewdir, 1, true) then
+        if not dpath:find(lownewdir, 1, true)
+        or not dpath:find("^[\\/]", #lownewdir+1) then
           table.insert(closdocs, document)
         end
       elseif document.id == current then restore = true end
