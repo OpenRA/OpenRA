@@ -1019,6 +1019,13 @@ Rules:
 			HuskActor: BADR.Husk
 		-EjectOnDeath:
 		-GpsDot:
+		Contrail@1:
+			Offset: -598,-683,0
+		Contrail@2:
+			Offset: -598,683,0
+		SmokeTrailWhenDamaged:
+			Offset: -853,0,171
+			Interval: 2
 	BADR.Husk:
 		Inherits: ^PlaneHusk
 		Tooltip:
