@@ -174,7 +174,9 @@ namespace OpenRA.Widgets
 					world.Selection.DoControlGroup(world, e.KeyName[0] - '0', e.Modifiers, e.MultiTapCount);
 					return true;
 				}
-				else if (e.KeyName == Game.Settings.Keys.PauseKey)
+
+				// Disable pausing for spectators
+				else if (e.KeyName == Game.Settings.Keys.PauseKey && world.LocalPlayer != null)
 					world.SetPauseState(!world.Paused);
 			}
 			return false;
