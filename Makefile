@@ -272,28 +272,28 @@ install-all: install-core install-tools
 
 install-core: default
 	@-echo "Installing OpenRA to $(DATA_INSTALL_DIR)"
-	@$(INSTALL_DIR) $(DATA_INSTALL_DIR)
-	@$(INSTALL_PROGRAM) $(foreach prog,$(CORE),$($(prog)_TARGET)) $(DATA_INSTALL_DIR)
-	@$(INSTALL_DIR) $(DATA_INSTALL_DIR)/mods
-	@$(CP_R) mods/cnc $(DATA_INSTALL_DIR)/mods/
-	@$(INSTALL_PROGRAM) $(mod_cnc_TARGET) $(DATA_INSTALL_DIR)/mods/cnc
-	@$(CP_R) mods/ra $(DATA_INSTALL_DIR)/mods/
-	@$(INSTALL_PROGRAM) $(mod_ra_TARGET) $(DATA_INSTALL_DIR)/mods/ra
-	@$(CP_R) mods/d2k $(DATA_INSTALL_DIR)/mods/
-	@$(INSTALL_PROGRAM) $(mod_d2k_TARGET) $(DATA_INSTALL_DIR)/mods/d2k
+	@$(INSTALL_DIR) "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) $(foreach prog,$(CORE),$($(prog)_TARGET)) "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_DIR) "$(DATA_INSTALL_DIR)/mods"
+	@$(CP_R) mods/cnc "$(DATA_INSTALL_DIR)/mods/"
+	@$(INSTALL_PROGRAM) $(mod_cnc_TARGET) "$(DATA_INSTALL_DIR)/mods/cnc"
+	@$(CP_R) mods/ra "$(DATA_INSTALL_DIR)/mods/"
+	@$(INSTALL_PROGRAM) $(mod_ra_TARGET) "$(DATA_INSTALL_DIR)/mods/ra"
+	@$(CP_R) mods/d2k "$(DATA_INSTALL_DIR)/mods/"
+	@$(INSTALL_PROGRAM) $(mod_d2k_TARGET) "$(DATA_INSTALL_DIR)/mods/d2k"
 
-	@$(INSTALL_DATA) "global mix database.dat" $(DATA_INSTALL_DIR)/"global mix database.dat"
-	@$(INSTALL_DATA) AUTHORS $(DATA_INSTALL_DIR)/AUTHORS
+	@$(INSTALL_DATA) "global mix database.dat" "$(DATA_INSTALL_DIR)/global mix database.dat"
+	@$(INSTALL_DATA) AUTHORS "$(DATA_INSTALL_DIR)/AUTHORS"
 
-	@$(CP_R) glsl $(DATA_INSTALL_DIR)
-	@$(CP_R) cg $(DATA_INSTALL_DIR)
-	@$(CP) *.ttf $(DATA_INSTALL_DIR)
-	@$(CP) thirdparty/Tao/* $(DATA_INSTALL_DIR)
-	@$(INSTALL_PROGRAM) thirdparty/ICSharpCode.SharpZipLib.dll $(DATA_INSTALL_DIR)
-	@$(INSTALL_PROGRAM) thirdparty/FuzzyLogicLibrary.dll $(DATA_INSTALL_DIR)
-	@$(INSTALL_PROGRAM) thirdparty/SharpFont.dll $(DATA_INSTALL_DIR)
-	@$(CP) thirdparty/SharpFont.dll.config $(DATA_INSTALL_DIR)
-	@$(INSTALL_PROGRAM) thirdparty/Mono.Nat.dll $(DATA_INSTALL_DIR)
+	@$(CP_R) glsl "$(DATA_INSTALL_DIR)"
+	@$(CP_R) cg "$(DATA_INSTALL_DIR)"
+	@$(CP) *.ttf "$(DATA_INSTALL_DIR)"
+	@$(CP) thirdparty/Tao/* "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) thirdparty/ICSharpCode.SharpZipLib.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) thirdparty/FuzzyLogicLibrary.dll "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) thirdparty/SharpFont.dll "$(DATA_INSTALL_DIR)"
+	@$(CP) thirdparty/SharpFont.dll.config "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) thirdparty/Mono.Nat.dll "$(DATA_INSTALL_DIR)"
 
 	@echo "#!/bin/sh" 				>  openra
 	@echo 'BINDIR=$$(dirname $$(readlink -f $$0))'	>> openra
@@ -302,15 +302,15 @@ install-core: default
 	@echo 'cd "$${DATADIR}/openra"' 		>> openra
 	@echo 'exec mono OpenRA.Game.exe "$$@"' 	>> openra
 
-	@$(INSTALL_DIR) $(BIN_INSTALL_DIR)
-	@$(INSTALL_PROGRAM) -m +rx openra $(BIN_INSTALL_DIR)
+	@$(INSTALL_DIR) "$(BIN_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) -m +rx openra "$(BIN_INSTALL_DIR)"
 
 	@-$(RM) openra
 
 install-tools: tools
 	@-echo "Installing OpenRA tools to $(DATA_INSTALL_DIR)"
-	@$(INSTALL_DIR) $(DATA_INSTALL_DIR)
-	@$(INSTALL_PROGRAM) $(foreach prog,$(TOOLS),$($(prog)_TARGET)) $(DATA_INSTALL_DIR)
+	@$(INSTALL_DIR) "$(DATA_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) $(foreach prog,$(TOOLS),$($(prog)_TARGET)) "$(DATA_INSTALL_DIR)"
 
 	@echo "#!/bin/sh" 				>  openra-editor
 	@echo 'BINDIR=$$(dirname $$(readlink -f $$0))'	>> openra-editor
@@ -319,15 +319,15 @@ install-tools: tools
 	@echo 'cd "$${DATADIR}/openra"'			>> openra-editor
 	@echo 'exec mono OpenRA.Editor.exe "$$@"'	>> openra-editor
 
-	@$(INSTALL_DIR) $(BIN_INSTALL_DIR)
-	@$(INSTALL_PROGRAM) -m +rx openra-editor $(BIN_INSTALL_DIR)
+	@$(INSTALL_DIR) "$(BIN_INSTALL_DIR)"
+	@$(INSTALL_PROGRAM) -m +rx openra-editor "$(BIN_INSTALL_DIR)"
 
 	@-$(RM) openra-editor
 
 uninstall:
-	@-$(RM_R) $(DATA_INSTALL_DIR)
-	@-$(RM_F) $(BIN_INSTALL_DIR)/openra
-	@-$(RM_F) $(BIN_INSTALL_DIR)/openra-editor
+	@-$(RM_R) "$(DATA_INSTALL_DIR)"
+	@-$(RM_F) "$(BIN_INSTALL_DIR)/openra"
+	@-$(RM_F) "$(BIN_INSTALL_DIR)/openra-editor"
 
 help:
 	@echo to compile, run:
