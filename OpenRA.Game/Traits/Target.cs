@@ -17,21 +17,13 @@ namespace OpenRA.Traits
 	public struct Target
 	{
 		public static readonly Target[] NoTargets = {};
+		public static readonly Target None = new Target();
 
 		Actor actor;
 		WPos pos;
 		bool valid;
 		int generation;
 
-		public static Target FromActor(Actor a)
-		{
-			return new Target
-			{
-				actor = a,
-				valid = (a != null),
-				generation = a.Generation,
-			};
-		}
 		public static Target FromPos(WPos p) { return new Target { pos = p, valid = true }; }
 		public static Target FromPos(PPos p) { return new Target { pos = p.ToWPos(0), valid = true }; }
 		public static Target FromCell(CPos c) { return new Target { pos = c.CenterPosition, valid = true }; }
@@ -42,11 +34,23 @@ namespace OpenRA.Traits
 				: Target.FromCell(o.TargetLocation);
 		}
 
-		public static readonly Target None = new Target();
+		public static Target FromActor(Actor a)
+		{
+			return new Target
+			{
+				actor = a,
+				valid = (a != null),
+				generation = a.Generation,
+			};
+		}
 
 		public bool IsValid { get { return valid && (actor == null || (actor.IsInWorld && !actor.IsDead() && actor.Generation == generation)); } }
 		public PPos PxPosition { get { return IsActor ? actor.Trait<IHasLocation>().PxPosition : PPos.FromWPos(pos); } }
 		public PPos CenterLocation { get { return PxPosition; } }
+		public Actor Actor { get { return IsActor ? actor : null; } }
+
+		// TODO: This should return true even if the actor is destroyed
+		public bool IsActor { get { return actor != null && !actor.Destroyed; } }
 
 		// Representative position - see Positions for the full set of targetable positions.
 		public WPos CenterPosition
@@ -90,7 +94,5 @@ namespace OpenRA.Traits
 				(t.Y - origin.Y)*(t.Y - origin.Y) <= range.Range*range.Range);
 		}
 
-		public Actor Actor { get { return IsActor ? actor : null; } }
-		public bool IsActor { get { return actor != null && !actor.Destroyed; } }
 	}
 }
