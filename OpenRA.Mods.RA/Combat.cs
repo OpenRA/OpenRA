@@ -207,29 +207,5 @@ namespace OpenRA.Mods.RA
 			if (weapon.ValidTargets.Contains("Water") && world.GetTerrainType(location) == "Water") return true;
 			return false;
 		}
-
-		public static bool IsInRange(PPos attackOrigin, float range, Actor target)
-		{
-			var rsq = range * range * Game.CellSize * Game.CellSize;
-			foreach (var cell in target.Trait<ITargetable>().TargetableCells(target))
-				if ((attackOrigin - Util.CenterOfCell(cell)).LengthSquared <= rsq)
-					return true;
-			return false;
-		}
-
-		public static bool IsInRange(PPos attackOrigin, float range, PPos targetLocation)
-		{
-			var rsq = range * range * Game.CellSize * Game.CellSize;
-			return (attackOrigin - targetLocation).LengthSquared <= rsq;
-		}
-
-		public static bool IsInRange(PPos attackOrigin, float range, Target target)
-		{
-			if (!target.IsValid) return false;
-			if (target.IsActor)
-				return IsInRange(attackOrigin, range, target.Actor);
-			else
-				return IsInRange(attackOrigin, range, target.CenterLocation);
-		}
 	}
 }
