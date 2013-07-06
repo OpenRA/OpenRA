@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA.Move
 
 		public override IEnumerable<Target> GetTargets( Actor self )
 		{
-			yield return Target.FromPos(PPos.FromWPos(end));
+			yield return Target.FromPos(end);
 		}
 
 		// Cannot be cancelled

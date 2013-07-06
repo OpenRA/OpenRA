@@ -125,7 +125,7 @@ namespace OpenRA.Mods.RA.Missions
 
 				if (world.FrameNumber == frameInfiltrated + 1500 * 12 && !bridgeTank.IsDead() && bridgeTank.IsInWorld && !bridge.IsDead())
 				{
-					bridgeTank.QueueActivity(new Attack(Target.FromPos(bridge.CenterLocation), WRange.FromCells(4)));
+					bridgeTank.QueueActivity(new Attack(Target.FromPos(bridge.CenterPosition), WRange.FromCells(4)));
 					attackingBridge = true;
 				}
 				if (attackingBridge && bridge.IsDead())

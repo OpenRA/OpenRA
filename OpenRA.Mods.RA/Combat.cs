@@ -150,7 +150,7 @@ namespace OpenRA.Mods.RA
 				srcAltitude = altitude,
 				destAltitude = altitude,
 				firedBy = attacker,
-				target = Target.FromPos(pxPos),
+				target = Target.FromPos(pos),
 				weapon = Rules.Weapons[weapontype.ToLowerInvariant()],
 				facing = 0
 			};

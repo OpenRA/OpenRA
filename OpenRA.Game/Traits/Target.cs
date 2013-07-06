@@ -19,7 +19,7 @@ namespace OpenRA.Traits
 		public static readonly Target[] NoTargets = {};
 
 		Actor actor;
-		PPos pos;
+		WPos pos;
 		bool valid;
 		int generation;
 
@@ -32,8 +32,9 @@ namespace OpenRA.Traits
 				generation = a.Generation,
 			};
 		}
-		public static Target FromPos(PPos p) { return new Target { pos = p, valid = true }; }
-		public static Target FromCell(CPos c) { return new Target { pos = Util.CenterOfCell(c), valid = true }; }
+		public static Target FromPos(WPos p) { return new Target { pos = p, valid = true }; }
+		public static Target FromPos(PPos p) { return new Target { pos = p.ToWPos(0), valid = true }; }
+		public static Target FromCell(CPos c) { return new Target { pos = c.CenterPosition, valid = true }; }
 		public static Target FromOrder(Order o)
 		{
 			return o.TargetActor != null
@@ -44,7 +45,7 @@ namespace OpenRA.Traits
 		public static readonly Target None = new Target();
 
 		public bool IsValid { get { return valid && (actor == null || (actor.IsInWorld && !actor.IsDead() && actor.Generation == generation)); } }
-		public PPos PxPosition { get { return IsActor ? actor.Trait<IHasLocation>().PxPosition : pos; } }
+		public PPos PxPosition { get { return IsActor ? actor.Trait<IHasLocation>().PxPosition : PPos.FromWPos(pos); } }
 		public PPos CenterLocation { get { return PxPosition; } }
 
 		// Representative position - see Positions for the full set of targetable positions.
@@ -55,7 +56,7 @@ namespace OpenRA.Traits
 				if (!IsValid)
 					throw new InvalidOperationException("Attempting to query the position of an invalid Target");
 
-				return actor != null ? actor.CenterPosition : pos.ToWPos(0);
+				return actor != null ? actor.CenterPosition : pos;
 			}
 		}
 
@@ -69,7 +70,7 @@ namespace OpenRA.Traits
 					return NoPositions;
 
 				if (actor == null)
-					return new []{pos.ToWPos(0)};
+					return new []{pos};
 
 				var targetable = actor.TraitOrDefault<ITargetable>();
 				if (targetable == null)
