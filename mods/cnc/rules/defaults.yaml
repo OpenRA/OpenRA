@@ -146,13 +146,16 @@
 		Probability: 2
 	CrushableInfantry:
 		WarnProbability: 60
-	RepairableNear:
-		Buildings: hosp
-		CloseEnough: 1
 	DebugMuzzlePositions:
 	Guard:
 	Guardable:
 	BodyOrientation:
+	SelfHealing:
+		Step: 5
+		Ticks: 100
+		HealIfBelow: 1
+		DamageCooldown: 125
+		RequiresTech: InfantryHealing
 
 ^CivInfantry:
 	Inherits: ^Infantry
