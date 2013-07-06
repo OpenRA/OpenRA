@@ -35,7 +35,7 @@ namespace OpenRA.Mods.RA.Air
 
 			var aircraft = self.Trait<Aircraft>();
 
-			var desiredFacing = Util.GetFacing(d.ToInt2(), aircraft.Facing);
+			var desiredFacing = Util.GetFacing(d, aircraft.Facing);
 			if (aircraft.Altitude == cruiseAltitude)
 				aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, aircraft.ROT);
 

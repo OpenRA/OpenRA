@@ -27,8 +27,8 @@ namespace OpenRA.Mods.RA.Air
 
 			if (IsCanceled) return NextActivity;
 
-			var d = Target.CenterLocation - self.CenterLocation;
-			if (d.LengthSquared < 50)		/* close enough */
+			var d = Target.CenterPosition - self.CenterPosition;
+			if (d.LengthSquared < 256*256) // close enough (1/4 cell)
 				return NextActivity;
 
 			var aircraft = self.Trait<Aircraft>();

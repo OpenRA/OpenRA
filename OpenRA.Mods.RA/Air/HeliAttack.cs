@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA.Air
 			}
 
 			var attack = self.Trait<AttackHeli>();
-			var dist = target.CenterLocation - self.CenterLocation;
+			var dist = target.CenterPosition - self.CenterPosition;
 
 			var desiredFacing = Util.GetFacing(dist, aircraft.Facing);
 			aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, aircraft.ROT);

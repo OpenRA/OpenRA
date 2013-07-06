@@ -45,7 +45,7 @@ namespace OpenRA.Traits
 			return GetFacing(d.ToInt2(), currentFacing);
 		}
 
-		public static int GetFacing( int2 d, int currentFacing )
+		public static int GetFacing(int2 d, int currentFacing)
 		{
 			if (d == int2.Zero)
 				return currentFacing;

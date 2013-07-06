@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA
 			{
 				new LocationInit( enterCell ),
 				new OwnerInit( self.Owner ),
-				new FacingInit( Util.GetFacing((order.TargetLocation - enterCell).ToInt2(), 0) ),
+				new FacingInit( Util.GetFacing(order.TargetLocation - enterCell, 0) ),
 				new AltitudeInit( Rules.Info["u2"].Traits.Get<PlaneInfo>().CruiseAltitude ),
 			});
 

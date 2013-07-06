@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA
 				return false;
 
 			var facing = self.Trait<IFacing>().Facing;
-			var facingToTarget = Util.GetFacing(target.CenterLocation - self.CenterLocation, facing);
+			var facingToTarget = Util.GetFacing(target.CenterPosition - self.CenterPosition, facing);
 
 			if (Math.Abs(facingToTarget - facing) % 256 > info.FacingTolerance)
 				return false;

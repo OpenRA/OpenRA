@@ -73,7 +73,7 @@ namespace OpenRA.Mods.RA.Activities
 				return (AllowMovement) ? Util.SequenceActivities(self.Trait<Mobile>().MoveWithinRange(Target, Range.Range / 1024), this) : NextActivity;
 			}
 
-			var desiredFacing = Util.GetFacing(Target.CenterLocation - self.CenterLocation, 0);
+			var desiredFacing = Util.GetFacing(Target.CenterPosition - self.CenterPosition, 0);
 			var facing = self.Trait<IFacing>();
 			if (facing.Facing != desiredFacing)
 				return Util.SequenceActivities(new Turn(desiredFacing), this);
