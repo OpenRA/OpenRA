@@ -58,11 +58,18 @@ namespace OpenRA.Mods.RA.Move
 			this.ignoreBuilding = ignoreBuilding;
 		}
 
+		static readonly List<CPos> NoPath = new List<CPos>();
 		public Move(Target target, int range)
 		{
-			this.getPath = (self,mobile) => self.World.WorldActor.Trait<PathFinder>().FindUnitPathToRange(
-				mobile.toCell, target.CenterPosition.ToCPos(),
-				range, self);
+			this.getPath = (self, mobile) =>
+			{
+				if (!target.IsValid)
+					return NoPath;
+
+				return self.World.WorldActor.Trait<PathFinder>().FindUnitPathToRange(
+					mobile.toCell, target.CenterPosition.ToCPos(), range, self);
+			};
+
 			this.destination = null;
 			this.nearEnough = range;
 		}
