@@ -255,10 +255,11 @@ namespace OpenRA.Server
 
 				if (client.Slot != null)
 					SyncClientToPlayerReference(client, Map.Players[client.Slot]);
-
-				var mods = handshake.Mods;
+				else
+					client.Color = HSLColor.FromRGB(255, 255, 255);
 
 				// Check that the client has compatible mods
+				var mods = handshake.Mods;
 				var validMod = mods.All(m => m.Contains('@')) && //valid format
 					mods.Count() == Game.CurrentMods.Count() && //same number
 					mods.Select(m => Pair.New(m.Split('@')[0], m.Split('@')[1])).All(kv => Game.CurrentMods.ContainsKey(kv.First));
