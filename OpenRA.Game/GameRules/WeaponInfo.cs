@@ -137,5 +137,37 @@ namespace OpenRA.GameRules
 
 			return ret;
 		}
+
+		public bool IsValidAgainst(Actor a)
+		{
+			var targetable = a.TraitOrDefault<ITargetable>();
+			if (targetable == null || !ValidTargets.Intersect(targetable.TargetTypes).Any())
+				return false;
+
+			if (Warheads.All(w => w.EffectivenessAgainst(a) <= 0))
+				return false;
+
+			return true;
+		}
+
+		public bool IsValidAgainst(Target target, World world)
+		{
+			if (!target.IsValid)
+				return false;
+
+			if (target.IsActor)
+				return IsValidAgainst(target.Actor);
+			else
+			{
+				var cell = target.CenterPosition.ToCPos();
+				if (ValidTargets.Contains("Ground") && world.GetTerrainType(cell) != "Water")
+					return true;
+
+				if (ValidTargets.Contains("Water") && world.GetTerrainType(cell) == "Water")
+					return true;
+
+				return false;
+			}
+		}
 	}
 }

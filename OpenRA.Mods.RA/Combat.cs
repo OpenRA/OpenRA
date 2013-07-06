@@ -178,7 +178,8 @@ namespace OpenRA.Mods.RA
 		static float GetDamageToInflict(Actor target, ProjectileArgs args, WarheadInfo warhead, float modifier)
 		{
 			// don't hit air units with splash from ground explosions, etc
-			if (!WeaponValidForTarget(args.weapon, target)) return 0f;
+			if (!args.weapon.IsValidAgainst(target))
+				return 0f;
 
 			var health = target.Info.Traits.GetOrDefault<HealthInfo>();
 			if( health == null ) return 0f;
@@ -189,25 +190,6 @@ namespace OpenRA.Mods.RA
 			var multiplier = (float)warhead.EffectivenessAgainst(target);
 
 			return (float)(rawDamage * multiplier);
-		}
-
-		public static bool WeaponValidForTarget(WeaponInfo weapon, Actor target)
-		{
-			var targetable = target.TraitOrDefault<ITargetable>();
-			if (targetable == null || !weapon.ValidTargets.Intersect(targetable.TargetTypes).Any())
-				return false;
-
-			if (weapon.Warheads.All( w => w.EffectivenessAgainst(target) <= 0))
-				return false;
-
-			return true;
-		}
-
-		public static bool WeaponValidForTarget(WeaponInfo weapon, World world, CPos location)
-		{
-			if (weapon.ValidTargets.Contains("Ground") && world.GetTerrainType(location) != "Water") return true;
-			if (weapon.ValidTargets.Contains("Water") && world.GetTerrainType(location) == "Water") return true;
-			return false;
 		}
 	}
 }

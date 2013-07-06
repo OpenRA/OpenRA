@@ -116,7 +116,7 @@ namespace OpenRA.Mods.RA
 			if (target.IsInRange(self.CenterPosition, minRange))
 				return;
 
-			if (!IsValidAgainst(self.World, target))
+			if (!Weapon.IsValidAgainst(target, self.World))
 				return;
 
 			var barrel = Barrels[Burst % Barrels.Length];
@@ -170,14 +170,6 @@ namespace OpenRA.Mods.RA
 				FireDelay = Weapon.ROF;
 				Burst = Weapon.Burst;
 			}
-		}
-
-		public bool IsValidAgainst(World world, Target target)
-		{
-			if (target.IsActor)
-				return Combat.WeaponValidForTarget(Weapon, target.Actor);
-			else
-				return Combat.WeaponValidForTarget(Weapon, world, target.CenterPosition.ToCPos());
 		}
 
 		public bool IsReloading { get { return FireDelay > 0; } }
