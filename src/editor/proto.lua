@@ -10,7 +10,7 @@ ide.proto.Document = {__index = {
 ide.proto.Plugin = {__index = {
   GetName = function(self) return self.name end,
   GetFileName = function(self) return self.fname end,
-  GetConfig = function(self) return ide.config[self.fname] end,
+  GetConfig = function(self) return ide.config[self.fname] or {} end,
 }}
 
 ide.proto.Interpreter = {__index = {
