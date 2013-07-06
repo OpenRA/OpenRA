@@ -47,9 +47,11 @@ namespace OpenRA.Mods.RA
 			if (self.Owner != self.World.LocalPlayer)
 				return;
 
+			// Hack: Convert world coords to cells
+			var pxRange = self.Trait<AttackBase>().GetMaximumRange().Range / 1024f;
 			wr.DrawRangeCircleWithContrast(
 				Color.FromArgb(128, Color.Yellow),
-				self.CenterLocation.ToFloat2(), self.Trait<AttackBase>().GetMaximumRange(),
+				self.CenterLocation.ToFloat2(), pxRange,
 				Color.FromArgb(96, Color.Black),
 				1);
 		}

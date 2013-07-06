@@ -43,7 +43,7 @@ namespace OpenRA.Mods.RA.Air
 			var desiredFacing = Util.GetFacing(dist, aircraft.Facing);
 			aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, aircraft.ROT);
 
-			if (!Combat.IsInRange(self.CenterLocation, attack.GetMaximumRange(), target))
+			if (!target.IsInRange(self.CenterPosition, attack.GetMaximumRange()))
 				aircraft.TickMove(PSubPos.PerPx * aircraft.MovementSpeed, desiredFacing);
 
 			attack.DoAttack( self, target );

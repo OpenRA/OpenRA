@@ -19,10 +19,10 @@ namespace OpenRA.Mods.RA
 
 	class AutoHeal : INotifyIdle
 	{
-		public void TickIdle( Actor self )
+		public void TickIdle(Actor self)
 		{
 			var attack = self.Trait<AttackBase>();
-			var inRange = self.World.FindUnitsInCircle(self.CenterLocation, (int)(Game.CellSize * attack.GetMaximumRange()));
+			var inRange = self.World.FindUnitsInCircle(self.CenterPosition, attack.GetMaximumRange());
 
 			var target = inRange
 				.Where(a => a != self && a.AppearsFriendlyTo(self))
@@ -31,8 +31,8 @@ namespace OpenRA.Mods.RA
 				.Where(a => attack.HasAnyValidWeapons(Target.FromActor(a)))
 				.ClosestTo( self.CenterLocation );
 
-			if( target != null )
-				self.QueueActivity(attack.GetAttackActivity(self, Target.FromActor( target ), false ));
+			if (target != null)
+				self.QueueActivity(attack.GetAttackActivity(self, Target.FromActor(target), false));
 		}
 	}
 }
