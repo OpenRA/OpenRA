@@ -81,7 +81,7 @@ namespace OpenRA.Mods.RA.Move
 			return passability.ToBits();
 		}
 
-		public readonly Dictionary<SubCell, PVecInt> SubCellOffsets = new Dictionary<SubCell, PVecInt>()
+		public static readonly Dictionary<SubCell, PVecInt> SubCellOffsets = new Dictionary<SubCell, PVecInt>()
 		{
 			{SubCell.TopLeft, new PVecInt(-7,-6)},
 			{SubCell.TopRight, new PVecInt(6,-6)},
@@ -197,7 +197,7 @@ namespace OpenRA.Mods.RA.Move
 			if (init.Contains<LocationInit>())
 			{
 				this.__fromCell = this.__toCell = init.Get<LocationInit, CPos>();
-				this.PxPosition = Util.CenterOfCell(fromCell) + info.SubCellOffsets[fromSubCell];
+				this.PxPosition = Util.CenterOfCell(fromCell) + MobileInfo.SubCellOffsets[fromSubCell];
 			}
 
 			this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : info.InitialFacing;
@@ -207,7 +207,7 @@ namespace OpenRA.Mods.RA.Move
 		public void SetPosition(Actor self, CPos cell)
 		{
 			SetLocation(cell,fromSubCell, cell,fromSubCell);
-			PxPosition = Util.CenterOfCell(fromCell) + Info.SubCellOffsets[fromSubCell];
+			PxPosition = Util.CenterOfCell(fromCell) + MobileInfo.SubCellOffsets[fromSubCell];
 			FinishedMoving(self);
 		}
 
