@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA.Render
 			var bi = self.Info.Traits.Get<BuildingInfo>();
 			FootprintUtils.UnpathableTiles(self.Info.Name, bi, self.Location).Do(
 				t => self.World.AddFrameEndTask(
-					w => w.Add(new Explosion(w, Traits.Util.CenterOfCell(t), "building", false, 0))));
+					w => w.Add(new Explosion(w, t.CenterPosition, "building"))));
 		}
 	}
 }
