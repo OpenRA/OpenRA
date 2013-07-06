@@ -38,23 +38,20 @@ namespace OpenRA.Mods.RA.Buildings
 
 		public object Create(ActorInitializer init) { return new Building(init, this); }
 
-		public PPos CenterLocation(CPos topLeft)
+		public Actor FindBaseProvider(World world, Player p, CPos topLeft)
 		{
-			return (PPos)((2 * topLeft.ToInt2() + Dimensions) * Game.CellSize / 2);
-		}
-
-		bool HasBaseProvider(World world, Player p, CPos topLeft)
-		{
-			var center = CenterLocation(topLeft);
+			var center = topLeft.CenterPosition + FootprintUtils.CenterOffset(this);
 			foreach (var bp in world.ActorsWithTrait<BaseProvider>())
 			{
 				if (bp.Actor.Owner.Stances[p] != Stance.Ally || !bp.Trait.Ready())
 					continue;
 
-				if (Combat.IsInRange(center, bp.Trait.Info.Range, bp.Actor.CenterLocation))
-					return true;
+				// Range is counted from the center of the actor, not from each cell.
+				var target = Target.FromPos(bp.Actor.CenterLocation);
+				if (target.IsInRange(center, WRange.FromCells(bp.Trait.Info.Range)))
+					return bp.Actor;
 			}
-			return false;
+			return null;
 		}
 
 		public bool IsCloseEnoughToBase(World world, Player p, string buildingName, CPos topLeft)
@@ -62,7 +59,7 @@ namespace OpenRA.Mods.RA.Buildings
 			if (p.PlayerActor.Trait<DeveloperMode>().BuildAnywhere)
 				return true;
 
-			if (RequiresBaseProvider && !HasBaseProvider(world, p, topLeft))
+			if (RequiresBaseProvider && FindBaseProvider(world, p, topLeft) == null)
 				return false;
 
 			var buildingMaxBounds = (CVec)Dimensions;
@@ -126,7 +123,9 @@ namespace OpenRA.Mods.RA.Buildings
 
 			occupiedCells = FootprintUtils.UnpathableTiles( self.Info.Name, Info, TopLeft )
 				.Select(c => Pair.New(c, SubCell.FullCell)).ToArray();
-			pxPosition = Info.CenterLocation(topLeft);
+
+			var position = topLeft.CenterPosition + FootprintUtils.CenterOffset(Info);
+			pxPosition = PPos.FromWPosHackZ(position);
 		}
 
 		public int GetPowerUsage()

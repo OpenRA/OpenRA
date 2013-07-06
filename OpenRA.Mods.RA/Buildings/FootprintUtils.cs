@@ -65,7 +65,8 @@ namespace OpenRA.Mods.RA.Buildings
 		public static WVec CenterOffset(BuildingInfo buildingInfo)
 		{
 			var dim = buildingInfo.Dimensions;
-			return new CVec(dim.X, dim.Y).ToWVec() / 2;
+			// Offset is measured relative to the center of the cell, so need to subtract an additional half cell.
+			return new CVec(dim.X, dim.Y).ToWVec() / 2 - new WVec(512, 512, 0);
 		}
 	}
 }

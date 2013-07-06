@@ -98,7 +98,7 @@ namespace OpenRA.Mods.RA.Orders
 					initialized = true;
 				}
 
-				var offset = (topLeft - CPos.Zero).ToWVec() + FootprintUtils.CenterOffset(BuildingInfo);
+				var offset = topLeft.CenterPosition + FootprintUtils.CenterOffset(BuildingInfo) - WPos.Zero;
 				foreach (var r in preview)
 					r.WithPos(r.Pos + offset).Render(wr);
 

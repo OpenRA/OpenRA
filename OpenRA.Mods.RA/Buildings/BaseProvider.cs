@@ -17,7 +17,7 @@ namespace OpenRA.Mods.RA.Buildings
 {
 	public class BaseProviderInfo : ITraitInfo
 	{
-		public readonly float Range = 10;
+		public readonly int Range = 10;
 		public readonly int Cooldown = 0;
 		public readonly int InitialDelay = 0;
 
