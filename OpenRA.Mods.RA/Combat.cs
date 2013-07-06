@@ -139,22 +139,24 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		public static void DoExplosion(Actor attacker, string weapontype, PPos pos, int altitude)
+		public static void DoExplosion(Actor attacker, string weapontype, WPos pos)
 		{
+			var pxPos = PPos.FromWPos(pos);
+			var altitude = pos.Z * Game.CellSize / 1024;
 			var args = new ProjectileArgs
 			{
-				src = pos,
-				dest = pos,
+				src = pxPos,
+				dest = pxPos,
 				srcAltitude = altitude,
 				destAltitude = altitude,
 				firedBy = attacker,
-				target = Target.FromPos(pos),
+				target = Target.FromPos(pxPos),
 				weapon = Rules.Weapons[weapontype.ToLowerInvariant()],
 				facing = 0
 			};
 
 			if (args.weapon.Report != null && args.weapon.Report.Any())
-				Sound.Play(args.weapon.Report.Random(attacker.World.SharedRandom), pos);
+				Sound.Play(args.weapon.Report.Random(attacker.World.SharedRandom), pxPos);
 
 			DoImpacts(args);
 		}

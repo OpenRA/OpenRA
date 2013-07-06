@@ -40,7 +40,7 @@ namespace OpenRA.Mods.Cnc.Effects
 		void Finish(World world)
 		{
 			world.AddFrameEndTask(w => w.Remove(this));
-			Combat.DoExplosion(firedBy, "IonCannon", target.CenterLocation, 0);
+			Combat.DoExplosion(firedBy, "IonCannon", target.CenterPosition);
 		}
 	}
 }
