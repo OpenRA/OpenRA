@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -19,22 +19,26 @@ namespace OpenRA.Mods.RA.Effects
 	public class GravityBombInfo : IProjectileInfo
 	{
 		public readonly string Image = null;
+		public readonly WRange Velocity = WRange.Zero;
+		public readonly WRange Acceleration = new WRange(15);
+
 		public IEffect Create(ProjectileArgs args) { return new GravityBomb(this, args); }
 	}
 
 	public class GravityBomb : IEffect
 	{
+		GravityBombInfo info;
 		Animation anim;
-		int2 dest;
-		int altitude, destAltitude;
-		ProjectileArgs Args;
+		ProjectileArgs args;
+		WVec velocity;
+		WPos pos;
 
 		public GravityBomb(GravityBombInfo info, ProjectileArgs args)
 		{
-			Args = args;
-			altitude = args.source.Z * Game.CellSize / 1024;
-			destAltitude = args.passiveTarget.Z * Game.CellSize / 1024;
-			dest = PPos.FromWPos(args.passiveTarget).ToInt2();
+			this.info = info;
+			this.args = args;
+			pos = args.source;
+			velocity = new WVec(WRange.Zero, WRange.Zero, -info.Velocity);
 
 			anim = new Animation(info.Image);
 			if (anim.HasSequence("open"))
@@ -45,10 +49,13 @@ namespace OpenRA.Mods.RA.Effects
 
 		public void Tick(World world)
 		{
-			if (--altitude <= destAltitude)
+			velocity -= new WVec(WRange.Zero, WRange.Zero, info.Acceleration);
+			pos += velocity;
+
+			if (pos.Z <= args.passiveTarget.Z)
 			{
 				world.AddFrameEndTask(w => w.Remove(this));
-				Combat.DoImpacts(Args.passiveTarget, Args.sourceActor, Args.weapon, Args.firepowerModifier);
+				Combat.DoImpacts(args.passiveTarget, args.sourceActor, args.weapon, args.firepowerModifier);
 			}
 
 			anim.Tick();
@@ -56,8 +63,7 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			var pos = dest - new int2(0, altitude) - .5f * anim.Image.size;
-			yield return new SpriteRenderable(anim.Image, pos, wr.Palette("effect"), dest.Y);
+			return anim.Render(pos, wr.Palette("effect"));
 		}
 	}
 }
