@@ -234,7 +234,7 @@ namespace OpenRA.Mods.RA.Move
 			if (order is MoveOrderTargeter)
 			{
 				if (Info.OnRails) return null;
-				return new Order("Move", self, queued) { TargetLocation = target.CenterLocation.ToCPos() };
+				return new Order("Move", self, queued) { TargetLocation = target.CenterPosition.ToCPos() };
 			}
 			return null;
 		}

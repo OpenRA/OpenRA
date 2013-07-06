@@ -177,7 +177,7 @@ namespace OpenRA.Mods.RA
 			if (target.IsActor)
 				return Combat.WeaponValidForTarget(Weapon, target.Actor);
 			else
-				return Combat.WeaponValidForTarget(Weapon, world, target.CenterLocation.ToCPos());
+				return Combat.WeaponValidForTarget(Weapon, world, target.CenterPosition.ToCPos());
 		}
 
 		public bool IsReloading { get { return FireDelay > 0; } }

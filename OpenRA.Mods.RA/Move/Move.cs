@@ -61,7 +61,7 @@ namespace OpenRA.Mods.RA.Move
 		public Move(Target target, int range)
 		{
 			this.getPath = (self,mobile) => self.World.WorldActor.Trait<PathFinder>().FindUnitPathToRange(
-				mobile.toCell, target.CenterLocation.ToCPos(),
+				mobile.toCell, target.CenterPosition.ToCPos(),
 				range, self);
 			this.destination = null;
 			this.nearEnough = range;

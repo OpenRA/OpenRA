@@ -177,7 +177,7 @@ namespace OpenRA.Traits
 				: new CPos[] {};
 
 			if (cells.Length == 0)
-				cells = new CPos[] { target.CenterLocation.ToCPos() };
+				cells = new CPos[] { target.CenterPosition.ToCPos() };
 
 			return Util.ExpandFootprint(cells, true);
 		}

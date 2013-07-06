@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA.Activities
 			if (IsCanceled) return NextActivity;
 			if (!Target.IsValid) return NextActivity;
 
-			var inRange = ( Target.CenterLocation.ToCPos() - self.Location ).LengthSquared < Range * Range;
+			var inRange = ( Target.CenterPosition.ToCPos() - self.Location ).LengthSquared < Range * Range;
 
 			if( inRange ) return this;
 			if (--nextPathTime > 0) return this;

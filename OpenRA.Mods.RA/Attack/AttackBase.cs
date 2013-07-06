@@ -117,7 +117,7 @@ namespace OpenRA.Mods.RA
 				if (target.IsActor)
 					return new Order("Attack", self, queued) { TargetActor = target.Actor };
 				else
-					return new Order("Attack", self, queued) { TargetLocation = target.CenterLocation.ToCPos() };
+					return new Order("Attack", self, queued) { TargetLocation = target.CenterPosition.ToCPos() };
 			}
 			return null;
 		}
