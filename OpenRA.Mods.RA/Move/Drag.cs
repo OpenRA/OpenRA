@@ -15,25 +15,25 @@ namespace OpenRA.Mods.RA.Move
 {
 	public class Drag : Activity
 	{
-		PPos endLocation;
-		PPos startLocation;
+		WPos start, end;
 		int length;
 		int ticks = 0;
 
-		public Drag(PPos start, PPos end, int length)
+		public Drag(WPos start, WPos end, int length)
 		{
-			startLocation = start;
-			endLocation = end;
+			this.start = start;
+			this.end = end;
 			this.length = length;
 		}
 
 		public override Activity Tick( Actor self )
 		{
 			var mobile = self.Trait<Mobile>();
-			mobile.PxPosition = length > 1
-				? PPos.Lerp(startLocation, endLocation, ticks, length - 1)
-				: endLocation;
+			var pos = length > 1
+				? WPos.Lerp(start, end, ticks, length - 1)
+				: end;
 
+			mobile.PxPosition = PPos.FromWPos(pos);
 			if (++ticks >= length)
 			{
 				mobile.IsMoving = false;
@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA.Move
 
 		public override IEnumerable<Target> GetTargets( Actor self )
 		{
-			yield return Target.FromPos(endLocation);
+			yield return Target.FromPos(PPos.FromWPos(end));
 		}
 
 		// Cannot be cancelled

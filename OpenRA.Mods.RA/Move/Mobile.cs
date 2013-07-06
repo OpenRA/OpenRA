@@ -420,6 +420,11 @@ namespace OpenRA.Mods.RA.Move
 			return (int)(speed / 100);
 		}
 
+		public int WorldMovementSpeedForCell(Actor self, CPos cell)
+		{
+			return MovementSpeedForCell(self, cell) * 1024 / Game.CellSize;
+		}
+
 		public void AddInfluence()
 		{
 			if (self.IsInWorld)

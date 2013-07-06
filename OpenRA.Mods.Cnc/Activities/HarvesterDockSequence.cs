@@ -27,16 +27,15 @@ namespace OpenRA.Mods.Cnc
 		readonly RenderUnit ru;
 		State state;
 
-		PPos startDock;
-		PPos endDock;
+		WPos startDock, endDock;
 		public HarvesterDockSequence(Actor self, Actor proc)
 		{
 			this.proc = proc;
 			state = State.Turn;
 			harv = self.Trait<Harvester>();
 			ru = self.Trait<RenderUnit>();
-			startDock = self.Trait<IHasLocation>().PxPosition;
-			endDock = proc.Trait<IHasLocation>().PxPosition + new PVecInt(-15,8);
+			startDock = self.Trait<IHasLocation>().PxPosition.ToWPos(0);
+			endDock = (proc.Trait<IHasLocation>().PxPosition + new PVecInt(-15,8)).ToWPos(0);
 		}
 
 		public override Activity Tick(Actor self)

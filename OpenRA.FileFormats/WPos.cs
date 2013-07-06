@@ -34,6 +34,8 @@ namespace OpenRA
 		public static bool operator ==(WPos me, WPos other) { return (me.X == other.X && me.Y == other.Y && me.Z == other.Z); }
 		public static bool operator !=(WPos me, WPos other) { return !(me == other); }
 
+		public static WPos Lerp(WPos a, WPos b, int mul, int div) { return a + (b - a) * mul / div; }
+
 		public static WPos Average(params WPos[] list)
 		{
 			if (list == null || list.Length == 0)

@@ -30,6 +30,11 @@ namespace OpenRA.Traits
 				return ( facing - rot ) & 0xFF;
 		}
 
+		public static int GetFacing(WVec d, int currentFacing)
+		{
+			return GetFacing(new int2(d.X, d.Y), currentFacing);
+		}
+
 		public static int GetFacing(PVecInt d, int currentFacing)
 		{
 			return GetFacing(d.ToInt2(), currentFacing);

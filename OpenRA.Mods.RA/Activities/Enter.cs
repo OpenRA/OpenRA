@@ -35,9 +35,9 @@ namespace OpenRA.Mods.RA.Activities
 
 			// Move to the middle of the target, ignoring impassable tiles
 			var mobile = self.Trait<Mobile>();
-			var to = target.CenterLocation;
-			var from = self.CenterLocation;
-			var speed = mobile.MovementSpeedForCell(self, self.Location);
+			var to = target.CenterPosition;
+			var from = self.CenterPosition;
+			var speed = mobile.WorldMovementSpeedForCell(self, self.Location);
 			var length = speed > 0 ? (int)((to - from).Length * 3 / speed) : 0;
 
 			return Util.SequenceActivities(
