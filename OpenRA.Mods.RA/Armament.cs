@@ -107,9 +107,17 @@ namespace OpenRA.Mods.RA
 			if (limitedAmmo != null && !limitedAmmo.HasAmmo())
 				return;
 
-			if (!Combat.IsInRange(self.CenterLocation, Weapon.Range, target)) return;
-			if (Combat.IsInRange(self.CenterLocation, Weapon.MinRange, target)) return;
-			if (!IsValidAgainst(self.World, target)) return;
+			// TODO: Define weapon ranges as WRange
+			var range = new WRange((int)(1024*Weapon.Range));
+			var minRange = new WRange((int)(1024*Weapon.MinRange));
+			if (!target.IsInRange(self.CenterPosition, range))
+				return;
+
+			if (target.IsInRange(self.CenterPosition, minRange))
+				return;
+
+			if (!IsValidAgainst(self.World, target))
+				return;
 
 			var barrel = Barrels[Burst % Barrels.Length];
 			var destMove = target.IsActor ? target.Actor.TraitOrDefault<IMove>() : null;
