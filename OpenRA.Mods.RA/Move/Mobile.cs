@@ -170,7 +170,9 @@ namespace OpenRA.Mods.RA.Move
 
 		public void SetLocation(CPos from, SubCell fromSub, CPos to, SubCell toSub)
 		{
-			if (fromCell == from && toCell == to) return;
+			if (fromCell == from && toCell == to && fromSubCell == fromSub && toSubCell == toSub)
+				return;
+
 			RemoveInfluence();
 			__fromCell = from;
 			__toCell = to;

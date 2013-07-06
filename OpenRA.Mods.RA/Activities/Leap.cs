@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Linq;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Mods.RA.Render;
@@ -17,16 +18,29 @@ namespace OpenRA.Mods.RA.Activities
 {
 	class Leap : Activity
 	{
-		Target target;
-		PPos initialLocation;
+		Mobile mobile;
+
+		PPos from;
+		PPos to;
 
 		int moveFraction;
-		const int delay = 6;
+		const int length = 6;
 
 		public Leap(Actor self, Target target)
 		{
-			this.target = target;
-			initialLocation = (PPos) self.Trait<Mobile>().PxPosition;
+			if (!target.IsActor)
+				throw new InvalidOperationException("Leap requires a target actor");
+
+			var targetMobile = target.Actor.TraitOrDefault<Mobile>();
+			if (targetMobile == null)
+				throw new InvalidOperationException("Leap requires a target actor with the Mobile trait");
+
+			mobile = self.Trait<Mobile>();
+			mobile.SetLocation(mobile.fromCell, mobile.fromSubCell, targetMobile.fromCell, targetMobile.fromSubCell);
+			mobile.IsMoving = true;
+
+			from = self.CenterLocation;
+			to = Util.CenterOfCell(targetMobile.fromCell) + MobileInfo.SubCellOffsets[targetMobile.fromSubCell];
 
 			self.Trait<RenderInfantry>().Attacking(self, target);
 			Sound.Play("dogg5p.aud", self.CenterLocation);
@@ -34,23 +48,18 @@ namespace OpenRA.Mods.RA.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if( moveFraction == 0 && IsCanceled ) return NextActivity;
-			if (!target.IsValid) return NextActivity;
+			if (moveFraction == 0 && IsCanceled)
+				return NextActivity;
 
-			self.Trait<AttackLeap>().IsLeaping = true;
-			var mobile = self.Trait<Mobile>();
-			++moveFraction;
-
-			mobile.PxPosition = PPos.Lerp(initialLocation, target.PxPosition, moveFraction, delay);
-
-			if (moveFraction >= delay)
+			mobile.AdjustPxPosition(self, PPos.Lerp(from, to, moveFraction++, length - 1));
+			if (moveFraction >= length)
 			{
-				self.TraitsImplementing<IMove>().FirstOrDefault()
-					.SetPosition(self, target.CenterLocation.ToCPos());
+				mobile.SetLocation(mobile.toCell, mobile.toSubCell, mobile.toCell, mobile.toSubCell);
+				mobile.FinishedMoving(self);
+				mobile.IsMoving = false;
 
-				if (target.IsActor)
-					target.Actor.Kill(self);
-				self.Trait<AttackLeap>().IsLeaping = false;
+				// Kill whatever else is in our new cell
+				self.World.ActorMap.GetUnitsAt(mobile.toCell, mobile.toSubCell).Except(new []{self}).Do(a => a.Kill(self));
 				return NextActivity;
 			}
 

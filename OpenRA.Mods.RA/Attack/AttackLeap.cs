@@ -22,8 +22,6 @@ namespace OpenRA.Mods.RA
 
 	class AttackLeap : AttackFrontal, ISync
 	{
-		[Sync] internal bool IsLeaping;
-
 		public AttackLeap(Actor self, AttackLeapInfo info)
 			: base(self, info) {}
 
