@@ -42,13 +42,5 @@ namespace OpenRA.Mods.RA
 			self.CancelActivity();
 			self.QueueActivity(new Leap(self, target));
 		}
-
-		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
-		{
-			var a = ChooseArmamentForTarget(newTarget);
-			if (a == null)
-				return null;
-			return new Activities.Attack(newTarget, Math.Max(0, (int)a.Weapon.Range), allowMove);
-		}
 	}
 }
