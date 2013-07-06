@@ -72,12 +72,20 @@ FCOM:
 
 HOSP:
 	Inherits: ^TechBuilding
+	Selectable:
+		Priority: 0
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
+	Health:
+		HP: 1000
+	Capturable:
+	CapturableBar:
+	EngineerRepairable:
+	SelfHealingTech:
+		Type: InfantryHealing
 	Tooltip:
 		Name: Hospital
-	RepairsUnits:
 
 V01:
 	Inherits: ^CivBuilding
@@ -299,8 +307,6 @@ OILB:
 		Dimensions: 2,2
 	Health:
 		HP: 1000
-	Armor:
-		Type: Wood
 	Bib:
 	RevealsShroud:
 		Range: 3

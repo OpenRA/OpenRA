@@ -21,15 +21,20 @@ V19.Husk:
 
 # Hospital
 HOSP:
-	Inherits: ^CivBuilding
+	Inherits: ^TechBuilding
+	Selectable:
+		Priority: 0
 	Building:
 		Footprint: xx xx
 		Dimensions: 2,2
+	Health:
+		HP: 1000
+	SelfHealingTech:
+		Type: InfantryHealing
 	Tooltip:
 		Name: Hospital
 	LeavesHusk: 
 		HuskActor: HOSP.Husk
-	RepairsUnits:
 
 HOSP.Husk:
 	Inherits: ^CivBuildingHusk
