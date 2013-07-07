@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -121,26 +121,20 @@ namespace OpenRA.Mods.RA
 
 			var barrel = Barrels[Burst % Barrels.Length];
 			var muzzlePosition = self.CenterPosition + MuzzleOffset(self, barrel);
-			var legacyMuzzlePosition = PPos.FromWPos(muzzlePosition);
-			var legacyMuzzleAltitude = Game.CellSize*muzzlePosition.Z/1024;
 			var legacyFacing = MuzzleOrientation(self, barrel).Yaw.Angle / 4;
 
 			var args = new ProjectileArgs
 			{
 				weapon = Weapon,
-				firedBy = self,
-				target = target,
-				src = legacyMuzzlePosition,
-				srcAltitude = legacyMuzzleAltitude,
-
-				dest = PPos.FromWPos(target.CenterPosition),
-				destAltitude = target.CenterPosition.Z * Game.CellSize / 1024,
-
 				facing = legacyFacing,
-
 				firepowerModifier = self.TraitsImplementing<IFirepowerModifier>()
 					.Select(a => a.GetFirepowerModifier())
-					.Product()
+					.Product(),
+
+				source = muzzlePosition,
+				sourceActor = self,
+				passiveTarget = target.CenterPosition,
+				guidedTarget = target
 			};
 
 			attack.ScheduleDelayedAction(Info.FireDelay, () =>

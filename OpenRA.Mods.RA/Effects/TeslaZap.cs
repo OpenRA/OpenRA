@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -46,13 +46,14 @@ namespace OpenRA.Mods.RA.Effects
 			var bright = SequenceProvider.GetSequence(Info.Image, "bright");
 			var dim = SequenceProvider.GetSequence(Info.Image, "dim");
 
-			var src = new PPos(Args.src.X, Args.src.Y - Args.srcAltitude);
-			var dest = new PPos(Args.dest.X, Args.dest.Y - Args.destAltitude);
+			var source = wr.ScreenPosition(Args.source);
+			var target = wr.ScreenPosition(Args.passiveTarget);
+
 			for (var n = 0; n < Info.DimZaps; n++)
-				foreach (var z in DrawZapWandering(wr, src, dest, dim))
+				foreach (var z in DrawZapWandering(wr, source, target, dim))
 					yield return z;
 			for (var n = 0; n < Info.BrightZaps; n++)
-				foreach (var z in DrawZapWandering(wr, src, dest, bright))
+				foreach (var z in DrawZapWandering(wr, source, target, bright))
 					yield return z;
 		}
 
@@ -64,10 +65,8 @@ namespace OpenRA.Mods.RA.Effects
 
 			if (!doneDamage)
 			{
-				if (Args.target.IsValid)
-					Args.dest = Args.target.CenterLocation;
-
-				Combat.DoImpacts(Args);
+				var pos = Args.guidedTarget.IsValid ? Args.guidedTarget.CenterPosition : Args.passiveTarget;
+				Combat.DoImpacts(pos, Args.sourceActor, Args.weapon, Args.firepowerModifier);
 				doneDamage = true;
 			}
 		}
@@ -83,7 +82,7 @@ namespace OpenRA.Mods.RA.Effects
 			return renderables;
 		}
 
-		static IEnumerable<IRenderable> DrawZapWandering(WorldRenderer wr, PPos from, PPos to, Sequence s)
+		static IEnumerable<IRenderable> DrawZapWandering(WorldRenderer wr, float2 from, float2 to, Sequence s)
 		{
 			var z = float2.Zero;	/* hack */
 			var dist = to - from;
@@ -92,19 +91,19 @@ namespace OpenRA.Mods.RA.Effects
 			var renderables = new List<IRenderable>();
 			if (Game.CosmeticRandom.Next(2) != 0)
 			{
-				var p1 = from.ToFloat2() + (1 / 3f) * dist.ToFloat2() + Game.CosmeticRandom.Gauss1D(1) * .2f * dist.Length * norm;
-				var p2 = from.ToFloat2() + (2 / 3f) * dist.ToFloat2() + Game.CosmeticRandom.Gauss1D(1) * .2f * dist.Length * norm;
+				var p1 = from + (1 / 3f) * dist + Game.CosmeticRandom.Gauss1D(1) * .2f * dist.Length * norm;
+				var p2 = from + (2 / 3f) * dist + Game.CosmeticRandom.Gauss1D(1) * .2f * dist.Length * norm;
 
-				renderables.AddRange(DrawZap(wr, from.ToFloat2(), p1, s, out p1));
+				renderables.AddRange(DrawZap(wr, from, p1, s, out p1));
 				renderables.AddRange(DrawZap(wr, p1, p2, s, out p2));
-				renderables.AddRange(DrawZap(wr, p2, to.ToFloat2(), s, out z));
+				renderables.AddRange(DrawZap(wr, p2, to, s, out z));
 			}
 			else
 			{
-				var p1 = from.ToFloat2() + (1 / 2f) * dist.ToFloat2() + Game.CosmeticRandom.Gauss1D(1) * .2f * dist.Length * norm;
+				var p1 = from + (1 / 2f) * dist + Game.CosmeticRandom.Gauss1D(1) * .2f * dist.Length * norm;
 
-				renderables.AddRange(DrawZap(wr, from.ToFloat2(), p1, s, out p1));
-				renderables.AddRange(DrawZap(wr, p1, to.ToFloat2(), s, out z));
+				renderables.AddRange(DrawZap(wr, from, p1, s, out p1));
+				renderables.AddRange(DrawZap(wr, p1, to, s, out z));
 			}
 
 			return renderables;

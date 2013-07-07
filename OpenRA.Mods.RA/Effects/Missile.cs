@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -54,6 +54,8 @@ namespace OpenRA.Mods.RA.Effects
 		PVecInt offset;
 		public PSubPos SubPxPosition;
 		public PPos PxPosition { get { return SubPxPosition.ToPPos(); } }
+		PPos target;
+		int targetAltitude;
 
 		readonly Animation anim;
 		int Facing;
@@ -66,12 +68,15 @@ namespace OpenRA.Mods.RA.Effects
 			Info = info;
 			Args = args;
 
-			SubPxPosition = Args.src.ToPSubPos();
-			Altitude = Args.srcAltitude;
+			SubPxPosition = PPos.FromWPos(Args.source).ToPSubPos();
+			Altitude = args.source.Z * Game.CellSize / 1024;
 			Facing = Args.facing;
 
+			target = PPos.FromWPos(Args.passiveTarget);
+			targetAltitude = args.passiveTarget.Z * Game.CellSize / 1024;
+
 			if (info.Inaccuracy > 0)
-				offset = (PVecInt)(info.Inaccuracy * args.firedBy.World.SharedRandom.Gauss2D(2)).ToInt2();
+				offset = (PVecInt)(info.Inaccuracy * args.sourceActor.World.SharedRandom.Gauss2D(2)).ToInt2();
 
 			if (Info.Image != null)
 			{
@@ -81,8 +86,8 @@ namespace OpenRA.Mods.RA.Effects
 
 			if (Info.ContrailLength > 0)
 			{
-				var color = Info.ContrailUsePlayerColor ? ContrailRenderable.ChooseColor(args.firedBy) : Info.ContrailColor;
-				Trail = new ContrailRenderable(args.firedBy.World, color, Info.ContrailLength, Info.ContrailDelay, 0);
+				var color = Info.ContrailUsePlayerColor ? ContrailRenderable.ChooseColor(args.sourceActor) : Info.ContrailColor;
+				Trail = new ContrailRenderable(args.sourceActor.World, color, Info.ContrailLength, Info.ContrailDelay, 0);
 			}
 		}
 
@@ -94,25 +99,27 @@ namespace OpenRA.Mods.RA.Effects
 		{
 			t += 40;
 
+			// Missile tracks target
+			if (Args.guidedTarget.IsValid)
+			{
+				target = PPos.FromWPos(Args.guidedTarget.CenterPosition);
+				targetAltitude = Args.guidedTarget.CenterPosition.Z * Game.CellSize / 1024;
+			}
+
 			// In pixels
-			var dist = Args.target.CenterLocation + offset - PxPosition;
-
-			var targetAltitude = 0;
-			if (Args.target.IsValid)
-				targetAltitude = Args.target.CenterPosition.Z * Game.CellSize / 1024;
-
+			var dist = target + offset - PxPosition;
 			var jammed = Info.Jammable && world.ActorsWithTrait<JamsMissiles>().Any(tp =>
 				(tp.Actor.CenterLocation - PxPosition).ToCVec().Length <= tp.Trait.Range
 
-				&& (tp.Actor.Owner.Stances[Args.firedBy.Owner] != Stance.Ally
-				|| (tp.Actor.Owner.Stances[Args.firedBy.Owner] == Stance.Ally && tp.Trait.AlliedMissiles))
+				&& (tp.Actor.Owner.Stances[Args.sourceActor.Owner] != Stance.Ally
+				|| (tp.Actor.Owner.Stances[Args.sourceActor.Owner] == Stance.Ally && tp.Trait.AlliedMissiles))
 
 				&& world.SharedRandom.Next(100 / tp.Trait.Chance) == 0);
 
 			if (!jammed)
 			{
 				Altitude += Math.Sign(targetAltitude - Altitude);
-				if (Args.target.IsValid)
+				if (Args.guidedTarget.IsValid)
 					Facing = Traits.Util.TickFacing(Facing,
 						Traits.Util.GetFacing(dist, Facing),
 						Info.ROT);
@@ -127,7 +134,7 @@ namespace OpenRA.Mods.RA.Effects
 
 			anim.Tick();
 
-			if (dist.LengthSquared < MissileCloseEnough * MissileCloseEnough && Args.target.IsValid)
+			if (dist.LengthSquared < MissileCloseEnough * MissileCloseEnough)
 				Explode(world);
 
 			// TODO: Replace this with a lookup table
@@ -168,9 +175,8 @@ namespace OpenRA.Mods.RA.Effects
 		void Explode(World world)
 		{
 			world.AddFrameEndTask(w => w.Remove(this));
-			Args.dest = PxPosition;
 			if (t > Info.Arm * 40)	/* don't blow up in our launcher's face! */
-				Combat.DoImpacts(Args);
+				Combat.DoImpacts(PxPosition.ToWPos(Altitude), Args.sourceActor, Args.weapon, Args.firepowerModifier);
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
@@ -178,7 +184,7 @@ namespace OpenRA.Mods.RA.Effects
 			if (Info.ContrailLength > 0)
 				yield return Trail;
 
-			if (!Args.firedBy.World.FogObscures(PxPosition.ToCPos()))
+			if (!Args.sourceActor.World.FogObscures(PxPosition.ToCPos()))
 				yield return new SpriteRenderable(anim.Image, PxPosition.ToFloat2() - new float2(0, Altitude),
 				                                  wr.Palette(Args.weapon.Underwater ? "shadow" : "effect"), PxPosition.Y);
 		}

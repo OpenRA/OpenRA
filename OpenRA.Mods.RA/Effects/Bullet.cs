@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -46,6 +46,8 @@ namespace OpenRA.Mods.RA.Effects
 	{
 		readonly BulletInfo Info;
 		readonly ProjectileArgs Args;
+		PPos src, dest;
+		int srcAltitude, destAltitude;
 
 		int t = 0;
 		Animation anim;
@@ -58,11 +60,17 @@ namespace OpenRA.Mods.RA.Effects
 			Info = info;
 			Args = args;
 
+			src = PPos.FromWPos(args.source);
+			srcAltitude = args.source.Z * Game.CellSize / 1024;
+
+			dest = PPos.FromWPos(args.passiveTarget);
+			destAltitude = args.passiveTarget.Z * Game.CellSize / 1024;
+
 			if (info.Inaccuracy > 0)
 			{
-				var factor = ((Args.dest - Args.src).ToCVec().Length) / args.weapon.Range;
-				Args.dest += (PVecInt) (info.Inaccuracy * factor * args.firedBy.World.SharedRandom.Gauss2D(2)).ToInt2();
-				Log.Write("debug", "Bullet with Inaccuracy; factor: #{0}; Projectile dest: {1}", factor, Args.dest);
+				var factor = ((dest - src).ToCVec().Length) / args.weapon.Range;
+				dest += (PVecInt) (info.Inaccuracy * factor * args.sourceActor.World.SharedRandom.Gauss2D(2)).ToInt2();
+				Log.Write("debug", "Bullet with Inaccuracy; factor: #{0}; Projectile dest: {1}", factor, dest);
 			}
 
 			if (Info.Image != null)
@@ -73,17 +81,17 @@ namespace OpenRA.Mods.RA.Effects
 
 			if (Info.ContrailLength > 0)
 			{
-				var color = Info.ContrailUsePlayerColor ? ContrailRenderable.ChooseColor(args.firedBy) : Info.ContrailColor;
-				Trail = new ContrailRenderable(args.firedBy.World, color, Info.ContrailLength, Info.ContrailDelay, 0);
+				var color = Info.ContrailUsePlayerColor ? ContrailRenderable.ChooseColor(args.sourceActor) : Info.ContrailColor;
+				Trail = new ContrailRenderable(args.sourceActor.World, color, Info.ContrailLength, Info.ContrailDelay, 0);
 			}
 		}
 
-		int TotalTime() { return (Args.dest - Args.src).Length * BaseBulletSpeed / Info.Speed; }
+		int TotalTime() { return (dest - src).Length * BaseBulletSpeed / Info.Speed; }
 
 		float GetAltitude()
 		{
 			var at = (float)t / TotalTime();
-			return (Args.dest - Args.src).Length * Info.Angle * 4 * at * (1 - at);
+			return (dest - src).Length * Info.Angle * 4 * at * (1 - at);
 		}
 
 		int GetEffectiveFacing()
@@ -91,7 +99,7 @@ namespace OpenRA.Mods.RA.Effects
 			var at = (float)t / TotalTime();
 			var attitude = Info.Angle * (1 - 2 * at);
 
-			var rawFacing = Traits.Util.GetFacing(Args.dest - Args.src, 0);
+			var rawFacing = Traits.Util.GetFacing(dest - src, 0);
 			var u = (rawFacing % 128) / 128f;
 			var scale = 512 * u * (1 - u);
 
@@ -112,8 +120,8 @@ namespace OpenRA.Mods.RA.Effects
 
 			{
 				var at = (float)t / TotalTime();
-				var altitude = float2.Lerp(Args.srcAltitude, Args.destAltitude, at);
-				var pos = float2.Lerp(Args.src.ToFloat2(), Args.dest.ToFloat2(), at) - new float2(0, altitude);
+				var altitude = float2.Lerp(srcAltitude, destAltitude, at);
+				var pos = float2.Lerp(src.ToFloat2(), dest.ToFloat2(), at) - new float2(0, altitude);
 
 				var highPos = (Info.High || Info.Angle > 0)
 					? (pos - new float2(0, GetAltitude()))
@@ -136,13 +144,13 @@ namespace OpenRA.Mods.RA.Effects
 			if (!Info.High)		// check for hitting a wall
 			{
 				var at = (float)t / TotalTime();
-				var pos = float2.Lerp(Args.src.ToFloat2(), Args.dest.ToFloat2(), at);
+				var pos = float2.Lerp(src.ToFloat2(), dest.ToFloat2(), at);
 				var cell = ((PPos) pos.ToInt2()).ToCPos();
 
 				if (world.ActorMap.GetUnitsAt(cell).Any(
 					a => a.HasTrait<IBlocksBullets>()))
 				{
-					Args.dest = (PPos) pos.ToInt2();
+					dest = (PPos) pos.ToInt2();
 					Explode(world);
 				}
 			}
@@ -159,11 +167,11 @@ namespace OpenRA.Mods.RA.Effects
 			{
 				var at = (float)t / TotalTime();
 
-				var altitude = float2.Lerp(Args.srcAltitude, Args.destAltitude, at);
-				var pos = float2.Lerp(Args.src.ToFloat2(), Args.dest.ToFloat2(), at) - new float2(0, altitude);
+				var altitude = float2.Lerp(srcAltitude, destAltitude, at);
+				var pos = float2.Lerp(src.ToFloat2(), dest.ToFloat2(), at) - new float2(0, altitude);
 
 				var cell = ((PPos)pos.ToInt2()).ToCPos();
-				if (!Args.firedBy.World.FogObscures(cell))
+				if (!Args.sourceActor.World.FogObscures(cell))
 				{
 					if (Info.High || Info.Angle > 0)
 					{
@@ -184,7 +192,7 @@ namespace OpenRA.Mods.RA.Effects
 		void Explode( World world )
 		{
 			world.AddFrameEndTask(w => w.Remove(this));
-			Combat.DoImpacts(Args);
+			Combat.DoImpacts(dest.ToWPos(destAltitude), Args.sourceActor, Args.weapon, Args.firepowerModifier);
 		}
 	}
 }
