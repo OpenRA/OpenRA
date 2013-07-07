@@ -36,6 +36,20 @@ namespace OpenRA
 
 		public static WPos Lerp(WPos a, WPos b, int mul, int div) { return a + (b - a) * mul / div; }
 
+		public static WPos LerpQuadratic(WPos a, WPos b, WAngle pitch, int mul, int div)
+		{
+			// Start with a linear lerp between the points
+			var ret = Lerp(a, b, mul, div);
+
+			if (pitch.Angle == 0)
+				return ret;
+
+			// Add an additional quadratic variation to height
+			// Uses fp to avoid integer overflow
+			var offset = (int)((float)((float)(b - a).Length*pitch.Tan()*mul*(div - mul)) / (float)(1024*div*div));
+			return new WPos(ret.X, ret.Y, ret.Z + offset);
+		}
+
 		public static WPos Average(params WPos[] list)
 		{
 			if (list == null || list.Length == 0)
