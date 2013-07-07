@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -28,171 +29,145 @@ namespace OpenRA.Mods.RA.Effects
 		public readonly string Image = null;
 		[Desc("Check for whether an actor with Wall: trait blocks fire")]
 		public readonly bool High = false;
-		public readonly int RangeLimit = 0;
-		public readonly int Arm = 0;
 		public readonly bool Shadow = false;
-		public readonly bool Proximity = false;
 		public readonly float Angle = 0;
 		public readonly int TrailInterval = 2;
+		public readonly int TrailDelay = 1;
 		public readonly int ContrailLength = 0;
 		public readonly Color ContrailColor = Color.White;
 		public readonly bool ContrailUsePlayerColor = false;
 		public readonly int ContrailDelay = 1;
 
-		public IEffect Create(ProjectileArgs args) { return new Bullet( this, args ); }
+		public IEffect Create(ProjectileArgs args) { return new Bullet(this, args); }
 	}
 
 	public class Bullet : IEffect
 	{
-		readonly BulletInfo Info;
-		readonly ProjectileArgs Args;
-		PPos src, dest;
-		int srcAltitude, destAltitude;
+		readonly BulletInfo info;
+		readonly ProjectileArgs args;
 
-		int t = 0;
+		ContrailRenderable trail;
 		Animation anim;
-
-		const int BaseBulletSpeed = 100;		/* pixels / 40ms frame */
-		ContrailRenderable Trail;
+		WAngle angle;
+		WPos pos, target;
+		int length;
+		int facing;
+		int ticks, smokeTicks;
 
 		public Bullet(BulletInfo info, ProjectileArgs args)
 		{
-			Info = info;
-			Args = args;
+			this.info = info;
+			this.args = args;
+			this.pos = args.source;
 
-			src = PPos.FromWPos(args.source);
-			srcAltitude = args.source.Z * Game.CellSize / 1024;
+			// Convert ProjectileArg definitions to world coordinates
+			// TODO: Change the yaml definitions so we don't need this
+			var range = new WRange((int)(1024 * args.weapon.Range)); // Range in world units
+			var inaccuracy = new WRange((int)(info.Inaccuracy * 1024 / Game.CellSize)); // Offset in world units at max range
+			var speed = (int)(info.Speed * 4 * 1024 / (10 * Game.CellSize)); // Speed in world units per tick
+			angle = WAngle.ArcTan((int)(info.Angle * 4 * 1024), 1024); // Angle in world angle
 
-			dest = PPos.FromWPos(args.passiveTarget);
-			destAltitude = args.passiveTarget.Z * Game.CellSize / 1024;
-
+			target = args.passiveTarget;
 			if (info.Inaccuracy > 0)
 			{
-				var factor = ((dest - src).ToCVec().Length) / args.weapon.Range;
-				dest += (PVecInt) (info.Inaccuracy * factor * args.sourceActor.World.SharedRandom.Gauss2D(2)).ToInt2();
-				Log.Write("debug", "Bullet with Inaccuracy; factor: #{0}; Projectile dest: {1}", factor, dest);
+				var maxOffset = inaccuracy.Range * (target - args.source).Length / range.Range;
+				target += WVec.FromPDF(args.sourceActor.World.SharedRandom, 2) * maxOffset / 1024;
 			}
 
-			if (Info.Image != null)
+			facing = Traits.Util.GetFacing(target - args.source, 0);
+			length = Math.Max((target - args.source).Length / speed, 1);
+
+			if (info.Image != null)
 			{
-				anim = new Animation(Info.Image, GetEffectiveFacing);
+				anim = new Animation(info.Image, GetEffectiveFacing);
 				anim.PlayRepeating("idle");
 			}
 
-			if (Info.ContrailLength > 0)
+			if (info.ContrailLength > 0)
 			{
-				var color = Info.ContrailUsePlayerColor ? ContrailRenderable.ChooseColor(args.sourceActor) : Info.ContrailColor;
-				Trail = new ContrailRenderable(args.sourceActor.World, color, Info.ContrailLength, Info.ContrailDelay, 0);
+				var color = info.ContrailUsePlayerColor ? ContrailRenderable.ChooseColor(args.sourceActor) : info.ContrailColor;
+				trail = new ContrailRenderable(args.sourceActor.World, color, info.ContrailLength, info.ContrailDelay, 0);
 			}
-		}
 
-		int TotalTime() { return (dest - src).Length * BaseBulletSpeed / Info.Speed; }
-
-		float GetAltitude()
-		{
-			var at = (float)t / TotalTime();
-			return (dest - src).Length * Info.Angle * 4 * at * (1 - at);
+			smokeTicks = info.TrailDelay;
 		}
 
 		int GetEffectiveFacing()
 		{
-			var at = (float)t / TotalTime();
-			var attitude = Info.Angle * (1 - 2 * at);
+			var at = (float)ticks / (length - 1);
+			var attitude = angle.Tan() * (1 - 2 * at) / (4 * 1024);
 
-			var rawFacing = Traits.Util.GetFacing(dest - src, 0);
-			var u = (rawFacing % 128) / 128f;
+			var u = (facing % 128) / 128f;
 			var scale = 512 * u * (1 - u);
 
-			return (int)(rawFacing < 128
-				? rawFacing - scale * attitude
-				: rawFacing + scale * attitude);
+			return (int)(facing < 128
+				? facing - scale * attitude
+				: facing + scale * attitude);
 		}
 
-		int ticksToNextSmoke;
-
-		public void Tick( World world )
+		public void Tick(World world)
 		{
-			t += 40;
-
-			if (anim != null) anim.Tick();
-
-			if (t > TotalTime()) Explode( world );
-
+			// Fade the trail out gradually
+			if (ticks > length && info.ContrailLength > 0)
 			{
-				var at = (float)t / TotalTime();
-				var altitude = float2.Lerp(srcAltitude, destAltitude, at);
-				var pos = float2.Lerp(src.ToFloat2(), dest.ToFloat2(), at) - new float2(0, altitude);
-
-				var highPos = (Info.High || Info.Angle > 0)
-					? (pos - new float2(0, GetAltitude()))
-					: pos;
-
-				if (Info.Trail != null && --ticksToNextSmoke < 0)
-				{
-					world.AddFrameEndTask(w => w.Add(
-						new Smoke(w, ((PPos)highPos.ToInt2()).ToWPos(0), Info.Trail)));
-					ticksToNextSmoke = Info.TrailInterval;
-				}
-
-				if (Info.ContrailLength > 0)
-				{
-					var alt = (Info.High || Info.Angle > 0) ? GetAltitude() : 0;
-					Trail.Update(new PPos((int)pos.X, (int)pos.Y).ToWPos((int)alt));
-				}
+				trail.Update(pos);
+				return;
 			}
 
-			if (!Info.High)		// check for hitting a wall
-			{
-				var at = (float)t / TotalTime();
-				var pos = float2.Lerp(src.ToFloat2(), dest.ToFloat2(), at);
-				var cell = ((PPos) pos.ToInt2()).ToCPos();
+			if (anim != null)
+				anim.Tick();
 
-				if (world.ActorMap.GetUnitsAt(cell).Any(
-					a => a.HasTrait<IBlocksBullets>()))
-				{
-					dest = (PPos) pos.ToInt2();
-					Explode(world);
-				}
+			pos = WPos.LerpQuadratic(args.source, target, angle, ticks, length);
+
+			if (info.Trail != null && --smokeTicks < 0)
+			{
+				var delayedPos = WPos.LerpQuadratic(args.source, target, angle, ticks - info.TrailDelay, length);
+				world.AddFrameEndTask(w => w.Add(new Smoke(w, delayedPos, info.Trail)));
+				smokeTicks = info.TrailInterval;
+			}
+
+			if (info.ContrailLength > 0)
+				trail.Update(pos);
+
+			if (ticks++ >= length || (!info.High && world.ActorMap
+			    .GetUnitsAt(pos.ToCPos()).Any(a => a.HasTrait<IBlocksBullets>())))
+			{
+				Explode(world);
 			}
 		}
-
-		const float height = .1f;
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (Info.ContrailLength > 0)
-				yield return Trail;
+			if (info.ContrailLength > 0)
+				yield return trail;
 
-			if (anim != null)
+			if (anim == null || ticks >= length)
+				yield break;
+
+			var cell = pos.ToCPos();
+			if (!args.sourceActor.World.FogObscures(cell))
 			{
-				var at = (float)t / TotalTime();
-
-				var altitude = float2.Lerp(srcAltitude, destAltitude, at);
-				var pos = float2.Lerp(src.ToFloat2(), dest.ToFloat2(), at) - new float2(0, altitude);
-
-				var cell = ((PPos)pos.ToInt2()).ToCPos();
-				if (!Args.sourceActor.World.FogObscures(cell))
+				if (info.Shadow)
 				{
-					if (Info.High || Info.Angle > 0)
-					{
-						if (Info.Shadow)
-							yield return new SpriteRenderable(anim.Image, pos, wr.Palette("shadow"), (int)pos.Y);
-
-						var highPos = pos - new float2(0, GetAltitude());
-
-						yield return new SpriteRenderable(anim.Image, highPos, wr.Palette("effect"), (int)pos.Y);
-					}
-					else
-						yield return new SpriteRenderable(anim.Image, pos,
-							wr.Palette(Args.weapon.Underwater ? "shadow" : "effect"), (int)pos.Y);
+					var shadowPos = pos - new WVec(0, 0, pos.Z);
+					foreach (var r in anim.Render(shadowPos, wr.Palette("shadow")))
+						yield return r;
 				}
+
+				var palette =  wr.Palette(args.weapon.Underwater ? "shadow" : "effect");
+				foreach (var r in anim.Render(pos, palette))
+					yield return r;
 			}
 		}
 
-		void Explode( World world )
+		void Explode(World world)
 		{
-			world.AddFrameEndTask(w => w.Remove(this));
-			Combat.DoImpacts(dest.ToWPos(destAltitude), Args.sourceActor, Args.weapon, Args.firepowerModifier);
+			if (info.ContrailLength > 0)
+				world.AddFrameEndTask(w => w.Add(new DelayedAction(info.ContrailLength, () => w.Remove(this))));
+			else
+				world.AddFrameEndTask(w => w.Remove(this));
+
+			Combat.DoImpacts(target, args.sourceActor, args.weapon, args.firepowerModifier);
 		}
 	}
 }
