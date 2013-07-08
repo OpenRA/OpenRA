@@ -30,6 +30,11 @@ namespace OpenRA.Traits
 				return ( facing - rot ) & 0xFF;
 		}
 
+		public static int GetFacing(WVec d, int currentFacing)
+		{
+			return GetFacing(new int2(d.X, d.Y), currentFacing);
+		}
+
 		public static int GetFacing(PVecInt d, int currentFacing)
 		{
 			return GetFacing(d.ToInt2(), currentFacing);
@@ -40,7 +45,7 @@ namespace OpenRA.Traits
 			return GetFacing(d.ToInt2(), currentFacing);
 		}
 
-		public static int GetFacing( int2 d, int currentFacing )
+		public static int GetFacing(int2 d, int currentFacing)
 		{
 			if (d == int2.Zero)
 				return currentFacing;
@@ -177,7 +182,7 @@ namespace OpenRA.Traits
 				: new CPos[] {};
 
 			if (cells.Length == 0)
-				cells = new CPos[] { target.CenterLocation.ToCPos() };
+				cells = new CPos[] { target.CenterPosition.ToCPos() };
 
 			return Util.ExpandFootprint(cells, true);
 		}

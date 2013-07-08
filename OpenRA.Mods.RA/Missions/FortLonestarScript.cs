@@ -82,7 +82,7 @@ namespace OpenRA.Mods.RA.Missions
             var targetEnemy = enemies.OrderBy(u => (self.CenterLocation - u.CenterLocation).LengthSquared).FirstOrDefault();
             if (targetEnemy != null)
             {
-                self.QueueActivity(new AttackMove.AttackMoveActivity(self, new Attack(Target.FromActor(targetEnemy), 6)));
+                self.QueueActivity(new AttackMove.AttackMoveActivity(self, new Attack(Target.FromActor(targetEnemy), WRange.FromCells(6))));
             }
         }
 

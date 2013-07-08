@@ -8,7 +8,9 @@
  */
 #endregion
 
+using System;
 using System.Linq;
+using OpenRA.GameRules;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Mods.RA.Render;
 using OpenRA.Traits;
@@ -17,40 +19,54 @@ namespace OpenRA.Mods.RA.Activities
 {
 	class Leap : Activity
 	{
-		Target target;
-		PPos initialLocation;
+		Mobile mobile;
+		WeaponInfo weapon;
 
-		int moveFraction;
-		const int delay = 6;
+		WPos from;
+		WPos to;
+		int ticks;
+		int length;
+		WAngle angle;
 
-		public Leap(Actor self, Target target)
+		public Leap(Actor self, Actor target, WeaponInfo weapon, WRange speed, WAngle angle)
 		{
-			this.target = target;
-			initialLocation = (PPos) self.Trait<Mobile>().PxPosition;
+			var targetMobile = target.TraitOrDefault<Mobile>();
+			if (targetMobile == null)
+				throw new InvalidOperationException("Leap requires a target actor with the Mobile trait");
 
-			self.Trait<RenderInfantry>().Attacking(self, target);
-			Sound.Play("dogg5p.aud", self.CenterLocation);
+			this.weapon = weapon;
+			this.angle = angle;
+			mobile = self.Trait<Mobile>();
+			mobile.SetLocation(mobile.fromCell, mobile.fromSubCell, targetMobile.fromCell, targetMobile.fromSubCell);
+			mobile.IsMoving = true;
+
+			from = self.CenterPosition;
+			var offset = MobileInfo.SubCellOffsets[targetMobile.fromSubCell];
+			to = targetMobile.fromCell.CenterPosition + new WVec(offset.X * 1024 / Game.CellSize, offset.Y * 1024 / Game.CellSize, 0);
+			length = Math.Max((to - from).Length / speed.Range, 1);
+
+			self.Trait<RenderInfantry>().Attacking(self, Target.FromActor(target));
+
+			if (weapon.Report != null && weapon.Report.Any())
+				Sound.Play(weapon.Report.Random(self.World.SharedRandom), self.CenterLocation);
 		}
 
 		public override Activity Tick(Actor self)
 		{
-			if( moveFraction == 0 && IsCanceled ) return NextActivity;
-			if (!target.IsValid) return NextActivity;
+			if (ticks == 0 && IsCanceled)
+				return NextActivity;
 
-			self.Trait<AttackLeap>().IsLeaping = true;
-			var mobile = self.Trait<Mobile>();
-			++moveFraction;
-
-			mobile.PxPosition = PPos.Lerp(initialLocation, target.PxPosition, moveFraction, delay);
-
-			if (moveFraction >= delay)
+			mobile.AdjustPxPosition(self, PPos.FromWPosHackZ(WPos.LerpQuadratic(from, to, angle, ++ticks, length)));
+			if (ticks >= length)
 			{
-				self.TraitsImplementing<IMove>().FirstOrDefault()
-					.SetPosition(self, target.CenterLocation.ToCPos());
+				mobile.SetLocation(mobile.toCell, mobile.toSubCell, mobile.toCell, mobile.toSubCell);
+				mobile.FinishedMoving(self);
+				mobile.IsMoving = false;
 
-				if (target.IsActor)
-					target.Actor.Kill(self);
-				self.Trait<AttackLeap>().IsLeaping = false;
+				self.World.ActorMap.GetUnitsAt(mobile.toCell, mobile.toSubCell)
+					.Except(new []{self}).Where(t => weapon.IsValidAgainst(t))
+					.Do(t => t.Kill(self));
+
 				return NextActivity;
 			}
 

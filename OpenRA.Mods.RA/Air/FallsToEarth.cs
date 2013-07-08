@@ -50,7 +50,7 @@ namespace OpenRA.Mods.RA.Air
 			if (aircraft.Altitude <= 0)
 			{
 				if (info.Explosion != null)
-					Combat.DoExplosion(self, info.Explosion, self.CenterLocation, 0);
+					Combat.DoExplosion(self, info.Explosion, self.CenterPosition);
 
 				self.Destroy();
 				return null;

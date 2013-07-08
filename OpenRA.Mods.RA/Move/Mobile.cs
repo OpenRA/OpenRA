@@ -81,7 +81,7 @@ namespace OpenRA.Mods.RA.Move
 			return passability.ToBits();
 		}
 
-		public readonly Dictionary<SubCell, PVecInt> SubCellOffsets = new Dictionary<SubCell, PVecInt>()
+		public static readonly Dictionary<SubCell, PVecInt> SubCellOffsets = new Dictionary<SubCell, PVecInt>()
 		{
 			{SubCell.TopLeft, new PVecInt(-7,-6)},
 			{SubCell.TopRight, new PVecInt(6,-6)},
@@ -170,7 +170,9 @@ namespace OpenRA.Mods.RA.Move
 
 		public void SetLocation(CPos from, SubCell fromSub, CPos to, SubCell toSub)
 		{
-			if (fromCell == from && toCell == to) return;
+			if (fromCell == from && toCell == to && fromSubCell == fromSub && toSubCell == toSub)
+				return;
+
 			RemoveInfluence();
 			__fromCell = from;
 			__toCell = to;
@@ -197,7 +199,7 @@ namespace OpenRA.Mods.RA.Move
 			if (init.Contains<LocationInit>())
 			{
 				this.__fromCell = this.__toCell = init.Get<LocationInit, CPos>();
-				this.PxPosition = Util.CenterOfCell(fromCell) + info.SubCellOffsets[fromSubCell];
+				this.PxPosition = Util.CenterOfCell(fromCell) + MobileInfo.SubCellOffsets[fromSubCell];
 			}
 
 			this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : info.InitialFacing;
@@ -207,7 +209,7 @@ namespace OpenRA.Mods.RA.Move
 		public void SetPosition(Actor self, CPos cell)
 		{
 			SetLocation(cell,fromSubCell, cell,fromSubCell);
-			PxPosition = Util.CenterOfCell(fromCell) + Info.SubCellOffsets[fromSubCell];
+			PxPosition = Util.CenterOfCell(fromCell) + MobileInfo.SubCellOffsets[fromSubCell];
 			FinishedMoving(self);
 		}
 
@@ -232,7 +234,7 @@ namespace OpenRA.Mods.RA.Move
 			if (order is MoveOrderTargeter)
 			{
 				if (Info.OnRails) return null;
-				return new Order("Move", self, queued) { TargetLocation = target.CenterLocation.ToCPos() };
+				return new Order("Move", self, queued) { TargetLocation = target.CenterPosition.ToCPos() };
 			}
 			return null;
 		}
@@ -416,6 +418,11 @@ namespace OpenRA.Mods.RA.Move
 			foreach (var t in self.TraitsImplementing<ISpeedModifier>())
 				speed *= t.GetSpeedModifier();
 			return (int)(speed / 100);
+		}
+
+		public int WorldMovementSpeedForCell(Actor self, CPos cell)
+		{
+			return MovementSpeedForCell(self, cell) * 1024 / Game.CellSize;
 		}
 
 		public void AddInfluence()

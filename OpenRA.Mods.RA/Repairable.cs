@@ -78,7 +78,7 @@ namespace OpenRA.Mods.RA
 
 				self.CancelActivity();
 				self.QueueActivity(new MoveAdjacentTo(target));
-				self.QueueActivity(mobile.MoveTo(order.TargetActor.CenterLocation.ToCPos(), order.TargetActor));
+				self.QueueActivity(mobile.MoveTo(order.TargetActor.CenterPosition.ToCPos(), order.TargetActor));
 				self.QueueActivity(new Rearm(self));
 				self.QueueActivity(new Repair(order.TargetActor));
 

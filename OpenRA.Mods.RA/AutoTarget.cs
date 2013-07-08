@@ -87,8 +87,9 @@ namespace OpenRA.Mods.RA
 			var target = ScanForTarget(self, null);
 			if (target != null)
 			{
-				self.SetTargetLine(Target.FromActor(target), Color.Red, false);
-				attack.AttackTarget(Target.FromActor(target), false, Info.AllowMovement && stance != UnitStance.Defend);
+				var t = Target.FromActor(target);
+				self.SetTargetLine(t, Color.Red, false);
+				attack.AttackTarget(t, false, Info.AllowMovement && stance != UnitStance.Defend);
 			}
 		}
 
@@ -100,10 +101,9 @@ namespace OpenRA.Mods.RA
 
 		public Actor ScanForTarget(Actor self, Actor currentTarget)
 		{
-			var range = Info.ScanRadius > 0 ? Info.ScanRadius : attack.GetMaximumRange();
-
-			if (self.IsIdle || currentTarget == null || !Combat.IsInRange(self.CenterLocation, range, currentTarget))
-				if(nextScanTime <= 0)
+			var range = Info.ScanRadius > 0 ? WRange.FromCells(Info.ScanRadius) : attack.GetMaximumRange();
+			if (self.IsIdle || currentTarget == null || !Target.FromActor(currentTarget).IsInRange(self.CenterPosition, range))
+				if (nextScanTime <= 0)
 					return ChooseTarget(self, range);
 
 			return currentTarget;
@@ -116,11 +116,10 @@ namespace OpenRA.Mods.RA
 				attack.AttackTarget(Target.FromActor(targetActor), false, Info.AllowMovement && stance != UnitStance.Defend);
 		}
 
-		Actor ChooseTarget(Actor self, float range)
+		Actor ChooseTarget(Actor self, WRange range)
 		{
 			nextScanTime = self.World.SharedRandom.Next(Info.MinimumScanTimeInterval, Info.MaximumScanTimeInterval);
-
-			var inRange = self.World.FindUnitsInCircle(self.CenterLocation, (int)(Game.CellSize * range));
+			var inRange = self.World.FindUnitsInCircle(self.CenterPosition, range);
 
 			if (self.Owner.HasFogVisibility())
 			{

@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA
 			if (self.World.FrameNumber - lastAttackTime > info.NotifyInterval * 25)
 				Sound.PlayNotification(self.Owner, "Speech", "BaseAttack", self.Owner.Country.Race);
 
-			lastAttackLocation = self.CenterLocation.ToCPos();
+			lastAttackLocation = self.CenterPosition.ToCPos();
 			lastAttackTime = self.World.FrameNumber;
 		}
 	}

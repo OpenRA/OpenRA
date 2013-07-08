@@ -107,9 +107,17 @@ namespace OpenRA.Mods.RA
 			if (limitedAmmo != null && !limitedAmmo.HasAmmo())
 				return;
 
-			if (!Combat.IsInRange(self.CenterLocation, Weapon.Range, target)) return;
-			if (Combat.IsInRange(self.CenterLocation, Weapon.MinRange, target)) return;
-			if (!IsValidAgainst(self.World, target)) return;
+			// TODO: Define weapon ranges as WRange
+			var range = new WRange((int)(1024*Weapon.Range));
+			var minRange = new WRange((int)(1024*Weapon.MinRange));
+			if (!target.IsInRange(self.CenterPosition, range))
+				return;
+
+			if (target.IsInRange(self.CenterPosition, minRange))
+				return;
+
+			if (!Weapon.IsValidAgainst(target, self.World))
+				return;
 
 			var barrel = Barrels[Burst % Barrels.Length];
 			var destMove = target.IsActor ? target.Actor.TraitOrDefault<IMove>() : null;
@@ -162,14 +170,6 @@ namespace OpenRA.Mods.RA
 				FireDelay = Weapon.ROF;
 				Burst = Weapon.Burst;
 			}
-		}
-
-		public bool IsValidAgainst(World world, Target target)
-		{
-			if (target.IsActor)
-				return Combat.WeaponValidForTarget(Weapon, target.Actor);
-			else
-				return Combat.WeaponValidForTarget(Weapon, world, target.CenterLocation.ToCPos());
 		}
 
 		public bool IsReloading { get { return FireDelay > 0; } }

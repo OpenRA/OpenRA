@@ -39,6 +39,11 @@ namespace OpenRA
 			return actors.OrderBy( a => (a.CenterLocation - px).LengthSquared ).FirstOrDefault();
 		}
 
+		public static IEnumerable<Actor> FindUnitsInCircle(this World world, WPos a, WRange r)
+		{
+			return world.FindUnitsInCircle(PPos.FromWPos(a), r.Range * Game.CellSize / 1024);
+		}
+
 		public static IEnumerable<Actor> FindUnitsInCircle(this World world, PPos a, int r)
 		{
 			using (new PerfSample("FindUnitsInCircle"))

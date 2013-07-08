@@ -177,7 +177,7 @@ namespace OpenRA.Mods.RA.Air
 				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
 
 			if (order.OrderID == "Move")
-				return new Order(order.OrderID, self, queued) { TargetLocation = target.CenterLocation.ToCPos() };
+				return new Order(order.OrderID, self, queued) { TargetLocation = target.CenterPosition.ToCPos() };
 
 			return null;
 		}

@@ -125,7 +125,7 @@ namespace OpenRA.Mods.RA.Missions
 
 				if (world.FrameNumber == frameInfiltrated + 1500 * 12 && !bridgeTank.IsDead() && bridgeTank.IsInWorld && !bridge.IsDead())
 				{
-					bridgeTank.QueueActivity(new Attack(Target.FromPos(bridge.CenterLocation), 4));
+					bridgeTank.QueueActivity(new Attack(Target.FromPos(bridge.CenterPosition), WRange.FromCells(4)));
 					attackingBridge = true;
 				}
 				if (attackingBridge && bridge.IsDead())
@@ -152,7 +152,7 @@ namespace OpenRA.Mods.RA.Missions
 
 					var enemy = enemies.OrderBy(u => (attacker.CenterLocation - u.CenterLocation).LengthSquared).FirstOrDefault();
 					if (enemy != null)
-						attacker.QueueActivity(new AttackMove.AttackMoveActivity(attacker, new Attack(Target.FromActor(enemy), 3)));
+						attacker.QueueActivity(new AttackMove.AttackMoveActivity(attacker, new Attack(Target.FromActor(enemy), WRange.FromCells(3))));
 					else
 					{
 						attackingTown = false;

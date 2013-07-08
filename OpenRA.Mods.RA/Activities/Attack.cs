@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA.Activities
 	{
 		protected Target Target;
 		ITargetable targetable;
-		int Range;
+		WRange Range;
 		bool AllowMovement;
 
 		int nextPathTime;
@@ -27,7 +27,10 @@ namespace OpenRA.Mods.RA.Activities
 		const int delayBetweenPathingAttempts = 20;
 		const int delaySpread = 5;
 
-		public Attack(Target target, int range, bool allowMovement)
+		public Attack(Target target, WRange range)
+			: this(target, range, true) {}
+
+		public Attack(Target target, WRange range, bool allowMovement)
 		{
 			Target = target;
 			if (target.IsActor)
@@ -37,20 +40,18 @@ namespace OpenRA.Mods.RA.Activities
 			AllowMovement = allowMovement;
 		}
 
-		public Attack(Target target, int range) : this(target, range, true) {}
-
-		public override Activity Tick( Actor self )
+		public override Activity Tick(Actor self)
 		{
 			var attack = self.Trait<AttackBase>();
-
-			var ret = InnerTick( self, attack );
-			attack.IsAttacking = ( ret == this );
+			var ret = InnerTick(self, attack);
+			attack.IsAttacking = (ret == this);
 			return ret;
 		}
 
-		protected virtual Activity InnerTick( Actor self, AttackBase attack )
+		protected virtual Activity InnerTick(Actor self, AttackBase attack)
 		{
-			if (IsCanceled) return NextActivity;
+			if (IsCanceled)
+				return NextActivity;
 
 			if (!Target.IsValid)
 				return NextActivity;
@@ -61,7 +62,7 @@ namespace OpenRA.Mods.RA.Activities
 			if (targetable != null && !targetable.TargetableBy(Target.Actor, self))
 				return NextActivity;
 
-			if (!Combat.IsInRange(self.CenterLocation, Range, Target))
+			if (!Target.IsInRange(self.CenterPosition, Range))
 			{
 				if (--nextPathTime > 0)
 					return this;
@@ -69,13 +70,13 @@ namespace OpenRA.Mods.RA.Activities
 				nextPathTime = self.World.SharedRandom.Next(delayBetweenPathingAttempts - delaySpread,
 					delayBetweenPathingAttempts + delaySpread);
 
-				return (AllowMovement) ? Util.SequenceActivities(self.Trait<Mobile>().MoveWithinRange(Target, Range), this) : NextActivity;
+				return (AllowMovement) ? Util.SequenceActivities(self.Trait<Mobile>().MoveWithinRange(Target, Range.Range / 1024), this) : NextActivity;
 			}
 
-			var desiredFacing = Util.GetFacing(Target.CenterLocation - self.CenterLocation, 0);
+			var desiredFacing = Util.GetFacing(Target.CenterPosition - self.CenterPosition, 0);
 			var facing = self.Trait<IFacing>();
 			if (facing.Facing != desiredFacing)
-				return Util.SequenceActivities( new Turn( desiredFacing ), this );
+				return Util.SequenceActivities(new Turn(desiredFacing), this);
 
 			attack.DoAttack(self, Target);
 			return this;
