@@ -235,6 +235,8 @@ STEG:
 		Name: Stegosaurus
 		Description: A large, heavily built, herbivorous quadruped
 		Icon: stegicnh
+	Armament:
+		Weapon: tail
 
 TREX:
 	Inherits: ^DINO
@@ -242,6 +244,8 @@ TREX:
 		Name: Tyrannosaurus rex
 		Description: Bipedal carnivore with a massive skull
 		Icon: trexicnh
+	Armament:
+		Weapon: teeth
 
 TRIC:
 	Inherits: ^DINO
@@ -249,6 +253,8 @@ TRIC:
 		Name: Triceratops
 		Description: Quadruped with large bony frill and three horns
 		Icon: tricicnh
+	Armament:
+		Weapon: horn
 
 RAPT:
 	Inherits: ^DINO
@@ -256,4 +262,5 @@ RAPT:
 		Name: Velociraptor
 		Description: Bipedal with enlarged sickle-shaped claw on each hindfoot
 		Icon: rapticnh
-
+	Armament:
+		Weapon: claw

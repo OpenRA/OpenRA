@@ -895,3 +895,63 @@ Patriot:
 		ImpactSound: xplos.aud
 		SmudgeType: Crater
 		Damage: 30
+
+Tail:
+	ROF: 30
+	Range: 1
+	Projectile: Bullet
+	Warhead:
+		Spread: 5
+		Versus:
+			None: 90%
+			Wood: 10%
+			Light: 30%
+			Heavy: 10%
+			Concrete: 10%
+		InfDeath: 1
+		Damage: 180
+
+Horn:
+	ROF: 20
+	Range: 1
+	Projectile: Bullet
+	Warhead:
+		Spread: 5
+		Versus:
+			None: 90%
+			Wood: 10%
+			Light: 30%
+			Heavy: 10%
+			Concrete: 10%
+		InfDeath: 1
+		Damage: 120
+
+Teeth:
+	ROF: 30
+	Range: 1
+	Projectile: Bullet
+	Warhead:
+		Spread: 5
+		Versus:
+			None: 90%
+			Wood: 10%
+			Light: 30%
+			Heavy: 10%
+			Concrete: 10%
+		InfDeath: 1
+		Damage: 180
+
+Claw:
+	ROF: 10
+	Range: 1
+	Projectile: Bullet
+	Warhead:
+		Spread: 5
+		Versus:
+			None: 90%
+			Wood: 10%
+			Light: 30%
+			Heavy: 10%
+			Concrete: 10%
+		InfDeath: 1
+		Damage: 60

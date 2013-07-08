@@ -200,7 +200,7 @@
 	Buildable:
 		Queue: Biolab
 		BuildPaletteOrder: 50
-		Owner: Dinopark
+		Owner: gdi, nod
 	Valued:
 		Cost: 1000
 	Tooltip:
@@ -221,10 +221,17 @@
 	TargetableUnit:
 		TargetTypes: Ground
 	HiddenUnderFog:
-	GainsExperience:
 	GivesExperience:
 	RenderInfantry:
+		Palette: terrain
+	EditorAppearance:
+		UseTerrainPalette: true
 	BodyOrientation:
+	DrawLineToTarget:
+	AutoTarget:
+		ScanRadius: 4
+	AttackMove:
+	AttackFrontal:
 
 ^Plane:
 	AppearsOnRadar:
