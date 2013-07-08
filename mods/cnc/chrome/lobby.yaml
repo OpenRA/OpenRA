@@ -90,17 +90,17 @@ Container@SERVER_LOBBY:
 							Align:Left
 							Font:Bold
 				Container@PLAYER_BIN_ROOT:
-				Button@OPTIONS_BUTTON:
-					X:15
-					Y:254
-					Width:112
-					Height:25
 				DropDownButton@SLOTS_DROPDOWNBUTTON:
-					X:132
+					X:15
 					Y:254
 					Width:150
 					Height:25
 					Text:Slot Admin
+				Button@OPTIONS_BUTTON:
+					X:170
+					Y:254
+					Width:112
+					Height:25
 				Button@CHANGEMAP_BUTTON:
 					X:287
 					Y:254

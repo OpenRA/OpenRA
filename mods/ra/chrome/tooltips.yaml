@@ -1,3 +1,14 @@
+Background@SIMPLE_TOOLTIP:
+	Logic:SimpleTooltipLogic
+	Background:dialog4
+	Height:29
+	Children:
+		Label@LABEL:
+			X:7
+			Y:2
+			Height:23
+			Font:Bold
+
 Background@SPAWN_TOOLTIP:
 	Logic:SpawnSelectorTooltipLogic
 	Background:dialog4

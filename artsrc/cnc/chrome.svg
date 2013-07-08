@@ -99,9 +99,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="15.999999"
-     inkscape:cx="385.97751"
-     inkscape:cy="397.09537"
+     inkscape:zoom="5.6568539"
+     inkscape:cx="371.83537"
+     inkscape:cy="425.37964"
      inkscape:document-units="px"
      inkscape:current-layer="svg2"
      showgrid="false"
@@ -205,13 +205,6 @@
       </cc:Work>
     </rdf:RDF>
   </metadata>
-  <rect
-     style="fill:#768bd7;fill-opacity:1;stroke:none"
-     id="rect3200"
-     width="767.91803"
-     height="742.46216"
-     x="-195.16148"
-     y="-169.65097" />
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
@@ -877,21 +870,15 @@
        sodipodi:nodetypes="ccccc"
        inkscape:connector-curvature="0"
        id="path3948"
-       d="m 320,580.3622 4,4 0,0 -4,4 z"
+       d="m 400,588.3622 4,4 0,0 -4,4 z"
        style="fill:#ffffff;fill-opacity:1;stroke:none" />
     <rect
        style="fill:#ffffff;fill-opacity:1;stroke:none"
        id="rect3950"
        width="10"
        height="2"
-       x="323"
-       y="583.36224" />
-    <path
-       style="fill:#ffffff;fill-opacity:1;stroke:none"
-       d="m 336,580.3622 -4,4 0,0 4,4 z"
-       id="path3952"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="ccccc" />
+       x="403"
+       y="591.36224" />
     <rect
        style="fill:#ffffff;fill-opacity:1;stroke:none"
        id="rect3167"
@@ -1355,6 +1342,19 @@
        id="path3993"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccc" />
+    <rect
+       y="599.36224"
+       x="403"
+       height="2"
+       width="10"
+       id="rect3206"
+       style="fill:#ffffff;fill-opacity:1;stroke:none" />
+    <path
+       sodipodi:nodetypes="ccccc"
+       inkscape:connector-curvature="0"
+       id="path3208"
+       d="m 416,596.3622 -4,4 0,0 4,4 z"
+       style="fill:#ffffff;fill-opacity:1;stroke:none" />
   </g>
   <g
      inkscape:groupmode="layer"

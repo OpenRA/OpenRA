@@ -68,19 +68,19 @@ Background@LOBBY_OPTIONS_BIN:
 		Checkbox@ALLOWCHEATS_CHECKBOX:
 			X:150
 			Y:80
-			Width:80
+			Width:220
 			Height:20
 			Text:Enable Cheats / Debug Menu
 		Checkbox@CRATES_CHECKBOX:
 			X:150
 			Y:110
-			Width:80
+			Width:220
 			Height:20
 			Text:Enable Crates
 		Checkbox@FRAGILEALLIANCES_CHECKBOX:
 			X:150
 			Y:140
-			Width:80
+			Width:220
 			Height:20
 			Text:Allow Team Changes
 		Label@DIFFICULTY_DESC:

@@ -2,14 +2,9 @@ chrome-allies: chrome-allies.png
 	specialbin-top: 0,0,30,51
 	specialbin-middle: 0,51,30,51
 	specialbin-bottom: 0,153,30,39
-	moneybin: 192,0,320,32
+	moneybin: 192,0,320,31
+	radar: 297,31,210,222
 	tooltip-bg: 0,288,272,136
-
-radar-allies: chrome-allies.png
-	left: 297,31,9,192
-	right: 498,31,9,192
-	bottom: 297,223,210,30
-	bg: 306,31,192,192
 
 power-allies: chrome-allies.png
 	power-indicator: 187,4,4,7
@@ -44,15 +39,9 @@ chrome-soviet: chrome-soviet.png
 	specialbin-top: 0,0,30,51
 	specialbin-middle: 0,51,30,51
 	specialbin-bottom: 0,153,30,39
-	moneybin: 192,0,320,32
+	moneybin: 192,0,320,31
+	radar: 297,31,210,222
 	tooltip-bg: 0,288,272,136
-
-radar-soviet: chrome-soviet.png
-	left: 297,31,9,192
-	right: 498,31,9,192
-	bottom: 297,223,210,30
-	bg: 306,31,192,192
-	power-indicator: 187,4,4,7
 
 power-soviet: chrome-soviet.png
 	power-indicator: 187,4,4,7

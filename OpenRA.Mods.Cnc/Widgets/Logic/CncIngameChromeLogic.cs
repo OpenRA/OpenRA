@@ -9,6 +9,8 @@
 #endregion
 
 using System.Drawing;
+using System.Linq;
+using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Orders;
 using OpenRA.Mods.RA.Widgets;
@@ -100,9 +102,22 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 			playerWidgets.Get<ButtonWidget>("OPTIONS_BUTTON").OnClick = OptionsClicked;
 
-			var winLossWatcher = playerWidgets.Get<LogicTickerWidget>("WIN_LOSS_WATCHER");
-			winLossWatcher.OnTick = () =>
+			var radarEnabled = false;
+			var cachedRadarEnabled = false;
+			sidebarRoot.Get<RadarWidget>("RADAR_MINIMAP").IsEnabled = () => radarEnabled;
+
+			var sidebarTicker = playerWidgets.Get<LogicTickerWidget>("SIDEBAR_TICKER");
+			sidebarTicker.OnTick = () =>
 			{
+				// Update radar bin
+				radarEnabled = world.ActorsWithTrait<ProvidesRadar>()
+					.Any(a => a.Actor.Owner == world.LocalPlayer && a.Trait.IsActive);
+
+				if (radarEnabled != cachedRadarEnabled)
+					Sound.PlayNotification(null, "Sounds", (radarEnabled ? "RadarUp" : "RadarDown"), null);
+				cachedRadarEnabled = radarEnabled;
+
+				// Switch to observer mode after win/loss
 				if (world.LocalPlayer.WinState != WinState.Undefined)
 					Game.RunAfterTick(() =>
 					{
@@ -115,11 +130,12 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			siloBar.GetProvided = () => playerResources.OreCapacity;
 			siloBar.GetUsed = () => playerResources.Ore;
 			siloBar.TooltipFormat = "Silo Usage: {0}/{1}";
-			siloBar.RightIndicator = true;
 			siloBar.GetBarColor = () => 
 			{
-				if (playerResources.Ore == playerResources.OreCapacity) return Color.Red;
-				if (playerResources.Ore >= 0.8 * playerResources.OreCapacity) return Color.Orange;
+				if (playerResources.Ore == playerResources.OreCapacity)
+					return Color.Red;
+				if (playerResources.Ore >= 0.8 * playerResources.OreCapacity)
+					return Color.Orange;
 				return Color.LimeGreen;
 			};
 
@@ -127,11 +143,12 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			powerBar.GetProvided = () => powerManager.PowerProvided;
 			powerBar.GetUsed = () => powerManager.PowerDrained;
 			powerBar.TooltipFormat = "Power Usage: {0}/{1}";
-			powerBar.RightIndicator = false;
 			powerBar.GetBarColor = () => 
 			{
-				if (powerManager.PowerState == PowerState.Critical) return Color.Red;
-				if (powerManager.PowerState == PowerState.Low) return Color.Orange;
+				if (powerManager.PowerState == PowerState.Critical)
+					return Color.Red;
+				if (powerManager.PowerState == PowerState.Low)
+					return Color.Orange;
 				return Color.LimeGreen;
 			};
 		}
