@@ -653,3 +653,9 @@ rushouse:
 		Start: 0
 	damaged-idle:
 		Start: 1
+
+asianhut:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1

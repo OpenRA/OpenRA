@@ -593,3 +593,8 @@ RUSHOUSE:
 	Building:
 		Footprint: _ x
 		Dimensions: 1,2
+
+ASIANHUT:
+	Inherits: ^CivBuilding
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
