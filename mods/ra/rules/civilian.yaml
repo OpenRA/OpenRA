@@ -273,21 +273,14 @@ BRL3:
 	TargetableBuilding:
 		TargetTypes: Ground, DemoTruck
 
-AMMOBOX:
-	Inherits: ^TechBuilding
-	Selectable:
-		Priority: 0
-	Health:
-		HP: 10
-	Explodes:
-		Weapon: UnitExplode
-	Tooltip:
-		Name: Ammo Box
-	AutoTargetIgnore:
-	Armor:
-		Type: Light
-	TargetableBuilding:
-		TargetTypes: Ground, DemoTruck
+AMMOBOX1:
+	Inherits: ^AmmoBox
+
+AMMOBOX2:
+	Inherits: ^AmmoBox
+
+AMMOBOX3:
+	Inherits: ^AmmoBox
 
 MISS:
 	Inherits: ^TechBuilding
