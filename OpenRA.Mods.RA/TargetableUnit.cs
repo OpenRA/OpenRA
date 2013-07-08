@@ -54,7 +54,7 @@ namespace OpenRA.Mods.RA
 
 		public virtual IEnumerable<CPos> TargetableCells( Actor self )
 		{
-			yield return self.CenterLocation.ToCPos();
+			yield return self.CenterPosition.ToCPos();
 		}
 	}
 }

@@ -71,7 +71,7 @@ namespace OpenRA.Mods.RA
 
 		public bool FaceTarget(Actor self, Target target)
 		{
-			desiredFacing = Util.GetFacing(target.CenterLocation - self.CenterLocation, turretFacing);
+			desiredFacing = Util.GetFacing(target.CenterPosition - self.CenterPosition, turretFacing);
 			return turretFacing == desiredFacing;
 		}
 

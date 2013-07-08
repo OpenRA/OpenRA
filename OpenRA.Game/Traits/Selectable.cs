@@ -46,9 +46,9 @@ namespace OpenRA.Traits
 			var Xy = new float2(bounds.Right, bounds.Top);
 
 			wr.DrawSelectionBox(self, Color.White);
-			DrawHealthBar(self, xy, Xy);
-			DrawExtraBars(self, xy, Xy);
-			DrawUnitPath(self);
+			DrawHealthBar(wr, self, xy, Xy);
+			DrawExtraBars(wr, self, xy, Xy);
+			DrawUnitPath(wr, self);
 		}
 
 		public void DrawRollover(WorldRenderer wr, Actor self)
@@ -61,11 +61,11 @@ namespace OpenRA.Traits
 			var xy = new float2(bounds.Left, bounds.Top);
 			var Xy = new float2(bounds.Right, bounds.Top);
 
-			DrawHealthBar(self, xy, Xy);
-			DrawExtraBars(self, xy, Xy);
+			DrawHealthBar(wr, self, xy, Xy);
+			DrawExtraBars(wr, self, xy, Xy);
 		}
 
-		void DrawExtraBars(Actor self, float2 xy, float2 Xy)
+		void DrawExtraBars(WorldRenderer wr, Actor self, float2 xy, float2 Xy)
 		{
 			foreach (var extraBar in self.TraitsImplementing<ISelectionBar>())
 			{
@@ -74,12 +74,12 @@ namespace OpenRA.Traits
 				{
 					xy.Y += 4;
 					Xy.Y += 4;
-					DrawSelectionBar(self, xy, Xy, extraBar.GetValue(), extraBar.GetColor());
+					DrawSelectionBar(wr, self, xy, Xy, extraBar.GetValue(), extraBar.GetColor());
 				}
 			}
 		}
 
-		void DrawSelectionBar(Actor self, float2 xy, float2 Xy, float value, Color barColor)
+		void DrawSelectionBar(WorldRenderer wr, Actor self, float2 xy, float2 Xy, float value, Color barColor)
 		{
 			if (!self.IsInWorld) return;
 
@@ -102,7 +102,7 @@ namespace OpenRA.Traits
 			wlr.DrawLine(xy + new float2(0, -4), z + new float2(0, -4), barColor2, barColor2);
 		}
 
-		void DrawHealthBar(Actor self, float2 xy, float2 Xy)
+		void DrawHealthBar(WorldRenderer wr, Actor self, float2 xy, float2 Xy)
 		{
 			if (!self.IsInWorld) return;
 
@@ -148,24 +148,21 @@ namespace OpenRA.Traits
 			}
 		}
 
-		void DrawUnitPath(Actor self)
+		void DrawUnitPath(WorldRenderer wr, Actor self)
 		{
 			if (self.World.LocalPlayer == null ||!self.World.LocalPlayer.PlayerActor.Trait<DeveloperMode>().PathDebug) return;
 
 			var activity = self.GetCurrentActivity();
-			var mobile = self.TraitOrDefault<IMove>();
-			if (activity != null && mobile != null)
+			if (activity != null)
 			{
-				var alt = new float2(0, -mobile.Altitude);
 				var targets = activity.GetTargets(self);
-				var start = self.CenterLocation.ToFloat2() + alt;
+				var start = wr.ScreenPxPosition(self.CenterPosition);
 
 				var c = Color.Green;
 
 				var wlr = Game.Renderer.WorldLineRenderer;
-				foreach (var step in targets.Select(p => p.CenterLocation.ToFloat2()))
+				foreach (var stp in targets.Where(t => t.IsValid).Select(p => wr.ScreenPxPosition(p.CenterPosition)))
 				{
-					var stp = step + alt;
 					wlr.DrawLine(stp + new float2(-1, -1), stp + new float2(-1, 1), c, c);
 					wlr.DrawLine(stp + new float2(-1, 1), stp + new float2(1, 1), c, c);
 					wlr.DrawLine(stp + new float2(1, 1), stp + new float2(1, -1), c, c);

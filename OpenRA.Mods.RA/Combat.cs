@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA
 
 			if (explosionType != null)
 				world.AddFrameEndTask(
-					w => w.Add(new Explosion(w, args.dest, explosionType, isWater, args.destAltitude)));
+					w => w.Add(new Explosion(w, args.dest.ToWPos(args.destAltitude), explosionType)));
 
 			Sound.Play(GetImpactSound(warhead, isWater), args.dest);
 
@@ -139,12 +139,14 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		public static void DoExplosion(Actor attacker, string weapontype, PPos pos, int altitude)
+		public static void DoExplosion(Actor attacker, string weapontype, WPos pos)
 		{
+			var pxPos = PPos.FromWPos(pos);
+			var altitude = pos.Z * Game.CellSize / 1024;
 			var args = new ProjectileArgs
 			{
-				src = pos,
-				dest = pos,
+				src = pxPos,
+				dest = pxPos,
 				srcAltitude = altitude,
 				destAltitude = altitude,
 				firedBy = attacker,
@@ -154,7 +156,7 @@ namespace OpenRA.Mods.RA
 			};
 
 			if (args.weapon.Report != null && args.weapon.Report.Any())
-				Sound.Play(args.weapon.Report.Random(attacker.World.SharedRandom), pos);
+				Sound.Play(args.weapon.Report.Random(attacker.World.SharedRandom), pxPos);
 
 			DoImpacts(args);
 		}
@@ -176,7 +178,8 @@ namespace OpenRA.Mods.RA
 		static float GetDamageToInflict(Actor target, ProjectileArgs args, WarheadInfo warhead, float modifier)
 		{
 			// don't hit air units with splash from ground explosions, etc
-			if (!WeaponValidForTarget(args.weapon, target)) return 0f;
+			if (!args.weapon.IsValidAgainst(target))
+				return 0f;
 
 			var health = target.Info.Traits.GetOrDefault<HealthInfo>();
 			if( health == null ) return 0f;
@@ -187,49 +190,6 @@ namespace OpenRA.Mods.RA
 			var multiplier = (float)warhead.EffectivenessAgainst(target);
 
 			return (float)(rawDamage * multiplier);
-		}
-
-		public static bool WeaponValidForTarget(WeaponInfo weapon, Actor target)
-		{
-			var targetable = target.TraitOrDefault<ITargetable>();
-			if (targetable == null || !weapon.ValidTargets.Intersect(targetable.TargetTypes).Any())
-				return false;
-
-			if (weapon.Warheads.All( w => w.EffectivenessAgainst(target) <= 0))
-				return false;
-
-			return true;
-		}
-
-		public static bool WeaponValidForTarget(WeaponInfo weapon, World world, CPos location)
-		{
-			if (weapon.ValidTargets.Contains("Ground") && world.GetTerrainType(location) != "Water") return true;
-			if (weapon.ValidTargets.Contains("Water") && world.GetTerrainType(location) == "Water") return true;
-			return false;
-		}
-
-		public static bool IsInRange(PPos attackOrigin, float range, Actor target)
-		{
-			var rsq = range * range * Game.CellSize * Game.CellSize;
-			foreach (var cell in target.Trait<ITargetable>().TargetableCells(target))
-				if ((attackOrigin - Util.CenterOfCell(cell)).LengthSquared <= rsq)
-					return true;
-			return false;
-		}
-
-		public static bool IsInRange(PPos attackOrigin, float range, PPos targetLocation)
-		{
-			var rsq = range * range * Game.CellSize * Game.CellSize;
-			return (attackOrigin - targetLocation).LengthSquared <= rsq;
-		}
-
-		public static bool IsInRange(PPos attackOrigin, float range, Target target)
-		{
-			if (!target.IsValid) return false;
-			if (target.IsActor)
-				return IsInRange(attackOrigin, range, target.Actor);
-			else
-				return IsInRange(attackOrigin, range, target.CenterLocation);
 		}
 	}
 }

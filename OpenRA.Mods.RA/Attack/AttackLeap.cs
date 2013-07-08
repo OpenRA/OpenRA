@@ -10,6 +10,7 @@
 
 using System;
 using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Traits;
 
@@ -17,38 +18,39 @@ namespace OpenRA.Mods.RA
 {
 	class AttackLeapInfo : AttackFrontalInfo
 	{
+		[Desc("Leap speed (in units/tick).")]
+		public readonly WRange Speed = new WRange(426);
+		public readonly WAngle Angle = WAngle.FromDegrees(20);
+
 		public override object Create(ActorInitializer init) { return new AttackLeap(init.self, this); }
 	}
 
 	class AttackLeap : AttackFrontal, ISync
 	{
-		[Sync] internal bool IsLeaping;
+		AttackLeapInfo info;
 
 		public AttackLeap(Actor self, AttackLeapInfo info)
-			: base(self, info) {}
+			: base(self, info)
+		{
+			this.info = info;
+		}
 
 		public override void DoAttack(Actor self, Target target)
 		{
-			if (!CanAttack(self, target))
+			if (!CanAttack(self, target) || !target.IsActor)
 				return;
 
 			var a = ChooseArmamentForTarget(target);
 			if (a == null)
 				return;
 
-			if (!Combat.IsInRange(self.CenterLocation, a.Weapon.Range, target))
+			// TODO: Define weapon ranges as WRange
+			var range = new WRange((int)(1024*a.Weapon.Range));
+			if (!target.IsInRange(self.CenterPosition, range))
 				return;
 
 			self.CancelActivity();
-			self.QueueActivity(new Leap(self, target));
-		}
-
-		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
-		{
-			var a = ChooseArmamentForTarget(newTarget);
-			if (a == null)
-				return null;
-			return new Activities.Attack(newTarget, Math.Max(0, (int)a.Weapon.Range), allowMove);
+			self.QueueActivity(new Leap(self, target.Actor, a.Weapon, info.Speed, info.Angle));
 		}
 	}
 }

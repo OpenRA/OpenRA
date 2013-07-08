@@ -250,7 +250,7 @@ namespace OpenRA.Mods.RA
 				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
 
 			if (order.OrderID == "Harvest")
-				return new Order(order.OrderID, self, queued) { TargetLocation = target.CenterLocation.ToCPos() };
+				return new Order(order.OrderID, self, queued) { TargetLocation = target.CenterPosition.ToCPos() };
 
 			return null;
 		}

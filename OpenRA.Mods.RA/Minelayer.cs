@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA
 		{
 			if( order is BeginMinefieldOrderTargeter )
 			{
-				var start = target.CenterLocation.ToCPos();
+				var start = target.CenterPosition.ToCPos();
 				self.World.OrderGenerator = new MinefieldOrderGenerator( self, start );
 				return new Order("BeginMinefield", self, false) { TargetLocation = start };
 			}

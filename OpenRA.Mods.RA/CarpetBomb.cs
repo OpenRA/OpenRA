@@ -14,25 +14,37 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class CarpetBombInfo : TraitInfo<CarpetBomb>
+	class CarpetBombInfo : ITraitInfo
 	{
 		[WeaponReference]
 		public readonly string Weapon = null;
 		public readonly int Range = 3;
+
+		public object Create(ActorInitializer init) { return new CarpetBomb(this); }
 	}
 
-	class CarpetBomb : ITick, ISync			// TODO: maybe integrate this better with the normal weapons system?
+	// TODO: maybe integrate this better with the normal weapons system?
+	class CarpetBomb : ITick, ISync
 	{
-		[Sync] CPos Target;
-		[Sync] int dropDelay;
+		CarpetBombInfo info;
+		Target target;
 
-		public void SetTarget(CPos targetCell) { Target = targetCell; }
+		[Sync] int dropDelay;
+		[Sync] WRange range;
+
+		public CarpetBomb(CarpetBombInfo info)
+		{
+			this.info = info;
+
+			// TODO: Push this conversion into the yaml
+			range = WRange.FromCells(info.Range);
+		}
+
+		public void SetTarget(CPos targetCell) { target = Target.FromCell(targetCell); }
 
 		public void Tick(Actor self)
 		{
-			var info = self.Info.Traits.Get<CarpetBombInfo>();
-
-			if( !Combat.IsInRange( self.CenterLocation, info.Range, Target.ToPPos() ) )
+			if (!target.IsInRange(self.CenterPosition, range))
 				return;
 
 			var limitedAmmo = self.TraitOrDefault<LimitedAmmo>();

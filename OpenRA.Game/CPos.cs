@@ -21,8 +21,6 @@ namespace OpenRA
 		public readonly int X, Y;
 
 		public CPos(int x, int y) { X = x; Y = y; }
-		public CPos(WPos a) { X = a.X / 1024; Y = a.Y / 1024; }
-
 		public static readonly CPos Zero = new CPos(0, 0);
 
 		public static explicit operator CPos(int2 a) { return new CPos(a.X, a.Y); }
@@ -70,5 +68,10 @@ namespace OpenRA
 	{
 		public static CPos TopLeftAsCPos(this Rectangle r) { return new CPos(r.Left, r.Top); }
 		public static CPos BottomRightAsCPos(this Rectangle r) { return new CPos(r.Right, r.Bottom); }
+	}
+
+	public static class WPosExtensions
+	{
+		public static CPos ToCPos(this WPos a) { return new CPos(a.X / 1024, a.Y / 1024); }
 	}
 }

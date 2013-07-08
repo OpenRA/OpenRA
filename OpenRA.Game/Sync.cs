@@ -80,6 +80,31 @@ namespace OpenRA
 				il.EmitCall(OpCodes.Call, ((Func<PSubVec, int>)hash_PSubVec).Method, null);
 				il.Emit(OpCodes.Xor);
 			}
+			else if (type == typeof(WRange))
+			{
+				il.EmitCall(OpCodes.Call, ((Func<WRange, int>)(a => a.GetHashCode())).Method, null);
+				il.Emit(OpCodes.Xor);
+			}
+			else if (type == typeof(WPos))
+			{
+				il.EmitCall(OpCodes.Call, ((Func<WPos, int>)(a => a.GetHashCode())).Method, null);
+				il.Emit(OpCodes.Xor);
+			}
+			else if (type == typeof(WVec))
+			{
+				il.EmitCall(OpCodes.Call, ((Func<WVec, int>)(a => a.GetHashCode())).Method, null);
+				il.Emit(OpCodes.Xor);
+			}
+			else if (type == typeof(WAngle))
+			{
+				il.EmitCall(OpCodes.Call, ((Func<WAngle, int>)(a => a.GetHashCode())).Method, null);
+				il.Emit(OpCodes.Xor);
+			}
+			else if (type == typeof(WRot))
+			{
+				il.EmitCall(OpCodes.Call, ((Func<WRot, int>)(a => a.GetHashCode())).Method, null);
+				il.Emit(OpCodes.Xor);
+			}
 			else if (type == typeof(TypeDictionary))
 			{
 				il.EmitCall(OpCodes.Call, ((Func<TypeDictionary, int>)hash_tdict).Method, null);

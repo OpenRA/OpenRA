@@ -117,7 +117,7 @@ namespace OpenRA.Mods.RA
 				if (target.IsActor)
 					return new Order("Attack", self, queued) { TargetActor = target.Actor };
 				else
-					return new Order("Attack", self, queued) { TargetLocation = target.CenterLocation.ToCPos() };
+					return new Order("Attack", self, queued) { TargetLocation = target.CenterPosition.ToCPos() };
 			}
 			return null;
 		}
@@ -139,10 +139,10 @@ namespace OpenRA.Mods.RA
 
 		public abstract Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove);
 
-		public bool HasAnyValidWeapons(Target t) { return Armaments.Any(a => a.IsValidAgainst(self.World, t)); }
-		public float GetMaximumRange() { return Armaments.Select(a => a.Weapon.Range).Aggregate(0f, Math.Max); }
+		public bool HasAnyValidWeapons(Target t) { return Armaments.Any(a => a.Weapon.IsValidAgainst(t, self.World)); }
+		public WRange GetMaximumRange() { return new WRange((int)(1024*Armaments.Max(a => a.Weapon.Range))); }
 
-		public Armament ChooseArmamentForTarget(Target t) { return Armaments.FirstOrDefault(a => a.IsValidAgainst(self.World, t)); }
+		public Armament ChooseArmamentForTarget(Target t) { return Armaments.FirstOrDefault(a => a.Weapon.IsValidAgainst(t, self.World)); }
 
 		public void AttackTarget(Target target, bool queued, bool allowMove)
 		{

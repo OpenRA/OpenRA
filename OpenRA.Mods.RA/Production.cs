@@ -50,8 +50,8 @@ namespace OpenRA.Mods.RA
 		public void DoProduction(Actor self, ActorInfo producee, ExitInfo exitinfo)
 		{
 			var exit = self.Location + exitinfo.ExitCellVector;
-			var spawn = self.Trait<IHasLocation>().PxPosition + exitinfo.SpawnOffsetVector;
-			var to = Util.CenterOfCell(exit);
+			var spawn = (self.Trait<IHasLocation>().PxPosition + exitinfo.SpawnOffsetVector).ToWPos(0);
+			var to = exit.CenterPosition;
 
 			var fi = producee.Traits.Get<IFacingInfo>();
 			var initialFacing = exitinfo.Facing < 0 ? Util.GetFacing(to - spawn, fi.GetInitialFacing()) : exitinfo.Facing;
@@ -66,7 +66,7 @@ namespace OpenRA.Mods.RA
 			// TODO: Move this into an *Init
 			// TODO: We should be adjusting the actual position for aircraft, not just visuals.
 			var teleportable = newUnit.Trait<ITeleportable>();
-			teleportable.AdjustPxPosition(newUnit, spawn);
+			teleportable.AdjustPxPosition(newUnit, PPos.FromWPos(spawn));
 
 			// TODO: Generalize this for non-mobile (e.g. aircraft) too
 			// Remember to update the Enter activity too
@@ -74,7 +74,7 @@ namespace OpenRA.Mods.RA
 			if (mobile != null)
 			{
 				// Animate the spawn -> exit transition
-				var speed = mobile.MovementSpeedForCell(newUnit, exit);
+				var speed = mobile.WorldMovementSpeedForCell(newUnit, exit);
 				var length = speed > 0 ? (int)((to - spawn).Length * 3 / speed) : 0;
 				newUnit.QueueActivity(new Drag(spawn, to, length));
 			}

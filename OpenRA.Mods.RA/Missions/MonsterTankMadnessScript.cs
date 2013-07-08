@@ -258,7 +258,7 @@ namespace OpenRA.Mods.RA.Missions
 		{
 			Sound.Play("reinfor1.aud");
 			foreach (var unit in units)
-				world.CreateActor(unit, greece, startEntryPoint.Location, Util.GetFacing(startBridgeEndPoint.CenterLocation - startEntryPoint.CenterLocation, 0))
+				world.CreateActor(unit, greece, startEntryPoint.Location, Util.GetFacing(startBridgeEndPoint.CenterPosition - startEntryPoint.CenterPosition, 0))
 				.QueueActivity(new Move.Move(startMovePoint.Location, 0));
 		}
 
@@ -266,7 +266,7 @@ namespace OpenRA.Mods.RA.Missions
 		{
 			Sound.Play("reinfor1.aud");
 			foreach (var unit in units)
-				world.CreateActor(unit, greece, alliedBaseEntryPoint.Location, Util.GetFacing(alliedBaseMovePoint.CenterLocation - alliedBaseEntryPoint.CenterLocation, 0))
+				world.CreateActor(unit, greece, alliedBaseEntryPoint.Location, Util.GetFacing(alliedBaseMovePoint.CenterPosition - alliedBaseEntryPoint.CenterPosition, 0))
 				.QueueActivity(new Move.Move(alliedBaseMovePoint.Location, 0));
 		}
 

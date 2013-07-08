@@ -79,23 +79,24 @@ namespace OpenRA.Mods.RA.Activities
 				return this;
 
 			var actor = cargo.Unload(self);
-			var exitPx = Util.CenterOfCell(exitTile.Value);
-			var currentPx = Util.CenterOfCell(self.Location);
+			var exit = exitTile.Value.CenterPosition;
+			var current = self.Location.CenterPosition;
 
 			self.World.AddFrameEndTask(w =>
 			{
-				if (actor.Destroyed) return;
+				if (actor.Destroyed)
+					return;
 
 				var mobile = actor.Trait<Mobile>();
-				mobile.Facing = Util.GetFacing( (exitPx - currentPx).ToInt2(), mobile.Facing );
+				mobile.Facing = Util.GetFacing(exit - current, mobile.Facing );
 				mobile.SetPosition(actor, exitTile.Value);
-				mobile.AdjustPxPosition(actor, currentPx);
-				var speed = mobile.MovementSpeedForCell(actor, exitTile.Value);
-				var length = speed > 0 ? ((int)(exitPx - currentPx).Length * 3 / speed) : 0;
+				mobile.AdjustPxPosition(actor, PPos.FromWPos(current));
+				var speed = mobile.WorldMovementSpeedForCell(actor, exitTile.Value);
+				var length = speed > 0 ? ((int)(exit - current).Length * 3 / speed) : 0;
 
 				w.Add(actor);
 				actor.CancelActivity();
-				actor.QueueActivity(new Drag(currentPx, exitPx, length));
+				actor.QueueActivity(new Drag(current, exit, length));
 				actor.QueueActivity(mobile.MoveTo(exitTile.Value, 0));
 
 				var rallyPoint = ChooseRallyPoint(actor).Value;

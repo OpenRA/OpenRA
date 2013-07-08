@@ -33,7 +33,9 @@ namespace OpenRA.Mods.RA
 			if (arm == null)
 				return;
 
-			if (!Combat.IsInRange(self.CenterLocation, arm.Weapon.Range, target))
+			// TODO: Define weapon ranges as WRange
+			var range = new WRange((int)(1024*arm.Weapon.Range));
+			if (!target.IsInRange(self.CenterPosition, range))
 				return;
 
 			var move = self.TraitOrDefault<IMove>();

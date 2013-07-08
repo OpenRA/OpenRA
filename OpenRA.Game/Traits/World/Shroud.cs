@@ -202,7 +202,7 @@ namespace OpenRA.Traits
 					return cells.Select(c => c.First);
 			}
 
-			return new[] { a.CenterLocation.ToCPos() };
+			return new[] { a.CenterPosition.ToCPos() };
 		}
 
 		public void Explore(World world, CPos center, int range)
