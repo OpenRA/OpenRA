@@ -36,10 +36,10 @@ namespace OpenRA.Mods.RA.Activities
 			var capturableInfo = target.Actor.Info.Traits.Get<LegacyCapturableInfo>();
 
 			var health = target.Actor.Trait<Health>();
-			var lowEnoughHealth = health.HP <= capturableInfo.CaptureThreshold * health.MaxHP;
 
 			self.World.AddFrameEndTask(w =>
 			{
+				var lowEnoughHealth = health.HP <= capturableInfo.CaptureThreshold * health.MaxHP;
 				if (!capturesInfo.Sabotage || lowEnoughHealth || target.Actor.Owner.NonCombatant)
 				{
 					var oldOwner = target.Actor.Owner;
