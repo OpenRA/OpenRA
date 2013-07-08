@@ -619,7 +619,7 @@ v37:
 	damaged-idle:
 		Start: 1
 
-stsga:
+utilpol1:
 	idle:
 		Start: 0
 	damaged-idle:
@@ -627,7 +627,7 @@ stsga:
 	dead:
 		Start: 1
 
-stsgb:
+utilpol2:
 	idle:
 		Start: 0
 	damaged-idle:

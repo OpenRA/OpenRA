@@ -332,12 +332,12 @@ T04:
 		Footprint: __ x_
 		Dimensions: 2,2
 
-STSGA:
+UTILPOL1:
 	Inherits: ^Tree
 	Tooltip:
 		Name: Utility Pole
 
-STSGB:
+UTILPOL2:
 	Inherits: ^Tree
 	Tooltip:
 		Name: Utility Pole
