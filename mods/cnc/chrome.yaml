@@ -422,8 +422,8 @@ strategic: strategic.png
 	player_owned: 96,0,32,32
 
 sidebar-bits: chrome.png
-	left-indicator: 320,40,11,8
-	right-indicator: 325,40,11,8
+	indicator-left: 400,48,16,8
+	indicator-right: 400,56,16,8
 
 production-icons: chrome.png
 	building: 384,0,16,16

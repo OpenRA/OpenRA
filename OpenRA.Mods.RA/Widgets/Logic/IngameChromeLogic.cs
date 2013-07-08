@@ -11,6 +11,7 @@
 using System.Drawing;
 using System.Linq;
 using OpenRA.Network;
+using OpenRA.Mods.RA.Buildings;
 using OpenRA.Traits;
 using OpenRA.Widgets;
 
@@ -77,6 +78,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			observerWidgets.Get<ButtonWidget>("INGAME_STATS_BUTTON").OnClick = () => gameRoot.Get("OBSERVER_STATS").Visible ^= true;
 		}
 
+		enum RadarBinState { Closed, BinAnimating, RadarAnimating, Open };
 		void InitPlayerWidgets()
 		{
 			var playerWidgets = Game.LoadWidget(world, "PLAYER_WIDGETS", playerRoot, new WidgetArgs());
@@ -104,9 +106,48 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			moneyBin.Get<OrderButtonWidget>("POWER_DOWN").GetKey = _ => Game.Settings.Keys.PowerDownKey;
 			moneyBin.Get<OrderButtonWidget>("REPAIR").GetKey = _ => Game.Settings.Keys.RepairKey;
 
-			var winLossWatcher = playerWidgets.Get<LogicTickerWidget>("WIN_LOSS_WATCHER");
-			winLossWatcher.OnTick = () =>
+			bool radarActive = false;
+			RadarBinState binState = RadarBinState.Closed;
+			var radarBin = playerWidgets.Get<SlidingContainerWidget>("INGAME_RADAR_BIN");
+			radarBin.IsOpen = () => radarActive || binState > RadarBinState.BinAnimating;
+			radarBin.AfterOpen = () => binState = RadarBinState.RadarAnimating;
+			radarBin.AfterClose = () => binState = RadarBinState.Closed;
+
+			var radarMap = radarBin.Get<RadarWidget>("RADAR_MINIMAP");
+			radarMap.IsEnabled = () => radarActive && binState >= RadarBinState.RadarAnimating;
+			radarMap.AfterOpen = () => binState = RadarBinState.Open;
+			radarMap.AfterClose = () => binState = RadarBinState.BinAnimating;
+
+			radarBin.Get<ImageWidget>("RADAR_BIN_BG").GetImageCollection = () => "chrome-"+world.LocalPlayer.Country.Race;
+
+			var powerManager = world.LocalPlayer.PlayerActor.Trait<PowerManager>();
+			var powerBar = radarBin.Get<ResourceBarWidget>("POWERBAR");
+			powerBar.IndicatorCollection = "power-"+world.LocalPlayer.Country.Race;
+			powerBar.GetProvided = () => powerManager.PowerProvided;
+			powerBar.GetUsed = () => powerManager.PowerDrained;
+			powerBar.TooltipFormat = "Power Usage: {0}/{1}";
+			powerBar.GetBarColor = () =>
 			{
+				if (powerManager.PowerState == PowerState.Critical)
+					return Color.Red;
+				if (powerManager.PowerState == PowerState.Low)
+					return Color.Orange;
+				return Color.LimeGreen;
+			};
+
+			var cachedRadarActive = false;
+			var sidebarTicker = playerWidgets.Get<LogicTickerWidget>("SIDEBAR_TICKER");
+			sidebarTicker.OnTick = () =>
+			{
+				// Update radar bin
+				radarActive = world.ActorsWithTrait<ProvidesRadar>()
+					.Any(a => a.Actor.Owner == world.LocalPlayer && a.Trait.IsActive);
+
+				if (radarActive != cachedRadarActive)
+					Sound.PlayNotification(null, "Sounds", (radarActive ? "RadarUp" : "RadarDown"), null);
+				cachedRadarActive = radarActive;
+
+				// Switch to observer mode after win/loss
 				if (world.LocalPlayer.WinState != WinState.Undefined)
 					Game.RunAfterTick(() =>
 					{
