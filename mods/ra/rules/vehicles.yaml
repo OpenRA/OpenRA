@@ -155,6 +155,8 @@ V2RL:
 		Hotkey: m
 	Valued:
 		Cost: 1800
+	CustomBuildTimeValue:
+		Value: 2225
 	Tooltip:
 		Name: Mammoth Tank
 		Description: Big and slow tank, with anti-air capability.\n  Strong vs Tanks, Aircraft\n  Weak vs Infantry
