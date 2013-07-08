@@ -135,12 +135,17 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				return Color.LimeGreen;
 			};
 
+			var cachedRadarActive = false;
 			var sidebarTicker = playerWidgets.Get<LogicTickerWidget>("SIDEBAR_TICKER");
 			sidebarTicker.OnTick = () =>
 			{
 				// Update radar bin
 				radarActive = world.ActorsWithTrait<ProvidesRadar>()
 					.Any(a => a.Actor.Owner == world.LocalPlayer && a.Trait.IsActive);
+
+				if (radarActive != cachedRadarActive)
+					Sound.PlayNotification(null, "Sounds", (radarActive ? "RadarUp" : "RadarDown"), null);
+				cachedRadarActive = radarActive;
 
 				// Switch to observer mode after win/loss
 				if (world.LocalPlayer.WinState != WinState.Undefined)

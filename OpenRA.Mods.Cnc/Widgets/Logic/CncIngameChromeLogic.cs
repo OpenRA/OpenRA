@@ -102,7 +102,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 			playerWidgets.Get<ButtonWidget>("OPTIONS_BUTTON").OnClick = OptionsClicked;
 
-			bool radarEnabled = false;
+			var radarEnabled = false;
+			var cachedRadarEnabled = false;
 			sidebarRoot.Get<RadarWidget>("RADAR_MINIMAP").IsEnabled = () => radarEnabled;
 
 			var sidebarTicker = playerWidgets.Get<LogicTickerWidget>("SIDEBAR_TICKER");
@@ -111,6 +112,10 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				// Update radar bin
 				radarEnabled = world.ActorsWithTrait<ProvidesRadar>()
 					.Any(a => a.Actor.Owner == world.LocalPlayer && a.Trait.IsActive);
+
+				if (radarEnabled != cachedRadarEnabled)
+					Sound.PlayNotification(null, "Sounds", (radarEnabled ? "RadarUp" : "RadarDown"), null);
+				cachedRadarEnabled = radarEnabled;
 
 				// Switch to observer mode after win/loss
 				if (world.LocalPlayer.WinState != WinState.Undefined)
