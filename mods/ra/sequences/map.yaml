@@ -647,3 +647,9 @@ ammobox: # TODO: there are 2 more variants, but the editor does not like the spl
 tanktrap:
 	idle:
 		Start: 0
+
+rushouse:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1

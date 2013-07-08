@@ -585,3 +585,11 @@ RICE:
 	Inherits: ^CivField
 	EditorTilesetFilter:
 		RequireTilesets: TEMPERAT
+
+RUSHOUSE:
+	Inherits: ^CivBuilding
+	EditorTilesetFilter:
+		ExcludeTilesets: DESERT
+	Building:
+		Footprint: _ x
+		Dimensions: 1,2
