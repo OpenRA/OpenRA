@@ -619,10 +619,6 @@ v37:
 	damaged-idle:
 		Start: 1
 
-czh1:
-	idle:
-		Start: 0
-
 stsga:
 	idle:
 		Start: 0
@@ -644,7 +640,11 @@ ammobox: # TODO: there are 2 more variants, but the editor does not like the spl
 		Start: 0
 		Length: 1
 
-tanktrap:
+tanktrap1:
+	idle:
+		Start: 0
+
+tanktrap2:
 	idle:
 		Start: 0
 
