@@ -75,9 +75,8 @@ namespace OpenRA.Mods.RA.Move
 				if (!target.IsValid)
 					return NoPath;
 
-				// TODO: Adjust range to account for target center position
 				return self.World.WorldActor.Trait<PathFinder>().FindUnitPathToRange(
-					mobile.toCell, target.CenterPosition.ToCPos(), range.Range / 1024, self);
+					mobile.toCell, mobile.toSubCell, target.CenterPosition, range, self);
 			};
 
 			this.destination = null;
