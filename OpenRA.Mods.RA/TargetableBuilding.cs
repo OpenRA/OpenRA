@@ -31,9 +31,9 @@ namespace OpenRA.Mods.RA
 		public string[] TargetTypes { get { return info.TargetTypes; } }
 		public bool TargetableBy(Actor self, Actor byActor) { return true; }
 
-		public IEnumerable<CPos> TargetableCells( Actor self )
+		public IEnumerable<WPos> TargetablePositions(Actor self)
 		{
-			return self.Trait<Building>().OccupiedCells().Select(c => c.First);
+			return self.Trait<Building>().OccupiedCells().Select(c => c.First.CenterPosition);
 		}
 	}
 }

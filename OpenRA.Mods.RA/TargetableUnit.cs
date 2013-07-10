@@ -52,9 +52,9 @@ namespace OpenRA.Mods.RA
 
 		public virtual string[] TargetTypes { get { return info.TargetTypes; } }
 
-		public virtual IEnumerable<CPos> TargetableCells( Actor self )
+		public virtual IEnumerable<WPos> TargetablePositions(Actor self)
 		{
-			yield return self.CenterPosition.ToCPos();
+			yield return self.CenterPosition;
 		}
 	}
 }

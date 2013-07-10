@@ -80,7 +80,7 @@ namespace OpenRA.Traits
 				if (targetable == null)
 					return new []{actor.CenterPosition};
 
-				return targetable.TargetableCells(actor).Select(c => c.CenterPosition);
+				return targetable.TargetablePositions(actor);
 			}
 		}
 
