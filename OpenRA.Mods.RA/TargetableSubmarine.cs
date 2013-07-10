@@ -17,17 +17,22 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly string[] CloakedTargetTypes = {};
 
-		public override object Create( ActorInitializer init ) { return new TargetableSubmarine(init.self, this); }
+		public override object Create(ActorInitializer init) { return new TargetableSubmarine(init.self, this); }
 	}
 
-	public class TargetableSubmarine : TargetableUnit<TargetableSubmarineInfo>
+	public class TargetableSubmarine : TargetableUnit
 	{
+		readonly TargetableSubmarineInfo info;
+
 		public TargetableSubmarine(Actor self, TargetableSubmarineInfo info)
-			: base(self, info) {}
+			: base(self, info)
+		{
+			this.info = info;
+		}
 
 		public override string[] TargetTypes
 		{
-			get { return Cloak.Cloaked ? info.CloakedTargetTypes
+			get { return cloak.Cloaked ? info.CloakedTargetTypes
 									   : info.TargetTypes;}
 		}
 	}
