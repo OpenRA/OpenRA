@@ -95,12 +95,11 @@ namespace OpenRA.Mods.RA
 
 				if (weapon != null)
 				{
-					attack.target = target;
+					var range = WRange.FromCells(Math.Max(0, (int)weapon.Weapon.Range - RangeTolerance));
 
+					attack.target = target;
 					if (allowMove && self.HasTrait<Mobile>() && !self.Info.Traits.Get<MobileInfo>().OnRails)
-						return Util.SequenceActivities(
-							new Follow( target, Math.Max( 0, (int)weapon.Weapon.Range - RangeTolerance ) ),
-							this );
+						return Util.SequenceActivities(new Follow(target, range), this);
 				}
 
 				return NextActivity;

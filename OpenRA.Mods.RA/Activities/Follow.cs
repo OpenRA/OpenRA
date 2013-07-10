@@ -16,13 +16,13 @@ namespace OpenRA.Mods.RA.Activities
 	public class Follow : Activity
 	{
 		Target target;
-		int range;
+		WRange range;
 		int nextPathTime;
 
 		const int delayBetweenPathingAttempts = 20;
 		const int delaySpread = 5;
 
-		public Follow(Target target, int range)
+		public Follow(Target target, WRange range)
 		{
 			this.target = target;
 			this.range = range;
@@ -33,16 +33,14 @@ namespace OpenRA.Mods.RA.Activities
 			if (IsCanceled || !target.IsValid)
 				return NextActivity;
 
-			var inRange = (target.CenterPosition.ToCPos() - self.Location).LengthSquared < range * range;
-
-			if (inRange || --nextPathTime > 0)
+			if (target.IsInRange(self.CenterPosition, range) || --nextPathTime > 0)
 				return this;
 
 			nextPathTime = self.World.SharedRandom.Next(delayBetweenPathingAttempts - delaySpread,
 				delayBetweenPathingAttempts + delaySpread);
 
 			var mobile = self.Trait<Mobile>();
-			return Util.SequenceActivities(mobile.MoveWithinRange(target, new WRange(1024*range)), this);
+			return Util.SequenceActivities(mobile.MoveWithinRange(target, range), this);
 		}
 	}
 }
