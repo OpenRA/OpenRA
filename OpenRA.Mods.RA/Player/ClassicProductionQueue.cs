@@ -99,7 +99,7 @@ namespace OpenRA.Mods.RA
 			if (self.World.LobbyInfo.GlobalSettings.AllowCheats && self.Owner.PlayerActor.Trait<DeveloperMode>().FastBuild)
 				return 0;
 
-			var time = (int)(unit.GetBuildTime() * Info.BuildSpeedModifier);
+			var time = (int)(unit.GetBuildTime() * Info.BuildSpeed);
 
 			if (Info.SpeedUp)
 			{
