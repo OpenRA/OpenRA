@@ -15,25 +15,30 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class TargetableBuildingInfo : ITraitInfo, Requires<BuildingInfo>
+	public class TargetableBuildingInfo : ITraitInfo, Requires<BuildingInfo>
 	{
 		public readonly string[] TargetTypes = { };
 
-		public object Create( ActorInitializer init ) { return new TargetableBuilding( this ); }
+		public object Create(ActorInitializer init) { return new TargetableBuilding(init.self, this); }
 	}
 
-	class TargetableBuilding : ITargetable
+	public class TargetableBuilding : ITargetable
 	{
 		readonly TargetableBuildingInfo info;
+		readonly Building building;
 
-		public TargetableBuilding( TargetableBuildingInfo info ) { this.info = info; }
+		public TargetableBuilding(Actor self, TargetableBuildingInfo info)
+		{
+			this.info = info;
+			building = self.Trait<Building>();
+		}
 
 		public string[] TargetTypes { get { return info.TargetTypes; } }
 		public bool TargetableBy(Actor self, Actor byActor) { return true; }
 
 		public IEnumerable<WPos> TargetablePositions(Actor self)
 		{
-			return self.Trait<Building>().OccupiedCells().Select(c => c.First.CenterPosition);
+			return building.OccupiedCells().Select(c => c.First.CenterPosition);
 		}
 	}
 }
