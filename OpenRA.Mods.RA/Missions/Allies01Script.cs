@@ -191,14 +191,14 @@ namespace OpenRA.Mods.RA.Missions
 				if (einstein != null)
 				{
 					if (einstein.IsInWorld)
-						innerActivity = new Move.Move(Target.FromActor(einstein), 3);
+						innerActivity = new Move.Move(Target.FromActor(einstein), WRange.FromCells(3));
 
 					else
 					{
 						var container = world.UnitContaining(einstein);
 
 						if (container != null && !container.HasTrait<Aircraft>() && container.HasTrait<Mobile>())
-							innerActivity = new Move.Move(Target.FromActor(container), 3);
+							innerActivity = new Move.Move(Target.FromActor(container), WRange.FromCells(3));
 
 						else
 							innerActivity = new Move.Move(extractionLZ.Location, 3);

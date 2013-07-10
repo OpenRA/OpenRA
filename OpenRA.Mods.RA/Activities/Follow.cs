@@ -42,7 +42,7 @@ namespace OpenRA.Mods.RA.Activities
 				delayBetweenPathingAttempts + delaySpread);
 
 			var mobile = self.Trait<Mobile>();
-			return Util.SequenceActivities( mobile.MoveWithinRange( Target, Range ), this );
+			return Util.SequenceActivities( mobile.MoveWithinRange( Target, new WRange(1024*Range) ), this );
 		}
 	}
 }

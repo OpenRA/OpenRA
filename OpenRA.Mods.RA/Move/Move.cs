@@ -59,19 +59,20 @@ namespace OpenRA.Mods.RA.Move
 		}
 
 		static readonly List<CPos> NoPath = new List<CPos>();
-		public Move(Target target, int range)
+		public Move(Target target, WRange range)
 		{
 			this.getPath = (self, mobile) =>
 			{
 				if (!target.IsValid)
 					return NoPath;
 
+				// TODO: Adjust range to account for target center position
 				return self.World.WorldActor.Trait<PathFinder>().FindUnitPathToRange(
-					mobile.toCell, target.CenterPosition.ToCPos(), range, self);
+					mobile.toCell, target.CenterPosition.ToCPos(), range.Range / 1024, self);
 			};
 
 			this.destination = null;
-			this.nearEnough = range;
+			this.nearEnough = range.Range / 1024;
 		}
 
 		public Move(Func<List<CPos>> getPath)
