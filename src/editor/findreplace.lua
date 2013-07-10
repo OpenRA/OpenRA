@@ -13,7 +13,7 @@ ide.findReplace = {
   fWrap = true, -- search wraps around
 
   fDown = true, -- search downwards in doc
-  fSubDirs = false, -- search in subdirectories
+  fSubDirs = true, -- search in subdirectories
   fMakeBak = true, -- make bak files for replace in files
 
   findTextArray = {}, -- array of last entered find text
