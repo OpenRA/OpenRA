@@ -19,7 +19,7 @@ local function match_string(s, pos)
     pos = pos + 1
     while 1 do
       pos = s:find("[" .. c .. "\\]", pos)
-      if not pos then return s:sub(posa), #s end -- not terminated string
+      if not pos then return s:sub(posa), #s + 1 end -- not terminated string
       if s:sub(pos,pos) == c then
         local part = s:sub(posa, pos)
         return part, pos + 1
@@ -31,7 +31,7 @@ local function match_string(s, pos)
     local sc = s:match("^%[(=*)%[", pos)
     if sc then
       local _; _, pos = s:find("%]" .. sc .. "%]", pos)
-      if not pos then return s:sub(posa), #s end -- not terminated string
+      if not pos then return s:sub(posa), #s + 1 end -- not terminated string
       local part = s:sub(posa, pos)
       return part, pos + 1
     else
@@ -120,7 +120,7 @@ function M.lex(code, f, pos)
       f('Comment', tok, pos)
       pos = pos2
     elseif n1 == '\'' or n1 == '\"' or n2 == '[[' or n2 == '[=' then
-      local tok, _pos2 = match_string(code, pos)
+      local tok = match_string(code, pos)
       if tok then
         f('String', tok, pos)
         pos = pos + #tok
