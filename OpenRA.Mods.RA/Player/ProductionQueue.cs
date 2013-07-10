@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA
 		public readonly string Group = null;
 
 		[Desc("This value is used to translate the unit cost into build time.")]
-		public float BuildSpeedModifier = 0.4f;
+		public float BuildSpeed = 0.4f;
 		[Desc("The build time is multiplied with this value on low power.")]
 		public readonly int LowPowerSlowdown = 3;
 
@@ -281,7 +281,7 @@ namespace OpenRA.Mods.RA
 			if (self.World.LobbyInfo.GlobalSettings.AllowCheats && self.Owner.PlayerActor.Trait<DeveloperMode>().FastBuild)
 				return 0;
 
-			var time = unit.GetBuildTime() * Info.BuildSpeedModifier;
+			var time = unit.GetBuildTime() * Info.BuildSpeed;
 
 			return (int) time;
 		}
