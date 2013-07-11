@@ -43,11 +43,12 @@ namespace OpenRA.Mods.RA
 			var isWater = args.destAltitude == 0 && world.GetTerrainInfo(targetTile).IsWater;
 			var explosionType = isWater ? warhead.WaterExplosion : warhead.Explosion;
 
+			var dest = args.dest.ToWPos(args.destAltitude);
 			if (explosionType != null)
 				world.AddFrameEndTask(
-					w => w.Add(new Explosion(w, args.dest.ToWPos(args.destAltitude), explosionType)));
+					w => w.Add(new Explosion(w, dest, explosionType)));
 
-			Sound.Play(GetImpactSound(warhead, isWater), args.dest);
+			Sound.Play(GetImpactSound(warhead, isWater), dest);
 
 			var smudgeLayers = world.WorldActor.TraitsImplementing<SmudgeLayer>().ToDictionary(x => x.Info.Type);
 
@@ -156,7 +157,7 @@ namespace OpenRA.Mods.RA
 			};
 
 			if (args.weapon.Report != null && args.weapon.Report.Any())
-				Sound.Play(args.weapon.Report.Random(attacker.World.SharedRandom), pxPos);
+				Sound.Play(args.weapon.Report.Random(attacker.World.SharedRandom), pos);
 
 			DoImpacts(args);
 		}
