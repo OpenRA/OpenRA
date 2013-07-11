@@ -383,6 +383,8 @@ GNRL:
 	Inherits: ^CivInfantry
 	Tooltip:
 		Name: General
+	Selectable:
+		Voice: StavrosVoice
 
 THF:
 	Inherits: ^Infantry
@@ -484,3 +486,57 @@ SNIPER:
 		CaptureTypes: CivilianBuilding
 		Sabotage: no
 		SabotageHPRemoval: 0
+
+Zombie:
+	Inherits: ^Infantry
+	Valued:
+		Cost: 100
+	Tooltip:
+		Icon: zombicon
+		Name: Zombie
+		Description: Slow undead. Attacks in close combat.
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 28
+		Owner: Umbrella
+		Prerequisites: bio
+	Selectable:
+		Voice: AntVoice
+		Bounds: 12,17,0,-9
+	Health:
+		HP: 250
+	Mobile:
+		Speed: 3
+	AttackWander:
+	AutoTarget:
+		ScanRadius: 5
+	AttackFrontal:
+	Armament:
+		Weapon: claw
+
+Ant:
+	Inherits: ^Infantry
+	Valued:
+		Cost: 300
+	Tooltip:
+		Icon: anticon
+		Name: Giant Ant
+		Description: Irradiated insect that grew oversize.
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 1954
+		Owner: Them
+		Prerequisites: bio
+	Selectable:
+		Voice: AntVoice
+	Health:
+		HP: 750
+	Mobile:
+		Speed: 7
+		SharesCell: no
+	AttackWander:
+	AutoTarget:
+		ScanRadius: 5
+	AttackFrontal:
+	Armament:
+		Weapon: mandible

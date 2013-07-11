@@ -190,6 +190,49 @@
 		JustMove: yes
 	CrushableInfantry:
 
+^DINO:
+	AppearsOnRadar:
+	Health:
+		Radius: 3
+		HP: 1000
+	Armor:
+		Type: Wood
+	Buildable:
+		Queue: Biolab
+		BuildPaletteOrder: 50
+		Owner: gdi, nod
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Dinosaur
+	RevealsShroud:
+		Range: 6
+	Mobile:
+		Speed: 8
+		TerrainSpeeds:
+			Clear: 90
+			Rough: 80
+			Road: 100
+			Tiberium: 70
+			BlueTiberium: 70
+			Beach: 80
+	Selectable:
+		Voice: DinoVoice
+	TargetableUnit:
+		TargetTypes: Ground
+	HiddenUnderFog:
+	GivesExperience:
+	RenderInfantry:
+		Palette: terrain
+	EditorAppearance:
+		UseTerrainPalette: true
+	BodyOrientation:
+	DrawLineToTarget:
+	AutoTarget:
+		ScanRadius: 4
+	AttackMove:
+	AttackFrontal:
+
 ^Plane:
 	AppearsOnRadar:
 		UseLocation: yes

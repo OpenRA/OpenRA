@@ -214,8 +214,8 @@ RMBO:
 		Range: 2
 
 PVICE:
-	Inherits:VICE
-	-AttackWander
+	Inherits: VICE
+	-AttackWander:
 	Mobile:
 		Crushes: crate
 	Buildable:
@@ -226,7 +226,41 @@ PVICE:
 		Description: Mutated abomination that spits liquid tiberium.\n  Strong vs Infantry, Buildings\n  Weak vs Aircraft
 		Icon: viceicnh
 	DrawLineToTarget:
-	Selectable:
-		Voice: DinoVoice
 	SelectionDecorations:
 	ActorLostNotification:
+
+STEG:
+	Inherits: ^DINO
+	Tooltip:
+		Name: Stegosaurus
+		Description: A large, heavily built, herbivorous quadruped
+		Icon: stegicnh
+	Armament:
+		Weapon: tail
+
+TREX:
+	Inherits: ^DINO
+	Tooltip:
+		Name: Tyrannosaurus rex
+		Description: Bipedal carnivore with a massive skull
+		Icon: trexicnh
+	Armament:
+		Weapon: teeth
+
+TRIC:
+	Inherits: ^DINO
+	Tooltip:
+		Name: Triceratops
+		Description: Quadruped with large bony frill and three horns
+		Icon: tricicnh
+	Armament:
+		Weapon: horn
+
+RAPT:
+	Inherits: ^DINO
+	Tooltip:
+		Name: Velociraptor
+		Description: Bipedal with enlarged sickle-shaped claw on each hindfoot
+		Icon: rapticnh
+	Armament:
+		Weapon: claw
