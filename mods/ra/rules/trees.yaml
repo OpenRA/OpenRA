@@ -357,3 +357,50 @@ TANKTRAP2:
 		Dimensions: 1,1
 	Tooltip:
 		Name: Tank Trap
+
+QUEE:
+	Tooltip:
+		Name: Queen Ant
+	Building:
+		Footprint: xx
+		Dimensions: 2,1
+	RenderBuilding:
+	AppearsOnRadar:
+	BodyOrientation:
+	EditorTilesetFilter:
+		RequireTilesets: INTERIOR
+	EditorAppearance:
+		RelativeToTopLeft: yes
+		UseTerrainPalette: true
+
+LAR1:
+	Tooltip:
+		Name: Ant Larva
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	RenderBuilding:
+		Palette: terrain
+	AppearsOnRadar:
+	BodyOrientation:
+	EditorTilesetFilter:
+		RequireTilesets: INTERIOR
+	EditorAppearance:
+		RelativeToTopLeft: yes
+		UseTerrainPalette: true
+
+LAR2:
+	Tooltip:
+		Name: Ant Larvae
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	RenderBuilding:
+		Palette: terrain
+	AppearsOnRadar:
+	BodyOrientation:
+	EditorTilesetFilter:
+		RequireTilesets: INTERIOR
+	EditorAppearance:
+		RelativeToTopLeft: yes
+		UseTerrainPalette: true
