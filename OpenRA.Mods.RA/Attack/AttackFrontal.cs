@@ -19,14 +19,18 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly int FacingTolerance = 1;
 
-		public override object Create( ActorInitializer init ) { return new AttackFrontal( init.self, this ); }
+		public override object Create(ActorInitializer init) { return new AttackFrontal(init.self, this); }
 	}
 
 	public class AttackFrontal : AttackBase
 	{
 		readonly AttackFrontalInfo info;
+
 		public AttackFrontal(Actor self, AttackFrontalInfo info)
-			: base( self ) { this.info = info; }
+			: base(self)
+		{
+			this.info = info;
+		}
 
 		protected override bool CanAttack(Actor self, Target target)
 		{

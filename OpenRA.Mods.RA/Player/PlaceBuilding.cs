@@ -56,7 +56,7 @@ namespace OpenRA.Mods.RA
 
 							if (playSounds)
 								foreach (var s in buildingInfo.BuildSounds)
-									Sound.PlayToPlayer(order.Player, s, building.CenterLocation);
+									Sound.PlayToPlayer(order.Player, s, building.CenterPosition);
 							playSounds = false;
 						}
 					}
@@ -74,7 +74,7 @@ namespace OpenRA.Mods.RA
 							new OwnerInit( order.Player ),
 						});
 						foreach (var s in buildingInfo.BuildSounds)
-							Sound.PlayToPlayer(order.Player, s, building.CenterLocation);
+							Sound.PlayToPlayer(order.Player, s, building.CenterPosition);
 					}
 
 					PlayBuildAnim( self, unit );

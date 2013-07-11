@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA
 				&& self.Owner.WinState != WinState.Lost)
 			{
 				self.World.AddFrameEndTask(w => w.Add(new Parachute(pilot, self.CenterPosition)));
-				Sound.Play(info.ChuteSound, self.CenterLocation);
+				Sound.Play(info.ChuteSound, self.CenterPosition);
 			}
 			else
 				pilot.Destroy();

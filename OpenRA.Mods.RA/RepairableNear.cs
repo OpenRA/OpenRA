@@ -69,7 +69,7 @@ namespace OpenRA.Mods.RA
 				var target = Target.FromOrder(order);
 
 				self.CancelActivity();
-				self.QueueActivity(mobile.MoveWithinRange(target, info.CloseEnough));
+				self.QueueActivity(mobile.MoveWithinRange(target, new WRange(1024*info.CloseEnough)));
 				self.QueueActivity(new Repair(order.TargetActor));
 
 				self.SetTargetLine(target, Color.Green, false);

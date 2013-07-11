@@ -32,9 +32,9 @@ namespace OpenRA.Mods.RA.Buildings
 		public void DamageStateChanged(Actor self, AttackInfo e)
 		{
 			if (e.DamageState == DamageState.Dead)
-				Sound.Play(Info.DestroyedSound, self.CenterLocation);
+				Sound.Play(Info.DestroyedSound, self.CenterPosition);
 			else if (e.DamageState >= DamageState.Heavy && e.PreviousDamageState < DamageState.Heavy)
-				Sound.Play(Info.DamagedSound, self.CenterLocation);
+				Sound.Play(Info.DamagedSound, self.CenterPosition);
 		}
 	}
 }

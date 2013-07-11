@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA
 		public void Uncloak(int time)
 		{
 			if (Cloaked)
-				Sound.Play(info.UncloakSound, self.CenterLocation);
+				Sound.Play(info.UncloakSound, self.CenterPosition);
 
 			remainingTime = Math.Max(remainingTime, time);
 		}
@@ -86,7 +86,7 @@ namespace OpenRA.Mods.RA
 		{
 			if (remainingTime > 0 && canCloak)
 				if (--remainingTime <= 0)
-					Sound.Play(info.CloakSound, self.CenterLocation);
+					Sound.Play(info.CloakSound, self.CenterPosition);
 			if (self.IsDisabled())
 				Uncloak();
 

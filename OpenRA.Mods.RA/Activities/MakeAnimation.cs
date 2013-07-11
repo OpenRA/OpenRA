@@ -55,7 +55,7 @@ namespace OpenRA.Mods.RA.Activities
 				var bi = self.Info.Traits.GetOrDefault<BuildingInfo>();
 				if (bi != null)
 					foreach (var s in bi.SellSounds)
-						Sound.PlayToPlayer(self.Owner, s, self.CenterLocation);
+						Sound.PlayToPlayer(self.Owner, s, self.CenterPosition);
 
 				rb.PlayCustomAnimBackwards(self, "make", () => { OnComplete(); complete = true;});
 			}

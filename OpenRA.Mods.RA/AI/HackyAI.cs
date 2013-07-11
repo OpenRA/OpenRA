@@ -226,18 +226,18 @@ namespace OpenRA.Mods.RA.AI
 
 			protected static bool CanAttackTarget(Actor a, Actor target)
 			{
-				if (!a.HasTrait<AttackBase>()) return false;
-				if (!target.HasTrait<TargetableUnit<TargetableUnitInfo>>() &&
-					!target.HasTrait<TargetableBuilding>()) return false;
+				if (!a.HasTrait<AttackBase>())
+					return false;
+
+				var targetable = target.TraitOrDefault<ITargetable>();
+				if (targetable == null)
+					return false;
 
 				var arms = a.TraitsImplementing<Armament>();
 				foreach (var arm in arms)
-					if (target.HasTrait<TargetableUnit<TargetableUnitInfo>>() && 
-						arm.Weapon.ValidTargets.Intersect(target.Trait<TargetableUnit<TargetableUnitInfo>>().TargetTypes) != null)
+					if (arm.Weapon.ValidTargets.Intersect(targetable.TargetTypes) != null)
 						return true;
-					else if (target.HasTrait<TargetableBuilding>() && 
-				    	arm.Weapon.ValidTargets.Intersect(target.Trait<TargetableBuilding>().TargetTypes) != null)
-						return true;
+
 				return false;
 			}
 		}
