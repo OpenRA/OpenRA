@@ -23,12 +23,14 @@ namespace OpenRA.Mods.RA
 	class RenderRangeCircleInfo : TraitInfo<RenderRangeCircle>, IPlaceBuildingDecoration
 	{
 		public readonly string RangeCircleType = null;
+		public readonly string[] IgnoredArmsDuringPlacement = { };
 
 		public void Render(WorldRenderer wr, World w, ActorInfo ai, PPos centerLocation)
 		{
 			wr.DrawRangeCircleWithContrast(
 				Color.FromArgb(128, Color.Yellow), centerLocation.ToFloat2(),
 				ai.Traits.WithInterface<ArmamentInfo>()
+					.Where(a => !IgnoredArmsDuringPlacement.Contains(a.Name))
 					.Select(a => Rules.Weapons[a.Weapon.ToLowerInvariant()].Range).Max(),
 				Color.FromArgb(96, Color.Black), 1
 			);
