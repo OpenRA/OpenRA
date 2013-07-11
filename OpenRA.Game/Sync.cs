@@ -82,27 +82,27 @@ namespace OpenRA
 			}
 			else if (type == typeof(WRange))
 			{
-				il.EmitCall(OpCodes.Call, ((Func<WRange, int>)(a => a.GetHashCode())).Method, null);
+				il.EmitCall(OpCodes.Call, ((Func<WRange, int>)hash<WRange>).Method, null);
 				il.Emit(OpCodes.Xor);
 			}
 			else if (type == typeof(WPos))
 			{
-				il.EmitCall(OpCodes.Call, ((Func<WPos, int>)(a => a.GetHashCode())).Method, null);
+				il.EmitCall(OpCodes.Call, ((Func<WPos, int>)hash<WPos>).Method, null);
 				il.Emit(OpCodes.Xor);
 			}
 			else if (type == typeof(WVec))
 			{
-				il.EmitCall(OpCodes.Call, ((Func<WVec, int>)(a => a.GetHashCode())).Method, null);
+				il.EmitCall(OpCodes.Call, ((Func<WVec, int>)hash<WVec>).Method, null);
 				il.Emit(OpCodes.Xor);
 			}
 			else if (type == typeof(WAngle))
 			{
-				il.EmitCall(OpCodes.Call, ((Func<WAngle, int>)(a => a.GetHashCode())).Method, null);
+				il.EmitCall(OpCodes.Call, ((Func<WAngle, int>)hash<WAngle>).Method, null);
 				il.Emit(OpCodes.Xor);
 			}
 			else if (type == typeof(WRot))
 			{
-				il.EmitCall(OpCodes.Call, ((Func<WRot, int>)(a => a.GetHashCode())).Method, null);
+				il.EmitCall(OpCodes.Call, ((Func<WRot, int>)hash<WRot>).Method, null);
 				il.Emit(OpCodes.Xor);
 			}
 			else if (type == typeof(TypeDictionary))
@@ -215,6 +215,11 @@ namespace OpenRA
 			if( p != null )
 				return (int)( p.PlayerActor.ActorID << 16 ) * 0x567;
 			return 0;
+		}
+
+		public static int hash<T>(T t)
+		{
+			return t.GetHashCode();
 		}
 
 		public static void CheckSyncUnchanged( World world, Action fn )
