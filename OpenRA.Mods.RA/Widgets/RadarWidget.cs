@@ -27,9 +27,10 @@ namespace OpenRA.Mods.RA.Widgets
 		public Action AfterClose = () => {};
 
 		float radarMinimapHeight;
-		int frame = 0;
-		bool hasRadar = false;
-		int updateTicks = 0;
+		int frame;
+		bool hasRadar;
+		bool cachedEnabled;
+		int updateTicks;
 
 		float previewScale = 0;
 		int2 previewOrigin = int2.Zero;
@@ -43,7 +44,10 @@ namespace OpenRA.Mods.RA.Widgets
 		readonly World world;
 
 		[ObjectCreator.UseCtor]
-		public RadarWidget(World world) { this.world = world; }
+		public RadarWidget(World world)
+		{
+			this.world = world;
+		}
 
 		public override void Initialize(WidgetArgs args)
 		{
@@ -85,7 +89,7 @@ namespace OpenRA.Mods.RA.Widgets
 				Modifiers = Game.GetModifierKeys()
 			};
 
-			var cursor = world.OrderGenerator.GetCursor( world, loc, mi );
+			var cursor = world.OrderGenerator.GetCursor(world, loc, mi);
 			if (cursor == null)
 				return "default";
 
@@ -155,7 +159,6 @@ namespace OpenRA.Mods.RA.Widgets
 			}
 		}
 
-		bool cachedEnabled;
 		public override void Tick()
 		{
 			// Update the radar animation even when its closed
