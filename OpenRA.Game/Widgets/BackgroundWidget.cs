@@ -30,8 +30,12 @@ namespace OpenRA.Widgets
 
 		public override bool HandleMouseInput(MouseInput mi)
 		{
-			if (ClickThrough) return false;
-			if (!Draggable || moving && (!TakeFocus(mi) || mi.Button != MouseButton.Left)) return true;
+			if (ClickThrough || !Bounds.Contains(mi.Location))
+				return false;
+
+			if (!Draggable || moving && (!TakeFocus(mi) || mi.Button != MouseButton.Left))
+				return true;
+
 			if (prevMouseLocation == null)
 				prevMouseLocation = mi.Location;
 			var vec = mi.Location - (int2)prevMouseLocation;
@@ -51,6 +55,7 @@ namespace OpenRA.Widgets
 						Bounds = new Rectangle(Bounds.X + vec.X, Bounds.Y + vec.Y, Bounds.Width, Bounds.Height);
 					break;
 			}
+
 			return true;
 		}
 
