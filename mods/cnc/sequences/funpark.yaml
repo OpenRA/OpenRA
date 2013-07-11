@@ -1,10 +1,10 @@
 steg:
 	stand:
 		Start: 0
-		Length: 8
+		Facings: 8
 	stand2:
 		Start: 8
-		Length: 8
+		Facings: 8
 	run:
 		Start: 16
 		Length: 8
@@ -35,10 +35,10 @@ steg:
 trex:
 	stand:
 		Start: 0
-		Length: 8
+		Facings: 8
 	stand2:
 		Start: 8
-		Length: 8
+		Facings: 8
 	run:
 		Start: 16
 		Length: 8
@@ -69,10 +69,10 @@ trex:
 tric:
 	stand:
 		Start: 0
-		Length: 8
+		Facings: 8
 	stand2:
 		Start: 8
-		Length: 8
+		Facings: 8
 	run:
 		Start: 16
 		Length: 8
@@ -103,10 +103,10 @@ tric:
 rapt:
 	stand:
 		Start: 0
-		Length: 8
+		Facings: 8
 	stand2:
 		Start: 8
-		Length: 8
+		Facings: 8
 	run:
 		Start: 16
 		Length: 8
