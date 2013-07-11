@@ -94,10 +94,10 @@ namespace OpenRA.Mods.RA.Widgets
 
 		public override bool HandleMouseInput(MouseInput mi)
 		{
-			if (!hasRadar)
-				return true;
-
 			if (!mapRect.Contains(mi.Location))
+				return false;
+
+			if (!hasRadar)
 				return true;
 
 			var loc = MinimapPixelToCell(mi.Location);
@@ -126,8 +126,6 @@ namespace OpenRA.Mods.RA.Widgets
 
 			return true;
 		}
-
-		public override Rectangle EventBounds {	get { return mapRect; } }
 
 		public override void Draw()
 		{
