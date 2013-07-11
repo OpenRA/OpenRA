@@ -70,7 +70,7 @@ namespace OpenRA.Mods.RA.Activities
 				nextPathTime = self.World.SharedRandom.Next(delayBetweenPathingAttempts - delaySpread,
 					delayBetweenPathingAttempts + delaySpread);
 
-				return (AllowMovement) ? Util.SequenceActivities(self.Trait<Mobile>().MoveWithinRange(Target, Range.Range / 1024), this) : NextActivity;
+				return (AllowMovement) ? Util.SequenceActivities(self.Trait<Mobile>().MoveWithinRange(Target, Range), this) : NextActivity;
 			}
 
 			var desiredFacing = Util.GetFacing(Target.CenterPosition - self.CenterPosition, 0);

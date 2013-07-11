@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA
 		{
 			self.Trait<RenderBuilding>().PlayCustomAnim(self, "active");
 
-			Sound.Play("ironcur9.aud", order.TargetLocation.ToPPos());
+			Sound.Play("ironcur9.aud", order.TargetLocation.CenterPosition);
 
 			foreach (var target in UnitsInRange(order.TargetLocation)
 				.Where(a => a.Owner.Stances[self.Owner] == Stance.Ally))

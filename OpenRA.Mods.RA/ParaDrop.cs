@@ -53,7 +53,7 @@ namespace OpenRA.Mods.RA
 
 					var a = cargo.Unload(self);
 					self.World.AddFrameEndTask(w => w.Add(new Parachute(a, self.CenterPosition)));
-					Sound.Play(info.ChuteSound, self.CenterLocation);
+					Sound.Play(info.ChuteSound, self.CenterPosition);
 				}
 			}
 		}

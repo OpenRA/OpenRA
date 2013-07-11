@@ -68,17 +68,27 @@ namespace OpenRA.Mods.RA.Move
 			}
 		}
 
-		public List<CPos> FindUnitPathToRange(CPos src, CPos target, int range, Actor self)
+		public List<CPos> FindUnitPathToRange(CPos src, SubCell srcSub, WPos target, WRange range, Actor self)
 		{
 			using (new PerfSample("Pathfinder"))
 			{
 				var mi = self.Info.Traits.Get<MobileInfo>();
-				var tilesInRange = world.FindTilesInCircle(target, range)
-					.Where(t => mi.CanEnterCell(self.World, self, t, null, true, true));
+				var targetCell = target.ToCPos();
+				var rangeSquared = range.Range*range.Range;
+
+				// Correct for SubCell offset
+				var so = MobileInfo.SubCellOffsets[srcSub];
+				target -= new WVec(so.X * 1024 / Game.CellSize, so.Y * 1024 / Game.CellSize, 0);
+
+				// Select only the tiles that are within range from the requested SubCell
+				// This assumes that the SubCell does not change during the path traversal
+				var tilesInRange = world.FindTilesInCircle(targetCell, range.Range / 1024 + 1)
+					.Where(t => (t.CenterPosition - target).LengthSquared <= rangeSquared
+					       && mi.CanEnterCell(self.World, self, t, null, true, true));
 
 				var path = FindBidiPath(
 					PathSearch.FromPoints(world, mi, self, tilesInRange, src, true),
-					PathSearch.FromPoint(world, mi, self, src, target, true).InReverse()
+					PathSearch.FromPoint(world, mi, self, src, targetCell, true).InReverse()
 				);
 
 				return path;

@@ -201,7 +201,7 @@ namespace OpenRA.Traits
 	public interface ITargetable
 	{
 		string[] TargetTypes { get; }
-		IEnumerable<CPos> TargetableCells(Actor self);
+		IEnumerable<WPos> TargetablePositions(Actor self);
 		bool TargetableBy(Actor self, Actor byActor);
 	}
 

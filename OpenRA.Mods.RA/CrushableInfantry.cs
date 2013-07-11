@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA
 
 		public void OnCrush(Actor crusher)
 		{
-			Sound.Play(Info.CrushSound, crusher.CenterLocation);
+			Sound.Play(Info.CrushSound, crusher.CenterPosition);
 			ri.SpawnCorpse(self, Info.CorpseSequence);
 			self.Kill(crusher);
 		}

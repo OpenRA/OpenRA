@@ -29,8 +29,8 @@ namespace OpenRA.Mods.RA.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			Sound.Play("chrono2.aud", self.Location.ToPPos());
-			Sound.Play("chrono2.aud", destination.ToPPos());
+			Sound.Play("chrono2.aud", self.CenterPosition);
+			Sound.Play("chrono2.aud", destination.CenterPosition);
 
 			self.Trait<ITeleportable>().SetPosition(self, destination);
 			self.Generation++;

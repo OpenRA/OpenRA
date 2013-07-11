@@ -28,8 +28,10 @@ namespace OpenRA.Mods.RA
 			{
 				var target = Target.FromActor(order.TargetActor);
 				self.SetTargetLine(target, Color.Yellow);
+
+				var range = WRange.FromCells(target.Actor.Info.Traits.Get<GuardableInfo>().Range);
 				self.QueueActivity(false, new AttackMove.AttackMoveActivity(self,
-					new Follow(target, target.Actor.Info.Traits.Get<GuardableInfo>().Range)));
+					new Follow(target, range)));
 			}
 		}
 

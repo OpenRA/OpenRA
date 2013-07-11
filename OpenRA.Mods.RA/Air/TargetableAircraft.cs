@@ -21,12 +21,15 @@ namespace OpenRA.Mods.RA.Air
 		public override object Create(ActorInitializer init) { return new TargetableAircraft(init.self, this); }
 	}
 
-	public class TargetableAircraft : TargetableUnit<TargetableAircraftInfo>
+	public class TargetableAircraft : TargetableUnit
 	{
-		Aircraft Aircraft;
+		readonly TargetableAircraftInfo info;
+		readonly Aircraft Aircraft;
+
 		public TargetableAircraft(Actor self, TargetableAircraftInfo info)
 			: base(self, info)
 		{
+			this.info = info;
 			Aircraft = self.Trait<Aircraft>();
 		}
 
