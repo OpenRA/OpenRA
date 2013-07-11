@@ -291,6 +291,22 @@
 	-Capturable:
 	-CapturableBar:
 
+^AmmoBox:
+	Inherits: ^TechBuilding
+	Selectable:
+		Priority: 0
+	Health:
+		HP: 10
+	Explodes:
+		Weapon: UnitExplode
+	Tooltip:
+		Name: Ammo Box
+	AutoTargetIgnore:
+	Armor:
+		Type: Light
+	TargetableBuilding:
+		TargetTypes: Ground, DemoTruck
+
 ^CivInfantry:
 	Inherits: ^Infantry
 	Selectable:

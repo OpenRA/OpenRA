@@ -167,10 +167,30 @@ MINE:
 		Terrain: Ore
 	EditorAppearance:
 		RelativeToTopLeft: yes
-		UseTerrainPalette: true
+		UseTerrainPalette: yes
 	AutoTargetIgnore:
 	BodyOrientation:
 	SeedsResource:
+	BelowUnits:
+
+RAILMINE:
+	Tooltip:
+		Name: Gem Mine
+	RenderBuilding:
+		Palette: terrain
+	Building:
+		Footprint: _x
+		Dimensions: 1,2
+	AppearsOnRadar:
+	RadarColorFromTerrain:
+		Terrain: Gems
+	EditorAppearance:
+		RelativeToTopLeft: yes
+		UseTerrainPalette: yes
+	AutoTargetIgnore:
+	BodyOrientation:
+	SeedsResource:
+		ResourceType: Gems
 	BelowUnits:
 
 BOXES01:
@@ -311,3 +331,29 @@ T04:
 	Building:
 		Footprint: __ x_
 		Dimensions: 2,2
+
+UTILPOL1:
+	Inherits: ^Tree
+	Tooltip:
+		Name: Utility Pole
+
+UTILPOL2:
+	Inherits: ^Tree
+	Tooltip:
+		Name: Utility Pole
+
+TANKTRAP1:
+	Inherits: ^Rock
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	Tooltip:
+		Name: Tank Trap
+
+TANKTRAP2:
+	Inherits: ^Rock
+	Building:
+		Footprint: x
+		Dimensions: 1,1
+	Tooltip:
+		Name: Tank Trap
