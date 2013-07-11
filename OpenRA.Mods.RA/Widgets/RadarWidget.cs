@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA.Widgets
 		public int AnimationLength = 5;
 		public string RadarOnlineSound = null;
 		public string RadarOfflineSound = null;
-		public Func<bool> IsEnabled = () => false;
+		public Func<bool> IsEnabled = () => true;
 		public Action AfterOpen = () => {};
 		public Action AfterClose = () => {};
 
