@@ -73,5 +73,17 @@ namespace OpenRA
 		}
 
 		public override string ToString() { return "{0},{1}".F(X, Y); }
+
+		public static readonly CVec[] directions =
+		{
+			new CVec(-1, -1),
+			new CVec(-1,  0),
+			new CVec(-1,  1),
+			new CVec(0, -1),
+			new CVec(0,  1),
+			new CVec(1, -1),
+			new CVec(1,  0),
+			new CVec(1,  1),
+		};
 	}
 }

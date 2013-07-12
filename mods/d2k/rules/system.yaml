@@ -354,6 +354,7 @@ World:
 	BibLayer:
 		BibTypes: bib3x, bib2x
 		BibWidths: 3, 2
+	DomainIndex:
 	ResourceLayer:
 	ResourceClaimLayer:
 	ResourceType@Spice:

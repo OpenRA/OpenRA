@@ -604,6 +604,7 @@ World:
 		Name: Soviet
 		Race: soviet
 	BibLayer:
+	DomainIndex:
 	ResourceLayer:
 	ResourceClaimLayer:
 	ResourceType@ore:
