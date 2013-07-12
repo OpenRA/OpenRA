@@ -307,9 +307,12 @@ World:
 		Depths:5,5,5,5,5,5
 	DebugOverlay:
 	SpawnMapActors:
-	CreateMPPlayers:
-	SpawnMPUnits:
 	MPStartLocations:
+	CreateMPPlayers:
+	MPStartUnits:
+		Races: gdi, nod
+		BaseActor: mcv
+	SpawnMPUnits:
 	SpatialBins:
 		BinSize: 4
 	CrateSpawner:

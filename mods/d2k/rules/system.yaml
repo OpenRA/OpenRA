@@ -380,15 +380,16 @@ World:
 	SpawnMapActors:
 	CreateMPPlayers:
 	MPStartLocations:
-	SpawnMPUnits@atreides:
-		InitialUnit: mcva
-		Faction: atreides
-	SpawnMPUnits@harkonnen:
-		InitialUnit: mcvh
-		Faction: harkonnen
-	SpawnMPUnits@ordos:
-		InitialUnit: mcvo
-		Faction: ordos
+	MPStartUnits@atreides:
+		Races: atreides
+		BaseActor: mcva
+	MPStartUnits@harkonnen:
+		Races: harkonnen
+		BaseActor: mcvh
+	MPStartUnits@ordos:
+		Races: ordos
+		BaseActor: mcvo
+	SpawnMPUnits:
 	SpatialBins:
 		BinSize: 4
 	PathFinder:
