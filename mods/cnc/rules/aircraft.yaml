@@ -166,6 +166,7 @@ C17:
 	-TargetableUnit:
 	-GainsExperience:
 	FlyAwayOnIdle:
+	RejectsOrders:
 
 A10:
 	Inherits: ^Plane
@@ -194,6 +195,7 @@ A10:
 	-Selectable:
 	-GainsExperience:
 	FlyAwayOnIdle:
+	RejectsOrders:
 
 TRAN.Husk:
 	Inherits: ^HelicopterHusk
