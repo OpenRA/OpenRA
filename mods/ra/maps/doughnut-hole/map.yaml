@@ -30,24 +30,32 @@ Players:
 		Race: Random
 		Enemies: Creeps
 		AllowBots: False
+		DefaultStartingUnits: True
+		StartingUnitsClass: custom
 	PlayerReference@Multi1:
 		Name: Multi1
 		Playable: True
 		Race: Random
 		Enemies: Creeps
 		AllowBots: False
+		DefaultStartingUnits: True
+		StartingUnitsClass: custom
 	PlayerReference@Multi2:
 		Name: Multi2
 		Playable: True
 		Race: Random
 		Enemies: Creeps
 		AllowBots: False
+		DefaultStartingUnits: True
+		StartingUnitsClass: custom
 	PlayerReference@Multi3:
 		Name: Multi3
 		Playable: True
 		Race: Random
 		Enemies: Creeps
 		AllowBots: False
+		DefaultStartingUnits: True
+		StartingUnitsClass: custom
 	PlayerReference@Creeps:
 		Name: Creeps
 		NonCombatant: True
@@ -99,18 +107,6 @@ Actors:
 		Owner: Neutral
 	Actor14: t10
 		Location: 73,71
-		Owner: Neutral
-	Actor15: mpspawn
-		Location: 49,59
-		Owner: Neutral
-	Actor16: mpspawn
-		Location: 54,79
-		Owner: Neutral
-	Actor17: mpspawn
-		Location: 76,75
-		Owner: Neutral
-	Actor18: mpspawn
-		Location: 71,55
 		Owner: Neutral
 	Actor22: cycl
 		Location: 59,67
@@ -631,30 +627,18 @@ Actors:
 	Actor191: v14
 		Location: 110,69
 		Owner: Neutral
-	Actor192: mcv
+	Actor15: mpspawn
 		Location: 48,59
-		Owner: Multi0
-	Actor193: lst
-		Location: 45,57
-		Owner: Multi0
-	Actor194: lst
-		Location: 50,81
-		Owner: Multi1
-	Actor195: mcv
+		Owner: Neutral
+	Actor16: mpspawn
 		Location: 52,80
-		Owner: Multi1
-	Actor196: mcv
+		Owner: Neutral
+	Actor17: mpspawn
 		Location: 80,76
-		Owner: Multi2
-	Actor197: lst
-		Location: 82,77
-		Owner: Multi2
-	Actor198: lst
-		Location: 75,49
-		Owner: Multi3
-	Actor199: mcv
+		Owner: Neutral
+	Actor18: mpspawn
 		Location: 74,51
-		Owner: Multi3
+		Owner: Neutral
 	Actor200: mine
 		Location: 104,71
 		Owner: Neutral
@@ -859,6 +843,14 @@ Rules:
 		NukePower:
 			AllowMultiple: yes
 
+	World:
+		MPStartUnits@custom:
+			Class: custom
+			Races: soviet, allies
+			BaseActor: mcv
+			SupportActors: lst
+			InnerSupportRadius: 3
+			OuterSupportRadius: 4
 Sequences:
 
 Weapons:
