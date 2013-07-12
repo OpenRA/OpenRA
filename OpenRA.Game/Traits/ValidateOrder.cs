@@ -8,7 +8,6 @@
  */
 #endregion
 
-using System.Collections.Generic;
 using OpenRA.Network;
 
 namespace OpenRA.Traits
@@ -40,7 +39,7 @@ namespace OpenRA.Traits
 				return false;
 			}
 
-			return true;
+			return order.Subject.AcceptsOrder(order.OrderString);
 		}
 	}
 }

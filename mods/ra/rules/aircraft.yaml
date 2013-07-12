@@ -33,6 +33,7 @@ BADR:
 		Interval: 2
 	-EjectOnDeath:
 	-GpsDot:
+	RejectsOrders:
 
 BADR.Bomber:
 	CarpetBomb:
@@ -70,6 +71,7 @@ BADR.Bomber:
 		Interval: 2
 	-EjectOnDeath:
 	-GpsDot:
+	RejectsOrders:
 
 MIG:
 	Inherits: ^Plane
@@ -341,6 +343,7 @@ U2:
 	SmokeTrailWhenDamaged:
 		Offset: -1c43,0,0
 		Interval: 2
+	RejectsOrders:
 
 BADR.Husk:
 	Inherits: ^PlaneHusk
