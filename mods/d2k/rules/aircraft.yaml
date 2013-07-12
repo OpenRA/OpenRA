@@ -60,6 +60,7 @@ FRIGATE:
 	-Selectable:
 	-GainsExperience:
 	FlyAwayOnIdle:
+	RejectsOrders:
 
 ORNI:
 	Inherits: ^Helicopter
@@ -120,6 +121,7 @@ ORNI.bomber:
 		Name: Ornithopter
 	LeavesHusk:
 		HuskActor: ORNI.bomber.Husk
+	RejectsOrders:
 
 CARRYALL.infantry:
 	ParaDrop:
@@ -149,6 +151,7 @@ CARRYALL.infantry:
 		Name: Carryall
 	LeavesHusk:
 		HuskActor: CARRYALL.infantry.Husk
+	RejectsOrders:
 
 BADR:
 	Inherits: CARRYALL.infantry

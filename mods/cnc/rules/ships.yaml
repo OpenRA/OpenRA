@@ -29,6 +29,7 @@ BOAT:
 	AutoTarget:
 		AllowMovement: false
 	WithSmoke:
+	RejectsOrders:
 
 LST:
 	Inherits: ^Ship
@@ -68,4 +69,4 @@ LST:
 		PipCount: 5
 	AttackMove:
 		JustMove: true
-
+	RejectsOrders:
