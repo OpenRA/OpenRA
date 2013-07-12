@@ -393,7 +393,7 @@ namespace OpenRA.Mods.RA.Scripting
 			if (bi == null)
 				return null;
 
-			return GetSharedQueueForCategory(player, bi.Queue);
+			return bi.Queue.Select(q => GetSharedQueueForCategory(player, q)).FirstOrDefault();
 		}
 
 		[LuaGlobal]

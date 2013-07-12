@@ -136,9 +136,10 @@ namespace OpenRA.Mods.RA
 		IEnumerable<ActorInfo> AllBuildables(string category)
 		{
 			return self.World.Map.Rules.Actors.Values
-				.Where( x => x.Name[ 0 ] != '^' )
-				.Where( x => x.Traits.Contains<BuildableInfo>() )
-				.Where( x => x.Traits.Get<BuildableInfo>().Queue == category );
+				.Where(x =>
+					x.Name[ 0 ] != '^' &&
+					x.Traits.Contains<BuildableInfo>() &&
+					x.Traits.Get<BuildableInfo>().Queue.Contains(category));
 		}
 
 		public void OverrideProduction(ActorInfo type, bool buildable)
@@ -221,7 +222,7 @@ namespace OpenRA.Mods.RA
 				{
 					var unit = self.World.Map.Rules.Actors[order.TargetString];
 					var bi = unit.Traits.Get<BuildableInfo>();
-					if (bi.Queue != Info.Type)
+					if (!bi.Queue.Contains(Info.Type))
 						return; /* Not built by this queue */
 
 					var cost = unit.Traits.Contains<ValuedInfo>() ? unit.Traits.Get<ValuedInfo>().Cost : 0;
