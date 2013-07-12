@@ -109,6 +109,11 @@ namespace OpenRA.Mods.RA.Move
 			return true;
 		}
 
+		public bool CanEnterCell(World world, CPos cell)
+		{
+			return CanEnterCell(world, null, cell, null, true, true);
+		}
+
 		public bool CanEnterCell(World world, Actor self, CPos cell, Actor ignoreActor, bool checkTransientActors, bool blockedByMovers)
 		{
 			if (MovementCostForCell(world, cell) == int.MaxValue)
@@ -120,13 +125,13 @@ namespace OpenRA.Mods.RA.Move
 			var blockingActors = world.ActorMap.GetUnitsAt(cell)
 				.Where(x => x != ignoreActor)
 				// Neutral/enemy units are blockers. Allied units that are moving are not blockers.
-				.Where(x => blockedByMovers || ((self.Owner.Stances[x.Owner] != Stance.Ally) || !IsMovingInMyDirection(self, x)))
+				.Where(x => blockedByMovers || (self == null || self.Owner.Stances[x.Owner] != Stance.Ally || !IsMovingInMyDirection(self, x)))
 				.ToList();
 
 			if (checkTransientActors && blockingActors.Count > 0)
 			{
 				// Non-sharable unit can enter a cell with shareable units only if it can crush all of them
-				if (Crushes == null)
+				if (self == null || Crushes == null)
 					return false;
 
 				if (blockingActors.Any(a => !(a.HasTrait<ICrushable>() &&
