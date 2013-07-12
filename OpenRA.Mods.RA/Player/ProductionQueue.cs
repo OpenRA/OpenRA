@@ -26,6 +26,9 @@ namespace OpenRA.Mods.RA
 		[Desc("Group queues from separate buildings together into the same tab.")]
 		public readonly string Group = null;
 
+		[Desc("Filter buildable items based on their Owner.")]
+		public readonly bool RequireOwner = true;
+
 		[Desc("This value is used to translate the unit cost into build time.")]
 		public float BuildSpeed = 0.4f;
 		[Desc("The build time is multiplied with this value on low power.")]
@@ -122,10 +125,13 @@ namespace OpenRA.Mods.RA
 			foreach (var a in AllBuildables(Info.Type))
 			{
 				var bi = a.Traits.Get<BuildableInfo>();
+
 				// Can our race build this by satisfying normal prerequisites?
-				var buildable = bi.Owner.Contains(Race.Race);
+				var buildable = !Info.RequireOwner || bi.Owner.Contains(Race.Race);
+
 				// Checks if Prerequisites want to hide the Actor from buildQueue if they are false
 				tech.Add(a, new ProductionState { Visible = buildable });
+
 				if (buildable)
 					ttc.Add(a.Name, bi.Prerequisites, bi.BuildLimit, this);
 			}
