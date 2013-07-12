@@ -21,8 +21,7 @@ namespace OpenRA.FileFormats
 		public bool NonCombatant = false;
 		public bool Playable = false;
 		public string Bot = null;
-		public bool DefaultStartingUnits = false;
-		public string StartingUnitsClass;
+		public string StartingUnitsClass = null;
 		public bool AllowBots = true;
 		public bool Required = false;
 

@@ -29,10 +29,6 @@ namespace OpenRA.Mods.RA
 
 		void SpawnUnitsForPlayer(World w, Player p, CPos sp)
 		{
-			// They don't want a MCV - the map provides something else for them
-			if (!p.PlayerReference.DefaultStartingUnits)
-				return;
-
 			var spawnClass = p.PlayerReference.StartingUnitsClass ?? w.LobbyInfo.GlobalSettings.StartingUnitsClass;
 			var unitGroup = Rules.Info["world"].Traits.WithInterface<MPStartUnitsInfo>()
 				.Where(g => g.Class == spawnClass && g.Races != null && g.Races.Contains(p.Country.Race))

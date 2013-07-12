@@ -393,7 +393,6 @@ namespace OpenRA
 					Name = "Multi{0}".F(index),
 					Race = "Random",
 					Playable = true,
-					DefaultStartingUnits = true,
 					Enemies = new[] { "Creeps" }
 				};
 				Players.Add(p.Name, p);

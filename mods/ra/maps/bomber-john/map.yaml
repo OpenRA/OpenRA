@@ -759,8 +759,7 @@ Smudges:
 Rules:
 	World:
 		-CrateDrop:
-		SpawnMPUnits:
-			InitialUnit: mnlyr
+		-SpawnMPUnits:
 
 	APWR:
 		Buildable:
