@@ -6,10 +6,11 @@ NEW:
 		Added force-move ability (hold alt to prioritize move/crush over attack/harvest).
 		Added change-mod button to the asset download screen.
 		Added kick-ban to the server lobby.
-		Added a button to fill empty lobby slots with bots.
 		Added a renderer geometry visualization to the debug/cheats menu.
+		Overhauled lobby layout.
 		Fixed exploit allowing arbitrary building placement.
 		Fixed exploit allowing a malicious client to steal admin rights.
+		Fixed exploit related to support aircraft.
 		Fixed glitches relating to passenger-carrying units being killed.
 		Fixed a crash related to bridges on certain maps.
 		Fixed a crash related to the color picker.
@@ -21,6 +22,7 @@ NEW:
 		Fixed units continuing to attack a building after it was captured.
 		Fixed units chasing a chronoshifted unit across the map.
 		Fixed units not being able to attack buildings from some angles.
+		Fixed infantry not being able to attack units from some angles.
 		Removed some developer-specific options from the settings menu.
 	Red Alert:
 		Added external capturing for engineers (like C&C Generals).
@@ -30,19 +32,27 @@ NEW:
 		Fixed support powers being available after winning a game.
 		Fixed sniper damage vs walls.
 		Fixed destroyable ore mines.
+		Improved dog attack behavior.
 		Tweaked some weapon explosions.
 		Sniper health reduced.
 		Iron curtain duration increased to 20 seconds.
 		Chronoshift duration decreased to 20 seconds.
+		Tesla coil price reduced to $1200 and firing delay increased.
+		Mammoth tank build time reduced to 36 seconds.
 		Mobile Radar Jammer range increased.
 		Mechanic repair amount increased.
 		Decrease the infantry run animation speed.
+		Added hospital tech structure that allows infantry to auto-heal.
 		Increased oil derrick health and cash rate. Added initial capture bonus.
-		Added maps: Artemis, Fort Lonestar, Pluto, Sahara,  Survival02, Tournament Island, Zeus.
+		Added several community created map decorations.
+		Added ants and larvae creep actors.
+		Added maps: Artemis, Athena, Fort Lonestar, Pluto, Sahara,  Survival02, Tournament Island, Zeus.
 		Updated maps: Ares, Apollo, Dionysus, Doughnut, Poseidon.
 		Renamed maps: Ares: National Park -> Dionysus.
 		Removed maps: Hotzone, Mjolnir-2, Seaside.
+		Disabled bots on several maps where they don't work well.
 	C&C:
+		Added starting units configuration to the lobby (MCV only, light support, heavy support).
 		Restored "classic" multi-engineer behavior. Buildings above 50% health will be damaged by 50%; buildings below this will be captured.
 		Added some texture to the UI background.
 		Fixed veterancy chevrons on cloaked units.
@@ -50,6 +60,8 @@ NEW:
 		Reduced the pip-count on silos.
 		Orca range increased, reload time decreased.
 		Sam Site missile spread increased.
+		Changed hospital to a capturable tech structure that allows infantry to auto-heal.
+		Added dinosaurs as buildable units from the Biolab.
 		Added maps: Deterring Democracy, Deterring Democracy +
 		Removed maps: East vs West Redux.
 		Updated maps: Skull Valley, Slippery Slopes, The Hourglass.
@@ -58,12 +70,14 @@ NEW:
 		Added new title font.
 		Added maps: Imperial Basin.
 		Fixed harvester docking animation.
+		Fixed statistics tracking.
 		Added harvesting animation.
 		Uses original (better quality) audio.
 		Updated maps: Black Mesa, Brimstone, Death Depths, Dune Boogie.
 	Engine:
 		Fixed a crash with server hosting under Windows.
-		Reduced order lag for singleplayer games
+		Significant improvements to pathfinder performance when ordering units to areas they cannot reach.
+		Reduced order lag for singleplayer games.
 		Added support for TS/RA2 mix files.
 		Added support for TS/RA2 SHP images.
 		Added support for TS/RA2 voxel models.
@@ -81,7 +95,8 @@ NEW:
 		Host windows OpenAL and SDL dependencies on our own servers to avoid excessive downtime.
 	Map Editor and Tools:
 		Added an ingame asset viewer / converter to D2K and RA (enable via the Debug tab in the settings menu).
-
+		Added EditorConfig definitions for editors that support it.
+		Added StyleCop definitions for editors that support it.
 20130514:
 	All mods:
 		Destroyed bridges can now be repaired with an engineer.
