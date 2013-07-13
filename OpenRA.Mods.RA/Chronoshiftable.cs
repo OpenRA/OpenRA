@@ -14,9 +14,12 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class ChronoshiftableInfo : TraitInfo<Chronoshiftable>
+	public class ChronoshiftableInfo : ITraitInfo
 	{
 		public readonly bool ExplodeInstead = false;
+		public readonly string ChronoshiftSound = "chrono2.aud";
+
+		public object Create(ActorInitializer init) { return new Chronoshiftable(this); }
 	}
 
 	public class Chronoshiftable : ITick, ISync, ISelectionBar
@@ -27,6 +30,12 @@ namespace OpenRA.Mods.RA
 		Actor chronosphere;
 		bool killCargo;
 		int TotalTicks;
+		readonly ChronoshiftableInfo info;
+
+		public Chronoshiftable(ChronoshiftableInfo info)
+		{
+			this.info = info;
+		}
 
 		public void Tick(Actor self)
 		{
@@ -41,7 +50,7 @@ namespace OpenRA.Mods.RA
 			{
 				self.CancelActivity();
 				// TODO: need a new Teleport method that will move to the closest available cell
-				self.QueueActivity(new Teleport(chronosphere, chronoshiftOrigin, killCargo));
+				self.QueueActivity(new Teleport(chronosphere, chronoshiftOrigin, killCargo, info.ChronoshiftSound));
 			}
 		}
 
@@ -54,7 +63,6 @@ namespace OpenRA.Mods.RA
 
 		public virtual bool Teleport(Actor self, CPos targetLocation, int duration, bool killCargo, Actor chronosphere)
 		{
-			var info = self.Info.Traits.Get<ChronoshiftableInfo>();
 			if (info.ExplodeInstead)	// some things appear chronoshiftable, but instead they just die.
 			{
 				self.World.AddFrameEndTask(w =>
@@ -74,7 +82,7 @@ namespace OpenRA.Mods.RA
 
 			// Set up the teleport
 			self.CancelActivity();
-			self.QueueActivity(new Teleport(chronosphere, targetLocation, killCargo));
+			self.QueueActivity(new Teleport(chronosphere, targetLocation, killCargo, info.ChronoshiftSound));
 
 			return true;
 		}
