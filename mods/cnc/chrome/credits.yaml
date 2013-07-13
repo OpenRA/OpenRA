@@ -29,7 +29,7 @@ Container@CREDITS_PANEL:
 							VAlign:Top
 		Button@BACK_BUTTON:
 			X:PARENT_RIGHT-140
-			Y:400
+			Y:399
 			Width:140
 			Height:35
 			Text:Back

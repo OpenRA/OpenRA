@@ -25,7 +25,6 @@ namespace OpenRA.Server
 		public int ExpectLength = 8;
 		public int Frame = 0;
 		public int MostRecentFrame = 0;
-		public const int MaxOrderLength = 4096;
 
 		/* client data */
 		public int PlayerIndex;
@@ -66,7 +65,7 @@ namespace OpenRA.Server
 					if (e.SocketErrorCode == SocketError.WouldBlock) break;
 
 					server.DropClient(this);
-					Log.Write("server", "Dropping client {0} because reading the data failed: {1}", PlayerIndex, e);
+					Log.Write("server", "Dropping client {0} because reading the data failed: {1}", this.PlayerIndex.ToString(), e);
 					return false;
 				}
 			}
@@ -87,13 +86,6 @@ namespace OpenRA.Server
 								ExpectLength = BitConverter.ToInt32(bytes, 0) - 4;
 								Frame = BitConverter.ToInt32(bytes, 4);
 								State = ReceiveState.Data;
-
-								if (ExpectLength < 0 || ExpectLength > MaxOrderLength)
-								{
-									server.DropClient(this);
-									Log.Write("server", "Dropping client {0} for excessive order length = {1}", PlayerIndex, ExpectLength);
-									return;
-								}
 							} break;
 
 						case ReceiveState.Data:
