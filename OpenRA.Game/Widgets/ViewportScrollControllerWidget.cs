@@ -140,7 +140,7 @@ namespace OpenRA.Widgets
 					direction_vector_y = 0;
 				}
 
-				scroll_scale += 0.5f;
+				scroll_scale += 0.5f; //TODO: decide which amount feels good
 				scroll.X = direction_vector_x * (Game.Settings.Game.ViewportEdgeScrollStep * scroll_scale);
 				scroll.Y = direction_vector_y * (Game.Settings.Game.ViewportEdgeScrollStep * scroll_scale);
 
