@@ -38,6 +38,7 @@ namespace OpenRA
 		public string Author;
 		public string Tileset;
 		public string[] Difficulties;
+		public bool AllowStartUnitConfig = true;
 
 		[FieldLoader.Ignore] public Lazy<Dictionary<string, ActorReference>> Actors;
 
