@@ -49,13 +49,14 @@ return {
     return match and 1 or 0, match and term and 1 or 0
   end,
   isincindent = function(str)
-    local term = str:match("^%s*(%w+)[^%w]*")
+    local term = str:match("^%s*(%w+)%W*")
     term = term and incindent[term] and 1 or 0
     local _, opened = str:gsub("([%{%(])", "%1")
     local _, closed = str:gsub("([%}%)])", "%1")
-    local func = (isfndef(str) or str:match("[^%w]+function%s*%(")) and 1 or 0
+    local func = (isfndef(str) or str:match("%W+function%s*%(")) and 1 or 0
     -- ended should only be used to negate term and func effects
-    local ended = (term + func > 0) and str:match("[^%w]+end%s*$") and 1 or 0
+    local anon = str:match("%W+function%s*%(.+%Wend%W")
+    local ended = (term + func > 0) and (str:match("%W+end%s*$") or anon) and 1 or 0
 
     return opened - closed + func + term - ended
   end,
