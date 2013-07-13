@@ -307,9 +307,53 @@ World:
 		Depths:5,5,5,5,5,5
 	DebugOverlay:
 	SpawnMapActors:
-	CreateMPPlayers:
-	SpawnMPUnits:
 	MPStartLocations:
+	CreateMPPlayers:
+	MPStartUnits@mcvonly:
+		Class: none
+		Races: gdi, nod
+		BaseActor: mcv
+	MPStartUnits@defaultgdia:
+		Races: gdi
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e1,e1,e3,e3,jeep
+	MPStartUnits@defaultgdib:
+		Races: gdi
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e1,e1,e1,e3,apc
+	MPStartUnits@defaultnoda:
+		Races: nod
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e1,e3,bggy,bike
+	MPStartUnits@defaultnodb:
+		Races: nod
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e3,e3,e3,bggy
+	MPStartUnits@defaultnodc:
+		Races: nod
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e1,e1,e1,e1,e3,bike
+	MPStartUnits@heavynoda:
+		Class: heavy
+		Races: nod
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e1,e3,e3,ltnk,ltnk,ftnk
+	MPStartUnits@heavynodb:
+		Class: heavy
+		Races: nod
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e1,e1,e3,e3,e3,ftnk,ftnk
+	MPStartUnits@heavygdia:
+		Class: heavy
+		Races: gdi
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e1,e3,e3,jeep,mtnk,mtnk
+	MPStartUnits@heavygdib:
+		Class: heavy
+		Races: gdi
+		BaseActor: mcv
+		SupportActors: e1,e1,e1,e1,e1,e2,e2,e2,e3,e3,apc,mtnk
+	SpawnMPUnits:
 	SpatialBins:
 		BinSize: 4
 	CrateSpawner:

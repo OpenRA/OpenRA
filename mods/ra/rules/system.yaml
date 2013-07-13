@@ -639,6 +639,9 @@ World:
 	DebugOverlay:
 	SpawnMapActors:
 	CreateMPPlayers:
+	MPStartUnits:
+		Races: soviet, allies
+		BaseActor: mcv
 	MPStartLocations:
 	SpawnMPUnits:
 	SpatialBins:

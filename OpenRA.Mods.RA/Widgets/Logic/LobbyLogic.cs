@@ -318,8 +318,46 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					difficulty.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count() * 30, options, setupItem);
 				};
 
-				var difficultyDesc = optionsBin.GetOrNull<LabelWidget>("DIFFICULTY_DESC");
-				difficultyDesc.IsVisible = difficulty.IsVisible;
+				optionsBin.Get<LabelWidget>("DIFFICULTY_DESC").IsVisible = difficulty.IsVisible;
+			}
+
+			var startingUnits = optionsBin.GetOrNull<DropDownButtonWidget>("STARTINGUNITS_DROPDOWNBUTTON");
+			if (startingUnits != null)
+			{
+				var classNames = new Dictionary<string,string>()
+				{
+					{"none", "MCV Only"},
+					{"default", "Light Support"},
+					{"heavy", "Heavy Support"},
+				};
+
+				Func<string, string> className = c => classNames.ContainsKey(c) ? classNames[c] : c;
+				var classes = Rules.Info["world"].Traits.WithInterface<MPStartUnitsInfo>()
+					.Select(a => a.Class).Distinct();
+
+				startingUnits.IsDisabled = configurationDisabled;
+				startingUnits.IsVisible = () => Map.AllowStartUnitConfig;
+				startingUnits.GetText = () => className(orderManager.LobbyInfo.GlobalSettings.StartingUnitsClass);
+				startingUnits.OnMouseDown = _ =>
+				{
+					var options = classes.Select(c => new DropDownOption
+					{
+						Title = className(c),
+						IsSelected = () => orderManager.LobbyInfo.GlobalSettings.StartingUnitsClass == c,
+						OnClick = () => orderManager.IssueOrder(Order.Command("startingunits {0}".F(c)))
+					});
+
+					Func<DropDownOption, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
+					{
+						var item = ScrollItemWidget.Setup(template, option.IsSelected, option.OnClick);
+						item.Get<LabelWidget>("LABEL").GetText = () => option.Title;
+						return item;
+					};
+
+					startingUnits.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count() * 30, options, setupItem);
+				};
+
+				optionsBin.Get<LabelWidget>("STARTINGUNITS_DESC").IsVisible = startingUnits.IsVisible;
 			}
 
 			var disconnectButton = lobby.Get<ButtonWidget>("DISCONNECT_BUTTON");

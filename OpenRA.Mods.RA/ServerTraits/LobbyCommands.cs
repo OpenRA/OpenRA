@@ -399,6 +399,32 @@ namespace OpenRA.Mods.RA.Server
 						server.SyncLobbyInfo();
 						return true;
 					}},
+				{ "startingunits",
+					s =>
+					{
+						if (!client.IsAdmin)
+						{
+							server.SendOrderTo(conn, "Message", "Only the host can set that option");
+							return true;
+						}
+
+						if (!server.Map.AllowStartUnitConfig)
+						{
+							server.SendOrderTo(conn, "Message", "Map has disabled start unit configuration");
+							return true;
+						}
+
+						var startUnits = Rules.Info["world"].Traits.WithInterface<MPStartUnitsInfo>();
+						if (!startUnits.Any(msu => msu.Class == s))
+						{
+							server.SendOrderTo(conn, "Message", "Unknown unit class: {0}".F(s));
+							return true;
+						}
+
+						server.lobbyInfo.GlobalSettings.StartingUnitsClass = s;
+						server.SyncLobbyInfo();
+						return true;
+					}},
 				{ "kick",
 					s =>
 					{

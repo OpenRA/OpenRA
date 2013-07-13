@@ -38,6 +38,7 @@ namespace OpenRA
 		public string Author;
 		public string Tileset;
 		public string[] Difficulties;
+		public bool AllowStartUnitConfig = true;
 
 		[FieldLoader.Ignore] public Lazy<Dictionary<string, ActorReference>> Actors;
 
@@ -393,7 +394,6 @@ namespace OpenRA
 					Name = "Multi{0}".F(index),
 					Race = "Random",
 					Playable = true,
-					DefaultStartingUnits = true,
 					Enemies = new[] { "Creeps" }
 				};
 				Players.Add(p.Name, p);

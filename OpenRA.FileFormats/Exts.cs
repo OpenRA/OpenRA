@@ -110,6 +110,14 @@ namespace OpenRA
 			return xs[r.Next(xs.Length)];
 		}
 
+		public static T RandomOrDefault<T>(this IEnumerable<T> ts, Thirdparty.Random r)
+		{
+			if (!ts.Any())
+				return default(T);
+
+			return ts.Random(r);
+		}
+
 		public static float Product(this IEnumerable<float> xs)
 		{
 			return xs.Aggregate(1f, (a, x) => a * x);
