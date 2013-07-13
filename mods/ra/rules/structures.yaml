@@ -192,6 +192,7 @@ IRON:
 		BuildPaletteOrder: 120
 		Prerequisites: stek
 		Owner: soviet
+		BuildLimit: 1
 		Hotkey: c
 	Valued:
 		Cost: 1500
@@ -230,6 +231,7 @@ PDOX:
 		BuildPaletteOrder: 120
 		Prerequisites: atek
 		Owner: allies
+		BuildLimit: 1
 		Hotkey: o
 	Valued:
 		Cost: 1500
