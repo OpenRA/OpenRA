@@ -4,7 +4,7 @@ MSLO:
 		Cost: 2500
 	Tooltip:
 		Name: Missile Silo
-		Description: Launches a devastating nuclear strike.\n  Strong vs Infantry, Buildings\n  Weak vs Tanks\n  Special Ability: Nuclear Missile\n\nMaximum 1 can be built
+		Description: Launches a devastating atomic bomb\nat a target location.\n  Special Ability: Atom Bomb\n\nMaximum 1 can be built
 		Icon: msloicon2
 	Buildable:
 		Queue: Defense
@@ -28,7 +28,7 @@ MSLO:
 		Image: atomicon
 		ChargeTime: 540
 		Description: Atom Bomb
-		LongDesc: Launches a nuclear missile at a target location.
+		LongDesc: Launches a devastating atomic bomb\nat a target location.
 		BeginChargeSound: aprep1.aud
 		EndChargeSound: aready1.aud
 		SelectTargetSound: slcttgt1.aud
@@ -192,23 +192,25 @@ IRON:
 		BuildPaletteOrder: 120
 		Prerequisites: stek
 		Owner: soviet
+		BuildLimit: 1
 		Hotkey: c
 	Valued:
 		Cost: 1500
 	Tooltip:
 		Name: Iron Curtain
-		Description: Makes a group of units invulnerable for a \nshort time.\n  Special Ability: Invulnerability
+		Description: Makes a group of units invulnerable\nfor a short time.\n  Special Ability: Invulnerability\n\nMaximum 1 can be built
 	Building:
 		Power: -200
-		Footprint: xx xx
-		Dimensions: 2,2
+		Footprint: xx
+		Dimensions: 2,1
+	Selectable:
+		Bounds: 50,50,0,-12
 	Health:
 		HP: 1000
 	Armor:
 		Type: Wood
 	RevealsShroud:
 		Range: 10
-	Bib:
 	IronCurtainable:
 	IronCurtainPower:
 		Image: infxicon
@@ -230,12 +232,13 @@ PDOX:
 		BuildPaletteOrder: 120
 		Prerequisites: atek
 		Owner: allies
+		BuildLimit: 1
 		Hotkey: o
 	Valued:
 		Cost: 1500
 	Tooltip:
 		Name: Chronosphere
-		Description: Teleports a unit from one place \nto another, for a limited time.\n  Special Ability: Chronoshift
+		Description: Teleports a group of units across the\nmap for a short time.\n  Special Ability: Chronoshift\n\nMaximum 1 can be built
 	Building:
 		Power: -200
 		Footprint: xx xx
@@ -246,13 +249,12 @@ PDOX:
 		Type: Wood
 	RevealsShroud:
 		Range: 10
-	Bib:
 	IronCurtainable:
 	ChronoshiftPower:
 		Image: warpicon
 		ChargeTime: 120
 		Description: Chronoshift
-		LongDesc: Teleport a group of vehicles across\nthe map for 20 seconds.
+		LongDesc: Teleports a group of units across\nthe map for 20 seconds.
 		SelectTargetSound: slcttgt1.aud
 		BeginChargeSound: chrochr1.aud
 		EndChargeSound: chrordy1.aud

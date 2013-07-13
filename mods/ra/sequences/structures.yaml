@@ -362,17 +362,22 @@ gap:
 iron:
 	idle:
 		Start: 0
+		Offset: 0,-12
 	active:
 		Start: 0
 		Length: 11
+		Offset: 0,-12
 	damaged-idle:
 		Start: 11
+		Offset: 0,-12
 	damaged-active:
 		Start: 11
 		Length: 11
+		Offset: 0,-12
 	make: ironmake
 		Start: 0
 		Length: *
+		Offset: 0,-12
 
 pdox:
 	idle:
