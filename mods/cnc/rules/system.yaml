@@ -158,7 +158,7 @@ Player:
 			silo: 1
 		BuildingFractions:
 			proc: 17%
-			nuke: 10%	
+			nuke: 10%
 			pyle: 7%
 			hand: 9%
 			hq: 1%
@@ -273,6 +273,7 @@ World:
 	ProductionQueueFromSelection:
 		ProductionTabsWidget: PRODUCTION_TABS
 	BibLayer:
+	DomainIndex:
 	ResourceLayer:
 	ResourceClaimLayer:
 	ResourceType@green-tib:

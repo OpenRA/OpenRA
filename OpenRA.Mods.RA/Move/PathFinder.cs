@@ -25,6 +25,8 @@ namespace OpenRA.Mods.RA.Move
 
 	public class PathFinder
 	{
+		readonly static List<CPos> emptyPath = new List<CPos>(0);
+
 		readonly World world;
 		public PathFinder(World world) { this.world = world; }
 
@@ -50,10 +52,19 @@ namespace OpenRA.Mods.RA.Move
 					Log.Write("debug", "Actor {0} asked for a path from {1} tick(s) ago", self.ActorID, world.FrameNumber - cached.tick);
 					if (world.FrameNumber - cached.tick > MaxPathAge)
 						CachedPaths.Remove(cached);
-					return new List<CPos>(cached.result);
+					return emptyPath;
 				}
 
 				var mi = self.Info.Traits.Get<MobileInfo>();
+
+				// If a water-land transition is required, bail early
+				var domainIndex = self.World.WorldActor.TraitOrDefault<DomainIndex>();
+				if (domainIndex != null)
+				{
+					var passable = mi.GetMovementClass(world.TileSet);
+					if (!domainIndex.IsPassable(from, target, (uint)passable))
+						return emptyPath;
+				}
 
 				var pb = FindBidiPath(
 					PathSearch.FromPoint(world, mi, self, target, from, true),
@@ -85,6 +96,17 @@ namespace OpenRA.Mods.RA.Move
 				var tilesInRange = world.FindTilesInCircle(targetCell, range.Range / 1024 + 1)
 					.Where(t => (t.CenterPosition - target).LengthSquared <= rangeSquared
 					       && mi.CanEnterCell(self.World, self, t, null, true, true));
+
+				// See if there is any cell within range that does not involve a cross-domain request
+				// Really, we only need to check the circle perimeter, but it's not clear that would be a performance win
+				var domainIndex = self.World.WorldActor.TraitOrDefault<DomainIndex>();
+				if (domainIndex != null)
+				{
+					var passable = mi.GetMovementClass(world.TileSet);
+					tilesInRange = new List<CPos>(tilesInRange.Where(t => domainIndex.IsPassable(src, t, (uint)passable)));
+					if (tilesInRange.Count() == 0)
+						return emptyPath;
+				}
 
 				var path = FindBidiPath(
 					PathSearch.FromPoints(world, mi, self, tilesInRange, src, true),
@@ -124,7 +146,7 @@ namespace OpenRA.Mods.RA.Move
 				}
 
 				// no path exists
-				return new List<CPos>(0);
+				return emptyPath;
 			}
 		}
 
@@ -189,7 +211,7 @@ namespace OpenRA.Mods.RA.Move
 						return path;
 				}
 
-				return new List<CPos>(0);
+				return emptyPath;
 			}
 		}
 
