@@ -95,7 +95,7 @@ namespace OpenRA.Widgets
 			}
 			return false;
 		}
-
+		//
 		public override void Tick()
 		{
 			Edge = ScrollDirection.None;

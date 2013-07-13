@@ -30,7 +30,7 @@ namespace OpenRA.Graphics
 		DownLeft = ScrollDirection.Down | ScrollDirection.Left,
 		DownRight = ScrollDirection.Down | ScrollDirection.Right
 	}
-
+	//
 	public class Viewport
 	{
 		readonly int2 screenSize;
