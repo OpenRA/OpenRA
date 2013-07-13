@@ -51,6 +51,7 @@ return {
   isincindent = function(str)
     local term = str:match("^%s*(%w+)%W*")
     term = term and incindent[term] and 1 or 0
+    str = str:gsub("'.-'",""):gsub('".-"','')
     local _, opened = str:gsub("([%{%(])", "%1")
     local _, closed = str:gsub("([%}%)])", "%1")
     local func = (isfndef(str) or str:match("%W+function%s*%(")) and 1 or 0
