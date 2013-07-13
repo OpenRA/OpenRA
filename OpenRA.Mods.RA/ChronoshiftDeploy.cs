@@ -22,6 +22,8 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly int ChargeTime = 30; // seconds
 		public readonly int JumpDistance = 10;
+		public readonly string ChronoshiftSound = "chrotnk1.aud";
+
 		public object Create(ActorInitializer init) { return new ChronoshiftDeploy(init.self, this); }
 	}
 
@@ -63,7 +65,7 @@ namespace OpenRA.Mods.RA
 				if (CanJumpTo(order.TargetLocation, true))
 				{
 					self.CancelActivity();
-					self.QueueActivity(new Teleport(null, order.TargetLocation, true));
+					self.QueueActivity(new Teleport(null, order.TargetLocation, true, Info.ChronoshiftSound));
 					chargeTick = 25 * Info.ChargeTime;
 				}
 			}

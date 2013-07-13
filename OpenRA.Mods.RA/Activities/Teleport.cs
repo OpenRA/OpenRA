@@ -19,18 +19,20 @@ namespace OpenRA.Mods.RA.Activities
 		CPos destination;
 		bool killCargo;
 		Actor chronosphere;
+		string sound;
 
-		public Teleport(Actor chronosphere, CPos destination, bool killCargo)
+		public Teleport(Actor chronosphere, CPos destination, bool killCargo, string sound)
 		{
 			this.chronosphere = chronosphere;
 			this.destination = destination;
 			this.killCargo = killCargo;
+			this.sound = sound;
 		}
 
 		public override Activity Tick(Actor self)
 		{
-			Sound.Play("chrono2.aud", self.CenterPosition);
-			Sound.Play("chrono2.aud", destination.CenterPosition);
+			Sound.Play(sound, self.CenterPosition);
+			Sound.Play(sound, destination.CenterPosition);
 
 			self.Trait<ITeleportable>().SetPosition(self, destination);
 			self.Generation++;
