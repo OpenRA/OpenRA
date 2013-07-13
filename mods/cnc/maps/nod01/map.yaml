@@ -20,6 +20,8 @@ UseAsShellmap: False
 
 Type: Campaign
 
+AllowStartUnitConfig: False
+
 Players:
 	PlayerReference@Neutral:
 		Name: Neutral
