@@ -64,6 +64,16 @@ namespace OpenRA
 				SubCell.BottomLeft, SubCell.BottomRight }.Any(b => !AnyUnitsAt(a,b));
 		}
 
+		public SubCell? FreeSubCell(CPos a)
+		{
+			if (!HasFreeSubCell(a))
+				return null;
+
+			return new[]{ SubCell.TopLeft, SubCell.TopRight, SubCell.Center,
+				SubCell.BottomLeft, SubCell.BottomRight }.First(b => !AnyUnitsAt(a,b));
+		}
+
+
 		public bool AnyUnitsAt(CPos a)
 		{
 			return influence[ a.X, a.Y ] != null;

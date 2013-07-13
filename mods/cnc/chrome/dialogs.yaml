@@ -224,12 +224,18 @@ Background@LOBBY_OPTIONS_BIN:
 			Width:230
 			Height:20
 			Text:Enable Crates
-		Checkbox@FRAGILEALLIANCES_CHECKBOX:
+		Label@STARTINGUNITS_DESC:
 			X:150
 			Y:140
-			Width:230
-			Height:20
-			Text:Allow Team Changes
+			Width:120
+			Height:25
+			Text:Starting Units:
+		DropDownButton@STARTINGUNITS_DROPDOWNBUTTON:
+			X:245
+			Y:140
+			Width:140
+			Height:25
+			Font:Bold
 		Label@DIFFICULTY_DESC:
 			X:150
 			Y:170
