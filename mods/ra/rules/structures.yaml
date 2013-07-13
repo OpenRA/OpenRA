@@ -203,6 +203,8 @@ IRON:
 		Power: -200
 		Footprint: xx
 		Dimensions: 2,1
+	Selectable:
+		Bounds: 50,50,0,-12
 	Health:
 		HP: 1000
 	Armor:
