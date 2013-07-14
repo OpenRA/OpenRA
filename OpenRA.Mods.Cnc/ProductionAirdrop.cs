@@ -30,9 +30,10 @@ namespace OpenRA.Mods.Cnc
 
 	class ProductionAirdrop : Production
 	{
-		public ProductionAirdrop(ProductionAirdropInfo info) : base(info) {}
+		public ProductionAirdrop(ProductionAirdropInfo info)
+			: base(info) { }
 
-		public override bool Produce( Actor self, ActorInfo producee )
+		public override bool Produce(Actor self, ActorInfo producee)
 		{
 			var owner = self.Owner;
 
@@ -53,13 +54,13 @@ namespace OpenRA.Mods.Cnc
 			{
 				var a = w.CreateActor(actorType, new TypeDictionary
 				{
-					new LocationInit( startPos ),
-					new OwnerInit( owner ),
-					new FacingInit( 64 ),
-					new AltitudeInit( Rules.Info[actorType].Traits.Get<PlaneInfo>().CruiseAltitude ),
+					new LocationInit(startPos),
+					new OwnerInit(owner),
+					new FacingInit(64),
+					new AltitudeInit(Rules.Info[actorType].Traits.Get<PlaneInfo>().CruiseAltitude),
 				});
 
-				a.QueueActivity(Fly.ToCell(self.Location + new CVec(6, 0)));
+				a.QueueActivity(Fly.ToCell(self.Location + new CVec(9, 0)));
 				a.QueueActivity(new Land(Target.FromActor(self)));
 				a.QueueActivity(new CallFunc(() =>
 				{
