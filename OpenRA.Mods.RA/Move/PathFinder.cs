@@ -52,7 +52,7 @@ namespace OpenRA.Mods.RA.Move
 					Log.Write("debug", "Actor {0} asked for a path from {1} tick(s) ago", self.ActorID, world.FrameNumber - cached.tick);
 					if (world.FrameNumber - cached.tick > MaxPathAge)
 						CachedPaths.Remove(cached);
-					return emptyPath;
+					return new List<CPos>(cached.result);
 				}
 
 				var mi = self.Info.Traits.Get<MobileInfo>();
