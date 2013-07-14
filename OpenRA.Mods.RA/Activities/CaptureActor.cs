@@ -68,9 +68,6 @@ namespace OpenRA.Mods.RA.Activities
 						foreach (var t in target.Actor.TraitsImplementing<INotifyCapture>())
 							t.OnCapture(target.Actor, self, oldOwner, self.Owner);
 
-						foreach (var t in self.World.ActorsWithTrait<INotifyOtherCaptured>())
-							t.Trait.OnActorCaptured(t.Actor, target.Actor, self, oldOwner, self.Owner);
-
 						capturable.EndCapture();
 
 						if (capturesInfo != null && capturesInfo.ConsumeActor)
