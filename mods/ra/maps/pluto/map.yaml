@@ -27,31 +27,27 @@ Players:
 	PlayerReference@Multi0:
 		Name: Multi0
 		Playable: True
-		DefaultStartingUnits: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi1:
 		Name: Multi1
 		Playable: True
-		DefaultStartingUnits: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi2:
 		Name: Multi2
 		Playable: True
-		DefaultStartingUnits: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi3:
 		Name: Multi3
 		Playable: True
-		DefaultStartingUnits: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Creeps:
 		Name: Creeps
 		NonCombatant: True
@@ -70,18 +66,6 @@ Actors:
 		Owner: Neutral
 	Actor3: mine
 		Location: 40,94
-		Owner: Neutral
-	Actor4: mine
-		Location: 24,86
-		Owner: Neutral
-	Actor5: mine
-		Location: 46,107
-		Owner: Neutral
-	Actor6: mine
-		Location: 144,106
-		Owner: Neutral
-	Actor7: mine
-		Location: 167,86
 		Owner: Neutral
 	Actor9: mine
 		Location: 151,97
@@ -929,6 +913,8 @@ Smudges:
 Rules:
 
 Sequences:
+
+VoxelSequences:
 
 Weapons:
 
