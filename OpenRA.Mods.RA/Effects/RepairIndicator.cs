@@ -23,14 +23,24 @@ namespace OpenRA.Mods.RA.Effects
 		string palettePrefix;
 		Animation anim = new Animation("allyrepair");
 		RepairableBuilding rb;
+		Cloak cloak;
 
 		public RepairIndicator(Actor building, string palettePrefix, Player player)
 		{
 			this.building = building;
 			this.player = player;
 			this.palettePrefix = palettePrefix;
+			cloak = building.TraitOrDefault<Cloak>();
 			rb = building.Trait<RepairableBuilding>();
 			anim.PlayRepeating("repair");
+		}
+
+		public bool IsVisible()
+		{
+			if (cloak != null && cloak.Cloaked)
+				return false;
+
+			return true;
 		}
 
 		public void Tick(World world)
@@ -46,6 +56,9 @@ namespace OpenRA.Mods.RA.Effects
 		{
 			if (!building.Destroyed)
 			{
+				if (!IsVisible() && !player.IsAlliedWith(building.World.RenderPlayer))
+					yield break;
+
 				yield return new SpriteRenderable(anim.Image, building.CenterPosition, 0,
 					wr.Palette(palettePrefix+player.InternalName), 1f);
 			}
