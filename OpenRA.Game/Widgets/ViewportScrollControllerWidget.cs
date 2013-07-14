@@ -23,11 +23,10 @@ namespace OpenRA.Widgets
 		ScrollDirection Keyboard;
 		ScrollDirection Edge;
 
-		float DirectionVectorX = 0;
-		float DirectionVectorY = 0;
-		float ScrollScale = 0;
-		float ScrollScaleMax = 5;
-		float2 ScrollAmount = new float2(0, 0);
+		float currentScrollScale = 0;
+		float scrollScaleLimit = 5;
+		float2 scrollAmount = new float2(0, 0);
+		float2 directionVector = new float2 (0, 0);
 
 		public ViewportScrollControllerWidget() : base() { }
 		protected ViewportScrollControllerWidget(ViewportScrollControllerWidget widget)
@@ -108,66 +107,66 @@ namespace OpenRA.Widgets
 			{
 				Scroll();
 			} 
-			else if (ScrollScale != 0) 
+			else if (currentScrollScale != 0) 
 			{
-				ScrollScale = 0;
-				DirectionVectorY = 0;
-				DirectionVectorX = 0;
+				currentScrollScale = 0;
+				directionVector.Y = 0;
+				directionVector.X = 0;
 			}
 		}
 
 		void Scroll()
 		{
 			if (Edge == ScrollDirection.UpLeft || Keyboard == ScrollDirection.UpLeft)
-			{	//	up-left
-				DirectionVectorY = -1;
-				DirectionVectorX = -1;
+			{
+				directionVector.Y = -1;
+				directionVector.X = -1;
 			}
 			else if (Edge == ScrollDirection.UpRight || Keyboard == ScrollDirection.UpRight)
-			{	//	up-right
-				DirectionVectorY = -1;
-				DirectionVectorX = 1;
+			{
+				directionVector.Y = -1;
+				directionVector.X = 1;
 			} 
 			else if (Edge == ScrollDirection.DownLeft || Keyboard == ScrollDirection.DownLeft)
-			{	//	down-left
-				DirectionVectorY = 1;
-				DirectionVectorX = -1;
+			{
+				directionVector.Y = 1;
+				directionVector.X = -1;
 			} 
 			else if (Edge == ScrollDirection.DownRight || Keyboard == ScrollDirection.DownRight)
-			{	//	down-right
-				DirectionVectorY = 1;
-				DirectionVectorX = 1;
-			} 
-			else if (Keyboard.Includes (ScrollDirection.Up) || Edge.Includes (ScrollDirection.Up)) 
-			{	//	up
-				DirectionVectorY = -1;
-				DirectionVectorX = 0;
-			} 
-			else if (Keyboard.Includes (ScrollDirection.Right) || Edge.Includes (ScrollDirection.Right))
-			{	//	right
-				DirectionVectorX = 1;
-				DirectionVectorY = 0;
-			} 
-			else if (Keyboard.Includes (ScrollDirection.Down) || Edge.Includes (ScrollDirection.Down)) 
-			{	//	down
-				DirectionVectorY = 1;
-				DirectionVectorX = 0;
-			} 
-			else if (Keyboard.Includes (ScrollDirection.Left) || Edge.Includes (ScrollDirection.Left)) 
-			{	//	left
-				DirectionVectorX = -1;
-				DirectionVectorY = 0;
-			}
-
-			if(ScrollScale <= ScrollScaleMax)
 			{
-				ScrollScale += 0.5f;
+				directionVector.Y = 1;
+				directionVector.X = 1;
+			} 
+			else if (Keyboard.Includes(ScrollDirection.Up) || Edge.Includes(ScrollDirection.Up)) 
+			{
+				directionVector.Y = -1;
+				directionVector.X = 0;
+			} 
+			else if (Keyboard.Includes(ScrollDirection.Down) || Edge.Includes(ScrollDirection.Down)) 
+			{
+				directionVector.Y = 1;
+				directionVector.X = 0;
+			} 
+			else if (Keyboard.Includes(ScrollDirection.Left) || Edge.Includes(ScrollDirection.Left)) 
+			{
+				directionVector.X = -1;
+				directionVector.Y = 0;
+			}
+			else if (Keyboard.Includes(ScrollDirection.Right) || Edge.Includes(ScrollDirection.Right))
+			{
+				directionVector.X = 1;
+				directionVector.Y = 0;
+			} 
+
+			if (currentScrollScale <= scrollScaleLimit)
+			{
+				currentScrollScale += 0.1f;
 			}
 
-			ScrollAmount.X = DirectionVectorX * (Game.Settings.Game.ViewportEdgeScrollStep * ScrollScale);
-			ScrollAmount.Y = DirectionVectorY * (Game.Settings.Game.ViewportEdgeScrollStep * ScrollScale);
+			scrollAmount.X = directionVector.X * (Game.Settings.Game.ViewportEdgeScrollStep * currentScrollScale);
+			scrollAmount.Y = directionVector.Y * (Game.Settings.Game.ViewportEdgeScrollStep * currentScrollScale);
 
-			Game.viewport.Scroll(ScrollAmount);
+			Game.viewport.Scroll(scrollAmount);
 		}
 
 		ScrollDirection CheckForDirections()
