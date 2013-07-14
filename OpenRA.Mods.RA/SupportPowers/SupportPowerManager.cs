@@ -83,7 +83,7 @@ namespace OpenRA.Mods.RA
 
 		public void Tick(Actor self)
 		{
-			foreach(var power in Powers.Values)
+			foreach (var power in Powers.Values)
 				power.Tick();
 		}
 
@@ -100,7 +100,7 @@ namespace OpenRA.Mods.RA
 				Powers[key].Target();
 		}
 
-		static readonly SupportPowerInstance[] NoInstances = {};
+		static readonly SupportPowerInstance[] NoInstances = { };
 
 		public IEnumerable<SupportPowerInstance> GetPowersForActor(Actor a)
 		{
@@ -110,85 +110,85 @@ namespace OpenRA.Mods.RA
 			return a.TraitsImplementing<SupportPower>()
 				.Select(t => Powers[MakeKey(t)]);
 		}
+	}
 
-		public class SupportPowerInstance
+	public class SupportPowerInstance
+	{
+		readonly SupportPowerManager Manager;
+		readonly string Key;
+
+		public List<SupportPower> Instances;
+		public int RemainingTime;
+		public int TotalTime;
+		public bool Active { get; private set; }
+		public bool Disabled { get; private set; }
+
+		public SupportPowerInfo Info { get { return Instances.Select(i => i.Info).FirstOrDefault(); } }
+		public bool Ready { get { return Active && RemainingTime == 0; } }
+
+		public SupportPowerInstance(string key, SupportPowerManager manager)
 		{
-			readonly SupportPowerManager Manager;
-			readonly string Key;
+			Manager = manager;
+			Key = key;
+		}
 
-			public List<SupportPower> Instances;
-			public int RemainingTime;
-			public int TotalTime;
-			public bool Active { get; private set; }
-			public bool Disabled { get; private set; }
+		static bool InstanceDisabled(SupportPower sp)
+		{
+			return sp.self.TraitsImplementing<IDisable>().Any(d => d.Disabled);
+		}
 
-			public SupportPowerInfo Info { get { return Instances.Select(i => i.Info).FirstOrDefault(); } }
-			public bool Ready { get { return Active && RemainingTime == 0; } }
+		bool notifiedCharging;
+		bool notifiedReady;
+		public void Tick()
+		{
+			Active = !Disabled && Instances.Any(i => !i.self.IsDisabled());
+			if (!Active)
+				return;
 
-			public SupportPowerInstance(string key, SupportPowerManager manager)
+			if (Active)
 			{
-				Manager = manager;
-				Key = key;
-			}
+				var power = Instances.First();
+				if (Manager.devMode.FastCharge && RemainingTime > 25)
+					RemainingTime = 25;
 
-			static bool InstanceDisabled(SupportPower sp)
-			{
-				return sp.self.TraitsImplementing<IDisable>().Any(d => d.Disabled);
-			}
-
-			bool notifiedCharging;
-			bool notifiedReady;
-			public void Tick()
-			{
-				Active = !Disabled && Instances.Any(i => !i.self.IsDisabled());
-				if (!Active)
-					return;
-
-				if (Active)
+				if (RemainingTime > 0) --RemainingTime;
+				if (!notifiedCharging)
 				{
-					var power = Instances.First();
-					if (Manager.devMode.FastCharge && RemainingTime > 25)
-						RemainingTime = 25;
+					power.Charging(power.self, Key);
+					notifiedCharging = true;
+				}
 
-					if (RemainingTime > 0) --RemainingTime;
-					if (!notifiedCharging)
-					{
-						power.Charging(power.self, Key);
-						notifiedCharging = true;
-					}
-
-					if (RemainingTime == 0
-						&& !notifiedReady)
-					{
-						power.Charged(power.self, Key);
-						notifiedReady = true;
-					}
+				if (RemainingTime == 0
+					&& !notifiedReady)
+				{
+					power.Charged(power.self, Key);
+					notifiedReady = true;
 				}
 			}
+		}
 
-			public void Target()
-			{
-				if (!Ready)
-					return;
+		public void Target()
+		{
+			if (!Ready)
+				return;
 
-				Manager.self.World.OrderGenerator = Instances.First().OrderGenerator(Key, Manager);
-			}
+			Manager.self.World.OrderGenerator = Instances.First().OrderGenerator(Key, Manager);
+		}
 
-			public void Activate(Order order)
-			{
-				if (!Ready)
-					return;
+		public void Activate(Order order)
+		{
+			if (!Ready)
+				return;
 
-				var power = Instances.First(i => !InstanceDisabled(i));
+			var power = Instances.First(i => !InstanceDisabled(i));
 
-				// Note: order.Subject is the *player* actor
-				power.Activate(power.self, order);
-				RemainingTime = TotalTime;
-				notifiedCharging = notifiedReady = false;
+			// Note: order.Subject is the *player* actor
+			power.Activate(power.self, order);
+			RemainingTime = TotalTime;
+			notifiedCharging = notifiedReady = false;
 
-				if (Info.OneShot)
-					Disabled = true;
-			}
+			if (Info.OneShot)
+				Disabled = true;
 		}
 	}
 
