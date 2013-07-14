@@ -86,6 +86,8 @@ HOSP:
 		Type: InfantryHealing
 	Tooltip:
 		Name: Hospital
+	RevealsShroud:
+		Range: 3
 
 V01:
 	Inherits: ^CivBuilding
