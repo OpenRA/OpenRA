@@ -41,7 +41,7 @@ namespace OpenRA.Graphics
 
 		// Top-left of the viewport, in world-px units
 		public float2 Location { get { return scrollPosition; } }
-		public float2 CenterLocation { get { return scrollPosition + 0.5f/Zoom*screenSize.ToFloat2(); } }
+		public float2 CenterLocation { get { return scrollPosition + 0.5f / Zoom * screenSize.ToFloat2(); } }
 
 		public Rectangle WorldRect
 		{

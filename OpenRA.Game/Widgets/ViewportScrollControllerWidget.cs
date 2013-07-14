@@ -17,16 +17,41 @@ namespace OpenRA.Widgets
 {
 	public class ViewportScrollControllerWidget : Widget
 	{
+		static readonly Dictionary<ScrollDirection, string> Directions = new Dictionary<ScrollDirection, string>
+		{
+			{ ScrollDirection.Up | ScrollDirection.Left, "scroll-tl" },
+			{ ScrollDirection.Up | ScrollDirection.Right, "scroll-tr" },
+			{ ScrollDirection.Down | ScrollDirection.Left, "scroll-bl" },
+			{ ScrollDirection.Down | ScrollDirection.Right, "scroll-br" },
+			{ ScrollDirection.Up, "scroll-t" },
+			{ ScrollDirection.Down, "scroll-b" },
+			{ ScrollDirection.Left, "scroll-l" },
+			{ ScrollDirection.Right, "scroll-r" },
+		};
+
 		public int EdgeScrollThreshold = 15;
 		public int EdgeCornerScrollThreshold = 35;
 
-		ScrollDirection Keyboard;
-		ScrollDirection Edge;
-
+		ScrollDirection keyboard;
+		ScrollDirection edge;
 		float currentScrollScale = 0;
 		float scrollScaleLimit = 5;
 		float2 scrollAmount = new float2(0, 0);
-		float2 directionVector = new float2 (0, 0);
+		float2 directionVector = new float2(0, 0);
+
+		public static string GetScrollCursor(Widget w, ScrollDirection edge, int2 pos)
+		{
+			if (!Game.Settings.Game.ViewportEdgeScroll || Ui.MouseOverWidget != w)
+				return null;
+
+			var blockedDirections = Game.viewport.GetBlockedDirections();
+
+			foreach (var dir in Directions)
+				if (edge.Includes(dir.Key))
+					return dir.Value + (blockedDirections.Includes(dir.Key) ? "-blocked" : "");
+
+			return null;
+		}
 
 		public ViewportScrollControllerWidget() : base() { }
 		protected ViewportScrollControllerWidget(ViewportScrollControllerWidget widget)
@@ -45,41 +70,15 @@ namespace OpenRA.Widgets
 				Game.viewport.Scroll((Viewport.LastMousePos - mi.Location) * d);
 				return true;
 			}
+
 			return false;
 		}
 
-		static readonly Dictionary<ScrollDirection, string> directions = new Dictionary<ScrollDirection, string>
-		{
-			{ ScrollDirection.Up | ScrollDirection.Left, "scroll-tl" },
-			{ ScrollDirection.Up | ScrollDirection.Right, "scroll-tr" },
-			{ ScrollDirection.Down | ScrollDirection.Left, "scroll-bl" },
-			{ ScrollDirection.Down | ScrollDirection.Right, "scroll-br" },
-
-			{ ScrollDirection.Up, "scroll-t" },
-			{ ScrollDirection.Down, "scroll-b" },
-			{ ScrollDirection.Left, "scroll-l" },
-			{ ScrollDirection.Right, "scroll-r" },
-		};
-
-		public static string GetScrollCursor(Widget w, ScrollDirection edge, int2 pos)
-		{
-			if (!Game.Settings.Game.ViewportEdgeScroll || Ui.MouseOverWidget != w)
-				return null;
-
-			var blockedDirections = Game.viewport.GetBlockedDirections();
-
-			foreach (var dir in directions)
-				if (edge.Includes(dir.Key))
-					return dir.Value + (blockedDirections.Includes(dir.Key) ? "-blocked" : "");
-
-			return null;
-		}
-
-		public override string GetCursor(int2 pos) { return GetScrollCursor(this, Edge, pos); }
+		public override string GetCursor(int2 pos) { return GetScrollCursor(this, edge, pos); }
 
 		public override bool LoseFocus(MouseInput mi)
 		{
-			Keyboard = ScrollDirection.None;
+			keyboard = ScrollDirection.None;
 			return base.LoseFocus(mi);
 		}
 
@@ -87,23 +86,24 @@ namespace OpenRA.Widgets
 		{
 			switch (e.KeyName)
 			{
-				case "up": Keyboard = Keyboard.Set(ScrollDirection.Up, e.Event == KeyInputEvent.Down); return true;
-				case "down": Keyboard = Keyboard.Set(ScrollDirection.Down, e.Event == KeyInputEvent.Down); return true;
-				case "left": Keyboard = Keyboard.Set(ScrollDirection.Left, e.Event == KeyInputEvent.Down); return true;
-				case "right": Keyboard = Keyboard.Set(ScrollDirection.Right, e.Event == KeyInputEvent.Down); return true;
+				case "up": keyboard = keyboard.Set(ScrollDirection.Up, e.Event == KeyInputEvent.Down); return true;
+				case "down": keyboard = keyboard.Set(ScrollDirection.Down, e.Event == KeyInputEvent.Down); return true;
+				case "left": keyboard = keyboard.Set(ScrollDirection.Left, e.Event == KeyInputEvent.Down); return true;
+				case "right": keyboard = keyboard.Set(ScrollDirection.Right, e.Event == KeyInputEvent.Down); return true;
 			}
+
 			return false;
 		}
 
 		public override void Tick()
 		{
-			Edge = ScrollDirection.None;
+			edge = ScrollDirection.None;
 			if (Game.Settings.Game.ViewportEdgeScroll && Game.HasInputFocus)
 			{
-				Edge = CheckForDirections();
+				edge = CheckForDirections();
 			}
 
-			if (Edge != ScrollDirection.None || Keyboard != ScrollDirection.None ) 
+			if (edge != ScrollDirection.None || keyboard != ScrollDirection.None) 
 			{
 				Scroll();
 			} 
@@ -117,42 +117,42 @@ namespace OpenRA.Widgets
 
 		void Scroll()
 		{
-			if (Edge == ScrollDirection.UpLeft || Keyboard == ScrollDirection.UpLeft)
+			if (edge == ScrollDirection.UpLeft || keyboard == ScrollDirection.UpLeft)
 			{
 				directionVector.Y = -1;
 				directionVector.X = -1;
 			}
-			else if (Edge == ScrollDirection.UpRight || Keyboard == ScrollDirection.UpRight)
+			else if (edge == ScrollDirection.UpRight || keyboard == ScrollDirection.UpRight)
 			{
 				directionVector.Y = -1;
 				directionVector.X = 1;
 			} 
-			else if (Edge == ScrollDirection.DownLeft || Keyboard == ScrollDirection.DownLeft)
+			else if (edge == ScrollDirection.DownLeft || keyboard == ScrollDirection.DownLeft)
 			{
 				directionVector.Y = 1;
 				directionVector.X = -1;
 			} 
-			else if (Edge == ScrollDirection.DownRight || Keyboard == ScrollDirection.DownRight)
+			else if (edge == ScrollDirection.DownRight || keyboard == ScrollDirection.DownRight)
 			{
 				directionVector.Y = 1;
 				directionVector.X = 1;
 			} 
-			else if (Keyboard.Includes(ScrollDirection.Up) || Edge.Includes(ScrollDirection.Up)) 
+			else if (keyboard.Includes(ScrollDirection.Up) || edge.Includes(ScrollDirection.Up)) 
 			{
 				directionVector.Y = -1;
 				directionVector.X = 0;
 			} 
-			else if (Keyboard.Includes(ScrollDirection.Down) || Edge.Includes(ScrollDirection.Down)) 
+			else if (keyboard.Includes(ScrollDirection.Down) || edge.Includes(ScrollDirection.Down)) 
 			{
 				directionVector.Y = 1;
 				directionVector.X = 0;
 			} 
-			else if (Keyboard.Includes(ScrollDirection.Left) || Edge.Includes(ScrollDirection.Left)) 
+			else if (keyboard.Includes(ScrollDirection.Left) || edge.Includes(ScrollDirection.Left)) 
 			{
 				directionVector.X = -1;
 				directionVector.Y = 0;
 			}
-			else if (Keyboard.Includes(ScrollDirection.Right) || Edge.Includes(ScrollDirection.Right))
+			else if (keyboard.Includes(ScrollDirection.Right) || edge.Includes(ScrollDirection.Right))
 			{
 				directionVector.X = 1;
 				directionVector.Y = 0;
@@ -171,32 +171,29 @@ namespace OpenRA.Widgets
 
 		ScrollDirection CheckForDirections()
 		{
-			// First let's check if the mouse is on the corners:
+			//// First let's check if the mouse is on the corners:
 			if (Viewport.LastMousePos.X >= Game.viewport.Width - EdgeCornerScrollThreshold &&
-			    Viewport.LastMousePos.Y >= Game.viewport.Height - EdgeCornerScrollThreshold) //Bottom Right
+			    Viewport.LastMousePos.Y >= Game.viewport.Height - EdgeCornerScrollThreshold)
 			{
 				return ScrollDirection.Right | ScrollDirection.Down;
 			}
 			else if (Viewport.LastMousePos.X < EdgeCornerScrollThreshold &&
-			         Viewport.LastMousePos.Y >= Game.viewport.Height - EdgeCornerScrollThreshold) //Bottom Left
+			         Viewport.LastMousePos.Y >= Game.viewport.Height - EdgeCornerScrollThreshold)
 			{
 				return ScrollDirection.Down | ScrollDirection.Left;
 			}
-
 			else if (Viewport.LastMousePos.X >= Game.viewport.Width - EdgeCornerScrollThreshold &&
-			         Viewport.LastMousePos.Y < EdgeCornerScrollThreshold) //Top Right
+			         Viewport.LastMousePos.Y < EdgeCornerScrollThreshold)
 			{
 				return ScrollDirection.Right | ScrollDirection.Up;
 			}
-
 			else if (Viewport.LastMousePos.X < EdgeCornerScrollThreshold &&
-			         Viewport.LastMousePos.Y < EdgeCornerScrollThreshold) //Top Left
+			         Viewport.LastMousePos.Y < EdgeCornerScrollThreshold)
 			{
 				return ScrollDirection.Left | ScrollDirection.Up;
 			}
 
-			//Check for corner ends here now let's check the edges:
-
+			// Check for corner ends here now let's check the edges:
 			// Check for edge-scroll
 			if (Viewport.LastMousePos.X < EdgeScrollThreshold)
 				return ScrollDirection.Left;
@@ -207,8 +204,7 @@ namespace OpenRA.Widgets
 			if (Viewport.LastMousePos.Y >= Game.viewport.Height - EdgeScrollThreshold)
 				return ScrollDirection.Down;
 
-
-			//Check for edge-scroll ends here.If none of above then return none.
+			// Check for edge-scroll ends here.If none of above then return none.
 			return ScrollDirection.None;
 		}
 
