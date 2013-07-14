@@ -59,7 +59,7 @@ namespace OpenRA.Mods.Cnc
 					new AltitudeInit( Rules.Info[actorType].Traits.Get<PlaneInfo>().CruiseAltitude ),
 				});
 
-				a.QueueActivity(Fly.ToCell(self.Location + new CVec(6, 0)));
+				a.QueueActivity(Fly.ToCell(self.Location + new CVec(9, 0)));
 				a.QueueActivity(new Land(Target.FromActor(self)));
 				a.QueueActivity(new CallFunc(() =>
 				{
