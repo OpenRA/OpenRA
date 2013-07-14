@@ -27,49 +27,41 @@ Players:
 	PlayerReference@Multi0:
 		Name: Multi0
 		Playable: True
-		DefaultStartingUnits: True
 		Race: Random
 		Enemies: Creeps
 	PlayerReference@Multi1:
 		Name: Multi1
 		Playable: True
-		DefaultStartingUnits: True
 		Race: Random
 		Enemies: Creeps
 	PlayerReference@Multi2:
 		Name: Multi2
 		Playable: True
-		DefaultStartingUnits: True
 		Race: Random
 		Enemies: Creeps
 	PlayerReference@Multi3:
 		Name: Multi3
 		Playable: True
-		DefaultStartingUnits: True
 		Race: Random
 		Enemies: Creeps
 	PlayerReference@Multi4:
 		Name: Multi4
 		Playable: True
-		DefaultStartingUnits: True
 		Race: Random
 		Enemies: Creeps
 	PlayerReference@Multi5:
 		Name: Multi5
 		Playable: True
-		DefaultStartingUnits: True
 		Race: Random
 		Enemies: Creeps
 	PlayerReference@Multi6:
 		Name: Multi6
 		Playable: True
-		DefaultStartingUnits: True
 		Race: Random
 		Enemies: Creeps
 	PlayerReference@Multi7:
 		Name: Multi7
 		Playable: True
-		DefaultStartingUnits: True
 		Race: Random
 		Enemies: Creeps
 	PlayerReference@Creeps:
@@ -724,8 +716,8 @@ Actors:
 	Actor236: tc02
 		Location: 161,78
 		Owner: Neutral
-	Actor65: t08
-		Location: 125,87
+	Actor63: t02
+		Location: 120,85
 		Owner: Neutral
 	Actor238: tc02
 		Location: 132,78
@@ -1027,11 +1019,11 @@ Actors:
 	Actor201: tc03
 		Location: 112,79
 		Owner: Neutral
-	Actor71: t08
-		Location: 119,85
+	Actor66: t08
+		Location: 127,84
 		Owner: Neutral
-	Actor64: t08
-		Location: 125,83
+	Actor65: t07
+		Location: 118,86
 		Owner: Neutral
 	Actor212: tc03
 		Location: 92,76
@@ -1075,11 +1067,11 @@ Actors:
 	Actor346: tc03
 		Location: 108,83
 		Owner: Neutral
-	Actor73: t08
-		Location: 122,83
+	Actor71: t05
+		Location: 119,81
 		Owner: Neutral
-	Actor74: t08
-		Location: 122,87
+	Actor73: tc03
+		Location: 113,84
 		Owner: Neutral
 	Actor350: tc03
 		Location: 131,83
@@ -1308,15 +1300,6 @@ Actors:
 		Owner: Neutral
 	Actor425: t02
 		Location: 106,81
-		Owner: Neutral
-	Actor66: t08
-		Location: 119,87
-		Owner: Neutral
-	Actor63: t08
-		Location: 119,83
-		Owner: Neutral
-	Actor206: miss
-		Location: 121,84
 		Owner: Neutral
 	Actor432: tc04
 		Location: 110,84
@@ -2158,8 +2141,8 @@ Actors:
 	Actor711: t08
 		Location: 73,87
 		Owner: Neutral
-	Actor72: t08
-		Location: 125,85
+	Actor64: t02
+		Location: 123,83
 		Owner: Neutral
 
 Smudges:
@@ -2182,6 +2165,8 @@ Rules:
 		RepairableBuilding:
 
 Sequences:
+
+VoxelSequences:
 
 Weapons:
 
