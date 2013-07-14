@@ -16,7 +16,7 @@ using OpenRA.Widgets;
 using OpenRA.Support;
 
 namespace OpenRA.Graphics
-{
+{ 
 	[Flags]
 	public enum ScrollDirection 
 	{ 

@@ -14,7 +14,11 @@ using OpenRA.GameRules;
 using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
+<<<<<<< HEAD
 {
+=======
+{ 
+>>>>>>> smooth-scrolling
 	public class ViewportScrollControllerWidget : Widget
 	{
 		static readonly Dictionary<ScrollDirection, string> Directions = new Dictionary<ScrollDirection, string>
