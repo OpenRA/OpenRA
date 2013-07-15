@@ -72,6 +72,7 @@ harvester:
 		Length: 6
 		Facings: 8
 		Tick: 80
+		ZOffset: 1
 	dock: unload2
 		Start: 0
 		Length: 10
