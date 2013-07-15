@@ -49,9 +49,6 @@ namespace OpenRA.Mods.RA.Activities
 					foreach (var t in target.Actor.TraitsImplementing<INotifyCapture>())
 						t.OnCapture(target.Actor, self, oldOwner, self.Owner);
 
-					foreach (var t in target.Actor.World.ActorsWithTrait<INotifyOtherCaptured>())
-						t.Trait.OnActorCaptured(t.Actor, target.Actor, self, oldOwner, self.Owner);
-
 					if (b != null && b.Locked)
 						b.Unlock();
 				}
