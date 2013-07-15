@@ -35,18 +35,17 @@ namespace OpenRA.Graphics
 			this.facingFunc = facingFunc;
 		}
 
-		public Sprite Image
-		{
-			get
-			{
-				return backwards
-					? CurrentSequence.GetSprite(CurrentSequence.Start + CurrentSequence.Length - frame - 1, facingFunc())
-					: CurrentSequence.GetSprite(frame, facingFunc());
-			}
-		}
+		int CurrentFrame { get { return backwards ? CurrentSequence.Start + CurrentSequence.Length - frame - 1 : frame; } }
+		public Sprite Image { get { return CurrentSequence.GetSprite(CurrentFrame, facingFunc()); } }
 
 		public IEnumerable<IRenderable> Render(WPos pos, int zOffset, PaletteReference palette, float scale)
 		{
+			if (CurrentSequence.ShadowStart >= 0)
+			{
+				var shadow = CurrentSequence.GetShadow(CurrentFrame, facingFunc());
+				yield return new SpriteRenderable(shadow, pos, CurrentSequence.ShadowZOffset + zOffset, palette, scale);
+			}
+
 			yield return new SpriteRenderable(Image, pos, CurrentSequence.ZOffset + zOffset, palette, scale);
 		}
 

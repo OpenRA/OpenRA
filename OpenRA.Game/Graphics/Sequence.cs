@@ -27,6 +27,8 @@ namespace OpenRA.Graphics
 		public readonly int Facings;
 		public readonly int Tick;
 		public readonly int ZOffset;
+		public readonly int ShadowStart;
+		public readonly int ShadowZOffset;
 
 		public Sequence(string unit, string name, MiniYaml info)
 		{
@@ -74,6 +76,16 @@ namespace OpenRA.Graphics
 			if (d.ContainsKey("Transpose"))
 			    transpose = bool.Parse(d["Transpose"].Value);
 
+			if (d.ContainsKey("ShadowStart"))
+				ShadowStart = int.Parse(d["ShadowStart"].Value);
+			else
+				ShadowStart = -1;
+
+			if (d.ContainsKey("ShadowZOffset"))
+				ShadowZOffset = int.Parse(d["ShadowZOffset"].Value);
+			else
+				ShadowZOffset = -5;
+
 			if (d.ContainsKey("ZOffset"))
 				ZOffset = int.Parse(d["ZOffset"].Value);
 
@@ -82,7 +94,7 @@ namespace OpenRA.Graphics
 					"{0}: Sequence {1}.{2}: Length must be <= stride"
 						.F(info.Nodes[0].Location, unit, name));
 
-			if (Start < 0 || Start + Facings * Stride > sprites.Length)
+			if (Start < 0 || Start + Facings * Stride > sprites.Length || ShadowStart + Facings * Stride > sprites.Length)
 				throw new InvalidOperationException(
 					"{6}: Sequence {0}.{1} uses frames [{2}..{3}] of SHP `{4}`, but only 0..{5} actually exist"
 					.F(unit, name, Start, Start + Facings * Stride - 1, srcOverride ?? unit, sprites.Length - 1,
@@ -91,10 +103,20 @@ namespace OpenRA.Graphics
 
 		public Sprite GetSprite(int frame)
 		{
-			return GetSprite(frame, 0);
+			return GetSprite(Start, frame, 0);
 		}
 
 		public Sprite GetSprite(int frame, int facing)
+		{
+			return GetSprite(Start, frame, facing);
+		}
+
+		public Sprite GetShadow(int frame, int facing)
+		{
+			return ShadowStart >= 0 ? GetSprite(ShadowStart, frame, facing) : null;
+		}
+
+		Sprite GetSprite(int start, int frame, int facing)
 		{
 			var f = Traits.Util.QuantizeFacing(facing, Facings);
 
@@ -104,7 +126,7 @@ namespace OpenRA.Graphics
 			int i = transpose ? (frame % Length) * Facings + f :
 				(f * Stride) + (frame % Length);
 
-			return sprites[Start + i];
+			return sprites[start + i];
 		}
 	}
 }
