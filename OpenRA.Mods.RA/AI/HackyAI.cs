@@ -907,7 +907,7 @@ namespace OpenRA.Mods.RA.AI
 		CPos defenseCenter;
 		public CPos? ChooseBuildLocation(string actorType, BuildingType type)
 		{
-			return ChooseBuildLocation(actorType, false, MaxBaseDistance, type);
+			return ChooseBuildLocation(actorType, true, MaxBaseDistance, type);
 		}
 
 		public CPos? ChooseBuildLocation(string actorType, bool distanceToBaseIsImportant, int maxBaseDistance, BuildingType type)
@@ -949,14 +949,14 @@ namespace OpenRA.Mods.RA.AI
 							{
 								if (distanceToBaseIsImportant)
 									if (!bi.IsCloseEnoughToBase(world, p, actorType, t))
-										return null;
+										continue;
 								if (NoBuildingsUnder(Util.ExpandFootprint(FootprintUtils.Tiles(actorType, bi, t), false)))
 									return t;
 							}
 					break;
 			}
 
-			return null;		// Don't know where to put it.
+			return null;		// i don't know where to put it.
 		}
 
 		public void Tick(Actor self)
