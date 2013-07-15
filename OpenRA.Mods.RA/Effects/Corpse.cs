@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			yield return new SpriteRenderable(Anim.Image, Pos, 0, wr.Palette(PaletteName), 1f);
+			return Anim.Render(Pos, wr.Palette(PaletteName));
 		}
 	}
 }

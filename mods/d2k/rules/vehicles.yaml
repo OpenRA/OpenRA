@@ -89,7 +89,6 @@ HARVESTER:
 	LeavesHusk:
 		HuskActor: Harvester.Husk
 	WithHarvestAnimation:
-		ZOffset: 1
 
 HARVESTER.Husk:
 	Inherits: ^Husk

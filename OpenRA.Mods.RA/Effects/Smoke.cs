@@ -28,14 +28,14 @@ namespace OpenRA.Mods.RA.Effects
 				() => world.AddFrameEndTask(w => w.Remove(this)));
 		}
 
-		public void Tick( World world )
+		public void Tick(World world)
 		{
 			Anim.Tick();
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			yield return new SpriteRenderable(Anim.Image, Pos, 0, wr.Palette("effect"), 1f);
+			return Anim.Render(Pos, wr.Palette("effect"));
 		}
 	}
 }

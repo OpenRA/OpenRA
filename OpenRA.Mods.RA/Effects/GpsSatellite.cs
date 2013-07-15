@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			yield return new SpriteRenderable(Anim.Image, Pos, 0, wr.Palette("effect"), 1f);
+			return Anim.Render(Pos, wr.Palette("effect"));
 		}
 	}
 }

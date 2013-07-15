@@ -50,14 +50,15 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (building.IsInWorld && building.Owner == building.World.LocalPlayer
-				&& building.World.Selection.Actors.Contains(building))
-			{
-				var pos = cachedLocation.CenterPosition;
-				var palette = wr.Palette(palettePrefix+building.Owner.InternalName);
-				yield return new SpriteRenderable(circles.Image, pos, 0, palette, 1f);
-				yield return new SpriteRenderable(flag.Image, pos, 0, palette, 1f);
-			}
+			if (building.Owner != building.World.LocalPlayer)
+				return SpriteRenderable.None;
+
+			if (!building.IsInWorld || !building.World.Selection.Actors.Contains(building))
+				return SpriteRenderable.None;
+
+			var pos = cachedLocation.CenterPosition;
+			var palette = wr.Palette(palettePrefix+building.Owner.InternalName);
+			return circles.Render(pos, palette).Concat(flag.Render(pos, palette));
 		}
 	}
 }

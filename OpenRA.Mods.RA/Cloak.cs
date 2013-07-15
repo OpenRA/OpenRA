@@ -66,8 +66,6 @@ namespace OpenRA.Mods.RA
 			if (!canCloak) Uncloak();
 		}
 
-		static readonly IRenderable[] Nothing = { };
-
 		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
 		{
 			if (remainingTime > 0)
@@ -79,7 +77,7 @@ namespace OpenRA.Mods.RA
 				else
 					return r.Select(a => a.WithPalette(wr.Palette(info.Palette)));
 			else
-				return Nothing;
+				return SpriteRenderable.None;
 		}
 
 		public void Tick(Actor self)

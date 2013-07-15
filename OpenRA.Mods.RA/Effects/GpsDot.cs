@@ -80,10 +80,10 @@ namespace OpenRA.Mods.RA.Effects
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
 			if (!show || self.Destroyed)
-				yield break;
+				return SpriteRenderable.None;
 
 			var palette = wr.Palette(info.IndicatorPalettePrefix+self.Owner.InternalName);
-			yield return new SpriteRenderable(anim.Image, self.CenterPosition, 0, palette, 1f);
+			return anim.Render(self.CenterPosition, palette);
 		}
 	}
 }

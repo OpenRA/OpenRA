@@ -29,12 +29,10 @@ namespace OpenRA.Mods.RA.Render
 		public override IEnumerable<IRenderable> RenderPreview(ActorInfo building, PaletteReference pr)
 		{
 			var p = BaseBuildingPreview(building, pr);
-			foreach (var r in p)
-				yield return r;
-
 			var anim = new Animation(RenderSprites.GetImage(building), () => 0);
 			anim.PlayRepeating("idle-top");
-			yield return new SpriteRenderable(anim.Image, WPos.Zero, 0, pr, 1f);
+
+			return p.Concat(anim.Render(WPos.Zero, pr));
 		}
 	}
 
