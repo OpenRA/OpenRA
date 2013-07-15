@@ -34,7 +34,7 @@ namespace OpenRA.Mods.Cnc.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			yield return new SpriteRenderable(anim.Image, target.CenterPosition, 1, wr.Palette("effect"), 1.0f);
+			return anim.Render(target.CenterPosition, wr.Palette("effect"));
 		}
 
 		void Finish(World world)

@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 namespace OpenRA.Graphics
 {
@@ -47,6 +48,8 @@ namespace OpenRA.Graphics
 
 	public struct SpriteRenderable : IRenderable
 	{
+		public static readonly IEnumerable<IRenderable> None = new IRenderable[0].AsEnumerable();
+
 		readonly Sprite sprite;
 		readonly WPos pos;
 		readonly int zOffset;

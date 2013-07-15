@@ -9,7 +9,6 @@
 #endregion
 
 using System;
-using System.Xml;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
@@ -19,16 +18,17 @@ namespace OpenRA.Graphics
 	public class Sequence
 	{
 		readonly Sprite[] sprites;
-		readonly int start, length, stride, facings, tick;
 		readonly bool reverseFacings, transpose;
 
 		public readonly string Name;
-		public int Start { get { return start; } }
-		public int End { get { return start + length; } }
-		public int Length { get { return length; } }
-		public int Stride { get { return stride; } }
-		public int Facings { get { return facings; } }
-		public int Tick { get { return tick; } }
+		public readonly int Start;
+		public readonly int Length;
+		public readonly int Stride;
+		public readonly int Facings;
+		public readonly int Tick;
+		public readonly int ZOffset;
+		public readonly int ShadowStart;
+		public readonly int ShadowZOffset;
 
 		public Sequence(string unit, string name, MiniYaml info)
 		{
@@ -37,7 +37,7 @@ namespace OpenRA.Graphics
 			var d = info.NodesDict;
 			var offset = float2.Zero;
 
-			start = int.Parse(d["Start"].Value);
+			Start = int.Parse(d["Start"].Value);
 
 			if (d.ContainsKey("Offset"))
 				offset = FieldLoader.GetValue<float2>("Offset", d["Offset"].Value);
@@ -48,60 +48,83 @@ namespace OpenRA.Graphics
 				s => new Sprite(s.sheet, s.bounds, s.offset + offset, s.channel)).ToArray();
 
 			if (!d.ContainsKey("Length"))
-				length = 1;
+				Length = 1;
 			else if (d["Length"].Value == "*")
-				length = sprites.Length - Start;
+				Length = sprites.Length - Start;
 			else
-				length = int.Parse(d["Length"].Value);
+				Length = int.Parse(d["Length"].Value);
 
 			if (d.ContainsKey("Stride"))
-				stride = int.Parse(d["Stride"].Value);
+				Stride = int.Parse(d["Stride"].Value);
 			else
-				stride = length;
+				Stride = Length;
 
 			if (d.ContainsKey("Facings"))
 			{
 				var f = int.Parse(d["Facings"].Value);
-				facings = Math.Abs(f);
+				Facings = Math.Abs(f);
 				reverseFacings = f < 0;
 			}
 			else
-				facings = 1;
+				Facings = 1;
 
 			if (d.ContainsKey("Tick"))
-				tick = int.Parse(d["Tick"].Value);
+				Tick = int.Parse(d["Tick"].Value);
 			else
-				tick = 40;
+				Tick = 40;
 
 			if (d.ContainsKey("Transpose"))
 			    transpose = bool.Parse(d["Transpose"].Value);
 
-			if (length > stride)
+			if (d.ContainsKey("ShadowStart"))
+				ShadowStart = int.Parse(d["ShadowStart"].Value);
+			else
+				ShadowStart = -1;
+
+			if (d.ContainsKey("ShadowZOffset"))
+				ShadowZOffset = int.Parse(d["ShadowZOffset"].Value);
+			else
+				ShadowZOffset = -5;
+
+			if (d.ContainsKey("ZOffset"))
+				ZOffset = int.Parse(d["ZOffset"].Value);
+
+			if (Length > Stride)
 				throw new InvalidOperationException(
 					"{0}: Sequence {1}.{2}: Length must be <= stride"
 						.F(info.Nodes[0].Location, unit, name));
 
-			if (start < 0 || start + facings * stride > sprites.Length)
+			if (Start < 0 || Start + Facings * Stride > sprites.Length || ShadowStart + Facings * Stride > sprites.Length)
 				throw new InvalidOperationException(
 					"{6}: Sequence {0}.{1} uses frames [{2}..{3}] of SHP `{4}`, but only 0..{5} actually exist"
-					.F(unit, name, start, start + facings * stride - 1, srcOverride ?? unit, sprites.Length - 1,
+					.F(unit, name, Start, Start + Facings * Stride - 1, srcOverride ?? unit, sprites.Length - 1,
 					info.Nodes[0].Location));
 		}
 
 		public Sprite GetSprite(int frame)
 		{
-			return GetSprite(frame, 0);
+			return GetSprite(Start, frame, 0);
 		}
 
 		public Sprite GetSprite(int frame, int facing)
 		{
-			var f = Traits.Util.QuantizeFacing(facing, facings);
+			return GetSprite(Start, frame, facing);
+		}
+
+		public Sprite GetShadow(int frame, int facing)
+		{
+			return ShadowStart >= 0 ? GetSprite(ShadowStart, frame, facing) : null;
+		}
+
+		Sprite GetSprite(int start, int frame, int facing)
+		{
+			var f = Traits.Util.QuantizeFacing(facing, Facings);
 
 			if (reverseFacings)
-				f = (facings - f) % facings;
+				f = (Facings - f) % Facings;
 
-			int i = transpose ? (frame % length) * facings + f :
-				(f * stride) + (frame % length);
+			int i = transpose ? (frame % Length) * Facings + f :
+				(f * Stride) + (frame % Length);
 
 			return sprites[start + i];
 		}

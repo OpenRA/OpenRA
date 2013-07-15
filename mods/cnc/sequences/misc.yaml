@@ -224,6 +224,7 @@ ionsfx:
 		Start: 0
 		Length: *
 		Offset: 0, -78
+		ZOffset: 1
 
 bomblet:
 	idle:

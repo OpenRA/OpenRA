@@ -34,9 +34,10 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (a.IsInWorld)
-				yield return new SpriteRenderable(anim.Image,
-					a.CenterPosition, 0, wr.Palette("effect"), 1f);
+			if (!a.IsInWorld)
+				return SpriteRenderable.None;
+
+			return anim.Render(a.CenterPosition, wr.Palette("effect"));
 		}
 	}
 }

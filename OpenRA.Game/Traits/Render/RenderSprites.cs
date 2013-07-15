@@ -90,8 +90,13 @@ namespace OpenRA.Traits
 			}
 
 			foreach (var a in anims.Values)
-				if (a.DisableFunc == null || !a.DisableFunc())
-					yield return a.Image(self, wr, palette, Info.Scale);
+			{
+				if (a.DisableFunc != null && a.DisableFunc())
+					continue;
+
+				foreach (var r in a.Render(self, wr, palette, Info.Scale))
+					yield return r;
+			}
 		}
 
 		public virtual void Tick(Actor self)
