@@ -949,7 +949,7 @@ namespace OpenRA.Mods.RA.AI
 							{
 								if (distanceToBaseIsImportant)
 									if (!bi.IsCloseEnoughToBase(world, p, actorType, t))
-										return null;
+										continue;
 								if (NoBuildingsUnder(Util.ExpandFootprint(FootprintUtils.Tiles(actorType, bi, t), false)))
 									return t;
 							}
