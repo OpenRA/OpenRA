@@ -44,11 +44,11 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (!building.Destroyed)
-			{
-				yield return new SpriteRenderable(anim.Image, building.CenterPosition, 0,
-					wr.Palette(palettePrefix+player.InternalName), 1f);
-			}
+			if (building.Destroyed)
+				return SpriteRenderable.None;
+
+			return anim.Render(building.CenterPosition,
+					wr.Palette(palettePrefix+player.InternalName));
 		}
 	}
 }

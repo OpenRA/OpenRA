@@ -23,7 +23,6 @@ namespace OpenRA.Mods.RA.Render
 	{
 		public RenderEditorOnly(Actor self) : base(self, () => 0) { }
 
-		static readonly IRenderable[] Nothing = { };
-		public override IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr) { return Nothing; }
+		public override IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr) { return SpriteRenderable.None; }
 	}
 }

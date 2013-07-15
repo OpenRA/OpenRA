@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 
 namespace OpenRA.Graphics
 {
@@ -42,6 +43,16 @@ namespace OpenRA.Graphics
 					? CurrentSequence.GetSprite(CurrentSequence.End - frame - 1, facingFunc())
 					: CurrentSequence.GetSprite(frame, facingFunc());
 			}
+		}
+
+		public IEnumerable<IRenderable> Render(WPos pos, int zOffset, PaletteReference palette, float scale)
+		{
+			yield return new SpriteRenderable(Image, pos, zOffset, palette, scale);
+		}
+
+		public IEnumerable<IRenderable> Render(WPos pos, PaletteReference palette)
+		{
+			return Render(pos, 0, palette, 1f);
 		}
 
 		public void Play(string sequenceName)
