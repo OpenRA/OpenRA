@@ -40,7 +40,7 @@ namespace OpenRA.Graphics
 			get
 			{
 				return backwards
-					? CurrentSequence.GetSprite(CurrentSequence.End - frame - 1, facingFunc())
+					? CurrentSequence.GetSprite(CurrentSequence.Start + CurrentSequence.Length - frame - 1, facingFunc())
 					: CurrentSequence.GetSprite(frame, facingFunc());
 			}
 		}
