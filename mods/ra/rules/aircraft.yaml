@@ -20,16 +20,16 @@ BADR:
 	Tooltip:
 		Name: Badger
 	Contrail@1:
-		Offset: -469,469,0
+		Offset: -432,560,0
 	Contrail@2:
-		Offset: -469,-469,0
+		Offset: -432,-560,0
 	LeavesHusk:
 		HuskActor: BADR.Husk
 	SmokeTrailWhenDamaged@0:
-		Offset: -469,469,0
+		Offset: -432,560,0
 		Interval: 2
 	SmokeTrailWhenDamaged@1:
-		Offset: -469,-469,0
+		Offset: -432,-560,0
 		Interval: 2
 	-EjectOnDeath:
 	-GpsDot:
@@ -58,16 +58,16 @@ BADR.Bomber:
 	Tooltip:
 		Name: Badger
 	Contrail@1:
-		Offset: 469,469,0
+		Offset: -432,560,0
 	Contrail@2:
-		Offset: 469,-469,0
+		Offset: -432,-560,0
 	LeavesHusk:
 		HuskActor: BADR.Husk
 	SmokeTrailWhenDamaged@0:
-		Offset: -469,469,0
+		Offset: -432,560,0
 		Interval: 2
 	SmokeTrailWhenDamaged@1:
-		Offset: -469,-469,0
+		Offset: -432,-560,0
 		Interval: 2
 	-EjectOnDeath:
 	-GpsDot:
@@ -356,11 +356,11 @@ BADR.Husk:
 		ROT: 5
 		Speed: 16
 	SmokeTrailWhenDamaged@0:
-		Offset: -469,469,0
+		Offset: -432,560,0
 		Interval: 2
 		MinDamage: Undamaged
 	SmokeTrailWhenDamaged@1:
-		Offset: -469,-469,0
+		Offset: -432,-560,0
 		Interval: 2
 		MinDamage: Undamaged
 
