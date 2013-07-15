@@ -1,5 +1,46 @@
 # ZeroBrane Studio Changelog
 
+## Current master (Jul 14 2013)
+
+### Special thanks
+  - To Chow CheeWen for Chinese translation.
+  - To [Riidom](https://github.com/Riidom) for German translation.
+  - To [ardente](https://github.com/ardente) for user home patch for Windows.
+  - To [Mika Attila](https://github.com/crumblingstatue) for code folding patch.
+  - To [Tim Mensch](https://github.com/TimMensch) for auto-save, auto-reload, and debugger improvements.
+
+### Improvements
+  - Added German translation (thanks to Riidom; ref #70).
+  - Added default value to package config (ref #176).
+  - Added handling of ?51.dll and required DLLs for LuaForWindows interpreter.
+  - Added plugin::GetConfig method (ref #166).
+  - Added erasing current line in Console (ref #173).
+  - Added search/completion in the local and remote console (closes #173).
+  - Added package onAppFocus* events (ref #166; ref #172).
+  - Added Chinese translation (thanks to Chow CheeWen; ref #70).
+  - Added `editor.autoreload` to enable reload of updated files (ref #172).
+  - Added creating (missing) folders when saving a file (fixes #171).
+  - Added an example of styling individual keywords.
+  - Added fold indication of a current block (ref #168).
+  - Added reporting of process id for a conflicting process.
+  - Disabled 'Fold' menu instead of removing when no folding is allowed (ref #169).
+  - Make code folding optional (thanks to [Mika Attila](https://github.com/crumblingstatue))
+  - Moved 'Sort' menu to 'Edit'.
+  - Replaced package onEditorActivated event with onEditorFocus* events (ref #166).
+  - Set search in subdirectories as default in Find in Files dialog (ref #162).
+  - Updated `SaveAll` to allow saving (only) files with filenames (ref #172).
+  - windows: adopt native user home (thanks to [ardente](https://github.com/ardente))
+
+### Fixes
+  - Fixed indentation after lines with brackets in strings.
+  - Fixed indentation after lines with anonymous functions.
+  - Fixed indicator showing at the end of not terminated long comment.
+  - Fixed an issue with LUA_DEV including files instead of directories.
+  - Fixed project switching to close all files when switching to a subdirectory.
+  - Fixed saving projects that do not have any open files.
+  - Fixed debugger to accept filenames without '@'; thanks to Tim Mensch (closes #174).
+  - Fixed sorting when the sorted fragment ends with a newline.
+
 ## v0.38 (Jun 21 2013)
 
 ### Highlights
