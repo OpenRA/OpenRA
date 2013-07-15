@@ -29,6 +29,7 @@ namespace OpenRA.Graphics
 		public int Stride { get { return stride; } }
 		public int Facings { get { return facings; } }
 		public int Tick { get { return tick; } }
+		public readonly int ZOffset;
 
 		public Sequence(string unit, string name, MiniYaml info)
 		{
@@ -75,6 +76,9 @@ namespace OpenRA.Graphics
 
 			if (d.ContainsKey("Transpose"))
 			    transpose = bool.Parse(d["Transpose"].Value);
+
+			if (d.ContainsKey("ZOffset"))
+				ZOffset = int.Parse(d["ZOffset"].Value);
 
 			if (length > stride)
 				throw new InvalidOperationException(

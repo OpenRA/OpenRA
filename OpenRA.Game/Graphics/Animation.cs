@@ -47,7 +47,7 @@ namespace OpenRA.Graphics
 
 		public IEnumerable<IRenderable> Render(WPos pos, int zOffset, PaletteReference palette, float scale)
 		{
-			yield return new SpriteRenderable(Image, pos, zOffset, palette, scale);
+			yield return new SpriteRenderable(Image, pos, CurrentSequence.ZOffset + zOffset, palette, scale);
 		}
 
 		public IEnumerable<IRenderable> Render(WPos pos, PaletteReference palette)
