@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2012 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made 
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -10,13 +10,13 @@
  */
 #endregion
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System;
 
-namespace OpenRA.Utility
+namespace OpenRA.FileFormats
 {
 	public class R8Image
 	{
@@ -28,7 +28,7 @@ namespace OpenRA.Utility
 
 		public int ImageHandle;
 		public int PaletteHandle;
-		
+
 		public byte[] Image;
 
 		public int OffsetX;
@@ -70,7 +70,7 @@ namespace OpenRA.Utility
 			else
 				throw new InvalidDataException("Error: {0} bits per pixel are not supported.".F(Bpp));
 
-			
+
 			if (ID == 1 && PaletteHandle != 0)
 			{
 				// read and ignore custom palette
