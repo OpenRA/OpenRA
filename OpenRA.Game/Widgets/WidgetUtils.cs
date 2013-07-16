@@ -141,21 +141,31 @@ namespace OpenRA.Widgets
 				DrawRGBA(ss[7], new float2(bounds.Right - ss[7].size.X, bounds.Bottom - ss[7].size.Y));
 		}
 
-
 		public static string FormatTime(int ticks)
 		{
+			return FormatTime(ticks, true);
+		}
+
+		public static string FormatTime(int ticks, bool leadingMinuteZero)
+		{
 			var seconds = (int)Math.Ceiling(ticks / 25f);
-			return FormatTimeSeconds( seconds );
+			return FormatTimeSeconds(seconds, leadingMinuteZero);
 		}
 
 		public static string FormatTimeSeconds(int seconds)
+		{
+			return FormatTimeSeconds(seconds, true);
+		}
+
+		public static string FormatTimeSeconds(int seconds, bool leadingMinuteZero)
 		{
 			var minutes = seconds / 60;
 
 			if (minutes >= 60)
 				return "{0:D}:{1:D2}:{2:D2}".F(minutes / 60, minutes % 60, seconds % 60);
-			else
+			if (leadingMinuteZero)
 				return "{0:D2}:{1:D2}".F(minutes, seconds % 60);
+			return "{0:D}:{1:D2}".F(minutes, seconds % 60);
 		}
 
 		public static string WrapText(string text, int width, SpriteFont font)
