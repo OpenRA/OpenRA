@@ -2,7 +2,7 @@
 -- (C) 2012 Paul Kulchenko
 
 local M, LA, LI, T = {}
-local FAST = true
+local FAST = false
 
 local function init()
   if LA then return end
@@ -136,7 +136,7 @@ function M.show_warnings(top_ast)
     local note = vast.parent
              and (vast.parent.tag == 'Call' or vast.parent.tag == 'Invoke')
              and vast.parent.note
-    if note and not isseen[vast.parent] then
+    if note and not isseen[vast.parent] and type(name) == "string" then
       isseen[vast.parent] = true
       warn("function '" .. name .. "': " .. note, line, path)
     end
