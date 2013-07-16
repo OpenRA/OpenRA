@@ -329,7 +329,7 @@ local function activateDocument(file, line, activatehow)
   end
 
   if not (activated or indebugger or debugger.loop or activatehow == activate.CHECKONLY)
-  and (ide.config.editor.autoactivate or content) then
+  and (ide.config.editor.autoactivate or content and activatehow == activate.NOREPORT) then
     -- found file, but can't activate yet (because this part may be executed
     -- in a different coroutine), so schedule pending activation.
     if content or wx.wxFileName(file):FileExists() then
