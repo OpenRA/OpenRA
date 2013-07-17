@@ -52,6 +52,10 @@ Container@INGAME_ROOT:
 					Width:170
 					Height:40
 		TooltipContainer@TOOLTIP_CONTAINER:
+		SupportPowerTimer@SUPPORT_POWER_TIMER:
+			X:15
+			Y:WINDOW_BOTTOM-30
+			Order:Ascending
 
 Container@PLAYER_WIDGETS:
 	Children:

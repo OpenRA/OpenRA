@@ -90,7 +90,7 @@ namespace OpenRA.Mods.RA.Widgets
 			}
 		}
 
-		static string GetOverlayForItem(SupportPowerManager.SupportPowerInstance item)
+		static string GetOverlayForItem(SupportPowerInstance item)
 		{
 			if (item.Disabled) return "ON HOLD";
 			if (item.Ready) return "READY";
