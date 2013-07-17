@@ -76,7 +76,6 @@
   <ItemGroup>
     <Compile Include="Command.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="R8Reader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
