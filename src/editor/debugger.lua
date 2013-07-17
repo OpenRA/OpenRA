@@ -446,7 +446,11 @@ debugger.listen = function()
       end
 
       copas.setErrorHandler(function(error)
-        DisplayOutputLn(TR("Can't start debugging session due to internal error '%s'."):format(error))
+        -- ignore errors that happen because debugging session is
+        -- terminated during handshake (server == nil in this case).
+        if debugger.server then
+          DisplayOutputLn(TR("Can't start debugging session due to internal error '%s'."):format(error))
+        end
         debugger.terminate()
       end)
 
