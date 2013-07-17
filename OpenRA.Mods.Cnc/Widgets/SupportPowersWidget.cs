@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 		public readonly string TooltipContainer;
 		public readonly string TooltipTemplate = "SUPPORT_POWER_TOOLTIP";
-		public SupportPowerManager.SupportPowerInstance TooltipPower { get; private set; }
+		public SupportPowerInstance TooltipPower { get; private set; }
 		Lazy<TooltipContainerWidget> tooltipContainer;
 
 		Rectangle eventBounds;
@@ -61,7 +61,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 		public class SupportPowerIcon
 		{
-			public SupportPowerManager.SupportPowerInstance Power;
+			public SupportPowerInstance Power;
 			public float2 Pos;
 			public Sprite Sprite;
 		}
