@@ -35,6 +35,7 @@ MSLO:
 		LaunchSound: alaunch1.aud
 		MissileWeapon: atomic
 		SpawnOffset: 0,427,0
+		DisplayTimer: True
 	CanPowerDown:
 	RequiresPower:
 	SupportPowerChargeBar:
@@ -849,9 +850,10 @@ ATEK:
 		OneShot: yes
 		ChargeTime: 480
 		Description: GPS Satellite
-		LongDesc: Reveals the entire map
+		LongDesc: Reveals the entire map.
 		RevealDelay: 15
 		LaunchSound: satlnch1.aud
+		DisplayTimer: True
 	SupportPowerChargeBar:
 
 WEAP:

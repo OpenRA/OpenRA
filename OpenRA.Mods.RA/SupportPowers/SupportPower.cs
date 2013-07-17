@@ -28,6 +28,8 @@ namespace OpenRA.Mods.RA
 		public readonly string SelectTargetSound = null;
 		public readonly string LaunchSound = null;
 
+		public readonly bool DisplayTimer = false;
+
 		public readonly string OrderName;
 		public abstract object Create(ActorInitializer init);
 
