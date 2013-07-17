@@ -132,11 +132,8 @@ namespace OpenRA.Utility
 			var FrameCount = endFrame - startFrame;
 
 			var frame = srcImage[startFrame];
-			var bitmap = new Bitmap(frame.FrameWidth * FrameCount, frame.FrameHeight, PixelFormat.Format8bppIndexed);
+			var bitmap = new Bitmap(frame.FrameSize.Width * FrameCount, frame.FrameSize.Height, PixelFormat.Format8bppIndexed);
 			bitmap.Palette = palette.AsSystemPalette();
-
-			int OffsetX = 0;
-			int OffsetY = 0;
 
 			int x = 0;
 
@@ -150,22 +147,22 @@ namespace OpenRA.Utility
 					
 					for (int f = startFrame+e-1; f > endFrame; f--)
 					{
-						OffsetX = frame.FrameWidth/2 - frame.Width/2;
-						OffsetY = frame.FrameHeight/2 - frame.Height/2;
+						var OffsetX = frame.FrameSize.Width/2 - frame.Size.Width/2;
+						var OffsetY = frame.FrameSize.Height/2 - frame.Size.Height/2;
 
 						Console.WriteLine("calculated OffsetX: {0}", OffsetX);
 						Console.WriteLine("calculated OffsetY: {0}", OffsetY);
 
-						var data = bitmap.LockBits(new Rectangle(x+OffsetX, 0+OffsetY, frame.Width, frame.Height), ImageLockMode.WriteOnly,
+						var data = bitmap.LockBits(new Rectangle(x+OffsetX, 0+OffsetY, frame.Size.Width, frame.Size.Height), ImageLockMode.WriteOnly,
 							PixelFormat.Format8bppIndexed);
 
-						for (var i = 0; i < frame.Height; i++)
-							Marshal.Copy(frame.Image, i * frame.Width,
-								new IntPtr(data.Scan0.ToInt64() + i * data.Stride), frame.Width);
+						for (var i = 0; i < frame.Size.Height; i++)
+							Marshal.Copy(frame.Image, i * frame.Size.Width,
+								new IntPtr(data.Scan0.ToInt64() + i * data.Stride), frame.Size.Width);
 
 						bitmap.UnlockBits(data);
 
-						x += frame.FrameWidth;
+						x += frame.FrameSize.Width;
 
 						frame = srcImage[f];
 						Console.WriteLine("f: {0}", f);
@@ -183,22 +180,22 @@ namespace OpenRA.Utility
 
 				for (int f = endFrame-1; f > startFrame-1; f--)
 				{
-					OffsetX = frame.FrameWidth/2 - frame.OffsetX;
-					OffsetY = frame.FrameHeight/2 - frame.OffsetY;
+					var OffsetX = frame.FrameSize.Width/2 - frame.Offset.X;
+					var OffsetY = frame.FrameSize.Height/2 - frame.Offset.Y;
 
 					Console.WriteLine("calculated OffsetX: {0}", OffsetX);
 					Console.WriteLine("calculated OffsetY: {0}", OffsetY);
 
-					var data = bitmap.LockBits(new Rectangle(x+OffsetX, 0+OffsetY, frame.Width, frame.Height), ImageLockMode.WriteOnly,
+					var data = bitmap.LockBits(new Rectangle(x+OffsetX, 0+OffsetY, frame.Size.Width, frame.Size.Height), ImageLockMode.WriteOnly,
 						PixelFormat.Format8bppIndexed);
 
-					for (var i = 0; i < frame.Height; i++)
-						Marshal.Copy(frame.Image, i * frame.Width,
-							new IntPtr(data.Scan0.ToInt64() + i * data.Stride), frame.Width);
+					for (var i = 0; i < frame.Size.Height; i++)
+						Marshal.Copy(frame.Image, i * frame.Size.Width,
+						             new IntPtr(data.Scan0.ToInt64() + i * data.Stride), frame.Size.Width);
 
 					bitmap.UnlockBits(data);
 
-					x += frame.FrameWidth;
+					x += frame.FrameSize.Width;
 
 					frame = srcImage[f];
 				}
@@ -209,24 +206,22 @@ namespace OpenRA.Utility
 
 				for (int f = endFrame-1; f > startFrame-1; f--)
 				{
-					if (frame.OffsetX < 0) { frame.OffsetX = 0 - frame.OffsetX; }
-					if (frame.OffsetY < 0) { frame.OffsetY = 0 - frame.OffsetY; }
-					OffsetX = 0 + frame.OffsetX;
-					OffsetY = frame.FrameHeight - frame.OffsetY;
+					var OffsetX = Math.Abs(frame.Offset.X);
+					var OffsetY = frame.FrameSize.Height - Math.Abs(frame.Offset.Y);
 
 					Console.WriteLine("calculated OffsetX: {0}", OffsetX);
 					Console.WriteLine("calculated OffsetY: {0}", OffsetY);
 
-					var data = bitmap.LockBits(new Rectangle(x+OffsetX, 0+OffsetY, frame.Width, frame.Height), ImageLockMode.WriteOnly,
+					var data = bitmap.LockBits(new Rectangle(x+OffsetX, 0+OffsetY, frame.Size.Width, frame.Size.Height), ImageLockMode.WriteOnly,
 						PixelFormat.Format8bppIndexed);
 
-					for (var i = 0; i < frame.Height; i++)
-						Marshal.Copy(frame.Image, i * frame.Width,
-							new IntPtr(data.Scan0.ToInt64() + i * data.Stride), frame.Width);
+					for (var i = 0; i < frame.Size.Height; i++)
+						Marshal.Copy(frame.Image, i * frame.Size.Width,
+							new IntPtr(data.Scan0.ToInt64() + i * data.Stride), frame.Size.Width);
 
 					bitmap.UnlockBits(data);
 
-					x += frame.FrameWidth;
+					x += frame.FrameSize.Width;
 
 					frame = srcImage[f];
 				}
@@ -240,29 +235,27 @@ namespace OpenRA.Utility
 
 					frame = srcImage[f];
 
-					if (frame.OffsetX < 0) { frame.OffsetX = 0 - frame.OffsetX; }
-					if (frame.OffsetY < 0) { frame.OffsetY = 0 - frame.OffsetY; }
-					OffsetX = 0 + frame.OffsetX;
-					OffsetY = frame.FrameHeight - frame.OffsetY;
+					var OffsetX = Math.Abs(frame.Offset.X);
+					var OffsetY = frame.FrameSize.Height - Math.Abs(frame.Offset.Y);
 					Console.WriteLine("calculated OffsetX: {0}", OffsetX);
 					Console.WriteLine("calculated OffsetY: {0}", OffsetY);
 
-					var data = bitmap.LockBits(new Rectangle(x+OffsetX, 0+OffsetY, frame.Width, frame.Height), ImageLockMode.WriteOnly,
+					var data = bitmap.LockBits(new Rectangle(x+OffsetX, 0+OffsetY, frame.Size.Width, frame.Size.Height), ImageLockMode.WriteOnly,
 						PixelFormat.Format8bppIndexed);
 
-					for (var i = 0; i < frame.Height; i++)
-						Marshal.Copy(frame.Image, i * frame.Width,
-							new IntPtr(data.Scan0.ToInt64() + i * data.Stride), frame.Width);
+					for (var i = 0; i < frame.Size.Height; i++)
+						Marshal.Copy(frame.Image, i * frame.Size.Width,
+							new IntPtr(data.Scan0.ToInt64() + i * data.Stride), frame.Size.Width);
 
 					bitmap.UnlockBits(data);
 
-					x += frame.FrameWidth;
+					x += frame.FrameSize.Width;
 				}
 			}
 			else if (args.Contains("--tileset"))
 			{
 				int f = 0;
-				var tileset = new Bitmap(frame.FrameWidth * 20, frame.FrameHeight * 40, PixelFormat.Format8bppIndexed);
+				var tileset = new Bitmap(frame.FrameSize.Width * 20, frame.FrameSize.Height * 40, PixelFormat.Format8bppIndexed);
 				tileset.Palette = palette.AsSystemPalette();
 
 				for (int h = 0; h < 40; h++)
@@ -274,12 +267,12 @@ namespace OpenRA.Utility
 							Console.WriteLine(f);
 							frame = srcImage[f];
 
-							var data = tileset.LockBits(new Rectangle(w * frame.Width, h * frame.Height, frame.Width, frame.Height),
+							var data = tileset.LockBits(new Rectangle(w * frame.Size.Width, h * frame.Size.Height, frame.Size.Width, frame.Size.Height),
 								ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
 
-							for (var i = 0; i < frame.Height; i++)
-								Marshal.Copy(frame.Image, i * frame.Width,
-									new IntPtr(data.Scan0.ToInt64() + i * data.Stride), frame.Width);
+							for (var i = 0; i < frame.Size.Height; i++)
+								Marshal.Copy(frame.Image, i * frame.Size.Width,
+									new IntPtr(data.Scan0.ToInt64() + i * data.Stride), frame.Size.Width);
 
 							tileset.UnlockBits(data);
 							f++;
@@ -293,31 +286,31 @@ namespace OpenRA.Utility
 				for (int f = startFrame; f < endFrame; f++)
 				{
 					frame = srcImage[f];
+					int OffsetX = 0;
+					int OffsetY = 0;
 					if (args.Contains("--infantrydeath"))
 					{
-						OffsetX = frame.FrameWidth/2 - frame.Width/2;
-						OffsetY = frame.FrameHeight/2 - frame.Height/2;
+						OffsetX = frame.FrameSize.Width/2 - frame.Size.Width/2;
+						OffsetY = frame.FrameSize.Height/2 - frame.Size.Height/2;
 					}
 					else if (args.Contains("--building"))
 					{
-						if (frame.OffsetX < 0) { frame.OffsetX = 0 - frame.OffsetX; }
-						if (frame.OffsetY < 0) { frame.OffsetY = 0 - frame.OffsetY; }
-						OffsetX = 0 + frame.OffsetX;
-						OffsetY = frame.FrameHeight - frame.OffsetY;
+						OffsetX = Math.Abs(frame.Offset.X);
+						OffsetY = frame.FrameSize.Height - Math.Abs(frame.Offset.Y);
 					}
 					Console.WriteLine("calculated OffsetX: {0}", OffsetX);
 					Console.WriteLine("calculated OffsetY: {0}", OffsetY);
 
-					var data = bitmap.LockBits(new Rectangle(x+OffsetX, 0+OffsetY, frame.Width, frame.Height), ImageLockMode.WriteOnly,
+					var data = bitmap.LockBits(new Rectangle(x+OffsetX, 0+OffsetY, frame.Size.Width, frame.Size.Height), ImageLockMode.WriteOnly,
 						PixelFormat.Format8bppIndexed);
 
-					for (var i = 0; i < frame.Height; i++)
-						Marshal.Copy(frame.Image, i * frame.Width,
-							new IntPtr(data.Scan0.ToInt64() + i * data.Stride), frame.Width);
+					for (var i = 0; i < frame.Size.Height; i++)
+						Marshal.Copy(frame.Image, i * frame.Size.Width,
+							new IntPtr(data.Scan0.ToInt64() + i * data.Stride), frame.Size.Width);
 
 					bitmap.UnlockBits(data);
 
-					x += frame.FrameWidth;
+					x += frame.FrameSize.Width;
 				}
 			}
 			bitmap.Save(filename+".png");

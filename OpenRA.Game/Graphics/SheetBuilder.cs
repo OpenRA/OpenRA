@@ -51,9 +51,10 @@ namespace OpenRA.Graphics
 			this.allocateSheet = allocateSheet;
 		}
 
-		public Sprite Add(byte[] src, Size size)
+		public Sprite Add(byte[] src, Size size) { return Add(src, size, float2.Zero); }
+		public Sprite Add(byte[] src, Size size, float2 spriteOffset)
 		{
-			var rect = Allocate(size);
+			var rect = Allocate(size, spriteOffset);
 			Util.FastCopyIntoChannel(rect, src);
 			current.CommitData();
 			return rect;

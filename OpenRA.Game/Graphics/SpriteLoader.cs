@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using OpenRA.FileFormats;
@@ -29,6 +30,13 @@ namespace OpenRA.Graphics
 
 		Sprite[] LoadSprites(string filename)
 		{
+			// TODO: Cleanly abstract file type detection
+			if (filename.ToLower().EndsWith("r8"))
+			{
+				var r8 = new R8Reader(FileSystem.Open(filename));
+				return r8.Select(a => SheetBuilder.Add(a.Image, a.Size, a.Offset)).ToArray();
+			}
+
 			BinaryReader reader = new BinaryReader(FileSystem.OpenWithExts(filename, exts));
 
 			var ImageCount = reader.ReadUInt16();
