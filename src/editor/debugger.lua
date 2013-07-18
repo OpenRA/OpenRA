@@ -564,8 +564,11 @@ debugger.listen = function()
           end
 
           -- if not found and the files doesn't exist, it may be
-          -- a remote call; try to map it to the project folder
-          if not activated and not wx.wxFileName(file):FileExists() then
+          -- a remote call; try to map it to the project folder.
+          -- also check for absolute path as it may need to be remapped
+          -- when autoactivation is disabled.
+          if not activated and (not wx.wxFileName(file):FileExists()
+                                or wx.wxIsAbsolutePath(file)) then
             -- file is /foo/bar/my.lua; basedir is d:\local\path\
             -- check for d:\local\path\my.lua, d:\local\path\bar\my.lua, ...
             -- wxwidgets on Windows handles \\ and / as separators, but on OSX
