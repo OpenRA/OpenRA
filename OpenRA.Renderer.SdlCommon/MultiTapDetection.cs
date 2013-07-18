@@ -14,33 +14,29 @@ using OpenRA.FileFormats;
 
 public static class MultiTapDetection
 {
-	static Cache<string, TapHistory> KeyHistoryCache =
+	static Cache<string, TapHistory> keyHistoryCache =
 		new Cache<string, TapHistory>(_ => new TapHistory(DateTime.Now - TimeSpan.FromSeconds(1)));
-	static Cache<byte, TapHistory> ClickHistoryCache =
+	static Cache<byte, TapHistory> clickHistoryCache =
 		new Cache<byte, TapHistory>(_ => new TapHistory(DateTime.Now - TimeSpan.FromSeconds(1)));
 
-	public static int DetectFromMouse(byte MBName, int2 xy)
+	public static int DetectFromMouse(byte button, int2 xy)
 	{
-		var clickHistory = ClickHistoryCache[MBName];
-		return clickHistory.GetTapCount(xy);
+		return clickHistoryCache[button].GetTapCount(xy);
 	}
 
-	public static int InfoFromMouse(byte MBName)
+	public static int InfoFromMouse(byte button)
 	{
-		var clickHistory = ClickHistoryCache[MBName];
-		return clickHistory.LastTapCount();
+		return clickHistoryCache[button].LastTapCount();
 	}
 
-	public static int DetectFromKeyboard(string KeyName)
+	public static int DetectFromKeyboard(string key)
 	{
-		var keyHistory = KeyHistoryCache[KeyName];
-		return keyHistory.GetTapCount(int2.Zero);
+		return keyHistoryCache[key].GetTapCount(int2.Zero);
 	}
 
-	public static int InfoFromKeyboard(string KeyName)
+	public static int InfoFromKeyboard(string key)
 	{
-		var keyHistory = KeyHistoryCache[KeyName];
-		return keyHistory.LastTapCount();
+		return keyHistoryCache[key].LastTapCount();
 	}
 }
 
@@ -50,12 +46,12 @@ class TapHistory
 
 	public TapHistory(DateTime now)
 	{
-		FirstRelease = SecondRelease = ThirdRelease = Pair.New( now, int2.Zero );
+		FirstRelease = SecondRelease = ThirdRelease = Pair.New(now, int2.Zero);
 	}
 
 	static bool CloseEnough(Pair<DateTime, int2> a, Pair<DateTime, int2> b)
 	{
-		return a.First - b.First < TimeSpan.FromMilliseconds( 250 )
+		return a.First - b.First < TimeSpan.FromMilliseconds(250)
 			&& (a.Second - b.Second).Length < 4;
 	}
 
@@ -65,15 +61,21 @@ class TapHistory
 		SecondRelease = ThirdRelease;
 		ThirdRelease = Pair.New(DateTime.Now, xy);
 
-		if (!CloseEnough(ThirdRelease, SecondRelease)) return 1;
-		if (!CloseEnough(SecondRelease, FirstRelease)) return 2;
+		if (!CloseEnough(ThirdRelease, SecondRelease))
+			return 1;
+		if (!CloseEnough(SecondRelease, FirstRelease))
+			return 2;
+
 		return 3;
 	}
 
 	public int LastTapCount()
 	{
-		if (!CloseEnough(ThirdRelease, SecondRelease)) return 1;
-		if (!CloseEnough(SecondRelease, FirstRelease)) return 2;
+		if (!CloseEnough(ThirdRelease, SecondRelease))
+			return 1;
+		if (!CloseEnough(SecondRelease, FirstRelease))
+			return 2;
+
 		return 3;
 	}
 }

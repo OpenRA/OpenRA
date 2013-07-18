@@ -43,13 +43,13 @@ namespace OpenRA.Renderer.SdlCommon
 
 		IntPtr InitializeSdlGl(ref Size size, WindowMode window, string[] requiredExtensions)
 		{
-			Sdl.SDL_Init( Sdl.SDL_INIT_NOPARACHUTE | Sdl.SDL_INIT_VIDEO );
-			Sdl.SDL_GL_SetAttribute( Sdl.SDL_GL_DOUBLEBUFFER, 1 );
-			Sdl.SDL_GL_SetAttribute( Sdl.SDL_GL_RED_SIZE, 8 );
-			Sdl.SDL_GL_SetAttribute( Sdl.SDL_GL_GREEN_SIZE, 8 );
-			Sdl.SDL_GL_SetAttribute( Sdl.SDL_GL_BLUE_SIZE, 8 );
-			Sdl.SDL_GL_SetAttribute( Sdl.SDL_GL_ALPHA_SIZE, 0 );
-			Sdl.SDL_GL_SetAttribute( Sdl.SDL_GL_STENCIL_SIZE, 1 );
+			Sdl.SDL_Init(Sdl.SDL_INIT_NOPARACHUTE | Sdl.SDL_INIT_VIDEO);
+			Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_DOUBLEBUFFER, 1);
+			Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_RED_SIZE, 8);
+			Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_GREEN_SIZE, 8);
+			Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_BLUE_SIZE, 8);
+			Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_ALPHA_SIZE, 0);
+			Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_STENCIL_SIZE, 1);
 
 			int windowFlags = 0;
 			switch (window)
@@ -59,16 +59,16 @@ namespace OpenRA.Renderer.SdlCommon
 				break;
 			case WindowMode.PseudoFullscreen:
 				windowFlags |= Sdl.SDL_NOFRAME;
-				Environment.SetEnvironmentVariable( "SDL_VIDEO_WINDOW_POS", "0,0" );
+				Environment.SetEnvironmentVariable("SDL_VIDEO_WINDOW_POS", "0,0");
 				break;
 			case WindowMode.Windowed:
-				Environment.SetEnvironmentVariable( "SDL_VIDEO_CENTERED", "1" );
+				Environment.SetEnvironmentVariable("SDL_VIDEO_CENTERED", "1");
 				break;
 			default:
 				break;
 			}
 
-			var info = (Sdl.SDL_VideoInfo) Marshal.PtrToStructure(
+			var info = (Sdl.SDL_VideoInfo)Marshal.PtrToStructure(
 				Sdl.SDL_GetVideoInfo(), typeof(Sdl.SDL_VideoInfo));
 			Console.WriteLine("Desktop resolution: {0}x{1}",
 				info.current_w, info.current_h);
@@ -76,7 +76,7 @@ namespace OpenRA.Renderer.SdlCommon
 			if (size.Width == 0 && size.Height == 0)
 			{
 				Console.WriteLine("No custom resolution provided, using desktop resolution");
-				size = new Size( info.current_w, info.current_h );
+				size = new Size(info.current_w, info.current_h);
 			}
 
 			Console.WriteLine("Using resolution: {0}x{1}", size.Width, size.Height);
@@ -110,13 +110,14 @@ namespace OpenRA.Renderer.SdlCommon
 
 		int ModeFromPrimitiveType(PrimitiveType pt)
 		{
-			switch(pt)
+			switch (pt)
 			{
 			case PrimitiveType.PointList: return Gl.GL_POINTS;
 			case PrimitiveType.LineList: return Gl.GL_LINES;
 			case PrimitiveType.TriangleList: return Gl.GL_TRIANGLES;
 			case PrimitiveType.QuadList: return Gl.GL_QUADS;
 			}
+
 			throw new NotImplementedException();
 		}
 
@@ -194,4 +195,3 @@ namespace OpenRA.Renderer.SdlCommon
 		public abstract IShader CreateShader(string name);
 	}
 }
-
