@@ -8,8 +8,24 @@ local frame = ide.frame
 local menuBar = frame.menuBar
 local mobdebug = require "mobdebug"
 
+local url = "http://download.zerobrane.com/zerobranestudio-"
+local urls = {
+  [ID_HELPPROJECT] = "main",
+  [ID_HELPDOCUMENTATION] =  "documentation",
+  [ID_HELPGETTINGSTARTED] = "gettingstarted",
+  [ID_HELPTUTORIALS] = "tutorials",
+  [ID_HELPFAQ] = "faq",
+  [ID_HELPCOMMUNITY] = "community",
+}
+
 local helpMenu = wx.wxMenu{
   { ID_ABOUT, TR("&About")..KSC(ID_ABOUT), TR("About %s"):format(GetIDEString("editor")) },
+  { ID_HELPPROJECT, TR("&Project Page")..KSC(ID_HELPPROJECT) },
+  { ID_HELPDOCUMENTATION, TR("&Documentation")..KSC(ID_HELPDOCUMENTATION) },
+  { ID_HELPGETTINGSTARTED, TR("&Getting Started Guide")..KSC(ID_HELPGETTINGSTARTED) },
+  { ID_HELPTUTORIALS, TR("&Tutorials")..KSC(ID_HELPTUTORIALS) },
+  { ID_HELPFAQ, TR("&Frequently Asked Questions")..KSC(ID_HELPFAQ) },
+  { ID_HELPCOMMUNITY, TR("&Community")..KSC(ID_HELPCOMMUNITY) },
 }
 -- do not translate Help menu on Mac as it won't merge with "standard" menus
 menuBar:Append(helpMenu, ide.osname == 'Macintosh' and "&Help" or TR("&Help"))
@@ -94,3 +110,7 @@ local function DisplayAbout(event)
 end
 
 frame:Connect(ID_ABOUT, wx.wxEVT_COMMAND_MENU_SELECTED, DisplayAbout)
+for item, page in pairs(urls) do
+  frame:Connect(item, wx.wxEVT_COMMAND_MENU_SELECTED,
+    function() wx.wxLaunchDefaultBrowser(url..page, 0) end)
+end

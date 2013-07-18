@@ -78,6 +78,12 @@ ID_PROJECTDIRFROMFILE = NewID()
 ID_PROJECTDIRCHOOSE = NewID()
 -- Help menu
 ID_ABOUT            = wx.wxID_ABOUT
+ID_HELPPROJECT      = NewID()
+ID_HELPDOCUMENTATION = NewID()
+ID_HELPGETTINGSTARTED = NewID()
+ID_HELPTUTORIALS    = NewID()
+ID_HELPFAQ          = NewID()
+ID_HELPCOMMUNITY    = NewID()
 -- Watch window menu items
 ID_ADDWATCH         = NewID()
 ID_EDITWATCH        = NewID()
