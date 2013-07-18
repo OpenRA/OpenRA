@@ -28,12 +28,12 @@ namespace OpenRA.Renderer.Cg
 			string code;
 			using (var file = new StreamReader(FileSystem.Open("cg{0}{1}.fx".F(Path.DirectorySeparatorChar, name))))
 				code = file.ReadToEnd();
-			effect = Tao.Cg.Cg.cgCreateEffect(dev.cgContext, code, null);
+			effect = Tao.Cg.Cg.cgCreateEffect(dev.Context, code, null);
 
 			if (effect == IntPtr.Zero)
 			{
 				var err = Tao.Cg.Cg.cgGetErrorString(Tao.Cg.Cg.cgGetError());
-				var results = Tao.Cg.Cg.cgGetLastListing(dev.cgContext);
+				var results = Tao.Cg.Cg.cgGetLastListing(dev.Context);
 				throw new InvalidOperationException(
 					"Cg compile failed ({0}):\n{1}".F(err, results));
 			}
@@ -51,8 +51,8 @@ namespace OpenRA.Renderer.Cg
 
 		public void Render(Action a)
 		{
-			Tao.Cg.CgGl.cgGLEnableProfile(dev.vertexProfile);
-			Tao.Cg.CgGl.cgGLEnableProfile(dev.fragmentProfile);
+			Tao.Cg.CgGl.cgGLEnableProfile(dev.VertexProfile);
+			Tao.Cg.CgGl.cgGLEnableProfile(dev.FragmentProfile);
 
 			var pass = Tao.Cg.Cg.cgGetFirstPass(technique);
 			while (pass != IntPtr.Zero)
@@ -63,8 +63,8 @@ namespace OpenRA.Renderer.Cg
 				pass = Tao.Cg.Cg.cgGetNextPass(pass);
 			}
 
-			Tao.Cg.CgGl.cgGLDisableProfile(dev.fragmentProfile);
-			Tao.Cg.CgGl.cgGLDisableProfile(dev.vertexProfile);
+			Tao.Cg.CgGl.cgGLDisableProfile(dev.FragmentProfile);
+			Tao.Cg.CgGl.cgGLDisableProfile(dev.VertexProfile);
 		}
 
 		public void SetTexture(string name, ITexture t)
@@ -95,7 +95,7 @@ namespace OpenRA.Renderer.Cg
 			if (param == IntPtr.Zero)
 				return;
 
-			switch(length)
+			switch (length)
 			{
 				case 1: Tao.Cg.CgGl.cgGLSetParameter1fv(param, vec); break;
 				case 2: Tao.Cg.CgGl.cgGLSetParameter2fv(param, vec); break;

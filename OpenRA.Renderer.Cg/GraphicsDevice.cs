@@ -13,8 +13,6 @@ using System.Drawing;
 using OpenRA.FileFormats.Graphics;
 using OpenRA.Renderer.SdlCommon;
 using Tao.Cg;
-using Tao.OpenGl;
-using Tao.Sdl;
 
 [assembly: Renderer(typeof(OpenRA.Renderer.Cg.DeviceFactory))]
 
@@ -31,7 +29,7 @@ namespace OpenRA.Renderer.Cg
 
 	public class GraphicsDevice : SdlGraphics
 	{
-		static string[] RequiredExtensions =
+		static string[] requiredExtensions =
 		{
 			"GL_ARB_vertex_program",
 			"GL_ARB_fragment_program",
@@ -39,10 +37,10 @@ namespace OpenRA.Renderer.Cg
 			"GL_EXT_framebuffer_object"
 		};
 
-		internal IntPtr cgContext;
-		internal int vertexProfile, fragmentProfile;
+		internal IntPtr Context;
+		internal int VertexProfile, FragmentProfile;
 
-		static Tao.Cg.Cg.CGerrorCallbackFuncDelegate CgErrorCallback = () =>
+		static Tao.Cg.Cg.CGerrorCallbackFuncDelegate errorCallback = () =>
 		{
 			var err = Tao.Cg.Cg.cgGetError();
 			var msg = "CG Error: {0}: {1}".F(err, Tao.Cg.Cg.cgGetErrorString(err));
@@ -51,16 +49,16 @@ namespace OpenRA.Renderer.Cg
 		};
 
 		public GraphicsDevice(Size size, WindowMode window)
-			: base(size, window, RequiredExtensions)
+			: base(size, window, requiredExtensions)
 		{
-			cgContext = Tao.Cg.Cg.cgCreateContext();
+			Context = Tao.Cg.Cg.cgCreateContext();
 
-			Tao.Cg.Cg.cgSetErrorCallback(CgErrorCallback);
+			Tao.Cg.Cg.cgSetErrorCallback(errorCallback);
 
-			Tao.Cg.CgGl.cgGLRegisterStates(cgContext);
-			Tao.Cg.CgGl.cgGLSetManageTextureParameters(cgContext, true);
-			vertexProfile = CgGl.cgGLGetLatestProfile(CgGl.CG_GL_VERTEX);
-			fragmentProfile = CgGl.cgGLGetLatestProfile(CgGl.CG_GL_FRAGMENT);
+			Tao.Cg.CgGl.cgGLRegisterStates(Context);
+			Tao.Cg.CgGl.cgGLSetManageTextureParameters(Context, true);
+			VertexProfile = CgGl.cgGLGetLatestProfile(CgGl.CG_GL_VERTEX);
+			FragmentProfile = CgGl.cgGLGetLatestProfile(CgGl.CG_GL_FRAGMENT);
 		}
 
 		public override IShader CreateShader(string name) { return new Shader(this, name); }
