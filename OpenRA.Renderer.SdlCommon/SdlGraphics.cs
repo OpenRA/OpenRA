@@ -21,7 +21,6 @@ namespace OpenRA.Renderer.SdlCommon
 	public abstract class SdlGraphics : IGraphicsDevice
 	{
 		Size windowSize;
-		IntPtr surf;
 		SdlInput input;
 
 		public Size WindowSize { get { return windowSize; } }
@@ -29,7 +28,7 @@ namespace OpenRA.Renderer.SdlCommon
 		public SdlGraphics(Size size, WindowMode window, string[] extensions)
 		{
 			windowSize = size;
-			surf = InitializeSdlGl(ref windowSize, window, extensions);
+			InitializeSdlGl(ref windowSize, window, extensions);
 
 			Gl.glEnableClientState(Gl.GL_VERTEX_ARRAY);
 			ErrorHandler.CheckGlError();
@@ -38,7 +37,7 @@ namespace OpenRA.Renderer.SdlCommon
 
 			Sdl.SDL_SetModState(0);
 
-			input = new SdlInput(surf);
+			input = new SdlInput();
 		}
 
 		IntPtr InitializeSdlGl(ref Size size, WindowMode window, string[] requiredExtensions)

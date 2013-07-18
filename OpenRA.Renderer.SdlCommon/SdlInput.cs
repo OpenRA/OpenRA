@@ -17,9 +17,6 @@ namespace OpenRA.Renderer.SdlCommon
 	public class SdlInput
 	{
 		MouseButton lastButtonBits = (MouseButton)0;
-		IntPtr surface;
-
-		public SdlInput(IntPtr surface) { this.surface = surface; }
 
 		MouseButton MakeButton(byte b)
 		{
@@ -118,8 +115,7 @@ namespace OpenRA.Renderer.SdlCommon
 							MultiTapCount = MultiTapDetection.DetectFromKeyboard(keyName)
 						};
 
-						if (!HandleSpecialKey(keyEvent))
-							inputHandler.OnKeyInput(keyEvent);
+						inputHandler.OnKeyInput(keyEvent);
 
 						break;
 					}
@@ -150,29 +146,6 @@ namespace OpenRA.Renderer.SdlCommon
 			}
 
 			ErrorHandler.CheckGlError();
-		}
-
-		bool HandleSpecialKey(KeyInput k)
-		{
-			switch (k.VirtKey)
-			{
-			case Sdl.SDLK_F13:
-				var path = Environment.GetFolderPath(Environment.SpecialFolder.Personal)
-					+ Path.DirectorySeparatorChar + DateTime.UtcNow.ToString("OpenRA-yyyy-MM-ddThhmmssZ") + ".bmp";
-				Sdl.SDL_SaveBMP(surface, path);
-				return true;
-
-			case Sdl.SDLK_F4:
-				if (k.Modifiers.HasModifier(Modifiers.Alt))
-				{
-					OpenRA.Game.Exit();
-					return true;
-				}
-
-				return false;
-			default:
-				return false;
-			}
 		}
 	}
 }
