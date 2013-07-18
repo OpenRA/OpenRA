@@ -44,7 +44,7 @@ function M.show_warnings(top_ast)
   local function known(o) return not T.istype[o] end
   local function index(f) -- build abc.def.xyz name recursively
     return (f[1].tag == 'Id' and f[1][1] or index(f[1])) .. '.' .. f[2][1] end
-  local isseen, globseen = {}, {}
+  local isseen, globseen, fieldseen = {}, {}, {}
   LA.walk(top_ast, function(ast)
     local line = ast.lineinfo and ast.lineinfo.first[1] or 0
     local path = ast.lineinfo and ast.lineinfo.first[4] or '?'
@@ -105,7 +105,14 @@ function M.show_warnings(top_ast)
     -- added check for FAST as ast.seevalue relies on value evaluation,
     -- which is very slow even on simple and short scripts
     if not FAST and ast.isfield and not(known(ast.seevalue.value) and ast.seevalue.value ~= nil) then
-      warn("unknown field " .. name, ast.lineinfo.first[1], path)
+      if not fieldseen[name] then
+        fieldseen[name] = true
+        local parent = ast.parent
+          and (" in '"..index(ast.parent):gsub("%."..name.."$","").."'")
+          or ""
+        warn("first use of unknown field '" .. name .."'"..parent,
+          ast.lineinfo.first[1], path)
+      end
     elseif ast.tag == 'Id' and not ast.localdefinition and not ast.definedglobal then
       if not globseen[name] then
         globseen[name] = true
