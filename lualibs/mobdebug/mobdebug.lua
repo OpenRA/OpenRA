@@ -1,12 +1,12 @@
 --
--- MobDebug 0.535
+-- MobDebug 0.5362
 -- Copyright 2011-13 Paul Kulchenko
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
 --
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.535,
+  _VERSION = 0.5362,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = os and os.getenv and os.getenv("MOBDEBUG_PORT") or 8172,
@@ -26,6 +26,7 @@ local require = require
 local setmetatable = setmetatable
 local string = string
 local tonumber = tonumber
+local unpack = table.unpack or unpack
 
 -- if strict.lua is used, then need to avoid referencing some global
 -- variables, as they can be undefined;
@@ -463,9 +464,10 @@ local function debug_hook(event, line)
         -- some file systems allow newlines in file names; remove these.
         file = file:gsub("\n", ' ')
       else
-        -- serialize and return the source code; need serialization as scripts
-        -- may include newlines, but the names are expected to one one line.
-        file = serpent.line(file) -- serialize file content as a string
+        -- this is either a file name coming from loadstring("chunk", "file"),
+        -- or the actual source code that needs to be serialized (as it may
+        -- include newlines); assume it's a file name if it's all on one line.
+        file = file:find("[\r\n]") and serpent.line(file) or file
       end
 
       -- set to true if we got here; this only needs to be done once per
@@ -812,13 +814,18 @@ local function isrunning()
   return coro_debugger and coroutine.status(coro_debugger) == 'suspended'
 end
 
+local lasthost, lastport
+
 -- Starts a debug session by connecting to a controller
 local function start(controller_host, controller_port)
   -- only one debugging session can be run (as there is only one debug hook)
   if isrunning() then return end
 
-  controller_host = controller_host or "localhost"
-  controller_port = controller_port or mobdebug.port
+  lasthost = controller_host or lasthost
+  lastport = controller_port or lastport
+
+  controller_host = lasthost or "localhost"
+  controller_port = lastport or mobdebug.port
 
   server = (socket.connect4 or socket.connect)(controller_host, controller_port)
   if server then
@@ -853,6 +860,7 @@ local function start(controller_host, controller_port)
     end
     coro_debugger = coroutine.create(debugger_loop)
     debug.sethook(debug_hook, "lcr")
+    seen_hook = nil -- reset in case the last start() call was refused
     step_into = true -- start with step command
     return true
   else
@@ -864,8 +872,11 @@ local function controller(controller_host, controller_port, scratchpad)
   -- only one debugging session can be run (as there is only one debug hook)
   if isrunning() then return end
 
-  controller_host = controller_host or "localhost"
-  controller_port = controller_port or mobdebug.port
+  lasthost = controller_host or lasthost
+  lastport = controller_port or lastport
+
+  controller_host = lasthost or "localhost"
+  controller_port = lastport or mobdebug.port
 
   local exitonerror = not scratchpad
   server = (socket.connect4 or socket.connect)(controller_host, controller_port)
@@ -1160,7 +1171,7 @@ local function handle(params, client, options)
               print("Error in processing results: " .. err)
               return nil, nil, "Error in processing results: " .. err
             end
-            print((table.unpack or unpack)(res))
+            print(unpack(res))
             return res[1], res
           end
         elseif status == "201" then
@@ -1383,8 +1394,9 @@ local function done()
   debug.sethook()
   server:close()
 
-  coro_debugger = nil -- this is to make sure isrunning() returns `false`
-  seen_hook = nil -- this is to make sure that the next start() call works
+  coro_debugger = nil -- to make sure isrunning() returns `false`
+  seen_hook = nil -- to make sure that the next start() call works
+  abort = nil -- to make sure that callback calls use proper "abort" value
 end
 
 -- make public functions available
