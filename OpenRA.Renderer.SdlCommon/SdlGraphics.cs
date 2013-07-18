@@ -49,7 +49,6 @@ namespace OpenRA.Renderer.SdlCommon
 			Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_GREEN_SIZE, 8);
 			Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_BLUE_SIZE, 8);
 			Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_ALPHA_SIZE, 0);
-			Sdl.SDL_GL_SetAttribute(Sdl.SDL_GL_STENCIL_SIZE, 1);
 
 			int windowFlags = 0;
 			switch (window)
