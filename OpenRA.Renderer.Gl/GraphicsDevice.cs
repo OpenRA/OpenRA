@@ -12,8 +12,6 @@ using System;
 using System.Drawing;
 using OpenRA.FileFormats.Graphics;
 using OpenRA.Renderer.SdlCommon;
-using Tao.OpenGl;
-using Tao.Sdl;
 
 [assembly: Renderer(typeof(OpenRA.Renderer.Glsl.DeviceFactory))]
 
@@ -30,7 +28,7 @@ namespace OpenRA.Renderer.Glsl
 
 	public class GraphicsDevice : SdlGraphics
 	{
-		static string[] RequiredExtensions =
+		static string[] requiredExtensions =
 		{
 			"GL_ARB_vertex_shader",
 			"GL_ARB_fragment_shader",
@@ -39,8 +37,8 @@ namespace OpenRA.Renderer.Glsl
 		};
 
 		public GraphicsDevice(Size size, WindowMode window)
-		: base(size, window, RequiredExtensions) {}
+			: base(size, window, requiredExtensions) { }
 
-		public override IShader CreateShader(string name) { return new Shader( this, name ); }
+		public override IShader CreateShader(string name) { return new Shader(this, name); }
 	}
 }

@@ -64,6 +64,22 @@ namespace OpenRA.Renderer.SdlCommon
 			ErrorHandler.CheckGlError();
 		}
 
+		static int[] ViewportRectangle()
+		{
+			var v = new int[4];
+			unsafe
+			{
+				fixed (int* ptr = &v[0])
+				{
+					IntPtr intPtr = new IntPtr((void*)ptr);
+					Gl.glGetIntegerv(Gl.GL_VIEWPORT, intPtr);
+				}
+			}
+
+			ErrorHandler.CheckGlError();
+			return v;
+		}
+
 		void FinalizeInner()
 		{
 			Gl.glDeleteFramebuffersEXT(1, ref framebuffer);
@@ -73,22 +89,6 @@ namespace OpenRA.Renderer.SdlCommon
 		}
 
 		~FrameBuffer() { Game.RunAfterTick(FinalizeInner); }
-
-		static int[] ViewportRectangle()
-		{
-			int[] v = new int[4];
-			unsafe
-			{
-				fixed (int *ptr = &v[0])
-				{
-					IntPtr intPtr = new IntPtr((void*)ptr);
-					Gl.glGetIntegerv(Gl.GL_VIEWPORT, intPtr);
-				}
-			}
-			ErrorHandler.CheckGlError();
-
-			return v;
-		}
 
 		int[] cv = new int[4];
 		public void Bind()

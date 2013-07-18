@@ -18,8 +18,8 @@ namespace OpenRA.Renderer.SdlCommon
 	public class VertexBuffer<T> : IVertexBuffer<T>
 			where T : struct
 	{
+		static readonly int VertexSize = Marshal.SizeOf(typeof(T));
 		int buffer;
-		static readonly int vertexSize = Marshal.SizeOf(typeof(T));
 
 		public VertexBuffer(int size)
 		{
@@ -27,8 +27,8 @@ namespace OpenRA.Renderer.SdlCommon
 			ErrorHandler.CheckGlError();
 			Bind();
 			Gl.glBufferDataARB(Gl.GL_ARRAY_BUFFER_ARB,
-				new IntPtr(vertexSize * size),
-				new T[ size ],
+				new IntPtr(VertexSize * size),
+				new T[size],
 				Gl.GL_DYNAMIC_DRAW_ARB);
 			ErrorHandler.CheckGlError();
 		}
@@ -38,7 +38,7 @@ namespace OpenRA.Renderer.SdlCommon
 			Bind();
 			Gl.glBufferSubDataARB(Gl.GL_ARRAY_BUFFER_ARB,
 				IntPtr.Zero,
-				new IntPtr(vertexSize * length),
+				new IntPtr(VertexSize * length),
 				data);
 			ErrorHandler.CheckGlError();
 		}
@@ -47,13 +47,13 @@ namespace OpenRA.Renderer.SdlCommon
 		{
 			Gl.glBindBufferARB(Gl.GL_ARRAY_BUFFER_ARB, buffer);
 			ErrorHandler.CheckGlError();
-			Gl.glVertexPointer(3, Gl.GL_FLOAT, vertexSize, IntPtr.Zero);
+			Gl.glVertexPointer(3, Gl.GL_FLOAT, VertexSize, IntPtr.Zero);
 			ErrorHandler.CheckGlError();
-			Gl.glTexCoordPointer(4, Gl.GL_FLOAT, vertexSize, new IntPtr(12));
+			Gl.glTexCoordPointer(4, Gl.GL_FLOAT, VertexSize, new IntPtr(12));
 			ErrorHandler.CheckGlError();
 		}
 
-		void FinalizeInner() { Gl.glDeleteBuffersARB( 1, ref buffer ); }
-		~VertexBuffer() { Game.RunAfterTick( FinalizeInner ); }
+		void FinalizeInner() { Gl.glDeleteBuffersARB(1, ref buffer); }
+		~VertexBuffer() { Game.RunAfterTick(FinalizeInner); }
 	}
 }

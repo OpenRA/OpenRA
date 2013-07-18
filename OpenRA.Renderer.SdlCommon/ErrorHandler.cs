@@ -31,7 +31,7 @@ namespace OpenRA.Renderer.SdlCommon
 		public static void CheckGlError()
 		{
 			var n = Gl.glGetError();
-			if( n != Gl.GL_NO_ERROR )
+			if (n != Gl.GL_NO_ERROR)
 			{
 				var error = "GL Error: {0}\n{1}".F((GlError)n, new StackTrace());
 				WriteGraphicsLog(error);
@@ -54,4 +54,3 @@ namespace OpenRA.Renderer.SdlCommon
 		}
 	}
 }
-

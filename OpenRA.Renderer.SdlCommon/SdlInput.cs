@@ -17,11 +17,8 @@ namespace OpenRA.Renderer.SdlCommon
 	public class SdlInput
 	{
 		MouseButton lastButtonBits = (MouseButton)0;
-		IntPtr surface;
 
-		public SdlInput( IntPtr surface ) { this.surface = surface; }
-
-		MouseButton MakeButton( byte b )
+		MouseButton MakeButton(byte b)
 		{
 			return b == Sdl.SDL_BUTTON_LEFT ? MouseButton.Left
 				: b == Sdl.SDL_BUTTON_RIGHT ? MouseButton.Right
@@ -31,26 +28,26 @@ namespace OpenRA.Renderer.SdlCommon
 				: 0;
 		}
 
-		Modifiers MakeModifiers( int raw )
+		Modifiers MakeModifiers(int raw)
 		{
-			return ( ( raw & Sdl.KMOD_ALT ) != 0 ? Modifiers.Alt : 0 )
-				 | ( ( raw & Sdl.KMOD_CTRL ) != 0 ? Modifiers.Ctrl : 0 )
-				 | ( ( raw & Sdl.KMOD_META ) != 0 ? Modifiers.Meta : 0 )
-				 | ( ( raw & Sdl.KMOD_SHIFT ) != 0 ? Modifiers.Shift : 0 );
+			return ((raw & Sdl.KMOD_ALT) != 0 ? Modifiers.Alt : 0)
+				 | ((raw & Sdl.KMOD_CTRL) != 0 ? Modifiers.Ctrl : 0)
+				 | ((raw & Sdl.KMOD_META) != 0 ? Modifiers.Meta : 0)
+				 | ((raw & Sdl.KMOD_SHIFT) != 0 ? Modifiers.Shift : 0);
 		}
 
-		public void PumpInput( IInputHandler inputHandler )
+		public void PumpInput(IInputHandler inputHandler)
 		{
-			Game.HasInputFocus = 0 != ( Sdl.SDL_GetAppState() & Sdl.SDL_APPINPUTFOCUS );
+			Game.HasInputFocus = 0 != (Sdl.SDL_GetAppState() & Sdl.SDL_APPINPUTFOCUS);
 
-			var mods = MakeModifiers( Sdl.SDL_GetModState() );
-			inputHandler.ModifierKeys( mods );
+			var mods = MakeModifiers(Sdl.SDL_GetModState());
+			inputHandler.ModifierKeys(mods);
 			MouseInput? pendingMotion = null;
 
 			Sdl.SDL_Event e;
-			while( Sdl.SDL_PollEvent( out e ) != 0 )
+			while (Sdl.SDL_PollEvent(out e) != 0)
 			{
-				switch( e.type )
+				switch (e.type)
 				{
 				case Sdl.SDL_QUIT:
 					OpenRA.Game.Exit();
@@ -58,118 +55,97 @@ namespace OpenRA.Renderer.SdlCommon
 
 				case Sdl.SDL_MOUSEBUTTONDOWN:
 					{
-						if( pendingMotion != null )
+						if (pendingMotion != null)
 						{
-							inputHandler.OnMouseInput( pendingMotion.Value );
+							inputHandler.OnMouseInput(pendingMotion.Value);
 							pendingMotion = null;
 						}
 
-						var button = MakeButton( e.button.button );
+						var button = MakeButton(e.button.button);
 						lastButtonBits |= button;
 
-						var pos = new int2( e.button.x, e.button.y );
+						var pos = new int2(e.button.x, e.button.y);
 
 						inputHandler.OnMouseInput(new MouseInput(
-													MouseInputEvent.Down, button, pos, mods,
-													MultiTapDetection.DetectFromMouse(e.button.button, pos)
-						));
-					} break;
+							MouseInputEvent.Down, button, pos, mods,
+							MultiTapDetection.DetectFromMouse(e.button.button, pos)));
+
+						break;
+					}
 
 				case Sdl.SDL_MOUSEBUTTONUP:
 					{
-						if( pendingMotion != null )
+						if (pendingMotion != null)
 						{
-							inputHandler.OnMouseInput( pendingMotion.Value );
+							inputHandler.OnMouseInput(pendingMotion.Value);
 							pendingMotion = null;
 						}
 
-						var button = MakeButton( e.button.button );
+						var button = MakeButton(e.button.button);
 						lastButtonBits &= ~button;
 
-						var pos = new int2( e.button.x, e.button.y );
+						var pos = new int2(e.button.x, e.button.y);
 						inputHandler.OnMouseInput(new MouseInput(
 							MouseInputEvent.Up, button, pos, mods,
-							MultiTapDetection.InfoFromMouse(e.button.button)
-						));
-					} break;
+							MultiTapDetection.InfoFromMouse(e.button.button)));
+
+						break;
+					} 
 
 				case Sdl.SDL_MOUSEMOTION:
 					{
 						pendingMotion = new MouseInput(
-							MouseInputEvent.Move,
-							lastButtonBits,
-							new int2( e.motion.x, e.motion.y ),
-							mods, 0 );
-					} break;
+							MouseInputEvent.Move, lastButtonBits,
+							new int2(e.motion.x, e.motion.y), mods, 0);
+
+						break;
+					} 
 
 				case Sdl.SDL_KEYDOWN:
 					{
-						var keyName = Sdl.SDL_GetKeyName( e.key.keysym.sym );
+						var keyName = Sdl.SDL_GetKeyName(e.key.keysym.sym);
 
 						var keyEvent = new KeyInput
 						{
 							Event = KeyInputEvent.Down,
 							Modifiers = mods,
 							UnicodeChar = (char)e.key.keysym.unicode,
-							KeyName = Sdl.SDL_GetKeyName( e.key.keysym.sym ),
+							KeyName = Sdl.SDL_GetKeyName(e.key.keysym.sym),
 							VirtKey = e.key.keysym.sym,
 							MultiTapCount = MultiTapDetection.DetectFromKeyboard(keyName)
 						};
 
-						if( !HandleSpecialKey( keyEvent ) )
-							inputHandler.OnKeyInput( keyEvent );
-					} break;
+						inputHandler.OnKeyInput(keyEvent);
+
+						break;
+					}
 
 				case Sdl.SDL_KEYUP:
 					{
-						var keyName = Sdl.SDL_GetKeyName( e.key.keysym.sym );
-
+						var keyName = Sdl.SDL_GetKeyName(e.key.keysym.sym);
 						var keyEvent = new KeyInput
 						{
 							Event = KeyInputEvent.Up,
 							Modifiers = mods,
 							UnicodeChar = (char)e.key.keysym.unicode,
-							KeyName = Sdl.SDL_GetKeyName( e.key.keysym.sym ),
+							KeyName = Sdl.SDL_GetKeyName(e.key.keysym.sym),
 							VirtKey = e.key.keysym.sym,
 							MultiTapCount = MultiTapDetection.InfoFromKeyboard(keyName)
 						};
 
-						inputHandler.OnKeyInput( keyEvent );
-					} break;
+						inputHandler.OnKeyInput(keyEvent);
+						break;
+					}
 				}
 			}
 
-			if( pendingMotion != null )
+			if (pendingMotion != null)
 			{
-				inputHandler.OnMouseInput( pendingMotion.Value );
+				inputHandler.OnMouseInput(pendingMotion.Value);
 				pendingMotion = null;
 			}
 
 			ErrorHandler.CheckGlError();
 		}
-
-		bool HandleSpecialKey( KeyInput k )
-		{
-			switch( k.VirtKey )
-			{
-			case Sdl.SDLK_F13:
-				var path = Environment.GetFolderPath( Environment.SpecialFolder.Personal )
-					+ Path.DirectorySeparatorChar + DateTime.UtcNow.ToString( "OpenRA-yyyy-MM-ddThhmmssZ" ) + ".bmp";
-				Sdl.SDL_SaveBMP( surface, path );
-				return true;
-
-			case Sdl.SDLK_F4:
-				if( k.Modifiers.HasModifier( Modifiers.Alt ) )
-				{
-					OpenRA.Game.Exit();
-					return true;
-				}
-				return false;
-
-			default:
-				return false;
-			}
-		}
 	}
 }
-
