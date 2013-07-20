@@ -84,7 +84,7 @@ E2:
 		IdleAnimations: idle1,idle2
 	Explodes:
 		Weapon: UnitExplodeSmall
-		Chance: 50		
+		Chance: 50
 
 E3:
 	Inherits: ^Infantry

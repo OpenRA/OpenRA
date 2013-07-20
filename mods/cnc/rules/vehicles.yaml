@@ -249,7 +249,7 @@ BIKE:
 			Beach: 35
 	Health:
 		HP: 120
-	Armor: 
+	Armor:
 		Type: Light
 	RevealsShroud:
 		Range: 8
