@@ -36,7 +36,7 @@ namespace OpenRA
 		public static bool operator !=(WVec me, WVec other) { return !(me == other); }
 
 		public static int Dot(WVec a, WVec b) { return a.X * b.X + a.Y * b.Y + a.Z * b.Z; }
-		public int LengthSquared { get { return X * X + Y * Y + Z * Z; } }
+		public long LengthSquared { get { return (long)X * X + (long)Y * Y + (long)Z * Z; } }
 		public int Length { get { return (int)Math.Sqrt(LengthSquared); } }
 
 		public WVec Rotate(WRot rot)
