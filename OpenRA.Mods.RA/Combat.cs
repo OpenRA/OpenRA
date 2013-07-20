@@ -106,7 +106,7 @@ namespace OpenRA.Mods.RA
 					{
 						var maxSpread = warhead.Spread * (float)Math.Log(Math.Abs(warhead.Damage), 2);
 						var range = new WRange((int)maxSpread * 1024 / Game.CellSize);
-						var hitActors = world.FindUnitsInCircle(args.dest.ToWPos(0), range);
+						var hitActors = world.FindActorsInCircle(args.dest.ToWPos(0), range);
 
 						foreach (var victim in hitActors)
 						{

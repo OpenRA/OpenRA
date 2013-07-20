@@ -168,7 +168,7 @@ namespace OpenRA.Mods.RA.AI
 				if (owner.IsEmpty) return false;
 				var u = owner.units.Random(owner.random);
 
-				var units = owner.world.FindUnitsInCircle(u.CenterPosition, WRange.FromCells(dangerRadius)).ToList();
+				var units = owner.world.FindActorsInCircle(u.CenterPosition, WRange.FromCells(dangerRadius)).ToList();
 				var ownBaseBuildingAround = units.Where(unit => unit.Owner == owner.bot.p && unit.HasTrait<Building>()).ToList();
 				if (ownBaseBuildingAround.Count > 0) return false;
 
@@ -325,7 +325,7 @@ namespace OpenRA.Mods.RA.AI
 			protected static bool NearToPosSafely(Squad owner, WPos loc, out Actor detectedEnemyTarget)
 			{
 				detectedEnemyTarget = null;
-				var unitsAroundPos = owner.world.FindUnitsInCircle(loc, WRange.FromCells(dangerRadius))
+				var unitsAroundPos = owner.world.FindActorsInCircle(loc, WRange.FromCells(dangerRadius))
 					.Where(unit => owner.bot.p.Stances[unit.Owner] == Stance.Enemy).ToList();
 
 				int missileUnitsCount = 0;
@@ -509,7 +509,7 @@ namespace OpenRA.Mods.RA.AI
 					owner.Target = t;
 				}
 
-				var enemyUnits = owner.world.FindUnitsInCircle(owner.Target.CenterPosition, WRange.FromCells(10))
+				var enemyUnits = owner.world.FindActorsInCircle(owner.Target.CenterPosition, WRange.FromCells(10))
 					.Where(unit => owner.bot.p.Stances[unit.Owner] == Stance.Enemy).ToList();
 				if (enemyUnits.Any())
 
@@ -554,7 +554,7 @@ namespace OpenRA.Mods.RA.AI
 				Actor leader = owner.units.ClosestTo(owner.Target.CenterPosition);
 				if (leader == null)
 					return;
-				var ownUnits = owner.world.FindUnitsInCircle(leader.CenterPosition, WRange.FromCells(owner.units.Count) / 3)
+				var ownUnits = owner.world.FindActorsInCircle(leader.CenterPosition, WRange.FromCells(owner.units.Count) / 3)
 					.Where(a => a.Owner == owner.units.FirstOrDefault().Owner && owner.units.Contains(a)).ToList();
 				if (ownUnits.Count < owner.units.Count)
 				{
@@ -564,7 +564,7 @@ namespace OpenRA.Mods.RA.AI
 				}
 				else
 				{
-					var enemys = owner.world.FindUnitsInCircle(leader.CenterPosition, WRange.FromCells(12))
+					var enemys = owner.world.FindActorsInCircle(leader.CenterPosition, WRange.FromCells(12))
 						.Where(a1 => !a1.Destroyed && !a1.IsDead()).ToList();
 					var enemynearby = enemys.Where(a1 => a1.HasTrait<ITargetable>() && leader.Owner.Stances[a1.Owner] == Stance.Enemy).ToList();
 					if (enemynearby.Any())
@@ -1037,7 +1037,7 @@ namespace OpenRA.Mods.RA.AI
 
 		internal Actor FindClosestEnemy(WPos pos, WRange radius)
 		{
-			var enemyUnits = world.FindUnitsInCircle(pos, radius)
+			var enemyUnits = world.FindActorsInCircle(pos, radius)
 								.Where(unit => p.Stances[unit.Owner] == Stance.Enemy &&
 									!unit.HasTrait<Husk>() && unit.HasTrait<ITargetable>()).ToList();
 
@@ -1194,7 +1194,7 @@ namespace OpenRA.Mods.RA.AI
 			if (!allEnemyBaseBuilder.Any() || (ownUnits.Count < Info.SquadSize)) return;
 			foreach (var b in allEnemyBaseBuilder)
 			{
-				var enemys = world.FindUnitsInCircle(b.CenterPosition, WRange.FromCells(15))
+				var enemys = world.FindActorsInCircle(b.CenterPosition, WRange.FromCells(15))
 					.Where(unit => p.Stances[unit.Owner] == Stance.Enemy && unit.HasTrait<AttackBase>()).ToList();
 				
 				rushFuzzy.CalculateFuzzy(ownUnits, enemys);
@@ -1223,7 +1223,7 @@ namespace OpenRA.Mods.RA.AI
 				protectSq.Target = attacker;
 			if (protectSq.IsEmpty)
 			{
-				var ownUnits = world.FindUnitsInCircle(baseCenter.CenterPosition, WRange.FromCells(15))
+				var ownUnits = world.FindActorsInCircle(baseCenter.CenterPosition, WRange.FromCells(15))
 									.Where(unit => unit.Owner == p && !unit.HasTrait<Building>()
 										&& unit.HasTrait<AttackBase>()).ToList();
 				foreach (var a in ownUnits)
@@ -1340,7 +1340,7 @@ namespace OpenRA.Mods.RA.AI
 				for (int j = 0; j < y; j += radiusOfPower * 2)
 				{
 					CPos pos = new CPos(i, j);
-					var targets = world.FindUnitsInCircle(pos.CenterPosition, WRange.FromCells(radiusOfPower)).ToList();
+					var targets = world.FindActorsInCircle(pos.CenterPosition, WRange.FromCells(radiusOfPower)).ToList();
 					var enemys = targets.Where(unit => p.Stances[unit.Owner] == Stance.Enemy).ToList();
 					var ally = targets.Where(unit => p.Stances[unit.Owner] == Stance.Ally || unit.Owner == p).ToList();
 

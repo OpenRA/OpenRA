@@ -119,7 +119,7 @@ namespace OpenRA.Mods.RA
 		Actor ChooseTarget(Actor self, WRange range)
 		{
 			nextScanTime = self.World.SharedRandom.Next(Info.MinimumScanTimeInterval, Info.MaximumScanTimeInterval);
-			var inRange = self.World.FindUnitsInCircle(self.CenterPosition, range);
+			var inRange = self.World.FindActorsInCircle(self.CenterPosition, range);
 
 			if (self.Owner.HasFogVisibility())
 			{

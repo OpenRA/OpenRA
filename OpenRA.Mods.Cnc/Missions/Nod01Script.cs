@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2012 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -148,7 +148,7 @@ namespace OpenRA.Mods.Cnc.Missions
 
         IEnumerable<Actor> UnitsNearActor(Actor actor, int range)
         {
-			return world.FindUnitsInCircle(actor.CenterPosition, WRange.FromCells(range))
+			return world.FindActorsInCircle(actor.CenterPosition, WRange.FromCells(range))
                 .Where(a => a.IsInWorld && a != world.WorldActor && !a.Destroyed && a.HasTrait<IMove>() && !a.Owner.NonCombatant);
         }
 

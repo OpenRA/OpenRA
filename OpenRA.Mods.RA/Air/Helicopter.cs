@@ -114,7 +114,7 @@ namespace OpenRA.Mods.RA.Air
 			if (Altitude <= 0) return;
 
 			var separation = new WRange(Info.IdealSeparation * 1024 / Game.CellSize);
-			var otherHelis = self.World.FindUnitsInCircle(self.CenterPosition, separation)
+			var otherHelis = self.World.FindActorsInCircle(self.CenterPosition, separation)
 				.Where(a => a.HasTrait<Helicopter>());
 
 			var f = otherHelis

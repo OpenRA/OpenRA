@@ -55,7 +55,7 @@ namespace OpenRA
 			return actors.OrderBy(a => (a.CenterPosition - pos).LengthSquared).FirstOrDefault();
 		}
 
-		public static IEnumerable<Actor> FindUnitsInCircle(this World world, WPos origin, WRange r)
+		public static IEnumerable<Actor> FindActorsInCircle(this World world, WPos origin, WRange r)
 		{
 			using (new PerfSample("FindUnitsInCircle"))
 			{

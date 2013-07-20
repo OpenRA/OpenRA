@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA
 		public void TickIdle(Actor self)
 		{
 			var attack = self.Trait<AttackBase>();
-			var inRange = self.World.FindUnitsInCircle(self.CenterPosition, attack.GetMaximumRange());
+			var inRange = self.World.FindActorsInCircle(self.CenterPosition, attack.GetMaximumRange());
 
 			var target = inRange
 				.Where(a => a != self && a.AppearsFriendlyTo(self))
