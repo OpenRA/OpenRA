@@ -55,25 +55,20 @@ namespace OpenRA
 			return actors.OrderBy(a => (a.CenterPosition - pos).LengthSquared).FirstOrDefault();
 		}
 
-		public static IEnumerable<Actor> FindUnitsInCircle(this World world, WPos a, WRange r)
-		{
-			return world.FindUnitsInCircle(PPos.FromWPos(a), r.Range * Game.CellSize / 1024);
-		}
-
-		public static IEnumerable<Actor> FindUnitsInCircle(this World world, PPos a, int r)
+		public static IEnumerable<Actor> FindUnitsInCircle(this World world, WPos origin, WRange r)
 		{
 			using (new PerfSample("FindUnitsInCircle"))
 			{
-				var min = a - PVecInt.FromRadius(r);
-				var max = a + PVecInt.FromRadius(r);
-
-				var actors = world.FindUnits(min, max);
-
-				var rect = new Rectangle(min.X, min.Y, max.X - min.X, max.Y - min.Y);
-
-				var inBox = actors.Where(x => x.ExtendedBounds.Value.IntersectsWith(rect));
-
-				return inBox.Where(x => (x.CenterLocation - a).LengthSquared < r * r);
+				// Target ranges are calculated in 2D, so ignore height differences
+				var vec = new WVec(r, r, WRange.Zero);
+				var rSq = r.Range*r.Range;
+				return world.FindUnits(origin - vec, origin + vec).Where(a =>
+				{
+					var pos = a.CenterPosition;
+					var dx = (long)(pos.X - origin.X);
+					var dy = (long)(pos.Y - origin.Y);
+					return dx*dx + dy*dy <= rSq;
+				});
 			}
 		}
 

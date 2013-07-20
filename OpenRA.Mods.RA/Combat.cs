@@ -105,7 +105,8 @@ namespace OpenRA.Mods.RA
 				case DamageModel.Normal:
 					{
 						var maxSpread = warhead.Spread * (float)Math.Log(Math.Abs(warhead.Damage), 2);
-						var hitActors = world.FindUnitsInCircle(args.dest, (int)maxSpread);
+						var range = new WRange((int)maxSpread * 1024 / Game.CellSize);
+						var hitActors = world.FindUnitsInCircle(args.dest.ToWPos(0), range);
 
 						foreach (var victim in hitActors)
 						{
