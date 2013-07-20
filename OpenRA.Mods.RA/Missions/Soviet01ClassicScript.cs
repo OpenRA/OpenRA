@@ -129,7 +129,7 @@ namespace OpenRA.Mods.RA.Missions
 					.OrderBy(a => (startJeep.CenterPosition - a.CenterPosition).LengthSquared)
 					.First();
 				Combat.DoExplosion(bridge, "Demolish", bridge.CenterPosition);
-				world.WorldActor.Trait<ScreenShaker>().AddEffect(15, bridge.CenterLocation.ToFloat2(), 6);
+				world.WorldActor.Trait<ScreenShaker>().AddEffect(15, bridge.CenterPosition, 6);
 				bridge.Kill(bridge);
 			}));
 		}
