@@ -24,20 +24,21 @@ namespace OpenRA.Mods.RA.Missions
 {
 	public static class MissionUtils
 	{
-		public static IEnumerable<Actor> FindAliveCombatantActorsInCircle(this World world, PPos location, int range)
+		public static IEnumerable<Actor> FindAliveCombatantActorsInCircle(this World world, WPos location, WRange range)
 		{
-			return world.FindUnitsInCircle(location, Game.CellSize * range)
+			return world.FindActorsInCircle(location, range)
 				.Where(u => u.IsInWorld && u != world.WorldActor && !u.IsDead() && !u.Owner.NonCombatant);
 		}
 
-		public static IEnumerable<Actor> FindAliveCombatantActorsInBox(this World world, PPos a, PPos b)
+		public static IEnumerable<Actor> FindAliveCombatantActorsInBox(this World world, CPos a, CPos b)
 		{
-			return world.FindUnits(a, b).Where(u => u.IsInWorld && u != world.WorldActor && !u.IsDead() && !u.Owner.NonCombatant);
+			return world.FindActorsInBox(a, b)
+				.Where(u => u.IsInWorld && u != world.WorldActor && !u.IsDead() && !u.Owner.NonCombatant);
 		}
 
-		public static IEnumerable<Actor> FindAliveNonCombatantActorsInCircle(this World world, PPos location, int range)
+		public static IEnumerable<Actor> FindAliveNonCombatantActorsInCircle(this World world, WPos location, WRange range)
 		{
-			return world.FindUnitsInCircle(location, Game.CellSize * range)
+			return world.FindActorsInCircle(location, range)
 				.Where(u => u.IsInWorld && u != world.WorldActor && !u.IsDead() && u.Owner.NonCombatant);
 		}
 
@@ -103,7 +104,7 @@ namespace OpenRA.Mods.RA.Missions
 			badger.QueueActivity(new RemoveSelf());
 		}
 
-		public static bool AreaSecuredWithUnits(World world, Player player, PPos location, int range)
+		public static bool AreaSecuredWithUnits(World world, Player player, WPos location, WRange range)
 		{
 			var units = world.FindAliveCombatantActorsInCircle(location, range).Where(a => a.HasTrait<IMove>());
 			return units.Any() && units.All(a => a.Owner == player);
@@ -211,7 +212,7 @@ namespace OpenRA.Mods.RA.Missions
 			var enemies = self.World.Actors.Where(u => u.AppearsHostileTo(self) && u.Owner == enemyPlayer
 					&& ((u.HasTrait<Building>() && !u.HasTrait<Wall>()) || (u.HasTrait<Mobile>() && !u.HasTrait<Aircraft>())) && u.IsInWorld && !u.IsDead());
 
-			var enemy = enemies.OrderBy(u => (self.CenterLocation - u.CenterLocation).LengthSquared).FirstOrDefault();
+			var enemy = enemies.OrderBy(u => (self.CenterPosition - u.CenterPosition).LengthSquared).FirstOrDefault();
 			if (enemy != null)
 				self.QueueActivity(queued, new AttackMove.AttackMoveActivity(self, new Attack(Target.FromActor(enemy), WRange.FromCells(3))));
 		}

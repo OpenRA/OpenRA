@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA.Air
 				var nearestHpad = self.World.ActorsWithTrait<Reservable>()
 									.Where(a => a.Actor.Owner == self.Owner && rearmBuildings.Contains(a.Actor.Info.Name))
 									.Select(a => a.Actor)
-									.ClosestTo(self.CenterLocation);
+									.ClosestTo(self);
 
 				if (nearestHpad == null)
 					return Util.SequenceActivities(new Turn(initialFacing), new HeliLand(true, 0), NextActivity);

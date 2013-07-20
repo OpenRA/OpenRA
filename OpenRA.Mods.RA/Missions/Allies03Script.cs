@@ -187,8 +187,8 @@ namespace OpenRA.Mods.RA.Missions
 				ManageSovietAircraft();
 			}
 
-			EvacuateAlliedUnits(exit1TopLeft.CenterLocation, exit1BottomRight.CenterLocation, exit1ExitPoint.Location);
-			EvacuateAlliedUnits(exit2TopLeft.CenterLocation, exit2BottomRight.CenterLocation, exit2ExitPoint.Location);
+			EvacuateAlliedUnits(exit1TopLeft.Location, exit1BottomRight.Location, exit1ExitPoint.Location);
+			EvacuateAlliedUnits(exit2TopLeft.Location, exit2BottomRight.Location, exit2ExitPoint.Location);
 
 			CheckSovietAirbases();
 
@@ -203,7 +203,7 @@ namespace OpenRA.Mods.RA.Missions
 
 		Actor FirstUnshroudedOrDefault(IEnumerable<Actor> actors, World world, int shroudRange)
 		{
-			return actors.FirstOrDefault(u => world.FindAliveCombatantActorsInCircle(u.CenterLocation, shroudRange).All(a => !a.HasTrait<CreatesShroud>()));
+			return actors.FirstOrDefault(u => world.FindAliveCombatantActorsInCircle(u.CenterPosition, WRange.FromCells(shroudRange)).All(a => !a.HasTrait<CreatesShroud>()));
 		}
 
 		void ManageSovietAircraft()
@@ -219,7 +219,7 @@ namespace OpenRA.Mods.RA.Missions
 				var ammo = aircraft.Trait<LimitedAmmo>();
 				if ((plane.Altitude == 0 && ammo.FullAmmo()) || (plane.Altitude != 0 && ammo.HasAmmo()))
 				{
-					var enemy = FirstUnshroudedOrDefault(enemies.OrderBy(u => (aircraft.CenterLocation - u.CenterLocation).LengthSquared), world, 10);
+					var enemy = FirstUnshroudedOrDefault(enemies.OrderBy(u => (aircraft.CenterPosition - u.CenterPosition).LengthSquared), world, 10);
 					if (enemy != null)
 					{
 						if (!aircraft.IsIdle && aircraft.GetCurrentActivity().GetType() != typeof(FlyAttack))
@@ -295,7 +295,7 @@ namespace OpenRA.Mods.RA.Missions
 			var enemies = world.Actors.Where(u => u.AppearsHostileTo(self) && (u.Owner == allies1 || u.Owner == allies2)
 					&& ((u.HasTrait<Building>() && !u.HasTrait<Wall>()) || u.HasTrait<Mobile>()) && u.IsInWorld && !u.IsDead());
 
-			var enemy = FirstUnshroudedOrDefault(enemies.OrderBy(u => (self.CenterLocation - u.CenterLocation).LengthSquared), world, 10);
+			var enemy = FirstUnshroudedOrDefault(enemies.OrderBy(u => (self.CenterPosition - u.CenterPosition).LengthSquared), world, 10);
 			if (enemy != null)
 				self.QueueActivity(new AttackMove.AttackMoveActivity(self, new Attack(Target.FromActor(enemy), WRange.FromCells(3))));
 		}
@@ -304,7 +304,7 @@ namespace OpenRA.Mods.RA.Missions
 		{
 			foreach (var rallyPoint in sovietRallyPoints)
 			{
-				var units = world.FindAliveCombatantActorsInCircle(Util.CenterOfCell(rallyPoint), 10)
+				var units = world.FindAliveCombatantActorsInCircle(rallyPoint.CenterPosition, WRange.FromCells(10))
 					.Where(u => u.IsIdle && u.HasTrait<Mobile>() && u.HasTrait<AttackBase>() && u.Owner == soviets);
 				if (units.Count() >= SovietGroupSize)
 				{
@@ -315,7 +315,7 @@ namespace OpenRA.Mods.RA.Missions
 
 			var scatteredUnits = world.Actors.Where(u => u.IsInWorld && !u.IsDead() && u.HasTrait<Mobile>() && u.IsIdle && u.Owner == soviets)
 				.Except(world.WorldActor.Trait<SpawnMapActors>().Actors.Values)
-				.Except(sovietRallyPoints.SelectMany(rp => world.FindAliveCombatantActorsInCircle(Util.CenterOfCell(rp), 10)));
+				.Except(sovietRallyPoints.SelectMany(rp => world.FindAliveCombatantActorsInCircle(rp.CenterPosition, WRange.FromCells(10))));
 
 			foreach (var unit in scatteredUnits)
 				AttackNearestAlliedActor(unit);
@@ -351,9 +351,9 @@ namespace OpenRA.Mods.RA.Missions
 			}
 		}
 
-		void EvacuateAlliedUnits(PPos a, PPos b, CPos exit)
+		void EvacuateAlliedUnits(CPos tl, CPos br, CPos exit)
 		{
-			var units = world.FindAliveCombatantActorsInBox(a, b)
+			var units = world.FindAliveCombatantActorsInBox(tl, br)
 				.Where(u => u.HasTrait<Mobile>() && !u.HasTrait<Aircraft>() && (u.Owner == allies1 || u.Owner == allies2));
 
 			foreach (var unit in units)

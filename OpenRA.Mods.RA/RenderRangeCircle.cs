@@ -17,17 +17,17 @@ namespace OpenRA.Mods.RA
 {
 	public interface IPlaceBuildingDecoration
 	{
-		void Render(WorldRenderer wr, World w, ActorInfo ai, PPos centerLocation);
+		void Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition);
 	}
 
 	class RenderRangeCircleInfo : TraitInfo<RenderRangeCircle>, IPlaceBuildingDecoration
 	{
 		public readonly string RangeCircleType = null;
 
-		public void Render(WorldRenderer wr, World w, ActorInfo ai, PPos centerLocation)
+		public void Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
 		{
 			wr.DrawRangeCircleWithContrast(
-				Color.FromArgb(128, Color.Yellow), centerLocation.ToFloat2(),
+				Color.FromArgb(128, Color.Yellow), wr.ScreenPxPosition(centerPosition),
 				ai.Traits.WithInterface<ArmamentInfo>()
 					.Select(a => Rules.Weapons[a.Weapon.ToLowerInvariant()].Range).Max(),
 				Color.FromArgb(96, Color.Black), 1
@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA
 			var pxRange = self.Trait<AttackBase>().GetMaximumRange().Range / 1024f;
 			wr.DrawRangeCircleWithContrast(
 				Color.FromArgb(128, Color.Yellow),
-				self.CenterLocation.ToFloat2(), pxRange,
+				wr.ScreenPxPosition(self.CenterPosition), pxRange,
 				Color.FromArgb(96, Color.Black),
 				1);
 		}

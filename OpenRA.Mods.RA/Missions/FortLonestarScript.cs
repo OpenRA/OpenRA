@@ -79,7 +79,7 @@ namespace OpenRA.Mods.RA.Missions
 		{
 			var enemies = world.Actors.Where(u => u.IsInWorld && !u.IsDead() && (u.Owner == multi0)
 				&& ((u.HasTrait<Building>() && !u.HasTrait<Mobile>())));
-			var targetEnemy = enemies.OrderBy(u => (self.CenterLocation - u.CenterLocation).LengthSquared).FirstOrDefault();
+			var targetEnemy = enemies.OrderBy(u => (self.CenterPosition - u.CenterPosition).LengthSquared).FirstOrDefault();
 			if (targetEnemy != null)
 			{
 				self.QueueActivity(new AttackMove.AttackMoveActivity(self, new Attack(Target.FromActor(targetEnemy), WRange.FromCells(6))));
@@ -127,7 +127,7 @@ namespace OpenRA.Mods.RA.Missions
 								new OwnerInit(soviets) 
 							});
 						squad.QueueActivity(new AttackMove.AttackMoveActivity(squad, new Move.Move(paradrop1.Location, 3)));
-						var scatteredUnits = world.FindAliveCombatantActorsInCircle(Util.CenterOfCell(paradrop1.Location), 15)
+						var scatteredUnits = world.FindAliveCombatantActorsInCircle(paradrop1.Location.CenterPosition, WRange.FromCells(15))
 						.Where(unit => unit.IsIdle && unit.HasTrait<Mobile>() && unit.Owner == soviets);
 						foreach (var unit in scatteredUnits)
 						{

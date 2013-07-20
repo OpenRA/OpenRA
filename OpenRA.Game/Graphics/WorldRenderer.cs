@@ -73,9 +73,9 @@ namespace OpenRA.Graphics
 			var bounds = Game.viewport.WorldBounds(world);
 			var comparer = new RenderableComparer(this);
 
-			var actors = world.FindUnits(
-				bounds.TopLeftAsCPos().ToPPos(),
-				bounds.BottomRightAsCPos().ToPPos());
+			var actors = world.FindActorsInBox(
+				bounds.TopLeftAsCPos(),
+				bounds.BottomRightAsCPos());
 
 			var worldRenderables = actors.SelectMany(a => a.Render(this))
 				.OrderBy(r => r, comparer);

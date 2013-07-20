@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Render
 
 		public override object Create(ActorInitializer init) { return new RenderBuilding(init, this);}
 
-		public void Render(WorldRenderer wr, World w, ActorInfo ai, PPos centerLocation)
+		public void Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
 		{
 			if (!ai.Traits.Get<BuildingInfo>().RequiresBaseProvider)
 				return;

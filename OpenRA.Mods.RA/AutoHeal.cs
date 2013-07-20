@@ -22,14 +22,14 @@ namespace OpenRA.Mods.RA
 		public void TickIdle(Actor self)
 		{
 			var attack = self.Trait<AttackBase>();
-			var inRange = self.World.FindUnitsInCircle(self.CenterPosition, attack.GetMaximumRange());
+			var inRange = self.World.FindActorsInCircle(self.CenterPosition, attack.GetMaximumRange());
 
 			var target = inRange
 				.Where(a => a != self && a.AppearsFriendlyTo(self))
 				.Where(a => a.IsInWorld && !a.IsDead())
 				.Where(a => a.GetDamageState() > DamageState.Undamaged)
 				.Where(a => attack.HasAnyValidWeapons(Target.FromActor(a)))
-				.ClosestTo( self.CenterLocation );
+				.ClosestTo(self);
 
 			if (target != null)
 				self.QueueActivity(attack.GetAttackActivity(self, Target.FromActor(target), false));

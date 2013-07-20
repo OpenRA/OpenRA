@@ -119,7 +119,7 @@ namespace OpenRA.Mods.RA
 		Actor ChooseTarget(Actor self, WRange range)
 		{
 			nextScanTime = self.World.SharedRandom.Next(Info.MinimumScanTimeInterval, Info.MaximumScanTimeInterval);
-			var inRange = self.World.FindUnitsInCircle(self.CenterPosition, range);
+			var inRange = self.World.FindActorsInCircle(self.CenterPosition, range);
 
 			if (self.Owner.HasFogVisibility())
 			{
@@ -127,7 +127,7 @@ namespace OpenRA.Mods.RA
 					.Where(a => a.AppearsHostileTo(self))
 					.Where(a => !a.HasTrait<AutoTargetIgnore>())
 					.Where(a => attack.HasAnyValidWeapons(Target.FromActor(a)))
-					.ClosestTo(self.CenterLocation);
+					.ClosestTo(self);
 			}
 			else
 			{
@@ -136,7 +136,7 @@ namespace OpenRA.Mods.RA
 					.Where(a => !a.HasTrait<AutoTargetIgnore>())
 					.Where(a => attack.HasAnyValidWeapons(Target.FromActor(a)))
 					.Where(a => self.Owner.Shroud.IsTargetable(a))
-					.ClosestTo(self.CenterLocation);
+					.ClosestTo(self);
 			}
 		}
 	}

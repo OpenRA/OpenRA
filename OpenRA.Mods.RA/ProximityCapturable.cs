@@ -109,7 +109,7 @@ namespace OpenRA.Mods.RA
 
 		IEnumerable<Actor> UnitsInRange()
 		{
-			return Self.World.FindUnitsInCircle(Self.CenterLocation, Game.CellSize * Info.Range)
+			return Self.World.FindActorsInCircle(Self.CenterPosition, WRange.FromCells(Info.Range))
 				.Where(a => a.IsInWorld && a != Self && !a.Destroyed)
 				.Where(a => !a.Owner.NonCombatant);
 		}
@@ -141,7 +141,7 @@ namespace OpenRA.Mods.RA
 		// TODO exclude other NeutralActor that arent permanent
 		Actor GetInRange(Actor self)
 		{
-			return CaptorsInRange(self).ClosestTo( self.CenterLocation );
+			return CaptorsInRange(self).ClosestTo(self);
 		}
 
 		int CountPlayersNear(Actor self, Player ignoreMe)

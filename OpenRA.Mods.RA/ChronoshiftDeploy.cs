@@ -154,7 +154,7 @@ namespace OpenRA.Mods.RA
 
 			wr.DrawRangeCircle(
 				Color.FromArgb(128, Color.DeepSkyBlue),
-				self.CenterLocation.ToFloat2(), (int)self.Trait<ChronoshiftDeploy>().Info.JumpDistance);
+				wr.ScreenPxPosition(self.CenterPosition), (int)self.Trait<ChronoshiftDeploy>().Info.JumpDistance);
 		}
 	}
 }

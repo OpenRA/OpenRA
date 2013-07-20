@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA.Activities
 				var buildings = self.Info.Traits.Get<MinelayerInfo>().RearmBuildings;
 				var rearmTarget = self.World.Actors.Where(a => self.Owner.Stances[a.Owner] == Stance.Ally
 					&& buildings.Contains(a.Info.Name))
-					.ClosestTo( self.CenterLocation );
+					.ClosestTo(self);
 
 				if (rearmTarget == null)
 					return new Wait(20);

@@ -14,47 +14,50 @@ using System.Linq;
 
 namespace OpenRA.Traits
 {
-	class ScreenShakerInfo : TraitInfo<ScreenShaker> {}
+	public class ScreenShakerInfo : TraitInfo<ScreenShaker> { }
 
 	public class ScreenShaker : ITick
 	{
-		int ticks = 0;
 		List<ShakeEffect> shakeEffects = new List<ShakeEffect>();
+		int ticks = 0;
 
-		public void Tick (Actor self)
+		public void Tick(Actor self)
 		{
-			if(shakeEffects.Any())
+			if (shakeEffects.Any())
 			{
 				Game.viewport.Scroll(GetScrollOffset(), true);
 				shakeEffects.RemoveAll(t => t.ExpiryTime == ticks);
 			}
+
 			ticks++;
 		}
 
-		public void AddEffect(int time, float2 position, int intensity)
+		public void AddEffect(int time, WPos position, int intensity)
 		{
 			shakeEffects.Add(new ShakeEffect { ExpiryTime = ticks + time, Position = position, Intensity = intensity });
 		}
 
 		float2 GetScrollOffset()
 		{
-			int xFreq = 4;
-			int yFreq = 5;
-
 			return GetIntensity() * new float2(
-				(float) Math.Sin((ticks*2*Math.PI)/xFreq) ,
-				(float) Math.Cos((ticks*2*Math.PI)/yFreq));
+				(float)Math.Sin((ticks * 2 * Math.PI) / 4),
+				(float)Math.Cos((ticks * 2 * Math.PI) / 5));
 		}
 
 		float GetIntensity()
 		{
-			var cp = Game.viewport.CenterLocation;
-			var intensity = Game.CellSize * Game.CellSize * 100 * shakeEffects.Sum(
-				e => e.Intensity / (e.Position - cp).LengthSquared);
+			var cp = ((PPos)Game.viewport.CenterLocation.ToInt2()).ToWPos(0);
+			var intensity = 100 * 1024 * 1024 * shakeEffects.Sum(
+				e => (float)e.Intensity / (e.Position - cp).LengthSquared);
 
 			return Math.Min(intensity, 10);
 		}
 	}
 
-	class ShakeEffect { public int ExpiryTime; public float2 Position; public int Intensity; }
+	struct ShakeEffect
+	{
+		public int ExpiryTime;
+		public WPos Position;
+		public int Intensity;
+	}
 }
