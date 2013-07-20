@@ -31,9 +31,9 @@ namespace OpenRA.Mods.RA.Air
 			var aircraft = self.Trait<Aircraft>();
 			var d = Target.CenterPosition - self.CenterPosition;
 
-			// close enough (1/16 cell)
-			// TODO: TickMove may overshoot if the aircraft speed is too high
-			if (d.HorizontalLengthSquared < 4096)
+			// The next move would overshoot, so just set the final position
+			var moveDist = aircraft.MovementSpeed * 7 * 1024 / (Game.CellSize * 32);
+			if (d.HorizontalLengthSquared < moveDist*moveDist)
 			{
 				aircraft.SetPxPosition(self, PPos.FromWPos(Target.CenterPosition));
 				return NextActivity;

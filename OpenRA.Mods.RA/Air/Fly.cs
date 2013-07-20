@@ -16,25 +16,25 @@ namespace OpenRA.Mods.RA.Air
 {
 	public class Fly : Activity
 	{
-		public readonly PPos Pos;
+		readonly WPos pos;
 
-		Fly(PPos px) { Pos = px; }
+		Fly(WPos pos) { this.pos = pos; }
 
-		public static Fly ToPx( PPos px ) { return new Fly( px ); }
-		public static Fly ToCell(CPos pos) { return new Fly(Util.CenterOfCell(pos)); }
+		public static Fly ToPos(WPos pos) { return new Fly(pos); }
+		public static Fly ToCell(CPos pos) { return new Fly(pos.CenterPosition); }
 
 		public override Activity Tick(Actor self)
 		{
-			var cruiseAltitude = self.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
+			if (IsCanceled)
+				return NextActivity;
 
-			if (IsCanceled) return NextActivity;
-
-			var d = Pos - self.CenterLocation;
-			if (d.LengthSquared < 50)		/* close enough */
+			// Close enough (ported from old code which checked length against sqrt(50) px)
+			var d = pos - self.CenterPosition;
+			if (d.HorizontalLengthSquared < 91022)
 				return NextActivity;
 
 			var aircraft = self.Trait<Aircraft>();
-
+			var cruiseAltitude = self.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
 			var desiredFacing = Util.GetFacing(d, aircraft.Facing);
 			if (aircraft.Altitude == cruiseAltitude)
 				aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, aircraft.ROT);
@@ -46,18 +46,18 @@ namespace OpenRA.Mods.RA.Air
 			return this;
 		}
 
-		public override IEnumerable<Target> GetTargets( Actor self )
+		public override IEnumerable<Target> GetTargets(Actor self)
 		{
-			yield return Target.FromPos(Pos);
+			yield return Target.FromPos(pos);
 		}
 	}
 
 	public static class FlyUtil
 	{
-		public static void Fly(Actor self, int desiredAltitude )
+		public static void Fly(Actor self, int desiredAltitude)
 		{
 			var aircraft = self.Trait<Aircraft>();
-			aircraft.TickMove( PSubPos.PerPx * aircraft.MovementSpeed, aircraft.Facing );
+			aircraft.TickMove(PSubPos.PerPx * aircraft.MovementSpeed, aircraft.Facing);
 			aircraft.Altitude += Math.Sign(desiredAltitude - aircraft.Altitude);
 		}
 	}

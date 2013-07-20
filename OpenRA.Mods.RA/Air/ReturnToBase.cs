@@ -19,8 +19,7 @@ namespace OpenRA.Mods.RA.Air
 	{
 		bool isCalculated;
 		Actor dest;
-
-		PPos w1, w2, w3;	/* tangent points to turn circles */
+		WPos w1, w2, w3;
 
 		public static Actor ChooseAirfield(Actor self, bool unreservedOnly)
 		{
@@ -35,11 +34,14 @@ namespace OpenRA.Mods.RA.Air
 
 		void Calculate(Actor self)
 		{
-			if (dest == null || Reservable.IsReserved(dest)) dest = ChooseAirfield(self, true);
+			if (dest == null || Reservable.IsReserved(dest))
+				dest = ChooseAirfield(self, true);
 
-			if (dest == null) return;
+			if (dest == null)
+				return;
 
 			var plane = self.Trait<Plane>();
+			var planeInfo = self.Info.Traits.Get<PlaneInfo>();
 			var res = dest.TraitOrDefault<Reservable>();
 			if (res != null)
 			{
@@ -47,41 +49,46 @@ namespace OpenRA.Mods.RA.Air
 				plane.reservation = res.Reserve(dest, self, plane);
 			}
 
-			var landPos = dest.CenterLocation;
-			var aircraft = self.Trait<Aircraft>();
+			var landPos = dest.CenterPosition;
+			var speed = plane.MovementSpeed * 1024 / Game.CellSize / 5;
 
-			var speed = .2f * aircraft.MovementSpeed;
+			// Distance required for descent.
+			// TODO: Generalize this for arbitrary flight pitches
+			var landDistance = planeInfo.CruiseAltitude * speed;
+			var altitude = planeInfo.CruiseAltitude * 1024 / Game.CellSize;
 
-			/* if the aircraft is on the ground, it will take off to the cruise altitude first before approaching */
-			var altitude = aircraft.Altitude;
-			if (altitude == 0) altitude = self.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
+			// Land towards the east
+			var approachStart = landPos + new WVec(-landDistance, 0, altitude);
 
-			var approachStart = landPos.ToInt2() - new float2(altitude * speed, 0);
-			var turnRadius = (128f / self.Info.Traits.Get<AircraftInfo>().ROT) * speed / (float)Math.PI;
+			// Add 10% to the turning radius to ensure we have enough room
+			var turnRadius = (int)(141 * speed / planeInfo.ROT / (float)(Math.PI));
 
-			/* work out the center points */
-			var fwd = -float2.FromAngle(aircraft.Facing / 128f * (float)Math.PI);
-			var side = new float2(-fwd.Y, fwd.X);		/* rotate */
+			// Find the center of the turning circles for clockwise and counterclockwise turns
+			var angle = WAngle.FromFacing(plane.Facing);
+			var fwd = -new WVec(angle.Sin(), angle.Cos(), 0);
+
+			// Work out whether we should turn clockwise or counter-clockwise for approach
+			var side = new WVec(-fwd.Y, fwd.X, fwd.Z);
+			var approachDelta = self.CenterPosition - approachStart;
 			var sideTowardBase = new[] { side, -side }
-				.OrderBy(a => float2.Dot(a, self.CenterLocation.ToInt2() - approachStart))
+				.OrderBy(a => WVec.Dot(a, approachDelta))
 				.First();
 
-			var c1 = self.CenterLocation.ToInt2() + turnRadius * sideTowardBase;
-			var c2 = approachStart + new float2(0, turnRadius * Math.Sign(self.CenterLocation.Y - approachStart.Y));	// above or below start point
+			// Calculate the tangent line that joins the turning circles at the current and approach positions
+			var cp = self.CenterPosition + turnRadius * sideTowardBase / 1024;
+			var posCenter = new WPos(cp.X, cp.Y, altitude);
+			var approachCenter = approachStart + new WVec(0, turnRadius * Math.Sign(self.CenterPosition.Y - approachStart.Y), 0);
+			var tangentDirection = approachCenter - posCenter;
+			var tangentOffset = new WVec(-tangentDirection.Y, tangentDirection.X, 0) * turnRadius / tangentDirection.Length;
 
-			/* work out tangent points */
-			var d = c2 - c1;
-			var e = (turnRadius / d.Length) * d;
-			var f = new float2(-e.Y, e.X);		/* rotate */
+			// TODO: correctly handle CCW <-> CW turns
+			if (tangentOffset.X > 0)
+				tangentOffset = -tangentOffset;
 
-			/* TODO: support internal tangents, too! */
-
-			if (f.X > 0) f = -f;
-
-			w1 = (PPos)(c1 + f).ToInt2();
-			w2 = (PPos)(c2 + f).ToInt2();
-			w3 = (PPos)(approachStart).ToInt2();
-			plane.RTBPathHash = (PVecInt)w1 + (PVecInt)w2 + (PVecInt)w3;
+			w1 = posCenter + tangentOffset;
+			w2 = approachCenter + tangentOffset;
+			w3 = approachStart;
+			plane.RTBPathHash = w1 + (WVec)w2 + (WVec)w3;
 
 			isCalculated = true;
 		}
@@ -93,12 +100,12 @@ namespace OpenRA.Mods.RA.Air
 
 		public override Activity Tick(Actor self)
 		{
-			if (IsCanceled)
+			if (IsCanceled || self.IsDead())
 				return NextActivity;
-			if (self.IsDead())
-				return NextActivity;
+
 			if (!isCalculated)
 				Calculate(self);
+
 			if (dest == null)
 			{
 				var nearestAfld = ChooseAirfield(self, false);
@@ -111,9 +118,9 @@ namespace OpenRA.Mods.RA.Air
 			}
 
 			return Util.SequenceActivities(
-				Fly.ToPx(w1),
-				Fly.ToPx(w2),
-				Fly.ToPx(w3),
+				Fly.ToPos(w1),
+				Fly.ToPos(w2),
+				Fly.ToPos(w3),
 				new Land(Target.FromActor(dest)),
 				NextActivity);
 		}
