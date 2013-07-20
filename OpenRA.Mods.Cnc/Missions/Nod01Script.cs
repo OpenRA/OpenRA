@@ -148,7 +148,7 @@ namespace OpenRA.Mods.Cnc.Missions
 
         IEnumerable<Actor> UnitsNearActor(Actor actor, int range)
         {
-            return world.FindUnitsInCircle(actor.CenterLocation, Game.CellSize * range)
+			return world.FindUnitsInCircle(actor.CenterPosition, WRange.FromCells(range))
                 .Where(a => a.IsInWorld && a != world.WorldActor && !a.Destroyed && a.HasTrait<IMove>() && !a.Owner.NonCombatant);
         }
 

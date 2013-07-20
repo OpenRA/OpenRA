@@ -184,7 +184,7 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				var units = world.CreateActor((sovietInfantry).Random(world.SharedRandom), new TypeDictionary { new LocationInit(sovietinfantryentry1.Location), new OwnerInit(soviets) });
 				units.QueueActivity(new Move.Move(sovietinfantryrally1.Location, 3));
-				var unitsincircle = world.FindAliveCombatantActorsInCircle(Util.CenterOfCell(sovietinfantryrally1.Location), 10)
+				var unitsincircle = world.FindAliveCombatantActorsInCircle(sovietinfantryrally1.CenterPosition, WRange.FromCells(10))
 					.Where(a => a.Owner == soviets && a.IsIdle && a.HasTrait<IMove>());
 				if (unitsincircle.Count() >= sovietInfantryGroupSize)
 				{
@@ -211,7 +211,7 @@ namespace OpenRA.Mods.RA.Missions
 		{
 			var enemies = world.Actors.Where(u => u.IsInWorld && !u.IsDead() && (u.Owner == allies)
 				&& ((u.HasTrait<Building>() && !u.HasTrait<Wall>()) || u.HasTrait<Mobile>()));
-			var targetEnemy = enemies.OrderBy(u => (self.CenterLocation - u.CenterLocation).LengthSquared).FirstOrDefault();
+			var targetEnemy = enemies.OrderBy(u => (self.CenterPosition - u.CenterPosition).LengthSquared).FirstOrDefault();
 			if (targetEnemy != null)
 			{
 				self.QueueActivity(new AttackMove.AttackMoveActivity(self, new Attack(Target.FromActor(targetEnemy), WRange.FromCells(3))));
@@ -222,7 +222,7 @@ namespace OpenRA.Mods.RA.Missions
 		{
 			foreach (var rallyPoint in sovietRallyPoints)
 			{
-				var units = world.FindAliveCombatantActorsInCircle(Util.CenterOfCell(rallyPoint), 4)
+				var units = world.FindAliveCombatantActorsInCircle(rallyPoint.CenterPosition, WRange.FromCells(4))
 					.Where(u => u.IsIdle && u.HasTrait<Mobile>() && u.Owner == soviets);
 				if (units.Count() >= sovietAttackGroupSize)
 				{
@@ -234,7 +234,7 @@ namespace OpenRA.Mods.RA.Missions
 			}
 			var scatteredUnits = world.Actors.Where(u => u.IsInWorld && !u.IsDead() && u.HasTrait<Mobile>() && u.IsIdle && u.Owner == soviets)
 				.Except(world.WorldActor.Trait<SpawnMapActors>().Actors.Values)
-				.Except(sovietRallyPoints.SelectMany(rp => world.FindAliveCombatantActorsInCircle(Util.CenterOfCell(rp), 4)));
+				.Except(sovietRallyPoints.SelectMany(rp => world.FindAliveCombatantActorsInCircle(rp.CenterPosition, WRange.FromCells(4))));
 			foreach (var unit in scatteredUnits)
 			{
 				AttackNearestAlliedActor(unit);
