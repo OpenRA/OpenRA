@@ -65,7 +65,7 @@ namespace OpenRA.Mods.RA.Buildings
 
 			wr.DrawRangeCircleWithContrast(
 				Color.FromArgb(128, Ready() ? Color.White : Color.Red),
-				self.CenterLocation.ToFloat2(), Info.Range,
+				wr.ScreenPxPosition(self.CenterPosition), Info.Range,
 				Color.FromArgb(96, Color.Black), 1);
 		}
 
