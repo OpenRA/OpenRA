@@ -76,7 +76,7 @@ namespace OpenRA.Mods.RA.Orders
 
 			var actorInfo = Rules.Info[Building];
 			foreach (var dec in actorInfo.Traits.WithInterface<IPlaceBuildingDecoration>())
-				dec.Render(wr, world, actorInfo, Traits.Util.CenterOfCell(position));	/* hack hack */
+				dec.Render(wr, world, actorInfo, position.CenterPosition);	/* hack hack */
 
 			var cells = new Dictionary<CPos, bool>();
 			// Linebuild for walls.

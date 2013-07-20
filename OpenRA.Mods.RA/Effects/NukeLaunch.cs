@@ -67,7 +67,7 @@ namespace OpenRA.Mods.RA.Effects
 		{
 			world.AddFrameEndTask(w => w.Remove(this));
 			Combat.DoExplosion(firedBy.PlayerActor, weapon, pos);
-			world.WorldActor.Trait<ScreenShaker>().AddEffect(20, PPos.FromWPos(pos).ToFloat2(), 5);
+			world.WorldActor.Trait<ScreenShaker>().AddEffect(20, pos, 5);
 
 			foreach (var a in world.ActorsWithTrait<NukePaletteEffect>())
 				a.Trait.Enable();

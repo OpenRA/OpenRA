@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA.Air
 				.Where(a => rearmBuildings.Contains(a.Actor.Info.Name)
 					&& (!unreservedOnly || !Reservable.IsReserved(a.Actor)))
 				.Select(a => a.Actor)
-				.ClosestTo( self.CenterLocation );
+				.ClosestTo(self);
 		}
 
 		void Calculate(Actor self)

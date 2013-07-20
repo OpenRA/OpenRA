@@ -17,15 +17,15 @@ namespace OpenRA.Mods.RA
 	//todo: remove all the Render*Circle duplication
 	class RenderJammerCircleInfo : TraitInfo<RenderJammerCircle>, IPlaceBuildingDecoration
 	{
-		public void Render(WorldRenderer wr, World w, ActorInfo ai, PPos centerLocation)
+		public void Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
 		{
 			var jamsMissiles = ai.Traits.GetOrDefault<JamsMissilesInfo>();
 			if (jamsMissiles != null)
-				RenderJammerCircle.DrawRangeCircle(wr, centerLocation.ToFloat2(), jamsMissiles.Range, Color.Red);
+				RenderJammerCircle.DrawRangeCircle(wr, centerPosition, jamsMissiles.Range, Color.Red);
 
 			var jamsRadar = ai.Traits.GetOrDefault<JamsRadarInfo>();
 			if (jamsRadar != null)
-				RenderJammerCircle.DrawRangeCircle(wr, centerLocation.ToFloat2(), jamsRadar.Range, Color.Blue);
+				RenderJammerCircle.DrawRangeCircle(wr, centerPosition, jamsRadar.Range, Color.Blue);
 
 			foreach (var a in w.ActorsWithTrait<RenderJammerCircle>())
 				if (a.Actor.Owner == a.Actor.World.LocalPlayer)
@@ -42,18 +42,18 @@ namespace OpenRA.Mods.RA
 
 			var jamsMissiles = self.Info.Traits.GetOrDefault<JamsMissilesInfo>();
 			if (jamsMissiles != null)
-				DrawRangeCircle(wr, self.CenterLocation.ToFloat2(), jamsMissiles.Range, Color.Red);
+				DrawRangeCircle(wr, self.CenterPosition, jamsMissiles.Range, Color.Red);
 
 			var jamsRadar = self.Info.Traits.GetOrDefault<JamsRadarInfo>();
 			if (jamsRadar != null)
-				DrawRangeCircle(wr, self.CenterLocation.ToFloat2(), jamsRadar.Range, Color.Blue);
+				DrawRangeCircle(wr, self.CenterPosition, jamsRadar.Range, Color.Blue);
 		}
 
-		public static void DrawRangeCircle(WorldRenderer wr, float2 location, int range, Color color)
+		public static void DrawRangeCircle(WorldRenderer wr, WPos pos, int range, Color color)
 		{
 			wr.DrawRangeCircleWithContrast(
 				Color.FromArgb(128, color),
-				location,
+				wr.ScreenPxPosition(pos),
 				range,
 				Color.FromArgb(96, Color.Black),
 				1);

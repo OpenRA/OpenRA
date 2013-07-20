@@ -47,7 +47,8 @@ namespace OpenRA.Mods.RA.Render
 
 			if (!hasTicked)
 			{
-				var adjWalls = self.World.FindUnits(self.CenterLocation - PVecInt.OneCell, self.CenterLocation + PVecInt.OneCell)
+				var vec = new CVec(1, 1);
+				var adjWalls = self.World.FindActorsInBox(self.Location - vec, self.Location + vec)
 					.Where(a => a.Info == self.Info && a != self);
 
 				foreach (var w in adjWalls)

@@ -221,7 +221,7 @@ namespace OpenRA.Mods.RA.Missions
 
 		bool AlliesControlLab()
 		{
-			return MissionUtils.AreaSecuredWithUnits(world, allies, lab.CenterLocation, LabClearRange);
+			return MissionUtils.AreaSecuredWithUnits(world, allies, lab.CenterPosition, WRange.FromCells(LabClearRange));
 		}
 
 		void SpawnEinsteinAtLab()

@@ -23,41 +23,49 @@ namespace OpenRA
 	{
 		public static IEnumerable<Actor> FindUnitsAtMouse(this World world, int2 mouseLocation)
 		{
-			var loc = Game.viewport.ViewToWorldPx(mouseLocation);
-			return FindUnits(world, loc, loc).Where(a => !world.FogObscures(a));
+			var loc = Game.viewport.ViewToWorldPx(mouseLocation).ToWPos(0);
+			return FindActorsInBox(world, loc, loc).Where(a => !world.FogObscures(a));
 		}
 
-		public static IEnumerable<Actor> FindUnits(this World world, PPos a, PPos b)
+		public static IEnumerable<Actor> FindActorsInBox(this World world, CPos tl, CPos br)
 		{
+			return world.FindActorsInBox(tl.TopLeft, br.BottomRight);
+		}
+
+		public static IEnumerable<Actor> FindActorsInBox(this World world, WPos tl, WPos br)
+		{
+			var a = PPos.FromWPos(tl);
+			var b = PPos.FromWPos(br);
 			var u = PPos.Min(a, b);
 			var v = PPos.Max(a, b);
 			return world.WorldActor.Trait<SpatialBins>().ActorsInBox(u,v);
 		}
 
-		public static Actor ClosestTo(this IEnumerable<Actor> actors, PPos px)
+		public static Actor ClosestTo(this IEnumerable<Actor> actors, Actor a)
 		{
-			return actors.OrderBy( a => (a.CenterLocation - px).LengthSquared ).FirstOrDefault();
+			var pos = a.CenterPosition;
+			return actors.OrderBy(b => (b.CenterPosition - pos).LengthSquared).FirstOrDefault();
 		}
 
-		public static IEnumerable<Actor> FindUnitsInCircle(this World world, WPos a, WRange r)
+		public static Actor ClosestTo(this IEnumerable<Actor> actors, WPos pos)
 		{
-			return world.FindUnitsInCircle(PPos.FromWPos(a), r.Range * Game.CellSize / 1024);
+			return actors.OrderBy(a => (a.CenterPosition - pos).LengthSquared).FirstOrDefault();
 		}
 
-		public static IEnumerable<Actor> FindUnitsInCircle(this World world, PPos a, int r)
+		public static IEnumerable<Actor> FindActorsInCircle(this World world, WPos origin, WRange r)
 		{
 			using (new PerfSample("FindUnitsInCircle"))
 			{
-				var min = a - PVecInt.FromRadius(r);
-				var max = a + PVecInt.FromRadius(r);
-
-				var actors = world.FindUnits(min, max);
-
-				var rect = new Rectangle(min.X, min.Y, max.X - min.X, max.Y - min.Y);
-
-				var inBox = actors.Where(x => x.ExtendedBounds.Value.IntersectsWith(rect));
-
-				return inBox.Where(x => (x.CenterLocation - a).LengthSquared < r * r);
+				// Target ranges are calculated in 2D, so ignore height differences
+				var vec = new WVec(r, r, WRange.Zero);
+				var rSq = r.Range*r.Range;
+				return world.FindActorsInBox(origin - vec, origin + vec).Where(a =>
+				{
+					var pos = a.CenterPosition;
+					var dx = (long)(pos.X - origin.X);
+					var dy = (long)(pos.Y - origin.Y);
+					return dx*dx + dy*dy <= rSq;
+				});
 			}
 		}
 

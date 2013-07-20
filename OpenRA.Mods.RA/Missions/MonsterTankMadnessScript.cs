@@ -121,7 +121,7 @@ namespace OpenRA.Mods.RA.Missions
 
 			MissionUtils.CapOre(ussr);
 
-			if (!hospitalEvacuated && !hospital.IsDead() && MissionUtils.AreaSecuredWithUnits(world, greece, hospital.CenterLocation, 5))
+			if (!hospitalEvacuated && !hospital.IsDead() && MissionUtils.AreaSecuredWithUnits(world, greece, hospital.CenterPosition, WRange.FromCells(5)))
 			{
 				EvacuateCivilians();
 				hospitalEvacuated = true;
@@ -129,7 +129,7 @@ namespace OpenRA.Mods.RA.Missions
 
 			if (baseTransferredTick == -1)
 			{
-				var actorsInBase = world.FindUnits(alliedBaseTopLeft.CenterLocation, alliedBaseBottomRight.CenterLocation).Where(a => a != a.Owner.PlayerActor);
+				var actorsInBase = world.FindActorsInBox(alliedBaseTopLeft.Location, alliedBaseBottomRight.Location).Where(a => a != a.Owner.PlayerActor);
 				if (actorsInBase.Any(a => a.Owner == greece))
 				{
 					SetupAlliedBase(actorsInBase);
@@ -184,7 +184,7 @@ namespace OpenRA.Mods.RA.Missions
 						MissionFailed("Dr. Demitri was killed.");
 					}
 
-					else if (MissionUtils.AreaSecuredWithUnits(world, greece, demitriTriggerAreaCenter.CenterLocation, 3))
+					else if (MissionUtils.AreaSecuredWithUnits(world, greece, demitriTriggerAreaCenter.CenterPosition, WRange.FromCells(3)))
 					{
 						demitri = world.CreateActor("demitri", greece, demitriChurchSpawnPoint.Location, null);
 						demitri.QueueActivity(new Move.Move(demitriTriggerAreaCenter.Location, 0));
