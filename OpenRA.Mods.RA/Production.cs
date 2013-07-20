@@ -104,7 +104,7 @@ namespace OpenRA.Mods.RA
 			var helicopter = newUnit.TraitOrDefault<Helicopter>();
 			if (helicopter != null)
 			{
-				newUnit.QueueActivity(new HeliFly(Util.CenterOfCell(rp.rallyPoint)));
+				newUnit.QueueActivity(new HeliFly(rp.rallyPoint));
 				return rp.rallyPoint;
 			}
 

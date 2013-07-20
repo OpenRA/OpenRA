@@ -16,15 +16,14 @@ namespace OpenRA.Mods.RA.Air
 {
 	class HeliFly : Activity
 	{
-		public readonly PPos Dest;
-		public HeliFly(PPos dest)
-		{
-			Dest = dest;
-		}
+		readonly WPos pos;
+		public HeliFly(WPos pos) { this.pos = pos; }
+		public HeliFly(CPos pos) { this.pos = pos.CenterPosition; }
 
 		public override Activity Tick(Actor self)
 		{
-			if (IsCanceled)	return NextActivity;
+			if (IsCanceled)
+				return NextActivity;
 
 			var info = self.Info.Traits.Get<HelicopterInfo>();
 			var aircraft = self.Trait<Aircraft>();
@@ -35,23 +34,25 @@ namespace OpenRA.Mods.RA.Air
 				return this;
 			}
 
-			var dist = Dest - aircraft.PxPosition;
-			if (Math.Abs(dist.X) < 2 && Math.Abs(dist.Y) < 2)
+			// The next move would overshoot, so just set the final position
+			var dist = pos - self.CenterPosition;
+			var moveDist = aircraft.MovementSpeed * 7 * 1024 / (Game.CellSize * 32);
+			if (dist.HorizontalLengthSquared < moveDist*moveDist)
 			{
-				aircraft.SubPxPosition = Dest.ToPSubPos();
+				aircraft.SubPxPosition = PPos.FromWPos(pos).ToPSubPos();
 				return NextActivity;
 			}
 
 			var desiredFacing = Util.GetFacing(dist, aircraft.Facing);
 			aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, aircraft.ROT);
-			aircraft.TickMove( PSubPos.PerPx * aircraft.MovementSpeed, desiredFacing );
+			aircraft.TickMove(PSubPos.PerPx * aircraft.MovementSpeed, desiredFacing);
 
 			return this;
 		}
 
-		public override IEnumerable<Target> GetTargets( Actor self )
+		public override IEnumerable<Target> GetTargets(Actor self)
 		{
-			yield return Target.FromPos(Dest);
+			yield return Target.FromPos(pos);
 		}
 	}
 }

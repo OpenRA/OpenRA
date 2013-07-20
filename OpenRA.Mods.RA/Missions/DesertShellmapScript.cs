@@ -217,14 +217,15 @@ namespace OpenRA.Mods.RA.Missions
 				cargo.Load(chinook, world.CreateActor(false, ChinookCargo.Random(world.SharedRandom), allies, null, null));
 
 			var exit = lz.Info.Traits.WithInterface<ExitInfo>().FirstOrDefault();
-			var offset = exit != null ? exit.SpawnOffsetVector : PVecInt.Zero;
+			var offset = (exit == null) ? WVec.Zero :
+				new WVec(exit.SpawnOffsetVector.X, exit.SpawnOffsetVector.Y, 0) * 1024 / Game.CellSize;
 
-			chinook.QueueActivity(new HeliFly(lz.CenterLocation + offset)); // no reservation of hpad but it's not needed
+			chinook.QueueActivity(new HeliFly(lz.CenterPosition + offset)); // no reservation of hpad but it's not needed
 			chinook.QueueActivity(new Turn(0));
 			chinook.QueueActivity(new HeliLand(false, 0));
 			chinook.QueueActivity(new UnloadCargo(true));
 			chinook.QueueActivity(new Wait(150));
-			chinook.QueueActivity(new HeliFly(Util.CenterOfCell(entry)));
+			chinook.QueueActivity(new HeliFly(entry));
 			chinook.QueueActivity(new RemoveSelf());
 		}
 

@@ -45,12 +45,12 @@ namespace OpenRA.Mods.RA.Missions
 		public static Actor ExtractUnitWithChinook(World world, Player owner, Actor unit, CPos entry, CPos lz, CPos exit)
 		{
 			var chinook = world.CreateActor("tran", new TypeDictionary { new OwnerInit(owner), new LocationInit(entry) });
-			chinook.QueueActivity(new HeliFly(Util.CenterOfCell(lz)));
+			chinook.QueueActivity(new HeliFly(lz));
 			chinook.QueueActivity(new Turn(0));
 			chinook.QueueActivity(new HeliLand(true, 0));
 			chinook.QueueActivity(new WaitFor(() => chinook.Trait<Cargo>().Passengers.Contains(unit)));
 			chinook.QueueActivity(new Wait(150));
-			chinook.QueueActivity(new HeliFly(Util.CenterOfCell(exit)));
+			chinook.QueueActivity(new HeliFly(exit));
 			chinook.QueueActivity(new RemoveSelf());
 			return chinook;
 		}
@@ -60,13 +60,13 @@ namespace OpenRA.Mods.RA.Missions
 			var unit = world.CreateActor(false, unitName, new TypeDictionary { new OwnerInit(owner) });
 			var chinook = world.CreateActor("tran", new TypeDictionary { new OwnerInit(owner), new LocationInit(entry) });
 			chinook.Trait<Cargo>().Load(chinook, unit);
-			chinook.QueueActivity(new HeliFly(Util.CenterOfCell(lz)));
+			chinook.QueueActivity(new HeliFly(lz));
 			chinook.QueueActivity(new Turn(0));
 			chinook.QueueActivity(new HeliLand(true, 0));
 			chinook.QueueActivity(new UnloadCargo(true));
 			chinook.QueueActivity(new CallFunc(() => afterUnload(unit)));
 			chinook.QueueActivity(new Wait(150));
-			chinook.QueueActivity(new HeliFly(Util.CenterOfCell(exit)));
+			chinook.QueueActivity(new HeliFly(exit));
 			chinook.QueueActivity(new RemoveSelf());
 			return Pair.New(chinook, unit);
 		}
