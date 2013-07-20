@@ -37,8 +37,8 @@ namespace OpenRA.Mods.RA.Activities
 			var mobile = self.Trait<Mobile>();
 			var to = target.CenterPosition;
 			var from = self.CenterPosition;
-			var speed = mobile.WorldMovementSpeedForCell(self, self.Location);
-			var length = speed > 0 ? (int)((to - from).Length * 3 / speed) : 0;
+			var speed = mobile.MovementSpeedForCell(self, self.Location);
+			var length = speed > 0 ? (to - from).Length / speed : 0;
 
 			return Util.SequenceActivities(
 				new Turn(Util.GetFacing(to - from, mobile.Facing)),

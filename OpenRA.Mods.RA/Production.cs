@@ -76,8 +76,8 @@ namespace OpenRA.Mods.RA
 			if (mobile != null)
 			{
 				// Animate the spawn -> exit transition
-				var speed = mobile.WorldMovementSpeedForCell(newUnit, exit);
-				var length = speed > 0 ? (int)((to - spawn).Length * 3 / speed) : 0;
+				var speed = mobile.MovementSpeedForCell(newUnit, exit);
+				var length = speed > 0 ? (to - spawn).Length / speed : 0;
 				newUnit.QueueActivity(new Drag(spawn, to, length));
 			}
 

@@ -41,8 +41,7 @@ namespace OpenRA.Mods.RA.Activities
 			mobile.IsMoving = true;
 
 			from = self.CenterPosition;
-			var offset = MobileInfo.SubCellOffsets[targetMobile.fromSubCell];
-			to = targetMobile.fromCell.CenterPosition + new WVec(offset.X * 1024 / Game.CellSize, offset.Y * 1024 / Game.CellSize, 0);
+			to = targetMobile.fromCell.CenterPosition + MobileInfo.SubCellOffsets[targetMobile.fromSubCell];
 			length = Math.Max((to - from).Length / speed.Range, 1);
 
 			self.Trait<RenderInfantry>().Attacking(self, Target.FromActor(target));

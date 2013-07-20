@@ -81,14 +81,14 @@ namespace OpenRA.Mods.RA.Move
 			return passability.ToBits();
 		}
 
-		public static readonly Dictionary<SubCell, PVecInt> SubCellOffsets = new Dictionary<SubCell, PVecInt>()
+		public static readonly Dictionary<SubCell, WVec> SubCellOffsets = new Dictionary<SubCell, WVec>()
 		{
-			{SubCell.TopLeft, new PVecInt(-7,-6)},
-			{SubCell.TopRight, new PVecInt(6,-6)},
-			{SubCell.Center, new PVecInt(0,0)},
-			{SubCell.BottomLeft, new PVecInt(-7,6)},
-			{SubCell.BottomRight, new PVecInt(6,6)},
-			{SubCell.FullCell, new PVecInt(0,0)},
+			{SubCell.TopLeft, new WVec(-299, -256, 0)},
+			{SubCell.TopRight, new WVec(256, -256, 0)},
+			{SubCell.Center, new WVec(0, 0, 0)},
+			{SubCell.BottomLeft, new WVec(-299, 256, 0)},
+			{SubCell.BottomRight, new WVec(256, 256, 0)},
+			{SubCell.FullCell, new WVec(0, 0, 0)},
 		};
 
 		static bool IsMovingInMyDirection(Actor self, Actor other)
@@ -204,7 +204,7 @@ namespace OpenRA.Mods.RA.Move
 			if (init.Contains<LocationInit>())
 			{
 				this.__fromCell = this.__toCell = init.Get<LocationInit, CPos>();
-				this.PxPosition = Util.CenterOfCell(fromCell) + MobileInfo.SubCellOffsets[fromSubCell];
+				this.PxPosition = PPos.FromWPos(fromCell.CenterPosition + MobileInfo.SubCellOffsets[fromSubCell]);
 			}
 
 			this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : info.InitialFacing;
@@ -214,7 +214,7 @@ namespace OpenRA.Mods.RA.Move
 		public void SetPosition(Actor self, CPos cell)
 		{
 			SetLocation(cell,fromSubCell, cell,fromSubCell);
-			PxPosition = Util.CenterOfCell(fromCell) + MobileInfo.SubCellOffsets[fromSubCell];
+			PxPosition = PPos.FromWPos(fromCell.CenterPosition + MobileInfo.SubCellOffsets[fromSubCell]);
 			FinishedMoving(self);
 		}
 
@@ -422,12 +422,7 @@ namespace OpenRA.Mods.RA.Move
 			decimal speed = Info.Speed * Info.TerrainSpeeds[type].Speed;
 			foreach (var t in self.TraitsImplementing<ISpeedModifier>())
 				speed *= t.GetSpeedModifier();
-			return (int)(speed / 100);
-		}
-
-		public int WorldMovementSpeedForCell(Actor self, CPos cell)
-		{
-			return MovementSpeedForCell(self, cell) * 1024 / Game.CellSize;
+			return (int)(speed / 100) * 1024 / (3 * Game.CellSize);
 		}
 
 		public void AddInfluence()

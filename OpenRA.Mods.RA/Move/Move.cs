@@ -160,7 +160,7 @@ namespace OpenRA.Mods.RA.Move
 				mobile.SetLocation(mobile.fromCell, mobile.fromSubCell, nextCell.Value.First, nextCell.Value.Second);
 				var move = new MoveFirstHalf(
 					this,
-					Util.CenterOfCell(mobile.fromCell) + MobileInfo.SubCellOffsets[mobile.fromSubCell],
+					mobile.fromCell.CenterPosition + MobileInfo.SubCellOffsets[mobile.fromSubCell],
 					Util.BetweenCells(mobile.fromCell, mobile.toCell) + (MobileInfo.SubCellOffsets[mobile.fromSubCell] + MobileInfo.SubCellOffsets[mobile.toSubCell]) / 2,
 					mobile.Facing,
 					mobile.Facing,
@@ -273,12 +273,12 @@ namespace OpenRA.Mods.RA.Move
 		abstract class MovePart : Activity
 		{
 			protected readonly Move move;
-			protected readonly PPos from, to;
+			protected readonly WPos from, to;
 			protected readonly int fromFacing, toFacing;
 			protected readonly int moveFractionTotal;
 			protected int moveFraction;
 
-			public MovePart(Move move, PPos from, PPos to, int fromFacing, int toFacing, int startingFraction)
+			public MovePart(Move move, WPos from, WPos to, int fromFacing, int toFacing, int startingFraction)
 			{
 				this.move = move;
 				this.from = from;
@@ -286,7 +286,7 @@ namespace OpenRA.Mods.RA.Move
 				this.fromFacing = fromFacing;
 				this.toFacing = toFacing;
 				this.moveFraction = startingFraction;
-				this.moveFractionTotal = 3 * (to - from).Length;
+				this.moveFractionTotal = (to - from).Length;
 			}
 
 			public override void Cancel(Actor self)
@@ -328,7 +328,7 @@ namespace OpenRA.Mods.RA.Move
 
 			void UpdateCenterLocation(Actor self, Mobile mobile)
 			{
-				mobile.PxPosition = PPos.Lerp(from, to, moveFraction, moveFractionTotal);
+				mobile.PxPosition = PPos.FromWPos(WPos.Lerp(from, to, moveFraction, moveFractionTotal));
 
 				if (moveFraction >= moveFractionTotal)
 					mobile.Facing = toFacing & 0xFF;
@@ -346,7 +346,7 @@ namespace OpenRA.Mods.RA.Move
 
 		class MoveFirstHalf : MovePart
 		{
-			public MoveFirstHalf(Move move, PPos from, PPos to, int fromFacing, int toFacing, int startingFraction)
+			public MoveFirstHalf(Move move, WPos from, WPos to, int fromFacing, int toFacing, int startingFraction)
 				: base(move, from, to, fromFacing, toFacing, startingFraction) { }
 
 			static bool IsTurn(Mobile mobile, CPos nextCell)
@@ -384,7 +384,7 @@ namespace OpenRA.Mods.RA.Move
 				var ret2 = new MoveSecondHalf(
 					move,
 					Util.BetweenCells(mobile.fromCell, mobile.toCell) + (fromSubcellOffset + toSubcellOffset) / 2,
-					Util.CenterOfCell(mobile.toCell) + toSubcellOffset,
+					mobile.toCell.CenterPosition + toSubcellOffset,
 					mobile.Facing,
 					mobile.Facing,
 					moveFraction - moveFractionTotal);
@@ -397,7 +397,7 @@ namespace OpenRA.Mods.RA.Move
 
 		class MoveSecondHalf : MovePart
 		{
-			public MoveSecondHalf(Move move, PPos from, PPos to, int fromFacing, int toFacing, int startingFraction)
+			public MoveSecondHalf(Move move, WPos from, WPos to, int fromFacing, int toFacing, int startingFraction)
 				: base(move, from, to, fromFacing, toFacing, startingFraction) { }
 
 			protected override MovePart OnComplete(Actor self, Mobile mobile, Move parent)

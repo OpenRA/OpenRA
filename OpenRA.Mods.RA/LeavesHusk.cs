@@ -49,7 +49,7 @@ namespace OpenRA.Mods.RA
 				if (mobile != null)
 				{
 					if (!mobile.CanEnterCell(self.Location, self, false)) return;
-					td.Add(new HuskSpeedInit(mobile.MovementSpeedForCell(self, self.Location)));
+					td.Add(new HuskSpeedInit(mobile.MovementSpeedForCell(self, self.Location) * 3 * Game.CellSize / 1024));
 				}
 
 				var aircraft = self.TraitOrDefault<Aircraft>();
