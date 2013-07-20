@@ -126,8 +126,7 @@ namespace OpenRA.Mods.RA.Missions
 			{
 				var bridge = world.Actors
 					.Where(a => a.HasTrait<Bridge>() && !a.IsDead())
-					.OrderBy(a => (startJeep.CenterPosition - a.CenterPosition).LengthSquared)
-					.First();
+					.ClosestTo(startJeep);
 				Combat.DoExplosion(bridge, "Demolish", bridge.CenterPosition);
 				world.WorldActor.Trait<ScreenShaker>().AddEffect(15, bridge.CenterPosition, 6);
 				bridge.Kill(bridge);

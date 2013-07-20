@@ -212,7 +212,7 @@ namespace OpenRA.Mods.RA.Missions
 			var enemies = self.World.Actors.Where(u => u.AppearsHostileTo(self) && u.Owner == enemyPlayer
 					&& ((u.HasTrait<Building>() && !u.HasTrait<Wall>()) || (u.HasTrait<Mobile>() && !u.HasTrait<Aircraft>())) && u.IsInWorld && !u.IsDead());
 
-			var enemy = enemies.OrderBy(u => (self.CenterPosition - u.CenterPosition).LengthSquared).FirstOrDefault();
+			var enemy = enemies.ClosestTo(self);
 			if (enemy != null)
 				self.QueueActivity(queued, new AttackMove.AttackMoveActivity(self, new Attack(Target.FromActor(enemy), WRange.FromCells(3))));
 		}
