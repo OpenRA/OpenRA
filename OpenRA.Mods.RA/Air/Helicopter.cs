@@ -72,8 +72,7 @@ namespace OpenRA.Mods.RA.Air
 						reservation = res.Reserve(order.TargetActor, self, this);
 
 					var exit = order.TargetActor.Info.Traits.WithInterface<ExitInfo>().FirstOrDefault();
-					var offset = (exit == null) ? WVec.Zero :
-						new WVec(exit.SpawnOffsetVector.X, exit.SpawnOffsetVector.Y, 0) * 1024 / Game.CellSize;
+					var offset = (exit != null) ? exit.SpawnOffsetVector : WVec.Zero;
 
 					self.SetTargetLine(Target.FromActor(order.TargetActor), Color.Green);
 
