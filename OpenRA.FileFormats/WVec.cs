@@ -38,6 +38,7 @@ namespace OpenRA
 		public static int Dot(WVec a, WVec b) { return a.X * b.X + a.Y * b.Y + a.Z * b.Z; }
 		public long LengthSquared { get { return (long)X * X + (long)Y * Y + (long)Z * Z; } }
 		public int Length { get { return (int)Math.Sqrt(LengthSquared); } }
+		public long HorizontalLengthSquared { get { return (long)X * X + (long)Y * Y; } }
 
 		public WVec Rotate(WRot rot)
 		{

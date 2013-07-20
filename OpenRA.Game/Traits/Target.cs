@@ -91,12 +91,7 @@ namespace OpenRA.Traits
 
 			// Target ranges are calculated in 2D, so ignore height differences
 			var rangeSquared = range.Range*range.Range;
-			return Positions.Any(t =>
-			{
-				var dx = (long)(t.X - origin.X);
-				var dy = (long)(t.Y - origin.Y);
-				return dx*dx + dy*dy <= rangeSquared;
-			});
+			return Positions.Any(t => (t - origin).HorizontalLengthSquared <= rangeSquared);
 		}
 
 	}

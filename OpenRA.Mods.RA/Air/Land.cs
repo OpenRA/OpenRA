@@ -25,13 +25,19 @@ namespace OpenRA.Mods.RA.Air
 			if (!Target.IsValid)
 				Cancel(self);
 
-			if (IsCanceled) return NextActivity;
-
-			var d = Target.CenterPosition - self.CenterPosition;
-			if (d.LengthSquared < 256*256) // close enough (1/4 cell)
+			if (IsCanceled)
 				return NextActivity;
 
 			var aircraft = self.Trait<Aircraft>();
+			var d = Target.CenterPosition - self.CenterPosition;
+
+			// close enough (1/16 cell)
+			// TODO: TickMove may overshoot if the aircraft speed is too high
+			if (d.HorizontalLengthSquared < 4096)
+			{
+				aircraft.SetPxPosition(self, PPos.FromWPos(Target.CenterPosition));
+				return NextActivity;
+			}
 
 			if (aircraft.Altitude > 0)
 				--aircraft.Altitude;
