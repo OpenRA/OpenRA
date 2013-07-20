@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -185,7 +185,7 @@ namespace OpenRA.Mods.RA.Missions
 				var units = world.CreateActor((sovietInfantry).Random(world.SharedRandom), new TypeDictionary { new LocationInit(sovietinfantryentry1.Location), new OwnerInit(soviets) });
 				units.QueueActivity(new Move.Move(sovietinfantryrally1.Location, 3));
 				var unitsincircle = world.FindAliveCombatantActorsInCircle(sovietinfantryrally1.CenterPosition, WRange.FromCells(10))
-					.Where(a => a.Owner == soviets && a.IsIdle && a.HasTrait<ITeleportable>());
+					.Where(a => a.Owner == soviets && a.IsIdle && a.HasTrait<IPositionable>());
 				if (unitsincircle.Count() >= sovietInfantryGroupSize)
 				{
 					foreach (var scatteredunits in unitsincircle)

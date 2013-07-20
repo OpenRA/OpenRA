@@ -205,7 +205,7 @@ namespace OpenRA.Mods.Cnc.Missions
 						{
 							if (b.Destroyed) return;
 							w2.Add(b);
-							b.TraitsImplementing<ITeleportable>().FirstOrDefault().SetPosition(b, a.Location);
+							b.TraitsImplementing<IPositionable>().FirstOrDefault().SetPosition(b, a.Location);
 							b.QueueActivity(mobile.MoveTo(unload, 2));
 						});
 					}

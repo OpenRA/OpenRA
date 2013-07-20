@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA.Air
 		public int GetInitialFacing() { return InitialFacing; }
 	}
 
-	public class Aircraft : IFacing, ITeleportable, ISync, INotifyKilled, IIssueOrder, IOrderVoice
+	public class Aircraft : IFacing, IPositionable, ISync, INotifyKilled, IIssueOrder, IOrderVoice
 	{
 		public IDisposable reservation;
 

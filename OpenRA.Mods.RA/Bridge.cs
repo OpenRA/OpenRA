@@ -158,7 +158,7 @@ namespace OpenRA.Mods.RA
 		{
 			foreach (var c in TileSprites[currentTemplate].Keys)
 				foreach (var a in self.World.ActorMap.GetUnitsAt(c))
-					if (a.HasTrait<ITeleportable>() && !a.Trait<ITeleportable>().CanEnterCell(c))
+					if (a.HasTrait<IPositionable>() && !a.Trait<IPositionable>().CanEnterCell(c))
 						a.Kill(self);
 		}
 

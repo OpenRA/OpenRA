@@ -763,7 +763,7 @@ namespace OpenRA.Mods.RA.AI
 			if (!buildableThings.Any()) return null;
 
 			var myUnits = p.World
-				.ActorsWithTrait<ITeleportable>()
+				.ActorsWithTrait<IPositionable>()
 				.Where(a => a.Actor.Owner == p)
 				.Select(a => a.Actor.Info.Name).ToArray();
 
@@ -783,7 +783,7 @@ namespace OpenRA.Mods.RA.AI
 
 		int CountUnits(string unit, Player owner)
 		{
-			return world.ActorsWithTrait<ITeleportable>().Where(a => a.Actor.Owner == owner && a.Actor.Info.Name == unit).Count();
+			return world.ActorsWithTrait<IPositionable>().Where(a => a.Actor.Owner == owner && a.Actor.Info.Name == unit).Count();
 		}
 
 		int? CountBuildingByCommonName(string commonName, Player owner)
@@ -1145,7 +1145,7 @@ namespace OpenRA.Mods.RA.AI
 
 		void FindNewUnits(Actor self)
 		{
-			var newUnits = self.World.ActorsWithTrait<ITeleportable>()
+			var newUnits = self.World.ActorsWithTrait<IPositionable>()
 				.Where(a => a.Actor.Owner == p && !a.Actor.HasTrait<BaseBuilding>()
 			&& !activeUnits.Contains(a.Actor))
 			.Select(a => a.Actor).ToArray();

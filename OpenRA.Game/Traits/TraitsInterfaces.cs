@@ -138,7 +138,7 @@ namespace OpenRA.Traits
 	public interface ITags { IEnumerable<TagType> GetTags(); }
 	public interface ISelectionBar { float GetValue(); Color GetColor(); }
 
-	public interface ITeleportable : IOccupySpace
+	public interface IPositionable : IOccupySpace
 	{
 		bool CanEnterCell(CPos location);
 		void SetPosition(Actor self, CPos cell);

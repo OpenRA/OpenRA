@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA
 			var pilot = self.World.CreateActor(false, info.PilotActor.ToLowerInvariant(),
 				new TypeDictionary { new OwnerInit(self.Owner) });
 			var r = self.World.SharedRandom.Next(1, 100);
-			var aircraft = self.Trait<ITeleportable>();
+			var aircraft = self.Trait<IPositionable>();
 
 			if (IsSuitableCell(pilot, self.Location) && r > 100 - info.SuccessRate && aircraft.Altitude > 10
 				&& self.Owner.WinState != WinState.Lost)
@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA
 
 		bool IsSuitableCell(Actor actorToDrop, CPos p)
 		{
-			return actorToDrop.Trait<ITeleportable>().CanEnterCell(p);
+			return actorToDrop.Trait<IPositionable>().CanEnterCell(p);
 		}
 	}
 }

@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -58,7 +58,7 @@ namespace OpenRA.Mods.RA
 		public virtual bool CanChronoshiftTo(Actor self, CPos targetLocation)
 		{
 			// TODO: Allow enemy units to be chronoshifted into bad terrain to kill them
-			return (self.HasTrait<ITeleportable>() && self.Trait<ITeleportable>().CanEnterCell(targetLocation));
+			return (self.HasTrait<IPositionable>() && self.Trait<IPositionable>().CanEnterCell(targetLocation));
 		}
 
 		public virtual bool Teleport(Actor self, CPos targetLocation, int duration, bool killCargo, Actor chronosphere)

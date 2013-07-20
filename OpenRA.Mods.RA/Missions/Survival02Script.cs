@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -299,7 +299,7 @@ namespace OpenRA.Mods.RA.Missions
 		void ManageSovietUnits()
 		{
 			var units = world.FindAliveCombatantActorsInCircle(sovietrally.CenterPosition, WRange.FromCells(3))
-					.Where(u => u.IsIdle && u.HasTrait<ITeleportable>() && u.HasTrait<AttackBase>() && u.Owner == soviets);
+					.Where(u => u.IsIdle && u.HasTrait<IPositionable>() && u.HasTrait<AttackBase>() && u.Owner == soviets);
 			if (units.Count() >= sovietAttackGroupSize)
 			{
 				foreach (var unit in units)
