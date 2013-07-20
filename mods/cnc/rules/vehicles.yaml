@@ -70,13 +70,11 @@ HARV:
 		Type: Heavy
 	RevealsShroud:
 		Range: 4
-	RenderUnit:
 	AttackMove:
 		JustMove:true
 	LeavesHusk:
 		HuskActor: HARV.Husk
 	-GainsExperience:
-	-RenderUnit:
 	RenderHarvester:
 
 APC:
