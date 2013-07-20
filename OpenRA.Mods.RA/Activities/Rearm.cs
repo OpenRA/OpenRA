@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA.Activities
 			{
 				if (!limitedAmmo.GiveAmmo()) return NextActivity;
 
-				var hostBuilding = self.World.FindUnits(self.CenterLocation, self.CenterLocation)
+				var hostBuilding = self.World.FindUnits(self.CenterPosition, self.CenterPosition)
 					.FirstOrDefault(a => a.HasTrait<RenderBuilding>());
 
 				if (hostBuilding != null)

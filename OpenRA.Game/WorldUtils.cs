@@ -23,7 +23,7 @@ namespace OpenRA
 	{
 		public static IEnumerable<Actor> FindUnitsAtMouse(this World world, int2 mouseLocation)
 		{
-			var loc = Game.viewport.ViewToWorldPx(mouseLocation);
+			var loc = Game.viewport.ViewToWorldPx(mouseLocation).ToWPos(0);
 			return FindUnits(world, loc, loc).Where(a => !world.FogObscures(a));
 		}
 
@@ -34,11 +34,8 @@ namespace OpenRA
 
 		public static IEnumerable<Actor> FindUnits(this World world, WPos tl, WPos br)
 		{
-			return world.FindUnits(PPos.FromWPos(tl), PPos.FromWPos(br));
-		}
-
-		public static IEnumerable<Actor> FindUnits(this World world, PPos a, PPos b)
-		{
+			var a = PPos.FromWPos(tl);
+			var b = PPos.FromWPos(br);
 			var u = PPos.Min(a, b);
 			var v = PPos.Max(a, b);
 			return world.WorldActor.Trait<SpatialBins>().ActorsInBox(u,v);
