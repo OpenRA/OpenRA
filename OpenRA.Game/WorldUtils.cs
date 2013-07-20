@@ -27,11 +27,32 @@ namespace OpenRA
 			return FindUnits(world, loc, loc).Where(a => !world.FogObscures(a));
 		}
 
+		public static IEnumerable<Actor> FindUnits(this World world, CPos tl, CPos br)
+		{
+			return world.FindUnits(tl.TopLeft, br.BottomRight);
+		}
+
+		public static IEnumerable<Actor> FindUnits(this World world, WPos tl, WPos br)
+		{
+			return world.FindUnits(PPos.FromWPos(tl), PPos.FromWPos(br));
+		}
+
 		public static IEnumerable<Actor> FindUnits(this World world, PPos a, PPos b)
 		{
 			var u = PPos.Min(a, b);
 			var v = PPos.Max(a, b);
 			return world.WorldActor.Trait<SpatialBins>().ActorsInBox(u,v);
+		}
+
+		public static Actor ClosestTo(this IEnumerable<Actor> actors, Actor a)
+		{
+			var pos = a.CenterPosition;
+			return actors.OrderBy(b => (b.CenterPosition - pos).LengthSquared).FirstOrDefault();
+		}
+
+		public static Actor ClosestTo(this IEnumerable<Actor> actors, WPos pos)
+		{
+			return actors.OrderBy(a => (a.CenterPosition - pos).LengthSquared).FirstOrDefault();
 		}
 
 		public static Actor ClosestTo(this IEnumerable<Actor> actors, PPos px)

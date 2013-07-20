@@ -27,6 +27,9 @@ namespace OpenRA
 		public static WRange operator +(WRange a, WRange b) { return new WRange(a.Range + b.Range); }
 		public static WRange operator -(WRange a, WRange b) { return new WRange(a.Range - b.Range); }
 		public static WRange operator -(WRange a) { return new WRange(-a.Range); }
+		public static WRange operator /(WRange a, int b) { return new WRange(a.Range / b); }
+		public static WRange operator *(WRange a, int b) { return new WRange(a.Range * b); }
+		public static WRange operator *(int a, WRange b) { return new WRange(a * b.Range); }
 
 		public static bool operator ==(WRange me, WRange other) { return (me.Range == other.Range); }
 		public static bool operator !=(WRange me, WRange other) { return !(me == other); }
