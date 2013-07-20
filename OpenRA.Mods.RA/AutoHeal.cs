@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA
 				.Where(a => a.IsInWorld && !a.IsDead())
 				.Where(a => a.GetDamageState() > DamageState.Undamaged)
 				.Where(a => attack.HasAnyValidWeapons(Target.FromActor(a)))
-				.ClosestTo( self.CenterLocation );
+				.ClosestTo(self);
 
 			if (target != null)
 				self.QueueActivity(attack.GetAttackActivity(self, Target.FromActor(target), false));

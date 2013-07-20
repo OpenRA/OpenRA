@@ -141,7 +141,7 @@ namespace OpenRA.Mods.RA
 		// TODO exclude other NeutralActor that arent permanent
 		Actor GetInRange(Actor self)
 		{
-			return CaptorsInRange(self).ClosestTo( self.CenterLocation );
+			return CaptorsInRange(self).ClosestTo(self);
 		}
 
 		int CountPlayersNear(Actor self, Player ignoreMe)

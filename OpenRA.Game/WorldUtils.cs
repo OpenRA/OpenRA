@@ -55,11 +55,6 @@ namespace OpenRA
 			return actors.OrderBy(a => (a.CenterPosition - pos).LengthSquared).FirstOrDefault();
 		}
 
-		public static Actor ClosestTo(this IEnumerable<Actor> actors, PPos px)
-		{
-			return actors.OrderBy( a => (a.CenterLocation - px).LengthSquared ).FirstOrDefault();
-		}
-
 		public static IEnumerable<Actor> FindUnitsInCircle(this World world, WPos a, WRange r)
 		{
 			return world.FindUnitsInCircle(PPos.FromWPos(a), r.Range * Game.CellSize / 1024);
