@@ -60,7 +60,7 @@ namespace OpenRA.Mods.RA
 
 			if (order.OrderString == "PlaceMinefield")
 			{
-				var movement = self.Trait<IMove>();
+				var movement = self.Trait<ITeleportable>();
 
 				minefield = GetMinefieldCells(minefieldStart, order.TargetLocation,
 					self.Info.Traits.Get<MinelayerInfo>().MinefieldDepth)
@@ -130,7 +130,7 @@ namespace OpenRA.Mods.RA
 				if (!minelayer.IsInWorld)
 					return;
 
-				var movement = minelayer.Trait<IMove>();
+				var movement = minelayer.Trait<ITeleportable>();
 				var minefield = GetMinefieldCells(minefieldStart, lastMousePos,
 					minelayer.Info.Traits.Get<MinelayerInfo>().MinefieldDepth)
 					.Where(p => movement.CanEnterCell(p)).ToArray();

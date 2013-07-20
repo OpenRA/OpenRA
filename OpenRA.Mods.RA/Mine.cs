@@ -62,6 +62,7 @@ namespace OpenRA.Mods.RA
 
 		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { yield return Pair.New(TopLeft, SubCell.FullCell); }
 		public PPos PxPosition { get { return Util.CenterOfCell( location ); } }
+		public int Altitude { get { return 0; } set { } }
 	}
 
 	/* tag trait for stuff that shouldnt trigger mines */

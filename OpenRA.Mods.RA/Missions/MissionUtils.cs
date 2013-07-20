@@ -106,7 +106,7 @@ namespace OpenRA.Mods.RA.Missions
 
 		public static bool AreaSecuredWithUnits(World world, Player player, WPos location, WRange range)
 		{
-			var units = world.FindAliveCombatantActorsInCircle(location, range).Where(a => a.HasTrait<IMove>());
+			var units = world.FindAliveCombatantActorsInCircle(location, range).Where(a => a.HasTrait<ITeleportable>());
 			return units.Any() && units.All(a => a.Owner == player);
 		}
 

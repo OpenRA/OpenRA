@@ -24,16 +24,16 @@ namespace OpenRA.Mods.RA.Render
 	{
 		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
 		{
-			var move = self.Trait<IMove>();
+			var ios = self.Trait<IOccupySpace>();
 
 			/* rude hack */
-			var visualOffset = ((move is Helicopter || move is Mobile) && move.Altitude > 0)
+			var visualOffset = ((ios is Helicopter || ios is Mobile) && ios.Altitude > 0)
 				? (int)Math.Abs((self.ActorID + Game.LocalTick) / 5 % 4 - 1) - 1 : 0;
 
 			var shadowSprites = r.Select(a => a.WithPalette(wr.Palette("shadow"))
 				.WithPos(a.Pos - new WVec(0, 0, a.Pos.Z)).WithZOffset(a.ZOffset + a.Pos.Z));
 
-			var flyingSprites = (move.Altitude <= 0) ? r :
+			var flyingSprites = (ios.Altitude <= 0) ? r :
 				r.Select(a => a.WithPos(a.Pos - new WVec(0,0,43*visualOffset)));
 
 			return shadowSprites.Concat(flyingSprites);

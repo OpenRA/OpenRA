@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA
 	}
 
 	// ITeleportable is required for paradrop
-	class Crate : ITick, IOccupySpace, ITeleportable, ICrushable, ISync, INotifyParachuteLanded
+	class Crate : ITick, ITeleportable, ICrushable, ISync, INotifyParachuteLanded
 	{
 		readonly Actor self;
 		[Sync] int ticks;
@@ -86,6 +86,7 @@ namespace OpenRA.Mods.RA
 		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { yield return Pair.New( Location, SubCell.FullCell); }
 
 		public PPos PxPosition { get; private set; }
+		public int Altitude { get { return 0; } set { } }
 
 		public void SetPxPosition(Actor self, PPos px)
 		{

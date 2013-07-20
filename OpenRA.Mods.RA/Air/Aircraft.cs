@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA.Air
 		public int GetInitialFacing() { return InitialFacing; }
 	}
 
-	public class Aircraft : IMove, IFacing, IOccupySpace, ISync, INotifyKilled, IIssueOrder, IOrderVoice
+	public class Aircraft : IFacing, ITeleportable, ISync, INotifyKilled, IIssueOrder, IOrderVoice
 	{
 		public IDisposable reservation;
 
@@ -77,7 +77,7 @@ namespace OpenRA.Mods.RA.Air
 
 		public Actor GetActorBelow()
 		{
-			if (self.Trait<IMove>().Altitude != 0)
+			if (self.Trait<IOccupySpace>().Altitude != 0)
 				return null;	// not on the ground.
 
 			return self.World.FindActorsInBox(self.CenterPosition, self.CenterPosition)

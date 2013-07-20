@@ -92,8 +92,8 @@ namespace OpenRA.Mods.RA
 				return false;
 
 			// Cannot unload mid-air
-			var move = self.TraitOrDefault<IMove>();
-			if (move != null && move.Altitude > info.minimalUnloadAltitude)
+			var ios = self.TraitOrDefault<IOccupySpace>();
+			if (ios != null && ios.Altitude > info.minimalUnloadAltitude)
 				return false;
 
 			// TODO: Check if there is a free tile to unload to
@@ -106,8 +106,8 @@ namespace OpenRA.Mods.RA
 				return false;
 
 			// Cannot load mid-air
-			var move = self.TraitOrDefault<IMove>();
-			return move == null || move.Altitude == info.minimalUnloadAltitude;
+			var ios = self.TraitOrDefault<IOccupySpace>();
+			return ios == null || ios.Altitude == info.minimalUnloadAltitude;
 		}
 
 		public string CursorForOrder(Actor self, Order order)

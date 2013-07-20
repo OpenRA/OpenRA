@@ -145,7 +145,7 @@ namespace OpenRA.Mods.RA.Move
 		public int GetInitialFacing() { return InitialFacing; }
 	}
 
-	public class Mobile : IIssueOrder, IResolveOrder, IOrderVoice, IOccupySpace, IMove, IFacing, ISync
+	public class Mobile : IIssueOrder, IResolveOrder, IOrderVoice, ITeleportable, IFacing, ISync
 	{
 		public readonly Actor self;
 		public readonly MobileInfo Info;

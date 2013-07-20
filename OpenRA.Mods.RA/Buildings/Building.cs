@@ -111,6 +111,7 @@ namespace OpenRA.Mods.RA.Buildings
 
 		public CPos TopLeft { get { return topLeft; } }
 		public PPos PxPosition { get { return pxPosition; } }
+		public int Altitude { get { return 0; } set { } }
 
 		public IEnumerable<string> ProvidesPrerequisites { get { yield return self.Info.Name; } }
 

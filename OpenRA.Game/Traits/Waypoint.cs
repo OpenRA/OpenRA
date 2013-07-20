@@ -31,5 +31,6 @@ namespace OpenRA.Traits
 
 		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { yield break; }
 		public PPos PxPosition { get { return Util.CenterOfCell(location); } }
+		public int Altitude { get { return 0; } set { } }
 	}
 }

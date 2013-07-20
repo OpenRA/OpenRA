@@ -58,7 +58,7 @@ namespace OpenRA.Mods.RA
 
 				var args = new ProjectileArgs
 				{
-					srcAltitude = self.Trait<IMove>().Altitude,
+					srcAltitude = self.Trait<IOccupySpace>().Altitude,
 					destAltitude = 0,
 					src = self.CenterLocation,
 					dest = self.CenterLocation,

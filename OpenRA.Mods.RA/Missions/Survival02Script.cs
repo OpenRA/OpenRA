@@ -299,7 +299,7 @@ namespace OpenRA.Mods.RA.Missions
 		void ManageSovietUnits()
 		{
 			var units = world.FindAliveCombatantActorsInCircle(sovietrally.CenterPosition, WRange.FromCells(3))
-					.Where(u => u.IsIdle && u.HasTrait<IMove>() && u.HasTrait<AttackBase>() && u.Owner == soviets);
+					.Where(u => u.IsIdle && u.HasTrait<ITeleportable>() && u.HasTrait<AttackBase>() && u.Owner == soviets);
 			if (units.Count() >= sovietAttackGroupSize)
 			{
 				foreach (var unit in units)

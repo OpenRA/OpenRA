@@ -26,8 +26,6 @@ namespace OpenRA
 		public readonly uint ActorID;
 
 		Lazy<IOccupySpace> occupySpace;
-		IHasLocation HasLocation;
-		Lazy<IMove> Move;
 		Lazy<IFacing> Facing;
 
 		public Cached<Rectangle> Bounds;
@@ -37,21 +35,13 @@ namespace OpenRA
 
 		public CPos Location { get { return occupySpace.Value.TopLeft; } }
 
-		public PPos CenterLocation
-		{
-			get
-			{
-				if (HasLocation == null)
-					HasLocation = Trait<IHasLocation>();
-				return HasLocation.PxPosition;
-			}
-		}
+		public PPos CenterLocation { get { return occupySpace.Value.PxPosition; } }
 
 		public WPos CenterPosition
 		{
 			get
 			{
-				var altitude = Move.Value != null ? Move.Value.Altitude : 0;
+				var altitude = occupySpace.Value != null ? occupySpace.Value.Altitude : 0;
 				return CenterLocation.ToWPos(altitude);
 			}
 		}
@@ -93,7 +83,6 @@ namespace OpenRA
 					AddTrait(trait.Create(init));
 			}
 
-			Move = Lazy.New(() => TraitOrDefault<IMove>());
 			Facing = Lazy.New(() => TraitOrDefault<IFacing>());
 
 			Size = Lazy.New(() =>
@@ -152,13 +141,13 @@ namespace OpenRA
 				loc += new PVecInt(si.Bounds[2], si.Bounds[3]);
 			}
 
-			var move = Move.Value;
-			if (move != null)
+			var ios = occupySpace.Value;
+			if (ios != null)
 			{
-				loc -= new PVecInt(0, move.Altitude);
+				loc -= new PVecInt(0, ios.Altitude);
 
 				if (useAltitude)
-					size = new PVecInt(size.X, size.Y + move.Altitude);
+					size = new PVecInt(size.X, size.Y + ios.Altitude);
 			}
 
 			return new Rectangle(loc.X, loc.Y, size.X, size.Y);

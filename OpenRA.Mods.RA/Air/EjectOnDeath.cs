@@ -30,7 +30,7 @@ namespace OpenRA.Mods.RA
 			var pilot = self.World.CreateActor(false, info.PilotActor.ToLowerInvariant(),
 				new TypeDictionary { new OwnerInit(self.Owner) });
 			var r = self.World.SharedRandom.Next(1, 100);
-			var aircraft = self.Trait<IMove>();
+			var aircraft = self.Trait<ITeleportable>();
 
 			if (IsSuitableCell(pilot, self.Location) && r > 100 - info.SuccessRate && aircraft.Altitude > 10
 				&& self.Owner.WinState != WinState.Lost)

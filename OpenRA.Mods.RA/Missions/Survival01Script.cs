@@ -185,7 +185,7 @@ namespace OpenRA.Mods.RA.Missions
 				var units = world.CreateActor((sovietInfantry).Random(world.SharedRandom), new TypeDictionary { new LocationInit(sovietinfantryentry1.Location), new OwnerInit(soviets) });
 				units.QueueActivity(new Move.Move(sovietinfantryrally1.Location, 3));
 				var unitsincircle = world.FindAliveCombatantActorsInCircle(sovietinfantryrally1.CenterPosition, WRange.FromCells(10))
-					.Where(a => a.Owner == soviets && a.IsIdle && a.HasTrait<IMove>());
+					.Where(a => a.Owner == soviets && a.IsIdle && a.HasTrait<ITeleportable>());
 				if (unitsincircle.Count() >= sovietInfantryGroupSize)
 				{
 					foreach (var scatteredunits in unitsincircle)

@@ -27,6 +27,7 @@ namespace OpenRA.Mods.RA
 		[Sync] CPos location;
 
 		[Sync] public PPos PxPosition { get; set; }
+		public int Altitude { get { return 0; } set { } }
 
 		[Sync] public int Facing { get; set; }
 		public int ROT { get { return 0; } }
