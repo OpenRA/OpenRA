@@ -45,8 +45,7 @@ namespace OpenRA.Traits
 		}
 
 		public bool IsValid { get { return valid && (actor == null || (actor.IsInWorld && !actor.IsDead() && actor.Generation == generation)); } }
-		public PPos PxPosition { get { return IsActor ? actor.Trait<IHasLocation>().PxPosition : PPos.FromWPos(pos); } }
-		public PPos CenterLocation { get { return PxPosition; } }
+		public PPos CenterLocation { get { return IsActor ? actor.CenterLocation : PPos.FromWPos(pos); } }
 		public Actor Actor { get { return IsActor ? actor : null; } }
 
 		// TODO: This should return true even if the actor is destroyed
