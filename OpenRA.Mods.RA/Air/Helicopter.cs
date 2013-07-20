@@ -21,17 +21,18 @@ namespace OpenRA.Mods.RA.Air
 		public readonly bool LandWhenIdle = true;
 		public readonly int MinimalLandAltitude = 0;
 
-		public override object Create( ActorInitializer init ) { return new Helicopter( init, this); }
+		public override object Create(ActorInitializer init) { return new Helicopter(init, this); }
 	}
 
 	class Helicopter : Aircraft, ITick, IResolveOrder
 	{
-		HelicopterInfo Info;
+		HelicopterInfo info;
 		bool firstTick = true;
 
-		public Helicopter( ActorInitializer init, HelicopterInfo info) : base( init, info )
+		public Helicopter(ActorInitializer init, HelicopterInfo info)
+			: base(init, info)
 		{
-			Info = info;
+			this.info = info;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
@@ -50,10 +51,10 @@ namespace OpenRA.Mods.RA.Air
 				self.CancelActivity();
 				self.QueueActivity(new HeliFly(target));
 
-				if (Info.LandWhenIdle)
+				if (info.LandWhenIdle)
 				{
-					self.QueueActivity(new Turn(Info.InitialFacing));
-					self.QueueActivity(new HeliLand(true, Info.MinimalLandAltitude));
+					self.QueueActivity(new Turn(info.InitialFacing));
+					self.QueueActivity(new HeliLand(true, info.MinimalLandAltitude));
 				}
 			}
 
@@ -78,8 +79,8 @@ namespace OpenRA.Mods.RA.Air
 
 					self.CancelActivity();
 					self.QueueActivity(new HeliFly(order.TargetActor.CenterPosition + offset));
-					self.QueueActivity(new Turn(Info.InitialFacing));
-					self.QueueActivity(new HeliLand(false, Info.MinimalLandAltitude));
+					self.QueueActivity(new Turn(info.InitialFacing));
+					self.QueueActivity(new HeliLand(false, info.MinimalLandAltitude));
 					self.QueueActivity(new ResupplyAircraft());
 				}
 			}
@@ -87,17 +88,17 @@ namespace OpenRA.Mods.RA.Air
 			if (order.OrderString == "ReturnToBase")
 			{
 				self.CancelActivity();
-				self.QueueActivity( new HeliReturn() );
+				self.QueueActivity(new HeliReturn());
 			}
 
 			if (order.OrderString == "Stop")
 			{
 				self.CancelActivity();
 
-				if (Info.LandWhenIdle)
+				if (info.LandWhenIdle)
 				{
-					self.QueueActivity(new Turn(Info.InitialFacing));
-					self.QueueActivity(new HeliLand(true, Info.MinimalLandAltitude));
+					self.QueueActivity(new Turn(info.InitialFacing));
+					self.QueueActivity(new HeliLand(true, info.MinimalLandAltitude));
 				}
 			}
 		}
@@ -112,10 +113,10 @@ namespace OpenRA.Mods.RA.Air
 			}
 
 			// Repulsion only applies when we're flying!
-			if (Altitude != Info.CruiseAltitude)
+			if (Altitude != info.CruiseAltitude)
 				return;
 
-			var otherHelis = self.World.FindActorsInCircle(self.CenterPosition, Info.IdealSeparation)
+			var otherHelis = self.World.FindActorsInCircle(self.CenterPosition, info.IdealSeparation)
 				.Where(a => a.HasTrait<Helicopter>());
 
 			var f = otherHelis
@@ -133,18 +134,18 @@ namespace OpenRA.Mods.RA.Air
 				return WVec.Zero;
 
 			var d = self.CenterPosition - other.CenterPosition;
-			var dlSq = d.HorizontalLengthSquared;
-			if (dlSq > Info.IdealSeparation.Range*Info.IdealSeparation.Range)
+			var distSq = d.HorizontalLengthSquared;
+			if (distSq > info.IdealSeparation.Range * info.IdealSeparation.Range)
 				return WVec.Zero;
 
-			if (dlSq < 1)
+			if (distSq < 1)
 			{
 				var yaw = self.World.SharedRandom.Next(0, 1023);
 				var rot = new WRot(WAngle.Zero, WAngle.Zero, new WAngle(yaw));
 				return new WVec(1024, 0, 0).Rotate(rot);
 			}
 
-			return (d * 1024 * 8) / (int)dlSq;
+			return (d * 1024 * 8) / (int)distSq;
 		}
 	}
 }
