@@ -14,43 +14,41 @@ namespace OpenRA.Mods.RA.Air
 {
 	public class FlyAttack : Activity
 	{
-		readonly Target Target;
+		readonly Target target;
 		Activity inner;
 
-		public FlyAttack(Target target) { Target = target; }
+		public FlyAttack(Target target) { this.target = target; }
 
 		public override Activity Tick(Actor self)
 		{
-			if( !Target.IsValid )
-				Cancel( self );
+			if (!target.IsValid)
+				Cancel(self);
+
 			var limitedAmmo = self.TraitOrDefault<LimitedAmmo>();
-			if( limitedAmmo != null && !limitedAmmo.HasAmmo() )
-				Cancel( self );
+			if (limitedAmmo != null && !limitedAmmo.HasAmmo())
+				Cancel(self);
 
 			var attack = self.TraitOrDefault<AttackPlane>();
 			if (attack != null)
-				attack.DoAttack( self, Target );
+				attack.DoAttack(self, target);
 
-			if( inner == null )
+			if (inner == null)
 			{
-				if( IsCanceled )
+				if (IsCanceled)
 					return NextActivity;
-				inner = Util.SequenceActivities(
-					Fly.ToPos(Target.CenterPosition),
-					new FlyTimed(50));
+
+				inner = Util.SequenceActivities(Fly.ToPos(target.CenterPosition), new FlyTimed(50));
 			}
-			inner = Util.RunActivity( self, inner );
+
+			inner = Util.RunActivity(self, inner);
 
 			return this;
 		}
 
-		public override void Cancel( Actor self )
+		public override void Cancel(Actor self)
 		{
-			if( !IsCanceled )
-			{
-				if( inner != null )
-					inner.Cancel( self );
-			}
+			if (!IsCanceled && inner != null)
+				inner.Cancel(self);
 
 			// NextActivity must always be set to null:
 			base.Cancel(self);
