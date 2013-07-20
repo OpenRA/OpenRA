@@ -328,7 +328,7 @@ namespace OpenRA.Mods.RA.Move
 
 			void UpdateCenterLocation(Actor self, Mobile mobile)
 			{
-				mobile.PxPosition = PPos.FromWPos(WPos.Lerp(from, to, moveFraction, moveFractionTotal));
+				mobile.AdjustPxPosition(self, PPos.FromWPos(WPos.Lerp(from, to, moveFraction, moveFractionTotal)));
 
 				if (moveFraction >= moveFractionTotal)
 					mobile.Facing = toFacing & 0xFF;
@@ -402,9 +402,7 @@ namespace OpenRA.Mods.RA.Move
 
 			protected override MovePart OnComplete(Actor self, Mobile mobile, Move parent)
 			{
-				mobile.PxPosition = Util.CenterOfCell(mobile.toCell);
-				mobile.SetLocation(mobile.toCell, mobile.toSubCell, mobile.toCell, mobile.toSubCell);
-				mobile.FinishedMoving(self);
+				mobile.SetPosition(self, mobile.toCell);
 				return null;
 			}
 		}

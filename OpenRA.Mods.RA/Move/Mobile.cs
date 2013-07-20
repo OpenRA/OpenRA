@@ -167,7 +167,7 @@ namespace OpenRA.Mods.RA.Move
 
 		public int ROT { get { return Info.ROT; } }
 
-		[Sync] public PPos PxPosition { get; set; }
+		[Sync] public PPos PxPosition { get; private set; }
 		[Sync] public CPos fromCell { get { return __fromCell; } }
 		[Sync] public CPos toCell { get { return __toCell; } }
 

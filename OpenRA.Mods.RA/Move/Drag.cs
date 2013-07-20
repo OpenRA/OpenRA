@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA.Move
 				? WPos.Lerp(start, end, ticks, length - 1)
 				: end;
 
-			mobile.PxPosition = PPos.FromWPos(pos);
+			mobile.AdjustPxPosition(self, PPos.FromWPos(pos));
 			if (++ticks >= length)
 			{
 				mobile.IsMoving = false;
