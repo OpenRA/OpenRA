@@ -73,7 +73,7 @@ namespace OpenRA.Graphics
 			var bounds = Game.viewport.WorldBounds(world);
 			var comparer = new RenderableComparer(this);
 
-			var actors = world.FindUnits(
+			var actors = world.FindActorsInBox(
 				bounds.TopLeftAsCPos(),
 				bounds.BottomRightAsCPos());
 

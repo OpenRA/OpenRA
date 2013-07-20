@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA.Missions
 
 		public static IEnumerable<Actor> FindAliveCombatantActorsInBox(this World world, CPos a, CPos b)
 		{
-			return world.FindUnits(a, b)
+			return world.FindActorsInBox(a, b)
 				.Where(u => u.IsInWorld && u != world.WorldActor && !u.IsDead() && !u.Owner.NonCombatant);
 		}
 

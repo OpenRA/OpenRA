@@ -118,7 +118,7 @@ namespace OpenRA.Mods.RA
 				case DamageModel.PerCell:
 					{
 						foreach (var t in world.FindTilesInCircle(targetTile, warhead.Size[0]))
-							foreach (var unit in world.FindUnits(t, t))
+							foreach (var unit in world.FindActorsInBox(t, t))
 								unit.InflictDamage(args.firedBy,
 									(int)(warhead.Damage * warhead.EffectivenessAgainst(unit)), warhead);
 					} break;

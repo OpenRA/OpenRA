@@ -24,15 +24,15 @@ namespace OpenRA
 		public static IEnumerable<Actor> FindUnitsAtMouse(this World world, int2 mouseLocation)
 		{
 			var loc = Game.viewport.ViewToWorldPx(mouseLocation).ToWPos(0);
-			return FindUnits(world, loc, loc).Where(a => !world.FogObscures(a));
+			return FindActorsInBox(world, loc, loc).Where(a => !world.FogObscures(a));
 		}
 
-		public static IEnumerable<Actor> FindUnits(this World world, CPos tl, CPos br)
+		public static IEnumerable<Actor> FindActorsInBox(this World world, CPos tl, CPos br)
 		{
-			return world.FindUnits(tl.TopLeft, br.BottomRight);
+			return world.FindActorsInBox(tl.TopLeft, br.BottomRight);
 		}
 
-		public static IEnumerable<Actor> FindUnits(this World world, WPos tl, WPos br)
+		public static IEnumerable<Actor> FindActorsInBox(this World world, WPos tl, WPos br)
 		{
 			var a = PPos.FromWPos(tl);
 			var b = PPos.FromWPos(br);
@@ -59,7 +59,7 @@ namespace OpenRA
 				// Target ranges are calculated in 2D, so ignore height differences
 				var vec = new WVec(r, r, WRange.Zero);
 				var rSq = r.Range*r.Range;
-				return world.FindUnits(origin - vec, origin + vec).Where(a =>
+				return world.FindActorsInBox(origin - vec, origin + vec).Where(a =>
 				{
 					var pos = a.CenterPosition;
 					var dx = (long)(pos.X - origin.X);

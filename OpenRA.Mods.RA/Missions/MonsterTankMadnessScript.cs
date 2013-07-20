@@ -129,7 +129,7 @@ namespace OpenRA.Mods.RA.Missions
 
 			if (baseTransferredTick == -1)
 			{
-				var actorsInBase = world.FindUnits(alliedBaseTopLeft.Location, alliedBaseBottomRight.Location).Where(a => a != a.Owner.PlayerActor);
+				var actorsInBase = world.FindActorsInBox(alliedBaseTopLeft.Location, alliedBaseBottomRight.Location).Where(a => a != a.Owner.PlayerActor);
 				if (actorsInBase.Any(a => a.Owner == greece))
 				{
 					SetupAlliedBase(actorsInBase);

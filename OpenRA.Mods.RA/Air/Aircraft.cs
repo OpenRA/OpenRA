@@ -80,7 +80,7 @@ namespace OpenRA.Mods.RA.Air
 			if (self.Trait<IMove>().Altitude != 0)
 				return null;	// not on the ground.
 
-			return self.World.FindUnits(self.CenterPosition, self.CenterPosition)
+			return self.World.FindActorsInBox(self.CenterPosition, self.CenterPosition)
 				.FirstOrDefault( a => a.HasTrait<Reservable>() );
 		}
 
