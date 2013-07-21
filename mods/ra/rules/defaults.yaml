@@ -373,6 +373,7 @@
 
 ^Husk:
 	Husk:
+		AllowedTerrain: Clear, Rough, Road, Ore, Gems, Beach
 	RenderUnit:
 	Health:
 		HP: 140

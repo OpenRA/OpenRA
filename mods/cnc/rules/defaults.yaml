@@ -449,6 +449,7 @@
 	Armor: 
 		Type: Light
 	Husk:
+		AllowedTerrain: Clear, Rough, Road, Tiberium, BlueTiberium, Beach
 	HiddenUnderFog:
 	AppearsOnRadar:
 	Burns:
