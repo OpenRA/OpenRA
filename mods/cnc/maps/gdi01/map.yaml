@@ -465,7 +465,7 @@ Rules:
 		-Buildable:
 	FIX:
 		-Buildable:
-	HPAD.GDI:
+	HPAD:
 		-Buildable:
 	EYE:
 		-Buildable:
