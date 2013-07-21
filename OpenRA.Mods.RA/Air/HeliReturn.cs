@@ -1,6 +1,6 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -9,8 +9,8 @@
 #endregion
 
 using System.Linq;
-using OpenRA.Traits;
 using OpenRA.Mods.RA.Activities;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Air
 {
@@ -19,16 +19,16 @@ namespace OpenRA.Mods.RA.Air
 		static Actor ChooseHelipad(Actor self)
 		{
 			var rearmBuildings = self.Info.Traits.Get<HelicopterInfo>().RearmBuildings;
-			return self.World.Actors.Where( a => a.Owner == self.Owner ).FirstOrDefault(
-				a => rearmBuildings.Contains(a.Info.Name) &&
-					!Reservable.IsReserved(a));
+			return self.World.Actors.Where(a => a.Owner == self.Owner).FirstOrDefault(
+				a => rearmBuildings.Contains(a.Info.Name) && !Reservable.IsReserved(a));
 		}
 
 		public override Activity Tick(Actor self)
 		{
-			if (IsCanceled) return NextActivity;
-			var dest = ChooseHelipad(self);
+			if (IsCanceled)
+				return NextActivity;
 
+			var dest = ChooseHelipad(self);
 			var initialFacing = self.Info.Traits.Get<AircraftInfo>().InitialFacing;
 
 			if (dest == null)
@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA.Air
 									.ClosestTo(self);
 
 				if (nearestHpad == null)
-					return Util.SequenceActivities(new Turn(initialFacing), new HeliLand(true, 0), NextActivity);
+					return Util.SequenceActivities(new Turn(initialFacing), new HeliLand(true), NextActivity);
 				else
 					return Util.SequenceActivities(new HeliFly(nearestHpad.CenterPosition));
 			}
@@ -48,7 +48,7 @@ namespace OpenRA.Mods.RA.Air
 			var res = dest.TraitOrDefault<Reservable>();
 			var heli = self.Trait<Helicopter>();
 			if (res != null)
-				heli.reservation = res.Reserve(dest, self, heli);
+				heli.Reservation = res.Reserve(dest, self, heli);
 
 			var exit = dest.Info.Traits.WithInterface<ExitInfo>().FirstOrDefault();
 			var offset = (exit != null) ? exit.SpawnOffsetVector : WVec.Zero;
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.RA.Air
 			return Util.SequenceActivities(
 				new HeliFly(dest.CenterPosition + offset),
 				new Turn(initialFacing),
-				new HeliLand(false, 0),
+				new HeliLand(false),
 				new Rearm(self),
 				NextActivity);
 		}

@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -20,6 +20,23 @@ namespace OpenRA.Mods.RA.Air
 
 		Fly(WPos pos) { this.pos = pos; }
 
+		public static void FlyToward(Actor self, Plane plane, int desiredFacing, WRange desiredAltitude)
+		{
+			var move = plane.FlyStep(plane.Facing);
+			var altitude = plane.CenterPosition.Z;
+
+			plane.Facing = Util.TickFacing(plane.Facing, desiredFacing, plane.ROT);
+
+			if (altitude != desiredAltitude.Range)
+			{
+				var delta = move.HorizontalLength * plane.Info.MaximumPitch.Tan() / 1024;
+				var dz = (desiredAltitude.Range - altitude).Clamp(-delta, delta);
+				move += new WVec(0, 0, dz);
+			}
+
+			plane.SetPosition(self, plane.CenterPosition + move);
+		}
+
 		public static Fly ToPos(WPos pos) { return new Fly(pos); }
 		public static Fly ToCell(CPos pos) { return new Fly(pos.CenterPosition); }
 
@@ -33,32 +50,22 @@ namespace OpenRA.Mods.RA.Air
 			if (d.HorizontalLengthSquared < 91022)
 				return NextActivity;
 
-			var aircraft = self.Trait<Aircraft>();
-			var cruiseAltitude = self.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
-			var desiredFacing = Util.GetFacing(d, aircraft.Facing);
-			if (aircraft.Altitude == cruiseAltitude)
-				aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, aircraft.ROT);
+			var plane = self.Trait<Plane>();
+			var desiredFacing = Util.GetFacing(d, plane.Facing);
+			var cruiseAltitude = new WRange(plane.Info.CruiseAltitude * 1024 / Game.CellSize);
 
-			if (aircraft.Altitude < cruiseAltitude)
-				++aircraft.Altitude;
+			// Don't turn until we've reached the cruise altitude
+			if (plane.CenterPosition.Z < cruiseAltitude.Range)
+				desiredFacing = plane.Facing;
 
-			FlyUtil.Fly(self, cruiseAltitude);
+			FlyToward(self, plane, desiredFacing, cruiseAltitude);
+
 			return this;
 		}
 
 		public override IEnumerable<Target> GetTargets(Actor self)
 		{
 			yield return Target.FromPos(pos);
-		}
-	}
-
-	public static class FlyUtil
-	{
-		public static void Fly(Actor self, int desiredAltitude)
-		{
-			var aircraft = self.Trait<Aircraft>();
-			aircraft.TickMove(PSubPos.PerPx * aircraft.MovementSpeed, aircraft.Facing);
-			aircraft.Altitude += Math.Sign(desiredAltitude - aircraft.Altitude);
 		}
 	}
 }

@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -20,10 +20,13 @@ namespace OpenRA.Mods.RA.Air
 
 		public override Activity Tick(Actor self)
 		{
-			if( IsCanceled ) return NextActivity;
-			var targetAltitude = self.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
-			if (remainingTicks-- == 0) return NextActivity;
-			FlyUtil.Fly(self, targetAltitude);
+			if (IsCanceled || remainingTicks-- == 0)
+				return NextActivity;
+
+			var plane = self.Trait<Plane>();
+			var cruiseAltitude = new WRange(plane.Info.CruiseAltitude * 1024 / Game.CellSize);
+			Fly.FlyToward(self, plane, plane.Facing, cruiseAltitude);
+
 			return this;
 		}
 	}
@@ -32,15 +35,16 @@ namespace OpenRA.Mods.RA.Air
 	{
 		public override Activity Tick(Actor self)
 		{
-			var targetAltitude = self.Info.Traits.Get<PlaneInfo>().CruiseAltitude;
 			if (IsCanceled || !self.World.Map.IsInMap(self.Location))
 				return NextActivity;
 
-			FlyUtil.Fly(self, targetAltitude);
+			var plane = self.Trait<Plane>();
+			var cruiseAltitude = new WRange(plane.Info.CruiseAltitude * 1024 / Game.CellSize);
+			Fly.FlyToward(self, plane, plane.Facing, cruiseAltitude);
 			return this;
 		}
 
-		public override void Cancel( Actor self )
+		public override void Cancel(Actor self)
 		{
 			base.Cancel(self);
 		}

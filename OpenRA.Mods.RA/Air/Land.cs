@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -16,35 +16,31 @@ namespace OpenRA.Mods.RA.Air
 {
 	public class Land : Activity
 	{
-		Target Target;
+		Target target;
 
-		public Land(Target t) { Target = t; }
+		public Land(Target t) { target = t; }
 
 		public override Activity Tick(Actor self)
 		{
-			if (!Target.IsValid)
+			if (!target.IsValid)
 				Cancel(self);
 
 			if (IsCanceled)
 				return NextActivity;
 
-			var aircraft = self.Trait<Aircraft>();
-			var d = Target.CenterPosition - self.CenterPosition;
+			var plane = self.Trait<Plane>();
+			var d = target.CenterPosition - self.CenterPosition;
 
 			// The next move would overshoot, so just set the final position
-			var moveDist = aircraft.MovementSpeed * 7 * 1024 / (Game.CellSize * 32);
-			if (d.HorizontalLengthSquared < moveDist*moveDist)
+			var move = plane.FlyStep(plane.Facing);
+			if (d.HorizontalLengthSquared < move.HorizontalLengthSquared)
 			{
-				aircraft.SetPosition(self, Target.CenterPosition);
+				plane.SetPosition(self, target.CenterPosition);
 				return NextActivity;
 			}
 
-			if (aircraft.Altitude > 0)
-				--aircraft.Altitude;
-
-			var desiredFacing = Util.GetFacing(d, aircraft.Facing);
-			aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, aircraft.ROT);
-			aircraft.TickMove(PSubPos.PerPx * aircraft.MovementSpeed, aircraft.Facing);
+			var desiredFacing = Util.GetFacing(d, plane.Facing);
+			Fly.FlyToward(self, plane, desiredFacing, WRange.Zero);
 
 			return this;
 		}

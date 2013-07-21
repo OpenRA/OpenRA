@@ -221,7 +221,7 @@ namespace OpenRA.Mods.RA.Missions
 
 			chinook.QueueActivity(new HeliFly(lz.CenterPosition + offset)); // no reservation of hpad but it's not needed
 			chinook.QueueActivity(new Turn(0));
-			chinook.QueueActivity(new HeliLand(false, 0));
+			chinook.QueueActivity(new HeliLand(false));
 			chinook.QueueActivity(new UnloadCargo(true));
 			chinook.QueueActivity(new Wait(150));
 			chinook.QueueActivity(new HeliFly(entry));

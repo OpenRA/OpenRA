@@ -19,7 +19,7 @@
 		LandableTerrainTypes: Sand, Rock, Transition, Spice, Dune
 		RepairBuildings: repair
 		RearmBuildings: starporta,starporto,starporth
-		MinimalLandAltitude: 25
+		LandAltitude: 800
 	RenderUnit:
 	WithCargo:
 		LocalOffset: 0,0,-854

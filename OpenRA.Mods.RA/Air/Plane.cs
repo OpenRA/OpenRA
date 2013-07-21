@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -16,15 +16,21 @@ namespace OpenRA.Mods.RA.Air
 {
 	public class PlaneInfo : AircraftInfo
 	{
-		public override object Create( ActorInitializer init ) { return new Plane( init, this ); }
+		public readonly WAngle MaximumPitch = WAngle.FromDegrees(10);
+
+		public override object Create(ActorInitializer init) { return new Plane(init, this); }
 	}
 
 	public class Plane : Aircraft, IResolveOrder, ITick, ISync
 	{
+		public readonly PlaneInfo Info;
 		[Sync] public WPos RTBPathHash;
 
-		public Plane( ActorInitializer init, PlaneInfo info )
-			: base( init, info ) { }
+		public Plane(ActorInitializer init, PlaneInfo info)
+			: base(init, info)
+		{
+			Info = info;
+		}
 
 		bool firstTick = true;
 		public void Tick(Actor self)
@@ -49,7 +55,6 @@ namespace OpenRA.Mods.RA.Air
 				self.QueueActivity(Fly.ToCell(target));
 				self.QueueActivity(new FlyCircle());
 			}
-
 			else if (order.OrderString == "Enter")
 			{
 				if (Reservable.IsReserved(order.TargetActor)) return;

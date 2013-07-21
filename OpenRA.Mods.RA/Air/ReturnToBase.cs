@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -10,8 +10,8 @@
 
 using System;
 using System.Linq;
-using OpenRA.Traits;
 using OpenRA.Mods.RA.Buildings;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Air
 {
@@ -46,22 +46,21 @@ namespace OpenRA.Mods.RA.Air
 			if (res != null)
 			{
 				plane.UnReserve();
-				plane.reservation = res.Reserve(dest, self, plane);
+				plane.Reservation = res.Reserve(dest, self, plane);
 			}
 
 			var landPos = dest.CenterPosition;
-			var speed = plane.MovementSpeed * 1024 / Game.CellSize / 5;
 
 			// Distance required for descent.
-			// TODO: Generalize this for arbitrary flight pitches
-			var landDistance = planeInfo.CruiseAltitude * speed;
+			var landDistance = planeInfo.CruiseAltitude * 1024 * 1024 / (Game.CellSize * plane.Info.MaximumPitch.Tan());
 			var altitude = planeInfo.CruiseAltitude * 1024 / Game.CellSize;
 
 			// Land towards the east
 			var approachStart = landPos + new WVec(-landDistance, 0, altitude);
 
 			// Add 10% to the turning radius to ensure we have enough room
-			var turnRadius = (int)(141 * speed / planeInfo.ROT / (float)(Math.PI));
+			var speed = plane.MovementSpeed * 1024 / (Game.CellSize * 5);
+			var turnRadius = (int)(141 * speed / planeInfo.ROT / (float)Math.PI);
 
 			// Find the center of the turning circles for clockwise and counterclockwise turns
 			var angle = WAngle.FromFacing(plane.Facing);

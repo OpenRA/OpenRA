@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA.Missions
 			var chinook = world.CreateActor("tran", new TypeDictionary { new OwnerInit(owner), new LocationInit(entry) });
 			chinook.QueueActivity(new HeliFly(lz));
 			chinook.QueueActivity(new Turn(0));
-			chinook.QueueActivity(new HeliLand(true, 0));
+			chinook.QueueActivity(new HeliLand(true));
 			chinook.QueueActivity(new WaitFor(() => chinook.Trait<Cargo>().Passengers.Contains(unit)));
 			chinook.QueueActivity(new Wait(150));
 			chinook.QueueActivity(new HeliFly(exit));
@@ -62,7 +62,7 @@ namespace OpenRA.Mods.RA.Missions
 			chinook.Trait<Cargo>().Load(chinook, unit);
 			chinook.QueueActivity(new HeliFly(lz));
 			chinook.QueueActivity(new Turn(0));
-			chinook.QueueActivity(new HeliLand(true, 0));
+			chinook.QueueActivity(new HeliLand(true));
 			chinook.QueueActivity(new UnloadCargo(true));
 			chinook.QueueActivity(new CallFunc(() => afterUnload(unit)));
 			chinook.QueueActivity(new Wait(150));

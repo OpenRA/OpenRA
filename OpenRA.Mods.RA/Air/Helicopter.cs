@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -19,28 +19,29 @@ namespace OpenRA.Mods.RA.Air
 	{
 		public readonly WRange IdealSeparation = new WRange(1706);
 		public readonly bool LandWhenIdle = true;
-		public readonly int MinimalLandAltitude = 0;
+		public readonly WRange LandAltitude = WRange.Zero;
+		public readonly WRange AltitudeVelocity = new WRange(43);
 
 		public override object Create(ActorInitializer init) { return new Helicopter(init, this); }
 	}
 
 	class Helicopter : Aircraft, ITick, IResolveOrder
 	{
-		HelicopterInfo info;
+		public HelicopterInfo Info;
 		bool firstTick = true;
 
 		public Helicopter(ActorInitializer init, HelicopterInfo info)
 			: base(init, info)
 		{
-			this.info = info;
+			Info = info;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (reservation != null)
+			if (Reservation != null)
 			{
-				reservation.Dispose();
-				reservation = null;
+				Reservation.Dispose();
+				Reservation = null;
 			}
 
 			if (order.OrderString == "Move")
@@ -51,10 +52,10 @@ namespace OpenRA.Mods.RA.Air
 				self.CancelActivity();
 				self.QueueActivity(new HeliFly(target));
 
-				if (info.LandWhenIdle)
+				if (Info.LandWhenIdle)
 				{
-					self.QueueActivity(new Turn(info.InitialFacing));
-					self.QueueActivity(new HeliLand(true, info.MinimalLandAltitude));
+					self.QueueActivity(new Turn(Info.InitialFacing));
+					self.QueueActivity(new HeliLand(true));
 				}
 			}
 
@@ -69,7 +70,7 @@ namespace OpenRA.Mods.RA.Air
 				{
 					var res = order.TargetActor.TraitOrDefault<Reservable>();
 					if (res != null)
-						reservation = res.Reserve(order.TargetActor, self, this);
+						Reservation = res.Reserve(order.TargetActor, self, this);
 
 					var exit = order.TargetActor.Info.Traits.WithInterface<ExitInfo>().FirstOrDefault();
 					var offset = (exit != null) ? exit.SpawnOffsetVector : WVec.Zero;
@@ -78,8 +79,8 @@ namespace OpenRA.Mods.RA.Air
 
 					self.CancelActivity();
 					self.QueueActivity(new HeliFly(order.TargetActor.CenterPosition + offset));
-					self.QueueActivity(new Turn(info.InitialFacing));
-					self.QueueActivity(new HeliLand(false, info.MinimalLandAltitude));
+					self.QueueActivity(new Turn(Info.InitialFacing));
+					self.QueueActivity(new HeliLand(false));
 					self.QueueActivity(new ResupplyAircraft());
 				}
 			}
@@ -94,10 +95,10 @@ namespace OpenRA.Mods.RA.Air
 			{
 				self.CancelActivity();
 
-				if (info.LandWhenIdle)
+				if (Info.LandWhenIdle)
 				{
-					self.QueueActivity(new Turn(info.InitialFacing));
-					self.QueueActivity(new HeliLand(true, info.MinimalLandAltitude));
+					self.QueueActivity(new Turn(Info.InitialFacing));
+					self.QueueActivity(new HeliLand(true));
 				}
 			}
 		}
@@ -112,10 +113,12 @@ namespace OpenRA.Mods.RA.Air
 			}
 
 			// Repulsion only applies when we're flying!
-			if (Altitude != info.CruiseAltitude)
+			var altitude = CenterPosition.Z;
+			var cruiseAltitude = Info.CruiseAltitude * 1024 / Game.CellSize;
+			if (altitude != cruiseAltitude)
 				return;
 
-			var otherHelis = self.World.FindActorsInCircle(self.CenterPosition, info.IdealSeparation)
+			var otherHelis = self.World.FindActorsInCircle(self.CenterPosition, Info.IdealSeparation)
 				.Where(a => a.HasTrait<Helicopter>());
 
 			var f = otherHelis
@@ -124,17 +127,17 @@ namespace OpenRA.Mods.RA.Air
 
 			int repulsionFacing = Util.GetFacing(f, -1);
 			if (repulsionFacing != -1)
-				TickMove(PSubPos.PerPx * MovementSpeed, repulsionFacing);
+				SetPosition(self, CenterPosition + FlyStep(repulsionFacing));
 		}
 
 		public WVec GetRepulseForce(Actor self, Actor other)
 		{
-			if (self == other || other.Trait<Helicopter>().Altitude < Altitude)
+			if (self == other || other.CenterPosition.Z < self.CenterPosition.Z)
 				return WVec.Zero;
 
 			var d = self.CenterPosition - other.CenterPosition;
 			var distSq = d.HorizontalLengthSquared;
-			if (distSq > info.IdealSeparation.Range * info.IdealSeparation.Range)
+			if (distSq > Info.IdealSeparation.Range * Info.IdealSeparation.Range)
 				return WVec.Zero;
 
 			if (distSq < 1)
