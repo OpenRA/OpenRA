@@ -68,7 +68,7 @@ namespace OpenRA.Mods.RA
 			// TODO: Move this into an *Init
 			// TODO: We should be adjusting the actual position for aircraft, not just visuals.
 			var teleportable = newUnit.Trait<IPositionable>();
-			teleportable.AdjustPxPosition(newUnit, PPos.FromWPos(spawn));
+			teleportable.SetVisualPosition(newUnit, spawn);
 
 			// TODO: Generalize this for non-mobile (e.g. aircraft) too
 			// Remember to update the Enter activity too

@@ -205,7 +205,7 @@ namespace OpenRA.Mods.RA.Move
 			if (init.Contains<LocationInit>())
 			{
 				this.__fromCell = this.__toCell = init.Get<LocationInit, CPos>();
-				this.PxPosition = PPos.FromWPos(fromCell.CenterPosition + MobileInfo.SubCellOffsets[fromSubCell]);
+				SetVisualPosition(self, fromCell.CenterPosition + MobileInfo.SubCellOffsets[fromSubCell]);
 			}
 
 			this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : info.InitialFacing;
@@ -215,15 +215,7 @@ namespace OpenRA.Mods.RA.Move
 		public void SetPosition(Actor self, CPos cell)
 		{
 			SetLocation(cell,fromSubCell, cell,fromSubCell);
-			PxPosition = PPos.FromWPos(fromCell.CenterPosition + MobileInfo.SubCellOffsets[fromSubCell]);
-			FinishedMoving(self);
-		}
-
-		public void SetPxPosition(Actor self, PPos px)
-		{
-			var cell = px.ToCPos();
-			SetLocation(cell,fromSubCell, cell,fromSubCell);
-			PxPosition = px;
+			SetVisualPosition(self, fromCell.CenterPosition + MobileInfo.SubCellOffsets[fromSubCell]);
 			FinishedMoving(self);
 		}
 
@@ -235,7 +227,10 @@ namespace OpenRA.Mods.RA.Move
 		public void SetPosition(Actor self, WPos pos)
 		{
 			// TODO: Handle altitude
-			SetPxPosition(self, PPos.FromWPos(pos));
+			var cell = pos.ToCPos();
+			SetLocation(cell,fromSubCell, cell,fromSubCell);
+			PxPosition = PPos.FromWPos(pos);
+			FinishedMoving(self);
 		}
 
 		public void SetVisualPosition(Actor self, WPos pos)

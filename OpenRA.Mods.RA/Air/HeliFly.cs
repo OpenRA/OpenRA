@@ -39,7 +39,7 @@ namespace OpenRA.Mods.RA.Air
 			var moveDist = aircraft.MovementSpeed * 7 * 1024 / (Game.CellSize * 32);
 			if (dist.HorizontalLengthSquared < moveDist*moveDist)
 			{
-				aircraft.SubPxPosition = PPos.FromWPos(pos).ToPSubPos();
+				aircraft.SetPosition(self, pos);
 				return NextActivity;
 			}
 

@@ -101,15 +101,8 @@ namespace OpenRA.Mods.RA.Air
 
 		public void SetPosition(Actor self, CPos cell)
 		{
-			SetPxPosition(self, Util.CenterOfCell(cell));
+			SubPxPosition = Util.CenterOfCell(cell).ToPSubPos();
 		}
-
-		public void SetPxPosition(Actor self, PPos px)
-		{
-			SubPxPosition = px.ToPSubPos();
-		}
-
-		public void AdjustPxPosition(Actor self, PPos px) { SetPxPosition(self, px); }
 
 		public void SetPosition(Actor self, WPos pos)
 		{

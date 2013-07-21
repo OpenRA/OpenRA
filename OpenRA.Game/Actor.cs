@@ -34,17 +34,8 @@ namespace OpenRA
 		public IOccupySpace OccupiesSpace { get { return occupySpace.Value; } }
 
 		public CPos Location { get { return occupySpace.Value.TopLeft; } }
-
-		public PPos CenterLocation { get { return occupySpace.Value.PxPosition; } }
-
-		public WPos CenterPosition
-		{
-			get
-			{
-				var altitude = occupySpace.Value != null ? occupySpace.Value.Altitude : 0;
-				return CenterLocation.ToWPos(altitude);
-			}
-		}
+		public PPos CenterLocation { get { return PPos.FromWPos(occupySpace.Value.CenterPosition); } }
+		public WPos CenterPosition { get { return occupySpace.Value.CenterPosition; } }
 
 		public WRot Orientation
 		{

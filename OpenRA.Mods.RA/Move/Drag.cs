@@ -26,14 +26,14 @@ namespace OpenRA.Mods.RA.Move
 			this.length = length;
 		}
 
-		public override Activity Tick( Actor self )
+		public override Activity Tick(Actor self)
 		{
 			var mobile = self.Trait<Mobile>();
 			var pos = length > 1
 				? WPos.Lerp(start, end, ticks, length - 1)
 				: end;
 
-			mobile.AdjustPxPosition(self, PPos.FromWPos(pos));
+			mobile.SetVisualPosition(self, pos);
 			if (++ticks >= length)
 			{
 				mobile.IsMoving = false;
@@ -44,12 +44,12 @@ namespace OpenRA.Mods.RA.Move
 			return this;
 		}
 
-		public override IEnumerable<Target> GetTargets( Actor self )
+		public override IEnumerable<Target> GetTargets(Actor self)
 		{
 			yield return Target.FromPos(end);
 		}
 
 		// Cannot be cancelled
-		public override void Cancel( Actor self ) { }
+		public override void Cancel(Actor self) { }
 	}
 }

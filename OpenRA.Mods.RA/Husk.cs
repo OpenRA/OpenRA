@@ -25,9 +25,9 @@ namespace OpenRA.Mods.RA
 	class Husk : IOccupySpace, IFacing, ISync
 	{
 		[Sync] CPos location;
+		[Sync] PPos PxPosition;
 
 		public WPos CenterPosition { get { return PxPosition.ToWPos(0); } }
-		[Sync] public PPos PxPosition { get; private set; }
 		public int Altitude { get { return 0; } set { } }
 
 		[Sync] public int Facing { get; set; }

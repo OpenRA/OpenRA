@@ -328,7 +328,7 @@ namespace OpenRA.Mods.RA.Move
 
 			void UpdateCenterLocation(Actor self, Mobile mobile)
 			{
-				mobile.AdjustPxPosition(self, PPos.FromWPos(WPos.Lerp(from, to, moveFraction, moveFractionTotal)));
+				mobile.SetVisualPosition(self, WPos.Lerp(from, to, moveFraction, moveFractionTotal));
 
 				if (moveFraction >= moveFractionTotal)
 					mobile.Facing = toFacing & 0xFF;

@@ -90,7 +90,7 @@ namespace OpenRA.Mods.RA.Activities
 				var mobile = actor.Trait<Mobile>();
 				mobile.Facing = Util.GetFacing(exit - current, mobile.Facing );
 				mobile.SetPosition(actor, exitTile.Value);
-				mobile.AdjustPxPosition(actor, PPos.FromWPos(current));
+				mobile.SetVisualPosition(actor, current);
 				var speed = mobile.MovementSpeedForCell(actor, exitTile.Value);
 				var length = speed > 0 ? (exit - current).Length / speed : 0;
 
