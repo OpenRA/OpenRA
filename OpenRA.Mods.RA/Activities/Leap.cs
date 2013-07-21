@@ -41,8 +41,7 @@ namespace OpenRA.Mods.RA.Activities
 			mobile.IsMoving = true;
 
 			from = self.CenterPosition;
-			var offset = MobileInfo.SubCellOffsets[targetMobile.fromSubCell];
-			to = targetMobile.fromCell.CenterPosition + new WVec(offset.X * 1024 / Game.CellSize, offset.Y * 1024 / Game.CellSize, 0);
+			to = targetMobile.fromCell.CenterPosition + MobileInfo.SubCellOffsets[targetMobile.fromSubCell];
 			length = Math.Max((to - from).Length / speed.Range, 1);
 
 			self.Trait<RenderInfantry>().Attacking(self, Target.FromActor(target));
@@ -56,7 +55,7 @@ namespace OpenRA.Mods.RA.Activities
 			if (ticks == 0 && IsCanceled)
 				return NextActivity;
 
-			mobile.AdjustPxPosition(self, PPos.FromWPosHackZ(WPos.LerpQuadratic(from, to, angle, ++ticks, length)));
+			mobile.SetVisualPosition(self, WPos.LerpQuadratic(from, to, angle, ++ticks, length));
 			if (ticks >= length)
 			{
 				mobile.SetLocation(mobile.toCell, mobile.toSubCell, mobile.toCell, mobile.toSubCell);

@@ -215,9 +215,10 @@ namespace OpenRA.Mods.RA.Missions
 
 			foreach (var aircraft in SovietAircraft())
 			{
+				var pos = aircraft.CenterPosition;
 				var plane = aircraft.Trait<Plane>();
 				var ammo = aircraft.Trait<LimitedAmmo>();
-				if ((plane.Altitude == 0 && ammo.FullAmmo()) || (plane.Altitude != 0 && ammo.HasAmmo()))
+				if ((pos.Z == 0 && ammo.FullAmmo()) || (pos.Z != 0 && ammo.HasAmmo()))
 				{
 					var enemy = FirstUnshroudedOrDefault(enemies.OrderBy(u => (aircraft.CenterPosition - u.CenterPosition).LengthSquared), world, 10);
 					if (enemy != null)
@@ -225,13 +226,13 @@ namespace OpenRA.Mods.RA.Missions
 						if (!aircraft.IsIdle && aircraft.GetCurrentActivity().GetType() != typeof(FlyAttack))
 							aircraft.CancelActivity();
 
-						if (plane.Altitude == 0)
+						if (pos.Z == 0)
 							plane.UnReserve();
 
 						aircraft.QueueActivity(new FlyAttack(Target.FromActor(enemy)));
 					}
 				}
-				else if (plane.Altitude != 0 && !LandIsQueued(aircraft))
+				else if (pos.Z != 0 && !LandIsQueued(aircraft))
 				{
 					aircraft.CancelActivity();
 					aircraft.QueueActivity(new ReturnToBase(aircraft, null));

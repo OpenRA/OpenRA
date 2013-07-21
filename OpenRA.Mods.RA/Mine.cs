@@ -17,7 +17,7 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA
 {
-	class MineInfo : ITraitInfo
+	class MineInfo : ITraitInfo, IOccupySpaceInfo
 	{
 		public readonly string[] CrushClasses = { };
 		public readonly bool AvoidFriendly = true;
@@ -61,7 +61,7 @@ namespace OpenRA.Mods.RA
 		public CPos TopLeft { get { return location; } }
 
 		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { yield return Pair.New(TopLeft, SubCell.FullCell); }
-		public PPos PxPosition { get { return Util.CenterOfCell( location ); } }
+		public WPos CenterPosition { get { return location.CenterPosition; } }
 	}
 
 	/* tag trait for stuff that shouldnt trigger mines */

@@ -97,9 +97,9 @@ namespace OpenRA.Mods.RA.Effects
 			// In pixels
 			var dist = Args.target.CenterLocation + offset - PxPosition;
 
-			var targetAltitude = 0; 
-			if (Args.target.IsValid && Args.target.IsActor && Args.target.Actor.HasTrait<IMove>())
-				targetAltitude = Args.target.Actor.Trait<IMove>().Altitude;
+			var targetAltitude = 0;
+			if (Args.target.IsValid)
+				targetAltitude = Args.target.CenterPosition.Z * Game.CellSize / 1024;
 
 			var jammed = Info.Jammable && world.ActorsWithTrait<JamsMissiles>().Any(tp =>
 				(tp.Actor.CenterLocation - PxPosition).ToCVec().Length <= tp.Trait.Range

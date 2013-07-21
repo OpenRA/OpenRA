@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -17,29 +17,31 @@ namespace OpenRA.Mods.RA.Air
 {
 	class HelicopterInfo : AircraftInfo
 	{
-		public readonly int IdealSeparation = 40;
+		public readonly WRange IdealSeparation = new WRange(1706);
 		public readonly bool LandWhenIdle = true;
-		public readonly int MinimalLandAltitude = 0;
+		public readonly WRange LandAltitude = WRange.Zero;
+		public readonly WRange AltitudeVelocity = new WRange(43);
 
-		public override object Create( ActorInitializer init ) { return new Helicopter( init, this); }
+		public override object Create(ActorInitializer init) { return new Helicopter(init, this); }
 	}
 
 	class Helicopter : Aircraft, ITick, IResolveOrder
 	{
-		HelicopterInfo Info;
+		public HelicopterInfo Info;
 		bool firstTick = true;
 
-		public Helicopter( ActorInitializer init, HelicopterInfo info) : base( init, info )
+		public Helicopter(ActorInitializer init, HelicopterInfo info)
+			: base(init, info)
 		{
 			Info = info;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (reservation != null)
+			if (Reservation != null)
 			{
-				reservation.Dispose();
-				reservation = null;
+				Reservation.Dispose();
+				Reservation = null;
 			}
 
 			if (order.OrderString == "Move")
@@ -48,12 +50,12 @@ namespace OpenRA.Mods.RA.Air
 
 				self.SetTargetLine(Target.FromCell(target), Color.Green);
 				self.CancelActivity();
-				self.QueueActivity(new HeliFly(Util.CenterOfCell(target)));
+				self.QueueActivity(new HeliFly(target));
 
 				if (Info.LandWhenIdle)
 				{
 					self.QueueActivity(new Turn(Info.InitialFacing));
-					self.QueueActivity(new HeliLand(true, Info.MinimalLandAltitude));
+					self.QueueActivity(new HeliLand(true));
 				}
 			}
 
@@ -68,17 +70,17 @@ namespace OpenRA.Mods.RA.Air
 				{
 					var res = order.TargetActor.TraitOrDefault<Reservable>();
 					if (res != null)
-						reservation = res.Reserve(order.TargetActor, self, this);
+						Reservation = res.Reserve(order.TargetActor, self, this);
 
 					var exit = order.TargetActor.Info.Traits.WithInterface<ExitInfo>().FirstOrDefault();
-					var offset = exit != null ? exit.SpawnOffsetVector : PVecInt.Zero;
+					var offset = (exit != null) ? exit.SpawnOffsetVector : WVec.Zero;
 
 					self.SetTargetLine(Target.FromActor(order.TargetActor), Color.Green);
 
 					self.CancelActivity();
-					self.QueueActivity(new HeliFly(order.TargetActor.Trait<IHasLocation>().PxPosition + offset));
+					self.QueueActivity(new HeliFly(order.TargetActor.CenterPosition + offset));
 					self.QueueActivity(new Turn(Info.InitialFacing));
-					self.QueueActivity(new HeliLand(false, Info.MinimalLandAltitude));
+					self.QueueActivity(new HeliLand(false));
 					self.QueueActivity(new ResupplyAircraft());
 				}
 			}
@@ -86,7 +88,7 @@ namespace OpenRA.Mods.RA.Air
 			if (order.OrderString == "ReturnToBase")
 			{
 				self.CancelActivity();
-				self.QueueActivity( new HeliReturn() );
+				self.QueueActivity(new HeliReturn());
 			}
 
 			if (order.OrderString == "Stop")
@@ -96,7 +98,7 @@ namespace OpenRA.Mods.RA.Air
 				if (Info.LandWhenIdle)
 				{
 					self.QueueActivity(new Turn(Info.InitialFacing));
-					self.QueueActivity(new HeliLand(true, Info.MinimalLandAltitude));
+					self.QueueActivity(new HeliLand(true));
 				}
 			}
 		}
@@ -110,38 +112,42 @@ namespace OpenRA.Mods.RA.Air
 					ReserveSpawnBuilding();
 			}
 
-			/* repulsion only applies when we're flying */
-			if (Altitude <= 0) return;
+			// Repulsion only applies when we're flying!
+			var altitude = CenterPosition.Z;
+			var cruiseAltitude = Info.CruiseAltitude * 1024 / Game.CellSize;
+			if (altitude != cruiseAltitude)
+				return;
 
-			var separation = new WRange(Info.IdealSeparation * 1024 / Game.CellSize);
-			var otherHelis = self.World.FindActorsInCircle(self.CenterPosition, separation)
+			var otherHelis = self.World.FindActorsInCircle(self.CenterPosition, Info.IdealSeparation)
 				.Where(a => a.HasTrait<Helicopter>());
 
 			var f = otherHelis
 				.Select(h => GetRepulseForce(self, h))
-				.Aggregate(PSubVec.Zero, (a, b) => a + b);
+				.Aggregate(WVec.Zero, (a, b) => a + b);
 
-			// FIXME(jsd): not sure which units GetFacing accepts; code is unclear to me.
-			int repulsionFacing = Util.GetFacing( f.ToInt2(), -1 );
-			if( repulsionFacing != -1 )
-				TickMove(PSubPos.PerPx * MovementSpeed, repulsionFacing);
+			int repulsionFacing = Util.GetFacing(f, -1);
+			if (repulsionFacing != -1)
+				SetPosition(self, CenterPosition + FlyStep(repulsionFacing));
 		}
 
-		// Returns a vector in subPx units
-		public PSubVec GetRepulseForce(Actor self, Actor h)
+		public WVec GetRepulseForce(Actor self, Actor other)
 		{
-			if (self == h)
-				return PSubVec.Zero;
-			if( h.Trait<Helicopter>().Altitude < Altitude )
-				return PSubVec.Zero;
-			var d = self.CenterLocation - h.CenterLocation;
+			if (self == other || other.CenterPosition.Z < self.CenterPosition.Z)
+				return WVec.Zero;
 
-			if (d.Length > Info.IdealSeparation)
-				return PSubVec.Zero;
+			var d = self.CenterPosition - other.CenterPosition;
+			var distSq = d.HorizontalLengthSquared;
+			if (distSq > Info.IdealSeparation.Range * Info.IdealSeparation.Range)
+				return WVec.Zero;
 
-			if (d.LengthSquared < 1)
-				return Util.SubPxVector[self.World.SharedRandom.Next(255)];
-			return (5 * d.ToPSubVec()) / d.LengthSquared;
+			if (distSq < 1)
+			{
+				var yaw = self.World.SharedRandom.Next(0, 1023);
+				var rot = new WRot(WAngle.Zero, WAngle.Zero, new WAngle(yaw));
+				return new WVec(1024, 0, 0).Rotate(rot);
+			}
+
+			return (d * 1024 * 8) / (int)distSq;
 		}
 	}
 }

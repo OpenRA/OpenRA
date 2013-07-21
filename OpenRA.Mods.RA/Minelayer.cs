@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -60,7 +60,7 @@ namespace OpenRA.Mods.RA
 
 			if (order.OrderString == "PlaceMinefield")
 			{
-				var movement = self.Trait<IMove>();
+				var movement = self.Trait<IPositionable>();
 
 				minefield = GetMinefieldCells(minefieldStart, order.TargetLocation,
 					self.Info.Traits.Get<MinelayerInfo>().MinefieldDepth)
@@ -130,7 +130,7 @@ namespace OpenRA.Mods.RA
 				if (!minelayer.IsInWorld)
 					return;
 
-				var movement = minelayer.Trait<IMove>();
+				var movement = minelayer.Trait<IPositionable>();
 				var minefield = GetMinefieldCells(minefieldStart, lastMousePos,
 					minelayer.Info.Traits.Get<MinelayerInfo>().MinefieldDepth)
 					.Where(p => movement.CanEnterCell(p)).ToArray();

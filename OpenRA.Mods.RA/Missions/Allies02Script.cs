@@ -170,7 +170,7 @@ namespace OpenRA.Mods.RA.Missions
 				if (yak == null || (yak != null && !yak.IsDead() && (yak.GetCurrentActivity() is FlyCircle || yak.IsIdle)))
 				{
 					var alliedUnitsNearYakPoint = world.FindAliveCombatantActorsInCircle(yakAttackPoint.CenterPosition, WRange.FromCells(10))
-						.Where(a => a.Owner != soviets && a.HasTrait<IMove>() && a != tanya && a != einstein && a != engineer);
+						.Where(a => a.Owner != soviets && a.HasTrait<IPositionable>() && a != tanya && a != einstein && a != engineer);
 					if (alliedUnitsNearYakPoint.Any())
 						YakStrafe(alliedUnitsNearYakPoint);
 				}
@@ -384,7 +384,7 @@ namespace OpenRA.Mods.RA.Missions
 		bool AlliesNearTown()
 		{
 			return world.FindAliveCombatantActorsInCircle(townPoint.CenterPosition, WRange.FromCells(AlliedTownTransferRange))
-				.Any(a => a.Owner == allies1 && a.HasTrait<IMove>());
+				.Any(a => a.Owner == allies1 && a.HasTrait<IPositionable>());
 		}
 
 		void TransferTownUnitsToAllies()
@@ -399,7 +399,7 @@ namespace OpenRA.Mods.RA.Missions
 			var sovietAttackUnits = world.FindAliveCombatantActorsInCircle(sovietTownAttackPoint1.CenterPosition, WRange.FromCells(SovietTownAttackGroupRange))
 				.Union(world.FindAliveCombatantActorsInCircle(sovietTownAttackPoint2.CenterPosition, WRange.FromCells(SovietTownAttackGroupRange)))
 				.Union(world.FindAliveCombatantActorsInCircle(townPoint.CenterPosition, WRange.FromCells(AlliedTownTransferRange)))
-				.Where(a => a.HasTrait<IMove>() && a.Owner == soviets);
+				.Where(a => a.HasTrait<IPositionable>() && a.Owner == soviets);
 
 			foreach (var unit in sovietAttackUnits)
 				unit.QueueActivity(new AttackMove.AttackMoveActivity(unit, new Move.Move(townPoint.Location, SovietTownMoveNearEnough)));

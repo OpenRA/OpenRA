@@ -19,7 +19,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.RA.Move
 {
 	[Desc("Unit is able to move.")]
-	public class MobileInfo : ITraitInfo, IFacingInfo, UsesInit<FacingInit>, UsesInit<LocationInit>, UsesInit<SubCellInit>
+	public class MobileInfo : ITraitInfo, IOccupySpaceInfo, IFacingInfo, UsesInit<FacingInit>, UsesInit<LocationInit>, UsesInit<SubCellInit>
 	{
 		[FieldLoader.LoadUsing("LoadSpeeds")]
 		[Desc("Set Water: 0 for ground units and lower the value on rough terrain.")]
@@ -35,7 +35,6 @@ namespace OpenRA.Mods.RA.Move
 		public readonly bool OnRails = false;
 		[Desc("Allow multiple (infantry) units in one cell.")]
 		public readonly bool SharesCell = false;
-		public readonly int Altitude;
 
 		public virtual object Create(ActorInitializer init) { return new Mobile(init, this); }
 
@@ -81,14 +80,14 @@ namespace OpenRA.Mods.RA.Move
 			return passability.ToBits();
 		}
 
-		public static readonly Dictionary<SubCell, PVecInt> SubCellOffsets = new Dictionary<SubCell, PVecInt>()
+		public static readonly Dictionary<SubCell, WVec> SubCellOffsets = new Dictionary<SubCell, WVec>()
 		{
-			{SubCell.TopLeft, new PVecInt(-7,-6)},
-			{SubCell.TopRight, new PVecInt(6,-6)},
-			{SubCell.Center, new PVecInt(0,0)},
-			{SubCell.BottomLeft, new PVecInt(-7,6)},
-			{SubCell.BottomRight, new PVecInt(6,6)},
-			{SubCell.FullCell, new PVecInt(0,0)},
+			{SubCell.TopLeft, new WVec(-299, -256, 0)},
+			{SubCell.TopRight, new WVec(256, -256, 0)},
+			{SubCell.Center, new WVec(0, 0, 0)},
+			{SubCell.BottomLeft, new WVec(-299, 256, 0)},
+			{SubCell.BottomRight, new WVec(256, 256, 0)},
+			{SubCell.FullCell, new WVec(0, 0, 0)},
 		};
 
 		static bool IsMovingInMyDirection(Actor self, Actor other)
@@ -145,7 +144,7 @@ namespace OpenRA.Mods.RA.Move
 		public int GetInitialFacing() { return InitialFacing; }
 	}
 
-	public class Mobile : IIssueOrder, IResolveOrder, IOrderVoice, IOccupySpace, IMove, IFacing, ISync
+	public class Mobile : IIssueOrder, IResolveOrder, IOrderVoice, IPositionable, IFacing, ISync
 	{
 		public readonly Actor self;
 		public readonly MobileInfo Info;
@@ -163,11 +162,9 @@ namespace OpenRA.Mods.RA.Move
 			set { __facing = value; }
 		}
 
-		[Sync] public int Altitude { get; set; }
-
 		public int ROT { get { return Info.ROT; } }
 
-		[Sync] public PPos PxPosition { get; set; }
+		[Sync] public WPos CenterPosition { get; private set; }
 		[Sync] public CPos fromCell { get { return __fromCell; } }
 		[Sync] public CPos toCell { get { return __toCell; } }
 
@@ -204,31 +201,36 @@ namespace OpenRA.Mods.RA.Move
 			if (init.Contains<LocationInit>())
 			{
 				this.__fromCell = this.__toCell = init.Get<LocationInit, CPos>();
-				this.PxPosition = Util.CenterOfCell(fromCell) + MobileInfo.SubCellOffsets[fromSubCell];
+				SetVisualPosition(self, fromCell.CenterPosition + MobileInfo.SubCellOffsets[fromSubCell]);
 			}
 
 			this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : info.InitialFacing;
-			this.Altitude = init.Contains<AltitudeInit>() ? init.Get<AltitudeInit, int>() : 0;
+
+			if (init.Contains<AltitudeInit>())
+			{
+				var z = init.Get<AltitudeInit, int>() * 1024 / Game.CellSize;
+				SetVisualPosition(self, CenterPosition + new WVec(0, 0, z - CenterPosition.Z));
+			}
 		}
 
 		public void SetPosition(Actor self, CPos cell)
 		{
 			SetLocation(cell,fromSubCell, cell,fromSubCell);
-			PxPosition = Util.CenterOfCell(fromCell) + MobileInfo.SubCellOffsets[fromSubCell];
+			SetVisualPosition(self, fromCell.CenterPosition + MobileInfo.SubCellOffsets[fromSubCell]);
 			FinishedMoving(self);
 		}
 
-		public void SetPxPosition(Actor self, PPos px)
+		public void SetPosition(Actor self, WPos pos)
 		{
-			var cell = px.ToCPos();
+			var cell = pos.ToCPos();
 			SetLocation(cell,fromSubCell, cell,fromSubCell);
-			PxPosition = px;
+			SetVisualPosition(self, pos);
 			FinishedMoving(self);
 		}
 
-		public void AdjustPxPosition(Actor self, PPos px)	/* visual hack only */
+		public void SetVisualPosition(Actor self, WPos pos)
 		{
-			PxPosition = px;
+			CenterPosition = pos;
 		}
 
 		public IEnumerable<IOrderTargeter> Orders { get { yield return new MoveOrderTargeter(Info); } }
@@ -422,12 +424,7 @@ namespace OpenRA.Mods.RA.Move
 			decimal speed = Info.Speed * Info.TerrainSpeeds[type].Speed;
 			foreach (var t in self.TraitsImplementing<ISpeedModifier>())
 				speed *= t.GetSpeedModifier();
-			return (int)(speed / 100);
-		}
-
-		public int WorldMovementSpeedForCell(Actor self, CPos cell)
-		{
-			return MovementSpeedForCell(self, cell) * 1024 / Game.CellSize;
+			return (int)(speed / 100) * 1024 / (3 * Game.CellSize);
 		}
 
 		public void AddInfluence()

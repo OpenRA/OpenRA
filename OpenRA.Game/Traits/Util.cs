@@ -100,9 +100,9 @@ namespace OpenRA.Traits
 			return loc.ToPPos() + new PVecInt(Game.CellSize / 2, Game.CellSize / 2);
 		}
 
-		public static PPos BetweenCells(CPos from, CPos to)
+		public static WPos BetweenCells(CPos from, CPos to)
 		{
-			return PPos.Lerp(CenterOfCell(from), CenterOfCell(to), 1, 2);
+			return WPos.Lerp(from.CenterPosition, to.CenterPosition, 1, 2);
 		}
 
 		public static int2 AsInt2(this int[] xs) { return new int2(xs[0], xs[1]); }

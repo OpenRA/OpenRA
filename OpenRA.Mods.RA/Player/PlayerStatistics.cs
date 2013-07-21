@@ -112,7 +112,7 @@ namespace OpenRA.Mods.RA
 				attackerStats.BuildingsKilled++;
 				defenderStats.BuildingsDead++;
 			}
-			else if (self.HasTrait<IMove>())
+			else if (self.HasTrait<IPositionable>())
 			{
 				attackerStats.UnitsKilled++;
 				defenderStats.UnitsDead++;

@@ -11,12 +11,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
-using OpenRA.Traits;
 using OpenRA.Mods.RA.Buildings;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class CrateInfo : ITraitInfo, Requires<RenderSpritesInfo>
+	class CrateInfo : ITraitInfo, IOccupySpaceInfo, Requires<RenderSpritesInfo>
 	{
 		public readonly int Lifetime = 5; // Seconds
 		public readonly string[] TerrainTypes = { };
@@ -24,26 +24,25 @@ namespace OpenRA.Mods.RA
 	}
 
 	// ITeleportable is required for paradrop
-	class Crate : ITick, IOccupySpace, ITeleportable, ICrushable, ISync, INotifyParachuteLanded
+	class Crate : ITick, IPositionable, ICrushable, ISync, INotifyParachuteLanded
 	{
 		readonly Actor self;
+		readonly CrateInfo info;
+		bool collected;
+
 		[Sync] int ticks;
 		[Sync] public CPos Location;
-		CrateInfo Info;
-		bool collected;
 
 		public Crate(ActorInitializer init, CrateInfo info)
 		{
 			this.self = init.self;
+			this.info = info;
+
 			if (init.Contains<LocationInit>())
-			{
-				this.Location = init.Get<LocationInit, CPos>();
-				PxPosition = Util.CenterOfCell(Location);
-			}
-			this.Info = info;
+				SetPosition(self, init.Get<LocationInit, CPos>());
 		}
 
-		public void WarnCrush(Actor crusher) {}
+		public void WarnCrush(Actor crusher) { }
 
 		public void OnCrush(Actor crusher)
 		{
@@ -78,27 +77,22 @@ namespace OpenRA.Mods.RA
 
 		public void Tick(Actor self)
 		{
-			if( ++ticks >= Info.Lifetime * 25 )
+			if (++ticks >= info.Lifetime * 25)
 				self.Destroy();
 		}
 
 		public CPos TopLeft { get { return Location; } }
-		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { yield return Pair.New( Location, SubCell.FullCell); }
+		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { yield return Pair.New(Location, SubCell.FullCell); }
 
-		public PPos PxPosition { get; private set; }
-
-		public void SetPxPosition(Actor self, PPos px)
-		{
-			SetPosition( self, px.ToCPos() );
-		}
-
-		public void AdjustPxPosition(Actor self, PPos px) { SetPxPosition(self, px); }
+		public WPos CenterPosition { get; private set; }
+		public void SetPosition(Actor self, WPos pos) { SetPosition(self, pos.ToCPos()); }
+		public void SetVisualPosition(Actor self, WPos pos) { SetPosition(self, pos.ToCPos()); }
 
 		public bool CanEnterCell(CPos cell)
 		{
 			if (!self.World.Map.IsInMap(cell.X, cell.Y)) return false;
 			var type = self.World.GetTerrainType(cell);
-			if (!Info.TerrainTypes.Contains(type))
+			if (!info.TerrainTypes.Contains(type))
 				return false;
 
 			if (self.World.WorldActor.Trait<BuildingInfluence>().GetBuildingAt(cell) != null) return false;
@@ -109,18 +103,18 @@ namespace OpenRA.Mods.RA
 
 		public void SetPosition(Actor self, CPos cell)
 		{
-			if( self.IsInWorld )
+			if (self.IsInWorld)
 				self.World.ActorMap.Remove(self, this);
 
 			Location = cell;
-			PxPosition = Util.CenterOfCell(cell);
+			CenterPosition = cell.CenterPosition;
 
 			var seq = self.World.GetTerrainInfo(cell).IsWater ? "water" : "land";
 			var rs = self.Trait<RenderSprites>();
 			if (seq != rs.anim.CurrentSequence.Name)
 				rs.anim.PlayRepeating(seq);
 
-			if( self.IsInWorld )
+			if (self.IsInWorld)
 				self.World.ActorMap.Add(self, this);
 		}
 

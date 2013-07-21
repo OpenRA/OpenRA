@@ -150,7 +150,7 @@ namespace OpenRA.Mods.RA.Missions
 					var enemies = world.Actors.Where(u => u.Owner == creeps && u.HasTrait<ITargetable>()
 						&& ((u.HasTrait<Building>() && !u.HasTrait<Wall>() && !u.HasTrait<Bridge>()) || u.HasTrait<Mobile>()) && !u.IsDead() && u.IsInWorld);
 
-					var enemy = enemies.OrderBy(u => (attacker.CenterPosition - u.CenterPosition).LengthSquared).FirstOrDefault();
+					var enemy = enemies.ClosestTo(attacker);
 					if (enemy != null)
 						attacker.QueueActivity(new AttackMove.AttackMoveActivity(attacker, new Attack(Target.FromActor(enemy), WRange.FromCells(3))));
 					else

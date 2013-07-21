@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -60,7 +60,7 @@ namespace OpenRA.Mods.RA
 
 		bool IsSuitableCell(Actor actorToDrop, CPos p)
 		{
-			return actorToDrop.Trait<ITeleportable>().CanEnterCell(p);
+			return actorToDrop.Trait<IPositionable>().CanEnterCell(p);
 		}
 
 		void FinishedDropping(Actor self)

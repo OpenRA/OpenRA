@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -19,10 +19,10 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Air
 {
-
-	public class AircraftInfo : ITraitInfo, IFacingInfo, UsesInit<AltitudeInit>, UsesInit<LocationInit>, UsesInit<FacingInit>
+	public class AircraftInfo : ITraitInfo, IFacingInfo, IOccupySpaceInfo, UsesInit<AltitudeInit>, UsesInit<LocationInit>, UsesInit<FacingInit>
 	{
 		public readonly int CruiseAltitude = 30;
+
 		[ActorReference]
 		public readonly string[] RepairBuildings = { "fix" };
 		[ActorReference]
@@ -32,56 +32,47 @@ namespace OpenRA.Mods.RA.Air
 		public readonly int Speed = 1;
 		public readonly string[] LandableTerrainTypes = { };
 
-		public virtual object Create( ActorInitializer init ) { return new Aircraft( init , this ); }
+		public virtual object Create(ActorInitializer init) { return new Aircraft(init, this); }
 		public int GetInitialFacing() { return InitialFacing; }
 	}
 
-	public class Aircraft : IMove, IFacing, IOccupySpace, ISync, INotifyKilled, IIssueOrder, IOrderVoice
+	public class Aircraft : IFacing, IPositionable, ISync, INotifyKilled, IIssueOrder, IOrderVoice
 	{
-		public IDisposable reservation;
+		static readonly Pair<CPos, SubCell>[] NoCells = new Pair<CPos, SubCell>[] { };
 
-		public void UnReserve()
-		{
-			if (reservation != null)
-			{
-				reservation.Dispose();
-				reservation = null;
-			}
-		}
+		readonly AircraftInfo info;
+		readonly Actor self;
 
-		public void Killed(Actor self, AttackInfo e)
-		{
-			UnReserve();
-		}
-
-
-		protected readonly Actor self;
 		[Sync] public int Facing { get; set; }
-		[Sync] public int Altitude { get; set; }
-		[Sync] public PSubPos SubPxPosition;
-		public PPos PxPosition { get { return SubPxPosition.ToPPos(); } }
-		public CPos TopLeft { get { return PxPosition.ToCPos(); } }
+		[Sync] public WPos CenterPosition { get; private set; }
+		public CPos TopLeft { get { return CenterPosition.ToCPos(); } }
+		public IDisposable Reservation;
+		public int ROT { get { return info.ROT; } }
 
-		readonly AircraftInfo Info;
-
-		public Aircraft(ActorInitializer init , AircraftInfo info)
+		public Aircraft(ActorInitializer init, AircraftInfo info)
 		{
+			this.info = info;
 			this.self = init.self;
-			if( init.Contains<LocationInit>() )
-				this.SubPxPosition = Util.CenterOfCell( init.Get<LocationInit, CPos>() ).ToPSubPos();
 
-			this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit,int>() : info.InitialFacing;
-			this.Altitude = init.Contains<AltitudeInit>() ? init.Get<AltitudeInit,int>() : 0;
-			Info = info;
+			if (init.Contains<LocationInit>())
+				SetPosition(self, init.Get<LocationInit, CPos>());
+
+			this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : info.InitialFacing;
+
+			if (init.Contains<AltitudeInit>())
+			{
+				var z = init.Get<AltitudeInit, int>() * 1024 / Game.CellSize;
+				SetPosition(self, CenterPosition + new WVec(0, 0, z - CenterPosition.Z));
+			}
 		}
 
 		public Actor GetActorBelow()
 		{
-			if (self.Trait<IMove>().Altitude != 0)
+			if (self.CenterPosition.Z != 0)
 				return null;	// not on the ground.
 
 			return self.World.FindActorsInBox(self.CenterPosition, self.CenterPosition)
-				.FirstOrDefault( a => a.HasTrait<Reservable>() );
+				.FirstOrDefault(a => a.HasTrait<Reservable>());
 		}
 
 		protected void ReserveSpawnBuilding()
@@ -93,28 +84,39 @@ namespace OpenRA.Mods.RA.Air
 
 			var res = afld.Trait<Reservable>();
 			if (res != null)
-				reservation = res.Reserve(afld, self, this);
+				Reservation = res.Reserve(afld, self, this);
 		}
 
-		public int ROT { get { return Info.ROT; } }
+		public void UnReserve()
+		{
+			if (Reservation != null)
+			{
+				Reservation.Dispose();
+				Reservation = null;
+			}
+		}
+
+		public void Killed(Actor self, AttackInfo e)
+		{
+			UnReserve();
+		}
 
 		public void SetPosition(Actor self, CPos cell)
 		{
-			SetPxPosition(self, Util.CenterOfCell(cell));
+			// Changes position, but not altitude
+			CenterPosition = cell.CenterPosition + new WVec(0, 0, CenterPosition.Z);
 		}
 
-		public void SetPxPosition(Actor self, PPos px)
-		{
-			SubPxPosition = px.ToPSubPos();
-		}
-
-		public void AdjustPxPosition(Actor self, PPos px) { SetPxPosition(self, px); }
+		public void SetPosition(Actor self, WPos pos) { CenterPosition = pos; }
+		public void SetVisualPosition(Actor self, WPos pos) { SetPosition(self, pos); }
 
 		public bool AircraftCanEnter(Actor a)
 		{
-			if (self.AppearsHostileTo(a)) return false;
-			return Info.RearmBuildings.Contains(a.Info.Name)
-				|| Info.RepairBuildings.Contains(a.Info.Name);
+			if (self.AppearsHostileTo(a))
+				return false;
+
+			return info.RearmBuildings.Contains(a.Info.Name)
+				|| info.RepairBuildings.Contains(a.Info.Name);
 		}
 
 		public bool CanEnterCell(CPos location) { return true; }
@@ -123,20 +125,20 @@ namespace OpenRA.Mods.RA.Air
 		{
 			get
 			{
-				decimal ret = Info.Speed;
+				decimal ret = info.Speed;
 				foreach (var t in self.TraitsImplementing<ISpeedModifier>())
 					ret *= t.GetSpeedModifier();
 				return (int)ret;
 			}
 		}
 
-		Pair<CPos, SubCell>[] noCells = new Pair<CPos, SubCell>[] { };
-		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { return noCells; }
+		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { return NoCells; }
 
-		public void TickMove(int speed, int facing)
+		public WVec FlyStep(int facing)
 		{
-			var rawspeed = speed * 7 / (32 * PSubPos.PerPx);
-			SubPxPosition += rawspeed * -Util.SubPxVector[facing];
+			var speed = MovementSpeed * 7 * 1024 / (Game.CellSize * 32);
+			var dir = new WVec(0, -1024, 0).Rotate(WRot.FromFacing(facing));
+			return speed * dir / 1024;
 		}
 
 		public bool CanLand(CPos cell)
@@ -148,15 +150,15 @@ namespace OpenRA.Mods.RA.Air
 				return false;
 
 			var type = self.World.GetTerrainType(cell);
-			return Info.LandableTerrainTypes.Contains(type);
+			return info.LandableTerrainTypes.Contains(type);
 		}
 
 		public IEnumerable<Activity> GetResupplyActivities(Actor a)
 		{
 			var name = a.Info.Name;
-			if (Info.RearmBuildings.Contains(name))
+			if (info.RearmBuildings.Contains(name))
 				yield return new Rearm(self);
-			if (Info.RepairBuildings.Contains(name))
+			if (info.RepairBuildings.Contains(name))
 				yield return new Repair(a);
 		}
 
@@ -226,6 +228,7 @@ namespace OpenRA.Mods.RA.Air
 			cursor = self.World.Map.IsInMap(location) ? "move" : "move-blocked";
 			return true;
 		}
+
 		public bool IsQueued { get; protected set; }
 	}
 }

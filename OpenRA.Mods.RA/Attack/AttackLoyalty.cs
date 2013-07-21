@@ -38,10 +38,9 @@ namespace OpenRA.Mods.RA
 			if (!target.IsInRange(self.CenterPosition, range))
 				return;
 
-			var move = self.TraitOrDefault<IMove>();
 			var facing = self.TraitOrDefault<IFacing>();
 			foreach (var a in Armaments)
-				a.CheckFire(self, this, move, facing, target);
+				a.CheckFire(self, this, facing, target);
 
 			if (target.Actor != null)
 				target.Actor.ChangeOwner(self.Owner);

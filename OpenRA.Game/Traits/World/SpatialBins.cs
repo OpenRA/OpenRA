@@ -45,7 +45,7 @@ namespace OpenRA.Traits
 				for (var i = 0; i <= bins.GetUpperBound(0); i++)
 					bins[i, j].Clear();
 
-			foreach (var a in self.World.ActorsWithTrait<IHasLocation>())
+			foreach (var a in self.World.ActorsWithTrait<IOccupySpace>())
 			{
 				var bounds = a.Actor.ExtendedBounds.Value;
 

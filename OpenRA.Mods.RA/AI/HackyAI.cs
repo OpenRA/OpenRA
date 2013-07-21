@@ -763,7 +763,7 @@ namespace OpenRA.Mods.RA.AI
 			if (!buildableThings.Any()) return null;
 
 			var myUnits = p.World
-				.ActorsWithTrait<IMove>()
+				.ActorsWithTrait<IPositionable>()
 				.Where(a => a.Actor.Owner == p)
 				.Select(a => a.Actor.Info.Name).ToArray();
 
@@ -783,7 +783,7 @@ namespace OpenRA.Mods.RA.AI
 
 		int CountUnits(string unit, Player owner)
 		{
-			return world.ActorsWithTrait<IMove>().Where(a => a.Actor.Owner == owner && a.Actor.Info.Name == unit).Count();
+			return world.ActorsWithTrait<IPositionable>().Where(a => a.Actor.Owner == owner && a.Actor.Info.Name == unit).Count();
 		}
 
 		int? CountBuildingByCommonName(string commonName, Player owner)
@@ -1028,7 +1028,7 @@ namespace OpenRA.Mods.RA.AI
 		{
 			var allEnemyUnits = world.Actors
 				.Where(unit => p.Stances[unit.Owner] == Stance.Enemy && !unit.HasTrait<Husk>() &&
-					unit.HasTrait<ITargetable>() && unit.HasTrait<IHasLocation>()).ToList();
+					unit.HasTrait<ITargetable>()).ToList();
 
 			if (allEnemyUnits.Count > 0)
 				return allEnemyUnits.ClosestTo(pos);
@@ -1048,14 +1048,14 @@ namespace OpenRA.Mods.RA.AI
 
 		List<Actor> FindEnemyConstructionYards()
 		{
-			var bases =  world.Actors.Where(a => p.Stances[a.Owner] == Stance.Enemy && a.HasTrait<IHasLocation>()
-				&& !a.Destroyed && a.HasTrait<BaseBuilding>() && !a.HasTrait<Mobile>()).ToList();
+			var bases = world.Actors.Where(a => p.Stances[a.Owner] == Stance.Enemy && !a.Destroyed
+				&& a.HasTrait<BaseBuilding>() && !a.HasTrait<Mobile>()).ToList();
 			return bases != null ? bases : new List<Actor>();
 		}
 
 		Actor FindEnemyBuildingClosestToPos(WPos pos)
 		{
-			var closestBuilding = world.Actors.Where(a => p.Stances[a.Owner] == Stance.Enemy && a.HasTrait<IHasLocation>()
+			var closestBuilding = world.Actors.Where(a => p.Stances[a.Owner] == Stance.Enemy
 			   && !a.Destroyed && a.HasTrait<Building>()).ClosestTo(pos);
 			return closestBuilding;
 		}
@@ -1145,7 +1145,7 @@ namespace OpenRA.Mods.RA.AI
 
 		void FindNewUnits(Actor self)
 		{
-			var newUnits = self.World.ActorsWithTrait<IMove>()
+			var newUnits = self.World.ActorsWithTrait<IPositionable>()
 				.Where(a => a.Actor.Owner == p && !a.Actor.HasTrait<BaseBuilding>()
 			&& !activeUnits.Contains(a.Actor))
 			.Select(a => a.Actor).ToArray();
@@ -1424,12 +1424,12 @@ namespace OpenRA.Mods.RA.AI
 				aggro[e.Attacker.Owner].Aggro += e.Damage;
 
 			//protected harvesters or building
-			if (self.HasTrait<Harvester>() || self.HasTrait<Building>())
-				if (e.Attacker.HasTrait<IHasLocation>() && (p.Stances[e.Attacker.Owner] == Stance.Enemy))
-				{
-					defenseCenter = e.Attacker.Location;
-					ProtectOwn(e.Attacker);
-				}
+			if ((self.HasTrait<Harvester>() || self.HasTrait<Building>()) &&
+			    p.Stances[e.Attacker.Owner] == Stance.Enemy)
+			{
+				defenseCenter = e.Attacker.Location;
+				ProtectOwn(e.Attacker);
+			}
 		}
 	}
 }

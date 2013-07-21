@@ -17,14 +17,14 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	public class CargoInfo : ITraitInfo
+	public class CargoInfo : ITraitInfo, Requires<IOccupySpaceInfo>
 	{
 		public readonly int MaxWeight = 0;
 		public readonly int PipCount = 0;
 		public readonly string[] Types = { };
 		public readonly int UnloadFacing = 0;
 		public readonly string[] InitialUnits = { };
-		public readonly int minimalUnloadAltitude = 0;
+		public readonly WRange MaximumUnloadAltitude = WRange.Zero;
 
 		public object Create( ActorInitializer init ) { return new Cargo( init, this ); }
 	}
@@ -92,8 +92,8 @@ namespace OpenRA.Mods.RA
 				return false;
 
 			// Cannot unload mid-air
-			var move = self.TraitOrDefault<IMove>();
-			if (move != null && move.Altitude > info.minimalUnloadAltitude)
+			var ios = self.TraitOrDefault<IOccupySpace>();
+			if (ios != null && ios.CenterPosition.Z > info.MaximumUnloadAltitude.Range)
 				return false;
 
 			// TODO: Check if there is a free tile to unload to
@@ -106,8 +106,7 @@ namespace OpenRA.Mods.RA
 				return false;
 
 			// Cannot load mid-air
-			var move = self.TraitOrDefault<IMove>();
-			return move == null || move.Altitude == info.minimalUnloadAltitude;
+			return self.CenterPosition.Z <= info.MaximumUnloadAltitude.Range;
 		}
 
 		public string CursorForOrder(Actor self, Order order)
