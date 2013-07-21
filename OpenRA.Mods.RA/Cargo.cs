@@ -106,7 +106,7 @@ namespace OpenRA.Mods.RA
 				return false;
 
 			// Cannot load mid-air
-			return self.CenterPosition.Z < info.MaximumUnloadAltitude.Range;
+			return self.CenterPosition.Z <= info.MaximumUnloadAltitude.Range;
 		}
 
 		public string CursorForOrder(Actor self, Order order)
