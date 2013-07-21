@@ -386,6 +386,7 @@
 		Types:Husk
 	BelowUnits:
 	BodyOrientation:
+	Chronoshiftable:
 
 ^HelicopterHusk:
 	Inherits: ^Husk
