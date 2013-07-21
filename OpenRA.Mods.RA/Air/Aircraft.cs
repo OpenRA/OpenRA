@@ -54,11 +54,12 @@ namespace OpenRA.Mods.RA.Air
 			UnReserve();
 		}
 
-
 		protected readonly Actor self;
 		[Sync] public int Facing { get; set; }
 		[Sync] public int Altitude { get; set; }
 		[Sync] public PSubPos SubPxPosition;
+
+		public WPos CenterPosition { get { return PxPosition.ToWPos(Altitude); } }
 		public PPos PxPosition { get { return SubPxPosition.ToPPos(); } }
 		public CPos TopLeft { get { return PxPosition.ToCPos(); } }
 
@@ -109,6 +110,14 @@ namespace OpenRA.Mods.RA.Air
 		}
 
 		public void AdjustPxPosition(Actor self, PPos px) { SetPxPosition(self, px); }
+
+		public void SetPosition(Actor self, WPos pos)
+		{
+			// TODO: Handle altitude
+			SubPxPosition = PPos.FromWPos(pos).ToPSubPos();
+		}
+
+		public void SetVisualPosition(Actor self, WPos pos) { SetPosition(self, pos); }
 
 		public bool AircraftCanEnter(Actor a)
 		{

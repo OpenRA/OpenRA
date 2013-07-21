@@ -61,6 +61,7 @@ namespace OpenRA.Mods.RA
 		public CPos TopLeft { get { return location; } }
 
 		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { yield return Pair.New(TopLeft, SubCell.FullCell); }
+		public WPos CenterPosition { get { return PxPosition.ToWPos(0); } }
 		public PPos PxPosition { get { return Util.CenterOfCell( location ); } }
 		public int Altitude { get { return 0; } set { } }
 	}

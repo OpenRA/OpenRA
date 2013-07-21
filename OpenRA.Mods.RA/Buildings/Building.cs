@@ -110,6 +110,7 @@ namespace OpenRA.Mods.RA.Buildings
 		public void Unlock() { Locked = false; }
 
 		public CPos TopLeft { get { return topLeft; } }
+		public WPos CenterPosition { get { return PxPosition.ToWPos(0); } }
 		public PPos PxPosition { get { return pxPosition; } }
 		public int Altitude { get { return 0; } set { } }
 

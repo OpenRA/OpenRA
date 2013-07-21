@@ -100,6 +100,7 @@ namespace OpenRA.Traits
 	public interface IOccupySpace
 	{
 		PPos PxPosition { get; }
+		WPos CenterPosition { get; }
 		CPos TopLeft { get; }
 		IEnumerable<Pair<CPos, SubCell>> OccupiedCells();
 
@@ -144,6 +145,9 @@ namespace OpenRA.Traits
 		void SetPosition(Actor self, CPos cell);
 		void SetPxPosition(Actor self, PPos px);
 		void AdjustPxPosition(Actor self, PPos px);	/* works like SetPxPosition, but visual only */
+
+		void SetPosition(Actor self, WPos pos);
+		void SetVisualPosition(Actor self, WPos pos);
 	}
 
 	public interface INotifyBlockingMove { void OnNotifyBlockingMove(Actor self, Actor blocking); }

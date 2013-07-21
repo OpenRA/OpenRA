@@ -85,15 +85,19 @@ namespace OpenRA.Mods.RA
 		public CPos TopLeft { get { return Location; } }
 		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { yield return Pair.New( Location, SubCell.FullCell); }
 
+		public WPos CenterPosition { get { return PxPosition.ToWPos(Altitude); } }
 		public PPos PxPosition { get; private set; }
 		public int Altitude { get { return 0; } set { } }
 
 		public void SetPxPosition(Actor self, PPos px)
 		{
-			SetPosition( self, px.ToCPos() );
+			SetPosition(self, px.ToCPos());
 		}
 
 		public void AdjustPxPosition(Actor self, PPos px) { SetPxPosition(self, px); }
+
+		public void SetPosition(Actor self, WPos pos) { SetPosition(self, pos.ToCPos()); }
+		public void SetVisualPosition(Actor self, WPos pos) { SetPosition(self, pos.ToCPos()); }
 
 		public bool CanEnterCell(CPos cell)
 		{

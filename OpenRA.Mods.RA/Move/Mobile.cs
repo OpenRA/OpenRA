@@ -167,6 +167,7 @@ namespace OpenRA.Mods.RA.Move
 
 		public int ROT { get { return Info.ROT; } }
 
+		public WPos CenterPosition { get { return PxPosition.ToWPos(Altitude); } }
 		[Sync] public PPos PxPosition { get; private set; }
 		[Sync] public CPos fromCell { get { return __fromCell; } }
 		[Sync] public CPos toCell { get { return __toCell; } }
@@ -229,6 +230,18 @@ namespace OpenRA.Mods.RA.Move
 		public void AdjustPxPosition(Actor self, PPos px)	/* visual hack only */
 		{
 			PxPosition = px;
+		}
+
+		public void SetPosition(Actor self, WPos pos)
+		{
+			// TODO: Handle altitude
+			SetPxPosition(self, PPos.FromWPos(pos));
+		}
+
+		public void SetVisualPosition(Actor self, WPos pos)
+		{
+			// TODO: Handle altitude
+			AdjustPxPosition(self, PPos.FromWPos(pos));
 		}
 
 		public IEnumerable<IOrderTargeter> Orders { get { yield return new MoveOrderTargeter(Info); } }
