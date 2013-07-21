@@ -20,7 +20,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.RA.Air
 {
 
-	public class AircraftInfo : ITraitInfo, IFacingInfo, UsesInit<AltitudeInit>, UsesInit<LocationInit>, UsesInit<FacingInit>
+	public class AircraftInfo : ITraitInfo, IFacingInfo, IOccupySpaceInfo, UsesInit<AltitudeInit>, UsesInit<LocationInit>, UsesInit<FacingInit>
 	{
 		public readonly int CruiseAltitude = 30;
 		[ActorReference]
@@ -78,7 +78,7 @@ namespace OpenRA.Mods.RA.Air
 
 		public Actor GetActorBelow()
 		{
-			if (self.Trait<IOccupySpace>().Altitude != 0)
+			if (Altitude != 0)
 				return null;	// not on the ground.
 
 			return self.World.FindActorsInBox(self.CenterPosition, self.CenterPosition)

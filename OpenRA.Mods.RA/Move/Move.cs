@@ -111,15 +111,6 @@ namespace OpenRA.Mods.RA.Move
 		public override Activity Tick(Actor self)
 		{
 			var mobile = self.Trait<Mobile>();
-			var info = self.Info.Traits.Get<MobileInfo>();
-
-			if (mobile.Altitude != info.Altitude)
-			{
-				if (mobile.Altitude < info.Altitude)
-					++mobile.Altitude;
-
-				return this;
-			}
 
 			if (destination == mobile.toCell)
 				return NextActivity;

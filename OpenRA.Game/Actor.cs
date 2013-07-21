@@ -135,10 +135,11 @@ namespace OpenRA
 			var ios = occupySpace.Value;
 			if (ios != null)
 			{
-				loc -= new PVecInt(0, ios.Altitude);
+				var altitude = ios.CenterPosition.Z * Game.CellSize / 1024;
+				loc -= new PVecInt(0, altitude);
 
 				if (useAltitude)
-					size = new PVecInt(size.X, size.Y + ios.Altitude);
+					size = new PVecInt(size.X, size.Y + altitude);
 			}
 
 			return new Rectangle(loc.X, loc.Y, size.X, size.Y);

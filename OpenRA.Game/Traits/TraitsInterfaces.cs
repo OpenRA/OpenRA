@@ -97,15 +97,12 @@ namespace OpenRA.Traits
 	public interface IVisibilityModifier { bool IsVisible(Actor self, Player byPlayer); }
 	public interface IRadarColorModifier { Color RadarColorOverride(Actor self); }
 
+	public interface IOccupySpaceInfo { }
 	public interface IOccupySpace
 	{
 		WPos CenterPosition { get; }
 		CPos TopLeft { get; }
 		IEnumerable<Pair<CPos, SubCell>> OccupiedCells();
-
-		// TODO: We shouldn't expose the setter here
-		// This will be going away soon, so isn't a big deal
-		int Altitude { get; set; }
 	}
 
 	public static class IOccupySpaceExts

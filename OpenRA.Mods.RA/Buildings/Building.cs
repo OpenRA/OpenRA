@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA.Buildings
 	public class GivesBuildableAreaInfo : TraitInfo<GivesBuildableArea> {}
 	public class GivesBuildableArea {}
 
-	public class BuildingInfo : ITraitInfo, UsesInit<LocationInit>
+	public class BuildingInfo : ITraitInfo, IOccupySpaceInfo, UsesInit<LocationInit>
 	{
 		[Desc("If negative, it will drain power, if positive, it will provide power.")]
 		public readonly int Power = 0;
@@ -96,7 +96,6 @@ namespace OpenRA.Mods.RA.Buildings
 		[Sync] readonly CPos topLeft;
 
 		PowerManager PlayerPower;
-		PPos pxPosition;
 
 		[Sync] public bool Locked;	/* shared activity lock: undeploy, sell, capture, etc */
 
@@ -110,9 +109,7 @@ namespace OpenRA.Mods.RA.Buildings
 		public void Unlock() { Locked = false; }
 
 		public CPos TopLeft { get { return topLeft; } }
-		public WPos CenterPosition { get { return PxPosition.ToWPos(0); } }
-		public PPos PxPosition { get { return pxPosition; } }
-		public int Altitude { get { return 0; } set { } }
+		public WPos CenterPosition { get; private set; }
 
 		public IEnumerable<string> ProvidesPrerequisites { get { yield return self.Info.Name; } }
 
@@ -126,8 +123,7 @@ namespace OpenRA.Mods.RA.Buildings
 			occupiedCells = FootprintUtils.UnpathableTiles( self.Info.Name, Info, TopLeft )
 				.Select(c => Pair.New(c, SubCell.FullCell)).ToArray();
 
-			var position = topLeft.CenterPosition + FootprintUtils.CenterOffset(Info);
-			pxPosition = PPos.FromWPosHackZ(position);
+			CenterPosition = topLeft.CenterPosition + FootprintUtils.CenterOffset(Info);
 		}
 
 		public int GetPowerUsage()

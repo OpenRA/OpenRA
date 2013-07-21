@@ -120,8 +120,6 @@ namespace OpenRA.Mods.RA
 				return;
 
 			var barrel = Barrels[Burst % Barrels.Length];
-			var destios = target.IsActor ? target.Actor.TraitOrDefault<IOccupySpace>() : null;
-
 			var muzzlePosition = self.CenterPosition + MuzzleOffset(self, barrel);
 			var legacyMuzzlePosition = PPos.FromWPos(muzzlePosition);
 			var legacyMuzzleAltitude = Game.CellSize*muzzlePosition.Z/1024;
@@ -135,8 +133,8 @@ namespace OpenRA.Mods.RA
 				src = legacyMuzzlePosition,
 				srcAltitude = legacyMuzzleAltitude,
 
-				dest = target.CenterLocation,
-				destAltitude = destios != null ? destios.Altitude : 0,
+				dest = PPos.FromWPos(target.CenterPosition),
+				destAltitude = target.CenterPosition.Z * Game.CellSize / 1024,
 
 				facing = legacyFacing,
 

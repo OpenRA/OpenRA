@@ -16,7 +16,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	class HuskInfo : ITraitInfo, IFacingInfo
+	class HuskInfo : ITraitInfo, IOccupySpaceInfo, IFacingInfo
 	{
 		public readonly string[] AllowedTerrain = { };
 
@@ -35,7 +35,6 @@ namespace OpenRA.Mods.RA
 		[Sync] public int Facing { get; set; }
 
 		public int ROT { get { return 0; } }
-		public int Altitude { get { return 0; } set { } }
 
 		public Husk(ActorInitializer init, HuskInfo info)
 		{

@@ -28,7 +28,7 @@
 		Types: Vehicle
 		MaxWeight: 1
 		PipCount: 1
-		minimalUnloadAltitude: 25
+		MaximumUnloadAltitude: 800
 	LeavesHusk:
 		HuskActor: CARRYALL.Husk
 

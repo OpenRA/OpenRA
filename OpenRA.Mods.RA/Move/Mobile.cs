@@ -19,7 +19,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.RA.Move
 {
 	[Desc("Unit is able to move.")]
-	public class MobileInfo : ITraitInfo, IFacingInfo, UsesInit<FacingInit>, UsesInit<LocationInit>, UsesInit<SubCellInit>
+	public class MobileInfo : ITraitInfo, IOccupySpaceInfo, IFacingInfo, UsesInit<FacingInit>, UsesInit<LocationInit>, UsesInit<SubCellInit>
 	{
 		[FieldLoader.LoadUsing("LoadSpeeds")]
 		[Desc("Set Water: 0 for ground units and lower the value on rough terrain.")]
@@ -35,7 +35,6 @@ namespace OpenRA.Mods.RA.Move
 		public readonly bool OnRails = false;
 		[Desc("Allow multiple (infantry) units in one cell.")]
 		public readonly bool SharesCell = false;
-		public readonly int Altitude;
 
 		public virtual object Create(ActorInitializer init) { return new Mobile(init, this); }
 
@@ -163,12 +162,9 @@ namespace OpenRA.Mods.RA.Move
 			set { __facing = value; }
 		}
 
-		[Sync] public int Altitude { get; set; }
-
 		public int ROT { get { return Info.ROT; } }
 
-		public WPos CenterPosition { get { return PxPosition.ToWPos(Altitude); } }
-		[Sync] public PPos PxPosition { get; private set; }
+		[Sync] public WPos CenterPosition { get; private set; }
 		[Sync] public CPos fromCell { get { return __fromCell; } }
 		[Sync] public CPos toCell { get { return __toCell; } }
 
@@ -209,7 +205,12 @@ namespace OpenRA.Mods.RA.Move
 			}
 
 			this.Facing = init.Contains<FacingInit>() ? init.Get<FacingInit, int>() : info.InitialFacing;
-			this.Altitude = init.Contains<AltitudeInit>() ? init.Get<AltitudeInit, int>() : 0;
+
+			if (init.Contains<AltitudeInit>())
+			{
+				var z = init.Get<AltitudeInit, int>() * 1024 / Game.CellSize;
+				SetVisualPosition(self, CenterPosition + new WVec(0, 0, z - CenterPosition.Z));
+			}
 		}
 
 		public void SetPosition(Actor self, CPos cell)
@@ -219,24 +220,17 @@ namespace OpenRA.Mods.RA.Move
 			FinishedMoving(self);
 		}
 
-		public void AdjustPxPosition(Actor self, PPos px)	/* visual hack only */
-		{
-			PxPosition = px;
-		}
-
 		public void SetPosition(Actor self, WPos pos)
 		{
-			// TODO: Handle altitude
 			var cell = pos.ToCPos();
 			SetLocation(cell,fromSubCell, cell,fromSubCell);
-			PxPosition = PPos.FromWPos(pos);
+			SetVisualPosition(self, pos);
 			FinishedMoving(self);
 		}
 
 		public void SetVisualPosition(Actor self, WPos pos)
 		{
-			// TODO: Handle altitude
-			AdjustPxPosition(self, PPos.FromWPos(pos));
+			CenterPosition = pos;
 		}
 
 		public IEnumerable<IOrderTargeter> Orders { get { yield return new MoveOrderTargeter(Info); } }

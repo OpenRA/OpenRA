@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA.Render
 
 		public void Tick(Actor self)
 		{
-			var isFlying = self.Trait<IOccupySpace>().Altitude > 0 && !self.IsDead();
+			var isFlying = self.CenterPosition.Z > 0 && !self.IsDead();
 			if (isFlying ^ (rotorAnim.CurrentSequence.Name != "rotor"))
 				return;
 

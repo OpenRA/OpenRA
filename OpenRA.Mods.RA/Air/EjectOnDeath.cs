@@ -20,6 +20,7 @@ namespace OpenRA.Mods.RA
 		public readonly string PilotActor = "E1";
 		public readonly int SuccessRate = 50;
 		public readonly string ChuteSound = "chute1.aud";
+		public readonly WRange MinimumEjectHeight = new WRange(427);
 	}
 
 	public class EjectOnDeath : INotifyKilled
@@ -29,14 +30,15 @@ namespace OpenRA.Mods.RA
 			var info = self.Info.Traits.Get<EjectOnDeathInfo>();
 			var pilot = self.World.CreateActor(false, info.PilotActor.ToLowerInvariant(),
 				new TypeDictionary { new OwnerInit(self.Owner) });
-			var r = self.World.SharedRandom.Next(1, 100);
-			var aircraft = self.Trait<IPositionable>();
 
-			if (IsSuitableCell(pilot, self.Location) && r > 100 - info.SuccessRate && aircraft.Altitude > 10
+			var r = self.World.SharedRandom.Next(1, 100);
+			var cp = self.CenterPosition;
+
+			if (IsSuitableCell(pilot, self.Location) && r > 100 - info.SuccessRate && cp.Z > info.MinimumEjectHeight.Range
 				&& self.Owner.WinState != WinState.Lost)
 			{
-				self.World.AddFrameEndTask(w => w.Add(new Parachute(pilot, self.CenterPosition)));
-				Sound.Play(info.ChuteSound, self.CenterPosition);
+				self.World.AddFrameEndTask(w => w.Add(new Parachute(pilot, cp)));
+				Sound.Play(info.ChuteSound, cp);
 			}
 			else
 				pilot.Destroy();

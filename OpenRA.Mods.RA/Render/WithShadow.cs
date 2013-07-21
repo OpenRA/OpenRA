@@ -14,7 +14,6 @@ using System.Linq;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 using OpenRA.Mods.RA.Air;
-using OpenRA.Mods.RA.Move;
 
 namespace OpenRA.Mods.RA.Render
 {
@@ -27,13 +26,14 @@ namespace OpenRA.Mods.RA.Render
 			var ios = self.Trait<IOccupySpace>();
 
 			/* rude hack */
-			var visualOffset = ((ios is Helicopter || ios is Mobile) && ios.Altitude > 0)
+			var flying = ios.CenterPosition.Z > 0;
+			var visualOffset = (ios is Helicopter && flying)
 				? (int)Math.Abs((self.ActorID + Game.LocalTick) / 5 % 4 - 1) - 1 : 0;
 
 			var shadowSprites = r.Select(a => a.WithPalette(wr.Palette("shadow"))
 				.WithPos(a.Pos - new WVec(0, 0, a.Pos.Z)).WithZOffset(a.ZOffset + a.Pos.Z));
 
-			var flyingSprites = (ios.Altitude <= 0) ? r :
+			var flyingSprites = !flying ? r :
 				r.Select(a => a.WithPos(a.Pos - new WVec(0,0,43*visualOffset)));
 
 			return shadowSprites.Concat(flyingSprites);

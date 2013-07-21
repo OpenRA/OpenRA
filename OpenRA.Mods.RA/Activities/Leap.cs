@@ -55,7 +55,7 @@ namespace OpenRA.Mods.RA.Activities
 			if (ticks == 0 && IsCanceled)
 				return NextActivity;
 
-			mobile.AdjustPxPosition(self, PPos.FromWPosHackZ(WPos.LerpQuadratic(from, to, angle, ++ticks, length)));
+			mobile.SetVisualPosition(self, WPos.LerpQuadratic(from, to, angle, ++ticks, length));
 			if (ticks >= length)
 			{
 				mobile.SetLocation(mobile.toCell, mobile.toSubCell, mobile.toCell, mobile.toSubCell);
