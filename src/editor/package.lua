@@ -53,3 +53,12 @@ function ide:GetMainFrame() return self.frame end
 function ide:GetDocument(ed) return self.openDocuments[ed:GetId()] end
 function ide:GetInterpreter() return self.interpreter end
 function ide:GetConfig() return self.config end
+
+function ide:AddInterpreter(name, interpreter)
+  self.interpreters[name] = setmetatable(interpreter, ide.proto.Interpreter)
+  UpdateInterpreters()
+end
+function ide:RemoveInterpreter(name)
+  self.interpreters[name] = nil
+  UpdateInterpreters()
+end
