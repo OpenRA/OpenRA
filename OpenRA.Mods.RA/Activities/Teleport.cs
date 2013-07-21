@@ -1,4 +1,4 @@
-﻿#region Copyright & License Information
+#region Copyright & License Information
 /*
  * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
@@ -34,7 +34,7 @@ namespace OpenRA.Mods.RA.Activities
 			Sound.Play(sound, self.CenterPosition);
 			Sound.Play(sound, destination.CenterPosition);
 
-			self.Trait<ITeleportable>().SetPosition(self, destination);
+			self.Trait<IPositionable>().SetPosition(self, destination);
 			self.Generation++;
 
 			if (killCargo && self.HasTrait<Cargo>())
@@ -68,7 +68,7 @@ namespace OpenRA.Mods.RA.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			self.Trait<ITeleportable>().SetPosition(self, destination);
+			self.Trait<IPositionable>().SetPosition(self, destination);
 			self.Generation++;
 			return NextActivity;
 		}

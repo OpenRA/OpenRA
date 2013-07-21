@@ -13,7 +13,7 @@ using OpenRA.FileFormats;
 
 namespace OpenRA.Traits
 {
-	class WaypointInfo : ITraitInfo
+	class WaypointInfo : ITraitInfo, IOccupySpaceInfo
 	{
 		public object Create( ActorInitializer init ) { return new Waypoint( init ); }
 	}
@@ -28,8 +28,7 @@ namespace OpenRA.Traits
 		}
 
 		public CPos TopLeft { get { return location; } }
-
 		public IEnumerable<Pair<CPos, SubCell>> OccupiedCells() { yield break; }
-		public PPos PxPosition { get { return Util.CenterOfCell(location); } }
+		public WPos CenterPosition { get { return location.CenterPosition; } }
 	}
 }

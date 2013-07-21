@@ -96,10 +96,11 @@ namespace OpenRA.Traits
 
 	public interface IVisibilityModifier { bool IsVisible(Actor self, Player byPlayer); }
 	public interface IRadarColorModifier { Color RadarColorOverride(Actor self); }
-	public interface IHasLocation { PPos PxPosition { get; } }
 
-	public interface IOccupySpace : IHasLocation
+	public interface IOccupySpaceInfo { }
+	public interface IOccupySpace
 	{
+		WPos CenterPosition { get; }
 		CPos TopLeft { get; }
 		IEnumerable<Pair<CPos, SubCell>> OccupiedCells();
 	}
@@ -134,15 +135,14 @@ namespace OpenRA.Traits
 	public interface ITags { IEnumerable<TagType> GetTags(); }
 	public interface ISelectionBar { float GetValue(); Color GetColor(); }
 
-	public interface ITeleportable : IHasLocation /* crap name! */
+	public interface IPositionable : IOccupySpace
 	{
 		bool CanEnterCell(CPos location);
 		void SetPosition(Actor self, CPos cell);
-		void SetPxPosition(Actor self, PPos px);
-		void AdjustPxPosition(Actor self, PPos px);	/* works like SetPxPosition, but visual only */
+		void SetPosition(Actor self, WPos pos);
+		void SetVisualPosition(Actor self, WPos pos);
 	}
 
-	public interface IMove : ITeleportable { int Altitude { get; set; } }
 	public interface INotifyBlockingMove { void OnNotifyBlockingMove(Actor self, Actor blocking); }
 
 	public interface IFacing

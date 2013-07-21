@@ -26,8 +26,6 @@ namespace OpenRA
 		public readonly uint ActorID;
 
 		Lazy<IOccupySpace> occupySpace;
-		IHasLocation HasLocation;
-		Lazy<IMove> Move;
 		Lazy<IFacing> Facing;
 
 		public Cached<Rectangle> Bounds;
@@ -36,25 +34,8 @@ namespace OpenRA
 		public IOccupySpace OccupiesSpace { get { return occupySpace.Value; } }
 
 		public CPos Location { get { return occupySpace.Value.TopLeft; } }
-
-		public PPos CenterLocation
-		{
-			get
-			{
-				if (HasLocation == null)
-					HasLocation = Trait<IHasLocation>();
-				return HasLocation.PxPosition;
-			}
-		}
-
-		public WPos CenterPosition
-		{
-			get
-			{
-				var altitude = Move.Value != null ? Move.Value.Altitude : 0;
-				return CenterLocation.ToWPos(altitude);
-			}
-		}
+		public PPos CenterLocation { get { return PPos.FromWPos(occupySpace.Value.CenterPosition); } }
+		public WPos CenterPosition { get { return occupySpace.Value.CenterPosition; } }
 
 		public WRot Orientation
 		{
@@ -93,7 +74,6 @@ namespace OpenRA
 					AddTrait(trait.Create(init));
 			}
 
-			Move = Lazy.New(() => TraitOrDefault<IMove>());
 			Facing = Lazy.New(() => TraitOrDefault<IFacing>());
 
 			Size = Lazy.New(() =>
@@ -152,13 +132,14 @@ namespace OpenRA
 				loc += new PVecInt(si.Bounds[2], si.Bounds[3]);
 			}
 
-			var move = Move.Value;
-			if (move != null)
+			var ios = occupySpace.Value;
+			if (ios != null)
 			{
-				loc -= new PVecInt(0, move.Altitude);
+				var altitude = ios.CenterPosition.Z * Game.CellSize / 1024;
+				loc -= new PVecInt(0, altitude);
 
 				if (useAltitude)
-					size = new PVecInt(size.X, size.Y + move.Altitude);
+					size = new PVecInt(size.X, size.Y + altitude);
 			}
 
 			return new Rectangle(loc.X, loc.Y, size.X, size.Y);

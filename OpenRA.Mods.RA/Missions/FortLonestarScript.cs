@@ -79,11 +79,10 @@ namespace OpenRA.Mods.RA.Missions
 		{
 			var enemies = world.Actors.Where(u => u.IsInWorld && !u.IsDead() && (u.Owner == multi0)
 				&& ((u.HasTrait<Building>() && !u.HasTrait<Mobile>())));
-			var targetEnemy = enemies.OrderBy(u => (self.CenterPosition - u.CenterPosition).LengthSquared).FirstOrDefault();
+
+			var targetEnemy = enemies.ClosestTo(self);
 			if (targetEnemy != null)
-			{
 				self.QueueActivity(new AttackMove.AttackMoveActivity(self, new Attack(Target.FromActor(targetEnemy), WRange.FromCells(6))));
-			}
 		}
 
 		void SendVehicles()

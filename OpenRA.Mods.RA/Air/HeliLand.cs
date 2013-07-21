@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -14,27 +14,27 @@ namespace OpenRA.Mods.RA.Air
 {
 	class HeliLand : Activity
 	{
-		public HeliLand(bool requireSpace, int minimalAltitude)
+		bool requireSpace;
+
+		public HeliLand(bool requireSpace)
 		{
 			this.requireSpace = requireSpace;
-			this.minimalAltitude = minimalAltitude;
 		}
-
-		bool requireSpace;
-		int minimalAltitude = 0;
 
 		public override Activity Tick(Actor self)
 		{
-			if (IsCanceled) return NextActivity;
-			var aircraft = self.Trait<Aircraft>();
-			if (aircraft.Altitude == minimalAltitude)
+			if (IsCanceled)
 				return NextActivity;
 
-			if (requireSpace && !aircraft.CanLand(self.Location))
+			var helicopter = self.Trait<Helicopter>();
+
+			if (requireSpace && !helicopter.CanLand(self.Location))
 				return this;
 
-			--aircraft.Altitude;
-			return this;
+			if (HeliFly.AdjustAltitude(self, helicopter, helicopter.Info.LandAltitude))
+			    return this;
+
+			return NextActivity;
 		}
 	}
 }

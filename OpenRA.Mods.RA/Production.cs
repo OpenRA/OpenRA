@@ -31,13 +31,15 @@ namespace OpenRA.Mods.RA
 	public class ExitInfo : TraitInfo<Exit>
 	{
 		public readonly int2 SpawnOffset = int2.Zero;	// in px relative to CenterLocation
-		public readonly int2 ExitCell = int2.Zero;			// in cells relative to TopLeft
+		public readonly int2 ExitCell = int2.Zero;		// in cells relative to TopLeft
 		public readonly int Facing = -1;
 
-		public PVecInt SpawnOffsetVector { get { return (PVecInt)SpawnOffset; } }
+		// TODO: Push this conversion into the yaml
+		public WVec SpawnOffsetVector { get { return new WVec(SpawnOffset.X, SpawnOffset.Y, 0) * 1024 / Game.CellSize; } }
 		public CVec ExitCellVector { get { return (CVec)ExitCell; } }
 	}
-	public class Exit {}
+
+	public class Exit { }
 
 	public class Production
 	{
@@ -50,7 +52,7 @@ namespace OpenRA.Mods.RA
 		public void DoProduction(Actor self, ActorInfo producee, ExitInfo exitinfo)
 		{
 			var exit = self.Location + exitinfo.ExitCellVector;
-			var spawn = (self.Trait<IHasLocation>().PxPosition + exitinfo.SpawnOffsetVector).ToWPos(0);
+			var spawn = self.CenterPosition + exitinfo.SpawnOffsetVector;
 			var to = exit.CenterPosition;
 
 			var fi = producee.Traits.Get<IFacingInfo>();
@@ -65,8 +67,8 @@ namespace OpenRA.Mods.RA
 
 			// TODO: Move this into an *Init
 			// TODO: We should be adjusting the actual position for aircraft, not just visuals.
-			var teleportable = newUnit.Trait<ITeleportable>();
-			teleportable.AdjustPxPosition(newUnit, PPos.FromWPos(spawn));
+			var teleportable = newUnit.Trait<IPositionable>();
+			teleportable.SetVisualPosition(newUnit, spawn);
 
 			// TODO: Generalize this for non-mobile (e.g. aircraft) too
 			// Remember to update the Enter activity too
@@ -74,8 +76,8 @@ namespace OpenRA.Mods.RA
 			if (mobile != null)
 			{
 				// Animate the spawn -> exit transition
-				var speed = mobile.WorldMovementSpeedForCell(newUnit, exit);
-				var length = speed > 0 ? (int)((to - spawn).Length * 3 / speed) : 0;
+				var speed = mobile.MovementSpeedForCell(newUnit, exit);
+				var length = speed > 0 ? (to - spawn).Length / speed : 0;
 				newUnit.QueueActivity(new Drag(spawn, to, length));
 			}
 
@@ -104,7 +106,7 @@ namespace OpenRA.Mods.RA
 			var helicopter = newUnit.TraitOrDefault<Helicopter>();
 			if (helicopter != null)
 			{
-				newUnit.QueueActivity(new HeliFly(Util.CenterOfCell(rp.rallyPoint)));
+				newUnit.QueueActivity(new HeliFly(rp.rallyPoint));
 				return rp.rallyPoint;
 			}
 

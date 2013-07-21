@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -16,42 +16,56 @@ namespace OpenRA.Mods.RA.Air
 {
 	class HeliFly : Activity
 	{
-		public readonly PPos Dest;
-		public HeliFly(PPos dest)
+		readonly WPos pos;
+
+		public HeliFly(WPos pos) { this.pos = pos; }
+		public HeliFly(CPos pos) { this.pos = pos.CenterPosition; }
+
+		public static bool AdjustAltitude(Actor self, Helicopter helicopter, WRange targetAltitude)
 		{
-			Dest = dest;
+			var altitude = helicopter.CenterPosition.Z;
+			if (altitude == targetAltitude.Range)
+				return false;
+
+			var delta = helicopter.Info.AltitudeVelocity.Range;
+			var dz = (targetAltitude.Range - altitude).Clamp(-delta, delta);
+			helicopter.SetPosition(self, helicopter.CenterPosition + new WVec(0, 0, dz));
+
+			return true;
 		}
 
 		public override Activity Tick(Actor self)
 		{
-			if (IsCanceled)	return NextActivity;
+			if (IsCanceled)
+				return NextActivity;
 
-			var info = self.Info.Traits.Get<HelicopterInfo>();
-			var aircraft = self.Trait<Aircraft>();
+			var helicopter = self.Trait<Helicopter>();
 
-			if (aircraft.Altitude != info.CruiseAltitude)
-			{
-				aircraft.Altitude += Math.Sign(info.CruiseAltitude - aircraft.Altitude);
+			var cruiseAltitude = new WRange(helicopter.Info.CruiseAltitude * 1024 / Game.CellSize);
+			if (HeliFly.AdjustAltitude(self, helicopter, cruiseAltitude))
 				return this;
-			}
 
-			var dist = Dest - aircraft.PxPosition;
-			if (Math.Abs(dist.X) < 2 && Math.Abs(dist.Y) < 2)
+			// Rotate towards the target
+			var dist = pos - self.CenterPosition;
+			var desiredFacing = Util.GetFacing(dist, helicopter.Facing);
+			helicopter.Facing = Util.TickFacing(helicopter.Facing, desiredFacing, helicopter.ROT);
+
+			// The next move would overshoot, so just set the final position
+			var move = helicopter.FlyStep(desiredFacing);
+			if (dist.HorizontalLengthSquared < move.HorizontalLengthSquared)
 			{
-				aircraft.SubPxPosition = Dest.ToPSubPos();
+				helicopter.SetPosition(self, pos + new WVec(0, 0, cruiseAltitude.Range - pos.Z));
 				return NextActivity;
 			}
 
-			var desiredFacing = Util.GetFacing(dist, aircraft.Facing);
-			aircraft.Facing = Util.TickFacing(aircraft.Facing, desiredFacing, aircraft.ROT);
-			aircraft.TickMove( PSubPos.PerPx * aircraft.MovementSpeed, desiredFacing );
+			helicopter.SetPosition(self, helicopter.CenterPosition + move);
 
 			return this;
 		}
 
-		public override IEnumerable<Target> GetTargets( Actor self )
+		public override IEnumerable<Target> GetTargets(Actor self)
 		{
-			yield return Target.FromPos(Dest);
+			yield return Target.FromPos(pos);
 		}
 	}
 }

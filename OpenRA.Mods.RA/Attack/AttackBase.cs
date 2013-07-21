@@ -89,12 +89,12 @@ namespace OpenRA.Mods.RA
 
 		public virtual void DoAttack(Actor self, Target target)
 		{
-			if( !CanAttack( self, target ) ) return;
+			if (!CanAttack(self, target))
+				return;
 
-			var move = self.TraitOrDefault<IMove>();
 			var facing = self.TraitOrDefault<IFacing>();
 			foreach (var a in Armaments)
-				a.CheckFire(self, this, move, facing, target);
+				a.CheckFire(self, this, facing, target);
 		}
 
 		public IEnumerable<IOrderTargeter> Orders

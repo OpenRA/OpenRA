@@ -94,7 +94,7 @@ namespace OpenRA.Mods.RA
 
 		public bool CanJumpTo(CPos xy, bool ignoreVis)
 		{
-			var movement = self.TraitOrDefault<IMove>();
+			var movement = self.TraitOrDefault<IPositionable>();
 
 			if (chargeTick <= 0 // Can jump
 				&& (self.Location - xy).Length <= Info.JumpDistance // Within jump range

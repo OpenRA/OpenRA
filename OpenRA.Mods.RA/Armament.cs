@@ -99,7 +99,7 @@ namespace OpenRA.Mods.RA
 
 		// Note: facing is only used by the legacy positioning code
 		// The world coordinate model uses Actor.Orientation
-		public void CheckFire(Actor self, AttackBase attack, IMove move, IFacing facing, Target target)
+		public void CheckFire(Actor self, AttackBase attack, IFacing facing, Target target)
 		{
 			if (FireDelay > 0) return;
 
@@ -120,8 +120,6 @@ namespace OpenRA.Mods.RA
 				return;
 
 			var barrel = Barrels[Burst % Barrels.Length];
-			var destMove = target.IsActor ? target.Actor.TraitOrDefault<IMove>() : null;
-
 			var muzzlePosition = self.CenterPosition + MuzzleOffset(self, barrel);
 			var legacyMuzzlePosition = PPos.FromWPos(muzzlePosition);
 			var legacyMuzzleAltitude = Game.CellSize*muzzlePosition.Z/1024;
@@ -135,8 +133,8 @@ namespace OpenRA.Mods.RA
 				src = legacyMuzzlePosition,
 				srcAltitude = legacyMuzzleAltitude,
 
-				dest = target.CenterLocation,
-				destAltitude = destMove != null ? destMove.Altitude : 0,
+				dest = PPos.FromWPos(target.CenterPosition),
+				destAltitude = target.CenterPosition.Z * Game.CellSize / 1024,
 
 				facing = legacyFacing,
 
