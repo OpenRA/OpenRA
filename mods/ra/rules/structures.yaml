@@ -291,17 +291,23 @@ TSLA:
 	RevealsShroud:
 		Range: 8
 	RenderBuildingCharge:
-	Armament:
+	Armament@PRIMARY:
 		Weapon: TeslaZap
 		LocalOffset: 0,0,427
+	Armament@OVERCHARGE:
+		Name: overcharge
+		Weapon: TeslaZap.Overcharged
+		LocalOffset: 0,0,427
 	AttackTesla:
-		ReloadTime: 120
 	AutoTarget:
 	IronCurtainable:
 	-RenderBuilding:
 	RenderRangeCircle:
+		IgnoredArmsDuringPlacement: overcharge
 	-AcceptsSupplies:
 	DrawLineToTarget:
+	TargetableBuilding:
+		TargetTypes: Ground, C4, DemoTruck, AttackOvercharge
 
 AGUN:
 	Inherits: ^Building

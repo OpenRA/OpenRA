@@ -639,7 +639,6 @@ CrateNuke:
 
 TeslaZap:
 	ROF: 3
-	Charges: true
 	Range: 8.5
 	Report: TESLA1.AUD
 	Projectile: TeslaZap
@@ -647,6 +646,22 @@ TeslaZap:
 		Spread: 1
 		InfDeath: 6
 		Damage: 100
+		Versus:
+			Wood: 60%
+
+TeslaZap.Overcharged:
+	ROF: 3
+	Range: 12.5
+	Report: TESLA1.AUD
+	Projectile: TeslaZap
+		BrightZaps: 2
+		DimZaps: 8
+		BrightZapPalette: effect
+		DimZapPalette: overcharge
+	Warhead:
+		Spread: 1
+		InfDeath: 6
+		Damage: 150
 		Versus:
 			Wood: 60%
 
@@ -1172,12 +1187,18 @@ PortaTesla:
 	Range: 3.5
 	Report: TESLA1.AUD
 #	Report: SHKTROP1.AUD
-	Charges: yes
 	Projectile: TeslaZap
 	Warhead:
 		Spread: 1
 		InfDeath: 6
 		Damage: 45
+
+PortaTesla.ProvidesOvercharge:
+	ROF: 5
+	Range: 3.5
+	Projectile: TeslaZap
+	Warhead:
+		DamageModel: PerCell
 
 TTankZap:
 	ROF: 120

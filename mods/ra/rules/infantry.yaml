@@ -433,10 +433,14 @@ SHOK:
 		Speed: 3
 	RevealsShroud:
 		Range: 4
-	Armament:
+	Armament@PRIMARY:
 		Weapon: PortaTesla
 		LocalOffset: 427,0,341
-	AttackFrontal:
+	Armament@OVERCHARGE:
+		Name: overcharge
+		Weapon: PortaTesla.ProvidesOvercharge
+		LocalOffset: 427,0,341
+	AttackOvercharge:
 	TakeCover:
 	-RenderInfantry:
 	RenderInfantryProne:

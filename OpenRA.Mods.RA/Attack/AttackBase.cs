@@ -97,7 +97,7 @@ namespace OpenRA.Mods.RA
 				a.CheckFire(self, this, facing, target);
 		}
 
-		public IEnumerable<IOrderTargeter> Orders
+		public virtual IEnumerable<IOrderTargeter> Orders
 		{
 			get
 			{
@@ -110,7 +110,7 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
+		public virtual Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
 			if (order is AttackOrderTargeter)
 			{
@@ -132,7 +132,7 @@ namespace OpenRA.Mods.RA
 			}
 		}
 
-		public string VoicePhraseForOrder(Actor self, Order order)
+		public virtual string VoicePhraseForOrder(Actor self, Order order)
 		{
 			return (order.OrderString == "Attack" || order.OrderString == "AttackHold") ? "Attack" : null;
 		}
@@ -140,7 +140,7 @@ namespace OpenRA.Mods.RA
 		public abstract Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove);
 
 		public bool HasAnyValidWeapons(Target t) { return Armaments.Any(a => a.Weapon.IsValidAgainst(t, self.World)); }
-		public WRange GetMaximumRange() { return new WRange((int)(1024*Armaments.Max(a => a.Weapon.Range))); }
+		public virtual WRange GetMaximumRange() { return new WRange((int)(1024*Armaments.Max(a => a.Weapon.Range))); }
 
 		public Armament ChooseArmamentForTarget(Target t) { return Armaments.FirstOrDefault(a => a.Weapon.IsValidAgainst(t, self.World)); }
 
