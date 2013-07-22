@@ -266,13 +266,13 @@ Actors:
 		Location: 54,16
 		Owner: NOD
 	NODReinforceNthA: waypoint
-		Location: 52,18
+		Location: 52,14
 		Owner: NOD
-	GDIReinforceNth: waypoint
-		Location: 24,15
-		Owner: GDI
+	NODReinforceNWstA: waypoint
+		Location: 24,14
+		Owner: NOD
 	NODReinforceNthB: waypoint
-		Location: 55,18
+		Location: 56,14
 		Owner: NOD
 	Actor27: jeep
 		Location: 31,28
