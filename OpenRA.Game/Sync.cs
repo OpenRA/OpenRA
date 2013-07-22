@@ -37,8 +37,6 @@ namespace OpenRA
 			{typeof(CVec), ((Func<CVec, int>)hash_CVec).Method},
 			{typeof(PPos), ((Func<PPos, int>)hash_PPos).Method},
 			{typeof(PVecInt), ((Func<PVecInt, int>)hash_PVecInt).Method},
-			{typeof(PSubPos), ((Func<PSubPos, int>)hash_PSubPos).Method},
-			{typeof(PSubVec), ((Func<PSubVec, int>)hash_PSubVec).Method},
 			{typeof(WRange), ((Func<WRange, int>)hash<WRange>).Method},
 			{typeof(WPos), ((Func<WPos, int>)hash<WPos>).Method},
 			{typeof(WVec), ((Func<WVec, int>)hash<WVec>).Method},
@@ -122,16 +120,6 @@ namespace OpenRA
 		}
 		
 		public static int hash_PVecInt(PVecInt i2)
-		{
-			return ((i2.X * 5) ^ (i2.Y * 3)) / 4;
-		}
-
-		public static int hash_PSubPos(PSubPos i2)
-		{
-			return ((i2.X * 5) ^ (i2.Y * 3)) / 4;
-		}
-
-		public static int hash_PSubVec(PSubVec i2)
 		{
 			return ((i2.X * 5) ^ (i2.Y * 3)) / 4;
 		}

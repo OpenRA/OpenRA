@@ -77,7 +77,6 @@ namespace OpenRA
 		public float2 ToFloat2() { return new float2(X, Y); }
 		public int2 ToInt2() { return new int2(X, Y); }
 		public CPos ToCPos() { return new CPos((int)(1f / Game.CellSize * X), (int)(1f / Game.CellSize * Y)); }
-		public PSubPos ToPSubPos() { return new PSubPos(X * PSubPos.PerPx, Y * PSubPos.PerPx); }
 
 		public PPos Clamp(Rectangle r)
 		{
