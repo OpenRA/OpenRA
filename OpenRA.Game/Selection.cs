@@ -42,7 +42,7 @@ namespace OpenRA
 			else
 				actors = (isCombine ? oldSelection.Union(newSelection) : newSelection).ToList();
 
-			var voicedUnit = actors.FirstOrDefault(a => a.Owner == world.LocalPlayer && a.IsInWorld && a.HasVoice());
+			var voicedUnit = actors.FirstOrDefault(a => a.Owner == world.LocalPlayer && a.IsInWorld && a.HasVoices());
 			if (voicedUnit != null)
 				Sound.PlayVoice("Select", voicedUnit, voicedUnit.Owner.Country.Race);
 

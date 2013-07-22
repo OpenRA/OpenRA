@@ -151,18 +151,24 @@ namespace OpenRA
 			return new float2(Gauss1D(r, samples), Gauss1D(r, samples));
 		}
 
-		public static bool HasVoice(this Actor a)
+		public static bool HasVoices(this Actor a)
 		{
 			var selectable = a.Info.Traits.GetOrDefault<SelectableInfo>();
 			return selectable != null && selectable.Voice != null;
 		}
 
-		public static SoundInfo GetVoice(this Actor a)
+		public static bool HasVoice(this Actor a, string voice)
+		{
+			var v = GetVoices(a);
+			return v != null && v.Voices.ContainsKey(voice);
+		}
+
+		public static SoundInfo GetVoices(this Actor a)
 		{
 			var selectable = a.Info.Traits.GetOrDefault<SelectableInfo>();
 			if (selectable == null) return null;
 			var v = selectable.Voice;
-			return (v == null) ? null : Rules.Voices[v];
+			return (v == null) ? null : Rules.Voices[v.ToLowerInvariant()];
 		}
 
 		public static void PlayVoiceForOrders(this World w, Order[] orders)
