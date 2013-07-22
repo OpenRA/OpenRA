@@ -67,7 +67,8 @@ namespace OpenRA
 			return new WAngle(Angle - 512).Tan();
 		}
 
-		public static WAngle ArcTan(int y, int x)
+		public static WAngle ArcTan(int y, int x) { return ArcTan(y, x, 1); }
+		public static WAngle ArcTan(int y, int x, int stride)
 		{
 			if (y == 0)
 				return new WAngle(x >= 0 ? 0 : 512);
@@ -81,7 +82,7 @@ namespace OpenRA
 			// Find the closest angle that satisfies y = x*tan(theta)
 			var bestVal = int.MaxValue;
 			var bestAngle = 0;
-			for (var i = 0; i < 256; i++)
+			for (var i = 0; i < 256; i+= stride)
 			{
 				var val = Math.Abs(1024*ay - ax*TanTable[i]);
 				if (val < bestVal)

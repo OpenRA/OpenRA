@@ -32,38 +32,19 @@ namespace OpenRA.Traits
 
 		public static int GetFacing(WVec d, int currentFacing)
 		{
-			return GetFacing(new int2(d.X, d.Y), currentFacing);
-		}
+			if (d.LengthSquared == 0)
+				return currentFacing;
 
-		public static int GetFacing(PVecInt d, int currentFacing)
-		{
-			return GetFacing(d.ToInt2(), currentFacing);
+			// OpenRA defines north as -y, so invert
+			var angle = WAngle.ArcTan(-d.Y, d.X, 4).Angle;
+
+			// Convert back to a facing
+			return (angle / 4 - 0x40) & 0xFF;
 		}
 
 		public static int GetFacing(CVec d, int currentFacing)
 		{
-			return GetFacing(d.ToInt2(), currentFacing);
-		}
-
-		public static int GetFacing(int2 d, int currentFacing)
-		{
-			if (d == int2.Zero)
-				return currentFacing;
-
-			int highest = -1;
-			int highestDot = -1;
-
-			for( int i = 0 ; i < fvecs.Length ; i++ )
-			{
-				int dot = int2.Dot( fvecs[ i ], d );
-				if( dot > highestDot )
-				{
-					highestDot = dot;
-					highest = i;
-				}
-			}
-
-			return highest * 8;
+			return GetFacing(d.ToWVec(), currentFacing);
 		}
 
 		public static int GetNearestFacing( int facing, int desiredFacing )
@@ -161,41 +142,5 @@ namespace OpenRA.Traits
 
 			return Util.ExpandFootprint(cells, true);
 		}
-
-		static int2[] fvecs =
-		{
-			new int2( 0, -1331 ),
-			new int2( -199, -1305 ),
-			new int2( -391, -1229 ),
-			new int2( -568, -1106 ),
-			new int2( -724, -941 ),
-			new int2( -851, -739 ),
-			new int2( -946, -509 ),
-			new int2( -1004, -259 ),
-			new int2( -1024, 0 ),
-			new int2( -1004, 259 ),
-			new int2( -946, 509 ),
-			new int2( -851, 739 ),
-			new int2( -724, 941 ),
-			new int2( -568, 1106 ),
-			new int2( -391, 1229 ),
-			new int2( -199, 1305 ),
-			new int2( 0, 1331 ),
-			new int2( 199, 1305 ),
-			new int2( 391, 1229 ),
-			new int2( 568, 1106 ),
-			new int2( 724, 941 ),
-			new int2( 851, 739 ),
-			new int2( 946, 509 ),
-			new int2( 1004, 259 ),
-			new int2( 1024, 0 ),
-			new int2( 1004, -259 ),
-			new int2( 946, -509 ),
-			new int2( 851, -739 ),
-			new int2( 724, -941 ),
-			new int2( 568, -1106 ),
-			new int2( 391, -1229 ),
-			new int2( 199, -1305 )
-		};
 	}
 }
