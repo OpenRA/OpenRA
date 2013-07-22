@@ -118,7 +118,7 @@ namespace OpenRA.Mods.RA
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
 			if (order.OrderString != "Unload" || IsEmpty(self)) return null;
-			return "Move";
+			return self.HasVoice("Unload") ? "Unload" : "Move";
 		}
 
 		public bool HasSpace(int weight) { return totalWeight + weight <= info.MaxWeight; }
