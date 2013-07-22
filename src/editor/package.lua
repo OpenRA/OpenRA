@@ -62,3 +62,9 @@ function ide:RemoveInterpreter(name)
   self.interpreters[name] = nil
   UpdateInterpreters()
 end
+
+function ide:AddSpec(name, spec)
+  self.specs[name] = spec
+  UpdateSpecs()
+end
+function ide:RemoveSpec(name) self.specs[name] = nil end

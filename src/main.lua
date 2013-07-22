@@ -273,10 +273,7 @@ local function loadPackages(filter)
   for fname, package in pairs(ide.packages) do package.fname = fname end
 end
 
--- load specs
-local function loadSpecs(filter)
-  loadToTab(filter or "specs", "spec", ide.specs, true)
-
+function UpdateSpecs()
   for _, spec in pairs(ide.specs) do
     spec.sep = spec.sep or "\1" -- default separator doesn't match anything
     spec.iscomment = {}
@@ -300,6 +297,12 @@ local function loadSpecs(filter)
       end
     end
   end
+end
+
+-- load specs
+local function loadSpecs(filter)
+  loadToTab(filter or "specs", "spec", ide.specs, true)
+  UpdateSpecs()
 end
 
 -- temporarily replace print() to capture reported error messages to show
