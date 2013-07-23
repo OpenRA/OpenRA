@@ -200,12 +200,12 @@ function PARSE.parse_scope_resolve(lx, f, vars)
     return setmetatable(newvars, {__index=vars})
   end
   
-  vars = vars or newscope({}, nil, 1)
+  vars = vars or newscope({[0] = 0}, nil, 1)
   vars[NEXT] = false -- vars that come into scope upon next statement
   vars[INSIDE] = false -- vars that come into scope upon entering block
   PARSE.parse_scope(lx, function(op, name, lineinfo)
     -- in some (rare) cases VarNext can follow Statement event (which copies
-    -- vars[NEXT]). This may case vars[0] to be `nil`, so default to 1.
+    -- vars[NEXT]). This may cause vars[0] to be `nil`, so default to 1.
     local var = op:find("^Var") and
       {fpos = lineinfo, at = (vars[0] or 1) + (op == 'VarInside' and 1 or 0),
        masked = vars[name], self = (op == 'VarSelf') or nil } or nil
