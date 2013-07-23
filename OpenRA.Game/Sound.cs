@@ -27,11 +27,31 @@ namespace OpenRA
 		static ISound video;
 		static MusicInfo currentMusic;
 
+		public static string [] OpenAlGetDeviceList()
+		{
+			string[] deviceList;
+			Al.alGetError(); // clear error bit
+			/* On Windows Vista or newer it will only return all devices if this extension is present.
+			On Linux it may returns some devices under two different names. 
+			On OSX there is, with our current thirdparty files, no way to get a list of devices other then the name of the default device*/
+			if (Alc.alcIsExtensionPresent(IntPtr.Zero, "ALC_ENUMERATE_ALL_EXT") == Alc.ALC_TRUE)
+			{
+				deviceList = Alc.alcGetStringv(IntPtr.Zero, Alc.ALC_ALL_DEVICES_SPECIFIER);
+				if (Al.alGetError() != Al.AL_NO_ERROR)
+				{
+				Log.Write("sound", "Can't get OpenAL device list. ALC_ALL_DEVICES");
+					return null;
+				}
+				return deviceList;
+			}
+			return null;
+		}
+
 		static ISoundSource LoadSound(string filename)
 		{
 			if (!FileSystem.Exists(filename))
 			{
-				Log.Write("debug", "LoadSound, file does not exist: {0}", filename);
+				Log.Write("sound", "LoadSound, file does not exist: {0}", filename);
 				return null;
 			}
 
@@ -376,9 +396,13 @@ namespace OpenRA
 		{
 			Console.WriteLine("Using OpenAL sound engine");
 			//var str = Alc.alcGetString(IntPtr.Zero, Alc.ALC_DEFAULT_DEVICE_SPECIFIER);
-			var dev = Alc.alcOpenDevice(null);
+			var dev = Alc.alcOpenDevice(Game.Settings.Sound.Device);
 			if (dev == IntPtr.Zero)
-				throw new InvalidOperationException("Can't create OpenAL device");
+			{
+				dev = Alc.alcOpenDevice(null);
+				if (dev == IntPtr.Zero)
+					throw new InvalidOperationException("Can't create OpenAL device");
+			}
 			var ctx = Alc.alcCreateContext(dev, IntPtr.Zero);
 			if (ctx == IntPtr.Zero)
 				throw new InvalidOperationException("Can't create OpenAL context");
@@ -390,7 +414,7 @@ namespace OpenRA
 				Al.alGenSources(1, out source);
 				if (0 != Al.alGetError())
 				{
-					Log.Write("debug", "Failed generating OpenAL source {0}", i);
+					Log.Write("sound", "Failed generating OpenAL source {0}", i);
 					return;
 				}
 
@@ -442,7 +466,7 @@ namespace OpenRA
 		{
 			if (sound == null)
 			{
-				Log.Write("debug", "Attempt to Play2D a null `ISoundSource`");
+				Log.Write("sound", "Attempt to Play2D a null `ISoundSource`");
 				return null;
 			}
 

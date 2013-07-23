@@ -258,6 +258,7 @@ namespace OpenRA
 			Log.AddChannel("debug", "debug.log");
 			Log.AddChannel("sync", "syncreport.log");
 			Log.AddChannel("server", "server.log");
+			Log.AddChannel("sound", "sound.log");
 
 			if (Settings.Server.DiscoverNatDevices)
 				UPnP.TryNatDiscovery();

@@ -109,7 +109,16 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			soundEngineDropdown.GetText = () => soundSettings.Engine == "AL" ?
 				"OpenAL" : soundSettings.Engine == "Null" ? "None" : "OpenAL";
 
-			
+			var audioDeviceDropdown = audio.Get<DropDownButtonWidget>("AUDIO_DEVICE");
+			audioDeviceDropdown.OnMouseDown = _ => ShowAudioDeviceDropdown(audioDeviceDropdown, soundSettings);
+			audioDeviceDropdown.GetText = () =>
+			{
+				var devicename = soundSettings.Device == null ? "Default Device" : soundSettings.Device;
+				if (devicename.Length > 32)
+					devicename = "..." + devicename.Substring(devicename.Length - 32);
+				return devicename;
+			};
+
 			// Display
 			var display = bg.Get("DISPLAY_PANE");
 			var gs = Game.Settings.Graphics;
@@ -362,6 +371,30 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var item = ScrollItemWidget.Setup(itemTemplate,
 					() => s.Engine == options[o],
 					() => s.Engine = options[o]);
+				item.Get<LabelWidget>("LABEL").GetText = () => o;
+				return item;
+			};
+
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, setupItem);
+			return true;
+		}
+
+		public static bool ShowAudioDeviceDropdown(DropDownButtonWidget dropdown, SoundSettings s)
+		{
+			var options = new Dictionary<string, string>();
+			options.Add("Default Device", null);
+			string[] deviceList = Sound.OpenAlGetDeviceList();
+			if (deviceList != null)
+			{
+				foreach(string device in deviceList)
+					options.Add(device, device);
+			}
+
+			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
+			{
+				var item = ScrollItemWidget.Setup(itemTemplate,
+					() => s.Device == options[o],
+					() => s.Device = options[o]);
 				item.Get<LabelWidget>("LABEL").GetText = () => o;
 				return item;
 			};
