@@ -27,45 +27,39 @@ Players:
 	PlayerReference@Multi0:
 		Name: Multi0
 		Playable: True
-		DefaultStartingUnits: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi1:
 		Name: Multi1
 		Playable: True
-		DefaultStartingUnits: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi2:
 		Name: Multi2
 		Playable: True
-		DefaultStartingUnits: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi3:
 		Name: Multi3
 		Playable: True
-		DefaultStartingUnits: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi4:
 		Name: Multi4
 		Playable: True
-		DefaultStartingUnits: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi5:
 		Name: Multi5
 		Playable: True
-		DefaultStartingUnits: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Creeps:
 		Name: Creeps
 		NonCombatant: True
@@ -2869,6 +2863,66 @@ Actors:
 	Actor931: v03
 		Location: 99,153
 		Owner: Neutral
+	Actor932: rushouse
+		Location: 89,166
+		Owner: Neutral
+	Actor933: rushouse
+		Location: 89,164
+		Owner: Neutral
+	Actor934: rushouse
+		Location: 79,161
+		Owner: Neutral
+	Actor935: rushouse
+		Location: 79,163
+		Owner: Neutral
+	Actor936: rushouse
+		Location: 81,161
+		Owner: Neutral
+	Actor937: rushouse
+		Location: 81,163
+		Owner: Neutral
+	Actor938: rushouse
+		Location: 80,162
+		Owner: Neutral
+	Actor939: rushouse
+		Location: 80,164
+		Owner: Neutral
+	Actor940: rushouse
+		Location: 80,160
+		Owner: Neutral
+	Actor941: rushouse
+		Location: 90,145
+		Owner: Neutral
+	Actor942: rushouse
+		Location: 90,143
+		Owner: Neutral
+	Actor943: rushouse
+		Location: 90,147
+		Owner: Neutral
+	Actor944: rushouse
+		Location: 89,144
+		Owner: Neutral
+	Actor945: rushouse
+		Location: 89,146
+		Owner: Neutral
+	Actor946: rushouse
+		Location: 93,144
+		Owner: Neutral
+	Actor947: rushouse
+		Location: 93,146
+		Owner: Neutral
+	Actor948: rushouse
+		Location: 94,145
+		Owner: Neutral
+	Actor949: v11
+		Location: 100,144
+		Owner: Neutral
+	Actor950: v11
+		Location: 100,140
+		Owner: Neutral
+	Actor951: asianhut
+		Location: 102,141
+		Owner: Neutral
 
 Smudges:
 
@@ -2892,6 +2946,8 @@ Rules:
 			Amount: 50
 
 Sequences:
+
+VoxelSequences:
 
 Weapons:
 
