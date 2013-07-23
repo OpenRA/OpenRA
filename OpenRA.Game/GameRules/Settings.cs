@@ -104,7 +104,8 @@ namespace OpenRA.GameRules
 		public bool Repeat = false;
 		public bool MapMusic = true;
 		public string Engine = "AL";
-		
+		public string Device = null; // Pick the default device.
+
 		public SoundCashTicks SoundCashTickType = SoundCashTicks.Extreme;
 	}
 
