@@ -238,12 +238,12 @@ local function getValAtPosition(editor, pos)
   local line = editor:LineFromPosition(pos)
   local linetx = editor:GetLine(line)
   local linestart = editor:PositionFromLine(line)
-  local localpos = pos-linestart+1
+  local localpos = pos-linestart
 
   local selected = editor:GetSelectionStart() ~= editor:GetSelectionEnd()
     and pos >= editor:GetSelectionStart() and pos <= editor:GetSelectionEnd()
 
-  -- check if we have a selected text or an identifier
+  -- check if we have a selected text or an identifier.
   -- for an identifier, check fragments on the left and on the right.
   -- this is to match 'io' in 'i^o.print' and 'io.print' in 'io.pr^int'.
   -- remove square brackets to make tbl[index].x show proper values.
