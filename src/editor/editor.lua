@@ -225,8 +225,8 @@ function EditorAutoComplete(editor)
 
   -- know now which string is to be completed
   local userList = CreateAutoCompList(editor,lt)
-  -- don't show the list if the only option is what's already typed
-  if userList and #userList > 0 and userList ~= lt then
+  -- don't show the list if it only suggests what's already typed
+  if userList and #userList > 0 and not lt:find(userList.."$") then
     editor:UserListShow(1, userList)
   elseif editor:AutoCompActive() then
     editor:AutoCompCancel()
