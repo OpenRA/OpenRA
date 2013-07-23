@@ -243,14 +243,20 @@ end
 
 function GetTipInfo(editor, content, short, fullmatch)
   if not content then return end
+
+  UpdateAssignCache(editor)
+
+  -- try to resolve the class
+  content = content:gsub("%b[]",".0")
+  local tab, rest = resolveAssign(editor, content)
+
   local caller = content:match("([%w_]+)%(?%s*$")
-  local class = caller and content:match("([%w_]+)[%.:]"..caller.."%(?%s*$") or ""
+  local class = (tab and tab.classname
+    or caller and content:match("([%w_]+)[%.:]"..caller.."%(?%s*$") or "")
   local tip = editor.api.tip
 
   local classtab = short and tip.shortfinfoclass or tip.finfoclass
   local funcstab = short and tip.shortfinfo or tip.finfo
-
-  UpdateAssignCache(editor)
 
   if (editor.assignscache and not (class and classtab[class])) then
     local assigns = editor.assignscache.assigns
