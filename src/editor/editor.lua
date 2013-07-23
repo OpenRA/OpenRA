@@ -264,16 +264,9 @@ local function getValAtPosition(editor, pos)
   -- 2. foo.bar(..^. -- the cursor (pos) is on the parameter list
   -- "var" has value for #1 and the following fragment checks for #2
 
-  local linetxtopos = linetx:sub(1,localpos)
-  funccall = (#funccall > 0) and var
-    or (linetxtopos..")"):match(ident .. "%s*%b()$")
-    or (linetxtopos.."}"):match(ident .. "%s*%b{}$")
-    or (linetxtopos.."'"):match(ident .. "%s*'[^']*'$")
-    or (linetxtopos..'"'):match(ident .. '%s*"[^"]*"$')
-    or nil
-
   -- check if the style is the right one; this is to ignore
   -- comments, strings, numbers (to avoid '1 = 1'), keywords, and such
+  local goodpos = true
   if start and not selected then
     local style = bit.band(editor:GetStyleAt(linestart+start),31)
     if editor.spec.iscomment[style]
@@ -281,10 +274,20 @@ local function getValAtPosition(editor, pos)
     or editor.spec.isstring[style]
     or style == wxstc.wxSTC_LUA_NUMBER
     or style == wxstc.wxSTC_LUA_WORD then
-      -- don't do anything for strings or comments or numbers
-      return nil, funccall
+      goodpos = false
     end
   end
+
+  local linetxtopos = linetx:sub(1,localpos)
+  funccall = (#funccall > 0) and goodpos and var
+    or (linetxtopos..")"):match(ident .. "%s*%b()$")
+    or (linetxtopos.."}"):match(ident .. "%s*%b{}$")
+    or (linetxtopos.."'"):match(ident .. "%s*'[^']*'$")
+    or (linetxtopos..'"'):match(ident .. '%s*"[^"]*"$')
+    or nil
+
+  -- don't do anything for strings or comments or numbers
+  if not goodpos then return nil, funccall end
 
   return var, funccall
 end
