@@ -18,12 +18,14 @@ namespace OpenRA.Traits
 {
 	public class ResourceLayerInfo : TraitInfo<ResourceLayer> { }
 
-	public class ResourceLayer : IRenderOverlay, IWorldLoaded
+	public class ResourceLayer : IRenderOverlay, IWorldLoaded, ITickRender
 	{
 		World world;
 
 		ResourceType[] resourceTypes;
 		CellContents[,] content;
+		CellContents[,] render;
+		List<CPos> dirty;
 		bool hasSetupPalettes;
 
 		public void Render(WorldRenderer wr)
@@ -37,23 +39,30 @@ namespace OpenRA.Traits
 
 			var clip = Game.viewport.WorldBounds(world);
 			for (var x = clip.Left; x < clip.Right; x++)
+			{
 				for (var y = clip.Top; y < clip.Bottom; y++)
 				{
-					if (world.ShroudObscures(new CPos(x, y)))
+					var pos = new CPos(x, y);
+					if (world.ShroudObscures(pos))
 						continue;
 
-					var c = content[x, y];
+					var c = render[x, y];
 					if (c.Image != null)
-						c.Image[c.Density].DrawAt(
-							new CPos(x, y).ToPPos().ToFloat2(),
-							c.Type.info.PaletteRef);
+					{
+						var tile = c.Image[c.Density];
+						var px = wr.ScreenPxPosition(pos.CenterPosition) - 0.5f * tile.size;
+						tile.DrawAt(px, c.Type.info.PaletteRef);
+					}
 				}
+			}
 		}
 
 		public void WorldLoaded(World w)
 		{
 			this.world = w;
 			content = new CellContents[w.Map.MapSize.X, w.Map.MapSize.Y];
+			render = new CellContents[w.Map.MapSize.X, w.Map.MapSize.Y];
+			dirty = new List<CPos>();
 
 			resourceTypes = w.WorldActor.TraitsImplementing<ResourceType>().ToArray();
 			foreach (var rt in resourceTypes)
@@ -73,17 +82,37 @@ namespace OpenRA.Traits
 					if (!AllowResourceAt(type, new CPos(x, y)))
 						continue;
 
-					content[x, y].Type = type;
-					content[x, y].Image = ChooseContent(type);
+					render[x, y].Type = content[x, y].Type = type;
+					render[x, y].Image = content[x, y].Image = ChooseContent(type);
 				}
 
 			for (var x = map.Bounds.Left; x < map.Bounds.Right; x++)
+			{
 				for (var y = map.Bounds.Top; y < map.Bounds.Bottom; y++)
+				{
 					if (content[x, y].Type != null)
 					{
-						content[x, y].Density = GetIdealDensity(x, y);
+						render[x, y].Density = content[x, y].Density = GetIdealDensity(x, y);
 						w.Map.CustomTerrain[x, y] = content[x, y].Type.info.TerrainType;
 					}
+				}
+			}
+		}
+
+		public void TickRender(WorldRenderer wr, Actor self)
+		{
+			var remove = new List<CPos>();
+			foreach (var c in dirty)
+			{
+				if (!self.World.FogObscures(c))
+				{
+					render[c.X, c.Y] = content[c.X, c.Y];
+					remove.Add(c);
+				}
+			}
+
+			foreach (var r in remove)
+				dirty.Remove(r);
 		}
 
 		public bool AllowResourceAt(ResourceType rt, CPos a)
@@ -138,6 +167,10 @@ namespace OpenRA.Traits
 				content[i, j].Density + n);
 
 			world.Map.CustomTerrain[i, j] = t.info.TerrainType;
+
+			var cell = new CPos(i, j);
+			if (!dirty.Contains(cell))
+				dirty.Add(cell);
 		}
 
 		public bool IsFull(int i, int j)
@@ -158,6 +191,9 @@ namespace OpenRA.Traits
 				world.Map.CustomTerrain[p.X, p.Y] = null;
 			}
 
+			if (!dirty.Contains(p))
+				dirty.Add(p);
+
 			return type;
 		}
 
@@ -171,6 +207,9 @@ namespace OpenRA.Traits
 			content[p.X, p.Y].Image = null;
 			content[p.X, p.Y].Density = 0;
 			world.Map.CustomTerrain[p.X, p.Y] = null;
+
+			if (!dirty.Contains(p))
+				dirty.Add(p);
 		}
 
 		public ResourceType GetResource(CPos p) { return content[p.X, p.Y].Type; }
