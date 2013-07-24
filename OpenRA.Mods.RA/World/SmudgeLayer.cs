@@ -29,10 +29,11 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new SmudgeLayer(this); }
 	}
 
-	public class SmudgeLayer : IRenderOverlay, IWorldLoaded
+	public class SmudgeLayer : IRenderOverlay, IWorldLoaded, ITickRender
 	{
 		public SmudgeLayerInfo Info;
 		Dictionary<CPos, TileReference<byte, byte>> tiles;
+		Dictionary<CPos, TileReference<byte, byte>> dirty;
 		Sprite[][] smudgeSprites;
 		World world;
 
@@ -46,6 +47,7 @@ namespace OpenRA.Mods.RA
 		{
 			world = w;
 			tiles = new Dictionary<CPos, TileReference<byte, byte>>();
+			dirty = new Dictionary<CPos, TileReference<byte, byte>>();
 
 			// Add map smudges
 			foreach (var s in w.Map.Smudges.Value.Where(s => Info.Types.Contains(s.Type)))
@@ -57,23 +59,38 @@ namespace OpenRA.Mods.RA
 			if (Game.CosmeticRandom.Next(0, 100) <= Info.SmokePercentage)
 				world.AddFrameEndTask(w => w.Add(new Smoke(w, loc.CenterPosition, Info.SmokeType)));
 
-			// No smudge; create a new one
-			if (!tiles.ContainsKey(loc))
+			if (!dirty.ContainsKey(loc) && !tiles.ContainsKey(loc))
 			{
-				byte st = (byte)(1 + world.SharedRandom.Next(Info.Types.Length - 1));
-				tiles.Add(loc, new TileReference<byte, byte>(st, (byte)0));
-				return;
+				// No smudge; create a new one
+				var st = (byte)(1 + world.SharedRandom.Next(Info.Types.Length - 1));
+				dirty[loc] = new TileReference<byte, byte>(st, (byte)0);
+			}
+			else
+			{
+				// Existing smudge; make it deeper
+				var tile = dirty.ContainsKey(loc) ? dirty[loc] : tiles[loc];
+				var depth = Info.Depths[tile.type - 1];
+				if (tile.index < depth - 1)
+					tile.index++;
+
+				dirty[loc] = tile;
+			}
+		}
+
+		public void TickRender(WorldRenderer wr, Actor self)
+		{
+			var remove = new List<CPos>();
+			foreach (var kv in dirty)
+			{
+				if (!self.World.FogObscures(kv.Key))
+				{
+					tiles[kv.Key] = kv.Value;
+					remove.Add(kv.Key);
+				}
 			}
 
-			var tile = tiles[loc];
-
-			// Existing smudge; make it deeper
-			var depth = Info.Depths[tile.type - 1];
-			if (tile.index < depth - 1)
-			{
-				tile.index++;
-				tiles[loc] = tile;	// struct semantics.
-			}
+			foreach (var r in remove)
+				dirty.Remove(r);
 		}
 
 		public void Render(WorldRenderer wr)
