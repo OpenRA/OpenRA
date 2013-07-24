@@ -44,6 +44,10 @@ if [ $# -eq 0 ]; then
   exit 0
 fi
 
+WXLUASTRIP="/strip"
+WXLUABUILD="MinSizeRel"
+WXWIDGETSDEBUG="--disable-debug"
+
 # iterate through the command line arguments
 for ARG in "$@"; do
   case $ARG in
@@ -67,6 +71,10 @@ for ARG in "$@"; do
     ;;
   zbstudio)
     BUILD_ZBSTUDIO=true
+    ;;
+  debug)
+    WXLUASTRIP=""
+    WXWIDGETSDEBUG="--enable-debug"
     ;;
   all)
     BUILD_WXWIDGETS=true
@@ -121,7 +129,7 @@ if [ $BUILD_WXWIDGETS ]; then
   svn co "$WXWIDGETS_URL" "$WXWIDGETS_BASENAME" || { echo "Error: failed to checkout wxWidgets"; exit 1; }
   svn revert -R "$WXWIDGETS_BASENAME"
   cd "$WXWIDGETS_BASENAME"
-  ./configure --prefix="$INSTALL_DIR" --disable-debug --disable-shared --enable-unicode \
+  ./configure --prefix="$INSTALL_DIR" $WXWIDGETSDEBUG --disable-shared --enable-unicode \
     --with-libjpeg=builtin --with-libpng=builtin --with-libtiff=no --with-expat=no \
     --with-zlib=builtin --disable-richtext \
     CFLAGS="-Os -fno-keep-inline-dllexport" CXXFLAGS="-Os -fno-keep-inline-dllexport"
@@ -164,13 +172,13 @@ if [ $BUILD_WXLUA ]; then
 
   cp "$INSTALL_DIR/lib/libwxscintilla-2.9.a" "$INSTALL_DIR/lib/libwx_mswu_scintilla-2.9.a"
   echo "set_target_properties(wxLuaModule PROPERTIES LINK_FLAGS -static)" >> modules/luamodule/CMakeLists.txt
-  cmake -G "MSYS Makefiles" -DBUILD_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=FALSE \
+  cmake -G "MSYS Makefiles" -DBUILD_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=$WXLUABUILD -DBUILD_SHARED_LIBS=FALSE \
     -DwxWidgets_CONFIG_EXECUTABLE="$INSTALL_DIR/bin/wx-config" \
     -DwxWidgets_COMPONENTS="stc;html;aui;adv;core;net;base" \
     -DwxLuaBind_COMPONENTS="stc;html;aui;adv;core;net;base" -DwxLua_LUA_LIBRARY_USE_BUILTIN=FALSE \
     -DwxLua_LUA_INCLUDE_DIR="$INSTALL_DIR/include" -DwxLua_LUA_LIBRARY="$INSTALL_DIR/lib/lua51.dll" .
   (cd modules/luamodule; make $MAKEFLAGS) || { echo "Error: failed to build wxLua"; exit 1; }
-  (cd modules/luamodule; make install/strip)
+  (cd modules/luamodule; make install$WXLUASTRIP)
   [ -f "$INSTALL_DIR/bin/libwx.dll" ] || { echo "Error: libwx.dll isn't found"; exit 1; }
   cd ../..
   rm -rf "$WXLUA_BASENAME"
