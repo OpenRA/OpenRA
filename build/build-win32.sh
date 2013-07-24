@@ -151,11 +151,17 @@ if [ $BUILD_WXLUA ]; then
   cd "$WXLUA_BASENAME/wxLua"
   sed -i 's|:-/\(.\)/|:-\1:/|' "$INSTALL_DIR/bin/wx-config"
   sed -i 's/execute_process(COMMAND/& sh/' build/CMakewxAppLib.cmake modules/wxstedit/build/CMakewxAppLib.cmake
+
   # the following patches wxlua source to fix live coding support in wxlua apps
   # http://www.mail-archive.com/wxlua-users@lists.sourceforge.net/msg03225.html
   sed -i 's/\(m_wxlState = wxLuaState(wxlState.GetLuaState(), wxLUASTATE_GETSTATE|wxLUASTATE_ROOTSTATE);\)/\/\/ removed by ZBS build process \/\/ \1/' modules/wxlua/wxlcallb.cpp
+
   # remove check for Lua 5.2 as it doesn't work with Twoface ABI mapper
   sed -i 's/LUA_VERSION_NUM < 502/0/' modules/wxlua/wxlcallb.cpp
+
+  # (temporary) fix for compilation issue in wxlua in Windows using mingw (r184)
+  sed -i 's/defined(__MINGW32__) || defined(__GNUWIN32__)/0/' modules/wxbind/src/wxcore_bind.cpp
+
   cp "$INSTALL_DIR/lib/libwxscintilla-2.9.a" "$INSTALL_DIR/lib/libwx_mswu_scintilla-2.9.a"
   echo "set_target_properties(wxLuaModule PROPERTIES LINK_FLAGS -static)" >> modules/luamodule/CMakeLists.txt
   cmake -G "MSYS Makefiles" -DBUILD_INSTALL_PREFIX="$INSTALL_DIR" -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=FALSE \
