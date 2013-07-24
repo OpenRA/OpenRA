@@ -118,7 +118,6 @@ namespace OpenRA.Mods.Cnc.Missions
 					OnObjectivesUpdated(true);
 					Sound.StopMusic();
 					MissionAccomplished("Nikoomba was killed and the village was destroyed.");
-					//does an fmv play at this point?
 				}
 			}
 
@@ -129,7 +128,7 @@ namespace OpenRA.Mods.Cnc.Missions
 					Sound.StopMusic();
 					MissionFailed("The Nod forces in the area have been wiped out.");
 				};
-			Game.RunAfterDelay(0, () => Media.PlayFMVFullscreen(world, "gameover.vqa", afterFMV)); //this is the wrong fmv i believe
+			Game.RunAfterDelay(0, () => Media.PlayFMVFullscreen(world, "nodlose.vqa", afterFMV));
 			}
 		}
 
