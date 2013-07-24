@@ -38,7 +38,6 @@ namespace OpenRA.Mods.Cnc.Missions
 		const string KillNikoombaText = "Find Nikoomba. Once found he must be assasinated.";
 		const string LevelVillageText = "Nikoomba has met his demise, now level the village.";
 
-		Player gdi;
 		Player nod;
 
 		Actor nikoomba;
@@ -123,7 +122,7 @@ namespace OpenRA.Mods.Cnc.Missions
 				}
 			}
 
-			if (!world.Actors.Any(a => (a.Owner == nod)))
+			if (!world.Actors.Any(a => (a.Owner == nod) && a.IsInWorld && !a.IsDead()))
 			{
 			Action afterFMV = () =>
 				{
@@ -163,7 +162,6 @@ namespace OpenRA.Mods.Cnc.Missions
 		public void WorldLoaded(World w)
 		{
 			world = w;
-			gdi = w.Players.Single(p => p.InternalName == "GDI");
 			nod = w.Players.Single(p => p.InternalName == "NOD");
 			nod.PlayerActor.Trait<PlayerResources>().Cash = 0;
 			var actors = w.WorldActor.Trait<SpawnMapActors>().Actors;
