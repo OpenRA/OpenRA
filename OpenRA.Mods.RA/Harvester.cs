@@ -433,7 +433,7 @@ namespace OpenRA.Mods.RA
 				if (!self.Owner.Shroud.IsExplored(location))
 					return false;
 
-				var res = self.World.WorldActor.Trait<ResourceLayer>().GetResource(location);
+				var res = self.World.WorldActor.Trait<ResourceLayer>().GetRenderedResource(location);
 				var info = self.Info.Traits.Get<HarvesterInfo>();
 
 				if (res == null || !info.Resources.Contains(res.info.Name))

@@ -213,6 +213,7 @@ namespace OpenRA.Traits
 		}
 
 		public ResourceType GetResource(CPos p) { return content[p.X, p.Y].Type; }
+		public ResourceType GetRenderedResource(CPos p) { return render[p.X, p.Y].Type; }
 		public int GetResourceDensity(CPos p) { return content[p.X, p.Y].Density; }
 		public int GetMaxResourceDensity(CPos p)
 		{
