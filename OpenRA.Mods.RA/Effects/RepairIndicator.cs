@@ -44,7 +44,7 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (building.Destroyed)
+			if (building.Destroyed || wr.world.FogObscures(building))
 				return SpriteRenderable.None;
 
 			return anim.Render(building.CenterPosition,
