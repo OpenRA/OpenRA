@@ -123,12 +123,12 @@ namespace OpenRA.Mods.Cnc.Missions
 
 			if (!world.Actors.Any(a => (a.Owner == nod) && a.IsInWorld && !a.IsDead()))
 			{
-			Action afterFMV = () =>
+				Action afterFMV = () =>
 				{
 					Sound.StopMusic();
 					MissionFailed("The Nod forces in the area have been wiped out.");
 				};
-			Game.RunAfterDelay(0, () => Media.PlayFMVFullscreen(world, "nodlose.vqa", afterFMV));
+				Game.RunAfterDelay(0, () => Media.PlayFMVFullscreen(world, "nodlose.vqa", afterFMV));
 			}
 		}
 
