@@ -94,8 +94,8 @@ Actors:
 	Actor16: mpspawn
 		Location: 162,90
 		Owner: Neutral
-	Actor17: oilb
-		Location: 87,168
+	Actor38: v34
+		Location: 96,73
 		Owner: Neutral
 	Actor18: oilb
 		Location: 90,167
@@ -157,8 +157,8 @@ Actors:
 	Actor37: oilb
 		Location: 97,98
 		Owner: Neutral
-	Actor38: oilb
-		Location: 95,71
+	Actor17: mslo
+		Location: 95,72
 		Owner: Neutral
 	Actor39: oilb
 		Location: 54,37
@@ -407,7 +407,7 @@ Actors:
 		Location: 79,46
 		Owner: Neutral
 	Actor121: oilb
-		Location: 106,46
+		Location: 105,43
 		Owner: Neutral
 	Actor123: v35
 		Location: 94,95
@@ -499,8 +499,8 @@ Actors:
 	Actor152: brl3
 		Location: 97,169
 		Owner: Neutral
-	Actor21: oilb
-		Location: 100,166
+	Actor21: v35
+		Location: 95,73
 		Owner: Neutral
 	Actor153: tc01
 		Location: 99,169
@@ -586,8 +586,8 @@ Actors:
 	Actor182: rock3
 		Location: 93,43
 		Owner: Neutral
-	Actor183: tran.husk2
-		Location: 90,49
+	Actor183: rock6
+		Location: 89,48
 		Owner: Neutral
 	Actor184: v29
 		Location: 76,25
@@ -616,11 +616,11 @@ Actors:
 	Actor192: v25
 		Location: 156,94
 		Owner: Neutral
-	Actor193: miss
-		Location: 77,39
+	Actor5: brl3
+		Location: 111,39
 		Owner: Neutral
-	Actor194: miss
-		Location: 111,38
+	Actor4: brl3
+		Location: 112,38
 		Owner: Neutral
 	Actor195: brl3
 		Location: 77,41
@@ -907,10 +907,66 @@ Actors:
 	Actor289: v32
 		Location: 95,116
 		Owner: Neutral
+	Actor6: brl3
+		Location: 114,38
+		Owner: Neutral
+	Actor7: brl3
+		Location: 78,39
+		Owner: Neutral
+	Actor172: brl3
+		Location: 77,40
+		Owner: Neutral
+	Actor193: brl3
+		Location: 79,39
+		Owner: Neutral
+	Actor194: tc01
+		Location: 145,105
+		Owner: Neutral
+	Actor236: tc01
+		Location: 169,85
+		Owner: Neutral
+	Actor290: tc01
+		Location: 143,82
+		Owner: Neutral
+	Actor291: tc01
+		Location: 169,106
+		Owner: Neutral
+	Actor292: t04
+		Location: 45,108
+		Owner: Neutral
+	Actor293: t08
+		Location: 47,107
+		Owner: Neutral
+	Actor294: tc01
+		Location: 49,106
+		Owner: Neutral
+	Actor295: tc01
+		Location: 46,84
+		Owner: Neutral
+	Actor296: tc01
+		Location: 22,84
+		Owner: Neutral
+	Actor297: tc01
+		Location: 21,107
+		Owner: Neutral
 
 Smudges:
 
 Rules:
+	MSLO:
+		Inherits: ^Building
+		Valued:
+			Cost: 10000
+		CustomSellValue:
+			Value: 1000
+		Buildable:
+			BuildLimit: 1
+		Building:
+			Power: -100
+		NukePower:
+			ChargeTime: 600
+			Description: Atom Bomb
+			AllowMultiple: yes
 
 Sequences:
 
