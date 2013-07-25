@@ -121,7 +121,9 @@ namespace OpenRA.Mods.Cnc.Missions
 				}
 			}
 
-			if (!world.Actors.Any(a => (a.Owner == nod) && a.IsInWorld && !a.IsDead()))
+			var unitsAndBuildings = world.Actors.Where(a => !a.IsDead() && a.IsInWorld && (a.HasTrait<Mobile>() || (a.HasTrait<Building>() && !a.HasTrait<Wall>())));
+
+			if (!unitsAndBuildings.Any(a => a.Owner == nod))
 			{
 				Action afterFMV = () =>
 				{
