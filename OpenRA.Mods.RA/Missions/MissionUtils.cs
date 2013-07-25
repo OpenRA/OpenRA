@@ -131,7 +131,8 @@ namespace OpenRA.Mods.RA.Missions
 
 		public static void PlayMissionMusic()
 		{
-			if (!Rules.InstalledMusic.Any()) return;
+			if (!Rules.InstalledMusic.Any() || !Game.Settings.Sound.MapMusic)
+				return;
 			Game.ConnectionStateChanged += StopMusic;
 			PlayMusic();
 		}
