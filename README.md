@@ -42,7 +42,7 @@ Overriding default configuration:
   e.g.: zbstudio -cfg "editor.fontsize=12" somefile.lua
 
 Loading custom configuration:
-  zbstudio -cfg config/file.lua [<filename>]
+  zbstudio -cfg path/file.lua [<filename>]
   e.g.: zbstudio -cfg cfg/estrela.lua
 ```
 
@@ -58,12 +58,13 @@ Loading custom configuration:
 
 ## Where is Estrela?
 
-The projects have been merged and zbstudio will lead the future.
-Please reassociate files with zbstudio. To keep your history of files and
-projects copy the contents of the `EstrelaEditor.ini` in your HOME directory
-to `ZeroBraneStudio.ini`. If you have used Estrela for graphics shader
-authoring or luxinia, create/modify the `cfg/user.lua` to include the content
-of `cfg/estrela.lua` to load all tools and specifications by default again.
+The projects have been merged and ZeroBrane Studio will lead the future.
+Please reassociate files with ZeroBrane Studio. To keep your history of files
+and projects copy the contents of the `EstrelaEditor.ini` in your HOME
+directory to `ZeroBraneStudio.ini`. If you have used Estrela for graphics
+shader authoring or luxinia, create/modify the `cfg/user.lua` to include the
+content of `cfg/estrela.lua` to load all tools and specifications by default
+again.
   
 ## License
 
