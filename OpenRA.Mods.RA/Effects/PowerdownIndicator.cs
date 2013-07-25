@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (a.Destroyed || a.Owner.IsAlliedWith(a.World.RenderPlayer))
+			if (a.Destroyed || wr.world.FogObscures(a))
 				return SpriteRenderable.None;
 
 			return anim.Render(a.CenterPosition, wr.Palette("chrome"));

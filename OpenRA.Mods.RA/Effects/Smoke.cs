@@ -17,25 +17,29 @@ namespace OpenRA.Mods.RA.Effects
 {
 	public class Smoke : IEffect
 	{
-		readonly WPos Pos;
-		readonly Animation Anim;
+		readonly World world;
+		readonly WPos pos;
+		readonly CPos cell;
+		readonly Animation anim;
 
 		public Smoke(World world, WPos pos, string trail)
 		{
-			Pos = pos;
-			Anim = new Animation(trail);
-			Anim.PlayThen("idle",
+			this.world = world;
+			this.pos = pos;
+			this.cell = pos.ToCPos();
+			anim = new Animation(trail);
+			anim.PlayThen("idle",
 				() => world.AddFrameEndTask(w => w.Remove(this)));
 		}
 
-		public void Tick(World world)
-		{
-			Anim.Tick();
-		}
+		public void Tick(World world) { anim.Tick(); }
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			return Anim.Render(Pos, wr.Palette("effect"));
+			if (world.FogObscures(cell))
+				return SpriteRenderable.None;
+
+			return anim.Render(pos, wr.Palette("effect"));
 		}
 	}
 }
