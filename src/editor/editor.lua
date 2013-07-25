@@ -293,9 +293,10 @@ local function getValAtPosition(editor, pos)
 end
 
 function EditorCallTip(editor, pos, x, y)
-  -- don't show anything if the calltip is active; this may happen after
-  -- typing function name, while the mouse is over a different function.
-  if editor:CallTipActive() then return end
+  -- don't show anything if the calltip/auto-complete is active;
+  -- this may happen after typing function name, while the mouse is over
+  -- a different function or when auto-complete is on for a parameter.
+  if editor:CallTipActive() or editor:AutoCompActive() then return end
 
   -- don't activate if the window itself is not active (in the background)
   if not ide.frame:IsActive() then return end
