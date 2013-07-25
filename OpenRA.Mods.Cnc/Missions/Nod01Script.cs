@@ -38,10 +38,8 @@ namespace OpenRA.Mods.Cnc.Missions
 		const string KillNikoombaText = "Find Nikoomba. Once found he must be assasinated.";
 		const string LevelVillageText = "Nikoomba has met his demise, now level the village.";
 
-		Player gdi;
 		Player nod;
 
-		//actors and the likes go here
 		Actor nikoomba;
 		Actor vil01;
 		Actor vil02;
@@ -64,17 +62,14 @@ namespace OpenRA.Mods.Cnc.Missions
 		Actor civ06;
 		Actor civ07;
 
-		//waypoints
 		Actor nr1;
 		Actor nr2;
-		Actor gr1;
+		Actor nr3;
 
 		World world;
 
-		//in the allies01 script stuff was here not needed for me so far
-		const string NRName = "E1";
-		const string GRName = "E2";
-		const string GRName2 = "JEEP";
+		const string ReInfE1 = "E1";
+		const string ReInfE3 = "E3";
 
 		void MissionFailed(string text)
 		{
@@ -90,7 +85,6 @@ namespace OpenRA.Mods.Cnc.Missions
 		{
 			if (nod.WinState != WinState.Undefined) return;
 
-			//spawns nod reinf
 			if (world.FrameNumber == 700)
 			{
 				NODReinforceNthA();
@@ -101,7 +95,7 @@ namespace OpenRA.Mods.Cnc.Missions
 				NODReinforceNthB();
 				Sound.Play("reinfor1.aud");
 			}
-			// objectives
+
 			if (killnikoomba.Status == ObjectiveStatus.InProgress)
 			{
 				if (nikoomba.Destroyed)
@@ -109,8 +103,8 @@ namespace OpenRA.Mods.Cnc.Missions
 					killnikoomba.Status = ObjectiveStatus.Completed;
 					levelvillage.Status = ObjectiveStatus.InProgress;
 					OnObjectivesUpdated(true);
-					//DisplayObjective();
-					//GDIReinforceNth();
+					NODReinforceNWstA();
+					Sound.Play("reinfor1.aud");
 				}
 			}
 			if (levelvillage.Status == ObjectiveStatus.InProgress)
@@ -122,48 +116,55 @@ namespace OpenRA.Mods.Cnc.Missions
 				{
 					levelvillage.Status = ObjectiveStatus.Completed;
 					OnObjectivesUpdated(true);
+					Sound.StopMusic();
 					MissionAccomplished("Nikoomba was killed and the village was destroyed.");
 				}
 			}
 
-			if (!world.Actors.Any(a => (a.Owner == nod) && a.IsInWorld && !a.IsDead()))
-			{
-				MissionFailed("The Nod forces in the area have been wiped out.");
-			}
-		}
+			var unitsAndBuildings = world.Actors.Where(a => !a.IsDead() && a.IsInWorld && (a.HasTrait<Mobile>() || (a.HasTrait<Building>() && !a.HasTrait<Wall>())));
 
-		IEnumerable<Actor> UnitsNearActor(Actor actor, int range)
-		{
-			return world.FindActorsInCircle(actor.CenterPosition, WRange.FromCells(range))
-				.Where(a => a.IsInWorld && a != world.WorldActor && !a.Destroyed && a.HasTrait<IPositionable>() && !a.Owner.NonCombatant);
+			if (!unitsAndBuildings.Any(a => a.Owner == nod))
+			{
+				Action afterFMV = () =>
+				{
+					Sound.StopMusic();
+					MissionFailed("The Nod forces in the area have been wiped out.");
+				};
+				Game.RunAfterDelay(0, () => Media.PlayFMVFullscreen(world, "nodlose.vqa", afterFMV));
+			}
 		}
 
 		void NODReinforceNthA()
 		{
-			nr1 = world.CreateActor(true, NRName, new TypeDictionary { new OwnerInit(nod), new LocationInit(nr1.Location) });
-			nr1 = world.CreateActor(true, NRName, new TypeDictionary { new OwnerInit(nod), new LocationInit(nr1.Location) });
+			nr1 = world.CreateActor(true, ReInfE1, new TypeDictionary { new OwnerInit(nod), new LocationInit(nr1.Location) });
+			nr1.QueueActivity(nr1.Trait<Mobile>().ScriptedMove(nr1.Location - new CVec(0, -2)));
+			nr1 = world.CreateActor(true, ReInfE1, new TypeDictionary { new OwnerInit(nod), new LocationInit(nr1.Location) });
+			nr1.QueueActivity(nr1.Trait<Mobile>().ScriptedMove(nr1.Location - new CVec(0, -2)));
 		}
 
 		void NODReinforceNthB()
 		{
-			nr2 = world.CreateActor(true, NRName, new TypeDictionary { new OwnerInit(nod), new LocationInit(nr2.Location) });
-			nr2 = world.CreateActor(true, NRName, new TypeDictionary { new OwnerInit(nod), new LocationInit(nr2.Location) });
-			//nr1.QueueActivity(new Move.Move(nr1.Location - new CVec(0, 2)));
+			nr2 = world.CreateActor(true, ReInfE1, new TypeDictionary { new OwnerInit(nod), new LocationInit(nr2.Location) });
+			nr2.QueueActivity(nr2.Trait<Mobile>().ScriptedMove(nr2.Location - new CVec(0, -2)));
+			nr2 = world.CreateActor(true, ReInfE1, new TypeDictionary { new OwnerInit(nod), new LocationInit(nr2.Location) });
+			nr2.QueueActivity(nr2.Trait<Mobile>().ScriptedMove(nr2.Location - new CVec(0, -2)));
 		}
 
-		void GDIReinforceNth()
+		void NODReinforceNWstA()
 		{
-			gr1 = world.CreateActor(true, GRName, new TypeDictionary { new OwnerInit(gdi), new LocationInit(gr1.Location) });
-			gr1 = world.CreateActor(true, GRName, new TypeDictionary { new OwnerInit(gdi), new LocationInit(gr1.Location) });
-			gr1 = world.CreateActor(true, GRName2, new TypeDictionary { new OwnerInit(gdi), new LocationInit(gr1.Location) });
-			//gr1.QueueActivity(new Move.Move(nr1.Location - new CVec(0, 2)));
+			nr3 = world.CreateActor(true, ReInfE3, new TypeDictionary { new OwnerInit(nod), new LocationInit(nr3.Location) });
+			nr3.QueueActivity(nr3.Trait<Mobile>().ScriptedMove(nr3.Location - new CVec(0, -5)));
+			nr3 = world.CreateActor(true, ReInfE3, new TypeDictionary { new OwnerInit(nod), new LocationInit(nr3.Location) });
+			nr3.QueueActivity(nr3.Trait<Mobile>().ScriptedMove(nr3.Location - new CVec(0, -5)));
+			nr3 = world.CreateActor(true, ReInfE3, new TypeDictionary { new OwnerInit(nod), new LocationInit(nr3.Location) });
+			nr3.QueueActivity(nr3.Trait<Mobile>().ScriptedMove(nr3.Location - new CVec(0, -5)));
 		}
 
 		public void WorldLoaded(World w)
 		{
 			world = w;
-			gdi = w.Players.Single(p => p.InternalName == "GDI");
 			nod = w.Players.Single(p => p.InternalName == "NOD");
+			nod.PlayerActor.Trait<PlayerResources>().Cash = 0;
 			var actors = w.WorldActor.Trait<SpawnMapActors>().Actors;
 			nikoomba = actors["Nikoomba"];
 			vil01 = actors["Vil01"];
@@ -188,11 +189,11 @@ namespace OpenRA.Mods.Cnc.Missions
 			civ07 = actors["Civ07"];
 			nr1 = actors["NODReinforceNthA"];
 			nr2 = actors["NODReinforceNthB"];
-			gr1 = actors["GDIReinforceNth"];
+			nr3 = actors["NODReinforceNWstA"];
 			Game.MoveViewport(nr1.Location.ToFloat2());
 			Action afterFMV = () =>
 			{
-				Sound.PlayMusic(Rules.Music["aoi"]);
+				MissionUtils.PlayMissionMusic();
 			};
 			Game.RunAfterDelay(0, () => Media.PlayFMVFullscreen(w, "nod1pre.vqa", () =>
 										Media.PlayFMVFullscreen(w, "nod1.vqa", afterFMV)));
