@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -14,25 +14,26 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
-using OpenRA.Traits;
 using OpenRA.Mods.RA.Effects;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
 	public class SmudgeLayerInfo : ITraitInfo
 	{
 		public readonly string Type = "Scorch";
-		public readonly string[] Types = {"sc1", "sc2", "sc3", "sc4", "sc5", "sc6"};
-		public readonly int[] Depths = {1,1,1,1,1,1};
+		public readonly string[] Types = { "sc1", "sc2", "sc3", "sc4", "sc5", "sc6" };
+		public readonly int[] Depths = { 1, 1, 1, 1, 1, 1 };
 		public readonly int SmokePercentage = 25;
 		public readonly string SmokeType = "smoke_m";
 		public object Create(ActorInitializer init) { return new SmudgeLayer(this); }
 	}
 
-	public class SmudgeLayer: IRenderOverlay, IWorldLoaded
+	public class SmudgeLayer : IRenderOverlay, IWorldLoaded, ITickRender
 	{
 		public SmudgeLayerInfo Info;
 		Dictionary<CPos, TileReference<byte, byte>> tiles;
+		Dictionary<CPos, TileReference<byte, byte>> dirty;
 		Sprite[][] smudgeSprites;
 		World world;
 
@@ -46,49 +47,66 @@ namespace OpenRA.Mods.RA
 		{
 			world = w;
 			tiles = new Dictionary<CPos, TileReference<byte, byte>>();
+			dirty = new Dictionary<CPos, TileReference<byte, byte>>();
 
 			// Add map smudges
-			foreach (var s in w.Map.Smudges.Value.Where( s => Info.Types.Contains(s.Type )))
+			foreach (var s in w.Map.Smudges.Value.Where(s => Info.Types.Contains(s.Type)))
 				tiles.Add((CPos)s.Location, new TileReference<byte, byte>((byte)Array.IndexOf(Info.Types, s.Type), (byte)s.Depth));
 		}
 
 		public void AddSmudge(CPos loc)
 		{
-			if (Game.CosmeticRandom.Next(0,100) <= Info.SmokePercentage)
+			if (Game.CosmeticRandom.Next(0, 100) <= Info.SmokePercentage)
 				world.AddFrameEndTask(w => w.Add(new Smoke(w, loc.CenterPosition, Info.SmokeType)));
 
-			// No smudge; create a new one
-			if (!tiles.ContainsKey(loc))
+			if (!dirty.ContainsKey(loc) && !tiles.ContainsKey(loc))
 			{
-				byte st = (byte)(1 + world.SharedRandom.Next(Info.Types.Length - 1));
-				tiles.Add(loc, new TileReference<byte,byte>(st,(byte)0));
-				return;
+				// No smudge; create a new one
+				var st = (byte)(1 + world.SharedRandom.Next(Info.Types.Length - 1));
+				dirty[loc] = new TileReference<byte, byte>(st, (byte)0);
 			}
-
-			var tile = tiles[loc];
-			// Existing smudge; make it deeper
-			int depth = Info.Depths[tile.type-1];
-			if (tile.index < depth - 1)
+			else
 			{
-				tile.index++;
-				tiles[loc] = tile;	// struct semantics.
+				// Existing smudge; make it deeper
+				var tile = dirty.ContainsKey(loc) ? dirty[loc] : tiles[loc];
+				var depth = Info.Depths[tile.type - 1];
+				if (tile.index < depth - 1)
+					tile.index++;
+
+				dirty[loc] = tile;
 			}
 		}
 
-		public void Render( WorldRenderer wr )
+		public void TickRender(WorldRenderer wr, Actor self)
+		{
+			var remove = new List<CPos>();
+			foreach (var kv in dirty)
+			{
+				if (!self.World.FogObscures(kv.Key))
+				{
+					tiles[kv.Key] = kv.Value;
+					remove.Add(kv.Key);
+				}
+			}
+
+			foreach (var r in remove)
+				dirty.Remove(r);
+		}
+
+		public void Render(WorldRenderer wr)
 		{
 			var cliprect = Game.viewport.WorldBounds(world);
 			var pal = wr.Palette("terrain");
 
 			foreach (var kv in tiles)
 			{
-				if (!cliprect.Contains(kv.Key.X,kv.Key.Y))
+				if (!cliprect.Contains(kv.Key.X, kv.Key.Y))
 					continue;
 
 				if (world.ShroudObscures(kv.Key))
 					continue;
 
-				smudgeSprites[kv.Value.type- 1][kv.Value.index].DrawAt(kv.Key.ToPPos().ToFloat2(), pal);
+				smudgeSprites[kv.Value.type - 1][kv.Value.index].DrawAt(kv.Key.ToPPos().ToFloat2(), pal);
 			}
 		}
 	}

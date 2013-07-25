@@ -317,12 +317,14 @@
 	Guardable:
 		Range: 3
 	BodyOrientation:
+	FrozenUnderFog:
 
 ^CivBuilding:
 	Inherits: ^Building
 	-DeadBuildingState:
 	-Buildable:
 	-GivesBuildableArea:
+	-FrozenUnderFog:
 	Health:
 		HP: 400
 	Armor: 

@@ -273,6 +273,7 @@ World:
 	ProductionQueueFromSelection:
 		ProductionTabsWidget: PRODUCTION_TABS
 	BibLayer:
+		FrozenUnderFog: true
 	DomainIndex:
 	ResourceLayer:
 	ResourceClaimLayer:

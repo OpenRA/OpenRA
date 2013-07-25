@@ -604,6 +604,7 @@ World:
 		Name: Soviet
 		Race: soviet
 	BibLayer:
+		FrozenUnderFog: true
 	DomainIndex:
 	ResourceLayer:
 	ResourceClaimLayer:
