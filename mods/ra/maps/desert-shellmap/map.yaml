@@ -1340,7 +1340,7 @@ Sequences:
 
 Weapons:
 	8Inch:
-		Report: tank6
+		Report: tank6.aud
 	2Inch:
 		Range: 10
 	TTankZap:
