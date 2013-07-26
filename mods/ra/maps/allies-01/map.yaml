@@ -406,7 +406,7 @@ Weapons:
 		ROF: 200
 		Range: 25
 		Burst: 2
-		Report: TURRET1
+		Report: TURRET1.AUD
 		Projectile: Bullet
 			Speed: 30
 			High: true
@@ -426,8 +426,8 @@ Weapons:
 			InfDeath: 2
 			SmudgeType: Crater
 			Damage: 500
-			ImpactSound: kaboom12
-			WaterImpactSound: splash9
+			ImpactSound: kaboom12.aud
+			WaterImpactSound: splash9.aud
 
 Voices:
 
