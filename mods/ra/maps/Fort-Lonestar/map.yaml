@@ -1047,7 +1047,7 @@ Weapons:
 	120mm:
 		ROF: 150
 		Range: 10
-		Report: CANNON1
+		Report: CANNON1.AUD
 		Burst: 6
 		Projectile: Bullet
 			Speed: 12
@@ -1070,7 +1070,7 @@ Weapons:
 	MammothTusk:
 		ROF: 300
 		Range: 10
-		Report: MISSILE6
+		Report: MISSILE6.AUD
 		Burst: 2
 		ValidTargets: Ground, Air
 		Projectile: Missile
@@ -1101,7 +1101,7 @@ Weapons:
 	VolkNapalm:
 		ROF: 40
 		Range: 8
-		Report: volknapalm
+		Report: firebl3.aud
 		ValidTargets: Ground
 		Burst: 6
 		BurstDelay: 1
@@ -1128,7 +1128,7 @@ Weapons:
 	ParaBomb:
 		ROF: 5
 		Range: 5
-		Report: CHUTE1
+		Report: CHUTE1.AUD
 		Projectile: GravityBomb
 			Image: BOMBLET
 		Warhead:
@@ -1139,7 +1139,7 @@ Weapons:
 				Light: 60%
 				Concrete: 25%
 			Explosion: napalm
-			ImpactSound: firebl3
+			ImpactSound: firebl3.aud
 			WaterExplosion: napalm
 			InfDeath: 5
 			SmudgeType: Crater
@@ -1170,12 +1170,12 @@ Weapons:
 			WaterExplosion: small_napalm
 			InfDeath: 5
 			SmudgeType: Scorch
-			ImpactSound: firebl3
+			ImpactSound: firebl3.aud
 			Damage: 10
 	FLAK-23:
 		ROF: 10
 		Range: 8
-		Report: AACANON3
+		Report: AACANON3.AUD
 		ValidTargets: Air,Ground
 		Projectile: Bullet
 			Speed: 100
@@ -1194,7 +1194,7 @@ Weapons:
 		ROF: 280
 		Range: 7
 		MinRange: 3
-		Report: MISSILE1
+		Report: MISSILE1.AUD
 		Projectile: Bullet
 			Speed: 10
 			Arm: 10
@@ -1217,12 +1217,12 @@ Weapons:
 			InfDeath: 3
 			SmudgeType: Crater
 			Damage: 500
-			ImpactSound: kaboom1
-			WaterImpactSound: kaboom1
+			ImpactSound: kaboom1.aud
+			WaterImpactSound: kaboom1.aud
 	SilencedPPK:
 		ROF: 80
 		Range: 2.5
-		Report: silppk
+		Report: silppk.aud
 		Projectile: Bullet
 			Speed: 100
 		Warhead:
