@@ -72,10 +72,10 @@ namespace OpenRA.Widgets
 
         public override string GetCursor(int2 pos) { return GetScrollCursor(this, Edge, pos); }
 
-        public override bool LoseFocus(MouseInput mi)
+        public override bool YieldKeyboardFocus()
         {
             Keyboard = ScrollDirection.None;
-            return base.LoseFocus(mi);
+            return base.YieldKeyboardFocus();
         }
 
         public override bool HandleKeyPress(KeyInput e)

@@ -100,10 +100,10 @@ namespace OpenRA.Mods.Cnc.Widgets
 				?? base.GetCursor(pos);
 		}
 
-		public override bool LoseFocus(MouseInput mi)
+		public override bool YieldKeyboardFocus()
 		{
 			Keyboard = ScrollDirection.None;
-			return base.LoseFocus(mi);
+			return base.YieldKeyboardFocus();
 		}
 
 		public override bool HandleKeyPress(KeyInput e)

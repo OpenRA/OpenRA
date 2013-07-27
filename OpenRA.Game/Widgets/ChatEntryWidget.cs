@@ -64,12 +64,12 @@ namespace OpenRA.Widgets
 						orderManager.IssueOrder(Order.Chat(teamChat, content));
 					content = "";
 
-					LoseFocus();
+					YieldKeyboardFocus();
 					return true;
 				}
 				else
 				{
-					TakeFocus(new MouseInput());
+					TakeKeyboardFocus();
 					composing = true;
 					teamChat = (Game.Settings.Game.TeamChatToggle && teamChat)
 						^ e.Modifiers.HasModifier(Modifiers.Shift);
@@ -83,7 +83,7 @@ namespace OpenRA.Widgets
 				{
 					composing = false;
 					content = "";
-					LoseFocus();
+					YieldKeyboardFocus();
 					return true;
 				}
 				else if (e.KeyName == "backspace")
