@@ -96,7 +96,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 		public override string GetCursor(int2 pos)
 		{
-			return ViewportScrollControllerWidget.GetScrollCursor(this, Edge, pos)
+			return ViewportControllerWidget.GetScrollCursor(this, Edge, pos)
 				?? base.GetCursor(pos);
 		}
 

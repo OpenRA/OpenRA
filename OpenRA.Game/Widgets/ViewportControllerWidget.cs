@@ -15,7 +15,7 @@ using OpenRA.Graphics;
 
 namespace OpenRA.Widgets
 {
-	public class ViewportScrollControllerWidget : Widget
+	public class ViewportControllerWidget : Widget
 	{
 		public int EdgeScrollThreshold = 15;
 		public int EdgeCornerScrollThreshold = 35;

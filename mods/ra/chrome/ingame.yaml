@@ -6,7 +6,7 @@ Container@INGAME_ROOT:
 			Y:0
 			Width:WINDOW_RIGHT
 			Height:WINDOW_BOTTOM
-		ViewportScrollController:
+		ViewportController:
 			X:0
 			Y:0
 			Width:WINDOW_RIGHT
