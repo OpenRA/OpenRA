@@ -1,0 +1,127 @@
+mcv:
+	idle:
+
+harv:
+	idle:
+
+horv:
+	idle:
+
+apc: # TODO apcw in water
+	idle:
+
+art2:
+	idle:
+	turret: art2tur
+	barrel: art2barl
+
+subtank:
+	idle:
+
+bggy:
+	idle:
+#	muzzle: # TODO: use MGUN-N,MGUN-NE,MGUN-E,MGUN-SE,MGUN-S,MGUN-SW,MGUN-W,MGUN-NW
+
+sapc:
+	idle:
+
+bike:
+	idle:
+
+ttnk:
+	idle:
+	turret: ttnktur
+	barrel: ttnkbarl
+
+mmch:
+	barrel: mmchbarl
+
+hmec:
+	idle:
+
+hvr:
+	idle:
+	turret: hvrtur
+
+stnk:
+	idle:
+	
+orca:
+	idle:
+
+orcab:
+	idle:
+
+orcatran:
+	idle:
+
+trnsport:
+	idle:
+
+scrin:
+	idle:
+
+apache:
+	idle:
+
+dshp:
+	idle:
+
+4tnk:
+	idle:
+	turret: 4tnktur
+
+trucka:
+	idle:
+
+truckb:
+	idle:
+
+lpst:
+	idle:
+
+icbm:
+	idle:
+
+repair:
+	idle:
+
+weed:
+	idle:
+
+bus:
+	idle:
+
+pick:
+	idle:
+
+car:
+	idle:
+
+wini:
+	idle:
+
+sonic:
+	idle:
+	turret: sonictur
+
+#truk: # TODO: unused
+#	idle:
+
+#truck2: # TODO: unused
+#	idle:
+
+#utnk: # TODO: unused alternative version of Devil's Tongue
+#	idle:
+
+#tire: # TODO: unused debris
+#	idle:
+
+#probe: # TODO: unused
+#	idle:
+
+#piece: # TODO: unused debris
+#	idle:
+
+dpod:
+	idle:

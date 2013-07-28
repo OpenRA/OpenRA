@@ -1,0 +1,274 @@
+DPOD:
+	Inherits: ^Helicopter
+	Valued:
+		Cost: 10
+	Tooltip:
+		Name: Drop Pod
+		Icon: podsicon
+	Buildable:
+		Queue: Air
+		BuildPaletteOrder: 10
+		Owner: gdi
+	Helicopter:
+		LandWhenIdle: yes
+		ROT: 5
+		Speed: 16
+		InitialFacing: 0
+		LandableTerrainTypes: Clear # TODO: add more
+	Health:
+		HP: 60
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 0
+	Cargo:
+		Types: Infantry
+		MaxWeight: 5
+		PipCount: 5
+	Armament:
+		Weapon: Vulcan2
+	AttackHeli:
+	LimitedAmmo:
+		Ammo: 5
+		PipCount: 5
+	AutoTarget:
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+
+DSHP:
+	Inherits: ^Helicopter
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Dropship
+		Icon: xxicon
+	Buildable:
+		Queue: Air
+		BuildPaletteOrder: 10
+		Owner: gdi
+		Prerequisites: gaweap
+	Helicopter:
+		LandWhenIdle: yes # TODO: use DROPUP1.AUD and DROPDWN1.AUD
+		ROT: 5
+		Speed: 18
+		InitialFacing: 0
+		LandableTerrainTypes: Clear # TODO: add more
+	Health:
+		HP: 200
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 3
+	Cargo:
+		Types: Infantry
+		MaxWeight: 5
+		PipCount: 5
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+
+ORCA:
+	Inherits: ^Helicopter
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Orca Fighter
+		Icon: orcaicon
+		Description: Helicopter Gunship with Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
+	Buildable:
+		Queue: Air
+		BuildPaletteOrder: 20
+		Prerequisites: gahpad
+		Owner: gdi
+	Selectable:
+		Bounds: 30,24
+	Helicopter:
+		RearmBuildings: gahpad # TODO: use ORCAUP1.AUD and ORCADWN1.AUD
+		ROT: 5
+		Speed: 20
+	Health:
+		HP: 200
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 10
+	Armament:
+		Weapon: Hellfire
+	AttackHeli:
+		FacingTolerance: 20
+	LimitedAmmo:
+		Ammo: 5
+		PipCount: 5
+	AutoTarget:
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+
+ORCAB:
+	Inherits: ^Helicopter
+	Valued:
+		Cost: 1600
+	Tooltip:
+		Name: Orca Bomber
+		Icon: obmbicon
+	Buildable:
+		Queue: Air
+		BuildPaletteOrder: 20
+		Prerequisites: gahpad#, gatech
+		Owner: gdi
+	Selectable:
+		Bounds: 30,24
+	Helicopter:
+		RearmBuildings: gahpad # TODO: use ORCAUP1.AUD and ORCADWN1.AUD
+		ROT: 5
+		Speed: 12
+	Health:
+		HP: 260
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 2
+	Armament:
+		Weapon: Bomb
+	AttackHeli:
+		FacingTolerance: 20
+	LimitedAmmo:
+		Ammo: 2
+		PipCount: 2
+	AutoTarget:
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+
+ORCATRAN:
+	Inherits: ^Helicopter
+	Valued:
+		Cost: 1200
+	Tooltip:
+		Name: Orca Transport
+		Icon: crryicon
+	Buildable:
+		Queue: Air
+		BuildPaletteOrder: 10
+		Owner: gdi
+		Prerequisites: gahpad
+	Helicopter:
+		LandWhenIdle: yes # TODO: use ORCAUP1.AUD and ORCADWN1.AUD
+		ROT: 5
+		Speed: 9
+		InitialFacing: 0
+		LandableTerrainTypes: Clear # TODO: add more
+	Health:
+		HP: 200
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 2
+	Cargo:
+		Types: Infantry
+		MaxWeight: 5
+		PipCount: 5
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+
+TRNSPORT: # TODO: set up the vehicle cargo traits, but beware of desyncs
+	Inherits: ^Helicopter
+	Valued:
+		Cost: 750
+	Tooltip:
+		Name: Carryall
+		Icon: otrnicon
+	Buildable:
+		Queue: Air
+		BuildPaletteOrder: 10
+		Owner: gdi
+		Prerequisites: gahpad#, gadept
+	Helicopter:
+		LandWhenIdle: yes # TODO: use DROPUP1.AUD and DROPDWN1.AUD
+		ROT: 5
+		Speed: 16
+		InitialFacing: 0
+		LandableTerrainTypes: Clear # TODO: add more
+	Health:
+		HP: 175
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 2
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+
+SCRIN:
+	Inherits: ^Helicopter
+	Valued:
+		Cost: 1500
+	Tooltip:
+		Name: Banshee Fighter
+		Icon: proicon
+	Buildable:
+		Queue: Air
+		BuildPaletteOrder: 20
+		Prerequisites: #nahpad, natech
+		Owner: nod
+	Selectable:
+		Bounds: 30,24
+	Helicopter:
+		RearmBuildings: #nahpad # TODO: use DROPUP1.AUD and DROPDWN1.AUD
+		ROT: 3
+		Speed: 18
+	Health:
+		HP: 280
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 2
+	Armament:
+		Weapon: Proton
+	AttackHeli:
+		FacingTolerance: 20
+	LimitedAmmo:
+		Ammo: 3
+		PipCount: 3
+	AutoTarget:
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+
+APACHE:
+	Inherits: ^Helicopter
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Harpy
+		Icon: apchicon
+	Buildable:
+		Queue: Air
+		BuildPaletteOrder: 20
+		Prerequisites: #nahpad
+		Owner: nod
+	Selectable:
+		Bounds: 30,24
+	Helicopter:
+		RearmBuildings: #nahpad
+		ROT: 5
+		Speed: 14
+	Health:
+		HP: 225
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 2
+	Armament:
+		Weapon: HarpyClaw
+	AttackHeli:
+		FacingTolerance: 20
+	LimitedAmmo:
+		Ammo: 12
+		PipCount: 4
+	AutoTarget:
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:

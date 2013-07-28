@@ -1,0 +1,831 @@
+MCV:
+	Inherits: ^Vehicle
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 110
+		Owner: gdi,nod
+		Hotkey: b
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: Mobile Construction Vehicle
+		Description: Deploys into another Construction Yard.\n  Unarmed
+	Selectable:
+		Priority: 3
+		Bounds: 42,42
+	Health:
+		HP: 600
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 6
+		Crushes: wall, crate, infantry
+	RevealsShroud:
+		Range: 4
+	MustBeDestroyed:
+	BaseBuilding:
+	-AttackMove:
+	Transforms:
+		IntoActor: gacnst
+		Offset:-1,-1
+		Facing: 96
+		TransformSounds: # TODO
+		NoTransformSounds: # TODO
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+
+APC:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 600
+	Tooltip:
+		Name: Amphibious APC # TODO: not yet amphibious
+		Icon: apcicon
+		Description: Armored infantry transport and mobile AA\n  Strong vs Aircraft, Vehicles\n  Weak vs Infantry
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 30
+		Owner: gdi
+	Mobile:
+		ROT: 5
+		Speed: 8
+	Health:
+		HP: 200
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 5
+	Turreted:
+		ROT: 10
+	-AttackMove:
+	Cargo:
+		Types: Infantry
+		MaxWeight: 5
+		PipCount: 5
+		UnloadFacing: 220
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+
+HARV: # TODO: without back: HORV
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 1400
+	Tooltip:
+		Name: Harvester
+		Icon: harvicon
+		Description: Collects Tiberium for processing.\n  Unarmed
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 10
+#		Prerequisites: proc
+		Owner: gdi,nod
+	Selectable:
+		Priority: 7
+		Bounds: 36,36
+#	Harvester:
+#		Resources: Tiberium, BlueTiberium
+#		PipCount: 7
+#		Capacity: 28
+#		LoadTicksPerBale: 6
+#		UnloadTicksPerBale: 12
+#		SearchFromProcRadius: 24
+#		SearchFromOrderRadius: 12
+	Mobile:
+		Speed: 5
+	Health:
+		HP: 1000
+	SelfHealing:
+		Ticks: 10
+		HealIfBelow: 50%
+		DamageCooldown: 200
+	Armor: 
+		Type: Heavy
+	RevealsShroud:
+		Range: 4
+	AttackMove:
+		JustMove: yes
+	-GainsExperience:
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+
+HVR:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 900
+	Tooltip:
+		Name: Hover MLRS
+		Icon: hovricon
+		Description: Hover Multi-Launch Rocket System
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 30
+		Owner: gdi
+	Mobile: # TODO: amphibious
+		Speed: 7
+	Health:
+		HP: 230
+	Armor: 
+		Type: Light
+	RevealsShroud:
+		Range: 7
+	Armament:
+		Weapon: HoverMissile
+	Turreted:
+		ROT: 7
+	AttackTurreted:
+	AutoTarget:
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+	WithVoxelTurret:
+
+4TNK:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 1700
+	Tooltip:
+		Name: Mammoth Tank
+		Icon: xxicon
+		Description: Heavily armored GDI Tank.\n  Strong vs Everything
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 60
+		Owner: gdi
+	Mobile:
+		Speed: 4
+		ROT: 5
+	Health:
+		HP: 600
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 6
+	Turreted:
+		ROT: 3
+	Armament@PRIMARY:
+		Weapon: 120mmx
+	Armament@SECONDARY:
+		Weapon: MammothTusk
+	AttackTurreted:
+	AutoTarget:
+	SelfHealing:
+		Ticks: 10
+		HealIfBelow: 50%
+		DamageCooldown: 200
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+	WithVoxelTurret:
+
+TRUCKB: # NOTE: TRUCKA is unloaded
+	Inherits: ^Vehicle
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 120
+		Owner: gdi, nod
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Truck
+		Description: Transports cash to other players.\n  Unarmed
+		Icon: xxicon
+	Health:
+		HP: 2000
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 4
+	RevealsShroud:
+		Range: 5
+	SupplyTruck:
+		Payload: 500
+	AttackMove:
+		JustMove: yes
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+
+LPST:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 950
+	Tooltip:
+		Name: Mobile Sensor Array
+		Icon: lpsticon
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 100
+		Owner: gdi, nod
+	Health:
+		HP: 600
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 6
+		ROT: 5
+	RevealsShroud:
+		Range: 10
+	AttackMove:
+		JustMove: yes
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+	Transforms:
+		IntoActor: gadpsa
+		Offset: -1,-1 # TODO
+		Facing: 96 # TODO
+		TransformSounds: # TODO
+		NoTransformSounds: # TODO
+
+ICBM:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 1400
+	Tooltip:
+		Name: Ballistic Missile Launcher
+		Icon: xxicon
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 100
+		Owner: gdi
+	Health:
+		HP: 500
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 6
+		ROT: 5
+	RevealsShroud:
+		Range: 7
+	AttackMove:
+		JustMove: yes
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+	Transforms:
+		IntoActor: gaicbm
+		Offset:-1,-1 # TODO
+		Facing: 96 # TODO
+		TransformSounds: # TODO
+		NoTransformSounds: # TODO
+
+REPAIR:
+	Inherits: ^Vehicle
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 70
+		Owner: nod
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Mobile Repair Vehicle
+		Description: Repairs nearby vehicles.\n  Strong vs Nothing\n  Weak vs Everything
+		Icon: rboticon
+	Health:
+		HP: 200
+	Mobile:
+		Speed: 6
+		ROT: 5
+	RevealsShroud:
+		Range: 5
+	Armament:
+		Weapon: Repair
+	AttackMedic:
+		Cursor: repair
+	AttackMove:
+		JustMove: true
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+
+ART2:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 975
+	Tooltip:
+		Name: Artillery
+		Icon: artyicon
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 100
+		Owner: nod
+	Health:
+		HP: 300
+	Armor:
+		Type: Light
+	Mobile:
+		Speed: 5
+		ROT: 2
+	RevealsShroud:
+		Range: 9
+	AttackMove:
+		JustMove: yes
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+	Transforms:
+		IntoActor: gaarty
+		Offset: -1,-1 # TODO
+		Facing: 96 # TODO
+		TransformSounds: # TODO
+		NoTransformSounds: # TODO
+
+WEED:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 1400
+	Tooltip:
+		Name: Weed Eater
+		Icon: weedicon
+		Description: Collects veins for processing.\n  Unarmed
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 10
+#		Prerequisites: naweap, nawast
+		Owner: nod
+#	Harvester:
+#		Resources: Veins
+#		PipCount: 7
+#		Capacity: 28
+#		LoadTicksPerBale: 6
+#		UnloadTicksPerBale: 12
+#		SearchFromProcRadius: 24
+#		SearchFromOrderRadius: 12
+	Mobile:
+		Speed: 5
+		ROT: 5
+	Health:
+		HP: 600
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 4
+	AttackMove:
+		JustMove: yes
+	-GainsExperience:
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+
+BUS:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: School Bus
+		Icon: xxicon
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 300
+		Owner: gdi
+	Mobile:
+		ROT: 5
+		Speed: 8
+	Health:
+		HP: 100
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 5
+	-AttackMove:
+	Cargo:
+		Types: Infantry
+		MaxWeight: 20
+		PipCount: 5
+		UnloadFacing: 220
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+
+PICK:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Pickup
+		Icon: xxicon
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 300
+		Owner: gdi
+	Mobile:
+		ROT: 5
+		Speed: 8
+	Health:
+		HP: 100
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 5
+	-AttackMove:
+	Cargo:
+		Types: Infantry
+		MaxWeight: 2
+		PipCount: 5
+		UnloadFacing: 220
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+
+CAR:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Automobile
+		Icon: xxicon
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 300
+		Owner: gdi
+	Mobile:
+		ROT: 5
+		Speed: 8
+	Health:
+		HP: 100
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 5
+	-AttackMove:
+	Cargo:
+		Types: Infantry
+		MaxWeight: 4
+		PipCount: 5
+		UnloadFacing: 220
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+
+GGHUNT:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 1000
+	Tooltip:
+		Name: Hunter-Seeker Droid
+		Icon: seekicon
+	Buildable:
+		BuildPaletteOrder: 20
+		Owner: gdi, nod
+		Queue: Vehicle
+	Mobile:
+		ROT: 16
+		Speed: 25
+	Health:
+		HP: 500
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 7
+	RenderUnit:
+	AttackMove:
+		JustMove: yes
+	DemoTruck:
+	Explodes:
+		Weapon: SuicideBomb
+		EmptyWeapon: SuicideBomb
+
+WINI:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Recreational Vehicle
+		Icon: xxicon
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 300
+		Owner: gdi
+	Mobile:
+		ROT: 5
+		Speed: 8
+	Health:
+		HP: 200
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 5
+	-AttackMove:
+	Cargo:
+		Types: Infantry
+		MaxWeight: 5
+		PipCount: 5
+		UnloadFacing: 220
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+
+MMCH:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Medium Mech
+		Icon: mmchicon
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 300
+		Owner: gdi
+	Mobile:
+		ROT: 5
+		Speed: 4
+	Health:
+		HP: 400
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 8
+	RenderInfantry:
+	Turreted:
+	AttackTurreted:
+	WithTurret:
+		Recoils: no
+	Armament:
+		Weapon: 120mm
+		Recoil: 127
+		RecoilRecovery: 26
+	RenderVoxels:
+	WithVoxelBarrel:
+		LocalOffset: -128, 128, 213
+	AutoTarget:
+
+HMEC:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 3000
+	Tooltip:
+		Name: Mammoth Mk. II
+		Icon: hmecicon
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 40
+		Owner: gdi
+	Mobile:
+		ROT: 3
+		Speed: 3
+	Health:
+		HP: 800
+	SelfHealing:
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 8
+	RenderSprites:
+	AttackFrontal:
+	AutoTarget:
+	Armament@MISSILES:
+		Weapon: MammothTusk
+	Armament@RAILGUN:
+		Weapon: MechRailgun
+		LocalOffset: 640,-640,980, 640,640,980
+	RenderVoxels:
+	WithVoxelWalkerBody:
+
+SMECH:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Wolverine
+		Description: Small Mech
+		Icon: smchicon
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 10
+		Owner: gdi
+	Mobile:
+		ROT: 5
+		Speed: 7
+	Health:
+		HP: 800
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 6
+	AttackFrontal:
+	AutoTarget:
+	Armament:
+		Weapon: AssaultCannon
+	RenderInfantry:
+	Selectable:
+		Voices: Mech
+
+BIKE:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 600
+	Tooltip:
+		Name: Attack Cycle
+		Icon: cyclicon
+		Description: Fast scout vehicle, armed with \nrockets.\n  Strong vs Vehicles, Aircraft\n  Weak vs Infantry
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 30
+		Owner: nod
+	Mobile:
+		ROT: 8
+		Speed: 12
+	Health:
+		HP: 150
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 5
+	Armament:
+		Weapon: BikeMissile
+		LocalOffset: -128, -170, 170, -128, 170, 170
+		LocalYaw: 100, -100
+	AttackFrontal:
+	AutoTarget:
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+
+BGGY:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Attack Buggy
+		Icon: bggyicon
+		Description: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry, Vehicles\n  Weak vs Tanks, Aircraft
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 40
+		Owner: nod
+	Mobile:
+		ROT: 8
+		Speed: 10
+	Health:
+		HP: 220
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 6
+	Armament:
+		Weapon: RaiderCannon
+	AttackFrontal:
+	AutoTarget:
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+
+SAPC:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Subterranean APC # TODO: not yet subterranean
+		Icon: sapcicon
+		Description: Armored infantry transport and mobile AA\n  Strong vs Aircraft, Vehicles\n  Weak vs Infantry
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 30
+		Owner: nod
+	Mobile:
+		ROT: 5
+		Speed: 5
+	Health:
+		HP: 175
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 5
+	-AttackMove:
+	Cargo:
+		Types: Infantry
+		MaxWeight: 5
+		PipCount: 5
+		UnloadFacing: 220
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+
+SUBTANK:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 750
+	Tooltip:
+		Name: Devil's Tongue
+		Icon: subticon
+		Description: Subterranean Tank
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 40
+		Owner: nod
+	Mobile:
+		ROT: 6
+		Speed: 5
+	Health:
+		HP: 300
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 5
+	Armament:
+		Weapon: FireballLauncher
+	AttackFrontal:
+	AutoTarget:
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+
+SONIC:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 1300
+	Tooltip:
+		Name: Disruptor
+		Icon: soniicon
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 40
+		Owner: gdi
+	Mobile:
+		ROT: 4
+		Speed: 4
+	Health:
+		HP: 500
+	Armor:
+		Type: Heavy
+	RevealsShroud:
+		Range: 7
+	Armament:
+		Weapon: SonicZap
+	AttackTurreted:
+	Turreted:
+	AutoTarget:
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+	WithVoxelTurret:
+
+TTNK:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 800
+	Tooltip:
+		Name: Tick Tank
+		Icon: tickicon
+	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 60
+		Owner: nod
+	Mobile:
+		ROT: 5
+		Speed: 6
+	Health:
+		HP: 350
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 5
+	-AttackMove:
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:
+	Transforms:
+		IntoActor: gatick
+		Offset:-1,-1 # TODO
+		Facing: 96 # TODO
+		TransformSounds: # TODO
+		NoTransformSounds: # TODO
+
+STNK:
+	Inherits: ^Vehicle
+	Valued:
+		Cost: 1100
+	Tooltip:
+		Name: Stealth Tank
+		Icon: stnkicon
+		Description: Long-range missile tank that can cloak.\nHas weak armor. Can be spotted by infantry.\n  Strong vs Vehicles, Tanks, Aircraft\n  Weak vs Infantry.
+	Buildable:
+		BuildPaletteOrder: 90
+		Queue: Vehicle
+		Owner: nod
+	Mobile:
+		ROT: 5
+		Speed: 6
+	Health:
+		HP: 180
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 5
+	Cloak:
+		InitialDelay: 90
+		CloakDelay: 90
+		CloakSound: # TODO
+		UncloakSound: # TODO
+	Armament:
+		Weapon: Dragon
+		LocalOffset: 213,43,128, 213,-43,128
+	AttackFrontal:
+	AutoTarget:
+		InitialStance: HoldFire
+	RenderSprites:
+	RenderVoxels:
+	WithVoxelBody:

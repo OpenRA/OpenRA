@@ -1,0 +1,710 @@
+E1:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 10
+		Owner: gdi,nod
+		Hotkey: i
+	Valued:
+		Cost: 120
+	Tooltip:
+		Name: Light Infantry
+		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles
+	Selectable:
+		Bounds: 12,17,0,-9
+	Health:
+		HP: 125
+	Mobile:
+		Speed: 5
+	Armament:
+		Weapon: Minigun
+	AttackFrontal:
+	TakeCover:
+	-RenderInfantry:
+	RenderInfantryProne:
+		IdleAnimations: idle1,idle2
+
+E2:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 10
+		Owner: gdi
+		Hotkey: n
+	Valued:
+		Cost: 200
+	Tooltip:
+		Name: Disc Thrower
+		Description: Infantry armed with grenades. \n  Strong vs Buildings, Infantry\n  Weak vs Vehicles
+	Selectable:
+		Bounds: 12,17,0,-9
+	Health:
+		HP: 150
+	Mobile:
+		Speed: 4
+	Armament:
+		Weapon: Grenade
+		LocalOffset: 0,0,555
+		FireDelay: 15
+	AttackFrontal:
+	TakeCover:
+	-RenderInfantry:
+	RenderInfantryProne:
+		IdleAnimations: idle1,idle2
+
+E3:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 20
+		Owner: nod
+		Hotkey: r
+	Valued:
+		Cost: 250
+	Tooltip:
+		Name: Rocket Infantry
+		Description: Anti-tank infantry.\n  Strong vs Tanks\n  Weak vs Infantry
+		Icon: e4icon # TODO: really?
+	Selectable:
+		Bounds: 12,17,0,-9
+		Voice: Rocket
+	Health:
+		HP: 100
+	Mobile:
+		Speed: 3
+	Armament@PRIMARY:
+		Weapon: Bazooka
+		LocalOffset: 0,0,555
+	AttackFrontal:
+	TakeCover:
+	-RenderInfantry:
+	RenderInfantryProne:
+		IdleAnimations: idle1,idle2
+
+WEEDGUY:
+	Inherits: ^Infantry
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Chem Spray Infantry
+		Description: Advanced Anti-infantry unit.\n  Strong vs Infantry\n  Weak vs Vehicles
+		Icon: weaticon
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 50
+		Owner: gdi
+	Selectable:
+		Bounds: 12,17,0,-6
+		Voice: Weed
+	Mobile:
+		Speed: 3
+	Health:
+		HP: 130
+	CrushableInfantry:
+		CrushSound: squish2.aud
+	Armament:
+		Weapon: MultiCluster
+		LocalOffset: 85,0,384
+		FireDelay: 3
+	AttackFrontal:
+#	-PoisonedByTiberium:
+	-RenderInfantry:
+	RenderInfantryProne:
+	TakeCover:
+
+MEDIC:
+	Inherits: ^Infantry
+	Valued:
+		Cost: 600
+	Tooltip:
+		Name: Medic
+		Description: Heals nearby infantry.\n  Strong vs Nothing\n  Weak vs Everything
+		Icon: mediicon
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 60
+		Owner: gdi
+	Selectable:
+		Bounds: 12,17,0,-6
+		Voice: Medic
+	Mobile:
+		Speed: 4
+	Health:
+		HP: 125
+	CrushableInfantry:
+		CrushSound: squish2.aud
+	Armament:
+		Weapon: Heal
+	AttackFrontal:
+	TakeCover:
+	-RenderInfantry:
+	RenderInfantryProne:
+		IdleAnimations: idle1,idle2
+	SelfHealing:
+	Passenger:
+		PipType: Red
+
+ENGINEER:
+	Inherits: ^Infantry
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Engineer
+		Description: Infiltrates and captures enemy structures.\n  Strong vs Nothing\n  Weak vs Everything
+		Icon: engnicon
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 30
+		Owner: gdi,nod
+	Selectable:
+		Bounds: 12,17,0,-6
+		Voice: Engineer
+	Mobile:
+		Speed: 4
+	Health:
+		HP: 500
+	Passenger:
+		PipType: Yellow
+	EngineerRepair:
+	RepairsBridges:
+	LegacyCaptures:
+		CaptureTypes: building
+	-AutoTarget:
+	AttackMove:
+		JustMove: true
+	-RenderInfantry:
+	RenderInfantryProne:
+		IdleAnimations: idle1,idle2
+	TakeCover:
+	-GainsExperience:
+
+UMAGON:
+	Inherits: ^Infantry
+	Valued:
+		Cost: 400
+	Tooltip:
+		Icon: umagicon
+		Name: Umagon
+		Description: Elite sniper infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 50
+		Owner: gdi
+	Selectable:
+		Bounds: 12,17,0,-6
+		Voice: Umagon
+	Mobile:
+		Speed: 5
+	Health:
+		HP: 150
+	Passenger: # TODO:
+#		PipType: White
+	RevealsShroud:
+		Range: 7
+	Armament:
+		Weapon: Sniper
+	AttackFrontal:
+	TakeCover:
+	-RenderInfantry:
+	RenderInfantryProne:
+		IdleAnimations: idle1,idle2
+
+GHOST:
+	Inherits: ^Infantry
+	Valued:
+		Cost: 1750
+	Tooltip:
+		Icon: gosticon
+		Name: Ghost Stalker
+		Description: Elite commando infantry, armed with \ndual pistols and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles\n  Special Ability: Destroy Building with C4\n\nMaximum 1 can be trained
+		BuildLimit: 1
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 50
+		Owner: gdi
+	Selectable:
+		Bounds: 12,17,0,-6
+		Voice: Ghost
+	Mobile:
+		Speed: 4
+	Health:
+		HP: 200
+	Passenger: # TODO:
+#		PipType: White
+	RevealsShroud:
+		Range: 6
+	Armament:
+		Weapon: LtRail
+	CrushableInfantry:
+		CrushSound: squish2.aud
+	AttackFrontal:
+	C4Demolition:
+		C4Delay: 45
+	TakeCover:
+	-RenderInfantry:
+	RenderInfantryProne:
+		IdleAnimations: idle1,idle2
+
+JUMPJET:
+	Inherits: ^Infantry
+	Valued:
+		Cost: 600
+	Tooltip:
+		Icon: jjeticon
+		Name: Jumpjet Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 50
+		Owner: gdi
+	Selectable:
+		Bounds: 12,17,0,-6
+		Voice: JumpJet
+	Mobile:
+		Speed: 4
+	Health:
+		HP: 120
+	Armor:
+		Type: Light
+	Passenger:
+		PipType: Green
+	RevealsShroud:
+		Range: 6
+	Armament:
+		Weapon: JumpCannon
+	-CrushableInfantry:
+	AttackFrontal:
+	TakeCover:
+	RenderInfantry:
+#	LeavesHusk: # TODO
+#	Transforms: # TODO
+
+CHAMSPY:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 60
+		Owner: nod
+		Hotkey: p
+	Valued:
+		Cost: 700
+	SpyToolTip:
+		Name: Chameleon Spy
+		Description: Infiltrates enemy structures to gather \nintelligence. Exact effect depends on the \nbuilding infiltrated.\n  Strong vs Nothing\n  Weak vs Everything\n  Special Ability: Disguised
+		Icon: chamicon
+	Selectable:
+		Voice: Spy
+		Bounds: 12,17,0,-9
+	Health:
+		HP: 120
+	Mobile:
+		Speed: 6
+	RevealsShroud:
+		Range: 9
+	Passenger: # TODO
+#		PipType: White
+	TakeCover:
+	Spy:
+	Infiltrates:
+		Types: Cash, SupportPower, Exploration
+	-AutoTarget:
+	AttackMove:
+		JustMove: true
+	-RenderInfantry:
+	RenderSpy:
+		IdleAnimations: idle1,idle2
+
+CYBORG:
+	Inherits: ^Infantry
+	Armor:
+		Type: Heavy
+	Valued:
+		Cost: 650
+	Tooltip:
+		Icon: cybiicon
+		Name: Cyborg Infantry
+		Description: Cybernetic infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 50
+		Owner: nod
+	-CrushableInfantry:
+		CrushSound: squish2.aud
+	Selectable:
+		Bounds: 12,17,0,-6 # TODO: wrong
+		Voice: Cyborg
+	Mobile:
+		Speed: 4
+	Health:
+		HP: 300
+#	-PoisonedByTiberium:
+#	TiberiumHeal: # TODO
+	Passenger: # TODO:
+#		PipType: White
+	RevealsShroud:
+		Range: 5
+	Armament:
+		Weapon: Vulcan3
+	AttackFrontal:
+	TakeCover:
+	-RenderInfantry:
+	RenderInfantryProne:
+		IdleAnimations: idle1,idle2
+#	LeavesHusk: # TODO:
+#		CrawlingCyborg
+
+CYC2:
+	Inherits: ^Infantry
+	Armor:
+		Type: Heavy
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Icon: cybcicon
+		Name: Cyborg Commando
+		Description: Elite cybernetic infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 50
+		Owner: nod
+	-CrushableInfantry:
+		CrushSound: squish2.aud
+	Selectable:
+		Bounds: 12,17,0,-6 # TODO: wrong
+		Voice: CyborgCommando
+	Mobile:
+		Speed: 4
+	Health:
+		HP: 500
+#	-PoisonedByTiberium:
+#	TiberiumHeal: # TODO
+	Passenger: # TODO:
+#		PipType: White
+	RevealsShroud:
+		Range: 7
+	Armament:
+		Weapon: Sniper
+	AttackFrontal:
+	TakeCover:
+	-RenderInfantry:
+	RenderInfantryProne:
+		IdleAnimations: idle1,idle2
+#	LeavesHusk: # TODO:
+#		CrawlingCyborgCommando
+
+MUTANT:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 10
+		Owner: forgotten
+	Valued:
+		Cost: 100
+	Tooltip:
+		Name: Mutant
+		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles
+		Icon: mutcicon
+	Selectable:
+		Bounds: 12,17,0,-9
+		Voice: Mutant
+	Health:
+		HP: 50
+	Mobile:
+		Speed: 4
+	RevealsShroud:
+		Range: 4
+	Armament:
+		Weapon: Vulcan
+	AttackFrontal:
+	TakeCover:
+	-RenderInfantry:
+	RenderInfantryProne:
+		IdleAnimations: idle1,idle2
+#	-PoisonedByTiberium:
+#	TiberiumHeal: # TODO
+
+MWMN:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 10
+		Owner: forgotten
+	Valued:
+		Cost: 100
+	Tooltip:
+		Name: Mutant Soldier
+		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles
+		Icon: mutcicon
+	Selectable:
+		Bounds: 12,17,0,-9
+		Voice: Mutant
+	Health:
+		HP: 50
+	Mobile:
+		Speed: 4
+	RevealsShroud:
+		Range: 4
+	Armament:
+		Weapon: Vulcan
+	AttackFrontal:
+	TakeCover:
+	-RenderInfantry:
+	RenderInfantryProne:
+		IdleAnimations: idle1,idle2
+#	-PoisonedByTiberium:
+#	TiberiumHeal: # TODO
+
+MUTANT3:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 10
+		Owner: forgotten
+	Valued:
+		Cost: 100
+	Tooltip:
+		Name: Mutant Sergeant
+		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles
+		Icon: mutcicon
+	Selectable:
+		Bounds: 12,17,0,-9
+		Voice: Mutant
+	Health:
+		HP: 50
+	Mobile:
+		Speed: 4
+	RevealsShroud:
+		Range: 4
+	Armament:
+		Weapon: Vulcan
+	AttackFrontal:
+	TakeCover:
+	-RenderInfantry:
+	RenderInfantryProne:
+		IdleAnimations: idle1,idle2
+#	-PoisonedByTiberium:
+#	TiberiumHeal: # TODO
+
+MHIJACK: # TODO: does not work
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 10
+		Owner: forgotten
+	Valued:
+		Cost: 100
+	Tooltip:
+		Name: Mutant Hijacker
+		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles
+		Icon: mutcicon
+	Selectable:
+		Bounds: 12,17,0,-9
+		Voice: Hijacker
+	Health:
+		HP: 300
+	Mobile:
+		Speed: 7
+	RevealsShroud:
+		Range: 6
+	-AutoTarget:
+	-AttackMove:
+	TakeCover:
+	-RenderInfantry:
+	RenderInfantryProne:
+		IdleAnimations: idle1,idle2
+#	-PoisonedByTiberium:
+#	TiberiumHeal: # TODO
+
+TRATOS:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 10
+		Owner: forgotten
+	Valued:
+		Cost: 100
+	Tooltip:
+		Name: Tratos
+		Icon: mutcicon
+	Selectable:
+		Bounds: 12,17,0,-9
+		Voice: Tratos
+	Health:
+		HP: 200
+	Mobile:
+		Speed: 5
+	RevealsShroud:
+		Range: 4
+	TakeCover:
+	-AutoTarget:
+	-AttackMove:
+	-RenderInfantry:
+	RenderInfantryProne:
+		IdleAnimations: idle1,idle2
+#	-PoisonedByTiberium:
+#	TiberiumHeal: # TODO
+
+OXANNA:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 10
+		Owner: forgotten
+	Valued:
+		Cost: 100
+	Tooltip:
+		Name: Oxanna
+		Icon: mutcicon
+	Selectable:
+		Bounds: 12,17,0,-9
+		Voice: Oxanna
+	Health:
+		HP: 50
+	Mobile:
+		Speed: 4
+	RevealsShroud:
+		Range: 4
+	TakeCover:
+	-AutoTarget:
+	-AttackMove:
+	-RenderInfantry:
+	RenderInfantryProne:
+		IdleAnimations: idle1,idle2
+#	-PoisonedByTiberium:
+#	TiberiumHeal: # TODO
+
+SLAV:
+	Inherits: ^Infantry
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 10
+		Owner: forgotten
+	Valued:
+		Cost: 100
+	Tooltip:
+		Name: Slavick
+		Icon: mutcicon
+	Selectable:
+		Bounds: 12,17,0,-9
+		Voice: Slavick
+	Health:
+		HP: 300
+	Mobile:
+		Speed: 4
+	RevealsShroud:
+		Range: 4
+	TakeCover:
+	-AutoTarget:
+	-AttackMove:
+	-RenderInfantry:
+	RenderInfantryProne:
+		IdleAnimations: idle1,idle2
+#	-PoisonedByTiberium:
+#	TiberiumHeal: # TODO
+
+DOGGIE:
+	Inherits: ^Infantry
+	Tooltip:
+		Name: Tiberian Fiend
+		Icon: xxicon
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 100
+		Owner: None
+	Health:
+		Radius: 3
+		HP: 250
+	Valued:
+		Cost: 100
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 4
+	Mobile:
+		Speed: 8
+#	CrushableInfantry:
+#		CrushSound: squish2.aud
+	Selectable:
+		Voice: Fiend
+	TargetableUnit:
+		TargetTypes: Ground
+	Armament:
+		Weapon: FiendShard
+	AttackFrontal:
+	AttackWander:
+#	-PoisonedByTiberium:
+#	TiberiumHeal: # TODO
+
+VISSML:
+	Inherits: ^Infantry
+	Tooltip:
+		Name: Baby Visceroid
+		Icon: xxicon
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 100
+		Owner: None
+	Health:
+		HP: 200
+	Valued:
+		Cost: 1
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 0
+	Mobile:
+		Speed: 8
+		ROT: 16
+	-CrushableInfantry:
+	Selectable:
+		Voice: Fiend
+	TargetableUnit:
+		TargetTypes: Ground
+	-AutoTarget:
+	-AttackMove:
+#	-PoisonedByTiberium:
+#	TiberiumHeal: # TODO
+	-RenderInfantry:
+	RenderUnit:
+
+VISLRG:
+	Inherits: ^Infantry
+	Tooltip:
+		Name: Adult Visceroid
+		Icon: xxicon
+	Buildable:
+		Queue: Infantry
+		BuildPaletteOrder: 100
+		Owner: None
+	Health:
+		HP: 500
+	Valued:
+		Cost: 1
+	Armor:
+		Type: Light
+	RevealsShroud:
+		Range: 0
+	Mobile:
+		Speed: 8
+		ROT: 16
+	-CrushableInfantry:
+	Selectable:
+		Voice: Fiend
+	TargetableUnit:
+		TargetTypes: Ground
+	Armament:
+		Weapon: SlimeAttack
+	AttackFrontal:
+	AttackWander:
+#	-PoisonedByTiberium:
+#	TiberiumHeal: # TODO
+	-RenderInfantry:
+	RenderUnit:
+
+CIV1:
+	Inherits: ^CivilianInfantry
+
+CIV2:
+	Inherits: ^CivilianInfantry
+
+CIV3:
+	Inherits: ^CivilianInfantry
