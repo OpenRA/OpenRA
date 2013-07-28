@@ -10,13 +10,25 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
+using OpenRA.Traits;
 
 namespace OpenRA.Widgets
 {
+	public enum WorldTooltipType { None, Unexplored, Actor }
+
 	public class ViewportControllerWidget : Widget
 	{
+		public readonly string TooltipTemplate = "WORLD_TOOLTIP";
+		public readonly string TooltipContainer;
+		Lazy<TooltipContainerWidget> tooltipContainer;
+
+		public WorldTooltipType TooltipType { get; private set; }
+		public IToolTip ActorTooltip { get; private set; }
+
 		public int EdgeScrollThreshold = 15;
 		public int EdgeCornerScrollThreshold = 35;
 
@@ -42,6 +54,61 @@ namespace OpenRA.Widgets
 
 		ScrollDirection keyboardDirections;
 		ScrollDirection edgeDirections;
+		World world;
+
+		[ObjectCreator.UseCtor]
+		public ViewportControllerWidget(World world, WorldRenderer worldRenderer)
+			: base()
+		{
+			this.world = world;
+			tooltipContainer = Lazy.New(() =>
+				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
+		}
+
+		public override void MouseEntered()
+		{
+			if (TooltipContainer == null)
+				return;
+
+			tooltipContainer.Value.SetTooltip(TooltipTemplate,
+				new WidgetArgs() {{ "world", world }, { "wic", this }});
+		}
+
+		public override void MouseExited()
+		{
+			if (TooltipContainer == null)
+				return;
+
+			tooltipContainer.Value.RemoveTooltip();
+		}
+
+		public override void Draw()
+		{
+			UpdateMouseover();
+			base.Draw();
+		}
+
+		public void UpdateMouseover()
+		{
+			TooltipType = WorldTooltipType.None;
+			var cell = Game.viewport.ViewToWorld(Viewport.LastMousePos);
+			if (!world.Map.IsInMap(cell))
+				return;
+
+			if (world.ShroudObscures(cell))
+			{
+				TooltipType = WorldTooltipType.Unexplored;
+				return;
+			}
+
+			var actor = world.FindUnitsAtMouse(Viewport.LastMousePos).FirstOrDefault();
+			if (actor == null)
+				return;
+
+			ActorTooltip = actor.TraitsImplementing<IToolTip>().FirstOrDefault();
+			if (ActorTooltip != null)
+				TooltipType = WorldTooltipType.Actor;
+		}
 
 		public static string GetScrollCursor(Widget w, ScrollDirection edge, int2 pos)
 		{

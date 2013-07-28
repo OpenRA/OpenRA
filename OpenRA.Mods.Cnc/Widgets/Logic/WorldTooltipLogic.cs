@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 	public class WorldTooltipLogic
 	{
 		[ObjectCreator.UseCtor]
-		public WorldTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, CncWorldInteractionControllerWidget wic)
+		public WorldTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, ViewportControllerWidget wic)
 		{
 			widget.IsVisible = () => wic.TooltipType != WorldTooltipType.None;
 			var label = widget.Get<LabelWidget>("LABEL");
