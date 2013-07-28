@@ -158,8 +158,9 @@ namespace OpenRA.Mods.RA.Widgets
 
 		public override bool HandleMouseInput(MouseInput mi)
 		{
+			// Eat mouse-up events
 			if (mi.Event != MouseInputEvent.Down)
-				return false;
+				return true;
 
 			if (mi.Button == MouseButton.WheelDown)
 			{
