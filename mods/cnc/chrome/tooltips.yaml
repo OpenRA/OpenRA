@@ -25,8 +25,11 @@ Background@BUTTON_TOOLTIP:
 Background@WORLD_TOOLTIP:
 	Logic:WorldTooltipLogic
 	Background:panel-black
-	Width:141
 	Children:
+		Container@SINGLE_HEIGHT:
+			Height:25
+		Container@DOUBLE_HEIGHT:
+			Height:45
 		Label@LABEL:
 			X:5
 			Height:23

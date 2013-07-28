@@ -11,6 +11,7 @@ Container@INGAME_ROOT:
 			Y:0
 			Width:WINDOW_RIGHT
 			Height:WINDOW_BOTTOM
+			TooltipContainer:TOOLTIP_CONTAINER
 		WorldCommand:
 			X:0
 			Y:0
@@ -31,7 +32,6 @@ Container@INGAME_ROOT:
 			Text:Options (ESC)
 			Font:Bold
 			Key: escape
-		WorldTooltip:
 		Background@PERF_BG:
 			ClickThrough:true
 			Background:dialog4
