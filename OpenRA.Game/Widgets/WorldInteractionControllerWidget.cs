@@ -60,7 +60,7 @@ namespace OpenRA.Widgets
 
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Down)
 			{
-				if (!TakeFocus(mi))
+				if (!TakeMouseFocus(mi))
 					return false;
 				
 				dragStart = dragEnd = xy;
@@ -75,13 +75,13 @@ namespace OpenRA.Widgets
 
 			if (mi.Button == MouseButton.Left && mi.Event == MouseInputEvent.Up)
 			{
-				if (UseClassicMouseStyle && Focused)
+				if (UseClassicMouseStyle && HasMouseFocus)
 				{
 					//order units around
 					if (!HasBox && world.Selection.Actors.Any() && !MultiClick)
 					{
 						ApplyOrders(world, xy, mi);
-						LoseFocus(mi);
+						YieldMouseFocus(mi);
 						return true;
 					}
 				}
@@ -108,7 +108,7 @@ namespace OpenRA.Widgets
 				}
 				
 				dragStart = dragEnd = xy;
-				LoseFocus(mi);
+				YieldMouseFocus(mi);
 			}
 			
 			if (mi.Button == MouseButton.None && mi.Event == MouseInputEvent.Move)

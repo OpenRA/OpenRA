@@ -90,7 +90,6 @@
     <Compile Include="SpawnViceroid.cs" />
     <Compile Include="TiberiumRefinery.cs" />
     <Compile Include="Widgets\CncWidgetUtils.cs" />
-    <Compile Include="Widgets\CncWorldInteractionControllerWidget.cs" />
     <Compile Include="Widgets\Logic\ButtonTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\CncConquestObjectivesLogic.cs" />
     <Compile Include="Widgets\Logic\CncIngameChromeLogic.cs" />
@@ -103,7 +102,6 @@
     <Compile Include="Widgets\Logic\CncSettingsLogic.cs" />
     <Compile Include="Widgets\Logic\ProductionTooltipLogic.cs" />
     <Compile Include="Widgets\Logic\SupportPowerTooltipLogic.cs" />
-    <Compile Include="Widgets\Logic\WorldTooltipLogic.cs" />
     <Compile Include="Widgets\ProductionPaletteWidget.cs" />
     <Compile Include="Widgets\ProductionTabsWidget.cs" />
     <Compile Include="Widgets\SupportPowersWidget.cs" />

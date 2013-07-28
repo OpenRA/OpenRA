@@ -165,16 +165,16 @@ namespace OpenRA.Mods.RA.Widgets
 		{
 			if (mi.Button != MouseButton.Left)
 				return false;
-			if (mi.Event == MouseInputEvent.Down && !TakeFocus(mi))
+			if (mi.Event == MouseInputEvent.Down && !TakeMouseFocus(mi))
 				return false;
-			if (!Focused)
+			if (!HasMouseFocus)
 				return false;
 
 			switch (mi.Event)
 			{
 			case MouseInputEvent.Up:
 				isMoving = false;
-				LoseFocus(mi);
+				YieldMouseFocus(mi);
 				break;
 
 			case MouseInputEvent.Down:

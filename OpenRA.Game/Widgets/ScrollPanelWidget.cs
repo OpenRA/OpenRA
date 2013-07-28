@@ -104,7 +104,7 @@ namespace OpenRA.Widgets
 			ButtonWidget.DrawBackground("button", downButtonRect, downDisabled, DownPressed, downHover, false);
 
 			if (thumbHeight > 0)
-				ButtonWidget.DrawBackground("scrollthumb", thumbRect, false, Focused && thumbHover, thumbHover, false);
+				ButtonWidget.DrawBackground("scrollthumb", thumbRect, false, HasMouseFocus && thumbHover, thumbHover, false);
 
 			var upOffset = !UpPressed || upDisabled ? 4 : 4 + ButtonDepth;
 			var downOffset = !DownPressed || downDisabled ? 4 : 4 + ButtonDepth;
@@ -170,10 +170,10 @@ namespace OpenRA.Widgets
 			if (DownPressed) Scroll(-1);
 		}
 
-		public override bool LoseFocus (MouseInput mi)
+		public override bool YieldMouseFocus(MouseInput mi)
 		{
 			UpPressed = DownPressed = ThumbPressed = false;
-			return base.LoseFocus(mi);
+			return base.YieldMouseFocus(mi);
 		}
 
 		int2 lastMouseLocation;
@@ -194,14 +194,14 @@ namespace OpenRA.Widgets
 			if (mi.Button != MouseButton.Left)
 				return false;
 
-			if (mi.Event == MouseInputEvent.Down && !TakeFocus(mi))
+			if (mi.Event == MouseInputEvent.Down && !TakeMouseFocus(mi))
 				return false;
 
-			if (!Focused)
+			if (!HasMouseFocus)
 				return false;
 
-			if (Focused && mi.Event == MouseInputEvent.Up)
-				return LoseFocus(mi);
+			if (HasMouseFocus && mi.Event == MouseInputEvent.Up)
+				return YieldMouseFocus(mi);
 
 			if (ThumbPressed && mi.Event == MouseInputEvent.Move)
 			{

@@ -9,6 +9,30 @@ Background@SIMPLE_TOOLTIP:
 			Height:23
 			Font:Bold
 
+Background@WORLD_TOOLTIP:
+	Logic:WorldTooltipLogic
+	Background:dialog3
+	Children:
+		Container@SINGLE_HEIGHT:
+			Height:31
+		Container@DOUBLE_HEIGHT:
+			Height:56
+		Label@LABEL:
+			X:7
+			Y:2
+			Height:23
+			Font:Bold
+		Image@FLAG:
+			X:7
+			Y:27
+			Width:23
+			Height:23
+		Label@OWNER:
+			X:35
+			Y:25
+			Height:23
+			Font:Bold
+
 Background@SPAWN_TOOLTIP:
 	Logic:SpawnSelectorTooltipLogic
 	Background:dialog3

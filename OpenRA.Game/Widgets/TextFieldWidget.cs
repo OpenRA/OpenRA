@@ -52,11 +52,10 @@ namespace OpenRA.Widgets
 			VisualHeight = widget.VisualHeight;
 		}
 
-		public override bool LoseFocus(MouseInput mi)
+		public override bool YieldKeyboardFocus()
 		{
 			OnLoseFocus();
-			var lose = base.LoseFocus(mi);
-			return lose;
+			return base.YieldKeyboardFocus();
 		}
 
 		public override bool HandleMouseInput(MouseInput mi)
@@ -64,14 +63,11 @@ namespace OpenRA.Widgets
 			if (IsDisabled())
 				return false;
 
-			if (mi.Event == MouseInputEvent.Move)
+			if (mi.Event != MouseInputEvent.Down)
 				return false;
 
-			// Lose focus if they click outside the box; return false so the next widget can grab this event
-			if (mi.Event == MouseInputEvent.Down && !RenderBounds.Contains(mi.Location) && LoseFocus(mi))
-				return false;
-
-			if (mi.Event == MouseInputEvent.Down && !TakeFocus(mi))
+			// Attempt to take keyboard focus
+			if (!RenderBounds.Contains(mi.Location) || !TakeKeyboardFocus())
 				return false;
 
 			blinkCycle = 10;
@@ -89,7 +85,7 @@ namespace OpenRA.Widgets
 			var textSize = font.Measure(apparentText);
 
 			var start = RenderOrigin.X + LeftMargin;
-			if (textSize.X > Bounds.Width - LeftMargin - RightMargin && Focused)
+			if (textSize.X > Bounds.Width - LeftMargin - RightMargin && HasKeyboardFocus)
 				start += Bounds.Width - LeftMargin - RightMargin - textSize.X;
 
 			int minIndex = -1;
@@ -107,13 +103,11 @@ namespace OpenRA.Widgets
 
 		public override bool HandleKeyPress(KeyInput e)
 		{
-			if (IsDisabled())
+			if (IsDisabled() || e.Event == KeyInputEvent.Up)
 				return false;
 
-			if (e.Event == KeyInputEvent.Up) return false;
-
 			// Only take input if we are focused
-			if (!Focused)
+			if (!HasKeyboardFocus)
 				return false;
 
 			if ((e.KeyName == "return" || e.KeyName == "enter") && OnEnterKey())
@@ -206,7 +200,7 @@ namespace OpenRA.Widgets
 
 			var disabled = IsDisabled();
 			var state = disabled ? "textfield-disabled" :
-				Focused ? "textfield-focused" :
+				HasKeyboardFocus ? "textfield-focused" :
 				Ui.MouseOverWidget == this ? "textfield-hover" :
 				"textfield";
 
@@ -219,7 +213,7 @@ namespace OpenRA.Widgets
 			// Right align when editing and scissor when the text overflows
 			if (textSize.X > Bounds.Width - LeftMargin - RightMargin)
 			{
-				if (Focused)
+				if (HasKeyboardFocus)
 					textPos += new int2(Bounds.Width - LeftMargin - RightMargin - textSize.X, 0);
 
 				Game.Renderer.EnableScissor(pos.X + LeftMargin, pos.Y,
@@ -229,7 +223,7 @@ namespace OpenRA.Widgets
 			var color = disabled ? DisabledColor : TextColor;
 			font.DrawText(apparentText, textPos, color);
 
-			if (showCursor && Focused)
+			if (showCursor && HasKeyboardFocus)
 				font.DrawText("|", new float2(textPos.X + cursorPosition.X - 2, textPos.Y), Color.White);
 
 			if (textSize.X > Bounds.Width - LeftMargin - RightMargin)

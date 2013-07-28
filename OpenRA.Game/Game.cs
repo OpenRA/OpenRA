@@ -215,7 +215,8 @@ namespace OpenRA
 			worldRenderer = new WorldRenderer(orderManager.world);
 
 			if (orderManager.GameStarted) return;
-			Ui.SelectedWidget = null;
+			Ui.MouseFocusWidget = null;
+			Ui.KeyboardFocusWidget = null;
 
 			orderManager.LocalFrameNumber = 0;
 			orderManager.LastTickTime = Environment.TickCount;

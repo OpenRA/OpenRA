@@ -83,10 +83,10 @@ namespace OpenRA.Widgets
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 		}
 
-		public override bool LoseFocus(MouseInput mi)
+		public override bool YieldMouseFocus(MouseInput mi)
 		{
 			Depressed = false;
-			return base.LoseFocus(mi);
+			return base.YieldMouseFocus(mi);
 		}
 
 		public override bool HandleKeyPress(KeyInput e)
@@ -110,25 +110,25 @@ namespace OpenRA.Widgets
 			if (mi.Button != MouseButton.Left)
 				return false;
 
-			if (mi.Event == MouseInputEvent.Down && !TakeFocus(mi))
+			if (mi.Event == MouseInputEvent.Down && !TakeMouseFocus(mi))
 				return false;
 
 			var disabled = IsDisabled();
-			if (Focused && mi.Event == MouseInputEvent.Up && mi.MultiTapCount == 2)
+			if (HasMouseFocus && mi.Event == MouseInputEvent.Up && mi.MultiTapCount == 2)
 			{
 				if (!disabled)
 				{
 					OnDoubleClick();
-					return LoseFocus(mi);
+					return YieldMouseFocus(mi);
 				}
 			} 
 			// Only fire the onMouseUp event if we successfully lost focus, and were pressed
-			else if (Focused && mi.Event == MouseInputEvent.Up)
+			else if (HasMouseFocus && mi.Event == MouseInputEvent.Up)
 			{
 				if (Depressed && !disabled)
 					OnMouseUp(mi);
 
-				return LoseFocus(mi);
+				return YieldMouseFocus(mi);
 			}
 			if (mi.Event == MouseInputEvent.Down)
 			{
@@ -141,11 +141,11 @@ namespace OpenRA.Widgets
 				}
 				else
 				{
-					LoseFocus(mi);
+					YieldMouseFocus(mi);
 					Sound.PlayNotification(null, "Sounds", "ClickDisabledSound", null);
 				}
 			}
-			else if (mi.Event == MouseInputEvent.Move && Focused)
+			else if (mi.Event == MouseInputEvent.Move && HasMouseFocus)
 				Depressed = RenderBounds.Contains(mi.Location);
 
 			return Depressed;

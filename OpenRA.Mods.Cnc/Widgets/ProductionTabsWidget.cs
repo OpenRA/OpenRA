@@ -208,10 +208,10 @@ namespace OpenRA.Mods.Cnc.Widgets
 			if (rightPressed) Scroll(-1);
 		}
 
-		public override bool LoseFocus(MouseInput mi)
+		public override bool YieldMouseFocus(MouseInput mi)
 		{
 			leftPressed = rightPressed = false;
-			return base.LoseFocus(mi);
+			return base.YieldMouseFocus(mi);
 		}
 
 		public override bool HandleMouseInput(MouseInput mi)
@@ -231,14 +231,14 @@ namespace OpenRA.Mods.Cnc.Widgets
 			if (mi.Button != MouseButton.Left)
 				return true;
 
-			if (mi.Event == MouseInputEvent.Down && !TakeFocus(mi))
+			if (mi.Event == MouseInputEvent.Down && !TakeMouseFocus(mi))
 				return true;
 
-			if (!Focused)
+			if (!HasMouseFocus)
 				return true;
 
-			if (Focused && mi.Event == MouseInputEvent.Up)
-				return LoseFocus(mi);
+			if (HasMouseFocus && mi.Event == MouseInputEvent.Up)
+				return YieldMouseFocus(mi);
 
 			leftPressed = leftButtonRect.Contains(mi.Location);
 			rightPressed = rightButtonRect.Contains(mi.Location);

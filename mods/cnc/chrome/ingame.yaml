@@ -36,7 +36,10 @@ Container@INGAME_ROOT:
 					Y:WINDOW_BOTTOM-HEIGHT-10
 					Width:200
 					Height:200
-		CncWorldInteractionController@INTERACTION_CONTROLLER:
+		WorldInteractionController@INTERACTION_CONTROLLER:
+			Width:WINDOW_RIGHT
+			Height:WINDOW_BOTTOM
+		ViewportController:
 			Width:WINDOW_RIGHT
 			Height:WINDOW_BOTTOM
 			TooltipContainer:TOOLTIP_CONTAINER
