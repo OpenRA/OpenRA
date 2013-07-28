@@ -151,6 +151,15 @@ mod_d2k_EXTRA_CMDS	= mono --debug RALint.exe d2k
 PROGRAMS 		+= mod_d2k
 mod_d2k: $(mod_d2k_TARGET)
 
+# Tiberian Sun
+mod_ts_SRCS		:= $(shell find OpenRA.Mods.TS/ -iname '*.cs')
+mod_ts_TARGET		= mods/ts/OpenRA.Mods.TS.dll
+mod_ts_KIND		= library
+mod_ts_DEPS		= $(STD_MOD_DEPS) $(mod_ra_TARGET)
+mod_ts_LIBS		= $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_ra_TARGET)
+mod_ts_EXTRA_CMDS	= mono --debug RALint.exe ts
+PROGRAMS 		+= mod_ts
+mod_ts: $(mod_ts_TARGET)
 
 ##### Tools #####
 
@@ -243,7 +252,7 @@ tools: editor tsbuild ralint
 
 package: dependencies core editor docs version
 
-mods: mod_ra mod_cnc mod_d2k
+mods: mod_ra mod_cnc mod_d2k mod_ts
 
 all: dependencies core tools
 

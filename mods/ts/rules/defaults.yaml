@@ -1,0 +1,202 @@
+^Building:
+	AppearsOnRadar:
+	SelectionDecorations:
+	Selectable:
+		Priority: 3
+	TargetableBuilding:
+		TargetTypes: Ground, C4
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+		TerrainTypes: Clear,Road
+	GivesBuildableArea:
+	Capturable:
+	CapturableBar:
+	SoundOnDamageTransition:
+		DamagedSound: #TODO
+		DestroyedSound: #TODO
+	RenderBuilding:
+	WithBuildingExplosion:
+	RepairableBuilding:
+	EngineerRepairable:
+#	EmitInfantryOnSell:
+	MustBeDestroyed:
+	GivesExperience:
+#	FrozenUnderFog:
+	CaptureNotification:
+	EditorAppearance:
+		RelativeToTopLeft: yes
+	ShakeOnDeath:
+	ProximityCaptor:
+		Types:Building
+	Sellable:
+	AcceptsSupplies:
+	GivesBounty:
+	UpdatesPlayerStatistics:
+	DebugMuzzlePositions:
+	Guardable:
+		Range: 3
+	BodyOrientation:
+
+^Infantry:
+	AppearsOnRadar:
+	Health:
+		Radius: 3
+	Armor:
+		Type: None
+	RevealsShroud:
+		Range: 4
+	Mobile:
+		Crushes: crate
+		SharesCell: yes
+		TerrainSpeeds:
+			Clear: 90
+			Rough: 80
+			Road: 100
+			Ore: 80
+			Gems: 80
+			Beach: 80
+	SelectionDecorations:
+	Selectable:
+		Voice: Infantry
+	TargetableUnit:
+		TargetTypes: Ground
+	RenderInfantry:
+	AutoTarget:
+	AttackMove:
+	Passenger:
+		CargoType: Infantry
+	HiddenUnderFog:
+	GainsExperience:
+	GivesExperience:
+	DrawLineToTarget:
+	ActorLostNotification:
+	ProximityCaptor:
+		Types: Infantry
+	GivesBounty:
+	CrushableInfantry:
+		CrushSound: squish6.aud
+	UpdatesPlayerStatistics:
+	DebugMuzzlePositions:
+	Guard:
+	Guardable:
+	BodyOrientation:
+
+^CivilianInfantry:
+	Inherits: ^Infantry
+	Selectable:
+		Voice: Civilian
+		Bounds: 12,17,0,-9
+	Valued:
+		Cost: 10
+	Tooltip:
+		Name: Civilian
+		Icon: xxicon
+	Buildable: # TODO: remove this once the testing period is over
+		Queue: Infantry
+		BuildPaletteOrder: 1000
+		Owner: gdi, nod
+	Health:
+		HP: 50
+	Mobile:
+		Speed: 5
+	RevealsShroud:
+		Range: 2
+	Armament:
+		Weapon: Pistola # deviation from RULES.INI (only CTECH is armed)
+#	LimitedAmmo:
+#		Ammo: 10
+#		PipCount: 2
+	AttackFrontal:
+	ProximityCaptor:
+		Types: CivilianInfantry
+	-RenderInfantry:
+	RenderInfantryPanic:
+	ScaredyCat:
+
+^Vehicle:
+	AppearsOnRadar:
+	Mobile:
+		Crushes: crate
+		TerrainSpeeds:
+			Clear: 80
+			Rough: 40
+			Road: 100
+			Beach: 40
+		ROT: 5
+	SelectionDecorations:
+	Selectable: 
+		Voice: Vehicle
+	TargetableUnit:
+		TargetTypes: Ground
+	Repairable:
+	Passenger:
+		CargoType: Vehicle
+	AttackMove:
+	HiddenUnderFog:
+	GainsExperience:
+	GivesExperience:
+	DrawLineToTarget:
+	ActorLostNotification:
+	ProximityCaptor:
+		Types:Vehicle
+	GivesBounty:
+#	WithSmoke:
+	UpdatesPlayerStatistics:
+	DebugMuzzlePositions:
+	Guard:
+	Guardable:
+	BodyOrientation:
+
+^Wall:
+	AppearsOnRadar:
+	Building:
+		Dimensions: 1,1
+		Footprint: x
+		BuildSounds: placbldg.aud
+		Adjacent: 7
+		TerrainTypes: Clear,Road
+	Wall:
+		CrushClasses: wall
+	LineBuild:
+		Range: 8
+	SelectionDecorations:
+	Selectable:
+		Priority: 1
+	TargetableBuilding:
+		TargetTypes: Ground, C4
+	RenderBuildingWall:
+		HasMakeAnimation: no
+	GivesExperience:
+	EditorAppearance:
+		RelativeToTopLeft: yes
+		UseTerrainPalette: yes
+	AutoTargetIgnore:
+	ProximityCaptor:
+		Types: Wall
+	Sellable:
+	UpdatesPlayerStatistics:
+	BodyOrientation:
+
+^Helicopter:
+	AppearsOnRadar:
+		UseLocation: yes
+	TargetableAircraft:
+		TargetTypes: Air
+		GroundedTargetTypes: Ground
+	SelectionDecorations:
+	Selectable:
+		Voice: Heli
+	Helicopter:
+		RepairBuildings:
+		RearmBuildings:
+		LandWhenIdle: no
+	Buildable:
+		Queue: Aircraft
+	HiddenUnderFog:
+	GainsExperience:
+	GivesExperience:
+	DrawLineToTarget:
+	ActorLostNotification:
+	DebugMuzzlePositions:
+	BodyOrientation:

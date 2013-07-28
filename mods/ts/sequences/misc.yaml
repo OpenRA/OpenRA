@@ -1,0 +1,105 @@
+overlay:
+	build-valid-interior: cellsel #TODO remove backfall to RA tileset
+		Start: 3
+	build-valid-snow: cellsel
+		Start: 3
+	build-valid-temperat: cellsel
+		Start: 3
+	build-invalid: cellsel
+		Start: 6
+	target-select: cellsel
+		Start: 10
+	target-valid-desert: cellsel
+		Start: 3
+	target-valid-interior: cellsel
+		Start: 3
+	target-valid-snow: cellsel
+		Start: 3
+	target-valid-temperat: cellsel
+		Start: 3
+	target-invalid: cellsel
+		Start: 6
+
+poweroff:
+	offline: poweroff
+		Start: 0
+		Length: *
+		Tick: 160
+
+allyrepair:
+	repair: wrench
+		Start: 0
+		Length: *
+		Tick: 160
+
+rank: # TODO: backfall to RA asset
+	rank:
+		Start: 0
+		Length: *
+
+mpspawn: # TODO: backfall to RA asset
+	idle:
+		Start: 0
+		Length: *
+
+waypoint: # TODO: backfall to RA asset
+	idle:
+		Start: 0
+		Length: *
+
+clock:
+	idle: gclock2
+		Start: 0
+		Length: *
+
+pips:
+	medic:
+		Start: 6
+	tag-primary:
+		Start: 8
+	pip-empty:
+		Start: 1
+# TODO:
+	pip-green:
+		Start: 2
+	pip-yellow:
+		Start: 2
+	pip-gray:
+		Start: 2
+	pip-red:
+		Start: 2
+	pip-blue:
+		Start: 2
+
+explosion:
+	piff: piff
+		Start: 0
+		Length: *
+	piffpiff: piffpiff
+		Start: 0
+		Length: *
+
+discus:
+	idle:
+		Start: 0
+		Length: *
+
+dragon:
+	idle:
+		Start: 0
+		Facings: 32
+
+crystal4:
+	idle:
+		Start: 0
+		Length: 15
+		ShadowStart: 15
+
+120mm:
+	idle:
+		Start: 0
+
+torpedo:
+	idle:
+		Start: 0
+		Length: *

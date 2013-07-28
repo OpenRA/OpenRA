@@ -40,7 +40,7 @@ TRAN:
 	Explodes:
 		Weapon: HeliExplode
 		EmptyWeapon: HeliExplode
-		
+
 HELI:
 	Inherits: ^Helicopter
 	Valued:
