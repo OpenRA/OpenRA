@@ -220,6 +220,31 @@ function SettingsSaveProjectSession(projdirs)
   settings:SetPath(path)
 end
 
+function SettingsRestorePackage(package)
+  local packagename = "/package/"..package
+  local path = settings:GetPath()
+  settings:SetPath(packagename)
+  local outtab = {}
+  local ismore, key, index = settings:GetFirstEntry("", 0)
+  while (ismore) do
+    local couldread, value = settings:Read(key, "")
+    if couldread then outtab[key] = value end
+    ismore, key, index = settings:GetNextEntry(index)
+  end
+  settings:SetPath(path)
+  return outtab
+end
+
+function SettingsSavePackage(package, values)
+  local packagename = "/package/"..package
+  local path = settings:GetPath()
+
+  settings:DeleteGroup(packagename)
+  settings:SetPath(packagename)
+  for k,v in pairs(values) do settings:Write(k, v) end
+  settings:SetPath(path)
+end
+
 -----------------------------------
 
 local function saveNotebook(nb)
