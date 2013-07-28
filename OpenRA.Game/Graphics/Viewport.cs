@@ -16,9 +16,20 @@ using OpenRA.Widgets;
 using OpenRA.Support;
 
 namespace OpenRA.Graphics
-{
+{ 
 	[Flags]
-	public enum ScrollDirection { None = 0, Up = 1, Left = 2, Down = 4, Right = 8 }
+	public enum ScrollDirection 
+	{ 
+		None = 0, 
+		Up = 1,
+		Left = 2,
+		Down = 4,
+		Right = 8, 
+		UpLeft = ScrollDirection.Up | ScrollDirection.Left,
+		UpRight = ScrollDirection.Up | ScrollDirection.Right,
+		DownLeft = ScrollDirection.Down | ScrollDirection.Left,
+		DownRight = ScrollDirection.Down | ScrollDirection.Right
+	}
 
 	public class Viewport
 	{
@@ -30,7 +41,7 @@ namespace OpenRA.Graphics
 
 		// Top-left of the viewport, in world-px units
 		public float2 Location { get { return scrollPosition; } }
-		public float2 CenterLocation { get { return scrollPosition + 0.5f/Zoom*screenSize.ToFloat2(); } }
+		public float2 CenterLocation { get { return scrollPosition + 0.5f / Zoom * screenSize.ToFloat2(); } }
 
 		public Rectangle WorldRect
 		{
