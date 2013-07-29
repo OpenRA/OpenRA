@@ -212,7 +212,6 @@
     <Compile Include="Widgets\SliderWidget.cs" />
     <Compile Include="Widgets\TextFieldWidget.cs" />
     <Compile Include="Widgets\TimerWidget.cs" />
-    <Compile Include="Widgets\ViewportScrollControllerWidget.cs" />
     <Compile Include="Widgets\VqaPlayerWidget.cs" />
     <Compile Include="Widgets\Widget.cs" />
     <Compile Include="Widgets\WidgetLoader.cs" />
@@ -237,6 +236,7 @@
     <Compile Include="Graphics\TextRenderable.cs" />
     <Compile Include="Graphics\BeamRenderable.cs" />
     <Compile Include="Graphics\ContrailRenderable.cs" />
+    <Compile Include="Widgets\ViewportControllerWidget.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

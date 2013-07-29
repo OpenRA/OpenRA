@@ -12,14 +12,14 @@ using System;
 using System.Drawing;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.Cnc.Widgets.Logic
+namespace OpenRA.Mods.RA.Widgets.Logic
 {
 	public class WorldTooltipLogic
 	{
 		[ObjectCreator.UseCtor]
-		public WorldTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, CncWorldInteractionControllerWidget wic)
+		public WorldTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, ViewportControllerWidget viewport)
 		{
-			widget.IsVisible = () => wic.TooltipType != WorldTooltipType.None;
+			widget.IsVisible = () => viewport.TooltipType != WorldTooltipType.None;
 			var label = widget.Get<LabelWidget>("LABEL");
 			var flag = widget.Get<ImageWidget>("FLAG");
 			var owner = widget.Get<LabelWidget>("OWNER");
@@ -32,24 +32,25 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			var flagRace = "";
 			var ownerName = "";
 			var ownerColor = Color.White;
-			var doubleHeight = 45;
-			var singleHeight = 25;
+
+			var singleHeight = widget.Get("SINGLE_HEIGHT").Bounds.Height;
+			var doubleHeight = widget.Get("DOUBLE_HEIGHT").Bounds.Height;
 
 			tooltipContainer.BeforeRender = () =>
 			{
-				if (wic == null || wic.TooltipType == WorldTooltipType.None)
+				if (viewport == null || viewport.TooltipType == WorldTooltipType.None)
 					return;
 
-				labelText = wic.TooltipType == WorldTooltipType.Unexplored ? "Unexplored Terrain" :
-					wic.ActorTooltip.Name();
+				labelText = viewport.TooltipType == WorldTooltipType.Unexplored ? "Unexplored Terrain" :
+					viewport.ActorTooltip.Name();
 				var textWidth = font.Measure(labelText).X;
 				if (textWidth != cachedWidth)
 				{
 					label.Bounds.Width = textWidth;
 					widget.Bounds.Width = 2*label.Bounds.X + textWidth;
 				}
-				var o = wic.ActorTooltip != null ? wic.ActorTooltip.Owner() : null;
-				showOwner = wic.TooltipType == WorldTooltipType.Actor && o != null && !o.NonCombatant;
+				var o = viewport.ActorTooltip != null ? viewport.ActorTooltip.Owner() : null;
+				showOwner = viewport.TooltipType == WorldTooltipType.Actor && o != null && !o.NonCombatant;
 
 				if (showOwner)
 				{
@@ -58,7 +59,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					ownerColor = o.Color.RGB;
 					widget.Bounds.Height = doubleHeight;
 					widget.Bounds.Width = Math.Max(widget.Bounds.Width,
-						owner.Bounds.X + ownerFont.Measure(ownerName).X + 5);
+						owner.Bounds.X + ownerFont.Measure(ownerName).X + label.Bounds.X);
 				}
 				else
 					widget.Bounds.Height = singleHeight;

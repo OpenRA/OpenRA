@@ -23,7 +23,8 @@ namespace OpenRA.Widgets
 
 		static Stack<Widget> WindowList = new Stack<Widget>();
 
-		public static Widget SelectedWidget;
+		public static Widget MouseFocusWidget;
+		public static Widget KeyboardFocusWidget;
 		public static Widget MouseOverWidget;
 
 		public static void CloseWindow()
@@ -74,7 +75,7 @@ namespace OpenRA.Widgets
 				MouseOverWidget = null;
 
 			bool handled = false;
-			if (SelectedWidget != null && SelectedWidget.HandleMouseInputOuter(mi))
+			if (MouseFocusWidget != null && MouseFocusWidget.HandleMouseInputOuter(mi))
 				handled = true;
 
 			if (!handled && Root.HandleMouseInputOuter(mi))
@@ -100,8 +101,8 @@ namespace OpenRA.Widgets
 
 		public static bool HandleKeyPress(KeyInput e)
 		{
-			if (SelectedWidget != null)
-				return SelectedWidget.HandleKeyPressOuter(e);
+			if (KeyboardFocusWidget != null)
+				return KeyboardFocusWidget.HandleKeyPressOuter(e);
 
 			if (Root.HandleKeyPressOuter(e))
 				return true;
@@ -234,31 +235,46 @@ namespace OpenRA.Widgets
 				.Aggregate(EventBounds, Rectangle.Union);
 		}
 
-		public bool Focused { get { return Ui.SelectedWidget == this; } }
+		public bool HasMouseFocus { get { return Ui.MouseFocusWidget == this; } }
+		public bool HasKeyboardFocus { get { return Ui.KeyboardFocusWidget == this; } }
 
-		public virtual bool TakeFocus(MouseInput mi)
+		public virtual bool TakeMouseFocus(MouseInput mi)
 		{
-			if (Focused)
+			if (HasMouseFocus)
 				return true;
 
-			if (Ui.SelectedWidget != null && !Ui.SelectedWidget.LoseFocus(mi))
+			if (Ui.MouseFocusWidget != null && !Ui.MouseFocusWidget.YieldMouseFocus(mi))
 				return false;
 
-			Ui.SelectedWidget = this;
+			Ui.MouseFocusWidget = this;
 			return true;
 		}
 
 		// Remove focus from this widget; return false if you don't want to give it up
-		public virtual bool LoseFocus(MouseInput mi)
+		public virtual bool YieldMouseFocus(MouseInput mi)
 		{
-			// Some widgets may need to override focus depending on mouse click
-			return LoseFocus();
+			if (Ui.MouseFocusWidget == this)
+				Ui.MouseFocusWidget = null;
+
+			return true;
 		}
 
-		public virtual bool LoseFocus()
+		public virtual bool TakeKeyboardFocus()
 		{
-			if (Ui.SelectedWidget == this)
-				Ui.SelectedWidget = null;
+			if (HasKeyboardFocus)
+				return true;
+
+			if (Ui.KeyboardFocusWidget != null && !Ui.KeyboardFocusWidget.YieldKeyboardFocus())
+				return false;
+
+			Ui.KeyboardFocusWidget = this;
+			return true;
+		}
+
+		public virtual bool YieldKeyboardFocus()
+		{
+			if (Ui.KeyboardFocusWidget == this)
+				Ui.KeyboardFocusWidget = null;
 
 			return true;
 		}
@@ -288,7 +304,7 @@ namespace OpenRA.Widgets
 		public bool HandleMouseInputOuter(MouseInput mi)
 		{
 			// Are we able to handle this event?
-			if (!(Focused || (IsVisible() && GetEventBounds().Contains(mi.Location))))
+			if (!(HasMouseFocus || (IsVisible() && GetEventBounds().Contains(mi.Location))))
 				return false;
 
 			var oldMouseOver = Ui.MouseOverWidget;

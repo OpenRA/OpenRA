@@ -104,14 +104,14 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			ChatText.Text = "";
 			ChatOverlay.Visible = false;
 			ChatChrome.Visible = true;
-			ChatText.TakeFocus(new MouseInput());
+			ChatText.TakeKeyboardFocus();
 		}
 
 		public void CloseChat()
 		{
 			ChatOverlay.Visible = true;
 			ChatChrome.Visible = false;
-			ChatText.LoseFocus();
+			ChatText.YieldKeyboardFocus();
 		}
 
 		public bool IsOpen { get { return ChatChrome.IsVisible(); } }

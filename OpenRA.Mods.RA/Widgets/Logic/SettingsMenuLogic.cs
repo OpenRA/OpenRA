@@ -43,13 +43,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			name.OnLoseFocus = () =>
 			{
 				name.Text = name.Text.Trim();
-
 				if (name.Text.Length == 0)
 					name.Text = Game.Settings.Player.Name;
 				else
 					Game.Settings.Player.Name = name.Text;
 			};
-			name.OnEnterKey = () => { name.LoseFocus(); return true; };
+			name.OnEnterKey = () => { name.YieldKeyboardFocus(); return true; };
 
 			var edgescrollCheckbox = general.Get<CheckboxWidget>("EDGE_SCROLL");
 			edgescrollCheckbox.IsChecked = () => Game.Settings.Game.ViewportEdgeScroll;
@@ -315,7 +314,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var textBox = keyWidget.Get<TextFieldWidget>("HOTKEY");
 
 			textBox.Text = getValue();
-
 			textBox.OnLoseFocus = () =>
 			{
 				textBox.Text.Trim();
@@ -324,8 +322,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				else
 					setValue(textBox.Text);
 			};
-
-			textBox.OnEnterKey = () => { textBox.LoseFocus(); return true; };
+			textBox.OnEnterKey = () => { textBox.YieldKeyboardFocus(); return true; };
 		}
 
 		public static bool ShowRendererDropdown(DropDownButtonWidget dropdown, GraphicSettings s)

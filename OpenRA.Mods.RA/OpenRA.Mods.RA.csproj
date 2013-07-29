@@ -413,7 +413,6 @@
     <Compile Include="Widgets\SupportPowerTimerWidget.cs" />
     <Compile Include="Widgets\SupportPowerBinWidget.cs" />
     <Compile Include="Widgets\WorldCommandWidget.cs" />
-    <Compile Include="Widgets\WorldTooltipWidget.cs" />
     <Compile Include="World\ChooseBuildTabOnSelect.cs" />
     <Compile Include="World\DebugOverlay.cs" />
     <Compile Include="World\ResourceClaim.cs" />
@@ -462,6 +461,7 @@
     <Compile Include="MPStartUnits.cs" />
     <Compile Include="Orders\SetChronoTankDestination.cs" />
     <Compile Include="Effects\FrozenActorProxy.cs" />
+    <Compile Include="Widgets\Logic\WorldTooltipLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

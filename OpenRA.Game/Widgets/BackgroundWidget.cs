@@ -33,7 +33,7 @@ namespace OpenRA.Widgets
 			if (ClickThrough || !Bounds.Contains(mi.Location))
 				return false;
 
-			if (!Draggable || moving && (!TakeFocus(mi) || mi.Button != MouseButton.Left))
+			if (!Draggable || moving && (!TakeMouseFocus(mi) || mi.Button != MouseButton.Left))
 				return true;
 
 			if (prevMouseLocation == null)
@@ -44,7 +44,7 @@ namespace OpenRA.Widgets
 			{
 				case MouseInputEvent.Up:
 					moving = false;
-					LoseFocus(mi);
+					YieldMouseFocus(mi);
 					break;
 				case MouseInputEvent.Down:
 					moving = true;
