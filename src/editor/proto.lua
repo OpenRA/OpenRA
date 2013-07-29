@@ -11,6 +11,8 @@ ide.proto.Plugin = {__index = {
   GetName = function(self) return self.name end,
   GetFileName = function(self) return self.fname end,
   GetConfig = function(self) return ide.config[self.fname] or {} end,
+  GetSettings = function(self) return SettingsRestorePackage(self.fname) end,
+  SetSettings = function(self, settings) SettingsSavePackage(self.fname, settings) end,
 }}
 
 ide.proto.Interpreter = {__index = {
