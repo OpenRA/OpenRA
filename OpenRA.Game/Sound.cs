@@ -31,7 +31,7 @@ namespace OpenRA
 		{
 			if (!FileSystem.Exists(filename))
 			{
-				Log.Write("debug", "LoadSound, file does not exist: {0}", filename);
+				Log.Write("sound", "LoadSound, file does not exist: {0}", filename);
 				return null;
 			}
 
@@ -390,7 +390,7 @@ namespace OpenRA
 				Al.alGenSources(1, out source);
 				if (0 != Al.alGetError())
 				{
-					Log.Write("debug", "Failed generating OpenAL source {0}", i);
+					Log.Write("sound", "Failed generating OpenAL source {0}", i);
 					return;
 				}
 
@@ -442,7 +442,7 @@ namespace OpenRA
 		{
 			if (sound == null)
 			{
-				Log.Write("debug", "Attempt to Play2D a null `ISoundSource`");
+				Log.Write("sound", "Attempt to Play2D a null `ISoundSource`");
 				return null;
 			}
 
