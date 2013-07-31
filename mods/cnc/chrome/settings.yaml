@@ -78,6 +78,13 @@ Container@SETTINGS_PANEL:
 					Height:20
 					Font:Regular
 					Text:Check Sync around Unsynced Code
+				Checkbox@SHELLMAP_MUSIC:
+					X:15
+					Y:210
+					Width:200
+					Height:20
+					Font:Regular
+					Text:Shellmap Music
 				Label@VIDEO_TITLE:
 					Y:20
 					X:375
@@ -183,13 +190,26 @@ Container@SETTINGS_PANEL:
 					Width:240
 					Height:20
 					Ticks:5
-				Checkbox@SHELLMAP_MUSIC:
+				Label@AUDIO_DEVICE_LABEL:
 					X:375
 					Y:240
-					Width:200
+					Width:75
+					Height:20
+					Text:Audio Device:
+				DropDownButton@AUDIO_DEVICE:
+					X:475
+					Y:240
+					Width:240
 					Height:20
 					Font:Regular
-					Text:Shellmap Music
+					Text:Default Device
+				Label@AUDIO_DESC
+					X:400
+					Y:262
+					Width:200
+					Height:25
+					Font:Tiny
+					Text:Device changes will be applied after the game is restarted.
 		Background@INPUT_CONTROLS:
 			Width:740
 			Height:290
