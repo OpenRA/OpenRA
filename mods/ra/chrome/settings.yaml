@@ -195,6 +195,26 @@ Background@SETTINGS_MENU:
 					Height:25
 					Font:Regular
 					Text:OpenAL
+				Label@AUDIO_DEVICE_LABEL:
+					X:0
+					Y:185
+					Width:75
+					Height:25
+					Text:Audio Device:
+				DropDownButton@AUDIO_DEVICE:
+					X:100
+					Y:185
+					Width:250
+					Height:25
+					Font:Regular
+					Text:Default Device
+				Label@AUDIO_DESC
+					X:0
+					Y:210
+					Width:200
+					Height:25
+					Font:Tiny
+					Text:Sound engine and device changes will be applied after the game is restarted.
 		Container@DISPLAY_PANE:
 			X:37
 			Y:100
