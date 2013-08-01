@@ -11,9 +11,9 @@
 using System.Collections.Generic;
 using System.Drawing;
 using OpenRA.Effects;
+using OpenRA.FileFormats;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
-using OpenRA.FileFormats;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Effects
@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEffect Create(ProjectileArgs args)
 		{
-			var c = UsePlayerColor ? args.firedBy.Owner.Color.RGB : Color;
+			var c = UsePlayerColor ? args.sourceActor.Owner.Color.RGB : Color;
 			return new LaserZap(args, this, c);
 		}
 	}
@@ -41,13 +41,16 @@ namespace OpenRA.Mods.RA.Effects
 		int ticks = 0;
 		Color color;
 		bool doneDamage;
+		bool animationComplete;
 		Animation hitanim;
+		WPos target;
 
 		public LaserZap(ProjectileArgs args, LaserZapInfo info, Color color)
 		{
 			this.args = args;
 			this.info = info;
 			this.color = color;
+			this.target = args.passiveTarget;
 
 			if (info.HitAnim != null)
 				this.hitanim = new Animation(info.HitAnim);
@@ -56,43 +59,36 @@ namespace OpenRA.Mods.RA.Effects
 		public void Tick(World world)
 		{
 			// Beam tracks target
-			if (args.target.IsValid)
-				args.dest = args.target.CenterLocation;
+			if (args.guidedTarget.IsValid)
+				target = args.guidedTarget.CenterPosition;
 
 			if (!doneDamage)
 			{
 				if (hitanim != null)
-					hitanim.PlayThen("idle",
-						() => world.AddFrameEndTask(w => w.Remove(this)));
-				Combat.DoImpacts(args);
+					hitanim.PlayThen("idle", () => animationComplete = true);
+
+				Combat.DoImpacts(target, args.sourceActor, args.weapon, args.firepowerModifier);
 				doneDamage = true;
 			}
-			++ticks;
 
 			if (hitanim != null)
 				hitanim.Tick();
-			else
-				if (ticks >= info.BeamDuration)
-					world.AddFrameEndTask(w => w.Remove(this));
+
+			if (++ticks >= info.BeamDuration && animationComplete)
+				world.AddFrameEndTask(w => w.Remove(this));
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
 			if (ticks < info.BeamDuration)
 			{
-				var src = new PPos(args.src.X, args.src.Y).ToWPos(args.srcAltitude);
-				var dest = new PPos(args.dest.X, args.dest.Y).ToWPos(args.destAltitude);
-				var rc = Color.FromArgb((info.BeamDuration - ticks)*255/info.BeamDuration, color);
-
-				yield return new BeamRenderable(src, 0, dest - src, info.BeamWidth, rc);
+				var rc = Color.FromArgb((info.BeamDuration - ticks) * 255 / info.BeamDuration, color);
+				yield return new BeamRenderable(args.source, 0, target - args.source, info.BeamWidth, rc);
 			}
 
 			if (hitanim != null)
-				yield return new SpriteRenderable(hitanim.Image, args.dest.ToFloat2(),
-				                                  wr.Palette("effect"), (int)args.dest.Y);
-
-			if (ticks >= info.BeamDuration)
-				yield break;
+				foreach (var r in hitanim.Render(target, wr.Palette("effect")))
+					yield return r;
 		}
 	}
 }

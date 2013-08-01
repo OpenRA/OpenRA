@@ -31,8 +31,8 @@ namespace OpenRA.Mods.RA
 
 		public void TickIdle(Actor self)
 		{
-			var target = (Util.SubPxVector[self.World.SharedRandom.Next(255)] * Info.MoveRadius).ToPVecInt().ToCVec() + self.Location;
-			self.Trait<AttackMove>().ResolveOrder(self, new Order("AttackMove", self, false) { TargetLocation = target });
+			var offset = new WVec(0, -1024*Info.MoveRadius, 0).Rotate(WRot.FromFacing(self.World.SharedRandom.Next(255))).ToCVec();
+			self.Trait<AttackMove>().ResolveOrder(self, new Order("AttackMove", self, false) { TargetLocation = self.Location + offset });
 		}
 	}
 }

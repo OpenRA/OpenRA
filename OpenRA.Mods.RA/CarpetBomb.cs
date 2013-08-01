@@ -56,17 +56,15 @@ namespace OpenRA.Mods.RA
 				var weapon = Rules.Weapons[info.Weapon.ToLowerInvariant()];
 				dropDelay = weapon.ROF;
 
-				var centerLocation = PPos.FromWPos(self.CenterPosition);
-				var altitude = self.CenterPosition.Z * Game.CellSize / 1024;
+				var pos = self.CenterPosition;
 				var args = new ProjectileArgs
 				{
-					srcAltitude = altitude,
-					destAltitude = 0,
-					src = centerLocation,
-					dest = centerLocation,
+					weapon = weapon,
 					facing = self.Trait<IFacing>().Facing,
-					firedBy = self,
-					weapon = weapon
+
+					source = pos,
+					sourceActor = self,
+					passiveTarget = pos - new WVec(0, 0, pos.Z)
 				};
 
 				self.World.Add(args.weapon.Projectile.Create(args));

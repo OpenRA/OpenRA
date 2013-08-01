@@ -76,7 +76,7 @@ namespace OpenRA.Mods.RA
 			length = (finalPos - initialPos).Length / info.Velocity;
 
 			// Facing rotation
-			rotation = Game.CosmeticRandom.Gauss1D(2) * info.ROT;
+			rotation = WRange.FromPDF(Game.CosmeticRandom, 2).Range * info.ROT / 1024;
 
 			var anim = new Animation(rs.GetImage(self), () => (int)facing);
 			anim.PlayRepeating(info.Anim);

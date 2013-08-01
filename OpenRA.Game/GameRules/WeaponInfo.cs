@@ -74,8 +74,6 @@ namespace OpenRA.GameRules
 		}
 	}
 
-
-
 	public enum DamageModel
 	{
 		Normal,								// classic RA damage model: point actors, distance-based falloff
@@ -85,14 +83,12 @@ namespace OpenRA.GameRules
 	public class ProjectileArgs
 	{
 		public WeaponInfo weapon;
-		public Actor firedBy;
-		public PPos src;
-		public int srcAltitude;
-		public int facing;
-		public Target target;
-		public PPos dest;
-		public int destAltitude;
 		public float firepowerModifier = 1.0f;
+		public int facing;
+		public WPos source;
+		public Actor sourceActor;
+		public WPos passiveTarget;
+		public Target guidedTarget;
 	}
 
 	public interface IProjectileInfo { IEffect Create(ProjectileArgs args); }

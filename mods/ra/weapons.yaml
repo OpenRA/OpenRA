@@ -563,8 +563,6 @@ Napalm:
 		Image: BOMBLET
 		Speed: 5
 		High: yes
-		RangeLimit: 24
-		Arm: 24
 	Warhead:
 		Spread: 4
 		Versus:
@@ -865,6 +863,8 @@ ParaBomb:
 	Report: CHUTE1.AUD
 	Projectile: GravityBomb
 		Image: PARABOMB
+		Velocity: 43
+		Acceleration: 0
 	Warhead:
 		Spread: 6
 		Versus:
@@ -950,11 +950,10 @@ SCUD:
 	Report: MISSILE1.AUD
 	Projectile: Bullet
 		Speed: 10
-		Arm: 10
 		High: true
 		Shadow: false
-		Proximity: true
 		Trail: smokey
+		TrailDelay: 5
 		Inaccuracy: 5
 		Image: V2
 		Angle: .1

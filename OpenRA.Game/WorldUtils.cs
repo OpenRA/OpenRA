@@ -138,19 +138,6 @@ namespace OpenRA
 				r.Next(w.Map.Bounds.Top, w.Map.Bounds.Bottom));
 		}
 
-		public static float Gauss1D(this Thirdparty.Random r, int samples)
-		{
-			return Exts.MakeArray(samples, _ => r.NextFloat() * 2 - 1f)
-				.Sum() / samples;
-		}
-
-		// Returns a random offset in the range [-1..1,-1..1] with a separable
-		// Gauss distribution with 'samples' values taken for each axis
-		public static float2 Gauss2D(this Thirdparty.Random r, int samples)
-		{
-			return new float2(Gauss1D(r, samples), Gauss1D(r, samples));
-		}
-
 		public static bool HasVoices(this Actor a)
 		{
 			var selectable = a.Info.Traits.GetOrDefault<SelectableInfo>();

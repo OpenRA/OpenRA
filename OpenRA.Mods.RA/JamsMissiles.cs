@@ -26,7 +26,8 @@ namespace OpenRA.Mods.RA
 	{
 		readonly JamsMissilesInfo info;
 
-		public int Range { get { return info.Range; } }
+		// Convert cells to world units
+		public int Range { get { return 1024 * info.Range; } }
 		public bool AlliedMissiles { get { return info.AlliedMissiles; } }
 		public int Chance { get { return info.Chance; } }
 

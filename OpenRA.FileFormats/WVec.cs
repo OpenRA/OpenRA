@@ -69,6 +69,16 @@ namespace OpenRA
 			return new WVec(ret.X, ret.Y, ret.Z + offset);
 		}
 
+		// Sampled a N-sample probability density function in the range [-1024..1024, -1024..1024]
+		// 1 sample produces a rectangular probability
+		// 2 samples produces a triangular probability
+		// ...
+		// N samples approximates a true gaussian
+		public static WVec FromPDF(Thirdparty.Random r, int samples)
+		{
+			return new WVec(WRange.FromPDF(r, samples), WRange.FromPDF(r, samples), WRange.Zero);
+		}
+
 		public override int GetHashCode() { return X.GetHashCode() ^ Y.GetHashCode() ^ Z.GetHashCode(); }
 
 		public override bool Equals(object obj)

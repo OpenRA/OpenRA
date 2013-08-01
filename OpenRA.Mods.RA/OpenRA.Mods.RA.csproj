@@ -462,6 +462,7 @@
     <Compile Include="Orders\SetChronoTankDestination.cs" />
     <Compile Include="Effects\FrozenActorProxy.cs" />
     <Compile Include="Widgets\Logic\WorldTooltipLogic.cs" />
+    <Compile Include="TeslaZapRenderable.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

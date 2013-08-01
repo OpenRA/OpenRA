@@ -25,7 +25,6 @@ namespace OpenRA.Traits
 		int generation;
 
 		public static Target FromPos(WPos p) { return new Target { pos = p, valid = true }; }
-		public static Target FromPos(PPos p) { return new Target { pos = p.ToWPos(0), valid = true }; }
 		public static Target FromCell(CPos c) { return new Target { pos = c.CenterPosition, valid = true }; }
 		public static Target FromOrder(Order o)
 		{
@@ -45,7 +44,6 @@ namespace OpenRA.Traits
 		}
 
 		public bool IsValid { get { return valid && (actor == null || (actor.IsInWorld && !actor.IsDead() && actor.Generation == generation)); } }
-		public PPos CenterLocation { get { return IsActor ? actor.CenterLocation : PPos.FromWPos(pos); } }
 		public Actor Actor { get { return IsActor ? actor : null; } }
 
 		// TODO: This should return true even if the actor is destroyed
