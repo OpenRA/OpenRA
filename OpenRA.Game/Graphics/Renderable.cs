@@ -52,42 +52,52 @@ namespace OpenRA.Graphics
 
 		readonly Sprite sprite;
 		readonly WPos pos;
+		readonly WVec offset;
 		readonly int zOffset;
 		readonly PaletteReference palette;
 		readonly float scale;
 
-		public SpriteRenderable(Sprite sprite, WPos pos, int zOffset, PaletteReference palette, float scale)
+		public SpriteRenderable(Sprite sprite, WPos pos, WVec offset, int zOffset, PaletteReference palette, float scale)
 		{
 			this.sprite = sprite;
 			this.pos = pos;
+			this.offset = offset;
 			this.zOffset = zOffset;
 			this.palette = palette;
 			this.scale = scale;
 		}
 
+		public SpriteRenderable(Sprite sprite, WPos pos, int zOffset, PaletteReference palette, float scale)
+			: this(sprite, pos, WVec.Zero, zOffset, palette, scale) { }
+
 		// Provided for legacy support only - Don't use for new things!
 		public SpriteRenderable(Sprite sprite, float2 pos, PaletteReference palette, int z)
 			: this(sprite, new PPos((int)pos.X, (int)pos.Y).ToWPos(0), z, palette, 1f) { }
 
-		public WPos Pos { get { return pos; } }
+		public WPos Pos { get { return pos + offset; } }
 		public float Scale { get { return scale; } }
 		public PaletteReference Palette { get { return palette; } }
 		public int ZOffset { get { return zOffset; } }
 
-		public IRenderable WithScale(float newScale) { return new SpriteRenderable(sprite, pos, zOffset, palette, newScale); }
-		public IRenderable WithPalette(PaletteReference newPalette) { return new SpriteRenderable(sprite, pos, zOffset, newPalette, scale); }
-		public IRenderable WithZOffset(int newOffset) { return new SpriteRenderable(sprite, pos, newOffset, palette, scale); }
-		public IRenderable WithPos(WPos pos) { return new SpriteRenderable(sprite, pos, zOffset, palette, scale); }
+		public IRenderable WithScale(float newScale) { return new SpriteRenderable(sprite, pos, offset, zOffset, palette, newScale); }
+		public IRenderable WithPalette(PaletteReference newPalette) { return new SpriteRenderable(sprite, pos, offset, zOffset, newPalette, scale); }
+		public IRenderable WithZOffset(int newOffset) { return new SpriteRenderable(sprite, pos, offset, newOffset, palette, scale); }
+		public IRenderable WithPos(WPos pos) { return new SpriteRenderable(sprite, pos, offset, zOffset, palette, scale); }
+
+		float2 ScreenPosition(WorldRenderer wr)
+		{
+			return wr.ScreenPxPosition(pos) + wr.ScreenPxOffset(offset) - (0.5f*scale*sprite.size).ToInt2();
+		}
 
 		public void BeforeRender(WorldRenderer wr) {}
 		public void Render(WorldRenderer wr)
 		{
-			sprite.DrawAt(wr.ScreenPxPosition(pos) - (0.5f*scale*sprite.size).ToInt2(), palette, scale);
+			sprite.DrawAt(ScreenPosition(wr), palette, scale);
 		}
 
 		public void RenderDebugGeometry(WorldRenderer wr)
 		{
-			var offset = wr.ScreenPxPosition(pos) - 0.5f*scale*sprite.size + sprite.offset;
+			var offset = ScreenPosition(wr) + sprite.offset;
 			Game.Renderer.WorldLineRenderer.DrawRect(offset, offset + sprite.size, Color.Red);
 		}
 	}

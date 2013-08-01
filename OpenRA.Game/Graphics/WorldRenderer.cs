@@ -245,6 +245,13 @@ namespace OpenRA.Graphics
 			return new float[] {c*vec.X, c*vec.Y, c*vec.Z, 1};
 		}
 
+		public int2 ScreenPxOffset(WVec vec)
+		{
+			// Round to nearest pixel
+			var px = ScreenVector(vec);
+			return new int2((int)Math.Round(px[0]), (int)Math.Round(px[1] - px[2]));
+		}
+
 		public float ScreenZPosition(WPos pos, int zOffset) { return (pos.Y + pos.Z + zOffset)*Game.CellSize/1024f; }
 	}
 }

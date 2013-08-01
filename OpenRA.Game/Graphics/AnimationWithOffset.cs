@@ -37,12 +37,11 @@ namespace OpenRA.Graphics
 
 		public IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr, PaletteReference pal, float scale)
 		{
-			var p = self.CenterPosition;
-			if (OffsetFunc != null)
-				p += OffsetFunc();
+			var center = self.CenterPosition;
+			var offset = OffsetFunc != null ? OffsetFunc() : WVec.Zero;
 
-			var z = (ZOffset != null) ? ZOffset(p) : 0;
-			return Animation.Render(p, z, pal, scale);
+			var z = (ZOffset != null) ? ZOffset(center + offset) : 0;
+			return Animation.Render(center, offset, z, pal, scale);
 		}
 
 		public static implicit operator AnimationWithOffset(Animation a)
