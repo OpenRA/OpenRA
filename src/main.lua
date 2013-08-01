@@ -93,6 +93,7 @@ ide = {
   iofilters = {},
   interpreters = {},
   packages = {},
+  apis = {},
 
   proto = {}, -- prototypes for various classes
 

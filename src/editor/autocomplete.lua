@@ -36,54 +36,70 @@ local apis = {
   lua = newAPI(),
 }
 
-function GetApi(apitype)
-  return apis[apitype] or apis["none"]
-end
+function GetApi(apitype) return apis[apitype] end
 
 ----------
 -- API loading
 
-local function addAPI(apifile,only,subapis,known) -- relative to API directory
-  local ftype, fname = apifile:match("api[/\\]([^/\\]+)[/\\](.*)%.")
-  if not ftype or not fname then
-    DisplayOutputLn(TR("The API file must be located in a subdirectory of the API directory."))
-    return
-  end
-  if ((only and ftype ~= only) or (known and not known[ftype])) then 
-    return 
-  end
-  if (subapis and not subapis[fname]) then return end
-
-  local fn,err = loadfile(apifile)
-  if err then
-    DisplayOutputLn(TR("Error while loading API file: %s"):format(err))
-    return
-  end
-  local env = apis[ftype] or newAPI()
-  apis[ftype] = env
-  env = env.ac.childs
-  local suc,res = pcall(function()return fn(env) end)
-  if (not suc) then
-    DisplayOutputLn(TR("Error while processing API file: %s"):format(res))
-  elseif (res) then
-    local function gennames(tab,prefix)
-      for i,v in pairs(tab) do
-        v.classname = (prefix and (prefix..".") or "")..i
-        if(v.childs) then
-          gennames(v.childs,v.classname)
-        end
-      end
-    end
-    gennames(res)
-    for i,v in pairs(res) do
-      env[i] = v
+local function gennames(tab, prefix)
+  for i,v in pairs(tab) do
+    v.classname = (prefix and (prefix..".") or "")..i
+    if (v.childs) then
+      gennames(v.childs,v.classname)
     end
   end
 end
 
-local function loadallAPIs (only,subapis,known)
+local function addAPI(ftype, fname) -- relative to API directory
+  local env = apis[ftype] or newAPI()
+
+  local res
+  local api = ide.apis[ftype][fname]
+
+  if type(api) == 'table' then
+    res = api
+  else
+    local fn, err = loadfile(api)
+    if err then
+      DisplayOutputLn(TR("Error while loading API file: %s"):format(err))
+      return
+    end
+    local suc
+    suc, res = pcall(function() return fn(env.ac.childs) end)
+    if (not suc) then
+      DisplayOutputLn(TR("Error while processing API file: %s"):format(res))
+      return
+    end
+    -- cache the result
+    ide.apis[ftype][fname] = res
+  end
+  apis[ftype] = env
+
+  gennames(res)
+  for i,v in pairs(res) do env.ac.childs[i] = v end
+end
+
+local function loadallAPIs(only, subapis, known)
+  for ftype, v in pairs(only and {[only] = ide.apis[only]} or ide.apis) do
+    if (not known or known[ftype]) then
+      for fname in pairs(v) do
+        if (not subapis or subapis[fname]) then addAPI(ftype, fname) end
+      end
+    end
+  end
+end
+
+local function scanAPIs()
   for _, file in ipairs(FileSysGetRecursive("api", true, "*.lua")) do
-    if not file:match(string_Pathsep.."$") then addAPI(file,only,subapis,known) end
+    if not file:match(string_Pathsep.."$") then
+      local ftype, fname = file:match("api[/\\]([^/\\]+)[/\\](.*)%.")
+      if not ftype or not fname then
+        DisplayOutputLn(TR("The API file must be located in a subdirectory of the API directory."))
+        return
+      end
+      ide.apis[ftype] = ide.apis[ftype] or {}
+      ide.apis[ftype][fname] = file
+    end
   end
 end
 
@@ -299,6 +315,7 @@ do
   -- by defaul load every known api except lua
   known.lua = false
 
+  scanAPIs()
   loadallAPIs(nil,nil,known)
   generateAPIInfo()
 end
