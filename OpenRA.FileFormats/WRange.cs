@@ -10,6 +10,7 @@
 
 using System;
 using System.Drawing;
+using System.Linq;
 
 namespace OpenRA
 {
@@ -33,6 +34,17 @@ namespace OpenRA
 
 		public static bool operator ==(WRange me, WRange other) { return (me.Range == other.Range); }
 		public static bool operator !=(WRange me, WRange other) { return !(me == other); }
+
+		// Sampled a N-sample probability density function in the range [-1024..1024]
+		// 1 sample produces a rectangular probability
+		// 2 samples produces a triangular probability
+		// ...
+		// N samples approximates a true gaussian
+		public static WRange FromPDF(Thirdparty.Random r, int samples)
+		{
+			return new WRange(Exts.MakeArray(samples, _ => r.Next(-1024, 1024))
+				.Sum() / samples);
+		}
 
 		public static bool TryParse(string s, out WRange result)
 		{
