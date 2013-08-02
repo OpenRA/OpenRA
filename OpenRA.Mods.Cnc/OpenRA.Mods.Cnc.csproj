@@ -97,7 +97,6 @@
     <Compile Include="Widgets\Logic\CncInstallFromCDLogic.cs" />
     <Compile Include="Widgets\Logic\CncInstallLogic.cs" />
     <Compile Include="Widgets\Logic\CncMenuLogic.cs" />
-    <Compile Include="Widgets\Logic\CncMusicPlayerLogic.cs" />
     <Compile Include="Widgets\Logic\CncPerfDebugLogic.cs" />
     <Compile Include="Widgets\Logic\CncSettingsLogic.cs" />
     <Compile Include="Widgets\Logic\ProductionTooltipLogic.cs" />
@@ -109,6 +108,7 @@
     <Compile Include="WithRoof.cs" />
     <Compile Include="Widgets\Logic\ProductionTabsLogic.cs" />
     <Compile Include="Widgets\ProductionTypeButtonWidget.cs" />
+    <Compile Include="Widgets\Logic\CncInstallMusicLogic.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

@@ -1,41 +1,68 @@
-Background@MUSIC_MENU:
+Background@MUSIC_PANEL:
 	Logic:MusicPlayerLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
-	Y:(WINDOW_BOTTOM - HEIGHT)/2
-	Width: 450
-	Height: 250
-	Visible: true
+	Y:(WINDOW_BOTTOM - 400)/2
+	Width:360
+	Height:450
 	Children:
-		Label@SETTINGS_LABEL_TITLE:
-			X:0
-			Y:20
-			Width:450
-			Height:25
-			Text:Music
-			Align:Center
-			Font:Bold
-		Button@BUTTON_INSTALL:
-			X:20
-			Y:PARENT_BOTTOM - 45
-			Width:160
-			Height:25
-			Text:Install Music
-			Font:Bold
-		Button@BUTTON_CLOSE:
-			X:PARENT_RIGHT - 180
-			Y:PARENT_BOTTOM - 45
-			Width:160
-			Height:25
-			Text:Close
-			Font:Bold
-			Key:escape
-		Container@BUTTONS:
-			X:PARENT_RIGHT - 150
-			Y:50
+		ScrollPanel@MUSIC_LIST:
+			X:15
+			Y:45
+			Width:330
+			Height:275
 			Children:
+				ScrollItem@MUSIC_TEMPLATE:
+					Width:PARENT_RIGHT-27
+					Height:25
+					X:2
+					Y:0
+					Visible:false
+					Children:
+						Label@TITLE:
+							X:10
+							Width:PARENT_RIGHT-50
+							Height:25
+						Label@LENGTH:
+							Width:50
+							X:PARENT_RIGHT-60
+							Align:Right
+							Height:25
+		Container@LABEL_CONTAINER:
+			X:25
+			Y:15
+			Width:330
+			Children:
+				Label@TITLE:
+					Width:100
+					Height:25
+					Text:Track
+					Align:Center
+					Font:Bold
+				Label@TYPE:
+					X:PARENT_RIGHT-85
+					Height:25
+					Width:50
+					Text:Length
+					Align:Right
+					Font:Bold
+		Container@BUTTONS:
+			X:15
+			Y:PARENT_BOTTOM-HEIGHT-85
+			Width:170
+			Children:
+				Button@BUTTON_PREV:
+					Width:25
+					Height:25
+					Children:
+						Image@IMAGE_PREV:
+							X:0
+							Y:0
+							Width:25
+							Height:25
+							ImageCollection:music
+							ImageName:prev
 				Button@BUTTON_PLAY:
 					X:35
-					Y:0
 					Width:25
 					Height:25
 					Children:
@@ -49,7 +76,6 @@ Background@MUSIC_MENU:
 				Button@BUTTON_PAUSE:
 					Visible:false
 					X:35
-					Y:0
 					Width:25
 					Height:25
 					Children:
@@ -62,7 +88,6 @@ Background@MUSIC_MENU:
 							ImageName:pause
 				Button@BUTTON_STOP:
 					X:70
-					Y:0
 					Width:25
 					Height:25
 					Children:
@@ -75,7 +100,6 @@ Background@MUSIC_MENU:
 							ImageName:stop
 				Button@BUTTON_NEXT:
 					X:105
-					Y:0
 					Width:25
 					Height:25
 					Children:
@@ -86,57 +110,45 @@ Background@MUSIC_MENU:
 							Height:25
 							ImageCollection:music
 							ImageName:next
-				Button@BUTTON_PREV:
-					X:0
-					Y:0
-					Width:25
-					Height:25
-					Children:
-						Image@IMAGE_PREV:
-							X:0
-							Y:0
-							Width:25
-							Height:25
-							ImageCollection:music
-							ImageName:prev
-		Label@TIME:
-			X:PARENT_RIGHT - 150
-			Y:75
+				Slider@MUSIC_SLIDER:
+					X:145
+					Y:3
+					Width:175
+					Height:20
+					Ticks:5
+		Label@TIME_LABEL:
+			X:(PARENT_RIGHT-WIDTH)/2
+			Y:330
 			Width:140
 			Height:25
-			Align: Center
-		ScrollPanel@MUSIC_LIST:
-			X:10
-			Y:50
-			Width:280
-			Height:140
-			Children:
-				ScrollItem@MUSIC_TEMPLATE:
-					Width:PARENT_RIGHT-27
-					Height:25
-					X:2
-					Y:0
-					Visible:false
-					Children:
-						Label@TITLE:
-							X:5
-							Width:PARENT_RIGHT - 10
-							Height:PARENT_BOTTOM
-							Align: Left
-						Label@LENGTH:
-							X:5
-							Width:PARENT_RIGHT - 10
-							Height:PARENT_BOTTOM
-							Align: Right
+			Align:Center
+			Font:Bold
 		Checkbox@SHUFFLE:
-			X:PARENT_RIGHT - 150
-			Y:110
-			Width:100
+			X:15
+			Y:335
+			Width:85
 			Height:20
 			Text:Shuffle
 		Checkbox@REPEAT:
-			X:PARENT_RIGHT - 150
-			Y:140
-			Width:100
+			X:PARENT_RIGHT-15-WIDTH
+			Y:335
+			Width:70
 			Height:20
 			Text:Loop
+		Label@NO_MUSIC_LABEL:
+			X:15
+			Y:147
+			Width:330
+			Height:25
+			Font:Bold
+			Align:Center
+			Visible:false
+			Text:No Music Installed
+		Button@BACK_BUTTON:
+			X:PARENT_RIGHT - 180
+			Y:PARENT_BOTTOM - 45
+			Width:160
+			Height:25
+			Text:Close
+			Font:Bold
+			Key:escape

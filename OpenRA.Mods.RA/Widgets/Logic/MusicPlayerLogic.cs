@@ -9,102 +9,145 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Drawing;
+using System.IO;
 using System.Linq;
 using OpenRA.FileFormats;
-using OpenRA.Support;
+using OpenRA.GameRules;
+using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
 {
 	public class MusicPlayerLogic
 	{
-		string CurrentSong = null;
-		Widget bg;
+		bool installed;
+		MusicInfo currentSong = null;
+		MusicInfo[] music;
+		MusicInfo[] random;
+		ScrollPanelWidget musicList;
 
-		public void Play(string song)
-		{
-			CurrentSong = song;
-			if (CurrentSong == null) return;
-
-			Sound.PlayMusicThen(Rules.Music[CurrentSong],
-				() => Play( Game.Settings.Sound.Repeat ? CurrentSong : GetNextSong() ));
-		}
+		ScrollItemWidget itemTemplate;
 
 		[ObjectCreator.UseCtor]
-		public MusicPlayerLogic(Action onExit)
+		public MusicPlayerLogic(Widget widget, Action onExit)
 		{
-			bg = Ui.Root.Get("MUSIC_MENU");
-			CurrentSong = GetNextSong();
+			var panel = widget.Get("MUSIC_PANEL");
 
-			bg.Get( "BUTTON_PAUSE" ).IsVisible = () => Sound.MusicPlaying;
-			bg.Get( "BUTTON_PLAY" ).IsVisible = () => !Sound.MusicPlaying;
+			musicList = panel.Get<ScrollPanelWidget>("MUSIC_LIST");
+			itemTemplate = musicList.Get<ScrollItemWidget>("MUSIC_TEMPLATE");
 
-			bg.Get<ButtonWidget>("BUTTON_CLOSE").OnClick =
-				() => { Game.Settings.Save(); Ui.CloseWindow(); onExit(); };
+			BuildMusicTable();
 
-			bg.Get("BUTTON_INSTALL").IsVisible = () => false;
+			Func<bool> noMusic = () => !installed;
+			panel.Get("NO_MUSIC_LABEL").IsVisible = noMusic;
 
-			bg.Get<ButtonWidget>("BUTTON_PLAY").OnClick = () => Play( CurrentSong );
-			bg.Get<ButtonWidget>("BUTTON_PAUSE").OnClick = Sound.PauseMusic;
-			bg.Get<ButtonWidget>("BUTTON_STOP").OnClick = Sound.StopMusic;
-			bg.Get<ButtonWidget>("BUTTON_NEXT").OnClick = () => Play( GetNextSong() );
-			bg.Get<ButtonWidget>("BUTTON_PREV").OnClick = () => Play( GetPrevSong() );
+			var playButton = panel.Get<ButtonWidget>("BUTTON_PLAY");
+			playButton.OnClick = Play;
+			playButton.IsDisabled = noMusic;
+			playButton.IsVisible = () => !Sound.MusicPlaying;
 
-			var shuffleCheckbox = bg.Get<CheckboxWidget>("SHUFFLE");
+			var pauseButton = panel.Get<ButtonWidget>("BUTTON_PAUSE");
+			pauseButton.OnClick = Sound.PauseMusic;
+			pauseButton.IsDisabled = noMusic;
+			pauseButton.IsVisible = () => Sound.MusicPlaying;
+
+			var stopButton = panel.Get<ButtonWidget>("BUTTON_STOP");
+			stopButton.OnClick = Sound.StopMusic;
+			stopButton.IsDisabled = noMusic;
+
+			var nextButton = panel.Get<ButtonWidget>("BUTTON_NEXT");
+			nextButton.OnClick = () => { currentSong = GetNextSong(); Play(); };
+			nextButton.IsDisabled = noMusic;
+
+			var prevButton = panel.Get<ButtonWidget>("BUTTON_PREV");
+			prevButton.OnClick = () => { currentSong = GetPrevSong(); Play(); };
+			prevButton.IsDisabled = noMusic;
+
+			var shuffleCheckbox = panel.Get<CheckboxWidget>("SHUFFLE");
 			shuffleCheckbox.IsChecked = () => Game.Settings.Sound.Shuffle;
 			shuffleCheckbox.OnClick = () => Game.Settings.Sound.Shuffle ^= true;
 
-			var repeatCheckbox = bg.Get<CheckboxWidget>("REPEAT");
+			var repeatCheckbox = panel.Get<CheckboxWidget>("REPEAT");
 			repeatCheckbox.IsChecked = () => Game.Settings.Sound.Repeat;
 			repeatCheckbox.OnClick = () => Game.Settings.Sound.Repeat ^= true;
 
-			bg.Get<LabelWidget>("TIME").GetText = () =>
-			{
-				if (CurrentSong == null)
-					return "";
-				return "{0} / {1}".F(
-					WidgetUtils.FormatTimeSeconds( (int)Sound.MusicSeekPosition ),
-					WidgetUtils.FormatTimeSeconds( Rules.Music[CurrentSong].Length ));
-			};
+			panel.Get<LabelWidget>("TIME_LABEL").GetText = () => (currentSong == null) ? "" :
+				"{0:D2}:{1:D2} / {2:D2}:{3:D2}".F((int)Sound.MusicSeekPosition / 60, (int)Sound.MusicSeekPosition % 60,
+				    currentSong.Length / 60, currentSong.Length % 60);
 
-			var ml = bg.Get<ScrollPanelWidget>("MUSIC_LIST");
-			var itemTemplate = ml.Get<ScrollItemWidget>("MUSIC_TEMPLATE");
+			var musicSlider = panel.Get<SliderWidget>("MUSIC_SLIDER");
+			musicSlider.OnChange += x => Sound.MusicVolume = x;
+			musicSlider.Value = Sound.MusicVolume;
 
-			if (!Rules.InstalledMusic.Any())
-			{
-				itemTemplate.IsVisible = () => true;
-				itemTemplate.Get<LabelWidget>("TITLE").GetText = () => "No Music Installed";
-				itemTemplate.Get<LabelWidget>("TITLE").Align = TextAlign.Center;
-			}
-
-			foreach (var kv in Rules.InstalledMusic)
-			{
-				var song = kv.Key;
-				var item = ScrollItemWidget.Setup(itemTemplate,
-					() => CurrentSong == song,
-					() => Play( song ));
-				item.Get<LabelWidget>("TITLE").GetText = () => Rules.Music[song].Title;
-				item.Get<LabelWidget>("LENGTH").GetText =
-					() => WidgetUtils.FormatTimeSeconds( Rules.Music[song].Length );
-				ml.AddChild(item);
-			}
+			panel.Get<ButtonWidget>("BACK_BUTTON").OnClick = () => { Game.Settings.Save(); Ui.CloseWindow(); onExit(); };
 		}
 
-		string ChooseSong( IEnumerable<string> songs )
+		public void BuildMusicTable()
 		{
-			if (!songs.Any())
+			music = Rules.InstalledMusic.Select(a => a.Value).ToArray();
+			random = music.Shuffle(Game.CosmeticRandom).ToArray();
+			currentSong = Sound.CurrentMusic;
+			if (currentSong == null && music.Any())
+				currentSong = Game.Settings.Sound.Shuffle ? random.First() : music.First();
+
+			musicList.RemoveChildren();
+			foreach (var s in music)
+			{
+				var song = s;
+				if (currentSong == null)
+					currentSong = song;
+
+				// TODO: We leak the currentSong MusicInfo across map load, so compare the Filename instead.
+				var item = ScrollItemWidget.Setup(song.Filename, itemTemplate, () => currentSong.Filename == song.Filename, () => { currentSong = song; Play(); });
+				item.Get<LabelWidget>("TITLE").GetText = () => song.Title;
+				item.Get<LabelWidget>("LENGTH").GetText = () => SongLengthLabel(song);
+				musicList.AddChild(item);
+			}
+
+			if (currentSong != null)
+				musicList.ScrollToItem(currentSong.Filename);
+
+			installed = Rules.InstalledMusic.Any();
+		}
+
+		void Play()
+		{
+			if (currentSong == null)
+				return;
+
+			musicList.ScrollToItem(currentSong.Filename);
+
+			Sound.PlayMusicThen(currentSong, () =>
+			{
+				if (!Game.Settings.Sound.Repeat)
+					currentSong = GetNextSong();
+				Play();
+			});
+		}
+
+		string SongLengthLabel(MusicInfo song)
+		{
+			return "{0:D1}:{1:D2}".F(song.Length / 60, song.Length % 60);
+		}
+
+		MusicInfo GetNextSong()
+		{
+			if (!music.Any())
 				return null;
 
-			if (Game.Settings.Sound.Shuffle)
-				return songs.Random(Game.CosmeticRandom);
-
-			return songs.SkipWhile(m => m != CurrentSong)
+			var songs = Game.Settings.Sound.Shuffle ? random : music;
+			return songs.SkipWhile(m => m != currentSong)
 				.Skip(1).FirstOrDefault() ?? songs.FirstOrDefault();
 		}
 
-		string GetNextSong() { return ChooseSong( Rules.InstalledMusic.Select( a => a.Key ) ); }
-		string GetPrevSong() { return ChooseSong( Rules.InstalledMusic.Select( a => a.Key ).Reverse() ); }
+		MusicInfo GetPrevSong()
+		{
+			if (!music.Any())
+				return null;
+
+			var songs = Game.Settings.Sound.Shuffle ? random : music;
+			return songs.Reverse().SkipWhile(m => m != currentSong)
+				.Skip(1).FirstOrDefault() ?? songs.Reverse().FirstOrDefault();
+		}
 	}
 }
