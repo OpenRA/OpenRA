@@ -68,3 +68,9 @@ function ide:AddSpec(name, spec)
   UpdateSpecs()
 end
 function ide:RemoveSpec(name) self.specs[name] = nil end
+
+function ide:AddAPI(type, name, api)
+  self.apis[type] = self.apis[type] or {}
+  self.apis[type][name] = api
+end
+function ide:RemoveAPI(type, name) self.apis[type][name] = nil end
