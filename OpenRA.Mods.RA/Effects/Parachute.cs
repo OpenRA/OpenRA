@@ -76,7 +76,7 @@ namespace OpenRA.Mods.RA.Effects
 				yield return c.WithPos(pos);
 			}
 
-			foreach (var r in paraAnim.Render(pos + parachuteOffset, 1, rc.First().Palette, 1f))
+			foreach (var r in paraAnim.Render(pos, parachuteOffset, 1, rc.First().Palette, 1f))
 				yield return r;
 		}
 	}

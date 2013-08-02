@@ -38,20 +38,20 @@ namespace OpenRA.Graphics
 		int CurrentFrame { get { return backwards ? CurrentSequence.Start + CurrentSequence.Length - frame - 1 : frame; } }
 		public Sprite Image { get { return CurrentSequence.GetSprite(CurrentFrame, facingFunc()); } }
 
-		public IEnumerable<IRenderable> Render(WPos pos, int zOffset, PaletteReference palette, float scale)
+		public IEnumerable<IRenderable> Render(WPos pos, WVec offset, int zOffset, PaletteReference palette, float scale)
 		{
 			if (CurrentSequence.ShadowStart >= 0)
 			{
 				var shadow = CurrentSequence.GetShadow(CurrentFrame, facingFunc());
-				yield return new SpriteRenderable(shadow, pos, CurrentSequence.ShadowZOffset + zOffset, palette, scale);
+				yield return new SpriteRenderable(shadow, pos, offset, CurrentSequence.ShadowZOffset + zOffset, palette, scale);
 			}
 
-			yield return new SpriteRenderable(Image, pos, CurrentSequence.ZOffset + zOffset, palette, scale);
+			yield return new SpriteRenderable(Image, pos, offset, CurrentSequence.ZOffset + zOffset, palette, scale);
 		}
 
 		public IEnumerable<IRenderable> Render(WPos pos, PaletteReference palette)
 		{
-			return Render(pos, 0, palette, 1f);
+			return Render(pos, WVec.Zero, 0, palette, 1f);
 		}
 
 		public void Play(string sequenceName)
