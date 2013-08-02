@@ -100,7 +100,7 @@ namespace OpenRA.Mods.RA.Orders
 
 				var offset = topLeft.CenterPosition + FootprintUtils.CenterOffset(BuildingInfo) - WPos.Zero;
 				foreach (var r in preview)
-					r.WithPos(r.Pos + offset).Render(wr);
+					r.OffsetBy(offset).Render(wr);
 
 				var res = world.WorldActor.Trait<ResourceLayer>();
 				var isCloseEnough = BuildingInfo.IsCloseEnoughToBase(world, world.LocalPlayer, Building, topLeft);

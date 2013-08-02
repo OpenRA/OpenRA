@@ -70,7 +70,7 @@ namespace OpenRA.Mods.Cnc
 				{
 					var offset = pos - c.CenterPosition + body.LocalToWorld(positions[i++ % positions.Length].Rotate(bodyOrientation));
 					foreach (var cr in c.Render(wr))
-						yield return cr.WithPos(cr.Pos + offset).WithZOffset(1);
+						yield return cr.OffsetBy(offset).WithZOffset(1);
 				}
 			}
 		}

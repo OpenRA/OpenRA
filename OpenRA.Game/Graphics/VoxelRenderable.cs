@@ -76,9 +76,9 @@ namespace OpenRA.Graphics
 			                           palette, normalsPalette, shadowPalette);
 		}
 
-		public IRenderable WithPos(WPos newPos)
+		public IRenderable OffsetBy(WVec vec)
 		{
-			return new VoxelRenderable(voxels, newPos, zOffset, camera, scale,
+			return new VoxelRenderable(voxels, pos + vec, zOffset, camera, scale,
 			                           lightSource, lightAmbientColor, lightDiffuseColor,
 			                           palette, normalsPalette, shadowPalette);
 		}
