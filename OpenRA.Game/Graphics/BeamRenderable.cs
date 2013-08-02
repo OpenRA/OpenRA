@@ -38,7 +38,7 @@ namespace OpenRA.Graphics
 		public IRenderable WithScale(float newScale) { return new BeamRenderable(pos, zOffset, length, width, color); }
 		public IRenderable WithPalette(PaletteReference newPalette) { return new BeamRenderable(pos, zOffset, length, width, color); }
 		public IRenderable WithZOffset(int newOffset) { return new BeamRenderable(pos, zOffset, length, width, color); }
-		public IRenderable WithPos(WPos pos) { return new BeamRenderable(pos, zOffset, length, width, color); }
+		public IRenderable OffsetBy(WVec vec) { return new BeamRenderable(pos + vec, zOffset, length, width, color); }
 
 		public void BeforeRender(WorldRenderer wr) {}
 		public void Render(WorldRenderer wr)

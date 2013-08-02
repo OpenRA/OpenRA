@@ -39,7 +39,7 @@ namespace OpenRA.Graphics
 		public IRenderable WithScale(float newScale) { return new TextRenderable(font, pos, zOffset, color, text); }
 		public IRenderable WithPalette(PaletteReference newPalette) { return new TextRenderable(font, pos, zOffset, color, text); }
 		public IRenderable WithZOffset(int newOffset) { return new TextRenderable(font, pos, zOffset, color, text); }
-		public IRenderable WithPos(WPos pos) { return new TextRenderable(font, pos, zOffset, color, text); }
+		public IRenderable OffsetBy(WVec vec) { return new TextRenderable(font, pos + vec, zOffset, color, text); }
 
 		public void BeforeRender(WorldRenderer wr) {}
 		public void Render(WorldRenderer wr)

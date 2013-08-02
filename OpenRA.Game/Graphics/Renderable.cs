@@ -40,7 +40,7 @@ namespace OpenRA.Graphics
 		IRenderable WithScale(float newScale);
 		IRenderable WithPalette(PaletteReference newPalette);
 		IRenderable WithZOffset(int newOffset);
-		IRenderable WithPos(WPos pos);
+		IRenderable OffsetBy(WVec offset);
 		void BeforeRender(WorldRenderer wr);
 		void Render(WorldRenderer wr);
 		void RenderDebugGeometry(WorldRenderer wr);
@@ -75,6 +75,7 @@ namespace OpenRA.Graphics
 			: this(sprite, new PPos((int)pos.X, (int)pos.Y).ToWPos(0), z, palette, 1f) { }
 
 		public WPos Pos { get { return pos + offset; } }
+		public WVec Offset { get { return offset; } }
 		public float Scale { get { return scale; } }
 		public PaletteReference Palette { get { return palette; } }
 		public int ZOffset { get { return zOffset; } }
@@ -82,7 +83,7 @@ namespace OpenRA.Graphics
 		public IRenderable WithScale(float newScale) { return new SpriteRenderable(sprite, pos, offset, zOffset, palette, newScale); }
 		public IRenderable WithPalette(PaletteReference newPalette) { return new SpriteRenderable(sprite, pos, offset, zOffset, newPalette, scale); }
 		public IRenderable WithZOffset(int newOffset) { return new SpriteRenderable(sprite, pos, offset, newOffset, palette, scale); }
-		public IRenderable WithPos(WPos pos) { return new SpriteRenderable(sprite, pos, offset, zOffset, palette, scale); }
+		public IRenderable OffsetBy(WVec vec) { return new SpriteRenderable(sprite, pos + vec, offset, zOffset, palette, scale); }
 
 		float2 ScreenPosition(WorldRenderer wr)
 		{

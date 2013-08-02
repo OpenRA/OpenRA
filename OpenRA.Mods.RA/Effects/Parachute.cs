@@ -73,7 +73,7 @@ namespace OpenRA.Mods.RA.Effects
 			foreach (var c in rc)
 			{
 				yield return c.WithPalette(shadow).WithZOffset(-1);
-				yield return c.WithPos(pos);
+				yield return c.OffsetBy(pos - c.Pos);
 			}
 
 			foreach (var r in paraAnim.Render(pos, parachuteOffset, 1, rc.First().Palette, 1f))
