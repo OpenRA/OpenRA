@@ -64,8 +64,8 @@ namespace OpenRA.Mods.RA
 		public IRenderable WithScale(float newScale) { return new TeslaZapRenderable(pos, zOffset, length, image, brightZaps, dimZaps); }
 		public IRenderable WithPalette(PaletteReference newPalette) { return new TeslaZapRenderable(pos, zOffset, length, image, brightZaps, dimZaps); }
 		public IRenderable WithZOffset(int newOffset) { return new TeslaZapRenderable(pos, zOffset, length, image, brightZaps, dimZaps); }
-		public IRenderable WithPos(WPos pos) { return new TeslaZapRenderable(pos, zOffset, length, image, brightZaps, dimZaps); }
-		
+		public IRenderable OffsetBy(WVec vec) { return new TeslaZapRenderable(pos + vec, zOffset, length, image, brightZaps, dimZaps); }
+
 		public void BeforeRender(WorldRenderer wr) { }
 		public void RenderDebugGeometry(WorldRenderer wr) { }
 		public void Render(WorldRenderer wr)

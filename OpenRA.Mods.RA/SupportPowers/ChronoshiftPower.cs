@@ -247,7 +247,7 @@ namespace OpenRA.Mods.RA
 					var offset = (xy - sourceLocation).ToWVec();
 					if (manager.self.Owner.Shroud.IsTargetable(unit))
 						foreach (var r in unit.Render(wr))
-							r.WithPos(r.Pos + offset).Render(wr);
+							r.OffsetBy(offset).Render(wr);
 				}
 
 				// Unit tiles
