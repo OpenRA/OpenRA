@@ -30,7 +30,9 @@ namespace OpenRA.Mods.RA.Render
 			var visualOffset = (ios is Helicopter && flying)
 				? (int)Math.Abs((self.ActorID + Game.LocalTick) / 5 % 4 - 1) - 1 : 0;
 
-			var shadowSprites = r.Select(a => a.WithPalette(wr.Palette("shadow"))
+			// Contrails shouldn't cast shadows
+			var shadowSprites = r.Where(s => !(s is ContrailRenderable))
+				.Select(a => a.WithPalette(wr.Palette("shadow"))
 				.OffsetBy(new WVec(0, 0, -a.Pos.Z)).WithZOffset(a.ZOffset + a.Pos.Z));
 
 			var worldVisualOffset = new WVec(0,0,-43*visualOffset);
