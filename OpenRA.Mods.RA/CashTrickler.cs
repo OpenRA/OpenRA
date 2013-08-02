@@ -17,9 +17,9 @@ namespace OpenRA.Mods.RA
 	[Desc("Lets the actor generate cash in a set periodic time.")]
 	class CashTricklerInfo : ITraitInfo
 	{
-		[Desc("Amount of money to give each time.")]
-		public readonly int Period = 50;
 		[Desc("Number of ticks to wait between giving money.")]
+		public readonly int Period = 50;
+		[Desc("Amount of money to give each time.")]
 		public readonly int Amount = 15;
 		[Desc("Whether to show the cash tick indicators (+$15 rising from actor).")]
 		public readonly bool ShowTicks = true;
