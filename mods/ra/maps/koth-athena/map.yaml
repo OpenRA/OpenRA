@@ -27,45 +27,39 @@ Players:
 	PlayerReference@Multi0:
 		Name: Multi0
 		Playable: True
-		DefaultStartingUnits: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi1:
 		Name: Multi1
 		Playable: True
-		DefaultStartingUnits: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi2:
 		Name: Multi2
 		Playable: True
-		DefaultStartingUnits: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi3:
 		Name: Multi3
 		Playable: True
-		DefaultStartingUnits: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi4:
 		Name: Multi4
 		Playable: True
-		DefaultStartingUnits: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Multi5:
 		Name: Multi5
 		Playable: True
-		DefaultStartingUnits: True
+		AllowBots: False
 		Race: Random
 		Enemies: Creeps
-		AllowBots: False
 	PlayerReference@Creeps:
 		Name: Creeps
 		NonCombatant: True
@@ -1042,9 +1036,6 @@ Actors:
 	Actor331: oilb
 		Location: 160,178
 		Owner: Neutral
-	Actor332: oilb
-		Location: 162,178
-		Owner: Neutral
 	Actor333: oilb
 		Location: 168,177
 		Owner: Neutral
@@ -1056,9 +1047,6 @@ Actors:
 		Owner: Neutral
 	Actor337: powr
 		Location: 93,177
-		Owner: Neutral
-	Actor339: oilb
-		Location: 95,177
 		Owner: Neutral
 	Actor340: oilb
 		Location: 97,177
@@ -1087,9 +1075,6 @@ Actors:
 	Actor348: oilb
 		Location: 94,72
 		Owner: Neutral
-	Actor349: oilb
-		Location: 98,72
-		Owner: Neutral
 	Actor350: oilb
 		Location: 100,72
 		Owner: Neutral
@@ -1098,9 +1083,6 @@ Actors:
 		Owner: Neutral
 	Actor353: oilb
 		Location: 159,72
-		Owner: Neutral
-	Actor354: oilb
-		Location: 161,72
 		Owner: Neutral
 	Actor355: oilb
 		Location: 166,72
@@ -1153,9 +1135,6 @@ Actors:
 	Actor372: oilb
 		Location: 199,225
 		Owner: Neutral
-	Actor373: oilb
-		Location: 188,225
-		Owner: Neutral
 	Actor374: oilb
 		Location: 201,225
 		Owner: Neutral
@@ -1174,17 +1153,11 @@ Actors:
 	Actor379: oilb
 		Location: 58,224
 		Owner: Neutral
-	Actor380: oilb
-		Location: 56,224
-		Owner: Neutral
 	Actor381: oilb
 		Location: 64,28
 		Owner: Neutral
 	Actor382: oilb
 		Location: 66,28
-		Owner: Neutral
-	Actor383: oilb
-		Location: 68,28
 		Owner: Neutral
 	Actor384: oilb
 		Location: 59,28
@@ -1210,9 +1183,6 @@ Actors:
 	Actor391: oilb
 		Location: 188,28
 		Owner: Neutral
-	Actor392: oilb
-		Location: 186,28
-		Owner: Neutral
 	Actor395: apwr
 		Location: 225,126
 		Owner: Neutral
@@ -1224,9 +1194,6 @@ Actors:
 		Owner: Neutral
 	Actor398: oilb
 		Location: 33,123
-		Owner: Neutral
-	Actor399: oilb
-		Location: 35,123
 		Owner: Neutral
 	Actor400: oilb
 		Location: 26,123
@@ -1255,9 +1222,6 @@ Actors:
 	Actor408: oilb
 		Location: 54,112
 		Owner: Neutral
-	Actor409: oilb
-		Location: 51,112
-		Owner: Neutral
 	Actor410: oilb
 		Location: 29,109
 		Owner: Neutral
@@ -1282,9 +1246,6 @@ Actors:
 	Actor417: oilb
 		Location: 205,140
 		Owner: Neutral
-	Actor418: oilb
-		Location: 208,140
-		Owner: Neutral
 	Actor419: oilb
 		Location: 205,144
 		Owner: Neutral
@@ -1305,9 +1266,6 @@ Actors:
 		Owner: Neutral
 	Actor425: oilb
 		Location: 221,127
-		Owner: Neutral
-	Actor426: oilb
-		Location: 219,127
 		Owner: Neutral
 	Actor427: brl3
 		Location: 223,129
@@ -1867,9 +1825,6 @@ Actors:
 	Actor611: t02
 		Location: 130,126
 		Owner: Neutral
-	Actor617: brik
-		Location: 131,132
-		Owner: Neutral
 	Actor499: fenc
 		Location: 132,131
 		Owner: Neutral
@@ -1890,9 +1845,6 @@ Actors:
 		Owner: Neutral
 	Actor358: oilb
 		Location: 137,117
-		Owner: Neutral
-	Actor511: barl
-		Location: 119,118
 		Owner: Neutral
 	Actor512: barl
 		Location: 121,116
@@ -2167,6 +2119,8 @@ Rules:
 			CriticalRatioRequired: 1
 
 Sequences:
+
+VoxelSequences:
 
 Weapons:
 
