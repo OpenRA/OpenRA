@@ -18,6 +18,9 @@ namespace OpenRA.Traits
 {
 	public class BodyOrientationInfo : ITraitInfo, IBodyOrientationInfo
 	{
+		[Desc("Number of facings for gameplay calculations. -1 indiciates auto-detection from sequence")]
+		public readonly int QuantizedFacings = -1;
+
 		[Desc("Camera pitch for rotation calculations")]
 		public readonly WAngle CameraPitch = WAngle.FromDegrees(40);
 		public object Create(ActorInitializer init) { return new BodyOrientation(init.self, this); }
@@ -25,21 +28,23 @@ namespace OpenRA.Traits
 
 	public class BodyOrientation : IBodyOrientation
 	{
-		[Sync] public int QuantizedFacings { get; set; }
-		BodyOrientationInfo Info;
+		[Sync] public int QuantizedFacings { get; private set; }
+		BodyOrientationInfo info;
 
 		public BodyOrientation(Actor self, BodyOrientationInfo info)
 		{
-			Info = info;
+			this.info = info;
+			if (info.QuantizedFacings > 0)
+				QuantizedFacings = info.QuantizedFacings;
 		}
 
-		public WAngle CameraPitch { get { return Info.CameraPitch; } }
+		public WAngle CameraPitch { get { return info.CameraPitch; } }
 
 		public WVec LocalToWorld(WVec vec)
 		{
 			// RA's 2d perspective doesn't correspond to an orthonormal 3D
 			// coordinate system, so fudge the y axis to make things look good
-			return new WVec(vec.Y, -Info.CameraPitch.Sin()*vec.X/1024, vec.Z);
+			return new WVec(vec.Y, -info.CameraPitch.Sin()*vec.X/1024, vec.Z);
 		}
 
 		public WRot QuantizeOrientation(Actor self, WRot orientation)
@@ -53,6 +58,12 @@ namespace OpenRA.Traits
 
 			// Roll and pitch are always zero if yaw is quantized
 			return new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(facing));
+		}
+
+		public void SetAutodetectedFacings(int facings)
+		{
+			if (info.QuantizedFacings < 0)
+				QuantizedFacings = facings;
 		}
 	}
 }

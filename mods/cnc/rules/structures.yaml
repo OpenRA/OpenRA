@@ -605,8 +605,6 @@ OBLI:
 	Turreted:
 		ROT:255
 	AutoTarget:
-	RenderBuilding:
-		QuantizedFacings: 8
 	-RenderBuilding:
 	RenderRangeCircle:
 	-EmitInfantryOnSell:
@@ -638,7 +636,7 @@ GTWR:
 		Weapon: HighV
 		LocalOffset: 256,0,256
 	AttackTurreted:
-	RenderBuilding:
+	BodyOrientation:
 		QuantizedFacings: 8
 	AutoTarget:
 	DetectCloaked:
@@ -682,7 +680,7 @@ ATWR:
 		LocalYaw: -100,100
 	AttackTurreted:
 	AutoTarget:
-	RenderBuilding:
+	BodyOrientation:
 		QuantizedFacings: 8
 	RenderDetectionCircle:
 	DetectCloaked:
