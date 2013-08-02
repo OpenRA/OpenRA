@@ -165,12 +165,14 @@ namespace OpenRA
 			if (m == currentMusic && music != null)
 			{
 				soundEngine.PauseSound(music, false);
+				MusicPlaying = true;
 				return;
 			}
 			StopMusic();
 
 			var sound = sounds[m.Filename];
-			if (sound == null) return;
+			if (sound == null)
+				return;
 
 			music = soundEngine.Play2D(sound, false, true, float2.Zero, MusicVolume, false);
 			currentMusic = m;
@@ -570,7 +572,8 @@ namespace OpenRA
 
 		public void PauseSound(ISound sound, bool paused)
 		{
-			if (sound == null) return;
+			if (sound == null)
+				return;
 
 			int key = ((OpenAlSound)sound).source;
 			int state;
@@ -591,7 +594,6 @@ namespace OpenRA
 					Al.alSourcePause(key);
 				else if (state == Al.AL_PAUSED && !paused)
 					Al.alSourcePlay(key);
-
 			}
 		}
 

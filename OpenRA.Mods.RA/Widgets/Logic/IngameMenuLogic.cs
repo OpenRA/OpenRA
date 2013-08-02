@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			widget.Get<ButtonWidget>("MUSIC").OnClick = () =>
 			{
 				widget.Visible = false;
-				Ui.OpenWindow("MUSIC_MENU", new WidgetArgs { { "onExit", () => { widget.Visible = true; } } });
+				Ui.OpenWindow("MUSIC_PANEL", new WidgetArgs { { "onExit", () => { widget.Visible = true; } } });
 			};
 			widget.Get<ButtonWidget>("RESUME").OnClick = () => onExit();
 

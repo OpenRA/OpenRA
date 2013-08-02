@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			widget.Get<ButtonWidget>("MAINMENU_BUTTON_MUSIC").OnClick = () =>
 			{
 				Menu = MenuType.None;
-				Ui.OpenWindow("MUSIC_MENU", new WidgetArgs()
+				Ui.OpenWindow("MUSIC_PANEL", new WidgetArgs()
 				{
 					{ "onExit", () => Menu = MenuType.Main }
 				});

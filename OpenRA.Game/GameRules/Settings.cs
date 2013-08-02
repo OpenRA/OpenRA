@@ -100,9 +100,11 @@ namespace OpenRA.GameRules
 		public float SoundVolume = 0.5f;
 		public float MusicVolume = 0.5f;
 		public float VideoVolume = 0.5f;
+
 		public bool Shuffle = false;
 		public bool Repeat = false;
 		public bool MapMusic = true;
+
 		public string Engine = "AL";
 		public string Device = null;
 
