@@ -20,6 +20,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	public class SettingsMenuLogic
 	{
 		Widget bg;
+		SoundDevice soundDevice;
 
 		[ObjectCreator.UseCtor]
 		public SettingsMenuLogic(Action onExit)
@@ -103,12 +104,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			mapMusicCheckbox.IsChecked = () => Game.Settings.Sound.MapMusic;
 			mapMusicCheckbox.OnClick = () => Game.Settings.Sound.MapMusic ^= true;
 
-			var soundEngineDropdown = audio.Get<DropDownButtonWidget>("SOUND_ENGINE");
-			soundEngineDropdown.OnMouseDown = _ => ShowSoundEngineDropdown(soundEngineDropdown, soundSettings);
-			soundEngineDropdown.GetText = () => soundSettings.Engine == "AL" ?
-				"OpenAL" : soundSettings.Engine == "Null" ? "None" : "OpenAL";
+			var devices = Sound.AvailableDevices();
+			soundDevice = devices.FirstOrDefault(d => d.Engine == soundSettings.Engine && d.Device == soundSettings.Device) ?? devices.First();
 
-			
+			var audioDeviceDropdown = audio.Get<DropDownButtonWidget>("AUDIO_DEVICE");
+			audioDeviceDropdown.OnMouseDown = _ => ShowAudioDeviceDropdown(audioDeviceDropdown, soundSettings, devices);
+			audioDeviceDropdown.GetText = () => soundDevice.Label;
+
 			// Display
 			var display = bg.Get("DISPLAY_PANE");
 			var gs = Game.Settings.Graphics;
@@ -244,6 +246,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				int.TryParse(windowHeight.Text, out y);
 				gs.WindowedSize = new int2(x,y);
 				int.TryParse(maxFrameRate.Text, out gs.MaxFramerate);
+				soundSettings.Device = soundDevice.Device;
+				soundSettings.Engine = soundDevice.Engine;
 				Game.Settings.Save();
 				Ui.CloseWindow();
 				onExit();
@@ -325,7 +329,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			textBox.OnEnterKey = () => { textBox.YieldKeyboardFocus(); return true; };
 		}
 
-		public static bool ShowRendererDropdown(DropDownButtonWidget dropdown, GraphicSettings s)
+		static bool ShowRendererDropdown(DropDownButtonWidget dropdown, GraphicSettings s)
 		{
 			var options = new Dictionary<string, string>()
 			{
@@ -346,20 +350,18 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			return true;
 		}
 
-		public static bool ShowSoundEngineDropdown(DropDownButtonWidget dropdown, SoundSettings s)
+		bool ShowAudioDeviceDropdown(DropDownButtonWidget dropdown, SoundSettings s, SoundDevice[] devices)
 		{
-			var options = new Dictionary<string, string>()
-			{
-				{ "OpenAL", "AL" },
-				{ "None", "Null" },
-			};
+			var i = 0;
+			var options = devices.ToDictionary(d => (i++).ToString(), d => d);
 
 			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
 			{
 				var item = ScrollItemWidget.Setup(itemTemplate,
-					() => s.Engine == options[o],
-					() => s.Engine = options[o]);
-				item.Get<LabelWidget>("LABEL").GetText = () => o;
+					() => soundDevice == options[o],
+					() => soundDevice = options[o]);
+
+				item.Get<LabelWidget>("LABEL").GetText = () => options[o].Label;
 				return item;
 			};
 

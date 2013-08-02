@@ -26,6 +26,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 	{
 		enum PanelType { General, Input }
 
+		SoundDevice soundDevice;
 		PanelType Settings = PanelType.General;
 		ColorPreviewManagerWidget colorPreview;
 		World world;
@@ -112,6 +113,13 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			shellmapMusicCheckbox.IsChecked = () => soundSettings.MapMusic;
 			shellmapMusicCheckbox.OnClick = () => soundSettings.MapMusic ^= true;
 
+			var devices = Sound.AvailableDevices();
+			soundDevice = devices.FirstOrDefault(d => d.Engine == soundSettings.Engine && d.Device == soundSettings.Device) ?? devices.First();
+
+			var audioDeviceDropdown = generalPane.Get<DropDownButtonWidget>("AUDIO_DEVICE");
+			audioDeviceDropdown.OnMouseDown = _ => ShowAudioDeviceDropdown(audioDeviceDropdown, soundSettings, devices);
+			audioDeviceDropdown.GetText = () => soundDevice.Label;
+
 			// Input pane
 			var inputPane = panel.Get("INPUT_CONTROLS");
 			inputPane.IsVisible = () => Settings == PanelType.Input;
@@ -147,6 +155,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				int.TryParse(windowWidth.Text, out x);
 				int.TryParse(windowHeight.Text, out y);
 				graphicsSettings.WindowedSize = new int2(x,y);
+				soundSettings.Device = soundDevice.Device;
+				soundSettings.Engine = soundDevice.Engine;
 				Game.Settings.Save();
 				Ui.CloseWindow();
 				onExit();
@@ -188,6 +198,25 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					() => s.MouseScroll == options[o],
 					() => s.MouseScroll = options[o]);
 				item.Get<LabelWidget>("LABEL").GetText = () => o;
+				return item;
+			};
+
+			dropdown.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", 500, options.Keys, setupItem);
+			return true;
+		}
+
+		bool ShowAudioDeviceDropdown(DropDownButtonWidget dropdown, SoundSettings s, SoundDevice[] devices)
+		{
+			var i = 0;
+			var options = devices.ToDictionary(d => (i++).ToString(), d => d);
+
+			Func<string, ScrollItemWidget, ScrollItemWidget> setupItem = (o, itemTemplate) =>
+			{
+				var item = ScrollItemWidget.Setup(itemTemplate,
+					() => soundDevice == options[o],
+					() => soundDevice = options[o]);
+
+				item.Get<LabelWidget>("LABEL").GetText = () => options[o].Label;
 				return item;
 			};
 
