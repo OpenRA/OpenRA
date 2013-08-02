@@ -51,6 +51,6 @@ namespace OpenRA
 			return y.ToDictionaryWithConflictLog(kv => kv.Key.ToLowerInvariant(), kv => f(kv, yy), "LoadYamlRules", null, null);
 		}
 
-		public static IEnumerable<KeyValuePair<string,MusicInfo>> InstalledMusic { get { return Music.Where( m => m.Value.Exists ); } }
+		public static IEnumerable<KeyValuePair<string, MusicInfo>> InstalledMusic { get { return Music.Where(m => m.Value.Exists); } }
 	}
 }

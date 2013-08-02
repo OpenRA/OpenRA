@@ -1,5 +1,5 @@
 Container@MUSIC_PANEL:
-	Logic:CncMusicPlayerLogic
+	Logic:MusicPlayerLogic
 	X:(WINDOW_RIGHT - WIDTH)/2
 	Y:(WINDOW_BOTTOM - 400)/2
 	Width:360
@@ -39,15 +39,6 @@ Container@MUSIC_PANEL:
 									X:PARENT_RIGHT-60
 									Align:Right
 									Height:25
-				Label@NO_MUSIC_LABEL:
-					X:15
-					Y:147
-					Width:330
-					Height:25
-					Font:Bold
-					Align:Center
-					Visible:false
-					Text:No Music Installed
 				Container@LABEL_CONTAINER:
 					X:25
 					Y:5
@@ -130,23 +121,16 @@ Container@MUSIC_PANEL:
 									Width:16
 									Height:16
 									ImageCollection:music
-									ImageName:next									
+									ImageName:next
 						Slider@MUSIC_SLIDER:
 							X:145
 							Y:3
 							Width:185
 							Height:20
 							Ticks:5
-				Label@TITLE_LABEL:
-					X:(PARENT_RIGHT-WIDTH)/2
-					Y:305
-					Width:140
-					Height:25
-					Align:Center
-					Font:Bold
 				Label@TIME_LABEL:
 					X:(PARENT_RIGHT-WIDTH)/2
-					Y:325
+					Y:315
 					Width:140
 					Height:25
 					Align:Center
@@ -163,6 +147,15 @@ Container@MUSIC_PANEL:
 					Width:70
 					Height:20
 					Text:Loop
+				Label@NO_MUSIC_LABEL:
+					X:15
+					Y:147
+					Width:330
+					Height:25
+					Font:Bold
+					Align:Center
+					Visible:false
+					Text:No Music Installed
 		Button@BACK_BUTTON:
 			Key:escape
 			X:0
@@ -171,6 +164,7 @@ Container@MUSIC_PANEL:
 			Height:35
 			Text:Back
 		Button@INSTALL_BUTTON:
+			Logic:CncInstallMusicLogic
 			X:220
 			Y:399
 			Width:140
@@ -249,3 +243,4 @@ Container@INSTALL_MUSIC_PANEL:
 			Width:140
 			Height:35
 			Text:Retry
+
