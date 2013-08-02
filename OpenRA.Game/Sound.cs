@@ -31,7 +31,7 @@ namespace OpenRA
 		{
 			if (!FileSystem.Exists(filename))
 			{
-				Log.Write("debug", "LoadSound, file does not exist: {0}", filename);
+				Log.Write("sound", "LoadSound, file does not exist: {0}", filename);
 				return null;
 			}
 
@@ -75,6 +75,20 @@ namespace OpenRA
 			music = null;
 			currentMusic = null;
 			video = null;
+		}
+
+		public static SoundDevice[] AvailableDevices()
+		{
+			var defaultDevices = new []
+			{
+				new SoundDevice("AL", null, "Default Output"),
+				new SoundDevice("Null", null, "Output Disabled")
+			};
+
+			var alDevices = OpenAlSoundEngine.AvailableDevices()
+				.Select(d => new SoundDevice("AL", d, d));
+
+			return defaultDevices.Concat(alDevices).ToArray();
 		}
 
 		public static void SetListenerPosition(float2 position) { soundEngine.SetListenerPosition(position); }
@@ -348,6 +362,24 @@ namespace OpenRA
 		void SetSoundVolume(float volume, ISound music, ISound video);
 	}
 
+	public class SoundDevice
+	{
+		public readonly string Engine;
+		public readonly string Device;
+		public readonly string Label;
+
+		public SoundDevice(string engine, string device, string label)
+		{
+			Engine = engine;
+			Device = device;
+			Label = label;
+
+			// Limit label to 32 characters
+			if (Label.Length > 32)
+				Label = "..." + Label.Substring(Label.Length - 32);
+		}
+	}
+
 	interface ISoundSource { }
 
 	public interface ISound
@@ -372,13 +404,51 @@ namespace OpenRA
 		Dictionary<int, PoolSlot> sourcePool = new Dictionary<int, PoolSlot>();
 		const int POOL_SIZE = 32;
 
+		static string[] QueryDevices(string label, int type)
+		{
+			// Clear error bit
+			Al.alGetError();
+
+			var devices = Alc.alcGetStringv(IntPtr.Zero, type);
+			if (Al.alGetError() != Al.AL_NO_ERROR)
+			{
+				Log.Write("sound", "Failed to query OpenAL device list using {0}", label);
+				return new string[] {};
+			}
+
+			return devices;
+		}
+
+		public static string[] AvailableDevices()
+		{
+			// Returns all devices under windows vista and newer
+			if (Alc.alcIsExtensionPresent(IntPtr.Zero, "ALC_ENUMERATE_ALL_EXT") == Alc.ALC_TRUE)
+				return QueryDevices("ALC_ENUMERATE_ALL_EXT", Alc.ALC_ALL_DEVICES_SPECIFIER);
+
+			if (Alc.alcIsExtensionPresent(IntPtr.Zero, "ALC_ENUMERATION_EXT") == Alc.ALC_TRUE)
+				return QueryDevices("ALC_ENUMERATION_EXT", Alc.ALC_DEVICE_SPECIFIER);
+
+			return new string[] {};
+		}
+
 		public OpenAlSoundEngine()
 		{
 			Console.WriteLine("Using OpenAL sound engine");
-			//var str = Alc.alcGetString(IntPtr.Zero, Alc.ALC_DEFAULT_DEVICE_SPECIFIER);
-			var dev = Alc.alcOpenDevice(null);
+
+			if (Game.Settings.Sound.Device != null)
+				Console.WriteLine("Using device `{0}`", Game.Settings.Sound.Device);
+			else
+				Console.WriteLine("Using default device");
+
+			var dev = Alc.alcOpenDevice(Game.Settings.Sound.Device);
 			if (dev == IntPtr.Zero)
-				throw new InvalidOperationException("Can't create OpenAL device");
+			{
+				Console.WriteLine("Failed to open device. Falling back to default");
+				dev = Alc.alcOpenDevice(null);
+				if (dev == IntPtr.Zero)
+					throw new InvalidOperationException("Can't create OpenAL device");
+			}
+
 			var ctx = Alc.alcCreateContext(dev, IntPtr.Zero);
 			if (ctx == IntPtr.Zero)
 				throw new InvalidOperationException("Can't create OpenAL context");
@@ -390,7 +460,7 @@ namespace OpenRA
 				Al.alGenSources(1, out source);
 				if (0 != Al.alGetError())
 				{
-					Log.Write("debug", "Failed generating OpenAL source {0}", i);
+					Log.Write("sound", "Failed generating OpenAL source {0}", i);
 					return;
 				}
 
@@ -442,7 +512,7 @@ namespace OpenRA
 		{
 			if (sound == null)
 			{
-				Log.Write("debug", "Attempt to Play2D a null `ISoundSource`");
+				Log.Write("sound", "Attempt to Play2D a null `ISoundSource`");
 				return null;
 			}
 

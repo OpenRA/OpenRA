@@ -50,30 +50,44 @@ Container@SETTINGS_PANEL:
 							Y:6
 							Width:PARENT_RIGHT-35
 							Height:PARENT_BOTTOM-12
+				Checkbox@SHOW_SHELLMAP:
+					X:15
+					Y:80
+					Width:200
+					Height:20
+					Font:Regular
+					Text:Show Shellmap
+				Checkbox@SHELLMAP_MUSIC:
+					X:15
+					Y:110
+					Width:200
+					Height:20
+					Font:Regular
+					Text:Shellmap Music
 				Label@DEBUG_TITLE:
 					X:15
-					Y:100
+					Y:150
 					Width:340
 					Font:Bold
 					Text:Debug
 					Align:Center
 				Checkbox@PERFTEXT_CHECKBOX:
 					X:15
-					Y:120
+					Y:170
 					Width:300
 					Height:20
 					Font:Regular
 					Text:Show Performance Text
 				Checkbox@PERFGRAPH_CHECKBOX:
 					X:15
-					Y:150
+					Y:200
 					Width:300
 					Height:20
 					Font:Regular
 					Text:Show Performance Graph
 				Checkbox@CHECKUNSYNCED_CHECKBOX:
 					X:15
-					Y:180
+					Y:230
 					Width:300
 					Height:20
 					Font:Regular
@@ -130,7 +144,7 @@ Container@SETTINGS_PANEL:
 							MaxLength:5
 				Label@VIDEO_DESC:
 					X:375
-					Y:65
+					Y:68
 					Width:340
 					Height:25
 					Font:Tiny
@@ -138,58 +152,65 @@ Container@SETTINGS_PANEL:
 					Text:Mode/Resolution changes will be applied after the game is restarted
 				Checkbox@PIXELDOUBLE_CHECKBOX:
 					X:375
-					Y:90
+					Y:110
 					Width:200
 					Height:20
 					Font:Regular
 					Text:Enable Pixel Doubling
-				Checkbox@SHOW_SHELLMAP:
-					X:375
-					Y:120
-					Width:200
-					Height:20
-					Font:Regular
-					Text:Show Shellmap
 				Label@AUDIO_TITLE:
 					X:375
-					Y:160
+					Y:150
 					Width:340
 					Font:Bold
 					Text:Sound
 					Align:Center
 				Label@SOUND_LABEL:
 					X:375
-					Y:175
+					Y:164
 					Width:95
 					Height:25
 					Align:Right
 					Text:Sound Volume:
 				Slider@SOUND_SLIDER:
 					X:475
-					Y:180
+					Y:170
 					Width:240
 					Height:20
 					Ticks:5
 				Label@MUSIC_LABEL:
 					X:375
-					Y:205
+					Y:194
 					Width:95
 					Height:25
 					Align:Right
 					Text:Music Volume:
 				Slider@MUSIC_SLIDER:
 					X:475
-					Y:210
+					Y:200
 					Width:240
 					Height:20
 					Ticks:5
-				Checkbox@SHELLMAP_MUSIC:
+				Label@AUDIO_DEVICE_LABEL:
 					X:375
-					Y:240
-					Width:200
+					Y:229
+					Width:75
 					Height:20
+					Text:Audio Device:
+				DropDownButton@AUDIO_DEVICE:
+					X:475
+					Y:230
+					Width:240
+					Height:25
 					Font:Regular
-					Text:Shellmap Music
+					Text:Default Device
+				Label@AUDIO_DESC:
+					X:375
+					Y:258
+					Width:340
+					Height:25
+					Font:Tiny
+					Align:Center
+					Text:Device changes will be applied after the game is restarted
 		Background@INPUT_CONTROLS:
 			Width:740
 			Height:290
