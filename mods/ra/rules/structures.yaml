@@ -1031,7 +1031,7 @@ HPAD:
 		SpawnOffset: 0,-6
 		ExitCell: 0,0
 	Production:
-		Produces: Plane
+		Produces: Helicopter
 	BelowUnits:
 	Reservable:
 	IronCurtainable:
