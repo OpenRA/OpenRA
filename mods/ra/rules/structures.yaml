@@ -953,7 +953,7 @@ PROC:
 		Range: 6
 	Bib:
 	OreRefinery:
-	StoresOre:
+	StoresResources:
 		PipCount: 17
 		Capacity: 2000
 	IronCurtainable:
@@ -996,7 +996,7 @@ SILO:
 	RevealsShroud:
 		Range: 4
 	RenderBuildingSilo:
-	StoresOre:
+	StoresResources:
 		PipCount: 5
 		Capacity: 1500
 	IronCurtainable:

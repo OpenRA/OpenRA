@@ -23,8 +23,10 @@ namespace OpenRA.GameRules
 		[FieldLoader.LoadUsing( "LoadVersus" )]
 		[Desc("Damage vs each armortype. 0% = can't target.")]
 		public readonly Dictionary<string, float> Versus;
-		[Desc("Can this damage ore?")]
-		public readonly bool Ore = false;
+		[Desc("Can this remove resource patches in vicinity?")]
+		public readonly bool DestroyResources = false;
+		[Desc("Will this create new resource patches and which?")]
+		public readonly string AddsResourceType = null;
 		[Desc("Explosion effect to use.")]
 		public readonly string Explosion = null;
 		[Desc("Explosion effect on hitting water (usually a splash).")]

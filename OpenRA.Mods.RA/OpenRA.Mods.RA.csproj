@@ -350,7 +350,6 @@
     <Compile Include="SpawnMPUnits.cs" />
     <Compile Include="SpawnMapActors.cs" />
     <Compile Include="Spy.cs" />
-    <Compile Include="StoresOre.cs" />
     <Compile Include="StrategicVictoryConditions.cs" />
     <Compile Include="SupplyTruck.cs" />
     <Compile Include="SupportPowers\AirstrikePower.cs" />
@@ -463,6 +462,7 @@
     <Compile Include="Effects\FrozenActorProxy.cs" />
     <Compile Include="Widgets\Logic\WorldTooltipLogic.cs" />
     <Compile Include="TeslaZapRenderable.cs" />
+    <Compile Include="StoresResources.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

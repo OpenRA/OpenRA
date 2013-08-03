@@ -49,10 +49,10 @@ namespace OpenRA.Mods.RA
 			Sound.Play(GetImpactSound(warhead, isWater), pos);
 
 			var smudgeLayers = world.WorldActor.TraitsImplementing<SmudgeLayer>().ToDictionary(x => x.Info.Type);
+			var resLayer = world.WorldActor.Trait<ResourceLayer>();
 
 			if (warhead.Size[0] > 0)
 			{
-				var resLayer = world.WorldActor.Trait<ResourceLayer>();
 				var allCells = world.FindTilesInCircle(targetTile, warhead.Size[0]).ToList();
 
 				// `smudgeCells` might want to just be an outer shell of the cells:
@@ -71,15 +71,15 @@ namespace OpenRA.Mods.RA
 						throw new NotImplementedException("Unknown smudge type `{0}`".F(smudgeType));
 
 					smudgeLayer.AddSmudge(sc);
-					if (warhead.Ore)
+					if (warhead.DestroyResources)
 						resLayer.Destroy(sc);
 				}
 
 				// Destroy all resources in range, not just the outer shell:
 				foreach (var cell in allCells)
 				{
-					if (warhead.Ore)
-						resLayer.Destroy(cell);
+					if (warhead.DestroyResources)
+						resLayer.Destroy(cell); 
 				}
 			}
 			else
@@ -95,8 +95,18 @@ namespace OpenRA.Mods.RA
 				}
 			}
 
-			if (warhead.Ore)
+			if (warhead.DestroyResources)
 				world.WorldActor.Trait<ResourceLayer>().Destroy(targetTile);
+
+			if (warhead.AddsResourceType != null)
+			{
+				var resourceType = world.WorldActor
+					.TraitsImplementing<ResourceType>()
+						.FirstOrDefault(t => t.info.Name == warhead.AddsResourceType);
+				
+				if (resLayer.GetResource(targetTile) == resourceType || (resLayer.GetResource(targetTile) == null && resLayer.AllowResourceAt(resourceType, targetTile)))
+					resLayer.AddResource(resourceType, targetTile.X, targetTile.Y, 1);
+			}
 
 			switch (warhead.DamageModel)
 			{

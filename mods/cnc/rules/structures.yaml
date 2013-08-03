@@ -121,7 +121,7 @@ PROC:
 	TiberiumRefinery:
 		DockOffset: 0,2
 		TickRate: 15
-	StoresOre:
+	StoresResources:
 		PipColor: Green
 		PipCount: 15
 		Capacity: 1500
@@ -159,7 +159,7 @@ SILO:
 	RevealsShroud:
 		Range: 4
 	RenderBuildingSilo:
-	StoresOre:
+	StoresResources:
 		PipCount: 10
 		PipColor: Green
 		Capacity: 2400

@@ -204,8 +204,8 @@ namespace OpenRA.Mods.RA.Missions
 		public static void CapOre(Player player)
 		{
 			var res = player.PlayerActor.Trait<PlayerResources>();
-			if (res.Ore > res.OreCapacity * 0.8)
-				res.Ore = (int)(res.OreCapacity * 0.8);
+			if (res.Resources > res.Capacity * 0.8)
+				res.Resources = (int)(res.Capacity * 0.8);
 		}
 
 		public static void AttackNearestLandActor(bool queued, Actor self, Player enemyPlayer)
