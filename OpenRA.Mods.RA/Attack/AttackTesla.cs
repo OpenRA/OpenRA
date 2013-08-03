@@ -40,7 +40,7 @@ namespace OpenRA.Mods.RA
 			base.Tick( self );
 		}
 
-		public void Attacking(Actor self, Target target)
+		public void Attacking(Actor self, Target target, Armament a, Barrel barrel)
 		{
 			--charges;
 			timeToRecharge = self.Info.Traits.Get<AttackTeslaInfo>().ReloadTime;

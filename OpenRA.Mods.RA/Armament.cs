@@ -151,7 +151,7 @@ namespace OpenRA.Mods.RA
 			});
 
 			foreach (var na in self.TraitsImplementing<INotifyAttack>())
-				na.Attacking(self, target);
+				na.Attacking(self, target, this, barrel);
 
 			Recoil = Info.Recoil;
 

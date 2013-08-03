@@ -11,69 +11,84 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 using OpenRA.Mods.RA;
 
 namespace OpenRA.Mods.RA.Render
 {
-	class WithMuzzleFlashInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<AttackBaseInfo>
+	class WithMuzzleFlashInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<AttackBaseInfo>, Requires<ArmamentInfo>
 	{
-		public object Create(ActorInitializer init) { return new WithMuzzleFlash(init.self); }
+		[Desc("Sequence name to use")]
+		public readonly string Sequence = "muzzle";
+
+		[Desc("Armament name")]
+		public readonly string Armament = "primary";
+
+		public object Create(ActorInitializer init) { return new WithMuzzleFlash(init.self, this); }
 	}
 
 	class WithMuzzleFlash : INotifyAttack, IRender, ITick
 	{
-		Dictionary<string, AnimationWithOffset> muzzleFlashes = new Dictionary<string, AnimationWithOffset>();
-		bool isShowing;
+		readonly WithMuzzleFlashInfo info;
+		Dictionary<Barrel, bool> visible = new Dictionary<Barrel, bool>();
+		Dictionary<Barrel, AnimationWithOffset> anims = new Dictionary<Barrel, AnimationWithOffset>();
 
-		public WithMuzzleFlash(Actor self)
+		public WithMuzzleFlash(Actor self, WithMuzzleFlashInfo info)
 		{
+			this.info = info;
 			var render = self.Trait<RenderSprites>();
 			var facing = self.TraitOrDefault<IFacing>();
 
-			var arms = self.TraitsImplementing<Armament>();
-			foreach (var a in arms)
-				foreach(var b in a.Barrels)
-				{
-					var barrel = b;
-					var turreted = self.TraitsImplementing<Turreted>()
-						.FirstOrDefault(t => t.Name ==  a.Info.Turret);
-					var getFacing = turreted != null ? () => turreted.turretFacing :
-						facing != null ? (Func<int>)(() => facing.Facing) : () => 0;
+			var arm = self.TraitsImplementing<Armament>()
+				.Single(a => a.Info.Name == info.Armament);
 
-					var muzzleFlash = new Animation(render.GetImage(self), getFacing);
-					muzzleFlash.Play("muzzle");
+			foreach (var b in arm.Barrels)
+			{
+				var barrel = b;
+				var turreted = self.TraitsImplementing<Turreted>()
+					.FirstOrDefault(t => t.Name ==  arm.Info.Turret);
 
-					muzzleFlashes.Add("muzzle{0}".F(muzzleFlashes.Count),
-				    	new AnimationWithOffset(muzzleFlash,
-							() => a.MuzzleOffset(self, barrel),
-							() => !isShowing));
-				}
+				var getFacing = turreted != null ? () => turreted.turretFacing :
+					facing != null ? (Func<int>)(() => facing.Facing) : () => 0;
+
+				var muzzleFlash = new Animation(render.GetImage(self), getFacing);
+				visible.Add(barrel, false);
+				anims.Add(barrel,
+			    	new AnimationWithOffset(muzzleFlash,
+						() => arm.MuzzleOffset(self, barrel),
+						() => !visible[barrel]));
+			}
 		}
 
-		public void Attacking(Actor self, Target target)
+		public void Attacking(Actor self, Target target, Armament a, Barrel barrel)
 		{
-			isShowing = true;
-			foreach( var mf in muzzleFlashes.Values )
-				mf.Animation.PlayThen("muzzle", () => isShowing = false);
+			if (a.Info.Name != info.Armament)
+				return;
+
+			visible[barrel] = true;
+			anims[barrel].Animation.PlayThen(info.Sequence, () => visible[barrel] = false);
 		}
 
 		public IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
 		{
-			foreach (var a in muzzleFlashes.Values)
+			foreach (var kv in anims)
 			{
-				if (a.DisableFunc != null && a.DisableFunc())
+				if (!visible[kv.Key])
 					continue;
 
-				foreach (var r in a.Render(self, wr, wr.Palette("effect"), 1f))
+				if (kv.Value.DisableFunc != null && kv.Value.DisableFunc())
+					continue;
+
+				foreach (var r in kv.Value.Render(self, wr, wr.Palette("effect"), 1f))
 					yield return r;
 			}
 		}
 
 		public void Tick(Actor self)
 		{
-			foreach (var a in muzzleFlashes.Values)
+			foreach (var a in anims.Values)
 				a.Animation.Tick();
 		}
 	}
