@@ -290,6 +290,8 @@
 	-Sellable:
 	-Capturable:
 	-CapturableBar:
+	FrozenUnderFog:
+		StartsRevealed: true
 
 ^AmmoBox:
 	Inherits: ^TechBuilding
@@ -370,6 +372,8 @@
 		Type: Wood
 	AutoTargetIgnore:
 	BodyOrientation:
+	FrozenUnderFog:
+		StartsRevealed: true
 
 ^Husk:
 	Husk:
@@ -489,6 +493,8 @@
 	ProximityCaptor:
 		Types:Tree
 	BodyOrientation:
+	FrozenUnderFog:
+		StartsRevealed: true
 
 ^DesertCivBuilding:
 	Inherits: ^CivBuilding
