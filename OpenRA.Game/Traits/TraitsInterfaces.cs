@@ -124,7 +124,6 @@ namespace OpenRA.Traits
 		}
 	}
 
-	public interface INotifyAttack { void Attacking(Actor self, Target target); }
 	public interface IRenderModifier { IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r); }
 	public interface IDamageModifier { float GetDamageModifier(Actor attacker, WarheadInfo warhead); }
 	public interface ISpeedModifier { decimal GetSpeedModifier(); }

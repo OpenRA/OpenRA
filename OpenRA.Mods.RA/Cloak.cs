@@ -56,7 +56,7 @@ namespace OpenRA.Mods.RA
 			remainingTime = Math.Max(remainingTime, time);
 		}
 
-		public void Attacking(Actor self, Target target) { Uncloak(); }
+		public void Attacking(Actor self, Target target, Armament a, Barrel barrel) { Uncloak(); }
 
 		public bool Cloaked { get { return remainingTime <= 0; } }
 

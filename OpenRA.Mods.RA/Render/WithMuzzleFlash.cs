@@ -52,7 +52,7 @@ namespace OpenRA.Mods.RA.Render
 				}
 		}
 
-		public void Attacking(Actor self, Target target)
+		public void Attacking(Actor self, Target target, Armament a, Barrel barrel)
 		{
 			isShowing = true;
 			foreach( var mf in muzzleFlashes.Values )
