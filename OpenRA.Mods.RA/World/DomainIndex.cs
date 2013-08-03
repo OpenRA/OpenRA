@@ -84,6 +84,9 @@ namespace OpenRA.Mods.RA
 
 		public bool IsPassable(CPos p1, CPos p2)
 		{
+			if (!bounds.Contains(p1.X, p1.Y) || !bounds.Contains(p2.X, p2.Y))
+				return false;
+
 			if (domains[p1.X, p1.Y] == domains[p2.X, p2.Y])
 				return true;
 
@@ -233,9 +236,8 @@ namespace OpenRA.Mods.RA
 
 					// Don't crawl off the map, or add already-visited cells
 					var neighbors = CVec.directions.Select(d => n + d)
-						.Where(p => (p.X < map.Bounds.Right) && (p.X >= map.Bounds.Left)
-						        && (p.Y >= map.Bounds.Top) && (p.Y < map.Bounds.Bottom)
-						        && !visited[p.X, p.Y]);
+						.Where(p => bounds.Contains(p.X, p.Y) && !visited[p.X, p.Y]);
+
 					foreach (var neighbor in neighbors)
 						domainQueue.Enqueue(neighbor);
 				}
