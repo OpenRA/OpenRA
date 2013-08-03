@@ -272,6 +272,7 @@
 	UpdatesPlayerStatistics:
 	Guardable:
 	BodyOrientation:
+	FrozenUnderFog:
 
 ^TechBuilding:
 	Inherits: ^Building

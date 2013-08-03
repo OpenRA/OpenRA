@@ -415,6 +415,7 @@
 	Sellable:
 	Guardable:
 	BodyOrientation:
+	FrozenUnderFog:
 
 ^Tree:
 	Tooltip:
