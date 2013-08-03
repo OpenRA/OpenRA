@@ -69,6 +69,7 @@ HELI:
 		Weapon: HeliAGGun
 		LocalOffset: 128,-213,-85, 128,213,-85
 	Armament@SECONDARY:
+		Name: secondary
 		Weapon: HeliAAGun
 		LocalOffset: 128,-213,-85, 128,213,-85
 	AttackHeli:
@@ -82,7 +83,9 @@ HELI:
 	RenderUnit:
 	WithRotor:
 		Offset: 0,0,85
-	WithMuzzleFlash:
+	WithMuzzleFlash@PRIMARY:
+	WithMuzzleFlash@SECONDARY:
+		Armament: secondary
 	WithShadow:
 	LeavesHusk:
 		HuskActor: HELI.Husk

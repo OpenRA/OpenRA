@@ -248,9 +248,12 @@ Rules:
 		Armament@PRIMARY:
 			Weapon:M60mg
 		Armament@SECONDARY:
+			Name: secondary
 			Weapon:M60mg
 		AttackFrontal:
-		WithMuzzleFlash:
+		WithMuzzleFlash@PRIMARY:
+		WithMuzzleFlash@SECONDARY:
+			Armament: secondary
 		MustBeDestroyed:
 		-GivesBounty:
 	PT:

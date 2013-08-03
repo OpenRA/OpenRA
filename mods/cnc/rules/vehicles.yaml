@@ -106,12 +106,15 @@ APC:
 		RecoilRecovery: 18
 		LocalOffset: 85,85,299, 85,-85,299
 	Armament@SECONDARY:
+		Name: secondary
 		Weapon: APCGun.AA
 		Recoil: 96
 		RecoilRecovery: 18
 		LocalOffset: 85,85,299, 85,-85,299
 	AttackTurreted:
-	WithMuzzleFlash:
+	WithMuzzleFlash@PRIMARY:
+	WithMuzzleFlash@SECONDARY:
+		Armament: secondary
 	RenderUnit:
 	WithTurret:
 	AutoTarget:
@@ -404,6 +407,7 @@ HTNK:
 		Recoil: 170
 		RecoilRecovery: 42
 	Armament@SECONDARY:
+		Name: secondary
 		Weapon: MammothMissiles
 		LocalOffset: -85, 384, 340, -85, -384, 340
 		LocalYaw: -100, 100
