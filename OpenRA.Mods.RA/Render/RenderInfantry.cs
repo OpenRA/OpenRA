@@ -74,6 +74,11 @@ namespace OpenRA.Mods.RA.Render
 				anim.PlayThen(NormalizeInfantrySequence(self, "heal"), () => State = AnimationState.Idle);
 		}
 
+		public void Attacking(Actor self, Target target, Armament a, Barrel barrel)
+		{
+			Attacking(self, target);
+		}
+
 		public override void Tick(Actor self)
 		{
 			base.Tick(self);

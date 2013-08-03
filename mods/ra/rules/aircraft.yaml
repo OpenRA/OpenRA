@@ -145,6 +145,7 @@ YAK:
 		Weapon: ChainGun.Yak
 		LocalOffset: 256,-213,0
 	Armament@SECONDARY:
+		Name: secondary
 		Weapon: ChainGun.Yak
 		LocalOffset: 256,213,0
 	AttackPlane:
@@ -163,7 +164,9 @@ YAK:
 		ReloadTicks: 11
 	IronCurtainable:
 	ReturnOnIdle:
-	WithMuzzleFlash:
+	WithMuzzleFlash@PRIMARY:
+	WithMuzzleFlash@SECONDARY:
+		Armament: secondary
 	Contrail:
 		Offset: -853,0,0
 	LeavesHusk:
@@ -294,6 +297,7 @@ HIND:
 		Weapon: ChainGun
 		LocalOffset: 85,-213,-85
 	Armament@SECONDARY:
+		Name: secondary
 		Weapon: ChainGun
 		LocalOffset: 85,213,-85
 	AttackHeli:
@@ -314,7 +318,9 @@ HIND:
 	IronCurtainable:
 	Selectable:
 		Bounds: 38,32,0,0
-	WithMuzzleFlash:
+	WithMuzzleFlash@PRIMARY:
+	WithMuzzleFlash@SECONDARY:
+		Armament: secondary
 	LeavesHusk:
 		HuskActor: HIND.Husk
 	SmokeTrailWhenDamaged:

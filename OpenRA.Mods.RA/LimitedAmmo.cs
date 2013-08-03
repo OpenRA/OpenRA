@@ -44,6 +44,7 @@ namespace OpenRA.Mods.RA
 			++ammo;
 			return true;
 		}
+
 		public bool TakeAmmo()
 		{
 			if (ammo <= 0) return false;
@@ -53,7 +54,7 @@ namespace OpenRA.Mods.RA
 
 		public int ReloadTimePerAmmo() { return Info.ReloadTicks; }
 
-		public void Attacking(Actor self, Target target) { TakeAmmo(); }
+		public void Attacking(Actor self, Target target, Armament a, Barrel barrel) { TakeAmmo(); }
 
 		public IEnumerable<PipType> GetPips(Actor self)
 		{

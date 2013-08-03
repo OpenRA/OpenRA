@@ -137,7 +137,7 @@ namespace OpenRA.Mods.RA
 		}
 
 		/* lose our disguise if we attack anything */
-		public void Attacking(Actor self, Target target) { DropDisguise(); }
+		public void Attacking(Actor self, Target target, Armament a, Barrel barrel) { DropDisguise(); }
 	}
 
 	class IgnoresDisguiseInfo : TraitInfo<IgnoresDisguise> {}
