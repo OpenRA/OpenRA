@@ -564,20 +564,25 @@ function CreateAutoCompList(editor,key)
   -- list from api
   local apilist = getAutoCompApiList(tab.childs or tab,rest,method)
 
-  -- handle inheritance; add matches from the parent class/lib
-  local seen = {tab = true}
-  while tab.inherits do
-    local base = tab.inherits
-    tab = ac
-    -- map "a.b.c" to class hierarchy (a.b.c)
-    for class in base:gmatch("[%w_]+") do tab = tab.childs[class] end
-    if not tab or seen[tab] then break end
-    seen[tab] = true
+  local function addInheritance(tab, apilist, seen)
+    if not tab.inherits then return end
+    for base in tab.inherits:gmatch("[%w_"..sep.."]+") do
+      local tab = ac
+      -- map "a.b.c" to class hierarchy (a.b.c)
+      for class in base:gmatch("[%w_]+") do tab = tab.childs[class] end
 
-    for _,v in pairs(getAutoCompApiList(tab.childs,rest,method)) do
-      table.insert(apilist, v)
+      if tab and not seen[tab] then
+        seen[tab] = true
+        for _,v in pairs(getAutoCompApiList(tab.childs,rest,method)) do
+          table.insert(apilist, v)
+        end
+        addInheritance(tab, apilist, seen)
+      end
     end
   end
+
+  -- handle (multiple) inheritance; add matches from the parent class/lib
+  addInheritance(tab, apilist, {[tab] = true})
 
   local compstr = ""
   if apilist then
