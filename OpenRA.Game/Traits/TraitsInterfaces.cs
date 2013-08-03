@@ -191,9 +191,10 @@ namespace OpenRA.Traits
 	public interface IBodyOrientation
 	{
 		WAngle CameraPitch { get; }
-		int QuantizedFacings { get; set; }
+		int QuantizedFacings { get; }
 		WVec LocalToWorld(WVec vec);
 		WRot QuantizeOrientation(Actor self, WRot orientation);
+		void SetAutodetectedFacings(int facings);
 	}
 	public interface IBodyOrientationInfo {}
 

@@ -44,7 +44,7 @@ namespace OpenRA.Traits
 			: this(self, MakeFacingFunc(self))
 		{
 			anim.PlayRepeating("idle");
-			self.Trait<IBodyOrientation>().QuantizedFacings = anim.CurrentSequence.Facings;
+			self.Trait<IBodyOrientation>().SetAutodetectedFacings(anim.CurrentSequence.Facings);
 		}
 
 		public int2 SelectionSize(Actor self)

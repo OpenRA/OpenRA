@@ -62,7 +62,7 @@ namespace OpenRA.Mods.RA.Render
 			State = AnimationState.Waiting;
 			mobile = self.Trait<Mobile>();
 
-			self.Trait<IBodyOrientation>().QuantizedFacings = anim.CurrentSequence.Facings;
+			self.Trait<IBodyOrientation>().SetAutodetectedFacings(anim.CurrentSequence.Facings);
 		}
 
 		public void Attacking(Actor self, Target target)
