@@ -11,16 +11,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.Mods.Cnc;
 using OpenRA.Mods.RA;
-using OpenRA.Mods.RA.Air;
-using OpenRA.Mods.RA.Move;
 using OpenRA.Mods.RA.Activities;
-using OpenRA.Mods.RA.Missions;
+using OpenRA.Mods.RA.Air;
 using OpenRA.Mods.RA.Buildings;
+using OpenRA.Mods.RA.Missions;
+using OpenRA.Mods.RA.Move;
 using OpenRA.Scripting;
 using OpenRA.Traits;
-using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.Cnc.Missions
 {
@@ -90,6 +90,7 @@ namespace OpenRA.Mods.Cnc.Missions
 				NODReinforceNthA();
 				Sound.Play("reinfor1.aud");
 			}
+
 			if (world.FrameNumber == 1400)
 			{
 				NODReinforceNthB();
@@ -107,6 +108,7 @@ namespace OpenRA.Mods.Cnc.Missions
 					Sound.Play("reinfor1.aud");
 				}
 			}
+
 			if (levelvillage.Status == ObjectiveStatus.InProgress)
 			{
 				if (vil01.Destroyed && vil02.Destroyed && vil03.Destroyed && vil04.Destroyed && vil05.Destroyed && vil06.Destroyed &&

@@ -14,31 +14,33 @@ using System.Drawing;
 using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
-using OpenRA.Widgets;
 using OpenRA.Mods.RA;
+using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc.Widgets
 {
 	public class SupportPowersWidget : Widget
 	{
-		public int Spacing = 10;
-
 		public readonly string ReadyText = "";
 		public readonly string HoldText = "";
 
-		Dictionary<string, Sprite> iconSprites;
-		Animation clock;
-		Dictionary<Rectangle, SupportPowerIcon> Icons = new Dictionary<Rectangle, SupportPowerIcon>();
-
 		public readonly string TooltipContainer;
 		public readonly string TooltipTemplate = "SUPPORT_POWER_TOOLTIP";
+
+		public int Spacing = 10;
+
+		readonly WorldRenderer worldRenderer;
+		readonly SupportPowerManager spm;
+
+		Dictionary<string, Sprite> iconSprites;
+		Animation clock;
+		Dictionary<Rectangle, SupportPowerIcon> icons = new Dictionary<Rectangle, SupportPowerIcon>();
+
 		public SupportPowerInstance TooltipPower { get; private set; }
 		Lazy<TooltipContainerWidget> tooltipContainer;
 
 		Rectangle eventBounds;
 		public override Rectangle EventBounds { get { return eventBounds; } }
-		readonly WorldRenderer worldRenderer;
-		readonly SupportPowerManager spm;
 		SpriteFont overlayFont;
 		float2 holdOffset, readyOffset, timeOffset;
 
@@ -50,7 +52,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			tooltipContainer = Lazy.New(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 
-			iconSprites = Rules.Info.Values.SelectMany( u => u.Traits.WithInterface<SupportPowerInfo>() )
+			iconSprites = Rules.Info.Values.SelectMany(u => u.Traits.WithInterface<SupportPowerInfo>())
 				.Select(u => u.Image).Distinct()
 				.ToDictionary(
 					u => u,
@@ -68,7 +70,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 		public void RefreshIcons()
 		{
-			Icons = new Dictionary<Rectangle, SupportPowerIcon>();
+			icons = new Dictionary<Rectangle, SupportPowerIcon>();
 			var powers = spm.Powers.Values.Where(p => !p.Disabled);
 
 			var i = 0;
@@ -83,26 +85,26 @@ namespace OpenRA.Mods.Cnc.Widgets
 					Sprite = iconSprites[p.Info.Image]
 				};
 
-				Icons.Add(rect, power);
+				icons.Add(rect, power);
 				i++;
 			}
 
-			eventBounds = (Icons.Count == 0) ? Rectangle.Empty : Icons.Keys.Aggregate(Rectangle.Union);
+			eventBounds = (icons.Count == 0) ? Rectangle.Empty : icons.Keys.Aggregate(Rectangle.Union);
 		}
 
 		public override void Draw()
 		{
 			overlayFont = Game.Renderer.Fonts["TinyBold"];
-			holdOffset = new float2(32,24) - overlayFont.Measure(HoldText) / 2;
-			readyOffset = new float2(32,24) - overlayFont.Measure(ReadyText) / 2;
-			timeOffset = new float2(32,24) - overlayFont.Measure(WidgetUtils.FormatTime(0)) / 2;
+			holdOffset = new float2(32, 24) - overlayFont.Measure(HoldText) / 2;
+			readyOffset = new float2(32, 24) - overlayFont.Measure(ReadyText) / 2;
+			timeOffset = new float2(32, 24) - overlayFont.Measure(WidgetUtils.FormatTime(0)) / 2;
 
 			// Background
-			foreach (var rect in Icons.Keys)
-				WidgetUtils.DrawPanel("panel-black", rect.InflateBy(1,1,1,1));
+			foreach (var rect in icons.Keys)
+				WidgetUtils.DrawPanel("panel-black", rect.InflateBy(1, 1, 1, 1));
 
 			// Icons
-			foreach (var p in Icons.Values)
+			foreach (var p in icons.Values)
 			{
 				WidgetUtils.DrawSHP(p.Sprite, p.Pos, worldRenderer);
 
@@ -115,7 +117,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			}
 
 			// Overlay
-			foreach (var p in Icons.Values)
+			foreach (var p in icons.Values)
 			{
 				if (p.Power.Ready)
 					overlayFont.DrawTextWithContrast(ReadyText,
@@ -142,7 +144,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 		{
 			if (TooltipContainer == null) return;
 			tooltipContainer.Value.SetTooltip(TooltipTemplate,
-				new WidgetArgs() {{ "palette", this }});
+				new WidgetArgs() { { "palette", this } });
 		}
 
 		public override void MouseExited()
@@ -155,7 +157,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 		{
 			if (mi.Event == MouseInputEvent.Move)
 			{
-				var icon = Icons.Where(i => i.Key.Contains(mi.Location))
+				var icon = icons.Where(i => i.Key.Contains(mi.Location))
 					.Select(i => i.Value).FirstOrDefault();
 				TooltipPower = (icon != null) ? icon.Power : null;
 				return false;
@@ -164,7 +166,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			if (mi.Event != MouseInputEvent.Down)
 				return false;
 
-			var clicked = Icons.Where(i => i.Key.Contains(mi.Location))
+			var clicked = icons.Where(i => i.Key.Contains(mi.Location))
 				.Select(i => i.Value).FirstOrDefault();
 
 			if (clicked != null)

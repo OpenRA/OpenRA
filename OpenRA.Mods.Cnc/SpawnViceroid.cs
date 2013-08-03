@@ -26,28 +26,28 @@ namespace OpenRA.Mods.Cnc
 
 	class SpawnViceroid : INotifyKilled
 	{
-		readonly SpawnViceroidInfo Info;
+		readonly SpawnViceroidInfo spawnViceroidInfo;
 
-		public SpawnViceroid(SpawnViceroidInfo info) { Info = info; }
+		public SpawnViceroid(SpawnViceroidInfo info) { spawnViceroidInfo = info; }
 
 		public void Killed(Actor self, AttackInfo e)
 		{
-			if (e.Warhead == null || e.Warhead.InfDeath != Info.InfDeath) return;
-			if (self.World.SharedRandom.Next(100) > Info.Probability) return;
+			if (e.Warhead == null || e.Warhead.InfDeath != spawnViceroidInfo.InfDeath) return;
+			if (self.World.SharedRandom.Next(100) > spawnViceroidInfo.Probability) return;
 
 			self.World.AddFrameEndTask(w =>
 			{
 				var td = new TypeDictionary
 				{
-					new LocationInit( self.Location ),
-					new OwnerInit( self.World.Players.First(p => p.InternalName == Info.Owner) )
+					new LocationInit(self.Location),
+					new OwnerInit(self.World.Players.First(p => p.InternalName == spawnViceroidInfo.Owner))
 				};
 
 				var facing = self.TraitOrDefault<IFacing>();
 				if (facing != null)
-					td.Add(new FacingInit( facing.Facing ));
+					td.Add(new FacingInit(facing.Facing));
 
-				w.CreateActor(Info.ViceroidActor, td);
+				w.CreateActor(spawnViceroidInfo.ViceroidActor, td);
 			});
 		}
 	}

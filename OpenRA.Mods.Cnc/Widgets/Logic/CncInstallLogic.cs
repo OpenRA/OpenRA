@@ -17,7 +17,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 	public class CncInstallLogic
 	{
 		[ObjectCreator.UseCtor]
-		public CncInstallLogic(Widget widget, Dictionary<string,string> installData, Action continueLoading)
+		public CncInstallLogic(Widget widget, Dictionary<string, string> installData, Action continueLoading)
 		{
 			var panel = widget.Get("INSTALL_PANEL");
 			var args = new WidgetArgs()
@@ -43,8 +43,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			{
 				Ui.OpenWindow("MODS_PANEL", new WidgetArgs()
 				{
-					{ "onExit", () => {} },
-					// Close this panel
+					{ "onExit", () => { } },
 					{ "onSwitch", Ui.CloseWindow },
 				});
 			};

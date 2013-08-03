@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Cnc
 
 		Color ColorForEffect(EffectType t, Color orig)
 		{
-			switch(t)
+			switch (t)
 			{
 				case EffectType.Black:
 					return Color.FromArgb(orig.A, Color.Black);
@@ -62,7 +62,7 @@ namespace OpenRA.Mods.Cnc
 			}
 		}
 
-		public void AdjustPalette(Dictionary<string,Palette> palettes)
+		public void AdjustPalette(Dictionary<string, Palette> palettes)
 		{
 			if (to == EffectType.None && remainingFrames == 0)
 				return;
