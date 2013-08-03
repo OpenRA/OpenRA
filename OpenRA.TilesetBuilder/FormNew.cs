@@ -8,24 +8,24 @@ using System.Windows.Forms;
 
 namespace OpenRA.TilesetBuilder
 {
-	public partial class frmNew : Form
+	public partial class FormNew : Form
 	{
 		public bool PaletteFromImage = true;
 		public string PaletteFile = "";
 		public string ImageFile = "";
 		public int TileSize = 24;
 
-		public frmNew()
+		public FormNew()
 		{
 			InitializeComponent();
 		}
 
-		private void btnCancel_Click(object sender, EventArgs e)
+		private void CancelButtonClick(object sender, EventArgs e)
 		{
 			Close();
 		}
 
-		private void btnOk_Click(object sender, EventArgs e)
+		private void OkButtonClick(object sender, EventArgs e)
 		{
 			if (!PaletteFromImage)
 			{
@@ -34,6 +34,7 @@ namespace OpenRA.TilesetBuilder
 					MessageBox.Show("No palette specified", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				}
 			}
+
 			if (ImageFile.Length < 5)
 			{
 				MessageBox.Show("No image selected", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -45,7 +46,7 @@ namespace OpenRA.TilesetBuilder
 			}
 		}
 
-		private void chkUsePalFromImage_CheckedChanged(object sender, EventArgs e)
+		private void UsePaletteFromImageCheckedChanged(object sender, EventArgs e)
 		{
 			if (chkUsePalFromImage.Checked)
 			{
@@ -59,7 +60,7 @@ namespace OpenRA.TilesetBuilder
 			}
 		}
 
-		private void btnPalBrowse_Click(object sender, EventArgs e)
+		private void PaletteBrowseClick(object sender, EventArgs e)
 		{
 			using (var ofd = new OpenFileDialog { Filter = "C&C Palette (*.pal)|*.pal" })
 				if (DialogResult.OK == ofd.ShowDialog())
@@ -69,7 +70,7 @@ namespace OpenRA.TilesetBuilder
 				}
 		}
 
-		private void btnImgBrowse_Click(object sender, EventArgs e)
+		private void ImageBrowseClick(object sender, EventArgs e)
 		{
 			using (var ofd = new OpenFileDialog { Filter = "8bit Image (*.png,*.pcx,*.bmp)|*.png;*.pcx;*.bmp" })
 				if (DialogResult.OK == ofd.ShowDialog())
@@ -80,7 +81,7 @@ namespace OpenRA.TilesetBuilder
 				}
 		}
 
-		private void numSize_ValueChanged(object sender, EventArgs e)
+		private void NumSizeValueChanged(object sender, EventArgs e)
 		{
 			TileSize = (int)numSize.Value;
 		}
