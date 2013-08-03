@@ -52,7 +52,7 @@ namespace OpenRA.Mods.RA.Render
 			rightWake.Play("wake-right");
 			anims.Add("wake-right", new AnimationWithOffset(rightWake, null, () => facing.Facing <= 128, -87));
 
-			self.Trait<IBodyOrientation>().QuantizedFacings = 2;
+			self.Trait<IBodyOrientation>().SetAutodetectedFacings(2);
 		}
 
 		public void DamageStateChanged(Actor self, AttackInfo e)
