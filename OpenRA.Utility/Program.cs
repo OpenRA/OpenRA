@@ -38,10 +38,10 @@ namespace OpenRA.Utility
 
 			try
 			{
-				var action = Exts.WithDefault( _ => PrintUsage(), () => actions[args[0]]);
+				var action = Exts.WithDefault(_ => PrintUsage(), () => actions[args[0]]);
 				action(args);
 			}
-			catch( Exception e )
+			catch (Exception e)
 			{
 				Log.AddChannel("utility", "utility.log");
 				Log.Write("utility", "Received args: {0}", args.JoinWith(" "));
