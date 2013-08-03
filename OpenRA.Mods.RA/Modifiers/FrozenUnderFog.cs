@@ -19,20 +19,25 @@ namespace OpenRA.Mods.RA
 {
 	public class FrozenUnderFogInfo : ITraitInfo, Requires<BuildingInfo>, Requires<RenderSpritesInfo>
 	{
-		public object Create(ActorInitializer init) { return new FrozenUnderFog(init.self); }
+		public readonly bool StartsRevealed = false;
+
+		public object Create(ActorInitializer init) { return new FrozenUnderFog(init, this); }
 	}
 
 	public class FrozenUnderFog : IRenderModifier, IVisibilityModifier, ITickRender
 	{
 		FrozenActorProxy proxy;
 		IEnumerable<CPos> footprint;
-		bool visible;
+		bool visible, cacheFirstFrame;
 
-		public FrozenUnderFog(Actor self)
+		public FrozenUnderFog(ActorInitializer init, FrozenUnderFogInfo info)
 		{
-			footprint = FootprintUtils.Tiles(self);
-			proxy = new FrozenActorProxy(self, footprint);
-			self.World.AddFrameEndTask(w => w.Add(proxy));
+			footprint = FootprintUtils.Tiles(init.self);
+			proxy = new FrozenActorProxy(init.self, footprint);
+			init.world.AddFrameEndTask(w => w.Add(proxy));
+
+			// Spawned actors (e.g. building husks) shouldn't be revealed
+			cacheFirstFrame = info.StartsRevealed && !init.Contains<ParentActorInit>();
 		}
 
 		public bool IsVisible(Actor self, Player byPlayer)
@@ -46,6 +51,13 @@ namespace OpenRA.Mods.RA
 				return;
 
 			visible = IsVisible(self, self.World.RenderPlayer);
+
+			if (cacheFirstFrame)
+			{
+				visible = true;
+				cacheFirstFrame = false;
+			}
+
 			if (visible)
 				proxy.SetRenderables(self.Render(wr));
 		}

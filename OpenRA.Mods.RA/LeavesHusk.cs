@@ -36,6 +36,7 @@ namespace OpenRA.Mods.RA
 			{
 				var td = new TypeDictionary
 				{
+					new ParentActorInit(self),
 					new LocationInit(self.Location),
 					new CenterLocationInit(self.CenterLocation),
 					new OwnerInit(self.Owner),
