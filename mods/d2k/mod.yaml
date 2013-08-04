@@ -104,6 +104,14 @@ ServerTraits:
 	PlayerPinger
 	MasterServerPinger
 
+LobbyDefaults:
+	AllowCheats: false
+	Crates: true
+	StartingUnitsClass: none
+	FragileAlliances: false
+	Shroud: false
+	Fog: true
+
 ChromeMetrics:
 	mods/d2k/metrics.yaml
 

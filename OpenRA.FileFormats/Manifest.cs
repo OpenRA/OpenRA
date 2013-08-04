@@ -26,6 +26,7 @@ namespace OpenRA.FileFormats
 
 		public readonly Dictionary<string, string> Packages;
 		public readonly MiniYaml LoadScreen;
+		public readonly MiniYaml LobbyDefaults;
 		public readonly Dictionary<string, Pair<string,int>> Fonts;
 		public readonly int TileSize = 24;
 
@@ -57,6 +58,7 @@ namespace OpenRA.FileFormats
 			PackageContents = YamlList(yaml, "PackageContents");
 
 			LoadScreen = yaml["LoadScreen"];
+			LobbyDefaults = yaml["LobbyDefaults"];
 			Fonts = yaml["Fonts"].NodesDict.ToDictionary(x => x.Key,
 				x => Pair.New(x.Value.NodesDict["Font"].Value,
 					int.Parse(x.Value.NodesDict["Size"].Value)));

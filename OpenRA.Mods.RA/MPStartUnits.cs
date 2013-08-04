@@ -15,7 +15,7 @@ namespace OpenRA.Mods.RA
 {
 	public class MPStartUnitsInfo : TraitInfo<MPStartUnits>
 	{
-		public readonly string Class = "default";
+		public readonly string Class = "none";
 		public readonly string[] Races = { };
 
 		public readonly string BaseActor = null;

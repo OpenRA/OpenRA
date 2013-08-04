@@ -69,6 +69,7 @@ FCOM:
 	RevealsShroud:
 		Range: 10
 	Bib:
+		Sprite: bib3
 
 HOSP:
 	Inherits: ^TechBuilding
@@ -300,6 +301,7 @@ MISS:
 	Tooltip:
 		Name: Technology Center
 	Bib:
+		Sprite: bib2
 
 BIO:
 	Inherits: ^TechBuilding
@@ -319,6 +321,7 @@ OILB:
 	Health:
 		HP: 1000
 	Bib:
+		Sprite: bib3
 	RevealsShroud:
 		Range: 3
 	Capturable:

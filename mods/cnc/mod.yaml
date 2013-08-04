@@ -52,6 +52,7 @@ Sequences:
 	mods/cnc/sequences/funpark.yaml
 	mods/cnc/sequences/civilian.yaml
 	mods/cnc/sequences/campaign.yaml
+
 Cursors:
 	mods/cnc/cursors.yaml
 
@@ -116,6 +117,14 @@ ServerTraits:
 	LobbyCommands
 	PlayerPinger
 	MasterServerPinger
+
+LobbyDefaults:
+	AllowCheats: false
+	Crates: true
+	StartingUnitsClass: light
+	FragileAlliances: false
+	Shroud: true
+	Fog: true
 
 ChromeMetrics:
 	mods/cnc/metrics.yaml

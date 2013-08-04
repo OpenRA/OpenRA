@@ -342,6 +342,9 @@ World:
 	ShroudPalette@fog:
 		Name: fog
 		Type: Fog
+	ShroudPalette@combined:
+		Name: shroudfog
+		Type: Combined
 	Country@Atreides:
 		Name: Atreides
 		Race: atreides
@@ -352,9 +355,6 @@ World:
 		Name: Ordos
 		Race: ordos
 	BibLayer:
-		BibTypes: bib3x, bib2x
-		BibWidths: 3, 2
-		FrozenUnderFog: true
 	DomainIndex:
 	ResourceLayer:
 	ResourceClaimLayer:
