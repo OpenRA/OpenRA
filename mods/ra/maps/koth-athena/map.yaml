@@ -1927,9 +1927,6 @@ Actors:
 	Actor636: v13
 		Location: 123,62
 		Owner: Neutral
-	Actor656: tran.husk1
-		Location: 133,126
-		Owner: Neutral
 	Actor657: v13
 		Location: 128,121
 		Owner: Neutral
