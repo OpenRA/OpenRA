@@ -159,6 +159,9 @@ namespace OpenRA
 			a.IsInWorld = true;
 			actors.Add(a);
 			ActorAdded(a);
+
+			foreach (var t in a.TraitsImplementing<INotifyAddedToWorld>())
+				t.AddedToWorld(a);
 		}
 
 		public void Remove(Actor a)
@@ -166,7 +169,9 @@ namespace OpenRA
 			a.IsInWorld = false;
 			actors.Remove(a);
 			ActorRemoved(a);
-			
+
+			foreach (var t in a.TraitsImplementing<INotifyRemovedFromWorld>())
+				t.RemovedFromWorld(a);
 		}
 
 		public void Add(IEffect b) { effects.Add(b); }
