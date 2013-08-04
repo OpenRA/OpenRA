@@ -59,24 +59,24 @@ namespace OpenRA.FileFormats
 		// Decode PKWare Compression Library stream.
 		public static byte[] Decompress(byte[] src)
 		{
-			BitReader br = new BitReader(src);
+			var br = new BitReader(src);
 
 			// Are literals coded?
-			int coded = br.ReadBits(8);
+			var coded = br.ReadBits(8);
 
 			if (coded < 0 || coded > 1)
 				throw new NotImplementedException("Invalid datastream");
-			bool EncodedLiterals = (coded == 1);
+			var EncodedLiterals = coded == 1;
 
 			// log2(dictionary size) - 6
-			int dict = br.ReadBits(8);
+			var dict = br.ReadBits(8);
 			if (dict < 4 || dict > 6)
 				throw new InvalidDataException("Invalid dictionary size");
 
 			// output state
 			ushort next = 0; // index of next write location in out[]
-			bool first = true; // true to check distances (for first 4K)
-			byte[] outBuffer = new byte[MAXWIN]; // output buffer and sliding window
+			var first = true; // true to check distances (for first 4K)
+			var outBuffer = new byte[MAXWIN]; // output buffer and sliding window
 			var ms = new MemoryStream();
 
 			// decode literals and length/distance pairs
@@ -86,9 +86,11 @@ namespace OpenRA.FileFormats
 				if (br.ReadBits(1) == 1)
 				{
 					// Length
-					int symbol = Decode(lencode, br);
-					int len = lengthbase[symbol] + br.ReadBits(extra[symbol]);
-					if (len == 519) // Magic number for "done"
+					var symbol = Decode(lencode, br);
+					var len = lengthbase[symbol] + br.ReadBits(extra[symbol]);
+
+					// Magic number for "done"
+					if (len == 519)
 					{
 						for (int i = 0; i < next; i++)
 							ms.WriteByte(outBuffer[i]);
@@ -97,7 +99,7 @@ namespace OpenRA.FileFormats
 
 					// Distance
 					symbol = len == 2 ? 2 : dict;
-					int dist = Decode(distcode, br) << symbol;
+					var dist = Decode(distcode, br) << symbol;
 					dist += br.ReadBits(symbol);
 					dist++;
 
@@ -107,10 +109,10 @@ namespace OpenRA.FileFormats
 					// copy length bytes from distance bytes back
 					do
 					{
-						int dest = next;
-						int source = dest - dist;
+						var dest = next;
+						var source = dest - dist;
 
-						int copy = MAXWIN;
+						var copy = MAXWIN;
 						if (next < dist)
 						{
 							source += copy;
@@ -127,7 +129,7 @@ namespace OpenRA.FileFormats
 						// copy with old-fashioned memcpy semantics
 						// in case of overlapping ranges. this is NOT
 						// the same as Array.Copy()
-						while( copy-- > 0 )
+						while (copy-- > 0)
 							outBuffer[dest++] = outBuffer[source++];
 
 						// Flush window to outstream
@@ -140,9 +142,10 @@ namespace OpenRA.FileFormats
 						}
 					} while (len != 0);
 				}
-				else // literal value
+				// literal value
+				else
 				{
-					int symbol = EncodedLiterals ? Decode(litcode, br) : br.ReadBits(8);
+					var symbol = EncodedLiterals ? Decode(litcode, br) : br.ReadBits(8);
 					outBuffer[next++] = (byte)symbol;
 					if (next == MAXWIN)
 					{
@@ -160,9 +163,9 @@ namespace OpenRA.FileFormats
 		// Decode a code using huffman table h.
 		static int Decode(Huffman h, BitReader br)
 		{
-			int code = 0; // len bits being decoded
-			int first = 0; // first code of length len
-			int index = 0; // index of first code of length len in symbol table
+			var code = 0; // len bits being decoded
+			var first = 0; // first code of length len
+			var index = 0; // index of first code of length len in symbol table
 			short next = 1;
 			while (true)
 			{
@@ -193,8 +196,8 @@ namespace OpenRA.FileFormats
 
 		public int ReadBits(int count)
 		{
-			int ret = 0;
-			int filled = 0;
+			var ret = 0;
+			var filled = 0;
 			while (filled < count)
 			{
 				if (bitCount == 0)
@@ -208,6 +211,7 @@ namespace OpenRA.FileFormats
 				bitCount--;
 				filled++;
 			}
+
 			return ret;
 		}
 	}
@@ -226,21 +230,22 @@ namespace OpenRA.FileFormats
 		public short[] Count; // number of symbols of each length
 		public short[] Symbol; // canonically ordered symbols
 
-		public Huffman(byte[] rep, int n, short SymbolCount)
+		public Huffman(byte[] rep, int n, short symbolCount)
 		{
-			short[] length = new short[256]; // code lengths
-			int s = 0; // current symbol
+			var length = new short[256]; // code lengths
+			var s = 0; // current symbol
 
 			// convert compact repeat counts into symbol bit length list
 			foreach (byte code in rep)
 			{
-				int num = (code >> 4) + 1; // Number of codes (top four bits plus 1)
-				byte len = (byte)(code & 15); // Code length (low four bits)
+				var num = (code >> 4) + 1; // Number of codes (top four bits plus 1)
+				var len = (byte)(code & 15); // Code length (low four bits)
 				do
 				{
 					length[s++] = len;
 				} while (--num > 0);
 			}
+
 			n = s;
 
 			// count number of codes of each length
@@ -253,24 +258,22 @@ namespace OpenRA.FileFormats
 				return;
 
 			// check for an over-subscribed or incomplete set of lengths
-			int left = 1; // one possible code of zero length
+			var left = 1; // one possible code of zero length
 			for (int len = 1; len <= Blast.MAXBITS; len++)
 			{
-				left <<= 1;
-				// one more bit, double codes left
-				left -= Count[len];
-				// deduct count from possible codes
+				left <<= 1;	// one more bit, double codes left
+				left -= Count[len];	// deduct count from possible codes
 				if (left < 0)
-					throw new InvalidDataException ("over subscribed code set");
+					throw new InvalidDataException("over subscribed code set");
 			}
 
 			// generate offsets into symbol table for each length for sorting
-			short[] offs = new short[Blast.MAXBITS + 1];
+			var offs = new short[Blast.MAXBITS + 1];
 			for (int len = 1; len < Blast.MAXBITS; len++)
 				offs[len + 1] = (short)(offs[len] + Count[len]);
 
 			// put symbols in table sorted by length, by symbol order within each length
-			Symbol = new short[SymbolCount];
+			Symbol = new short[symbolCount];
 			for (short i = 0; i < n; i++)
 				if (length[i] != 0)
 					Symbol[offs[length[i]]++] = i;
