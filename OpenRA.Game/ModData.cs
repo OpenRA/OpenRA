@@ -30,6 +30,18 @@ namespace OpenRA
 		public SpriteLoader SpriteLoader;
 		public VoxelLoader VoxelLoader;
 
+		public static IEnumerable<string> FindMapsIn(string dir)
+		{
+			string[] noMaps = { };
+
+			if (!Directory.Exists(dir))
+				return noMaps;
+
+			return Directory.GetDirectories(dir)
+				.Concat(Directory.GetFiles(dir, "*.zip"))
+					.Concat(Directory.GetFiles(dir, "*.oramap"));
+		}
+
 		public ModData(params string[] mods)
 		{
 			Manifest = new Manifest(mods);
@@ -45,7 +57,6 @@ namespace OpenRA
 			FileSystem.UnmountAll();
 			foreach (var dir in Manifest.Folders)
 				FileSystem.Mount(dir);
-
 		}
 
 		public void InitializeLoaders()
@@ -76,22 +87,11 @@ namespace OpenRA
 
 			Rules.LoadRules(Manifest, map);
 			SpriteLoader = new SpriteLoader(Rules.TileSets[map.Tileset].Extensions, SheetBuilder);
+
 			// TODO: Don't load the sequences for assets that are not used in this tileset. Maybe use the existing EditorTilesetFilters.
 			SequenceProvider.Initialize(Manifest.Sequences, map.Sequences);
 			VoxelProvider.Initialize(Manifest.VoxelSequences, map.VoxelSequences);
 			return map;
-		}
-
-		public static IEnumerable<string> FindMapsIn(string dir)
-		{
-			string[] NoMaps = { };
-
-			if (!Directory.Exists(dir))
-				return NoMaps;
-
-			return Directory.GetDirectories(dir)
-				.Concat(Directory.GetFiles(dir, "*.zip"))
-				.Concat(Directory.GetFiles(dir, "*.oramap"));
 		}
 
 		Dictionary<string, Map> FindMaps(string[] mods)
@@ -108,7 +108,7 @@ namespace OpenRA
 					var map = new Map(path);
 					ret.Add(map.Uid, map);
 				}
-				catch(Exception e)
+				catch (Exception e)
 				{
 					Console.WriteLine("Failed to load map: {0}", path);
 					Console.WriteLine("Details: {0}", e.ToString());
