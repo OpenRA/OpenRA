@@ -120,6 +120,8 @@ ServerTraits:
 	PlayerPinger
 	MasterServerPinger
 
+LobbyDefaults:
+
 ChromeMetrics:
 	mods/ra/metrics.yaml
 

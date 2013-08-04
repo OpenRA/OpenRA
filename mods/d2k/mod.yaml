@@ -104,6 +104,8 @@ ServerTraits:
 	PlayerPinger
 	MasterServerPinger
 
+LobbyDefaults:
+
 ChromeMetrics:
 	mods/d2k/metrics.yaml
 
