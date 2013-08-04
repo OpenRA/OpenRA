@@ -99,6 +99,11 @@ namespace OpenRA.FileFormats
 			return new MiniYaml( null, list.Select( x => new MiniYamlNode( x.ToString(), new MiniYaml( null ) ) ).ToList() );
 		}
 
+		public static List<MiniYamlNode> NodesOrEmpty(MiniYaml y, string s)
+		{
+			return y.NodesDict.ContainsKey(s) ? y.NodesDict[s].Nodes : new List<MiniYamlNode>();
+		}
+
 		static List<MiniYamlNode> FromLines(string[] lines, string filename)
 		{
 			var levels = new List<List<MiniYamlNode>>();

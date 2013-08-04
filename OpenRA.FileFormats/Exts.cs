@@ -232,6 +232,16 @@ namespace OpenRA
 			return result;
 		}
 
+		public static T[,] ResizeArray<T>(T[,] ts, T t, int width, int height)
+		{
+			var result = new T[width, height];
+			for (var i = 0; i < width; i++)
+				for (var j = 0; j < height; j++)
+					result[i, j] = i <= ts.GetUpperBound(0) && j <= ts.GetUpperBound(1)
+						? ts[i, j] : t;
+			return result;
+		}
+
 		public static Rectangle Bounds(this Bitmap b) { return new Rectangle(0, 0, b.Width, b.Height); }
 
 		public static int ToBits(this IEnumerable<bool> bits)
