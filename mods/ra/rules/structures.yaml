@@ -402,7 +402,7 @@ PBOX:
 	-AcceptsSupplies:
 	Turreted:
 		ROT: 255
-	RenderBuilding:
+	BodyOrientation:
 		QuantizedFacings: 8
 	Cargo:
 		Types: Infantry
@@ -567,7 +567,7 @@ HBOX:
 	-AcceptsSupplies:
 	Turreted:
 		ROT: 255
-	RenderBuilding:
+	BodyOrientation:
 		QuantizedFacings: 8
 	Cargo:
 		Types: Infantry
@@ -774,7 +774,7 @@ FTUR:
 		Weapon: FireballLauncher
 		LocalOffset: 512,0,0
 	AttackTurreted:
-	RenderBuilding:
+	BodyOrientation:
 		QuantizedFacings: 8
 	AutoTarget:
 	IronCurtainable:
