@@ -527,7 +527,10 @@ namespace OpenRA.Server
 				DispatchOrders(toDrop, toDrop.MostRecentFrame, new byte[] {0xbf});
 
 				if (!conns.Any())
+				{
+					FieldLoader.Load(lobbyInfo.GlobalSettings, ModData.Manifest.LobbyDefaults);
 					TempBans.Clear();
+				}
 
 				if (conns.Any() || lobbyInfo.GlobalSettings.Dedicated)
 					SyncLobbyInfo();

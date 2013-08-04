@@ -121,6 +121,10 @@ ServerTraits:
 	MasterServerPinger
 
 LobbyDefaults:
+	AllowCheats: false
+	Crates: true
+	StartingUnitsClass: default
+	FragileAlliances: false
 
 ChromeMetrics:
 	mods/ra/metrics.yaml

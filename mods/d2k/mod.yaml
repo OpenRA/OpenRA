@@ -105,6 +105,10 @@ ServerTraits:
 	MasterServerPinger
 
 LobbyDefaults:
+	AllowCheats: false
+	Crates: true
+	StartingUnitsClass: default
+	FragileAlliances: false
 
 ChromeMetrics:
 	mods/d2k/metrics.yaml
