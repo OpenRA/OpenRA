@@ -264,6 +264,9 @@ World:
 	ShroudPalette@fog:
 		Name: fog
 		Type: Fog
+	ShroudPalette@combined:
+		Name: shroudfog
+		Type: Combined
 	Country@gdi:
 		Name: GDI
 		Race: gdi

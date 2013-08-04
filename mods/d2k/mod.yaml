@@ -109,6 +109,8 @@ LobbyDefaults:
 	Crates: true
 	StartingUnitsClass: default
 	FragileAlliances: false
+	Shroud: false
+	Fog: true
 
 ChromeMetrics:
 	mods/d2k/metrics.yaml

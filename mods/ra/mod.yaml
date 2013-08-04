@@ -125,6 +125,8 @@ LobbyDefaults:
 	Crates: true
 	StartingUnitsClass: default
 	FragileAlliances: false
+	Shroud: true
+	Fog: true
 
 ChromeMetrics:
 	mods/ra/metrics.yaml

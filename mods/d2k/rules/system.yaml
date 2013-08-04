@@ -342,6 +342,9 @@ World:
 	ShroudPalette@fog:
 		Name: fog
 		Type: Fog
+	ShroudPalette@combined:
+		Name: shroudfog
+		Type: Combined
 	Country@Atreides:
 		Name: Atreides
 		Race: atreides

@@ -601,6 +601,9 @@ World:
 	ShroudPalette@fog:
 		Name: fog
 		Type: Fog
+	ShroudPalette@combined:
+		Name: shroudfog
+		Type: Combined
 	Country@0:
 		Name: Allies
 		Race: allies

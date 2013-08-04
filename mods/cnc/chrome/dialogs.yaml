@@ -206,45 +206,57 @@ Background@LOBBY_OPTIONS_BIN:
 	Children:
 		Label@TITLE:
 			X:0
-			Y:50
+			Y:40
 			Width:PARENT_RIGHT
 			Height:25
 			Font:Bold
 			Align:Center
 			Text: Map Options
 		Checkbox@ALLOWCHEATS_CHECKBOX:
-			X:150
-			Y:80
+			X:80
+			Y:75
 			Width:230
 			Height:20
-			Text:Enable Cheats / Debug Menu
+			Text:Cheats / Debug Menu
 		Checkbox@CRATES_CHECKBOX:
-			X:150
+			X:80
 			Y:110
 			Width:230
 			Height:20
-			Text:Enable Crates
+			Text:Crates
+		Checkbox@SHROUD_CHECKBOX:
+			X:310
+			Y:75
+			Width:230
+			Height:20
+			Text:Shroud
+		Checkbox@FOG_CHECKBOX:
+			X:310
+			Y:110
+			Width:230
+			Height:20
+			Text:Fog of War
 		Label@STARTINGUNITS_DESC:
-			X:150
-			Y:140
+			X:135
+			Y:142
 			Width:120
 			Height:25
 			Text:Starting Units:
 		DropDownButton@STARTINGUNITS_DROPDOWNBUTTON:
-			X:245
-			Y:140
+			X:230
+			Y:142
 			Width:140
 			Height:25
 			Font:Bold
 		Label@DIFFICULTY_DESC:
-			X:150
-			Y:170
+			X:125
+			Y:177
 			Width:120
 			Height:25
 			Text:Mission Difficulty:
 		DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
-			X:265
-			Y:170
+			X:230
+			Y:177
 			Width:100
 			Height:25
 			Font:Bold
