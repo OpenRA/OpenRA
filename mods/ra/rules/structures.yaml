@@ -336,8 +336,12 @@ AGUN:
 	Armament@PRIMARY:
 		Weapon: ZSU-23
 	Armament@SECONDARY:
+		Name: secondary
 		Weapon: ZSU-23
 	AttackTurreted:
+	WithMuzzleFlash@PRIMARY:
+	WithMuzzleFlash@SECONDARY:
+		Armament: secondary
 	AutoTarget:
 	IronCurtainable:
 	-RenderBuilding:
@@ -733,6 +737,7 @@ GUN:
 	Armament:
 		Weapon: TurretGun
 	AttackTurreted:
+	WithMuzzleFlash:
 	AutoTarget:
 	IronCurtainable:
 	-RenderBuilding:

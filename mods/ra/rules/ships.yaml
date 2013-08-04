@@ -174,12 +174,16 @@ CA:
 		Recoil: 171
 		RecoilRecovery: 34
 	Armament@SECONDARY:
+		Name: secondary
 		Turret: secondary
 		Weapon: 8Inch
 		LocalOffset: 213,-171,0, 213,171,0
 		Recoil: 171
 		RecoilRecovery: 34
 	AttackTurreted:
+	WithMuzzleFlash@PRIMARY:
+	WithMuzzleFlash@SECONDARY:
+		Armament: secondary
 	Selectable:
 		Bounds: 44,44
 	RenderUnit:
@@ -253,6 +257,7 @@ PT:
 	Armament@SECONDARY:
 		Weapon: DepthCharge
 	AttackTurreted:
+	WithMuzzleFlash@PRIMARY:
 	Selectable:
 		Bounds: 32,32
 	RenderUnit:

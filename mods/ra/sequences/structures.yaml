@@ -263,6 +263,9 @@ gun:
 	damaged-recoil:
 		Start: 96
 		Facings: 32
+	muzzle: gunfire2
+		Start: 0
+		Length: 5
 
 agun:
 	idle:
@@ -280,6 +283,9 @@ agun:
 	damaged-recoil:
 		Start: 96
 		Facings: 32
+	muzzle: gunfire2
+		Start: 1
+		Length: 4
 
 sam:
 	idle:
