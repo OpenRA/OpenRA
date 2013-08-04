@@ -39,14 +39,15 @@ namespace OpenRA.FileFormats
 					default: s.Push(int.Parse(t)); break;
 				}
 			}
+
 			return s.Pop();
 		}
 
-		static void ApplyBinop( Stack<int> s, Func<int,int,int> f )
+		static void ApplyBinop(Stack<int> s, Func<int, int, int> f)
 		{
 			var x = s.Pop();
 			var y = s.Pop();
-			s.Push( f(x,y) );
+			s.Push(f(x, y));
 		}
 
 		static IEnumerable<string> ToPostfix(IEnumerable<string> toks, Dictionary<string, int> syms)
