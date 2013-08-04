@@ -327,7 +327,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var classNames = new Dictionary<string,string>()
 				{
 					{"none", "MCV Only"},
-					{"default", "Light Support"},
+					{"light", "Light Support"},
 					{"heavy", "Heavy Support"},
 				};
 

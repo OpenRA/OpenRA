@@ -107,7 +107,7 @@ ServerTraits:
 LobbyDefaults:
 	AllowCheats: false
 	Crates: true
-	StartingUnitsClass: default
+	StartingUnitsClass: none
 	FragileAlliances: false
 	Shroud: false
 	Fog: true
