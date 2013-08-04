@@ -5,6 +5,8 @@
 		Footprint: xxx xxx
 		Dimensions: 3,2
 		Adjacent: 4
+	Bib:
+		Sprite: bib3x
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 1000
@@ -51,6 +53,8 @@
 		Power: 100
 		Footprint: xx xx
 		Dimensions: 2,2
+	Bib:
+		Sprite: bib2x
 	Health:
 		HP: 400
 	Armor:
@@ -78,6 +82,8 @@
 		Power: -20
 		Footprint: =x xx
 		Dimensions: 2,2
+	Bib:
+		Sprite: bib2x
 	Health:
 		HP: 800
 	Armor:
@@ -119,6 +125,8 @@
 		Power: -30
 		Footprint: xxx x==
 		Dimensions: 3,2
+	Bib:
+		Sprite: bib3x
 	Health:
 		HP: 900
 	Armor:
@@ -173,7 +181,6 @@
 		PipCount: 5
 		Capacity: 2000
 	-EmitInfantryOnSell:
-	-Bib:
 
 ^LIGHT:
 	Inherits: ^Building
@@ -193,6 +200,8 @@
 		Power: -20
 		Footprint: xxx xx=
 		Dimensions: 3,2
+	Bib:
+		Sprite: bib3x
 	Health:
 		HP: 750
 	Armor:
@@ -230,6 +239,8 @@
 		Power: -30
 		Footprint: _x_ xxx =xx
 		Dimensions: 3,3
+	Bib:
+		Sprite: bib3x
 	Health:
 		HP: 1500
 	Armor:
@@ -269,6 +280,8 @@
 		Power: -40
 		Footprint: xxx xxx
 		Dimensions: 3,2
+	Bib:
+		Sprite: bib3x
 	Health:
 		HP: 1000
 	Armor:
@@ -298,6 +311,8 @@
 		Power: -40
 		Footprint: xxx x=x =x=
 		Dimensions: 3,3
+	Bib:
+		Sprite: bib3x
 	Health:
 		HP: 1000
 	Armor:
@@ -420,7 +435,6 @@ GUNTOWER:
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 5
-	-Bib:
 
 GUNTOWER.Husk:
 	Inherits: ^TowerHusk
@@ -479,7 +493,6 @@ ROCKETTOWER:
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 6
-	-Bib:
 
 ROCKETTOWER.Husk:
 	Inherits: ^TowerHusk
@@ -520,7 +533,6 @@ REPAIR:
 		ValuePercentage: 50
 	RallyPoint:
 		RallyPoint: 1,3
-	-Bib:
 
 ^HIGHTECH:
 	Inherits: ^Building
@@ -540,6 +552,8 @@ REPAIR:
 		Power: -40
 		Footprint: _x_ xxx xxx
 		Dimensions: 3,3
+	Bib:
+		Sprite: bib3x
 	Health:
 		HP: 1500
 	Armor:
@@ -580,6 +594,8 @@ RESEARCH:
 		Power: -40
 		Footprint: xxx xxx
 		Dimensions: 3,2
+	Bib:
+		Sprite: bib3x
 	Health:
 		HP: 1000
 	Armor:
@@ -607,6 +623,8 @@ RESEARCH:
 		Power: -50
 		Footprint: _x_ xxx =xx
 		Dimensions: 3,3
+	Bib:
+		Sprite: bib3x
 	Health:
 		HP: 2000
 	Armor:
@@ -628,6 +646,8 @@ SIETCH:
 		Footprint: xx xx
 		Dimensions: 2,2
 		TerrainTypes: Cliff
+	Bib:
+		Sprite: bib2x
 	Health:
 		HP: 400
 	Armor:
@@ -652,6 +672,8 @@ PALACEC:
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 3,2
+	Bib:
+		Sprite: bib3x
 	RenderBuilding:
 		HasMakeAnimation: false
 

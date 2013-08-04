@@ -230,7 +230,6 @@
 	Sellable:
 	GivesBounty:
 	DebugMuzzlePositions:
-	Bib:
 	Guardable:
 		Range: 3
 	BodyOrientation:

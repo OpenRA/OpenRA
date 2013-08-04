@@ -355,9 +355,6 @@ World:
 		Name: Ordos
 		Race: ordos
 	BibLayer:
-		BibTypes: bib3x, bib2x
-		BibWidths: 3, 2
-		FrozenUnderFog: true
 	DomainIndex:
 	ResourceLayer:
 	ResourceClaimLayer:

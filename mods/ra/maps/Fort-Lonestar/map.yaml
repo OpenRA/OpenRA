@@ -521,6 +521,7 @@ Rules:
 		Armor:
 			Type: Wood
 		Bib:
+			Sprite: bib3
 		RevealsShroud:
 			Range: 3
 		Capturable:

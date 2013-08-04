@@ -20,72 +20,40 @@ namespace OpenRA.Mods.RA.Buildings
 {
 	class BibLayerInfo : ITraitInfo
 	{
-		public readonly string[] BibTypes = { "bib3", "bib2", "bib1" };
-		public readonly int[] BibWidths = { 2, 3, 4 };
-		public readonly bool FrozenUnderFog = false;
-		public object Create(ActorInitializer init) { return new BibLayer(init.self, this); }
+		public object Create(ActorInitializer init) { return new BibLayer(init.self); }
 	}
 
 	struct CachedBib
 	{
-		public Dictionary<CPos, TileReference<byte, byte>> Tiles;
+		public Dictionary<CPos, Sprite> Tiles;
 		public IEnumerable<CPos> Footprint;
 		public bool Visible;
+		public bool Immediate;
 	}
 
-	class BibLayer : IRenderOverlay, IWorldLoaded, ITickRender
+	class BibLayer : IRenderOverlay, ITickRender
 	{
 		World world;
-		BibLayerInfo info;
 		Dictionary<Actor, CachedBib> visible;
 		Dictionary<Actor, CachedBib> dirty;
-		Sprite[][] bibSprites;
+		Cache<string, Sprite[]> sprites;
 
-		public BibLayer(Actor self, BibLayerInfo info)
+		public BibLayer(Actor self)
 		{
-			this.info = info;
-			bibSprites = info.BibTypes.Select(x => Game.modData.SpriteLoader.LoadAllSprites(x)).ToArray();
-
-			self.World.ActorAdded += a => DoBib(a, true);
-			self.World.ActorRemoved += a => DoBib(a, false);
-		}
-
-		public void WorldLoaded(World w)
-		{
-			world = w;
+			world = self.World;
 			visible = new Dictionary<Actor, CachedBib>();
 			dirty = new Dictionary<Actor, CachedBib>();
+			sprites = new Cache<string, Sprite[]>(x => Game.modData.SpriteLoader.LoadAllSprites(x));
 		}
 
-		public void DoBib(Actor b, bool isAdd)
+		public void Update(Actor a, CachedBib bib)
 		{
-			if (!b.HasTrait<Bib>())
-				return;
+			dirty[a] = bib;
+		}
 
-			var buildingInfo = b.Info.Traits.Get<BuildingInfo>();
-			var size = buildingInfo.Dimensions.X;
-			var bibOffset = buildingInfo.Dimensions.Y - 1;
-
-			var bib = Array.IndexOf(info.BibWidths, size);
-			if (bib < 0)
-			{
-				Log.Write("debug", "Cannot bib {0}-wide building {1}", size, b.Info.Name);
-				return;
-			}
-
-			dirty[b] = new CachedBib()
-			{
-				Footprint = FootprintUtils.Tiles(b),
-				Tiles = new Dictionary<CPos, TileReference<byte, byte>>(),
-				Visible = isAdd
-			};
-
-			for (var i = 0; i < 2 * size; i++)
-			{
-				var cell = b.Location + new CVec(i % size, i / size + bibOffset);
-				var tile = new TileReference<byte, byte>((byte)(bib + 1), (byte) i);
-				dirty[b].Tiles.Add(cell, tile);
-			}
+		public Sprite[] LoadSprites(string bibType)
+		{
+			return sprites[bibType];
 		}
 
 		public void TickRender(WorldRenderer wr, Actor self)
@@ -93,7 +61,7 @@ namespace OpenRA.Mods.RA.Buildings
 			var remove = new List<Actor>();
 			foreach (var kv in dirty)
 			{
-				if (!info.FrozenUnderFog || kv.Value.Footprint.Any(c => !self.World.FogObscures(c)))
+				if (kv.Value.Immediate || kv.Value.Footprint.Any(c => !self.World.FogObscures(c)))
 				{
 					if (kv.Value.Visible)
 						visible[kv.Key] = kv.Value;
@@ -119,16 +87,68 @@ namespace OpenRA.Mods.RA.Buildings
 				{
 					if (!cliprect.Contains(kv.Key.X, kv.Key.Y))
 						continue;
+
 					if (world.ShroudObscures(kv.Key))
 						continue;
 
-					var tile = bibSprites[kv.Value.type - 1][kv.Value.index];
-					tile.DrawAt(wr.ScreenPxPosition(kv.Key.CenterPosition) - 0.5f * tile.size, pal);
+					kv.Value.DrawAt(wr.ScreenPxPosition(kv.Key.CenterPosition) - 0.5f * kv.Value.size, pal);
 				}
 			}
 		}
 	}
 
-	public class BibInfo : TraitInfo<Bib>, Requires<BuildingInfo> { }
-	public class Bib { }
+	public class BibInfo : ITraitInfo, Requires<BuildingInfo>
+	{
+		public readonly string Sprite = "bib3";
+
+		public object Create(ActorInitializer init) { return new Bib(init.self, this); }
+	}
+
+	public class Bib : INotifyAddedToWorld, INotifyRemovedFromWorld
+	{
+		readonly BibInfo info;
+		readonly BibLayer bibLayer;
+		bool firstAdd;
+
+		public Bib(Actor self, BibInfo info)
+		{
+			this.info = info;
+			bibLayer = self.World.WorldActor.Trait<BibLayer>();
+			firstAdd = true;
+		}
+
+		void DoBib(Actor self, bool add)
+		{
+			var buildingInfo = self.Info.Traits.Get<BuildingInfo>();
+			var size = buildingInfo.Dimensions.X;
+			var bibOffset = buildingInfo.Dimensions.Y - 1;
+			var sprites = bibLayer.LoadSprites(info.Sprite);
+
+			if (sprites.Length != 2*size)
+				throw new InvalidOperationException("{0} is an invalid bib for a {1}-wide building".F(info.Sprite, size));
+
+			var immediate = !self.HasTrait<FrozenUnderFog>() ||
+				(firstAdd && self.Info.Traits.GetOrDefault<FrozenUnderFogInfo>().StartsRevealed);
+
+			var dirty = new CachedBib()
+			{
+				Footprint = FootprintUtils.Tiles(self),
+				Tiles = new Dictionary<CPos, Sprite>(),
+				Visible = add,
+				Immediate = immediate
+			};
+
+			for (var i = 0; i < 2 * size; i++)
+			{
+				var cell = self.Location + new CVec(i % size, i / size + bibOffset);
+				dirty.Tiles.Add(cell, sprites[i]);
+			}
+
+			firstAdd = false;
+			bibLayer.Update(self, dirty);
+		}
+
+		public void AddedToWorld(Actor self) { DoBib(self, true); }
+		public void RemovedFromWorld(Actor self) { DoBib(self, false); }
+	}
 }
