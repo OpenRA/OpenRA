@@ -327,7 +327,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var classNames = new Dictionary<string,string>()
 				{
 					{"none", "MCV Only"},
-					{"default", "Light Support"},
+					{"light", "Light Support"},
 					{"heavy", "Heavy Support"},
 				};
 
@@ -359,6 +359,24 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 
 				optionsBin.Get<LabelWidget>("STARTINGUNITS_DESC").IsVisible = startingUnits.IsVisible;
 			}
+
+			var enableShroud = optionsBin.GetOrNull<CheckboxWidget>("SHROUD_CHECKBOX");
+			if (enableShroud != null)
+			{
+				enableShroud.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.Shroud;
+				enableShroud.IsDisabled = configurationDisabled;
+				enableShroud.OnClick = () => orderManager.IssueOrder(Order.Command(
+					"shroud {0}".F(!orderManager.LobbyInfo.GlobalSettings.Shroud)));
+			};
+
+			var enableFog = optionsBin.GetOrNull<CheckboxWidget>("FOG_CHECKBOX");
+			if (enableFog != null)
+			{
+				enableFog.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.Fog;
+				enableFog.IsDisabled = configurationDisabled;
+				enableFog.OnClick = () => orderManager.IssueOrder(Order.Command(
+					"fog {0}".F(!orderManager.LobbyInfo.GlobalSettings.Fog)));
+			};
 
 			var disconnectButton = lobby.Get<ButtonWidget>("DISCONNECT_BUTTON");
 			disconnectButton.OnClick = () => { CloseWindow(); onExit(); };

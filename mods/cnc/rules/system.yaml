@@ -264,6 +264,9 @@ World:
 	ShroudPalette@fog:
 		Name: fog
 		Type: Fog
+	ShroudPalette@combined:
+		Name: shroudfog
+		Type: Combined
 	Country@gdi:
 		Name: GDI
 		Race: gdi
@@ -273,7 +276,6 @@ World:
 	ProductionQueueFromSelection:
 		ProductionTabsWidget: PRODUCTION_TABS
 	BibLayer:
-		FrozenUnderFog: true
 	DomainIndex:
 	ResourceLayer:
 	ResourceClaimLayer:
@@ -315,22 +317,27 @@ World:
 		Races: gdi, nod
 		BaseActor: mcv
 	MPStartUnits@defaultgdia:
+		Class: light
 		Races: gdi
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e1,e3,e3,jeep
 	MPStartUnits@defaultgdib:
+		Class: light
 		Races: gdi
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e1,e1,e3,apc
 	MPStartUnits@defaultnoda:
+		Class: light
 		Races: nod
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e3,bggy,bike
 	MPStartUnits@defaultnodb:
+		Class: light
 		Races: nod
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e3,e3,e3,bggy
 	MPStartUnits@defaultnodc:
+		Class: light
 		Races: nod
 		BaseActor: mcv
 		SupportActors: e1,e1,e1,e1,e1,e1,e1,e3,bike

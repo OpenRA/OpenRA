@@ -324,7 +324,6 @@
 	-DeadBuildingState:
 	-Buildable:
 	-GivesBuildableArea:
-	-FrozenUnderFog:
 	Health:
 		HP: 400
 	Armor: 
@@ -337,6 +336,8 @@
 	-Sellable:
 	Tooltip:
 		Name: Civilian Building
+	FrozenUnderFog:
+		StartsRevealed: true
 
 ^CivBuildingHusk:
 	AppearsOnRadar:
@@ -349,6 +350,8 @@
 	Tooltip:
 		Name: Civilian Building (Destroyed)
 	BodyOrientation:
+	FrozenUnderFog:
+		StartsRevealed: true
 
 ^TechBuilding:
 	Inherits: ^CivBuilding
@@ -379,6 +382,10 @@
 		Name: Field (Destroyed)
 	BelowUnits:
 	BodyOrientation:
+	RenderBuilding:
+		Palette: terrain
+	FrozenUnderFog:
+		StartsRevealed: true
 
 ^Wall:
 	AppearsOnRadar:
@@ -408,6 +415,7 @@
 	Sellable:
 	Guardable:
 	BodyOrientation:
+	FrozenUnderFog:
 
 ^Tree:
 	Tooltip:
@@ -429,6 +437,8 @@
 		Type: Wood
 	AutoTargetIgnore:
 	BodyOrientation:
+	FrozenUnderFog:
+		StartsRevealed: true
 
 ^Rock:
 	Tooltip:
@@ -444,6 +454,8 @@
 	EditorAppearance:
 		RelativeToTopLeft: yes
 	BodyOrientation:
+	FrozenUnderFog:
+		StartsRevealed: true
 
 ^Husk:
 	Health:

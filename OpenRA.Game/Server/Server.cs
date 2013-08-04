@@ -106,6 +106,7 @@ namespace OpenRA.Server
 			lobbyInfo.GlobalSettings.Map = settings.Map;
 			lobbyInfo.GlobalSettings.ServerName = settings.Name;
 			lobbyInfo.GlobalSettings.Dedicated = settings.Dedicated;
+			FieldLoader.Load(lobbyInfo.GlobalSettings, modData.Manifest.LobbyDefaults);
 
 			foreach (var t in ServerTraits.WithInterface<INotifyServerStart>())
 				t.ServerStarted(this);
@@ -526,7 +527,10 @@ namespace OpenRA.Server
 				DispatchOrders(toDrop, toDrop.MostRecentFrame, new byte[] {0xbf});
 
 				if (!conns.Any())
+				{
+					FieldLoader.Load(lobbyInfo.GlobalSettings, ModData.Manifest.LobbyDefaults);
 					TempBans.Clear();
+				}
 
 				if (conns.Any() || lobbyInfo.GlobalSettings.Dedicated)
 					SyncLobbyInfo();

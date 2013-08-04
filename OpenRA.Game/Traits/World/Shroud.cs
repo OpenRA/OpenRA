@@ -18,14 +18,11 @@ namespace OpenRA.Traits
 {
 	public class ShroudInfo : ITraitInfo
 	{
-		public readonly bool Shroud = true;
-		public readonly bool Fog = true;
-		public object Create(ActorInitializer init) { return new Shroud(init.self, this); }
+		public object Create(ActorInitializer init) { return new Shroud(init.self); }
 	}
 
 	public class Shroud
 	{
-		public ShroudInfo Info;
 		Actor self;
 		Map map;
 
@@ -42,9 +39,8 @@ namespace OpenRA.Traits
 
 		public int Hash { get; private set; }
 
-		public Shroud(Actor self, ShroudInfo info)
+		public Shroud(Actor self)
 		{
-			Info = info;
 			this.self = self;
 			map = self.World.Map;
 
@@ -58,7 +54,7 @@ namespace OpenRA.Traits
 			self.World.ActorAdded += AddShroudGeneration;
 			self.World.ActorRemoved += RemoveShroudGeneration;
 
-			if (!info.Shroud)
+			if (!self.World.LobbyInfo.GlobalSettings.Shroud)
 				ExploredBounds = map.Bounds;
 		}
 
@@ -252,7 +248,7 @@ namespace OpenRA.Traits
 			if (!map.IsInMap(x, y))
 				return false;
 
-			if (!Info.Shroud)
+			if (!self.World.LobbyInfo.GlobalSettings.Shroud)
 				return true;
 
 			return explored[x, y] && (generatedShroudCount[x, y] == 0 || visibleCount[x, y] > 0);
@@ -271,7 +267,7 @@ namespace OpenRA.Traits
 			if (x < 0 || x >= map.MapSize.X || y < 0 || y >= map.MapSize.Y)
 				return false;
 
-			if (!Info.Fog)
+			if (!self.World.LobbyInfo.GlobalSettings.Fog)
 				return true;
 
 			return visibleCount[x, y] > 0;
