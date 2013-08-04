@@ -115,7 +115,14 @@ namespace OpenRA.Renderer.SdlCommon
 							MultiTapCount = MultiTapDetection.DetectFromKeyboard(keyName)
 						};
 
-						inputHandler.OnKeyInput(keyEvent);
+						// Special case workaround for windows users
+						if (e.key.keysym.sym == Sdl.SDLK_F4 && mods.HasModifier(Modifiers.Alt) &&
+						    Platform.CurrentPlatform == PlatformType.Windows)
+						{
+							OpenRA.Game.Exit();
+						}
+						else
+							inputHandler.OnKeyInput(keyEvent);
 
 						break;
 					}
