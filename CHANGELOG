@@ -1,5 +1,9 @@
 NEW:
 	All mods:
+		Overhauled Fog of War to freeze the state of resource, smudge, and structures.
+		Overhauled weapon projectile physics and rendering.
+		Added starting units configuration to the lobby (MCV only, light support, heavy support).
+		Added lobby options for disabling shroud and fog of war.
 		Added an ingame credits menu.
 		Added descriptive error messages when connecting to a server fails.
 		Added guard ability to combat units ('d').
@@ -23,15 +27,22 @@ NEW:
 		Fixed units chasing a chronoshifted unit across the map.
 		Fixed units not being able to attack buildings from some angles.
 		Fixed infantry not being able to attack units from some angles.
+		Unified the music player between C&C and RA/D2K.
+		Unified tooltip behavior between C&C and RA/D2K.
 		Removed some developer-specific options from the settings menu.
 	Red Alert:
 		Added external capturing for engineers (like C&C Generals).
 		Added collection animation for parabomb crate.
+		Added public countdown timers to A-bomb and GPS.
 		Fixed artwork glitches in several units and buildings.
 		Fixed incorrect player color on captured oil derricks on some maps.
 		Fixed support powers being available after winning a game.
 		Fixed sniper damage vs walls.
 		Fixed destroyable ore mines.
+		Fixed chronotank teleport sound.
+		Improved chronoshift interaction with vehicle husks.
+		Added build limit to iron curtain and chronosphere.
+		Removed bibs from iron curtain and chronosphere.
 		Improved dog attack behavior.
 		Tweaked some weapon explosions.
 		Sniper health reduced.
@@ -52,7 +63,8 @@ NEW:
 		Removed maps: Hotzone, Mjolnir-2, Seaside.
 		Disabled bots on several maps where they don't work well.
 	C&C:
-		Added starting units configuration to the lobby (MCV only, light support, heavy support).
+		Fixed Nod01 mission.
+		Fixed mouse cursor colors.
 		Restored "classic" multi-engineer behavior. Buildings above 50% health will be damaged by 50%; buildings below this will be captured.
 		Added some texture to the UI background.
 		Fixed veterancy chevrons on cloaked units.
@@ -78,10 +90,12 @@ NEW:
 		Fixed a crash with server hosting under Windows.
 		Significant improvements to pathfinder performance when ordering units to areas they cannot reach.
 		Reduced order lag for singleplayer games.
+		Added audio device configuration.
 		Added support for TS/RA2 mix files.
 		Added support for TS/RA2 SHP images.
 		Added support for TS/RA2 voxel models.
 		Added support for D2K RS archives.
+		Added support for D2K R8 images.
 		Added support for WAV audio files.
 		Added support for XCC mix databases.
 		Added support for the D2K InstallShield archive.
@@ -90,13 +104,14 @@ NEW:
 		Added additional debug information when yaml merging fails.
 		Added additional customization options for laser weapons.
 		Added additional logging for server errors.
-		Additional refactoring working towards TS/RA2 terrain support.
+		Significant additional work towards TS/RA2 terrain support.
 	Build system and packages:
 		Host windows OpenAL and SDL dependencies on our own servers to avoid excessive downtime.
 	Map Editor and Tools:
 		Added an ingame asset viewer / converter to D2K and RA (enable via the Debug tab in the settings menu).
 		Added EditorConfig definitions for editors that support it.
 		Added StyleCop definitions for editors that support it.
+
 20130514:
 	All mods:
 		Destroyed bridges can now be repaired with an engineer.
