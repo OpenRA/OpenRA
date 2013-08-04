@@ -10,6 +10,9 @@ ca:
 	turret: turr
 		Start: 0
 		Facings: 32
+	muzzle: gunfire2
+		Start: 0
+		Length: 5
 
 dd:
 	idle:
@@ -26,6 +29,9 @@ pt:
 	turret: mgun
 		Start: 0
 		Facings: 32
+	muzzle: gunfire2
+		Start: 0
+		Length: 5
 
 lst:
 	idle:

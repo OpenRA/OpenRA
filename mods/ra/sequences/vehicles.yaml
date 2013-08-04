@@ -75,6 +75,9 @@ hhusk2:
 	turret:
 		Start: 32
 		Facings: 32
+	muzzle: gunfire2
+		Start: 0
+		Length: 2
 
 2tnk:
 	idle:
@@ -83,6 +86,9 @@ hhusk2:
 	turret:
 		Start: 32
 		Facings: 32
+	muzzle: gunfire2
+		Start: 0
+		Length: 5
 
 3tnk:
 	idle:
@@ -91,6 +97,9 @@ hhusk2:
 	turret:
 		Start: 32
 		Facings: 32
+	muzzle: gunfire2
+		Start: 0
+		Length: 5
 
 4tnk:
 	idle:
@@ -99,6 +108,9 @@ hhusk2:
 	turret:
 		Start: 32
 		Facings: 32
+	muzzle: gunfire2
+		Start: 0
+		Length: 5
 
 v2rl:
 	idle:
@@ -118,6 +130,9 @@ arty:
 	idle:
 		Start: 0
 		Facings: 32
+	muzzle: gunfire2
+		Start: 0
+		Length: 5
 
 jeep:
 	idle:
@@ -187,6 +202,9 @@ ftrk:
 	turret:
 		Start: 32
 		Facings: 32
+	muzzle: gunfire2
+		Start: 0
+		Length: 2
 
 dtrk:
 	idle:
@@ -197,3 +215,6 @@ ctnk:
 	idle:
 		Start: 0
 		Facings: 32
+	muzzle: gunfire2
+		Start: 0
+		Length: 5

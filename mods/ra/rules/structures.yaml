@@ -335,9 +335,15 @@ AGUN:
 	RenderBuildingTurreted:
 	Armament@PRIMARY:
 		Weapon: ZSU-23
+		LocalOffset: 432,80,-30
 	Armament@SECONDARY:
+		Name: secondary
 		Weapon: ZSU-23
+		LocalOffset: 432,-80,-30
 	AttackTurreted:
+	WithMuzzleFlash@PRIMARY:
+	WithMuzzleFlash@SECONDARY:
+		Armament: secondary
 	AutoTarget:
 	IronCurtainable:
 	-RenderBuilding:
@@ -398,7 +404,7 @@ PBOX:
 	-AcceptsSupplies:
 	Turreted:
 		ROT: 255
-	RenderBuilding:
+	BodyOrientation:
 		QuantizedFacings: 8
 	Cargo:
 		Types: Infantry
@@ -461,7 +467,7 @@ PBOX.E1:
 	AutoTarget:
 	Armament:
 		Weapon: Vulcan
-		LocalOffset: 469,0,0
+		LocalOffset: 384,0,88
 	AttackTurreted:
 	WithMuzzleFlash:
 	Cargo:
@@ -484,7 +490,7 @@ PBOX.E3:
 	AutoTarget:
 	Armament:
 		Weapon: Dragon
-		LocalOffset: 469,0,0
+		LocalOffset: 384,0,88
 	AttackTurreted:
 
 PBOX.E4:
@@ -497,7 +503,7 @@ PBOX.E4:
 	AutoTarget:
 	Armament:
 		Weapon: Flamer
-		LocalOffset: 469,0,0
+		LocalOffset: 384,0,88
 	AttackTurreted:
 
 PBOX.E7:
@@ -510,7 +516,7 @@ PBOX.E7:
 	AutoTarget:
 	Armament:
 		Weapon: Colt45
-		LocalOffset: 469,0,0
+		LocalOffset: 384,0,88
 	AttackTurreted:
 
 PBOX.SHOK:
@@ -523,7 +529,7 @@ PBOX.SHOK:
 	AutoTarget:
 	Armament:
 		Weapon: PortaTesla
-		LocalOffset: 469,0,0
+		LocalOffset: 384,0,88
 	AttackTurreted:
 
 PBOX.SNIPER:
@@ -536,7 +542,7 @@ PBOX.SNIPER:
 	AutoTarget:
 	Armament:
 		Weapon: Sniper
-		LocalOffset: 469,0,0
+		LocalOffset: 384,0,88
 	AttackTurreted:
 
 HBOX:
@@ -563,7 +569,7 @@ HBOX:
 	-AcceptsSupplies:
 	Turreted:
 		ROT: 255
-	RenderBuilding:
+	BodyOrientation:
 		QuantizedFacings: 8
 	Cargo:
 		Types: Infantry
@@ -626,7 +632,7 @@ HBOX.E1:
 	AutoTarget:
 	Armament:
 		Weapon: Vulcan
-		LocalOffset: 469,0,0
+		LocalOffset: 400,0,48
 	AttackTurreted:
 	WithMuzzleFlash:
 	Cargo:
@@ -649,7 +655,7 @@ HBOX.E3:
 	AutoTarget:
 	Armament:
 		Weapon: Dragon
-		LocalOffset: 469,0,0
+		LocalOffset: 400,0,48
 	AttackTurreted:
 
 HBOX.E4:
@@ -662,7 +668,7 @@ HBOX.E4:
 	AutoTarget:
 	Armament:
 		Weapon: Flamer
-		LocalOffset: 469,0,0
+		LocalOffset: 400,0,48
 	AttackTurreted:
 
 HBOX.E7:
@@ -675,7 +681,7 @@ HBOX.E7:
 	AutoTarget:
 	Armament:
 		Weapon: Colt45
-		LocalOffset: 469,0,0
+		LocalOffset: 400,0,48
 	AttackTurreted:
 
 HBOX.SHOK:
@@ -688,7 +694,7 @@ HBOX.SHOK:
 	AutoTarget:
 	Armament:
 		Weapon: PortaTesla
-		LocalOffset: 469,0,0
+		LocalOffset: 400,0,48
 	AttackTurreted:
 
 HBOX.SNIPER:
@@ -701,7 +707,7 @@ HBOX.SNIPER:
 	AutoTarget:
 	Armament:
 		Weapon: Sniper
-		LocalOffset: 469,0,0
+		LocalOffset: 400,0,48
 	AttackTurreted:
 
 GUN:
@@ -732,7 +738,9 @@ GUN:
 	RenderBuildingTurreted:
 	Armament:
 		Weapon: TurretGun
+		LocalOffset: 512,0,112
 	AttackTurreted:
+	WithMuzzleFlash:
 	AutoTarget:
 	IronCurtainable:
 	-RenderBuilding:
@@ -764,12 +772,12 @@ FTUR:
 		Range: 6
 	Turreted:
 		ROT: 255
-		Offset: 0,0,85
+		Offset: 0,0,112
 	Armament:
 		Weapon: FireballLauncher
 		LocalOffset: 512,0,0
 	AttackTurreted:
-	RenderBuilding:
+	BodyOrientation:
 		QuantizedFacings: 8
 	AutoTarget:
 	IronCurtainable:

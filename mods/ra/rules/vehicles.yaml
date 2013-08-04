@@ -54,7 +54,9 @@ V2RL:
 		Weapon: 25mm
 		Recoil: 85
 		RecoilRecovery: 25
+		LocalOffset: 768,0,90
 	AttackTurreted:
+	WithMuzzleFlash:
 	RenderUnit:
 	WithTurret:
 	AutoTarget:
@@ -92,7 +94,9 @@ V2RL:
 		Weapon: 90mm
 		Recoil: 128
 		RecoilRecovery: 38
+		LocalOffset: 720,0,80
 	AttackTurreted:
+	WithMuzzleFlash:
 	RenderUnit:
 	WithTurret:
 	AutoTarget:
@@ -132,8 +136,9 @@ V2RL:
 		Weapon: 105mm
 		Recoil: 128
 		RecoilRecovery: 38
-		LocalOffset: 0,85,0, 0,-85,0
+		LocalOffset: 768,85,90, 768,-85,90
 	AttackTurreted:
+	WithMuzzleFlash:
 	RenderUnit:
 	WithTurret:
 	AutoTarget:
@@ -173,15 +178,17 @@ V2RL:
 		ROT: 2
 	Armament@PRIMARY:
 		Weapon: 120mm
-		LocalOffset: 800,180,340, 800,-180,340
+		LocalOffset: 900,180,340, 900,-180,340
 		Recoil: 171
 		RecoilRecovery: 30
 	Armament@SECONDARY:
+		Name: secondary
 		Weapon: MammothTusk
 		LocalOffset: -85,384,340, -85,-384,340
 		LocalYaw: -100,100
 		Recoil: 43
 	AttackTurreted:
+	WithMuzzleFlash@PRIMARY:
 	RenderUnit:
 	WithTurret:
 	AutoTarget:
@@ -222,7 +229,9 @@ ARTY:
 		Range: 5
 	Armament:
 		Weapon: 155mm
+		LocalOffset: 624,0,208
 	AttackFrontal:
+	WithMuzzleFlash:
 	RenderUnit:
 	Explodes:
 		Weapon: UnitExplode
@@ -674,7 +683,9 @@ FTRK:
 	Armament:
 		Weapon: FLAK-23
 		Recoil: 85
+		LocalOffset: 512,0,192
 	AttackTurreted:
+	WithMuzzleFlash:
 	RenderUnit:
 	WithTurret:
 	AutoTarget:

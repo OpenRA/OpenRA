@@ -79,6 +79,7 @@ MSUB:
 		UncloakSound: subshow1.aud
 	Armament:
 		Weapon: SubMissile
+		LocalOffset: 0,-171,0, 0,171,0
 		FireDelay: 2
 	AttackFrontal:
 	Selectable:
@@ -118,11 +119,11 @@ DD:
 		Offset: 341,0,128
 	Armament@PRIMARY:
 		Weapon: Stinger
-		LocalOffset: 0,-171,0, 0,171,0
-		LocalYaw: 80, -80
+		LocalOffset: 0,-100,0, 0,100,0
+		LocalYaw: 64, -64
 	Armament@SECONDARY:
 		Weapon: DepthCharge
-		LocalOffset: 0,-171,0, 0,171,0
+		LocalOffset: 0,-100,0, 0,100,0
 		LocalYaw: 80, -80
 	AttackTurreted:
 	Selectable:
@@ -161,25 +162,29 @@ CA:
 		Range: 7
 	Turreted@PRIMARY:
 		Turret: primary
-		Offset: -725,0,85
+		Offset: -864,0,128
 		ROT: 3
 	Turreted@SECONDARY:
 		Turret: secondary
-		Offset: 725,0,85
+		Offset: 768,0,128
 		ROT: 3
 	Armament@PRIMARY:
 		Turret: primary
 		Weapon: 8Inch
-		LocalOffset: 213,-171,0, 213,171,0
+		LocalOffset: 480,-100,40, 480,100,40
 		Recoil: 171
 		RecoilRecovery: 34
 	Armament@SECONDARY:
+		Name: secondary
 		Turret: secondary
 		Weapon: 8Inch
-		LocalOffset: 213,-171,0, 213,171,0
+		LocalOffset: 480,-100,40, 480,100,40
 		Recoil: 171
 		RecoilRecovery: 34
 	AttackTurreted:
+	WithMuzzleFlash@PRIMARY:
+	WithMuzzleFlash@SECONDARY:
+		Armament: secondary
 	Selectable:
 		Bounds: 44,44
 	RenderUnit:
@@ -247,12 +252,15 @@ PT:
 		Range: 7
 	Turreted:
 		ROT: 7
-		Offset: 256,0,43
+		Offset: 512,0,0
 	Armament@PRIMARY:
 		Weapon: 2Inch
+		LocalOffset: 208,0,48
 	Armament@SECONDARY:
+		Name: secondary
 		Weapon: DepthCharge
 	AttackTurreted:
+	WithMuzzleFlash@PRIMARY:
 	Selectable:
 		Bounds: 32,32
 	RenderUnit:
