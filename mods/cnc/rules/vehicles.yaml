@@ -183,7 +183,7 @@ FTNK:
 		Range: 5
 	Armament:
 		Weapon: BigFlamer
-		LocalOffset: 213,213,-85, 213,-213,-85
+		LocalOffset: 512,128,42, 512,-128,42
 	AttackFrontal:
 	RenderUnit:
 	AutoTarget:

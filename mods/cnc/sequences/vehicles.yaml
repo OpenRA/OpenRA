@@ -125,10 +125,10 @@ ftnk:
 	idle:
 		Start: 0
 		Facings: 32
-	muzzle: flame
+	muzzle: flame2
 		Start: 0
 		Length: 13
-		Facings: 8
+		Facings: -8
 
 mhq:
 	idle:
