@@ -279,8 +279,8 @@ BikeRockets:
 
 OrcaAGMissiles:
 	ROF: 15
-	Burst: 1
-	BurstDelay: 0
+	Burst: 2
+	BurstDelay: 15
 	Range: 5
 	Report: BAZOOK1.AUD
 	ValidTargets: Ground
@@ -310,8 +310,8 @@ OrcaAGMissiles:
 
 OrcaAAMissiles:
 	ROF: 15
-	Burst: 1
-	BurstDelay: 0
+	Burst: 2
+	BurstDelay: 15
 	Range: 5
 	Report: BAZOOK1.AUD
 	ValidTargets: Air
