@@ -27,10 +27,10 @@ hind:
 	idle:
 		Start: 0
 		Facings: 32
-	rotor: lrotor
+	rotor: lrotorlg
 		Start: 0
 		Length: 4
-	slow-rotor: lrotor
+	slow-rotor: lrotorlg
 		Start: 4
 		Length: 8
 	muzzle: minigun
