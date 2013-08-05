@@ -151,6 +151,7 @@ ARTY:
 		Weapon: ArtilleryShell
 		LocalOffset: 299, 0, 128
 	AttackFrontal:
+	WithMuzzleFlash:
 	RenderUnit:
 	Explodes:
 		Weapon: UnitExplode
@@ -329,6 +330,7 @@ LTNK:
 		RecoilRecovery: 17
 		LocalOffset: -128,0,85
 	AttackTurreted:
+	WithMuzzleFlash:
 	RenderUnit:
 	WithTurret:
 	AutoTarget:
@@ -366,6 +368,7 @@ MTNK:
 		RecoilRecovery: 26
 		LocalOffset: 0,0,43
 	AttackTurreted:
+	WithMuzzleFlash:
 	RenderUnit:
 	WithTurret:
 	AutoTarget:
@@ -413,6 +416,7 @@ HTNK:
 		LocalYaw: -100, 100
 		Recoil: 42
 	AttackTurreted:
+	WithMuzzleFlash@PRIMARY:
 	RenderUnit:
 	WithTurret:
 	AutoTarget:

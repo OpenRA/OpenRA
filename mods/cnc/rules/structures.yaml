@@ -536,6 +536,7 @@ GUN:
 		Weapon: TurretGun
 		LocalOffset: -71,0,85
 	AttackTurreted:
+	WithMuzzleFlash:
 	AutoTarget:
 	-RenderBuilding:
 	-DeadBuildingState:
@@ -690,6 +691,7 @@ ATWR:
 		LocalOffset: 299,299,-85, 299,-299,-85
 		LocalYaw: -100,100
 	AttackTurreted:
+	WithMuzzleFlash:
 	AutoTarget:
 	BodyOrientation:
 		QuantizedFacings: 8
