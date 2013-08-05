@@ -724,8 +724,7 @@ function CreateEditor()
       if ide.config.acandtip.nodynwords then return end
       -- only required to track changes
       if (bit.band(evtype,wxstc.wxSTC_MOD_BEFOREDELETE) ~= 0) then
-        local numlines = 0
-        event:GetText():gsub("(\r?\n)",function() numlines = numlines + 1 end)
+        local _, numlines = text:gsub("\r?\n","%1")
         DynamicWordsRem("pre",editor,nil,editor:LineFromPosition(event:GetPosition()), numlines)
       end
       if (bit.band(evtype,wxstc.wxSTC_MOD_BEFOREINSERT) ~= 0) then
