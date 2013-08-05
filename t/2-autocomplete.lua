@@ -24,7 +24,7 @@ ok(limit(10000, function() CreateAutoCompList(editor, "smth:") end),
 ok(pcall(CreateAutoCompList, editor, "%1000"),
   "Auto-complete doesn't trigger 'invalid capture index' on '%...'.")
 
-editor:SetText('') -- use Set/Add to position cursor after added text
+editor:SetText('')
 editor:AddText([[
   result = result.list[1]  --> "does the test" test
   result.1
@@ -43,6 +43,17 @@ ok(c == 1,
     :format(ac))
 
 ProjectSetInterpreter(interpreter)
+
+editor:SetText('')
+editor:AddText('print(1,io.')
+
+local value
+local ULS = editor.UserListShow
+editor.UserListShow = function(editor, pos, list) value = list end
+EditorAutoComplete(editor)
+editor.UserListShow = ULS
+
+ok(value and value:find("close"), "Auto-complete is shown after comma.")
 
 -- cleanup
 ide:GetDocument(editor).isModified = false

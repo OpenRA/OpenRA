@@ -221,7 +221,7 @@ function EditorAutoComplete(editor)
   lt = lt:gsub("%b{}","")
   lt = lt:gsub("%b[]",".0")
   -- match from starting brace
-  lt = lt:match("[^%[%(%{%s]*$")
+  lt = lt:match("[^%[%(%{%s,]*$")
 
   -- know now which string is to be completed
   local userList = CreateAutoCompList(editor,lt)
