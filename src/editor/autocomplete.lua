@@ -376,11 +376,8 @@ function DynamicWordsReset ()
 end
 
 local function getEditorLines(editor,line,numlines)
-  local tx = ""
-  for i=0,numlines do
-    tx = tx..editor:GetLine(line + i)
-  end
-  return tx
+  return editor:GetTextRange(
+    editor:PositionFromLine(line),editor:PositionFromLine(line+numlines+1))
 end
 
 function DynamicWordsAdd(ev,editor,content,line,numlines)
