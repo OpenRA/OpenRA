@@ -87,6 +87,9 @@ mtnk:
 	turret:
 		Start: 32
 		Facings: 32
+	muzzle: gunfire2
+		Start: 0
+		Length: *
 
 ltnk:
 	idle:
@@ -95,6 +98,9 @@ ltnk:
 	turret:
 		Start: 32
 		Facings: 32
+	muzzle: gunfire2
+		Start: 0
+		Length: *
 
 htnk:
 	idle:
@@ -103,6 +109,9 @@ htnk:
 	turret:
 		Start: 32
 		Facings: 32
+	muzzle: gunfire2
+		Start: 0
+		Length: *
 
 jeep:
 	idle:
@@ -125,7 +134,7 @@ ftnk:
 	idle:
 		Start: 0
 		Facings: 32
-	muzzle: flame
+	muzzle: flame2
 		Start: 0
 		Length: 13
 		Facings: 8
@@ -175,6 +184,9 @@ arty:
 	idle:
 		Start: 0
 		Facings: 32
+	muzzle: gunfire2
+		Start: 0
+		Length: *
 
 apc:
 	idle:
