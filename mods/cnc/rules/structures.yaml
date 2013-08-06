@@ -692,7 +692,6 @@ ATWR:
 		LocalOffset: 256,128,0, 256,-128,0
 		LocalYaw: -100,100
 	AttackTurreted:
-	WithMuzzleFlash:
 	AutoTarget:
 	BodyOrientation:
 		QuantizedFacings: 8
