@@ -308,29 +308,22 @@ errorlog:Connect(wxstc.wxEVT_STC_DOUBLECLICK,
   function()
     local line = errorlog:GetCurrentLine()
     local linetx = errorlog:GetLine(line)
-    -- try to detect a filename + line
-    -- in linetx
 
-    local fname
-    local jumpline
-    local jumplinepos
-
+    -- try to detect a filename and line in linetx
+    local fname, jumpline, jumplinepos
     for _,pattern in ipairs(jumptopatterns) do
       fname,jumpline,jumplinepos = linetx:match(pattern)
-      if (fname and jumpline) then
-        break
-      end
+      if (fname and jumpline) then break end
     end
 
     if (fname and jumpline) then
-      LoadFile(fname,nil,true)
-      local editor = GetEditor()
+      local editor = LoadFile(MergeFullPath(FileTreeGetDir(), fname) or fname,nil,true)
       if (editor) then
         jumpline = tonumber(jumpline)
         jumplinepos = tonumber(jumplinepos)
 
-        --editor:ScrollToLine(jumpline)
-        editor:GotoPos(editor:PositionFromLine(math.max(0,jumpline-1)) + (jumplinepos and (math.max(0,jumplinepos-1)) or 0))
+        editor:GotoPos(editor:PositionFromLine(math.max(0,jumpline-1))
+          + (jumplinepos and (math.max(0,jumplinepos-1)) or 0))
         editor:SetFocus()
       end
     end
