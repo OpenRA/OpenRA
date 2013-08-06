@@ -221,21 +221,6 @@ local function killClient()
   end
 end
 
-local function loadsafe(data)
-  local f, res = loadstring(data)
-  if not f then return f, res end
-
-  local count = 0
-  debug.sethook(function ()
-    count = count + 1
-    if count >= 3 then error("cannot call functions") end
-  end, "c")
-  local ok, res = pcall(f)
-  count = 0
-  debug.sethook()
-  return ok, res
-end
-
 local function activateDocument(file, line, activatehow)
   if not file then return end
 
@@ -245,7 +230,7 @@ local function activateDocument(file, line, activatehow)
   -- (for example: 'mobdebug.lua').
   local content
   if not wx.wxFileName(file):FileExists() and file:find('^"') then
-    local ok, res = loadsafe("return "..file)
+    local ok, res = LoadSafe("return "..file)
     if ok then content = res end
   end
 

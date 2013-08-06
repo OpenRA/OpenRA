@@ -228,7 +228,11 @@ function SettingsRestorePackage(package)
   local ismore, key, index = settings:GetFirstEntry("", 0)
   while (ismore) do
     local couldread, value = settings:Read(key, "")
-    if couldread then outtab[key] = value end
+    if couldread then
+      local ok, res = LoadSafe("return "..value)
+      if ok then outtab[key] = res
+      else outtab[key] = nil end
+    end
     ismore, key, index = settings:GetNextEntry(index)
   end
   settings:SetPath(path)
@@ -238,10 +242,13 @@ end
 function SettingsSavePackage(package, values)
   local packagename = "/package/"..package
   local path = settings:GetPath()
+  local mdb = require('mobdebug')
 
   settings:DeleteGroup(packagename)
   settings:SetPath(packagename)
-  for k,v in pairs(values) do settings:Write(k, v) end
+  for k,v in pairs(values or {}) do
+    settings:Write(k, mdb.line(v, {comment = false, nocode = true}))
+  end
   settings:SetPath(path)
 end
 

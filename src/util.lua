@@ -357,3 +357,18 @@ function LoadLuaFileExt(tab, file, proto)
     end
   end
 end
+
+function LoadSafe(data)
+  local f, res = loadstring(data)
+  if not f then return f, res end
+
+  local count = 0
+  debug.sethook(function ()
+    count = count + 1
+    if count >= 3 then error("cannot call functions") end
+  end, "c")
+  local ok, res = pcall(f)
+  count = 0
+  debug.sethook()
+  return ok, res
+end
