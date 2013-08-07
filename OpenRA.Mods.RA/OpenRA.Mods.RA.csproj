@@ -75,6 +75,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\thirdparty\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
+    <Reference Include="Mono.Nat">
+      <HintPath>..\thirdparty\Mono.Nat.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\LegacyCaptureActor.cs" />
