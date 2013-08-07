@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (IsCanceled || !target.IsValid || target.Actor.Owner == self.Owner)
+			if (IsCanceled || target.Type != TargetType.Actor || target.Actor.Owner == self.Owner)
 				return NextActivity;
 
 			foreach (var t in target.Actor.TraitsImplementing<IAcceptInfiltrator>())

@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (!target.IsValid)
+			if (target.Type != TargetType.Actor)
 				return NextActivity;
 
 			var capturable = target.Actor.Trait<Capturable>();

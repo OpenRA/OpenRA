@@ -151,12 +151,10 @@ namespace OpenRA.GameRules
 
 		public bool IsValidAgainst(Target target, World world)
 		{
-			if (!target.IsValid)
-				return false;
-
-			if (target.IsActor)
+			if (target.Type == TargetType.Actor)
 				return IsValidAgainst(target.Actor);
-			else
+
+			if (target.Type == TargetType.Terrain)
 			{
 				var cell = target.CenterPosition.ToCPos();
 				if (ValidTargets.Contains("Ground") && world.GetTerrainType(cell) != "Water")
@@ -167,6 +165,8 @@ namespace OpenRA.GameRules
 
 				return false;
 			}
+
+			return false;
 		}
 	}
 }

@@ -109,8 +109,10 @@ namespace OpenRA.Traits
 
 			self.World.AddFrameEndTask(w =>
 			{
-				if (self.Destroyed) return;
-				if (target.IsActor && display)
+				if (self.Destroyed)
+					return;
+
+				if (target.Type == TargetType.Actor && display)
 					w.Add(new FlashTarget(target.Actor));
 
 				var line = self.TraitOrDefault<DrawLineToTarget>();

@@ -258,7 +258,7 @@ namespace OpenRA.Mods.RA.Move
 				return Enumerable.Reverse(path).Select(c => Target.FromCell(c));
 			if (destination != null)
 				return new Target[] { Target.FromCell(destination.Value) };
-			return Target.NoTargets;
+			return Target.None;
 		}
 
 		abstract class MovePart : Activity

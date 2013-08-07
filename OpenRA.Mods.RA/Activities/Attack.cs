@@ -33,7 +33,7 @@ namespace OpenRA.Mods.RA.Activities
 		public Attack(Target target, WRange range, bool allowMovement)
 		{
 			Target = target;
-			if (target.IsActor)
+			if (target.Type == TargetType.Actor)
 				targetable = target.Actor.TraitOrDefault<ITargetable>();
 
 			Range = range;

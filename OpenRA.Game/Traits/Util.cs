@@ -134,7 +134,7 @@ namespace OpenRA.Traits
 
 		public static IEnumerable<CPos> AdjacentCells(Target target)
 		{
-			var cells = target.IsActor
+			var cells = target.Type == TargetType.Actor
 				? target.Actor.OccupiesSpace.OccupiedCells().Select(c => c.First).ToArray()
 				: new CPos[] { };
 

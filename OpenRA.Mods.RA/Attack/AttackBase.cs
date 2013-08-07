@@ -54,7 +54,7 @@ namespace OpenRA.Mods.RA
 			if (self.IsDisabled())
 				return false;
 
-			if (target.IsActor && target.Actor.HasTrait<ITargetable>() &&
+			if (target.Type == TargetType.Actor && target.Actor.HasTrait<ITargetable>() &&
 				!target.Actor.Trait<ITargetable>().TargetableBy(target.Actor,self))
 				return false;
 
@@ -114,7 +114,7 @@ namespace OpenRA.Mods.RA
 		{
 			if (order is AttackOrderTargeter)
 			{
-				if (target.IsActor)
+				if (target.Type == TargetType.Actor)
 					return new Order("Attack", self, queued) { TargetActor = target.Actor };
 				else
 					return new Order("Attack", self, queued) { TargetLocation = target.CenterPosition.ToCPos() };
