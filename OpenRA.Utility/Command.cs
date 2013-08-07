@@ -88,7 +88,7 @@ namespace OpenRA.Utility
 					Array.Resize(ref shadowIndex, shadowIndex.Length + 3);
 					shadowIndex[shadowIndex.Length - 1] = 1;
 					shadowIndex[shadowIndex.Length - 2] = 3;
-					shadowIndex[shadowIndex.Length - 1] = 4;
+					shadowIndex[shadowIndex.Length - 3] = 4;
 			}
 
 			var palette = Palette.Load(args[2], shadowIndex);
