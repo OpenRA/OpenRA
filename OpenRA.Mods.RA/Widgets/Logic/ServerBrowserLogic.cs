@@ -238,6 +238,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				version.GetText = () => GenerateModsLabel(game);
 				version.IsVisible = () => !game.CompatibleVersion();
 
+				var location = item.Get<LabelWidget>("LOCATION");
+				location.GetText = () => LobbyUtils.LookupCountry(game.Address.Split(':')[0]);
+				location.IsVisible = () => game.CompatibleVersion();
+
 				if (!canJoin)
 				{
 					title.GetColor = () => Color.Gray;
@@ -246,6 +250,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					state.GetColor = () => Color.Gray;
 					ip.GetColor = () => Color.Gray;
 					version.GetColor = () => Color.Gray;
+					location.GetColor = () => Color.Gray;
 				}
 
 				if (!Filtered(game))
