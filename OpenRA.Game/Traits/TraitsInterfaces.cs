@@ -83,7 +83,6 @@ namespace OpenRA.Traits
 	{
 		string Name();
 		Player Owner();
-		Stance Stance();
 	}
 
 	public interface IDisable { bool Disabled { get; } }

@@ -40,7 +40,6 @@ namespace OpenRA.Mods.RA
 
 		public string Name() { return Info.Name; }
 		public Player Owner() { return self.Owner; }
-		public Stance Stance() { return self.World.LocalPlayer.Stances[self.Owner]; }
 
 		public Tooltip(Actor self, TooltipInfo info)
 		{
