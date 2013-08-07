@@ -35,6 +35,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -50,5 +51,8 @@
       <Project>{BDAEAB25-991E-46A7-AF1E-4F0E03358DAA}</Project>
       <Name>OpenRA.FileFormats</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="TSLoadScreen.cs" />
   </ItemGroup>
 </Project>
