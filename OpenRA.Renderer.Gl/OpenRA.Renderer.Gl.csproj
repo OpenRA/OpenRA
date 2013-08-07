@@ -75,7 +75,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GraphicsDevice.cs" />
     <Compile Include="Shader.cs" />
   </ItemGroup>
