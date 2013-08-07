@@ -15,7 +15,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Orders
 {
-	public class UnitOrderTargeter : IOrderTargeter
+	public abstract class UnitOrderTargeter : IOrderTargeter
 	{
 		readonly string cursor;
 		readonly bool targetEnemyUnits, targetAllyUnits;
@@ -33,27 +33,24 @@ namespace OpenRA.Mods.RA.Orders
 		public int OrderPriority { get; private set; }
 		public bool? ForceAttack = null;
 
-		public virtual bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
+		public abstract bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor);
+
+		public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, TargetModifiers modifiers, ref string cursor)
 		{
-			if( self == null ) throw new ArgumentNullException( "self" );
-			if( target == null ) throw new ArgumentNullException( "target" );
+			if (target.Type != TargetType.Actor)
+				return false;
 
 			cursor = this.cursor;
 			IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
 			if (ForceAttack != null && modifiers.HasModifier(TargetModifiers.ForceAttack) != ForceAttack) return false;
 
-			var playerRelationship = self.Owner.Stances[target.Owner];
+			var playerRelationship = self.Owner.Stances[target.Actor.Owner];
 
 			if (!modifiers.HasModifier(TargetModifiers.ForceAttack) && playerRelationship == Stance.Ally && !targetAllyUnits) return false;
 			if (!modifiers.HasModifier(TargetModifiers.ForceAttack) && playerRelationship == Stance.Enemy && !targetEnemyUnits) return false;
 
-			return true;
-		}
-
-		public virtual bool CanTargetLocation(Actor self, CPos location, List<Actor> actorsAtLocation, TargetModifiers modifiers, ref string cursor)
-		{
-			return false;
+			return CanTargetActor(self, target.Actor, modifiers, ref cursor);
 		}
 
 		public virtual bool IsQueued { get; protected set; }
@@ -71,9 +68,6 @@ namespace OpenRA.Mods.RA.Orders
 
 		public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 		{
-			if (!base.CanTargetActor(self, target, modifiers, ref cursor))
-				return false;
-
 			if (!target.TraitsImplementing<ITargetable>().Any(t => t.TargetTypes.Contains(targetType)))
 			    return false;
 

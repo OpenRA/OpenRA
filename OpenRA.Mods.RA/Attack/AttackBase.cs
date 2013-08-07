@@ -169,7 +169,7 @@ namespace OpenRA.Mods.RA
 			public string OrderID { get; private set; }
 			public int OrderPriority { get; private set; }
 
-			public bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
+			bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
@@ -192,7 +192,7 @@ namespace OpenRA.Mods.RA
 				return self.Owner.Stances[target.Owner] == targetableRelationship;
 			}
 
-			public bool CanTargetLocation(Actor self, CPos location, List<Actor> actorsAtLocation, TargetModifiers modifiers, ref string cursor)
+			bool CanTargetLocation(Actor self, CPos location, List<Actor> actorsAtLocation, TargetModifiers modifiers, ref string cursor)
 			{
 				if (!self.World.Map.IsInMap(location))
 					return false;
@@ -210,6 +210,17 @@ namespace OpenRA.Mods.RA
 				if (modifiers.HasModifier(TargetModifiers.ForceAttack))
 					if (self.Info.Traits.Get<AttackBaseInfo>().CanAttackGround)
 						return true;
+
+				return false;
+			}
+
+			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, TargetModifiers modifiers, ref string cursor)
+			{
+				if (target.Type == TargetType.Actor)
+					return CanTargetActor(self, target.Actor, modifiers, ref cursor);
+
+				if (target.Type == TargetType.Terrain)
+					return CanTargetLocation(self, target.CenterPosition.ToCPos(), othersAtTarget, modifiers, ref cursor);
 
 				return false;
 			}

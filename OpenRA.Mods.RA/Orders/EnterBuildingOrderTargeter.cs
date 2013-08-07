@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Orders
@@ -28,9 +29,6 @@ namespace OpenRA.Mods.RA.Orders
 
 		public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 		{
-			if (!base.CanTargetActor(self, target, modifiers, ref cursor))
-				return false;
-
 			if (!target.HasTrait<T>())
 				return false;
 

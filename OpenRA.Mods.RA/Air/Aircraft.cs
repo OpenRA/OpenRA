@@ -217,15 +217,13 @@ namespace OpenRA.Mods.RA.Air
 		public string OrderID { get { return "Move"; } }
 		public int OrderPriority { get { return 4; } }
 
-		public bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
+		public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, TargetModifiers modifiers, ref string cursor)
 		{
-			return false;
-		}
+			if (target.Type != TargetType.Terrain)
+				return false;
 
-		public bool CanTargetLocation(Actor self, CPos location, List<Actor> actorsAtLocation, TargetModifiers modifiers, ref string cursor)
-		{
 			IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
-			cursor = self.World.Map.IsInMap(location) ? "move" : "move-blocked";
+			cursor = self.World.Map.IsInMap(target.CenterPosition.ToCPos()) ? "move" : "move-blocked";
 			return true;
 		}
 

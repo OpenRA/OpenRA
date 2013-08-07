@@ -94,8 +94,6 @@ namespace OpenRA.Mods.RA
 
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{
-				if (!base.CanTargetActor(self, target, modifiers, ref cursor)) return false;
-
 				var canTargetActor = useCaptureCursor(target);
 
 				if (canTargetActor)

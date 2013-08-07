@@ -96,11 +96,9 @@ namespace OpenRA.Orders
 						modifiers |= TargetModifiers.ForceMove;
 
 					string cursor = null;
-					if (underCursor != null)
-						if (o.Order.CanTargetActor(self, underCursor, modifiers, ref cursor))
-							return new UnitOrderResult(self, o.Order, o.Trait, cursor, Target.FromActor(underCursor));
-					if (o.Order.CanTargetLocation(self, xy, actorsAt, modifiers, ref cursor))
-						return new UnitOrderResult(self, o.Order, o.Trait, cursor, Target.FromCell(xy));
+					var target = underCursor != null ? Target.FromActor(underCursor) : Target.FromCell(xy);
+					if (o.Order.CanTarget(self, target, actorsAt, modifiers, ref cursor))
+						return new UnitOrderResult(self, o.Order, o.Trait, cursor, target);
 				}
 			}
 
