@@ -95,6 +95,12 @@ Background@JOINSERVER_BG:
 							Y:40
 							Align:Right
 							Height:25
+						Label@PING:
+							Width:140
+							X:PARENT_RIGHT-150
+							Y:40
+							Align:Right
+							Height:25
 		Label@PROGRESS_LABEL:
 			X:(PARENT_RIGHT - WIDTH) / 2
 			Y:PARENT_BOTTOM / 2 - HEIGHT
@@ -105,14 +111,20 @@ Background@JOINSERVER_BG:
 		Button@REFRESH_BUTTON:
 			X:20
 			Y:PARENT_BOTTOM - 45
-			Width:100
+			Width:120
 			Height:25
 			Text:Refresh
 			Font:Bold
+		Checkbox@PING_SERVERS:
+			X:150
+			Y:PARENT_BOTTOM - 45
+			Width:100
+			Height:20
+			Text:Ping
 		Button@JOIN_BUTTON:
 			X:PARENT_RIGHT - 140 - 130
 			Y:PARENT_BOTTOM - 45
-			Width:100
+			Width:120
 			Height:25
 			Text:Join
 			Font:Bold
@@ -120,7 +132,7 @@ Background@JOINSERVER_BG:
 		Button@BACK_BUTTON:
 			X:PARENT_RIGHT - 140
 			Y:PARENT_BOTTOM - 45
-			Width:100
+			Width:120
 			Height:25
 			Text:Cancel
 			Font:Bold
