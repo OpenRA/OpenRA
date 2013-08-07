@@ -120,6 +120,24 @@ namespace OpenRA.Traits
 					line.SetTarget(self, target, color, display);
 			});
 		}
+
+		public static void SetTargetLine(this Actor self, FrozenActor target, Color color, bool display)
+		{
+			if (self.Owner != self.World.LocalPlayer)
+				return;
+
+			self.World.AddFrameEndTask(w =>
+			{
+				if (self.Destroyed)
+					return;
+
+				target.Flash();
+
+				var line = self.TraitOrDefault<DrawLineToTarget>();
+				if (line != null)
+					line.SetTarget(self, Target.FromPos(target.CenterPosition), color, display);
+			});
+		}
 	}
 }
 
