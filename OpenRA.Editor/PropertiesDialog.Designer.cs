@@ -24,9 +24,8 @@ namespace OpenRA.Editor
 		protected override void Dispose(bool disposing)
 		{
 			if (disposing && (components != null))
-			{
 				components.Dispose();
-			}
+
 			base.Dispose(disposing);
 		}
 
@@ -41,13 +40,13 @@ namespace OpenRA.Editor
 			this.button2 = new System.Windows.Forms.Button();
 			this.button1 = new System.Windows.Forms.Button();
 			this.label1 = new System.Windows.Forms.Label();
-			this.title = new System.Windows.Forms.TextBox();
+			this.TitleBox = new System.Windows.Forms.TextBox();
 			this.label2 = new System.Windows.Forms.Label();
-			this.desc = new System.Windows.Forms.TextBox();
-			this.selectable = new System.Windows.Forms.CheckBox();
+			this.DescBox = new System.Windows.Forms.TextBox();
+			this.SelectableCheckBox = new System.Windows.Forms.CheckBox();
 			this.label3 = new System.Windows.Forms.Label();
-			this.author = new System.Windows.Forms.TextBox();
-			this.useAsShellmap = new System.Windows.Forms.CheckBox();
+			this.AuthorBox = new System.Windows.Forms.TextBox();
+			this.ShellmapCheckBox = new System.Windows.Forms.CheckBox();
 			this.SuspendLayout();
 			//
 			// button2
@@ -83,10 +82,10 @@ namespace OpenRA.Editor
 			//
 			// title
 			//
-			this.title.Location = new System.Drawing.Point(66, 47);
-			this.title.Name = "title";
-			this.title.Size = new System.Drawing.Size(286, 20);
-			this.title.TabIndex = 17;
+			this.TitleBox.Location = new System.Drawing.Point(66, 47);
+			this.TitleBox.Name = "title";
+			this.TitleBox.Size = new System.Drawing.Size(286, 20);
+			this.TitleBox.TabIndex = 17;
 			//
 			// label2
 			//
@@ -99,20 +98,20 @@ namespace OpenRA.Editor
 			//
 			// desc
 			//
-			this.desc.Location = new System.Drawing.Point(66, 73);
-			this.desc.Name = "desc";
-			this.desc.Size = new System.Drawing.Size(286, 20);
-			this.desc.TabIndex = 17;
+			this.DescBox.Location = new System.Drawing.Point(66, 73);
+			this.DescBox.Name = "desc";
+			this.DescBox.Size = new System.Drawing.Size(286, 20);
+			this.DescBox.TabIndex = 17;
 			//
 			// selectable
 			//
-			this.selectable.AutoSize = true;
-			this.selectable.Location = new System.Drawing.Point(118, 138);
-			this.selectable.Name = "selectable";
-			this.selectable.Size = new System.Drawing.Size(130, 17);
-			this.selectable.TabIndex = 18;
-			this.selectable.Text = "Show in Map Chooser";
-			this.selectable.UseVisualStyleBackColor = true;
+			this.SelectableCheckBox.AutoSize = true;
+			this.SelectableCheckBox.Location = new System.Drawing.Point(118, 138);
+			this.SelectableCheckBox.Name = "selectable";
+			this.SelectableCheckBox.Size = new System.Drawing.Size(130, 17);
+			this.SelectableCheckBox.TabIndex = 18;
+			this.SelectableCheckBox.Text = "Show in Map Chooser";
+			this.SelectableCheckBox.UseVisualStyleBackColor = true;
 			//
 			// label3
 			//
@@ -125,20 +124,20 @@ namespace OpenRA.Editor
 			//
 			// author
 			//
-			this.author.Location = new System.Drawing.Point(66, 99);
-			this.author.Name = "author";
-			this.author.Size = new System.Drawing.Size(286, 20);
-			this.author.TabIndex = 17;
+			this.AuthorBox.Location = new System.Drawing.Point(66, 99);
+			this.AuthorBox.Name = "author";
+			this.AuthorBox.Size = new System.Drawing.Size(286, 20);
+			this.AuthorBox.TabIndex = 17;
 			//
 			// checkBox1
 			//
-			this.useAsShellmap.AutoSize = true;
-			this.useAsShellmap.Location = new System.Drawing.Point(118, 161);
-			this.useAsShellmap.Name = "checkBox1";
-			this.useAsShellmap.Size = new System.Drawing.Size(105, 17);
-			this.useAsShellmap.TabIndex = 18;
-			this.useAsShellmap.Text = "Use as Shellmap";
-			this.useAsShellmap.UseVisualStyleBackColor = true;
+			this.ShellmapCheckBox.AutoSize = true;
+			this.ShellmapCheckBox.Location = new System.Drawing.Point(118, 161);
+			this.ShellmapCheckBox.Name = "checkBox1";
+			this.ShellmapCheckBox.Size = new System.Drawing.Size(105, 17);
+			this.ShellmapCheckBox.TabIndex = 18;
+			this.ShellmapCheckBox.Text = "Use as Shellmap";
+			this.ShellmapCheckBox.UseVisualStyleBackColor = true;
 			//
 			// PropertiesDialog
 			//
@@ -147,13 +146,13 @@ namespace OpenRA.Editor
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.button1;
 			this.ClientSize = new System.Drawing.Size(370, 228);
-			this.Controls.Add(this.useAsShellmap);
-			this.Controls.Add(this.selectable);
-			this.Controls.Add(this.author);
+			this.Controls.Add(this.ShellmapCheckBox);
+			this.Controls.Add(this.SelectableCheckBox);
+			this.Controls.Add(this.AuthorBox);
 			this.Controls.Add(this.label3);
-			this.Controls.Add(this.desc);
+			this.Controls.Add(this.DescBox);
 			this.Controls.Add(this.label2);
-			this.Controls.Add(this.title);
+			this.Controls.Add(this.TitleBox);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.button2);
 			this.Controls.Add(this.button1);
@@ -171,12 +170,12 @@ namespace OpenRA.Editor
 		private System.Windows.Forms.Button button2;
 		private System.Windows.Forms.Button button1;
 		private System.Windows.Forms.Label label1;
-		public System.Windows.Forms.TextBox title;
+		public System.Windows.Forms.TextBox TitleBox;
 		private System.Windows.Forms.Label label2;
-		public System.Windows.Forms.TextBox desc;
-		public System.Windows.Forms.CheckBox selectable;
+		public System.Windows.Forms.TextBox DescBox;
+		public System.Windows.Forms.CheckBox SelectableCheckBox;
 		private System.Windows.Forms.Label label3;
-		public System.Windows.Forms.TextBox author;
-		public System.Windows.Forms.CheckBox useAsShellmap;
+		public System.Windows.Forms.TextBox AuthorBox;
+		public System.Windows.Forms.CheckBox ShellmapCheckBox;
 	}
 }
