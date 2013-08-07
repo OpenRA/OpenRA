@@ -17,6 +17,30 @@ namespace OpenRA.FileFormats
 {
 	using MiniYamlNodes = List<MiniYamlNode>;
 
+	public static class MiniYamlExts
+	{
+		public static void WriteToFile(this MiniYamlNodes y, string filename)
+		{
+			File.WriteAllLines(filename, y.ToLines(true).Select(x => x.TrimEnd()).ToArray());
+		}
+
+		public static string WriteToString(this MiniYamlNodes y)
+		{
+			return y.ToLines(true).Select(x => x.TrimEnd()).JoinWith("\n");
+		}
+
+		public static IEnumerable<string> ToLines(this MiniYamlNodes y, bool lowest)
+		{
+			foreach (var kv in y)
+			{
+				foreach (var line in kv.Value.ToLines(kv.Key))
+					yield return line;
+				if (lowest)
+					yield return "";
+			}
+		}
+	}
+
 	public class MiniYamlNode
 	{
 		public struct SourceLocation
@@ -29,31 +53,26 @@ namespace OpenRA.FileFormats
 		public string Key;
 		public MiniYaml Value;
 
-		public MiniYamlNode( string k, MiniYaml v )
+		public MiniYamlNode(string k, MiniYaml v)
 		{
 			Key = k;
 			Value = v;
 		}
 
-		public MiniYamlNode( string k, MiniYaml v, SourceLocation loc )
-			: this( k, v )
+		public MiniYamlNode(string k, MiniYaml v, SourceLocation loc)
+			: this(k, v)
 		{
 			Location = loc;
 		}
 
-		public MiniYamlNode( string k, string v )
-			: this( k, v, null )
-		{
-		}
-		public MiniYamlNode( string k, string v, List<MiniYamlNode> n )
-			: this( k, new MiniYaml( v, n ) )
-		{
-		}
+		public MiniYamlNode(string k, string v)
+			: this(k, v, null) { }
 
-		public MiniYamlNode( string k, string v, List<MiniYamlNode> n, SourceLocation loc )
-			: this( k, new MiniYaml( v, n ), loc )
-		{
-		}
+		public MiniYamlNode(string k, string v, List<MiniYamlNode> n)
+			: this(k, new MiniYaml(v, n)) { }
+
+		public MiniYamlNode(string k, string v, List<MiniYamlNode> n, SourceLocation loc)
+			: this(k, new MiniYaml(v, n), loc) { }
 
 		public override string ToString()
 		{
@@ -77,26 +96,27 @@ namespace OpenRA.FileFormats
 						throw new InvalidDataException("Duplicate key `{0}' in MiniYaml".F(y.Key));
 					ret.Add(y.Key, y.Value);
 				}
+
 				return ret;
 			}
 		}
 
-		public MiniYaml( string value ) : this( value, null ) { }
+		public MiniYaml(string value) : this(value, null) { }
 
-		public MiniYaml( string value, List<MiniYamlNode> nodes )
+		public MiniYaml(string value, List<MiniYamlNode> nodes)
 		{
 			Value = value;
 			Nodes = nodes ?? new List<MiniYamlNode>();
 		}
 
-		public static MiniYaml FromDictionary<K, V>( Dictionary<K, V> dict )
+		public static MiniYaml FromDictionary<K, V>(Dictionary<K, V> dict)
 		{
-			return new MiniYaml( null, dict.Select( x => new MiniYamlNode( x.Key.ToString(), new MiniYaml( x.Value.ToString() ) ) ).ToList() );
+			return new MiniYaml(null, dict.Select(x => new MiniYamlNode(x.Key.ToString(), new MiniYaml(x.Value.ToString()))).ToList());
 		}
 
-		public static MiniYaml FromList<T>( List<T> list )
+		public static MiniYaml FromList<T>(List<T> list)
 		{
-			return new MiniYaml( null, list.Select( x => new MiniYamlNode( x.ToString(), new MiniYaml( null ) ) ).ToList() );
+			return new MiniYaml(null, list.Select(x => new MiniYamlNode(x.ToString(), new MiniYaml(null))).ToList());
 		}
 
 		public static List<MiniYamlNode> NodesOrEmpty(MiniYaml y, string s)
@@ -123,56 +143,57 @@ namespace OpenRA.FileFormats
 				var location = new MiniYamlNode.SourceLocation { Filename = filename, Line = lineNo };
 
 				if (levels.Count <= level)
-					throw new YamlException("Bad indent in miniyaml at {0}".F (location));
+					throw new YamlException("Bad indent in miniyaml at {0}".F(location));
 				while (levels.Count > level + 1)
 					levels.RemoveAt(levels.Count - 1);
 
 				var d = new List<MiniYamlNode>();
-				var rhs = SplitAtColon( ref t );
-				levels[ level ].Add( new MiniYamlNode( t, rhs, d, location ) );
+				var rhs = SplitAtColon(ref t);
+				levels[level].Add(new MiniYamlNode(t, rhs, d, location));
 
 				levels.Add(d);
 			}
-			return levels[ 0 ];
+
+			return levels[0];
 		}
 
-		static string SplitAtColon( ref string t )
+		static string SplitAtColon(ref string t)
 		{
 			var colon = t.IndexOf(':');
-			if( colon == -1 )
+			if (colon == -1)
 				return null;
-			var ret = t.Substring( colon + 1 ).Trim();
-			if( ret.Length == 0 )
+			var ret = t.Substring(colon + 1).Trim();
+			if (ret.Length == 0)
 				ret = null;
-			t = t.Substring( 0, colon ).Trim();
+			t = t.Substring(0, colon).Trim();
 			return ret;
 		}
 
-		public static List<MiniYamlNode> FromFileInPackage( string path )
+		public static List<MiniYamlNode> FromFileInPackage(string path)
 		{
-			StreamReader reader = new StreamReader( FileSystem.Open(path) );
+			StreamReader reader = new StreamReader(FileSystem.Open(path));
 			List<string> lines = new List<string>();
 
-			while( !reader.EndOfStream )
+			while (!reader.EndOfStream)
 				lines.Add(reader.ReadLine());
 			reader.Close();
 
 			return FromLines(lines.ToArray(), path);
 		}
 
-		public static Dictionary<string, MiniYaml> DictFromFile( string path )
+		public static Dictionary<string, MiniYaml> DictFromFile(string path)
 		{
-			return FromFile( path ).ToDictionary( x => x.Key, x => x.Value );
+			return FromFile(path).ToDictionary(x => x.Key, x => x.Value);
 		}
 
-		public static Dictionary<string, MiniYaml> DictFromStream( Stream stream )
+		public static Dictionary<string, MiniYaml> DictFromStream(Stream stream)
 		{
-			return FromStream( stream ).ToDictionary( x => x.Key, x => x.Value );
+			return FromStream(stream).ToDictionary(x => x.Key, x => x.Value);
 		}
 
-		public static List<MiniYamlNode> FromFile( string path )
+		public static List<MiniYamlNode> FromFile(string path)
 		{
-			return FromLines(File.ReadAllLines( path ), path);
+			return FromLines(File.ReadAllLines(path), path);
 		}
 
 		public static List<MiniYamlNode> FromStream(Stream s)
@@ -196,29 +217,29 @@ namespace OpenRA.FileFormats
 			return Merge(a, b, true);
 		}
 
-		static List<MiniYamlNode> Merge( List<MiniYamlNode> a, List<MiniYamlNode> b, bool throwErrors )
+		static List<MiniYamlNode> Merge(List<MiniYamlNode> a, List<MiniYamlNode> b, bool throwErrors)
 		{
-			if( a.Count == 0 )
+			if (a.Count == 0)
 				return b;
-			if( b.Count == 0 )
+			if (b.Count == 0)
 				return a;
 
 			var ret = new List<MiniYamlNode>();
 
-			var aDict = a.ToDictionaryWithConflictLog(x => x.Key, "MiniYaml.Merge", null, x => "{0} (at {1})".F(x.Key, x.Location));
-			var bDict = b.ToDictionaryWithConflictLog(x => x.Key, "MiniYaml.Merge", null, x => "{0} (at {1})".F(x.Key, x.Location));
-			var keys = aDict.Keys.Union( bDict.Keys ).ToList();
+			var dictA = a.ToDictionaryWithConflictLog(x => x.Key, "MiniYaml.Merge", null, x => "{0} (at {1})".F(x.Key, x.Location));
+			var dictB = b.ToDictionaryWithConflictLog(x => x.Key, "MiniYaml.Merge", null, x => "{0} (at {1})".F(x.Key, x.Location));
+			var keys = dictA.Keys.Union(dictB.Keys).ToList();
 
 			var noInherit = keys.Where(x => x.Length > 0 && x[0] == '-')
 				.ToDictionary(x => x.Substring(1), x => false);
 
-			foreach( var key in keys )
+			foreach (var key in keys)
 			{
 				MiniYamlNode aa, bb;
-				aDict.TryGetValue( key, out aa );
-				bDict.TryGetValue( key, out bb );
+				dictA.TryGetValue(key, out aa);
+				dictB.TryGetValue(key, out bb);
 
-				if( noInherit.ContainsKey( key ) )
+				if (noInherit.ContainsKey(key))
 				{
 					if (!throwErrors)
 						if (aa != null)
@@ -228,9 +249,9 @@ namespace OpenRA.FileFormats
 				}
 				else
 				{
-					var loc = aa == null ? default( MiniYamlNode.SourceLocation ) : aa.Location;
-					var merged = ( aa == null || bb == null ) ? aa ?? bb : new MiniYamlNode( key, Merge( aa.Value, bb.Value, throwErrors ), loc );
-					ret.Add( merged );
+					var loc = aa == null ? default(MiniYamlNode.SourceLocation) : aa.Location;
+					var merged = (aa == null || bb == null) ? aa ?? bb : new MiniYamlNode(key, Merge(aa.Value, bb.Value, throwErrors), loc);
+					ret.Add(merged);
 				}
 			}
 
@@ -252,14 +273,14 @@ namespace OpenRA.FileFormats
 			return Merge(a, b, true);
 		}
 
-		static MiniYaml Merge( MiniYaml a, MiniYaml b, bool throwErrors )
+		static MiniYaml Merge(MiniYaml a, MiniYaml b, bool throwErrors)
 		{
-			if( a == null )
+			if (a == null)
 				return b;
-			if( b == null )
+			if (b == null)
 				return a;
 
-			return new MiniYaml( a.Value ?? b.Value, Merge( a.Nodes, b.Nodes, throwErrors ) );
+			return new MiniYaml(a.Value ?? b.Value, Merge(a.Nodes, b.Nodes, throwErrors));
 		}
 
 		public IEnumerable<string> ToLines(string name)
@@ -268,30 +289,6 @@ namespace OpenRA.FileFormats
 			if (Nodes != null)
 				foreach (var line in Nodes.ToLines(false))
 					yield return "\t" + line;
-		}
-	}
-
-	public static class MiniYamlExts
-	{
-		public static void WriteToFile(this MiniYamlNodes y, string filename)
-		{
-			File.WriteAllLines(filename, y.ToLines(true).Select(x => x.TrimEnd()).ToArray());
-		}
-
-		public static string WriteToString(this MiniYamlNodes y)
-		{
-			return y.ToLines(true).Select(x => x.TrimEnd()).JoinWith("\n");
-		}
-
-		public static IEnumerable<string> ToLines(this MiniYamlNodes y, bool lowest)
-		{
-			foreach (var kv in y)
-			{
-				foreach (var line in kv.Value.ToLines(kv.Key))
-					yield return line;
-				if (lowest)
-					yield return "";
-			}
 		}
 	}
 
