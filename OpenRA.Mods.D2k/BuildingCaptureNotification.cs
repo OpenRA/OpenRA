@@ -21,19 +21,18 @@ namespace OpenRA.Mods.RA
 
 	class CaptureNotification : INotifyCapture
 	{
-		CaptureNotificationInfo Info;
+		CaptureNotificationInfo captureInfo;
 		public CaptureNotification(CaptureNotificationInfo info)
 		{
-			Info = info;
+			captureInfo = info;
 		}
 
-		public void OnCapture (Actor self, Actor captor, Player oldOwner, Player newOwner)
+		public void OnCapture(Actor self, Actor captor, Player oldOwner, Player newOwner)
 		{
 			if (captor.World.LocalPlayer != captor.Owner)
 				return;
 
-			Sound.PlayNotification(captor.World.LocalPlayer, "Speech", Info.Notification, newOwner.Country.Race);
+			Sound.PlayNotification(captor.World.LocalPlayer, "Speech", captureInfo.Notification, newOwner.Country.Race);
 		}
 	}
 }
-
