@@ -12,6 +12,7 @@ Colt45:
 			Heavy: 5%
 			Concrete: 0%
 		Explosion: piff
+		WaterExplosion: water_piff
 		InfDeath: 2
 		Damage: 50
 
@@ -47,6 +48,7 @@ Vulcan:
 			Heavy: 25%
 			Concrete: 25%
 		Explosion: piffs
+		WaterExplosion: water_piffs
 		InfDeath: 2
 		Damage: 10
 	Warhead@2:
@@ -57,6 +59,7 @@ Vulcan:
 			Heavy: 25%
 			Concrete: 25%
 		Explosion: piffs
+		WaterExplosion: water_piffs
 		InfDeath: 2
 		Damage: 10
 		Delay: 2
@@ -68,6 +71,7 @@ Vulcan:
 			Heavy: 25%
 			Concrete: 25%
 		Explosion: piffs
+		WaterExplosion: water_piffs
 		InfDeath: 2
 		Damage: 10
 		Delay: 4
@@ -79,6 +83,7 @@ Vulcan:
 			Heavy: 25%
 			Concrete: 25%
 		Explosion: piffs
+		WaterExplosion: water_piffs
 		InfDeath: 2
 		Damage: 10
 		Delay: 6
@@ -90,6 +95,7 @@ Vulcan:
 			Heavy: 25%
 			Concrete: 25%
 		Explosion: piffs
+		WaterExplosion: water_piffs
 		InfDeath: 2
 		Damage: 10
 		Delay: 8
@@ -101,6 +107,7 @@ Vulcan:
 			Heavy: 25%
 			Concrete: 25%
 		Explosion: piffs
+		WaterExplosion: water_piffs
 		InfDeath: 2
 		Damage: 10
 		Delay: 10
@@ -203,7 +210,7 @@ ChainGun:
 			Heavy: 25%
 			Concrete: 25%
 		Explosion: piffs
-		WaterExplosion: small_splash
+		WaterExplosion: water_piffs
 		InfDeath: 2
 		Damage: 20
 
@@ -223,7 +230,7 @@ ChainGun.Yak:
 			Heavy: 25%
 			Concrete: 25%
 		Explosion: piffs
-		WaterExplosion: small_splash
+		WaterExplosion: water_piffs
 		InfDeath: 2
 		Damage: 40
 
@@ -241,6 +248,7 @@ Pistol:
 			Heavy: 25%
 			Concrete: 25%
 		Explosion: piff
+		WaterExplosion: water_piff
 		InfDeath: 2
 		Damage: 1
 
@@ -258,6 +266,7 @@ M1Carbine:
 			Heavy: 10%
 			Concrete: 10%
 		Explosion: piffs
+		WaterExplosion: water_piffs
 		InfDeath: 2
 		Damage: 15
 
@@ -552,7 +561,7 @@ M60mg:
 			Heavy: 10%
 			Concrete: 10%
 		Explosion: piffs
-		WaterExplosion: small_splash
+		WaterExplosion: water_piffs
 		InfDeath: 2
 		Damage: 15
 
@@ -940,6 +949,7 @@ SilencedPPK:
 			Heavy: 0%
 			Concrete: 0%
 		Explosion: piffs
+		WaterExplosion: water_piffs
 		InfDeath: 2
 		Damage: 150
 
