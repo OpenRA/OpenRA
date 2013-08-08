@@ -98,13 +98,12 @@ namespace OpenRA.Mods.RA
 		{
 			var canTargetActor = useCaptureCursor(target);
 			cursor = canTargetActor ? "ability" : "move-blocked";
+			return canTargetActor;
+		}
 
-			if (canTargetActor)
-			{
-				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
-				return true;
-			}
-
+		public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
+		{
+			// TODO: Not yet supported
 			return false;
 		}
 	}

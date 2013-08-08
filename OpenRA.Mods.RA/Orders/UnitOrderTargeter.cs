@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA.Orders
 		readonly string cursor;
 		readonly bool targetEnemyUnits, targetAllyUnits;
 
-		public UnitOrderTargeter( string order, int priority, string cursor, bool targetEnemyUnits, bool targetAllyUnits )
+		public UnitOrderTargeter(string order, int priority, string cursor, bool targetEnemyUnits, bool targetAllyUnits)
 		{
 			this.OrderID = order;
 			this.OrderPriority = priority;
@@ -34,23 +34,32 @@ namespace OpenRA.Mods.RA.Orders
 		public bool? ForceAttack = null;
 
 		public abstract bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor);
+		public abstract bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor);
 
 		public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, TargetModifiers modifiers, ref string cursor)
 		{
-			if (target.Type != TargetType.Actor)
+			var type = target.Type;
+			if (type != TargetType.Actor && type != TargetType.FrozenActor)
 				return false;
 
 			cursor = this.cursor;
 			IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
-			if (ForceAttack != null && modifiers.HasModifier(TargetModifiers.ForceAttack) != ForceAttack) return false;
+			if (ForceAttack != null && modifiers.HasModifier(TargetModifiers.ForceAttack) != ForceAttack)
+				return false;
 
-			var playerRelationship = self.Owner.Stances[target.Actor.Owner];
+			var owner = type == TargetType.FrozenActor ? target.FrozenActor.Owner : target.Actor.Owner;
+			var playerRelationship = self.Owner.Stances[owner];
 
-			if (!modifiers.HasModifier(TargetModifiers.ForceAttack) && playerRelationship == Stance.Ally && !targetAllyUnits) return false;
-			if (!modifiers.HasModifier(TargetModifiers.ForceAttack) && playerRelationship == Stance.Enemy && !targetEnemyUnits) return false;
+			if (!modifiers.HasModifier(TargetModifiers.ForceAttack) && playerRelationship == Stance.Ally && !targetAllyUnits)
+				return false;
 
-			return CanTargetActor(self, target.Actor, modifiers, ref cursor);
+			if (!modifiers.HasModifier(TargetModifiers.ForceAttack) && playerRelationship == Stance.Enemy && !targetEnemyUnits)
+				return false;
+
+			return type == TargetType.FrozenActor ?
+				CanTargetFrozenActor(self, target.FrozenActor, modifiers, ref cursor) :
+				CanTargetActor(self, target.Actor, modifiers, ref cursor);
 		}
 
 		public virtual bool IsQueued { get; protected set; }
@@ -68,12 +77,12 @@ namespace OpenRA.Mods.RA.Orders
 
 		public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 		{
-			if (!target.TraitsImplementing<ITargetable>().Any(t => t.TargetTypes.Contains(targetType)))
-			    return false;
+			return target.TraitsImplementing<ITargetable>().Any(t => t.TargetTypes.Contains(targetType));
+		}
 
-			IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
-
-			return true;
+		public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
+		{
+			return target.Info.Traits.WithInterface<ITargetableInfo>().Any(t => t.GetTargetTypes().Contains(targetType));
 		}
 	}
 }

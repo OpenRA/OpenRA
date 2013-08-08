@@ -72,14 +72,13 @@ namespace OpenRA.Mods.RA
 
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{
-				if (target.AppearsHostileTo(self))
-					return false;
+				return target.HasTrait<AcceptsSupplies>();
+			}
 
-				if (!target.HasTrait<AcceptsSupplies>())
-					return false;
-
-				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
-				return true;
+			public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
+			{
+				// TODO: Not yet supported
+				return false;
 			}
 		}
 	}

@@ -29,15 +29,17 @@ namespace OpenRA.Mods.RA.Orders
 
 		public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 		{
-			if (!target.HasTrait<T>())
-				return false;
-
-			if (!canTarget(target))
+			if (!target.HasTrait<T>() || !canTarget(target))
 				return false;
 
 			cursor = useEnterCursor(target) ? "enter" : "enter-blocked";
-			IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 			return true;
+		}
+
+		public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
+		{
+			// TODO: Not yet supported
+			return false;
 		}
 	}
 }

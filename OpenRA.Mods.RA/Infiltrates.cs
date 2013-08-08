@@ -103,6 +103,12 @@ namespace OpenRA.Mods.RA
 
 				return true;
 			}
+
+			public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
+			{
+				// TODO: Not yet supported
+				return false;
+			}
 		}
 	}
 }

@@ -65,12 +65,16 @@ namespace OpenRA.Mods.RA
 				if (self.Owner.Stances[target.Owner] != Stance.Ally)
 					return false;
 
-				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
-
 				if (target.GetDamageState() == DamageState.Undamaged)
 					cursor = "goldwrench-blocked";
 
 				return true;
+			}
+
+			public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
+			{
+				// TODO: Not yet supported
+				return false;
 			}
 		}
 	}

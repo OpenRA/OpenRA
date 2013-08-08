@@ -24,8 +24,20 @@ namespace OpenRA.Orders
 				.OrderByDescending(a => a.Info.SelectionPriority())
 				.FirstOrDefault();
 
+			Target target;
+			if (underCursor != null)
+				target = Target.FromActor(underCursor);
+			else
+			{
+				var frozen = world.FindFrozenActorsAtMouse(mi.Location)
+					.Where(a => a.Info.Traits.Contains<ITargetableInfo>())
+					.OrderByDescending(a => a.Info.SelectionPriority())
+					.FirstOrDefault();
+				target = frozen != null ? Target.FromFrozenActor(frozen) : Target.FromCell(xy);
+			}
+
 			var orders = world.Selection.Actors
-				.Select(a => OrderForUnit(a, xy, mi, underCursor))
+				.Select(a => OrderForUnit(a, target, mi))
 				.Where(o => o != null)
 				.ToArray();
 
@@ -61,8 +73,20 @@ namespace OpenRA.Orders
 					useSelect = true;
 			}
 
+			Target target;
+			if (underCursor != null)
+				target = Target.FromActor(underCursor);
+			else
+			{
+				var frozen = world.FindFrozenActorsAtMouse(mi.Location)
+					.Where(a => a.Info.Traits.Contains<ITargetableInfo>())
+					.OrderByDescending(a => a.Info.SelectionPriority())
+					.FirstOrDefault();
+				target = frozen != null ? Target.FromFrozenActor(frozen) : Target.FromCell(xy);
+			}
+
 			var orders = world.Selection.Actors
-				.Select(a => OrderForUnit(a, xy, mi, underCursor))
+				.Select(a => OrderForUnit(a, target, mi))
 				.Where(o => o != null)
 				.ToArray();
 
@@ -70,12 +94,12 @@ namespace OpenRA.Orders
 			return cursorName ?? (useSelect ? "select" : "default");
 		}
 
-		static UnitOrderResult OrderForUnit(Actor self, CPos xy, MouseInput mi, Actor underCursor)
+		static UnitOrderResult OrderForUnit(Actor self, Target target, MouseInput mi)
 		{
 			if (self.Owner != self.World.LocalPlayer)
 				return null;
 
-			if (self.Destroyed)
+			if (self.Destroyed || target.Type == TargetType.Invalid)
 				return null;
 
 			if (mi.Button == Game.mouseButtonPreference.Action)
@@ -85,7 +109,7 @@ namespace OpenRA.Orders
 						.Select(x => new { Trait = trait, Order = x } ))
 					.OrderByDescending(x => x.Order.OrderPriority))
 				{
-					var actorsAt = self.World.ActorMap.GetUnitsAt(xy).ToList();
+					var actorsAt = self.World.ActorMap.GetUnitsAt(target.CenterPosition.ToCPos()).ToList();
 
 					var modifiers = TargetModifiers.None;
 					if (mi.Modifiers.HasModifier(Modifiers.Ctrl))
@@ -96,7 +120,6 @@ namespace OpenRA.Orders
 						modifiers |= TargetModifiers.ForceMove;
 
 					string cursor = null;
-					var target = underCursor != null ? Target.FromActor(underCursor) : Target.FromCell(xy);
 					if (o.Order.CanTarget(self, target, actorsAt, modifiers, ref cursor))
 						return new UnitOrderResult(self, o.Order, o.Trait, cursor, target);
 				}

@@ -104,11 +104,16 @@ namespace OpenRA.Mods.RA
 
 					cursor = lowEnoughHealth ? "enter" : "capture";
 
-					IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 					return true;
 				}
 
 				cursor = "enter-blocked";
+				return false;
+			}
+
+			public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
+			{
+				// TODO: Not yet supported
 				return false;
 			}
 		}
