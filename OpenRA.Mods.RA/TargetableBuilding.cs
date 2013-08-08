@@ -15,10 +15,11 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	public class TargetableBuildingInfo : ITraitInfo, Requires<BuildingInfo>
+	public class TargetableBuildingInfo : ITraitInfo, ITargetableInfo, Requires<BuildingInfo>
 	{
 		public readonly string[] TargetTypes = { };
 
+		public string[] GetTargetTypes() { return TargetTypes; }
 		public object Create(ActorInitializer init) { return new TargetableBuilding(init.self, this); }
 	}
 

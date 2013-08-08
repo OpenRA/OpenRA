@@ -204,6 +204,11 @@ namespace OpenRA.Traits
 	}
 	public interface IBodyOrientationInfo {}
 
+	public interface ITargetableInfo
+	{
+		string[] GetTargetTypes();
+	}
+
 	public interface ITargetable
 	{
 		string[] TargetTypes { get; }
