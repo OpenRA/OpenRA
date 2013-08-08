@@ -23,19 +23,27 @@ Container@INGAME_ROOT:
 			Height: 30
 			UseContrast: yes
 		Container@PERFORMANCE_INFO:
-			Logic:CncPerfDebugLogic
+			Logic:PerfDebugLogic
 			Children:
 				Label@PERF_TEXT:
-					X:85
-					Y:10
+					X:WINDOW_RIGHT - 200
+					Y:WINDOW_BOTTOM - 70
 					Width:170
 					Height:40
 					Contrast:true
-				PerfGraph@GRAPH:
+					VAlign:Top
+				Background@GRAPH_BG:
 					X:10
 					Y:WINDOW_BOTTOM-HEIGHT-10
-					Width:200
-					Height:200
+					Width:220
+					Height:220
+					Background:panel-black
+					Children:
+						PerfGraph@GRAPH:
+							X:10
+							Y:10
+							Width:200
+							Height:200
 		WorldInteractionController@INTERACTION_CONTROLLER:
 			Width:WINDOW_RIGHT
 			Height:WINDOW_BOTTOM

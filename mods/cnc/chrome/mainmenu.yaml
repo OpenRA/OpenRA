@@ -171,7 +171,7 @@ Container@MENU_BACKGROUND:
 							Height:35
 							Text:Back
 		Container@PERFORMANCE_INFO:
-			Logic:CncPerfDebugLogic
+			Logic:PerfDebugLogic
 			Children:
 				Label@PERF_TEXT:
 					X:40

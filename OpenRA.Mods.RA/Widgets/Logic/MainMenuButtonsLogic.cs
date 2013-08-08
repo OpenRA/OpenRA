@@ -25,7 +25,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			rootMenu = widget;
 			rootMenu.IsVisible = () => Menu == MenuType.Main;
 
-			Game.modData.WidgetLoader.LoadWidget( new WidgetArgs(), Ui.Root, "PERF_BG" );
 			var versionLabel = Ui.Root.GetOrNull<LabelWidget>("VERSION_LABEL");
 			if (versionLabel != null)
 				versionLabel.GetText = WidgetUtils.ActiveModVersion;
