@@ -239,7 +239,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				version.IsVisible = () => !game.CompatibleVersion();
 
 				var location = item.Get<LabelWidget>("LOCATION");
-				location.GetText = () => LobbyUtils.LookupCountry(game.Address.Split(':')[0]);
+				var cachedServerLocation = LobbyUtils.LookupCountry(game.Address.Split(':')[0]);
+				location.GetText = () => cachedServerLocation;
 				location.IsVisible = () => game.CompatibleVersion();
 
 				if (!canJoin)

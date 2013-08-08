@@ -70,8 +70,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var ipAddress = orderManager.LobbyInfo.ClientWithIndex(clientIndex).IpAddress;
 			if ((ipAddress == null || ipAddress == "127.0.0.1") && UPnP.NatDevice != null)
 				ipAddress = UPnP.NatDevice.GetExternalIP().ToString();
-			ip.GetText = () => LobbyUtils.DescriptiveIpAddress(ipAddress);
-			location.GetText = () => LobbyUtils.LookupCountry(ipAddress);
+			var cachedDescriptiveIP = LobbyUtils.DescriptiveIpAddress(ipAddress);
+			ip.GetText = () => cachedDescriptiveIP;
+			var cachedCountryLookup = LobbyUtils.LookupCountry(ipAddress);
+			location.GetText = () => cachedCountryLookup;
 		}
 	}
 }
