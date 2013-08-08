@@ -191,8 +191,10 @@ namespace OpenRA.Mods.RA.Widgets
 			if (!IsVisible()) return;
 			// TODO: fix
 
-			int paletteHeight = DrawPalette(CurrentQueue);
+			var paletteHeight = DrawPalette(CurrentQueue);
 			DrawBuildTabs(world, paletteHeight);
+			DrawPalette(CurrentQueue);
+			// TODO: use ProductionTooltipLogic instead to avoid overlapping
 		}
 
 		int numActualRows = 5;
