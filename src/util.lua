@@ -341,11 +341,20 @@ function LoadLuaFileExt(tab, file, proto)
   if not cfgfn then
     print(("Error while loading file: '%s'."):format(err))
   else
-    local name = file:match("([a-zA-Z_0-9]+)%.lua$")
+    local name = file:match("([a-zA-Z_0-9%-]+)%.lua$")
+    if not name then return end
+
+    -- check if os/arch matches to allow packages for different systems
+    local os, arch = name:match("-(%w+)-?(%w*)")
+    if os and os:lower() ~= ide.osname:lower()
+    or arch and #arch > 0 and arch:lower() ~= ide.osarch:lower()
+    then return end
+    if os then name = name:gsub("-.*","") end
+
     local success, result = pcall(function()return cfgfn(assert(_G or _ENV))end)
     if not success then
       print(("Error while processing file: '%s'."):format(result))
-    elseif name then
+    else
       if (tab[name]) then
         local out = tab[name]
         for i,v in pairs(result) do
