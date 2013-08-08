@@ -338,6 +338,9 @@ gun:
 		Start: 0
 		Length: *
 		Tick: 80
+	muzzle: gunfire2
+		Start: 0
+		Length: *
 
 sam:
 	closed-idle:
@@ -403,4 +406,7 @@ atwr:
 		Start: 0
 		Length: *
 		Tick: 80
+	muzzle: gunfire2
+		Start: 0
+		Length: *
 

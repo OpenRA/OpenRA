@@ -149,8 +149,9 @@ ARTY:
 		Range: 9
 	Armament:
 		Weapon: ArtilleryShell
-		LocalOffset: 299, 0, 128
+		LocalOffset: 624,0,208
 	AttackFrontal:
+	WithMuzzleFlash:
 	RenderUnit:
 	Explodes:
 		Weapon: UnitExplode
@@ -183,7 +184,7 @@ FTNK:
 		Range: 5
 	Armament:
 		Weapon: BigFlamer
-		LocalOffset: 213,213,-85, 213,-213,-85
+		LocalOffset: 512,128,42, 512,-128,42
 	AttackFrontal:
 	RenderUnit:
 	AutoTarget:
@@ -327,8 +328,9 @@ LTNK:
 		Weapon: 70mm
 		Recoil: 85
 		RecoilRecovery: 17
-		LocalOffset: -128,0,85
+		LocalOffset: 720,0,90
 	AttackTurreted:
+	WithMuzzleFlash:
 	RenderUnit:
 	WithTurret:
 	AutoTarget:
@@ -364,8 +366,9 @@ MTNK:
 		Weapon: 120mm
 		Recoil: 128
 		RecoilRecovery: 26
-		LocalOffset: 0,0,43
+		LocalOffset: 768,0,90
 	AttackTurreted:
+	WithMuzzleFlash:
 	RenderUnit:
 	WithTurret:
 	AutoTarget:
@@ -403,16 +406,17 @@ HTNK:
 		ROT: 3
 	Armament@PRIMARY:
 		Weapon: 120mmDual
-		LocalOffset: 800, 180, 340, 800, -180, 340
+		LocalOffset: 900,180,340, 900,-180,340
 		Recoil: 170
 		RecoilRecovery: 42
 	Armament@SECONDARY:
 		Name: secondary
 		Weapon: MammothMissiles
-		LocalOffset: -85, 384, 340, -85, -384, 340
+		LocalOffset: -85,384,340, -85,-384,340
 		LocalYaw: -100, 100
 		Recoil: 42
 	AttackTurreted:
+	WithMuzzleFlash@PRIMARY:
 	RenderUnit:
 	WithTurret:
 	AutoTarget:
