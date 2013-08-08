@@ -48,12 +48,15 @@ namespace OpenRA.GameRules
 		[Desc("Whether we should prevent prone response for infantry.")]
 		public readonly bool PreventProne = false;
 
-		public float EffectivenessAgainst(Actor self)
+		public float EffectivenessAgainst(ActorInfo ai)
 		{
-			var health = self.Info.Traits.GetOrDefault<HealthInfo>();
-			if (health == null) return 0f;
-			var armor = self.Info.Traits.GetOrDefault<ArmorInfo>();
-			if (armor == null || armor.Type == null) return 1;
+			var health = ai.Traits.GetOrDefault<HealthInfo>();
+			if (health == null)
+				return 0f;
+
+			var armor = ai.Traits.GetOrDefault<ArmorInfo>();
+			if (armor == null || armor.Type == null)
+				return 1;
 
 			float versus;
 			return Versus.TryGetValue(armor.Type, out versus) ? versus : 1;
@@ -140,7 +143,7 @@ namespace OpenRA.GameRules
 			if (targetable == null || !ValidTargets.Intersect(targetable.TargetTypes).Any())
 				return false;
 
-			if (Warheads.All(w => w.EffectivenessAgainst(a) <= 0))
+			if (Warheads.All(w => w.EffectivenessAgainst(a.Info) <= 0))
 				return false;
 
 			return true;
