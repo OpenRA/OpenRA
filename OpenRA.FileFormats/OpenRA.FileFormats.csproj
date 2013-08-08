@@ -130,7 +130,7 @@
     <Compile Include="Support\Log.cs" />
     <Compile Include="Support\Stopwatch.cs" />
     <Compile Include="Support\Timer.cs" />
-    <Compile Include="Thirdparty\Random.cs" />
+    <Compile Include="Random.cs" />
     <Compile Include="TypeDictionary.cs" />
     <Compile Include="WPos.cs" />
     <Compile Include="WVec.cs" />
