@@ -140,6 +140,7 @@ Maverick:
 			Concrete: 50%
 		Explosion: med_explosion
 		WaterExplosion: med_splash
+		ImpactSound: kaboom25.aud
 		WaterImpactSound: splash9.aud
 		InfDeath: 4
 		SmudgeType: Crater
@@ -300,7 +301,7 @@ Dragon:
 		InfDeath: 4
 		SmudgeType: Crater
 		Damage: 50
-		ImpactSound: kaboom12.aud
+		ImpactSound: kaboom25.aud
 		WaterImpactSound: splash9.aud
 
 HellfireAG:
@@ -333,6 +334,7 @@ HellfireAG:
 		InfDeath: 4
 		SmudgeType: Crater
 		Damage: 40
+		ImpactSound: kaboom25.aud
 		WaterImpactSound: splash9.aud
 
 HellfireAA:
@@ -388,7 +390,7 @@ Grenade:
 		InfDeath: 3
 		SmudgeType: Crater
 		Damage: 60
-		ImpactSound: kaboom12.aud
+		ImpactSound: kaboom25.aud
 		WaterImpactSound: splash9.aud
 
 25mm:
@@ -427,6 +429,7 @@ Grenade:
 			Concrete: 50%
 		Explosion: small_explosion
 		WaterExplosion: small_splash
+		ImpactSound: kaboom12.aud
 		WaterImpactSound: splash9.aud
 		InfDeath: 4
 		SmudgeType: Crater
@@ -450,6 +453,7 @@ Grenade:
 			Concrete: 50%
 		Explosion: small_explosion
 		WaterExplosion: small_splash
+		ImpactSound: kaboom12.aud
 		WaterImpactSound: splash9.aud
 		InfDeath: 4
 		SmudgeType: Crater
@@ -472,6 +476,7 @@ Grenade:
 			Concrete: 50%
 		Explosion: small_explosion
 		WaterExplosion: small_splash
+		ImpactSound: kaboom12.aud
 		WaterImpactSound: splash9.aud
 		InfDeath: 4
 		SmudgeType: Crater
@@ -493,6 +498,7 @@ TurretGun:
 			Concrete: 50%
 		Explosion: small_explosion
 		WaterExplosion: small_splash
+		ImpactSound: kaboom12.aud
 		WaterImpactSound: splash9.aud
 		InfDeath: 4
 		SmudgeType: Crater
@@ -524,6 +530,7 @@ MammothTusk:
 			Heavy: 25%
 		Explosion: med_explosion_air
 		WaterExplosion: med_splash
+		ImpactSound: kaboom25.aud
 		WaterImpactSound: splash9.aud
 		InfDeath: 3
 		SmudgeType: Crater
@@ -551,6 +558,7 @@ MammothTusk:
 			Concrete: 50%
 		Explosion: artillery_explosion
 		WaterExplosion: med_splash
+		ImpactSound: kaboom15.aud
 		WaterImpactSound: splash9.aud
 		InfDeath: 3
 		SmudgeType: Crater
@@ -692,6 +700,7 @@ Nike:
 			Heavy: 50%
 			Concrete: 0%
 		Explosion: med_explosion_air
+		ImpactSound: kaboom25.aud
 		InfDeath: 3
 		SmudgeType: Crater
 		Damage: 100
@@ -719,6 +728,7 @@ RedEye:
 			Light: 60%
 			Heavy: 25%
 		Explosion: med_explosion_air
+		ImpactSound: kaboom25.aud
 		InfDeath: 3
 		SmudgeType: Crater
 		Damage: 40
@@ -747,7 +757,7 @@ RedEye:
 		InfDeath: 3
 		SmudgeType: Crater
 		Damage: 250
-		ImpactSound: kaboom12.aud
+		ImpactSound: kaboom15.aud
 		WaterImpactSound: splash9.aud
 
 SubMissile:
@@ -774,7 +784,7 @@ SubMissile:
 		InfDeath: 3
 		SmudgeType: Crater
 		Damage: 300
-		ImpactSound: kaboom12.aud
+		ImpactSound: kaboom15.aud
 		WaterImpactSound: splash9.aud
 
 Stinger:
@@ -804,6 +814,7 @@ Stinger:
 			Concrete: 50%
 		Explosion: med_explosion
 		WaterExplosion: med_splash
+		ImpactSound: kaboom25.aud
 		WaterImpactSound: splash9.aud
 		InfDeath: 4
 		SmudgeType: Crater
@@ -853,6 +864,7 @@ TorpTube:
 			Concrete: 50%
 		Explosion: small_explosion
 		WaterExplosion: med_splash
+		ImpactSound: kaboom12.aud
 		WaterImpactSound: splash9.aud
 		InfDeath: 4
 		SmudgeType: Crater
@@ -1277,6 +1289,7 @@ ChronoTusk:
 			Concrete: 50%
 		Explosion: med_explosion
 		WaterExplosion: med_splash
+		ImpactSound: kaboom25.aud
 		WaterImpactSound: splash9.aud
 		InfDeath: 4
 		SmudgeType: Crater
