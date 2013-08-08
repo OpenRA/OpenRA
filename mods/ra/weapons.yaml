@@ -540,7 +540,7 @@ MammothTusk:
 			Light: 60%
 			Heavy: 25%
 			Concrete: 50%
-		Explosion: large_explosion
+		Explosion: artillery_explosion
 		WaterExplosion: med_splash
 		InfDeath: 3
 		SmudgeType: Crater
@@ -731,7 +731,7 @@ RedEye:
 			Wood: 75%
 			Light: 60%
 			Heavy: 25%
-		Explosion: large_explosion
+		Explosion: artillery_explosion
 		WaterExplosion: large_splash
 		InfDeath: 3
 		SmudgeType: Crater
@@ -758,7 +758,7 @@ SubMissile:
 			None: 40%
 			Light: 30%
 			Heavy: 30%
-		Explosion: large_explosion
+		Explosion: artillery_explosion
 		WaterExplosion: large_splash
 		InfDeath: 3
 		SmudgeType: Crater
