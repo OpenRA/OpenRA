@@ -53,10 +53,11 @@ namespace OpenRA.Mods.RA.Activities
 			if (IsCanceled)
 				return NextActivity;
 
-			if (!Target.IsValid)
+			var type = Target.Type;
+			if (type != TargetType.Actor && type != TargetType.Terrain)
 				return NextActivity;
 				
-			if (!self.Owner.HasFogVisibility() && Target.Actor != null && Target.Actor.HasTrait<Mobile>() && !self.Owner.Shroud.IsTargetable(Target.Actor))
+			if (type == TargetType.Actor && !self.Owner.HasFogVisibility() && Target.Actor.HasTrait<Mobile>() && !self.Owner.Shroud.IsTargetable(Target.Actor))
 				return NextActivity;
 
 			if (targetable != null && !targetable.TargetableBy(Target.Actor, self))

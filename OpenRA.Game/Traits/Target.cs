@@ -14,7 +14,7 @@ using System.Linq;
 
 namespace OpenRA.Traits
 {
-	public enum TargetType { Invalid, Actor, Terrain }
+	public enum TargetType { Invalid, Actor, Terrain, FrozenActor }
 	public struct Target
 	{
 		public static readonly Target[] None = {};
@@ -22,6 +22,7 @@ namespace OpenRA.Traits
 
 		TargetType type;
 		Actor actor;
+		FrozenActor frozen;
 		WPos pos;
 		int generation;
 
@@ -44,8 +45,11 @@ namespace OpenRA.Traits
 			};
 		}
 
+		public static Target FromFrozenActor(FrozenActor a)  { return new Target { frozen = a, type = TargetType.FrozenActor }; }
+
 		public bool IsValid { get { return Type != TargetType.Invalid; } }
 		public Actor Actor { get { return actor; } }
+		public FrozenActor FrozenActor { get { return frozen; } }
 
 		public TargetType Type
 		{
@@ -71,10 +75,18 @@ namespace OpenRA.Traits
 		{
 			get
 			{
-				if (Type == TargetType.Invalid)
+				switch (Type)
+				{
+				case TargetType.Actor:
+					return actor.CenterPosition;
+				case TargetType.FrozenActor:
+					return frozen.CenterPosition;
+				case TargetType.Terrain:
+					return pos;
+				default:
+				case TargetType.Invalid:
 					throw new InvalidOperationException("Attempting to query the position of an invalid Target");
-
-				return actor != null ? actor.CenterPosition : pos;
+				}
 			}
 		}
 
@@ -84,17 +96,23 @@ namespace OpenRA.Traits
 		{
 			get
 			{
-				if (Type == TargetType.Invalid)
+				switch (Type)
+				{
+				case TargetType.Actor:
+					var targetable = actor.TraitOrDefault<ITargetable>();
+					if (targetable == null)
+						return new [] { actor.CenterPosition };
+
+					var positions = targetable.TargetablePositions(actor);
+					return positions.Any() ? positions : new [] { actor.CenterPosition };
+				case TargetType.FrozenActor:
+					return new [] { frozen.CenterPosition };
+				case TargetType.Terrain:
+					return new [] { pos };
+				default:
+				case TargetType.Invalid:
 					return NoPositions;
-
-				if (actor == null)
-					return new []{pos};
-
-				var targetable = actor.TraitOrDefault<ITargetable>();
-				if (targetable == null)
-					return new []{actor.CenterPosition};
-
-				return targetable.TargetablePositions(actor);
+				}
 			}
 		}
 

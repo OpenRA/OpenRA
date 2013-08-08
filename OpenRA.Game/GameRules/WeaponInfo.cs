@@ -149,10 +149,26 @@ namespace OpenRA.GameRules
 			return true;
 		}
 
+		public bool IsValidAgainst(FrozenActor a)
+		{
+			var targetable = a.Info.Traits.GetOrDefault<ITargetableInfo>();
+			if (targetable == null || !ValidTargets.Intersect(targetable.GetTargetTypes()).Any())
+				return false;
+
+			if (Warheads.All(w => w.EffectivenessAgainst(a.Info) <= 0))
+				return false;
+
+			return true;
+		}
+
+
 		public bool IsValidAgainst(Target target, World world)
 		{
 			if (target.Type == TargetType.Actor)
 				return IsValidAgainst(target.Actor);
+
+			if (target.Type == TargetType.FrozenActor)
+				return IsValidAgainst(target.FrozenActor);
 
 			if (target.Type == TargetType.Terrain)
 			{

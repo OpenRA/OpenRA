@@ -216,13 +216,15 @@ namespace OpenRA.Mods.RA
 
 			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, TargetModifiers modifiers, ref string cursor)
 			{
-				if (target.Type == TargetType.Actor)
+				switch (target.Type)
+				{
+				case TargetType.Actor:
 					return CanTargetActor(self, target.Actor, modifiers, ref cursor);
-
-				if (target.Type == TargetType.Terrain)
+				case TargetType.Terrain:
 					return CanTargetLocation(self, target.CenterPosition.ToCPos(), othersAtTarget, modifiers, ref cursor);
-
-				return false;
+				default:
+					return false;
+				}
 			}
 
 			public bool IsQueued { get; protected set; }
