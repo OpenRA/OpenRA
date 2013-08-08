@@ -31,7 +31,7 @@ ZSU-23:
 			Wood: 75%
 			Light: 75%
 			Concrete: 50%
-		Explosion: med_explosion
+		Explosion: small_explosion_air
 		Damage: 25
 
 Vulcan:
@@ -357,7 +357,7 @@ HellfireAA:
 			Wood: 75%
 			Light: 75%
 			Concrete: 50%
-		Explosion: med_explosion
+		Explosion: med_explosion_air
 		WaterExplosion: med_splash
 		InfDeath: 4
 		SmudgeType: Crater
@@ -514,7 +514,7 @@ MammothTusk:
 			Wood: 75%
 			Light: 60%
 			Heavy: 25%
-		Explosion: med_explosion
+		Explosion: med_explosion_air
 		WaterExplosion: med_splash
 		InfDeath: 3
 		SmudgeType: Crater
@@ -680,7 +680,7 @@ Nike:
 			Light: 90%
 			Heavy: 50%
 			Concrete: 0%
-		Explosion: med_explosion
+		Explosion: med_explosion_air
 		InfDeath: 3
 		SmudgeType: Crater
 		Damage: 100
@@ -707,7 +707,7 @@ RedEye:
 			Wood: 75%
 			Light: 60%
 			Heavy: 25%
-		Explosion: med_explosion
+		Explosion: med_explosion_air
 		InfDeath: 3
 		SmudgeType: Crater
 		Damage: 40
@@ -1215,7 +1215,7 @@ FLAK-23:
 			Light: 60%
 			Heavy: 10%
 			Concrete: 20%
-		Explosion: med_explosion
+		Explosion: small_explosion_air
 		Damage: 20
 
 Sniper:
