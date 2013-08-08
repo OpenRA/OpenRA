@@ -30,6 +30,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var ip = widget.Get<LabelWidget>("IP");
 			var ipFont = Game.Renderer.Fonts[ip.Font];
 
+			var location = widget.Get<LabelWidget>("LOCATION");
+			var locationFont = Game.Renderer.Fonts[location.Font];
+
+			var locationOffset = location.Bounds.Y;
 			var ipOffset = ip.Bounds.Y;
 			var latencyOffset = latency.Bounds.Y;
 			var tooltipHeight = widget.Bounds.Height;
@@ -39,27 +43,33 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			tooltipContainer.IsVisible = () => (orderManager.LobbyInfo.ClientWithIndex(clientIndex) != null);
 			tooltipContainer.BeforeRender = () =>
 			{
-				var width = Math.Max(adminFont.Measure(admin.GetText()).X, Math.Max(ipFont.Measure(ip.GetText()).X, latencyFont.Measure(latency.GetText()).X));
-				widget.Bounds.Width = width + 2*margin;
+				var width = Math.Max(locationFont.Measure(location.GetText()).X, (Math.Max(adminFont.Measure(admin.GetText()).X,
+					Math.Max(ipFont.Measure(ip.GetText()).X, latencyFont.Measure(latency.GetText()).X))));
+				widget.Bounds.Width = width + 2 * margin;
 				latency.Bounds.Width = widget.Bounds.Width;
 				ip.Bounds.Width = widget.Bounds.Width;
 				admin.Bounds.Width = widget.Bounds.Width;
+				location.Bounds.Width = widget.Bounds.Width;
 
 				ip.Bounds.Y = ipOffset;
 				latency.Bounds.Y = latencyOffset;
+				location.Bounds.Y = locationOffset;
 				widget.Bounds.Height = tooltipHeight;
 
 				if (admin.IsVisible())
 				{
 					ip.Bounds.Y += admin.Bounds.Height;
 					latency.Bounds.Y += admin.Bounds.Height;
+					location.Bounds.Y += admin.Bounds.Height;
 					widget.Bounds.Height += admin.Bounds.Height;
 				}
 			};
 
 			admin.IsVisible = () => orderManager.LobbyInfo.ClientWithIndex(clientIndex).IsAdmin;
 			latency.GetText = () => "Latency: {0}".F(LobbyUtils.LatencyDescription(orderManager.LobbyInfo.ClientWithIndex(clientIndex).Latency));
-			ip.GetText = () => LobbyUtils.DescriptiveIpAddress(orderManager.LobbyInfo.ClientWithIndex(clientIndex).IpAddress);
+			var ipAddress = orderManager.LobbyInfo.ClientWithIndex(clientIndex).IpAddress;
+			ip.GetText = () => LobbyUtils.DescriptiveIpAddress(ipAddress);
+			location.GetText = () => LobbyUtils.LookupCountry(ipAddress);
 		}
 	}
 }

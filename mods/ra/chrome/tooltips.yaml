@@ -60,7 +60,7 @@ Background@SPAWN_TOOLTIP:
 Background@CLIENT_TOOLTIP:
 	Logic:ClientTooltipLogic
 	Background:dialog4
-	Height:39
+	Height:51
 	Width:7
 	Children:
 		Label@ADMIN:
@@ -75,8 +75,13 @@ Background@CLIENT_TOOLTIP:
 			Height:10
 			Font:TinyBold
 			Align:Center
-		Label@LATENCY:
+		Label@LOCATION:
 			Y:19
+			Height:10
+			Font:TinyBold
+			Align:Center
+		Label@LATENCY:
+			Y:31
 			Height:10
 			Font:TinyBold
 			Align:Center

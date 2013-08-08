@@ -479,6 +479,10 @@
       <Project>{F33337BE-CB69-4B24-850F-07D23E408DDF}</Project>
       <Name>OpenRA.Utility</Name>
     </ProjectReference>
+    <ProjectReference Include="..\GeoIP\GeoIP.csproj">
+      <Project>{021DDD6A-A608-424C-9A9A-252D8A9989E0}</Project>
+      <Name>GeoIP</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
