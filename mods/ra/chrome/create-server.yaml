@@ -54,18 +54,18 @@ Background@CREATESERVER_BG:
 			Width:50
 			MaxLength:5
 			Height:25
-		Checkbox@ADVERTISE_CHECKBOX:
-			X:165
+		Checkbox@UPNP_CHECKBOX:
+			X:150
 			Y:130
 			Width:300
 			Height:20
-			Text:Advertise game Online
-		Checkbox@UPNP_CHECKBOX:
-			X:165
+			Text:Automatic port forwarding
+		Checkbox@ADVERTISE_CHECKBOX:
+			X:150
 			Y:165
 			Width:300
 			Height:20
-			Text:Automatic port forwarding
+			Text:Advertise game Online
 		Button@CREATE_BUTTON:
 			X:130
 			Y:PARENT_BOTTOM - 45
