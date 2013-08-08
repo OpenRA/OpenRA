@@ -23,6 +23,8 @@ namespace OpenRA.Traits
 
 	public class Shroud
 	{
+		[Sync] public bool Disabled = false;
+
 		Actor self;
 		Map map;
 
@@ -248,7 +250,7 @@ namespace OpenRA.Traits
 			if (!map.IsInMap(x, y))
 				return false;
 
-			if (!self.World.LobbyInfo.GlobalSettings.Shroud)
+			if (Disabled || !self.World.LobbyInfo.GlobalSettings.Shroud)
 				return true;
 
 			return explored[x, y] && (generatedShroudCount[x, y] == 0 || visibleCount[x, y] > 0);
@@ -267,7 +269,7 @@ namespace OpenRA.Traits
 			if (x < 0 || x >= map.MapSize.X || y < 0 || y >= map.MapSize.Y)
 				return false;
 
-			if (!self.World.LobbyInfo.GlobalSettings.Fog)
+			if (Disabled || !self.World.LobbyInfo.GlobalSettings.Fog)
 				return true;
 
 			return visibleCount[x, y] > 0;
