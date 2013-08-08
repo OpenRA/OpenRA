@@ -36,7 +36,7 @@ namespace GeoIP
 		int dboptions;
 		byte[] dbbuffer;
 
-		private static Country UNKNOWN_COUNTRY = new Country("--", "N/A");
+		private static Country UNKNOWN_COUNTRY = new Country("--", "Unknown Location");
 		private static int COUNTRY_BEGIN = 16776960;
 		private static int STRUCTURE_INFO_MAX_SIZE = 20;
 		private static int DATABASE_INFO_MAX_SIZE = 100;
@@ -59,9 +59,9 @@ namespace GeoIP
 		public static int GEOIP_CABLEDSL_SPEED = 2;
 		public static int GEOIP_CORPORATE_SPEED = 3;
 
-		private static String[] countryCode =
-		{
-		"--", "AP", "EU", "AD", "AE", "AF", "AG", "AI", "AL", "AM", "CW",
+		private static String[] countryCode = {
+		"--",
+		"AP", "EU", "AD", "AE", "AF", "AG", "AI", "AL", "AM", "CW",
 		"AO", "AQ", "AR", "AS", "AT", "AU", "AW", "AZ", "BA", "BB",
 		"BD", "BE", "BF", "BG", "BH", "BI", "BJ", "BM", "BN", "BO",
 		"BR", "BS", "BT", "BV", "BW", "BY", "BZ", "CA", "CC", "CD",
@@ -86,12 +86,11 @@ namespace GeoIP
 		"TZ", "UA", "UG", "UM", "US", "UY", "UZ", "VA", "VC", "VE",
 		"VG", "VI", "VN", "VU", "WF", "WS", "YE", "YT", "RS", "ZA",
 		"ZM", "ME", "ZW", "A1", "A2", "O1", "AX", "GG", "IM", "JE",
-		"BL", "MF", "BQ", "SS", "O1"
-		};
+		"BL", "MF", "BQ", "SS", "O1" };
 
-		private static String[] countryName =
-		{
-			"N/A", "Asia/Pacific Region", "Europe", "Andorra", "United Arab Emirates", "Afghanistan", "Antigua and Barbuda", "Anguilla", "Albania", "Armenia", "Curacao",
+		private static String[] countryName = {
+		"Unknown Location",
+		"Asia/Pacific Region", "Europe", "Andorra", "United Arab Emirates", "Afghanistan", "Antigua and Barbuda", "Anguilla", "Albania", "Armenia", "Curacao",
 		"Angola", "Antarctica", "Argentina", "American Samoa", "Austria", "Australia", "Aruba", "Azerbaijan", "Bosnia and Herzegovina", "Barbados",
 		"Bangladesh", "Belgium", "Burkina Faso", "Bulgaria", "Bahrain", "Burundi", "Benin", "Bermuda", "Brunei Darussalam", "Bolivia",
 		"Brazil", "Bahamas", "Bhutan", "Bouvet Island", "Botswana", "Belarus", "Belize", "Canada", "Cocos (Keeling) Islands", "Congo, The Democratic Republic of the",
@@ -116,7 +115,7 @@ namespace GeoIP
 		"Tanzania, United Republic of", "Ukraine", "Uganda", "United States Minor Outlying Islands", "United States", "Uruguay", "Uzbekistan", "Holy See (Vatican City State)", "Saint Vincent and the Grenadines", "Venezuela",
 		"Virgin Islands, British", "Virgin Islands, U.S.", "Vietnam", "Vanuatu", "Wallis and Futuna", "Samoa", "Yemen", "Mayotte", "Serbia", "South Africa",
 		"Zambia", "Montenegro", "Zimbabwe", "Anonymous Proxy", "Satellite Provider", "Other", "Aland Islands", "Guernsey", "Isle of Man", "Jersey",
-		"Saint Barthelemy", "Saint Martin", "Bonaire, Saint Eustatius and Saba", "South Sudan", "Other"};
+		"Saint Barthelemy", "Saint Martin", "Bonaire, Saint Eustatius and Saba", "South Sudan", "Other" };
 
 		public LookupService(String databaseFile, int options)
 		{
