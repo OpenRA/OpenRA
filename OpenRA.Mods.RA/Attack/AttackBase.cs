@@ -55,7 +55,7 @@ namespace OpenRA.Mods.RA
 				return false;
 
 			if (target.Type == TargetType.Actor && target.Actor.HasTrait<ITargetable>() &&
-				!target.Actor.Trait<ITargetable>().TargetableBy(target.Actor,self))
+				!target.Actor.Trait<ITargetable>().TargetableBy(target.Actor, self))
 				return false;
 
 			return true;
@@ -76,6 +76,7 @@ namespace OpenRA.Mods.RA
 					x.Second();
 				delayedActions[i] = x;
 			}
+
 			delayedActions.RemoveAll(a => a.First <= 0);
 		}
 
@@ -104,8 +105,7 @@ namespace OpenRA.Mods.RA
 				if (Armaments.Count() == 0)
 					yield break;
 
-				var negativeDamage = (Armaments.First().Weapon.Warheads[0].Damage < 0);
-
+				var negativeDamage = Armaments.First().Weapon.Warheads[0].Damage < 0;
 				yield return new AttackOrderTargeter("Attack", 6, negativeDamage);
 			}
 		}
@@ -114,33 +114,42 @@ namespace OpenRA.Mods.RA
 		{
 			if (order is AttackOrderTargeter)
 			{
-				if (target.Type == TargetType.Actor)
+				switch (target.Type)
+				{
+				case TargetType.Actor:
 					return new Order("Attack", self, queued) { TargetActor = target.Actor };
-				else
+				case TargetType.FrozenActor:
+					return new Order("Attack", self, queued) { ExtraData = target.FrozenActor.ID };
+				case TargetType.Terrain:
 					return new Order("Attack", self, queued) { TargetLocation = target.CenterPosition.ToCPos() };
+				}
 			}
+
 			return null;
 		}
 
 		public virtual void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "Attack" || order.OrderString == "AttackHold")
+			if (order.OrderString == "Attack")
 			{
-				var target = Target.FromOrder(order);
+				var target = self.ResolveFrozenActorOrder(order, Color.Red);
+				if (!target.IsValid)
+					return;
+
 				self.SetTargetLine(target, Color.Red);
-				AttackTarget(target, order.Queued, order.OrderString == "Attack");
+				AttackTarget(target, order.Queued, true);
 			}
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return (order.OrderString == "Attack" || order.OrderString == "AttackHold") ? "Attack" : null;
+			return order.OrderString == "Attack" ? "Attack" : null;
 		}
 
 		public abstract Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove);
 
 		public bool HasAnyValidWeapons(Target t) { return Armaments.Any(a => a.Weapon.IsValidAgainst(t, self.World)); }
-		public WRange GetMaximumRange() { return new WRange((int)(1024*Armaments.Max(a => a.Weapon.Range))); }
+		public WRange GetMaximumRange() { return new WRange((int)(1024 * Armaments.Max(a => a.Weapon.Range))); }
 
 		public Armament ChooseArmamentForTarget(Target t) { return Armaments.FirstOrDefault(a => a.Weapon.IsValidAgainst(t, self.World)); }
 
@@ -169,16 +178,16 @@ namespace OpenRA.Mods.RA
 			public string OrderID { get; private set; }
 			public int OrderPriority { get; private set; }
 
-			bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
+			bool CanTargetActor(Actor self, Target target, TargetModifiers modifiers, ref string cursor)
 			{
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
 				cursor = self.Info.Traits.Get<AttackBaseInfo>().Cursor;
 
-				if (self == target)
+				if (target.Type == TargetType.Actor && target.Actor == self)
 					return false;
 
-				if (!self.Trait<AttackBase>().HasAnyValidWeapons(Target.FromActor(target)))
+				if (!self.Trait<AttackBase>().HasAnyValidWeapons(target))
 					return false;
 
 				if (modifiers.HasModifier(TargetModifiers.ForceAttack))
@@ -189,7 +198,8 @@ namespace OpenRA.Mods.RA
 
 				var targetableRelationship = negativeDamage ? Stance.Ally : Stance.Enemy;
 
-				return self.Owner.Stances[target.Owner] == targetableRelationship;
+				var owner = target.Type == TargetType.FrozenActor ? target.FrozenActor.Owner : target.Actor.Owner;
+				return self.Owner.Stances[owner] == targetableRelationship;
 			}
 
 			bool CanTargetLocation(Actor self, CPos location, List<Actor> actorsAtLocation, TargetModifiers modifiers, ref string cursor)
@@ -219,7 +229,8 @@ namespace OpenRA.Mods.RA
 				switch (target.Type)
 				{
 				case TargetType.Actor:
-					return CanTargetActor(self, target.Actor, modifiers, ref cursor);
+				case TargetType.FrozenActor:
+					return CanTargetActor(self, target, modifiers, ref cursor);
 				case TargetType.Terrain:
 					return CanTargetLocation(self, target.CenterPosition.ToCPos(), othersAtTarget, modifiers, ref cursor);
 				default:
