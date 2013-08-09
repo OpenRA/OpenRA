@@ -22,10 +22,22 @@ explosion:
 	piffs: piffpiff
 		Start: 0
 		Length: *
+	water_piff: wpiff
+		Start: 0
+		Length: *
+	water_piffs: wpifpif
+		Start: 0
+		Length: *
 	small_explosion: veh-hit3
 		Start: 0
 		Length: *
 	med_explosion: veh-hit2
+		Start: 0
+		Length: *
+	small_explosion_air: flak
+		Start: 0
+		Length: *
+	med_explosion_air: veh-hit1
 		Start: 0
 		Length: *
 	large_splash: h2o_exp1
