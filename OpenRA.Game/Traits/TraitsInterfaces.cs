@@ -143,6 +143,13 @@ namespace OpenRA.Traits
 		void SetVisualPosition(Actor self, WPos pos);
 	}
 
+	public interface IMove
+	{
+		Activity MoveTo(CPos cell, int nearEnough);
+		Activity MoveTo(CPos cell, Actor ignoredActor);
+		Activity MoveWithinRange(Target target, WRange range);
+	}
+
 	public interface INotifyBlockingMove { void OnNotifyBlockingMove(Actor self, Actor blocking); }
 
 	public interface IFacing
