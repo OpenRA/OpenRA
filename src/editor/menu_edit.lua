@@ -157,20 +157,40 @@ frame:Connect(ID_COMMENT, wx.wxEVT_COMMAND_MENU_SELECTED,
   function (event)
     local editor = GetEditor()
     local buf = {}
-    if editor:GetSelectionStart() == editor:GetSelectionEnd() then
-      local lineNumber = editor:GetCurrentLine()
-      editor:SetSelection(editor:PositionFromLine(lineNumber), editor:GetLineEndPosition(lineNumber))
-    end
+
+    -- capture the current position in line to restore later
+    local curline = editor:GetCurrentLine()
+    local curlen = #editor:GetLine(curline)
+    local curpos = editor:GetCurrentPos()-editor:PositionFromLine(curline)
+
+    -- for multi-line selection, always start the first line at the beginning
+    local ssel, esel = editor:GetSelectionStart(), editor:GetSelectionEnd()
+    local sline = editor:LineFromPosition(ssel)
+    local eline = editor:LineFromPosition(esel)
+    local sel = ssel ~= esel
+    local rect = editor:SelectionIsRectangle()
+
+    editor:BeginUndoAction()
     local lc = editor.spec.linecomment
-    for line in string.gmatch(editor:GetSelectedText()..'\n', "(.-)\r?\n") do
-      if string.sub(line,1,#lc) == lc then
-        line = string.sub(line,#lc+1)
-      elseif #line > 0 then
-        line = lc..line
+    -- go last to first as selection positions we captured may be affected
+    -- by text changes
+    for line = eline, sline, -1 do
+      local pos = sel and (sline == eline or rect)
+        and ssel-editor:PositionFromLine(sline)+1 or 1
+      local text = editor:GetLine(line)
+      if string.sub(text,pos,pos+#lc-1) == lc then
+        editor:DeleteRange(pos+editor:PositionFromLine(line)-1, #lc)
+      elseif #text > 0
+      and line == sline or line < eline or esel-editor:PositionFromLine(line) > 0 then
+        editor:InsertText(pos+editor:PositionFromLine(line)-1, lc)
       end
-      table.insert(buf, line)
     end
-    editor:ReplaceSelection(table.concat(buf,"\n"))
+    editor:EndUndoAction()
+
+    -- position the cursor exactly where its position was, which
+    -- could have shifted depending on whether the text was added or removed.
+    editor:GotoPos(editor:PositionFromLine(curline)
+      + math.max(0, curpos+#editor:GetLine(curline)-curlen))
   end)
 frame:Connect(ID_COMMENT, wx.wxEVT_UPDATE_UI, OnUpdateUIEditMenu)
 
