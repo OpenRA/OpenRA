@@ -1,0 +1,558 @@
+walla:
+	idle:
+		Start: 0
+		Length: 16
+	scratched-idle:
+		Start: 0
+		Length: 16
+	damaged-idle:
+		Start: 16
+		Length: 16
+	critical-idle:
+		Start: 16
+		Length: 16
+
+guntowera:
+	idle:
+		Start: 0
+		Facings: 1
+	recoil:
+		Start: 0
+		Facings: 1
+	damaged-idle:
+		Start: 0
+		Facings: 1
+	damaged-recoil:
+		Start: 0
+		Facings: 1
+	turret: gunturreta
+		Start: 0
+		Facings: 32
+
+rockettowera:
+	idle:
+		Start: 0
+		Facings: 1
+	recoil:
+		Start: 0
+		Facings: 1
+	damaged-idle:
+		Start: 0
+		Facings: 1
+	damaged-recoil:
+		Start: 0
+		Facings: 1
+	turret: rocketturreta
+		Start: 0
+		Facings: 32
+
+conyarda:
+	idle:
+		Start: 0
+	make: conmake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 1
+	#build: cranea
+	#	Start: 0
+	#	Length: 14
+	#	Tick: 75
+	#damaged-build: cranea
+	#	Start: 0
+	#	Length: 14
+	#	Tick: 75
+
+repair:
+	idle:
+		Start: 0
+	active:
+		Start: 0
+		Length: 10
+		Tick: 60
+	damaged-active:
+		Start: 10
+		Length: 10
+		Tick: 60
+	make: repairmake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 10
+
+starporta:
+	idle:
+		Start: 0
+	active:
+		Start: 0
+		Length: 1
+	damaged-idle:
+		Start: 1
+	damaged-active:
+		Start: 1
+	make: starportmake
+		Start: 0
+		Length: *
+
+pwra:
+	idle:
+		Start: 0
+		Length: 6
+		Tick: 160
+	make: wtrpmake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 6
+
+barra:
+	idle:
+		Start: 0
+	make: barramake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 1
+
+radara:
+	idle:
+		Start: 0
+	make: radarmake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 1
+
+refa:
+	idle:
+		Start: 0
+		Length: 1
+	make: refmake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 0
+	build-top:
+		Start: 1
+		Length: 1
+	damaged-build-top:
+		Start: 2
+		Length: 1
+	idle-top:
+		Start: 1
+	damaged-idle-top:
+		Start: 2
+
+siloa:
+	idle:
+		Start: 0
+		Length: 4
+	damaged-idle:
+		Start: 4
+		Length: 1
+	make: silomake
+		Start: 0
+		Length: *
+
+hightecha:
+	idle:
+		Start: 0
+	make: highmake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 1
+
+research:
+	idle:
+		Start: 0
+		Length: 20
+		Tick: 80
+	make: researchmake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 20
+		Length: 20
+		Tick: 80
+
+palacea:
+	idle:
+		Start: 0
+	make: palacemake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 1
+
+
+lighta:
+	idle:
+		Start: 0
+		Length: 1
+	make: lightmake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 0
+	build-top:
+		Start: 1
+		Length: 1
+	damaged-build-top:
+		Start: 2
+		Length: 1
+	idle-top:
+		Start: 1
+	damaged-idle-top:
+		Start: 2
+
+heavya:
+	idle:
+		Start: 0
+		Length: 1
+	make: heavymake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 0
+	build-top:
+		Start: 1
+		Length: 1
+	damaged-build-top:
+		Start: 2
+		Length: 1
+	idle-top:
+		Start: 1
+	damaged-idle-top:
+		Start: 2
+
+conyardh:
+	idle:
+		Start: 0
+	make: conmake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 1
+
+starporth:
+	idle:
+		Start: 0
+	active:
+		Start: 0
+		Length: 1
+	damaged-idle:
+		Start: 1
+	damaged-active:
+		Start: 1
+	make: starportmake
+		Start: 0
+		Length: *
+
+pwrh:
+	idle:
+		Start: 0
+		Length: 6
+		Tick: 160
+	make: wtrpmake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 6
+
+barrh:
+	idle:
+		Start: 0
+	make: barrhmake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 1
+
+radarh:
+	idle:
+		Start: 0
+	make: radarmake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 1
+
+refh:
+	idle:
+		Start: 0
+		Length: 1
+	make: refmake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 0
+	build-top:
+		Start: 1
+		Length: 1
+	damaged-build-top:
+		Start: 2
+		Length: 1
+	idle-top:
+		Start: 1
+	damaged-idle-top:
+		Start: 2
+
+siloh:
+	idle:
+		Start: 0
+		Length: 4
+	damaged-idle:
+		Start: 4
+		Length: 1
+	make: silomake
+		Start: 0
+		Length: *
+
+hightechh:
+	idle:
+		Start: 0
+	make: highmake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 1
+
+palaceh:
+	idle:
+		Start: 0
+	make: palacemake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 7
+	active:
+		Start: 1
+		Length: 6
+		Tick: 160
+	damaged-active:
+		Start: 8
+		Length: 6
+		Tick: 160
+
+lighth:
+	idle:
+		Start: 0
+		Length: 1
+	make: lightmake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 0
+	build-top:
+		Start: 1
+		Length: 1
+	damaged-build-top:
+		Start: 2
+		Length: 1
+	idle-top:
+		Start: 1
+	damaged-idle-top:
+		Start: 2
+
+heavyh:
+	idle:
+		Start: 0
+		Length: 1
+	make: heavymake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 0
+	build-top:
+		Start: 1
+		Length: 1
+	damaged-build-top:
+		Start: 2
+		Length: 1
+	idle-top:
+		Start: 1
+	damaged-idle-top:
+		Start: 2
+
+conyardo:
+	idle:
+		Start: 0
+	make: conmake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 1
+
+starporto:
+	idle:
+		Start: 0
+	active:
+		Start: 0
+		Length: 1
+	damaged-idle:
+		Start: 1
+	damaged-active:
+		Start: 1
+	make: starportmake
+		Start: 0
+		Length: *
+
+pwro:
+	idle:
+		Start: 0
+		Length: 6
+		Tick: 160
+	make: wtrpmake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 6
+
+barro:
+	idle:
+		Start: 0
+	make: barromake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 1
+
+radaro:
+	idle:
+		Start: 0
+	make: radarmake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 1
+
+refo:
+	idle:
+		Start: 0
+		Length: 1
+	make: refmake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 0
+	build-top:
+		Start: 1
+		Length: 1
+	damaged-build-top:
+		Start: 2
+		Length: 1
+	idle-top:
+		Start: 1
+	damaged-idle-top:
+		Start: 2
+
+siloo:
+	idle:
+		Start: 0
+		Length: 4
+	damaged-idle:
+		Start: 4
+		Length: 1
+	make: silomake
+		Start: 0
+		Length: *
+
+hightecho:
+	idle:
+		Start: 0
+	make: highmake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 1
+
+palaceo:
+	idle:
+		Start: 0
+	make: palacemake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 1
+
+
+lighto:
+	idle:
+		Start: 0
+		Length: 1
+	make: lightmake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 0
+	build-top:
+		Start: 1
+		Length: 1
+	damaged-build-top:
+		Start: 2
+		Length: 1
+	idle-top:
+		Start: 1
+	damaged-idle-top:
+		Start: 2
+
+heavyo:
+	idle:
+		Start: 0
+		Length: 1
+	make: heavymake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 0
+	build-top:
+		Start: 1
+		Length: 1
+	damaged-build-top:
+		Start: 2
+		Length: 1
+	idle-top:
+		Start: 1
+	damaged-idle-top:
+		Start: 2
+
+palacec:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+starportc:
+	idle:
+		Start: 0
+	active:
+		Start: 0
+		Length: 1
+	damaged-idle:
+		Start: 1
+	damaged-active:
+		Start: 1
+	make: starportmake
+		Start: 0
+		Length: *
+
+heavyc:
+	idle:
+		Start: 0
+		Length: 1
+	make: heavymake
+		Start: 0
+		Length: *
+	damaged-idle:
+		Start: 0
+	build-top:
+		Start: 1
+		Length: 1
+	damaged-build-top:
+		Start: 2
+		Length: 1
+	idle-top:
+		Start: 1
+	damaged-idle-top:
+		Start: 2

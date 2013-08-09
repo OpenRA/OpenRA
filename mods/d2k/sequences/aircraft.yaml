@@ -1,0 +1,19 @@
+carryall:
+	idle:
+		Start: 0
+		Facings: 32
+	unload:
+		Start: 0
+		Facings: 32
+
+orni:
+	idle:
+		Start: 0
+		Facings: 32
+		Length: 3
+		Tick: 120
+
+frigate:
+	idle:
+		Start: 0
+		Facings: 1
