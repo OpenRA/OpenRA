@@ -21,28 +21,19 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 	{
 		static List<Widget> controls = new List<Widget>();
 
-		int validPlayers = 0;
 		readonly World world;
 
 		[ObjectCreator.UseCtor]
-		public DiplomacyLogic(World world)
+		public DiplomacyLogic(Widget widget, Action onExit, World world)
 		{
 			this.world = world;
-			var root = Ui.Root.Get("INGAME_ROOT");
+			var root = Ui.Root.Get("DIPLOMACY");
 			var diplomacyBG = root.Get("DIPLOMACY_BG");
-			var diplomacy = root.Get<ButtonWidget>("INGAME_DIPLOMACY_BUTTON");
+			LayoutDialog(diplomacyBG);
 
-			diplomacy.OnClick = () =>
-			{
-				diplomacyBG.Visible = !diplomacyBG.Visible;
-				if (diplomacyBG.IsVisible())
-					LayoutDialog(diplomacyBG);
-			};
-
-			validPlayers = world.Players.Where(a => a != world.LocalPlayer && !a.NonCombatant).Count();
-			diplomacy.IsVisible = () => (validPlayers > 0);
-
-			diplomacyBG.Get<ButtonWidget>("CLOSE_DIPLOMACY").OnClick = () => { diplomacyBG.Visible = false; };
+			var close = widget.GetOrNull<ButtonWidget>("CLOSE_DIPLOMACY");
+			if (close != null)
+				close.OnClick = () => { Ui.CloseWindow(); onExit(); };
 		}
 
 		// This is shit

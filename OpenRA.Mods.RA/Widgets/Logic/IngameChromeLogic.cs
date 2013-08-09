@@ -83,6 +83,17 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			var playerWidgets = Game.LoadWidget(world, "PLAYER_WIDGETS", playerRoot, new WidgetArgs());
 
+			Widget diplomacy = null;
+			diplomacy = Game.LoadWidget(world, "DIPLOMACY", playerWidgets, new WidgetArgs
+			{
+				{ "onExit", () => diplomacy.Visible = false }
+			});
+			var diplomacyButton = playerWidgets.Get<ButtonWidget>("INGAME_DIPLOMACY_BUTTON");
+			diplomacyButton.OnClick = () => diplomacy.Visible ^= true;
+			int validPlayers = 0;
+			validPlayers = world.Players.Where(a => a != world.LocalPlayer && !a.NonCombatant).Count();
+			diplomacyButton.IsVisible = () => validPlayers > 0;
+
 			Widget cheats = null;
 			cheats = Game.LoadWidget(world, "CHEATS_PANEL", playerWidgets, new WidgetArgs
 			{
