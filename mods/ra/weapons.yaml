@@ -1252,15 +1252,15 @@ Sniper:
 	Range: 10
 	Projectile: Bullet
 		Speed: 100
-	Warhead: 
+	Warhead:
 		Damage: 140
 		Spread: 1
-		Versus: 
+		Versus:
 			None: 100%
-			Wood: 5%
-			Light: 5%
-			Heavy: 5%
-			Concrete: 5%
+			Wood: 0%
+			Light: 0%
+			Heavy: 0%
+			Concrete: 0%
 		InfDeath: 2
 
 ChronoTusk:
