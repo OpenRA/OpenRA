@@ -34,7 +34,12 @@ Rules:
 	mods/d2k/rules/ordos.yaml
 
 Sequences:
-	mods/d2k/sequences.yaml
+	mods/d2k/sequences/aircraft.yaml
+	mods/d2k/sequences/vehicles.yaml
+	mods/d2k/sequences/infantry.yaml
+	mods/d2k/sequences/structures.yaml
+	mods/d2k/sequences/misc.yaml
+	mods/d2k/sequences/map.yaml
 
 Cursors:
 	mods/d2k/cursors.yaml

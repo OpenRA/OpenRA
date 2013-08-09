@@ -153,6 +153,7 @@ SectionGroup /e "Mods"
 		File /r "${SRCDIR}\mods\d2k\bits"
 		File /r "${SRCDIR}\mods\d2k\rules"
 		File /r "${SRCDIR}\mods\d2k\tilesets"
+		File /r "${SRCDIR}\mods\d2k\sequences"
 		File /r "${SRCDIR}\mods\d2k\uibits"
 		File /r "${SRCDIR}\mods\d2k\weapons"
 	SectionEnd
