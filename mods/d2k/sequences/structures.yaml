@@ -53,38 +53,136 @@ wallo:
 		Offset: -16,16
 
 guntowera:
-	idle:
-		Start: 0
+	idle: DATA.R8
+		Start: 2573
 		Facings: 1
-	recoil:
-		Start: 0
+		Offset: -24,24
+	recoil: DATA.R8
+		Start: 2573
 		Facings: 1
-	damaged-idle:
-		Start: 0
+		Offset: -24,24
+	damaged-idle: DATA.R8
+		Start: 2573
 		Facings: 1
-	damaged-recoil:
-		Start: 0
+		Offset: -24,24
+	damaged-recoil: DATA.R8
+		Start: 2573
 		Facings: 1
-	turret: gunturreta
-		Start: 0
-		Facings: 32
+		Offset: -24,24
+	turret: DATA.R8
+		Start: 2589
+		Facings: -32
+		Offset: -24,24
+
+guntowerh:
+	idle: DATA.R8
+		Start: 2733
+		Facings: 1
+		Offset: -24,24
+	recoil: DATA.R8
+		Start: 2733
+		Facings: 1
+		Offset: -24,24
+	damaged-idle: DATA.R8
+		Start: 2733
+		Facings: 1
+		Offset: -24,24
+	damaged-recoil: DATA.R8
+		Start: 2733
+		Facings: 1
+		Offset: -24,24
+	turret: DATA.R8
+		Start: 2749
+		Facings: -32
+		Offset: -24,24
+
+guntowero:
+	idle: DATA.R8
+		Start: 2893
+		Facings: 1
+		Offset: -24,24
+	recoil: DATA.R8
+		Start: 2893
+		Facings: 1
+		Offset: -24,24
+	damaged-idle: DATA.R8
+		Start: 2893
+		Facings: 1
+		Offset: -24,24
+	damaged-recoil: DATA.R8
+		Start: 2893
+		Facings: 1
+		Offset: -24,24
+	turret: DATA.R8
+		Start: 2909
+		Facings: -32
+		Offset: -24,24
 
 rockettowera:
-	idle:
-		Start: 0
+	idle: DATA.R8
+		Start: 2733
 		Facings: 1
-	recoil:
-		Start: 0
+		Offset: -24,24
+	recoil: DATA.R8
+		Start: 2733
 		Facings: 1
-	damaged-idle:
-		Start: 0
+		Offset: -24,24
+	damaged-idle: DATA.R8
+		Start: 2733
 		Facings: 1
-	damaged-recoil:
-		Start: 0
+		Offset: -24,24
+	damaged-recoil: DATA.R8
+		Start: 2733
 		Facings: 1
-	turret: rocketturreta
-		Start: 0
-		Facings: 32
+		Offset: -24,24
+	turret: DATA.R8
+		Start: 2637
+		Facings: -32
+		Offset: -24,24
+
+rockettowerh:
+	idle: DATA.R8
+		Start: 2781
+		Facings: 1
+		Offset: -24,24
+	recoil: DATA.R8
+		Start: 2781
+		Facings: 1
+		Offset: -24,24
+	damaged-idle: DATA.R8
+		Start: 2781
+		Facings: 1
+		Offset: -24,24
+	damaged-recoil: DATA.R8
+		Start: 2781
+		Facings: 1
+		Offset: -24,24
+	turret: DATA.R8
+		Start: 2828
+		Facings: -32
+		Offset: -24,24
+
+rockettowero:
+	idle: DATA.R8
+		Start: 2941
+		Facings: 1
+		Offset: -24,24
+	recoil: DATA.R8
+		Start: 2941
+		Facings: 1
+		Offset: -24,24
+	damaged-idle: DATA.R8
+		Start: 2941
+		Facings: 1
+		Offset: -24,24
+	damaged-recoil: DATA.R8
+		Start: 2941
+		Facings: 1
+		Offset: -24,24
+	turret: DATA.R8
+		Start: 2988
+		Facings: -32
+		Offset: -24,24
 
 conyarda:
 	idle:
