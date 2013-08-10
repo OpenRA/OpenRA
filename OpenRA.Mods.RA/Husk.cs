@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA
 		public int GetInitialFacing() { return 128; }
 	}
 
-	class Husk : IPositionable, IFacing, ISync
+	class Husk : IPositionable, IFacing, ISync, INotifyKilled
 	{
 		readonly HuskInfo info;
 		readonly Actor self;
@@ -72,6 +72,13 @@ namespace OpenRA.Mods.RA
 			CenterPosition = pos;
 			TopLeft = pos.ToCPos();
 			self.World.ActorMap.Add(self, this);
+		}
+
+		// Revert stats so a unit does not get counted twice if it leaves husks
+		public void Killed(Actor self, AttackInfo e)
+		{
+			e.Attacker.Owner.Kills--;
+			self.Owner.Deaths--;
 		}
 	}
 
