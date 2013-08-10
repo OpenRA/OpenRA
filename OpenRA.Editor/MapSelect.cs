@@ -40,7 +40,7 @@ namespace OpenRA.Editor
 		void MapSelect_Load(object sender, EventArgs e)
 		{
 			MapList.Items.Clear();
-			txtPathOut.Text = MapFolderPath;
+			PathOutText.Text = MapFolderPath;
 
 			if (DirectoryIsEmpty(MapFolderPath))
 				return;
@@ -55,7 +55,7 @@ namespace OpenRA.Editor
 			}
 
 			// hack
-			if (txtNew.Text != "unnamed")
+			if (NewText.Text != "unnamed")
 				MapList.Items[0].Selected = true;
 		}
 
@@ -63,31 +63,30 @@ namespace OpenRA.Editor
 		{
 			if (MapList.SelectedItems.Count == 1)
 			{
-				txtNew.Text = MapList.SelectedItems[0].Text;
-				txtNew.Tag = MapList.SelectedItems[0].Tag;
+				NewText.Text = MapList.SelectedItems[0].Text;
+				NewText.Tag = MapList.SelectedItems[0].Tag;
 
-				var map = new Map(txtNew.Tag as string);
-				txtTitle.Text = map.Title;
-				txtAuthor.Text = map.Author;
-				txtTheater.Text = map.Tileset;
-				txtDesc.Text = map.Description;
-				pbMinimap.Image = null;
+				var map = new Map(NewText.Tag as string);
+				TitleText.Text = map.Title;
+				AuthorText.Text = map.Author;
+				TheaterText.Text = map.Tileset;
+				DescTxt.Text = map.Description;
+				MiniMapBox.Image = null;
 
 				try
 				{
-					pbMinimap.Image = Minimap.AddStaticResources(map, Minimap.TerrainBitmap(map, true));
+					MiniMapBox.Image = Minimap.AddStaticResources(map, Minimap.TerrainBitmap(map, true));
 				}
 				catch (Exception ed)
 				{
 					Console.WriteLine("No map preview image found: {0}", ed.ToString());
 				}
-				finally { }
 			}
 		}
 
-		void txtPathOut_TextChanged(object sender, EventArgs e)
+		void PathOutTextChanged(object sender, EventArgs e)
 		{
-			MapFolderPath = txtPathOut.Text;
+			MapFolderPath = PathOutText.Text;
 		}
 	}
 }

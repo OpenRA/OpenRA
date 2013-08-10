@@ -21,7 +21,7 @@ namespace OpenRA.Renderer.Null
 	{
 		public IGraphicsDevice Create(Size size, WindowMode windowMode)
 		{
-			return new NullGraphicsDevice( size, windowMode );
+			return new NullGraphicsDevice(size, windowMode);
 		}
 	}
 
@@ -54,7 +54,7 @@ namespace OpenRA.Renderer.Null
 		}
 
 		public void DrawPrimitives(PrimitiveType pt, int firstVertex, int numVertices) { }
-		public void SetLineWidth( float width ) { }
+		public void SetLineWidth(float width) { }
 
 		public IVertexBuffer<Vertex> CreateVertexBuffer(int size) { return new NullVertexBuffer<Vertex>(); }
 		public ITexture CreateTexture() { return new NullTexture(); }

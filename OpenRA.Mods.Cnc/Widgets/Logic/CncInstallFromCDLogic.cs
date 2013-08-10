@@ -54,9 +54,9 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		public static bool IsValidDisk(string diskRoot)
 		{
 			var files = new string[][] {
-				new [] { diskRoot, "CONQUER.MIX" },
-				new [] { diskRoot, "DESERT.MIX" },
-				new [] { diskRoot, "INSTALL", "SETUP.Z" },
+				new[] { diskRoot, "CONQUER.MIX" },
+				new[] { diskRoot, "DESERT.MIX" },
+				new[] { diskRoot, "INSTALL", "SETUP.Z" },
 			};
 
 			return files.All(f => File.Exists(f.Aggregate(Path.Combine)));
@@ -89,7 +89,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			var installTotal = filesToExtract.Count() + filesToExtract.Count();
 			var onProgress = (Action<string>)(s => Game.RunAfterTick(() =>
 			{
-				progressBar.Percentage = installCounter*100/installTotal;
+				progressBar.Percentage = installCounter * 100 / installTotal;
 				installCounter++;
 
 				statusLabel.GetText = () => s;
@@ -97,12 +97,12 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 			var onError = (Action<string>)(s => Game.RunAfterTick(() =>
 			{
-				statusLabel.GetText = () => "Error: "+s;
+				statusLabel.GetText = () => "Error: " + s;
 				backButton.IsDisabled = () => false;
 				retryButton.IsDisabled = () => false;
 			}));
 
-			new Thread( _ =>
+			new Thread(_ =>
 			{
 				try
 				{

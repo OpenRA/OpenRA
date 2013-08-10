@@ -15,25 +15,25 @@ using OpenRA.FileFormats;
 using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Move;
+using OpenRA.Scripting;
 using OpenRA.Traits;
 using OpenRA.Widgets;
-using OpenRA.Scripting;
 
 namespace OpenRA.Mods.Cnc.Missions
 {
 	class Gdi01ScriptInfo : TraitInfo<Gdi01Script> { }
 
-	class Gdi01Script: IWorldLoaded, ITick
+	class Gdi01Script : IWorldLoaded, ITick
 	{
-		Dictionary<string, Actor> Actors;
-		Dictionary<string, Player> Players;
+		Dictionary<string, Actor> actors;
+		Dictionary<string, Player> players;
 
 		public void WorldLoaded(World w)
 		{
-			Players = w.Players.ToDictionary(p => p.InternalName);
-			Actors = w.WorldActor.Trait<SpawnMapActors>().Actors;
+			players = w.Players.ToDictionary(p => p.InternalName);
+			actors = w.WorldActor.Trait<SpawnMapActors>().Actors;
 			var b = w.Map.Bounds;
-			Game.MoveViewport(new CPos(b.Left + b.Width/2, b.Top + b.Height/2).ToFloat2());
+			Game.MoveViewport(new CPos(b.Left + b.Width / 2, b.Top + b.Height / 2).ToFloat2());
 
 			Action afterFMV = () =>
 			{
@@ -48,10 +48,10 @@ namespace OpenRA.Mods.Cnc.Missions
 		{
 			Action afterFMV = () =>
 			{
-				Players["GoodGuy"].WinState = WinState.Won;
+				players["GoodGuy"].WinState = WinState.Won;
 				started = false;
 				Sound.StopMusic();
-				Sound.PlayToPlayer(Players["GoodGuy"], "accom1.aud");
+				Sound.PlayToPlayer(players["GoodGuy"], "accom1.aud");
 			};
 			Game.RunAfterDelay(0, () => Media.PlayFMVFullscreen(w, "consyard.vqa", afterFMV));
 		}
@@ -60,10 +60,10 @@ namespace OpenRA.Mods.Cnc.Missions
 		{
 			Action afterFMV = () =>
 			{
-				Players["GoodGuy"].WinState = WinState.Lost;
+				players["GoodGuy"].WinState = WinState.Lost;
 				started = false;
 				Sound.StopMusic();
-				Sound.PlayToPlayer(Players["GoodGuy"], "fail1.aud");
+				Sound.PlayToPlayer(players["GoodGuy"], "fail1.aud");
 			};
 			Game.RunAfterDelay(0, () => Media.PlayFMVFullscreen(w, "gameover.vqa", afterFMV));
 		}
@@ -82,27 +82,29 @@ namespace OpenRA.Mods.Cnc.Missions
 				SetGunboatPath();
 				self.World.AddFrameEndTask(w =>
 				{
-					//Initial Nod reinforcements
-					foreach (var i in new[]{ "e1", "e1" })
+					// Initial Nod reinforcements
+					foreach (var i in new[] { "e1", "e1" })
 					{
 						var a = self.World.CreateActor(i.ToLowerInvariant(), new TypeDictionary
 						{
-							new OwnerInit(Players["BadGuy"]),
+							new OwnerInit(players["BadGuy"]),
 							new FacingInit(0),
-							new LocationInit(Actors["nod0"].Location),
+							new LocationInit(actors["nod0"].Location),
 						});
 						var mobile = a.Trait<Mobile>();
-						a.QueueActivity(mobile.MoveTo(Actors["nod1"].Location, 2 ));
-						a.QueueActivity(mobile.MoveTo(Actors["nod2"].Location, 2 ));
-						a.QueueActivity(mobile.MoveTo(Actors["nod3"].Location, 2 ));
+						a.QueueActivity(mobile.MoveTo(actors["nod1"].Location, 2));
+						a.QueueActivity(mobile.MoveTo(actors["nod2"].Location, 2));
+						a.QueueActivity(mobile.MoveTo(actors["nod3"].Location, 2));
+
 						// TODO: Queue hunt order
 					}
 				});
 			}
+
 			// GoodGuy win conditions
 			// BadGuy is dead
 			var badcount = self.World.Actors.Count(a => a != a.Owner.PlayerActor &&
-											       a.Owner == Players["BadGuy"] && !a.IsDead());
+											       a.Owner == players["BadGuy"] && !a.IsDead());
 			if (badcount != lastBadCount)
 			{
 				Game.Debug("{0} badguys remain".F(badcount));
@@ -112,51 +114,51 @@ namespace OpenRA.Mods.Cnc.Missions
 					OnVictory(self.World);
 			}
 
-			//GoodGuy lose conditions: MCV/cyard must survive
+			// GoodGuy lose conditions: MCV/cyard must survive
 			var hasAnything = self.World.ActorsWithTrait<MustBeDestroyed>()
-				.Any( a => a.Actor.Owner == Players["GoodGuy"] );
+				.Any(a => a.Actor.Owner == players["GoodGuy"]);
 			if (!hasAnything)
 				OnLose(self.World);
 
 			// GoodGuy reinforcements
-			if (ticks == 25*5)
+			if (ticks == 25 * 5)
 			{
 				ReinforceFromSea(self.World,
-								 Actors["lstStart"].Location,
-								 Actors["lstEnd"].Location,
+								 actors["lstStart"].Location,
+								 actors["lstEnd"].Location,
 								 new CPos(53, 53),
-								 new string[] {"e1","e1","e1"},
-								 Players["GoodGuy"]);
+								 new string[] { "e1", "e1", "e1" },
+								 players["GoodGuy"]);
 			}
 
-			if (ticks == 25*15)
+			if (ticks == 25 * 15)
 			{
 				ReinforceFromSea(self.World,
-								 Actors["lstStart"].Location,
-								 Actors["lstEnd"].Location,
+								 actors["lstStart"].Location,
+								 actors["lstEnd"].Location,
 								 new CPos(53, 53),
-								 new string[] {"e1","e1","e1"},
-								 Players["GoodGuy"]);
+								 new string[] { "e1", "e1", "e1" },
+								 players["GoodGuy"]);
 			}
 
-			if (ticks == 25*30)
+			if (ticks == 25 * 30)
 			{
 				ReinforceFromSea(self.World,
-								 Actors["lstStart"].Location,
-								 Actors["lstEnd"].Location,
+								 actors["lstStart"].Location,
+								 actors["lstEnd"].Location,
 								 new CPos(53, 53),
-								 new string[] {"jeep"},
-								 Players["GoodGuy"]);
+								 new string[] { "jeep" },
+								 players["GoodGuy"]);
 			}
 
-			if (ticks == 25*60)
+			if (ticks == 25 * 60)
 			{
 				ReinforceFromSea(self.World,
-								 Actors["lstStart"].Location,
-								 Actors["lstEnd"].Location,
+								 actors["lstStart"].Location,
+								 actors["lstEnd"].Location,
 								 new CPos(53, 53),
-								 new string[] {"jeep"},
-								 Players["GoodGuy"]);
+								 new string[] { "jeep" },
+								 players["GoodGuy"]);
 			}
 
 			ticks++;
@@ -164,11 +166,11 @@ namespace OpenRA.Mods.Cnc.Missions
 
 		void SetGunboatPath()
 		{
-			var self = Actors[ "Gunboat" ];
+			var self = actors["Gunboat"];
 			var mobile = self.Trait<Mobile>();
-			self.Trait<AutoTarget>().stance = UnitStance.AttackAnything; //TODO: this is ignored
-			self.QueueActivity(mobile.ScriptedMove(Actors["gunboatLeft"].Location));
-			self.QueueActivity(mobile.ScriptedMove(Actors["gunboatRight"].Location));
+			self.Trait<AutoTarget>().stance = UnitStance.AttackAnything; // TODO: this is ignored
+			self.QueueActivity(mobile.ScriptedMove(actors["gunboatLeft"].Location));
+			self.QueueActivity(mobile.ScriptedMove(actors["gunboatRight"].Location));
 			self.QueueActivity(new CallFunc(() => SetGunboatPath()));
 		}
 
@@ -176,13 +178,13 @@ namespace OpenRA.Mods.Cnc.Missions
 		{
 			world.AddFrameEndTask(w =>
 			{
-				Sound.PlayToPlayer(w.LocalPlayer,"reinfor1.aud");
+				Sound.PlayToPlayer(w.LocalPlayer, "reinfor1.aud");
 
 				var a = w.CreateActor("lst", new TypeDictionary
 				{
-					new LocationInit( startPos ),
-					new OwnerInit( player ),
-					new FacingInit( 0 ),
+					new LocationInit(startPos),
+					new OwnerInit(player),
+					new FacingInit(0),
 				});
 
 				var mobile = a.Trait<Mobile>();
@@ -190,8 +192,8 @@ namespace OpenRA.Mods.Cnc.Missions
 				foreach (var i in items)
 					cargo.Load(a, world.CreateActor(false, i.ToLowerInvariant(), new TypeDictionary
 					{
-						new OwnerInit( player ),
-						new FacingInit( 0 ),
+						new OwnerInit(player),
+						new FacingInit(0),
 					}));
 
 				a.CancelActivity();

@@ -9,31 +9,29 @@ namespace OpenRA.TilesetBuilder
 	class Surface : Control
 	{
 		public Bitmap Image;
-		private ImageList ImagesListControl;
 		public int[,] TerrainTypes;
 		public List<Template> Templates = new List<Template>();
-		private bool bShowTerrainTypes;
 		public string InputMode;
-		public Bitmap[] icon;
+		public Bitmap[] Icon;
 		public int TileSize;
 		public int TilesPerRow;
-		//private System.ComponentModel.IContainer components;
 
-		
 		public event Action<int, int, int> UpdateMouseTilePosition = (x, y, t) => { };
 
-		Template CurrentTemplate;
+		Template currentTemplate;
+		ImageList imagesListControl;
+		bool showTerrainTypes;
 
 		public bool ShowTerrainTypes
 		{
-			get { return bShowTerrainTypes; }
-			set { bShowTerrainTypes = value; }
+			get { return showTerrainTypes; }
+			set { showTerrainTypes = value; }
 		}
 
 		public ImageList ImagesList
 		{
-			get { return ImagesListControl; }
-			set { ImagesListControl = value; }
+			get { return imagesListControl; }
+			set { imagesListControl = value; }
 		}
 
 		public Surface()
@@ -60,12 +58,12 @@ namespace OpenRA.TilesetBuilder
 					for (var j = 0; j <= TerrainTypes.GetUpperBound(1); j++)
 						if (TerrainTypes[i, j] != 0)
 						{
-							//e.Graphics.FillRectangle(Brushes.Black, TileSize * i + 8, TileSize * j + 8, 16, 16);
+							////e.Graphics.FillRectangle(Brushes.Black, TileSize * i + 8, TileSize * j + 8, 16, 16);
 
-							e.Graphics.DrawImage(icon[TerrainTypes[i, j]], TileSize * i + 8, TileSize * j + 8, 16, 16);
+							e.Graphics.DrawImage(Icon[TerrainTypes[i, j]], TileSize * i + 8, TileSize * j + 8, 16, 16);
 
-							//e.Graphics.DrawString(TerrainTypes[i, j].ToString(),
-							//Font, Brushes.LimeGreen, TileSize * i + 10, TileSize * j + 10);
+							////e.Graphics.DrawString(TerrainTypes[i, j].ToString(),
+							////Font, Brushes.LimeGreen, TileSize * i + 10, TileSize * j + 10);
 						}
 			}
 
@@ -76,7 +74,7 @@ namespace OpenRA.TilesetBuilder
 
 				foreach (var c in t.Cells.Keys)
 				{
-					if (CurrentTemplate == t)
+					if (currentTemplate == t)
 						e.Graphics.FillRectangle(currentBrush, TileSize * c.X, TileSize * c.Y, TileSize, TileSize);
 
 					if (!t.Cells.ContainsKey(c + new int2(-1, 0)))
@@ -99,9 +97,9 @@ namespace OpenRA.TilesetBuilder
 			{
 				if (e.Button == MouseButtons.Left)
 				{
-					CurrentTemplate = Templates.FirstOrDefault(t => t.Cells.ContainsKey(pos));
-					if (CurrentTemplate == null)
-						Templates.Add(CurrentTemplate = new Template { Cells = new Dictionary<int2, bool> { { pos, true } } });
+					currentTemplate = Templates.FirstOrDefault(t => t.Cells.ContainsKey(pos));
+					if (currentTemplate == null)
+						Templates.Add(currentTemplate = new Template { Cells = new Dictionary<int2, bool> { { pos, true } } });
 
 					Invalidate();
 				}
@@ -109,7 +107,7 @@ namespace OpenRA.TilesetBuilder
 				if (e.Button == MouseButtons.Right)
 				{
 					Templates.RemoveAll(t => t.Cells.ContainsKey(pos));
-					CurrentTemplate = null;
+					currentTemplate = null;
 					Invalidate();
 				}
 			}
@@ -126,11 +124,11 @@ namespace OpenRA.TilesetBuilder
 
 			if (InputMode == null)
 			{
-				if (e.Button == MouseButtons.Left && CurrentTemplate != null)
+				if (e.Button == MouseButtons.Left && currentTemplate != null)
 				{
-					if (!CurrentTemplate.Cells.ContainsKey(pos))
+					if (!currentTemplate.Cells.ContainsKey(pos))
 					{
-						CurrentTemplate.Cells[pos] = true;
+						currentTemplate.Cells[pos] = true;
 						Invalidate();
 					}
 				}

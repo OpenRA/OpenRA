@@ -74,25 +74,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="frmBuilder.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmBuilder.Designer.cs">
-      <DependentUpon>frmBuilder.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmNew.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmNew.Designer.cs">
-      <DependentUpon>frmNew.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="frmBuilder.resx">
-      <DependentUpon>frmBuilder.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="frmNew.resx">
-      <DependentUpon>frmNew.cs</DependentUpon>
+      <DependentUpon>FormNew.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -120,6 +104,21 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Template.cs" />
+    <Compile Include="FormBuilder.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormBuilder.Designer.cs">
+      <DependentUpon>FormBuilder.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="FormBuilder.resx">
+      <DependentUpon>FormBuilder.cs</DependentUpon>
+    </EmbeddedResource>
+    <Compile Include="FormNew.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormNew.Designer.cs">
+      <DependentUpon>FormNew.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

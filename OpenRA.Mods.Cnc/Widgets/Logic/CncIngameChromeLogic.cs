@@ -24,6 +24,17 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		Widget ingameRoot;
 		World world;
 
+		static void BindOrderButton<T>(World world, Widget parent, string button, string icon)
+			where T : IOrderGenerator, new()
+		{
+			var w = parent.Get<ButtonWidget>(button);
+			w.OnClick = () => world.ToggleInputMode<T>();
+			w.IsHighlighted = () => world.OrderGenerator is T;
+
+			w.Get<ImageWidget>("ICON").GetImageName =
+				() => world.OrderGenerator is T ? icon + "-active" : icon;
+		}
+
 		void AddChatLine(Color c, string from, string text)
 		{
 			ingameRoot.Get<ChatDisplayWidget>("CHAT_DISPLAY").AddLine(c, from, text);
@@ -114,7 +125,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					.Any(a => a.Actor.Owner == world.LocalPlayer && a.Trait.IsActive);
 
 				if (radarEnabled != cachedRadarEnabled)
-					Sound.PlayNotification(null, "Sounds", (radarEnabled ? "RadarUp" : "RadarDown"), null);
+					Sound.PlayNotification(null, "Sounds", radarEnabled ? "RadarUp" : "RadarDown", null);
 				cachedRadarEnabled = radarEnabled;
 
 				// Switch to observer mode after win/loss
@@ -151,17 +162,6 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 					return Color.Orange;
 				return Color.LimeGreen;
 			};
-		}
-
-		static void BindOrderButton<T>(World world, Widget parent, string button, string icon)
-			where T : IOrderGenerator, new()
-		{
-			var w = parent.Get<ButtonWidget>(button);
-			w.OnClick = () => world.ToggleInputMode<T>();
-			w.IsHighlighted = () => world.OrderGenerator is T;
-
-			w.Get<ImageWidget>("ICON").GetImageName =
-				() => world.OrderGenerator is T ? icon+"-active" : icon;
 		}
 	}
 }

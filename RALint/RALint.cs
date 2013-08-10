@@ -38,7 +38,7 @@ namespace RALint
 				var options = args.Where(a => a.StartsWith("-"));
 				var mods = args.Where(a => !options.Contains(a)).ToArray();
 
-				var verbose = options.Contains( "-v" ) || options.Contains( "--verbose" );
+				var verbose = options.Contains("-v") || options.Contains("--verbose");
 
 				// bind some nonfatal error handling into FieldLoader, so we don't just *explode*.
 				ObjectCreator.MissingTypeAction = s => EmitError("Missing Type: {0}".F(s));
@@ -61,7 +61,7 @@ namespace RALint
 
 						customPass.Run(EmitError, EmitWarning);
 					}
-					catch(Exception e)
+					catch (Exception e)
 					{
 						EmitError("Failed with exception: {0}".F(e));
 					}

@@ -43,7 +43,7 @@ namespace OpenRA.Editor
 				actorPalette.ResumeLayout();
 				resourcePalette.ResumeLayout();
 				surface1.Bind(null, null, null, null);
-				pmMiniMap.Image = null;
+				miniMapBox.Image = null;
 				currentMod = toolStripComboBox1.SelectedItem as string;
 
 				Game.modData = new ModData(currentMod);
@@ -69,13 +69,13 @@ namespace OpenRA.Editor
 		void OnMapChanged()
 		{
 			MakeDirty();
-			pmMiniMap.Image = Minimap.AddStaticResources(surface1.Map, Minimap.TerrainBitmap(surface1.Map, true));
+			miniMapBox.Image = Minimap.AddStaticResources(surface1.Map, Minimap.TerrainBitmap(surface1.Map, true));
 			cashToolStripStatusLabel.Text = CalculateTotalResource().ToString();
 		}
 
-		void ActorDoubleClicked(KeyValuePair<string,ActorReference> kv)
+		void ActorDoubleClicked(KeyValuePair<string, ActorReference> kv)
 		{
-			using( var apd = new ActorPropertiesDialog() )
+			using (var apd = new ActorPropertiesDialog())
 			{
 				var name = kv.Key;
 				apd.AddRow("(Name)", apd.MakeEditorControl(typeof(string), () => name, v => name = (string)v));
@@ -84,11 +84,11 @@ namespace OpenRA.Editor
 				var objSaved = kv.Value.Save();
 
 				// TODO: make this work properly
-				foreach( var init in Rules.Info[kv.Value.Type].GetInitKeys() )
+				foreach (var init in Rules.Info[kv.Value.Type].GetInitKeys())
 					apd.AddRow(init.First,
 						apd.MakeEditorControl(init.Second,
-							() => objSaved.NodesDict.ContainsKey( init.First ) ? objSaved.NodesDict[init.First].Value : null,
-							_ => {}));
+							() => objSaved.NodesDict.ContainsKey(init.First) ? objSaved.NodesDict[init.First].Value : null,
+							_ => { }));
 
 				apd.ShowDialog();
 
@@ -120,7 +120,8 @@ namespace OpenRA.Editor
 				map.MakeDefaultPlayers();
 
 			PrepareMapResources(Game.modData.Manifest, map);
-			//Calculate total net worth of resources in cash
+
+			// Calculate total net worth of resources in cash
 			cashToolStripStatusLabel.Text = CalculateTotalResource().ToString();
 
 			dirty = false;
@@ -144,19 +145,20 @@ namespace OpenRA.Editor
 			Rules.LoadRules(manifest, map);
 			tileset = Rules.TileSets[map.Tileset];
 			tileset.LoadTiles();
-			int[] ShadowIndex = { 3, 4 };
-			var palette = new Palette(FileSystem.Open(tileset.Palette), ShadowIndex);
+			var shadowIndex = new int[] { 3, 4 };
+			var palette = new Palette(FileSystem.Open(tileset.Palette), shadowIndex);
 
 			// required for desert terrain in RA
 			var playerPalette = tileset.PlayerPalette ?? tileset.Palette;
-			var PlayerPalette = new Palette(FileSystem.Open(playerPalette), ShadowIndex);
+			var shadowedPalette = new Palette(FileSystem.Open(playerPalette), shadowIndex);
 
-			surface1.Bind(map, tileset, palette, PlayerPalette);
+			surface1.Bind(map, tileset, palette, shadowedPalette);
+
 			// construct the palette of tiles
 			var palettes = new[] { tilePalette, actorPalette, resourcePalette };
 			foreach (var p in palettes) { p.Visible = false; p.SuspendLayout(); }
 
-			string[] templateOrder = tileset.EditorTemplateOrder ?? new string[]{};
+			var templateOrder = tileset.EditorTemplateOrder ?? new string[] { };
 			foreach (var tc in tileset.Templates.GroupBy(t => t.Value.Category).OrderBy(t => templateOrder.ToList().IndexOf(t.Key)))
 			{
 				var category = tc.Key ?? "(Uncategorized)";
@@ -170,15 +172,16 @@ namespace OpenRA.Editor
 					TextAlign = ContentAlignment.MiddleLeft,
 					Width = tilePalette.ClientSize.Width,
 				};
+
 				// hook this manually, anchoring inside FlowLayoutPanel is flaky.
-				tilePalette.Resize += (_,e) => categoryHeader.Width = tilePalette.ClientSize.Width;
+				tilePalette.Resize += (_, e) => categoryHeader.Width = tilePalette.ClientSize.Width;
 
 				if (tilePalette.Controls.Count > 0)
 					tilePalette.SetFlowBreak(
 						tilePalette.Controls[tilePalette.Controls.Count - 1], true);
 				tilePalette.Controls.Add(categoryHeader);
 
-				foreach( var t in tc )
+				foreach (var t in tc)
 				{
 					try
 					{
@@ -196,12 +199,7 @@ namespace OpenRA.Editor
 	
 						var template = t.Value;
 						tilePalette.Controls.Add(ibox);
-						tt.SetToolTip(ibox,
-							"{1}:{0} ({2}x{3})".F(
-							template.Image,
-							template.Id,
-							template.Size.X,
-							template.Size.Y));
+						tt.SetToolTip(ibox, "{1}:{0} ({2}x{3})".F(template.Image, template.Id, template.Size.X, template.Size.Y));
 					}
 					catch { }
 				}
@@ -222,13 +220,14 @@ namespace OpenRA.Editor
 					if (etf != null && etf.RequireTilesets != null
 						&& !etf.RequireTilesets.Contains(tileset.Id)) continue;
 
-					var TemplatePalette = PlayerPalette;
+					var templatePalette = shadowedPalette;
 					var rsi = info.Traits.GetOrDefault<RenderSimpleInfo>();
+
 					// exception for desert buildings
 					if (rsi != null && rsi.Palette != null && rsi.Palette.Contains("terrain"))
-						TemplatePalette = palette;
+						templatePalette = palette;
 
-					var template = RenderUtils.RenderActor(info, tileset, TemplatePalette);
+					var template = RenderUtils.RenderActor(info, tileset, templatePalette);
 					var ibox = new PictureBox
 					{
 						Image = template.Bitmap,
@@ -242,9 +241,7 @@ namespace OpenRA.Editor
 
 					actorPalette.Controls.Add(ibox);
 
-					tt.SetToolTip(ibox,
-						"{0}".F(
-						info.Name));
+					tt.SetToolTip(ibox, "{0}".F(info.Name));
 
 					actorTemplates.Add(template);
 				}
@@ -259,7 +256,7 @@ namespace OpenRA.Editor
 			{
 				try
 				{
-					var template = RenderUtils.RenderResourceType(a, tileset.Extensions, PlayerPalette);
+					var template = RenderUtils.RenderResourceType(a, tileset.Extensions, shadowedPalette);
 					var ibox = new PictureBox
 					{
 						Image = template.Bitmap,
@@ -269,16 +266,11 @@ namespace OpenRA.Editor
 						BorderStyle = BorderStyle.FixedSingle
 					};
 
-
-
 					ibox.Click += (_, e) => surface1.SetTool(new ResourceTool(template));
 
 					resourcePalette.Controls.Add(ibox);
 
-					tt.SetToolTip(ibox,
-						"{0}:{1}cr".F(
-						template.Info.Name,
-						template.Info.ValuePerUnit));
+					tt.SetToolTip(ibox, "{0}:{1}cr".F(template.Info.Name, template.Info.ValuePerUnit));
 
 					resourceTemplates.Add(template);
 				}
@@ -293,7 +285,7 @@ namespace OpenRA.Editor
 				p.ResumeLayout();
 			}
 
-			pmMiniMap.Image = Minimap.AddStaticResources(surface1.Map, Minimap.TerrainBitmap(surface1.Map, true));
+			miniMapBox.Image = Minimap.AddStaticResources(surface1.Map, Minimap.TerrainBitmap(surface1.Map, true));
 
 			propertiesToolStripMenuItem.Enabled = true;
 			toolStripMenuItemProperties.Enabled = true;
@@ -302,7 +294,7 @@ namespace OpenRA.Editor
 			saveToolStripMenuItem.Enabled = true;
 			toolStripMenuItemSave.Enabled = true;
 			saveAsToolStripMenuItem.Enabled = true;
-			mnuMinimapToPNG.Enabled = true;	// TODO: what is this VB naming bullshit doing here?
+			miniMapToPng.Enabled = true;
 
 			PopulateActorOwnerChooser();
 		}
@@ -319,24 +311,24 @@ namespace OpenRA.Editor
 		{
 			using (var rd = new ResizeDialog())
 			{
-				rd.width.Value = surface1.Map.MapSize.X;
-				rd.height.Value = surface1.Map.MapSize.Y;
-				rd.cordonLeft.Value = surface1.Map.Bounds.Left;
-				rd.cordonTop.Value = surface1.Map.Bounds.Top;
-				rd.cordonRight.Value = surface1.Map.Bounds.Right;
-				rd.cordonBottom.Value = surface1.Map.Bounds.Bottom;
+				rd.MapWidth.Value = surface1.Map.MapSize.X;
+				rd.MapHeight.Value = surface1.Map.MapSize.Y;
+				rd.CordonLeft.Value = surface1.Map.Bounds.Left;
+				rd.CordonTop.Value = surface1.Map.Bounds.Top;
+				rd.CordonRight.Value = surface1.Map.Bounds.Right;
+				rd.CordonBottom.Value = surface1.Map.Bounds.Bottom;
 
 				if (DialogResult.OK != rd.ShowDialog())
 					return;
 
-				surface1.Map.ResizeCordon((int)rd.cordonLeft.Value,
-					(int)rd.cordonTop.Value,
-					(int)rd.cordonRight.Value,
-					(int)rd.cordonBottom.Value);
+				surface1.Map.ResizeCordon((int)rd.CordonLeft.Value,
+					(int)rd.CordonTop.Value,
+					(int)rd.CordonRight.Value,
+					(int)rd.CordonBottom.Value);
 
-				if ((int)rd.width.Value != surface1.Map.MapSize.X || (int)rd.height.Value != surface1.Map.MapSize.Y)
+				if ((int)rd.MapWidth.Value != surface1.Map.MapSize.X || (int)rd.MapHeight.Value != surface1.Map.MapSize.Y)
 				{
-					surface1.Map.Resize((int)rd.width.Value, (int)rd.height.Value);
+					surface1.Map.Resize((int)rd.MapWidth.Value, (int)rd.MapHeight.Value);
 					surface1.Bind(surface1.Map, surface1.TileSet, surface1.Palette, surface1.PlayerPalette);	// rebind it to invalidate all caches
 				}
 
@@ -353,25 +345,24 @@ namespace OpenRA.Editor
 				surface1.Map.Save(loadedMapName);
 				dirty = false;
 			}
-
 		}
 
 		void SaveAsClicked(object sender, EventArgs e)
 		{
 			using (var nms = new MapSelect(currentMod))
 			{
-				nms.txtNew.ReadOnly = false;
-				nms.btnOk.Text = "Save";
-				nms.txtNew.Text = "unnamed";
-				nms.txtPathOut.ReadOnly = false;
+				nms.NewText.ReadOnly = false;
+				nms.ButtonOkay.Text = "Save";
+				nms.NewText.Text = "unnamed";
+				nms.PathOutText.ReadOnly = false;
 
 				if (DialogResult.OK == nms.ShowDialog())
 				{
-					if (nms.txtNew.Text == "")
-						nms.txtNew.Text = "unnamed";
+					if (nms.NewText.Text == "")
+						nms.NewText.Text = "unnamed";
 
 					// TODO: Allow the user to choose map format (directory vs oramap)
-					loadedMapName = Path.Combine(nms.MapFolderPath, nms.txtNew.Text + ".oramap");
+					loadedMapName = Path.Combine(nms.MapFolderPath, nms.NewText.Text + ".oramap");
 					SaveClicked(sender, e);
 				}
 			}
@@ -381,12 +372,12 @@ namespace OpenRA.Editor
 		{
 			using (var nms = new MapSelect(currentMod))
 			{
-				nms.txtNew.ReadOnly = true;
-				nms.txtPathOut.ReadOnly = true;
-				nms.btnOk.Text = "Open";
+				nms.NewText.ReadOnly = true;
+				nms.PathOutText.ReadOnly = true;
+				nms.ButtonOkay.Text = "Open";
 
 				if (DialogResult.OK == nms.ShowDialog())
-					LoadMap(nms.txtNew.Tag as string);
+					LoadMap(nms.NewText.Tag as string);
 			}
 		}
 
@@ -394,17 +385,17 @@ namespace OpenRA.Editor
 		{
 			using (var nmd = new NewMapDialog())
 			{
-				nmd.theater.Items.Clear();
-				nmd.theater.Items.AddRange(Rules.TileSets.Select(a => a.Value.Id).ToArray());
-				nmd.theater.SelectedIndex = 0;
+				nmd.TheaterBox.Items.Clear();
+				nmd.TheaterBox.Items.AddRange(Rules.TileSets.Select(a => a.Value.Id).ToArray());
+				nmd.TheaterBox.SelectedIndex = 0;
 
 				if (DialogResult.OK == nmd.ShowDialog())
 				{
-					var map = Map.FromTileset(nmd.theater.SelectedItem as string);
+					var map = Map.FromTileset(nmd.TheaterBox.SelectedItem as string);
 
-					map.Resize((int)nmd.width.Value, (int)nmd.height.Value);
-					map.ResizeCordon((int)nmd.cordonLeft.Value, (int)nmd.cordonTop.Value,
-						(int)nmd.cordonRight.Value, (int)nmd.cordonBottom.Value);
+					map.Resize((int)nmd.MapWidth.Value, (int)nmd.MapHeight.Value);
+					map.ResizeCordon((int)nmd.CordonLeft.Value, (int)nmd.CordonTop.Value,
+						(int)nmd.CordonRight.Value, (int)nmd.CordonBottom.Value);
 
 					map.Players.Clear();
 					map.MakeDefaultPlayers();
@@ -418,20 +409,20 @@ namespace OpenRA.Editor
 		{
 			using (var pd = new PropertiesDialog())
 			{
-				pd.title.Text = surface1.Map.Title;
-				pd.desc.Text = surface1.Map.Description;
-				pd.author.Text = surface1.Map.Author;
-				pd.selectable.Checked = surface1.Map.Selectable;
-				pd.useAsShellmap.Checked = surface1.Map.UseAsShellmap;
+				pd.TitleBox.Text = surface1.Map.Title;
+				pd.DescBox.Text = surface1.Map.Description;
+				pd.AuthorBox.Text = surface1.Map.Author;
+				pd.SelectableCheckBox.Checked = surface1.Map.Selectable;
+				pd.ShellmapCheckBox.Checked = surface1.Map.UseAsShellmap;
 
 				if (DialogResult.OK != pd.ShowDialog())
 					return;
 
-				surface1.Map.Title = pd.title.Text;
-				surface1.Map.Description = pd.desc.Text;
-				surface1.Map.Author = pd.author.Text;
-				surface1.Map.Selectable = pd.selectable.Checked;
-				surface1.Map.UseAsShellmap = pd.useAsShellmap.Checked;
+				surface1.Map.Title = pd.TitleBox.Text;
+				surface1.Map.Description = pd.DescBox.Text;
+				surface1.Map.Author = pd.AuthorBox.Text;
+				surface1.Map.Selectable = pd.SelectableCheckBox.Checked;
+				surface1.Map.UseAsShellmap = pd.ShellmapCheckBox.Checked;
 			}
 		}
 
@@ -489,15 +480,18 @@ namespace OpenRA.Editor
 
 		void ExportMinimap(object sender, EventArgs e)
 		{
-			using( var sfd = new SaveFileDialog() { 
+			using (var sfd = new SaveFileDialog()
+			{ 
 				InitialDirectory = Path.Combine(Environment.CurrentDirectory, "maps"),
 				DefaultExt = "*.png",
 				Filter = "PNG Image (*.png)|*.png",
 				Title = "Export Minimap to PNG",
 				FileName = Path.ChangeExtension(loadedMapName, ".png"),
-				RestoreDirectory = true } )
-				if (DialogResult.OK == sfd.ShowDialog())
-					pmMiniMap.Image.Save(sfd.FileName);
+				RestoreDirectory = true
+			})
+
+			if (DialogResult.OK == sfd.ShowDialog())
+				miniMapBox.Image.Save(sfd.FileName);
 		}
 
 		void ShowActorNamesClicked(object sender, EventArgs e)
@@ -559,10 +553,10 @@ namespace OpenRA.Editor
 				return;
 
 			var color = player.Color.RGB;
-			using( var brush = new SolidBrush(color) )
-				e.Graphics.FillRectangle( brush, e.Bounds.Left + 2, e.Bounds.Top + 2, e.Bounds.Height + 6, e.Bounds.Height - 4 );
-			using( var foreBrush = new SolidBrush(e.ForeColor) )
-				e.Graphics.DrawString( player.Name, e.Font, foreBrush, e.Bounds.Left + e.Bounds.Height + 12, e.Bounds.Top );
+			using (var brush = new SolidBrush(color))
+				e.Graphics.FillRectangle(brush, e.Bounds.Left + 2, e.Bounds.Top + 2, e.Bounds.Height + 6, e.Bounds.Height - 4);
+			using (var foreBrush = new SolidBrush(e.ForeColor))
+				e.Graphics.DrawString(player.Name, e.Font, foreBrush, e.Bounds.Left + e.Bounds.Height + 12, e.Bounds.Top);
 		}
 
 		void OnSelectedPlayerChanged(object sender, EventArgs e)
@@ -571,47 +565,47 @@ namespace OpenRA.Editor
 			surface1.NewActorOwner = player.Name;
 		}
 
-		private void copySelectionToolStripMenuItemClick(object sender, EventArgs e)
+		void CopySelectionToolStripMenuItemClick(object sender, EventArgs e)
 		{
 			surface1.CopySelection();
 		}
 
-		private void openRAWebsiteToolStripMenuItemClick(object sender, EventArgs e)
+		void OpenRAWebsiteToolStripMenuItemClick(object sender, EventArgs e)
 		{
 			System.Diagnostics.Process.Start("http://www.open-ra.org");
 		}
 
-		private void openRAResourcesToolStripMenuItemClick(object sender, EventArgs e)
+		void OpenRAResourcesToolStripMenuItemClick(object sender, EventArgs e)
 		{
 			System.Diagnostics.Process.Start("http://content.open-ra.org");
 		}
 
-		private void wikiDocumentationToolStripMenuItemClick(object sender, EventArgs e)
+		void WikiDocumentationToolStripMenuItemClick(object sender, EventArgs e)
 		{
 			System.Diagnostics.Process.Start("http://github.com/OpenRA/OpenRA/wiki");
 		}
 
-		private void discussionForumsToolStripMenuItemClick(object sender, EventArgs e)
+		void DiscussionForumsToolStripMenuItemClick(object sender, EventArgs e)
 		{
 			System.Diagnostics.Process.Start("http://www.sleipnirstuff.com/forum/viewforum.php?f=80");
 		}
 
-		private void issueTrackerToolStripMenuItemClick(object sender, EventArgs e)
+		void IssueTrackerToolStripMenuItemClick(object sender, EventArgs e)
 		{
 			System.Diagnostics.Process.Start("http://github.com/OpenRA/OpenRA/issues");
 		}
 
-		private void developerBountiesToolStripMenuItemClick(object sender, EventArgs e)
+		void DeveloperBountiesToolStripMenuItemClick(object sender, EventArgs e)
 		{
 			System.Diagnostics.Process.Start("https://www.bountysource.com/#repos/OpenRA/OpenRA");
 		}
 
-		private void sourceCodeToolStripMenuItemClick(object sender, EventArgs e)
+		void SourceCodeToolStripMenuItemClick(object sender, EventArgs e)
 		{
 			System.Diagnostics.Process.Start("http://github.com/OpenRA/OpenRA");
 		}
 
-		private void aboutToolStripMenuItemClick(object sender, EventArgs e)
+		void AboutToolStripMenuItemClick(object sender, EventArgs e)
 		{
 			MessageBox.Show("OpenRA and OpenRA Editor are Free/Libre Open Source Software released under the GNU General Public License version 3. See AUTHORS and COPYING for details.",
 							"About",
@@ -619,74 +613,75 @@ namespace OpenRA.Editor
 							MessageBoxIcon.Asterisk);
 		}
 
-		private void helpToolStripButton_Click(object sender, EventArgs e)
+		void HelpToolStripButton_Click(object sender, EventArgs e)
 		{
 			System.Diagnostics.Process.Start("http://github.com/OpenRA/OpenRA/wiki/Mapping");
 		}
 
-		private void toolStripMenuItemNewClick(object sender, EventArgs e)
+		void ToolStripMenuItemNewClick(object sender, EventArgs e)
 		{
 			NewClicked(sender, e);
 		}
 
-		private void toolStripMenuItemOpenClick(object sender, EventArgs e)
+		void ToolStripMenuItemOpenClick(object sender, EventArgs e)
 		{
 			OpenClicked(sender, e);
 		}
 
-		private void toolStripMenuItemSaveClick(object sender, EventArgs e)
+		void ToolStripMenuItemSaveClick(object sender, EventArgs e)
 		{
 			SaveClicked(sender, e);
 		}
 
-		private void toolStripMenuItemPropertiesClick(object sender, EventArgs e)
+		void ToolStripMenuItemPropertiesClick(object sender, EventArgs e)
 		{
 			PropertiesClicked(sender, e);
 		}
 
-		private void toolStripMenuItemResizeClick(object sender, EventArgs e)
+		void ToolStripMenuItemResizeClick(object sender, EventArgs e)
 		{
 			ResizeClicked(sender, e);
 		}
 
-		private void toolStripMenuItemShowActorNamesClick(object sender, EventArgs e)
+		void ToolStripMenuItemShowActorNamesClick(object sender, EventArgs e)
 		{
 			ShowActorNamesClicked(sender, e);
 		}
 
-		private void toolStripMenuItemFixOpenAreasClick(object sender, EventArgs e)
+		void ToolStripMenuItemFixOpenAreasClick(object sender, EventArgs e)
 		{
 			FixOpenAreas(sender, e);
 		}
 
-		private void toolStripMenuItemSetupDefaultPlayersClick(object sender, EventArgs e)
+		void ToolStripMenuItemSetupDefaultPlayersClick(object sender, EventArgs e)
 		{
 			SetupDefaultPlayers(sender, e);
 		}
 
-		private void toolStripMenuItemCopySelectionClick(object sender, EventArgs e)
+		void ToolStripMenuItemCopySelectionClick(object sender, EventArgs e)
 		{
-			copySelectionToolStripMenuItemClick(sender, e);
+			CopySelectionToolStripMenuItemClick(sender, e);
 		}
 
-		private void toolStripMenuItemShowGridClick(object sender, EventArgs e)
+		void ToolStripMenuItemShowGridClick(object sender, EventArgs e)
 		{
 			ShowGridClicked(sender, e);
 		}
 		
 		public int CalculateTotalResource()
 		{
-			int TotalResource = 0;
-			for(int i = 0; i < surface1.Map.MapSize.X; i++)
+			int totalResource = 0;
+			for (int i = 0; i < surface1.Map.MapSize.X; i++)
 				for (int j = 0; j < surface1.Map.MapSize.Y; j++)
 				{
 					if (surface1.Map.MapResources.Value[i, j].type != 0)
-						TotalResource += GetResourceValue(i, j);
+						totalResource += GetResourceValue(i, j);
 				}
-			return TotalResource;
+
+			return totalResource;
 		}
 		
-		int GetAdjecentCellsWith(int ResourceType, int x, int y)
+		int GetAdjecentCellsWith(int resourceType, int x, int y)
 		{
 			int sum = 0;
 			for (var u = -1; u < 2; u++)
@@ -694,27 +689,28 @@ namespace OpenRA.Editor
 				{
 					if (!surface1.Map.IsInMap(new CPos(x + u, y + v)))
 						continue;
-					if (surface1.Map.MapResources.Value[x + u, y + v].type == ResourceType)
+					if (surface1.Map.MapResources.Value[x + u, y + v].type == resourceType)
 						++sum;
 				}
+
 			return sum;
 		}
 
 		int GetResourceValue(int x, int y)
 		{
-			int ImageLength = 0;
+			int imageLength = 0;
 			int type = surface1.Map.MapResources.Value[x, y].type;
 			var template = surface1.ResourceTemplates.Where(a => a.Value.Info.ResourceType == type).FirstOrDefault().Value;
 			if (type == 1)
-				ImageLength = 12;
+				imageLength = 12;
 			else if (type == 2)
-				ImageLength = 3;
-			int density = (GetAdjecentCellsWith(type ,x , y) * ImageLength - 1) / 9;
+				imageLength = 3;
+			int density = (GetAdjecentCellsWith(type, x, y) * imageLength - 1) / 9;
 			int value = template.Info.ValuePerUnit;
-			return (density) * value;
+			return density * value;
 		}
 
-		void zoomInToolStripButtonClick(object sender, System.EventArgs e)
+		void ZoomInToolStripButtonClick(object sender, System.EventArgs e)
 		{
 			if (surface1.Map == null) return;
 
@@ -723,7 +719,7 @@ namespace OpenRA.Editor
 			surface1.Invalidate();
 		}
 
-		void zoomOutToolStripButtonClick(object sender, System.EventArgs e)
+		void ZoomOutToolStripButtonClick(object sender, System.EventArgs e)
 		{
 			if (surface1.Map == null) return;
 
@@ -732,13 +728,13 @@ namespace OpenRA.Editor
 			surface1.Invalidate();
 		}
 
-		void panToolStripButtonClick(object sender, System.EventArgs e)
+		void PanToolStripButtonClick(object sender, System.EventArgs e)
 		{
 			panToolStripButton.Checked ^= true;
 			surface1.IsPanning = panToolStripButton.Checked;
 		}
 
-		void showRulerToolStripMenuItemClick(object sender, EventArgs e)
+		void ShowRulerToolStripMenuItemClick(object sender, EventArgs e)
 		{
 			showRulerToolStripMenuItem.Checked ^= true;
 			showRulerToolStripItem.Checked ^= true;
@@ -746,9 +742,9 @@ namespace OpenRA.Editor
 			surface1.Chunks.Clear();
 		}
 
-		void showRulerToolStripItemClick(object sender, System.EventArgs e)
+		void ShowRulerToolStripItemClick(object sender, System.EventArgs e)
 		{
-			showRulerToolStripMenuItemClick(sender, e);
+			ShowRulerToolStripMenuItemClick(sender, e);
 		}
 
 		void EraserToolStripButtonClick(object sender, System.EventArgs e)

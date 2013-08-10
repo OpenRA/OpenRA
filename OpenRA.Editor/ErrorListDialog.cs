@@ -15,7 +15,7 @@ namespace OpenRA.Editor
 {
 	public partial class ErrorListDialog : Form
 	{
-		public ErrorListDialog( IEnumerable<string> errors )
+		public ErrorListDialog(IEnumerable<string> errors)
 		{
 			InitializeComponent();
 			foreach (var e in errors)

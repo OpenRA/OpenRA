@@ -11,57 +11,58 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Globalization;
 
 namespace OpenRA.FileFormats
 {
 	public static class FieldLoader
 	{
-		public static Func<string,Type,string,object> InvalidValueAction = (s,t,f) =>
+		public static Func<string, Type, string, object> InvalidValueAction = (s, t, f) =>
 		{
-			throw new InvalidOperationException("FieldLoader: Cannot parse `{0}` into `{1}.{2}` ".F(s,f,t) );
+			throw new InvalidOperationException("FieldLoader: Cannot parse `{0}` into `{1}.{2}` ".F(s, f, t));
 		};
 
-		public static Action<string,Type> UnknownFieldAction = (s,f) =>
+		public static Action<string, Type> UnknownFieldAction = (s, f) =>
 		{
-			throw new NotImplementedException( "FieldLoader: Missing field `{0}` on `{1}`".F( s, f.Name ) );
+			throw new NotImplementedException("FieldLoader: Missing field `{0}` on `{1}`".F(s, f.Name));
 		};
 
-		public static void Load( object self, MiniYaml my )
+		public static void Load(object self, MiniYaml my)
 		{
-			var loadDict = typeLoadInfo[ self.GetType() ];
+			var loadDict = typeLoadInfo[self.GetType()];
 
-			foreach( var kv in loadDict )
+			foreach (var kv in loadDict)
 			{
 				object val;
-				if( kv.Value != null )
-					val = kv.Value( kv.Key.Name, kv.Key.FieldType, my );
-				else if( !TryGetValueFromYaml( kv.Key.Name, kv.Key.FieldType, my, out val ) )
+				if (kv.Value != null)
+					val = kv.Value(kv.Key.Name, kv.Key.FieldType, my);
+				else if (!TryGetValueFromYaml(kv.Key.Name, kv.Key.FieldType, my, out val))
 					continue;
 
-				kv.Key.SetValue( self, val );
+				kv.Key.SetValue(self, val);
 			}
 		}
 
-		static bool TryGetValueFromYaml( string fieldName, Type fieldType, MiniYaml yaml, out object ret )
+		static bool TryGetValueFromYaml(string fieldName, Type fieldType, MiniYaml yaml, out object ret)
 		{
 			ret = null;
-			var n = yaml.Nodes.Where( x=>x.Key == fieldName ).ToList();
-			if( n.Count == 0 )
+			var n = yaml.Nodes.Where(x => x.Key == fieldName).ToList();
+			if (n.Count == 0)
 				return false;
-			if( n.Count == 1 && n[ 0 ].Value.Nodes.Count == 0 )
+			if (n.Count == 1 && n[0].Value.Nodes.Count == 0)
 			{
-				ret = GetValue( fieldName, fieldType, n[ 0 ].Value.Value );
+				ret = GetValue(fieldName, fieldType, n[0].Value.Value);
 				return true;
 			}
-			else if ( n.Count > 1 )
+			else if (n.Count > 1)
 			{
 				throw new InvalidOperationException("The field {0} has multiple definitions:\n{1}"
 					.F(fieldName, n.Select(m => "\t- " + m.Location).JoinWith("\n")));
 			}
-			throw new InvalidOperationException( "TryGetValueFromYaml: unable to load field {0} (of type {1})".F( fieldName, fieldType ) );
+
+			throw new InvalidOperationException("TryGetValueFromYaml: unable to load field {0} (of type {1})".F(fieldName, fieldType));
 		}
 
 		public static T Load<T>(MiniYaml y) where T : new()
@@ -71,19 +72,19 @@ namespace OpenRA.FileFormats
 			return t;
 		}
 
-		static readonly object[] NoIndexes = {};
-		public static void LoadField( object self, string key, string value )
+		static readonly object[] NoIndexes = { };
+		public static void LoadField(object self, string key, string value)
 		{
-			var field = self.GetType().GetField( key.Trim() );
+			var field = self.GetType().GetField(key.Trim());
 
-			if( field != null )
+			if (field != null)
 			{
 				if (!field.HasAttribute<FieldFromYamlKeyAttribute>())
-					field.SetValue( self, GetValue( field.Name, field.FieldType, value ) );
+					field.SetValue(self, GetValue(field.Name, field.FieldType, value));
 				return;
 			}
 
-			var prop = self.GetType().GetProperty( key.Trim() );
+			var prop = self.GetType().GetProperty(key.Trim());
 
 			if (prop != null)
 			{
@@ -92,47 +93,48 @@ namespace OpenRA.FileFormats
 				return;
 			}
 
-			UnknownFieldAction( key.Trim(), self.GetType() );
+			UnknownFieldAction(key.Trim(), self.GetType());
 		}
 
-		public static T GetValue<T>( string field, string value )
+		public static T GetValue<T>(string field, string value)
 		{
-			return (T) GetValue( field, typeof(T), value );
+			return (T)GetValue(field, typeof(T), value);
 		}
 
-		public static object GetValue( string field, Type fieldType, string x )
+		public static object GetValue(string field, Type fieldType, string x)
 		{
 			if (x != null) x = x.Trim();
-			if( fieldType == typeof( int ) )
+
+			if (fieldType == typeof(int))
 			{
 				int res;
-				if (int.TryParse(x,out res))
+				if (int.TryParse(x, out res))
 					return res;
-				return InvalidValueAction(x,fieldType, field);
+				return InvalidValueAction(x, fieldType, field);
 			}
 
-			else if( fieldType == typeof( ushort ) )
+			else if (fieldType == typeof(ushort))
 			{
 				ushort res;
-				if (ushort.TryParse(x,out res))
+				if (ushort.TryParse(x, out res))
 					return res;
-				return InvalidValueAction(x,fieldType, field);
+				return InvalidValueAction(x, fieldType, field);
 			}
 
 			else if (fieldType == typeof(float))
 			{
 				float res;
-				if (float.TryParse(x.Replace("%",""),  NumberStyles.Any, NumberFormatInfo.InvariantInfo, out res))
-					return res * (x.Contains( '%' ) ? 0.01f : 1f);
-				return InvalidValueAction(x,fieldType, field);
+				if (float.TryParse(x.Replace("%", ""),  NumberStyles.Any, NumberFormatInfo.InvariantInfo, out res))
+					return res * (x.Contains('%') ? 0.01f : 1f);
+				return InvalidValueAction(x, fieldType, field);
 			}
 
 			else if (fieldType == typeof(decimal))
 			{
 				decimal res;
-				if (decimal.TryParse(x.Replace("%",""),  NumberStyles.Any, NumberFormatInfo.InvariantInfo, out res))
-					return res * (x.Contains( '%' ) ? 0.01m : 1m);
-				return InvalidValueAction(x,fieldType, field);
+				if (decimal.TryParse(x.Replace("%", ""),  NumberStyles.Any, NumberFormatInfo.InvariantInfo, out res))
+					return res * (x.Contains('%') ? 0.01m : 1m);
+				return InvalidValueAction(x, fieldType, field);
 			}
 
 			else if (fieldType == typeof(string))
@@ -145,12 +147,13 @@ namespace OpenRA.FileFormats
 					return Color.FromArgb(int.Parse(parts[0]).Clamp(0, 255), int.Parse(parts[1]).Clamp(0, 255), int.Parse(parts[2]).Clamp(0, 255));
 				if (parts.Length == 4)
 					return Color.FromArgb(int.Parse(parts[0]).Clamp(0, 255), int.Parse(parts[1]).Clamp(0, 255), int.Parse(parts[2]).Clamp(0, 255), int.Parse(parts[3]).Clamp(0, 255));
-				return InvalidValueAction(x,fieldType, field);
+				return InvalidValueAction(x, fieldType, field);
 			}
 
 			else if (fieldType == typeof(HSLColor))
 			{
 				var parts = x.Split(',');
+
 				// Allow old ColorRamp format to be parsed as HSLColor
 				if (parts.Length == 3 || parts.Length == 4)
 					return new HSLColor(
@@ -213,6 +216,7 @@ namespace OpenRA.FileFormats
 					if (int.TryParse(x, out rr) && int.TryParse(x, out rp) && int.TryParse(x, out ry))
 						return new WRot(new WAngle(rr), new WAngle(rp), new WAngle(ry));
 				}
+
 				return InvalidValueAction(x, fieldType, field);
 			}
 
@@ -238,11 +242,13 @@ namespace OpenRA.FileFormats
 					ret.SetValue(GetValue(field, fieldType.GetElementType(), parts[i].Trim()), i);
 				return ret;
 			}
+
 			else if (fieldType == typeof(int2))
 			{
 				var parts = x.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 				return new int2(int.Parse(parts[0]), int.Parse(parts[1]));
 			}
+
 			else if (fieldType == typeof(float2))
 			{
 				var parts = x.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
@@ -255,11 +261,13 @@ namespace OpenRA.FileFormats
 					yy = res * (parts[1].Contains('%') ? 0.01f : 1f);
 				return new float2(xx, yy);
 			}
+
 			else if (fieldType == typeof(Rectangle))
 			{
 				var parts = x.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 				return new Rectangle(int.Parse(parts[0]), int.Parse(parts[1]), int.Parse(parts[2]), int.Parse(parts[3]));
 			}
+
 			else if (fieldType.IsGenericType && fieldType.GetGenericTypeDefinition() == typeof(Bits<>))
 			{
 				var parts = x.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
@@ -268,62 +276,62 @@ namespace OpenRA.FileFormats
 				return fieldType.GetConstructor(argTypes).Invoke(argValues);
 			}
 
-			UnknownFieldAction("[Type] {0}".F(x),fieldType);
+			UnknownFieldAction("[Type] {0}".F(x), fieldType);
 			return null;
 		}
 
-		static object ParseYesNo( string p, System.Type fieldType, string field )
+		static object ParseYesNo(string p, System.Type fieldType, string field)
 		{
 			p = p.ToLowerInvariant();
-			if( p == "yes" ) return true;
-			if( p == "true" ) return true;
-			if( p == "no" ) return false;
-			if( p == "false" ) return false;
-			return InvalidValueAction(p,fieldType, field);
+			if (p == "yes") return true;
+			if (p == "true") return true;
+			if (p == "no") return false;
+			if (p == "false") return false;
+			return InvalidValueAction(p, fieldType, field);
 		}
 
-		static Cache<Type, Dictionary<FieldInfo, Func<string, Type, MiniYaml, object>>> typeLoadInfo = new Cache<Type, Dictionary<FieldInfo, Func<string, Type, MiniYaml, object>>>( GetTypeLoadInfo );
+		static Cache<Type, Dictionary<FieldInfo, Func<string, Type, MiniYaml, object>>> typeLoadInfo = new Cache<Type, Dictionary<FieldInfo, Func<string, Type, MiniYaml, object>>>(GetTypeLoadInfo);
 
-		static Dictionary<FieldInfo, Func<string, Type, MiniYaml, object>> GetTypeLoadInfo( Type type )
+		static Dictionary<FieldInfo, Func<string, Type, MiniYaml, object>> GetTypeLoadInfo(Type type)
 		{
 			var ret = new Dictionary<FieldInfo, Func<string, Type, MiniYaml, object>>();
 
-			foreach( var ff in type.GetFields() )
+			foreach (var ff in type.GetFields())
 			{
 				var field = ff;
-				var ignore = field.GetCustomAttributes<IgnoreAttribute>( false );
-				var loadUsing = field.GetCustomAttributes<LoadUsingAttribute>( false );
-				var fromYamlKey = field.GetCustomAttributes<FieldFromYamlKeyAttribute>( false );
-				if( loadUsing.Length != 0 )
-					ret[ field ] = ( _1, fieldType, yaml ) => loadUsing[ 0 ].LoaderFunc( field )( yaml );
-				else if( fromYamlKey.Length != 0 )
-					ret[ field ] = ( f, ft, yaml ) => GetValue( f, ft, yaml.Value );
-				else if( ignore.Length == 0 )
-					ret[ field ] = null;
+				var ignore = field.GetCustomAttributes<IgnoreAttribute>(false);
+				var loadUsing = field.GetCustomAttributes<LoadUsingAttribute>(false);
+				var fromYamlKey = field.GetCustomAttributes<FieldFromYamlKeyAttribute>(false);
+				if (loadUsing.Length != 0)
+					ret[field] = (_1, fieldType, yaml) => loadUsing[0].LoaderFunc(field)(yaml);
+				else if (fromYamlKey.Length != 0)
+					ret[field] = (f, ft, yaml) => GetValue(f, ft, yaml.Value);
+				else if (ignore.Length == 0)
+					ret[field] = null;
 			}
 
 			return ret;
 		}
 
-		[AttributeUsage( AttributeTargets.Field )]
+		[AttributeUsage(AttributeTargets.Field)]
 		public class IgnoreAttribute : Attribute { }
 
-		[AttributeUsage( AttributeTargets.Field )]
+		[AttributeUsage(AttributeTargets.Field)]
 		public class LoadUsingAttribute : Attribute
 		{
 			Func<MiniYaml, object> loaderFuncCache;
 			public readonly string Loader;
 
-			public LoadUsingAttribute( string loader )
+			public LoadUsingAttribute(string loader)
 			{
 				Loader = loader;
 			}
 
-			internal Func<MiniYaml, object> LoaderFunc( FieldInfo field )
+			internal Func<MiniYaml, object> LoaderFunc(FieldInfo field)
 			{
-				const BindingFlags bf = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
-				if( loaderFuncCache == null )
-					loaderFuncCache = (Func<MiniYaml, object>)Delegate.CreateDelegate( typeof( Func<MiniYaml, object> ), field.DeclaringType.GetMethod( Loader, bf ) );
+				const BindingFlags BindingFlag = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
+				if (loaderFuncCache == null)
+					loaderFuncCache = (Func<MiniYaml, object>)Delegate.CreateDelegate(typeof(Func<MiniYaml, object>), field.DeclaringType.GetMethod(Loader, BindingFlag));
 				return loaderFuncCache;
 			}
 		}
@@ -336,15 +344,15 @@ namespace OpenRA.FileFormats
 			var nodes = new List<MiniYamlNode>();
 			string root = null;
 
-			foreach( var f in o.GetType().GetFields( BindingFlags.Public | BindingFlags.Instance ) )
+			foreach (var f in o.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance))
 			{
-				if( f.HasAttribute<FieldFromYamlKeyAttribute>() )
-					root = FormatValue( o, f );
+				if (f.HasAttribute<FieldFromYamlKeyAttribute>())
+					root = FormatValue(o, f);
 				else
-					nodes.Add( new MiniYamlNode( f.Name, FormatValue( o, f ) ) );
+					nodes.Add(new MiniYamlNode(f.Name, FormatValue(o, f)));
 			}
 
-			return new MiniYaml( root, nodes );
+			return new MiniYaml(root, nodes);
 		}
 
 		public static MiniYaml SaveDifferences(object o, object from)
@@ -353,16 +361,14 @@ namespace OpenRA.FileFormats
 				throw new InvalidOperationException("FieldLoader: can't diff objects of different types");
 
 			var fields = o.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance)
-				.Where(f => FormatValue(o,f) != FormatValue(from,f));
+				.Where(f => FormatValue(o, f) != FormatValue(from, f));
 
-			return new MiniYaml( null, fields.Select( f => new MiniYamlNode(
-					f.Name,
-					FormatValue( o, f ) ) ).ToList() );
+			return new MiniYaml(null, fields.Select(f => new MiniYamlNode(f.Name, FormatValue(o, f))).ToList());
 		}
 
 		public static MiniYamlNode SaveField(object o, string field)
 		{
-			return new MiniYamlNode(field, FieldSaver.FormatValue( o, o.GetType().GetField(field) ));
+			return new MiniYamlNode(field, FieldSaver.FormatValue(o, o.GetType().GetField(field)));
 		}
 
 		public static string FormatValue(object v, Type t)

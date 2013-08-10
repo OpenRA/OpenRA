@@ -41,7 +41,7 @@ namespace OpenRA.Editor
 		{
 			var r = new TextBox();
 			r.Text = FieldSaver.FormatValue(getter(), t);
-			r.LostFocus += (e,_) => setter(FieldLoader.GetValue("<editor internals>", t, r.Text));
+			r.LostFocus += (e, _) => setter(FieldLoader.GetValue("<editor internals>", t, r.Text));
 			r.Enabled = false;
 			return r;
 		}

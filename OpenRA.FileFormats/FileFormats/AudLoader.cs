@@ -44,8 +44,8 @@ namespace OpenRA.FileFormats
 
 	public static class AudLoader
 	{
-		static int[] IndexAdjust = { -1, -1, -1, -1, 2, 4, 6, 8 };
-		static int[] StepTable = {
+		static int[] indexAdjust = { -1, -1, -1, -1, 2, 4, 6, 8 };
+		static int[] stepTable = {
 									7,     8,     9,     10,    11,    12,     13,    14,    16,
 									17,    19,    21,    23,    25,    28,     31,    34,    37,
 									41,    45,    50,    55,    60,    66,     73,    80,    88,
@@ -62,14 +62,14 @@ namespace OpenRA.FileFormats
 			var sb = (b & 8) != 0;
 			b &= 7;
 
-			var delta = (StepTable[index] * b) / 4 + StepTable[index] / 8;
+			var delta = (stepTable[index] * b) / 4 + stepTable[index] / 8;
 			if (sb) delta = -delta;
 
 			current += delta;
 			if (current > short.MaxValue) current = short.MaxValue;
 			if (current < short.MinValue) current = short.MinValue;
 
-			index += IndexAdjust[b];
+			index += indexAdjust[b];
 			if (index < 0) index = 0;
 			if (index > 88) index = 88;
 
@@ -108,7 +108,7 @@ namespace OpenRA.FileFormats
 			var sampleRate = br.ReadUInt16();
 			/*var dataSize = */ br.ReadInt32();
 			var outputSize = br.ReadInt32();
-			var flags = (SoundFlags) br.ReadByte();
+			var flags = (SoundFlags)br.ReadByte();
 
 			var samples = outputSize;
 			if (0 != (flags & SoundFlags.Stereo)) samples /= 2;

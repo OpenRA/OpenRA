@@ -68,8 +68,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 		public readonly int ArrowWidth = 20;
 		public Dictionary<string, ProductionTabGroup> Groups;
 
-		int ContentWidth = 0;
-		float ListOffset = 0;
+		int contentWidth = 0;
+		float listOffset = 0;
 		bool leftPressed = false;
 		bool rightPressed = false;
 		Rectangle leftButtonRect;
@@ -107,10 +107,14 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 		public string QueueGroup
 		{
-			get { return queueGroup; }
+			get
+			{
+				return queueGroup;
+			}
+
 			set
 			{
-				ListOffset = 0;
+				listOffset = 0;
 				queueGroup = value;
 				SelectNextTab(false);
 			}
@@ -118,7 +122,11 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 		public ProductionQueue CurrentQueue
 		{
-			get { return paletteWidget.Value.CurrentQueue; }
+			get
+			{
+				return paletteWidget.Value.CurrentQueue;
+			}
+
 			set
 			{
 				paletteWidget.Value.CurrentQueue = value;
@@ -134,9 +142,9 @@ namespace OpenRA.Mods.Cnc.Widgets
 			leftButtonRect = new Rectangle(rb.X, rb.Y, ArrowWidth, rb.Height);
 			rightButtonRect = new Rectangle(rb.Right - ArrowWidth, rb.Y, ArrowWidth, rb.Height);
 
-			var leftDisabled = ListOffset >= 0;
+			var leftDisabled = listOffset >= 0;
 			var leftHover = Ui.MouseOverWidget == this && leftButtonRect.Contains(Viewport.LastMousePos);
-			var rightDisabled = ListOffset <= Bounds.Width - rightButtonRect.Width - leftButtonRect.Width - ContentWidth;
+			var rightDisabled = listOffset <= Bounds.Width - rightButtonRect.Width - leftButtonRect.Width - contentWidth;
 			var rightHover = Ui.MouseOverWidget == this && rightButtonRect.Contains(Viewport.LastMousePos);
 
 			WidgetUtils.DrawPanel("panel-black", rb);
@@ -150,20 +158,20 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 			// Draw tab buttons
 			Game.Renderer.EnableScissor(leftButtonRect.Right, rb.Y + 1, rightButtonRect.Left - leftButtonRect.Right - 1, rb.Height);
-			var origin = new int2(leftButtonRect.Right - 1 + (int)ListOffset, leftButtonRect.Y);
+			var origin = new int2(leftButtonRect.Right - 1 + (int)listOffset, leftButtonRect.Y);
 			SpriteFont font = Game.Renderer.Fonts["TinyBold"];
-			ContentWidth = 0;
+			contentWidth = 0;
 
 			foreach (var tab in Groups[queueGroup].Tabs)
 			{
-				var rect = new Rectangle(origin.X + ContentWidth, origin.Y, TabWidth, rb.Height);
+				var rect = new Rectangle(origin.X + contentWidth, origin.Y, TabWidth, rb.Height);
 				var hover = !leftHover && !rightHover && Ui.MouseOverWidget == this && rect.Contains(Viewport.LastMousePos);
 				var baseName = tab.Queue == CurrentQueue ? "button-highlighted" : "button";
 				ButtonWidget.DrawBackground(baseName, rect, false, false, hover, false);
-				ContentWidth += TabWidth - 1;
+				contentWidth += TabWidth - 1;
 
 				int2 textSize = font.Measure(tab.Name);
-				int2 position = new int2(rect.X + (rect.Width - textSize.X)/2, rect.Y + (rect.Height - textSize.Y)/2);
+				int2 position = new int2(rect.X + (rect.Width - textSize.X) / 2, rect.Y + (rect.Height - textSize.Y) / 2);
 				font.DrawTextWithContrast(tab.Name, position, tab.Queue.CurrentDone ? Color.Gold : Color.White, Color.Black, 1);
 			}
 
@@ -172,8 +180,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 		void Scroll(int direction)
 		{
-			ListOffset += direction*ScrollVelocity;
-			ListOffset = Math.Min(0,Math.Max(Bounds.Width - rightButtonRect.Width - leftButtonRect.Width - ContentWidth, ListOffset));
+			listOffset += direction * ScrollVelocity;
+			listOffset = Math.Min(0, Math.Max(Bounds.Width - rightButtonRect.Width - leftButtonRect.Width - contentWidth, listOffset));
 		}
 
 		// Is added to world.ActorAdded by the SidebarLogic handler
@@ -242,8 +250,8 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 			leftPressed = leftButtonRect.Contains(mi.Location);
 			rightPressed = rightButtonRect.Contains(mi.Location);
-			var leftDisabled = ListOffset >= 0;
-			var rightDisabled = ListOffset <= Bounds.Width - rightButtonRect.Width - leftButtonRect.Width - ContentWidth;
+			var leftDisabled = listOffset >= 0;
+			var rightDisabled = listOffset <= Bounds.Width - rightButtonRect.Width - leftButtonRect.Width - contentWidth;
 
 			if (leftPressed || rightPressed)
 			{
@@ -254,10 +262,10 @@ namespace OpenRA.Mods.Cnc.Widgets
 			}
 
 			// Check production tabs
-			var offsetloc = mi.Location - new int2(leftButtonRect.Right - 1 + (int)ListOffset, leftButtonRect.Y);
-			if (offsetloc.X > 0 && offsetloc.X < ContentWidth)
+			var offsetloc = mi.Location - new int2(leftButtonRect.Right - 1 + (int)listOffset, leftButtonRect.Y);
+			if (offsetloc.X > 0 && offsetloc.X < contentWidth)
 			{
-				CurrentQueue = Groups[queueGroup].Tabs[offsetloc.X/(TabWidth - 1)].Queue;
+				CurrentQueue = Groups[queueGroup].Tabs[offsetloc.X / (TabWidth - 1)].Queue;
 				Sound.PlayNotification(null, "Sounds", "ClickSound", null);
 			}
 

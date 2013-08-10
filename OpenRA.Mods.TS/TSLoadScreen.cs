@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2012 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -10,39 +10,38 @@
 
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Network;
 using OpenRA.Support;
 using OpenRA.Widgets;
 
-namespace OpenRA.Mods.D2k
+namespace OpenRA.Mods.TS
 {
-	public class D2kLoadScreen : ILoadScreen
+	public class TSLoadScreen : ILoadScreen
 	{
-		public static string[] Comments = new[] { "Filling Crates...", "Breeding Sandworms..." };
-		public Dictionary<string, string> Info;
+		Dictionary<string, string> Info;
+		static string[] Comments = new[] { "Updating EVA installation..." };
 
 		Stopwatch lastLoadScreen = new Stopwatch();
-		Rectangle stripeRect;
-		Sprite stripe, Logo;
-		float2 logoPos;
+		Rectangle StripeRect;
+		Sprite Stripe, Logo;
+		float2 LogoPos;
 
 		Renderer r;
 		public void Init(Dictionary<string, string> info)
 		{
 			Info = info;
-
 			// Avoid standard loading mechanisms so we
 			// can display loadscreen as early as possible
 			r = Game.Renderer;
 			if (r == null) return;
-			var s = new Sheet("mods/d2k/uibits/loadscreen.png");
-			Logo = new Sprite(s, new Rectangle(0, 0, 256, 256), TextureChannel.Alpha);
-			stripe = new Sprite(s, new Rectangle(256, 0, 256, 256), TextureChannel.Alpha);
-			stripeRect = new Rectangle(0, Renderer.Resolution.Height / 2 - 128, Renderer.Resolution.Width, 256);
-			logoPos = new float2(Renderer.Resolution.Width / 2 - 128, Renderer.Resolution.Height / 2 - 128);
+
+			var s = new Sheet(Info["LoadScreenImage"]);
+			Logo = new Sprite(s, new Rectangle(0,0,256,256), TextureChannel.Alpha);
+			Stripe = new Sprite(s, new Rectangle(256,0,256,256), TextureChannel.Alpha);
+			StripeRect = new Rectangle(0, Renderer.Resolution.Height/2 - 128, Renderer.Resolution.Width, 256);
+			LogoPos =  new float2(Renderer.Resolution.Width/2 - 128, Renderer.Resolution.Height/2 - 128);
 		}
 
 		public void Display()
@@ -62,10 +61,10 @@ namespace OpenRA.Mods.D2k
 			var textSize = r.Fonts["Bold"].Measure(text);
 
 			r.BeginFrame(float2.Zero, 1f);
-			WidgetUtils.FillRectWithSprite(stripeRect, stripe);
-			r.RgbaSpriteRenderer.DrawSprite(Logo, logoPos);
+			WidgetUtils.FillRectWithSprite(StripeRect, Stripe);
+			r.RgbaSpriteRenderer.DrawSprite(Logo, LogoPos);
 			r.Fonts["Bold"].DrawText(text, new float2(Renderer.Resolution.Width - textSize.X - 20, Renderer.Resolution.Height - textSize.Y - 20), Color.White);
-			r.EndFrame(new NullInputHandler());
+			r.EndFrame( new NullInputHandler() );
 		}
 
 		public void StartGame()
@@ -86,10 +85,8 @@ namespace OpenRA.Mods.D2k
 				Ui.OpenWindow(Info["InstallerMenuWidget"], args);
 			}
 			else
-			{
-				Ui.ResetAll();
 				Game.LoadShellMap();
-			}
 		}
 	}
 }
+

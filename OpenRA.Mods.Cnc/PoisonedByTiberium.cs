@@ -34,12 +34,12 @@ namespace OpenRA.Mods.Cnc
 
 			var rl = self.World.WorldActor.Trait<ResourceLayer>();
 			var r = rl.GetResource(self.Location);
-			if( r == null ) return;
-			if( !info.Resources.Contains(r.info.Name) ) return;
+			if (r == null) return;
+			if (!info.Resources.Contains(r.info.Name)) return;
 
 			var weapon = Rules.Weapons[info.Weapon.ToLowerInvariant()];
 
-			self.InflictDamage( self.World.WorldActor, weapon.Warheads[ 0 ].Damage, weapon.Warheads[ 0 ] );
+			self.InflictDamage(self.World.WorldActor, weapon.Warheads[0].Damage, weapon.Warheads[0]);
 			poisonTicks = weapon.ROF;
 		}
 	}

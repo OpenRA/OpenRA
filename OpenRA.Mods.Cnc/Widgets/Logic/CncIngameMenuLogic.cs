@@ -49,7 +49,7 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				});
 			};
 
-			Action doNothing = () => {};
+			Action doNothing = () => { };
 
 			menu.Get<ButtonWidget>("QUIT_BUTTON").OnClick = () =>
 				CncWidgetUtils.PromptConfirmAction("Abort Mission", "Leave this game and return to the menu?", onQuit, doNothing);
@@ -92,35 +92,35 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 
 			// Menu panels - ordered from lowest to highest priority
 			var panelParent = Game.OpenWindow(world, "INGAME_MENU_PANEL");
-			PanelType Panel = PanelType.Objectives;
+			PanelType panelType = PanelType.Objectives;
 			var visibleButtons = 0;
 
 			// Debug / Cheats panel
 			var debugButton = panelParent.Get<ButtonWidget>("DEBUG_BUTTON");
-			debugButton.OnClick = () => Panel = PanelType.Debug;
-			debugButton.IsHighlighted = () => Panel == PanelType.Debug;
+			debugButton.OnClick = () => panelType = PanelType.Debug;
+			debugButton.IsHighlighted = () => panelType == PanelType.Debug;
 
 			if (world.LocalPlayer != null && world.LobbyInfo.GlobalSettings.AllowCheats)
 			{
-				Panel = PanelType.Debug;
+				panelType = PanelType.Debug;
 				visibleButtons++;
-				var debugPanel = Game.LoadWidget(world, "CHEATS_PANEL", panelParent, new WidgetArgs(){{"onExit", doNothing}});
-				debugPanel.IsVisible = () => Panel == PanelType.Debug;
+				var debugPanel = Game.LoadWidget(world, "CHEATS_PANEL", panelParent, new WidgetArgs() { { "onExit", doNothing } });
+				debugPanel.IsVisible = () => panelType == PanelType.Debug;
 				debugButton.IsVisible = () => visibleButtons > 1;
 			}
 
 			// Mission objectives
 			var iop = world.WorldActor.TraitsImplementing<IObjectivesPanel>().FirstOrDefault();
 			var objectivesButton = panelParent.Get<ButtonWidget>("OBJECTIVES_BUTTON");
-			objectivesButton.OnClick = () => Panel = PanelType.Objectives;
-			objectivesButton.IsHighlighted = () => Panel == PanelType.Objectives;
+			objectivesButton.OnClick = () => panelType = PanelType.Objectives;
+			objectivesButton.IsHighlighted = () => panelType == PanelType.Objectives;
 
 			if (iop != null && iop.ObjectivesPanel != null)
 			{
-				Panel = PanelType.Objectives;
+				panelType = PanelType.Objectives;
 				visibleButtons++;
 				var objectivesPanel = Game.LoadWidget(world, iop.ObjectivesPanel, panelParent, new WidgetArgs());
-				objectivesPanel.IsVisible = () => Panel == PanelType.Objectives;
+				objectivesPanel.IsVisible = () => panelType == PanelType.Objectives;
 				objectivesButton.IsVisible = () => visibleButtons > 1;
 			}
 		}

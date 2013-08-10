@@ -19,7 +19,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 	{
 		public readonly string ProductionGroup;
 
-		public ProductionTypeButtonWidget() : base() {}
+		public ProductionTypeButtonWidget() : base() { }
 		protected ProductionTypeButtonWidget(ProductionTypeButtonWidget other)
 			: base(other)
 		{
