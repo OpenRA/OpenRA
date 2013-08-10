@@ -364,6 +364,7 @@ HellfireAA:
 			Concrete: 50%
 		Explosion: med_explosion_air
 		WaterExplosion: med_splash
+		ImpactSound: kaboom25.aud
 		InfDeath: 4
 		SmudgeType: Crater
 		Damage: 40
@@ -617,7 +618,7 @@ CrateNapalm:
 		WaterExplosion: napalm
 		InfDeath: 5
 		SmudgeType: Scorch
-		ImpactSound: firebl3
+		ImpactSound: firebl3.aud
 		Damage: 600
 
 CrateExplosion:
