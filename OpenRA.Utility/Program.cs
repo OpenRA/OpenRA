@@ -64,7 +64,7 @@ namespace OpenRA.Utility
 			Console.WriteLine("  --extract MOD[,MOD]* FILES [--userdir]     Extract files from mod packages to the current (or user) directory");
 			Console.WriteLine("  --tmp-png MOD[,MOD]* THEATER FILES      Extract terrain tiles to PNG");
 			Console.WriteLine("  --remap SRCMOD:PAL DESTMOD:PAL SRCSHP DESTSHP     Remap SHPs to another palette");
-			Console.WriteLine("  --r8 R8FILE PALETTE START END FILENAME [--noshadow] [--infrantry] [--vehicle] [--projectile] [--building] [--wall] [--tileset]     Convert Dune 2000 DATA.R8 to PNGs choosing start- and endframe as well as type for correct offset to append multiple frames to one PNG named by filename optionally removing the shadow.");
+			Console.WriteLine("  --r8 R8FILE PALETTE START END FILENAME [--noshadow] [--infrantry] [--vehicle] [--projectile] [--building] [--tileset]     Convert Dune 2000 DATA.R8 to PNGs choosing start- and endframe as well as type for correct offset to append multiple frames to one PNG named by filename optionally removing the shadow.");
 			Console.WriteLine("  --transpose SRCSHP DESTSHP START N M [START N M ...]     Transpose the N*M block of frames starting at START.");
 			Console.WriteLine("  --docs MOD     Generate trait documentation in MarkDown format.");
 			Console.WriteLine("  --map-hash MAPFILE     Generate hash of specified oramap file.");

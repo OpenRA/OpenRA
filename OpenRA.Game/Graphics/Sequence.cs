@@ -30,6 +30,7 @@ namespace OpenRA.Graphics
 		public readonly int ZOffset;
 		public readonly int ShadowStart;
 		public readonly int ShadowZOffset;
+		public readonly int[] Frames;
 
 		public Sequence(string unit, string name, MiniYaml info)
 		{
@@ -39,7 +40,8 @@ namespace OpenRA.Graphics
 			var offset = float2.Zero;
 			var blendMode = BlendMode.Alpha;
 
-			Start = int.Parse(d["Start"].Value);
+			if (d.ContainsKey("Start"))
+				Start = int.Parse(d["Start"].Value);
 
 			if (d.ContainsKey("Offset"))
 				offset = FieldLoader.GetValue<float2>("Offset", d["Offset"].Value);
@@ -79,7 +81,10 @@ namespace OpenRA.Graphics
 				Tick = 40;
 
 			if (d.ContainsKey("Transpose"))
-			    transpose = bool.Parse(d["Transpose"].Value);
+				transpose = bool.Parse(d["Transpose"].Value);
+
+			if (d.ContainsKey("Frames"))
+				Frames = Array.ConvertAll<string, int>(d["Frames"].Value.Split(','), int.Parse);
 
 			if (d.ContainsKey("ShadowStart"))
 				ShadowStart = int.Parse(d["ShadowStart"].Value);
@@ -136,8 +141,11 @@ namespace OpenRA.Graphics
 			if (reverseFacings)
 				f = (Facings - f) % Facings;
 
-			int i = transpose ? (frame % Length) * Facings + f :
+			var i = transpose ? (frame % Length) * Facings + f :
 				(f * Stride) + (frame % Length);
+
+			if (Frames != null)
+				return sprites[Frames[i]];
 
 			return sprites[start + i];
 		}
