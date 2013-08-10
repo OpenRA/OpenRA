@@ -34,11 +34,13 @@ namespace OpenRA.Graphics
 		public float Scale { get { return 1f; } }
 		public PaletteReference Palette { get { return null; } }
 		public int ZOffset { get { return zOffset; } }
+		public bool IsDecoration { get { return true; } }
 
 		public IRenderable WithScale(float newScale) { return new BeamRenderable(pos, zOffset, length, width, color); }
 		public IRenderable WithPalette(PaletteReference newPalette) { return new BeamRenderable(pos, zOffset, length, width, color); }
 		public IRenderable WithZOffset(int newOffset) { return new BeamRenderable(pos, zOffset, length, width, color); }
 		public IRenderable OffsetBy(WVec vec) { return new BeamRenderable(pos + vec, zOffset, length, width, color); }
+		public IRenderable AsDecoration() { return this; }
 
 		public void BeforeRender(WorldRenderer wr) {}
 		public void Render(WorldRenderer wr)

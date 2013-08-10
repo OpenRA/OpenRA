@@ -60,11 +60,13 @@ namespace OpenRA.Mods.RA
 		public float Scale { get { return 1f; } }
 		public PaletteReference Palette { get { return null; } }
 		public int ZOffset { get { return zOffset; } }
+		public bool IsDecoration { get { return true; } }
 		
 		public IRenderable WithScale(float newScale) { return new TeslaZapRenderable(pos, zOffset, length, image, brightZaps, dimZaps); }
 		public IRenderable WithPalette(PaletteReference newPalette) { return new TeslaZapRenderable(pos, zOffset, length, image, brightZaps, dimZaps); }
 		public IRenderable WithZOffset(int newOffset) { return new TeslaZapRenderable(pos, zOffset, length, image, brightZaps, dimZaps); }
 		public IRenderable OffsetBy(WVec vec) { return new TeslaZapRenderable(pos + vec, zOffset, length, image, brightZaps, dimZaps); }
+		public IRenderable AsDecoration() { return this; }
 
 		public void BeforeRender(WorldRenderer wr) { }
 		public void RenderDebugGeometry(WorldRenderer wr) { }
@@ -132,8 +134,8 @@ namespace OpenRA.Mods.RA
 				var step = steps.Where(t => (to - (z + new float2(t[0], t[1]))).LengthSquared < (to - z).LengthSquared)
 					.OrderBy(t => Math.Abs(float2.Dot(z + new float2(t[0], t[1]), q) + c)).First();
 
-				rs.Add(new SpriteRenderable(s.GetSprite(step[4]), z + new float2(step[2], step[3]),
-					wr.Palette("effect"), (int)from.Y));
+				var pos = new PPos((int)(z.X + step[2]), (int)(z.Y + step[3])).ToWPos(0);
+				rs.Add(new SpriteRenderable(s.GetSprite(step[4]), pos, WVec.Zero, 0, wr.Palette("effect"), 1f, true));
 
 				z += new float2(step[0], step[1]);
 				if (rs.Count >= 1000)

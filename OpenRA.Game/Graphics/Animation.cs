@@ -17,6 +17,7 @@ namespace OpenRA.Graphics
 	{
 		string name;
 		public Sequence CurrentSequence { get; private set; }
+		public bool IsDecoration = false;
 		int frame = 0;
 		bool backwards = false;
 		bool tickAlways;
@@ -43,10 +44,10 @@ namespace OpenRA.Graphics
 			if (CurrentSequence.ShadowStart >= 0)
 			{
 				var shadow = CurrentSequence.GetShadow(CurrentFrame, facingFunc());
-				yield return new SpriteRenderable(shadow, pos, offset, CurrentSequence.ShadowZOffset + zOffset, palette, scale);
+				yield return new SpriteRenderable(shadow, pos, offset, CurrentSequence.ShadowZOffset + zOffset, palette, scale, true);
 			}
 
-			yield return new SpriteRenderable(Image, pos, offset, CurrentSequence.ZOffset + zOffset, palette, scale);
+			yield return new SpriteRenderable(Image, pos, offset, CurrentSequence.ZOffset + zOffset, palette, scale, IsDecoration);
 		}
 
 		public IEnumerable<IRenderable> Render(WPos pos, PaletteReference palette)

@@ -54,6 +54,7 @@ namespace OpenRA.Graphics
 		public float Scale { get { return scale; } }
 		public PaletteReference Palette { get { return palette; } }
 		public int ZOffset { get { return zOffset; } }
+		public bool IsDecoration { get { return false; } }
 
 		public IRenderable WithScale(float newScale)
 		{
@@ -82,6 +83,8 @@ namespace OpenRA.Graphics
 			                           lightSource, lightAmbientColor, lightDiffuseColor,
 			                           palette, normalsPalette, shadowPalette);
 		}
+
+		public IRenderable AsDecoration() { return this; }
 
 		// This will need generalizing once we support TS/RA2 terrain
 		static readonly float[] groundNormal = new float[] {0,0,1,1};
