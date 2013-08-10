@@ -321,7 +321,6 @@
 		Range: 7
 	RallyPoint:
 		RallyPoint: 1,3
-	BelowUnits:
 	Exit@1:
 		SpawnOffset: 0,-15
 		ExitCell: 2,2
@@ -526,7 +525,6 @@ REPAIR:
 		Type: Concrete
 	RevealsShroud:
 		Range: 5
-	BelowUnits:
 	Reservable:
 	RepairsUnits:
 		Interval: 15
@@ -695,7 +693,6 @@ HEAVYC:
 #	Building:
 #		TerrainTypes: Rock
 #		Footprint: =
-#	BelowUnits:
 #	LineBuild:
 #		Range: 4
 #	RenderBuildingWall:
@@ -720,7 +717,6 @@ HEAVYC:
 #	Building:
 #		TerrainTypes: Rock
 #		Footprint: =
-#	BelowUnits:
 #	LineBuild:
 #		Range: 6
 #	RenderBuildingWall:

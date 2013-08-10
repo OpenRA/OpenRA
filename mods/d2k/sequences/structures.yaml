@@ -66,30 +66,38 @@ conyarda:
 repair:
 	idle:
 		Start: 0
+		ZOffset: -1c511
 	active:
 		Start: 0
 		Length: 10
 		Tick: 60
+		ZOffset: -1c511
+	damaged-idle:
+		Start: 10
+		ZOffset: -1c511
 	damaged-active:
 		Start: 10
 		Length: 10
 		Tick: 60
+		ZOffset: -1c511
 	make: repairmake
 		Start: 0
 		Length: *
-	damaged-idle:
-		Start: 10
 
 starporta:
 	idle:
 		Start: 0
+		ZOffset: -1c511
 	active:
 		Start: 0
 		Length: 1
+		ZOffset: -1c511
 	damaged-idle:
 		Start: 1
+		ZOffset: -1c511
 	damaged-active:
 		Start: 1
+		ZOffset: -1c511
 	make: starportmake
 		Start: 0
 		Length: *
@@ -238,13 +246,17 @@ conyardh:
 starporth:
 	idle:
 		Start: 0
+		ZOffset: -1c511
 	active:
 		Start: 0
 		Length: 1
+		ZOffset: -1c511
 	damaged-idle:
 		Start: 1
+		ZOffset: -1c511
 	damaged-active:
 		Start: 1
+		ZOffset: -1c511
 	make: starportmake
 		Start: 0
 		Length: *
@@ -387,13 +399,17 @@ conyardo:
 starporto:
 	idle:
 		Start: 0
+		ZOffset: -1c511
 	active:
 		Start: 0
 		Length: 1
+		ZOffset: -1c511
 	damaged-idle:
 		Start: 1
+		ZOffset: -1c511
 	damaged-active:
 		Start: 1
+		ZOffset: -1c511
 	make: starportmake
 		Start: 0
 		Length: *
@@ -526,13 +542,17 @@ palacec:
 starportc:
 	idle:
 		Start: 0
+		ZOffset: -1c511
 	active:
 		Start: 0
 		Length: 1
+		ZOffset: -1c511
 	damaged-idle:
 		Start: 1
+		ZOffset: -1c511
 	damaged-active:
 		Start: 1
+		ZOffset: -1c511
 	make: starportmake
 		Start: 0
 		Length: *
