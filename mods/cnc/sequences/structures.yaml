@@ -132,19 +132,24 @@ afld:
 	idle:
 		Start: 0
 		Tick: 120
+		ZOffset: -1023
 	active:
 		Start: 0
 		Length: 16
 		Tick: 120
+		ZOffset: -1023
 	damaged-idle:
 		Start: 16
 		Tick: 120
+		ZOffset: -1023
 	damaged-active:
 		Start: 16
 		Length: 16
 		Tick: 120
+		ZOffset: -1023
 	dead:
 		Start: 32
+		ZOffset: -1023
 	make: afldmake
 		Start: 0
 		Length: *
@@ -185,18 +190,23 @@ nuk2:
 hpad:
 	idle:
 		Start: 0
+		ZOffset: -1023
 	damaged-idle:
 		Start: 7
+		ZOffset: -1023
 	active:
 		Start: 1
 		Length: 6
 		Tick: 100
+		ZOffset: -1023
 	damaged-active:
 		Start: 8
 		Length: 6
 		Tick: 100		
+		ZOffset: -1023
 	dead:
 		Start: 14
+		ZOffset: -1023
 	make: hpadmake
 		Start: 0
 		Length: *
@@ -205,16 +215,20 @@ hpad:
 fix:
 	idle:
 		Start: 0
+		ZOffset: -1c511
 	damaged-idle:
 		Start: 7
 	active:
 		Start: 0
 		Length: 7
+		ZOffset: -1c511
 	damaged-active:
 		Start: 7
 		Length: 7
+		ZOffset: -1c511
 	dead:
 		Start: 14
+		ZOffset: -1c511
 	make: fixmake
 		Start: 0
 		Length: 14

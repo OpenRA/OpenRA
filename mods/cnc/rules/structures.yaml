@@ -275,7 +275,6 @@ AFLD:
 		Sprite: bib1
 	RallyPoint:
 		RallyPoint: 4,2
-	BelowUnits:
 	Exit@1:
 		SpawnOffset: -24,0
 		ExitCell: 3,1
@@ -353,7 +352,6 @@ HPAD:
 		SpawnOffset: 0,-6
 	Production:
 		Produces: Aircraft
-	BelowUnits:
 	Reservable:
 	RepairsUnits:
 	RallyPoint:
@@ -424,7 +422,6 @@ FIX:
 		HP: 400
 	RevealsShroud:
 		Range: 5
-	BelowUnits:
 	Reservable:
 	RepairsUnits:
 	RallyPoint:

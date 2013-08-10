@@ -403,7 +403,6 @@ CRATE:
 		NoBaseSelectionShares: 120
 		Unit: mcv
 	RenderSimple:
-	BelowUnits:
 	BodyOrientation:
 
 mpspawn:
