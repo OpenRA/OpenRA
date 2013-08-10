@@ -375,7 +375,6 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 				new string[] { "--r8", pathToDataR8, pathToPalette, "4745", "4759", Path.Combine(pathToSHPs, "marker"), "--building" },
 				new string[] { "--r8", pathToDataR8, pathToPalette, "4760", "4819", Path.Combine(pathToSHPs, "researchzaps"), "--building" },
 				new string[] { "--r8", pathToDataR8, pathToPalette, "4820", "4840", Path.Combine(pathToSHPs, "deathhandlaunch"), "--building" },
-				new string[] { "--r8", Path.Combine(Platform.SupportDir, "Content/d2k/MOUSE.R8"), pathToPalette, "0", "264", Path.Combine(pathToSHPs, "mouse") },
 				new string[] { "--r8", Path.Combine(Platform.SupportDir, "Content/d2k/BLOXBASE.R8"), pathToPalette, "0", "799", Path.Combine(pathToTilesets, "BASE"), "--tileset" },
 				new string[] { "--r8", Path.Combine(Platform.SupportDir, "Content/d2k/BLOXBASE.R8"), pathToPalette, "748", "749", Path.Combine(pathToSHPs, "spice0") },
 				new string[] { "--r8", Path.Combine(Platform.SupportDir, "Content/d2k/BLOXBAT.R8"), pathToPalette, "0", "799", Path.Combine(pathToTilesets, "BAT"), "--tileset" },
@@ -678,7 +677,6 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 				new string[] { "--shp", Path.Combine(pathToSHPs, "marker.png"), "96" },
 				new string[] { "--shp", Path.Combine(pathToSHPs, "researchzaps.png"), "96" },
 				new string[] { "--shp", Path.Combine(pathToSHPs, "deathhandlaunch.png"), "96" },
-				new string[] { "--shp", Path.Combine(pathToSHPs, "mouse.png"), "48" },
 				new string[] { "--shp", Path.Combine(pathToSHPs, "spice0.png"), "32" },
 			};
 
