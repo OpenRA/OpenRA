@@ -1046,7 +1046,6 @@ HPAD:
 		ExitCell: 0,0
 	Production:
 		Produces: Helicopter
-	BelowUnits:
 	Reservable:
 	IronCurtainable:
 	ProductionBar:
@@ -1081,7 +1080,6 @@ AFLD:
 		Facing:192
 	Production:
 		Produces: Plane
-	BelowUnits:
 	Reservable:
 	IronCurtainable:
 	SpyPlanePower:
@@ -1307,7 +1305,6 @@ FIX:
 		Type: Wood
 	RevealsShroud:
 		Range: 5
-	BelowUnits:
 	Reservable:
 	RallyPoint:
 	IronCurtainable:

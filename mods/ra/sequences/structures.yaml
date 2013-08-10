@@ -181,38 +181,46 @@ weap:
 hpad:
 	idle:
 		Start: 0
+		ZOffset: -1023
 	damaged-idle:
 		Start: 7
-	make: hpadmake
-		Start: 0
-		Length: *
+		ZOffset: -1023
 	active:
 		Start: 1
 		Length: 6
+		ZOffset: -1023
 	damaged-active:
 		Start: 8
 		Length: 6
+		ZOffset: -1023
+	make: hpadmake
+		Start: 0
+		Length: *
 
 afld:
 	idle: afldidle
 		Start: 0
 		Length: 8
 		Tick: 160
+		ZOffset: -1023
 	damaged-idle: afldidle
 		Start: 8
 		Length: 8
 		Tick: 160
-	make: afldmake
-		Start: 0
-		Length: *
+		ZOffset: -1023
 	active:
 		Start: 0
 		Length: 8
 		Tick: 160
+		ZOffset: -1023
 	damaged-active:
 		Start: 8
 		Length: 8
 		Tick: 160
+		ZOffset: -1023
+	make: afldmake
+		Start: 0
+		Length: *
 
 spen:
 	idle:
@@ -235,17 +243,21 @@ syrd:
 fix:
 	idle:
 		Start: 0
+		ZOffset: -1c511
 	damaged-idle:
 		Start: 7
-	make: fixmake
-		Start: 0
-		Length: *
+		ZOffset: -1c511
 	active:
 		Start: 1
 		Length: 6
+		ZOffset: -1c511
 	damaged-active:
 		Start: 8
 		Length: 6
+		ZOffset: -1c511
+	make: fixmake
+		Start: 0
+		Length: *
 
 gun:
 	idle:

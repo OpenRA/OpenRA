@@ -796,7 +796,6 @@ CRATE:
 		SelectionShares: 3
 		Unit: 4tnk
 	RenderSimple:
-	BelowUnits:
 	ProximityCaptor:
 		Types:Crate
 	Passenger:
