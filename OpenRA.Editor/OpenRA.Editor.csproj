@@ -116,7 +116,6 @@
     <Compile Include="PropertiesDialog.Designer.cs">
       <DependentUpon>PropertiesDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="ActorPropertiesDialog.resx">
       <DependentUpon>ActorPropertiesDialog.cs</DependentUpon>
       <SubType>Designer</SubType>

@@ -132,7 +132,7 @@ Music:
 
 Movies:
 
-LoadScreen: RALoadScreen
+LoadScreen: TSLoadScreen
 	LoadScreenImage: mods/ts/uibits/loadscreen.png
 	InstallerMenuWidget: INSTALL_PANEL
 	TestFile: tibsun.mix

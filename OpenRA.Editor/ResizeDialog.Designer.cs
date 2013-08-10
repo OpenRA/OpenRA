@@ -24,9 +24,8 @@ namespace OpenRA.Editor
 		protected override void Dispose(bool disposing)
 		{
 			if (disposing && (components != null))
-			{
 				components.Dispose();
-			}
+
 			base.Dispose(disposing);
 		}
 
@@ -38,41 +37,41 @@ namespace OpenRA.Editor
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.width = new System.Windows.Forms.NumericUpDown();
+			this.MapWidth = new System.Windows.Forms.NumericUpDown();
 			this.label1 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
-			this.cordonLeft = new System.Windows.Forms.NumericUpDown();
-			this.cordonTop = new System.Windows.Forms.NumericUpDown();
-			this.cordonRight = new System.Windows.Forms.NumericUpDown();
-			this.cordonBottom = new System.Windows.Forms.NumericUpDown();
+			this.CordonLeft = new System.Windows.Forms.NumericUpDown();
+			this.CordonTop = new System.Windows.Forms.NumericUpDown();
+			this.CordonRight = new System.Windows.Forms.NumericUpDown();
+			this.CordonBottom = new System.Windows.Forms.NumericUpDown();
 			this.label3 = new System.Windows.Forms.Label();
 			this.button1 = new System.Windows.Forms.Button();
 			this.button2 = new System.Windows.Forms.Button();
-			this.height = new System.Windows.Forms.NumericUpDown();
-			((System.ComponentModel.ISupportInitialize)(this.width)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.cordonLeft)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.cordonTop)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.cordonRight)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.cordonBottom)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.height)).BeginInit();
+			this.MapHeight = new System.Windows.Forms.NumericUpDown();
+			((System.ComponentModel.ISupportInitialize)(this.MapWidth)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.CordonLeft)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.CordonTop)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.CordonRight)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.CordonBottom)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.MapHeight)).BeginInit();
 			this.SuspendLayout();
 			//
 			// width
 			//
-			this.width.Increment = new decimal(new int[] {
+			this.MapWidth.Increment = new decimal(new int[] {
 			8,
 			0,
 			0,
 			0});
-			this.width.Location = new System.Drawing.Point(161, 18);
-			this.width.Maximum = new decimal(new int[] {
+			this.MapWidth.Location = new System.Drawing.Point(161, 18);
+			this.MapWidth.Maximum = new decimal(new int[] {
 			2048,
 			0,
 			0,
 			0});
-			this.width.Name = "width";
-			this.width.Size = new System.Drawing.Size(105, 20);
-			this.width.TabIndex = 0;
+			this.MapWidth.Name = "width";
+			this.MapWidth.Size = new System.Drawing.Size(105, 20);
+			this.MapWidth.TabIndex = 0;
 			//
 			// label1
 			//
@@ -94,51 +93,51 @@ namespace OpenRA.Editor
 			//
 			// cordonLeft
 			//
-			this.cordonLeft.Location = new System.Drawing.Point(161, 44);
-			this.cordonLeft.Maximum = new decimal(new int[] {
+			this.CordonLeft.Location = new System.Drawing.Point(161, 44);
+			this.CordonLeft.Maximum = new decimal(new int[] {
 			2048,
 			0,
 			0,
 			0});
-			this.cordonLeft.Name = "cordonLeft";
-			this.cordonLeft.Size = new System.Drawing.Size(105, 20);
-			this.cordonLeft.TabIndex = 0;
+			this.CordonLeft.Name = "cordonLeft";
+			this.CordonLeft.Size = new System.Drawing.Size(105, 20);
+			this.CordonLeft.TabIndex = 0;
 			//
 			// cordonTop
 			//
-			this.cordonTop.Location = new System.Drawing.Point(272, 44);
-			this.cordonTop.Maximum = new decimal(new int[] {
+			this.CordonTop.Location = new System.Drawing.Point(272, 44);
+			this.CordonTop.Maximum = new decimal(new int[] {
 			2048,
 			0,
 			0,
 			0});
-			this.cordonTop.Name = "cordonTop";
-			this.cordonTop.Size = new System.Drawing.Size(105, 20);
-			this.cordonTop.TabIndex = 0;
+			this.CordonTop.Name = "cordonTop";
+			this.CordonTop.Size = new System.Drawing.Size(105, 20);
+			this.CordonTop.TabIndex = 0;
 			//
 			// cordonRight
 			//
-			this.cordonRight.Location = new System.Drawing.Point(161, 70);
-			this.cordonRight.Maximum = new decimal(new int[] {
+			this.CordonRight.Location = new System.Drawing.Point(161, 70);
+			this.CordonRight.Maximum = new decimal(new int[] {
 			2048,
 			0,
 			0,
 			0});
-			this.cordonRight.Name = "cordonRight";
-			this.cordonRight.Size = new System.Drawing.Size(105, 20);
-			this.cordonRight.TabIndex = 0;
+			this.CordonRight.Name = "cordonRight";
+			this.CordonRight.Size = new System.Drawing.Size(105, 20);
+			this.CordonRight.TabIndex = 0;
 			//
 			// cordonBottom
 			//
-			this.cordonBottom.Location = new System.Drawing.Point(272, 70);
-			this.cordonBottom.Maximum = new decimal(new int[] {
+			this.CordonBottom.Location = new System.Drawing.Point(272, 70);
+			this.CordonBottom.Maximum = new decimal(new int[] {
 			2048,
 			0,
 			0,
 			0});
-			this.cordonBottom.Name = "cordonBottom";
-			this.cordonBottom.Size = new System.Drawing.Size(105, 20);
-			this.cordonBottom.TabIndex = 0;
+			this.CordonBottom.Name = "cordonBottom";
+			this.CordonBottom.Size = new System.Drawing.Size(105, 20);
+			this.CordonBottom.TabIndex = 0;
 			//
 			// label3
 			//
@@ -171,20 +170,20 @@ namespace OpenRA.Editor
 			//
 			// height
 			//
-			this.height.Increment = new decimal(new int[] {
+			this.MapHeight.Increment = new decimal(new int[] {
 			8,
 			0,
 			0,
 			0});
-			this.height.Location = new System.Drawing.Point(272, 18);
-			this.height.Maximum = new decimal(new int[] {
+			this.MapHeight.Location = new System.Drawing.Point(272, 18);
+			this.MapHeight.Maximum = new decimal(new int[] {
 			2048,
 			0,
 			0,
 			0});
-			this.height.Name = "height";
-			this.height.Size = new System.Drawing.Size(105, 20);
-			this.height.TabIndex = 0;
+			this.MapHeight.Name = "height";
+			this.MapHeight.Size = new System.Drawing.Size(105, 20);
+			this.MapHeight.TabIndex = 0;
 			//
 			// ResizeDialog
 			//
@@ -198,22 +197,22 @@ namespace OpenRA.Editor
 			this.Controls.Add(this.label3);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label1);
-			this.Controls.Add(this.cordonBottom);
-			this.Controls.Add(this.cordonTop);
-			this.Controls.Add(this.cordonRight);
-			this.Controls.Add(this.cordonLeft);
-			this.Controls.Add(this.height);
-			this.Controls.Add(this.width);
+			this.Controls.Add(this.CordonBottom);
+			this.Controls.Add(this.CordonTop);
+			this.Controls.Add(this.CordonRight);
+			this.Controls.Add(this.CordonLeft);
+			this.Controls.Add(this.MapHeight);
+			this.Controls.Add(this.MapWidth);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.Name = "ResizeDialog";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Resize Map";
-			((System.ComponentModel.ISupportInitialize)(this.width)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.cordonLeft)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.cordonTop)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.cordonRight)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.cordonBottom)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.height)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.MapWidth)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.CordonLeft)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.CordonTop)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.CordonRight)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.CordonBottom)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.MapHeight)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -226,11 +225,11 @@ namespace OpenRA.Editor
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Button button1;
 		private System.Windows.Forms.Button button2;
-		public System.Windows.Forms.NumericUpDown width;
-		public System.Windows.Forms.NumericUpDown cordonLeft;
-		public System.Windows.Forms.NumericUpDown cordonTop;
-		public System.Windows.Forms.NumericUpDown cordonRight;
-		public System.Windows.Forms.NumericUpDown cordonBottom;
-		public System.Windows.Forms.NumericUpDown height;
+		public System.Windows.Forms.NumericUpDown MapWidth;
+		public System.Windows.Forms.NumericUpDown CordonLeft;
+		public System.Windows.Forms.NumericUpDown CordonTop;
+		public System.Windows.Forms.NumericUpDown CordonRight;
+		public System.Windows.Forms.NumericUpDown CordonBottom;
+		public System.Windows.Forms.NumericUpDown MapHeight;
 	}
 }

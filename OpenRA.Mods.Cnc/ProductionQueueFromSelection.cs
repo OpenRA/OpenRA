@@ -20,13 +20,13 @@ namespace OpenRA.Mods.Cnc.Widgets
 	{
 		public string ProductionTabsWidget = null;
 
-		public object Create( ActorInitializer init ) { return new ProductionQueueFromSelection(init.world, this); }
+		public object Create(ActorInitializer init) { return new ProductionQueueFromSelection(init.world, this); }
 	}
 
 	class ProductionQueueFromSelection : INotifySelection
 	{
-		Lazy<ProductionTabsWidget> tabsWidget;
 		readonly World world;
+		Lazy<ProductionTabsWidget> tabsWidget;
 
 		public ProductionQueueFromSelection(World world, ProductionQueueFromSelectionInfo info)
 		{

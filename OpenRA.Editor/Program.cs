@@ -20,7 +20,7 @@ namespace OpenRA.Editor
 	static class Program
 	{
 		[STAThread]
-		static void Main( string[] args )
+		static void Main(string[] args)
 		{
 			if (args.Length >= 2 && args[0] == "--convert")
 			{
@@ -40,12 +40,13 @@ namespace OpenRA.Editor
 
 		static void UpgradeMaps(string mod)
 		{
-			var MapFolderPath = new string[] { Environment.CurrentDirectory, "mods", mod, "maps" }
+			var mapFolderPath = new string[] { Environment.CurrentDirectory, "mods", mod, "maps" }
 				.Aggregate(Path.Combine);
 
-			foreach (var path in ModData.FindMapsIn(MapFolderPath))
+			foreach (var path in ModData.FindMapsIn(mapFolderPath))
 			{
 				var map = new Map(path);
+
 				// Touch the lazy bits to initialize them
 				map.Actors.Force();
 				map.Smudges.Force();
@@ -54,6 +55,5 @@ namespace OpenRA.Editor
 				map.Save(path);
 			}
 		}
-
 	}
 }

@@ -21,6 +21,24 @@ using SGraphics = System.Drawing.Graphics;
 
 namespace OpenRA.Editor
 {
+	static class ActorReferenceExts
+	{
+		public static CPos Location(this ActorReference ar)
+		{
+			return (CPos)ar.InitDict.Get<LocationInit>().value;
+		}
+
+		public static void DrawStringContrast(this SGraphics g, Font f, string s, int x, int y, Brush fg, Brush bg)
+		{
+			g.DrawString(s, f, bg, x - 1, y - 1);
+			g.DrawString(s, f, bg, x + 1, y - 1);
+			g.DrawString(s, f, bg, x - 1, y + 1);
+			g.DrawString(s, f, bg, x + 1, y + 1);
+
+			g.DrawString(s, f, fg, x, y);
+		}
+	}
+
 	class Surface : Control
 	{
 		public Map Map { get; private set; }
@@ -33,7 +51,7 @@ namespace OpenRA.Editor
 
 		public float Zoom = 1.0f;
 
-		ITool Tool;
+		ITool currentTool;
 
 		public bool IsPanning;
 		public bool IsErasing;
@@ -53,7 +71,7 @@ namespace OpenRA.Editor
 		public event Action<string> MousePositionChanged = _ => { };
 		public event Action<KeyValuePair<string, ActorReference>> ActorDoubleClicked = _ => { };
 
-		Dictionary<string, ActorTemplate> ActorTemplates = new Dictionary<string, ActorTemplate>();
+		Dictionary<string, ActorTemplate> actorTemplates = new Dictionary<string, ActorTemplate>();
 		public Dictionary<int, ResourceTemplate> ResourceTemplates = new Dictionary<int, ResourceTemplate>();
 
 		static readonly Font MarkerFont = new Font(FontFamily.GenericSansSerif, 12.0f, FontStyle.Regular);
@@ -67,16 +85,16 @@ namespace OpenRA.Editor
 			TileSet = ts;
 			Palette = p;
 			PlayerPalette = pp;
-			PlayerPalettes = null;
+			playerPalettes = null;
 			Chunks.Clear();
-			Tool = null;
+			currentTool = null;
 		}
 
-		public void SetTool(ITool tool) { Tool = tool; ClearSelection(); }
+		public void SetTool(ITool tool) { currentTool = tool; ClearSelection(); }
 
 		public void BindActorTemplates(IEnumerable<ActorTemplate> templates)
 		{
-			ActorTemplates = templates.ToDictionary(a => a.Info.Name.ToLowerInvariant());
+			actorTemplates = templates.ToDictionary(a => a.Info.Name.ToLowerInvariant());
 		}
 
 		public void BindResourceTemplates(IEnumerable<ResourceTemplate> templates)
@@ -99,7 +117,8 @@ namespace OpenRA.Editor
 		static readonly Pen SelectionPen = new Pen(Color.Blue);
 		static readonly Pen PastePen = new Pen(Color.Green);
 		static readonly Pen CordonPen = new Pen(Color.Red);
-		int2 MousePos;
+
+		int2 mousePos;
 
 		public void Scroll(int2 dx)
 		{
@@ -151,12 +170,12 @@ namespace OpenRA.Editor
 
 			if (Map == null) return;
 
-			var oldMousePos = MousePos;
-			MousePos = new int2(e.Location);
+			var oldMousePos = mousePos;
+			mousePos = new int2(e.Location);
 			MousePositionChanged(GetBrushLocation().ToString());
 
 			if (e.Button == MouseButtons.Middle || (e.Button != MouseButtons.None && IsPanning))
-				Scroll(oldMousePos - MousePos);
+				Scroll(oldMousePos - mousePos);
 			else
 			{
 				if (e.Button == MouseButtons.Right || (IsErasing && e.Button == MouseButtons.Left))
@@ -180,7 +199,7 @@ namespace OpenRA.Editor
 				brushLocation.Y < 0)
 				return;
 
-			Tool = null;
+			currentTool = null;
 
 			var key = Map.Actors.Value.FirstOrDefault(a => a.Value.Location() == brushLocation);
 			if (key.Key != null) Map.Actors.Value.Remove(key.Key);
@@ -188,7 +207,7 @@ namespace OpenRA.Editor
 			if (Map.MapResources.Value[brushLocation.X, brushLocation.Y].type != 0)
 			{
 				Map.MapResources.Value[brushLocation.X, brushLocation.Y] = new TileReference<byte, byte>();
-				var ch = new int2((brushLocation.X) / ChunkSize, (brushLocation.Y) / ChunkSize);
+				var ch = new int2(brushLocation.X / ChunkSize, brushLocation.Y / ChunkSize);
 				if (Chunks.ContainsKey(ch))
 				{
 					Chunks[ch].Dispose();
@@ -202,9 +221,9 @@ namespace OpenRA.Editor
 
 		void Draw()
 		{
-			if (Tool != null)
+			if (currentTool != null)
 			{
-				Tool.Apply(this);
+				currentTool.Apply(this);
 				AfterChange();
 			}
 			else if (IsPaste)
@@ -237,7 +256,6 @@ namespace OpenRA.Editor
 
 		Bitmap RenderChunk(int u, int v)
 		{
-
 			var bitmap = new Bitmap(ChunkSize * TileSet.TileSize, ChunkSize * TileSet.TileSize);
 
 			var data = bitmap.LockBits(bitmap.Bounds(),
@@ -284,12 +302,12 @@ namespace OpenRA.Editor
 			bitmap.UnlockBits(data);
 
 			if (ShowGrid)
-				using( var g = SGraphics.FromImage(bitmap) )
+				using (var g = SGraphics.FromImage(bitmap))
 				{
-					var rect = new Rectangle(0,0,bitmap.Width, bitmap.Height);
-					ControlPaint.DrawGrid( g, rect,	new Size(2, Game.CellSize), Color.DarkRed );
-					ControlPaint.DrawGrid( g, rect,	new Size(Game.CellSize, 2), Color.DarkRed );
-					ControlPaint.DrawGrid( g, rect,	new Size(Game.CellSize, Game.CellSize), Color.Red );
+					var rect = new Rectangle(0, 0, bitmap.Width, bitmap.Height);
+					ControlPaint.DrawGrid(g, rect,	new Size(2, Game.CellSize), Color.DarkRed);
+					ControlPaint.DrawGrid(g, rect,	new Size(Game.CellSize, 2), Color.DarkRed);
+					ControlPaint.DrawGrid(g, rect,	new Size(Game.CellSize, Game.CellSize), Color.Red);
 				}
 
 			return bitmap;
@@ -297,15 +315,15 @@ namespace OpenRA.Editor
 
 		public CPos GetBrushLocation()
 		{
-			var vX = (int)Math.Floor((MousePos.X - Offset.X) / Zoom);
-			var vY = (int)Math.Floor((MousePos.Y - Offset.Y) / Zoom);
+			var vX = (int)Math.Floor((mousePos.X - Offset.X) / Zoom);
+			var vY = (int)Math.Floor((mousePos.Y - Offset.Y) / Zoom);
 			return new CPos(vX / TileSet.TileSize, vY / TileSet.TileSize);
 		}
 
 		public CPos GetBrushLocationBR()
 		{
-			var vX = (int)Math.Floor((MousePos.X - Offset.X) / Zoom);
-			var vY = (int)Math.Floor((MousePos.Y - Offset.Y) / Zoom);
+			var vX = (int)Math.Floor((mousePos.X - Offset.X) / Zoom);
+			var vY = (int)Math.Floor((mousePos.Y - Offset.Y) / Zoom);
 			return new CPos((vX + TileSet.TileSize - 1) / TileSet.TileSize,
 			                (vY + TileSet.TileSize - 1) / TileSet.TileSize);
 		}
@@ -361,14 +379,14 @@ namespace OpenRA.Editor
 			return new Palette(PlayerPalette, remap).AsSystemPalette();
 		}
 
-		Cache<string, ColorPalette> PlayerPalettes;
+		Cache<string, ColorPalette> playerPalettes;
 
 		public ColorPalette GetPaletteForPlayer(string player)
 		{
-			if (PlayerPalettes == null)
-				PlayerPalettes = new Cache<string, ColorPalette>(GetPaletteForPlayerInner);
+			if (playerPalettes == null)
+				playerPalettes = new Cache<string, ColorPalette>(GetPaletteForPlayerInner);
 
-			return PlayerPalettes[player];
+			return playerPalettes[player];
 		}
 
 		ColorPalette GetPaletteForActor(ActorReference ar)
@@ -393,10 +411,10 @@ namespace OpenRA.Editor
 
 					var bmp = Chunks[x];
 
-					float DrawX = TileSet.TileSize * (float)ChunkSize * (float)x.X * Zoom + Offset.X;
-					float DrawY = TileSet.TileSize * (float)ChunkSize * (float)x.Y * Zoom + Offset.Y;
+					var drawX = TileSet.TileSize * (float)ChunkSize * (float)x.X * Zoom + Offset.X;
+					var drawY = TileSet.TileSize * (float)ChunkSize * (float)x.Y * Zoom + Offset.Y;
 					RectangleF sourceRect = new RectangleF(0, 0, bmp.Width, bmp.Height);
-					RectangleF destRect = new RectangleF(DrawX, DrawY, bmp.Width * Zoom, bmp.Height * Zoom);
+					RectangleF destRect = new RectangleF(drawX, drawY, bmp.Width * Zoom, bmp.Height * Zoom);
 					e.Graphics.DrawImage(bmp, destRect, sourceRect, GraphicsUnit.Pixel);
 				}
 
@@ -427,8 +445,8 @@ namespace OpenRA.Editor
 
 			foreach (var ar in Map.Actors.Value)
 			{
-				if (ActorTemplates.ContainsKey(ar.Value.Type))
-					DrawActor(e.Graphics, ar.Value.Location(), ActorTemplates[ar.Value.Type],
+				if (actorTemplates.ContainsKey(ar.Value.Type))
+					DrawActor(e.Graphics, ar.Value.Location(), actorTemplates[ar.Value.Type],
 						GetPaletteForActor(ar.Value));
 				else
 					Console.WriteLine("Warning: Unknown or excluded actor: {0}", ar.Value.Type);
@@ -445,16 +463,16 @@ namespace OpenRA.Editor
 
 			if (ShowRuler && Zoom > 0.2)
 			{
-				for (int i = Map.Bounds.Left; i <= Map.Bounds.Right; i+=8)
+				for (int i = Map.Bounds.Left; i <= Map.Bounds.Right; i += 8)
 				{
-					if( i % 8 == 0)
+					if (i % 8 == 0)
 					{
 						PointF point = new PointF(i * TileSet.TileSize * Zoom + Offset.X, (Map.Bounds.Top - 8) * TileSet.TileSize * Zoom + Offset.Y);
 						e.Graphics.DrawString((i - Map.Bounds.Left).ToString(), MarkerFont, TextBrush, point);
 					}
 				}
 
-				for (int i = Map.Bounds.Top; i <= Map.Bounds.Bottom; i+=8)
+				for (int i = Map.Bounds.Top; i <= Map.Bounds.Bottom; i += 8)
 				{
 					if (i % 8 == 0)
 					{
@@ -464,14 +482,14 @@ namespace OpenRA.Editor
 				}
 			}
 
-			if (Tool != null)
-				Tool.Preview(this, e.Graphics);
+			if (currentTool != null)
+				currentTool.Preview(this, e.Graphics);
 
-			if (Tool == null)
+			if (currentTool == null)
 			{
 				var x = Map.Actors.Value.FirstOrDefault(a => a.Value.Location() == GetBrushLocation());
 				if (x.Key != null)
-					DrawActorBorder(e.Graphics, x.Value.Location(), ActorTemplates[x.Value.Type]);
+					DrawActorBorder(e.Graphics, x.Value.Location(), actorTemplates[x.Value.Type]);
 			}
 		}
 
@@ -493,7 +511,7 @@ namespace OpenRA.Editor
 			{
 				for (int y = 0; y < height; y++)
 				{
-					//TODO: crash prevention
+					// TODO: crash prevention
 					TileSelection[x, y] = Map.MapTiles.Value[start.X + x, start.Y + y];
 					ResourceSelection[x, y] = Map.MapResources.Value[start.X + x, start.Y + y];
 				}
@@ -513,7 +531,7 @@ namespace OpenRA.Editor
 					var mapX = loc.X + x;
 					var mapY = loc.Y + y;
 
-					//TODO: crash prevention for outside of bounds
+					// TODO: crash prevention for outside of bounds
 					Map.MapTiles.Value[mapX, mapY] = TileSelection[x, y];
 					Map.MapResources.Value[mapX, mapY] = ResourceSelection[x, y];
 
@@ -525,6 +543,7 @@ namespace OpenRA.Editor
 					}
 				}
 			}
+
 			AfterChange();
 		}
 
@@ -534,24 +553,6 @@ namespace OpenRA.Editor
 			SelectionEnd = CPos.Zero;
 			TileSelection = null;
 			ResourceSelection = null;
-		}
-	}
-
-	static class ActorReferenceExts
-	{
-		public static CPos Location(this ActorReference ar)
-		{
-			return (CPos)ar.InitDict.Get<LocationInit>().value;
-		}
-
-		public static void DrawStringContrast(this SGraphics g, Font f, string s, int x, int y, Brush fg, Brush bg)
-		{
-			g.DrawString(s, f, bg, x - 1, y - 1);
-			g.DrawString(s, f, bg, x + 1, y - 1);
-			g.DrawString(s, f, bg, x - 1, y + 1);
-			g.DrawString(s, f, bg, x + 1, y + 1);
-
-			g.DrawString(s, f, fg, x, y);
 		}
 	}
 }

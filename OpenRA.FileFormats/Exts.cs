@@ -129,9 +129,9 @@ namespace OpenRA
 			return xs.Except(ys).Concat(ys.Except(xs));
 		}
 
-		public static IEnumerable<T> Iterate<T>( this T t, Func<T,T> f )
+		public static IEnumerable<T> Iterate<T>(this T t, Func<T, T> f)
 		{
-			for(;;) { yield return t; t = f(t); }
+			for (;;) { yield return t; t = f(t); }
 		}
 
 		public static int NextPowerOf2(int v)
@@ -157,7 +157,7 @@ namespace OpenRA
 			return string.Join(j, ts.Select(t => t.ToString()).ToArray());
 		}
 
-		public static IEnumerable<T> Append<T>( this IEnumerable<T> ts, params T[] moreTs)
+		public static IEnumerable<T> Append<T>(this IEnumerable<T> ts, params T[] moreTs)
 		{
 			return ts.Concat(moreTs);
 		}
@@ -204,8 +204,8 @@ namespace OpenRA
 			// If any duplicates were found, log it and throw a descriptive error
 			if (dupKeys.Count > 0)
 			{
-				string badKeysFormatted = String.Join(", ", dupKeys.Select(p => "{0}: [{1}]".F(logKey(p.Key), String.Join(",", p.Value.ToArray()))).ToArray());
-				string msg = "{0}, duplicate values found for the following keys: {1}".F(debugName, badKeysFormatted);
+				var badKeysFormatted = string.Join(", ", dupKeys.Select(p => "{0}: [{1}]".F(logKey(p.Key), string.Join(",", p.Value.ToArray()))).ToArray());
+				var msg = "{0}, duplicate values found for the following keys: {1}".F(debugName, badKeysFormatted);
 				Log.Write("debug", msg);
 				throw new ArgumentException(msg);
 			}
@@ -232,6 +232,16 @@ namespace OpenRA
 			return result;
 		}
 
+		public static T[,] ResizeArray<T>(T[,] ts, T t, int width, int height)
+		{
+			var result = new T[width, height];
+			for (var i = 0; i < width; i++)
+				for (var j = 0; j < height; j++)
+					result[i, j] = i <= ts.GetUpperBound(0) && j <= ts.GetUpperBound(1)
+						? ts[i, j] : t;
+			return result;
+		}
+
 		public static Rectangle Bounds(this Bitmap b) { return new Rectangle(0, 0, b.Width, b.Height); }
 
 		public static int ToBits(this IEnumerable<bool> bits)
@@ -240,7 +250,7 @@ namespace OpenRA
 			var result = 0;
 			foreach (var b in bits)
 				if (b)
-					result |= (1 << i++);
+					result |= 1 << i++;
 				else
 					i++;
 			if (i > 33)

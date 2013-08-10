@@ -126,7 +126,6 @@
     <Compile Include="Primitives\Set.cs" />
     <Compile Include="Primitives\float2.cs" />
     <Compile Include="Primitives\int2.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Support\Log.cs" />
     <Compile Include="Support\Stopwatch.cs" />
     <Compile Include="Support\Timer.cs" />

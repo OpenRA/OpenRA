@@ -14,8 +14,8 @@ using System.Linq;
 using System.Threading;
 using OpenRA.FileFormats;
 using OpenRA.FileFormats.Graphics;
-using OpenRA.Widgets;
 using OpenRA.Utility;
+using OpenRA.Widgets;
 
 namespace OpenRA.Mods.D2k.Widgets.Logic
 {
@@ -51,8 +51,8 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 		public static bool IsValidDisk(string diskRoot)
 		{
 			var files = new string[][] {
-				new [] { diskRoot, "music", "ambush.aud" },
-				new [] { diskRoot, "setup", "setup.z" },
+				new[] { diskRoot, "music", "ambush.aud" },
+				new[] { diskRoot, "setup", "setup.z" },
 			};
 
 			return files.All(f => File.Exists(f.Aggregate(Path.Combine)));
@@ -79,8 +79,8 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 			installingContainer.IsVisible = () => true;
 
 			var destMusic = new string[] { Platform.SupportDir, "Content", "d2k", "Music" }.Aggregate(Path.Combine);
-			var destData = new [] { Platform.SupportDir, "Content", "d2k" }.Aggregate(Path.Combine);
-			var destSound = new [] { destData, "GAMESFX" }.Aggregate(Path.Combine);
+			var destData = new[] { Platform.SupportDir, "Content", "d2k" }.Aggregate(Path.Combine);
+			var destSound = new[] { destData, "GAMESFX" }.Aggregate(Path.Combine);
 			var copyFiles = new string[] { "music/ambush.aud", "music/arakatak.aud", "music/atregain.aud", "music/entordos.aud", "music/fightpwr.aud", "music/fremen.aud", "music/hark_bat.aud", "music/landsand.aud", "music/options.aud", "music/plotting.aud", "music/risehark.aud", "music/robotix.aud", "music/score.aud", "music/soldappr.aud", "music/spicesct.aud", "music/undercon.aud", "music/waitgame.aud" };
 
 			var extractPackage = "setup/setup.z";
@@ -123,7 +123,7 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 
 			var onProgress = (Action<string>)(s => Game.RunAfterTick(() =>
 			{
-				progressBar.Percentage = installCounter*100/installTotal;
+				progressBar.Percentage = installCounter * 100 / installTotal;
 				installCounter++;
 
 				statusLabel.GetText = () => s;
@@ -131,12 +131,12 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 
 			var onError = (Action<string>)(s => Game.RunAfterTick(() =>
 			{
-				statusLabel.GetText = () => "Error: "+s;
+				statusLabel.GetText = () => "Error: " + s;
 				backButton.IsDisabled = () => false;
 				retryButton.IsDisabled = () => false;
 			}));
 
-			var t = new Thread( _ =>
+			var t = new Thread(_ =>
 			{
 				try
 				{

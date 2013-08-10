@@ -19,18 +19,18 @@ namespace OpenRA.Mods.RA
 {
 	class CncShellmapScriptInfo : TraitInfo<CncShellmapScript> { }
 
-	class CncShellmapScript: IWorldLoaded, ITick
+	class CncShellmapScript : IWorldLoaded, ITick
 	{
-		Dictionary<string, Actor> Actors;
-		static CPos ViewportOrigin;
+		static CPos viewportOrigin;
+		Dictionary<string, Actor> actors;
 
 		public void WorldLoaded(World w)
 		{
 			var b = w.Map.Bounds;
-			ViewportOrigin = new CPos(b.Left + b.Width/2, b.Top + b.Height/2);
-			Game.MoveViewport(ViewportOrigin.ToFloat2());
+			viewportOrigin = new CPos(b.Left + b.Width / 2, b.Top + b.Height / 2);
+			Game.MoveViewport(viewportOrigin.ToFloat2());
 
-			Actors = w.WorldActor.Trait<SpawnMapActors>().Actors;
+			actors = w.WorldActor.Trait<SpawnMapActors>().Actors;
 
 			SetViewport();
 		}
@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA
 		void SetViewport()
 		{
 			var t = (ticks + 45) % (360f * speed) * (Math.PI / 180) * 1f / speed;
-			var loc = ViewportOrigin.ToFloat2() + (new float2(-15,4) * float2.FromAngle( (float)t ));
+			var loc = viewportOrigin.ToFloat2() + (new float2(-15, 4) * float2.FromAngle((float)t));
 			Game.viewport.Center(loc);
 		}
 
@@ -51,16 +51,16 @@ namespace OpenRA.Mods.RA
 
 			if (ticks == 0)
 			{
-				LoopTrack(Actors["boat1"], Actors["tl1"].Location, Actors["tr1"].Location);
-				LoopTrack(Actors["boat3"], Actors["tl1"].Location, Actors["tr1"].Location);
-				LoopTrack(Actors["boat2"], Actors["tl3"].Location, Actors["tr3"].Location);
-				LoopTrack(Actors["boat4"], Actors["tl3"].Location, Actors["tr3"].Location);
-				CreateUnitsInTransport(Actors["lst1"], new string[] {"htnk"});
-				CreateUnitsInTransport(Actors["lst2"], new string[] {"mcv"});
-				CreateUnitsInTransport(Actors["lst3"], new string[] {"htnk"});
-				LoopTrack(Actors["lst1"], Actors["tl2"].Location, Actors["tr2"].Location);
-				LoopTrack(Actors["lst2"], Actors["tl2"].Location, Actors["tr2"].Location);
-				LoopTrack(Actors["lst3"], Actors["tl2"].Location, Actors["tr2"].Location);
+				LoopTrack(actors["boat1"], actors["tl1"].Location, actors["tr1"].Location);
+				LoopTrack(actors["boat3"], actors["tl1"].Location, actors["tr1"].Location);
+				LoopTrack(actors["boat2"], actors["tl3"].Location, actors["tr3"].Location);
+				LoopTrack(actors["boat4"], actors["tl3"].Location, actors["tr3"].Location);
+				CreateUnitsInTransport(actors["lst1"], new string[] { "htnk" });
+				CreateUnitsInTransport(actors["lst2"], new string[] { "mcv" });
+				CreateUnitsInTransport(actors["lst3"], new string[] { "htnk" });
+				LoopTrack(actors["lst1"], actors["tl2"].Location, actors["tr2"].Location);
+				LoopTrack(actors["lst2"], actors["tl2"].Location, actors["tr2"].Location);
+				LoopTrack(actors["lst3"], actors["tl2"].Location, actors["tr2"].Location);
 			}
 
 			ticks++;
@@ -73,8 +73,8 @@ namespace OpenRA.Mods.RA
 			foreach (var i in cargo)
 				c.Load(transport, transport.World.CreateActor(false, i.ToLowerInvariant(), new TypeDictionary
 				{
-					new OwnerInit( transport.Owner ),
-					new FacingInit( f.Facing ),
+					new OwnerInit(transport.Owner),
+					new FacingInit(f.Facing),
 				}));
 		}
 
@@ -83,7 +83,7 @@ namespace OpenRA.Mods.RA
 			var mobile = self.Trait<Mobile>();
 			self.QueueActivity(mobile.ScriptedMove(left));
 			self.QueueActivity(new SimpleTeleport(right));
-			self.QueueActivity(new CallFunc(() => LoopTrack(self,left,right)));
+			self.QueueActivity(new CallFunc(() => LoopTrack(self, left, right)));
 		}
 	}
 }

@@ -303,7 +303,6 @@
     <Compile Include="PrimaryBuilding.cs" />
     <Compile Include="Production.cs" />
     <Compile Include="ProductionBar.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProvidesRadar.cs" />
     <Compile Include="ProximityCaptor.cs" />
     <Compile Include="ProximityCapturable.cs" />

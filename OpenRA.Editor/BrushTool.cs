@@ -19,14 +19,14 @@ namespace OpenRA.Editor
 {
 	class BrushTool : ITool
 	{
-		BrushTemplate Brush;
+		BrushTemplate brushTemplate;
 
-		public BrushTool(BrushTemplate brush) { this.Brush = brush; }
+		public BrushTool(BrushTemplate brush) { this.brushTemplate = brush; }
 
 		public void Apply(Surface surface)
 		{
 			// change the bits in the map
-			var template = surface.TileSet.Templates[Brush.N];
+			var template = surface.TileSet.Templates[brushTemplate.N];
 			var tile = template.Data;
 			var pos = surface.GetBrushLocation();
 
@@ -46,7 +46,7 @@ namespace OpenRA.Editor
 							surface.Map.MapTiles.Value[u + pos.X, v + pos.Y] =
 								new TileReference<ushort, byte>
 								{
-									type = Brush.N,
+									type = brushTemplate.N,
 									index = template.PickAny ? (byte)((u + pos.X) % 4 + ((v + pos.Y) % 4) * 4) : (byte)z,
 								};
 
@@ -62,11 +62,11 @@ namespace OpenRA.Editor
 
 		public void Preview(Surface surface, SGraphics g)
 		{
-			g.DrawImage(Brush.Bitmap,
+			g.DrawImage(brushTemplate.Bitmap,
 					surface.TileSet.TileSize * surface.GetBrushLocation().X * surface.Zoom + surface.GetOffset().X,
 					surface.TileSet.TileSize * surface.GetBrushLocation().Y * surface.Zoom + surface.GetOffset().Y,
-					Brush.Bitmap.Width * surface.Zoom,
-					Brush.Bitmap.Height * surface.Zoom);
+					brushTemplate.Bitmap.Width * surface.Zoom,
+					brushTemplate.Bitmap.Height * surface.Zoom);
 		}
 
 		void FloodFillWithBrush(Surface s, CPos pos)
@@ -96,7 +96,7 @@ namespace OpenRA.Editor
 
 				for (var x = a.X; x <= b.X; x++)
 				{
-					s.Map.MapTiles.Value[x, p.Y] = new TileReference<ushort, byte> { type = Brush.N, index = (byte)0 };
+					s.Map.MapTiles.Value[x, p.Y] = new TileReference<ushort, byte> { type = brushTemplate.N, index = (byte)0 };
 					if (s.Map.MapTiles.Value[x, p.Y - 1].Equals(replace))
 						maybeEnqueue(x, p.Y - 1);
 					if (s.Map.MapTiles.Value[x, p.Y + 1].Equals(replace))
@@ -111,7 +111,7 @@ namespace OpenRA.Editor
 
 		CPos FindEdge(Surface s, CPos p, CVec d, TileReference<ushort, byte> replace)
 		{
-			for (; ; )
+			for (;;)
 			{
 				var q = p + d;
 				if (!s.Map.IsInMap(q)) return p;

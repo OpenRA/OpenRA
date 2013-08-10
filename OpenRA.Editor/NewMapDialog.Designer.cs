@@ -24,9 +24,8 @@ namespace OpenRA.Editor
 		protected override void Dispose(bool disposing)
 		{
 			if (disposing && (components != null))
-			{
 				components.Dispose();
-			}
+
 			base.Dispose(disposing);
 		}
 
@@ -43,20 +42,20 @@ namespace OpenRA.Editor
 			this.label3 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
-			this.cordonBottom = new System.Windows.Forms.NumericUpDown();
-			this.cordonTop = new System.Windows.Forms.NumericUpDown();
-			this.cordonRight = new System.Windows.Forms.NumericUpDown();
-			this.cordonLeft = new System.Windows.Forms.NumericUpDown();
-			this.height = new System.Windows.Forms.NumericUpDown();
-			this.width = new System.Windows.Forms.NumericUpDown();
+			this.CordonBottom = new System.Windows.Forms.NumericUpDown();
+			this.CordonTop = new System.Windows.Forms.NumericUpDown();
+			this.CordonRight = new System.Windows.Forms.NumericUpDown();
+			this.CordonLeft = new System.Windows.Forms.NumericUpDown();
+			this.MapHeight = new System.Windows.Forms.NumericUpDown();
+			this.MapWidth = new System.Windows.Forms.NumericUpDown();
 			this.label4 = new System.Windows.Forms.Label();
-			this.theater = new System.Windows.Forms.ComboBox();
-			((System.ComponentModel.ISupportInitialize)(this.cordonBottom)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.cordonTop)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.cordonRight)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.cordonLeft)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.height)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.width)).BeginInit();
+			this.TheaterBox = new System.Windows.Forms.ComboBox();
+			((System.ComponentModel.ISupportInitialize)(this.CordonBottom)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.CordonTop)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.CordonRight)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.CordonLeft)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.MapHeight)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.MapWidth)).BeginInit();
 			this.SuspendLayout();
 			//
 			// button2
@@ -108,121 +107,121 @@ namespace OpenRA.Editor
 			//
 			// cordonBottom
 			//
-			this.cordonBottom.Location = new System.Drawing.Point(280, 75);
-			this.cordonBottom.Maximum = new decimal(new int[] {
+			this.CordonBottom.Location = new System.Drawing.Point(280, 75);
+			this.CordonBottom.Maximum = new decimal(new int[] {
 			2048,
 			0,
 			0,
 			0});
-			this.cordonBottom.Name = "cordonBottom";
-			this.cordonBottom.Size = new System.Drawing.Size(105, 20);
-			this.cordonBottom.TabIndex = 5;
-			this.cordonBottom.Value = new decimal(new int[] {
+			this.CordonBottom.Name = "cordonBottom";
+			this.CordonBottom.Size = new System.Drawing.Size(105, 20);
+			this.CordonBottom.TabIndex = 5;
+			this.CordonBottom.Value = new decimal(new int[] {
 			112,
 			0,
 			0,
 			0});
-			this.cordonBottom.Enter += new System.EventHandler(this.SelectText);
+			this.CordonBottom.Enter += new System.EventHandler(this.SelectText);
 			//
 			// cordonTop
 			//
-			this.cordonTop.Location = new System.Drawing.Point(280, 49);
-			this.cordonTop.Maximum = new decimal(new int[] {
+			this.CordonTop.Location = new System.Drawing.Point(280, 49);
+			this.CordonTop.Maximum = new decimal(new int[] {
 			2048,
 			0,
 			0,
 			0});
-			this.cordonTop.Name = "cordonTop";
-			this.cordonTop.Size = new System.Drawing.Size(105, 20);
-			this.cordonTop.TabIndex = 3;
-			this.cordonTop.Value = new decimal(new int[] {
+			this.CordonTop.Name = "cordonTop";
+			this.CordonTop.Size = new System.Drawing.Size(105, 20);
+			this.CordonTop.TabIndex = 3;
+			this.CordonTop.Value = new decimal(new int[] {
 			16,
 			0,
 			0,
 			0});
-			this.cordonTop.Enter += new System.EventHandler(this.SelectText);
+			this.CordonTop.Enter += new System.EventHandler(this.SelectText);
 			//
 			// cordonRight
 			//
-			this.cordonRight.Location = new System.Drawing.Point(169, 75);
-			this.cordonRight.Maximum = new decimal(new int[] {
+			this.CordonRight.Location = new System.Drawing.Point(169, 75);
+			this.CordonRight.Maximum = new decimal(new int[] {
 			2048,
 			0,
 			0,
 			0});
-			this.cordonRight.Name = "cordonRight";
-			this.cordonRight.Size = new System.Drawing.Size(105, 20);
-			this.cordonRight.TabIndex = 4;
-			this.cordonRight.Value = new decimal(new int[] {
+			this.CordonRight.Name = "cordonRight";
+			this.CordonRight.Size = new System.Drawing.Size(105, 20);
+			this.CordonRight.TabIndex = 4;
+			this.CordonRight.Value = new decimal(new int[] {
 			112,
 			0,
 			0,
 			0});
-			this.cordonRight.Enter += new System.EventHandler(this.SelectText);
+			this.CordonRight.Enter += new System.EventHandler(this.SelectText);
 			//
 			// cordonLeft
 			//
-			this.cordonLeft.Location = new System.Drawing.Point(169, 49);
-			this.cordonLeft.Maximum = new decimal(new int[] {
+			this.CordonLeft.Location = new System.Drawing.Point(169, 49);
+			this.CordonLeft.Maximum = new decimal(new int[] {
 			2048,
 			0,
 			0,
 			0});
-			this.cordonLeft.Name = "cordonLeft";
-			this.cordonLeft.Size = new System.Drawing.Size(105, 20);
-			this.cordonLeft.TabIndex = 2;
-			this.cordonLeft.Value = new decimal(new int[] {
+			this.CordonLeft.Name = "cordonLeft";
+			this.CordonLeft.Size = new System.Drawing.Size(105, 20);
+			this.CordonLeft.TabIndex = 2;
+			this.CordonLeft.Value = new decimal(new int[] {
 			16,
 			0,
 			0,
 			0});
-			this.cordonLeft.Enter += new System.EventHandler(this.SelectText);
+			this.CordonLeft.Enter += new System.EventHandler(this.SelectText);
 			//
 			// height
 			//
-			this.height.Increment = new decimal(new int[] {
+			this.MapHeight.Increment = new decimal(new int[] {
 			8,
 			0,
 			0,
 			0});
-			this.height.Location = new System.Drawing.Point(280, 23);
-			this.height.Maximum = new decimal(new int[] {
+			this.MapHeight.Location = new System.Drawing.Point(280, 23);
+			this.MapHeight.Maximum = new decimal(new int[] {
 			2048,
 			0,
 			0,
 			0});
-			this.height.Name = "height";
-			this.height.Size = new System.Drawing.Size(105, 20);
-			this.height.TabIndex = 1;
-			this.height.Value = new decimal(new int[] {
+			this.MapHeight.Name = "height";
+			this.MapHeight.Size = new System.Drawing.Size(105, 20);
+			this.MapHeight.TabIndex = 1;
+			this.MapHeight.Value = new decimal(new int[] {
 			128,
 			0,
 			0,
 			0});
-			this.height.Enter += new System.EventHandler(this.SelectText);
+			this.MapHeight.Enter += new System.EventHandler(this.SelectText);
 			//
 			// width
 			//
-			this.width.Increment = new decimal(new int[] {
+			this.MapWidth.Increment = new decimal(new int[] {
 			8,
 			0,
 			0,
 			0});
-			this.width.Location = new System.Drawing.Point(169, 23);
-			this.width.Maximum = new decimal(new int[] {
+			this.MapWidth.Location = new System.Drawing.Point(169, 23);
+			this.MapWidth.Maximum = new decimal(new int[] {
 			2048,
 			0,
 			0,
 			0});
-			this.width.Name = "width";
-			this.width.Size = new System.Drawing.Size(105, 20);
-			this.width.TabIndex = 0;
-			this.width.Value = new decimal(new int[] {
+			this.MapWidth.Name = "width";
+			this.MapWidth.Size = new System.Drawing.Size(105, 20);
+			this.MapWidth.TabIndex = 0;
+			this.MapWidth.Value = new decimal(new int[] {
 			128,
 			0,
 			0,
 			0});
-			this.width.Enter += new System.EventHandler(this.SelectText);
+			this.MapWidth.Enter += new System.EventHandler(this.SelectText);
 			//
 			// label4
 			//
@@ -235,12 +234,12 @@ namespace OpenRA.Editor
 			//
 			// theater
 			//
-			this.theater.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.theater.FormattingEnabled = true;
-			this.theater.Location = new System.Drawing.Point(169, 121);
-			this.theater.Name = "theater";
-			this.theater.Size = new System.Drawing.Size(216, 21);
-			this.theater.TabIndex = 6;
+			this.TheaterBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.TheaterBox.FormattingEnabled = true;
+			this.TheaterBox.Location = new System.Drawing.Point(169, 121);
+			this.TheaterBox.Name = "theater";
+			this.TheaterBox.Size = new System.Drawing.Size(216, 21);
+			this.TheaterBox.TabIndex = 6;
 			//
 			// NewMapDialog
 			//
@@ -249,29 +248,29 @@ namespace OpenRA.Editor
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.CancelButton = this.button1;
 			this.ClientSize = new System.Drawing.Size(418, 210);
-			this.Controls.Add(this.theater);
+			this.Controls.Add(this.TheaterBox);
 			this.Controls.Add(this.label4);
 			this.Controls.Add(this.button2);
 			this.Controls.Add(this.button1);
 			this.Controls.Add(this.label3);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label1);
-			this.Controls.Add(this.cordonBottom);
-			this.Controls.Add(this.cordonTop);
-			this.Controls.Add(this.cordonRight);
-			this.Controls.Add(this.cordonLeft);
-			this.Controls.Add(this.height);
-			this.Controls.Add(this.width);
+			this.Controls.Add(this.CordonBottom);
+			this.Controls.Add(this.CordonTop);
+			this.Controls.Add(this.CordonRight);
+			this.Controls.Add(this.CordonLeft);
+			this.Controls.Add(this.MapHeight);
+			this.Controls.Add(this.MapWidth);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.Name = "NewMapDialog";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "New Map";
-			((System.ComponentModel.ISupportInitialize)(this.cordonBottom)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.cordonTop)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.cordonRight)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.cordonLeft)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.height)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.width)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.CordonBottom)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.CordonTop)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.CordonRight)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.CordonLeft)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.MapHeight)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.MapWidth)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -284,13 +283,13 @@ namespace OpenRA.Editor
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Label label1;
-		public System.Windows.Forms.NumericUpDown cordonBottom;
-		public System.Windows.Forms.NumericUpDown cordonTop;
-		public System.Windows.Forms.NumericUpDown cordonRight;
-		public System.Windows.Forms.NumericUpDown cordonLeft;
-		public System.Windows.Forms.NumericUpDown height;
-		public System.Windows.Forms.NumericUpDown width;
+		public System.Windows.Forms.NumericUpDown CordonBottom;
+		public System.Windows.Forms.NumericUpDown CordonTop;
+		public System.Windows.Forms.NumericUpDown CordonRight;
+		public System.Windows.Forms.NumericUpDown CordonLeft;
+		public System.Windows.Forms.NumericUpDown MapHeight;
+		public System.Windows.Forms.NumericUpDown MapWidth;
 		private System.Windows.Forms.Label label4;
-		public System.Windows.Forms.ComboBox theater;
+		public System.Windows.Forms.ComboBox TheaterBox;
 	}
 }

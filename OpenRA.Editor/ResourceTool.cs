@@ -17,21 +17,21 @@ namespace OpenRA.Editor
 {
 	class ResourceTool : ITool
 	{
-		ResourceTemplate Resource;
+		ResourceTemplate resourceTemplate;
 
-		public ResourceTool(ResourceTemplate resource) { Resource = resource; }
+		public ResourceTool(ResourceTemplate resource) { resourceTemplate = resource; }
 
 		public void Apply(Surface surface)
 		{
 			surface.Map.MapResources.Value[surface.GetBrushLocation().X, surface.GetBrushLocation().Y]
 				= new TileReference<byte, byte>
 				{
-					type = (byte)Resource.Info.ResourceType,
-					index = (byte)random.Next(Resource.Info.SpriteNames.Length)
+					type = (byte)resourceTemplate.Info.ResourceType,
+					index = (byte)random.Next(resourceTemplate.Info.SpriteNames.Length)
 				};
 
-			var ch = new int2((surface.GetBrushLocation().X) / Surface.ChunkSize,
-				(surface.GetBrushLocation().Y) / Surface.ChunkSize);
+			var ch = new int2(surface.GetBrushLocation().X / Surface.ChunkSize,
+				surface.GetBrushLocation().Y / Surface.ChunkSize);
 
 			if (surface.Chunks.ContainsKey(ch))
 			{
@@ -42,7 +42,7 @@ namespace OpenRA.Editor
 
 		public void Preview(Surface surface, SGraphics g)
 		{
-			surface.DrawImage(g, Resource.Bitmap, surface.GetBrushLocation(), false, null);
+			surface.DrawImage(g, resourceTemplate.Bitmap, surface.GetBrushLocation(), false, null);
 		}
 
 		Random random = new Random();

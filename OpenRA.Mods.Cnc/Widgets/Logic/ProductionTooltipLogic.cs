@@ -23,8 +23,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public ProductionTooltipLogic(Widget widget, TooltipContainerWidget tooltipContainer, ProductionPaletteWidget palette)
 		{
-			var pm = palette.world.LocalPlayer.PlayerActor.Trait<PowerManager>();
-			var pr = palette.world.LocalPlayer.PlayerActor.Trait<PlayerResources>();
+			var pm = palette.World.LocalPlayer.PlayerActor.Trait<PowerManager>();
+			var pr = palette.World.LocalPlayer.PlayerActor.Trait<PlayerResources>();
 
 			widget.IsVisible = () => palette.TooltipActor != null;
 			var nameLabel = widget.Get<LabelWidget>("NAME");
@@ -75,20 +75,20 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				var descString = tooltip.Description.Replace("\\n", "\n");
 				descLabel.GetText = () => descString;
 
-				var leftWidth = new [] {font.Measure(tooltip.Name).X, requiresFont.Measure(requiresString).X, descFont.Measure(descString).X}.Aggregate(Math.Max);
-				var rightWidth = new [] {font.Measure(powerString).X, font.Measure(timeString).X, font.Measure(costString).X}.Aggregate(Math.Max);
-				timeLabel.Bounds.X = powerLabel.Bounds.X = costLabel.Bounds.X = leftWidth + 2*nameLabel.Bounds.X;
-				widget.Bounds.Width = leftWidth + rightWidth + 3*nameLabel.Bounds.X;
+				var leftWidth = new[] { font.Measure(tooltip.Name).X, requiresFont.Measure(requiresString).X, descFont.Measure(descString).X }.Aggregate(Math.Max);
+				var rightWidth = new[] { font.Measure(powerString).X, font.Measure(timeString).X, font.Measure(costString).X }.Aggregate(Math.Max);
+				timeLabel.Bounds.X = powerLabel.Bounds.X = costLabel.Bounds.X = leftWidth + 2 * nameLabel.Bounds.X;
+				widget.Bounds.Width = leftWidth + rightWidth + 3 * nameLabel.Bounds.X;
 
 				var leftHeight = font.Measure(tooltip.Name).Y + requiresFont.Measure(requiresString).Y + descFont.Measure(descString).Y;
 				var rightHeight = font.Measure(powerString).Y + font.Measure(timeString).Y + font.Measure(costString).Y;
-				widget.Bounds.Height = Math.Max(leftHeight, rightHeight)*3/2 + 3*nameLabel.Bounds.Y;
+				widget.Bounds.Height = Math.Max(leftHeight, rightHeight) * 3 / 2 + 3 * nameLabel.Bounds.Y;
 
 				lastActor = actor;
 			};
 		}
 
-		static string ActorName( string a )
+		static string ActorName(string a)
 		{
 			ActorInfo ai;
 			Rules.Info.TryGetValue(a.ToLowerInvariant(), out ai);
@@ -99,4 +99,3 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 		}
 	}
 }
-
