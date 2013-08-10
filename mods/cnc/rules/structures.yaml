@@ -23,7 +23,6 @@ FACT:
 	RevealsShroud:
 		Range: 10
 	Bib:
-		Sprite: bib2
 	Production:
 		Produces: Building,Defense
 	Transforms:
@@ -73,7 +72,6 @@ NUKE:
 	RevealsShroud:
 		Range: 4
 	Bib:
-		Sprite: bib3
 
 NUK2:
 	Inherits: ^Building
@@ -98,7 +96,6 @@ NUK2:
 	RevealsShroud:
 		Range: 4
 	Bib:
-		Sprite: bib3
 
 PROC:
 	Inherits: ^Building
@@ -121,7 +118,6 @@ PROC:
 	RevealsShroud:
 		Range: 6
 	Bib:
-		Sprite: bib2
 	TiberiumRefinery:
 		DockOffset: 0,2
 		TickRate: 15
@@ -195,7 +191,6 @@ PYLE:
 	RevealsShroud:
 		Range: 5
 	Bib:
-		Sprite: bib3
 	RallyPoint:
 	Exit@1:
 		SpawnOffset: -10,2
@@ -235,7 +230,6 @@ HAND:
 	RevealsShroud:
 		Range: 5
 	Bib:
-		Sprite: bib3
 	RallyPoint:
 	Exit@1:
 		SpawnOffset: 12,24
@@ -272,7 +266,6 @@ AFLD:
 	RevealsShroud:
 		Range: 7
 	Bib:
-		Sprite: bib1
 	RallyPoint:
 		RallyPoint: 4,2
 	Exit@1:
@@ -311,7 +304,6 @@ WEAP:
 	RevealsShroud:
 		Range: 4
 	Bib:
-		Sprite: bib2
 	-RenderBuilding:
 	RenderBuildingWarFactory:
 	RallyPoint:
@@ -387,7 +379,6 @@ HQ:
 	RevealsShroud:
 		Range: 10
 	Bib:
-		Sprite: bib3
 	ProvidesRadar:
 	RenderDetectionCircle:
 	DetectCloaked:
@@ -451,7 +442,6 @@ EYE:
 	RevealsShroud:
 		Range: 10
 	Bib:
-		Sprite: bib3
 	ProvidesRadar:
 	RenderDetectionCircle:
 	DetectCloaked:
@@ -492,7 +482,6 @@ TMPL:
 	RevealsShroud:
 		Range: 6
 	Bib:
-		Sprite: bib2
 	NukePower:
 		Image: atomicnh
 		ChargeTime: 300

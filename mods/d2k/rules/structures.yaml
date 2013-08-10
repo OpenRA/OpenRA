@@ -6,7 +6,6 @@
 		Dimensions: 3,2
 		Adjacent: 4
 	Bib:
-		Sprite: bib3x
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 1000
@@ -54,7 +53,6 @@
 		Footprint: xx xx
 		Dimensions: 2,2
 	Bib:
-		Sprite: bib2x
 	Health:
 		HP: 400
 	Armor:
@@ -83,7 +81,6 @@
 		Footprint: =x xx
 		Dimensions: 2,2
 	Bib:
-		Sprite: bib2x
 	Health:
 		HP: 800
 	Armor:
@@ -126,7 +123,6 @@
 		Footprint: xxx x==
 		Dimensions: 3,2
 	Bib:
-		Sprite: bib3x
 	Health:
 		HP: 900
 	Armor:
@@ -201,7 +197,6 @@
 		Footprint: xxx xx=
 		Dimensions: 3,2
 	Bib:
-		Sprite: bib3x
 	Health:
 		HP: 750
 	Armor:
@@ -240,7 +235,6 @@
 		Footprint: _x_ xxx =xx
 		Dimensions: 3,3
 	Bib:
-		Sprite: bib3x
 	Health:
 		HP: 1500
 	Armor:
@@ -281,7 +275,6 @@
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Bib:
-		Sprite: bib3x
 	Health:
 		HP: 1000
 	Armor:
@@ -312,7 +305,6 @@
 		Footprint: xxx x=x =x=
 		Dimensions: 3,3
 	Bib:
-		Sprite: bib3x
 	Health:
 		HP: 1000
 	Armor:
@@ -551,7 +543,6 @@ REPAIR:
 		Footprint: _x_ xxx xxx
 		Dimensions: 3,3
 	Bib:
-		Sprite: bib3x
 	Health:
 		HP: 1500
 	Armor:
@@ -593,7 +584,6 @@ RESEARCH:
 		Footprint: xxx xxx
 		Dimensions: 3,2
 	Bib:
-		Sprite: bib3x
 	Health:
 		HP: 1000
 	Armor:
@@ -622,7 +612,6 @@ RESEARCH:
 		Footprint: _x_ xxx =xx
 		Dimensions: 3,3
 	Bib:
-		Sprite: bib3x
 	Health:
 		HP: 2000
 	Armor:
@@ -670,8 +659,6 @@ PALACEC:
 	Building:
 		Footprint: xxx xxx
 		Dimensions: 3,2
-	Bib:
-		Sprite: bib3x
 	RenderBuilding:
 		HasMakeAnimation: false
 

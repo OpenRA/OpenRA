@@ -6,6 +6,9 @@ fcom:
 	make: fcommake
 		Start: 0
 		Length: *
+	bib: bib3
+		Start: 0
+		Length: *
 
 hosp:
 	idle:
@@ -35,7 +38,9 @@ oilb:
 		Length: *
 	make:
 		Start: 0
-
+	bib: bib3
+		Start: 0
+		Length: *
 fact:
 	idle:
 		Start: 0
@@ -52,6 +57,9 @@ fact:
 		Length: 25
 	dead: factdead
 		Start: 0
+	bib: bib2
+		Start: 0
+		Length: *
 
 proc:
 	idle:
@@ -63,6 +71,9 @@ proc:
 		Length: *
 	dead: procdead
 		Start: 0
+	bib: bib2
+		Start: 0
+		Length: *
 
 silo:
 	idle: silo2
@@ -85,6 +96,9 @@ powr:
 		Length: *
 	dead: powrdead
 		Start: 0
+	bib: bib3
+		Start: 0
+		Length: *
 
 apwr:
 	idle:
@@ -96,6 +110,9 @@ apwr:
 		Length: *
 	dead: apwrdead
 		Start: 0
+	bib: bib2
+		Start: 0
+		Length: *
 
 barr:
 	idle:
@@ -107,6 +124,9 @@ barr:
 	make: barrmake
 		Start: 0
 		Length: *
+	bib: bib3
+		Start: 0
+		Length: *
 
 tent:
 	idle:
@@ -116,6 +136,9 @@ tent:
 		Start: 10
 		Length: 10
 	make: tentmake
+		Start: 0
+		Length: *
+	bib: bib3
 		Start: 0
 		Length: *
 
@@ -136,6 +159,9 @@ dome:
 	make: domemake
 		Start: 0
 		Length: *
+	bib: bib3
+		Start: 0
+		Length: *
 
 atek:
 	idle:
@@ -149,6 +175,9 @@ atek:
 		Start: 0
 		Length: *
 		Offset: -4,0
+	bib: bib3
+		Start: 0
+		Length: *
 
 stek:
 	idle:
@@ -156,6 +185,9 @@ stek:
 	damaged-idle:
 		Start: 1
 	make: stekmake
+		Start: 0
+		Length: *
+	bib: bib2
 		Start: 0
 		Length: *
 
@@ -177,6 +209,9 @@ weap:
 		Start: 0
 	damaged-idle-top: weap2
 		Start: 4
+	bib: bib2
+		Start: 0
+		Length: *
 
 hpad:
 	idle:
@@ -194,6 +229,9 @@ hpad:
 		Length: 6
 		ZOffset: -1023
 	make: hpadmake
+		Start: 0
+		Length: *
+	bib: bib3
 		Start: 0
 		Length: *
 
@@ -434,6 +472,9 @@ miss:
 	damaged-idle:
 		Start: 2
 	make: missmake
+		Start: 0
+		Length: *
+	bib: bib2
 		Start: 0
 		Length: *
 

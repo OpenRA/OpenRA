@@ -354,7 +354,6 @@ World:
 	Country@Ordos:
 		Name: Ordos
 		Race: ordos
-	BibLayer:
 	DomainIndex:
 	ResourceLayer:
 	ResourceClaimLayer:
