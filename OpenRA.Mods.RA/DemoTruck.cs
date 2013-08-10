@@ -17,8 +17,7 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	// Exception when overriding Chronoshift event; removed for now, will look into it.
-	class DemoTruckInfo : TraitInfo<DemoTruck>, Requires<ExplodesInfo> {}
+	class DemoTruckInfo : TraitInfo<DemoTruck>, Requires<ExplodesInfo> { }
 
 	class DemoTruck : IIssueOrder, IResolveOrder, IOrderVoice
 	{
@@ -41,10 +40,13 @@ namespace OpenRA.Mods.RA
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID == "DemoAttack" || order.OrderID == "DemoDeploy")
-				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
+			if (order.OrderID != "DemoAttack" && order.OrderID != "DemoDeploy")
+				return null;
 
-			return null;
+			if (target.Type == TargetType.FrozenActor)
+				return new Order(order.OrderID, self, queued) { ExtraData = target.FrozenActor.ID };
+
+			return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
@@ -56,13 +58,18 @@ namespace OpenRA.Mods.RA
 		{
 			if (order.OrderString == "DemoAttack")
 			{
-				self.SetTargetLine(Target.FromOrder(order), Color.Red);
-				self.World.AddFrameEndTask(w =>
-				{
-					self.QueueActivity(new MoveAdjacentTo(Target.FromOrder(order)));
-					self.QueueActivity(new CallFunc(() => Explode(self)));
-				});
+				var target = self.ResolveFrozenActorOrder(order, Color.Red);
+				if (target.Type != TargetType.Actor)
+					return;
+
+				if (!order.Queued)
+					self.CancelActivity();
+
+				self.SetTargetLine(target, Color.Red);
+				self.QueueActivity(new MoveAdjacentTo(target));
+				self.QueueActivity(new CallFunc(() => Explode(self)));
 			}
+
 			if (order.OrderString == "DemoDeploy")
 				Explode(self);
 		}
