@@ -137,9 +137,6 @@ namespace OpenRA.Traits
 
 			if (hp == 0)
 			{
-				attacker.Owner.Kills++;
-				self.Owner.Deaths++;
-
 				foreach (var nd in self.TraitsImplementing<INotifyKilled>()
 						.Concat(self.Owner.PlayerActor.TraitsImplementing<INotifyKilled>()))
 					nd.Killed(self, ai);

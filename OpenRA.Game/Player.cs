@@ -22,8 +22,6 @@ namespace OpenRA
 	public class Player
 	{
 		public Actor PlayerActor;
-		public int Kills;
-		public int Deaths;
 		public WinState WinState = WinState.Undefined;
 
 		public readonly HSLColor Color;
