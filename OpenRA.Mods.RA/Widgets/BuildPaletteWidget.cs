@@ -191,8 +191,10 @@ namespace OpenRA.Mods.RA.Widgets
 			if (!IsVisible()) return;
 			// TODO: fix
 
-			int paletteHeight = DrawPalette(CurrentQueue);
+			var paletteHeight = DrawPalette(CurrentQueue);
 			DrawBuildTabs(world, paletteHeight);
+			DrawPalette(CurrentQueue);
+			// TODO: use ProductionTooltipLogic instead to avoid overlapping
 		}
 
 		int numActualRows = 5;
@@ -444,7 +446,7 @@ namespace OpenRA.Mods.RA.Widgets
 			pos.Y += 15;
 
 			var pl = world.LocalPlayer;
-			var p = pos.ToFloat2() - new float2(297, -3);
+			var p = Viewport.LastMousePos + new int2(-300, 0);
 
 			var info = Rules.Info[unit];
 			var tooltip = info.Traits.Get<TooltipInfo>();
@@ -455,26 +457,26 @@ namespace OpenRA.Mods.RA.Widgets
 			var longDescSize = Game.Renderer.Fonts["Regular"].Measure(tooltip.Description.Replace("\\n", "\n")).Y;
 			if (!canBuildThis) longDescSize += 8;
 
-			WidgetUtils.DrawPanel("dialog4", new Rectangle(Game.viewport.Width - 300, pos.Y, 300, longDescSize + 65));
+			WidgetUtils.DrawPanel("dialog4", new Rectangle(p.X, p.Y, 300, longDescSize + 65));
 
 			Game.Renderer.Fonts["Bold"].DrawText(
 				tooltip.Name + ((buildable.Hotkey != null) ? " ({0})".F(buildable.Hotkey.ToUpper()) : ""),
-												   p.ToInt2() + new int2(5, 5), Color.White);
+				p + new int2(5, 5), Color.White);
 
 			var resources = pl.PlayerActor.Trait<PlayerResources>();
 			var power = pl.PlayerActor.Trait<PowerManager>();
 
-			DrawRightAligned("${0}".F(cost), pos + new int2(-5, 5),
+			DrawRightAligned("${0}".F(cost), p + new int2(295, 5),
 				(resources.DisplayCash + resources.DisplayOre >= cost ? Color.White : Color.Red));
 
 			var lowpower = power.PowerState != PowerState.Normal;
 			var time = CurrentQueue.GetBuildTime(info.Name)
 				* ((lowpower) ? CurrentQueue.Info.LowPowerSlowdown : 1);
-			DrawRightAligned(WidgetUtils.FormatTime(time), pos + new int2(-5, 35), lowpower ? Color.Red : Color.White);
+			DrawRightAligned(WidgetUtils.FormatTime(time), p + new int2(295, 35), lowpower ? Color.Red : Color.White);
 
 			var bi = info.Traits.GetOrDefault<BuildingInfo>();
 			if (bi != null)
-				DrawRightAligned("{1}{0}".F(bi.Power, bi.Power > 0 ? "+" : ""), pos + new int2(-5, 20),
+				DrawRightAligned("{1}{0}".F(bi.Power, bi.Power > 0 ? "+" : ""), p + new int2(295, 20),
 					((power.PowerProvided - power.PowerDrained) >= -bi.Power || bi.Power > 0) ? Color.White : Color.Red);
 
 			p += new int2(5, 35);
@@ -483,15 +485,13 @@ namespace OpenRA.Mods.RA.Widgets
 				var prereqs = buildable.Prerequisites.Select(Description);
 				if (prereqs.Any())
 				{
-					Game.Renderer.Fonts["Regular"].DrawText("{0} {1}".F(RequiresText, prereqs.JoinWith(", ")), p.ToInt2(), Color.White);
-
+					Game.Renderer.Fonts["Regular"].DrawText("{0} {1}".F(RequiresText, prereqs.JoinWith(", ")), p, Color.White);
 					p += new int2(0, 8);
 				}
 			}
 
 			p += new int2(0, 15);
-			Game.Renderer.Fonts["Regular"].DrawText(tooltip.Description.Replace("\\n", "\n"),
-				p.ToInt2(), Color.White);
+			Game.Renderer.Fonts["Regular"].DrawText(tooltip.Description.Replace("\\n", "\n"), p, Color.White);
 		}
 
 		bool DoBuildingHotkey(string key, World world)
