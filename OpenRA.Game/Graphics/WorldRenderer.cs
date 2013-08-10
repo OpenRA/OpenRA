@@ -77,8 +77,11 @@ namespace OpenRA.Graphics
 				bounds.TopLeftAsCPos(),
 				bounds.BottomRightAsCPos());
 
-			var worldRenderables = actors.SelectMany(a => a.Render(this))
-				.OrderBy(r => r, comparer);
+			var worldRenderables = actors.SelectMany(a => a.Render(this));
+			if (world.OrderGenerator != null)
+				worldRenderables = worldRenderables.Concat(world.OrderGenerator.Render(this, world));
+
+			worldRenderables = worldRenderables.OrderBy(r => r, comparer);
 
 			// Effects are drawn on top of all actors
 			// TODO: Allow effects to be interleaved with actors
@@ -112,15 +115,7 @@ namespace OpenRA.Graphics
 				foreach (var r in a.Trait.RenderAsTerrain(this, a.Actor))
 					r.Render(this);
 
-			foreach (var a in world.Selection.Actors)
-				if (!a.Destroyed)
-					foreach (var t in a.TraitsImplementing<IPreRenderSelection>())
-						t.RenderBeforeWorld(this, a);
-
 			Game.Renderer.Flush();
-
-			if (world.OrderGenerator != null)
-				world.OrderGenerator.RenderBeforeWorld(this, world);
 
 			for (var i = 0; i < renderables.Count; i++)
 				renderables[i].Render(this);

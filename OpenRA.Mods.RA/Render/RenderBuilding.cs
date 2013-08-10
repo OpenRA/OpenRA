@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA.Render
 				return;
 
 			foreach (var a in w.ActorsWithTrait<BaseProvider>())
-				a.Trait.RenderBeforeWorld(wr, a.Actor);
+				a.Trait.RenderAfterWorld(wr);
 		}
 	}
 

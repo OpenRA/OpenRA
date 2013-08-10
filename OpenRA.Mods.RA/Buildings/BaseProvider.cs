@@ -24,7 +24,7 @@ namespace OpenRA.Mods.RA.Buildings
 		public object Create(ActorInitializer init) { return new BaseProvider(init.self, this); }
 	}
 
-	public class BaseProvider : ITick, IPreRenderSelection, ISelectionBar
+	public class BaseProvider : ITick, IPostRenderSelection, ISelectionBar
 	{
 		public readonly BaseProviderInfo Info;
 		DeveloperMode devMode;
@@ -57,7 +57,7 @@ namespace OpenRA.Mods.RA.Buildings
 		}
 
 		// Range circle
-		public void RenderBeforeWorld(WorldRenderer wr, Actor self)
+		public void RenderAfterWorld(WorldRenderer wr)
 		{
 			// Visible to player and allies
 			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
