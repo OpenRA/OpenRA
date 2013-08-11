@@ -10,6 +10,7 @@
 
 using System.Drawing;
 using System.Linq;
+using OpenRA.Mods.RA;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc.Widgets.Logic
@@ -57,11 +58,17 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				item.Get<LabelWidget>("FACTION").GetText = () => pp.Country.Name;
 
 				var team = item.Get<LabelWidget>("TEAM");
-				team.GetText = () => (pp.PlayerReference.Team == 0) ? "-" : pp.PlayerReference.Team.ToString();
+				var teamNumber = world.LobbyInfo.ClientWithIndex(pp.ClientIndex).Team;
+				team.GetText = () => (teamNumber == 0) ? "-" : teamNumber.ToString();
 				scrollpanel.AddChild(item);
 
-				item.Get<LabelWidget>("KILLS").GetText = () => pp.Kills.ToString();
-				item.Get<LabelWidget>("DEATHS").GetText = () => pp.Deaths.ToString();
+				var stats = pp.PlayerActor.TraitOrDefault<PlayerStatistics>();
+				if (stats == null)
+					break;
+				var totalKills = stats.UnitsKilled + stats.BuildingsKilled;
+				var totalDeaths = stats.UnitsDead + stats.BuildingsDead;
+				item.Get<LabelWidget>("KILLS").GetText = () => totalKills.ToString();
+				item.Get<LabelWidget>("DEATHS").GetText = () => totalDeaths.ToString();
 			}
 		}
 	}

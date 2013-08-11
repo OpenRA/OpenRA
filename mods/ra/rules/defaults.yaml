@@ -269,7 +269,6 @@
 	ProximityCaptor:
 		Types:Wall
 	Sellable:
-	UpdatesPlayerStatistics:
 	Guardable:
 	BodyOrientation:
 	FrozenUnderFog:

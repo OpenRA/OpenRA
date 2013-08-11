@@ -34,6 +34,7 @@
 	Guard:
 	Guardable:
 	BodyOrientation:
+	UpdatesPlayerStatistics:
 
 ^Tank:
 	AppearsOnRadar:
@@ -74,6 +75,7 @@
 	Guard:
 	Guardable:
 	BodyOrientation:
+	UpdatesPlayerStatistics:
 
 ^Helicopter:
 	AppearsOnRadar:
@@ -100,6 +102,7 @@
 		EmptyWeapon: HeliExplode
 	DebugMuzzlePositions:
 	BodyOrientation:
+	UpdatesPlayerStatistics:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -156,6 +159,7 @@
 		HealIfBelow: 1
 		DamageCooldown: 125
 		RequiresTech: InfantryHealing
+	UpdatesPlayerStatistics:
 
 ^CivInfantry:
 	Inherits: ^Infantry
@@ -232,6 +236,7 @@
 		ScanRadius: 4
 	AttackMove:
 	AttackFrontal:
+	UpdatesPlayerStatistics:
 
 ^Plane:
 	AppearsOnRadar:
@@ -270,6 +275,7 @@
 	Guard:
 	Guardable:
 	BodyOrientation:
+	UpdatesPlayerStatistics:
 
 ^Building:
 	AppearsOnRadar:
@@ -318,6 +324,7 @@
 		Range: 3
 	BodyOrientation:
 	FrozenUnderFog:
+	UpdatesPlayerStatistics:
 
 ^CivBuilding:
 	Inherits: ^Building

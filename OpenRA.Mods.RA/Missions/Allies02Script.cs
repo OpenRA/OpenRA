@@ -252,7 +252,7 @@ namespace OpenRA.Mods.RA.Missions
 
 		void UpdateDeaths()
 		{
-			var unitDeaths = allies1.Deaths + allies2.Deaths;
+			var unitDeaths = allies1.PlayerActor.Trait<PlayerStatistics>().UnitsDead + allies2.PlayerActor.Trait<PlayerStatistics>().UnitsDead;
 			fewDeaths.Text = FewDeathsTemplate.F(unitDeaths, DeathsThreshold);
 			OnObjectivesUpdated(false);
 			if (unitDeaths >= DeathsThreshold && fewDeaths.Status == ObjectiveStatus.InProgress)
