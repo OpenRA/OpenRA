@@ -82,12 +82,20 @@ namespace OpenRA.Graphics
 				ShadowStart = -1;
 
 			if (d.ContainsKey("ShadowZOffset"))
-				ShadowZOffset = int.Parse(d["ShadowZOffset"].Value);
+			{
+				WRange r;
+				if (WRange.TryParse(d["ShadowZOffset"].Value, out r))
+					ShadowZOffset = r.Range;
+			}
 			else
 				ShadowZOffset = -5;
 
 			if (d.ContainsKey("ZOffset"))
-				ZOffset = int.Parse(d["ZOffset"].Value);
+			{
+				WRange r;
+				if (WRange.TryParse(d["ZOffset"].Value, out r))
+					ZOffset = r.Range;
+			}
 
 			if (Length > Stride)
 				throw new InvalidOperationException(

@@ -15,7 +15,7 @@ using OpenRA.Traits;
 namespace OpenRA.Mods.RA
 {
 	//todo: remove all the Render*Circle duplication
-	class RenderJammerCircleInfo : TraitInfo<RenderJammerCircle>, IPlaceBuildingDecoration
+	class RenderJammerCircleInfo : ITraitInfo, IPlaceBuildingDecoration
 	{
 		public void Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition)
 		{
@@ -29,13 +29,19 @@ namespace OpenRA.Mods.RA
 
 			foreach (var a in w.ActorsWithTrait<RenderJammerCircle>())
 				if (a.Actor.Owner == a.Actor.World.LocalPlayer)
-					a.Trait.RenderBeforeWorld(wr, a.Actor);
+					a.Trait.RenderAfterWorld(wr);
 		}
+
+		public object Create(ActorInitializer init) { return new RenderJammerCircle(init.self); }
 	}
 
-	public class RenderJammerCircle : IPreRenderSelection
+	class RenderJammerCircle : IPostRenderSelection
 	{
-		public void RenderBeforeWorld(WorldRenderer wr, Actor self)
+		Actor self;
+
+		public RenderJammerCircle(Actor self) { this.self = self; }
+
+		public void RenderAfterWorld(WorldRenderer wr)
 		{
 			if (self.Owner != self.World.LocalPlayer)
 				return;

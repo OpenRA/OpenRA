@@ -275,7 +275,6 @@ World:
 		Race: nod
 	ProductionQueueFromSelection:
 		ProductionTabsWidget: PRODUCTION_TABS
-	BibLayer:
 	DomainIndex:
 	ResourceLayer:
 	ResourceClaimLayer:
@@ -403,7 +402,6 @@ CRATE:
 		NoBaseSelectionShares: 120
 		Unit: mcv
 	RenderSimple:
-	BelowUnits:
 	BodyOrientation:
 
 mpspawn:

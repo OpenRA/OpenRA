@@ -51,17 +51,6 @@ namespace OpenRA.Mods.RA
 			return self.Owner;
 		}
 
-		public Stance Stance()
-		{
-			if (spy.Disguised)
-			{
-				if (self.Owner == self.World.LocalPlayer)
-					return self.World.LocalPlayer.Stances[self.Owner];
-				return self.World.LocalPlayer.Stances[spy.disguisedAsPlayer];
-			}
-			return self.World.LocalPlayer.Stances[self.Owner];
-		}
-
 		public SpyToolTip( Actor self, TooltipInfo info )
 		{
 			this.self = self;

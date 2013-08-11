@@ -21,6 +21,9 @@ fact:
 		Start: 0
 		Length: *
 		Tick: 80
+	bib: bib2
+		Start: 0
+		Length: *
 
 nuke:
 	idle:
@@ -38,6 +41,9 @@ nuke:
 		Start: 0
 		Length: *
 		Tick: 80
+	bib: bib3
+		Start: 0
+		Length: *
 
 proc:
 	idle:
@@ -62,6 +68,9 @@ proc:
 		Start: 6
 		Length: 6
 		Offset: -32,-21
+	bib: bib2
+		Start: 0
+		Length: *
 
 silo:
 	idle:
@@ -76,6 +85,9 @@ silo:
 		Start: 0
 		Length: *
 		Tick: 80
+	bib: bib3
+		Start: 0
+		Length: *
 
 hand:
 	idle:
@@ -88,6 +100,9 @@ hand:
 		Start: 0
 		Length: *
 		Tick: 80
+	bib: bib3
+		Start: 0
+		Length: *
 
 pyle:
 	idle:
@@ -105,6 +120,9 @@ pyle:
 		Start: 0
 		Length: *
 		Tick: 80
+	bib: bib3
+		Start: 0
+		Length: *
 
 weap:
 	idle:
@@ -127,28 +145,39 @@ weap:
 		Start: 0
 		Length: *
 		Tick: 80
+	bib: bib2
+		Start: 0
+		Length: *
 
 afld:
 	idle:
 		Start: 0
 		Tick: 120
+		ZOffset: -1023
 	active:
 		Start: 0
 		Length: 16
 		Tick: 120
+		ZOffset: -1023
 	damaged-idle:
 		Start: 16
 		Tick: 120
+		ZOffset: -1023
 	damaged-active:
 		Start: 16
 		Length: 16
 		Tick: 120
+		ZOffset: -1023
 	dead:
 		Start: 32
+		ZOffset: -1023
 	make: afldmake
 		Start: 0
 		Length: *
 		Tick: 80
+	bib: bib1
+		Start: 0
+		Length: *
 
 hq:
 	idle:
@@ -165,6 +194,9 @@ hq:
 		Start: 0
 		Length: *
 		Tick: 80
+	bib: bib3
+		Start: 0
+		Length: *
 
 nuk2:
 	idle:
@@ -181,22 +213,30 @@ nuk2:
 		Start: 0
 		Length: *
 		Tick: 80
+	bib: bib3
+		Start: 0
+		Length: *
 
 hpad:
 	idle:
 		Start: 0
+		ZOffset: -1023
 	damaged-idle:
 		Start: 7
+		ZOffset: -1023
 	active:
 		Start: 1
 		Length: 6
 		Tick: 100
+		ZOffset: -1023
 	damaged-active:
 		Start: 8
 		Length: 6
 		Tick: 100		
+		ZOffset: -1023
 	dead:
 		Start: 14
+		ZOffset: -1023
 	make: hpadmake
 		Start: 0
 		Length: *
@@ -205,16 +245,20 @@ hpad:
 fix:
 	idle:
 		Start: 0
+		ZOffset: -1c511
 	damaged-idle:
 		Start: 7
 	active:
 		Start: 0
 		Length: 7
+		ZOffset: -1c511
 	damaged-active:
 		Start: 7
 		Length: 7
+		ZOffset: -1c511
 	dead:
 		Start: 14
+		ZOffset: -1c511
 	make: fixmake
 		Start: 0
 		Length: 14
@@ -235,6 +279,9 @@ eye:
 		Start: 0
 		Length: *
 		Tick: 80
+	bib: bib3
+		Start: 0
+		Length: *
 
 tmpl:
 	idle:
@@ -253,6 +300,9 @@ tmpl:
 		Start: 0
 		Length: *
 		Tick: 60
+	bib: bib2
+		Start: 0
+		Length: *
 
 obli:
 	idle:

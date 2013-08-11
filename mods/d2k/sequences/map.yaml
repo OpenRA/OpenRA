@@ -1,8 +1,10 @@
 crate:
 	idle: crates
 		Start: 0
+		ZOffset: -511
 	land: crates
 		Start: 0
+		ZOffset: -511
 
 spicebloom:
 	make:
@@ -11,8 +13,10 @@ spicebloom:
 	active:
 		Start: 2
 		Length: 1
+		ZOffset: -511
 	idle:
 		Start: 2
+		ZOffset: -511
 
 sandworm:
 	stand: wormsigns1

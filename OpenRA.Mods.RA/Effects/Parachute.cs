@@ -72,7 +72,9 @@ namespace OpenRA.Mods.RA.Effects
 			var shadow = wr.Palette("shadow");
 			foreach (var c in rc)
 			{
-				yield return c.WithPalette(shadow).WithZOffset(-1);
+				if (!c.IsDecoration)
+					yield return c.WithPalette(shadow).WithZOffset(c.ZOffset - 1).AsDecoration();
+
 				yield return c.OffsetBy(pos - c.Pos);
 			}
 

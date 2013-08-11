@@ -125,6 +125,7 @@ namespace OpenRA.Mods.RA
 			}
 
 			CPos lastMousePos;
+			public IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
 			public void RenderAfterWorld(WorldRenderer wr, World world)
 			{
 				if (!minelayer.IsInWorld)
@@ -137,8 +138,6 @@ namespace OpenRA.Mods.RA
 
 				wr.DrawLocus(Color.Cyan, minefield);
 			}
-
-			public void RenderBeforeWorld(WorldRenderer wr, World world) { }
 
 			public string GetCursor(World world, CPos xy, MouseInput mi) { lastMousePos = xy; return "ability"; }	/* TODO */
 		}

@@ -94,19 +94,11 @@ namespace OpenRA.Mods.RA
 			if (rp == null)
 				return exitLocation;
 
-			var mobile = newUnit.TraitOrDefault<Mobile>();
-			if (mobile != null)
+			var move = newUnit.TraitOrDefault<IMove>();
+			if (move != null)
 			{
 				newUnit.QueueActivity(new AttackMove.AttackMoveActivity(
-					newUnit, mobile.MoveTo(rp.rallyPoint, rp.nearEnough)));
-				return rp.rallyPoint;
-			}
-
-			// TODO: don't talk about HeliFly here.
-			var helicopter = newUnit.TraitOrDefault<Helicopter>();
-			if (helicopter != null)
-			{
-				newUnit.QueueActivity(new HeliFly(rp.rallyPoint));
+					newUnit, move.MoveTo(rp.rallyPoint, rp.nearEnough)));
 				return rp.rallyPoint;
 			}
 

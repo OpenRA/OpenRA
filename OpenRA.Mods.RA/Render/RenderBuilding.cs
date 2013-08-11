@@ -32,7 +32,7 @@ namespace OpenRA.Mods.RA.Render
 				return;
 
 			foreach (var a in w.ActorsWithTrait<BaseProvider>())
-				a.Trait.RenderBeforeWorld(wr, a.Actor);
+				a.Trait.RenderAfterWorld(wr);
 		}
 	}
 
@@ -63,8 +63,10 @@ namespace OpenRA.Mods.RA.Render
 			foreach (var a in r)
 			{
 				yield return a;
-				if (disabled)
-					yield return a.WithPalette(wr.Palette("disabled")).WithZOffset(1);
+				if (disabled && !a.IsDecoration)
+					yield return a.WithPalette(wr.Palette("disabled"))
+						.WithZOffset(a.ZOffset + 1)
+						.AsDecoration();
 			}
 		}
 

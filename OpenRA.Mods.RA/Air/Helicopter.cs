@@ -25,7 +25,7 @@ namespace OpenRA.Mods.RA.Air
 		public override object Create(ActorInitializer init) { return new Helicopter(init, this); }
 	}
 
-	class Helicopter : Aircraft, ITick, IResolveOrder
+	class Helicopter : Aircraft, ITick, IResolveOrder, IMove
 	{
 		public HelicopterInfo Info;
 		bool firstTick = true;
@@ -149,5 +149,9 @@ namespace OpenRA.Mods.RA.Air
 
 			return (d * 1024 * 8) / (int)distSq;
 		}
+
+		public Activity MoveTo(CPos cell, int nearEnough) { return new HeliFly(cell); }
+		public Activity MoveTo(CPos cell, Actor ignoredActor) { return new HeliFly(cell); }
+		public Activity MoveWithinRange(Target target, WRange range) { return new HeliFly(target.CenterPosition); }
 	}
 }

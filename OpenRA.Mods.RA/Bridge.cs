@@ -151,7 +151,7 @@ namespace OpenRA.Mods.RA
 			}
 
 			foreach (var t in TileSprites[currentTemplate])
-				yield return new SpriteRenderable(t.Value, t.Key.CenterPosition, 0, terrainPalette, 1f);
+				yield return new SpriteRenderable(t.Value, t.Key.CenterPosition, WVec.Zero, 0, terrainPalette, 1f, true);
 		}
 
 		void KillUnitsOnBridge()

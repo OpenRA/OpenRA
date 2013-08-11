@@ -354,7 +354,6 @@ World:
 	Country@Ordos:
 		Name: Ordos
 		Race: ordos
-	BibLayer:
 	DomainIndex:
 	ResourceLayer:
 	ResourceClaimLayer:
@@ -480,7 +479,6 @@ CRATE:
 		UncloakSound: STEALTH2.WAV
 		Effect: cloak
 	RenderSimple:
-	BelowUnits:
 	ProximityCaptor:
 		Types:Crate
 	Passenger:
@@ -506,7 +504,6 @@ SPICEBLOOM:
 		RelativeToTopLeft: yes
 	ProximityCaptor:
 		Types:Tree
-	BelowUnits:
 	Tooltip:
 		Name: Spice Bloom
 	SeedsResource:
@@ -547,7 +544,6 @@ SPICEBLOOM:
 #	AttackLeap:
 #		CanAttackGround: no
 #	RenderInfantry:
-#	BelowUnits:
 #	GivesExperience:
 #	GivesBounty:
 #	DrawLineToTarget:

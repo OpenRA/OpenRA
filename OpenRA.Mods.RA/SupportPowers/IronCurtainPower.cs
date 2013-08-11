@@ -95,12 +95,12 @@ namespace OpenRA.Mods.RA
 					wr.DrawSelectionBox(unit, Color.Red);
 			}
 
-			public void RenderBeforeWorld(WorldRenderer wr, World world)
+			public IEnumerable<IRenderable> Render(WorldRenderer wr, World world)
 			{
 				var xy = Game.viewport.ViewToWorld(Viewport.LastMousePos);
 				var pal = wr.Palette("terrain");
 				foreach (var t in world.FindTilesInCircle(xy, range))
-					tile.DrawAt(t.ToPPos().ToFloat2(), pal);
+					yield return new SpriteRenderable(tile, t.CenterPosition, WVec.Zero, -511, pal, 1f, true);
 			}
 
 			public string GetCursor(World world, CPos xy, MouseInput mi)

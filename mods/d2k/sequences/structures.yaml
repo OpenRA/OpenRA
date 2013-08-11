@@ -54,6 +54,9 @@ conyarda:
 		Length: *
 	damaged-idle:
 		Start: 1
+	bib: bib3x
+		Start: 0
+		Length: *
 	#build: cranea
 	#	Start: 0
 	#	Length: 14
@@ -66,31 +69,42 @@ conyarda:
 repair:
 	idle:
 		Start: 0
+		ZOffset: -1c511
 	active:
 		Start: 0
 		Length: 10
 		Tick: 60
+		ZOffset: -1c511
+	damaged-idle:
+		Start: 10
+		ZOffset: -1c511
 	damaged-active:
 		Start: 10
 		Length: 10
 		Tick: 60
+		ZOffset: -1c511
 	make: repairmake
 		Start: 0
 		Length: *
-	damaged-idle:
-		Start: 10
 
 starporta:
 	idle:
 		Start: 0
+		ZOffset: -1c511
 	active:
 		Start: 0
 		Length: 1
+		ZOffset: -1c511
 	damaged-idle:
 		Start: 1
+		ZOffset: -1c511
 	damaged-active:
 		Start: 1
+		ZOffset: -1c511
 	make: starportmake
+		Start: 0
+		Length: *
+	bib: bib3x
 		Start: 0
 		Length: *
 
@@ -104,6 +118,9 @@ pwra:
 		Length: *
 	damaged-idle:
 		Start: 6
+	bib: bib2x
+		Start: 0
+		Length: *
 
 barra:
 	idle:
@@ -113,6 +130,9 @@ barra:
 		Length: *
 	damaged-idle:
 		Start: 1
+	bib: bib2x
+		Start: 0
+		Length: *
 
 radara:
 	idle:
@@ -122,6 +142,9 @@ radara:
 		Length: *
 	damaged-idle:
 		Start: 1
+	bib: bib3x
+		Start: 0
+		Length: *
 
 refa:
 	idle:
@@ -142,6 +165,9 @@ refa:
 		Start: 1
 	damaged-idle-top:
 		Start: 2
+	bib: bib3x
+		Start: 0
+		Length: *
 
 siloa:
 	idle:
@@ -162,6 +188,9 @@ hightecha:
 		Length: *
 	damaged-idle:
 		Start: 1
+	bib: bib3x
+		Start: 0
+		Length: *
 
 research:
 	idle:
@@ -175,6 +204,9 @@ research:
 		Start: 20
 		Length: 20
 		Tick: 80
+	bib: bib3x
+		Start: 0
+		Length: *
 
 palacea:
 	idle:
@@ -184,7 +216,9 @@ palacea:
 		Length: *
 	damaged-idle:
 		Start: 1
-
+	bib: bib3x
+		Start: 0
+		Length: *
 
 lighta:
 	idle:
@@ -205,6 +239,9 @@ lighta:
 		Start: 1
 	damaged-idle-top:
 		Start: 2
+	bib: bib3x
+		Start: 0
+		Length: *
 
 heavya:
 	idle:
@@ -225,6 +262,9 @@ heavya:
 		Start: 1
 	damaged-idle-top:
 		Start: 2
+	bib: bib3x
+		Start: 0
+		Length: *
 
 conyardh:
 	idle:
@@ -234,18 +274,28 @@ conyardh:
 		Length: *
 	damaged-idle:
 		Start: 1
+	bib: bib3x
+		Start: 0
+		Length: *
 
 starporth:
 	idle:
 		Start: 0
+		ZOffset: -1c511
 	active:
 		Start: 0
 		Length: 1
+		ZOffset: -1c511
 	damaged-idle:
 		Start: 1
+		ZOffset: -1c511
 	damaged-active:
 		Start: 1
+		ZOffset: -1c511
 	make: starportmake
+		Start: 0
+		Length: *
+	bib: bib3x
 		Start: 0
 		Length: *
 
@@ -259,6 +309,9 @@ pwrh:
 		Length: *
 	damaged-idle:
 		Start: 6
+	bib: bib2x
+		Start: 0
+		Length: *
 
 barrh:
 	idle:
@@ -268,6 +321,9 @@ barrh:
 		Length: *
 	damaged-idle:
 		Start: 1
+	bib: bib2x
+		Start: 0
+		Length: *
 
 radarh:
 	idle:
@@ -277,6 +333,9 @@ radarh:
 		Length: *
 	damaged-idle:
 		Start: 1
+	bib: bib3x
+		Start: 0
+		Length: *
 
 refh:
 	idle:
@@ -297,6 +356,9 @@ refh:
 		Start: 1
 	damaged-idle-top:
 		Start: 2
+	bib: bib3x
+		Start: 0
+		Length: *
 
 siloh:
 	idle:
@@ -317,6 +379,9 @@ hightechh:
 		Length: *
 	damaged-idle:
 		Start: 1
+	bib: bib3x
+		Start: 0
+		Length: *
 
 palaceh:
 	idle:
@@ -334,6 +399,9 @@ palaceh:
 		Start: 8
 		Length: 6
 		Tick: 160
+	bib: bib3x
+		Start: 0
+		Length: *
 
 lighth:
 	idle:
@@ -354,6 +422,9 @@ lighth:
 		Start: 1
 	damaged-idle-top:
 		Start: 2
+	bib: bib3x
+		Start: 0
+		Length: *
 
 heavyh:
 	idle:
@@ -374,6 +445,9 @@ heavyh:
 		Start: 1
 	damaged-idle-top:
 		Start: 2
+	bib: bib3x
+		Start: 0
+		Length: *
 
 conyardo:
 	idle:
@@ -383,18 +457,28 @@ conyardo:
 		Length: *
 	damaged-idle:
 		Start: 1
+	bib: bib3x
+		Start: 0
+		Length: *
 
 starporto:
 	idle:
 		Start: 0
+		ZOffset: -1c511
 	active:
 		Start: 0
 		Length: 1
+		ZOffset: -1c511
 	damaged-idle:
 		Start: 1
+		ZOffset: -1c511
 	damaged-active:
 		Start: 1
+		ZOffset: -1c511
 	make: starportmake
+		Start: 0
+		Length: *
+	bib: bib3x
 		Start: 0
 		Length: *
 
@@ -408,6 +492,9 @@ pwro:
 		Length: *
 	damaged-idle:
 		Start: 6
+	bib: bib2x
+		Start: 0
+		Length: *
 
 barro:
 	idle:
@@ -417,6 +504,9 @@ barro:
 		Length: *
 	damaged-idle:
 		Start: 1
+	bib: bib2x
+		Start: 0
+		Length: *
 
 radaro:
 	idle:
@@ -426,6 +516,9 @@ radaro:
 		Length: *
 	damaged-idle:
 		Start: 1
+	bib: bib3x
+		Start: 0
+		Length: *
 
 refo:
 	idle:
@@ -446,6 +539,9 @@ refo:
 		Start: 1
 	damaged-idle-top:
 		Start: 2
+	bib: bib3x
+		Start: 0
+		Length: *
 
 siloo:
 	idle:
@@ -466,6 +562,9 @@ hightecho:
 		Length: *
 	damaged-idle:
 		Start: 1
+	bib: bib3x
+		Start: 0
+		Length: *
 
 palaceo:
 	idle:
@@ -475,7 +574,9 @@ palaceo:
 		Length: *
 	damaged-idle:
 		Start: 1
-
+	bib: bib3x
+		Start: 0
+		Length: *
 
 lighto:
 	idle:
@@ -496,6 +597,9 @@ lighto:
 		Start: 1
 	damaged-idle-top:
 		Start: 2
+	bib: bib3x
+		Start: 0
+		Length: *
 
 heavyo:
 	idle:
@@ -516,24 +620,37 @@ heavyo:
 		Start: 1
 	damaged-idle-top:
 		Start: 2
+	bib: bib3x
+		Start: 0
+		Length: *
 
 palacec:
 	idle:
 		Start: 0
 	damaged-idle:
 		Start: 1
+	bib: bib3x
+		Start: 0
+		Length: *
 
 starportc:
 	idle:
 		Start: 0
+		ZOffset: -1c511
 	active:
 		Start: 0
 		Length: 1
+		ZOffset: -1c511
 	damaged-idle:
 		Start: 1
+		ZOffset: -1c511
 	damaged-active:
 		Start: 1
+		ZOffset: -1c511
 	make: starportmake
+		Start: 0
+		Length: *
+	bib: bib3x
 		Start: 0
 		Length: *
 
@@ -556,3 +673,6 @@ heavyc:
 		Start: 1
 	damaged-idle-top:
 		Start: 2
+	bib: bib3x
+		Start: 0
+		Length: *
