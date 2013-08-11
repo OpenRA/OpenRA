@@ -58,7 +58,8 @@ namespace OpenRA.Mods.RA.Render
 				anims.Add(barrel,
 			    	new AnimationWithOffset(muzzleFlash,
 						() => arm.MuzzleOffset(self, barrel),
-						() => !visible[barrel]));
+						() => !visible[barrel],
+						p => WithTurret.ZOffsetFromCenter(self, p, 2)));
 			}
 		}
 
