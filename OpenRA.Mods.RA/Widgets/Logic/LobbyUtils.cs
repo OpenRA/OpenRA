@@ -194,6 +194,13 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			return ip;
 		}
 
+		public static string LookupCountry(string ip)
+		{
+			var ip2geo = new GeoIP.LookupService("GeoIP.dat", GeoIP.LookupService.GEOIP_MEMORY_CACHE);
+			var country = ip2geo.getCountry(ip);
+			return country.getName();
+		}
+
 		public static void SetupClientWidget(Widget parent, Session.Slot s, Session.Client c, OrderManager orderManager, bool visible)
 		{
 			parent.Get("ADMIN_INDICATOR").IsVisible = () => c.IsAdmin;

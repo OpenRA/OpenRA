@@ -75,6 +75,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\thirdparty\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
+    <Reference Include="Mono.Nat">
+      <HintPath>..\thirdparty\Mono.Nat.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\LegacyCaptureActor.cs" />
@@ -477,6 +481,10 @@
     <ProjectReference Include="..\OpenRA.Utility\OpenRA.Utility.csproj">
       <Project>{F33337BE-CB69-4B24-850F-07D23E408DDF}</Project>
       <Name>OpenRA.Utility</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GeoIP\GeoIP.csproj">
+      <Project>{021DDD6A-A608-424C-9A9A-252D8A9989E0}</Project>
+      <Name>GeoIP</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

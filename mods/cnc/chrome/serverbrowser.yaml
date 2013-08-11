@@ -68,6 +68,12 @@ Container@SERVERBROWSER_PANEL:
 									Y:40
 									Align:Right
 									Height:25
+								Label@LOCATION:
+									Width:140
+									X:PARENT_RIGHT-150
+									Y:40
+									Align:Right
+									Height:25
 				Label@PROGRESS_LABEL:
 					X:(PARENT_RIGHT - WIDTH) / 2
 					Y:PARENT_BOTTOM / 2 - HEIGHT

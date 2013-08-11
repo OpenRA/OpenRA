@@ -71,6 +71,13 @@ fileformats_LIBS	= $(COMMON_LIBS) thirdparty/Tao/Tao.Sdl.dll System.Windows.Form
 PROGRAMS 			= fileformats
 fileformats: $(fileformats_TARGET)
 
+geoip_SRCS		:= $(shell find GeoIP/ -iname '*.cs')
+geoip_TARGET		= GeoIP.dll
+geoip_KIND		= library
+geoip_LIBS		= $(COMMON_LIBS)
+PROGRAMS 		+= geoip
+geoip: $(geoip_TARGET)
+
 game_SRCS			:= $(shell find OpenRA.Game/ -iname '*.cs')
 game_TARGET			= OpenRA.Game.exe
 game_KIND			= winexe
@@ -125,8 +132,8 @@ STD_MOD_DEPS	= $(STD_MOD_LIBS) $(ralint_TARGET)
 mod_ra_SRCS			:= $(shell find OpenRA.Mods.RA/ -iname '*.cs')
 mod_ra_TARGET			= mods/ra/OpenRA.Mods.RA.dll
 mod_ra_KIND			= library
-mod_ra_DEPS			= $(STD_MOD_DEPS) $(utility_TARGET)
-mod_ra_LIBS			= $(COMMON_LIBS) $(STD_MOD_LIBS) $(utility_TARGET)
+mod_ra_DEPS			= $(STD_MOD_DEPS) $(utility_TARGET) $(geoip_TARGET)
+mod_ra_LIBS			= $(COMMON_LIBS) $(STD_MOD_LIBS) $(utility_TARGET) $(geoip_TARGET)
 mod_ra_EXTRA_CMDS		= mono --debug RALint.exe ra
 PROGRAMS 			+= mod_ra
 mod_ra: $(mod_ra_TARGET)
@@ -292,6 +299,7 @@ install-core: default
 	@$(INSTALL_PROGRAM) $(mod_d2k_TARGET) "$(DATA_INSTALL_DIR)/mods/d2k"
 
 	@$(INSTALL_DATA) "global mix database.dat" "$(DATA_INSTALL_DIR)/global mix database.dat"
+	@$(INSTALL_DATA) "GeoIP.dat" "$(DATA_INSTALL_DIR)/GeoIP.dat"
 	@$(INSTALL_DATA) AUTHORS "$(DATA_INSTALL_DIR)/AUTHORS"
 
 	@$(CP_R) glsl "$(DATA_INSTALL_DIR)"
