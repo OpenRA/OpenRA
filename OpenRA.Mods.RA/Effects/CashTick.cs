@@ -44,6 +44,9 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
+			if (wr.world.FogObscures(pos.ToCPos()))
+				yield break;
+
 			yield return new TextRenderable(font, pos, 0, color, text);
 		}
 	}
