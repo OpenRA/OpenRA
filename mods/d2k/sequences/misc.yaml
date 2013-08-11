@@ -40,6 +40,9 @@ explosion:
 	small_napalm: DATA.R8
 		Start: 3421
 		Length: 8
+	shockwave: DATA.R8
+		Start: 3687
+		Length: 6
 
 90mm:
 	idle: 

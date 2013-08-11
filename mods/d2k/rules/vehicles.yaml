@@ -1,7 +1,7 @@
 ^MCV:
 	Inherits: ^Vehicle
 	Buildable:
-		Prerequisites: repair
+		Prerequisites: Repair
 		Queue: Armor
 		BuildPaletteOrder: 110
 		Hotkey: m

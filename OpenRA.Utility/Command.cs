@@ -137,63 +137,9 @@ namespace OpenRA.Utility
 			var bitmap = new Bitmap(frame.FrameSize.Width * frameCount, frame.FrameSize.Height, PixelFormat.Format8bppIndexed);
 			bitmap.Palette = palette.AsSystemPalette();
 
-			int x = 0;
-
 			frame = srcImage[startFrame];
 
-			if (args.Contains("--vehicle"))
-			{
-				frame = srcImage[startFrame];
-
-				for (int f = endFrame - 1; f > startFrame - 1; f--)
-				{
-					var offsetX = frame.FrameSize.Width / 2 - frame.Offset.X;
-					var offsetY = frame.FrameSize.Height / 2 - frame.Offset.Y;
-
-					Console.WriteLine("calculated OffsetX: {0}", offsetX);
-					Console.WriteLine("calculated OffsetY: {0}", offsetY);
-
-					var data = bitmap.LockBits(new Rectangle(x + offsetX, 0 + offsetY, frame.Size.Width, frame.Size.Height), ImageLockMode.WriteOnly,
-						PixelFormat.Format8bppIndexed);
-
-					for (var i = 0; i < frame.Size.Height; i++)
-						Marshal.Copy(frame.Image, i * frame.Size.Width,
-						             new IntPtr(data.Scan0.ToInt64() + i * data.Stride), frame.Size.Width);
-
-					bitmap.UnlockBits(data);
-
-					x += frame.FrameSize.Width;
-
-					frame = srcImage[f];
-				}
-			}
-			else if (args.Contains("--turret"))
-			{
-				frame = srcImage[startFrame];
-
-				for (int f = endFrame - 1; f > startFrame - 1; f--)
-				{
-					var offsetX = Math.Abs(frame.Offset.X);
-					var offsetY = frame.FrameSize.Height - Math.Abs(frame.Offset.Y);
-
-					Console.WriteLine("calculated OffsetX: {0}", offsetX);
-					Console.WriteLine("calculated OffsetY: {0}", offsetY);
-
-					var data = bitmap.LockBits(new Rectangle(x + offsetX, 0 + offsetY, frame.Size.Width, frame.Size.Height), ImageLockMode.WriteOnly,
-						PixelFormat.Format8bppIndexed);
-
-					for (var i = 0; i < frame.Size.Height; i++)
-						Marshal.Copy(frame.Image, i * frame.Size.Width,
-							new IntPtr(data.Scan0.ToInt64() + i * data.Stride), frame.Size.Width);
-
-					bitmap.UnlockBits(data);
-
-					x += frame.FrameSize.Width;
-
-					frame = srcImage[f];
-				}
-			}
-			else if (args.Contains("--tileset"))
+			if (args.Contains("--tileset"))
 			{
 				int f = 0;
 				var tileset = new Bitmap(frame.FrameSize.Width * 20, frame.FrameSize.Height * 40, PixelFormat.Format8bppIndexed);

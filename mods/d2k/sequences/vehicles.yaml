@@ -1,113 +1,110 @@
 dmcv:
-	idle:
-		Start: 0
-		Facings: 32
+	idle: DATA.R8
+		Start: 1795
+		Facings: -32
 
 harvester:
-	idle:
-		Start: 0
-		Facings: 32
-	harvest: harvest2
-		Start: 0
+	idle: DATA.R8
+		Start: 1699
+		Facings: -32
+	harvest: DATA.R8
+		Start: 3631
 		Length: 6
-		Facings: 8
+		Facings: -8
 		Tick: 80
 		ZOffset: 1
-	dock: unload2
-		Start: 0
+	dock: DATA.R8
+		Start: 3370
 		Length: 10
-	dock-loop: unload2
-		Start: 10
+	dock-loop: DATA.R8
+		Start: 3380
 		Length: 1
 
 trike:
-	idle:
-		Start: 0
-		Facings: 32
-	unload:
-		Start: 0
-		Facings: 32
-	muzzle: minimuzzle
-		Start: 0
-		Length: 1
-		Facings: 32
+	idle: DATA.R8
+		Start: 1635
+		Facings: -32
+	unload: DATA.R8
+		Start: 1635
+		Facings: -32
+	muzzle: DATA.R8
+		Start: 3839
+		Facings: -32
 
 quad:
-	idle:
-		Start: 0
-		Facings: 32
-	unload:
-		Start: 0
-		Facings: 32
-	muzzle: minimuzzle
-		Start: 0
-		Length: 1
-		Facings: 32
+	idle: DATA.R8
+		Start: 1667
+		Facings: -32
+	unload: DATA.R8
+		Start: 1667
+		Facings: -32
+	muzzle: DATA.R8
+		Start: 3839
+		Facings: -32
 
 siegetank:
-	idle:
-		Start: 0
-		Facings: 32
-	turret: siegeturret
-		Start: 0
-		Facings: 32
+	idle: DATA.R8
+		Start: 1763
+		Facings: -32
+	turret: DATA.R8
+		Start: 1891
+		Facings: -32
 
 missiletank:
-	idle:
-		Start: 0
-		Facings: 32
+	idle: DATA.R8
+		Start: 1603
+		Facings: -32
 
 sonictank:
-	idle:
-		Start: 0
-		Facings: 32
+	idle: DATA.R8
+		Start: 1827
+		Facings: -32
 
 combata:
-	idle:
-		Start: 0
-		Facings: 32
-	turret: combataturret
-		Start: 0
-		Facings: 32
+	idle: DATA.R8
+		Start: 1731
+		Facings: -32
+	turret: DATA.R8
+		Start: 1859
+		Facings: -32
 
 combath:
-	idle:
-		Start: 0
-		Facings: 32
-	turret: combathturret
-		Start: 0
-		Facings: 32
+	idle: DATA.R8
+		Start: 2051
+		Facings: -32
+	turret: DATA.R8
+		Start: 2115
+		Facings: -32
 
 devast:
-	idle:
-		Start: 0
-		Facings: 32
-	muzzle: doubleblastmuzzle
-		Start: 0
+	idle: DATA.R8
+		Start: 2083
+		Facings: -32
+	muzzle: DATA.R8
+		Start: 3807
 		Length: 1
-		Facings: 32
+		Facings: -32
 
 combato:
-	idle:
-		Start: 0
-		Facings: 32
-	turret: combatoturret
-		Start: 0
-		Facings: 32
+	idle: DATA.R8
+		Start: 2453
+		Facings: -32
+	turret: DATA.R8
+		Start: 2485
+		Facings: -32
 
 raider:
-	idle:
-		Start: 0
-		Facings: 32
-	unload:
-		Start: 0
-		Facings: 32
-	muzzle: minimuzzle
-		Start: 0
-		Length: 1
-		Facings: 32
+	idle: DATA.R8
+		Start: 2421
+		Facings: -32
+	unload: DATA.R8
+		Start: 2421
+		Facings: -32
+	muzzle: DATA.R8
+		Start: 3839
+		Facings: -32
 
 deviatortank:
-	idle:
-		Start: 0
-		Facings: 32
+	idle: DATA.R8
+		Start: 2389
+		Facings: -32
