@@ -98,7 +98,6 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 				new string[] { "--r8", pathToDataR8, pathToPalette, "1859", "1890", Path.Combine(pathToSHPs, "combataturret"), "--vehicle" },
 				new string[] { "--r8", pathToDataR8, pathToPalette, "1891", "1922", Path.Combine(pathToSHPs, "siegeturret"), "--vehicle" },
 				new string[] { "--r8", pathToDataR8, pathToPalette, "1923", "1954", Path.Combine(pathToSHPs, "carryall"), "--vehicle" },
-				new string[] { "--r8", pathToDataR8, pathToPalette, "1955", "2050", Path.Combine(pathToSHPs, "orni"), "--vehicle" },
 				new string[] { "--r8", pathToDataR8, pathToPalette, "2051", "2082", Path.Combine(pathToSHPs, "combath"), "--vehicle" },
 				new string[] { "--r8", pathToDataR8, pathToPalette, "2083", "2114", Path.Combine(pathToSHPs, "devast"), "--vehicle" },
 				new string[] { "--r8", pathToDataR8, pathToPalette, "2115", "2146", Path.Combine(pathToSHPs, "combathturret"), "--vehicle" },
@@ -107,7 +106,6 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 				new string[] { "--r8", pathToDataR8, pathToPalette, "2421", "2452", Path.Combine(pathToSHPs, "raider"), "--vehicle" },
 				new string[] { "--r8", pathToDataR8, pathToPalette, "2453", "2484", Path.Combine(pathToSHPs, "combato"), "--vehicle" },
 				new string[] { "--r8", pathToDataR8, pathToPalette, "2485", "2516", Path.Combine(pathToSHPs, "combatoturret"), "--vehicle" },
-				new string[] { "--r8", pathToDataR8, pathToPalette, "2517", "2517", Path.Combine(pathToSHPs, "frigate"), "--vehicle" },
 				new string[] { "--r8", pathToDataR8, pathToPalette, "3014", "3014", Path.Combine(pathToSHPs, "unknown3"), "--projectile" },
 				new string[] { "--r8", pathToDataR8, pathToPalette, "3015", "3078", Path.Combine(pathToSHPs, "rpg"), "--projectile" },
 				new string[] { "--r8", pathToDataR8, pathToPalette, "3079", "3087", Path.Combine(pathToSHPs, "unknown4"), "--projectile" },
@@ -314,7 +312,6 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 				new string[] { "--shp", Path.Combine(pathToSHPs, "combataturret.png"), "48" },
 				new string[] { "--shp", Path.Combine(pathToSHPs, "siegeturret.png"), "48" },
 				new string[] { "--shp", Path.Combine(pathToSHPs, "carryall.png"), "64" },
-				new string[] { "--shp", Path.Combine(pathToSHPs, "orni.png"), "48" },
 				new string[] { "--shp", Path.Combine(pathToSHPs, "combath.png"), "48" },
 				new string[] { "--shp", Path.Combine(pathToSHPs, "devast.png"), "48" },
 				new string[] { "--shp", Path.Combine(pathToSHPs, "combathturret.png"), "48" },
@@ -464,11 +461,6 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 				new string[] { "--shp", Path.Combine(pathToSHPs, "spice0.png"), "32" },
 			};
 
-			var shpToTranspose = new string[][]
-			{
-				new string[] { "--transpose", Path.Combine(pathToSHPs, "orni.shp"), Path.Combine(pathToSHPs, "orni.shp"), "0", "32", "3" },
-			};
-
 			var onError = (Action<string>)(s => Game.RunAfterTick(() =>
 			{
 				statusLabel.GetText = () => "Error: " + s;
@@ -493,13 +485,6 @@ namespace OpenRA.Mods.D2k.Widgets.Logic
 						statusLabel.GetText = () => "Converting...";
 						Utility.Command.ConvertPngToShp(shpToCreate[i]);
 						File.Delete(shpToCreate[i][1]);
-					}
-
-					for (int i = 0; i < shpToTranspose.Length; i++)
-					{
-						progressBar.Percentage = i * 100 / shpToTranspose.Count();
-						statusLabel.GetText = () => "Transposing...";
-						Utility.Command.TransposeShp(shpToTranspose[i]);
 					}
 
 					statusLabel.GetText = () => "Building tilesets...";

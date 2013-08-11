@@ -1,19 +1,20 @@
 carryall:
-	idle:
-		Start: 0
-		Facings: 32
-	unload:
-		Start: 0
-		Facings: 32
+	idle: DATA.R8
+		Start: 1923
+		Facings: -32
+	unload: DATA.R8
+		Start: 1923
+		Facings: -32
 
 orni:
-	idle:
-		Start: 0
-		Facings: 32
+	idle: DATA.R8
+		Start: 1955
+		Facings: -32
 		Length: 3
 		Tick: 120
+		Transpose: true
 
 frigate:
-	idle:
-		Start: 0
+	idle: DATA.R8
+		Start: 2517
 		Facings: 1
