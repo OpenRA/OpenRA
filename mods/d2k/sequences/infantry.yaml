@@ -1,385 +1,417 @@
 rifle:
-	stand:
-		Start: 0
-		Facings: 8
-	stand2:
-		Start: 0
-		Facings: 8
-	stand3:
-		Start: 0
-		Facings: 8
-	run:
-		Start: 8
+	stand: DATA.R8
+		Start: 206
+		Facings: -8
+		Transpose: true
+	stand2: DATA.R8
+		Start: 206
+		Facings: -8
+		Transpose: true
+	stand3: DATA.R8
+		Start: 206
+		Facings: -8
+		Transpose: true
+	run: DATA.R8
+		Start: 214
 		Length: 6
-		Facings: 8
+		Facings: -8
 		Tick: 110
-	shoot:
-		Start: 56
-		Length: 5
-		Facings: 8
-		Tick: 120
-	prone-stand:
-		Start: 104
-		Length: 1
-		Facings: 8
-	prone-run:
-		Start: 112
+		Transpose: true
+	shoot: DATA.R8
+		Start: 254
+		Length: 6
+		Facings: -8
+		Transpose: true
+	prone-stand: DATA.R8
+		Start: 302
+		Facings: -8
+		Transpose: true
+	prone-run: DATA.R8
+		Start: 310
 		Length: 3
-		Facings: 8
+		Facings: -8
+		Transpose: true
 		Tick: 110
-	standup-0:
-		Start: 96
-		Length: 1
-		Facings: 8
+	standup-0: DATA.R8
+		Start: 302
+		Facings: -8
+		Transpose: true
 		Tick: 120
-	prone-shoot:
-		Start: 136
+	prone-shoot: DATA.R8
+		Start: 334
+		Length: 6
+		Facings: -8
+		Transpose: true
+	die1: DATA.R8
+		Start: 382
 		Length: 5
-		Facings: 8
-		Tick: 120
-	die1: rifledeath
-		Start: 12
-		Length: 12
+	die2: DATA.R8
+		Start: 387
+		Length: 7
 		Tick: 80
-	die2: rifledeath
-		Start: 12
+	die3: DATA.R8
+		Start: 394
+		Length: 7
+	die4: DATA.R8
+		Start: 401
+		Length: 7
+	die5: DATA.R8
+		Start: 408
+		Length: 7
+	die6: DATA.R8
+		Start: 415
 		Length: 12
-		Tick: 80
-	die3: rifledeath
-		Start: 36
+	die-crushed: DATA.R8
+		Start: 430
 		Length: 12
-		Tick: 80
-	die4: rifledeath
-		Start: 24
-		Length: 12
-		Tick: 80
-	die5: rifledeath
-		Start: 0
-		Length: 12
-		Tick: 80
-	die6: rifledeath
-		Start: 12
-		Length: 12
-		Tick: 80
-	die-crushed: rifledeath
-		Start: 48
-		Length: 12
-		Tick: 160
+		Tick: 1600
 
 bazooka:
-	stand:
-		Start: 0
-		Facings: 8
-	stand2:
-		Start: 0
-		Facings: 8
-	stand3:
-		Start: 0
-		Facings: 8
-	run:
-		Start: 8
+	stand: DATA.R8
+		Start: 458
+		Facings: -8
+		Transpose: true
+	stand2: DATA.R8
+		Start: 458
+		Facings: -8
+		Transpose: true
+	stand3: DATA.R8
+		Start: 458
+		Facings: -8
+		Transpose: true
+	run: DATA.R8
+		Start: 466
 		Length: 6
-		Facings: 8
+		Facings: -8
 		Tick: 120
-	shoot:
-		Start: 56
-		Length: 5
-		Facings: 8
-		Tick: 120
-	prone-stand:
-		Start: 104
+		Transpose: true
+	shoot: DATA.R8
+		Start: 506
+		Length: 6
+		Facings: -8
+		Transpose: true
+	prone-stand: DATA.R8
+		Start: 562
 		Length: 1
-		Facings: 8
-	prone-run:
-		Start: 112
+		Facings: -8
+		Transpose: true
+	prone-run: DATA.R8
+		Start: 570
 		Length: 3
-		Facings: 8
+		Facings: -8
+		Transpose: true
 		Tick: 120
-	standup-0:
-		Start: 96
+	standup-0: DATA.R8
+		Start: 554
 		Length: 1
-		Facings: 8
-	prone-shoot:
-		Start: 136
+		Facings: -8
+		Transpose: true
+	prone-shoot: DATA.R8
+		Start: 586
+		Length: 6
+		Facings: -8
+		Transpose: true
+	die1: DATA.R8
+		Start: 634
 		Length: 5
-		Facings: 8
-		Tick: 120
-	die1: bazookadeath
-		Start: 0
-		Length: 5
-	die2: bazookadeath
-		Start: 5
+	die2: DATA.R8
+		Start: 639
 		Length: 7
-	die3: bazookadeath
-		Start: 12
+	die3: DATA.R8
+		Start: 646
 		Length: 7
-	die4: bazookadeath
-		Start: 19
+	die4: DATA.R8
+		Start: 653
 		Length: 7
-	die5: bazookadeath
-		Start: 26
+	die5: DATA.R8
+		Start: 660
 		Length: 7
-	die6: bazookadeath
-		Start: 26
+	die6: DATA.R8
+		Start: 660
 		Length: 7
-	die-crushed: bazookadeath
-		Start: 34
+	die-crushed: DATA.R8
+		Start: 668
 		Length: 26
 		Tick: 1600
 
 engineer:
-	stand:
-		Start: 0
-		Facings: 8
-	stand2:
-		Start: 0
-		Facings: 8
-	run:
-		Start: 8
+	stand: DATA.R8
+		Start: 1166
+		Facings: -8
+		Transpose: true
+	stand2: DATA.R8
+		Start: 1166
+		Facings: -8
+		Transpose: true
+	run: DATA.R8
+		Start: 1174
 		Length: 6
-		Facings: 8
+		Facings: -8
+		Transpose: true
 		Tick: 120
-	die1: engineerdeath
-		Start: 0
+	die1: DATA.R8
+		Start: 1342
 		Length: 5
-	die2: engineerdeath
-		Start: 5
+	die2: DATA.R8
+		Start: 1347
 		Length: 7
-	die3: engineerdeath
-		Start: 12
+	die3: DATA.R8
+		Start: 1354
 		Length: 7
-	die4: engineerdeath
-		Start: 19
+	die4: DATA.R8
+		Start: 1361
 		Length: 7
-	die5: engineerdeath
-		Start: 26
+	die5: DATA.R8
+		Start: 1368
 		Length: 7
-	die6: engineerdeath
-		Start: 26
+	die6: DATA.R8
+		Start: 1368
 		Length: 7
-	die-crushed: engineerdeath
-		Start: 34
+	die-crushed: DATA.R8
+		Start: 1376
 		Length: 26
 		Tick: 1600
 
 thumper:
-	stand:
-		Start: 0
-		Facings: 8
-	stand2:
-		Start: 0
-		Facings: 8
-	run:
-		Start: 8
+	stand: DATA.R8
+		Start: 1402
+		Facings: -8
+		Transpose: true
+	stand2: DATA.R8
+		Start: 1402
+		Facings: -8
+		Transpose: true
+	run: DATA.R8
+		Start: 1410
 		Length: 6
-		Facings: 8
+		Facings: -8
+		Transpose: true
 		Tick: 120
-	heal: thumping
-		Start: 0
-		Length: 4
-		Tick: 480
-	die1: thumperdeath
-		Start: 0
+	heal: DATA.R8
+		Start: 1458
 		Length: 5
-	die2: thumperdeath
-		Start: 5
+		Tick: 480
+	die1: DATA.R8
+		Start: 1543
+		Length: 5
+	die2: DATA.R8
+		Start: 1548
 		Length: 7
-	die3: thumperdeath
-		Start: 12
+	die3: DATA.R8
+		Start: 1555
 		Length: 7
-	die4: thumperdeath
-		Start: 19
+	die4: DATA.R8
+		Start: 1562
 		Length: 7
-	die5: thumperdeath
-		Start: 26
+	die5: DATA.R8
+		Start: 1569
 		Length: 7
-	die6: thumperdeath
-		Start: 26
+	die6: DATA.R8
+		Start: 1569
 		Length: 7
-	die-crushed: thumperdeath
-		Start: 34
+	die-crushed: DATA.R8
+		Start: 1577
 		Length: 26
 		Tick: 1600
 
 thumping:
-	idle:
-		Start: 0
-		Length: 4
+	idle: DATA.R8
+		Start: 1458
+		Length: 5
 		Tick: 150
-	make:
-		Start: 0
-		Length: 4
-	damaged-idle:
-		Start: 0
-		Length: 4
+	make: DATA.R8
+		Start: 1458
+		Length: 5
+	damaged-idle: DATA.R8
+		Start: 1458
+		Length: 5
 		Tick: 150
 
 fremen:
-	stand:
-		Start: 0
-		Facings: 8
-	stand2:
-		Start: 0
-		Facings: 8
-	run:
-		Start: 8
+	stand: DATA.R8
+		Start: 694
+		Facings: -8
+		Transpose: true
+	stand2: DATA.R8
+		Start: 694
+		Facings: -8
+		Transpose: true
+	run: DATA.R8
+		Start: 702
 		Length: 6
-		Facings: 8
+		Facings: -8
+		Transpose: true
 		Tick: 120
-	shoot:
-		Start: 56
-		Length: 5
-		Facings: 8
-		Tick: 120
-	prone-stand:
-		Start: 104
+	shoot: DATA.R8
+		Start: 742
+		Length: 6
+		Facings: -8
+		Transpose: true
+	prone-stand: DATA.R8
+		Start: 798
 		Length: 1
-		Facings: 8
-	prone-run:
-		Start: 112
+		Facings: -8
+		Transpose: true
+	prone-run: DATA.R8
+		Start: 806
 		Length: 3
-		Facings: 8
+		Facings: -8
+		Transpose: true
 		Tick: 120
-	standup-0:
-		Start: 96
+	standup-0: DATA.R8
+		Start: 790
 		Length: 1
-		Facings: 8
+		Facings: -8
+		Transpose: true
 		Tick: 120
-	prone-shoot:
-		Start: 136
+	prone-shoot: DATA.R8
+		Start: 822
+		Length: 6
+		Facings: -8
+		Transpose: true
+	die1: DATA.R8
+		Start: 870
 		Length: 5
-		Facings: 8
-		Tick: 120
-	die1: fremendeath
-		Start: 0
-		Length: 5
-	die2: fremendeath
-		Start: 5
+	die2: DATA.R8
+		Start: 875
 		Length: 7
-	die3: fremendeath
-		Start: 12
+	die3: DATA.R8
+		Start: 882
 		Length: 7
-	die4: fremendeath
-		Start: 19
+	die4: DATA.R8
+		Start: 889
 		Length: 7
-	die5: fremendeath
-		Start: 26
+	die5: DATA.R8
+		Start: 896
 		Length: 7
-	die6: fremendeath
-		Start: 26
+	die6: DATA.R8
+		Start: 896
 		Length: 7
-	die-crushed: fremendeath
-		Start: 34
+	die-crushed: DATA.R8
+		Start: 904
 		Length: 26
 		Tick: 1600
 
 saboteur:
-	stand:
-		Start: 0
-		Facings: 8
-	stand2:
-		Start: 0
-		Facings: 8
-	stand3:
-		Start: 0
-		Facings: 8
-	run:
-		Start: 8
+	stand: DATA.R8
+		Start: 2149
+		Facings: -8
+		Transpose: true
+	stand2: DATA.R8
+		Start: 2149
+		Facings: -8
+		Transpose: true
+	stand3: DATA.R8
+		Start: 2149
+		Facings: -8
+		Transpose: true
+	run: DATA.R8
+		Start: 2157
 		Length: 6
-		Facings: 8
+		Facings: -8
+		Transpose: true
 		Tick: 120
-	prone-stand:
-		Start: 104
+	prone-stand: DATA.R8
+		Start: 2253
 		Length: 1
-		Facings: 8
-	prone-run:
-		Start: 112
+		Facings: -8
+		Transpose: true
+	prone-run: DATA.R8
+		Start: 2261
 		Length: 3
-		Facings: 8
+		Facings: -8
+		Transpose: true
 		Tick: 120
-	standup-0:
-		Start: 96
+	standup-0: DATA.R8
+		Start: 2245
 		Length: 1
-		Facings: 8
+		Facings: -8
+		Transpose: true
 		Tick: 120
-	die1: saboteurdeath
-		Start: 0
+	die1: DATA.R8
+		Start: 2325
 		Length: 5
-	die2: saboteurdeath
-		Start: 5
+	die2: DATA.R8
+		Start: 2330
 		Length: 7
-	die3: saboteurdeath
-		Start: 12
+	die3: DATA.R8
+		Start: 2337
 		Length: 7
-	die4: saboteurdeath
-		Start: 19
+	die4: DATA.R8
+		Start: 2344
 		Length: 7
-	die5: saboteurdeath
-		Start: 26
+	die5: DATA.R8
+		Start: 2351
 		Length: 7
-	die6: saboteurdeath
-		Start: 26
+	die6: DATA.R8
+		Start: 2351
 		Length: 7
-	die-crushed: saboteurdeath
-		Start: 34
+	die-crushed: DATA.R8
+		Start: 2359
 		Length: 26
 		Tick: 1600
 
 sardaukar:
-	stand:
-		Start: 0
-		Facings: 8
-	stand2:
-		Start: 0
-		Facings: 8
-	run:
-		Start: 8
+	stand: DATA.R8
+		Start: 930
+		Facings: -8
+		Transpose: true
+	stand2: DATA.R8
+		Start: 930
+		Facings: -8
+		Transpose: true
+	run: DATA.R8
+		Start: 938
+		Length: 6
+		Facings: -8
+		Transpose: true
+		Tick: 120
+	shoot: DATA.R8
+		Start: 978
+		Length: 6
+		Facings: -8
+		Transpose: true
+	prone-stand: DATA.R8
+		Start: 1034
+		Length: 1
+		Facings: -8
+		Transpose: true
+	prone-run: DATA.R8
+		Start: 1042
+		Length: 3
+		Facings: -8
+		Transpose: true
+		Tick: 120
+	standup-0: DATA.R8
+		Start: 1026
+		Length: 1
+		Facings: -8
+		Transpose: true
+		Tick: 120
+	prone-shoot: DATA.R8
+		Start: 1058
 		Length: 6
 		Facings: 8
-		Tick: 120
-	shoot:
-		Start: 56
+		Transpose: true
+	die1: DATA.R8
+		Start: 1106
 		Length: 5
-		Facings: 8
-		Tick: 120
-	prone-stand:
-		Start: 104
-		Length: 1
-		Facings: 8
-	prone-run:
-		Start: 112
-		Length: 3
-		Facings: 8
-		Tick: 120
-	standup-0:
-		Start: 96
-		Length: 1
-		Facings: 8
-		Tick: 120
-	prone-shoot:
-		Start: 136
-		Length: 5
-		Facings: 8
-		Tick: 120
-	die1: sardaukardeath
-		Start: 0
-		Length: 5
-	die2: sardaukardeath
-		Start: 5
+	die2: DATA.R8
+		Start: 1111
 		Length: 7
-	die3: sardaukardeath
-		Start: 12
+	die3: DATA.R8
+		Start: 1118
 		Length: 7
-	die4: sardaukardeath
-		Start: 19
+	die4: DATA.R8
+		Start: 1125
 		Length: 7
-	die5: sardaukardeath
-		Start: 26
+	die5: DATA.R8
+		Start: 1132
 		Length: 7
-	die6: sardaukardeath
-		Start: 26
+	die6: DATA.R8
+		Start: 1132
 		Length: 7
-	die-crushed: sardaukardeath
-		Start: 34
+	die-crushed: DATA.R8
+		Start: 1140
 		Length: 26
 		Tick: 1600
