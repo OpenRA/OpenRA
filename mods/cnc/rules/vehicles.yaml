@@ -221,6 +221,7 @@ BGGY:
 		Offset: -43,0,128
 	Armament:
 		Weapon: MachineGun
+		LocalOffset: 171,0,43
 	AttackTurreted:
 	WithMuzzleFlash:
 	RenderUnit:
@@ -290,9 +291,10 @@ JEEP:
 		Range: 8
 	Turreted:
 		ROT: 10
-		Offset: -85,0,171
+		Offset: -85,0,128
 	Armament:
 		Weapon: MachineGun
+		LocalOffset: 171,0,85
 	AttackTurreted:
 	WithMuzzleFlash:
 	RenderUnit:
