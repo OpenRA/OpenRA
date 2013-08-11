@@ -35,12 +35,15 @@ namespace OpenRA.Effects
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
-			if (!target.IsInWorld)
-				yield break;
+			if (target.IsInWorld && remainingTicks % 2 == 0)
+			{
+				var palette = wr.Palette("highlight");
+				return target.Render(wr)
+					.Where(r => !r.IsDecoration)
+					.Select(r => r.WithPalette(palette));
+			}
 
-			if (remainingTicks % 2 == 0)
-				foreach (var r in target.Render(wr))
-					yield return r.WithPalette(wr.Palette("highlight"));
+			return SpriteRenderable.None;
 		}
 	}
 }
