@@ -68,6 +68,10 @@ namespace OpenRA
 			default: return false;
 			}
 
+			// Propagate sign to fractional part
+			if (cell < 0)
+				subcell = -subcell;
+
 			result = new WRange(1024*cell + subcell);
 			return true;
 		}

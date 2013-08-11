@@ -221,7 +221,7 @@ namespace OpenRA.Mods.RA
 				world.CancelInputMode();
 		}
 
-		public void RenderBeforeWorld(WorldRenderer wr, World world) { }
+		public IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
 		public void RenderAfterWorld(WorldRenderer wr, World world) { }
 		public string GetCursor(World world, CPos xy, MouseInput mi) { return world.Map.IsInMap(xy) ? cursor : "generic-blocked"; }
 	}

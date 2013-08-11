@@ -59,7 +59,10 @@ namespace OpenRA.Mods.RA
 			}
 
 			if (visible)
-				proxy.SetRenderables(self.Render(wr));
+			{
+				var comparer = new RenderableComparer(wr);
+				proxy.SetRenderables(self.Render(wr).OrderBy(r => r, comparer));
+			}
 		}
 
 		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)

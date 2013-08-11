@@ -165,8 +165,10 @@ allyrepair:
 crate:
 	idle: wcrate
 		Start: 0
+		ZOffset: -511
 	land: wcrate
 		Start: 0
+		ZOffset: -511
 
 crate-effects:
 	airstrike: deviator

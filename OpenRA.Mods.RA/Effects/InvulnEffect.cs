@@ -38,6 +38,7 @@ namespace OpenRA.Mods.RA.Effects
 				yield break;
 
 			foreach (var r in a.Render(wr))
+				if (!r.IsDecoration)
 				yield return r.WithPalette(wr.Palette("invuln"));
 		}
 	}

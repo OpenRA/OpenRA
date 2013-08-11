@@ -154,7 +154,6 @@
     <Compile Include="BridgeLayer.cs" />
     <Compile Include="Buildable.cs" />
     <Compile Include="BuildingCaptureNotification.cs" />
-    <Compile Include="Buildings\BibLayer.cs" />
     <Compile Include="Buildings\Building.cs" />
     <Compile Include="Buildings\BuildingInfluence.cs" />
     <Compile Include="Buildings\CanPowerDown.cs" />
@@ -462,6 +461,7 @@
     <Compile Include="Effects\FrozenActorProxy.cs" />
     <Compile Include="Widgets\Logic\WorldTooltipLogic.cs" />
     <Compile Include="TeslaZapRenderable.cs" />
+    <Compile Include="Buildings\Bib.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

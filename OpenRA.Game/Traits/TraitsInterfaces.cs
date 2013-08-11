@@ -83,7 +83,6 @@ namespace OpenRA.Traits
 	{
 		string Name();
 		Player Owner();
-		Stance Stance();
 	}
 
 	public interface IDisable { bool Disabled { get; } }
@@ -144,6 +143,13 @@ namespace OpenRA.Traits
 		void SetVisualPosition(Actor self, WPos pos);
 	}
 
+	public interface IMove
+	{
+		Activity MoveTo(CPos cell, int nearEnough);
+		Activity MoveTo(CPos cell, Actor ignoredActor);
+		Activity MoveWithinRange(Target target, WRange range);
+	}
+
 	public interface INotifyBlockingMove { void OnNotifyBlockingMove(Actor self, Actor blocking); }
 
 	public interface IFacing
@@ -187,7 +193,6 @@ namespace OpenRA.Traits
 	public interface IPostRender { void RenderAfterWorld(WorldRenderer wr, Actor self); }
 
 	public interface IPostRenderSelection { void RenderAfterWorld(WorldRenderer wr); }
-	public interface IPreRenderSelection { void RenderBeforeWorld(WorldRenderer wr, Actor self); }
 	public interface IRenderAsTerrain { IEnumerable<IRenderable> RenderAsTerrain(WorldRenderer wr, Actor self); }
 	public interface IBodyOrientation
 	{

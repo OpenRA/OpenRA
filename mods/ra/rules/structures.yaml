@@ -378,7 +378,6 @@ DOME:
 	RevealsShroud:
 		Range: 10
 	Bib:
-		Sprite: bib3
 	ProvidesRadar:
 	IronCurtainable:
 	Infiltratable:
@@ -853,7 +852,6 @@ ATEK:
 	RevealsShroud:
 		Range: 10
 	Bib:
-		Sprite: bib3
 	IronCurtainable:
 	GpsPower:
 		Image: gpssicon
@@ -890,7 +888,6 @@ WEAP:
 	RevealsShroud:
 		Range: 4
 	Bib:
-		Sprite: bib2
 	-RenderBuilding:
 	RenderBuildingWarFactory:
 	RallyPoint:
@@ -920,7 +917,6 @@ FACT:
 	RevealsShroud:
 		Range: 5
 	Bib:
-		Sprite: bib2
 	Production:
 		Produces: Building,Defense
 	IronCurtainable: 
@@ -964,7 +960,6 @@ PROC:
 	RevealsShroud:
 		Range: 6
 	Bib:
-		Sprite: bib2
 	OreRefinery:
 	StoresOre:
 		PipCount: 17
@@ -1040,13 +1035,11 @@ HPAD:
 	RevealsShroud:
 		Range: 5
 	Bib:
-		Sprite: bib3
 	Exit@1:
 		SpawnOffset: 0,-6
 		ExitCell: 0,0
 	Production:
 		Produces: Helicopter
-	BelowUnits:
 	Reservable:
 	IronCurtainable:
 	ProductionBar:
@@ -1081,7 +1074,6 @@ AFLD:
 		Facing:192
 	Production:
 		Produces: Plane
-	BelowUnits:
 	Reservable:
 	IronCurtainable:
 	SpyPlanePower:
@@ -1128,7 +1120,6 @@ POWR:
 	RevealsShroud:
 		Range: 4
 	Bib:
-		Sprite: bib3
 	IronCurtainable:
 	DeadBuildingState:
 
@@ -1158,7 +1149,6 @@ APWR:
 	RevealsShroud:
 		Range: 4
 	Bib:
-		Sprite: bib2
 	IronCurtainable:
 	DeadBuildingState:
 
@@ -1188,7 +1178,6 @@ STEK:
 	RevealsShroud:
 		Range: 4
 	Bib:
-		Sprite: bib2
 	IronCurtainable:
 
 BARR:
@@ -1215,7 +1204,6 @@ BARR:
 	RevealsShroud:
 		Range: 5
 	Bib:
-		Sprite: bib3
 	RallyPoint:
 	Exit@1:
 		SpawnOffset: -4,19
@@ -1253,7 +1241,6 @@ TENT:
 	RevealsShroud:
 		Range: 5
 	Bib:
-		Sprite: bib3
 	RallyPoint:
 	Exit@1:
 		SpawnOffset: -1,19
@@ -1307,7 +1294,6 @@ FIX:
 		Type: Wood
 	RevealsShroud:
 		Range: 5
-	BelowUnits:
 	Reservable:
 	RallyPoint:
 	IronCurtainable:
@@ -1336,7 +1322,6 @@ FACF:
 	RevealsShroud:
 		Range: 4
 	Bib:
-		Sprite: bib2
 	RenderBuilding:
 		Image: FACT
 	Fake:
@@ -1366,7 +1351,6 @@ WEAF:
 	RevealsShroud:
 		Range: 4
 	Bib:
-		Sprite: bib2
 	-RenderBuilding:
 	RenderBuildingWarFactory:
 		Image: WEAP
@@ -1459,7 +1443,6 @@ DOMF:
 	RevealsShroud:
 		Range: 4
 	Bib:
-		Sprite: bib3
 	RenderBuilding:
 		Image: DOME
 	Fake:

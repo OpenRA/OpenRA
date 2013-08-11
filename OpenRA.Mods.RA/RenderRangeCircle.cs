@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA
 		void Render(WorldRenderer wr, World w, ActorInfo ai, WPos centerPosition);
 	}
 
-	class RenderRangeCircleInfo : TraitInfo<RenderRangeCircle>, IPlaceBuildingDecoration
+	class RenderRangeCircleInfo : ITraitInfo, IPlaceBuildingDecoration
 	{
 		public readonly string RangeCircleType = null;
 
@@ -36,13 +36,19 @@ namespace OpenRA.Mods.RA
 			foreach (var a in w.ActorsWithTrait<RenderRangeCircle>())
 				if (a.Actor.Owner == a.Actor.World.LocalPlayer)
 					if (a.Actor.Info.Traits.Get<RenderRangeCircleInfo>().RangeCircleType == RangeCircleType)
-						a.Trait.RenderBeforeWorld(wr, a.Actor);
+						a.Trait.RenderAfterWorld(wr);
 		}
+
+		public object Create(ActorInitializer init) { return new RenderRangeCircle(init.self); }
 	}
 
-	class RenderRangeCircle : IPreRenderSelection
+	class RenderRangeCircle : IPostRenderSelection
 	{
-		public void RenderBeforeWorld(WorldRenderer wr, Actor self)
+		Actor self;
+
+		public RenderRangeCircle(Actor self) { this.self = self; }
+
+		public void RenderAfterWorld(WorldRenderer wr)
 		{
 			if (self.Owner != self.World.LocalPlayer)
 				return;

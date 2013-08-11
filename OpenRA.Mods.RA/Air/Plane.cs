@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA.Air
 		public override object Create(ActorInitializer init) { return new Plane(init, this); }
 	}
 
-	public class Plane : Aircraft, IResolveOrder, ITick, ISync
+	public class Plane : Aircraft, IResolveOrder, IMove, ITick, ISync
 	{
 		public readonly PlaneInfo Info;
 		[Sync] public WPos RTBPathHash;
@@ -89,5 +89,9 @@ namespace OpenRA.Mods.RA.Air
 				UnReserve();
 			}
 		}
+
+		public Activity MoveTo(CPos cell, int nearEnough) { return Fly.ToCell(cell); }
+		public Activity MoveTo(CPos cell, Actor ignoredActor) { return Fly.ToCell(cell); }
+		public Activity MoveWithinRange(Target target, WRange range) { return Fly.ToPos(target.CenterPosition); }
 	}
 }

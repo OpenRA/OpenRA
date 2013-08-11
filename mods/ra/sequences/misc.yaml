@@ -221,12 +221,15 @@ fb4:
 crate:
 	idle: scrate
 		Start: 0
+		ZOffset: -511
 	water: wwcrate
 		Start: 0
 		Length: *
 		Tick: 500
+		ZOffset: -511
 	land: sh-crate
 		Start: 0
+		ZOffset: -511
 
 crate-effects:
 	speed: speed

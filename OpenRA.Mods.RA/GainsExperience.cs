@@ -118,8 +118,8 @@ namespace OpenRA.Mods.RA
 				yield break;
 
 			var bounds = self.Bounds.Value;
-			var pos = new float2(bounds.Right, bounds.Bottom - 2);
-			yield return new SpriteRenderable(RankAnim.Image, pos, wr.Palette("effect"), self.CenterLocation.Y);
+			var pos = new PPos(bounds.Right, bounds.Bottom - 2).ToWPos(0);
+			yield return new SpriteRenderable(RankAnim.Image, pos, WVec.Zero, 0, wr.Palette("effect"), 1f, true);
 		}
 	}
 

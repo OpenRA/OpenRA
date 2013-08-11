@@ -68,8 +68,8 @@ namespace OpenRA.Mods.RA.Orders
 		}
 
 		public void Tick(World world) {}
-		public void RenderAfterWorld(WorldRenderer wr, World world) {}
-		public void RenderBeforeWorld(WorldRenderer wr, World world)
+		public IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
+		public void RenderAfterWorld(WorldRenderer wr, World world)
 		{
 			var position = Game.viewport.ViewToWorld(Viewport.LastMousePos);
 			var topLeft = position - FootprintUtils.AdjustForBuildingSize(BuildingInfo);
@@ -110,7 +110,10 @@ namespace OpenRA.Mods.RA.Orders
 
 			var pal = wr.Palette("terrain");
 			foreach (var c in cells)
-				(c.Value ? buildOk : buildBlocked).DrawAt(c.Key.ToPPos().ToFloat2(), pal);
+			{
+				var tile = c.Value ? buildOk : buildBlocked;
+				tile.DrawAt(wr.ScreenPxPosition(c.Key.CenterPosition) - 0.5f * tile.size, pal);
+			}
 		}
 
 		public string GetCursor(World world, CPos xy, MouseInput mi) { return "default"; }

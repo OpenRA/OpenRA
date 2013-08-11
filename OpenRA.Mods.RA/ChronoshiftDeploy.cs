@@ -143,8 +143,9 @@ namespace OpenRA.Mods.RA
 			if (!self.IsInWorld || self.IsDead())
 				world.CancelInputMode();
 		}
-		public void RenderAfterWorld(WorldRenderer wr, World world) { }
-		public void RenderBeforeWorld(WorldRenderer wr, World world)
+
+		public IEnumerable<IRenderable> Render(WorldRenderer wr, World world) { yield break; }
+		public void RenderAfterWorld(WorldRenderer wr, World world)
 		{
 			if (!self.IsInWorld)
 				return;
