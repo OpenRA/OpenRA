@@ -185,632 +185,958 @@ rockettowero:
 		Offset: -24,24
 
 conyarda:
-	idle:
-		Start: 0
-	make: conmake
+	idle: DATA.R8
+		Start: 2559
+		Offset: -48,64
+	make: DATA.R8  # TODO: overlay
+		Start: 4109
+		Length: 42
+		Offset: -48,64
+	damaged-idle: DATA.R8
+		Start: 2560
+		Offset: -48,64
+#	build: DATA.R8 # TODO: overlay
+#		Start: 4436
+#		Length: 14
+#		Offset: -48,64
+#	damaged-build: DATA.R8  # TODO: overlay
+#		Start: 4436
+#		Length: 14
+#		Offset: -48,64
+	bib: bib3x # TODO: read this from BLOXBAT.R8
 		Start: 0
 		Length: *
-	damaged-idle:
-		Start: 1
-	bib: bib3x
-		Start: 0
-		Length: *
-	#build: cranea
-	#	Start: 0
-	#	Length: 14
-	#	Tick: 75
-	#damaged-build: cranea
-	#	Start: 0
-	#	Length: 14
-	#	Tick: 75
 
-repair:
-	idle:
-		Start: 0
+repaira:
+	make: DATA.R8 # TODO: overlay
+		Start: 4370
+		Length: 20
+		Offset: -48,48
+	idle: DATA.R8
+		Start: 2571
+		Offset: -48,48
 		ZOffset: -1c511
-	active:
-		Start: 0
-		Length: 10
+#	active: DATA.R8 # TODO: overlay
+#		Start: 4746
+#		Length: 14
+#		Offset: -48,48
+#		ZOffset: -1c511
+#	damaged-active: DATA.R8 # TODO: overlay
+#		Start: 4746
+#		Length: 14
+#		Tick: 60
+#		Offset: -48,48
+#		ZOffset: -1c511
+	damaged-idle: DATA.R8
+		Start: 2572
+		Offset: -48,48
+		ZOffset: -1c511
+
+repairh:
+	make: DATA.R8 # TODO: overlay
+		Start: 4370
+		Length: 20
+		Offset: -48,48
+	idle: DATA.R8
+		Start: 2731
+		Offset: -48,48
+		ZOffset: -1c511
+	active: DATA.R8 # TODO: overlay
+		Start: 4746
+		Length: 14
+		Offset: -48,48
+		ZOffset: -1c511
+	damaged-active: DATA.R8 # TODO: overlay
+		Start: 4746
+		Length: 14
 		Tick: 60
+		Offset: -48,48
 		ZOffset: -1c511
-	damaged-idle:
-		Start: 10
+	damaged-idle: DATA.R8
+		Start: 2732
+		Offset: -48,48
 		ZOffset: -1c511
-	damaged-active:
-		Start: 10
-		Length: 10
+
+repairo:
+	make: DATA.R8 # TODO: overlay
+		Start: 4370
+		Length: 20
+		Offset: -48,48
+	idle: DATA.R8
+		Start: 2891
+		Offset: -48,48
+		ZOffset: -1c511
+	active: DATA.R8 # TODO: overlay
+		Start: 4746
+		Length: 14
+		Offset: -48,48
+		ZOffset: -1c511
+	damaged-active: DATA.R8 # TODO: overlay
+		Start: 4746
+		Length: 14
 		Tick: 60
+		Offset: -48,48
 		ZOffset: -1c511
-	make: repairmake
-		Start: 0
-		Length: *
+	damaged-idle: DATA.R8
+		Start: 2892
+		Offset: -48,48
+		ZOffset: -1c511
 
 starporta:
-	idle:
-		Start: 0
+	idle: DATA.R8
+		Start: 2671
 		ZOffset: -1c511
-	active:
-		Start: 0
+		Offset: -48,64
+	active: DATA.R8
+		Start: 2671
 		Length: 1
 		ZOffset: -1c511
-	damaged-idle:
-		Start: 1
+		Offset: -48,64
+	damaged-idle: DATA.R8
+		Start: 2672
 		ZOffset: -1c511
-	damaged-active:
-		Start: 1
+		Offset: -48,64
+	damaged-active: DATA.R8
+		Start: 2672
 		ZOffset: -1c511
-	make: starportmake
-		Start: 0
-		Length: *
+		Offset: -48,64
+	make: DATA.R8
+		Start: 4347
+		Length: 22
+		Offset: -48,64
 	bib: bib3x
 		Start: 0
 		Length: *
 
 pwra:
-	idle:
-		Start: 0
-		Length: 6
-		Tick: 160
-	make: wtrpmake
-		Start: 0
-		Length: *
-	damaged-idle:
-		Start: 6
+	idle: DATA.R8
+		Start: 2523
+		Offset: -32,64
+	make: DATA.R8
+		Start: 4151
+		Length: 24
+		Offset: -32,64
+	damaged-idle: DATA.R8
+		Start: 2524
+		Offset: -32,64
+	active: DATA.R8 # TODO: not wired up
+		Start: 4492
+		Length: 10
+		Offset: -32,64
 	bib: bib2x
 		Start: 0
 		Length: *
 
 barra:
-	idle:
-		Start: 0
-	make: barramake
-		Start: 0
-		Length: *
-	damaged-idle:
-		Start: 1
+	idle: DATA.R8
+		Start: 2525
+		Offset: -32,64
+	make: DATA.R8
+		Start: 4175
+		Length: 20
+		Offset: -32,64
+	damaged-idle: DATA.R8
+		Start: 2526
+		Offset: -32,64
 	bib: bib2x
 		Start: 0
 		Length: *
 
 radara:
-	idle:
-		Start: 0
-	make: radarmake
-		Start: 0
-		Length: *
-	damaged-idle:
-		Start: 1
+	idle: DATA.R8
+		Start: 2521
+		Offset: -48,80
+	make: DATA.R8
+		Start: 4254
+		Length: 19
+		Offset: -48,80
+	damaged-idle: DATA.R8
+		Start: 2522
+		Offset: -48,80
+	active: DATA.R8 # TODO: wire it up
+		Start: 4522
+		Length: 30
+		Offset: -48,80
 	bib: bib3x
 		Start: 0
 		Length: *
 
 refa:
-	idle:
-		Start: 0
+	idle: DATA.R8
+		Start: 2561
 		Length: 1
-	make: refmake
-		Start: 0
-		Length: *
-	damaged-idle:
-		Start: 0
-	build-top:
-		Start: 1
-		Length: 1
-	damaged-build-top:
-		Start: 2
-		Length: 1
-	idle-top:
-		Start: 1
-	damaged-idle-top:
-		Start: 2
+		Offset: -48,64
+	make: DATA.R8
+		Start: 4231
+		Length: 22
+		Offset: -48,64
+	damaged-idle: DATA.R8
+		Start: 2561
+		Offset: -48,64
+	idle-top: DATA.R8
+		Start: 2562
+		Offset: -48,64
+	damaged-idle-top: DATA.R8
+		Start: 2563
+		Offset: -48,64
 	bib: bib3x
 		Start: 0
 		Length: *
 
 siloa:
-	idle:
-		Start: 0
+	idle: DATA.R8
+		Start: 2566
 		Length: 4
-	damaged-idle:
-		Start: 4
+		Offset: -16,16
+	damaged-idle: DATA.R8
+		Start: 2569
 		Length: 1
-	make: silomake
-		Start: 0
-		Length: *
+		Offset: -16,16
+	make: DATA.R8
+		Start: 4313
+		Length: 14
+		Offset: -16,16
 
 hightecha:
-	idle:
-		Start: 0
-	make: highmake
-		Start: 0
-		Length: *
-	damaged-idle:
-		Start: 1
+	idle: DATA.R8
+		Start: 2564
+		Offset: -48,80
+	make: DATA.R8
+		Start: 4274
+		Length: 20
+		Offset: -48,80
+	damaged-idle: DATA.R8
+		Start: 2565
+		Offset: -48,80
+	active: DATA.R8 # TODO: not wired up
+		Start: 4614
+		Length: 30
+		Offset: -48,80
 	bib: bib3x
 		Start: 0
 		Length: *
 
-research:
-	idle:
-		Start: 0
-		Length: 20
-		Tick: 80
-	make: researchmake
+researcha:
+	idle: DATA.R8
+		Start: 2669
+		Offset: -48,80
+	make: DATA.R8
+		Start: 4391
+		Length: 21
+		Offset: -48,80
+	damaged-idle: DATA.R8
+		Start: 2670
+		Offset: -48,80
+	active: DATA.R8 # TODO: wire it up
+		Start: 4760
+		Length: 80
+		Offset: -48,80
+	bib: bib3x
 		Start: 0
 		Length: *
-	damaged-idle:
-		Start: 20
-		Length: 20
-		Tick: 80
+
+researchh:
+	idle: DATA.R8
+		Start: 2829
+		Offset: -48,80
+	make: DATA.R8
+		Start: 4391
+		Length: 21
+		Offset: -48,80
+	damaged-idle: DATA.R8
+		Start: 2830
+		Offset: -48,80
+	active: DATA.R8 # TODO: wire it up
+		Start: 4760
+		Length: 80
+		Offset: -48,80
+	bib: bib3x
+		Start: 0
+		Length: *
+
+researcho:
+	idle: DATA.R8
+		Start: 2989
+		Offset: -48,80
+	make: DATA.R8
+		Start: 4391
+		Length: 21
+		Offset: -48,80
+	damaged-idle: DATA.R8
+		Start: 2990
+		Offset: -48,80
+	active: DATA.R8 # TODO: wire it up
+		Start: 4760
+		Length: 80
+		Offset: -48,80
 	bib: bib3x
 		Start: 0
 		Length: *
 
 palacea:
-	idle:
-		Start: 0
-	make: palacemake
-		Start: 0
-		Length: *
-	damaged-idle:
-		Start: 1
+	idle: DATA.R8
+		Start: 2676
+		Offset: -48,48
+	make: DATA.R8
+		Start: 4413
+		Length: 22
+		Offset: -48,48
+	damaged-idle: DATA.R8
+		Start: 2677
+		Offset: -48,48
 	bib: bib3x
 		Start: 0
 		Length: *
 
 lighta:
-	idle:
-		Start: 0
+	idle: DATA.R8
+		Start: 2673
 		Length: 1
-	make: lightmake
-		Start: 0
-		Length: *
-	damaged-idle:
-		Start: 0
-	build-top:
-		Start: 1
+		Offset: -48,64
+	make: DATA.R8
+		Start: 4295
+		Length: 7
+		Offset: -48,64
+	damaged-idle: DATA.R8
+		Start: 2673
+		Offset: -48,64
+	build-top: DATA.R8
+		Start: 2674
 		Length: 1
-	damaged-build-top:
-		Start: 2
+		Offset: -48,64
+	damaged-build-top: DATA.R8
+		Start: 2675
 		Length: 1
-	idle-top:
-		Start: 1
-	damaged-idle-top:
-		Start: 2
+		Offset: -48,64
+	idle-top: DATA.R8
+		Start: 2674
+		Offset: -48,64
+	damaged-idle-top: DATA.R8
+		Start: 2675
+		Offset: -48,64
+	active: DATA.R8 # TODO: not wired up
+		Start: 4644
+		Length: 30
+		Offset: -48,64
 	bib: bib3x
 		Start: 0
 		Length: *
 
 heavya:
-	idle:
-		Start: 0
+	idle: DATA.R8
+		Start: 2518
 		Length: 1
-	make: heavymake
-		Start: 0
-		Length: *
-	damaged-idle:
-		Start: 0
-	build-top:
-		Start: 1
+		Offset: -48,80
+	make: DATA.R8
+		Start: 4328
+		Length: 18
+		Offset: -48,80
+	damaged-idle: DATA.R8
+		Start: 2518
+		Offset: -48,80
+	build-top: DATA.R8
+		Start: 2519
 		Length: 1
-	damaged-build-top:
-		Start: 2
+		Offset: -48,80
+	damaged-build-top: DATA.R8
+		Start: 2520
 		Length: 1
-	idle-top:
-		Start: 1
-	damaged-idle-top:
-		Start: 2
+		Offset: -48,80
+	idle-top: DATA.R8
+		Start: 2519
+		Offset: -48,80
+	damaged-idle-top: DATA.R8
+		Start: 2520
+		Offset: -48,80
+	active: DATA.R8 # TODO: not wired up
+		Start: 4674
+		Length: 47
+		Offset: -48,80
 	bib: bib3x
 		Start: 0
 		Length: *
 
 conyardh:
-	idle:
-		Start: 0
-	make: conmake
-		Start: 0
-		Length: *
-	damaged-idle:
-		Start: 1
-	bib: bib3x
+	idle: DATA.R8
+		Start: 2719
+		Offset: -48,64
+	make: DATA.R8 # TODO: overlay
+		Start: 4109
+		Length: 41
+		Offset: -48,64
+	damaged-idle: DATA.R8
+		Start: 2720
+		Offset: -48,64
+#	build: DATA.R8  # TODO: overlay
+#		Start: 4450
+#		Length: 14
+#		Offset: -48,64
+#	damaged-build: DATA.R8  # TODO: overlay
+#		Start: 4450
+#		Length: 14
+#		Offset: -48,64
+	bib: bib3x # TODO: read this from BLOXBAT.R8
 		Start: 0
 		Length: *
 
 starporth:
-	idle:
-		Start: 0
+	idle: DATA.R8
+		Start: 2831
 		ZOffset: -1c511
-	active:
-		Start: 0
+		Offset: -48,64
+	active: DATA.R8
+		Start: 2831
 		Length: 1
+		Offset: -48,64
 		ZOffset: -1c511
-	damaged-idle:
-		Start: 1
+	damaged-idle: DATA.R8
+		Start: 2832
+		Offset: -48,64
 		ZOffset: -1c511
-	damaged-active:
-		Start: 1
+	damaged-active: DATA.R8
+		Start: 2832
+		Offset: -48,64
 		ZOffset: -1c511
-	make: starportmake
-		Start: 0
-		Length: *
+	make: DATA.R8
+		Start: 4347
+		Length: 22
+		Offset: -48,64
+		ZOffset: -1c511
 	bib: bib3x
 		Start: 0
 		Length: *
 
 pwrh:
-	idle:
-		Start: 0
-		Length: 6
-		Tick: 160
-	make: wtrpmake
-		Start: 0
-		Length: *
-	damaged-idle:
-		Start: 6
+	idle: DATA.R8
+		Start: 2683
+		Offset: -32,64
+	make: DATA.R8
+		Start: 4151
+		Length: 24
+		Offset: -32,64
+	damaged-idle: DATA.R8
+		Start: 2684
+		Offset: -32,64
+	active: DATA.R8 # TODO: not wired up
+		Start: 4502
+		Length: 10
+		Offset: -32,64
 	bib: bib2x
 		Start: 0
 		Length: *
 
 barrh:
-	idle:
-		Start: 0
-	make: barrhmake
-		Start: 0
-		Length: *
-	damaged-idle:
-		Start: 1
+	idle: DATA.R8
+		Start: 2685
+		Offset: -32,64
+	make: DATA.R8
+		Start: 4195
+		Length: 17
+		Offset: -32,64
+	damaged-idle: DATA.R8
+		Start: 2686
+		Offset: -32,64
 	bib: bib2x
 		Start: 0
 		Length: *
 
 radarh:
-	idle:
-		Start: 0
-	make: radarmake
-		Start: 0
-		Length: *
-	damaged-idle:
-		Start: 1
+	idle: DATA.R8
+		Start: 2681
+		Offset: -48,80
+	make: DATA.R8
+		Start: 4254
+		Length: 19
+		Offset: -48,80
+	damaged-idle: DATA.R8
+		Start: 2682
+		Offset: -48,80
+	active: DATA.R8 # TODO: wire it up
+		Start: 4553
+		Length: 30
+		Offset: -48,80
 	bib: bib3x
 		Start: 0
 		Length: *
 
 refh:
-	idle:
-		Start: 0
+	idle: DATA.R8
+		Start: 2721
 		Length: 1
-	make: refmake
-		Start: 0
-		Length: *
-	damaged-idle:
-		Start: 0
-	build-top:
-		Start: 1
-		Length: 1
-	damaged-build-top:
-		Start: 2
-		Length: 1
-	idle-top:
-		Start: 1
-	damaged-idle-top:
-		Start: 2
+		Offset: -48,64
+	make: DATA.R8
+		Start: 4231
+		Length: 22
+		Offset: -48,64
+	damaged-idle: DATA.R8
+		Start: 2721
+		Offset: -48,64
+	idle-top: DATA.R8
+		Start: 2722
+		Offset: -48,64
+	damaged-idle-top: DATA.R8
+		Start: 2723
+		Offset: -48,64
 	bib: bib3x
 		Start: 0
 		Length: *
 
 siloh:
-	idle:
-		Start: 0
+	idle: DATA.R8
+		Start: 2726
 		Length: 4
-	damaged-idle:
-		Start: 4
+		Offset: -16,16
+	damaged-idle: DATA.R8
+		Start: 2730
 		Length: 1
-	make: silomake
-		Start: 0
-		Length: *
+		Offset: -16,16
+	make: DATA.R8
+		Start: 4313
+		Length: 14
+		Offset: -16,16
 
 hightechh:
-	idle:
-		Start: 0
-	make: highmake
-		Start: 0
-		Length: *
-	damaged-idle:
-		Start: 1
+	idle: DATA.R8
+		Start: 2724
+		Offset: -48,80
+	make: DATA.R8
+		Start: 4274
+		Length: 20
+		Offset: -48,80
+	damaged-idle: DATA.R8
+		Start: 2725
+		Offset: -48,80
+	active: DATA.R8 # TODO: not wired up
+		Start: 4614
+		Length: 30
+		Offset: -48,80
 	bib: bib3x
 		Start: 0
 		Length: *
 
 palaceh:
-	idle:
-		Start: 0
-	make: palacemake
-		Start: 0
-		Length: *
-	damaged-idle:
-		Start: 7
-	active:
-		Start: 1
-		Length: 6
-		Tick: 160
-	damaged-active:
-		Start: 8
-		Length: 6
-		Tick: 160
+	idle: DATA.R8
+		Start: 2836
+		Offset: -48,64
+	make: DATA.R8
+		Start: 4413
+		Length: 22
+		Offset: -48,64
+	damaged-idle: DATA.R8
+		Start: 2837
+		Offset: -48,64
+#	active: DATA.R8 # TODO: overlay
+#		Start: 4820
+#		Length: 20
+#		Offset: -48,64
+	damaged-active: DATA.R8
+		Start: 4820
+		Length: 20
+		Offset: -48,64
 	bib: bib3x
 		Start: 0
 		Length: *
 
 lighth:
-	idle:
-		Start: 0
+	idle: DATA.R8
+		Start: 2833
 		Length: 1
-	make: lightmake
-		Start: 0
-		Length: *
-	damaged-idle:
-		Start: 0
-	build-top:
-		Start: 1
+		Offset: -48,64
+	make: DATA.R8
+		Start: 4295
+		Length: 7
+		Offset: -48,64
+	damaged-idle: DATA.R8
+		Start: 2833
+		Offset: -48,64
+	build-top: DATA.R8
+		Start: 2834
 		Length: 1
-	damaged-build-top:
-		Start: 2
+		Offset: -48,64
+	damaged-build-top: DATA.R8
+		Start: 2835
 		Length: 1
-	idle-top:
-		Start: 1
-	damaged-idle-top:
-		Start: 2
+		Offset: -48,64
+	idle-top: DATA.R8
+		Start: 2834
+		Offset: -48,64
+	damaged-idle-top: DATA.R8
+		Start: 2835
+		Offset: -48,64
+	active: DATA.R8 # TODO: not wired up
+		Start: 4644
+		Length: 30
+		Offset: -48,64
 	bib: bib3x
 		Start: 0
 		Length: *
 
 heavyh:
-	idle:
-		Start: 0
+	idle: DATA.R8
+		Start: 2678
 		Length: 1
-	make: heavymake
-		Start: 0
-		Length: *
-	damaged-idle:
-		Start: 0
-	build-top:
-		Start: 1
+		Offset: -48,80
+	make: DATA.R8
+		Start: 4328
+		Length: 18
+		Offset: -48,80
+	damaged-idle: DATA.R8
+		Start: 2678
+		Offset: -48,80
+	build-top: DATA.R8
+		Start: 2679
 		Length: 1
-	damaged-build-top:
-		Start: 2
+		Offset: -48,80
+	damaged-build-top: DATA.R8
+		Start: 2680
 		Length: 1
-	idle-top:
-		Start: 1
-	damaged-idle-top:
-		Start: 2
+		Offset: -48,80
+	idle-top: DATA.R8
+		Start: 2679
+		Offset: -48,80
+	damaged-idle-top: DATA.R8
+		Start: 2680
+		Offset: -48,80
+	active: DATA.R8 # TODO: not wired up
+		Start: 4674
+		Length: 47
+		Offset: -48,80
 	bib: bib3x
 		Start: 0
 		Length: *
 
 conyardo:
-	idle:
-		Start: 0
-	make: conmake
-		Start: 0
-		Length: *
-	damaged-idle:
-		Start: 1
-	bib: bib3x
+	idle: DATA.R8
+		Start: 2879
+		Offset: -48,64
+	make: DATA.R8 # TODO: overlay
+		Start: 4109
+		Length: 41
+		Offset: -48,64
+	damaged-idle: DATA.R8
+		Start: 2880
+		Offset: -48,64
+#	build: DATA.R8 # TODO: overlay
+#		Start: 4464
+#		Length: 14
+#		Offset: -48,64
+#	damaged-build: DATA.R8 # TODO: overlay
+#		Start: 4464
+#		Length: 14
+#		Offset: -48,64
+	bib: bib3x # TODO: read this from BLOXBAT.R8
 		Start: 0
 		Length: *
 
 starporto:
-	idle:
-		Start: 0
+	idle: DATA.R8
+		Start: 2991
+		Offset: -48,64
 		ZOffset: -1c511
-	active:
-		Start: 0
+	active: DATA.R8
+		Start: 2991
 		Length: 1
+		Offset: -48,64
 		ZOffset: -1c511
-	damaged-idle:
-		Start: 1
+	damaged-idle: DATA.R8
+		Start: 2992
+		Offset: -48,64
 		ZOffset: -1c511
-	damaged-active:
-		Start: 1
+	damaged-active: DATA.R8
+		Start: 2992
+		Offset: -48,64
 		ZOffset: -1c511
-	make: starportmake
-		Start: 0
-		Length: *
+	make: DATA.R8
+		Start: 4347
+		Length: 22
+		Offset: -48,64
 	bib: bib3x
 		Start: 0
 		Length: *
 
 pwro:
-	idle:
-		Start: 0
-		Length: 6
-		Tick: 160
-	make: wtrpmake
-		Start: 0
-		Length: *
-	damaged-idle:
-		Start: 6
+	idle: DATA.R8
+		Start: 2843
+		Length: 1
+		Offset: -32,64
+	make: DATA.R8
+		Start: 4151
+		Length: 24
+		Offset: -32,64
+	damaged-idle: DATA.R8
+		Start: 2844
+		Offset: -32,64
+	active: DATA.R8 # TODO: not wired up
+		Start: 4512
+		Length: 10
+		Offset: -32,64
 	bib: bib2x
 		Start: 0
 		Length: *
 
 barro:
-	idle:
-		Start: 0
-	make: barromake
-		Start: 0
-		Length: *
-	damaged-idle:
-		Start: 1
+	idle: DATA.R8
+		Start: 2845
+		Offset: -32,64
+	make: DATA.R8
+		Start: 4213
+		Length: 17
+		Offset: -32,64
+	damaged-idle: DATA.R8
+		Start: 2846
+		Offset: -32,64
 	bib: bib2x
 		Start: 0
 		Length: *
 
 radaro:
-	idle:
-		Start: 0
-	make: radarmake
-		Start: 0
-		Length: *
-	damaged-idle:
-		Start: 1
+	idle: DATA.R8
+		Start: 2841
+		Offset: -48,80
+	make: DATA.R8
+		Start: 4254
+		Length: 19
+		Offset: -48,80
+	damaged-idle: DATA.R8
+		Start: 2842
+		Offset: -48,80
+	active: DATA.R8 # TODO: wire it up
+		Start: 4583
+		Length: 30
+		Offset: -48,80
 	bib: bib3x
 		Start: 0
 		Length: *
 
 refo:
-	idle:
-		Start: 0
+	idle: DATA.R8
+		Start: 2881
 		Length: 1
-	make: refmake
-		Start: 0
-		Length: *
-	damaged-idle:
-		Start: 0
-	build-top:
-		Start: 1
-		Length: 1
-	damaged-build-top:
-		Start: 2
-		Length: 1
-	idle-top:
-		Start: 1
-	damaged-idle-top:
-		Start: 2
+		Offset: -48,64
+	make: DATA.R8
+		Start: 4231
+		Length: 22
+		Offset: -48,64
+	damaged-idle: DATA.R8
+		Start: 2881
+		Offset: -48,64
+	idle-top: DATA.R8
+		Start: 2882
+		Offset: -48,64
+	damaged-idle-top: DATA.R8
+		Start: 2883
+		Offset: -48,64
 	bib: bib3x
 		Start: 0
 		Length: *
 
 siloo:
-	idle:
-		Start: 0
+	idle: DATA.R8
+		Start: 2886
 		Length: 4
-	damaged-idle:
-		Start: 4
+		Offset: -16,16
+	damaged-idle: DATA.R8
+		Start: 2890
 		Length: 1
-	make: silomake
-		Start: 0
-		Length: *
+		Offset: -16,16
+	make: DATA.R8
+		Start: 4313
+		Length: 14
+		Offset: -16,16
 
 hightecho:
-	idle:
-		Start: 0
-	make: highmake
-		Start: 0
-		Length: *
-	damaged-idle:
-		Start: 1
+	idle: DATA.R8
+		Start: 2884
+		Offset: -48,80
+	make: DATA.R8
+		Start: 4274
+		Length: 20
+		Offset: -48,80
+	damaged-idle: DATA.R8
+		Start: 2885
+		Offset: -48,80
+	active: DATA.R8 # TODO: not wired up
+		Start: 4614
+		Length: 30
+		Offset: -48,80
 	bib: bib3x
 		Start: 0
 		Length: *
 
 palaceo:
-	idle:
-		Start: 0
-	make: palacemake
-		Start: 0
-		Length: *
-	damaged-idle:
-		Start: 1
+	idle: DATA.R8
+		Start: 2996
+		Offset: -48,64
+	make: DATA.R8
+		Start: 4413
+		Length: 22
+		Offset: -48,64
+	damaged-idle: DATA.R8
+		Start: 2997
+		Offset: -48,64
 	bib: bib3x
 		Start: 0
 		Length: *
 
 lighto:
-	idle:
-		Start: 0
+	idle: DATA.R8
+		Start: 2993
 		Length: 1
-	make: lightmake
-		Start: 0
-		Length: *
-	damaged-idle:
-		Start: 0
-	build-top:
-		Start: 1
+		Offset: -48,64
+	make: DATA.R8
+		Start: 4295
+		Length: 7
+		Offset: -48,64
+	damaged-idle: DATA.R8
+		Start: 2993
+		Offset: -48,64
+	build-top: DATA.R8
+		Start: 2994
 		Length: 1
-	damaged-build-top:
-		Start: 2
+		Offset: -48,64
+	damaged-build-top: DATA.R8
+		Start: 2995
 		Length: 1
-	idle-top:
-		Start: 1
-	damaged-idle-top:
-		Start: 2
+		Offset: -48,64
+	idle-top: DATA.R8
+		Start: 2994
+		Offset: -48,64
+	damaged-idle-top: DATA.R8
+		Start: 2995
+		Offset: -48,64
 	bib: bib3x
 		Start: 0
 		Length: *
 
 heavyo:
-	idle:
-		Start: 0
+	idle: DATA.R8
+		Start: 2838
 		Length: 1
-	make: heavymake
-		Start: 0
-		Length: *
-	damaged-idle:
-		Start: 0
-	build-top:
-		Start: 1
+		Offset: -48,80
+	make: DATA.R8
+		Start: 4328
+		Length: 18
+		Offset: -48,80
+	damaged-idle: DATA.R8
+		Start: 2838
+		Offset: -48,80
+	build-top: DATA.R8
+		Start: 2839
 		Length: 1
-	damaged-build-top:
-		Start: 2
+		Offset: -48,80
+	damaged-build-top: DATA.R8
+		Start: 2840
 		Length: 1
-	idle-top:
-		Start: 1
-	damaged-idle-top:
-		Start: 2
+		Offset: -48,80
+	idle-top: DATA.R8
+		Start: 2839
+		Offset: -48,80
+	damaged-idle-top: DATA.R8
+		Start: 2840
+		Offset: -48,80
+	active: DATA.R8 # TODO: not wired up
+		Start: 4674
+		Length: 47
+		Offset: -48,80
 	bib: bib3x
 		Start: 0
 		Length: *
 
-palacec:
-	idle:
-		Start: 0
-	damaged-idle:
-		Start: 1
+palacec: # TODO: unused
+	idle: DATA.R8
+		Start: 3004
+		Offset: -48,64
+	damaged-idle: DATA.R8
+		Start: 3005
+		Offset: -48,64
 	bib: bib3x
 		Start: 0
 		Length: *
 
-starportc:
-	idle:
-		Start: 0
+starportc: # TODO: unused
+	idle: DATA.R8
+		Start: 2999
+		Offset: -48,64
 		ZOffset: -1c511
-	active:
-		Start: 0
+	active: DATA.R8
+		Start: 2999
 		Length: 1
+		Offset: -48,64
 		ZOffset: -1c511
-	damaged-idle:
-		Start: 1
+	damaged-idle: DATA.R8
+		Start: 3000
+		Offset: -48,64
 		ZOffset: -1c511
-	damaged-active:
-		Start: 1
+	damaged-active: DATA.R8
+		Start: 3000
+		Offset: -48,64
 		ZOffset: -1c511
-	make: starportmake
-		Start: 0
-		Length: *
+	make: DATA.R8
+		Start: 4347
+		Length: 22
+		Offset: -48,64
 	bib: bib3x
 		Start: 0
 		Length: *
 
-heavyc:
-	idle:
-		Start: 0
+heavyc: # TODO: unused
+	idle: DATA.R8
+		Start: 3001
 		Length: 1
-	make: heavymake
-		Start: 0
-		Length: *
-	damaged-idle:
-		Start: 0
-	build-top:
-		Start: 1
+		Offset: -48,64
+	make: DATA.R8
+		Start: 4328
+		Length: 18
+		Offset: -48,64
+	damaged-idle: DATA.R8
+		Start: 3001
+		Offset: -48,64
+	build-top: DATA.R8
+		Start: 3002
 		Length: 1
-	damaged-build-top:
-		Start: 2
+		Offset: -48,64
+	damaged-build-top: DATA.R8
+		Start: 3003
 		Length: 1
-	idle-top:
-		Start: 1
-	damaged-idle-top:
-		Start: 2
+		Offset: -48,64
+	idle-top: DATA.R8
+		Start: 3002
+		Offset: -48,64
+	damaged-idle-top: DATA.R8
+		Start: 3003
+		Offset: -48,64
+	active: DATA.R8 # TODO: not wired up
+		Start: 4674
+		Length: 47
+		Offset: -48,64
 	bib: bib3x
 		Start: 0
 		Length: *
+
+conyardc: # TODO: unused
+	idle: DATA.R8
+		Start: 3006
+		Offset: -48,64
+	make: DATA.R8 # TODO: overlay
+		Start: 4109
+		Length: 41
+		Offset: -48,64
+	damaged-idle: DATA.R8
+		Start: 3007
+		Offset: -48,64
+#	build: DATA.R8  # TODO: overlay
+#		Start: 4478
+#		Length: 14
+#		Offset: -48,64
+#	damaged-build: DATA.R8  # TODO: overlay
+#		Start: 4478
+#		Length: 14
+#		Offset: -48,64
+	bib: bib3x # TODO: read this from BLOXBAT.R8
+		Start: 0
+		Length: *
+
+plates: # TODO: unused
+	idle: DATA.R8
+		Start: 3008
+		Length: 6

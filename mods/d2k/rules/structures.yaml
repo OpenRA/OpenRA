@@ -523,6 +523,8 @@ REPAIR:
 		ValuePercentage: 50
 	RallyPoint:
 		RallyPoint: 1,3
+	RenderBuilding:
+		Image: repaira
 
 ^HIGHTECH:
 	Inherits: ^Building
@@ -581,8 +583,8 @@ RESEARCH:
 		FlareType:
 	Building:
 		Power: -40
-		Footprint: xxx xxx
-		Dimensions: 3,2
+		Footprint: _x_ xxx xxx
+		Dimensions: 3,3
 	Bib:
 	Health:
 		HP: 1000
@@ -592,6 +594,8 @@ RESEARCH:
 		Range: 4
 	ProvidesCustomPrerequisite:
 		Prerequisite: Ix
+	RenderBuilding:
+		Image: researcha
 
 ^PALACE:
 	Inherits: ^Building
@@ -609,8 +613,8 @@ RESEARCH:
 		Description: Unlocks elite infantry\n  Special Ability: Ornithopter Strike
 	Building:
 		Power: -50
-		Footprint: _x_ xxx =xx
-		Dimensions: 3,3
+		Footprint: xxx xxx
+		Dimensions: 3,2
 	Bib:
 	Health:
 		HP: 2000

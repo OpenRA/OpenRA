@@ -272,11 +272,6 @@ namespace OpenRA.Utility
 						offsetX = frame.FrameSize.Width / 2 - frame.Size.Width / 2;
 						offsetY = frame.FrameSize.Height / 2 - frame.Size.Height / 2;
 					}
-					else if (args.Contains("--building"))
-					{
-						offsetX = Math.Abs(frame.Offset.X);
-						offsetY = frame.FrameSize.Height - Math.Abs(frame.Offset.Y);
-					}
 
 					Console.WriteLine("calculated OffsetX: {0}", offsetX);
 					Console.WriteLine("calculated OffsetY: {0}", offsetY);
