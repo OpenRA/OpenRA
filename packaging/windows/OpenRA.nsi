@@ -94,6 +94,8 @@ Section "Client" Client
 	File "${SRCDIR}\Tao.*.dll"
 	File "${SRCDIR}\SharpFont.dll"
 	File "${SRCDIR}\global mix database.dat"
+	File "${SRCDIR}\GeoIP.dll
+	File "${SRCDIR}\GeoIP.dat"
 
 	!insertmacro MUI_STARTMENU_WRITE_BEGIN Application
 		CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
@@ -281,6 +283,8 @@ Function ${UN}Clean
 	Delete $INSTDIR\cgGL.dll
 	Delete $INSTDIR\zlib1.dll
 	Delete "$INSTDIR\global mix database.dat"
+	Delete $INSTDIR\GeoIP.dat
+	Delete $INSTDIR\GeoIP.dll
 	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA"
 	Delete $INSTDIR\uninstaller.exe
 	RMDir $INSTDIR

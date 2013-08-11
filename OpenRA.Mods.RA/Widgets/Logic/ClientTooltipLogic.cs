@@ -27,9 +27,16 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var latency = widget.Get<LabelWidget>("LATENCY");
 			var latencyFont = Game.Renderer.Fonts[latency.Font];
 
+			var latencyPrefix = widget.Get<LabelWidget>("LATENCY_PREFIX");
+			var latencyPrefixFont = Game.Renderer.Fonts[latencyPrefix.Font];
+
 			var ip = widget.Get<LabelWidget>("IP");
 			var ipFont = Game.Renderer.Fonts[ip.Font];
 
+			var location = widget.Get<LabelWidget>("LOCATION");
+			var locationFont = Game.Renderer.Fonts[location.Font];
+
+			var locationOffset = location.Bounds.Y;
 			var ipOffset = ip.Bounds.Y;
 			var latencyOffset = latency.Bounds.Y;
 			var tooltipHeight = widget.Bounds.Height;
@@ -39,27 +46,42 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			tooltipContainer.IsVisible = () => (orderManager.LobbyInfo.ClientWithIndex(clientIndex) != null);
 			tooltipContainer.BeforeRender = () =>
 			{
-				var width = Math.Max(adminFont.Measure(admin.GetText()).X, Math.Max(ipFont.Measure(ip.GetText()).X, latencyFont.Measure(latency.GetText()).X));
-				widget.Bounds.Width = width + 2*margin;
+				var latencyPrefixSize = latencyPrefix.Bounds.X + latencyPrefixFont.Measure(latencyPrefix.GetText()+" ").X;
+				var width = Math.Max(locationFont.Measure(location.GetText()).X, (Math.Max(adminFont.Measure(admin.GetText()).X,
+					Math.Max(ipFont.Measure(ip.GetText()).X, latencyPrefixSize + latencyFont.Measure(latency.GetText()).X))));
+				widget.Bounds.Width = width + 2 * margin;
 				latency.Bounds.Width = widget.Bounds.Width;
 				ip.Bounds.Width = widget.Bounds.Width;
 				admin.Bounds.Width = widget.Bounds.Width;
+				location.Bounds.Width = widget.Bounds.Width;
 
 				ip.Bounds.Y = ipOffset;
 				latency.Bounds.Y = latencyOffset;
+				location.Bounds.Y = locationOffset;
 				widget.Bounds.Height = tooltipHeight;
 
 				if (admin.IsVisible())
 				{
 					ip.Bounds.Y += admin.Bounds.Height;
 					latency.Bounds.Y += admin.Bounds.Height;
+					location.Bounds.Y += admin.Bounds.Height;
 					widget.Bounds.Height += admin.Bounds.Height;
 				}
+
+				latencyPrefix.Bounds.Y = latency.Bounds.Y;
+				latency.Bounds.X = latencyPrefixSize;
 			};
 
 			admin.IsVisible = () => orderManager.LobbyInfo.ClientWithIndex(clientIndex).IsAdmin;
-			latency.GetText = () => "Latency: {0}".F(LobbyUtils.LatencyDescription(orderManager.LobbyInfo.ClientWithIndex(clientIndex).Latency));
-			ip.GetText = () => LobbyUtils.DescriptiveIpAddress(orderManager.LobbyInfo.ClientWithIndex(clientIndex).IpAddress);
+			latency.GetText = () => LobbyUtils.LatencyDescription(orderManager.LobbyInfo.ClientWithIndex(clientIndex).Latency);
+			latency.GetColor = () => LobbyUtils.LatencyColor(orderManager.LobbyInfo.ClientWithIndex(clientIndex).Latency);
+			var ipAddress = orderManager.LobbyInfo.ClientWithIndex(clientIndex).IpAddress;
+			if ((ipAddress == null || ipAddress == "127.0.0.1") && UPnP.NatDevice != null)
+				ipAddress = UPnP.NatDevice.GetExternalIP().ToString();
+			var cachedDescriptiveIP = LobbyUtils.DescriptiveIpAddress(ipAddress);
+			ip.GetText = () => cachedDescriptiveIP;
+			var cachedCountryLookup = LobbyUtils.LookupCountry(ipAddress);
+			location.GetText = () => cachedCountryLookup;
 		}
 	}
 }
