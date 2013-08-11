@@ -166,7 +166,7 @@ namespace OpenRA.Mods.RA.Air
 		{
 			get
 			{
-				yield return new EnterOrderTargeter<Building>("Enter", 5, false, true,
+				yield return new EnterAlliedActorTargeter<Building>("Enter", 5,
 					target => AircraftCanEnter(target), target => !Reservable.IsReserved(target));
 
 				yield return new AircraftMoveOrderTargeter();

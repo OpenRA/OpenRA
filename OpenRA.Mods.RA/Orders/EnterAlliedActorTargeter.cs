@@ -14,14 +14,14 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Orders
 {
-	public class EnterOrderTargeter<T> : UnitOrderTargeter
+	public class EnterAlliedActorTargeter<T> : UnitOrderTargeter
 	{
 		readonly Func<Actor, bool> canTarget;
 		readonly Func<Actor, bool> useEnterCursor;
 
-		public EnterOrderTargeter(string order, int priority, bool targetEnemy, bool targetAlly,
+		public EnterAlliedActorTargeter(string order, int priority,
 			Func<Actor, bool> canTarget, Func<Actor, bool> useEnterCursor)
-			: base (order, priority, "enter", targetEnemy, targetAlly)
+			: base (order, priority, "enter", false, true)
 		{
 			this.canTarget = canTarget;
 			this.useEnterCursor = useEnterCursor;
@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA.Orders
 
 		public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
 		{
-			// TODO: Not yet supported
+			// Allied actors are never frozen
 			return false;
 		}
 	}

@@ -239,7 +239,8 @@ namespace OpenRA.Mods.RA
 		{
 			get
 			{
-				yield return new EnterOrderTargeter<IAcceptOre>("Deliver", 5, false, true, _ => true, proc => !IsEmpty && proc.Trait<IAcceptOre>().AllowDocking);
+				yield return new EnterAlliedActorTargeter<IAcceptOre>("Deliver", 5, _ => true,
+					proc => !IsEmpty && proc.Trait<IAcceptOre>().AllowDocking);
 				yield return new HarvestOrderTargeter();
 			}
 		}
