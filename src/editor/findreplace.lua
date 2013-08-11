@@ -289,6 +289,8 @@ function findReplace:RunInFiles(replace)
     wx.wxDefaultPosition, wx.wxSize(1,1), wx.wxBORDER_STATIC)
   findReplace.occurrences = 0
 
+  ActivateOutput()
+
   local startdir = findReplace.filedirText
   DisplayOutputLn(("%s '%s'."):format(
     (replace and TR("Replacing") or TR("Searching for")),
