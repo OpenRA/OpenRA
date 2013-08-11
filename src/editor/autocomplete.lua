@@ -235,9 +235,9 @@ local function resolveAssign(editor,tx)
         -- this can happen if it's a reference to a value with a known type
         classname = classname or assigns[c..w]
         if (s ~= "" and old ~= classname) then
-          c = classname..s
           -- continue checking unless this can lead to recursive substitution
-          change = not classname:find("^"..w)
+          change = not classname:find("^"..w) and not classname:find("^"..c..w)
+          c = classname..s
         else
           c = c..w..s
         end

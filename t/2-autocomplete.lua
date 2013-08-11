@@ -31,7 +31,16 @@ editor:AddText([[
 ]])
 
 ok(limit(10000, function() CreateAutoCompList(editor, "result.1") end),
-  "Auto-complete doesn't loop for table index reference.")
+  "Auto-complete doesn't loop for table index reference 1/2.")
+
+editor:SetText('')
+editor:AddText([[
+  self.popUpObjs = self.undoBuffer[0].sub
+  self.undoBuffer = self.undoBuffer[0]
+  self.popUpObjs[popUpNo].]])
+
+ok(limit(10000, function() EditorAutoComplete(editor) end),
+  "Auto-complete doesn't loop for table index reference 2/2.")
 
 local interpreter = ide:GetInterpreter():GetFileName()
 ProjectSetInterpreter("gideros")
