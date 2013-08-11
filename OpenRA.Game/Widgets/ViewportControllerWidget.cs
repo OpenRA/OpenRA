@@ -14,6 +14,7 @@ using System.Linq;
 using OpenRA.FileFormats;
 using OpenRA.GameRules;
 using OpenRA.Graphics;
+using OpenRA.Orders;
 using OpenRA.Traits;
 
 namespace OpenRA.Widgets
@@ -101,13 +102,17 @@ namespace OpenRA.Widgets
 				return;
 			}
 
-			var actor = world.FindUnitsAtMouse(Viewport.LastMousePos).FirstOrDefault();
-			if (actor == null)
-				return;
+			var underCursor = world.FindUnitsAtMouse(Viewport.LastMousePos)
+				.Where(a => a.HasTrait<IToolTip>())
+				.OrderByDescending(a => a.Info.SelectionPriority())
+				.FirstOrDefault();
 
-			ActorTooltip = actor.TraitsImplementing<IToolTip>().FirstOrDefault();
-			if (ActorTooltip != null)
+			if (underCursor != null)
+			{
+				ActorTooltip = underCursor.TraitsImplementing<IToolTip>().First();
 				TooltipType = WorldTooltipType.Actor;
+				return;
+			}
 		}
 
 		public static string GetScrollCursor(Widget w, ScrollDirection edge, int2 pos)

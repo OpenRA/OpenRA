@@ -21,7 +21,7 @@ namespace OpenRA.Orders
 		{
 			var underCursor = world.FindUnitsAtMouse(mi.Location)
 				.Where(a => a.HasTrait<ITargetable>())
-				.OrderByDescending(a => a.SelectionPriority())
+				.OrderByDescending(a => a.Info.SelectionPriority())
 				.FirstOrDefault();
 
 			var orders = world.Selection.Actors
@@ -51,7 +51,7 @@ namespace OpenRA.Orders
 
 			var underCursor = world.FindUnitsAtMouse(mi.Location)
 				.Where(a => a.HasTrait<ITargetable>())
-				.OrderByDescending(a => a.SelectionPriority())
+				.OrderByDescending(a => a.Info.SelectionPriority())
 				.FirstOrDefault();
 
 			if (underCursor != null && (mi.Modifiers.HasModifier(Modifiers.Shift) || !world.Selection.Actors.Any()))
@@ -135,9 +135,9 @@ namespace OpenRA.Orders
 
 	public static class SelectableExts
 	{
-		public static int SelectionPriority(this Actor a)
+		public static int SelectionPriority(this ActorInfo a)
 		{
-			var selectableInfo = a.Info.Traits.GetOrDefault<SelectableInfo>();
+			var selectableInfo = a.Traits.GetOrDefault<SelectableInfo>();
 			return selectableInfo != null ? selectableInfo.Priority : int.MinValue;
 		}
 	}
