@@ -2,6 +2,7 @@ ScrollPanel@LABEL_DROPDOWN_TEMPLATE:
 	Width:DROPDOWN_WIDTH
 	Children:
 		ScrollItem@HEADER:
+			BaseName:scrollheader
 			Width:PARENT_RIGHT-27
 			Height:13
 			X:2
