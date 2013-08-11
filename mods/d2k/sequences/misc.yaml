@@ -1,52 +1,45 @@
 explosion:
-	piff: minipiff
-		Start: 0
-		Length: *
-	piffs: minipiff
-		Start: 0
-		Length: *
-	small_explosion: veh-hit3
-		Start: 0
-		Length: *
-	med_explosion: frag1
-		Start: 0
-		Length: *
-	large_explosion: bigboom
-		Start: 0
-		Length: *
-	small_artillery: veh-hit2
-		Start: 0
-		Length: *
-	artillery: art-exp1
-		Start: 0
-		Length: *
-	self_destruct: art-exp1
-		Start: 0
-		Length: *
-	small_building: veh-hit1
-		Start: 0
-		Length: *
-	building: fball1
-		Start: 0
-		Length: *
-	small_napalm: napalm1
-		Start: 0
-		Length: *
-	napalm: napalm2
-		Start: 0
-		Length: *
-	napalm2: napalm2
-		Start: 0
-		Length: *
+	piff: DATA.R8
+		Start: 3626
+		Length: 5
+	piffs: DATA.R8
+		Start: 3626
+		Length: 5
+	small_explosion: DATA.R8
+		Start: 3386
+		Length: 4
+	med_explosion: DATA.R8
+		Start: 3390
+		Length: 12
+	napalm: DATA.R8
+		Start: 3390
+		Length: 12
+	nuke: DATA.R8
+		Start: 3965
+		Length: 14
 		Tick: 60
-	shockwave: shockwave
-		Start: 0
-		Length: *
-		Tick: 30
-	nuke: atomsfx
-		Start: 0
-		Length: *
+	napalm2: DATA.R8
+		Start: 3403
+		Length: 15
 		Tick: 60
+	self_destruct: DATA.R8
+		Start: 3433
+		Length: 15
+	building: DATA.R8
+		Start: 3448
+		Length: 22
+	large_explosion: DATA.R8
+		Start: 3988
+		Length: 22
+	artillery: DATA.R8
+		Start: 3988
+		Length: 22
+	small_artillery: DATA.R8
+		Start: 3988
+		Length: 22
+	small_napalm: DATA.R8
+		Start: 3421
+		Length: 8
 
 90mm:
 	idle: 
@@ -54,20 +47,20 @@ explosion:
 		Facings: 32
 
 laserfire:
-	idle: miniboom
-		Start: 0
-		Length: *
+	idle: DATA.R8
+		Start: 3386
+		Length: 3
 
 pips:
-	groups: numbers
-		Start: 0
+	groups: DATA.R8
+		Start: 17
 		Length: 10
-	tag-primary: stars
-		Start: 0
-	pip-empty: dots
-		Start: 0
-	pip-green: dots
-		Start: 1
+	tag-primary: DATA.R8
+		Start: 110
+	pip-empty: DATA.R8
+		Start: 15
+	pip-green: DATA.R8
+		Start: 16
 
 clock:
 	idle:
@@ -90,16 +83,21 @@ rank:
 		Length: *
 
 overlay:
-	build-valid-arrakis:
+	build-valid-arrakis: DATA.R8
 		Start: 0
-	build-invalid:
+		Offset: -20,-20
+	build-invalid: DATA.R8
 		Start: 1
-	target-select:
+		Offset: -20,-20
+	target-select: DATA.R8
 		Start: 2
-	target-valid-arrakis:
+		Offset: -20,-20
+	target-valid-arrakis: DATA.R8
 		Start: 0
-	target-invalid:
+		Offset: -20,-20
+	target-invalid: DATA.R8
 		Start: 1
+		Offset: -20,-20
 
 rallypoint:
 	flag:flagfly
@@ -111,84 +109,83 @@ rallypoint:
 		Length: *
 
 rpg:
-	idle:
-		Start: 0
+	idle: DATA.R8
+		Start: 3015
 		Facings: 32
 
 crate-effects:
-	dollar: selling
-		Start: 0
-		Length: *
-	reveal-map: orbit
-		Start: 0
-		Length: *
-	hide-map: reveal
-		Start: 0
-		Length: *
+	dollar: DATA.R8
+		Start: 3679
+		Length: 8
+	reveal-map: DATA.R8
+		Start: 3947
+		Length: 18
+	hide-map: DATA.R8
+		Start: 3911
+		Length: 36
 	levelup: levelup
 		Start: 0
 		Length: *
 		Tick: 200
 
 allyrepair:
-	repair:
-		Start: 0
-		Length: *
-		Tick: 160
+	repair: DATA.R8
+		Start: 3
+		Length: 1
 
 missile:
-	idle:
-		Start: 0
-		Facings: 32
+	idle: DATA.R8
+		Start: 3088
+		Facings: -32
 
 missile2:
-	idle:
-		Start: 0
-		Facings: 32
+	idle: DATA.R8
+		Start: 3306
+		Facings: -32
 
 atomic:
-	up: deathhandmissile
-		Start: 0
+	up: DATA.R8
+		Start: 2147
 		Length: 1
-	down: deathhandmissile
-		Start: 1
+	down: DATA.R8
+		Start: 2148
 		Length: 1
 
 fire:
-	1: fire2
-		Start: 0
-		Length: *
+	1: DATA.R8
+		Start: 3712
+		Length: 10
 		Offset: 0,-3
-	2: fire2
-		Start: 0
-		Length: *
+	2: DATA.R8
+		Start: 3723
+		Length: 11
 		Offset: 0,-3
-	3: fire3
-		Start: 0
-		Length: *
+	3: DATA.R8
+		Start: 3885
+		Length: 13
 		Offset: 0,-3
-	4: fire
-		Start: 0
-		Length: *
+	4: DATA.R8
+		Start: 3712
+		Length: 10
 		Offset: 0,-3
 
 smoke_m:
-	idle: minifire
-		Start: 0
-		Length: *
-	loop: minifire
-		Start: 0
-		Length: *
-	end: minifire
-		Start: 0
+	idle: DATA.R8
+		Start: 3418
+		Length: 2
+	loop: DATA.R8
+		Start: 3418
+		Length: 2
+	end: DATA.R8
+		Start: 3418
 		Length: 3
 
 bombs:
-	open:
-		Start: 0
+	open: DATA.R8
+		Start: 3280
 		Length: 4
-	idle:
-		Start: 0
+	idle: DATA.R8
+		Start: 3280
 		Length: 4
 
 parach:
@@ -210,10 +207,10 @@ waypoint:
 		Length: *
 
 sietch:
-	idle:
-		Start: 0
+	idle: DATA.R8
+		Start: 2998
 
 doubleblast:
-	idle: 
-		Start: 0
-		Facings: 16
+	idle: DATA.R8
+		Start: 3279
+		Facings: -16

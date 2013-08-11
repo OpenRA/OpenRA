@@ -141,7 +141,7 @@ namespace OpenRA.Utility
 
 			frame = srcImage[startFrame];
 
-			if (args.Contains("--vehicle") || args.Contains("--projectile"))
+			if (args.Contains("--vehicle"))
 			{
 				frame = srcImage[startFrame];
 
