@@ -531,5 +531,11 @@ namespace OpenRA.Utility
 			Console.WriteLine();
 			Console.WriteLine("```");
 		}
+
+		public static void GetMapHash(string[] args)
+		{
+			var result = new Map(args[1]).Uid;
+			Console.WriteLine(result);
+		}
 	}
 }
