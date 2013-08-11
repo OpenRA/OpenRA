@@ -42,10 +42,12 @@ namespace OpenRA.Mods.RA.Activities
 				var cargo = self.Trait<Cargo>();
 				while (!cargo.IsEmpty(self))
 				{
-					if (chronosphere != null)
-						chronosphere.Owner.Kills++;
+					if (chronosphere != null && chronosphere.HasTrait<UpdatesPlayerStatistics>())
+						chronosphere.Owner.PlayerActor.Trait<PlayerStatistics>().UnitsKilled++;
+
 					var a = cargo.Unload(self);
-					a.Owner.Deaths++;
+					if (a.HasTrait<UpdatesPlayerStatistics>())
+						a.Owner.PlayerActor.Trait<PlayerStatistics>().UnitsDead++;
 				}
 			}
 
