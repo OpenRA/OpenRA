@@ -28,28 +28,58 @@ namespace OpenRA.Mods.RA
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID == "EngineerRepair")
-				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
+			if (order.OrderID != "EngineerRepair")
+				return null;
 
-			return null;
+			if (target.Type == TargetType.FrozenActor)
+				return new Order(order.OrderID, self, queued) { ExtraData = target.FrozenActor.ID };
+
+			return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
+		}
+
+		bool IsValidOrder(Actor self, Order order)
+		{
+			// Not targeting a frozen actor
+			if (order.ExtraData == 0 && order.TargetActor == null)
+				return false;
+
+			if (order.ExtraData != 0)
+			{
+				// Targeted an actor under the fog
+				var frozenLayer = self.Owner.PlayerActor.TraitOrDefault<FrozenActorLayer>();
+				if (frozenLayer == null)
+					return false;
+
+				var frozen = frozenLayer.FromID(order.ExtraData);
+				if (frozen == null)
+					return false;
+
+				return frozen.DamageState > DamageState.Undamaged;
+			}
+
+			return order.TargetActor.GetDamageState() > DamageState.Undamaged;
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return (order.OrderString == "EngineerRepair" &&
-					order.TargetActor.GetDamageState() > DamageState.Undamaged) ? "Attack" : null;
+			return order.OrderString == "EngineerRepair" && IsValidOrder(self, order)
+				? "Attack" : null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "EngineerRepair" &&
-			    order.TargetActor.GetDamageState() > DamageState.Undamaged)
-			{
-				self.SetTargetLine(Target.FromOrder(order), Color.Yellow);
+			if (order.OrderString != "EngineerRepair" || !IsValidOrder(self, order))
+				return;
 
+			var target = self.ResolveFrozenActorOrder(order, Color.Yellow);
+			if (target.Type != TargetType.Actor)
+				return;
+
+			if (!order.Queued)
 				self.CancelActivity();
-				self.QueueActivity(new Enter(order.TargetActor, new RepairBuilding(order.TargetActor)));
-			}
+
+			self.SetTargetLine(target, Color.Yellow);
+			self.QueueActivity(new Enter(target.Actor, new RepairBuilding(target.Actor)));
 		}
 
 		class EngineerRepairOrderTargeter : UnitOrderTargeter
@@ -73,8 +103,16 @@ namespace OpenRA.Mods.RA
 
 			public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
 			{
-				// TODO: Not yet supported
-				return false;
+				if (!target.Info.Traits.Contains<EngineerRepairable>())
+					return false;
+
+				if (self.Owner.Stances[target.Owner] != Stance.Ally)
+					return false;
+
+				if (target.DamageState == DamageState.Undamaged)
+					cursor = "goldwrench-blocked";
+
+				return true;
 			}
 		}
 	}
