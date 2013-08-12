@@ -14,10 +14,11 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
 {
-	public class TargetableUnitInfo : ITraitInfo
+	public class TargetableUnitInfo : ITraitInfo, ITargetableInfo
 	{
 		public readonly string[] TargetTypes = { };
 
+		public string[] GetTargetTypes() { return TargetTypes; }
 		public virtual object Create(ActorInitializer init) { return new TargetableUnit(init.self, this); }
 	}
 

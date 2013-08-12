@@ -269,7 +269,7 @@ Player:
 		RemapIndex: 255, 254, 253, 252, 251, 250, 249, 248, 247, 246, 245, 244, 243, 242, 241, 240
 	BaseAttackNotifier:
 	Shroud:
-		Shroud: false
+	FrozenActorLayer:
 	HarvesterAttackNotifier:
 	PlayerStatistics:
 

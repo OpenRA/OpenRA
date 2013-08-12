@@ -191,7 +191,7 @@ namespace OpenRA
 							if (orderManager.NetFrameNumber == 0)
 								orderManager.LastTickTime = Environment.TickCount;
 
-						world.TickRender(worldRenderer);
+						Sync.CheckSyncUnchanged(world, () => world.TickRender(worldRenderer));
 						viewport.Tick();
 					}
 				}

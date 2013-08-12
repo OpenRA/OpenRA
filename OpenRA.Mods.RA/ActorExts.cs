@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Drawing;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -43,6 +44,44 @@ namespace OpenRA.Mods.RA
 				return toActor.Owner.Stances[self.Trait<Spy>().disguisedAsPlayer] == Stance.Enemy;
 
 			return stance == Stance.Enemy;
+		}
+
+		public static Target ResolveFrozenActorOrder(this Actor self, Order order, Color targetLine)
+		{
+			// Not targeting a frozen actor
+			if (order.ExtraData == 0)
+				return Target.FromOrder(order);
+
+			// Targeted an actor under the fog
+			var frozenLayer = self.Owner.PlayerActor.TraitOrDefault<FrozenActorLayer>();
+			if (frozenLayer == null)
+				return Target.Invalid;
+
+			var frozen = frozenLayer.FromID(order.ExtraData);
+			if (frozen == null)
+				return Target.Invalid;
+
+			// Flashes the frozen proxy
+			self.SetTargetLine(frozen, targetLine, true);
+
+			// Target is still alive - resolve the real order
+			if (frozen.Actor != null && frozen.Actor.IsInWorld)
+				return Target.FromActor(frozen.Actor);
+
+			if (!order.Queued)
+				self.CancelActivity();
+
+			var move = self.TraitOrDefault<IMove>();
+			if (move != null)
+			{
+				// Move within sight range of the frozen actor
+				var sight = self.TraitOrDefault<RevealsShroud>();
+				var range = sight != null ? sight.Range : 2;
+
+				self.QueueActivity(move.MoveWithinRange(Target.FromPos(frozen.CenterPosition), WRange.FromCells(range)));
+			}
+
+			return Target.Invalid;
 		}
 	}
 }

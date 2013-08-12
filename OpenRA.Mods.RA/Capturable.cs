@@ -28,6 +28,28 @@ namespace OpenRA.Mods.RA
 		[Desc("Seconds it takes to change the owner.", "You might want to add a CapturableBar: trait, too.")]
 		public readonly int CaptureCompleteTime = 15;
 
+		public bool CanBeTargetedBy(Actor captor, Player owner)
+		{
+			var c = captor.TraitOrDefault<Captures>();
+			if (c == null)
+				return false;
+
+			var playerRelationship = owner.Stances[captor.Owner];
+			if (playerRelationship == Stance.Ally && !AllowAllies)
+				return false;
+
+			if (playerRelationship == Stance.Enemy && !AllowEnemies)
+				return false;
+
+			if (playerRelationship == Stance.Neutral && !AllowNeutral)
+				return false;
+
+			if (!c.Info.CaptureTypes.Contains(Type))
+				return false;
+
+			return true;
+		}
+
 		public object Create(ActorInitializer init) { return new Capturable(init.self, this); }
 	}
 
@@ -43,31 +65,6 @@ namespace OpenRA.Mods.RA
 		{
 			this.self = self;
 			Info = info;
-		}
-
-		public bool CanBeTargetedBy(Actor captor)
-		{
-			var c = captor.TraitOrDefault<Captures>();
-			if (c == null)
-				return false;
-
-			var playerRelationship = self.Owner.Stances[captor.Owner];
-			if (playerRelationship == Stance.Ally && !Info.AllowAllies)
-				return false;
-
-			if (playerRelationship == Stance.Enemy && !Info.AllowEnemies)
-				return false;
-
-			if (playerRelationship == Stance.Neutral && !Info.AllowNeutral)
-				return false;
-
-			if (!c.Info.CaptureTypes.Contains(Info.Type))
-				return false;
-
-			if (CaptureInProgress)
-				return false;
-
-			return true;
 		}
 
 		public void BeginCapture(Actor captor)

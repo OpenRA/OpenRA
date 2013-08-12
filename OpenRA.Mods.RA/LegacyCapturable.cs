@@ -15,7 +15,7 @@ using OpenRA.FileFormats;
 namespace OpenRA.Mods.RA
 {
 	[Desc("This actor can be captured by a unit with LegacyCaptures: trait.")]
-	class LegacyCapturableInfo : ITraitInfo
+	class LegacyCapturableInfo : TraitInfo<LegacyCapturable>
 	{
 		[Desc("Type of actor (the LegacyCaptures: trait defines what Types it can capture).")]
 		public readonly string Type = "building";
@@ -25,40 +25,28 @@ namespace OpenRA.Mods.RA
 		[Desc("Health percentage the target must be at (or below) before it can be captured.")]
 		public readonly float CaptureThreshold = 0.5f;
 
-		public object Create(ActorInitializer init) { return new LegacyCapturable(init.self, this); }
-	}
-
-	class LegacyCapturable
-	{
-		[Sync] Actor self;
-		public LegacyCapturableInfo Info;
-
-		public LegacyCapturable(Actor self, LegacyCapturableInfo info)
-		{
-			this.self = self;
-			Info = info;
-		}
-
-		public bool CanBeTargetedBy(Actor captor)
+		public bool CanBeTargetedBy(Actor captor, Player owner)
 		{
 			var c = captor.TraitOrDefault<LegacyCaptures>();
 			if (c == null)
 				return false;
 
-			var playerRelationship = self.Owner.Stances[captor.Owner];
-			if (playerRelationship == Stance.Ally && !Info.AllowAllies)
+			var playerRelationship = owner.Stances[captor.Owner];
+			if (playerRelationship == Stance.Ally && !AllowAllies)
 				return false;
 
-			if (playerRelationship == Stance.Enemy && !Info.AllowEnemies)
+			if (playerRelationship == Stance.Enemy && !AllowEnemies)
 				return false;
 
-			if (playerRelationship == Stance.Neutral && !Info.AllowNeutral)
+			if (playerRelationship == Stance.Neutral && !AllowNeutral)
 				return false;
 
-			if (!c.Info.CaptureTypes.Contains(Info.Type))
+			if (!c.Info.CaptureTypes.Contains(Type))
 				return false;
 
 			return true;
 		}
 	}
+
+	class LegacyCapturable { }
 }

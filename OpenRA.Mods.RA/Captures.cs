@@ -12,11 +12,11 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Orders;
 using OpenRA.Traits;
-using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA
 {
@@ -34,11 +34,9 @@ namespace OpenRA.Mods.RA
 	class Captures : IIssueOrder, IResolveOrder, IOrderVoice
 	{
 		public readonly CapturesInfo Info;
-		readonly Actor self;
 
 		public Captures(Actor self, CapturesInfo info)
 		{
-			this.self = self;
 			Info = info;
 		}
 
@@ -46,69 +44,89 @@ namespace OpenRA.Mods.RA
 		{
 			get
 			{
-				yield return new CaptureOrderTargeter(CanCapture);
+				yield return new CaptureOrderTargeter();
 			}
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID == "CaptureActor")
-				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
+			if (order.OrderID != "CaptureActor")
+				return null;
 
-			return null;
+			if (target.Type == TargetType.FrozenActor)
+				return new Order(order.OrderID, self, queued) { ExtraData = target.FrozenActor.ID };
+
+			return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
+		}
+
+		bool IsValidOrder(Actor self, Order order)
+		{
+			// Not targeting an actor
+			if (order.ExtraData == 0 && order.TargetActor == null)
+				return false;
+
+			if (order.ExtraData != 0)
+			{
+				// Targeted an actor under the fog
+				var frozenLayer = self.Owner.PlayerActor.TraitOrDefault<FrozenActorLayer>();
+				if (frozenLayer == null)
+					return false;
+
+				var frozen = frozenLayer.FromID(order.ExtraData);
+				if (frozen == null)
+					return false;
+
+				var ci = frozen.Info.Traits.GetOrDefault<CapturableInfo>();
+				return ci != null && ci.CanBeTargetedBy(self, frozen.Owner);
+			}
+
+			var c = order.TargetActor.TraitOrDefault<Capturable>();
+			return c != null && !c.CaptureInProgress && c.Info.CanBeTargetedBy(self, order.TargetActor.Owner);
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return (order.OrderString == "CaptureActor" && CanCapture(order.TargetActor)) ? "Attack" : null;
+			return order.OrderString == "CaptureActor" && IsValidOrder(self, order)
+				? "Attack" : null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "CaptureActor")
-			{
-				if (!CanCapture(order.TargetActor))
-					return;
+			if (order.OrderString != "CaptureActor" || !IsValidOrder(self, order))
+				return;
 
-				self.SetTargetLine(Target.FromOrder(order), Color.Red);
+			var target = self.ResolveFrozenActorOrder(order, Color.Red);
+			if (target.Type != TargetType.Actor)
+				return;
 
+			if (!order.Queued)
 				self.CancelActivity();
-				self.QueueActivity(new CaptureActor(Target.FromOrder(order)));
-			}
-		}
 
-		bool CanCapture(Actor target)
-		{
-			var c = target.TraitOrDefault<Capturable>();
-			return c != null && c.CanBeTargetedBy(self);
+			self.SetTargetLine(target, Color.Red);
+			self.QueueActivity(new CaptureActor(target));
 		}
 	}
 
 	class CaptureOrderTargeter : UnitOrderTargeter
 	{
-		readonly Func<Actor, bool> useCaptureCursor;
-
-		public CaptureOrderTargeter(Func<Actor, bool> useCaptureCursor)
-			: base("CaptureActor", 6, "enter", true, true)
-		{
-			this.useCaptureCursor = useCaptureCursor;
-		}
+		public CaptureOrderTargeter() : base("CaptureActor", 6, "enter", true, true) { }
 
 		public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 		{
-			if (!base.CanTargetActor(self, target, modifiers, ref cursor))
-				return false;
+			var c = target.TraitOrDefault<Capturable>();
 
-			var canTargetActor = useCaptureCursor(target);
+			var canTargetActor = c != null && !c.CaptureInProgress && c.Info.CanBeTargetedBy(self, target.Owner);
 			cursor = canTargetActor ? "ability" : "move-blocked";
+			return canTargetActor;
+		}
 
-			if (canTargetActor)
-			{
-				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
-				return true;
-			}
+		public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
+		{
+			var c = target.Info.Traits.GetOrDefault<CapturableInfo>();
 
-			return false;
+			var canTargetActor = c != null && c.CanBeTargetedBy(self, target.Owner);
+			cursor = canTargetActor ? "ability" : "move-blocked";
+			return canTargetActor;
 		}
 	}
 }

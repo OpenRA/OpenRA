@@ -203,6 +203,7 @@ Player:
 	BaseAttackNotifier:
 	Shroud:
 	PlayerStatistics:
+	FrozenActorLayer:
 
 World:
 	LoadWidgetAtGameStart:

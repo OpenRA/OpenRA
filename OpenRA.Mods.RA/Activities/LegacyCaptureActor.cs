@@ -9,9 +9,9 @@
 #endregion
 
 using System.Linq;
-using OpenRA.Traits;
-using OpenRA.Mods.RA.Move;
 using OpenRA.Mods.RA.Buildings;
+using OpenRA.Mods.RA.Move;
+using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Activities
 {
@@ -23,31 +23,30 @@ namespace OpenRA.Mods.RA.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (IsCanceled)
-				return NextActivity;
-			if (!target.IsValid)
+			if (IsCanceled || target.Type != TargetType.Actor)
 				return NextActivity;
 
-			var b = target.Actor.TraitOrDefault<Building>();
+			var actor = target.Actor;
+			var b = actor.TraitOrDefault<Building>();
 			if (b != null && b.Locked)
 				return NextActivity;
 
 			var capturesInfo = self.Info.Traits.Get<LegacyCapturesInfo>();
-			var capturableInfo = target.Actor.Info.Traits.Get<LegacyCapturableInfo>();
+			var capturableInfo = actor.Info.Traits.Get<LegacyCapturableInfo>();
 
-			var health = target.Actor.Trait<Health>();
+			var health = actor.Trait<Health>();
 
 			self.World.AddFrameEndTask(w =>
 			{
 				var lowEnoughHealth = health.HP <= capturableInfo.CaptureThreshold * health.MaxHP;
-				if (!capturesInfo.Sabotage || lowEnoughHealth || target.Actor.Owner.NonCombatant)
+				if (!capturesInfo.Sabotage || lowEnoughHealth || actor.Owner.NonCombatant)
 				{
-					var oldOwner = target.Actor.Owner;
+					var oldOwner = actor.Owner;
 
-					target.Actor.ChangeOwner(self.Owner);
+					actor.ChangeOwner(self.Owner);
 
-					foreach (var t in target.Actor.TraitsImplementing<INotifyCapture>())
-						t.OnCapture(target.Actor, self, oldOwner, self.Owner);
+					foreach (var t in actor.TraitsImplementing<INotifyCapture>())
+						t.OnCapture(actor, self, oldOwner, self.Owner);
 
 					if (b != null && b.Locked)
 						b.Unlock();
@@ -55,7 +54,7 @@ namespace OpenRA.Mods.RA.Activities
 				else
 				{
 					var damage = (int)(health.MaxHP * capturesInfo.SabotageHPRemoval);
-					target.Actor.InflictDamage(self, damage, null);
+					actor.InflictDamage(self, damage, null);
 				}
 
 				self.Destroy();

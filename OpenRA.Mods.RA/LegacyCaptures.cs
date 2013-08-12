@@ -12,11 +12,11 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Orders;
 using OpenRA.Traits;
-using OpenRA.FileFormats;
 
 namespace OpenRA.Mods.RA
 {
@@ -36,11 +36,9 @@ namespace OpenRA.Mods.RA
 	class LegacyCaptures : IIssueOrder, IResolveOrder, IOrderVoice
 	{
 		public readonly LegacyCapturesInfo Info;
-		readonly Actor self;
 
 		public LegacyCaptures(Actor self, LegacyCapturesInfo info)
 		{
-			this.self = self;
 			Info = info;
 		}
 
@@ -48,70 +46,85 @@ namespace OpenRA.Mods.RA
 		{
 			get
 			{
-				yield return new LegacyCaptureOrderTargeter(CanCapture);
+				yield return new LegacyCaptureOrderTargeter(Info.Sabotage);
 			}
 		}
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID == "LegacyCaptureActor")
-				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
+			if (order.OrderID != "LegacyCaptureActor")
+				return null;
 
-			return null;
+			if (target.Type == TargetType.FrozenActor)
+				return new Order(order.OrderID, self, queued) { ExtraData = target.FrozenActor.ID };
+
+			return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return (order.OrderString == "LegacyCaptureActor") ? "Attack" : null;
+			return order.OrderString == "LegacyCaptureActor" ? "Attack" : null;
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "LegacyCaptureActor")
-			{
-				self.SetTargetLine(Target.FromOrder(order), Color.Red);
+			if (order.OrderString != "LegacyCaptureActor")
+				return;
 
+			var target = self.ResolveFrozenActorOrder(order, Color.Red);
+			if (target.Type != TargetType.Actor)
+				return;
+
+			if (!order.Queued)
 				self.CancelActivity();
-				self.QueueActivity(new Enter(order.TargetActor, new LegacyCaptureActor(Target.FromOrder(order))));
-			}
-		}
 
-		bool CanCapture(Actor target)
-		{
-			var c = target.TraitOrDefault<LegacyCapturable>();
-			return c != null && c.CanBeTargetedBy(self);
+			self.SetTargetLine(target, Color.Red);
+			self.QueueActivity(new Enter(target.Actor, new LegacyCaptureActor(target)));
 		}
 
 		class LegacyCaptureOrderTargeter : UnitOrderTargeter
 		{
-			readonly Func<Actor, bool> useCaptureCursor;
+			readonly bool sabotage;
 
-			public LegacyCaptureOrderTargeter(Func<Actor, bool> useCaptureCursor)
+			public LegacyCaptureOrderTargeter(bool sabotage)
 				: base("LegacyCaptureActor", 6, "enter", true, true)
 			{
-				this.useCaptureCursor = useCaptureCursor;
+				this.sabotage = sabotage;
 			}
 
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{
-				if (!base.CanTargetActor(self, target, modifiers, ref cursor)) return false;
-
-				var canTargetActor = useCaptureCursor(target);
-
-				if (canTargetActor)
+				var c = target.Info.Traits.GetOrDefault<LegacyCapturableInfo>();
+				if (c == null || !c.CanBeTargetedBy(self, target.Owner))
 				{
-					var c = target.Trait<LegacyCapturable>();
-					var health = target.Trait<Health>();
-					var lowEnoughHealth = health.HP <= c.Info.CaptureThreshold * health.MaxHP;
-
-					cursor = lowEnoughHealth ? "enter" : "capture";
-
-					IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
-					return true;
+					cursor = "enter-blocked";
+					return false;
 				}
 
-				cursor = "enter-blocked";
-				return false;
+				var health = target.Trait<Health>();
+				var lowEnoughHealth = health.HP <= c.CaptureThreshold * health.MaxHP;
+
+				cursor = !sabotage || lowEnoughHealth || target.Owner.NonCombatant
+					? "capture" : "enter";
+				return true;
+			}
+
+			public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
+			{
+				var c = target.Info.Traits.GetOrDefault<LegacyCapturableInfo>();
+				if (c == null || !c.CanBeTargetedBy(self, target.Owner))
+				{
+					cursor = "enter-blocked";
+					return false;
+				}
+
+				var health = target.Info.Traits.GetOrDefault<HealthInfo>();
+				var lowEnoughHealth = target.HP <= c.CaptureThreshold * health.HP;
+
+				cursor = !sabotage || lowEnoughHealth || target.Owner.NonCombatant
+					? "capture" : "enter";
+
+				return true;
 			}
 		}
 	}

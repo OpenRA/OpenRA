@@ -38,7 +38,8 @@ namespace OpenRA.Mods.RA
 
 		public IEnumerable<IOrderTargeter> Orders
 		{
-			get { yield return new EnterOrderTargeter<Building>( "Repair", 5, false, true, target => CanRepairAt( target ), _ => CanRepair() ); }
+			get { yield return new EnterAlliedActorTargeter<Building>("Repair", 5,
+				target => CanRepairAt(target), _ => CanRepair()); }
 		}
 
 		public Order IssueOrder( Actor self, IOrderTargeter order, Target target, bool queued )

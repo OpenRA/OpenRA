@@ -48,12 +48,15 @@ namespace OpenRA.GameRules
 		[Desc("Whether we should prevent prone response for infantry.")]
 		public readonly bool PreventProne = false;
 
-		public float EffectivenessAgainst(Actor self)
+		public float EffectivenessAgainst(ActorInfo ai)
 		{
-			var health = self.Info.Traits.GetOrDefault<HealthInfo>();
-			if (health == null) return 0f;
-			var armor = self.Info.Traits.GetOrDefault<ArmorInfo>();
-			if (armor == null || armor.Type == null) return 1;
+			var health = ai.Traits.GetOrDefault<HealthInfo>();
+			if (health == null)
+				return 0f;
+
+			var armor = ai.Traits.GetOrDefault<ArmorInfo>();
+			if (armor == null || armor.Type == null)
+				return 1;
 
 			float versus;
 			return Versus.TryGetValue(armor.Type, out versus) ? versus : 1;
@@ -140,20 +143,34 @@ namespace OpenRA.GameRules
 			if (targetable == null || !ValidTargets.Intersect(targetable.TargetTypes).Any())
 				return false;
 
-			if (Warheads.All(w => w.EffectivenessAgainst(a) <= 0))
+			if (Warheads.All(w => w.EffectivenessAgainst(a.Info) <= 0))
 				return false;
 
 			return true;
 		}
 
-		public bool IsValidAgainst(Target target, World world)
+		public bool IsValidAgainst(FrozenActor a)
 		{
-			if (!target.IsValid)
+			var targetable = a.Info.Traits.GetOrDefault<ITargetableInfo>();
+			if (targetable == null || !ValidTargets.Intersect(targetable.GetTargetTypes()).Any())
 				return false;
 
-			if (target.IsActor)
+			if (Warheads.All(w => w.EffectivenessAgainst(a.Info) <= 0))
+				return false;
+
+			return true;
+		}
+
+
+		public bool IsValidAgainst(Target target, World world)
+		{
+			if (target.Type == TargetType.Actor)
 				return IsValidAgainst(target.Actor);
-			else
+
+			if (target.Type == TargetType.FrozenActor)
+				return IsValidAgainst(target.FrozenActor);
+
+			if (target.Type == TargetType.Terrain)
 			{
 				var cell = target.CenterPosition.ToCPos();
 				if (ValidTargets.Contains("Ground") && world.GetTerrainType(cell) != "Water")
@@ -164,6 +181,8 @@ namespace OpenRA.GameRules
 
 				return false;
 			}
+
+			return false;
 		}
 	}
 }

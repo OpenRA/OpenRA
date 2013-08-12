@@ -457,7 +457,7 @@ namespace OpenRA.Mods.RA.Missions
 		}
 	}
 
-	class Allies04HijackableInfo : ITraitInfo
+	class Allies04HijackableInfo : ITraitInfo, Requires<InfiltratableInfo>
 	{
 		public object Create(ActorInitializer init) { return new Allies04Hijackable(init.self); }
 	}

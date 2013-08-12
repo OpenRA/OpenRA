@@ -494,13 +494,12 @@ namespace OpenRA.Mods.RA.Move
 			public int OrderPriority { get { return 4; } }
 			public bool IsQueued { get; protected set; }
 
-			public bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
+			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, TargetModifiers modifiers, ref string cursor)
 			{
-				return false;
-			}
+				if (!target.IsValid)
+					return false;
 
-			public bool CanTargetLocation(Actor self, CPos location, List<Actor> actorsAtLocation, TargetModifiers modifiers, ref string cursor)
-			{
+				var location = target.CenterPosition.ToCPos();
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 				cursor = "move";
 

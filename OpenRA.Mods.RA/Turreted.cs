@@ -77,7 +77,7 @@ namespace OpenRA.Mods.RA
 
 		public virtual void ResolveOrder(Actor self, Order order)
 		{
-			if (info.AlignWhenIdle && order.OrderString != "Attack" && order.OrderString != "AttackHold")
+			if (info.AlignWhenIdle && order.OrderString != "Attack")
 				desiredFacing = null;
 		}
 

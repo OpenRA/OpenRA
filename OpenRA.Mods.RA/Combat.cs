@@ -118,7 +118,7 @@ namespace OpenRA.Mods.RA
 						foreach (var t in world.FindTilesInCircle(targetTile, warhead.Size[0]))
 							foreach (var unit in world.FindActorsInBox(t, t))
 								unit.InflictDamage(firedBy,
-									(int)(warhead.Damage * warhead.EffectivenessAgainst(unit)), warhead);
+									(int)(warhead.Damage * warhead.EffectivenessAgainst(unit.Info)), warhead);
 					} break;
 			}
 		}
@@ -173,7 +173,7 @@ namespace OpenRA.Mods.RA
 			var distance = (int)Math.Max(0, (target.CenterPosition - pos).Length * Game.CellSize / 1024 - health.Radius);
 			var falloff = (float)GetDamageFalloff(distance / warhead.Spread);
 			var rawDamage = (float)(warhead.Damage * modifier * falloff);
-			var multiplier = (float)warhead.EffectivenessAgainst(target);
+			var multiplier = (float)warhead.EffectivenessAgainst(target.Info);
 
 			return (float)(rawDamage * multiplier);
 		}

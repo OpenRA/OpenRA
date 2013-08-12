@@ -41,16 +41,30 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				if (viewport == null || viewport.TooltipType == WorldTooltipType.None)
 					return;
 
-				labelText = viewport.TooltipType == WorldTooltipType.Unexplored ? "Unexplored Terrain" :
-					viewport.ActorTooltip.Name();
+				Player o = null;
+				switch (viewport.TooltipType)
+				{
+				case WorldTooltipType.Unexplored:
+					labelText = "Unexplored Terrain";
+					break;
+				case WorldTooltipType.Actor:
+					labelText = viewport.ActorTooltip.Name();
+					o = viewport.ActorTooltip.Owner();
+					break;
+				case WorldTooltipType.FrozenActor:
+					labelText = viewport.FrozenActorTooltip.TooltipName;
+					o = viewport.FrozenActorTooltip.TooltipOwner;
+					break;
+				}
+
 				var textWidth = font.Measure(labelText).X;
 				if (textWidth != cachedWidth)
 				{
 					label.Bounds.Width = textWidth;
 					widget.Bounds.Width = 2*label.Bounds.X + textWidth;
 				}
-				var o = viewport.ActorTooltip != null ? viewport.ActorTooltip.Owner() : null;
-				showOwner = viewport.TooltipType == WorldTooltipType.Actor && o != null && !o.NonCombatant;
+
+				showOwner = o != null && !o.NonCombatant;
 
 				if (showOwner)
 				{

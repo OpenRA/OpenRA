@@ -134,13 +134,7 @@ namespace OpenRA.Traits
 
 		public static IEnumerable<CPos> AdjacentCells(Target target)
 		{
-			var cells = target.IsActor
-				? target.Actor.OccupiesSpace.OccupiedCells().Select(c => c.First).ToArray()
-				: new CPos[] { };
-
-			if (cells.Length == 0)
-				cells = new CPos[] { target.CenterPosition.ToCPos() };
-
+			var cells = target.Positions.Select(p => p.ToCPos()).Distinct();
 			return Util.ExpandFootprint(cells, true);
 		}
 	}

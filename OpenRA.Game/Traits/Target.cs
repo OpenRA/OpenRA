@@ -14,18 +14,20 @@ using System.Linq;
 
 namespace OpenRA.Traits
 {
+	public enum TargetType { Invalid, Actor, Terrain, FrozenActor }
 	public struct Target
 	{
-		public static readonly Target[] NoTargets = {};
-		public static readonly Target None = new Target();
+		public static readonly Target[] None = {};
+		public static readonly Target Invalid = new Target { type = TargetType.Invalid };
 
+		TargetType type;
 		Actor actor;
+		FrozenActor frozen;
 		WPos pos;
-		bool valid;
 		int generation;
 
-		public static Target FromPos(WPos p) { return new Target { pos = p, valid = true }; }
-		public static Target FromCell(CPos c) { return new Target { pos = c.CenterPosition, valid = true }; }
+		public static Target FromPos(WPos p) { return new Target { pos = p, type = TargetType.Terrain }; }
+		public static Target FromCell(CPos c) { return new Target { pos = c.CenterPosition, type = TargetType.Terrain }; }
 		public static Target FromOrder(Order o)
 		{
 			return o.TargetActor != null
@@ -38,26 +40,53 @@ namespace OpenRA.Traits
 			return new Target
 			{
 				actor = a,
-				valid = (a != null),
+				type = a != null ? TargetType.Actor : TargetType.Invalid,
 				generation = a.Generation,
 			};
 		}
 
-		public bool IsValid { get { return valid && (actor == null || (actor.IsInWorld && !actor.IsDead() && actor.Generation == generation)); } }
-		public Actor Actor { get { return IsActor ? actor : null; } }
+		public static Target FromFrozenActor(FrozenActor a)  { return new Target { frozen = a, type = TargetType.FrozenActor }; }
 
-		// TODO: This should return true even if the actor is destroyed
-		public bool IsActor { get { return actor != null && !actor.Destroyed; } }
+		public bool IsValid { get { return Type != TargetType.Invalid; } }
+		public Actor Actor { get { return actor; } }
+		public FrozenActor FrozenActor { get { return frozen; } }
+
+		public TargetType Type
+		{
+			get
+			{
+				if (type == TargetType.Actor)
+				{
+					// Actor is no longer in the world
+					if (!actor.IsInWorld || actor.IsDead())
+						return TargetType.Invalid;
+
+					// Actor generation has changed (teleported or captured)
+					if (actor.Generation != generation)
+						return TargetType.Invalid;
+				}
+
+				return type;
+			}
+		}
 
 		// Representative position - see Positions for the full set of targetable positions.
 		public WPos CenterPosition
 		{
 			get
 			{
-				if (!IsValid)
+				switch (Type)
+				{
+				case TargetType.Actor:
+					return actor.CenterPosition;
+				case TargetType.FrozenActor:
+					return frozen.CenterPosition;
+				case TargetType.Terrain:
+					return pos;
+				default:
+				case TargetType.Invalid:
 					throw new InvalidOperationException("Attempting to query the position of an invalid Target");
-
-				return actor != null ? actor.CenterPosition : pos;
+				}
 			}
 		}
 
@@ -67,23 +96,29 @@ namespace OpenRA.Traits
 		{
 			get
 			{
-				if (!IsValid)
+				switch (Type)
+				{
+				case TargetType.Actor:
+					var targetable = actor.TraitOrDefault<ITargetable>();
+					if (targetable == null)
+						return new [] { actor.CenterPosition };
+
+					var positions = targetable.TargetablePositions(actor);
+					return positions.Any() ? positions : new [] { actor.CenterPosition };
+				case TargetType.FrozenActor:
+					return new [] { frozen.CenterPosition };
+				case TargetType.Terrain:
+					return new [] { pos };
+				default:
+				case TargetType.Invalid:
 					return NoPositions;
-
-				if (actor == null)
-					return new []{pos};
-
-				var targetable = actor.TraitOrDefault<ITargetable>();
-				if (targetable == null)
-					return new []{actor.CenterPosition};
-
-				return targetable.TargetablePositions(actor);
+				}
 			}
 		}
 
 		public bool IsInRange(WPos origin, WRange range)
 		{
-			if (!IsValid)
+			if (Type == TargetType.Invalid)
 				return false;
 
 			// Target ranges are calculated in 2D, so ignore height differences
