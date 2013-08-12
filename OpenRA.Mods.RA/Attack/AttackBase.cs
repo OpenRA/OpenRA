@@ -164,6 +164,12 @@ namespace OpenRA.Mods.RA
 			self.QueueActivity(GetAttackActivity(self, target, allowMove));
 		}
 
+		public bool IsReachableTarget(Target target, bool allowMove)
+		{
+			return HasAnyValidWeapons(target)
+				&& (target.IsInRange(self.CenterPosition, GetMaximumRange()) || (self.HasTrait<IMove>() && allowMove));
+		}
+
 		class AttackOrderTargeter : IOrderTargeter
 		{
 			readonly bool negativeDamage;

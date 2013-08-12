@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Move;
@@ -20,12 +19,12 @@ namespace OpenRA.Mods.RA
 {
 	class AttackTurretedInfo : AttackBaseInfo, Requires<TurretedInfo>
 	{
-		public override object Create(ActorInitializer init) { return new AttackTurreted( init.self ); }
+		public override object Create(ActorInitializer init) { return new AttackTurreted(init.self); }
 	}
 
 	class AttackTurreted : AttackBase, INotifyBuildComplete, ISync
 	{
-		protected Target target;
+		public Target Target { get; protected set; }
 		protected IEnumerable<Turreted> turrets;
 		[Sync] protected bool buildComplete;
 
@@ -34,9 +33,9 @@ namespace OpenRA.Mods.RA
 			turrets = self.TraitsImplementing<Turreted>();
 		}
 
-		protected override bool CanAttack( Actor self, Target target )
+		protected override bool CanAttack(Actor self, Target target)
 		{
-			if( self.HasTrait<Building>() && !buildComplete )
+			if (self.HasTrait<Building>() && !buildComplete)
 				return false;
 
 			if (!target.IsValid) return false;
@@ -45,21 +44,21 @@ namespace OpenRA.Mods.RA
 			foreach (var t in turrets)
 				if (t.FaceTarget(self, target))
 					canAttack = true;
-			if (!canAttack)	return false;
+			if (!canAttack) return false;
 
-			return base.CanAttack( self, target );
+			return base.CanAttack(self, target);
 		}
 
 		public override void Tick(Actor self)
 		{
 			base.Tick(self);
-			DoAttack( self, target );
-			IsAttacking = target.IsValid;
+			DoAttack(self, Target);
+			IsAttacking = Target.IsValid;
 		}
 
 		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
 		{
-			return new AttackActivity( newTarget, allowMove );
+			return new AttackActivity(newTarget, allowMove);
 		}
 
 		public override void ResolveOrder(Actor self, Order order)
@@ -67,7 +66,7 @@ namespace OpenRA.Mods.RA
 			base.ResolveOrder(self, order);
 
 			if (order.OrderString == "Stop")
-				target = Target.Invalid;
+				Target = Target.Invalid;
 		}
 
 		public virtual void BuildingComplete(Actor self) { buildComplete = true; }
@@ -77,15 +76,15 @@ namespace OpenRA.Mods.RA
 			readonly Target target;
 			readonly bool allowMove;
 
-			public AttackActivity( Target newTarget, bool allowMove )
+			public AttackActivity(Target newTarget, bool allowMove)
 			{
 				this.target = newTarget;
 				this.allowMove = allowMove;
 			}
 
-			public override Activity Tick( Actor self )
+			public override Activity Tick(Actor self)
 			{
-				if( IsCanceled || !target.IsValid ) return NextActivity;
+				if (IsCanceled || !target.IsValid) return NextActivity;
 
 				if (self.IsDisabled()) return this;
 
@@ -97,7 +96,7 @@ namespace OpenRA.Mods.RA
 				{
 					var range = WRange.FromCells(Math.Max(0, (int)weapon.Weapon.Range - RangeTolerance));
 
-					attack.target = target;
+					attack.Target = target;
 					if (allowMove && self.HasTrait<Mobile>() && !self.Info.Traits.Get<MobileInfo>().OnRails)
 						return Util.SequenceActivities(new Follow(target, range), this);
 				}

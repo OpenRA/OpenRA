@@ -38,6 +38,7 @@ namespace OpenRA.Mods.RA
 	{
 		readonly AutoTargetInfo Info;
 		readonly AttackBase attack;
+		readonly AttackTurreted at;
 
 		[Sync] public int nextScanTime = 0;
 		public UnitStance stance;
@@ -52,6 +53,7 @@ namespace OpenRA.Mods.RA
 			attack = self.Trait<AttackBase>();
 			stance = Info.InitialStance;
 			predictedStance = stance;
+			at = self.TraitOrDefault<AttackTurreted>();
 		}
 
 		public void ResolveOrder(Actor self, Order order)
@@ -68,7 +70,6 @@ namespace OpenRA.Mods.RA
 			if (stance < UnitStance.ReturnFire) return;
 
 			// not a lot we can do about things we can't hurt... although maybe we should automatically run away?
-			var attack = self.Trait<AttackBase>();
 			if (!attack.HasAnyValidWeapons(Target.FromActor(e.Attacker))) return;
 
 			// don't retaliate against own units force-firing on us. it's usually not what the player wanted.
@@ -78,22 +79,16 @@ namespace OpenRA.Mods.RA
 
 			Aggressor = e.Attacker;
 
-			attack.AttackTarget(Target.FromActor(e.Attacker), false, Info.AllowMovement && stance != UnitStance.Defend);
+			if (at == null || !at.IsReachableTarget(at.Target, Info.AllowMovement && stance != UnitStance.Defend))
+				Attack(self, e.Attacker);
 		}
 
 		public void TickIdle(Actor self)
 		{
 			if (stance < UnitStance.Defend) return;
 
-			var target = ScanForTarget(self, null);
-			if (target != null)
-			{
-				TargetedActor = target;
-
-				var t = Target.FromActor(target);
-				self.SetTargetLine(t, Color.Red, false);
-				attack.AttackTarget(t, false, Info.AllowMovement && stance != UnitStance.Defend);
-			}
+			if (at == null || !at.IsReachableTarget(at.Target, Info.AllowMovement && stance != UnitStance.Defend))
+				ScanAndAttack(self);
 		}
 
 		public void Tick(Actor self)
@@ -116,10 +111,15 @@ namespace OpenRA.Mods.RA
 		{
 			var targetActor = ScanForTarget(self, null);
 			if (targetActor != null)
-			{
-				TargetedActor = targetActor;
-				attack.AttackTarget(Target.FromActor(targetActor), false, Info.AllowMovement && stance != UnitStance.Defend);
-			}
+				Attack(self, targetActor);
+		}
+
+		void Attack(Actor self, Actor targetActor)
+		{
+			TargetedActor = targetActor;
+			var target = Target.FromActor(targetActor);
+			self.SetTargetLine(target, Color.Red, false);
+			attack.AttackTarget(target, false, Info.AllowMovement && stance != UnitStance.Defend);
 		}
 
 		Actor ChooseTarget(Actor self, WRange range)
@@ -150,5 +150,5 @@ namespace OpenRA.Mods.RA
 	[Desc("Will not get automatically targeted by enemy (like walls)")]
 	class AutoTargetIgnoreInfo : TraitInfo<AutoTargetIgnore> { }
 	class AutoTargetIgnore { }
-	
+
 }
