@@ -652,7 +652,9 @@ namespace OpenRA.Mods.RA.AI
 				if (owner.IsEmpty) return;
 				if (!owner.TargetIsValid)
 				{
-					owner.Target = owner.bot.FindClosestEnemy(AverageUnitsPosition(owner.units).Value.CenterPosition, WRange.FromCells(8));
+					var circaPostion = AverageUnitsPosition(owner.units);
+					if (circaPostion == null) return;
+					owner.Target = owner.bot.FindClosestEnemy(circaPostion.Value.CenterPosition, WRange.FromCells(8));
 
 					if (owner.Target == null)
 					{
