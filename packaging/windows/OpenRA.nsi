@@ -94,7 +94,7 @@ Section "Client" Client
 	File "${SRCDIR}\Tao.*.dll"
 	File "${SRCDIR}\SharpFont.dll"
 	File "${SRCDIR}\global mix database.dat"
-	File "${SRCDIR}\GeoIP.dll
+	File "${SRCDIR}\GeoIP.dll"
 	File "${SRCDIR}\GeoIP.dat"
 
 	!insertmacro MUI_STARTMENU_WRITE_BEGIN Application
