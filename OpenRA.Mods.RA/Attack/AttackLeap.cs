@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA
 
 		public override void DoAttack(Actor self, Target target)
 		{
-			if (!CanAttack(self, target) || !target.IsActor)
+			if (target.Type != TargetType.Actor || !CanAttack(self, target))
 				return;
 
 			var a = ChooseArmamentForTarget(target);

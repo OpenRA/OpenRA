@@ -71,9 +71,6 @@ namespace OpenRA.Mods.RA
 
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{
-				if (!base.CanTargetActor(self, target, modifiers, ref cursor))
-					return false;
-
 				var bridge = target.TraitOrDefault<BridgeHut>();
 				if (bridge == null)
 					return false;
@@ -83,13 +80,17 @@ namespace OpenRA.Mods.RA
 				if (!modifiers.HasModifier(TargetModifiers.ForceAttack) && damage != DamageState.Dead)
 					return false;
 
-				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
-
 				// Can't repair an undamaged bridge
 				if (damage == DamageState.Undamaged)
 					cursor = "goldwrench-blocked";
 
 				return true;
+			}
+
+			public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
+			{
+				// TODO: Bridges don't yet support FrozenUnderFog.
+				return false;
 			}
 		}
 	}

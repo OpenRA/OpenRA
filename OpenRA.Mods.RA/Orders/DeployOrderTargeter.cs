@@ -35,16 +35,15 @@ namespace OpenRA.Mods.RA.Orders
 		public string OrderID { get; private set; }
 		public int OrderPriority { get; private set; }
 
-		public bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
+		public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, TargetModifiers modifiers, ref string cursor)
 		{
+			if (target.Type != TargetType.Actor)
+				return false;
+
 			IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 			cursor = useDeployCursor() ? "deploy" : "deploy-blocked";
-			return self == target;
-		}
 
-		public bool CanTargetLocation(Actor self, CPos location, List<Actor> actorsAtLocation, TargetModifiers modifiers, ref string cursor)
-		{
-			return false;
+			return self == target.Actor;
 		}
 
 		public bool IsQueued { get; protected set; }

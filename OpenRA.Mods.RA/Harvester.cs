@@ -239,7 +239,8 @@ namespace OpenRA.Mods.RA
 		{
 			get
 			{
-				yield return new EnterOrderTargeter<IAcceptOre>("Deliver", 5, false, true, _ => true, proc => !IsEmpty && proc.Trait<IAcceptOre>().AllowDocking);
+				yield return new EnterAlliedActorTargeter<IAcceptOre>("Deliver", 5, _ => true,
+					proc => !IsEmpty && proc.Trait<IAcceptOre>().AllowDocking);
 				yield return new HarvestOrderTargeter();
 			}
 		}
@@ -419,16 +420,15 @@ namespace OpenRA.Mods.RA
 			public int OrderPriority { get { return 10; } }
 			public bool IsQueued { get; protected set; }
 
-			public bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
+			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, TargetModifiers modifiers, ref string cursor)
 			{
-				return false;
-			}
+				if (target.Type != TargetType.Terrain)
+					return false;
 
-			public bool CanTargetLocation(Actor self, CPos location, List<Actor> actorsAtLocation, TargetModifiers modifiers, ref string cursor)
-			{
 				if (modifiers.HasModifier(TargetModifiers.ForceMove))
 					return false;
 
+				var location = target.CenterPosition.ToCPos();
 				// Don't leak info about resources under the shroud
 				if (!self.Owner.Shroud.IsExplored(location))
 					return false;

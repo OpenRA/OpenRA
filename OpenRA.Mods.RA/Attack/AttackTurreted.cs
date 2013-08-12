@@ -67,7 +67,7 @@ namespace OpenRA.Mods.RA
 			base.ResolveOrder(self, order);
 
 			if (order.OrderString == "Stop")
-				target = Target.None;
+				target = Target.Invalid;
 		}
 
 		public virtual void BuildingComplete(Actor self) { buildComplete = true; }

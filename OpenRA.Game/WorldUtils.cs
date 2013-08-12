@@ -27,6 +27,20 @@ namespace OpenRA
 			return FindActorsInBox(world, loc, loc).Where(a => !world.FogObscures(a));
 		}
 
+		public static readonly IEnumerable<FrozenActor> NoFrozenActors = new FrozenActor[0].AsEnumerable();
+		public static IEnumerable<FrozenActor> FindFrozenActorsAtMouse(this World world, int2 mouseLocation)
+		{
+			if (world.RenderPlayer == null)
+				return NoFrozenActors;
+
+			var frozenLayer = world.RenderPlayer.PlayerActor.TraitOrDefault<FrozenActorLayer>();
+			if (frozenLayer == null)
+				return NoFrozenActors;
+
+			var loc = Game.viewport.ViewToWorldPx(mouseLocation).ToInt2();
+			return frozenLayer.FrozenActorsAt(loc);
+		}
+
 		public static IEnumerable<Actor> FindActorsInBox(this World world, CPos tl, CPos br)
 		{
 			return world.FindActorsInBox(tl.TopLeft, br.BottomRight);

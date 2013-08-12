@@ -58,13 +58,12 @@ namespace OpenRA.Mods.RA
 			public string OrderID { get { return "SetRallyPoint"; } }
 			public int OrderPriority { get { return 0; } }
 
-			public bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
+			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, TargetModifiers modifiers, ref string cursor)
 			{
-				return false;
-			}
+				if (target.Type != TargetType.Terrain)
+					return false;
 
-			public bool CanTargetLocation(Actor self, CPos location, List<Actor> actorsAtLocation, TargetModifiers modifiers, ref string cursor)
-			{
+				var location = target.CenterPosition.ToCPos();
 				if (self.World.Map.IsInMap(location))
 				{
 					cursor = "ability";

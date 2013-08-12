@@ -156,21 +156,21 @@ namespace OpenRA.Mods.RA
 			public string OrderID { get { return "BeginMinefield"; } }
 			public int OrderPriority { get { return 5; } }
 
-			public bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
+			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, TargetModifiers modifiers, ref string cursor)
 			{
-				return false;
-			}
+				if (target.Type != TargetType.Terrain)
+					return false;
 
-			public bool CanTargetLocation(Actor self, CPos location, List<Actor> actorsAtLocation, TargetModifiers modifiers, ref string cursor)
-			{
+				var location = target.CenterPosition.ToCPos();
 				if (!self.World.Map.IsInMap(location))
 					return false;
 
 				cursor = "ability";
 				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 
-				return (actorsAtLocation.Count == 0 && modifiers.HasModifier(TargetModifiers.ForceAttack));
+				return !othersAtTarget.Any() && modifiers.HasModifier(TargetModifiers.ForceAttack);
 			}
+
 			public bool IsQueued { get; protected set; }
 		}
 	}

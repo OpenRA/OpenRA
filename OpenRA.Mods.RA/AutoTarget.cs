@@ -43,7 +43,8 @@ namespace OpenRA.Mods.RA
 		public UnitStance stance;
 		[Sync] public int stanceNumber { get { return (int)stance; } }
 		public UnitStance predictedStance;		/* NOT SYNCED: do not refer to this anywhere other than UI code */
-		[Sync] public int AggressorID;
+		[Sync] public Actor Aggressor;
+		[Sync] public Actor TargetedActor;
 
 		public AutoTarget(Actor self, AutoTargetInfo info)
 		{
@@ -75,7 +76,7 @@ namespace OpenRA.Mods.RA
 
 			if (e.Damage < 0) return;	// don't retaliate against healers
 
-			AggressorID = (int)e.Attacker.ActorID;
+			Aggressor = e.Attacker;
 
 			attack.AttackTarget(Target.FromActor(e.Attacker), false, Info.AllowMovement && stance != UnitStance.Defend);
 		}
@@ -87,6 +88,8 @@ namespace OpenRA.Mods.RA
 			var target = ScanForTarget(self, null);
 			if (target != null)
 			{
+				TargetedActor = target;
+
 				var t = Target.FromActor(target);
 				self.SetTargetLine(t, Color.Red, false);
 				attack.AttackTarget(t, false, Info.AllowMovement && stance != UnitStance.Defend);
@@ -113,7 +116,10 @@ namespace OpenRA.Mods.RA
 		{
 			var targetActor = ScanForTarget(self, null);
 			if (targetActor != null)
+			{
+				TargetedActor = targetActor;
 				attack.AttackTarget(Target.FromActor(targetActor), false, Info.AllowMovement && stance != UnitStance.Defend);
+			}
 		}
 
 		Actor ChooseTarget(Actor self, WRange range)

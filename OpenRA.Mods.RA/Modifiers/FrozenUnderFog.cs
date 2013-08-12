@@ -9,7 +9,9 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Effects;
@@ -24,50 +26,97 @@ namespace OpenRA.Mods.RA
 		public object Create(ActorInitializer init) { return new FrozenUnderFog(init, this); }
 	}
 
-	public class FrozenUnderFog : IRenderModifier, IVisibilityModifier, ITickRender
+	public class FrozenUnderFog : IRenderModifier, IVisibilityModifier, ITick, ITickRender, ISync
 	{
-		FrozenActorProxy proxy;
+		[Sync] public int VisibilityHash;
+
+		bool initialized, startsRevealed;
 		IEnumerable<CPos> footprint;
-		bool visible, cacheFirstFrame;
+		Lazy<IToolTip> tooltip;
+		Lazy<Health> health;
+
+		Dictionary<Player, bool> visible;
+		Dictionary<Player, FrozenActor> frozen;
 
 		public FrozenUnderFog(ActorInitializer init, FrozenUnderFogInfo info)
 		{
-			footprint = FootprintUtils.Tiles(init.self);
-			proxy = new FrozenActorProxy(init.self, footprint);
-			init.world.AddFrameEndTask(w => w.Add(proxy));
-
 			// Spawned actors (e.g. building husks) shouldn't be revealed
-			cacheFirstFrame = info.StartsRevealed && !init.Contains<ParentActorInit>();
+			startsRevealed = info.StartsRevealed && !init.Contains<ParentActorInit>();
+			footprint = FootprintUtils.Tiles(init.self);
+			tooltip = Lazy.New(() => init.self.TraitsImplementing<IToolTip>().FirstOrDefault());
+			tooltip = Lazy.New(() => init.self.TraitsImplementing<IToolTip>().FirstOrDefault());
+			health = Lazy.New(() => init.self.TraitOrDefault<Health>());
+
+			frozen = new Dictionary<Player, FrozenActor>();
+			visible = init.world.Players.ToDictionary(p => p, p => false);
 		}
 
 		public bool IsVisible(Actor self, Player byPlayer)
 		{
-			return byPlayer == null || footprint.Any(c => byPlayer.Shroud.IsVisible(c));
+			return byPlayer == null || visible[byPlayer];
 		}
 
-		public void TickRender(WorldRenderer wr, Actor self)
+		public void Tick(Actor self)
 		{
 			if (self.Destroyed)
 				return;
 
-			visible = IsVisible(self, self.World.RenderPlayer);
-
-			if (cacheFirstFrame)
+			VisibilityHash = 0;
+			foreach (var p in self.World.Players)
 			{
-				visible = true;
-				cacheFirstFrame = false;
+				visible[p] = footprint.Any(c => p.Shroud.IsVisible(c));
+				if (visible[p])
+					VisibilityHash += p.ClientIndex;
 			}
 
-			if (visible)
+			if (!initialized)
 			{
-				var comparer = new RenderableComparer(wr);
-				proxy.SetRenderables(self.Render(wr).OrderBy(r => r, comparer));
+				foreach (var p in self.World.Players)
+				{
+					visible[p] |= startsRevealed;
+					frozen[p] = new FrozenActor(self, footprint);
+					p.PlayerActor.Trait<FrozenActorLayer>().Add(frozen[p]);
+				}
+
+				initialized = true;
 			}
+
+			foreach (var player in self.World.Players)
+			{
+				if (!visible[player])
+					continue;
+
+				frozen[player].Owner = self.Owner;
+
+				if (health.Value != null)
+				{
+					frozen[player].HP = health.Value.HP;
+					frozen[player].DamageState = health.Value.DamageState;
+				}
+
+				if (tooltip.Value != null)
+				{
+					frozen[player].TooltipName = tooltip.Value.Name();
+					frozen[player].TooltipOwner = tooltip.Value.Owner();
+				}
+			}
+		}
+
+		public void TickRender(WorldRenderer wr, Actor self)
+		{
+			if (self.Destroyed || !initialized || !visible.Any(v => v.Value))
+				return;
+
+			// Force a copy of the underlying data
+			var renderables = self.Render(wr).Select(rr => rr).ToArray();
+			foreach (var player in self.World.Players)
+				if (visible[player])
+					frozen[player].Renderables = renderables;
 		}
 
 		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
 		{
-			return visible ? r : SpriteRenderable.None;
+			return IsVisible(self, self.World.RenderPlayer) ? r : SpriteRenderable.None;
 		}
 	}
 }

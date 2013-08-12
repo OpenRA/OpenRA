@@ -10,10 +10,10 @@
 
 using System.Collections.Generic;
 using System.Drawing;
+using OpenRA.FileFormats;
 using OpenRA.Mods.RA.Activities;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Orders;
-using OpenRA.FileFormats;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA
@@ -28,11 +28,11 @@ namespace OpenRA.Mods.RA
 
 	class SupplyTruck : IIssueOrder, IResolveOrder, IOrderVoice
 	{
-		SupplyTruckInfo Info;
+		SupplyTruckInfo info;
 
 		public SupplyTruck(SupplyTruckInfo info)
 		{
-			Info = info;
+			this.info = info;
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
@@ -42,10 +42,13 @@ namespace OpenRA.Mods.RA
 
 		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID == "DeliverSupplies")
-				return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
+			if (order.OrderID != "DeliverSupplies")
+				return null;
 
-			return null;
+			if (target.Type == TargetType.FrozenActor)
+				return new Order(order.OrderID, self, queued) { ExtraData = target.FrozenActor.ID };
+
+			return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
@@ -55,12 +58,18 @@ namespace OpenRA.Mods.RA
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "DeliverSupplies")
-			{
-				self.SetTargetLine(Target.FromOrder(order), Color.Yellow);
+			if (order.OrderString != "DeliverSupplies")
+				return;
+
+			var target = self.ResolveFrozenActorOrder(order, Color.Yellow);
+			if (target.Type != TargetType.Actor)
+				return;
+
+			if (!order.Queued)
 				self.CancelActivity();
-				self.QueueActivity(new Enter(order.TargetActor, new DonateSupplies(order.TargetActor, Info.Payload)));
-			}
+
+			self.SetTargetLine(target, Color.Yellow);
+			self.QueueActivity(new Enter(target.Actor, new DonateSupplies(target.Actor, info.Payload)));
 		}
 
 		class SupplyTruckOrderTargeter : UnitOrderTargeter
@@ -72,17 +81,12 @@ namespace OpenRA.Mods.RA
 
 			public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 			{
-				if (!base.CanTargetActor(self, target, modifiers, ref cursor))
-					return false;
+				return target.HasTrait<AcceptsSupplies>();
+			}
 
-				if (target.AppearsHostileTo(self))
-					return false;
-
-				if (!target.HasTrait<AcceptsSupplies>())
-					return false;
-
-				IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
-				return true;
+			public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
+			{
+				return target.Info.Traits.Contains<AcceptsSuppliesInfo>();
 			}
 		}
 	}

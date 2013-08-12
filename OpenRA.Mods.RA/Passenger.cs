@@ -35,8 +35,8 @@ namespace OpenRA.Mods.RA
 		{
 			get
 			{
-				yield return new EnterOrderTargeter<Cargo>( "EnterTransport", 6, false, true,
-					target => IsCorrectCargoType( target ), target => CanEnter( target ) );
+				yield return new EnterAlliedActorTargeter<Cargo>("EnterTransport", 6,
+					target => IsCorrectCargoType(target), target => CanEnter(target));
 			}
 		}
 

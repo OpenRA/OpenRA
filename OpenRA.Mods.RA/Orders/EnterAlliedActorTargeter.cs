@@ -9,18 +9,19 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.Orders
 {
-	public class EnterOrderTargeter<T> : UnitOrderTargeter
+	public class EnterAlliedActorTargeter<T> : UnitOrderTargeter
 	{
 		readonly Func<Actor, bool> canTarget;
 		readonly Func<Actor, bool> useEnterCursor;
 
-		public EnterOrderTargeter(string order, int priority, bool targetEnemy, bool targetAlly,
+		public EnterAlliedActorTargeter(string order, int priority,
 			Func<Actor, bool> canTarget, Func<Actor, bool> useEnterCursor)
-			: base (order, priority, "enter", targetEnemy, targetAlly)
+			: base (order, priority, "enter", false, true)
 		{
 			this.canTarget = canTarget;
 			this.useEnterCursor = useEnterCursor;
@@ -28,18 +29,17 @@ namespace OpenRA.Mods.RA.Orders
 
 		public override bool CanTargetActor(Actor self, Actor target, TargetModifiers modifiers, ref string cursor)
 		{
-			if (!base.CanTargetActor(self, target, modifiers, ref cursor))
-				return false;
-
-			if (!target.HasTrait<T>())
-				return false;
-
-			if (!canTarget(target))
+			if (!target.HasTrait<T>() || !canTarget(target))
 				return false;
 
 			cursor = useEnterCursor(target) ? "enter" : "enter-blocked";
-			IsQueued = modifiers.HasModifier(TargetModifiers.ForceQueue);
 			return true;
+		}
+
+		public override bool CanTargetFrozenActor(Actor self, FrozenActor target, TargetModifiers modifiers, ref string cursor)
+		{
+			// Allied actors are never frozen
+			return false;
 		}
 	}
 }

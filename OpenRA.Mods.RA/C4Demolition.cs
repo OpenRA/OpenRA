@@ -26,11 +26,11 @@ namespace OpenRA.Mods.RA
 
 	class C4Demolition : IIssueOrder, IResolveOrder, IOrderVoice
 	{
-		readonly C4DemolitionInfo Info;
+		readonly C4DemolitionInfo info;
 
 		public C4Demolition(C4DemolitionInfo info)
 		{
-			Info = info;
+			this.info = info;
 		}
 
 		public IEnumerable<IOrderTargeter> Orders
@@ -38,28 +38,36 @@ namespace OpenRA.Mods.RA
 			get { yield return new TargetTypeOrderTargeter("C4", "C4", 6, "c4", true, false); }
 		}
 
-		public Order IssueOrder( Actor self, IOrderTargeter order, Target target, bool queued )
+		public Order IssueOrder(Actor self, IOrderTargeter order, Target target, bool queued)
 		{
-			if (order.OrderID == "C4")
-				return new Order("C4", self, queued) { TargetActor = target.Actor };
+			if (order.OrderID != "C4")
+				return null;
 
-			return null;
+			if (target.Type == TargetType.FrozenActor)
+				return new Order(order.OrderID, self, queued) { ExtraData = target.FrozenActor.ID };
+
+			return new Order(order.OrderID, self, queued) { TargetActor = target.Actor };
 		}
 
 		public void ResolveOrder(Actor self, Order order)
 		{
-			if (order.OrderString == "C4")
-			{
-				self.SetTargetLine(Target.FromOrder(order), Color.Red);
+			if (order.OrderString != "C4")
+				return;
 
+			var target = self.ResolveFrozenActorOrder(order, Color.Red);
+			if (target.Type != TargetType.Actor)
+				return;
+
+			if (!order.Queued)
 				self.CancelActivity();
-				self.QueueActivity(new Enter(order.TargetActor, new Demolish(order.TargetActor, Info.C4Delay)));
-			}
+
+			self.SetTargetLine(target, Color.Red);
+			self.QueueActivity(new Enter(target.Actor, new Demolish(target.Actor, info.C4Delay)));
 		}
 
 		public string VoicePhraseForOrder(Actor self, Order order)
 		{
-			return (order.OrderString == "C4") ? "Attack" : null;
+			return order.OrderString == "C4" ? "Attack" : null;
 		}
 	}
 }

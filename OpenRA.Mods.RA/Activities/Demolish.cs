@@ -27,13 +27,13 @@ namespace OpenRA.Mods.RA.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (IsCanceled || !target.IsValid)
+			if (IsCanceled || target.Type != TargetType.Actor)
 				return NextActivity;
 
 			self.World.AddFrameEndTask(w => w.Add(new DelayedAction(delay, () =>
 			{
 				// Can't demolish an already dead actor
-				if (!target.IsValid)
+				if (target.Type != TargetType.Actor)
 					return;
 
 				// Invulnerable actors can't be demolished

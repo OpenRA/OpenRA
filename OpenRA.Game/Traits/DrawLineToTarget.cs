@@ -109,13 +109,33 @@ namespace OpenRA.Traits
 
 			self.World.AddFrameEndTask(w =>
 			{
-				if (self.Destroyed) return;
-				if (target.IsActor && display)
+				if (self.Destroyed)
+					return;
+
+				if (target.Type == TargetType.Actor && display)
 					w.Add(new FlashTarget(target.Actor));
 
 				var line = self.TraitOrDefault<DrawLineToTarget>();
 				if (line != null)
 					line.SetTarget(self, target, color, display);
+			});
+		}
+
+		public static void SetTargetLine(this Actor self, FrozenActor target, Color color, bool display)
+		{
+			if (self.Owner != self.World.LocalPlayer)
+				return;
+
+			self.World.AddFrameEndTask(w =>
+			{
+				if (self.Destroyed)
+					return;
+
+				target.Flash();
+
+				var line = self.TraitOrDefault<DrawLineToTarget>();
+				if (line != null)
+					line.SetTarget(self, Target.FromPos(target.CenterPosition), color, display);
 			});
 		}
 	}
