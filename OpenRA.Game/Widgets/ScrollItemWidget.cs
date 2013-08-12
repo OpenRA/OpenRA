@@ -15,6 +15,7 @@ namespace OpenRA.Widgets
 	public class ScrollItemWidget : ButtonWidget
 	{
 		public string ItemKey;
+		public string BaseName = "scrollitem";
 
 		public ScrollItemWidget()
 			: base()
@@ -31,14 +32,15 @@ namespace OpenRA.Widgets
 			VisualHeight = 0;
 			IgnoreChildMouseOver = true;
 			Key = other.Key;
+			BaseName = other.BaseName;
 		}
 
 		public Func<bool> IsSelected = () => false;
 
 		public override void Draw()
 		{
-			var state = IsSelected() ? "scrollitem-selected" :
-				Ui.MouseOverWidget == this ? "scrollitem-hover" :
+			var state = IsSelected() ? BaseName+"-selected" :
+				Ui.MouseOverWidget == this ? BaseName+"-hover" :
 				null;
 
 			if (state != null)
