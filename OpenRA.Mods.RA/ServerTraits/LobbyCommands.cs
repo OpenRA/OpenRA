@@ -440,13 +440,6 @@ namespace OpenRA.Mods.RA.Server
 							return true;
 						}
 
-						var startUnits = Rules.Info["world"].Traits.WithInterface<MPStartUnitsInfo>();
-						if (!startUnits.Any(msu => msu.Class == s))
-						{
-							server.SendOrderTo(conn, "Message", "Unknown unit class: {0}".F(s));
-							return true;
-						}
-
 						server.lobbyInfo.GlobalSettings.StartingUnitsClass = s;
 						server.SyncLobbyInfo();
 						return true;
