@@ -90,22 +90,38 @@ gapile:
 	idle: gtpile
 		Start: 0
 		ShadowStart: 3
-# TODO: lights: gtpile_a
-#		Start: 0
-# TODO: light: gtpile_b
-#		Start: 0
-# TODO: flag: gtpile_c
-#		Start:0
+	damaged-idle: gtpile
+		Start: 1
+		ShadowStart: 4
+	critical-idle: gtpile
+		Start: 2
+		ShadowStart: 5
+	idle-lights: gtpile_a
+		Start: 0
+		Length: 7
+		Tick: 200
+	damaged-idle-lights: gtpile_a
+		Start:7
+		Length: 7
+		Tick: 200
+	idle-light: gtpile_b
+		Start: 0
+		Length: 7
+		Tick: 200
+	damaged-idle-light: gtpile_b
+		Start:7
+		Length: 7
+		Tick: 200
+	idle-flag: gtpile_c
+		Start:0
+		Length: 7
+	damaged-idle-flag: gtpile_c
+		Start:7
+		Length: 7
 	make: gtpilemk
 		Start: 0
 		Length: 20
 		ShadowStart: 20
-	damaged-idle: gtpile
-		Start: 1
-		ShadowStart: 4
-	dead: gtpile
-		Start: 2
-		ShadowStart: 5
 
 gaweap:
 	idle: gtweap

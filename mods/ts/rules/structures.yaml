@@ -101,6 +101,12 @@ GAPILE:
 	PrimaryBuilding:
 	IronCurtainable:
 	ProductionBar:
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+	WithIdleOverlay@LIGHT:
+		Sequence: idle-light
+	WithIdleOverlay@FLAG:
+		Sequence: idle-flag
 
 GAWEAP:
 	Inherits: ^Building
