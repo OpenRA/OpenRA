@@ -73,12 +73,15 @@ namespace OpenRA.Mods.RA.Buildings
 
 			var bi = world.WorldActor.Trait<BuildingInfluence>();
 
+			var teamBasewalk = world.LobbyInfo.GlobalSettings.TeamBasewalk;
+
 			for (var y = scanStart.Y; y < scanEnd.Y; y++)
 				for (var x = scanStart.X; x < scanEnd.X; x++)
 				{
 					var at = bi.GetBuildingAt(new CPos(x, y));
-					if (at != null && at.Owner.Stances[p] == Stance.Ally && at.HasTrait<GivesBuildableArea>())
-						nearnessCandidates.Add(new CPos(x, y));
+					if (at != null && at.HasTrait<GivesBuildableArea>())
+						if ((teamBasewalk && at.Owner.Stances[p] == Stance.Ally) || at.Owner == p)
+							nearnessCandidates.Add(new CPos(x, y));
 				}
 
 			var buildingTiles = FootprintUtils.Tiles(buildingName, this, topLeft).ToList();

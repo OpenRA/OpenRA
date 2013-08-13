@@ -295,6 +295,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					"fragilealliance {0}".F(!orderManager.LobbyInfo.GlobalSettings.FragileAlliances)));
 			};
 
+			var teamBasewalk = optionsBin.GetOrNull<CheckboxWidget>("TEAMBASEWALK_CHECKBOX");
+			if (teamBasewalk != null)
+			{
+				teamBasewalk.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.TeamBasewalk;
+				teamBasewalk.IsDisabled = configurationDisabled;
+				teamBasewalk.OnClick = () => orderManager.IssueOrder(Order.Command(
+					"teambasewalk {0}".F(!orderManager.LobbyInfo.GlobalSettings.TeamBasewalk)));
+			};
+
 			var difficulty = optionsBin.GetOrNull<DropDownButtonWidget>("DIFFICULTY_DROPDOWNBUTTON");
 			if (difficulty != null)
 			{

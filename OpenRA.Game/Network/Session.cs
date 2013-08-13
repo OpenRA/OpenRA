@@ -96,6 +96,7 @@ namespace OpenRA.Network
 			public bool Fog = true;
 			public string StartingUnitsClass = "none";
 			public bool AllowVersionMismatch;
+			public bool TeamBasewalk = true;
 		}
 
 		public Session(string[] mods)
