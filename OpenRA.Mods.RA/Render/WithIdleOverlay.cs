@@ -11,10 +11,11 @@
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Traits;
+using OpenRA.Mods.RA.Buildings;
 
 namespace OpenRA.Mods.RA.Render
 {
-	public class WithIdleOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>
+	public class WithIdleOverlayInfo : ITraitInfo, Requires<RenderSpritesInfo>, Requires<IBodyOrientationInfo>
 	{
 		[Desc("Sequence name to use")]
 		public readonly string Sequence = "idle-overlay";
@@ -35,6 +36,7 @@ namespace OpenRA.Mods.RA.Render
 			var rs = self.Trait<RenderSprites>();
 			var body = self.Trait<IBodyOrientation>();
 
+			buildComplete = !self.HasTrait<Building>(); // always render instantly for units
 			overlay = new Animation(rs.GetImage(self));
 			overlay.PlayRepeating(info.Sequence);
 			rs.anims.Add("idle_overlay_{0}".F(info.Sequence), 
