@@ -465,6 +465,7 @@
     <Compile Include="TeslaZapRenderable.cs" />
     <Compile Include="Buildings\Bib.cs" />
     <Compile Include="Orders\EnterAlliedActorTargeter.cs" />
+    <Compile Include="Render\WithIdleOverlay.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
