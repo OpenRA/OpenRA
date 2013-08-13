@@ -509,8 +509,9 @@ MGG:
 	RevealsShroud:
 		Range: 6
 	RenderUnit:
-	WithSpinner:
+	WithIdleOverlay@SPINNER:
 		Offset: -299,0,171
+		Sequence: spinner
 	AttackMove:
 		JustMove: yes
 	CreatesShroud:
@@ -554,7 +555,8 @@ MRJ:
 	RevealsShroud:
 		Range: 6
 	RenderUnit:
-	WithSpinner:
+	WithIdleOverlay@SPINNER:
+		Sequence: spinner
 		Offset: -256,0,256
 	AttackMove:
 		JustMove: yes
@@ -651,7 +653,8 @@ TTNK:
 		LocalOffset: 0,0,213
 	AttackFrontal:
 	RenderUnit:
-	WithSpinner:
+	WithIdleOverlay@SPINNER:
+		Sequence: spinner
 	Selectable:
 		Bounds: 28,28,0,0
 	AutoTarget:
