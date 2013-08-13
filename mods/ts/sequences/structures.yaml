@@ -218,13 +218,28 @@ gaarty:
 		Length: 16
 		ShadowStart: 16
 
-gaspot: # TODO: 1 more damage state, GASPOT_A active animation
+gaspot:
 	idle:
 		Start: 0
 		ShadowStart: 3
 	damaged-idle:
 		Start: 1
 		ShadowStart: 4
+	critical-idle:
+		Start: 2
+		ShadowStart: 5
+	idle-lights: gaspot_a
+		Start: 0
+		Length: 8
+		Tick: 200
+	damaged-idle-lights: gaspot_a
+		Start: 8
+		Length: 8
+		Tick: 200
+	critical-idle-lights: gaspot_a
+		Start: 16
+		Length: 8
+		Tick: 200
 	make: gaspotmk
 		Start: 0
 		Length: 14

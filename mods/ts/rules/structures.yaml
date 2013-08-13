@@ -317,6 +317,8 @@ GASPOT: # TODO: has moving spotlights
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 3
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
 
 GAHPAD:
 	Inherits: ^Building
