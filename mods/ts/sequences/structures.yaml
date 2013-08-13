@@ -1,21 +1,21 @@
-gacnst: # TODO: write a render trait for the overlays
+gacnst:
 	idle: gtcnst
 		Start: 0
 		ShadowStart: 3
-	medium-damaged-idle: gtcnst
+	damaged-idle: gtcnst
 		Start: 1
 		ShadowStart: 4
-	damaged-idle: gtcnst
+	critical-idle: gtcnst
 		Start: 2
 		ShadowStart: 5
 	make: gtcnstmk
 		Start: 0
 		Length: 24
 		ShadowStart: 24
-	build-front: gtcnst_d
+	build-front: gtcnst_d # TODO: needs a render overlay trait
 		Start: 0
 		Length: 20
-	damaged-build-front: gtcnst_d
+	damaged-build-front: gtcnst_d # TODO: needs a render overlay trait
 		Start: 0
 		Length: 20
 	idle-top: gtcnst_c
@@ -26,7 +26,7 @@ gacnst: # TODO: write a render trait for the overlays
 		Start: 15
 		Length: 15
 		Tick: 200
-	heavy-damaged-idle-top: gtcnst_c
+	critical-idle-top: gtcnst_c
 		Start: 30
 	idle-side: gtcnst_a
 		Start: 0
@@ -34,7 +34,7 @@ gacnst: # TODO: write a render trait for the overlays
 	damaged-idle-side: gtcnst_a
 		Start: 10
 		Length: 10
-	heavy-damaged-idle-side: gtcnst_a
+	critical-idle-side: gtcnst_a
 		Start: 20
 		Length: 10
 	idle-front: gtcnst_b
@@ -43,42 +43,85 @@ gacnst: # TODO: write a render trait for the overlays
 	damaged-idle-front: gtcnst_b
 		Start: 0
 		Length: 10
+	critical-idle-front: gtcnst_b
+		Start: 0
+		Length: 10
 
-gapowr: # TODO: shadow, plugs
+gapowr:
 	idle: gtpowr
 		Start: 0
 		ShadowStart: 3
+	damaged-idle: gtpowr
+		Start: 1
+		ShadowStart: 4
+	critical-idle: gtpowr
+		Start: 2
+		ShadowStart: 5
+	idle-lights: gtpowr_a
+		Start: 0
+		Length: 12
+		Tick: 200
+	damaged-idle-lights: gtpowr_a
+		Start: 12
+		Length: 12
+		Tick: 200
+	critical-idle-lights: gtpowr_a
+		Start: 24
+		Length: 12
+		Tick: 200
+	idle-plug: gtpowr_b
+		Start: 0
+		Length: 12
+		Tick: 200
+	damaged-idle-plug: gtpowr_b
+		Start: 0
+		Length: 12
+		Tick: 200
+	critical-idle-plug: gtpowr_b
+		Start: 0
+		Length: 12
+		Tick: 200
 	make: gtpowrmk
 		Start: 0
 		Length: 20
 		ShadowStart: 20
-	damaged-idle: gtpowr
-		Start: 1
-		ShadowStart: 4
-	dead: gtpowr
-		Start: 2
-		ShadowStart: 5
 
 gapile:
 	idle: gtpile
 		Start: 0
 		ShadowStart: 3
-# TODO: lights: gtpile_a
-#		Start: 0
-# TODO: light: gtpile_b
-#		Start: 0
-# TODO: flag: gtpile_c
-#		Start:0
+	damaged-idle: gtpile
+		Start: 1
+		ShadowStart: 4
+	critical-idle: gtpile
+		Start: 2
+		ShadowStart: 5
+	idle-lights: gtpile_a
+		Start: 0
+		Length: 7
+		Tick: 200
+	damaged-idle-lights: gtpile_a
+		Start:7
+		Length: 7
+		Tick: 200
+	idle-light: gtpile_b
+		Start: 0
+		Length: 7
+		Tick: 200
+	damaged-idle-light: gtpile_b
+		Start:7
+		Length: 7
+		Tick: 200
+	idle-flag: gtpile_c
+		Start:0
+		Length: 7
+	damaged-idle-flag: gtpile_c
+		Start:7
+		Length: 7
 	make: gtpilemk
 		Start: 0
 		Length: 20
 		ShadowStart: 20
-	damaged-idle: gtpile
-		Start: 1
-		ShadowStart: 4
-	dead: gtpile
-		Start: 2
-		ShadowStart: 5
 
 gaweap:
 	idle: gtweap
@@ -175,38 +218,68 @@ gaarty:
 		Length: 16
 		ShadowStart: 16
 
-gaspot: # TODO: 1 more damage state, GASPOT_A active animation
+gaspot:
 	idle:
 		Start: 0
 		ShadowStart: 3
 	damaged-idle:
 		Start: 1
 		ShadowStart: 4
+	critical-idle:
+		Start: 2
+		ShadowStart: 5
+	idle-lights: gaspot_a
+		Start: 0
+		Length: 8
+		Tick: 200
+	damaged-idle-lights: gaspot_a
+		Start: 8
+		Length: 8
+		Tick: 200
+	critical-idle-lights: gaspot_a
+		Start: 16
+		Length: 8
+		Tick: 200
 	make: gaspotmk
 		Start: 0
 		Length: 14
 		ShadowStart: 14
 
-gahpad: # TODO: 1 more damage state
+gahpad:
 	idle:
 		Start: 0
 		ShadowStart: 3
 	damaged-idle:
 		Start: 1
 		ShadowStart: 4
+	critical-idle:
+		Start: 2
+		ShadowStart: 5
+	idle-platform: gthpadbb
+		Start: 0
+		ShadowStart: 3
+	damaged-idle-platform: gthpadbb
+		Start: 1
+		ShadowStart: 4
+	critical-idle-platform: gthpadbb
+		Start: 2
+		ShadowStart: 5
+	idle-lights: gahpad_a
+		Start: 0
+		Length: 8
+		Offset: 2,-12
+		Tick: 200
+	damaged-idle-lights: gthpad_a
+		Start: 8
+		Length: 8
+		Offset: 16,-16
+		Tick: 200
+	critical-idle-lights: gthpad_a
+		Start: 16
+		Length: 8
+		Offset: 24,-24
+		Tick: 200
 	make: gahpadmk
 		Start: 0
 		Length: 18
 		ShadowStart: 18
-	build-top: gahpad_a
-		Start: 8
-		Length: 8
-	damaged-build-top: gahpad_a
-		Start: 0
-		Length: 8
-	idle-top: gahpadbb
-		Start: 0
-		ShadowStart: 3
-	damaged-idle-top: gahpadbb
-		Start: 1
-		ShadowStart: 4

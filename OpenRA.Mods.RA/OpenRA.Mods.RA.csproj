@@ -432,7 +432,6 @@
     <Compile Include="Armament.cs" />
     <Compile Include="DebugMuzzlePositions.cs" />
     <Compile Include="Buildings\BaseProvider.cs" />
-    <Compile Include="Render\WithSpinner.cs" />
     <Compile Include="Widgets\Logic\ObserverShroudSelectorLogic.cs" />
     <Compile Include="RepairsBridges.cs" />
     <Compile Include="Activities\RepairBridge.cs" />
@@ -465,6 +464,7 @@
     <Compile Include="TeslaZapRenderable.cs" />
     <Compile Include="Buildings\Bib.cs" />
     <Compile Include="Orders\EnterAlliedActorTargeter.cs" />
+    <Compile Include="Render\WithIdleOverlay.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

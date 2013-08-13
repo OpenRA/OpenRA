@@ -31,6 +31,12 @@ GACNST:
 		Facing: 96
 	ProductionBar:
 	-Sellable:
+	WithIdleOverlay@TOP:
+		Sequence: idle-top
+	WithIdleOverlay@SIDE:
+		Sequence: idle-side
+	WithIdleOverlay@FRONT:
+		Sequence: idle-front
 
 GAPOWR:
 	Inherits: ^Building
@@ -57,6 +63,10 @@ GAPOWR:
 		Type: Wood
 	RevealsShroud:
 		Range: 4
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+	WithIdleOverlay@PLUG:
+		Sequence: idle-plug
 
 GAPILE:
 	Inherits: ^Building
@@ -91,6 +101,12 @@ GAPILE:
 	PrimaryBuilding:
 	IronCurtainable:
 	ProductionBar:
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+	WithIdleOverlay@LIGHT:
+		Sequence: idle-light
+	WithIdleOverlay@FLAG:
+		Sequence: idle-flag
 
 GAWEAP:
 	Inherits: ^Building
@@ -301,6 +317,8 @@ GASPOT: # TODO: has moving spotlights
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 3
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
 
 GAHPAD:
 	Inherits: ^Building
@@ -332,8 +350,10 @@ GAHPAD:
 	RepairsUnits:
 #	RallyPoint:
 	ProductionBar:
-	-RenderBuilding:
-	RenderBuildingWarFactory: # TODO: workaround
+	WithIdleOverlay@PLATFORM:
+		Sequence: idle-platform
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
 
 # custom prerequisites:
 ANYPOWER:
