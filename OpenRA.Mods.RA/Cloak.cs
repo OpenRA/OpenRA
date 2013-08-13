@@ -82,9 +82,12 @@ namespace OpenRA.Mods.RA
 
 		public void Tick(Actor self)
 		{
-			if (remainingTime > 0 && canCloak)
-				if (--remainingTime <= 0)
-					Sound.Play(info.CloakSound, self.CenterPosition);
+			if (remainingTime > 0 && canCloak && --remainingTime <= 0)
+			{
+				self.Generation++;
+				Sound.Play(info.CloakSound, self.CenterPosition);
+			}
+
 			if (self.IsDisabled())
 				Uncloak();
 
