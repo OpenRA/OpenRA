@@ -565,7 +565,8 @@ MHQ:
 	RevealsShroud:
 		Range: 6
 	RenderUnit:
-	WithSpinner:
+	WithIdleOverlay@SPINNER:
+		Sequence: spinner
 		Offset: -256,0,256
 	AttackMove:
 		JustMove: yes

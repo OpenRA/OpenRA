@@ -432,7 +432,6 @@
     <Compile Include="Armament.cs" />
     <Compile Include="DebugMuzzlePositions.cs" />
     <Compile Include="Buildings\BaseProvider.cs" />
-    <Compile Include="Render\WithSpinner.cs" />
     <Compile Include="Widgets\Logic\ObserverShroudSelectorLogic.cs" />
     <Compile Include="RepairsBridges.cs" />
     <Compile Include="Activities\RepairBridge.cs" />
