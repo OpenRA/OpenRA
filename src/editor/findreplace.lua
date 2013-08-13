@@ -46,8 +46,8 @@ end
 -------------------- Find replace dialog
 
 local function setSearchFlags(editor)
-  local flags = 0
-  if findReplace.fWholeWord then flags = wxstc.wxSTC_FIND_WHOLEWORD end
+  local flags = wxstc.wxSTC_FIND_POSIX
+  if findReplace.fWholeWord then flags = flags + wxstc.wxSTC_FIND_WHOLEWORD end
   if findReplace.fMatchCase then flags = flags + wxstc.wxSTC_FIND_MATCHCASE end
   if findReplace.fRegularExpr then flags = flags + wxstc.wxSTC_FIND_REGEXP end
   editor:SetSearchFlags(flags)
