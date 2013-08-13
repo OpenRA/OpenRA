@@ -25,9 +25,10 @@ namespace OpenRA.Mods.RA.Render
 		public object Create(ActorInitializer init) { return new WithIdleOverlay(init.self, this); }
 	}
 
-	public class WithIdleOverlay : INotifyDamageStateChanged
+	public class WithIdleOverlay : INotifyDamageStateChanged, INotifyBuildComplete
 	{
 		Animation overlay;
+		bool buildComplete;
 
 		public WithIdleOverlay(Actor self, WithIdleOverlayInfo info)
 		{
@@ -39,7 +40,12 @@ namespace OpenRA.Mods.RA.Render
 			rs.anims.Add("idle_overlay_{0}".F(info.Sequence), 
 				new AnimationWithOffset(overlay,
 					() => body.LocalToWorld(info.Offset.Rotate(body.QuantizeOrientation(self, self.Orientation))),
-					null, p => WithTurret.ZOffsetFromCenter(self, p, 1)));
+					() => !buildComplete, p => WithTurret.ZOffsetFromCenter(self, p, 1)));
+		}
+
+		public void BuildingComplete(Actor self)
+		{
+			buildComplete = true;
 		}
 
 		public void DamageStateChanged(Actor self, AttackInfo e)
