@@ -230,26 +230,41 @@ gaspot: # TODO: 1 more damage state, GASPOT_A active animation
 		Length: 14
 		ShadowStart: 14
 
-gahpad: # TODO: 1 more damage state
+gahpad:
 	idle:
 		Start: 0
 		ShadowStart: 3
 	damaged-idle:
 		Start: 1
 		ShadowStart: 4
+	critical-idle:
+		Start: 2
+		ShadowStart: 5
+	idle-platform: gthpadbb
+		Start: 0
+		ShadowStart: 3
+	damaged-idle-platform: gthpadbb
+		Start: 1
+		ShadowStart: 4
+	critical-idle-platform: gthpadbb
+		Start: 2
+		ShadowStart: 5
+	idle-lights: gahpad_a
+		Start: 0
+		Length: 8
+		Offset: 2,-12
+		Tick: 200
+	damaged-idle-lights: gthpad_a
+		Start: 8
+		Length: 8
+		Offset: 16,-16
+		Tick: 200
+	critical-idle-lights: gthpad_a
+		Start: 16
+		Length: 8
+		Offset: 24,-24
+		Tick: 200
 	make: gahpadmk
 		Start: 0
 		Length: 18
 		ShadowStart: 18
-	build-top: gahpad_a
-		Start: 8
-		Length: 8
-	damaged-build-top: gahpad_a
-		Start: 0
-		Length: 8
-	idle-top: gahpadbb
-		Start: 0
-		ShadowStart: 3
-	damaged-idle-top: gahpadbb
-		Start: 1
-		ShadowStart: 4

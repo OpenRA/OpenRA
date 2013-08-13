@@ -348,8 +348,10 @@ GAHPAD:
 	RepairsUnits:
 #	RallyPoint:
 	ProductionBar:
-	-RenderBuilding:
-	RenderBuildingWarFactory: # TODO: workaround
+	WithIdleOverlay@PLATFORM:
+		Sequence: idle-platform
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
 
 # custom prerequisites:
 ANYPOWER:
