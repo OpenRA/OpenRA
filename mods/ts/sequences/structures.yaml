@@ -47,20 +47,44 @@ gacnst:
 		Start: 0
 		Length: 10
 
-gapowr: # TODO: shadow, plugs
+gapowr:
 	idle: gtpowr
 		Start: 0
 		ShadowStart: 3
+	damaged-idle: gtpowr
+		Start: 1
+		ShadowStart: 4
+	critical-idle: gtpowr
+		Start: 2
+		ShadowStart: 5
+	idle-lights: gtpowr_a
+		Start: 0
+		Length: 12
+		Tick: 200
+	damaged-idle-lights: gtpowr_a
+		Start: 12
+		Length: 12
+		Tick: 200
+	critical-idle-lights: gtpowr_a
+		Start: 24
+		Length: 12
+		Tick: 200
+	idle-plug: gtpowr_b
+		Start: 0
+		Length: 12
+		Tick: 200
+	damaged-idle-plug: gtpowr_b
+		Start: 0
+		Length: 12
+		Tick: 200
+	critical-idle-plug: gtpowr_b
+		Start: 0
+		Length: 12
+		Tick: 200
 	make: gtpowrmk
 		Start: 0
 		Length: 20
 		ShadowStart: 20
-	damaged-idle: gtpowr
-		Start: 1
-		ShadowStart: 4
-	dead: gtpowr
-		Start: 2
-		ShadowStart: 5
 
 gapile:
 	idle: gtpile

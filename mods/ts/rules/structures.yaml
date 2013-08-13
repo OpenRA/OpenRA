@@ -63,6 +63,10 @@ GAPOWR:
 		Type: Wood
 	RevealsShroud:
 		Range: 4
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+	WithIdleOverlay@PLUG:
+		Sequence: idle-plug
 
 GAPILE:
 	Inherits: ^Building
