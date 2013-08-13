@@ -31,6 +31,12 @@ GACNST:
 		Facing: 96
 	ProductionBar:
 	-Sellable:
+	WithIdleOverlay@TOP:
+		Sequence: idle-top
+	WithIdleOverlay@SIDE:
+		Sequence: idle-side
+	WithIdleOverlay@FRONT:
+		Sequence: idle-front
 
 GAPOWR:
 	Inherits: ^Building

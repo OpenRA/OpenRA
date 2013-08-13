@@ -1,21 +1,21 @@
-gacnst: # TODO: write a render trait for the overlays
+gacnst:
 	idle: gtcnst
 		Start: 0
 		ShadowStart: 3
-	medium-damaged-idle: gtcnst
+	damaged-idle: gtcnst
 		Start: 1
 		ShadowStart: 4
-	damaged-idle: gtcnst
+	critical-idle: gtcnst
 		Start: 2
 		ShadowStart: 5
 	make: gtcnstmk
 		Start: 0
 		Length: 24
 		ShadowStart: 24
-	build-front: gtcnst_d
+	build-front: gtcnst_d # TODO: needs a render overlay trait
 		Start: 0
 		Length: 20
-	damaged-build-front: gtcnst_d
+	damaged-build-front: gtcnst_d # TODO: needs a render overlay trait
 		Start: 0
 		Length: 20
 	idle-top: gtcnst_c
@@ -26,7 +26,7 @@ gacnst: # TODO: write a render trait for the overlays
 		Start: 15
 		Length: 15
 		Tick: 200
-	heavy-damaged-idle-top: gtcnst_c
+	critical-idle-top: gtcnst_c
 		Start: 30
 	idle-side: gtcnst_a
 		Start: 0
@@ -34,13 +34,16 @@ gacnst: # TODO: write a render trait for the overlays
 	damaged-idle-side: gtcnst_a
 		Start: 10
 		Length: 10
-	heavy-damaged-idle-side: gtcnst_a
+	critical-idle-side: gtcnst_a
 		Start: 20
 		Length: 10
 	idle-front: gtcnst_b
 		Start: 0
 		Length: 10
 	damaged-idle-front: gtcnst_b
+		Start: 0
+		Length: 10
+	critical-idle-front: gtcnst_b
 		Start: 0
 		Length: 10
 
