@@ -185,7 +185,6 @@ function findReplace:ReplaceString(fReplaceAll, inFileRegister)
   local replaced = false
 
   if findReplace:HasText() then
-    local replaceLen = string.len(findReplace.replaceText)
     local editor = findReplace:GetEditor()
     local endTarget = inFileRegister and setTargetAll(editor) or
       setTarget(editor, findReplace.fDown, fReplaceAll, findReplace.fWrap)
@@ -200,8 +199,11 @@ function findReplace:ReplaceString(fReplaceAll, inFileRegister)
           if (inFileRegister) then inFileRegister(posFind) end
 
           local length = editor:GetLength()
-          editor:ReplaceTarget(findReplace.replaceText)
-          editor:SetTargetStart(posFind + replaceLen)
+          local replaced = findReplace.fRegularExpr
+            and editor:ReplaceTargetRE(findReplace.replaceText)
+            or editor:ReplaceTarget(findReplace.replaceText)
+
+          editor:SetTargetStart(posFind + replaced)
           -- adjust the endTarget as the position could have changed;
           -- can't simply subtract findText length as it could be a regexp
           endTarget = endTarget + (editor:GetLength() - length)
@@ -218,8 +220,16 @@ function findReplace:ReplaceString(fReplaceAll, inFileRegister)
     else
       if findReplace.foundString then
         local start = editor:GetSelectionStart()
-        editor:ReplaceSelection(findReplace.replaceText)
-        editor:SetSelection(start, start + replaceLen)
+
+        -- convert selection to target as we need TargetRE support
+        editor:TargetFromSelection()
+
+        local length = editor:GetLength()
+        local replaced = findReplace.fRegularExpr
+          and editor:ReplaceTargetRE(findReplace.replaceText)
+          or editor:ReplaceTarget(findReplace.replaceText)
+
+        editor:SetSelection(start, start + replaced)
         findReplace.foundString = false
 
         replaced = true
