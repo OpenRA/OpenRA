@@ -465,6 +465,7 @@
     <Compile Include="Buildings\Bib.cs" />
     <Compile Include="Orders\EnterAlliedActorTargeter.cs" />
     <Compile Include="Render\WithIdleOverlay.cs" />
+    <Compile Include="Tooltip.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">

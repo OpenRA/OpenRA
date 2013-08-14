@@ -226,7 +226,7 @@ TowerMissile:
 	ValidTargets: Ground, Air
 	Burst: 2
 	BurstDelay: 15
-	Projectile: Missile
+	Projectile: Bullet
 		Arm: 0
 		High: yes
 		Shadow: yes
@@ -234,11 +234,12 @@ TowerMissile:
 		Inaccuracy: 12
 		Image: MISSILE2
 		ROT: 10
-		Speed: 45
+		Speed: 20
 		RangeLimit: 50
+		Angle: 0.2
 	Warhead:
 		Spread: 12
-		Versus: 
+		Versus:
 			None: 50%
 			Wood: 45%
 			Light: 100%
