@@ -329,7 +329,7 @@ MISSILETANK:
 	Armament:
 		Weapon: 227mm
 		LocalOffset: -213,128,171, -213,-256,171
-		FireDelay: 15		
+		FireDelay: 15
 	AttackFrontal:
 	AutoTarget:
 		InitialStance: Defend

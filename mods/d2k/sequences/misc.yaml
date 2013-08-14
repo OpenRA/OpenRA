@@ -11,14 +11,14 @@ explosion:
 	med_explosion: DATA.R8
 		Start: 3390
 		Length: 12
-	napalm: DATA.R8
+	tiny_explosion: DATA.R8
 		Start: 3390
 		Length: 12
 	nuke: DATA.R8
 		Start: 3965
 		Length: 14
 		Tick: 60
-	napalm2: DATA.R8
+	mini_explosion: DATA.R8
 		Start: 3403
 		Length: 15
 		Tick: 60

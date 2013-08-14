@@ -10,7 +10,7 @@ LMG:
 		ContrailUsePlayerColor: true
 	Warhead:
 		Spread: 3
-		Versus: 
+		Versus:
 			Wood: 25%
 			Light: 40%
 			Heavy: 10%
@@ -36,13 +36,13 @@ Bazooka:
 		RangeLimit: 35
 	Warhead:
 		Spread: 3
-		Versus: 
+		Versus:
 			None: 10%
 			Wood: 75%
 			Light: 60%
 			Heavy: 90%
 			Concrete: 40%
-		Explosion: small_artillery
+		Explosion: small_explosion
 		InfDeath: 4
 		SmudgeType: SandCrater, RockCrater
 		Damage: 50
@@ -61,7 +61,7 @@ Sniper:
 	Warhead: 
 		Damage: 60
 		Spread: 1
-		Versus: 
+		Versus:
 			None: 100%
 			Wood: 0%
 			Light: 1%
@@ -82,7 +82,7 @@ Vulcan:
 		ContrailUsePlayerColor: true
 	Warhead:
 		Spread: 3
-		Versus: 
+		Versus:
 			Wood: 0%
 			Light: 60%
 			Heavy: 10%
@@ -107,7 +107,7 @@ Slung:
 		Image: MISSILE
 	Warhead:
 		Spread: 6
-		Versus: 
+		Versus:
 			None: 0%
 			Wood: 75%
 			Light: 40%
@@ -133,7 +133,7 @@ HMG:
 		ContrailUsePlayerColor: true
 	Warhead:
 		Spread: 3
-		Versus: 
+		Versus:
 			Wood: 15%
 			Light: 45%
 			Heavy: 20%
@@ -156,7 +156,7 @@ HMGo:
 		ContrailUsePlayerColor: true
 	Warhead:
 		Spread: 3
-		Versus: 
+		Versus:
 			Wood: 15%
 			Light: 45%
 			Heavy: 25%
@@ -183,7 +183,7 @@ QuadRockets:
 		RangeLimit: 40
 	Warhead:
 		Spread: 3
-		Versus: 
+		Versus:
 			None: 35%
 			Wood: 45%
 			Light: 100%
@@ -206,7 +206,7 @@ TurretGun:
 		Inaccuracy: 9
 	Warhead:
 		Spread: 8
-		Versus: 
+		Versus:
 			None: 50%
 			Wood: 75%
 			Light: 100%
@@ -259,7 +259,7 @@ TowerMissile:
 		Inaccuracy: 12
 	Warhead:
 		Spread: 8
-		Versus: 
+		Versus:
 			None: 50%
 			Wood: 50%
 			Light: 100%
@@ -279,7 +279,7 @@ TowerMissile:
 		Inaccuracy: 11
 	Warhead:
 		Spread: 8
-		Versus: 
+		Versus:
 			None: 50%
 			Wood: 50%
 			Light: 100%
@@ -299,7 +299,7 @@ DevBullet:
 		Image: doubleblast
 	Warhead:
 		Spread: 8
-		Versus: 
+		Versus:
 			None: 100%
 			Wood: 50%
 			Light: 100%
@@ -310,7 +310,7 @@ DevBullet:
 		SmudgeType: SandCrater, RockCrater
 		Damage: 100
 
-227mm: 
+227mm:
 	ROF: 100
 	Range: 10
 	MinRange: 4
@@ -330,7 +330,7 @@ DevBullet:
 		ContrailLength: 5
 	Warhead:
 		Spread: 12
-		Versus: 
+		Versus:
 			None: 20%
 			Wood: 50%
 			Light: 100%
@@ -358,7 +358,7 @@ FakeMissile:
 		ContrailUsePlayerColor : True
 	Warhead:
 		Spread: 3
-		Versus: 
+		Versus:
 			None: 0%
 			Wood: 0%
 			Concrete: 0%
@@ -381,7 +381,7 @@ FakeMissile:
 		ContrailLength: 20
 	Warhead:
 		Spread: 12
-		Versus: 
+		Versus:
 			None: 100%
 			Wood: 80%
 			Light: 75%
@@ -405,7 +405,7 @@ Sound:
 		UsePlayerColor: true
 	Warhead:
 		Spread: 1
-		Versus: 
+		Versus:
 			None: 60%
 			Wood: 85%
 			Light: 80%
@@ -423,7 +423,7 @@ ChainGun:
 		High: true
 	Warhead:
 		Spread: 3
-		Versus: 
+		Versus:
 			Wood: 50%
 			Light: 60%
 			Heavy: 25%
@@ -440,7 +440,7 @@ Heal:
 		Speed: 100
 	Warhead:
 		Spread: 5
-		Versus: 
+		Versus:
 			Wood: 0%
 			Light: 0%
 			Heavy: 0%
@@ -454,7 +454,7 @@ WormJaw:
 	Report: WORM.WAV
 	Warhead:
 		Spread: 5
-		Versus: 
+		Versus:
 			Wood: 0%
 			Concrete: 0%
 		Damage: 100
@@ -467,7 +467,7 @@ ParaBomb:
 		Image: BOMBS
 	Warhead:
 		Spread: 6
-		Versus: 
+		Versus:
 			None: 30%
 			Wood: 75%
 			Light: 75%
@@ -484,14 +484,117 @@ Napalm:
 		Image: BOMBS
 	Warhead:
 		Spread: 20
-		Versus: 
+		Versus:
 			None: 20%
 			Wood: 100%
 			Light: 30%
 			Heavy: 20%
 			Concrete: 70%
 		InfDeath: 4
-		Explosion: napalm
+		Explosion: small_artillery
 		ImpactSound: NAPALM1.WAV
 		SmudgeType: Crater
 		Damage: 300
+
+Crush:
+	Warhead:
+		ImpactSound: CRUSH1.WAV
+		Damage: 100
+
+Demolish:
+	Warhead:
+		ImpactSound: EXPLLG2.WAV
+		Explosion: building
+
+Atomic:
+	Warhead:
+		Damage: 1800
+		Spread: 64
+		Versus:
+			None: 100%
+			Wood: 100%
+			Light: 100%
+			Heavy: 50%
+			Concrete: 50%
+		Explosion: nuke
+		InfDeath: 5
+		ImpactSound: EXPLLG2.WAV
+
+CrateNuke:
+	Warhead:
+		Damage: 800
+		Spread: 50
+		Versus:
+			None: 20%
+			Wood: 75%
+			Light: 25%
+			Heavy: 25%
+			Concrete: 50%
+		Explosion: nuke
+		InfDeath: 5
+		ImpactSound: EXPLLG2.WAV
+
+CrateExplosion:
+	Warhead:
+		Damage: 400
+		Spread: 10
+		Versus:
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
+		Explosion: building
+		InfDeath: 4
+		ImpactSound: EXPLSML4.WAV
+
+UnitExplode:
+	Warhead:
+		Damage: 500
+		Spread: 10
+		Versus:
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
+		Explosion: building
+		InfDeath: 4
+		ImpactSound: EXPLMD1.WAV
+
+UnitExplodeSmall:
+	Warhead:
+		Damage: 60
+		Spread: 10
+		Versus:
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
+		Explosion: self_destruct
+		InfDeath: 4
+		ImpactSound: EXPLHG1.WAV, EXPLLG1.WAV, EXPLMD1.WAV, EXPLSML4.WAV
+
+UnitExplodeTiny:
+	Warhead:
+		Damage: 30
+		Spread: 7
+		Versus:
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
+		Explosion: med_explosion
+		InfDeath: 4
+		ImpactSound: EXPLMD2.WAV, EXPLSML1.WAV, EXPLSML2.WAV, EXPLSML3.WAV
+
+UnitExplodeScale:
+	Warhead:
+		Damage: 90
+		Spread: 13
+		Versus:
+			None: 90%
+			Wood: 75%
+			Light: 60%
+			Heavy: 25%
+		Explosion: building
+		InfDeath: 4
+		ImpactSound: EXPLLG2.WAV, EXPLLG3.WAV, EXPLLG5.WAV
