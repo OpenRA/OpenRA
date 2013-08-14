@@ -64,6 +64,11 @@ smoothstep = fn "clip and smooth blend [a,b]. - (vecN)(vecN a, b, x)",
 floatBitsToInt = fn "returns the 32-bit integer representation of an IEEE 754 floating-point scalar or vector - (uintN/intN)(floatN)",
 intBitsToFloat = fn "returns the float value corresponding to a given bit represention.of a scalar int value or vector of int values. - (floatN)(intN)",
 uintBitsToFloat = fn "returns the float value corresponding to a given bit represention.of a scalar int value or vector of int values. - (floatN)(uintN)",
+doubleBitsToInt64 = fn "returns the 64-bit integer representation of an IEEE 754 double precision floating-point scalar or vector - (int64N)(doubleN)",
+doubleBitsToUint64 = fn "returns the 64-bit integer representation of an IEEE 754 double precision floating-point scalar or vector - (uint64N)(doubleN)",
+int64BitsToDouble =  fn "returns the double value corresponding to a given bit represention.of a scalar int value or vector of int values. - (doubleN)(uint64N)",
+uint64BitsToDouble =  fn "returns the double value corresponding to a given bit represention.of a scalar int value or vector of int values. - (doubleN)(uint64N)",
+
 fma = fn "return a*b + c, treated as single operation when using precise - (vecN a, vecN b, vecN c)",
 frexp = fn "splits scalars and vectors into normalized fraction [0.5,1.0) and a power of 2. - (vecN)(vecN x, out vecN e)",
 ldexp = fn "build floating point number from x and the corresponding integral exponen of 2 in exp. - (vecN)(vecN x, exp)",
@@ -73,12 +78,19 @@ packUnorm4x8 = fn "Converts each comp. of v into 8-bit ints, packs results into 
 packSnorm4x8 = fn "Converts each comp. of v into 8-bit ints, packs results into the returned 32-bit uint. - (uint)(vec4 v)",
 packDouble2x32 = fn "Packs components of v into a 64-bit value and returns a double-prec value. - (double)(uvec2 v)",
 packHalf2x16 = fn "Converts each comp. of v into 16-bit half float, packs results into the returned 32-bit uint. - (uint)(vec2 v)",
+packInt2x32 = fn "Packs two 32 bit into one 64-bit value. - (int64_t)(ivec2)",
+packUint2x32 = fn "Packs two 32 bit into one 64-bit value. - (uint64_t)(uvec2)",
+packFloat2x16 = fn "returns an unsigned integer obtained by interpreting the components of a two-component 16-bit floating-point as integers and packing them into 32 bit. - (uint)(f16vec2  v)",
 
 unpackUnorm2x16 = fn "Unpacks 32-bit p into two 16-bit uints and converts them to normalized float. - (vec2)(uint p)",
 unpackUnorm4x8 = fn "Unpacks 32-bit p into four 8-bit uints and converts them to normalized float. - (vec4)(uint p)",
 unpackSnorm4x8 = fn "Unpacks 32-bit p into four 8-bit uints and converts them to normalized float. - (vec4)(uint p)",
 unpackDouble2x32 = fn "Returns a 2 component vector representation of v. - (uvec2)(double v)",
 unpackHalf2x16 = fn "Interprets p as two 16-bit half floats and returns them as vector. - (vec2)(uint p)",
+unpackInt2x32  = fn "Unpacks 64-bit into two 32-bit values. - (ivec2)(int64_t)",
+unpackUint2x32 = fn "Unpacks 64-bit into two 32-bit values. - (uvec2)(uint64_t)",
+unpackFloat2x16 = fn "returns a two-component vector with 16-bit floating-point components obtained by unpacking a 32-bit unsigned integer into a pair of 16-bit values. - (f16vec2)(uint)",
+
 
 length = fn "return scalar Euclidean length of a vector. - (type)(vecN)",
 distance = fn "return the Euclidean distance between two points. - (vecN)(vecN a, b)",
@@ -170,6 +182,10 @@ textureGather = fn "gather lookup (pixel quad of 4 single channel samples at onc
 textureGatherOffset = fn "gather lookup (pixel quad of 4 single channel samples at once) with offset. Component 0: x, 1: y ... is ignored for shadow samplers instead reference value must be passed. Only 2D/Cube. Illegal for MS. - (vec4)(samplerN, vecN coord, [float shadowRefZ], intN offset / intN offset[4] , [int comp])",
 texelFetch = fn "integer coordinate lookup for a single texel. No lod parameter for Buffer, MS, Rect. Illegal for Cube - (vec4)(samplerN, intN coord, [int lod/sample])",
 texelFetchOffset = fn "integer coordinate lookup for a single texel with offset. No lod parameter for Buffer, MS, Rect. Illegal for Cube, Buffer, MS. - (vec4)(samplerN, intN coord, [int lod/sample], intN offset)",
+
+anyInvocationARB = fn "returns true if and only if <value> is true for at least one active invocation in the group. - (bool)(bool value)",
+allInvocationsARB = fn "returns true if and only if <value> is true for all active invocations in the group - (bool)(bool value)",
+allInvocationsEqualARB = fn "returns true if <value> is the same for all active invocation in the group. - (bool)(bool value)",
 }
 
 local keyw = 
@@ -178,6 +194,18 @@ local keyw =
     ivec2 ivec3 ivec4 uvec2 uvec3 uvec4 bvec2 bvec3 bvec4
     mat2 mat3 mat4 mat2x2 mat3x3 mat4x4 mat2x3 mat3x2 mat4x2 mat2x4 mat4x3 mat3x4
     dmat2 dmat3 dmat4 dmat2x2 dmat3x3 dmat4x4 dmat2x3 dmat3x2 dmat4x2 dmat2x4 dmat4x3 dmat3x4
+    float16_t f16vec2 f16vec3 f16vec4
+    float32_t f32vec2 f32vec3 f32vec4
+    float64_t f64vec2 f64vec3 f64vec4
+    int8_t i8vec2 i8vec3 i8vec4
+    int8_t i8vec2 i8vec3 i8vec4
+    int16_t i16vec2 i16vec3 i16vec4
+    int32_t i32vec2 i32vec3 i32vec4
+    int64_t i64vec2 i64vec3 i64vec4
+    uint8_t u8vec2 u8vec3 u8vec4
+    uint16_t u16vec2 u16vec3 u16vec4
+    uint32_t u32vec2 u32vec3 u32vec4
+    uint64_t u64vec2 u64vec3 u64vec4
     struct typedef void
     usampler1D usampler2D usampler3D usampler2DRect usamplerCube isampler1DArray usampler2DARRAY usamplerCubeArray usampler2DMS usampler2DMSArray
     isampler1D isampler2D isampler3D isampler2DRect isamplerCube isampler1DArray isampler2DARRAY isamplerCubeArray isampler2DMS isampler2DMSArray
@@ -189,7 +217,7 @@ local keyw =
     layout location vertices line_strip triangle_strip max_vertices stream
     triangles quads equal_spacing isolines fractional_even_spacing lines points
     fractional_odd_spacing cw ccw point_mode lines_adjacency triangles_adjacency
-    invocations
+    invocations offset align xfb_offset xfb_buffer
     origin_upper_left pixel_center_integer depth_greater depth_greater depth_greater depth_unchanged
     smooth flat noperspective highp mediump lowp shared packed std140 std430 row_major column_major buffer
     gl_FrontColor gl_BackColor gl_FrontSecondaryColor gl_BackSecondaryColor gl_Color gl_SecondaryColor
@@ -205,6 +233,7 @@ local keyw =
     gl_FragData gl_FragDepth gl_SampleMask
     gl_NumWorkGroups gl_WorkGroupSize gl_WorkGroupID gl_LocalInvocationID gl_GlobalInvocationID gl_LocalInvocationIndex
     local_size_x local_size_y local_size_z
+    gl_BaseVertexARB gl_BaseInstanceARB gl_DrawIDARB
 
     coherent volatile restrict readonly writeonly
     image1D image2D image3D image2DRect imageCube imageBuffer image1DArray image2DArray imageCubeArray image2DMS image2DMSArray
