@@ -10,6 +10,7 @@
 
 using System;
 using System.Drawing;
+using OpenRA.FileFormats.Graphics;
 
 namespace OpenRA.Graphics
 {
@@ -105,7 +106,7 @@ namespace OpenRA.Graphics
 				p = new Point(0,0);
 			}
 
-			var rect = new Sprite(current, new Rectangle(p, imageSize), spriteOffset, channel);
+			var rect = new Sprite(current, new Rectangle(p, imageSize), spriteOffset, channel, BlendMode.Alpha);
 			p.X += imageSize.Width;
 
 			return rect;

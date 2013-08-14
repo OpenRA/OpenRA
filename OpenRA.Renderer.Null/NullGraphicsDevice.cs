@@ -41,8 +41,7 @@ namespace OpenRA.Renderer.Null
 		public void EnableDepthBuffer() { }
 		public void DisableDepthBuffer() { }
 
-		public void EnableAlphaBlending() { }
-		public void DisableAlphaBlending() { }
+		public void SetBlendMode(BlendMode mode) { }
 
 		public void Clear() { }
 		public void Present() { }
