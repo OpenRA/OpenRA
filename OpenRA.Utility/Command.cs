@@ -341,6 +341,7 @@ namespace OpenRA.Utility
 			if (tileset == null)
 				throw new InvalidOperationException("No theater named '{0}'".F(theater));
 
+			var renderer = new TileSetRenderer(tileset, new Size(manifest.TileSize, manifest.TileSize));
 			tileset.LoadTiles();
 			var palette = new Palette(FileSystem.Open(tileset.Palette), shadowIndex);
 
@@ -350,7 +351,7 @@ namespace OpenRA.Utility
 				if (template.Value == null)
 					throw new InvalidOperationException("No such template '{0}'".F(templateName));
 
-				using (var image = tileset.RenderTemplate(template.Value.Id, palette))
+				using (var image = renderer.RenderTemplate(template.Value.Id, palette))
 					image.Save(Path.ChangeExtension(templateName, ".png"));
 			}
 		}
