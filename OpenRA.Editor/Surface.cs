@@ -43,6 +43,7 @@ namespace OpenRA.Editor
 	{
 		public Map Map { get; private set; }
 		public TileSet TileSet { get; private set; }
+		public TileSetRenderer TileSetRenderer { get; private set; }
 		public Palette Palette { get; private set; }
 		public Palette PlayerPalette { get; private set; }
 		public int2 Offset;
@@ -79,10 +80,11 @@ namespace OpenRA.Editor
 
 		public Keys GetModifiers() { return ModifierKeys; }
 
-		public void Bind(Map m, TileSet ts, Palette p, Palette pp)
+		public void Bind(Map m, TileSet ts, TileSetRenderer tsr, Palette p, Palette pp)
 		{
 			Map = m;
 			TileSet = ts;
+			TileSetRenderer = tsr;
 			Palette = p;
 			PlayerPalette = pp;
 			playerPalettes = null;
@@ -270,9 +272,9 @@ namespace OpenRA.Editor
 					for (var j = 0; j < ChunkSize; j++)
 					{
 						var tr = Map.MapTiles.Value[u * ChunkSize + i, v * ChunkSize + j];
-						var tile = TileSet.Templates[tr.type].Data;
-						var index = (tr.index < tile.TileBitmapBytes.Count) ? tr.index : (byte)0;
-						var rawImage = tile.TileBitmapBytes[index];
+						var tile = TileSetRenderer.Data(tr.type);
+						var index = (tr.index < tile.Count) ? tr.index : (byte)0;
+						var rawImage = tile[index];
 						for (var x = 0; x < TileSet.TileSize; x++)
 							for (var y = 0; y < TileSet.TileSize; y++)
 								p[(j * TileSet.TileSize + y) * stride + i * TileSet.TileSize + x] = Palette.GetColor(rawImage[x + TileSet.TileSize * y]).ToArgb();
