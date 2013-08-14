@@ -512,38 +512,3 @@ SPICEBLOOM:
 	RadarColorFromTerrain:
 		Terrain: Spice
 	BodyOrientation:
-
-#SANDWORM:
-#	Buildable:
-#		Owner: Creep
-#	Valued:
-#		Cost: 1000
-#	Tooltip:
-#		Name: Sandworm
-#		Description: Attracted by vibrations in the sand. Will eat units whole and has a large appetite.
-#		Icon: black
-#	Health:
-#		HP: 10000
-#		Radius: 3
-#	Armor:
-#		Type: None
-#	Mobile:
-#		Speed: 5
-#		TerrainSpeeds:
-#			Sand: 100
-#			Dune: 100
-#			Spice: 100
-#	TargetableUnit:
-#		TargetTypes: Ground
-#	AutoTarget:
-#	AttackMove:
-#		JustMove: true
-#	AttackWander:
-#	Armament:
-#		Weapon: WormJaw
-#	AttackLeap:
-#		CanAttackGround: no
-#	RenderInfantry:
-#	GivesExperience:
-#	GivesBounty:
-#	DrawLineToTarget:

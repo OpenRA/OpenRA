@@ -21,30 +21,4 @@ namespace OpenRA.Mods.RA
 	}
 
 	public class Valued { }
-
-	[Desc("Shown in the build palette widget.")]
-	public class TooltipInfo : ITraitInfo
-	{
-		public readonly string Description = "";
-		public readonly string Name = "";
-		[Desc("Defaults to actor name + icon suffix.")]
-		public readonly string Icon = null;
-
-		public virtual object Create(ActorInitializer init) { return new Tooltip(init.self, this); }
-	}
-
-	public class Tooltip : IToolTip
-	{
-		Actor self;
-		TooltipInfo Info;
-
-		public string Name() { return Info.Name; }
-		public Player Owner() { return self.Owner; }
-
-		public Tooltip(Actor self, TooltipInfo info)
-		{
-			this.self = self;
-			Info = info;
-		}
-	}
 }

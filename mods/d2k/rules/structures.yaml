@@ -668,54 +668,6 @@ HEAVYC:
 	RenderBuildingWarFactory:
 		Image: HEAVYC
 
-#4PLATES:
-#	Inherits: ^WALL
-#	Buildable:
-#		BuildPaletteOrder: 2000
-#		Owner: atreides, harkonnen, ordos
-#	Tooltip:
-#		Name: Fundament
-#		Description: Pretty useless at the moment.
-#		Icon: 4plateicon
-#	Building:
-#		TerrainTypes: Rock
-#		Footprint: =
-#	LineBuild:
-#		Range: 4
-#	RenderBuildingWall:
-#		HasMakeAnimation: false
-#		Image: PLATES
-#	Wall:
-#		CrushClasses: plates
-#	-SelectionDecorations:
-#	-Selectable:
-
-#6PLATES:
-#	Inherits: ^WALL
-#	Buildable:
-#		BuildPaletteOrder: 3000
-#		Owner: atreides, harkonnen, ordos
-#	Valued:
-#		Cost: 120
-#	Tooltip:
-#		Name: Fundament
-#		Description: Pretty useless at the moment.
-#		Icon: 6plateicon
-#	Building:
-#		TerrainTypes: Rock
-#		Footprint: =
-#	LineBuild:
-#		Range: 6
-#	RenderBuildingWall:
-#		HasMakeAnimation: false
-#		Image: PLATES
-#	Wall:
-#		CrushClasses: plates
-#	-SelectionDecorations:
-#	-Selectable:
-
-
-
 # custom prerequisites:
 CONYARD:
 	Tooltip:
