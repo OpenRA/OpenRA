@@ -31,14 +31,14 @@ namespace OpenRA.Graphics
 		{
 			if (nv > 0)
 			{
-				renderer.Device.EnableAlphaBlending();
+				renderer.Device.SetBlendMode(BlendMode.Alpha);
 				shader.Render(() =>
 				{
 					var vb = renderer.GetTempVertexBuffer();
 					vb.SetData(vertices, nv);
 					renderer.DrawBatch(vb, 0, nv, PrimitiveType.QuadList);
 				});
-				renderer.Device.DisableAlphaBlending();
+				renderer.Device.SetBlendMode(BlendMode.None);
 
 				nv = 0;
 			}

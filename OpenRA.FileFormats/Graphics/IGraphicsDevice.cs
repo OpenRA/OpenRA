@@ -32,6 +32,8 @@ namespace OpenRA.FileFormats.Graphics
 		IGraphicsDevice Create( Size size, WindowMode windowMode );
 	}
 
+	public enum BlendMode { None, Alpha, Additive }
+
 	public interface IGraphicsDevice
 	{
 		IVertexBuffer<Vertex> CreateVertexBuffer( int length );
@@ -55,8 +57,7 @@ namespace OpenRA.FileFormats.Graphics
 		void EnableDepthBuffer();
 		void DisableDepthBuffer();
 
-		void EnableAlphaBlending();
-		void DisableAlphaBlending();
+		void SetBlendMode(BlendMode mode);
 	}
 
 	public interface IVertexBuffer<T>

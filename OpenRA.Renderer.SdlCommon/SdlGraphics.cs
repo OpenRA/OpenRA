@@ -147,17 +147,24 @@ namespace OpenRA.Renderer.SdlCommon
 			ErrorHandler.CheckGlError();
 		}
 
-		public void EnableAlphaBlending()
+		public void SetBlendMode(BlendMode mode)
 		{
-			Gl.glEnable(Gl.GL_BLEND);
-			ErrorHandler.CheckGlError();
-			Gl.glBlendFunc(Gl.GL_SRC_ALPHA, Gl.GL_ONE_MINUS_SRC_ALPHA);
-			ErrorHandler.CheckGlError();
-		}
-
-		public void DisableAlphaBlending()
-		{
-			Gl.glDisable(Gl.GL_BLEND);
+			switch (mode)
+			{
+				case BlendMode.None:
+					Gl.glDisable(Gl.GL_BLEND);
+					break;
+				case BlendMode.Alpha:
+					Gl.glEnable(Gl.GL_BLEND);
+					ErrorHandler.CheckGlError();
+					Gl.glBlendFunc(Gl.GL_SRC_ALPHA, Gl.GL_ONE_MINUS_SRC_ALPHA);
+					break;
+				case BlendMode.Additive:
+					Gl.glEnable(Gl.GL_BLEND);
+					ErrorHandler.CheckGlError();
+					Gl.glBlendFunc(Gl.GL_ONE, Gl.GL_ONE);
+					break;
+			}
 			ErrorHandler.CheckGlError();
 		}
 
