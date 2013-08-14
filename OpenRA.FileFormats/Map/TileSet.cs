@@ -79,7 +79,6 @@ namespace OpenRA.FileFormats
 		public string Id;
 		public string Palette;
 		public string PlayerPalette;
-		public int TileSize = 24;
 		public string[] Extensions;
 		public int WaterPaletteRotationBase = 0x60; 
 		public Dictionary<string, TerrainTypeInfo> Terrain = new Dictionary<string, TerrainTypeInfo>();

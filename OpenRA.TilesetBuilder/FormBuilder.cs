@@ -366,7 +366,6 @@ namespace OpenRA.TilesetBuilder
 			{
 				Name = tilesetName,
 				Id = tilesetID.ToUpper(),
-				TileSize = size,
 				Palette = tilesetPalette.ToLower(),
 				Extensions = new string[] { ext[0], ext[1] }
 			};

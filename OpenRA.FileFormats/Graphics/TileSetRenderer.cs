@@ -21,12 +21,12 @@ namespace OpenRA.FileFormats
 	{
 		public TileSet TileSet;
 		Dictionary<ushort, List<byte[]>> templates;
-		Size tileSize;
+		public Size TileSize;
 
 		public TileSetRenderer(TileSet tileset, Size tileSize)
 		{
 			this.TileSet = tileset;
-			this.tileSize = tileSize;
+			this.TileSize = tileSize;
 
 			templates = new Dictionary<ushort, List<byte[]>>();
 
@@ -40,7 +40,7 @@ namespace OpenRA.FileFormats
 			var template = TileSet.Templates[id];
 			var templateData = templates[id];
 
-			var bitmap = new Bitmap(tileSize.Width * template.Size.X, tileSize.Height * template.Size.Y,
+			var bitmap = new Bitmap(TileSize.Width * template.Size.X, TileSize.Height * template.Size.Y,
 				PixelFormat.Format8bppIndexed);
 
 			bitmap.Palette = p.AsSystemPalette();
@@ -58,15 +58,15 @@ namespace OpenRA.FileFormats
 						if (templateData[u + v * template.Size.X] != null)
 						{
 							var rawImage = templateData[u + v * template.Size.X];
-							for (var i = 0; i < tileSize.Width; i++)
-								for (var j = 0; j < tileSize.Height; j++)
-									q[(v * tileSize.Width + j) * stride + u * tileSize.Width + i] = rawImage[i + tileSize.Width * j];
+							for (var i = 0; i < TileSize.Width; i++)
+								for (var j = 0; j < TileSize.Height; j++)
+									q[(v * TileSize.Width + j) * stride + u * TileSize.Width + i] = rawImage[i + TileSize.Width * j];
 						}
 						else
 						{
-							for (var i = 0; i < tileSize.Width; i++)
-								for (var j = 0; j < tileSize.Height; j++)
-									q[(v * tileSize.Width + j) * stride + u * tileSize.Width + i] = 0;
+							for (var i = 0; i < TileSize.Width; i++)
+								for (var j = 0; j < TileSize.Height; j++)
+									q[(v * TileSize.Width + j) * stride + u * TileSize.Width + i] = 0;
 						}
 			}
 
