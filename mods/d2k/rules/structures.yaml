@@ -570,6 +570,8 @@ WALL:
 		Range: 4
 	ProvidesCustomPrerequisite:
 		Prerequisite: Research
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
 
 ^PALACE:
 	Inherits: ^Building

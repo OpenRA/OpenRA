@@ -495,9 +495,10 @@ researcha:
 	damaged-idle: DATA.R8
 		Start: 2670
 		Offset: -48,80
-	active: DATA.R8 # TODO: wire it up
+	idle-lights: DATA.R8
 		Start: 4760
-		Length: 80
+		Length: 60
+		Tick: 80
 		Offset: -48,80
 	bib: bib3x
 		Start: 0
@@ -517,9 +518,10 @@ researchh:
 	damaged-idle: DATA.R8
 		Start: 2830
 		Offset: -48,80
-	active: DATA.R8 # TODO: wire it up
+	idle-lights: DATA.R8
 		Start: 4760
-		Length: 80
+		Length: 60
+		Tick: 80
 		Offset: -48,80
 	bib: bib3x
 		Start: 0
@@ -539,9 +541,10 @@ researcho:
 	damaged-idle: DATA.R8
 		Start: 2990
 		Offset: -48,80
-	active: DATA.R8 # TODO: wire it up
+	idle-lights: DATA.R8
 		Start: 4760
-		Length: 80
+		Length: 60
+		Tick: 80
 		Offset: -48,80
 	bib: bib3x
 		Start: 0
