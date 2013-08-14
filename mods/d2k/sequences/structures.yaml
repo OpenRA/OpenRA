@@ -409,7 +409,7 @@ radara:
 	damaged-idle: DATA.R8
 		Start: 2522
 		Offset: -48,80
-	active: DATA.R8 # TODO: wire it up
+	idle-dish: DATA.R8
 		Start: 4522
 		Length: 30
 		Offset: -48,80
@@ -755,7 +755,7 @@ radarh:
 	damaged-idle: DATA.R8
 		Start: 2682
 		Offset: -48,80
-	active: DATA.R8 # TODO: wire it up
+	idle-dish: DATA.R8
 		Start: 4553
 		Length: 30
 		Offset: -48,80
@@ -1043,7 +1043,7 @@ radaro:
 	damaged-idle: DATA.R8
 		Start: 2842
 		Offset: -48,80
-	active: DATA.R8 # TODO: wire it up
+	idle-dish: DATA.R8
 		Start: 4583
 		Length: 30
 		Offset: -48,80
