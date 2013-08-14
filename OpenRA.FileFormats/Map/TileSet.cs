@@ -71,8 +71,6 @@ namespace OpenRA.FileFormats
 
 			return new MiniYaml(null, root);
 		}
-
-		public Terrain Data;
 	}
 
 	public class TileSet
@@ -106,14 +104,6 @@ namespace OpenRA.FileFormats
 			// Templates
 			Templates = yaml["Templates"].NodesDict.Values
 				.Select(y => new TileTemplate(y)).ToDictionary(t => t.Id);
-		}
-
-		public void LoadTiles()
-		{
-			foreach (var t in Templates)
-				if (t.Value.Data == null)
-					using (var s = FileSystem.OpenWithExts(t.Value.Image, Extensions))
-						t.Value.Data = new Terrain(s);
 		}
 
 		public void Save(string filepath)
@@ -152,44 +142,6 @@ namespace OpenRA.FileFormats
 				return "Clear"; // Default walkable
 
 			return ret;
-		}
-
-		public Bitmap RenderTemplate(ushort n, Palette p)
-		{
-			var template = Templates[n];
-
-			var bitmap = new Bitmap(TileSize * template.Size.X, TileSize * template.Size.Y,
-				PixelFormat.Format8bppIndexed);
-
-			bitmap.Palette = p.AsSystemPalette();
-
-			var data = bitmap.LockBits(bitmap.Bounds(),
-				ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
-
-			unsafe
-			{
-				byte* q = (byte*)data.Scan0.ToPointer();
-				var stride = data.Stride;
-
-				for (var u = 0; u < template.Size.X; u++)
-					for (var v = 0; v < template.Size.Y; v++)
-						if (template.Data.TileBitmapBytes[u + v * template.Size.X] != null)
-						{
-							var rawImage = template.Data.TileBitmapBytes[u + v * template.Size.X];
-							for (var i = 0; i < TileSize; i++)
-								for (var j = 0; j < TileSize; j++)
-									q[(v * TileSize + j) * stride + u * TileSize + i] = rawImage[i + TileSize * j];
-						}
-						else
-						{
-							for (var i = 0; i < TileSize; i++)
-								for (var j = 0; j < TileSize; j++)
-									q[(v * TileSize + j) * stride + u * TileSize + i] = 0;
-						}
-			}
-
-			bitmap.UnlockBits(data);
-			return bitmap;
 		}
 	}
 }

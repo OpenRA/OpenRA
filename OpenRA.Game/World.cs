@@ -119,8 +119,6 @@ namespace OpenRA
 			Map = map;
 
 			TileSet = Rules.TileSets[Map.Tileset];
-			TileSet.LoadTiles();
-
 			SharedRandom = new XRandom(orderManager.LobbyInfo.GlobalSettings.RandomSeed);
 
 			WorldActor = CreateActor( "World", new TypeDictionary() );

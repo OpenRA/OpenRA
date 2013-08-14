@@ -342,7 +342,6 @@ namespace OpenRA.Utility
 				throw new InvalidOperationException("No theater named '{0}'".F(theater));
 
 			var renderer = new TileSetRenderer(tileset, new Size(manifest.TileSize, manifest.TileSize));
-			tileset.LoadTiles();
 			var palette = new Palette(FileSystem.Open(tileset.Palette), shadowIndex);
 
 			foreach (var templateName in templateNames)
