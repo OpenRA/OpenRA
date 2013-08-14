@@ -113,7 +113,7 @@ namespace OpenRA.FileFormats
 			foreach (var t in Templates)
 				if (t.Value.Data == null)
 					using (var s = FileSystem.OpenWithExts(t.Value.Image, Extensions))
-						t.Value.Data = new Terrain(s, TileSize);
+						t.Value.Data = new Terrain(s);
 		}
 
 		public void Save(string filepath)
@@ -142,23 +142,6 @@ namespace OpenRA.FileFormats
 					"Template@{0}".F(t.Value.Id),
 					t.Value.Save())).ToList()));
 			root.WriteToFile(filepath);
-		}
-
-		public byte[] GetBytes(TileReference<ushort,byte> r)
-		{
-			TileTemplate tile;
-			if (Templates.TryGetValue(r.type, out tile))
-			{
-				var data = tile.Data.TileBitmapBytes[r.index];
-				if (data != null)
-					return data;
-			}
-
-			byte[] missingTile = new byte[TileSize*TileSize];
-			for (var i = 0; i < missingTile.Length; i++)
-				missingTile[i] = 0x00;
-
-			return missingTile;
 		}
 
 		public string GetTerrainType(TileReference<ushort, byte> r)

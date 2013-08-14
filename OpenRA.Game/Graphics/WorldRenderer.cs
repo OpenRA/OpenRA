@@ -33,6 +33,8 @@ namespace OpenRA.Graphics
 	public class WorldRenderer
 	{
 		public readonly World world;
+		public readonly Theater Theater;
+
 		internal readonly TerrainRenderer terrainRenderer;
 		internal readonly ShroudRenderer shroudRenderer;
 		internal readonly HardwarePalette palette;
@@ -50,6 +52,7 @@ namespace OpenRA.Graphics
 
 			palette.Initialize();
 
+			Theater = new Theater(world.TileSet);
 			terrainRenderer = new TerrainRenderer(world, this);
 			shroudRenderer = new ShroudRenderer(world);
 
