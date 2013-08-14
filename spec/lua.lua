@@ -153,6 +153,11 @@ return {
             typ = nil
           end
           typ = typ and typ:gsub("%s","")
+          typ = typ and typ:gsub(".+", function(s)
+            return (s:find("^'[^']*'$")
+                 or s:find('^"[^"]*"$')
+                 or s:find('^%[=*%[.*%]=*%]$')) and 'string' or s
+          end)
           if (var and typ) then
             class,func = typ:match(varname.."[%.:]"..varname)
             if (assigns[typ]) then
