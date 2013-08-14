@@ -1,0 +1,82 @@
+#region Copyright & License Information
+/*
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
+ * This file is part of OpenRA, which is free software. It is made
+ * available to you under the terms of the GNU General Public License
+ * as published by the Free Software Foundation. For more information,
+ * see COPYING.
+ */
+#endregion
+
+using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+
+namespace OpenRA.FileFormats
+{
+	public class TileSetRenderer
+	{
+		public TileSet TileSet;
+		Dictionary<ushort, List<byte[]>> templates;
+		Size tileSize;
+
+		public TileSetRenderer(TileSet tileset, Size tileSize)
+		{
+			this.TileSet = tileset;
+			this.tileSize = tileSize;
+
+			templates = new Dictionary<ushort, List<byte[]>>();
+
+			foreach (var t in TileSet.Templates)
+			using (var s = FileSystem.OpenWithExts(t.Value.Image, tileset.Extensions))
+				templates.Add(t.Key, new Terrain(s).TileBitmapBytes);
+		}
+
+		public Bitmap RenderTemplate(ushort id, Palette p)
+		{
+			var template = TileSet.Templates[id];
+			var templateData = templates[id];
+
+			var bitmap = new Bitmap(tileSize.Width * template.Size.X, tileSize.Height * template.Size.Y,
+				PixelFormat.Format8bppIndexed);
+
+			bitmap.Palette = p.AsSystemPalette();
+
+			var data = bitmap.LockBits(bitmap.Bounds(),
+				ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
+
+			unsafe
+			{
+				var q = (byte*)data.Scan0.ToPointer();
+				var stride = data.Stride;
+
+				for (var u = 0; u < template.Size.X; u++)
+					for (var v = 0; v < template.Size.Y; v++)
+						if (templateData[u + v * template.Size.X] != null)
+						{
+							var rawImage = templateData[u + v * template.Size.X];
+							for (var i = 0; i < tileSize.Width; i++)
+								for (var j = 0; j < tileSize.Height; j++)
+									q[(v * tileSize.Width + j) * stride + u * tileSize.Width + i] = rawImage[i + tileSize.Width * j];
+						}
+						else
+						{
+							for (var i = 0; i < tileSize.Width; i++)
+								for (var j = 0; j < tileSize.Height; j++)
+									q[(v * tileSize.Width + j) * stride + u * tileSize.Width + i] = 0;
+						}
+			}
+
+			bitmap.UnlockBits(data);
+			return bitmap;
+		}
+
+		public List<byte[]> Data(ushort id)
+		{
+			return templates[id];
+		}
+	}
+}
