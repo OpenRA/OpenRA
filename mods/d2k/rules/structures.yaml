@@ -255,6 +255,8 @@
 	ProductionBar:
 	ProvidesCustomPrerequisite:
 		Prerequisite: Heavy
+	WithIdleOverlay@WELDING:
+		Sequence: idle-welding
 
 ^RADAR:
 	RequiresPower:

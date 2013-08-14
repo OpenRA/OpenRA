@@ -634,10 +634,12 @@ heavya:
 	damaged-idle-top: DATA.R8
 		Start: 2520
 		Offset: -48,80
-	active: DATA.R8 # TODO: not wired up
+	idle-welding: DATA.R8
 		Start: 4674
 		Length: 47
 		Offset: -48,80
+		Tick: 200
+		BlendMode: Additive
 	bib: bib3x
 		Start: 0
 		Length: *
@@ -922,10 +924,12 @@ heavyh:
 	damaged-idle-top: DATA.R8
 		Start: 2680
 		Offset: -48,80
-	active: DATA.R8 # TODO: not wired up
+	idle-welding: DATA.R8
 		Start: 4674
 		Length: 47
 		Offset: -48,80
+		Tick: 200
+		BlendMode: Additive
 	bib: bib3x
 		Start: 0
 		Length: *
@@ -1198,10 +1202,12 @@ heavyo:
 	damaged-idle-top: DATA.R8
 		Start: 2840
 		Offset: -48,80
-	active: DATA.R8 # TODO: not wired up
+	idle-welding: DATA.R8
 		Start: 4674
 		Length: 47
 		Offset: -48,80
+		Tick: 200
+		BlendMode: Additive
 	bib: bib3x
 		Start: 0
 		Length: *
