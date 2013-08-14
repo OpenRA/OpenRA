@@ -363,10 +363,16 @@ pwra:
 	damaged-idle: DATA.R8
 		Start: 2524
 		Offset: -32,64
-	active: DATA.R8 # TODO: not wired up
+	idle-zaps: DATA.R8
 		Start: 4492
 		Length: 10
 		Offset: -32,64
+		Tick: 200
+	damaged-idle-zaps: DATA.R8
+		Start: 4497
+		Length: 5
+		Offset: -32,64
+		Tick: 200
 	bib: bib2x
 		Start: 0
 		Length: *
@@ -703,10 +709,16 @@ pwrh:
 	damaged-idle: DATA.R8
 		Start: 2684
 		Offset: -32,64
-	active: DATA.R8 # TODO: not wired up
+	idle-zaps: DATA.R8
 		Start: 4502
 		Length: 10
 		Offset: -32,64
+		Tick: 200
+	damaged-idle-zaps: DATA.R8
+		Start: 4507
+		Length: 5
+		Offset: -32,64
+		Tick: 200
 	bib: bib2x
 		Start: 0
 		Length: *
@@ -985,10 +997,16 @@ pwro:
 	damaged-idle: DATA.R8
 		Start: 2844
 		Offset: -32,64
-	active: DATA.R8 # TODO: not wired up
+	idle-zaps: DATA.R8
 		Start: 4512
 		Length: 10
 		Offset: -32,64
+		Tick: 200
+	damaged-idle-zaps: DATA.R8
+		Start: 4517
+		Length: 5
+		Offset: -32,64
+		Tick: 200
 	bib: bib2x
 		Start: 0
 		Length: *

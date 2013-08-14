@@ -61,6 +61,8 @@
 		Range: 4
 	ProvidesCustomPrerequisite:
 		Prerequisite: Power
+	WithIdleOverlay@ZAPS:
+		Sequence: idle-zaps
 
 ^BARRACKS:
 	Inherits: ^Building
