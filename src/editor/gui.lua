@@ -180,7 +180,12 @@ local function createNotebook(frame)
       notebook:PopupMenu(menu)
     end)
 
-  local function IfAtLeastOneTab(event) event:Enable(notebook:GetPageCount() > 0) end
+  local function IfAtLeastOneTab(event)
+    event:Enable(notebook:GetPageCount() > 0)
+    if ide.osname == 'Macintosh' and (event:GetId() == ID_CLOSEALL
+    or event:GetId() == ID_CLOSE and notebook:GetPageCount() <= 1)
+    then event:Enable(false) end
+  end
   local function IfModified(event) event:Enable(EditorIsModified(GetEditor(selection))) end
 
   notebook:Connect(ID_SAVE, wx.wxEVT_COMMAND_MENU_SELECTED, function ()
