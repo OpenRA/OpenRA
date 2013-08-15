@@ -1289,10 +1289,12 @@ heavyc: # TODO: unused
 	damaged-idle-top: DATA.R8
 		Start: 3003
 		Offset: -48,64
-	active: DATA.R8 # TODO: not wired up
+	idle-welding: DATA.R8
 		Start: 4674
 		Length: 47
-		Offset: -48,64
+		Offset: -48,80
+		Tick: 200
+		BlendMode: Additive
 	bib: bib3x
 		Start: 0
 		Length: *
