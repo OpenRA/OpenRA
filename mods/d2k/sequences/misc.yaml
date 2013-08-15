@@ -44,11 +44,6 @@ explosion:
 		Start: 3687
 		Length: 6
 
-90mm:
-	idle: 
-		Start: 0
-		Facings: 32
-
 laserfire:
 	idle: DATA.R8
 		Start: 3386

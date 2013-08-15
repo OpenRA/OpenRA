@@ -203,7 +203,6 @@ TurretGun:
 		Speed: 55
 		High: yes
 		Shadow: yes
-		Image: 90MM
 		Inaccuracy: 9
 	Warhead:
 		Spread: 8
@@ -258,7 +257,6 @@ TowerMissile:
 	Projectile: Bullet
 		Speed: 50
 		Inaccuracy: 12
-		Image: 90MM
 	Warhead:
 		Spread: 8
 		Versus: 
@@ -279,7 +277,6 @@ TowerMissile:
 	Projectile: Bullet
 		Speed: 55
 		Inaccuracy: 11
-		Image: 90MM
 	Warhead:
 		Spread: 8
 		Versus: 
