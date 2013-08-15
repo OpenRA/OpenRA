@@ -473,10 +473,12 @@ hightecha:
 	damaged-idle: DATA.R8
 		Start: 2565
 		Offset: -48,80
-	active: DATA.R8 # TODO: not wired up
+	idle-welding: DATA.R8
 		Start: 4614
 		Length: 30
 		Offset: -48,80
+		Tick: 500
+		BlendMode: Additive
 	bib: bib3x
 		Start: 0
 		Length: *
@@ -824,10 +826,12 @@ hightechh:
 	damaged-idle: DATA.R8
 		Start: 2725
 		Offset: -48,80
-	active: DATA.R8 # TODO: not wired up
+	idle-welding: DATA.R8
 		Start: 4614
 		Length: 30
 		Offset: -48,80
+		Tick: 500
+		BlendMode: Additive
 	bib: bib3x
 		Start: 0
 		Length: *
@@ -1114,10 +1118,12 @@ hightecho:
 	damaged-idle: DATA.R8
 		Start: 2885
 		Offset: -48,80
-	active: DATA.R8 # TODO: not wired up
+	idle-welding: DATA.R8
 		Start: 4614
 		Length: 30
 		Offset: -48,80
+		Tick: 500
+		BlendMode: Additive
 	bib: bib3x
 		Start: 0
 		Length: *

@@ -533,6 +533,8 @@ WALL:
 		Range: 4
 	ProvidesCustomPrerequisite:
 		Prerequisite: Hitech
+	WithIdleOverlay@WELDING:
+		Sequence: idle-welding
 
 ^RESEARCH:
 	Inherits: ^Building
