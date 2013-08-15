@@ -38,17 +38,17 @@ namespace OpenRA.Graphics
 			cursors = new Dictionary<string, CursorSequence>();
 			palettes = new Cache<string, PaletteReference>(CreatePaletteReference);
 			var sequences = new MiniYaml(null, sequenceFiles.Select(s => MiniYaml.FromFile(s)).Aggregate(MiniYaml.MergeLiberal));
-			int[] ShadowIndex = { };
+			var shadowIndex = new int[] { };
 
 			if (sequences.NodesDict.ContainsKey("ShadowIndex"))
 			{
-				Array.Resize(ref ShadowIndex, ShadowIndex.Length + 1);
-				int.TryParse(sequences.NodesDict["ShadowIndex"].Value, out ShadowIndex[ShadowIndex.Length - 1]);
+				Array.Resize(ref shadowIndex, shadowIndex.Length + 1);
+				int.TryParse(sequences.NodesDict["ShadowIndex"].Value, out shadowIndex[shadowIndex.Length - 1]);
 			}
 
 			palette = new HardwarePalette();
 			foreach (var p in sequences.NodesDict["Palettes"].Nodes)
-				palette.AddPalette(p.Key, new Palette(FileSystem.Open(p.Value.Value), ShadowIndex), false);
+				palette.AddPalette(p.Key, new Palette(FileSystem.Open(p.Value.Value), shadowIndex), false);
 
 			foreach (var s in sequences.NodesDict["Cursors"].Nodes)
 				LoadSequencesForCursor(s.Key, s.Value);
@@ -76,7 +76,7 @@ namespace OpenRA.Graphics
 
 			renderer.SetPalette(palette);
 			renderer.SpriteRenderer.DrawSprite(cursorSprite,
-			                                   lastMousePos - cursorSequence.Hotspot,
+			                                   lastMousePos - cursorSequence.Hotspot - (0.5f * cursorSprite.size).ToInt2(),
 			                                   palettes[cursorSequence.Palette],
 			                                   cursorSprite.size);
 		}

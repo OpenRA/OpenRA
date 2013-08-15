@@ -5,77 +5,47 @@ Cursors:
 	mouse: cursor
 		scroll-t: #TODO
 			start:1
-			x: 12
-			y: 12
 		scroll-tr: #TODO
 			start: 2
-			x: 12
-			y: 12
 		scroll-r: #TODO
 			start: 3
-			x: 12
-			y: 12
 		scroll-br: #TODO
 			start: 4
-			x: 12
-			y: 12
 		scroll-b: #TODO
 			start:5
-			x: 12
-			y: 12
 		scroll-bl: #TODO
 			start:6
-			x: 12
-			y: 12
 		scroll-l: #TODO
 			start:7
-			x: 12
-			y: 12
 		scroll-tl: #TODO
 			start:8
-			x: 12
-			y: 12
 		scroll-t-blocked: #TODO
 			start:124
-			x: 12
-			y: 12
 		scroll-tr-blocked: #TODO
 			start:125
-			x: 12
-			y: 12
 		scroll-r-blocked: #TODO
 			start:126
-			x: 12
-			y: 12
 		scroll-br-blocked: #TODO
 			start:127
-			x: 12
-			y: 12
 		scroll-b-blocked: #TODO
 			start:128
-			x: 12
-			y: 12
 		scroll-bl-blocked: #TODO
 			start:129
-			x: 12
-			y: 12
 		scroll-l-blocked: #TODO
 			start:130
-			x: 12
-			y: 12
 		scroll-tl-blocked:#TODO
 			start:131
-			x: 12
-			y: 12
 		select:
 			start:18
 			length: 12
-			x: 12
-			y: 12
 		default:
 			start:0
+			x: -26
+			y: -20
 		default-minimap:
 			start:1
+			x: -26
+			y: -20
 		generic-blocked:
 			start:9
 		generic-blocked-minimap:
@@ -83,193 +53,117 @@ Cursors:
 		move:
 			start:31
 			length: 10
-			x: 12
-			y: 12
 		move-minimap:
 			start:42
 			length: 10
-			x: 12
-			y: 12
 		move-rough:
 			start:31
 			length: 10
-			x: 12
-			y: 12
 		move-blocked:
 			start:41
-			x: 12
-			y: 12
 		move-blocked-minimap:
 			start:52
-			x: 12
-			y: 12
 		attack:
 			start: 31
 			length: 10
-			x: 12
-			y: 12
 		attack-blocked: # TODO: unused
 			start: 32
 			length: 1
-			x: 12
-			y: 12
 		attack-minimap:
 			start: 42
 			length: 10
-			x: 12
-			y: 12
 		attackmove: #TODO
 			start:21
 			length: 8
-			x: 12
-			y: 12
 		attackmove-minimap: #TODO
 			start:134
 			length: 8
-			x: 12
-			y: 12
 		harvest: #TODO
 			start:21
 			length: 8
-			x: 12
-			y: 12
 		harvest-minimap: #TODO
 			start:134
 			length: 8
-			x: 12
-			y: 12
 		enter: #TODO
 			start:113
 			length: 3
-			x: 12
-			y: 12
 		enter-minimap: #TODO
 			start:139
 			length: 3
-			x: 12
-			y: 12
 		enter-blocked: #TODO
 			start:212
 			length: 1
-			x: 12
-			y: 12
 		enter-blocked-minimap: #TODO
 			start:33
 		c4: #TODO
 			start:116
 			length: 3
-			x: 12
-			y: 12
 		c4-minimap: #TODO
 			start:121
 			length: 3
-			x: 12
-			y: 12
 		guard: #TODO
 			start:147
 			length: 1
-			x: 12
-			y: 12
 		guard-minimap: #TODO
 			start:146
 			length: 1
-			x: 12
-			y: 12
 		capture: #TODO
 			start:164
 			length: 3
-			x: 12
-			y: 12
 		capture-minimap: #TODO
 			start:167
 			length: 3
-			x: 12
-			y: 12
 		heal: #TODO
 			start:160
 			length: 4
-			x: 12
-			y: 12
 		heal-minimap: #TODO
 			start:194
 			length: 1
-			x: 12
-			y: 12
 		ability: #TODO
 			start:82
 			length: 8
-			x: 12
-			y: 12
 		ability-minimap: #TODO
 			start:214
 			length: 8
-			x: 12
-			y: 12
 		deploy:
 			start:110
 			length: 9
-			x: 12
-			y: 12
 		deploy-blocked:
 			start:119
 			length: 1
-			x: 12
-			y: 12
 		undeploy: #TODO: unused
 			start:120
 			length: 9
-			x: 12
-			y: 12
 		goldwrench: #TODO
 			start:170
 			length: 24
-			x: 12
-			y: 12
 		goldwrench-blocked: #TODO
 			start:213
 			length: 1
-			x: 12
-			y: 12
 		nuke: #TODO
 			start:90
 			length: 7
-			x: 12
-			y: 12
 		sell:
 			start:129
 			length: 10
-			x: 12
-			y: 12
 		sell-minimap: #TODO: unused
 			start:139
 			length: 10
-			x: 12
-			y: 12
 		sell-blocked:
 			start:149
 			length: 1
-			x: 12
-			y: 12
 		repair:
 			start:170
 			length: 20
-			x: 12
-			y: 12
 		repair-blocked:
 			start:190
 			length: 1
-			x: 12
-			y: 12
 		sell2: #TODO ?
 			start:148
 			length: 12
 		powerdown-blocked:
 			start:345
 			length: 1
-			x: 12
-			y: 12
 		powerdown:
 			start:329
 			length: 15
-			x: 12
-			y: 12

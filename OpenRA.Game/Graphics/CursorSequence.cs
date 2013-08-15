@@ -44,9 +44,9 @@ namespace OpenRA.Graphics
 				length = 1;
 
 			if (d.ContainsKey("x"))
-				int.TryParse(d["x"].Value, out Hotspot.X );
+				int.TryParse(d["x"].Value, out Hotspot.X);
 			if (d.ContainsKey("y"))
-				int.TryParse(d["y"].Value, out Hotspot.Y );
+				int.TryParse(d["y"].Value, out Hotspot.Y);
 		}
 
 		public Sprite GetSprite(int frame)
