@@ -42,11 +42,10 @@ namespace OpenRA.Graphics
 			Func<Sheet> allocate = () =>
 			{
 				if (allocated)
-					throw new SheetOverflowException("Terrain sheet overflow");
+					throw new SheetOverflowException("Terrain sheet overflow. Try increasing the tileset SheetSize parameter.");
 				allocated = true;
 
-				// TODO: Use a fixed sheet size specified in the tileset yaml
-				return SheetBuilder.AllocateSheet();
+				return new Sheet(new Size(tileset.SheetSize, tileset.SheetSize));
 			};
 
 			templates = new Dictionary<ushort, Sprite[]>();

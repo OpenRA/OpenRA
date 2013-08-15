@@ -77,6 +77,7 @@ namespace OpenRA.FileFormats
 	{
 		public string Name;
 		public string Id;
+		public int SheetSize = 512;
 		public string Palette;
 		public string PlayerPalette;
 		public string[] Extensions;
@@ -85,7 +86,7 @@ namespace OpenRA.FileFormats
 		public Dictionary<ushort, TileTemplate> Templates = new Dictionary<ushort, TileTemplate>();
 		public string[] EditorTemplateOrder;
 
-		static readonly string[] fields = {"Name", "TileSize", "Id", "Palette", "Extensions"};
+		static readonly string[] fields = {"Name", "TileSize", "Id", "SheetSize", "Palette", "Extensions"};
 
 		public TileSet() {}
 
