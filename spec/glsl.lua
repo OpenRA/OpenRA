@@ -43,6 +43,18 @@ return {
     ivec2 ivec3 ivec4 uvec2 uvec3 uvec4 bvec2 bvec3 bvec4
     mat2 mat3 mat4 mat2x2 mat3x3 mat4x4 mat2x3 mat3x2 mat4x2 mat2x4 mat4x3 mat3x4
     dmat2 dmat3 dmat4 dmat2x2 dmat3x3 dmat4x4 dmat2x3 dmat3x2 dmat4x2 dmat2x4 dmat4x3 dmat3x4
+    float16_t f16vec2 f16vec3 f16vec4
+    float32_t f32vec2 f32vec3 f32vec4
+    float64_t f64vec2 f64vec3 f64vec4
+    int8_t i8vec2 i8vec3 i8vec4
+    int8_t i8vec2 i8vec3 i8vec4
+    int16_t i16vec2 i16vec3 i16vec4
+    int32_t i32vec2 i32vec3 i32vec4
+    int64_t i64vec2 i64vec3 i64vec4
+    uint8_t u8vec2 u8vec3 u8vec4
+    uint16_t u16vec2 u16vec3 u16vec4
+    uint32_t u32vec2 u32vec3 u32vec4
+    uint64_t u64vec2 u64vec3 u64vec4
     struct typedef void
     usampler1D usampler2D usampler3D usampler2DRect usamplerCube isampler1DArray usampler2DARRAY usamplerCubeArray usampler2DMS usampler2DMSArray
     isampler1D isampler2D isampler3D isampler2DRect isamplerCube isampler1DArray isampler2DARRAY isamplerCubeArray isampler2DMS isampler2DMSArray
@@ -51,10 +63,10 @@ return {
     usamplerBuffer isamplerBuffer samplerBuffer samplerRenderbuffer isamplerRenderbuffer usamplerRenderbuffer
     in out inout uniform const centroid sample attribute varying patch index true false
     return switch case for do while if else break continue main inline
-    layout location vertices line_strip triangle_strip max_vertices stream
+    layout location vertices line_strip triangle_strip max_vertices stream 
     triangles quads equal_spacing isolines fractional_even_spacing lines points
     fractional_odd_spacing cw ccw point_mode lines_adjacency triangles_adjacency
-    invocations
+    invocations offset align xfb_offset xfb_buffer
     origin_upper_left pixel_center_integer depth_greater depth_greater depth_greater depth_unchanged
     smooth flat noperspective highp mediump lowp shared packed std140 std430 row_major column_major buffer
     gl_FrontColor gl_BackColor gl_FrontSecondaryColor gl_BackSecondaryColor gl_Color gl_SecondaryColor
@@ -70,6 +82,7 @@ return {
     gl_FragData gl_FragDepth gl_SampleMask
     gl_NumWorkGroups gl_WorkGroupSize gl_WorkGroupID gl_LocalInvocationID gl_GlobalInvocationID gl_LocalInvocationIndex
     local_size_x local_size_y local_size_z
+    gl_BaseVertexARB gl_BaseInstanceARB gl_DrawIDARB
 
     coherent volatile restrict readonly writeonly
     image1D image2D image3D image2DRect imageCube imageBuffer image1DArray image2DArray imageCubeArray image2DMS image2DMSArray
@@ -88,6 +101,10 @@ return {
     packUnorm2x16 packUnorm4x8 packSnorm4x8
     unpackUnorm2x16 unpackUnorm4x8 unpackSnorm4x8
     packDouble2x32 unpackDouble2x32 packHalf2x16 unpackHalf2x16
+    packInt2x32 packUint2x32 unpackInt2x32 unpackUint2x32
+    packFloat2x16 unpackFloat2x16 doubleBitsToInt64
+    doubleBitsToUint64 int64BitsToDouble uint64BitsToDouble
+    
     length distance dot cross normalize ftransform faceforward
     reflect refract
     matrixCompMult outerProduct transpose determinant inverse
@@ -140,6 +157,8 @@ return {
     
     atomicCounterIncrement atomicCounterDecrement atomicCounter
     atomicMin atomicMax atomicAdd atomicAnd atomicOr atomicXor atomicExchange atomicCompSwap
+    
+    anyInvocationARB allInvocationsARB allInvocationsEqualARB
 
     x y z w
     xxxx xxxy xxxz xxxw xxyx xxyy xxyz xxyw xxzx xxzy
