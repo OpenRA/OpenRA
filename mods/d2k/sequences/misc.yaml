@@ -140,8 +140,9 @@ crate-effects:
 
 allyrepair:
 	repair: DATA.R8
-		Start: 3
-		Length: 1
+		Frames: 3, 39
+		Length: 2
+		Tick: 300
 
 missile:
 	idle: DATA.R8
