@@ -83,6 +83,12 @@ Background@LOBBY_OPTIONS_BIN:
 			Width:230
 			Height:20
 			Text:Crates
+		Checkbox@TEAMBASEWALK_CHECKBOX:
+			X:80
+			Y:180
+			Width:230
+			Height:20
+			Text:Build off Friendly Bases
 		Checkbox@SHROUD_CHECKBOX:
 			X:310
 			Y:75

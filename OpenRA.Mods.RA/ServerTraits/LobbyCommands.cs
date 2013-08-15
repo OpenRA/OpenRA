@@ -352,6 +352,19 @@ namespace OpenRA.Mods.RA.Server
 						server.SyncLobbyInfo();
 						return true;
 					}},
+				{ "teambasewalk",
+					s =>
+					{
+						if (!client.IsAdmin)
+						{
+							server.SendOrderTo(conn, "Message", "Only the host can set that option");
+							return true;
+						}
+
+						bool.TryParse(s, out server.lobbyInfo.GlobalSettings.TeamBasewalk);
+						server.SyncLobbyInfo();
+						return true;
+					}},
 				{ "assignteams",
 					s =>
 					{
