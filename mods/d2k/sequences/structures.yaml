@@ -1,5 +1,3 @@
-# read bibs from DATA.R8
-
 walla:
 	idle: DATA.R8
 		Frames: 2527, 2530, 2528, 2538, 2531, 2532, 2542, 2535, 2529, 2539, 2533, 2534, 2540, 2536, 2537, 2541
@@ -232,9 +230,10 @@ conyarda:
 #		Start: 4436
 #		Length: 14
 #		Offset: -48,64
-	bib: bib3x # TODO: read this from BLOXBAT.R8
-		Start: 0
-		Length: *
+	bib: BLOXBASE.R8
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
 	icon: DATA.R8
 		Start: 4046
 		Offset: -30,-24
@@ -345,9 +344,10 @@ starporta:
 		Start: 4347
 		Length: 22
 		Offset: -48,64
-	bib: bib3x
-		Start: 0
-		Length: *
+	bib: BLOXBASE.R8
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
 	icon: DATA.R8
 		Start: 4092
 		Offset: -30,-24
@@ -373,9 +373,10 @@ pwra:
 		Length: 5
 		Offset: -32,64
 		Tick: 200
-	bib: bib2x
-		Start: 0
-		Length: *
+	bib: BLOXBASE.R8
+		Frames: 617, 618, 637, 638
+		Length: 4
+		Offset: -16,-16
 	icon: DATA.R8
 		Start: 4056
 		Offset: -30,-24
@@ -391,9 +392,10 @@ barra:
 	damaged-idle: DATA.R8
 		Start: 2526
 		Offset: -32,64
-	bib: bib2x
-		Start: 0
-		Length: *
+	bib: BLOXBASE.R8
+		Frames: 617, 618, 637, 638
+		Length: 4
+		Offset: -16,-16
 	icon: DATA.R8
 		Start: 4059
 		Offset: -30,-24
@@ -413,9 +415,10 @@ radara:
 		Start: 4522
 		Length: 30
 		Offset: -48,80
-	bib: bib3x
-		Start: 0
-		Length: *
+	bib: BLOXBASE.R8
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
 	icon: DATA.R8
 		Start: 4072
 		Offset: -30,-24
@@ -438,9 +441,10 @@ refa:
 	damaged-idle-top: DATA.R8
 		Start: 2563
 		Offset: -48,64
-	bib: bib3x
-		Start: 0
-		Length: *
+	bib: BLOXBASE.R8
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
 	icon: DATA.R8
 		Start: 4066
 		Offset: -30,-24
@@ -479,9 +483,10 @@ hightecha:
 		Offset: -48,80
 		Tick: 500
 		BlendMode: Additive
-	bib: bib3x
-		Start: 0
-		Length: *
+	bib: BLOXBASE.R8
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
 	icon: DATA.R8
 		Start: 4078
 		Offset: -30,-24
@@ -502,9 +507,10 @@ researcha:
 		Length: 60
 		Tick: 80
 		Offset: -48,80
-	bib: bib3x
-		Start: 0
-		Length: *
+	bib: BLOXBASE.R8
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
 	icon: DATA.R8
 		Start: 4099
 		Offset: -30,-24
@@ -525,9 +531,10 @@ researchh:
 		Length: 60
 		Tick: 80
 		Offset: -48,80
-	bib: bib3x
-		Start: 0
-		Length: *
+	bib: BLOXBASE.R8
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
 	icon: DATA.R8
 		Start: 4100
 		Offset: -30,-24
@@ -548,9 +555,10 @@ researcho:
 		Length: 60
 		Tick: 80
 		Offset: -48,80
-	bib: bib3x
-		Start: 0
-		Length: *
+	bib: BLOXBASE.R8
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
 	icon: DATA.R8
 		Start: 4101
 		Offset: -30,-24
@@ -566,9 +574,10 @@ palacea:
 	damaged-idle: DATA.R8
 		Start: 2677
 		Offset: -48,48
-	bib: bib3x
-		Start: 0
-		Length: *
+	bib: BLOXBASE.R8
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
 	icon: DATA.R8
 		Start: 4102
 		Offset: -30,-24
@@ -605,9 +614,10 @@ lighta:
 		Offset: -48,64
 		Tick: 200
 		BlendMode: Additive
-	bib: bib3x
-		Start: 0
-		Length: *
+	bib: BLOXBASE.R8
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
 	icon: DATA.R8
 		Start: 4081
 		Offset: -30,-24
@@ -644,9 +654,10 @@ heavya:
 		Offset: -48,80
 		Tick: 200
 		BlendMode: Additive
-	bib: bib3x
-		Start: 0
-		Length: *
+	bib: BLOXBASE.R8
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
 	icon: DATA.R8
 		Start: 4087
 		Offset: -30,-24
@@ -670,9 +681,10 @@ conyardh:
 #		Start: 4450
 #		Length: 14
 #		Offset: -48,64
-	bib: bib3x # TODO: read this from BLOXBAT.R8
-		Start: 0
-		Length: *
+	bib: BLOXBASE.R8
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
 	icon: DATA.R8
 		Start: 4047
 		Offset: -30,-24
@@ -700,9 +712,10 @@ starporth:
 		Length: 22
 		Offset: -48,64
 		ZOffset: -1c511
-	bib: bib3x
-		Start: 0
-		Length: *
+	bib: BLOXBASE.R8
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
 	icon: DATA.R8
 		Start: 4093
 		Offset: -30,-24
@@ -728,9 +741,10 @@ pwrh:
 		Length: 5
 		Offset: -32,64
 		Tick: 200
-	bib: bib2x
-		Start: 0
-		Length: *
+	bib: BLOXBASE.R8
+		Frames: 617, 618, 637, 638
+		Length: 4
+		Offset: -16,-16
 	icon: DATA.R8
 		Start: 4057
 		Offset: -30,-24
@@ -746,9 +760,10 @@ barrh:
 	damaged-idle: DATA.R8
 		Start: 2686
 		Offset: -32,64
-	bib: bib2x
-		Start: 0
-		Length: *
+	bib: BLOXBASE.R8
+		Frames: 617, 618, 637, 638
+		Length: 4
+		Offset: -16,-16
 	icon: DATA.R8
 		Start: 4060
 		Offset: -30,-24
@@ -768,9 +783,10 @@ radarh:
 		Start: 4553
 		Length: 30
 		Offset: -48,80
-	bib: bib3x
-		Start: 0
-		Length: *
+	bib: BLOXBASE.R8
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
 	icon: DATA.R8
 		Start: 4073
 		Offset: -30,-24
@@ -793,9 +809,10 @@ refh:
 	damaged-idle-top: DATA.R8
 		Start: 2723
 		Offset: -48,64
-	bib: bib3x
-		Start: 0
-		Length: *
+	bib: BLOXBASE.R8
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
 	icon: DATA.R8
 		Start: 4067
 		Offset: -30,-24
@@ -834,9 +851,10 @@ hightechh:
 		Offset: -48,80
 		Tick: 500
 		BlendMode: Additive
-	bib: bib3x
-		Start: 0
-		Length: *
+	bib: BLOXBASE.R8
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
 	icon: DATA.R8
 		Start: 4079
 		Offset: -30,-24
@@ -860,9 +878,10 @@ palaceh:
 		Start: 4820
 		Length: 20
 		Offset: -48,64
-	bib: bib3x
-		Start: 0
-		Length: *
+	bib: BLOXBASE.R8
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
 	icon: DATA.R8
 		Start: 4103
 		Offset: -30,-24
@@ -899,9 +918,10 @@ lighth:
 		Offset: -48,64
 		Tick: 200
 		BlendMode: Additive
-	bib: bib3x
-		Start: 0
-		Length: *
+	bib: BLOXBASE.R8
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
 	icon: DATA.R8
 		Start: 4082
 		Offset: -30,-24
@@ -938,9 +958,10 @@ heavyh:
 		Offset: -48,80
 		Tick: 200
 		BlendMode: Additive
-	bib: bib3x
-		Start: 0
-		Length: *
+	bib: BLOXBASE.R8
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
 	icon: DATA.R8
 		Start: 4088
 		Offset: -30,-24
@@ -964,9 +985,10 @@ conyardo:
 #		Start: 4464
 #		Length: 14
 #		Offset: -48,64
-	bib: bib3x # TODO: read this from BLOXBAT.R8
-		Start: 0
-		Length: *
+	bib: BLOXBASE.R8
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
 	icon: DATA.R8
 		Start: 4048
 		Offset: -30,-24
@@ -993,9 +1015,10 @@ starporto:
 		Start: 4347
 		Length: 22
 		Offset: -48,64
-	bib: bib3x
-		Start: 0
-		Length: *
+	bib: BLOXBASE.R8
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
 	icon: DATA.R8
 		Start: 4094
 		Offset: -30,-24
@@ -1022,9 +1045,10 @@ pwro:
 		Length: 5
 		Offset: -32,64
 		Tick: 200
-	bib: bib2x
-		Start: 0
-		Length: *
+	bib: BLOXBASE.R8
+		Frames: 617, 618, 637, 638
+		Length: 4
+		Offset: -16,-16
 	icon: DATA.R8
 		Start: 4058
 		Offset: -30,-24
@@ -1040,9 +1064,10 @@ barro:
 	damaged-idle: DATA.R8
 		Start: 2846
 		Offset: -32,64
-	bib: bib2x
-		Start: 0
-		Length: *
+	bib: BLOXBASE.R8
+		Frames: 617, 618, 637, 638
+		Length: 4
+		Offset: -16,-16
 	icon: DATA.R8
 		Start: 4061
 		Offset: -30,-24
@@ -1062,9 +1087,10 @@ radaro:
 		Start: 4583
 		Length: 30
 		Offset: -48,80
-	bib: bib3x
-		Start: 0
-		Length: *
+	bib: BLOXBASE.R8
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
 	icon: DATA.R8
 		Start: 4074
 		Offset: -30,-24
@@ -1087,9 +1113,10 @@ refo:
 	damaged-idle-top: DATA.R8
 		Start: 2883
 		Offset: -48,64
-	bib: bib3x
-		Start: 0
-		Length: *
+	bib: BLOXBASE.R8
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
 	icon: DATA.R8
 		Start: 4068
 		Offset: -30,-24
@@ -1128,9 +1155,10 @@ hightecho:
 		Offset: -48,80
 		Tick: 500
 		BlendMode: Additive
-	bib: bib3x
-		Start: 0
-		Length: *
+	bib: BLOXBASE.R8
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
 	icon: DATA.R8
 		Start: 4080
 		Offset: -30,-24
@@ -1146,9 +1174,10 @@ palaceo:
 	damaged-idle: DATA.R8
 		Start: 2997
 		Offset: -48,64
-	bib: bib3x
-		Start: 0
-		Length: *
+	bib: BLOXBASE.R8
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
 	icon: DATA.R8
 		Start: 4104
 		Offset: -30,-24
@@ -1185,9 +1214,10 @@ lighto:
 		Offset: -48,64
 		Tick: 200
 		BlendMode: Additive
-	bib: bib3x
-		Start: 0
-		Length: *
+	bib: BLOXBASE.R8
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
 	icon: DATA.R8
 		Start: 4083
 		Offset: -30,-24
@@ -1224,9 +1254,10 @@ heavyo:
 		Offset: -48,80
 		Tick: 200
 		BlendMode: Additive
-	bib: bib3x
-		Start: 0
-		Length: *
+	bib: BLOXBASE.R8
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
 	icon: DATA.R8
 		Start: 4089
 		Offset: -30,-24
@@ -1238,9 +1269,10 @@ palacec: # TODO: unused
 	damaged-idle: DATA.R8
 		Start: 3005
 		Offset: -48,64
-	bib: bib3x
-		Start: 0
-		Length: *
+	bib: BLOXBASE.R8
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
 	icon: palacecicon
 		Start: 0
 
@@ -1266,9 +1298,10 @@ starportc: # TODO: unused
 		Start: 4347
 		Length: 22
 		Offset: -48,64
-	bib: bib3x
-		Start: 0
-		Length: *
+	bib: BLOXBASE.R8
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
 	icon: DATA.R8 # TODO: blank
 		Start: 4020
 		Offset: -30,-24
@@ -1305,9 +1338,10 @@ heavyc: # TODO: unused
 		Offset: -48,80
 		Tick: 200
 		BlendMode: Additive
-	bib: bib3x
-		Start: 0
-		Length: *
+	bib: BLOXBASE.R8
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
 	icon: DATA.R8 # TODO: blank
 		Start: 4020
 		Offset: -30,-24
@@ -1331,9 +1365,10 @@ conyardc: # TODO: unused
 #		Start: 4478
 #		Length: 14
 #		Offset: -48,64
-	bib: bib3x # TODO: read this from BLOXBAT.R8
-		Start: 0
-		Length: *
+	bib: BLOXBASE.R8
+		Frames: 611, 612, 613, 631, 632, 633
+		Length: 6
+		Offset: -16,-16
 	icon: DATA.R8
 		Start: 4049
 		Offset: -30,-24
