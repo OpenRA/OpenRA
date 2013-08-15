@@ -120,10 +120,6 @@ namespace OpenRA.Graphics
 			Game.Renderer.EnableScissor(bounds.Left, bounds.Top, bounds.Width, bounds.Height);
 
 			terrainRenderer.Draw(this, Game.viewport);
-			foreach (var a in world.traitDict.ActorsWithTraitMultiple<IRenderAsTerrain>(world))
-				foreach (var r in a.Trait.RenderAsTerrain(this, a.Actor))
-					r.Render(this);
-
 			Game.Renderer.Flush();
 
 			for (var i = 0; i < renderables.Count; i++)

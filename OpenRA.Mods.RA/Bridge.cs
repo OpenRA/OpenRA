@@ -67,7 +67,7 @@ namespace OpenRA.Mods.RA
 		}
 	}
 
-	class Bridge: IRenderAsTerrain, INotifyDamageStateChanged
+	class Bridge: IRender, INotifyDamageStateChanged
 	{
 		ushort template;
 		Dictionary<CPos, byte> footprint;
@@ -125,12 +125,12 @@ namespace OpenRA.Mods.RA
 		{
 			return footprint.Select(c => (IRenderable)(new SpriteRenderable(
 				wr.Theater.TileSprite(new TileReference<ushort, byte>(template, c.Value)),
-				c.Key.CenterPosition, WVec.Zero, 0, palette, 1f, true))).ToArray();
+				c.Key.CenterPosition, WVec.Zero, -512, palette, 1f, true))).ToArray();
 		}
 
 		bool initialized;
 		Dictionary<ushort, IRenderable[]> renderables;
-		public IEnumerable<IRenderable> RenderAsTerrain(WorldRenderer wr, Actor self)
+		public IEnumerable<IRenderable> Render(Actor self, WorldRenderer wr)
 		{
 			if (!initialized)
 			{
