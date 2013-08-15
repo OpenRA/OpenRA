@@ -23,16 +23,31 @@ namespace OpenRA.FileFormats
 		Dictionary<ushort, List<byte[]>> templates;
 		public Size TileSize;
 
+		List<byte[]> LoadTemplate(string filename, string[] exts, Cache<string, R8Reader> r8Cache, int[] frames)
+		{
+			if (exts.Contains(".r8") && FileSystem.Exists(filename+".r8"))
+			{
+				var data = new List<byte[]>();
+
+				foreach (var f in frames)
+					data.Add(f >= 0 ? r8Cache[filename][f].Image : null);
+
+				return data;
+			}
+
+			using (var s = FileSystem.OpenWithExts(filename, exts))
+				return new Terrain(s).TileBitmapBytes;
+		}
+
 		public TileSetRenderer(TileSet tileset, Size tileSize)
 		{
 			this.TileSet = tileset;
 			this.TileSize = tileSize;
 
 			templates = new Dictionary<ushort, List<byte[]>>();
-
+			var r8Cache = new Cache<string, R8Reader>(s => new R8Reader(FileSystem.OpenWithExts(s, ".r8")));
 			foreach (var t in TileSet.Templates)
-			using (var s = FileSystem.OpenWithExts(t.Value.Image, tileset.Extensions))
-				templates.Add(t.Key, new Terrain(s).TileBitmapBytes);
+				templates.Add(t.Key, LoadTemplate(t.Value.Image, tileset.Extensions, r8Cache, t.Value.Frames));
 		}
 
 		public Bitmap RenderTemplate(ushort id, Palette p)

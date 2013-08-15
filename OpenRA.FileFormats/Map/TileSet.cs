@@ -35,6 +35,7 @@ namespace OpenRA.FileFormats
 	{
 		public ushort Id;
 		public string Image;
+		public int[] Frames;
 		public int2 Size;
 		public bool PickAny;
 		public string Category;
@@ -52,7 +53,7 @@ namespace OpenRA.FileFormats
 				t => t.Value.Value);
 		}
 
-		static readonly string[] Fields = { "Id", "Image", "Size", "PickAny" };
+		static readonly string[] Fields = { "Id", "Image", "Frames", "Size", "PickAny" };
 
 		public MiniYaml Save()
 		{

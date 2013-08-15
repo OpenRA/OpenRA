@@ -25,8 +25,20 @@ namespace OpenRA.Graphics
 		Dictionary<ushort, Sprite[]> templates;
 		Sprite missingTile;
 
-		Sprite[] LoadTemplate(string filename, string[] exts)
+		Sprite[] LoadTemplate(string filename, string[] exts, Cache<string, R8Reader> r8Cache, int[] frames)
 		{
+			if (exts.Contains(".r8") && FileSystem.Exists(filename+".r8"))
+			{
+				return frames.Select(f =>
+				{
+					if (f < 0)
+						return null;
+
+					var image = r8Cache[filename][f];
+					return sheetBuilder.Add(image.Image, new Size(image.Size.Width, image.Size.Height));
+				}).ToArray();
+			}
+
 			using (var s = FileSystem.OpenWithExts(filename, exts))
 			{
 				var t = new Terrain(s);
@@ -48,10 +60,11 @@ namespace OpenRA.Graphics
 				return new Sheet(new Size(tileset.SheetSize, tileset.SheetSize));
 			};
 
+			var r8Cache = new Cache<string, R8Reader>(s => new R8Reader(FileSystem.OpenWithExts(s, ".r8")));
 			templates = new Dictionary<ushort, Sprite[]>();
 			sheetBuilder = new SheetBuilder(SheetType.Indexed, allocate);
 			foreach (var t in tileset.Templates)
-				templates.Add(t.Value.Id, LoadTemplate(t.Value.Image, tileset.Extensions));
+				templates.Add(t.Value.Id, LoadTemplate(t.Value.Image, tileset.Extensions, r8Cache, t.Value.Frames));
 
 			// 1x1px transparent tile
 			missingTile = sheetBuilder.Add(new byte[1], new Size(1, 1));
