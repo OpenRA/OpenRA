@@ -599,10 +599,12 @@ lighta:
 	damaged-idle-top: DATA.R8
 		Start: 2675
 		Offset: -48,64
-	active: DATA.R8 # TODO: not wired up
+	idle-welding: DATA.R8
 		Start: 4644
 		Length: 30
 		Offset: -48,64
+		Tick: 200
+		BlendMode: Additive
 	bib: bib3x
 		Start: 0
 		Length: *
@@ -891,10 +893,12 @@ lighth:
 	damaged-idle-top: DATA.R8
 		Start: 2835
 		Offset: -48,64
-	active: DATA.R8 # TODO: not wired up
+	idle-welding: DATA.R8
 		Start: 4644
 		Length: 30
 		Offset: -48,64
+		Tick: 200
+		BlendMode: Additive
 	bib: bib3x
 		Start: 0
 		Length: *
@@ -1175,6 +1179,12 @@ lighto:
 	damaged-idle-top: DATA.R8
 		Start: 2995
 		Offset: -48,64
+	idle-welding: DATA.R8
+		Start: 4644
+		Length: 30
+		Offset: -48,64
+		Tick: 200
+		BlendMode: Additive
 	bib: bib3x
 		Start: 0
 		Length: *

@@ -217,6 +217,8 @@
 	ProductionBar:
 	ProvidesCustomPrerequisite:
 		Prerequisite: Light
+	WithIdleOverlay@WELDING:
+		Sequence: idle-welding
 
 ^HEAVY:
 	Inherits: ^Building
