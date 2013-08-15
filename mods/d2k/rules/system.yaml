@@ -282,7 +282,7 @@ World:
 	LoadWidgetAtGameStart:
 		Widget: INGAME_ROOT
 	ScreenShaker:
-	NukePaletteEffect:
+#	NukePaletteEffect: # TODO: does not work well with additive blending (idle overlays still use player palette effects)
 	BuildingInfluence:
 	ChooseBuildTabOnSelect:
 	CrateSpawner:
@@ -307,6 +307,7 @@ World:
 		Name: effect
 		Filename: d2k.pal
 		ShadowIndex: 4
+		AllowModifiers: false
 	PaletteFromFile@colorpicker:
 		Name: colorpicker
 		Filename: d2k.pal
