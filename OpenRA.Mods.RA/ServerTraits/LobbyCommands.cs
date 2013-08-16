@@ -446,7 +446,7 @@ namespace OpenRA.Mods.RA.Server
 							return true;
 						}
 
-						if ((server.Map.Options.Difficulties == null && s != null) || (server.Map.Options.Difficulties != null && !server.Map.Options.Difficulties.Contains(s)))
+						if (s != null && !server.Map.Options.Difficulties.Contains(s))
 						{
 							server.SendOrderTo(conn, "Message", "Unsupported difficulty selected: {0}".F(s));
 							server.SendOrderTo(conn, "Message", "Supported difficulties: {0}".F(server.Map.Options.Difficulties.JoinWith(",")));
@@ -674,12 +674,14 @@ namespace OpenRA.Mods.RA.Server
 
 		static void SetDefaultDifficulty(S server)
 		{
-			if (server.Map.Options.Difficulties != null && server.Map.Options.Difficulties.Any())
+			if (!server.Map.Options.Difficulties.Any())
 			{
-				if (!server.Map.Options.Difficulties.Contains(server.lobbyInfo.GlobalSettings.Difficulty))
-					server.lobbyInfo.GlobalSettings.Difficulty = server.Map.Options.Difficulties.First();
+				server.lobbyInfo.GlobalSettings.Difficulty = null;
+				return;
 			}
-			else server.lobbyInfo.GlobalSettings.Difficulty = null;
+
+			if (!server.Map.Options.Difficulties.Contains(server.lobbyInfo.GlobalSettings.Difficulty))
+				server.lobbyInfo.GlobalSettings.Difficulty = server.Map.Options.Difficulties.First();
 		}
 	}
 }

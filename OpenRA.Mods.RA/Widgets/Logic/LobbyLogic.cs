@@ -298,7 +298,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var difficulty = optionsBin.GetOrNull<DropDownButtonWidget>("DIFFICULTY_DROPDOWNBUTTON");
 			if (difficulty != null)
 			{
-				difficulty.IsVisible = () => Map.Options.Difficulties != null && Map.Options.Difficulties.Any();
+				difficulty.IsVisible = () => Map.Options.Difficulties.Any();
 				difficulty.IsDisabled = configurationDisabled;
 				difficulty.GetText = () => orderManager.LobbyInfo.GlobalSettings.Difficulty;
 				difficulty.OnMouseDown = _ =>
@@ -335,9 +335,8 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				var classes = Rules.Info["world"].Traits.WithInterface<MPStartUnitsInfo>()
 					.Select(a => a.Class).Distinct();
 
-				startingUnits.IsDisabled = configurationDisabled;
-				startingUnits.IsVisible = () => Map.Options.ConfigurableStartingUnits;
-				startingUnits.GetText = () => className(orderManager.LobbyInfo.GlobalSettings.StartingUnitsClass);
+				startingUnits.IsDisabled =  () => !Map.Options.ConfigurableStartingUnits || configurationDisabled();
+				startingUnits.GetText = () => !Map.Options.ConfigurableStartingUnits ? "Not Available" : className(orderManager.LobbyInfo.GlobalSettings.StartingUnitsClass);
 				startingUnits.OnMouseDown = _ =>
 				{
 					var options = classes.Select(c => new DropDownOption

@@ -29,7 +29,7 @@ namespace OpenRA
 		public bool? Shroud;
 		public bool? FragileAlliances;
 		public bool ConfigurableStartingUnits = true;
-		public string[] Difficulties;
+		public string[] Difficulties = { };
 
 		public void UpdateServerSettings(Session.Global settings)
 		{
