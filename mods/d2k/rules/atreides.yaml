@@ -22,6 +22,15 @@ BARRA:
 	Buildable:
 		Owner: atreides
 
+REPAIRA:
+	Inherits: ^REPAIR
+	Buildable:
+		Owner: atreides
+
+RESEARCHA:
+	Inherits: ^RESEARCH
+	Buildable:
+		Owner: atreides
 
 HIGHTECHA:
 	Inherits: ^HIGHTECH
@@ -92,21 +101,6 @@ MCVA.starport:
 	Valued:
 		Cost: 2500
 
-TRIKEA:
-	Inherits: ^TRIKE
-	Buildable:
-		Owner: atreides, harkonnen
-	RenderUnit:
-		Image: TRIKE
-
-TRIKEA.starport:
-	Inherits: TRIKEA
-	Buildable:
-		Owner: atreides, harkonnen, ordos
-		Queue: Starport
-	Valued:
-		Cost: 315
-
 CARRYALLA:
 	Inherits: ^CARRYALL
 	RenderUnit:
@@ -119,8 +113,6 @@ CARRYALLA.starport:
 
 COMBATA:
 	Inherits: ^COMBAT
-	Tooltip:
-		Icon: combataicon
 	Buildable:
 		Owner: atreides
 	RevealsShroud:
@@ -141,8 +133,6 @@ COMBATA:
 
 COMBATA.Husk:
 	Inherits: ^COMBAT.Husk
-	Tooltip:
-		Icon: combataicon
 	RenderUnit:
 		Image: COMBATA
 
@@ -166,7 +156,6 @@ SONICTANK:
 	Tooltip:
 		Name: Sonic Tank
 		Description: Fires sonic shocks\n  Strong vs Infantry, Vehicles\n  Weak vs Artillery, Aircraft
-		Icon: sonictankicon
 	Selectable:
 		Bounds: 30,30
 	Health:
@@ -193,8 +182,6 @@ SONICTANK:
 
 SONICTANK.Husk:
 	Inherits: ^Husk
-	Tooltip:
-		Icon: sonictankicon
 	RenderUnit:
 		Image: SONICTANK
 

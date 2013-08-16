@@ -41,7 +41,6 @@ APC:
 		Cost: 600
 	Tooltip:
 		Name: Amphibious APC # TODO: not yet amphibious
-		Icon: apcicon
 		Description: Armored infantry transport and mobile AA\n  Strong vs Aircraft, Vehicles\n  Weak vs Infantry
 	Buildable:
 		Queue: Vehicle
@@ -74,7 +73,6 @@ HARV: # TODO: without back: HORV
 		Cost: 1400
 	Tooltip:
 		Name: Harvester
-		Icon: harvicon
 		Description: Collects Tiberium for processing.\n  Unarmed
 	Buildable:
 		Queue: Vehicle
@@ -117,7 +115,6 @@ HVR:
 		Cost: 900
 	Tooltip:
 		Name: Hover MLRS
-		Icon: hovricon
 		Description: Hover Multi-Launch Rocket System
 	Buildable:
 		Queue: Vehicle
@@ -148,7 +145,6 @@ HVR:
 		Cost: 1700
 	Tooltip:
 		Name: Mammoth Tank
-		Icon: xxicon
 		Description: Heavily armored GDI Tank.\n  Strong vs Everything
 	Buildable:
 		Queue: Vehicle
@@ -191,7 +187,6 @@ TRUCKB: # NOTE: TRUCKA is unloaded
 	Tooltip:
 		Name: Truck
 		Description: Transports cash to other players.\n  Unarmed
-		Icon: xxicon
 	Health:
 		HP: 2000
 	Armor:
@@ -214,7 +209,6 @@ LPST:
 		Cost: 950
 	Tooltip:
 		Name: Mobile Sensor Array
-		Icon: lpsticon
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 100
@@ -246,7 +240,6 @@ ICBM:
 		Cost: 1400
 	Tooltip:
 		Name: Ballistic Missile Launcher
-		Icon: xxicon
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 100
@@ -283,7 +276,6 @@ REPAIR:
 	Tooltip:
 		Name: Mobile Repair Vehicle
 		Description: Repairs nearby vehicles.\n  Strong vs Nothing\n  Weak vs Everything
-		Icon: rboticon
 	Health:
 		HP: 200
 	Mobile:
@@ -307,7 +299,6 @@ ART2:
 		Cost: 975
 	Tooltip:
 		Name: Artillery
-		Icon: artyicon
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 100
@@ -339,7 +330,6 @@ WEED:
 		Cost: 1400
 	Tooltip:
 		Name: Weed Eater
-		Icon: weedicon
 		Description: Collects veins for processing.\n  Unarmed
 	Buildable:
 		Queue: Vehicle
@@ -376,7 +366,6 @@ BUS:
 		Cost: 800
 	Tooltip:
 		Name: School Bus
-		Icon: xxicon
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 300
@@ -406,7 +395,6 @@ PICK:
 		Cost: 800
 	Tooltip:
 		Name: Pickup
-		Icon: xxicon
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 300
@@ -436,7 +424,6 @@ CAR:
 		Cost: 800
 	Tooltip:
 		Name: Automobile
-		Icon: xxicon
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 300
@@ -466,7 +453,6 @@ GGHUNT:
 		Cost: 1000
 	Tooltip:
 		Name: Hunter-Seeker Droid
-		Icon: seekicon
 	Buildable:
 		BuildPaletteOrder: 20
 		Owner: gdi, nod
@@ -494,7 +480,6 @@ WINI:
 		Cost: 800
 	Tooltip:
 		Name: Recreational Vehicle
-		Icon: xxicon
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 300
@@ -524,7 +509,6 @@ MMCH:
 		Cost: 800
 	Tooltip:
 		Name: Medium Mech
-		Icon: mmchicon
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 300
@@ -558,7 +542,6 @@ HMEC:
 		Cost: 3000
 	Tooltip:
 		Name: Mammoth Mk. II
-		Icon: hmecicon
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 40
@@ -591,7 +574,6 @@ SMECH:
 	Tooltip:
 		Name: Wolverine
 		Description: Small Mech
-		Icon: smchicon
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
@@ -619,7 +601,6 @@ BIKE:
 		Cost: 600
 	Tooltip:
 		Name: Attack Cycle
-		Icon: cyclicon
 		Description: Fast scout vehicle, armed with \nrockets.\n  Strong vs Vehicles, Aircraft\n  Weak vs Infantry
 	Buildable:
 		Queue: Vehicle
@@ -650,7 +631,6 @@ BGGY:
 		Cost: 500
 	Tooltip:
 		Name: Attack Buggy
-		Icon: bggyicon
 		Description: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry, Vehicles\n  Weak vs Tanks, Aircraft
 	Buildable:
 		Queue: Vehicle
@@ -679,7 +659,6 @@ SAPC:
 		Cost: 800
 	Tooltip:
 		Name: Subterranean APC # TODO: not yet subterranean
-		Icon: sapcicon
 		Description: Armored infantry transport and mobile AA\n  Strong vs Aircraft, Vehicles\n  Weak vs Infantry
 	Buildable:
 		Queue: Vehicle
@@ -710,7 +689,6 @@ SUBTANK:
 		Cost: 750
 	Tooltip:
 		Name: Devil's Tongue
-		Icon: subticon
 		Description: Subterranean Tank
 	Buildable:
 		Queue: Vehicle
@@ -739,7 +717,6 @@ SONIC:
 		Cost: 1300
 	Tooltip:
 		Name: Disruptor
-		Icon: soniicon
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 40
@@ -769,7 +746,6 @@ TTNK:
 		Cost: 800
 	Tooltip:
 		Name: Tick Tank
-		Icon: tickicon
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 60
@@ -800,7 +776,6 @@ STNK:
 		Cost: 1100
 	Tooltip:
 		Name: Stealth Tank
-		Icon: stnkicon
 		Description: Long-range missile tank that can cloak.\nHas weak armor. Can be spotted by infantry.\n  Strong vs Vehicles, Tanks, Aircraft\n  Weak vs Infantry.
 	Buildable:
 		BuildPaletteOrder: 90

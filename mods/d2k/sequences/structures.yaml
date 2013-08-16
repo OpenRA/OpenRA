@@ -15,6 +15,9 @@ walla:
 		Frames: 2543, 2546, 2544, 2554, 2547, 2548, 2558, 2551, 2545, 2555, 2549, 2550, 2556, 2552, 2553, 2557
 		Length: 16
 		Offset: -16,16
+	icon: DATA.R8
+		Start: 4063
+		Offset: -30,-24
 
 wallh:
 	idle: DATA.R8
@@ -33,6 +36,9 @@ wallh:
 		Frames: 2703, 2706, 2704, 2714, 2707, 2708, 2718, 2711, 2705, 2715, 2709, 2710, 2716, 2712, 2713, 2717
 		Length: 16
 		Offset: -16,16
+	icon: DATA.R8
+		Start: 4064
+		Offset: -30,-24
 
 wallo:
 	idle: DATA.R8
@@ -51,6 +57,9 @@ wallo:
 		Frames: 2863, 2866, 2864, 2874, 2867, 2868, 2878, 2871, 2865, 2875, 2869, 2870, 2876, 2872, 2873, 2877
 		Length: 16
 		Offset: -16,16
+	icon: DATA.R8
+		Start: 4065
+		Offset: -30,-24
 
 guntowera:
 	idle: DATA.R8
@@ -73,6 +82,9 @@ guntowera:
 		Start: 2589
 		Facings: -32
 		Offset: -24,24
+	icon: DATA.R8
+		Start: 4069
+		Offset: -30,-24
 
 guntowerh:
 	idle: DATA.R8
@@ -95,6 +107,9 @@ guntowerh:
 		Start: 2749
 		Facings: -32
 		Offset: -24,24
+	icon: DATA.R8
+		Frames: 4070
+		Offset: -30,-24
 
 guntowero:
 	idle: DATA.R8
@@ -117,6 +132,9 @@ guntowero:
 		Start: 2909
 		Facings: -32
 		Offset: -24,24
+	icon: DATA.R8
+		Start: 4071
+		Offset: -30,-24
 
 rockettowera:
 	idle: DATA.R8
@@ -139,6 +157,9 @@ rockettowera:
 		Start: 2637
 		Facings: -32
 		Offset: -24,24
+	icon: DATA.R8
+		Start: 4075
+		Offset: -30,-24
 
 rockettowerh:
 	idle: DATA.R8
@@ -161,6 +182,9 @@ rockettowerh:
 		Start: 2828
 		Facings: -32
 		Offset: -24,24
+	icon: DATA.R8
+		Start: 4076
+		Offset: -30,-24
 
 rockettowero:
 	idle: DATA.R8
@@ -183,6 +207,9 @@ rockettowero:
 		Start: 2988
 		Facings: -32
 		Offset: -24,24
+	icon: DATA.R8
+		Start: 4077
+		Offset: -30,-24
 
 conyarda:
 	idle: DATA.R8
@@ -206,6 +233,9 @@ conyarda:
 	bib: bib3x # TODO: read this from BLOXBAT.R8
 		Start: 0
 		Length: *
+	icon: DATA.R8
+		Start: 4046
+		Offset: -30,-24
 
 repaira:
 	make: DATA.R8 # TODO: overlay
@@ -231,6 +261,9 @@ repaira:
 		Start: 2572
 		Offset: -48,48
 		ZOffset: -1c511
+	icon: DATA.R8
+		Start: 4096
+		Offset: -30,-24
 
 repairh:
 	make: DATA.R8 # TODO: overlay
@@ -256,6 +289,9 @@ repairh:
 		Start: 2732
 		Offset: -48,48
 		ZOffset: -1c511
+	icon: DATA.R8
+		Start: 4097
+		Offset: -30,-24
 
 repairo:
 	make: DATA.R8 # TODO: overlay
@@ -281,6 +317,9 @@ repairo:
 		Start: 2892
 		Offset: -48,48
 		ZOffset: -1c511
+	icon: DATA.R8
+		Start: 4098
+		Offset: -30,-24
 
 starporta:
 	idle: DATA.R8
@@ -307,6 +346,9 @@ starporta:
 	bib: bib3x
 		Start: 0
 		Length: *
+	icon: DATA.R8
+		Start: 4092
+		Offset: -30,-24
 
 pwra:
 	idle: DATA.R8
@@ -326,6 +368,9 @@ pwra:
 	bib: bib2x
 		Start: 0
 		Length: *
+	icon: DATA.R8
+		Start: 4056
+		Offset: -30,-24
 
 barra:
 	idle: DATA.R8
@@ -341,6 +386,9 @@ barra:
 	bib: bib2x
 		Start: 0
 		Length: *
+	icon: DATA.R8
+		Start: 4059
+		Offset: -30,-24
 
 radara:
 	idle: DATA.R8
@@ -360,6 +408,9 @@ radara:
 	bib: bib3x
 		Start: 0
 		Length: *
+	icon: DATA.R8
+		Start: 4072
+		Offset: -30,-24
 
 refa:
 	idle: DATA.R8
@@ -382,6 +433,9 @@ refa:
 	bib: bib3x
 		Start: 0
 		Length: *
+	icon: DATA.R8
+		Start: 4066
+		Offset: -30,-24
 
 siloa:
 	idle: DATA.R8
@@ -396,6 +450,9 @@ siloa:
 		Start: 4313
 		Length: 14
 		Offset: -16,16
+	icon: DATA.R8
+		Start: 4084
+		Offset: -30,-24
 
 hightecha:
 	idle: DATA.R8
@@ -415,6 +472,9 @@ hightecha:
 	bib: bib3x
 		Start: 0
 		Length: *
+	icon: DATA.R8
+		Start: 4078
+		Offset: -30,-24
 
 researcha:
 	idle: DATA.R8
@@ -434,6 +494,9 @@ researcha:
 	bib: bib3x
 		Start: 0
 		Length: *
+	icon: DATA.R8
+		Start: 4099
+		Offset: -30,-24
 
 researchh:
 	idle: DATA.R8
@@ -453,6 +516,9 @@ researchh:
 	bib: bib3x
 		Start: 0
 		Length: *
+	icon: DATA.R8
+		Start: 4100
+		Offset: -30,-24
 
 researcho:
 	idle: DATA.R8
@@ -472,6 +538,9 @@ researcho:
 	bib: bib3x
 		Start: 0
 		Length: *
+	icon: DATA.R8
+		Start: 4101
+		Offset: -30,-24
 
 palacea:
 	idle: DATA.R8
@@ -487,6 +556,9 @@ palacea:
 	bib: bib3x
 		Start: 0
 		Length: *
+	icon: DATA.R8
+		Start: 4102
+		Offset: -30,-24
 
 lighta:
 	idle: DATA.R8
@@ -521,6 +593,9 @@ lighta:
 	bib: bib3x
 		Start: 0
 		Length: *
+	icon: DATA.R8
+		Start: 4081
+		Offset: -30,-24
 
 heavya:
 	idle: DATA.R8
@@ -555,6 +630,9 @@ heavya:
 	bib: bib3x
 		Start: 0
 		Length: *
+	icon: DATA.R8
+		Start: 4087
+		Offset: -30,-24
 
 conyardh:
 	idle: DATA.R8
@@ -578,6 +656,9 @@ conyardh:
 	bib: bib3x # TODO: read this from BLOXBAT.R8
 		Start: 0
 		Length: *
+	icon: DATA.R8
+		Start: 4047
+		Offset: -30,-24
 
 starporth:
 	idle: DATA.R8
@@ -605,6 +686,9 @@ starporth:
 	bib: bib3x
 		Start: 0
 		Length: *
+	icon: DATA.R8
+		Start: 4093
+		Offset: -30,-24
 
 pwrh:
 	idle: DATA.R8
@@ -624,6 +708,9 @@ pwrh:
 	bib: bib2x
 		Start: 0
 		Length: *
+	icon: DATA.R8
+		Start: 4057
+		Offset: -30,-24
 
 barrh:
 	idle: DATA.R8
@@ -639,6 +726,9 @@ barrh:
 	bib: bib2x
 		Start: 0
 		Length: *
+	icon: DATA.R8
+		Start: 4060
+		Offset: -30,-24
 
 radarh:
 	idle: DATA.R8
@@ -658,6 +748,9 @@ radarh:
 	bib: bib3x
 		Start: 0
 		Length: *
+	icon: DATA.R8
+		Start: 4073
+		Offset: -30,-24
 
 refh:
 	idle: DATA.R8
@@ -680,6 +773,9 @@ refh:
 	bib: bib3x
 		Start: 0
 		Length: *
+	icon: DATA.R8
+		Start: 4067
+		Offset: -30,-24
 
 siloh:
 	idle: DATA.R8
@@ -694,6 +790,9 @@ siloh:
 		Start: 4313
 		Length: 14
 		Offset: -16,16
+	icon: DATA.R8
+		Start: 4085
+		Offset: -30,-24
 
 hightechh:
 	idle: DATA.R8
@@ -713,6 +812,9 @@ hightechh:
 	bib: bib3x
 		Start: 0
 		Length: *
+	icon: DATA.R8
+		Start: 4079
+		Offset: -30,-24
 
 palaceh:
 	idle: DATA.R8
@@ -736,6 +838,9 @@ palaceh:
 	bib: bib3x
 		Start: 0
 		Length: *
+	icon: DATA.R8
+		Start: 4103
+		Offset: -30,-24
 
 lighth:
 	idle: DATA.R8
@@ -770,6 +875,9 @@ lighth:
 	bib: bib3x
 		Start: 0
 		Length: *
+	icon: DATA.R8
+		Start: 4082
+		Offset: -30,-24
 
 heavyh:
 	idle: DATA.R8
@@ -804,6 +912,9 @@ heavyh:
 	bib: bib3x
 		Start: 0
 		Length: *
+	icon: DATA.R8
+		Start: 4088
+		Offset: -30,-24
 
 conyardo:
 	idle: DATA.R8
@@ -827,6 +938,9 @@ conyardo:
 	bib: bib3x # TODO: read this from BLOXBAT.R8
 		Start: 0
 		Length: *
+	icon: DATA.R8
+		Start: 4048
+		Offset: -30,-24
 
 starporto:
 	idle: DATA.R8
@@ -853,6 +967,9 @@ starporto:
 	bib: bib3x
 		Start: 0
 		Length: *
+	icon: DATA.R8
+		Start: 4094
+		Offset: -30,-24
 
 pwro:
 	idle: DATA.R8
@@ -873,6 +990,9 @@ pwro:
 	bib: bib2x
 		Start: 0
 		Length: *
+	icon: DATA.R8
+		Start: 4058
+		Offset: -30,-24
 
 barro:
 	idle: DATA.R8
@@ -888,6 +1008,9 @@ barro:
 	bib: bib2x
 		Start: 0
 		Length: *
+	icon: DATA.R8
+		Start: 4061
+		Offset: -30,-24
 
 radaro:
 	idle: DATA.R8
@@ -907,6 +1030,9 @@ radaro:
 	bib: bib3x
 		Start: 0
 		Length: *
+	icon: DATA.R8
+		Start: 4074
+		Offset: -30,-24
 
 refo:
 	idle: DATA.R8
@@ -929,6 +1055,9 @@ refo:
 	bib: bib3x
 		Start: 0
 		Length: *
+	icon: DATA.R8
+		Start: 4068
+		Offset: -30,-24
 
 siloo:
 	idle: DATA.R8
@@ -943,6 +1072,9 @@ siloo:
 		Start: 4313
 		Length: 14
 		Offset: -16,16
+	icon: DATA.R8
+		Start: 4086
+		Offset: -30,-24
 
 hightecho:
 	idle: DATA.R8
@@ -962,6 +1094,9 @@ hightecho:
 	bib: bib3x
 		Start: 0
 		Length: *
+	icon: DATA.R8
+		Start: 4080
+		Offset: -30,-24
 
 palaceo:
 	idle: DATA.R8
@@ -977,6 +1112,9 @@ palaceo:
 	bib: bib3x
 		Start: 0
 		Length: *
+	icon: DATA.R8
+		Start: 4104
+		Offset: -30,-24
 
 lighto:
 	idle: DATA.R8
@@ -1007,6 +1145,9 @@ lighto:
 	bib: bib3x
 		Start: 0
 		Length: *
+	icon: DATA.R8
+		Start: 4083
+		Offset: -30,-24
 
 heavyo:
 	idle: DATA.R8
@@ -1041,6 +1182,9 @@ heavyo:
 	bib: bib3x
 		Start: 0
 		Length: *
+	icon: DATA.R8
+		Start: 4089
+		Offset: -30,-24
 
 palacec: # TODO: unused
 	idle: DATA.R8
@@ -1052,6 +1196,8 @@ palacec: # TODO: unused
 	bib: bib3x
 		Start: 0
 		Length: *
+	icon: palacecicon
+		Start: 0
 
 starportc: # TODO: unused
 	idle: DATA.R8
@@ -1078,6 +1224,9 @@ starportc: # TODO: unused
 	bib: bib3x
 		Start: 0
 		Length: *
+	icon: DATA.R8 # TODO: blank
+		Start: 4020
+		Offset: -30,-24
 
 heavyc: # TODO: unused
 	idle: DATA.R8
@@ -1112,6 +1261,9 @@ heavyc: # TODO: unused
 	bib: bib3x
 		Start: 0
 		Length: *
+	icon: DATA.R8 # TODO: blank
+		Start: 4020
+		Offset: -30,-24
 
 conyardc: # TODO: unused
 	idle: DATA.R8
@@ -1135,8 +1287,17 @@ conyardc: # TODO: unused
 	bib: bib3x # TODO: read this from BLOXBAT.R8
 		Start: 0
 		Length: *
+	icon: DATA.R8
+		Start: 4049
+		Offset: -30,-24
 
 plates: # TODO: unused
 	idle: DATA.R8
 		Start: 3008
 		Length: 6
+	4-plates-icon: DATA.R8
+		Start: 4050
+		Offset: -30,-24
+	6-plates-icon: DATA.R8
+		Start: 4053
+		Offset: -30,-24

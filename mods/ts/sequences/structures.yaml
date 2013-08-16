@@ -46,6 +46,8 @@ gacnst:
 	critical-idle-front: gtcnst_b
 		Start: 0
 		Length: 10
+	icon: facticon
+		Start: 0
 
 gapowr:
 	idle: gtpowr
@@ -85,6 +87,8 @@ gapowr:
 		Start: 0
 		Length: 20
 		ShadowStart: 20
+	icon: powricon
+		Start: 0
 
 gapile:
 	idle: gtpile
@@ -122,6 +126,8 @@ gapile:
 		Start: 0
 		Length: 20
 		ShadowStart: 20
+	icon: brrkicon
+		Start: 0
 
 gaweap:
 	idle: gtweap
@@ -150,6 +156,8 @@ gaweap:
 		Length: 20
 		Tick: 80
 		ShadowStart: 20
+	icon: weapicon
+		Start: 0
 # TODO: gtweap_1 & gtweapbb & gtweap_a & gtweap_b & gtweap_c are unused
 
 gasand: # TODO frame order (horizontal seems busted)
@@ -161,6 +169,8 @@ gasand: # TODO frame order (horizontal seems busted)
 		Start: 16
 		Length: 16
 		ShadowStart: 48
+	icon: sbagicon
+		Start: 0
 
 gatick:
 	idle:
@@ -244,6 +254,8 @@ gaspot:
 		Start: 0
 		Length: 14
 		ShadowStart: 14
+	icon: spoticon
+		Start: 0
 
 gahpad:
 	idle:
@@ -283,3 +295,5 @@ gahpad:
 		Start: 0
 		Length: 18
 		ShadowStart: 18
+	icon: heliicon
+		Start: 0

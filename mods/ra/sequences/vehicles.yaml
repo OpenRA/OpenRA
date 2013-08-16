@@ -2,6 +2,8 @@ mcv:
 	idle:
 		Start: 0
 		Facings: 32
+	icon: mcvicon
+		Start: 0
 
 mcvhusk:
 	idle:
@@ -12,6 +14,8 @@ truk:
 	idle:
 		Start: 0
 		Facings: 32
+	icon: trukicon
+		Start: 0
 
 harv:
 	idle:
@@ -27,6 +31,8 @@ harv:
 	dock-loop:
 		Start: 104
 		Length: 7
+	icon: harvicon
+		Start: 0
 
 harvhalf:
 	idle:
@@ -78,6 +84,8 @@ hhusk2:
 	muzzle: gunfire2
 		Start: 0
 		Length: 2
+	icon: 1tnkicon
+		Start: 0
 
 2tnk:
 	idle:
@@ -89,6 +97,8 @@ hhusk2:
 	muzzle: gunfire2
 		Start: 0
 		Length: 5
+	icon: 2tnkicon
+		Start: 0
 
 3tnk:
 	idle:
@@ -100,6 +110,8 @@ hhusk2:
 	muzzle: gunfire2
 		Start: 0
 		Length: 5
+	icon: 3tnkicon
+		Start: 0
 
 4tnk:
 	idle:
@@ -111,6 +123,8 @@ hhusk2:
 	muzzle: gunfire2
 		Start: 0
 		Length: 5
+	icon: 4tnkicon
+		Start: 0
 
 v2rl:
 	idle:
@@ -125,6 +139,8 @@ v2rl:
 	empty-aim:
 		Start: 72
 		Facings: 8
+	icon: v2rlicon
+		Start: 0
 
 arty:
 	idle:
@@ -133,6 +149,8 @@ arty:
 	muzzle: gunfire2
 		Start: 0
 		Length: 5
+	icon: artyicon
+		Start: 0
 
 jeep:
 	idle:
@@ -148,6 +166,8 @@ jeep:
 	unload:
 		Start: 0
 		Facings: 32
+	icon: jeepicon
+		Start: 0
 
 apc:
 	idle:
@@ -162,11 +182,15 @@ apc:
 		Length: 3
 	unload:
 		Start: 32
+	icon: apcicon
+		Start: 0
 
 mnly:
 	idle:
 		Start: 0
 		Facings: 32
+	icon: mnlyicon
+		Start: 0
 
 mrj:
 	idle:
@@ -175,6 +199,8 @@ mrj:
 	spinner:
 		Start: 32
 		Length: 32
+	icon: mrjicon
+		Start: 0
 
 mgg:
 	idle:
@@ -186,6 +212,8 @@ mgg:
 	spinner-idle:
 		Start: 32
 		Length: 1
+	icon: mggicon
+		Start: 0
 
 ttnk:
 	idle:
@@ -194,6 +222,8 @@ ttnk:
 	spinner:
 		Start: 32
 		Length: 32
+	icon: ttnkicon
+		Start: 0
 
 ftrk:
 	idle:
@@ -205,11 +235,15 @@ ftrk:
 	muzzle: gunfire2
 		Start: 0
 		Length: 2
+	icon: ftrkicon
+		Start: 0
 
 dtrk:
 	idle:
 		Start: 0
 		Facings: 32
+	icon: dtrkicon
+		Start: 0
 
 ctnk:
 	idle:
@@ -218,3 +252,5 @@ ctnk:
 	muzzle: gunfire2
 		Start: 0
 		Length: 5
+	icon: ctnkicon
+		Start: 0

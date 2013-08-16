@@ -4,7 +4,6 @@ MCV:
 		Cost: 2000
 	Tooltip:
 		Name: Mobile Construction Vehicle
-		Icon: mcvicnh
 		Description: Deploys into another Construction Yard.\n  Unarmed
 	Buildable:
 		BuildPaletteOrder: 100
@@ -45,7 +44,6 @@ HARV:
 		Cost: 1200
 	Tooltip:
 		Name: Harvester
-		Icon: harvicnh
 		Description: Collects Tiberium for processing.\n  Unarmed
 	Buildable:
 		BuildPaletteOrder: 10
@@ -83,7 +81,6 @@ APC:
 		Cost: 600
 	Tooltip:
 		Name: APC
-		Icon: apcicnh
 		Description: Armored infantry transport and mobile AA\n  Strong vs Aircraft, Vehicles\n  Weak vs Infantry
 	Buildable:
 		BuildPaletteOrder: 30
@@ -132,7 +129,6 @@ ARTY:
 		Cost: 600
 	Tooltip:
 		Name: Artillery
-		Icon:artyicnh
 		Description: Long-range artillery.\n  Strong vs Infantry, Vehicles\n  Weak vs Tanks, Aircraft
 	Buildable:
 		BuildPaletteOrder: 60
@@ -167,7 +163,6 @@ FTNK:
 		Cost: 800
 	Tooltip:
 		Name: Flame Tank
-		Icon: ftnkicnh
 		Description: Heavily armored flame-throwing vehicle.\n  Strong vs Infantry, Buildings, Vehicles\n  Weak vs Aircraft
 	Buildable:
 		BuildPaletteOrder: 50
@@ -201,7 +196,6 @@ BGGY:
 		Cost: 300
 	Tooltip:
 		Name: Nod Buggy
-		Icon: bggyicnh
 		Description: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry, Vehicles\n  Weak vs Tanks, Aircraft
 	Buildable:
 		BuildPaletteOrder: 20
@@ -236,7 +230,6 @@ BIKE:
 		Cost: 500
 	Tooltip:
 		Name: Recon Bike
-		Icon: bikeicnh
 		Description: Fast scout vehicle, armed with \nrockets.\n  Strong vs Vehicles, Aircraft\n  Weak vs Infantry
 	Buildable:
 		BuildPaletteOrder: 30
@@ -274,7 +267,6 @@ JEEP:
 		Cost: 400
 	Tooltip:
 		Name: Hum-Vee
-		Icon: jeepicnh
 		Description: Fast scout & anti-infantry vehicle.\n  Strong vs Infantry, Vehicles\n  Weak vs Tanks, Aircraft
 	Buildable:
 		BuildPaletteOrder: 20
@@ -309,7 +301,6 @@ LTNK:
 		Cost: 600
 	Tooltip:
 		Name: Light Tank
-		Icon: ltnkicnh
 		Description: Fast, light tank.\n  Strong vs Vehicles, Tanks\n  Weak vs Infantry, Aircraft
 	Buildable:
 		BuildPaletteOrder: 40
@@ -348,7 +339,6 @@ MTNK:
 		Cost: 800
 	Tooltip:
 		Name: Med. Tank
-		Icon: mtnkicnh
 		Description: General-Purpose GDI Tank.\n  Strong vs Tanks, Vehicles\n  Weak vs Infantry, Aircraft
 	Buildable:
 		BuildPaletteOrder: 40
@@ -388,7 +378,6 @@ HTNK:
 		Cost: 1500
 	Tooltip:
 		Name: Mammoth Tank
-		Icon: htnkicnh
 		Description: Heavily armored GDI Tank.\n  Strong vs Everything
 	Buildable:
 		BuildPaletteOrder: 60
@@ -440,7 +429,6 @@ MSAM:
 		Cost: 1200
 	Tooltip:
 		Name: MLRS
-		Icon: msamicnh
 		Description: Long range rocket artillery.\n  Strong vs all ground units.
 	Buildable:
 		BuildPaletteOrder: 50
@@ -475,7 +463,6 @@ MLRS:
 		Cost: 600
 	Tooltip:
 		Name: Mobile S.A.M.
-		Icon: mlrsicnh
 		Description: Powerful anti-air unit.\nCannot attack ground units.
 	Buildable:
 		BuildPaletteOrder: 70
@@ -516,7 +503,6 @@ STNK:
 		Cost: 900
 	Tooltip:
 		Name: Stealth Tank
-		Icon: stnkicnh
 		Description: Long-range missile tank that can cloak.\nHas weak armor. Can be spotted by infantry.\n  Strong vs Vehicles, Tanks, Aircraft\n  Weak vs Infantry.
 	Buildable:
 		BuildPaletteOrder: 90
@@ -554,7 +540,6 @@ MHQ:
 		Cost: 1000
 	Tooltip:
 		Name: Mobile HQ
-		Icon: mhqicnh
 		Description: Base of operations
 	Health:
 		HP: 200

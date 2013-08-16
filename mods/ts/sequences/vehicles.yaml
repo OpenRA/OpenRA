@@ -1,3 +1,95 @@
+mcv:
+	icon: mcvicon
+		Start: 0
+
+apc:
+	icon: apcicon
+		Start: 0
+
+harv:
+	icon: harvicon
+		Start: 0
+
+hvr:
+	icon: hovricon
+		Start: 0
+
+4tnk:
+	icon: xxicon
+		Start: 0
+
+truckb:
+	icon: xxicon
+		Start: 0
+
+lpst:
+	icon: lpsticon
+		Start: 0
+
+icbm:
+	icon: xxicon
+		Start: 0
+
+repair:
+	icon: rboticon
+		Start: 0
+
+art2:
+	icon: artyicon
+		Start: 0
+
+weed:
+	icon: weedicon
+		Start: 0
+
+bus:
+	icon: xxicon
+		Start: 0
+
+pick:
+	icon: xxicon
+		Start: 0
+
+car:
+	icon: xxicon
+		Start: 0
+
+wini:
+	icon: xxicon
+		Start: 0
+
+hmec:
+	icon: hmecicon
+		Start: 0
+
+bike:
+	icon: cyclicon
+		Start: 0
+
+bggy:
+	icon: bggyicon
+		Start: 0
+
+sapc:
+	icon: sapcicon
+		Start: 0
+
+subtank:
+	icon: subticon
+		Start: 0
+
+sonic:
+	icon: soniicon
+		Start: 0
+
+ttnk:
+	icon: tickicon
+		Start: 0
+
+stnk:
+	icon: stnkicon
+		Start: 0
+
 mmch:
 	stand:
 		Start: 0
@@ -12,6 +104,8 @@ mmch:
 	turret:
 		Start: 120
 		Facings: -32
+	icon: mmchicon
+		Start: 0
 
 gghunt:
 	idle:
@@ -19,6 +113,8 @@ gghunt:
 		Facings: 1
 		Length: 8
 		ShadowStart: 8
+	icon: seekicon
+		Start: 0
 
 smech:
 	stand: # TODO: slightly glitchy
@@ -35,3 +131,5 @@ smech:
 		Length: 4
 		Facings: -8
 		ShadowStart: 240
+	icon: smchicon
+		Start: 0

@@ -448,7 +448,6 @@ SNIPER:
 	Valued:
 		Cost: 700
 	Tooltip:
-		Icon: snipericon
 		Name: Sniper
 		Description: Elite sniper infantry unit.\n  Strong vs Infantry\n  Weak vs Vehicles
 	Buildable:
@@ -492,7 +491,6 @@ Zombie:
 	Valued:
 		Cost: 100
 	Tooltip:
-		Icon: zombicon
 		Name: Zombie
 		Description: Slow undead. Attacks in close combat.
 	Buildable:
@@ -519,7 +517,6 @@ Ant:
 	Valued:
 		Cost: 300
 	Tooltip:
-		Icon: anticon
 		Name: Giant Ant
 		Description: Irradiated insect that grew oversize.
 	Buildable:

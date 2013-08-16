@@ -23,6 +23,16 @@ BARRH:
 		Owner: harkonnen
 	-RepairsUnits:
 
+REPAIRH:
+	Inherits: ^REPAIR
+	Buildable:
+		Owner: harkonnen
+
+RESEARCHH:
+	Inherits: ^RESEARCH
+	Buildable:
+		Owner: harkonnen
+
 SILOH:
 	Inherits: ^SILO
 	Buildable:
@@ -97,38 +107,6 @@ MCVH.starport:
 	Valued:
 		Cost: 2500
 
-#TRIKEH:
-#	Inherits: ^TRIKE
-#	Buildable:
-#		Owner: harkonnen
-#	Valued:
-#		Cost: 250
-#	Tooltip:
-#		Name: Scout Quad
-#		Description: Heavy Scout\n Strong vs Infantry
-#		Icon: quadicon
-#	Health:
-#		HP: 125
-#	Mobile:
-#		ROT: 9
-#		Speed: 11
-#	Armament:
-#		Weapon: M60mg
-#		LocalOffset: 43,0,128
-#	AttackFrontal:
-#	RenderUnit:
-#		Image: QUAD
-
-#TRIKEH.starport:
-#	Inherits: ^TRIKE
-#	Buildable:
-#		Owner: harkonnen
-#		Queue: Starport
-#	Valued:
-#		Cost: 149
-#	RenderUnit:
-#		Image: TRIKE
-
 CARRYALLH:
 	Inherits: ^CARRYALL
 	RenderUnit:
@@ -139,16 +117,8 @@ CARRYALLH.starport:
 	Valued:
 		Cost: 1500
 
-QUADH:
-	Inherits: QUAD
-	Buildable:
-		-Prerequisites:
-		Owner: harkonnen
-
 COMBATH:
 	Inherits: ^COMBAT
-	Tooltip:
-		Icon: combathicon
 	Buildable:
 		Owner: harkonnen
 	Mobile:
@@ -166,8 +136,6 @@ COMBATH:
 
 COMBATH.Husk:
 	Inherits: ^COMBAT.Husk
-	Tooltip:
-		Icon: combathicon
 	RenderUnit:
 		Image: COMBATH
 
@@ -183,7 +151,7 @@ DEVAST:
 	Buildable:
 		Queue: Armor
 		BuildPaletteOrder: 100
-		Prerequisites: Ix
+		Prerequisites: Research
 		Owner: harkonnen
 		Hotkey: d
 	Valued:
@@ -191,7 +159,6 @@ DEVAST:
 	Tooltip:
 		Name: Devastator
 		Description: Super Heavy Tank\n  Strong vs Tanks\n  Weak vs Artillery, Aircraft
-		Icon: devasticon
 	Health:
 		HP: 650
 	Armor:
@@ -220,8 +187,6 @@ DEVAST.Husk:
 	Inherits: ^Husk
 	Health:
 		HP: 125
-	Tooltip:
-		Icon: devasticon
 	RenderUnit:
 		Image: DEVAST
 

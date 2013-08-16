@@ -11,7 +11,6 @@ FACT:
 	Tooltip:
 		Name: Construction Yard
 		Description: Builds structures
-		Icon: facticnh
 	Building:
 		Power: 15
 		Footprint: xxx xxx
@@ -55,7 +54,6 @@ NUKE:
 		Cost: 300
 	Tooltip:
 		Name: Power Plant
-		Icon: nukeicnh
 		Description: Generates power
 	ProvidesCustomPrerequisite:
 		Prerequisite: anypower
@@ -79,7 +77,6 @@ NUK2:
 		Cost: 500
 	Tooltip:
 		Name: Advanced Power Plant
-		Icon:nuk2icnh
 		Description: Provides more power, cheaper than the \nstandard Power Plant
 	ProvidesCustomPrerequisite:
 		Prerequisite: anypower
@@ -103,7 +100,6 @@ PROC:
 		Cost: 1500
 	Tooltip:
 		Name: Tiberium Refinery
-		Icon: procicnh
 		Description: Processes raw Tiberium\ninto useable resources
 	Buildable:
 		BuildPaletteOrder: 20
@@ -142,7 +138,6 @@ SILO:
 		Cost: 300
 	Tooltip:
 		Name: Tiberium Silo
-		Icon: siloicnh
 		Description: Stores processed Tiberium
 	Buildable:
 		Queue: Defense
@@ -174,7 +169,6 @@ PYLE:
 		Cost: 300
 	Tooltip:
 		Name: Barracks
-		Icon: pyleicnh
 		Description: Trains infantry
 	ProvidesCustomPrerequisite:
 		Prerequisite: barracks
@@ -213,7 +207,6 @@ HAND:
 		Cost: 300
 	Tooltip:
 		Name: Hand of Nod
-		Icon: handicnh
 		Description: Trains infantry
 	ProvidesCustomPrerequisite:
 		Prerequisite: barracks
@@ -249,7 +242,6 @@ AFLD:
 		Cost: 2000
 	Tooltip:
 		Name: Airstrip
-		Icon: afldicnh
 		Description: Provides a dropzone\nfor vehicle reinforcements
 	ProvidesCustomPrerequisite:
 		Prerequisite: vehicleproduction
@@ -287,7 +279,6 @@ WEAP:
 		Cost: 2000
 	Tooltip:
 		Name: Weapons Factory
-		Icon: weapicnh
 		Description: Assembly point for\nvehicle reinforcements
 	ProvidesCustomPrerequisite:
 		Prerequisite: vehicleproduction
@@ -326,7 +317,6 @@ HPAD:
 		Cost: 1000
 	Tooltip:
 		Name: Helipad
-		Icon:hpadicnh
 		Description: Produces, rearms and\nrepairs helicopters
 	Buildable:
 		BuildPaletteOrder: 60
@@ -362,7 +352,6 @@ HQ:
 		Cost: 1000
 	Tooltip:
 		Name: Communications Center
-		Icon: hqicnh
 		Description: Provides an overview of the battlefield.\n  Requires power to operate.
 	ProvidesCustomPrerequisite:
 		Prerequisite: anyhq
@@ -399,7 +388,6 @@ FIX:
 		Cost: 500
 	Tooltip:
 		Name: Repair Facility
-		Icon: fixicnh
 		Description: Repairs vehicles
 	Buildable:
 		BuildPaletteOrder: 80
@@ -425,7 +413,6 @@ EYE:
 		Cost: 1800
 	Tooltip:
 		Name: Advanced Communications Center
-		Icon: eyeicnh
 		Description: Provides access to the Ion Cannon.\n  Requires power to operate.
 	ProvidesCustomPrerequisite:
 		Prerequisite: anyhq
@@ -465,7 +452,6 @@ TMPL:
 		Cost: 2000
 	Tooltip:
 		Name: Temple of Nod
-		Icon: tmplicnh
 		Description: Place of worship and secret missile silo.\n  Requires power to operate.
 	ProvidesCustomPrerequisite:
 		Prerequisite: anyhq
@@ -500,7 +486,6 @@ GUN:
 		Cost: 600
 	Tooltip:
 		Name: Turret
-		Icon: gunicnh
 		Description: Anti-Armor base defense.\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
 	Buildable:
 		Queue: Defense
@@ -538,7 +523,6 @@ SAM:
 		Cost: 750
 	Tooltip:
 		Name: SAM Site
-		Icon: samicnh
 		Description: Anti-Air base defense.\n  Strong vs Aircraft\n  Weak vs Infantry, Tanks
 	Buildable:
 		Queue: Defense
@@ -575,7 +559,6 @@ OBLI:
 		Cost: 1500
 	Tooltip:
 		Name: Obelisk of Light
-		Icon:obliicnh
 		Description: Advanced base defense.\n  Requires power to operate.\n  Strong vs Tanks, Infantry\n  Weak vs Aircraft
 	Buildable:
 		Queue: Defense
@@ -616,7 +599,6 @@ GTWR:
 		Cost: 500
 	Tooltip:
 		Name: Guard Tower
-		Icon: gtwricnh
 		Description: Basic defensive structure.\n  Strong vs Infantry\n  Weak vs Tanks, Aircraft
 	Buildable:
 		Queue: Defense
@@ -652,7 +634,6 @@ ATWR:
 		Cost: 1000
 	Tooltip:
 		Name: Advanced Guard Tower
-		Icon: atwricnh
 		Description: Anti-armor defensive structure.\n  Strong vs Light Vehicles, Tanks\n  Weak vs Infantry
 	Buildable:
 		Queue: Defense
@@ -694,7 +675,6 @@ SBAG:
 		Value: 0
 	Tooltip:
 		Name: Sandbag Barrier
-		Icon:sbagicnh
 		Description: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
 	Buildable:
 		Queue: Defense
@@ -714,7 +694,6 @@ CYCL:
 		Value: 0
 	Tooltip:
 		Name: Chain Link Barrier
-		Icon:cyclicnh
 		Description: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
 	Buildable:
 		Queue: Defense
@@ -734,7 +713,6 @@ BRIK:
 		Value: 0
 	Tooltip:
 		Name: Concrete Barrier
-		Icon:brikicnh
 		Description: Stop units and blocks enemy fire.
 	Buildable:
 		Queue: Defense

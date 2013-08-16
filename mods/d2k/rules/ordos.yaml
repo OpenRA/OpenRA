@@ -22,6 +22,16 @@ BARRO:
 	Buildable:
 		Owner: ordos
 
+REPAIRO:
+	Inherits: ^REPAIR
+	Buildable:
+		Owner: ordos
+
+RESEARCHO:
+	Inherits: ^RESEARCH
+	Buildable:
+		Owner: ordos
+
 SILOO:
 	Inherits: ^SILO
 	Buildable:
@@ -93,8 +103,6 @@ MCVO.starport:
 
 COMBATO:
 	Inherits: ^COMBAT
-	Tooltip:
-		Icon: combatoicon
 	Buildable:
 		Owner: ordos
 	RevealsShroud:
@@ -113,8 +121,6 @@ COMBATO:
 
 COMBATO.Husk:
 	Inherits: ^COMBAT.Husk
-	Tooltip:
-		Icon: combatoicon
 	RenderUnit:
 		Image: COMBATO
 
@@ -125,31 +131,44 @@ COMBATO.starport:
 	Valued:
 		Cost: 875
 
-TRIKEO:
-	Inherits: ^TRIKE
+RAIDER:
+	Inherits: ^Vehicle
 	Buildable:
+		Queue: Vehicle
+		BuildPaletteOrder: 10
+		Hotkey: w
 		Owner: ordos
 	Valued:
 		Cost: 300
 	Tooltip:
 		Name: Raider Trike
 		Description: Improved Scout\n Strong vs Infantry, Light Vehicles
-		Icon: raidericon
+	Selectable:
+		Bounds: 24,24
 	Health:
 		HP: 110
+	Armor:
+		Type: Light
 	Mobile:
 		ROT: 10
 		Speed: 14
+	RevealsShroud:
+		Range: 7
 	RenderUnit:
-		Image: RAIDER
+	WithMuzzleFlash:
 	Armament:
 		Weapon: HMGo
 		LocalOffset: 256,0,128
 	AttackFrontal:
+	AutoTarget:
+	Explodes:
+		Weapon: UnitExplodeTiny
+		EmptyWeapon: UnitExplodeTiny
 
-STEALTHTRIKE:
-	Inherits: ^TRIKE
+STEALTHRAIDER:
+	Inherits: ^Vehicle
 	Buildable:
+		Queue: Vehicle
 		Prerequisites: Hitech
 		Owner: ordos
 		BuildPaletteOrder: 30
@@ -158,18 +177,26 @@ STEALTHTRIKE:
 	Tooltip:
 		Name: Stealth Raider Trike
 		Description: Invisible Raider Trike\n Strong vs Infantry, Light Vehicles
-		Icon: raidersicon
+	Selectable:
+		Bounds: 24,24
 	Health:
 		HP: 110
+	Armor:
+		Type: Light
 	Mobile:
 		ROT: 10
 		Speed: 14
+	RevealsShroud:
+		Range: 7
 	RenderUnit:
-		Image: RAIDER
+	WithMuzzleFlash:
 	Armament:
 		Weapon: HMGo
 		LocalOffset: 256,0,128
 	AttackFrontal:
+	Explodes:
+		Weapon: UnitExplodeTiny
+		EmptyWeapon: UnitExplodeTiny
 	Cloak:
 		InitialDelay: 45
 		CloakDelay: 90
@@ -177,16 +204,6 @@ STEALTHTRIKE:
 		UncloakSound: STEALTH2.WAV
 	AutoTarget:
 		InitialStance: HoldFire
-
-#TRIKEO.starport:
-#	Inherits: ^TRIKE
-#	Buildable:
-#		Queue: Starport
-#		Owner: ordos
-#	RenderUnit:
-#		Image: TRIKE
-#	Valued:
-#		Cost: 149
 
 CARRYALLO:
 	Inherits: ^CARRYALL
@@ -205,7 +222,6 @@ DEVIATORTANK:
 	Tooltip:
 		Name: Deviator
 		Description: Causes no actual damage\nFires a warhead which changes allegiances\n but does not effect buildings or tanks
-		Icon: deviatortankicon
 	Buildable:
 		Queue: Armor
 		BuildPaletteOrder: 50
@@ -238,8 +254,6 @@ DEVIATORTANK:
 
 DEVIATORTANK.Husk:
 	Inherits: ^Husk
-	Tooltip:
-		Icon: deviatortankicon
 	RenderUnit:
 		Image: DEVIATORTANK
 

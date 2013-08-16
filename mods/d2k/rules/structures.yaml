@@ -330,12 +330,15 @@
 		Prerequisite: Starport
 
 WALL:
+	Inherits: ^WALL
+	Buildable:
+		Owner:
+
+^WALL:
 	Buildable:
 		Queue: Building
 		Prerequisites: Barracks
-		Owner: atreides, harkonnen, ordos
 		BuildPaletteOrder: 60
-		#Hotkey: g
 	SoundOnDamageTransition:
 		DamagedSound:
 		DestroyedSound: EXPLSML4.WAV
@@ -346,7 +349,6 @@ WALL:
 	Tooltip:
 		Name: Concrete Wall
 		Description: Stop units and blocks enemy fire.
-		Icon: wallaicon
 	AppearsOnRadar:
 	Building:
 		BuildSounds: CHUNG.WAV
@@ -361,15 +363,14 @@ WALL:
 		CrushClasses: Concretewall
 	LineBuild:
 		Range: 8
-	#SelectionDecorations:
-	#Selectable:
-	#	Priority: 1
+#	SelectionDecorations:
+#	Selectable:
+#		Priority: 1
 	TargetableBuilding:
 		TargetTypes: Ground, C4
 	RenderBuildingWall:
 		HasMakeAnimation: false
 		Image: walla
-	#GivesExperience:
 	EditorAppearance:
 		RelativeToTopLeft: yes
 	AutoTargetIgnore:
@@ -379,12 +380,11 @@ WALL:
 	Guardable:
 	BodyOrientation:
 
-GUNTOWER:
+^GUNTOWER:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
 		Prerequisites: Barracks
-		Owner: atreides, harkonnen, ordos
 		BuildPaletteOrder: 90
 		Hotkey: g
 	Valued:
@@ -392,7 +392,6 @@ GUNTOWER:
 	Tooltip:
 		Name: Gun Tower
 		Description: Defensive structure\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft
-		Icon: guntoweraicon
 	Building:
 		Power: -20
 		Adjacent: 4
@@ -421,26 +420,15 @@ GUNTOWER:
 		LocalOffset: 469,0,299
 	AttackTurreted:
 	AutoTarget:
-	LeavesHusk:
-		HuskActor: Guntower.Husk
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 5
 
-GUNTOWER.Husk:
-	Inherits: ^TowerHusk
-	Tooltip:
-		Name: Destroyed Tower
-		Icon: guntoweraicon
-	RenderUnit:
-		Image: guntowera
-
-ROCKETTOWER:
+^ROCKETTOWER:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
 		Prerequisites: Outpost
-		Owner: atreides, harkonnen, ordos
 		BuildPaletteOrder: 120
 		Hotkey: m
 	Valued:
@@ -448,7 +436,6 @@ ROCKETTOWER:
 	Tooltip:
 		Name: Rocket Tower
 		Description: Defensive structure\n  Strong vs Infantry, Aircraft\n  Weak vs Tanks\n\n  Requires power to operate
-		Icon: rockettoweraicon
 	Building:
 		Power: -30
 		Adjacent: 4
@@ -467,7 +454,6 @@ ROCKETTOWER:
 	RenderRangeCircle:
 	RenderBuilding:
 		HasMakeAnimation: false
-		Image: rockettowera
 	WithTurret:
 	Armament:
 		Weapon: TowerMissile
@@ -479,26 +465,15 @@ ROCKETTOWER:
 	AutoTarget:
 	RequiresPower:
 	CanPowerDown:
-	LeavesHusk:
-		HuskActor: Rockettower.Husk
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 6
 
-ROCKETTOWER.Husk:
-	Inherits: ^TowerHusk
-	Tooltip:
-		Name: Destroyed Tower
-		Icon: rockettoweraicon
-	RenderUnit:
-		Image: rockettowera
-
-REPAIR:
+^REPAIR:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
 		Prerequisites: Heavy
-		Owner: atreides, harkonnen, ordos
 		BuildPaletteOrder: 130
 		Hotkey: e
 	Valued:
@@ -506,7 +481,6 @@ REPAIR:
 	Tooltip:
 		Name: Repair Pad
 		Description: Repairs vehicles\n Allows construction of MCVs
-		Icon: repairaicon
 	Building:
 		Power: -10
 		Footprint: =x= =x= ===
@@ -523,8 +497,8 @@ REPAIR:
 		ValuePercentage: 50
 	RallyPoint:
 		RallyPoint: 1,3
-	RenderBuilding:
-		Image: repaira
+	ProvidesCustomPrerequisite:
+		Prerequisite: Repair
 
 ^HIGHTECH:
 	Inherits: ^Building
@@ -554,12 +528,11 @@ REPAIR:
 	ProvidesCustomPrerequisite:
 		Prerequisite: Hitech
 
-RESEARCH:
+^RESEARCH:
 	Inherits: ^Building
 	Buildable:
 		Queue: Building
 		Prerequisites: Hitech
-		Owner: atreides, harkonnen, ordos
 		BuildPaletteOrder: 140
 		Hotkey: v
 	Selectable:
@@ -569,7 +542,6 @@ RESEARCH:
 	Tooltip:
 		Name: IX Research Center
 		Description: Unlocks experimental tanks\n  Special Ability: Carryall Combat Drop
-		Icon: researchaicon
 	ParatroopersPower:
 		Image: carryallicon
 		UnitType: carryall.infantry
@@ -593,14 +565,12 @@ RESEARCH:
 	RevealsShroud:
 		Range: 4
 	ProvidesCustomPrerequisite:
-		Prerequisite: Ix
-	RenderBuilding:
-		Image: researcha
+		Prerequisite: Research
 
 ^PALACE:
 	Inherits: ^Building
 	Buildable:
-		Prerequisites: Ix
+		Prerequisites: Research
 		Queue: Building
 		BuildPaletteOrder: 150
 		Hotkey: p
@@ -626,7 +596,7 @@ RESEARCH:
 	DetectCloaked:
 		Range: 4
 	ProvidesCustomPrerequisite:
-		Prerequisite: TPal
+		Prerequisite: Palace
 
 SIETCH:
 	Inherits: ^Building
@@ -689,6 +659,10 @@ HITECH:
 	Tooltip:
 		Name: High-Tech Facility
 
-IX:
+REPAIR:
 	Tooltip:
-		Name: IX Research Center
+		Name: Repair Pad
+
+RESEARCH:
+	Tooltip:
+		Name: Ix Research Center

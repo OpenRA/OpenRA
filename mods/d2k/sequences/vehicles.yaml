@@ -2,6 +2,9 @@ dmcv:
 	idle: DATA.R8
 		Start: 1795
 		Facings: -32
+	icon: DATA.R8
+		Start: 4023
+		Offset: -30,-24
 
 harvester:
 	idle: DATA.R8
@@ -19,6 +22,9 @@ harvester:
 	dock-loop: DATA.R8
 		Start: 3380
 		Length: 1
+	icon: DATA.R8
+		Start: 4019
+		Offset: -30,-24
 
 trike:
 	idle: DATA.R8
@@ -30,6 +36,9 @@ trike:
 	muzzle: DATA.R8
 		Start: 3839
 		Facings: -32
+	icon: DATA.R8
+		Start: 4041
+		Offset: -30,-24
 
 quad:
 	idle: DATA.R8
@@ -41,6 +50,9 @@ quad:
 	muzzle: DATA.R8
 		Start: 3839
 		Facings: -32
+	icon: DATA.R8
+		Start: 4018
+		Offset: -30,-24
 
 siegetank:
 	idle: DATA.R8
@@ -49,16 +61,25 @@ siegetank:
 	turret: DATA.R8
 		Start: 1891
 		Facings: -32
+	icon: DATA.R8
+		Start: 4026
+		Offset: -30,-24
 
 missiletank:
 	idle: DATA.R8
 		Start: 1603
 		Facings: -32
+	icon: DATA.R8
+		Start: 4024
+		Offset: -30,-24
 
 sonictank:
 	idle: DATA.R8
 		Start: 1827
 		Facings: -32
+	icon: DATA.R8
+		Start: 4027
+		Offset: -30,-24
 
 combata:
 	idle: DATA.R8
@@ -67,6 +88,9 @@ combata:
 	turret: DATA.R8
 		Start: 1859
 		Facings: -32
+	icon: DATA.R8
+		Start: 4020
+		Offset: -30,-24
 
 combath:
 	idle: DATA.R8
@@ -75,6 +99,9 @@ combath:
 	turret: DATA.R8
 		Start: 2115
 		Facings: -32
+	icon: DATA.R8
+		Start: 4021
+		Offset: -30,-24
 
 devast:
 	idle: DATA.R8
@@ -84,6 +111,9 @@ devast:
 		Start: 3807
 		Length: 1
 		Facings: -32
+	icon: DATA.R8
+		Start: 4028
+		Offset: -30,-24
 
 combato:
 	idle: DATA.R8
@@ -92,6 +122,9 @@ combato:
 	turret: DATA.R8
 		Start: 2485
 		Facings: -32
+	icon: DATA.R8
+		Start: 4022
+		Offset: -30,-24
 
 raider:
 	idle: DATA.R8
@@ -103,8 +136,27 @@ raider:
 	muzzle: DATA.R8
 		Start: 3839
 		Facings: -32
+	icon: DATA.R8
+		Start: 4017
+		Offset: -30,-24
+
+stealthraider:
+	idle: DATA.R8
+		Start: 2421
+		Facings: -32
+	unload: DATA.R8
+		Start: 2421
+		Facings: -32
+	muzzle: DATA.R8
+		Start: 3839
+		Facings: -32
+	icon: raidersicon
+		Start: 0
 
 deviatortank:
 	idle: DATA.R8
 		Start: 2389
 		Facings: -32
+	icon: DATA.R8
+		Start: 4025
+		Offset: -30,-24

@@ -10,7 +10,6 @@
 	Tooltip:
 		Name: Mobile Construction Vehicle
 		Description: Deploys into another Construction Yard\n  Unarmed
-		Icon: mcvicon
 	Selectable:
 		Priority: 3
 		Bounds: 42,42
@@ -40,7 +39,6 @@ MCV.Husk:
 		HP: 175
 	Tooltip:
 		Name: Destroyed Mobile Construction Vehicle
-		Icon: missiletankicon
 	RenderUnit:
 		Image: DMCV
 
@@ -57,7 +55,6 @@ HARVESTER:
 	Tooltip:
 		Name: Spice Harvester
 		Description: Collects Spice for processing\n  Unarmed
-		Icon: harvestericon
 	Selectable:
 		Priority: 7
 		Bounds: 42,42
@@ -96,7 +93,6 @@ HARVESTER.Husk:
 		HP: 150
 	Tooltip:
 		Name: Destroyed Spice Harvester
-		Icon: harvestericon
 	RenderUnit:
 		Image: HARVESTER
 
@@ -108,18 +104,18 @@ HARVESTER.starport:
 	Valued:
 		Cost: 1500
 
-^TRIKE:
+TRIKE:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Vehicle
 		BuildPaletteOrder: 10
 		Hotkey: w
+		Owner: atreides, harkonnen
 	Valued:
 		Cost: 250
 	Tooltip:
 		Name: Scout Trike
 		Description: Fast Scout\n Strong vs Infantry
-		Icon: trikeicon
 	Selectable:
 		Bounds: 24,24
 	Health:
@@ -141,18 +137,28 @@ HARVESTER.starport:
 	Explodes:
 		Weapon: UnitExplodeTiny
 		EmptyWeapon: UnitExplodeTiny
-	#Cargo:
-	#	Types: Infantry
-	#	MaxWeight: 1
-	#	PipCount: 1
-	#	UnloadFacing: 220
+#	Cargo:
+#		Types: Infantry
+#		MaxWeight: 1
+#		PipCount: 1
+#		UnloadFacing: 220
+
+TRIKE.starport:
+	Inherits: TRIKE
+	Buildable:
+		Owner: atreides, harkonnen, ordos
+		Queue: Starport
+	Valued:
+		Cost: 315
+	RenderUnit:
+		Image: TRIKE
 
 QUAD:
 	Inherits: ^Vehicle
 	Buildable:
 		Queue: Vehicle
 		Prerequisites: Light,Outpost
-		Owner: atreides, ordos
+		Owner: atreides, ordos, harkonnen
 		BuildPaletteOrder: 20
 		Hotkey: q
 	Valued:
@@ -160,7 +166,6 @@ QUAD:
 	Tooltip:
 		Name: Missile Quad
 		Description: Missile Scout\n Strong vs Vehicles\n  Weak vs Infantry
-		Icon: quadicon
 	Health:
 		HP: 125
 	Armor: 
@@ -170,8 +175,6 @@ QUAD:
 		Speed: 9
 	RevealsShroud:
 		Range: 8
-	RenderUnit:
-		Image: QUAD
 	Armament:
 		Weapon: QuadRockets
 		LocalOffset: 128,0,85#-4
@@ -190,6 +193,8 @@ QUAD.starport:
 		Queue: Starport
 	Valued:
 		Cost: 500
+	RenderUnit:
+		Image: QUAD
 
 ^COMBAT:
 	Inherits: ^Tank
@@ -250,7 +255,6 @@ SIEGETANK:
 	Tooltip:
 		Name: Siege Tank
 		Description: Siege Artillery\n  Strong vs Infantry, Buildings\n  Weak vs Tanks, Aircraft
-		Icon: siegetankicon
 	Health:
 		HP: 120
 	Armor:
@@ -286,7 +290,6 @@ SIEGETANK:
 SIEGETANK.Husk:
 	Inherits: ^Husk
 	Tooltip:
-		Icon: siegetankicon
 	ThrowsParticle@turret:
 		Anim: turret
 	RenderUnit:
@@ -306,7 +309,6 @@ MISSILETANK:
 	Tooltip:
 		Name: Rocket Tank
 		Description: Rocket Artillery\n  Strong vs Vehicles, Buildings\n  Weak vs Infantry, Aircraft
-		Icon: missiletankicon
 	Buildable:
 		Queue: Armor
 		Prerequisites: Hitech
@@ -341,8 +343,6 @@ MISSILETANK:
 
 MISSILETANK.Husk:
 	Inherits: ^Husk
-	Tooltip:
-		Icon: missiletankicon
 	RenderUnit:
 		Image: MISSILETANK
 

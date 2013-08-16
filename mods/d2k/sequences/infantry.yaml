@@ -65,6 +65,9 @@ rifle:
 		Start: 430
 		Length: 12
 		Tick: 1600
+	icon: DATA.R8
+		Start: 4011
+		Offset: -30,-24
 
 bazooka:
 	stand: DATA.R8
@@ -133,6 +136,9 @@ bazooka:
 		Start: 668
 		Length: 26
 		Tick: 1600
+	icon: DATA.R8
+		Start: 4012
+		Offset: -30,-24
 
 engineer:
 	stand: DATA.R8
@@ -171,8 +177,11 @@ engineer:
 		Start: 1376
 		Length: 26
 		Tick: 1600
+	icon: DATA.R8
+		Start: 4013
+		Offset: -30,-24
 
-thumper:
+medic: # actually thumper
 	stand: DATA.R8
 		Start: 1402
 		Facings: -8
@@ -213,6 +222,9 @@ thumper:
 		Start: 1577
 		Length: 26
 		Tick: 1600
+	icon: DATA.R8
+		Start: 4014
+		Offset: -30,-24
 
 thumping:
 	idle: DATA.R8
@@ -226,6 +238,9 @@ thumping:
 		Start: 1458
 		Length: 5
 		Tick: 150
+	icon: DATA.R8
+		Frames: 4014
+		Offset: -30,-24
 
 fremen:
 	stand: DATA.R8
@@ -291,6 +306,9 @@ fremen:
 		Start: 904
 		Length: 26
 		Tick: 1600
+	icon: DATA.R8
+		Start: 4032
+		Offset: -30,-24
 
 saboteur:
 	stand: DATA.R8
@@ -350,6 +368,9 @@ saboteur:
 		Start: 2359
 		Length: 26
 		Tick: 1600
+	icon: DATA.R8
+		Start: 4034
+		Offset: -30,-24
 
 sardaukar:
 	stand: DATA.R8
@@ -415,3 +436,6 @@ sardaukar:
 		Start: 1140
 		Length: 26
 		Tick: 1600
+	icon: DATA.R8
+		Start: 4015
+		Offset: -30,-24

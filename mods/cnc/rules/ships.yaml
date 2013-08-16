@@ -4,7 +4,6 @@ BOAT:
 		Cost: 300
 	Tooltip:
 		Name: Gunboat
-		Icon: boaticnh
 	Health:
 		HP: 700
 	Armor:

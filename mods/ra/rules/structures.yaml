@@ -5,7 +5,6 @@ MSLO:
 	Tooltip:
 		Name: Missile Silo
 		Description: Launches a devastating atomic bomb\nat a target location.\n  Special Ability: Atom Bomb\n\nMaximum 1 can be built
-		Icon: msloicon2
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 130
@@ -459,7 +458,6 @@ PBOX.E1:
 	Tooltip:
 		Name: Pillbox (Guns)
 		Description: Basic defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
-		Icon: PBOXICON
 	RenderBuilding:
 		Image: PBOX
 	RenderRangeCircle:
@@ -624,7 +622,6 @@ HBOX.E1:
 	Tooltip:
 		Name: Camo Pillbox (Guns)
 		Description: Hidden defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
-		Icon: HBOXICON
 	RenderBuilding:
 		Image: HBOX
 	RenderRangeCircle:
