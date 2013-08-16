@@ -1,0 +1,245 @@
+Selectable: True
+
+MapFormat: 5
+
+Title: The Hot Box
+
+Description: Drop Zone for CnC
+
+Author: Dan9550
+
+Tileset: DESERT
+
+MapSize: 64,64
+
+Bounds: 16,16,36,36
+
+UseAsShellmap: False
+
+Type: Drop Zone
+
+Options:
+	Fog: false
+	Shroud: false
+	Crates: true
+	FragileAlliances: false
+	ConfigurableStartingUnits: false
+
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Race: gdi
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		LockRace: True
+		Race: nod
+		Enemies: Multi9,Multi1,Multi2,Multi3,Multi4,Multi5,Multi6,Multi7,Multi8
+	PlayerReference@Multi1:
+		Name: Multi1
+		Playable: True
+		LockRace: True
+		Race: nod
+		Enemies: Multi0,Multi2,Multi3,Multi4,Multi5,Multi6,Multi7,Multi8,Multi9
+	PlayerReference@Multi2:
+		Name: Multi2
+		Playable: True
+		LockRace: True
+		Race: nod
+		Enemies: Multi0,Multi1,Multi3,Multi4,Multi5,Multi6,Multi7,Multi8,Multi9
+	PlayerReference@Multi3:
+		Name: Multi3
+		Playable: True
+		LockRace: True
+		Race: nod
+		Enemies: Multi0,Multi1,Multi2,Multi4,Multi5,Multi6,Multi7,Multi8,Multi9
+	PlayerReference@Multi4:
+		Name: Multi4
+		Playable: True
+		LockRace: True
+		Race: nod
+		Enemies: Multi0,Multi1,Multi2,Multi3,Multi5,Multi6,Multi7,Multi8,Multi9
+	PlayerReference@Multi5:
+		Name: Multi5
+		Playable: True
+		LockRace: True
+		Race: nod
+		Enemies: Multi0,Multi1,Multi2,Multi3,Multi4,Multi6,Multi7,Multi8,Multi9
+	PlayerReference@Multi6:
+		Name: Multi6
+		Playable: True
+		LockRace: True
+		Race: nod
+		Enemies: Multi0,Multi1,Multi2,Multi3,Multi4,Multi5,Multi7,Multi8,Multi9
+	PlayerReference@Multi7:
+		Name: Multi7
+		Playable: True
+		LockRace: True
+		Race: nod
+		Enemies: Multi0,Multi1,Multi2,Multi3,Multi4,Multi5,Multi6,Multi8,Multi9
+	PlayerReference@Multi8:
+		Name: Multi8
+		Playable: True
+		LockRace: True
+		Race: nod
+		Enemies: Multi0,Multi1,Multi2,Multi3,Multi4,Multi5,Multi6,Multi7,Multi9
+	PlayerReference@Multi9:
+		Name: Multi9
+		Playable: True
+		LockRace: True
+		Race: nod
+		Enemies: Multi0,Multi1,Multi2,Multi3,Multi4,Multi5,Multi6,Multi7,Multi8
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Race: gdi
+		Enemies: Multi0,Multi1,Multi2,Multi3,Multi4,Multi5,Multi6,Multi7,Multi8,Multi9
+
+Actors:
+	Actor0: apc
+		Location: 40,17
+		Owner: Multi0
+	Actor1: apc
+		Location: 42,17
+		Owner: Multi1
+	Actor2: apc
+		Location: 40,19
+		Owner: Multi2
+	Actor3: apc
+		Location: 46,21
+		Owner: Multi3
+	Actor4: apc
+		Location: 48,21
+		Owner: Multi4
+	Actor5: apc
+		Location: 50,19
+		Owner: Multi5
+	Actor6: apc
+		Location: 50,21
+		Owner: Multi6
+	Actor7: apc
+		Location: 50,17
+		Owner: Multi7
+	Actor8: apc
+		Location: 39,21
+		Owner: Multi8
+	Actor9: apc
+		Location: 47,17
+		Owner: Multi9
+	Actor10: tc02
+		Location: 22,43
+		Owner: Neutral
+	Actor11: v20
+		Location: 44,38
+		Owner: Neutral
+	Actor12: v34
+		Location: 28,38
+		Owner: Neutral
+	Actor13: v35
+		Location: 29,39
+		Owner: Neutral
+	Actor14: v36
+		Location: 38,35
+		Owner: Neutral
+	Actor15: v23
+		Location: 46,39
+		Owner: Neutral
+	Actor16: v27
+		Location: 22,28
+		Owner: Neutral
+	Actor17: t02
+		Location: 26,26
+		Owner: Neutral
+	Actor18: t07
+		Location: 26,27
+		Owner: Neutral
+	Actor19: tc04
+		Location: 25,16
+		Owner: Neutral
+	Actor20: tc03
+		Location: 26,17
+		Owner: Neutral
+	Actor21: mpspawn
+		Location: 40,18
+		Owner: Neutral
+	Actor22: mpspawn
+		Location: 42,18
+		Owner: Neutral
+	Actor23: mpspawn
+		Location: 40,20
+		Owner: Neutral
+	Actor24: mpspawn
+		Location: 39,22
+		Owner: Neutral
+	Actor25: mpspawn
+		Location: 47,18
+		Owner: Neutral
+	Actor26: mpspawn
+		Location: 50,18
+		Owner: Neutral
+	Actor27: mpspawn
+		Location: 50,20
+		Owner: Neutral
+	Actor28: mpspawn
+		Location: 50,22
+		Owner: Neutral
+	Actor29: mpspawn
+		Location: 48,22
+		Owner: Neutral
+	Actor30: mpspawn
+		Location: 46,22
+		Owner: Neutral
+
+Smudges:
+
+Rules:
+	World:
+		CrateSpawner:
+			Maximum: 4
+			SpawnInterval: 5
+		-SpawnMPUnits:
+		-MPStartLocations:
+	CRATE:
+		-HealUnitsCrateAction:
+		-LevelUpCrateAction:
+		-GiveMcvCrateAction:
+		-RevealMapCrateAction:
+		-HideMapCrateAction:
+		-CloakCrateAction:
+		-ExplodeCrateAction@nuke:
+		-ExplodeCrateAction@boom:
+		-ExplodeCrateAction@fire:
+		-SupportPowerCrateAction@parabombs:
+		-GiveCashCrateAction:
+		GiveUnitCrateAction@stnk:
+			SelectionShares: 4
+			Unit: stnk
+		GiveUnitCrateAction@bike:
+			SelectionShares: 6
+			Unit: bike
+		GiveUnitCrateAction@htnk:
+			SelectionShares: 1
+			Unit: htnk
+		GiveUnitCrateAction@e5:
+			SelectionShares: 1
+			Unit: e5
+		GiveUnitCrateAction@e1:
+			SelectionShares: 1
+			Unit: e1
+	APC:
+		Health:
+			HP: 1000
+		RevealsShroud:
+			Range: 40
+		MustBeDestroyed:
+		-AttackMove:
+
+Sequences:
+
+Weapons:
+
+Voices:
+
+Notifications:

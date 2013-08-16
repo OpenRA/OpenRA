@@ -20,7 +20,12 @@ UseAsShellmap: False
 
 Type: Campaign
 
-AllowStartUnitConfig: False
+Options:
+	Crates: false
+	Fog: false
+	Shroud: true
+	FragileAlliances: false
+	ConfigurableStartingUnits: false
 
 Players:
 	PlayerReference@Neutral:

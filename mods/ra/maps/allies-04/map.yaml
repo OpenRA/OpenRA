@@ -12,7 +12,12 @@ Author: Scott_NZ
 
 Tileset: TEMPERAT
 
-Difficulties: Easy,Normal,Hard
+Options:
+	Fog: true
+	Shroud: true
+	FragileAlliances: false
+	ConfigurableStartingUnits: false
+	Difficulties: Easy,Normal,Hard
 
 MapSize: 128,128
 

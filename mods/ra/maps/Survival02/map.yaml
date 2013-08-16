@@ -16,7 +16,13 @@ Bounds: 2,2,76,76
 
 UseAsShellmap: False
 
-Type: Campaign
+Type: Minigame
+
+Options:
+	Fog: true
+	Shroud: true
+	FragileAlliances: false
+	ConfigurableStartingUnits: false
 
 Players:
 	PlayerReference@Neutral:

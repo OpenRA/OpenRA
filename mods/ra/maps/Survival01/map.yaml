@@ -10,15 +10,20 @@ Author: Nuke'm Bro.
 
 Tileset: TEMPERAT
 
-Difficulties: Easy,Normal,Hard
-
 MapSize: 96,64
 
 Bounds: 4,4,88,56
 
 UseAsShellmap: False
 
-Type: Campaign
+Type: Minigame
+
+Options:
+	Fog: true
+	Shroud: true
+	FragileAlliances: false
+	ConfigurableStartingUnits: false
+	Difficulties: Easy,Normal,Hard
 
 Players:
 	PlayerReference@Neutral:

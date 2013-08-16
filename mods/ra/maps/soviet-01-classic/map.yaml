@@ -20,6 +20,12 @@ UseAsShellmap: False
 
 Type: Campaign
 
+Options:
+	Fog: true
+	Shroud: true
+	FragileAlliances: false
+	ConfigurableStartingUnits: false
+
 Players:
 	PlayerReference@GoodGuy:
 		Name: GoodGuy

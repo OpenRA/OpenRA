@@ -272,7 +272,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (allowCheats != null)
 			{
 				allowCheats.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.AllowCheats;
-				allowCheats.IsDisabled = configurationDisabled;
+				allowCheats.IsDisabled = () => Map.Options.Cheats.HasValue || configurationDisabled();
 				allowCheats.OnClick = () =>	orderManager.IssueOrder(Order.Command(
 						"allowcheats {0}".F(!orderManager.LobbyInfo.GlobalSettings.AllowCheats)));
 			}
@@ -281,7 +281,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (crates != null)
 			{
 				crates.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.Crates;
-				crates.IsDisabled = configurationDisabled;
+				crates.IsDisabled = () => Map.Options.Crates.HasValue || configurationDisabled();
 				crates.OnClick = () => orderManager.IssueOrder(Order.Command(
 					"crates {0}".F(!orderManager.LobbyInfo.GlobalSettings.Crates)));
 			}
@@ -290,7 +290,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (fragileAlliance != null)
 			{
 				fragileAlliance.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.FragileAlliances;
-				fragileAlliance.IsDisabled = configurationDisabled;
+				fragileAlliance.IsDisabled = () => Map.Options.FragileAlliances.HasValue || configurationDisabled();
 				fragileAlliance.OnClick = () => orderManager.IssueOrder(Order.Command(
 					"fragilealliance {0}".F(!orderManager.LobbyInfo.GlobalSettings.FragileAlliances)));
 			};
@@ -298,12 +298,12 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			var difficulty = optionsBin.GetOrNull<DropDownButtonWidget>("DIFFICULTY_DROPDOWNBUTTON");
 			if (difficulty != null)
 			{
-				difficulty.IsVisible = () => Map != null && Map.Difficulties != null && Map.Difficulties.Any();
+				difficulty.IsVisible = () => Map.Options.Difficulties != null && Map.Options.Difficulties.Any();
 				difficulty.IsDisabled = configurationDisabled;
 				difficulty.GetText = () => orderManager.LobbyInfo.GlobalSettings.Difficulty;
 				difficulty.OnMouseDown = _ =>
 				{
-					var options = Map.Difficulties.Select(d => new DropDownOption
+					var options = Map.Options.Difficulties.Select(d => new DropDownOption
 					{
 						Title = d,
 						IsSelected = () => orderManager.LobbyInfo.GlobalSettings.Difficulty == d,
@@ -336,7 +336,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					.Select(a => a.Class).Distinct();
 
 				startingUnits.IsDisabled = configurationDisabled;
-				startingUnits.IsVisible = () => Map.AllowStartUnitConfig;
+				startingUnits.IsVisible = () => Map.Options.ConfigurableStartingUnits;
 				startingUnits.GetText = () => className(orderManager.LobbyInfo.GlobalSettings.StartingUnitsClass);
 				startingUnits.OnMouseDown = _ =>
 				{
@@ -364,7 +364,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (enableShroud != null)
 			{
 				enableShroud.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.Shroud;
-				enableShroud.IsDisabled = configurationDisabled;
+				enableShroud.IsDisabled = () => Map.Options.Shroud.HasValue || configurationDisabled();
 				enableShroud.OnClick = () => orderManager.IssueOrder(Order.Command(
 					"shroud {0}".F(!orderManager.LobbyInfo.GlobalSettings.Shroud)));
 			};
@@ -373,7 +373,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (enableFog != null)
 			{
 				enableFog.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.Fog;
-				enableFog.IsDisabled = configurationDisabled;
+				enableFog.IsDisabled = () => Map.Options.Fog.HasValue || configurationDisabled();
 				enableFog.OnClick = () => orderManager.IssueOrder(Order.Command(
 					"fog {0}".F(!orderManager.LobbyInfo.GlobalSettings.Fog)));
 			};

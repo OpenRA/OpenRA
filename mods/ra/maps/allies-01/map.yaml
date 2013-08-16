@@ -20,7 +20,12 @@ UseAsShellmap: False
 
 Type: Campaign
 
-Difficulties: Easy, Normal
+Options:
+	Fog: true
+	Shroud: true
+	FragileAlliances: false
+	ConfigurableStartingUnits: false
+	Difficulties: Easy, Normal
 
 Players:
 	PlayerReference@Neutral:

@@ -18,6 +18,12 @@ UseAsShellmap: False
 
 Type: Minigame
 
+Options:
+	Fog: true
+	Shroud: true
+	FragileAlliances: false
+	ConfigurableStartingUnits: false
+
 Players:
 	PlayerReference@Neutral:
 		Name: Neutral
