@@ -8,41 +8,53 @@ explosion:
 	small_explosion: DATA.R8
 		Start: 3386
 		Length: 4
+		BlendMode: Additive
 	med_explosion: DATA.R8
 		Start: 3390
 		Length: 12
+		BlendMode: Additive
 	tiny_explosion: DATA.R8
 		Start: 3390
 		Length: 12
+		BlendMode: Additive
 	nuke: DATA.R8
 		Start: 3965
 		Length: 14
 		Tick: 60
+		BlendMode: Additive
 	mini_explosion: DATA.R8
 		Start: 3403
 		Length: 15
 		Tick: 60
+		BlendMode: Additive
 	self_destruct: DATA.R8
 		Start: 3433
 		Length: 15
+		BlendMode: Additive
 	building: DATA.R8
 		Start: 3448
 		Length: 22
+		BlendMode: Additive
 	large_explosion: DATA.R8
 		Start: 3988
 		Length: 22
+		BlendMode: Additive
 	artillery: DATA.R8
 		Start: 3988
 		Length: 22
+		BlendMode: Additive
 	small_artillery: DATA.R8
 		Start: 3988
 		Length: 22
+		BlendMode: Additive
 	small_napalm: DATA.R8
 		Start: 3421
 		Length: 8
+		BlendMode: Additive
 	shockwave: DATA.R8
 		Start: 3687
 		Length: 6
+		BlendMode: Additive
 
 laserfire:
 	idle: DATA.R8
@@ -154,29 +166,36 @@ fire:
 		Start: 3712
 		Length: 10
 		Offset: 0,-3
+		BlendMode: Additive
 	2: DATA.R8
 		Start: 3723
 		Length: 11
 		Offset: 0,-3
+		BlendMode: Additive
 	3: DATA.R8
 		Start: 3885
 		Length: 13
 		Offset: 0,-3
+		BlendMode: Additive
 	4: DATA.R8
 		Start: 3712
 		Length: 10
 		Offset: 0,-3
+		BlendMode: Additive
 
 smoke_m:
 	idle: DATA.R8
 		Start: 3418
 		Length: 2
+		BlendMode: Additive
 	loop: DATA.R8
 		Start: 3418
 		Length: 2
+		BlendMode: Additive
 	end: DATA.R8
 		Start: 3418
 		Length: 3
+		BlendMode: Additive
 
 bombs:
 	open: DATA.R8
@@ -212,6 +231,7 @@ doubleblast:
 	idle: DATA.R8
 		Start: 3279
 		Facings: -16
+		BlendMode: Additive
 
 icon:
 	paratroopers: DATA.R8
