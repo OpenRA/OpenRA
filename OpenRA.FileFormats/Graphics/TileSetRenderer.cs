@@ -25,7 +25,7 @@ namespace OpenRA.FileFormats
 
 		List<byte[]> LoadTemplate(string filename, string[] exts, Cache<string, R8Reader> r8Cache, int[] frames)
 		{
-			if (exts.Contains(".r8") && FileSystem.Exists(filename+".r8"))
+			if (exts.Contains(".R8") && FileSystem.Exists(filename+".R8"))
 			{
 				var data = new List<byte[]>();
 
@@ -45,7 +45,7 @@ namespace OpenRA.FileFormats
 			this.TileSize = tileSize;
 
 			templates = new Dictionary<ushort, List<byte[]>>();
-			var r8Cache = new Cache<string, R8Reader>(s => new R8Reader(FileSystem.OpenWithExts(s, ".r8")));
+			var r8Cache = new Cache<string, R8Reader>(s => new R8Reader(FileSystem.OpenWithExts(s, ".R8")));
 			foreach (var t in TileSet.Templates)
 				templates.Add(t.Key, LoadTemplate(t.Value.Image, tileset.Extensions, r8Cache, t.Value.Frames));
 		}

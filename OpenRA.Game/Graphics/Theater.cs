@@ -27,7 +27,7 @@ namespace OpenRA.Graphics
 
 		Sprite[] LoadTemplate(string filename, string[] exts, Cache<string, R8Reader> r8Cache, int[] frames)
 		{
-			if (exts.Contains(".r8") && FileSystem.Exists(filename+".r8"))
+			if (exts.Contains(".R8") && FileSystem.Exists(filename+".R8"))
 			{
 				return frames.Select(f =>
 				{
@@ -60,7 +60,7 @@ namespace OpenRA.Graphics
 				return new Sheet(new Size(tileset.SheetSize, tileset.SheetSize));
 			};
 
-			var r8Cache = new Cache<string, R8Reader>(s => new R8Reader(FileSystem.OpenWithExts(s, ".r8")));
+			var r8Cache = new Cache<string, R8Reader>(s => new R8Reader(FileSystem.OpenWithExts(s, ".R8")));
 			templates = new Dictionary<ushort, Sprite[]>();
 			sheetBuilder = new SheetBuilder(SheetType.Indexed, allocate);
 			foreach (var t in tileset.Templates)
