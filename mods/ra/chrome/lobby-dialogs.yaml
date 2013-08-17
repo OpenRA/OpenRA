@@ -71,37 +71,37 @@ Background@LOBBY_OPTIONS_BIN:
 			Width: PARENT_RIGHT-60
 			Height: PARENT_BOTTOM-75
 			Children:
-				Checkbox@ALLOWCHEATS_CHECKBOX:
-					Width:230
-					Height:20
-					Text:Debug Menu
-				Checkbox@FRAGILEALLIANCES_CHECKBOX:
-					Y:40
-					Width:220
-					Height:20
-					Text:Team Changes
 				Checkbox@SHROUD_CHECKBOX:
-					X:175
 					Width:230
 					Height:20
 					Text:Shroud
 				Checkbox@FOG_CHECKBOX:
-					X:175
 					Y:40
 					Width:230
 					Height:20
 					Text:Fog of War
 				Checkbox@CRATES_CHECKBOX:
-					X:310
+					X:155
 					Width:230
 					Height:20
 					Text:Crates Appear
 				Checkbox@ALLYBUILDRADIUS_CHECKBOX:
-					X:310
+					X:155
 					Y:40
 					Width:230
 					Height:20
 					Text:Build off Ally ConYards
+				Checkbox@ALLOWCHEATS_CHECKBOX:
+					X:350
+					Width:230
+					Height:20
+					Text:Debug Menu
+				Checkbox@FRAGILEALLIANCES_CHECKBOX:
+					X:350
+					Y:40
+					Width:220
+					Height:20
+					Text:Team Changes
 				Label@STARTINGCASH_DESC:
 					Y:87
 					Width:80

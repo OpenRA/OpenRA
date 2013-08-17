@@ -213,78 +213,72 @@ Background@LOBBY_OPTIONS_BIN:
 			Align:Center
 			Text: Map Options
 		Container:
-			X:20
+			X:30
 			Y:65
-			Width: PARENT_RIGHT-40
+			Width: PARENT_RIGHT-60
 			Height: PARENT_BOTTOM-75
 			Children:
-				Checkbox@ALLOWCHEATS_CHECKBOX:
-					Width:230
-					Height:20
-					Text:Debug Menu
-				Checkbox@FRAGILEALLIANCES_CHECKBOX:
-					Y:35
-					Width:220
-					Height:20
-					Text:Team Changes
 				Checkbox@SHROUD_CHECKBOX:
-					X:155
 					Width:230
 					Height:20
 					Text:Shroud
 				Checkbox@FOG_CHECKBOX:
-					X:155
 					Y:35
 					Width:230
 					Height:20
 					Text:Fog of War
 				Checkbox@CRATES_CHECKBOX:
-					X:280
+					X:160
 					Width:230
 					Height:20
 					Text:Crates Appear
 				Checkbox@ALLYBUILDRADIUS_CHECKBOX:
-					X:280
+					X:160
 					Y:35
 					Width:230
 					Height:20
 					Text:Build off Ally ConYards
+				Checkbox@ALLOWCHEATS_CHECKBOX:
+					X:325
+					Width:230
+					Height:20
+					Text:Debug Menu
 				Label@STARTINGCASH_DESC:
 					X:10
 					Y:72
-					Width:80
+					Width:70
 					Height:25
 					Text:Starting Cash:
 					Align:Right
 				DropDownButton@STARTINGCASH_DROPDOWNBUTTON:
-					X:95
+					X:85
 					Y:72
 					Width:120
 					Height:25
 					Font:Bold
 					Text:$5000
 				Label@STARTINGUNITS_DESC:
-					X:PARENT_RIGHT - WIDTH - 145
+					X:PARENT_RIGHT - WIDTH - 135
 					Y:72
 					Width:120
 					Height:25
 					Text:Starting Units:
 					Align:Right
 				DropDownButton@STARTINGUNITS_DROPDOWNBUTTON:
-					X:PARENT_RIGHT - WIDTH
+					X:PARENT_RIGHT - WIDTH + 10
 					Y:72
 					Width:140
 					Height:25
 					Font:Bold
 				Label@DIFFICULTY_DESC:
-					X:PARENT_RIGHT - WIDTH - 145
+					X:PARENT_RIGHT - WIDTH - 135 
 					Y:107
 					Width:120
 					Height:25
 					Text:Mission Difficulty:
 					Align:Right
 				DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
-					X:PARENT_RIGHT - WIDTH
+					X:PARENT_RIGHT - WIDTH + 10
 					Y:107
 					Width:140
 					Height:25
