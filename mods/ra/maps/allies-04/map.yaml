@@ -1836,11 +1836,13 @@ Rules:
 		Tooltip:
 			Icon: lsticon
 		-Selectable:
+		Invulnerable:
 	LST.Unselectable.NoCargo:
 		Inherits: LST.Unselectable
 		Cargo:
 			MaxWeight: 0
 			PipCount: 0
+		Invulnerable:
 	SPY.Strong:
 		Inherits: SPY
 		Buildable:
@@ -1856,6 +1858,8 @@ Rules:
 		Spy:
 		Infiltrates:
 			Types: Lab, Truck
+			InfiltrateTypes: Lab, Truck
+			DestroyOnInfiltrate: False
 	DOG.Patrol:
 		Inherits: DOG
 		Buildable:

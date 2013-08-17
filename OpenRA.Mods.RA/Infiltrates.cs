@@ -28,10 +28,11 @@ namespace OpenRA.Mods.RA
 	class InfiltratesInfo : ITraitInfo
 	{
 		public string[] Types = { "Cash", "SupportPower", "Exploration" };
+		public bool DestroyOnInfiltrate = true;
 
 		public object Create(ActorInitializer init) { return new Infiltrates(this); }
 	}
-	
+
 	class Infiltrates : IIssueOrder, IResolveOrder, IOrderVoice
 	{
 		public readonly InfiltratesInfo Info;
