@@ -19,9 +19,9 @@ UseAsShellmap: False
 Type: Drop Zone
 
 Options:
+	Crates: true
 	Fog: false
 	Shroud: false
-	Crates: true
 	AllyBuildRadius: false
 	FragileAlliances: false
 	StartingCash: 5000

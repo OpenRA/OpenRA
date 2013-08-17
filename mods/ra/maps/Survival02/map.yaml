@@ -19,6 +19,7 @@ UseAsShellmap: False
 Type: Minigame
 
 Options:
+	Crates: false
 	Fog: true
 	Shroud: true
 	AllyBuildRadius: false

@@ -13,6 +13,7 @@ Author: Scott_NZ
 Tileset: TEMPERAT
 
 Options:
+	Crates: false
 	Fog: true
 	Shroud: true
 	AllyBuildRadius: false
