@@ -27,6 +27,7 @@ namespace OpenRA
 		public bool? Crates;
 		public bool? Fog;
 		public bool? Shroud;
+		public bool? AllyBuildRadius;
 		public bool? FragileAlliances;
 		public bool ConfigurableStartingUnits = true;
 		public string[] Difficulties = { };
@@ -41,6 +42,8 @@ namespace OpenRA
 				settings.Fog = Fog.Value;
 			if (Shroud.HasValue)
 				settings.Shroud = Shroud.Value;
+			if (AllyBuildRadius.HasValue)
+				settings.AllyBuildRadius = AllyBuildRadius.Value;
 			if (FragileAlliances.HasValue)
 				settings.FragileAlliances = FragileAlliances.Value;
 		}

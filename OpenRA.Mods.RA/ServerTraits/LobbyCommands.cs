@@ -437,6 +437,25 @@ namespace OpenRA.Mods.RA.Server
 						server.SyncLobbyInfo();
 						return true;
 					}},
+				{ "allybuildradius",
+					s =>
+					{
+						if (!client.IsAdmin)
+						{
+							server.SendOrderTo(conn, "Message", "Only the host can set that option");
+							return true;
+						}
+
+						if (server.Map.Options.AllyBuildRadius.HasValue)
+						{
+							server.SendOrderTo(conn, "Message", "Map has disabled ally build radius configuration");
+							return true;
+						}
+
+						bool.TryParse(s, out server.lobbyInfo.GlobalSettings.AllyBuildRadius);
+						server.SyncLobbyInfo();
+						return true;
+					}},
 				{ "difficulty",
 					s =>
 					{

@@ -43,7 +43,8 @@ namespace OpenRA.Mods.RA.Buildings
 			var center = topLeft.CenterPosition + FootprintUtils.CenterOffset(this);
 			foreach (var bp in world.ActorsWithTrait<BaseProvider>())
 			{
-				if (bp.Actor.Owner.Stances[p] != Stance.Ally || !bp.Trait.Ready())
+				var validOwner = bp.Actor.Owner == p || (world.LobbyInfo.GlobalSettings.AllyBuildRadius && bp.Actor.Owner.Stances[p] == Stance.Ally);
+				if (!validOwner || !bp.Trait.Ready())
 					continue;
 
 				// Range is counted from the center of the actor, not from each cell.
@@ -72,14 +73,21 @@ namespace OpenRA.Mods.RA.Buildings
 			var nearnessCandidates = new List<CPos>();
 
 			var bi = world.WorldActor.Trait<BuildingInfluence>();
+			var allyBuildRadius = world.LobbyInfo.GlobalSettings.AllyBuildRadius;
 
 			for (var y = scanStart.Y; y < scanEnd.Y; y++)
+			{
 				for (var x = scanStart.X; x < scanEnd.X; x++)
 				{
-					var at = bi.GetBuildingAt(new CPos(x, y));
-					if (at != null && at.Owner.Stances[p] == Stance.Ally && at.HasTrait<GivesBuildableArea>())
-						nearnessCandidates.Add(new CPos(x, y));
+				    var pos = new CPos(x, y);
+					var at = bi.GetBuildingAt(pos);
+					if (at == null || !at.HasTrait<GivesBuildableArea>())
+						continue;
+
+					if (at.Owner == p || (allyBuildRadius && at.Owner.Stances[p] == Stance.Ally))
+						nearnessCandidates.Add(pos);
 				}
+			}
 
 			var buildingTiles = FootprintUtils.Tiles(buildingName, this, topLeft).ToList();
 			return nearnessCandidates

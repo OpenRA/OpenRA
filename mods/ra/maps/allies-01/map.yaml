@@ -23,6 +23,7 @@ Type: Campaign
 Options:
 	Fog: true
 	Shroud: true
+	AllyBuildRadius: false
 	FragileAlliances: false
 	ConfigurableStartingUnits: false
 	Difficulties: Easy, Normal

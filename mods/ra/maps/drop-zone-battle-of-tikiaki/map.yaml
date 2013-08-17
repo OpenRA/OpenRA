@@ -22,6 +22,7 @@ Options:
 	Fog: false
 	Shroud: false
 	Crates: true
+	AllyBuildRadius: false
 	FragileAlliances: false
 	ConfigurableStartingUnits: false
 

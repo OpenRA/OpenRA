@@ -286,6 +286,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 					"crates {0}".F(!orderManager.LobbyInfo.GlobalSettings.Crates)));
 			}
 
+			var allybuildradius = optionsBin.GetOrNull<CheckboxWidget>("ALLYBUILDRADIUS_CHECKBOX");
+			if (allybuildradius != null)
+			{
+				allybuildradius.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.AllyBuildRadius;
+				allybuildradius.IsDisabled = () => Map.Options.AllyBuildRadius.HasValue || configurationDisabled();
+				allybuildradius.OnClick = () => orderManager.IssueOrder(Order.Command(
+					"allybuildradius {0}".F(!orderManager.LobbyInfo.GlobalSettings.AllyBuildRadius)));
+			}
+
 			var fragileAlliance = optionsBin.GetOrNull<CheckboxWidget>("FRAGILEALLIANCES_CHECKBOX");
 			if (fragileAlliance != null)
 			{
