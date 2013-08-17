@@ -153,13 +153,15 @@ Container@PLAYER_WIDGETS:
 		BuildPalette@INGAME_BUILD_PALETTE:
 			X:WINDOW_RIGHT - 250
 			Y:280
-			Width:238 # TODO: why is this ignored?
+			Width:238
 			Height:500
 			ReadyText: READY
 			HoldText: ON HOLD
 			RequiresText: Requires
 			IconWidth: 60
 			IconHeight: 48
+			Columns: 3
+			Rows: 4
 		Background@DIPLOMACY_BG:
 			Logic:DiplomacyLogic
 			X:(WINDOW_RIGHT - WIDTH)/2
