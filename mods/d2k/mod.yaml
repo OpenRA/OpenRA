@@ -10,16 +10,11 @@ Folders:
 	./mods/d2k/bits
 	./mods/d2k/uibits
 	./mods/ra/uibits
-	~^/Content/ra
 	~^/Content/d2k
 	~^/Content/d2k/GAMESFX
 	~^/Content/d2k/Music
-	~^/Content/d2k/Tilesets
-	~^/Content/d2k/SHPs
 
 Packages:
-	~main.mix
-	conquer.mix
 	SOUND.RS
 
 Rules:
@@ -101,8 +96,8 @@ Movies:
 
 LoadScreen: D2kLoadScreen
 	InstallerMenuWidget: INSTALL_PANEL
-	TestFile: SOUND.RS
-	PackageURL: http://open-ra.org/get-dependency.php?file=d2k-complete-packages
+	TestFile: DATA.R8
+	PackageURL: http://open-ra.org/get-dependency.php?file=d2k-103-packages
 
 ServerTraits:
 	LobbyCommands
