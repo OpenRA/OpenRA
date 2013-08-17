@@ -6,6 +6,16 @@ PWRA:
 	Buildable:
 		Owner: atreides
 
+GUNTOWERA:
+	Inherits: ^GUNTOWER
+	Buildable:
+		Owner: atreides
+
+ROCKETTOWERA:
+	Inherits: ^ROCKETTOWER
+	Buildable:
+		Owner: atreides
+
 REFA:
 	Inherits: ^REFINERY
 	Buildable:

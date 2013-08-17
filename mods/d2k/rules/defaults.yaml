@@ -28,7 +28,7 @@
 		Types:Vehicle
 	GivesBounty:
 	Repairable:
-		RepairBuildings: repair
+		RepairBuildings: repaira,repairo,repairh
 	DebugMuzzlePositions:
 	Guard:
 	Guardable:

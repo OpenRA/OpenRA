@@ -6,6 +6,16 @@ PWRO:
 	Buildable:
 		Owner: ordos
 
+GUNTOWERO:
+	Inherits: ^GUNTOWER
+	Buildable:
+		Owner: ordos
+
+ROCKETTOWERO:
+	Inherits: ^ROCKETTOWER
+	Buildable:
+		Owner: ordos
+
 REFO:
 	Inherits: ^REFINERY
 	Buildable:

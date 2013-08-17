@@ -6,6 +6,16 @@ PWRH:
 	Buildable:
 		Owner: harkonnen
 
+GUNTOWERH:
+	Inherits: ^GUNTOWER
+	Buildable:
+		Owner: harkonnen
+
+ROCKETTOWERH:
+	Inherits: ^ROCKETTOWER
+	Buildable:
+		Owner: harkonnen
+
 REFH:
 	Inherits: ^REFINERY
 	Buildable:
