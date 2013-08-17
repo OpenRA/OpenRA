@@ -74,7 +74,7 @@ PALACEH:
 	Tooltip:
 		Description: Provides elite infantry\n  Special Ability: Death Hand Missile
 	NukePower:
-		Image: deathhandicon
+		Icon: deathhand
 		ChargeTime: 300
 		Description: Death Hand
 		LongDesc: Launches a nuclear missile at a target location

@@ -42,7 +42,7 @@ PALACEA:
 	Buildable:
 		Owner: atreides
 	AirstrikePower:
-		Image: orniicon
+		Icon: ornistrike
 		Description: Air Strike
 		ChargeTime: 180
 		LongDesc: Ornithopter drops a load of parachuted\nbombs on your target

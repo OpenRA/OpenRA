@@ -373,7 +373,7 @@ HQ:
 	DetectCloaked:
 		Range: 8
 	AirstrikePower:
-		Image: bombicnh
+		Icon: airstrike
 		ChargeTime: 180
 		Description: Air Strike
 		LongDesc: Deploy an aerial napalm strike.\nBurns buildings and infantry along a line.
@@ -434,7 +434,7 @@ EYE:
 	DetectCloaked:
 		Range: 8
 	IonCannonPower:
-		Image: ionicnh
+		Icon: ioncannon
 		ChargeTime: 180
 		Description: Ion Cannon
 		LongDesc: Initiate an Ion Cannon strike.\nApplies instant damage to a small area.
@@ -469,7 +469,7 @@ TMPL:
 		Range: 6
 	Bib:
 	NukePower:
-		Image: atomicnh
+		Icon: abomb
 		ChargeTime: 300
 		Description: Nuclear Strike
 		LongDesc: Launch a tactical nuke.\nApplies heavy damage over a large area.

@@ -543,7 +543,7 @@ WALL:
 		Name: IX Research Center
 		Description: Unlocks experimental tanks\n  Special Ability: Carryall Combat Drop
 	ParatroopersPower:
-		Image: carryallicon
+		Icon: paratroopers
 		UnitType: carryall.infantry
 		FlareTime: 0
 		ChargeTime: 180

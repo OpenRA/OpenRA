@@ -17,7 +17,7 @@ namespace OpenRA.Mods.RA
 	public abstract class SupportPowerInfo : ITraitInfo
 	{
 		public readonly int ChargeTime = 0;
-		public readonly string Image = null;
+		public readonly string Icon = null;
 		public readonly string Description = "";
 		public readonly string LongDesc = "";
 		public readonly bool AllowMultiple = false;

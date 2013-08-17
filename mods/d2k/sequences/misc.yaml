@@ -217,3 +217,14 @@ doubleblast:
 	idle: DATA.R8
 		Start: 3279
 		Facings: -16
+
+icon:
+	paratroopers: DATA.R8
+		Start: 4029
+		Offset: -30,-24
+	ornistrike: DATA.R8
+		Start: 4031
+		Offset: -30,-24
+	deathhand: DATA.R8
+		Start: 4035
+		Offset: -30,-24
