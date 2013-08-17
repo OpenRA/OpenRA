@@ -42,7 +42,7 @@ namespace OpenRA.Editor
 				tilePalette.ResumeLayout();
 				actorPalette.ResumeLayout();
 				resourcePalette.ResumeLayout();
-				surface1.Bind(null, null, null, null);
+				surface1.Bind(null, null, null, null, null);
 				miniMapBox.Image = null;
 				currentMod = toolStripComboBox1.SelectedItem as string;
 
@@ -101,6 +101,7 @@ namespace OpenRA.Editor
 		string loadedMapName;
 		string currentMod = "ra";
 		TileSet tileset;
+		TileSetRenderer tilesetRenderer;
 		bool dirty = false;
 
 		void LoadMap(string mapname)
@@ -144,7 +145,7 @@ namespace OpenRA.Editor
 		{
 			Rules.LoadRules(manifest, map);
 			tileset = Rules.TileSets[map.Tileset];
-			tileset.LoadTiles();
+			tilesetRenderer = new TileSetRenderer(tileset, new Size(manifest.TileSize, manifest.TileSize));
 			var shadowIndex = new int[] { 3, 4 };
 			var palette = new Palette(FileSystem.Open(tileset.Palette), shadowIndex);
 
@@ -152,7 +153,7 @@ namespace OpenRA.Editor
 			var playerPalette = tileset.PlayerPalette ?? tileset.Palette;
 			var shadowedPalette = new Palette(FileSystem.Open(playerPalette), shadowIndex);
 
-			surface1.Bind(map, tileset, palette, shadowedPalette);
+			surface1.Bind(map, tileset, tilesetRenderer, palette, shadowedPalette);
 
 			// construct the palette of tiles
 			var palettes = new[] { tilePalette, actorPalette, resourcePalette };
@@ -185,7 +186,7 @@ namespace OpenRA.Editor
 				{
 					try
 					{
-						var bitmap = tileset.RenderTemplate((ushort)t.Key, palette);
+						var bitmap = tilesetRenderer.RenderTemplate((ushort)t.Key, palette);
 						var ibox = new PictureBox
 						{
 							Image = bitmap,
@@ -329,7 +330,7 @@ namespace OpenRA.Editor
 				if ((int)rd.MapWidth.Value != surface1.Map.MapSize.X || (int)rd.MapHeight.Value != surface1.Map.MapSize.Y)
 				{
 					surface1.Map.Resize((int)rd.MapWidth.Value, (int)rd.MapHeight.Value);
-					surface1.Bind(surface1.Map, surface1.TileSet, surface1.Palette, surface1.PlayerPalette);	// rebind it to invalidate all caches
+					surface1.Bind(surface1.Map, surface1.TileSet, surface1.TileSetRenderer, surface1.Palette, surface1.PlayerPalette);	// rebind it to invalidate all caches
 				}
 
 				surface1.Invalidate();
@@ -519,8 +520,7 @@ namespace OpenRA.Editor
 				{
 					var tr = surface1.Map.MapTiles.Value[i, j];
 					if (tr.type == 0xff || tr.type == 0xffff || tr.type == 1 || tr.type == 2)
-						tr.index = (byte)r.Next(0,
-							Rules.TileSets[surface1.Map.Tileset].Templates[tr.type].Data.TileBitmapBytes.Count);
+						tr.index = (byte)r.Next(0, surface1.TileSetRenderer.Data(tr.type).Count);
 
 					surface1.Map.MapTiles.Value[i, j] = tr;
 				}

@@ -27,7 +27,7 @@ namespace OpenRA.Editor
 		{
 			// change the bits in the map
 			var template = surface.TileSet.Templates[brushTemplate.N];
-			var tile = template.Data;
+			var tile = surface.TileSetRenderer.Data(brushTemplate.N);
 			var pos = surface.GetBrushLocation();
 
 			if (surface.GetModifiers() == Keys.Shift)
@@ -42,7 +42,7 @@ namespace OpenRA.Editor
 					if (surface.Map.IsInMap(new CVec(u, v) + pos))
 					{
 						var z = u + v * template.Size.X;
-						if (tile.TileBitmapBytes[z] != null)
+						if (tile[z] != null)
 							surface.Map.MapTiles.Value[u + pos.X, v + pos.Y] =
 								new TileReference<ushort, byte>
 								{
@@ -63,8 +63,8 @@ namespace OpenRA.Editor
 		public void Preview(Surface surface, SGraphics g)
 		{
 			g.DrawImage(brushTemplate.Bitmap,
-					surface.TileSet.TileSize * surface.GetBrushLocation().X * surface.Zoom + surface.GetOffset().X,
-					surface.TileSet.TileSize * surface.GetBrushLocation().Y * surface.Zoom + surface.GetOffset().Y,
+					surface.TileSetRenderer.TileSize.Width * surface.GetBrushLocation().X * surface.Zoom + surface.GetOffset().X,
+			        surface.TileSetRenderer.TileSize.Height * surface.GetBrushLocation().Y * surface.Zoom + surface.GetOffset().Y,
 					brushTemplate.Bitmap.Width * surface.Zoom,
 					brushTemplate.Bitmap.Height * surface.Zoom);
 		}

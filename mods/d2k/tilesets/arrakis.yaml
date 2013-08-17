@@ -1,7 +1,7 @@
 General:
 	Name: Arrakis
-	TileSize: 32
 	Id: ARRAKIS
+	SheetSize: 1024
 	Palette: d2k.pal
 	Extensions: .bas,.bat,.bgb,.ice,.tre,.was,.ext,.shp
 

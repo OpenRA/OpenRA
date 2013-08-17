@@ -43,6 +43,7 @@ namespace OpenRA.Editor
 	{
 		public Map Map { get; private set; }
 		public TileSet TileSet { get; private set; }
+		public TileSetRenderer TileSetRenderer { get; private set; }
 		public Palette Palette { get; private set; }
 		public Palette PlayerPalette { get; private set; }
 		public int2 Offset;
@@ -79,10 +80,11 @@ namespace OpenRA.Editor
 
 		public Keys GetModifiers() { return ModifierKeys; }
 
-		public void Bind(Map m, TileSet ts, Palette p, Palette pp)
+		public void Bind(Map m, TileSet ts, TileSetRenderer tsr, Palette p, Palette pp)
 		{
 			Map = m;
 			TileSet = ts;
+			TileSetRenderer = tsr;
 			Palette = p;
 			PlayerPalette = pp;
 			playerPalettes = null;
@@ -256,7 +258,7 @@ namespace OpenRA.Editor
 
 		Bitmap RenderChunk(int u, int v)
 		{
-			var bitmap = new Bitmap(ChunkSize * TileSet.TileSize, ChunkSize * TileSet.TileSize);
+			var bitmap = new Bitmap(ChunkSize * TileSetRenderer.TileSize.Width, ChunkSize * TileSetRenderer.TileSize.Height);
 
 			var data = bitmap.LockBits(bitmap.Bounds(),
 				ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
@@ -270,12 +272,12 @@ namespace OpenRA.Editor
 					for (var j = 0; j < ChunkSize; j++)
 					{
 						var tr = Map.MapTiles.Value[u * ChunkSize + i, v * ChunkSize + j];
-						var tile = TileSet.Templates[tr.type].Data;
-						var index = (tr.index < tile.TileBitmapBytes.Count) ? tr.index : (byte)0;
-						var rawImage = tile.TileBitmapBytes[index];
-						for (var x = 0; x < TileSet.TileSize; x++)
-							for (var y = 0; y < TileSet.TileSize; y++)
-								p[(j * TileSet.TileSize + y) * stride + i * TileSet.TileSize + x] = Palette.GetColor(rawImage[x + TileSet.TileSize * y]).ToArgb();
+						var tile = TileSetRenderer.Data(tr.type);
+						var index = (tr.index < tile.Count) ? tr.index : (byte)0;
+						var rawImage = tile[index];
+						for (var x = 0; x < TileSetRenderer.TileSize.Width; x++)
+							for (var y = 0; y < TileSetRenderer.TileSize.Height; y++)
+								p[(j * TileSetRenderer.TileSize.Width + y) * stride + i * TileSetRenderer.TileSize.Width + x] = Palette.GetColor(rawImage[x + TileSetRenderer.TileSize.Width * y]).ToArgb();
 
 						if (Map.MapResources.Value[u * ChunkSize + i, v * ChunkSize + j].type != 0)
 						{
@@ -286,12 +288,12 @@ namespace OpenRA.Editor
 							int* q = (int*)srcdata.Scan0.ToPointer();
 							var srcstride = srcdata.Stride >> 2;
 
-							for (var x = 0; x < TileSet.TileSize; x++)
-								for (var y = 0; y < TileSet.TileSize; y++)
+							for (var x = 0; x < TileSetRenderer.TileSize.Width; x++)
+								for (var y = 0; y < TileSetRenderer.TileSize.Height; y++)
 								{
 									var c = q[y * srcstride + x];
 									if ((c & 0xff000000) != 0)	/* quick & dirty, i cbf doing real alpha */
-										p[(j * TileSet.TileSize + y) * stride + i * TileSet.TileSize + x] = c;
+										p[(j * TileSetRenderer.TileSize.Width + y) * stride + i * TileSetRenderer.TileSize.Width + x] = c;
 								}
 
 							resourceImage.UnlockBits(srcdata);
@@ -317,15 +319,15 @@ namespace OpenRA.Editor
 		{
 			var vX = (int)Math.Floor((mousePos.X - Offset.X) / Zoom);
 			var vY = (int)Math.Floor((mousePos.Y - Offset.Y) / Zoom);
-			return new CPos(vX / TileSet.TileSize, vY / TileSet.TileSize);
+			return new CPos(vX / TileSetRenderer.TileSize.Width, vY / TileSetRenderer.TileSize.Height);
 		}
 
 		public CPos GetBrushLocationBR()
 		{
 			var vX = (int)Math.Floor((mousePos.X - Offset.X) / Zoom);
 			var vY = (int)Math.Floor((mousePos.Y - Offset.Y) / Zoom);
-			return new CPos((vX + TileSet.TileSize - 1) / TileSet.TileSize,
-			                (vY + TileSet.TileSize - 1) / TileSet.TileSize);
+			return new CPos((vX + TileSetRenderer.TileSize.Width - 1) / TileSetRenderer.TileSize.Width,
+			                (vY + TileSetRenderer.TileSize.Height - 1) / TileSetRenderer.TileSize.Height);
 		}
 
 		public void DrawActor(SGraphics g, CPos p, ActorTemplate t, ColorPalette cp)
@@ -339,11 +341,11 @@ namespace OpenRA.Editor
 
 		float2 GetDrawPosition(CPos location, Bitmap bmp, bool centered)
 		{
-			float offsetX = centered ? bmp.Width / 2 - TileSet.TileSize / 2 : 0;
-			float drawX = TileSet.TileSize * location.X * Zoom + Offset.X - offsetX;
+			float offsetX = centered ? bmp.Width / 2 - TileSetRenderer.TileSize.Width / 2 : 0;
+			float drawX = TileSetRenderer.TileSize.Width * location.X * Zoom + Offset.X - offsetX;
 
-			float offsetY = centered ? bmp.Height / 2 - TileSet.TileSize / 2 : 0;
-			float drawY = TileSet.TileSize * location.Y * Zoom + Offset.Y - offsetY;
+			float offsetY = centered ? bmp.Height / 2 - TileSetRenderer.TileSize.Height / 2 : 0;
+			float drawY = TileSetRenderer.TileSize.Height * location.Y * Zoom + Offset.Y - offsetY;
 
 			return new float2(drawX, drawY);
 		}
@@ -411,24 +413,24 @@ namespace OpenRA.Editor
 
 					var bmp = Chunks[x];
 
-					var drawX = TileSet.TileSize * (float)ChunkSize * (float)x.X * Zoom + Offset.X;
-					var drawY = TileSet.TileSize * (float)ChunkSize * (float)x.Y * Zoom + Offset.Y;
+					var drawX = TileSetRenderer.TileSize.Width * (float)ChunkSize * (float)x.X * Zoom + Offset.X;
+					var drawY = TileSetRenderer.TileSize.Height * (float)ChunkSize * (float)x.Y * Zoom + Offset.Y;
 					RectangleF sourceRect = new RectangleF(0, 0, bmp.Width, bmp.Height);
 					RectangleF destRect = new RectangleF(drawX, drawY, bmp.Width * Zoom, bmp.Height * Zoom);
 					e.Graphics.DrawImage(bmp, destRect, sourceRect, GraphicsUnit.Pixel);
 				}
 
 			e.Graphics.DrawRectangle(CordonPen,
-				Map.Bounds.Left * TileSet.TileSize * Zoom + Offset.X,
-				Map.Bounds.Top * TileSet.TileSize * Zoom + Offset.Y,
-				Map.Bounds.Width * TileSet.TileSize * Zoom,
-				Map.Bounds.Height * TileSet.TileSize * Zoom);
+				Map.Bounds.Left * TileSetRenderer.TileSize.Width * Zoom + Offset.X,
+				Map.Bounds.Top * TileSetRenderer.TileSize.Height * Zoom + Offset.Y,
+				Map.Bounds.Width * TileSetRenderer.TileSize.Width * Zoom,
+				Map.Bounds.Height * TileSetRenderer.TileSize.Height * Zoom);
 
 			e.Graphics.DrawRectangle(SelectionPen,
-				(SelectionStart.X * TileSet.TileSize * Zoom) + Offset.X,
-				(SelectionStart.Y * TileSet.TileSize * Zoom) + Offset.Y,
-				(SelectionEnd - SelectionStart).X * TileSet.TileSize * Zoom,
-				(SelectionEnd - SelectionStart).Y * TileSet.TileSize * Zoom);
+				(SelectionStart.X * TileSetRenderer.TileSize.Width * Zoom) + Offset.X,
+				(SelectionStart.Y * TileSetRenderer.TileSize.Height * Zoom) + Offset.Y,
+				(SelectionEnd - SelectionStart).X * TileSetRenderer.TileSize.Width * Zoom,
+				(SelectionEnd - SelectionStart).Y * TileSetRenderer.TileSize.Height * Zoom);
 
 			if (IsPaste)
 			{
@@ -437,10 +439,10 @@ namespace OpenRA.Editor
 				var height = Math.Abs((SelectionStart - SelectionEnd).Y);
 
 				e.Graphics.DrawRectangle(PastePen,
-					(loc.X * TileSet.TileSize * Zoom) + Offset.X,
-					(loc.Y * TileSet.TileSize * Zoom) + Offset.Y,
-					width * (TileSet.TileSize * Zoom),
-					height * (TileSet.TileSize * Zoom));
+					(loc.X * TileSetRenderer.TileSize.Width * Zoom) + Offset.X,
+					(loc.Y * TileSetRenderer.TileSize.Height * Zoom) + Offset.Y,
+					width * (TileSetRenderer.TileSize.Width * Zoom),
+					height * (TileSetRenderer.TileSize.Height * Zoom));
 			}
 
 			foreach (var ar in Map.Actors.Value)
@@ -456,8 +458,8 @@ namespace OpenRA.Editor
 				foreach (var ar in Map.Actors.Value)
 					if (!ar.Key.StartsWith("Actor"))	// if it has a custom name
 						e.Graphics.DrawStringContrast(Font, ar.Key,
-							(int)(ar.Value.Location().X * TileSet.TileSize * Zoom + Offset.X),
-							(int)(ar.Value.Location().Y * TileSet.TileSize * Zoom + Offset.Y),
+							(int)(ar.Value.Location().X * TileSetRenderer.TileSize.Width * Zoom + Offset.X),
+							(int)(ar.Value.Location().Y * TileSetRenderer.TileSize.Height * Zoom + Offset.Y),
 							Brushes.White,
 							Brushes.Black);
 
@@ -467,7 +469,7 @@ namespace OpenRA.Editor
 				{
 					if (i % 8 == 0)
 					{
-						PointF point = new PointF(i * TileSet.TileSize * Zoom + Offset.X, (Map.Bounds.Top - 8) * TileSet.TileSize * Zoom + Offset.Y);
+						PointF point = new PointF(i * TileSetRenderer.TileSize.Width * Zoom + Offset.X, (Map.Bounds.Top - 8) * TileSetRenderer.TileSize.Height * Zoom + Offset.Y);
 						e.Graphics.DrawString((i - Map.Bounds.Left).ToString(), MarkerFont, TextBrush, point);
 					}
 				}
@@ -476,7 +478,7 @@ namespace OpenRA.Editor
 				{
 					if (i % 8 == 0)
 					{
-						PointF point = new PointF((Map.Bounds.Left - 8) * TileSet.TileSize * Zoom + Offset.X, i * TileSet.TileSize * Zoom + Offset.Y);
+						PointF point = new PointF((Map.Bounds.Left - 8) * TileSetRenderer.TileSize.Width * Zoom + Offset.X, i * TileSetRenderer.TileSize.Height * Zoom + Offset.Y);
 						e.Graphics.DrawString((i - Map.Bounds.Left).ToString(), MarkerFont, TextBrush, point);
 					}
 				}

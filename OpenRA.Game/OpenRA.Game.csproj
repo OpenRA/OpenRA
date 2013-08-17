@@ -235,6 +235,7 @@
     <Compile Include="Graphics\ContrailRenderable.cs" />
     <Compile Include="Widgets\ViewportControllerWidget.cs" />
     <Compile Include="Traits\Player\FrozenActorLayer.cs" />
+    <Compile Include="Graphics\Theater.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
