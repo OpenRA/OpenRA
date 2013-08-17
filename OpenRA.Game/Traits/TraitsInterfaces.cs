@@ -192,7 +192,6 @@ namespace OpenRA.Traits
 	public interface IPostRender { void RenderAfterWorld(WorldRenderer wr, Actor self); }
 
 	public interface IPostRenderSelection { void RenderAfterWorld(WorldRenderer wr); }
-	public interface IRenderAsTerrain { IEnumerable<IRenderable> RenderAsTerrain(WorldRenderer wr, Actor self); }
 	public interface IBodyOrientation
 	{
 		WAngle CameraPitch { get; }

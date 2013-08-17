@@ -33,6 +33,8 @@ namespace OpenRA.Graphics
 	public class WorldRenderer
 	{
 		public readonly World world;
+		public readonly Theater Theater;
+
 		internal readonly TerrainRenderer terrainRenderer;
 		internal readonly ShroudRenderer shroudRenderer;
 		internal readonly HardwarePalette palette;
@@ -50,6 +52,7 @@ namespace OpenRA.Graphics
 
 			palette.Initialize();
 
+			Theater = new Theater(world.TileSet);
 			terrainRenderer = new TerrainRenderer(world, this);
 			shroudRenderer = new ShroudRenderer(world);
 
@@ -117,10 +120,6 @@ namespace OpenRA.Graphics
 			Game.Renderer.EnableScissor(bounds.Left, bounds.Top, bounds.Width, bounds.Height);
 
 			terrainRenderer.Draw(this, Game.viewport);
-			foreach (var a in world.traitDict.ActorsWithTraitMultiple<IRenderAsTerrain>(world))
-				foreach (var r in a.Trait.RenderAsTerrain(this, a.Actor))
-					r.Render(this);
-
 			Game.Renderer.Flush();
 
 			for (var i = 0; i < renderables.Count; i++)

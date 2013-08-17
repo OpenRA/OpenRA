@@ -146,6 +146,7 @@
     <Compile Include="FileFormats\WavLoader.cs" />
     <Compile Include="Filesystem\D2kSoundResources.cs" />
     <Compile Include="Graphics\R8Reader.cs" />
+    <Compile Include="Graphics\TileSetRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
