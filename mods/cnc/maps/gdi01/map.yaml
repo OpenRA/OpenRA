@@ -20,7 +20,14 @@ UseAsShellmap: False
 
 Type: Campaign
 
-AllowStartUnitConfig: False
+Options:
+	Crates: false
+	Fog: false
+	Shroud: true
+	AllyBuildRadius: false
+	FragileAlliances: false
+	StartingCash: 500
+	ConfigurableStartingUnits: false
 
 Players:
 	PlayerReference@BadGuy:
@@ -41,7 +48,6 @@ Players:
 		LockSpawn: True
 		Spawn: 0
 		AllowBots: False
-		InitialCash: 20
 		Allies: GoodGuy
 		Enemies: BadGuy,Creeps
 		Required: True

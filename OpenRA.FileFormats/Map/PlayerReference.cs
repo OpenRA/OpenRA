@@ -39,7 +39,6 @@ namespace OpenRA.FileFormats
 		public bool LockTeam = false;
 		public int Team = 0;
 
-		public int InitialCash = 0;
 		public string[] Allies = {};
 		public string[] Enemies = {};
 

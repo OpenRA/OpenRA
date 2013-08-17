@@ -20,7 +20,15 @@ UseAsShellmap: False
 
 Type: Campaign
 
-Difficulties: Easy, Normal, Hard
+Options:
+	Crates: false
+	Fog: true
+	Shroud: true
+	AllyBuildRadius: false
+	FragileAlliances: false
+	StartingCash: 5000
+	ConfigurableStartingUnits: false
+	Difficulties: Easy, Normal, Hard
 
 Players:
 	PlayerReference@Neutral:

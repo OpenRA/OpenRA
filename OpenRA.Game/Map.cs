@@ -16,10 +16,42 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using OpenRA.FileFormats;
+using OpenRA.Network;
 using OpenRA.Traits;
 
 namespace OpenRA
 {
+	public class MapOptions
+	{
+		public bool? Cheats;
+		public bool? Crates;
+		public bool? Fog;
+		public bool? Shroud;
+		public bool? AllyBuildRadius;
+		public bool? FragileAlliances;
+		public int? StartingCash;
+		public bool ConfigurableStartingUnits = true;
+		public string[] Difficulties = { };
+
+		public void UpdateServerSettings(Session.Global settings)
+		{
+			if (Cheats.HasValue)
+				settings.AllowCheats = Cheats.Value;
+			if (Crates.HasValue)
+				settings.Crates = Crates.Value;
+			if (Fog.HasValue)
+				settings.Fog = Fog.Value;
+			if (Shroud.HasValue)
+				settings.Shroud = Shroud.Value;
+			if (AllyBuildRadius.HasValue)
+				settings.AllyBuildRadius = AllyBuildRadius.Value;
+			if (StartingCash.HasValue)
+				settings.StartingCash = StartingCash.Value;
+			if (FragileAlliances.HasValue)
+				settings.FragileAlliances = FragileAlliances.Value;
+		}
+	}
+
 	public class Map
 	{
 		[FieldLoader.Ignore] IFolder container;
@@ -37,8 +69,19 @@ namespace OpenRA
 		public string Description;
 		public string Author;
 		public string Tileset;
-		public string[] Difficulties;
 		public bool AllowStartUnitConfig = true;
+
+		[FieldLoader.LoadUsing("LoadOptions")]
+		public MapOptions Options;
+
+		static object LoadOptions(MiniYaml y)
+		{
+			var options = new MapOptions();
+			if (y.NodesDict.ContainsKey("Options"))
+				FieldLoader.Load(options, y.NodesDict["Options"]);
+
+			return options;
+		}
 
 		[FieldLoader.Ignore] public Lazy<Dictionary<string, ActorReference>> Actors;
 
@@ -177,7 +220,7 @@ namespace OpenRA
 				"Description",
 				"Author",
 				"Tileset",
-				"Difficulties",
+				"Options",
 				"MapSize",
 				"Bounds",
 				"UseAsShellmap",

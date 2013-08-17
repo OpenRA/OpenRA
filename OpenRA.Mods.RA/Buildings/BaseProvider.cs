@@ -56,11 +56,17 @@ namespace OpenRA.Mods.RA.Buildings
 			return devMode.FastBuild || progress == 0;
 		}
 
+		bool ValidRenderPlayer()
+		{
+			var allyBuildRadius = self.World.LobbyInfo.GlobalSettings.AllyBuildRadius;
+			return self.Owner == self.World.RenderPlayer || (allyBuildRadius && self.Owner.IsAlliedWith(self.World.RenderPlayer));
+		}
+
 		// Range circle
 		public void RenderAfterWorld(WorldRenderer wr)
 		{
 			// Visible to player and allies
-			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
+			if (!ValidRenderPlayer())
 				return;
 
 			wr.DrawRangeCircleWithContrast(
@@ -73,7 +79,7 @@ namespace OpenRA.Mods.RA.Buildings
 		public float GetValue()
 		{
 			// Visible to player and allies
-			if (!self.Owner.IsAlliedWith(self.World.RenderPlayer))
+			if (!ValidRenderPlayer())
 				return 0f;
 
 			// Ready or delay disabled

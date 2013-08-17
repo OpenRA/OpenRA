@@ -206,57 +206,80 @@ Background@LOBBY_OPTIONS_BIN:
 	Children:
 		Label@TITLE:
 			X:0
-			Y:40
+			Y:30
 			Width:PARENT_RIGHT
 			Height:25
 			Font:Bold
 			Align:Center
 			Text: Map Options
-		Checkbox@ALLOWCHEATS_CHECKBOX:
-			X:80
-			Y:75
-			Width:230
-			Height:20
-			Text:Cheats / Debug Menu
-		Checkbox@CRATES_CHECKBOX:
-			X:80
-			Y:110
-			Width:230
-			Height:20
-			Text:Crates
-		Checkbox@SHROUD_CHECKBOX:
-			X:310
-			Y:75
-			Width:230
-			Height:20
-			Text:Shroud
-		Checkbox@FOG_CHECKBOX:
-			X:310
-			Y:110
-			Width:230
-			Height:20
-			Text:Fog of War
-		Label@STARTINGUNITS_DESC:
-			X:135
-			Y:142
-			Width:120
-			Height:25
-			Text:Starting Units:
-		DropDownButton@STARTINGUNITS_DROPDOWNBUTTON:
-			X:230
-			Y:142
-			Width:140
-			Height:25
-			Font:Bold
-		Label@DIFFICULTY_DESC:
-			X:125
-			Y:177
-			Width:120
-			Height:25
-			Text:Mission Difficulty:
-		DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
-			X:230
-			Y:177
-			Width:100
-			Height:25
-			Font:Bold
+		Container:
+			X:30
+			Y:65
+			Width: PARENT_RIGHT-60
+			Height: PARENT_BOTTOM-75
+			Children:
+				Checkbox@SHROUD_CHECKBOX:
+					Width:230
+					Height:20
+					Text:Shroud
+				Checkbox@FOG_CHECKBOX:
+					Y:35
+					Width:230
+					Height:20
+					Text:Fog of War
+				Checkbox@CRATES_CHECKBOX:
+					X:160
+					Width:230
+					Height:20
+					Text:Crates Appear
+				Checkbox@ALLYBUILDRADIUS_CHECKBOX:
+					X:160
+					Y:35
+					Width:230
+					Height:20
+					Text:Build off Ally ConYards
+				Checkbox@ALLOWCHEATS_CHECKBOX:
+					X:325
+					Width:230
+					Height:20
+					Text:Debug Menu
+				Label@STARTINGCASH_DESC:
+					X:10
+					Y:72
+					Width:70
+					Height:25
+					Text:Starting Cash:
+					Align:Right
+				DropDownButton@STARTINGCASH_DROPDOWNBUTTON:
+					X:85
+					Y:72
+					Width:120
+					Height:25
+					Font:Bold
+					Text:$5000
+				Label@STARTINGUNITS_DESC:
+					X:PARENT_RIGHT - WIDTH - 135
+					Y:72
+					Width:120
+					Height:25
+					Text:Starting Units:
+					Align:Right
+				DropDownButton@STARTINGUNITS_DROPDOWNBUTTON:
+					X:PARENT_RIGHT - WIDTH + 10
+					Y:72
+					Width:140
+					Height:25
+					Font:Bold
+				Label@DIFFICULTY_DESC:
+					X:PARENT_RIGHT - WIDTH - 135 
+					Y:107
+					Width:120
+					Height:25
+					Text:Mission Difficulty:
+					Align:Right
+				DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
+					X:PARENT_RIGHT - WIDTH + 10
+					Y:107
+					Width:140
+					Height:25
+					Font:Bold
