@@ -36,7 +36,7 @@ local apis = {
   lua = newAPI(),
 }
 
-function GetApi(apitype) return apis[apitype] end
+function GetApi(apitype) return apis[apitype] or apis.none end
 
 ----------
 -- API loading
