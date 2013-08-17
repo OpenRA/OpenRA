@@ -1,9 +1,5 @@
 CONYARDH:
 	Inherits: ^CONYARD
-	Transforms:
-		IntoActor: mcvh
-		Offset:1,1
-		Facing: 270
 
 PWRH:
 	Inherits: ^POWER

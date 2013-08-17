@@ -1,9 +1,5 @@
 CONYARDA:
 	Inherits: ^CONYARD
-	Transforms:
-		IntoActor: mcva
-		Offset:1,1
-		Facing: 270
 
 PWRA:
 	Inherits: ^POWER

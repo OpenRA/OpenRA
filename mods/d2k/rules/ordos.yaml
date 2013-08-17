@@ -1,9 +1,5 @@
 CONYARDO:
 	Inherits: ^CONYARD
-	Transforms:
-		IntoActor: mcvo
-		Offset:1,1
-		Facing: 270
 
 PWRO:
 	Inherits: ^POWER
