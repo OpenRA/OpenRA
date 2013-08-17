@@ -13,107 +13,59 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using OpenRA.Traits;
+using OpenRA.Network;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
 {
 	public class DiplomacyLogic
 	{
-		static List<Widget> controls = new List<Widget>();
-
 		readonly World world;
+
+		ScrollPanelWidget diplomacyPanel;
 
 		[ObjectCreator.UseCtor]
 		public DiplomacyLogic(Widget widget, Action onExit, World world)
 		{
 			this.world = world;
-			var root = Ui.Root.Get("DIPLOMACY");
-			var diplomacyBG = root.Get("DIPLOMACY_BG");
-			LayoutDialog(diplomacyBG);
 
-			var close = widget.GetOrNull<ButtonWidget>("CLOSE_DIPLOMACY");
-			if (close != null)
-				close.OnClick = () => { Ui.CloseWindow(); onExit(); };
+			diplomacyPanel = widget.Get<ScrollPanelWidget>("DIPLOMACY_PANEL");
+
+			LayoutPlayers();
 		}
 
-		// This is shit
-		void LayoutDialog(Widget bg)
+		void LayoutPlayers()
 		{
-			foreach (var c in controls)
-				bg.RemoveChild(c);
-			controls.Clear();
-
-			var y = 50;
-			var margin = 20;
-			var labelWidth = (bg.Bounds.Width - 3 * margin) / 3;
-
-			var ts = new LabelWidget
+			var teamTemplate = diplomacyPanel.Get<ScrollItemWidget>("TEAM_TEMPLATE");
+			var players = world.Players.Where(p => p != world.LocalPlayer && !p.NonCombatant);
+			var teams = players.GroupBy(p => (world.LobbyInfo.ClientWithIndex(p.ClientIndex) ?? new Session.Client()).Team).OrderBy(g => g.Key);
+			foreach (var t in teams)
 			{
-				Font = "Bold",
-				Bounds = new Rectangle(margin + labelWidth + 10, y, labelWidth, 25),
-				Text = "Their Stance",
-				Align = TextAlign.Left,
-			};
-
-			bg.AddChild(ts);
-			controls.Add(ts);
-
-			var ms = new LabelWidget
-			{
-				Font = "Bold",
-				Bounds = new Rectangle(margin + 2 * labelWidth + 20, y, labelWidth, 25),
-				Text = "My Stance",
-				Align = TextAlign.Left,
-			};
-
-			bg.AddChild(ms);
-			controls.Add(ms);
-
-			y += 35;
-
-			foreach (var p in world.Players.Where(a => a != world.LocalPlayer && !a.NonCombatant))
-			{
-				var pp = p;
-				var label = new LabelWidget
+				var team = t;
+				var tt = ScrollItemWidget.Setup(teamTemplate, () => false, () => { });
+				tt.IgnoreMouseOver = true;
+				tt.Get<LabelWidget>("TEAM").GetText = () => team.Key == 0 ? "No Team" : "Team " + team.Key;
+				diplomacyPanel.AddChild(tt);
+				foreach (var p in team)
 				{
-					Bounds = new Rectangle(margin, y, labelWidth, 25),
-					Text = p.PlayerName,
-					Align = TextAlign.Left,
-					Font = "Bold",
-					Color = p.Color.RGB,
-				};
-
-				bg.AddChild(label);
-				controls.Add(label);
-
-				var theirStance = new LabelWidget
-				{
-					Bounds = new Rectangle( margin + labelWidth + 10, y, labelWidth, 25),
-					Text = p.PlayerName,
-					Align = TextAlign.Left,
-
-					GetText = () => pp.Stances[ world.LocalPlayer ].ToString(),
-				};
-
-				bg.AddChild(theirStance);
-				controls.Add(theirStance);
-
-				var myStance = new DropDownButtonWidget
-				{
-					Bounds = new Rectangle( margin + 2 * labelWidth + 20,  y, labelWidth, 25),
-					GetText = () => world.LocalPlayer.Stances[ pp ].ToString(),
-				};
-
-				if (!p.World.LobbyInfo.GlobalSettings.FragileAlliances)
-					myStance.Disabled = true;
-
-				myStance.OnMouseDown = mi => ShowDropDown(pp, myStance);
-
-				bg.AddChild(myStance);
-				controls.Add(myStance);
-
-				y += 35;
+					var player = p;
+					diplomacyPanel.AddChild(DiplomaticStatus(player));
+				}
 			}
+		}
+
+		ScrollItemWidget DiplomaticStatus(Player player)
+		{
+			var playerTemplate = diplomacyPanel.Get<ScrollItemWidget>("PLAYER_TEMPLATE");
+			var pt = ScrollItemWidget.Setup(playerTemplate, () => false, () => { });
+			pt.IgnoreMouseOver = true;
+			LobbyUtils.AddPlayerFlagAndName(pt, player);
+			pt.Get<LabelWidget>("THEIR_STANCE").GetText = () => player.Stances[world.LocalPlayer].ToString();
+			var myStance = pt.Get<DropDownButtonWidget>("MY_STANCE");
+			myStance.GetText = () => world.LocalPlayer.Stances[player].ToString();
+			myStance.IsDisabled = () => !world.LobbyInfo.GlobalSettings.FragileAlliances;
+			myStance.OnMouseDown = mi => ShowDropDown(player, myStance);
+			return pt;
 		}
 
 		void ShowDropDown(Player p, DropDownButtonWidget dropdown)
@@ -135,9 +87,9 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		void SetStance(ButtonWidget bw, Player p, Stance ss)
 		{
 			if (!p.World.LobbyInfo.GlobalSettings.FragileAlliances)
-				return;	// team changes are banned
+				return;	// stance changes are banned
 
-			// NOTE(jsd): Abuse of the type system here with `CPos`
+			// HACK: Abuse of the type system here with `CPos`
 			world.IssueOrder(new Order("SetStance", world.LocalPlayer.PlayerActor, false)
 				{ TargetLocation = new CPos((int)ss, 0), TargetString = p.InternalName });
 
