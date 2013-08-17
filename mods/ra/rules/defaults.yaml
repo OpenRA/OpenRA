@@ -37,6 +37,9 @@
 	Guard:
 	Guardable:
 	BodyOrientation:
+	Infiltratable:
+		Type: Vehicle
+	InfiltrateHijack:
 
 ^Tank:
 	AppearsOnRadar:
@@ -77,6 +80,9 @@
 	Guard:
 	Guardable:
 	BodyOrientation:
+	Infiltratable:
+		Type: Tank
+	InfiltrateHijack:
 
 ^Infantry:
 	AppearsOnRadar:
@@ -164,6 +170,9 @@
 	Guard:
 	Guardable:
 	BodyOrientation:
+	Infiltratable:
+		Type: Ship
+	InfiltrateHijack:
 
 ^Plane:
 	AppearsOnRadar:
@@ -191,6 +200,9 @@
 	UpdatesPlayerStatistics:
 	DebugMuzzlePositions:
 	BodyOrientation:
+	Infiltratable:
+		Type: Plane
+	InfiltrateHijack:
 
 ^Helicopter:
 	Inherits: ^Plane

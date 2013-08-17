@@ -241,6 +241,7 @@
     <Compile Include="HarvesterHuskModifier.cs" />
     <Compile Include="Husk.cs" />
     <Compile Include="InfiltrateForSupportPower.cs" />
+    <Compile Include="InfiltrateHijack.cs" />
     <Compile Include="Invulnerable.cs" />
     <Compile Include="IronCurtainable.cs" />
     <Compile Include="JamsMissiles.cs" />

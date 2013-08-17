@@ -2559,6 +2559,10 @@ Rules:
 	SPY:
 		Infiltrates:
 			InfiltrateTypes: MissionObjective
+	THF:
+		Infiltrates:
+			InfiltrateTypes: Cash
+			DestroyOnInfiltrate: True
 	DEMITRI:
 		Inherits: DELPHI
 		Tooltip:
@@ -2622,6 +2626,8 @@ Rules:
 		Health:
 			HP: 2000
 	SILO:
+		Infiltratable:
+			InfiltrateType: Cash
 		InfiltrateForCash:
 	DOME.NoInfiltrate:
 		Inherits: DOME
