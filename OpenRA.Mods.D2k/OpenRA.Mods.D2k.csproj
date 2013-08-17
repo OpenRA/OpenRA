@@ -82,6 +82,7 @@
     <Compile Include="Widgets\Logic\D2kInstallFromCDLogic.cs" />
     <Compile Include="Widgets\Logic\D2kDownloadPackagesLogic.cs" />
     <Compile Include="BuildingCaptureNotification.cs" />
+    <Compile Include="Render\WithCrumbleOverlay.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
@@ -119,5 +120,8 @@ cd "$(SolutionDir)"</PostBuildEvent>
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Render\" />
   </ItemGroup>
 </Project>

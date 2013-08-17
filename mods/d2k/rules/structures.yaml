@@ -431,6 +431,7 @@ WALL:
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 5
+	-WithCrumbleOverlay:
 
 ^ROCKETTOWER:
 	Inherits: ^Building
@@ -476,6 +477,7 @@ WALL:
 	RenderDetectionCircle:
 	DetectCloaked:
 		Range: 6
+	-WithCrumbleOverlay:
 
 ^REPAIR:
 	Inherits: ^Building
