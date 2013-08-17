@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Render
 		public object Create(ActorInitializer init) { return new WithIdleOverlay(init.self, this); }
 	}
 
-	public class WithIdleOverlay : INotifyDamageStateChanged, INotifyBuildComplete
+	public class WithIdleOverlay : INotifyDamageStateChanged, INotifyBuildComplete, INotifySold
 	{
 		Animation overlay;
 		bool buildComplete;
@@ -48,6 +48,12 @@ namespace OpenRA.Mods.RA.Render
 		public void BuildingComplete(Actor self)
 		{
 			buildComplete = true;
+		}
+
+		public void Sold(Actor self) { }
+		public void Selling(Actor self)
+		{
+			buildComplete = false;
 		}
 
 		public void DamageStateChanged(Actor self, AttackInfo e)
