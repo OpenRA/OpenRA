@@ -237,6 +237,8 @@
 		Range: 3
 	BodyOrientation:
 	FrozenUnderFog:
+	GpsDot:
+		String:Structure
 
 ^Wall:
 	AppearsOnRadar:
@@ -292,6 +294,7 @@
 	-CapturableBar:
 	FrozenUnderFog:
 		StartsRevealed: true
+	-GpsDot:
 
 ^AmmoBox:
 	Inherits: ^TechBuilding
