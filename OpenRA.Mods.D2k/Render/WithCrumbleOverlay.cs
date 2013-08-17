@@ -33,8 +33,8 @@ namespace OpenRA.Mods.RA.Render
 			var rs = self.Trait<RenderSprites>();
 
 			overlay = new Animation(rs.GetImage(self));
-			overlay.Play(info.Sequence);
-			rs.anims.Add("make_overlay_{0}".F(info.Sequence), 
+			overlay.PlayThen(info.Sequence, () => buildComplete = false);
+			rs.anims.Add("make_overlay_{0}".F(info.Sequence),
 				new AnimationWithOffset(overlay, null, () => !buildComplete, null));
 		}
 

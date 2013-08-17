@@ -223,7 +223,7 @@ conyarda:
 		Start: 4139
 		Length: 12
 		Offset: -48,64
-		Tick: 200
+		Tick: 170
 	damaged-idle: DATA.R8
 		Start: 2560
 		Offset: -48,64
@@ -759,7 +759,7 @@ conyardh:
 		Start: 4139
 		Length: 12
 		Offset: -48,64
-		Tick: 200
+		Tick: 170
 	damaged-idle: DATA.R8
 		Start: 2720
 		Offset: -48,64
@@ -1117,7 +1117,7 @@ conyardo:
 		Start: 4139
 		Length: 12
 		Offset: -48,64
-		Tick: 200
+		Tick: 170
 	damaged-idle: DATA.R8
 		Start: 2880
 		Offset: -48,64
