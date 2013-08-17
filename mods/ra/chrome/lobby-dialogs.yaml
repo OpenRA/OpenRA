@@ -81,23 +81,23 @@ Background@LOBBY_OPTIONS_BIN:
 					Height:20
 					Text:Fog of War
 				Checkbox@CRATES_CHECKBOX:
-					X:155
+					X:125
 					Width:230
 					Height:20
 					Text:Crates Appear
 				Checkbox@ALLYBUILDRADIUS_CHECKBOX:
-					X:155
+					X:125
 					Y:40
 					Width:230
 					Height:20
 					Text:Build off Ally ConYards
 				Checkbox@ALLOWCHEATS_CHECKBOX:
-					X:350
+					X:320
 					Width:230
 					Height:20
 					Text:Debug Menu
 				Checkbox@FRAGILEALLIANCES_CHECKBOX:
-					X:350
+					X:320
 					Y:40
 					Width:220
 					Height:20

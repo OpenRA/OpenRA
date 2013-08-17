@@ -1,95 +1,83 @@
-Container@DIPLOMACY:
+Background@DIPLOMACY:
 	Logic:DiplomacyLogic
 	X:25
 	Y:50
-	Width:540
-	Height:400
+	Width:490
+	Height:300
 	Visible:false
 	Children:
-		Background@DIPLOMACY_BG:
-			Width:PARENT_RIGHT
+		Label@LABEL_TITLE:
+			X:(PARENT_RIGHT - WIDTH)/2
+			Y:17
+			Width:250
+			Height:20
+			Text:Diplomacy
+			Align:Center
+			Font:Bold
+		Container@DIPLOMACY_HEADERS:
+			X:20
+			Y:40
+			Width:PARENT_RIGHT-40
 			Height:PARENT_BOTTOM
 			Children:
-				Label@LABEL_TITLE:
-					X:(PARENT_RIGHT - WIDTH)/2
-					Y:10
-					Width:250
+				Label@PLAYER_HEADER:
+					X:20
+					Width:160
 					Height:25
-					Text:Diplomacy
-					Align:Center
 					Font:Bold
-				Container@DIPLOMACY_HEADERS:
-					X:0
-					Y:0
+					Text:Player
+				Label@THEIR_STANCE_HEADER:
+					X:210
+					Width:80
+					Height:25
+					Font:Bold
+					Text:Their Stance
+					Align:Center
+				Label@MY_STANCE_HEADER:
+					X:307
+					Width:100
+					Height:25
+					Font:Bold
+					Text:My Stance
+					Align:Center
+		ScrollPanel@DIPLOMACY_PANEL:
+			X:20
+			Y:67
+			Width:PARENT_RIGHT-40
+			Height:PARENT_BOTTOM-87
+			ItemSpacing:5
+			Children:
+				ScrollItem@TEAM_TEMPLATE:
 					Width:PARENT_RIGHT
-					Height:PARENT_BOTTOM
+					Height:25
 					Children:
-						Label@PLAYER_HEADER:
-							X:45
-							Y:40
+						Label@TEAM:
+							X:10
+							Width:PARENT_RIGHT
+							Height:PARENT_BOTTOM
+							Font:Bold
+				ScrollItem@PLAYER_TEMPLATE:
+					Width:PARENT_RIGHT-35
+					Height:25
+					Children:
+						Image@FLAG:
+							X:20
+							Y:5
+							Width:35
+							Height:PARENT_BOTTOM-5
+							ImageName:random
+							ImageCollection:flags
+						Label@PLAYER:
+							X:55
 							Width:160
-							Height:25
+							Height:PARENT_BOTTOM
 							Font:Bold
-							Text:Player
-						Label@THEIR_STANCE_HEADER:
-							X:265
-							Y:40
+						Label@THEIR_STANCE:
+							X:210
 							Width:80
-							Height:25
-							Font:Bold
-							Text:Their Stance
-						Label@MY_STANCE_HEADER:
-							X:385
-							Y:40
-							Width:60
-							Height:25
-							Font:Bold
-							Text:My Stance
-				ScrollPanel@DIPLOMACY_PANEL:
-					X:25
-					Y:70
-					Width:PARENT_RIGHT-50
-					Height:PARENT_BOTTOM-45-50
-					ItemSpacing:5
-					Children:
-						ScrollItem@TEAM_TEMPLATE:
-							X:0
-							Y:0
-							Width:PARENT_RIGHT-35
-							Height:25
-							Children:
-								Label@TEAM:
-									X:10
-									Y:0
-									Width:PARENT_RIGHT
-									Height:PARENT_BOTTOM
-									Font:Bold
-						ScrollItem@PLAYER_TEMPLATE:
-							X:0
-							Y:0
-							Width:PARENT_RIGHT-35
-							Height:25
-							Children:
-								Image@FLAG:
-									X:20
-									Y:5
-									Width:35
-									Height:PARENT_BOTTOM-5
-									ImageName:random
-									ImageCollection:flags
-								Label@PLAYER:
-									X:55
-									Y:0
-									Width:160
-									Height:PARENT_BOTTOM
-									Font:Bold
-								Label@THEIR_STANCE:
-									X:265
-									Y:0
-									Width:80
-									Height:PARENT_BOTTOM
-								DropDownButton@MY_STANCE:
-									X:345
-									Y:0
-									Width:100
-									Height:PARENT_BOTTOM
+							Height:PARENT_BOTTOM
+							Align:Center
+						DropDownButton@MY_STANCE:
+							X:307
+							Width:100
+							Height:PARENT_BOTTOM
