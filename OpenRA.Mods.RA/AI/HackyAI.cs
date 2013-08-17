@@ -12,10 +12,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.FileFormats;
-using OpenRA.Mods.RA.Buildings;
-using OpenRA.Mods.RA.Move;
-using OpenRA.Mods.RA.Effects;
 using OpenRA.Mods.RA.Air;
+using OpenRA.Mods.RA.Buildings;
+using OpenRA.Mods.RA.Effects;
+using OpenRA.Mods.RA.Move;
 using OpenRA.Traits;
 using XRandom = OpenRA.Thirdparty.Random;
 
@@ -26,12 +26,12 @@ namespace OpenRA.Mods.RA.AI
 		public readonly string Name = "Unnamed Bot";
 		public readonly int SquadSize = 8;
 
-		//intervals
+		// intervals
 		public readonly int AssignRolesInterval = 20;
 		public readonly int RushInterval = 600;
 		public readonly int AttackForceInterval = 30;
 
-		public readonly string RallypointTestBuilding = "fact";		// temporary hack to maintain previous rallypoint behavior.
+		public readonly string RallypointTestBuilding = "fact"; // HACK: to maintain previous rallypoint behavior.
 		public readonly string[] UnitQueues = { "Vehicle", "Infantry", "Plane", "Ship", "Aircraft" };
 		public readonly bool ShouldRepairBuildings = true;
 
@@ -59,7 +59,7 @@ namespace OpenRA.Mods.RA.AI
 
 		static object LoadListList(MiniYaml y, string field)
 		{
-			return LoadList<string[]>(y,field);
+			return LoadList<string[]>(y, field);
 		}
 
 		static object LoadList<ValueType>(MiniYaml y, string field)
@@ -92,17 +92,16 @@ namespace OpenRA.Mods.RA.AI
 
 	class Squad
 	{
-		public List<Actor> units = new List<Actor>();
-		public SquadType type;
+		public List<Actor> Units = new List<Actor>();
+		public SquadType Type;
 
 		World world;
 		HackyAI bot;
 		XRandom random;
 
 		Actor target;
-		StateMachine fsm;
+		StateMachine fuzzy;
 
-		//fuzzy
 		AttackOrFleeFuzzy attackOrFleeFuzzy = new AttackOrFleeFuzzy();
 
 		public Squad(HackyAI bot, SquadType type) : this(bot, type, null) { }
@@ -110,23 +109,23 @@ namespace OpenRA.Mods.RA.AI
 		public Squad(HackyAI bot, SquadType type, Actor target)
 		{
 			this.bot = bot;
-			this.world = bot.world;
-			this.random = bot.random;
-			this.type = type;
+			this.world = bot.BotWorld;
+			this.random = bot.BotRandom;
+			this.Type = type;
 			this.target = target;
-			fsm = new StateMachine(this);
+			fuzzy = new StateMachine(this);
 
 			switch (type)
 			{
 				case SquadType.Assault:
 				case SquadType.Rush:
-					fsm.ChangeState(new GroundUnitsIdleState(), true);
+					fuzzy.ChangeState(new GroundUnitsIdleState(), true);
 					break;
 				case SquadType.Air:
-					fsm.ChangeState(new AirIdleState(), true);
+					fuzzy.ChangeState(new AirIdleState(), true);
 					break;
 				case SquadType.Protection:
-					fsm.ChangeState(new UnitsForProtectionIdleState(), true);
+					fuzzy.ChangeState(new UnitsForProtectionIdleState(), true);
 					break;
 			}
 		}
@@ -134,12 +133,12 @@ namespace OpenRA.Mods.RA.AI
 		public void Update()
 		{
 			if (IsEmpty) return;
-			fsm.UpdateFsm();
+			fuzzy.UpdateStateMachine();
 		}
 
 		public bool IsEmpty
 		{
-			get { return !units.Any(); }
+			get { return !Units.Any(); }
 		}
 
 		public Actor Target
@@ -150,34 +149,12 @@ namespace OpenRA.Mods.RA.AI
 
 		public bool TargetIsValid
 		{
-			get { return (target != null && !target.IsDead() && !target.Destroyed
-				&& target.IsInWorld && !target.HasTrait<Husk>()); }
+			get { return target != null && !target.IsDead() && !target.Destroyed
+				&& target.IsInWorld && !target.HasTrait<Husk>(); }
 		}
-
-		//**********************************************************************************
-		// Squad AI States
-
-		/* Include general functional for all states */
 
 		abstract class StateBase
 		{
-			protected const int dangerRadius = 10;
-
-			protected virtual bool MayBeFlee(Squad owner, Func<List<Actor>, bool> flee)
-			{
-				if (owner.IsEmpty) return false;
-				var u = owner.units.Random(owner.random);
-
-				var units = owner.world.FindActorsInCircle(u.CenterPosition, WRange.FromCells(dangerRadius)).ToList();
-				var ownBaseBuildingAround = units.Where(unit => unit.Owner == owner.bot.p && unit.HasTrait<Building>()).ToList();
-				if (ownBaseBuildingAround.Count > 0) return false;
-
-				var enemyAroundUnit = units.Where(unit => owner.bot.p.Stances[unit.Owner] == Stance.Enemy && unit.HasTrait<AttackBase>()).ToList();
-				if (!enemyAroundUnit.Any()) return false;
-
-				return flee(enemyAroundUnit);
-			}
-
 			protected static CPos? AverageUnitsPosition(List<Actor> units)
 			{
 				int x = 0;
@@ -189,6 +166,7 @@ namespace OpenRA.Mods.RA.AI
 					y += u.Location.Y;
 					countUnits++;
 				}
+
 				x = x / countUnits;
 				y = y / countUnits;
 				return (x != 0 && y != 0) ? new CPos?(new CPos(x, y)) : null;
@@ -197,15 +175,15 @@ namespace OpenRA.Mods.RA.AI
 			protected static void GoToRandomOwnBuilding(Squad owner)
 			{
 				var loc = RandomBuildingLocation(owner);
-				foreach (var a in owner.units)
+				foreach (var a in owner.Units)
 					owner.world.IssueOrder(new Order("Move", a, false) { TargetLocation = loc });
 			}
 
 			protected static CPos RandomBuildingLocation(Squad owner)
 			{
-				var location = owner.bot.baseCenter;
+				var location = owner.bot.BaseCenter;
 				var buildings = owner.world.ActorsWithTrait<Building>()
-					.Where(a => a.Actor.Owner == owner.bot.p).Select(a => a.Actor).ToArray();
+					.Where(a => a.Actor.Owner == owner.bot.BotPlayer).Select(a => a.Actor).ToArray();
 				if (buildings.Length > 0)
 					location = buildings.Random(owner.random).Location;
 				return location;
@@ -218,8 +196,7 @@ namespace OpenRA.Mods.RA.AI
 						a.GetCurrentActivity().GetType() == typeof(FlyAttack) ||
 						(a.GetCurrentActivity().NextActivity != null &&
 						(a.GetCurrentActivity().NextActivity.GetType() == typeof(OpenRA.Mods.RA.Activities.Attack) || 
-						a.GetCurrentActivity().NextActivity.GetType() == typeof(FlyAttack)) )
-						)
+						a.GetCurrentActivity().NextActivity.GetType() == typeof(FlyAttack))))
 						return true;
 				return false;
 			}
@@ -240,13 +217,30 @@ namespace OpenRA.Mods.RA.AI
 
 				return false;
 			}
+
+			protected const int DangerRadius = 10;
+
+			protected virtual bool MayBeFlee(Squad owner, Func<List<Actor>, bool> flee)
+			{
+				if (owner.IsEmpty) return false;
+				var u = owner.Units.Random(owner.random);
+
+				var units = owner.world.FindActorsInCircle(u.CenterPosition, WRange.FromCells(DangerRadius)).ToList();
+				var ownBaseBuildingAround = units.Where(unit => unit.Owner == owner.bot.BotPlayer && unit.HasTrait<Building>()).ToList();
+				if (ownBaseBuildingAround.Count > 0) return false;
+
+				var enemyAroundUnit = units.Where(unit => owner.bot.BotPlayer.Stances[unit.Owner] == Stance.Enemy && unit.HasTrait<AttackBase>()).ToList();
+				if (!enemyAroundUnit.Any()) return false;
+
+				return flee(enemyAroundUnit);
+			}
 		}
 
 		/* States for air units */
 
 		abstract class AirStateBase : StateBase
 		{
-			protected const int missileUnitsMultiplier = 3;
+			protected const int MissileUnitsMultiplier = 3;
 
 			protected static int CountAntiAirUnits(List<Actor> units)
 			{
@@ -263,23 +257,8 @@ namespace OpenRA.Mods.RA.AI
 								break;
 							}
 					}
+
 				return missileUnitsCount;
-			}
-
-			//checks the number of anti air enemies around units
-			protected virtual bool MayBeFlee(Squad owner)
-			{
-				return base.MayBeFlee(owner, (enemyAroundUnit) =>
-				{
-					int missileUnitsCount = 0;
-					if (enemyAroundUnit.Count > 0)
-						missileUnitsCount = CountAntiAirUnits(enemyAroundUnit);
-
-					if (missileUnitsCount * missileUnitsMultiplier > owner.units.Count)
-						return true;
-
-					return false;
-				});
 			}
 
 			protected static Actor FindDefenselessTarget(Squad owner)
@@ -294,11 +273,11 @@ namespace OpenRA.Mods.RA.AI
 			{
 				World world = owner.world;
 				detectedEnemyTarget = null;
-				int x = (world.Map.MapSize.X % dangerRadius) == 0 ? world.Map.MapSize.X : world.Map.MapSize.X + dangerRadius;
-				int y = (world.Map.MapSize.Y % dangerRadius) == 0 ? world.Map.MapSize.Y : world.Map.MapSize.Y + dangerRadius;
+				int x = (world.Map.MapSize.X % DangerRadius) == 0 ? world.Map.MapSize.X : world.Map.MapSize.X + DangerRadius;
+				int y = (world.Map.MapSize.Y % DangerRadius) == 0 ? world.Map.MapSize.Y : world.Map.MapSize.Y + DangerRadius;
 
-				for (int i = 0; i < x; i += dangerRadius * 2)
-					for (int j = 0; j < y; j += dangerRadius * 2)
+				for (int i = 0; i < x; i += DangerRadius * 2)
+					for (int j = 0; j < y; j += DangerRadius * 2)
 					{
 						CPos pos = new CPos(i, j);
 						if (NearToPosSafely(owner, pos.CenterPosition, out detectedEnemyTarget))
@@ -310,9 +289,11 @@ namespace OpenRA.Mods.RA.AI
 								else
 									return pos;
 							}
+
 							return pos;
 						}
 					}
+
 				return null;
 			}
 
@@ -325,14 +306,14 @@ namespace OpenRA.Mods.RA.AI
 			protected static bool NearToPosSafely(Squad owner, WPos loc, out Actor detectedEnemyTarget)
 			{
 				detectedEnemyTarget = null;
-				var unitsAroundPos = owner.world.FindActorsInCircle(loc, WRange.FromCells(dangerRadius))
-					.Where(unit => owner.bot.p.Stances[unit.Owner] == Stance.Enemy).ToList();
+				var unitsAroundPos = owner.world.FindActorsInCircle(loc, WRange.FromCells(DangerRadius))
+					.Where(unit => owner.bot.BotPlayer.Stances[unit.Owner] == Stance.Enemy).ToList();
 
 				int missileUnitsCount = 0;
 				if (unitsAroundPos.Count > 0)
 				{
 					missileUnitsCount = CountAntiAirUnits(unitsAroundPos);
-					if (missileUnitsCount * missileUnitsMultiplier < owner.units.Count)
+					if (missileUnitsCount * MissileUnitsMultiplier < owner.Units.Count)
 					{
 						detectedEnemyTarget = unitsAroundPos.Random(owner.random);
 						return true;
@@ -340,19 +321,20 @@ namespace OpenRA.Mods.RA.AI
 					else
 						return false;
 				}
+
 				return true;
 			}
 
 			protected static bool FullAmmo(Actor a)
 			{
 				var limitedAmmo = a.TraitOrDefault<LimitedAmmo>();
-				return (limitedAmmo != null && limitedAmmo.FullAmmo());
+				return limitedAmmo != null && limitedAmmo.FullAmmo();
 			}
 
 			protected static bool HasAmmo(Actor a)
 			{
 				var limitedAmmo = a.TraitOrDefault<LimitedAmmo>();
-				return (limitedAmmo != null && limitedAmmo.HasAmmo());
+				return limitedAmmo != null && limitedAmmo.HasAmmo();
 			}
 
 			protected static bool IsReloadable(Actor a)
@@ -366,11 +348,25 @@ namespace OpenRA.Mods.RA.AI
 				if (a.GetCurrentActivity().GetType() == typeof(OpenRA.Mods.RA.Activities.Rearm) ||
 					a.GetCurrentActivity().GetType() == typeof(ResupplyAircraft) ||
 					(a.GetCurrentActivity().NextActivity != null &&
-					 (a.GetCurrentActivity().NextActivity.GetType() == typeof(OpenRA.Mods.RA.Activities.Rearm) ||
-					 a.GetCurrentActivity().NextActivity.GetType() == typeof(ResupplyAircraft)))
-					)
+					(a.GetCurrentActivity().NextActivity.GetType() == typeof(OpenRA.Mods.RA.Activities.Rearm) ||
+					a.GetCurrentActivity().NextActivity.GetType() == typeof(ResupplyAircraft))))
 					return true;
 				return false;
+			}
+
+			// Checks the number of anti air enemies around units
+			protected virtual bool MayBeFlee(Squad owner)
+			{
+				return base.MayBeFlee(owner, (enemyAroundUnit) => {
+					int missileUnitsCount = 0;
+					if (enemyAroundUnit.Count > 0)
+						missileUnitsCount = CountAntiAirUnits(enemyAroundUnit);
+
+					if (missileUnitsCount * MissileUnitsMultiplier > owner.Units.Count)
+						return true;
+
+					return false;
+				});
 			}
 		}
 
@@ -384,7 +380,7 @@ namespace OpenRA.Mods.RA.AI
 
 				if (MayBeFlee(owner))
 				{
-					owner.fsm.ChangeState(new AirFleeState(), true);
+					owner.fuzzy.ChangeState(new AirFleeState(), true);
 					return;
 				}
 
@@ -394,7 +390,7 @@ namespace OpenRA.Mods.RA.AI
 				else
 				{
 					owner.Target = e;
-					owner.fsm.ChangeState(new AirAttackState(), true);
+					owner.fuzzy.ChangeState(new AirAttackState(), true);
 				}
 			}
 
@@ -411,24 +407,24 @@ namespace OpenRA.Mods.RA.AI
 
 				if (!owner.TargetIsValid)
 				{
-					var a = owner.units.Random(owner.random);
+					var a = owner.Units.Random(owner.random);
 					var closestEnemy = owner.bot.FindClosestEnemy(a.CenterPosition);
 					if (closestEnemy != null)
 						owner.Target = closestEnemy;
 					else
 					{
-					   owner.fsm.ChangeState(new AirFleeState(), true);
+					   owner.fuzzy.ChangeState(new AirFleeState(), true);
 						return;
 					}
 				}
 
 				if (!NearToPosSafely(owner, owner.Target.CenterPosition))
 				{
-					owner.fsm.ChangeState(new AirFleeState(), true);
+					owner.fuzzy.ChangeState(new AirFleeState(), true);
 					return;
 				}
 
-				foreach (var a in owner.units)
+				foreach (var a in owner.Units)
 				{
 					if (BusyAttack(a))
 						continue;
@@ -441,9 +437,11 @@ namespace OpenRA.Mods.RA.AI
 							owner.world.IssueOrder(new Order("ReturnToBase", a, false));
 							continue;
 						}
+
 						if (IsRearm(a))
 							continue;
 					}
+
 					if (owner.Target.HasTrait<ITargetable>() && CanAttackTarget(a, owner.Target))
 						owner.world.IssueOrder(new Order("Attack", a, false) { TargetActor = owner.Target });
 				}
@@ -460,7 +458,7 @@ namespace OpenRA.Mods.RA.AI
 			{
 				if (owner.IsEmpty) return;
 
-				foreach (var a in owner.units)
+				foreach (var a in owner.Units)
 				{
 					if (!IsReloadable(a))
 						if (!FullAmmo(a))
@@ -470,9 +468,11 @@ namespace OpenRA.Mods.RA.AI
 							owner.world.IssueOrder(new Order("ReturnToBase", a, false));
 							continue;
 						}
+
 					owner.world.IssueOrder(new Order("Move", a, false) { TargetLocation = RandomBuildingLocation(owner) });
 				}
-				owner.fsm.ChangeState(new AirIdleState(), true);
+
+				owner.fuzzy.ChangeState(new AirIdleState(), true);
 			}
 
 			public void Exit(Squad owner) { }
@@ -486,7 +486,7 @@ namespace OpenRA.Mods.RA.AI
 			{
 				return base.MayBeFlee(owner, (enemyAroundUnit) =>
 				{
-					owner.attackOrFleeFuzzy.CalculateFuzzy(owner.units, enemyAroundUnit);
+					owner.attackOrFleeFuzzy.CalculateFuzzy(owner.Units, enemyAroundUnit);
 					if (!owner.attackOrFleeFuzzy.CanAttack)
 						return true;
 
@@ -504,27 +504,27 @@ namespace OpenRA.Mods.RA.AI
 				if (owner.IsEmpty) return;
 				if (!owner.TargetIsValid)
 				{
-					var t = owner.bot.FindClosestEnemy(owner.units.FirstOrDefault().CenterPosition);
+					var t = owner.bot.FindClosestEnemy(owner.Units.FirstOrDefault().CenterPosition);
 					if (t == null) return;
 					owner.Target = t;
 				}
 
 				var enemyUnits = owner.world.FindActorsInCircle(owner.Target.CenterPosition, WRange.FromCells(10))
-					.Where(unit => owner.bot.p.Stances[unit.Owner] == Stance.Enemy).ToList();
+					.Where(unit => owner.bot.BotPlayer.Stances[unit.Owner] == Stance.Enemy).ToList();
 				if (enemyUnits.Any())
-
 				{
-					owner.attackOrFleeFuzzy.CalculateFuzzy(owner.units, enemyUnits);
+					owner.attackOrFleeFuzzy.CalculateFuzzy(owner.Units, enemyUnits);
 					if (owner.attackOrFleeFuzzy.CanAttack)
 					{
-						foreach(var u in owner.units)
+						foreach (var u in owner.Units)
 							owner.world.IssueOrder(new Order("AttackMove", u, false) { TargetLocation = owner.Target.CenterPosition.ToCPos() });
+
 						// We have gathered sufficient units. Attack the nearest enemy unit.
-						owner.fsm.ChangeState(new GroundUnitsAttackMoveState(), true);
+						owner.fuzzy.ChangeState(new GroundUnitsAttackMoveState(), true);
 						return;
 					}
 					else
-						owner.fsm.ChangeState(new GroundUnitsFleeState(), true);
+						owner.fuzzy.ChangeState(new GroundUnitsFleeState(), true);
 				}
 			}
 
@@ -541,25 +541,25 @@ namespace OpenRA.Mods.RA.AI
 
 				if (!owner.TargetIsValid)
 				{
-					var closestEnemy = owner.bot.FindClosestEnemy(owner.units.Random(owner.random).CenterPosition);
+					var closestEnemy = owner.bot.FindClosestEnemy(owner.Units.Random(owner.random).CenterPosition);
 					if (closestEnemy != null)
 						owner.Target = closestEnemy;
 					else
 					{
-						owner.fsm.ChangeState(new GroundUnitsFleeState(), true);
+						owner.fuzzy.ChangeState(new GroundUnitsFleeState(), true);
 						return;
 					}
 				}
 
-				Actor leader = owner.units.ClosestTo(owner.Target.CenterPosition);
+				var leader = owner.Units.ClosestTo(owner.Target.CenterPosition);
 				if (leader == null)
 					return;
-				var ownUnits = owner.world.FindActorsInCircle(leader.CenterPosition, WRange.FromCells(owner.units.Count) / 3)
-					.Where(a => a.Owner == owner.units.FirstOrDefault().Owner && owner.units.Contains(a)).ToList();
-				if (ownUnits.Count < owner.units.Count)
+				var ownUnits = owner.world.FindActorsInCircle(leader.CenterPosition, WRange.FromCells(owner.Units.Count) / 3)
+					.Where(a => a.Owner == owner.Units.FirstOrDefault().Owner && owner.Units.Contains(a)).ToList();
+				if (ownUnits.Count < owner.Units.Count)
 				{
 					owner.world.IssueOrder(new Order("Stop", leader, false));
-					foreach (var unit in owner.units.Where(a => !ownUnits.Contains(a)))
+					foreach (var unit in owner.Units.Where(a => !ownUnits.Contains(a)))
 						owner.world.IssueOrder(new Order("AttackMove", unit, false) { TargetLocation = leader.CenterPosition.ToCPos() });
 				}
 				else
@@ -570,19 +570,19 @@ namespace OpenRA.Mods.RA.AI
 					if (enemynearby.Any())
 					{
 						owner.Target = enemynearby.ClosestTo(leader.CenterPosition);
-						owner.fsm.ChangeState(new GroundUnitsAttackState(), true);
+						owner.fuzzy.ChangeState(new GroundUnitsAttackState(), true);
 						return;
 					}
 					else
-						foreach (var a in owner.units)
+						foreach (var a in owner.Units)
 							owner.world.IssueOrder(new Order("AttackMove", a, false) { TargetLocation = owner.Target.Location });
 				}
 
 				if (MayBeFlee(owner))
 				{
-					owner.fsm.ChangeState(new GroundUnitsFleeState(), true);
+					owner.fuzzy.ChangeState(new GroundUnitsFleeState(), true);
 					return;
-				}   
+				}
 			}
 
 			public void Exit(Squad owner) { }
@@ -598,22 +598,23 @@ namespace OpenRA.Mods.RA.AI
 
 				if (!owner.TargetIsValid)
 				{
-					var closestEnemy = owner.bot.FindClosestEnemy(owner.units.Random(owner.random).CenterPosition);
+					var closestEnemy = owner.bot.FindClosestEnemy(owner.Units.Random(owner.random).CenterPosition);
 					if (closestEnemy != null)
 						owner.Target = closestEnemy;
 					else
 					{
-						owner.fsm.ChangeState(new GroundUnitsFleeState(), true);
+						owner.fuzzy.ChangeState(new GroundUnitsFleeState(), true);
 						return;
 					}
 				}
-				foreach (var a in owner.units)
+
+				foreach (var a in owner.Units)
 					if (!BusyAttack(a))
 						owner.world.IssueOrder(new Order("Attack", a, false) { TargetActor = owner.bot.FindClosestEnemy(a.CenterPosition) });
 
 				if (MayBeFlee(owner))
 				{
-					owner.fsm.ChangeState(new GroundUnitsFleeState(), true);
+					owner.fuzzy.ChangeState(new GroundUnitsFleeState(), true);
 					return;
 				}
 			}
@@ -630,16 +631,16 @@ namespace OpenRA.Mods.RA.AI
 				if (owner.IsEmpty) return;
 
 				GoToRandomOwnBuilding(owner);
-				owner.fsm.ChangeState(new GroundUnitsIdleState(), true);
+				owner.fuzzy.ChangeState(new GroundUnitsIdleState(), true);
 			}
 
-			public void Exit(Squad owner) { owner.units.Clear(); }
+			public void Exit(Squad owner) { owner.Units.Clear(); }
 		}
 
 		class UnitsForProtectionIdleState : GroundStateBase, IState
 		{
 			public void Enter(Squad owner) { }
-			public void Execute(Squad owner) { owner.fsm.ChangeState(new UnitsForProtectionAttackState(), true); }
+			public void Execute(Squad owner) { owner.fuzzy.ChangeState(new UnitsForProtectionAttackState(), true); }
 			public void Exit(Squad owner) { }
 		}
 
@@ -652,17 +653,18 @@ namespace OpenRA.Mods.RA.AI
 				if (owner.IsEmpty) return;
 				if (!owner.TargetIsValid)
 				{
-					var circaPostion = AverageUnitsPosition(owner.units);
+					var circaPostion = AverageUnitsPosition(owner.Units);
 					if (circaPostion == null) return;
 					owner.Target = owner.bot.FindClosestEnemy(circaPostion.Value.CenterPosition, WRange.FromCells(8));
 
 					if (owner.Target == null)
 					{
-						owner.fsm.ChangeState(new UnitsForProtectionFleeState(), true);
+						owner.fuzzy.ChangeState(new UnitsForProtectionFleeState(), true);
 						return;
 					}
 				}
-				foreach (var a in owner.units)
+
+				foreach (var a in owner.Units)
 					owner.world.IssueOrder(new Order("AttackMove", a, false) { TargetLocation = owner.Target.Location });
 			}
 
@@ -678,44 +680,45 @@ namespace OpenRA.Mods.RA.AI
 				if (owner.IsEmpty) return;
 
 				GoToRandomOwnBuilding(owner);
-				owner.fsm.ChangeState(new UnitsForProtectionIdleState(), true);
+				owner.fuzzy.ChangeState(new UnitsForProtectionIdleState(), true);
 			}
 
-			public void Exit(Squad owner) { owner.units.Clear(); }
+			public void Exit(Squad owner) { owner.Units.Clear(); }
 		}
 	}
 
 	class HackyAI : ITick, IBot, INotifyDamage
 	{
+		const int MaxBaseDistance = 40;
+		public const int FeedbackTime = 30;		// ticks; = a bit over 1s. must be >= netlag.
+
+		public int Ticks;
+		public Player BotPlayer;
+		public XRandom BotRandom;
+		public CPos BaseCenter;
+
+		readonly BuildingInfo rallypointTestBuilding; // HACK: temporary
+
 		bool enabled;
-		public int ticks;
-		public Player p;
-		public XRandom random;
-		public CPos baseCenter;
 		PowerManager playerPower;
 		SupportPowerManager supportPowerMngr;
 		PlayerResources playerResource;
-		readonly BuildingInfo rallypointTestBuilding;		// temporary hack
-		internal readonly HackyAIInfo Info;
-
 		string[] resourceTypes;
+
+		internal readonly HackyAIInfo Info;
 
 		RushFuzzy rushFuzzy = new RushFuzzy();
 
-		Cache<Player,Enemy> aggro = new Cache<Player, Enemy>( _ => new Enemy() );
+		Cache<Player, Enemy> aggro = new Cache<Player, Enemy>(_ => new Enemy());
 		BaseBuilder[] builders;
 
-		const int MaxBaseDistance = 40;
-		public const int feedbackTime = 30;		// ticks; = a bit over 1s. must be >= netlag.
-
-		public World world { get { return p.PlayerActor.World; } }
+		public World BotWorld { get { return BotPlayer.PlayerActor.World; } }
 		IBotInfo IBot.Info { get { return this.Info; } }
 
-		public HackyAI(HackyAIInfo Info)
+		public HackyAI(HackyAIInfo hackyAIinfo)
 		{
-			this.Info = Info;
-			// temporary hack.
-			this.rallypointTestBuilding = Rules.Info[Info.RallypointTestBuilding].Traits.Get<BuildingInfo>();
+			this.Info = hackyAIinfo;
+			this.rallypointTestBuilding = Rules.Info[hackyAIinfo.RallypointTestBuilding].Traits.Get<BuildingInfo>(); // HACK: temporary
 		}
 
 		public static void BotDebug(string s, params object[] args)
@@ -727,16 +730,16 @@ namespace OpenRA.Mods.RA.AI
 		/* called by the host's player creation code */
 		public void Activate(Player p)
 		{
-			this.p = p;
+			this.BotPlayer = p;
 			enabled = true;
 			playerPower = p.PlayerActor.Trait<PowerManager>();
 			supportPowerMngr = p.PlayerActor.Trait<SupportPowerManager>();
 			playerResource = p.PlayerActor.Trait<PlayerResources>();
 			builders = new BaseBuilder[] {
-				new BaseBuilder( this, "Building", q => ChooseBuildingToBuild(q, false) ),
-				new BaseBuilder( this, "Defense", q => ChooseBuildingToBuild(q, true) ) };
+				new BaseBuilder(this, "Building", q => ChooseBuildingToBuild(q, false)),
+				new BaseBuilder(this, "Defense", q => ChooseBuildingToBuild(q, true)) };
 
-			random = new XRandom((int)p.PlayerActor.ActorID);
+			BotRandom = new XRandom((int)p.PlayerActor.ActorID);
 
 			resourceTypes = Rules.Info["world"].Traits.WithInterface<ResourceTypeInfo>()
 				.Select(t => t.TerrainType).ToArray();
@@ -753,7 +756,7 @@ namespace OpenRA.Mods.RA.AI
 		{
 			var buildableThings = queue.BuildableItems();
 			if (!buildableThings.Any()) return null;
-			var unit = buildableThings.ElementAtOrDefault(random.Next(buildableThings.Count()));
+			var unit = buildableThings.ElementAtOrDefault(BotRandom.Next(buildableThings.Count()));
 			if (HasAdequateAirUnits(unit))
 				return unit;
 			return null;
@@ -764,9 +767,9 @@ namespace OpenRA.Mods.RA.AI
 			var buildableThings = queue.BuildableItems();
 			if (!buildableThings.Any()) return null;
 
-			var myUnits = p.World
+			var myUnits = BotPlayer.World
 				.ActorsWithTrait<IPositionable>()
-				.Where(a => a.Actor.Owner == p)
+				.Where(a => a.Actor.Owner == BotPlayer)
 				.Select(a => a.Actor.Info.Name).ToArray();
 
 			foreach (var unit in Info.UnitsToBuild)
@@ -780,18 +783,18 @@ namespace OpenRA.Mods.RA.AI
 
 		int CountBuilding(string frac, Player owner)
 		{
-			return world.ActorsWithTrait<Building>().Where(a => a.Actor.Owner == owner && a.Actor.Info.Name == frac).Count();
+			return BotWorld.ActorsWithTrait<Building>().Where(a => a.Actor.Owner == owner && a.Actor.Info.Name == frac).Count();
 		}
 
 		int CountUnits(string unit, Player owner)
 		{
-			return world.ActorsWithTrait<IPositionable>().Where(a => a.Actor.Owner == owner && a.Actor.Info.Name == unit).Count();
+			return BotWorld.ActorsWithTrait<IPositionable>().Where(a => a.Actor.Owner == owner && a.Actor.Info.Name == unit).Count();
 		}
 
 		int? CountBuildingByCommonName(string commonName, Player owner)
 		{
-			if(Info.BuildingCommonNames.ContainsKey(commonName))
-				return world.ActorsWithTrait<Building>()
+			if (Info.BuildingCommonNames.ContainsKey(commonName))
+				return BotWorld.ActorsWithTrait<Building>()
 					.Where(a => a.Actor.Owner == owner && Info.BuildingCommonNames[commonName].Contains(a.Actor.Info.Name)).Count();
 			return null;
 		}
@@ -799,7 +802,7 @@ namespace OpenRA.Mods.RA.AI
 		ActorInfo GetBuildingInfoByCommonName(string commonName, Player owner)
 		{
 			if (commonName == "ConstructionYard")
-				return Rules.Info.Where(k => Info.BuildingCommonNames[commonName].Contains(k.Key)).Random(random).Value;
+				return Rules.Info.Where(k => Info.BuildingCommonNames[commonName].Contains(k.Key)).Random(BotRandom).Value;
 			return GetInfoByCommonName(Info.BuildingCommonNames, commonName, owner);
 		}
 
@@ -812,7 +815,7 @@ namespace OpenRA.Mods.RA.AI
 		{
 			if (!names.Any() || !names.ContainsKey(commonName)) return null;
 			return Rules.Info.Where(k => names[commonName].Contains(k.Key) &&
-				k.Value.Traits.Get<BuildableInfo>().Owner.Contains(owner.Country.Race)).Random(random).Value; //random is shit
+				k.Value.Traits.Get<BuildableInfo>().Owner.Contains(owner.Country.Race)).Random(BotRandom).Value; // TODO: random is shit
 		}
 
 		bool HasAdequatePower()
@@ -824,22 +827,22 @@ namespace OpenRA.Mods.RA.AI
 
 		bool HasAdequateFact()
 		{
-			if (CountBuildingByCommonName("ConstructionYard", p) == 0 && CountBuildingByCommonName("VehiclesFactory", p) > 0)
+			if (CountBuildingByCommonName("ConstructionYard", BotPlayer) == 0 && CountBuildingByCommonName("VehiclesFactory", BotPlayer) > 0)
 				return false;
 			return true;
 		}
 
 		bool HasAdequateProc()
 		{
-			if (CountBuildingByCommonName("Refinery", p) == 0 && CountBuildingByCommonName("Power", p) > 0)
+			if (CountBuildingByCommonName("Refinery", BotPlayer) == 0 && CountBuildingByCommonName("Power", BotPlayer) > 0)
 				return false;
 			return true;
 		}
 
 		bool HasMinimumProc()
 		{
-			if (CountBuildingByCommonName("Refinery", p) < 2 && CountBuildingByCommonName("Power", p) > 0 &&
-				CountBuildingByCommonName("Barracks",p) > 0)
+			if (CountBuildingByCommonName("Refinery", BotPlayer) < 2 && CountBuildingByCommonName("Power", BotPlayer) > 0 &&
+				CountBuildingByCommonName("Barracks", BotPlayer) > 0)
 				return false;
 			return true;
 		}
@@ -855,17 +858,18 @@ namespace OpenRA.Mods.RA.AI
 			return true;
 		}
 
-		//for mods like RA (number of building must match the number of aircraft)
+		// for mods like RA (number of building should match the number of aircraft)
 		bool HasAdequateAirUnits(ActorInfo actorInfo)
 		{
 			if (!actorInfo.Traits.Contains<ReloadsInfo>() && actorInfo.Traits.Contains<LimitedAmmoInfo>() 
 				&& actorInfo.Traits.Contains<AircraftInfo>())
 			{
-				var countOwnAir = CountUnits(actorInfo.Name, p);
-				var countBuildings = CountBuilding(actorInfo.Traits.Get<AircraftInfo>().RearmBuildings.FirstOrDefault(), p);
+				var countOwnAir = CountUnits(actorInfo.Name, BotPlayer);
+				var countBuildings = CountBuilding(actorInfo.Traits.Get<AircraftInfo>().RearmBuildings.FirstOrDefault(), BotPlayer);
 				if (countOwnAir >= countBuildings)
 					return false;
 			}
+
 			return true;
 		}
 
@@ -881,19 +885,20 @@ namespace OpenRA.Mods.RA.AI
 						.OrderByDescending(a => GetPowerProvidedBy(a)).FirstOrDefault();
 
 				if (playerResource.AlertSilo)
-					return GetBuildingInfoByCommonName("Silo", p);
+					return GetBuildingInfoByCommonName("Silo", BotPlayer);
 
 				if (!HasAdequateProc() || !HasMinimumProc())
-					return GetBuildingInfoByCommonName("Refinery", p);
+					return GetBuildingInfoByCommonName("Refinery", BotPlayer);
 			}
-			var myBuildings = p.World
+
+			var myBuildings = BotPlayer.World
 				.ActorsWithTrait<Building>()
-				.Where( a => a.Actor.Owner == p )
+				.Where(a => a.Actor.Owner == BotPlayer)
 				.Select(a => a.Actor.Info.Name).ToArray();
 
 			foreach (var frac in Info.BuildingFractions)
 				if (buildableThings.Any(b => b.Name == frac.Key))
-					if (myBuildings.Count(a => a == frac.Key) < frac.Value * myBuildings.Length && HasAdequateNumber(frac.Key, p) &&
+					if (myBuildings.Count(a => a == frac.Key) < frac.Value * myBuildings.Length && HasAdequateNumber(frac.Key, BotPlayer) &&
 						playerPower.ExcessPower >= Rules.Info[frac.Key].Traits.Get<BuildingInfo>().Power)
 						return Rules.Info[frac.Key];
 
@@ -902,7 +907,7 @@ namespace OpenRA.Mods.RA.AI
 
 		bool NoBuildingsUnder(IEnumerable<CPos> cells)
 		{
-			var bi = world.WorldActor.Trait<BuildingInfluence>();
+			var bi = BotWorld.WorldActor.Trait<BuildingInfluence>();
 			return cells.All(c => bi.GetBuildingAt(c) == null);
 		}
 
@@ -921,40 +926,42 @@ namespace OpenRA.Mods.RA.AI
 			{
 				for (var k = MaxBaseDistance; k >= 0; k--)
 				{
-					var tlist = world.FindTilesInCircle(center, k)
+					var tlist = BotWorld.FindTilesInCircle(center, k)
 						.OrderBy(a => (a.CenterPosition - pos).LengthSquared);
 					foreach (var t in tlist)
-						if (world.CanPlaceBuilding(actorType, bi, t, null))
-							if (bi.IsCloseEnoughToBase(world, p, actorType, t))
+						if (BotWorld.CanPlaceBuilding(actorType, bi, t, null))
+							if (bi.IsCloseEnoughToBase(BotWorld, BotPlayer, actorType, t))
 								if (NoBuildingsUnder(Util.ExpandFootprint(FootprintUtils.Tiles(actorType, bi, t), false)))
 									return t;
 				}
+
 				return null;
 			};
 
-			switch(type)
+			switch (type)
 			{
 				case BuildingType.Defense:
-					Actor enemyBase = FindEnemyBuildingClosestToPos(baseCenter.CenterPosition);
+					Actor enemyBase = FindEnemyBuildingClosestToPos(BaseCenter.CenterPosition);
 					return enemyBase != null ? findPos(enemyBase.CenterPosition, defenseCenter) : null;
 
 				case BuildingType.Refinery:
-					var tilesPos = world.FindTilesInCircle(baseCenter, MaxBaseDistance)
-						.Where(a => resourceTypes.Contains(world.GetTerrainType(new CPos(a.X, a.Y))))
-						.OrderBy(a => (a.CenterPosition - baseCenter.CenterPosition).LengthSquared);
-					return tilesPos.Any() ? findPos(tilesPos.First().CenterPosition, baseCenter) : null;
+					var tilesPos = BotWorld.FindTilesInCircle(BaseCenter, MaxBaseDistance)
+						.Where(a => resourceTypes.Contains(BotWorld.GetTerrainType(new CPos(a.X, a.Y))))
+						.OrderBy(a => (a.CenterPosition - BaseCenter.CenterPosition).LengthSquared);
+					return tilesPos.Any() ? findPos(tilesPos.First().CenterPosition, BaseCenter) : null;
 
 				case BuildingType.Building:
 					for (var k = 0; k < maxBaseDistance; k++)
-						foreach (var t in world.FindTilesInCircle(baseCenter, k))
-							if (world.CanPlaceBuilding(actorType, bi, t, null))
+						foreach (var t in BotWorld.FindTilesInCircle(BaseCenter, k))
+							if (BotWorld.CanPlaceBuilding(actorType, bi, t, null))
 							{
 								if (distanceToBaseIsImportant)
-									if (!bi.IsCloseEnoughToBase(world, p, actorType, t))
+									if (!bi.IsCloseEnoughToBase(BotWorld, BotPlayer, actorType, t))
 										continue;
 								if (NoBuildingsUnder(Util.ExpandFootprint(FootprintUtils.Tiles(actorType, bi, t), false)))
 									return t;
 							}
+
 					break;
 			}
 
@@ -966,12 +973,12 @@ namespace OpenRA.Mods.RA.AI
 			if (!enabled)
 				return;
 
-			ticks++;
+			Ticks++;
 
-			if (ticks == 1)
+			if (Ticks == 1)
 				DeployMcv(self);
 
-			if (ticks % feedbackTime == 0)
+			if (Ticks % FeedbackTime == 0)
 				ProductionUnits(self);
 			
 			AssignRolesToIdleUnits(self);
@@ -984,9 +991,9 @@ namespace OpenRA.Mods.RA.AI
 
 		internal Actor ChooseEnemyTarget()
 		{
-			var liveEnemies = world.Players
-				.Where(q => p != q && p.Stances[q] == Stance.Enemy)
-				.Where(q => p.WinState == WinState.Undefined && q.WinState == WinState.Undefined);
+			var liveEnemies = BotWorld.Players
+				.Where(q => BotPlayer != q && BotPlayer.Stances[q] == Stance.Enemy)
+				.Where(q => BotPlayer.WinState == WinState.Undefined && q.WinState == WinState.Undefined);
 
 			if (!liveEnemies.Any())
 				return null;
@@ -1000,21 +1007,21 @@ namespace OpenRA.Mods.RA.AI
 			if (leastLikedEnemies == null)
 				enemy = liveEnemies.FirstOrDefault();
 			else
-				enemy = leastLikedEnemies.Random(random);
+				enemy = leastLikedEnemies.Random(BotRandom);
 
 			/* pick something worth attacking owned by that player */
-			var targets = world.Actors
+			var targets = BotWorld.Actors
 				.Where(a => a.Owner == enemy && a.HasTrait<IOccupySpace>());
 			Actor target = null;
 
 			if (targets.Any())
-				target = targets.ClosestTo(baseCenter.CenterPosition);
+				target = targets.ClosestTo(BaseCenter.CenterPosition);
 
 			if (target == null)
 			{
 				/* Assume that "enemy" has nothing. Cool off on attacks. */
 				aggro[enemy].Aggro = aggro[enemy].Aggro / 2 - 1;
-				Log.Write("debug", "Bot {0} couldn't find target for player {1}", this.p.ClientIndex, enemy.ClientIndex);
+				Log.Write("debug", "Bot {0} couldn't find target for player {1}", this.BotPlayer.ClientIndex, enemy.ClientIndex);
 
 				return null;
 			}
@@ -1028,8 +1035,8 @@ namespace OpenRA.Mods.RA.AI
 
 		internal Actor FindClosestEnemy(WPos pos)
 		{
-			var allEnemyUnits = world.Actors
-				.Where(unit => p.Stances[unit.Owner] == Stance.Enemy && !unit.HasTrait<Husk>() &&
+			var allEnemyUnits = BotWorld.Actors
+				.Where(unit => BotPlayer.Stances[unit.Owner] == Stance.Enemy && !unit.HasTrait<Husk>() &&
 					unit.HasTrait<ITargetable>()).ToList();
 
 			if (allEnemyUnits.Count > 0)
@@ -1039,8 +1046,8 @@ namespace OpenRA.Mods.RA.AI
 
 		internal Actor FindClosestEnemy(WPos pos, WRange radius)
 		{
-			var enemyUnits = world.FindActorsInCircle(pos, radius)
-								.Where(unit => p.Stances[unit.Owner] == Stance.Enemy &&
+			var enemyUnits = BotWorld.FindActorsInCircle(pos, radius)
+								.Where(unit => BotPlayer.Stances[unit.Owner] == Stance.Enemy &&
 									!unit.HasTrait<Husk>() && unit.HasTrait<ITargetable>()).ToList();
 
 			if (enemyUnits.Count > 0)
@@ -1050,14 +1057,14 @@ namespace OpenRA.Mods.RA.AI
 
 		List<Actor> FindEnemyConstructionYards()
 		{
-			var bases = world.Actors.Where(a => p.Stances[a.Owner] == Stance.Enemy && !a.Destroyed
+			var bases = BotWorld.Actors.Where(a => BotPlayer.Stances[a.Owner] == Stance.Enemy && !a.Destroyed
 				&& a.HasTrait<BaseBuilding>() && !a.HasTrait<Mobile>()).ToList();
 			return bases != null ? bases : new List<Actor>();
 		}
 
 		Actor FindEnemyBuildingClosestToPos(WPos pos)
 		{
-			var closestBuilding = world.Actors.Where(a => p.Stances[a.Owner] == Stance.Enemy
+			var closestBuilding = BotWorld.Actors.Where(a => BotPlayer.Stances[a.Owner] == Stance.Enemy
 			   && !a.Destroyed && a.HasTrait<Building>()).ClosestTo(pos);
 			return closestBuilding;
 		}
@@ -1065,20 +1072,21 @@ namespace OpenRA.Mods.RA.AI
 		List<Squad> squads = new List<Squad>();
 
 		List<Actor> unitsHangingAroundTheBase = new List<Actor>();
-		//Units that the ai already knows about. Any unit not on this list needs to be given a role.
+
+		// Units that the AI already knows about. Any unit not on this list needs to be given a role.
 		List<Actor> activeUnits = new List<Actor>();
 
 		void CleanSquads()
 		{
 			squads.RemoveAll(s => s.IsEmpty);
 			foreach (Squad squad in squads)
-				squad.units.RemoveAll(a => a.Destroyed || a.IsDead());
+				squad.Units.RemoveAll(a => a.Destroyed || a.IsDead());
 		}
 
-		//use of this function requires that one squad of this type. Hence it is a piece of shit
+		// Use of this function requires that one squad of this type. Hence it is a piece of shit
 		Squad GetSquadOfType(SquadType type)
 		{
-			return squads.Where(s => s.type == type).FirstOrDefault();
+			return squads.Where(s => s.Type == type).FirstOrDefault();
 		}
 
 		Squad RegisterNewSquad(SquadType type, Actor target = null)
@@ -1095,7 +1103,7 @@ namespace OpenRA.Mods.RA.AI
 		void AssignRolesToIdleUnits(Actor self)
 		{
 			CleanSquads();
-			activeUnits.RemoveAll(a => a.Destroyed || a.IsDead());
+			activeUnits.RemoveAll(a => a.Destroyed || a.IsDead()); 
 			unitsHangingAroundTheBase.RemoveAll(a => a.Destroyed || a.IsDead());
 
 			if (--rushTicks <= 0)
@@ -1133,22 +1141,24 @@ namespace OpenRA.Mods.RA.AI
 				if (!a.IsIdle)
 				{
 					Activity act = a.GetCurrentActivity();
+
 					// A Wait activity is technically idle:
 					if ((act.GetType() != typeof(OpenRA.Mods.RA.Activities.Wait)) &&
 						(act.NextActivity == null || act.NextActivity.GetType() != typeof(OpenRA.Mods.RA.Activities.FindResources)))
 						continue;
 				}
+
 				if (!harv.IsEmpty) continue;
 
 				// Tell the idle harvester to quit slacking:
-				world.IssueOrder(new Order("Harvest", a, false));
-			}   
+				BotWorld.IssueOrder(new Order("Harvest", a, false));
+			}
 		}
 
 		void FindNewUnits(Actor self)
 		{
 			var newUnits = self.World.ActorsWithTrait<IPositionable>()
-				.Where(a => a.Actor.Owner == p && !a.Actor.HasTrait<BaseBuilding>()
+				.Where(a => a.Actor.Owner == BotPlayer && !a.Actor.HasTrait<BaseBuilding>()
 			&& !activeUnits.Contains(a.Actor))
 			.Select(a => a.Actor).ToArray();
 
@@ -1156,7 +1166,7 @@ namespace OpenRA.Mods.RA.AI
 			{
 				BotDebug("AI: Found a newly built unit");
 				if (a.HasTrait<Harvester>())
-					world.IssueOrder(new Order("Harvest", a, false));
+					BotWorld.IssueOrder(new Order("Harvest", a, false));
 				else
 					unitsHangingAroundTheBase.Add(a);
 				if (a.HasTrait<Aircraft>() && a.HasTrait<AttackBase>())
@@ -1165,17 +1175,18 @@ namespace OpenRA.Mods.RA.AI
 					if (air == null)
 						air = RegisterNewSquad(SquadType.Air);
 
-					air.units.Add(a);
+					air.Units.Add(a);
 				}
+
 				activeUnits.Add(a);
 			}  
 		}
 
 		void CreateAttackForce()
 		{
-			/* Create an attack force when we have enough units around our base. */
-			// (don't bother leaving any behind for defense.)
-			var randomizedSquadSize = Info.SquadSize + random.Next(30);
+			/* Create an attack force when we have enough units around our base. 
+			// (don't bother leaving any behind for defense.) */
+			var randomizedSquadSize = Info.SquadSize + BotRandom.Next(30);
 
 			if (unitsHangingAroundTheBase.Count >= randomizedSquadSize)
 			{
@@ -1183,7 +1194,7 @@ namespace OpenRA.Mods.RA.AI
 
 				foreach (var a in unitsHangingAroundTheBase)
 					if (!a.HasTrait<Aircraft>())
-						attackForce.units.Add(a);
+						attackForce.Units.Add(a);
 				unitsHangingAroundTheBase.Clear();
 			}
 		}
@@ -1196,19 +1207,19 @@ namespace OpenRA.Mods.RA.AI
 			if (!allEnemyBaseBuilder.Any() || (ownUnits.Count < Info.SquadSize)) return;
 			foreach (var b in allEnemyBaseBuilder)
 			{
-				var enemys = world.FindActorsInCircle(b.CenterPosition, WRange.FromCells(15))
-					.Where(unit => p.Stances[unit.Owner] == Stance.Enemy && unit.HasTrait<AttackBase>()).ToList();
+				var enemys = BotWorld.FindActorsInCircle(b.CenterPosition, WRange.FromCells(15))
+					.Where(unit => BotPlayer.Stances[unit.Owner] == Stance.Enemy && unit.HasTrait<AttackBase>()).ToList();
 				
 				rushFuzzy.CalculateFuzzy(ownUnits, enemys);
 				if (rushFuzzy.CanAttack)
 				{
-					var target = enemys.Any() ? enemys.Random(random) : b;
+					var target = enemys.Any() ? enemys.Random(BotRandom) : b;
 					var rush = GetSquadOfType(SquadType.Rush);
 					if (rush == null)
 						rush = RegisterNewSquad(SquadType.Rush, target);
 
 					foreach (var a3 in ownUnits)
-						rush.units.Add(a3);
+						rush.Units.Add(a3);
 		  
 					return;
 				}
@@ -1225,11 +1236,11 @@ namespace OpenRA.Mods.RA.AI
 				protectSq.Target = attacker;
 			if (protectSq.IsEmpty)
 			{
-				var ownUnits = world.FindActorsInCircle(baseCenter.CenterPosition, WRange.FromCells(15))
-									.Where(unit => unit.Owner == p && !unit.HasTrait<Building>()
+				var ownUnits = BotWorld.FindActorsInCircle(BaseCenter.CenterPosition, WRange.FromCells(15))
+									.Where(unit => unit.Owner == BotPlayer && !unit.HasTrait<Building>()
 										&& unit.HasTrait<AttackBase>()).ToList();
 				foreach (var a in ownUnits)
-					protectSq.units.Add(a);
+					protectSq.Units.Add(a);
 			}
 		}
 
@@ -1237,52 +1248,52 @@ namespace OpenRA.Mods.RA.AI
 		{
 			// this is actually WRONG as soon as HackyAI is building units with a variety of
 			// movement capabilities. (has always been wrong)
-			return world.IsCellBuildable(x, rallypointTestBuilding);
+			return BotWorld.IsCellBuildable(x, rallypointTestBuilding);
 		}
 
 		void SetRallyPointsForNewProductionBuildings(Actor self)
 		{
 			var buildings = self.World.ActorsWithTrait<RallyPoint>()
-				.Where(rp => rp.Actor.Owner == p &&
+				.Where(rp => rp.Actor.Owner == BotPlayer &&
 					!IsRallyPointValid(rp.Trait.rallyPoint)).ToArray();
 
 			if (buildings.Length > 0)
 				BotDebug("Bot {0} needs to find rallypoints for {1} buildings.",
-					p.PlayerName, buildings.Length);
+					BotPlayer.PlayerName, buildings.Length);
 
 			foreach (var a in buildings)
 			{
 				CPos newRallyPoint = ChooseRallyLocationNear(a.Actor.Location);
-				world.IssueOrder(new Order("SetRallyPoint", a.Actor, false) { TargetLocation = newRallyPoint });
+				BotWorld.IssueOrder(new Order("SetRallyPoint", a.Actor, false) { TargetLocation = newRallyPoint });
 			}
 		}
 
-		//won't work for shipyards...
+		// TODO: won't work for shipyards...
 		CPos ChooseRallyLocationNear(CPos startPos)
 		{
-			var possibleRallyPoints = world.FindTilesInCircle(startPos, 8).Where(IsRallyPointValid).ToArray();
+			var possibleRallyPoints = BotWorld.FindTilesInCircle(startPos, 8).Where(IsRallyPointValid).ToArray();
 			if (possibleRallyPoints.Length == 0)
 			{
 				BotDebug("Bot Bug: No possible rallypoint near {0}", startPos);
 				return startPos;
 			}
 
-			return possibleRallyPoints.Random(random);
+			return possibleRallyPoints.Random(BotRandom);
 		}
 
 		void DeployMcv(Actor self)
 		{
-			/* find our mcv and deploy it */
 			var mcv = self.World.Actors
-				.FirstOrDefault(a => a.Owner == p && a.HasTrait<BaseBuilding>());
+				.FirstOrDefault(a => a.Owner == BotPlayer && a.HasTrait<BaseBuilding>());
 
 			if (mcv != null)
 			{
-				baseCenter = mcv.Location;
-				defenseCenter = baseCenter;
-				//Don't transform the mcv if it is a fact
+				BaseCenter = mcv.Location;
+				defenseCenter = BaseCenter;
+
+				// Don't transform the MCV if it is a construction yard.
 				if (mcv.HasTrait<Mobile>())
-					world.IssueOrder(new Order("DeployTransform", mcv, false));
+					BotWorld.IssueOrder(new Order("DeployTransform", mcv, false));
 			}
 			else
 				BotDebug("AI: Can't find BaseBuildUnit.");
@@ -1290,25 +1301,24 @@ namespace OpenRA.Mods.RA.AI
 
 		void FindAndDeployMcv(Actor self)
 		{
-			var mcvs = self.World.Actors.Where(a => a.Owner == p && a.HasTrait<BaseBuilding>()).ToArray();
+			var mcvs = self.World.Actors.Where(a => a.Owner == BotPlayer && a.HasTrait<BaseBuilding>()).ToArray();
 			if (!mcvs.Any())
 				return;
 			else
 				foreach (var mcv in mcvs)
 					if (mcv != null)
-						//Don't transform the mcv if it is a fact
 						if (mcv.HasTrait<Mobile>())
 						{
 							if (mcv.IsMoving()) return;
-							var maxBaseDistance = world.Map.MapSize.X > world.Map.MapSize.Y ? world.Map.MapSize.X : world.Map.MapSize.Y;
-							ActorInfo aInfo = GetUnitInfoByCommonName("Mcv",p);
-							if (aInfo == null) return;
-							string intoActor = aInfo.Traits.Get<TransformsInfo>().IntoActor;
+							var maxBaseDistance = BotWorld.Map.MapSize.X > BotWorld.Map.MapSize.Y ? BotWorld.Map.MapSize.X : BotWorld.Map.MapSize.Y;
+							var actorInfo = GetUnitInfoByCommonName("Mcv", BotPlayer);
+							if (actorInfo == null) return;
+							var intoActor = actorInfo.Traits.Get<TransformsInfo>().IntoActor;
 							var desiredLocation = ChooseBuildLocation(intoActor, false, maxBaseDistance, BuildingType.Building);
 							if (desiredLocation == null)
 								return;
-							world.IssueOrder(new Order("Move", mcv, false) { TargetLocation = desiredLocation.Value });
-							world.IssueOrder(new Order("DeployTransform", mcv, false));
+							BotWorld.IssueOrder(new Order("Move", mcv, false) { TargetLocation = desiredLocation.Value });
+							BotWorld.IssueOrder(new Order("DeployTransform", mcv, false));
 						}
 		}
 
@@ -1325,7 +1335,7 @@ namespace OpenRA.Mods.RA.AI
 					var attackLocation = FindAttackLocationToSupportPower(5);
 					if (attackLocation == null) return;
 
-					world.IssueOrder(new Order(sp.Info.OrderName, supportPowerMngr.self, false) { TargetLocation = attackLocation.Value });
+					BotWorld.IssueOrder(new Order(sp.Info.OrderName, supportPowerMngr.self, false) { TargetLocation = attackLocation.Value });
 				}
 			}
 		}
@@ -1335,32 +1345,33 @@ namespace OpenRA.Mods.RA.AI
 			CPos? resLoc = null;
 			int countUnits = 0;
 
-			int x = (world.Map.MapSize.X % radiusOfPower) == 0 ? world.Map.MapSize.X : world.Map.MapSize.X + radiusOfPower;
-			int y = (world.Map.MapSize.Y % radiusOfPower) == 0 ? world.Map.MapSize.Y : world.Map.MapSize.Y + radiusOfPower;
+			var x = (BotWorld.Map.MapSize.X % radiusOfPower) == 0 ? BotWorld.Map.MapSize.X : BotWorld.Map.MapSize.X + radiusOfPower;
+			var y = (BotWorld.Map.MapSize.Y % radiusOfPower) == 0 ? BotWorld.Map.MapSize.Y : BotWorld.Map.MapSize.Y + radiusOfPower;
 
 			for (int i = 0; i < x; i += radiusOfPower * 2)
 				for (int j = 0; j < y; j += radiusOfPower * 2)
 				{
 					CPos pos = new CPos(i, j);
-					var targets = world.FindActorsInCircle(pos.CenterPosition, WRange.FromCells(radiusOfPower)).ToList();
-					var enemys = targets.Where(unit => p.Stances[unit.Owner] == Stance.Enemy).ToList();
-					var ally = targets.Where(unit => p.Stances[unit.Owner] == Stance.Ally || unit.Owner == p).ToList();
+					var targets = BotWorld.FindActorsInCircle(pos.CenterPosition, WRange.FromCells(radiusOfPower)).ToList();
+					var enemys = targets.Where(unit => BotPlayer.Stances[unit.Owner] == Stance.Enemy).ToList();
+					var ally = targets.Where(unit => BotPlayer.Stances[unit.Owner] == Stance.Ally || unit.Owner == BotPlayer).ToList();
 
 					if (enemys.Count < ally.Count || !enemys.Any())
 						continue;
 					if (enemys.Count > countUnits)
 					{
 						countUnits = enemys.Count;
-						resLoc = enemys.Random(random).Location;
+						resLoc = enemys.Random(BotRandom).Location;
 					}
 				}
+
 			return resLoc;
 		}
 
 		internal IEnumerable<ProductionQueue> FindQueues(string category)
 		{
-			return world.ActorsWithTrait<ProductionQueue>()
-				.Where(a => a.Actor.Owner == p && a.Trait.Info.Type == category)
+			return BotWorld.ActorsWithTrait<ProductionQueue>()
+				.Where(a => a.Actor.Owner == BotPlayer && a.Trait.Info.Type == category)
 				.Select(a => a.Trait);
 		}
 
@@ -1369,8 +1380,8 @@ namespace OpenRA.Mods.RA.AI
 			if (!HasAdequateProc()) /* Stop building until economy is back on */
 				return;
 			if (!HasAdequateFact())
-				if (!self.World.Actors.Where(a => a.Owner == p && a.HasTrait<BaseBuilding>() && a.HasTrait<Mobile>()).Any())
-					BuildUnit("Vehicle", GetUnitInfoByCommonName("Mcv",p).Name);
+				if (!self.World.Actors.Where(a => a.Owner == BotPlayer && a.HasTrait<BaseBuilding>() && a.HasTrait<Mobile>()).Any())
+					BuildUnit("Vehicle", GetUnitInfoByCommonName("Mcv", BotPlayer).Name);
 			foreach (var q in Info.UnitQueues)
 			{
 				if (unitsHangingAroundTheBase.Count < 12)
@@ -1378,6 +1389,7 @@ namespace OpenRA.Mods.RA.AI
 					BuildUnit(q, true);
 					continue;
 				}
+
 				BuildUnit(q, false);
 			}
 		}
@@ -1385,26 +1397,26 @@ namespace OpenRA.Mods.RA.AI
 		void BuildUnit(string category, bool buildRandom)
 		{
 			// Pick a free queue
-			var queue = FindQueues(category).FirstOrDefault( q => q.CurrentItem() == null );
+			var queue = FindQueues(category).FirstOrDefault(q => q.CurrentItem() == null);
 			if (queue == null)
 				return;
 
 			ActorInfo unit;
-			if(buildRandom)
+			if (buildRandom)
 				unit = ChooseRandomUnitToBuild(queue);
 			else
 				unit = ChooseUnitToBuild(queue);
 
 			if (unit != null && Info.UnitsToBuild.Any(u => u.Key == unit.Name))
-				world.IssueOrder(Order.StartProduction(queue.self, unit.Name, 1));
+				BotWorld.IssueOrder(Order.StartProduction(queue.self, unit.Name, 1));
 		}
 
 		void BuildUnit(string category, string name)
 		{
-			var queue = FindQueues(category).FirstOrDefault( q => q.CurrentItem() == null );
+			var queue = FindQueues(category).FirstOrDefault(q => q.CurrentItem() == null);
 			if (queue == null) return;
-			if(Rules.Info[name] != null)
-				world.IssueOrder(Order.StartProduction(queue.self, name, 1));
+			if (Rules.Info[name] != null)
+				BotWorld.IssueOrder(Order.StartProduction(queue.self, name, 1));
 		}
 
 		public void Damaged(Actor self, AttackInfo e)
@@ -1418,16 +1430,16 @@ namespace OpenRA.Mods.RA.AI
 				{
 					BotDebug("Bot noticed damage {0} {1}->{2}, repairing.",
 						self, e.PreviousDamageState, e.DamageState);
-					world.IssueOrder(new Order("RepairBuilding", self.Owner.PlayerActor, false)
+					BotWorld.IssueOrder(new Order("RepairBuilding", self.Owner.PlayerActor, false)
 						{ TargetActor = self });
 				}
 
 			if (e.Attacker != null && e.Damage > 0)
 				aggro[e.Attacker.Owner].Aggro += e.Damage;
 
-			//protected harvesters or building
+			// Protected harvesters or building
 			if ((self.HasTrait<Harvester>() || self.HasTrait<Building>()) &&
-			    p.Stances[e.Attacker.Owner] == Stance.Enemy)
+				BotPlayer.Stances[e.Attacker.Owner] == Stance.Enemy)
 			{
 				defenseCenter = e.Attacker.Location;
 				ProtectOwn(e.Attacker);

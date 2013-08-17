@@ -52,13 +52,13 @@ namespace OpenRA.Mods.RA.AI
 						if (item == null)
 						{
 							state = BuildState.WaitForFeedback;
-							lastThinkTick = ai.ticks;
+							lastThinkTick = ai.Ticks;
 						}
 						else
 						{
 							HackyAI.BotDebug("AI: Starting production of {0}".F(item.Name));
 							state = BuildState.WaitForProduction;
-							ai.world.IssueOrder(Order.StartProduction(queue.self, item.Name, 1));
+							ai.BotWorld.IssueOrder(Order.StartProduction(queue.self, item.Name, 1));
 						}
 					}
 					break;
@@ -67,11 +67,11 @@ namespace OpenRA.Mods.RA.AI
 					if (currentBuilding == null) return;	/* let it happen.. */
 
 					else if (currentBuilding.Paused)
-						ai.world.IssueOrder(Order.PauseProduction(queue.self, currentBuilding.Item, false));
+						ai.BotWorld.IssueOrder(Order.PauseProduction(queue.self, currentBuilding.Item, false));
 					else if (currentBuilding.Done)
 					{
 						state = BuildState.WaitForFeedback;
-						lastThinkTick = ai.ticks;
+						lastThinkTick = ai.Ticks;
 
 						/* place the building */
 						BuildingType type = BuildingType.Building;
@@ -84,11 +84,11 @@ namespace OpenRA.Mods.RA.AI
 						if (location == null)
 						{
 							HackyAI.BotDebug("AI: Nowhere to place {0}".F(currentBuilding.Item));
-							ai.world.IssueOrder(Order.CancelProduction(queue.self, currentBuilding.Item, 1));
+							ai.BotWorld.IssueOrder(Order.CancelProduction(queue.self, currentBuilding.Item, 1));
 						}
 						else
 						{
-							ai.world.IssueOrder(new Order("PlaceBuilding", ai.p.PlayerActor, false)
+							ai.BotWorld.IssueOrder(new Order("PlaceBuilding", ai.BotPlayer.PlayerActor, false)
 								{
 									TargetLocation = location.Value,
 									TargetString = currentBuilding.Item
@@ -98,7 +98,7 @@ namespace OpenRA.Mods.RA.AI
 					break;
 
 				case BuildState.WaitForFeedback:
-					if (ai.ticks - lastThinkTick > HackyAI.feedbackTime)
+					if (ai.Ticks - lastThinkTick > HackyAI.FeedbackTime)
 						state = BuildState.ChooseItem;
 					break;
 			}

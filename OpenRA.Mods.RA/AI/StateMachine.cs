@@ -38,7 +38,7 @@ namespace OpenRA.Mods.RA.AI
 		}
 
 		//call this to update the FSM
-		public void UpdateFsm()
+		public void UpdateStateMachine()
 		{
 			currentState.Execute(owner);
 		}
