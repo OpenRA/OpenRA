@@ -26,6 +26,7 @@ Options:
 	Shroud: true
 	AllyBuildRadius: false
 	FragileAlliances: false
+	StartingCash: 500
 	ConfigurableStartingUnits: false
 
 Players:
@@ -47,7 +48,6 @@ Players:
 		LockSpawn: True
 		Spawn: 0
 		AllowBots: False
-		InitialCash: 20
 		Allies: GoodGuy
 		Enemies: BadGuy,Creeps
 		Required: True

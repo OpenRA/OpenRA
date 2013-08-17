@@ -95,6 +95,7 @@ namespace OpenRA.Network
 			public bool Shroud = true;
 			public bool Fog = true;
 			public bool AllyBuildRadius = true;
+			public int StartingCash = 5000;
 			public string StartingUnitsClass = "none";
 			public bool AllowVersionMismatch;
 		}

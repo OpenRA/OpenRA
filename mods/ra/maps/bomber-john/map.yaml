@@ -23,6 +23,7 @@ Options:
 	Shroud: true
 	AllyBuildRadius: false
 	FragileAlliances: false
+	StartingCash: 60
 	ConfigurableStartingUnits: false
 
 Players:
@@ -805,8 +806,6 @@ Rules:
 	Player:
 		ClassicProductionQueue@Building:
 			BuildSpeed: 0.4
-		PlayerResources:
-			InitialCash: 60
 
 	MNLYR:
 		Inherits: ^Tank

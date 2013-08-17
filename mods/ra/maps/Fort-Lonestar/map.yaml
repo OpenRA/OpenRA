@@ -23,6 +23,7 @@ Options:
 	Shroud: true
 	AllyBuildRadius: false
 	FragileAlliances: false
+	StartingCash: 50
 	ConfigurableStartingUnits: false
 
 Players:
@@ -512,8 +513,6 @@ Rules:
 			Unit: e7
 			SelectionShares: 10
 	Player:
-		PlayerResources:
-			InitialCash: 50
 		ClassicProductionQueue@Infantry:
 			Type: Infantry
 			BuildSpeed: 1

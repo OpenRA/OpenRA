@@ -29,6 +29,7 @@ namespace OpenRA
 		public bool? Shroud;
 		public bool? AllyBuildRadius;
 		public bool? FragileAlliances;
+		public int? StartingCash;
 		public bool ConfigurableStartingUnits = true;
 		public string[] Difficulties = { };
 
@@ -44,6 +45,8 @@ namespace OpenRA
 				settings.Shroud = Shroud.Value;
 			if (AllyBuildRadius.HasValue)
 				settings.AllyBuildRadius = AllyBuildRadius.Value;
+			if (StartingCash.HasValue)
+				settings.StartingCash = StartingCash.Value;
 			if (FragileAlliances.HasValue)
 				settings.FragileAlliances = FragileAlliances.Value;
 		}

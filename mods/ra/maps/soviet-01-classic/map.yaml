@@ -25,6 +25,7 @@ Options:
 	Shroud: true
 	AllyBuildRadius: false
 	FragileAlliances: false
+	StartingCash: 0
 	ConfigurableStartingUnits: false
 
 Players:
@@ -848,8 +849,6 @@ Smudges:
 Rules:
 	Player:
 		-ConquestVictoryConditions:
-		PlayerResources:
-			InitialCash: 0
 	World:
 		-CrateDrop:
 		-SpawnMPUnits:

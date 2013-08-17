@@ -24,6 +24,7 @@ Options:
 	Crates: true
 	AllyBuildRadius: false
 	FragileAlliances: false
+	StartingCash: 5000
 	ConfigurableStartingUnits: false
 
 Players:

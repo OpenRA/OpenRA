@@ -25,6 +25,7 @@ Options:
 	Shroud: true
 	AllyBuildRadius: false
 	FragileAlliances: false
+	StartingCash: 5000
 	ConfigurableStartingUnits: false
 	Difficulties: Easy, Normal
 

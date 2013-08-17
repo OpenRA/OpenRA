@@ -495,6 +495,25 @@ namespace OpenRA.Mods.RA.Server
 						server.SyncLobbyInfo();
 						return true;
 					}},
+				{ "startingcash",
+					s =>
+					{
+						if (!client.IsAdmin)
+						{
+							server.SendOrderTo(conn, "Message", "Only the host can set that option");
+							return true;
+						}
+
+						if (server.Map.Options.StartingCash.HasValue)
+						{
+							server.SendOrderTo(conn, "Message", "Map has disabled cash configuration");
+							return true;
+						}
+
+						server.lobbyInfo.GlobalSettings.StartingCash = int.Parse(s);
+						server.SyncLobbyInfo();
+						return true;
+					}},
 				{ "kick",
 					s =>
 					{

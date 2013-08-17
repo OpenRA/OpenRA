@@ -23,6 +23,7 @@ Options:
 	Shroud: true
 	AllyBuildRadius: false
 	FragileAlliances: false
+	StartingCash: 100
 	ConfigurableStartingUnits: false
 
 Players:
@@ -807,8 +808,6 @@ Rules:
 		-SpawnMPUnits:
 		-MPStartLocations:
 	Player:
-		PlayerResources:
-			InitialCash: 100
 		ClassicProductionQueue@Infantry:
 			Type: Infantry
 			BuildSpeed: 1

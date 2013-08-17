@@ -368,6 +368,31 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				optionsBin.Get<LabelWidget>("STARTINGUNITS_DESC").IsVisible = startingUnits.IsVisible;
 			}
 
+			var startingCash = optionsBin.GetOrNull<DropDownButtonWidget>("STARTINGCASH_DROPDOWNBUTTON");
+			if (startingCash != null)
+			{
+				startingCash.IsDisabled = () => Map.Options.StartingCash.HasValue || configurationDisabled();
+				startingCash.GetText = () => Map.Options.StartingCash.HasValue ? "Not Available" : "${0}".F(orderManager.LobbyInfo.GlobalSettings.StartingCash);
+				startingCash.OnMouseDown = _ =>
+				{
+					var options = Rules.Info["player"].Traits.Get<PlayerResourcesInfo>().SelectableCash.Select(c => new DropDownOption
+					{
+						Title = "${0}".F(c),
+						IsSelected = () => orderManager.LobbyInfo.GlobalSettings.StartingCash == c,
+						OnClick = () => orderManager.IssueOrder(Order.Command("startingcash {0}".F(c)))
+					});
+
+					Func<DropDownOption, ScrollItemWidget, ScrollItemWidget> setupItem = (option, template) =>
+					{
+						var item = ScrollItemWidget.Setup(template, option.IsSelected, option.OnClick);
+						item.Get<LabelWidget>("LABEL").GetText = () => option.Title;
+						return item;
+					};
+
+					startingCash.ShowDropDown("LABEL_DROPDOWN_TEMPLATE", options.Count() * 30, options, setupItem);
+				};
+			}
+
 			var enableShroud = optionsBin.GetOrNull<CheckboxWidget>("SHROUD_CHECKBOX");
 			if (enableShroud != null)
 			{
@@ -481,6 +506,11 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 				else
 					throw new InvalidOperationException("Server's new map doesn't exist on your system and Downloading turned off");
 			Map = new Map(Game.modData.AvailableMaps[MapUid].Path);
+
+			// Restore default starting cash if the last map set it to something invalid
+			var pri = Rules.Info["player"].Traits.Get<PlayerResourcesInfo>();
+			if (!Map.Options.StartingCash.HasValue && !pri.SelectableCash.Contains(orderManager.LobbyInfo.GlobalSettings.StartingCash))
+				orderManager.IssueOrder(Order.Command("startingcash {0}".F(pri.DefaultCash)));
 		}
 
 		void UpdatePlayerList()

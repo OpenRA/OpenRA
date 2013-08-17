@@ -38,7 +38,6 @@ Player:
 	PowerManager:
 	AllyRepair:
 	PlayerResources:
-		InitialCash: 5000
 	ActorGroupProxy:
 	DeveloperMode:
 	HackyAI@EasyAI:
