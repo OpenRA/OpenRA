@@ -84,6 +84,8 @@ namespace OpenRA.Traits
 			}
 			return Renderables;
 		}
+
+		public bool HasRenderables { get { return Renderables != null; } }
 	}
 
 	public class FrozenActorLayer : IRender, ITick, ISync
