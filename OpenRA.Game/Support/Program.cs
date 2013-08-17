@@ -31,7 +31,7 @@ namespace OpenRA
 				return;
 			}
 
-			AppDomain.CurrentDomain.UnhandledException += (_, e) => LogException((Exception)e.ExceptionObject);
+			AppDomain.CurrentDomain.UnhandledException += (_, e) => FatalError((Exception)e.ExceptionObject);
 
 			try
 			{
@@ -39,16 +39,19 @@ namespace OpenRA
 			}
 			catch (Exception e)
 			{
-				LogException(e);
+				FatalError(e);
 			}
 		}
 
-		static void LogException(Exception e)
+		static void FatalError(Exception e)
 		{
 			Log.AddChannel("exception", "exception.log");
 			var rpt = BuildExceptionReport(e).ToString();
 			Log.Write("exception", "{0}", rpt);
 			Console.Error.WriteLine(rpt);
+
+			if (Game.Settings.Debug.ShowFatalErrorDialog)
+				FatalErrorDialog.Show();
 		}
 
 		static StringBuilder BuildExceptionReport(Exception e)

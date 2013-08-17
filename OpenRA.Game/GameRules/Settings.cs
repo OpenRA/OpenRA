@@ -78,6 +78,9 @@ namespace OpenRA.GameRules
 		public int Samples = 25;
 		public bool IgnoreVersionMismatch = false;
 		public bool DeveloperMenu = false;
+
+		public bool ShowFatalErrorDialog = true;
+		public string FatalErrorDialogFaq = "http://github.com/OpenRA/OpenRA/wiki/FAQ";
 	}
 
 	public class GraphicSettings

@@ -390,3 +390,9 @@ Background@SETTINGS_MENU:
 					Width:300
 					Height:20
 					Text:Enable Asset Browser (requires restart)
+				Checkbox@SHOW_FATAL_ERROR_DIALOG_CHECKBOX:
+					X:0
+					Y:210
+					Width:200
+					Height:20
+					Text:Show Fatal Error dialog
