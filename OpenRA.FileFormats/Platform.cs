@@ -49,6 +49,10 @@ namespace OpenRA
 		{
 			get
 			{
+				// Use a local directory in the game root if it exists
+				if (Directory.Exists("Support"))
+					return "Support" + Path.DirectorySeparatorChar;
+
 				var dir = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
 
 				switch (CurrentPlatform)
