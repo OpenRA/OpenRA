@@ -1080,7 +1080,7 @@ namespace OpenRA.Mods.RA.AI
 		{
 			squads.RemoveAll(s => s.IsEmpty);
 			foreach (Squad squad in squads)
-				squad.Units.RemoveAll(a => a.Destroyed || a.IsDead());
+				squad.Units.RemoveAll(a => a.Destroyed || a.IsDead() || a.Owner != BotPlayer);
 		}
 
 		// Use of this function requires that one squad of this type. Hence it is a piece of shit
@@ -1103,8 +1103,8 @@ namespace OpenRA.Mods.RA.AI
 		void AssignRolesToIdleUnits(Actor self)
 		{
 			CleanSquads();
-			activeUnits.RemoveAll(a => a.Destroyed || a.IsDead()); 
-			unitsHangingAroundTheBase.RemoveAll(a => a.Destroyed || a.IsDead());
+			activeUnits.RemoveAll(a => a.Destroyed || a.IsDead() || a.Owner != BotPlayer); 
+			unitsHangingAroundTheBase.RemoveAll(a => a.Destroyed || a.IsDead() || a.Owner != BotPlayer);
 
 			if (--rushTicks <= 0)
 			{
