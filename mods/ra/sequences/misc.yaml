@@ -394,3 +394,5 @@ gpsdot:
 		Start: 4
 	Harvester:
 		Start: 5
+	Structure:
+		Start: 6

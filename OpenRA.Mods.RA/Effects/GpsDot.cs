@@ -10,6 +10,7 @@
 
 using System.Collections.Generic;
 using OpenRA.Effects;
+using OpenRA.FileFormats;
 using OpenRA.Graphics;
 using OpenRA.Traits;
 
@@ -32,9 +33,12 @@ namespace OpenRA.Mods.RA.Effects
 		GpsDotInfo info;
 		Animation anim;
 
-		GpsWatcher watcher;
-		HiddenUnderFog huf;
-		Spy spy;
+		Lazy<HiddenUnderFog> huf;
+		Lazy<FrozenUnderFog> fuf;
+		Lazy<Spy> spy;
+		Cache<Player, GpsWatcher> watcher;
+		Cache<Player, FrozenActorLayer> frozen;
+
 		bool show = false;
 
 		public GpsDot(Actor self, GpsDotInfo info)
@@ -45,36 +49,45 @@ namespace OpenRA.Mods.RA.Effects
 			anim.PlayRepeating(info.String);
 
 			self.World.AddFrameEndTask(w => w.Add(this));
+
+			huf = Lazy.New(() => self.TraitOrDefault<HiddenUnderFog>());
+			fuf = Lazy.New(() => self.TraitOrDefault<FrozenUnderFog>());
+			spy = Lazy.New(() => self.TraitOrDefault<Spy>());
+			watcher = new Cache<Player, GpsWatcher>(p => p.PlayerActor.Trait<GpsWatcher>());
+			frozen = new Cache<Player, FrozenActorLayer>(p => p.PlayerActor.Trait<FrozenActorLayer>());
 		}
 
-		bool firstTick = true;
+		bool ShouldShowIndicator()
+		{
+			// Can be granted at runtime via a crate, so can't cache
+			var cloak = self.TraitOrDefault<Cloak>();
+			if (cloak != null && cloak.Cloaked)
+				return false;
+
+			if (spy.Value != null && spy.Value.Disguised)
+				return false;
+
+			if (huf.Value != null && !huf.Value.IsVisible(self, self.World.RenderPlayer))
+				return true;
+
+			if (fuf.Value == null)
+				return false;
+
+			var f = frozen[self.World.RenderPlayer].FromID(self.ActorID);
+			return f.Visible && !f.HasRenderables;
+		}
+
 		public void Tick(World world)
 		{
 			if (self.Destroyed)
 				world.AddFrameEndTask(w => w.Remove(this));
 
-			if (!self.IsInWorld || self.Destroyed)
+			show = false;
+			if (!self.IsInWorld || self.Destroyed || self.World.RenderPlayer == null)
 				return;
 
-			// Can be granted at runtime via a crate, so can't cache
-			var cloak = self.TraitOrDefault<Cloak>();
-
-			if (firstTick)
-			{
-				huf = self.TraitOrDefault<HiddenUnderFog>();
-				spy = self.TraitOrDefault<Spy>();
-				firstTick = false;
-			}
-
-			// Can change with the Shroud selector for observers so don't cache.
-			if (self.World.RenderPlayer != null)
-				watcher = self.World.RenderPlayer.PlayerActor.Trait<GpsWatcher>();
-
-			var hasGps = (watcher != null && (watcher.Granted || watcher.GrantedAllies));
-			var hasDot = (huf != null && !huf.IsVisible(self, self.World.RenderPlayer));
-			var dotHidden = (cloak != null && cloak.Cloaked) || (spy != null && spy.Disguised);
-
-			show = hasGps && hasDot && !dotHidden;
+			var gps = watcher[self.World.RenderPlayer];
+			show = (gps.Granted || gps.GrantedAllies) && ShouldShowIndicator();
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
@@ -82,7 +95,7 @@ namespace OpenRA.Mods.RA.Effects
 			if (!show || self.Destroyed)
 				return SpriteRenderable.None;
 
-			var palette = wr.Palette(info.IndicatorPalettePrefix+self.Owner.InternalName);
+			var palette = wr.Palette(info.IndicatorPalettePrefix + self.Owner.InternalName);
 			return anim.Render(self.CenterPosition, palette);
 		}
 	}
