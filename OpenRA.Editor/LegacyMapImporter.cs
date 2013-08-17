@@ -475,9 +475,6 @@ namespace OpenRA.Editor
 				Console.WriteLine(s.Key);
 				switch (s.Key)
 				{
-					case "Credits":
-						pr.InitialCash = int.Parse(s.Value);
-					break;
 					case "Allies":
 						pr.Allies = s.Value.Split(',').Intersect(players).Except(neutral).ToArray();
 						pr.Enemies = s.Value.Split(',').SymmetricDifference(players).Except(neutral).ToArray();

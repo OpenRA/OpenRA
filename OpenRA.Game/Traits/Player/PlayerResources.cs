@@ -16,8 +16,8 @@ namespace OpenRA.Traits
 {
 	public class PlayerResourcesInfo : ITraitInfo
 	{
-		public readonly int InitialCash = 10000;
-		public readonly int InitialOre = 0;
+		public readonly int[] SelectableCash = { 2500, 5000, 10000, 20000 };
+		public readonly int DefaultCash = 5000;
 		public readonly int AdviceInterval = 250;
 
 		public object Create(ActorInitializer init) { return new PlayerResources(init.self, this); }
@@ -34,8 +34,7 @@ namespace OpenRA.Traits
 		{
 			Owner = self.Owner;
 
-			Cash = info.InitialCash;
-			Ore = info.InitialOre;
+			Cash = self.World.LobbyInfo.GlobalSettings.StartingCash;
 			AdviceInterval = info.AdviceInterval;
 		}
 

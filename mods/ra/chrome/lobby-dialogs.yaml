@@ -59,63 +59,85 @@ Background@LOBBY_OPTIONS_BIN:
 	Children:
 		Label@TITLE:
 			X:0
-			Y:40
+			Y:30
 			Width:PARENT_RIGHT
 			Height:25
 			Font:Bold
 			Align:Center
 			Text: Map Options
-		Checkbox@ALLOWCHEATS_CHECKBOX:
-			X:80
-			Y:75
-			Width:230
-			Height:20
-			Text:Cheats / Debug Menu
-		Checkbox@FRAGILEALLIANCES_CHECKBOX:
-			X:80
-			Y:110
-			Width:220
-			Height:20
-			Text:Allow Team Changes
-		Checkbox@CRATES_CHECKBOX:
-			X:80
-			Y:145
-			Width:230
-			Height:20
-			Text:Crates
-		Checkbox@SHROUD_CHECKBOX:
-			X:310
-			Y:75
-			Width:230
-			Height:20
-			Text:Shroud
-		Checkbox@FOG_CHECKBOX:
-			X:310
-			Y:110
-			Width:230
-			Height:20
-			Text:Fog of War
-		Label@STARTINGUNITS_DESC:
-			X:215
-			Y:142
-			Width:120
-			Height:25
-			Text:Starting Units:
-		DropDownButton@STARTINGUNITS_DROPDOWNBUTTON:
-			X:310
-			Y:142
-			Width:140
-			Height:25
-			Font:Bold
-		Label@DIFFICULTY_DESC:
-			X:195
-			Y:177
-			Width:120
-			Height:25
-			Text:Mission Difficulty:
-		DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
-			X:310
-			Y:177
-			Width:100
-			Height:25
-			Font:Bold
+		Container:
+			X:30
+			Y:70
+			Width: PARENT_RIGHT-60
+			Height: PARENT_BOTTOM-75
+			Children:
+				Checkbox@SHROUD_CHECKBOX:
+					Width:230
+					Height:20
+					Text:Shroud
+				Checkbox@FOG_CHECKBOX:
+					Y:40
+					Width:230
+					Height:20
+					Text:Fog of War
+				Checkbox@CRATES_CHECKBOX:
+					X:155
+					Width:230
+					Height:20
+					Text:Crates Appear
+				Checkbox@ALLYBUILDRADIUS_CHECKBOX:
+					X:155
+					Y:40
+					Width:230
+					Height:20
+					Text:Build off Ally ConYards
+				Checkbox@ALLOWCHEATS_CHECKBOX:
+					X:350
+					Width:230
+					Height:20
+					Text:Debug Menu
+				Checkbox@FRAGILEALLIANCES_CHECKBOX:
+					X:350
+					Y:40
+					Width:220
+					Height:20
+					Text:Team Changes
+				Label@STARTINGCASH_DESC:
+					Y:87
+					Width:80
+					Height:25
+					Text:Starting Cash:
+					Align:Right
+				DropDownButton@STARTINGCASH_DROPDOWNBUTTON:
+					X:85
+					Y:87
+					Width:130
+					Height:25
+					Font:Bold
+					Text:$5000
+				Label@STARTINGUNITS_DESC:
+					X:PARENT_RIGHT - WIDTH - 145
+					Y:87
+					Width:120
+					Height:25
+					Text:Starting Units:
+					Align:Right
+				DropDownButton@STARTINGUNITS_DROPDOWNBUTTON:
+					X:PARENT_RIGHT - WIDTH
+					Y:87
+					Width:140
+					Height:25
+					Font:Bold
+				Label@DIFFICULTY_DESC:
+					X:PARENT_RIGHT - WIDTH - 145
+					Y:122
+					Width:120
+					Height:25
+					Text:Mission Difficulty:
+					Align:Right
+				DropDownButton@DIFFICULTY_DROPDOWNBUTTON:
+					X:PARENT_RIGHT - WIDTH
+					Y:122
+					Width:140
+					Height:25
+					Font:Bold

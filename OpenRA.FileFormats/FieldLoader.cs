@@ -276,6 +276,13 @@ namespace OpenRA.FileFormats
 				return fieldType.GetConstructor(argTypes).Invoke(argValues);
 			}
 
+			else if (fieldType.IsGenericType && fieldType.GetGenericTypeDefinition() == typeof(Nullable<>))
+			{
+				var innerType = fieldType.GetGenericArguments().First();
+				var innerValue = GetValue("Nullable<T>", innerType, x);
+				return fieldType.GetConstructor(new []{ innerType }).Invoke(new []{ innerValue });
+			}
+
 			UnknownFieldAction("[Type] {0}".F(x), fieldType);
 			return null;
 		}

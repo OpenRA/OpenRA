@@ -20,6 +20,15 @@ UseAsShellmap: False
 
 Type: Campaign
 
+Options:
+	Crates: false
+	Fog: true
+	Shroud: true
+	AllyBuildRadius: false
+	FragileAlliances: false
+	StartingCash: 0
+	ConfigurableStartingUnits: false
+
 Players:
 	PlayerReference@GoodGuy:
 		Name: GoodGuy
@@ -841,8 +850,6 @@ Smudges:
 Rules:
 	Player:
 		-ConquestVictoryConditions:
-		PlayerResources:
-			InitialCash: 0
 	World:
 		-CrateDrop:
 		-SpawnMPUnits:

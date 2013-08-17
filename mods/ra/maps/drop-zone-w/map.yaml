@@ -16,7 +16,16 @@ Bounds: 16,16,32,32
 
 UseAsShellmap: False
 
-Type: Minigame
+Type: Drop Zone
+
+Options:
+	Crates: true
+	Fog: false
+	Shroud: false
+	AllyBuildRadius: false
+	FragileAlliances: false
+	StartingCash: 5000
+	ConfigurableStartingUnits: false
 
 Players:
 	PlayerReference@Neutral:

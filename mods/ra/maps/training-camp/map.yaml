@@ -18,6 +18,15 @@ UseAsShellmap: False
 
 Type: Minigame
 
+Options:
+	Crates: false
+	Fog: true
+	Shroud: true
+	AllyBuildRadius: false
+	FragileAlliances: false
+	StartingCash: 100
+	ConfigurableStartingUnits: false
+
 Players:
 	PlayerReference@Neutral:
 		Name: Neutral
@@ -800,8 +809,6 @@ Rules:
 		-SpawnMPUnits:
 		-MPStartLocations:
 	Player:
-		PlayerResources:
-			InitialCash: 100
 		ClassicProductionQueue@Infantry:
 			Type: Infantry
 			BuildSpeed: 1
