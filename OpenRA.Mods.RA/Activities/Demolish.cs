@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (IsCanceled || target.Type != TargetType.Actor)
+			if (IsCanceled || !target.IsValidFor(self))
 				return NextActivity;
 
 			self.World.AddFrameEndTask(w => w.Add(new DelayedAction(delay, () =>

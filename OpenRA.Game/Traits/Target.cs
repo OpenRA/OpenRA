@@ -22,6 +22,7 @@ namespace OpenRA.Traits
 
 		TargetType type;
 		Actor actor;
+		ITargetable targetable;
 		FrozenActor frozen;
 		WPos pos;
 		int generation;
@@ -40,6 +41,7 @@ namespace OpenRA.Traits
 			return new Target
 			{
 				actor = a,
+				targetable = a != null ? a.TraitOrDefault<ITargetable>() : null,
 				type = a != null ? TargetType.Actor : TargetType.Invalid,
 				generation = a.Generation,
 			};
@@ -47,7 +49,6 @@ namespace OpenRA.Traits
 
 		public static Target FromFrozenActor(FrozenActor a)  { return new Target { frozen = a, type = TargetType.FrozenActor }; }
 
-		public bool IsValid { get { return Type != TargetType.Invalid; } }
 		public Actor Actor { get { return actor; } }
 		public FrozenActor FrozenActor { get { return frozen; } }
 
@@ -68,6 +69,17 @@ namespace OpenRA.Traits
 
 				return type;
 			}
+		}
+
+		public bool IsValidFor(Actor targeter)
+		{
+			if (Type == TargetType.Invalid)
+				return false;
+
+			if (targetable != null && !targetable.TargetableBy(actor, targeter))
+				return false;
+
+			return true;
 		}
 
 		// Representative position - see Positions for the full set of targetable positions.

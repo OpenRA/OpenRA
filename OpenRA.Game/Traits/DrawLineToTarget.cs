@@ -64,7 +64,7 @@ namespace OpenRA.Traits
 
 			foreach (var target in targets)
 			{
-				if (!target.IsValid)
+				if (target.Type == TargetType.Invalid)
 					continue;
 
 				var to = wr.ScreenPxPosition(target.CenterPosition);

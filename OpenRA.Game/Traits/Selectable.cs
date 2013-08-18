@@ -161,7 +161,7 @@ namespace OpenRA.Traits
 				var c = Color.Green;
 
 				var wlr = Game.Renderer.WorldLineRenderer;
-				foreach (var stp in targets.Where(t => t.IsValid).Select(p => wr.ScreenPxPosition(p.CenterPosition)))
+				foreach (var stp in targets.Where(t => t.Type != TargetType.Invalid).Select(p => wr.ScreenPxPosition(p.CenterPosition)))
 				{
 					wlr.DrawLine(stp + new float2(-1, -1), stp + new float2(-1, 1), c, c);
 					wlr.DrawLine(stp + new float2(-1, 1), stp + new float2(1, 1), c, c);

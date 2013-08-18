@@ -22,7 +22,7 @@ namespace OpenRA.Mods.RA.Air
 
 		public override Activity Tick(Actor self)
 		{
-			if (!target.IsValid)
+			if (!target.IsValidFor(self))
 				Cancel(self);
 
 			if (IsCanceled)
