@@ -239,6 +239,10 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			developerMenuCheckbox.IsChecked = () => Game.Settings.Debug.DeveloperMenu;
 			developerMenuCheckbox.OnClick = () => Game.Settings.Debug.DeveloperMenu ^= true;
 
+			var showFatalErrorDialog = debug.Get<CheckboxWidget>("SHOW_FATAL_ERROR_DIALOG_CHECKBOX");
+			showFatalErrorDialog.IsChecked = () => Game.Settings.Debug.ShowFatalErrorDialog;
+			showFatalErrorDialog.OnClick = () => Game.Settings.Debug.ShowFatalErrorDialog ^= true;
+
 			bg.Get<ButtonWidget>("BUTTON_CLOSE").OnClick = () =>
 			{
 				int x, y;
