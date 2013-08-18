@@ -157,6 +157,8 @@
 		Queue: Building
 		BuildPaletteOrder: 30
 		Hotkey: i
+	Selectable:
+		Bounds: 32,32
 	Valued:
 		Cost: 150
 	Tooltip:
@@ -312,6 +314,8 @@
 		Power: -40
 		Footprint: xxx x=x =x=
 		Dimensions: 3,3
+	Selectable:
+		Bounds: 96,64
 	Bib:
 	Health:
 		HP: 1000
