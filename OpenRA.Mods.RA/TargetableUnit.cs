@@ -33,15 +33,12 @@ namespace OpenRA.Mods.RA
 			cloak = self.TraitOrDefault<Cloak>();
 		}
 
-		public virtual bool TargetableBy(Actor self, Actor byActor)
+		public virtual bool TargetableBy(Actor self, Actor viewer)
 		{
 			if (cloak == null || !cloak.Cloaked)
 				return true;
 
-			if (self.Owner.IsAlliedWith(byActor.Owner))
-				return true;
-
-			return self.World.ActorsWithTrait<DetectCloaked>().Any(a => (self.Location - a.Actor.Location).Length < a.Actor.Info.Traits.Get<DetectCloakedInfo>().Range);
+			return cloak.IsVisible(self, viewer.Owner);
 		}
 
 		public virtual string[] TargetTypes { get { return info.TargetTypes; } }

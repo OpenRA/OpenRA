@@ -108,10 +108,9 @@ namespace OpenRA.Mods.RA
 			if (!Cloaked || self.Owner.IsAlliedWith(viewer))
 				return true;
 
-			// TODO: Change this to be per-player? A cloak detector revealing to everyone is dumb
-			return self.World.ActorsWithTrait<DetectCloaked>().Any(a =>
-				a.Actor.Owner.Stances[self.Owner] != Stance.Ally &&
-				(self.Location - a.Actor.Location).Length < a.Actor.Info.Traits.Get<DetectCloakedInfo>().Range);
+			var centerPosition = self.CenterPosition;
+			return self.World.ActorsWithTrait<DetectCloaked>().Any(a => a.Actor.Owner.IsAlliedWith(viewer) &&
+				(centerPosition - a.Actor.CenterPosition).Length < WRange.FromCells(a.Actor.Info.Traits.Get<DetectCloakedInfo>().Range).Range);
 		}
 
 		public Color RadarColorOverride(Actor self)
