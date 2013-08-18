@@ -15,7 +15,7 @@ Join the [Forums](http://www.sleipnirstuff.com/forum/viewforum.php?f=80) for dis
 Distributed mods include a reimagining of
 * Command & Conquer: Red Alert
 * Command & Conquer: Tiberian Dawn
-* Dune 2000 (experimental)
+* Dune 2000
 
 Check our [Playing the Game](https://github.com/OpenRA/OpenRA/wiki/Playing-the-game) Guide to win multiplayer matches.
 
@@ -24,7 +24,6 @@ Check our [Playing the Game](https://github.com/OpenRA/OpenRA/wiki/Playing-the-g
 * Please read [INSTALL](https://github.com/OpenRA/OpenRA/blob/bleed/INSTALL) and [Compiling](https://github.com/OpenRA/OpenRA/wiki/Compiling) on how to set up an OpenRA development environment.
 * Read [HACKING](https://github.com/OpenRA/OpenRA/blob/bleed/HACKING) for an overview of the engine.
 * To get your patches merged please adhere to the [Contributing](https://github.com/OpenRA/OpenRA/blob/bleed/CONTRIBUTING.md) guidelines.
-* Some insights on the upcoming [Translation](https://github.com/OpenRA/OpenRA/wiki/Translation) framework.
 
 ## Mapping
 
@@ -33,7 +32,7 @@ Check our [Playing the Game](https://github.com/OpenRA/OpenRA/wiki/Playing-the-g
 
 ## Modding
 
-* There exists an incomplete [Trait documentation](https://github.com/OpenRA/OpenRA/wiki/Trait-Documentation) to get started with yaml files.
+* There exists an auto-generated [Trait documentation](https://github.com/OpenRA/OpenRA/wiki/Traits) to get started with yaml files.
 * Check the [Modding Guide](https://github.com/OpenRA/OpenRA/wiki/Modding%20Guide) to create your own classic RTS.
 * Some hints on to create new OpenRA compatible [Pixelart](https://github.com/OpenRA/OpenRA/wiki/Pixelart).
 * Upload total conversions at [our ModDB profile](http://www.moddb.com/games/openra/mods)

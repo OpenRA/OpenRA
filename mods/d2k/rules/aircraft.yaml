@@ -5,7 +5,6 @@
 	Tooltip:
 		Name: Carryall
 		Description: Fast drop ship.\n  Unarmed
-		Icon: carryallicon
 	Health:
 		HP: 250
 	Armor: 
@@ -17,7 +16,7 @@
 		ROT: 4
 		Speed: 30
 		LandableTerrainTypes: Sand, Rock, Transition, Spice, Dune
-		RepairBuildings: repair
+		RepairBuildings: repaira,repairo,repairh
 		RearmBuildings: starporta,starporto,starporth
 		LandAltitude: 800
 	RenderUnit:
@@ -42,7 +41,7 @@ FRIGATE:
 	Plane:
 		ROT: 5
 		Speed: 50
-		RepairBuildings: repair
+		RepairBuildings: repaira,repairo,repairh
 		RearmBuildings: starporta,starporto,starporth
 	Health:
 		HP: 500
@@ -85,7 +84,7 @@ ORNI:
 		InitialFacing: 20
 		ROT: 6
 		Speed: 40
-		RepairBuildings: repair
+		RepairBuildings: repaira,repairo,repairh
 		RearmBuildings: starporta,starporto,starporth
 	RenderUnit:
 	WithShadow:
@@ -108,7 +107,7 @@ ORNI.bomber:
 	Plane:
 		ROT: 5
 		Speed: 50
-		RepairBuildings: repair
+		RepairBuildings: repaira,repairo,repairh
 		RearmBuildings: starporta,starporto,starporth
 	LimitedAmmo:
 		Ammo: 5
@@ -137,7 +136,7 @@ CARRYALL.infantry:
 	Plane:
 		ROT: 4
 		Speed: 40
-		RepairBuildings: repair
+		RepairBuildings: repaira,repairo,repairh
 		RearmBuildings: starporta,starporto,starporth
 	RenderUnit:
 		Image: carryall
@@ -169,7 +168,7 @@ CARRYALL.Husk:
 	Helicopter:
 		ROT: 4
 		Speed: 30
-		RepairBuildings: repair
+		RepairBuildings: repaira,repairo,repairh
 		RearmBuildings: starporta,starporto,starporth
 	RenderUnit:
 		Image: carryall
@@ -182,7 +181,7 @@ ORNI.Husk:
 	Helicopter:
 		ROT: 6
 		Speed: 40
-		RepairBuildings: repair
+		RepairBuildings: repaira,repairo,repairh
 		RearmBuildings: starporta,starporto,starporth
 	RenderUnit:
 		Image: orni
@@ -195,7 +194,7 @@ ORNI.bomber.Husk:
 	Plane:
 		ROT: 5
 		Speed: 50
-		RepairBuildings: repair
+		RepairBuildings: repaira,repairo,repairh
 		RearmBuildings: starporta,starporto,starporth
 	RenderUnit:
 		Image: orni
@@ -208,7 +207,7 @@ CARRYALL.infantry.Husk:
 	Plane:
 		ROT: 4
 		Speed: 40
-		RepairBuildings: repair
+		RepairBuildings: repaira,repairo,repairh
 		RearmBuildings: starporta,starporto,starporth
 	RenderUnit:
 		Image: carryall
@@ -221,7 +220,7 @@ BADR.Husk:
 	Plane:
 		ROT: 4
 		Speed: 40
-		RepairBuildings: repair
+		RepairBuildings: repaira,repairo,repairh
 		RearmBuildings: starporta,starporto,starporth
 	RenderUnit:
 		Image: carryall

@@ -402,7 +402,6 @@ MNLY.AP:
 		Cost: 800
 	Tooltip:
 		Name: Minelayer (Anti-Personnel)
-		Icon: MNLYICON
 		Description: Lays mines to destroy unwary enemy units.\n  Unarmed
 	Health:
 		HP: 100
@@ -437,7 +436,6 @@ MNLY.AT:
 		Cost: 800
 	Tooltip:
 		Name: Minelayer (Anti-Tank)
-		Icon: MNLYICON
 		Description: Lays mines to destroy unwary enemy units.\n  Unarmed
 	Health:
 		HP: 100

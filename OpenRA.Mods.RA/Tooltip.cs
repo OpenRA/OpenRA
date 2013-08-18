@@ -18,8 +18,9 @@ namespace OpenRA.Mods.RA
 	{
 		public readonly string Description = "";
 		public readonly string Name = "";
-		[Desc("Defaults to actor name + icon suffix.")]
-		public readonly string Icon = null;
+
+		[Desc("Sequence of the actor that contains the cameo.")]
+		public readonly string Icon = "icon";
 
 		public virtual object Create(ActorInitializer init) { return new Tooltip(init.self, this); }
 	}

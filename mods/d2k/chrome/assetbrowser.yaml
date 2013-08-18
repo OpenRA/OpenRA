@@ -1,0 +1,203 @@
+Background@ASSETBROWSER_BG:
+	Logic:AssetBrowserLogic
+	X:(WINDOW_RIGHT - WIDTH)/2
+	Y:(WINDOW_BOTTOM - HEIGHT)/2
+	Width:700
+	Height:410
+	Children:
+		Label@ASSETBROWSER_TITLE:
+			X:0
+			Y:20
+			Width:PARENT_RIGHT
+			Height:25
+			Text:Game Asset Viewer & Converter
+			Align:Center
+			Font:Bold
+		DropDownButton@SOURCE_SELECTOR:
+			X:40
+			Y:45
+			Width:160
+			Height:25
+			Font:Bold
+			Text:Folders
+		ScrollPanel@ASSET_LIST:
+			X:40
+			Y:80
+			Width:160
+			Height:190
+			Children:
+				ScrollItem@ASSET_TEMPLATE:
+					Width:PARENT_RIGHT-27
+					Height:25
+					X:2
+					Y:0
+					Visible:false
+					Children:
+						Label@TITLE:
+							X:10
+							Width:PARENT_RIGHT-20
+							Height:25
+		TextField@FILENAME_INPUT:
+			X:40
+			Y:280
+			Width:140
+			Height:25
+		Button@LOAD_BUTTON:
+			X:40
+			Y:310
+			Width:140
+			Height:25
+			Text:Load
+			Font:Bold
+			Key:return
+		Label@PREVIEW_TITLE:
+			X:320
+			Y:45
+			Width:PARENT_RIGHT
+			Height:25
+			Text:Preview
+			Font:Bold
+		Background@SPRITE_BG:
+			X:220
+			Y:80
+			Width:250
+			Height:250
+			Background:dialog4
+			Children:
+				ShpImage@SPRITE:
+					X:4
+					Y:4
+					Width:246
+					Height:246
+					Image:DATA.R8
+					Palette:colorpicker
+		Label@ACTIONS_TITLE:
+			X:PARENT_RIGHT - 150
+			Y:45
+			Width:PARENT_RIGHT
+			Height:25
+			Text:Actions
+			Font:Bold
+		Button@EXPORT_BUTTON:
+			X:PARENT_RIGHT - 200
+			Y:80
+			Width:160
+			Height:25
+			Text:Selected to PNG
+			Font:Bold
+		Button@EXTRACT_BUTTON:
+			X:PARENT_RIGHT - 200
+			Y:115
+			Width:160
+			Height:25
+			Text:Extract all to PNG
+			Font:Bold
+		TextField@IMAGE_FILENAME_INPUT:
+			X:PARENT_RIGHT - 200
+			Y:PARENT_BOTTOM - 235
+			Width:100
+			Height:25
+			Text:pixelart.png
+		TextField@IMAGE_SIZE_INPUT:
+			X:PARENT_RIGHT - 90
+			Y:PARENT_BOTTOM - 235
+			Width:50
+			Height:25
+			Text:width
+		Button@IMPORT_BUTTON:
+			X:PARENT_RIGHT - 200
+			Y:PARENT_BOTTOM - 200
+			Width:160
+			Height:25
+			Text:Import from PNG
+			Font:Bold
+		Button@CLOSE_BUTTON:
+			X:PARENT_RIGHT - 200
+			Y:PARENT_BOTTOM - 115
+			Width:160
+			Height:25
+			Text:Close
+			Font:Bold
+			Key:escape
+		Container@FRAME_SELECTOR:
+			X:45
+			Y:360
+			Children:
+				Button@BUTTON_PREV:
+					X:0
+					Y:0
+					Width:25
+					Height:25
+					Children:
+						Image@IMAGE_PREV:
+							X:0
+							Y:0
+							Width:25
+							Height:25
+							ImageCollection:music
+							ImageName:prev
+				Button@BUTTON_PLAY:
+					X:35
+					Y:0
+					Width:25
+					Height:25
+					Children:
+						Image@IMAGE_PLAY:
+							X:0
+							Y:0
+							Width:25
+							Height:25
+							ImageCollection:music
+							ImageName:play
+				Button@BUTTON_PAUSE:
+					Visible: no
+					X:35
+					Y:0
+					Width:25
+					Height:25
+					Children:
+						Image@IMAGE_PAUSE:
+							X:0
+							Y:0
+							Width:25
+							Height:25
+							ImageCollection:music
+							ImageName:pause
+				Button@BUTTON_STOP:
+					X:70
+					Y:0
+					Width:25
+					Height:25
+					Children:
+						Image@IMAGE_STOP:
+							X:0
+							Y:0
+							Width:25
+							Height:25
+							ImageCollection:music
+							ImageName:stop
+				Button@BUTTON_NEXT:
+					X:105
+					Y:0
+					Width:25
+					Height:25
+					Children:
+						Image@IMAGE_NEXT:
+							X:0
+							Y:0
+							Width:25
+							Height:25
+							ImageCollection:music
+							ImageName:next
+				Slider@FRAME_SLIDER:
+					X:160
+					Y:0
+					Width:410
+					Height:20
+					MinimumValue: 0
+				Label@FRAME_COUNT:
+					X:585
+					Y:0
+					Width:25
+					Height:25
+					Font:Bold

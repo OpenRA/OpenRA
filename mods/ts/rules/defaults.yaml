@@ -91,7 +91,6 @@
 		Cost: 10
 	Tooltip:
 		Name: Civilian
-		Icon: xxicon
 	Buildable: # TODO: remove this once the testing period is over
 		Queue: Infantry
 		BuildPaletteOrder: 1000

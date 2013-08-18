@@ -3,7 +3,7 @@ General:
 	Id: ARRAKIS
 	SheetSize: 1024
 	Palette: d2k.pal
-	Extensions: .bas,.bat,.bgb,.ice,.tre,.was,.ext,.shp
+	Extensions: .R8, .shp
 
 Terrain:
 	TerrainType@Sand:
@@ -61,14 +61,16 @@ Terrain:
 Templates:
 	Template@0:
 		Id: 0
-		Image: BASE00
+		Image: BLOXBASE
+		Frames: 0
 		Size: 1,1
 		PickAny: False
 		Tiles:
 			0: Sand
 	Template@1:
 		Id: 1
-		Image: BASE01
+		Image: BLOXBASE
+		Frames: 10,11,30,31
 		Size: 2,2
 		Category: Dune
 		PickAny: False
@@ -79,7 +81,8 @@ Templates:
 			2: Dune
 	Template@2:
 		Id: 2
-		Image: BASE02
+		Image: BLOXBASE
+		Frames: 12,13,32,33
 		Size: 2,2
 		Category: SandyCliff
 		PickAny: False
@@ -90,7 +93,8 @@ Templates:
 			2: Rough
 	Template@3:
 		Id: 3
-		Image: BASE03
+		Image: BLOXBASE
+		Frames: 14,15,34,35
 		Size: 2,2
 		Category: SandyCliff
 		PickAny: False
@@ -101,7 +105,8 @@ Templates:
 			2: Rough
 	Template@4:
 		Id: 4
-		Image: BASE04
+		Image: BLOXBASE
+		Frames: 16,17,36,37
 		Size: 2,2
 		Category: Dune	
 		PickAny: False
@@ -112,7 +117,8 @@ Templates:
 			1: Dune
 	Template@5:
 		Id: 5
-		Image: BASE05
+		Image: BLOXBASE
+		Frames: 18,19,38,39
 		Size: 2,2
 		Category: Dune	
 		PickAny: False
@@ -123,7 +129,8 @@ Templates:
 			1: Sand
 	Template@6:
 		Id: 6
-		Image: BASE06
+		Image: BLOXBASE
+		Frames: 58,59,78,79
 		Size: 2,2
 		Category: Dune	
 		PickAny: False
@@ -134,9 +141,10 @@ Templates:
 			0: Dune
 	Template@7:
 		Id: 7
-		Image: BASE07
+		Image: BLOXBASE
+		Frames: 56,57,76,77
 		Size: 2,2
-		Category: Dune	
+		Category: Dune
 		PickAny: False
 		Tiles:
 			1: Dune
@@ -145,7 +153,8 @@ Templates:
 			0: Dune
 	Template@8:
 		Id: 8
-		Image: BASE08
+		Image: BLOXBASE
+		Frames: 54,55,74,75
 		Size: 2,2
 		Category: Cliff-Type-Changer
 		PickAny: False
@@ -156,7 +165,8 @@ Templates:
 			0: Cliff
 	Template@9:
 		Id: 9
-		Image: BASE09
+		Image: BLOXBASE
+		Frames: 53,73
 		Size: 1,2
 		Category: SandyCliff
 		PickAny: False
@@ -165,7 +175,8 @@ Templates:
 			1: Transition
 	Template@10:
 		Id: 10
-		Image: BASE10
+		Image: BLOXBASE
+		Frames: 98,99,118,119
 		Size: 2,2
 		Category: SandyCliff
 		PickAny: False
@@ -176,7 +187,8 @@ Templates:
 			1: Cliff
 	Template@11:
 		Id: 11
-		Image: BASE11
+		Image: BLOXBASE
+		Frames: 138,139,158,159
 		Size: 2,2
 		Category: SandyCliff
 		PickAny: False
@@ -187,7 +199,8 @@ Templates:
 			2: Cliff
 	Template@12:
 		Id: 12
-		Image: BASE12
+		Image: BLOXBASE
+		Frames: 136,137,156,157
 		Size: 2,2
 		Category: SandyCliff
 		PickAny: False
@@ -198,7 +211,8 @@ Templates:
 			1: Cliff
 	Template@13:
 		Id: 13
-		Image: BASE13
+		Image: BLOXBASE
+		Frames: 134,135,154,155
 		Size: 2,2
 		Category: SandyCliff
 		PickAny: False
@@ -209,7 +223,8 @@ Templates:
 			3: Cliff
 	Template@14:
 		Id: 14
-		Image: BASE14
+		Image: BLOXBASE
+		Frames: 132,133,152,153
 		Size: 2,2
 		Category: SandyCliff
 		PickAny: False
@@ -220,7 +235,8 @@ Templates:
 			1: Cliff
 	Template@15:
 		Id: 15
-		Image: BASE15
+		Image: BLOXBASE
+		Frames: 130,131,150,151
 		Size: 2,2
 		Category: SandyCliff
 		PickAny: False
@@ -231,7 +247,8 @@ Templates:
 			2: Cliff
 	Template@16:
 		Id: 16
-		Image: BASE16
+		Image: BLOXBASE
+		Frames: 128,129,148,149
 		Size: 2,2
 		Category: SandyCliff
 		PickAny: False
@@ -242,7 +259,8 @@ Templates:
 			1: Cliff
 	Template@17:
 		Id: 17
-		Image: BASE17
+		Image: BLOXBASE
+		Frames: 126,127,146,147
 		Size: 2,2
 		Category: SandyCliff
 		PickAny: False
@@ -253,7 +271,8 @@ Templates:
 			0: Cliff
 	Template@18:
 		Id: 18
-		Image: BASE18
+		Image: BLOXBASE
+		Frames: 124,125,144,145
 		Size: 2,2
 		Category: SandyCliff
 		PickAny: False
@@ -264,7 +283,8 @@ Templates:
 			0: Cliff
 	Template@19:
 		Id: 19
-		Image: BASE19
+		Image: BLOXBASE
+		Frames: 122,123,142,143
 		Size: 2,2
 		Category: SandyCliff
 		PickAny: False
@@ -275,7 +295,8 @@ Templates:
 			0: Cliff
 	Template@20:
 		Id: 20
-		Image: BASE20
+		Image: BLOXBASE
+		Frames: 120,121,140,141
 		Size: 2,2
 		Category: SandyCliff
 		PickAny: False
@@ -286,7 +307,8 @@ Templates:
 			0: Cliff
 	Template@21:
 		Id: 21
-		Image: BASE21
+		Image: BLOXBASE
+		Frames: 178,179,198,199
 		Size: 2,2
 		Category: Rock-SandSmooth
 		PickAny: False
@@ -297,7 +319,8 @@ Templates:
 			1: Transition
 	Template@22:
 		Id: 22
-		Image: BASE22
+		Image: BLOXBASE
+		Frames: 176,177,196,197
 		Size: 2,2
 		Category: SandyCliff
 		PickAny: False
@@ -308,7 +331,8 @@ Templates:
 			0: Rough
 	Template@23:
 		Id: 23
-		Image: BASE23
+		Image: BLOXBASE
+		Frames: 174,175,194,195
 		Size: 2,2
 		Category: SandyCliff
 		PickAny: False
@@ -319,7 +343,8 @@ Templates:
 			0: Rough
 	Template@24:
 		Id: 24
-		Image: BASE24
+		Image: BLOXBASE
+		Frames: 172,173,192,193
 		Size: 2,2
 		Category: SandyCliff
 		PickAny: False
@@ -330,7 +355,8 @@ Templates:
 			0: Cliff
 	Template@25:
 		Id: 25
-		Image: BASE25
+		Image: BLOXBASE
+		Frames: 170,171,190,191
 		Size: 2,2
 		Category: SandyCliff
 		PickAny: False
@@ -341,7 +367,8 @@ Templates:
 			0: Cliff
 	Template@26:
 		Id: 26
-		Image: BASE26
+		Image: BLOXBASE
+		Frames: 168,169,188,189
 		Size: 2,2
 		Category: SandyCliff
 		PickAny: False
@@ -352,7 +379,8 @@ Templates:
 			0: Cliff
 	Template@27:
 		Id: 27
-		Image: BASE27
+		Image: BLOXBASE
+		Frames: 166,167,186,187
 		Size: 2,2
 		Category: SandyCliff
 		PickAny: False
@@ -363,7 +391,8 @@ Templates:
 			0: Rough
 	Template@28:
 		Id: 28
-		Image: BASE28
+		Image: BLOXBASE
+		Frames: 164,165,184,185
 		Size: 2,2
 		Category: Rock-Detail
 		PickAny: False
@@ -374,7 +403,8 @@ Templates:
 			0: Rough
 	Template@29:
 		Id: 29
-		Image: BASE29
+		Image: BLOXBASE
+		Frames: 162,163,182,183
 		Size: 2,2
 		Category: SandyCliff
 		PickAny: False
@@ -385,7 +415,8 @@ Templates:
 			0: Cliff
 	Template@30:
 		Id: 30
-		Image: BASE30
+		Image: BLOXBASE
+		Frames: 160,161,180,181
 		Size: 2,2
 		Category: SandyCliff
 		PickAny: False
@@ -396,7 +427,8 @@ Templates:
 			0: Cliff
 	Template@31:
 		Id: 31
-		Image: BASE31
+		Image: BLOXBASE
+		Frames: 202,203,222,223,242,243
 		Size: 2,3
 		Category: SandyCliff
 		PickAny: False
@@ -409,7 +441,8 @@ Templates:
 			5: Cliff
 	Template@32:
 		Id: 32
-		Image: BASE32
+		Image: BLOXBASE
+		Frames: 260,261,280,281
 		Size: 2,2
 		Category: Rock-SandSmooth
 		PickAny: False
@@ -420,7 +453,8 @@ Templates:
 			0: Transition
 	Template@33:
 		Id: 33
-		Image: BASE33
+		Image: BLOXBASE
+		Frames: 200,201,220,221,240,241
 		Size: 2,3
 		Category: SandyCliff
 		PickAny: False
@@ -433,7 +467,8 @@ Templates:
 			0: Cliff
 	Template@34:
 		Id: 34
-		Image: BASE34
+		Image: BLOXBASE
+		Frames: 204,205,224,225,244,245
 		Size: 2,3
 		Category: SandyCliff
 		PickAny: False
@@ -446,7 +481,8 @@ Templates:
 			1: Sand
 	Template@35:
 		Id: 35
-		Image: BASE35
+		Image: BLOXBASE
+		Frames: 206,207,226,227,246,247
 		Size: 2,3
 		Category: SandyCliff
 		PickAny: False
@@ -459,7 +495,8 @@ Templates:
 			1: Cliff
 	Template@36:
 		Id: 36
-		Image: BASE36
+		Image: BLOXBASE
+		Frames: 262,263,282,283
 		Size: 2,2
 		Category: Rock-SandSmooth
 		PickAny: False
@@ -470,7 +507,8 @@ Templates:
 			1: Transition
 	Template@37:
 		Id: 37
-		Image: BASE37
+		Image: BLOXBASE
+		Frames: 264,265,284,285
 		Size: 2,2
 		Category: Rock-SandSmooth
 		PickAny: False
@@ -481,7 +519,8 @@ Templates:
 			1: Transition
 	Template@38:
 		Id: 38
-		Image: BASE38
+		Image: BLOXBASE
+		Frames: 85,86,105,106
 		Size: 2,2
 		Category: SandyCliff
 		PickAny: False
@@ -492,7 +531,8 @@ Templates:
 			2: Cliff
 	Template@39:
 		Id: 39
-		Image: BASE39
+		Image: BLOXBASE
+		Frames: 87,88,107,108
 		Size: 2,2
 		Category: SandyCliff
 		PickAny: False
@@ -503,7 +543,8 @@ Templates:
 			1: Cliff
 	Template@40:
 		Id: 40
-		Image: BASE40
+		Image: BLOXBASE
+		Frames: 89,90,109,110
 		Size: 2,2
 		Category: SandyCliff
 		PickAny: False
@@ -514,7 +555,8 @@ Templates:
 			2: Sand
 	Template@41:
 		Id: 41
-		Image: BASE41
+		Image: BLOXBASE
+		Frames: 91,92,111,112
 		Size: 2,2
 		Category: SandyCliff
 		PickAny: False
@@ -525,7 +567,8 @@ Templates:
 			1: Cliff
 	Template@42:
 		Id: 42
-		Image: BASE42
+		Image: BLOXBASE
+		Frames: 93,94,113,114
 		Size: 2,2
 		Category: SandyCliff
 		PickAny: False
@@ -536,7 +579,8 @@ Templates:
 			1: Cliff
 	Template@43:
 		Id: 43
-		Image: BASE43
+		Image: BLOXBASE
+		Frames: 95,96,115,116
 		Size: 2,2
 		Category: Cliff-Type-Changer
 		PickAny: False
@@ -547,7 +591,8 @@ Templates:
 			1: Cliff
 	Template@44:
 		Id: 44
-		Image: BASE44
+		Image: BLOXBASE
+		Frames: 218,219,238,239
 		Size: 2,2
 		Category: Rock-SandSmooth
 		PickAny: False
@@ -558,7 +603,8 @@ Templates:
 			1: Transition
 	Template@45:
 		Id: 45
-		Image: BASE45
+		Image: BLOXBASE
+		Frames: 258,259,278,279
 		Size: 2,2
 		Category: Rock-SandSmooth
 		PickAny: False
@@ -569,7 +615,8 @@ Templates:
 			3: Transition
 	Template@46:
 		Id: 46
-		Image: BASE46
+		Image: BLOXBASE
+		Frames: 256,257,276,277
 		Size: 2,2
 		Category: Rock-SandSmooth
 		PickAny: False
@@ -580,7 +627,8 @@ Templates:
 			1: Transition
 	Template@47:
 		Id: 47
-		Image: BASE47
+		Image: BLOXBASE
+		Frames: 216,217,236,237
 		Size: 2,2
 		Category: SandyCliff
 		PickAny: False
@@ -591,7 +639,8 @@ Templates:
 			3: Cliff
 	Template@48:
 		Id: 48
-		Image: BASE48
+		Image: BLOXBASE
+		Frames: 214,215,234,235
 		Size: 2,2
 		Category: SandyCliff
 		PickAny: False
@@ -602,7 +651,8 @@ Templates:
 			1: Cliff
 	Template@49:
 		Id: 49
-		Image: BASE49
+		Image: BLOXBASE
+		Frames: 211,212,213,231,232,233
 		Size: 3,2
 		Category: SandyCliff
 		PickAny: False
@@ -615,7 +665,8 @@ Templates:
 			5: Cliff
 	Template@50:
 		Id: 50
-		Image: BASE50
+		Image: BLOXBASE
+		Frames: 251,252,253,271,272,273
 		Size: 3,2
 		Category: SandyCliff
 		PickAny: False
@@ -628,7 +679,8 @@ Templates:
 			5: Cliff
 	Template@51:
 		Id: 51
-		Image: BASE51
+		Image: BLOXBASE
+		Frames: 248,249,250,268,269,270
 		Size: 3,2
 		Category: SandyCliff
 		PickAny: False
@@ -641,7 +693,8 @@ Templates:
 			2: Cliff
 	Template@52:
 		Id: 52
-		Image: BASE52
+		Image: BLOXBASE
+		Frames: 208,209,210,228,229,230
 		Size: 3,2
 		Category: SandyCliff
 		PickAny: False
@@ -654,7 +707,8 @@ Templates:
 			2: Cliff
 	Template@53:
 		Id: 53
-		Image: BASE53
+		Image: BLOXBASE
+		Frames: 266,267,286,287
 		Size: 2,2
 		Category: Rock-SandSmooth
 		PickAny: False
@@ -663,37 +717,42 @@ Templates:
 			1: Transition
 			3: Transition
 			2: Transition
-#	Template@54:
-#		Id: 54
-#		Image: BASE54
-#		Size: 1,1
-#		PickAny: False
-#		Tiles:
-#			0: SpiceBlobs
-#	Template@55:
-#		Id: 55
-#		Image: BASE55
-#		Size: 1,1
-#		PickAny: False
-#		Tiles:
-#			0: SpiceBlobs
-#	Template@56:
-#		Id: 56
-#		Image: BASE56
-#		Size: 1,1
-#		PickAny: False
-#		Tiles:
-#			0: SpiceBlobs
-#	Template@57:
-#		Id: 57
-#		Image: BASE57
-#		Size: 1,1
-#		PickAny: False
-#		Tiles:
-#			0: SpiceBlobs
+	Template@54:
+		Id: 54
+		Image: BLOXBASE
+		Frames: 301
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: SpiceBlobs
+	Template@55:
+		Id: 55
+		Image: BLOXBASE
+		Frames: 300
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: SpiceBlobs
+	Template@56:
+		Id: 56
+		Image: BLOXBASE
+		Frames: 320
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: SpiceBlobs
+	Template@57:
+		Id: 57
+		Image: BLOXBASE
+		Frames: 321
+		Size: 1,1
+		PickAny: False
+		Tiles:
+			0: SpiceBlobs
 	Template@58:
 		Id: 58
-		Image: BASE58
+		Image: BLOXBASE
+		Frames: 322
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -701,7 +760,8 @@ Templates:
 			0: Cliff
 	Template@59:
 		Id: 59
-		Image: BASE59
+		Image: BLOXBASE
+		Frames: 302
 		Size: 1,1
 		Category: Rock-Detail
 		PickAny: False
@@ -709,7 +769,8 @@ Templates:
 			0: Rock
 	Template@60:
 		Id: 60
-		Image: BASE60
+		Image: BLOXBASE
+		Frames: 288
 		Size: 1,1
 		Category: Rock-SandSmooth
 		PickAny: False
@@ -717,7 +778,8 @@ Templates:
 			0: Sand
 	Template@61:
 		Id: 61
-		Image: BASE61
+		Image: BLOXBASE
+		Frames: 308
 		Size: 1,1
 		Category: Rock-Detail
 		PickAny: False
@@ -725,7 +787,8 @@ Templates:
 			0: Rock
 	Template@62:
 		Id: 62
-		Image: BASE62
+		Image: BLOXBASE
+		Frames: 328
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -733,7 +796,8 @@ Templates:
 			0: Sand
 	Template@63:
 		Id: 63
-		Image: BASE63
+		Image: BLOXBASE
+		Frames: 329
 		Size: 1,1
 		Category: Rock-SandSmooth
 		PickAny: False
@@ -741,7 +805,8 @@ Templates:
 			0: Transition
 	Template@64:
 		Id: 64
-		Image: BASE64
+		Image: BLOXBASE
+		Frames: 330
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -749,7 +814,8 @@ Templates:
 			0: Sand
 	Template@65:
 		Id: 65
-		Image: BASE65
+		Image: BLOXBASE
+		Frames: 289,290,309,310
 		Size: 2,2
 		Category: Rock-Detail
 		PickAny: False
@@ -760,7 +826,8 @@ Templates:
 			1: Rough
 	Template@66:
 		Id: 66
-		Image: BASE66
+		Image: BLOXBASE
+		Frames: 331
 		Size: 1,1
 		Category: Rock-SandSmooth
 		PickAny: False
@@ -768,7 +835,8 @@ Templates:
 			0: Transition
 	Template@67:
 		Id: 67
-		Image: BASE67
+		Image: BLOXBASE
+		Frames: 332
 		Size: 1,1
 		Category: Rock-SandSmooth
 		PickAny: False
@@ -776,7 +844,8 @@ Templates:
 			0: Transition
 	Template@68:
 		Id: 68
-		Image: BASE68
+		Image: BLOXBASE
+		Frames: 298,299
 		Size: 2,1
 		Category: SandyCliff
 		PickAny: False
@@ -785,7 +854,8 @@ Templates:
 			1: Cliff
 	Template@69:
 		Id: 69
-		Image: BASE69
+		Image: BLOXBASE
+		Frames: 317,318
 		Size: 2,1
 		Category: Rock-SandSmooth
 		PickAny: False
@@ -794,7 +864,8 @@ Templates:
 			1: Transition
 	Template@70:
 		Id: 70
-		Image: BASE70
+		Image: BLOXBASE
+		Frames: 338,339,358,359
 		Size: 2,2
 		Category: Rock-Detail
 		PickAny: False
@@ -805,7 +876,8 @@ Templates:
 			1: Rough
 	Template@71:
 		Id: 71
-		Image: BASE71
+		Image: BLOXBASE
+		Frames: 337
 		Size: 1,1
 		Category: Rock-SandSmooth
 		PickAny: False
@@ -813,7 +885,8 @@ Templates:
 			0: Transition
 	Template@72:
 		Id: 72
-		Image: BASE72
+		Image: BLOXBASE
+		Frames: 336
 		Size: 1,1
 		Category: Rock-SandSmooth
 		PickAny: False
@@ -821,7 +894,8 @@ Templates:
 			0: Transition
 	Template@73:
 		Id: 73
-		Image: BASE73
+		Image: BLOXBASE
+		Frames: 335
 		Size: 1,1
 		Category: Rock-SandSmooth
 		PickAny: False
@@ -829,7 +903,8 @@ Templates:
 			0: Transition
 	Template@74:
 		Id: 74
-		Image: BASE74
+		Image: BLOXBASE
+		Frames: 313,333
 		Size: 1,2
 		Category: Rock-SandSmooth
 		PickAny: False
@@ -838,7 +913,8 @@ Templates:
 			1: Transition
 	Template@75:
 		Id: 75
-		Image: BASE75
+		Image: BLOXBASE
+		Frames: 314,334
 		Size: 1,2
 		Category: Rock-SandSmooth
 		PickAny: False
@@ -847,7 +923,8 @@ Templates:
 			1: Transition
 	Template@76:
 		Id: 76
-		Image: BASE76
+		Image: BLOXBASE
+		Frames: 315
 		Size: 1,1
 		Category: Rock-SandSmooth
 		PickAny: False
@@ -855,7 +932,8 @@ Templates:
 			0: Transition
 	Template@77:
 		Id: 77
-		Image: BASE77
+		Image: BLOXBASE
+		Frames: 291,292
 		Size: 2,1
 		Category: Rock-SandSmooth
 		PickAny: False
@@ -864,7 +942,8 @@ Templates:
 			1: Transition
 	Template@78:
 		Id: 78
-		Image: BASE78
+		Image: BLOXBASE
+		Frames: 293,294
 		Size: 2,1
 		Category: Rock-SandSmooth
 		PickAny: False
@@ -873,7 +952,8 @@ Templates:
 			1: Transition
 	Template@79:
 		Id: 79
-		Image: BASE79
+		Image: BLOXBASE
+		Frames: 295,296
 		Size: 2,1
 		Category: Rock-SandSmooth
 		PickAny: False
@@ -882,7 +962,8 @@ Templates:
 			1: Transition
 	Template@80:
 		Id: 80
-		Image: BASE80
+		Image: BLOXBASE
+		Frames: 719
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -890,7 +971,8 @@ Templates:
 			0: Rough
 	Template@81:
 		Id: 81
-		Image: BASE81
+		Image: BLOXBASE
+		Frames: 718
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -898,7 +980,8 @@ Templates:
 			0: Rough
 	Template@82:
 		Id: 82
-		Image: BASE82
+		Image: BLOXBASE
+		Frames: 738
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -906,7 +989,8 @@ Templates:
 			0: Sand
 	Template@83:
 		Id: 83
-		Image: BASE83
+		Image: BLOXBASE
+		Frames: 739
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -914,7 +998,8 @@ Templates:
 			0: Sand
 	Template@84:
 		Id: 84
-		Image: BASE84
+		Image: BLOXBASE
+		Frames: 737
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -922,7 +1007,8 @@ Templates:
 			0: Sand
 	Template@85:
 		Id: 85
-		Image: BASE85
+		Image: BLOXBASE
+		Frames: 717
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -930,7 +1016,8 @@ Templates:
 			0: Sand
 	Template@86:
 		Id: 86
-		Image: BASE86
+		Image: BLOXBASE
+		Frames: 716
 		Size: 1,1
 		Category: Rock-Detail
 		PickAny: False
@@ -938,7 +1025,8 @@ Templates:
 			0: Rough
 	Template@87:
 		Id: 87
-		Image: BASE87
+		Image: BLOXBASE
+		Frames: 736
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -946,7 +1034,8 @@ Templates:
 			0: Sand
 	Template@88:
 		Id: 88
-		Image: BASE88
+		Image: BLOXBASE
+		Frames: 657,658,659
 		Size: 3,1
 		Category: Brick
 		PickAny: False
@@ -956,7 +1045,8 @@ Templates:
 			2: Concrete
 	Template@89:
 		Id: 89
-		Image: BASE89
+		Image: BLOXBASE
+		Frames: 691
 		Size: 1,1
 		Category: Brick
 		PickAny: False
@@ -964,7 +1054,8 @@ Templates:
 			0: Concrete
 	Template@90:
 		Id: 90
-		Image: BASE90
+		Image: BLOXBASE
+		Frames: 649,650,651,669,670,671
 		Size: 3,2
 		Category: Brick
 		PickAny: False
@@ -977,7 +1068,8 @@ Templates:
 			1: Concrete
 	Template@91:
 		Id: 91
-		Image: BASE91
+		Image: BLOXBASE
+		Frames: 646,647,648,666,667,668,686,687,688
 		Size: 3,3
 		Category: Brick
 		PickAny: False
@@ -993,7 +1085,8 @@ Templates:
 			6: Concrete
 	Template@92:
 		Id: 92
-		Image: BASE92
+		Image: BLOXBASE
+		Frames: 685
 		Size: 1,1
 		Category: Rock-Detail
 		PickAny: False
@@ -1001,7 +1094,8 @@ Templates:
 			0: Rough
 	Template@93:
 		Id: 93
-		Image: BASE93
+		Image: BLOXBASE
+		Frames: 643,644,645,663,664,665
 		Size: 3,2
 		Category: Brick
 		PickAny: False
@@ -1014,7 +1108,8 @@ Templates:
 			2: Concrete
 	Template@94:
 		Id: 94
-		Image: BASE94
+		Image: BLOXBASE
+		Frames: 661,662,681,682
 		Size: 2,2
 		Category: Rock-Detail
 		PickAny: False
@@ -1025,7 +1120,8 @@ Templates:
 			0: Rough
 	Template@95:
 		Id: 95
-		Image: BASE95
+		Image: BLOXBASE
+		Frames: 660,680
 		Size: 1,2
 		Category: Rock-Detail
 		PickAny: False
@@ -1034,7 +1130,8 @@ Templates:
 			1: Rock
 	Template@96:
 		Id: 96
-		Image: BASE96
+		Image: BLOXBASE
+		Frames: 614,615,616,634,635,636,654,655,656
 		Size: 3,3
 		Category: Rock-Detail
 		PickAny: False
@@ -1050,7 +1147,8 @@ Templates:
 			8: Rock
 	Template@97:
 		Id: 97
-		Image: BASE97
+		Image: BLOXBASE
+		Frames: 617,618,637,638
 		Size: 2,2
 		Category: Rock-Detail
 		PickAny: False
@@ -1061,7 +1159,8 @@ Templates:
 			2: Rock
 	Template@98:
 		Id: 98
-		Image: BASE98
+		Image: BLOXBASE
+		Frames: 619,639
 		Size: 1,2
 		Category: Rock-Detail
 		PickAny: False
@@ -1070,7 +1169,8 @@ Templates:
 			1: Rock
 	Template@99:
 		Id: 99
-		Image: BASE99
+		Image: BLOXBASE
+		Frames: 538
 		Size: 1,1
 		Category: Rock-Detail
 		PickAny: False
@@ -1078,7 +1178,8 @@ Templates:
 			0: Rock
 	Template@100:
 		Id: 100
-		Image: BASE100
+		Image: BLOXBASE
+		Frames: 539
 		Size: 1,1
 		Category: Rock-Detail
 		PickAny: False
@@ -1086,7 +1187,8 @@ Templates:
 			0: Rock
 	Template@101:
 		Id: 101
-		Image: BASE101
+		Image: BLOXBASE
+		Frames: 557,558,559,577,578,579,597,598,599
 		Size: 3,3
 		Category: Rock-Detail
 		PickAny: False
@@ -1102,7 +1204,8 @@ Templates:
 			4: Rough
 	Template@102:
 		Id: 102
-		Image: BASE102
+		Image: BLOXBASE
+		Frames: 611,612,613,631,632,633
 		Size: 3,2
 		Category: Rock-Detail
 		PickAny: False
@@ -1115,7 +1218,8 @@ Templates:
 			3: Rock
 	Template@103:
 		Id: 103
-		Image: BASE103
+		Image: BLOXBASE
+		Frames: 652,653,672,673
 		Size: 2,2
 		Category: Rock-Detail
 		PickAny: False
@@ -1126,7 +1230,8 @@ Templates:
 			1: Cliff
 	Template@104:
 		Id: 104
-		Image: BASE104
+		Image: BLOXBASE
+		Frames: 692,693
 		Size: 2,1
 		Category: SandyCliff
 		PickAny: False
@@ -1135,7 +1240,8 @@ Templates:
 			1: Sand
 	Template@105:
 		Id: 105
-		Image: BASE105
+		Image: BLOXBASE
+		Frames: 689,690
 		Size: 2,1
 		Category: SandyCliff
 		PickAny: False
@@ -1144,7 +1250,8 @@ Templates:
 			1: Cliff
 	Template@106:
 		Id: 106
-		Image: BASE106
+		Image: BLOXBASE
+		Frames: 674,694
 		Size: 1,2
 		Category: SandyCliff
 		PickAny: False
@@ -1153,7 +1260,8 @@ Templates:
 			1: Cliff
 	Template@107:
 		Id: 107
-		Image: BASE107
+		Image: BLOXBASE
+		Frames: 675,695
 		Size: 1,2
 		Category: SandyCliff
 		PickAny: False
@@ -1162,7 +1270,8 @@ Templates:
 			1: Sand
 	Template@108:
 		Id: 108
-		Image: BASE108
+		Image: BLOXBASE
+		Frames: 677
 		Size: 1,1
 		Category: Z-Crap(Unusual)
 		PickAny: False
@@ -1170,7 +1279,8 @@ Templates:
 			0: Cliff
 	Template@109:
 		Id: 109
-		Image: BASE109
+		Image: BLOXBASE
+		Frames: 697
 		Size: 1,1
 		Category: Rock-Detail
 		PickAny: False
@@ -1178,7 +1288,8 @@ Templates:
 			0: Rock
 	Template@110:
 		Id: 110
-		Image: BASE110
+		Image: BLOXBASE
+		Frames: 678,679
 		Size: 2,1
 		Category: SandyCliff
 		PickAny: False
@@ -1187,7 +1298,8 @@ Templates:
 			1: Cliff
 	Template@111:
 		Id: 111
-		Image: BASE111
+		Image: BLOXBASE
+		Frames: 698,699
 		Size: 2,1
 		Category: SandyCliff
 		PickAny: False
@@ -1196,7 +1308,8 @@ Templates:
 			0: Cliff
 	Template@112:
 		Id: 112
-		Image: BASE112
+		Image: BLOXBASE
+		Frames: 715,735
 		Size: 1,2
 		Category: Rock-Detail
 		PickAny: False
@@ -1205,7 +1318,8 @@ Templates:
 			1: Rough
 	Template@113:
 		Id: 113
-		Image: BASE113
+		Image: BLOXBASE
+		Frames: 711,712,713,714,731,732,733,734
 		Size: 4,2
 		Category: Rock-Detail
 		PickAny: False
@@ -1220,7 +1334,8 @@ Templates:
 			0: Rough
 	Template@114:
 		Id: 114
-		Image: BASE114
+		Image: BLOXBASE
+		Frames: 709,710,729,730
 		Size: 2,2
 		Category: Rock-Detail
 		PickAny: False
@@ -1231,7 +1346,8 @@ Templates:
 			0: Rough
 	Template@115:
 		Id: 115
-		Image: BASE115
+		Image: BLOXBASE
+		Frames: 708
 		Size: 1,1
 		Category: Rock-Detail
 		PickAny: False
@@ -1239,7 +1355,8 @@ Templates:
 			0: Rough
 	Template@116:
 		Id: 116
-		Image: BASE116
+		Image: BLOXBASE
+		Frames: 728
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -1247,7 +1364,8 @@ Templates:
 			0: Rough
 	Template@117:
 		Id: 117
-		Image: BASE117
+		Image: BLOXBASE
+		Frames: 706,707,726,727
 		Size: 2,2
 		Category: Sand-Detail
 		PickAny: False
@@ -1258,7 +1376,8 @@ Templates:
 			1: Sand
 	Template@118:
 		Id: 118
-		Image: BASE118
+		Image: BLOXBASE
+		Frames: 700,701,702,720,721,722
 		Size: 3,2
 		Category: Sand-Detail
 		PickAny: False
@@ -1271,7 +1390,8 @@ Templates:
 			3: Rough
 	Template@119:
 		Id: 119
-		Image: BASE119
+		Image: BLOXBASE
+		Frames: 703,704,723,724
 		Size: 2,2
 		Category: Sand-Detail
 		PickAny: False
@@ -1282,7 +1402,8 @@ Templates:
 			1: Rough
 	Template@120:
 		Id: 120
-		Image: BASE120
+		Image: BLOXBASE
+		Frames: 705,725
 		Size: 1,2
 		Category: Sand-Detail
 		PickAny: False
@@ -1291,7 +1412,8 @@ Templates:
 			1: Rough
 	Template@121:
 		Id: 121
-		Image: BASE121
+		Image: BLOXBASE
+		Frames: 746,747
 		Size: 2,1
 		Category: Sand-Detail
 		PickAny: False
@@ -1300,7 +1422,8 @@ Templates:
 			0: Rough
 	Template@122:
 		Id: 122
-		Image: BASE122
+		Image: BLOXBASE
+		Frames: 744,745
 		Size: 2,1
 		Category: Sand-Detail
 		PickAny: False
@@ -1309,7 +1432,8 @@ Templates:
 			0: Rough
 	Template@123:
 		Id: 123
-		Image: BASE123
+		Image: BLOXBASE
+		Frames: 743
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -1317,7 +1441,8 @@ Templates:
 			0: Rough
 	Template@124:
 		Id: 124
-		Image: BASE124
+		Image: BLOXBASE
+		Frames: 742
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -1325,7 +1450,8 @@ Templates:
 			0: Rough
 	Template@125:
 		Id: 125
-		Image: BASE125
+		Image: BLOXBASE
+		Frames: 740,741
 		Size: 2,1
 		Category: Sand-Detail
 		PickAny: False
@@ -1334,357 +1460,408 @@ Templates:
 			0: Rough
 #	Template@126:
 #		Id: 126
-#		Image: BASE126
+#		Image: BLOXBASE
+#		Frames: 748
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@127:
 #		Id: 127
-#		Image: BASE127
+#		Image: BLOXBASE
+#		Frames: 749
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@128:
 #		Id: 128
-#		Image: BASE128
+#		Image: BLOXBASE
+#		Frames: 750
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@129:
 #		Id: 129
-#		Image: BASE129
+#		Image: BLOXBASE
+#		Frames: 751
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@130:
 #		Id: 130
-#		Image: BASE130
+#		Image: BLOXBASE
+#		Frames: 752
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@131:
 #		Id: 131
-#		Image: BASE131
+#		Image: BLOXBASE
+#		Frames: 753
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@132:
 #		Id: 132
-#		Image: BASE132
+#		Image: BLOXBASE
+#		Frames: 754
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@133:
 #		Id: 133
-#		Image: BASE133
+#		Image: BLOXBASE
+#		Frames: 755
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@134:
 #		Id: 134
-#		Image: BASE134
+#		Image: BLOXBASE
+#		Frames: 756
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@135:
 #		Id: 135
-#		Image: BASE135
+#		Image: BLOXBASE
+#		Frames: 757
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@136:
 #		Id: 136
-#		Image: BASE136
+#		Image: BLOXBASE
+#		Frames: 760
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@137:
 #		Id: 137
-#		Image: BASE137
+#		Image: BLOXBASE
+#		Frames: 761
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@138:
 #		Id: 138
-#		Image: BASE138
+#		Image: BLOXBASE
+#		Frames: 762
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@139:
 #		Id: 139
-#		Image: BASE139
+#		Image: BLOXBASE
+#		Frames: 763
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@140:
 #		Id: 140
-#		Image: BASE140
+#		Image: BLOXBASE
+#		Frames: 764
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@141:
 #		Id: 141
-#		Image: BASE141
+#		Image: BLOXBASE
+#		Frames: 765
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@142:
 #		Id: 142
-#		Image: BASE142
+#		Image: BLOXBASE
+#		Frames: 766
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@143:
 #		Id: 143
-#		Image: BASE143
+#		Image: BLOXBASE
+#		Frames: 767
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@144:
 #		Id: 144
-#		Image: BASE144
+#		Image: BLOXBASE
+#		Frames: 768
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@145:
 #		Id: 145
-#		Image: BASE145
+#		Image: BLOXBASE
+#		Frames: 769
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@146:
 #		Id: 146
-#		Image: BASE146
+#		Image: BLOXBASE
+#		Frames: 770
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@147:
 #		Id: 147
-#		Image: BASE147
+#		Image: BLOXBASE
+#		Frames: 771
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@148:
 #		Id: 148
-#		Image: BASE148
+#		Image: BLOXBASE
+#		Frames: 772
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@149:
 #		Id: 149
-#		Image: BASE149
+#		Image: BLOXBASE
+#		Frames: 773
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@150:
 #		Id: 150
-#		Image: BASE150
+#		Image: BLOXBASE
+#		Frames: 774
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@151:
 #		Id: 151
-#		Image: BASE151
+#		Image: BLOXBASE
+#		Frames: 775
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@152:
 #		Id: 152
-#		Image: BASE152
+#		Image: BLOXBASE
+#		Frames: 776
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@153:
 #		Id: 153
-#		Image: BASE153
+#		Image: BLOXBASE
+#		Frames: 777
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@154:
 #		Id: 154
-#		Image: BASE154
+#		Image: BLOXBASE
+#		Frames: 778
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@155:
 #		Id: 155
-#		Image: BASE155
+#		Image: BLOXBASE
+#		Frames: 779
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@156:
 #		Id: 156
-#		Image: BASE156
+#		Image: BLOXBASE
+#		Frames: 799
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@157:
 #		Id: 157
-#		Image: BASE157
+#		Image: BLOXBASE
+#		Frames: 798
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@158:
 #		Id: 158
-#		Image: BASE158
+#		Image: BLOXBASE
+#		Frames: 797
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@159:
 #		Id: 159
-#		Image: BASE159
+#		Image: BLOXBASE
+#		Frames: 796
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@160:
 #		Id: 160
-#		Image: BASE160
+#		Image: BLOXBASE
+#		Frames: 795
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@161:
 #		Id: 161
-#		Image: BASE161
+#		Image: BLOXBASE
+#		Frames: 794
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@162:
 #		Id: 162
-#		Image: BASE162
+#		Image: BLOXBASE
+#		Frames: 793
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@163:
 #		Id: 163
-#		Image: BASE163
+#		Image: BLOXBASE
+#		Frames: 792
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@164:
 #		Id: 164
-#		Image: BASE164
+#		Image: BLOXBASE
+#		Frames: 791
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@165:
 #		Id: 165
-#		Image: BASE165
+#		Image: BLOXBASE
+#		Frames: 789
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@166:
 #		Id: 166
-#		Image: BASE166
+#		Image: BLOXBASE
+#		Frames: 790
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@167:
 #		Id: 167
-#		Image: BASE167
+#		Image: BLOXBASE
+#		Frames: 788
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@168:
 #		Id: 168
-#		Image: BASE168
+#		Image: BLOXBASE
+#		Frames: 787
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@169:
 #		Id: 169
-#		Image: BASE169
+#		Image: BLOXBASE
+#		Frames: 786
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@170:
 #		Id: 170
-#		Image: BASE170
+#		Image: BLOXBASE
+#		Frames: 785
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@171:
 #		Id: 171
-#		Image: BASE171
+#		Image: BLOXBASE
+#		Frames: 784
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@172:
 #		Id: 172
-#		Image: BASE172
+#		Image: BLOXBASE
+#		Frames: 783
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@173:
 #		Id: 173
-#		Image: BASE173
+#		Image: BLOXBASE
+#		Frames: 782
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@174:
 #		Id: 174
-#		Image: BASE174
+#		Image: BLOXBASE
+#		Frames: 781
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 #	Template@175:
 #		Id: 175
-#		Image: BASE175
+#		Image: BLOXBASE
+#		Frames: 780
 #		Size: 1,1
 #		PickAny: False
 #		Tiles:
 #			0: Spice
 	Template@176:
 		Id: 176
-		Image: BASE176
+		Image: BLOXBASE
+		Frames: 600,601,602,620,621,622,640,641,642
 		Size: 3,3
 		Category: BaseBorder-Cliff
 		PickAny: False
@@ -1700,7 +1877,8 @@ Templates:
 			4: Sand
 	Template@177:
 		Id: 177
-		Image: BASE177
+		Image: BLOXBASE
+		Frames: 603,604,623,624
 		Size: 2,2
 		Category: SandyCliff
 		PickAny: False
@@ -1711,7 +1889,8 @@ Templates:
 			2: Cliff
 	Template@178:
 		Id: 178
-		Image: BASE178
+		Image: BLOXBASE
+		Frames: 605,606,625,626
 		Size: 2,2
 		Category: SandyCliff
 		PickAny: False
@@ -1722,7 +1901,8 @@ Templates:
 			2: Cliff
 	Template@179:
 		Id: 179
-		Image: BASE179
+		Image: BLOXBASE
+		Frames: 564,565,584,585
 		Size: 2,2
 		Category: BaseBorder-Cliff
 		PickAny: False
@@ -1733,7 +1913,8 @@ Templates:
 			2: Cliff
 	Template@180:
 		Id: 180
-		Image: BASE180
+		Image: BLOXBASE
+		Frames: 566,567,586,587
 		Size: 2,2
 		Category: BaseBorder-Cliff
 		PickAny: False
@@ -1744,7 +1925,8 @@ Templates:
 			2: Cliff
 	Template@181:
 		Id: 181
-		Image: BASE181
+		Image: BLOXBASE
+		Frames: 562,563,582,583
 		Size: 2,2
 		Category: BaseBorder-Cliff
 		PickAny: False
@@ -1755,7 +1937,8 @@ Templates:
 			0: Cliff
 	Template@182:
 		Id: 182
-		Image: BASE182
+		Image: BLOXBASE
+		Frames: 560,561,580,581
 		Size: 2,2
 		Category: BaseBorder-Cliff
 		PickAny: False
@@ -1766,7 +1949,8 @@ Templates:
 			3: Rock
 	Template@183:
 		Id: 183
-		Image: BASE183
+		Image: BLOXBASE
+		Frames: 607,608,627,628
 		Size: 2,2
 		Category: Rock-Detail
 		PickAny: False
@@ -1777,7 +1961,8 @@ Templates:
 			1: Cliff
 	Template@184:
 		Id: 184
-		Image: BASE184
+		Image: BLOXBASE
+		Frames: 609,610,629,630
 		Size: 2,2
 		Category: Rock-Detail
 		PickAny: False
@@ -1788,7 +1973,8 @@ Templates:
 			1: Sand
 	Template@185:
 		Id: 185
-		Image: BASE185
+		Image: BLOXBASE
+		Frames: 568,569,588,589
 		Size: 2,2
 		Category: BaseBorder-Cliff
 		PickAny: False
@@ -1799,7 +1985,8 @@ Templates:
 			2: Cliff
 	Template@186:
 		Id: 186
-		Image: BASE186
+		Image: BLOXBASE
+		Frames: 570,571,590,591
 		Size: 2,2
 		Category: BaseBorder-Cliff
 		PickAny: False
@@ -1810,7 +1997,8 @@ Templates:
 			1: Cliff
 	Template@187:
 		Id: 187
-		Image: BASE187
+		Image: BLOXBASE
+		Frames: 529,530,549,550
 		Size: 2,2
 		Category: BaseBorder-Cliff
 		PickAny: False
@@ -1821,7 +2009,8 @@ Templates:
 			2: Rock
 	Template@188:
 		Id: 188
-		Image: BASE188
+		Image: BLOXBASE
+		Frames: 527,528,547,548
 		Size: 2,2
 		Category: BaseBorder-Cliff
 		PickAny: False
@@ -1832,7 +2021,8 @@ Templates:
 			2: Rock
 	Template@189:
 		Id: 189
-		Image: BASE189
+		Image: BLOXBASE
+		Frames: 525,526,545,546
 		Size: 2,2
 		Category: BaseBorder-Cliff
 		PickAny: False
@@ -1843,7 +2033,8 @@ Templates:
 			2: Rock
 	Template@190:
 		Id: 190
-		Image: BASE190
+		Image: BLOXBASE
+		Frames: 523,524,543,544
 		Size: 2,2
 		Category: BaseBorder-Cliff
 		PickAny: False
@@ -1854,7 +2045,8 @@ Templates:
 			2: Sand
 	Template@191:
 		Id: 191
-		Image: BASE191
+		Image: BLOXBASE
+		Frames: 520,521,522,540,541,542
 		Size: 3,2
 		Category: BaseBorder-Cliff
 		PickAny: False
@@ -1867,7 +2059,8 @@ Templates:
 			4: Cliff
 	Template@192:
 		Id: 192
-		Image: BASE192
+		Image: BLOXBASE
+		Frames: 480,481,482,500,501,502
 		Size: 3,2
 		Category: BaseBorder-Cliff
 		PickAny: False
@@ -1880,7 +2073,8 @@ Templates:
 			5: Cliff
 	Template@193:
 		Id: 193
-		Image: BASE193
+		Image: BLOXBASE
+		Frames: 440,441,460,461
 		Size: 2,2
 		Category: BaseBorder-Cliff
 		PickAny: False
@@ -1891,7 +2085,8 @@ Templates:
 			0: Transition
 	Template@194:
 		Id: 194
-		Image: BASE194
+		Image: BLOXBASE
+		Frames: 402,403,422,423,442,443
 		Size: 2,3
 		Category: BaseBorder-Cliff
 		PickAny: False
@@ -1904,7 +2099,8 @@ Templates:
 			1: Cliff
 	Template@195:
 		Id: 195
-		Image: BASE195
+		Image: BLOXBASE
+		Frames: 400,401,420,421
 		Size: 2,2
 		Category: BaseBorder-Cliff
 		PickAny: False
@@ -1915,7 +2111,8 @@ Templates:
 			1: Cliff
 	Template@196:
 		Id: 196
-		Image: BASE196
+		Image: BLOXBASE
+		Frames: 408,409,428,429
 		Size: 2,2
 		Category: BaseBorder-Cliff
 		PickAny: False
@@ -1926,7 +2123,8 @@ Templates:
 			1: Cliff
 	Template@197:
 		Id: 197
-		Image: BASE197
+		Image: BLOXBASE
+		Frames: 410,411,430,431,450,451
 		Size: 2,3
 		Category: BaseBorder-Cliff
 		PickAny: False
@@ -1939,7 +2137,8 @@ Templates:
 			1: Cliff
 	Template@198:
 		Id: 198
-		Image: BASE198
+		Image: BLOXBASE
+		Frames: 412,413,432,433
 		Size: 2,2
 		Category: BaseBorder-Cliff
 		PickAny: False
@@ -1950,7 +2149,8 @@ Templates:
 			1: Transition
 	Template@199:
 		Id: 199
-		Image: BASE199
+		Image: BLOXBASE
+		Frames: 452,453
 		Size: 2,1
 		Category: BaseBorder-Cliff
 		PickAny: False
@@ -1959,7 +2159,8 @@ Templates:
 			1: Sand
 	Template@200:
 		Id: 200
-		Image: BASE200
+		Image: BLOXBASE
+		Frames: 454,455,474,475,494,495
 		Size: 2,3
 		Category: BaseBorder-Cliff
 		PickAny: False
@@ -1972,7 +2173,8 @@ Templates:
 			2: Cliff
 	Template@201:
 		Id: 201
-		Image: BASE201
+		Image: BLOXBASE
+		Frames: 489,490,509,510
 		Size: 2,2
 		Category: BaseBorder-Cliff
 		PickAny: False
@@ -1983,18 +2185,20 @@ Templates:
 			0: Cliff
 	Template@202:
 		Id: 202
-		Image: BASE202
+		Image: BLOXBASE
+		Frames: 448,449,468,469
 		Size: 2,2
 		Category: BaseBorder-Cliff
 		PickAny: False
 		Tiles:
-			0: Cliff
-			2: Cliff
+			0: Transition
+			2: Transition
 			3: Rock
 			1: Transition
 	Template@203:
 		Id: 203
-		Image: BASE203
+		Image: BLOXBASE
+		Frames: 487,488,507,508
 		Size: 2,2
 		Category: BaseBorder-Cliff
 		PickAny: False
@@ -2005,7 +2209,8 @@ Templates:
 			0: Cliff
 	Template@204:
 		Id: 204
-		Image: BASE204
+		Image: BLOXBASE
+		Frames: 446,447,466,467
 		Size: 2,2
 		Category: BaseBorder-Cliff
 		PickAny: False
@@ -2016,7 +2221,8 @@ Templates:
 			0: Cliff
 	Template@205:
 		Id: 205
-		Image: BASE205
+		Image: BLOXBASE
+		Frames: 444,445,464,465
 		Size: 2,2
 		Category: BaseBorder-Cliff
 		PickAny: False
@@ -2027,7 +2233,8 @@ Templates:
 			0: Cliff
 	Template@206:
 		Id: 206
-		Image: BASE206
+		Image: BLOXBASE
+		Frames: 456,457,476,477,496,497
 		Size: 2,3
 		Category: BaseBorder-Cliff
 		PickAny: False
@@ -2040,7 +2247,8 @@ Templates:
 			0: Cliff
 	Template@207:
 		Id: 207
-		Image: BASE207
+		Image: BLOXBASE
+		Frames: 498,499,518,519
 		Size: 2,2
 		Category: Cliff-Type-Changer
 		PickAny: False
@@ -2051,7 +2259,8 @@ Templates:
 			2: Transition
 	Template@208:
 		Id: 208
-		Image: BASE208
+		Image: BLOXBASE
+		Frames: 458,459,478,479
 		Size: 2,2
 		Category: Cliff-Type-Changer
 		PickAny: False
@@ -2062,7 +2271,8 @@ Templates:
 			1: Cliff
 	Template@209:
 		Id: 209
-		Image: BASE209
+		Image: BLOXBASE
+		Frames: 418,419,438,439
 		Size: 2,2
 		Category: BaseBorder-Cliff
 		PickAny: False
@@ -2073,7 +2283,8 @@ Templates:
 			1: Cliff
 	Template@210:
 		Id: 210
-		Image: BASE210
+		Image: BLOXBASE
+		Frames: 378,379,398,399
 		Size: 2,2
 		Category: BaseBorder-Cliff
 		PickAny: False
@@ -2084,7 +2295,8 @@ Templates:
 			2: Cliff
 	Template@211:
 		Id: 211
-		Image: BASE211
+		Image: BLOXBASE
+		Frames: 416,417,436,437
 		Size: 2,2
 		Category: BaseBorder-Cliff
 		PickAny: False
@@ -2095,7 +2307,8 @@ Templates:
 			3: Cliff
 	Template@212:
 		Id: 212
-		Image: BASE212
+		Image: BLOXBASE
+		Frames: 376,377,396,397
 		Size: 2,2
 		Category: BaseBorder-Cliff
 		PickAny: False
@@ -2106,7 +2319,8 @@ Templates:
 			2: Cliff
 	Template@213:
 		Id: 213
-		Image: BASE213
+		Image: BLOXBASE
+		Frames: 414,415,434,435
 		Size: 2,2
 		Category: Sand-Detail
 		PickAny: False
@@ -2117,7 +2331,8 @@ Templates:
 			2: Cliff
 	Template@214:
 		Id: 214
-		Image: BASE214
+		Image: BLOXBASE
+		Frames: 354,355,374,375,394,395
 		Size: 2,3
 		Category: Sand-Detail
 		PickAny: False
@@ -2130,7 +2345,8 @@ Templates:
 			5: Rough
 	Template@215:
 		Id: 215
-		Image: BASE215
+		Image: BLOXBASE
+		Frames: 356
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -2138,7 +2354,8 @@ Templates:
 			0: Sand
 	Template@216:
 		Id: 216
-		Image: BASE216
+		Image: BLOXBASE
+		Frames: 347,348,367,368,387,388
 		Size: 2,3
 		Category: Sand-Detail(Rotten Base)
 		PickAny: False
@@ -2151,7 +2368,8 @@ Templates:
 			0: Sand
 	Template@217:
 		Id: 217
-		Image: BASE217
+		Image: BLOXBASE
+		Frames: 386
 		Size: 1,1
 		Category: Sand-Detail(Rotten Base)
 		PickAny: False
@@ -2159,7 +2377,8 @@ Templates:
 			0: Rough
 	Template@218:
 		Id: 218
-		Image: BASE218
+		Image: BLOXBASE
+		Frames: 345,346,365,366
 		Size: 2,2
 		Category: Sand-Detail(Rotten Base)
 		PickAny: False
@@ -2170,7 +2389,8 @@ Templates:
 			0: Rough
 	Template@219:
 		Id: 219
-		Image: BASE219
+		Image: BLOXBASE
+		Frames: 343,344,363,364
 		Size: 2,2
 		Category: Sand-Detail(Rotten Base)
 		PickAny: False
@@ -2181,7 +2401,8 @@ Templates:
 			0: Sand
 	Template@220:
 		Id: 220
-		Image: BASE220
+		Image: BLOXBASE
+		Frames: 340,341,342,360,361,362
 		Size: 3,2
 		Category: Sand-Detail(Rotten Base)
 		PickAny: False
@@ -2194,7 +2415,8 @@ Templates:
 			3: Rough
 	Template@221:
 		Id: 221
-		Image: BASE221
+		Image: BLOXBASE
+		Frames: 380,381,382
 		Size: 3,1
 		Category: Sand-Detail(Rotten Base)
 		PickAny: False
@@ -2204,7 +2426,8 @@ Templates:
 			2: Sand
 	Template@222:
 		Id: 222
-		Image: BASE222
+		Image: BLOXBASE
+		Frames: 483,484,503,504
 		Size: 2,2
 		Category: BaseBorder-Cliff
 		PickAny: False
@@ -2215,7 +2438,8 @@ Templates:
 			0: Cliff
 	Template@223:
 		Id: 223
-		Image: BASE223
+		Image: BLOXBASE
+		Frames: 485,486,505,506
 		Size: 2,2
 		Category: BaseBorder-Cliff
 		PickAny: False
@@ -2226,7 +2450,8 @@ Templates:
 			1: Cliff
 	Template@224:
 		Id: 224
-		Image: BASE224
+		Image: BLOXBASE
+		Frames: 83,84,103,104
 		Size: 2,2
 		Category: Dune
 		PickAny: False
@@ -2237,7 +2462,8 @@ Templates:
 			2: Dune
 	Template@225:
 		Id: 225
-		Image: BASE225
+		Image: BLOXBASE
+		Frames: 28
 		Size: 1,1
 		Category: Dune
 		PickAny: False
@@ -2245,28 +2471,32 @@ Templates:
 			0: Dune
 	Template@226:
 		Id: 226
-		Image: BASE226
+		Image: BLOXBASE
+		Frames: 8
 		Size: 1,1
 		PickAny: False
 		Tiles:
 			0: Sand
 	Template@227:
 		Id: 227
-		Image: BASE227
+		Image: BLOXBASE
+		Frames: 9
 		Size: 1,1
 		PickAny: False
 		Tiles:
 			0: Sand
 	Template@228:
 		Id: 228
-		Image: BASE228
+		Image: BLOXBASE
+		Frames: 29
 		Size: 1,1
 		PickAny: False
 		Tiles:
 			0: Sand
 	Template@229:
 		Id: 229
-		Image: BASE229
+		Image: BLOXBASE
+		Frames: 26,27,46,47
 		Size: 2,2
 		Category: Dune
 		PickAny: False
@@ -2277,7 +2507,8 @@ Templates:
 			0: Dune
 	Template@230:
 		Id: 230
-		Image: BASE230
+		Image: BLOXBASE
+		Frames: 65,66
 		Size: 2,1
 		Category: Dune
 		PickAny: False
@@ -2286,7 +2517,8 @@ Templates:
 			0: Dune
 	Template@231:
 		Id: 231
-		Image: BASE231
+		Image: BLOXBASE
+		Frames: 63,64
 		Size: 2,1
 		Category: Dune
 		PickAny: False
@@ -2295,7 +2527,8 @@ Templates:
 			0: Dune
 	Template@232:
 		Id: 232
-		Image: BASE232
+		Image: BLOXBASE
+		Frames: 22,23,42,43
 		Size: 2,2
 		Category: Dune
 		PickAny: False
@@ -2306,7 +2539,8 @@ Templates:
 			0: Dune
 	Template@233:
 		Id: 233
-		Image: BASE233
+		Image: BLOXBASE
+		Frames: 60
 		Size: 1,1
 		Category: Dune
 		PickAny: False
@@ -2314,7 +2548,8 @@ Templates:
 			0: Dune
 	Template@234:
 		Id: 234
-		Image: BASE234
+		Image: BLOXBASE
+		Frames: 61
 		Size: 1,1
 		Category: Dune
 		PickAny: False
@@ -2322,7 +2557,8 @@ Templates:
 			0: Dune
 	Template@235:
 		Id: 235
-		Image: BASE235
+		Image: BLOXBASE
+		Frames: 62
 		Size: 1,1
 		Category: Dune
 		PickAny: False
@@ -2330,7 +2566,8 @@ Templates:
 			0: Dune
 	Template@236:
 		Id: 236
-		Image: BASE236
+		Image: BLOXBASE
+		Frames: 82
 		Size: 1,1
 		Category: Dune
 		PickAny: False
@@ -2338,7 +2575,8 @@ Templates:
 			0: Dune
 	Template@237:
 		Id: 237
-		Image: BASE237
+		Image: BLOXBASE
+		Frames: 102
 		Size: 1,1
 		Category: Dune
 		PickAny: False
@@ -2346,7 +2584,8 @@ Templates:
 			0: Dune
 	Template@238:
 		Id: 238
-		Image: BASE238
+		Image: BLOXBASE
+		Frames: 101
 		Size: 1,1
 		Category: Dune
 		PickAny: False
@@ -2354,7 +2593,8 @@ Templates:
 			0: Dune
 	Template@239:
 		Id: 239
-		Image: BASE239
+		Image: BLOXBASE
+		Frames: 100
 		Size: 1,1
 		Category: Dune
 		PickAny: False
@@ -2362,7 +2602,8 @@ Templates:
 			0: Dune
 	Template@240:
 		Id: 240
-		Image: BASE240
+		Image: BLOXBASE
+		Frames: 80
 		Size: 1,1
 		Category: Dune
 		PickAny: False
@@ -2370,7 +2611,8 @@ Templates:
 			0: Dune
 	Template@241:
 		Id: 241
-		Image: BASE241
+		Image: BLOXBASE
+		Frames: 81
 		Size: 1,1
 		Category: Dune
 		PickAny: False
@@ -2378,7 +2620,8 @@ Templates:
 			0: Dune
 	Template@242:
 		Id: 242
-		Image: BASE242
+		Image: BLOXBASE
+		Frames: 21
 		Size: 1,1
 		Category: Dune
 		PickAny: False
@@ -2386,7 +2629,8 @@ Templates:
 			0: Dune
 	Template@243:
 		Id: 243
-		Image: BASE243
+		Image: BLOXBASE
+		Frames: 41
 		Size: 1,1
 		Category: Dune
 		PickAny: False
@@ -2394,7 +2638,8 @@ Templates:
 			0: Dune
 	Template@244:
 		Id: 244
-		Image: BASE244
+		Image: BLOXBASE
+		Frames: 40
 		Size: 1,1
 		Category: Dune
 		PickAny: False
@@ -2402,7 +2647,8 @@ Templates:
 			0: Dune
 	Template@245:
 		Id: 245
-		Image: BASE245
+		Image: BLOXBASE
+		Frames: 20
 		Size: 1,1
 		Category: Dune
 		PickAny: False
@@ -2410,7 +2656,8 @@ Templates:
 			0: Dune
 	Template@246:
 		Id: 246
-		Image: BASE246
+		Image: BLOXBASE
+		Frames: 24,25,44,45
 		Size: 2,2
 		Category: Dune
 		PickAny: False
@@ -2421,7 +2668,8 @@ Templates:
 			2: Sand
 	Template@247:
 		Id: 247
-		Image: BASE247
+		Image: BLOXBASE
+		Frames: 352,353,372,373
 		Size: 2,2
 		Category: Sand-Detail
 		PickAny: False
@@ -2432,7 +2680,8 @@ Templates:
 			1: Sand
 	Template@248:
 		Id: 248
-		Image: BASE248
+		Image: BLOXBASE
+		Frames: 392,393
 		Size: 2,1
 		Category: Sand-Detail(Rotten Base)
 		PickAny: False
@@ -2441,7 +2690,8 @@ Templates:
 			0: Sand
 	Template@249:
 		Id: 249
-		Image: BASE249
+		Image: BLOXBASE
+		Frames: 390
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -2449,7 +2699,8 @@ Templates:
 			0: Rough
 	Template@250:
 		Id: 250
-		Image: BASE250
+		Image: BLOXBASE
+		Frames: 389
 		Size: 1,1
 		Category: Sand-Detail(Rotten Base)
 		PickAny: False
@@ -2457,7 +2708,8 @@ Templates:
 			0: Rough
 	Template@251:
 		Id: 251
-		Image: BASE251
+		Image: BLOXBASE
+		Frames: 349,350,369,370
 		Size: 2,2
 		Category: Sand-Detail(Rotten Base)
 		PickAny: False
@@ -2468,7 +2720,8 @@ Templates:
 			1: Rough
 	Template@252:
 		Id: 252
-		Image: BASE252
+		Image: BLOXBASE
+		Frames: 254,255,274,275
 		Size: 2,2
 		Category: Z-Crap(Unusual)
 		PickAny: False
@@ -2479,7 +2732,8 @@ Templates:
 			2: Sand
 	Template@253:
 		Id: 253
-		Image: BASE253
+		Image: BLOXBASE
+		Frames: 514,515,534,535
 		Size: 2,2
 		Category: Cliff-Type-Changer
 		PickAny: False
@@ -2490,7 +2744,8 @@ Templates:
 			0: Cliff
 	Template@254:
 		Id: 254
-		Image: BASE254
+		Image: BLOXBASE
+		Frames: 516,517,536,537
 		Size: 2,2
 		Category: Cliff-Type-Changer
 		PickAny: False
@@ -2501,7 +2756,8 @@ Templates:
 			1: Cliff
 	Template@255:
 		Id: 255
-		Image: BASE255
+		Image: BLOXBASE
+		Frames: 404,405,424,425
 		Size: 2,2
 		Category: BaseBorder-Cliff
 		PickAny: False
@@ -2512,7 +2768,8 @@ Templates:
 			2: Cliff
 	Template@256:
 		Id: 256
-		Image: BASE256
+		Image: BLOXBASE
+		Frames: 406,407,426,427
 		Size: 2,2
 		Category: BaseBorder-Cliff
 		PickAny: False
@@ -2523,7 +2780,8 @@ Templates:
 			0: Cliff
 	Template@257:
 		Id: 257
-		Image: BASE257
+		Image: BLOXBASE
+		Frames: 48,49,50,51,52,68,69,70,71,72
 		Size: 5,2
 		PickAny: False
 		Tiles:
@@ -2539,7 +2797,8 @@ Templates:
 			5: Sand
 	Template@258:
 		Id: 258
-		Image: BASE258
+		Image: BLOXBASE
+		Frames: 676,696
 		Size: 1,2
 		Category: BaseBorder-Cliff
 		PickAny: False
@@ -2548,7 +2807,8 @@ Templates:
 			0: Cliff
 	Template@259:
 		Id: 259
-		Image: BASE259
+		Image: BLOXBASE
+		Frames: 303
 		Size: 1,1
 		Category: Rock-SandSmooth
 		PickAny: False
@@ -2556,7 +2816,8 @@ Templates:
 			0: Transition
 	Template@260:
 		Id: 260
-		Image: BASE260
+		Image: BLOXBASE
+		Frames: 304
 		Size: 1,1
 		Category: Rock-SandSmooth
 		PickAny: False
@@ -2564,7 +2825,8 @@ Templates:
 			0: Transition
 	Template@261:
 		Id: 261
-		Image: BASE261
+		Image: BLOXBASE
+		Frames: 324
 		Size: 1,1
 		Category: Rock-SandSmooth
 		PickAny: False
@@ -2572,7 +2834,8 @@ Templates:
 			0: Transition
 	Template@262:
 		Id: 262
-		Image: BASE262
+		Image: BLOXBASE
+		Frames: 323
 		Size: 1,1
 		Category: Rock-SandSmooth
 		PickAny: False
@@ -2580,7 +2843,8 @@ Templates:
 			0: Transition
 	Template@263:
 		Id: 263
-		Image: BASE263
+		Image: BLOXBASE
+		Frames: 511,512,513,531,532,533
 		Size: 3,2
 		Category: BaseBorder-Cliff
 		PickAny: False
@@ -2593,7 +2857,8 @@ Templates:
 			3: Cliff
 	Template@264:
 		Id: 264
-		Image: BASE264
+		Image: BLOXBASE
+		Frames: 471,472,473,491,492,493
 		Size: 3,2
 		Category: BaseBorder-Cliff
 		PickAny: False
@@ -2606,7 +2871,8 @@ Templates:
 			0: Cliff
 	Template@265:
 		Id: 265
-		Image: BASE265
+		Image: BLOXBASE
+		Frames: 552,553,554,555,556,572,573,574,575,576
 		Size: 5,2
 		PickAny: False
 		Tiles:
@@ -2622,21 +2888,24 @@ Templates:
 			1: Rock
 	Template@266:
 		Id: 266
-		Image: BASE266
+		Image: BLOXBASE
+		Frames: 595
 		Size: 1,1
 		PickAny: False
 		Tiles:
 			0: Rock
 	Template@267:
 		Id: 267
-		Image: BASE267
+		Image: BLOXBASE
+		Frames: 596
 		Size: 1,1
 		PickAny: False
 		Tiles:
 			0: Rock
 	Template@268:
 		Id: 268
-		Image: BASE268
+		Image: BLOXBASE
+		Frames: 306,307
 		Size: 2,1
 		PickAny: False
 		Tiles:
@@ -2644,7 +2913,8 @@ Templates:
 			1: Rock
 	Template@269:
 		Id: 269
-		Image: BASE269
+		Image: BLOXBASE
+		Frames: 326,327
 		Size: 2,1
 		Category: Rock-SandSmooth
 		PickAny: False
@@ -2653,7 +2923,8 @@ Templates:
 			0: Transition
 	Template@270:
 		Id: 270
-		Image: BASE270
+		Image: BLOXBASE
+		Frames: 592,593,594
 		Size: 3,1
 		PickAny: False
 		Tiles:
@@ -2662,7 +2933,8 @@ Templates:
 			2: Rock
 	Template@271:
 		Id: 271
-		Image: BAT00
+		Image: BLOXBAT
+		Frames: 1
 		Size: 1,1
 		Category: Rock-Detail
 		PickAny: False
@@ -2670,7 +2942,8 @@ Templates:
 			0: Rough
 	Template@272:
 		Id: 272
-		Image: BAT01
+		Image: BLOXBAT
+		Frames: 2
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -2678,7 +2951,8 @@ Templates:
 			0: Rough
 	Template@273:
 		Id: 273
-		Image: BAT02
+		Image: BLOXBAT
+		Frames: 3
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -2686,7 +2960,8 @@ Templates:
 			0: Rough
 	Template@274:
 		Id: 274
-		Image: BAT03
+		Image: BLOXBAT
+		Frames: 4
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -2694,7 +2969,8 @@ Templates:
 			0: Rough
 	Template@275:
 		Id: 275
-		Image: BAT04
+		Image: BLOXBAT
+		Frames: 5
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -2702,7 +2978,8 @@ Templates:
 			0: Rough
 	Template@276:
 		Id: 276
-		Image: BAT05
+		Image: BLOXBAT
+		Frames: 6
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -2710,7 +2987,8 @@ Templates:
 			0: Rough
 	Template@277:
 		Id: 277
-		Image: BAT06
+		Image: BLOXBAT
+		Frames: 322
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -2718,7 +2996,8 @@ Templates:
 			0: Cliff
 	Template@278:
 		Id: 278
-		Image: BAT07
+		Image: BLOXBAT
+		Frames: 165
 		Size: 1,1
 		Category: Rock-Detail
 		PickAny: False
@@ -2726,7 +3005,8 @@ Templates:
 			0: Rough
 	Template@279:
 		Id: 279
-		Image: BAT08
+		Image: BLOXBAT
+		Frames: 164
 		Size: 1,1
 		Category: Rock-Detail
 		PickAny: False
@@ -2734,7 +3014,8 @@ Templates:
 			0: Rough
 	Template@280:
 		Id: 280
-		Image: BAT09
+		Image: BLOXBAT
+		Frames: 184
 		Size: 1,1
 		Category: Rock-Detail
 		PickAny: False
@@ -2742,7 +3023,8 @@ Templates:
 			0: Rock
 	Template@281:
 		Id: 281
-		Image: BAT10
+		Image: BLOXBAT
+		Frames: 305
 		Size: 1,1
 		Category: Rock-Detail
 		PickAny: False
@@ -2750,7 +3032,8 @@ Templates:
 			0: Rough
 	Template@282:
 		Id: 282
-		Image: BAT11
+		Image: BLOXBAT
+		Frames: 325
 		Size: 1,1
 		Category: Rock-Detail
 		PickAny: False
@@ -2758,7 +3041,8 @@ Templates:
 			0: Rough
 	Template@283:
 		Id: 283
-		Image: BAT12
+		Image: BLOXBAT
+		Frames: 289,290,309,310
 		Size: 2,2
 		Category: Sand-Detail
 		PickAny: False
@@ -2769,7 +3053,8 @@ Templates:
 			1: Rough
 	Template@284:
 		Id: 284
-		Image: BAT13
+		Image: BLOXBAT
+		Frames: 316
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -2777,7 +3062,8 @@ Templates:
 			0: Sand
 	Template@285:
 		Id: 285
-		Image: BAT14
+		Image: BLOXBAT
+		Frames: 297
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -2785,7 +3071,8 @@ Templates:
 			0: Sand
 	Template@286:
 		Id: 286
-		Image: BAT15
+		Image: BLOXBAT
+		Frames: 338,339,358,359
 		Size: 2,2
 		Category: Sand-Detail
 		PickAny: False
@@ -2796,7 +3083,8 @@ Templates:
 			1: Sand
 	Template@287:
 		Id: 287
-		Image: BAT16
+		Image: BLOXBAT
+		Frames: 340,341,360,361,380,381
 		Size: 2,3
 		Category: Sand-Detail
 		PickAny: False
@@ -2809,7 +3097,8 @@ Templates:
 			1: Rough
 	Template@288:
 		Id: 288
-		Image: BAT17
+		Image: BLOXBAT
+		Frames: 342,343,362,363,382,383
 		Size: 2,3
 		Category: Sand-Detail
 		PickAny: False
@@ -2822,7 +3111,8 @@ Templates:
 			1: Rough
 	Template@289:
 		Id: 289
-		Image: BAT18
+		Image: BLOXBAT
+		Frames: 344,345,364,365,384,385
 		Size: 2,3
 		Category: Sand-Detail
 		PickAny: False
@@ -2835,7 +3125,8 @@ Templates:
 			1: Rough
 	Template@290:
 		Id: 290
-		Image: BAT19
+		Image: BLOXBAT
+		Frames: 349,350,369,370,389,390
 		Size: 2,3
 		Category: Sand-Detail
 		PickAny: False
@@ -2848,7 +3139,8 @@ Templates:
 			1: Sand
 	Template@291:
 		Id: 291
-		Image: BAT20
+		Image: BLOXBAT
+		Frames: 351,371
 		Size: 1,2
 		Category: Sand-Detail
 		PickAny: False
@@ -2857,7 +3149,8 @@ Templates:
 			1: Sand
 	Template@292:
 		Id: 292
-		Image: BAT21
+		Image: BLOXBAT
+		Frames: 391
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -2865,7 +3158,8 @@ Templates:
 			0: Sand
 	Template@293:
 		Id: 293
-		Image: BAT22
+		Image: BLOXBAT
+		Frames: 392
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -2873,7 +3167,8 @@ Templates:
 			0: Sand
 	Template@294:
 		Id: 294
-		Image: BAT23
+		Image: BLOXBAT
+		Frames: 393
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -2881,7 +3176,8 @@ Templates:
 			0: Sand
 	Template@295:
 		Id: 295
-		Image: BAT24
+		Image: BLOXBAT
+		Frames: 352,372
 		Size: 1,2
 		Category: Sand-Detail
 		PickAny: False
@@ -2890,7 +3186,8 @@ Templates:
 			0: Sand
 	Template@296:
 		Id: 296
-		Image: BAT25
+		Image: BLOXBAT
+		Frames: 353
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -2898,7 +3195,8 @@ Templates:
 			0: Sand
 	Template@297:
 		Id: 297
-		Image: BAT26
+		Image: BLOXBAT
+		Frames: 354
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -2906,7 +3204,8 @@ Templates:
 			0: Sand
 	Template@298:
 		Id: 298
-		Image: BAT27
+		Image: BLOXBAT
+		Frames: 374
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -2914,7 +3213,8 @@ Templates:
 			0: Sand
 	Template@299:
 		Id: 299
-		Image: BAT28
+		Image: BLOXBAT
+		Frames: 373
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -2922,7 +3222,8 @@ Templates:
 			0: Sand
 	Template@300:
 		Id: 300
-		Image: BAT29
+		Image: BLOXBAT
+		Frames: 394,395,414,415
 		Size: 2,2
 		Category: Sand-Detail
 		PickAny: False
@@ -2933,7 +3234,8 @@ Templates:
 			1: Sand
 	Template@301:
 		Id: 301
-		Image: BAT30
+		Image: BLOXBAT
+		Frames: 434,435
 		Size: 2,1
 		Category: Rock-Detail
 		PickAny: False
@@ -2942,7 +3244,8 @@ Templates:
 			1: Rough
 	Template@302:
 		Id: 302
-		Image: BAT31
+		Image: BLOXBAT
+		Frames: 355,375
 		Size: 1,2
 		Category: Rock-Detail
 		PickAny: False
@@ -2951,7 +3254,8 @@ Templates:
 			1: Rough
 	Template@303:
 		Id: 303
-		Image: BAT32
+		Image: BLOXBAT
+		Frames: 356,357
 		Size: 2,1
 		Category: Rock-Detail
 		PickAny: False
@@ -2960,7 +3264,8 @@ Templates:
 			1: Rough
 	Template@304:
 		Id: 304
-		Image: BAT33
+		Image: BLOXBAT
+		Frames: 462,463
 		Size: 2,1
 		Category: Sand-Detail(Rotten Base)
 		PickAny: False
@@ -2969,7 +3274,8 @@ Templates:
 			1: Rough
 	Template@305:
 		Id: 305
-		Image: BAT34
+		Image: BLOXBAT
+		Frames: 551
 		Size: 1,1
 		Category: Sand-Detail(Rotten Base)
 		PickAny: False
@@ -2977,7 +3283,8 @@ Templates:
 			0: Rough
 	Template@306:
 		Id: 306
-		Image: BAT35
+		Image: BLOXBAT
+		Frames: 607,608,627,628
 		Size: 2,2
 		Category: Sand-Detail(Rotten Base)
 		PickAny: False
@@ -2988,7 +3295,8 @@ Templates:
 			1: Rough
 	Template@307:
 		Id: 307
-		Image: BAT36
+		Image: BLOXBAT
+		Frames: 609,610,629,630
 		Size: 2,2
 		Category: Sand-Detail(Rotten Base)
 		PickAny: False
@@ -2999,7 +3307,8 @@ Templates:
 			1: Rough
 	Template@308:
 		Id: 308
-		Image: BAT37
+		Image: BLOXBAT
+		Frames: 652,653,672,673
 		Size: 2,2
 		Category: Sand-Detail(Rotten Base)
 		PickAny: False
@@ -3010,7 +3319,8 @@ Templates:
 			1: Rough
 	Template@309:
 		Id: 309
-		Image: BAT38
+		Image: BLOXBAT
+		Frames: 713,714,715,733,734,735
 		Size: 3,2
 		Category: Sand-Detail(Rotten Base)
 		PickAny: False
@@ -3023,7 +3333,8 @@ Templates:
 			1: Rough
 	Template@310:
 		Id: 310
-		Image: BAT39
+		Image: BLOXBAT
+		Frames: 709,710,711,712,729,730,731,732
 		Size: 4,2
 		Category: Sand-Detail(Rotten Base)
 		PickAny: False
@@ -3038,7 +3349,8 @@ Templates:
 			1: Rough
 	Template@311:
 		Id: 311
-		Image: BAT40
+		Image: BLOXBAT
+		Frames: 661,662,681,682
 		Size: 2,2
 		Category: Sand-Detail
 		PickAny: False
@@ -3049,7 +3361,8 @@ Templates:
 			1: Sand
 	Template@312:
 		Id: 312
-		Image: BAT41
+		Image: BLOXBAT
+		Frames: 683
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -3057,7 +3370,8 @@ Templates:
 			0: Sand
 	Template@313:
 		Id: 313
-		Image: BAT42
+		Image: BLOXBAT
+		Frames: 684
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -3065,7 +3379,8 @@ Templates:
 			0: Sand
 	Template@314:
 		Id: 314
-		Image: BAT43
+		Image: BLOXBAT
+		Frames: 703
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -3073,7 +3388,8 @@ Templates:
 			0: Sand
 	Template@315:
 		Id: 315
-		Image: BAT44
+		Image: BLOXBAT
+		Frames: 723
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -3081,7 +3397,8 @@ Templates:
 			0: Sand
 	Template@316:
 		Id: 316
-		Image: BAT45
+		Image: BLOXBAT
+		Frames: 722
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -3089,7 +3406,8 @@ Templates:
 			0: Sand
 	Template@317:
 		Id: 317
-		Image: BAT46
+		Image: BLOXBAT
+		Frames: 721
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -3097,7 +3415,8 @@ Templates:
 			0: Sand
 	Template@318:
 		Id: 318
-		Image: BAT47
+		Image: BLOXBAT
+		Frames: 720
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -3105,7 +3424,8 @@ Templates:
 			0: Sand
 	Template@319:
 		Id: 319
-		Image: BAT48
+		Image: BLOXBAT
+		Frames: 700
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -3113,7 +3433,8 @@ Templates:
 			0: Sand
 	Template@320:
 		Id: 320
-		Image: BAT49
+		Image: BLOXBAT
+		Frames: 701,702
 		Size: 2,1
 		Category: Sand-Detail
 		PickAny: False
@@ -3122,7 +3443,8 @@ Templates:
 			1: Sand
 	Template@321:
 		Id: 321
-		Image: BAT50
+		Image: BLOXBAT
+		Frames: 741
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -3130,7 +3452,8 @@ Templates:
 			0: Sand
 	Template@322:
 		Id: 322
-		Image: BAT51
+		Image: BLOXBAT
+		Frames: 742
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -3138,7 +3461,8 @@ Templates:
 			0: Sand
 	Template@323:
 		Id: 323
-		Image: BAT52
+		Image: BLOXBAT
+		Frames: 743
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -3146,7 +3470,8 @@ Templates:
 			0: Sand
 	Template@324:
 		Id: 324
-		Image: BAT53
+		Image: BLOXBAT
+		Frames: 744
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -3154,7 +3479,8 @@ Templates:
 			0: Sand
 	Template@325:
 		Id: 325
-		Image: BAT54
+		Image: BLOXBAT
+		Frames: 745,746
 		Size: 2,1
 		Category: Sand-Detail
 		PickAny: False
@@ -3163,7 +3489,8 @@ Templates:
 			1: Sand
 	Template@326:
 		Id: 326
-		Image: BAT55
+		Image: BLOXBAT
+		Frames: 747
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -3171,7 +3498,8 @@ Templates:
 			0: Sand
 	Template@327:
 		Id: 327
-		Image: BAT56
+		Image: BLOXBAT
+		Frames: 728
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -3179,7 +3507,8 @@ Templates:
 			0: Sand
 	Template@328:
 		Id: 328
-		Image: BAT57
+		Image: BLOXBAT
+		Frames: 708
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -3187,7 +3516,8 @@ Templates:
 			0: Sand
 	Template@329:
 		Id: 329
-		Image: BAT58
+		Image: BLOXBAT
+		Frames: 716,717,736,737
 		Size: 2,2
 		Category: Rock-Detail(Cliff)
 		PickAny: False
@@ -3198,7 +3528,8 @@ Templates:
 			1: Cliff
 	Template@330:
 		Id: 330
-		Image: BAT59
+		Image: BLOXBAT
+		Frames: 538,539,558,559
 		Size: 2,2
 		Category: Rock-Detail
 		PickAny: False
@@ -3209,7 +3540,8 @@ Templates:
 			1: Rough
 	Template@331:
 		Id: 331
-		Image: BAT60
+		Image: BLOXBAT
+		Frames: 578,579,598,599
 		Size: 2,2
 		Category: Rock-Detail
 		PickAny: False
@@ -3220,7 +3552,8 @@ Templates:
 			1: Rough
 	Template@332:
 		Id: 332
-		Image: BAT61
+		Image: BLOXBAT
+		Frames: 718,719,738,739,758,759
 		Size: 2,3
 		Category: Sand-Detail
 		PickAny: False
@@ -3233,7 +3566,8 @@ Templates:
 			1: Rough
 	Template@333:
 		Id: 333
-		Image: BAT62
+		Image: BLOXBAT
+		Frames: 704,705,724,725
 		Size: 2,2
 		Category: Rock-Detail
 		PickAny: False
@@ -3244,7 +3578,8 @@ Templates:
 			1: Rock
 	Template@334:
 		Id: 334
-		Image: BAT63
+		Image: BLOXBAT
+		Frames: 706,707,726,727
 		Size: 2,2
 		Category: Rock-Detail
 		PickAny: False
@@ -3255,7 +3590,8 @@ Templates:
 			1: Rock
 	Template@335:
 		Id: 335
-		Image: BAT64
+		Image: BLOXBAT
+		Frames: 660,680
 		Size: 1,2
 		Category: Sand-Detail
 		PickAny: False
@@ -3264,7 +3600,8 @@ Templates:
 			1: Sand
 	Template@336:
 		Id: 336
-		Image: BAT65
+		Image: BLOXBAT
+		Frames: 388
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -3272,7 +3609,8 @@ Templates:
 			0: Sand
 	Template@337:
 		Id: 337
-		Image: BAT66
+		Image: BLOXBAT
+		Frames: 346,347,348,366,367,368
 		Size: 3,2
 		Category: Sand-Detail
 		PickAny: False
@@ -3285,7 +3623,8 @@ Templates:
 			1: Rough
 	Template@338:
 		Id: 338
-		Image: BAT67
+		Image: BLOXBAT
+		Frames: 386,387
 		Size: 2,1
 		Category: Sand-Detail
 		PickAny: False
@@ -3294,7 +3633,8 @@ Templates:
 			0: Rough
 	Template@339:
 		Id: 339
-		Image: BGBS00
+		Image: BLOXBGBS
+		Frames: 164,165,184,185
 		Size: 2,2
 		Category: Rock-Detail
 		PickAny: False
@@ -3305,7 +3645,8 @@ Templates:
 			1: Rough
 	Template@340:
 		Id: 340
-		Image: BGBS01
+		Image: BLOXBGBS
+		Frames: 289,290,309,310
 		Size: 2,2
 		Category: Sand-Detail
 		PickAny: False
@@ -3316,7 +3657,8 @@ Templates:
 			1: Sand
 	Template@341:
 		Id: 341
-		Image: BGBS02
+		Image: BLOXBGBS
+		Frames: 338,339,358,359
 		Size: 2,2
 		Category: Rock-Detail
 		PickAny: False
@@ -3327,7 +3669,8 @@ Templates:
 			1: Rough
 	Template@342:
 		Id: 342
-		Image: BGBS03
+		Image: BLOXBGBS
+		Frames: 349,350,351,352,353,354,369,370,371,372,373,374,389,390,391,392,393,394
 		Size: 6,3
 		Category: Rock-Detail(Cliff)
 		PickAny: False
@@ -3352,7 +3695,8 @@ Templates:
 			7: Transition
 	Template@343:
 		Id: 343
-		Image: BGBS04
+		Image: BLOXBGBS
+		Frames: 340,341,342,360,361,362,380,381,382
 		Size: 3,3
 		Category: Rock-Detail(Cliff)
 		PickAny: False
@@ -3368,7 +3712,8 @@ Templates:
 			4: Transition
 	Template@344:
 		Id: 344
-		Image: BGBS05
+		Image: BLOXBGBS
+		Frames: 363,364,383,384
 		Size: 2,2
 		Category: Rock-Detail
 		PickAny: False
@@ -3379,7 +3724,8 @@ Templates:
 			1: Rock
 	Template@345:
 		Id: 345
-		Image: BGBS06
+		Image: BLOXBGBS
+		Frames: 343,344
 		Size: 2,1
 		Category: Rock-Detail
 		PickAny: False
@@ -3388,7 +3734,8 @@ Templates:
 			1: Rock
 	Template@346:
 		Id: 346
-		Image: BGBS07
+		Image: BLOXBGBS
+		Frames: 345,346
 		Size: 2,1
 		Category: Rock-Detail
 		PickAny: False
@@ -3397,7 +3744,8 @@ Templates:
 			1: Rock
 	Template@347:
 		Id: 347
-		Image: BGBS08
+		Image: BLOXBGBS
+		Frames: 365,366,367,368,385,386,387,388
 		Size: 4,2
 		Category: Rock-Detail
 		PickAny: False
@@ -3412,7 +3760,8 @@ Templates:
 			1: Cliff
 	Template@348:
 		Id: 348
-		Image: BGBS09
+		Image: BLOXBGBS
+		Frames: 414,415,434,435
 		Size: 2,2
 		Category: Rock-Detail
 		PickAny: False
@@ -3423,7 +3772,8 @@ Templates:
 			1: Rock
 	Template@349:
 		Id: 349
-		Image: BGBS10
+		Image: BLOXBGBS
+		Frames: 607,608,609,627,628,629
 		Size: 3,2
 		Category: Sand-Detail
 		PickAny: False
@@ -3436,7 +3786,8 @@ Templates:
 			1: Sand
 	Template@350:
 		Id: 350
-		Image: BGBS11
+		Image: BLOXBGBS
+		Frames: 610
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -3444,7 +3795,8 @@ Templates:
 			0: Sand
 	Template@351:
 		Id: 351
-		Image: BGBS12
+		Image: BLOXBGBS
+		Frames: 652,653,672,673
 		Size: 2,2
 		Category: Rock-Detail
 		PickAny: False
@@ -3455,7 +3807,8 @@ Templates:
 			1: Rough
 	Template@352:
 		Id: 352
-		Image: BGBS13
+		Image: BLOXBGBS
+		Frames: 700
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -3463,7 +3816,8 @@ Templates:
 			0: Sand
 	Template@353:
 		Id: 353
-		Image: BGBS14
+		Image: BLOXBGBS
+		Frames: 720
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -3471,7 +3825,8 @@ Templates:
 			0: Sand
 	Template@354:
 		Id: 354
-		Image: BGBS15
+		Image: BLOXBGBS
+		Frames: 701,702,703,721,722,723,741,742,743
 		Size: 3,3
 		Category: Sand-Detail
 		PickAny: False
@@ -3487,7 +3842,8 @@ Templates:
 			1: Rough
 	Template@355:
 		Id: 355
-		Image: BGBS16
+		Image: BLOXBGBS
+		Frames: 724,725,744,745
 		Size: 2,2
 		Category: Sand-Detail
 		PickAny: False
@@ -3498,7 +3854,8 @@ Templates:
 			1: Rough
 	Template@356:
 		Id: 356
-		Image: BGBS17
+		Image: BLOXBGBS
+		Frames: 726,727,746,747
 		Size: 2,2
 		Category: Sand-Detail
 		PickAny: False
@@ -3509,7 +3866,8 @@ Templates:
 			1: Rough
 	Template@357:
 		Id: 357
-		Image: BGBS18
+		Image: BLOXBGBS
+		Frames: 734,735
 		Size: 2,1
 		Category: Sand-Detail
 		PickAny: False
@@ -3518,7 +3876,8 @@ Templates:
 			1: Rough
 	Template@358:
 		Id: 358
-		Image: BGBS19
+		Image: BLOXBGBS
+		Frames: 716,717,736,737
 		Size: 2,2
 		Category: Sand-Detail
 		PickAny: False
@@ -3529,7 +3888,8 @@ Templates:
 			1: Rough
 	Template@359:
 		Id: 359
-		Image: BGBS20
+		Image: BLOXBGBS
+		Frames: 718,719,738,739
 		Size: 2,2
 		Category: Sand-Detail
 		PickAny: False
@@ -3540,7 +3900,8 @@ Templates:
 			1: Sand
 	Template@360:
 		Id: 360
-		Image: BGBS21
+		Image: BLOXBGBS
+		Frames: 758,759
 		Size: 2,1
 		Category: Sand-Detail
 		PickAny: False
@@ -3549,7 +3910,8 @@ Templates:
 			0: Rough
 	Template@361:
 		Id: 361
-		Image: ICE00
+		Image: BLOXICE
+		Frames: 1,2,3,4
 		Size: 4,1
 		Category: Sand-Detail
 		PickAny: False
@@ -3560,7 +3922,8 @@ Templates:
 			3: Cliff
 	Template@362:
 		Id: 362
-		Image: ICE01
+		Image: BLOXICE
+		Frames: 5,6,7
 		Size: 3,1
 		Category: Sand-Detail
 		PickAny: False
@@ -3570,7 +3933,8 @@ Templates:
 			2: Sand
 	Template@363:
 		Id: 363
-		Image: ICE02
+		Image: BLOXICE
+		Frames: 97,117
 		Size: 1,2
 		Category: Ice
 		PickAny: False
@@ -3579,7 +3943,8 @@ Templates:
 			1: Cliff
 	Template@364:
 		Id: 364
-		Image: ICE03
+		Image: BLOXICE
+		Frames: 164,165,184,185
 		Size: 2,2
 		Category: Rock-Detail(Cliff)
 		PickAny: False
@@ -3590,7 +3955,8 @@ Templates:
 			1: Cliff
 	Template@365:
 		Id: 365
-		Image: ICE04
+		Image: BLOXICE
+		Frames: 289,290
 		Size: 2,1
 		Category: Ice-Detail
 		PickAny: False
@@ -3599,7 +3965,8 @@ Templates:
 			1: Sand
 	Template@366:
 		Id: 366
-		Image: ICE05
+		Image: BLOXICE
+		Frames: 309,310,311,312
 		Size: 4,1
 		Category: Ice-Detail
 		PickAny: False
@@ -3610,7 +3977,8 @@ Templates:
 			3: Sand
 	Template@367:
 		Id: 367
-		Image: ICE06
+		Image: BLOXICE
+		Frames: 322
 		Size: 1,1
 		Category: Ice-Detail
 		PickAny: False
@@ -3618,7 +3986,8 @@ Templates:
 			0: Sand
 	Template@368:
 		Id: 368
-		Image: ICE07
+		Image: BLOXICE
+		Frames: 325
 		Size: 1,1
 		Category: Ice-Detail
 		PickAny: False
@@ -3626,7 +3995,8 @@ Templates:
 			0: Sand
 	Template@369:
 		Id: 369
-		Image: ICE08
+		Image: BLOXICE
+		Frames: 305
 		Size: 1,1
 		Category: Ice-Detail
 		PickAny: False
@@ -3634,7 +4004,8 @@ Templates:
 			0: Sand
 	Template@370:
 		Id: 370
-		Image: ICE09
+		Image: BLOXICE
+		Frames: 297
 		Size: 1,1
 		Category: Ice-Detail
 		PickAny: False
@@ -3642,7 +4013,8 @@ Templates:
 			0: Sand
 	Template@371:
 		Id: 371
-		Image: ICE10
+		Image: BLOXICE
+		Frames: 375,395,415,435
 		Size: 1,4
 		Category: Ice-Detail
 		PickAny: False
@@ -3653,7 +4025,8 @@ Templates:
 			3: Sand
 	Template@372:
 		Id: 372
-		Image: ICE11
+		Image: BLOXICE
+		Frames: 414,434
 		Size: 1,2
 		Category: Ice-Detail
 		PickAny: False
@@ -3662,7 +4035,8 @@ Templates:
 			1: Sand
 	Template@373:
 		Id: 373
-		Image: ICE12
+		Image: BLOXICE
+		Frames: 340,341,342,343,344,345,360,361,362,363,364,365,380,381,382,383,384,385
 		Size: 6,3
 		Category: Ice-Detail
 		PickAny: False
@@ -3687,7 +4061,8 @@ Templates:
 			7: Sand
 	Template@374:
 		Id: 374
-		Image: ICE13
+		Image: BLOXICE
+		Frames: 366,367,368,386,387,388
 		Size: 3,2
 		Category: Ice-Detail
 		PickAny: False
@@ -3700,7 +4075,8 @@ Templates:
 			1: Sand
 	Template@375:
 		Id: 375
-		Image: ICE14
+		Image: BLOXICE
+		Frames: 346
 		Size: 1,1
 		Category: Ice-Detail
 		PickAny: False
@@ -3708,7 +4084,8 @@ Templates:
 			0: Sand
 	Template@376:
 		Id: 376
-		Image: ICE15
+		Image: BLOXICE
+		Frames: 349,350,351,352,369,370,371,372,389,390,391,392
 		Size: 4,3
 		Category: Ice
 		PickAny: False
@@ -3727,7 +4104,8 @@ Templates:
 			6: Cliff
 	Template@377:
 		Id: 377
-		Image: ICE16
+		Image: BLOXICE
+		Frames: 355,356,357,358
 		Size: 4,1
 		Category: Ice-Detail
 		PickAny: False
@@ -3738,7 +4116,8 @@ Templates:
 			3: Sand
 	Template@378:
 		Id: 378
-		Image: ICE17
+		Image: BLOXICE
+		Frames: 353,354,373,374,393,394
 		Size: 2,3
 		Category: Ice-Detail
 		PickAny: False
@@ -3751,7 +4130,8 @@ Templates:
 			1: Sand
 	Template@379:
 		Id: 379
-		Image: ICE18
+		Image: BLOXICE
+		Frames: 462
 		Size: 1,1
 		Category: Ice-Detail
 		PickAny: False
@@ -3759,7 +4139,8 @@ Templates:
 			0: Sand
 	Template@380:
 		Id: 380
-		Image: ICE19
+		Image: BLOXICE
+		Frames: 463
 		Size: 1,1
 		Category: Ice-Detail
 		PickAny: False
@@ -3767,7 +4148,8 @@ Templates:
 			0: Sand
 	Template@381:
 		Id: 381
-		Image: ICE20
+		Image: BLOXICE
+		Frames: 551
 		Size: 1,1
 		Category: Z-Crap(Unusual)
 		PickAny: False
@@ -3775,7 +4157,8 @@ Templates:
 			0: Sand
 	Template@382:
 		Id: 382
-		Image: ICE21
+		Image: BLOXICE
+		Frames: 579,599,619,639
 		Size: 1,4
 		Category: Z-Crap(Unusual)
 		PickAny: False
@@ -3786,7 +4169,8 @@ Templates:
 			3: Cliff
 	Template@383:
 		Id: 383
-		Image: ICE22
+		Image: BLOXICE
+		Frames: 539,559
 		Size: 1,2
 		Category: Z-Crap(Unusual)
 		PickAny: False
@@ -3795,7 +4179,8 @@ Templates:
 			0: Cliff
 	Template@384:
 		Id: 384
-		Image: ICE23
+		Image: BLOXICE
+		Frames: 557,558,577,578,597,598
 		Size: 2,3
 		Category: Sand-Detail
 		PickAny: False
@@ -3808,7 +4193,8 @@ Templates:
 			0: Rough
 	Template@385:
 		Id: 385
-		Image: ICE24
+		Image: BLOXICE
+		Frames: 607,608,627,628
 		Size: 2,2
 		Category: Sand-Detail
 		PickAny: False
@@ -3819,7 +4205,8 @@ Templates:
 			1: Rough
 	Template@386:
 		Id: 386
-		Image: ICE25
+		Image: BLOXICE
+		Frames: 609,610,629,630
 		Size: 2,2
 		Category: Sand-Detail
 		PickAny: False
@@ -3830,7 +4217,8 @@ Templates:
 			1: Sand
 	Template@387:
 		Id: 387
-		Image: ICE26
+		Image: BLOXICE
+		Frames: 700,701,720,721,740,741
 		Size: 2,3
 		Category: Ice
 		PickAny: False
@@ -3843,7 +4231,8 @@ Templates:
 			1: Cliff
 	Template@388:
 		Id: 388
-		Image: ICE27
+		Image: BLOXICE
+		Frames: 702,703,722,723
 		Size: 2,2
 		Category: Ice
 		PickAny: False
@@ -3854,7 +4243,8 @@ Templates:
 			1: Cliff
 	Template@389:
 		Id: 389
-		Image: ICE28
+		Image: BLOXICE
+		Frames: 742
 		Size: 1,1
 		Category: Ice-Detail
 		PickAny: False
@@ -3862,7 +4252,8 @@ Templates:
 			0: Sand
 	Template@390:
 		Id: 390
-		Image: ICE29
+		Image: BLOXICE
+		Frames: 743
 		Size: 1,1
 		Category: Ice-Detail
 		PickAny: False
@@ -3870,7 +4261,8 @@ Templates:
 			0: Sand
 	Template@391:
 		Id: 391
-		Image: ICE30
+		Image: BLOXICE
+		Frames: 744
 		Size: 1,1
 		Category: Ice-Detail
 		PickAny: False
@@ -3878,7 +4270,8 @@ Templates:
 			0: Sand
 	Template@392:
 		Id: 392
-		Image: ICE31
+		Image: BLOXICE
+		Frames: 745
 		Size: 1,1
 		Category: Ice-Detail
 		PickAny: False
@@ -3886,7 +4279,8 @@ Templates:
 			0: Sand
 	Template@393:
 		Id: 393
-		Image: ICE32
+		Image: BLOXICE
+		Frames: 704,705,724,725
 		Size: 2,2
 		Category: Ice
 		PickAny: False
@@ -3897,7 +4291,8 @@ Templates:
 			0: Cliff
 	Template@394:
 		Id: 394
-		Image: ICE33
+		Image: BLOXICE
+		Frames: 706,707,726,727,746,747
 		Size: 2,3
 		Category: Ice
 		PickAny: False
@@ -3910,7 +4305,8 @@ Templates:
 			1: Ice
 	Template@395:
 		Id: 395
-		Image: ICE34
+		Image: BLOXICE
+		Frames: 708,709,728,729
 		Size: 2,2
 		Category: Ice
 		PickAny: False
@@ -3921,7 +4317,8 @@ Templates:
 			1: Cliff
 	Template@396:
 		Id: 396
-		Image: ICE35
+		Image: BLOXICE
+		Frames: 710,711,730,731
 		Size: 2,2
 		Category: Ice
 		PickAny: False
@@ -3932,7 +4329,8 @@ Templates:
 			1: Ice
 	Template@397:
 		Id: 397
-		Image: ICE36
+		Image: BLOXICE
+		Frames: 712,713,732,733
 		Size: 2,2
 		Category: Ice
 		PickAny: False
@@ -3943,7 +4341,8 @@ Templates:
 			1: Cliff
 	Template@398:
 		Id: 398
-		Image: ICE37
+		Image: BLOXICE
+		Frames: 714,715,734,735
 		Size: 2,2
 		Category: Ice
 		PickAny: False
@@ -3954,7 +4353,8 @@ Templates:
 			1: Ice
 	Template@399:
 		Id: 399
-		Image: ICE38
+		Image: BLOXICE
+		Frames: 716,717
 		Size: 2,1
 		Category: Ice-Detail
 		PickAny: False
@@ -3963,7 +4363,8 @@ Templates:
 			1: Sand
 	Template@400:
 		Id: 400
-		Image: ICE39
+		Image: BLOXICE
+		Frames: 736,737
 		Size: 2,1
 		Category: Ice-Detail
 		PickAny: False
@@ -3972,7 +4373,8 @@ Templates:
 			0: Sand
 	Template@401:
 		Id: 401
-		Image: ICE40
+		Image: BLOXICE
+		Frames: 718,719,738,739,758,759
 		Size: 2,3
 		Category: Rock-Detail(Cliff)
 		PickAny: False
@@ -3985,7 +4387,8 @@ Templates:
 			1: Sand
 	Template@402:
 		Id: 402
-		Image: ICE41
+		Image: BLOXICE
+		Frames: 660,661,662
 		Size: 3,1
 		Category: Z-Crap(Unusual)
 		PickAny: False
@@ -3995,7 +4398,8 @@ Templates:
 			2: Rough
 	Template@403:
 		Id: 403
-		Image: ICE42
+		Image: BLOXICE
+		Frames: 680,681
 		Size: 2,1
 		Category: Sand-Detail
 		PickAny: False
@@ -4004,7 +4408,8 @@ Templates:
 			1: Rough
 	Template@404:
 		Id: 404
-		Image: ICE43
+		Image: BLOXICE
+		Frames: 682,683
 		Size: 2,1
 		Category: Sand-Detail
 		PickAny: False
@@ -4013,7 +4418,8 @@ Templates:
 			1: Rough
 	Template@405:
 		Id: 405
-		Image: ICE44
+		Image: BLOXICE
+		Frames: 684,685
 		Size: 2,1
 		Category: Sand-Detail
 		PickAny: False
@@ -4022,7 +4428,8 @@ Templates:
 			1: Rough
 	Template@406:
 		Id: 406
-		Image: ICE45
+		Image: BLOXICE
+		Frames: 652,653
 		Size: 2,1
 		Category: Sand-Detail
 		PickAny: False
@@ -4031,7 +4438,8 @@ Templates:
 			1: Rough
 	Template@407:
 		Id: 407
-		Image: ICE46
+		Image: BLOXICE
+		Frames: 672,673
 		Size: 2,1
 		Category: Sand-Detail
 		PickAny: False
@@ -4040,7 +4448,8 @@ Templates:
 			0: Rough
 	Template@408:
 		Id: 408
-		Image: TREE00
+		Image: BLOXTREE
+		Frames: 6
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -4048,7 +4457,8 @@ Templates:
 			0: Rough
 	Template@409:
 		Id: 409
-		Image: TREE01
+		Image: BLOXTREE
+		Frames: 7
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -4056,14 +4466,16 @@ Templates:
 			0: Rough
 	Template@410:
 		Id: 410
-		Image: TREE02
+		Image: BLOXTREE
+		Frames: 67
 		Size: 1,1
 		PickAny: False
 		Tiles:
 			0: Rock
 	Template@411:
 		Id: 411
-		Image: TREE03
+		Image: BLOXTREE
+		Frames: 97,117
 		Size: 1,2
 		Category: Sand-Detail
 		PickAny: False
@@ -4072,7 +4484,8 @@ Templates:
 			1: Cliff
 	Template@412:
 		Id: 412
-		Image: TREE04
+		Image: BLOXTREE
+		Frames: 340,341,360,361
 		Size: 2,2
 		Category: Sand-Detail(Rotten Base)
 		PickAny: False
@@ -4083,7 +4496,8 @@ Templates:
 			1: Rough
 	Template@413:
 		Id: 413
-		Image: TREE05
+		Image: BLOXTREE
+		Frames: 342,343,344,362,363,364
 		Size: 3,2
 		Category: Sand-Detail(Rotten Base)
 		PickAny: False
@@ -4096,7 +4510,8 @@ Templates:
 			1: Rough
 	Template@414:
 		Id: 414
-		Image: TREE06
+		Image: BLOXTREE
+		Frames: 1,2,3,4,5
 		Size: 5,1
 		Category: Rock-Detail
 		PickAny: False
@@ -4108,7 +4523,8 @@ Templates:
 			4: Rock
 	Template@415:
 		Id: 415
-		Image: TREE07
+		Image: BLOXTREE
+		Frames: 305,325
 		Size: 1,2
 		Category: Sand-Detail
 		PickAny: False
@@ -4117,7 +4533,8 @@ Templates:
 			1: Sand
 	Template@416:
 		Id: 416
-		Image: TREE08
+		Image: BLOXTREE
+		Frames: 289,290,309,310
 		Size: 2,2
 		Category: Sand-Detail
 		PickAny: False
@@ -4128,7 +4545,8 @@ Templates:
 			1: Sand
 	Template@417:
 		Id: 417
-		Image: TREE09
+		Image: BLOXTREE
+		Frames: 311,312
 		Size: 2,1
 		Category: Sand-Detail
 		PickAny: False
@@ -4137,7 +4555,8 @@ Templates:
 			1: Transition
 	Template@418:
 		Id: 418
-		Image: TREE10
+		Image: BLOXTREE
+		Frames: 316
 		Size: 1,1
 		Category: Rock-Detail
 		PickAny: False
@@ -4145,7 +4564,8 @@ Templates:
 			0: Rock
 	Template@419:
 		Id: 419
-		Image: TREE11
+		Image: BLOXTREE
+		Frames: 297
 		Size: 1,1
 		Category: Rock-Detail
 		PickAny: False
@@ -4153,7 +4573,8 @@ Templates:
 			0: Rock
 	Template@420:
 		Id: 420
-		Image: TREE12
+		Image: BLOXTREE
+		Frames: 319
 		Size: 1,1
 		Category: Rock-Detail
 		PickAny: False
@@ -4161,7 +4582,8 @@ Templates:
 			0: Rock
 	Template@421:
 		Id: 421
-		Image: TREE13
+		Image: BLOXTREE
+		Frames: 338,339,358,359
 		Size: 2,2
 		Category: Rock-Detail
 		PickAny: False
@@ -4172,7 +4594,8 @@ Templates:
 			1: Sand
 	Template@422:
 		Id: 422
-		Image: TREE14
+		Image: BLOXTREE
+		Frames: 374,375,394,395
 		Size: 2,2
 		Category: Rock-Detail
 		PickAny: False
@@ -4183,7 +4606,8 @@ Templates:
 			1: Rock
 	Template@423:
 		Id: 423
-		Image: TREE15
+		Image: BLOXTREE
+		Frames: 414,415,434,435
 		Size: 2,2
 		Category: Rock-Detail
 		PickAny: False
@@ -4194,7 +4618,8 @@ Templates:
 			1: Rock
 	Template@424:
 		Id: 424
-		Image: TREE16
+		Image: BLOXTREE
+		Frames: 349,350,351,352,353,354
 		Size: 6,1
 		Category: Rock-Detail
 		PickAny: False
@@ -4207,7 +4632,8 @@ Templates:
 			5: Rock
 	Template@425:
 		Id: 425
-		Image: TREE17
+		Image: BLOXTREE
+		Frames: 355,356,357
 		Size: 3,1
 		Category: Rock-Detail
 		PickAny: False
@@ -4217,7 +4643,8 @@ Templates:
 			2: Rock
 	Template@426:
 		Id: 426
-		Image: TREE18
+		Image: BLOXTREE
+		Frames: 462,463
 		Size: 2,1
 		Category: Rock-Detail
 		PickAny: False
@@ -4226,7 +4653,8 @@ Templates:
 			0: Rock
 	Template@427:
 		Id: 427
-		Image: TREE19
+		Image: BLOXTREE
+		Frames: 538,539,558,559
 		Size: 2,2
 		Category: SandyCliff
 		PickAny: False
@@ -4237,7 +4665,8 @@ Templates:
 			1: Cliff
 	Template@428:
 		Id: 428
-		Image: TREE20
+		Image: BLOXTREE
+		Frames: 578,579,598,599
 		Size: 2,2
 		Category: Sand-Detail
 		PickAny: False
@@ -4248,7 +4677,8 @@ Templates:
 			1: Transition
 	Template@429:
 		Id: 429
-		Image: TREE21
+		Image: BLOXTREE
+		Frames: 700,701,702,720,721,722,740,741,742
 		Size: 3,3
 		Category: Sand-Detail
 		PickAny: False
@@ -4264,7 +4694,8 @@ Templates:
 			4: Rough
 	Template@430:
 		Id: 430
-		Image: TREE22
+		Image: BLOXTREE
+		Frames: 747
 		Size: 1,1
 		Category: Z-Crap(Unusual)
 		PickAny: False
@@ -4272,7 +4703,8 @@ Templates:
 			0: Rough
 	Template@431:
 		Id: 431
-		Image: TREE23
+		Image: BLOXTREE
+		Frames: 707,708,727,728
 		Size: 2,2
 		Category: Sand-Detail
 		PickAny: False
@@ -4283,7 +4715,8 @@ Templates:
 			1: Rough
 	Template@432:
 		Id: 432
-		Image: TREE24
+		Image: BLOXTREE
+		Frames: 709
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -4291,7 +4724,8 @@ Templates:
 			0: Sand
 	Template@433:
 		Id: 433
-		Image: TREE25
+		Image: BLOXTREE
+		Frames: 729
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -4299,7 +4733,8 @@ Templates:
 			0: Rough
 	Template@434:
 		Id: 434
-		Image: TREE26
+		Image: BLOXTREE
+		Frames: 730,731
 		Size: 2,1
 		Category: Sand-Detail
 		PickAny: False
@@ -4308,7 +4743,8 @@ Templates:
 			0: Rough
 	Template@435:
 		Id: 435
-		Image: TREE27
+		Image: BLOXTREE
+		Frames: 710,711,712
 		Size: 3,1
 		Category: Sand-Detail
 		PickAny: False
@@ -4318,7 +4754,8 @@ Templates:
 			2: Rough
 	Template@436:
 		Id: 436
-		Image: TREE28
+		Image: BLOXTREE
+		Frames: 718,719,738,739,758,759
 		Size: 2,3
 		Category: Sand-Detail
 		PickAny: False
@@ -4331,14 +4768,16 @@ Templates:
 			1: Rough
 	Template@437:
 		Id: 437
-		Image: TREE29
+		Image: BLOXTREE
+		Frames: 732
 		Size: 1,1
 		PickAny: False
 		Tiles:
 			0: Rock
 	Template@438:
 		Id: 438
-		Image: TREE30
+		Image: BLOXTREE
+		Frames: 713,714,733,734
 		Size: 2,2
 		Category: Rock-Detail
 		PickAny: False
@@ -4349,7 +4788,8 @@ Templates:
 			1: Rock
 	Template@439:
 		Id: 439
-		Image: TREE31
+		Image: BLOXTREE
+		Frames: 715,716,717,735,736,737
 		Size: 3,2
 		Category: Rock-Detail
 		PickAny: False
@@ -4362,7 +4802,8 @@ Templates:
 			5: Rock
 	Template@440:
 		Id: 440
-		Image: TREE32
+		Image: BLOXTREE
+		Frames: 652,653,672,673
 		Size: 2,2
 		Category: Rock-Detail
 		PickAny: False
@@ -4373,7 +4814,8 @@ Templates:
 			1: Rock
 	Template@441:
 		Id: 441
-		Image: TREE33
+		Image: BLOXTREE
+		Frames: 610
 		Size: 1,1
 		Category: Rock-Detail
 		PickAny: False
@@ -4381,7 +4823,8 @@ Templates:
 			0: Rock
 	Template@442:
 		Id: 442
-		Image: TREE34
+		Image: BLOXTREE
+		Frames: 630
 		Size: 1,1
 		Category: Rock-Detail
 		PickAny: False
@@ -4389,7 +4832,8 @@ Templates:
 			0: Rock
 	Template@443:
 		Id: 443
-		Image: TREE35
+		Image: BLOXTREE
+		Frames: 607,608,609,627,628,629
 		Size: 3,2
 		Category: Rock-Detail(Cliff)
 		PickAny: False
@@ -4402,7 +4846,8 @@ Templates:
 			4: Cliff
 	Template@444:
 		Id: 444
-		Image: TREE36
+		Image: BLOXTREE
+		Frames: 551
 		Size: 1,1
 		Category: Rock-Detail
 		PickAny: False
@@ -4410,7 +4855,8 @@ Templates:
 			0: Rock
 	Template@445:
 		Id: 445
-		Image: WAST00
+		Image: BLOXWAST
+		Frames: 700,701,702,703,704,705,720,721,722,723,724,725,740,741,742,743,744,745
 		Size: 6,3
 		Category: Sand-Detail
 		PickAny: False
@@ -4435,7 +4881,8 @@ Templates:
 			10: Sand
 	Template@446:
 		Id: 446
-		Image: WAST01
+		Image: BLOXWAST
+		Frames: 683,684,685
 		Size: 3,1
 		Category: Sand-Detail
 		PickAny: False
@@ -4445,7 +4892,8 @@ Templates:
 			2: Dune
 	Template@447:
 		Id: 447
-		Image: WAST02
+		Image: BLOXWAST
+		Frames: 746,747
 		Size: 2,1
 		Category: Sand-Detail
 		PickAny: False
@@ -4454,7 +4902,8 @@ Templates:
 			1: Dune
 	Template@448:
 		Id: 448
-		Image: WAST03
+		Image: BLOXWAST
+		Frames: 708,709,728,729
 		Size: 2,2
 		Category: Sand-Detail
 		PickAny: False
@@ -4465,7 +4914,8 @@ Templates:
 			0: Dune
 	Template@449:
 		Id: 449
-		Image: WAST04
+		Image: BLOXWAST
+		Frames: 710,711
 		Size: 2,1
 		Category: Sand-Detail
 		PickAny: False
@@ -4474,7 +4924,8 @@ Templates:
 			1: Dune
 	Template@450:
 		Id: 450
-		Image: WAST05
+		Image: BLOXWAST
+		Frames: 730,731
 		Size: 2,1
 		Category: Sand-Detail
 		PickAny: False
@@ -4483,7 +4934,8 @@ Templates:
 			0: Sand
 	Template@451:
 		Id: 451
-		Image: WAST06
+		Image: BLOXWAST
+		Frames: 712
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -4491,7 +4943,8 @@ Templates:
 			0: Sand
 	Template@452:
 		Id: 452
-		Image: WAST07
+		Image: BLOXWAST
+		Frames: 732
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -4499,7 +4952,8 @@ Templates:
 			0: Sand
 	Template@453:
 		Id: 453
-		Image: WAST08
+		Image: BLOXWAST
+		Frames: 713,733
 		Size: 1,2
 		Category: Sand-Detail
 		PickAny: False
@@ -4508,7 +4962,8 @@ Templates:
 			1: Dune
 	Template@454:
 		Id: 454
-		Image: WAST09
+		Image: BLOXWAST
+		Frames: 734,735
 		Size: 2,1
 		Category: Sand-Detail
 		PickAny: False
@@ -4517,7 +4972,8 @@ Templates:
 			1: Sand
 	Template@455:
 		Id: 455
-		Image: WAST10
+		Image: BLOXWAST
+		Frames: 714,715
 		Size: 2,1
 		Category: Sand-Detail
 		PickAny: False
@@ -4526,7 +4982,8 @@ Templates:
 			1: Sand
 	Template@456:
 		Id: 456
-		Image: WAST11
+		Image: BLOXWAST
+		Frames: 716,717,718,736,737,738
 		Size: 3,2
 		Category: Sand-Detail
 		PickAny: False
@@ -4539,7 +4996,8 @@ Templates:
 			5: Sand
 	Template@457:
 		Id: 457
-		Image: WAST12
+		Image: BLOXWAST
+		Frames: 739
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -4547,7 +5005,8 @@ Templates:
 			0: Sand
 	Template@458:
 		Id: 458
-		Image: WAST13
+		Image: BLOXWAST
+		Frames: 758,759
 		Size: 2,1
 		Category: Sand-Detail
 		PickAny: False
@@ -4556,7 +5015,8 @@ Templates:
 			0: Sand
 	Template@459:
 		Id: 459
-		Image: WAST14
+		Image: BLOXWAST
+		Frames: 652,653,672,673
 		Size: 2,2
 		Category: Sand-Detail
 		PickAny: False
@@ -4567,7 +5027,8 @@ Templates:
 			1: Sand
 	Template@460:
 		Id: 460
-		Image: WAST15
+		Image: BLOXWAST
+		Frames: 345,346,365,366
 		Size: 2,2
 		Category: Dead-Wurm
 		PickAny: False
@@ -4578,7 +5039,8 @@ Templates:
 			1: Rough
 	Template@461:
 		Id: 461
-		Image: WAST16
+		Image: BLOXWAST
+		Frames: 373,374,375
 		Size: 3,1
 		Category: Sand-Detail(Rotten Base)
 		PickAny: False
@@ -4588,7 +5050,8 @@ Templates:
 			2: Rough
 	Template@462:
 		Id: 462
-		Image: WAST17
+		Image: BLOXWAST
+		Frames: 355,356,357,358,359
 		Size: 5,1
 		Category: Sand-Detail(Rotten Base)
 		PickAny: False
@@ -4600,7 +5063,8 @@ Templates:
 			4: Rough
 	Template@463:
 		Id: 463
-		Image: WAST18
+		Image: BLOXWAST
+		Frames: 338,339
 		Size: 2,1
 		Category: Sand-Detail(Rotten Base)
 		PickAny: False
@@ -4609,7 +5073,8 @@ Templates:
 			1: Rough
 	Template@464:
 		Id: 464
-		Image: WAST19
+		Image: BLOXWAST
+		Frames: 97,117
 		Size: 1,2
 		Category: Dead-Wurm
 		PickAny: False
@@ -4618,7 +5083,8 @@ Templates:
 			1: Cliff
 	Template@465:
 		Id: 465
-		Image: WAST20
+		Image: BLOXWAST
+		Frames: 67
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -4626,7 +5092,8 @@ Templates:
 			0: Sand
 	Template@466:
 		Id: 466
-		Image: WAST21
+		Image: BLOXWAST
+		Frames: 1
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -4634,7 +5101,8 @@ Templates:
 			0: Sand
 	Template@467:
 		Id: 467
-		Image: WAST22
+		Image: BLOXWAST
+		Frames: 2,3
 		Size: 2,1
 		Category: Sand-Detail
 		PickAny: False
@@ -4643,7 +5111,8 @@ Templates:
 			1: Sand
 	Template@468:
 		Id: 468
-		Image: WAST23
+		Image: BLOXWAST
+		Frames: 4
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -4651,7 +5120,8 @@ Templates:
 			0: Cliff
 	Template@469:
 		Id: 469
-		Image: WAST24
+		Image: BLOXWAST
+		Frames: 5
 		Size: 1,1
 		Category: Sand-Detail
 		PickAny: False
@@ -4659,7 +5129,8 @@ Templates:
 			0: Cliff
 	Template@470:
 		Id: 470
-		Image: WAST25
+		Image: BLOXWAST
+		Frames: 6,7
 		Size: 2,1
 		Category: Sand-Detail
 		PickAny: False
@@ -4668,7 +5139,8 @@ Templates:
 			1: Cliff
 	Template@471:
 		Id: 471
-		Image: WAST26
+		Image: BLOXWAST
+		Frames: 312
 		Size: 1,1
 		Category: Dead-Wurm
 		PickAny: False
@@ -4676,7 +5148,8 @@ Templates:
 			0: Sand
 	Template@472:
 		Id: 472
-		Image: WAST27
+		Image: BLOXWAST
+		Frames: 310,311
 		Size: 2,1
 		Category: Dead-Wurm
 		PickAny: False
@@ -4685,7 +5158,8 @@ Templates:
 			0: Sand
 	Template@473:
 		Id: 473
-		Image: WAST28
+		Image: BLOXWAST
+		Frames: 309
 		Size: 1,1
 		Category: Dead-Wurm
 		PickAny: False
@@ -4693,7 +5167,8 @@ Templates:
 			0: Sand
 	Template@474:
 		Id: 474
-		Image: WAST29
+		Image: BLOXWAST
+		Frames: 349,350,351,352,369,370,371,372,389,390,391,392
 		Size: 4,3
 		Category: Sand-Detail
 		PickAny: False
@@ -4712,7 +5187,8 @@ Templates:
 			6: Cliff
 	Template@475:
 		Id: 475
-		Image: WAST30
+		Image: BLOXWAST
+		Frames: 706,707,726,727
 		Size: 2,2
 		Category: BaseBorder-Cliff
 		PickAny: False
@@ -4723,7 +5199,8 @@ Templates:
 			1: Cliff
 	Template@476:
 		Id: 476
-		Image: WAST31
+		Image: BLOXWAST
+		Frames: 557,558,559,577,578,579
 		Size: 3,2
 		Category: BaseBorder-Cliff
 		PickAny: False
@@ -4736,7 +5213,8 @@ Templates:
 			5: Transition
 	Template@477:
 		Id: 477
-		Image: WAST32
+		Image: BLOXWAST
+		Frames: 619,639
 		Size: 1,2
 		Category: Sand-Detail
 		PickAny: False
@@ -4745,7 +5223,8 @@ Templates:
 			1: Rough
 	Template@478:
 		Id: 478
-		Image: WAST33
+		Image: BLOXWAST
+		Frames: 305
 		Size: 1,1
 		Category: Rock-Detail
 		PickAny: False
@@ -4753,7 +5232,8 @@ Templates:
 			0: Rough
 	Template@479:
 		Id: 479
-		Image: WAST34
+		Image: BLOXWAST
+		Frames: 325
 		Size: 1,1
 		Category: Rock-Detail
 		PickAny: False
@@ -4761,7 +5241,8 @@ Templates:
 			0: Rough
 	Template@480:
 		Id: 480
-		Image: WAST35
+		Image: BLOXWAST
+		Frames: 385,386,387,388
 		Size: 4,1
 		Category: Sand-Detail
 		PickAny: False
@@ -4772,7 +5253,8 @@ Templates:
 			3: Rough
 	Template@481:
 		Id: 481
-		Image: WAST36
+		Image: BLOXWAST
+		Frames: 414,415,434,435
 		Size: 2,2
 		Category: BaseBorder-Cliff
 		PickAny: False
@@ -4783,7 +5265,8 @@ Templates:
 			1: Cliff
 	Template@482:
 		Id: 482
-		Image: WAST37
+		Image: BLOXWAST
+		Frames: 538,539
 		Size: 2,1
 		Category: Sand-Detail
 		PickAny: False

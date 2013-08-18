@@ -20,15 +20,15 @@ namespace OpenRA
 	{
 		Dictionary<string, MiniYamlNode> widgets = new Dictionary<string, MiniYamlNode>();
 
-		public WidgetLoader( ModData modData )
+		public WidgetLoader(ModData modData)
 		{
-			foreach( var file in modData.Manifest.ChromeLayout.Select( a => MiniYaml.FromFile( a ) ) )
+			foreach (var file in modData.Manifest.ChromeLayout.Select(a => MiniYaml.FromFile(a)))
 				foreach( var w in file )
 				{
-					var key = w.Key.Substring( w.Key.IndexOf( '@' ) + 1 );
+					var key = w.Key.Substring( w.Key.IndexOf('@') + 1);
 					if (widgets.ContainsKey(key))
-						throw new InvalidDataException("Widget has duplicate Key `{0}`".F(w.Key));
-					widgets.Add( key, w );
+						throw new InvalidDataException("Widget has duplicate Key `{0}` at {1}".F(w.Key, w.Location));
+					widgets.Add(key, w);
 				}
 		}
 

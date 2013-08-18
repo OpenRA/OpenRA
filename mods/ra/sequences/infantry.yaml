@@ -64,6 +64,8 @@ e1:
 		Start: 0
 		Length: 6
 		Tick: 1600
+	icon: e1icon
+		Start: 0
 
 sniper:
 	stand:
@@ -130,6 +132,8 @@ sniper:
 		Start: 0
 		Length: 6
 		Tick: 1600
+	icon: snipericon
+		Start: 0
 
 e3:
 	stand:
@@ -190,6 +194,8 @@ e3:
 		Start: 192
 		Length: 10
 		Facings: 8
+	icon: e3icon
+		Start: 0
 
 e6:
 	stand:
@@ -242,6 +248,8 @@ e6:
 		Length: 4
 		Facings: 8
 		Tick: 100
+	icon: e6icon
+		Start: 0
 
 medi:
 	stand:
@@ -298,6 +306,8 @@ medi:
 		Length: 4
 		Facings: 8
 		Tick: 100
+	icon: mediicon
+		Start: 0
 		
 mech:
 	stand:
@@ -354,6 +364,8 @@ mech:
 		Length: 4
 		Facings: 8
 		Tick: 100
+	icon: mechicon
+		Start: 0
 
 e2:
 	stand:
@@ -414,6 +426,8 @@ e2:
 		Start: 288
 		Length: 12
 		Facings: 8
+	icon: e2icon
+		Start: 0
 
 dog:
 	stand:
@@ -458,6 +472,8 @@ dog:
 		Start: 0
 		Length: 4
 		Facings: 8
+	icon: dogicon
+		Start: 0
 
 spy:
 	stand:
@@ -518,6 +534,8 @@ spy:
 		Start: 192
 		Length: 8
 		Facings: 8
+	icon: spyicon
+		Start: 0
 
 thf:
 	stand:
@@ -550,6 +568,8 @@ thf:
 		Start: 72
 		Length: 4
 		Facings: 8
+	icon: thficon
+		Start: 0
 
 e7:
 	stand:
@@ -607,6 +627,8 @@ e7:
 		Start: 176
 		Length: 7
 		Facings: 8
+	icon: e7icon
+		Start: 0
 
 e4:
 	stand:
@@ -667,6 +689,8 @@ e4:
 		Start: 256
 		Length: 16
 		Facings: 8
+	icon: e4icon
+		Start: 0
 
 gnrl:
 	stand:
@@ -786,6 +810,8 @@ shok:
 	die6: electro
 		Start: 0
 		Length: *
+	icon: shokicon
+		Start: 0
 
 c1:
 	stand:
@@ -1080,6 +1106,8 @@ zombie:
 		Start: 0
 		Length: 6
 		Tick: 1600
+	icon: zombicon
+		Start: 0
 
 ant:
 	stand:
@@ -1124,3 +1152,5 @@ ant:
 		Start: 104
 		Length: 8
 		Tick: 300
+	icon: anticon
+		Start: 0

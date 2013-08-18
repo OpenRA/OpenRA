@@ -297,3 +297,11 @@ poweroff:
 		Start: 0
 		Length: *
 		Tick: 160
+
+icon:
+	airstrike: bombicnh
+		Start: 0
+	ioncannon: ionicnh
+		Start: 0
+	abomb: atomicnh
+		Start: 0

@@ -16,6 +16,7 @@ using OpenRA.Graphics;
 using OpenRA.Mods.RA;
 using OpenRA.Mods.RA.Buildings;
 using OpenRA.Mods.RA.Orders;
+using OpenRA.Traits;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.Cnc.Widgets
@@ -53,7 +54,6 @@ namespace OpenRA.Mods.Cnc.Widgets
 
 		public override Rectangle EventBounds { get { return eventBounds; } }
 		Dictionary<Rectangle, ProductionIcon> icons = new Dictionary<Rectangle, ProductionIcon>();
-		Dictionary<string, Sprite> iconSprites;
 		Animation cantBuild, clock;
 		Rectangle eventBounds = Rectangle.Empty;
 		readonly WorldRenderer worldRenderer;
@@ -71,13 +71,6 @@ namespace OpenRA.Mods.Cnc.Widgets
 			cantBuild = new Animation("clock");
 			cantBuild.PlayFetchIndex("idle", () => 0);
 			clock = new Animation("clock");
-
-			iconSprites = Rules.Info.Values
-				.Where(u => u.Traits.Contains<BuildableInfo>() && u.Name[0] != '^')
-				.ToDictionary(
-					u => u.Name,
-					u => Game.modData.SpriteLoader.LoadAllSprites(
-						u.Traits.Get<TooltipInfo>().Icon ?? (u.Name + "icon"))[0]);
 		}
 
 		public override void Tick()
@@ -186,10 +179,12 @@ namespace OpenRA.Mods.Cnc.Widgets
 				var x = i % Columns;
 				var y = i / Columns;
 				var rect = new Rectangle(rb.X + x * 64 + 1, rb.Y + y * 48 + 1, 64, 48);
+				var icon = new Animation(RenderSimple.GetImage(item));
+				icon.Play(item.Traits.Get<TooltipInfo>().Icon);
 				var pi = new ProductionIcon()
 				{
 					Name = item.Name,
-					Sprite = iconSprites[item.Name],
+					Sprite = icon.Image,
 					Pos = new float2(rect.Location),
 					Queued = CurrentQueue.AllQueued().Where(a => a.Item == item.Name).ToList(),
 				};

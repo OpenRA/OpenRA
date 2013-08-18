@@ -32,8 +32,8 @@ Background@COLOR_CHOOSER:
 		ShpImage@FACT:
 			X:160
 			Y:8
-			Image:carryall
-			Frame:13
+			Image:DATA.R8
+			Frame:1936
 			Palette:colorpicker
 		Button@RANDOM_BUTTON:
 			Key:tab

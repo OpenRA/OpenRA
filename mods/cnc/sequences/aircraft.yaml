@@ -2,6 +2,8 @@ c17:
 	idle:
 		Start: 0
 		Facings: 32
+	icon: c17iconh
+		Start: 0
 
 tran:
 	idle:
@@ -24,6 +26,8 @@ tran:
 		Length: 4
 	unload:
 		Start: 35
+	icon: tranicnh
+		Start: 0
 
 heli:
 	idle:
@@ -39,6 +43,9 @@ heli:
 		Start: 0
 		Length: 6
 		Facings: 8
+	icon: heliicnh
+		Start: 0
+
 orca:
 	idle:
 		Start: 0
@@ -46,8 +53,12 @@ orca:
 	damaged-idle:
 		Start: 32
 		Facings: 32
+	icon: orcaicnh
+		Start: 0
 
 a10:
 	idle:
 		Start: 0
 		Facings: 32
+	icon: a10icnh
+		Start: 0

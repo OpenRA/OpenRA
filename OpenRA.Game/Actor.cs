@@ -53,16 +53,16 @@ namespace OpenRA
 		public Group Group;
 		public int Generation;
 
-		internal Actor(World world, string name, TypeDictionary initDict )
+		internal Actor(World world, string name, TypeDictionary initDict)
 		{
-			var init = new ActorInitializer( this, initDict );
+			var init = new ActorInitializer(this, initDict);
 
 			World = world;
 			ActorID = world.NextAID();
-			if( initDict.Contains<OwnerInit>() )
+			if (initDict.Contains<OwnerInit>())
 				Owner = init.Get<OwnerInit,Player>();
 
-			occupySpace = Lazy.New( () => TraitOrDefault<IOccupySpace>() );
+			occupySpace = Lazy.New(() => TraitOrDefault<IOccupySpace>());
 
 			if (name != null)
 			{

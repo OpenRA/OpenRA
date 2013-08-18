@@ -117,9 +117,7 @@ Player:
 			fremen: 0.5%
 			sardaukar: 1.5%
 			harvester: 0.1%
-			trikea.starport: 5%
-			#trikeh.starport: 5%
-			#trikeo.starport: 5%
+			trike.starport: 5%
 			quad.starport: 7.5%
 			siegetank.starport: 5%
 			missiletank.starport: 7.5%
@@ -129,9 +127,7 @@ Player:
 			sonictank: 10%
 			devast: 10%
 			deviatortank: 7.5%
-			trikea: 10%
-			#trikeh: 10%
-			trikeo: 10%
+			trike: 10%
 			quad: 15%
 			siegetank: 10%
 			missiletank: 15%
@@ -143,6 +139,14 @@ Player:
 		Name:Vidious
 		UnitQueues: Infantry, Vehicle, Armor, Starport
 		RallypointTestBuilding: conyarda
+		BuildingCommonNames:
+			ConstructionYard: conyarda,conyardh,conyardo
+			Refinery: refa,refh,refo
+			Power: pwra,pwrh,pwro
+			VehiclesFactory: lighta,lighth,lighto,heavya,heavyh,heavyo
+			Silo: siloa, siloh, siloo
+		UnitsCommonNames:
+			Mcv: mcva,mcvh,mcvo
 		BuildingFractions:
 			refa: 20.1%
 			refh: 20.1%
@@ -180,9 +184,7 @@ Player:
 			fremen: 0.25%
 			sardaukar: 1%
 			harvester: 0.1%
-			trikea.starport: 7.5%
-			#trikeh.starport: 7.5%
-			#trikeo.starport: 7.5%
+			trike.starport: 7.5%
 			quad.starport: 12.5%
 			siegetank.starport: 5%
 			missiletank.starport: 7.5%
@@ -192,9 +194,8 @@ Player:
 			sonictank: 10%
 			devast: 10%
 			deviatortank: 7.5%
-			trikea: 15%
-			#trikeh: 15%
-			trikeo: 15%
+			trike: 15%
+			raider: 15%
 			quad: 25%
 			siegetank: 10%
 			missiletank: 15%
@@ -206,6 +207,14 @@ Player:
 		Name:Gladius
 		UnitQueues: Infantry, Vehicle, Armor, Starport
 		RallypointTestBuilding: conyarda
+		BuildingCommonNames:
+			ConstructionYard: conyarda,conyardh,conyardo
+			Refinery: refa,refh,refo
+			Power: pwra,pwrh,pwro
+			VehiclesFactory: lighta,lighth,lighto,heavya,heavyh,heavyo
+			Silo: siloa, siloh, siloo
+		UnitsCommonNames:
+			Mcv: mcva,mcvh,mcvo
 		BuildingFractions:
 			refa: 20.1%
 			refh: 20.1%
@@ -241,9 +250,7 @@ Player:
 			fremen: 1%
 			sardaukar: 3%
 			harvester: 0.1%
-			trikea.starport: 5%
-			#trikeh.starport: 5%
-			#trikeo.starport: 5%
+			trike.starport: 5%
 			quad.starport: 7.5%
 			siegetank.starport: 5%
 			missiletank.starport: 7.5%
@@ -253,9 +260,8 @@ Player:
 			sonictank: 10%
 			devast: 10%
 			deviatortank: 7.5%
-			trikea: 10%
-			#trikeh: 10%
-			trikeo: 10%
+			trike: 10%
+			raider: 10%
 			quad: 15%
 			siegetank: 10%
 			missiletank: 15%
@@ -276,7 +282,7 @@ World:
 	LoadWidgetAtGameStart:
 		Widget: INGAME_ROOT
 	ScreenShaker:
-	NukePaletteEffect:
+#	NukePaletteEffect: # TODO: does not work well with additive blending (idle overlays still use player palette effects)
 	BuildingInfluence:
 	ChooseBuildTabOnSelect:
 	CrateSpawner:
@@ -299,8 +305,9 @@ World:
 		AllowModifiers: false
 	PaletteFromFile@effect:
 		Name: effect
-		Filename: temperat.pal
+		Filename: d2k.pal
 		ShadowIndex: 4
+		AllowModifiers: false
 	PaletteFromFile@colorpicker:
 		Name: colorpicker
 		Filename: d2k.pal
@@ -413,12 +420,12 @@ CRATE:
 		Amount: 1500
 		SelectionShares: 25
 		UseCashTick: yes
-	GiveUnitCrateAction@TrikeA:
+	GiveUnitCrateAction@Trike:
 		SelectionShares: 20
-		Unit: trikea
-	GiveUnitCrateAction@TrikeO:
+		Unit: trike
+	GiveUnitCrateAction@Raider:
 		SelectionShares: 15
-		Unit: trikeo
+		Unit: raider
 	GiveUnitCrateAction@Quad:
 		SelectionShares: 40
 		Unit: quad
@@ -437,9 +444,9 @@ CRATE:
 	GiveUnitCrateAction@MissileTank:
 		SelectionShares: 10
 		Unit: missiletank
-	GiveUnitCrateAction@StealthTrike:
+	GiveUnitCrateAction@StealthRaider:
 		SelectionShares: 7
-		Unit: stealthtrike
+		Unit: stealthraider
 	GiveUnitCrateAction@Fremen:
 		SelectionShares: 5
 		Unit: fremen

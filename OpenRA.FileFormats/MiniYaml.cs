@@ -93,7 +93,7 @@ namespace OpenRA.FileFormats
 				foreach (var y in Nodes)
 				{
 					if (ret.ContainsKey(y.Key))
-						throw new InvalidDataException("Duplicate key `{0}' in MiniYaml".F(y.Key));
+						throw new InvalidDataException("Duplicate key `{0}' in {1}".F(y.Key, y.Location));
 					ret.Add(y.Key, y.Value);
 				}
 

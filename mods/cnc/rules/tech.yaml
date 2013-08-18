@@ -85,7 +85,6 @@ MISS:
 		Dimensions: 3,2
 	Tooltip:
 		Name: Tech Center
-		Icon: missicnh
 	Buildable:
 		Queue: Building
 		BuildPaletteOrder: 1000

@@ -35,3 +35,5 @@ boat:
 		Start: 0
 		Length: 6
 		Offset: -1,2
+	icon: boaticnh
+		Start: 0
