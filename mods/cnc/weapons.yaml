@@ -60,6 +60,7 @@ GrenadierExplode:
 		ImpactSound: xplosml2.aud
 
 Atomic:
+	Report: nukemisl.aud
 	Warhead@impact:
 		Damage: 1000
 		Spread: 6

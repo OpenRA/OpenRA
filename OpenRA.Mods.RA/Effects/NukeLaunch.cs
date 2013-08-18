@@ -9,6 +9,7 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Effects;
 using OpenRA.Graphics;
 using OpenRA.Traits;
@@ -33,6 +34,9 @@ namespace OpenRA.Mods.RA.Effects
 			anim.PlayRepeating("up");
 
 			pos = launchPos;
+			var weaponRules = Rules.Weapons[weapon.ToLowerInvariant()];
+			if (weaponRules.Report != null && weaponRules.Report.Any())
+				Sound.Play(weaponRules.Report.Random(firedBy.World.SharedRandom), pos);
 			if (silo == null)
 				StartDescent(firedBy.World);
 		}
