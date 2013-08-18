@@ -75,6 +75,10 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 			checkunsyncedCheckbox.IsChecked = () => debugSettings.SanityCheckUnsyncedCode;
 			checkunsyncedCheckbox.OnClick = () => debugSettings.SanityCheckUnsyncedCode ^= true;
 
+			var showFatalErrorDialog = generalPane.Get<CheckboxWidget>("SHOW_FATAL_ERROR_DIALOG_CHECKBOX");
+			showFatalErrorDialog.IsChecked = () => Game.Settings.Debug.ShowFatalErrorDialog;
+			showFatalErrorDialog.OnClick = () => Game.Settings.Debug.ShowFatalErrorDialog ^= true;
+
 			// Video
 			var windowModeDropdown = generalPane.Get<DropDownButtonWidget>("MODE_DROPDOWN");
 			windowModeDropdown.OnMouseDown = _ => SettingsMenuLogic.ShowWindowModeDropdown(windowModeDropdown, graphicsSettings);
