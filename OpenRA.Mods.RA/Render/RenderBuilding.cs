@@ -47,7 +47,7 @@ namespace OpenRA.Mods.RA.Render
 			var self = init.self;
 
 			// Work around a bogus crash
-			anim.PlayRepeating( NormalizeSequence(self, "idle") );
+			anim.PlayRepeating(NormalizeSequence(self, "idle"));
 			self.Trait<IBodyOrientation>().SetAutodetectedFacings(anim.CurrentSequence.Facings);
 
 			// Can't call Complete() directly from ctor because other traits haven't been inited yet

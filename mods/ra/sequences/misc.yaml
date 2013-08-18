@@ -396,3 +396,17 @@ gpsdot:
 		Start: 5
 	Structure:
 		Start: 6
+
+icon:
+	abomb: atomicon
+		Start: 0
+	invuln: infxicon
+		Start: 0
+	chrono: warpicon
+		Start: 0
+	spyplane: smigicon
+		Start: 0
+	paratroopers: pinficon
+		Start: 0
+	gps: gpssicon
+		Start: 0

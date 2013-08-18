@@ -21,7 +21,6 @@ GACNST:
 	Tooltip:
 		Name: Construction Yard
 		Description: Builds base structures.
-		Icon: facticon
 	CustomSellValue:
 		Value: 2500
 	BaseBuilding:
@@ -50,7 +49,6 @@ GAPOWR:
 	Tooltip:
 		Name: GDI Power Plant
 		Description: Provides power for other structures
-		Icon: powricon
 	ProvidesCustomPrerequisite:
 		Prerequisite: anypower
 	Building:
@@ -81,7 +79,6 @@ GAPILE:
 	Tooltip:
 		Name: GDI Barracks
 		Description: Produces infantry
-		Icon: brrkicon
 	Building:
 		Power: -20
 		Footprint: xx xx
@@ -114,7 +111,6 @@ GAWEAP:
 		Cost: 2000
 	Tooltip:
 		Name: GDI War Factory
-		Icon: weapicon
 		Description: Assembly point for\nvehicle reinforcements
 #	ProvidesCustomPrerequisite:
 #		Prerequisite: VehicleProduction
@@ -158,7 +154,6 @@ GASAND:
 	Tooltip:
 		Name: Sandbags
 		Description: Stops infantry and blocks enemy fire.\nCan be crushed by tanks.
-		Icon: sbagicon
 	Health:
 		HP: 250
 	Armor:
@@ -303,7 +298,6 @@ GASPOT: # TODO: has moving spotlights
 		Cost: 300
 	Tooltip:
 		Name: Light Tower
-		Icon: spoticon
 	Building:
 		Power: -10
 		Footprint: x
@@ -326,7 +320,6 @@ GAHPAD:
 		Cost: 500
 	Tooltip:
 		Name: Helipad
-		Icon: heliicon
 		Description: Produces, rearms and\nrepairs helicopters
 	Buildable:
 		BuildPaletteOrder: 60

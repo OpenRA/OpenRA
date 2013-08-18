@@ -2,6 +2,8 @@ mcv:
 	idle:
 		Start: 0
 		Facings: 32
+	icon: mcvicnh
+		Start: 0
 
 harv:
 	idle:
@@ -18,6 +20,8 @@ harv:
 	dock-loop: harvdump
 		Start: 7
 		Length: 1
+	icon: harvicnh
+		Start: 0
 
 bggy:
 	idle:
@@ -30,6 +34,8 @@ bggy:
 		Start: 0
 		Length: 6
 		Facings: 8
+	icon: bggyicnh
+		Start: 0
 
 mtnk:
 	idle:
@@ -41,6 +47,8 @@ mtnk:
 	muzzle: gunfire2
 		Start: 0
 		Length: *
+	icon: mtnkicnh
+		Start: 0
 
 ltnk:
 	idle:
@@ -52,6 +60,8 @@ ltnk:
 	muzzle: gunfire2
 		Start: 0
 		Length: *
+	icon: ltnkicnh
+		Start: 0
 
 htnk:
 	idle:
@@ -63,6 +73,8 @@ htnk:
 	muzzle: gunfire2
 		Start: 0
 		Length: *
+	icon: htnkicnh
+		Start: 0
 
 jeep:
 	idle:
@@ -75,11 +87,15 @@ jeep:
 		Start: 0
 		Length: 6
 		Facings: 8
+	icon: jeepicnh
+		Start: 0
 
 bike:
 	idle:
 		Start: 0
 		Facings: 32
+	icon: bikeicnh
+		Start: 0
 
 ftnk:
 	idle:
@@ -89,6 +105,8 @@ ftnk:
 		Start: 0
 		Length: 13
 		Facings: 8
+	icon: ftnkicnh
+		Start: 0
 
 mhq:
 	idle:
@@ -97,6 +115,8 @@ mhq:
 	spinner:
 		Start: 32
 		Length: 32
+	icon: mhqicnh
+		Start: 0
 
 msam:
 	idle:
@@ -111,6 +131,8 @@ msam:
 	turret-3:
 		Start: 64
 		Facings: 32
+	icon: msamicnh
+		Start: 0
 
 mlrs:
 	idle:
@@ -125,11 +147,15 @@ mlrs:
 	turret-3:
 		Start: 96
 		Facings: 32
+	icon: mlrsicnh
+		Start: 0
 
 stnk:
 	idle:
 		Start: 0
 		Facings: 32
+	icon: stnkicnh
+		Start: 0
 
 arty:
 	idle:
@@ -138,6 +164,8 @@ arty:
 	muzzle: gunfire2
 		Start: 0
 		Length: *
+	icon: artyicnh
+		Start: 0
 
 apc:
 	idle:
@@ -156,3 +184,5 @@ apc:
 		Length: 3
 	unload:
 		Start: 32
+	icon: apcicnh
+		Start: 0

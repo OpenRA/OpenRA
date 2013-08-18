@@ -1,67 +1,24 @@
-crate:
-	idle: crates
-		Start: 0
+crate: 
+	idle: DATA.R8
+		Start: 102
 		ZOffset: -511
-	land: crates
-		Start: 0
+		Offset: -16,-16
+	land: DATA.R8
+		Start: 102
 		ZOffset: -511
+		Offset: -16,-16
 
 spicebloom:
-	make:
-		Start: 0
+	make: DATA.R8
+		Start: 107
 		Length: 3
-	active:
-		Start: 2
+		Offset: -16,-16
+	active: DATA.R8
+		Start: 109
 		Length: 1
 		ZOffset: -511
-	idle:
-		Start: 2
+		Offset: -16,-16
+	idle: DATA.R8
+		Start: 109
 		ZOffset: -511
-
-sandworm:
-	stand: wormsigns1
-		Start: 0
-		Length: *
-	run: wormsigns2
-		Start: 0
-		Facings: 15
-		Length: 1
-	die1: wormsigns3
-		Start: 0
-		Length: 1
-	die2: wormsigns3
-		Start: 0
-		Length: 1
-	die3: wormsigns3
-		Start: 0
-		Length: 1
-	die4: wormsigns3
-		Start: 0
-		Length: 1
-	die5: wormsigns3
-		Start: 0
-		Length: 1
-	die6: wormsigns3
-		Start: 0
-		Length: 1
-	die-crushed: wormsigns3
-		Start: 0
-		Length: 1
-		Tick: 1600		
-	wormattack: wormjaw
-		Start: 0
-		Length: 15
-
-plates:
-	idle:
-		Start: 0
-		Length: 6
-	scratched-idle:
-		Start: 0
-		Length: 6
-	damaged-idle:
-		Start: 0
-		Length: 6
-	critical-idle:
-		Start: 0
-		Length: 6
+		Offset: -16,-16

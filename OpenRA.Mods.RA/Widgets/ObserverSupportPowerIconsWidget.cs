@@ -20,7 +20,7 @@ namespace OpenRA.Mods.RA.Widgets
 	public class ObserverSupportPowerIconsWidget : Widget
 	{
 		public Func<Player> GetPlayer;
-		Dictionary<string, Sprite> iconSprites;
+		Animation icon;
 		World world;
 		WorldRenderer worldRenderer;
 		Dictionary<string, Animation> clocks;
@@ -29,21 +29,18 @@ namespace OpenRA.Mods.RA.Widgets
 		public ObserverSupportPowerIconsWidget(World world, WorldRenderer worldRenderer)
 			: base()
 		{
-			iconSprites = Rules.Info.Values.SelectMany(u => u.Traits.WithInterface<SupportPowerInfo>())
-				.Select(u => u.Image).Distinct()
-				.ToDictionary(
-					u => u,
-					u => Game.modData.SpriteLoader.LoadAllSprites(u)[0]);
+
 			this.world = world;
 			this.worldRenderer = worldRenderer;
 			clocks = new Dictionary<string, Animation>();
+			icon = new Animation("icon");
 		}
 
 		protected ObserverSupportPowerIconsWidget(ObserverSupportPowerIconsWidget other)
 			: base(other)
 		{
 			GetPlayer = other.GetPlayer;
-			iconSprites = other.iconSprites;
+			icon = other.icon;
 			world = other.world;
 			worldRenderer = other.worldRenderer;
 			clocks = other.clocks;
@@ -68,12 +65,12 @@ namespace OpenRA.Mods.RA.Widgets
 			foreach (var power in powers)
 			{
 				var item = power.a.Value;
-				if (item == null || item.Info == null || item.Info.Image == null)
+				if (item == null || item.Info == null || item.Info.Icon == null)
 					continue;
-				var sprite = iconSprites[item.Info.Image];
-				var size = sprite.size / new float2(2, 2);
+				icon.Play(item.Info.Icon);
+				var size = icon.Image.size / new float2(2, 2);
 				var location = new float2(RenderBounds.Location) + new float2(power.i * (int)size.Length, 0);
-				WidgetUtils.DrawSHP(sprite, location, worldRenderer, size);
+				WidgetUtils.DrawSHP(icon.Image, location, worldRenderer, size);
 
 				var clock = clocks[power.a.Key];
 				clock.PlayFetchIndex("idle",

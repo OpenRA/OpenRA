@@ -137,127 +137,9 @@ namespace OpenRA.Utility
 			var bitmap = new Bitmap(frame.FrameSize.Width * frameCount, frame.FrameSize.Height, PixelFormat.Format8bppIndexed);
 			bitmap.Palette = palette.AsSystemPalette();
 
-			int x = 0;
-
 			frame = srcImage[startFrame];
 
-			// resorting to RA/CnC compatible counter-clockwise frame order
-			if (args.Contains("--infantry"))
-			{
-				endFrame = startFrame - 1;
-
-				// assuming 8 facings each animation set
-				for (int e = 8; e < frameCount + 1; e = e + 8)
-				{
-					for (int f = startFrame + e - 1; f > endFrame; f--)
-					{
-						var offsetX = frame.FrameSize.Width / 2 - frame.Size.Width / 2;
-						var offsetY = frame.FrameSize.Height / 2 - frame.Size.Height / 2;
-
-						Console.WriteLine("calculated OffsetX: {0}", offsetX);
-						Console.WriteLine("calculated OffsetY: {0}", offsetY);
-
-						var data = bitmap.LockBits(new Rectangle(x + offsetX, 0 + offsetY, frame.Size.Width, frame.Size.Height), ImageLockMode.WriteOnly,
-							PixelFormat.Format8bppIndexed);
-
-						for (var i = 0; i < frame.Size.Height; i++)
-							Marshal.Copy(frame.Image, i * frame.Size.Width,
-								new IntPtr(data.Scan0.ToInt64() + i * data.Stride), frame.Size.Width);
-
-						bitmap.UnlockBits(data);
-
-						x += frame.FrameSize.Width;
-
-						frame = srcImage[f];
-						Console.WriteLine("f: {0}", f);
-					}
-
-					endFrame = startFrame + e - 1;
-					frame = srcImage[startFrame + e];
-					Console.WriteLine("e: {0}", e);
-					Console.WriteLine("FrameCount: {0}", frameCount);
-				}
-			}
-			else if (args.Contains("--vehicle") || args.Contains("--projectile"))
-			{
-				frame = srcImage[startFrame];
-
-				for (int f = endFrame - 1; f > startFrame - 1; f--)
-				{
-					var offsetX = frame.FrameSize.Width / 2 - frame.Offset.X;
-					var offsetY = frame.FrameSize.Height / 2 - frame.Offset.Y;
-
-					Console.WriteLine("calculated OffsetX: {0}", offsetX);
-					Console.WriteLine("calculated OffsetY: {0}", offsetY);
-
-					var data = bitmap.LockBits(new Rectangle(x + offsetX, 0 + offsetY, frame.Size.Width, frame.Size.Height), ImageLockMode.WriteOnly,
-						PixelFormat.Format8bppIndexed);
-
-					for (var i = 0; i < frame.Size.Height; i++)
-						Marshal.Copy(frame.Image, i * frame.Size.Width,
-						             new IntPtr(data.Scan0.ToInt64() + i * data.Stride), frame.Size.Width);
-
-					bitmap.UnlockBits(data);
-
-					x += frame.FrameSize.Width;
-
-					frame = srcImage[f];
-				}
-			}
-			else if (args.Contains("--turret"))
-			{
-				frame = srcImage[startFrame];
-
-				for (int f = endFrame - 1; f > startFrame - 1; f--)
-				{
-					var offsetX = Math.Abs(frame.Offset.X);
-					var offsetY = frame.FrameSize.Height - Math.Abs(frame.Offset.Y);
-
-					Console.WriteLine("calculated OffsetX: {0}", offsetX);
-					Console.WriteLine("calculated OffsetY: {0}", offsetY);
-
-					var data = bitmap.LockBits(new Rectangle(x + offsetX, 0 + offsetY, frame.Size.Width, frame.Size.Height), ImageLockMode.WriteOnly,
-						PixelFormat.Format8bppIndexed);
-
-					for (var i = 0; i < frame.Size.Height; i++)
-						Marshal.Copy(frame.Image, i * frame.Size.Width,
-							new IntPtr(data.Scan0.ToInt64() + i * data.Stride), frame.Size.Width);
-
-					bitmap.UnlockBits(data);
-
-					x += frame.FrameSize.Width;
-
-					frame = srcImage[f];
-				}
-			}
-			else if (args.Contains("--wall")) 
-			{
-				// complex resorting to RA/CnC compatible frame order
-				var d2kBrikFrameOrder = new int[] { 1, 4, 2, 12, 5, 6, 16, 9, 3, 13, 7, 8, 14, 10, 11, 15, 17, 20, 18, 28, 21, 22, 32, 25, 19, 29, 23, 24, 30, 26, 27, 31 };
-				foreach (int o in d2kBrikFrameOrder)
-				{
-					var f = startFrame - 1 + o;
-
-					frame = srcImage[f];
-
-					var offsetX = Math.Abs(frame.Offset.X);
-					var offsetY = frame.FrameSize.Height - Math.Abs(frame.Offset.Y);
-					Console.WriteLine("calculated OffsetX: {0}", offsetX);
-					Console.WriteLine("calculated OffsetY: {0}", offsetY);
-
-					var data = bitmap.LockBits(new Rectangle(x + offsetX, 0 + offsetY, frame.Size.Width, frame.Size.Height), ImageLockMode.WriteOnly,
-						PixelFormat.Format8bppIndexed);
-
-					for (var i = 0; i < frame.Size.Height; i++)
-						Marshal.Copy(frame.Image, i * frame.Size.Width,
-							new IntPtr(data.Scan0.ToInt64() + i * data.Stride), frame.Size.Width);
-
-					bitmap.UnlockBits(data);
-
-					x += frame.FrameSize.Width;
-				}
-			}
-			else if (args.Contains("--tileset"))
+			if (args.Contains("--tileset"))
 			{
 				int f = 0;
 				var tileset = new Bitmap(frame.FrameSize.Width * 20, frame.FrameSize.Height * 40, PixelFormat.Format8bppIndexed);
@@ -286,39 +168,6 @@ namespace OpenRA.Utility
 				}
 
 				bitmap = tileset;
-			}
-			else
-			{
-				for (int f = startFrame; f < endFrame; f++)
-				{
-					frame = srcImage[f];
-					var offsetX = 0;
-					var offsetY = 0;
-					if (args.Contains("--infantrydeath"))
-					{
-						offsetX = frame.FrameSize.Width / 2 - frame.Size.Width / 2;
-						offsetY = frame.FrameSize.Height / 2 - frame.Size.Height / 2;
-					}
-					else if (args.Contains("--building"))
-					{
-						offsetX = Math.Abs(frame.Offset.X);
-						offsetY = frame.FrameSize.Height - Math.Abs(frame.Offset.Y);
-					}
-
-					Console.WriteLine("calculated OffsetX: {0}", offsetX);
-					Console.WriteLine("calculated OffsetY: {0}", offsetY);
-
-					var data = bitmap.LockBits(new Rectangle(x + offsetX, 0 + offsetY, frame.Size.Width, frame.Size.Height), ImageLockMode.WriteOnly,
-						PixelFormat.Format8bppIndexed);
-
-					for (var i = 0; i < frame.Size.Height; i++)
-						Marshal.Copy(frame.Image, i * frame.Size.Width,
-							new IntPtr(data.Scan0.ToInt64() + i * data.Stride), frame.Size.Width);
-
-					bitmap.UnlockBits(data);
-
-					x += frame.FrameSize.Width;
-				}
 			}
 
 			bitmap.Save(filename + ".png");

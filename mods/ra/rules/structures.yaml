@@ -5,7 +5,6 @@ MSLO:
 	Tooltip:
 		Name: Missile Silo
 		Description: Launches a devastating atomic bomb\nat a target location.\n  Special Ability: Atom Bomb\n\nMaximum 1 can be built
-		Icon: msloicon2
 	Buildable:
 		Queue: Defense
 		BuildPaletteOrder: 130
@@ -25,7 +24,7 @@ MSLO:
 		Range: 5
 	IronCurtainable:
 	NukePower:
-		Image: atomicon
+		Icon: abomb
 		ChargeTime: 540
 		Description: Atom Bomb
 		LongDesc: Launches a devastating atomic bomb\nat a target location.
@@ -214,7 +213,7 @@ IRON:
 		Range: 10
 	IronCurtainable:
 	IronCurtainPower:
-		Image: infxicon
+		Icon: invuln
 		ChargeTime: 120
 		Description: Invulnerability
 		LongDesc: Makes a group of units invulnerable\nfor 20 seconds.
@@ -252,7 +251,7 @@ PDOX:
 		Range: 10
 	IronCurtainable:
 	ChronoshiftPower:
-		Image: warpicon
+		Icon: chrono
 		ChargeTime: 120
 		Description: Chronoshift
 		LongDesc: Teleports a group of units across\nthe map for 20 seconds.
@@ -459,7 +458,6 @@ PBOX.E1:
 	Tooltip:
 		Name: Pillbox (Guns)
 		Description: Basic defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
-		Icon: PBOXICON
 	RenderBuilding:
 		Image: PBOX
 	RenderRangeCircle:
@@ -624,7 +622,6 @@ HBOX.E1:
 	Tooltip:
 		Name: Camo Pillbox (Guns)
 		Description: Hidden defensive structure.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks, Aircraft
-		Icon: HBOXICON
 	RenderBuilding:
 		Image: HBOX
 	RenderRangeCircle:
@@ -854,7 +851,7 @@ ATEK:
 	Bib:
 	IronCurtainable:
 	GpsPower:
-		Image: gpssicon
+		Icon: gps
 		OneShot: yes
 		ChargeTime: 480
 		Description: GPS Satellite
@@ -1077,14 +1074,14 @@ AFLD:
 	Reservable:
 	IronCurtainable:
 	SpyPlanePower:
-		Image: smigicon
+		Icon: spyplane
 		ChargeTime: 180
 		Description: Spy Plane
 		LongDesc: Reveals an area of the map.
 		SelectTargetSound: slcttgt1.aud
 		EndChargeSound: spypln1.aud
 	ParatroopersPower:
-		Image: pinficon
+		Icon: paratroopers
 		ChargeTime: 360
 		Description: Paratroopers
 		LongDesc: A Badger drops a squad of Riflemen \nanywhere on the map
@@ -1310,6 +1307,7 @@ FACF:
 		Hotkey: c
 		Queue: Defense
 	Tooltip:
+		Icon: fake-icon
 		Name: Fake Construction Yard
 		Description: Looks like a Construction Yard.
 	Building:
@@ -1339,6 +1337,7 @@ WEAF:
 		Hotkey: x
 		Queue: Defense
 	Tooltip:
+		Icon: fake-icon
 		Name: Fake War Factory
 		Description: Looks like a War Factory.
 	Building:
@@ -1369,6 +1368,7 @@ SYRF:
 		Hotkey: z
 		Queue: Defense
 	Tooltip:
+		Icon: fake-icon
 		Name: Fake Shipyard
 		Description: Looks like a Shipyard
 	TargetableBuilding:
@@ -1402,6 +1402,7 @@ SPEF:
 		Hotkey: z
 		Queue: Defense
 	Tooltip:
+		Icon: fake-icon
 		Name: Fake Sub Pen
 		Description: Looks like a Sub Pen
 	Building:
@@ -1425,6 +1426,7 @@ DOMF:
 	Valued:
 		Cost: 50
 	Tooltip:
+		Icon: fake-icon
 		Name: Fake Radar Dome
 		Description: Looks like a Radar Dome
 	Buildable:

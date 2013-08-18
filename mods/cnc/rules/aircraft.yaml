@@ -4,7 +4,6 @@ TRAN:
 		Cost: 750
 	Tooltip:
 		Name: Chinook Transport
-		Icon:tranicnh
 		Description: Fast Infantry Transport Helicopter.\n  Unarmed
 	Buildable:
 		BuildPaletteOrder: 10
@@ -47,7 +46,6 @@ HELI:
 		Cost: 1200
 	Tooltip:
 		Name: Apache Longbow
-		Icon: heliicnh
 		Description: Helicopter Gunship with Chainguns.\n  Strong vs Infantry, Light Vehicles\n  Weak vs Tanks
 	Buildable:
 		BuildPaletteOrder: 20
@@ -100,7 +98,6 @@ ORCA:
 		Cost: 1200
 	Tooltip:
 		Name: Orca
-		Icon: orcaicnh
 		Description: Helicopter Gunship with AG Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
 	Buildable:
 		BuildPaletteOrder: 20
@@ -148,7 +145,6 @@ C17:
 	Tooltip:
 		Name: Supply Aircraft
 		Description: Drops vehicle reinforcements on Airstrips
-		Icon: c17icnh
 	Valued:
 		Cost: 2000
 	Plane:
@@ -175,7 +171,6 @@ A10:
 	Inherits: ^Plane
 	Tooltip:
 		Name: A10 Bomber
-		Icon: a10icnh
 		Description: Used to deliver Napalm strikes.
 	Valued:
 		Cost: 2000

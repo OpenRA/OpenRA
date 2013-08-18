@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA.Widgets
 		public string ReadyText = "";
 		public string HoldText = "";
 
-		Dictionary<string, Sprite> spsprites;
+		Animation icon;
 		Animation clock;
 		readonly List<Pair<Rectangle, Action<MouseInput>>> buttons = new List<Pair<Rectangle,Action<MouseInput>>>();
 
@@ -41,12 +41,7 @@ namespace OpenRA.Mods.RA.Widgets
 		{
 			base.Initialize(args);
 
-			spsprites = Rules.Info.Values.SelectMany( u => u.Traits.WithInterface<SupportPowerInfo>() )
-				.Select(u => u.Image).Distinct()
-				.ToDictionary(
-					u => u,
-					u => Game.modData.SpriteLoader.LoadAllSprites(u)[0]);
-
+			icon = new Animation("icon");
 			clock = new Animation("clock");
 		}
 
@@ -88,7 +83,7 @@ namespace OpenRA.Mods.RA.Widgets
 				WidgetUtils.DrawRGBA(WidgetUtils.GetChromeImage(world, "specialbin-middle"), new float2(rectBounds.X, rectBounds.Y + i * 51));
 			WidgetUtils.DrawRGBA(WidgetUtils.GetChromeImage(world, "specialbin-bottom"), new float2(rectBounds.X, rectBounds.Y + numPowers * 51));
 
-			// Hack Hack Hack
+			// HACK: Hack Hack Hack
 			rectBounds.Width = 69;
 			rectBounds.Height = 10 + numPowers * 51 + 21;
 
@@ -96,7 +91,7 @@ namespace OpenRA.Mods.RA.Widgets
 			foreach (var kv in powers)
 			{
 				var sp = kv.Value;
-				var image = spsprites[sp.Info.Image];
+				icon.Play(sp.Info.Icon);
 
 				var drawPos = new float2(rectBounds.X + 5, y);
 				var rect = new Rectangle(rectBounds.X + 5, y, 64, 48);
@@ -142,7 +137,7 @@ namespace OpenRA.Mods.RA.Widgets
 					}
 				}
 
-				WidgetUtils.DrawSHP(image, drawPos, worldRenderer);
+				WidgetUtils.DrawSHP(icon.Image, drawPos, worldRenderer);
 
 				clock.PlayFetchIndex("idle",
 					() => sp.TotalTime == 0 ? clock.CurrentSequence.Length - 1 : (sp.TotalTime - sp.RemainingTime)

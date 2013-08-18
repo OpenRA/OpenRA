@@ -60,6 +60,8 @@ e1:
 	die6: electro
 		Start: 0
 		Length: *
+	icon: e1icon
+		Start: 0
 
 e2:
 	stand:
@@ -123,6 +125,8 @@ e2:
 	die6: electro
 		Start: 0
 		Length: *
+	icon: e2icon
+		Start: 0
 
 e3:
 	stand:
@@ -186,6 +190,8 @@ e3:
 	die6: electro
 		Start: 0
 		Length: *
+	icon: e4icon
+		Start: 0
 
 weedguy:
 	stand: weed
@@ -244,6 +250,8 @@ weedguy:
 	die6: electro
 		Start: 0
 		Length: *
+	icon: weaticon
+		Start: 0
 
 medic:
 	stand:
@@ -298,6 +306,8 @@ medic:
 	die6: electro
 		Start: 0
 		Length: *
+	icon: mediicon
+		Start: 0
 
 engineer:
 	stand:
@@ -341,6 +351,8 @@ engineer:
 	die6: electro
 		Start: 0
 		Length: *
+	icon: engnicon
+		Start: 0
 
 umagon:
 	stand:
@@ -404,6 +416,8 @@ umagon:
 	die6: electro
 		Start: 0
 		Length: *
+	icon: umagicon
+		Start: 0
 
 ghost: # TODO unused GUNFIRE.SHP
 	stand:
@@ -467,6 +481,8 @@ ghost: # TODO unused GUNFIRE.SHP
 	die6: electro
 		Start: 0
 		Length: *
+	icon: gosticon
+		Start: 0
 
 jumpjet: # TODO: ShadowStart:
 	stand:
@@ -519,6 +535,8 @@ jumpjet: # TODO: ShadowStart:
 	die6: electro
 		Start: 0
 		Length: *
+	icon: jjeticon
+		Start: 0
 
 mhijack:
 	stand:
@@ -582,6 +600,8 @@ mhijack:
 	die6: electro
 		Start: 0
 		Length: *
+	icon: mutcicon
+		Start: 0
 
 chamspy:
 	stand:
@@ -645,6 +665,8 @@ chamspy:
 	die6: electro
 		Start: 0
 		Length: *
+	icon: chamicon
+		Start: 0
 
 cyc2:
 	stand:
@@ -708,6 +730,8 @@ cyc2:
 	die6: electro
 		Start: 0
 		Length: *
+	icon: cybcicon
+		Start: 0
 
 cyborg:
 	stand:
@@ -765,6 +789,8 @@ cyborg:
 	die6: electro
 		Start: 0
 		Length: *
+	icon: cybiicon
+		Start: 0
 
 mutant: # TODO unused MGUN-N,MGUN-NE,MGUN-E,MGUN-SE,MGUN-S,MGUN-SW,MGUN-W,MGUN-NW
 	stand:
@@ -828,6 +854,8 @@ mutant: # TODO unused MGUN-N,MGUN-NE,MGUN-E,MGUN-SE,MGUN-S,MGUN-SW,MGUN-W,MGUN-N
 	die6: electro
 		Start: 0
 		Length: *
+	icon: mutcicon
+		Start: 0
 
 mwmn: # TODO unused MGUN-N,MGUN-NE,MGUN-E,MGUN-SE,MGUN-S,MGUN-SW,MGUN-W,MGUN-NW
 	stand:
@@ -891,6 +919,8 @@ mwmn: # TODO unused MGUN-N,MGUN-NE,MGUN-E,MGUN-SE,MGUN-S,MGUN-SW,MGUN-W,MGUN-NW
 	die6: electro
 		Start: 0
 		Length: *
+	icon: mutcicon
+		Start: 0
 
 mutant3: # TODO unused MGUN-N,MGUN-NE,MGUN-E,MGUN-SE,MGUN-S,MGUN-SW,MGUN-W,MGUN-NW
 	stand:
@@ -954,6 +984,8 @@ mutant3: # TODO unused MGUN-N,MGUN-NE,MGUN-E,MGUN-SE,MGUN-S,MGUN-SW,MGUN-W,MGUN-
 	die6: electro
 		Start: 0
 		Length: *
+	icon: mutcicon
+		Start: 0
 
 tratos:
 	stand:
@@ -1017,6 +1049,8 @@ tratos:
 	die6: electro
 		Start: 0
 		Length: *
+	icon: mutcicon
+		Start: 0
 
 oxanna:
 	stand:
@@ -1080,6 +1114,8 @@ oxanna:
 	die6: electro
 		Start: 0
 		Length: *
+	icon: mutcicon
+		Start: 0
 
 slav:
 	stand:
@@ -1143,6 +1179,8 @@ slav:
 	die6: electro
 		Start: 0
 		Length: *
+	icon: mutcicon
+		Start: 0
 
 doggie: # TODO: not sure what frame 88 and following is
 	stand:
@@ -1176,12 +1214,16 @@ doggie: # TODO: not sure what frame 88 and following is
 		Start: 109
 		Length: 9
 		ShadowStart: 228
+	icon: xxicon
+		Start: 0
 
 vissml:
 	idle:
 		Start: 0
 		Length: 90
 		ShadowStart: 90
+	icon: xxicon
+		Start: 0
 
 vislrg:
 	idle:
@@ -1193,6 +1235,8 @@ vislrg:
 		Length: 5
 		Facings: 8
 		ShadowStart: 40
+	icon: xxicon
+		Start: 0
 
 civ1:
 	stand:
@@ -1230,6 +1274,8 @@ civ1:
 	die6: electro
 		Start: 0
 		Length: *
+	icon: xxicon
+		Start: 0
 
 civ2:
 	stand:
@@ -1267,6 +1313,8 @@ civ2:
 	die6: electro
 		Start: 0
 		Length: *
+	icon: xxicon
+		Start: 0
 
 civ3:
 	stand:
@@ -1304,3 +1352,5 @@ civ3:
 	die6: electro
 		Start: 0
 		Length: *
+	icon: xxicon
+		Start: 0

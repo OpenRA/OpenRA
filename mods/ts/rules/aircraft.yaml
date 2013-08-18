@@ -4,7 +4,6 @@ DPOD:
 		Cost: 10
 	Tooltip:
 		Name: Drop Pod
-		Icon: podsicon
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 10
@@ -42,7 +41,6 @@ DSHP:
 		Cost: 1000
 	Tooltip:
 		Name: Dropship
-		Icon: xxicon
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 10
@@ -74,7 +72,6 @@ ORCA:
 		Cost: 1000
 	Tooltip:
 		Name: Orca Fighter
-		Icon: orcaicon
 		Description: Helicopter Gunship with Missiles.\n  Strong vs Buildings, Tanks\n  Weak vs Infantry
 	Buildable:
 		Queue: Air
@@ -111,7 +108,6 @@ ORCAB:
 		Cost: 1600
 	Tooltip:
 		Name: Orca Bomber
-		Icon: obmbicon
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 20
@@ -147,7 +143,6 @@ ORCATRAN:
 		Cost: 1200
 	Tooltip:
 		Name: Orca Transport
-		Icon: crryicon
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 10
@@ -179,7 +174,6 @@ TRNSPORT: # TODO: set up the vehicle cargo traits, but beware of desyncs
 		Cost: 750
 	Tooltip:
 		Name: Carryall
-		Icon: otrnicon
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 10
@@ -207,7 +201,6 @@ SCRIN:
 		Cost: 1500
 	Tooltip:
 		Name: Banshee Fighter
-		Icon: proicon
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 20
@@ -243,7 +236,6 @@ APACHE:
 		Cost: 1000
 	Tooltip:
 		Name: Harpy
-		Icon: apchicon
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 20

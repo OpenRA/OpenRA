@@ -37,10 +37,9 @@ namespace OpenRA.Mods.RA.Widgets
 		List<ProductionQueue> VisibleQueues;
 
 		bool paletteOpen = false;
-		Dictionary<string, Sprite> iconSprites;
 
-		float2 paletteOpenOrigin = new float2(Game.viewport.Width - 215, 280);
-		float2 paletteClosedOrigin = new float2(Game.viewport.Width - 16, 280);
+		float2 paletteOpenOrigin;
+		float2 paletteClosedOrigin;
 		float2 paletteOrigin;
 
 		int paletteAnimationLength = 7;
@@ -64,16 +63,16 @@ namespace OpenRA.Mods.RA.Widgets
 			cantBuild = new Animation("clock");
 			cantBuild.PlayFetchIndex("idle", () => 0);
 			clock = new Animation("clock");
-			paletteOrigin = paletteClosedOrigin;
 			VisibleQueues = new List<ProductionQueue>();
 			CurrentQueue = null;
+		}
 
-			iconSprites = Rules.Info.Values
-				.Where(u => u.Traits.Contains<BuildableInfo>() && u.Name[0] != '^')
-				.ToDictionary(
-					u => u.Name,
-					u => Game.modData.SpriteLoader.LoadAllSprites(
-						u.Traits.Get<TooltipInfo>().Icon ?? (u.Name + "icon"))[0]);
+		public override void Initialize(WidgetArgs args)
+		{
+			paletteOpenOrigin = new float2(Game.viewport.Width - Columns*IconWidth - 23, 280);
+			paletteClosedOrigin = new float2(Game.viewport.Width - 16, 280);
+			paletteOrigin = paletteClosedOrigin;
+			base.Initialize(args);
 		}
 
 		public override Rectangle EventBounds
@@ -230,7 +229,9 @@ namespace OpenRA.Mods.RA.Widgets
 				{
 					var rect = new RectangleF(origin.X + x * IconWidth, origin.Y + IconHeight * y, IconWidth, IconHeight);
 					var drawPos = new float2(rect.Location);
-					WidgetUtils.DrawSHP(iconSprites[item.Name], drawPos, worldRenderer);
+					var icon = new Animation(RenderSimple.GetImage(item));
+					icon.Play(item.Traits.Get<TooltipInfo>().Icon);
+					WidgetUtils.DrawSHP(icon.Image, drawPos, worldRenderer);
 
 					var firstOfThis = queue.AllQueued().FirstOrDefault(a => a.Item == item.Name);
 

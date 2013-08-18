@@ -64,7 +64,6 @@ E3:
 	Tooltip:
 		Name: Rocket Infantry
 		Description: Anti-tank infantry.\n  Strong vs Tanks\n  Weak vs Infantry
-		Icon: e4icon # TODO: really?
 	Selectable:
 		Bounds: 12,17,0,-9
 		Voice: Rocket
@@ -88,7 +87,6 @@ WEEDGUY:
 	Tooltip:
 		Name: Chem Spray Infantry
 		Description: Advanced Anti-infantry unit.\n  Strong vs Infantry\n  Weak vs Vehicles
-		Icon: weaticon
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 50
@@ -119,7 +117,6 @@ MEDIC:
 	Tooltip:
 		Name: Medic
 		Description: Heals nearby infantry.\n  Strong vs Nothing\n  Weak vs Everything
-		Icon: mediicon
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 60
@@ -151,7 +148,6 @@ ENGINEER:
 	Tooltip:
 		Name: Engineer
 		Description: Infiltrates and captures enemy structures.\n  Strong vs Nothing\n  Weak vs Everything
-		Icon: engnicon
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 30
@@ -183,7 +179,6 @@ UMAGON:
 	Valued:
 		Cost: 400
 	Tooltip:
-		Icon: umagicon
 		Name: Umagon
 		Description: Elite sniper infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
 	Buildable:
@@ -214,7 +209,6 @@ GHOST:
 	Valued:
 		Cost: 1750
 	Tooltip:
-		Icon: gosticon
 		Name: Ghost Stalker
 		Description: Elite commando infantry, armed with \ndual pistols and C4.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles\n  Special Ability: Destroy Building with C4\n\nMaximum 1 can be trained
 		BuildLimit: 1
@@ -250,7 +244,6 @@ JUMPJET:
 	Valued:
 		Cost: 600
 	Tooltip:
-		Icon: jjeticon
 		Name: Jumpjet Infantry
 	Buildable:
 		Queue: Infantry
@@ -290,7 +283,6 @@ CHAMSPY:
 	SpyToolTip:
 		Name: Chameleon Spy
 		Description: Infiltrates enemy structures to gather \nintelligence. Exact effect depends on the \nbuilding infiltrated.\n  Strong vs Nothing\n  Weak vs Everything\n  Special Ability: Disguised
-		Icon: chamicon
 	Selectable:
 		Voice: Spy
 		Bounds: 12,17,0,-9
@@ -320,7 +312,6 @@ CYBORG:
 	Valued:
 		Cost: 650
 	Tooltip:
-		Icon: cybiicon
 		Name: Cyborg Infantry
 		Description: Cybernetic infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
 	Buildable:
@@ -359,7 +350,6 @@ CYC2:
 	Valued:
 		Cost: 2000
 	Tooltip:
-		Icon: cybcicon
 		Name: Cyborg Commando
 		Description: Elite cybernetic infantry unit.\n  Strong vs Infantry, Buildings\n  Weak vs Vehicles
 	Buildable:
@@ -402,7 +392,6 @@ MUTANT:
 	Tooltip:
 		Name: Mutant
 		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles
-		Icon: mutcicon
 	Selectable:
 		Bounds: 12,17,0,-9
 		Voice: Mutant
@@ -433,7 +422,6 @@ MWMN:
 	Tooltip:
 		Name: Mutant Soldier
 		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles
-		Icon: mutcicon
 	Selectable:
 		Bounds: 12,17,0,-9
 		Voice: Mutant
@@ -464,7 +452,6 @@ MUTANT3:
 	Tooltip:
 		Name: Mutant Sergeant
 		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles
-		Icon: mutcicon
 	Selectable:
 		Bounds: 12,17,0,-9
 		Voice: Mutant
@@ -495,7 +482,6 @@ MHIJACK: # TODO: does not work
 	Tooltip:
 		Name: Mutant Hijacker
 		Description: General-purpose infantry.\n  Strong vs Infantry\n  Weak vs Vehicles
-		Icon: mutcicon
 	Selectable:
 		Bounds: 12,17,0,-9
 		Voice: Hijacker
@@ -524,7 +510,6 @@ TRATOS:
 		Cost: 100
 	Tooltip:
 		Name: Tratos
-		Icon: mutcicon
 	Selectable:
 		Bounds: 12,17,0,-9
 		Voice: Tratos
@@ -553,7 +538,6 @@ OXANNA:
 		Cost: 100
 	Tooltip:
 		Name: Oxanna
-		Icon: mutcicon
 	Selectable:
 		Bounds: 12,17,0,-9
 		Voice: Oxanna
@@ -582,7 +566,6 @@ SLAV:
 		Cost: 100
 	Tooltip:
 		Name: Slavick
-		Icon: mutcicon
 	Selectable:
 		Bounds: 12,17,0,-9
 		Voice: Slavick
@@ -605,7 +588,6 @@ DOGGIE:
 	Inherits: ^Infantry
 	Tooltip:
 		Name: Tiberian Fiend
-		Icon: xxicon
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 100
@@ -638,7 +620,6 @@ VISSML:
 	Inherits: ^Infantry
 	Tooltip:
 		Name: Baby Visceroid
-		Icon: xxicon
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 100
@@ -670,7 +651,6 @@ VISLRG:
 	Inherits: ^Infantry
 	Tooltip:
 		Name: Adult Visceroid
-		Icon: xxicon
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 100

@@ -6,6 +6,9 @@ vice:
 		Start: 0
 		Length: 13
 		Facings: 8
+	icon: viceicnh
+		Start: 0
+
 pvice:
 	idle:
 		Start: 0
@@ -14,6 +17,9 @@ pvice:
 		Start: 0
 		Length: 13
 		Facings: 8
+	icon: viceicnh
+		Start: 0
+
 e1:
 	stand:
 		Start: 0
@@ -109,6 +115,8 @@ e1:
 		Start: 16
 		Length: 4
 		Tick: 1600
+	icon: e1icnh
+		Start: 0
 
 e2:
 	stand:
@@ -196,6 +204,8 @@ e2:
 		Start: 16
 		Length: 4
 		Tick: 1600
+	icon: e2icnh
+		Start: 0
 
 e3:
 	stand:
@@ -283,6 +293,8 @@ e3:
 		Start: 16
 		Length: 4
 		Tick: 1600
+	icon: e3icnh
+		Start: 0
 
 e4:
 	stand:
@@ -374,6 +386,9 @@ e4:
 		Start: 0
 		Length: 13
 		Facings: 8
+	icon: e4icnh
+		Start: 0
+
 e5:
 	stand:
 		Start: 0
@@ -464,6 +479,9 @@ e5:
 		Start: 0
 		Length: 13
 		Facings: 8
+	icon: e5icnh
+		Start: 0
+
 e6:
 	stand:
 		Start: 0
@@ -542,6 +560,9 @@ e6:
 		Start: 16
 		Length: 4
 		Tick: 1600
+	icon: e6icnh
+		Start: 0
+
 rmbo:
 	stand:
 		Start: 0
@@ -632,3 +653,5 @@ rmbo:
 		Start: 16
 		Length: 4
 		Tick: 1600
+	icon: rmboicnh
+		Start: 0

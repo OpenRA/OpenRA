@@ -32,7 +32,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 		readonly WorldRenderer worldRenderer;
 		readonly SupportPowerManager spm;
 
-		Dictionary<string, Sprite> iconSprites;
+		Animation icon;
 		Animation clock;
 		Dictionary<Rectangle, SupportPowerIcon> icons = new Dictionary<Rectangle, SupportPowerIcon>();
 
@@ -52,12 +52,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 			tooltipContainer = Lazy.New(() =>
 				Ui.Root.Get<TooltipContainerWidget>(TooltipContainer));
 
-			iconSprites = Rules.Info.Values.SelectMany(u => u.Traits.WithInterface<SupportPowerInfo>())
-				.Select(u => u.Image).Distinct()
-				.ToDictionary(
-					u => u,
-					u => Game.modData.SpriteLoader.LoadAllSprites(u)[0]);
-
+			icon = new Animation("icon");
 			clock = new Animation("clock");
 		}
 
@@ -78,11 +73,12 @@ namespace OpenRA.Mods.Cnc.Widgets
 			foreach (var p in powers)
 			{
 				var rect = new Rectangle(rb.X + 1, rb.Y + i * (48 + Spacing) + 1, 64, 48);
+				icon.Play(p.Info.Icon);
 				var power = new SupportPowerIcon()
 				{
 					Power = p,
 					Pos = new float2(rect.Location),
-					Sprite = iconSprites[p.Info.Image]
+					Sprite = icon.Image
 				};
 
 				icons.Add(rect, power);
