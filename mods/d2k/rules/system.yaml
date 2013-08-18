@@ -104,12 +104,21 @@ Player:
 			starporta: 0.1%
 			starporth: 0.1%
 			starporto: 0.1%
-			research: 0.1%
-			guntower: 7%
-			rockettower: 7%
-			powra: 30%
-			powrh: 30%
-			powro: 30%
+			researcha: 0.1%
+			researchh: 0.1%
+			researcho: 0.1%
+			repaira: 0.1%
+			repairh: 0.1%
+			repairo: 0.1%
+			guntowera: 7%
+			guntowerh: 7%
+			guntowero: 7%
+			rockettowera: 7%
+			rockettowerh: 7%
+			rockettowero: 7%
+			powra: 10%
+			powrh: 10%
+			powro: 10%
 		UnitsToBuild:
 			rifle: 6%
 			bazooka: 5%
@@ -147,6 +156,34 @@ Player:
 			Silo: siloa, siloh, siloo
 		UnitsCommonNames:
 			Mcv: mcva,mcvh,mcvo
+		BuildingLimits:
+			refa: 4
+			refh: 4
+			refo: 4
+			barra: 1
+			barrh: 1
+			barro: 1
+			lighta: 1
+			lighth: 1
+			lighto: 1
+			heavya: 1
+			heavyh: 1
+			heavyo: 1
+			researcha: 1
+			researchh: 1
+			researcho: 1
+			repaira: 1
+			repairh: 1
+			repairo: 1
+			radara: 1
+			radaro: 1
+			radarh: 1
+			hightecha: 1
+			hightechh: 1
+			hightecho: 1
+			palacea: 1
+			palaceh: 1
+			palaceo: 1
 		BuildingFractions:
 			refa: 20.1%
 			refh: 20.1%
@@ -166,17 +203,24 @@ Player:
 			hightecha: 0.1%
 			hightechh: 0.1%
 			hightecho: 0.1%
+			repaira: 0.1%
+			repairh: 0.1%
+			repairo: 0.1%
 			starporta: 0.1%
 			starporth: 0.1%
 			starporto: 0.1%
 			palacea: 0.1%
 			palaceh: 0.1%
 			palaceo: 0.1%
-			guntower: 5%
-			rockettower: 10%
-			powra: 32%
-			powrh: 32%
-			powro: 32%
+			guntowera: 5%
+			guntowerh: 5%
+			guntowero: 5%
+			rockettowera: 10%
+			rockettowerh: 10%
+			rockettowero: 10%
+			powra: 12%
+			powrh: 12%
+			powro: 12%
 		UnitsToBuild:
 			rifle: 2%
 			bazooka: 2%
@@ -191,9 +235,9 @@ Player:
 			combata.starport: 15%
 			combath.starport: 15%
 			combato.starport: 15%
-			sonictank: 10%
-			devast: 10%
-			deviatortank: 7.5%
+			sonictank: 50%
+			devast: 40%
+			deviatortank: 5%
 			trike: 15%
 			raider: 15%
 			quad: 25%
@@ -215,6 +259,34 @@ Player:
 			Silo: siloa, siloh, siloo
 		UnitsCommonNames:
 			Mcv: mcva,mcvh,mcvo
+		BuildingLimits:
+			refa: 4
+			refh: 4
+			refo: 4
+			barra: 1
+			barrh: 1
+			barro: 1
+			lighta: 1
+			lighth: 1
+			lighto: 1
+			heavya: 1
+			heavyh: 1
+			heavyo: 1
+			researcha: 1
+			researchh: 1
+			researcho: 1
+			repaira: 1
+			repairh: 1
+			repairo: 1
+			radara: 1
+			radaro: 1
+			radarh: 1
+			hightecha: 1
+			hightechh: 1
+			hightecho: 1
+			palacea: 1
+			palaceh: 1
+			palaceo: 1
 		BuildingFractions:
 			refa: 20.1%
 			refh: 20.1%
@@ -228,21 +300,26 @@ Player:
 			heavya: 0.1%
 			heavyh: 0.1%
 			heavyo: 0.1%
+			repaira: 0.1%
+			repairh: 0.1%
+			repairo: 0.1%
 			radara: 0.1%
 			radaro: 0.1%
 			radarh: 0.1%
 			hightecha: 0.1%
 			hightechh: 0.1%
 			hightecho: 0.1%
-			research: 0.1%
+			researcha: 0.1%
+			researchh: 0.1%
+			researcho: 0.1%
 			palacea: 0.1%
 			palaceh: 0.1%
 			palaceo: 0.1%
 			guntower: 10%
 			rockettower: 5%
-			powra: 30%
-			powrh: 30%
-			powro: 30%
+			powra: 10%
+			powrh: 10%
+			powro: 10%
 		UnitsToBuild:
 			rifle: 15%
 			bazooka: 13%
