@@ -28,13 +28,18 @@
 	DrawLineToTarget:
 	ActorLostNotification:
 	AttackMove:
-	AcceptsCloakCrate:
 	WithSmoke:
 	DebugMuzzlePositions:
 	Guard:
 	Guardable:
 	BodyOrientation:
 	UpdatesPlayerStatistics:
+	Cloak:
+		RequiresCrate: true
+		InitialDelay: 15
+		CloakDelay: 90
+		CloakSound: trans1.aud
+		UncloakSound: trans1.aud
 
 ^Tank:
 	AppearsOnRadar:
@@ -66,7 +71,6 @@
 	DrawLineToTarget:
 	ActorLostNotification:
 	AttackMove:
-	AcceptsCloakCrate:
 	WithSmoke:
 	Explodes:
 		Weapon: UnitExplodeSmall
@@ -76,6 +80,12 @@
 	Guardable:
 	BodyOrientation:
 	UpdatesPlayerStatistics:
+	Cloak:
+		RequiresCrate: true
+		InitialDelay: 15
+		CloakDelay: 90
+		CloakSound: trans1.aud
+		UncloakSound: trans1.aud
 
 ^Helicopter:
 	AppearsOnRadar:

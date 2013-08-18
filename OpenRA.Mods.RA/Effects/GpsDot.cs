@@ -36,6 +36,7 @@ namespace OpenRA.Mods.RA.Effects
 		Lazy<HiddenUnderFog> huf;
 		Lazy<FrozenUnderFog> fuf;
 		Lazy<Spy> spy;
+		Lazy<Cloak> cloak;
 		Cache<Player, GpsWatcher> watcher;
 		Cache<Player, FrozenActorLayer> frozen;
 
@@ -53,15 +54,15 @@ namespace OpenRA.Mods.RA.Effects
 			huf = Lazy.New(() => self.TraitOrDefault<HiddenUnderFog>());
 			fuf = Lazy.New(() => self.TraitOrDefault<FrozenUnderFog>());
 			spy = Lazy.New(() => self.TraitOrDefault<Spy>());
+			cloak = Lazy.New(() => self.TraitOrDefault<Cloak>());
+
 			watcher = new Cache<Player, GpsWatcher>(p => p.PlayerActor.Trait<GpsWatcher>());
 			frozen = new Cache<Player, FrozenActorLayer>(p => p.PlayerActor.Trait<FrozenActorLayer>());
 		}
 
 		bool ShouldShowIndicator()
 		{
-			// Can be granted at runtime via a crate, so can't cache
-			var cloak = self.TraitOrDefault<Cloak>();
-			if (cloak != null && cloak.Cloaked)
+			if (cloak.Value != null && cloak.Value.Cloaked)
 				return false;
 
 			if (spy.Value != null && spy.Value.Disguised)

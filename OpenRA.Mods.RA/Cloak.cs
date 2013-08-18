@@ -22,6 +22,7 @@ namespace OpenRA.Mods.RA
 		public readonly int InitialDelay = 10; // Ticks
 		public readonly int CloakDelay = 30; // Ticks
 		public readonly bool UncloakOnMove = false;
+		public readonly bool RequiresCrate = false;
 
 		public readonly string CloakSound = "subshow1.aud";
 		public readonly string UncloakSound = "subshow1.aud";
@@ -33,7 +34,8 @@ namespace OpenRA.Mods.RA
 	public class Cloak : IRenderModifier, INotifyDamageStateChanged, INotifyAttack, ITick, IVisibilityModifier, IRadarColorModifier, ISync
 	{
 		[Sync] int remainingTime;
-		[Sync] bool canCloak = true;
+		[Sync] bool damageDisabled;
+		[Sync] bool crateDisabled;
 
 		Actor self;
 		CloakInfo info;
@@ -45,6 +47,7 @@ namespace OpenRA.Mods.RA
 			this.self = self;
 
 			remainingTime = info.InitialDelay;
+			crateDisabled = info.RequiresCrate;
 		}
 
 		public void Uncloak() { Uncloak(info.CloakDelay); }
@@ -63,8 +66,8 @@ namespace OpenRA.Mods.RA
 
 		public void DamageStateChanged(Actor self, AttackInfo e)
 		{
-			canCloak = e.DamageState < DamageState.Critical;
-			if (!canCloak)
+			damageDisabled = e.DamageState >= DamageState.Critical;
+			if (damageDisabled)
 				Uncloak();
 		}
 
@@ -84,7 +87,7 @@ namespace OpenRA.Mods.RA
 
 		public void Tick(Actor self)
 		{
-			if (remainingTime > 0 && canCloak && --remainingTime <= 0)
+			if (remainingTime > 0 && !crateDisabled && !damageDisabled && --remainingTime <= 0)
 			{
 				self.Generation++;
 				Sound.Play(info.CloakSound, self.CenterPosition);
@@ -117,6 +120,13 @@ namespace OpenRA.Mods.RA
 			if (self.Owner == self.World.LocalPlayer && Cloaked)
 				c = Color.FromArgb(128, c);
 			return c;
+		}
+
+		public bool AcceptsCloakCrate { get { return info.RequiresCrate && crateDisabled; } }
+
+		public void ReceivedCloakCrate(Actor self)
+		{
+			crateDisabled = false;
 		}
 	}
 }

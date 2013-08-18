@@ -30,12 +30,6 @@ namespace OpenRA.Mods.RA
 		public TargetableUnit(Actor self, TargetableUnitInfo info)
 		{
 			this.info = info;
-			ReceivedCloak(self);
-		}
-
-		// Arbitrary units can receive cloak via a crate during gameplay
-		public void ReceivedCloak(Actor self)
-		{
 			cloak = self.TraitOrDefault<Cloak>();
 		}
 
