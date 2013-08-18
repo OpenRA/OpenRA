@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA
 
 				var range = WRange.FromCells(target.Actor.Info.Traits.Get<GuardableInfo>().Range);
 				self.QueueActivity(false, new AttackMove.AttackMoveActivity(self,
-					new Follow(target, range)));
+					new Follow(self, target, range)));
 			}
 		}
 

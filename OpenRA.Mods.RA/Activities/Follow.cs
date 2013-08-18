@@ -16,15 +16,17 @@ namespace OpenRA.Mods.RA.Activities
 	public class Follow : Activity
 	{
 		Target target;
+		Mobile mobile;
 		WRange range;
 		int nextPathTime;
 
 		const int delayBetweenPathingAttempts = 20;
 		const int delaySpread = 5;
 
-		public Follow(Target target, WRange range)
+		public Follow(Actor self, Target target, WRange range)
 		{
 			this.target = target;
+			mobile = self.Trait<Mobile>();
 			this.range = range;
 		}
 
@@ -39,7 +41,6 @@ namespace OpenRA.Mods.RA.Activities
 			nextPathTime = self.World.SharedRandom.Next(delayBetweenPathingAttempts - delaySpread,
 				delayBetweenPathingAttempts + delaySpread);
 
-			var mobile = self.Trait<Mobile>();
 			return Util.SequenceActivities(mobile.MoveWithinRange(target, range), this);
 		}
 	}

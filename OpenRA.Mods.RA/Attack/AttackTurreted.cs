@@ -98,7 +98,7 @@ namespace OpenRA.Mods.RA
 
 					attack.Target = target;
 					if (allowMove && self.HasTrait<Mobile>() && !self.Info.Traits.Get<MobileInfo>().OnRails)
-						return Util.SequenceActivities(new Follow(target, range), this);
+						return Util.SequenceActivities(new Follow(self, target, range), this);
 				}
 
 				return NextActivity;
