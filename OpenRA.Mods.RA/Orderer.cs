@@ -46,7 +46,7 @@ namespace OpenRA.Mods.RA
             {
                 return locations[world.SharedRandom.Next(0, locations.Count() - 1)];
             }
-            return locations.Last();
+            return CPos.Zero;
         }
 
         int delay = 0;
@@ -59,7 +59,7 @@ namespace OpenRA.Mods.RA
             if (delay % Info.Delay == 0)
             {
                 CPos location = randomLocation();
-                if (location != null)
+                if (location != CPos.Zero)
                 {
                     var actors = self.World.ActorMap.GetUnitsAt(self.Location);
                     foreach (Actor actor in actors)
