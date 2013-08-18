@@ -19,12 +19,13 @@ namespace OpenRA.Mods.RA
 {
 	public class CloakInfo : ITraitInfo
 	{
-		public int InitialDelay = 10; // Ticks
-		public int CloakDelay = 30; // Ticks
-		public string CloakSound = "subshow1.aud";
-		public string UncloakSound = "subshow1.aud";
-		public readonly string Palette = "cloak";
+		public readonly int InitialDelay = 10; // Ticks
+		public readonly int CloakDelay = 30; // Ticks
 		public readonly bool UncloakOnMove = false;
+
+		public readonly string CloakSound = "subshow1.aud";
+		public readonly string UncloakSound = "subshow1.aud";
+		public readonly string Palette = "cloak";
 
 		public object Create(ActorInitializer init) { return new Cloak(init.self, this); }
 	}
@@ -62,8 +63,9 @@ namespace OpenRA.Mods.RA
 
 		public void DamageStateChanged(Actor self, AttackInfo e)
 		{
-			canCloak = (e.DamageState < DamageState.Critical);
-			if (!canCloak) Uncloak();
+			canCloak = e.DamageState < DamageState.Critical;
+			if (!canCloak)
+				Uncloak();
 		}
 
 		public IEnumerable<IRenderable> ModifyRender(Actor self, WorldRenderer wr, IEnumerable<IRenderable> r)
@@ -98,9 +100,9 @@ namespace OpenRA.Mods.RA
 			}
 		}
 		
-		public bool IsVisible(Actor self, Player byPlayer)
+		public bool IsVisible(Actor self, Player viewer)
 		{
-			if (!Cloaked || self.Owner.IsAlliedWith(byPlayer))
+			if (!Cloaked || self.Owner.IsAlliedWith(viewer))
 				return true;
 
 			// TODO: Change this to be per-player? A cloak detector revealing to everyone is dumb
