@@ -44,12 +44,7 @@ technique high_quality {
 technique high_quality_cg21 {
 	pass p0	{
 		DepthTestEnable = false;
-		//CullMode = None;
-		//FillMode = Wireframe;
 		VertexProgram = compile arbvp1 Simple_vp();
 		FragmentProgram = compile arbfp1 Simple_fp();
-		
-		BlendEquation = FuncAdd;
-		BlendFunc = int2( SrcAlpha, OneMinusSrcAlpha );
 	}
 }
