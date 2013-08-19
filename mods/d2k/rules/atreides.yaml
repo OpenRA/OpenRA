@@ -154,7 +154,7 @@ SONICTANK:
 	Buildable:
 		Queue: Armor
 		BuildPaletteOrder: 100
-		Prerequisites: heavya,research
+		Prerequisites: heavya, researcha
 		Owner: atreides
 		Hotkey: o
 	Valued:
