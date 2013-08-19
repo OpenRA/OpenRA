@@ -379,6 +379,7 @@ HQ:
 		LongDesc: Deploy an aerial napalm strike.\nBurns buildings and infantry along a line.
 		EndChargeSound: airredy1.aud
 		SelectTargetSound: select1.aud
+		IncomingSound: enemya.aud
 		UnitType: a10
 	SupportPowerChargeBar:
 
