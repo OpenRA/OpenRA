@@ -41,7 +41,7 @@ namespace OpenRA.Mods.RA
 
 		public override void Activate(Actor self, Order order)
 		{
-			if (self.Owner == self.World.LocalPlayer)
+			if (self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				Sound.Play(Info.LaunchSound);
 			else
 				Sound.Play(Info.IncomingSound);
