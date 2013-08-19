@@ -130,6 +130,16 @@ rpg:
 		Start: 3015
 		Facings: -32
 
+120mm:
+	idle: DATA.R8
+		Start: 3014
+		Length: 1
+		BlendMode: Additive
+
+155mm:
+	idle: DATA.R8
+		Start: 3081
+		Length: 1
 
 crate-effects:
 	dollar: DATA.R8
