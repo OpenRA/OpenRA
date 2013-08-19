@@ -59,7 +59,9 @@ explosion:
 laserfire:
 	idle: DATA.R8
 		Start: 3386
-		Length: 3
+		Length: 4
+		Tick: 80
+		BlendMode: Additive
 
 pips:
 	groups: DATA.R8
