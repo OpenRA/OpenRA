@@ -435,6 +435,8 @@ WALL:
 	DetectCloaked:
 		Range: 5
 	-WithCrumbleOverlay:
+	BodyOrientation:
+		QuantizedFacings: 8
 
 ^ROCKETTOWER:
 	Inherits: ^Building
@@ -481,6 +483,8 @@ WALL:
 	DetectCloaked:
 		Range: 6
 	-WithCrumbleOverlay:
+	BodyOrientation:
+		QuantizedFacings: 8
 
 ^REPAIR:
 	Inherits: ^Building
