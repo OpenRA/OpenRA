@@ -59,9 +59,6 @@ technique low_quality {
 		CullFaceEnable = false;
 		VertexProgram = compile latest Simple_vp();
 		FragmentProgram = compile latest Palette_fp();
-
-		BlendEquation = FuncAdd;
-		BlendFunc = int2( SrcAlpha, OneMinusSrcAlpha );
 	}
 }
 
@@ -71,8 +68,5 @@ technique low_quality_cg21 {
 		CullFaceEnable = false;
 		VertexProgram = compile arbvp1 Simple_vp();
 		FragmentProgram = compile arbfp1 Palette_fp();
-
-		BlendEquation = FuncAdd;
-		BlendFunc = int2( SrcAlpha, OneMinusSrcAlpha );
 	}
 }
