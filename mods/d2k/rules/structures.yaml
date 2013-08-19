@@ -422,13 +422,16 @@ WALL:
 	RenderRangeCircle:
 	RenderBuilding:
 		HasMakeAnimation: false
+	BodyOrientation:
+		QuantizedFacings: 32
 	WithTurret:
+	WithMuzzleFlash:
 	Turreted:
 		ROT: 6
 		InitialFacing: 128
 	Armament:
 		Weapon: TurretGun
-		LocalOffset: 469,0,299
+		LocalOffset: 448,0,128
 	AttackTurreted:
 	AutoTarget:
 	RenderDetectionCircle:
@@ -466,10 +469,12 @@ WALL:
 	RenderRangeCircle:
 	RenderBuilding:
 		HasMakeAnimation: false
+	BodyOrientation:
+		QuantizedFacings: 32
 	WithTurret:
 	Armament:
 		Weapon: TowerMissile
-		LocalOffset: 85,597,469, 85,-597,469
+		LocalOffset: 256,384,448, 256,-384,448
 	AttackTurreted:
 	Turreted:
 		ROT: 8
