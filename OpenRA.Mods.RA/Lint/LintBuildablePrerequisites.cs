@@ -20,17 +20,18 @@ namespace OpenRA.Mods.RA
 		public void Run(Action<string> emitError, Action<string> emitWarning)
 		{
 			var providedPrereqs = Rules.Info.Keys.Concat(
-				Rules.Info.SelectMany( a => a.Value.Traits
+				Rules.Info.SelectMany(a => a.Value.Traits
 					.WithInterface<ProvidesCustomPrerequisiteInfo>()
-					.Select( p => p.Prerequisite ))).ToArray();
+					.Select(p => p.Prerequisite))).ToArray();
 
-			foreach( var i in Rules.Info )
+			// TODO: this check is case insensitive while the real check in-game is not
+			foreach (var i in Rules.Info)
 			{
 				var bi = i.Value.Traits.GetOrDefault<BuildableInfo>();
 				if (bi != null)
-					foreach( var prereq in bi.Prerequisites )
-						if ( !providedPrereqs.Contains(prereq.Replace("!","")) )
-							emitError( "Buildable actor {0} has prereq {1} not provided by anything.".F( i.Key, prereq ) );
+					foreach (var prereq in bi.Prerequisites)
+						if (!providedPrereqs.Contains(prereq.Replace("!", "")))
+							emitError("Buildable actor {0} has prereq {1} not provided by anything.".F(i.Key, prereq));
 			}
 		}
 	}
