@@ -121,7 +121,8 @@ rallypoint:
 rpg:
 	idle: DATA.R8
 		Start: 3015
-		Facings: 32
+		Facings: -32
+
 
 crate-effects:
 	dollar: DATA.R8
