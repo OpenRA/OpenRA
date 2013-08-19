@@ -65,9 +65,6 @@ technique high_quality {
 		CullFaceEnable = false;
 		VertexProgram = compile latest Simple_vp();
 		FragmentProgram = compile latest Simple_fp();
-
-		BlendEquation = FuncAdd;
-		BlendFunc = int2(SrcAlpha, OneMinusSrcAlpha);
 	}
 }
 
@@ -77,8 +74,5 @@ technique high_quality_cg21 {
 		CullFaceEnable = false;
 		VertexProgram = compile arbvp1 Simple_vp();
 		FragmentProgram = compile arbfp1 Simple_fp();
-
-		BlendEquation = FuncAdd;
-		BlendFunc = int2(SrcAlpha, OneMinusSrcAlpha);
 	}
 }
