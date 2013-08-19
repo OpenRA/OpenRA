@@ -127,9 +127,9 @@ COMBATA:
 		ROT: 6
 	Armament:
 		Weapon: 90mma
-		Recoil: 171
-		RecoilRecovery: 34
-		LocalOffset: 85,0,128
+		Recoil: 128
+		RecoilRecovery: 32
+		LocalOffset: 256,0,0
 	AttackTurreted:
 	RenderUnit:
 		Image: COMBATA
