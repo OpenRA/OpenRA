@@ -3,19 +3,22 @@ explosion:
 		Start: 3626
 		Length: 5
 	piffs: DATA.R8
-		Start: 3626
-		Length: 5
-	small_explosion: DATA.R8
-		Start: 3386
+		Start: 3429
 		Length: 4
+		Tick: 80
+		BlendMode: Additive
+	small_explosion: DATA.R8
+		Start: 3403
+		Length: 15
 		BlendMode: Additive
 	med_explosion: DATA.R8
 		Start: 3390
 		Length: 12
 		BlendMode: Additive
 	tiny_explosion: DATA.R8
-		Start: 3390
-		Length: 12
+		Start: 3386
+		Length: 4
+		Tick: 80
 		BlendMode: Additive
 	nuke: DATA.R8
 		Start: 3965
@@ -44,8 +47,9 @@ explosion:
 		Length: 22
 		BlendMode: Additive
 	small_artillery: DATA.R8
-		Start: 3988
-		Length: 22
+		Start: 3390
+		Length: 12
+		Tick: 60
 		BlendMode: Additive
 	small_napalm: DATA.R8
 		Start: 3421
@@ -55,11 +59,19 @@ explosion:
 		Start: 3687
 		Length: 6
 		BlendMode: Additive
+		Tick: 120
+	deviator: DATA.R8
+		Start: 3512
+		Length: 23
+		BlendMode: Additive
+		Tick: 60
 
 laserfire:
 	idle: DATA.R8
 		Start: 3386
-		Length: 3
+		Length: 4
+		Tick: 80
+		BlendMode: Additive
 
 pips:
 	groups: DATA.R8
@@ -121,7 +133,18 @@ rallypoint:
 rpg:
 	idle: DATA.R8
 		Start: 3015
-		Facings: 32
+		Facings: -32
+
+120mm:
+	idle: DATA.R8
+		Start: 3014
+		Length: 1
+		BlendMode: Additive
+
+155mm:
+	idle: DATA.R8
+		Start: 3081
+		Length: 1
 
 crate-effects:
 	dollar: DATA.R8
@@ -231,6 +254,12 @@ sietch:
 doubleblast:
 	idle: DATA.R8
 		Start: 3279
+		Facings: -16
+		BlendMode: Additive
+
+doubleblastbullet:
+	idle: DATA.R8
+		Start: 3248
 		Facings: -16
 		BlendMode: Additive
 

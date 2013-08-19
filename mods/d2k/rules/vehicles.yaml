@@ -131,7 +131,7 @@ TRIKE:
 	WithMuzzleFlash:
 	Armament:
 		Weapon: HMG
-		LocalOffset: 256,0,128
+		LocalOffset: -416,0,0
 	AttackFrontal:
 	AutoTarget:
 	Explodes:
@@ -177,7 +177,7 @@ QUAD:
 		Range: 8
 	Armament:
 		Weapon: QuadRockets
-		LocalOffset: 128,0,85#-4
+		LocalOffset: 128,64,64, 128,-64,64
 	AttackFrontal:
 	AutoTarget:
 	Explodes:
@@ -222,10 +222,11 @@ QUAD.starport:
 		AlignWhenIdle: true
 	Armament:
 		Weapon: 90mm
-		Recoil: 171
-		RecoilRecovery: 34
-		LocalOffset: 85,0,128
+		Recoil: 128
+		RecoilRecovery: 32
+		LocalOffset: 256,0,0
 	AttackTurreted:
+	WithMuzzleFlash:
 	RenderUnit:
 	WithTurret:
 	AutoTarget:
@@ -267,13 +268,14 @@ SIEGETANK:
 		Range: 8
 	Turreted:
 		ROT: 3
-		Offset: -220,0,-40
+		Offset: 0,0,-32
 	Armament:
 		Weapon: 155mm
 		Recoil: 150
 		RecoilRecovery: 19
-		LocalOffset: 171,0,299
-	AttackTurreted:
+		LocalOffset: 512,0,320
+	AttackFrontal:
+	WithMuzzleFlash:
 	RenderUnit:
 		Image: SIEGETANK
 	WithTurret:

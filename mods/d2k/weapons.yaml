@@ -46,7 +46,7 @@ Bazooka:
 		InfDeath: 4
 		SmudgeType: SandCrater, RockCrater
 		Damage: 50
-		ImpactSound: EXPLSML2.WAV
+		ImpactSound: EXPLSML1.WAV
 
 Sniper:
 	ROF: 100
@@ -114,7 +114,6 @@ Slung:
 			Heavy: 90%
 			Concrete: 50%
 		Explosion: small_explosion
-		WaterExplosion: med_splash
 		InfDeath: 4
 		Damage: 30
 		ImpactSound: EXPLLG5.WAV
@@ -177,7 +176,7 @@ QuadRockets:
 		Shadow: yes
 		Proximity: yes
 		Inaccuracy: 3
-		Image: MISSILE
+		Image: RPG
 		ROT: 10
 		Speed: 40
 		RangeLimit: 40
@@ -190,8 +189,8 @@ QuadRockets:
 			Heavy: 100%
 			Concrete: 35%
 		InfDeath: 4
-		Explosion: small_artillery
-		ImpactSound: EXPLSML2.WAV
+		Explosion: med_explosion
+		ImpactSound: EXPLSML1.WAV
 		SmudgeType: SandCrater, RockCrater
 		Damage: 25
 
@@ -202,8 +201,9 @@ TurretGun:
 	Projectile: Bullet
 		Speed: 55
 		High: yes
-		Shadow: yes
+		Shadow: no
 		Inaccuracy: 9
+		Image: 120mm
 	Warhead:
 		Spread: 8
 		Versus:
@@ -211,8 +211,8 @@ TurretGun:
 			Wood: 75%
 			Light: 100%
 			Concrete: 65%
-		Explosion: med_explosion
-		ImpactSound: EXPLLG3.WAV
+		Explosion: small_napalm
+		ImpactSound: EXPLSML4.WAV
 		InfDeath: 4
 		SmudgeType: SandCrater, RockCrater
 		Damage: 55
@@ -245,8 +245,8 @@ TowerMissile:
 			Heavy: 50%
 			Concrete: 35%
 		InfDeath: 3
-		Explosion: artillery
-		ImpactSound: EXPLSML2
+		Explosion: small_explosion
+		ImpactSound: EXPLMD1.WAV
 		SmudgeType: SandCrater, RockCrater
 		Damage: 50
 
@@ -257,6 +257,7 @@ TowerMissile:
 	Projectile: Bullet
 		Speed: 50
 		Inaccuracy: 12
+		Image: 120mm
 	Warhead:
 		Spread: 8
 		Versus:
@@ -264,8 +265,8 @@ TowerMissile:
 			Wood: 50%
 			Light: 100%
 			Concrete: 50%
-		Explosion: small_artillery
-		ImpactSound: EXPLLG3.WAV
+		Explosion: small_napalm
+		ImpactSound: EXPLSML4.WAV
 		InfDeath: 4
 		SmudgeType: SandCrater, RockCrater
 		Damage: 40
@@ -277,6 +278,7 @@ TowerMissile:
 	Projectile: Bullet
 		Speed: 55
 		Inaccuracy: 11
+		Image: 120mm
 	Warhead:
 		Spread: 8
 		Versus:
@@ -284,8 +286,8 @@ TowerMissile:
 			Wood: 50%
 			Light: 100%
 			Concrete: 50%
-		Explosion: small_artillery
-		ImpactSound: EXPLLG3.WAV
+		Explosion: small_napalm
+		ImpactSound: EXPLSML4.WAV
 		InfDeath: 4
 		SmudgeType: SandCrater, RockCrater
 		Damage: 40
@@ -296,7 +298,7 @@ DevBullet:
 	Report: TANKHVY1.WAV
 	Projectile: Bullet
 		Speed: 50
-		Image: doubleblast
+		Image: doubleblastbullet
 	Warhead:
 		Spread: 8
 		Versus:
@@ -337,8 +339,8 @@ DevBullet:
 			Heavy: 50%
 			Concrete: 80%
 		InfDeath: 4
-		Explosion: artillery
-		ImpactSound: EXPLSML2.WAV
+		Explosion: mini_explosion
+		ImpactSound: EXPLMD3.WAV
 		SmudgeType: SandCrater, RockCrater
 		Damage: 60
 
@@ -362,7 +364,7 @@ FakeMissile:
 			None: 0%
 			Wood: 0%
 			Concrete: 0%
-		Explosion: large_explosion
+		Explosion: deviator
 		SmudgeType: SandCrater, RockCrater
 		Damage: 10
 		ImpactSound: EXPLSML2.WAV
@@ -379,6 +381,7 @@ FakeMissile:
 		Angle: .1
 		Inaccuracy: 40
 		ContrailLength: 20
+		Image: 155mm
 	Warhead:
 		Spread: 12
 		Versus:
@@ -388,8 +391,7 @@ FakeMissile:
 			Heavy: 50%
 			Concrete: 100%
 		Explosion: large_explosion
-		WaterExplosion: large_splash
-		ImpactSound: EXPLSML2.WAV
+		ImpactSound: EXPLLG3.WAV
 		InfDeath: 3
 		SmudgeType: SandCrater, RockCrater
 		Damage: 100
@@ -491,7 +493,7 @@ Napalm:
 			Heavy: 20%
 			Concrete: 70%
 		InfDeath: 4
-		Explosion: small_artillery
+		Explosion: artillery
 		ImpactSound: NAPALM1.WAV
 		SmudgeType: Crater
 		Damage: 300

@@ -178,8 +178,9 @@ DEVAST:
 	RenderUnit:
 	Armament:
 		Weapon: DevBullet
-		LocalOffset: 683,213,85, 683,-171,85
+		LocalOffset: 256,0,32
 	AttackFrontal:
+	WithMuzzleFlash:
 	AutoTarget:
 	Explodes:
 		Weapon: UnitExplodeScale
