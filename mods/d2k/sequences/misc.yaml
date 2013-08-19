@@ -55,6 +55,11 @@ explosion:
 		Start: 3687
 		Length: 6
 		BlendMode: Additive
+	deviator: DATA.R8
+		Start: 3512
+		Length: 23
+		BlendMode: Additive
+		Tick: 60
 
 laserfire:
 	idle: DATA.R8
