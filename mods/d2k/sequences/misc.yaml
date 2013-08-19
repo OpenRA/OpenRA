@@ -252,6 +252,12 @@ doubleblast:
 		Facings: -16
 		BlendMode: Additive
 
+doubleblastbullet:
+	idle: DATA.R8
+		Start: 3248
+		Facings: -16
+		BlendMode: Additive
+
 icon:
 	paratroopers: DATA.R8
 		Start: 4029
