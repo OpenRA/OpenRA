@@ -32,49 +32,37 @@ namespace OpenRA.Mods.RA
             Info = info;
             locations = new List<CPos>();
             if (Info.Location != null && Info.Location.Length % 2 == 0 && Info.Location.Length > 0)
-            {
                 for (int i = 0; i + 1 < Info.Location.Length; i+=2)
-                {
                     locations.Add(new CPos(Info.Location[i], Info.Location[i + 1]));
-                }
-            }
         }
 
         private CPos randomLocation()
         {
             if (locations.Count > 1)
-            {
                 return locations[world.SharedRandom.Next(0, locations.Count() - 1)];
-            }
-            return CPos.Zero;
+            return locations[0];
         }
 
         int delay = 0;
         public void Tick(Actor self)
         {
             if (world == null)
-            {
                 world = self.World;
-            }
-            if (delay % Info.Delay == 0)
+            if (locations.Count > 0 && delay % Info.Delay == 0)
             {
                 CPos location = randomLocation();
                 if (location != CPos.Zero)
                 {
-                    var actors = self.World.ActorMap.GetUnitsAt(self.Location);
+                    IEnumerable<Actor> actors = self.World.ActorMap.GetUnitsAt(self.Location);
                     foreach (Actor actor in actors)
                     {
                         bool isAffected = Info.Affects == null || Info.Affects.Contains(actor.Owner.InternalName);
                         if (isAffected)
                         {
                             if (Info.Order == "AttackMove" && actor.HasTrait<AttackMove>())
-                            {
                                 actor.Trait<AttackMove>().ResolveOrder(actor, new Order("AttackMove", actor, false) { TargetLocation = location });
-                            }
                             else if (Info.Order == "Move" && actor.HasTrait<Mobile>())
-                            {
                                 actor.Trait<Mobile>().ResolveOrder(actor, new Order("Move", actor, false) { TargetLocation = location });
-                            }
                         }
                     }
                 }

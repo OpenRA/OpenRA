@@ -95,27 +95,19 @@ namespace OpenRA.Mods.RA
         {
             stopSpawner();
             if (Info.PlayersWin != null)
-            {
                 foreach (string playerName in Info.PlayersWin)
                 {
                     Player player = world.Players.Where(p => p.InternalName == playerName).Last();
                     if (player != null)
-                    {
                         player.WinState = WinState.Won;
-                    }
                 }
-            }
             if (Info.PlayersLose != null)
-            {
                 foreach (string playerName in Info.PlayersLose)
                 {
                     Player player = world.Players.Where(p => p.InternalName == playerName).Last();
                     if (player != null)
-                    {
                         player.WinState = WinState.Lost;
-                    }
                 }
-            }
         }
 
         public void repeatSpawn()
@@ -150,18 +142,14 @@ namespace OpenRA.Mods.RA
             autoStart = currentWave().AutoStart;
             didBegin = false;
             if (currentWave().MessageBegin.Length > 0 && isMaster)
-            {
                 Game.AddChatLine(System.Drawing.Color.Red, "Info", currentWave().MessageBegin);
-            }
         }
 
         private int currentWaveIndex = 0;
         public Wave currentWave()
         {
             if (Info.Waves.Length > currentWaveIndex)
-            {
                 return Info.Waves[currentWaveIndex];
-            }
             return null;
         }
 
@@ -170,71 +158,57 @@ namespace OpenRA.Mods.RA
             Wave wave = currentWave();
             string owner = null;
             if (wave.Owners.Length <= internalWave)
-            {
                 owner = wave.Owners[wave.Owners.Length - 1];
-            }
             else
-            {
                 owner = wave.Owners[internalWave];
-            }
 
             string actorName = null;
             if (wave.Units.Length <= internalWave)
-            {
                 actorName = wave.Units[wave.Units.Length - 1];
-            }
             else
-            {
                 actorName = wave.Units[internalWave];
-            }
             if (actorName.Length > 0 && actorName[0] == '{')
             {
                 actorName = actorName.Substring(1);
                 int posOfEnd = actorName.IndexOf("}");
                 if (posOfEnd != -1)
-                {
                     actorName = actorName.Substring(0, posOfEnd);
-                }
                 string[] coordinates = actorName.Split('|');
                 if (coordinates.Length == 2)
                 {
                     int x = int.Parse(coordinates[0]);
                     int y = int.Parse(coordinates[1]);
-                    var units = world.ActorMap.GetUnitsAt(new CPos(x, y)).ToArray();
-                    if (units.Length > 0)
-                    {
-                        actorName = units[0].Info.Name;
-                    }
+                    Actor[] actors = world.ActorMap.GetUnitsAt(new CPos(x, y)).ToArray();
+                    if (actors.Length > 0)
+                        actorName = actors[0].Info.Name;
                 }
             }
 
             if (Info.SharedUnits && useMaster && isMaster)
             {
-                var actors = world.ActorsWithTrait<Spawner>().ToArray();
-                int canSpawn = Math.Min(actors.Length, unitsToSpawn);
+                TraitPair<Spawner>[] traitPairs = world.ActorsWithTrait<Spawner>().ToArray();
+                int canSpawn = Math.Min(traitPairs.Length, unitsToSpawn);
                 for (int i = 0; i < canSpawn; i++)
                 {
                     if (this.shouldSpawnActorForPlayer(owner, actorName))
                     {
-                        var actor = world.CreateActor(actorName, new TypeDictionary
+                        Actor actor = world.CreateActor(actorName, new TypeDictionary
                         {
                             new OwnerInit(owner),
-                            new LocationInit(actors[i].Actor.Location)
+                            new LocationInit(traitPairs[i].Actor.Location)
                         });
                         spawnedUnits.Add(actor);
                     }
                 }
                 unitsToSpawn -= canSpawn;
                 if (unitsToSpawn <= 0)
-                {
                     internalWave++;
-                }
             }
             else if (!useMaster || !Info.SharedUnits)
             {
                 if (this.shouldSpawnActorForPlayer(owner, actorName))
                 {
-                    var actor = world.CreateActor(actorName, new TypeDictionary
+                    Actor actor = world.CreateActor(actorName, new TypeDictionary
                     {
                         new OwnerInit(owner),
                         new LocationInit(location)
@@ -243,9 +217,7 @@ namespace OpenRA.Mods.RA
                 }
                 unitsToSpawn--;
                 if (unitsToSpawn <= 0)
-                {
                     internalWave++;
-                }
             }
         }
 
@@ -266,13 +238,9 @@ namespace OpenRA.Mods.RA
                     if (currentWave().PlayersToGiveCashAmount.Length > 0)
                     {
                         if (i < currentWave().PlayersToGiveCashAmount.Length)
-                        {
                             amount = currentWave().PlayersToGiveCashAmount[i];
-                        }
                         else
-                        {
                             amount = currentWave().PlayersToGiveCashAmount[currentWave().PlayersToGiveCashAmount.Length - 1];
-                        }
                     }
                     player.PlayerActor.Trait<PlayerResources>().GiveCash(amount);
                 }
@@ -294,7 +262,7 @@ namespace OpenRA.Mods.RA
             bool isAlive = true;
             if (Info.ActorsAlive != null)
             {
-                var actors = world.WorldActor.Trait<SpawnMapActors>().Actors;
+                Dictionary<string,Actor> actors = world.WorldActor.Trait<SpawnMapActors>().Actors;
                 int nrOfDeadActors = actors.Where(actor => Info.ActorsAlive.Contains(actor.Key) && actor.Value.IsDead()).Count();
                 isAlive = nrOfDeadActors == 0;
             }
@@ -330,13 +298,9 @@ namespace OpenRA.Mods.RA
                     useMaster = true;
                     string type = self.Info.Name;
                     if (!master.ContainsKey(type))
-                    {
                         master.Add(type, this);
-                    }
                     else
-                    {
                         isMaster = false;
-                    }
                 }
             }
             if (state == State.Initial)
@@ -347,20 +311,12 @@ namespace OpenRA.Mods.RA
             if (delay <= 0 && state == State.WaveSpawn)
             {
                 if (Info.Waves.Length > currentWaveIndex)
-                {
                     startWave();
-                }
                 else
-                {
                     if (spawnRepeat == 0)
-                    {
                         completeSpawner();
-                    }
                     else
-                    {
                         repeatSpawn();
-                    }
-                }
             }
             if (delay <= 0 && state == State.WaveStart)
             {
@@ -371,9 +327,7 @@ namespace OpenRA.Mods.RA
                 if (!didBegin)
                 {
                     if (currentWave().MessageDidBegin.Length > 0 && isMaster)
-                    {
                         Game.AddChatLine(System.Drawing.Color.Red, "Info", currentWave().MessageDidBegin);
-                    }
                     didBegin = true;
                 }
                 if (currentWave().Units.Length > internalWave && unitsToSpawn <= 0)
@@ -381,13 +335,9 @@ namespace OpenRA.Mods.RA
                     //New kind of units to spawn
                     int amounts = 1;
                     if (currentWave().Amounts.Length <= internalWave)
-                    {
                         amounts = currentWave().Amounts[currentWave().Amounts.Length - 1];
-                    }
                     else
-                    {
                         amounts = currentWave().Amounts[internalWave];
-                    }
                     unitsToSpawn = amounts;
                     spawnUnit(self.Location);
                     delay = currentWave().DelayBetweenSubSpawn;
@@ -403,9 +353,7 @@ namespace OpenRA.Mods.RA
                             delay = currentWave().DelayBetweenSubSpawn;
                         }
                         else
-                        {
                             delay = 25;
-                        }
                     }
                     else
                     {
@@ -447,16 +395,11 @@ namespace OpenRA.Mods.RA
                                 //No more units to spawn.
                                 givePlayersCash();
                                 if (currentWave().MessageEnded.Length > 0 && isMaster)
-                                {
                                     Game.AddChatLine(System.Drawing.Color.Red, "Info", currentWave().MessageEnded);
-                                }
                                 completeWave();
                             }
                             else
-                            {
-                                //Repeat wave
                                 repeatWave();
-                            }
                         }
                     }
                 }
@@ -470,12 +413,8 @@ namespace OpenRA.Mods.RA
                 if (autoStart == 0)
                 {
                     if (currentWave().AutoKill)
-                    {
                         foreach (Actor actor in spawnedUnits)
-                        {
                             actor.Destroy();
-                        }
-                    }
                     spawnedUnits.Clear();
                 }
             }
