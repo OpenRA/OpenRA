@@ -85,7 +85,6 @@ ide = {
   },
   specs = {
     none = {
-      linecomment = ">",
       sep = "\1",
     }
   },
