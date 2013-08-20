@@ -251,6 +251,7 @@ function SaveFileAs(editor)
       FileTreeMarkSelected(filePath)
       if ext ~= GetFileExt(filePath) then
         -- new extension, so setup new keywords and re-apply indicators
+        editor:ClearDocumentStyle() -- remove styles from the document
         SetupKeywords(editor, GetFileExt(filePath))
         IndicateAll(editor)
         MarkupStyle(editor)
