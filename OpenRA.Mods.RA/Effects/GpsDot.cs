@@ -74,6 +74,9 @@ namespace OpenRA.Mods.RA.Effects
 				return false;
 
 			var f = frozen[self.World.RenderPlayer].FromID(self.ActorID);
+			if (f == null)
+				return false;
+
 			return f.Visible && !f.HasRenderables;
 		}
 
