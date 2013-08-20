@@ -240,6 +240,9 @@ function FileWrite(file, content)
 end
 
 function FileRead(file)
+  -- on OSX "Open" dialog allows to open applications, which are folders
+  if wx.wxDirExists(file) then return nil, "Can't read directory as file." end
+
   local log = wx.wxLogNull() -- disable error reporting; will report as needed
   local file = wx.wxFile(file, wx.wxFile.read)
   if not file:IsOpened() then return nil, wx.wxSysErrorMsg() end
