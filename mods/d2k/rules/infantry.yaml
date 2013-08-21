@@ -83,8 +83,8 @@ MEDIC:
 	Buildable:
 		Queue: Infantry
 		BuildPaletteOrder: 60
-		Owner: atreides,ordos
-		Prerequisites: research
+		Owner: atreides, ordos
+		Prerequisites: Research
 		Hotkey: m
 	Valued:
 		Cost: 500

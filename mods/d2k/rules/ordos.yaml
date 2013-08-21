@@ -231,7 +231,7 @@ DEVIATORTANK:
 	Buildable:
 		Queue: Armor
 		BuildPaletteOrder: 50
-		Prerequisites: heavyo,research
+		Prerequisites: heavyo, researcho
 #		Owner: ordos
 		Hotkey: d
 	Mobile:
