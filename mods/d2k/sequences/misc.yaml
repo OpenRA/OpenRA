@@ -107,19 +107,19 @@ rank:
 overlay:
 	build-valid-arrakis: DATA.R8
 		Start: 0
-		Offset: -20,-20
+		Offset: -16,-16
 	build-invalid: DATA.R8
 		Start: 1
-		Offset: -20,-20
+		Offset: -16,-16
 	target-select: DATA.R8
 		Start: 2
-		Offset: -20,-20
+		Offset: -16,-16
 	target-valid-arrakis: DATA.R8
 		Start: 0
-		Offset: -20,-20
+		Offset: -16,-16
 	target-invalid: DATA.R8
 		Start: 1
-		Offset: -20,-20
+		Offset: -16,-16
 
 rallypoint:
 	flag:flagfly
