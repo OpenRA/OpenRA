@@ -163,6 +163,20 @@ local colors = {
     Blue        = H'859900',
     Purple      = H'268BD2',
   },
+  NotepadPlusPlus = { -- contributed by Florian (https://github.com/SiENcE)
+    Background = H'FFFFFF',
+    CurrentLine = H'E9E2FF',
+    Selection = H'ADADA1',
+    Foreground = H'000000',
+    Comment = H'008000',
+    Red = H'FF6900',
+    Orange = H'00FF00',
+    Yellow = H'FF4E00',
+    Green = H'808080',
+    Aqua = H'260099',
+    Blue  = H'2123FF',
+    Purple = H'FFFFFF',
+  },
 }
 
 -- add more of the specified color (keeping all in 0-255 range)

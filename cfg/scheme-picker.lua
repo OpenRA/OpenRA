@@ -1,5 +1,5 @@
 --[[
-1. Pick a color scheme by clicking on a link:
+1. Pick a color scheme by clicking on its name:
   - [Tomorrow](macro:shell(ApplyStyleConfig('cfg/tomorrow.lua','Tomorrow')))
   - [TomorrowContrast](macro:shell(ApplyStyleConfig('cfg/tomorrow.lua','TomorrowContrast')))
   - [TomorrowNight](macro:shell(ApplyStyleConfig('cfg/tomorrow.lua','TomorrowNight')))
@@ -10,6 +10,7 @@
   - [Monokai](macro:shell(ApplyStyleConfig('cfg/tomorrow.lua','Monokai')))
   - [SolarizedDark](macro:shell(ApplyStyleConfig('cfg/tomorrow.lua','SolarizedDark')))
   - [SolarizedLight](macro:shell(ApplyStyleConfig('cfg/tomorrow.lua','SolarizedLight')))
+  - [Notepad++](macro:shell(ApplyStyleConfig('cfg/tomorrow.lua','NotepadPlusPlus')))
 
   - [ZeroBrane Studio](macro:shell(ide.config.styles = StylesGetDefault(); ReApplySpecAndStyles()))
 
