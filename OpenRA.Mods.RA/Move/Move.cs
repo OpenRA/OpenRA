@@ -45,7 +45,7 @@ namespace OpenRA.Mods.RA.Move
 			this.nearEnough = WRange.Zero;
 		}
 
-		// Hack for legacy code
+		// HACK: for legacy code
 		public Move(CPos destination, int nearEnough)
 			: this(destination, WRange.FromCells(nearEnough)) { }
 
@@ -319,7 +319,11 @@ namespace OpenRA.Mods.RA.Move
 
 			void UpdateCenterLocation(Actor self, Mobile mobile)
 			{
-				mobile.SetVisualPosition(self, WPos.Lerp(from, to, moveFraction, moveFractionTotal));
+				// avoid division through zero
+				if (moveFractionTotal != 0)
+					mobile.SetVisualPosition(self, WPos.Lerp(from, to, moveFraction, moveFractionTotal));
+				else
+					mobile.SetVisualPosition(self, to);
 
 				if (moveFraction >= moveFractionTotal)
 					mobile.Facing = toFacing & 0xFF;
@@ -407,7 +411,7 @@ namespace OpenRA.Mods.RA.Move
 			if (a == null)
 				return false;
 
-			// Dirty, but it suffices until we do something better:
+			// HACK: Dirty, but it suffices until we do something better:
 			if (a.GetType() == typeof(Move)) return true;
 			if (a.GetType() == typeof(MoveAdjacentTo)) return true;
 			if (a.GetType() == typeof(AttackMove)) return true;
