@@ -41,9 +41,10 @@ namespace OpenRA.Mods.RA
 
 		public override void Activate(Actor self, Order order)
 		{
-			// Play to everyone but the current player
-			if (self.Owner != self.World.LocalPlayer)
+			if (self.Owner.IsAlliedWith(self.World.RenderPlayer))
 				Sound.Play(Info.LaunchSound);
+			else
+				Sound.Play(Info.IncomingSound);
 
 			var npi = Info as NukePowerInfo;
 			var rb = self.Trait<RenderSimple>();

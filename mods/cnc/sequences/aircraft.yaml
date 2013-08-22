@@ -2,7 +2,7 @@ c17:
 	idle:
 		Start: 0
 		Facings: 32
-	icon: c17iconh
+	icon: c17icnh
 		Start: 0
 
 tran:

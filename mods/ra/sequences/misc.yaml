@@ -410,3 +410,15 @@ icon:
 		Start: 0
 	gps: gpssicon
 		Start: 0
+	parabombs: pbmbicon
+		Start: 0
+	sonar: sonricon
+		Start: 0
+
+minp:
+	icon: jmin
+		Start: 0
+
+minv:
+	icon: jmin
+		Start: 0

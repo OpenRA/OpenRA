@@ -31,7 +31,8 @@ MSLO:
 		BeginChargeSound: aprep1.aud
 		EndChargeSound: aready1.aud
 		SelectTargetSound: slcttgt1.aud
-		LaunchSound: alaunch1.aud
+		IncomingSound: alaunch1.aud
+		LaunchSound:
 		MissileWeapon: atomic
 		SpawnOffset: 0,427,0
 		DisplayTimer: True

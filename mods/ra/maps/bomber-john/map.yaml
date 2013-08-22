@@ -819,7 +819,6 @@ Rules:
 			Cost: 800
 		Tooltip:
 			Name: Bomber
-			Icon: MNLYICON
 			Description: Lays mines to destroy unwary enemy units.\n  Unarmed
 		Health:
 			HP: 500
@@ -858,7 +857,7 @@ Rules:
 			Period: 150
 			Amount: 30
 		ChronoshiftPower:
-			Image: warpicon
+			Icon: chrono
 			ChargeTime: 60
 			Description: Chronoshift
 			LongDesc: Teleport a group of vehicles across\nthe map.
@@ -869,7 +868,7 @@ Rules:
 			KillCargo: yes
 			Range: 3
 		IronCurtainPower:
-			Image: infxicon
+			Icon: invuln
 			ChargeTime: 30
 			Description: Invulnerability
 			LongDesc: Makes a unit invulnerable\nfor 3 seconds.
@@ -889,7 +888,6 @@ Rules:
 		Buildable:
 			Queue: Building
 			BuildPaletteOrder: 30
-			#Prerequisites: MNLYR
 			Owner: allies, soviet
 			Hotkey: b
 		Valued:
@@ -902,7 +900,6 @@ Rules:
 		BelowUnits:
 		Tooltip:
 			Name: Bomb
-			Icon: jmin
 			Description: Bomb (Hotkey B)
 		ProximityCaptor:
 			Types: Mine
@@ -917,6 +914,7 @@ Rules:
 		AttackFrontal:
 		Explodes:
 		DemoTruck:
+		BodyOrientation:
 
 	T17:
 		Health:
@@ -932,7 +930,7 @@ Rules:
 		Tooltip:
 			Name: Tree
 		ChronoshiftPower:
-			Image: warpicon
+			Icon: chrono
 			ChargeTime: 60
 			Description: Chronoshift
 			LongDesc: Teleport a group of vehicles across\nthe map.
@@ -943,7 +941,7 @@ Rules:
 			KillCargo: yes
 			Range: 3
 		IronCurtainPower:
-			Image: infxicon
+			Icon: invuln
 			ChargeTime: 30
 			Description: Invulnerability
 			LongDesc: Makes a unit invulnerable\nfor 3 seconds.
@@ -964,6 +962,12 @@ Sequences:
 		damaged-build:
 			Start: 1
 			Length: *
+		icon: jmin
+			Start: 0
+
+	mnlyr:
+		icon mnlyicon
+
 	brick:
 		idle:
 			Start: 0
