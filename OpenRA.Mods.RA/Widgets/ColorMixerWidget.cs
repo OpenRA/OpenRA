@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA.Widgets
 		public event Action OnChange = () => {};
 
 		float H, S, V;
-		Bitmap frontBitmap, backBitmap;
+		byte[] front, back;
 		Sprite mixerSprite;
 		bool isMoving;
 
@@ -50,12 +50,12 @@ namespace OpenRA.Mods.RA.Widgets
 			base.Initialize(args);
 
 			// Bitmap data is generated in a background thread and then flipped
-			frontBitmap = new Bitmap(256, 256);
-			backBitmap = new Bitmap(256, 256);
+			front = new byte[4*256*256];
+			back = new byte[4*256*256];
 
 			var rect = new Rectangle((int)(255*SRange[0]), (int)(255*(1 - VRange[1])), (int)(255*(SRange[1] - SRange[0]))+1, (int)(255*(VRange[1] - VRange[0])) + 1);
 			mixerSprite = new Sprite(new Sheet(new Size(256, 256)), rect, TextureChannel.Alpha);
-			mixerSprite.sheet.Texture.SetData(frontBitmap);
+			mixerSprite.sheet.Texture.SetData(front, 256, 256);
 		}
 
 		void GenerateBitmap()
@@ -95,28 +95,25 @@ namespace OpenRA.Mods.RA.Widgets
 					hue = H;
 				}
 
-				lock (backBitmap)
+				lock (back)
 				{
-					var bitmapData = backBitmap.LockBits(backBitmap.Bounds(),
-						ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
-
 					unsafe
 					{
-						int* c = (int*)bitmapData.Scan0;
-
 						// Generate palette in HSV
-						for (var v = 0; v < 256; v++)
-							for (var s = 0; s < 256; s++)
-								*(c + (v * bitmapData.Stride >> 2) + s) = HSLColor.FromHSV(hue, s / 255f, (255 - v) / 255f).RGB.ToArgb();
+						fixed (byte* cc = &back[0])
+						{
+							var c = (int*)cc;
+							for (var v = 0; v < 256; v++)
+								for (var s = 0; s < 256; s++)
+									*(c + (v * 256) + s) = HSLColor.FromHSV(hue, s / 255f, (255 - v) / 255f).RGB.ToArgb();
+						}
 					}
 
-					backBitmap.UnlockBits(bitmapData);
-
-					lock (frontBitmap)
+					lock (front)
 					{
-						var swap = frontBitmap;
-						frontBitmap = backBitmap;
-						backBitmap = swap;
+						var swap = front;
+						front = back;
+						back = swap;
 					}
 				}
 			}
@@ -124,15 +121,15 @@ namespace OpenRA.Mods.RA.Widgets
 
 		public override void Draw()
 		{
-			if (Monitor.TryEnter(frontBitmap))
+			if (Monitor.TryEnter(front))
 			{
 				try
 				{
-					mixerSprite.sheet.Texture.SetData(frontBitmap);
+					mixerSprite.sheet.Texture.SetData(front, 256, 256);
 				}
 				finally
 				{
-					Monitor.Exit(frontBitmap);
+					Monitor.Exit(front);
 				}
 			}
 
