@@ -704,7 +704,6 @@ MINP:
 		Palette:
 	Tooltip:
 		Name: Anti-Personnel Mine
-		Icon: jmin
 	ProximityCaptor:
 		Types: Mine
 	TargetableUnit:
@@ -730,7 +729,6 @@ MINV:
 		Palette:
 	Tooltip:
 		Name: Anti-Tank Mine
-		Icon: jmin
 	ProximityCaptor:
 		Types: Mine
 	TargetableUnit:
@@ -827,7 +825,7 @@ FLARE:
 
 powerproxy.parabombs:
 	AirstrikePower:
-		Image: pbmbicon
+		Icon: parabombs
 		Description: Parabombs (Single Use)
 		LongDesc: A Badger drops a load of parachuted\nbombs on your target.
 		OneShot: yes
@@ -838,7 +836,7 @@ powerproxy.parabombs:
 
 powerproxy.sonarpulse:
 	SonarPulsePower:
-		Image: sonricon
+		Icon: sonar
 		Description: Sonar Pulse (Single Use)
 		LongDesc: Reveals all submarines on the map for a \nshort time.
 		AllowMultiple: yes

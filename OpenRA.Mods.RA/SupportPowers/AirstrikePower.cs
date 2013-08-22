@@ -30,12 +30,19 @@ namespace OpenRA.Mods.RA
 	class AirstrikePower : SupportPower
 	{
 		public AirstrikePower(Actor self, AirstrikePowerInfo info) : base(self, info) { }
+
 		public override void Activate(Actor self, Order order)
 		{
 			var startPos = self.World.ChooseRandomEdgeCell();
 			self.World.AddFrameEndTask(w =>
 			{
 				var info = (Info as AirstrikePowerInfo);
+
+				if (self.Owner.IsAlliedWith(self.World.RenderPlayer))
+					Sound.Play(Info.LaunchSound);
+				else
+					Sound.Play(Info.IncomingSound);
+
 				var flare = info.FlareType != null ? w.CreateActor(info.FlareType, new TypeDictionary
 				{
 					new LocationInit( order.TargetLocation ),

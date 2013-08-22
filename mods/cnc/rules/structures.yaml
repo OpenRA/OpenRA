@@ -379,6 +379,7 @@ HQ:
 		LongDesc: Deploy an aerial napalm strike.\nBurns buildings and infantry along a line.
 		EndChargeSound: airredy1.aud
 		SelectTargetSound: select1.aud
+		IncomingSound: enemya.aud
 		UnitType: a10
 	SupportPowerChargeBar:
 
@@ -473,10 +474,11 @@ TMPL:
 		ChargeTime: 300
 		Description: Nuclear Strike
 		LongDesc: Launch a tactical nuke.\nApplies heavy damage over a large area.
-		BeginChargeSound: 
+		BeginChargeSound:
 		EndChargeSound: nukavail.aud
 		SelectTargetSound: select1.aud
-		LaunchSound: nukel.aud
+		LaunchSound: nuklnch1.aud
+		IncomingSound: nuke1.aud
 		MissileWeapon: atomic
 	SupportPowerChargeBar:
 

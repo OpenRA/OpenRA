@@ -86,8 +86,9 @@ PALACEH:
 		LongDesc: Launches a nuclear missile at a target location
 		BeginChargeSound: HI_PREP.AUD
 		EndChargeSound: HI_DHRDY.AUD
-		SelectTargetSound: 
+		SelectTargetSound:
 		LaunchSound:
+		IncomingSound:
 		MissileWeapon: atomic
 		SpawnOffset:-512,1c171,0
 	CanPowerDown:

@@ -62,18 +62,20 @@ namespace OpenRA.Mods.RA.Widgets
 			}
 			foreach (var queue in queues)
 			{
-				var item = queue.Trait.AllItems().FirstOrDefault();
-				if (item == null)
+				var current = queue.Trait.CurrentItem();
+				if (current == null)
 					continue;
-				var icon = new Animation(RenderSimple.GetImage(item));
-				icon.Play(item.Traits.Get<TooltipInfo>().Icon);
+
+				var actor = queue.Trait.AllItems().Where(a => a.Name == current.Item).FirstOrDefault();
+				if (actor == null)
+					continue;
+
+				var icon = new Animation(RenderSimple.GetImage(actor));
+				icon.Play(actor.Traits.Get<TooltipInfo>().Icon);
 				var size = icon.Image.size / new float2(2, 2);
 				var location = new float2(RenderBounds.Location) + new float2(queue.i * (int)size.Length, 0);
 				WidgetUtils.DrawSHP(icon.Image, location, worldRenderer, size);
 
-				var current = queue.Trait.CurrentItem();
-				if (current == null)
-					continue;
 				var clock = clocks[queue.Trait];
 				clock.PlayFetchIndex("idle",
 					() => current.TotalTime == 0 ? 0 : ((current.TotalTime - current.RemainingTime)
