@@ -56,4 +56,9 @@
   <ItemGroup>
     <Compile Include="TSLoadScreen.cs" />
   </ItemGroup>
+  <PropertyGroup>
+    <PostBuildEvent>mkdir "$(SolutionDir)mods/ts/"
+copy "$(TargetPath)" "$(SolutionDir)mods/ts/"
+cd "$(SolutionDir)"</PostBuildEvent>
+  </PropertyGroup>
 </Project>
