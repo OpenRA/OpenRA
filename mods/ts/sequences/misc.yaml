@@ -72,6 +72,9 @@ pips:
 		Start: 2
 
 explosion:
+	building: twlt070
+		Start: 0
+		Length: *
 	piff: piff
 		Start: 0
 		Length: *
