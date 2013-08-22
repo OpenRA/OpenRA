@@ -52,30 +52,151 @@ clock:
 		Start: 0
 		Length: *
 
-pips:
-	medic:
-		Start: 6
-	tag-primary:
-		Start: 8
-	pip-empty:
-		Start: 1
 # TODO:
-	pip-green:
+# needs palette.pal
+pips:
+	medic: 
+		Start: 6
+	tag-primary: 
+		Start: 8
+	pip-empty: pips2
+		Start: 0
+	pip-green: pips2
+		Start: 1
+	pip-yellow: pips2
 		Start: 2
-	pip-yellow:
+	pip-gray: pips2
+		Start: 3
+	pip-red: pips2
+		Start: 4
+	pip-blue: pips2
+		Start: 5
+	pip-ammo: pips2
+		Start: 6
+# TODO:
+	pip-empty-building:
+		Start: 0
+	pip-green-building:
+		Start: 1
+	pip-yellow-building:
 		Start: 2
-	pip-gray:
-		Start: 2
-	pip-red:
-		Start: 2
-	pip-blue:
-		Start: 2
+	pip-gray-building:
+		Start: 3
+	pip-red-building:
+		Start: 4
+	pip-blue-building:
+		Start: 5
 
 explosion:
+	building: twlt070
+		Start: 0
+		Length: *
+	ionring: ring1
+		Start: 0
+		Length: *
+		Tick: 160
+	pulse_explosion: pulsefx2
+		Start: 0
+		Length: *
+		Tick: 160
+		BlendMode: Additive
+	small_watersplash: h2o_exp2
+		Start: 0
+		Length: *
+	large_watersplash: h2o_exp1
+		Start: 0
+		Length: *
 	piff: piff
 		Start: 0
 		Length: *
 	piffpiff: piffpiff
+		Start: 0
+		Length: *
+	small_explosion: explosml
+		Start: 0
+		Length: *
+	medium_explosion: explomed
+		Start: 0
+		Length: *
+	large_explosion: explolrg
+		Start: 0
+		Length: *
+	tiny_bang: s_bang16
+		Start: 0
+		Length: *
+	small_bang: s_bang24
+		Start: 0
+		Length: *
+	medium_bang: s_bang34
+		Start: 0
+		Length: *
+	large_bang: s_bang48
+		Start: 0
+		Length: *
+	tiny_brnl: s_brnl20
+		Start: 0
+		Length: *
+	small_brnl: s_brnl30
+		Start: 0
+		Length: *
+	medium_brnl: s_brnl40
+		Start: 0
+		Length: *
+	large_brnl: s_brnl58
+		Start: 0
+		Length: *
+	tiny_tumu: s_tumu22
+		Start: 0
+		Length: *
+	small_tumu: s_tumu30
+		Start: 0
+		Length: *
+	medium_tumu: s_tumu42
+		Start: 0
+		Length: *
+	large_tumu: s_tumu60
+		Start: 0
+		Length: *
+	tiny_clsn: s_clsn16
+		Start: 0
+		Length: *
+	small_clsn: s_clsn22
+		Start: 0
+		Length: *
+	medium_clsn: s_clsn30
+		Start: 0
+		Length: *
+	large_clsn: s_clsn42
+		Start: 0
+		Length: *
+	verylarge_clsn: s_clsn58
+		Start: 0
+		Length: *
+	tiny_twlt: twlt026
+		Start: 0
+		Length: *
+	small_twlt: twlt036
+		Start: 0
+		Length: *
+	medium_twlt: twlt050
+		Start: 0
+		Length: *
+	large_twlt: twlt070
+		Start: 0
+		Length: *
+	verylarge_twlt: twlt100
+		Start: 0
+		Length: *
+	tiny_grey_explosion: xgrysml1
+		Start: 0
+		Length: *
+	small_grey_explosion: xgrysml2
+		Start: 0
+		Length: *
+	medium_grey_explosion: xgrymed1
+		Start: 0
+		Length: *
+	large_grey_explosion: xgrymed2
 		Start: 0
 		Length: *
 
@@ -84,6 +205,13 @@ discus:
 		Start: 0
 		Length: *
 
+# TODO: needs unit*.pal
+canister:
+	idle:
+		Start: 0
+		Length: *
+
+# TODO: needs unit*.pal + ShadowIndex: 4
 dragon:
 	idle:
 		Start: 0
