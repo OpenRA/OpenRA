@@ -21,7 +21,8 @@ Grenade:
 	Projectile: Bullet
 		Speed: 5
 		High: yes
-		Angle: .1
+		Shadow: yes
+		Angle: 0.1
 		Inaccuracy: 13
 		Image: DISCUS
 	Warhead:
@@ -33,6 +34,8 @@ Grenade:
 			Heavy: 5%
 		InfDeath: 2
 		Damage: 40
+		Explosion: large_grey_explosion
+		ImpactSound: expnew13.aud
 
 Bazooka:
 	ROF: 60
@@ -43,7 +46,7 @@ Bazooka:
 		Speed: 25
 		Arm: 2
 		High: yes
-		Shadow: no
+		Shadow: yes
 		Proximity: yes
 		Inaccuracy: 3
 		Image: DRAGON
@@ -58,6 +61,8 @@ Bazooka:
 			Concrete: 20%
 		InfDeath: 2
 		Damage: 25
+		Explosion: small_clsn
+		ImpactSound: expnew12.aud
 
 MultiCluster:
 	ROF: 80
@@ -68,7 +73,7 @@ MultiCluster:
 		Speed: 20
 		Arm: 2
 		High: yes
-		Shadow: no
+		Shadow: yes
 		Proximity: yes
 		Inaccuracy: 3
 		Image: DRAGON
@@ -83,6 +88,8 @@ MultiCluster:
 			Concrete: 20%
 		InfDeath: 2
 		Damage: 65
+		Explosion: large_explosion
+		ImpactSound: expnew09.aud
 
 Heal:
 	ROF: 80
@@ -151,13 +158,13 @@ LtRail:
 
 Vulcan3:
 	ROF: 30
+	Burst: 3
 	Range: 4
 	Report: CYGUN1.AUD
 	Projectile: Bullet
 		Speed: 100
 	Warhead:
 		Spread: 3
-		Burst: 3
 		Versus:
 			Wood: 25%
 			Light: 30%
@@ -169,13 +176,13 @@ Vulcan3:
 
 Vulcan2:
 	ROF: 50
+	Burst: 3
 	Range: 6
 	Report: TSGUN4.AUD
 	Projectile: Bullet
 		Speed: 100
 	Warhead:
 		Spread: 3
-		Burst: 3
 		Versus:
 			None: 100%
 			Wood: 60%
@@ -204,12 +211,14 @@ Vulcan:
 
 FiendShard:
 	ROF: 30
+	Burst: 3
 	Range: 5
 	Report: FIEND2.AUD
 	Projectile: Missile
-		Burst: 3
 		Speed: 25
 		Image: CRYSTAL4
+		Shadow: yes
+		Angle: 0.15
 	Warhead:
 		Versus:
 			Wood: 25%
@@ -221,11 +230,11 @@ FiendShard:
 
 JumpCannon:
 	ROF: 40
+	Burst: 2
 	Range: 5
 	Report: JUMPJET1.AUD
 	Projectile: Bullet
 		Speed: 100
-		Burst: 2
 	Warhead:
 		Versus:
 			Wood: 25%
@@ -238,15 +247,15 @@ JumpCannon:
 
 HoverMissile:
 	ROF: 68
+	Burst: 2
 	Range: 8
 	Report: HOVRMIS1.AUD
 	ValidTargets: Ground, Air
 	Projectile: Missile
-		Burst: 2
 		Speed: 30
 		Arm: 2
 		High: yes
-		Shadow: no
+		Shadow: yes
 		Proximity: yes
 		Inaccuracy: 3
 		Image: DRAGON
@@ -261,15 +270,20 @@ HoverMissile:
 			Concrete: 20%
 		InfDeath: 2
 		Damage: 30
+		Explosion: small_clsn
+		ImpactSound: expnew12.aud
 
 120mmx:
 	ROF: 80
 	Range: 6.75
-	Report: 120MMX9.AUD
+	Report: 120MMF.AUD
 	Burst: 2
 	BurstDelay: 5
 	Projectile: Bullet
 		Speed: 40
+		Image: 120mm
+		Shadow: yes
+		Angle: 0.1
 	Warhead:
 		Spread: 3
 		Versus:
@@ -280,6 +294,8 @@ HoverMissile:
 			Concrete: 100%
 		InfDeath: 2
 		Damage: 50
+		Explosion: medium_clsn
+		ImpactSound: expnew14.aud
 
 MammothTusk:
 	ROF: 80
@@ -290,7 +306,7 @@ MammothTusk:
 	Projectile: Missile
 		Arm: 0
 		High: yes
-		Shadow: no
+		Shadow: yes
 		Proximity: yes
 		Inaccuracy: 3
 		Image: DRAGON
@@ -306,6 +322,8 @@ MammothTusk:
 			Heavy: 50%
 		InfDeath: 2
 		Damage: 40
+		Explosion: medium_bang
+		ImpactSound: expnew12.aud
 
 Repair:
 	ROF: 80
@@ -326,10 +344,10 @@ Repair:
 
 SlimeAttack:
 	ROF: 80
+	Burst: 3
 	Range: 5
 	Report: VICER1.AUD
 	Projectile: Bullet
-		Burst: 3
 		Speed: 25
 	Warhead:
 		Versus:
@@ -359,8 +377,6 @@ SuicideBomb:
 	ROF: 80
 	Range: 6.75
 	Report: 120MMF.AUD
-	Burst: 2
-	BurstDelay: 5
 	Projectile: Bullet
 		Speed: 90
 	Warhead:
@@ -373,12 +389,14 @@ SuicideBomb:
 			Concrete: 100%
 		InfDeath: 3
 		Damage: 70
+		Explosion: large_clsn
+		ImpactSound: expnew14.aud
 
 MechRailgun:
 	ROF: 60
 	Range: 8
 	Burst: 2
-	BurstDelay:10
+	BurstDelay: 10
 	Charges: yes
 	Report: RAILUSE5.AUD
 	Projectile: LaserZap
@@ -409,14 +427,15 @@ AssaultCannon:
 
 BikeMissile:
 	ROF: 60
+	Burst: 2
+	BurstDelay: 60
 	Range: 5
 	Report: MISL1.AUD
 	ValidTargets: Ground
-	Burst: 2
 	Projectile: Missile
 		Arm: 2
 		High: yes
-		Shadow: no
+		Shadow: yes
 		Proximity: yes
 		Inaccuracy: 3
 		Image: DRAGON
@@ -432,6 +451,8 @@ BikeMissile:
 			Heavy: 50%
 		InfDeath: 2
 		Damage: 40
+		Explosion: small_clsn
+		ImpactSound: expnew12.aud
 
 RaiderCannon:
 	ROF: 55
@@ -465,6 +486,7 @@ FireballLauncher: # TODO: add fire particles
 			Wood: 100%
 			Light: 50%
 			Heavy: 25%
+			Concrete: 20%
 		InfDeath: 5
 		Damage: 90
 
@@ -472,12 +494,12 @@ SonicZap:
 	ROF: 120
 	Range: 6
 	Burst: 2
-	BurstDelay:10
+	BurstDelay: 10
 	Charges: yes
 	Report: SONIC4.AUD
 	Projectile: LaserZap # TODO: SonicBeam
 		Color: 200,0,255,255
-		BeamWidth: 2
+		BeamWidth: 10
 	Warhead:
 		Spread: 1
 		InfDeath: 5
@@ -494,7 +516,7 @@ Dragon:
 		Speed: 25
 		Arm: 2
 		High: yes
-		Shadow: no
+		Shadow: yes
 		Proximity: yes
 		Inaccuracy: 3
 		Image: DRAGON
@@ -509,15 +531,18 @@ Dragon:
 			Concrete: 20%
 		InfDeath: 2
 		Damage: 30
+		Explosion: small_clsn
+		ImpactSound: expnew12.aud
 
 90mm:
 	ROF: 50
 	Range: 6.75
 	Report: 120MMF.AUD
-	Burst: 2
-	BurstDelay: 5
 	Projectile: Bullet
 		Speed: 40
+		Image: 120mm
+		Shadow: yes
+		Angle: 0.1
 	Warhead:
 		Spread: 3
 		Versus:
@@ -528,15 +553,18 @@ Dragon:
 			Concrete: 100%
 		InfDeath: 2
 		Damage: 36
+		Explosion: medium_clsn
+		ImpactSound: expnew14.aud
 
 155mm:
 	ROF: 110
 	Range: 18
 	Report: 120MMF.AUD
-	Burst: 2
-	BurstDelay: 5
 	Projectile: Bullet
 		Speed: 10
+		Image: 120mm
+		Angle: 0.4
+		Shadow: yes
 	MinRange: 5
 	Warhead:
 		Spread: 7
@@ -548,6 +576,8 @@ Dragon:
 			Concrete: 35%
 		InfDeath: 2
 		Damage: 150
+		Explosion: large_explosion
+		ImpactSound: expnew09.aud
 
 Hellfire:
 	ROF: 50
@@ -559,7 +589,7 @@ Hellfire:
 		Speed: 30
 		Arm: 2
 		High: yes
-		Shadow: no
+		Shadow: yes
 		Proximity: yes
 		Inaccuracy: 3
 		Image: DRAGON
@@ -575,6 +605,8 @@ Hellfire:
 			Concrete: 30%
 		InfDeath: 3
 		Damage: 30
+		Explosion: small_bang
+		ImpactSound: expnew12.aud
 
 Bomb:
 	ROF: 10
@@ -582,6 +614,7 @@ Bomb:
 	Projectile: Bullet
 		Speed: 10
 		Image: 120MM
+		Shadow: yes
 	Warhead:
 		Spread: 7
 		Versus:
@@ -592,6 +625,8 @@ Bomb:
 			Concrete: 100%
 		InfDeath: 2
 		Damage: 160
+		Explosion: large_explosion
+		ImpactSound: expnew09.aud
 
 Proton:
 	ROF: 3
@@ -603,7 +638,7 @@ Proton:
 		Speed: 30
 		Arm: 2
 		High: yes
-		Shadow: no
+		Shadow: yes
 		Proximity: yes
 		Inaccuracy: 3
 		Image: TORPEDO
@@ -619,6 +654,8 @@ Proton:
 			Concrete: 60%
 		InfDeath: 3
 		Damage: 20
+		Explosion: small_bang
+		ImpactSound: expnew12.aud
 
 HarpyClaw:
 	ROF: 36

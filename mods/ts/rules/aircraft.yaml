@@ -261,6 +261,8 @@ APACHE:
 		Ammo: 12
 		PipCount: 4
 	AutoTarget:
+	WithRotor:
+		Offset: 85,0,384
 	RenderSprites:
 	RenderVoxels:
 	WithVoxelBody:

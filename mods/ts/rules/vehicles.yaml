@@ -175,6 +175,7 @@ HVR:
 	RenderVoxels:
 	WithVoxelBody:
 	WithVoxelTurret:
+	WithVoxelBarrel:
 
 TRUCKB: # NOTE: TRUCKA is unloaded
 	Inherits: ^Vehicle
