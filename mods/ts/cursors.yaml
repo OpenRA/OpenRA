@@ -4,37 +4,37 @@
 Cursors:
 	mouse: cursor
 		scroll-t: #TODO
-			start:1
-		scroll-tr: #TODO
 			start: 2
-		scroll-r: #TODO
+		scroll-tr: #TODO
 			start: 3
-		scroll-br: #TODO
+		scroll-r: #TODO
 			start: 4
+		scroll-br: #TODO
+			start: 5
 		scroll-b: #TODO
-			start:5
+			start: 6
 		scroll-bl: #TODO
-			start:6
+			start: 7
 		scroll-l: #TODO
-			start:7
+			start: 8
 		scroll-tl: #TODO
-			start:8
+			start: 9
 		scroll-t-blocked: #TODO
-			start:124
+			start: 10
 		scroll-tr-blocked: #TODO
-			start:125
+			start: 11
 		scroll-r-blocked: #TODO
-			start:126
+			start: 12
 		scroll-br-blocked: #TODO
-			start:127
+			start: 13
 		scroll-b-blocked: #TODO
-			start:128
+			start: 14
 		scroll-bl-blocked: #TODO
-			start:129
+			start: 15
 		scroll-l-blocked: #TODO
-			start:130
+			start: 16
 		scroll-tl-blocked:#TODO
-			start:131
+			start: 17
 		select:
 			start:18
 			length: 12
@@ -64,23 +64,23 @@ Cursors:
 		move-blocked-minimap:
 			start:52
 		attack:
-			start: 31
-			length: 10
+			start: 53
+			length: 5
 		attack-blocked: # TODO: unused
-			start: 32
+			start: 41
 			length: 1
 		attack-minimap:
-			start: 42
-			length: 10
+			start: 63
+			length: 5
 		attackmove: #TODO
-			start:21
-			length: 8
+			start: 58
+			length: 5
 		attackmove-minimap: #TODO
-			start:134
-			length: 8
+			start:68
+			length: 5
 		harvest: #TODO
-			start:21
-			length: 8
+			start:53
+			length: 5
 		harvest-minimap: #TODO
 			start:134
 			length: 8
