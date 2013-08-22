@@ -38,11 +38,14 @@ namespace OpenRA.Traits
 
 		public static Target FromActor(Actor a)
 		{
+			if (a == null)
+				return Target.Invalid;
+
 			return new Target
 			{
 				actor = a,
-				targetable = a != null ? a.TraitOrDefault<ITargetable>() : null,
-				type = a != null ? TargetType.Actor : TargetType.Invalid,
+				targetable = a.TraitOrDefault<ITargetable>(),
+				type = TargetType.Actor,
 				generation = a.Generation,
 			};
 		}
@@ -73,7 +76,7 @@ namespace OpenRA.Traits
 
 		public bool IsValidFor(Actor targeter)
 		{
-			if (Type == TargetType.Invalid)
+			if (targeter == null || Type == TargetType.Invalid)
 				return false;
 
 			if (targetable != null && !targetable.TargetableBy(actor, targeter))
