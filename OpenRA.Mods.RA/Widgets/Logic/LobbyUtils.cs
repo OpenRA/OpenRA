@@ -348,5 +348,16 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		{
 			parent.Get<ImageWidget>("STATUS_IMAGE").IsVisible = () => c.IsReady || c.Bot != null;
 		}
+
+		public static void AddPlayerFlagAndName(ScrollItemWidget template, Player player)
+		{
+			var flag = template.Get<ImageWidget>("FLAG");
+			flag.GetImageName = () => player.Country.Race;
+			flag.GetImageCollection = () => "flags";
+
+			var playerName = template.Get<LabelWidget>("PLAYER");
+			playerName.GetText = () => player.PlayerName + (player.WinState == WinState.Undefined ? "" : " (" + player.WinState + ")");
+			playerName.GetColor = () => player.Color.RGB;
+		}
 	}
 }
