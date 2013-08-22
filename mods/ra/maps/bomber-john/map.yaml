@@ -966,7 +966,7 @@ Sequences:
 			Start: 0
 
 	mnlyr:
-		icon mnlyicon
+		icon: mnlyicon
 
 	brick:
 		idle:
