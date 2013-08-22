@@ -92,6 +92,7 @@ ChromeLayout:
 	mods/ra/chrome/gameinit.yaml
 	mods/ra/chrome/ingame.yaml
 	mods/ra/chrome/ingame-chat.yaml
+	mods/ra/chrome/ingame-diplomacy.yaml
 	mods/ra/chrome/ingame-fmvplayer.yaml
 	mods/ra/chrome/ingame-menu.yaml
 	mods/ra/chrome/ingame-objectives.yaml
