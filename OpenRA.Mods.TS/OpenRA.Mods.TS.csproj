@@ -56,6 +56,13 @@
   <ItemGroup>
     <Compile Include="TSLoadScreen.cs" />
   </ItemGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
   <PropertyGroup>
     <PostBuildEvent>mkdir "$(SolutionDir)mods/ts/"
 copy "$(TargetPath)" "$(SolutionDir)mods/ts/"
