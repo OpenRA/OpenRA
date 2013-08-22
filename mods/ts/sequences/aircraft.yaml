@@ -29,3 +29,9 @@ scrin:
 apache:
 	icon: apchicon
 		Start: 0
+	rotor: lrotor
+		Start: 0
+		Length: 4
+	slow-rotor: lrotor
+		Start: 4
+		Length: 8
