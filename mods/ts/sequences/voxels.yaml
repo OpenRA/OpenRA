@@ -70,6 +70,7 @@ dshp:
 4tnk:
 	idle:
 	turret: 4tnktur
+	barrel: 4tnkbarl
 
 trucka:
 	idle:
