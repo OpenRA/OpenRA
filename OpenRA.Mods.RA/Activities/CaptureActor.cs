@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Activities
 
 			var capturable = target.Actor.Trait<Capturable>();
 
-			if (IsCanceled || !self.IsInWorld || self.IsDead())
+			if (IsCanceled || !self.IsInWorld || self.IsDead() || !target.IsValidFor(self))
 			{
 				if (capturable.CaptureInProgress)
 					capturable.EndCapture();

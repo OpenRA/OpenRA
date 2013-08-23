@@ -67,7 +67,8 @@ namespace OpenRA.Mods.RA
 
 			public override Activity Tick( Actor self )
 			{
-				if( IsCanceled || !target.IsValid ) return NextActivity;
+				if (IsCanceled || !target.IsValidFor(self))
+					return NextActivity;
 
 				var attack = self.Trait<AttackTesla>();
 				if( attack.charges == 0 || !attack.CanAttack( self, target ) )
@@ -85,7 +86,8 @@ namespace OpenRA.Mods.RA
 
 			public override Activity Tick( Actor self )
 			{
-				if( IsCanceled || !target.IsValid ) return NextActivity;
+				if (IsCanceled || !target.IsValidFor(self))
+					return NextActivity;
 
 				var attack = self.Trait<AttackTesla>();
 				if( attack.charges == 0 ) return NextActivity;

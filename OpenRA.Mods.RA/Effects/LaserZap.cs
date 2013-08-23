@@ -59,7 +59,7 @@ namespace OpenRA.Mods.RA.Effects
 		public void Tick(World world)
 		{
 			// Beam tracks target
-			if (args.guidedTarget.IsValid)
+			if (args.guidedTarget.IsValidFor(args.sourceActor))
 				target = args.guidedTarget.CenterPosition;
 
 			if (!doneDamage)

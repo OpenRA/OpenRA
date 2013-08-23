@@ -554,13 +554,6 @@ CRATE:
 		SelectionShares: 0
 		NoBaseSelectionShares: 9001
 		Unit: mcvo
-	CloakCrateAction:
-		SelectionShares: 15
-		InitialDelay: 15
-		CloakDelay: 90
-		CloakSound: STEALTH1.WAV
-		UncloakSound: STEALTH2.WAV
-		Effect: cloak
 	RenderSimple:
 	ProximityCaptor:
 		Types:Crate

@@ -43,7 +43,7 @@ namespace OpenRA.Mods.RA
 
 			public override Activity Tick( Actor self )
 			{
-				if( IsCanceled || !target.IsValid )
+				if (IsCanceled || !target.IsValidFor(self))
 					return NextActivity;
 
 				self.Trait<AttackOmni>().DoAttack(self, target);

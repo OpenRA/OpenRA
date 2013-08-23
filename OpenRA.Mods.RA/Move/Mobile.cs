@@ -496,7 +496,7 @@ namespace OpenRA.Mods.RA.Move
 
 			public bool CanTarget(Actor self, Target target, List<Actor> othersAtTarget, TargetModifiers modifiers, ref string cursor)
 			{
-				if (!target.IsValid)
+				if (!target.IsValidFor(self))
 					return false;
 
 				var location = target.CenterPosition.ToCPos();

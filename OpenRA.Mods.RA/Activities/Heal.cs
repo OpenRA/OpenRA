@@ -22,6 +22,9 @@ namespace OpenRA.Mods.RA.Activities
 
 		protected override Activity InnerTick(Actor self, AttackBase attack)
 		{
+			if (!Target.IsValidFor(self))
+				return NextActivity;
+
 			if (Target.Type == TargetType.Actor && Target.Actor.GetDamageState() == DamageState.Undamaged)
 				return NextActivity;
 

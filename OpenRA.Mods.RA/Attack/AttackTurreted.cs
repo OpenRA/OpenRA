@@ -38,7 +38,8 @@ namespace OpenRA.Mods.RA
 			if (self.HasTrait<Building>() && !buildComplete)
 				return false;
 
-			if (!target.IsValid) return false;
+			if (!target.IsValidFor(self))
+				return false;
 
 			bool canAttack = false;
 			foreach (var t in turrets)
@@ -53,7 +54,7 @@ namespace OpenRA.Mods.RA
 		{
 			base.Tick(self);
 			DoAttack(self, Target);
-			IsAttacking = Target.IsValid;
+			IsAttacking = Target.IsValidFor(self);
 		}
 
 		public override Activity GetAttackActivity(Actor self, Target newTarget, bool allowMove)
@@ -84,7 +85,8 @@ namespace OpenRA.Mods.RA
 
 			public override Activity Tick(Actor self)
 			{
-				if (IsCanceled || !target.IsValid) return NextActivity;
+				if (IsCanceled || !target.IsValidFor(self))
+					return NextActivity;
 
 				if (self.IsDisabled()) return this;
 
@@ -98,7 +100,7 @@ namespace OpenRA.Mods.RA
 
 					attack.Target = target;
 					if (allowMove && self.HasTrait<Mobile>() && !self.Info.Traits.Get<MobileInfo>().OnRails)
-						return Util.SequenceActivities(new Follow(target, range), this);
+						return Util.SequenceActivities(new Follow(self, target, range), this);
 				}
 
 				return NextActivity;

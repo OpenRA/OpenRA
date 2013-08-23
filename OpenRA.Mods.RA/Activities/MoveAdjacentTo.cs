@@ -21,7 +21,7 @@ namespace OpenRA.Mods.RA.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (IsCanceled || !target.IsValid)
+			if (IsCanceled || !target.IsValidFor(self))
 				return NextActivity;
 
 			var mobile = self.Trait<Mobile>();
