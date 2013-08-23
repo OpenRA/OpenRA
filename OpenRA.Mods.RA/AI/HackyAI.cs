@@ -622,8 +622,7 @@ namespace OpenRA.Mods.RA.AI
 				var enemys = world.FindActorsInCircle(b.CenterPosition, WRange.FromCells(15))
 					.Where(unit => p.Stances[unit.Owner] == Stance.Enemy && unit.HasTrait<AttackBase>()).ToList();
 				
-				rushFuzzy.CalculateFuzzy(ownUnits, enemys);
-				if (rushFuzzy.CanAttack)
+				if (rushFuzzy.CanAttack(ownUnits, enemys))
 				{
 					var target = enemys.Any() ? enemys.Random(random) : b;
 					var rush = GetSquadOfType(SquadType.Rush);

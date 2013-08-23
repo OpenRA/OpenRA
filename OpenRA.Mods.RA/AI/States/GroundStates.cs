@@ -18,14 +18,8 @@ namespace OpenRA.Mods.RA.AI
 	{
 		protected virtual bool MayBeFlee(Squad owner)
 		{
-			return base.MayBeFlee(owner, (enemyAroundUnit) =>
-			{
-				owner.attackOrFleeFuzzy.CalculateFuzzy(owner.units, enemyAroundUnit);
-				if (!owner.attackOrFleeFuzzy.CanAttack)
-					return true;
-
-				return false;
-			});
+			return base.MayBeFlee(owner, enemyAroundUnit =>
+				!owner.attackOrFleeFuzzy.CanAttack(owner.units, enemyAroundUnit));
 		}
 	}
 
@@ -47,14 +41,14 @@ namespace OpenRA.Mods.RA.AI
 
 			var enemyUnits = owner.world.FindActorsInCircle(owner.Target.CenterPosition, WRange.FromCells(10))
 				.Where(unit => owner.bot.p.Stances[unit.Owner] == Stance.Enemy).ToList();
-			if (enemyUnits.Any())
 
+			if (enemyUnits.Any())
 			{
-				owner.attackOrFleeFuzzy.CalculateFuzzy(owner.units, enemyUnits);
-				if (owner.attackOrFleeFuzzy.CanAttack)
+				if (owner.attackOrFleeFuzzy.CanAttack(owner.units, enemyUnits))
 				{
-					foreach(var u in owner.units)
+					foreach (var u in owner.units)
 						owner.world.IssueOrder(new Order("AttackMove", u, false) { TargetLocation = owner.Target.CenterPosition.ToCPos() });
+
 					// We have gathered sufficient units. Attack the nearest enemy unit.
 					owner.fsm.ChangeState(owner, new GroundUnitsAttackMoveState(), true);
 					return;

@@ -20,20 +20,10 @@ namespace OpenRA.Mods.RA.AI
 	class AttackOrFleeFuzzy
 	{
 		MamdaniFuzzySystem fuzzyEngine;
-		Dictionary<FuzzyVariable, double> result;
 
 		public AttackOrFleeFuzzy()
 		{
 			InitializateFuzzyVariables();
-		}
-
-		public bool CanAttack
-		{
-			get
-			{
-				var attackChance = result[fuzzyEngine.OutputByName("AttackOrFlee")];
-				return !double.IsNaN(attackChance) && attackChance < 30.0;
-			}
 		}
 
 		protected void AddFuzzyRule(string rule)
@@ -166,7 +156,7 @@ namespace OpenRA.Mods.RA.AI
 				"then AttackOrFlee is Flee");
 		}
 
-		public void CalculateFuzzy(IEnumerable<Actor> ownUnits, IEnumerable<Actor> enemyUnits)
+		public bool CanAttack(IEnumerable<Actor> ownUnits, IEnumerable<Actor> enemyUnits)
 		{
 			var inputValues = new Dictionary<FuzzyVariable, double>();
 			inputValues.Add(fuzzyEngine.InputByName("OwnHealth"), (double)NormalizedHealth(ownUnits, 100));
@@ -174,7 +164,9 @@ namespace OpenRA.Mods.RA.AI
 			inputValues.Add(fuzzyEngine.InputByName("RelativeAttackPower"), (double)RelativePower(ownUnits, enemyUnits));
 			inputValues.Add(fuzzyEngine.InputByName("RelativeSpeed"), (double)RelativeSpeed(ownUnits, enemyUnits));
 
-			result = fuzzyEngine.Calculate(inputValues);
+			var result = fuzzyEngine.Calculate(inputValues);
+			var attackChance = result[fuzzyEngine.OutputByName("AttackOrFlee")];
+			return !double.IsNaN(attackChance) && attackChance < 30.0;
 		}
 
 		protected float NormalizedHealth(IEnumerable<Actor> actors, float normalizeByValue)
