@@ -155,7 +155,7 @@ namespace OpenRA.Mods.RA.AI
 
 			if (MayBeFlee(owner))
 			{
-				owner.fsm.ChangeState(new AirFleeState(), true);
+				owner.fsm.ChangeState(owner, new AirFleeState(), true);
 				return;
 			}
 
@@ -165,7 +165,7 @@ namespace OpenRA.Mods.RA.AI
 			else
 			{
 				owner.Target = e;
-				owner.fsm.ChangeState(new AirAttackState(), true);
+				owner.fsm.ChangeState(owner, new AirAttackState(), true);
 			}
 		}
 
@@ -188,14 +188,14 @@ namespace OpenRA.Mods.RA.AI
 					owner.Target = closestEnemy;
 				else
 				{
-					owner.fsm.ChangeState(new AirFleeState(), true);
+					owner.fsm.ChangeState(owner, new AirFleeState(), true);
 					return;
 				}
 			}
 
 			if (!NearToPosSafely(owner, owner.Target.CenterPosition))
 			{
-				owner.fsm.ChangeState(new AirFleeState(), true);
+				owner.fsm.ChangeState(owner, new AirFleeState(), true);
 				return;
 			}
 
@@ -243,7 +243,7 @@ namespace OpenRA.Mods.RA.AI
 				}
 				owner.world.IssueOrder(new Order("Move", a, false) { TargetLocation = RandomBuildingLocation(owner) });
 			}
-			owner.fsm.ChangeState(new AirIdleState(), true);
+			owner.fsm.ChangeState(owner, new AirIdleState(), true);
 		}
 
 		public void Exit(Squad owner) { }

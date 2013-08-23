@@ -42,19 +42,19 @@ namespace OpenRA.Mods.RA.AI
 			this.random = bot.random;
 			this.type = type;
 			this.target = target;
-			fsm = new StateMachine(this);
+			fsm = new StateMachine();
 
 			switch (type)
 			{
 				case SquadType.Assault:
 				case SquadType.Rush:
-					fsm.ChangeState(new GroundUnitsIdleState(), true);
+					fsm.ChangeState(this, new GroundUnitsIdleState(), true);
 					break;
 				case SquadType.Air:
-					fsm.ChangeState(new AirIdleState(), true);
+					fsm.ChangeState(this, new AirIdleState(), true);
 					break;
 				case SquadType.Protection:
-					fsm.ChangeState(new UnitsForProtectionIdleState(), true);
+					fsm.ChangeState(this, new UnitsForProtectionIdleState(), true);
 					break;
 			}
 		}
@@ -62,7 +62,7 @@ namespace OpenRA.Mods.RA.AI
 		public void Update()
 		{
 			if (IsEmpty) return;
-			fsm.UpdateFsm();
+			fsm.Update(this);
 		}
 
 		public bool IsEmpty

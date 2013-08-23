@@ -17,7 +17,7 @@ namespace OpenRA.Mods.RA.AI
 	class UnitsForProtectionIdleState : GroundStateBase, IState
 	{
 		public void Enter(Squad owner) { }
-		public void Execute(Squad owner) { owner.fsm.ChangeState(new UnitsForProtectionAttackState(), true); }
+		public void Execute(Squad owner) { owner.fsm.ChangeState(owner, new UnitsForProtectionAttackState(), true); }
 		public void Exit(Squad owner) { }
 	}
 
@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA.AI
 
 				if (owner.Target == null)
 				{
-					owner.fsm.ChangeState(new UnitsForProtectionFleeState(), true);
+					owner.fsm.ChangeState(owner, new UnitsForProtectionFleeState(), true);
 					return;
 				}
 			}
@@ -56,7 +56,7 @@ namespace OpenRA.Mods.RA.AI
 			if (owner.IsEmpty) return;
 
 			GoToRandomOwnBuilding(owner);
-			owner.fsm.ChangeState(new UnitsForProtectionIdleState(), true);
+			owner.fsm.ChangeState(owner, new UnitsForProtectionIdleState(), true);
 		}
 
 		public void Exit(Squad owner) { owner.units.Clear(); }

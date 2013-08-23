@@ -54,11 +54,11 @@ namespace OpenRA.Mods.RA.AI
 					foreach(var u in owner.units)
 						owner.world.IssueOrder(new Order("AttackMove", u, false) { TargetLocation = owner.Target.CenterPosition.ToCPos() });
 					// We have gathered sufficient units. Attack the nearest enemy unit.
-					owner.fsm.ChangeState(new GroundUnitsAttackMoveState(), true);
+					owner.fsm.ChangeState(owner, new GroundUnitsAttackMoveState(), true);
 					return;
 				}
 				else
-					owner.fsm.ChangeState(new GroundUnitsFleeState(), true);
+					owner.fsm.ChangeState(owner, new GroundUnitsFleeState(), true);
 			}
 		}
 
@@ -80,7 +80,7 @@ namespace OpenRA.Mods.RA.AI
 					owner.Target = closestEnemy;
 				else
 				{
-					owner.fsm.ChangeState(new GroundUnitsFleeState(), true);
+					owner.fsm.ChangeState(owner, new GroundUnitsFleeState(), true);
 					return;
 				}
 			}
@@ -104,7 +104,7 @@ namespace OpenRA.Mods.RA.AI
 				if (enemynearby.Any())
 				{
 					owner.Target = enemynearby.ClosestTo(leader.CenterPosition);
-					owner.fsm.ChangeState(new GroundUnitsAttackState(), true);
+					owner.fsm.ChangeState(owner, new GroundUnitsAttackState(), true);
 					return;
 				}
 				else
@@ -114,7 +114,7 @@ namespace OpenRA.Mods.RA.AI
 
 			if (MayBeFlee(owner))
 			{
-				owner.fsm.ChangeState(new GroundUnitsFleeState(), true);
+				owner.fsm.ChangeState(owner, new GroundUnitsFleeState(), true);
 				return;
 			}
 		}
@@ -137,7 +137,7 @@ namespace OpenRA.Mods.RA.AI
 					owner.Target = closestEnemy;
 				else
 				{
-					owner.fsm.ChangeState(new GroundUnitsFleeState(), true);
+					owner.fsm.ChangeState(owner, new GroundUnitsFleeState(), true);
 					return;
 				}
 			}
@@ -147,7 +147,7 @@ namespace OpenRA.Mods.RA.AI
 
 			if (MayBeFlee(owner))
 			{
-				owner.fsm.ChangeState(new GroundUnitsFleeState(), true);
+				owner.fsm.ChangeState(owner, new GroundUnitsFleeState(), true);
 				return;
 			}
 		}
@@ -164,7 +164,7 @@ namespace OpenRA.Mods.RA.AI
 			if (owner.IsEmpty) return;
 
 			GoToRandomOwnBuilding(owner);
-			owner.fsm.ChangeState(new GroundUnitsIdleState(), true);
+			owner.fsm.ChangeState(owner, new GroundUnitsIdleState(), true);
 		}
 
 		public void Exit(Squad owner) { owner.units.Clear(); }
