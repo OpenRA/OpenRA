@@ -68,7 +68,7 @@ namespace OpenRA.Graphics
 			for (var i = 0; i < length - skip - 4; i++)
 			{
 				var j = next - skip - i - 2;
-				var nextPos = WPos.Average(trail[idx(j)], trail[idx(j-1)], trail[idx(j-2)], trail[idx(j-3)]);
+				var nextPos = Average(trail[idx(j)], trail[idx(j-1)], trail[idx(j-2)], trail[idx(j-3)]);
 				var nextCell = nextPos.ToCPos();
 				var nextColor = Exts.ColorLerp(i * 1f / (length - 4), color, Color.Transparent);
 
@@ -88,6 +88,11 @@ namespace OpenRA.Graphics
 		{
 			var j = i % trail.Length;
 			return j < 0 ? j + trail.Length : j;
+		}
+
+		WPos Average(params WPos[] list)
+		{
+			return list.Average();
 		}
 
 		public void Update(WPos pos)
