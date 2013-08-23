@@ -120,7 +120,7 @@ namespace OpenRA.Mods.RA.Effects
 			anim.Tick();
 
 			// Missile tracks target
-			if (args.guidedTarget.IsValid)
+			if (args.guidedTarget.IsValidFor(args.sourceActor))
 				target = args.guidedTarget.CenterPosition;
 
 			var dist = target + offset - pos;
@@ -133,7 +133,7 @@ namespace OpenRA.Mods.RA.Effects
 				desiredFacing = facing + world.SharedRandom.Next(-20, 21);
 				desiredAltitude = world.SharedRandom.Next(-43, 86);
 			}
-			else if (!args.guidedTarget.IsValid)
+			else if (!args.guidedTarget.IsValidFor(args.sourceActor))
 				desiredFacing = facing;
 
 			facing = Traits.Util.TickFacing(facing, desiredFacing, info.ROT);

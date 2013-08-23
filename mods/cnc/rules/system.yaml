@@ -393,10 +393,6 @@ CRATE:
 		SelectionShares: 5
 	CloakCrateAction:
 		SelectionShares: 5
-		InitialDelay: 15
-		CloakDelay: 90
-		CloakSound: trans1.aud
-		UncloakSound: trans1.aud
 		Effect: cloak
 	GiveMcvCrateAction:
 		SelectionShares: 0

@@ -33,7 +33,7 @@ MCV:
 	LeavesHusk:
 		HuskActor: MCV.Husk
 	-GainsExperience:
-	-AcceptsCloakCrate:
+	-Cloak:
 	Explodes:
 		Weapon: UnitExplodeSmall
 		EmptyWeapon: UnitExplodeSmall
@@ -519,6 +519,7 @@ STNK:
 	RevealsShroud:
 		Range: 7
 	Cloak:
+		RequiresCrate: false
 		InitialDelay: 90
 		CloakDelay: 90
 		CloakSound: trans1.aud

@@ -45,17 +45,13 @@ namespace OpenRA.Mods.RA
 			if (!self.IsInWorld)
 				return false;
 
-			if (!target.IsValid)
+			if (!target.IsValidFor(self))
 				return false;
 
 			if (Armaments.All(a => a.IsReloading))
 				return false;
 
 			if (self.IsDisabled())
-				return false;
-
-			if (target.Type == TargetType.Actor && target.Actor.HasTrait<ITargetable>() &&
-				!target.Actor.Trait<ITargetable>().TargetableBy(target.Actor, self))
 				return false;
 
 			return true;
@@ -133,7 +129,7 @@ namespace OpenRA.Mods.RA
 			if (order.OrderString == "Attack")
 			{
 				var target = self.ResolveFrozenActorOrder(order, Color.Red);
-				if (!target.IsValid)
+				if (!target.IsValidFor(self))
 					return;
 
 				self.SetTargetLine(target, Color.Red);
@@ -155,7 +151,7 @@ namespace OpenRA.Mods.RA
 
 		public void AttackTarget(Target target, bool queued, bool allowMove)
 		{
-			if (!target.IsValid)
+			if (!target.IsValidFor(self))
 				return;
 
 			if (!queued)

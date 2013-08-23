@@ -73,7 +73,7 @@ namespace OpenRA.Mods.RA.Move
 		{
 			this.getPath = (self, mobile) =>
 			{
-				if (!target.IsValid)
+				if (!target.IsValidFor(self))
 					return NoPath;
 
 				return self.World.WorldActor.Trait<PathFinder>().FindUnitPathToRange(

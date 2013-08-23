@@ -18,7 +18,6 @@ namespace OpenRA.Mods.RA.Activities
 	public class Attack : Activity
 	{
 		protected Target Target;
-		ITargetable targetable;
 		WRange Range;
 		bool AllowMovement;
 
@@ -33,9 +32,6 @@ namespace OpenRA.Mods.RA.Activities
 		public Attack(Target target, WRange range, bool allowMovement)
 		{
 			Target = target;
-			if (target.Type == TargetType.Actor)
-				targetable = target.Actor.TraitOrDefault<ITargetable>();
-
 			Range = range;
 			AllowMovement = allowMovement;
 		}
@@ -54,13 +50,11 @@ namespace OpenRA.Mods.RA.Activities
 				return NextActivity;
 
 			var type = Target.Type;
-			if (type != TargetType.Actor && type != TargetType.Terrain)
-				return NextActivity;
-				
-			if (type == TargetType.Actor && !self.Owner.HasFogVisibility() && Target.Actor.HasTrait<Mobile>() && !self.Owner.Shroud.IsTargetable(Target.Actor))
+			if (!Target.IsValidFor(self) || type == TargetType.FrozenActor)
 				return NextActivity;
 
-			if (targetable != null && !targetable.TargetableBy(Target.Actor, self))
+			// TODO: This is horrible, and probably wrong. Work out what it is trying to solve, then redo it properly.
+			if (type == TargetType.Actor && !self.Owner.HasFogVisibility() && Target.Actor.HasTrait<Mobile>() && !self.Owner.Shroud.IsTargetable(Target.Actor))
 				return NextActivity;
 
 			if (!Target.IsInRange(self.CenterPosition, Range))

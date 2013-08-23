@@ -27,7 +27,10 @@ namespace OpenRA.Mods.RA.Activities
 
 		public override Activity Tick(Actor self)
 		{
-			if (IsCanceled || target.Type != TargetType.Actor)
+			if (IsCanceled || !target.IsValidFor(self))
+				return NextActivity;
+
+			if (target.Type != TargetType.Actor)
 				return NextActivity;
 
 			if (!Util.AdjacentCells(target).Any(c => c == self.Location))

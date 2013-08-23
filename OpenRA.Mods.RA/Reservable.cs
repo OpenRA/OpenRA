@@ -26,7 +26,7 @@ namespace OpenRA.Mods.RA
 			if (reservedFor == null)
 				return;		/* nothing to do */
 
-			if (!Target.FromActor( reservedFor ).IsValid)
+			if (!Target.FromActor(reservedFor).IsValidFor(self))
 				reservedFor = null;		/* not likely to arrive now. */
 		}
 
