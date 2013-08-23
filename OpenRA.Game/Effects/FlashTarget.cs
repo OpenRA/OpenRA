@@ -11,23 +11,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using OpenRA.Graphics;
-using OpenRA.Traits;
 
 namespace OpenRA.Effects
 {
 	public class FlashTarget : IEffect
 	{
 		Actor target;
+		Player player;
 		int remainingTicks = 4;
 
 		public FlashTarget(Actor target)
+			: this(target, null) { }
+
+		public FlashTarget(Actor target, Player asPlayer)
 		{
 			this.target = target;
+			player = asPlayer;
 			foreach (var e in target.World.Effects.OfType<FlashTarget>().Where(a => a.target == target).ToArray())
 				target.World.Remove(e);
 		}
 
-		public void Tick( World world )
+		public void Tick(World world)
 		{
 			if (--remainingTicks == 0 || !target.IsInWorld)
 				world.AddFrameEndTask(w => w.Remove(this));
@@ -37,7 +41,7 @@ namespace OpenRA.Effects
 		{
 			if (target.IsInWorld && remainingTicks % 2 == 0)
 			{
-				var palette = wr.Palette("highlight");
+				var palette = wr.Palette(player == null ? "highlight" : "highlight" + player.InternalName);
 				return target.Render(wr)
 					.Where(r => !r.IsDecoration)
 					.Select(r => r.WithPalette(palette));

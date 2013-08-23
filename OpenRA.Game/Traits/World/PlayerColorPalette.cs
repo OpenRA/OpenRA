@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System.Drawing;
 using OpenRA.FileFormats;
 using OpenRA.Graphics;
 
@@ -45,6 +46,9 @@ namespace OpenRA.Traits
 		{
 			var remap = new PlayerColorRemap(info.RemapIndex, owner.Color, info.Ramp);
 			wr.AddPalette(info.BaseName+owner.InternalName, new Palette(wr.Palette(info.BasePalette).Palette, remap), info.AllowModifiers);
+
+			var argb = (uint)Color.FromArgb(128, owner.Color.RGB).ToArgb();
+			wr.AddPalette("highlight" + owner.InternalName, new Palette(Exts.MakeArray(256, i => i == 0 ? 0 : argb)), false);
 		}
 	}
 }
