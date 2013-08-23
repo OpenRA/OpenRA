@@ -39,8 +39,6 @@ UBUNTU (substitute comparable packages for other Linux distros):
 * libsdl1.2-dev
 * nvidia-cg-toolkit (for Cg renderer)
 
-OpenRA does not work with some older versions of Compiz. On affected systems, disable desktop effects before playing. This is fixed in Ubuntu Natty and later.
-
 The following dlls can also be installed into your system GAC. This is not
 recommended because we ship a custom Tao.FreeType that can conflict with
 other applications that use Tao:
