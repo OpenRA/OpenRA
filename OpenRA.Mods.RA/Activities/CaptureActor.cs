@@ -51,7 +51,7 @@ namespace OpenRA.Mods.RA.Activities
 
 				if (capturable.CaptureProgressTime % 25 == 0)
 				{
-					self.World.Add(new FlashTarget(target.Actor)); // TODO: building should flash captor's color
+					self.World.Add(new FlashTarget(target.Actor, self.Owner));
 					self.World.Add(new FlashTarget(self));
 				}
 
