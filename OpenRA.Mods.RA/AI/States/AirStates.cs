@@ -147,9 +147,9 @@ namespace OpenRA.Mods.RA.AI
 
 	class AirIdleState : AirStateBase, IState
 	{
-		public void Enter(Squad owner) { }
+		public void Activate(Squad owner) { }
 
-		public void Execute(Squad owner)
+		public void Tick(Squad owner)
 		{
 			if (owner.IsEmpty) return;
 
@@ -169,14 +169,14 @@ namespace OpenRA.Mods.RA.AI
 			}
 		}
 
-		public void Exit(Squad owner) { }
+		public void Deactivate(Squad owner) { }
 	}
 
 	class AirAttackState : AirStateBase, IState
 	{
-		public void Enter(Squad owner) { }
+		public void Activate(Squad owner) { }
 
-		public void Execute(Squad owner)
+		public void Tick(Squad owner)
 		{
 			if (owner.IsEmpty) return;
 
@@ -220,14 +220,14 @@ namespace OpenRA.Mods.RA.AI
 			}
 		}
 
-		public void Exit(Squad owner) { }
+		public void Deactivate(Squad owner) { }
 	}
 
 	class AirFleeState : AirStateBase, IState
 	{
-		public void Enter(Squad owner) { }
+		public void Activate(Squad owner) { }
 
-		public void Execute(Squad owner)
+		public void Tick(Squad owner)
 		{
 			if (owner.IsEmpty) return;
 
@@ -246,6 +246,6 @@ namespace OpenRA.Mods.RA.AI
 			owner.fsm.ChangeState(owner, new AirIdleState(), true);
 		}
 
-		public void Exit(Squad owner) { }
+		public void Deactivate(Squad owner) { }
 	}
 }

@@ -31,9 +31,9 @@ namespace OpenRA.Mods.RA.AI
 
 	class GroundUnitsIdleState : GroundStateBase, IState
 	{
-		public void Enter(Squad owner) { }
+		public void Activate(Squad owner) { }
 
-		public void Execute(Squad owner)
+		public void Tick(Squad owner)
 		{
 			if (owner.IsEmpty) return;
 			if (!owner.TargetIsValid)
@@ -62,14 +62,14 @@ namespace OpenRA.Mods.RA.AI
 			}
 		}
 
-		public void Exit(Squad owner) { }
+		public void Deactivate(Squad owner) { }
 	}
 
 	class GroundUnitsAttackMoveState : GroundStateBase, IState
 	{
-		public void Enter(Squad owner) { }
+		public void Activate(Squad owner) { }
 
-		public void Execute(Squad owner)
+		public void Tick(Squad owner)
 		{
 			if (owner.IsEmpty) return;
 
@@ -119,14 +119,14 @@ namespace OpenRA.Mods.RA.AI
 			}
 		}
 
-		public void Exit(Squad owner) { }
+		public void Deactivate(Squad owner) { }
 	}
 
 	class GroundUnitsAttackState : GroundStateBase, IState
 	{
-		public void Enter(Squad owner) { }
+		public void Activate(Squad owner) { }
 
-		public void Execute(Squad owner)
+		public void Tick(Squad owner)
 		{
 			if (owner.IsEmpty) return;
 
@@ -152,14 +152,14 @@ namespace OpenRA.Mods.RA.AI
 			}
 		}
 
-		public void Exit(Squad owner) { }
+		public void Deactivate(Squad owner) { }
 	}
 
 	class GroundUnitsFleeState : GroundStateBase, IState
 	{
-		public void Enter(Squad owner) { }
+		public void Activate(Squad owner) { }
 
-		public void Execute(Squad owner)
+		public void Tick(Squad owner)
 		{
 			if (owner.IsEmpty) return;
 
@@ -167,6 +167,6 @@ namespace OpenRA.Mods.RA.AI
 			owner.fsm.ChangeState(owner, new GroundUnitsIdleState(), true);
 		}
 
-		public void Exit(Squad owner) { owner.units.Clear(); }
+		public void Deactivate(Squad owner) { owner.units.Clear(); }
 	}
 }

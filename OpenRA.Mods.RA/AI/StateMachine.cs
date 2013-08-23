@@ -17,7 +17,7 @@ namespace OpenRA.Mods.RA.AI
 
 		public void Update(Squad squad)
 		{
-			currentState.Execute(squad);
+			currentState.Tick(squad);
 		}
 
 		public void ChangeState(Squad squad, IState newState, bool rememberPrevious)
@@ -26,12 +26,12 @@ namespace OpenRA.Mods.RA.AI
 				previousState = currentState;
 
 			if (currentState != null)
-				currentState.Exit(squad);
+				currentState.Deactivate(squad);
 
 			if (newState != null)
 				currentState = newState;
 
-			currentState.Enter(squad);
+			currentState.Activate(squad);
 		}
 
 		public void RevertToPreviousState(Squad squad, bool saveCurrentState)
@@ -42,8 +42,8 @@ namespace OpenRA.Mods.RA.AI
 
 	interface IState
 	{
-		void Enter(Squad bot);
-		void Execute(Squad bot);
-		void Exit(Squad bot);
+		void Activate(Squad bot);
+		void Tick(Squad bot);
+		void Deactivate(Squad bot);
 	}
 }

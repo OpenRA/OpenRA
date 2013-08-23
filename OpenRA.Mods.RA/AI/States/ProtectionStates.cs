@@ -16,16 +16,16 @@ namespace OpenRA.Mods.RA.AI
 {
 	class UnitsForProtectionIdleState : GroundStateBase, IState
 	{
-		public void Enter(Squad owner) { }
-		public void Execute(Squad owner) { owner.fsm.ChangeState(owner, new UnitsForProtectionAttackState(), true); }
-		public void Exit(Squad owner) { }
+		public void Activate(Squad owner) { }
+		public void Tick(Squad owner) { owner.fsm.ChangeState(owner, new UnitsForProtectionAttackState(), true); }
+		public void Deactivate(Squad owner) { }
 	}
 
 	class UnitsForProtectionAttackState : GroundStateBase, IState
 	{
-		public void Enter(Squad owner) { }
+		public void Activate(Squad owner) { }
 
-		public void Execute(Squad owner)
+		public void Tick(Squad owner)
 		{
 			if (owner.IsEmpty) return;
 			if (!owner.TargetIsValid)
@@ -44,14 +44,14 @@ namespace OpenRA.Mods.RA.AI
 				owner.world.IssueOrder(new Order("AttackMove", a, false) { TargetLocation = owner.Target.Location });
 		}
 
-		public void Exit(Squad owner) { }
+		public void Deactivate(Squad owner) { }
 	}
 
 	class UnitsForProtectionFleeState : GroundStateBase, IState
 	{
-		public void Enter(Squad owner) { }
+		public void Activate(Squad owner) { }
 
-		public void Execute(Squad owner)
+		public void Tick(Squad owner)
 		{
 			if (owner.IsEmpty) return;
 
@@ -59,6 +59,6 @@ namespace OpenRA.Mods.RA.AI
 			owner.fsm.ChangeState(owner, new UnitsForProtectionIdleState(), true);
 		}
 
-		public void Exit(Squad owner) { owner.units.Clear(); }
+		public void Deactivate(Squad owner) { owner.units.Clear(); }
 	}
 }
