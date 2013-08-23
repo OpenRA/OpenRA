@@ -388,7 +388,7 @@ namespace OpenRA.Mods.RA.AI
 			ticks++;
 
 			if (ticks == 1)
-				DeployMcv(self);
+				InitializeBase(self);
 
 			if (ticks % feedbackTime == 0)
 				ProductionUnits(self);
@@ -532,7 +532,7 @@ namespace OpenRA.Mods.RA.AI
 			GiveOrdersToIdleHarvesters();
 			FindNewUnits(self);
 			CreateAttackForce();
-			FindAndDeployMcv(self);
+			FindAndDeployBackupMcv(self);
 		}
 
 		void GiveOrdersToIdleHarvesters()
@@ -694,7 +694,7 @@ namespace OpenRA.Mods.RA.AI
 			return possibleRallyPoints.Random(random);
 		}
 
-		void DeployMcv(Actor self)
+		void InitializeBase(Actor self)
 		{
 			// Find and deploy our mcv
 			var mcv = self.World.Actors
@@ -706,6 +706,7 @@ namespace OpenRA.Mods.RA.AI
 				defenseCenter = baseCenter;
 
 				// Don't transform the mcv if it is a fact
+				// HACK: This needs to query against MCVs directly
 				if (mcv.HasTrait<Mobile>())
 					world.IssueOrder(new Order("DeployTransform", mcv, false));
 			}
@@ -713,28 +714,36 @@ namespace OpenRA.Mods.RA.AI
 				BotDebug("AI: Can't find BaseBuildUnit.");
 		}
 
-		void FindAndDeployMcv(Actor self)
+		// Find any newly constructed MCVs and deploy them at a sensible
+		// backup location within the main base.
+		void FindAndDeployBackupMcv(Actor self)
 		{
-			var mcvs = self.World.Actors.Where(a => a.Owner == p && a.HasTrait<BaseBuilding>()).ToArray();
+			var maxBaseDistance = Math.Max(world.Map.MapSize.X, world.Map.MapSize.Y);
+
+			// HACK: Assumes all MCVs deploy into the same construction yard footprint
+			var mcvInfo = GetUnitInfoByCommonName("Mcv", p);
+			if (mcvInfo == null)
+				return;
+
+			var factType = mcvInfo.Traits.Get<TransformsInfo>().IntoActor;
+
+			// HACK: This needs to query against MCVs directly
+			var mcvs = self.World.Actors.Where(a => a.Owner == p && a.HasTrait<BaseBuilding>() && a.HasTrait<Mobile>());
 			if (!mcvs.Any())
 				return;
-			else
-				foreach (var mcv in mcvs)
-					if (mcv != null)
-						//Don't transform the mcv if it is a fact
-						if (mcv.HasTrait<Mobile>())
-						{
-							if (mcv.IsMoving()) return;
-							var maxBaseDistance = world.Map.MapSize.X > world.Map.MapSize.Y ? world.Map.MapSize.X : world.Map.MapSize.Y;
-							ActorInfo aInfo = GetUnitInfoByCommonName("Mcv",p);
-							if (aInfo == null) return;
-							string intoActor = aInfo.Traits.Get<TransformsInfo>().IntoActor;
-							var desiredLocation = ChooseBuildLocation(intoActor, false, maxBaseDistance, BuildingType.Building);
-							if (desiredLocation == null)
-								return;
-							world.IssueOrder(new Order("Move", mcv, false) { TargetLocation = desiredLocation.Value });
-							world.IssueOrder(new Order("DeployTransform", mcv, false));
-						}
+
+			foreach (var mcv in mcvs)
+			{
+				if (mcv.IsMoving())
+					continue;
+
+				var desiredLocation = ChooseBuildLocation(factType, false, maxBaseDistance, BuildingType.Building);
+				if (desiredLocation == null)
+					continue;
+
+				world.IssueOrder(new Order("Move", mcv, false) { TargetLocation = desiredLocation.Value });
+				world.IssueOrder(new Order("DeployTransform", mcv, false));
+			}
 		}
 
 		void TryToUseSupportPower(Actor self)
