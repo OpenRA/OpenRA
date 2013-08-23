@@ -75,7 +75,7 @@ namespace OpenRA.Mods.RA.AI
 			return false;
 		}
 
-		protected virtual bool MayBeFlee(Squad squad, Func<IEnumerable<Actor>, bool> flee)
+		protected virtual bool ShouldFlee(Squad squad, Func<IEnumerable<Actor>, bool> flee)
 		{
 			if (!squad.IsValid)
 				return false;

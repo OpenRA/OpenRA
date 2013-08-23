@@ -16,10 +16,9 @@ namespace OpenRA.Mods.RA.AI
 {
 	abstract class GroundStateBase : StateBase
 	{
-		protected virtual bool MayBeFlee(Squad owner)
+		protected virtual bool ShouldFlee(Squad owner)
 		{
-			return base.MayBeFlee(owner, enemyAroundUnit =>
-				!owner.attackOrFleeFuzzy.CanAttack(owner.units, enemyAroundUnit));
+			return base.ShouldFlee(owner, enemies => !owner.attackOrFleeFuzzy.CanAttack(owner.units, enemies));
 		}
 	}
 
@@ -109,7 +108,7 @@ namespace OpenRA.Mods.RA.AI
 						owner.world.IssueOrder(new Order("AttackMove", a, false) { TargetLocation = owner.Target.Location });
 			}
 
-			if (MayBeFlee(owner))
+			if (ShouldFlee(owner))
 			{
 				owner.fsm.ChangeState(owner, new GroundUnitsFleeState(), true);
 				return;
@@ -139,11 +138,12 @@ namespace OpenRA.Mods.RA.AI
 					return;
 				}
 			}
+
 			foreach (var a in owner.units)
 				if (!BusyAttack(a))
 					owner.world.IssueOrder(new Order("Attack", a, false) { TargetActor = owner.bot.FindClosestEnemy(a.CenterPosition) });
 
-			if (MayBeFlee(owner))
+			if (ShouldFlee(owner))
 			{
 				owner.fsm.ChangeState(owner, new GroundUnitsFleeState(), true);
 				return;

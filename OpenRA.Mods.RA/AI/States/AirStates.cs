@@ -21,6 +21,9 @@ namespace OpenRA.Mods.RA.AI
 
 		protected static int CountAntiAirUnits(IEnumerable<Actor> units)
 		{
+			if (!units.Any())
+				return 0;
+
 			int missileUnitsCount = 0;
 			foreach (var unit in units)
 				if (unit != null && unit.HasTrait<AttackBase>() && !unit.HasTrait<Aircraft>()
@@ -38,19 +41,9 @@ namespace OpenRA.Mods.RA.AI
 		}
 
 		//checks the number of anti air enemies around units
-		protected virtual bool MayBeFlee(Squad owner)
+		protected virtual bool ShouldFlee(Squad owner)
 		{
-			return base.MayBeFlee(owner, (enemyAroundUnit) =>
-			{
-				int missileUnitsCount = 0;
-				if (enemyAroundUnit.Any())
-					missileUnitsCount = CountAntiAirUnits(enemyAroundUnit);
-
-				if (missileUnitsCount * missileUnitsMultiplier > owner.units.Count)
-					return true;
-
-				return false;
-			});
+			return base.ShouldFlee(owner, enemies => CountAntiAirUnits(enemies) * missileUnitsMultiplier > owner.units.Count);
 		}
 
 		protected static Actor FindDefenselessTarget(Squad owner)
@@ -154,7 +147,7 @@ namespace OpenRA.Mods.RA.AI
 			if (!owner.IsValid)
 				return;
 
-			if (MayBeFlee(owner))
+			if (ShouldFlee(owner))
 			{
 				owner.fsm.ChangeState(owner, new AirFleeState(), true);
 				return;
