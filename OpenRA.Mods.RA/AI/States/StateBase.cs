@@ -21,23 +21,6 @@ namespace OpenRA.Mods.RA.AI
 	{
 		protected const int DangerRadius = 10;
 
-		protected static CPos? AverageUnitsPosition(List<Actor> units)
-		{
-			int x = 0;
-			int y = 0;
-			int countUnits = 0;
-			foreach (var u in units)
-			{
-				x += u.Location.X;
-				y += u.Location.Y;
-				countUnits++;
-			}
-
-			x = x / countUnits;
-			y = y / countUnits;
-			return (x != 0 && y != 0) ? new CPos?(new CPos(x, y)) : null;
-		}
-
 		protected static void GoToRandomOwnBuilding(Squad squad)
 		{
 			var loc = RandomBuildingLocation(squad);

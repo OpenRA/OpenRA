@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenRA.FileFormats;
 using OpenRA.Traits;
 using XRandom = OpenRA.Thirdparty.Random;
 
@@ -78,5 +79,7 @@ namespace OpenRA.Mods.RA.AI
 			get { return (target != null && !target.IsDead() && !target.Destroyed
 				&& target.IsInWorld && !target.HasTrait<Husk>()); }
 		}
+
+		public WPos CenterPosition { get { return units.Select(u => u.CenterPosition).Average(); } }
 	}
 }

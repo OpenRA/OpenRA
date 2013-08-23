@@ -32,9 +32,7 @@ namespace OpenRA.Mods.RA.AI
 
 			if (!owner.TargetIsValid)
 			{
-				var circaPostion = AverageUnitsPosition(owner.units);
-				if (circaPostion == null) return;
-				owner.Target = owner.bot.FindClosestEnemy(circaPostion.Value.CenterPosition, WRange.FromCells(8));
+				owner.Target = owner.bot.FindClosestEnemy(owner.CenterPosition, WRange.FromCells(8));
 
 				if (owner.Target == null)
 				{
@@ -42,6 +40,7 @@ namespace OpenRA.Mods.RA.AI
 					return;
 				}
 			}
+
 			foreach (var a in owner.units)
 				owner.world.IssueOrder(new Order("AttackMove", a, false) { TargetLocation = owner.Target.Location });
 		}
