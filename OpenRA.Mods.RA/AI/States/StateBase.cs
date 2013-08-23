@@ -92,7 +92,7 @@ namespace OpenRA.Mods.RA.AI
 			return false;
 		}
 
-		protected virtual bool MayBeFlee(Squad squad, Func<List<Actor>, bool> flee)
+		protected virtual bool MayBeFlee(Squad squad, Func<IEnumerable<Actor>, bool> flee)
 		{
 			if (!squad.IsValid)
 				return false;
@@ -107,7 +107,7 @@ namespace OpenRA.Mods.RA.AI
 			if (!enemyAroundUnit.Any())
 				return false;
 
-			return flee(enemyAroundUnit.ToList());
+			return flee(enemyAroundUnit);
 		}
 	}
 }

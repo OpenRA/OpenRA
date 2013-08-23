@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using AI.Fuzzy.Library;
 using OpenRA.Mods.RA.Move;
 using OpenRA.Traits;
@@ -165,7 +166,7 @@ namespace OpenRA.Mods.RA.AI
 				"then AttackOrFlee is Flee");
 		}
 
-		public void CalculateFuzzy(List<Actor> ownUnits, List<Actor> enemyUnits)
+		public void CalculateFuzzy(IEnumerable<Actor> ownUnits, IEnumerable<Actor> enemyUnits)
 		{
 			var inputValues = new Dictionary<FuzzyVariable, double>();
 			inputValues.Add(fuzzyEngine.InputByName("OwnHealth"), (double)NormalizedHealth(ownUnits, 100));
@@ -176,7 +177,7 @@ namespace OpenRA.Mods.RA.AI
 			result = fuzzyEngine.Calculate(inputValues);
 		}
 
-		protected float NormalizedHealth(List<Actor> actors, float normalizeByValue)
+		protected float NormalizedHealth(IEnumerable<Actor> actors, float normalizeByValue)
 		{
 			var sumOfMaxHp = 0;
 			var sumOfHp = 0;
@@ -195,7 +196,7 @@ namespace OpenRA.Mods.RA.AI
 			return (sumOfHp * normalizeByValue) / sumOfMaxHp;
 		}
 
-		protected float RelativePower(List<Actor> own, List<Actor> enemy)
+		protected float RelativePower(IEnumerable<Actor> own, IEnumerable<Actor> enemy)
 		{
 			return RelativeValue(own, enemy, 100, SumOfValues<AttackBase>, (Actor a) =>
 			{
@@ -208,25 +209,25 @@ namespace OpenRA.Mods.RA.AI
 			});
 		}
 
-		protected float RelativeSpeed(List<Actor> own, List<Actor> enemy)
+		protected float RelativeSpeed(IEnumerable<Actor> own, IEnumerable<Actor> enemy)
 		{
 			return RelativeValue(own, enemy, 100, Average<Mobile>, (Actor a) => a.Trait<Mobile>().Info.Speed);
 		}
 
-		protected float RelativeValue(List<Actor> own, List<Actor> enemy, float normalizeByValue, 
-					Func<List<Actor>, Func<Actor, int>, float> relativeFunc, Func<Actor, int> getValue)
+		protected float RelativeValue(IEnumerable<Actor> own, IEnumerable<Actor> enemy, float normalizeByValue, 
+					Func<IEnumerable<Actor>, Func<Actor, int>, float> relativeFunc, Func<Actor, int> getValue)
 		{
-			if (enemy.Count == 0)
+			if (!enemy.Any())
 				return 999.0f;
 
-			if (own.Count == 0)
+			if (!own.Any())
 				return 0.0f;
 
 			var relative = (relativeFunc(own, getValue) / relativeFunc(enemy, getValue)) * normalizeByValue;
 			return relative.Clamp(0.0f, 999.0f);
 		}
 
-		protected float SumOfValues<Trait>(List<Actor> actors, Func<Actor, int> getValue)
+		protected float SumOfValues<Trait>(IEnumerable<Actor> actors, Func<Actor, int> getValue)
 		{
 			var sum = 0;
 			foreach (var a in actors)
@@ -236,7 +237,7 @@ namespace OpenRA.Mods.RA.AI
 			return sum;
 		}
 
-		protected float Average<Trait>(List<Actor> actors, Func<Actor, int> getValue)
+		protected float Average<Trait>(IEnumerable<Actor> actors, Func<Actor, int> getValue)
 		{
 			var sum = 0;
 			var countActors = 0;

@@ -19,7 +19,7 @@ namespace OpenRA.Mods.RA.AI
 	{
 		protected const int missileUnitsMultiplier = 3;
 
-		protected static int CountAntiAirUnits(List<Actor> units)
+		protected static int CountAntiAirUnits(IEnumerable<Actor> units)
 		{
 			int missileUnitsCount = 0;
 			foreach (var unit in units)
@@ -43,7 +43,7 @@ namespace OpenRA.Mods.RA.AI
 			return base.MayBeFlee(owner, (enemyAroundUnit) =>
 			{
 				int missileUnitsCount = 0;
-				if (enemyAroundUnit.Count > 0)
+				if (enemyAroundUnit.Any())
 					missileUnitsCount = CountAntiAirUnits(enemyAroundUnit);
 
 				if (missileUnitsCount * missileUnitsMultiplier > owner.units.Count)
