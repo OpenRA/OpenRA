@@ -17,12 +17,8 @@ debugger.watchCtrl = nil -- the watch ctrl that shows watch information
 debugger.stackCtrl = nil -- the stack ctrl that shows stack information
 debugger.toggleview = { stackpanel = false, watchpanel = false }
 debugger.hostname = ide.config.debugger.hostname or (function()
-  local addr = wx.wxIPV4address() -- check what address is resolvable
-  local log = wx.wxLogNull() -- disable error reporting
-  for _, host in ipairs({wx.wxGetHostName(), wx.wxGetFullHostName()}) do
-    if host and #host > 0 and addr:Hostname(host) then return host end
-  end
-  return "localhost" -- last resort; no known good hostname
+  local hostname = socket.dns.gethostname()
+  return hostname and socket.dns.toip(hostname) and hostname or "localhost"
 end)()
 
 local notebook = ide.frame.notebook
