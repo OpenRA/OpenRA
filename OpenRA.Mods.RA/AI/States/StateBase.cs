@@ -28,7 +28,9 @@ namespace OpenRA.Mods.RA.AI
 
 		protected virtual bool MayBeFlee(Squad owner, Func<List<Actor>, bool> flee)
 		{
-			if (owner.IsEmpty) return false;
+			if (!owner.IsValid)
+				return false;
+
 			var u = owner.units.Random(owner.random);
 
 			var units = owner.world.FindActorsInCircle(u.CenterPosition, WRange.FromCells(dangerRadius)).ToList();

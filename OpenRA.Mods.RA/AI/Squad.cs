@@ -61,14 +61,11 @@ namespace OpenRA.Mods.RA.AI
 
 		public void Update()
 		{
-			if (IsEmpty) return;
-			fsm.Update(this);
+			if (IsValid)
+				fsm.Update(this);
 		}
 
-		public bool IsEmpty
-		{
-			get { return !units.Any(); }
-		}
+		public bool IsValid { get { return units.Any(); } }
 
 		public Actor Target
 		{

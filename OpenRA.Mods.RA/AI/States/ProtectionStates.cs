@@ -27,7 +27,9 @@ namespace OpenRA.Mods.RA.AI
 
 		public void Tick(Squad owner)
 		{
-			if (owner.IsEmpty) return;
+			if (!owner.IsValid)
+				return;
+
 			if (!owner.TargetIsValid)
 			{
 				var circaPostion = AverageUnitsPosition(owner.units);
@@ -53,7 +55,8 @@ namespace OpenRA.Mods.RA.AI
 
 		public void Tick(Squad owner)
 		{
-			if (owner.IsEmpty) return;
+			if (!owner.IsValid)
+				return;
 
 			GoToRandomOwnBuilding(owner);
 			owner.fsm.ChangeState(owner, new UnitsForProtectionIdleState(), true);

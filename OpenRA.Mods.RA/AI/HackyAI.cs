@@ -483,7 +483,7 @@ namespace OpenRA.Mods.RA.AI
 
 		void CleanSquads()
 		{
-			squads.RemoveAll(s => s.IsEmpty);
+			squads.RemoveAll(s => !s.IsValid);
 			foreach (var s in squads)
 				s.units.RemoveAll(a => a.Destroyed || a.IsDead());
 		}
@@ -647,7 +647,7 @@ namespace OpenRA.Mods.RA.AI
 			if (!protectSq.TargetIsValid)
 				protectSq.Target = attacker;
 
-			if (protectSq.IsEmpty)
+			if (!protectSq.IsValid)
 			{
 				var ownUnits = world.FindActorsInCircle(baseCenter.CenterPosition, WRange.FromCells(15))
 					.Where(unit => unit.Owner == p && !unit.HasTrait<Building>()

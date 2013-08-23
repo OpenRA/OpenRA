@@ -35,7 +35,9 @@ namespace OpenRA.Mods.RA.AI
 
 		public void Tick(Squad owner)
 		{
-			if (owner.IsEmpty) return;
+			if (!owner.IsValid)
+				return;
+
 			if (!owner.TargetIsValid)
 			{
 				var t = owner.bot.FindClosestEnemy(owner.units.FirstOrDefault().CenterPosition);
@@ -71,7 +73,8 @@ namespace OpenRA.Mods.RA.AI
 
 		public void Tick(Squad owner)
 		{
-			if (owner.IsEmpty) return;
+			if (!owner.IsValid)
+				return;
 
 			if (!owner.TargetIsValid)
 			{
@@ -128,7 +131,8 @@ namespace OpenRA.Mods.RA.AI
 
 		public void Tick(Squad owner)
 		{
-			if (owner.IsEmpty) return;
+			if (!owner.IsValid)
+				return;
 
 			if (!owner.TargetIsValid)
 			{
@@ -161,7 +165,8 @@ namespace OpenRA.Mods.RA.AI
 
 		public void Tick(Squad owner)
 		{
-			if (owner.IsEmpty) return;
+			if (!owner.IsValid)
+				return;
 
 			GoToRandomOwnBuilding(owner);
 			owner.fsm.ChangeState(owner, new GroundUnitsIdleState(), true);

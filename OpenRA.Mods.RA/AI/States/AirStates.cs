@@ -151,7 +151,8 @@ namespace OpenRA.Mods.RA.AI
 
 		public void Tick(Squad owner)
 		{
-			if (owner.IsEmpty) return;
+			if (!owner.IsValid)
+				return;
 
 			if (MayBeFlee(owner))
 			{
@@ -178,7 +179,8 @@ namespace OpenRA.Mods.RA.AI
 
 		public void Tick(Squad owner)
 		{
-			if (owner.IsEmpty) return;
+			if (!owner.IsValid)
+				return;
 
 			if (!owner.TargetIsValid)
 			{
@@ -229,7 +231,8 @@ namespace OpenRA.Mods.RA.AI
 
 		public void Tick(Squad owner)
 		{
-			if (owner.IsEmpty) return;
+			if (!owner.IsValid)
+				return;
 
 			foreach (var a in owner.units)
 			{
