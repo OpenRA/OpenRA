@@ -17,31 +17,9 @@ using OpenRA.Traits;
 
 namespace OpenRA.Mods.RA.AI
 {
-	//**********************************************************************************
-	// Squad AI States
-
-	/* Include general functional for all states */
-
 	abstract class StateBase
 	{
-		protected const int dangerRadius = 10;
-
-		protected virtual bool MayBeFlee(Squad owner, Func<List<Actor>, bool> flee)
-		{
-			if (!owner.IsValid)
-				return false;
-
-			var u = owner.units.Random(owner.random);
-
-			var units = owner.world.FindActorsInCircle(u.CenterPosition, WRange.FromCells(dangerRadius)).ToList();
-			var ownBaseBuildingAround = units.Where(unit => unit.Owner == owner.bot.p && unit.HasTrait<Building>()).ToList();
-			if (ownBaseBuildingAround.Count > 0) return false;
-
-			var enemyAroundUnit = units.Where(unit => owner.bot.p.Stances[unit.Owner] == Stance.Enemy && unit.HasTrait<AttackBase>()).ToList();
-			if (!enemyAroundUnit.Any()) return false;
-
-			return flee(enemyAroundUnit);
-		}
+		protected const int DangerRadius = 10;
 
 		protected static CPos? AverageUnitsPosition(List<Actor> units)
 		{
@@ -54,38 +32,46 @@ namespace OpenRA.Mods.RA.AI
 				y += u.Location.Y;
 				countUnits++;
 			}
+
 			x = x / countUnits;
 			y = y / countUnits;
 			return (x != 0 && y != 0) ? new CPos?(new CPos(x, y)) : null;
 		}
 
-		protected static void GoToRandomOwnBuilding(Squad owner)
+		protected static void GoToRandomOwnBuilding(Squad squad)
 		{
-			var loc = RandomBuildingLocation(owner);
-			foreach (var a in owner.units)
-				owner.world.IssueOrder(new Order("Move", a, false) { TargetLocation = loc });
+			var loc = RandomBuildingLocation(squad);
+			foreach (var a in squad.units)
+				squad.world.IssueOrder(new Order("Move", a, false) { TargetLocation = loc });
 		}
 
-		protected static CPos RandomBuildingLocation(Squad owner)
+		protected static CPos RandomBuildingLocation(Squad squad)
 		{
-			var location = owner.bot.baseCenter;
-			var buildings = owner.world.ActorsWithTrait<Building>()
-				.Where(a => a.Actor.Owner == owner.bot.p).Select(a => a.Actor).ToArray();
+			var location = squad.bot.baseCenter;
+			var buildings = squad.world.ActorsWithTrait<Building>()
+				.Where(a => a.Actor.Owner == squad.bot.p).Select(a => a.Actor).ToArray();
 			if (buildings.Length > 0)
-				location = buildings.Random(owner.random).Location;
+				location = buildings.Random(squad.random).Location;
 			return location;
 		}
 
 		protected static bool BusyAttack(Actor a)
 		{
-			if (!a.IsIdle)
-				if (a.GetCurrentActivity().GetType() == typeof(OpenRA.Mods.RA.Activities.Attack) ||
-					a.GetCurrentActivity().GetType() == typeof(FlyAttack) ||
-					(a.GetCurrentActivity().NextActivity != null &&
-					(a.GetCurrentActivity().NextActivity.GetType() == typeof(OpenRA.Mods.RA.Activities.Attack) || 
-					a.GetCurrentActivity().NextActivity.GetType() == typeof(FlyAttack)) )
-					)
-					return true;
+			if (a.IsIdle)
+				return false;
+
+			var type = a.GetCurrentActivity().GetType();
+			if (type == typeof(OpenRA.Mods.RA.Activities.Attack) || type == typeof(FlyAttack))
+				return true;
+
+			var next = a.GetCurrentActivity().NextActivity;
+			if (next == null)
+				return false;
+
+			var nextType = a.GetCurrentActivity().NextActivity.GetType();
+			if (nextType == typeof(OpenRA.Mods.RA.Activities.Attack) || nextType == typeof(FlyAttack))
+				return true;
+
 			return false;
 		}
 
@@ -104,6 +90,24 @@ namespace OpenRA.Mods.RA.AI
 					return true;
 
 			return false;
+		}
+
+		protected virtual bool MayBeFlee(Squad squad, Func<List<Actor>, bool> flee)
+		{
+			if (!squad.IsValid)
+				return false;
+
+			var u = squad.units.Random(squad.random);
+			var units = squad.world.FindActorsInCircle(u.CenterPosition, WRange.FromCells(DangerRadius)).ToList();
+			var ownBaseBuildingAround = units.Where(unit => unit.Owner == squad.bot.p && unit.HasTrait<Building>());
+			if (ownBaseBuildingAround.Any())
+				return false;
+
+			var enemyAroundUnit = units.Where(unit => squad.bot.p.Stances[unit.Owner] == Stance.Enemy && unit.HasTrait<AttackBase>());
+			if (!enemyAroundUnit.Any())
+				return false;
+
+			return flee(enemyAroundUnit.ToList());
 		}
 	}
 }

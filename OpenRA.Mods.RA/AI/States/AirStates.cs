@@ -65,11 +65,11 @@ namespace OpenRA.Mods.RA.AI
 		{
 			World world = owner.world;
 			detectedEnemyTarget = null;
-			int x = (world.Map.MapSize.X % dangerRadius) == 0 ? world.Map.MapSize.X : world.Map.MapSize.X + dangerRadius;
-			int y = (world.Map.MapSize.Y % dangerRadius) == 0 ? world.Map.MapSize.Y : world.Map.MapSize.Y + dangerRadius;
+			int x = (world.Map.MapSize.X % DangerRadius) == 0 ? world.Map.MapSize.X : world.Map.MapSize.X + DangerRadius;
+			int y = (world.Map.MapSize.Y % DangerRadius) == 0 ? world.Map.MapSize.Y : world.Map.MapSize.Y + DangerRadius;
 
-			for (int i = 0; i < x; i += dangerRadius * 2)
-				for (int j = 0; j < y; j += dangerRadius * 2)
+			for (int i = 0; i < x; i += DangerRadius * 2)
+				for (int j = 0; j < y; j += DangerRadius * 2)
 				{
 					CPos pos = new CPos(i, j);
 					if (NearToPosSafely(owner, pos.CenterPosition, out detectedEnemyTarget))
@@ -96,7 +96,7 @@ namespace OpenRA.Mods.RA.AI
 		protected static bool NearToPosSafely(Squad owner, WPos loc, out Actor detectedEnemyTarget)
 		{
 			detectedEnemyTarget = null;
-			var unitsAroundPos = owner.world.FindActorsInCircle(loc, WRange.FromCells(dangerRadius))
+			var unitsAroundPos = owner.world.FindActorsInCircle(loc, WRange.FromCells(DangerRadius))
 				.Where(unit => owner.bot.p.Stances[unit.Owner] == Stance.Enemy).ToList();
 
 			int missileUnitsCount = 0;
