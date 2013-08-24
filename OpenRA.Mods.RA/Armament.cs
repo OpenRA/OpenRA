@@ -125,28 +125,28 @@ namespace OpenRA.Mods.RA
 
 			var args = new ProjectileArgs
 			{
-				weapon = Weapon,
-				facing = legacyFacing,
-				firepowerModifier = self.TraitsImplementing<IFirepowerModifier>()
+				Weapon = Weapon,
+				Facing = legacyFacing,
+				FirepowerModifier = self.TraitsImplementing<IFirepowerModifier>()
 					.Select(a => a.GetFirepowerModifier())
 					.Product(),
 
-				source = muzzlePosition,
-				sourceActor = self,
-				passiveTarget = target.CenterPosition,
-				guidedTarget = target
+				Source = muzzlePosition,
+				SourceActor = self,
+				PassiveTarget = target.CenterPosition,
+				GuidedTarget = target
 			};
 
 			attack.ScheduleDelayedAction(Info.FireDelay, () =>
 			{
-				if (args.weapon.Projectile != null)
+				if (args.Weapon.Projectile != null)
 				{
-					var projectile = args.weapon.Projectile.Create(args);
+					var projectile = args.Weapon.Projectile.Create(args);
 					if (projectile != null)
 						self.World.Add(projectile);
 
-					if (args.weapon.Report != null && args.weapon.Report.Any())
-						Sound.Play(args.weapon.Report.Random(self.World.SharedRandom), self.CenterPosition);
+					if (args.Weapon.Report != null && args.Weapon.Report.Any())
+						Sound.Play(args.Weapon.Report.Random(self.World.SharedRandom), self.CenterPosition);
 				}
 			});
 

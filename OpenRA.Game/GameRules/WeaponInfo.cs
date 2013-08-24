@@ -9,10 +9,10 @@
 #endregion
 
 using System.Collections.Generic;
+using System.Linq;
 using OpenRA.Effects;
 using OpenRA.FileFormats;
 using OpenRA.Traits;
-using System.Linq;
 
 namespace OpenRA.GameRules
 {
@@ -20,7 +20,7 @@ namespace OpenRA.GameRules
 	{
 		[Desc("Distance (in pixels) from the explosion center at which damage is 1/2.")]
 		public readonly int Spread = 1;
-		[FieldLoader.LoadUsing( "LoadVersus" )]
+		[FieldLoader.LoadUsing("LoadVersus")]
 		[Desc("Damage vs each armortype. 0% = can't target.")]
 		public readonly Dictionary<string, float> Versus;
 		[Desc("Can this damage ore?")]
@@ -62,17 +62,17 @@ namespace OpenRA.GameRules
 			return Versus.TryGetValue(armor.Type, out versus) ? versus : 1;
 		}
 
-		public WarheadInfo( MiniYaml yaml )
+		public WarheadInfo(MiniYaml yaml)
 		{
-			FieldLoader.Load( this, yaml );
+			FieldLoader.Load(this, yaml);
 		}
 
-		static object LoadVersus( MiniYaml y )
+		static object LoadVersus(MiniYaml y)
 		{
-			return y.NodesDict.ContainsKey( "Versus" )
-				? y.NodesDict[ "Versus" ].NodesDict.ToDictionary(
+			return y.NodesDict.ContainsKey("Versus")
+				? y.NodesDict["Versus"].NodesDict.ToDictionary(
 					a => a.Key,
-					a => FieldLoader.GetValue<float>( "(value)", a.Value.Value ) )
+					a => FieldLoader.GetValue<float>("(value)", a.Value.Value))
 				: new Dictionary<string, float>();
 		}
 	}
@@ -85,13 +85,13 @@ namespace OpenRA.GameRules
 
 	public class ProjectileArgs
 	{
-		public WeaponInfo weapon;
-		public float firepowerModifier = 1.0f;
-		public int facing;
-		public WPos source;
-		public Actor sourceActor;
-		public WPos passiveTarget;
-		public Target guidedTarget;
+		public WeaponInfo Weapon;
+		public float FirepowerModifier = 1.0f;
+		public int Facing;
+		public WPos Source;
+		public Actor SourceActor;
+		public WPos PassiveTarget;
+		public Target GuidedTarget;
 	}
 
 	public interface IProjectileInfo { IEffect Create(ProjectileArgs args); }
@@ -109,30 +109,30 @@ namespace OpenRA.GameRules
 		public readonly int BurstDelay = 5;
 		public readonly float MinRange = 0;
 
-		[FieldLoader.LoadUsing( "LoadProjectile" )] public IProjectileInfo Projectile;
-		[FieldLoader.LoadUsing( "LoadWarheads" )] public List<WarheadInfo> Warheads;
+		[FieldLoader.LoadUsing("LoadProjectile")] public IProjectileInfo Projectile;
+		[FieldLoader.LoadUsing("LoadWarheads")] public List<WarheadInfo> Warheads;
 
 		public WeaponInfo(string name, MiniYaml content)
 		{
-			FieldLoader.Load( this, content );
+			FieldLoader.Load(this, content);
 		}
 
-		static object LoadProjectile( MiniYaml yaml )
+		static object LoadProjectile(MiniYaml yaml)
 		{
 			MiniYaml proj;
-			if( !yaml.NodesDict.TryGetValue( "Projectile", out proj ) )
+			if (!yaml.NodesDict.TryGetValue("Projectile", out proj))
 				return null;
-			var ret = Game.CreateObject<IProjectileInfo>( proj.Value + "Info" );
-			FieldLoader.Load( ret, proj );
+			var ret = Game.CreateObject<IProjectileInfo>(proj.Value + "Info");
+			FieldLoader.Load(ret, proj);
 			return ret;
 		}
 
-		static object LoadWarheads( MiniYaml yaml )
+		static object LoadWarheads(MiniYaml yaml)
 		{
 			var ret = new List<WarheadInfo>();
-			foreach( var w in yaml.Nodes )
-				if( w.Key.Split( '@' )[ 0 ] == "Warhead" )
-					ret.Add( new WarheadInfo( w.Value ) );
+			foreach (var w in yaml.Nodes)
+				if (w.Key.Split('@')[0] == "Warhead")
+					ret.Add(new WarheadInfo(w.Value));
 
 			return ret;
 		}
@@ -160,7 +160,6 @@ namespace OpenRA.GameRules
 
 			return true;
 		}
-
 
 		public bool IsValidAgainst(Target target, World world)
 		{
