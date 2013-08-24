@@ -28,7 +28,7 @@ namespace OpenRA.Mods.RA.AI
 		internal HackyAI bot;
 		internal XRandom random;
 
-		internal Actor target;
+		internal Target target;
 		internal StateMachine fsm;
 
 		//fuzzy
@@ -42,7 +42,7 @@ namespace OpenRA.Mods.RA.AI
 			this.world = bot.world;
 			this.random = bot.random;
 			this.type = type;
-			this.target = target;
+			this.target = Traits.Target.FromActor(target);
 			fsm = new StateMachine();
 
 			switch (type)
@@ -70,14 +70,13 @@ namespace OpenRA.Mods.RA.AI
 
 		public Actor Target
 		{
-			get { return target; }
-			set { target = value; }
+			get { return target.Actor; }
+			set { target = Traits.Target.FromActor(value); }
 		}
 
 		public bool TargetIsValid
 		{
-			get { return (target != null && !target.IsDead() && !target.Destroyed
-				&& target.IsInWorld && !target.HasTrait<Husk>()); }
+			get { return target.IsValidFor(units.FirstOrDefault()) && !target.Actor.HasTrait<Husk>(); }
 		}
 
 		public WPos CenterPosition { get { return units.Select(u => u.CenterPosition).Average(); } }
