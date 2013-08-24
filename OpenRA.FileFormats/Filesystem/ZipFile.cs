@@ -66,7 +66,7 @@ namespace OpenRA.FileFormats
 
 		public IEnumerable<uint> ClassicHashes()
 		{
-			foreach(ZipEntry entry in pkg)
+			foreach (ZipEntry entry in pkg)
 				yield return PackageEntry.HashFilename(entry.Name, PackageHashType.Classic);
 		}
 
@@ -77,7 +77,7 @@ namespace OpenRA.FileFormats
 
 		public IEnumerable<string> AllFileNames()
 		{
-			foreach(ZipEntry entry in pkg)
+			foreach (ZipEntry entry in pkg)
 				yield return entry.Name;
 		}
 
@@ -91,20 +91,16 @@ namespace OpenRA.FileFormats
 
 		public void Write(Dictionary<string, byte[]> contents)
 		{
-			pkg.Close();
-
-			pkg = SZipFile.Create(filename);
-
-			pkg.BeginUpdate();
 			// TODO: Clear existing content?
+			pkg.Close();
+			pkg = SZipFile.Create(filename);
+			pkg.BeginUpdate();
 
 			foreach (var kvp in contents)
 				pkg.Add(new StaticMemoryDataSource(kvp.Value), kvp.Key);
 
 			pkg.CommitUpdate();
-
 			pkg.Close();
-
 			pkg = new SZipFile(new MemoryStream(File.ReadAllBytes(filename)));
 		}
 	}
@@ -112,7 +108,7 @@ namespace OpenRA.FileFormats
 	class StaticMemoryDataSource : IStaticDataSource
 	{
 		byte[] data;
-		public StaticMemoryDataSource (byte[] data)
+		public StaticMemoryDataSource(byte[] data)
 		{
 			this.data = data;
 		}
