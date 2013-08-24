@@ -25,8 +25,8 @@ namespace OpenRA.Mods.RA
     public class Orderer : ITick
     {
         public OrdererInfo Info;
-        private List<CPos> locations;
-        private World world;
+        List<CPos> locations;
+        World world;
         public Orderer(Actor self, OrdererInfo info)
         {
             Info = info;
@@ -36,7 +36,7 @@ namespace OpenRA.Mods.RA
                     locations.Add(new CPos(Info.Location[i], Info.Location[i + 1]));
         }
 
-        private CPos randomLocation()
+        CPos randomLocation()
         {
             if (locations.Count > 1)
                 return locations[world.SharedRandom.Next(0, locations.Count() - 1)];
@@ -50,13 +50,13 @@ namespace OpenRA.Mods.RA
                 world = self.World;
             if (locations.Count > 0 && delay % Info.Delay == 0)
             {
-                CPos location = randomLocation();
+                var location = randomLocation();
                 if (location != CPos.Zero)
                 {
-                    IEnumerable<Actor> actors = self.World.ActorMap.GetUnitsAt(self.Location);
+                    var actors = self.World.ActorMap.GetUnitsAt(self.Location);
                     foreach (Actor actor in actors)
                     {
-                        bool isAffected = Info.Affects == null || Info.Affects.Contains(actor.Owner.InternalName);
+                        var isAffected = Info.Affects == null || Info.Affects.Contains(actor.Owner.InternalName);
                         if (isAffected)
                         {
                             if (Info.Order == "AttackMove" && actor.HasTrait<AttackMove>())
