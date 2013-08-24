@@ -53,10 +53,28 @@ Background@EDITOR_PANEL:
 			Width:210
 			MaxLength:50
 			Height:25
+		Label@PATH_LABEL:
+			X:10
+			Y:379
+			Width:40
+			Height:25
+			Align:Right
+			Text:Path:
+		TextField@PATH:
+			X:60
+			Y:380
+			Width:270
+			Height:25
 		Button@CLOSE:
 			X:30
 			Y:420
-			Width:PARENT_RIGHT - 60
+			Width:100
 			Height:25
 			Text:Close
 			Key:escape
+		Button@SAVE:
+			X:210
+			Y:420
+			Width:100
+			Height:25
+			Text:Save

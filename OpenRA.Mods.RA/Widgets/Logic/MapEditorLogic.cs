@@ -9,6 +9,8 @@
 #endregion
 
 using System;
+using System.IO;
+using System.Linq;
 using OpenRA.Widgets;
 
 namespace OpenRA.Mods.RA.Widgets.Logic
@@ -18,29 +20,48 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public MapEditorLogic(Widget widget, Action onExit, World world)
 		{
-			var close = widget.GetOrNull<ButtonWidget>("CLOSE");
-			if (close != null)
-				close.OnClick = () => { Ui.CloseWindow(); onExit(); };
-
 			var title = widget.GetOrNull<TextFieldWidget>("TITLE");
 			if (title != null)
 			{
 				title.Text = world.Map.Title;
-				title.IsDisabled = () => true;
 			}
 
 			var description = widget.GetOrNull<TextFieldWidget>("DESCRIPTION");
 			if (description != null)
 			{
 				description.Text = world.Map.Description;
-				description.IsDisabled = () => true;
 			}
 
 			var author = widget.GetOrNull<TextFieldWidget>("AUTHOR");
 			if (author != null)
 			{
 				author.Text = world.Map.Author;
-				author.IsDisabled = () => true;
+			}
+
+			var defaultPath = new string[] {
+				Platform.SupportDir, "maps", WidgetUtils.ActiveModId(),
+				world.Map.Title.ToLower().Trim() }.Aggregate(Path.Combine) + ".oramap";
+			var path = widget.GetOrNull<TextFieldWidget>("PATH");
+			if (path != null)
+			{
+				path.Text = defaultPath;
+			}
+
+			var close = widget.GetOrNull<ButtonWidget>("CLOSE");
+			if (close != null)
+				close.OnClick = () => { Ui.CloseWindow(); onExit(); };
+
+			var save = widget.GetOrNull<ButtonWidget>("SAVE");
+			if (save != null && !string.IsNullOrEmpty(path.Text))
+			{
+				save.OnClick = () => {
+					var newMap = world.Map;
+					newMap.Title = title.Text;
+					newMap.Description = description.Text;
+					newMap.Author = author.Text;
+					newMap.Save(path.Text);
+					Game.Debug("Saved current map as {0}", path.Text);
+				};
 			}
 		}
 	}
