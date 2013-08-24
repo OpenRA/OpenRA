@@ -26,7 +26,7 @@ namespace OpenRA
 		public readonly uint ActorID;
 
 		Lazy<IOccupySpace> occupySpace;
-		Lazy<IFacing> Facing;
+		Lazy<IFacing> facing;
 
 		public Cached<Rectangle> Bounds;
 		public Cached<Rectangle> ExtendedBounds;
@@ -42,8 +42,8 @@ namespace OpenRA
 			get
 			{
 				// TODO: Support non-zero pitch/roll in IFacing (IOrientation?)
-				var facing = Facing.Value != null ? Facing.Value.Facing : 0;
-				return new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(facing));
+				var facingValue = facing.Value != null ? facing.Value.Facing : 0;
+				return new WRot(WAngle.Zero, WAngle.Zero, WAngle.FromFacing(facingValue));
 			}
 		}
 
@@ -60,7 +60,7 @@ namespace OpenRA
 			World = world;
 			ActorID = world.NextAID();
 			if (initDict.Contains<OwnerInit>())
-				Owner = init.Get<OwnerInit,Player>();
+				Owner = init.Get<OwnerInit, Player>();
 
 			occupySpace = Lazy.New(() => TraitOrDefault<IOccupySpace>());
 
@@ -74,9 +74,9 @@ namespace OpenRA
 					AddTrait(trait.Create(init));
 			}
 
-			Facing = Lazy.New(() => TraitOrDefault<IFacing>());
+			facing = Lazy.New(() => TraitOrDefault<IFacing>());
 
-			Size = Lazy.New(() =>
+			size = Lazy.New(() =>
 			{
 				var si = Info.Traits.GetOrDefault<SelectableInfo>();
 				if (si != null && si.Bounds != null)
@@ -85,8 +85,8 @@ namespace OpenRA
 				return TraitsImplementing<IAutoSelectionSize>().Select(x => x.SelectionSize(this)).FirstOrDefault();
 			});
 
-			ApplyIRender = (x, wr) => x.Render(this, wr);
-			ApplyRenderModifier = (m, p, wr) => p.ModifyRender(this, wr, m);
+			applyIRender = (x, wr) => x.Render(this, wr);
+			applyRenderModifier = (m, p, wr) => p.ModifyRender(this, wr, m);
 
 			Bounds = Cached.New(() => CalculateBounds(false));
 			ExtendedBounds = Cached.New(() => CalculateBounds(true));
@@ -105,16 +105,16 @@ namespace OpenRA
 			get { return currentActivity == null; }
 		}
 
-		OpenRA.FileFormats.Lazy<int2> Size;
+		OpenRA.FileFormats.Lazy<int2> size;
 
 		// note: these delegates are cached to avoid massive allocation.
-		Func<IRender, WorldRenderer, IEnumerable<IRenderable>> ApplyIRender;
-		Func<IEnumerable<IRenderable>, IRenderModifier, WorldRenderer, IEnumerable<IRenderable>> ApplyRenderModifier;
+		Func<IRender, WorldRenderer, IEnumerable<IRenderable>> applyIRender;
+		Func<IEnumerable<IRenderable>, IRenderModifier, WorldRenderer, IEnumerable<IRenderable>> applyRenderModifier;
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
 		{
 			var mods = TraitsImplementing<IRenderModifier>();
-			var sprites = TraitsImplementing<IRender>().SelectMany(x => ApplyIRender(x, wr));
-			return mods.Aggregate(sprites, (m,p) => ApplyRenderModifier(m,p,wr));
+			var sprites = TraitsImplementing<IRender>().SelectMany(x => applyIRender(x, wr));
+			return mods.Aggregate(sprites, (m, p) => applyRenderModifier(m, p, wr));
 		}
 
 		// When useAltitude = true, the bounding box is extended
@@ -123,8 +123,8 @@ namespace OpenRA
 		// at its current altitude
 		Rectangle CalculateBounds(bool useAltitude)
 		{
-			var size = (PVecInt)(Size.Value);
-			var loc = CenterLocation - size / 2;
+			var sizeVector = (PVecInt)size.Value;
+			var loc = CenterLocation - sizeVector / 2;
 
 			var si = Info.Traits.GetOrDefault<SelectableInfo>();
 			if (si != null && si.Bounds != null && si.Bounds.Length > 2)
@@ -139,33 +139,33 @@ namespace OpenRA
 				loc -= new PVecInt(0, altitude);
 
 				if (useAltitude)
-					size = new PVecInt(size.X, size.Y + altitude);
+					sizeVector = new PVecInt(sizeVector.X, sizeVector.Y + altitude);
 			}
 
-			return new Rectangle(loc.X, loc.Y, size.X, size.Y);
+			return new Rectangle(loc.X, loc.Y, sizeVector.X, sizeVector.Y);
 		}
 
 		public bool IsInWorld { get; internal set; }
 
-		public void QueueActivity( bool queued, Activity nextActivity )
+		public void QueueActivity(bool queued, Activity nextActivity)
 		{
-			if( !queued )
+			if (!queued)
 				CancelActivity();
-			QueueActivity( nextActivity );
+			QueueActivity(nextActivity);
 		}
 
-		public void QueueActivity( Activity nextActivity )
+		public void QueueActivity(Activity nextActivity)
 		{
-			if( currentActivity == null )
+			if (currentActivity == null)
 				currentActivity = nextActivity;
 			else
-				currentActivity.Queue( nextActivity );
+				currentActivity.Queue(nextActivity);
 		}
 
 		public void CancelActivity()
 		{
-			if( currentActivity != null )
-				currentActivity.Cancel( this );
+			if (currentActivity != null)
+				currentActivity.Cancel(this);
 		}
 
 		public Activity GetCurrentActivity()
@@ -178,54 +178,54 @@ namespace OpenRA
 			return (int)ActorID;
 		}
 
-		public override bool Equals( object obj )
+		public override bool Equals(object obj)
 		{
 			var o = obj as Actor;
-			return ( o != null && o.ActorID == ActorID );
+			return o != null && o.ActorID == ActorID;
 		}
 
 		public override string ToString()
 		{
-			return "{0} {1}{2}".F( Info.Name, ActorID, IsInWorld ? "" : " (not in world)" );
+			return "{0} {1}{2}".F(Info.Name, ActorID, IsInWorld ? "" : " (not in world)");
 		}
 
 		public T Trait<T>()
 		{
-			return World.traitDict.Get<T>( this );
+			return World.traitDict.Get<T>(this);
 		}
 
 		public T TraitOrDefault<T>()
 		{
-			return World.traitDict.GetOrDefault<T>( this );
+			return World.traitDict.GetOrDefault<T>(this);
 		}
 
 		public IEnumerable<T> TraitsImplementing<T>()
 		{
-			return World.traitDict.WithInterface<T>( this );
+			return World.traitDict.WithInterface<T>(this);
 		}
 
 		public bool HasTrait<T>()
 		{
-			return World.traitDict.Contains<T>( this );
+			return World.traitDict.Contains<T>(this);
 		}
 
-		public void AddTrait( object trait )
+		public void AddTrait(object trait)
 		{
-			World.traitDict.AddTrait( this, trait );
+			World.traitDict.AddTrait(this, trait);
 		}
 
 		public bool Destroyed { get; private set; }
 
 		public void Destroy()
 		{
-			World.AddFrameEndTask( w =>
+			World.AddFrameEndTask(w =>
 			{
 				if (Destroyed) return;
 
-				World.Remove( this );
-				World.traitDict.RemoveActor( this );
+				World.Remove(this);
+				World.traitDict.RemoveActor(this);
 				Destroyed = true;
-			} );
+			});
 		}
 
 		// TODO: move elsewhere.
