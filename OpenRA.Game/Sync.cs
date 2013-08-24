@@ -14,6 +14,7 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using OpenRA.FileFormats;
+using OpenRA.Traits;
 
 namespace OpenRA
 {
@@ -45,6 +46,7 @@ namespace OpenRA
 			{typeof(TypeDictionary), ((Func<TypeDictionary, int>)hash_tdict).Method},
 			{typeof(Actor), ((Func<Actor, int>)hash_actor).Method},
 			{typeof(Player), ((Func<Player, int>)hash_player).Method},
+			{typeof(Target), ((Func<Target, int>)hash_target).Method},
 		};
 
 		static void EmitSyncOpcodes(Type type, ILGenerator il)
@@ -144,6 +146,25 @@ namespace OpenRA
 			if (p != null)
 				return (int)(p.PlayerActor.ActorID << 16) * 0x567;
 			return 0;
+		}
+
+		public static int hash_target(Target t)
+		{
+			switch (t.Type)
+			{
+				case TargetType.Actor:
+					return (int)(t.Actor.ActorID << 16) * 0x567;
+
+				case TargetType.FrozenActor:
+					return (int)(t.FrozenActor.Actor.ActorID << 16) * 0x567;
+
+				case TargetType.Terrain:
+					return hash<WPos>(t.CenterPosition);
+
+				default:
+				case TargetType.Invalid:
+					return 0;
+			}
 		}
 
 		public static int hash<T>(T t)
