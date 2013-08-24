@@ -246,6 +246,14 @@ namespace OpenRA
 				foreach (var x in traitDict.ActorsWithTraitMultiple<ISync>(this))
 					ret += n++ * (int)(1+x.Actor.ActorID) * Sync.CalculateSyncHash(x.Trait);
 
+				// TODO: don't go over all effects
+				foreach (var e in Effects)
+				{
+					var sync = e as ISync;
+					if (sync != null)
+						ret += n++ * Sync.CalculateSyncHash(sync);
+				}
+
 				// Hash the shared rng
 				ret += SharedRandom.Last;
 
