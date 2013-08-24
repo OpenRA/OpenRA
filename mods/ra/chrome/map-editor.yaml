@@ -1,0 +1,62 @@
+Background@EDITOR_PANEL:
+	Logic:MapEditorLogic
+	X:(WINDOW_RIGHT - WIDTH)/2
+	Y:(WINDOW_BOTTOM - HEIGHT)/2
+	Width:350
+	Height:475
+	Visible:false
+	Children:
+		Label@LABEL_TITLE:
+			X:(PARENT_RIGHT - WIDTH)/2
+			Y:20
+			Width:250
+			Height:25
+			Text:Map Editor
+			Align:Center
+			Font:Bold
+		Label@TITLE_LABEL:
+			X:10
+			Y:59
+			Width:95
+			Height:25
+			Align:Right
+			Text:Title:
+		TextField@TITLE:
+			X:110
+			Y:60
+			Width:210
+			MaxLength:50
+			Height:25
+		Label@DESCRIPTION_LABEL:
+			X:10
+			Y:99
+			Width:95
+			Height:25
+			Align:Right
+			Text:Description:
+		TextField@DESCRIPTION:
+			X:110
+			Y:100
+			Width:210
+			MaxLength:50
+			Height:25
+		Label@AUTHOR_LABEL:
+			X:10
+			Y:139
+			Width:95
+			Height:25
+			Align:Right
+			Text:Author:
+		TextField@AUTHOR:
+			X:110
+			Y:140
+			Width:210
+			MaxLength:50
+			Height:25
+		Button@CLOSE:
+			X:30
+			Y:420
+			Width:PARENT_RIGHT - 60
+			Height:25
+			Text:Close
+			Key:escape

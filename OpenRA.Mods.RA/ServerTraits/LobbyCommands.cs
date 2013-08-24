@@ -338,6 +338,25 @@ namespace OpenRA.Mods.RA.Server
 						server.SyncLobbyInfo();
 						return true;
 					}},
+				{ "mapeditor",
+					s =>
+					{
+						if (!client.IsAdmin)
+						{
+							server.SendOrderTo(conn, "Message", "Only the host can set that option");
+							return true;
+						}
+
+						if (server.Map.Options.Editor.HasValue)
+						{
+							server.SendOrderTo(conn, "Message", "Map has disabled map editor configuration");
+							return true;
+						}
+
+						bool.TryParse(s, out server.lobbyInfo.GlobalSettings.EnableEditor);
+						server.SyncLobbyInfo();
+						return true;
+					}},
 				{ "shroud",
 					s =>
 					{

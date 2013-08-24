@@ -96,35 +96,41 @@ Background@LOBBY_OPTIONS_BIN:
 					Width:230
 					Height:20
 					Text:Debug Menu
-				Checkbox@FRAGILEALLIANCES_CHECKBOX:
+				Checkbox@MAPEDITOR_CHECKBOX:
 					X:320
 					Y:40
+					Width:230
+					Height:20
+					Text:Map Editor
+				Checkbox@FRAGILEALLIANCES_CHECKBOX:
+					X:320
+					Y:80
 					Width:220
 					Height:20
 					Text:Diplomacy Changes
 				Label@STARTINGCASH_DESC:
-					Y:87
+					Y:127
 					Width:80
 					Height:25
 					Text:Starting Cash:
 					Align:Right
 				DropDownButton@STARTINGCASH_DROPDOWNBUTTON:
 					X:85
-					Y:87
+					Y:127
 					Width:130
 					Height:25
 					Font:Bold
 					Text:$5000
 				Label@STARTINGUNITS_DESC:
 					X:PARENT_RIGHT - WIDTH - 145
-					Y:87
+					Y:127
 					Width:120
 					Height:25
 					Text:Starting Units:
 					Align:Right
 				DropDownButton@STARTINGUNITS_DROPDOWNBUTTON:
 					X:PARENT_RIGHT - WIDTH
-					Y:87
+					Y:127
 					Width:140
 					Height:25
 					Font:Bold

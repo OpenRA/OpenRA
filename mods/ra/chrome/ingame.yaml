@@ -80,6 +80,14 @@ Container@PLAYER_WIDGETS:
 			Visible:false
 			Font:Bold
 			Key: f2
+		Button@EDITOR_BUTTON:
+			X:324
+			Y:0
+			Width:160
+			Height:25
+			Text:Map Editor
+			Visible:false
+			Font:Bold
 		Button@OBJECTIVES_BUTTON:
 			X:486
 			Y:0

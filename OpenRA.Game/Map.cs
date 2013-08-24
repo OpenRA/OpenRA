@@ -24,6 +24,7 @@ namespace OpenRA
 	public class MapOptions
 	{
 		public bool? Cheats;
+		public bool? Editor;
 		public bool? Crates;
 		public bool? Fog;
 		public bool? Shroud;
@@ -37,6 +38,8 @@ namespace OpenRA
 		{
 			if (Cheats.HasValue)
 				settings.AllowCheats = Cheats.Value;
+			if (Editor.HasValue)
+				settings.EnableEditor = Editor.Value;
 			if (Crates.HasValue)
 				settings.Crates = Crates.Value;
 			if (Fog.HasValue)

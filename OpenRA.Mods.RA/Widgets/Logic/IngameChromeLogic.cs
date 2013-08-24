@@ -103,6 +103,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			cheatsButton.OnClick = () => cheats.Visible ^= true;
 			cheatsButton.IsVisible = () => world.LobbyInfo.GlobalSettings.AllowCheats;
 
+			Widget editor = null;
+			editor = Game.LoadWidget(world, "EDITOR_PANEL", playerWidgets, new WidgetArgs
+			{
+				{ "onExit", () => editor.Visible = false }
+			});
+			var editorButton = playerWidgets.Get<ButtonWidget>("EDITOR_BUTTON");
+			editorButton.OnClick = () => editor.Visible ^= true;
+			editorButton.IsVisible = () => world.LobbyInfo.GlobalSettings.EnableEditor;
+
 			var iop = world.WorldActor.TraitsImplementing<IObjectivesPanel>().FirstOrDefault();
 			if (iop != null && iop.ObjectivesPanel != null)
 			{
