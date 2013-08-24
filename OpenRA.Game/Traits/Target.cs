@@ -141,5 +141,24 @@ namespace OpenRA.Traits
 			return Positions.Any(t => (t - origin).HorizontalLengthSquared <= rangeSquared);
 		}
 
+		public override string ToString()
+		{
+			switch (Type)
+			{
+				case TargetType.Actor:
+					return actor.ToString();
+
+				case TargetType.FrozenActor:
+					return frozen.ToString();
+
+				case TargetType.Terrain:
+					return pos.ToString();
+
+				default:
+				case TargetType.Invalid:
+					return "Invalid";
+			}
+		}
+
 	}
 }
