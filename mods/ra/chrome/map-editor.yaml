@@ -53,6 +53,18 @@ Background@EDITOR_PANEL:
 			Width:210
 			MaxLength:50
 			Height:25
+		Checkbox@MAPCHOOSER_CHECKBOX:
+			X:110
+			Y:180
+			Width:300
+			Height:20
+			Text:Show in Map Chooser
+		Checkbox@SHELLMAP_CHECKBOX:
+			X:110
+			Y:220
+			Width:300
+			Height:20
+			Text:Use as Shellmap
 		Label@PATH_LABEL:
 			X:10
 			Y:379
@@ -71,6 +83,7 @@ Background@EDITOR_PANEL:
 			Width:100
 			Height:25
 			Text:Close
+			Font:Bold
 			Key:escape
 		Button@SAVE:
 			X:210
@@ -78,3 +91,4 @@ Background@EDITOR_PANEL:
 			Width:100
 			Height:25
 			Text:Save
+			Font:Bold

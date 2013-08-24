@@ -20,22 +20,38 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 		[ObjectCreator.UseCtor]
 		public MapEditorLogic(Widget widget, Action onExit, World world)
 		{
+			var newMap = world.Map;
+
 			var title = widget.GetOrNull<TextFieldWidget>("TITLE");
 			if (title != null)
 			{
-				title.Text = world.Map.Title;
+				title.Text = newMap.Title;
 			}
 
 			var description = widget.GetOrNull<TextFieldWidget>("DESCRIPTION");
 			if (description != null)
 			{
-				description.Text = world.Map.Description;
+				description.Text = newMap.Description;
 			}
 
 			var author = widget.GetOrNull<TextFieldWidget>("AUTHOR");
 			if (author != null)
 			{
-				author.Text = world.Map.Author;
+				author.Text = newMap.Author;
+			}
+
+			var showMap = widget.GetOrNull<CheckboxWidget>("MAPCHOOSER_CHECKBOX");
+			if (showMap != null)
+			{
+				showMap.IsChecked = () => newMap.Selectable;
+				showMap.OnClick = () => newMap.Selectable ^= true;
+			}
+
+			var shellmap = widget.GetOrNull<CheckboxWidget>("SHELLMAP_CHECKBOX");
+			if (shellmap != null)
+			{
+				shellmap.IsChecked = () => newMap.UseAsShellmap;
+				shellmap.OnClick = () => newMap.UseAsShellmap ^= true;
 			}
 
 			var defaultPath = new string[] {
@@ -55,7 +71,6 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			if (save != null && !string.IsNullOrEmpty(path.Text))
 			{
 				save.OnClick = () => {
-					var newMap = world.Map;
 					newMap.Title = title.Text;
 					newMap.Description = description.Text;
 					newMap.Author = author.Text;
