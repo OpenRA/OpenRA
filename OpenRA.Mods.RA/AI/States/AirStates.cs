@@ -17,66 +17,63 @@ namespace OpenRA.Mods.RA.AI
 {
 	abstract class AirStateBase : StateBase
 	{
-		protected const int missileUnitsMultiplier = 3;
+		protected const int MissileUnitMultiplier = 3;
 
 		protected static int CountAntiAirUnits(IEnumerable<Actor> units)
 		{
 			if (!units.Any())
 				return 0;
 
-			int missileUnitsCount = 0;
+			var missileUnitsCount = 0;
 			foreach (var unit in units)
+			{
 				if (unit != null && unit.HasTrait<AttackBase>() && !unit.HasTrait<Aircraft>()
 					&& !unit.IsDisabled())
 				{
 					var arms = unit.TraitsImplementing<Armament>();
 					foreach (var a in arms)
+					{
 						if (a.Weapon.ValidTargets.Contains("Air"))
 						{
 							missileUnitsCount++;
 							break;
 						}
+					}
 				}
-			return missileUnitsCount;
-		}
+			}
 
-		//checks the number of anti air enemies around units
-		protected virtual bool ShouldFlee(Squad owner)
-		{
-			return base.ShouldFlee(owner, enemies => CountAntiAirUnits(enemies) * missileUnitsMultiplier > owner.units.Count);
+			return missileUnitsCount;
 		}
 
 		protected static Actor FindDefenselessTarget(Squad owner)
 		{
 			Actor target = null;
 			FindSafePlace(owner, out target, true);
-
-			return target == null ? null : target;
+			return target;
 		}
 
 		protected static CPos? FindSafePlace(Squad owner, out Actor detectedEnemyTarget, bool needTarget)
 		{
-			World world = owner.world;
+			var world = owner.world;
 			detectedEnemyTarget = null;
-			int x = (world.Map.MapSize.X % DangerRadius) == 0 ? world.Map.MapSize.X : world.Map.MapSize.X + DangerRadius;
-			int y = (world.Map.MapSize.Y % DangerRadius) == 0 ? world.Map.MapSize.Y : world.Map.MapSize.Y + DangerRadius;
+			var x = (world.Map.MapSize.X % DangerRadius) == 0 ? world.Map.MapSize.X : world.Map.MapSize.X + DangerRadius;
+			var y = (world.Map.MapSize.Y % DangerRadius) == 0 ? world.Map.MapSize.Y : world.Map.MapSize.Y + DangerRadius;
 
-			for (int i = 0; i < x; i += DangerRadius * 2)
-				for (int j = 0; j < y; j += DangerRadius * 2)
+			for (var i = 0; i < x; i += DangerRadius * 2)
+			{
+				for (var j = 0; j < y; j += DangerRadius * 2)
 				{
-					CPos pos = new CPos(i, j);
+					var pos = new CPos(i, j);
 					if (NearToPosSafely(owner, pos.CenterPosition, out detectedEnemyTarget))
 					{
-						if (needTarget)
-						{
-							if (detectedEnemyTarget == null)
-								continue;
-							else
-								return pos;
-						}
+						if (needTarget && detectedEnemyTarget == null)
+							continue;
+
 						return pos;
 					}
 				}
+			}
+
 			return null;
 		}
 
@@ -92,31 +89,28 @@ namespace OpenRA.Mods.RA.AI
 			var unitsAroundPos = owner.world.FindActorsInCircle(loc, WRange.FromCells(DangerRadius))
 				.Where(unit => owner.bot.p.Stances[unit.Owner] == Stance.Enemy).ToList();
 
-			int missileUnitsCount = 0;
-			if (unitsAroundPos.Count > 0)
+			if (!unitsAroundPos.Any())
+				return true;
+
+			if (CountAntiAirUnits(unitsAroundPos) * MissileUnitMultiplier < owner.units.Count)
 			{
-				missileUnitsCount = CountAntiAirUnits(unitsAroundPos);
-				if (missileUnitsCount * missileUnitsMultiplier < owner.units.Count)
-				{
-					detectedEnemyTarget = unitsAroundPos.Random(owner.random);
-					return true;
-				}
-				else
-					return false;
+				detectedEnemyTarget = unitsAroundPos.Random(owner.random);
+				return true;
 			}
-			return true;
+
+			return false;
 		}
 
 		protected static bool FullAmmo(Actor a)
 		{
 			var limitedAmmo = a.TraitOrDefault<LimitedAmmo>();
-			return (limitedAmmo != null && limitedAmmo.FullAmmo());
+			return limitedAmmo != null && limitedAmmo.FullAmmo();
 		}
 
 		protected static bool HasAmmo(Actor a)
 		{
 			var limitedAmmo = a.TraitOrDefault<LimitedAmmo>();
-			return (limitedAmmo != null && limitedAmmo.HasAmmo());
+			return limitedAmmo != null && limitedAmmo.HasAmmo();
 		}
 
 		protected static bool IsReloadable(Actor a)
@@ -126,15 +120,29 @@ namespace OpenRA.Mods.RA.AI
 
 		protected static bool IsRearm(Actor a)
 		{
-			if (a.GetCurrentActivity() == null) return false;
-			if (a.GetCurrentActivity().GetType() == typeof(OpenRA.Mods.RA.Activities.Rearm) ||
-				a.GetCurrentActivity().GetType() == typeof(ResupplyAircraft) ||
-				(a.GetCurrentActivity().NextActivity != null &&
-				 (a.GetCurrentActivity().NextActivity.GetType() == typeof(OpenRA.Mods.RA.Activities.Rearm) ||
-				 a.GetCurrentActivity().NextActivity.GetType() == typeof(ResupplyAircraft)))
-				)
+			var activity = a.GetCurrentActivity();
+			if (activity == null)
+				return false;
+
+			var type = activity.GetType();
+			if (type == typeof(OpenRA.Mods.RA.Activities.Rearm) || type == typeof(ResupplyAircraft))
 				return true;
+
+			var next = activity.NextActivity;
+			if (next == null)
+				return false;
+
+			var nextType = next.GetType();
+			if (nextType == typeof(OpenRA.Mods.RA.Activities.Rearm) || nextType == typeof(ResupplyAircraft))
+				return true;
+
 			return false;
+		}
+
+		// Checks the number of anti air enemies around units
+		protected virtual bool ShouldFlee(Squad owner)
+		{
+			return base.ShouldFlee(owner, enemies => CountAntiAirUnits(enemies) * MissileUnitMultiplier > owner.units.Count);
 		}
 	}
 
@@ -156,11 +164,9 @@ namespace OpenRA.Mods.RA.AI
 			var e = FindDefenselessTarget(owner);
 			if (e == null)
 				return;
-			else
-			{
-				owner.Target = e;
-				owner.fsm.ChangeState(owner, new AirAttackState(), true);
-			}
+
+			owner.Target = e;
+			owner.fsm.ChangeState(owner, new AirAttackState(), true);
 		}
 
 		public void Deactivate(Squad owner) { }
@@ -198,6 +204,7 @@ namespace OpenRA.Mods.RA.AI
 			{
 				if (BusyAttack(a))
 					continue;
+
 				if (!IsReloadable(a))
 				{
 					if (!HasAmmo(a))
@@ -207,9 +214,11 @@ namespace OpenRA.Mods.RA.AI
 						owner.world.IssueOrder(new Order("ReturnToBase", a, false));
 						continue;
 					}
+
 					if (IsRearm(a))
 						continue;
 				}
+
 				if (owner.Target.HasTrait<ITargetable>() && CanAttackTarget(a, owner.Target))
 					owner.world.IssueOrder(new Order("Attack", a, false) { TargetActor = owner.Target });
 			}
@@ -229,16 +238,19 @@ namespace OpenRA.Mods.RA.AI
 
 			foreach (var a in owner.units)
 			{
-				if (!IsReloadable(a))
-					if (!FullAmmo(a))
+				// TODO: This looks wrong - don't we want IsReloadable non-negated?
+				if (!IsReloadable(a) && !FullAmmo(a))
 				{
 					if (IsRearm(a))
 						continue;
+
 					owner.world.IssueOrder(new Order("ReturnToBase", a, false));
 					continue;
 				}
+
 				owner.world.IssueOrder(new Order("Move", a, false) { TargetLocation = RandomBuildingLocation(owner) });
 			}
+
 			owner.fsm.ChangeState(owner, new AirIdleState(), true);
 		}
 
