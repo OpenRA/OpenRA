@@ -254,11 +254,11 @@ namespace OpenRA.Editor
 
 			for (int j = 0; j < mapSize; j++)
 				for (int i = 0; i < mapSize; i++)
-					map.MapTiles.Value[i, j].type = ReadWord(ms);
+					map.MapTiles.Value[i, j].Type = ReadWord(ms);
 
 			for (int j = 0; j < mapSize; j++)
 				for (int i = 0; i < mapSize; i++)
-					map.MapTiles.Value[i, j].index = ReadByte(ms);
+					map.MapTiles.Value[i, j].Index = ReadByte(ms);
 		}
 
 		void UnpackRAOverlayData(MemoryStream ms)
@@ -311,8 +311,8 @@ namespace OpenRA.Editor
 			for (int j = 0; j < mapSize; j++)
 				for (int i = 0; i < mapSize; i++)
 				{
-					map.MapTiles.Value[i, j].type = ReadByte(ms);
-					map.MapTiles.Value[i, j].index = ReadByte(ms);
+					map.MapTiles.Value[i, j].Type = ReadByte(ms);
+					map.MapTiles.Value[i, j].Index = ReadByte(ms);
 				}
 		}
 

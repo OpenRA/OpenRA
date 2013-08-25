@@ -8,8 +8,8 @@
  */
 #endregion
 
-using System.Drawing;
 using System;
+using System.Drawing;
 
 namespace OpenRA.FileFormats
 {
@@ -30,8 +30,8 @@ namespace OpenRA.FileFormats
 
 		// ColorRamp naming retained for backward compatibility
 		public bool LockColor = false;
-		public HSLColor ColorRamp = new HSLColor(0,0,238);
-		public HSLColor Color { get { return ColorRamp; } set { ColorRamp = value; }}
+		public HSLColor ColorRamp = new HSLColor(0, 0, 238);
+		public HSLColor Color { get { return ColorRamp; } set { ColorRamp = value; } }
 
 		public bool LockSpawn = false;
 		public int Spawn = 0;
@@ -39,10 +39,10 @@ namespace OpenRA.FileFormats
 		public bool LockTeam = false;
 		public int Team = 0;
 
-		public string[] Allies = {};
-		public string[] Enemies = {};
+		public string[] Allies = { };
+		public string[] Enemies = { };
 
-		public PlayerReference() {}
+		public PlayerReference() { }
 		public PlayerReference(MiniYaml my) { FieldLoader.Load(this, my); }
 
 		public override string ToString() { return Name; }

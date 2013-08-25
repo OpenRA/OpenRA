@@ -26,8 +26,8 @@ namespace OpenRA.Editor
 			surface.Map.MapResources.Value[surface.GetBrushLocation().X, surface.GetBrushLocation().Y]
 				= new TileReference<byte, byte>
 				{
-					type = (byte)resourceTemplate.Info.ResourceType,
-					index = (byte)random.Next(resourceTemplate.Info.SpriteNames.Length)
+					Type = (byte)resourceTemplate.Info.ResourceType,
+					Index = (byte)random.Next(resourceTemplate.Info.SpriteNames.Length)
 				};
 
 			var ch = new int2(surface.GetBrushLocation().X / Surface.ChunkSize,

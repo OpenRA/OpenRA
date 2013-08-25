@@ -69,9 +69,9 @@ namespace OpenRA.Mods.RA
 			{
 				// Existing smudge; make it deeper
 				var tile = dirty.ContainsKey(loc) ? dirty[loc] : tiles[loc];
-				var depth = Info.Depths[tile.type - 1];
-				if (tile.index < depth - 1)
-					tile.index++;
+				var depth = Info.Depths[tile.Type - 1];
+				if (tile.Index < depth - 1)
+					tile.Index++;
 
 				dirty[loc] = tile;
 			}
@@ -106,7 +106,7 @@ namespace OpenRA.Mods.RA
 				if (world.ShroudObscures(kv.Key))
 					continue;
 
-				smudgeSprites[kv.Value.type - 1][kv.Value.index].DrawAt(kv.Key.ToPPos().ToFloat2(), pal);
+				smudgeSprites[kv.Value.Type - 1][kv.Value.Index].DrawAt(kv.Key.ToPPos().ToFloat2(), pal);
 			}
 		}
 	}

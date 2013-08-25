@@ -111,7 +111,7 @@ namespace OpenRA
 		public static Map FromTileset(string tileset)
 		{
 			var tile = OpenRA.Rules.TileSets[tileset].Templates.First();
-			var tileRef = new TileReference<ushort, byte> { type = tile.Key, index = (byte)0 };
+			var tileRef = new TileReference<ushort, byte> { Type = tile.Key, Index = (byte)0 };
 
 			Map map = new Map()
 			{
@@ -349,17 +349,17 @@ namespace OpenRA
 				for (var i = 0; i < MapSize.X; i++)
 					for (var j = 0; j < MapSize.Y; j++)
 					{
-						writer.Write(MapTiles.Value[i, j].type);
-						var pickAny = OpenRA.Rules.TileSets[Tileset].Templates[MapTiles.Value[i, j].type].PickAny;
-						writer.Write(pickAny ? (byte)(i % 4 + (j % 4) * 4) : MapTiles.Value[i, j].index);
+						writer.Write(MapTiles.Value[i, j].Type);
+						var pickAny = OpenRA.Rules.TileSets[Tileset].Templates[MapTiles.Value[i, j].Type].PickAny;
+						writer.Write(pickAny ? (byte)(i % 4 + (j % 4) * 4) : MapTiles.Value[i, j].Index);
 					}
 
 				// Resource data
 				for (var i = 0; i < MapSize.X; i++)
 					for (var j = 0; j < MapSize.Y; j++)
 					{
-						writer.Write(MapResources.Value[i, j].type);
-						writer.Write(MapResources.Value[i, j].index);
+						writer.Write(MapResources.Value[i, j].Type);
+						writer.Write(MapResources.Value[i, j].Index);
 					}
 			}
 
