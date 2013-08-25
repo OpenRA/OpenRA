@@ -204,7 +204,7 @@ function SaveFile(editor, filePath)
       SetDocumentModified(id, false)
       SetAutoRecoveryMark()
 
-      PackageEventHandle("onEditorPostSave", editor)
+      PackageEventHandle("onEditorSave", editor)
 
       return true
     else
