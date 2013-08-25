@@ -31,12 +31,12 @@ namespace OpenRA.FileFormats
 		public int CompressedSize;
 		public int OutputSize;
 
-		public static Chunk Read(BinaryReader r)
+		public static Chunk Read(Stream s)
 		{
 			Chunk c;
-			c.CompressedSize = r.ReadUInt16();
-			c.OutputSize = r.ReadUInt16();
-			if (0xdeaf != r.ReadUInt32())
+			c.CompressedSize = s.ReadUInt16();
+			c.OutputSize = s.ReadUInt16();
+			if (0xdeaf != s.ReadUInt32())
 				throw new InvalidDataException("Chunk header is bogus");
 			return c;
 		}
@@ -78,7 +78,7 @@ namespace OpenRA.FileFormats
 
 		public static byte[] LoadSound(byte[] raw, ref int index)
 		{
-			var br = new BinaryReader(new MemoryStream(raw));
+			var s = new MemoryStream(raw);
 			var dataSize = raw.Length;
 			var outputSize = raw.Length * 4;
 
@@ -88,7 +88,7 @@ namespace OpenRA.FileFormats
 
 			while (dataSize-- > 0)
 			{
-				var b = br.ReadByte();
+				var b = s.ReadUInt8();
 
 				var t = DecodeSample(b, ref index, ref currentSample);
 				output[offset++] = (byte)t;
@@ -104,11 +104,10 @@ namespace OpenRA.FileFormats
 
 		public static float SoundLength(Stream s)
 		{
-			var br = new BinaryReader(s);
-			var sampleRate = br.ReadUInt16();
-			/*var dataSize = */ br.ReadInt32();
-			var outputSize = br.ReadInt32();
-			var flags = (SoundFlags)br.ReadByte();
+			var sampleRate = s.ReadUInt16();
+			/*var dataSize = */ s.ReadInt32();
+			var outputSize = s.ReadInt32();
+			var flags = (SoundFlags)s.ReadByte();
 
 			var samples = outputSize;
 			if (0 != (flags & SoundFlags.Stereo)) samples /= 2;
@@ -118,12 +117,11 @@ namespace OpenRA.FileFormats
 
 		public static byte[] LoadSound(Stream s)
 		{
-			var br = new BinaryReader(s);
-			/*var sampleRate =*/ br.ReadUInt16();
-			var dataSize = br.ReadInt32();
-			var outputSize = br.ReadInt32();
-			/*var flags = (SoundFlags)*/ br.ReadByte();
-			/*var format = (SoundFormat)*/ br.ReadByte();
+			/*var sampleRate =*/ s.ReadUInt16();
+			var dataSize = s.ReadInt32();
+			var outputSize = s.ReadInt32();
+			/*var flags = (SoundFlags)*/ s.ReadByte();
+			/*var format = (SoundFormat)*/ s.ReadByte();
 
 			var output = new byte[outputSize];
 			var offset = 0;
@@ -132,10 +130,10 @@ namespace OpenRA.FileFormats
 
 			while (dataSize > 0)
 			{
-				var chunk = Chunk.Read(br);
+				var chunk = Chunk.Read(s);
 				for (int n = 0; n < chunk.CompressedSize; n++)
 				{
-					var b = br.ReadByte();
+					var b = s.ReadUInt8();
 
 					var t = DecodeSample(b, ref index, ref currentSample);
 					output[offset++] = (byte)t;
