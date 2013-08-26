@@ -41,8 +41,12 @@ local events = {
   for k in pairs(events) do
     if k:find("^on") then
       P[k] = k:find("^onEditor")
-        and function(self, ed) DisplayOutputLn(self:GetFileName(), k, ide:GetDocument(ed):GetFilePath()) end
-        or function(self, ...) DisplayOutputLn(self:GetFileName(), k, ...) end
+        and function(self, ed)
+          -- document can be empty for newly added documents
+          local doc = ide:GetDocument(ed)
+          DisplayOutputLn(self:GetFileName(), k, doc and doc:GetFilePath() or "new document") end
+        or function(self, ...)
+          DisplayOutputLn(self:GetFileName(), k, ...) end
     end
   end
 
