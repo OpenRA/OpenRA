@@ -17,6 +17,18 @@ function PackageEventHandle(event, ...)
   return success
 end
 
+function PackageEventHandleOnce(event, ...)
+  local success = PackageEventHandle(event, ...)
+  -- remove all handlers as they need to be called only once
+  -- this allows them to be re-installed if needed
+  for _, package in pairs(ide.packages) do
+    if type(package[event]) == 'function' then
+      package[event] = nil
+    end
+  end
+  return success
+end
+
 local function PackageEventHandleOne(file, event, ...)
   local package = ide.packages[file]
   if package and type(package[event]) == 'function' then

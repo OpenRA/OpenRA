@@ -33,6 +33,7 @@ local events = {
   onProjectClose =     function(self, project) end,
   onInterpreterLoad =  function(self, interpreter) end,
   onInterpreterClose = function(self, interpreter) end,
+  onIdleOnce =         function(self, event) end,
   onAppFocusLost =     function(self, app) end,
   onAppFocusSet =      function(self, app) end,
 }
