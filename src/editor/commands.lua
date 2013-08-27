@@ -11,12 +11,15 @@ local CURRENT_LINE_MARKER = StylesGetMarker("currentline")
 local CURRENT_LINE_MARKER_VALUE = 2^CURRENT_LINE_MARKER
 local BREAKPOINT_MARKER = StylesGetMarker("breakpoint")
 
-function NewFile(event)
+function NewFile(filename)
+  filename = filename or ide.config.default.fullname
   local editor = CreateEditor()
-  SetupKeywords(editor, "lua")
-  local doc = AddEditor(editor, ide.config.default.fullname)
-  if doc then PackageEventHandle("onEditorNew", editor) end
-  if doc then SetEditorSelection(doc.index) end
+  SetupKeywords(editor, GetFileExt(filename))
+  local doc = AddEditor(editor, filename)
+  if doc then
+    PackageEventHandle("onEditorNew", editor)
+    SetEditorSelection(doc.index)
+  end
   return editor
 end
 
@@ -221,11 +224,9 @@ end
 function SaveFileAs(editor)
   local id = editor:GetId()
   local saved = false
-  local filePath = openDocuments[id].filePath
-  if (not filePath) then
-    filePath = FileTreeGetDir()
-    filePath = (filePath or "")..ide.config.default.name
-  end
+  local filePath = (openDocuments[id].filePath
+    or ((FileTreeGetDir() or "")
+        ..(openDocuments[id].fileName or ide.config.default.name)))
 
   local fn = wx.wxFileName(filePath)
   fn:Normalize() -- want absolute path for dialog

@@ -1148,7 +1148,7 @@ function AddEditor(editor, name)
     local document = setmetatable({}, ide.proto.Document)
     document.editor = editor
     document.index = notebook:GetPageIndex(editor)
-    document.fileName = nil
+    document.fileName = name
     document.filePath = nil
     document.modTime = nil
     document.isModified = false
