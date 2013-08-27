@@ -128,10 +128,113 @@ GAWEAP:
 		Range: 4
 	-RenderBuilding:
 	RenderBuildingWarFactory:
-#	RallyPoint: # TODO: setup sequences
+	RallyPoint: # TODO: setup sequences/palettes
+		RallyPoint: 6,5
+#		IndicatorPalettePrefix: effect
 	Exit@1:
-		SpawnOffset: -8,-8
+		SpawnOffset: -4,24
+		ExitCell: 3,3
+	Production:
+		Produces: Vehicle
+	ProductionBar:
+
+NAPOWR:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 0
+		Owner: nod
+		Hotkey: p
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Nod Power Plant
+		Description: Provides power for other structures
+	ProvidesCustomPrerequisite:
+		Prerequisite: anypower
+	Building:
+		Power: 100
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 750
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 4
+#	WithIdleOverlay@LIGHTS:
+#		Sequence: idle-lights
+#	WithIdleOverlay@PLUG:
+#		Sequence: idle-plug
+
+NAHAND:
+	Inherits: ^Building
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 30
+		Prerequisites: anypower
+		Owner: nod
+		Hotkey: b
+	Valued:
+		Cost: 300
+	Tooltip:
+		Name: Hand of Nod
+		Description: Produces infantry
+	Building:
+		Power: -20
+		Footprint: xxx xxx
+		Dimensions: 3,2
+	Health:
+		HP: 800
+	Armor:
+		Type: Wood
+	RevealsShroud:
+		Range: 5
+#	RallyPoint: #TODO: setup sequences
+	Exit@1:
+		SpawnOffset: -64,64,0
 		ExitCell: 0,2
+	Production:
+		Produces: Infantry
+	PrimaryBuilding:
+	IronCurtainable:
+	ProductionBar:
+#	WithIdleOverlay@LIGHTS:
+#		Sequence: idle-lights
+#	WithIdleOverlay@LIGHT:
+#		Sequence: idle-light
+#	WithIdleOverlay@FLAG:
+#		Sequence: idle-flag
+
+NAWEAP:
+	Inherits: ^Building
+	Valued:
+		Cost: 2000
+	Tooltip:
+		Name: Nod War Factory
+		Description: Assembly point for\nvehicle reinforcements
+#	ProvidesCustomPrerequisite:
+#		Prerequisite: VehicleProduction
+	Buildable:
+		Queue: Building
+		BuildPaletteOrder: 50
+		Owner: nod
+	Building:
+		Power: -30
+		Footprint: ___ xxx ===
+		Dimensions: 3,3
+	Health:
+		HP: 1000
+	RevealsShroud:
+		Range: 4
+	-RenderBuilding:
+	RenderBuildingWarFactory:
+RallyPoint: # TODO: setup sequences/palettes
+		RallyPoint: 6,5
+#		IndicatorPalettePrefix: effect
+	Exit@1:
+		SpawnOffset: -4,24
+		ExitCell: 3,3
 	Production:
 		Produces: Vehicle
 	ProductionBar:
@@ -325,6 +428,40 @@ GAHPAD:
 		BuildPaletteOrder: 60
 #		Prerequisites: garadr
 		Owner: gdi
+		Queue: Building
+	Building:
+		Power: -10
+		Footprint: xx xx
+		Dimensions: 2,2
+	Health:
+		HP: 600
+	RevealsShroud:
+		Range: 5
+	Exit@1:
+		SpawnOffset: 0,-6
+	Production:
+		Produces: Air
+	BelowUnits:
+	Reservable:
+	RepairsUnits:
+#	RallyPoint:
+	ProductionBar:
+	WithIdleOverlay@PLATFORM:
+		Sequence: idle-platform
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+
+NAHPAD:
+	Inherits: ^Building
+	Valued:
+		Cost: 500
+	Tooltip:
+		Name: Nod Helipad
+		Description: Produces, rearms and\nrepairs helicopters
+	Buildable:
+		BuildPaletteOrder: 60
+#		Prerequisites: naradr
+		Owner: nod
 		Queue: Building
 	Building:
 		Power: -10
