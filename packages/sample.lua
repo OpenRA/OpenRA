@@ -36,6 +36,8 @@ local events = {
   onIdleOnce =         function(self, event) end,
   onAppFocusLost =     function(self, app) end,
   onAppFocusSet =      function(self, app) end,
+  onAppLoad =          function(self, app) end,
+  onAppClose =         function(self, app) end,
 }
 
 --[[ Uncomment this to see event names printed in the Output window

@@ -776,6 +776,8 @@ local function closeWindow(event)
 
   ShowFullScreen(false)
 
+  PackageEventHandle("onAppClose")
+
   SettingsSaveAll()
   ide.settings:Flush()
 

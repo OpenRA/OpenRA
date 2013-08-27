@@ -459,6 +459,8 @@ end
 
 resumePrint()
 
+PackageEventHandle("onAppLoad")
+
 ide.frame:Show(true)
 wx.wxGetApp():MainLoop()
 
