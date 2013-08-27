@@ -71,9 +71,10 @@ function LoadFile(filePath, editor, file_must_exist, skipselection)
   editor:SetText(file_text or "")
 
   -- check the editor as it can be empty if the file has malformed UTF8;
-  -- skip binary files as they may have any sequences; can't show them anyway.
+  -- skip binary files with unknown extensions as they may have any sequences;
+  -- can't show them anyway.
   if file_text and #file_text > 0 and #(editor:GetText()) == 0
-  and not isBinary(file_text) then
+  and (editor.spec ~= ide.specs.none or not isBinary(file_text)) then
     local replacement, invalid = "\022"
     file_text, invalid = fixUTF8(file_text, replacement)
     if #invalid > 0 then
