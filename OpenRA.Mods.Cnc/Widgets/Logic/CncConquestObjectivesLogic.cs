@@ -58,7 +58,8 @@ namespace OpenRA.Mods.Cnc.Widgets.Logic
 				item.Get<LabelWidget>("FACTION").GetText = () => pp.Country.Name;
 
 				var team = item.Get<LabelWidget>("TEAM");
-				var teamNumber = world.LobbyInfo.ClientWithIndex(pp.ClientIndex).Team;
+				var client = world.LobbyInfo.ClientWithIndex(pp.ClientIndex);
+				var teamNumber = (client == null) ? 0 : client.Team;
 				team.GetText = () => (teamNumber == 0) ? "-" : teamNumber.ToString();
 				scrollpanel.AddChild(item);
 
