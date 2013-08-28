@@ -277,6 +277,15 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 						"allowcheats {0}".F(!orderManager.LobbyInfo.GlobalSettings.AllowCheats)));
 			}
 
+			var enableEditor = optionsBin.GetOrNull<CheckboxWidget>("MAPEDITOR_CHECKBOX");
+			if (enableEditor != null)
+			{
+				enableEditor.IsChecked = () => orderManager.LobbyInfo.GlobalSettings.EnableEditor;
+				enableEditor.IsDisabled = () => Map.Options.Editor.HasValue || configurationDisabled();
+				enableEditor.OnClick = () =>	orderManager.IssueOrder(Order.Command(
+					"mapeditor {0}".F(!orderManager.LobbyInfo.GlobalSettings.EnableEditor)));
+			}
+
 			var crates = optionsBin.GetOrNull<CheckboxWidget>("CRATES_CHECKBOX");
 			if (crates != null)
 			{
