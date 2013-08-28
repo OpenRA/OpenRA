@@ -45,6 +45,7 @@ lualibs/mime.lua
 lualibs/socket.lua
 lualibs/socket/ftp.lua
 lualibs/socket/http.lua
+lualibs/socket/headers.lua
 lualibs/socket/smtp.lua
 lualibs/socket/tp.lua
 lualibs/socket/url.lua

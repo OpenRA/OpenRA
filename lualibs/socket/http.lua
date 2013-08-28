@@ -2,7 +2,6 @@
 -- HTTP/1.1 client support for the Lua language.
 -- LuaSocket toolkit.
 -- Author: Diego Nehab
--- RCS ID: $Id: http.lua 1418 2006-04-25 09:38:15Z 3rdparty $
 -----------------------------------------------------------------------------
 
 -----------------------------------------------------------------------------
@@ -13,9 +12,11 @@ local url = require("socket.url")
 local ltn12 = require("ltn12")
 local mime = require("mime")
 local string = require("string")
+local headers = require("socket.headers")
 local base = _G
 local table = require("table")
-module("socket.http")
+socket.http = {}
+local _M = socket.http
 
 -----------------------------------------------------------------------------
 -- Program constants
@@ -23,9 +24,9 @@ module("socket.http")
 -- connection timeout in seconds
 TIMEOUT = 60
 -- default port for document retrieval
-PORT = 80
+_M.PORT = 80
 -- user agent field sent in request
-USERAGENT = socket._VERSION
+_M.USERAGENT = socket._VERSION
 
 -----------------------------------------------------------------------------
 -- Reads MIME headers from a connection, unfolding where needed
@@ -105,15 +106,15 @@ end
 -----------------------------------------------------------------------------
 local metat = { __index = {} }
 
-function open(host, port, create)
+function _M.open(host, port, create)
     -- create socket with user connect function, or with default
-    local c = socket.try(create or socket.tcp)()
+    local c = socket.try((create or socket.tcp)())
     local h = base.setmetatable({ c = c }, metat)
     -- create finalized try
     h.try = socket.newtry(function() h:close() end)
     -- set timeout before connecting
-    h.try(c:settimeout(TIMEOUT))
-    h.try(c:connect(host, port or PORT))
+    h.try(c:settimeout(_M.TIMEOUT))
+    h.try(c:connect(host, port or _M.PORT))
     -- here everything worked
     return h
 end
@@ -123,10 +124,11 @@ function metat.__index:sendrequestline(method, uri)
     return self.try(self.c:send(reqline))
 end
 
-function metat.__index:sendheaders(headers)
+function metat.__index:sendheaders(tosend)
+    local canonic = headers.canonic
     local h = "\r\n"
-    for i, v in base.pairs(headers) do
-        h = i .. ": " .. v .. "\r\n" .. h
+    for f, v in base.pairs(tosend) do
+        h = (canonic[f] or f) .. ": " .. v .. "\r\n" .. h
     end
     self.try(self.c:send(h))
     return 1
@@ -142,7 +144,12 @@ function metat.__index:sendbody(headers, source, step)
 end
 
 function metat.__index:receivestatusline()
-    local status = self.try(self.c:receive())
+    local status = self.try(self.c:receive(5))
+    -- identify HTTP/0.9 responses, which do not contain a status line
+    -- this is just a heuristic, but is what the RFC recommends
+    if status ~= "HTTP/" then return nil, status end
+    -- otherwise proceed reading a status line
+    status = self.try(self.c:receive("*l", status))
     local code = socket.skip(2, string.find(status, "HTTP/%d*%.%d* (%d%d%d)"))
     return self.try(base.tonumber(code), status)
 end
@@ -161,6 +168,12 @@ function metat.__index:receivebody(headers, sink, step)
     elseif base.tonumber(headers["content-length"]) then mode = "by-length" end
     return self.try(ltn12.pump.all(socket.source(mode, self.c, length),
         sink, step))
+end
+
+function metat.__index:receive09body(status, sink, step)
+    local source = ltn12.source.rewind(socket.source("until-closed", self.c))
+    source(status)
+    return self.try(ltn12.pump.all(source, sink, step))
 end
 
 function metat.__index:close()
@@ -194,16 +207,21 @@ local function adjustproxy(reqt)
     end
 end
 
-local function adjustheaders(headers, host)
+local function adjustheaders(reqt)
     -- default headers
     local lower = {
-        ["user-agent"] = USERAGENT,
-        ["host"] = host,
+        ["user-agent"] = _M.USERAGENT,
+        ["host"] = reqt.host,
         ["connection"] = "close, TE",
         ["te"] = "trailers"
     }
+    -- if we have authentication information, pass it along
+    if reqt.user and reqt.password then
+        lower["authorization"] = 
+            "Basic " ..  (mime.b64(reqt.user .. ":" .. reqt.password))
+    end
     -- override with user headers
-    for i,v in base.pairs(headers or lower) do
+    for i,v in base.pairs(reqt.headers or lower) do
         lower[string.lower(i)] = v
     end
     return lower
@@ -212,7 +230,7 @@ end
 -- default url parts
 local default = {
     host = "",
-    port = PORT,
+    port = _M.PORT,
     path ="/",
     scheme = "http"
 }
@@ -220,16 +238,17 @@ local default = {
 local function adjustrequest(reqt)
     -- parse url if provided
     local nreqt = reqt.url and url.parse(reqt.url, default) or {}
-    local t = url.parse(reqt.url, default)
     -- explicit components override url
     for i,v in base.pairs(reqt) do nreqt[i] = v end
-    socket.try(nreqt.host, "invalid host '" .. base.tostring(nreqt.host) .. "'")
+    if nreqt.port == "" then nreqt.port = 80 end
+    socket.try(nreqt.host and nreqt.host ~= "", 
+        "invalid host '" .. base.tostring(nreqt.host) .. "'")
     -- compute uri if user hasn't overriden
     nreqt.uri = reqt.uri or adjusturi(nreqt)
     -- ajust host and port if there is a proxy
     nreqt.host, nreqt.port = adjustproxy(nreqt)
     -- adjust headers in request
-    nreqt.headers = adjustheaders(nreqt.headers, nreqt.host)
+    nreqt.headers = adjustheaders(nreqt)
     return nreqt
 end
 
@@ -237,17 +256,9 @@ local function shouldredirect(reqt, code, headers)
     return headers.location and
            string.gsub(headers.location, "%s", "") ~= "" and
            (reqt.redirect ~= false) and
-           (code == 301 or code == 302) and
+           (code == 301 or code == 302 or code == 303 or code == 307) and
            (not reqt.method or reqt.method == "GET" or reqt.method == "HEAD")
            and (not reqt.nredirects or reqt.nredirects < 5)
-end
-
-local function shouldauthorize(reqt, code)
-    -- if there has been an authorization attempt, it must have failed
-    if reqt.headers and reqt.headers["authorization"] then return nil end
-    -- if last attempt didn't fail due to lack of authentication,
-    -- or we don't have authorization information, we can't retry
-    return code == 401 and reqt.user and reqt.password
 end
 
 local function shouldreceivebody(reqt, code)
@@ -258,69 +269,86 @@ local function shouldreceivebody(reqt, code)
 end
 
 -- forward declarations
-local trequest, tauthorize, tredirect
+local trequest, tredirect
 
-function tauthorize(reqt)
-    local auth = "Basic " ..  (mime.b64(reqt.user .. ":" .. reqt.password))
-    reqt.headers["authorization"] = auth
-    return trequest(reqt)
-end
-
-function tredirect(reqt, location)
+--[[local]] function tredirect(reqt, location)
     local result, code, headers, status = trequest {
         -- the RFC says the redirect URL has to be absolute, but some
         -- servers do not respect that
-        url = url.absolute(reqt, location),
+        url = url.absolute(reqt.url, location),
         source = reqt.source,
         sink = reqt.sink,
         headers = reqt.headers,
-        proxy = reqt.proxy,
+        proxy = reqt.proxy, 
         nredirects = (reqt.nredirects or 0) + 1,
-        connect = reqt.connect
-    }
+        create = reqt.create
+    }   
     -- pass location header back as a hint we redirected
+    headers = headers or {}
     headers.location = headers.location or location
     return result, code, headers, status
 end
 
-function trequest(reqt)
-    reqt = adjustrequest(reqt)
-    local h = open(reqt.host, reqt.port, reqt.create)
-    h:sendrequestline(reqt.method, reqt.uri)
-    h:sendheaders(reqt.headers)
-    if reqt.source then h:sendbody(reqt.headers, reqt.source, reqt.step) end
-    local code, headers, status
-    code, status = h:receivestatusline()
+--[[local]] function trequest(reqt)
+    -- we loop until we get what we want, or
+    -- until we are sure there is no way to get it
+    local nreqt = adjustrequest(reqt)
+    local h = _M.open(nreqt.host, nreqt.port, nreqt.create)
+    -- send request line and headers
+    h:sendrequestline(nreqt.method, nreqt.uri)
+    h:sendheaders(nreqt.headers)
+    -- if there is a body, send it
+    if nreqt.source then
+        h:sendbody(nreqt.headers, nreqt.source, nreqt.step) 
+    end
+    local code, status = h:receivestatusline()
+    -- if it is an HTTP/0.9 server, simply get the body and we are done
+    if not code then
+        h:receive09body(status, nreqt.sink, nreqt.step)
+        return 1, 200
+    end
+    local headers
+    -- ignore any 100-continue messages
+    while code == 100 do 
+        headers = h:receiveheaders()
+        code, status = h:receivestatusline()
+    end
     headers = h:receiveheaders()
-    if shouldredirect(reqt, code, headers) then
+    -- at this point we should have a honest reply from the server
+    -- we can't redirect if we already used the source, so we report the error 
+    if shouldredirect(nreqt, code, headers) and not nreqt.source then
         h:close()
         return tredirect(reqt, headers.location)
-    elseif shouldauthorize(reqt, code) then
-        h:close()
-        return tauthorize(reqt)
-    elseif shouldreceivebody(reqt, code) then
-        h:receivebody(headers, reqt.sink, reqt.step)
+    end
+    -- here we are finally done
+    if shouldreceivebody(nreqt, code) then
+        h:receivebody(headers, nreqt.sink, nreqt.step)
     end
     h:close()
     return 1, code, headers, status
 end
 
-local function srequest(u, body)
+local function srequest(u, b)
     local t = {}
     local reqt = {
         url = u,
         sink = ltn12.sink.table(t)
     }
-    if body then
-        reqt.source = ltn12.source.string(body)
-        reqt.headers = { ["content-length"] = string.len(body) }
+    if b then
+        reqt.source = ltn12.source.string(b)
+        reqt.headers = {
+            ["content-length"] = string.len(b),
+            ["content-type"] = "application/x-www-form-urlencoded"
+        }
         reqt.method = "POST"
     end
     local code, headers, status = socket.skip(1, trequest(reqt))
     return table.concat(t), code, headers, status
 end
 
-request = socket.protect(function(reqt, body)
+_M.request = socket.protect(function(reqt, body)
     if base.type(reqt) == "string" then return srequest(reqt, body)
     else return trequest(reqt) end
 end)
+
+return _M
