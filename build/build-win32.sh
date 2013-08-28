@@ -127,11 +127,12 @@ fi
 mkdir -p "$INSTALL_DIR" || { echo "Error: cannot create directory $INSTALL_DIR"; exit 1; }
 
 LUAV="51"
-LUA_TARGET="mingw"
+LUAS=""
 LUA_BASENAME="lua-5.1.5"
 
 if [ $BUILD_52 ]; then
   LUAV="52"
+  LUAS=$LUAV
   LUA_BASENAME="lua-5.2.2"
 fi
 
@@ -139,8 +140,6 @@ LUA_FILENAME="$LUA_BASENAME.tar.gz"
 LUA_URL="http://www.lua.org/ftp/$LUA_FILENAME"
 
 if [ $BUILD_JIT ]; then
-  LUAV="jit"
-  LUA_TARGET=""
   LUA_BASENAME="LuaJIT-2.0.2"
   LUA_FILENAME="$LUA_BASENAME.tar.gz"
   LUA_URL="http://luajit.org/download/$LUA_FILENAME"
@@ -167,13 +166,17 @@ if [ $BUILD_LUA ]; then
   tar -xzf "$LUA_FILENAME"
   cd "$LUA_BASENAME"
   if [ $BUILD_JIT ]; then
-    make TARGET_DLLNAME=luajit.dll $LUA_TARGET || { echo "Error: failed to build Lua"; exit 1; }
-    cp src/luajit.exe "$INSTALL_DIR/bin"
+    make CCOPT="-DLUAJIT_ENABLE_LUA52COMPAT" || { echo "Error: failed to build Lua"; exit 1; }
+    make install PREFIX="$INSTALL_DIR"
+    cp "$INSTALL_DIR/bin/luajit.exe" "$INSTALL_DIR/bin/lua.exe"
+    # move luajit to lua as it's expected by luasocket and other components
+    cp "$INSTALL_DIR"/include/luajit*/* "$INSTALL_DIR/include/"
   else
-    make $LUA_TARGET || { echo "Error: failed to build Lua"; exit 1; }
+    make mingw || { echo "Error: failed to build Lua"; exit 1; }
     make install INSTALL_TOP="$INSTALL_DIR"
   fi
   cp src/lua$LUAV.dll "$INSTALL_DIR/lib"
+  cp "$INSTALL_DIR/bin/lua.exe" "$INSTALL_DIR/bin/lua$LUAV.exe"
   [ -f "$INSTALL_DIR/lib/lua$LUAV.dll" ] || { echo "Error: lua$LUAV.dll isn't found"; exit 1; }
   cd ..
   rm -rf "$LUA_FILENAME" "$LUA_BASENAME"
@@ -280,26 +283,20 @@ fi
 # now copy the compiled dependencies to ZBS binary directory
 mkdir -p "$BIN_DIR" || { echo "Error: cannot create directory $BIN_DIR"; exit 1; }
 
-SUFFIX=""
-if [[ $BUILD_52 || $BUILD_JIT ]]; then
-  SUFFIX=$LUAV
-fi
-
-[ $BUILD_LUA ] && cp "$INSTALL_DIR/bin/lua$SUFFIX.exe" "$INSTALL_DIR/lib/lua$LUAV.dll" "$BIN_DIR"
+[ $BUILD_LUA ] && cp "$INSTALL_DIR/bin/lua$LUAS.exe" "$INSTALL_DIR/lib/lua$LUAV.dll" "$BIN_DIR"
 [ $BUILD_WXLUA ] && cp "$INSTALL_DIR/bin/libwx.dll" "$BIN_DIR/wx.dll"
 [ $BUILD_WINAPI ] && cp "$INSTALL_DIR/lib/lua/5.1/winapi.dll" "$BIN_DIR"
 [ $BUILD_LUASEC ] && cp "$INSTALL_DIR/lib/lua/5.1/ssl.dll" "$BIN_DIR"
 
 if [ $BUILD_LUASOCKET ]; then
-  mkdir -p "$BIN_DIR/clibs$SUFFIX/"{mime,socket}
-  cp "$INSTALL_DIR/lib/lua/$LUAV/mime/core.dll" "$BIN_DIR/clibs$SUFFIX/mime"
-  cp "$INSTALL_DIR/lib/lua/$LUAV/socket/core.dll" "$BIN_DIR/clibs$SUFFIX/socket"
+  mkdir -p "$BIN_DIR/clibs$LUAS/"{mime,socket}
+  cp "$INSTALL_DIR/lib/lua/$LUAV/mime/core.dll" "$BIN_DIR/clibs$LUAS/mime"
+  cp "$INSTALL_DIR/lib/lua/$LUAV/socket/core.dll" "$BIN_DIR/clibs$LUAS/socket"
 fi
 
 # To build lua5.1.dll proxy:
 # (1) get mkforwardlib-gcc.lua from http://lua-users.org/wiki/LuaProxyDllThree
 # (2) run it as "lua mkforwardlib-gcc.lua lua51 lua5.1 X86"
 
-# show a message about successful completion
 echo "*** Build has been successfully completed ***"
 exit 0
