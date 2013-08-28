@@ -230,22 +230,6 @@ namespace OpenRA.Editor
 			return ms;
 		}
 
-		static byte ReadByte(Stream s)
-		{
-			int ret = s.ReadByte();
-			if (ret == -1)
-				throw new NotImplementedException();
-			return (byte)ret;
-		}
-
-		static ushort ReadWord(Stream s)
-		{
-			ushort ret = ReadByte(s);
-			ret |= (ushort)(ReadByte(s) << 8);
-
-			return ret;
-		}
-
 		void UnpackRATileData(MemoryStream ms)
 		{
 			for (int i = 0; i < mapSize; i++)
@@ -254,19 +238,20 @@ namespace OpenRA.Editor
 
 			for (int j = 0; j < mapSize; j++)
 				for (int i = 0; i < mapSize; i++)
-					map.MapTiles.Value[i, j].Type = ReadWord(ms);
+					map.MapTiles.Value[i, j].Type = ms.ReadUInt16();
 
 			for (int j = 0; j < mapSize; j++)
 				for (int i = 0; i < mapSize; i++)
-					map.MapTiles.Value[i, j].Index = ReadByte(ms);
+					map.MapTiles.Value[i, j].Index = ms.ReadUInt8();
 		}
 
 		void UnpackRAOverlayData(MemoryStream ms)
 		{
 			for (int j = 0; j < mapSize; j++)
+			{
 				for (int i = 0; i < mapSize; i++)
 				{
-					byte o = ReadByte(ms);
+					var o = ms.ReadUInt8();
 					var res = Pair.New((byte)0, (byte)0);
 
 					if (o != 255 && overlayResourceMapping.ContainsKey(redAlertOverlayNames[o]))
@@ -275,13 +260,16 @@ namespace OpenRA.Editor
 					map.MapResources.Value[i, j] = new TileReference<byte, byte>(res.First, res.Second);
 
 					if (o != 255 && overlayActorMapping.ContainsKey(redAlertOverlayNames[o]))
+					{
 						map.Actors.Value.Add("Actor" + actorCount++,
 							new ActorReference(overlayActorMapping[redAlertOverlayNames[o]])
 							{
 								new LocationInit(new CPos(i, j)),
 								new OwnerInit("Neutral")
 							});
+					}
 				}
+			}
 		}
 
 		void ReadRATrees(IniFile file)
@@ -309,11 +297,13 @@ namespace OpenRA.Editor
 					map.MapTiles.Value[i, j] = new TileReference<ushort, byte>();
 
 			for (int j = 0; j < mapSize; j++)
+			{
 				for (int i = 0; i < mapSize; i++)
 				{
-					map.MapTiles.Value[i, j].Type = ReadByte(ms);
-					map.MapTiles.Value[i, j].Index = ReadByte(ms);
+					map.MapTiles.Value[i, j].Type = ms.ReadUInt8();
+					map.MapTiles.Value[i, j].Index = ms.ReadUInt8();
 				}
+			}
 		}
 
 		void ReadCncOverlay(IniFile file)
