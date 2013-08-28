@@ -35,6 +35,8 @@ namespace OpenRA.Renderer.Null
 			WindowSize = size;
 		}
 
+		public void Quit() { }
+
 		public void EnableScissor(int left, int top, int width, int height) { }
 		public void DisableScissor() { }
 

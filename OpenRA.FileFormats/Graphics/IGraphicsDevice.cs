@@ -58,6 +58,8 @@ namespace OpenRA.FileFormats.Graphics
 		void DisableDepthBuffer();
 
 		void SetBlendMode(BlendMode mode);
+
+		void Quit();
 	}
 
 	public interface IVertexBuffer<T>

@@ -61,6 +61,12 @@ namespace OpenRA.Renderer.Cg
 			FragmentProfile = CgGl.cgGLGetLatestProfile(CgGl.CG_GL_FRAGMENT);
 		}
 
+		public override void Quit()
+		{
+			Tao.Cg.Cg.cgDestroyContext(Context);
+			base.Quit();
+		}
+
 		public override IShader CreateShader(string name) { return new Shader(this, name); }
 	}
 }
