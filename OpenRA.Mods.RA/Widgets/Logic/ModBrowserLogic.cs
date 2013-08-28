@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA.Widgets.Logic
 			foreach (var m in Mod.AllMods)
 			{
 				var mod = m.Value;
-				var item = ScrollItemWidget.Setup(modTemplate, () => currentMod == mod, () => currentMod = mod);
+				var item = ScrollItemWidget.Setup(modTemplate, () => currentMod == mod, () => currentMod = mod, () => LoadMod(currentMod.Id, onSwitch));
 				item.Get<LabelWidget>("TITLE").GetText = () => mod.Title;
 				item.Get<LabelWidget>("VERSION").GetText = () => mod.Version;
 				item.Get<LabelWidget>("AUTHOR").GetText = () => mod.Author;
