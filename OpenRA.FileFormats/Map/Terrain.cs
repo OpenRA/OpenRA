@@ -19,53 +19,55 @@ namespace OpenRA.FileFormats
 		public readonly int Width;
 		public readonly int Height;
 
-		public Terrain(Stream stream)
+		public Terrain(Stream s)
 		{
 			// Try loading as a cnc .tem
-			BinaryReader reader = new BinaryReader( stream );
-			Width = reader.ReadUInt16();
-			Height = reader.ReadUInt16();
+			Width = s.ReadUInt16();
+			Height = s.ReadUInt16();
 
-			/*NumTiles = */reader.ReadUInt16();
-			/*Zero1 = */reader.ReadUInt16();
-			/*uint Size = */reader.ReadUInt32();
-			uint ImgStart = reader.ReadUInt32();
-			/*Zero2 = */reader.ReadUInt32();
+			/*NumTiles = */s.ReadUInt16();
+			/*Zero1 = */s.ReadUInt16();
+			/*uint Size = */s.ReadUInt32();
+			var imgStart = s.ReadUInt32();
+			/*Zero2 = */s.ReadUInt32();
 
-			int IndexEnd, IndexStart;
-			if (reader.ReadUInt16() == 65535) // ID1 = FFFFh for cnc
+			int indexEnd, indexStart;
+
+			// ID1 = FFFFh for cnc
+			if (s.ReadUInt16() == 65535) 
 			{
-				/*ID2 = */reader.ReadUInt16();
-				IndexEnd = reader.ReadInt32();
-				IndexStart = reader.ReadInt32();
+				/*ID2 = */s.ReadUInt16();
+				indexEnd = s.ReadInt32();
+				indexStart = s.ReadInt32();
 			}
-			else // Load as a ra .tem
+			else
 			{
-				stream.Position = 0;
-				reader = new BinaryReader( stream );
-				Width = reader.ReadUInt16();
-				Height = reader.ReadUInt16();
+				// Load as a ra .tem
+				s.Position = 0;
+				Width = s.ReadUInt16();
+				Height = s.ReadUInt16();
 
-				/*NumTiles = */reader.ReadUInt16();
-				reader.ReadUInt16();
-				/*XDim = */reader.ReadUInt16();
-				/*YDim = */reader.ReadUInt16();
-				/*uint FileSize = */reader.ReadUInt32();
-				ImgStart = reader.ReadUInt32();
-				reader.ReadUInt32();
-				reader.ReadUInt32();
-				IndexEnd = reader.ReadInt32();
-				reader.ReadUInt32();
-				IndexStart = reader.ReadInt32();
+				/*NumTiles = */s.ReadUInt16();
+				s.ReadUInt16();
+				/*XDim = */s.ReadUInt16();
+				/*YDim = */s.ReadUInt16();
+				/*uint FileSize = */s.ReadUInt32();
+				imgStart = s.ReadUInt32();
+				s.ReadUInt32();
+				s.ReadUInt32();
+				indexEnd = s.ReadInt32();
+				s.ReadUInt32();
+				indexStart = s.ReadInt32();
 			}
-			stream.Position = IndexStart;
 
-			foreach( byte b in new BinaryReader(stream).ReadBytes(IndexEnd - IndexStart) )
+			s.Position = indexStart;
+
+			foreach (byte b in s.ReadBytes(indexEnd - indexStart))
 			{
 				if (b != 255)
 				{
-					stream.Position = ImgStart + b * Width * Height;
-					TileBitmapBytes.Add(new BinaryReader(stream).ReadBytes(Width * Height));
+					s.Position = imgStart + b * Width * Height;
+					TileBitmapBytes.Add(s.ReadBytes(Width * Height));
 				}
 				else
 					TileBitmapBytes.Add(null);

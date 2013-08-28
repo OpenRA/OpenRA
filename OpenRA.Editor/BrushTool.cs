@@ -46,8 +46,8 @@ namespace OpenRA.Editor
 							surface.Map.MapTiles.Value[u + pos.X, v + pos.Y] =
 								new TileReference<ushort, byte>
 								{
-									type = brushTemplate.N,
-									index = template.PickAny ? (byte)((u + pos.X) % 4 + ((v + pos.Y) % 4) * 4) : (byte)z,
+									Type = brushTemplate.N,
+									Index = template.PickAny ? (byte)((u + pos.X) % 4 + ((v + pos.Y) % 4) * 4) : (byte)z,
 								};
 
 						var ch = new int2((pos.X + u) / Surface.ChunkSize, (pos.Y + v) / Surface.ChunkSize);
@@ -96,7 +96,7 @@ namespace OpenRA.Editor
 
 				for (var x = a.X; x <= b.X; x++)
 				{
-					s.Map.MapTiles.Value[x, p.Y] = new TileReference<ushort, byte> { type = brushTemplate.N, index = (byte)0 };
+					s.Map.MapTiles.Value[x, p.Y] = new TileReference<ushort, byte> { Type = brushTemplate.N, Index = (byte)0 };
 					if (s.Map.MapTiles.Value[x, p.Y - 1].Equals(replace))
 						maybeEnqueue(x, p.Y - 1);
 					if (s.Map.MapTiles.Value[x, p.Y + 1].Equals(replace))

@@ -25,7 +25,7 @@ namespace OpenRA.FileFormats
 		public Color Color;
 		public string CustomCursor;
 
-		public TerrainTypeInfo() {}
+		public TerrainTypeInfo() { }
 		public TerrainTypeInfo(MiniYaml my) { FieldLoader.Load(this, my); }
 
 		public MiniYaml Save() { return FieldSaver.Save(this); }
@@ -43,7 +43,7 @@ namespace OpenRA.FileFormats
 		[FieldLoader.LoadUsing("LoadTiles")]
 		public Dictionary<byte, string> Tiles = new Dictionary<byte, string>();
 
-		public TileTemplate() {}
+		public TileTemplate() { }
 		public TileTemplate(MiniYaml my) { FieldLoader.Load(this, my); }
 
 		static object LoadTiles(MiniYaml y)
@@ -87,9 +87,9 @@ namespace OpenRA.FileFormats
 		public Dictionary<ushort, TileTemplate> Templates = new Dictionary<ushort, TileTemplate>();
 		public string[] EditorTemplateOrder;
 
-		static readonly string[] fields = {"Name", "TileSize", "Id", "SheetSize", "Palette", "Extensions"};
+		static readonly string[] Fields = { "Name", "TileSize", "Id", "SheetSize", "Palette", "Extensions" };
 
-		public TileSet() {}
+		public TileSet() { }
 
 		public TileSet(string filepath)
 		{
@@ -112,9 +112,9 @@ namespace OpenRA.FileFormats
 			var root = new List<MiniYamlNode>();
 			var gen = new List<MiniYamlNode>();
 
-			foreach (var field in fields)
+			foreach (var field in Fields)
 			{
-				FieldInfo f = this.GetType().GetField(field);
+				var f = this.GetType().GetField(field);
 				if (f.GetValue(this) == null)
 					continue;
 
@@ -123,23 +123,19 @@ namespace OpenRA.FileFormats
 
 			root.Add(new MiniYamlNode("General", null, gen));
 
-			root.Add(new MiniYamlNode( "Terrain", null,
-				Terrain.Select(t => new MiniYamlNode(
-					"TerrainType@{0}".F(t.Value.Type),
-					t.Value.Save())).ToList()));
+			root.Add(new MiniYamlNode("Terrain", null,
+				Terrain.Select(t => new MiniYamlNode("TerrainType@{0}".F(t.Value.Type), t.Value.Save())).ToList()));
 
 			root.Add(new MiniYamlNode("Templates", null,
-				Templates.Select(t => new MiniYamlNode(
-					"Template@{0}".F(t.Value.Id),
-					t.Value.Save())).ToList()));
+				Templates.Select(t => new MiniYamlNode("Template@{0}".F(t.Value.Id), t.Value.Save())).ToList()));
 			root.WriteToFile(filepath);
 		}
 
 		public string GetTerrainType(TileReference<ushort, byte> r)
 		{
-			var tt = Templates[r.type].Tiles;
+			var tt = Templates[r.Type].Tiles;
 			string ret;
-			if (!tt.TryGetValue(r.index, out ret))
+			if (!tt.TryGetValue(r.Index, out ret))
 				return "Clear"; // Default walkable
 
 			return ret;

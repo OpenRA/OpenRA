@@ -16,7 +16,7 @@ namespace OpenRA.FileFormats
 		public readonly int2 Location;
 		public readonly int Depth;
 
-		public SmudgeReference( string type, int2 location, int depth )
+		public SmudgeReference(string type, int2 location, int depth)
 		{
 			Type = type;
 			Location = location;

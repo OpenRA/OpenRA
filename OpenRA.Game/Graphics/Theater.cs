@@ -73,9 +73,9 @@ namespace OpenRA.Graphics
 		public Sprite TileSprite(TileReference<ushort, byte> r)
 		{
 			Sprite[] template;
-			if (templates.TryGetValue(r.type, out template))
-				if (template.Length > r.index && template[r.index] != null)
-					return template[r.index];
+			if (templates.TryGetValue(r.Type, out template))
+				if (template.Length > r.Index && template[r.Index] != null)
+					return template[r.Index];
 
 			return missingTile;
 		}
