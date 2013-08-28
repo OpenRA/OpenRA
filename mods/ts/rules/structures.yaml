@@ -229,7 +229,7 @@ NAWEAP:
 		Range: 4
 	-RenderBuilding:
 	RenderBuildingWarFactory:
-RallyPoint: # TODO: setup sequences/palettes
+	RallyPoint: # TODO: setup sequences/palettes
 		RallyPoint: 6,5
 #		IndicatorPalettePrefix: effect
 	Exit@1:
