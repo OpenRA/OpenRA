@@ -23,14 +23,14 @@ namespace OpenRA.FileFormats
 		Dictionary<ushort, List<byte[]>> templates;
 		public Size TileSize;
 
-		List<byte[]> LoadTemplate(string filename, string[] exts, Cache<string, R8Reader> r8Cache, int[] frames)
+		List<byte[]> LoadTemplate(string filename, string[] exts, Cache<string, R8Reader> r8cache, int[] frames)
 		{
-			if (exts.Contains(".R8") && FileSystem.Exists(filename+".R8"))
+			if (exts.Contains(".R8") && FileSystem.Exists(filename + ".R8"))
 			{
 				var data = new List<byte[]>();
 
 				foreach (var f in frames)
-					data.Add(f >= 0 ? r8Cache[filename][f].Image : null);
+					data.Add(f >= 0 ? r8cache[filename][f].Image : null);
 
 				return data;
 			}
@@ -45,9 +45,9 @@ namespace OpenRA.FileFormats
 			this.TileSize = tileSize;
 
 			templates = new Dictionary<ushort, List<byte[]>>();
-			var r8Cache = new Cache<string, R8Reader>(s => new R8Reader(FileSystem.OpenWithExts(s, ".R8")));
+			var r8cache = new Cache<string, R8Reader>(s => new R8Reader(FileSystem.OpenWithExts(s, ".R8")));
 			foreach (var t in TileSet.Templates)
-				templates.Add(t.Key, LoadTemplate(t.Value.Image, tileset.Extensions, r8Cache, t.Value.Frames));
+				templates.Add(t.Key, LoadTemplate(t.Value.Image, tileset.Extensions, r8cache, t.Value.Frames));
 		}
 
 		public Bitmap RenderTemplate(ushort id, Palette p)

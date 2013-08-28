@@ -79,11 +79,11 @@ namespace OpenRA.Graphics
 					{
 						var mapX = x + map.Bounds.Left;
 						var mapY = y + map.Bounds.Top;
-						if (map.MapResources.Value[mapX, mapY].type == 0)
+						if (map.MapResources.Value[mapX, mapY].Type == 0)
 							continue;
 
 						var res = Rules.Info["world"].Traits.WithInterface<ResourceTypeInfo>()
-								.Where(t => t.ResourceType == map.MapResources.Value[mapX, mapY].type)
+								.Where(t => t.ResourceType == map.MapResources.Value[mapX, mapY].Type)
 								.Select(t => t.TerrainType).FirstOrDefault();
 						if (res == null)
 							continue;

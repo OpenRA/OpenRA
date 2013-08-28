@@ -519,8 +519,8 @@ namespace OpenRA.Editor
 				for (var i = surface1.Map.Bounds.Left; i < surface1.Map.Bounds.Right; i++)
 				{
 					var tr = surface1.Map.MapTiles.Value[i, j];
-					if (tr.type == 0xff || tr.type == 0xffff || tr.type == 1 || tr.type == 2)
-						tr.index = (byte)r.Next(0, surface1.TileSetRenderer.Data(tr.type).Count);
+					if (tr.Type == 0xff || tr.Type == 0xffff || tr.Type == 1 || tr.Type == 2)
+						tr.Index = (byte)r.Next(0, surface1.TileSetRenderer.Data(tr.Type).Count);
 
 					surface1.Map.MapTiles.Value[i, j] = tr;
 				}
@@ -674,7 +674,7 @@ namespace OpenRA.Editor
 			for (int i = 0; i < surface1.Map.MapSize.X; i++)
 				for (int j = 0; j < surface1.Map.MapSize.Y; j++)
 				{
-					if (surface1.Map.MapResources.Value[i, j].type != 0)
+					if (surface1.Map.MapResources.Value[i, j].Type != 0)
 						totalResource += GetResourceValue(i, j);
 				}
 
@@ -689,7 +689,7 @@ namespace OpenRA.Editor
 				{
 					if (!surface1.Map.IsInMap(new CPos(x + u, y + v)))
 						continue;
-					if (surface1.Map.MapResources.Value[x + u, y + v].type == resourceType)
+					if (surface1.Map.MapResources.Value[x + u, y + v].Type == resourceType)
 						++sum;
 				}
 
@@ -699,7 +699,7 @@ namespace OpenRA.Editor
 		int GetResourceValue(int x, int y)
 		{
 			int imageLength = 0;
-			int type = surface1.Map.MapResources.Value[x, y].type;
+			int type = surface1.Map.MapResources.Value[x, y].Type;
 			var template = surface1.ResourceTemplates.Where(a => a.Value.Info.ResourceType == type).FirstOrDefault().Value;
 			if (type == 1)
 				imageLength = 12;
