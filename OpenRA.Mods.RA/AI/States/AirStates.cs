@@ -113,7 +113,7 @@ namespace OpenRA.Mods.RA.AI
 			return limitedAmmo != null && limitedAmmo.HasAmmo();
 		}
 
-		protected static bool IsReloadable(Actor a)
+		protected static bool ReloadsAutomatically(Actor a)
 		{
 			return a.HasTrait<Reloads>();
 		}
@@ -205,7 +205,7 @@ namespace OpenRA.Mods.RA.AI
 				if (BusyAttack(a))
 					continue;
 
-				if (!IsReloadable(a))
+				if (!ReloadsAutomatically(a))
 				{
 					if (!HasAmmo(a))
 					{
@@ -238,8 +238,7 @@ namespace OpenRA.Mods.RA.AI
 
 			foreach (var a in owner.units)
 			{
-				// TODO: This looks wrong - don't we want IsReloadable non-negated?
-				if (!IsReloadable(a) && !FullAmmo(a))
+				if (!ReloadsAutomatically(a) && !FullAmmo(a))
 				{
 					if (IsRearm(a))
 						continue;
