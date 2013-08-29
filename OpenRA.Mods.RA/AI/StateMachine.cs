@@ -1,6 +1,6 @@
 #region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -12,68 +12,38 @@ namespace OpenRA.Mods.RA.AI
 {
 	class StateMachine
 	{
-		//a pointer to the agent that owns this instance
-		private Squad owner;
+		IState currentState;
+		IState previousState;
 
-		private IState currentState;
-
-		//a record of the last state the agent was in
-		private IState previousState;
-
-		public StateMachine(Squad owner)
+		public void Update(Squad squad)
 		{
-			this.owner = owner;
+			currentState.Tick(squad);
 		}
 
-		public IState CurrentState
+		public void ChangeState(Squad squad, IState newState, bool rememberPrevious)
 		{
-			get { return currentState; }
-			set { currentState = value; }
-		}
-
-		public IState PreviousState
-		{
-			get { return previousState; }
-			set { previousState = value; }
-		}
-
-		//call this to update the FSM
-		public void UpdateFsm()
-		{
-			currentState.Execute(owner);
-		}
-
-		//change to a new state
-		//boolean variable isSaveCurrentState respons on save or not current state
-		public void ChangeState(IState newState, bool saveCurrentState)
-		{
-			if (saveCurrentState)
-				//keep a record of the previous state
+			if (rememberPrevious)
 				previousState = currentState;
 
-			//call the exit method of the existing state
-			if(currentState != null)
-				currentState.Exit(owner);
+			if (currentState != null)
+				currentState.Deactivate(squad);
 
-			//change state to the new state
 			if (newState != null)
 				currentState = newState;
 
-			//call the entry method of the new state
-			currentState.Enter(owner);
+			currentState.Activate(squad);
 		}
 
-		//change state back to the previous state
-		public void RevertToPreviousState(bool saveCurrentState)
+		public void RevertToPreviousState(Squad squad, bool saveCurrentState)
 		{
-			ChangeState(previousState, saveCurrentState);
+			ChangeState(squad, previousState, saveCurrentState);
 		}
 	}
 
 	interface IState
 	{
-		void Enter(Squad bot);
-		void Execute(Squad bot);
-		void Exit(Squad bot);
+		void Activate(Squad bot);
+		void Tick(Squad bot);
+		void Deactivate(Squad bot);
 	}
 }
