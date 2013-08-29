@@ -106,6 +106,11 @@ namespace OpenRA.Renderer.SdlCommon
 			return surf;
 		}
 
+		public virtual void Quit()
+		{
+			Sdl.SDL_Quit();
+		}
+
 		int ModeFromPrimitiveType(PrimitiveType pt)
 		{
 			switch (pt)
