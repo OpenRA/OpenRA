@@ -199,11 +199,19 @@ nahand:
 	critical-idle: nthand
 		Start: 2
 		ShadowStart: 5
-	idle-light: nthand_b
+	idle-light: nthand_a
+		Start: 0
+		Length: 5
+		Tick: 100
+	damaged-idle-light: nthand_a
+		Start: 5
+		Length: 5
+		Tick: 100
+	idle-lights: nthand_b
 		Start: 0
 		Length: 8
 		Tick: 200
-	damaged-idle-light: nthand_b
+	damaged-idle-lights: nthand_b
 		Start: 8
 		Length: 8
 		Tick: 200

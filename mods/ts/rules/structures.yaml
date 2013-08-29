@@ -162,10 +162,8 @@ NAPOWR:
 		Type: Wood
 	RevealsShroud:
 		Range: 4
-#	WithIdleOverlay@LIGHTS:
-#		Sequence: idle-lights
-#	WithIdleOverlay@PLUG:
-#		Sequence: idle-plug
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
 
 NAHAND:
 	Inherits: ^Building
@@ -199,12 +197,10 @@ NAHAND:
 	PrimaryBuilding:
 	IronCurtainable:
 	ProductionBar:
-#	WithIdleOverlay@LIGHTS:
-#		Sequence: idle-lights
-#	WithIdleOverlay@LIGHT:
-#		Sequence: idle-light
-#	WithIdleOverlay@FLAG:
-#		Sequence: idle-flag
+	WithIdleOverlay@LIGHTS:
+		Sequence: idle-lights
+	WithIdleOverlay@LIGHT:
+		Sequence: idle-light
 
 NAWEAP:
 	Inherits: ^Building
