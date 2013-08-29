@@ -84,52 +84,52 @@ Cursors:
 		harvest-minimap: #TODO
 			start:134
 			length: 8
-		enter: #TODO
-			start:113
-			length: 3
-		enter-minimap: #TODO
-			start:139
-			length: 3
-		enter-blocked: #TODO
-			start:212
+		enter:
+			start: 89
+			length: 10
+		enter-minimap:
+			start: 100
+			length: 10
+		enter-blocked:
+			start: 99
 			length: 1
 		enter-blocked-minimap: #TODO
 			start:33
-		c4: #TODO
-			start:116
-			length: 3
+		c4:
+			start: 309
+			length: 10
 		c4-minimap: #TODO
 			start:121
 			length: 3
-		guard: #TODO
-			start:147
-			length: 1
-		guard-minimap: #TODO
-			start:146
-			length: 1
-		capture: #TODO
-			start:164
-			length: 3
-		capture-minimap: #TODO
-			start:167
-			length: 3
-		heal: #TODO
-			start:160
-			length: 4
+		guard:
+			start: 68
+			length: 5
+		guard-minimap:
+			start: 73
+			length: 5
+		capture:
+			start: 89
+			length: 10
+		capture-minimap:
+			start: 100
+			length: 10
+		heal:
+			start: 346
+			length: 10
 		heal-minimap: #TODO
 			start:194
 			length: 1
-		ability: #TODO
-			start:82
-			length: 8
+		ability:
+			start: 78
+			length: 10
 		ability-minimap: #TODO
 			start:214
 			length: 8
 		deploy:
-			start:110
+			start: 110
 			length: 9
 		deploy-blocked:
-			start:119
+			start: 119
 			length: 1
 		undeploy: #TODO: unused
 			start:120
@@ -158,9 +158,9 @@ Cursors:
 		repair-blocked:
 			start:190
 			length: 1
-		sell2: #TODO ?
-			start:148
-			length: 12
+		sell2:
+			start:139
+			length: 10
 		powerdown-blocked:
 			start:345
 			length: 1

@@ -204,12 +204,12 @@ SCRIN:
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 20
-		Prerequisites: #nahpad, natech
+		Prerequisites: nahpad #, natech
 		Owner: nod
 	Selectable:
 		Bounds: 30,24
 	Helicopter:
-		RearmBuildings: #nahpad # TODO: use DROPUP1.AUD and DROPDWN1.AUD
+		RearmBuildings: nahpad # TODO: use DROPUP1.AUD and DROPDWN1.AUD
 		ROT: 3
 		Speed: 18
 	Health:
@@ -239,12 +239,12 @@ APACHE:
 	Buildable:
 		Queue: Air
 		BuildPaletteOrder: 20
-		Prerequisites: #nahpad
+		Prerequisites: nahpad
 		Owner: nod
 	Selectable:
 		Bounds: 30,24
 	Helicopter:
-		RearmBuildings: #nahpad
+		RearmBuildings: nahpad
 		ROT: 5
 		Speed: 14
 	Health:
