@@ -1,8 +1,12 @@
 bin/clibs/mime/core.dll
 bin/clibs/socket/core.dll
+bin/clibs52/mime/core.dll
+bin/clibs52/socket/core.dll
 bin/lua.exe
 bin/lua5.1.dll
 bin/lua51.dll
+bin/lua52.dll
+bin/lua52.exe
 bin/winapi.dll
 bin/wx.dll
 zbstudio.exe
