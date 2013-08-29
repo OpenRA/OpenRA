@@ -86,6 +86,11 @@ namespace OpenRA.Traits
 		}
 
 		public bool HasRenderables { get { return Renderables != null; } }
+
+		public override string ToString()
+		{
+			return "{0} {1}{2}".F(Info.Name, ID, IsValid ? "" : " (invalid)");
+		}
 	}
 
 	public class FrozenActorLayer : IRender, ITick, ISync

@@ -48,8 +48,8 @@ namespace OpenRA.Mods.RA.Effects
 
 			if (!doneDamage)
 			{
-				var pos = Args.guidedTarget.IsValidFor(Args.sourceActor) ? Args.guidedTarget.CenterPosition : Args.passiveTarget;
-				Combat.DoImpacts(pos, Args.sourceActor, Args.weapon, Args.firepowerModifier);
+				var pos = Args.GuidedTarget.IsValidFor(Args.SourceActor) ? Args.GuidedTarget.CenterPosition : Args.PassiveTarget;
+				Combat.DoImpacts(pos, Args.SourceActor, Args.Weapon, Args.FirepowerModifier);
 				doneDamage = true;
 			}
 		}
@@ -58,8 +58,8 @@ namespace OpenRA.Mods.RA.Effects
 		{
 			if (!initialized)
 			{
-				var pos = Args.guidedTarget.IsValidFor(Args.sourceActor) ? Args.guidedTarget.CenterPosition : Args.passiveTarget;
-				zap = new TeslaZapRenderable(Args.source, 0, pos - Args.source, Info.Image, Info.BrightZaps, Info.DimZaps);
+				var pos = Args.GuidedTarget.IsValidFor(Args.SourceActor) ? Args.GuidedTarget.CenterPosition : Args.PassiveTarget;
+				zap = new TeslaZapRenderable(Args.Source, 0, pos - Args.Source, Info.Image, Info.BrightZaps, Info.DimZaps);
 			}
 			yield return zap;
 		}

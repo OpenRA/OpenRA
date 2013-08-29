@@ -45,32 +45,38 @@ namespace OpenRA.Mods.RA.Effects
 		public IEffect Create(ProjectileArgs args) { return new Missile(this, args); }
 	}
 
-	class Missile : IEffect
+	class Missile : IEffect, ISync
 	{
+		static readonly WRange MissileCloseEnough = new WRange(7 * 1024 / Game.CellSize);
+
 		readonly MissileInfo info;
 		readonly ProjectileArgs args;
 		readonly Animation anim;
-
-		ContrailRenderable trail;
-		WPos pos;
-		int facing;
-
-		WPos target;
-		WVec offset;
-		int ticks;
-		bool exploded;
-
 		readonly int speed;
+
+		int ticksToNextSmoke;
+		ContrailRenderable trail;
+
+		[Sync] WPos pos;
+		[Sync] int facing;
+
+		[Sync] WPos targetPosition;
+		[Sync] WVec offset;
+		[Sync] int ticks;
+		[Sync] bool exploded;
+
+		[Sync] public Actor SourceActor { get { return args.SourceActor; } }
+		[Sync] public Target GuidedTarget { get { return args.GuidedTarget; } }
 
 		public Missile(MissileInfo info, ProjectileArgs args)
 		{
 			this.info = info;
 			this.args = args;
 
-			pos = args.source;
-			facing = args.facing;
+			pos = args.Source;
+			facing = args.Facing;
 
-			target = args.passiveTarget;
+			targetPosition = args.PassiveTarget;
 
 			// Convert ProjectileArg definitions to world coordinates
 			// TODO: Change the yaml definitions so we don't need this
@@ -78,7 +84,7 @@ namespace OpenRA.Mods.RA.Effects
 			speed = info.Speed * 1024 / (5 * Game.CellSize);
 
 			if (info.Inaccuracy > 0)
-				offset = WVec.FromPDF(args.sourceActor.World.SharedRandom, 2) * inaccuracy / 1024;
+				offset = WVec.FromPDF(args.SourceActor.World.SharedRandom, 2) * inaccuracy / 1024;
 
 			if (info.Image != null)
 			{
@@ -88,20 +94,17 @@ namespace OpenRA.Mods.RA.Effects
 
 			if (info.ContrailLength > 0)
 			{
-				var color = info.ContrailUsePlayerColor ? ContrailRenderable.ChooseColor(args.sourceActor) : info.ContrailColor;
-				trail = new ContrailRenderable(args.sourceActor.World, color, info.ContrailLength, info.ContrailDelay, 0);
+				var color = info.ContrailUsePlayerColor ? ContrailRenderable.ChooseColor(args.SourceActor) : info.ContrailColor;
+				trail = new ContrailRenderable(args.SourceActor.World, color, info.ContrailLength, info.ContrailDelay, 0);
 			}
 		}
-
-		static readonly WRange MissileCloseEnough = new WRange(7 * 1024 / Game.CellSize);
-		int ticksToNextSmoke;
 
 		bool JammedBy(TraitPair<JamsMissiles> tp)
 		{
 			if ((tp.Actor.CenterPosition - pos).HorizontalLengthSquared > tp.Trait.Range * tp.Trait.Range)
 				return false;
 
-			if (tp.Actor.Owner.Stances[args.sourceActor.Owner] == Stance.Ally && !tp.Trait.AlliedMissiles)
+			if (tp.Actor.Owner.Stances[args.SourceActor.Owner] == Stance.Ally && !tp.Trait.AlliedMissiles)
 				return false;
 
 			return tp.Actor.World.SharedRandom.Next(100 / tp.Trait.Chance) == 0;
@@ -120,12 +123,12 @@ namespace OpenRA.Mods.RA.Effects
 			anim.Tick();
 
 			// Missile tracks target
-			if (args.guidedTarget.IsValidFor(args.sourceActor))
-				target = args.guidedTarget.CenterPosition;
+			if (args.GuidedTarget.IsValidFor(args.SourceActor))
+				targetPosition = args.GuidedTarget.CenterPosition;
 
-			var dist = target + offset - pos;
+			var dist = targetPosition + offset - pos;
 			var desiredFacing = Traits.Util.GetFacing(dist, facing);
-			var desiredAltitude = target.Z;
+			var desiredAltitude = targetPosition.Z;
 			var jammed = info.Jammable && world.ActorsWithTrait<JamsMissiles>().Any(j => JammedBy(j));
 
 			if (jammed)
@@ -133,18 +136,18 @@ namespace OpenRA.Mods.RA.Effects
 				desiredFacing = facing + world.SharedRandom.Next(-20, 21);
 				desiredAltitude = world.SharedRandom.Next(-43, 86);
 			}
-			else if (!args.guidedTarget.IsValidFor(args.sourceActor))
+			else if (!args.GuidedTarget.IsValidFor(args.SourceActor))
 				desiredFacing = facing;
 
 			facing = Traits.Util.TickFacing(facing, desiredFacing, info.ROT);
 			var move = new WVec(0, -1024, 0).Rotate(WRot.FromFacing(facing)) * speed / 1024;
-			if (target.Z > 0 && info.TurboBoost)
+			if (targetPosition.Z > 0 && info.TurboBoost)
 				move = (move * 3) / 2;
 
 			if (pos.Z != desiredAltitude)
 			{
 				var delta = move.HorizontalLength * info.MaximumPitch.Tan() / 1024;
-				var dz = (target.Z - pos.Z).Clamp(-delta, delta);
+				var dz = (targetPosition.Z - pos.Z).Clamp(-delta, delta);
 				move += new WVec(0, 0, dz);
 			}
 
@@ -159,9 +162,9 @@ namespace OpenRA.Mods.RA.Effects
 			if (info.ContrailLength > 0)
 				trail.Update(pos);
 
-			var shouldExplode = pos.Z < 0 // Hit the ground
-				|| dist.LengthSquared < MissileCloseEnough.Range * MissileCloseEnough.Range // Within range
-				|| info.RangeLimit != 0 && ticks > info.RangeLimit // Ran out of fuel
+			var shouldExplode = (pos.Z < 0) // Hit the ground
+				|| (dist.LengthSquared < MissileCloseEnough.Range * MissileCloseEnough.Range) // Within range
+				|| (info.RangeLimit != 0 && ticks > info.RangeLimit) // Ran out of fuel
 				|| (!info.High && world.ActorMap.GetUnitsAt(pos.ToCPos())
 					.Any(a => a.HasTrait<IBlocksBullets>())); // Hit a wall
 
@@ -182,7 +185,7 @@ namespace OpenRA.Mods.RA.Effects
 			if (ticks <= info.Arm)
 				return;
 
-			Combat.DoImpacts(pos, args.sourceActor, args.weapon, args.firepowerModifier);
+			Combat.DoImpacts(pos, args.SourceActor, args.Weapon, args.FirepowerModifier);
 		}
 
 		public IEnumerable<IRenderable> Render(WorldRenderer wr)
@@ -190,9 +193,9 @@ namespace OpenRA.Mods.RA.Effects
 			if (info.ContrailLength > 0)
 				yield return trail;
 
-			if (!args.sourceActor.World.FogObscures(pos.ToCPos()))
+			if (!args.SourceActor.World.FogObscures(pos.ToCPos()))
 			{
-				var palette = wr.Palette(args.weapon.Underwater ? "shadow" : "effect");
+				var palette = wr.Palette(args.Weapon.Underwater ? "shadow" : "effect");
 				foreach (var r in anim.Render(pos, palette))
 					yield return r;
 			}

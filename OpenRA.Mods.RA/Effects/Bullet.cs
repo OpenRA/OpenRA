@@ -41,41 +41,44 @@ namespace OpenRA.Mods.RA.Effects
 		public IEffect Create(ProjectileArgs args) { return new Bullet(this, args); }
 	}
 
-	public class Bullet : IEffect
+	public class Bullet : IEffect, ISync
 	{
 		readonly BulletInfo info;
 		readonly ProjectileArgs args;
 
 		ContrailRenderable trail;
 		Animation anim;
-		WAngle angle;
-		WPos pos, target;
-		int length;
-		int facing;
-		int ticks, smokeTicks;
+
+		[Sync] WAngle angle;
+		[Sync] WPos pos, target;
+		[Sync] int length;
+		[Sync] int facing;
+		[Sync] int ticks, smokeTicks;
+
+		[Sync] public Actor SourceActor { get { return args.SourceActor; } }
 
 		public Bullet(BulletInfo info, ProjectileArgs args)
 		{
 			this.info = info;
 			this.args = args;
-			this.pos = args.source;
+			this.pos = args.Source;
 
 			// Convert ProjectileArg definitions to world coordinates
 			// TODO: Change the yaml definitions so we don't need this
-			var range = new WRange((int)(1024 * args.weapon.Range)); // Range in world units
+			var range = new WRange((int)(1024 * args.Weapon.Range)); // Range in world units
 			var inaccuracy = new WRange((int)(info.Inaccuracy * 1024 / Game.CellSize)); // Offset in world units at max range
 			var speed = (int)(info.Speed * 4 * 1024 / (10 * Game.CellSize)); // Speed in world units per tick
 			angle = WAngle.ArcTan((int)(info.Angle * 4 * 1024), 1024); // Angle in world angle
 
-			target = args.passiveTarget;
+			target = args.PassiveTarget;
 			if (info.Inaccuracy > 0)
 			{
-				var maxOffset = inaccuracy.Range * (target - args.source).Length / range.Range;
-				target += WVec.FromPDF(args.sourceActor.World.SharedRandom, 2) * maxOffset / 1024;
+				var maxOffset = inaccuracy.Range * (target - pos).Length / range.Range;
+				target += WVec.FromPDF(args.SourceActor.World.SharedRandom, 2) * maxOffset / 1024;
 			}
 
-			facing = Traits.Util.GetFacing(target - args.source, 0);
-			length = Math.Max((target - args.source).Length / speed, 1);
+			facing = Traits.Util.GetFacing(target - pos, 0);
+			length = Math.Max((target - pos).Length / speed, 1);
 
 			if (info.Image != null)
 			{
@@ -85,8 +88,8 @@ namespace OpenRA.Mods.RA.Effects
 
 			if (info.ContrailLength > 0)
 			{
-				var color = info.ContrailUsePlayerColor ? ContrailRenderable.ChooseColor(args.sourceActor) : info.ContrailColor;
-				trail = new ContrailRenderable(args.sourceActor.World, color, info.ContrailLength, info.ContrailDelay, 0);
+				var color = info.ContrailUsePlayerColor ? ContrailRenderable.ChooseColor(args.SourceActor) : info.ContrailColor;
+				trail = new ContrailRenderable(args.SourceActor.World, color, info.ContrailLength, info.ContrailDelay, 0);
 			}
 
 			smokeTicks = info.TrailDelay;
@@ -117,11 +120,11 @@ namespace OpenRA.Mods.RA.Effects
 			if (anim != null)
 				anim.Tick();
 
-			pos = WPos.LerpQuadratic(args.source, target, angle, ticks, length);
+			pos = WPos.LerpQuadratic(args.Source, target, angle, ticks, length);
 
 			if (info.Trail != null && --smokeTicks < 0)
 			{
-				var delayedPos = WPos.LerpQuadratic(args.source, target, angle, ticks - info.TrailDelay, length);
+				var delayedPos = WPos.LerpQuadratic(args.Source, target, angle, ticks - info.TrailDelay, length);
 				world.AddFrameEndTask(w => w.Add(new Smoke(w, delayedPos, info.Trail)));
 				smokeTicks = info.TrailInterval;
 			}
@@ -130,7 +133,7 @@ namespace OpenRA.Mods.RA.Effects
 				trail.Update(pos);
 
 			if (ticks++ >= length || (!info.High && world.ActorMap
-			    .GetUnitsAt(pos.ToCPos()).Any(a => a.HasTrait<IBlocksBullets>())))
+				.GetUnitsAt(pos.ToCPos()).Any(a => a.HasTrait<IBlocksBullets>())))
 			{
 				Explode(world);
 			}
@@ -145,7 +148,7 @@ namespace OpenRA.Mods.RA.Effects
 				yield break;
 
 			var cell = pos.ToCPos();
-			if (!args.sourceActor.World.FogObscures(cell))
+			if (!args.SourceActor.World.FogObscures(cell))
 			{
 				if (info.Shadow)
 				{
@@ -154,7 +157,7 @@ namespace OpenRA.Mods.RA.Effects
 						yield return r;
 				}
 
-				var palette =  wr.Palette(args.weapon.Underwater ? "shadow" : "effect");
+				var palette = wr.Palette(args.Weapon.Underwater ? "shadow" : "effect");
 				foreach (var r in anim.Render(pos, palette))
 					yield return r;
 			}
@@ -167,7 +170,7 @@ namespace OpenRA.Mods.RA.Effects
 			else
 				world.AddFrameEndTask(w => w.Remove(this));
 
-			Combat.DoImpacts(target, args.sourceActor, args.weapon, args.firepowerModifier);
+			Combat.DoImpacts(target, args.SourceActor, args.Weapon, args.FirepowerModifier);
 		}
 	}
 }

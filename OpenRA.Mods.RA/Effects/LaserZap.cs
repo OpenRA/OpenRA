@@ -29,7 +29,7 @@ namespace OpenRA.Mods.RA.Effects
 
 		public IEffect Create(ProjectileArgs args)
 		{
-			var c = UsePlayerColor ? args.sourceActor.Owner.Color.RGB : Color;
+			var c = UsePlayerColor ? args.SourceActor.Owner.Color.RGB : Color;
 			return new LaserZap(args, this, c);
 		}
 	}
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.RA.Effects
 			this.args = args;
 			this.info = info;
 			this.color = color;
-			this.target = args.passiveTarget;
+			this.target = args.PassiveTarget;
 
 			if (info.HitAnim != null)
 				this.hitanim = new Animation(info.HitAnim);
@@ -59,15 +59,15 @@ namespace OpenRA.Mods.RA.Effects
 		public void Tick(World world)
 		{
 			// Beam tracks target
-			if (args.guidedTarget.IsValidFor(args.sourceActor))
-				target = args.guidedTarget.CenterPosition;
+			if (args.GuidedTarget.IsValidFor(args.SourceActor))
+				target = args.GuidedTarget.CenterPosition;
 
 			if (!doneDamage)
 			{
 				if (hitanim != null)
 					hitanim.PlayThen("idle", () => animationComplete = true);
 
-				Combat.DoImpacts(target, args.sourceActor, args.weapon, args.firepowerModifier);
+				Combat.DoImpacts(target, args.SourceActor, args.Weapon, args.FirepowerModifier);
 				doneDamage = true;
 			}
 
@@ -83,7 +83,7 @@ namespace OpenRA.Mods.RA.Effects
 			if (ticks < info.BeamDuration)
 			{
 				var rc = Color.FromArgb((info.BeamDuration - ticks) * 255 / info.BeamDuration, color);
-				yield return new BeamRenderable(args.source, 0, target - args.source, info.BeamWidth, rc);
+				yield return new BeamRenderable(args.Source, 0, target - args.Source, info.BeamWidth, rc);
 			}
 
 			if (hitanim != null)
