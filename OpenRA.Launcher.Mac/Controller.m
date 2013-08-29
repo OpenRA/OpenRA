@@ -28,7 +28,7 @@ extern char **environ;
 										 defaultButton:@"Download Mono"
 									   alternateButton:@"Quit"
 										   otherButton:nil
-							 informativeTextWithFormat:@"OpenRA requires the Mono Framework version 2.6.7 or later."];
+							 informativeTextWithFormat:@"OpenRA requires the Mono Framework version 2.10 or later."];
 		
 		if ([alert runModal] == NSAlertDefaultReturn)
 			[[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://www.go-mono.com/mono-downloads/download.html"]];
@@ -153,9 +153,7 @@ extern char **environ;
 	sscanf([ret UTF8String], "Mono JIT compiler version %d.%d.%d", &major, &minor, &point);
 	[ret release];
 	
-	return (major > 2 ||
-			(major == 2 && minor > 6) ||
-			(major == 2 && minor == 6 && point >= 7));
+	return (major > 2 || (major == 2 && minor >= 10));
 }
 
 - (void)dealloc
