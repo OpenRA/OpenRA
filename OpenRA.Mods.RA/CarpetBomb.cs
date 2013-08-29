@@ -59,18 +59,18 @@ namespace OpenRA.Mods.RA
 				var pos = self.CenterPosition;
 				var args = new ProjectileArgs
 				{
-					weapon = weapon,
-					facing = self.Trait<IFacing>().Facing,
+					Weapon = weapon,
+					Facing = self.Trait<IFacing>().Facing,
 
-					source = pos,
-					sourceActor = self,
-					passiveTarget = pos - new WVec(0, 0, pos.Z)
+					Source = pos,
+					SourceActor = self,
+					PassiveTarget = pos - new WVec(0, 0, pos.Z)
 				};
 
-				self.World.Add(args.weapon.Projectile.Create(args));
+				self.World.Add(args.Weapon.Projectile.Create(args));
 
-				if (args.weapon.Report != null && args.weapon.Report.Any())
-					Sound.Play(args.weapon.Report.Random(self.World.SharedRandom), self.CenterPosition);
+				if (args.Weapon.Report != null && args.Weapon.Report.Any())
+					Sound.Play(args.Weapon.Report.Random(self.World.SharedRandom), self.CenterPosition);
 			}
 		}
 	}

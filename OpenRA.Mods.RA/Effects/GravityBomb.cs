@@ -37,7 +37,7 @@ namespace OpenRA.Mods.RA.Effects
 		{
 			this.info = info;
 			this.args = args;
-			pos = args.source;
+			pos = args.Source;
 			velocity = new WVec(WRange.Zero, WRange.Zero, -info.Velocity);
 
 			anim = new Animation(info.Image);
@@ -52,10 +52,10 @@ namespace OpenRA.Mods.RA.Effects
 			velocity -= new WVec(WRange.Zero, WRange.Zero, info.Acceleration);
 			pos += velocity;
 
-			if (pos.Z <= args.passiveTarget.Z)
+			if (pos.Z <= args.PassiveTarget.Z)
 			{
 				world.AddFrameEndTask(w => w.Remove(this));
-				Combat.DoImpacts(args.passiveTarget, args.sourceActor, args.weapon, args.firepowerModifier);
+				Combat.DoImpacts(args.PassiveTarget, args.SourceActor, args.Weapon, args.FirepowerModifier);
 			}
 
 			anim.Tick();
