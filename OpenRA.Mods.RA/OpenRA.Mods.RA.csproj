@@ -466,6 +466,11 @@
     <Compile Include="Orders\EnterAlliedActorTargeter.cs" />
     <Compile Include="Render\WithIdleOverlay.cs" />
     <Compile Include="Tooltip.cs" />
+    <Compile Include="AI\Squad.cs" />
+    <Compile Include="AI\States\StateBase.cs" />
+    <Compile Include="AI\States\GroundStates.cs" />
+    <Compile Include="AI\States\ProtectionStates.cs" />
+    <Compile Include="AI\States\AirStates.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
@@ -519,4 +524,7 @@ cd "$(SolutionDir)thirdparty/"
 copy "FuzzyLogicLibrary.dll" "$(SolutionDir)"
 cd "$(SolutionDir)"</PostBuildEvent>
   </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="AI\States\" />
+  </ItemGroup>
 </Project>

@@ -9,6 +9,8 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Drawing;
 
 namespace OpenRA
@@ -50,28 +52,6 @@ namespace OpenRA
 			return new WPos(ret.X, ret.Y, ret.Z + offset);
 		}
 
-		public static WPos Average(params WPos[] list)
-		{
-			if (list == null || list.Length == 0)
-				return WPos.Zero;
-
-			var x = 0;
-			var y = 0;
-			var z = 0;
-			foreach(var pos in list)
-			{
-				x += pos.X;
-				y += pos.Y;
-				z += pos.Z;
-			}
-
-			x /= list.Length;
-			y /= list.Length;
-			z /= list.Length;
-
-			return new WPos(x,y,z);
-		}
-
 		public override int GetHashCode() { return X.GetHashCode() ^ Y.GetHashCode() ^ Z.GetHashCode(); }
 
 		public override bool Equals(object obj)
@@ -84,5 +64,31 @@ namespace OpenRA
 		}
 
 		public override string ToString() { return "{0},{1},{2}".F(X, Y, Z); }
+	}
+
+	public static class IEnumerableExtensions
+	{
+		public static WPos Average(this IEnumerable<WPos> source)
+		{
+			var length = source.Count();
+			if (length == 0)
+				return WPos.Zero;
+
+			var x = 0L;
+			var y = 0L;
+			var z = 0L;
+			foreach (var pos in source)
+			{
+				x += pos.X;
+				y += pos.Y;
+				z += pos.Z;
+			}
+
+			x /= length;
+			y /= length;
+			z /= length;
+
+			return new WPos((int)x, (int)y, (int)z);
+		}
 	}
 }
