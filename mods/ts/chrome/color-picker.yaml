@@ -32,7 +32,7 @@ Background@COLOR_CHOOSER:
 		ShpImage@GTCNST:
 			X:121
 			Y:0-68
-			Image:gtcnst
+			Image:gtcnstmk
 			Palette:colorpicker
 		Button@RANDOM_BUTTON:
 			Key:tab
