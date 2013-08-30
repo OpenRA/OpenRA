@@ -1,0 +1,7 @@
+# General dumping-ground for UI element sizes, etc.
+
+Metrics:
+	ButtonDepth: 1
+	ButtonFont: Regular
+	CheckboxPressedState: false
+	ColorPickerRemapIndices: 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31

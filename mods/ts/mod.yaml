@@ -103,7 +103,7 @@ ChromeLayout:
 	mods/ra/chrome/lobby.yaml
 	mods/ra/chrome/lobby-playerbin.yaml
 	mods/ra/chrome/lobby-dialogs.yaml
-	mods/ra/chrome/color-picker.yaml
+	mods/ts/chrome/color-picker.yaml
 	mods/ra/chrome/map-chooser.yaml
 	mods/ra/chrome/create-server.yaml
 	mods/ra/chrome/serverbrowser.yaml
@@ -153,7 +153,7 @@ LobbyDefaults:
 	Fog: true
 
 ChromeMetrics:
-	mods/ra/metrics.yaml
+	mods/ts/metrics.yaml
 
 Fonts:
 	Regular:
