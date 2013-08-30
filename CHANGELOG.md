@@ -1,6 +1,6 @@
 # ZeroBrane Studio Changelog
 
-## Current master (Jul 14 2013)
+## Current master (Aug 29 2013)
 
 ### Special thanks
   - To Chow CheeWen for Chinese translation.
@@ -8,8 +8,32 @@
   - To [ardente](https://github.com/ardente) for user home patch for Windows.
   - To [Mika Attila](https://github.com/crumblingstatue) for code folding patch.
   - To [Tim Mensch](https://github.com/TimMensch) for auto-save, auto-reload, and debugger improvements.
+  - To [Florian](https://github.com/SiENcE) for Notepad++ color scheme.
 
 ### Improvements
+  - Added package GetOutput method (ref #166).
+  - Added package onAppLoad/onAppClose events (ref #166).
+  - Added package onIdleOnce event (ref #166).
+  - Added manifest to the Windows executable and re-signed.
+  - Added Notepad++ color scheme (thanks to Florian/SiENcE; closes #193).
+  - Added clearing document styles after saving file with a different extension.
+  - Added workaround to avoid crash on OSX after `Close All Pages` (closes #190).
+  - Added return type for string.* functions to assist in auto-complete (ref #189).
+  - Added handling of string literals in type assignments (closes #189).
+  - Added support for captures in regexp replacement (\1-\9).
+  - Added ability to cancel FindInFiles search by closing search dialog (ref #162).
+  - Added activating Output window before showing search results (ref #162).
+  - Added support for packages from different platforms to co-exist (ref #166).
+  - Added ability to save complex data in package settings (ref #166).
+  - Added support for multiple inheritance in auto-complete (ref #101).
+  - Added ability to add/remove API descriptions from plugins (ref #166).
+  - Added package GetSettings/SetSettings methods (ref #166).
+  - Added methods to save/restore package settings (ref #166).
+  - Added ability to add/remove specs from plugins (ref #166).
+  - Added ability to add/remove interpreters from plugins (ref #166).
+  - Added wxlua patch for twoface compatibility.
+  - Added `setfenv` for Lua 5.2 compatibility.
+  - Added links to project page and documentation (closes #180).
   - Added German translation (thanks to Riidom; ref #70).
   - Added default value to package config (ref #176).
   - Added handling of ?51.dll and required DLLs for LuaForWindows interpreter.
@@ -23,15 +47,54 @@
   - Added an example of styling individual keywords.
   - Added fold indication of a current block (ref #168).
   - Added reporting of process id for a conflicting process.
+  - Changed `un/comment` to act from the beginning of the line for multi-line selection.
+  - Disabled markup styling for specs without comment styles.
+  - Disabled showing tooltip when auto-complete suggestions are shown.
+  - Disabled error reporting after debugging has been terminated.
   - Disabled 'Fold' menu instead of removing when no folding is allowed (ref #169).
+  - Enabled support for xml/html folding.
+  - Enabled path remapping for local debugging.
+  - Enabled slower and more thorough static analysis (ref #149; ref #168).
+  - Improved logic to jump to file/line indicated in error messages.
+  - Limited activation of code fragments to the beginning of debugging session.
   - Make code folding optional (thanks to [Mika Attila](https://github.com/crumblingstatue))
   - Moved 'Sort' menu to 'Edit'.
+  - OpenGL 4.4 and ARB extensions added as well as NV_gpu_shader5 functions
+  - Optimized line count calculation for dynamic words when text is deleted.
+  - Optimized dynamic word processing for large files.
+  - Renamed package onEditorPostSave event to onEditorSave for consistency (ref #166).
+  - Removed comment from default spec as it forces undesired markup styling.
+  - Removed auto-complete suggestion when it is already typed (ref #101).
+  - Reorganized API processing to allow loading API description from a plugin.
   - Replaced package onEditorActivated event with onEditorFocus* events (ref #166).
   - Set search in subdirectories as default in Find in Files dialog (ref #162).
+  - Switched to using POSIX compatible regexp with '()' used for captures.
+  - Updated `NewFile` to accept a file name.
+  - Updated 'get hostname' logic to avoid using non-resolvable names (mostly on OSX).
+  - Updated tooltip to use the same type inference as auto-complete (ref #101).
+  - Updated Estrela reference in README.
+  - Updated build script on Windows to enable debugging (ref #164).
+  - Updated build script with a (temporary) fix for wxlua issue (mingw32).
+  - updated glewgl api for OpenGL4.4 and removed non-core duplicate functions/enums
+  - Updated static analyzer to report only first instance of 'unknown field'.
+  - Updated filename/source code heuristic in the debugger (Mobdebug 0.5362).
   - Updated `SaveAll` to allow saving (only) files with filenames (ref #172).
   - windows: adopt native user home (thanks to [ardente](https://github.com/ardente))
 
 ### Fixes
+  - Fixed loading of files with incorrect UTF-8 encoding and control characters (fixes #198).
+  - Fixed package sample to take into account new documents.
+  - Fixed crash on OSX after opening 'application' in 'Open File' dialog.
+  - Fixed windows resource file to properly reference the manifest.
+  - Fixed missing default api for files with unknown extensions.
+  - Fix spurious replacement after 'search, clear selection, replace' actions.
+  - Fixed using auto-complete with multiple selections (fixes #188).
+  - Fixed looping in auto-complete with array references (ref #143).
+  - Fixed showing auto-complete after comma.
+  - Fixed 'cannot get official hostname' message on low privilege accounts (fixes #183).
+  - Fixed displaying variable instances when code has invalid blocks (fixes #182).
+  - Fixed tooltip to ignore string parameters (ref #101).
+  - Fixed tooltip display between empty brackets (ref #101).
   - Fixed indentation after lines with brackets in strings.
   - Fixed indentation after lines with anonymous functions.
   - Fixed indicator showing at the end of not terminated long comment.
