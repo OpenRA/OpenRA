@@ -504,3 +504,50 @@ atwr:
 		Length: *
 	icon: atwricnh
 		Start: 0
+
+hosp:
+	idle:
+		Start: 0
+		Length: 4
+		Tick: 100
+	damaged-idle:
+		Start: 4
+		Length: 4
+	make: hospmake
+		Start: 0
+		Length: *
+		Tick: 80
+
+hosp.husk:
+	idle: hosp
+		Start: 8
+
+bio:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	make: biomake
+		Start: 0
+		Length: *
+		Tick: 80
+
+bio.husk:
+	idle: bio
+		Start: 2
+
+miss:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+	make: missmake
+		Start: 0
+		Length: *
+		Tick: 80
+	icon: missicnh
+		Start: 0
+
+miss.husk:
+	idle: miss
+		Start: 2

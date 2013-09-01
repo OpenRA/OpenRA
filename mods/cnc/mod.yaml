@@ -48,7 +48,7 @@ Sequences:
 	mods/cnc/sequences/vehicles.yaml
 	mods/cnc/sequences/infantry.yaml
 	mods/cnc/sequences/aircraft.yaml
-	mods/cnc/sequences/map.yaml
+	mods/cnc/sequences/decorations.yaml
 	mods/cnc/sequences/misc.yaml
 	mods/cnc/sequences/funpark.yaml
 	mods/cnc/sequences/civilian.yaml

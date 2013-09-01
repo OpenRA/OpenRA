@@ -273,3 +273,28 @@ icon:
 	deathhand: DATA.R8
 		Start: 4035
 		Offset: -30,-24
+
+crate:
+	idle: DATA.R8
+		Start: 102
+		ZOffset: -511
+		Offset: -16,-16
+	land: DATA.R8
+		Start: 102
+		ZOffset: -511
+		Offset: -16,-16
+
+spicebloom:
+	make: DATA.R8
+		Start: 107
+		Length: 3
+		Offset: -16,-16
+	active: DATA.R8
+		Start: 109
+		Length: 1
+		ZOffset: -511
+		Offset: -16,-16
+	idle: DATA.R8
+		Start: 109
+		ZOffset: -511
+		Offset: -16,-16
