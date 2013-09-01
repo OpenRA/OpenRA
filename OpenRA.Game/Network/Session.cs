@@ -8,6 +8,7 @@
  */
 #endregion
 
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -18,9 +19,48 @@ namespace OpenRA.Network
 	public class Session
 	{
 		public List<Client> Clients = new List<Client>();
+
 		// Keyed by the PlayerReference id that the slot corresponds to
 		public Dictionary<string, Slot> Slots = new Dictionary<string, Slot>();
+
 		public Global GlobalSettings = new Global();
+
+		public static Session Deserialize(string data)
+		{
+			try
+			{
+				var session = new Session(Game.Settings.Game.Mods);
+
+				var ys = MiniYaml.FromString(data);
+				foreach (var y in ys)
+				{
+					var yy = y.Key.Split('@');
+
+					switch (yy[0])
+					{
+						case "GlobalSettings":
+							FieldLoader.Load(session.GlobalSettings, y.Value);
+							break;
+
+							case "Client":
+							session.Clients.Add(FieldLoader.Load<Session.Client>(y.Value));
+							break;
+
+							case "Slot":
+							var s = FieldLoader.Load<Session.Slot>(y.Value);
+							session.Slots.Add(s.PlayerReference, s);
+							break;
+					}
+				}
+
+				return session;
+			}
+			catch (InvalidOperationException)
+			{
+				Log.Write("exception", "Session deserialized invalid MiniYaml:\n{0}".F(data));
+				throw;
+			}
+		}
 
 		public Client ClientWithIndex(int clientID)
 		{
@@ -64,7 +104,7 @@ namespace OpenRA.Network
 			public bool IsObserver { get { return Slot == null; } }
 			public int Latency = -1;
 			public int LatencyJitter = -1;
-			public int[] LatencyHistory = {};
+			public int[] LatencyHistory = { };
 		}
 
 		public class Slot
@@ -118,35 +158,6 @@ namespace OpenRA.Network
 			clientData.Add(new MiniYamlNode("GlobalSettings", FieldSaver.Save(GlobalSettings)));
 
 			return clientData.WriteToString();
-		}
-
-		public static Session Deserialize(string data)
-		{
-			var session = new Session(Game.Settings.Game.Mods);
-
-			var ys = MiniYaml.FromString(data);
-			foreach (var y in ys)
-			{
-				var yy = y.Key.Split('@');
-
-				switch (yy[0])
-				{
-					case "GlobalSettings":
-						FieldLoader.Load(session.GlobalSettings, y.Value);
-						break;
-
-					case "Client":
-						session.Clients.Add(FieldLoader.Load<Session.Client>(y.Value));
-						break;
-
-					case "Slot":
-						var s = FieldLoader.Load<Session.Slot>(y.Value);
-						session.Slots.Add(s.PlayerReference, s);
-						break;
-				}
-			}
-
-			return session;
 		}
 	}
 }
