@@ -47,7 +47,7 @@ Sequences:
 	mods/ra/sequences/infantry.yaml
 	mods/ra/sequences/aircraft.yaml
 	mods/ra/sequences/misc.yaml
-	mods/ra/sequences/map.yaml
+	mods/ra/sequences/decorations.yaml
 
 Cursors:
 	mods/ra/cursors.yaml

@@ -361,23 +361,56 @@ v19:
 		Start: 14
 		Length: 15
 
-barl:
+utilpol1:
 	idle:
 		Start: 0
-		Length: *
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 1
 
-brl3:
+utilpol2:
 	idle:
 		Start: 0
-		Length: *
+	damaged-idle:
+		Start: 1
+	dead:
+		Start: 1
 
-minp:
+ammobox1:
+	idle:
+		Start: 0
+		Length: 1
+
+ammobox2:
+	idle:
+		Start: 0
+		Length: 1
+
+ammobox3:
+	idle:
+		Start: 0
+		Length: 1
+
+tanktrap1:
 	idle:
 		Start: 0
 
-minv:
+tanktrap2:
 	idle:
 		Start: 0
+
+rushouse:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
+
+asianhut:
+	idle:
+		Start: 0
+	damaged-idle:
+		Start: 1
 
 barb:
 	idle:
@@ -395,68 +428,63 @@ wood:
 		Start: 16
 		Length: 16
 
+barl:
+	idle:
+		Start: 0
+		Length: *
+
+brl3:
+	idle:
+		Start: 0
+		Length: *
+
+# Interior Terrain
 boxes01:
 	idle:
 		Start: 0
 		Length: *
+
 boxes02:
 	idle:
 		Start: 0
 		Length: *
+
 boxes03:
 	idle:
 		Start: 0
 		Length: *
+
 boxes04:
 	idle:
 		Start: 0
 		Length: *
+
 boxes05:
 	idle:
 		Start: 0
 		Length: *
+
 boxes06:
 	idle:
 		Start: 0
 		Length: *
+
 boxes07:
 	idle:
 		Start: 0
 		Length: *
+
 boxes08:
 	idle:
 		Start: 0
 		Length: *
+
 boxes09:
 	idle:
 		Start: 0
 		Length: *
 
-overlay:
-	build-valid-desert:
-		Start: 0
-	build-valid-interior:
-		Start: 0
-	build-valid-snow:
-		Start: 2
-	build-valid-temperat:
-		Start: 0
-	build-invalid:
-		Start: 1
-	target-select:
-		Start: 2
-	target-valid-desert:
-		Start: 0
-	target-valid-interior:
-		Start: 0
-	target-valid-snow:
-		Start: 2
-	target-valid-temperat:
-		Start: 0
-	target-invalid:
-		Start: 1
-
-#Desert Terrain Expansion 
+#Desert Terrain Expansion
 rock1:
 	idle:
 		Start: 0
@@ -618,74 +646,3 @@ v37:
 		Start: 0
 	damaged-idle:
 		Start: 1
-
-utilpol1:
-	idle:
-		Start: 0
-	damaged-idle:
-		Start: 1
-	dead:
-		Start: 1
-
-utilpol2:
-	idle:
-		Start: 0
-	damaged-idle:
-		Start: 1
-	dead:
-		Start: 1
-
-ammobox1:
-	idle:
-		Start: 0
-		Length: 1
-
-ammobox2:
-	idle:
-		Start: 0
-		Length: 1
-
-
-ammobox3:
-	idle:
-		Start: 0
-		Length: 1
-
-
-tanktrap1:
-	idle:
-		Start: 0
-
-tanktrap2:
-	idle:
-		Start: 0
-
-rushouse:
-	idle:
-		Start: 0
-	damaged-idle:
-		Start: 1
-
-asianhut:
-	idle:
-		Start: 0
-	damaged-idle:
-		Start: 1
-
-quee:
-	idle:
-		Start: 0
-		Length: 10
-	damaged-idle:
-		Start: 10
-		Length: 10
-
-lar1:
-	idle:
-		Start: 0
-		Length: *
-
-lar2:
-	idle:
-		Start: 0
-		Length: *

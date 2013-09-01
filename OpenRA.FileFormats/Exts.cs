@@ -201,12 +201,11 @@ namespace OpenRA
 				d.Add(key, element);
 			}
 
-			// If any duplicates were found, log it and throw a descriptive error
+			// If any duplicates were found, throw a descriptive error
 			if (dupKeys.Count > 0)
 			{
 				var badKeysFormatted = string.Join(", ", dupKeys.Select(p => "{0}: [{1}]".F(logKey(p.Key), string.Join(",", p.Value.ToArray()))).ToArray());
 				var msg = "{0}, duplicate values found for the following keys: {1}".F(debugName, badKeysFormatted);
-				Log.Write("debug", msg);
 				throw new ArgumentException(msg);
 			}
 
