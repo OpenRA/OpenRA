@@ -415,10 +415,56 @@ icon:
 	sonar: sonricon
 		Start: 0
 
+quee:
+	idle:
+		Start: 0
+		Length: 10
+	damaged-idle:
+		Start: 10
+		Length: 10
+
+lar1:
+	idle:
+		Start: 0
+		Length: *
+
+lar2:
+	idle:
+		Start: 0
+		Length: *
+
 minp:
+	idle:
+		Start: 0
 	icon: jmin
 		Start: 0
 
 minv:
+	idle:
+		Start: 0
 	icon: jmin
 		Start: 0
+
+overlay:
+	build-valid-desert:
+		Start: 0
+	build-valid-interior:
+		Start: 0
+	build-valid-snow:
+		Start: 2
+	build-valid-temperat:
+		Start: 0
+	build-invalid:
+		Start: 1
+	target-select:
+		Start: 2
+	target-valid-desert:
+		Start: 0
+	target-valid-interior:
+		Start: 0
+	target-valid-snow:
+		Start: 2
+	target-valid-temperat:
+		Start: 0
+	target-invalid:
+		Start: 1
