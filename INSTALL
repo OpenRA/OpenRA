@@ -13,8 +13,8 @@ have very strange errors.
 
 WINDOWS:
 
-* .NET Framework >= 3.5-SP1
-	(http://www.microsoft.com/downloads/details.aspx?FamilyID=AB99342F-5D1A-413D-8319-81DA479AB0D7&displaylang=en)
+* .NET Framework >= 4.0
+	(http://www.microsoft.com/en-us/download/details.aspx?id=17851)
 * Tao Framework >= 2.1.0
 	This is now bundled with OpenRA, copy the files in thirdparty/Tao to the game root directory.
 * OpenAL >= 1.1
