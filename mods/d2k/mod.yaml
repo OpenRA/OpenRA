@@ -34,7 +34,6 @@ Sequences:
 	mods/d2k/sequences/infantry.yaml
 	mods/d2k/sequences/structures.yaml
 	mods/d2k/sequences/misc.yaml
-	mods/d2k/sequences/map.yaml
 
 Cursors:
 	mods/d2k/cursors.yaml
