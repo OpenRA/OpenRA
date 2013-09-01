@@ -19,29 +19,11 @@ namespace OpenRA.FileFormats
 		public readonly byte L;
 		public readonly Color RGB;
 
-		public HSLColor(byte h, byte s, byte l)
-		{
-			H = h;
-			S = s;
-			L = l;
-			RGB = RGBFromHSL(H / 255f, S / 255f, L / 255f);
-		}
-
-		public void ToHSV(out float h, out float s, out float v)
-		{
-			var ll = 2*L / 255f;
-			var ss = S / 255f * ((ll <= 1) ? ll : 2 - ll);
-
-			h = H / 255f;
-			s = (2 * ss) / (ll + ss);
-			v = (ll + ss) / 2;
-		}
-
 		public static HSLColor FromHSV(float h, float s, float v)
 		{
-			var ll = 0.5f*(2 - s)*v;
-			var ss = (ll >= 1 || v <= 0) ? 0 : 0.5f*s*v / (ll <= 0.5f ? ll : 1 - ll);
-			return new HSLColor((byte)(255*h), (byte)(255*ss), (byte)(255*ll));
+			var ll = 0.5f * (2 - s) * v;
+			var ss = (ll >= 1 || v <= 0) ? 0 : 0.5f * s * v / (ll <= 0.5f ? ll : 1 - ll);
+			return new HSLColor((byte)(255 * h), (byte)(255 * ss), (byte)(255 * ll));
 		}
 
 		public static HSLColor FromRGB(int r, int g, int b)
@@ -59,7 +41,7 @@ namespace OpenRA.FileFormats
 			var q = (l < 0.5f) ? l * (1 + s) : l + s - (l * s);
 			var p = 2 * l - q;
 
-			float[] trgb = { h + 1 / 3.0f, h, h - 1/3.0f };
+			float[] trgb = { h + 1 / 3.0f, h, h - 1 / 3.0f };
 			float[] rgb = { 0, 0, 0 };
 
 			for (int k = 0; k < 3; k++)
@@ -70,26 +52,44 @@ namespace OpenRA.FileFormats
 
 			for (int k = 0; k < 3; k++)
 			{
-				if (trgb[k] < 1 / 6.0f) { rgb[k] = (p + ((q - p) * 6 * trgb[k])); }
+				if (trgb[k] < 1 / 6.0f) { rgb[k] = p + ((q - p) * 6 * trgb[k]); }
 				else if (trgb[k] >= 1 / 6.0f && trgb[k] < 0.5) { rgb[k] = q; }
-				else if (trgb[k] >= 0.5f && trgb[k] < 2.0f / 3) { rgb[k] = (p + ((q - p) * 6 * (2.0f / 3 - trgb[k]))); }
+				else if (trgb[k] >= 0.5f && trgb[k] < 2.0f / 3) { rgb[k] = p + ((q - p) * 6 * (2.0f / 3 - trgb[k])); }
 				else { rgb[k] = p; }
 			}
 
 			return Color.FromArgb((int)(rgb[0] * 255), (int)(rgb[1] * 255), (int)(rgb[2] * 255));
 		}
 
+		public static bool operator ==(HSLColor me, HSLColor other)
+		{
+			return me.H == other.H && me.S == other.S && me.L == other.L;
+		}
+
+		public static bool operator !=(HSLColor me, HSLColor other) { return !(me == other); }
+
+		public HSLColor(byte h, byte s, byte l)
+		{
+			H = h;
+			S = s;
+			L = l;
+			RGB = RGBFromHSL(H / 255f, S / 255f, L / 255f);
+		}
+
+		public void ToHSV(out float h, out float s, out float v)
+		{
+			var ll = 2 * L / 255f;
+			var ss = S / 255f * ((ll <= 1) ? ll : 2 - ll);
+
+			h = H / 255f;
+			s = (2 * ss) / (ll + ss);
+			v = (ll + ss) / 2;
+		}
+
 		public override string ToString()
 		{
 			return "{0},{1},{2}".F(H, S, L);
 		}
-
-		public static bool operator ==(HSLColor me, HSLColor other)
-		{
-			return (me.H == other.H && me.S == other.S && me.L == other.L);
-		}
-
-		public static bool operator !=(HSLColor me, HSLColor other) { return !(me == other); }
 
 		public override int GetHashCode() { return H.GetHashCode() ^ S.GetHashCode() ^ L.GetHashCode(); }
 
