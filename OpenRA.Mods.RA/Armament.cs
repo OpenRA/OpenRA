@@ -53,8 +53,8 @@ namespace OpenRA.Mods.RA
 		public readonly ArmamentInfo Info;
 		public readonly WeaponInfo Weapon;
 		public readonly Barrel[] Barrels;
-		Lazy<Turreted> Turret;
-		Lazy<IBodyOrientation> Coords;
+		OpenRA.FileFormats.Lazy<Turreted> Turret;
+		OpenRA.FileFormats.Lazy<IBodyOrientation> Coords;
 
 		public WRange Recoil;
 		public int FireDelay { get; private set; }

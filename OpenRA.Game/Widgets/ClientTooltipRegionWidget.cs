@@ -23,7 +23,7 @@ namespace OpenRA.Widgets
 	{
 		public readonly string Template;
 		public readonly string TooltipContainer;
-		Lazy<TooltipContainerWidget> tooltipContainer;
+		OpenRA.FileFormats.Lazy<TooltipContainerWidget> tooltipContainer;
 		OrderManager orderManager;
 		int clientIndex;
 

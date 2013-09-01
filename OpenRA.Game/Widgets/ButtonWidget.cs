@@ -40,7 +40,7 @@ namespace OpenRA.Widgets
 		public readonly string TooltipTemplate = "BUTTON_TOOLTIP";
 		public readonly string TooltipText;
 		public readonly string TooltipContainer;
-		Lazy<TooltipContainerWidget> tooltipContainer;
+		OpenRA.FileFormats.Lazy<TooltipContainerWidget> tooltipContainer;
 
 		// Equivalent to OnMouseUp, but without an input arg
 		public Action OnClick = () => {};

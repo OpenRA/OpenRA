@@ -25,8 +25,8 @@ namespace OpenRA
 		public readonly World World;
 		public readonly uint ActorID;
 
-		Lazy<IOccupySpace> occupySpace;
-		Lazy<IFacing> facing;
+		OpenRA.FileFormats.Lazy<IOccupySpace> occupySpace;
+		OpenRA.FileFormats.Lazy<IFacing> facing;
 
 		public Cached<Rectangle> Bounds;
 		public Cached<Rectangle> ExtendedBounds;

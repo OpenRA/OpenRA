@@ -74,7 +74,7 @@ namespace OpenRA.Mods.Cnc.Widgets
 		bool rightPressed = false;
 		Rectangle leftButtonRect;
 		Rectangle rightButtonRect;
-		Lazy<ProductionPaletteWidget> paletteWidget;
+		OpenRA.FileFormats.Lazy<ProductionPaletteWidget> paletteWidget;
 		string queueGroup;
 
 		[ObjectCreator.UseCtor]

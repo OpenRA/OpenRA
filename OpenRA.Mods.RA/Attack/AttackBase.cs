@@ -31,7 +31,7 @@ namespace OpenRA.Mods.RA
 
 		readonly Actor self;
 
-		Lazy<IEnumerable<Armament>> armaments;
+		OpenRA.FileFormats.Lazy<IEnumerable<Armament>> armaments;
 		protected IEnumerable<Armament> Armaments { get { return armaments.Value; } }
 
 		public AttackBase(Actor self)

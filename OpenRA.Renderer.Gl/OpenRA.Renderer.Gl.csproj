@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>OpenRA.Renderer.Glsl</RootNamespace>
     <AssemblyName>OpenRA.Renderer.Gl</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -63,7 +63,7 @@
       <HintPath>..\thirdparty\Tao\Tao.Sdl.dll</HintPath>
     </Reference>
     <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
