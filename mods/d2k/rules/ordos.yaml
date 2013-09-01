@@ -232,7 +232,7 @@ DEVIATORTANK:
 		Queue: Armor
 		BuildPaletteOrder: 50
 		Prerequisites: heavyo, researcho
-#		Owner: ordos
+		Owner: ordos
 		Hotkey: d
 	Mobile:
 		ROT: 3
