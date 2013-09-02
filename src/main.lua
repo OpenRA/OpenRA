@@ -49,6 +49,7 @@ ide = {
     default = {
       name = 'untitled',
       fullname = 'untitled.lua',
+      interpreter = 'luadeb',
     },
     outputshell = {},
     filetree = {},
@@ -60,7 +61,6 @@ ide = {
 
     styles = nil,
     stylesoutshell = nil,
-    interpreter = "_undefined_",
 
     autocomplete = true,
     autoanalizer = true,

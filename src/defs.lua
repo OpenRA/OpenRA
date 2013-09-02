@@ -113,6 +113,7 @@ config = {
   default = {
     name = 'untitled',
     fullname = 'untitled.lua',
+    interpreter = 'luadeb',
   },
 
   debugger = {

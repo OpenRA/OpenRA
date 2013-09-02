@@ -101,13 +101,15 @@ function UpdateInterpreters()
     frame:Connect(id, wx.wxEVT_COMMAND_MENU_SELECTED, evSelectInterpreter)
   end
 
-  local defaultid = (
+  local id = (
+    -- interpreter is set and is (still) on the list of known interpreters
     IDget("debug.interpreter."
-      ..(ide.interpreter and ide.interpreter.name or ide.config.interpreter)) or
-    ID("debug.interpreter."..names[#names])
+      ..(ide.interpreter and ide.interpreters[ide.interpreter.fname]
+         and ide.interpreter.fname or ide.config.interpreter)) or
+    -- otherwise use default interpreter
+    ID("debug.interpreter."..ide.config.default.interpreter)
   )
-  ide.interpreter = interpreters[defaultid]
-  menuBar:Check(defaultid, true)
+  selectInterpreter(id)
 end
 
 UpdateInterpreters()
