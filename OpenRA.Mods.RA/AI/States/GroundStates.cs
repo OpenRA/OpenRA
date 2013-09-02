@@ -33,8 +33,11 @@ namespace OpenRA.Mods.RA.AI
 
 			if (!owner.TargetIsValid)
 			{
-				var t = owner.bot.FindClosestEnemy(owner.units.FirstOrDefault().CenterPosition);
-				if (t == null) return;
+				var targeter = owner.units.First();
+				var t = owner.bot.FindClosestEnemy(targeter, targeter.CenterPosition);
+				if (t == null)
+					return;
+
 				owner.Target = t;
 			}
 
@@ -71,7 +74,8 @@ namespace OpenRA.Mods.RA.AI
 
 			if (!owner.TargetIsValid)
 			{
-				var closestEnemy = owner.bot.FindClosestEnemy(owner.units.Random(owner.random).CenterPosition);
+				var targeter = owner.units.Random(owner.random);
+				var closestEnemy = owner.bot.FindClosestEnemy(targeter, targeter.CenterPosition);
 				if (closestEnemy != null)
 					owner.Target = closestEnemy;
 				else
@@ -129,7 +133,8 @@ namespace OpenRA.Mods.RA.AI
 
 			if (!owner.TargetIsValid)
 			{
-				var closestEnemy = owner.bot.FindClosestEnemy(owner.units.Random(owner.random).CenterPosition);
+				var targeter = owner.units.Random(owner.random);
+				var closestEnemy = owner.bot.FindClosestEnemy(targeter, targeter.CenterPosition);
 				if (closestEnemy != null)
 					owner.Target = closestEnemy;
 				else
@@ -141,7 +146,7 @@ namespace OpenRA.Mods.RA.AI
 
 			foreach (var a in owner.units)
 				if (!BusyAttack(a))
-					owner.world.IssueOrder(new Order("Attack", a, false) { TargetActor = owner.bot.FindClosestEnemy(a.CenterPosition) });
+					owner.world.IssueOrder(new Order("Attack", a, false) { TargetActor = owner.bot.FindClosestEnemy(a, a.CenterPosition) });
 
 			if (ShouldFlee(owner))
 			{

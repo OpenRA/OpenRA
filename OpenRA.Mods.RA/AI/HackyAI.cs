@@ -441,28 +441,34 @@ namespace OpenRA.Mods.RA.AI
 			return target;
 		}
 
-		internal Actor FindClosestEnemy(WPos pos)
+		bool IsValidTarget(Actor a, Actor targeter)
 		{
-			var allEnemyUnits = world.Actors
-				.Where(unit => p.Stances[unit.Owner] == Stance.Enemy && !unit.HasTrait<Husk>() &&
-					unit.HasTrait<ITargetable>()).ToList();
+			if (p.Stances[a.Owner] != Stance.Enemy)
+				return false;
 
-			if (allEnemyUnits.Count > 0)
-				return allEnemyUnits.ClosestTo(pos);
+			// TODO: We shouldn't need to check this explicitly
+			if (!a.HasTrait<Husk>())
+				return false;
 
-			return null;
+			var targetable = a.TraitOrDefault<ITargetable>();
+			if (targetable == null || !targetable.TargetableBy(a, targeter))
+			    return false;
+
+			return true;
 		}
 
-		internal Actor FindClosestEnemy(WPos pos, WRange radius)
+		internal Actor FindClosestEnemy(Actor targeter, WPos pos)
 		{
-			var enemyUnits = world.FindActorsInCircle(pos, radius)
-				.Where(unit => p.Stances[unit.Owner] == Stance.Enemy &&
-					!unit.HasTrait<Husk>() && unit.HasTrait<ITargetable>()).ToList();
+			return world.Actors
+				.Where(unit => IsValidTarget(unit, targeter))
+				.ClosestTo(pos);
+		}
 
-			if (enemyUnits.Count > 0)
-				return enemyUnits.ClosestTo(pos);
-
-			return null;
+		internal Actor FindClosestEnemy(Actor targeter, WPos pos, WRange radius)
+		{
+			return world.FindActorsInCircle(pos, radius)
+				.Where(unit => IsValidTarget(unit, targeter))
+				.ClosestTo(pos);
 		}
 
 		List<Actor> FindEnemyConstructionYards()
