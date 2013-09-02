@@ -1,12 +1,12 @@
 --
--- MobDebug 0.5362
+-- MobDebug 0.5401
 -- Copyright 2011-13 Paul Kulchenko
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
 --
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.5362,
+  _VERSION = 0.5401,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = os and os.getenv and os.getenv("MOBDEBUG_PORT") or 8172,
@@ -27,6 +27,7 @@ local setmetatable = setmetatable
 local string = string
 local tonumber = tonumber
 local unpack = table.unpack or unpack
+local rawget = rawget
 
 -- if strict.lua is used, then need to avoid referencing some global
 -- variables, as they can be undefined;
@@ -303,7 +304,9 @@ local function restore_vars(vars)
   while i > 0 do
     local name = debug.getlocal(3, i)
     if not written_vars[name] then
-      if string.sub(name, 1, 1) ~= '(' then debug.setlocal(3, i, vars[name]) end
+      if string.sub(name, 1, 1) ~= '(' then
+        debug.setlocal(3, i, rawget(vars, name))
+      end
       written_vars[name] = true
     end
     i = i - 1
@@ -315,7 +318,9 @@ local function restore_vars(vars)
     local name = debug.getupvalue(func, i)
     if not name then break end
     if not written_vars[name] then
-      if string.sub(name, 1, 1) ~= '(' then debug.setupvalue(func, i, vars[name]) end
+      if string.sub(name, 1, 1) ~= '(' then
+        debug.setupvalue(func, i, rawget(vars, name))
+      end
       written_vars[name] = true
     end
     i = i + 1
@@ -339,6 +344,13 @@ local function capture_vars(level)
     if string.sub(name, 1, 1) ~= '(' then vars[name] = value end
     i = i + 1
   end
+  -- returned 'vars' table plays a dual role: (1) it captures local values
+  -- and upvalues to be restored later (in case they are modified in "eval"),
+  -- and (2) it provides an environment for evaluated chunks.
+  -- getfenv(func) is needed to provide proper environment for functions,
+  -- including access to globals, but this causes vars[name] to fail in
+  -- restore_vars on local variables or upvalues with `nil` values when
+  -- 'strict' is in effect. To avoid this `rawget` is used in restore_vars.
   setmetatable(vars, { __index = getfenv(func), __newindex = getfenv(func) })
   return vars
 end
