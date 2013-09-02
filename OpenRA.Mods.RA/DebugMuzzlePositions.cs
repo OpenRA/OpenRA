@@ -27,7 +27,7 @@ namespace OpenRA.Mods.RA
 
 	public class DebugFiringOffsets : IPostRender
 	{
-		Lazy<IEnumerable<Armament>> armaments;
+		OpenRA.FileFormats.Lazy<IEnumerable<Armament>> armaments;
 		DeveloperMode devMode;
 
 		public DebugFiringOffsets(Actor self)

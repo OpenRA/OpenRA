@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>OpenRA.Mods.TS</RootNamespace>
     <AssemblyName>OpenRA.Mods.TS</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

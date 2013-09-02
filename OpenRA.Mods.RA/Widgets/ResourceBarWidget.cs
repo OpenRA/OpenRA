@@ -23,7 +23,7 @@ namespace OpenRA.Mods.RA.Widgets
 	{
 		public readonly string TooltipTemplate = "SIMPLE_TOOLTIP";
 		public readonly string TooltipContainer;
-		Lazy<TooltipContainerWidget> tooltipContainer;
+		OpenRA.FileFormats.Lazy<TooltipContainerWidget> tooltipContainer;
 
 		public string TooltipFormat = "";
 		public ResourceBarOrientation Orientation = ResourceBarOrientation.Vertical;

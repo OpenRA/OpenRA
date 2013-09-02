@@ -83,7 +83,7 @@ namespace OpenRA
 			return options;
 		}
 
-		[FieldLoader.Ignore] public Lazy<Dictionary<string, ActorReference>> Actors;
+		[FieldLoader.Ignore] public OpenRA.FileFormats.Lazy<Dictionary<string, ActorReference>> Actors;
 
 		public int PlayerCount { get { return Players.Count(p => p.Value.Playable); } }
 
@@ -91,7 +91,7 @@ namespace OpenRA
 
 		// Yaml map data
 		[FieldLoader.Ignore] public Dictionary<string, PlayerReference> Players = new Dictionary<string, PlayerReference>();
-		[FieldLoader.Ignore] public Lazy<List<SmudgeReference>> Smudges;
+		[FieldLoader.Ignore] public OpenRA.FileFormats.Lazy<List<SmudgeReference>> Smudges;
 
 		[FieldLoader.Ignore] public List<MiniYamlNode> Rules = new List<MiniYamlNode>();
 		[FieldLoader.Ignore] public List<MiniYamlNode> Sequences = new List<MiniYamlNode>();
@@ -104,8 +104,8 @@ namespace OpenRA
 		[FieldLoader.Ignore] public byte TileFormat = 1;
 		public int2 MapSize;
 
-		[FieldLoader.Ignore] public Lazy<TileReference<ushort, byte>[,]> MapTiles;
-		[FieldLoader.Ignore] public Lazy<TileReference<byte, byte>[,]> MapResources;
+		[FieldLoader.Ignore] public OpenRA.FileFormats.Lazy<TileReference<ushort, byte>[,]> MapTiles;
+		[FieldLoader.Ignore] public OpenRA.FileFormats.Lazy<TileReference<byte, byte>[,]> MapResources;
 		[FieldLoader.Ignore] public string[,] CustomTerrain;
 
 		public static Map FromTileset(string tileset)

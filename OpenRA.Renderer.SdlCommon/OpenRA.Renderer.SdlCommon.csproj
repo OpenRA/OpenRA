@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>OpenRA.Renderer.SdlCommon</RootNamespace>
     <AssemblyName>OpenRA.Renderer.SdlCommon</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>

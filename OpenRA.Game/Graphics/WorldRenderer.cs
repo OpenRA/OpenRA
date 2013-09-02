@@ -39,7 +39,7 @@ namespace OpenRA.Graphics
 		internal readonly ShroudRenderer shroudRenderer;
 		internal readonly HardwarePalette palette;
 		internal Cache<string, PaletteReference> palettes;
-		Lazy<DeveloperMode> devTrait;
+		OpenRA.FileFormats.Lazy<DeveloperMode> devTrait;
 
 		internal WorldRenderer(World world)
 		{
