@@ -9,6 +9,7 @@
 #endregion
 
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -28,7 +29,7 @@ namespace OpenRA.Renderer.SdlCommon
 		{
 			this.size = size;
 			if (!Exts.IsPowerOf2(size.Width) || !Exts.IsPowerOf2(size.Height))
-				throw new InvalidDataException("Non-power-of-two array {0}x{1}".F(size.Width, size.Height));
+				throw new InvalidDataException("Frame buffer size ({0}x{1}) must be a power of two".F(size.Width, size.Height));
 
 			Gl.glGenFramebuffersEXT(1, out framebuffer);
 			ErrorHandler.CheckGlError();
@@ -57,7 +58,11 @@ namespace OpenRA.Renderer.SdlCommon
 			// Test for completeness
 			var status = Gl.glCheckFramebufferStatusEXT(Gl.GL_FRAMEBUFFER_EXT);
 			if (status != Gl.GL_FRAMEBUFFER_COMPLETE_EXT)
-				throw new InvalidOperationException("Error creating framebuffer");
+			{
+				var error = "Error creating framebuffer: {0}\n{1}".F((ErrorHandler.GlError)status, new StackTrace());
+				ErrorHandler.WriteGraphicsLog(error);
+				throw new InvalidOperationException("OpenGL Error: See graphics.log for details.");
+			}
 
 			// Restore default buffer
 			Gl.glBindFramebufferEXT(Gl.GL_FRAMEBUFFER_EXT, 0);
