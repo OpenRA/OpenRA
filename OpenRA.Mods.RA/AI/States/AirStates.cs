@@ -183,8 +183,8 @@ namespace OpenRA.Mods.RA.AI
 
 			if (!owner.TargetIsValid)
 			{
-				var a = owner.units.Random(owner.random);
-				var closestEnemy = owner.bot.FindClosestEnemy(a.CenterPosition);
+				var targeter = owner.units.Random(owner.random);
+				var closestEnemy = owner.bot.FindClosestEnemy(targeter, targeter.CenterPosition);
 				if (closestEnemy != null)
 					owner.Target = closestEnemy;
 				else
