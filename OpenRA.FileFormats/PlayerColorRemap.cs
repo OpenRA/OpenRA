@@ -15,33 +15,33 @@ using System.Linq;
 
 namespace OpenRA.FileFormats
 {
-
 	public class PlayerColorRemap : IPaletteRemap
 	{
 		Dictionary<int, Color> remapColors;
 
-		public static int GetRemapIndex(int[] Ramp, int i)
+		public static int GetRemapIndex(int[] ramp, int i)
 		{
-			return Ramp[i];
+			return ramp[i];
 		}
 
-		public PlayerColorRemap(int[] Ramp, HSLColor c, float rampFraction)
+		public PlayerColorRemap(int[] ramp, HSLColor c, float rampFraction)
 		{
 			// Increase luminosity if required to represent the full ramp
-			var rampRange = (byte)((1 - rampFraction)*c.L);
+			var rampRange = (byte)((1 - rampFraction) * c.L);
 			var c1 = new HSLColor(c.H, c.S, (byte)Math.Max(rampRange, c.L)).RGB;
 			var c2 = new HSLColor(c.H, c.S, (byte)Math.Max(0, c.L - rampRange)).RGB;
-			var baseIndex = Ramp[0];
-			var RemapRamp = Ramp.Select(r => r - Ramp[0]).ToArray();
+			var baseIndex = ramp[0];
+			var remapRamp = ramp.Select(r => r - ramp[0]).ToArray();
 
-			if (Ramp[0] > Ramp[15]) // reversed remapping
-            {
-				baseIndex = Ramp[15];
+			// reversed remapping
+			if (ramp[0] > ramp[15])
+			{
+				baseIndex = ramp[15];
 				for (var i = 15; i > 0; i--)
-					RemapRamp = Ramp.Select(r => r - Ramp[15]).ToArray();
+					remapRamp = ramp.Select(r => r - ramp[15]).ToArray();
 			}
 			
-			remapColors = RemapRamp.Select((x, i) => Pair.New(baseIndex + i, Exts.ColorLerp(x / 16f, c1, c2)))
+			remapColors = remapRamp.Select((x, i) => Pair.New(baseIndex + i, Exts.ColorLerp(x / 16f, c1, c2)))
 				.ToDictionary(u => u.First, u => u.Second);
 		}
 

@@ -8,16 +8,22 @@
  */
 #endregion
 
+using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System;
 using System.Reflection;
 
 namespace OpenRA.FileFormats
 {
 	public class Palette
 	{
+		public static Palette Load(string filename, int[] remap)
+		{
+			using (var s = File.OpenRead(filename))
+				return new Palette(s, remap);
+		}
+
 		uint[] colors;
 		public Color GetColor(int index)
 		{
@@ -41,8 +47,8 @@ namespace OpenRA.FileFormats
 
 		public void ApplyRemap(IPaletteRemap r)
 		{
-			for(int i = 0; i < 256; i++)
-				colors[i] = (uint)r.GetRemappedColor(Color.FromArgb((int)colors[i]),i).ToArgb();
+			for (int i = 0; i < 256; i++)
+				colors[i] = (uint)r.GetRemappedColor(Color.FromArgb((int)colors[i]), i).ToArgb();
 		}
 
 		public Palette(Stream s, int[] remapShadow)
@@ -60,7 +66,7 @@ namespace OpenRA.FileFormats
 				}
 			}
 
-			colors[0] = 0; //convert black background to transparency
+			colors[0] = 0; // convert black background to transparency
 			foreach (int i in remapShadow)
 				colors[i] = 140u << 24;
 		}
@@ -101,24 +107,19 @@ namespace OpenRA.FileFormats
 		}
 
 		public Bitmap AsBitmap()
-        {
-            var b = new Bitmap(256, 1, PixelFormat.Format32bppArgb);
-            var data = b.LockBits(new Rectangle(0, 0, b.Width, b.Height),
-			                      ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
-            unsafe
-            {
-                uint* c = (uint*)data.Scan0;
-                for (var x = 0; x < 256; x++)
-	                *(c + x) = colors[x];
-            }
-            b.UnlockBits(data);
-			return b;
-        }
-
-		public static Palette Load(string filename, int[] remap)
 		{
-			using(var s = File.OpenRead(filename))
-				return new Palette(s, remap);
+			var b = new Bitmap(256, 1, PixelFormat.Format32bppArgb);
+			var data = b.LockBits(new Rectangle(0, 0, b.Width, b.Height),
+								  ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+			unsafe
+			{
+				uint* c = (uint*)data.Scan0;
+				for (var x = 0; x < 256; x++)
+					*(c + x) = colors[x];
+			}
+
+			b.UnlockBits(data);
+			return b;
 		}
 	}
 
