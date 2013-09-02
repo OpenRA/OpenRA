@@ -108,6 +108,7 @@ config = {
                       -- wxstc.wxSTC_EOL_CRLF, wxstc.wxSTC_EOL_LF and nil (OS default)
     nomousezoom = nil, -- disable zooming using mouse wheel
     autoreload = nil, -- trigger auto-reload when file is updated
+    saveallonrun = nil, -- save all modified files before Run/Debug
   },
 
   default = {

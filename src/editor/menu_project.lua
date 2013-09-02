@@ -183,6 +183,7 @@ local function getNameToRun(skipcheck)
   local id = editor:GetId()
   if not openDocuments[id].filePath then SetDocumentModified(id, true) end
   if not SaveIfModified(editor) then return end
+  if ide.config.editor.saveallonrun then SaveAll(true) end
 
   return wx.wxFileName(openDocuments[id].filePath)
 end
