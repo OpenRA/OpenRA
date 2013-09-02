@@ -301,6 +301,22 @@ function RequestAttention()
     if ide.osname == "Macintosh" then
       local cmd = [[osascript -e 'tell application "%s" to activate']]
       wx.wxExecute(cmd:format(ide.editorApp:GetAppName()), wx.wxEXEC_ASYNC)
+    elseif ide.osname == "Windows" then
+      local winapi = require 'winapi'
+      if winapi then
+        local pid = winapi.get_current_pid()
+        local wins = winapi.find_all_windows(function(w)
+          return w:get_process():get_pid() == pid
+             and w:get_class_name() == 'wxWindowNR'
+        end)
+        if wins and #wins > 0 then
+          -- found the window, now need to activate it:
+          -- send Alt key to the current window and then
+          -- bring our window to foreground (doesn't work without Alt pressed)
+          winapi.send_to_window(307)
+          wins[1]:set_foreground()
+        end
+      end
     end
   end
 end
