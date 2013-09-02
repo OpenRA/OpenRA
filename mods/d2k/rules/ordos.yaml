@@ -227,7 +227,7 @@ DEVIATORTANK:
 		Cost: 1000
 	Tooltip:
 		Name: Deviator
-		Description: Causes no actual damage\nFires a warhead which changes allegiances\n but does not effect buildings or tanks
+		Description: Fires a warhead which changes\nthe allegiance of enemy vehicles
 	Buildable:
 		Queue: Armor
 		BuildPaletteOrder: 50
