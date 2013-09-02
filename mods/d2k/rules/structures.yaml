@@ -560,7 +560,7 @@ WALL:
 	Valued:
 		Cost: 1500
 	Tooltip:
-		Name: IX Research Center
+		Name: Ix Lab
 		Description: Unlocks experimental tanks\n  Special Ability: Carryall Combat Drop
 	ParatroopersPower:
 		Icon: paratroopers
@@ -687,4 +687,4 @@ REPAIR:
 
 RESEARCH:
 	Tooltip:
-		Name: Ix Research Center
+		Name: Ix Lab
