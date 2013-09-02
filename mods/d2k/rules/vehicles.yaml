@@ -206,7 +206,7 @@ QUAD.starport:
 		Cost: 700
 	Tooltip:
 		Name: Combat Tank
-		Description: Main Battle Tank\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft\n \n  Atreides:     +Range\n  Harkonnen: +Health\n  Ordos:        +Speed
+		Description: Main Battle Tank\n  Strong vs Tanks\n  Weak vs Infantry, Aircraft\n \n  Atreides:      +Range\n  Harkonnen: +Health\n  Ordos:         +Speed
 	Health:
 		HP: 350
 	Armor:
