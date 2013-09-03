@@ -45,6 +45,8 @@ ide = {
       verbose = false,
       hostname = nil,
       port = nil,
+      runonstart = nil,
+      redirect = nil,
     },
     default = {
       name = 'untitled',

@@ -476,8 +476,9 @@ debugger.listen = function()
 
       reSetBreakpoints()
 
-      if options.redirect then
-        debugger.handle("output stdout " .. options.redirect, nil,
+      local redirect = ide.config.debugger.redirect or options.redirect
+      if redirect then
+        debugger.handle("output stdout " .. redirect, nil,
           { handler = function(m)
               if not debugger.server then return end
 

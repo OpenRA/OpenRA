@@ -123,6 +123,7 @@ config = {
     port = nil, -- port number to use
     runonstart = nil, -- if debugger should run immediately after starting
     -- default values are different for different interpreters
+    redirect = nil, -- "d", "c", or "r" values for default, copy, or redirect
   }
 
   outputshell = { -- output and shell settings
