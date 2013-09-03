@@ -255,7 +255,7 @@ BARL:
 		Name: Explosive Barrel
 	AutoTargetIgnore:
 	Armor:
-		Type: Light
+		Type: None
 	TargetableBuilding:
 		TargetTypes: Ground, DemoTruck
 
@@ -271,7 +271,7 @@ BRL3:
 		Name: Explosive Barrel
 	AutoTargetIgnore:
 	Armor:
-		Type: Light
+		Type: None
 	TargetableBuilding:
 		TargetTypes: Ground, DemoTruck
 
