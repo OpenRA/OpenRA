@@ -305,7 +305,7 @@ local jumptopatterns = {
 }
 
 errorlog:Connect(wxstc.wxEVT_STC_DOUBLECLICK,
-  function()
+  function(event)
     local line = errorlog:GetCurrentLine()
     local linetx = errorlog:GetLine(line)
 
@@ -317,7 +317,18 @@ errorlog:Connect(wxstc.wxEVT_STC_DOUBLECLICK,
     end
 
     if (fname and jumpline) then
-      local editor = LoadFile(MergeFullPath(FileTreeGetDir(), fname) or fname,nil,true)
+      local name = GetFullPathIfExists(FileTreeGetDir(), fname)
+        or FileTreeFindByPartialName(fname)
+
+      -- fname may include name of executable, as in "path/to/lua: file.lua";
+      -- strip it and try to find match again if needed
+      local fixedname = fname:match(": (.+)")
+      if not name and fixedname then
+        name = GetFullPathIfExists(FileTreeGetDir(), fixedname)
+          or FileTreeFindByPartialName(fixedname)
+      end
+
+      local editor = LoadFile(name or fname,nil,true)
       if (editor) then
         jumpline = tonumber(jumpline)
         jumplinepos = tonumber(jumplinepos)
@@ -325,6 +336,10 @@ errorlog:Connect(wxstc.wxEVT_STC_DOUBLECLICK,
         editor:GotoPos(editor:PositionFromLine(math.max(0,jumpline-1))
           + (jumplinepos and (math.max(0,jumplinepos-1)) or 0))
         editor:SetFocus()
+
+        -- doubleclick can set selection, so reset it
+        errorlog:SetSelection(event:GetPosition(), event:GetPosition())
+        event:Skip()
       end
     end
   end)
