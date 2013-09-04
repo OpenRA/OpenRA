@@ -8,6 +8,7 @@ local ide = ide
 ide.filetree = {
   projdir = "",
   projdirlist = {},
+  projdirmap = {},
 }
 local filetree = ide.filetree
 
@@ -208,14 +209,14 @@ local inupdate = false
 local function projcomboboxUpdate(event)
   if inupdate then return end
   local cur = projcombobox:GetValue()
-  local fn = wx.wxFileName(cur)
+  local fn = wx.wxFileName(filetree.projdirmap[cur] or cur)
   fn:Normalize()
 
   -- on Windows, wxwidgets (2.9.5+) generates two COMMAND_COMBOBOX_SELECTED
   -- events when the selection is done with ENTER, which causes recursive
   -- call of updateProjectDir. To prevent this the second call is ignored.
   inupdate = true
-  filetree:updateProjectDir(fn:GetFullPath(), event:GetEventType() == wx.wxEVT_COMMAND_COMBOBOX_SELECTED)
+  filetree:updateProjectDir(fn:GetFullPath())
   inupdate = false
 end
 
@@ -227,7 +228,29 @@ treeSetConnectorsAndIcons(projtree)
 -- proj functions
 -- ---------------
 
-function filetree:updateProjectDir(newdir, cboxsel)
+local function q(s) return s:gsub('([%(%)%.%%%+%-%*%?%[%^%$%]])','%%%1') end
+
+local function abbreviateProjList(projdirlist)
+  filetree.projdirmap = {}
+  local sep = "\t"
+  local dirs = table.concat(projdirlist, sep)..sep
+  local projlist = {}
+  for _, v in ipairs(projdirlist) do
+    -- using FileName because the path doesn't have trailing slash
+    local parts = wx.wxFileName(v..string_Pathsep):GetDirs()
+    local name = table.remove(parts, #parts) or v
+    while #parts > 0
+    and select(2, dirs:gsub("%f[^".. string_Pathsep .."]"..q(name)..sep, "")) > 1 do
+      name = table.remove(parts, #parts) .. string_Pathsep .. name
+    end
+    local abbrev = ("%s (%s)"):format(name, v)
+    filetree.projdirmap[abbrev] = v
+    table.insert(projlist, abbrev)
+  end
+  return projlist
+end
+
+function filetree:updateProjectDir(newdir)
   if (not newdir) or not wx.wxDirExists(newdir) then return end
   local dirname = wx.wxFileName.DirName(newdir)
 
@@ -254,12 +277,8 @@ function filetree:updateProjectDir(newdir, cboxsel)
     ide.config.projecthistorylength,
     function(s1, s2) return dirname:SameAs(wx.wxFileName.DirName(s2)) end)
   projcombobox:Clear()
-  projcombobox:Append(filetree.projdirlist)
-  if (not cboxsel) then
-    projcombobox:SetValue(newdir)
-  else
-    projcombobox:Select(0)
-  end
+  projcombobox:Append(abbreviateProjList(filetree.projdirlist))
+  projcombobox:Select(0)
 
   ProjectUpdateProjectDir(newdir,true)
   treeSetRoot(projtree,newdir)
