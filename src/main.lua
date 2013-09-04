@@ -397,7 +397,7 @@ do
   for _, v in ipairs(configs) do addConfig(v, true) end
 
   configs = nil
-  local sep = string_Pathsep
+  local sep = GetPathSeparator()
   if ide.config.language then
     LoadLuaFileExt(ide.config.messages, "cfg"..sep.."i18n"..sep..ide.config.language..".lua")
   end

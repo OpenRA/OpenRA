@@ -267,7 +267,7 @@ local function ProcInFiles(startdir,mask,subdirs,replace)
     -- ignore .bak files when replacing and asked to store .bak files
     -- and skip folders as these are included in the list as well
     if not (replace and findReplace.fMakeBak and file:find('.bak$'))
-    and not file:match(string_Pathsep.."$") then
+    and not IsDirectory(file) then
       local match = false
       for _, mask in ipairs(masks) do match = match or file:find(mask) end
       if match then

@@ -91,7 +91,7 @@ end
 
 local function scanAPIs()
   for _, file in ipairs(FileSysGetRecursive("api", true, "*.lua")) do
-    if not file:match(string_Pathsep.."$") then
+    if not IsDirectory(file) then
       local ftype, fname = file:match("api[/\\]([^/\\]+)[/\\](.*)%.")
       if not ftype or not fname then
         DisplayOutputLn(TR("The API file must be located in a subdirectory of the API directory."))

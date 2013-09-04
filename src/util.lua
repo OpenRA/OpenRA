@@ -28,13 +28,14 @@ function HasBit(value, num)
   return true
 end
 
--- ASCII values for common chars
-char_CR = string.byte("\r")
-char_LF = string.byte("\n")
-char_Tab = string.byte("\t")
-char_Sp = string.byte(" ")
+function GetPathSeparator()
+  return string.char(wx.wxFileName.GetPathSeparator())
+end
 
-string_Pathsep = string.char(wx.wxFileName.GetPathSeparator())
+do
+  local sep = GetPathSeparator()
+  function IsDirectory(dir) return dir:find(sep.."$") end
+end
 
 function StripCommentsC(tx)
   local out = ""
@@ -121,9 +122,6 @@ function PrependStringToArray(t, s, maxstrings, issame)
   if #t > (maxstrings or 15) then table.remove(t, #t) end -- keep reasonable length
 end
 
--- ----------------------------------------------------------------------------
--- Get file modification time, returns a wxDateTime (check IsValid) or nil if
--- the file doesn't exist
 function GetFileModTime(filePath)
   if filePath and #filePath > 0 then
     local fn = wx.wxFileName(filePath)

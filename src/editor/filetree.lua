@@ -13,6 +13,7 @@ ide.filetree = {
 local filetree = ide.filetree
 
 local iscaseinsensitive = wx.wxFileName("A"):SameAs(wx.wxFileName("a"))
+local pathsep = GetPathSeparator()
 
 -- generic tree
 -- ------------
@@ -43,7 +44,7 @@ local function treeAddDir(tree,parent_id,rootdir)
   local curr
 
   for _, file in ipairs(FileSysGetRecursive(rootdir)) do
-    local name, dir = file:match("([^"..string_Pathsep.."]+)("..string_Pathsep.."?)$")
+    local name, dir = file:match("([^"..pathsep.."]+)("..pathsep.."?)$")
     local known = GetSpec(GetFileExt(name))
     local icon = #dir>0 and IMG_DIRECTORY or known and IMG_FILE_KNOWN or IMG_FILE_OTHER
     local item = items[name .. icon]
@@ -104,7 +105,7 @@ local function treeSetConnectorsAndIcons(tree)
       item_id = tree:GetItemParent(item_id)
       if not item_id:IsOk() then break end
       cur = tree:GetItemText(item_id)
-      if cur and string.len(cur) > 0 then str = cur..string_Pathsep..str end
+      if cur and string.len(cur) > 0 then str = cur..pathsep..str end
     end
     -- as root may already include path separator, normalize the path
     local fullPath = wx.wxFileName(str)
@@ -237,11 +238,11 @@ local function abbreviateProjList(projdirlist)
   local projlist = {}
   for _, v in ipairs(projdirlist) do
     -- using FileName because the path doesn't have trailing slash
-    local parts = wx.wxFileName(v..string_Pathsep):GetDirs()
+    local parts = wx.wxFileName(v..pathsep):GetDirs()
     local name = table.remove(parts, #parts) or v
     while #parts > 0
-    and select(2, dirs:gsub("%f[^".. string_Pathsep .."]"..q(name)..sep, "")) > 1 do
-      name = table.remove(parts, #parts) .. string_Pathsep .. name
+    and select(2, dirs:gsub("%f[^".. pathsep .."]"..q(name)..sep, "")) > 1 do
+      name = table.remove(parts, #parts) .. pathsep .. name
     end
     local abbrev = ("%s (%s)"):format(name, v)
     filetree.projdirmap[abbrev] = v
@@ -325,7 +326,7 @@ local function findItem(tree, match)
   end
   if not s or s ~= 1 then return end
 
-  for token in string.gmatch(string.sub(match,e+1), "[^%"..string_Pathsep.."]+") do
+  for token in string.gmatch(string.sub(match,e+1), "[^%"..pathsep.."]+") do
     local data = tree:GetItemData(node)
     local cache = data and data:GetData()
     if cache and cache[iscaseinsensitive and token:lower() or token] then

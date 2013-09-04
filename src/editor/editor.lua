@@ -735,6 +735,7 @@ function CreateEditor()
   editor:Connect(wxstc.wxEVT_STC_CHARADDED,
     function (event)
       -- auto-indent
+      local LF = string.byte("\n")
       local ch = event:GetKey()
       local eol = editor:GetEOLMode()
       local pos = editor:GetCurrentPos()
@@ -746,7 +747,7 @@ function CreateEditor()
 
       if PackageEventHandle("onEditorCharAdded", editor, event) == false then
         -- this event has already been handled
-      elseif (ch == char_LF) then
+      elseif (ch == LF) then
         if (line > 0) then
           local indent = editor:GetLineIndentation(line - 1)
           local linedone = editor:GetLine(line - 1)
