@@ -2,14 +2,13 @@ function MakeLuaInterpreter(version, name)
 
 local exe
 
-local function exePath()
+local function exePath(version)
   local mainpath = ide.editorFilename:gsub("[^/\\]+$","")
-  local macExe = mainpath..([[bin/lua.app/Contents/MacOS/lua%s]]):format(version or "")
+  local macExe = mainpath..([[bin/lua.app/Contents/MacOS/lua%s]]):format(version)
   return ide.config.path['lua'..version]
-     or ide.config.path.lua
-     or (ide.osname == "Windows" and mainpath..([[bin\lua%s.exe]]):format(version or ""))
-     or (ide.osname == "Unix" and mainpath..([[bin/linux/%s/lua%s]]):format(ide.osarch, version or ""))
-     or (wx.wxFileExists(macExe) and macExe or mainpath..([[bin/lua%s]]):format(version or ""))
+     or (ide.osname == "Windows" and mainpath..([[bin\lua%s.exe]]):format(version))
+     or (ide.osname == "Unix" and mainpath..([[bin/linux/%s/lua%s]]):format(ide.osarch, version))
+     or (wx.wxFileExists(macExe) and macExe or mainpath..([[bin/lua%s]]):format(version))
 end
 
 return {
@@ -17,7 +16,7 @@ return {
   description = ("Lua%s interpreter with debugger"):format(name or version or ""),
   api = {"wxwidgets","baselib"},
   frun = function(self,wfilename,rundebug)
-    exe = exe or exePath()
+    exe = exe or exePath(version or "")
     local filepath = wfilename:GetFullPath()
     if rundebug then
       DebuggerAttachDefault({runstart = ide.config.debugger.runonstart == true})
