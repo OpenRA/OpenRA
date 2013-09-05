@@ -500,11 +500,15 @@ namespace OpenRA.Mods.RA.AI
 			return squads.Where(s => s.type == type).FirstOrDefault();
 		}
 
-		Squad RegisterNewSquad(SquadType type, Actor target = null)
+		Squad RegisterNewSquad(SquadType type, Actor target)
 		{
 			var ret = new Squad(this, type, target);
 			squads.Add(ret);
 			return ret;
+		}
+		Squad RegisterNewSquad(SquadType type)
+		{
+			return RegisterNewSquad(type, null);
 		}
 
 		int assignRolesTicks = 0;
