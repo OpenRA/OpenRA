@@ -5,8 +5,9 @@ local exe
 local function exePath()
   local mainpath = ide.editorFilename:gsub("[^/\\]+$","")
   local macExe = mainpath..([[bin/lua.app/Contents/MacOS/lua%s]]):format(version or "")
-  return ide.config.path.lua or
-        (ide.osname == "Windows" and mainpath..([[bin\lua%s.exe]]):format(version or ""))
+  return ide.config.path['lua'..version]
+     or ide.config.path.lua
+     or (ide.osname == "Windows" and mainpath..([[bin\lua%s.exe]]):format(version or ""))
      or (ide.osname == "Unix" and mainpath..([[bin/linux/%s/lua%s]]):format(ide.osarch, version or ""))
      or (wx.wxFileExists(macExe) and macExe or mainpath..([[bin/lua%s]]):format(version or ""))
 end
