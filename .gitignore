@@ -9,6 +9,8 @@ obj
 *.sln.cache
 *.manifest
 mods/*/*.dll
+*.CodeAnalysisLog.xml
+*.lastcodeanalysissucceeded
 
 # ReSharper crap
 _ReSharper.*/
