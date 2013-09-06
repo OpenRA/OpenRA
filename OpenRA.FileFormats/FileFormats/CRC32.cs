@@ -96,13 +96,17 @@ namespace OpenRA.FileFormats
 		/// <returns>
 		/// The calculated checksum.
 		/// </returns>
-		public static uint Calculate(byte[] data, uint polynomal = 0xFFFFFFFF)
+		public static uint Calculate(byte[] data, uint polynomial)
 		{
-			uint crc = polynomal;
+			uint crc = polynomial;
 			for (int i = 0; i < data.Length; i++)
 				crc = (crc >> 8) ^ lookUp[(crc & 0xFF) ^ data[i]];
-			crc ^= polynomal;
+			crc ^= polynomial;
 			return crc;
+		}
+		public static uint Calculate(byte[] data)
+		{
+			return Calculate(data, 0xFFFFFFFF);
 		}
 
 		/// <summary>
@@ -113,13 +117,17 @@ namespace OpenRA.FileFormats
 		/// <param name="len">		The length of the data data.</param>
 		/// <param name="polynomal">The polynomal to xor with.</param>
 		/// <returns>The calculated checksum.</returns>
-		public static unsafe uint Calculate(byte* data, uint len, uint polynomal = 0xFFFFFFFF)
+		public static unsafe uint Calculate(byte* data, uint len, uint polynomial)
 		{
-			uint crc = polynomal;
+			uint crc = polynomial;
 			for (int i = 0; i < len; i++)
 				crc = (crc >> 8) ^ lookUp[(crc & 0xFF) ^ *data++];
-			crc ^= polynomal;
+			crc ^= polynomial;
 			return crc;
+		}
+		public static unsafe uint Calculate(byte* data, uint len)
+		{
+			return Calculate(data, len, 0xFFFFFFFF);
 		}
 	}
 }
