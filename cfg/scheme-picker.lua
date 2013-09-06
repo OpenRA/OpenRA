@@ -8,6 +8,7 @@
   - [TomorrowNightEighties](macro:shell(ApplyStyleConfig('cfg/tomorrow.lua','TomorrowNightEighties')))
   - [Zenburn](macro:shell(ApplyStyleConfig('cfg/tomorrow.lua','Zenburn')))
   - [Monokai](macro:shell(ApplyStyleConfig('cfg/tomorrow.lua','Monokai')))
+  - [Molokai](macro:shell(ApplyStyleConfig('cfg/tomorrow.lua','Molokai')))
   - [SolarizedDark](macro:shell(ApplyStyleConfig('cfg/tomorrow.lua','SolarizedDark')))
   - [SolarizedLight](macro:shell(ApplyStyleConfig('cfg/tomorrow.lua','SolarizedLight')))
   - [Notepad++](macro:shell(ApplyStyleConfig('cfg/tomorrow.lua','NotepadPlusPlus')))
