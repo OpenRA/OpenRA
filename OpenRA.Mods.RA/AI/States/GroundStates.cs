@@ -65,58 +65,62 @@ namespace OpenRA.Mods.RA.AI
 
 	class GroundUnitsAttackMoveState : GroundStateBase, IState
 	{
-		public void Activate(Squad owner) { }
+		public void Activate(Squad s) { }
 
-		public void Tick(Squad owner)
+		public void Tick(Squad s)
 		{
-			if (!owner.IsValid)
+			if (!s.IsValid)
 				return;
 
-			if (!owner.TargetIsValid)
+			if (!s.TargetIsValid)
 			{
-				var targeter = owner.units.Random(owner.random);
-				var closestEnemy = owner.bot.FindClosestEnemy(targeter, targeter.CenterPosition);
+				var targeter = s.units.Random(s.random);
+				var closestEnemy = s.bot.FindClosestEnemy(targeter, targeter.CenterPosition);
 				if (closestEnemy != null)
-					owner.Target = closestEnemy;
+					s.Target = closestEnemy;
 				else
 				{
-					owner.fsm.ChangeState(owner, new GroundUnitsFleeState(), true);
+					s.fsm.ChangeState(s, new GroundUnitsFleeState(), true);
 					return;
 				}
 			}
 
-			Actor leader = owner.units.ClosestTo(owner.Target.CenterPosition);
-			if (leader == null)
-				return;
-			var ownUnits = owner.world.FindActorsInCircle(leader.CenterPosition, WRange.FromCells(owner.units.Count) / 3)
-				.Where(a => a.Owner == owner.units.FirstOrDefault().Owner && owner.units.Contains(a)).ToList();
-			if (ownUnits.Count < owner.units.Count)
+			// Force the squad to move as a group
+			var leader = s.units.ClosestTo(s.Target.CenterPosition);
+			var leaderPos = leader.CenterPosition;
+			var nearRange = WRange.FromCells(s.units.Count) / 3;
+			var nearLeader = s.units.Where(a => (a.CenterPosition - leaderPos).HorizontalLengthSquared < nearRange.Range * nearRange.Range);
+
+			if (nearLeader.Count() < s.units.Count)
 			{
-				owner.world.IssueOrder(new Order("Stop", leader, false));
-				foreach (var unit in owner.units.Where(a => !ownUnits.Contains(a)))
-					owner.world.IssueOrder(new Order("AttackMove", unit, false) { TargetLocation = leader.CenterPosition.ToCPos() });
+				// Wait for the stragglers to catch up
+				foreach (var a in s.units)
+				{
+					if (nearLeader.Contains(a))
+						s.world.IssueOrder(new Order("Stop", a, false));
+					else
+						s.world.IssueOrder(new Order("AttackMove", a, false) { TargetLocation = s.Target.Location });
+				}
 			}
 			else
 			{
-				var enemys = owner.world.FindActorsInCircle(leader.CenterPosition, WRange.FromCells(12))
-					.Where(a1 => !a1.Destroyed && !a1.IsDead()).ToList();
-				var enemynearby = enemys.Where(a1 => a1.HasTrait<ITargetable>() && leader.Owner.Stances[a1.Owner] == Stance.Enemy).ToList();
-				if (enemynearby.Any())
+				// Units are grouped together - are they close enough to attack a target directly?
+				var target = s.bot.FindClosestEnemy(leader, leaderPos, WRange.FromCells(12));
+				if (target != null)
 				{
-					owner.Target = enemynearby.ClosestTo(leader.CenterPosition);
-					owner.fsm.ChangeState(owner, new GroundUnitsAttackState(), true);
-					return;
+					s.Target = target;
+					s.fsm.ChangeState(s, new GroundUnitsAttackState(), true);
 				}
 				else
-					foreach (var a in owner.units)
-						owner.world.IssueOrder(new Order("AttackMove", a, false) { TargetLocation = owner.Target.Location });
+				{
+					// No target nearby - keep moving
+					foreach (var a in s.units)
+						s.world.IssueOrder(new Order("AttackMove", a, false) { TargetLocation = s.Target.Location });
+				}
 			}
 
-			if (ShouldFlee(owner))
-			{
-				owner.fsm.ChangeState(owner, new GroundUnitsFleeState(), true);
-				return;
-			}
+			if (ShouldFlee(s))
+				s.fsm.ChangeState(s, new GroundUnitsFleeState(), true);
 		}
 
 		public void Deactivate(Squad owner) { }
