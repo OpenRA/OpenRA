@@ -1,6 +1,6 @@
 ﻿#region Copyright & License Information
 /*
- * Copyright 2007-2011 The OpenRA Developers (see AUTHORS)
+ * Copyright 2007-2013 The OpenRA Developers (see AUTHORS)
  * This file is part of OpenRA, which is free software. It is made
  * available to you under the terms of the GNU General Public License
  * as published by the Free Software Foundation. For more information,
@@ -22,7 +22,7 @@ namespace OpenRA.Traits
 		[Desc("The prefix for the resulting player palettes")]
 		public readonly string BaseName = "player";
 		[Desc("Remap these indices to player colors.")]
-		public readonly int[] RemapIndex = {};
+		public readonly int[] RemapIndex = { };
 		[Desc("Luminosity range to span.")]
 		public readonly float Ramp = 0.05f;
 		[Desc("Allow palette modifiers to change the palette.")]
@@ -45,10 +45,7 @@ namespace OpenRA.Traits
 		public void InitPalette(WorldRenderer wr)
 		{
 			var remap = new PlayerColorRemap(info.RemapIndex, owner.Color, info.Ramp);
-			wr.AddPalette(info.BaseName+owner.InternalName, new Palette(wr.Palette(info.BasePalette).Palette, remap), info.AllowModifiers);
-
-			var argb = (uint)Color.FromArgb(128, owner.Color.RGB).ToArgb();
-			wr.AddPalette("highlight" + owner.InternalName, new Palette(Exts.MakeArray(256, i => i == 0 ? 0 : argb)), false);
+			wr.AddPalette(info.BaseName + owner.InternalName, new Palette(wr.Palette(info.BasePalette).Palette, remap), info.AllowModifiers);
 		}
 	}
 }
