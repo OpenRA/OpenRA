@@ -237,6 +237,7 @@
     <Compile Include="Traits\Player\FrozenActorLayer.cs" />
     <Compile Include="Graphics\Theater.cs" />
     <Compile Include="Traits\Player\PlayerColorPalette.cs" />
+    <Compile Include="Traits\Player\PlayerHighlightPalette.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
