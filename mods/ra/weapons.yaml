@@ -7,9 +7,10 @@ Colt45:
 	Warhead:
 		Spread: 1
 		Versus:
+			None: 100%
 			Wood: 0%
-			Light: 5%
-			Heavy: 5%
+			Light: 0%
+			Heavy: 0%
 			Concrete: 0%
 		Explosion: piff
 		WaterExplosion: water_piff
