@@ -1,4 +1,4 @@
-# Visual Studio crap
+# Visual Studio
 Release
 bin
 obj
@@ -8,14 +8,12 @@ obj
 *.user
 *.sln.cache
 *.manifest
-mods/*/*.dll
 *.CodeAnalysisLog.xml
 *.lastcodeanalysissucceeded
-
-# ReSharper crap
 _ReSharper.*/
 
-#binary stuff
+# binaries
+mods/*/*.dll
 /*.dll
 /*.dll.config
 *.pdb
@@ -28,23 +26,14 @@ _ReSharper.*/
 \#*
 .*.sw?
 
-# dependency DLLs (different for every platform!)
-cg.dll
-cgGL.dll
-freetype6.dll
-zlib1.dll
-SDL.dll
-
-/OpenRa.Gl.dll
-
-#monodevelop
+# Monodevelop
 *.pidb
 *.userprefs
 
-# osx crap
+# Mac OS X
 .DS_Store
 
-# osx build crap
+# XCode
 packaging/osx/launcher/build/
 packaging/osx/launcher/OpenRA.xcodeproj/*.pbxuser
 packaging/osx/launcher/OpenRA.xcodeproj/*.perspectivev3
@@ -58,7 +47,7 @@ OpenRA.Launcher.Mac/OpenRA.xcodeproj/*.perspectivev3
 OpenRA.Launcher.Mac/OpenRA.xcodeproj/*.mode1v3
 *.resources
 
-# KDE crap
+# KDE
 *.kate-swp
 *.directory
 

@@ -16,7 +16,6 @@
 
 
 !include "MUI2.nsh"
-!include "ZipDLL.nsh"
 !include "FileFunc.nsh"
 !include "WordFunc.nsh"
 
@@ -40,7 +39,6 @@ SetCompressor lzma
 Var StartMenuFolder
 !insertmacro MUI_PAGE_STARTMENU Application $StartMenuFolder
 
-;!insertmacro MUI_PAGE_COMPONENTS
 !insertmacro MUI_PAGE_INSTFILES
 
 !insertmacro MUI_UNPAGE_CONFIRM
@@ -48,23 +46,6 @@ Var StartMenuFolder
 !insertmacro MUI_UNPAGE_FINISH
 
 !insertmacro MUI_LANGUAGE "English"
-
-Var DownloadCount
-!macro DownloadDependency name saveas
-	IntOp $DownloadCount 0 + 1
-	download:
-		NSISdl::download "http://open-ra.org/get-dependency.php?file=${name}" ${saveas}
-		Pop $R0
-		StrCmp $R0 "success" success
-		IntCmp $DownloadCount 3 failure retry
-	failure:
-		MessageBox MB_OK "Download of ${saveas} did not succeed. Aborting installation. $\n$\n$R0"
-		Abort
-	retry:
-		IntOp $DownloadCount $DownloadCount + 1
-		Goto download
-	success:
-!macroend
 
 ;***************************
 ;Section Definitions
@@ -96,6 +77,10 @@ Section "Client" Client
 	File "${SRCDIR}\global mix database.dat"
 	File "${SRCDIR}\GeoIP.dll"
 	File "${SRCDIR}\GeoIP.dat"
+	File OpenAL32.dll
+	File SDL.dll
+	File freetype6.dll
+	File zlib1.dll
 
 	!insertmacro MUI_STARTMENU_WRITE_BEGIN Application
 		CreateDirectory "$SMPROGRAMS\$StartMenuFolder"
@@ -163,41 +148,6 @@ SectionGroupEnd
 ;***************************
 ;Dependency Sections
 ;***************************
-Section "-OpenAl" OpenAl
-	AddSize 768
-	SetOutPath "$TEMP"
-	ClearErrors
-	${GetFileVersion} $SYSDIR\OpenAL32.dll $0
-	IfErrors installal 0
-	${VersionCompare} $0 "6.14.357.24" $1
-	IntCmp $1 1 done done installal
-	installal:
-		!insertmacro DownloadDependency "openal" "oalinst.zip"
-		!insertmacro ZIPDLL_EXTRACT oalinst.zip OpenAL oalinst.exe
-		ExecWait "$TEMP\OpenAL\oalinst.exe"
-	done:
-SectionEnd
-
-Section "-Sdl" SDL
-	AddSize 317
-	SetOutPath "$TEMP"
-	IfFileExists $INSTDIR\SDL.dll done installsdl
-	installsdl:
-		!insertmacro DownloadDependency "sdl" "sdl.zip"
-		!insertmacro ZIPDLL_EXTRACT sdl.zip $INSTDIR SDL.dll
-	done:
-SectionEnd
-
-Section "-Freetype" Freetype
-	AddSize 583
-	SetOutPath "$TEMP"
-	IfFileExists $INSTDIR\zlib1.dll done installfreetype
-	installfreetype:
-		!insertmacro DownloadDependency "freetype" "freetype-zlib.zip"
-		ZipDLL::extractall "freetype-zlib.zip" "$INSTDIR"
-	done:
-SectionEnd
-
 Section "-DotNet" DotNet
 	ClearErrors
 	ReadRegDWORD $0 HKLM "SOFTWARE\Microsoft\NET Framework Setup\NDP\v3.5" "Install"
@@ -266,12 +216,13 @@ Function ${UN}Clean
 	Delete $INSTDIR\INSTALL
 	Delete $INSTDIR\OpenRA.ico
 	Delete $INSTDIR\*.ttf
-	Delete $INSTDIR\freetype6.dll
-	Delete $INSTDIR\SDL.dll
-	Delete $INSTDIR\zlib1.dll
 	Delete "$INSTDIR\global mix database.dat"
 	Delete $INSTDIR\GeoIP.dat
 	Delete $INSTDIR\GeoIP.dll
+	Delete $INSTDIR\OpenAL32.dll
+	Delete $INSTDIR\SDL.dll
+	Delete $INSTDIR\freetype6.dll
+	Delete $INSTDIR\zlib1.dll
 	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\OpenRA"
 	Delete $INSTDIR\uninstaller.exe
 	RMDir $INSTDIR
