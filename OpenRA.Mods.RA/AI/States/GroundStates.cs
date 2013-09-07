@@ -120,6 +120,12 @@ namespace OpenRA.Mods.RA.AI
 				}
 			}
 
+			// Work around an edge case where all units stop
+			// TODO: Get to the bottom of why this occurs
+			if (s.units.All(a => a.IsIdle))
+				foreach (var a in s.units)
+					s.world.IssueOrder(new Order("AttackMove", a, false) { TargetLocation = s.Target.Location });
+
 			if (ShouldFlee(s))
 				s.fsm.ChangeState(s, new GroundUnitsFleeState(), true);
 		}
