@@ -72,7 +72,7 @@ namespace OpenRA
 		{
 			var length = source.Count();
 			if (length == 0)
-				return WPos.Zero;
+				throw new InvalidOperationException("Cannot take the average of an empty IEnumerable<WPos>");
 
 			var x = 0L;
 			var y = 0L;
