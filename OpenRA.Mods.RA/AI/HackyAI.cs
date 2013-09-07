@@ -490,8 +490,6 @@ namespace OpenRA.Mods.RA.AI
 		void CleanSquads()
 		{
 			squads.RemoveAll(s => !s.IsValid);
-			foreach (var s in squads)
-				s.units.RemoveAll(a => a.Destroyed || a.IsDead() || a.Owner != p);
 		}
 
 		// Use of this function requires that one squad of this type. Hence it is a piece of shit
