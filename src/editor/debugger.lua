@@ -480,8 +480,6 @@ debugger.listen = function()
       if redirect then
         debugger.handle("output stdout " .. redirect, nil,
           { handler = function(m)
-              if not debugger.server then return end
-
               -- if it's an error returned, then handle the error
               if m and m:find("stack traceback:", 1, true) then
                 -- this is an error message sent remotely
