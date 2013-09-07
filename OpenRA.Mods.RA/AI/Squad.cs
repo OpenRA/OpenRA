@@ -62,7 +62,7 @@ namespace OpenRA.Mods.RA.AI
 
 		public void Update()
 		{
-			units.RemoveAll(a => a.Destroyed || a.IsDead() || a.Owner != p);
+			units.RemoveAll(a => a.Destroyed || a.IsDead() || a.Owner != bot.p);
 			if (IsValid)
 				fsm.Update(this);
 		}
