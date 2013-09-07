@@ -113,7 +113,7 @@ namespace OpenRA.Mods.RA.AI
 				}
 				else
 				{
-					// No target nearby - keep moving
+					// No target nearby - keep moving towards the original target
 					foreach (var a in s.units)
 						s.world.IssueOrder(new Order("AttackMove", a, false) { TargetLocation = s.Target.Location });
 				}
@@ -123,7 +123,7 @@ namespace OpenRA.Mods.RA.AI
 				s.fsm.ChangeState(s, new GroundUnitsFleeState(), true);
 		}
 
-		public void Deactivate(Squad owner) { }
+		public void Deactivate(Squad s) { }
 	}
 
 	class GroundUnitsAttackState : GroundStateBase, IState
