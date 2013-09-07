@@ -181,7 +181,6 @@
     <Compile Include="Traits\ValidateOrder.cs" />
     <Compile Include="Traits\Waypoint.cs" />
     <Compile Include="Traits\World\Country.cs" />
-    <Compile Include="Traits\World\PlayerColorPalette.cs" />
     <Compile Include="Traits\World\ResourceLayer.cs" />
     <Compile Include="Traits\World\ResourceType.cs" />
     <Compile Include="Traits\World\ScreenShaker.cs" />
@@ -237,6 +236,7 @@
     <Compile Include="Widgets\ViewportControllerWidget.cs" />
     <Compile Include="Traits\Player\FrozenActorLayer.cs" />
     <Compile Include="Graphics\Theater.cs" />
+    <Compile Include="Traits\Player\PlayerColorPalette.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\OpenRA.FileFormats\OpenRA.FileFormats.csproj">
