@@ -16,51 +16,52 @@ namespace OpenRA.Mods.RA.AI
 {
 	abstract class GroundStateBase : StateBase
 	{
-		protected virtual bool ShouldFlee(Squad owner)
+		protected virtual bool ShouldFlee(Squad s)
 		{
-			return base.ShouldFlee(owner, enemies => !owner.attackOrFleeFuzzy.CanAttack(owner.units, enemies));
+			return base.ShouldFlee(s, enemies => !s.attackOrFleeFuzzy.CanAttack(s.units, enemies));
 		}
 	}
 
 	class GroundUnitsIdleState : GroundStateBase, IState
 	{
-		public void Activate(Squad owner) { }
+		public void Activate(Squad s) { }
 
-		public void Tick(Squad owner)
+		public void Tick(Squad s)
 		{
-			if (!owner.IsValid)
+			if (!s.IsValid)
 				return;
 
-			if (!owner.TargetIsValid)
+			if (!s.TargetIsValid)
 			{
-				var targeter = owner.units.First();
-				var t = owner.bot.FindClosestEnemy(targeter, targeter.CenterPosition);
+				var targeter = s.units.First();
+				var t = s.bot.FindClosestEnemy(targeter, targeter.CenterPosition);
 				if (t == null)
 					return;
 
-				owner.Target = t;
+				s.Target = t;
 			}
 
-			var enemyUnits = owner.world.FindActorsInCircle(owner.Target.CenterPosition, WRange.FromCells(10))
-				.Where(unit => owner.bot.p.Stances[unit.Owner] == Stance.Enemy).ToList();
+			var enemyUnits = s.world.FindActorsInCircle(s.Target.CenterPosition, WRange.FromCells(10))
+				.Where(unit => s.bot.p.Stances[unit.Owner] == Stance.Enemy).ToList();
 
 			if (enemyUnits.Any())
 			{
-				if (owner.attackOrFleeFuzzy.CanAttack(owner.units, enemyUnits))
+				if (s.attackOrFleeFuzzy.CanAttack(s.units, enemyUnits))
 				{
-					foreach (var u in owner.units)
-						owner.world.IssueOrder(new Order("AttackMove", u, false) { TargetLocation = owner.Target.CenterPosition.ToCPos() });
+					var cell = s.Target.CenterPosition.ToCPos();
+					foreach (var u in s.units)
+						s.world.IssueOrder(new Order("AttackMove", u, false) { TargetLocation = cell });
 
 					// We have gathered sufficient units. Attack the nearest enemy unit.
-					owner.fsm.ChangeState(owner, new GroundUnitsAttackMoveState(), true);
+					s.fsm.ChangeState(s, new GroundUnitsAttackMoveState(), true);
 					return;
 				}
 				else
-					owner.fsm.ChangeState(owner, new GroundUnitsFleeState(), true);
+					s.fsm.ChangeState(s, new GroundUnitsFleeState(), true);
 			}
 		}
 
-		public void Deactivate(Squad owner) { }
+		public void Deactivate(Squad s) { }
 	}
 
 	class GroundUnitsAttackMoveState : GroundStateBase, IState
@@ -164,17 +165,17 @@ namespace OpenRA.Mods.RA.AI
 
 	class GroundUnitsFleeState : GroundStateBase, IState
 	{
-		public void Activate(Squad owner) { }
+		public void Activate(Squad s) { }
 
-		public void Tick(Squad owner)
+		public void Tick(Squad s)
 		{
-			if (!owner.IsValid)
+			if (!s.IsValid)
 				return;
 
-			GoToRandomOwnBuilding(owner);
-			owner.fsm.ChangeState(owner, new GroundUnitsIdleState(), true);
+			GoToRandomOwnBuilding(s);
+			s.fsm.ChangeState(s, new GroundUnitsIdleState(), true);
 		}
 
-		public void Deactivate(Squad owner) { owner.units.Clear(); }
+		public void Deactivate(Squad s) { s.units.Clear(); }
 	}
 }
