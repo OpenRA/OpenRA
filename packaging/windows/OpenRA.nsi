@@ -198,16 +198,6 @@ Section "-Freetype" Freetype
 	done:
 SectionEnd
 
-Section "-Cg" Cg
-	AddSize 1500
-	SetOutPath "$TEMP"
-	IfFileExists $INSTDIR\cg.dll done installcg
-	installcg:
-		!insertmacro DownloadDependency "cg" "cg-win32.zip"
-		ZipDLL::extractall "cg-win32.zip" "$INSTDIR"
-	done:
-SectionEnd
-
 Section "-DotNet" DotNet
 	ClearErrors
 	ReadRegDWORD $0 HKLM "SOFTWARE\Microsoft\NET Framework Setup\NDP\v3.5" "Install"
@@ -278,8 +268,6 @@ Function ${UN}Clean
 	Delete $INSTDIR\*.ttf
 	Delete $INSTDIR\freetype6.dll
 	Delete $INSTDIR\SDL.dll
-	Delete $INSTDIR\cg.dll
-	Delete $INSTDIR\cgGL.dll
 	Delete $INSTDIR\zlib1.dll
 	Delete "$INSTDIR\global mix database.dat"
 	Delete $INSTDIR\GeoIP.dat
