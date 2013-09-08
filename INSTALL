@@ -5,60 +5,60 @@ as published by the Free Software Foundation. For more information,
 see COPYING.
 
 To run OpenRA, several files are needed from the original game disks.
-These files are now downloaded and installed by the game,
-so so no explicit action is required.
+A minimal asset pack can also be downloaded and installed by the game.
 
-Dependencies - Make sure you have these installed, or you'll 
-have very strange errors.
-
-WINDOWS:
+Windows
+-------
 
 * .NET Framework >= 3.5-SP1
 	(http://www.microsoft.com/downloads/details.aspx?FamilyID=AB99342F-5D1A-413D-8319-81DA479AB0D7&displaylang=en)
-* Tao Framework >= 2.1.0
-	This is now bundled with OpenRA, copy the files in thirdparty/Tao to the game root directory.
-* OpenAL >= 1.1
-	(http://connect.creativelabs.com/openal/Downloads/oalinst.zip)
-* Cg Toolkit >= 2.2
-	(http://developer.download.nvidia.com/cg/Cg_2.2/Cg-2.2_October2009_Setup.exe)
+* Cg Toolkit >= 2.2 (optional, for Cg renderer)
+	(https://developer.nvidia.com/cg-toolkit-download)
 
 To compile OpenRA, open the OpenRA.sln solution in the main folder,
 or build it from the command-line with MSBuild.
 
+Execute `copy-dependencies.bat' to place the DLLs we conveniently
+bundle for you. They include binaries of:
+* http://libsdl.org/download-1.2.php
+* http://gnuwin32.sourceforge.net/packages/freetype.htm
+* http://gnuwin32.sourceforge.net/packages/zlib.htm
+* http://kcat.strangesoft.net/openal.html
+
 Run the game with `OpenRA.Game.exe Game.Mods=ra` for Red Alert
 or `OpenRA.Game.exe Game.Mods=cnc` for Command & Conquer
 
+Debian/Ubuntu
+-------------
 
-UBUNTU (substitute comparable packages for other Linux distros):
-* mono-runtime (>= 2.10)
 * mono-gmcs
+* cli-common-dev (>= 2.10)
 * freetype
-* libmono-corlib1.0-cil
-* libmono-winforms2.0-cil
-* libopenal1
-* libsdl1.2-dev
-* nvidia-cg-toolkit (for Cg renderer)
+* openal
+* sdl
+* nvidia-cg-toolkit (optional, for Cg renderer)
 
-The following dlls can also be installed into your system GAC. This is not
-recommended because we ship a custom Tao.FreeType that can conflict with
-other applications that use Tao:
+To compile OpenRA, run `make all' from the command line.
+To grab the bundled CLI DLLs type `make dependencies'
+Run with either `launch-game.sh' or `mono --debug OpenRA.Game.exe'.
 
-	gacutil -i Tao.Cg.dll
-	gacutil -i Tao.OpenGl.dll
-	gacutil -i Tao.OpenAl.dll
-	gacutil -i Tao.Sdl.dll
-	gacutil -i Tao.FreeType.dll
-	gacutil -i ICSharpCode.SharpZipLib.dll
+Type 'sudo make install-all' for system wide installation. You
+can then run from the `openra` shortcut.
 
-To compile OpenRA, run `make' from the command line.
-To install run 'make install'.
-Run the game with `mono OpenRA.Game.exe Game.Mods=ra` for Red Alert
-or `mono OpenRA.Game.exe Game.Mods=cnc` for Command & Conquer
-
-SLACKWARE:
+Slackware
+---------
 
 The following packages from slackbuilds.org are required, on 13.37 32bit:
 * libgdiplus
 * mono
 * openAL
-* nvidia-cg-toolkit (for Cg renderer)
+* nvidia-cg-toolkit (optional, for Cg renderer)
+
+openSUSE
+--------
+
+* mono-devel
+* openal
+* freetype2
+* SDL
+* cg (optional, for Cg renderer)
