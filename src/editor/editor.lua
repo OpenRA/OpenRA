@@ -124,6 +124,20 @@ local function isFileAlteredOnDisk(editor)
   end
 end
 
+local function navigateToPosition(editor, fromPosition, toPosition, length)
+  table.insert(editor.jumpstack, fromPosition)
+  editor:GotoPos(toPosition)
+  if length then
+    editor:SetAnchor(toPosition + length)
+  end
+end
+
+local function navigateBack(editor)
+  if #editor.jumpstack == 0 then return end
+  local pos = table.remove(editor.jumpstack)
+  editor:GotoPos(pos)
+end
+
 -- ----------------------------------------------------------------------------
 -- Get/Set notebook editor page, use nil for current page, returns nil if none
 function GetEditor(selection)
@@ -580,6 +594,7 @@ function CreateEditor()
 
   editor.matchon = false
   editor.assignscache = false
+  editor.jumpstack = {}
 
   editor:SetBufferedDraw(not ide.config.hidpi and true or false)
   editor:StyleClearAll()
@@ -937,6 +952,18 @@ function CreateEditor()
           if MarkupHotspotClick(position, editor) then return end
         end
       end
+      
+      if event:CmdDown() then
+        local point = event:GetPosition()
+        local pos = editor:PositionFromPointClose(point.x, point.y)
+        local value = pos ~= wxstc.wxSTC_INVALID_POSITION and getValAtPosition(editor, pos) or nil
+        local instances = value and indicateFindInstances(editor, value, pos+1)
+        if instances and instances[0] then
+          navigateToPosition(editor, pos, instances[0]-1, #value)
+          return
+        end
+      end
+      
       event:Skip()
     end)
 
@@ -1018,6 +1045,8 @@ function CreateEditor()
       and keycode == ('T'):byte() and mod == wx.wxMOD_CONTROL then
         ide.frame:AddPendingEvent(wx.wxCommandEvent(
           wx.wxEVT_COMMAND_MENU_SELECTED, ID_SHOWTOOLTIP))
+      elseif event:AltDown() and keycode == wx.WXK_LEFT then
+        navigateBack(editor)
       else
         if ide.osname == 'Macintosh' and mod == wx.wxMOD_META then
           return -- ignore a key press if Command key is also pressed
@@ -1117,8 +1146,7 @@ function CreateEditor()
   editor:Connect(ID_GOTODEFINITION, wx.wxEVT_COMMAND_MENU_SELECTED,
     function(event)
       if value and instances[0] then
-        editor:GotoPos(instances[0]-1)
-        editor:SetAnchor(instances[0]-1+#value)
+        navigateToPosition(editor, editor:GetCurrentPosition(), instances[0]-1, #value)
       end
     end)
 
