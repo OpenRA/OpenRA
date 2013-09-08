@@ -14,21 +14,21 @@ using OpenRA;
 using OpenRA.FileFormats;
 using OpenRA.Traits;
 
-namespace RALint
+namespace OpenRA
 {
-	static class RALint
+	static class YamlChecker
 	{
 		static int errors = 0;
 
 		static void EmitError(string e)
 		{
-			Console.WriteLine("RALint(1,1): Error: {0}", e);
+			Console.WriteLine("OpenRA.Lint(1,1): Error: {0}", e);
 			++errors;
 		}
 
 		static void EmitWarning(string e)
 		{
-			Console.WriteLine("RALint(1,1): Warning: {0}", e);
+			Console.WriteLine("OpenRA.Lint(1,1): Warning: {0}", e);
 		}
 
 		static int Main(string[] args)
