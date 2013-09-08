@@ -505,7 +505,6 @@ Zombie:
 		HP: 250
 	Mobile:
 		Speed: 3
-	AttackWander:
 	AutoTarget:
 		ScanRadius: 5
 	AttackFrontal:
@@ -531,7 +530,6 @@ Ant:
 	Mobile:
 		Speed: 7
 		SharesCell: no
-	AttackWander:
 	AutoTarget:
 		ScanRadius: 5
 	AttackFrontal:
