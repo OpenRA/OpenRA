@@ -183,8 +183,8 @@ OpenRA.Editor.Form1.resources:
 editor: OpenRA.Editor.MapSelect.resources OpenRA.Editor.Form1.resources $(editor_TARGET)
 
 # Analyses mod yaml for easy to detect errors
-ralint_SRCS			:= $(shell find RALint/ -iname '*.cs')
-ralint_TARGET			= RALint.exe
+ralint_SRCS			:= $(shell find OpenRA.Lint/ -iname '*.cs')
+ralint_TARGET			= OpenRA.Lint.exe
 ralint_KIND			= exe
 ralint_DEPS			= $(fileformats_TARGET) $(game_TARGET)
 ralint_LIBS			= $(COMMON_LIBS) $(ralint_DEPS)
@@ -192,13 +192,13 @@ PROGRAMS 			+= ralint
 ralint: $(ralint_TARGET)
 
 test:
-	@mono --debug RALint.exe ra
+	@mono --debug OpenRA.Lint.exe ra
 	@echo "OpenRA.Lint: ra mod yaml checks passed."
-	@mono --debug RALint.exe cnc
+	@mono --debug OpenRA.Lint.exe cnc
 	@echo "OpenRA.Lint: cnc mod yaml checks passed."
-	@mono --debug RALint.exe d2k
+	@mono --debug OpenRA.Lint.exe d2k
 	@echo "OpenRA.Lint: d2k mod yaml checks passed."
-	@mono --debug RALint.exe ts
+	@mono --debug OpenRA.Lint.exe ts
 	@echo "OpenRA.Lint: ts mod yaml checks passed."
 
 # Builds and exports tilesets from a bitmap
