@@ -259,6 +259,21 @@ function SaveFileAs(editor)
         MarkupStyle(editor)
       end
       saved = true
+
+      -- check if there is another tab with the same name and close it
+      local fileName = wx.wxFileName(filePath)
+      for _, document in pairs(ide.openDocuments) do
+        if document.filePath and fileName:SameAs(wx.wxFileName(document.filePath)) then
+          -- save the current selection as it may change after closing
+          local current = notebook:GetSelection()
+          ClosePage(document.index)
+          -- restore the selection if it changed
+          if current ~= notebook:GetSelection() then
+            notebook:SetSelection(current)
+          end
+          break
+        end
+      end
     end
   end
 
