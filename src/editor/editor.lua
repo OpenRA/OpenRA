@@ -952,8 +952,10 @@ function CreateEditor()
           if MarkupHotspotClick(position, editor) then return end
         end
       end
-      
-      if event:CmdDown() then
+
+      if event:ControlDown() and event:AltDown()
+      -- ide.wxver >= "2.9.5"; fix after GetModifiers is added to wxMouseEvent in wxlua
+      and not event:ShiftDown() and not event:MetaDown() then
         local point = event:GetPosition()
         local pos = editor:PositionFromPointClose(point.x, point.y)
         local value = pos ~= wxstc.wxSTC_INVALID_POSITION and getValAtPosition(editor, pos) or nil
@@ -963,7 +965,6 @@ function CreateEditor()
           return
         end
       end
-      
       event:Skip()
     end)
 
@@ -1045,7 +1046,7 @@ function CreateEditor()
       and keycode == ('T'):byte() and mod == wx.wxMOD_CONTROL then
         ide.frame:AddPendingEvent(wx.wxCommandEvent(
           wx.wxEVT_COMMAND_MENU_SELECTED, ID_SHOWTOOLTIP))
-      elseif event:AltDown() and keycode == wx.WXK_LEFT then
+      elseif mod == wx.wxMOD_ALT and keycode == wx.WXK_LEFT then
         navigateBack(editor)
       else
         if ide.osname == 'Macintosh' and mod == wx.wxMOD_META then
@@ -1146,7 +1147,7 @@ function CreateEditor()
   editor:Connect(ID_GOTODEFINITION, wx.wxEVT_COMMAND_MENU_SELECTED,
     function(event)
       if value and instances[0] then
-        navigateToPosition(editor, editor:GetCurrentPosition(), instances[0]-1, #value)
+        navigateToPosition(editor, editor:GetCurrentPos(), instances[0]-1, #value)
       end
     end)
 
