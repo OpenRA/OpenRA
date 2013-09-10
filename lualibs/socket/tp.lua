@@ -2,7 +2,6 @@
 -- Unified SMTP/FTP subsystem
 -- LuaSocket toolkit.
 -- Author: Diego Nehab
--- RCS ID: $Id: tp.lua 1418 2006-04-25 09:38:15Z 3rdparty $
 -----------------------------------------------------------------------------
 
 -----------------------------------------------------------------------------
@@ -12,12 +11,14 @@ local base = _G
 local string = require("string")
 local socket = require("socket")
 local ltn12 = require("ltn12")
-module("socket.tp")
+
+socket.tp = {}
+local _M = socket.tp
 
 -----------------------------------------------------------------------------
 -- Program constants
 -----------------------------------------------------------------------------
-TIMEOUT = 60
+_M.TIMEOUT = 60
 
 -----------------------------------------------------------------------------
 -- Implementation
@@ -64,6 +65,7 @@ function metat.__index:check(ok)
 end
 
 function metat.__index:command(cmd, arg)
+    cmd = string.upper(cmd)
     if arg then
         return self.c:send(cmd .. " " .. arg.. "\r\n")
     else
@@ -105,14 +107,14 @@ end
 -- closes the underlying c
 function metat.__index:close()
     self.c:close()
-	return 1
+    return 1
 end
 
 -- connect with server and return c object
-function connect(host, port, create, timeout)
-    local c, e = (create or socket.tcp())
+function _M.connect(host, port, timeout, create)
+    local c, e = (create or socket.tcp)()
     if not c then return nil, e end
-    c:settimeout(timeout or TIMEOUT)
+    c:settimeout(timeout or _M.TIMEOUT)
     local r, e = c:connect(host, port)
     if not r then
         c:close()
@@ -121,3 +123,4 @@ function connect(host, port, create, timeout)
     return base.setmetatable({c = c}, metat)
 end
 
+return _M

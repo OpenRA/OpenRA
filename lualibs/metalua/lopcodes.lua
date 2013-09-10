@@ -281,7 +281,7 @@ luaP.OpCode = {}   -- lookup name -> number
 luaP.ROpCode = {}  -- lookup number -> name
 
 local i = 0
-for v in string.gfind([[
+for v in string.gmatch([[
 MOVE -- 0
 LOADK
 LOADBOOL
