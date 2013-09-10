@@ -318,7 +318,6 @@ OILB:
 		Dimensions: 2,2
 	Health:
 		HP: 1000
-	Bib:
 	RevealsShroud:
 		Range: 3
 	Capturable:
