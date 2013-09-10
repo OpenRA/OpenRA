@@ -33,7 +33,7 @@ ZLIB_FILENAME="$ZLIB_BASENAME.tar.gz"
 ZLIB_URL="https://github.com/madler/zlib/archive/v1.2.8.tar.gz"
 
 WXLUA_BASENAME="wxlua"
-WXLUA_URL="https://wxlua.svn.sourceforge.net/svnroot/wxlua/trunk"
+WXLUA_URL="https://svn.code.sf.net/p/wxlua/svn/trunk@178"
 
 LUASOCKET_BASENAME="luasocket-3.0-rc1"
 LUASOCKET_FILENAME="v3.0-rc1.zip"
