@@ -248,6 +248,16 @@ function SaveFileAs(editor)
   if fileDialog:ShowModal() == wx.wxID_OK then
     local filePath = fileDialog:GetPath()
 
+    -- first check if there is another tab with the same name and close it
+    local existing
+    local fileName = wx.wxFileName(filePath)
+    for _, document in pairs(ide.openDocuments) do
+      if document.filePath and fileName:SameAs(wx.wxFileName(document.filePath)) then
+        existing = document.index
+        break
+      end
+    end
+
     if SaveFile(editor, filePath) then
       SetEditorSelection() -- update title of the editor
       FileTreeMarkSelected(filePath)
@@ -260,18 +270,13 @@ function SaveFileAs(editor)
       end
       saved = true
 
-      -- check if there is another tab with the same name and close it
-      local fileName = wx.wxFileName(filePath)
-      for _, document in pairs(ide.openDocuments) do
-        if document.filePath and fileName:SameAs(wx.wxFileName(document.filePath)) then
-          -- save the current selection as it may change after closing
-          local current = notebook:GetSelection()
-          ClosePage(document.index)
-          -- restore the selection if it changed
-          if current ~= notebook:GetSelection() then
-            notebook:SetSelection(current)
-          end
-          break
+      if existing then
+        -- save the current selection as it may change after closing
+        local current = notebook:GetSelection()
+        ClosePage(existing)
+        -- restore the selection if it changed
+        if current ~= notebook:GetSelection() then
+          notebook:SetSelection(current)
         end
       end
     end
