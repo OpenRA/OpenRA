@@ -1,12 +1,12 @@
 --
--- MobDebug 0.5401
+-- MobDebug 0.5402
 -- Copyright 2011-13 Paul Kulchenko
 -- Based on RemDebug 1.0 Copyright Kepler Project 2005
 --
 
 local mobdebug = {
   _NAME = "mobdebug",
-  _VERSION = 0.5401,
+  _VERSION = 0.5402,
   _COPYRIGHT = "Paul Kulchenko",
   _DESCRIPTION = "Mobile Remote Debugger for the Lua programming language",
   port = os and os.getenv and os.getenv("MOBDEBUG_PORT") or 8172,
@@ -408,9 +408,13 @@ local function debug_hook(event, line)
   -- the next line checks if the debugger is run under LuaJIT and if
   -- one of debugger methods is present in the stack, it simply returns.
   if jit then
-    local coro = coroutine.running()
-    if coro_debugee and coro ~= coro_debugee and not coroutines[coro]
-      or not coro_debugee and (in_debugger() or coro and not coroutines[coro])
+    -- when luajit is compiled with LUAJIT_ENABLE_LUA52COMPAT,
+    -- coroutine.running() returns non-nil for the main thread.
+    local coro, main = coroutine.running()
+    if not coro or main then coro = 'main' end
+    local disabled = coroutines[coro] == false
+      or coroutines[coro] == nil and coro ~= (coro_debugee or 'main')
+    if coro_debugee and disabled or not coro_debugee and (disabled or in_debugger())
     then return end
   end
 
@@ -955,13 +959,15 @@ end
 local function on()
   if not (isrunning() and server) then return end
 
-  local co = coroutine.running()
+  -- main is set to true under Lua5.2 for the "main" chunk.
+  -- Lua5.1 returns co as `nil` in that case.
+  local co, main = coroutine.running()
+  if main then co = nil end
   if co then
-    if not coroutines[co] then
-      coroutines[co] = true
-      debug.sethook(co, debug_hook, "lcr")
-    end
+    coroutines[co] = true
+    debug.sethook(co, debug_hook, "lcr")
   else
+    if jit then coroutines.main = true end
     debug.sethook(debug_hook, "lcr")
   end
 end
@@ -969,13 +975,28 @@ end
 local function off()
   if not (isrunning() and server) then return end
 
-  local co = coroutine.running()
+  -- main is set to true under Lua5.2 for the "main" chunk.
+  -- Lua5.1 returns co as `nil` in that case.
+  local co, main = coroutine.running()
+  if main then co = nil end
+
+  -- don't remove coroutine hook under LuaJIT as there is only one (global) hook
   if co then
-    if coroutines[co] then coroutines[co] = false end
-    -- don't remove coroutine hook under LuaJIT as there is only one (global) hook
+    coroutines[co] = false
     if not jit then debug.sethook(co) end
   else
-    debug.sethook()
+    if jit then coroutines.main = false end
+    if not jit then debug.sethook() end
+  end
+
+  -- check if there is any thread that is still being debugged under LuaJIT;
+  -- if not, turn the debugging off
+  if jit then
+    local remove = true
+    for co, debugged in pairs(coroutines) do
+      if debugged then remove = false; break end
+    end
+    if remove then debug.sethook() end
   end
 end
 

@@ -2,7 +2,6 @@
 -- LTN12 - Filters, sources, sinks and pumps.
 -- LuaSocket toolkit.
 -- Author: Diego Nehab
--- RCS ID: $Id: ltn12.lua 1418 2006-04-25 09:38:15Z 3rdparty $
 -----------------------------------------------------------------------------
 
 -----------------------------------------------------------------------------
@@ -11,15 +10,20 @@
 local string = require("string")
 local table = require("table")
 local base = _G
-module("ltn12")
+local _M = {}
+if module then -- heuristic for exporting a global package table
+    ltn12 = _M
+end
+local filter,source,sink,pump = {},{},{},{}
 
-filter = {}
-source = {}
-sink = {}
-pump = {}
+_M.filter = filter
+_M.source = source
+_M.sink = sink
+_M.pump = pump
 
 -- 2048 seems to be better in windows...
-BLOCKSIZE = 2048
+_M.BLOCKSIZE = 2048
+_M._VERSION = "LTN12 1.0.3"
 
 -----------------------------------------------------------------------------
 -- Filter stuff
@@ -37,7 +41,8 @@ end
 -- chains a bunch of filters together
 -- (thanks to Wim Couwenberg)
 function filter.chain(...)
-    local n = table.getn(arg)
+    local arg = {...}
+    local n = select('#',...)
     local top, index = 1, 1
     local retry = ""
     return function(chunk)
@@ -88,7 +93,7 @@ end
 function source.file(handle, io_err)
     if handle then
         return function()
-            local chunk = handle:read(BLOCKSIZE)
+            local chunk = handle:read(_M.BLOCKSIZE)
             if not chunk then handle:close() end
             return chunk
         end
@@ -111,8 +116,8 @@ function source.string(s)
     if s then
         local i = 1
         return function()
-            local chunk = string.sub(s, i, i+BLOCKSIZE-1)
-            i = i + BLOCKSIZE
+            local chunk = string.sub(s, i, i+_M.BLOCKSIZE-1)
+            i = i + _M.BLOCKSIZE
             if chunk ~= "" then return chunk
             else return nil end
         end
@@ -185,6 +190,7 @@ end
 -- other, as if they were concatenated
 -- (thanks to Wim Couwenberg)
 function source.cat(...)
+    local arg = {...}
     local src = table.remove(arg, 1)
     return function()
         while src do
@@ -289,3 +295,4 @@ function pump.all(src, snk, step)
     end
 end
 
+return _M
