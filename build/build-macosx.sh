@@ -35,6 +35,9 @@ if [ $# -eq 0 ]; then
   exit 0
 fi
 
+WXLUASTRIP="/strip"
+WXWIDGETSDEBUG="--disable-debug"
+
 # iterate through the command line arguments
 for ARG in "$@"; do
   case $ARG in
@@ -55,6 +58,10 @@ for ARG in "$@"; do
     ;;
   luasocket)
     BUILD_LUASOCKET=true
+    ;;
+  debug)
+    WXLUASTRIP=""
+    WXWIDGETSDEBUG="--enable-debug"
     ;;
   all)
     BUILD_WXWIDGETS=true
@@ -119,7 +126,7 @@ fi
 if [ $BUILD_WXWIDGETS ]; then
   svn co "$WXWIDGETS_URL" "$WXWIDGETS_BASENAME" || { echo "Error: failed to checkout wxWidgets"; exit 1; }
   cd "$WXWIDGETS_BASENAME"
-  ./configure --prefix="$INSTALL_DIR" --disable-debug --disable-shared --enable-unicode \
+  ./configure --prefix="$INSTALL_DIR" $WXWIDGETSDEBUG --disable-shared --enable-unicode \
     --with-libjpeg=builtin --with-libpng=builtin --with-libtiff=no --with-expat=no \
     --with-zlib=builtin --disable-richtext \
     --enable-macosx_arch=$MACOSX_ARCH --with-macosx-version-min=$MACOSX_VERSION --with-macosx-sdk="$MACOSX_SDK_PATH" \
@@ -174,7 +181,7 @@ if [ $BUILD_WXLUA ]; then
     -DwxLuaBind_COMPONENTS="stc;html;aui;adv;core;net;base" -DwxLua_LUA_LIBRARY_USE_BUILTIN=FALSE \
     -DwxLua_LUA_INCLUDE_DIR="$INSTALL_DIR/include" -DwxLua_LUA_LIBRARY="$INSTALL_DIR/lib/liblua.dylib" .
   (cd modules/luamodule; make $MAKEFLAGS) || { echo "Error: failed to build wxLua"; exit 1; }
-  (cd modules/luamodule; make install/strip)
+  (cd modules/luamodule; make install$WXLUASTRIP)
   strip -u -r "$INSTALL_DIR/lib/libwx.dylib"
   [ -f "$INSTALL_DIR/lib/libwx.dylib" ] || { echo "Error: libwx.dylib isn't found"; exit 1; }
   cd ../..
