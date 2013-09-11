@@ -6,7 +6,7 @@ local dxprofile
 
 return dxpath and {
   fninit = function(frame,menuBar)
-    dxprofile = ide.config.dxprofile or "dx_4"
+    dxprofile = ide.config.dxprofile or "dx_5"
 
     local myMenu = wx.wxMenu{
       { ID "dx.profile.dx_2x", "DX SM&2_x", "DirectX sm2_x profile", wx.wxITEM_CHECK },
@@ -14,15 +14,17 @@ return dxpath and {
       { ID "dx.profile.dx_4", "DX SM&4_0", "DirectX sm4_0 profile", wx.wxITEM_CHECK },
       { ID "dx.profile.dx_5", "DX SM&5_0", "DirectX sm5_0 profile", wx.wxITEM_CHECK },
       { },
-      { ID "dx.compile.input", "&Custom Args", "when set a popup for custom compiler args will be envoked", wx.wxITEM_CHECK },
+      { ID "dx.compile.input", "Custom &Args", "when set a popup for custom compiler args will be envoked", wx.wxITEM_CHECK },
+      { ID "dx.compile.binary", "&Binary", "when set compiles binary output", wx.wxITEM_CHECK },
       { ID "dx.compile.legacy", "&Legacy", "when set compiles in legacy mode", wx.wxITEM_CHECK },
-      { ID "dx.compile.backwards", "&Backwards Compatibility", "when set compiles in backwards compatibility mode", wx.wxITEM_CHECK },
+      { ID "dx.compile.backwards", "Backwards Compatibility", "when set compiles in backwards compatibility mode", wx.wxITEM_CHECK },
       { },
       { ID "dx.compile.vertex", "Compile &Vertex", "Compile Vertex shader (select entry word)" },
       { ID "dx.compile.fragment", "Compile &Fragment", "Compile pixel shader (select entry word)" },
       { ID "dx.compile.geometry", "Compile &Geometry", "Compile Geometry shader (select entry word)" },
       { ID "dx.compile.domain", "Compile &Domain", "Compile Domain shader (select entry word)" },
       { ID "dx.compile.hull", "Compile &Hull", "Compile Hull shader (select entry word)" },
+      { ID "dx.compile.compute", "Compile &Compute", "Compile Compute shader (select entry word)" },
     }
     menuBar:Append(myMenu, "&Dx")
 
@@ -31,6 +33,7 @@ return dxpath and {
     data.custom = ""
     data.legacy = false
     data.backwards = false
+    data.binary = false
     data.profid = ID ("dx.profile."..dxprofile)
     data.domains = {
       [ID "dx.compile.vertex"] = 1,
@@ -38,12 +41,13 @@ return dxpath and {
       [ID "dx.compile.geometry"] = 3,
       [ID "dx.compile.domain"] = 4,
       [ID "dx.compile.hull"] = 5,
+      [ID "dx.compile.compute"] = 6,
     }
     data.profiles = {
-      [ID "dx.profile.dx_2x"] = {"vs_2_0","ps_2_x",false,false,false,ext=".fxc.txt"},
-      [ID "dx.profile.dx_3"] = {"vs_3_0","ps_3_0",false,false,false,ext=".fxc.txt"},
-      [ID "dx.profile.dx_4"] = {"vs_4_0","ps_4_0","gs_4_0",false,false,ext=".fxc.txt"},
-      [ID "dx.profile.dx_5"] = {"vs_5_0","ps_5_0","gs_5_0","ds_5_0","hs_5_0",ext=".fxc.txt"},
+      [ID "dx.profile.dx_2x"] = {"vs_2_0","ps_2_x",false,false,false,false,ext=".fxc."},
+      [ID "dx.profile.dx_3"] = {"vs_3_0","ps_3_0",false,false,false,false,ext=".fxc."},
+      [ID "dx.profile.dx_4"] = {"vs_4_0","ps_4_0","gs_4_0",false,false,false,ext=".fxc."},
+      [ID "dx.profile.dx_5"] = {"vs_5_0","ps_5_0","gs_5_0","ds_5_0","hs_5_0","cs_5_0",ext=".fxc."},
     }
     data.domaindefs = {
       " /D _VERTEX_=1 /D _DX_=1 ",
@@ -51,6 +55,7 @@ return dxpath and {
       " /D _GEOMETRY_=1 /D _DX_=1 ",
       " /D _TESS_CONTROL_=1 /D _DX_=1 ",
       " /D _TESS_EVAL_=1 /D _DX_=1 ",
+      " /D _COMPUTE_=1 /D _DX_=1 ",
     }
     -- Profile related
     menuBar:Check(data.profid, true)
@@ -85,6 +90,10 @@ return dxpath and {
       function(event)
         data.backwards = event:IsChecked()
       end)
+    frame:Connect(ID "dx.compile.binary",wx.wxEVT_COMMAND_MENU_SELECTED,
+      function(event)
+        data.binary = event:IsChecked()
+      end)
     -- Compile
     local function evCompile(event)
       local filename,info = GetEditorFileAndCurInfo()
@@ -107,15 +116,15 @@ return dxpath and {
 
       local outname = fullname.."."..info.selword.."^"
       outname = args and outname..args:gsub("%s*[%-%/]",";-")..";^" or outname
-      outname = outname..profile[domain]..profile.ext
+      outname = outname..profile[domain]..profile.ext..(data.binary and "bin" or "txt")
       outname = '"'..outname..'"'
 
       local cmdline = " /T "..profile[domain].." "
       cmdline = cmdline..(args and args.." " or "")
       cmdline = cmdline..(data.legacy and "/LD " or "")
       cmdline = cmdline..(data.backwards and "/Gec " or "")
-      cmdline = cmdline..data.domaindefs[domain]
-      cmdline = cmdline.."/Fc "..outname.." "
+      cmdline = cmdline..(data.domaindefs[domain])
+      cmdline = cmdline..(data.binary and "/Fo " or "/Fc ")..outname.." "
       cmdline = cmdline.."/E "..info.selword.." "
       cmdline = cmdline.."/nologo "
       cmdline = cmdline..' "'..fullname..'"'
@@ -131,5 +140,6 @@ return dxpath and {
     frame:Connect(ID "dx.compile.geometry",wx.wxEVT_COMMAND_MENU_SELECTED,evCompile)
     frame:Connect(ID "dx.compile.domain",wx.wxEVT_COMMAND_MENU_SELECTED,evCompile)
     frame:Connect(ID "dx.compile.hull",wx.wxEVT_COMMAND_MENU_SELECTED,evCompile)
+    frame:Connect(ID "dx.compile.compute",wx.wxEVT_COMMAND_MENU_SELECTED,evCompile)
   end,
 }

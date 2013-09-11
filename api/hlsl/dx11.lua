@@ -43,7 +43,7 @@ local keyw =
     
     Texture Texture1D Texture1DArray Texture2D Texture2DArray Texture2DMS Texture2DMSArray Texture3D TextureCube RWTexture1D RWTexture1DArray RWTexture2D RWTexture2DArray RWTexture3D 
     Buffer StructuredBuffer AppendStructuredBuffer ConsumeStructuredBuffer RWBuffer RWStructuredBuffer ByteAddressBuffer RWByteAddressBuffer PointStream TriangleStream LineStream InputPatch OutputPatch
-    unroll loop flatten branch earlydepthstencil domain instance maxtessfactor outputcontrolpoints outputtopology partitioning patchconstantfunc numthreads maxvertexcount precise
+    unroll loop flatten branch earlydepthstencil allow_uav_condition domain instance maxtessfactor outputcontrolpoints outputtopology partitioning patchconstantfunc numthreads maxvertexcount precise
     
     SV_DispatchThreadID SV_DomainLocation SV_GroupID SV_GroupIndex SV_GroupThreadID SV_GSInstanceID SV_InsideTessFactor SV_OutputControlPointID SV_Coverage SV_Depth SV_Position SV_IsFrontFace SV_RenderTargetArrayIndex SV_SampleIndex SV_ViewportArrayIndex SV_InstanceID SV_PrimitiveID SV_VertexID    
     SV_ClipDistance SV_CullDistance SV_Target
