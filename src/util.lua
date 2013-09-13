@@ -252,7 +252,10 @@ end
 
 function FileRename(file1, file2) return wx.wxRenameFile(file1, file2) end
 
-function FileCopy(file1, file2) return wx.wxCopyFile(file1, file2) end
+function FileCopy(file1, file2)
+  local log = wx.wxLogNull() -- disable error reporting; will report as needed
+  return wx.wxCopyFile(file1, file2)
+end
 
 TimeGet = pcall(require, "socket") and socket.gettime or os.clock
 

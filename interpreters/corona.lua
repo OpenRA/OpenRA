@@ -45,20 +45,34 @@ return {
       DebuggerAttachDefault({startwith = file, redirect = mac and "r" or "c",
         runstart = ide.config.debugger.runonstart ~= false})
 
+      local function needRefresh(mdbl, mdbc)
+        return not wx.wxFileExists(mdbc)
+        or GetFileModTime(mdbc):GetTicks() < GetFileModTime(mdbl):GetTicks()
+      end
+
       -- copy mobdebug.lua to Resources/ folder on Win and to the project folder on OSX
       -- as copying it to Resources/ folder seems to break the signature of the app.
       local mdbc = mac and MergeFullPath(self:fworkdir(wfilename), "mobdebug.lua")
         or MergeFullPath(GetPathWithSep(corona), "Resources/mobdebug.lua")
       local mdbl = MergeFullPath(GetPathWithSep(ide.editorFilename), "lualibs/mobdebug/mobdebug.lua")
-      if not wx.wxFileExists(mdbc)
-      or GetFileModTime(mdbc):GetTicks() < GetFileModTime(mdbl):GetTicks() then
+      local needed = needRefresh(mdbl, mdbc)
+      if needed then
         local copied = FileCopy(mdbl, mdbc)
-        local message = copied
-          and ("Copied debugger ('mobdebug.lua') to '%s'."):format(mdbc)
-          or ("Failed to copy debugger ('mobdebug.lua') to '%s': %s")
-            :format(mdbc, wx.wxSysErrorMsg())
-        DisplayOutputLn(message)
-        if not copied then return end
+        -- couldn't copy to the Resources/ folder; not have permissions?
+        if not copied and win then
+          mdbc = MergeFullPath(wx.wxStandardPaths.Get():GetUserLocalDataDir(),
+            "../../Roaming/Corona Labs/Corona Simulator/Plugins/mobdebug.lua")
+          needed = needRefresh(mdbl, mdbc)
+          copied = needed and FileCopy(mdbl, mdbc)
+        end
+        if needed then
+          local message = copied
+            and ("Copied debugger ('mobdebug.lua') to '%s'."):format(mdbc)
+            or ("Failed to copy debugger ('mobdebug.lua') to '%s': %s")
+              :format(mdbc, wx.wxSysErrorMsg())
+          DisplayOutputLn(message)
+          if not copied then return end
+        end
       end
     end
 
