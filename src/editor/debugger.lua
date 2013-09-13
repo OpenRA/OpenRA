@@ -30,6 +30,16 @@ local BREAKPOINT_MARKER_VALUE = 2^BREAKPOINT_MARKER
 
 local activate = {CHECKONLY = 1, NOREPORT = 2}
 
+local function serialize(value, options) return mobdebug.line(value, options) end
+
+function fixUTF8(...)
+  local t = {...}
+  -- convert to escaped decimal code as these can only appear in strings
+  local function fix(s) return '\\'..string.byte(s) end
+  for i = 1, #t do t[i] = FixUTF8(t[i], fix) end
+  return (table.unpack or unpack)(t)
+end
+
 local function q(s) return s:gsub('([%(%)%.%%%+%-%*%?%[%^%$%]])','%%%1') end
 
 local function updateWatchesSync(num)
@@ -130,9 +140,9 @@ local function updateStackSync()
 
         -- comment can be not necessarily a string for tables with metatables
         -- that provide its own __tostring method
-        local value, comment = val[1], tostring(val[2])
+        local value, comment = val[1], fixUTF8(tostring(val[2]))
         local text = ("%s = %s%s"):
-          format(name, mobdebug.line(value, params),
+          format(name, fixUTF8(serialize(value, params)),
                  simpleType[type(value)] and "" or ("  --[["..comment.."]]"))
         local item = stackCtrl:AppendItem(callitem, text, 1)
         if checkIfExpandable(value, item) then
@@ -142,9 +152,9 @@ local function updateStackSync()
 
       -- add the upvalues for this call stack level to the tree item
       for name,val in pairs(frame[3]) do
-        local value, comment = val[1], tostring(val[2])
+        local value, comment = val[1], fixUTF8(tostring(val[2]))
         local text = ("%s = %s%s"):
-          format(name, mobdebug.line(value, params),
+          format(name, fixUTF8(serialize(value, params)),
                  simpleType[type(value)] and "" or ("  --[["..comment.."]]"))
         local item = stackCtrl:AppendItem(callitem, text, 2)
         if checkIfExpandable(value, item) then
@@ -385,7 +395,7 @@ debugger.shell = function(expression, isstatement)
               local func = loadstring('return '..v) -- deserialize the value first
               if func then -- if it's deserialized correctly
                 values[i] = (forceexpression and i > 1 and '\n' or '') ..
-                  mobdebug.line(func(), {nocode = true, comment = 0,
+                  serialize(func(), {nocode = true, comment = 0,
                     -- if '=' is used, then use multi-line serialized output
                     indent = forceexpression and '  ' or nil})
               end
@@ -396,7 +406,7 @@ debugger.shell = function(expression, isstatement)
           if #values == 0 and (forceexpression or not isstatement) then
             values = {'nil'}
           end
-          DisplayShell((table.unpack or unpack)(values))
+          DisplayShell(fixUTF8((table.unpack or unpack)(values)))
         end
 
         -- refresh Stack and Watch windows if executed a statement (and no err)
@@ -828,7 +838,7 @@ function debuggerCreateStackWindow()
       local image = stackCtrl:GetItemImage(item_id)
       local num = 1
       for name,value in pairs(stackItemValue[item_id:GetValue()]) do
-        local strval = mobdebug.line(value, {comment = false, nocode = true})
+        local strval = fixUTF8(serialize(value, {comment = false, nocode = true}))
         local text = type(name) == "number"
           and (num == name and strval or ("[%s] = %s"):format(name, strval))
           or ("%s = %s"):format(tostring(name), strval)

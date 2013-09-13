@@ -272,7 +272,7 @@ function pairsSorted(t, f)
   return iter
 end
 
-function fixUTF8(s, replacement)
+function FixUTF8(s, repl)
   local p, len, invalid = 1, #s, {}
   while p <= len do
     if     p == s:find("[%z\1-\127]", p) then p = p + 1
@@ -285,8 +285,12 @@ function fixUTF8(s, replacement)
     elseif p == s:find("[\241-\243][\128-\191][\128-\191][\128-\191]", p)
         or p == s:find(       "\244[\128-\143][\128-\191][\128-\191]", p) then p = p + 4
     else
-      s = s:sub(1, p-1)..replacement..s:sub(p+1)
+      local repl = type(repl) == 'function' and repl(s:sub(p,p)) or repl
+      s = s:sub(1, p-1)..repl..s:sub(p+1)
       table.insert(invalid, p)
+      -- adjust position/length as the replacement may be longer than one char
+      p = p + #repl
+      len = len + #repl - 1
     end
   end
   return s, invalid
