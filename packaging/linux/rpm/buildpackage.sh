@@ -13,7 +13,7 @@ sed -i "s/{VERSION_FIELD}/$PKGVERSION/" openra.spec
 rootdir=`readlink -f $2`
 sed -i "s|{ROOT_DIR}|$rootdir|" openra.spec
 
-for x in `find $rootdir -type d`
+for x in `find $rootdir -type f`
 do
     y="${x#$rootdir}"
     sed -i "/%files/ a ${y}" openra.spec
