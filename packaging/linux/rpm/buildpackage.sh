@@ -14,26 +14,28 @@ rootdir=`readlink -f $2`
 sed -i "s|{ROOT_DIR}|$rootdir|" openra.spec
 
 # List files to avoid owning standard dirs.
-for x in `find $rootdir/usr/bin -type f`
+find $rootdir/usr/bin -type f -print0 | xargs -0 -n 1 echo | while read x
 do
     y="${x#$rootdir}"
     sed -i "/%files/ a ${y}" openra.spec
 done
 
-for x in `find $rootdir/usr/share/icons -type f`
+find $rootdir/usr/share/icons -type f -print0 | xargs -0 -n 1 echo | while read x
 do
     y="${x#$rootdir}"
     sed -i "/%files/ a ${y}" openra.spec
 done
 
-for x in `find $rootdir/usr/share/applications -type f`
+find $rootdir/usr/share/applications -type f -print0 | \
+                                  xargs -0 -n 1 echo | \
+                                  while read x
 do
     y="${x#$rootdir}"
     sed -i "/%files/ a ${y}" openra.spec
 done
 
-# List directories only to avoid spam and problems with files containing spaces.
-for x in `find $rootdir/usr/share/openra -type d`
+# List directories only to avoid spam
+find $rootdir/usr/share/openra -type d -print0 | xargs -0 -n 1 echo | while read x
 do
     y="${x#$rootdir}"
     sed -i "/%files/ a ${y}" openra.spec
