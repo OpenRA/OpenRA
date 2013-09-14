@@ -49,7 +49,7 @@ namespace OpenRA.Renderer.SdlCommon
 			Gl.glBindRenderbufferEXT(Gl.GL_RENDERBUFFER_EXT, depth);
 			ErrorHandler.CheckGlError();
 
-			Gl.glRenderbufferStorageEXT(Gl.GL_RENDERBUFFER_EXT, Gl.GL_DEPTH_COMPONENT16, size.Width, size.Height);
+			Gl.glRenderbufferStorageEXT(Gl.GL_RENDERBUFFER_EXT, Gl.GL_DEPTH_COMPONENT, size.Width, size.Height);
 			ErrorHandler.CheckGlError();
 
 			Gl.glFramebufferRenderbufferEXT(Gl.GL_FRAMEBUFFER_EXT, Gl.GL_DEPTH_ATTACHMENT_EXT, Gl.GL_RENDERBUFFER_EXT, depth);
