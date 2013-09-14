@@ -94,6 +94,13 @@ echo "Creating packages..."
         echo "linux package build failed, refer to linux/package.log."
     fi
 ) &
+
+(
+    curl -L -o "$OUTPUTDIR/$TAG.tar.gz" "https://github.com/OpenRA/OpenRA/archive/$TAG.tar.gz"
+    if [ $? -ne 0 ]; then
+        echo "source code package download failed."
+    fi
+) &
 wait
 echo "Package build done."
 
