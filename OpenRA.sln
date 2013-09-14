@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Editor", "OpenRA.Edi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.TilesetBuilder", "OpenRA.TilesetBuilder\OpenRA.TilesetBuilder.csproj", "{1A8E50CC-EE32-4E57-8842-0C39C8EA7541}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RALint", "RALint\RALint.csproj", "{F9FA4D9F-2302-470A-8A07-6E37F488C124}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Lint", "OpenRA.Lint\OpenRA.Lint.csproj", "{F9FA4D9F-2302-470A-8A07-6E37F488C124}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenRA.Utility", "OpenRA.Utility\OpenRA.Utility.csproj", "{F33337BE-CB69-4B24-850F-07D23E408DDF}"
 EndProject

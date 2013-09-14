@@ -187,8 +187,8 @@ OpenRA.Editor.Form1.resources:
 editor: OpenRA.Editor.MapSelect.resources OpenRA.Editor.Form1.resources $(editor_TARGET)
 
 # Analyses mod yaml for easy to detect errors
-ralint_SRCS			:= $(shell find RALint/ -iname '*.cs')
-ralint_TARGET			= RALint.exe
+ralint_SRCS			:= $(shell find OpenRA.Lint/ -iname '*.cs')
+ralint_TARGET			= OpenRA.Lint.exe
 ralint_KIND			= exe
 ralint_DEPS			= $(fileformats_TARGET) $(game_TARGET)
 ralint_LIBS			= $(COMMON_LIBS) $(ralint_DEPS)
