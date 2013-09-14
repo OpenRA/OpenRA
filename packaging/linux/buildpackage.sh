@@ -15,22 +15,11 @@ ROOTDIR=root
 # Clean up
 rm -rf $ROOTDIR
 
-# Game files
-mkdir -p $ROOTDIR/usr/bin/
-cp -T openra-bin $ROOTDIR/usr/bin/openra
-cp -T openra-editor-bin $ROOTDIR/usr/bin/openra-editor
-mkdir -p $ROOTDIR/usr/share/openra/
-cp -R $BUILTDIR/* "$ROOTDIR/usr/share/openra/" || exit 3
+# Copy files
+cd ../..
+make install-all prefix="/usr" DESTDIR="$PWD/packaging/linux/$ROOTDIR"
 
-# Launch scripts (executed by Desura)
-cp ../../*.sh "$ROOTDIR/usr/share/openra/" || exit 3
-
-# Desktop Icons
-mkdir -p $ROOTDIR/usr/share/applications/
-cp *.desktop "$ROOTDIR/usr/share/applications/"
-
-mkdir -p $ROOTDIR/usr/share/icons/
-cp -r hicolor $ROOTDIR/usr/share/icons/
+cd packaging/linux
 
 (
     echo "Building Debian package."

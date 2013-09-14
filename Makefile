@@ -318,11 +318,15 @@ install-core: default
 	@echo 'DATADIR="$${ROOTDIR}/'"$(datadir)"'"'	>> openra
 	@echo 'cd "$${DATADIR}/openra"' 		>> openra
 	@echo 'exec mono OpenRA.Game.exe "$$@"' 	>> openra
-
 	@$(INSTALL_DIR) "$(BIN_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) -m +rx openra "$(BIN_INSTALL_DIR)"
-
 	@-$(RM) openra
+
+	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/applications"
+	@$(INSTALL_DATA) packaging/linux/openra.desktop "$(DESTDIR)$(datadir)/applications"
+
+	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/icons/"
+	@$(CP_R) packaging/linux/hicolor/ "$(DESTDIR)$(datadir)/icons"
 
 install-tools: tools
 	@-echo "Installing OpenRA tools to $(DATA_INSTALL_DIR)"
@@ -335,16 +339,26 @@ install-tools: tools
 	@echo 'DATADIR="$${ROOTDIR}/'"$(datadir)"'"'	>> openra-editor
 	@echo 'cd "$${DATADIR}/openra"'			>> openra-editor
 	@echo 'exec mono OpenRA.Editor.exe "$$@"'	>> openra-editor
-
 	@$(INSTALL_DIR) "$(BIN_INSTALL_DIR)"
 	@$(INSTALL_PROGRAM) -m +rx openra-editor "$(BIN_INSTALL_DIR)"
-
 	@-$(RM) openra-editor
+
+	@$(INSTALL_DIR) "$(DESTDIR)$(datadir)/applications"
+	@$(INSTALL_DATA) packaging/linux/openra-editor.desktop "$(DESTDIR)$(datadir)/applications"
 
 uninstall:
 	@-$(RM_R) "$(DATA_INSTALL_DIR)"
 	@-$(RM_F) "$(BIN_INSTALL_DIR)/openra"
 	@-$(RM_F) "$(BIN_INSTALL_DIR)/openra-editor"
+	@-$(RM_F) "$(DESTDIR)$(datadir)/applications/openra.desktop"
+	@-$(RM_F) "$(DESTDIR)$(datadir)/applications/openra-editor.desktop"
+	@-$(RM_F) "$(DESTDIR)$(datadir)/icons/hicolor/16x16/apps/openra.png"
+	@-$(RM_F) "$(DESTDIR)$(datadir)/icons/hicolor/32x32/apps/openra.png"
+	@-$(RM_F) "$(DESTDIR)$(datadir)/icons/hicolor/32x32/apps/openra-editor.png"
+	@-$(RM_F) "$(DESTDIR)$(datadir)/icons/hicolor/48x48/apps/openra.png"
+	@-$(RM_F) "$(DESTDIR)$(datadir)/icons/hicolor/48x48/apps/openra-editor.png"
+	@-$(RM_F) "$(DESTDIR)$(datadir)/icons/hicolor/64x64/apps/openra.png"
+	@-$(RM_F) "$(DESTDIR)$(datadir)/icons/hicolor/128x128/apps/openra.png"
 
 help:
 	@echo to compile, run:
