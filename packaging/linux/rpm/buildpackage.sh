@@ -14,31 +14,31 @@ rootdir=`readlink -f $2`
 sed -i "s|{ROOT_DIR}|$rootdir|" openra.spec
 
 # List files to avoid owning standard dirs.
-find $rootdir/usr/bin -type f -print0 | xargs -0 -n 1 echo | while read x
+`find $rootdir/usr/bin -type f -print0` | xargs -0 -n 1 echo | while read x
 do
     y="${x#$rootdir}"
-    sed -i "/%files/ a ${y}" openra.spec
+    sed -i "/%files/ a \"${y}\"" openra.spec
 done
 
-find $rootdir/usr/share/icons -type f -print0 | xargs -0 -n 1 echo | while read x
+`find $rootdir/usr/share/icons -type f -print0` | xargs -0 -n 1 echo | while read x
 do
     y="${x#$rootdir}"
-    sed -i "/%files/ a ${y}" openra.spec
+    sed -i "/%files/ a \"${y}\"" openra.spec
 done
 
-find $rootdir/usr/share/applications -type f -print0 | \
+`find $rootdir/usr/share/applications -type f -print0` | \
                                   xargs -0 -n 1 echo | \
                                   while read x
 do
     y="${x#$rootdir}"
-    sed -i "/%files/ a ${y}" openra.spec
+    sed -i "/%files/ a \"${y}\"" openra.spec
 done
 
 # List directories only to avoid spam
-find $rootdir/usr/share/openra -type d -print0 | xargs -0 -n 1 echo | while read x
+`find $rootdir/usr/share/openra -type d -print0` | xargs -0 -n 1 echo | while read x
 do
     y="${x#$rootdir}"
-    sed -i "/%files/ a ${y}" openra.spec
+    sed -i "/%files/ a \"${y}\"" openra.spec
 done
 
 cp openra.spec "$3/SPECS/"
