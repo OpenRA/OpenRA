@@ -1,10 +1,14 @@
-NEW:
+20130915:
 	All mods:
 		Overhauled Fog of War to freeze the state of resource, smudge, and structures.
-		Overhauled weapon projectile physics and rendering.
+		Overhauled weapon projectile physics, rendering, and sounds.
+		Overhauled firing offsets and muzzle flashes for all units.
 		Added starting units configuration to the lobby (MCV only, light support, heavy support).
 		Added lobby options for disabling shroud and fog of war.
+		Added "Build off Ally ConYards" lobby option.
+		Added starting cash selector.
 		Added an ingame credits menu.
+		Added country name resolution to the server browser and lobby.
 		Added descriptive error messages when connecting to a server fails.
 		Added guard ability to combat units ('d').
 		Added force-move ability (hold alt to prioritize move/crush over attack/harvest).
@@ -12,6 +16,9 @@ NEW:
 		Added kick-ban to the server lobby.
 		Added a renderer geometry visualization to the debug/cheats menu.
 		Overhauled lobby layout.
+		Overhauled diplomacy menu.
+		Fixed turreted buildings ignoring attack orders.
+		Fixed units targeting cloaked actors.
 		Fixed exploit allowing arbitrary building placement.
 		Fixed exploit allowing a malicious client to steal admin rights.
 		Fixed exploit related to support aircraft.
@@ -37,15 +44,15 @@ NEW:
 		Fixed artwork glitches in several units and buildings.
 		Fixed incorrect player color on captured oil derricks on some maps.
 		Fixed support powers being available after winning a game.
-		Fixed sniper damage vs walls.
 		Fixed destroyable ore mines.
 		Fixed chronotank teleport sound.
+		Fixed snipers and tanya shooting vehicles and buildings.
+		Sniper health reduced.
 		Improved chronoshift interaction with vehicle husks.
 		Added build limit to iron curtain and chronosphere.
 		Removed bibs from iron curtain and chronosphere.
 		Improved dog attack behavior.
 		Tweaked some weapon explosions.
-		Sniper health reduced.
 		Iron curtain duration increased to 20 seconds.
 		Chronoshift duration decreased to 20 seconds.
 		Tesla coil price reduced to $1200 and firing delay increased.
@@ -63,11 +70,13 @@ NEW:
 		Removed maps: Hotzone, Mjolnir-2, Seaside.
 		Disabled bots on several maps where they don't work well.
 	C&C:
-		Fixed Nod01 mission.
-		Fixed mouse cursor colors.
 		Restored "classic" multi-engineer behavior. Buildings above 50% health will be damaged by 50%; buildings below this will be captured.
-		Added some texture to the UI background.
+		Improved snow color on snow maps.
+		Fixed mouse cursor colors.
+		Fixed Nod01 mission.
 		Fixed veterancy chevrons on cloaked units.
+		Added some texture to the UI background.
+		Added EVA notifications when an enemy player launches an airstrike or nuclear missile.
 		Increased aggressiveness of Viceroids.
 		Reduced the pip-count on silos.
 		Orca range increased, reload time decreased.
@@ -79,15 +88,18 @@ NEW:
 		Updated maps: Skull Valley, Slippery Slopes, The Hourglass.
 		Renamed maps: Rock Canyon -> Manufacturing Consent, Bialystok -> Lessons from Kosovo.
 	Dune 2000:
+		Removed converted art and sound assets - now uses the original game files.
+		Restored Deviator tank for Ordos.
 		Added new title font.
 		Added maps: Imperial Basin.
-		Fixed harvester docking animation.
 		Fixed statistics tracking.
-		Added harvesting animation.
-		Uses original (better quality) audio.
 		Updated maps: Black Mesa, Brimstone, Death Depths, Dune Boogie.
 	Engine:
 		Fixed a crash with server hosting under Windows.
+		Added a fatal error dialog with options to view logs and read the FAQ.
+		Added sync checking for projectile effects.
+		Removed support for mono versions < 2.10.
+		Added support for portable installs (create a directory "Support" inside the game root).
 		Significant improvements to pathfinder performance when ordering units to areas they cannot reach.
 		Reduced order lag for singleplayer games.
 		Added audio device configuration.
@@ -106,9 +118,11 @@ NEW:
 		Added additional logging for server errors.
 		Significant additional work towards TS/RA2 terrain support.
 	Build system and packages:
-		Host windows OpenAL and SDL dependencies on our own servers to avoid excessive downtime.
+		Fix compilation issues under .Net 3.5.
+		Integrated windows dependencies in the installer.
 	Map Editor and Tools:
 		Added an ingame asset viewer / converter to D2K and RA (enable via the Debug tab in the settings menu).
+		Added utility '--map-hash' command for retrieving the hash of a map.
 		Added EditorConfig definitions for editors that support it.
 		Added StyleCop definitions for editors that support it.
 
