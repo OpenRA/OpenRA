@@ -152,6 +152,10 @@ SectionGroup /e "Mods"
 	SectionEnd
 SectionGroupEnd
 
+Section "Shortcut" Shortcut
+	CreateShortCut "$DESKTOP\OpenRA.lnk" "$INSTDIR\OpenRA.Game.exe"
+SectionEnd
+
 ;***************************
 ;Dependency Sections
 ;***************************
