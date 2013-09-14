@@ -134,7 +134,6 @@ mod_ra_TARGET			= mods/ra/OpenRA.Mods.RA.dll
 mod_ra_KIND			= library
 mod_ra_DEPS			= $(STD_MOD_DEPS) $(utility_TARGET) $(geoip_TARGET)
 mod_ra_LIBS			= $(COMMON_LIBS) $(STD_MOD_LIBS) $(utility_TARGET) $(geoip_TARGET)
-mod_ra_EXTRA_CMDS		= mono --debug RALint.exe ra
 PROGRAMS 			+= mod_ra
 mod_ra: $(mod_ra_TARGET)
 
@@ -144,7 +143,6 @@ mod_cnc_TARGET		= mods/cnc/OpenRA.Mods.Cnc.dll
 mod_cnc_KIND		= library
 mod_cnc_DEPS		= $(STD_MOD_DEPS) $(mod_ra_TARGET)
 mod_cnc_LIBS		= $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_ra_TARGET)
-mod_cnc_EXTRA_CMDS	= mono --debug RALint.exe cnc
 PROGRAMS 		+= mod_cnc
 mod_cnc: $(mod_cnc_TARGET)
 
@@ -154,7 +152,6 @@ mod_d2k_TARGET		= mods/d2k/OpenRA.Mods.D2k.dll
 mod_d2k_KIND		= library
 mod_d2k_DEPS		= $(STD_MOD_DEPS) $(mod_ra_TARGET) $(mod_cnc_TARGET)
 mod_d2k_LIBS		= $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_ra_TARGET)
-mod_d2k_EXTRA_CMDS	= mono --debug RALint.exe d2k
 PROGRAMS 		+= mod_d2k
 mod_d2k: $(mod_d2k_TARGET)
 
@@ -164,7 +161,6 @@ mod_ts_TARGET		= mods/ts/OpenRA.Mods.TS.dll
 mod_ts_KIND		= library
 mod_ts_DEPS		= $(STD_MOD_DEPS) $(mod_ra_TARGET)
 mod_ts_LIBS		= $(COMMON_LIBS) $(STD_MOD_LIBS) $(mod_ra_TARGET)
-mod_ts_EXTRA_CMDS	= mono --debug RALint.exe ts
 PROGRAMS 		+= mod_ts
 mod_ts: $(mod_ts_TARGET)
 
@@ -194,6 +190,16 @@ ralint_DEPS			= $(fileformats_TARGET) $(game_TARGET)
 ralint_LIBS			= $(COMMON_LIBS) $(ralint_DEPS)
 PROGRAMS 			+= ralint
 ralint: $(ralint_TARGET)
+
+test:
+	@mono --debug RALint.exe ra
+	@echo "OpenRA.Lint: ra mod yaml checks passed."
+	@mono --debug RALint.exe cnc
+	@echo "OpenRA.Lint: cnc mod yaml checks passed."
+	@mono --debug RALint.exe d2k
+	@echo "OpenRA.Lint: d2k mod yaml checks passed."
+	@mono --debug RALint.exe ts
+	@echo "OpenRA.Lint: ts mod yaml checks passed."
 
 # Builds and exports tilesets from a bitmap
 tsbuild_SRCS		:= $(shell find OpenRA.TilesetBuilder/ -iname '*.cs')

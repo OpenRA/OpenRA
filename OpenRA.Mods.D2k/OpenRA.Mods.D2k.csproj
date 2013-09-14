@@ -43,7 +43,6 @@
     <CustomCommands>
       <CustomCommands>
         <Command type="AfterBuild" command="cp ${TargetFile} ../mods/d2k" workingdir="${ProjectDir}" />
-        <Command type="AfterBuild" command="mono RALint.exe d2k" workingdir="${ProjectDir}/../" />
       </CustomCommands>
     </CustomCommands>
     <DefineConstants>DEBUG;</DefineConstants>

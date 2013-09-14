@@ -11,6 +11,7 @@ install:
 # Run the build script which will automatically call RALint and ensure that the IDE project files are still valid.
 script:
  - make all
+ - make test
  - xbuild
 
 # Only watch the development branch.
